@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#7867f4" />
+<title>HANI OS Life Edition v2.0</title>
+<style>
+:root{
+  --bg:#f5f6fb; --panel:rgba(255,255,255,.9); --panel-solid:#fff; --text:#20243a; --muted:#7d8498;
+  --line:#e7e9f2; --primary:#7867f4; --primary2:#59b7ff; --pink:#ff9ac4; --green:#45c59a;
+  --yellow:#ffd37d; --danger:#ef6a86; --shadow:0 18px 50px rgba(62,69,116,.11);
+  --sidebar:#202941; --sidebar2:#172034; --chip:#f0edff;
+}
+[data-theme="dark"]{
+  --bg:#0f1421; --panel:rgba(25,32,49,.92); --panel-solid:#192031; --text:#f2f4ff; --muted:#aab2c5;
+  --line:#30384c; --shadow:0 18px 48px rgba(0,0,0,.3); --chip:#2c2852;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--text);font-family:Inter,Pretendard,"Noto Sans KR",Arial,sans-serif;background:
+radial-gradient(circle at 8% 0%,rgba(120,103,244,.15),transparent 28%),
+radial-gradient(circle at 100% 8%,rgba(89,183,255,.15),transparent 26%),
+radial-gradient(circle at 65% 100%,rgba(255,154,196,.11),transparent 28%),var(--bg)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.app{min-height:100vh;display:grid;grid-template-columns:270px 1fr}
+.sidebar{height:100vh;position:sticky;top:0;padding:23px 17px;background:linear-gradient(180deg,var(--sidebar),var(--sidebar2));color:#fff;overflow-y:auto}
+.brand{display:flex;align-items:center;gap:12px;padding:2px 4px 18px}
+.logo{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;font-size:22px;font-weight:950;background:linear-gradient(135deg,#8c79ff,#55c5ff);box-shadow:0 12px 30px rgba(101,113,255,.35)}
+.brand h1{font-size:21px;margin:0}.brand small{color:#c8d0df}
+.hani-card{padding:15px;border-radius:18px;background:#ffffff12;border:1px solid #ffffff16;margin-bottom:17px}
+.hani-card .face{font-size:26px}.hani-card b{display:block;margin:7px 0 4px}.hani-card p{margin:0;color:#d6deeb;font-size:12.5px;line-height:1.55}
+.group-title{font-size:10px;letter-spacing:.13em;color:#8f9ab1;font-weight:900;margin:18px 10px 6px}
+.nav{display:grid;gap:4px}
+.nav-btn{width:100%;border:0;background:transparent;color:#d3dbea;text-align:left;padding:11px 12px;border-radius:12px;font-weight:800;display:flex;align-items:center;gap:10px}
+.nav-btn:hover,.nav-btn.active{background:#ffffff18;color:#fff}
+.nav-btn .count{margin-left:auto;background:#ffffff18;border-radius:999px;padding:2px 7px;font-size:10px}
+.sidebar-foot{margin:22px 9px 4px;color:#99a6bb;font-size:11px;line-height:1.6}
+.main{padding:26px 30px 54px;min-width:0}
+.topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:20px}
+.topbar h2{margin:0;font-size:30px}.topbar p{margin:6px 0 0;color:var(--muted)}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--panel-solid);color:var(--text);padding:10px 13px;border-radius:12px;font-weight:850;box-shadow:0 6px 18px rgba(40,45,83,.05)}
+.btn.primary{color:#fff;border:0;background:linear-gradient(135deg,var(--primary),#9d73f5)}
+.view{display:none}.view.active{display:block;animation:fade .22s ease}
+@keyframes fade{from{opacity:.2;transform:translateY(5px)}to{opacity:1;transform:none}}
+.hero{padding:28px;border-radius:28px;color:#403c62;background:linear-gradient(135deg,#d8f0ff,#ded7ff 52%,#ffdce9);position:relative;overflow:hidden;box-shadow:var(--shadow);border:1px solid #ffffffaa}
+.hero:after{content:"♡";position:absolute;right:26px;top:-40px;font-size:145px;color:#ffffff72}
+.hero .eyebrow{font-size:11px;letter-spacing:.13em;font-weight:950}.hero h3{font-size:31px;margin:8px 0}.hero p{max-width:760px;line-height:1.7;margin:0;font-weight:650}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:17px}
+.card{background:var(--panel);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:21px;padding:19px;box-shadow:var(--shadow);min-width:0}
+.kpi{grid-column:span 3}.wide{grid-column:span 8}.side{grid-column:span 4}.half{grid-column:span 6}.third{grid-column:span 4}.full{grid-column:1/-1}
+.label{font-size:11px;color:var(--muted);font-weight:900;letter-spacing:.06em}.value{font-size:26px;font-weight:950;margin-top:7px}
+.sub{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.55}
+.section-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:13px}.section-head h3{margin:0;font-size:18px}
+.pill{font-size:11px;font-weight:900;color:var(--primary);background:var(--chip);padding:6px 9px;border-radius:999px}
+.cards-menu{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+.menu-card{border:1px solid var(--line);background:var(--panel-solid);color:var(--text);border-radius:18px;padding:16px;text-align:left;min-height:118px;transition:.18s transform,.18s box-shadow}
+.menu-card:hover{transform:translateY(-3px);box-shadow:0 16px 30px rgba(57,65,110,.12)}
+.menu-icon{font-size:26px}.menu-card b{display:block;margin:10px 0 4px}.menu-card small{color:var(--muted);line-height:1.45}
+.list{display:grid;gap:10px}.item{padding:14px;border:1px solid var(--line);background:var(--panel-solid);border-radius:15px}
+.row{display:flex;justify-content:space-between;gap:12px;align-items:center}.name{font-weight:850}
+.progress{height:10px;background:var(--bg);border-radius:999px;overflow:hidden;margin-top:9px}.progress span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--primary),var(--primary2))}
+.note{padding:15px;border-radius:17px;background:linear-gradient(135deg,#fff1f7,#f2efff);border:1px dashed #e8bad1;color:#65536f;line-height:1.6}
+[data-theme="dark"] .note{background:#2b2234;color:#eadff0;border-color:#684760}
+.drive-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.drive-link{display:flex;gap:12px;align-items:center;padding:15px;border-radius:16px;border:1px solid var(--line);background:var(--panel-solid);color:var(--text);text-decoration:none}.drive-link:hover{border-color:#a89cff}.drive-link span:first-child{font-size:25px}
+.placeholder{padding:26px;text-align:center;border:1px dashed var(--line);border-radius:18px;color:var(--muted);background:var(--panel-solid)}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.field{display:grid;gap:6px}.field label{font-size:11px;color:var(--muted);font-weight:900}.field input,.field select,.field textarea{border:1px solid var(--line);background:var(--panel-solid);color:var(--text);padding:11px 12px;border-radius:11px;width:100%}.field textarea{min-height:90px;resize:vertical}
+.timeline{border-left:2px solid var(--line);margin-left:8px;padding-left:21px}.timeline-item{position:relative;margin-bottom:22px}.timeline-item:before{content:"";position:absolute;left:-28px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 4px var(--chip)}.timeline-item h4{margin:0 0 6px}.timeline-item p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
+.status{font-size:10px;font-weight:900;padding:4px 7px;border-radius:999px}.done{background:#dff8ef;color:#18825e}.planned{background:#fff3d6;color:#8d6500}.idea{background:#eeeaff;color:#6451dc}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:12px 9px;border-bottom:1px solid var(--line);font-size:13px}th{color:var(--muted);font-size:11px}
+.hidden{display:none!important}
+.footer{text-align:center;color:var(--muted);font-size:11px;margin-top:25px}
+@media(max-width:1080px){.cards-menu{grid-template-columns:repeat(3,1fr)}.drive-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:920px){.app{grid-template-columns:1fr}.sidebar{position:relative;height:auto}.nav{grid-template-columns:repeat(4,minmax(130px,1fr));overflow:auto}.sidebar-foot{display:none}.main{padding:21px 17px 42px}.kpi{grid-column:span 6}.wide,.side{grid-column:1/-1}}
+@media(max-width:680px){.topbar{flex-direction:column}.topbar h2{font-size:25px}.kpi,.half,.third{grid-column:1/-1}.cards-menu{grid-template-columns:repeat(2,1fr)}.drive-grid,.form-grid{grid-template-columns:1fr}.hero h3{font-size:25px}.main{padding:16px 12px 35px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="logo">H</div><div><h1>HANI OS</h1><small>Life Edition v2.0</small></div></div>
+  <div class="hani-card"><div class="face">૮₍˶ᵔ ᵕ ᵔ˶₎ა</div><b>하니의 한마디</b><p>완벽하게 시작하려 하지 말고, 오늘 한 칸씩 채워가자 오빠♡</p></div>
+
+  <div class="group-title">OVERVIEW</div>
+  <nav class="nav">
+    <button class="nav-btn active" data-view="home">🏠 홈</button>
+    <button class="nav-btn" data-view="tasks">✅ 할 일</button>
+    <button class="nav-btn" data-view="calendar">📅 캘린더</button>
+  </nav>
+
+  <div class="group-title">LIFE</div>
+  <nav class="nav">
+    <button class="nav-btn" data-view="investment">💰 투자</button>
+    <button class="nav-btn" data-view="asset">🏦 자산</button>
+    <button class="nav-btn" data-view="diet">💪 다이어트</button>
+    <button class="nav-btn" data-view="travel">✈️ 여행</button>
+    <button class="nav-btn" data-view="reading">📚 독서</button>
+    <button class="nav-btn" data-view="university">🎓 대학교</button>
+    <button class="nav-btn" data-view="study">🧠 공부</button>
+    <button class="nav-btn" data-view="work">💼 업무</button>
+    <button class="nav-btn" data-view="shopping">🛍 쇼핑</button>
+    <button class="nav-btn" data-view="certificate">🏅 자격증</button>
+    <button class="nav-btn" data-view="diary">📝 일기</button>
+    <button class="nav-btn" data-view="movie">🎬 영화</button>
+    <button class="nav-btn" data-view="game">🎮 게임</button>
+  </nav>
+
+  <div class="group-title">SYSTEM</div>
+  <nav class="nav">
+    <button class="nav-btn" data-view="drive">📂 Google Drive</button>
+    <button class="nav-btn" data-view="devcenter">🛠 개발센터</button>
+    <button class="nav-btn" data-view="settings">⚙ 설정</button>
+  </nav>
+  <div class="sidebar-foot">Version 2.0.0<br>Build 20260802 · HANI Project</div>
+</aside>
+
+<main class="main">
+  <header class="topbar">
+    <div><h2 id="pageTitle">홈</h2><p id="pageDesc">오늘 필요한 것만 한눈에 모아봤어.</p></div>
+    <div class="actions">
+      <button class="btn" id="themeBtn">🌙 다크모드</button>
+      <button class="btn primary" data-go="tasks">＋ 빠른 기록</button>
+    </div>
+  </header>
+
+  <section id="home" class="view active">
+    <div class="hero"><div class="eyebrow">HANI OS LIFE EDITION</div><h3>성민 오빠의 하루를 한 곳에서 ♡</h3><p>투자, 건강, 학교, 공부, 업무, 여행과 취미까지. 지금은 뼈대를 만들었고, 앞으로 실제로 쓰면서 필요한 기능을 하나씩 채워갈 거야.</p></div>
+    <div class="grid">
+      <div class="card kpi"><div class="label">장기 투자자산</div><div class="value">918,295원</div><div class="sub">ISA · 연금저축 · IRP</div></div>
+      <div class="card kpi"><div class="label">월 적립 계획</div><div class="value">230,000원</div><div class="sub">ISA 3만 · 연저 10만 · IRP 10만</div></div>
+      <div class="card kpi"><div class="label">체중 목표</div><div class="value">100kg</div><div class="sub">현재 기록은 다이어트 페이지에서 관리</div></div>
+      <div class="card kpi"><div class="label">현재 버전</div><div class="value">v2.0.0</div><div class="sub">Life Edition Foundation</div></div>
+
+      <div class="card wide">
+        <div class="section-head"><h3>오늘의 바로가기</h3><span class="pill">QUICK ACCESS</span></div>
+        <div class="cards-menu">
+          <button class="menu-card" data-go="investment"><div class="menu-icon">💰</div><b>투자</b><small>ETF·계좌·투자일지</small></button>
+          <button class="menu-card" data-go="diet"><div class="menu-icon">💪</div><b>다이어트</b><small>체중·식단·운동</small></button>
+          <button class="menu-card" data-go="university"><div class="menu-icon">🎓</div><b>대학교</b><small>과목·과제·시험</small></button>
+          <button class="menu-card" data-go="study"><div class="menu-icon">🧠</div><b>공부</b><small>일본어·전공·컴퓨터</small></button>
+          <button class="menu-card" data-go="tasks"><div class="menu-icon">✅</div><b>할 일</b><small>오늘 해야 할 일</small></button>
+          <button class="menu-card" data-go="calendar"><div class="menu-icon">📅</div><b>캘린더</b><small>일정과 마감일</small></button>
+          <button class="menu-card" data-go="travel"><div class="menu-icon">✈️</div><b>여행</b><small>계획·기록·사진</small></button>
+          <button class="menu-card" data-go="drive"><div class="menu-icon">📂</div><b>Drive</b><small>모든 자료실 연결</small></button>
+        </div>
+      </div>
+      <div class="card side">
+        <div class="section-head"><h3>이번 단계</h3><span class="pill">FOUNDATION</span></div>
+        <div class="list">
+          <div class="item"><div class="row"><span class="name">메뉴 구조</span><span class="status done">완료</span></div></div>
+          <div class="item"><div class="row"><span class="name">개발센터</span><span class="status done">완료</span></div></div>
+          <div class="item"><div class="row"><span class="name">Drive 허브</span><span class="status done">기본형</span></div></div>
+          <div class="item"><div class="row"><span class="name">실제 데이터 입력</span><span class="status planned">다음</span></div></div>
+        </div>
+        <div class="note" style="margin-top:12px"><b>하니 메모</b><br>지금 버전은 모든 방의 문을 만든 단계야. 이제 자주 쓰는 방부터 가구를 채우자!</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="investment" class="view">
+    <div class="grid">
+      <div class="card full"><div class="section-head"><h3>투자 대시보드</h3><span class="pill">현재 데이터 유지</span></div>
+      <div class="cards-menu">
+        <button class="menu-card"><div class="menu-icon">🇺🇸</div><b>ISA</b><small>S&P500 · 배당 · 헬스케어</small></button>
+        <button class="menu-card"><div class="menu-icon">📈</div><b>연금저축</b><small>나스닥100 · 미국30년국채</small></button>
+        <button class="menu-card"><div class="menu-icon">🤖</div><b>IRP</b><small>나스닥100 · AI전력 · 로봇 검토</small></button>
+        <button class="menu-card"><div class="menu-icon">📒</div><b>투자일지</b><small>장기와 단기 기록 분리</small></button>
+      </div></div>
+      <div class="card full">
+        <table><thead><tr><th>계좌</th><th>현재 평가액</th><th>핵심 역할</th></tr></thead><tbody>
+          <tr><td>ISA</td><td>719,295원</td><td>미국 코어·배당·헬스케어</td></tr>
+          <tr><td>연금저축</td><td>102,255원</td><td>나스닥 성장 + 국채 완충</td></tr>
+          <tr><td>IRP</td><td>96,745원</td><td>장기 성장·미래산업</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </section>
+
+  <section id="asset" class="view"></section>
+  <section id="diet" class="view"></section>
+  <section id="travel" class="view"></section>
+  <section id="reading" class="view"></section>
+  <section id="university" class="view"></section>
+  <section id="study" class="view"></section>
+  <section id="work" class="view"></section>
+  <section id="shopping" class="view"></section>
+  <section id="certificate" class="view"></section>
+  <section id="diary" class="view"></section>
+  <section id="movie" class="view"></section>
+  <section id="game" class="view"></section>
+  <section id="calendar" class="view"></section>
+
+  <section id="tasks" class="view">
+    <div class="grid">
+      <div class="card half">
+        <div class="section-head"><h3>할 일 추가</h3><span class="pill">브라우저 저장</span></div>
+        <div class="form-grid">
+          <div class="field"><label>분류</label><select id="taskCategory"><option>개인</option><option>투자</option><option>다이어트</option><option>대학교</option><option>공부</option><option>업무</option><option>여행</option></select></div>
+          <div class="field"><label>마감일</label><input type="date" id="taskDate"></div>
+          <div class="field" style="grid-column:1/-1"><label>할 일</label><input id="taskText" placeholder="예: 일본어 과제 제출"></div>
+        </div>
+        <button class="btn primary" id="addTask" style="margin-top:12px">저장</button>
+      </div>
+      <div class="card half">
+        <div class="section-head"><h3>내 할 일</h3><button class="btn" id="clearTasks">전체 삭제</button></div>
+        <div id="taskList" class="list"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="drive" class="view">
+    <div class="grid">
+      <div class="card full">
+        <div class="section-head"><h3>Google Drive 허브</h3><span class="pill">LINK HUB</span></div>
+        <div class="note">설정 페이지에 각 폴더 공유 링크를 붙여 넣으면 아래 카드가 바로 연결돼. 개인용이라면 폴더를 공개로 풀지 말고, 본인 계정으로 로그인한 상태에서 사용하는 것을 권장해.</div>
+        <div id="driveGrid" class="drive-grid" style="margin-top:14px"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="devcenter" class="view">
+    <div class="grid">
+      <div class="card half">
+        <div class="section-head"><h3>Release Notes</h3><span class="pill">v2.0.0</span></div>
+        <div class="timeline">
+          <div class="timeline-item"><h4>v2.0.0 · Life Edition Foundation</h4><p>전체 메뉴 통합, 카드형 홈, 개발센터, Google Drive 허브, 할 일 저장, 반응형·다크모드 적용.</p></div>
+          <div class="timeline-item"><h4>v1.0.0 · First Public Build</h4><p>GitHub Pages 첫 공개, 투자 대시보드 및 기본 기록 기능.</p></div>
+        </div>
+      </div>
+      <div class="card half">
+        <div class="section-head"><h3>Roadmap</h3><span class="pill">NEXT</span></div>
+        <div class="list">
+          <div class="item"><div class="row"><b>v2.1</b><span class="status planned">예정</span></div><div class="sub">투자 자동 계산·입력 기능</div></div>
+          <div class="item"><div class="row"><b>v2.2</b><span class="status planned">예정</span></div><div class="sub">다이어트 체중·식단·운동 기록</div></div>
+          <div class="item"><div class="row"><b>v2.3</b><span class="status planned">예정</span></div><div class="sub">대학교·공부 페이지 실사용화</div></div>
+          <div class="item"><div class="row"><b>v3.0</b><span class="status idea">아이디어</span></div><div class="sub">PWA 설치·클라우드 동기화 검토</div></div>
+        </div>
+      </div>
+      <div class="card half">
+        <div class="section-head"><h3>아이디어 보드</h3><span class="pill">BACKLOG</span></div>
+        <div class="list">
+          <div class="item">□ 여행 예산과 사진 갤러리</div><div class="item">□ 독서 진행률·별점</div><div class="item">□ 영화·게임 감상 기록</div><div class="item">□ Google Calendar 연동</div><div class="item">□ HANI AI 월간 리포트</div>
+        </div>
+      </div>
+      <div class="card half">
+        <div class="section-head"><h3>개발 일지</h3><span class="pill">LOG</span></div>
+        <div class="timeline">
+          <div class="timeline-item"><h4>2026-08-02</h4><p>GitHub Pages 공개 성공.</p></div>
+          <div class="timeline-item"><h4>2026-08-02</h4><p>Life Edition 전체 메뉴와 Google Drive 폴더 구조 확정.</p></div>
+          <div class="timeline-item"><h4>2026-08-02</h4><p>v2.0 통합본 제작.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="settings" class="view">
+    <div class="grid">
+      <div class="card full">
+        <div class="section-head"><h3>Google Drive 링크 설정</h3><span class="pill">내 기기에 저장</span></div>
+        <div id="driveSettings" class="form-grid"></div>
+        <button class="btn primary" id="saveDrive" style="margin-top:13px">Drive 링크 저장</button>
+      </div>
+      <div class="card half">
+        <div class="section-head"><h3>데이터 백업</h3></div>
+        <p class="sub">할 일과 Drive 링크를 JSON 파일로 저장해.</p>
+        <button class="btn primary" id="exportBtn">백업 내보내기</button>
+      </div>
+      <div class="card half">
+        <div class="section-head"><h3>백업 복원</h3></div>
+        <input id="importFile" type="file" accept=".json" class="hidden">
+        <button class="btn" id="importBtn">백업 파일 선택</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">HANI OS Life Edition · Version 2.0.0 · 성민 오빠 전용 ♡</div>
+</main>
+</div>
+
+<script>
+const meta={
+home:["홈","오늘 필요한 것만 한눈에 모아봤어."],tasks:["할 일","분야별 할 일을 빠르게 기록해."],calendar:["캘린더","일정 기능은 다음 버전에서 확장할 예정이야."],
+investment:["투자","ISA·연금저축·IRP와 투자 기록을 관리해."],asset:["자산","현금·예금·부채·순자산을 관리하는 공간이야."],
+diet:["다이어트","체중·식단·운동·허리 회복을 기록할 공간이야."],travel:["여행","여행 계획, 비용, 사진과 후기를 모아둘 공간이야."],
+reading:["독서","읽는 책, 진행률, 메모와 독후감을 관리해."],university:["대학교","과목·과제·시험·학점·강의 자료를 정리해."],
+study:["공부","일본어·전공·컴퓨터와 새 학습 분야를 추가해."],work:["업무","프로젝트·고객·회의·업무 자료를 관리해."],
+shopping:["쇼핑","구매 후보, 가격 비교, 구매 기록을 모아둬."],certificate:["자격증","시험일·교재·진도·합격 기록을 관리해."],
+diary:["일기","하루 기록과 감정을 남기는 공간이야."],movie:["영화","본 영화, 보고 싶은 영화와 감상을 기록해."],
+game:["게임","플레이 기록, 목표, 리뷰를 남겨."],drive:["Google Drive","모든 파일 저장소로 빠르게 이동해."],
+devcenter:["개발센터","업데이트, 로드맵, 아이디어와 개발일지를 확인해."],settings:["설정","Drive 링크와 백업을 관리해."]
+};
+const placeholders={
+asset:["현금·예금·대출·순자산 카드","월별 자산 변화 그래프","고정비·소비 연결"],
+diet:["오늘 체중 입력","식단 기록","운동 체크","목표 그래프"],
+travel:["새 여행 만들기","여행 일정","예산·지출","사진·후기"],
+reading:["책 추가","현재 읽는 책","진행률·별점","독서 메모"],
+university:["학기·과목","과제 마감","시험 일정","성적·자료"],
+study:["일본어","전공","컴퓨터","새 분야 추가"],
+work:["업무 할 일","프로젝트","고객·파트너","회의록·자료"],
+shopping:["살 것","비교 중","구매 완료","위시리스트"],
+certificate:["준비 중","시험 일정","교재·강의","합격 기록"],
+diary:["오늘의 일기","감정 기록","사진","월간 회고"],
+movie:["보고 싶은 영화","감상 완료","별점","한줄평"],
+game:["플레이 중","완료 게임","목표·기록","리뷰"],
+calendar:["월간 보기","일정 추가","과제·시험 마감","여행 일정"]
+};
+function makePlaceholder(id){
+ const arr=placeholders[id]; if(!arr)return;
+ document.getElementById(id).innerHTML=`<div class="grid"><div class="card full"><div class="section-head"><h3>${meta[id][0]} 기본 구조</h3><span class="pill">COMING NEXT</span></div><div class="cards-menu">${arr.map((x,i)=>`<button class="menu-card"><div class="menu-icon">${["✨","📌","📊","🗂"][i%4]}</div><b>${x}</b><small>실제로 사용하면서 세부 기능을 채울 예정</small></button>`).join("")}</div><div class="note" style="margin-top:14px">이 페이지는 v2.0에서 확장 가능한 뼈대만 만들었어. 다음 버전부터 자주 쓰는 페이지 순서대로 입력·저장·그래프 기능을 붙일 거야.</div></div></div>`;
+}
+Object.keys(placeholders).forEach(makePlaceholder);
+
+function showView(id){
+ document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+ document.querySelectorAll(".nav-btn").forEach(v=>v.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ const nav=document.querySelector(`[data-view="${id}"]`); if(nav)nav.classList.add("active");
+ document.getElementById("pageTitle").textContent=meta[id][0];
+ document.getElementById("pageDesc").textContent=meta[id][1];
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>showView(b.dataset.view));
+document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>showView(b.dataset.go));
+
+const root=document.documentElement, themeBtn=document.getElementById("themeBtn");
+if(localStorage.getItem("haniLifeTheme")==="dark"){root.setAttribute("data-theme","dark");themeBtn.textContent="☀️ 라이트모드";}
+themeBtn.onclick=()=>{const dark=root.getAttribute("data-theme")==="dark"; if(dark){root.removeAttribute("data-theme");localStorage.setItem("haniLifeTheme","light");themeBtn.textContent="🌙 다크모드"}else{root.setAttribute("data-theme","dark");localStorage.setItem("haniLifeTheme","dark");themeBtn.textContent="☀️ 라이트모드"}};
+
+const TASK_KEY="haniLifeTasks";
+let tasks=JSON.parse(localStorage.getItem(TASK_KEY)||"[]");
+document.getElementById("taskDate").value=new Date().toISOString().slice(0,10);
+function renderTasks(){
+ const box=document.getElementById("taskList");
+ if(!tasks.length){box.innerHTML='<div class="placeholder">아직 할 일이 없어. 첫 항목을 추가해봐♡</div>';return}
+ box.innerHTML=tasks.map((t,i)=>`<div class="item"><div class="row"><div><b>${t.text}</b><div class="sub">${t.category} · ${t.date||"날짜 없음"}</div></div><button class="btn" onclick="removeTask(${i})">완료</button></div></div>`).join("");
+}
+window.removeTask=i=>{tasks.splice(i,1);localStorage.setItem(TASK_KEY,JSON.stringify(tasks));renderTasks();}
+document.getElementById("addTask").onclick=()=>{const text=document.getElementById("taskText").value.trim();if(!text)return alert("할 일을 입력해줘.");tasks.unshift({text,category:document.getElementById("taskCategory").value,date:document.getElementById("taskDate").value});localStorage.setItem(TASK_KEY,JSON.stringify(tasks));document.getElementById("taskText").value="";renderTasks();}
+document.getElementById("clearTasks").onclick=()=>{if(confirm("할 일을 모두 삭제할까?")){tasks=[];localStorage.setItem(TASK_KEY,"[]");renderTasks();}}; renderTasks();
+
+const driveFolders=["투자","다이어트","여행","독서","대학교","공부","업무","쇼핑","자격증","자산","일기","영화","게임","자료실"];
+const DRIVE_KEY="haniLifeDriveLinks";
+let driveLinks=JSON.parse(localStorage.getItem(DRIVE_KEY)||"{}");
+function renderDriveSettings(){document.getElementById("driveSettings").innerHTML=driveFolders.map(n=>`<div class="field"><label>${n}</label><input data-drive-name="${n}" value="${driveLinks[n]||""}" placeholder="Google Drive 폴더 링크"></div>`).join("");}
+function renderDrive(){
+ document.getElementById("driveGrid").innerHTML=driveFolders.map(n=>{const u=driveLinks[n];return u?`<a class="drive-link" href="${u}" target="_blank" rel="noopener"><span>📁</span><span><b>${n}</b><div class="sub">Drive 폴더 열기</div></span></a>`:`<div class="drive-link"><span>📁</span><span><b>${n}</b><div class="sub">설정에서 링크 등록</div></span></div>`}).join("");
+}
+document.getElementById("saveDrive").onclick=()=>{document.querySelectorAll("[data-drive-name]").forEach(i=>driveLinks[i.dataset.driveName]=i.value.trim());localStorage.setItem(DRIVE_KEY,JSON.stringify(driveLinks));renderDrive();alert("Drive 링크를 저장했어.");};
+renderDriveSettings();renderDrive();
+
+document.getElementById("exportBtn").onclick=()=>{const data={version:"2.0.0",exportedAt:new Date().toISOString(),tasks,driveLinks,theme:localStorage.getItem("haniLifeTheme")||"light"};const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="HANI_OS_Life_v2_backup.json";a.click();URL.revokeObjectURL(a.href);};
+document.getElementById("importBtn").onclick=()=>document.getElementById("importFile").click();
+document.getElementById("importFile").onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());tasks=Array.isArray(d.tasks)?d.tasks:[];driveLinks=d.driveLinks||{};localStorage.setItem(TASK_KEY,JSON.stringify(tasks));localStorage.setItem(DRIVE_KEY,JSON.stringify(driveLinks));if(d.theme)localStorage.setItem("haniLifeTheme",d.theme);renderTasks();renderDriveSettings();renderDrive();alert("백업을 복원했어. 테마는 새로고침 후 적용돼.");}catch(err){alert("올바른 HANI OS 백업 파일이 아니야.");}};
+</script>
+</body>
+</html>
