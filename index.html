@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#202a42">
-<title>HANI OS Life Edition v2.3.5.1</title>
+<title>HANI OS Life Edition v2.4.0</title>
 <style>
 :root{
   --bg:#f5f7fb;--panel:#fff;--panel2:#fafbff;--text:#202638;--muted:#7d8598;--line:#e8ebf2;
@@ -49,7 +49,7 @@
 @media(max-width:850px){.app,.app.sidebar-mini{grid-template-columns:1fr}.side{position:fixed;left:0;top:0;width:280px;transform:translateX(-105%);box-shadow:20px 0 50px rgba(0,0,0,.25)}.app.mobile-open .side{transform:translateX(0)}.overlay{position:fixed;inset:0;background:rgba(9,14,28,.45);z-index:35}.app.mobile-open .overlay{display:block}.side-toggle{display:none}.mobile-menu{display:grid;place-items:center}.main{padding:18px 16px 50px}.top h2{font-size:25px}.top-actions .btn span{display:none}.account-grid{grid-template-columns:1fr}.calendar-frame{min-height:520px}}
 @media(max-width:650px){.top{align-items:flex-start}.top p{font-size:12px}.hero{grid-template-columns:1fr;padding:20px}.hero h3{font-size:23px}.art{min-height:170px}.grid{gap:11px}.kpi,.half,.third{grid-column:1/-1}.fg,.fg.three,.stats,.team,.feature-grid{grid-template-columns:1fr}.card{padding:15px;border-radius:17px}.value{font-size:23px}.task-input{grid-template-columns:1fr}.task-input .btn{width:100%}.ai-banner{grid-template-columns:1fr;min-height:0;padding:16px}.ai-banner-copy{grid-template-columns:44px 1fr}.ai-avatar{width:44px;height:44px}.ai-scene{height:104px}.ai-role{display:inline-flex}.investment-live{grid-template-columns:repeat(2,minmax(0,1fr))}.live-stat strong{font-size:17px}.chart{height:260px}.modal{padding:8px}.modal-card{padding:15px;border-radius:19px}.main{padding:14px 11px 44px}.top-actions{justify-content:flex-end}.top-actions .btn{padding:8px 10px}.tabs{width:100%;overflow:auto;flex-wrap:nowrap}.tab{white-space:nowrap}.account-card{padding:13px}}
 
-/* v2.3.5.1 usability update */
+/* v2.4.0 usability update */
 .top h2{font-size:32px;font-weight:950;letter-spacing:-.035em;position:relative;padding-bottom:8px}
 .top h2:after{content:"";display:block;width:42px;height:4px;border-radius:999px;background:var(--primary);margin-top:9px}
 .sh{padding-bottom:10px;border-bottom:1px solid var(--line)}
@@ -76,6 +76,41 @@
 .section-intro{margin:-2px 0 14px;color:var(--muted);font-size:12.5px;line-height:1.6}
 @media(max-width:720px){.top h2{font-size:27px}.archive-list{grid-template-columns:1fr}.archive-card{grid-template-columns:68px minmax(0,1fr)}.archive-cover{width:68px;height:96px}}
 
+
+/* v2.4.0 data safety, sorting and chart usability */
+.storage-strip{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:11px;color:var(--muted)}
+.save-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:999px;background:var(--panel);border:1px solid var(--line);font-weight:900}
+.save-badge:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--muted)}
+.save-badge.ok{color:var(--health);border-color:color-mix(in srgb,var(--health) 35%,var(--line))}
+.save-badge.ok:before{background:var(--health);box-shadow:0 0 0 3px color-mix(in srgb,var(--health) 15%,transparent)}
+.save-badge.error{color:var(--danger);border-color:color-mix(in srgb,var(--danger) 35%,var(--line))}
+.save-badge.error:before{background:var(--danger);box-shadow:0 0 0 3px color-mix(in srgb,var(--danger) 15%,transparent)}
+.data-status-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.data-status-item{padding:13px;border:1px solid var(--line);background:var(--panel2);border-radius:14px}
+.data-status-item b{display:block;margin-top:5px;font-size:15px;word-break:break-word}
+.storage-warning{border-style:solid;background:color-mix(in srgb,var(--life) 7%,var(--panel2));margin-top:12px}
+.toolbar{display:flex;gap:9px;align-items:end;flex-wrap:wrap;padding:11px;border:1px solid var(--line);background:var(--panel2);border-radius:14px;margin-bottom:13px}
+.toolbar .field{min-width:150px;flex:1}
+.rating{display:inline-flex;align-items:center;gap:1px;letter-spacing:0}
+.rating-star{color:#d8dde8;font-size:14px;line-height:1}
+.rating-star.full{color:#ef9d3c}
+.rating-star.half{background:linear-gradient(90deg,#ef9d3c 50%,#d8dde8 50%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.rating-number{margin-left:5px;color:var(--muted);font-size:10.5px;letter-spacing:0}
+.goal-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.goal-box{padding:14px;border:1px solid var(--line);background:var(--panel2);border-radius:15px}
+.goal-box .value{font-size:20px}
+.body-toolbar{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.body-toolbar .tabs{margin-bottom:8px}
+.body-period{min-width:128px}
+.body-summary{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:12px}
+.metric-card{padding:14px;border:1px solid var(--line);background:var(--panel2);border-radius:15px}
+.metric-card b{display:block;font-size:19px;margin-top:5px}
+.metric-delta{font-size:11px;color:var(--muted);margin-top:5px}
+.metric-delta.good{color:var(--health)}.metric-delta.bad{color:var(--danger)}
+.metric-stats{margin:10px 0 4px}
+@media(max-width:900px){.data-status-grid,.body-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.data-status-grid,.goal-grid,.body-summary{grid-template-columns:1fr}.storage-strip{align-items:flex-start}.toolbar .field{min-width:100%;}}
+
 </style>
 </head>
 <body>
@@ -83,7 +118,7 @@
   <div class="overlay" id="overlay"></div>
   <aside class="side" id="sidebar">
     <div class="brand-row">
-      <div class="brand"><img src="data:image/webp;base64,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" alt="HANI"><div class="brand-copy"><h1>HANI OS</h1><small>Life Edition v2.3.5.1</small></div></div>
+      <div class="brand"><img src="data:image/webp;base64,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" alt="HANI"><div class="brand-copy"><h1>HANI OS</h1><small>Life Edition v2.4.0</small></div></div>
       <button class="side-toggle" id="sideToggle" title="사이드바 접기">‹</button>
     </div>
     <div class="office"><b>Project HANI</b><p>홍성민과 AI Team이 금융, 건강, 성장, 라이프와 업무를 한곳에서 운영합니다.</p></div>
@@ -137,12 +172,12 @@
       <button class="nav-btn" data-view="aiTeam"><span class="ico">🤖</span><span class="txt">AI Team</span></button>
       <button class="nav-btn" data-view="settings"><span class="ico">⚙️</span><span class="txt">설정 / 데이터</span></button>
     </div>
-    <div class="foot">Version 2.3.5.1<br>Build 20260802</div>
+    <div class="foot">Version 2.4.0<br>Build 20260804</div>
   </aside>
 
   <main class="main">
     <header class="top">
-      <div class="top-left"><button class="mobile-menu" id="mobileMenu">☰</button><div><h2 id="title">홈</h2><p id="desc">Project HANI의 오늘 현황과 주요 목표를 확인합니다.</p></div></div>
+      <div class="top-left"><button class="mobile-menu" id="mobileMenu">☰</button><div><h2 id="title">홈</h2><p id="desc">Project HANI의 오늘 현황과 주요 목표를 확인합니다.</p><div class="storage-strip"><span class="save-badge" id="saveStateBadge">저장 상태 확인 중</span><span id="lastSavedLabel">마지막 저장 -</span><span>현재 기기·브라우저 저장</span></div></div></div>
       <div class="top-actions"><button class="btn icon" id="quickBackup" title="빠른 백업">💾 <span>백업</span></button><button class="btn" id="theme">🌙 <span>다크모드</span></button></div>
     </header>
     <div class="ai-banner" id="aiBanner"><div class="ai-banner-copy"><div class="ai-avatar" id="aiAvatar">✨</div><div><b id="aiName">HANI Executive Team</b><p id="aiMessage">오빠의 목표와 기록을 하나의 운영 체계로 연결해요.</p><span class="ai-role" id="aiRole">LIFE OS</span></div></div><div class="ai-scene" id="aiScene" aria-hidden="true"></div></div>
@@ -231,7 +266,11 @@
     <section id="diet" class="view">
       <div class="grid">
         <div class="card full"><div class="sh"><h3>다이어트 목표</h3><button class="btn sm" id="editWeightGoals">신체 설정</button></div><div class="stats" id="dietStats"></div><div class="helper">키 <b id="heightLabel">188cm</b> 기준으로 BMI가 자동 계산됩니다. 체지방률을 입력하면 체지방량도 자동으로 계산돼요.</div></div>
-        <div class="card wide"><div class="sh"><h3>신체 지표 추이</h3><span class="pill health">BODY</span></div><div class="toggles" id="bodyToggles"></div><div class="chart"><canvas id="bodyChart"></canvas></div></div>
+        <div class="card wide"><div class="sh"><h3>신체 지표 추이</h3><span class="pill health">BODY</span></div>
+<div class="body-toolbar"><div class="tabs" id="bodyMetricTabs"></div><div class="field body-period"><label>기간</label><select id="bodyPeriod"><option value="1m">1개월</option><option value="3m">3개월</option><option value="6m">6개월</option><option value="all">전체</option></select></div></div>
+<div class="stats metric-stats" id="bodyMetricStats"></div>
+<div class="chart" id="bodyChartWrap"><canvas id="bodyChart"></canvas></div>
+<div class="body-summary hidden" id="bodySummary"></div></div>
         <div class="card sidec"><div class="sh"><h3>신체 기록 입력</h3><span class="pill health">AUTO</span></div><div class="fg">
           <div class="field span2"><label>날짜</label><input id="bodyDate" type="date"></div>
           <div class="field"><label>몸무게(kg)</label><input id="bodyWeight" type="number" step="0.01" placeholder="필수"></div>
@@ -265,7 +304,14 @@
 
     <section id="aiTeam" class="view"><div class="grid"><div class="card full team-hero"><div class="team-hero-copy"><span class="pill">MAIN CHARACTER</span><h3>하니 · Executive Concierge</h3><p>Project HANI의 메인 캐릭터이자 라이프 OS의 얼굴이에요. 투자, 건강, 성장, 일정과 업무까지 각각의 AI 팀을 부드럽게 연결해주는 총괄 비서 컨셉으로 구성했어.</p><div class="hero-tags"><span class="hero-tag">투자 관리</span><span class="hero-tag">건강 코칭</span><span class="hero-tag">일정 정리</span><span class="hero-tag">학습 관리</span></div><div class="team-hero-kpis"><div class="team-mini"><b>캐릭터 콘셉트</b><span>밝고 똑부러진 퍼스널 AI 비서</span></div><div class="team-mini"><b>대표 역할</b><span>오빠의 목표를 하나의 OS로 연결</span></div></div><div class="team-note">이 캐릭터는 이후 배너·시작 화면·로그인 화면까지 확장 가능한 <b>HANI 대표 비주얼</b>로 쓸 수 있게 제작해뒀어.</div></div><div class="team-hero-art" aria-hidden="true"><svg viewBox="0 0 420 320" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="bgA" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e9f3ff"/><stop offset="55%" stop-color="#f4edff"/><stop offset="100%" stop-color="#fff3f8"/></linearGradient><linearGradient id="shirt" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#eef3ff"/></linearGradient><linearGradient id="hair" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#4b3d60"/><stop offset="100%" stop-color="#2b2b45"/></linearGradient><linearGradient id="tie" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#8d7dff"/><stop offset="100%" stop-color="#c488ff"/></linearGradient></defs><rect x="0" y="0" width="420" height="320" rx="24" fill="url(#bgA)"/><circle cx="336" cy="66" r="40" fill="#ffffff" opacity=".42"/><circle cx="66" cy="68" r="48" fill="#ffffff" opacity=".35"/><circle cx="362" cy="236" r="56" fill="#ffffff" opacity=".25"/><rect x="28" y="56" width="112" height="58" rx="18" fill="#ffffffd8" stroke="#d9e7ff"/><text x="44" y="80" font-size="12" font-family="Pretendard, sans-serif" fill="#4f63a7" font-weight="700">PROJECT HANI</text><text x="44" y="100" font-size="20" font-family="Pretendard, sans-serif" fill="#202638" font-weight="900">AI Team</text><rect x="42" y="208" width="110" height="70" rx="18" fill="#ffffffd8" stroke="#e4d8ff"/><text x="58" y="232" font-size="13" font-family="Pretendard, sans-serif" fill="#7569e8" font-weight="800">TODAY CHECK</text><text x="58" y="252" font-size="12" font-family="Pretendard, sans-serif" fill="#202638">투자 현황 정리</text><text x="58" y="270" font-size="12" font-family="Pretendard, sans-serif" fill="#202638">운동 기록 확인</text><g transform="translate(172 28)"><ellipse cx="104" cy="268" rx="88" ry="16" fill="#6d62d61a"/><path d="M53 100c8-26 29-43 54-43s46 17 54 43v54H53z" fill="url(#shirt)" stroke="#d6def6"/><path d="M72 127l35 37 35-37v126H72z" fill="#f8fbff"/><path d="M93 102h28l-14 22z" fill="url(#tie)"/><path d="M104 125l13 23-13 48-13-48z" fill="url(#tie)"/><path d="M80 196h48l7 60H73z" fill="#324565" opacity=".95"/><rect x="48" y="112" width="28" height="92" rx="14" fill="url(#shirt)" stroke="#d6def6" transform="rotate(10 62 158)"/><rect x="137" y="118" width="28" height="82" rx="14" fill="url(#shirt)" stroke="#d6def6" transform="rotate(-20 151 159)"/><rect x="138" y="132" width="52" height="74" rx="10" fill="#ffffff" stroke="#c8d6ef" transform="rotate(-12 164 169)"/><rect x="146" y="146" width="36" height="6" rx="3" fill="#d7e4ff" transform="rotate(-12 164 149)"/><rect x="146" y="160" width="26" height="6" rx="3" fill="#ebe7ff" transform="rotate(-12 159 163)"/><rect x="146" y="174" width="32" height="6" rx="3" fill="#dff5e8" transform="rotate(-12 162 177)"/><circle cx="67" cy="194" r="14" fill="#fbd6c9"/><circle cx="155" cy="194" r="14" fill="#fbd6c9"/><circle cx="107" cy="62" r="42" fill="#fbd6c9"/><path d="M70 59c4-29 26-48 54-48 30 0 49 23 49 49 0 7-1 12-3 18-6-6-10-13-13-22-9 9-22 15-38 17-17 2-33-1-46-9-2 10-3 18-3 25-5-8-6-17-4-30z" fill="url(#hair)"/><path d="M145 63c17 13 28 28 33 48-18-5-34-18-43-33z" fill="url(#hair)"/><path d="M84 63c-10 8-17 19-21 33-7-14-6-31 0-44z" fill="url(#hair)"/><ellipse cx="92" cy="63" rx="4.2" ry="5.6" fill="#2a2a45"/><ellipse cx="123" cy="63" rx="4.2" ry="5.6" fill="#2a2a45"/><path d="M98 82c6 5 12 5 18 0" fill="none" stroke="#d87490" stroke-width="3" stroke-linecap="round"/><circle cx="79" cy="74" r="6" fill="#f6aec2" opacity=".55"/><circle cx="136" cy="74" r="6" fill="#f6aec2" opacity=".55"/></g><g font-family="Pretendard, sans-serif" font-weight="800"><g transform="translate(300 82)"><rect x="0" y="0" width="84" height="26" rx="13" fill="#4285f4"/><text x="42" y="17" font-size="12" fill="#fff" text-anchor="middle">금융</text></g><g transform="translate(286 118)"><rect x="0" y="0" width="98" height="26" rx="13" fill="#2faa77"/><text x="49" y="17" font-size="12" fill="#fff" text-anchor="middle">건강</text></g><g transform="translate(290 154)"><rect x="0" y="0" width="94" height="26" rx="13" fill="#ef9d3c"/><text x="47" y="17" font-size="12" fill="#fff" text-anchor="middle">성장</text></g><g transform="translate(302 190)"><rect x="0" y="0" width="82" height="26" rx="13" fill="#334a75"/><text x="41" y="17" font-size="12" fill="#fff" text-anchor="middle">업무</text></g></g></svg></div></div><div class="card full"><div class="sh"><h3>HANI AI Executive Team</h3><span class="pill">TEAM</span></div><div class="team" id="teamList"></div></div><div class="card full"><div class="sh"><h3>바로가기</h3></div><div class="quick-links"><a class="external" href="https://chatgpt.com" target="_blank" rel="noopener">💬 ChatGPT</a><a class="external" href="https://gemini.google.com" target="_blank" rel="noopener">✨ Gemini</a><a class="external" href="https://calendar.google.com" target="_blank" rel="noopener">📅 Google Calendar</a><a class="external" href="https://github.com" target="_blank" rel="noopener">🐙 GitHub</a><a class="external" href="https://drive.google.com" target="_blank" rel="noopener">📂 Google Drive</a></div></div></div></section>
 
-    <section id="settings" class="view"><div class="grid"><div class="card half"><div class="sh"><h3>Google Calendar 설정</h3><span class="pill">EMBED</span></div><div class="field"><label>Google Calendar Embed URL</label><textarea id="calendarUrl" placeholder="https://calendar.google.com/calendar/embed?... 입력"></textarea></div><div class="sub">입력 즉시 캘린더 페이지에 반영됩니다. 캘린더 공개·공유 설정에 따라 표시 여부가 달라질 수 있습니다.</div><div class="form-actions"><button class="btn" id="calendarClear">URL 지우기</button><button class="btn primary" id="calendarSave">설정 저장</button></div></div><div class="card half"><div class="sh"><h3>JSON 백업 / 복원</h3><span class="pill">DATA</span></div><div class="feature-grid"><div class="feature"><div class="emoji">📤</div><b>백업</b><p class="sub">모든 데이터를 JSON 파일로 저장합니다.</p><button class="btn primary" id="exportBtn">백업 파일 만들기</button></div><div class="feature"><div class="emoji">📥</div><b>복원</b><p class="sub">v2.3 또는 v2.2 백업 파일을 불러옵니다.</p><button class="btn" id="importBtn">백업 파일 불러오기</button><input id="importFile" type="file" accept="application/json" class="hidden"></div><div class="feature"><div class="emoji">🧹</div><b>초기화</b><p class="sub">기본 계좌만 남기고 데이터를 초기화합니다.</p><button class="btn danger" id="resetBtn">전체 초기화</button></div></div></div></div></section>
+    <section id="settings" class="view"><div class="grid">
+<div class="card full"><div class="sh"><h3>데이터 저장 상태</h3><span class="pill" id="storageStatePill">LOCAL</span></div>
+<div class="data-status-grid" id="storageStats"></div>
+<div class="note storage-warning"><b>이 데이터는 현재 기기와 브라우저에 저장됩니다.</b><br>같은 크롬 계정이라도 회사 PC, 집 PC, 태블릿 사이에는 자동으로 공유되지 않아요. 중요한 변경 뒤에는 JSON 백업 파일을 별도로 보관해 주세요.</div>
+<div class="sub" id="storageMessage" style="margin-top:10px"></div></div>
+<div class="card half"><div class="sh"><h3>Google Calendar 설정</h3><span class="pill">EMBED</span></div><div class="field"><label>Google Calendar Embed URL</label><textarea id="calendarUrl" placeholder="https://calendar.google.com/calendar/embed?... 입력"></textarea></div><div class="sub">입력 즉시 캘린더 페이지에 반영됩니다. 캘린더 공개·공유 설정에 따라 표시 여부가 달라질 수 있습니다.</div><div class="form-actions"><button class="btn" id="calendarClear">URL 지우기</button><button class="btn primary" id="calendarSave">설정 저장</button></div></div>
+<div class="card half"><div class="sh"><h3>JSON 백업 / 복원</h3><span class="pill">DATA</span></div><div class="feature-grid"><div class="feature"><div class="emoji">📤</div><b>백업</b><p class="sub">모든 데이터를 검증 가능한 JSON 파일로 저장합니다.</p><button class="btn primary" id="exportBtn">백업 파일 만들기</button></div><div class="feature"><div class="emoji">📥</div><b>복원</b><p class="sub">v2.4·v2.3 또는 v2.2 백업 파일을 검증한 뒤 불러옵니다.</p><button class="btn" id="importBtn">백업 파일 불러오기</button><input id="importFile" type="file" accept="application/json,.json" class="hidden"></div><div class="feature"><div class="emoji">🧹</div><b>초기화</b><p class="sub">초기화 직전 자동 백업을 만든 뒤 기본 계좌만 남깁니다.</p><button class="btn danger" id="resetBtn">전체 초기화</button></div></div></div>
+</div></section>
 
     <section id="reading" class="view">
       <div class="grid">
@@ -274,12 +320,16 @@
           <div class="field span2"><label>제목</label><input id="bookTitle" placeholder="책 제목"></div>
           <div class="field"><label>저자</label><input id="bookAuthor" placeholder="저자"></div>
           <div class="field"><label>주제</label><select id="bookTopic"><option>교양</option><option>경제·투자</option><option>인문·철학</option><option>역사</option><option>소설</option><option>자기계발</option><option>일본어·학습</option><option>기타</option></select></div>
-          <div class="field"><label>내 평점</label><select id="bookRating"><option value="">미입력</option><option value="1">1점</option><option value="2">2점</option><option value="3">3점</option><option value="4">4점</option><option value="5">5점</option></select></div>
+          <div class="field"><label>내 평점</label><select id="bookRating"><option value="">미입력</option><option value="0.5">0.5점</option><option value="1">1점</option><option value="1.5">1.5점</option><option value="2">2점</option><option value="2.5">2.5점</option><option value="3">3점</option><option value="3.5">3.5점</option><option value="4">4점</option><option value="4.5">4.5점</option><option value="5">5점</option></select></div>
           <div class="field"><label>완독일</label><input id="bookDate" type="date"></div>
           <div class="field span2"><label>표지 이미지</label><input id="bookCover" type="file" accept="image/*"><div class="file-note">이미지는 자동 축소되어 이 브라우저에 저장됩니다. 여러 장을 등록하기 전 1장으로 먼저 테스트해 주세요.</div></div>
           <div class="field span2"><label>간단한 후기 / 메모</label><textarea id="bookReview" placeholder="읽고 싶은 이유나 짧은 감상을 남겨요."></textarea></div>
         </div><div class="form-actions"><button class="btn" id="cancelBookEdit" type="button">입력 초기화</button><button class="btn primary" id="saveBook" type="button">책 저장</button></div></div>
         <div class="card wide"><div class="sh"><h3>독서 현황</h3><span class="pill growth" id="bookCount">0권</span></div><div class="stats" id="bookStats"></div></div>
+<div class="card full"><div class="sh"><h3>독서 목표</h3><button class="btn sm" id="saveReadingGoals">목표 저장</button></div>
+<div class="goal-grid"><div class="goal-box"><div class="row"><b>연간 목표</b><div class="field" style="width:110px"><input id="readingAnnualGoal" type="number" min="1" step="1"></div></div><div class="value" id="readingAnnualProgress">0 / 0권</div><div class="progress"><i id="readingAnnualBar" style="width:0%"></i></div><div class="goal-line"><span id="readingAnnualRemain">남은 0권</span><span id="readingAnnualRate">0%</span></div></div>
+<div class="goal-box"><div class="row"><b>이번 달 목표</b><div class="field" style="width:110px"><input id="readingMonthlyGoal" type="number" min="1" step="1"></div></div><div class="value" id="readingMonthlyProgress">0 / 0권</div><div class="progress"><i id="readingMonthlyBar" style="width:0%"></i></div><div class="goal-line"><span id="readingMonthlyRemain">남은 0권</span><span id="readingMonthlyRate">0%</span></div></div></div></div>
+<div class="card full"><div class="sh"><h3>서재 정렬·필터</h3><span class="pill growth">SORT</span></div><div class="toolbar"><div class="field"><label>정렬</label><select id="bookSort"><option value="recent">최근 등록순</option><option value="date">완독일순</option><option value="ratingDesc">평점 높은순</option><option value="ratingAsc">평점 낮은순</option><option value="name">가나다순</option></select></div><div class="field"><label>최소 평점</label><select id="bookMinRating"><option value="0">전체</option><option value="1">1점 이상</option><option value="2">2점 이상</option><option value="3">3점 이상</option><option value="4">4점 이상</option><option value="4.5">4.5점 이상</option><option value="5">5점만</option></select></div></div></div>
         <div class="card half"><div class="sh"><h3>읽고 싶은 책</h3><span class="pill growth" id="wishBookCount">0권</span></div><div class="archive-list" id="wishBooks"></div></div>
         <div class="card half"><div class="sh"><h3>읽은 책</h3><span class="pill growth" id="readBookCount">0권</span></div><div class="archive-list" id="readBooks"></div></div>
       </div>
@@ -296,12 +346,13 @@
           <div class="field span2"><label>제목</label><input id="movieTitle" placeholder="영화 제목"></div>
           <div class="field"><label>감독</label><input id="movieDirector" placeholder="감독"></div>
           <div class="field"><label>주요 배우</label><input id="movieActors" placeholder="쉼표로 구분"></div>
-          <div class="field"><label>내 평점</label><select id="movieRating"><option value="">미입력</option><option value="1">1점</option><option value="2">2점</option><option value="3">3점</option><option value="4">4점</option><option value="5">5점</option></select></div>
+          <div class="field"><label>내 평점</label><select id="movieRating"><option value="">미입력</option><option value="0.5">0.5점</option><option value="1">1점</option><option value="1.5">1.5점</option><option value="2">2점</option><option value="2.5">2.5점</option><option value="3">3점</option><option value="3.5">3.5점</option><option value="4">4점</option><option value="4.5">4.5점</option><option value="5">5점</option></select></div>
           <div class="field"><label>관람일</label><input id="movieDate" type="date"></div>
           <div class="field span2"><label>포스터 이미지</label><input id="moviePoster" type="file" accept="image/*"><div class="file-note">포스터는 자동으로 축소해 브라우저에 저장합니다.</div></div>
           <div class="field span2"><label>간단한 후기 / 메모</label><textarea id="movieReview" placeholder="보고 싶은 이유나 관람 후기를 남겨요."></textarea></div>
         </div><div class="form-actions"><button class="btn" id="cancelMovieEdit" type="button">입력 초기화</button><button class="btn primary" id="saveMovie" type="button">영화 저장</button></div></div>
         <div class="card wide"><div class="sh"><h3>영화 현황</h3><span class="pill" id="movieCount">0편</span></div><div class="stats" id="movieStats"></div></div>
+<div class="card full"><div class="sh"><h3>영화 정렬·필터</h3><span class="pill">SORT</span></div><div class="toolbar"><div class="field"><label>정렬</label><select id="movieSort"><option value="recent">최근 등록순</option><option value="date">관람일순</option><option value="ratingDesc">평점 높은순</option><option value="ratingAsc">평점 낮은순</option><option value="name">가나다순</option></select></div><div class="field"><label>최소 평점</label><select id="movieMinRating"><option value="0">전체</option><option value="1">1점 이상</option><option value="2">2점 이상</option><option value="3">3점 이상</option><option value="4">4점 이상</option><option value="4.5">4.5점 이상</option><option value="5">5점만</option></select></div></div></div>
         <div class="card half"><div class="sh"><h3>보고 싶은 영화</h3><span class="pill" id="wishMovieCount">0편</span></div><div class="archive-list" id="wishMovies"></div></div>
         <div class="card half"><div class="sh"><h3>본 영화</h3><span class="pill" id="watchedMovieCount">0편</span></div><div class="archive-list" id="watchedMovies"></div></div>
       </div>
@@ -310,10 +361,10 @@
     <section id="diary" class="view generic" data-note-key="diary"><div class="card"><div class="sh"><h3>일기</h3><span class="pill">LIFE</span></div><div class="note">하루의 생각과 중요한 사건을 자유롭게 기록하는 공간입니다.</div><div class="field" style="margin-top:14px"><label>오늘의 기록</label><textarea class="page-note" placeholder="오늘 있었던 일과 감정을 기록하세요."></textarea></div><div class="form-actions"><button class="btn primary save-note">기록 저장</button></div></div></section>
     <section id="work" class="view generic" data-note-key="work"><div class="card"><div class="sh"><h3>업무</h3><span class="pill">WORK</span></div><div class="note">IT / CDN / Cloud / 보안 솔루션 업무의 진행 상황과 주요 고객 대응을 기록하는 공간입니다.</div><div class="field" style="margin-top:14px"><label>업무 메모</label><textarea class="page-note" placeholder="고객 이슈, 제안 일정, 후속 조치를 기록하세요."></textarea></div><div class="form-actions"><button class="btn primary save-note">메모 저장</button></div></div></section>
     <section id="drive" class="view"><div class="card"><div class="sh"><h3>Google Drive</h3><span class="pill">DRIVE</span></div><div class="placeholder">Google Drive 파일 연동은 후속 버전에서 확장됩니다.</div><div class="quick-links" style="margin-top:14px"><a class="external" href="https://drive.google.com" target="_blank" rel="noopener">📂 Google Drive 열기</a></div></div></section>
-    <section id="dev" class="view"><div class="grid"><div class="card full"><div class="sh"><h3>HANI OS Life Edition v2.3.5.1</h3><span class="pill">RELEASE</span></div><div class="feature-grid"><div class="feature"><div class="emoji">📈</div><b>투자 엔진 개편</b><p class="sub">계좌·종목·보유·거래 분리와 자산 흐름 관리.</p></div><div class="feature"><div class="emoji">📅</div><b>Calendar Embed</b><p class="sub">사용자 URL 입력과 즉시 반영, 새창 열기.</p></div><div class="feature"><div class="emoji">🤖</div><b>장면형 AI 배너</b><p class="sub">여행·투자·건강·성장 등 메뉴별 HANI 일러스트 장면.</p></div></div></div><div class="card full"><div class="sh"><h3>로드맵</h3></div><div class="list"><div class="item"><b>v2.3.5.1</b><div class="sub">BMI·체지방량 자동계산, 운동 기록 단순화, 독서·영화 아카이브 추가</div></div><div class="item"><b>v2.3.4</b><div class="sub">AI Team 메인 캐릭터 일러스트 추가, 최신 패치를 한 파일에 통합</div></div><div class="item"><b>v2.3.2</b><div class="sub">투자 계좌별 금액·그래프 선 색상 통일, 고정 색상 체계 적용</div></div><div class="item"><b>v2.3.1</b><div class="sub">메뉴별 캐릭터 장면 배너, 투자 평가가격·총자산 반영 보강</div></div><div class="item"><b>v2.3</b><div class="sub">개인 라이프 OS 기본 구조, 투자·건강·캘린더 실사용화</div></div><div class="item"><b>v2.4</b><div class="sub">가계부·카드·Google Drive 데이터 확장</div></div><div class="item"><b>v3.0</b><div class="sub">로그인·클라우드 동기화·외부 데이터 연동 검토</div></div></div></div></div></section>
+    <section id="dev" class="view"><div class="grid"><div class="card full"><div class="sh"><h3>HANI OS Life Edition v2.4.0</h3><span class="pill">RELEASE</span></div><div class="feature-grid"><div class="feature"><div class="emoji">📈</div><b>투자 엔진 개편</b><p class="sub">계좌·종목·보유·거래 분리와 자산 흐름 관리.</p></div><div class="feature"><div class="emoji">📅</div><b>Calendar Embed</b><p class="sub">사용자 URL 입력과 즉시 반영, 새창 열기.</p></div><div class="feature"><div class="emoji">🤖</div><b>장면형 AI 배너</b><p class="sub">여행·투자·건강·성장 등 메뉴별 HANI 일러스트 장면.</p></div></div></div><div class="card full"><div class="sh"><h3>로드맵</h3></div><div class="list"><div class="item"><b>v2.4.0</b><div class="sub">BMI·체지방량 자동계산, 운동 기록 단순화, 독서·영화 아카이브 추가</div></div><div class="item"><b>v2.3.4</b><div class="sub">AI Team 메인 캐릭터 일러스트 추가, 최신 패치를 한 파일에 통합</div></div><div class="item"><b>v2.3.2</b><div class="sub">투자 계좌별 금액·그래프 선 색상 통일, 고정 색상 체계 적용</div></div><div class="item"><b>v2.3.1</b><div class="sub">메뉴별 캐릭터 장면 배너, 투자 평가가격·총자산 반영 보강</div></div><div class="item"><b>v2.3</b><div class="sub">개인 라이프 OS 기본 구조, 투자·건강·캘린더 실사용화</div></div><div class="item"><b>v2.4</b><div class="sub">가계부·카드·Google Drive 데이터 확장</div></div><div class="item"><b>v3.0</b><div class="sub">로그인·클라우드 동기화·외부 데이터 연동 검토</div></div></div></div></div></section>
     <section id="shopping" class="view"><div class="card"><div class="placeholder">v2.2의 쇼핑 페이지는 호환성을 위해 내부에 유지됩니다.</div></div></section>
 
-    <div class="footer">HANI OS Life Edition v2.3.5.1 · Local-first Personal OS</div>
+    <div class="footer">HANI OS Life Edition v2.4.0 · Local-first Personal OS</div>
   </main>
 </div>
 
@@ -324,7 +375,7 @@
 
 <script>
 "use strict";
-const VERSION="2.3.5.1";
+const VERSION="2.4.0";
 const STORAGE_KEY="hani_os_life_v23";
 const THEME_KEY="h22th";
 const SIDEBAR_KEY="hani_os_sidebar_mini";
@@ -336,7 +387,7 @@ const num=v=>n(v).toLocaleString("ko-KR",{maximumFractionDigits:4});
 const pct=v=>Number.isFinite(v)?v.toFixed(2)+"%":"-";
 const mask=v=>{const s=String(v||"");return s? (s.length>8?s.slice(0,4)+"-****-"+s.slice(-4):s):"계좌번호 미등록"};
 const esc=s=>String(s??"").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));
-const today=()=>new Date().toISOString().slice(0,10);
+const today=()=>{const d=new Date(),y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");return `${y}-${m}-${day}`};
 const optionalNumber=v=>{if(v===null||v===undefined||String(v).trim()==="")return null;const x=Number(String(v).replace(/[,₩원\s]/g,""));return Number.isFinite(x)&&x>0?x:null};
 function compressImage(file,maxW=420,maxH=600,quality=.76){return new Promise((resolve,reject)=>{if(!file)return resolve("");if(file.size>10*1024*1024)return reject(new Error("이미지는 10MB 이하만 사용할 수 있습니다."));const reader=new FileReader();reader.onerror=()=>reject(new Error("이미지를 읽지 못했습니다."));reader.onload=()=>{const img=new Image();img.onerror=()=>reject(new Error("이미지 형식을 확인해주세요."));img.onload=()=>{const scale=Math.min(1,maxW/img.width,maxH/img.height),w=Math.max(1,Math.round(img.width*scale)),h=Math.max(1,Math.round(img.height*scale)),canvas=document.createElement("canvas");canvas.width=w;canvas.height=h;canvas.getContext("2d").drawImage(img,0,0,w,h);resolve(canvas.toDataURL("image/jpeg",quality))};img.src=reader.result};reader.readAsDataURL(file)})}
 
@@ -354,7 +405,25 @@ function seriesColor(id){
   const idx=Math.max(0,state?.accounts?.findIndex(a=>a.id===id)??0);
   return EXTRA_SERIES_COLORS[idx%EXTRA_SERIES_COLORS.length];
 }
-const freshState=()=>({version:VERSION,accounts:structuredClone(seedAccounts),instruments:[],transactions:[],snapshots:[],body:[],exercise:[],cardio:[],strength:[],books:[],movies:[],tasks:[],profile:{heightCm:188},goals:{investment:100000000,weight1:110,weight2:100,reading:30},calendarUrl:"",pageNotes:{},ui:{series:["total",...seedAccounts.map(a=>a.id)],bodySeries:["weight","fat","muscle","bmi","fatMass"]}});
+const freshState=()=>({
+  version:VERSION,
+  accounts:structuredClone(seedAccounts),
+  instruments:[],transactions:[],snapshots:[],body:[],exercise:[],cardio:[],strength:[],books:[],movies:[],tasks:[],
+  profile:{heightCm:188},
+  goals:{investment:100000000,weight1:110,weight2:100,reading:30,readingAnnual:30,readingMonthly:2},
+  calendarUrl:"",
+  pageNotes:{},
+  meta:{lastSavedAt:"",lastBackupAt:"",lastImportAt:""},
+  ui:{
+    series:["total",...seedAccounts.map(a=>a.id)],
+    bodySeries:["weight","fat","muscle","bmi","fatMass"],
+    bodyMetric:"weight",bodyPeriod:"all",
+    readingSort:"recent",readingMinRating:0,
+    movieSort:"recent",movieMinRating:0
+  }
+});
+let lastLoadError="";
+let lastSaveResult={ok:true,message:"저장 전"};
 let state=loadState();
 let activeAccountId=null;
 
@@ -366,16 +435,109 @@ function legacyExercise(cardio=[],strength=[]){
 }
 function normalizeBodyRecord(r,heightCm){const weight=optionalNumber(r?.weight),fat=optionalNumber(r?.fat),muscle=optionalNumber(r?.muscle),height=n(heightCm)/100,bmi=weight&&height?Number((weight/(height*height)).toFixed(2)):null,fatMass=weight&&fat?Number((weight*fat/100).toFixed(2)):null;return {...r,id:r?.id||uid(),date:r?.date||today(),weight,fat,muscle,bmi,fatMass}}
 function loadState(){
-  try{const raw=JSON.parse(localStorage.getItem(STORAGE_KEY)||"null");if(!raw)return freshState();return normalizeState(raw)}catch(e){console.error(e);return freshState()}
+  try{
+    const stored=localStorage.getItem(STORAGE_KEY);
+    if(!stored)return freshState();
+    const raw=JSON.parse(stored);
+    return normalizeState(raw);
+  }catch(e){
+    console.error(e);
+    lastLoadError="저장된 데이터를 읽는 중 오류가 발생해 새 상태로 열었습니다. 백업 파일이 있다면 복원해 주세요.";
+    return freshState();
+  }
 }
 function normalizeState(d){
-  const base=freshState(),profile={...base.profile,...(d.profile||{})};if(!n(profile.heightCm))profile.heightCm=188;
-  return {...base,...d,version:VERSION,profile,accounts:Array.isArray(d.accounts)?d.accounts:base.accounts,instruments:Array.isArray(d.instruments)?d.instruments:[],transactions:Array.isArray(d.transactions)?d.transactions:[],snapshots:Array.isArray(d.snapshots)?d.snapshots:[],body:(Array.isArray(d.body)?d.body:[]).map(r=>normalizeBodyRecord(r,profile.heightCm)),exercise:Array.isArray(d.exercise)?d.exercise:legacyExercise(d.cardio,d.strength),cardio:Array.isArray(d.cardio)?d.cardio:[],strength:Array.isArray(d.strength)?d.strength:[],books:Array.isArray(d.books)?d.books:[],movies:Array.isArray(d.movies)?d.movies:[],tasks:Array.isArray(d.tasks)?d.tasks:[],goals:{...base.goals,...(d.goals||{})},pageNotes:d.pageNotes||{},ui:{...base.ui,...(d.ui||{})}};
+  const base=freshState(),profile={...base.profile,...(d?.profile||{})};
+  if(!n(profile.heightCm))profile.heightCm=188;
+  const goals={...base.goals,...(d?.goals||{})};
+  if(!n(goals.readingAnnual))goals.readingAnnual=n(goals.reading)||30;
+  if(!n(goals.readingMonthly))goals.readingMonthly=2;
+  const ui={...base.ui,...(d?.ui||{})};
+  if(!["weight","fat","muscle","bmi","fatMass","summary"].includes(ui.bodyMetric))ui.bodyMetric="weight";
+  if(!["1m","3m","6m","all"].includes(ui.bodyPeriod))ui.bodyPeriod="all";
+  const normalized={
+    ...base,...(d||{}),version:VERSION,profile,goals,ui,
+    meta:{...base.meta,...(d?.meta||{})},
+    accounts:Array.isArray(d?.accounts)?d.accounts:base.accounts,
+    instruments:Array.isArray(d?.instruments)?d.instruments:[],
+    transactions:Array.isArray(d?.transactions)?d.transactions:[],
+    snapshots:Array.isArray(d?.snapshots)?d.snapshots:[],
+    body:(Array.isArray(d?.body)?d.body:[]).map(r=>normalizeBodyRecord(r,profile.heightCm)),
+    exercise:Array.isArray(d?.exercise)?d.exercise:legacyExercise(d?.cardio,d?.strength),
+    cardio:Array.isArray(d?.cardio)?d.cardio:[],
+    strength:Array.isArray(d?.strength)?d.strength:[],
+    books:Array.isArray(d?.books)?d.books:[],
+    movies:Array.isArray(d?.movies)?d.movies:[],
+    tasks:Array.isArray(d?.tasks)?d.tasks:[],
+    pageNotes:d?.pageNotes||{}
+  };
+  delete normalized._haniBackup;delete normalized.exportedAt;delete normalized.data;
+  return normalized;
 }
-function save(){state.version=VERSION;localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}
+function isQuotaError(e){return !!e&&(e.name==="QuotaExceededError"||e.name==="NS_ERROR_DOM_QUOTA_REACHED"||e.code===22||e.code===1014)}
+function bytesLabel(bytes){if(!Number.isFinite(bytes))return "-";if(bytes<1024)return bytes+" B";if(bytes<1024*1024)return (bytes/1024).toFixed(1)+" KB";return (bytes/1024/1024).toFixed(2)+" MB"}
+function serializedBytes(value){try{return new TextEncoder().encode(value).length}catch(e){return value.length*2}}
+function formatDateTime(value){if(!value)return "-";const d=new Date(value);return Number.isNaN(d.getTime())?"-":d.toLocaleString("ko-KR",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"})}
+function updateStorageStatus(result=lastSaveResult){
+  lastSaveResult=result||lastSaveResult;
+  const badge=$("saveStateBadge"),label=$("lastSavedLabel");
+  if(badge){
+    badge.classList.toggle("ok",!!result?.ok);
+    badge.classList.toggle("error",result?.ok===false);
+    badge.textContent=result?.ok===false?"저장 실패":"저장 정상";
+  }
+  if(label)label.textContent="마지막 저장 "+formatDateTime(state?.meta?.lastSavedAt);
+  renderStoragePanel();
+}
+function save(){
+  state.version=VERSION;
+  state.meta={...freshState().meta,...(state.meta||{})};
+  const previous=state.meta.lastSavedAt||"";
+  state.meta.lastSavedAt=new Date().toISOString();
+  try{
+    const serialized=JSON.stringify(state);
+    localStorage.setItem(STORAGE_KEY,serialized);
+    const verified=localStorage.getItem(STORAGE_KEY);
+    if(verified!==serialized)throw new Error("저장 후 검증 값이 일치하지 않습니다.");
+    const result={ok:true,bytes:serializedBytes(serialized),message:"브라우저 저장과 재확인을 완료했습니다."};
+    updateStorageStatus(result);
+    return result;
+  }catch(e){
+    state.meta.lastSavedAt=previous;
+    const quota=isQuotaError(e);
+    const result={ok:false,error:e,quota,message:quota?"브라우저 저장 공간이 부족합니다. 이미지를 줄이거나 JSON 백업 후 불필요한 이미지를 정리해 주세요.":"브라우저 저장에 실패했습니다. 현재 변경 내용은 재접속 후 사라질 수 있습니다."};
+    console.error(e);
+    updateStorageStatus(result);
+    return result;
+  }
+}
 function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.remove("show"),1800)}
 function accountBy(id){return state.accounts.find(a=>a.id===id)}
 function instrumentBy(id){return state.instruments.find(a=>a.id===id)}
+const KO_COLLATOR=new Intl.Collator("ko-KR",{numeric:true,sensitivity:"base"});
+function nameGroup(value){const c=String(value||"").trim().charAt(0);if(/[가-힣ㄱ-ㅎㅏ-ㅣ]/.test(c))return 0;if(/[A-Za-z]/.test(c))return 1;if(/[0-9]/.test(c))return 2;return 3}
+function compareNames(a,b){const ga=nameGroup(a),gb=nameGroup(b);return ga-gb||KO_COLLATOR.compare(String(a||""),String(b||""))}
+function sortedInstruments(){return [...state.instruments].sort((a,b)=>compareNames(a.name,b.name)||compareNames(a.ticker,b.ticker))}
+function registeredKey(item,dateField){return item?.createdAt||item?.updatedAt||item?.[dateField]||""}
+function usageKey(item,dateField){return item?.[dateField]||item?.updatedAt||item?.createdAt||""}
+function compareRegistered(a,b,dateField){return registeredKey(b,dateField).localeCompare(registeredKey(a,dateField))}
+function compareUsage(a,b,dateField){return usageKey(b,dateField).localeCompare(usageKey(a,dateField))}
+function sortRatedItems(items,sort,dateField){
+  const rows=[...items],rating=x=>x?.rating===null||x?.rating===undefined||x?.rating===""?null:Number(x.rating);
+  return rows.sort((a,b)=>{
+    if(sort==="name")return compareNames(a.title,b.title)||compareUsage(a,b,dateField);
+    if(sort==="date")return String(b?.[dateField]||"").localeCompare(String(a?.[dateField]||""))||compareRegistered(a,b,dateField);
+    if(sort==="ratingDesc"||sort==="ratingAsc"){
+      const ar=rating(a),br=rating(b);
+      if(ar===null&&br!==null)return 1;if(ar!==null&&br===null)return -1;if(ar===null&&br===null)return compareUsage(a,b,dateField);
+      const diff=sort==="ratingDesc"?br-ar:ar-br;
+      return diff||compareUsage(a,b,dateField);
+    }
+    return compareRegistered(a,b,dateField)||compareNames(a.title,b.title);
+  });
+}
+function filterMinimumRating(items,min){const threshold=n(min);return threshold<=0?[...items]:items.filter(x=>x.rating!==null&&x.rating!==undefined&&x.rating!==""&&Number(x.rating)>=threshold)}
+
 function openModal(id){$(id).classList.add("open")}
 function closeModal(id){$(id).classList.remove("open")}
 
@@ -508,8 +670,9 @@ function availableQty(accountId,instrumentId){return calculate().holdings.find(h
 
 function refreshSelects(){
   const accountOptions=state.accounts.map(a=>`<option value="${a.id}">${esc(a.name)} · ${esc(a.broker)}</option>`).join("");
-  $("txAccount").innerHTML=accountOptions;$("txFilterAccount").innerHTML='<option value="all">전체 계좌</option>'+accountOptions;
-  $("txInstrument").innerHTML=state.instruments.map(i=>`<option value="${i.id}">${esc(i.name)}</option>`).join("");
+  $("txAccount").innerHTML=accountOptions;
+  $("txFilterAccount").innerHTML='<option value="all">전체 계좌</option>'+accountOptions;
+  $("txInstrument").innerHTML=sortedInstruments().map(i=>`<option value="${i.id}">${esc(i.name)}</option>`).join("");
 }
 function accountCardHtml(a,calc,allowDelete=false){const x=calc.accounts[a.id];return `<div class="account-card" data-account="${a.id}"><div class="account-top"><div style="display:flex;gap:10px;align-items:center"><div class="account-icon">🏦</div><div><b>${esc(a.name)}</b><div class="sub">${esc(a.broker)} · ${esc(a.type)}</div></div></div>${allowDelete?`<button class="btn sm danger" data-delete-account="${a.id}">삭제</button>`:""}</div><div class="account-value series-amount" style="--series-color:${seriesColor(a.id)}">${won(x.total)}</div><div class="sub">현금 ${won(x.cash)} · 보유 ${Object.values(x.holdings).filter(h=>h.qty>0).length}종목</div><div class="sub">${esc(mask(a.number))}</div></div>`}
 function renderAccounts(){
@@ -523,15 +686,17 @@ $("addAccount").onclick=()=>{const name=$("accName").value.trim(),type=$("accTyp
 
 function renderInstruments(){
   const calc=calculate();$("instrumentCount").textContent=state.instruments.length+"개";
-  $("instrumentRows").innerHTML=state.instruments.map(i=>{const accs=[...new Set(calc.holdings.filter(h=>h.instrumentId===i.id).map(h=>accountBy(h.accountId)?.name))].filter(Boolean),hasPrice=n(i.price)>0;return `<tr><td><b>${esc(i.name)}</b></td><td>${esc(i.className)}</td><td>${esc(i.ticker||"-")}</td><td>${hasPrice?won(i.price):'미입력 <span class="price-fallback">거래가 사용</span>'}</td><td>${accs.map(esc).join(", ")||"-"}</td><td><div class="acts"><button class="btn sm" data-price="${i.id}">현재가</button><button class="btn sm danger" data-delete-instrument="${i.id}">삭제</button></div></td></tr>`}).join("")||'<tr><td colspan="6">등록 종목이 없습니다.</td></tr>';
+  $("instrumentRows").innerHTML=sortedInstruments().map(i=>{const accs=[...new Set(calc.holdings.filter(h=>h.instrumentId===i.id).map(h=>accountBy(h.accountId)?.name))].filter(Boolean),hasPrice=n(i.price)>0;return `<tr><td><b>${esc(i.name)}</b></td><td>${esc(i.className)}</td><td>${esc(i.ticker||"-")}</td><td>${hasPrice?won(i.price):'미입력 <span class="price-fallback">거래가 사용</span>'}</td><td>${accs.map(esc).join(", ")||"-"}</td><td><div class="acts"><button class="btn sm" data-price="${i.id}">현재가</button><button class="btn sm danger" data-delete-instrument="${i.id}">삭제</button></div></td></tr>`}).join("")||'<tr><td colspan="6">등록 종목이 없습니다.</td></tr>';
   document.querySelectorAll("[data-price]").forEach(b=>b.onclick=()=>{const i=instrumentBy(b.dataset.price);const v=prompt(i.name+" 현재가",i.price||"");if(v!==null){const price=n(v);if(price<0)return alert("현재가는 0 이상으로 입력하세요.");i.price=price;autoSnapshot();commit("현재가를 반영했습니다.")}});
   document.querySelectorAll("[data-delete-instrument]").forEach(b=>b.onclick=()=>{const id=b.dataset.deleteInstrument;if(state.transactions.some(t=>t.instrumentId===id))return alert("연결된 거래내역을 먼저 삭제하세요.");if(!confirm("이 종목을 삭제할까요?"))return;state.instruments=state.instruments.filter(i=>i.id!==id);commit("종목을 삭제했습니다.")});
 }
 $("addInstrument").onclick=()=>{const name=$("instrumentName").value.trim();if(!name)return alert("종목명을 입력하세요.");if(state.instruments.some(i=>i.name.toLowerCase()===name.toLowerCase()))return alert("이미 등록된 종목입니다.");state.instruments.push({id:uid(),name,className:$("instrumentClass").value,ticker:$("instrumentTicker").value.trim(),price:n($("instrumentPrice").value)});["instrumentName","instrumentTicker","instrumentPrice"].forEach(id=>$(id).value="");commit("종목을 등록했습니다.")};
 
 function renderHoldings(){
-  const c=calculate();$("holdingStats").innerHTML=[["보유종목",c.holdings.length+"개"],["평가액",won(c.totalMarket)],["매입원가",won(c.totalCost)],["평가손익",won(c.pnl)]].map(([l,v])=>`<div class="stat"><div class="label">${l}</div><div class="value">${v}</div></div>`).join("");
-  $("holdingRows").innerHTML=c.holdings.map(h=>{const a=accountBy(h.accountId),i=instrumentBy(h.instrumentId);return `<tr><td>${esc(a?.name||"-")}</td><td><b>${esc(i?.name||"삭제된 종목")}</b></td><td>${num(h.qty)}</td><td>${won(h.avg)}</td><td>${won(h.valuationPrice)}${h.priceFallback?'<span class="price-fallback">평균단가 임시 적용</span>':''}</td><td>${won(h.market)}</td><td class="${h.pnl<0?'danger':''}">${won(h.pnl)}</td><td>${pct(h.rate)}</td></tr>`}).join("")||'<tr><td colspan="8">보유내역이 없습니다. 종목을 등록한 뒤 매수 거래를 입력하세요.</td></tr>';
+  const c=calculate(),accountOrder=new Map(state.accounts.map((a,idx)=>[a.id,idx]));
+  const rows=[...c.holdings].sort((a,b)=>compareNames(instrumentBy(a.instrumentId)?.name,instrumentBy(b.instrumentId)?.name)||(accountOrder.get(a.accountId)??999)-(accountOrder.get(b.accountId)??999));
+  $("holdingStats").innerHTML=[["보유종목",c.holdings.length+"개"],["평가액",won(c.totalMarket)],["매입원가",won(c.totalCost)],["평가손익",won(c.pnl)]].map(([l,v])=>`<div class="stat"><div class="label">${l}</div><div class="value">${v}</div></div>`).join("");
+  $("holdingRows").innerHTML=rows.map(h=>{const a=accountBy(h.accountId),i=instrumentBy(h.instrumentId);return `<tr><td>${esc(a?.name||"-")}</td><td><b>${esc(i?.name||"삭제된 종목")}</b></td><td>${num(h.qty)}</td><td>${won(h.avg)}</td><td>${won(h.valuationPrice)}${h.priceFallback?'<span class="price-fallback">평균단가 임시 적용</span>':''}</td><td>${won(h.market)}</td><td class="${h.pnl<0?'danger':''}">${won(h.pnl)}</td><td>${pct(h.rate)}</td></tr>`}).join("")||'<tr><td colspan="8">보유내역이 없습니다. 종목을 등록한 뒤 매수 거래를 입력하세요.</td></tr>';
 }
 
 function updateTxForm(){const type=$("txType").value,isSec=type==="매수"||type==="매도";document.querySelectorAll(".tx-security").forEach(x=>x.classList.toggle("hidden",!isSec));document.querySelectorAll(".tx-cash").forEach(x=>x.classList.toggle("hidden",isSec));$("txAmountLabel").textContent=type==="현금조정"?"조정금액 (+/-)":"금액";const guides={입금:"입금액을 입력하면 해당 계좌의 현금잔액에 반영됩니다.",출금:"출금액만큼 해당 계좌의 현금잔액이 감소합니다.",매수:"수량과 거래단가, 수수료를 기준으로 보유수량과 평균단가가 자동 계산됩니다. 현재가가 비어 있으면 첫 거래가가 자동 등록됩니다.",매도:"평균단가는 유지되고 매도대금에서 수수료를 뺀 금액이 현금에 반영됩니다.",현금조정:"실제 잔액과 맞추기 위한 증감액을 입력하세요. 감소는 음수로 입력합니다."};$("txGuide").textContent=guides[type]}
@@ -564,7 +729,7 @@ function canvasSetup(canvas){const r=canvas.getBoundingClientRect(),d=window.dev
 function drawLines(canvas,labels,series,message,{targets=[]}={}){
   if(!canvas||canvas.offsetParent===null)return;const {ctx,w,h}=canvasSetup(canvas),css=getComputedStyle(document.documentElement),line=css.getPropertyValue("--line"),muted=css.getPropertyValue("--muted"),text=css.getPropertyValue("--text");ctx.clearRect(0,0,w,h);if(!labels.length||!series.length){ctx.fillStyle=muted;ctx.textAlign="center";ctx.font="13px sans-serif";ctx.fillText(message,w/2,h/2);return}
   const colors=["#7569e8","#4285f4","#2faa77","#ef9d3c","#58bce8","#8b63dc","#dc6279"];const values=[...series.flatMap(s=>s.data.filter(Number.isFinite)),...targets.map(t=>t.value)].filter(Number.isFinite);let min=Math.min(...values),max=Math.max(...values);if(min===max){min-=1;max+=1}const pad=(max-min)*.12;min-=pad;max+=pad;const P={l:58,r:18,t:30,b:38};const X=i=>P.l+(labels.length===1?(w-P.l-P.r)/2:i*(w-P.l-P.r)/(labels.length-1));const Y=v=>P.t+(max-v)*(h-P.t-P.b)/(max-min);
-  ctx.font="11px sans-serif";ctx.strokeStyle=line;ctx.fillStyle=muted;ctx.textAlign="right";for(let i=0;i<5;i++){const y=P.t+i*(h-P.t-P.b)/4;ctx.beginPath();ctx.moveTo(P.l,y);ctx.lineTo(w-P.r,y);ctx.stroke();const val=max-i*(max-min)/4;ctx.fillText(Math.abs(val)>=1000000?(val/1000000).toFixed(1)+"M":Math.round(val).toLocaleString(),P.l-7,y+4)}
+  ctx.font="11px sans-serif";ctx.strokeStyle=line;ctx.fillStyle=muted;ctx.textAlign="right";for(let i=0;i<5;i++){const y=P.t+i*(h-P.t-P.b)/4;ctx.beginPath();ctx.moveTo(P.l,y);ctx.lineTo(w-P.r,y);ctx.stroke();const val=max-i*(max-min)/4;const span=max-min,axisLabel=Math.abs(val)>=1000000?(val/1000000).toFixed(1)+"M":span<1?val.toFixed(2):span<10?val.toFixed(1):Math.round(val).toLocaleString();ctx.fillText(axisLabel,P.l-7,y+4)}
   targets.forEach((t,j)=>{ctx.save();ctx.strokeStyle=t.color||colors[(series.length+j)%colors.length];ctx.setLineDash([6,5]);ctx.beginPath();ctx.moveTo(P.l,Y(t.value));ctx.lineTo(w-P.r,Y(t.value));ctx.stroke();ctx.fillStyle=ctx.strokeStyle;ctx.textAlign="left";ctx.fillText(t.name,P.l+5,Y(t.value)-5);ctx.restore()});
   series.forEach((s,j)=>{ctx.strokeStyle=s.color||colors[j%colors.length];ctx.lineWidth=2.7;ctx.setLineDash([]);ctx.beginPath();s.data.forEach((v,i)=>{if(!Number.isFinite(v))return;i?ctx.lineTo(X(i),Y(v)):ctx.moveTo(X(i),Y(v))});ctx.stroke();s.data.forEach((v,i)=>{if(!Number.isFinite(v))return;ctx.fillStyle=ctx.strokeStyle;ctx.beginPath();ctx.arc(X(i),Y(v),3,0,Math.PI*2);ctx.fill()})});
   ctx.fillStyle=muted;ctx.textAlign="center";const step=Math.max(1,Math.ceil(labels.length/6));labels.forEach((l,i)=>{if(i%step===0||i===labels.length-1)ctx.fillText(String(l).slice(5),X(i),h-13)});
@@ -575,7 +740,7 @@ function chartRows(){const map=new Map(state.snapshots.map(s=>[s.date,s]));map.s
 function drawPortfolio(){const rows=chartRows(),active=new Set(state.ui.series||[]),series=[];if(active.has("total"))series.push({name:"총자산",color:seriesColor("total"),data:rows.map(r=>n(r.total))});state.accounts.forEach(a=>{if(active.has(a.id))series.push({name:a.name,color:seriesColor(a.id),data:rows.map(r=>n(r.accounts?.[a.id]))})});drawLines($("portfolioChart"),rows.map(r=>r.date),series,"거래를 입력하면 현재 자산이 표시되고, 스냅샷이 쌓이면 추이를 볼 수 있습니다.")}
 
 function openAccountDetail(id){activeAccountId=id;const a=accountBy(id),c=calculate(),x=c.accounts[id];if(!a||!x)return;$("modalAccountTitle").textContent=a.name+" 상세";$("modalAccountSub").textContent=`${a.broker} · ${a.type} · ${mask(a.number)}`;const accountColor=seriesColor(id);$("modalAccountStats").innerHTML=[["총입금액",won(x.deposits),true],["현금잔액",won(x.cash),true],["총자산",won(x.total),true],["보유종목",Object.values(x.holdings).filter(h=>h.qty>0).length+"개",false]].map(([l,v,isMoney])=>`<div class="stat"><div class="label">${l}</div><div class="value${isMoney?' series-amount':''}" ${isMoney?`style="--series-color:${accountColor}"`:''}>${v}</div></div>`).join("");
-  const hs=c.holdings.filter(h=>h.accountId===id);$("modalHoldings").innerHTML=hs.map(h=>{const i=instrumentBy(h.instrumentId);return `<div class="item"><div class="row"><b>${esc(i?.name||"-")}</b><b>${won(h.market)}</b></div><div class="sub">${num(h.qty)}주 · 평균 ${won(h.avg)} · 손익 ${won(h.pnl)}</div></div>`}).join("")||'<div class="empty">보유종목이 없습니다.</div>';
+  const hs=c.holdings.filter(h=>h.accountId===id).sort((a,b)=>compareNames(instrumentBy(a.instrumentId)?.name,instrumentBy(b.instrumentId)?.name));$("modalHoldings").innerHTML=hs.map(h=>{const i=instrumentBy(h.instrumentId);return `<div class="item"><div class="row"><b>${esc(i?.name||"-")}</b><b>${won(h.market)}</b></div><div class="sub">${num(h.qty)}주 · 평균 ${won(h.avg)} · 손익 ${won(h.pnl)}</div></div>`}).join("")||'<div class="empty">보유종목이 없습니다.</div>';
   const tx=[...state.transactions].filter(t=>t.accountId===id).sort((a,b)=>(b.date||"").localeCompare(a.date||"")).slice(0,6);$("modalTransactions").innerHTML=tx.map(t=>`<div class="item"><div class="row"><b>${esc(t.type)} ${t.instrumentId?esc(instrumentBy(t.instrumentId)?.name||""):""}</b><span>${esc(t.date)}</span></div><div class="sub">${t.instrumentId?`${num(t.qty)}주 · ${won(t.price)}`:won(t.amount)}${t.note?" · "+esc(t.note):""}</div></div>`).join("")||'<div class="empty">최근 거래가 없습니다.</div>';openModal("accountModal");setTimeout(()=>drawAccountChart(id),40)}
 function drawAccountChart(id){const a=accountBy(id),rows=chartRows();drawLines($("accountChart"),rows.map(r=>r.date),[{name:a?.name||"계좌",color:seriesColor(id),data:rows.map(r=>n(r.accounts?.[id]))}],"스냅샷이 쌓이면 계좌 추이가 표시됩니다.")}
 
@@ -583,16 +748,72 @@ function renderAssets(){const c=calculate();$("assetStats").innerHTML=[["총자�
 
 function bodyMetric(v,suffix=""){return v===null||v===undefined||!Number.isFinite(Number(v))?"미측정":num(v)+suffix}
 function refreshBodyAuto(){const weight=optionalNumber($("bodyWeight").value),fat=optionalNumber($("bodyFat").value),height=n(state.profile.heightCm)/100;$("bodyBmi").value=weight&&height?(weight/(height*height)).toFixed(2):"";$("bodyFatMass").value=weight&&fat?(weight*fat/100).toFixed(2):""}
+const BODY_METRICS={
+  weight:{label:"몸무게",unit:"kg",decimals:2},
+  fat:{label:"체지방률",unit:"%",decimals:2},
+  muscle:{label:"골격근량",unit:"kg",decimals:2},
+  bmi:{label:"BMI",unit:"",decimals:2},
+  fatMass:{label:"체지방량",unit:"kg",decimals:2}
+};
+function bodyPeriodRows(allRows){
+  const rows=[...allRows].sort((a,b)=>a.date.localeCompare(b.date)),period=state.ui.bodyPeriod||"all";
+  if(period==="all"||!rows.length)return rows;
+  const months={"1m":1,"3m":3,"6m":6}[period]||0,anchor=new Date(rows.at(-1).date+"T00:00:00");
+  const cutoff=new Date(anchor);cutoff.setMonth(cutoff.getMonth()-months);
+  return rows.filter(r=>new Date(r.date+"T00:00:00")>=cutoff);
+}
+function metricRows(rows,key){return rows.filter(r=>r[key]!==null&&r[key]!==undefined&&Number.isFinite(Number(r[key])))}
+function metricValueText(value,key){const m=BODY_METRICS[key];return value===null||value===undefined?"미측정":Number(value).toFixed(m.decimals)+m.unit}
+function metricDeltaText(value,key){const m=BODY_METRICS[key];if(value===null||value===undefined||!Number.isFinite(Number(value)))return "-";const x=Number(value);return `${x>0?"+":""}${x.toFixed(m.decimals)}${m.unit}`}
+function metricDeltaClass(key,delta){if(delta===null||delta===undefined||Number(delta)===0)return "";const positiveGood=key==="muscle";return (Number(delta)>0)===positiveGood?"good":"bad"}
 function renderBody(){
   state.body=state.body.map(r=>normalizeBodyRecord(r,state.profile.heightCm));
-  const rows=[...state.body].sort((a,b)=>a.date.localeCompare(b.date)),first=rows[0],last=rows.at(-1),start=n(first?.weight),cur=n(last?.weight),g1=n(state.goals.weight1),g2=n(state.goals.weight2);const rate=target=>start&&start!==target?Math.max(0,Math.min(100,(start-cur)/(start-target)*100)):0;
+  const rows=[...state.body].sort((a,b)=>a.date.localeCompare(b.date)),first=rows[0],last=rows.at(-1),start=n(first?.weight),cur=n(last?.weight),g1=n(state.goals.weight1),g2=n(state.goals.weight2);
+  const rate=target=>start&&start!==target?Math.max(0,Math.min(100,(start-cur)/(start-target)*100)):0;
   $("heightLabel").textContent=num(state.profile.heightCm)+"cm";
   $("dietStats").innerHTML=[["시작 체중",start?start.toFixed(2)+"kg":"-"],["현재 체중",cur?cur.toFixed(2)+"kg":"-"],["1차 목표",g1+"kg · "+rate(g1).toFixed(1)+"%"],["2차 목표",g2+"kg · "+rate(g2).toFixed(1)+"%"]].map(([l,v])=>`<div class="stat"><div class="label">${l}</div><div class="value">${v}</div></div>`).join("");
-  $("bodyCount").textContent=state.body.length+"건";$("bodyRows").innerHTML=[...state.body].sort((a,b)=>b.date.localeCompare(a.date)).map(r=>`<tr><td>${esc(r.date)}</td><td>${bodyMetric(r.weight,"kg")}</td><td>${bodyMetric(r.fat,"%")}</td><td>${bodyMetric(r.muscle,"kg")}</td><td>${bodyMetric(r.bmi)}</td><td>${bodyMetric(r.fatMass,"kg")}</td><td><button class="btn sm danger" data-delete-body="${r.id}">삭제</button></td></tr>`).join("")||'<tr><td colspan="7">신체 기록이 없습니다.</td></tr>';
-  document.querySelectorAll("[data-delete-body]").forEach(b=>b.onclick=()=>{state.body=state.body.filter(r=>r.id!==b.dataset.deleteBody);commit("신체 기록을 삭제했습니다.")});const active=new Set(state.ui.bodySeries||[]),opts=[["weight","몸무게"],["fat","체지방률"],["muscle","골격근량"],["bmi","BMI"],["fatMass","체지방량"]];$("bodyToggles").innerHTML=opts.map(([k,l])=>`<label class="check-chip"><input type="checkbox" data-body-series="${k}" ${active.has(k)?"checked":""}>${l}</label>`).join("");document.querySelectorAll("[data-body-series]").forEach(x=>x.onchange=()=>{const s=new Set(state.ui.bodySeries||[]);x.checked?s.add(x.dataset.bodySeries):s.delete(x.dataset.bodySeries);state.ui.bodySeries=[...s];save();drawBody()});drawBody();
+  $("bodyCount").textContent=state.body.length+"건";
+  $("bodyRows").innerHTML=[...state.body].sort((a,b)=>b.date.localeCompare(a.date)).map(r=>`<tr><td>${esc(r.date)}</td><td>${bodyMetric(r.weight,"kg")}</td><td>${bodyMetric(r.fat,"%")}</td><td>${bodyMetric(r.muscle,"kg")}</td><td>${bodyMetric(r.bmi)}</td><td>${bodyMetric(r.fatMass,"kg")}</td><td><button class="btn sm danger" data-delete-body="${r.id}">삭제</button></td></tr>`).join("")||'<tr><td colspan="7">신체 기록이 없습니다.</td></tr>';
+  document.querySelectorAll("[data-delete-body]").forEach(b=>b.onclick=()=>{state.body=state.body.filter(r=>r.id!==b.dataset.deleteBody);commit("신체 기록을 삭제했습니다.")});
+  const active=state.ui.bodyMetric||"weight";
+  $("bodyMetricTabs").innerHTML=[...Object.entries(BODY_METRICS),["summary",{label:"전체 요약"}]].map(([k,v])=>`<button class="tab ${active===k?"active":""}" data-body-metric="${k}">${v.label}</button>`).join("");
+  document.querySelectorAll("[data-body-metric]").forEach(btn=>btn.onclick=()=>{state.ui.bodyMetric=btn.dataset.bodyMetric;save();renderBody()});
+  $("bodyPeriod").value=state.ui.bodyPeriod||"all";
+  $("bodyPeriod").onchange=()=>{state.ui.bodyPeriod=$("bodyPeriod").value;save();renderBody()};
+  renderBodyMetricStats();
+  drawBody();
   $("homeWeight").textContent=last?n(last.weight).toFixed(2)+"kg":"기록 없음";$("homeWeightGoal").textContent=`1차 ${g1}kg · 2차 ${g2}kg`;
 }
-function drawBody(){const rows=[...state.body].sort((a,b)=>a.date.localeCompare(b.date)),active=new Set(state.ui.bodySeries||[]),map={weight:"몸무게",fat:"체지방률",muscle:"골격근량",bmi:"BMI",fatMass:"체지방량"},series=Object.keys(map).filter(k=>active.has(k)).map(k=>({name:map[k],data:rows.map(r=>r[k]===null||r[k]===undefined?null:Number(r[k]))}));const targets=active.has("weight")?[{name:"1차 "+state.goals.weight1+"kg",value:n(state.goals.weight1),color:"#ef9d3c"},{name:"2차 "+state.goals.weight2+"kg",value:n(state.goals.weight2),color:"#2faa77"}]:[];drawLines($("bodyChart"),rows.map(r=>r.date),series,"신체 기록을 입력하면 그래프가 표시됩니다.",{targets})}
+function renderBodyMetricStats(){
+  const key=state.ui.bodyMetric||"weight",rows=bodyPeriodRows(state.body);
+  if(key==="summary"){
+    $("bodyMetricStats").innerHTML="";
+    $("bodyMetricStats").classList.add("hidden");
+    $("bodyChartWrap").classList.add("hidden");
+    $("bodySummary").classList.remove("hidden");
+    $("bodySummary").innerHTML=Object.entries(BODY_METRICS).map(([metric,meta])=>{
+      const data=metricRows(rows,metric),latest=data.at(-1),previous=data.at(-2),delta=latest&&previous?Number(latest[metric])-Number(previous[metric]):null;
+      const cls=metricDeltaClass(metric,delta);
+      return `<div class="metric-card"><div class="label">${meta.label}</div><b>${latest?metricValueText(latest[metric],metric):"미측정"}</b><div class="metric-delta ${cls}">직전 대비 ${metricDeltaText(delta,metric)}</div></div>`;
+    }).join("");
+    return;
+  }
+  $("bodyMetricStats").classList.remove("hidden");$("bodyChartWrap").classList.remove("hidden");$("bodySummary").classList.add("hidden");
+  const data=metricRows(rows,key),latest=data.at(-1),previous=data.at(-2),first=data[0],values=data.map(r=>Number(r[key])),meta=BODY_METRICS[key];
+  const latestValue=latest?Number(latest[key]):null,previousDelta=latest&&previous?latestValue-Number(previous[key]):null,firstDelta=latest&&first?latestValue-Number(first[key]):null;
+  $("bodyMetricStats").innerHTML=[
+    ["최신 측정값",metricValueText(latestValue,key)],
+    ["직전 기록 대비",metricDeltaText(previousDelta,key)],
+    ["기간 첫 기록 대비",metricDeltaText(firstDelta,key)],
+    ["최고 / 최저",values.length?`${metricValueText(Math.max(...values),key)} / ${metricValueText(Math.min(...values),key)}`:"-"]
+  ].map(([l,v])=>`<div class="stat"><div class="label">${l}</div><div class="value">${v}</div></div>`).join("");
+}
+function drawBody(){
+  const key=state.ui.bodyMetric||"weight";
+  if(key==="summary")return;
+  const rows=bodyPeriodRows(state.body),meta=BODY_METRICS[key],series=[{name:meta.label,data:rows.map(r=>r[key]===null||r[key]===undefined?null:Number(r[key]))}],targets=key==="weight"?[{name:"1차 "+state.goals.weight1+"kg",value:n(state.goals.weight1),color:"#ef9d3c"},{name:"2차 "+state.goals.weight2+"kg",value:n(state.goals.weight2),color:"#2faa77"}]:[];
+  drawLines($("bodyChart"),rows.map(r=>r.date),series,"선택한 기간에 표시할 신체 기록이 없습니다.",{targets});
+}
 ["bodyWeight","bodyFat"].forEach(id=>$(id).addEventListener("input",refreshBodyAuto));
 $("addBody").onclick=()=>{const weight=optionalNumber($("bodyWeight").value);if(!$("bodyDate").value||!weight)return alert("날짜와 몸무게를 입력하세요.");state.body.push(normalizeBodyRecord({id:uid(),date:$("bodyDate").value,weight,fat:optionalNumber($("bodyFat").value),muscle:optionalNumber($("bodyMuscle").value)},state.profile.heightCm));["bodyWeight","bodyFat","bodyMuscle","bodyBmi","bodyFatMass"].forEach(id=>$(id).value="");commit("신체 기록을 저장했습니다.")};
 $("editWeightGoals").onclick=()=>{$("heightCm").value=state.profile.heightCm;$("weightGoal1").value=state.goals.weight1;$("weightGoal2").value=state.goals.weight2;openModal("weightGoalModal")};
@@ -608,20 +829,81 @@ function drawExercise(){const rows=[...state.exercise].sort((a,b)=>a.date.locale
 $("addExercise").onclick=()=>{const date=$("exerciseDate").value;if(!date)return alert("날짜를 입력하세요.");const row={id:uid(),date,steps:Math.max(0,Math.round(n($("exerciseSteps").value))),distance:Math.max(0,n($("exerciseDistance").value)),strength:$("exerciseStrength").checked,note:$("exerciseNote").value.trim()},old=state.exercise.find(r=>r.date===date);if(old)Object.assign(old,row,{id:old.id});else state.exercise.push(row);["exerciseSteps","exerciseDistance","exerciseNote"].forEach(id=>$(id).value="");$("exerciseStrength").checked=false;commit(old?"해당 날짜의 운동 기록을 수정했습니다.":"운동 기록을 저장했습니다.")};
 
 const TOPIC_COLORS={"교양":"#58bce8","경제·투자":"#4285f4","인문·철학":"#8b63dc","역사":"#a66b3d","소설":"#dc6279","자기계발":"#2faa77","일본어·학습":"#ef9d3c","기타":"#607d8b"};
-function stars(v){const x=n(v);return x?`<span class="rating">${"★".repeat(Math.min(5,x))}${"☆".repeat(Math.max(0,5-x))}</span>`:"평점 미입력"}
+function stars(v){
+  if(v===null||v===undefined||v==="")return "평점 미입력";
+  const x=Math.max(0,Math.min(5,Math.round(Number(v)*2)/2));
+  const icons=Array.from({length:5},(_,idx)=>{const point=idx+1;const cls=x>=point?"full":x>=point-.5?"half":"";return `<span class="rating-star ${cls}">★</span>`}).join("");
+  return `<span class="rating" aria-label="${x.toFixed(1)}점">${icons}<span class="rating-number">${x.toFixed(1)}</span></span>`;
+}
 function bookCard(b){return `<article class="archive-card">${b.cover?`<img class="archive-cover" src="${esc(b.cover)}" alt="${esc(b.title)} 표지">`:'<div class="archive-cover placeholder">📚</div>'}<div><span class="topic-tag" style="--tag:${TOPIC_COLORS[b.topic]||TOPIC_COLORS["기타"]}">${esc(b.topic||"기타")}</span><h4>${esc(b.title)}</h4><div class="archive-meta">${esc(b.author||"저자 미입력")}${b.status==="read"?` · ${stars(b.rating)}`:""}${b.completedDate?`<br>완독 ${esc(b.completedDate)}`:""}</div>${b.review?`<div class="archive-review">${esc(b.review)}</div>`:""}</div><div class="archive-actions"><button class="btn sm" data-book-toggle="${b.id}">${b.status==="read"?"읽고 싶은 책으로":"읽은 책으로"}</button><button class="btn sm" data-book-edit="${b.id}">수정</button><button class="btn sm danger" data-book-delete="${b.id}">삭제</button></div></article>`}
 function resetBookForm(){["bookEditId","bookTitle","bookAuthor","bookReview"].forEach(id=>$(id).value="");$("bookStatus").value="wish";$("bookTopic").value="교양";$("bookRating").value="";$("bookDate").value="";$("bookCover").value="";$("saveBook").textContent="책 저장"}
-function renderReading(){const wish=state.books.filter(b=>b.status!=="read"),read=state.books.filter(b=>b.status==="read"),ratings=read.map(b=>n(b.rating)).filter(Boolean),avg=ratings.length?ratings.reduce((a,b)=>a+b,0)/ratings.length:0;$("bookCount").textContent=state.books.length+"권";$("wishBookCount").textContent=wish.length+"권";$("readBookCount").textContent=read.length+"권";$("bookStats").innerHTML=[["전체 서재",state.books.length+"권"],["읽고 싶은 책",wish.length+"권"],["읽은 책",read.length+"권"],["평균 평점",avg?avg.toFixed(1)+" / 5":"-"]].map(([l,v])=>`<div class="stat"><div class="label">${l}</div><div class="value">${v}</div></div>`).join("");$("wishBooks").innerHTML=wish.map(bookCard).join("")||'<div class="empty">읽고 싶은 책을 등록해보세요.</div>';$("readBooks").innerHTML=read.map(bookCard).join("")||'<div class="empty">완독한 책이 아직 없습니다.</div>';
-  document.querySelectorAll("[data-book-delete]").forEach(b=>b.onclick=()=>{state.books=state.books.filter(x=>x.id!==b.dataset.bookDelete);commit("책을 삭제했습니다.")});document.querySelectorAll("[data-book-toggle]").forEach(b=>b.onclick=()=>{const x=state.books.find(v=>v.id===b.dataset.bookToggle);if(!x)return;x.status=x.status==="read"?"wish":"read";if(x.status==="read"&&!x.completedDate)x.completedDate=today();commit("책 분류를 변경했습니다.")});document.querySelectorAll("[data-book-edit]").forEach(b=>b.onclick=()=>{const x=state.books.find(v=>v.id===b.dataset.bookEdit);if(!x)return;$("bookEditId").value=x.id;$("bookStatus").value=x.status||"wish";$("bookTitle").value=x.title||"";$("bookAuthor").value=x.author||"";$("bookTopic").value=x.topic||"교양";$("bookRating").value=x.rating||"";$("bookDate").value=x.completedDate||"";$("bookReview").value=x.review||"";$("saveBook").textContent="수정 저장";$("reading").scrollIntoView({behavior:"smooth"})})
+function renderReadingGoals(read){
+  const now=new Date(),year=String(now.getFullYear()),month=year+"-"+String(now.getMonth()+1).padStart(2,"0"),annualGoal=Math.max(1,Math.round(n(state.goals.readingAnnual)||n(state.goals.reading)||30)),monthlyGoal=Math.max(1,Math.round(n(state.goals.readingMonthly)||2));
+  const annual=read.filter(b=>String(b.completedDate||"").startsWith(year)).length,monthly=read.filter(b=>String(b.completedDate||"").startsWith(month)).length;
+  const annualRate=Math.min(100,annual/annualGoal*100),monthlyRate=Math.min(100,monthly/monthlyGoal*100);
+  $("readingAnnualGoal").value=annualGoal;$("readingMonthlyGoal").value=monthlyGoal;
+  $("readingAnnualProgress").textContent=`${annual} / ${annualGoal}권`;$("readingMonthlyProgress").textContent=`${monthly} / ${monthlyGoal}권`;
+  $("readingAnnualBar").style.width=annualRate+"%";$("readingMonthlyBar").style.width=monthlyRate+"%";
+  $("readingAnnualRemain").textContent=`남은 ${Math.max(0,annualGoal-annual)}권`;$("readingMonthlyRemain").textContent=`남은 ${Math.max(0,monthlyGoal-monthly)}권`;
+  $("readingAnnualRate").textContent=annualRate.toFixed(1)+"%";$("readingMonthlyRate").textContent=monthlyRate.toFixed(1)+"%";
 }
-$("cancelBookEdit").onclick=resetBookForm;$("saveBook").onclick=async()=>{const title=$("bookTitle").value.trim();if(!title)return alert("책 제목을 입력하세요.");const editId=$("bookEditId").value,old=state.books.find(b=>b.id===editId),file=$("bookCover").files[0];let cover=old?.cover||"";try{if(file)cover=await compressImage(file)}catch(e){return alert(e.message)}const row={id:old?.id||uid(),status:$("bookStatus").value,title,author:$("bookAuthor").value.trim(),topic:$("bookTopic").value,rating:$("bookRating").value?Number($("bookRating").value):null,completedDate:$("bookDate").value,review:$("bookReview").value.trim(),cover,updatedAt:new Date().toISOString()};if(old)Object.assign(old,row);else state.books.push(row);resetBookForm();commit(old?"책 정보를 수정했습니다.":"책을 서재에 저장했습니다.")};
+function renderReading(){
+  const sort=state.ui.readingSort||"recent",min=n(state.ui.readingMinRating),allWish=state.books.filter(b=>b.status!=="read"),allRead=state.books.filter(b=>b.status==="read");
+  const wish=sortRatedItems(filterMinimumRating(allWish,min),sort,"completedDate"),read=sortRatedItems(filterMinimumRating(allRead,min),sort,"completedDate");
+  const ratings=allRead.map(b=>b.rating===null||b.rating===undefined||b.rating===""?null:Number(b.rating)).filter(v=>v!==null&&Number.isFinite(v)),avg=ratings.length?ratings.reduce((a,b)=>a+b,0)/ratings.length:0,five=ratings.filter(v=>v===5).length;
+  $("bookCount").textContent=state.books.length+"권";$("wishBookCount").textContent=wish.length+"권";$("readBookCount").textContent=read.length+"권";
+  $("bookStats").innerHTML=[["전체 서재",state.books.length+"권"],["읽고 싶은 책",allWish.length+"권"],["읽은 책",allRead.length+"권"],["평균 평점",avg?`${avg.toFixed(1)} / 5 · 5점 ${five}권`:"-"]].map(([l,v])=>`<div class="stat"><div class="label">${l}</div><div class="value">${v}</div></div>`).join("");
+  $("wishBooks").innerHTML=wish.map(bookCard).join("")||'<div class="empty">조건에 맞는 읽고 싶은 책이 없습니다.</div>';$("readBooks").innerHTML=read.map(bookCard).join("")||'<div class="empty">조건에 맞는 완독 책이 없습니다.</div>';
+  $("bookSort").value=sort;$("bookMinRating").value=String(min);
+  $("bookSort").onchange=()=>{state.ui.readingSort=$("bookSort").value;save();renderReading()};$("bookMinRating").onchange=()=>{state.ui.readingMinRating=n($("bookMinRating").value);save();renderReading()};
+  renderReadingGoals(allRead);
+  document.querySelectorAll("[data-book-delete]").forEach(b=>b.onclick=()=>{state.books=state.books.filter(x=>x.id!==b.dataset.bookDelete);commit("책을 삭제했습니다.")});
+  document.querySelectorAll("[data-book-toggle]").forEach(b=>b.onclick=()=>{const x=state.books.find(v=>v.id===b.dataset.bookToggle);if(!x)return;x.status=x.status==="read"?"wish":"read";if(x.status==="read"&&!x.completedDate)x.completedDate=today();x.updatedAt=new Date().toISOString();commit("책 분류를 변경했습니다.")});
+  document.querySelectorAll("[data-book-edit]").forEach(b=>b.onclick=()=>{const x=state.books.find(v=>v.id===b.dataset.bookEdit);if(!x)return;$("bookEditId").value=x.id;$("bookStatus").value=x.status||"wish";$("bookTitle").value=x.title||"";$("bookAuthor").value=x.author||"";$("bookTopic").value=x.topic||"교양";$("bookRating").value=x.rating??"";$("bookDate").value=x.completedDate||"";$("bookReview").value=x.review||"";$("saveBook").textContent="수정 저장";$("reading").scrollIntoView({behavior:"smooth"})})
+}
+$("saveReadingGoals").onclick=()=>{const annual=Math.round(n($("readingAnnualGoal").value)),monthly=Math.round(n($("readingMonthlyGoal").value));if(annual<=0||monthly<=0)return alert("연간·월간 목표 권수를 1권 이상 입력하세요.");state.goals.reading=annual;state.goals.readingAnnual=annual;state.goals.readingMonthly=monthly;commit("독서 목표를 저장했습니다.")};
+$("cancelBookEdit").onclick=resetBookForm;
+$("saveBook").onclick=async()=>{
+  const title=$("bookTitle").value.trim();if(!title)return alert("책 제목을 입력하세요.");
+  const previousBooks=structuredClone(state.books),editId=$("bookEditId").value,old=state.books.find(b=>b.id===editId),file=$("bookCover").files[0],oldCover=old?.cover||"";
+  let cover=oldCover,imageWarning="";
+  if(file){try{cover=await compressImage(file)}catch(e){imageWarning=e.message;cover=oldCover}}
+  const row={id:old?.id||uid(),status:$("bookStatus").value,title,author:$("bookAuthor").value.trim(),topic:$("bookTopic").value,rating:$("bookRating").value?Number($("bookRating").value):null,completedDate:$("bookDate").value,review:$("bookReview").value.trim(),cover,createdAt:old?.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString()};
+  if(old)Object.assign(old,row);else state.books.push(row);
+  let ok=commit(old?"책 정보를 수정했습니다.":"책을 서재에 저장했습니다.");
+  if(!ok&&file&&cover!==oldCover){row.cover=oldCover;const target=state.books.find(b=>b.id===row.id);if(target)target.cover=oldCover;ok=commit("저장 공간 문제로 이미지를 제외하고 책의 텍스트 기록을 저장했습니다.");if(ok)imageWarning="저장 공간 부족으로 새 이미지는 제외했어요."}
+  if(!ok){state.books=previousBooks;renderAll();return}
+  resetBookForm();if(imageWarning)alert(imageWarning+"\n텍스트 기록은 정상적으로 저장했습니다.");
+};
 
 function movieCard(m){return `<article class="archive-card">${m.poster?`<img class="archive-cover" src="${esc(m.poster)}" alt="${esc(m.title)} 포스터">`:'<div class="archive-cover placeholder">🎬</div>'}<div><span class="topic-tag" style="--tag:${m.origin==="국내"?"#58bce8":"#8b63dc"}">${esc(m.origin||"국외")}</span><h4>${esc(m.title)}</h4><div class="archive-meta">감독 ${esc(m.director||"미입력")}${m.actors?`<br>배우 ${esc(m.actors)}`:""}${m.status==="watched"?`<br>${stars(m.rating)}`:""}${m.watchedDate?` · ${esc(m.watchedDate)}`:""}</div>${m.review?`<div class="archive-review">${esc(m.review)}</div>`:""}</div><div class="archive-actions"><button class="btn sm" data-movie-toggle="${m.id}">${m.status==="watched"?"보고 싶은 영화로":"본 영화로"}</button><button class="btn sm" data-movie-edit="${m.id}">수정</button><button class="btn sm danger" data-movie-delete="${m.id}">삭제</button></div></article>`}
 function resetMovieForm(){["movieEditId","movieTitle","movieDirector","movieActors","movieReview"].forEach(id=>$(id).value="");$("movieStatus").value="wish";$("movieOrigin").value="국내";$("movieRating").value="";$("movieDate").value="";$("moviePoster").value="";$("saveMovie").textContent="영화 저장"}
-function renderMovies(){const wish=state.movies.filter(m=>m.status!=="watched"),watched=state.movies.filter(m=>m.status==="watched"),ratings=watched.map(m=>n(m.rating)).filter(Boolean),avg=ratings.length?ratings.reduce((a,b)=>a+b,0)/ratings.length:0;$("movieCount").textContent=state.movies.length+"편";$("wishMovieCount").textContent=wish.length+"편";$("watchedMovieCount").textContent=watched.length+"편";$("movieStats").innerHTML=[["전체 보관함",state.movies.length+"편"],["보고 싶은 영화",wish.length+"편"],["본 영화",watched.length+"편"],["평균 평점",avg?avg.toFixed(1)+" / 5":"-"]].map(([l,v])=>`<div class="stat"><div class="label">${l}</div><div class="value">${v}</div></div>`).join("");$("wishMovies").innerHTML=wish.map(movieCard).join("")||'<div class="empty">보고 싶은 영화를 등록해보세요.</div>';$("watchedMovies").innerHTML=watched.map(movieCard).join("")||'<div class="empty">본 영화가 아직 없습니다.</div>';
-  document.querySelectorAll("[data-movie-delete]").forEach(b=>b.onclick=()=>{state.movies=state.movies.filter(x=>x.id!==b.dataset.movieDelete);commit("영화를 삭제했습니다.")});document.querySelectorAll("[data-movie-toggle]").forEach(b=>b.onclick=()=>{const x=state.movies.find(v=>v.id===b.dataset.movieToggle);if(!x)return;x.status=x.status==="watched"?"wish":"watched";if(x.status==="watched"&&!x.watchedDate)x.watchedDate=today();commit("영화 분류를 변경했습니다.")});document.querySelectorAll("[data-movie-edit]").forEach(b=>b.onclick=()=>{const x=state.movies.find(v=>v.id===b.dataset.movieEdit);if(!x)return;$("movieEditId").value=x.id;$("movieStatus").value=x.status||"wish";$("movieOrigin").value=x.origin||"국내";$("movieTitle").value=x.title||"";$("movieDirector").value=x.director||"";$("movieActors").value=x.actors||"";$("movieRating").value=x.rating||"";$("movieDate").value=x.watchedDate||"";$("movieReview").value=x.review||"";$("saveMovie").textContent="수정 저장";$("movie").scrollIntoView({behavior:"smooth"})})
+function renderMovies(){
+  const sort=state.ui.movieSort||"recent",min=n(state.ui.movieMinRating),allWish=state.movies.filter(m=>m.status!=="watched"),allWatched=state.movies.filter(m=>m.status==="watched");
+  const wish=sortRatedItems(filterMinimumRating(allWish,min),sort,"watchedDate"),watched=sortRatedItems(filterMinimumRating(allWatched,min),sort,"watchedDate");
+  const ratings=allWatched.map(m=>m.rating===null||m.rating===undefined||m.rating===""?null:Number(m.rating)).filter(v=>v!==null&&Number.isFinite(v)),avg=ratings.length?ratings.reduce((a,b)=>a+b,0)/ratings.length:0,five=ratings.filter(v=>v===5).length;
+  $("movieCount").textContent=state.movies.length+"편";$("wishMovieCount").textContent=wish.length+"편";$("watchedMovieCount").textContent=watched.length+"편";
+  $("movieStats").innerHTML=[["전체 보관함",state.movies.length+"편"],["보고 싶은 영화",allWish.length+"편"],["본 영화",allWatched.length+"편"],["평균 평점",avg?`${avg.toFixed(1)} / 5 · 5점 ${five}편`:"-"]].map(([l,v])=>`<div class="stat"><div class="label">${l}</div><div class="value">${v}</div></div>`).join("");
+  $("wishMovies").innerHTML=wish.map(movieCard).join("")||'<div class="empty">조건에 맞는 보고 싶은 영화가 없습니다.</div>';$("watchedMovies").innerHTML=watched.map(movieCard).join("")||'<div class="empty">조건에 맞는 본 영화가 없습니다.</div>';
+  $("movieSort").value=sort;$("movieMinRating").value=String(min);
+  $("movieSort").onchange=()=>{state.ui.movieSort=$("movieSort").value;save();renderMovies()};$("movieMinRating").onchange=()=>{state.ui.movieMinRating=n($("movieMinRating").value);save();renderMovies()};
+  document.querySelectorAll("[data-movie-delete]").forEach(b=>b.onclick=()=>{state.movies=state.movies.filter(x=>x.id!==b.dataset.movieDelete);commit("영화를 삭제했습니다.")});
+  document.querySelectorAll("[data-movie-toggle]").forEach(b=>b.onclick=()=>{const x=state.movies.find(v=>v.id===b.dataset.movieToggle);if(!x)return;x.status=x.status==="watched"?"wish":"watched";if(x.status==="watched"&&!x.watchedDate)x.watchedDate=today();x.updatedAt=new Date().toISOString();commit("영화 분류를 변경했습니다.")});
+  document.querySelectorAll("[data-movie-edit]").forEach(b=>b.onclick=()=>{const x=state.movies.find(v=>v.id===b.dataset.movieEdit);if(!x)return;$("movieEditId").value=x.id;$("movieStatus").value=x.status||"wish";$("movieOrigin").value=x.origin||"국내";$("movieTitle").value=x.title||"";$("movieDirector").value=x.director||"";$("movieActors").value=x.actors||"";$("movieRating").value=x.rating??"";$("movieDate").value=x.watchedDate||"";$("movieReview").value=x.review||"";$("saveMovie").textContent="수정 저장";$("movie").scrollIntoView({behavior:"smooth"})})
 }
-$("cancelMovieEdit").onclick=resetMovieForm;$("saveMovie").onclick=async()=>{const title=$("movieTitle").value.trim();if(!title)return alert("영화 제목을 입력하세요.");const editId=$("movieEditId").value,old=state.movies.find(m=>m.id===editId),file=$("moviePoster").files[0];let poster=old?.poster||"";try{if(file)poster=await compressImage(file)}catch(e){return alert(e.message)}const row={id:old?.id||uid(),status:$("movieStatus").value,origin:$("movieOrigin").value,title,director:$("movieDirector").value.trim(),actors:$("movieActors").value.trim(),rating:$("movieRating").value?Number($("movieRating").value):null,watchedDate:$("movieDate").value,review:$("movieReview").value.trim(),poster,updatedAt:new Date().toISOString()};if(old)Object.assign(old,row);else state.movies.push(row);resetMovieForm();commit(old?"영화 정보를 수정했습니다.":"영화를 보관함에 저장했습니다.")};
+$("cancelMovieEdit").onclick=resetMovieForm;
+$("saveMovie").onclick=async()=>{
+  const title=$("movieTitle").value.trim();if(!title)return alert("영화 제목을 입력하세요.");
+  const previousMovies=structuredClone(state.movies),editId=$("movieEditId").value,old=state.movies.find(m=>m.id===editId),file=$("moviePoster").files[0],oldPoster=old?.poster||"";
+  let poster=oldPoster,imageWarning="";
+  if(file){try{poster=await compressImage(file)}catch(e){imageWarning=e.message;poster=oldPoster}}
+  const row={id:old?.id||uid(),status:$("movieStatus").value,origin:$("movieOrigin").value,title,director:$("movieDirector").value.trim(),actors:$("movieActors").value.trim(),rating:$("movieRating").value?Number($("movieRating").value):null,watchedDate:$("movieDate").value,review:$("movieReview").value.trim(),poster,createdAt:old?.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString()};
+  if(old)Object.assign(old,row);else state.movies.push(row);
+  let ok=commit(old?"영화 정보를 수정했습니다.":"영화를 보관함에 저장했습니다.");
+  if(!ok&&file&&poster!==oldPoster){row.poster=oldPoster;const target=state.movies.find(m=>m.id===row.id);if(target)target.poster=oldPoster;ok=commit("저장 공간 문제로 이미지를 제외하고 영화의 텍스트 기록을 저장했습니다.");if(ok)imageWarning="저장 공간 부족으로 새 이미지는 제외했어요."}
+  if(!ok){state.movies=previousMovies;renderAll();return}
+  resetMovieForm();if(imageWarning)alert(imageWarning+"\n텍스트 기록은 정상적으로 저장했습니다.");
+};
 
 function renderTasks(){const rows=[...state.tasks].sort((a,b)=>Number(a.done)-Number(b.done)||(a.due||"9999").localeCompare(b.due||"9999"));$("taskCount").textContent=state.tasks.length+"개";$("taskList").innerHTML=rows.map(t=>`<div class="item task ${t.done?'done':''}"><input type="checkbox" data-task-check="${t.id}" ${t.done?'checked':''}><div><b>${esc(t.text)}</b><div class="sub">${t.due?"마감 "+esc(t.due):"마감일 없음"}</div></div><button class="btn sm danger" data-task-delete="${t.id}">삭제</button></div>`).join("")||'<div class="empty">등록된 할 일이 없습니다.</div>';document.querySelectorAll("[data-task-check]").forEach(x=>x.onchange=()=>{const t=state.tasks.find(t=>t.id===x.dataset.taskCheck);if(t)t.done=x.checked;commit("할 일 상태를 변경했습니다.",false)});document.querySelectorAll("[data-task-delete]").forEach(b=>b.onclick=()=>{state.tasks=state.tasks.filter(t=>t.id!==b.dataset.taskDelete);commit("할 일을 삭제했습니다.")})}
 $("addTask").onclick=()=>{const text=$("taskText").value.trim();if(!text)return alert("할 일을 입력하세요.");state.tasks.push({id:uid(),text,due:$("taskDue").value,done:false,createdAt:new Date().toISOString()});$("taskText").value="";commit("할 일을 추가했습니다.")};
@@ -637,12 +919,65 @@ function renderNotes(){document.querySelectorAll(".generic").forEach(sec=>{const
 
 function renderHome(){const c=calculate(),goal=n(state.goals.investment),rate=goal?c.total/goal*100:0;$("homeAsset").textContent=won(c.total);$("homeInvestGoal").textContent=goal>=100000000?(goal/100000000).toFixed(goal%100000000?1:0)+"억원":won(goal);$("homeInvestRate").textContent="달성률 "+rate.toFixed(2)+"%";$("homeTasks").textContent=state.tasks.filter(t=>!t.done).length+"개";const acts=[];state.transactions.slice(-3).reverse().forEach(t=>acts.push(`<div class="item"><b>${esc(t.type)} ${t.instrumentId?esc(instrumentBy(t.instrumentId)?.name||""):""}</b><div class="sub">${esc(t.date)} · ${esc(accountBy(t.accountId)?.name||"")}</div></div>`));state.body.slice(-1).forEach(r=>acts.push(`<div class="item"><b>신체 기록 ${num(r.weight)}kg</b><div class="sub">${esc(r.date)}</div></div>`));state.tasks.filter(t=>!t.done).slice(0,2).forEach(t=>acts.push(`<div class="item"><b>할 일 · ${esc(t.text)}</b><div class="sub">${t.due?esc(t.due):"마감일 없음"}</div></div>`));$("recentActivity").innerHTML=acts.slice(0,5).join("")||'<div class="empty">기록을 시작하면 최근 활동이 표시됩니다.</div>'}
 
-function commit(message,notify=true){save();renderAll();if(notify)toast(message)}
-function renderAll(){refreshSelects();renderAccounts();renderInstruments();renderHoldings();renderTransactions();renderPortfolio();renderAssets();renderBody();renderExercise();renderReading();renderMovies();renderTasks();renderCalendar();renderTeam();renderNotes();renderHome()}
-
-function exportData(){const blob=new Blob([JSON.stringify({...state,version:VERSION,exportedAt:new Date().toISOString()},null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`HANI_OS_v2.3.5.1_backup_${today()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast("백업 파일을 만들었습니다.")}
-$("exportBtn").onclick=exportData;$("quickBackup").onclick=exportData;$("importBtn").onclick=()=>$("importFile").click();
-$("importFile").onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());state=d.instruments||d.transactions?normalizeState(d):migrateV22(d);save();renderAll();toast("백업을 복원했습니다.")}catch(err){console.error(err);alert("올바른 HANI OS 백업 파일이 아닙니다.")}finally{e.target.value=""}};
+function renderStoragePanel(){
+  const stats=$("storageStats");if(!stats)return;
+  let raw="";try{raw=localStorage.getItem(STORAGE_KEY)||""}catch(e){}const recordCount=state.transactions.length+state.body.length+state.exercise.length+state.books.length+state.movies.length+state.tasks.length;
+  const rows=[
+    ["저장 위치","현재 브라우저"],
+    ["마지막 저장",formatDateTime(state.meta?.lastSavedAt)],
+    ["마지막 백업",formatDateTime(state.meta?.lastBackupAt)],
+    ["저장 데이터",`${bytesLabel(serializedBytes(raw))} · 기록 ${recordCount}건`]
+  ];
+  stats.innerHTML=rows.map(([l,v])=>`<div class="data-status-item"><div class="label">${l}</div><b>${v}</b></div>`).join("");
+  const pill=$("storageStatePill"),message=$("storageMessage");
+  if(pill){pill.textContent=lastSaveResult?.ok===false?"ERROR":"LOCAL · OK";pill.classList.toggle("danger",lastSaveResult?.ok===false)}
+  if(message)message.textContent=lastLoadError||lastSaveResult?.message||"브라우저 저장 상태를 확인했습니다.";
+  const badge=$("saveStateBadge"),label=$("lastSavedLabel");
+  if(badge){badge.classList.toggle("ok",lastSaveResult?.ok!==false);badge.classList.toggle("error",lastSaveResult?.ok===false);badge.textContent=lastSaveResult?.ok===false?"저장 실패":"저장 정상"}
+  if(label)label.textContent="마지막 저장 "+formatDateTime(state.meta?.lastSavedAt);
+}
+function commit(message,notify=true){
+  const result=save();
+  if(!result.ok){alert(result.message);return false}
+  renderAll();if(notify)toast(message);return true;
+}
+function renderAll(){refreshSelects();renderAccounts();renderInstruments();renderHoldings();renderTransactions();renderPortfolio();renderAssets();renderBody();renderExercise();renderReading();renderMovies();renderTasks();renderCalendar();renderTeam();renderNotes();renderHome();renderStoragePanel()}
+function downloadJson(serialized,filename){const blob=new Blob([serialized],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function exportData({suffix="",silent=false}={}){
+  try{
+    const exportedAt=new Date().toISOString();state.meta={...freshState().meta,...(state.meta||{}),lastBackupAt:exportedAt};
+    const saveResult=save();
+    const payload={...state,version:VERSION,exportedAt,_haniBackup:{app:"HANI OS Life Edition",format:1,version:VERSION,storageKey:STORAGE_KEY,exportedAt}};
+    const serialized=JSON.stringify(payload,null,2),safeSuffix=suffix?`_${suffix.replace(/[^a-zA-Z0-9가-힣_-]/g,"_")}`:"";
+    downloadJson(serialized,`HANI_OS_v${VERSION}_backup_${today()}${safeSuffix}.json`);
+    renderStoragePanel();if(!silent)toast(saveResult.ok?"백업 파일을 만들었습니다.":"브라우저 저장은 실패했지만 현재 메모리 데이터로 백업 파일을 만들었습니다.");
+    return true;
+  }catch(e){console.error(e);alert("백업 파일을 만드는 중 오류가 발생했습니다.");return false}
+}
+function validateBackup(raw){
+  if(!raw||typeof raw!=="object"||Array.isArray(raw))throw new Error("백업 최상위 구조가 올바르지 않습니다.");
+  const data=raw.data&&typeof raw.data==="object"?raw.data:raw;
+  const hasAccounts=Array.isArray(data.accounts),isCurrent=hasAccounts&&["instruments","transactions","books","movies","body","exercise"].some(k=>Array.isArray(data[k])),isV22=hasAccounts&&(Array.isArray(data.assets)||Array.isArray(data.trades)||Array.isArray(data.cash));
+  if(!isCurrent&&!isV22)throw new Error("HANI OS 데이터 구조를 확인할 수 없습니다.");
+  if(data.accounts.some(a=>!a||typeof a!=="object"))throw new Error("계좌 데이터가 손상되었습니다.");
+  return {data,kind:isCurrent?"current":"v22"};
+}
+function backupSummary(d){return `계좌 ${d.accounts?.length||0}개 · 종목 ${(d.instruments||d.assets||[]).length}개 · 거래 ${(d.transactions||d.trades||[]).length}건 · 책 ${(d.books||[]).length}권 · 영화 ${(d.movies||[]).length}편`}
+$("exportBtn").onclick=()=>exportData();$("quickBackup").onclick=()=>exportData();$("importBtn").onclick=()=>$("importFile").click();
+$("importFile").onchange=async e=>{
+  const file=e.target.files?.[0];if(!file)return;
+  try{
+    if(file.size>30*1024*1024)throw new Error("백업 파일이 30MB를 초과합니다.");
+    const parsed=JSON.parse(await file.text()),checked=validateBackup(parsed),candidate=checked.kind==="current"?normalizeState(checked.data):migrateV22(checked.data);
+    if(!confirm(`다음 백업을 불러올까요?\n${backupSummary(checked.data)}\n\n현재 데이터는 자동 백업 파일로 먼저 내려받습니다.`))return;
+    exportData({suffix:"before_import",silent:true});
+    const previous=state;state=candidate;state.meta={...freshState().meta,...(state.meta||{}),lastImportAt:new Date().toISOString()};
+    const result=save();
+    if(!result.ok){state=previous;renderAll();throw new Error("복원 데이터를 브라우저에 저장하지 못했습니다. 기존 데이터는 유지했습니다.")}
+    lastLoadError="";renderAll();toast("백업 검증과 복원을 완료했습니다.");
+  }catch(err){console.error(err);alert("백업을 복원하지 못했습니다.\n"+(err?.message||"올바른 HANI OS 백업 파일인지 확인해 주세요."))}
+  finally{e.target.value=""}
+};
 function migrateV22(d){
   const base=freshState();if(!Array.isArray(d.accounts))throw new Error("Invalid v2.2 backup");base.accounts=d.accounts.map((a,idx)=>({id:a.id||uid(),name:a.id==="pension"?"연금":a.id==="brokerage"?"위탁":a.id==="us"?"토스":(a.type||`계좌 ${idx+1}`),type:a.type||"투자계좌",broker:a.broker||"",number:a.number||"",openingCash:0}));
   const byOldAsset={};(d.assets||[]).forEach(a=>{let i=base.instruments.find(x=>x.name===a.name);if(!i){i={id:uid(),name:a.name,className:a.cls||"기타",ticker:"",price:n(a.price)};base.instruments.push(i)}byOldAsset[a.id]=i.id});
@@ -651,7 +986,7 @@ function migrateV22(d){
   const temp=state;state=base;const calc=calculate();base.accounts.forEach(a=>{const old=d.accounts.find(x=>x.id===a.id);if(old)a.openingCash=n(old.cash)-n(calc.accounts[a.id]?.cash)});state=temp;
   base.ui.series=["total",...base.accounts.map(a=>a.id)];base.snapshots=d.shots||[];base.body=d.body||[];base.cardio=d.cardio||[];base.strength=d.strength||[];return normalizeState(base)
 }
-$("resetBtn").onclick=()=>{if(!confirm("모든 기록을 삭제하고 기본 계좌만 남길까요? 이 작업은 되돌릴 수 없습니다."))return;state=freshState();save();renderAll();toast("기본 계좌만 남기고 초기화했습니다.")};
+$("resetBtn").onclick=()=>{if(!confirm("모든 기록을 삭제하고 기본 계좌만 남길까요?\n초기화 직전 자동 백업 파일을 먼저 만듭니다."))return;exportData({suffix:"before_reset",silent:true});const previous=state;state=freshState();const result=save();if(!result.ok){state=previous;renderAll();return alert("초기화 상태를 저장하지 못해 기존 데이터를 유지했습니다.")}renderAll();toast("백업 후 기본 계좌 상태로 초기화했습니다.")};
 
 ["txDate","bodyDate","exerciseDate","taskDue"].forEach(id=>{if($(id))$(id).value=today()});
 updateTxForm();renderAll();showView(location.hash.slice(1)||"home");
