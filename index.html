@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#202a42">
-<title>성민 갓생살기 · HANI OS Life Edition v2.9.6</title>
+<title>성민 갓생살기 · HANI OS Life Edition v2.9.7</title>
 <style>
 @import url("https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/variable/woff2/SUIT-Variable.css");
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css");
@@ -1957,6 +1957,171 @@ body{font-size:15.3px!important}
   .quick-jump-item{grid-template-columns:105px minmax(0,1fr)}
 }
 
+
+
+/* =========================================================
+   v2.9.7 · Final Visual Correction
+   1) AI TEAM uses the whole card area for portraits.
+   2) Sidebar category headers return to neutral styling.
+   3) Page hero uses each group's single representative tint.
+   4) AI quote becomes a wide, high-priority readable element.
+   ========================================================= */
+
+/* 1. Sidebar AI TEAM: larger image AREA, not just stronger zoom */
+.sidebar-team-mini{
+  min-height:0!important;
+  height:auto!important;
+  padding:15px 14px 15px!important;
+  margin:10px 0 24px!important;
+}
+.sidebar-team-head{margin-bottom:14px!important}
+.sidebar-team-head b{font-size:12.5px!important;letter-spacing:.08em!important}
+.sidebar-team-head span{font-size:10.4px!important;line-height:1.4!important;margin-top:4px!important}
+.sidebar-team-head em{font-size:9.2px!important}
+.sidebar-team-faces{gap:10px!important}
+.sidebar-team-face{
+  height:118px!important;
+  border-radius:15px!important;
+}
+.sidebar-team-photo{
+  height:93px!important;
+  background-size:140% auto!important;
+  background-position:center 14%!important;
+  border-radius:14px 14px 8px 8px!important;
+}
+.sidebar-team-face small{
+  height:25px!important;
+  line-height:25px!important;
+  font-size:10.4px!important;
+  font-weight:900!important;
+}
+
+/* Home AI TEAM: make the visual itself the main content */
+.home-team-panel .ui26-team-strip{gap:10px!important}
+.home-team-panel .ui26-member{
+  min-height:112px!important;
+  padding:9px!important;
+  gap:10px!important;
+  grid-template-columns:86px minmax(0,1fr)!important;
+}
+.home-team-panel .member-visual,
+.home-team-panel .member-visual.has-photo{
+  width:86px!important;
+  height:92px!important;
+  flex-basis:86px!important;
+  border-radius:15px!important;
+  background-size:138% auto!important;
+  background-position:center 14%!important;
+}
+.home-team-panel .member-role{font-size:10.5px!important;margin-bottom:3px!important}
+.home-team-panel .member-copy b{font-size:15px!important}
+.home-team-panel .member-copy p{display:block!important;font-size:11px!important;line-height:1.45!important;height:auto!important;margin:3px 0 0!important;display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;overflow:hidden!important}
+
+/* 2. Sidebar category headers: neutral again, color stays as a small accent */
+.group .group-head{
+  background:transparent!important;
+  color:#626b80!important;
+  border-left:0!important;
+  box-shadow:none!important;
+}
+.group .group-head:hover{
+  background:color-mix(in srgb,var(--accent) 6%,#fff)!important;
+  color:var(--accent)!important;
+}
+.group .group-head .name:before{
+  background:var(--accent)!important;
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 16%,transparent)!important;
+}
+.group .group-head .arrow{color:#9da4b3!important;opacity:.85!important}
+.group.is-current .group-head{
+  background:color-mix(in srgb,var(--accent) 7%,#fff)!important;
+  color:var(--accent)!important;
+  box-shadow:none!important;
+}
+
+/* 3. Top page box: group color belongs here, as one clean tint */
+.ai-banner{
+  background:color-mix(in srgb,var(--banner,#7569e8) 11%,var(--panel))!important;
+  border-color:color-mix(in srgb,var(--banner,#7569e8) 34%,var(--line))!important;
+  border-left:5px solid var(--banner,#7569e8)!important;
+  min-height:154px!important;
+  grid-template-columns:minmax(0,1fr) minmax(650px,760px)!important;
+  gap:26px!important;
+  padding:18px 24px!important;
+}
+.ai-banner:before{
+  background:color-mix(in srgb,var(--banner,#7569e8) 12%,transparent)!important;
+  opacity:.78!important;
+}
+.ai-banner-copy{max-width:650px!important}
+.ai-banner b#aiName{font-size:28px!important}
+.ai-banner p{font-size:14px!important;line-height:1.65!important;max-width:620px!important}
+.ai-role{font-size:11.5px!important}
+
+/* 4. Quote: much wider + approximately double visual emphasis */
+.ai-character-zone{
+  width:740px!important;
+  max-width:740px!important;
+  min-width:650px!important;
+  grid-template-columns:minmax(0,570px) 148px!important;
+  grid-template-rows:142px!important;
+  column-gap:18px!important;
+}
+.ai-character-zone .ai-quote{
+  width:100%!important;
+  max-width:570px!important;
+  justify-self:stretch!important;
+  padding:18px 22px!important;
+  border-radius:21px!important;
+  box-shadow:0 13px 30px rgba(51,58,96,.10)!important;
+}
+.ai-character-zone .ai-quote span{
+  font-size:13px!important;
+  margin-bottom:8px!important;
+  letter-spacing:.02em!important;
+}
+.ai-character-zone .ai-quote b{
+  font-size:20px!important;
+  line-height:1.52!important;
+  font-weight:850!important;
+  letter-spacing:-.02em!important;
+}
+.ai-character-zone .ai-avatar{
+  width:140px!important;
+  height:140px!important;
+  border-radius:28px!important;
+  background-position:center 13%!important;
+}
+.ai-character-zone .ai-quote:after{right:-10px!important;width:18px!important;height:18px!important}
+
+@media(max-width:1350px){
+  .ai-banner{grid-template-columns:minmax(0,1fr) 590px!important}
+  .ai-character-zone{width:590px!important;max-width:590px!important;min-width:590px!important;grid-template-columns:minmax(0,444px) 130px!important;grid-template-rows:126px!important;column-gap:16px!important}
+  .ai-character-zone .ai-quote{max-width:444px!important;padding:16px 18px!important}
+  .ai-character-zone .ai-quote b{font-size:17px!important}
+  .ai-character-zone .ai-avatar{width:124px!important;height:124px!important;border-radius:25px!important}
+}
+@media(max-width:980px){
+  .ai-banner{grid-template-columns:1fr!important;gap:14px!important}
+  .ai-character-zone{width:100%!important;max-width:none!important;min-width:0!important;grid-template-columns:minmax(0,1fr) 118px!important;grid-template-rows:118px!important;column-gap:14px!important}
+  .ai-character-zone .ai-quote{max-width:none!important;width:100%!important;padding:15px 17px!important}
+  .ai-character-zone .ai-quote span{font-size:11.5px!important}
+  .ai-character-zone .ai-quote b{font-size:16px!important;line-height:1.5!important}
+  .ai-character-zone .ai-avatar{width:112px!important;height:112px!important;border-radius:24px!important}
+}
+@media(max-width:650px){
+  .sidebar-team-mini{padding:14px 12px!important;margin-bottom:20px!important}
+  .sidebar-team-face{height:112px!important}
+  .sidebar-team-photo{height:87px!important;background-size:138% auto!important}
+  .sidebar-team-face small{font-size:10px!important}
+  .ai-banner{padding:15px!important;min-height:0!important}
+  .ai-character-zone{grid-template-columns:minmax(0,1fr) 104px!important;grid-template-rows:104px!important;column-gap:11px!important}
+  .ai-character-zone .ai-quote{padding:13px 14px!important}
+  .ai-character-zone .ai-quote span{font-size:10.5px!important;margin-bottom:5px!important}
+  .ai-character-zone .ai-quote b{font-size:15px!important;line-height:1.48!important}
+  .ai-character-zone .ai-avatar{width:100px!important;height:100px!important;border-radius:22px!important}
+}
+
 </style>
 </head>
 <body>
@@ -1969,7 +2134,7 @@ body{font-size:15.3px!important}
       <div class="login-brand">
         <span class="login-brand-kicker">MY LIFE OS</span>
         <h1>성민 갓생살기</h1>
-        <p>HANI OS · Life Edition v2.9.6</p>
+        <p>HANI OS · Life Edition v2.9.7</p>
       </div>
 
       <div class="login-character-stage">
@@ -2046,7 +2211,7 @@ body{font-size:15.3px!important}
       <div class="brand v28-brand sidebar-brand-hero">
         <div class="brand-copy">
           <h1>성민 갓생살기</h1>
-          <small>HANI OS · Life Edition v2.9.6</small>
+          <small>HANI OS · Life Edition v2.9.7</small>
         </div>
       </div>
       <button class="side-toggle" id="sideToggle" title="사이드바 접기">‹</button>
@@ -2110,7 +2275,7 @@ body{font-size:15.3px!important}
       <button class="nav-btn" data-view="aiTeam"><span class="ico"><svg viewBox="0 0 24 24"><rect x="5" y="7" width="14" height="12" rx="3"/><path d="M9 12h.01M15 12h.01M9 16h6M12 3v4"/></svg></span><span class="txt">AI 팀</span></button>
       <button class="nav-btn" data-view="settings"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.4 1a7 7 0 0 0-1.7-1L14.5 3h-5L9.2 6a7 7 0 0 0-1.7 1L5.1 6 3 9.5 5.1 11a7 7 0 0 0 0 2L3 14.5 5.1 18l2.4-1a7 7 0 0 0 1.7 1l.3 3h5l.3-3a7 7 0 0 0 1.7-1l2.4 1 2.1-3.5L18.9 13a7 7 0 0 0 .1-1Z"/></svg></span><span class="txt">설정 / 데이터</span></button>
     </div>
-    <div class="foot">HANI OS · v2.9.6<br>Quick Jump + Random Quotes · Life, Going On.</div>
+    <div class="foot">HANI OS · v2.9.7<br>Quick Jump + Random Quotes · Life, Going On.</div>
   </aside>
 
   <main class="main">
