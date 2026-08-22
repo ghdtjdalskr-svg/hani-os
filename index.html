@@ -4,7 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#202a42">
-<title>성민 갓생살기 · HANI OS Life Edition v2.9.7</title>
+<link rel="apple-touch-icon" href="./godsaeng_icon_webtoon.png">
+<link rel="icon" type="image/png" href="./godsaeng_icon_webtoon.png">
+<title>성민 갓생살기 · HANI OS Life Edition v2.9.8</title>
 <style>
 @import url("https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/variable/woff2/SUIT-Variable.css");
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css");
@@ -2134,7 +2136,7 @@ body{font-size:15.3px!important}
       <div class="login-brand">
         <span class="login-brand-kicker">MY LIFE OS</span>
         <h1>성민 갓생살기</h1>
-        <p>HANI OS · Life Edition v2.9.7</p>
+        <p>HANI OS · Life Edition v2.9.8</p>
       </div>
 
       <div class="login-character-stage">
@@ -2211,7 +2213,7 @@ body{font-size:15.3px!important}
       <div class="brand v28-brand sidebar-brand-hero">
         <div class="brand-copy">
           <h1>성민 갓생살기</h1>
-          <small>HANI OS · Life Edition v2.9.7</small>
+          <small>HANI OS · Life Edition v2.9.8</small>
         </div>
       </div>
       <button class="side-toggle" id="sideToggle" title="사이드바 접기">‹</button>
@@ -2275,7 +2277,7 @@ body{font-size:15.3px!important}
       <button class="nav-btn" data-view="aiTeam"><span class="ico"><svg viewBox="0 0 24 24"><rect x="5" y="7" width="14" height="12" rx="3"/><path d="M9 12h.01M15 12h.01M9 16h6M12 3v4"/></svg></span><span class="txt">AI 팀</span></button>
       <button class="nav-btn" data-view="settings"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.4 1a7 7 0 0 0-1.7-1L14.5 3h-5L9.2 6a7 7 0 0 0-1.7 1L5.1 6 3 9.5 5.1 11a7 7 0 0 0 0 2L3 14.5 5.1 18l2.4-1a7 7 0 0 0 1.7 1l.3 3h5l.3-3a7 7 0 0 0 1.7-1l2.4 1 2.1-3.5L18.9 13a7 7 0 0 0 .1-1Z"/></svg></span><span class="txt">설정 / 데이터</span></button>
     </div>
-    <div class="foot">HANI OS · v2.9.7<br>Quick Jump + Random Quotes · Life, Going On.</div>
+    <div class="foot">HANI OS · v2.9.8<br>Quick Jump + Random Quotes · Life, Going On.</div>
   </aside>
 
   <main class="main">
@@ -3673,6 +3675,8 @@ async function loginGateSubmit(){
     $("loginGatePassword").value="";
     markLoginGateSession();
     unlockLoginGate();
+    // v2.9.8: a fresh credential login always starts from Dashboard; refresh/session restore keeps the current hash.
+    showView("home");
     cloudSetRuntime("로그인 완료","HANI OS 로그인 완료. Local을 먼저 열고 Cloud 동기화를 확인합니다.","ok",{sync:"CHECK"});
     try{
       await cloudFetchMeta({silent:true});
