@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#202a42">
-<title>성민 갓생살기 · HANI OS Life Edition v2.8.3</title>
+<title>성민 갓생살기 · HANI OS Life Edition v2.8.4</title>
 <style>
 @import url("https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/variable/woff2/SUIT-Variable.css");
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css");
@@ -1120,15 +1120,277 @@ input:focus,select:focus,textarea:focus{border-color:color-mix(in srgb,var(--sea
   .nav-home{margin-top:26px!important}
 }
 
+
+/* =========================================================
+   v2.8.4 · Full-screen Login Gate
+   ========================================================= */
+.app.login-locked{visibility:hidden!important}
+.login-gate{
+  position:fixed;inset:0;z-index:100000;
+  display:grid;place-items:center;
+  padding:26px;
+  overflow:auto;
+  opacity:1;visibility:visible;
+  transition:opacity .22s ease,visibility .22s ease;
+  background:
+    radial-gradient(circle at 14% 10%,color-mix(in srgb,var(--season-accent2) 18%,transparent),transparent 34%),
+    radial-gradient(circle at 92% 88%,color-mix(in srgb,var(--season-accent) 17%,transparent),transparent 35%),
+    linear-gradient(135deg,var(--season-tint),#fff 48%,var(--season-soft));
+}
+.login-gate.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
+.login-gate-bg{position:fixed;pointer-events:none;border-radius:50%;filter:blur(2px);opacity:.42}
+.login-orb-a{width:420px;height:420px;left:-130px;bottom:-170px;background:color-mix(in srgb,var(--season-accent) 13%,transparent)}
+.login-orb-b{width:330px;height:330px;right:-80px;top:-100px;background:color-mix(in srgb,var(--season-accent2) 13%,transparent)}
+
+.login-shell{
+  position:relative;z-index:2;
+  width:min(960px,100%);
+  min-height:590px;
+  display:grid;
+  grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);
+  overflow:hidden;
+  border-radius:30px;
+  border:1px solid rgba(255,255,255,.78);
+  background:rgba(255,255,255,.70);
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+  box-shadow:0 30px 90px rgba(55,58,91,.16);
+}
+.login-character-panel{
+  position:relative;overflow:hidden;
+  min-height:590px;
+  padding:34px 36px 30px;
+  display:flex;flex-direction:column;
+  background:
+    radial-gradient(circle at 75% 36%,color-mix(in srgb,var(--season-accent) 12%,transparent) 0 120px,transparent 121px),
+    linear-gradient(155deg,color-mix(in srgb,var(--season-soft) 82%,#fff),rgba(255,255,255,.82));
+}
+.login-brand{position:relative;z-index:3}
+.login-brand-kicker{font-size:9px;letter-spacing:.15em;font-weight:950;color:var(--season-accent)}
+.login-brand h1{
+  margin:7px 0 4px;font-size:31px;line-height:1.05;
+  letter-spacing:-.055em;font-weight:760;color:var(--season-accent)
+}
+.login-brand p{margin:0;color:#9299aa;font-size:10.5px;font-weight:700}
+.login-character-stage{
+  position:relative;
+  flex:1;min-height:335px;
+  display:grid;place-items:center;
+  margin-top:12px;
+}
+.login-character-glow{
+  position:absolute;width:270px;height:270px;border-radius:50%;
+  background:radial-gradient(circle,color-mix(in srgb,var(--season-accent) 16%,#fff),transparent 68%);
+}
+.login-character-photo{
+  position:relative;z-index:2;
+  width:245px;height:300px;
+  border-radius:42px 42px 30px 30px;
+  background-position:center 18%;background-size:cover;background-repeat:no-repeat;
+  border:5px solid rgba(255,255,255,.88);
+  box-shadow:0 26px 55px color-mix(in srgb,var(--season-accent) 18%,transparent);
+}
+.login-character-caption{
+  position:absolute;z-index:4;left:50%;bottom:7px;transform:translateX(-50%);
+  min-width:170px;padding:9px 14px;border-radius:15px;
+  background:rgba(255,255,255,.94);border:1px solid var(--season-line);
+  box-shadow:0 10px 25px rgba(50,54,82,.10);text-align:center
+}
+.login-character-caption span{display:block;font-size:8px;font-weight:900;color:#969dae;letter-spacing:.04em}
+.login-character-caption b{display:block;margin-top:3px;font-size:14px;color:#4c5364}
+.login-character-quote{
+  position:relative;z-index:4;
+  padding:13px 15px;border-radius:17px;
+  border:1px solid var(--season-line);background:rgba(255,255,255,.84)
+}
+.login-character-quote span{display:block;font-size:8.5px;font-weight:950;color:var(--season-accent);margin-bottom:4px}
+.login-character-quote b{display:block;font-size:12px;line-height:1.55;color:#4b5263;font-weight:780}
+
+.login-card{
+  position:relative;
+  padding:46px 42px 34px;
+  display:flex;flex-direction:column;justify-content:center;
+  background:rgba(255,255,255,.90);
+}
+.login-card-kicker{font-size:9px;letter-spacing:.15em;font-weight:950;color:var(--season-accent)}
+.login-card-head h2{margin:8px 0 5px;font-size:27px;letter-spacing:-.04em}
+.login-card-head p{margin:0;color:#9299aa;font-size:11px;line-height:1.5}
+.login-theme-block{margin-top:24px}
+.login-theme-block>label,.login-field label{display:block;font-size:9.5px;font-weight:900;color:#7b8396;margin-bottom:7px}
+.login-theme-options{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.login-theme-options button{
+  appearance:none;border:1px solid #e6e8ef;background:#fff;border-radius:13px;
+  min-height:58px;padding:7px 5px;cursor:pointer;transition:.15s;
+  color:#666f81
+}
+.login-theme-options button span{display:block;font-size:17px}
+.login-theme-options button b{display:block;margin-top:2px;font-size:9px}
+.login-theme-options button:hover{transform:translateY(-1px)}
+.login-theme-options button.active{
+  border-color:color-mix(in srgb,var(--season-accent) 45%,#e6e8ef);
+  background:var(--season-tint);
+  color:var(--season-accent);
+  box-shadow:0 5px 14px color-mix(in srgb,var(--season-accent) 10%,transparent)
+}
+.login-normal-panel,.login-recovery-panel{margin-top:22px}
+.login-recovery-panel{display:none}
+.login-field{margin-bottom:11px}
+.login-field input{
+  width:100%;min-height:48px;
+  border:1px solid #e2e5ee;border-radius:14px;
+  background:#f9fafd;color:#303748;
+  padding:0 14px;font:inherit;font-size:14px;outline:none;
+  transition:.15s
+}
+.login-field input:focus{
+  background:#fff;border-color:color-mix(in srgb,var(--season-accent) 52%,#ddd);
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--season-accent) 9%,transparent)
+}
+.login-primary-btn{
+  width:100%;min-height:50px;margin-top:5px;
+  border:0;border-radius:15px;
+  background:linear-gradient(135deg,var(--season-accent),var(--season-accent2));
+  color:#fff;font:inherit;font-size:13px;font-weight:900;
+  cursor:pointer;box-shadow:0 10px 24px color-mix(in srgb,var(--season-accent) 25%,transparent)
+}
+.login-primary-btn:disabled{opacity:.65;cursor:wait}
+.login-text-btn{
+  display:block;margin:13px auto 0;padding:4px 8px;border:0;background:none;
+  color:var(--season-accent);font:inherit;font-size:10px;font-weight:850;cursor:pointer
+}
+.login-recovery-note{
+  padding:11px 12px;margin-bottom:12px;border-radius:13px;
+  background:var(--season-tint);border:1px solid var(--season-line)
+}
+.login-recovery-note b{display:block;font-size:12px;color:var(--season-accent)}
+.login-recovery-note span{display:block;margin-top:4px;font-size:9.5px;color:#858d9f;line-height:1.45}
+.login-status{
+  min-height:32px;margin-top:17px;padding:9px 10px;border-radius:11px;
+  background:#f7f8fb;color:#8d95a7;font-size:9.5px;line-height:1.45;text-align:center
+}
+.login-status[data-tone="error"]{background:#fff1f4;color:#c94d69}
+.login-status[data-tone="ok"]{background:#edf9f5;color:#16866f}
+.login-status[data-tone="loading"],.login-status[data-tone="warn"]{background:#fff8ed;color:#ad741f}
+.login-card-foot{margin-top:16px;text-align:center;font-size:7.5px;letter-spacing:.11em;color:#b0b5c1;font-weight:850}
+
+@media(max-width:820px){
+  .login-gate{padding:14px}
+  .login-shell{grid-template-columns:1fr;min-height:0;max-width:560px;border-radius:24px}
+  .login-character-panel{min-height:250px;padding:22px 22px 18px}
+  .login-brand h1{font-size:25px}
+  .login-character-stage{min-height:135px;margin-top:5px}
+  .login-character-photo{width:116px;height:138px;border-radius:25px}
+  .login-character-glow{width:170px;height:170px}
+  .login-character-caption{left:calc(50% + 92px);bottom:36px;min-width:110px;padding:7px 9px}
+  .login-character-quote{margin-top:5px}
+  .login-card{padding:27px 23px 24px}
+  .login-theme-block{margin-top:18px}
+}
+@media(max-width:460px){
+  .login-gate{padding:8px}
+  .login-shell{border-radius:20px}
+  .login-character-panel{min-height:226px;padding:18px 17px 14px}
+  .login-brand h1{font-size:22px}
+  .login-brand p{font-size:8.5px}
+  .login-character-stage{min-height:118px}
+  .login-character-photo{width:96px;height:116px;border-radius:21px;border-width:3px}
+  .login-character-caption{left:calc(50% + 75px);bottom:27px;min-width:96px}
+  .login-character-quote{padding:9px 10px}
+  .login-character-quote b{font-size:10.5px}
+  .login-card{padding:23px 17px 20px}
+  .login-card-head h2{font-size:23px}
+  .login-theme-options{gap:5px}
+  .login-theme-options button{min-height:52px}
+}
+
 </style>
 </head>
 <body>
-<div class="app" id="app">
+<div class="login-gate" id="loginGate" aria-live="polite">
+  <div class="login-gate-bg login-orb login-orb-a"></div>
+  <div class="login-gate-bg login-orb login-orb-b"></div>
+
+  <div class="login-shell">
+    <section class="login-character-panel">
+      <div class="login-brand">
+        <span class="login-brand-kicker">MY LIFE OS</span>
+        <h1>성민 갓생살기</h1>
+        <p>HANI OS · Life Edition v2.8.4</p>
+      </div>
+
+      <div class="login-character-stage">
+        <div class="login-character-glow"></div>
+        <div class="login-character-photo" id="loginCharacterPhoto"></div>
+        <div class="login-character-caption">
+          <span id="loginCharacterRole">HANI AI TEAM</span>
+          <b id="loginCharacterName">하니</b>
+        </div>
+      </div>
+
+      <div class="login-character-quote">
+        <span>오늘의 파트너 한마디</span>
+        <b id="loginCharacterQuote">“오늘도 기록 하나면 충분해. 갓생은 누적이야.”</b>
+      </div>
+    </section>
+
+    <section class="login-card">
+      <div class="login-card-head">
+        <span class="login-card-kicker">WELCOME BACK</span>
+        <h2 id="loginGateTitle">HANI OS 로그인</h2>
+        <p id="loginGateSubtitle">오늘의 기록을 이어가려면 로그인해 주세요.</p>
+      </div>
+
+      <div class="login-theme-block">
+        <label>오늘의 테마</label>
+        <div class="login-theme-options">
+          <button type="button" data-login-theme="spring"><span>🌸</span><b>봄</b></button>
+          <button type="button" data-login-theme="summer"><span>🌊</span><b>여름</b></button>
+          <button type="button" data-login-theme="autumn"><span>🍂</span><b>가을</b></button>
+          <button type="button" data-login-theme="winter"><span>❄️</span><b>겨울</b></button>
+        </div>
+      </div>
+
+      <div class="login-normal-panel" id="loginNormalPanel">
+        <div class="login-field">
+          <label>이메일</label>
+          <input id="loginGateEmail" type="email" placeholder="HANI OS 계정 이메일" autocomplete="username">
+        </div>
+        <div class="login-field">
+          <label>비밀번호</label>
+          <input id="loginGatePassword" type="password" placeholder="비밀번호 입력" autocomplete="current-password">
+        </div>
+        <button class="login-primary-btn" id="loginGateSubmit" type="button">성민 갓생살기 시작하기</button>
+        <button class="login-text-btn" id="loginGateForgot" type="button">비밀번호를 잊었어요</button>
+      </div>
+
+      <div class="login-recovery-panel" id="loginRecoveryPanel">
+        <div class="login-recovery-note">
+          <b>🔐 새 비밀번호 설정</b>
+          <span>복구 링크 인증이 확인되면 여기서 새 비밀번호를 지정할 수 있어요.</span>
+        </div>
+        <div class="login-field">
+          <label>새 비밀번호</label>
+          <input id="loginGateNewPassword" type="password" placeholder="8자 이상 입력" autocomplete="new-password">
+        </div>
+        <div class="login-field">
+          <label>새 비밀번호 확인</label>
+          <input id="loginGateNewPasswordConfirm" type="password" placeholder="한 번 더 입력" autocomplete="new-password">
+        </div>
+        <button class="login-primary-btn" id="loginGateRecoverySave" type="button">새 비밀번호 저장</button>
+      </div>
+
+      <div class="login-status" id="loginGateStatus">Cloud 연결을 준비하고 있습니다.</div>
+      <div class="login-card-foot">LOCAL FIRST · SUPABASE CLOUD · PRIVATE LIFE OS</div>
+    </section>
+  </div>
+</div>
+
+<div class="app login-locked" id="app" aria-hidden="true">
   <div class="overlay" id="overlay"></div>
   <aside class="side" id="sidebar">
     <div class="brand-row v28-brand-row">
       <div class="brand v28-brand">
-        <div class="brand-copy"><h1>성민 갓생살기</h1><small>HANI OS · Life Edition v2.8.3</small></div>
+        <div class="brand-copy"><h1>성민 갓생살기</h1><small>HANI OS · Life Edition v2.8.4</small></div>
       </div>
       <button class="side-toggle" id="sideToggle" title="사이드바 접기">‹</button>
     </div>
@@ -1188,7 +1450,7 @@ input:focus,select:focus,textarea:focus{border-color:color-mix(in srgb,var(--sea
       <button class="nav-btn" data-view="aiTeam"><span class="ico"><svg viewBox="0 0 24 24"><rect x="5" y="7" width="14" height="12" rx="3"/><path d="M9 12h.01M15 12h.01M9 16h6M12 3v4"/></svg></span><span class="txt">AI 팀</span></button>
       <button class="nav-btn" data-view="settings"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.4 1a7 7 0 0 0-1.7-1L14.5 3h-5L9.2 6a7 7 0 0 0-1.7 1L5.1 6 3 9.5 5.1 11a7 7 0 0 0 0 2L3 14.5 5.1 18l2.4-1a7 7 0 0 0 1.7 1l.3 3h5l.3-3a7 7 0 0 0 1.7-1l2.4 1 2.1-3.5L18.9 13a7 7 0 0 0 .1-1Z"/></svg></span><span class="txt">설정 / 데이터</span></button>
     </div>
-    <div class="foot">HANI OS · v2.8.3<br>Sidebar Final · Life, Going On.</div>
+    <div class="foot">HANI OS · v2.8.4<br>Login Gate · Life, Going On.</div>
   </aside>
 
   <main class="main">
@@ -1737,10 +1999,10 @@ input:focus,select:focus,textarea:focus{border-color:color-mix(in srgb,var(--sea
     </div></section>
     <section id="work" class="view generic" data-note-key="work"><div class="card"><div class="sh"><h3>업무</h3><span class="pill">WORK</span></div><div class="note">IT / CDN / Cloud / 보안 솔루션 업무의 진행 상황과 주요 고객 대응을 기록하는 공간입니다.</div><div class="field" style="margin-top:14px"><label>업무 메모</label><textarea class="page-note" placeholder="고객 이슈, 제안 일정, 후속 조치를 기록하세요."></textarea></div><div class="form-actions"><button class="btn primary save-note">메모 저장</button></div></div></section>
     <section id="drive" class="view"><div class="card"><div class="sh"><h3>Google Drive</h3><span class="pill">DRIVE</span></div><div class="placeholder">Google Drive 파일 연동은 후속 버전에서 확장됩니다.</div><div class="quick-links" style="margin-top:14px"><a class="external" href="https://drive.google.com" target="_blank" rel="noopener">📂 Google Drive 열기</a></div></div></section>
-    <section id="dev" class="view"><div class="grid"><div class="card full"><div class="sh"><h3>성민 갓생살기 · HANI OS Life Edition v2.8.0</h3><span class="pill">RELEASE</span></div><div class="feature-grid"><div class="feature"><div class="emoji">📈</div><b>투자 엔진 개편</b><p class="sub">계좌·종목·보유·거래 분리와 자산 흐름 관리.</p></div><div class="feature"><div class="emoji">📅</div><b>Calendar Embed</b><p class="sub">사용자 URL 입력과 즉시 반영, 새창 열기.</p></div><div class="feature"><div class="emoji">🤖</div><b>장면형 AI 배너</b><p class="sub">여행·투자·건강·성장 등 메뉴별 HANI 일러스트 장면.</p></div></div></div><div class="card full"><div class="sh"><h3>로드맵</h3></div><div class="list"><div class="item"><b>v2.8.3 Sidebar Final</b><div class="sub">브랜드 심볼을 덜어내고 AI TEAM 배너를 확대, 캐릭터 가시성을 강화. 메뉴별 컬러 아이콘과 강조된 대시보드 진입점을 적용.</div></div><div class="list"><div class="item"><b>v2.8.2 UI Polish</b><div class="sub">배너·사이드바 브랜딩을 정리하고 AI 말풍선, 히나 공식 디자인, 오늘 기준 독서·영화 집계, 월간 할 일과 월간 업데이트 체크를 추가.</div></div><div class="list"><div class="item"><b>v2.8.1 Visual · Period Final</b><div class="sub">운동·다이어트에 올해/이번 달/전체 집계를 추가하고, 대시보드에는 올해 기준 운동량과 체중 변화를 표시. 모든 원본 기록은 그대로 보존.</div></div><div class="item"><b>v2.8.0 Visual & Personality Update</b><div class="sub">성민 갓생살기 브랜딩, 계절 테마, 사이드바 정보 계층·접기·현재 그룹 하이라이트, 탭별 AI 한마디, 소비 리뷰 월별 아카이브 UX를 통합 개편.</div></div><div class="item"><b>v2.7.0 Money 2.0</b><div class="sub">월 1회 소비 결산형 가계부와 선택형 소비 리뷰를 실사용 기능으로 추가. 월별 총지출·고정비·변동비·최대 소비·전월 비교 및 후속 소비 만족도 리뷰를 Cloud 동기화 데이터에 통합.</div></div><div class="item"><b>v2.6.11 Recovery Callback Fix</b><div class="sub">Auth callback hash/query를 라우팅보다 먼저 보존·처리하고, recovery 세션 확보 후 HANI Cloud 비밀번호 변경 화면으로 자동 이동.</div></div><div class="list"><div class="item"><b>v2.6.10 Password Recovery + Exercise Avg</b><div class="sub">Supabase 비밀번호 복구 링크를 HANI OS에서 직접 처리하고 새 비밀번호를 설정할 수 있도록 추가. 운동 요약에 실제 걸음 기록일 기준 하루 평균 걸음을 추가.</div></div><div class="item"><b>v2.6.9 Mobile + Login UX</b><div class="sub">모바일 화면 밀도와 터치 UX를 다듬고, Cloud 연결 정보를 기본 내장하여 이메일/비밀번호 중심의 간편 로그인 화면으로 정리.</div></div><div class="item"><b>v2.6.8 Auto Cloud Sync Phase 2B</b><div class="sub">Local-first 저장 직후 Cloud 반영, 다른 기기의 새 revision 자동 수신, optimistic revision 충돌 감지, 빈 Local 업로드 차단을 추가.</div></div><div class="item"><b>v2.6.7 Cloud Restore Phase 2A</b><div class="sub">새 브라우저/새 기기에서 로그인 후 Cloud state를 안전하게 localStorage로 복원. 기존 로컬 데이터가 있으면 자동 복원을 차단하고 비교만 허용.</div></div><div class="item"><b>v2.6.6 Cloud Bridge Phase 1</b><div class="sub">Supabase Auth와 hani_state를 연결하는 안전한 Cloud Bridge 1단계. 기존 localStorage를 원본으로 유지한 채 로그인, 최초 Cloud 복사, read-back 검증, 로컬/클라우드 비교 기능을 추가.</div></div><div class="item"><b>v2.6.5 Dashboard Density</b><div class="sub">홈 우측의 계좌별 자산 비중과 최근 기록 카드를 컴팩트하게 재배치. 계좌 범례를 한 줄 정보 구조로 압축하고 최근 활동을 한 줄 피드로 정리해 불필요한 공백과 시선 이동을 줄임.</div></div><div class="item"><b>v2.6.3 Visual Hierarchy</b><div class="sub">사용자 피드백 7~9차 반영: 메인 차트 SVG 텍스트 왜곡 제거, KPI 핵심 숫자를 딥 네이비 중심으로 재정렬하고 미니차트를 확대, 사이드바 폭·브랜드·카테고리·메뉴 글자 크기를 키우며 PC에서는 메뉴 그룹을 항상 펼쳐 한눈에 보이도록 개선.</div></div><div class="item"><b>v2.6.2 Design Preview</b><div class="sub">사용자 디자인 피드백 1~6차 반영: 컴팩트 사이드바, 데이터 우선 홈 대시보드, 컬러 KPI/미니차트, 메뉴별 장면형 Hero, 독서·영화 아카이브 우선 구조, 홈 AI Team 섹션을 구성안으로 통합.</div></div><div class="item"><b>v2.6.1</b><div class="sub">홈 대시보드 UI를 화이트·파스텔 카드형으로 재정렬하고, 투자 흐름 차트·계좌 비중 도넛·미니 캘린더·최근 기록 피드를 메인 화면에 통합. 작은 카드용 하니 아이콘을 새로 적용해 AI Team 카드의 선명도를 개선.</div></div><div class="item"><b>v2.5.0 RC2.4</b><div class="sub">실사용 피드백 반영: 종목 보유수량·평균단가·현재가만으로 매입금액·평가금액·손익·수익률 자동계산, 증권사 표시값 선택 덮어쓰기, 투자 대시보드 강조색·첫 달 안내 개선, 독서 예정/완독 입력 UX를 영화와 통일</div></div><div class="item"><b>v2.5.0 RC2.3</b><div class="sub">실사용 초기 입력을 위해 기존 투자 자산·거래·월간 스냅샷·자금흐름 값을 1회 초기화하고, 계좌 기본정보·종목 마스터·관심종목·투자일기와 다른 라이프 기록은 유지</div></div><div class="item"><b>v2.5.0 RC2.2</b><div class="sub">투자 고급 스냅샷 영역의 잘못된 닫힘 태그를 수정해 독서·영화 등 후속 메뉴가 본문 아래로 밀리던 레이아웃 구조 오류 해결</div></div><div class="item"><b>v2.5.0 RC2.1</b><div class="sub">투자 UI를 현황·월간기록·종목관리·투자일기로 재구성, 전체/계좌별/종목별 대시보드와 월간 하이라이트, 종목 마스터 연동 추가</div></div><div class="item"><b>v2.5.0 RC2</b><div class="sub">계좌별 원본값을 유지하면서 동일 종목 통합, 평균단가·현재가 흐름, 관심종목 연구 노트 추가</div></div><div class="item"><b>v2.5.0 RC1</b><div class="sub">투자를 월간 기록 아카이브 중심으로 단순화, 연간 자산·종목 수량 흐름과 투자 일기 연결</div></div><div class="item"><b>v2.4.2</b><div class="sub">0.1점 평점, 독서·영화 화면 재구성, 게시판형 일기와 기존 메모 마이그레이션</div></div><div class="item"><b>v2.4.0</b><div class="sub">BMI·체지방량 자동계산, 운동 기록 단순화, 독서·영화 아카이브 추가</div></div><div class="item"><b>v2.3.4</b><div class="sub">AI Team 메인 캐릭터 일러스트 추가, 최신 패치를 한 파일에 통합</div></div><div class="item"><b>v2.3.2</b><div class="sub">투자 계좌별 금액·그래프 선 색상 통일, 고정 색상 체계 적용</div></div><div class="item"><b>v2.3.1</b><div class="sub">메뉴별 캐릭터 장면 배너, 투자 평가가격·총자산 반영 보강</div></div><div class="item"><b>v2.3</b><div class="sub">개인 라이프 OS 기본 구조, 투자·건강·캘린더 실사용화</div></div><div class="item"><b>v2.4</b><div class="sub">가계부·카드·Google Drive 데이터 확장</div></div><div class="item"><b>v3.0</b><div class="sub">로그인·클라우드 동기화·외부 데이터 연동 검토</div></div></div></div></div></section>
+    <section id="dev" class="view"><div class="grid"><div class="card full"><div class="sh"><h3>성민 갓생살기 · HANI OS Life Edition v2.8.0</h3><span class="pill">RELEASE</span></div><div class="feature-grid"><div class="feature"><div class="emoji">📈</div><b>투자 엔진 개편</b><p class="sub">계좌·종목·보유·거래 분리와 자산 흐름 관리.</p></div><div class="feature"><div class="emoji">📅</div><b>Calendar Embed</b><p class="sub">사용자 URL 입력과 즉시 반영, 새창 열기.</p></div><div class="feature"><div class="emoji">🤖</div><b>장면형 AI 배너</b><p class="sub">여행·투자·건강·성장 등 메뉴별 HANI 일러스트 장면.</p></div></div></div><div class="card full"><div class="sh"><h3>로드맵</h3></div><div class="list"><div class="item"><b>v2.8.4 Login Gate</b><div class="sub">매 진입마다 이메일·비밀번호 인증을 요구하는 전체화면 로그인 게이트, 랜덤 AI 파트너, 계절 테마 선택과 비밀번호 복구 흐름을 추가.</div></div><div class="list"><div class="item"><b>v2.8.3 Sidebar Final</b><div class="sub">브랜드 심볼을 덜어내고 AI TEAM 배너를 확대, 캐릭터 가시성을 강화. 메뉴별 컬러 아이콘과 강조된 대시보드 진입점을 적용.</div></div><div class="list"><div class="item"><b>v2.8.2 UI Polish</b><div class="sub">배너·사이드바 브랜딩을 정리하고 AI 말풍선, 히나 공식 디자인, 오늘 기준 독서·영화 집계, 월간 할 일과 월간 업데이트 체크를 추가.</div></div><div class="list"><div class="item"><b>v2.8.1 Visual · Period Final</b><div class="sub">운동·다이어트에 올해/이번 달/전체 집계를 추가하고, 대시보드에는 올해 기준 운동량과 체중 변화를 표시. 모든 원본 기록은 그대로 보존.</div></div><div class="item"><b>v2.8.0 Visual & Personality Update</b><div class="sub">성민 갓생살기 브랜딩, 계절 테마, 사이드바 정보 계층·접기·현재 그룹 하이라이트, 탭별 AI 한마디, 소비 리뷰 월별 아카이브 UX를 통합 개편.</div></div><div class="item"><b>v2.7.0 Money 2.0</b><div class="sub">월 1회 소비 결산형 가계부와 선택형 소비 리뷰를 실사용 기능으로 추가. 월별 총지출·고정비·변동비·최대 소비·전월 비교 및 후속 소비 만족도 리뷰를 Cloud 동기화 데이터에 통합.</div></div><div class="item"><b>v2.6.11 Recovery Callback Fix</b><div class="sub">Auth callback hash/query를 라우팅보다 먼저 보존·처리하고, recovery 세션 확보 후 HANI Cloud 비밀번호 변경 화면으로 자동 이동.</div></div><div class="list"><div class="item"><b>v2.6.10 Password Recovery + Exercise Avg</b><div class="sub">Supabase 비밀번호 복구 링크를 HANI OS에서 직접 처리하고 새 비밀번호를 설정할 수 있도록 추가. 운동 요약에 실제 걸음 기록일 기준 하루 평균 걸음을 추가.</div></div><div class="item"><b>v2.6.9 Mobile + Login UX</b><div class="sub">모바일 화면 밀도와 터치 UX를 다듬고, Cloud 연결 정보를 기본 내장하여 이메일/비밀번호 중심의 간편 로그인 화면으로 정리.</div></div><div class="item"><b>v2.6.8 Auto Cloud Sync Phase 2B</b><div class="sub">Local-first 저장 직후 Cloud 반영, 다른 기기의 새 revision 자동 수신, optimistic revision 충돌 감지, 빈 Local 업로드 차단을 추가.</div></div><div class="item"><b>v2.6.7 Cloud Restore Phase 2A</b><div class="sub">새 브라우저/새 기기에서 로그인 후 Cloud state를 안전하게 localStorage로 복원. 기존 로컬 데이터가 있으면 자동 복원을 차단하고 비교만 허용.</div></div><div class="item"><b>v2.6.6 Cloud Bridge Phase 1</b><div class="sub">Supabase Auth와 hani_state를 연결하는 안전한 Cloud Bridge 1단계. 기존 localStorage를 원본으로 유지한 채 로그인, 최초 Cloud 복사, read-back 검증, 로컬/클라우드 비교 기능을 추가.</div></div><div class="item"><b>v2.6.5 Dashboard Density</b><div class="sub">홈 우측의 계좌별 자산 비중과 최근 기록 카드를 컴팩트하게 재배치. 계좌 범례를 한 줄 정보 구조로 압축하고 최근 활동을 한 줄 피드로 정리해 불필요한 공백과 시선 이동을 줄임.</div></div><div class="item"><b>v2.6.3 Visual Hierarchy</b><div class="sub">사용자 피드백 7~9차 반영: 메인 차트 SVG 텍스트 왜곡 제거, KPI 핵심 숫자를 딥 네이비 중심으로 재정렬하고 미니차트를 확대, 사이드바 폭·브랜드·카테고리·메뉴 글자 크기를 키우며 PC에서는 메뉴 그룹을 항상 펼쳐 한눈에 보이도록 개선.</div></div><div class="item"><b>v2.6.2 Design Preview</b><div class="sub">사용자 디자인 피드백 1~6차 반영: 컴팩트 사이드바, 데이터 우선 홈 대시보드, 컬러 KPI/미니차트, 메뉴별 장면형 Hero, 독서·영화 아카이브 우선 구조, 홈 AI Team 섹션을 구성안으로 통합.</div></div><div class="item"><b>v2.6.1</b><div class="sub">홈 대시보드 UI를 화이트·파스텔 카드형으로 재정렬하고, 투자 흐름 차트·계좌 비중 도넛·미니 캘린더·최근 기록 피드를 메인 화면에 통합. 작은 카드용 하니 아이콘을 새로 적용해 AI Team 카드의 선명도를 개선.</div></div><div class="item"><b>v2.5.0 RC2.4</b><div class="sub">실사용 피드백 반영: 종목 보유수량·평균단가·현재가만으로 매입금액·평가금액·손익·수익률 자동계산, 증권사 표시값 선택 덮어쓰기, 투자 대시보드 강조색·첫 달 안내 개선, 독서 예정/완독 입력 UX를 영화와 통일</div></div><div class="item"><b>v2.5.0 RC2.3</b><div class="sub">실사용 초기 입력을 위해 기존 투자 자산·거래·월간 스냅샷·자금흐름 값을 1회 초기화하고, 계좌 기본정보·종목 마스터·관심종목·투자일기와 다른 라이프 기록은 유지</div></div><div class="item"><b>v2.5.0 RC2.2</b><div class="sub">투자 고급 스냅샷 영역의 잘못된 닫힘 태그를 수정해 독서·영화 등 후속 메뉴가 본문 아래로 밀리던 레이아웃 구조 오류 해결</div></div><div class="item"><b>v2.5.0 RC2.1</b><div class="sub">투자 UI를 현황·월간기록·종목관리·투자일기로 재구성, 전체/계좌별/종목별 대시보드와 월간 하이라이트, 종목 마스터 연동 추가</div></div><div class="item"><b>v2.5.0 RC2</b><div class="sub">계좌별 원본값을 유지하면서 동일 종목 통합, 평균단가·현재가 흐름, 관심종목 연구 노트 추가</div></div><div class="item"><b>v2.5.0 RC1</b><div class="sub">투자를 월간 기록 아카이브 중심으로 단순화, 연간 자산·종목 수량 흐름과 투자 일기 연결</div></div><div class="item"><b>v2.4.2</b><div class="sub">0.1점 평점, 독서·영화 화면 재구성, 게시판형 일기와 기존 메모 마이그레이션</div></div><div class="item"><b>v2.4.0</b><div class="sub">BMI·체지방량 자동계산, 운동 기록 단순화, 독서·영화 아카이브 추가</div></div><div class="item"><b>v2.3.4</b><div class="sub">AI Team 메인 캐릭터 일러스트 추가, 최신 패치를 한 파일에 통합</div></div><div class="item"><b>v2.3.2</b><div class="sub">투자 계좌별 금액·그래프 선 색상 통일, 고정 색상 체계 적용</div></div><div class="item"><b>v2.3.1</b><div class="sub">메뉴별 캐릭터 장면 배너, 투자 평가가격·총자산 반영 보강</div></div><div class="item"><b>v2.3</b><div class="sub">개인 라이프 OS 기본 구조, 투자·건강·캘린더 실사용화</div></div><div class="item"><b>v2.4</b><div class="sub">가계부·카드·Google Drive 데이터 확장</div></div><div class="item"><b>v3.0</b><div class="sub">로그인·클라우드 동기화·외부 데이터 연동 검토</div></div></div></div></div></section>
     <section id="shopping" class="view"><div class="card"><div class="placeholder">v2.2의 쇼핑 페이지는 호환성을 위해 내부에 유지됩니다.</div></div></section>
 
-    <div class="footer">성민 갓생살기 · HANI OS Life Edition v2.8.3 · Local-first + Cloud Sync</div>
+    <div class="footer">성민 갓생살기 · HANI OS Life Edition v2.8.4 · Login Gate + Local-first + Cloud Sync</div>
   </main>
 </div>
 
@@ -1834,7 +2096,7 @@ input:focus,select:focus,textarea:focus{border-color:color-mix(in srgb,var(--sea
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 "use strict";
-const VERSION="2.8.3-sidebar-final";
+const VERSION="2.8.4-login-gate";
 const STORAGE_KEY="hani_os_life_v23";
 const DEFAULT_CLOUD_URL="https://qmgikfdwjzmhkwadycxk.supabase.co";
 const DEFAULT_CLOUD_PUBLISHABLE_KEY="sb_publishable_Z0YkkRSJIo5hs00YNcMOdQ__PA5BAj5";
@@ -1856,6 +2118,8 @@ let cloudPollTimer=null;
 let cloudLifecycleBound=false;
 let cloudRecoveryMode=false;
 let cloudAuthSubscription=null;
+let loginGateUnlocked=false;
+let loginGateCharacterKey="";
 // Auth callback은 showView()가 hash를 정리하기 전에 반드시 보존한다.
 // 토큰 문자열 자체를 별도 저장하지 않고, callback 종류/존재 여부만 메모리에 보존한다.
 const CLOUD_AUTH_BOOT=(()=>{
@@ -2345,6 +2609,168 @@ $("theme").onclick=()=>{
   const order=["spring","summer","autumn","winter"],current=document.documentElement.dataset.season||"spring";
   applySeasonTheme(order[(order.indexOf(current)+1)%order.length],true);
 };
+
+const LOGIN_GATE_LINES={
+  hani:"오늘도 기록 하나면 충분해. 갓생은 누적이야.",
+  jieun:"숫자는 혼내려고 보는 게 아니라 다음 달을 편하게 만들려고 보는 거야.",
+  nauen:"완벽한 하루보다 계속 가는 하루가 더 세다.",
+  hina:"오늘 한 페이지, 한 문장이 결국 실력이 돼요!",
+  sua:"해야 할 일은 머리가 아니라 시스템이 기억하게 해요.",
+  haru:"별일 없는 오늘도 나중엔 꽤 재밌는 기록이 돼.",
+  suyeon:"감독님, 오늘도 한 경기씩 시즌을 만들어갑시다."
+};
+function loginGateStatus(message,tone=""){
+  const el=$("loginGateStatus");if(!el)return;
+  el.textContent=message||"";
+  el.dataset.tone=tone||"";
+}
+function syncLoginThemeButtons(){
+  const current=document.documentElement.dataset.season||"spring";
+  document.querySelectorAll("[data-login-theme]").forEach(b=>b.classList.toggle("active",b.dataset.loginTheme===current));
+}
+function randomizeLoginCharacter(){
+  const available=(team||[]).filter(x=>agentImages?.[x.key]);
+  if(!available.length)return;
+  const pick=available[Math.floor(Math.random()*available.length)];
+  loginGateCharacterKey=pick.key;
+  const photo=$("loginCharacterPhoto");
+  if(photo)photo.style.backgroundImage=`url(${agentImages[pick.key]})`;
+  if($("loginCharacterName"))$("loginCharacterName").textContent=pick.name;
+  if($("loginCharacterRole"))$("loginCharacterRole").textContent=pick.role;
+  if($("loginCharacterQuote"))$("loginCharacterQuote").textContent=`“${LOGIN_GATE_LINES[pick.key]||"오늘도 천천히, 꾸준히 이어가요."}”`;
+}
+function lockLoginGate(message="이메일과 비밀번호로 로그인해 주세요."){
+  loginGateUnlocked=false;
+  const gate=$("loginGate"),app=$("app");
+  gate?.classList.remove("is-hidden","is-recovery");
+  app?.classList.add("login-locked");
+  app?.setAttribute("aria-hidden","true");
+  if($("loginNormalPanel"))$("loginNormalPanel").style.display="";
+  if($("loginRecoveryPanel"))$("loginRecoveryPanel").style.display="none";
+  if($("loginGateTitle"))$("loginGateTitle").textContent="HANI OS 로그인";
+  if($("loginGateSubtitle"))$("loginGateSubtitle").textContent="오늘의 기록을 이어가려면 로그인해 주세요.";
+  if(message)loginGateStatus(message);
+  setTimeout(()=>$("loginGatePassword")?.focus(),80);
+}
+function showLoginRecoveryGate(message="복구 링크를 확인하고 있습니다."){
+  loginGateUnlocked=false;
+  const gate=$("loginGate"),app=$("app");
+  gate?.classList.remove("is-hidden");
+  gate?.classList.add("is-recovery");
+  app?.classList.add("login-locked");
+  app?.setAttribute("aria-hidden","true");
+  if($("loginNormalPanel"))$("loginNormalPanel").style.display="none";
+  if($("loginRecoveryPanel"))$("loginRecoveryPanel").style.display="";
+  if($("loginGateTitle"))$("loginGateTitle").textContent="비밀번호 재설정";
+  if($("loginGateSubtitle"))$("loginGateSubtitle").textContent="새 비밀번호를 정한 뒤 다시 로그인하면 됩니다.";
+  loginGateStatus(message,"warn");
+}
+function unlockLoginGate(){
+  loginGateUnlocked=true;
+  const gate=$("loginGate"),app=$("app");
+  app?.classList.remove("login-locked");
+  app?.setAttribute("aria-hidden","false");
+  gate?.classList.add("is-hidden");
+}
+function loginGateConfig(email=""){
+  const cfg=cloudConfig(),nextEmail=String(email||cfg.email||"").trim();
+  const next={url:cfg.url,key:cfg.key,email:nextEmail};
+  cloudSaveJson(CLOUD_CONFIG_KEY,next);
+  if($("cloudEmail"))$("cloudEmail").value=nextEmail;
+  return next;
+}
+async function loginGateSubmit(){
+  const email=$("loginGateEmail")?.value.trim()||"",password=$("loginGatePassword")?.value||"";
+  if(!email)return loginGateStatus("이메일을 입력해 주세요.","error");
+  if(!password)return loginGateStatus("비밀번호를 입력해 주세요.","error");
+  const btn=$("loginGateSubmit"),original=btn?.textContent;
+  try{
+    if(btn){btn.disabled=true;btn.textContent="로그인 중…"}
+    const cfg=loginGateConfig(email);
+    if(!cloudClient)cloudCreateClient(cfg);
+    loginGateStatus("HANI Cloud 계정을 확인하고 있습니다.","loading");
+    const {data,error}=await cloudClient.auth.signInWithPassword({email,password});
+    if(error)throw error;
+    cloudUser=data?.user||data?.session?.user||null;
+    if(!cloudUser)throw new Error("로그인 세션을 만들지 못했습니다.");
+    $("loginGatePassword").value="";
+    cloudSetRuntime("로그인 완료","HANI OS 로그인 완료. Cloud 동기화를 확인합니다.","ok",{sync:"CHECK"});
+    await cloudFetchMeta({silent:true});
+    cloudBindLifecycle();
+    await cloudSyncCycle("login-gate");
+    unlockLoginGate();
+    toast("성민 갓생살기에 로그인했습니다.");
+  }catch(e){
+    console.error("Login gate",e);
+    if($("loginGatePassword"))$("loginGatePassword").value="";
+    loginGateStatus(e?.message||"로그인에 실패했습니다.","error");
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent=original||"성민 갓생살기 시작하기"}
+  }
+}
+async function loginGateForgotPassword(){
+  const email=$("loginGateEmail")?.value.trim()||"";
+  if(!email)return loginGateStatus("비밀번호를 재설정할 이메일을 입력해 주세요.","error");
+  try{
+    const cfg=loginGateConfig(email);
+    if(!cloudClient)cloudCreateClient(cfg);
+    loginGateStatus("비밀번호 재설정 메일을 보내고 있습니다.","loading");
+    const redirectTo=location.origin+location.pathname;
+    const {error}=await cloudClient.auth.resetPasswordForEmail(email,{redirectTo});
+    if(error)throw error;
+    loginGateStatus("재설정 메일을 보냈어요. 가장 최신 메일의 링크를 열어 주세요.","ok");
+  }catch(e){
+    console.error("Password reset request",e);
+    loginGateStatus(e?.message||"비밀번호 재설정 메일 발송에 실패했습니다.","error");
+  }
+}
+async function loginGateSaveRecoveryPassword(){
+  const pw=$("loginGateNewPassword")?.value||"",confirmPw=$("loginGateNewPasswordConfirm")?.value||"";
+  if(pw.length<8)return loginGateStatus("새 비밀번호는 8자 이상으로 입력해 주세요.","error");
+  if(pw!==confirmPw)return loginGateStatus("새 비밀번호와 확인 값이 서로 달라요.","error");
+  const btn=$("loginGateRecoverySave"),original=btn?.textContent;
+  try{
+    if(btn){btn.disabled=true;btn.textContent="변경 중…"}
+    if(!cloudClient)throw new Error("복구 세션이 준비되지 않았습니다. 최신 복구 링크를 다시 열어 주세요.");
+    const {data:sessionData,error:sessionError}=await cloudClient.auth.getSession();
+    if(sessionError)throw sessionError;
+    if(!sessionData?.session)throw new Error("복구 세션이 없습니다. 최신 복구 메일의 링크를 다시 열어 주세요.");
+    const {data,error}=await cloudClient.auth.updateUser({password:pw});
+    if(error)throw error;
+    cloudUser=data?.user||sessionData.session.user||null;
+    cloudRecoveryMode=false;
+    cloudCleanAuthUrl();
+    if($("loginGateNewPassword"))$("loginGateNewPassword").value="";
+    if($("loginGateNewPasswordConfirm"))$("loginGateNewPasswordConfirm").value="";
+    if(cloudUser?.email&&$("loginGateEmail"))$("loginGateEmail").value=cloudUser.email;
+    loginGateConfig(cloudUser?.email||$("loginGateEmail")?.value||"");
+    // Every entry requires a fresh password login, so return to the login screen after reset.
+    cloudUser=null;
+    lockLoginGate("비밀번호가 변경됐어요. 새 비밀번호로 로그인해 주세요.");
+  }catch(e){
+    console.error("Gate password recovery",e);
+    loginGateStatus(e?.message||"비밀번호 변경에 실패했습니다.","error");
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent=original||"새 비밀번호 저장"}
+  }
+}
+function initLoginGate(){
+  const cfg=cloudConfig();
+  if($("loginGateEmail"))$("loginGateEmail").value=cfg.email||"";
+  randomizeLoginCharacter();
+  syncLoginThemeButtons();
+  document.querySelectorAll("[data-login-theme]").forEach(btn=>btn.onclick=()=>{
+    applySeasonTheme(btn.dataset.loginTheme,true);
+    syncLoginThemeButtons();
+  });
+  if($("loginGateSubmit"))$("loginGateSubmit").onclick=loginGateSubmit;
+  if($("loginGateForgot"))$("loginGateForgot").onclick=loginGateForgotPassword;
+  if($("loginGateRecoverySave"))$("loginGateRecoverySave").onclick=loginGateSaveRecoveryPassword;
+  if($("loginGatePassword"))$("loginGatePassword").addEventListener("keydown",e=>{if(e.key==="Enter")loginGateSubmit()});
+  if($("loginGateNewPasswordConfirm"))$("loginGateNewPasswordConfirm").addEventListener("keydown",e=>{if(e.key==="Enter")loginGateSaveRecoveryPassword()});
+  lockLoginGate("HANI Cloud 연결을 준비하고 있습니다.");
+}
+
 
 function txSorted(){return [...state.transactions].sort((a,b)=>(a.date||"").localeCompare(b.date||"")||(a.createdAt||"").localeCompare(b.createdAt||""))}
 function calculate(){
@@ -3294,7 +3720,7 @@ function cloudCreateClient(config){
   try{cloudAuthSubscription?.unsubscribe?.()}catch(e){}
   cloudAuthSubscription=null;
   cloudClient=window.supabase.createClient(config.url,config.key,{
-    auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:"implicit"}
+    auth:{persistSession:false,autoRefreshToken:true,detectSessionInUrl:true,flowType:"implicit"}
   });
   cloudBindAuthEvents();
   return cloudClient;
@@ -3782,13 +4208,15 @@ async function initCloudBridge(){
       return;
     }
 
-    if(cloudUser){
-      cloudSetRuntime("로그인 유지","기존 Cloud 로그인 세션을 복원했습니다. Local ↔ Cloud 기준을 확인하고 자동 동기화를 준비합니다.","ok",{sync:"CHECK"});
+    if(cloudUser&&loginGateUnlocked){
+      cloudSetRuntime("로그인 완료","Cloud 로그인 세션이 확인되었습니다. 자동 동기화를 준비합니다.","ok",{sync:"CHECK"});
       await cloudFetchMeta({silent:true});
       cloudBindLifecycle();
       await cloudSyncCycle("login");
     }else{
-      cloudSetRuntime("로그인 필요","HANI OS 계정으로 로그인하면 이 기기와 Cloud가 자동으로 연결됩니다.","warn",{sync:"OFF"});
+      // v2.8.4: every page entry requires password authentication through the full-screen gate.
+      cloudUser=null;
+      cloudSetRuntime("로그인 필요","메인 로그인 화면에서 인증하면 이 기기와 Cloud가 연결됩니다.","warn",{sync:"OFF"});
     }
   }catch(e){
     console.error("Cloud init",e);
@@ -3838,6 +4266,7 @@ async function cloudLogout(){
   cloudRecoveryMode=false;
   cloudCleanAuthUrl();
   cloudSetRuntime("로그아웃","Cloud 세션에서 로그아웃했습니다. 로컬 데이터는 그대로 유지됩니다.","warn",{revision:null,updatedAt:"",sync:"OFF"});
+  lockLoginGate("로그아웃했습니다. 다시 이용하려면 로그인해 주세요.");
 }
 async function cloudFirstCopy(){
   if(!cloudClient||!cloudUser)return alert("먼저 Cloud 로그인을 완료해 주세요.");
@@ -4214,12 +4643,20 @@ $("spendReviewSave").onclick=()=>{
 
 ["txDate","bodyDate","exerciseDate","taskDue","diaryDate","flowDate","journalDate","watchDate","spendPurchaseDate","spendReviewDate"].forEach(id=>{if($(id))$(id).value=today()});
 updateTxForm();resetDiaryForm();resetFlow();resetWatchlist();resetJournal();updateMovieFormState();renderAll();
+initLoginGate();
 if(CLOUD_AUTH_BOOT.hasAuthCallback){
-  // recovery/PKCE/implicit callback hash를 Supabase가 읽기 전에 showView()가 지우지 않도록 Cloud 초기화를 먼저 완료한다.
-  initCloudBridge().finally(()=>{if(cloudRecoveryMode)cloudNavigateToRecovery();else showView("settings")});
+  // Recovery callback must be consumed before any page navigation can erase the auth hash.
+  showLoginRecoveryGate("복구 링크를 인증하고 있습니다.");
+  initCloudBridge().finally(()=>{
+    if(cloudRecoveryMode){
+      showLoginRecoveryGate(cloudUser?"복구 인증 완료. 새 비밀번호를 입력해 주세요.":"복구 세션을 확인하지 못했습니다. 최신 복구 링크인지 확인해 주세요.");
+    }else{
+      lockLoginGate("복구 링크 처리가 끝났습니다. 계정으로 로그인해 주세요.");
+    }
+  });
 }else{
   showView(location.hash.slice(1)||"home");
-  initCloudBridge();
+  initCloudBridge().finally(()=>loginGateStatus("이메일과 비밀번호로 로그인해 주세요."));
 }
 window.addEventListener("resize",()=>{drawPortfolio();drawBody();drawLedgerTrend();drawMonthlyAssetChart();drawBrokerChart();drawAnnualInvestmentCharts();drawInvestmentAccountChart();if(activeAccountId)drawAccountChart(activeAccountId)});
 </script>
