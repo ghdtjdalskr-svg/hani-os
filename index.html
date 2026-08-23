@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#202a42">
 <link rel="apple-touch-icon" href="./godsaeng_icon_webtoon.png">
 <link rel="icon" type="image/png" href="./godsaeng_icon_webtoon.png">
-<title>성민 갓생살기 · HANI OS Life Edition v2.9.11</title>
+<title>성민 갓생살기 · HANI OS Life Edition v2.9.12</title>
 <style>
 @import url("https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/variable/woff2/SUIT-Variable.css");
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css");
@@ -2136,7 +2136,7 @@ body{font-size:15.3px!important}
       <div class="login-brand">
         <span class="login-brand-kicker">MY LIFE OS</span>
         <h1>성민 갓생살기</h1>
-        <p>HANI OS · Life Edition v2.9.11</p>
+        <p>HANI OS · Life Edition v2.9.12</p>
       </div>
 
       <div class="login-character-stage">
@@ -2213,7 +2213,7 @@ body{font-size:15.3px!important}
       <div class="brand v28-brand sidebar-brand-hero">
         <div class="brand-copy">
           <h1>성민 갓생살기</h1>
-          <small>HANI OS · Life Edition v2.9.11</small>
+          <small>HANI OS · Life Edition v2.9.12</small>
         </div>
       </div>
       <button class="side-toggle" id="sideToggle" title="사이드바 접기">‹</button>
@@ -2277,7 +2277,7 @@ body{font-size:15.3px!important}
       <button class="nav-btn" data-view="aiTeam"><span class="ico"><svg viewBox="0 0 24 24"><rect x="5" y="7" width="14" height="12" rx="3"/><path d="M9 12h.01M15 12h.01M9 16h6M12 3v4"/></svg></span><span class="txt">AI 팀</span></button>
       <button class="nav-btn" data-view="settings"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.4 1a7 7 0 0 0-1.7-1L14.5 3h-5L9.2 6a7 7 0 0 0-1.7 1L5.1 6 3 9.5 5.1 11a7 7 0 0 0 0 2L3 14.5 5.1 18l2.4-1a7 7 0 0 0 1.7 1l.3 3h5l.3-3a7 7 0 0 0 1.7-1l2.4 1 2.1-3.5L18.9 13a7 7 0 0 0 .1-1Z"/></svg></span><span class="txt">설정 / 데이터</span></button>
     </div>
-    <div class="foot">HANI OS · v2.9.11<br>Stable Auto Cloud Sync · Life, Going On.</div>
+    <div class="foot">HANI OS · v2.9.12<br>Revision Sync + Media Guard · Life, Going On.</div>
   </aside>
 
   <main class="main">
@@ -2970,7 +2970,9 @@ const SIDEBAR_KEY="hani_os_sidebar_mini";
 const CLOUD_CONFIG_KEY="hani_os_cloud_config_v1";
 const HANI_GATE_SESSION_KEY="hani_os_gate_session_v2";
 const CLOUD_META_KEY="hani_os_cloud_meta_v1";
-const CLOUD_HASH_SCHEMA=2; // v2.9.11: sync fingerprint excludes device-local UI/save metadata
+const CLOUD_HASH_SCHEMA=3; // v2.9.12: durable-data fingerprint + revision-first sync
+const CLOUD_SYNC_ENGINE=3;
+const CLOUD_SAFETY_KEY="hani_os_cloud_safety_snapshot_v1";
 let cloudClient=null;
 let cloudUser=null;
 let cloudRuntime={status:"설정 필요",tone:"warn",message:"Cloud 설정을 입력하면 연결을 준비합니다.",revision:null,updatedAt:"",verifiedAt:"",device:"",sync:"OFF"};
@@ -4886,7 +4888,7 @@ function cloudRecordCount(d=state){
 function cloudComparableState(value){
   try{return normalizeState(structuredClone(value||{}))}catch(e){return value}
 }
-// v2.9.11: conflict detection must only track durable user data.
+// v2.9.12: conflict detection tracks durable user data; revision is authoritative.
 // UI state, save timestamps and app-version labels differ naturally by device
 // and must not create a false "both sides changed" conflict.
 function cloudSyncFingerprintState(value){
@@ -4919,7 +4921,43 @@ function cloudHasMeaningfulLocalData(value=state){
 function cloudLocalStatusLabel(){
   return cloudHasMeaningfulLocalData(state)?"기존 데이터 있음":"복원 가능";
 }
-
+function cloudSummaryText(value){
+  const d=value||{};
+  return `기록 ${cloudRecordCount(d)}건 · 책 ${(d.books||[]).length} · 영화 ${(d.movies||[]).length} · 체중 ${(d.body||[]).length}`;
+}
+function cloudMediaSignature(type,row){
+  if(type==="books")return [String(row?.title||"").trim().toLowerCase(),String(row?.author||"").trim().toLowerCase()].join("|");
+  return [String(row?.title||"").trim().toLowerCase(),String(row?.director||"").trim().toLowerCase(),String(row?.watchedDate||"")].join("|");
+}
+function cloudMergeProtectedMedia(target,source){
+  const out=structuredClone(target||{}),src=source||{};
+  [["books","cover"],["movies","poster"]].forEach(([type,key])=>{
+    const oldRows=Array.isArray(src[type])?src[type]:[],newRows=Array.isArray(out[type])?out[type]:[];
+    const byId=new Map(oldRows.filter(x=>x?.id).map(x=>[x.id,x]));
+    const bySig=new Map(oldRows.map(x=>[cloudMediaSignature(type,x),x]));
+    out[type]=newRows.map(row=>{
+      if(row?.[key])return row;
+      const old=(row?.id&&byId.get(row.id))||bySig.get(cloudMediaSignature(type,row));
+      return old?.[key]?{...row,[key]:old[key]}:row;
+    });
+  });
+  return out;
+}
+function cloudSaveSafetySnapshot(reason,value=state){
+  const payload={savedAt:new Date().toISOString(),reason:String(reason||"cloud-sync"),storageKey:STORAGE_KEY,state:structuredClone(value||{})};
+  let previous=null;
+  try{previous=localStorage.getItem(CLOUD_SAFETY_KEY)}catch(e){}
+  try{
+    const serialized=JSON.stringify(payload);
+    localStorage.setItem(CLOUD_SAFETY_KEY,serialized);
+    if(localStorage.getItem(CLOUD_SAFETY_KEY)!==serialized)throw new Error("safety snapshot read-back mismatch");
+    return true;
+  }catch(e){
+    console.error("Cloud safety snapshot",e);
+    try{if(previous===null)localStorage.removeItem(CLOUD_SAFETY_KEY);else localStorage.setItem(CLOUD_SAFETY_KEY,previous)}catch(_){}
+    return false;
+  }
+}
 
 async function cloudStateHash(value){
   const text=JSON.stringify(cloudCanonical(cloudSyncFingerprintState(value)));
@@ -4934,21 +4972,25 @@ async function cloudStateHash(value){
   return "fnv-"+(h>>>0).toString(16).padStart(8,"0");
 }
 function cloudSaveSyncMeta(remote,hash,extra={}){
+  const prev=cloudMeta();
   const meta={
-    ...cloudMeta(),
+    ...prev,
     revision:remote?.revision??null,
+    appliedRevision:extra.appliedRevision??remote?.revision??prev.appliedRevision??null,
     updatedAt:remote?.updated_at||"",
     device:remote?.device||"",
+    syncEngine:CLOUD_SYNC_ENGINE,
     hashSchema:CLOUD_HASH_SCHEMA,
     lastSyncedHash:hash||"",
-    verifiedAt:extra.verifiedAt||cloudMeta().verifiedAt||"",
+    verifiedAt:extra.verifiedAt||prev.verifiedAt||"",
     lastSyncAt:extra.lastSyncAt||new Date().toISOString(),
-    lastPushAt:extra.lastPushAt||cloudMeta().lastPushAt||"",
-    lastPullAt:extra.lastPullAt||cloudMeta().lastPullAt||""
+    lastPushAt:extra.lastPushAt||prev.lastPushAt||"",
+    lastPullAt:extra.lastPullAt||prev.lastPullAt||""
   };
   cloudSaveJson(CLOUD_META_KEY,meta);
   return meta;
 }
+
 async function cloudReadRow(){
   if(!cloudClient||!cloudUser)throw new Error("Cloud 로그인이 필요합니다.");
   const {data,error}=await cloudClient
@@ -4977,12 +5019,17 @@ function cloudQueueSync(delay=650){
   cloudSyncTimer=setTimeout(()=>cloudSyncCycle("local-save"),delay);
 }
 async function cloudApplyRemoteRow(remote,remoteHash,{announce=false}={}){
-  const candidate=cloudComparableState(remote.state);
+  const previousState=structuredClone(state);
+  let candidate=cloudComparableState(remote.state);
+  // Media Guard: an empty Cloud cover/poster must never erase a surviving Local image.
+  candidate=cloudMergeProtectedMedia(candidate,previousState);
   const serialized=JSON.stringify(candidate);
   let previousRaw=null;
   try{previousRaw=localStorage.getItem(STORAGE_KEY)}catch(e){}
-  const previousState=structuredClone(state);
   try{
+    if(!cloudSaveSafetySnapshot(`before_cloud_pull_r${remote?.revision??"unknown"}`,previousState)){
+      throw new Error("Cloud 반영 전 안전 스냅샷을 만들지 못해 동기화를 중단했습니다.");
+    }
     cloudApplyingRemote=true;
     localStorage.setItem(STORAGE_KEY,serialized);
     const verified=localStorage.getItem(STORAGE_KEY);
@@ -4991,11 +5038,15 @@ async function cloudApplyRemoteRow(remote,remoteHash,{announce=false}={}){
     if(!cloudSame(cloudComparableState(parsed),candidate))throw new Error("Cloud 수신 후 Local 상태 검증에 실패했습니다.");
     state=candidate;
     lastLoadError="";
-    lastSaveResult={ok:true,bytes:serializedBytes(serialized),message:"Cloud 변경을 Local에 반영하고 read-back 검증을 완료했습니다."};
+    lastSaveResult={ok:true,bytes:serializedBytes(serialized),message:"Cloud 변경을 이 기기에 반영하고 read-back 검증을 완료했습니다."};
     renderAll();
-    const meta=cloudSaveSyncMeta(remote,remoteHash,{lastPullAt:new Date().toISOString(),verifiedAt:new Date().toISOString()});
-    cloudSetRuntime("동기화 완료",`Cloud revision ${remote.revision}을 이 기기에 반영했습니다.`,"ok",{
-      revision:remote.revision,updatedAt:remote.updated_at,verifiedAt:meta.verifiedAt,device:remote.device||"",sync:"ON"
+    const effectiveHash=await cloudStateHash(candidate);
+    const rawRemoteHash=remoteHash||await cloudStateHash(cloudComparableState(remote.state));
+    const mediaPreserved=effectiveHash!==rawRemoteHash;
+    const meta=cloudSaveSyncMeta(remote,mediaPreserved?rawRemoteHash:effectiveHash,{lastPullAt:new Date().toISOString(),verifiedAt:new Date().toISOString(),appliedRevision:remote.revision});
+    cloudSetRuntime(mediaPreserved?"동기화 완료 · 미디어 보호":"동기화 완료",mediaPreserved?`Cloud revision ${remote.revision}을 반영했고 기존 Local 이미지 자산을 보호했습니다. 다음 자동 동기화에서 보호된 이미지를 Cloud에도 반영합니다.`:`Cloud revision ${remote.revision}을 이 기기에 반영했습니다.`,"ok",{
+      revision:remote.revision,updatedAt:remote.updated_at,verifiedAt:meta.verifiedAt,device:remote.device||"",sync:"ON",
+      localSummary:cloudSummaryText(candidate),remoteSummary:cloudSummaryText(remote.state)
     });
     if(announce)toast("Cloud의 최신 변경을 이 기기에 반영했습니다.");
     return true;
@@ -5015,9 +5066,13 @@ async function cloudPushLocalRow(remote,localState,localHash){
   if(!cloudHasMeaningfulLocalData(localState))throw new Error("빈 Local 상태는 Cloud에 업로드할 수 없습니다.");
   const expectedRevision=remote?.revision;
   if(expectedRevision===null||expectedRevision===undefined)throw new Error("Cloud revision을 확인할 수 없어 자동 업로드를 중단했습니다.");
+  // Media Guard works both ways: if Cloud still owns an image that Local lost, keep it.
+  const remoteState=cloudComparableState(remote?.state||{});
+  const outgoing=cloudMergeProtectedMedia(localState,remoteState);
+  const outgoingHash=await cloudStateHash(outgoing);
   const {data,error}=await cloudClient
     .from("hani_state")
-    .update({state:structuredClone(localState),device:cloudDeviceLabel()})
+    .update({state:structuredClone(outgoing),device:cloudDeviceLabel()})
     .eq("user_id",cloudUser.id)
     .eq("revision",expectedRevision)
     .select("state,revision,updated_at,device");
@@ -5029,14 +5084,23 @@ async function cloudPushLocalRow(remote,localState,localHash){
     throw new Error(`Cloud revision이 ${expectedRevision}에서 ${latestRev}(으)로 바뀌었습니다. 다른 기기의 변경을 덮지 않도록 동기화를 중단했습니다.`);
   }
   const returnedHash=await cloudStateHash(written.state);
-  if(returnedHash!==localHash)throw new Error("Cloud 저장 후 반환된 state가 Local과 일치하지 않습니다.");
+  if(returnedHash!==outgoingHash)throw new Error("Cloud 저장 후 반환된 state가 Local과 일치하지 않습니다.");
+  if(!cloudSame(outgoing,localState)){
+    const serialized=JSON.stringify(outgoing);
+    localStorage.setItem(STORAGE_KEY,serialized);
+    if(localStorage.getItem(STORAGE_KEY)!==serialized)throw new Error("Media Guard 병합 후 Local read-back 검증에 실패했습니다.");
+    state=outgoing;
+    renderAll();
+  }
   const now=new Date().toISOString();
-  const meta=cloudSaveSyncMeta(written,localHash,{lastPushAt:now,verifiedAt:now});
+  const meta=cloudSaveSyncMeta(written,outgoingHash,{lastPushAt:now,verifiedAt:now,appliedRevision:written.revision});
   cloudSetRuntime("동기화 완료",`Local 변경을 Cloud revision ${written.revision}으로 반영했습니다.`,"ok",{
-    revision:written.revision,updatedAt:written.updated_at,verifiedAt:meta.verifiedAt,device:written.device||"",sync:"ON"
+    revision:written.revision,updatedAt:written.updated_at,verifiedAt:meta.verifiedAt,device:written.device||"",sync:"ON",
+    localSummary:cloudSummaryText(outgoing),remoteSummary:cloudSummaryText(written.state)
   });
   return written;
 }
+
 async function cloudSyncCycle(reason="manual"){
   if(!cloudClient||!cloudUser)return;
   if(cloudSyncBusy){cloudSyncPending=true;return}
@@ -5046,10 +5110,9 @@ async function cloudSyncCycle(reason="manual"){
     const localState=cloudComparableState(state);
 
     if(!remote?.state){
-      // v2.9.11: an empty Cloud can be seeded safely from meaningful Local data without a manual button.
       if(cloudHasMeaningfulLocalData(localState)){
         const localHash=await cloudStateHash(localState);
-        cloudSetRuntime("자동 동기화 준비","Cloud가 비어 있어 현재 Local 데이터를 최초 기준으로 올리고 있습니다.","warn",{sync:"CHECK"});
+        cloudSetRuntime("자동 동기화 준비","Cloud가 비어 있어 현재 Local 데이터를 최초 기준으로 올리고 있습니다.","warn",{sync:"CHECK",localSummary:cloudSummaryText(localState),remoteSummary:"Cloud 비어 있음"});
         const {data,error}=await cloudClient.from("hani_state").upsert({
           user_id:cloudUser.id,state:structuredClone(localState),device:cloudDeviceLabel()
         },{onConflict:"user_id"}).select("state,revision,updated_at,device");
@@ -5059,169 +5122,107 @@ async function cloudSyncCycle(reason="manual"){
         const returnedHash=await cloudStateHash(written.state);
         if(returnedHash!==localHash)throw new Error("Cloud 자동 최초 업로드 read-back 데이터가 Local과 일치하지 않습니다.");
         const now=new Date().toISOString();
-        const meta=cloudSaveSyncMeta(written,localHash,{lastPushAt:now,verifiedAt:now});
+        const meta=cloudSaveSyncMeta(written,localHash,{lastPushAt:now,verifiedAt:now,appliedRevision:written.revision});
         cloudAutoSyncReady=true;
         cloudSetRuntime("자동 동기화 정상",`현재 Local을 Cloud revision ${written.revision}의 최초 기준으로 연결했습니다.`,"ok",{
-          revision:written.revision,updatedAt:written.updated_at,verifiedAt:meta.verifiedAt,device:written.device||"",sync:"ON"
+          revision:written.revision,updatedAt:written.updated_at,verifiedAt:meta.verifiedAt,device:written.device||"",sync:"ON",localSummary:cloudSummaryText(localState),remoteSummary:cloudSummaryText(written.state)
         });
         cloudStartPolling();
         if(reason!=="poll")toast("Cloud 자동 동기화를 시작했습니다.");
         return;
       }
       cloudAutoSyncReady=false;
-      cloudSetRuntime("Cloud 비어 있음","Cloud와 Local 모두 기준으로 사용할 실데이터가 없습니다.","warn",{sync:"WAIT"});
+      cloudSetRuntime("Cloud 비어 있음","Cloud와 Local 모두 기준으로 사용할 실데이터가 없습니다.","warn",{sync:"WAIT",localSummary:cloudSummaryText(localState),remoteSummary:"Cloud 비어 있음"});
       return;
     }
 
     const remoteState=cloudComparableState(remote.state);
     const [localHash,remoteHash]=await Promise.all([cloudStateHash(localState),cloudStateHash(remoteState)]);
     let meta=cloudMeta();
+    const localMeaningful=cloudHasMeaningfulLocalData(localState),remoteMeaningful=cloudHasMeaningfulLocalData(remoteState);
+    const engineCurrent=meta.syncEngine===CLOUD_SYNC_ENGINE&&meta.hashSchema===CLOUD_HASH_SCHEMA&&meta.appliedRevision!==undefined&&meta.appliedRevision!==null;
+    cloudRuntime={...cloudRuntime,revision:remote.revision,updatedAt:remote.updated_at,device:remote.device||"",localSummary:cloudSummaryText(localState),remoteSummary:cloudSummaryText(remoteState)};
 
-    if(localHash===remoteHash){
-      const now=new Date().toISOString();
-      meta=cloudSaveSyncMeta(remote,remoteHash,{verifiedAt:now});
-      cloudAutoSyncReady=true;
-      cloudSetRuntime("동기화 정상",`Local과 Cloud가 동일합니다. revision ${remote.revision}.`,"ok",{
-        revision:remote.revision,updatedAt:remote.updated_at,verifiedAt:meta.verifiedAt,device:remote.device||"",sync:"ON"
-      });
-      cloudStartPolling();
-      return;
-    }
-
-    const localMeaningful=cloudHasMeaningfulLocalData(localState);
-    const remoteMeaningful=cloudHasMeaningfulLocalData(remoteState);
-    const hashSchemaCurrent=meta.hashSchema===CLOUD_HASH_SCHEMA;
-
-    // Empty/new browser: remote is the only meaningful copy, so pulling is safe.
-    if(!localMeaningful&&remoteMeaningful){
-      await cloudApplyRemoteRow(remote,remoteHash,{announce:reason!=="login"&&reason!=="login-gate"&&reason!=="session-restore"});
-      cloudAutoSyncReady=true;
-      cloudStartPolling();
-      return;
-    }
-
-    // Cloud row exists but contains no meaningful user data: meaningful Local is the safe source.
-    if(localMeaningful&&!remoteMeaningful){
-      await cloudPushLocalRow(remote,localState,localHash);
-      cloudAutoSyncReady=true;
-      cloudStartPolling();
-      if(reason!=="poll")toast("현재 기기 데이터를 Cloud 기준으로 자동 연결했습니다.");
-      return;
-    }
-
-    // v2.9.11 hash migration: older baselines included device-local UI/meta fields.
-    // A stale old-schema hash must never be interpreted as a real two-device data conflict.
-    // When durable data differs, preserve this device first and adopt the existing Cloud baseline once.
-    if(!hashSchemaCurrent){
+    // v2.9.12 migration: previous clients could report SYNC even when the rendered/local baseline was stale.
+    // Every device must apply the authoritative Cloud row once under the new engine before normal syncing resumes.
+    if(!engineCurrent){
       if(remoteMeaningful){
-        cloudSetRuntime("동기화 기준 업그레이드","구버전 동기화 기준을 실데이터 기준으로 다시 연결하고 있습니다.","warn",{
-          revision:remote.revision,updatedAt:remote.updated_at,device:remote.device||"",sync:"CHECK"
-        });
-        if(localMeaningful){
-          const backupOk=exportData({suffix:"before_sync_hash_v2_migration",silent:true});
-          if(!backupOk)throw new Error("동기화 기준 업그레이드 전 Local 백업을 만들지 못해 중단했습니다.");
-        }
+        cloudSetRuntime("동기화 엔진 업그레이드",`Cloud revision ${remote.revision}을 이 기기에 실제 적용해 기준을 다시 잡고 있습니다.`,"warn",{sync:"CHECK",revision:remote.revision,updatedAt:remote.updated_at,localSummary:cloudSummaryText(localState),remoteSummary:cloudSummaryText(remoteState)});
         await cloudApplyRemoteRow(remote,remoteHash,{announce:false});
         cloudAutoSyncReady=true;
         cloudStartPolling();
-        cloudSetRuntime("자동 동기화 정상",`Cloud revision ${remote.revision}을 실데이터 기준 동기화 베이스라인으로 연결했습니다.`,"ok",{
-          revision:remote.revision,updatedAt:remote.updated_at,verifiedAt:cloudMeta().verifiedAt||new Date().toISOString(),device:remote.device||"",sync:"ON"
-        });
-        if(localMeaningful&&reason!=="poll")toast("기존 Local을 백업하고 자동 동기화 기준을 업그레이드했습니다.");
+        cloudSetRuntime("자동 동기화 정상",`Revision Sync 엔진으로 전환했습니다. Cloud revision ${remote.revision}을 이 기기에 적용했습니다.`,"ok",{sync:"ON",revision:remote.revision,updatedAt:remote.updated_at,localSummary:cloudSummaryText(state),remoteSummary:cloudSummaryText(remoteState)});
+        if(reason!=="poll")toast("Cloud 기준을 새 동기화 엔진으로 다시 연결했습니다.");
         return;
       }
-      // Both sides are effectively empty: establish the new schema without fabricating a conflict.
-      meta=cloudSaveSyncMeta(remote,remoteHash,{verifiedAt:new Date().toISOString()});
+      meta=cloudSaveSyncMeta(remote,remoteHash,{verifiedAt:new Date().toISOString(),appliedRevision:remote.revision});
       cloudAutoSyncReady=true;
       cloudStartPolling();
-      cloudSetRuntime("동기화 정상","실데이터 기준 동기화 스키마로 업그레이드했습니다.","ok",{
-        revision:remote.revision,updatedAt:remote.updated_at,verifiedAt:meta.verifiedAt,device:remote.device||"",sync:"ON"
-      });
+      renderAll();
       return;
     }
 
-    // v2.9.11 bootstrap: no common baseline yet, but Cloud already has meaningful data.
-    // Treat this as device initialization rather than a true conflict: preserve Local first, then adopt Cloud.
-    if(!meta.lastSyncedHash&&remoteMeaningful){
-      cloudSetRuntime("자동 동기화 연결","이 기기의 초기 동기화 기준을 Cloud 최신본으로 맞추고 있습니다.","warn",{
-        revision:remote.revision,updatedAt:remote.updated_at,device:remote.device||"",sync:"CHECK"
-      });
-      if(localMeaningful){
-        const backupOk=exportData({suffix:"before_auto_cloud_bootstrap",silent:true});
-        if(!backupOk)throw new Error("자동 동기화 연결 전 Local 백업을 만들지 못해 중단했습니다.");
-      }
-      await cloudApplyRemoteRow(remote,remoteHash,{announce:false});
+    // Exact durable-data match: refresh the rendered UI as well, not just the status card.
+    if(localHash===remoteHash){
+      const now=new Date().toISOString();
+      meta=cloudSaveSyncMeta(remote,remoteHash,{verifiedAt:now,appliedRevision:remote.revision});
       cloudAutoSyncReady=true;
-      cloudStartPolling();
-      cloudSetRuntime("자동 동기화 정상",`Cloud revision ${remote.revision}을 이 기기의 기준으로 연결했습니다. 이후 변경은 자동으로 주고받습니다.`,"ok",{
-        revision:remote.revision,updatedAt:remote.updated_at,verifiedAt:cloudMeta().verifiedAt||new Date().toISOString(),device:remote.device||"",sync:"ON"
+      renderAll();
+      cloudSetRuntime("동기화 정상",`Local과 Cloud가 동일합니다. revision ${remote.revision}.`,"ok",{
+        revision:remote.revision,updatedAt:remote.updated_at,verifiedAt:meta.verifiedAt,device:remote.device||"",sync:"ON",localSummary:cloudSummaryText(state),remoteSummary:cloudSummaryText(remoteState)
       });
-      if(localMeaningful&&reason!=="poll")toast("기존 Local을 백업하고 Cloud 최신본으로 자동 연결했습니다.");
-      return;
-    }
-
-    // If neither side is meaningful, there is nothing to synchronize yet.
-    if(!meta.lastSyncedHash){
-      cloudAutoSyncReady=false;
-      cloudSetRuntime("동기화 대기","아직 동기화할 실데이터가 없습니다.","warn",{
-        revision:remote.revision,updatedAt:remote.updated_at,device:remote.device||"",sync:"WAIT"
-      });
-      return;
-    }
-
-    const localChanged=localHash!==meta.lastSyncedHash;
-    const remoteChanged=remoteHash!==meta.lastSyncedHash;
-
-    // Only local changed since the common baseline -> safe optimistic push.
-    if(localChanged&&!remoteChanged){
-      await cloudPushLocalRow(remote,localState,localHash);
-      cloudAutoSyncReady=true;
       cloudStartPolling();
       return;
     }
 
-    // Only remote changed -> safe pull.
-    if(!localChanged&&remoteChanged){
+    if(!localMeaningful&&remoteMeaningful){
       await cloudApplyRemoteRow(remote,remoteHash,{announce:reason!=="poll"});
-      cloudAutoSyncReady=true;
-      cloudStartPolling();
+      cloudAutoSyncReady=true;cloudStartPolling();return;
+    }
+    if(localMeaningful&&!remoteMeaningful){
+      await cloudPushLocalRow(remote,localState,localHash);
+      cloudAutoSyncReady=true;cloudStartPolling();return;
+    }
+
+    const baselineHash=String(meta.lastSyncedHash||"");
+    const localDirty=baselineHash?localHash!==baselineHash:false;
+    const appliedRevision=Number(meta.appliedRevision??-1);
+    const remoteRevision=Number(remote.revision??-1);
+    const remoteAdvanced=remoteRevision!==appliedRevision;
+
+    // Revision changed remotely and this device has no unsynced durable edit -> authoritative pull.
+    if(remoteAdvanced&&!localDirty){
+      await cloudApplyRemoteRow(remote,remoteHash,{announce:reason!=="poll"});
+      cloudAutoSyncReady=true;cloudStartPolling();return;
+    }
+
+    // Revision unchanged but durable Local data changed -> optimistic push.
+    if(!remoteAdvanced&&localDirty){
+      await cloudPushLocalRow(remote,localState,localHash);
+      cloudAutoSyncReady=true;cloudStartPolling();return;
+    }
+
+    // Both sides moved: this is the only case we refuse to guess.
+    if(remoteAdvanced&&localDirty){
+      cloudAutoSyncReady=false;
+      cloudStopAutoSync(`이 기기의 Local 기록과 Cloud revision ${remote.revision}이 모두 변경되었습니다. 자동 덮어쓰기를 중단했습니다.`,"error");
       return;
     }
 
-    // Revision may change while state content remains the same.
-    if(!localChanged&&!remoteChanged){
-      meta=cloudSaveSyncMeta(remote,remoteHash,{verifiedAt:new Date().toISOString()});
-      cloudAutoSyncReady=true;
-      cloudSetRuntime("동기화 정상",`Cloud revision ${remote.revision} 기준으로 동기화 상태를 갱신했습니다.`,"ok",{
-        revision:remote.revision,updatedAt:remote.updated_at,verifiedAt:meta.verifiedAt,device:remote.device||"",sync:"ON"
-      });
-      cloudStartPolling();
-      return;
-    }
-
-    // Both changed from the same baseline: real conflict.
-    cloudAutoSyncReady=false;
-    cloudStopAutoSync(
-      `Local과 Cloud가 마지막 동기화본 이후 각각 변경되었습니다. 자동 덮어쓰기를 중단했습니다. Cloud revision ${remote.revision}.`,
-      "error"
-    );
+    // Same revision + no known Local edit but content differs means the old baseline/render state is inconsistent.
+    // Preserve Local first, then re-apply the authoritative Cloud row to self-heal.
+    await cloudApplyRemoteRow(remote,remoteHash,{announce:reason!=="poll"});
+    cloudAutoSyncReady=true;cloudStartPolling();
   }catch(e){
     console.error("Cloud sync",reason,e);
     cloudAutoSyncReady=false;
     cloudStopAutoSync(e?.message||"Cloud 동기화 중 오류가 발생했습니다.","error");
   }finally{
     cloudSyncBusy=false;
-    if(cloudSyncPending){
-      cloudSyncPending=false;
-      setTimeout(()=>cloudSyncCycle("pending"),250);
-    }
+    if(cloudSyncPending){cloudSyncPending=false;setTimeout(()=>cloudSyncCycle("queued"),120)}
   }
 }
-async function cloudManualSync(){
-  if(!cloudClient||!cloudUser)return alert("먼저 Cloud 로그인을 완료해 주세요.");
-  cloudSetRuntime("동기화 확인","Local과 Cloud의 변경 상태를 확인하고 있습니다.","warn",{sync:"CHECK"});
-  await cloudSyncCycle("manual");
-}
+
 function cloudBindLifecycle(){
   if(cloudLifecycleBound)return;
   cloudLifecycleBound=true;
@@ -5260,7 +5261,10 @@ function renderCloudPanel(){
       ["자동 동기화",cloudRuntime.sync||"OFF"],
       ["Cloud revision",cloudRuntime.revision??meta.revision??"-"],
       ["Cloud updated",formatDateTime(cloudRuntime.updatedAt||meta.updatedAt)],
-      ["마지막 동기화",formatDateTime(meta.lastSyncAt||cloudRuntime.verifiedAt||meta.verifiedAt)]
+      ["마지막 동기화",formatDateTime(meta.lastSyncAt||cloudRuntime.verifiedAt||meta.verifiedAt)],
+      ["Local 데이터",cloudRuntime.localSummary||cloudSummaryText(state)],
+      ["Cloud 데이터",cloudRuntime.remoteSummary||"동기화 후 표시"],
+      ["Sync engine",`R${CLOUD_SYNC_ENGINE} · applied ${meta.appliedRevision??"-"}`]
     ];
     grid.innerHTML=rows.map(([l,v])=>`<div class="cloud-status-item"><small>${esc(l)}</small><b>${esc(v)}</b></div>`).join("");
   }
@@ -5447,7 +5451,7 @@ async function cloudFirstCopy(){
 
       if(remoteMeaningful){
         // Only allow a manual push when the cloud still equals this browser's known baseline.
-        if(meta.hashSchema!==CLOUD_HASH_SCHEMA||!meta.lastSyncedHash||remoteHash!==meta.lastSyncedHash){
+        if(meta.syncEngine!==CLOUD_SYNC_ENGINE||meta.hashSchema!==CLOUD_HASH_SCHEMA||!meta.lastSyncedHash||remoteHash!==meta.lastSyncedHash){
           return alert(
             "수동 업로드를 차단했습니다.\n\nCloud에도 기존 데이터가 있고 현재 Local과 내용이 다릅니다.\n"+
             "다른 기기의 변경을 덮지 않도록 자동으로 중단했습니다.\n\n'지금 동기화' 또는 'Local ↔ Cloud 비교'를 먼저 사용해 주세요."
@@ -5574,9 +5578,11 @@ async function cloudRestoreToLocal(){
       const restoredHash=await cloudStateHash(candidate);
       const meta={
         revision:remote.revision,
+        appliedRevision:remote.revision,
         updatedAt:remote.updated_at,
         verifiedAt,
         device:remote.device||"",
+        syncEngine:CLOUD_SYNC_ENGINE,
         hashSchema:CLOUD_HASH_SCHEMA,
         lastSyncedHash:restoredHash,
         lastSyncAt:verifiedAt,
