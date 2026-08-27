@@ -2359,6 +2359,67 @@ body[data-canvas-group="team"]{--canvas-a:#7569e8;--canvas-b:#d875a3;--canvas-c:
 @media(max-width:980px){.agent-workspace{grid-template-columns:1fr}.agent-case-panel,.agent-detail-panel{min-height:0}.agent-case-list{max-height:320px}}
 @media(max-width:650px){.agent-command{grid-template-columns:1fr}.agent-command .btn{width:100%}.agent-decision-grid{grid-template-columns:1fr}.agent-decision-actions .btn{flex:1 1 calc(50% - 7px)}.agent-report-head{display:grid}.agent-chips{justify-content:flex-start}}
 
+
+/* ===== v2.9.24 AI Team profiles + sidebar all-members + review readability ===== */
+.sidebar-team-mini{display:block!important;padding:14px 12px 13px!important;border-radius:22px!important;min-height:auto!important}
+.sidebar-team-head{display:flex!important;align-items:flex-start!important;justify-content:space-between!important;gap:12px!important;margin-bottom:12px!important}
+.sidebar-team-head b{font-size:12px!important;letter-spacing:.08em!important}
+.sidebar-team-head span{font-size:10px!important;line-height:1.45!important;margin-top:4px!important;color:#8b90a4!important}
+.sidebar-team-head em{font-size:9px!important}
+.sidebar-team-faces{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:9px!important;min-width:0!important}
+.sidebar-team-face{width:100%!important;height:auto!important;margin:0!important;padding:7px 5px 8px!important;border-radius:16px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-start!important;gap:5px!important;background:rgba(255,255,255,.82)!important;border:1px solid rgba(118,106,194,.14)!important;box-shadow:0 10px 20px rgba(52,54,87,.06)!important}
+.sidebar-team-face:hover{transform:translateY(-2px)!important;box-shadow:0 13px 22px rgba(52,54,87,.11)!important}
+.sidebar-team-face.active{border-color:#8a73f2!important;box-shadow:0 0 0 2px rgba(138,115,242,.15),0 13px 22px rgba(52,54,87,.12)!important}
+.sidebar-team-photo{width:100%!important;height:54px!important;border-radius:12px!important;background:linear-gradient(145deg,#f4f1ff,#eef6ff)!important;background-size:cover!important;background-position:center center!important;display:grid!important;place-items:center!important;font-size:22px!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)!important}
+.sidebar-team-face small{display:block!important;font-size:10px!important;line-height:1.15!important;font-weight:900!important;text-align:center!important}
+.sidebar-team-face.tone-purple small{color:#7059dd!important}.sidebar-team-face.tone-sand small{color:#a97a3f!important}.sidebar-team-face.tone-mint small{color:#218c79!important}.sidebar-team-face.tone-peach small{color:#d87572!important}.sidebar-team-face.tone-blue small{color:#4c79b3!important}.sidebar-team-face.tone-orange small{color:#da8541!important}.sidebar-team-face.tone-violet small{color:#7d57d9!important}
+@media(max-width:1100px){.sidebar-team-faces{grid-template-columns:repeat(2,minmax(0,1fr))!important}.sidebar-team-photo{height:62px!important}}
+
+.ui26-member{position:relative}
+.ui26-member.is-active{border-color:#8a73f2!important;box-shadow:0 0 0 2px rgba(138,115,242,.14),var(--ui-shadow-hover)!important;transform:translateY(-3px)}
+.ui26-member .member-link{display:inline-flex;align-items:center;gap:4px}
+.ui26-member .member-link:before{content:"프로필 · 담당 보기"}
+
+.ai-team-profile-card{padding:0!important;overflow:hidden}
+.ai-team-profile-shell{display:grid;grid-template-columns:minmax(280px,.88fr) minmax(0,1.2fr);gap:0}
+.ai-team-profile-visual{padding:24px;background:linear-gradient(155deg,#f7f4ff 0%,#fff 56%,#eef7ff 100%);border-right:1px solid #ece9fb;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.ai-team-profile-avatar{width:100%;max-width:260px;aspect-ratio:1/1;border-radius:28px;background:#f5f2ff center center/cover no-repeat;box-shadow:0 18px 38px rgba(80,78,138,.12),inset 0 0 0 1px rgba(255,255,255,.7)}
+.ai-team-profile-tag{margin-top:14px;padding:8px 11px;border-radius:999px;background:#fff;border:1px solid #ebe7ff;color:#7467df;font-size:10px;font-weight:900;letter-spacing:.08em}
+.ai-team-profile-quote{margin-top:12px;font-size:12px;line-height:1.65;color:#6b7185}
+.ai-team-profile-body{padding:22px 24px 24px}
+.ai-team-profile-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+.ai-team-profile-head h3{font-size:28px;margin:2px 0 4px}
+.ai-team-profile-role{font-size:12px;color:#7569e8;font-weight:900;letter-spacing:.03em}
+.ai-team-profile-sub{font-size:12px;color:var(--ui-sub);line-height:1.6}
+.ai-team-profile-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.ai-team-meta-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+.ai-team-meta-card{padding:14px 14px 13px;border-radius:17px;border:1px solid #edeaf8;background:#fff;box-shadow:0 10px 24px rgba(53,55,89,.04)}
+.ai-team-meta-card b{display:block;font-size:12px;margin-bottom:8px;color:#2d3348}
+.ai-team-meta-card ul{margin:0;padding-left:18px;color:#5f6577;font-size:11px;line-height:1.7}
+.ai-team-meta-card li+li{margin-top:2px}
+.ai-team-mood{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.ai-team-mood .pill{padding:8px 11px;border-radius:999px;background:#fff9ef;border:1px solid #f5dfbc;color:#bc7c21;font-size:10px;font-weight:900;letter-spacing:.03em}
+.ai-team-profile-note{margin-top:16px;padding:14px 15px;border-radius:18px;background:linear-gradient(135deg,#fffaf0,#fff);border:1px solid #f6e5c4;color:#736957;font-size:12px;line-height:1.7}
+@media(max-width:980px){.ai-team-profile-shell{grid-template-columns:1fr}.ai-team-profile-visual{border-right:0;border-bottom:1px solid #ece9fb}.ai-team-meta-grid{grid-template-columns:1fr}}
+
+.agent-next-action{margin:14px 0 16px;padding:16px 17px;border-radius:18px;background:linear-gradient(135deg,#f8f6ff,#fff);border:1px solid #e7e1ff;box-shadow:0 12px 24px rgba(71,68,121,.05)}
+.agent-next-action-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:9px}
+.agent-next-action-head b{font-size:14px}.agent-next-action-head span{display:block;margin-top:4px;font-size:11px;color:#71758a;line-height:1.5}
+.agent-next-action-list{display:grid;gap:7px;margin-top:8px}
+.agent-next-action-item{display:flex;gap:8px;align-items:flex-start;padding:9px 10px;border-radius:12px;background:#fff;border:1px solid #efecff;font-size:11px;color:#5d6477}
+.agent-next-action-item i{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:999px;background:#f1edff;color:#6e59de;font-style:normal;font-size:11px;font-weight:900;flex:0 0 18px;margin-top:1px}
+.agent-position-list{display:grid;gap:10px}
+.agent-position{padding:14px 15px;border:1px solid #ece9f8;border-radius:18px;background:#fff;box-shadow:0 12px 24px rgba(53,55,89,.04)}
+.agent-position-card{display:grid;grid-template-columns:58px minmax(0,1fr);gap:12px;align-items:start}
+.agent-position-avatar{width:58px;height:58px;border-radius:18px;background:#f3f0ff center center/cover no-repeat;box-shadow:inset 0 0 0 1px rgba(255,255,255,.7)}
+.agent-position-copy{min-width:0}
+.agent-position-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:7px}
+.agent-position-name{display:flex;flex-direction:column;gap:2px;min-width:0}
+.agent-position-name b{font-size:14px;line-height:1.2}.agent-position-name small{font-size:10px;color:#7e8598;font-weight:800;letter-spacing:.03em}
+.agent-position-verdict{display:inline-flex;align-items:center;padding:6px 9px;border-radius:999px;background:#f7f6ff;border:1px solid #eceafd;font-size:10px;font-weight:900;color:#655ad9;white-space:nowrap}
+.agent-position-summary{font-size:12px;line-height:1.7;color:#5f6679}
+.agent-position-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}.agent-position-tags span{padding:6px 9px;border-radius:999px;background:#fff8ef;border:1px solid #f5dfbb;font-size:10px;color:#b97928;font-weight:800}
+
 </style>
 </head>
 <body>
@@ -2955,7 +3016,7 @@ body[data-canvas-group="team"]{--canvas-a:#7569e8;--canvas-b:#d875a3;--canvas-c:
       </div>
     </section>
 
-    <section id="aiTeam" class="view ui26-ai-team"><div class="grid"><div class="card full team-intro"><div><span class="eyebrow purple">성민 AI · EXECUTIVE TEAM</span><h3>각자 다른 역할, 하나의 Life OS.</h3><p>같은 세계관의 웹툰 캐릭터를 동일한 카드 프레임으로 먼저 적용하고 정식 Hero Banner 규격을 나중에 확정합니다.</p></div><div class="team-intro-badge">CHARACTER PREVIEW</div></div><div class="card full"><div class="sh"><h3>AI Executive Team</h3><span class="pill">TEAM</span></div><div class="team ui26-team-grid" id="teamList"></div></div><div class="card full"><div class="sh"><h3>바로가기</h3></div><div class="quick-links"><a class="external" href="https://chatgpt.com" target="_blank" rel="noopener">💬 ChatGPT</a><a class="external" href="https://gemini.google.com" target="_blank" rel="noopener">✨ Gemini</a><a class="external" href="https://calendar.google.com" target="_blank" rel="noopener">📅 Google Calendar</a><a class="external" href="https://github.com" target="_blank" rel="noopener">🐙 GitHub</a><a class="external" href="https://drive.google.com" target="_blank" rel="noopener">📂 Google Drive</a></div></div></div></section>
+    <section id="aiTeam" class="view ui26-ai-team"><div class="grid"><div class="card full team-intro"><div><span class="eyebrow purple">성민 AI · EXECUTIVE TEAM</span><h3>각자 다른 역할, 하나의 Life OS.</h3><p>사이드바의 모든 팀원을 바로 확인하고, 카드를 클릭하면 담당 역할 · 성향 · 말투 · 주력 영역을 프로필처럼 볼 수 있도록 정리했습니다.</p></div><div class="team-intro-badge">CHARACTER PREVIEW</div></div><div class="card full"><div class="sh"><h3>AI Executive Team</h3><span class="pill">TEAM</span></div><div class="team ui26-team-grid" id="teamList"></div></div><div class="card full ai-team-profile-card"><div class="sh"><h3>팀원 프로필 & 성향</h3><span class="pill" id="teamProfileBadge">하니</span></div><div id="teamProfilePanel" class="ai-team-profile-shell"></div></div><div class="card full"><div class="sh"><h3>바로가기</h3></div><div class="quick-links"><a class="external" href="https://chatgpt.com" target="_blank" rel="noopener">💬 ChatGPT</a><a class="external" href="https://gemini.google.com" target="_blank" rel="noopener">✨ Gemini</a><a class="external" href="https://calendar.google.com" target="_blank" rel="noopener">📅 Google Calendar</a><a class="external" href="https://github.com" target="_blank" rel="noopener">🐙 GitHub</a><a class="external" href="https://drive.google.com" target="_blank" rel="noopener">📂 Google Drive</a></div></div></div></section>
     <section id="settings" class="view"><div class="grid">
 <div class="card full"><div class="sh"><h3>데이터 저장 상태</h3><span class="pill" id="storageStatePill">LOCAL</span></div>
 <div class="data-status-grid" id="storageStats"></div>
@@ -4938,24 +4999,42 @@ const team=[
 {key:"nauen",emoji:"🌿",name:"나은",role:"Health Coach",desc:"다이어트·운동·회복과 생활습관",go:"diet",tone:"mint"},
 {key:"hina",emoji:"🇯🇵",name:"히나",role:"Study Guide",desc:"공부·대학교·자격증 학습 관리",go:"study",tone:"peach"},
 {key:"sua",emoji:"💼",name:"수아",role:"Chief of Staff",desc:"할 일·캘린더·업무·문서 보조",go:"work",tone:"blue"},
-{key:"haru",emoji:"☕",name:"하루",role:"Life Curator",desc:"Wish-list·독서/서재 기록",go:"wishlist",tone:"orange"},
+{key:"haru",emoji:"☕",name:"하루",role:"Life Curator",desc:"Wish-list·독서/서재·일상 기록",go:"wishlist",tone:"orange"},
 {key:"suyeon",emoji:"⚽",name:"수연",role:"Head Coach · Travel Planner",desc:"여행·게임·전술 기록",go:"travel",tone:"violet"},
-{key:"minji",emoji:"🎬",name:"민지",role:"Screen & Daily Mate",desc:"시청 아카이브·일기 기록",go:"movie",tone:"orange"}
+{key:"minji",emoji:"🎬",name:"민지",role:"Knowledge / Culture Archive Assistant",desc:"시청 아카이브·일기·문화 기록",go:"movie",tone:"orange"}
 ];
-function teamCard(x){const img=agentImages[x.key];return `<button class="member ui26-member tone-${x.tone}" data-go="${x.go}"><div class="member-visual ${img?'has-photo':''}" ${img?`style="background-image:url(${img})"`:''}>${img?'':`<span>${x.emoji}</span><small>DESIGN<br>COMING SOON</small>`}</div><div class="member-copy"><span class="member-role">${x.role}</span><b>${x.name}</b><p>${x.desc}</p><span class="member-link">담당 화면 바로가기 →</span></div></button>`}
+const TEAM_PROFILE_META={
+  hani:{rank:"Executive Lead",headline:"오빠의 Life OS 전체 구조와 방향을 총괄하는 메인 파트너",focus:["대시보드 전체 흐름 관리","투자/설정/데이터 총괄","AI 결재실 대표 종합"],traits:["친근하지만 판단은 냉정","데이터 보존과 안정성 최우선","전체 그림을 먼저 보는 PM형"],style:["오빠라고 부르며 친근하게 대화","팩트와 가설을 분리해서 설명","중요한 건 먼저 결론부터 말해줌"],strengths:["우선순위 정리","프로젝트 구조화","에이전트 의견 종합"],quote:"오빠, 전체 흐름은 내가 잡을게. 각 파트는 팀원들이 잘 굴러가게 만들면 돼.",signature:["총괄","투자","설정/데이터"],note:"핵심 역할: 대시보드, 투자, 설정/데이터, AI 결재실 대표 종합 판단"},
+  jieun:{rank:"Finance Lead",headline:"돈의 흐름과 소비 습관을 숫자로 정리해 주는 자산 파트너",focus:["자산 현황 관리","가계부 / 월 결산","현금흐름과 예산 통제"],traits:["차분하고 현실적","감정보다 숫자 우선","새는 돈을 먼저 잡는 타입"],style:["고객님·오빠 톤을 오가며 말함","쓴 금액보다 이유를 먼저 봄","과소비에는 부드럽지만 단호하게 제동"],strengths:["예산 점검","소비 복기","저축 여력 찾기"],quote:"잔고보다 흐름이에요. 오빠 돈이 어디서 와서 어디로 가는지가 먼저예요.",signature:["자산","가계부","현금흐름"],note:"핵심 역할: 자산 탭, 가계부 탭, 카드/소비 기록과 월간 결산 정리"},
+  nauen:{rank:"Health Coach",headline:"체중 감량과 생활 습관을 꾸준하게 밀어주는 건강 파트너",focus:["체중 추세 관리","식단 / 운동 기록","회복·생활습관 피드백"],traits:["밝고 애교 많음","필요할 때는 강하게 제동","지속 가능한 감량을 중시"],style:["오빠를 귀엽게 놀리면서도 관리","극단적 제한식은 말림","추세와 루틴을 함께 봄"],strengths:["다이어트 동기 부여","과식 후 리커버리","루틴 점검"],quote:"신발 내려놔. 무리한 운동 말고 오늘 할 수 있는 루틴부터 갑시다 오빠.",signature:["다이어트","운동","건강 습관"],note:"핵심 역할: 다이어트 탭, 운동 탭, 체중·식단·생활습관 코칭"},
+  hina:{rank:"Study Guide",headline:"대학교와 자격증, 일본어 학습을 차분하게 이끄는 공부 파트너",focus:["공부 계획 관리","대학교 일정/과목 관리","JLPT·자격증 학습"],traits:["상냥하고 세심함","격려형 튜터","실수도 편하게 교정"],style:["차분한 선생님 톤","작은 진전도 크게 칭찬","학습 루틴과 마감 관리에 강함"],strengths:["학습 계획","복습 루틴","대학 일정 정리"],quote:"오빠, 완벽하게 하려 하지 말고 오늘 분량부터 끝내봐요. 그게 제일 빨라요.",signature:["공부","대학교","자격증"],note:"핵심 역할: 공부 탭, 대학 관리, 자격증/JLPT 진도 관리"},
+  sua:{rank:"Chief of Staff",headline:"일정과 할 일, 업무 문서를 정리해 주는 실무형 비서",focus:["할 일 목록","캘린더 / 일정 보조","업무·문서 정리"],traits:["정돈된 실무형","깔끔하고 빠름","업무상 표현을 잘 다듬음"],style:["실행 우선으로 간단명료하게 말함","해야 할 일과 다음 행동을 분명히 제시","메일·문구를 보기 좋게 정리"],strengths:["업무 정리","우선순위 분배","문서/메일 다듬기"],quote:"지금 필요한 건 한 번에 다 하는 게 아니라, 순서대로 끝내는 거예요.",signature:["업무","캘린더","문서"],note:"핵심 역할: 할 일, 캘린더, 업무 보조와 문서/메일 정리"},
+  haru:{rank:"Life Curator",headline:"일상 취향과 위시리스트, 독서 생활을 함께 관리하는 라이프 메이트",focus:["Wish-list 관리","독서 / 서재 기록","일상 취향 정리"],traits:["친근하고 장난기 있음","생활밀착형","가성비와 현실감 중시"],style:["동네친구 같은 톤","이미 산 건 그 상태에서 이어서 조언","가볍지만 핵심은 정확하게"],strengths:["생활용품 정리","취향 아카이브","독서 기록"],quote:"오빠, 이건 예쁜데 우리 예산이랑 실제 사용 빈도도 같이 봐야 돼요 ㅎㅎ",signature:["위시","독서/서재","일상"],note:"핵심 역할: 위시리스트, 독서/서재, 생활 취향 아카이브"},
+  suyeon:{rank:"Head Coach · Travel Planner",headline:"여행과 게임, 전술 이야기를 에너지 있게 이끄는 코치형 파트너",focus:["여행 기록 / 계획","게임 기록","전술적 사고와 리뷰"],traits:["에너지 높고 추진력 있음","결정적일 땐 데이터형","감독님/제네럴 홍 세계관 보유"],style:["밝고 카리스마 있는 톤","근들갑은 분석 뒤에만","핵심 흐름과 동선을 먼저 봄"],strengths:["여행 동선 정리","게임·전술 리뷰","동기 부여"],quote:"감독님, 큰 동선부터 잡고 현장에서는 유연하게 갑시다. 그게 승리 플랜이에요.",signature:["여행","게임","전술"],note:"핵심 역할: 여행 탭, 게임 탭, 레코드성 콘텐츠 정리"},
+  minji:{rank:"Knowledge / Culture Archive Assistant",headline:"시청 기록과 문화 콘텐츠, 일상을 발랄하게 아카이빙하는 파트너",focus:["시청 아카이브","일기 기록","문화/지식 기록 보조"],traits:["톡톡 튀고 밝음","핑크 톤의 아카이브 감성","가볍게 던지지만 센스 있음"],style:["친근하고 재치 있는 톤","본 취향을 존중하며 기록","재미 요소를 살려 정리"],strengths:["시청 기록 정리","일상 메모 아카이브","콘텐츠 취향 정리"],quote:"오빠 이건 기록해둬야 돼요. 나중에 보면 그때의 감정까지 같이 떠오르거든요.",signature:["시청","일기","아카이브"],note:"핵심 역할: 시청 아카이브, 일기, 문화·지식 보관소 느낌의 기록"}
+};
+let activeTeamProfileKey="hani";
+function teamMeta(key){return TEAM_PROFILE_META[key]||TEAM_PROFILE_META.hani}
+function teamByKey(key){return team.find(x=>x.key===key)||team[0]}
+function teamCard(x){const img=agentImages[x.key];return `<button class="member ui26-member tone-${x.tone}" data-team-key="${x.key}" data-go="${x.go}" title="${x.name} 프로필 보기"><div class="member-visual ${img?'has-photo':''}" ${img?`style="background-image:url(${img})"`:''}>${img?'':`<span>${x.emoji}</span><small>DESIGN<br>COMING SOON</small>`}</div><div class="member-copy"><span class="member-role">${x.role}</span><b>${x.name}</b><p>${x.desc}</p><span class="member-link"></span></div></button>`}
+function teamListHtml(items){return `<ul>${items.map(v=>`<li>${esc(v)}</li>`).join("")}</ul>`}
+function updateTeamActiveState(key){document.querySelectorAll(".ui26-member[data-team-key]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.teamKey===key));document.querySelectorAll(".sidebar-team-face[data-team-key]").forEach(btn=>btn.classList.toggle("active",btn.dataset.teamKey===key));}
+function renderTeamProfile(key=activeTeamProfileKey){
+  const panel=$("teamProfilePanel");if(!panel)return;const member=teamByKey(key),meta=teamMeta(key),img=agentImages[key]||sidebarAgentImages[key]||"";activeTeamProfileKey=member.key;
+  if($("teamProfileBadge"))$("teamProfileBadge").textContent=member.name;
+  panel.innerHTML=`<div class="ai-team-profile-visual tone-${member.tone}"><div class="ai-team-profile-avatar" style="${img?`background-image:url(${img})`:''}"></div><div class="ai-team-profile-tag">${esc(meta.rank||member.role)}</div><div class="ai-team-profile-quote">“${esc(meta.quote||member.desc)}”</div></div><div class="ai-team-profile-body"><div class="ai-team-profile-head"><div><div class="ai-team-profile-role">${esc(member.role)}</div><h3>${esc(member.name)}</h3><div class="ai-team-profile-sub">${esc(meta.headline||member.desc)}</div></div><div class="ai-team-profile-actions"><button class="btn sm primary" type="button" id="teamProfileGoMain">담당 화면 열기</button></div></div><div class="ai-team-mood">${(meta.signature||[]).map(v=>`<span class="pill">${esc(v)}</span>`).join("")}</div><div class="ai-team-meta-grid"><div class="ai-team-meta-card"><b>담당 역할</b>${teamListHtml(meta.focus||[])}</div><div class="ai-team-meta-card"><b>성향</b>${teamListHtml(meta.traits||[])}</div><div class="ai-team-meta-card"><b>대화 스타일</b>${teamListHtml(meta.style||[])}</div><div class="ai-team-meta-card"><b>강점</b>${teamListHtml(meta.strengths||[])}</div></div><div class="ai-team-profile-note">${esc(meta.note||member.desc)}</div></div>`;
+  const goBtn=$("teamProfileGoMain");if(goBtn)goBtn.onclick=()=>showView(member.go||"home");
+  updateTeamActiveState(member.key);
+}
+function openTeamProfile(key,{showTeam=true}={}){const member=teamByKey(key);activeTeamProfileKey=member.key;if(showTeam)showView("aiTeam");renderTeamProfile(member.key);const card=$("teamProfilePanel");if(card&&showTeam)card.scrollIntoView({behavior:"smooth",block:"start"})}
 function renderSidebarTeamFaces(){
   const el=$("sidebarTeamFaces");if(!el)return;
-  const picks=["hani","jieun","nauen","hina","sua","haru"];
-  el.innerHTML=picks.map(key=>{
-    const x=team.find(t=>t.key===key),img=sidebarAgentImages[key]||agentImages[key];
-    return `<button class="sidebar-team-face agent-${esc(key)} tone-${x?.tone||"purple"}" data-go="${x?.go||"aiTeam"}" title="${esc(x?.name||key)} · ${esc(x?.role||"")}">
-      <span class="sidebar-team-photo" style="${img?`background-image:url(${img})`:""}">${img?"":esc(x?.emoji||"✦")}</span>
-      <small>${esc(x?.name||key)}</small>
-    </button>`;
-  }).join("");
-  el.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>showView(b.dataset.go));
+  const picks=team.map(x=>x.key);
+  el.innerHTML=picks.map(key=>{const x=teamByKey(key),img=sidebarAgentImages[key]||agentImages[key];return `<button class="sidebar-team-face agent-${esc(key)} tone-${x?.tone||"purple"}" data-team-key="${x?.key||key}" title="${esc(x?.name||key)} · ${esc(x?.role||"")}"><span class="sidebar-team-photo" style="${img?`background-image:url(${img})`:""}">${img?"":esc(x?.emoji||"✦")}</span><small>${esc(x?.name||key)}</small></button>`;}).join("");
+  el.querySelectorAll("[data-team-key]").forEach(b=>b.onclick=()=>openTeamProfile(b.dataset.teamKey,{showTeam:true}));
+  updateTeamActiveState(activeTeamProfileKey||team[0]?.key||"hani");
 }
-function renderTeam(){const html=team.map(teamCard).join("");if($("teamList"))$("teamList").innerHTML=html;if($("homeTeamList"))$("homeTeamList").innerHTML=html;renderSidebarTeamFaces();document.querySelectorAll(".ui26-member[data-go]").forEach(b=>b.onclick=()=>showView(b.dataset.go))}
+function renderTeam(){const html=team.map(teamCard).join("");if($("teamList"))$("teamList").innerHTML=html;if($("homeTeamList"))$("homeTeamList").innerHTML=html;renderSidebarTeamFaces();document.querySelectorAll(".ui26-member[data-team-key]").forEach(b=>b.onclick=()=>openTeamProfile(b.dataset.teamKey,{showTeam:true}));renderTeamProfile(activeTeamProfileKey||team[0]?.key||"hani")}
 
 
 // ===== v2.9.0 Campus MVP =====
@@ -6097,8 +6176,19 @@ function agentTimelineHtml(c,events){
 }
 function agentListHtml(items,empty="없음"){const rows=agentArray(items);return rows.length?rows.map(x=>`<div class="agent-check">${esc(typeof x==="string"?x:JSON.stringify(x))}</div>`).join(""):`<div class="agent-check" style="color:var(--muted)">${esc(empty)}</div>`}
 function agentPositionsHtml(h,reviews){
+  function agentKeyToTeamKey(raw){const s=String(raw||"").trim().toLowerCase();const alias={hani:"hani",하니:"hani",chief:"hani",cio:"hani",jieun:"jieun",지은:"jieun",finance:"jieun",money:"jieun",nauen:"nauen",naeun:"nauen",나은:"nauen",health:"nauen",hina:"hina",히나:"hina",study:"hina",sua:"sua",수아:"sua",staff:"sua",haru:"haru",하루:"haru",life:"haru",suyeon:"suyeon",수연:"suyeon",travel:"suyeon",coach:"suyeon",minji:"minji",민지:"minji",archive:"minji",movie:"minji"};return alias[s]||""}
   const round=agentLatestReviewRound(reviews),latest=reviews.filter(r=>Number(r.review_round)===round),mapped=agentArray(h.agent_positions),rows=mapped.length?mapped:latest.map(r=>({agent_key:r.agent_key,verdict:r.verdict,key_point:r.summary}));
-  return rows.length?rows.map(p=>`<div class="agent-position"><div class="agent-position-head"><b>${esc(p.agent_key||"AGENT")}</b><span>${esc(AGENT_VERDICT_LABELS[p.verdict]||p.verdict||"-")}</span></div><div>${esc(p.key_point||p.summary||"")}</div></div>`).join(""):'<div class="agent-check" style="color:var(--muted)">전문 Agent 의견 없음</div>';
+  return rows.length?rows.map(p=>{const key=agentKeyToTeamKey(p.agent_key),m=key?teamByKey(key):null,meta=key?teamMeta(key):null,img=key?(agentImages[key]||sidebarAgentImages[key]||""):"",tags=(meta?.signature||[]).slice(0,3);return `<div class="agent-position"><div class="agent-position-card"><div class="agent-position-avatar" style="${img?`background-image:url(${img})`:''}"></div><div class="agent-position-copy"><div class="agent-position-head"><div class="agent-position-name"><b>${esc(m?.name||p.agent_key||"AGENT")}</b><small>${esc(m?.role||p.agent_key||"")}</small></div><span class="agent-position-verdict">${esc(AGENT_VERDICT_LABELS[p.verdict]||p.verdict||"-")}</span></div><div class="agent-position-summary">${esc(p.key_point||p.summary||"")}</div>${tags.length?`<div class="agent-position-tags">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}</div></div></div>`}).join(""):'<div class="agent-check" style="color:var(--muted)">전문 Agent 의견 없음</div>';
+}
+function agentActionGuideHtml(c,h,v,reviews){
+  const recommendation=h.recommendation||"NEEDS_DATA",ready=Boolean(h.ready_for_decision)&&c.verification_status==="PASS",qs=agentArray(v.consolidated_questions).length?agentArray(v.consolidated_questions):agentArray(h.representative_questions),conditional=agentArray(v.conditional_checks),items=[];let title="지금 해야 할 일",desc="대표가 다음 행동을 바로 알 수 있게 요약합니다.",badge="GUIDE";
+  if(["ANALYZING","DRAFT"].includes(c.status)){title="현재 상태";badge="분석 진행";desc="AI TEAM이 안건을 검토 중입니다. 아래 내용이 채워지면 결재 판단 단계로 넘어갑니다.";items.push("전문 Agent 의견이 쌓이는 중입니다.");items.push("하니 종합안과 Verify 결과가 생성되면 대표 결재 Gate가 열립니다.");}
+  else if(!ready&&qs.length){title="대표 추가정보 필요";badge="답변 필요";desc="아직 바로 결재할 수 없어요. 먼저 아래 질문에 답하면 재검토가 더 정확해집니다.";qs.slice(0,3).forEach(q=>items.push(q));}
+  else if(!ready){title="결재 대기 전 체크";badge="Gate 점검";desc="왜 WAIT인지와 다음 단계만 간단히 보여줍니다.";items.push(`Verify 상태: ${AGENT_STATUS_LABELS[c.status]||c.status} / ${c.verification_status||'-'}`);if(conditional.length)conditional.slice(0,3).forEach(x=>items.push(typeof x==="string"?x:JSON.stringify(x)));else items.push("하니 종합안 또는 검증 PASS가 아직 완료되지 않았습니다.");}
+  else if(["AWAITING_APPROVAL","HELD"].includes(c.status)){title="대표 결재 가능";badge="READY";desc="이제 승인 / 보류 / 반려 / 수정 요청 중 하나를 선택할 수 있습니다.";items.push(`AI TEAM 대표 권고: ${AGENT_VERDICT_LABELS[recommendation]||recommendation}`);items.push("승인은 대표 결정 이력을 남기며, Life OS Commit은 별도 단계로 기록됩니다.");if(conditional.length)items.push(`조건/재확인 ${conditional.length}개를 함께 확인하세요.`);}
+  else if(["APPROVED","REJECTED","COMMITTED","COMMITTING"].includes(c.status)){title="최근 처리 상태";badge=AGENT_STATUS_LABELS[c.status]||c.status;desc="현재 안건은 이미 대표 결정 또는 Commit 단계에 들어가 있습니다.";items.push(`현재 상태: ${AGENT_STATUS_LABELS[c.status]||c.status}`);items.push(`AI 권고: ${AGENT_VERDICT_LABELS[recommendation]||recommendation}`);items.push(`마지막 리뷰 라운드: ${agentLatestReviewRound(reviews)}차`);}
+  else {items.push(`AI TEAM 대표 권고: ${AGENT_VERDICT_LABELS[recommendation]||recommendation}`);items.push(`Verify: ${c.verification_status||'-'} / Status: ${AGENT_STATUS_LABELS[c.status]||c.status}`);}
+  return `<div class="agent-next-action"><div class="agent-next-action-head"><div><b>${esc(title)}</b><span>${esc(desc)}</span></div><span class="agent-status ${ready?"ok":qs.length?"warn":""}">${esc(badge)}</span></div><div class="agent-next-action-list">${items.map((item,i)=>`<div class="agent-next-action-item"><i>${i+1}</i><div>${esc(item)}</div></div>`).join("")}</div></div>`;
 }
 function agentQuestionsHtml(v,h,c){
   const qs=agentArray(v.consolidated_questions).length?agentArray(v.consolidated_questions):agentArray(h.representative_questions);if(!qs.length)return "";
@@ -6116,12 +6206,13 @@ function renderAgentCaseDetail(){
     <div class="agent-timeline">${agentTimelineHtml(c,events)}</div>
     <div class="agent-summary"><div class="agent-summary-label">HANI EXECUTIVE REVIEW · ${esc(AGENT_VERDICT_LABELS[recommendation]||recommendation)}</div><p>${esc(h.executive_summary||v.summary||"하니 종합 결재안이 아직 준비되지 않았습니다.")}</p></div>
     <div class="agent-decision-grid"><div class="agent-decision-box"><small>${axisLabels[0]}</small><b>${esc(h.purchase_eligibility||"-")}</b></div><div class="agent-decision-box"><small>${axisLabels[1]}</small><b>${esc(h.product_selection||"-")}</b></div><div class="agent-decision-box"><small>${axisLabels[2]}</small><b>${esc(h.purchase_method||"-")}</b></div><div class="agent-decision-box"><small>${axisLabels[3]}</small><b>${esc(h.timing||"-")}</b></div></div>
+    ${agentActionGuideHtml(c,h,v,reviews)}
     <div class="agent-subsection"><div class="agent-subsection-title"><b>전문 Agent 의견</b><span class="agent-status">${agentLatestReviewRound(reviews)}차 Review</span></div><div class="agent-position-list">${agentPositionsHtml(h,reviews)}</div></div>
     <div class="agent-subsection"><div class="agent-subsection-title"><b>조건 / 재확인</b><span class="agent-status ${conditional.length?"warn":"ok"}">${conditional.length}개</span></div><div class="agent-check-list">${agentListHtml(conditional,"추가 조건 없음")}</div></div>
     ${conflicts.length?`<div class="agent-subsection"><div class="agent-subsection-title"><b>주요 이견</b></div><div class="agent-check-list">${agentListHtml(conflicts)}</div></div>`:""}
     ${required.length?`<div class="agent-subsection"><div class="agent-subsection-title"><b>후속 조치</b></div><div class="agent-check-list">${agentListHtml(required)}</div></div>`:""}
     ${agentQuestionsHtml(v,h,c)}
-    <div class="agent-decision-dock"><div class="row start"><div><b>홍대표 최종 결재</b><div class="sub">${ready?"AI 심의는 결재 가능한 상태입니다.":"아직 대표 결재 Gate가 열리지 않았습니다."} · Commit ${esc(commitText)}</div></div><span class="agent-status ${ready?"ok":"warn"}">${ready?"READY":"WAIT"}</span></div><div class="agent-note"><textarea id="agentRepresentativeNote" placeholder="선택 메모 · 수정 요청을 누를 때는 필수입니다."></textarea></div><div class="agent-decision-actions"><button class="btn approve" data-agent-decision="APPROVE" type="button" ${canDecide?"":"disabled"}>✓ 승인</button><button class="btn hold" data-agent-decision="HOLD" type="button" ${canDecide?"":"disabled"}>⏸ 보류</button><button class="btn danger" data-agent-decision="REJECT" type="button" ${canDecide?"":"disabled"}>✕ 반려</button><button class="btn" data-agent-decision="REVISION_REQUESTED" type="button" ${canDecide?"":"disabled"}>↺ 수정 요청</button></div>${latestDecision?`<div class="agent-last-decision"><b>최근 대표 결정 · ${esc(AGENT_DECISION_LABELS[latestDecision.representative_decision]||latestDecision.representative_decision)}</b><br>${esc(agentFmtDate(latestDecision.decided_at))} · AI 권고 ${esc(AGENT_VERDICT_LABELS[latestDecision.ai_recommendation]||latestDecision.ai_recommendation||"-")} · Override ${latestDecision.override?"YES":"NO"} · Commit ${esc(latestDecision.commit_status||"NOT_STARTED")}</div>`:""}</div>`;
+    <div class="agent-decision-dock"><div class="row start"><div><b>홍대표 최종 결재</b><div class="sub">${ready?"지금은 대표 결재를 내릴 수 있는 상태입니다.":"아직 바로 결재할 수 없어요. 위의 안내에서 왜 WAIT인지와 다음 행동을 먼저 확인하세요."} · Commit ${esc(commitText)}</div></div><span class="agent-status ${ready?"ok":"warn"}">${ready?"READY":"WAIT"}</span></div><div class="agent-note"><textarea id="agentRepresentativeNote" placeholder="선택 메모 · 수정 요청을 누를 때는 필수입니다."></textarea></div><div class="agent-decision-actions"><button class="btn approve" data-agent-decision="APPROVE" type="button" ${canDecide?"":"disabled"}>✓ 승인</button><button class="btn hold" data-agent-decision="HOLD" type="button" ${canDecide?"":"disabled"}>⏸ 보류</button><button class="btn danger" data-agent-decision="REJECT" type="button" ${canDecide?"":"disabled"}>✕ 반려</button><button class="btn" data-agent-decision="REVISION_REQUESTED" type="button" ${canDecide?"":"disabled"}>↺ 수정 요청</button></div>${latestDecision?`<div class="agent-last-decision"><b>최근 대표 결정 · ${esc(AGENT_DECISION_LABELS[latestDecision.representative_decision]||latestDecision.representative_decision)}</b><br>${esc(agentFmtDate(latestDecision.decided_at))} · AI 권고 ${esc(AGENT_VERDICT_LABELS[latestDecision.ai_recommendation]||latestDecision.ai_recommendation||"-")} · Override ${latestDecision.override?"YES":"NO"} · Commit ${esc(latestDecision.commit_status||"NOT_STARTED")}</div>`:""}</div>`;
   root.querySelectorAll("[data-agent-decision]").forEach(b=>b.onclick=()=>agentRecordDecision(b.dataset.agentDecision));if($("agentSubmitAnswers"))$("agentSubmitAnswers").onclick=agentSubmitAnswers;
 }
 async function agentRecordDecision(decision){
