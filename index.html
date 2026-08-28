@@ -2513,6 +2513,62 @@ body[data-canvas-group="team"]{--canvas-a:#7569e8;--canvas-b:#d875a3;--canvas-c:
 .agent-procurement-card{padding:13px;border:1px solid #dfe5f3;background:linear-gradient(145deg,#fff,#f8faff);border-radius:15px;box-shadow:0 8px 20px rgba(52,54,87,.05)}
 .agent-procurement-card .topline{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.agent-procurement-card b{font-size:13px;line-height:1.35}.agent-procurement-price{font-size:11px;font-weight:900;color:#4b67be;white-space:nowrap}.agent-procurement-fit{font-size:11px;line-height:1.55;color:#5f6679;margin-top:7px}.agent-procurement-meta{font-size:10px;color:#8a91a3;margin-top:5px}.agent-policy-draft{background:#fffaf1;border-color:#f3dfb9}.agent-policy-draft .agent-check{background:#fff;border-color:#f3e6cb}
 
+
+/* ===== v2.9.35 : HANI executive avatar + per-agent color accents ===== */
+.agent-summary.agent-hani,.agent-position{
+  --agent-accent:#6f5dd8;
+  --agent-soft:#f6f3ff;
+}
+.agent-summary.agent-hani,.agent-position.agent-hani{--agent-accent:#6f5dd8;--agent-soft:#f6f3ff}
+.agent-position.agent-jieun{--agent-accent:#bf8b52;--agent-soft:#fdf6ee}
+.agent-position.agent-nauen{--agent-accent:#36a27d;--agent-soft:#eefaf4}
+.agent-position.agent-hina{--agent-accent:#dc7a8c;--agent-soft:#fff3f6}
+.agent-position.agent-sua{--agent-accent:#5f88d8;--agent-soft:#f2f7ff}
+.agent-position.agent-haru{--agent-accent:#e19a41;--agent-soft:#fff8ee}
+.agent-position.agent-suyeon{--agent-accent:#8f6de4;--agent-soft:#f6f2ff}
+.agent-position.agent-minji{--agent-accent:#df70a4;--agent-soft:#fff3f8}
+
+.agent-summary.agent-hani{
+  position:relative!important;
+  overflow:hidden!important;
+}
+.agent-summary.agent-hani:after{
+  content:""!important;
+  position:absolute!important;
+  inset:0 auto 0 0!important;
+  width:6px!important;
+  border-radius:18px 0 0 18px!important;
+  background:linear-gradient(180deg,var(--agent-accent),color-mix(in srgb,var(--agent-accent) 55%,#ffcb7a))!important;
+}
+.agent-summary-dialog{display:grid!important;grid-template-columns:64px minmax(0,1fr)!important;gap:14px!important;align-items:start!important;margin-top:8px!important}
+.agent-summary-avatar{width:64px!important;height:64px!important;border-radius:20px!important;background:#f3f0ff center center/cover no-repeat!important;background-image:var(--agent-photo,none)!important;box-shadow:0 10px 22px rgba(54,52,90,.12),0 0 0 3px rgba(255,255,255,.9),0 0 0 5px color-mix(in srgb,var(--agent-accent) 42%,#fff)!important}
+.agent-summary-dialog-body{min-width:0!important;display:grid!important;gap:8px!important}
+.agent-summary-speaker{display:flex!important;align-items:flex-start!important;justify-content:space-between!important;gap:10px!important}
+.agent-summary-name{display:flex!important;flex-direction:column!important;gap:3px!important}
+.agent-summary-name b{font-size:16px!important;line-height:1.2!important;font-weight:1000!important;color:#252a3c!important}
+.agent-summary-name small{font-size:11px!important;line-height:1.35!important;color:#7b8192!important;font-weight:780!important;letter-spacing:.02em!important}
+.agent-summary-bubble{position:relative!important;padding:14px 16px!important;border-radius:16px!important;background:linear-gradient(180deg,color-mix(in srgb,var(--agent-soft) 72%,#fff),#fff)!important;border:1px solid color-mix(in srgb,var(--agent-accent) 18%,#eceaf6)!important;box-shadow:0 8px 18px rgba(58,59,89,.05)!important}
+.agent-summary-bubble:before{content:""!important;position:absolute!important;left:-10px!important;top:19px!important;width:18px!important;height:18px!important;background:linear-gradient(135deg,color-mix(in srgb,var(--agent-soft) 72%,#fff),#fff)!important;border-left:1px solid color-mix(in srgb,var(--agent-accent) 18%,#eceaf6)!important;border-bottom:1px solid color-mix(in srgb,var(--agent-accent) 18%,#eceaf6)!important;transform:rotate(45deg)!important;border-bottom-left-radius:4px!important}
+.agent-summary-quote{font-size:16.2px!important;line-height:1.74!important;font-weight:820!important;color:#272d40!important;letter-spacing:-.008em!important}
+.agent-summary-quote .agent-quote-name{font-size:14px!important;font-weight:1000!important;color:var(--agent-accent)!important;margin-right:7px!important}
+.agent-summary-tags{display:flex!important;flex-wrap:wrap!important;gap:6px!important;padding-left:2px!important}
+.agent-summary-tags span{display:inline-flex!important;align-items:center!important;padding:6px 10px!important;border-radius:999px!important;background:color-mix(in srgb,var(--agent-soft) 76%,#fff)!important;border:1px solid color-mix(in srgb,var(--agent-accent) 20%,#eadfca)!important;font-size:10.3px!important;font-weight:900!important;color:var(--agent-accent)!important}
+
+.agent-position{position:relative!important;overflow:hidden!important}
+.agent-position-card{position:relative!important}
+.agent-position-avatar{box-shadow:0 7px 18px rgba(54,52,90,.12)!important,0 0 0 3px rgba(255,255,255,.92)!important,0 0 0 5px color-mix(in srgb,var(--agent-accent) 36%,#fff)!important}
+.agent-position-name b{color:var(--agent-accent)!important}
+.agent-position-bubble{background:linear-gradient(180deg,color-mix(in srgb,var(--agent-soft) 62%,#fff),#fff)!important;border-color:color-mix(in srgb,var(--agent-accent) 18%,#ebeaf3)!important}
+.agent-position-bubble:before{background:linear-gradient(135deg,color-mix(in srgb,var(--agent-soft) 62%,#fff),#fff)!important;border-left-color:color-mix(in srgb,var(--agent-accent) 18%,#ebeaf3)!important;border-bottom-color:color-mix(in srgb,var(--agent-accent) 18%,#ebeaf3)!important}
+.agent-position-summary .agent-quote-name{color:var(--agent-accent)!important}
+.agent-position-tags span{background:color-mix(in srgb,var(--agent-soft) 76%,#fff)!important;border-color:color-mix(in srgb,var(--agent-accent) 20%,#f5dfbb)!important;color:var(--agent-accent)!important}
+
+@media(max-width:650px){
+  .agent-summary-dialog{grid-template-columns:52px minmax(0,1fr)!important;gap:10px!important}
+  .agent-summary-avatar{width:52px!important;height:52px!important;border-radius:16px!important}
+  .agent-summary-quote{font-size:14.8px!important}
+}
+
 </style>
 
 <style id="v2926-sidebar-team-visual-fix">
@@ -6553,10 +6609,15 @@ function agentInternalContextHtml(c){
   if(!rows.length&&!requested.length&&!domains.length)return "";
   return `<div class="agent-subsection"><div class="agent-subsection-title"><b>이번 검토에 사용한 HANI OS Context</b><span class="agent-status">READ ONLY</span></div><div class="agent-check-list"><div class="agent-check">Primary ${esc(router.primary_intent||c.workflow||"-")} · Context ${esc(domains.join(" + ")||"-")} · Research ${esc(research)}</div>${rows.length?rows.map(x=>`<div class="agent-check">${esc(x)}</div>`).join(""):`<div class="agent-check" style="color:var(--muted)">요청된 내부자료 ${requested.length}개 · 현재 요약할 기록이 없거나 조회 대상이 없습니다.</div>`}</div></div>`;
 }
+function agentReviewTeamKey(raw){const s=String(raw||"").trim().toLowerCase();const alias={hani:"hani",하니:"hani",chief:"hani",cio:"hani",jieun:"jieun",지은:"jieun",finance:"jieun",money:"jieun",nauen:"nauen",naeun:"nauen",나은:"nauen",health:"nauen",hina:"hina",히나:"hina",study:"hina",sua:"sua",수아:"sua",staff:"sua",haru:"haru",하루:"haru",life:"haru",suyeon:"suyeon",수연:"suyeon",travel:"suyeon",coach:"suyeon",minji:"minji",민지:"minji",archive:"minji",movie:"minji"};return alias[s]||""}
+function agentExecutiveSummaryHtml(h,v,latestDecision){
+  const key='hani',member=teamByKey(key)||{},meta=teamMeta(key)||{},img=(sidebarAgentImages[key]||agentImages[key]||""),tone=member.tone||'purple',recommendation=h.recommendation||"NEEDS_DATA",summary=esc(h.executive_summary||v.summary||"하니 종합 결재안이 아직 준비되지 않았습니다."),verdict=esc(AGENT_VERDICT_LABELS[recommendation]||recommendation),tags=agentArray(meta.signature).slice(0,3),role=esc(member.role||meta.rank||"HANI OS Manager");
+  return `<div class="agent-summary verdict-${String(recommendation).toLowerCase()} tone-${tone} agent-hani"><div class="agent-summary-topline"><div class="agent-summary-heading"><span class="agent-summary-kicker">HANI EXECUTIVE REVIEW</span><strong class="agent-summary-title">하니 최종 결론</strong></div><div class="agent-summary-badges"><span class="agent-summary-verdict verdict-${String(recommendation).toLowerCase()}">${verdict}</span>${latestDecision?`<span class="agent-summary-rep-decision">대표 ${esc(AGENT_DECISION_LABELS[latestDecision.representative_decision]||latestDecision.representative_decision)}</span>`:""}</div></div><div class="agent-summary-dialog"><div class="agent-summary-avatar" style="${img?`--agent-photo:url('${img}')`:''}"></div><div class="agent-summary-dialog-body"><div class="agent-summary-speaker"><div class="agent-summary-name"><b>${esc(member.name||'하니')}</b><small>${role}</small></div></div><div class="agent-summary-bubble"><div class="agent-summary-quote"><span class="agent-quote-name">${esc(member.name||'하니')}</span>“${summary}”</div></div>${tags.length?`<div class="agent-summary-tags">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}</div></div></div>`;
+}
+
 function agentPositionsHtml(h,reviews){
-  function agentKeyToTeamKey(raw){const s=String(raw||"").trim().toLowerCase();const alias={hani:"hani",하니:"hani",chief:"hani",cio:"hani",jieun:"jieun",지은:"jieun",finance:"jieun",money:"jieun",nauen:"nauen",naeun:"nauen",나은:"nauen",health:"nauen",hina:"hina",히나:"hina",study:"hina",sua:"sua",수아:"sua",staff:"sua",haru:"haru",하루:"haru",life:"haru",suyeon:"suyeon",수연:"suyeon",travel:"suyeon",coach:"suyeon",minji:"minji",민지:"minji",archive:"minji",movie:"minji"};return alias[s]||""}
   const round=agentLatestReviewRound(reviews),latest=reviews.filter(r=>Number(r.review_round)===round),mapped=agentArray(h.agent_positions),rows=mapped.length?mapped:latest.map(r=>({agent_key:r.agent_key,verdict:r.verdict,key_point:r.summary}));
-  return rows.length?rows.map(p=>{const key=agentKeyToTeamKey(p.agent_key),m=key?teamByKey(key):null,meta=key?teamMeta(key):null,img=key?(sidebarAgentImages[key]||agentImages[key]||""):"",tags=(meta?.signature||[]).slice(0,3),speaker=esc(m?.name||p.agent_key||"AGENT"),role=esc(m?.role||p.agent_key||""),verdict=esc(AGENT_VERDICT_LABELS[p.verdict]||p.verdict||"-"),verdictClass=`verdict-${String(p.verdict||"NEEDS_DATA").toLowerCase()}`,summary=esc(p.key_point||p.summary||"검토 의견이 아직 입력되지 않았습니다.");return `<div class="agent-position ${verdictClass}"><div class="agent-position-card"><div class="agent-position-avatar" style="${img?`--agent-photo:url('${img}')`:''}"></div><div class="agent-position-copy"><div class="agent-position-head"><div class="agent-position-name"><b>${speaker}</b><small>${role}</small></div><span class="agent-position-verdict ${verdictClass}">${verdict}</span></div><div class="agent-position-bubble"><div class="agent-position-summary"><span class="agent-quote-name">${speaker}</span>“${summary}”</div></div>${tags.length?`<div class="agent-position-tags">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}</div></div></div>`}).join(""):'<div class="agent-check" style="color:var(--muted)">전문 Agent 의견 없음</div>';
+  return rows.length?rows.map(p=>{const key=agentReviewTeamKey(p.agent_key),m=key?teamByKey(key):null,meta=key?teamMeta(key):null,img=key?(sidebarAgentImages[key]||agentImages[key]||""):"",tags=(meta?.signature||[]).slice(0,3),speaker=esc(m?.name||p.agent_key||"AGENT"),role=esc(m?.role||p.agent_key||""),verdict=esc(AGENT_VERDICT_LABELS[p.verdict]||p.verdict||"-"),verdictClass=`verdict-${String(p.verdict||"NEEDS_DATA").toLowerCase()}`,toneClass=`tone-${m?.tone||'purple'}`,agentClass=`agent-${key||'unknown'}`,summary=esc(p.key_point||p.summary||"검토 의견이 아직 입력되지 않았습니다.");return `<div class="agent-position ${verdictClass} ${toneClass} ${agentClass}"><div class="agent-position-card"><div class="agent-position-avatar" style="${img?`--agent-photo:url('${img}')`:''}"></div><div class="agent-position-copy"><div class="agent-position-head"><div class="agent-position-name"><b>${speaker}</b><small>${role}</small></div><span class="agent-position-verdict ${verdictClass}">${verdict}</span></div><div class="agent-position-bubble"><div class="agent-position-summary"><span class="agent-quote-name">${speaker}</span>“${summary}”</div></div>${tags.length?`<div class="agent-position-tags">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}</div></div></div>`}).join(""):'<div class="agent-check" style="color:var(--muted)">전문 Agent 의견 없음</div>';
 }
 
 function agentProcurementHtml(c){
@@ -6612,7 +6673,7 @@ function renderAgentCaseDetail(){
   root.innerHTML=`
     <div class="agent-report-head"><div><div class="agent-report-code">${esc(c.case_code||"")} · ${esc(c.workflow||"")}</div><h3>${esc(c.title||"제목 없는 안건")}</h3><div class="sub">업데이트 ${esc(agentFmtDate(c.updated_at))}</div></div><div class="agent-chips"><span class="agent-status ${agentStatusTone(c.status)}">${esc(AGENT_STATUS_LABELS[c.status]||c.status)}</span><span class="agent-status">${esc(c.risk_level||"LOW")} RISK</span><span class="agent-status ${c.verification_status==="PASS"?"ok":"warn"}">VERIFY ${esc(c.verification_status||"-")}</span></div></div>
     <div class="agent-timeline">${agentTimelineHtml(c,events)}</div>
-    <div class="agent-summary verdict-${String(recommendation).toLowerCase()}"><div class="agent-summary-topline"><div class="agent-summary-heading"><span class="agent-summary-kicker">HANI EXECUTIVE REVIEW</span><strong class="agent-summary-title">하니 최종 결론</strong></div><div class="agent-summary-badges"><span class="agent-summary-verdict verdict-${String(recommendation).toLowerCase()}">${esc(AGENT_VERDICT_LABELS[recommendation]||recommendation)}</span>${latestDecision?`<span class="agent-summary-rep-decision">대표 ${esc(AGENT_DECISION_LABELS[latestDecision.representative_decision]||latestDecision.representative_decision)}</span>`:""}</div></div><p>${esc(h.executive_summary||v.summary||"하니 종합 결재안이 아직 준비되지 않았습니다.")}</p></div>
+    ${agentExecutiveSummaryHtml(h,v,latestDecision)}
     <div class="agent-decision-grid"><div class="agent-decision-box"><small>${axisLabels[0]}</small><b>${esc(h.purchase_eligibility||"-")}</b></div><div class="agent-decision-box"><small>${axisLabels[1]}</small><b>${esc(h.product_selection||"-")}</b></div><div class="agent-decision-box"><small>${axisLabels[2]}</small><b>${esc(h.purchase_method||"-")}</b></div><div class="agent-decision-box"><small>${axisLabels[3]}</small><b>${esc(h.timing||"-")}</b></div></div>
     ${agentProcurementHtml(c)}
     <div class="agent-subsection"><div class="agent-subsection-title"><b>전문 Agent 의견</b><span class="agent-status">${agentLatestReviewRound(reviews)}차 Review</span></div><div class="agent-position-list">${agentPositionsHtml(h,reviews)}</div></div>
