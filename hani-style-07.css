@@ -153,7 +153,63 @@ body[data-view="intake"]{--canvas-accent:#6d64e7}
 
 
 /* =========================================================
-   v2.9.52 · YUNA CLIPBOARD + DRAG/DROP INTAKE
+   v2.9.53 · YUNA CLIPBOARD + DRAG/DROP INTAKE
    ========================================================= */
 .intake-material-field{grid-column:1/-1!important}.intake-paste-zone{display:flex;align-items:center;gap:12px;min-height:78px;padding:13px 14px;border:1.5px dashed #cfc2ef;border-radius:15px;background:linear-gradient(135deg,#fcfaff,#fffdf7);outline:none;transition:border-color .16s ease,box-shadow .16s ease,background .16s ease}.intake-paste-zone:focus,.intake-paste-zone.is-dragover{border-color:#8e70d1;background:#f7f1ff;box-shadow:0 0 0 4px rgba(142,112,209,.10)}.intake-paste-icon{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;border-radius:13px;background:#efe9ff;font-size:20px}.intake-paste-copy{min-width:0;flex:1}.intake-paste-copy b{display:block;color:#4c4263;font-size:12.5px}.intake-paste-copy span{display:block;margin-top:4px;color:#888294;font-size:9.5px;line-height:1.5}.intake-file-picker{position:relative;overflow:hidden;flex:0 0 auto;padding:9px 12px;border-radius:11px;background:#6f5ce7;color:#fff;font-size:10px;font-weight:950;cursor:pointer;box-shadow:0 5px 12px rgba(111,92,231,.12)}.intake-file-picker:hover{filter:brightness(.98)}.intake-file-picker input{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;opacity:0!important;cursor:pointer!important;padding:0!important}.intake-image-item{position:relative;padding-right:52px!important}.intake-image-item>div{flex:1!important}.intake-image-remove{position:absolute;right:7px;top:50%;transform:translateY(-50%);border:1px solid #e6def5;background:#fff;color:#8a78ae;border-radius:8px;padding:5px 7px;font-size:8px;font-weight:900;cursor:pointer}.intake-image-remove:hover{background:#f7f1ff;color:#6f5ce7}.intake-image-batch-note{line-height:1.45}.intake-chat-input{border-color:#ded7ee!important}
 @media(max-width:650px){.intake-paste-zone{align-items:flex-start;flex-wrap:wrap}.intake-paste-copy{min-width:calc(100% - 58px)}.intake-file-picker{width:100%;text-align:center}.intake-image-item{padding-right:50px!important}}
+
+/* =========================================================
+   v2.9.53 · Dashboard / Seongmin Office sidebar alignment
+   Keep both primary sidebar cards on the same visual grid.
+   ========================================================= */
+.office-group>.office-main-nav{
+  min-height:58px!important;
+  padding:9px 11px!important;
+  display:grid!important;
+  grid-template-columns:24px minmax(0,1fr) 18px!important;
+  gap:10px!important;
+  align-items:center!important;
+  border-radius:16px!important;
+}
+.office-group>.office-main-nav .ico{
+  width:24px!important;
+  height:24px!important;
+  display:grid!important;
+  place-items:center!important;
+  flex:none!important;
+  border-radius:8px!important;
+}
+.office-group>.office-main-nav .ico svg{
+  width:17px!important;
+  height:17px!important;
+}
+.office-group>.office-main-nav .dashboard-nav-copy{
+  min-width:0!important;
+  text-align:left!important;
+}
+.office-group>.office-main-nav .name{
+  display:block!important;
+  margin:0!important;
+  padding:0!important;
+  font-size:14.5px!important;
+  line-height:1.15!important;
+}
+.office-group>.office-main-nav .name:before{
+  content:none!important;
+  display:none!important;
+}
+.office-group>.office-main-nav small{
+  margin-top:3px!important;
+  font-size:8.7px!important;
+  line-height:1.15!important;
+}
+.office-group>.office-main-nav .dashboard-arrow{
+  width:18px!important;
+  height:24px!important;
+  display:grid!important;
+  place-items:center!important;
+  margin:0!important;
+  font-size:17px!important;
+  line-height:1!important;
+  transform-origin:center!important;
+}
