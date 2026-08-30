@@ -100,3 +100,24 @@ body[data-view="intake"]{--canvas-accent:#6d64e7}
 @media(max-width:1100px){.intake-yuna-desk{grid-template-columns:72px 1fr}.intake-route-strip{grid-column:1/-1;justify-content:flex-start}.intake-yuna-avatar{width:68px;height:68px;border-radius:19px}}
 @media(max-width:850px){.nav-office{margin:-8px 0 14px!important}.intake-yuna-desk{grid-template-columns:58px minmax(0,1fr);gap:11px}.intake-yuna-avatar{width:56px;height:56px;border-radius:16px}.intake-route-strip{overflow-x:auto;flex-wrap:nowrap;justify-content:flex-start;padding-bottom:3px}.intake-route-strip span{font-size:9px;padding:7px 8px}.intake-yuna-copy p{font-size:10px}}
 @media(max-width:560px){.office-nav .dashboard-nav-copy small{white-space:normal!important}.intake-agent-chip{display:block;width:100%;margin-top:2px}.intake-preview-head{flex-wrap:wrap}}
+
+
+/* =========================================================
+   v2.9.50 · Office hierarchy + approved Yuna portrait
+   ========================================================= */
+.office-group{margin:-7px 0 15px!important;padding:7px!important;border:1px solid rgba(164,133,222,.24)!important;border-radius:17px!important;background:linear-gradient(135deg,rgba(154,122,213,.14),rgba(255,247,226,.08))!important;box-shadow:0 8px 18px rgba(79,62,121,.05)!important}
+.office-group>.group-head{color:#ddd0fa!important;background:rgba(158,126,218,.09)!important;border-radius:12px!important}
+.office-group>.group-head .name{font-size:11.5px!important;font-weight:1000!important;letter-spacing:.02em!important}
+.office-group>.group-body{padding-top:5px!important}
+.office-group .nav-btn{min-height:37px!important;border-radius:11px!important}
+.office-group .nav-btn.active{background:linear-gradient(135deg,#8e70d1,#aa8ae8)!important;color:#fff!important;box-shadow:0 7px 16px rgba(132,101,196,.22)!important}
+.office-group .nav-btn .ico{color:#cdbaf4!important}
+.office-group .nav-btn.active .ico{color:#fff!important;background:rgba(255,255,255,.13)!important}
+.intake-yuna-avatar{border-radius:50%!important;background-position:center center!important;background-size:cover!important}
+.sidebar-team-face.agent-yuna .sidebar-team-photo{border-radius:50%!important;background-size:cover!important;background-position:center center!important}
+.sidebar-team-label{width:100%;display:flex!important;align-items:baseline!important;justify-content:center!important;gap:3px!important;min-width:0!important;white-space:nowrap!important;line-height:1!important}
+.sidebar-team-label b{font-size:12px!important;font-weight:1000!important;letter-spacing:-.02em!important;line-height:16px!important}
+.sidebar-team-label em{font-size:8.5px!important;font-style:normal!important;font-weight:900!important;color:#8a8fa2!important;line-height:16px!important}
+.sidebar-team-face.tone-purple .sidebar-team-label b{color:#7059dd!important}.sidebar-team-face.tone-sand .sidebar-team-label b{color:#a97a3f!important}.sidebar-team-face.tone-mint .sidebar-team-label b{color:#218c79!important}.sidebar-team-face.tone-peach .sidebar-team-label b{color:#d87572!important}.sidebar-team-face.tone-blue .sidebar-team-label b{color:#4c79b3!important}.sidebar-team-face.tone-orange .sidebar-team-label b{color:#da8541!important}.sidebar-team-face.tone-violet .sidebar-team-label b{color:#7d57d9!important}
+@media(max-width:1100px){.sidebar-team-label b{font-size:12.5px!important}.sidebar-team-label em{font-size:9px!important}}
+@media(max-width:650px){.office-group{margin-top:-8px!important}.sidebar-team-label{gap:4px!important}}
