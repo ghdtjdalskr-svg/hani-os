@@ -103,7 +103,7 @@ body[data-view="intake"]{--canvas-accent:#6d64e7}
 
 
 /* =========================================================
-   v2.9.50 · Office hierarchy + approved Yuna portrait
+   Office hierarchy + approved Yuna portrait
    ========================================================= */
 .office-group{margin:-7px 0 15px!important;padding:7px!important;border:1px solid rgba(164,133,222,.24)!important;border-radius:17px!important;background:linear-gradient(135deg,rgba(154,122,213,.14),rgba(255,247,226,.08))!important;box-shadow:0 8px 18px rgba(79,62,121,.05)!important}
 .office-group>.group-head{color:#ddd0fa!important;background:rgba(158,126,218,.09)!important;border-radius:12px!important}
@@ -121,3 +121,32 @@ body[data-view="intake"]{--canvas-accent:#6d64e7}
 .sidebar-team-face.tone-purple .sidebar-team-label b{color:#7059dd!important}.sidebar-team-face.tone-sand .sidebar-team-label b{color:#a97a3f!important}.sidebar-team-face.tone-mint .sidebar-team-label b{color:#218c79!important}.sidebar-team-face.tone-peach .sidebar-team-label b{color:#d87572!important}.sidebar-team-face.tone-blue .sidebar-team-label b{color:#4c79b3!important}.sidebar-team-face.tone-orange .sidebar-team-label b{color:#da8541!important}.sidebar-team-face.tone-violet .sidebar-team-label b{color:#7d57d9!important}
 @media(max-width:1100px){.sidebar-team-label b{font-size:12.5px!important}.sidebar-team-label em{font-size:9px!important}}
 @media(max-width:650px){.office-group{margin-top:-8px!important}.sidebar-team-label{gap:4px!important}}
+
+
+/* =========================================================
+   v2.9.51 · Seongmin Office nav + Campus Intake
+   ========================================================= */
+.office-group{margin:0 0 13px!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+.office-group>.office-main-nav{width:100%!important;min-height:58px!important;padding:10px 12px!important;display:flex!important;align-items:center!important;gap:10px!important;border:1px solid rgba(125,105,220,.20)!important;border-radius:17px!important;background:linear-gradient(135deg,rgba(255,255,255,.98),rgba(249,247,255,.96))!important;color:#252a39!important;box-shadow:0 8px 18px rgba(63,57,104,.05)!important;text-align:left!important}
+.office-group>.office-main-nav:hover{transform:translateY(-1px)!important;border-color:rgba(126,99,235,.34)!important;box-shadow:0 11px 22px rgba(63,57,104,.08)!important}
+.office-group>.office-main-nav .ico{width:32px!important;height:32px!important;display:grid!important;place-items:center!important;flex:0 0 32px!important;border-radius:11px!important;background:#f0ecff!important;color:#7359df!important}
+.office-group>.office-main-nav .ico svg{width:19px!important;height:19px!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+.office-group>.office-main-nav .dashboard-nav-copy{flex:1!important;display:flex!important;flex-direction:column!important;min-width:0!important}
+.office-group>.office-main-nav .name{font-size:14.5px!important;font-weight:950!important;line-height:1.15!important;color:#24283a!important}
+.office-group>.office-main-nav small{margin-top:3px!important;font-size:9px!important;font-weight:700!important;color:#969bad!important;white-space:nowrap!important}
+.office-group>.office-main-nav .dashboard-arrow{font-size:18px!important;color:#8a73ee!important;transition:transform .18s ease!important}
+.office-group.is-open>.office-main-nav .dashboard-arrow{transform:rotate(180deg)!important}
+.office-group>.group-body{padding:6px 6px 0 10px!important}
+.office-group .nav-btn{min-height:35px!important;border-radius:10px!important}
+.intake-preview-row.is-blocked{border-color:#efc8bd!important;background:#fff9f6!important}
+.intake-blocker-note{margin-top:8px;padding:8px 10px;border-radius:10px;background:#fff0ea;color:#a34d37;font-size:11px;font-weight:800;line-height:1.55}
+.intake-campus-note{margin-top:8px;padding:8px 10px;border-radius:10px;background:#f1f7ff;color:#4e6f9d;font-size:11px;font-weight:800;line-height:1.55}
+.intake-image-preview{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;margin-top:7px!important}
+.intake-image-preview[hidden]{display:none!important}
+.intake-image-item{display:flex;gap:7px;align-items:center;min-width:0;padding:6px;border:1px solid rgba(120,110,165,.14);border-radius:10px;background:#fff}
+.intake-image-item img{width:44px;height:44px;object-fit:cover;border-radius:8px;flex:0 0 44px}
+.intake-image-item div{min-width:0;display:flex;flex-direction:column}.intake-image-item b{font-size:9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.intake-image-item span{font-size:8px;color:#9499a8}
+.intake-image-batch-note{grid-column:1/-1;font-size:8.5px;color:#83769f;font-weight:800;padding:2px 3px}
+@media(max-width:650px){.office-group>.office-main-nav small{white-space:normal!important}.intake-image-preview{grid-template-columns:1fr!important}}
+
+.intake-campus-course-field[hidden]{display:none!important}.intake-campus-course-field .sub{margin-top:5px;font-size:9px;line-height:1.45;color:#8b8fa0}
