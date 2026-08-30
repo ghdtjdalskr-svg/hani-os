@@ -1,0 +1,27 @@
+
+/* v2.9.26 — Sidebar team portrait layout correction */
+.sidebar-team-faces{gap:9px!important;}
+.sidebar-team-face{
+  height:auto!important; min-height:0!important; margin:0!important;
+  padding:6px 6px 7px!important; gap:4px!important;
+  justify-content:flex-start!important;
+}
+.sidebar-team-photo{
+  width:100%!important; height:76px!important; flex:0 0 76px!important;
+  border-radius:12px!important;
+  background-image:var(--sidebar-photo, none),linear-gradient(145deg,#f4f1ff,#eef6ff)!important;
+  background-repeat:no-repeat,no-repeat!important;
+  background-size:100% auto,cover!important;
+  background-position:center 18%,center center!important;
+}
+.sidebar-team-face small{
+  display:block!important; height:auto!important; min-height:16px!important;
+  line-height:16px!important; margin:0!important; padding:0!important;
+  font-size:10px!important;
+}
+/* Keep the team overview cards compact too, but do not crop faces aggressively. */
+.home-team-panel .ui26-member{min-height:0!important;height:auto!important;}
+.home-team-panel .member-visual,.home-team-panel .member-visual.has-photo{
+  background-size:100% auto!important; background-position:center 18%!important;
+}
+@media(max-width:1100px){.sidebar-team-photo{height:80px!important;flex-basis:80px!important;}}

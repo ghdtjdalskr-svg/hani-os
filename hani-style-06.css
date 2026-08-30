@@ -1,0 +1,80 @@
+
+/* ===== v2.9.36 : force visible per-agent card/background accents ===== */
+.agent-position.agent-hani{--agent-accent:#6f5dd8;--agent-bg:#f5f2ff}
+.agent-position.agent-jieun{--agent-accent:#b9854c;--agent-bg:#fbf3e9}
+.agent-position.agent-nauen{--agent-accent:#319a78;--agent-bg:#eef9f4}
+.agent-position.agent-hina{--agent-accent:#d8758a;--agent-bg:#fff1f5}
+.agent-position.agent-sua{--agent-accent:#5c82d2;--agent-bg:#f0f5ff}
+.agent-position.agent-haru{--agent-accent:#df9238;--agent-bg:#fff6e9}
+.agent-position.agent-suyeon{--agent-accent:#8668d9;--agent-bg:#f4f0ff}
+.agent-position.agent-minji{--agent-accent:#d9689f;--agent-bg:#fff0f7}
+.agent-position.agent-unknown{--agent-accent:#7f8798;--agent-bg:#f5f6f8}
+
+.agent-position.agent-hani,
+.agent-position.agent-jieun,
+.agent-position.agent-nauen,
+.agent-position.agent-hina,
+.agent-position.agent-sua,
+.agent-position.agent-haru,
+.agent-position.agent-suyeon,
+.agent-position.agent-minji,
+.agent-position.agent-unknown{
+  background:linear-gradient(90deg,var(--agent-bg) 0%, color-mix(in srgb,var(--agent-bg) 72%,#fff) 48%, #fff 100%)!important;
+  border-left-color:var(--agent-accent)!important;
+  border-top-color:color-mix(in srgb,var(--agent-accent) 22%,#e7e9f1)!important;
+  border-right-color:color-mix(in srgb,var(--agent-accent) 14%,#e7e9f1)!important;
+  border-bottom-color:color-mix(in srgb,var(--agent-accent) 14%,#e7e9f1)!important;
+}
+.agent-position.agent-hani .agent-position-bubble,
+.agent-position.agent-jieun .agent-position-bubble,
+.agent-position.agent-nauen .agent-position-bubble,
+.agent-position.agent-hina .agent-position-bubble,
+.agent-position.agent-sua .agent-position-bubble,
+.agent-position.agent-haru .agent-position-bubble,
+.agent-position.agent-suyeon .agent-position-bubble,
+.agent-position.agent-minji .agent-position-bubble,
+.agent-position.agent-unknown .agent-position-bubble{
+  background:rgba(255,255,255,.76)!important;
+  border-color:color-mix(in srgb,var(--agent-accent) 22%,#e8e9f1)!important;
+}
+.agent-position.agent-hani .agent-position-bubble:before,
+.agent-position.agent-jieun .agent-position-bubble:before,
+.agent-position.agent-nauen .agent-position-bubble:before,
+.agent-position.agent-hina .agent-position-bubble:before,
+.agent-position.agent-sua .agent-position-bubble:before,
+.agent-position.agent-haru .agent-position-bubble:before,
+.agent-position.agent-suyeon .agent-position-bubble:before,
+.agent-position.agent-minji .agent-position-bubble:before,
+.agent-position.agent-unknown .agent-position-bubble:before{
+  background:rgba(255,255,255,.86)!important;
+  border-left-color:color-mix(in srgb,var(--agent-accent) 22%,#e8e9f1)!important;
+  border-bottom-color:color-mix(in srgb,var(--agent-accent) 22%,#e8e9f1)!important;
+}
+.agent-position.agent-hani .agent-position-name b,
+.agent-position.agent-hani .agent-quote-name,
+.agent-position.agent-jieun .agent-position-name b,
+.agent-position.agent-jieun .agent-quote-name,
+.agent-position.agent-nauen .agent-position-name b,
+.agent-position.agent-nauen .agent-quote-name,
+.agent-position.agent-hina .agent-position-name b,
+.agent-position.agent-hina .agent-quote-name,
+.agent-position.agent-sua .agent-position-name b,
+.agent-position.agent-sua .agent-quote-name,
+.agent-position.agent-haru .agent-position-name b,
+.agent-position.agent-haru .agent-quote-name,
+.agent-position.agent-suyeon .agent-position-name b,
+.agent-position.agent-suyeon .agent-quote-name,
+.agent-position.agent-minji .agent-position-name b,
+.agent-position.agent-minji .agent-quote-name{
+  color:var(--agent-accent)!important;
+}
+
+/* HANI final card gets a clearly purple-tinted executive treatment */
+.agent-summary.agent-hani{
+  background:linear-gradient(135deg,#f5f1ff 0%,#fbf9ff 48%,#fff 100%)!important;
+  border-color:#cfc5f4!important;
+}
+.agent-summary.agent-hani .agent-summary-bubble{
+  background:rgba(255,255,255,.78)!important;
+  border-color:#d9d0f5!important;
+}

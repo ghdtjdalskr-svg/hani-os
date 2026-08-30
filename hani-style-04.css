@@ -1,0 +1,45 @@
+
+/* v2.9.33 — Executive decision visibility */
+.agent-summary{
+  padding:19px 20px!important;
+  border-width:2px!important;
+  box-shadow:0 12px 28px rgba(70,65,120,.08)!important;
+}
+.agent-summary-label{font-size:11.5px!important;font-weight:1000!important;letter-spacing:.07em!important}
+.agent-summary p{font-size:15.5px!important;line-height:1.78!important;font-weight:760!important;color:#30364b!important}
+.agent-summary.verdict-proceed{border-color:color-mix(in srgb,var(--health) 38%,var(--line))!important;background:linear-gradient(135deg,color-mix(in srgb,var(--health) 10%,#fff),#fff)!important}
+.agent-summary.verdict-conditional,.agent-summary.verdict-delay{border-color:color-mix(in srgb,#ef9d3c 42%,var(--line))!important;background:linear-gradient(135deg,#fff8ec,#fff)!important}
+.agent-summary.verdict-reject{border-color:color-mix(in srgb,var(--danger) 38%,var(--line))!important;background:linear-gradient(135deg,color-mix(in srgb,var(--danger) 7%,#fff),#fff)!important}
+.agent-summary.verdict-needs_data{border-color:color-mix(in srgb,var(--primary) 34%,var(--line))!important}
+.agent-decision-grid{gap:11px!important;margin-top:13px!important}
+.agent-decision-box{padding:15px 16px!important;border-width:1.5px!important;background:#fff!important;box-shadow:0 8px 20px rgba(52,54,87,.045)!important}
+.agent-decision-box small{font-size:11.5px!important;color:#6b63b8!important;font-weight:1000!important;letter-spacing:.01em!important}
+.agent-decision-box b{font-size:14.3px!important;line-height:1.68!important;font-weight:850!important;color:#30364b!important}
+.agent-subsection-title{margin-bottom:10px!important}
+.agent-subsection-title b{font-size:15.5px!important;font-weight:1000!important;color:#242b3d!important}
+.agent-procurement-grid{gap:12px!important}
+.agent-procurement-card{position:relative;padding:16px!important;border-width:1.5px!important;box-shadow:0 10px 24px rgba(52,54,87,.065)!important}
+.agent-procurement-card:first-child{border:2px solid color-mix(in srgb,var(--primary) 42%,#dfe5f3)!important;background:linear-gradient(145deg,color-mix(in srgb,var(--primary) 5%,#fff),#fff)!important;box-shadow:0 14px 30px rgba(80,70,160,.11)!important}
+.agent-procurement-rank{display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;font-size:9.5px;font-weight:1000;color:#685dd5;background:#f2f0ff;border:1px solid #e0dcff;margin-bottom:9px}
+.agent-procurement-card:first-child .agent-procurement-rank{color:#fff;background:linear-gradient(135deg,#7466dc,#8c7cf0);border:0}
+.agent-procurement-card .topline b{font-size:14.5px!important;font-weight:950!important;color:#2f3548!important}
+.agent-procurement-price{font-size:13px!important;font-weight:1000!important;color:#425fbd!important}
+.agent-procurement-fit{font-size:12.6px!important;line-height:1.68!important;color:#40485c!important;font-weight:760!important}
+.agent-procurement-meta{font-size:10.8px!important;line-height:1.55!important;color:#7d8496!important}
+.agent-position{padding:13px 14px!important;background:#fff!important;border-width:1.5px!important;box-shadow:0 9px 22px rgba(52,54,87,.045)!important}
+.agent-position-name b{font-size:15.5px!important;font-weight:1000!important}
+.agent-position-name small{font-size:10.5px!important}
+.agent-position-summary{font-size:14px!important;line-height:1.78!important;color:#343b50!important;font-weight:720!important}
+.agent-position-summary .agent-quote-name{font-size:13.5px!important;font-weight:1000!important;color:#49427b!important}
+.agent-position-verdict{font-size:10.5px!important;font-weight:1000!important;padding:6px 10px!important}
+.agent-position-verdict.verdict-proceed{color:#157a55!important;background:#effaf5!important;border-color:#ccebdc!important}
+.agent-position-verdict.verdict-conditional{color:#a66b16!important;background:#fff8ec!important;border-color:#f3d9ad!important}
+.agent-position-verdict.verdict-delay{color:#9a6116!important;background:#fff5e4!important;border-color:#efcf9a!important}
+.agent-position-verdict.verdict-reject{color:#bd3e4b!important;background:#fff1f2!important;border-color:#f1cbd0!important}
+.agent-position-verdict.verdict-needs_data{color:#675bc8!important;background:#f5f3ff!important;border-color:#e1dcff!important}
+.agent-next-action{border-width:1.5px!important}
+.agent-decision-dock{border-width:2px!important;padding:15px!important}
+.agent-decision-dock.override-mode{border-color:color-mix(in srgb,#ef9d3c 48%,var(--line))!important;background:linear-gradient(135deg,#fffaf2,rgba(255,255,255,.96))!important}
+.agent-decision-dock .row.start>div>b{font-size:15px!important;font-weight:1000!important}
+.agent-decision-actions .btn{min-height:42px!important;font-size:12px!important;font-weight:950!important}
+@media(max-width:650px){.agent-summary p{font-size:14.5px!important}.agent-decision-box b{font-size:13.5px!important}.agent-position-summary{font-size:13.5px!important}}
