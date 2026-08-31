@@ -256,3 +256,27 @@ body[data-view="intake"]{--canvas-accent:#6d64e7}
 .task-calendar-actions{display:flex;gap:8px;flex:0 0 auto}.task-calendar-kpis{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}.task-calendar-kpis span{display:inline-flex;align-items:center;gap:5px;padding:5px 9px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--muted);font-size:10px;font-weight:800}.task-calendar-kpis b{color:var(--text)}
 .task-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap}.task-calendar-sync{border-color:#d9e6fb!important;background:#f7fbff!important;color:#4f6f9f!important}.task-calendar-sync.changed{border-color:#eadcb9!important;background:#fffaf0!important;color:#9b6d18!important}.task-calendar-badge{display:inline-flex;align-items:center;min-height:29px;padding:5px 8px;border-radius:9px;font-size:10px;font-weight:900;white-space:nowrap}.task-calendar-badge.synced{background:#edf8f2;color:#2f7d5a;border:1px solid #d5eddf}.task-calendar-badge.retained{background:#f4f5f7;color:#737b89;border:1px solid #e1e4e9}
 @media(max-width:720px){.task-calendar-hub-body{align-items:flex-start;flex-direction:column}.task-calendar-actions{width:100%;display:grid;grid-template-columns:1fr 1fr}.task-calendar-actions .btn{width:100%}.task{grid-template-columns:auto minmax(0,1fr)}.task-actions{grid-column:2;justify-content:flex-start}}
+
+
+/* =========================================================
+   v2.9.60 · Purchase Review v2 · Adaptive Scorecard
+   ========================================================= */
+.purchase-mode-chip{background:#f4efff!important;border-color:#d8c8ff!important;color:#6841c7!important;font-weight:900}
+.agent-purchase-mode-copy{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:5px;font-size:12px;color:var(--muted)}
+.agent-purchase-mode{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;background:#f4efff;border:1px solid #ddd0ff;color:#6841c7;font-weight:900;white-space:nowrap}
+.agent-purchase-axis-legend{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 12px}
+.agent-purchase-axis-legend>span{display:inline-flex;align-items:center;gap:4px;padding:6px 9px;border:1px solid #e4e7f0;background:#fff;border-radius:999px;font-size:11px;font-weight:800;color:#3a4358}
+.agent-purchase-axis-legend small{font-size:10px;color:var(--muted)}
+.agent-scorecard-grid .agent-procurement-card{position:relative;overflow:hidden;padding-top:14px}
+.agent-scorecard-grid .agent-procurement-card.hani-pick{border-color:#b69cff;box-shadow:0 8px 24px rgba(113,75,205,.12),inset 0 0 0 1px rgba(113,75,205,.08)}
+.agent-pick-row{display:flex;gap:5px;flex-wrap:wrap;min-height:26px;margin-bottom:7px}
+.agent-pick-chip{display:inline-flex;align-items:center;padding:4px 7px;border-radius:999px;background:#f7f8fc;border:1px solid #e2e5ef;font-size:10px;font-weight:900;color:#48516a;letter-spacing:.01em}
+.agent-pick-chip.hani{background:linear-gradient(135deg,#f3edff,#fff5fb);border-color:#d7c5ff;color:#7042cb}
+.agent-product-average{display:flex;align-items:baseline;gap:8px;margin:8px 0 7px;padding:8px 10px;border-radius:11px;background:#f8f7ff;border:1px solid #ebe6ff}
+.agent-product-average strong{font-size:16px;color:#5f3fba}.agent-product-average span{font-size:10px;color:var(--muted);font-weight:700}
+.agent-axis-score-row,.agent-card-agent-scores,.agent-candidate-score-row{display:flex;gap:5px;flex-wrap:wrap;margin:7px 0}
+.agent-axis-score-row>span{padding:4px 6px;border-radius:8px;background:#fafbfe;border:1px solid #e7e9f1;font-size:10px;color:#50596d}.agent-axis-score-row b{color:#252d40}
+.agent-card-agent-scores>span,.agent-candidate-score-row>span{padding:4px 6px;border-radius:8px;background:#fff;border:1px solid #e5e7ef;font-size:10px;color:#5b6478}
+.agent-card-agent-scores b,.agent-candidate-score-row b{color:#333c52}
+.agent-position-name small{font-weight:800}
+@media(max-width:760px){.agent-purchase-mode-copy{align-items:flex-start}.agent-purchase-axis-legend{gap:5px}.agent-scorecard-grid{grid-template-columns:1fr!important}.agent-product-average strong{font-size:15px}}
