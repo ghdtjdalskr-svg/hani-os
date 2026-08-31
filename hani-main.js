@@ -5,6 +5,9 @@ const STORAGE_KEY="hani_os_life_v23";
 const DEFAULT_CLOUD_URL="https://qmgikfdwjzmhkwadycxk.supabase.co";
 const DEFAULT_CLOUD_PUBLISHABLE_KEY="sb_publishable_Z0YkkRSJIo5hs00YNcMOdQ__PA5BAj5";
 const INVESTMENT_BASELINE_RESET_KEY="hani_os_investment_baseline_reset_v250_rc23";
+const INVESTMENT_NEWS_CACHE_KEY="hani_investment_news_cache_v1";
+const INVESTMENT_NEWS_TTL_MS=3*60*60*1000;
+const INVESTMENT_NEWS_MAX_TARGETS=8;
 const THEME_KEY="h22th"; // legacy dark-mode key
 const SEASON_THEME_KEY="hani_os_season_theme_v1";
 const SIDEBAR_KEY="hani_os_sidebar_mini";
@@ -89,7 +92,7 @@ const freshState=()=>({
     bodyMetric:"weight",bodyPeriod:"year",exercisePeriod:"year",
     readingSort:"recent",readingMinRating:0,readingSearch:"",
     movieSort:"recent",movieMinRating:0,movieSearch:"",movieTypeFilter:"all",
-    diarySort:"newest",diarySearch:"",ledgerMonth:monthKeyNow(),spendReviewFilter:"all",spendReviewSearch:"",spendReviewMonth:"all",monthlyHistoryMode:"all",brokerHistoryMode:"all",flowMonthFilter:monthKeyNow(),journalFilter:"all",journalSearch:"",watchlistFilter:"all",watchlistSearch:"",wishlistFilter:"all",wishlistKindFilter:"all",wishlistSearch:"",latestHoldingAccount:"all",campusActiveSemesterId:"",travelTab:"trips"
+    diarySort:"newest",diarySearch:"",ledgerMonth:monthKeyNow(),spendReviewFilter:"all",spendReviewSearch:"",spendReviewMonth:"all",monthlyHistoryMode:"all",brokerHistoryMode:"all",flowMonthFilter:monthKeyNow(),journalFilter:"all",journalSearch:"",watchlistFilter:"all",watchlistSearch:"",investmentNewsEntity:"all",investmentNewsGrade:"all",investmentNewsSentiment:"all",wishlistFilter:"all",wishlistKindFilter:"all",wishlistSearch:"",latestHoldingAccount:"all",campusActiveSemesterId:"",travelTab:"trips"
   }
 });
 let lastLoadError="";
@@ -193,6 +196,9 @@ function normalizeState(d){
   if(!/^\d{4}-\d{2}$/.test(String(ui.ledgerMonth||"")))ui.ledgerMonth=monthKeyNow();
   if(!["all","unreviewed","reviewed","regret"].includes(ui.spendReviewFilter))ui.spendReviewFilter="all";
   if(!ui.spendReviewMonth)ui.spendReviewMonth="all";
+  if(!["all","OFFICIAL","MEDIA","BROKER","RUMOR"].includes(ui.investmentNewsGrade))ui.investmentNewsGrade="all";
+  if(!["all","POSITIVE","NEUTRAL","NEGATIVE","MIXED"].includes(ui.investmentNewsSentiment))ui.investmentNewsSentiment="all";
+  if(!ui.investmentNewsEntity)ui.investmentNewsEntity="all";
   if(!["trips","archive","wish"].includes(ui.travelTab))ui.travelTab="trips";
   const pageNotes={...(d?.pageNotes||{})},diaries=Array.isArray(d?.diaries)?d.diaries.map(x=>({...x,id:x?.id||uid(),date:x?.date||today(),title:x?.title||"제목 없는 일기",content:x?.content||"",mood:x?.mood||"neutral",createdAt:x?.createdAt||new Date().toISOString(),updatedAt:x?.updatedAt||x?.createdAt||new Date().toISOString()})):[];
   if(!diaries.length&&String(pageNotes.diary||"").trim()){const now=new Date().toISOString();diaries.push({id:uid(),date:today(),title:"기존 일기 메모",content:String(pageNotes.diary).trim(),mood:"neutral",createdAt:now,updatedAt:now,migratedFrom:"pageNotes.diary"});delete pageNotes.diary}
@@ -640,7 +646,7 @@ document.querySelectorAll(".group-head").forEach(b=>b.addEventListener("click",(
   b.closest(".group").classList.toggle("collapsed");
   persistCollapsedGroups();
 }));
-document.querySelectorAll("[data-tabs]").forEach(t=>t.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{t.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");const parent=t.parentElement;parent.querySelectorAll(":scope > .panel").forEach(x=>x.classList.remove("active"));$(b.dataset.panel).classList.add("active");if(t.classList.contains("investment-tabs-main"))t.scrollIntoView({behavior:"smooth",block:"start"});setTimeout(()=>{drawPortfolio();drawBody();drawLedgerTrend();drawMonthlyAssetChart();drawBrokerChart();drawAnnualInvestmentCharts();drawInvestmentAccountChart()},30)})));
+document.querySelectorAll("[data-tabs]").forEach(t=>t.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{t.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");const parent=t.parentElement;parent.querySelectorAll(":scope > .panel").forEach(x=>x.classList.remove("active"));$(b.dataset.panel).classList.add("active");if(t.classList.contains("investment-tabs-main"))t.scrollIntoView({behavior:"smooth",block:"start"});if(b.dataset.panel==="investNews")setTimeout(()=>investmentNewsMaybeRefresh(),40);setTimeout(()=>{drawPortfolio();drawBody();drawLedgerTrend();drawMonthlyAssetChart();drawBrokerChart();drawAnnualInvestmentCharts();drawInvestmentAccountChart()},30)})));
 document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",()=>closeModal(b.dataset.close)));
 document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)m.classList.remove("open")}));
 $("sideToggle").onclick=()=>{const mini=$("app").classList.toggle("sidebar-mini");localStorage.setItem(SIDEBAR_KEY,mini?"1":"0");$("sideToggle").textContent=mini?"›":"‹"};
@@ -1098,12 +1104,151 @@ function masterUsage(i){
   const watch=(state.investmentWatchlist||[]).find(w=>w.instrumentId===i.id||instrumentFallbackKey(w)===instrumentFallbackKey(i));return {held:[...new Set(held)],ever,watch}
 }
 function resetInstrumentForm(){if($("instrumentEditId"))$("instrumentEditId").value="";$("instrumentName").value="";$("instrumentClass").value="ETF";if($("instrumentMarket"))$("instrumentMarket").value="";$("instrumentTicker").value="";if($("instrumentPrice"))$("instrumentPrice").value="";if($("addInstrument"))$("addInstrument").textContent="종목 저장"}
-function normalizeWatchlistItem(x={}){const ticker=String(x.ticker||"").trim(),name=String(x.name||"").trim(),market=inferMarket(ticker,x.market);return {id:x.id||uid(),instrumentId:String(x.instrumentId||""),name,market,ticker,registeredDate:x.registeredDate||x.date||today(),status:["study","interest","consider","hold"].includes(x.status)?x.status:"study",reason:String(x.reason||""),targetPrice:nullableNum(x.targetPrice),note:String(x.note||""),createdAt:x.createdAt||new Date().toISOString(),updatedAt:x.updatedAt||x.createdAt||new Date().toISOString()}}
+function normalizeWatchlistItem(x={}){const ticker=String(x.ticker||"").trim(),name=String(x.name||"").trim(),market=inferMarket(ticker,x.market);return {id:x.id||uid(),instrumentId:String(x.instrumentId||""),name,market,ticker,registeredDate:x.registeredDate||x.date||today(),status:["study","interest","consider","hold"].includes(x.status)?x.status:"study",reason:String(x.reason||""),targetPrice:nullableNum(x.targetPrice),note:String(x.note||""),newsTracking:x.newsTracking!==false,createdAt:x.createdAt||new Date().toISOString(),updatedAt:x.updatedAt||x.createdAt||new Date().toISOString()}}
 function watchStatusLabel(x){return {study:"공부중",interest:"관심",consider:"매수검토",hold:"보류"}[x]||"공부중"}
 function watchKey(x){return brokerHoldingKey({name:x.name,ticker:x.ticker,market:x.market})}
 function watchIsHeld(x){const latest=officialBrokerLatest();return !!latest&&brokerAggregatedHoldings(latest).some(h=>h.key===watchKey(x)&&n(h.quantity)>0)}
-function resetWatchlist(){["watchEditId","watchName","watchTicker","watchReason","watchTargetPrice","watchNote"].forEach(id=>$(id).value="");$("watchMarket").value="";$("watchStatus").value="study";$("watchDate").value=today()}
-function renderWatchlist(){if(!$("watchList"))return;const filter=state.ui.watchlistFilter||"all",q=(state.ui.watchlistSearch||"").trim().toLocaleLowerCase("ko-KR"),rows=[...(state.investmentWatchlist||[])].filter(x=>(filter==="all"||x.status===filter)&&(!q||[x.name,x.ticker,x.reason,x.note].join(" ").toLocaleLowerCase("ko-KR").includes(q))).sort((a,b)=>(b.registeredDate||"").localeCompare(a.registeredDate||"")||(b.updatedAt||"").localeCompare(a.updatedAt||""));$("watchFilter").value=filter;$("watchSearch").value=state.ui.watchlistSearch||"";$("watchCount").textContent=rows.length+"종목";$("watchList").innerHTML=rows.map(x=>{const held=watchIsHeld(x);return `<div class="watchlist-item"><div class="row start"><div><div class="watchlist-meta"><span class="watchlist-status ${x.status}">${watchStatusLabel(x.status)}</span>${held?'<span class="instrument-status held">현재 보유중</span>':""}<span>${esc(x.registeredDate)}</span><span>${esc(marketLabel(x.market))}${x.ticker?` · ${esc(x.ticker)}`:""}</span></div><h4>${esc(x.name)}</h4></div><div class="watchlist-actions"><button class="btn sm" data-watch-edit="${x.id}">수정</button><button class="btn sm danger" data-watch-delete="${x.id}">삭제</button></div></div>${x.reason?`<div class="watchlist-thesis"><b>관심 이유 / 투자 아이디어</b>\n${esc(x.reason)}</div>`:""}<div class="sub" style="margin-top:8px">관심 매수가 ${x.targetPrice===null?"미입력":won(x.targetPrice)}${x.note?` · ${esc(x.note)}`:""}</div></div>`}).join("")||'<div class="empty">공부하면서 눈여겨보는 종목을 가볍게 등록해 두세요. 가격은 지금 단계에서 매달 입력하지 않습니다.</div>';document.querySelectorAll("[data-watch-edit]").forEach(b=>b.onclick=()=>{const x=state.investmentWatchlist.find(r=>r.id===b.dataset.watchEdit);if(!x)return;$("watchEditId").value=x.id;$("watchName").value=x.name;$("watchMarket").value=x.market||"";$("watchTicker").value=x.ticker;$("watchDate").value=x.registeredDate;$("watchStatus").value=x.status;$("watchReason").value=x.reason;$("watchTargetPrice").value=x.targetPrice??"";$("watchNote").value=x.note});document.querySelectorAll("[data-watch-delete]").forEach(b=>b.onclick=()=>{const x=state.investmentWatchlist.find(r=>r.id===b.dataset.watchDelete);if(!x||!confirm(`${x.name} 관심종목 기록을 삭제할까요?`))return;state.investmentWatchlist=state.investmentWatchlist.filter(r=>r.id!==x.id);commit("관심종목을 삭제했습니다.")})}
+function resetWatchlist(){["watchEditId","watchName","watchTicker","watchReason","watchTargetPrice","watchNote"].forEach(id=>$(id).value="");$("watchMarket").value="";$("watchStatus").value="study";$("watchDate").value=today();if($("watchNewsTracking"))$("watchNewsTracking").checked=true}
+function renderWatchlist(){
+  if(!$("watchList"))return;
+  const filter=state.ui.watchlistFilter||"all",q=(state.ui.watchlistSearch||"").trim().toLocaleLowerCase("ko-KR"),
+    rows=[...(state.investmentWatchlist||[])].filter(x=>(filter==="all"||x.status===filter)&&(!q||[x.name,x.ticker,x.reason,x.note].join(" ").toLocaleLowerCase("ko-KR").includes(q))).sort((a,b)=>(b.registeredDate||"").localeCompare(a.registeredDate||"")||(b.updatedAt||"").localeCompare(a.updatedAt||""));
+  $("watchFilter").value=filter;$("watchSearch").value=state.ui.watchlistSearch||"";$("watchCount").textContent=rows.length+"종목";
+  $("watchList").innerHTML=rows.map(x=>{
+    const held=watchIsHeld(x),tracking=x.newsTracking!==false;
+    return `<div class="watchlist-item">
+      <div class="row start"><div><div class="watchlist-meta"><span class="watchlist-status ${x.status}">${watchStatusLabel(x.status)}</span>${held?'<span class="instrument-status held">현재 보유중</span>':""}<span class="watch-news-badge ${tracking?"on":"off"}">${tracking?"📰 뉴스 추적":"뉴스 추적 OFF"}</span><span>${esc(x.registeredDate)}</span><span>${esc(marketLabel(x.market))}${x.ticker?` · ${esc(x.ticker)}`:""}</span></div><h4>${esc(x.name)}</h4></div>
+      <div class="watchlist-actions">${tracking?`<button class="btn sm" data-watch-news="${x.id}">뉴스 보기</button>`:""}<button class="btn sm" data-watch-toggle-news="${x.id}">${tracking?"추적 끄기":"추적 켜기"}</button><button class="btn sm" data-watch-edit="${x.id}">수정</button><button class="btn sm danger" data-watch-delete="${x.id}">삭제</button></div></div>
+      ${x.reason?`<div class="watchlist-thesis"><b>관심 이유 / 투자 아이디어</b>\n${esc(x.reason)}</div>`:""}
+      <div class="sub" style="margin-top:8px">관심 매수가 ${x.targetPrice===null?"미입력":won(x.targetPrice)}${x.note?` · ${esc(x.note)}`:""}</div>
+    </div>`
+  }).join("")||'<div class="empty">공부하면서 눈여겨보는 종목을 가볍게 등록해 두세요. 뉴스 추적을 켜면 뉴스룸에서 3시간 단위로 신규 재료를 확인합니다.</div>';
+
+  document.querySelectorAll("[data-watch-edit]").forEach(b=>b.onclick=()=>{
+    const x=state.investmentWatchlist.find(r=>r.id===b.dataset.watchEdit);if(!x)return;
+    $("watchEditId").value=x.id;$("watchName").value=x.name;$("watchMarket").value=x.market||"";$("watchTicker").value=x.ticker;$("watchDate").value=x.registeredDate;$("watchStatus").value=x.status;$("watchReason").value=x.reason;$("watchTargetPrice").value=x.targetPrice??"";$("watchNote").value=x.note;if($("watchNewsTracking"))$("watchNewsTracking").checked=x.newsTracking!==false
+  });
+  document.querySelectorAll("[data-watch-toggle-news]").forEach(b=>b.onclick=()=>{
+    const x=state.investmentWatchlist.find(r=>r.id===b.dataset.watchToggleNews);if(!x)return;
+    x.newsTracking=x.newsTracking===false;x.updatedAt=new Date().toISOString();commit(`${x.name} 뉴스 추적을 ${x.newsTracking?"켰습니다.":"껐습니다."}`)
+  });
+  document.querySelectorAll("[data-watch-news]").forEach(b=>b.onclick=()=>{
+    const x=state.investmentWatchlist.find(r=>r.id===b.dataset.watchNews);if(!x)return;
+    state.ui.investmentNewsEntity=x.ticker||x.name;save();investmentOpenNewsTab(x.ticker||x.name)
+  });
+  document.querySelectorAll("[data-watch-delete]").forEach(b=>b.onclick=()=>{
+    const x=state.investmentWatchlist.find(r=>r.id===b.dataset.watchDelete);if(!x||!confirm(`${x.name} 관심종목 기록을 삭제할까요?`))return;
+    state.investmentWatchlist=state.investmentWatchlist.filter(r=>r.id!==x.id);commit("관심종목을 삭제했습니다.")
+  })
+}
+
+
+let investmentNewsRuntime={busy:false,error:""};
+
+function investmentNewsTargets(){
+  const priority={consider:4,interest:3,study:2,hold:1};
+  return [...(state.investmentWatchlist||[])]
+    .filter(x=>x&&x.newsTracking!==false&&String(x.name||"").trim())
+    .sort((a,b)=>(watchIsHeld(b)?1:0)-(watchIsHeld(a)?1:0)+(priority[b.status]||0)-(priority[a.status]||0)||(b.updatedAt||"").localeCompare(a.updatedAt||""))
+    .slice(0,INVESTMENT_NEWS_MAX_TARGETS)
+    .map(x=>({id:x.id,name:x.name,ticker:x.ticker||"",market:x.market||inferMarket(x.ticker,""),reason:x.reason||"",held:watchIsHeld(x)}))
+}
+function investmentNewsSignature(targets=investmentNewsTargets()){return targets.map(x=>[x.market,x.ticker||"",x.name,x.reason||"",x.held?1:0].join("|")).join("||")}
+function investmentNewsReadCache(){
+  try{
+    const raw=localStorage.getItem(INVESTMENT_NEWS_CACHE_KEY);if(!raw)return null;
+    const x=JSON.parse(raw);if(!x||x.schema!==1||!x.data||typeof x.data!=="object")return null;
+    return x
+  }catch(_){return null}
+}
+function investmentNewsWriteCache(data,targets){
+  const payload={schema:1,savedAt:new Date().toISOString(),signature:investmentNewsSignature(targets),data};
+  try{localStorage.setItem(INVESTMENT_NEWS_CACHE_KEY,JSON.stringify(payload));return true}catch(e){console.warn("Investment news cache",e);return false}
+}
+function investmentNewsCacheFresh(cache,targets=investmentNewsTargets()){
+  if(!cache||cache.signature!==investmentNewsSignature(targets))return false;
+  const stamp=new Date(cache.savedAt||cache.data?.generated_at||0).getTime();return Number.isFinite(stamp)&&Date.now()-stamp<INVESTMENT_NEWS_TTL_MS
+}
+function investmentNewsSafeUrl(value){
+  try{const u=new URL(String(value||""));return /^https?:$/.test(u.protocol)?u.href:""}catch(_){return ""}
+}
+function investmentNewsGradeLabel(v){return {OFFICIAL:"공식/확정",MEDIA:"언론보도",BROKER:"증권사 전망",RUMOR:"시장루머"}[v]||"출처 미분류"}
+function investmentNewsSentimentLabel(v){return {POSITIVE:"호재",NEUTRAL:"중립",NEGATIVE:"악재",MIXED:"혼재",NO_NEWS:"신규 없음"}[v]||"중립"}
+function investmentNewsTone(v){return v==="POSITIVE"?"positive":v==="NEGATIVE"?"negative":v==="MIXED"?"mixed":"neutral"}
+function investmentNewsFmtTime(v){
+  if(!v)return "시간 미확인";const s=String(v).trim();if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s;
+  const d=new Date(s);if(Number.isNaN(d.getTime()))return esc(s);
+  return new Intl.DateTimeFormat("ko-KR",{month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"}).format(d)
+}
+function investmentNewsFlatten(data){
+  const rows=[];for(const e of agentArray(data?.entities)){for(const item of agentArray(e.news))rows.push({entity:e,item})}
+  return rows.sort((a,b)=>n(b.item.importance)-n(a.item.importance)||String(b.item.published_at||"").localeCompare(String(a.item.published_at||"")))
+}
+function renderInvestmentNews(){
+  if(!$("investmentNewsFeed"))return;
+  const targets=investmentNewsTargets(),cache=investmentNewsReadCache(),data=agentObj(cache?.data),fresh=investmentNewsCacheFresh(cache,targets);
+  const targetBox=$("investmentNewsTargets");
+  if(targetBox)targetBox.innerHTML=targets.length?targets.map(x=>`<span class="investment-news-target ${x.held?"held":""}">${x.held?"● ":""}${esc(x.name)}${x.ticker?` <small>${esc(x.ticker)}</small>`:""}</span>`).join(""):'<span class="investment-news-target empty">관심종목에서 ‘3시간 뉴스 추적’을 켜주세요.</span>';
+  if($("investmentNewsState")){$("investmentNewsState").textContent=investmentNewsRuntime.busy?"검색 중":investmentNewsRuntime.error?"오류":cache?(fresh?"FRESH":"STALE"):"대기";$("investmentNewsState").className=`pill finance news-state ${investmentNewsRuntime.error?"bad":fresh?"ok":cache?"warn":""}`}
+  if($("investmentNewsUpdated"))$("investmentNewsUpdated").textContent=cache?.savedAt?`마지막 확인 ${agentFmtDate(cache.savedAt)}${fresh?" · 3시간 캐시 유효":" · 갱신 필요"}`:"아직 검색하지 않음";
+  if($("investmentNewsPolicy"))$("investmentNewsPolicy").textContent=`뉴스 추적 ${targets.length}/${INVESTMENT_NEWS_MAX_TARGETS}종목 · 자동 갱신 ${Math.round(INVESTMENT_NEWS_TTL_MS/3600000)}시간`;
+  if($("investmentNewsMarketBrief"))$("investmentNewsMarketBrief").textContent=investmentNewsRuntime.error&&cache?`최근 정상 결과를 유지합니다. · ${investmentNewsRuntime.error}`:(data.market_brief||"관심종목을 등록하면 최신 투자 뉴스를 묶어서 보여줍니다.");
+
+  const entities=agentArray(data.entities);
+  if($("investmentNewsEntityBriefs"))$("investmentNewsEntityBriefs").innerHTML=entities.length?entities.map(e=>`<div class="investment-news-entity-card ${investmentNewsTone(e.signal)}"><div class="investment-news-entity-head"><div><span>${esc(marketLabel(e.market))}${e.ticker?` · ${esc(e.ticker)}`:""}</span><b>${esc(e.name)}</b></div><em>${investmentNewsSentimentLabel(e.signal)}</em></div><p>${esc(e.summary||"신규 요약 없음")}</p><div class="investment-news-watchpoint"><b>다음 확인</b>${esc(e.watch_point||"새로운 공시·실적·사업 변화 확인")}</div><small>의미 있는 신규 뉴스 ${agentArray(e.news).length}건</small></div>`).join(""):'<div class="empty">뉴스 검색 결과가 아직 없습니다.</div>';
+
+  const entityFilter=$("investmentNewsEntityFilter"),selected=state.ui.investmentNewsEntity||"all";
+  if(entityFilter){
+    const opts=['<option value="all">전체 종목</option>',...entities.map(e=>{const key=e.ticker||e.name;return `<option value="${esc(key)}">${esc(e.name)}</option>`})];
+    entityFilter.innerHTML=opts.join("");entityFilter.value=[...entityFilter.options].some(o=>o.value===selected)?selected:"all"
+  }
+  const entityKey=entityFilter?.value||"all",grade=$("investmentNewsGradeFilter")?.value||state.ui.investmentNewsGrade||"all",sentiment=$("investmentNewsSentimentFilter")?.value||state.ui.investmentNewsSentiment||"all";
+  if($("investmentNewsGradeFilter"))$("investmentNewsGradeFilter").value=grade;if($("investmentNewsSentimentFilter"))$("investmentNewsSentimentFilter").value=sentiment;
+  const allRows=investmentNewsFlatten(data),rows=allRows.filter(r=>(entityKey==="all"||(r.entity.ticker||r.entity.name)===entityKey)&&(grade==="all"||r.item.source_grade===grade)&&(sentiment==="all"||r.item.sentiment===sentiment));
+  if($("investmentNewsCount"))$("investmentNewsCount").textContent=rows.length+"건";
+  $("investmentNewsFeed").innerHTML=rows.length?rows.map((r,i)=>{
+    const u=investmentNewsSafeUrl(r.item.source_url),verified=r.item.source_verified!==false&&!!u;
+    return `<article class="investment-news-item ${investmentNewsTone(r.item.sentiment)}"><div class="investment-news-item-top"><div class="investment-news-badges"><span class="news-grade ${String(r.item.source_grade||"").toLowerCase()}">${investmentNewsGradeLabel(r.item.source_grade)}</span><span class="news-sentiment ${investmentNewsTone(r.item.sentiment)}">${investmentNewsSentimentLabel(r.item.sentiment)}</span><span class="news-importance">중요도 ${"●".repeat(Math.max(1,Math.min(5,n(r.item.importance))))}</span></div><span>${investmentNewsFmtTime(r.item.published_at)}</span></div><h4>${esc(r.item.title)}</h4><div class="investment-news-symbol">${esc(r.entity.name)}${r.entity.ticker?` · ${esc(r.entity.ticker)}`:""} · ${esc(r.item.event_type||"NEWS")}</div><p>${esc(r.item.summary)}</p><div class="investment-news-why"><b>왜 중요한가</b>${esc(r.item.why_it_matters||"-")}</div><div class="investment-news-actions"><span>${esc(r.item.source_name||"출처")}${verified?"":" · 링크 미검증"}</span><div>${u?`<a class="btn sm" href="${esc(u)}" target="_blank" rel="noopener noreferrer">원문 ↗</a>`:""}<button class="btn sm" data-news-journal="${i}">투자일기에 연결</button></div></div></article>`
+  }).join(""):'<div class="empty">현재 필터에 해당하는 의미 있는 신규 뉴스가 없습니다.</div>';
+  $("investmentNewsFeed").querySelectorAll("[data-news-journal]").forEach(btn=>btn.onclick=()=>{const row=rows[Number(btn.dataset.newsJournal)];if(row)investmentNewsToJournal(row)});
+  const usage=agentObj(data.usage);
+  if($("investmentNewsUsage")){
+    const total=n(usage.total_tokens),model=data.model||"gpt-5.6-luna";
+    $("investmentNewsUsage").textContent=cache?`3시간 캐시 · ${targets.length}종목 · ${model}${total?` · 최근 API ${num(total)} tokens`:""} · 원문 전체를 HANI OS에 저장하지 않습니다.`:"뉴스는 탭을 열었을 때 캐시가 3시간 이상 오래된 경우에만 자동 갱신합니다. 새로고침 전까지 기존 결과를 유지합니다."
+  }
+}
+function investmentNewsToJournal(row){
+  const e=row.entity,item=row.item,u=investmentNewsSafeUrl(item.source_url);
+  const tabs=document.querySelector('.investment-tabs-main'),tab=tabs?.querySelector('.tab[data-panel="investJournal"]');if(tab)tab.click();
+  resetJournal();$("journalDate").value=today();$("journalAction").value="watch";$("journalStock").value=e.name||e.ticker||"";
+  $("journalReason").value=`뉴스 확인 · ${item.title||""}`.trim();
+  $("journalContext").value=[item.summary,item.why_it_matters?`왜 중요한가: ${item.why_it_matters}`:"",item.source_name?`출처: ${item.source_name}`:"",u?`원문: ${u}`:""].filter(Boolean).join("\n");
+  $("journalPlan").value=e.watch_point||"후속 공시·실적·주가 반응 확인";
+  $("journalReason").scrollIntoView({behavior:"smooth",block:"center"});toast("뉴스 내용을 투자 일기 Draft로 옮겼습니다. 저장 전 확인해 주세요.")
+}
+function investmentOpenNewsTab(entityKey="all"){
+  const tabs=document.querySelector('.investment-tabs-main'),tab=tabs?.querySelector('.tab[data-panel="investNews"]');if(tab)tab.click();
+  state.ui.investmentNewsEntity=entityKey||"all";save();renderInvestmentNews();setTimeout(()=>$("investmentNewsFeed")?.scrollIntoView({behavior:"smooth",block:"start"}),80)
+}
+async function investmentNewsRefresh(force=false,{silent=false}={}){
+  if(investmentNewsRuntime.busy)return;
+  const targets=investmentNewsTargets(),cache=investmentNewsReadCache();
+  if(!targets.length){renderInvestmentNews();if(!silent)alert("관심종목에서 뉴스 추적을 켠 종목이 없습니다.");return}
+  if(!force&&investmentNewsCacheFresh(cache,targets)){renderInvestmentNews();return}
+  try{
+    investmentNewsRuntime={busy:true,error:""};renderInvestmentNews();
+    if(!silent)haniWorkShow({agent:"hani",title:"하니가 관심종목 최신 뉴스를 확인하는 중",step:"HANI · INVESTMENT NEWS",message:`${targets.length}개 종목의 신규 재료를 검색하고 같은 사건은 하나로 합치고 있어요.`});
+    const result=await agentApi("investment_news",{lookback_hours:72,targets:targets.map(x=>({name:x.name,ticker:x.ticker,market:x.market,reason:x.reason,held:x.held}))}),data=agentObj(result.news);
+    if(!agentArray(data.entities).length)throw new Error("뉴스 검색 결과 구조를 확인하지 못했습니다.");
+    investmentNewsWriteCache(data,targets);investmentNewsRuntime={busy:false,error:""};renderInvestmentNews();
+    if(!silent){haniWorkFinish(true,"투자 뉴스 업데이트 완료!");haniWorkHide(700)}
+  }catch(e){
+    investmentNewsRuntime={busy:false,error:e?.message||String(e)};renderInvestmentNews();
+    if(!silent){haniWorkFinish(false,"뉴스 업데이트 중 확인할 문제가 생겼어요.");haniWorkHide(900);alert(`투자 뉴스 업데이트에 실패했습니다.\n${investmentNewsRuntime.error}\n\n기존 뉴스 캐시는 유지합니다.`)}
+  }
+}
+function investmentNewsMaybeRefresh(){const targets=investmentNewsTargets(),cache=investmentNewsReadCache();renderInvestmentNews();if(targets.length&&!investmentNewsCacheFresh(cache,targets))investmentNewsRefresh(false,{silent:true})}
+
 function emotionLabel(x){return {calm:"차분함",confident:"확신",fear:"불안·공포",greed:"조급함·욕심",regret:"후회",neutral:"중립"}[x]||"중립"}
 function journalActionLabel(x){return {buy:"매수",sell:"매도",watch:"관망",review:"복기"}[x]||x}
 function resetJournal(){["journalEditId","journalStock","journalReason","journalContext","journalPlan","journalPrice","journalQty"].forEach(id=>$(id).value="");$("journalDate").value=today();$("journalAction").value="buy";$("journalAccount").value="";$("journalEmotion").value="calm"}
@@ -3194,7 +3339,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.61";
+const HANI_DISPLAY_VERSION="2.9.62";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
@@ -3561,7 +3706,7 @@ async function agentReviewInit(){
 async function agentPolicyInit(){if(!$("policy"))return;if($("agentRefreshPolicies"))$("agentRefreshPolicies").onclick=()=>agentLoadPolicyRegistry();if(!agentRequireCloud())return;try{await agentLoadPolicyRegistry()}catch(e){console.error("Policy init",e);if($("agentPolicyRegistry"))$("agentPolicyRegistry").innerHTML=`<div class="empty">사내 규칙을 불러오지 못했습니다.<br>${esc(e?.message||e)}</div>`}}
 
 
-function renderAll(){syncHaniDisplayVersion();refreshSelects();renderAccounts();renderInstruments();renderHoldings();renderTransactions();renderMonthlySnapshots();renderInvestmentQuickSuite();renderInvestmentHighlights();renderInvestmentAccountOverview();syncOverviewYearMirror();renderPortfolio();renderAssets();renderLedger();renderWishlist();renderBody();renderExercise();renderReading();renderMovies();renderDiary();renderCampus();renderTravel();renderCertificates();renderTasks();renderCalendar();renderTeam();renderNotes();renderHome();renderStoragePanel()}
+function renderAll(){syncHaniDisplayVersion();refreshSelects();renderAccounts();renderInstruments();renderHoldings();renderTransactions();renderMonthlySnapshots();renderInvestmentQuickSuite();renderInvestmentHighlights();renderInvestmentAccountOverview();renderInvestmentNews();syncOverviewYearMirror();renderPortfolio();renderAssets();renderLedger();renderWishlist();renderBody();renderExercise();renderReading();renderMovies();renderDiary();renderCampus();renderTravel();renderCertificates();renderTasks();renderCalendar();renderTeam();renderNotes();renderHome();renderStoragePanel()}
 function downloadJson(serialized,filename){const blob=new Blob([serialized],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function exportData({suffix="",silent=false}={}){
   try{
@@ -3619,7 +3764,11 @@ $("flowType").onchange=updateFlowForm;document.querySelectorAll("[data-flow-kind
 $("flowReset").onclick=resetFlow;$("flowMonthFilter").onchange=()=>{state.ui.flowMonthFilter=$("flowMonthFilter").value||monthKeyNow();save();renderCashFlows()};
 $("flowSave").onclick=()=>{const id=$("flowEditId").value,type=$("flowType").value,accountId=$("flowAccount").value,toAccountId=$("flowToAccount").value,amount=n($("flowAmount").value),date=$("flowDate").value;if(!date||!accountId||amount<=0)return alert("날짜, 계좌와 금액을 입력하세요.");if(type==="transfer"&&(!toAccountId||toAccountId===accountId))return alert("서로 다른 보내는 계좌와 받는 계좌를 선택하세요.");const old=state.investmentCashFlows.find(x=>x.id===id),x=normalizeCashFlow({id:id||uid(),date,type,accountId,toAccountId:type==="transfer"?toAccountId:"",amount,note:$("flowNote").value.trim(),createdAt:old?.createdAt,updatedAt:new Date().toISOString()});const idx=state.investmentCashFlows.findIndex(r=>r.id===x.id);if(idx>=0)state.investmentCashFlows[idx]=x;else state.investmentCashFlows.push(x);state.ui.flowMonthFilter=date.slice(0,7);resetFlow();commit("자금 이동을 기록했습니다.")};
 $("watchReset").onclick=resetWatchlist;$("watchFilter").onchange=()=>{state.ui.watchlistFilter=$("watchFilter").value;save();renderWatchlist()};$("watchSearch").oninput=()=>{state.ui.watchlistSearch=$("watchSearch").value;renderWatchlist()};
-$("watchSave").onclick=()=>{const id=$("watchEditId").value,name=$("watchName").value.trim(),ticker=$("watchTicker").value.trim(),market=inferMarket(ticker,$("watchMarket").value),registeredDate=$("watchDate").value,reason=$("watchReason").value.trim();if(!name||!registeredDate)return alert("종목명과 관심 등록일을 입력하세요.");const master=ensureMasterInstrument({name,ticker,market});const candidate=normalizeWatchlistItem({id:id||uid(),instrumentId:master?.id||"",name:master?.name||name,market:master?.market||market,ticker:master?.ticker||ticker,registeredDate,status:$("watchStatus").value,reason,targetPrice:nullableNum($("watchTargetPrice").value),note:$("watchNote").value.trim()});const duplicate=state.investmentWatchlist.find(x=>x.id!==candidate.id&&watchKey(x)===watchKey(candidate));if(duplicate)return alert(`이미 관심종목에 등록되어 있습니다: ${duplicate.name}`);const old=state.investmentWatchlist.find(x=>x.id===candidate.id);candidate.createdAt=old?.createdAt||candidate.createdAt;candidate.updatedAt=new Date().toISOString();const idx=state.investmentWatchlist.findIndex(x=>x.id===candidate.id);if(idx>=0)state.investmentWatchlist[idx]=candidate;else state.investmentWatchlist.push(candidate);resetWatchlist();commit("관심종목을 저장했습니다.")};
+$("watchSave").onclick=()=>{const id=$("watchEditId").value,name=$("watchName").value.trim(),ticker=$("watchTicker").value.trim(),market=inferMarket(ticker,$("watchMarket").value),registeredDate=$("watchDate").value,reason=$("watchReason").value.trim();if(!name||!registeredDate)return alert("종목명과 관심 등록일을 입력하세요.");const master=ensureMasterInstrument({name,ticker,market});const candidate=normalizeWatchlistItem({id:id||uid(),instrumentId:master?.id||"",name:master?.name||name,market:master?.market||market,ticker:master?.ticker||ticker,registeredDate,status:$("watchStatus").value,reason,targetPrice:nullableNum($("watchTargetPrice").value),note:$("watchNote").value.trim(),newsTracking:$("watchNewsTracking")?.checked!==false});const duplicate=state.investmentWatchlist.find(x=>x.id!==candidate.id&&watchKey(x)===watchKey(candidate));if(duplicate)return alert(`이미 관심종목에 등록되어 있습니다: ${duplicate.name}`);const old=state.investmentWatchlist.find(x=>x.id===candidate.id);candidate.createdAt=old?.createdAt||candidate.createdAt;candidate.updatedAt=new Date().toISOString();const idx=state.investmentWatchlist.findIndex(x=>x.id===candidate.id);if(idx>=0)state.investmentWatchlist[idx]=candidate;else state.investmentWatchlist.push(candidate);resetWatchlist();commit("관심종목을 저장했습니다.")};
+if($("investmentNewsRefresh"))$("investmentNewsRefresh").onclick=()=>investmentNewsRefresh(true);
+if($("investmentNewsEntityFilter"))$("investmentNewsEntityFilter").onchange=()=>{state.ui.investmentNewsEntity=$("investmentNewsEntityFilter").value;save();renderInvestmentNews()};
+if($("investmentNewsGradeFilter"))$("investmentNewsGradeFilter").onchange=()=>{state.ui.investmentNewsGrade=$("investmentNewsGradeFilter").value;save();renderInvestmentNews()};
+if($("investmentNewsSentimentFilter"))$("investmentNewsSentimentFilter").onchange=()=>{state.ui.investmentNewsSentiment=$("investmentNewsSentimentFilter").value;save();renderInvestmentNews()};
 $("journalReset").onclick=resetJournal;$("journalFilter").onchange=()=>{state.ui.journalFilter=$("journalFilter").value;save();renderInvestmentJournal()};$("journalSearch").oninput=()=>{state.ui.journalSearch=$("journalSearch").value;renderInvestmentJournal()};
 $("journalSave").onclick=()=>{const id=$("journalEditId").value,date=$("journalDate").value,stock=$("journalStock").value.trim(),reason=$("journalReason").value.trim();if(!date||!stock||!reason)return alert("날짜, 종목명과 판단 이유를 입력하세요.");const old=state.investmentJournal.find(x=>x.id===id),x=normalizeInvestmentJournal({id:id||uid(),date,action:$("journalAction").value,accountId:$("journalAccount").value,stock,emotion:$("journalEmotion").value,reason,context:$("journalContext").value.trim(),plan:$("journalPlan").value.trim(),price:nullableNum($("journalPrice").value),qty:nullableNum($("journalQty").value),createdAt:old?.createdAt,updatedAt:new Date().toISOString()});const idx=state.investmentJournal.findIndex(r=>r.id===x.id);if(idx>=0)state.investmentJournal[idx]=x;else state.investmentJournal.push(x);resetJournal();commit("투자 일기를 저장했습니다.")};
 
