@@ -386,3 +386,245 @@ button.investment-news-target.held.active{border-color:#5a9d84;background:#edf9f
 
 @media(max-width:1100px){#newsroom .investment-news-board-head,#newsroom .investment-news-row-main{grid-template-columns:82px 112px 76px 76px 68px minmax(220px,1fr) 92px}#newsroom .investment-news-row-detail{padding-left:214px}}
 @media(max-width:760px){.newsroom-mode-tabs{width:100%;grid-template-columns:1fr 1fr}.newsroom-mode-btn{padding:10px 8px;font-size:13px}.newsroom-market-grid,.newsroom-weekly-grid{grid-template-columns:1fr}.newsroom-market-card{min-height:0;padding:14px}.newsroom-weekly-lead{padding:14px!important}.newsroom-weekly-lead h3,.newsroom-interest-head h3{font-size:17px}#newsroom .investment-news-market-brief,.newsroom-hani-general p{font-size:13px}.newsroom-market-card p{font-size:12.5px}#newsroom .investment-news-entity-row{grid-template-columns:1fr auto;gap:7px}.news-entity-summary{grid-column:1/-1}.news-entity-signal{grid-column:1}.news-entity-count{grid-column:2;grid-row:1}#newsroom .investment-news-board-head{display:none}#newsroom .investment-news-row-main{grid-template-columns:76px 1fr auto;gap:7px;padding:11px}.news-col-symbol{grid-column:2}.news-col-title{grid-column:1/-1}.news-col-source{grid-column:1/-1}.news-col-importance{grid-column:3;grid-row:2}#newsroom .investment-news-row-detail{padding:0 11px 11px}#newsroom .investment-news-row-detail>div:not(.investment-news-row-actions){grid-template-columns:1fr}.news-agent-comment{grid-template-columns:44px 1fr}#newsroom .investment-news-board-shell>.sh{align-items:flex-start;gap:8px}#newsroom .investment-news-board-shell>.sh .sh-actions{width:100%;flex-wrap:wrap}#newsroom .investment-news-board-shell>.sh select{max-width:100%;font-size:10px}}
+
+
+/* =========================================================
+   v2.9.67 · Newsroom v0.3
+   Readability + 3-column news hierarchy + richer weekly brief.
+   ========================================================= */
+#newsroom .newsroom-v03-note{
+  font-size:15px;line-height:1.7;padding:15px 17px;margin-bottom:12px;
+  border-radius:14px;background:#fff
+}
+#newsroom .newsroom-v03-note b{
+  display:block;font-size:18px;line-height:1.35;margin-bottom:4px;color:#273149
+}
+#newsroom .newsroom-v03-note span{display:block;color:#555f75}
+
+#newsroom .investment-news-toolbar{padding:11px 0 13px}
+#newsroom .investment-news-status b{font-size:14px}
+#newsroom .investment-news-status small{font-size:12px}
+#newsroom .newsroom-mode-btn{font-size:15px;font-weight:900}
+
+#newsroom .newsroom-weekly-lead{padding:18px 20px!important}
+#newsroom .newsroom-weekly-lead h3{font-size:22px}
+#newsroom .investment-news-market-brief{
+  font-size:16px;line-height:1.78;color:#3f4960;font-weight:590
+}
+#newsroom .newsroom-market-card{
+  padding:18px 19px;min-height:0
+}
+#newsroom .newsroom-market-title b{font-size:18px}
+#newsroom .newsroom-market-title small{font-size:10px}
+#newsroom .newsroom-market-card p{
+  font-size:15px;line-height:1.75;color:#4b556b
+}
+#newsroom .newsroom-weekly-card{
+  padding:17px 18px
+}
+#newsroom .newsroom-weekly-card h3{font-size:17px}
+#newsroom .newsroom-weekly-grid{grid-template-columns:1fr 1fr;gap:12px}
+#newsroom .newsroom-detail-list,
+#newsroom .newsroom-checkpoint-list{
+  display:grid;gap:9px;margin:0;padding-left:21px
+}
+#newsroom .newsroom-detail-list li,
+#newsroom .newsroom-checkpoint-list li{
+  font-size:14px;line-height:1.62;color:#4b556b
+}
+#newsroom .newsroom-theme-chips{gap:8px}
+#newsroom .newsroom-theme-chips span{
+  padding:8px 10px;font-size:13px;line-height:1.3
+}
+#newsroom .newsroom-hani-general{padding:18px 20px}
+#newsroom .newsroom-hani-kicker{font-size:15px}
+#newsroom .newsroom-hani-general p{
+  font-size:16px;line-height:1.72
+}
+
+#newsroom .newsroom-interest-head h3{font-size:22px}
+#newsroom .newsroom-interest-head p{font-size:13.5px;line-height:1.6}
+#newsroom button.investment-news-target{
+  padding:8px 11px;font-size:12.5px
+}
+#newsroom .investment-news-entity-row{
+  grid-template-columns:minmax(160px,.8fr) minmax(300px,2.3fr) 112px 46px;
+  gap:12px;padding:12px 14px
+}
+#newsroom .news-entity-main b{font-size:14px}
+#newsroom .news-entity-main span{font-size:10.5px}
+#newsroom .news-entity-summary{font-size:13px;line-height:1.55}
+#newsroom .news-entity-signal{
+  font-size:11px;padding:6px 9px;border:1px solid transparent
+}
+#newsroom .news-entity-signal.positive{border-color:#f1c8cb}
+#newsroom .news-entity-signal.negative{border-color:#c9d7f6}
+#newsroom .news-entity-signal.mixed{border-color:#ddcff7}
+#newsroom .news-entity-count{font-size:11px}
+
+#newsroom .investment-news-board-shell>.sh{padding:14px 15px}
+#newsroom .investment-news-board-shell>.sh h3{font-size:18px}
+#newsroom .investment-news-board-shell>.sh .sub{font-size:12px;line-height:1.45}
+
+#newsroom .newsroom-v03-head,
+#newsroom .newsroom-v03-main{
+  grid-template-columns:minmax(150px,180px) minmax(125px,150px) minmax(0,1fr);
+  gap:14px
+}
+#newsroom .newsroom-v03-head{
+  padding:10px 14px;
+  font-size:11px;letter-spacing:.04em;color:#737c90
+}
+#newsroom .newsroom-v03-main{
+  padding:12px 14px;
+  align-items:center
+}
+#newsroom .newsroom-v03-row{
+  border-left:5px solid #b8beca;
+  box-shadow:none
+}
+#newsroom .newsroom-v03-row.positive{border-left-color:#d85a62;box-shadow:none}
+#newsroom .newsroom-v03-row.negative{border-left-color:#4e76cb;box-shadow:none}
+#newsroom .newsroom-v03-row.mixed{border-left-color:#8561cb;box-shadow:none}
+#newsroom .newsroom-v03-row.neutral{border-left-color:#a6adba}
+#newsroom .newsroom-v03-row.positive .newsroom-v03-main{
+  background:linear-gradient(90deg,#fff7f8 0,#fff 155px)
+}
+#newsroom .newsroom-v03-row.negative .newsroom-v03-main{
+  background:linear-gradient(90deg,#f6f9ff 0,#fff 155px)
+}
+#newsroom .newsroom-v03-row.mixed .newsroom-v03-main{
+  background:linear-gradient(90deg,#faf7ff 0,#fff 155px)
+}
+#newsroom .newsroom-v03-row.open .newsroom-v03-main{background:#f8f7ff}
+
+#newsroom .newsroom-v03-symbol{gap:3px}
+#newsroom .newsroom-v03-symbol b{
+  font-size:14px;line-height:1.25;color:#273147
+}
+#newsroom .newsroom-v03-symbol small{
+  font-size:10.5px;line-height:1.35;color:#838c9d
+}
+#newsroom .news-col-classification{
+  display:grid;gap:6px;justify-items:start;min-width:0
+}
+#newsroom .news-col-classification>.news-sentiment{
+  font-size:11.5px;padding:6px 9px;border-radius:999px;font-weight:950
+}
+#newsroom .news-col-classification>.news-sentiment.positive{
+  background:#fff0f1;color:#ad3e47;border:1px solid #f1c5c9
+}
+#newsroom .news-col-classification>.news-sentiment.negative{
+  background:#eef4ff;color:#3e62aa;border:1px solid #cbd8f2
+}
+#newsroom .news-col-classification>.news-sentiment.mixed{
+  background:#f4efff;color:#704cb5;border:1px solid #d9caf3
+}
+#newsroom .news-col-classification>.news-sentiment.neutral{
+  background:#f1f3f6;color:#626b7c;border:1px solid #dfe3e9
+}
+#newsroom .news-col-classification small{
+  display:flex;align-items:center;flex-wrap:wrap;gap:6px
+}
+#newsroom .news-col-classification small .news-grade{
+  font-size:9.5px;padding:3px 6px
+}
+#newsroom .news-col-classification small b{
+  font-size:10px;color:#786f59;white-space:nowrap
+}
+#newsroom .newsroom-v03-title{gap:4px}
+#newsroom .newsroom-v03-title>b{
+  font-size:15px;line-height:1.45;color:#222d45;
+  white-space:normal;overflow:visible;text-overflow:clip
+}
+#newsroom .newsroom-v03-title>small{
+  display:flex;align-items:center;gap:4px;flex-wrap:wrap;
+  font-size:10.5px;line-height:1.45;color:#818a9d
+}
+#newsroom .newsroom-v03-title>small i{
+  margin-left:auto;font-style:normal;color:#7764d7;font-size:13px
+}
+#newsroom .newsroom-v03-row.open .newsroom-v03-title>small i{transform:rotate(180deg)}
+
+#newsroom .newsroom-v03-detail{
+  padding:4px 18px 15px 18px;background:#fbfbfe
+}
+#newsroom .newsroom-v03-detail>div:not(.investment-news-row-actions){
+  grid-template-columns:110px 1fr;gap:12px;padding:10px 0
+}
+#newsroom .newsroom-v03-detail b{font-size:12px}
+#newsroom .newsroom-v03-detail p{
+  font-size:14px;line-height:1.68;color:#48536a
+}
+#newsroom .news-hani-view{
+  margin:10px 0;padding:14px 15px
+}
+#newsroom .news-hani-view>b{font-size:13px!important}
+#newsroom .news-hani-view p{font-size:14.5px!important;line-height:1.68!important}
+
+#newsroom .news-agent-comments{
+  margin:10px 0;padding:12px 14px
+}
+#newsroom .news-comments-head{margin-bottom:5px}
+#newsroom .news-comments-head>b{font-size:13px!important}
+#newsroom .news-agent-comment{
+  display:grid;grid-template-columns:128px minmax(0,1fr);
+  gap:12px;padding:9px 0
+}
+#newsroom .news-agent-comment-head{
+  display:flex;align-items:flex-start;gap:5px;flex-wrap:wrap
+}
+#newsroom .news-agent-comment strong{font-size:12px}
+#newsroom .news-agent-comment-head em{
+  font-style:normal;font-size:9px;font-weight:900;padding:2px 5px;
+  border-radius:999px;background:#f1f2f6;color:#70798b
+}
+#newsroom .news-agent-comment p{
+  font-size:13px!important;line-height:1.6!important
+}
+#newsroom .news-agent-comment.banter .news-agent-comment-head em{
+  background:#fff2dc;color:#926426
+}
+#newsroom .news-agent-comment.counter .news-agent-comment-head em{
+  background:#f3edff;color:#7150ad
+}
+#newsroom .news-agent-comment.caution .news-agent-comment-head em{
+  background:#eef4ff;color:#4969aa
+}
+#newsroom .news-agent-comment.short .news-agent-comment-head em{
+  background:#ecf7f2;color:#3e7b62
+}
+#newsroom .investment-news-row-actions>span{font-size:10.5px}
+#newsroom .investment-news-cost-note{font-size:11.5px;line-height:1.55}
+
+@media(max-width:1100px){
+  #newsroom .newsroom-v03-head,
+  #newsroom .newsroom-v03-main{
+    grid-template-columns:135px 125px minmax(0,1fr);gap:10px
+  }
+  #newsroom .investment-news-entity-row{
+    grid-template-columns:minmax(145px,.8fr) minmax(240px,2fr) 104px 42px
+  }
+}
+@media(max-width:760px){
+  #newsroom .newsroom-v03-note{font-size:13.5px;padding:13px 14px}
+  #newsroom .newsroom-v03-note b{font-size:16px}
+  #newsroom .newsroom-weekly-lead h3,#newsroom .newsroom-interest-head h3{font-size:19px}
+  #newsroom .investment-news-market-brief{font-size:14.5px}
+  #newsroom .newsroom-market-card p{font-size:14px}
+  #newsroom .newsroom-weekly-grid{grid-template-columns:1fr}
+  #newsroom .newsroom-detail-list li,#newsroom .newsroom-checkpoint-list li{font-size:13.5px}
+  #newsroom .newsroom-hani-general p{font-size:14.5px}
+  #newsroom .investment-news-entity-row{grid-template-columns:1fr auto;gap:8px}
+  #newsroom .newsroom-v03-head{display:none}
+  #newsroom .newsroom-v03-main{
+    grid-template-columns:1fr auto;gap:8px;padding:12px
+  }
+  #newsroom .newsroom-v03-symbol{grid-column:1}
+  #newsroom .news-col-classification{grid-column:2;grid-row:1}
+  #newsroom .newsroom-v03-title{grid-column:1/-1}
+  #newsroom .newsroom-v03-title>b{font-size:14px}
+  #newsroom .newsroom-v03-detail{padding:2px 12px 12px}
+  #newsroom .newsroom-v03-detail>div:not(.investment-news-row-actions){grid-template-columns:1fr;gap:4px}
+  #newsroom .news-agent-comment{grid-template-columns:1fr;gap:4px}
+}
