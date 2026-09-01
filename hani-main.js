@@ -5,8 +5,8 @@ const STORAGE_KEY="hani_os_life_v23";
 const DEFAULT_CLOUD_URL="https://qmgikfdwjzmhkwadycxk.supabase.co";
 const DEFAULT_CLOUD_PUBLISHABLE_KEY="sb_publishable_Z0YkkRSJIo5hs00YNcMOdQ__PA5BAj5";
 const INVESTMENT_BASELINE_RESET_KEY="hani_os_investment_baseline_reset_v250_rc23";
-const INVESTMENT_NEWS_CACHE_KEY="hani_investment_news_cache_v2";
-const INVESTMENT_NEWS_SOCIAL_KEY="hani_investment_news_social_v1";
+const INVESTMENT_NEWS_CACHE_KEY="hani_investment_news_cache_v3";
+const INVESTMENT_NEWS_SOCIAL_KEY="hani_investment_news_social_v2";
 const INVESTMENT_NEWS_TTL_MS=3*60*60*1000;
 const INVESTMENT_NEWS_MAX_TARGETS=5;
 const THEME_KEY="h22th"; // legacy dark-mode key
@@ -1167,43 +1167,170 @@ function investmentNewsTargets(){
     .map(x=>{const meta=investmentNewsIssuerMeta(x),preferredNote=meta.security_type==="PREFERRED"?`발행회사 ${meta.issuer_name}${meta.issuer_ticker?`(${meta.issuer_ticker})`:""} 공통 뉴스와 우선주 직접 요인(배당·주주환원·괴리율·유동성·공시)을 함께 추적.`:"";return {id:x.id,name:x.name,ticker:x.ticker||"",market:x.market||inferMarket(x.ticker,""),reason:[x.reason||"",preferredNote].filter(Boolean).join(" "),held:watchIsHeld(x),...meta}})
 }
 function investmentNewsSignature(targets=investmentNewsTargets()){return targets.map(x=>[x.market,x.ticker||"",x.name,x.issuer_name||"",x.issuer_ticker||"",x.security_type||"",x.reason||"",x.held?1:0].join("|")).join("||")}
-function investmentNewsReadCache(){try{const raw=localStorage.getItem(INVESTMENT_NEWS_CACHE_KEY);if(!raw)return null;const x=JSON.parse(raw);if(!x||x.schema!==2||!x.data||typeof x.data!=="object")return null;return x}catch(_){return null}}
+function investmentNewsReadCache(){try{const raw=localStorage.getItem(INVESTMENT_NEWS_CACHE_KEY);if(!raw)return null;const x=JSON.parse(raw);if(!x||x.schema!==3||!x.data||typeof x.data!=="object")return null;return x}catch(_){return null}}
 function investmentNewsSocialRead(){try{const x=JSON.parse(localStorage.getItem(INVESTMENT_NEWS_SOCIAL_KEY)||"{}");return x&&typeof x==="object"?x:{}}catch(_){return {}}}
 function investmentNewsSocialWrite(store){try{localStorage.setItem(INVESTMENT_NEWS_SOCIAL_KEY,JSON.stringify(store||{}));return true}catch(e){console.warn("Newsroom social",e);return false}}
 function investmentNewsEventKey(entity,item){return [String(entity?.ticker||entity?.name||"").trim().toUpperCase(),String(item?.published_at||"").slice(0,16),String(item?.title||"").trim().toLocaleLowerCase("ko-KR")].join("|").slice(0,520)}
-function investmentNewsAttachStableSocial(data){const store=investmentNewsSocialRead();let changed=false;for(const e of agentArray(data?.entities)){for(const item of agentArray(e.news)){const key=investmentNewsEventKey(e,item),incoming=agentArray(item.comments).filter(c=>c&&c.comment),old=store[key];if(old?.comments?.length){item.comments=old.comments;if(old.hani_view)item.hani_view=old.hani_view}else if(incoming.length){store[key]={comments:incoming.slice(0,3),hani_view:String(item.hani_view||""),read:false,createdAt:new Date().toISOString()};changed=true}item._news_key=key}}if(changed)investmentNewsSocialWrite(store);return data}
-function investmentNewsWriteCache(data,targets){const stable=investmentNewsAttachStableSocial(structuredClone(data||{})),payload={schema:2,savedAt:new Date().toISOString(),signature:investmentNewsSignature(targets),data:stable};try{localStorage.setItem(INVESTMENT_NEWS_CACHE_KEY,JSON.stringify(payload));return true}catch(e){console.warn("Investment news cache",e);return false}}
+function investmentNewsAttachStableSocial(data){const store=investmentNewsSocialRead();let changed=false;for(const e of agentArray(data?.entities)){for(const item of agentArray(e.news)){const key=investmentNewsEventKey(e,item),incoming=agentArray(item.comments).filter(c=>c&&c.comment),old=store[key];if(old?.comments?.length){item.comments=old.comments;if(old.hani_view)item.hani_view=old.hani_view}else if(incoming.length){store[key]={comments:incoming.slice(0,7),hani_view:String(item.hani_view||""),read:false,createdAt:new Date().toISOString()};changed=true}item._news_key=key}}if(changed)investmentNewsSocialWrite(store);return data}
+function investmentNewsWriteCache(data,targets){const stable=investmentNewsAttachStableSocial(structuredClone(data||{})),payload={schema:3,savedAt:new Date().toISOString(),signature:investmentNewsSignature(targets),data:stable};try{localStorage.setItem(INVESTMENT_NEWS_CACHE_KEY,JSON.stringify(payload));return true}catch(e){console.warn("Investment news cache",e);return false}}
 function investmentNewsCacheFresh(cache,targets=investmentNewsTargets()){if(!cache||cache.signature!==investmentNewsSignature(targets))return false;const stamp=new Date(cache.savedAt||cache.data?.generated_at||0).getTime();return Number.isFinite(stamp)&&Date.now()-stamp<INVESTMENT_NEWS_TTL_MS}
 function investmentNewsSafeUrl(value){try{const u=new URL(String(value||""));return /^https?:$/.test(u.protocol)?u.href:""}catch(_){return ""}}
 function investmentNewsGradeLabel(v){return {OFFICIAL:"공식/확정",MEDIA:"언론보도",BROKER:"증권사 전망",RUMOR:"시장루머"}[v]||"출처 미분류"}
 function investmentNewsSentimentLabel(v){return {POSITIVE:"호재",NEUTRAL:"중립",NEGATIVE:"악재",MIXED:"혼재",NO_NEWS:"신규 없음"}[v]||"중립"}
 function investmentNewsImpactLabel(v){return {POSITIVE:"📈 호재",NEUTRAL:"➖ 중립",NEGATIVE:"📉 악재",MIXED:"⚖️ 혼재",NO_NEWS:"➖ 신규 없음"}[v]||"➖ 중립"}
+function investmentNewsCommentToneLabel(v){return {ANALYSIS:"분석",SHORT:"한마디",BANTER:"잡담",COUNTER:"반론",CAUTION:"체크"}[String(v||"").toUpperCase()]||"의견"}
 function investmentNewsTone(v){return v==="POSITIVE"?"positive":v==="NEGATIVE"?"negative":v==="MIXED"?"mixed":"neutral"}
 function investmentNewsScopeLabel(v){return v==="PREFERRED_DIRECT"?"⭐ 우선주 직접":v==="BOTH"?"🏢+⭐ 공통·직접":"🏢 기업 공통"}
 function investmentNewsFmtTime(v){if(!v)return "시간 미확인";const s=String(v).trim();if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s;const d=new Date(s);if(Number.isNaN(d.getTime()))return esc(s);return new Intl.DateTimeFormat("ko-KR",{month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"}).format(d)}
 function investmentNewsWithinHours(v,hours=72){if(!v)return true;const d=new Date(v).getTime();return Number.isNaN(d)?true:(Date.now()-d<=hours*3600000)}
 function investmentNewsFlatten(data,{interestHours=72}={}){const rows=[];for(const e of agentArray(data?.entities)){for(const item of agentArray(e.news))if(investmentNewsWithinHours(item.published_at,interestHours))rows.push({entity:e,item})}return rows.sort((a,b)=>String(b.item.published_at||"").localeCompare(String(a.item.published_at||""))||n(b.item.importance)-n(a.item.importance))}
-function investmentNewsComments(entity,item){const store=investmentNewsSocialRead(),key=item._news_key||investmentNewsEventKey(entity,item),saved=store[key];return saved?.comments?.length?saved.comments:agentArray(item.comments).filter(c=>c&&c.comment).slice(0,3)}
+function investmentNewsComments(entity,item){const store=investmentNewsSocialRead(),key=item._news_key||investmentNewsEventKey(entity,item),saved=store[key];return saved?.comments?.length?saved.comments:agentArray(item.comments).filter(c=>c&&c.comment).slice(0,7)}
 function investmentNewsIsRead(entity,item){const x=investmentNewsSocialRead()[item._news_key||investmentNewsEventKey(entity,item)];return x?.read===true}
 function investmentNewsMarkRead(entity,item){const store=investmentNewsSocialRead(),key=item._news_key||investmentNewsEventKey(entity,item),old=store[key]||{};store[key]={...old,read:true,readAt:new Date().toISOString()};investmentNewsSocialWrite(store)}
-function investmentNewsHaniView(entity,item){const store=investmentNewsSocialRead(),saved=store[item._news_key||investmentNewsEventKey(entity,item)],view=String(saved?.hani_view||item.hani_view||"").trim();return view||"v0.2 서버 브리핑 적용 후 HANI View가 표시됩니다."}
-function investmentNewsRenderWeekly(data){const w=agentObj(data.weekly_brief),market=data.market_brief||"최신 뉴스 확인을 누르면 최근 7일 한국·미국 시장을 함께 정리합니다.";if($("investmentNewsMarketBrief"))$("investmentNewsMarketBrief").textContent=market;if($("investmentNewsKoreaBrief"))$("investmentNewsKoreaBrief").textContent=w.korea_market||"v0.2 서버 브리핑을 새로 생성하면 한국 시장 요약이 표시됩니다.";if($("investmentNewsUsBrief"))$("investmentNewsUsBrief").textContent=w.us_market||"v0.2 서버 브리핑을 새로 생성하면 미국 시장 요약이 표시됩니다.";if($("investmentNewsThemes"))$("investmentNewsThemes").innerHTML=agentArray(w.key_themes).length?agentArray(w.key_themes).map(x=>`<span>${esc(x)}</span>`).join(""):'<span>최신 브리핑 대기</span>';if($("investmentNewsCheckpoints"))$("investmentNewsCheckpoints").innerHTML=agentArray(w.checkpoints).length?agentArray(w.checkpoints).map(x=>`<li>${esc(x)}</li>`).join(""):'<li>최신 뉴스 확인 후 다음 체크포인트를 정리합니다.</li>';if($("investmentNewsHaniViewGeneral"))$("investmentNewsHaniViewGeneral").textContent=w.hani_view||"💜 HANI View는 v0.2 뉴스 브리핑을 새로 생성하면 표시됩니다."}
+function investmentNewsHaniView(entity,item){const store=investmentNewsSocialRead(),saved=store[item._news_key||investmentNewsEventKey(entity,item)],view=String(saved?.hani_view||item.hani_view||"").trim();return view||"v0.3 서버 브리핑 적용 후 HANI View가 표시됩니다."}
+function investmentNewsRenderWeekly(data){
+  const w=agentObj(data.weekly_brief),market=data.market_brief||"최신 뉴스 확인을 누르면 최근 7일 한국·미국 시장을 함께 정리합니다.";
+  if($("investmentNewsMarketBrief"))$("investmentNewsMarketBrief").textContent=market;
+  if($("investmentNewsKoreaBrief"))$("investmentNewsKoreaBrief").textContent=w.korea_market||"v0.3 서버 브리핑을 새로 생성하면 한국 시장 요약이 표시됩니다.";
+  if($("investmentNewsUsBrief"))$("investmentNewsUsBrief").textContent=w.us_market||"v0.3 서버 브리핑을 새로 생성하면 미국 시장 요약이 표시됩니다.";
+  if($("investmentNewsMajorEvents"))$("investmentNewsMajorEvents").innerHTML=agentArray(w.major_events).length?agentArray(w.major_events).map(x=>`<li>${esc(x)}</li>`).join(""):'<li>최신 브리핑 대기</li>';
+  if($("investmentNewsMacroFlow"))$("investmentNewsMacroFlow").innerHTML=agentArray(w.macro_flow).length?agentArray(w.macro_flow).map(x=>`<li>${esc(x)}</li>`).join(""):'<li>최신 브리핑 대기</li>';
+  if($("investmentNewsThemes"))$("investmentNewsThemes").innerHTML=agentArray(w.key_themes).length?agentArray(w.key_themes).map(x=>`<span>${esc(x)}</span>`).join(""):'<span>최신 브리핑 대기</span>';
+  if($("investmentNewsCheckpoints"))$("investmentNewsCheckpoints").innerHTML=agentArray(w.checkpoints).length?agentArray(w.checkpoints).map(x=>`<li>${esc(x)}</li>`).join(""):'<li>최신 뉴스 확인 후 다음 체크포인트를 정리합니다.</li>';
+  if($("investmentNewsHaniViewGeneral"))$("investmentNewsHaniViewGeneral").textContent=w.hani_view||"💜 HANI View는 v0.3 뉴스 브리핑을 새로 생성하면 표시됩니다.";
+}
 function renderInvestmentNews(){
-  if(!$("investmentNewsFeed"))return;const targets=investmentNewsTargets(),cache=investmentNewsReadCache(),data=investmentNewsAttachStableSocial(agentObj(cache?.data)),fresh=investmentNewsCacheFresh(cache,targets),entities=agentArray(data.entities),mode=state.ui.investmentNewsMode==="general"?"general":"interest";state.ui.investmentNewsMode=mode;
-  document.querySelectorAll("[data-newsroom-mode]").forEach(btn=>{btn.classList.toggle("active",btn.dataset.newsroomMode===mode);btn.onclick=()=>{state.ui.investmentNewsMode=btn.dataset.newsroomMode;save();renderInvestmentNews()}});if($("newsroomGeneralPane"))$("newsroomGeneralPane").hidden=mode!=="general";if($("newsroomInterestPane"))$("newsroomInterestPane").hidden=mode!=="interest";investmentNewsRenderWeekly(data);
-  const validKeys=new Set(entities.map(e=>e.ticker||e.name).filter(Boolean)),requested=state.ui.investmentNewsEntity||"all",selected=requested==="all"||validKeys.has(requested)?requested:"all";if(selected!==requested){state.ui.investmentNewsEntity="all";save()}
-  const targetBox=$("investmentNewsTargets");if(targetBox){targetBox.innerHTML=targets.length?`<button type="button" class="investment-news-target ${selected==="all"?"active":""}" data-news-target="all">전체 흐름</button>`+targets.map(x=>{const key=x.ticker||x.name;return `<button type="button" class="investment-news-target ${x.held?"held":""} ${selected===key?"active":""}" data-news-target="${esc(key)}">${x.held?"● ":""}${esc(x.name)}${x.ticker?` <small>${esc(x.ticker)}</small>`:""}${x.security_type==="PREFERRED"?` <em>우선주+기업</em>`:""}</button>`}).join(""):'<span class="investment-news-target empty">종목 관리에서 뉴스 추적을 켜주세요.</span>';targetBox.querySelectorAll("[data-news-target]").forEach(btn=>btn.onclick=()=>{state.ui.investmentNewsEntity=btn.dataset.newsTarget||"all";state.ui.investmentNewsMode="interest";save();renderInvestmentNews()})}
-  if($("investmentNewsState")){$("investmentNewsState").textContent=investmentNewsRuntime.busy?"검색 중":investmentNewsRuntime.error?"오류":cache?(fresh?"FRESH":"STALE"):"대기";$("investmentNewsState").className=`pill finance news-state ${investmentNewsRuntime.error?"bad":fresh?"ok":cache?"warn":""}`}
-  if($("investmentNewsUpdated"))$("investmentNewsUpdated").textContent=cache?.savedAt?`마지막 확인 ${agentFmtDate(cache.savedAt)}${fresh?" · 3시간 캐시 유효":" · 갱신 필요"}`:"아직 검색하지 않음";if($("investmentNewsPolicy"))$("investmentNewsPolicy").textContent=`종합 7일 · 관심 72시간 · 뉴스 추적 ${targets.length}/${INVESTMENT_NEWS_MAX_TARGETS}종목 · 캐시 3시간`;
-  const selectedEntity=selected==="all"?null:entities.find(e=>(e.ticker||e.name)===selected);if($("investmentNewsEntityBriefs")){$("investmentNewsEntityBriefs").innerHTML=entities.length?entities.map(e=>{const key=e.ticker||e.name,isActive=selected===key;return `<button type="button" class="investment-news-entity-row ${investmentNewsTone(e.signal)} ${isActive?"active":""}" data-news-entity="${esc(key)}"><div class="news-entity-main"><b>${esc(e.name)}</b><span>${esc(marketLabel(e.market))}${e.ticker?` · ${esc(e.ticker)}`:""}${e.security_type==="PREFERRED"?` · 발행회사 ${esc(e.issuer_name||"")}`:""}</span></div><div class="news-entity-summary">${esc(e.summary||"신규 요약 없음")}</div><span class="news-entity-signal ${investmentNewsTone(e.signal)}">${investmentNewsImpactLabel(e.signal)}</span><span class="news-entity-count">${agentArray(e.news).filter(x=>investmentNewsWithinHours(x.published_at,72)).length}건</span></button>`}).join(""):'<div class="empty">뉴스 검색 결과가 아직 없습니다.</div>';$("investmentNewsEntityBriefs").querySelectorAll("[data-news-entity]").forEach(btn=>btn.onclick=()=>{const key=btn.dataset.newsEntity||"all";state.ui.investmentNewsEntity=state.ui.investmentNewsEntity===key?"all":key;save();renderInvestmentNews()})}
-  const entityFilter=$("investmentNewsEntityFilter");if(entityFilter){entityFilter.innerHTML=['<option value="all">전체 종목</option>',...entities.map(e=>{const key=e.ticker||e.name;return `<option value="${esc(key)}">${esc(e.name)}</option>`})].join("");entityFilter.value=[...entityFilter.options].some(o=>o.value===selected)?selected:"all"}
-  const entityKey=entityFilter?.value||selected||"all",grade=$("investmentNewsGradeFilter")?.value||state.ui.investmentNewsGrade||"all",sentiment=$("investmentNewsSentimentFilter")?.value||state.ui.investmentNewsSentiment||"all";if($("investmentNewsGradeFilter"))$("investmentNewsGradeFilter").value=grade;if($("investmentNewsSentimentFilter"))$("investmentNewsSentimentFilter").value=sentiment;const allRows=investmentNewsFlatten(data,{interestHours:72}),rows=allRows.filter(r=>(entityKey==="all"||(r.entity.ticker||r.entity.name)===entityKey)&&(grade==="all"||r.item.source_grade===grade)&&(sentiment==="all"||r.item.sentiment===sentiment));if($("investmentNewsCount"))$("investmentNewsCount").textContent=rows.length+"건";const flowLabel=selectedEntity?`${selectedEntity.name} 뉴스 흐름`:"전체 종목 뉴스 흐름";
-  $("investmentNewsFeed").innerHTML=rows.length?`<div class="investment-news-board" role="table" aria-label="${esc(flowLabel)}"><div class="investment-news-board-head" role="row"><span>시간</span><span>종목</span><span>분류</span><span>영향</span><span>중요도</span><span>뉴스 제목</span><span>출처</span></div>${rows.map((r,i)=>{const u=investmentNewsSafeUrl(r.item.source_url),verified=r.item.source_verified!==false&&!!u,comments=investmentNewsComments(r.entity,r.item),isRead=investmentNewsIsRead(r.entity,r.item),scope=r.entity.security_type==="PREFERRED"?investmentNewsScopeLabel(r.item.scope):"";return `<div class="investment-news-board-row ${investmentNewsTone(r.item.sentiment)}" role="row"><button type="button" class="investment-news-row-main" data-news-row-toggle="${i}" aria-expanded="false"><span class="news-col-time">${investmentNewsFmtTime(r.item.published_at)}</span><span class="news-col-symbol"><b>${esc(r.entity.name)}</b>${r.entity.ticker?`<small>${esc(r.entity.ticker)}</small>`:""}</span><span><em class="news-grade ${String(r.item.source_grade||"").toLowerCase()}">${investmentNewsGradeLabel(r.item.source_grade)}</em></span><span><em class="news-sentiment ${investmentNewsTone(r.item.sentiment)}">${investmentNewsImpactLabel(r.item.sentiment)}</em></span><span class="news-col-importance"><b>중요 ${Math.max(1,Math.min(5,n(r.item.importance)))}/5</b></span><span class="news-col-title"><b>${esc(r.item.title)}</b><small>${scope?`${esc(scope)} · `:""}${esc(r.item.event_type||"NEWS")} · 💬 ${comments.length}${comments.length&&!isRead?" · NEW":""}</small></span><span class="news-col-source">${esc(r.item.source_name||"출처")}<i>⌄</i></span></button><div class="investment-news-row-detail" data-news-row-detail="${i}"><div><b>요약</b><p>${esc(r.item.summary||"-")}</p></div><div><b>왜 중요한가</b><p>${esc(r.item.why_it_matters||"-")}</p></div><section class="news-hani-view"><b>💜 HANI View</b><p>${esc(investmentNewsHaniView(r.entity,r.item))}</p></section><section class="news-agent-comments"><div class="news-comments-head"><b>💬 AI TEAM 댓글 (${comments.length})</b>${comments.length&&!isRead?'<span>NEW</span>':""}</div>${comments.length?comments.map(c=>`<div class="news-agent-comment"><strong>${esc(c.agent_name||c.agent_key||"AI TEAM")}</strong><p>${esc(c.comment||"")}</p></div>`).join(""):'<p class="news-comments-pending">v0.2 서버가 생성한 댓글이 아직 없습니다.</p>'}</section><div class="investment-news-row-actions"><span>${verified?"원문 링크 확인됨":"원문 링크 미검증"}</span><div>${u?`<a class="btn sm" href="${esc(u)}" target="_blank" rel="noopener noreferrer">원문 ↗</a>`:""}<button class="btn sm" data-news-journal="${i}">투자일기에 연결</button></div></div></div></div>`}).join("")}</div>`:'<div class="empty">최근 72시간 기준 현재 필터에 해당하는 의미 있는 신규 뉴스가 없습니다.</div>';
-  $("investmentNewsFeed").querySelectorAll("[data-news-row-toggle]").forEach(btn=>btn.onclick=()=>{const k=btn.dataset.newsRowToggle,detail=$("investmentNewsFeed").querySelector(`[data-news-row-detail="${k}"]`),row=btn.closest(".investment-news-board-row"),open=!row?.classList.contains("open");row?.classList.toggle("open",open);btn.setAttribute("aria-expanded",open?"true":"false");if(detail)detail.hidden=!open;if(open){const rr=rows[Number(k)];if(rr&&investmentNewsComments(rr.entity,rr.item).length&&!investmentNewsIsRead(rr.entity,rr.item)){investmentNewsMarkRead(rr.entity,rr.item);setTimeout(()=>renderInvestmentNews(),30)}}});$("investmentNewsFeed").querySelectorAll("[data-news-row-detail]").forEach(x=>x.hidden=true);$("investmentNewsFeed").querySelectorAll("[data-news-journal]").forEach(btn=>btn.onclick=e=>{e.stopPropagation();const row=rows[Number(btn.dataset.newsJournal)];if(row)investmentNewsToJournal(row)});const usage=agentObj(data.usage);if($("investmentNewsUsage")){const total=n(usage.total_tokens),model=data.model||"gpt-5.6-luna";$("investmentNewsUsage").textContent=cache?`3시간 캐시 · 종합 7일 / 관심 72시간 · ${targets.length}종목 · ${model}${total?` · 최근 API ${num(total)} tokens`:""} · 뉴스/댓글 캐시는 Life OS 핵심 원장과 분리합니다.`:"뉴스룸을 열었을 때 캐시가 3시간 이상 오래된 경우에만 자동 갱신합니다."}
+  if(!$("investmentNewsFeed"))return;
+  const targets=investmentNewsTargets(),cache=investmentNewsReadCache(),data=investmentNewsAttachStableSocial(agentObj(cache?.data)),fresh=investmentNewsCacheFresh(cache,targets),entities=agentArray(data.entities),mode=state.ui.investmentNewsMode==="general"?"general":"interest";
+  state.ui.investmentNewsMode=mode;
+  document.querySelectorAll("[data-newsroom-mode]").forEach(btn=>{
+    btn.classList.toggle("active",btn.dataset.newsroomMode===mode);
+    btn.onclick=()=>{state.ui.investmentNewsMode=btn.dataset.newsroomMode;save();renderInvestmentNews()}
+  });
+  if($("newsroomGeneralPane"))$("newsroomGeneralPane").hidden=mode!=="general";
+  if($("newsroomInterestPane"))$("newsroomInterestPane").hidden=mode!=="interest";
+  investmentNewsRenderWeekly(data);
+
+  const validKeys=new Set(entities.map(e=>e.ticker||e.name).filter(Boolean)),requested=state.ui.investmentNewsEntity||"all",selected=requested==="all"||validKeys.has(requested)?requested:"all";
+  if(selected!==requested){state.ui.investmentNewsEntity="all";save()}
+
+  const targetBox=$("investmentNewsTargets");
+  if(targetBox){
+    targetBox.innerHTML=targets.length
+      ?`<button type="button" class="investment-news-target ${selected==="all"?"active":""}" data-news-target="all">전체 흐름</button>`+
+        targets.map(x=>{
+          const key=x.ticker||x.name;
+          return `<button type="button" class="investment-news-target ${x.held?"held":""} ${selected===key?"active":""}" data-news-target="${esc(key)}">${x.held?"● ":""}${esc(x.name)}${x.ticker?` <small>${esc(x.ticker)}</small>`:""}${x.security_type==="PREFERRED"?` <em>우선주+기업</em>`:""}</button>`
+        }).join("")
+      :'<span class="investment-news-target empty">종목 관리에서 뉴스 추적을 켜주세요.</span>';
+    targetBox.querySelectorAll("[data-news-target]").forEach(btn=>btn.onclick=()=>{
+      state.ui.investmentNewsEntity=btn.dataset.newsTarget||"all";
+      state.ui.investmentNewsMode="interest";
+      save();
+      renderInvestmentNews()
+    })
+  }
+
+  if($("investmentNewsState")){
+    $("investmentNewsState").textContent=investmentNewsRuntime.busy?"검색 중":investmentNewsRuntime.error?"오류":cache?(fresh?"FRESH":"STALE"):"대기";
+    $("investmentNewsState").className=`pill finance news-state ${investmentNewsRuntime.error?"bad":fresh?"ok":cache?"warn":""}`
+  }
+  if($("investmentNewsUpdated"))$("investmentNewsUpdated").textContent=cache?.savedAt?`마지막 확인 ${agentFmtDate(cache.savedAt)}${fresh?" · 3시간 캐시 유효":" · 갱신 필요"}`:"아직 검색하지 않음";
+  if($("investmentNewsPolicy"))$("investmentNewsPolicy").textContent=`종합 7일 · 관심 72시간 · 뉴스 추적 ${targets.length}/${INVESTMENT_NEWS_MAX_TARGETS}종목 · 캐시 3시간`;
+
+  const selectedEntity=selected==="all"?null:entities.find(e=>(e.ticker||e.name)===selected);
+  if($("investmentNewsEntityBriefs")){
+    $("investmentNewsEntityBriefs").innerHTML=entities.length?entities.map(e=>{
+      const key=e.ticker||e.name,isActive=selected===key;
+      return `<button type="button" class="investment-news-entity-row ${investmentNewsTone(e.signal)} ${isActive?"active":""}" data-news-entity="${esc(key)}"><div class="news-entity-main"><b>${esc(e.name)}</b><span>${esc(marketLabel(e.market))}${e.ticker?` · ${esc(e.ticker)}`:""}${e.security_type==="PREFERRED"?` · 발행회사 ${esc(e.issuer_name||"")}`:""}</span></div><div class="news-entity-summary">${esc(e.summary||"신규 요약 없음")}</div><span class="news-entity-signal ${investmentNewsTone(e.signal)}">${investmentNewsImpactLabel(e.signal)}</span><span class="news-entity-count">${agentArray(e.news).filter(x=>investmentNewsWithinHours(x.published_at,72)).length}건</span></button>`
+    }).join(""):'<div class="empty">뉴스 검색 결과가 아직 없습니다.</div>';
+    $("investmentNewsEntityBriefs").querySelectorAll("[data-news-entity]").forEach(btn=>btn.onclick=()=>{
+      const key=btn.dataset.newsEntity||"all";
+      state.ui.investmentNewsEntity=state.ui.investmentNewsEntity===key?"all":key;
+      save();
+      renderInvestmentNews()
+    })
+  }
+
+  const entityFilter=$("investmentNewsEntityFilter");
+  if(entityFilter){
+    entityFilter.innerHTML=['<option value="all">전체 종목</option>',...entities.map(e=>{
+      const key=e.ticker||e.name;
+      return `<option value="${esc(key)}">${esc(e.name)}</option>`
+    })].join("");
+    entityFilter.value=[...entityFilter.options].some(o=>o.value===selected)?selected:"all"
+  }
+
+  const entityKey=entityFilter?.value||selected||"all",grade=$("investmentNewsGradeFilter")?.value||state.ui.investmentNewsGrade||"all",sentiment=$("investmentNewsSentimentFilter")?.value||state.ui.investmentNewsSentiment||"all";
+  if($("investmentNewsGradeFilter"))$("investmentNewsGradeFilter").value=grade;
+  if($("investmentNewsSentimentFilter"))$("investmentNewsSentimentFilter").value=sentiment;
+
+  const allRows=investmentNewsFlatten(data,{interestHours:72}),rows=allRows.filter(r=>
+    (entityKey==="all"||(r.entity.ticker||r.entity.name)===entityKey)&&
+    (grade==="all"||r.item.source_grade===grade)&&
+    (sentiment==="all"||r.item.sentiment===sentiment)
+  );
+  if($("investmentNewsCount"))$("investmentNewsCount").textContent=rows.length+"건";
+  const flowLabel=selectedEntity?`${selectedEntity.name} 뉴스 흐름`:"전체 종목 뉴스 흐름";
+
+  $("investmentNewsFeed").innerHTML=rows.length
+    ?`<div class="investment-news-board newsroom-v03-board" role="table" aria-label="${esc(flowLabel)}">
+        <div class="investment-news-board-head newsroom-v03-head" role="row"><span>종목</span><span>구분</span><span>뉴스</span></div>
+        ${rows.map((r,i)=>{
+          const u=investmentNewsSafeUrl(r.item.source_url),verified=r.item.source_verified!==false&&!!u,comments=investmentNewsComments(r.entity,r.item),isRead=investmentNewsIsRead(r.entity,r.item),scope=r.entity.security_type==="PREFERRED"?investmentNewsScopeLabel(r.item.scope):"",importance=Math.max(1,Math.min(5,n(r.item.importance))),tone=investmentNewsTone(r.item.sentiment);
+          return `<div class="investment-news-board-row newsroom-v03-row ${tone}" role="row">
+            <button type="button" class="investment-news-row-main newsroom-v03-main" data-news-row-toggle="${i}" aria-expanded="false">
+              <span class="news-col-symbol newsroom-v03-symbol"><b>${esc(r.entity.name)}</b><small>${r.entity.ticker?`${esc(r.entity.ticker)} · `:""}${investmentNewsFmtTime(r.item.published_at)}</small></span>
+              <span class="news-col-classification">
+                <em class="news-sentiment ${tone}">${investmentNewsImpactLabel(r.item.sentiment)}</em>
+                <small><em class="news-grade ${String(r.item.source_grade||"").toLowerCase()}">${investmentNewsGradeLabel(r.item.source_grade)}</em><b>중요 ${importance}/5</b></small>
+              </span>
+              <span class="news-col-title newsroom-v03-title"><b>${esc(r.item.title)}</b><small>${esc(r.item.event_type||"NEWS")}${scope?` · ${esc(scope)}`:""}${r.item.source_name?` · ${esc(r.item.source_name)}`:""} · 💬 ${comments.length}${comments.length&&!isRead?" · NEW":""}<i>⌄</i></small></span>
+            </button>
+            <div class="investment-news-row-detail newsroom-v03-detail" data-news-row-detail="${i}">
+              <div><b>요약</b><p>${esc(r.item.summary||"-")}</p></div>
+              <div><b>왜 중요한가</b><p>${esc(r.item.why_it_matters||"-")}</p></div>
+              <section class="news-hani-view"><b>💜 HANI View</b><p>${esc(investmentNewsHaniView(r.entity,r.item))}</p></section>
+              <section class="news-agent-comments">
+                <div class="news-comments-head"><b>💬 AI TEAM 댓글 (${comments.length})</b>${comments.length&&!isRead?'<span>NEW</span>':""}</div>
+                ${comments.length?comments.map(c=>`<div class="news-agent-comment ${String(c.tone||"").toLowerCase()}"><div class="news-agent-comment-head"><strong>${esc(c.agent_name||c.agent_key||"AI TEAM")}</strong><em>${investmentNewsCommentToneLabel(c.tone)}</em></div><p>${esc(c.comment||"")}</p></div>`).join(""):'<p class="news-comments-pending">새 브리핑에서 관련 Agent 댓글을 생성합니다.</p>'}
+              </section>
+              <div class="investment-news-row-actions"><span>${verified?"원문 링크 확인됨":"원문 링크 미검증"}</span><div>${u?`<a class="btn sm" href="${esc(u)}" target="_blank" rel="noopener noreferrer">원문 ↗</a>`:""}<button class="btn sm" data-news-journal="${i}">투자일기에 연결</button></div></div>
+            </div>
+          </div>`
+        }).join("")}
+      </div>`
+    :'<div class="empty">최근 72시간 기준 현재 필터에 해당하는 의미 있는 신규 뉴스가 없습니다.</div>';
+
+  $("investmentNewsFeed").querySelectorAll("[data-news-row-toggle]").forEach(btn=>btn.onclick=()=>{
+    const k=btn.dataset.newsRowToggle,detail=$("investmentNewsFeed").querySelector(`[data-news-row-detail="${k}"]`),row=btn.closest(".investment-news-board-row"),open=!row?.classList.contains("open");
+    row?.classList.toggle("open",open);
+    btn.setAttribute("aria-expanded",open?"true":"false");
+    if(detail)detail.hidden=!open;
+    if(open){
+      const rr=rows[Number(k)];
+      if(rr&&investmentNewsComments(rr.entity,rr.item).length&&!investmentNewsIsRead(rr.entity,rr.item)){
+        investmentNewsMarkRead(rr.entity,rr.item);
+        setTimeout(()=>renderInvestmentNews(),30)
+      }
+    }
+  });
+  $("investmentNewsFeed").querySelectorAll("[data-news-row-detail]").forEach(x=>x.hidden=true);
+  $("investmentNewsFeed").querySelectorAll("[data-news-journal]").forEach(btn=>btn.onclick=e=>{
+    e.stopPropagation();
+    const row=rows[Number(btn.dataset.newsJournal)];
+    if(row)investmentNewsToJournal(row)
+  });
+
+  const usage=agentObj(data.usage);
+  if($("investmentNewsUsage")){
+    const total=n(usage.total_tokens),model=data.model||"gpt-5.6-luna";
+    $("investmentNewsUsage").textContent=cache?`3시간 캐시 · 종합 7일 / 관심 72시간 · ${targets.length}종목 · ${model}${total?` · 최근 API ${num(total)} tokens`:""} · 뉴스/댓글 캐시는 Life OS 핵심 원장과 분리합니다.`:"뉴스룸을 열었을 때 캐시가 3시간 이상 오래된 경우에만 자동 갱신합니다."
+  }
 }
 function investmentNewsToJournal(row){const e=row.entity,item=row.item,u=investmentNewsSafeUrl(item.source_url);showView("investment");activateInvestmentTab("investJournal");resetJournal();$("journalDate").value=today();$("journalAction").value="watch";$("journalStock").value=e.name||e.ticker||"";$("journalReason").value=`뉴스 확인 · ${item.title||""}`.trim();$("journalContext").value=[item.summary,item.why_it_matters?`왜 중요한가: ${item.why_it_matters}`:"",investmentNewsHaniView(e,item)?`HANI View: ${investmentNewsHaniView(e,item)}`:"",item.source_name?`출처: ${item.source_name}`:"",u?`원문: ${u}`:""].filter(Boolean).join("\n");$("journalPlan").value=e.watch_point||"후속 공시·실적·주가 반응 확인";$("journalReason").scrollIntoView({behavior:"smooth",block:"center"});toast("뉴스 내용을 투자 일기 Draft로 옮겼습니다. 저장 전 확인해 주세요.")}
 function investmentOpenNewsTab(entityKey="all"){state.ui.investmentNewsEntity=entityKey||"all";state.ui.investmentNewsMode="interest";save();showView("newsroom");renderInvestmentNews();setTimeout(()=>$("investmentNewsFeed")?.scrollIntoView({behavior:"smooth",block:"start"}),80)}
-async function investmentNewsRefresh(force=false,{silent=false}={}){if(investmentNewsRuntime.busy)return;const targets=investmentNewsTargets(),cache=investmentNewsReadCache();if(!targets.length){renderInvestmentNews();if(!silent)alert("관심종목에서 뉴스 추적을 켠 종목이 없습니다.");return}if(!force&&investmentNewsCacheFresh(cache,targets)){renderInvestmentNews();return}try{investmentNewsRuntime={busy:true,error:""};renderInvestmentNews();if(!silent)haniWorkShow({agent:"hani",title:"하니가 주간 시장 + 관심종목 뉴스를 확인하는 중",step:"HANI · NEWSROOM v0.2",message:`종합 7일 · 관심 72시간 · ${targets.length}개 종목을 검색하고 있어요.`});const result=await agentApi("investment_news",{lookback_hours:168,interest_lookback_hours:72,brief_scope:"KR_US_WEEKLY",targets:targets.map(x=>({name:x.name,ticker:x.ticker,market:x.market,reason:x.reason,held:x.held,issuer_name:x.issuer_name,issuer_ticker:x.issuer_ticker,security_type:x.security_type}))}),data=agentObj(result.news);if(!agentArray(data.entities).length)throw new Error("뉴스 검색 결과 구조를 확인하지 못했습니다.");investmentNewsWriteCache(data,targets);investmentNewsRuntime={busy:false,error:""};renderInvestmentNews();if(!silent){haniWorkFinish(true,"뉴스룸 v0.2 업데이트 완료!");haniWorkHide(700)}}catch(e){investmentNewsRuntime={busy:false,error:e?.message||String(e)};renderInvestmentNews();if(!silent){haniWorkFinish(false,"뉴스 업데이트 중 확인할 문제가 생겼어요.");haniWorkHide(900);alert(`투자 뉴스 업데이트에 실패했습니다.\n${investmentNewsRuntime.error}\n\n기존 뉴스 캐시는 유지합니다.`)}}}
+async function investmentNewsRefresh(force=false,{silent=false}={}){if(investmentNewsRuntime.busy)return;const targets=investmentNewsTargets(),cache=investmentNewsReadCache();if(!targets.length){renderInvestmentNews();if(!silent)alert("관심종목에서 뉴스 추적을 켠 종목이 없습니다.");return}if(!force&&investmentNewsCacheFresh(cache,targets)){renderInvestmentNews();return}try{investmentNewsRuntime={busy:true,error:""};renderInvestmentNews();if(!silent)haniWorkShow({agent:"hani",title:"하니가 주간 시장 + 관심종목 뉴스를 확인하는 중",step:"HANI · NEWSROOM v0.3",message:`종합 7일 · 관심 72시간 · ${targets.length}개 종목을 검색하고 있어요.`});const result=await agentApi("investment_news",{lookback_hours:168,interest_lookback_hours:72,brief_scope:"KR_US_WEEKLY",targets:targets.map(x=>({name:x.name,ticker:x.ticker,market:x.market,reason:x.reason,held:x.held,issuer_name:x.issuer_name,issuer_ticker:x.issuer_ticker,security_type:x.security_type}))}),data=agentObj(result.news);if(!agentArray(data.entities).length)throw new Error("뉴스 검색 결과 구조를 확인하지 못했습니다.");investmentNewsWriteCache(data,targets);investmentNewsRuntime={busy:false,error:""};renderInvestmentNews();if(!silent){haniWorkFinish(true,"뉴스룸 v0.3 업데이트 완료!");haniWorkHide(700)}}catch(e){investmentNewsRuntime={busy:false,error:e?.message||String(e)};renderInvestmentNews();if(!silent){haniWorkFinish(false,"뉴스 업데이트 중 확인할 문제가 생겼어요.");haniWorkHide(900);alert(`투자 뉴스 업데이트에 실패했습니다.\n${investmentNewsRuntime.error}\n\n기존 뉴스 캐시는 유지합니다.`)}}}
 function investmentNewsMaybeRefresh(){const targets=investmentNewsTargets(),cache=investmentNewsReadCache();renderInvestmentNews();if(targets.length&&!investmentNewsCacheFresh(cache,targets))investmentNewsRefresh(false,{silent:true})}
 
 function emotionLabel(x){return {calm:"차분함",confident:"확신",fear:"불안·공포",greed:"조급함·욕심",regret:"후회",neutral:"중립"}[x]||"중립"}
@@ -3325,7 +3452,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.66";
+const HANI_DISPLAY_VERSION="2.9.67";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
