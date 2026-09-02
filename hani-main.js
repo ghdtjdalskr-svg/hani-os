@@ -718,13 +718,17 @@ function randomizeLoginCharacter(){
   if($("loginCharacterQuote"))$("loginCharacterQuote").textContent=`“${LOGIN_GATE_LINES[pick.key]||"오늘도 천천히, 꾸준히 이어가요."}”`;
 }
 function loginGateSessionActive(){
-  try{return sessionStorage.getItem(HANI_GATE_SESSION_KEY)==="1"}catch(e){return false}
+  try{
+    if(localStorage.getItem(HANI_GATE_SESSION_KEY)==="1")return true;
+    if(sessionStorage.getItem(HANI_GATE_SESSION_KEY)==="1"){localStorage.setItem(HANI_GATE_SESSION_KEY,"1");return true}
+    return false
+  }catch(e){return false}
 }
 function markLoginGateSession(){
-  try{sessionStorage.setItem(HANI_GATE_SESSION_KEY,"1")}catch(e){console.warn("Gate session marker failed",e)}
+  try{localStorage.setItem(HANI_GATE_SESSION_KEY,"1")}catch(e){console.warn("Gate session marker failed",e)}
 }
 function clearLoginGateSession(){
-  try{sessionStorage.removeItem(HANI_GATE_SESSION_KEY)}catch(e){console.warn("Gate session marker clear failed",e)}
+  try{localStorage.removeItem(HANI_GATE_SESSION_KEY);sessionStorage.removeItem(HANI_GATE_SESSION_KEY)}catch(e){console.warn("Gate session marker clear failed",e)}
 }
 function lockLoginGate(message="이메일과 비밀번호로 로그인해 주세요."){
   loginGateUnlocked=false;
@@ -1198,7 +1202,42 @@ function investmentNewsArchiveEntities(rows=investmentNewsArchiveInterestRows())
 function investmentNewsArchiveIsRead(item){const id=item?._archive_post_id;return !!id&&investmentNewsArchiveRuntime.readSet instanceof Set&&investmentNewsArchiveRuntime.readSet.has(id)}
 async function investmentNewsArchiveMarkRead(item){const id=item?._archive_post_id;if(!id||!cloudClient||!cloudUser)return false;if(!(investmentNewsArchiveRuntime.readSet instanceof Set))investmentNewsArchiveRuntime.readSet=new Set();investmentNewsArchiveRuntime.readSet.add(id);try{const {error}=await cloudClient.from("hani_newsroom_reads").upsert({user_id:cloudUser.id,post_id:id,read_at:new Date().toISOString()},{onConflict:"user_id,post_id"});if(error)throw error;return true}catch(e){console.warn("Newsroom read state",e);return false}}
 async function investmentNewsArchiveLoad(force=false){if(!cloudClient||!cloudUser){investmentNewsArchiveRuntime={...investmentNewsArchiveRuntime,loaded:false,error:"Cloud 로그인 필요",posts:[],readSet:new Set()};return false}if(investmentNewsArchiveRuntime.loading)return false;if(!force&&investmentNewsArchiveRuntime.loaded&&Date.now()-n(investmentNewsArchiveRuntime.loadedAt)<60000)return true;investmentNewsArchiveRuntime.loading=true;try{const [postsRes,readsRes]=await Promise.all([cloudClient.from("hani_newsroom_posts").select("id,post_type,period_key,title,entity_name,ticker,market,sentiment,source_grade,importance,event_at,published_at,source_name,source_url,source_verified,summary,why_it_matters,hani_view,comments,payload,created_at,updated_at").eq("user_id",cloudUser.id).order("published_at",{ascending:false}).limit(INVESTMENT_NEWS_ARCHIVE_LIMIT),cloudClient.from("hani_newsroom_reads").select("post_id,read_at").eq("user_id",cloudUser.id)]);if(postsRes.error)throw postsRes.error;if(readsRes.error)throw readsRes.error;investmentNewsArchiveRuntime={...investmentNewsArchiveRuntime,loading:false,loaded:true,error:"",loadedAt:Date.now(),posts:agentArray(postsRes.data),readSet:new Set(agentArray(readsRes.data).map(x=>x.post_id).filter(Boolean))};renderInvestmentNews();return true}catch(e){investmentNewsArchiveRuntime={...investmentNewsArchiveRuntime,loading:false,loaded:false,error:e?.message||String(e)};console.warn("Newsroom archive load",e);renderInvestmentNews();return false}}
-async function investmentNewsArchiveSubmit(data){if(!cloudClient||!cloudUser||!data)return false;try{const {data:r,error}=await cloudClient.functions.invoke(INVESTMENT_NEWS_ARCHIVE_FUNCTION,{body:{action:"archive_result",news:data}});if(error)throw error;if(!r?.ok)throw new Error(r?.message||"Newsroom Archive 저장 실패");return true}catch(e){investmentNewsArchiveRuntime.error=e?.message||String(e);console.warn("Newsroom archive submit",e);return false}}
+async function investmentNewsArchiveErrorDetail(error){
+  const parts=[];
+  if(error?.message)parts.push(String(error.message));
+  try{
+    const ctx=error?.context;
+    if(ctx){
+      if(ctx.status)parts.push(`HTTP ${ctx.status}`);
+      let detail="";
+      try{
+        const res=ctx.clone?ctx.clone():ctx,body=await res.json();
+        detail=String(body?.message||body?.error||body?.details||JSON.stringify(body)||"").slice(0,500)
+      }catch(_){
+        try{const res=ctx.clone?ctx.clone():ctx;detail=String(await res.text()).slice(0,500)}catch(__){}
+      }
+      if(detail)parts.push(detail)
+    }
+  }catch(_){}
+  return parts.filter(Boolean).join(" · ")||"Newsroom Archive 저장 실패"
+}
+async function investmentNewsArchiveSubmit(data){
+  if(!cloudClient||!cloudUser||!data){investmentNewsArchiveRuntime.error="Cloud 로그인 또는 뉴스 데이터가 없습니다.";return null}
+  try{
+    const {data:r,error}=await cloudClient.functions.invoke(INVESTMENT_NEWS_ARCHIVE_FUNCTION,{body:{action:"archive_result",news:data}});
+    if(error)throw new Error(await investmentNewsArchiveErrorDetail(error));
+    if(!r?.ok)throw new Error(r?.message||r?.error||"Newsroom Archive 저장 실패");
+    return r
+  }catch(e){investmentNewsArchiveRuntime.error=e?.message||String(e);console.warn("Newsroom archive submit",e);return null}
+}
+function investmentNewsArchiveVerifyResult(data){
+  const expected=agentArray(data?.entities).flatMap(entity=>agentArray(entity?.news).map(item=>({
+    title:String(item?.title||"").trim(),ticker:String(entity?.ticker||"").trim().toUpperCase()
+  }))).filter(x=>x.title);
+  const posts=agentArray(investmentNewsArchiveRuntime.posts);
+  if(!expected.length)return posts.length>0;
+  return expected.some(x=>posts.some(p=>String(p?.title||"").trim()===x.title&&(!x.ticker||String(p?.ticker||"").trim().toUpperCase()===x.ticker)))
+}
 function investmentNewsRenderWeeklyArchive(fallbackData,mode="interest"){
   const posts=investmentNewsArchivePosts("WEEKLY"),tabs=$("investmentNewsWeeklyArchiveTabs");
   if(!posts.length){if(tabs)tabs.innerHTML=investmentNewsArchiveRuntime.loading?'<span>Cloud Archive를 불러오는 중…</span>':investmentNewsArchiveRuntime.error?`<span>Cloud Archive 대기 · ${esc(investmentNewsArchiveRuntime.error)}</span>`:'<span>아직 저장된 주간 종합 시황이 없습니다.</span>';if($("investmentNewsWeeklyTitle"))$("investmentNewsWeeklyTitle").textContent="이번 주 시장 한눈에";investmentNewsRenderWeekly(fallbackData);return}
@@ -1348,7 +1387,7 @@ function renderInvestmentNews(){
 }
 function investmentNewsToJournal(row){const e=row.entity,item=row.item,u=investmentNewsSafeUrl(item.source_url);showView("investment");activateInvestmentTab("investJournal");resetJournal();$("journalDate").value=today();$("journalAction").value="watch";$("journalStock").value=e.name||e.ticker||"";$("journalReason").value=`뉴스 확인 · ${item.title||""}`.trim();$("journalContext").value=[item.summary,item.why_it_matters?`왜 중요한가: ${item.why_it_matters}`:"",investmentNewsHaniView(e,item)?`HANI View: ${investmentNewsHaniView(e,item)}`:"",item.source_name?`출처: ${item.source_name}`:"",u?`원문: ${u}`:""].filter(Boolean).join("\n");$("journalPlan").value=e.watch_point||"후속 공시·실적·주가 반응 확인";$("journalReason").scrollIntoView({behavior:"smooth",block:"center"});toast("뉴스 내용을 투자 일기 Draft로 옮겼습니다. 저장 전 확인해 주세요.")}
 function investmentOpenNewsTab(entityKey="all"){state.ui.investmentNewsEntity=entityKey||"all";state.ui.investmentNewsMode="interest";save();showView("newsroom");renderInvestmentNews();setTimeout(()=>$("investmentNewsFeed")?.scrollIntoView({behavior:"smooth",block:"start"}),80)}
-async function investmentNewsRefresh(force=false,{silent=false}={}){if(investmentNewsRuntime.busy)return;const targets=investmentNewsTargets(),cache=investmentNewsReadCache();if(!targets.length){renderInvestmentNews();if(!silent)alert("관심종목에서 뉴스 추적을 켠 종목이 없습니다.");return}if(!force&&investmentNewsCacheFresh(cache,targets)){renderInvestmentNews();return}try{investmentNewsRuntime={busy:true,error:""};renderInvestmentNews();if(!silent)haniWorkShow({agent:"hani",title:"하니가 주간 시장 + 관심종목 뉴스를 확인하는 중",step:"HANI · NEWSROOM v0.3",message:`종합 7일 · 관심 72시간 · ${targets.length}개 종목을 검색하고 있어요.`});const result=await agentApi("investment_news",{lookback_hours:168,interest_lookback_hours:72,brief_scope:"KR_US_WEEKLY",targets:targets.map(x=>({name:x.name,ticker:x.ticker,market:x.market,reason:x.reason,held:x.held,issuer_name:x.issuer_name,issuer_ticker:x.issuer_ticker,security_type:x.security_type}))}),data=agentObj(result.news);if(!agentArray(data.entities).length)throw new Error("뉴스 검색 결과 구조를 확인하지 못했습니다.");investmentNewsWriteCache(data,targets);await investmentNewsArchiveSubmit(data);await investmentNewsArchiveLoad(true);investmentNewsRuntime={busy:false,error:""};renderInvestmentNews();if(!silent){haniWorkFinish(true,"뉴스룸 Archive 업데이트 완료!");haniWorkHide(700)}}catch(e){investmentNewsRuntime={busy:false,error:e?.message||String(e)};renderInvestmentNews();if(!silent){haniWorkFinish(false,"뉴스 업데이트 중 확인할 문제가 생겼어요.");haniWorkHide(900);alert(`투자 뉴스 업데이트에 실패했습니다.\n${investmentNewsRuntime.error}\n\n기존 뉴스 캐시는 유지합니다.`)}}}
+async function investmentNewsRefresh(force=false,{silent=false}={}){if(investmentNewsRuntime.busy)return;const targets=investmentNewsTargets(),cache=investmentNewsReadCache();if(!targets.length){renderInvestmentNews();if(!silent)alert("관심종목에서 뉴스 추적을 켠 종목이 없습니다.");return}if(!force&&investmentNewsCacheFresh(cache,targets)){renderInvestmentNews();return}try{investmentNewsRuntime={busy:true,error:""};renderInvestmentNews();if(!silent)haniWorkShow({agent:"hani",title:"하니가 주간 시장 + 관심종목 뉴스를 확인하는 중",step:"HANI · NEWSROOM v0.3",message:`종합 7일 · 관심 72시간 · ${targets.length}개 종목을 검색하고 있어요.`});const result=await agentApi("investment_news",{lookback_hours:168,interest_lookback_hours:72,brief_scope:"KR_US_WEEKLY",targets:targets.map(x=>({name:x.name,ticker:x.ticker,market:x.market,reason:x.reason,held:x.held,issuer_name:x.issuer_name,issuer_ticker:x.issuer_ticker,security_type:x.security_type}))}),data=agentObj(result.news);if(!agentArray(data.entities).length)throw new Error("뉴스 검색 결과 구조를 확인하지 못했습니다.");investmentNewsWriteCache(data,targets);const archiveResult=await investmentNewsArchiveSubmit(data);if(!archiveResult)throw new Error(investmentNewsArchiveRuntime.error||"Newsroom Cloud Archive 저장 실패");const archiveLoaded=await investmentNewsArchiveLoad(true);if(!archiveLoaded)throw new Error(investmentNewsArchiveRuntime.error||"Newsroom Cloud Archive 재조회 실패");if(!investmentNewsArchiveVerifyResult(data))throw new Error("Newsroom Cloud Archive read-back 검증 실패 · 생성한 뉴스가 Cloud DB에서 확인되지 않습니다.");investmentNewsRuntime={busy:false,error:""};renderInvestmentNews();if(!silent){haniWorkFinish(true,"뉴스룸 Archive 업데이트 완료!");haniWorkHide(700)}}catch(e){investmentNewsRuntime={busy:false,error:e?.message||String(e)};renderInvestmentNews();if(!silent){haniWorkFinish(false,"뉴스 업데이트 중 확인할 문제가 생겼어요.");haniWorkHide(900);alert(`투자 뉴스 업데이트에 실패했습니다.\n${investmentNewsRuntime.error}\n\n기존 뉴스 캐시는 유지합니다.`)}}}
 function investmentNewsMaybeRefresh(){const targets=investmentNewsTargets(),cache=investmentNewsReadCache();renderInvestmentNews();investmentNewsArchiveLoad(false);if(targets.length&&!investmentNewsCacheFresh(cache,targets))investmentNewsRefresh(false,{silent:true})}
 
 function emotionLabel(x){return {calm:"차분함",confident:"확신",fear:"불안·공포",greed:"조급함·욕심",regret:"후회",neutral:"중립"}[x]||"중립"}
@@ -2385,7 +2424,7 @@ function cloudCanonical(value){
 function cloudSame(a,b){return JSON.stringify(cloudCanonical(a))===JSON.stringify(cloudCanonical(b))}
 function cloudDeviceLabel(){
   const platform=navigator.userAgentData?.platform||navigator.platform||"Browser";
-  return (`HANI OS R${CLOUD_SYNC_ENGINE} · v2.9.18 · ${platform}`).slice(0,120);
+  return (`HANI OS R${CLOUD_SYNC_ENGINE} · v2.9.72 · ${platform}`).slice(0,120);
 }
 function cloudRecordCount(d=state){
   return (d.transactions?.length||0)+(d.investmentMonthlySnapshots?.length||0)+(d.investmentBrokerSnapshots?.length||0)+(d.investmentCashFlows?.length||0)+(d.investmentJournal?.length||0)+(d.body?.length||0)+(d.exercise?.length||0)+(d.books?.length||0)+(d.movies?.length||0)+(d.diaries?.length||0)+(d.tasks?.length||0)+(d.campusSemesters?.length||0)+(d.travelTrips?.length||0)+(d.travelWishlist?.length||0)+(d.certificates?.length||0)+(d.wishlistItems?.length||0);
@@ -2937,8 +2976,8 @@ async function initCloudBridge(){
         }
       }else{
         cloudAutoSyncReady=false;
-        cloudSetRuntime("로그인 확인","인증 세션은 남아 있지만 새 탭/브라우저 진입으로 판단해 비밀번호 확인을 기다립니다.","warn",{sync:"PAUSE"});
-        lockLoginGate("새 탭이나 새 브라우저에서는 비밀번호로 다시 로그인해 주세요.");
+        cloudSetRuntime("로그인 확인","인증 세션은 남아 있지만 HANI OS 로그인 확인 기록이 없습니다. 한 번만 비밀번호 확인을 기다립니다.","warn",{sync:"PAUSE"});
+        lockLoginGate("이 기기에서 한 번만 비밀번호를 확인해 주세요.");
       }
     }else{
       cloudUser=null;
@@ -3470,7 +3509,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.71";
+const HANI_DISPLAY_VERSION="2.9.72";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
