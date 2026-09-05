@@ -90,7 +90,11 @@ function createManifest({ baseSha, candidateSha, releaseKind, displayedVersion, 
     external_review: { ...EXTERNAL_REVIEW },
     yuri: { state: "PENDING", base_sha: baseSha, candidate_sha: candidateSha, report_generated_at: null },
     arin: { required: false, state: "UNDETERMINED", candidate_sha: candidateSha, report_generated_at: null },
-    hina: { state: "PENDING", candidate_sha: candidateSha, report_generated_at: null },
+    hina: {
+      state: releaseKind === "RUNTIME" ? "PENDING" : "N/A_DEV_TOOLING",
+      candidate_sha: candidateSha,
+      report_generated_at: null
+    },
     preview: { pr_number: null, url: null, head_sha: null, approval_state: "NOT_READY" },
     production: {
       state: "PENDING",
@@ -147,7 +151,7 @@ function validateShape(manifest) {
   assertIsoOrNull(manifest.arin.report_generated_at, "arin.report_generated_at");
 
   assertExactKeys(manifest.hina, ["state", "candidate_sha", "report_generated_at"], "hina");
-  assert(["PENDING", "PASS", "BLOCKED"].includes(manifest.hina.state), "Invalid hina.state.");
+  assert(["PENDING", "PASS", "BLOCKED", "N/A_DEV_TOOLING"].includes(manifest.hina.state), "Invalid hina.state.");
   assertSha(manifest.hina.candidate_sha, "hina.candidate_sha");
   assertIsoOrNull(manifest.hina.report_generated_at, "hina.report_generated_at");
 
@@ -185,6 +189,13 @@ function semanticProblems(manifest) {
   same(manifest.arin.candidate_sha, manifest.candidate_sha, "Arin candidate");
   same(manifest.hina.candidate_sha, manifest.candidate_sha, "HINA candidate");
   same(manifest.production.candidate_sha, manifest.candidate_sha, "Production candidate");
+
+  if (manifest.release_kind === "RUNTIME" && manifest.hina.state === "N/A_DEV_TOOLING") {
+    problems.push("RUNTIME releases cannot mark HINA as N/A_DEV_TOOLING.");
+  }
+  if (manifest.release_kind === "DEV_TOOLING_ONLY" && manifest.hina.state !== "N/A_DEV_TOOLING") {
+    problems.push("DEV_TOOLING_ONLY releases must keep HINA at N/A_DEV_TOOLING; this state is not PASS.");
+  }
 
   if (manifest.arin.required && !["PENDING", "PASS", "BLOCKED"].includes(manifest.arin.state)) {
     problems.push("Arin is required and cannot be N/A or UNDETERMINED.");
@@ -232,7 +243,7 @@ function deriveFlowState(manifest) {
   if (manifest.arin.state === "UNDETERMINED") return { state: "BLOCKED", problems: ["Yuri result did not determine the Arin path."] };
   if (manifest.arin.required && manifest.arin.state !== "PASS") return { state: "PENDING_ARIN", problems: [] };
   if (!manifest.arin.required && manifest.arin.state !== "N/A") return { state: "BLOCKED", problems: ["Non-UI changes require the Arin N/A path."] };
-  if (manifest.hina.state !== "PASS") return { state: "READY_FOR_HINA", problems: [] };
+  if (manifest.release_kind === "RUNTIME" && manifest.hina.state !== "PASS") return { state: "READY_FOR_HINA", problems: [] };
   if (manifest.preview.head_sha === null) return { state: "READY_FOR_PREVIEW", problems: [] };
   if (manifest.preview.approval_state !== "APPROVED") return { state: "READY_FOR_APPROVAL", problems: [] };
   if (manifest.production.merged_sha === null) return { state: "READY_FOR_MERGE", problems: [] };
@@ -304,6 +315,7 @@ function ingestArin(manifest, report) {
 }
 
 function ingestHina(manifest, report) {
+  assert(manifest.release_kind === "RUNTIME", "HINA runtime Gate is not applicable to DEV_TOOLING_ONLY releases.");
   const beforeHina = deriveFlowState(manifest).state;
   assert(beforeHina === "READY_FOR_HINA", `HINA entry is blocked while flow_state is ${beforeHina}.`);
   assertExactKeys(report, ["contract_version", "source", "candidate_sha", "state", "generated_at"], "HINA report");
@@ -320,7 +332,10 @@ function ingestHina(manifest, report) {
 }
 
 function ingestPreview(manifest, report) {
-  assert(manifest.hina.state === "PASS", "Preview cannot be connected before HINA PASS.");
+  const hinaReady = manifest.release_kind === "RUNTIME"
+    ? manifest.hina.state === "PASS"
+    : manifest.hina.state === "N/A_DEV_TOOLING";
+  assert(hinaReady, "Preview cannot be connected before the applicable HINA state is satisfied.");
   assertExactKeys(report, ["contract_version", "candidate_sha", "pr_number", "url", "head_sha", "approval_state"], "Preview handoff");
   assert(report.contract_version === "1.0.0", "Invalid Preview handoff contract.");
   assert(report.candidate_sha === manifest.candidate_sha, "Preview candidate SHA mismatch.");
@@ -338,7 +353,10 @@ function ingestPreview(manifest, report) {
 }
 
 function ingestProduction(manifest, report) {
-  assert(manifest.hina.state === "PASS" && manifest.preview.approval_state === "APPROVED", "Production handoff requires HINA PASS and representative approval.");
+  const hinaReady = manifest.release_kind === "RUNTIME"
+    ? manifest.hina.state === "PASS"
+    : manifest.hina.state === "N/A_DEV_TOOLING";
+  assert(hinaReady && manifest.preview.approval_state === "APPROVED", "Production handoff requires the applicable HINA state and representative approval.");
   assert(manifest.preview.head_sha === manifest.candidate_sha, "Production handoff is blocked by Preview SHA mismatch.");
   assertExactKeys(report, [
     "contract_version", "candidate_sha", "merged_sha", "pages_url", "pages_accessible",
@@ -392,6 +410,7 @@ function runSelfTest() {
     assert(blocked, `${name} failed open.`);
   });
   const fresh = () => createManifest({ baseSha: base, candidateSha: candidate, releaseKind: "DEV_TOOLING_ONLY", displayedVersion: "2.9.83", runtimeJs: "hani-ui-v02983.js" });
+  const freshRuntime = () => createManifest({ baseSha: base, candidateSha: candidate, releaseKind: "RUNTIME", displayedVersion: "2.9.84", runtimeJs: "hani-ui-v02984.js" });
 
   test("schema and manifest shape", () => validateManifest(fresh()));
   mustBlock("SHA mismatch fail-closed", () => ingestYuri(fresh(), { ...sampleYuri(fresh()), commit_sha: "4".repeat(40) }));
@@ -406,17 +425,40 @@ function runSelfTest() {
   });
   test("Arin N/A path", () => {
     const manifest = ingestYuri(fresh(), sampleYuri(fresh()));
-    assert(manifest.arin.state === "N/A" && manifest.flow_state === "READY_FOR_HINA", "Arin N/A path failed.");
+    assert(manifest.arin.state === "N/A" && manifest.hina.state === "N/A_DEV_TOOLING" && manifest.flow_state === "READY_FOR_PREVIEW", "Arin N/A path failed.");
   });
-  test("HINA incomplete blocks Preview", () => {
+  test("DEV_TOOLING_ONLY with HINA N/A proceeds", () => {
     const manifest = ingestYuri(fresh(), sampleYuri(fresh()));
+    assert(manifest.hina.state === "N/A_DEV_TOOLING" && manifest.flow_state === "READY_FOR_PREVIEW", "DEV_TOOLING_ONLY HINA N/A did not proceed.");
+  });
+  mustBlock("DEV_TOOLING_ONLY rejects forced HINA PASS", () => {
+    const manifest = fresh();
+    manifest.hina.state = "PASS";
+    validateManifest(manifest);
+  });
+  mustBlock("DEV_TOOLING_ONLY rejects ingest-hina", () => {
+    const manifest = ingestYuri(fresh(), sampleYuri(fresh()));
+    ingestHina(manifest, { contract_version: "1.0.0", source: "HANI_DEPLOY_BRIDGE", candidate_sha: candidate, state: "HINA_QA_PASS", generated_at: now() });
+  });
+  test("RUNTIME HINA PENDING blocks Preview", () => {
+    const manifest = ingestYuri(freshRuntime(), sampleYuri(freshRuntime()));
     let blocked = false;
     try { ingestPreview(manifest, {}); } catch { blocked = true; }
     assert(blocked, "Preview advanced before HINA PASS.");
   });
+  test("RUNTIME HINA PASS allows Preview", () => {
+    let manifest = ingestYuri(freshRuntime(), sampleYuri(freshRuntime()));
+    manifest = ingestHina(manifest, { contract_version: "1.0.0", source: "HANI_DEPLOY_BRIDGE", candidate_sha: candidate, state: "HINA_QA_PASS", generated_at: now() });
+    manifest = ingestPreview(manifest, { contract_version: "1.0.0", candidate_sha: candidate, pr_number: 1, url: "https://example.test/pr/1", head_sha: candidate, approval_state: "PENDING" });
+    assert(manifest.flow_state === "READY_FOR_APPROVAL", "RUNTIME HINA PASS did not allow Preview.");
+  });
+  mustBlock("RUNTIME rejects HINA N/A", () => {
+    const manifest = freshRuntime();
+    manifest.hina.state = "N/A_DEV_TOOLING";
+    validateManifest(manifest);
+  });
   mustBlock("Preview SHA mismatch", () => {
     let manifest = ingestYuri(fresh(), sampleYuri(fresh()));
-    manifest = ingestHina(manifest, { contract_version: "1.0.0", source: "HANI_DEPLOY_BRIDGE", candidate_sha: candidate, state: "HINA_QA_PASS", generated_at: now() });
     ingestPreview(manifest, { contract_version: "1.0.0", candidate_sha: candidate, pr_number: 1, url: "https://example.test/pr/1", head_sha: "4".repeat(40), approval_state: "APPROVED" });
   });
   mustBlock("External review cannot become PASS", () => {
@@ -426,7 +468,6 @@ function runSelfTest() {
   });
   test("complete non-UI flow", () => {
     let manifest = ingestYuri(fresh(), sampleYuri(fresh()));
-    manifest = ingestHina(manifest, { contract_version: "1.0.0", source: "HANI_DEPLOY_BRIDGE", candidate_sha: candidate, state: "HINA_QA_PASS", generated_at: now() });
     manifest = ingestPreview(manifest, { contract_version: "1.0.0", candidate_sha: candidate, pr_number: 49, url: "https://example.test/pr/49", head_sha: candidate, approval_state: "APPROVED" });
     manifest = ingestProduction(manifest, { contract_version: "1.0.0", candidate_sha: candidate, merged_sha: merged, pages_url: "https://example.test/", pages_accessible: true, displayed_version: "2.9.83", runtime_js: "hani-ui-v02983.js", smoke_state: "PASS", read_back_state: "PASS" });
     assert(manifest.flow_state === "COMPLETE", "Valid flow did not complete.");

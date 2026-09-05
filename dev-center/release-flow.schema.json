@@ -103,7 +103,7 @@
       "additionalProperties": false,
       "required": ["state", "candidate_sha", "report_generated_at"],
       "properties": {
-        "state": { "enum": ["PENDING", "PASS", "BLOCKED"] },
+        "state": { "enum": ["PENDING", "PASS", "BLOCKED", "N/A_DEV_TOOLING"] },
         "candidate_sha": { "$ref": "#/$defs/gitSha" },
         "report_generated_at": { "type": ["string", "null"], "format": "date-time" }
       }
