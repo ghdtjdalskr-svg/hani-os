@@ -1,4 +1,5 @@
 name: HANI Development Center Self-Protection
+# Canary marker: protected workflow change detection only.
 
 on:
   pull_request_target:
