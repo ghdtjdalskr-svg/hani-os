@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hani.local/dev-center/release-review.schema.json",
+  "title": "HANI Development Center Release Pre-QA Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "tool_version",
+    "commit_sha",
+    "base_main_sha",
+    "source_mode",
+    "worktree_dirty",
+    "changed_files",
+    "yuri_state",
+    "checks",
+    "arin_required",
+    "arin_state",
+    "generated_at"
+  ],
+  "properties": {
+    "contract_version": {
+      "const": "1.0.0"
+    },
+    "tool_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "commit_sha": {
+      "$ref": "#/$defs/gitSha"
+    },
+    "base_main_sha": {
+      "$ref": "#/$defs/gitSha"
+    },
+    "source_mode": {
+      "enum": ["COMMIT_RANGE", "WORKTREE_DRY_RUN"]
+    },
+    "worktree_dirty": {
+      "type": "boolean"
+    },
+    "changed_files": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "yuri_state": {
+      "enum": ["YURI_PRE_QA_PASS", "YURI_PRE_QA_BLOCKED"]
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/check"
+      }
+    },
+    "arin_required": {
+      "type": "boolean"
+    },
+    "arin_state": {
+      "enum": ["PENDING", "N/A"]
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "arin_required": {
+            "const": true
+          }
+        },
+        "required": ["arin_required"]
+      },
+      "then": {
+        "properties": {
+          "arin_state": {
+            "const": "PENDING"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "arin_state": {
+            "const": "N/A"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "gitSha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "status", "detail", "evidence"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": ["PASS", "BLOCKED"]
+        },
+        "detail": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

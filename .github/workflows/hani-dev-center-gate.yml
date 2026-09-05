@@ -1,0 +1,84 @@
+name: HANI Development Center Gate
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hani-dev-center-gate-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  yuri-pre-qa:
+    name: Yuri Pre-QA
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact PR head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run detector self-test
+        run: node scripts/hani-release-preqa.mjs --self-test
+
+      - name: Run Yuri Pre-QA
+        id: preqa
+        shell: bash
+        env:
+          BASE_MAIN_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set +e
+          node scripts/hani-release-preqa.mjs \
+            --base "$BASE_MAIN_SHA" \
+            --head "$PR_HEAD_SHA" \
+            --output "$RUNNER_TEMP/hani-release-preqa.json"
+          result=$?
+          echo "exit_code=$result" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Publish JSON artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hani-release-preqa-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/hani-release-preqa.json
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Add report to job summary
+        if: always()
+        shell: bash
+        run: |
+          echo '## Yuri Pre-QA' >> "$GITHUB_STEP_SUMMARY"
+          if [ -f "$RUNNER_TEMP/hani-release-preqa.json" ]; then
+            echo '```json' >> "$GITHUB_STEP_SUMMARY"
+            cat "$RUNNER_TEMP/hani-release-preqa.json" >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'HANI Release Pre-QA runner failed before producing JSON. Review the execution log.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Enforce Yuri gate
+        if: always()
+        shell: bash
+        env:
+          PREQA_EXIT_CODE: ${{ steps.preqa.outputs.exit_code }}
+        run: |
+          if [ "$PREQA_EXIT_CODE" != "0" ]; then
+            echo "Yuri Pre-QA blocked this commit. Review the JSON artifact."
+            exit 1
+          fi
