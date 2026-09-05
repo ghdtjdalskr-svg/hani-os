@@ -83,7 +83,7 @@ function seriesColor(id){
 const freshState=()=>({
   version:VERSION,
   accounts:structuredClone(seedAccounts),
-  instruments:[],transactions:[],snapshots:[],investmentMonthlySnapshots:[],investmentBrokerSnapshots:[],investmentCashFlows:[],investmentJournal:[],investmentWatchlist:[],ledgerMonths:[],spendReviews:[],body:[],exercise:[],cardio:[],strength:[],books:[],movies:[],diaries:[],tasks:[],campusSemesters:[],travelTrips:[],travelWishlist:[],certificates:[],wishlistItems:[],
+  instruments:[],transactions:[],snapshots:[],investmentMonthlySnapshots:[],investmentBrokerSnapshots:[],investmentCashFlows:[],investmentJournal:[],investmentWatchlist:[],ledgerMonths:[],spendReviews:[],body:[],exercise:[],cardio:[],strength:[],books:[],movies:[],diaries:[],tasks:[],campusSemesters:[],travelTrips:[],travelWishlist:[],certificates:[],wishlistItems:[],learningProjects:[],learningQuizzes:[],learningWrongAnswers:[],
   profile:{heightCm:188},
   goals:{investment:100000000,weight1:110,weight2:100,reading:30,readingAnnual:30,readingMonthly:2},
   calendarUrl:"",
@@ -2427,7 +2427,7 @@ function cloudDeviceLabel(){
   return (`HANI OS R${CLOUD_SYNC_ENGINE} · v2.9.76 · ${platform}`).slice(0,120);
 }
 function cloudRecordCount(d=state){
-  return (d.transactions?.length||0)+(d.investmentMonthlySnapshots?.length||0)+(d.investmentBrokerSnapshots?.length||0)+(d.investmentCashFlows?.length||0)+(d.investmentJournal?.length||0)+(d.body?.length||0)+(d.exercise?.length||0)+(d.books?.length||0)+(d.movies?.length||0)+(d.diaries?.length||0)+(d.tasks?.length||0)+(d.campusSemesters?.length||0)+(d.travelTrips?.length||0)+(d.travelWishlist?.length||0)+(d.certificates?.length||0)+(d.wishlistItems?.length||0);
+  return (d.transactions?.length||0)+(d.investmentMonthlySnapshots?.length||0)+(d.investmentBrokerSnapshots?.length||0)+(d.investmentCashFlows?.length||0)+(d.investmentJournal?.length||0)+(d.body?.length||0)+(d.exercise?.length||0)+(d.books?.length||0)+(d.movies?.length||0)+(d.diaries?.length||0)+(d.tasks?.length||0)+(d.campusSemesters?.length||0)+(d.travelTrips?.length||0)+(d.travelWishlist?.length||0)+(d.certificates?.length||0)+(d.wishlistItems?.length||0)+(d.learningProjects?.length||0)+(d.learningQuizzes?.length||0)+(d.learningWrongAnswers?.length||0);
 }
 
 function cloudComparableState(value){
@@ -2457,7 +2457,7 @@ function cloudHasMeaningfulLocalData(value=state){
     "instruments","transactions","snapshots","investmentMonthlySnapshots",
     "investmentBrokerSnapshots","investmentCashFlows","investmentJournal",
     "investmentWatchlist","body","exercise","cardio","strength","books",
-    "movies","diaries","tasks","ledgerMonths","spendReviews","campusSemesters","travelTrips","travelWishlist","certificates","wishlistItems"
+    "movies","diaries","tasks","ledgerMonths","spendReviews","campusSemesters","travelTrips","travelWishlist","certificates","wishlistItems","learningProjects","learningQuizzes","learningWrongAnswers"
   ];
   if(arrays.some(k=>Array.isArray(d[k])&&d[k].length>0))return true;
   if(String(d.calendarUrl||"").trim())return true;
@@ -3162,7 +3162,7 @@ function bindCloudBridgeControls(){
 
 function renderStoragePanel(){
   const stats=$("storageStats");if(!stats)return;
-  let raw="";try{raw=localStorage.getItem(STORAGE_KEY)||""}catch(e){}const recordCount=state.transactions.length+(state.investmentMonthlySnapshots?.length||0)+(state.investmentBrokerSnapshots?.length||0)+(state.investmentCashFlows?.length||0)+(state.investmentJournal?.length||0)+(state.ledgerMonths?.length||0)+(state.spendReviews?.length||0)+state.body.length+state.exercise.length+state.books.length+state.movies.length+state.diaries.length+state.tasks.length+(state.campusSemesters?.length||0)+(state.travelTrips?.length||0)+(state.travelWishlist?.length||0)+(state.certificates?.length||0)+(state.wishlistItems?.length||0);
+  let raw="";try{raw=localStorage.getItem(STORAGE_KEY)||""}catch(e){}const recordCount=state.transactions.length+(state.investmentMonthlySnapshots?.length||0)+(state.investmentBrokerSnapshots?.length||0)+(state.investmentCashFlows?.length||0)+(state.investmentJournal?.length||0)+(state.ledgerMonths?.length||0)+(state.spendReviews?.length||0)+state.body.length+state.exercise.length+state.books.length+state.movies.length+state.diaries.length+state.tasks.length+(state.campusSemesters?.length||0)+(state.travelTrips?.length||0)+(state.travelWishlist?.length||0)+(state.certificates?.length||0)+(state.wishlistItems?.length||0)+(state.learningProjects?.length||0)+(state.learningQuizzes?.length||0)+(state.learningWrongAnswers?.length||0);
   const rows=[
     ["저장 위치","현재 브라우저"],
     ["마지막 저장",formatDateTime(state.meta?.lastSavedAt)],
@@ -3509,7 +3509,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.83";
+const HANI_DISPLAY_VERSION="2.9.84";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
