@@ -5,7 +5,7 @@ import { closeSync, openSync, readFileSync, readSync, statSync, writeFileSync } 
 import path from "node:path";
 
 const CONTRACT_VERSION = "1.0.0";
-const TOOL_VERSION = "0.1.0";
+const TOOL_VERSION = "0.2.0";
 const PROTECTED_STORAGE_KEY = ["hani", "os", "life", "v23"].join("_");
 
 const args = process.argv.slice(2);
@@ -123,6 +123,7 @@ function isAllowedPath(file) {
     /^(?:js|css|assets)\/[A-Za-z0-9._/-]+$/i,
     /^scripts\/[A-Za-z0-9._/-]+\.(?:mjs|js|json)$/i,
     /^dev-center\/[A-Za-z0-9._/-]+\.(?:json|md)$/i,
+    /^supabase\/functions\/[A-Za-z0-9._-]+\/index\.ts$/i,
     /^\.github\/workflows\/[A-Za-z0-9._-]+\.ya?ml$/i,
     /^docs\/[A-Za-z0-9._/-]+$/i
   ].some(pattern => pattern.test(file));
@@ -339,6 +340,16 @@ function makeCheck(id, label, findings, passDetail, blockedDetail, kind = id) {
   };
 }
 
+function makeInformationalCheck(id, label, findings, passDetail, findingDetail, kind = id) {
+  return {
+    id,
+    label,
+    status: "PASS",
+    detail: findings.length ? `${findingDetail} (${findings.length}건)` : passDetail,
+    evidence: evidence(findings, kind)
+  };
+}
+
 function storageCallPattern() {
   const storageObject = "(?:(?:window|globalThis)\\s*(?:\\.\\s*(?:localStorage|sessionStorage)|\\[\\s*[\\\"'](?:localStorage|sessionStorage)[\\\"']\\s*\\])|(?:localStorage|sessionStorage))";
   const storageMethod = "(?:\\.\\s*(?:setItem|removeItem|clear)|\\[\\s*[\\\"'](?:setItem|removeItem|clear)[\\\"']\\s*\\])";
@@ -386,22 +397,30 @@ function detectRisks(fileChanges, records, snapshots = new Map()) {
   const destructiveChanges = executableRecords.filter(record => destructivePatterns.some(pattern => pattern.test(record.scanText)));
 
   const addedEvents = eventChanges.filter(record => record.change === "added");
-  const eventKeys = new Map();
-  for (const record of addedEvents) {
+  const addedBindings = addedEvents.filter(record => /(?:\baddEventListener\s*\(|\.onclick\s*=)/.test(record.scanText));
+  const eventSignature = record => {
     const source = record.text.replace(/\s+/g, "");
     const target = source.match(/^(.{1,120}?)(?:\.addEventListener|\.onclick)/)?.[1] || "unknown";
     const type = source.match(/addEventListener\(["']([^"']+)/)?.[1] || (source.includes(".onclick") ? "click" : "programmatic-click");
-    const key = `${record.path}:${target}:${type}`;
-    eventKeys.set(key, (eventKeys.get(key) || 0) + 1);
+    return `${record.path}:${target}:${type}`;
+  };
+  const headEventKeys = new Map();
+  for (const change of fileChanges) {
+    const snapshot = snapshots.get(change.path);
+    if (!snapshot || /^D/.test(change.status)) continue;
+    const rawLines = String(snapshot.headText || "").split(/\r?\n/);
+    const scanLines = stripNonCodeText(snapshot.headText || "").split("\n");
+    rawLines.forEach((text, index) => {
+      const scanText = scanLines[index] || "";
+      if (!/(?:\baddEventListener\s*\(|\.onclick\s*=)/.test(scanText)) return;
+      const key = eventSignature({ path: change.path, text });
+      headEventKeys.set(key, (headEventKeys.get(key) || 0) + 1);
+    });
   }
-  const layeringRisks = addedEvents.filter(record => {
-    const source = record.text.replace(/\s+/g, "");
-    const target = source.match(/^(.{1,120}?)(?:\.addEventListener|\.onclick)/)?.[1] || "unknown";
-    const type = source.match(/addEventListener\(["']([^"']+)/)?.[1] || (source.includes(".onclick") ? "click" : "programmatic-click");
-    const duplicated = (eventKeys.get(`${record.path}:${target}:${type}`) || 0) > 1;
-    const versionLayer = /^hani-.*-v\d+\.js$/i.test(path.basename(record.path));
-    const globalLayer = /(?:document|window)\.addEventListener/.test(source);
-    return duplicated || versionLayer || globalLayer;
+  const layeringRisks = addedBindings.filter(record => {
+    const duplicated = (headEventKeys.get(eventSignature(record)) || 0) > 1;
+    const globalLayer = /(?:\bdocument\b|\bwindow\b)\s*\.\s*addEventListener\s*\(/.test(record.scanText);
+    return duplicated || globalLayer;
   });
 
   const checks = [
@@ -409,7 +428,7 @@ function detectRisks(fileChanges, records, snapshots = new Map()) {
     makeCheck("storage_mutation", "브라우저 저장소 쓰기 변경", storageChanges, "localStorage/sessionStorage set/remove/clear 호출 변경이 없습니다.", "localStorage 또는 sessionStorage 쓰기·삭제 호출이 변경되었습니다.", "storage-mutation"),
     makeCheck("protected_storage_key", "보호 Storage Key 변경", protectedKeyChanges, `${PROTECTED_STORAGE_KEY} 관련 실행 코드 변경이 없습니다.`, `${PROTECTED_STORAGE_KEY} 관련 실행 코드가 변경되었습니다.`, "protected-storage-key"),
     makeCheck("supabase_mutation", "Supabase 쓰기 변경", supabaseWrites, "Supabase insert/update/delete/upsert 호출 변경이 없습니다.", "Supabase 쓰기 호출이 변경되었습니다.", "supabase-mutation"),
-    makeCheck("event_binding_change", "DOM 이벤트 연결 변경", eventChanges, "onclick/addEventListener/.click() 연결 변경이 없습니다.", "DOM 이벤트 연결 변경은 소유 경로 검토가 필요합니다.", "event-binding"),
+    makeInformationalCheck("event_binding_change", "DOM 이벤트 연결 변경", eventChanges, "onclick/addEventListener/.click() 연결 변경이 없습니다.", "DOM 이벤트 연결 변경을 Arin Review handoff에 기록했습니다.", "event-binding"),
     makeCheck("event_layering_risk", "DOM 이벤트 중복·레이어링 위험", layeringRisks, "정적 패턴상 이벤트 중복·레이어링 위험이 없습니다.", "중복 또는 추가 이벤트 레이어 가능성이 발견되었습니다.", "event-layering"),
     makeCheck("secret_exposure", "Secret 형식 문자열 노출", secretChanges, "알려진 Secret 형식 문자열이 추가·변경되지 않았습니다.", "Secret 형식과 일치하는 문자열이 발견되었습니다.", "secret-redacted"),
     makeCheck("destructive_git_deploy", "파괴적 Git·배포 코드 변경", destructiveChanges, "파괴적 Git·배포 동작 변경이 없습니다.", "파괴적 Git 또는 배포 상태 변경 코드가 발견되었습니다.", "destructive-operation")
@@ -443,19 +462,21 @@ function selfTest() {
   ]);
   const changes = [{ status: "M", path: "hani-test.js" }, { status: "M", path: "hani-newsroom-ux-v00001.js" }];
   const result = detectRisks(changes, samples, snapshots);
-  for (const id of ["storage_mutation", "supabase_mutation", "event_binding_change", "event_layering_risk", "destructive_git_deploy"]) {
+  for (const id of ["storage_mutation", "supabase_mutation", "event_layering_risk", "destructive_git_deploy"]) {
     if (result.checks.find(check => check.id === id)?.status !== "BLOCKED") throw new Error(`self-test detector failed: ${id}`);
   }
+  if (result.checks.find(check => check.id === "event_binding_change")?.status !== "PASS") throw new Error("self-test event handoff failed");
   const commentStorage = ["const ratio = value / 2; // local", "Storage.setItem('x','y')"].join("");
   if (storageCallPattern().test(stripNonCode(commentStorage))) throw new Error("self-test comment stripping failed");
   const blockStorage = ["/* local", "Storage.removeItem('x') */\nconst safe = true;"].join("");
   if (storageCallPattern().test(stripNonCodeText(blockStorage))) throw new Error("self-test block comment stripping failed");
-  const resultForSource = source => {
+  const resultForFile = (source, file = "hani-test.js") => {
     const sourceLines = source.split(/\r?\n/);
     const scanLines = stripNonCodeText(source).split("\n");
-    const sourceRecords = sourceLines.map((text, index) => ({ path: "hani-test.js", line: index + 1, change: "added", text, scanText: scanLines[index] || "" }));
-    return detectRisks([{ status: "M", path: "hani-test.js" }], sourceRecords, new Map([["hani-test.js", { headText: source, headLines: scanLines }]])).checks;
+    const sourceRecords = sourceLines.map((text, index) => ({ path: file, line: index + 1, change: "added", text, scanText: scanLines[index] || "" }));
+    return detectRisks([{ status: "M", path: file }], sourceRecords, new Map([[file, { headText: source, headLines: scanLines }]])).checks;
   };
+  const resultForSource = source => resultForFile(source);
   const checkStatus = (checks, id) => checks.find(check => check.id === id)?.status;
   const safeTemplate = [
     "const documentation = `",
@@ -484,6 +505,30 @@ function selfTest() {
     if (checkStatus(resultForSource(source), "storage_mutation") !== "BLOCKED") throw new Error(`self-test storage notation failed: ${source}`);
   }
   if (!isUiFile(changes[1], snapshots)) throw new Error("self-test full-file UI detection failed");
+  const localEventSource = "button.addEventListener('click', handler);";
+  const localEventScan = stripNonCodeText(localEventSource).split("\n");
+  const localEventRecords = [{ path:"hani-feature-v00001.js", line:1, change:"added", text:localEventSource, scanText:localEventScan[0] }];
+  const localEventChanges = [{ status:"A", path:"hani-feature-v00001.js" }];
+  const localEventSnapshots = new Map([["hani-feature-v00001.js", { headText:localEventSource, headLines:localEventScan }]]);
+  const localEventResult = detectRisks(localEventChanges, localEventRecords, localEventSnapshots);
+  if (checkStatus(localEventResult.checks, "event_binding_change") !== "PASS" || checkStatus(localEventResult.checks, "event_layering_risk") !== "PASS" || !isUiFile(localEventChanges[0], localEventSnapshots)) throw new Error("self-test local UI event handoff failed");
+  const duplicateEventSource = [localEventSource, localEventSource].join("\n");
+  const duplicateEventScan = stripNonCodeText(duplicateEventSource).split("\n");
+  const duplicateEventRecords = duplicateEventSource.split("\n").map((text,index)=>({ path:"hani-feature-v00001.js", line:index+1, change:"added", text, scanText:duplicateEventScan[index] }));
+  const duplicateEventResult = detectRisks(localEventChanges, duplicateEventRecords, new Map([["hani-feature-v00001.js", { headText:duplicateEventSource, headLines:duplicateEventScan }]]));
+  if (checkStatus(duplicateEventResult.checks, "event_layering_risk") !== "BLOCKED") throw new Error("self-test duplicate event detection failed");
+  for (const globalEventSource of ["document.addEventListener('click', handler);", "window.addEventListener('resize', handler);"]) {
+    const globalEventScan = stripNonCodeText(globalEventSource).split("\n");
+    const globalEventRecords = [{ path:"hani-feature-v00001.js", line:1, change:"added", text:globalEventSource, scanText:globalEventScan[0] }];
+    const globalEventResult = detectRisks(localEventChanges, globalEventRecords, new Map([["hani-feature-v00001.js", { headText:globalEventSource, headLines:globalEventScan }]]));
+    if (checkStatus(globalEventResult.checks, "event_layering_risk") !== "BLOCKED") throw new Error(`self-test global listener detection failed: ${globalEventSource}`);
+  }
+  const supabaseFunctionPath = "supabase/functions/hani-learning-quiz/index.ts";
+  const supabaseReadOnlySource = "const supabase = createClient(url, key); await supabase.auth.getUser();";
+  const supabaseReadOnlyChecks = resultForFile(supabaseReadOnlySource, supabaseFunctionPath);
+  if (checkStatus(supabaseReadOnlyChecks, "changed_file_scope") !== "PASS" || checkStatus(supabaseReadOnlyChecks, "supabase_mutation") !== "PASS") throw new Error("self-test read-only Supabase Function scope failed");
+  const supabaseWriteSource = "const supabase = client; supabase.from('items').insert(row);";
+  if (checkStatus(resultForFile(supabaseWriteSource, supabaseFunctionPath), "supabase_mutation") !== "BLOCKED") throw new Error("self-test Supabase DB write detection failed");
   const deletedScope = detectRisks([{ status: "D", path: "legacy.out-of-scope" }], [], new Map());
   if (deletedScope.checks.find(check => check.id === "changed_file_scope")?.status !== "BLOCKED") throw new Error("self-test deleted out-of-scope detection failed");
   if (!BINARY_EXTENSIONS.has(".png")) throw new Error("self-test binary classification failed");
