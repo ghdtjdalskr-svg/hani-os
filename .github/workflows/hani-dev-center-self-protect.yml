@@ -1,0 +1,81 @@
+name: HANI Development Center Self-Protection
+
+on:
+  pull_request_target:
+    branches:
+      - main
+    types: [opened, synchronize, reopened, labeled, unlabeled, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: hani-dev-center-self-protect-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  protect-gate:
+    name: Gate Self-Protection
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Inspect protected paths from base workflow
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        with:
+          script: |
+            const protectedPaths = new Set([
+              ".github/workflows/hani-dev-center-gate.yml",
+              ".github/workflows/hani-dev-center-self-protect.yml",
+              "scripts/hani-release-preqa.mjs",
+              "dev-center/release-review.schema.json",
+              "AGENTS.md"
+            ]);
+            const approvalLabel = "hani-gate-change-approved";
+            const { owner, repo } = context.repo;
+            const pullNumber = context.payload.pull_request.number;
+
+            const { data: before } = await github.rest.pulls.get({
+              owner,
+              repo,
+              pull_number: pullNumber
+            });
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner,
+              repo,
+              pull_number: pullNumber,
+              per_page: 100
+            });
+            const { data: after } = await github.rest.pulls.get({
+              owner,
+              repo,
+              pull_number: pullNumber
+            });
+
+            const protectedFiles = [...new Set(files.flatMap(file =>
+              [file.filename, file.previous_filename]
+                .filter(Boolean)
+                .filter(filename => protectedPaths.has(filename))
+            ))].sort();
+            const approvalLabelPresent = after.labels.some(label => label.name === approvalLabel);
+            const authorIsRepositoryOwner = after.user.login.toLowerCase() === owner.toLowerCase();
+            const stableHead = before.head.sha === after.head.sha;
+            const completeFileList = stableHead
+              && before.changed_files === after.changed_files
+              && files.length === after.changed_files;
+            const overrideApproved = authorIsRepositoryOwner && approvalLabelPresent;
+            const verdict = completeFileList
+              && (protectedFiles.length === 0 || overrideApproved)
+              ? "PASS"
+              : "BLOCKED";
+            const result = {
+              pr_number: pullNumber,
+              head_sha: after.head.sha,
+              protected_files: protectedFiles,
+              approval_label_present: approvalLabelPresent,
+              verdict
+            };
+            const serialized = JSON.stringify(result);
+
+            if (verdict === "BLOCKED") core.setFailed(serialized);
+            else core.info(serialized);
