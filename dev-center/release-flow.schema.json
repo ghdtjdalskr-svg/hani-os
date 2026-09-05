@@ -1,0 +1,213 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hani.local/dev-center/release-flow.schema.json",
+  "title": "PROJECT HANI Phase 1 Release Flow Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "base_sha",
+    "candidate_sha",
+    "release_kind",
+    "expected",
+    "external_review",
+    "yuri",
+    "arin",
+    "hina",
+    "preview",
+    "production",
+    "flow_state",
+    "created_at",
+    "updated_at"
+  ],
+  "properties": {
+    "contract_version": { "const": "1.0.0" },
+    "base_sha": { "$ref": "#/$defs/gitSha" },
+    "candidate_sha": { "$ref": "#/$defs/gitSha" },
+    "release_kind": { "enum": ["RUNTIME", "DEV_TOOLING_ONLY"] },
+    "expected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version_bump", "displayed_version", "runtime_js"],
+      "properties": {
+        "version_bump": { "enum": ["REQUIRED", "N/A_DEV_TOOLING"] },
+        "displayed_version": { "type": "string", "minLength": 1 },
+        "runtime_js": { "type": "string", "minLength": 1 }
+      }
+    },
+    "external_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "reason"],
+      "properties": {
+        "state": { "const": "DEFERRED" },
+        "reason": { "const": "Gemini CLI unavailable" }
+      }
+    },
+    "yuri": { "$ref": "#/$defs/yuriState" },
+    "arin": { "$ref": "#/$defs/arinState" },
+    "hina": { "$ref": "#/$defs/hinaState" },
+    "preview": { "$ref": "#/$defs/previewState" },
+    "production": { "$ref": "#/$defs/productionState" },
+    "flow_state": {
+      "enum": [
+        "PENDING_YURI",
+        "PENDING_ARIN",
+        "READY_FOR_HINA",
+        "READY_FOR_PREVIEW",
+        "READY_FOR_APPROVAL",
+        "READY_FOR_MERGE",
+        "PENDING_PRODUCTION_READBACK",
+        "COMPLETE",
+        "BLOCKED"
+      ]
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "gitSha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "nullableGitSha": {
+      "anyOf": [
+        { "$ref": "#/$defs/gitSha" },
+        { "type": "null" }
+      ]
+    },
+    "yuriState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "base_sha", "candidate_sha", "report_generated_at"],
+      "properties": {
+        "state": { "enum": ["PENDING", "PASS", "BLOCKED"] },
+        "base_sha": { "$ref": "#/$defs/gitSha" },
+        "candidate_sha": { "$ref": "#/$defs/gitSha" },
+        "report_generated_at": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "arinState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "state", "candidate_sha", "report_generated_at"],
+      "properties": {
+        "required": { "type": "boolean" },
+        "state": { "enum": ["UNDETERMINED", "PENDING", "PASS", "BLOCKED", "N/A"] },
+        "candidate_sha": { "$ref": "#/$defs/gitSha" },
+        "report_generated_at": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "hinaState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "candidate_sha", "report_generated_at"],
+      "properties": {
+        "state": { "enum": ["PENDING", "PASS", "BLOCKED"] },
+        "candidate_sha": { "$ref": "#/$defs/gitSha" },
+        "report_generated_at": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "previewState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pr_number", "url", "head_sha", "approval_state"],
+      "properties": {
+        "pr_number": { "type": ["integer", "null"], "minimum": 1 },
+        "url": { "type": ["string", "null"], "format": "uri" },
+        "head_sha": { "$ref": "#/$defs/nullableGitSha" },
+        "approval_state": {
+          "enum": ["NOT_READY", "PENDING", "APPROVED", "REJECTED", "INVALIDATED"]
+        }
+      }
+    },
+    "productionState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "candidate_sha",
+        "merged_sha",
+        "pages_url",
+        "pages_accessible",
+        "displayed_version",
+        "runtime_js",
+        "smoke_state",
+        "read_back_state"
+      ],
+      "properties": {
+        "state": { "enum": ["PENDING", "BLOCKED", "COMPLETE"] },
+        "candidate_sha": { "$ref": "#/$defs/gitSha" },
+        "merged_sha": { "$ref": "#/$defs/nullableGitSha" },
+        "pages_url": { "type": ["string", "null"], "format": "uri" },
+        "pages_accessible": { "type": ["boolean", "null"] },
+        "displayed_version": { "type": ["string", "null"] },
+        "runtime_js": { "type": ["string", "null"] },
+        "smoke_state": { "enum": ["PENDING", "PASS", "BLOCKED"] },
+        "read_back_state": { "enum": ["PENDING", "PASS", "BLOCKED"] }
+      }
+    },
+    "arinHandoff": {
+      "description": "READ-ONLY GPT Arin review result accepted by ingest-arin.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contract_version", "reviewer", "candidate_sha", "state", "reviewed_files", "generated_at"],
+      "properties": {
+        "contract_version": { "const": "1.0.0" },
+        "reviewer": { "const": "ARIN" },
+        "candidate_sha": { "$ref": "#/$defs/gitSha" },
+        "state": { "enum": ["PASS", "BLOCKED"] },
+        "reviewed_files": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "generated_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "hinaHandoff": {
+      "description": "Existing HANI Deploy Bridge HINA result bound to the release candidate commit.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contract_version", "source", "candidate_sha", "state", "generated_at"],
+      "properties": {
+        "contract_version": { "const": "1.0.0" },
+        "source": { "const": "HANI_DEPLOY_BRIDGE" },
+        "candidate_sha": { "$ref": "#/$defs/gitSha" },
+        "state": { "enum": ["HINA_QA_PASS", "HINA_QA_BLOCKED"] },
+        "generated_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "previewHandoff": {
+      "description": "Existing Preview PR and representative approval identity.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contract_version", "candidate_sha", "pr_number", "url", "head_sha", "approval_state"],
+      "properties": {
+        "contract_version": { "const": "1.0.0" },
+        "candidate_sha": { "$ref": "#/$defs/gitSha" },
+        "pr_number": { "type": "integer", "minimum": 1 },
+        "url": { "type": "string", "format": "uri", "pattern": "^https://" },
+        "head_sha": { "$ref": "#/$defs/gitSha" },
+        "approval_state": { "enum": ["PENDING", "APPROVED", "REJECTED"] }
+      }
+    },
+    "productionHandoff": {
+      "description": "Existing merge/read-back result plus actual Pages, version, runtime JS and smoke evidence.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contract_version", "candidate_sha", "merged_sha", "pages_url", "pages_accessible", "displayed_version", "runtime_js", "smoke_state", "read_back_state"],
+      "properties": {
+        "contract_version": { "const": "1.0.0" },
+        "candidate_sha": { "$ref": "#/$defs/gitSha" },
+        "merged_sha": { "$ref": "#/$defs/gitSha" },
+        "pages_url": { "type": "string", "format": "uri", "pattern": "^https://" },
+        "pages_accessible": { "type": "boolean" },
+        "displayed_version": { "type": "string", "minLength": 1 },
+        "runtime_js": { "type": "string", "minLength": 1 },
+        "smoke_state": { "enum": ["PASS", "BLOCKED"] },
+        "read_back_state": { "enum": ["PASS", "BLOCKED"] }
+      }
+    }
+  }
+}
