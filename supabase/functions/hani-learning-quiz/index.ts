@@ -1,5 +1,5 @@
 // PROJECT HANI
-// hani-learning-quiz v0.1.0 · READ-ONLY Daily Quiz Generator
+// hani-learning-quiz v0.2.0 · READ-ONLY Dynamic Quiz Generator
 // - Authenticated requests only
 // - OpenAI key remains server-side
 // - ZERO database write
@@ -14,32 +14,36 @@ const corsHeaders = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
-const QUIZ_SCHEMA = {
-  type: "object",
-  additionalProperties: false,
-  properties: {
-    questions: {
-      type: "array",
-      minItems: 20,
-      maxItems: 20,
-      items: {
-        type: "object",
-        additionalProperties: false,
-        properties: {
-          type: { type: "string" },
-          topic: { type: "string" },
-          difficulty: { type: "string", enum: ["easy", "medium", "hard"] },
-          prompt: { type: "string" },
-          choices: { type: "array", minItems: 4, maxItems: 4, items: { type: "string" } },
-          answer_index: { type: "integer", minimum: 0, maximum: 3 },
-          explanation: { type: "string" },
+const ALLOWED_QUIZ_SIZES = new Set([5, 10, 15, 20]);
+
+function quizSchema(quizSize: number) {
+  return {
+    type: "object",
+    additionalProperties: false,
+    properties: {
+      questions: {
+        type: "array",
+        minItems: quizSize,
+        maxItems: quizSize,
+        items: {
+          type: "object",
+          additionalProperties: false,
+          properties: {
+            type: { type: "string" },
+            topic: { type: "string" },
+            difficulty: { type: "string", enum: ["easy", "medium", "hard"] },
+            prompt: { type: "string" },
+            choices: { type: "array", minItems: 4, maxItems: 4, items: { type: "string" } },
+            answer_index: { type: "integer", minimum: 0, maximum: 3 },
+            explanation: { type: "string" },
+          },
+          required: ["type", "topic", "difficulty", "prompt", "choices", "answer_index", "explanation"],
         },
-        required: ["type", "topic", "difficulty", "prompt", "choices", "answer_index", "explanation"],
       },
     },
-  },
-  required: ["questions"],
-};
+    required: ["questions"],
+  };
+}
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body, null, 2), {
@@ -78,13 +82,13 @@ async function authenticatedUser(req: Request, supabaseUrl: string, publishableK
   return error ? null : user;
 }
 
-function systemPrompt() {
+function systemPrompt(quizSize: number, weaknessCount: number) {
   return [
     "당신은 PROJECT HANI의 히나 학습 Agent입니다.",
-    "사용자의 학습 프로젝트와 최근 약점을 바탕으로 오늘 풀 객관식 20문제를 만듭니다.",
-    "항상 정확히 20문제, 각 문제는 선택지 4개와 정답 1개를 제공합니다.",
+    `사용자의 학습 프로젝트와 최근 약점을 바탕으로 오늘 풀 객관식 ${quizSize}문제를 만듭니다.`,
+    `항상 정확히 ${quizSize}문제, 각 문제는 선택지 4개와 정답 1개를 제공합니다.`,
     "정답은 answer_index 0~3으로 표시하고, 각 문제에 짧고 학습 가능한 해설을 제공합니다.",
-    "최근 약점이 있으면 20문제 중 약 5~8문제에 약점 유형을 반영하세요.",
+    `최근 약점이 있으면 전체의 약 25~40%인 ${weaknessCount}문제에 약점 유형을 반영하세요.`,
     "동일하거나 유사한 문제, 사실상 같은 선택지를 반복하지 마세요.",
     "약점이 없으면 프로젝트 목표 범위를 균형 있게 샘플링하세요.",
     "JLPT 프로젝트라면 문제 지시문은 한국어로 쓰고, 실제 일본어 어휘/문법/독해 예문은 일본어를 사용하세요.",
@@ -118,6 +122,9 @@ Deno.serve(async (req) => {
   const scheduleType = cleanText(project.schedule_type, 40);
   const goal = cleanText(project.goal, 800) || focusAreas.join(" / ");
   const targetDate = cleanText(project.target_date, 20) || examDate;
+  const requestedQuizSize = Number(project.quiz_size);
+  const quizSize = ALLOWED_QUIZ_SIZES.has(requestedQuizSize) ? requestedQuizSize : 20;
+  const weaknessQuestionCount = Math.max(2, Math.min(8, Math.round(quizSize * 0.33)));
 
   const weaknesses = (Array.isArray(body.weaknesses) ? body.weaknesses : []).slice(0, 12).map((raw: any) => ({
     type: cleanText(raw?.type, 80),
@@ -137,6 +144,7 @@ Deno.serve(async (req) => {
       focus_areas: focusAreas,
       exam_date: examDate,
       schedule_type: scheduleType,
+      quiz_size: quizSize,
     },
     weaknesses,
   }, null, 2);
@@ -147,11 +155,11 @@ Deno.serve(async (req) => {
     headers: { "Authorization": `Bearer ${openaiKey}`, "Content-Type": "application/json" },
     body: JSON.stringify({
       model: "gpt-5.6-luna",
-      instructions: systemPrompt(),
+      instructions: systemPrompt(quizSize, weaknessQuestionCount),
       input,
       max_output_tokens: 7000,
       reasoning: { effort: "none" },
-      text: { verbosity: "low", format: { type: "json_schema", name: "hani_daily_learning_quiz", strict: true, schema: QUIZ_SCHEMA } },
+      text: { verbosity: "low", format: { type: "json_schema", name: "hani_daily_learning_quiz", strict: true, schema: quizSchema(quizSize) } },
       store: false,
     }),
   });
@@ -161,13 +169,13 @@ Deno.serve(async (req) => {
   const output = extractOutputText(ai);
   let quiz: any = null;
   try { quiz = JSON.parse(output); } catch (_) { return json({ ok:false, error:"QUIZ_PARSE_FAILED", message:"퀴즈 JSON 파싱에 실패했습니다.", db_write:false, hani_state_touched:false }, 502); }
-  if (!Array.isArray(quiz?.questions) || quiz.questions.length !== 20) return json({ ok:false, error:"QUIZ_COUNT_INVALID", message:"정확히 20문제를 생성하지 못했습니다.", db_write:false, hani_state_touched:false }, 502);
+  if (!Array.isArray(quiz?.questions) || quiz.questions.length !== quizSize) return json({ ok:false, error:"QUIZ_COUNT_INVALID", message:`정확히 ${quizSize}문제를 생성하지 못했습니다.`, db_write:false, hani_state_touched:false }, 502);
 
   return json({
     ok:true,
     service:"PROJECT HANI",
     function:"hani-learning-quiz",
-    version:"0.1.0",
+    version:"0.2.0",
     quiz,
     model:String(ai?.model || "gpt-5.6-luna"),
     usage:ai?.usage || null,
@@ -175,6 +183,6 @@ Deno.serve(async (req) => {
     db_write:false,
     hani_state_touched:false,
     store:false,
-    message:"오늘의 학습 퀴즈 20문제를 생성했습니다. 서버는 학습 기록을 저장하지 않았습니다.",
+    message:`오늘의 학습 퀴즈 ${quizSize}문제를 생성했습니다. 서버는 학습 기록을 저장하지 않았습니다.`,
   });
 });
