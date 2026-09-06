@@ -493,6 +493,22 @@
     <section id="newsroom" class="view"><div id="newsroomMount"></div></section>
 
     <section id="asset" class="view"><div class="grid"><div class="card full asset-dashboard-card"><div class="sh"><h3>통합 자산 대시보드</h3><span class="pill finance">ASSET</span></div><div class="stats" id="assetStats"></div></div><div class="card wide"><div class="sh"><h3>계좌별 자산</h3></div><div class="account-grid" id="assetAccounts"></div></div><div class="card sidec"><div class="sh"><h3>구성</h3></div><div class="list" id="assetComposition"></div></div></div></section>
+    <section id="investmentIntake" class="view">
+      <div class="money-intro">
+        <div><b>자산 업데이트</b><p>가계부 확정본과 투자 계좌 자료를 업데이트하는 전용 화면입니다.</p></div>
+      </div>
+      <div class="grid">
+        <div class="card full ledger-import">
+          <div class="sh"><div><span class="eyebrow purple">HOUSEHOLD LEDGER</span><h3>가계부 확정본 Import</h3></div><span class="pill finance">TSV ONLY</span></div>
+          <div class="field"><label>엑셀에서 헤더와 행을 복사해 붙여넣기</label><textarea id="ledgerImportRaw" placeholder="날짜&#9;내용&#9;금액&#9;결제수단&#9;대분류&#9;소분류&#9;세부항목&#9;회수예정액"></textarea></div>
+          <div class="form-actions"><button class="btn" id="ledgerImportPreview" type="button">미리보기</button><button class="btn finance" id="ledgerImportApply" type="button" disabled>확정 반영</button></div>
+          <div class="note ledger-import-result" id="ledgerImportResult">붙여넣은 원문은 미리보기 중에만 메모리에 유지되며 저장되지 않습니다.</div>
+        </div>
+        <div class="card full hani-investment-intake-placeholder-v02971">
+          <div class="inner"><div class="icon">📸</div><h3>투자 계좌 업데이트</h3><p>계좌 스크린샷으로 보유종목과 평가정보를 업데이트하는 전용 입력창을 준비 중입니다.</p><span class="soon">PHASE 1 · COMING SOON</span></div>
+        </div>
+      </div>
+    </section>
     <section id="ledger" class="view">
       <div class="tabs" data-tabs="ledgerTabs">
         <button class="tab active" data-panel="ledgerMonthly">월간 소비 결산</button>
@@ -502,8 +518,8 @@
       <div id="ledgerMonthly" class="panel active">
         <div class="money-intro">
           <div>
-            <b>한 달에 한 번, 소비 결과만 정리합니다.</b>
-            <p>카드 명세서 확정본을 붙여넣거나 고정비·유동비·특별지출·금융·자산 항목을 직접 기록해요.</p>
+            <b>월간 소비와 JISPI 흐름을 한눈에 확인합니다.</b>
+            <p>확정된 가계부 원장을 기준으로 지수·지출 구성·상세내역을 조회합니다.</p>
           </div>
           <div class="money-month-picker">
             <div class="field"><label>결산 월</label><input id="ledgerMonth" type="month"></div>
@@ -511,64 +527,32 @@
           </div>
         </div>
 
-        <div class="money-kpis" id="ledgerKpis"></div>
-
-        <div class="card full ledger-import">
-          <div class="sh"><h3>확정본 Import</h3><span class="pill finance">TSV ONLY</span></div>
-          <div class="field"><label>엑셀에서 헤더와 행을 복사해 붙여넣기</label><textarea id="ledgerImportRaw" placeholder="날짜&#9;내용&#9;금액&#9;결제수단&#9;대분류&#9;소분류&#9;세부항목&#9;회수예정액"></textarea></div>
-          <div class="form-actions"><button class="btn" id="ledgerImportPreview" type="button">미리보기</button><button class="btn finance" id="ledgerImportApply" type="button" disabled>확정 반영</button></div>
-          <div class="note ledger-import-result" id="ledgerImportResult">붙여넣은 원문은 미리보기 중에만 메모리에 유지되며 저장되지 않습니다.</div>
+        <div class="card full ledger-market-board">
+          <div class="sh"><div><span class="eyebrow purple">JISPI MARKET OVERVIEW</span><h3>JISPI 종합 지수</h3></div><span class="pill finance">MONTHLY</span></div>
+          <div class="ledger-jispi-grid" id="ledgerKpis"></div>
+          <div class="ledger-support-kpis" id="ledgerSupportKpis"></div>
         </div>
 
-        <div class="grid">
-          <div class="card wide">
-            <div class="sh"><h3>월별 지출 추이</h3><span class="pill finance">4 CATEGORIES · JISPI</span></div>
-            <div class="chart"><canvas id="ledgerTrendChart"></canvas></div>
-          </div>
-          <div class="card sidec money-note-box">
-            <div class="sh"><h3>이달의 소비 한줄평</h3><span class="pill">MONTH NOTE</span></div>
-            <div class="field"><label>이번 달을 한 문장으로 정리</label><textarea id="ledgerMonthComment" placeholder="예: 예상보다 쇼핑비가 컸지만 계획했던 지출 안에서 마무리."></textarea></div>
-            <div class="form-actions"><button class="btn finance" id="ledgerSaveComment" type="button">한줄평 저장</button></div>
-          </div>
+        <div class="card full ledger-trend-card">
+          <div class="sh"><h3>월별 지출 추이</h3><span class="pill finance">4 CATEGORIES · JISPI</span></div>
+          <div class="chart"><canvas id="ledgerTrendChart"></canvas></div>
         </div>
 
-        <div class="money-entry-grid">
-          <div class="card money-item-form">
-            <div class="sh"><h3>소비 항목 입력</h3><span class="pill finance">MONTHLY INPUT</span></div>
-            <input type="hidden" id="ledgerItemEditId">
-            <div class="fg ledger-final-grid">
-              <div class="field"><label>날짜</label><input id="ledgerItemDate" type="date"></div>
-              <div class="field"><label>내용</label><input id="ledgerItemContent" placeholder="예: 통신요금"></div>
-              <div class="field"><label>결제수단</label><input id="ledgerItemPayment" placeholder="예: 신용카드"></div>
-              <div class="field">
-                <label>대분류</label>
-                <select id="ledgerItemCategory">
-                  <option value="fixed">고정비</option>
-                  <option value="variable">변동비</option>
-                  <option value="special">특별지출</option>
-                  <option value="finance">금융·자산</option>
-                </select>
-              </div>
-              <div class="field"><label>소분류</label><input id="ledgerItemSubcategory" placeholder="예: 주거"></div>
-              <div class="field"><label>세부항목</label><input id="ledgerItemDetail" placeholder="예: 전세 대출 이자"></div>
-              <div class="field"><label>금액</label><input id="ledgerItemAmount" type="number" min="0" step="100" placeholder="0"></div>
-              <div class="field"><label>회수예정액</label><input id="ledgerItemReimbursement" type="number" min="0" step="100" placeholder="0"></div>
-              <div class="field"><label>메모</label><input id="ledgerItemNote" placeholder="선택 입력"></div>
-            </div>
-            <div class="form-actions">
-              <button class="btn" id="ledgerItemReset" type="button">입력 초기화</button>
-              <button class="btn finance" id="ledgerItemSave" type="button">항목 추가</button>
-            </div>
-          </div>
+        <div class="money-kpis ledger-category-kpis" id="ledgerCategoryKpis"></div>
 
-          <div class="card">
-            <div class="sh"><h3>이번 달 상세 내역</h3><span class="pill finance" id="ledgerItemCount">0건</span></div>
-            <div class="tw ledger-detail-wrap">
-              <table>
-                <thead><tr><th>날짜</th><th>내용</th><th>결제수단</th><th>대분류</th><th>소분류</th><th>세부항목</th><th>금액</th><th>회수예정액</th><th>메모</th><th>관리</th></tr></thead>
-                <tbody id="ledgerItemRows"></tbody>
-              </table>
-            </div>
+        <div class="card full ledger-detail-card">
+          <div class="sh"><div><h3>이번 달 상세내역</h3><div class="sub" id="ledgerItemCount">전체 0건 중 0건</div></div></div>
+          <div class="ledger-detail-toolbar">
+            <div class="field"><label>정렬</label><select id="ledgerDetailSort"><option value="amountDesc">금액 높은순</option><option value="amountAsc">금액 낮은순</option><option value="dateDesc">날짜 최신순</option><option value="dateAsc">날짜 오래된순</option></select></div>
+            <div class="field"><label>대분류</label><select id="ledgerDetailCategory"><option value="all">전체 대분류</option><option value="fixed">고정비</option><option value="variable">유동비</option><option value="special">특별지출</option><option value="finance">금융·자산</option></select></div>
+            <div class="field"><label>소분류</label><select id="ledgerDetailSubcategory"><option value="all">전체 소분류</option></select></div>
+            <button class="btn sm" id="ledgerDetailReset" type="button">필터 초기화</button>
+          </div>
+          <div class="tw ledger-detail-wrap">
+            <table>
+              <thead><tr><th>날짜</th><th>내용</th><th>결제수단</th><th>대분류</th><th>소분류</th><th>세부항목</th><th>금액</th><th>회수예정액</th><th>메모</th></tr></thead>
+              <tbody id="ledgerItemRows"></tbody>
+            </table>
           </div>
         </div>
 
