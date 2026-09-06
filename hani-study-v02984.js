@@ -1,5 +1,5 @@
 /* =========================================================
-   HANI OS v2.9.84 · Learning Engine MVP
+   HANI OS v2.9.85 · Learning Engine MVP
    Backward-compatible state extension only.
    - learningProjects
    - learningQuizzes
@@ -13,7 +13,7 @@
 
   const PATCH_ID = 'HANI_STUDY_V02984';
   const STYLE_ID = 'hani-study-v02984-style';
-  const VERSION = '2.9.84';
+  const VERSION = '2.9.85';
   if (window[PATCH_ID]) return;
   window[PATCH_ID] = true;
 
@@ -745,7 +745,7 @@
       derivedTaskCount: derivedLearningTasks().length,
       studyMounted: !!q('#studyEngineV02984'),
     });
-    console.info('[HANI OS] v2.9.84 Learning Board v1 ready');
+    console.info('[HANI OS] v2.9.85 Learning Board v1 ready');
   }
 
   boot();
