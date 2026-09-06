@@ -1,5 +1,5 @@
 /* =========================================================
-   HANI OS v2.9.86 · Learning Board v1.1
+   HANI OS v2.9.87 · Learning Board v1.1
    Backward-compatible state extension only.
    - learningProjects
    - learningQuizzes
@@ -13,7 +13,7 @@
 
   const PATCH_ID = 'HANI_STUDY_V02984';
   const STYLE_ID = 'hani-study-v02984-style';
-  const VERSION = '2.9.86';
+  const VERSION = '2.9.87';
   if (window[PATCH_ID]) return;
   window[PATCH_ID] = true;
 
@@ -40,7 +40,7 @@
   const generationFailures = new Map();
   const SCHEDULE_LABELS = {
     daily: '매일', mon_wed_fri: '월·수·금', every_2_days: '2일마다',
-    every_3_days: '3일마다', weekly: '매주', manual: '수동',
+    every_3_days: '3일마다', weekly: '매주', monthly: '한 달마다', manual: '수동',
   };
   const PROJECT_STATUSES = new Set(['active', 'paused', 'completed', 'archived']);
   const QUIZ_SIZES = new Set([5, 10, 15, 20]);
@@ -146,6 +146,12 @@
     if (!d) return false;
     if (type === 'daily') return true;
     if (type === 'mon_wed_fri') return [1, 3, 5].includes(d.getDay());
+    if (type === 'monthly') {
+      const start = parseLocalDate(String(p.createdAt || '').slice(0, 10));
+      if (!start || localDayNumber(date) < localDayNumber(String(p.createdAt || '').slice(0, 10))) return false;
+      const lastDay = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+      return d.getDate() === Math.min(start.getDate(), lastDay);
+    }
     const interval = type === 'every_2_days' ? 2 : type === 'every_3_days' ? 3 : type === 'weekly' ? 7 : 1;
     const start = String(p.createdAt || '').slice(0, 10) || date;
     const delta = localDayNumber(date) - localDayNumber(start);
@@ -409,7 +415,7 @@
                 <div><label>분류</label><select id="studyProjectCategory"><option value="jlpt">JLPT</option><option value="certificate">자격증</option><option value="university">대학교</option><option value="ai">AI/실무</option><option value="other">기타</option></select></div>
                 <div><label>시험일 · 선택</label><input id="studyProjectTargetDate" type="date"></div>
                 <div class="span2"><label>집중영역</label><div class="study-focus-grid" id="studyProjectFocusAreas"><label class="study-focus-chip"><input type="checkbox" value="어휘">어휘</label><label class="study-focus-chip"><input type="checkbox" value="문법">문법</label><label class="study-focus-chip"><input type="checkbox" value="독해">독해</label><label class="study-focus-chip"><input type="checkbox" value="청해">청해</label><label class="study-focus-chip"><input type="checkbox" value="이론">이론</label><label class="study-focus-chip"><input type="checkbox" value="실기">실기</label></div></div>
-                <div><label>생성주기</label><select id="studyProjectSchedule"><option value="daily">매일</option><option value="mon_wed_fri">월·수·금</option><option value="every_2_days">2일마다</option><option value="every_3_days" selected>3일마다</option><option value="weekly">매주</option><option value="manual">수동</option></select></div>
+                <div><label>생성주기</label><select id="studyProjectSchedule"><option value="daily">매일</option><option value="mon_wed_fri">월·수·금</option><option value="every_2_days">2일마다</option><option value="every_3_days" selected>3일마다</option><option value="weekly">매주</option><option value="monthly">한 달마다</option><option value="manual">수동</option></select></div>
                 <div><label>문제 수</label><select id="studyProjectQuizSize"><option value="5">5문제</option><option value="10">10문제</option><option value="15">15문제</option><option value="20" selected>20문제</option></select></div>
                 <div class="span2 study-actions-row"><button class="btn primary" type="button" id="studyProjectSave">프로젝트 저장</button><button class="btn" type="button" id="studyProjectPreset">JLPT N3 빠른 시작</button><button class="btn ghost" type="button" id="studyProjectCancel">취소</button></div>
               </div>
@@ -880,7 +886,7 @@
       derivedTaskCount: derivedLearningTasks().length,
       studyMounted: !!q('#studyEngineV02984'),
     });
-    console.info('[HANI OS] v2.9.86 Learning Board v1.1 ready');
+    console.info('[HANI OS] v2.9.87 Learning Board v1.1 ready');
   }
 
   boot();
