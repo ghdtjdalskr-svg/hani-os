@@ -1,5 +1,5 @@
 /* =========================================================
-   HANI OS v2.9.86 · Learning Board v1.1
+   HANI OS v2.9.87 · Learning Board v1.1
    Backward-compatible state extension only.
    - learningProjects
    - learningQuizzes
@@ -13,7 +13,7 @@
 
   const PATCH_ID = 'HANI_STUDY_V02984';
   const STYLE_ID = 'hani-study-v02984-style';
-  const VERSION = '2.9.86';
+  const VERSION = '2.9.87';
   if (window[PATCH_ID]) return;
   window[PATCH_ID] = true;
 
@@ -33,8 +33,6 @@
   let activeProjectId = '';
   let activeQuizId = '';
   let activeStudyTab = 'board';
-  let wrongProjectFilter = 'all';
-  let wrongPage = 1;
   let activeWrongId = '';
   let busy = false;
   let projectFormMode = 'create';
@@ -42,12 +40,11 @@
   const generationFailures = new Map();
   const SCHEDULE_LABELS = {
     daily: '매일', mon_wed_fri: '월·수·금', every_2_days: '2일마다',
-    every_3_days: '3일마다', weekly: '매주', manual: '수동',
+    every_3_days: '3일마다', weekly: '매주', monthly: '한 달마다', manual: '수동',
   };
   const PROJECT_STATUSES = new Set(['active', 'paused', 'completed', 'archived']);
   const QUIZ_SIZES = new Set([5, 10, 15, 20]);
   const DEFAULT_QUIZ_SIZE = 20;
-  const WRONG_PAGE_SIZE = 12;
 
   function ensureLearningState(target = state) {
     if (!target || typeof target !== 'object') return target;
@@ -149,6 +146,12 @@
     if (!d) return false;
     if (type === 'daily') return true;
     if (type === 'mon_wed_fri') return [1, 3, 5].includes(d.getDay());
+    if (type === 'monthly') {
+      const start = parseLocalDate(String(p.createdAt || '').slice(0, 10));
+      if (!start || localDayNumber(date) < localDayNumber(String(p.createdAt || '').slice(0, 10))) return false;
+      const lastDay = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+      return d.getDate() === Math.min(start.getDate(), lastDay);
+    }
     const interval = type === 'every_2_days' ? 2 : type === 'every_3_days' ? 3 : type === 'weekly' ? 7 : 1;
     const start = String(p.createdAt || '').slice(0, 10) || date;
     const delta = localDayNumber(date) - localDayNumber(start);
@@ -381,7 +384,7 @@
 #study .study-question{border:1px solid #e8e6f2;border-radius:15px;padding:14px;margin-top:11px;background:#fff}.study-question-head{display:flex;gap:7px;align-items:center;margin-bottom:8px}.study-question-head span{font-size:10px;font-weight:900;border-radius:99px;background:#f2efff;color:#5d4eb2;padding:4px 7px}.study-question h4{font-size:14px;line-height:1.55;margin:0 0 10px}.study-choices{display:grid;gap:7px}.study-choice{display:flex;align-items:flex-start;gap:8px;border:1px solid #e5e5ed;border-radius:11px;padding:9px 10px;cursor:pointer}.study-choice:hover{border-color:#afa4ea}.study-choice input{margin-top:2px}.study-question.is-graded .study-choice.is-correct{border-color:#5ec58b;background:#edf9f2}.study-question.is-graded .study-choice.is-wrong{border-color:#ee8c8c;background:#fff1f1}.study-explanation{margin-top:10px;padding:10px 11px;background:#f7f7fb;border-radius:10px;font-size:12px;line-height:1.5;color:#555568}.study-explanation b{color:#40396d}
 #study .study-submit-wrap{position:sticky;bottom:12px;z-index:3;margin-top:14px;padding:11px;border:1px solid #e3dffd;border-radius:14px;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);display:flex;justify-content:space-between;gap:10px;align-items:center}.study-submit-wrap .sub{font-size:11px;color:#77758a}
 #study .study-wrong-list{display:grid;gap:8px;margin-top:10px}.study-wrong-row{border:1px solid #ecebf3;border-radius:12px;padding:10px 12px}.study-wrong-row b{font-size:12px}.study-wrong-row p{font-size:11px;color:#727083;margin:4px 0 0;line-height:1.45}.study-wrong-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}.study-wrong-meta span{font-size:10px;padding:4px 6px;background:#f5f4fa;border-radius:99px;color:#66637a}
-#study .study-tab-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}.study-tab-toolbar select{min-height:38px;max-width:260px;border:1px solid #dddde8;border-radius:10px;padding:7px 10px;background:#fff}.study-wrong-row h4{margin:0 0 8px;font-size:14px;line-height:1.5}.study-wrong-answer{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:9px 0}.study-wrong-answer div{padding:9px;border-radius:10px;background:#f7f7fb;font-size:12px}.study-wrong-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.study-retry{margin-top:10px;padding:11px;border-radius:11px;background:#faf9ff}.study-pagination{display:flex;justify-content:center;align-items:center;gap:9px;margin-top:14px}.study-history-grid{display:grid;gap:12px}.study-history-card{border:1px solid #e7e4f3;border-radius:15px;padding:14px;background:#fff}.study-history-card h3{margin:0;font-size:16px}.study-history-meta{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0 12px}
+#study .study-tab-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}.study-wrong-groups{display:grid;gap:10px}.study-wrong-group{min-width:0;border:1px solid #e3e0f2;border-radius:14px;background:#fbfaff;overflow:hidden}.study-wrong-group summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 14px;cursor:pointer;list-style:none}.study-wrong-group summary::-webkit-details-marker{display:none}.study-wrong-group summary:after{content:"펼치기";flex:0 0 auto;font-size:10px;font-weight:900;color:#6759b3}.study-wrong-group[open] summary:after{content:"접기"}.study-wrong-group-title{min-width:0}.study-wrong-group-title b{display:block;overflow-wrap:anywhere}.study-wrong-group-title span{display:block;margin-top:3px;font-size:11px;color:#77758a}.study-wrong-group>.study-wrong-list{margin:0;padding:0 12px 12px}.study-wrong-row h4{margin:0 0 8px;font-size:14px;line-height:1.5;overflow-wrap:anywhere}.study-wrong-answer{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:9px 0}.study-wrong-answer div{min-width:0;padding:9px;border-radius:10px;background:#f7f7fb;font-size:12px;overflow-wrap:anywhere}.study-wrong-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.study-retry{margin-top:10px;padding:11px;border-radius:11px;background:#faf9ff}.study-pagination{display:flex;justify-content:center;align-items:center;gap:9px;margin-top:14px}.study-history-grid{display:grid;gap:12px}.study-history-card{border:1px solid #e7e4f3;border-radius:15px;padding:14px;background:#fff}.study-history-card h3{margin:0;font-size:16px}.study-history-meta{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0 12px}
 #study .study-quick-note{margin-top:16px}
 .home-task-mini-item.learning-derived{cursor:pointer;border-left:3px solid #8b78e8;padding-left:9px}.home-task-mini-item.learning-derived>i{background:#8b78e8!important}.home-task-mini-item.learning-derived b:before{content:"📚 ";}
 @media(max-width:800px){#study .study-engine-grid{grid-template-columns:1fr}#study .study-hero-v02984{align-items:flex-start;flex-direction:column}#study .study-project-form{grid-template-columns:1fr}#study .study-project-form .span2{grid-column:auto}#study .study-card-v02984{padding:13px}#study .study-submit-wrap{bottom:8px}#study .study-question{padding:12px}.study-hero-meta{width:100%}.study-chip{flex:1;text-align:center}#study .study-wrong-answer{grid-template-columns:1fr}#study .study-tab-toolbar select{width:100%;max-width:none}}
@@ -412,7 +415,7 @@
                 <div><label>분류</label><select id="studyProjectCategory"><option value="jlpt">JLPT</option><option value="certificate">자격증</option><option value="university">대학교</option><option value="ai">AI/실무</option><option value="other">기타</option></select></div>
                 <div><label>시험일 · 선택</label><input id="studyProjectTargetDate" type="date"></div>
                 <div class="span2"><label>집중영역</label><div class="study-focus-grid" id="studyProjectFocusAreas"><label class="study-focus-chip"><input type="checkbox" value="어휘">어휘</label><label class="study-focus-chip"><input type="checkbox" value="문법">문법</label><label class="study-focus-chip"><input type="checkbox" value="독해">독해</label><label class="study-focus-chip"><input type="checkbox" value="청해">청해</label><label class="study-focus-chip"><input type="checkbox" value="이론">이론</label><label class="study-focus-chip"><input type="checkbox" value="실기">실기</label></div></div>
-                <div><label>생성주기</label><select id="studyProjectSchedule"><option value="daily">매일</option><option value="mon_wed_fri">월·수·금</option><option value="every_2_days">2일마다</option><option value="every_3_days" selected>3일마다</option><option value="weekly">매주</option><option value="manual">수동</option></select></div>
+                <div><label>생성주기</label><select id="studyProjectSchedule"><option value="daily">매일</option><option value="mon_wed_fri">월·수·금</option><option value="every_2_days">2일마다</option><option value="every_3_days" selected>3일마다</option><option value="weekly">매주</option><option value="monthly">한 달마다</option><option value="manual">수동</option></select></div>
                 <div><label>문제 수</label><select id="studyProjectQuizSize"><option value="5">5문제</option><option value="10">10문제</option><option value="15">15문제</option><option value="20" selected>20문제</option></select></div>
                 <div class="span2 study-actions-row"><button class="btn primary" type="button" id="studyProjectSave">프로젝트 저장</button><button class="btn" type="button" id="studyProjectPreset">JLPT N3 빠른 시작</button><button class="btn ghost" type="button" id="studyProjectCancel">취소</button></div>
               </div>
@@ -450,10 +453,19 @@
     qa('[data-study-project]', box).forEach(btn => btn.onclick = () => { activeProjectId = btn.dataset.studyProject || ''; activeQuizId = ''; renderLearning(); });
   }
 
-  function wrongRows(filter = wrongProjectFilter) {
+  function wrongRows() {
     return (state.learningWrongAnswers || [])
-      .filter(x => x.reviewStatus !== 'mastered' && (filter === 'all' || x.projectId === filter))
+      .filter(x => x.reviewStatus !== 'mastered')
       .sort((a,b) => Number(b.wrongCount || 0) - Number(a.wrongCount || 0) || String(b.lastWrongDate || '').localeCompare(String(a.lastWrongDate || '')));
+  }
+
+  function wrongGroups() {
+    const groups = new Map();
+    wrongRows().forEach(row => {
+      if (!groups.has(row.projectId)) groups.set(row.projectId, { projectId:row.projectId, project:projectById(row.projectId), rows:[] });
+      groups.get(row.projectId).rows.push(row);
+    });
+    return Array.from(groups.values());
   }
 
   function persistWrongUpdate(row, changes, message) {
@@ -494,17 +506,10 @@
   function renderWrongTab() {
     const panel = q('#studyWrongPanel');
     if (!panel) return;
-    const projects = (state.learningProjects || []).filter(p => normalizeProject(p).status !== 'archived' || (state.learningWrongAnswers || []).some(x => x.projectId === p.id));
-    if (wrongProjectFilter !== 'all' && !projects.some(x => x.id === wrongProjectFilter)) wrongProjectFilter = 'all';
-    const rows = wrongRows(), pages = Math.max(1, Math.ceil(rows.length / WRONG_PAGE_SIZE));
-    wrongPage = Math.min(Math.max(1, wrongPage), pages);
-    const pageRows = rows.slice((wrongPage - 1) * WRONG_PAGE_SIZE, wrongPage * WRONG_PAGE_SIZE);
-    panel.innerHTML = `<div class="study-card-v02984"><div class="study-tab-toolbar"><div><h3 style="margin:0">오답노트</h3><div class="note">확인하거나 다시 푼 뒤 완료한 오답을 목록에서 숨길 수 있어요.</div></div><select id="studyWrongProjectFilter" aria-label="프로젝트별 오답 필터"><option value="all">전체 프로젝트</option>${projects.map(p => `<option value="${safe(p.id)}" ${p.id === wrongProjectFilter ? 'selected' : ''}>${safe(p.name)}</option>`).join('')}</select></div>
-      ${pageRows.length ? `<div class="study-wrong-list">${pageRows.map(x => { const retrying = activeWrongId === x.id; const canMaster = ['reviewed','retry_completed'].includes(x.reviewStatus); return `<article class="study-wrong-row"><h4>${safe(x.question)}</h4><div class="study-wrong-answer"><div><strong>내 답</strong><br>${safe(x.userAnswer || '미응답')}</div><div><strong>정답</strong><br>${safe(x.correctAnswer || '')}</div></div><p><strong>해설</strong> ${safe(x.explanation || '')}</p><div class="study-wrong-meta"><span>${safe(projectLabel(projectById(x.projectId)))}</span><span>오답 ${Number(x.wrongCount || 1)}회</span><span>최근 오답 ${safe(x.lastWrongDate || x.firstWrongDate || '')}</span><span>${x.reviewStatus === 'retry_completed' ? '재도전 완료' : x.reviewStatus === 'reviewed' ? '확인 완료' : Number(x.retryCount || 0) ? '재도전 중' : '재도전 전'}</span></div><div class="study-wrong-actions"><button class="btn sm" type="button" data-wrong-retry="${safe(x.id)}">다시 풀기</button><button class="btn sm" type="button" data-wrong-confirm="${safe(x.id)}">확인 완료</button>${canMaster ? `<button class="btn sm ghost" type="button" data-wrong-master="${safe(x.id)}">오답노트에서 지우기</button>` : ''}</div>${retrying ? `<div class="study-retry"><div class="study-choices">${(x.choices || []).map((choice, i) => `<label class="study-choice"><input type="radio" name="wrong-retry-${safe(x.id)}" value="${i}"><span>${i + 1}. ${safe(choice)}</span></label>`).join('')}</div><div class="study-wrong-actions"><button class="btn sm primary" type="button" data-wrong-submit="${safe(x.id)}">재도전 제출</button></div></div>` : ''}</article>`; }).join('')}</div>` : '<div class="study-empty">표시할 오답이 없습니다.</div>'}
-      <div class="study-pagination"><button class="btn sm" id="studyWrongPrev" type="button" ${wrongPage <= 1 ? 'disabled' : ''}>이전</button><span>${wrongPage} / ${pages}</span><button class="btn sm" id="studyWrongNext" type="button" ${wrongPage >= pages ? 'disabled' : ''}>다음</button></div></div>`;
-    q('#studyWrongProjectFilter')?.addEventListener('change', e => { wrongProjectFilter = e.target.value; wrongPage = 1; activeWrongId = ''; renderWrongTab(); });
-    q('#studyWrongPrev')?.addEventListener('click', () => { wrongPage -= 1; renderWrongTab(); });
-    q('#studyWrongNext')?.addEventListener('click', () => { wrongPage += 1; renderWrongTab(); });
+    const groups = wrongGroups();
+    const renderWrongRow = x => { const retrying = activeWrongId === x.id; const canMaster = ['reviewed','retry_completed'].includes(x.reviewStatus); return `<article class="study-wrong-row"><h4>${safe(x.question)}</h4><div class="study-wrong-answer"><div><strong>내 답</strong><br>${safe(x.userAnswer || '미응답')}</div><div><strong>정답</strong><br>${safe(x.correctAnswer || '')}</div></div><p><strong>해설</strong> ${safe(x.explanation || '')}</p><div class="study-wrong-meta"><span>${safe(projectLabel(projectById(x.projectId)))}</span><span>오답 ${Number(x.wrongCount || 1)}회</span><span>최근 오답 ${safe(x.lastWrongDate || x.firstWrongDate || '')}</span><span>${x.reviewStatus === 'retry_completed' ? '재도전 완료' : x.reviewStatus === 'reviewed' ? '확인 완료' : Number(x.retryCount || 0) ? '재도전 중' : '재도전 전'}</span></div><div class="study-wrong-actions"><button class="btn sm" type="button" data-wrong-retry="${safe(x.id)}">다시 풀기</button><button class="btn sm" type="button" data-wrong-confirm="${safe(x.id)}">확인 완료</button>${canMaster ? `<button class="btn sm ghost" type="button" data-wrong-master="${safe(x.id)}">오답노트에서 지우기</button>` : ''}</div>${retrying ? `<div class="study-retry"><div class="study-choices">${(x.choices || []).map((choice, i) => `<label class="study-choice"><input type="radio" name="wrong-retry-${safe(x.id)}" value="${i}"><span>${i + 1}. ${safe(choice)}</span></label>`).join('')}</div><div class="study-wrong-actions"><button class="btn sm primary" type="button" data-wrong-submit="${safe(x.id)}">재도전 제출</button></div></div>` : ''}</article>`; };
+    panel.innerHTML = `<div class="study-card-v02984"><div class="study-tab-toolbar"><div><h3 style="margin:0">오답노트</h3><div class="note">프로젝트를 열어 오답을 확인하고, 다시 푼 뒤 완료한 항목을 목록에서 숨길 수 있어요.</div></div></div>
+      ${groups.length ? `<div class="study-wrong-groups">${groups.map(group => { const totalWrongCount = group.rows.reduce((sum, row) => sum + Number(row.wrongCount || 1), 0); const retryOpen = group.rows.some(row => row.id === activeWrongId); return `<details class="study-wrong-group" ${retryOpen ? 'open' : ''}><summary><span class="study-wrong-group-title"><b>${safe(projectLabel(group.project))}</b><span>표시 오답 ${group.rows.length}개 · 누적 오답 ${totalWrongCount}회</span></span></summary><div class="study-wrong-list">${group.rows.map(renderWrongRow).join('')}</div></details>`; }).join('')}</div>` : '<div class="study-empty">표시할 오답이 없습니다.</div>'}</div>`;
     qa('[data-wrong-retry]', panel).forEach(btn => btn.onclick = () => { activeWrongId = activeWrongId === btn.dataset.wrongRetry ? '' : btn.dataset.wrongRetry; renderWrongTab(); });
     qa('[data-wrong-confirm]', panel).forEach(btn => btn.onclick = () => { if (confirmWrongAnswer(btn.dataset.wrongConfirm)) renderLearning(); });
     qa('[data-wrong-master]', panel).forEach(btn => btn.onclick = () => { if (masterWrongAnswer(btn.dataset.wrongMaster)) { activeWrongId = ''; renderLearning(); } });
@@ -858,7 +863,7 @@
 
   window.HANI_STUDY_V02984_TEST = {
     ensureLearningState, normalizeProject, normalizeQuestion, normalizeQuiz, questionKey,
-    quizDate, isScheduledDate, shouldGenerateForDate, nextSequenceNo, derivedLearningTasks, activeProjects, boardProjects, completedProjects, wrongRows,
+    quizDate, isScheduledDate, shouldGenerateForDate, nextSequenceNo, derivedLearningTasks, activeProjects, boardProjects, completedProjects, wrongRows, wrongGroups, renderWrongTab,
     upsertWrongAnswer, persistNewProject, persistProjectUpdate, archiveProjectWithConfirmation,
     pauseProject, resumeProject, completeProjectWithConfirmation, confirmWrongAnswer, retryWrongAnswer, masterWrongAnswer,
     persistGeneratedQuiz, persistQuizAnswer, gradeQuiz,
@@ -881,7 +886,7 @@
       derivedTaskCount: derivedLearningTasks().length,
       studyMounted: !!q('#studyEngineV02984'),
     });
-    console.info('[HANI OS] v2.9.86 Learning Board v1.1 ready');
+    console.info('[HANI OS] v2.9.87 Learning Board v1.1 ready');
   }
 
   boot();
