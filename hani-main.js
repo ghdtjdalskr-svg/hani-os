@@ -1534,15 +1534,20 @@ const LEDGER_CATEGORY_LABELS={fixed:"고정비",variable:"유동비",special:"�
 const LEDGER_IMPORT_HEADERS=["날짜","내용","금액","결제수단","대분류","소분류","세부항목","회수예정액"];
 const LEDGER_REWARD_PAYMENT="네이버페이 간편결제(포인트)";
 let ledgerImportPreview=null;
+const ledgerDetailView={sort:"amountDesc",category:"all",subcategory:"all"};
+function ledgerDetailSubcategories(items,category){return [...new Set((items||[]).filter(x=>category==="all"||x.category===category).map(x=>String(x.subcategory||"").trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ko"))}
+function ledgerVisibleItems(items,view){return [...(items||[])].filter(x=>(view.category==="all"||x.category===view.category)&&(view.subcategory==="all"||x.subcategory===view.subcategory)).sort((a,b)=>view.sort==="amountAsc"?n(a.amount)-n(b.amount):view.sort==="dateDesc"?String(b.date||"").localeCompare(String(a.date||"")):view.sort==="dateAsc"?String(a.date||"").localeCompare(String(b.date||"")):n(b.amount)-n(a.amount))}
 function ledgerSettlementMonth(date){const m=String(date||"").match(/^(\d{4})[-./](\d{1,2})[-./](\d{1,2})$/);if(!m)return "";const y=Number(m[1]),mo=Number(m[2]),day=Number(m[3]),d=new Date(y,mo-1,day);if(d.getFullYear()!==y||d.getMonth()!==mo-1||d.getDate()!==day)return "";const target=day>=18?new Date(y,mo,1):new Date(y,mo-1,1);return `${target.getFullYear()}-${String(target.getMonth()+1).padStart(2,"0")}`}
 function ledgerSettlementPeriod(month){const m=String(month||"").match(/^(\d{4})-(\d{2})$/);if(!m)return {periodStart:"",periodEnd:""};const y=Number(m[1]),mo=Number(m[2]),prev=new Date(y,mo-2,18),end=new Date(y,mo-1,17),fmt=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;return {periodStart:fmt(prev),periodEnd:fmt(end)}}
 function ledgerCategoryKey(value){const v=String(value||"").trim().replace(/\s/g,"");return ({fixed:"fixed",고정비:"fixed",variable:"variable",유동비:"variable",변동비:"variable",special:"special",특별지출:"special",finance:"finance",금융자산:"finance","금융·자산":"finance"})[v]||""}
 function parseLedgerTsv(raw){
   const lines=String(raw||"").replace(/^\uFEFF/,"").split(/\r?\n/).filter(x=>x.trim());if(lines.length<2)return {valid:false,errors:["헤더와 데이터 행을 붙여넣어 주세요."],items:[],excludedCount:0,excludedAmount:0,month:""};
   const header=lines[0].split("\t").map(x=>x.trim()),offset=header[0]!=="날짜"&&header[1]==="날짜"?1:0;if(LEDGER_IMPORT_HEADERS.some((h,i)=>header[i+offset]!==h))return {valid:false,errors:["열 이름 또는 순서를 확인해 주세요."],items:[],excludedCount:0,excludedAmount:0,month:""};
-  const items=[],errors=[],months=new Set();let excludedCount=0,excludedAmount=0;
-  lines.slice(1).forEach((line,rowIndex)=>{const c=line.split("\t").slice(offset),date=String(c[0]||"").trim().replace(/[./]/g,"-"),content=String(c[1]||"").trim(),amount=n(c[2]),payment=String(c[3]||"").trim(),category=ledgerCategoryKey(c[4]),subcategory=String(c[5]||"").trim(),detail=String(c[6]||"").trim(),reimbursement=Math.min(amount,Math.max(0,n(c[7]))),month=ledgerSettlementMonth(date);if(payment===LEDGER_REWARD_PAYMENT){excludedCount++;excludedAmount+=Math.max(0,amount);return}if(!month||!content||amount<=0||!category){errors.push(`${rowIndex+2}행: 날짜·내용·금액·대분류를 확인해 주세요.`);return}months.add(month);items.push(normalizeLedgerItem({date,content,amount,payment,category,subcategory,detail,reimbursement,note:""}))});
-  if(months.size>1)errors.push("수락 행이 둘 이상의 결산 월에 걸쳐 있습니다.");return {valid:errors.length===0&&items.length>0,errors,items,excludedCount,excludedAmount,month:months.size===1?[...months][0]:""};
+  const items=[],acceptedDates=[],errors=[],months=new Set();let excludedCount=0,excludedAmount=0;
+  lines.slice(1).forEach((line,rowIndex)=>{const c=line.split("\t").slice(offset),date=String(c[0]||"").trim().replace(/[./]/g,"-"),content=String(c[1]||"").trim(),amount=n(c[2]),payment=String(c[3]||"").trim(),category=ledgerCategoryKey(c[4]),subcategory=String(c[5]||"").trim(),detail=String(c[6]||"").trim(),reimbursement=Math.min(amount,Math.max(0,n(c[7]))),month=ledgerSettlementMonth(date);if(payment===LEDGER_REWARD_PAYMENT){excludedCount++;excludedAmount+=Math.max(0,amount);return}if(!month||!content||amount<=0||!category){errors.push(`${rowIndex+2}행: 날짜·내용·금액·대분류를 확인해 주세요.`);return}const [dateYear,dateMonth,dateDay]=date.split("-").map(Number),acceptedDate=`${dateYear}-${String(dateMonth).padStart(2,"0")}-${String(dateDay).padStart(2,"0")}`;months.add(month);acceptedDates.push(acceptedDate);items.push(normalizeLedgerItem({date,content,amount,payment,category,subcategory,detail,reimbursement,note:""}))});
+  if(months.size>1)errors.push("수락 행이 둘 이상의 결산 월에 걸쳐 있습니다.");
+  if(months.size===1&&acceptedDates.length){const month=[...months][0],{periodStart,periodEnd}=ledgerSettlementPeriod(month),actualStart=[...acceptedDates].sort()[0],actualEnd=[...acceptedDates].sort().at(-1);if(actualStart!==periodStart||actualEnd!==periodEnd)errors.push(`표준 결산기간과 다릅니다. ${periodStart} ~ ${periodEnd} 범위를 확인해 주세요.`)}
+  return {valid:errors.length===0&&items.length>0,errors,items,excludedCount,excludedAmount,month:months.size===1?[...months][0]:""};
 }
 function ledgerJispiStatus(value,target){const delta=target?(value-target)/target*100:0;if(delta<=-30)return "🚀 초강세/절약 신고가";if(delta<=-20)return "🔥 강한 상승장";if(delta<-10)return "📈 상승장";if(delta<=10)return "↔ 박스권/보합";if(delta<=20)return "📉 하락장";if(delta<30)return "🚨 지출 사이드카";return "🛑 지출 서킷브레이커"}
 function ledgerPrev(rec){
@@ -1561,26 +1566,20 @@ function resetLedgerItemForm(){
 function renderLedger(){
   if(!$("ledgerMonth"))return;
   const month=ledgerCurrentMonthKey();$("ledgerMonth").value=month;
-  const rec=ledgerFind(month),calc=ledgerCalc(rec);
-  $("ledgerKpis").innerHTML=[
-    ["총지출",won(calc.total),`${(rec?.items||[]).length}개 항목`,""],
-    ["고정비",won(calc.fixed),calc.total?`${(calc.fixed/calc.total*100).toFixed(1)}%`:"0%","fixed"],
-    ["유동비",won(calc.variable),calc.total?`${(calc.variable/calc.total*100).toFixed(1)}%`:"0%","variable"],
-    ["특별지출",won(calc.special),calc.total?`${(calc.special/calc.total*100).toFixed(1)}%`:"0%",""],
-    ["금융·자산",won(calc.finance),calc.total?`${(calc.finance/calc.total*100).toFixed(1)}%`:"0%",""],
-    ["JISPI-T",won(calc.jispiT),`${ledgerJispiStatus(calc.jispiT,calc.targetT)} · 목표 ${won(calc.targetT)}`,""],
-    ["JISPI-C",won(calc.jispiC),`${ledgerJispiStatus(calc.jispiC,calc.targetC)} · 목표 ${won(calc.targetC)}`,""]
-  ].map(([l,v,m,c])=>`<div class="money-kpi ${c}"><div class="label">${l}</div><div class="big">${esc(v)}</div><div class="meta">${esc(m)}</div></div>`).join("");
-  $("ledgerMonthComment").value=rec?.comment||"";
-  const items=[...(rec?.items||[])].sort((a,b)=>n(b.amount)-n(a.amount));
-  $("ledgerItemCount").textContent=items.length+"건";
-  $("ledgerItemRows").innerHTML=items.map(x=>`<tr>
+  const rec=ledgerFind(month),calc=ledgerCalc(rec),period=rec?.periodStart&&rec?.periodEnd?{periodStart:rec.periodStart,periodEnd:rec.periodEnd}:ledgerSettlementPeriod(month),items=[...(rec?.items||[])];
+  const jispiCard=(label,value,target)=>{const difference=value-target,rate=target?difference/target*100:0;return `<div class="ledger-jispi-card"><div class="ledger-jispi-head"><span>${label}</span><b>${esc(ledgerJispiStatus(value,target))}</b></div><strong>${esc(won(value))}</strong><div class="ledger-jispi-meta"><span>목표 ${esc(won(target))}</span><span class="${difference>0?"over":difference<0?"under":""}">목표 대비 ${difference>0?"+":""}${esc(won(difference))}</span><span class="${difference>0?"over":difference<0?"under":""}">목표 대비 ${difference>0?"+":""}${rate.toFixed(1)}%</span></div></div>`};
+  $("ledgerKpis").innerHTML=jispiCard("JISPI-T",calc.jispiT,calc.targetT)+jispiCard("JISPI-C",calc.jispiC,calc.targetC);
+  $("ledgerSupportKpis").innerHTML=[["총지출",won(calc.total)],["거래건수",items.length+"건"],["결산기간",`${period.periodStart||"-"} ~ ${period.periodEnd||"-"}`]].map(([label,value])=>`<div><span>${label}</span><b>${esc(value)}</b></div>`).join("");
+  $("ledgerCategoryKpis").innerHTML=[["고정비",calc.fixed,"fixed"],["유동비",calc.variable,"variable"],["특별지출",calc.special,"special"],["금융·자산",calc.finance,"finance"]].map(([label,value,category])=>`<div class="money-kpi ${category}"><div class="label">${label}</div><div class="big">${esc(won(value))}</div><div class="meta">총지출 대비 ${calc.total?(value/calc.total*100).toFixed(1):"0.0"}%</div></div>`).join("");
+  const subcategories=ledgerDetailSubcategories(items,ledgerDetailView.category);
+  if(ledgerDetailView.subcategory!=="all"&&!subcategories.includes(ledgerDetailView.subcategory))ledgerDetailView.subcategory="all";
+  $("ledgerDetailSort").value=ledgerDetailView.sort;$("ledgerDetailCategory").value=ledgerDetailView.category;$("ledgerDetailSubcategory").innerHTML='<option value="all">전체 소분류</option>'+subcategories.map(value=>`<option value="${esc(value)}">${esc(value)}</option>`).join("");$("ledgerDetailSubcategory").value=ledgerDetailView.subcategory;
+  const visibleItems=ledgerVisibleItems(items,ledgerDetailView);
+  $("ledgerItemCount").textContent=`전체 ${items.length}건 중 ${visibleItems.length}건`;
+  $("ledgerItemRows").innerHTML=visibleItems.map(x=>`<tr>
     <td>${esc(x.date||"-")}</td><td><b>${esc(x.content||x.detail||"-")}</b></td><td>${esc(x.payment||"-")}</td>
     <td><span class="money-category-pill ${x.category}">${LEDGER_CATEGORY_LABELS[x.category]}</span></td><td>${esc(x.subcategory||"-")}</td><td>${esc(x.detail||"-")}</td><td>${won(x.amount)}</td><td>${won(x.reimbursement)}</td><td>${esc(x.note||"-")}</td>
-    <td><div class="row-actions"><button class="btn sm" data-ledger-edit="${x.id}">수정</button><button class="btn sm danger" data-ledger-delete="${x.id}">삭제</button></div></td>
-  </tr>`).join("")||'<tr><td colspan="10">이 달의 소비 항목이 아직 없습니다.</td></tr>';
-  document.querySelectorAll("[data-ledger-edit]").forEach(b=>b.onclick=()=>{const r=ledgerFind(),x=r?.items.find(i=>i.id===b.dataset.ledgerEdit);if(!x)return;$("ledgerItemEditId").value=x.id;$("ledgerItemDate").value=x.date;$("ledgerItemContent").value=x.content;$("ledgerItemPayment").value=x.payment;$("ledgerItemCategory").value=x.category;$("ledgerItemSubcategory").value=x.subcategory;$("ledgerItemDetail").value=x.detail;$("ledgerItemAmount").value=x.amount;$("ledgerItemReimbursement").value=x.reimbursement;$("ledgerItemNote").value=x.note;$("ledgerItemSave").textContent="항목 수정";$("ledgerItemContent").focus()});
-  document.querySelectorAll("[data-ledger-delete]").forEach(b=>b.onclick=()=>{const r=ledgerFind();if(!r)return;const x=r.items.find(i=>i.id===b.dataset.ledgerDelete);if(!confirm(`${x?.detail||"이 항목"}을 삭제할까요?`))return;r.items=r.items.filter(i=>i.id!==b.dataset.ledgerDelete);r.updatedAt=new Date().toISOString();commit("소비 항목을 삭제했습니다.")});
+  </tr>`).join("")||'<tr><td colspan="9"><div class="money-empty">조건에 맞는 소비 내역이 없습니다.</div></td></tr>';
   const months=[...ledgerSorted()].reverse();
   $("ledgerMonthArchive").innerHTML=months.map(r=>{const c=ledgerCalc(r);return `<div class="money-month-card ${r.month===month?"active":""}">
     <div class="head"><div><b>${ledgerMonthLabel(r.month)}</b><div class="sub">${r.items.length}개 항목</div></div><span class="pill finance">${r.month}</span></div>
@@ -3537,7 +3536,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.87";
+const HANI_DISPLAY_VERSION="2.9.88";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
@@ -3988,8 +3987,12 @@ $("monthlyPeriod").onchange=()=>{if($("monthlyPeriod").value)$("monthlyDate").va
 
 $("ledgerMonth").onchange=()=>{state.ui.ledgerMonth=$("ledgerMonth").value||monthKeyNow();save();resetLedgerItemForm();renderLedger()};
 $("ledgerThisMonth").onclick=()=>{state.ui.ledgerMonth=monthKeyNow();save();resetLedgerItemForm();renderLedger();setTimeout(drawLedgerTrend,30)};
-$("ledgerItemReset").onclick=resetLedgerItemForm;
-$("ledgerItemSave").onclick=()=>{
+$("ledgerDetailSort").onchange=()=>{ledgerDetailView.sort=$("ledgerDetailSort").value;renderLedger()};
+$("ledgerDetailCategory").onchange=()=>{ledgerDetailView.category=$("ledgerDetailCategory").value;ledgerDetailView.subcategory="all";renderLedger()};
+$("ledgerDetailSubcategory").onchange=()=>{ledgerDetailView.subcategory=$("ledgerDetailSubcategory").value;renderLedger()};
+$("ledgerDetailReset").onclick=()=>{ledgerDetailView.sort="amountDesc";ledgerDetailView.category="all";ledgerDetailView.subcategory="all";renderLedger()};
+if($("ledgerItemReset"))$("ledgerItemReset").onclick=resetLedgerItemForm;
+if($("ledgerItemSave"))$("ledgerItemSave").onclick=()=>{
   const month=ledgerCurrentMonthKey(),content=$("ledgerItemContent").value.trim(),detail=$("ledgerItemDetail").value.trim(),amount=n($("ledgerItemAmount").value);
   if(!(content||detail)||amount<=0)return alert("내용 또는 세부항목과 금액을 입력해 주세요.");
   const rec=ledgerEnsure(month),id=$("ledgerItemEditId").value,old=rec.items.find(x=>x.id===id);
@@ -4011,7 +4014,7 @@ $("ledgerImportApply").onclick=()=>{
   const period=ledgerSettlementPeriod(parsed.month),now=new Date().toISOString(),rec=normalizeLedgerMonth({month:parsed.month,...period,targetT:2300000,targetC:1400000,importVersion:"LEDGER_FINAL_V1",importedAt:now,items:parsed.items,createdAt:now,updatedAt:now});
   state.ledgerMonths=state.ledgerMonths.filter(x=>x.month!==parsed.month);state.ledgerMonths.push(rec);state.ui.ledgerMonth=parsed.month;ledgerImportPreview=null;commit("확정본 가계부를 반영했습니다.");$("ledgerImportRaw").value="";$("ledgerImportApply").disabled=true;$("ledgerImportResult").textContent=`${ledgerMonthLabel(parsed.month)} 확정 반영 완료 · ${parsed.items.length}건`;
 };
-$("ledgerSaveComment").onclick=()=>{
+if($("ledgerSaveComment"))$("ledgerSaveComment").onclick=()=>{
   const rec=ledgerEnsure(),comment=$("ledgerMonthComment").value.trim();
   rec.comment=comment;rec.updatedAt=new Date().toISOString();commit("이달의 소비 한줄평을 저장했습니다.");
 };
