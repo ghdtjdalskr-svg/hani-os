@@ -40,6 +40,7 @@
     daily: '매일', mon_wed_fri: '월·수·금', every_2_days: '2일마다',
     every_3_days: '3일마다', manual: '수동',
   };
+  const DEFAULT_QUIZ_SIZE = 20;
 
   function ensureLearningState(target = state) {
     if (!target || typeof target !== 'object') return target;
@@ -54,7 +55,7 @@
     const focusAreas = Array.isArray(raw.focusAreas)
       ? raw.focusAreas.map(x => String(x || '').trim()).filter(Boolean).slice(0, 12)
       : String(raw.goal || '').split(/[·,\/]/).map(x => x.trim()).filter(Boolean).slice(0, 12);
-    const scheduleType = Object.prototype.hasOwnProperty.call(SCHEDULE_LABELS, raw.scheduleType) ? raw.scheduleType : 'daily';
+    const scheduleType = Object.prototype.hasOwnProperty.call(SCHEDULE_LABELS, raw.scheduleType) ? raw.scheduleType : 'every_3_days';
     const examDate = String(raw.examDate || raw.targetDate || '');
     return {
       id: String(raw.id || makeId()),
@@ -87,8 +88,8 @@
   }
 
   function normalizeQuiz(raw = {}) {
-    const questions = Array.isArray(raw.questions) ? raw.questions.slice(0, 5).map(normalizeQuestion) : [];
-    const answers = Array.isArray(raw.answers) ? raw.answers.slice(0, 5).map(v => v !== null && v !== '' && Number.isInteger(Number(v)) && Number(v) >= 0 && Number(v) <= 3 ? Number(v) : null) : [];
+    const questions = Array.isArray(raw.questions) ? raw.questions.slice(0, DEFAULT_QUIZ_SIZE).map(normalizeQuestion) : [];
+    const answers = Array.isArray(raw.answers) ? raw.answers.slice(0, questions.length).map(v => v !== null && v !== '' && Number.isInteger(Number(v)) && Number(v) >= 0 && Number(v) <= 3 ? Number(v) : null) : [];
     while (answers.length < questions.length) answers.push(null);
     const scheduledDate = String(raw.scheduledDate || raw.date || localToday());
     const sequenceNo = Math.max(1, Number(raw.sequenceNo) || 1);
@@ -153,7 +154,8 @@
 
   function quizCorrectCount(quiz) {
     if (Number.isFinite(Number(quiz?.correctCount))) return Number(quiz.correctCount);
-    if (quiz?.status === 'completed' && Number.isFinite(Number(quiz.score))) return Math.round(Number(quiz.score) / 20);
+    const total = Number(quiz?.total || quiz?.questions?.length || 0);
+    if (quiz?.status === 'completed' && total > 0 && Number.isFinite(Number(quiz.score))) return Math.round(Number(quiz.score) * total / 100);
     return null;
   }
 
@@ -245,7 +247,7 @@
     state.learningQuizzes.push(quiz);
     activeQuizId = quiz.id;
     try {
-      if (learningCommit(`${project.name} 오늘의 퀴즈 5문제를 생성했습니다.`)) return true;
+      if (learningCommit(`${project.name} 오늘의 퀴즈 ${quiz.questions.length}문제를 생성했습니다.`)) return true;
     } catch (error) {
       console.error('[HANI Learning] quiz save failed', error);
     }
@@ -295,7 +297,7 @@
           target_date: project.examDate || project.targetDate,
           exam_date: project.examDate || project.targetDate,
           focus_areas: Array.isArray(project.focusAreas) ? project.focusAreas : [],
-          schedule_type: project.scheduleType || 'daily',
+          schedule_type: project.scheduleType || 'every_3_days',
         },
         weaknesses: recentWeaknesses(project.id),
       }),
@@ -303,7 +305,7 @@
     const result = await res.json().catch(() => ({}));
     if (!res.ok || result?.ok === false) throw new Error(result?.message || result?.error || `퀴즈 생성 실패 (${res.status})`);
     const questions = Array.isArray(result?.quiz?.questions) ? result.quiz.questions.map(normalizeQuestion) : [];
-    if (questions.length !== 5) throw new Error(`퀴즈 생성 결과가 5문제가 아닙니다. (${questions.length}문제)`);
+    if (questions.length !== DEFAULT_QUIZ_SIZE) throw new Error(`퀴즈 생성 결과가 ${DEFAULT_QUIZ_SIZE}문제가 아닙니다. (${questions.length}문제)`);
     for (const [i, question] of questions.entries()) {
       if (!question.prompt || question.choices.length !== 4 || question.answerIndex < 0 || !question.explanation) {
         throw new Error(`${i + 1}번 문제 구조가 불완전해 저장을 중단했습니다.`);
@@ -365,7 +367,7 @@
                 <div><label>분류</label><select id="studyProjectCategory"><option value="jlpt">JLPT</option><option value="certificate">자격증</option><option value="university">대학교</option><option value="ai">AI/실무</option><option value="other">기타</option></select></div>
                 <div><label>시험일 · 선택</label><input id="studyProjectTargetDate" type="date"></div>
                 <div class="span2"><label>집중영역</label><div class="study-focus-grid" id="studyProjectFocusAreas"><label class="study-focus-chip"><input type="checkbox" value="어휘">어휘</label><label class="study-focus-chip"><input type="checkbox" value="문법">문법</label><label class="study-focus-chip"><input type="checkbox" value="독해">독해</label><label class="study-focus-chip"><input type="checkbox" value="청해">청해</label><label class="study-focus-chip"><input type="checkbox" value="이론">이론</label><label class="study-focus-chip"><input type="checkbox" value="실기">실기</label></div></div>
-                <div class="span2"><label>생성주기</label><select id="studyProjectSchedule"><option value="daily">매일</option><option value="mon_wed_fri">월·수·금</option><option value="every_2_days">2일마다</option><option value="every_3_days">3일마다</option><option value="manual">수동</option></select></div>
+                <div class="span2"><label>생성주기</label><select id="studyProjectSchedule"><option value="daily">매일</option><option value="mon_wed_fri">월·수·금</option><option value="every_2_days">2일마다</option><option value="every_3_days" selected>3일마다</option><option value="manual">수동</option></select></div>
                 <div class="span2 study-actions-row"><button class="btn primary" type="button" id="studyProjectSave">프로젝트 저장</button><button class="btn" type="button" id="studyProjectPreset">JLPT N3 빠른 시작</button><button class="btn ghost" type="button" id="studyProjectCancel">취소</button></div>
               </div>
             </div>
@@ -408,7 +410,7 @@
 
   function selectQuiz(id) { activeQuizId = id; renderLearning(); requestAnimationFrame(() => q('#studyQuizDetail')?.scrollIntoView({behavior:'smooth', block:'start'})); }
 
-  function quizStatusLabel(quiz) { const total = Number(quiz.total || quiz.questions?.length || 5); return quiz.status === 'completed' ? `${quizCorrectCount(quiz) ?? 0}/${total}` : `${quiz.answers.filter(x => Number.isInteger(x)).length}/${total} 풀이`; }
+  function quizStatusLabel(quiz) { const total = Number(quiz.total || quiz.questions?.length || 0); return quiz.status === 'completed' ? `${quizCorrectCount(quiz) ?? 0}/${total}` : `${quiz.answers.filter(x => Number.isInteger(x)).length}/${total} 풀이`; }
 
   function renderQuizDetail(project, quiz) {
     if (!quiz) return '';
@@ -422,7 +424,7 @@
           return `<label class="study-choice ${correct ? 'is-correct' : wrong ? 'is-wrong' : ''}"><input type="radio" name="study-q-${safe(quiz.id)}-${qi}" value="${ci}" ${selected === ci ? 'checked' : ''} ${graded ? 'disabled' : ''}><span>${ci + 1}. ${safe(choice)}</span></label>`;
         }).join('')}</div>${graded ? `<div class="study-explanation"><b>정답 ${question.answerIndex + 1}번</b> · ${safe(question.explanation)}</div>` : ''}</article>`;
       }).join('')}
-      ${graded ? '' : `<div class="study-submit-wrap"><div><b>답안 ${quiz.answers.filter(x => Number.isInteger(x)).length}/5</b><div class="sub">모든 답은 선택 즉시 임시 저장됩니다.</div></div><button class="btn primary" type="button" id="studyQuizSubmit" ${quiz.answers.filter(x => Number.isInteger(x)).length !== 5 ? 'disabled' : ''}>채점하기</button></div>`}
+      ${graded ? '' : `<div class="study-submit-wrap"><div><b>답안 ${quiz.answers.filter(x => Number.isInteger(x)).length}/${Number(quiz.total || quiz.questions.length)}</b><div class="sub">모든 답은 선택 즉시 임시 저장됩니다.</div></div><button class="btn primary" type="button" id="studyQuizSubmit" ${quiz.answers.filter(x => Number.isInteger(x)).length !== Number(quiz.total || quiz.questions.length) ? 'disabled' : ''}>채점하기</button></div>`}
     </div>`;
   }
 
@@ -447,7 +449,7 @@
       </div>
       <div class="study-card-v02984" style="margin-top:16px">
         <div class="study-card-head"><h3>문제세트 아카이브</h3><span class="study-status">완료 ${completed.length} · 미완료 ${pending.length}</span></div>
-        <div class="study-board-wrap"><table class="study-board"><thead><tr><th class="study-board-no">No</th><th>제목</th><th>상태</th><th>점수</th><th>작성일</th></tr></thead><tbody>${quizzes.length ? quizzes.slice(0, 40).map((x, index) => { const no = Number(x.sequenceNo || (quizzes.length - index)); const total = Number(x.total || x.questions?.length || 5); const status = x.status === 'completed' ? '완료' : x.status === 'in_progress' ? '풀이 중' : '미완료'; return `<tr class="study-board-row ${x.id === activeQuizId ? 'is-active' : ''}" data-study-quiz="${safe(x.id)}"><td class="study-board-no">${no}</td><td class="study-board-title">${safe(x.title || `${project.name} 문제세트 #${String(no).padStart(3, '0')}`)}</td><td><span class="study-status ${safe(x.status || 'pending')}">${status}</span></td><td class="study-board-score">${x.status === 'completed' ? `${quizCorrectCount(x) ?? 0}/${total}` : '-'}</td><td>${safe(quizDate(x) || String(x.createdAt || '').slice(0, 10))}</td></tr>`; }).join('') : '<tr><td colspan="5"><div class="study-empty">아직 문제세트가 없습니다.</div></td></tr>'}</tbody></table></div>
+        <div class="study-board-wrap"><table class="study-board"><thead><tr><th class="study-board-no">No</th><th>제목</th><th>상태</th><th>점수</th><th>작성일</th></tr></thead><tbody>${quizzes.length ? quizzes.slice(0, 40).map((x, index) => { const no = Number(x.sequenceNo || (quizzes.length - index)); const total = Number(x.total || x.questions?.length || 0); const status = x.status === 'completed' ? '완료' : x.status === 'in_progress' ? '풀이 중' : '미완료'; return `<tr class="study-board-row ${x.id === activeQuizId ? 'is-active' : ''}" data-study-quiz="${safe(x.id)}"><td class="study-board-no">${no}</td><td class="study-board-title">${safe(x.title || `${project.name} 문제세트 #${String(no).padStart(3, '0')}`)}</td><td><span class="study-status ${safe(x.status || 'pending')}">${status}</span></td><td class="study-board-score">${x.status === 'completed' ? `${quizCorrectCount(x) ?? 0}/${total}` : '-'}</td><td>${safe(quizDate(x) || String(x.createdAt || '').slice(0, 10))}</td></tr>`; }).join('') : '<tr><td colspan="5"><div class="study-empty">아직 문제세트가 없습니다.</div></td></tr>'}</tbody></table></div>
       </div>
       ${renderQuizDetail(project, activeQuiz)}
       <div class="study-card-v02984" style="margin-top:16px"><div class="study-card-head"><h3>오답 노트</h3><span class="study-status">약점 자동 누적</span></div>${renderWrongAnswers(project)}</div>`;
@@ -505,7 +507,7 @@
     if (q('#studyProjectName')) q('#studyProjectName').value = '';
     if (q('#studyProjectCategory')) q('#studyProjectCategory').value = 'jlpt';
     if (q('#studyProjectTargetDate')) q('#studyProjectTargetDate').value = '';
-    if (q('#studyProjectSchedule')) q('#studyProjectSchedule').value = 'daily';
+    if (q('#studyProjectSchedule')) q('#studyProjectSchedule').value = 'every_3_days';
     setFocusAreas([]);
   }
 
@@ -530,7 +532,7 @@
     q('#studyProjectPreset')?.addEventListener('click', () => {
       q('#studyProjectName').value = 'JLPT N3';
       q('#studyProjectCategory').value = 'jlpt';
-      q('#studyProjectSchedule').value = 'daily';
+      q('#studyProjectSchedule').value = 'every_3_days';
       setFocusAreas(['어휘','문법','독해','청해']);
       toggleProjectForm(true);
     });
@@ -546,7 +548,7 @@
         examDate: q('#studyProjectTargetDate')?.value || '',
         targetDate: q('#studyProjectTargetDate')?.value || '',
         focusAreas: selectedFocusAreas(),
-        scheduleType: q('#studyProjectSchedule')?.value || 'daily',
+        scheduleType: q('#studyProjectSchedule')?.value || 'every_3_days',
       };
       if (projectFormMode === 'edit' && editId) {
         const project = projectById(editId);
@@ -578,15 +580,15 @@
     busy = true;
     renderLearning();
     try {
-      if (typeof haniWorkShow === 'function') haniWorkShow({agent:'hina', title:'히나가 오늘의 5문제를 만들고 있어요!', step:'HINA · DAILY QUIZ', message:'최근 오답과 프로젝트 목표를 보고 새 문제를 구성합니다.'});
+      if (typeof haniWorkShow === 'function') haniWorkShow({agent:'hina', title:`히나가 오늘의 ${DEFAULT_QUIZ_SIZE}문제를 만들고 있어요!`, step:'HINA · DAILY QUIZ', message:'최근 오답과 프로젝트 목표를 보고 새 문제를 구성합니다.'});
       const questions = await quizApi(project);
       const duplicate = projectQuizzes(project.id).find(x => quizDate(x) === date);
       if (duplicate) return selectQuiz(duplicate.id);
       const sequenceNo = nextSequenceNo(project.id);
-      const quiz = normalizeQuiz({ projectId: project.id, date, scheduledDate:date, sequenceNo, title:`${project.name} 문제세트 #${String(sequenceNo).padStart(3, '0')}`, status:'pending', questions, answers:Array(5).fill(null), total:5 });
+      const quiz = normalizeQuiz({ projectId: project.id, date, scheduledDate:date, sequenceNo, title:`${project.name} 문제세트 #${String(sequenceNo).padStart(3, '0')}`, status:'pending', questions, answers:Array(questions.length).fill(null), total:questions.length });
       if (!persistGeneratedQuiz(project, quiz)) throw new Error('퀴즈 저장 검증에 실패했습니다.');
       generationFailures.delete(key);
-      if (typeof haniWorkFinish === 'function') haniWorkFinish(true, '오늘의 5문제 준비 완료!');
+      if (typeof haniWorkFinish === 'function') haniWorkFinish(true, `오늘의 ${questions.length}문제 준비 완료!`);
       if (typeof haniWorkHide === 'function') haniWorkHide(700);
     } catch (e) {
       generationFailures.set(key, e?.message || String(e));
@@ -634,7 +636,8 @@
   function gradeQuiz(quiz) {
     const project = projectById(quiz.projectId);
     if (!project || quiz.status === 'completed') return;
-    if (quiz.answers.length !== 5 || quiz.answers.some(x => !Number.isInteger(x))) return alert('5문제의 답을 모두 선택해 주세요.');
+    const total = Number(quiz.total || quiz.questions.length);
+    if (quiz.answers.length !== total || quiz.answers.some(x => !Number.isInteger(x))) return alert(`${total}문제의 답을 모두 선택해 주세요.`);
     const quizSnapshot = cloneLearningValue(quiz);
     const wrongAnswersSnapshot = cloneLearningValue(state.learningWrongAnswers || []);
     const previousQuizId = activeQuizId;
@@ -644,7 +647,7 @@
       else upsertWrongAnswer(project, quiz, question, quiz.answers[index]);
     });
     quiz.status = 'completed';
-    quiz.score = correct * 20;
+    quiz.score = total ? Math.round(correct / total * 100) : 0;
     quiz.correctCount = correct;
     quiz.total = quiz.questions.length;
     quiz.completedAt = nowIso();
@@ -669,8 +672,8 @@
     for (const project of activeProjects()) {
       const quizzes = projectQuizzes(project.id), todayQuiz = quizzes.find(x => quizDate(x) === date);
       if (!todayQuiz && isScheduledDate(project, date)) rows.push({ projectId:project.id, quizId:'', due:date, text:`${project.name} · 오늘 문제세트`, sub:'생성 대상', overdue:false });
-      else if (todayQuiz && todayQuiz.status !== 'completed') rows.push({ projectId:project.id, quizId:todayQuiz.id, due:date, text:`${project.name} · 오늘의 5문제`, sub:`${todayQuiz.answers.filter(x => Number.isInteger(x)).length}/5 풀이`, overdue:false });
-      for (const quiz of quizzes.filter(x => x.status !== 'completed' && quizDate(x) < date).slice(0, 3)) rows.push({ projectId:project.id, quizId:quiz.id, due:quizDate(quiz), text:`${project.name} · 미완료 문제세트`, sub:`${quizDate(quiz)} · ${quiz.answers.filter(x => Number.isInteger(x)).length}/5`, overdue:true });
+      else if (todayQuiz && todayQuiz.status !== 'completed') rows.push({ projectId:project.id, quizId:todayQuiz.id, due:date, text:`${project.name} · 오늘 문제세트`, sub:`${todayQuiz.answers.filter(x => Number.isInteger(x)).length}/${Number(todayQuiz.total || todayQuiz.questions.length)} 풀이`, overdue:false });
+      for (const quiz of quizzes.filter(x => x.status !== 'completed' && quizDate(x) < date).slice(0, 3)) rows.push({ projectId:project.id, quizId:quiz.id, due:quizDate(quiz), text:`${project.name} · 미완료 문제세트`, sub:`${quizDate(quiz)} · ${quiz.answers.filter(x => Number.isInteger(x)).length}/${Number(quiz.total || quiz.questions.length)}`, overdue:true });
     }
     return rows.sort((a,b) => String(a.due).localeCompare(String(b.due))).slice(0, 6);
   }
