@@ -137,6 +137,7 @@ function normalizeLedgerMonth(x={}){
   return {
     id:x.id||uid(),month,
     comment:String(x.comment||"").trim(),
+    jieunComment:String(x.jieunComment||"").trim().slice(0,80),
     periodStart:String(x.periodStart||"").trim(),periodEnd:String(x.periodEnd||"").trim(),
     targetT:Math.max(0,n(x.targetT)),targetC:Math.max(0,n(x.targetC)),
     importVersion:String(x.importVersion||"").trim(),importedAt:String(x.importedAt||"").trim(),
@@ -319,7 +320,8 @@ function closeModal(id){$(id).classList.remove("open")}
 
 const pageMeta={
  home:["대시보드","오늘의 기록과 흐름을 한눈에 확인합니다.","home"],
- investment:["홍 스트리트","월간 스냅샷으로 계좌별 자산과 자금 흐름을 기록합니다.","finance"],
+ investment:["투자","월간 스냅샷으로 계좌별 자산과 자금 흐름을 기록합니다.","finance"],
+ investmentIntake:["하니&지은의 월말정산","가계부 확정본과 투자 계좌 자료를 안전하게 업데이트합니다.","finance"],
  newsroom:["뉴스룸","관심종목의 의미 있는 뉴스와 종목별 흐름을 시간순으로 확인합니다.","finance"],
  asset:["자산","모든 투자계좌의 자산을 통합해서 확인합니다.","finance"],
  ledger:["가계부","월간 소비 결산과 시간이 지난 뒤의 소비 만족도를 기록합니다.","finance"],
@@ -1572,6 +1574,8 @@ function renderLedger(){
   const rec=ledgerFind(month),calc=ledgerCalc(rec),period=rec?.periodStart&&rec?.periodEnd?{periodStart:rec.periodStart,periodEnd:rec.periodEnd}:ledgerSettlementPeriod(month),items=[...(rec?.items||[])];
   const jispiCard=(label,value,target,tone)=>{const difference=value-target,rate=target?difference/target*100:0;return `<div class="ledger-jispi-card ${tone}"><div class="ledger-jispi-head"><span>${label}</span></div><strong>${esc(won(value))}</strong><div class="ledger-jispi-status"><b>${esc(ledgerJispiStatus(value,target))}</b></div><div class="ledger-jispi-meta"><span>목표 ${esc(won(target))}</span><span class="${difference>0?"over":difference<0?"under":""}">목표 대비 ${difference>0?"+":""}${esc(won(difference))}</span><span class="${difference>0?"over":difference<0?"under":""}">목표 대비 ${difference>0?"+":""}${rate.toFixed(1)}%</span></div></div>`};
   $("ledgerKpis").innerHTML=jispiCard("JISPI-T · 실질 지출 지수",calc.jispiT,calc.targetT,"jispi-t")+jispiCard("JISPI-C · 핵심 소비 지수",calc.jispiC,calc.targetC,"jispi-c");
+  $("ledgerKpis").querySelectorAll(".ledger-jispi-card").forEach((card,index)=>{const value=index?calc.jispiC:calc.jispiT,target=index?calc.targetC:calc.targetT,status=ledgerJispiStatus(value,target);if(/사이드카|서킷브레이커/.test(status)){const reason=document.createElement("div");reason.className="ledger-trigger-reason";reason.textContent=`목표 ${won(target)} · 현재 ${won(value)} · 목표 대비 초과로 발동`;card.querySelector(".ledger-jispi-status")?.after(reason)}});
+  if($("ledgerJieunComment"))$("ledgerJieunComment").textContent=rec?.jieunComment||"이번 달 코멘트가 아직 없어요.";if($("ledgerJieunInput"))$("ledgerJieunInput").value=rec?.jieunComment||"";if($("ledgerJieunCount"))$("ledgerJieunCount").textContent=`${(rec?.jieunComment||"").length} / 80`;if($("ledgerJieunEditor"))$("ledgerJieunEditor").hidden=true;
   $("ledgerSupportKpis").innerHTML=[["총지출",won(calc.total)],["거래건수",items.length+"건"],["결산기간",`${period.periodStart||"-"} ~ ${period.periodEnd||"-"}`]].map(([label,value])=>`<div><span>${label}</span><b>${esc(value)}</b></div>`).join("");
   $("ledgerCategoryKpis").innerHTML=[["고정비",calc.fixed,"fixed"],["유동비",calc.variable,"variable"],["특별지출",calc.special,"special"],["금융·자산",calc.finance,"finance"]].map(([label,value,category])=>`<div class="money-kpi ${category}"><div class="label">${label}</div><div class="big">${esc(won(value))}</div><div class="meta">총지출 대비 ${calc.total?(value/calc.total*100).toFixed(1):"0.0"}%</div></div>`).join("");
   const subcategories=ledgerDetailSubcategories(items,ledgerDetailView.category);
@@ -2254,12 +2258,13 @@ function renderHome(){renderHomeDialogue();const c=calculate(),official=official
     return `<div class="home-task-mini-item"><i></i><div><b>${esc(t.text)}</b><div class="sub">${due?esc(due):"마감일 없음"}${t.time?` · ${esc(t.time)}`:""}</div></div><span class="${days!==null&&days<=3?"is-near":""}">${dday}</span></div>`;
   }).join(''):'<div class="empty">이번 달 미완료 할 일이 없습니다. 🎉</div>';
 
-  const assetMonthRecord=officialBrokerSorted().find(x=>x.period===currentMonth&&x.status==="confirmed")||null,
-    ledgerMonthRecord=(state.ledgerMonths||[]).find(x=>x.month===currentMonth&&((x.items||[]).length>0||String(x.comment||"").trim()))||null;
+  const updatedThisMonth=x=>String(x?.importedAt||x?.updatedAt||x?.createdAt||"").slice(0,7)===currentMonth,
+    assetMonthRecord=officialBrokerSorted().filter(x=>x.status==="confirmed"&&updatedThisMonth(x)).at(-1)||null,
+    ledgerMonthRecord=(state.ledgerMonths||[]).filter(x=>((x.items||[]).length>0||String(x.comment||"").trim())&&updatedThisMonth(x)).sort((a,b)=>String(a.importedAt||a.updatedAt).localeCompare(String(b.importedAt||b.updatedAt))).at(-1)||null;
   if($("homeMonthlyCheckMonth"))$("homeMonthlyCheckMonth").textContent=ledgerMonthLabel(currentMonth);
   if($("homeMonthlyUpdateList"))$("homeMonthlyUpdateList").innerHTML=[
-    {label:"자산",done:!!assetMonthRecord,go:"investment",meta:assetMonthRecord?`기준일 ${assetMonthRecord.snapshotDate||currentMonth}`:"월간 투자/자산 기록을 아직 입력하지 않았어요."},
-    {label:"가계부",done:!!ledgerMonthRecord,go:"ledger",meta:ledgerMonthRecord?`${(ledgerMonthRecord.items||[]).length}개 소비 항목 · ${formatDateTime(ledgerMonthRecord.updatedAt||ledgerMonthRecord.createdAt)}`:"이번 달 소비 결산이 아직 없어요."}
+    {label:"자산",done:!!assetMonthRecord,go:"investment",meta:assetMonthRecord?`${ledgerMonthLabel(assetMonthRecord.period)} 기록 · ${formatDateTime(assetMonthRecord.updatedAt||assetMonthRecord.createdAt)} 업데이트`:"이번 달 투자·자산 업데이트가 아직 없어요."},
+    {label:"가계부",done:!!ledgerMonthRecord,go:"ledger",meta:ledgerMonthRecord?`${ledgerMonthLabel(ledgerMonthRecord.month)} 결산 · ${formatDateTime(ledgerMonthRecord.importedAt||ledgerMonthRecord.updatedAt||ledgerMonthRecord.createdAt)} 업데이트`:"이번 달 가계부 업데이트가 아직 없어요."}
   ].map(x=>`<button class="home-update-item ${x.done?"is-done":"is-wait"}" data-go="${x.go}"><span class="home-update-icon">${x.done?"✓":"!"}</span><div><b>${x.label}</b><p>${esc(x.meta)}</p></div><span class="home-update-status">${x.done?"업데이트 완료":"업데이트 대기"}</span></button>`).join("");
   const acts=[];if(latest&&latestCalc)acts.push({tone:'finance',title:`투자 월간 기록 · ${latest.period}`,sub:`총자산 ${won(latestCalc.total)} · ${latest.snapshotDate||'기록일 미입력'}`});state.body.slice(-1).forEach(r=>acts.push({tone:'mint',title:`다이어트 기록 · ${num(r.weight)}kg`,sub:`${esc(r.date)} · BMI ${r.bmi?num(r.bmi):'-'}`}));state.books.filter(b=>b.status==='read'&&completedByToday(b.readDate||b.completedDate)).slice(-1).forEach(b=>acts.push({tone:'orange',title:`독서 기록 · ${esc(b.title||'제목 없음')}`,sub:`${esc(b.readDate||b.completedDate||'완독일 미입력')} · 평점 ${b.rating?Number(b.rating).toFixed(1):'-'}`}));state.movies.filter(m=>m.status==='watched'&&completedByToday(m.watchedDate)).slice(-1).forEach(m=>acts.push({tone:'pink',title:`시청 기록 · ${esc(m.title||'제목 없음')}`,sub:`${esc(m.watchedDate||'관람일 미입력')} · 평점 ${m.rating?Number(m.rating).toFixed(1):'-'}`}));state.tasks.filter(t=>!t.done).slice(0,2).forEach(t=>acts.push({tone:'mint',title:`할 일 · ${esc(t.text)}`,sub:t.due?esc(t.due):'마감일 없음'}));$("recentActivity").innerHTML=acts.length?acts.slice(0,5).map(a=>`<div class="home-feed-item tone-${a.tone||'finance'}"><div class="home-feed-dot"></div><div><b>${a.title}</b><div class="sub">${a.sub}</div></div></div>`).join(''):'<div class="empty">기록을 시작하면 최근 활동이 표시됩니다.</div>';
   const hm=today().slice(0,7),year=today().slice(0,4),
@@ -2282,7 +2287,44 @@ function renderHome(){renderHomeDialogue();const c=calculate(),official=official
   if($("homeExerciseLabel"))$("homeExerciseLabel").textContent=`${year}년 운동`;
   if($("homeExerciseSteps"))$("homeExerciseSteps").innerHTML=homeKpiHtml(exerciseTotal,"보");
   if($("homeExerciseAvg"))$("homeExerciseAvg").textContent=exerciseYear.length?`평균 ${exerciseAvg.toLocaleString()}보 · 근력 ${exerciseStrength}일`:`${year}년 기록 없음`;
-  renderHomeMiniCharts()}
+  renderHomeMiniCharts();renderLifeMarket()}
+
+let activeLifeIndex="hasdaq";
+const LIFE_MARKET_BRIEFS={
+  strong:["🚀 대호황~~!! 오늘 시장 아주 뜨겁다 오빠","📈 대 풀 롱~~ 오늘은 황소장이다","🔥 상승장 on. 성민 시장 신고가 가보자","🐂 불장이다~~ 그대로 들고 간다","✨ 호재가 시장을 지배 중입니다"],
+  bull:["📈 오 좋아요~ 슬슬 우상향 중","🙂 시장 분위기 괜찮은데? 은근 강하다","🟢 오늘은 그래도 호재 우세!","💪 조금씩 좋아지는 중. 계속 간다","🚶 무리 없고 흐름 좋음~"],
+  mixed:["↔️ 보합권이네~ 관망도 전략이다","😌 딱히 나쁘진 않은데 확실한 방향성은 없음","🌤️ 오르내림 섞인 혼조장","👀 일단 지켜보자. 시장 눈치 보는 중","🫠 애매하지만 무너지진 않음"],
+  bear:["📉 어어... 살짝 밀리는데? 관리가 필요하다","😐 조정장 진입. 속도 조절합시다","🟠 악재 우세. 오늘은 방어가 먼저","🧯 시장 열기 좀 식었네","🥲 조금 흔들리는 장세입니다"],
+  sidecar:["🚨 대공황 직전;; 소비·건강·공부 중 하나는 살려야 한다","😵 사이드카 발동! 오빠 이거 점검 들어가자","🟧 시장 급랭. 일단 진정하고 보자","📛 급락 구간 진입. 복구 플랜 필요","🫨 변동성 너무 큰데? 하부장 긴급 브리핑 필요"],
+  circuit:["🛑 돔황챠~~!! 오늘 성민 시장 서킷이다","😱 대공황~~!! 이건 긴급 점검 들어가야 함","🚨 서킷브레이커 발동. 오늘은 방어의 날","🧨 시장 붕괴급... 뭐가 무너졌는지 바로 확인","🫠 오빠 지금은 풀롱이 아니라 구조조정이다"]
+};
+function lifeMonthRows(rows,dateKey,valueFn){const map=new Map();(rows||[]).forEach(r=>{const key=String(r?.[dateKey]||"").slice(0,7);if(!/^\d{4}-\d{2}$/.test(key))return;map.set(key,(map.get(key)||0)+n(valueFn(r)))});return [...map].sort((a,b)=>a[0].localeCompare(b[0])).slice(-6).map(([label,value])=>({label,value}))}
+function lifeDirection(rows,{lowerBetter=false}={}){if(rows.length<2)return 0;const d=n(rows.at(-1).value)-n(rows.at(-2).value);return d===0?0:(lowerBetter?-Math.sign(d):Math.sign(d))}
+function renderLifeMarket(){
+  const currentMonth=today().slice(0,7),official=officialBrokerSorted().slice(-6),assetRows=official.map(s=>({label:s.period,value:brokerCalc(s).total}));
+  const bodyRows=(state.body||[]).slice().sort((a,b)=>String(a.date).localeCompare(String(b.date))).slice(-6).map(r=>({label:r.date,value:n(r.weight)}));
+  const contentRows=lifeMonthRows([...(state.books||[]).filter(x=>x.status==="read").map(x=>({...x,activityDate:x.readDate||x.completedDate})),...(state.movies||[]).filter(x=>x.status==="watched").map(x=>({...x,activityDate:x.watchedDate}))],"activityDate",()=>1);
+  const stepRows=lifeMonthRows(state.exercise||[],"date",r=>r.steps);
+  const ledgerRows=(state.ledgerMonths||[]).slice().sort((a,b)=>a.month.localeCompare(b.month)).slice(-6).map(r=>({label:r.month,value:ledgerCalc(r).jispiT}));
+  const learningRows=lifeMonthRows([...(state.learningQuizzes||[]).map(x=>({...x,activityDate:x.completedAt||x.updatedAt||x.scheduledDate})),...(state.campusSemesters||[]).flatMap(s=>(s.events||[]).map(x=>({...x,activityDate:x.date})))],"activityDate",()=>1);
+  const latestLedger=(state.ledgerMonths||[]).slice().sort((a,b)=>a.month.localeCompare(b.month)).at(-1),lc=latestLedger?ledgerCalc(latestLedger):null;
+  const data={
+    hasdaq:{title:"총 투자자산 흐름",kicker:"HASDAQ · FINANCE",route:"investment",rows:assetRows,value:assetRows.at(-1)?.value||0,valueText:won(assetRows.at(-1)?.value||0),secondary:"계좌별 자산 비중",recent:"투자·자산 최근 기록"},
+    ne100:{title:"체중 흐름",kicker:"N&E 100 · HEALTH",route:"diet",rows:bodyRows,value:bodyRows.at(-1)?.value||0,valueText:bodyRows.length?`${num(bodyRows.at(-1).value)}kg`:"기록 없음",secondary:"목표체중 · BMI",recent:"최근 체중 기록"},
+    hinaJones:{title:"독서·시청 활동 흐름",kicker:"HINA JONES · CONTENT",route:"reading",rows:contentRows,value:contentRows.at(-1)?.value||0,valueText:`${contentRows.at(-1)?.value||0}건`,secondary:"이번 달 콘텐츠 현황",recent:"최근 독서·시청 기록"},
+    harukei:{title:"걸음수 흐름",kicker:"HARUKEI 10K · ACTIVITY",route:"exercise",rows:stepRows,value:stepRows.at(-1)?.value||0,valueText:`${Math.round(stepRows.at(-1)?.value||0).toLocaleString()}보`,secondary:"10,000보 달성률 · 평균",recent:"최근 활동 기록"},
+    jispi:{title:"소비지수 흐름",kicker:"JISPI · SPENDING",route:"ledger",rows:ledgerRows,value:ledgerRows.at(-1)?.value||0,valueText:lc?won(lc.jispiT):"기록 없음",secondary:"고정·변동·특별·금융 구성",recent:"최근 소비·결산 기록"},
+    hinkei:{title:"학습활동 흐름",kicker:"HINKEI 225 · LEARNING",route:"study",rows:learningRows,value:learningRows.at(-1)?.value||0,valueText:`${learningRows.at(-1)?.value||0}건`,secondary:"퀴즈 · 미완료 · 학습 진행",recent:"최근 학습 기록"}
+  };
+  const directions=[lifeDirection(assetRows),lifeDirection(bodyRows,{lowerBetter:true}),lifeDirection(contentRows),lifeDirection(stepRows),lifeDirection(ledgerRows,{lowerBetter:true}),lifeDirection(learningRows)],good=directions.filter(x=>x>0).length,bad=directions.filter(x=>x<0).length,flat=6-good-bad;
+  let key=good===6?"strong":good>=4?"bull":bad>=5?"circuit":bad>=4?"sidecar":bad>good?"bear":"mixed",label={strong:"초강세",bull:"상승 우세",mixed:"혼조",bear:"약세",sidecar:"사이드카",circuit:"서킷브레이커"}[key];
+  const phrases=LIFE_MARKET_BRIEFS[key],seed=[...`${today()}|${key}`].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7),brief=phrases[seed%phrases.length];
+  if($("lifeMarketState"))$("lifeMarketState").textContent=label;if($("lifeMarketCounts"))$("lifeMarketCounts").textContent=`6개 지표 중 ${good}개 상승 · 호재 ${good} · 보합 ${flat} · 악재 ${bad}`;if($("lifeMarketBrief"))$("lifeMarketBrief").textContent=brief;if($("lifeMarketFeatured"))$("lifeMarketFeatured").dataset.marketState=key;if($("lifeMarketBanner"))$("lifeMarketBanner").dataset.marketState=key;if($("lifeMarketMood"))$("lifeMarketMood").textContent={strong:"활기찬 불장",bull:"안정적인 우상향",mixed:"방향을 고르는 중",bear:"차분한 조정장",sidecar:"긴장 속 점검",circuit:"급락장 · 방어 우선"}[key];
+  if($("homeJispi"))$("homeJispi").textContent=data.jispi.valueText;if($("homeJispiMeta"))$("homeJispiMeta").textContent=latestLedger?`${ledgerMonthLabel(latestLedger.month)} · ${ledgerJispiStatus(lc.jispiT,lc.targetT)}`:"월간 소비 결산";if($("homeHinkei"))$("homeHinkei").textContent=data.hinkei.valueText;if($("homeHinkeiMeta"))$("homeHinkeiMeta").textContent=`퀴즈 ${(state.learningQuizzes||[]).length} · 오답 ${(state.learningWrongAnswers||[]).length}`;if($("homeContentMeta"))$("homeContentMeta").textContent=`독서 ${(state.books||[]).filter(x=>String(x.readDate||x.completedDate||"").startsWith(currentMonth)).length} · 시청 ${(state.movies||[]).filter(x=>String(x.watchedDate||"").startsWith(currentMonth)).length}`;
+  document.querySelectorAll("[data-life-index]").forEach(btn=>{btn.classList.toggle("is-selected",btn.dataset.lifeIndex===activeLifeIndex);btn.onclick=()=>{activeLifeIndex=btn.dataset.lifeIndex;renderLifeMarket()}});
+  const selected=data[activeLifeIndex]||data.hasdaq;if($("homeAnalysisKicker"))$("homeAnalysisKicker").textContent=selected.kicker;if($("homeAnalysisTitle"))$("homeAnalysisTitle").textContent=selected.title;if($("homeAnalysisDetail"))$("homeAnalysisDetail").dataset.go=selected.route;if($("homeSecondaryTitle"))$("homeSecondaryTitle").textContent=selected.secondary;if($("homeRecentTitle"))$("homeRecentTitle").textContent=selected.recent;if($("homeTrendTotal"))$("homeTrendTotal").textContent=selected.valueText;if($("homeTrendSvg"))$("homeTrendSvg").innerHTML=homeTrendSvg(selected.rows);if($("homeTrendAxis"))$("homeTrendAxis").innerHTML=selected.rows.map(r=>`<span>${esc(monthLabelShort(String(r.label).slice(0,7)))}</span>`).join("");if($("homeTrendEmpty")){$("homeTrendEmpty").style.display=selected.rows.length?"none":"grid";$("homeTrendEmpty").textContent=`${selected.title} 기록이 아직 없어요.`}if(activeLifeIndex!=="hasdaq")renderLifeMarketSide(selected,latestLedger,lc);
+}
+function renderLifeMarketSide(selected,ledger,lc){const rows=selected.rows||[],latest=rows.at(-1),prev=rows.at(-2),delta=latest&&prev?n(latest.value)-n(prev.value):null;if($("homeTrendChange"))$("homeTrendChange").textContent=delta===null?"기록이 쌓이면 최근 흐름을 비교해요.":`직전 기록 대비 ${delta>0?"+":""}${num(delta)}`;if($("homeLatestPeriod"))$("homeLatestPeriod").textContent=latest?.label||"-";if($("homeMixDonut"))$("homeMixDonut").style.background="conic-gradient(#806cf8 0 68%,#edf0f8 68% 100%)";if($("homeMixTotal"))$("homeMixTotal").textContent=selected.valueText;if($("homeMixUnit"))$("homeMixUnit").textContent="현재값";let items=[];if(activeLifeIndex==="ne100"){const b=(state.body||[]).slice().sort((a,b)=>String(a.date).localeCompare(String(b.date))).at(-1),goal=n(state.goals.weight2||state.goals.weight1);items=[["현재 BMI",b?.bmi?num(b.bmi):"-"],["목표까지",b&&goal?`${Math.abs(n(b.weight)-goal).toFixed(1)}kg`:"-"]]}else if(activeLifeIndex==="hinaJones")items=[["이번 달 완독",`${(state.books||[]).filter(x=>String(x.readDate||x.completedDate||"").startsWith(today().slice(0,7))).length}권`],["이번 달 시청",`${(state.movies||[]).filter(x=>String(x.watchedDate||"").startsWith(today().slice(0,7))).length}편`]];else if(activeLifeIndex==="harukei"){const recent=(state.exercise||[]).filter(x=>n(x.steps)>0).slice(-30),avg=recent.length?Math.round(recent.reduce((a,x)=>a+n(x.steps),0)/recent.length):0;items=[["평균 걸음수",`${avg.toLocaleString()}보`],["10,000보 달성",`${recent.filter(x=>n(x.steps)>=10000).length}/${recent.length}일`]]}else if(activeLifeIndex==="jispi"&&lc)items=[["고정비",won(lc.fixed)],["변동비",won(lc.variable)],["특별지출",won(lc.special)],["금융·자산",won(lc.finance)]];else if(activeLifeIndex==="hinkei")items=[["프로젝트",`${(state.learningProjects||[]).length}개`],["퀴즈",`${(state.learningQuizzes||[]).length}개`],["미완료",`${(state.learningQuizzes||[]).filter(x=>x.status!=="completed").length}개`],["오답",`${(state.learningWrongAnswers||[]).length}개`]];if($("homeMixLegend"))$("homeMixLegend").innerHTML=items.map(([a,b])=>`<div class="home-legend-row"><div class="name">${esc(a)}</div><div class="meta">${esc(b)}</div></div>`).join("")||'<div class="empty">현재 데이터에서 계산할 기록이 없습니다.</div>';let recent=[];if(activeLifeIndex==="ne100")recent=(state.body||[]).slice(-5).reverse().map(x=>[`${num(x.weight)}kg`,x.date]);else if(activeLifeIndex==="hinaJones")recent=[...(state.books||[]).map(x=>[x.title,x.readDate||x.completedDate]),...(state.movies||[]).map(x=>[x.title,x.watchedDate])].filter(x=>x[1]).sort((a,b)=>String(b[1]).localeCompare(String(a[1]))).slice(0,5);else if(activeLifeIndex==="harukei")recent=(state.exercise||[]).slice(-5).reverse().map(x=>[`${n(x.steps).toLocaleString()}보`,x.date]);else if(activeLifeIndex==="jispi")recent=(state.ledgerMonths||[]).slice().sort((a,b)=>b.month.localeCompare(a.month)).slice(0,5).map(x=>[`${ledgerMonthLabel(x.month)} 결산`,formatDateTime(x.importedAt||x.updatedAt)]);else if(activeLifeIndex==="hinkei")recent=(state.learningQuizzes||[]).slice().sort((a,b)=>String(b.updatedAt||b.scheduledDate).localeCompare(String(a.updatedAt||a.scheduledDate))).slice(0,5).map(x=>[x.title||"학습 퀴즈",String(x.updatedAt||x.scheduledDate).slice(0,10)]);if($("recentActivity"))$("recentActivity").innerHTML=recent.length?recent.map(x=>`<div class="home-feed-item tone-finance"><div class="home-feed-dot"></div><div><b>${esc(x[0]||"기록")}</b><div class="sub">${esc(x[1]||"")}</div></div></div>`).join(""):'<div class="empty">최근 기록이 없습니다.</div>'}
 
 
 function cloudLoadJson(key,fallback={}){
@@ -3543,7 +3585,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.90";
+const HANI_DISPLAY_VERSION="2.9.91";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
@@ -3994,6 +4036,9 @@ $("monthlyPeriod").onchange=()=>{if($("monthlyPeriod").value)$("monthlyDate").va
 
 $("ledgerMonth").onchange=()=>{ledgerEditMonth="";state.ui.ledgerMonth=$("ledgerMonth").value||monthKeyNow();save();resetLedgerItemForm();renderLedger()};
 $("ledgerThisMonth").onclick=()=>{ledgerEditMonth="";state.ui.ledgerMonth=monthKeyNow();save();resetLedgerItemForm();renderLedger();setTimeout(drawLedgerTrend,30)};
+if($("ledgerJieunEdit"))$("ledgerJieunEdit").onclick=()=>{const rec=ledgerFind();if(!rec)return alert("선택한 결산월에 저장된 원장이 없습니다.");$("ledgerJieunEditor").hidden=!$("ledgerJieunEditor").hidden;if(!$("ledgerJieunEditor").hidden)$("ledgerJieunInput").focus()};
+if($("ledgerJieunInput"))$("ledgerJieunInput").oninput=()=>{$("ledgerJieunCount").textContent=`${$("ledgerJieunInput").value.length} / 80`};
+if($("ledgerJieunSave"))$("ledgerJieunSave").onclick=()=>{const rec=ledgerFind();if(!rec)return alert("선택한 결산월에 저장된 원장이 없습니다.");rec.jieunComment=$("ledgerJieunInput").value.trim().slice(0,80);rec.updatedAt=new Date().toISOString();commit("지은's Comment를 저장했습니다.")};
 $("ledgerDetailSort").onchange=()=>{ledgerDetailView.sort=$("ledgerDetailSort").value;renderLedger()};
 $("ledgerDetailCategory").onchange=()=>{ledgerDetailView.category=$("ledgerDetailCategory").value;ledgerDetailView.subcategory="all";renderLedger()};
 $("ledgerDetailSubcategory").onchange=()=>{ledgerDetailView.subcategory=$("ledgerDetailSubcategory").value;renderLedger()};
