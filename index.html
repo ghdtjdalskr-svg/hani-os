@@ -230,10 +230,10 @@
         <button class="home-kpi health-tone" data-life-index="ne100"><div class="kpi-head"><span>N&amp;E 100</span><em>HEALTH</em></div><strong id="homeWeight">기록 없음</strong><small id="homeWeightGoal">목표를 확인해요</small><div class="home-mini-chart" id="homeWeightMini"></div></button>
         <button class="home-kpi growth-tone" data-life-index="hinaJones"><div class="kpi-head"><span>HINA JONES</span><em>CONTENT</em></div><strong id="homeBooks">0건</strong><small id="homeContentMeta">독서·시청 기록</small><div class="home-mini-chart" id="homeBooksMini"></div></button>
         <button class="home-kpi exercise-tone" data-life-index="harukei"><div class="kpi-head"><span>HARUKEI 10K</span><em>ACTIVITY</em></div><strong id="homeExerciseSteps">0보</strong><small id="homeExerciseAvg">기록을 확인해요</small><div class="home-mini-chart" id="homeExerciseMini"></div></button>
-        <button class="home-kpi ledger-tone" data-life-index="jispi"><div class="kpi-head"><span>JISPI</span><em>SPENDING</em></div><strong id="homeJispi">기록 없음</strong><small id="homeJispiMeta">월간 소비 결산</small></button>
-        <button class="home-kpi study-tone" data-life-index="hinkei"><div class="kpi-head"><span>HINKEI 225</span><em>LEARNING</em></div><strong id="homeHinkei">0건</strong><small id="homeHinkeiMeta">학습 활동</small></button>
+        <button class="home-kpi ledger-tone" data-life-index="jispi"><div class="kpi-head"><span>JISPI <small class="life-card-descriptor">(소비)</small></span><em>SPENDING</em></div><strong id="homeJispi">기록 없음</strong><small id="homeJispiMeta">월간 소비 결산</small></button>
+        <button class="home-kpi study-tone" data-life-index="hinkei"><div class="kpi-head"><span>HINKEI 225 <small class="life-card-descriptor">(학습)</small></span><em>LEARNING</em></div><strong id="homeHinkei">0건</strong><small id="homeHinkeiMeta">학습 활동</small></button>
         <article class="home-kpi life-market-featured" id="lifeMarketFeatured"><div class="kpi-head"><span>성민 종합지수</span><em>FEATURED</em></div><strong id="lifeMarketState">혼조</strong><small id="lifeMarketCounts">6개 지표 중 0개 상승</small><p id="lifeMarketBrief">오늘의 흐름을 계산하고 있어요.</p></article>
-        <article class="home-kpi life-market-banner" id="lifeMarketBanner"><div><small>HANI MARKET</small><strong>오늘의 라이프 장</strong><p id="lifeMarketMood">차분하게 흐름을 읽는 중</p></div><span aria-hidden="true">◒</span></article>
+        <article class="home-kpi life-market-banner" id="lifeMarketBanner"><div><small>HANI MARKET</small><strong>오늘의 라이프 장</strong><p id="lifeMarketMood">차분하게 흐름을 읽는 중</p><span id="lifeMarketMoodCounts">호재 0 · 보합 6 · 악재 0</span></div></article>
       </div>
       <div class="home-dashboard-grid">
         <div class="card home-trend-card">
@@ -385,18 +385,18 @@
       </div>
 
       <div id="investNews" class="panel">
-        <div class="investment-news-toolbar">
-          <div class="investment-news-status"><span class="pill finance" id="investmentNewsState">대기</span><b id="investmentNewsUpdated">아직 검색하지 않음</b><small id="investmentNewsPolicy">주간 시황 누적 · 관심뉴스 누적 · 자동 발행</small></div>
-          <div class="sh-actions"><button class="btn sm finance" id="investmentNewsRefresh">최신 뉴스 확인</button></div>
+        <div class="newsroom-photo-hero" role="img" aria-label="신문과 금융 데스크 분위기의 뉴스룸 배너">
+          <div><span>HANI NEWS DESK</span><h3>오늘의 시장을 읽는 뉴스룸</h3><p>종합 시황과 관심종목의 의미 있는 변화만 차분하게 모아봅니다.</p></div>
         </div>
         <div class="newsroom-mode-tabs" role="tablist" aria-label="뉴스룸 보기">
           <button type="button" class="newsroom-mode-btn" data-newsroom-mode="general">🌏 종합</button>
           <button type="button" class="newsroom-mode-btn active" data-newsroom-mode="interest">⭐ 관심</button>
         </div>
+        <div class="newsroom-content-actions"><button class="btn sm finance" id="investmentNewsRefresh">최신 뉴스 확인</button></div>
 
         <div id="newsroomGeneralPane" class="newsroom-pane" hidden>
-          <div id="investmentNewsWeeklyArchiveTabs" class="newsroom-weekly-archive-tabs"><span>Cloud Archive를 불러오는 중…</span></div>
-          <div class="card full investment-news-brief-card newsroom-weekly-lead"><div class="sh"><div><span class="eyebrow purple">WEEKLY MARKET ARCHIVE</span><h3 id="investmentNewsWeeklyTitle">이번 주 시장 한눈에</h3></div><span class="pill finance">WEEKLY</span></div><div id="investmentNewsMarketBrief" class="investment-news-market-brief">주간 종합 시황을 불러오는 중입니다.</div></div>
+          <div id="investmentNewsWeeklyArchiveTabs" hidden aria-hidden="true"></div>
+          <div class="card full investment-news-brief-card newsroom-weekly-lead"><span id="investmentNewsWeeklyTitle" hidden></span><div id="investmentNewsMarketBrief" class="investment-news-market-brief">주간 종합 시황을 불러오는 중입니다.</div></div>
           <div class="newsroom-market-grid">
             <article class="newsroom-market-card"><div class="newsroom-market-title"><span>🇰🇷</span><div><small>KOREA MARKET</small><b>한국 시장</b></div></div><p id="investmentNewsKoreaBrief">최신 브리핑 대기</p></article>
             <article class="newsroom-market-card"><div class="newsroom-market-title"><span>🇺🇸</span><div><small>US MARKET</small><b>미국 시장</b></div></div><p id="investmentNewsUsBrief">최신 브리핑 대기</p></article>
@@ -413,12 +413,12 @@
         </div>
 
         <div id="newsroomInterestPane" class="newsroom-pane">
-          <div class="newsroom-interest-head"><div><span class="eyebrow purple">WATCHLIST ARCHIVE</span><h3>관심종목 뉴스 아카이브</h3><p>서버가 최근 72시간을 매일 확인하고 의미 있는 신규 사건만 중복 없이 계속 누적합니다. 우선주는 발행회사 공통 뉴스와 우선주 직접 재료를 함께 봅니다.</p></div></div>
+          <div class="newsroom-interest-head"><div><span class="eyebrow purple">WATCHLIST NEWS</span><h3>관심종목 뉴스</h3></div></div>
           <div class="investment-news-targets" id="investmentNewsTargets"></div>
           <div class="investment-news-flow-summary" id="investmentNewsEntityBriefs"></div>
           <div class="investment-news-board-shell"><div class="sh"><div><h3>종목 뉴스 게시판</h3><div class="sub">종목 · 구분 · 뉴스 중심으로 읽고, 행을 열면 요약 · HANI View · AI TEAM 댓글을 확인합니다.</div></div><div class="sh-actions"><select id="investmentNewsEntityFilter" class="btn sm"><option value="all">전체 종목</option></select><select id="investmentNewsGradeFilter" class="btn sm"><option value="all">전체 출처</option><option value="OFFICIAL">공식/확정</option><option value="MEDIA">언론보도</option><option value="BROKER">증권사 전망</option><option value="RUMOR">시장루머</option></select><select id="investmentNewsSentimentFilter" class="btn sm"><option value="all">전체 영향</option><option value="POSITIVE">호재</option><option value="NEUTRAL">중립</option><option value="NEGATIVE">악재</option><option value="MIXED">혼재</option></select><span class="pill finance" id="investmentNewsCount">0건</span></div></div><div class="investment-news-feed" id="investmentNewsFeed"></div></div>
         </div>
-        <div class="source-value-note investment-news-cost-note" id="investmentNewsUsage">Cloud Archive는 HANI OS 접속 여부와 관계없이 서버 자동 발행으로 누적됩니다. Life OS 핵심 원장과 완전히 분리됩니다.</div>
+        <div class="source-value-note investment-news-cost-note" id="investmentNewsUsage">뉴스 데이터는 Life OS 핵심 원장과 분리되어 안전하게 유지됩니다.</div>
       </div>
 
       <div id="investJournal" class="panel">
