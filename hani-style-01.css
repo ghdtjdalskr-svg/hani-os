@@ -647,7 +647,7 @@ body{background:var(--ui-bg);font-family:"SUIT Variable","Pretendard Variable",P
 .ledger-trend-card,.ledger-category-kpis,.ledger-detail-card{margin-top:15px}.ledger-category-kpis{grid-template-columns:repeat(4,minmax(0,1fr))}.ledger-category-kpis .special .big{color:#ef9d3c}.ledger-category-kpis .finance .big{color:#168eaa}
 .ledger-detail-toolbar{display:flex;align-items:end;gap:9px;flex-wrap:wrap;margin:12px 0}.ledger-detail-toolbar .field{min-width:160px;flex:1}.ledger-detail-toolbar .btn{margin-bottom:1px}
 
-/* v2.9.89 hf1 · JISPI hierarchy + visible ledger edit mode */
+/* v2.9.90 · JISPI hierarchy + visible ledger edit mode */
 .ledger-market-board .sh-actions{align-items:center}.ledger-market-board #ledgerEditTargets{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.28);color:#fff}
 .ledger-jispi-card{--jispi-accent:#f08aa0;--jispi-soft:rgba(240,138,160,.12);padding:21px 22px;border-color:color-mix(in srgb,var(--jispi-accent) 32%,transparent);background:linear-gradient(145deg,var(--jispi-soft),rgba(255,255,255,.055))}.ledger-jispi-card.jispi-c{--jispi-accent:#63d5cd;--jispi-soft:rgba(64,190,181,.12)}
 .ledger-jispi-head{justify-content:flex-start}.ledger-jispi-head span{font-size:15px;font-weight:950;color:var(--jispi-accent);letter-spacing:.045em}.ledger-jispi-card>strong{font-size:34px;color:color-mix(in srgb,var(--jispi-accent) 82%,#fff);text-shadow:0 4px 18px color-mix(in srgb,var(--jispi-accent) 18%,transparent)}
