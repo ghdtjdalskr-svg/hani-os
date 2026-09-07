@@ -289,8 +289,7 @@
     const up=moves.filter(m=>m.tone==='up').length, total=moves.length;
     let label='집계 중',cls='mixed',icon='◐';
     if(total===4){if(up===4){label='매우 강세';cls='strong';icon='↑↑'}else if(up===3){label='강세';cls='strong';icon='↑'}else if(up===2){label='혼조';cls='mixed';icon='↔'}else if(up===1){label='약세';cls='weak';icon='↓'}else{label='매우 약세';cls='weak';icon='↓↓'}}
-    let market=q('#haniLifeMarketV02979'); if(!market){market=document.createElement('section');market.id='haniLifeMarketV02979';grid.insertAdjacentElement('beforebegin',market)}
-    market.innerHTML=`<div class="market-copy"><small>LIFE MARKET</small><b>이번 달 대표님 종합지수</b><span>${total}개 지수 집계 · ${up}개 상승${total<4?' · 일부 비교 데이터 준비 중':''}</span></div><div class="market-state ${cls}"><span>${icon}</span><b>${label}</b></div>`;
+    q('#haniLifeMarketV02979')?.remove();
   }
 
   function decorateHero() {
