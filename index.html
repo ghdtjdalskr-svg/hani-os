@@ -9,7 +9,7 @@
 <!-- HANI DEPLOY INVARIANT MIRROR · bootstrap compatibility only: hani_os_life_v23 | 2.9.15-safe-baseline-bootstrap -->
 <title>갓생살기 프로젝트 · HANI OS Life Edition v2.9.89</title>
 <style id="ledger-final-v1-style">#ledger .ledger-final-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}#ledger .ledger-import{margin:15px 0;overflow:hidden}#ledger .ledger-import textarea{min-height:120px;resize:vertical}#ledger .ledger-import-result{margin-top:10px;white-space:pre-wrap}#ledger .ledger-detail-wrap{max-width:100%;overflow-x:auto}#ledger .ledger-detail-wrap table{min-width:1080px}@media(max-width:760px){#ledger .ledger-final-grid{grid-template-columns:1fr}}</style>
-<link rel="stylesheet" href="./hani-style-01.css">
+<link rel="stylesheet" href="./hani-style-01.css?v=2.9.89-hf1">
 
 <link rel="stylesheet" href="./hani-style-02.css" id="v2926-sidebar-team-visual-fix">
 
@@ -541,7 +541,11 @@
         </div>
 
         <div class="card full ledger-detail-card">
-          <div class="sh"><div><h3>이번 달 상세내역</h3><div class="sub" id="ledgerItemCount">전체 0건 중 0건</div></div><button class="btn sm" id="ledgerExitEdit" type="button" hidden>수정 완료</button></div>
+          <div class="sh"><div><h3>이번 달 상세내역</h3><div class="sub" id="ledgerItemCount">전체 0건 중 0건</div></div></div>
+          <div class="ledger-edit-mode-bar" id="ledgerEditModeBar" hidden>
+            <div><b>수정 모드</b><span>항목을 수정하거나 삭제한 뒤 완료를 눌러 조회 화면으로 돌아가세요.</span></div>
+            <button class="btn finance" id="ledgerExitEdit" type="button">수정 완료</button>
+          </div>
           <div class="ledger-detail-toolbar">
             <div class="field"><label>정렬</label><select id="ledgerDetailSort"><option value="amountDesc">금액 높은순</option><option value="amountAsc">금액 낮은순</option><option value="dateDesc">날짜 최신순</option><option value="dateAsc">날짜 오래된순</option></select></div>
             <div class="field"><label>대분류</label><select id="ledgerDetailCategory"><option value="all">전체 대분류</option><option value="fixed">고정비</option><option value="variable">유동비</option><option value="special">특별지출</option><option value="finance">금융·자산</option></select></div>
@@ -1181,7 +1185,7 @@
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./hani-main.js"></script>
+<script src="./hani-main.js?v=2.9.89-hf1"></script>
 <script src="./hani-newsroom-ux-v02970.js"></script>
 <script src="./hani-ui-cleanup-v02971.js"></script>
 <script src="./hani-stability-polish-v02972.js"></script>
