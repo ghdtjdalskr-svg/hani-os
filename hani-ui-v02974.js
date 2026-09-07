@@ -78,7 +78,8 @@ html:not([data-season]){
   background:
     radial-gradient(circle at 18% 6%, rgba(255,255,255,.78) 0 7%, transparent 7.5%),
     linear-gradient(180deg,var(--hani-side-a) 0%,var(--hani-side-b) 100%)!important;
-  border-right-color:var(--hani-side-line)!important;
+  border-right:0!important;
+  box-shadow:none!important;
 }
 
 /* Top brand and AI TEAM = one brand family. */

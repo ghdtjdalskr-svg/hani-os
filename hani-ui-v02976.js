@@ -566,8 +566,7 @@ header.top.ui26-top #cloudHeaderState{font-weight:780!important;color:#788499!im
 
     board.innerHTML = `
       <div class="hasdaq-brand">
-        <span class="hasdaq-mark">HANI</span>
-        <div class="hasdaq-copy"><b>HASDAQ BOARD</b><span>성민 대표님 투자자산 흐름 · 실제 월간 기록 기준</span></div>
+        <div class="hasdaq-copy"><small class="hasdaq-eyebrow">HANI INVESTMENT DESK</small><b>HASDAQ BOARD</b><span>성민 대표님 투자자산 흐름 · 실제 월간 기록 기준</span></div>
       </div>
       <div class="hasdaq-move ${tone}"><strong>${esc(move)}</strong><small>${esc(pct === null ? sub : '전월 대비 자산 증감률 · ' + sub)}</small></div>
     `;
