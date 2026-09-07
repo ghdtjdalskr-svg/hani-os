@@ -1,0 +1,20 @@
+{
+  "contract_version": "2.0.0",
+  "package_format": "HANI_ONE_PASS_RELEASE_V2",
+  "entrypoints": ["index.html"],
+  "limits": { "max_files": 80, "max_total_bytes": 12000000, "max_single_file_bytes": 5000000 },
+  "required_storage_key": "hani_os_life_v23",
+  "required_internal_version": "2.9.15-safe-baseline-bootstrap",
+  "required_ui_anchors": ["loginGate", "app", "sidebar", "home", "deployment"],
+  "allowed_paths": [
+    "^index\\.html$",
+    "^hani-[A-Za-z0-9._-]+\\.(?:js|css)$",
+    "^(?:js|css)/[A-Za-z0-9._/-]+\\.(?:js|css)$",
+    "^assets/[A-Za-z0-9._/-]+\\.(?:png|webp|svg|jpg|jpeg|gif|ico|json)$"
+  ],
+  "secret_patterns": [
+    "github_pat_[A-Za-z0-9_]{20,}",
+    "\\bsk-[A-Za-z0-9_-]{20,}",
+    "\\b(?:service_role|sb_secret)_[A-Za-z0-9._-]{16,}"
+  ]
+}
