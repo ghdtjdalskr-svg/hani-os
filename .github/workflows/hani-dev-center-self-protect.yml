@@ -28,6 +28,12 @@ jobs:
               ".github/workflows/hani-dev-center-gate.yml",
               ".github/workflows/hani-dev-center-self-protect.yml",
               "scripts/hani-release-preqa.mjs",
+              "scripts/hani-one-pass-release.mjs",
+              "scripts/hani-one-pass-rules.mjs",
+              "scripts/hani-release-package.mjs",
+              "scripts/hani-runtime-closure.mjs",
+              "dev-center/one-pass-gate-contract.json",
+              "supabase/functions/hani-deploy-bridge/index.ts",
               "dev-center/release-review.schema.json",
               "AGENTS.md"
             ]);
