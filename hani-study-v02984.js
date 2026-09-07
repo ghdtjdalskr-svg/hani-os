@@ -365,7 +365,7 @@
     el.textContent = `
 #study.hani-study-v02984{--study:#6d5bd0;--study-soft:#f2efff;--study-line:#ded8ff}
 #study .study-engine-grid{display:grid;grid-template-columns:minmax(250px,.78fr) minmax(0,1.72fr);gap:16px;align-items:start}
-#study .study-hero-v02984{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px;padding:18px 20px;border:1px solid var(--study-line);border-radius:20px;background:linear-gradient(135deg,#fbfaff,#f0edff)}
+#study .study-hero-v02984{display:flex;align-items:center;justify-content:flex-end;gap:14px;margin-bottom:12px;padding:0;background:transparent}
 #study .study-hero-v02984 h2{margin:3px 0 4px;font-size:22px}.study-kicker{font-size:11px;font-weight:900;letter-spacing:.12em;color:var(--study);text-transform:uppercase}
 #study .study-hero-meta{display:flex;gap:8px;flex-wrap:wrap}.study-chip{border:1px solid var(--study-line);background:#fff;border-radius:999px;padding:7px 10px;font-size:12px;font-weight:800;color:#514a78}
 #study .study-card-v02984{background:#fff;border:1px solid #e8e9f1;border-radius:18px;padding:16px;box-shadow:0 5px 18px rgba(40,35,80,.035)}
@@ -400,7 +400,6 @@
     root.innerHTML = `
       <div id="studyEngineV02984">
         <div class="study-hero-v02984">
-          <div><div class="study-kicker">HINA · LEARNING BOARD v1.1</div><h2>공부</h2><div class="note">시험별 게시판에서 문제세트를 이어 풀고, 틀린 문제는 자동으로 오답 자산으로 남겨요.</div></div>
           <div class="study-hero-meta"><span class="study-chip" id="studyProjectCount">프로젝트 0</span><span class="study-chip" id="studyQuizCount">퀴즈 0</span><span class="study-chip" id="studyWrongCount">오답 0</span></div>
         </div>
         <div class="study-subtabs" role="tablist" aria-label="공부 메뉴"><button class="study-subtab is-active" type="button" data-study-tab="board">Learning Board</button><button class="study-subtab" type="button" data-study-tab="wrong">오답노트</button><button class="study-subtab" type="button" data-study-tab="history">History</button></div>
