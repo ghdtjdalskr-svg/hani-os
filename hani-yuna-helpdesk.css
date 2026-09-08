@@ -1,4 +1,12 @@
 #intake.yuna-helpdesk{--yuna-lavender:#8e73d5;--yuna-lavender-deep:#57418e;--yuna-lavender-soft:#f4f0ff;--yuna-sky:#dff3ff;--yuna-ivory:#fffdf7;--yuna-ink:#22263b;--yuna-muted:#72778b;--yuna-line:#e7e7ef;--yuna-navy:#252147;display:block;color:var(--yuna-ink)}
+#intake.yuna-helpdesk:not(.active){display:none!important}
+body[data-view="intake"] #aiBanner{display:none!important}
+#intake.yuna-helpdesk *{box-sizing:border-box}
+.yuna-mobile-label{display:none}
+.yuna-bubble{overflow-wrap:anywhere}
+.yuna-mobile-head>div:nth-child(2){display:flex;flex-direction:column;min-width:0}
+@media(max-width:340px){#intake .yuna-photo{display:grid;width:32px;flex-basis:32px}#intake .yuna-plus{width:30px;flex-basis:30px}#intake .yuna-mobile-head .yuna-new{white-space:nowrap;padding:6px}}
+@media(max-width:700px){#intake .yuna-desktop-label{display:none}#intake .yuna-mobile-label{display:inline}#intake .yuna-composer{bottom:var(--yuna-keyboard,0px)}#intake .yuna-mobile-head .yuna-new{font-size:12px;padding:10px}}
 #intake.yuna-helpdesk>.grid,#intake.yuna-helpdesk>.page-hero,#intake.yuna-helpdesk>.master-hero{display:none!important}
 .yuna-hero{min-height:220px;padding:34px 38px;margin-bottom:20px;border:1px solid #e8e2f5;border-radius:26px;background:radial-gradient(circle at 82% 20%,rgba(205,239,255,.9),transparent 34%),linear-gradient(135deg,#fffdf8 0%,#f7f2ff 62%,#eef8ff 100%);display:flex;align-items:center;justify-content:space-between;gap:28px;overflow:hidden;box-shadow:0 10px 30px rgba(71,55,113,.08)}
 .yuna-hero-copy{max-width:680px}.yuna-eyebrow{display:block;color:#7459bd;font-size:12px;font-weight:850;letter-spacing:.16em;margin-bottom:10px}.yuna-hero h2{font-size:38px;line-height:1.12;margin:0 0 12px;letter-spacing:-.035em}.yuna-hero p{margin:0;color:#62677d;font-size:16px;line-height:1.7}.yuna-hero-visual{display:flex;align-items:center;gap:14px;padding:14px 18px 14px 12px;background:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.95);border-radius:22px;box-shadow:0 8px 24px rgba(94,70,140,.09)}.yuna-hero-visual span{font-weight:750;font-size:13px;line-height:1.5;color:#55466f}
