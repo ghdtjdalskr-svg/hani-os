@@ -321,7 +321,7 @@ function closeModal(id){$(id).classList.remove("open")}
 const pageMeta={
  home:["대시보드","오늘의 기록과 흐름을 한눈에 확인합니다.","home"],
  investment:["투자","월간 스냅샷으로 계좌별 자산과 자금 흐름을 기록합니다.","finance"],
- investmentIntake:["하니&지은의 월말정산","가계부 확정본과 투자 계좌 자료를 안전하게 업데이트합니다.","finance"],
+ investmentIntake:["자산 업데이트","가계부 확정본과 투자 계좌 자료를 안전하게 업데이트합니다.","finance"],
  newsroom:["뉴스룸","관심종목의 의미 있는 뉴스와 종목별 흐름을 시간순으로 확인합니다.","finance"],
  asset:["자산","모든 투자계좌의 자산을 통합해서 확인합니다.","finance"],
  ledger:["가계부","월간 소비 결산과 시간이 지난 뒤의 소비 만족도를 기록합니다.","finance"],

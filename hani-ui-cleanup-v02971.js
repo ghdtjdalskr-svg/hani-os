@@ -21,7 +21,7 @@
     policy: '사내 규칙',
     deployment: '배포 센터',
     investment: '투자',
-    investmentIntake: '하니&지은의 월말정산',
+    investmentIntake: '자산 업데이트',
     asset: '자산',
     ledger: '가계부',
     newsroom: '뉴스룸',
@@ -142,7 +142,7 @@
           pageBannerMap[id] = Object.assign({}, pageBannerMap[id] || {}, { name: alias });
         });
         pageBannerMap.investmentIntake = Object.assign({}, pageBannerMap.investment || {}, {
-          name: '하니&지은의 월말정산',
+          name: '자산 업데이트',
           message: PAGE_DESC.investmentIntake
         });
         if (pageBannerMap.work) delete pageBannerMap.work;
