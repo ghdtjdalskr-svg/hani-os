@@ -195,7 +195,6 @@
 
 /* HASDAQ inline monthly change must stay beside board title. */
 #haniHasdaqBoardV02976 .hasdaq-move{display:none!important}
-#haniHasdaqBoardV02976 .hasdaq-brand{display:flex!important;align-items:center!important;gap:12px!important;flex-wrap:wrap!important}
 .hani-hasdaq-inline-v02979{display:inline-flex!important;align-items:center!important;gap:5px!important;margin-left:2px!important;padding:6px 10px!important;border-radius:999px!important;font-size:15px!important;font-weight:1000!important;line-height:1!important;white-space:nowrap!important}
 .hani-hasdaq-inline-v02979.up{background:#fff0f1;color:#d84b57;border:1px solid #f1cbd0}.hani-hasdaq-inline-v02979.down{background:#eef4ff;color:#3270d4;border:1px solid #cbdcf7}.hani-hasdaq-inline-v02979.flat,.hani-hasdaq-inline-v02979.na{background:#f3f4f6;color:#687184;border:1px solid #e1e4e9}.hani-hasdaq-inline-v02979 small{font-size:9px;font-weight:900;opacity:.78}
 
