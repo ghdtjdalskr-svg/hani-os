@@ -109,21 +109,31 @@ function editDraft(text){
 }
 function submitText(){const input=root.querySelector("#yunaInput"),text=clean(input.value);if(model.resume||model.status==="유나 분석 중"||(!text&&!model.image))return;if(text){say("user",text);model.input=""}model.status="유나 분석 중";if(routeIntent(text)){model.draft=parse(text);model.editing=false;model.status="확인 필요";say("yuna","전문 탭을 열어 확인할 수 있어요. 입력 내용은 이곳에 남겨둘게요.");persist();render();return;}if(model.editing&&model.draft?.mode==="draft"){editDraft(text);model.editing=false;model.status=model.draft.missing.length?"확인 필요":"Preview 준비 완료";persist();render();return;}if(model.draft?.mode==="draft"&&model.draft.missing.length&&text){hydrateMissing(model.draft,text);if(model.draft.missing.length)askNext();else{model.status="Preview 준비 완료";say("yuna","말씀해 주신 내용까지 반영했어요. 저장 전 Preview를 확인해 주세요.")}}else if(model.image){analyzeImage(text);return}else{model.draft=parse(text,model.category);if(model.draft.mode==="route"){model.status="확인 필요";say("yuna",`${model.draft.label}에서 안전하게 이어갈게요. 직접 저장하지 않았습니다.`)}else if(model.draft.missing.length)askNext();else{model.status="Preview 준비 완료";say("yuna","필요한 정보가 모두 있어요. 저장 전 Preview를 확인해 주세요.")}}persist();render()}
 
-function analyzeImage(userText){
-  // Existing Vision returns aggregate confidence, not verified per-field evidence.
-  // Never promote those results through legacy normalizers (which infer dates).
-  model.image=null;
-  model.status="확인 필요";
-  if(userText){
-    model.draft=parse(userText,model.category);
-    say("yuna","사진의 글자를 정확히 확인하기 어려워요. 직접 말씀하신 정보는 유지했어요.");
-    if(model.draft.mode==="route")say("yuna",model.draft.reason);
-    else if(model.draft.missing.length)askNext();
-    else {model.status="Preview 준비 완료";say("yuna","직접 말씀하신 내용으로 Preview를 준비했어요.");}
-  }else{
-    model.draft=null;
-    say("yuna","사진의 글자를 정확히 확인하기 어려워요. 책·시청·장소 중 기록할 종류와 이름을 텍스트로 알려주세요.");
+function visionDraft(extraction,userText="",hint="auto"){
+  const confidence=Number(extraction?.confidence),warnings=Array.isArray(extraction?.warnings)?extraction.warnings:[];
+  let items=[];try{const parsed=JSON.parse(clean(extraction?.structured_json)||"[]");items=Array.isArray(parsed)?parsed:[parsed]}catch(_){items=[]}
+  const item=items.find(Boolean),payload=item?.data&&typeof item.data==="object"?item.data:item;
+  const target=clean(item?.target||item?.type||extraction?.target_hint||hint),aliases={media:"movie",film:"movie",series:"movie",reading:"book",place:"travelWish"},kind=aliases[target]||target;
+  if(extraction?.financial_detected)return {mode:"route",...routeIntent(userText||clean(extraction?.extracted_text)||"자산 업데이트")};
+  if(!payload||!Number.isFinite(confidence)||confidence<.65)return null;
+  if(kind==="movie"){
+    const title=clean(payload.title||payload.name),season=clean(payload.season||payload.season_number),episode=clean(payload.episode||payload.episode_number),rawRating=Number(payload.rating),rating=Number.isFinite(rawRating)?Math.max(.1,Math.min(5,Math.round(rawRating*10)/10)):ratingFrom(String(payload.rating??"")),watchedDate=explicitDate(clean(payload.watchedDate||payload.watched_date||payload.date));
+    if(!title)return null;
+    return {mode:"draft",source:"VISION",target:"movie",data:{status:"watched",contentType:season||episode?"시리즈":"영화",origin:"",title,director:"",actors:"",rating,watchedDate,review:[season&&`시즌 ${season}`,episode&&`${episode}화까지`].filter(Boolean).join(" · ")},missing:[!watchedDate&&"watchedDate"].filter(Boolean),vision:{confidence,warnings}};
   }
+  const evidence=clean(extraction?.extracted_text);return evidence?parse([evidence,userText].filter(Boolean).join(" "),kind||hint):null;
+}
+
+async function analyzeImage(userText){
+  const file=model.image;model.status="유나 분석 중";render();
+  try{
+    const imageDataUrl=await intakeImageToDataUrl(file),result=await agentApi("extract_intake_image",{image_data_url:imageDataUrl,target_hint:model.category,file_name:file.name}),extraction=agentObj(result.extraction);
+    model.image=null;model.draft=visionDraft(extraction,userText,model.category);
+    if(!model.draft){model.status="확인 필요";say("yuna","사진 내용을 정확히 확인하기 어려워요. 확인이 필요한 종류와 이름만 텍스트로 알려주세요.");}
+    else if(model.draft.mode==="route"){model.status="확인 필요";say("yuna",model.draft.reason||"전문 탭에서 안전하게 이어갈게요. 직접 저장하지 않았습니다.");}
+    else if(model.draft.missing.length){model.status="확인 필요";say("yuna","사진에서 확실히 읽은 값은 유지했어요.");askNext();}
+    else {model.status="Preview 준비 완료";say("yuna","사진에서 확실히 읽은 내용으로 Preview를 준비했어요.");}
+  }catch(e){model.image=null;model.draft=userText?parse(userText,model.category):null;model.status="확인 필요";say("yuna","사진 내용을 정확히 확인하기 어려워요. 필요한 최소 정보만 텍스트로 알려주세요.");if(model.draft?.mode==="draft"&&model.draft.missing.length)askNext();console.warn("YUNA Vision",e)}
   persist();render();
 }
 
@@ -146,6 +156,6 @@ function startVoice(){const Recognition=window.SpeechRecognition||window.webkitS
 
 function init(){if(root)return;root=document.getElementById("intake");if(!root)return;root.classList.add("yuna-helpdesk");const nav=document.querySelector('[data-view="intake"] .txt');if(nav)nav.textContent="유나 인포데스크";const saved=loadPersisted();if(saved)model.resume=saved;render();if(window.visualViewport){const adjust=()=>{const v=window.visualViewport;root.style.setProperty("--yuna-keyboard",Math.max(0,window.innerHeight-v.height-v.offsetTop)+"px");};window.visualViewport.addEventListener("resize",adjust);window.visualViewport.addEventListener("scroll",adjust);adjust();}}
 
-window.HANI_YUNA_HELPDESK={parse,hydrateMissing,routeIntent,saveData,getDraftKey:()=>DRAFT_KEY,init};
+window.HANI_YUNA_HELPDESK={parse,hydrateMissing,routeIntent,saveData,visionDraft,getDraftKey:()=>DRAFT_KEY,init};
 init();
 })();

@@ -19,5 +19,9 @@ for(const hint of ['auto','book','diary','task'])assert.equal(api.parse('ISA에 
 assert.equal(api.parse('ISA에 20만원 추가했어').route,'investmentIntake');
 assert.equal(api.parse('벤치프레스 3세트 기록').mode,'route');
 const explicit=api.parse('오늘 셜록 시즌1 2화까지 봤어. 4.5점');assert.equal(explicit.missing.length,0);
+const vision=api.visionDraft({confidence:.94,target_hint:'movie',structured_json:JSON.stringify([{target:'movie',data:{title:'셜록',season:1,episode:2,rating:4.5}}]),warnings:['시청일 미확인']});
+assert.equal(vision.data.title,'셜록');assert.equal(vision.data.review,'시즌 1 · 2화까지');assert.equal(vision.data.rating,4.5);assert.deepEqual(Array.from(vision.missing),['watchedDate']);
+assert.equal(api.visionDraft({confidence:.42,target_hint:'movie',structured_json:JSON.stringify([{target:'movie',data:{title:'셜록',season:1,episode:2,rating:4.5}}])}),null);
+assert.equal(api.visionDraft({confidence:.9,financial_detected:true,extracted_text:'ISA에 20만원 추가'},'', 'auto').route,'investmentIntake');
 assert.equal(api.getDraftKey(),'hani_yuna_helpdesk_draft_v1');
-console.log('PASS: media missing date, book date semantics, task daypart preservation, finance routing, explicit date, isolated draft key');
+console.log('PASS: text/image media missing date, ambiguity rejection, book date semantics, task daypart preservation, finance routing, explicit date, isolated draft key');
