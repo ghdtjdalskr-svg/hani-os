@@ -43,24 +43,6 @@
 
 /* HASDAQ: title and monthly change are one visual line. */
 #haniHasdaqBoardV02976 .hani-hasdaq-inline-v02979{display:none!important}
-#haniHasdaqBoardV02976 .hani-hasdaq-titleline-v02980{
-  display:flex!important;align-items:center!important;gap:12px!important;flex-wrap:wrap!important;min-width:0
-}
-#haniHasdaqBoardV02976 .hani-hasdaq-titleline-v02980 > b,
-#haniHasdaqBoardV02976 .hani-hasdaq-titleline-v02980 > strong,
-#haniHasdaqBoardV02976 .hani-hasdaq-titleline-v02980 > h2,
-#haniHasdaqBoardV02976 .hani-hasdaq-titleline-v02980 > h3{margin:0!important}
-#haniHasdaqBoardV02976 .hani-hasdaq-change-v02980{
-  display:inline-flex!important;align-items:baseline!important;gap:6px!important;
-  margin:0!important;padding:0!important;background:transparent!important;border:0!important;
-  line-height:1!important;white-space:nowrap!important
-}
-#haniHasdaqBoardV02976 .hani-hasdaq-change-v02980 .value{font-size:19px!important;font-weight:1000!important;letter-spacing:-.04em!important}
-#haniHasdaqBoardV02976 .hani-hasdaq-change-v02980.up .value{color:#d83e4c!important}
-#haniHasdaqBoardV02976 .hani-hasdaq-change-v02980.down .value{color:#2d6fd3!important}
-#haniHasdaqBoardV02976 .hani-hasdaq-change-v02980.flat .value,
-#haniHasdaqBoardV02976 .hani-hasdaq-change-v02980.na .value{color:#697587!important}
-#haniHasdaqBoardV02976 .hani-hasdaq-change-v02980 small{font-size:10px!important;font-weight:850!important;color:#8791a2!important}
 
 /* v2.9.80 ETF identity: issuer color + product white mark. */
 #investment .hani-security-logo-v02979.etf{display:none!important}

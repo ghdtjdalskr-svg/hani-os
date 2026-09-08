@@ -259,26 +259,6 @@ header.top.ui26-top #cloudHeaderState{font-weight:780!important;color:#788499!im
 #newsroom .hani-close-all-comments-v02976:hover{border-color:#c9cfe0;color:#465269}
 
 /* HASDAQ: nickname over real monthly asset change, never a fabricated market index. */
-#haniHasdaqBoardV02976{
-  display:grid;grid-template-columns:minmax(0,1.4fr) auto;align-items:center;gap:18px;
-  margin:0 0 14px;padding:17px 19px;border:1px solid #dce5f2;border-radius:17px;
-  background:linear-gradient(120deg,#f5f9ff 0%,#fff 62%,#f8f5ff 100%);
-  box-shadow:0 7px 20px rgba(48,62,86,.045)
-}
-#haniHasdaqBoardV02976 .hasdaq-brand{display:flex;align-items:center;gap:12px;min-width:0}
-#haniHasdaqBoardV02976 .hasdaq-mark{
-  width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:#293d67;color:#fff;
-  font-size:11px;font-weight:1000;letter-spacing:.03em;box-shadow:0 6px 15px rgba(41,61,103,.16)
-}
-#haniHasdaqBoardV02976 .hasdaq-copy{display:grid;gap:2px;min-width:0}
-#haniHasdaqBoardV02976 .hasdaq-copy b{font-size:19px;line-height:1.15;color:#26354f;font-weight:1000;letter-spacing:.015em}
-#haniHasdaqBoardV02976 .hasdaq-copy span{font-size:10.5px;color:#7a8598;font-weight:760}
-#haniHasdaqBoardV02976 .hasdaq-move{text-align:right;display:grid;gap:3px;justify-items:end}
-#haniHasdaqBoardV02976 .hasdaq-move strong{font-size:22px;line-height:1;font-weight:1000}
-#haniHasdaqBoardV02976 .hasdaq-move small{font-size:10.5px;color:#7a8598;font-weight:800}
-#haniHasdaqBoardV02976 .hasdaq-move.up strong{color:#d84f58}
-#haniHasdaqBoardV02976 .hasdaq-move.down strong{color:#396fc8}
-#haniHasdaqBoardV02976 .hasdaq-move.flat strong{color:#70798a}
 #investment .hani-hasdaq-chart-title-v02976{display:flex!important;align-items:center!important;gap:7px!important}
 #investment .hani-hasdaq-chart-title-v02976:before{
   content:"HASDAQ";display:inline-flex;align-items:center;justify-content:center;padding:4px 7px;border-radius:7px;
@@ -286,15 +266,12 @@ header.top.ui26-top #cloudHeaderState{font-weight:780!important;color:#788499!im
 }
 
 @media(max-width:900px){
-  #haniHasdaqBoardV02976{grid-template-columns:1fr;gap:10px}
-  #haniHasdaqBoardV02976 .hasdaq-move{justify-items:start;text-align:left;padding-left:54px}
   #newsroom .hani-summary-toggle-v02976{margin-right:0}
 }
 @media(max-width:650px){
   header.top.ui26-top{background:#fff!important}
   #aiBanner{background:linear-gradient(160deg,var(--hani-group-soft),#fff 72%)!important}
   .hani-security-logo-v02976.lg{width:34px;height:34px}
-  #haniHasdaqBoardV02976{padding:14px 15px}
 }
 `;
     document.head.appendChild(style);
@@ -564,11 +541,13 @@ header.top.ui26-top #cloudHeaderState{font-weight:780!important;color:#788499!im
     const move = pct === null ? (latest ? '첫 기록' : '기록 없음') : `${arrow} ${pct > 0 ? '+' : ''}${pct.toFixed(2)}%`;
     const sub = latest ? `${latest.period} 총 투자자산 ${formatWon(latestTotal)}` : '월간 투자 기록을 저장하면 표시됩니다.';
 
+    board.classList.add("hani-master-hero", "spatial-scene-investment");
     board.innerHTML = `
-      <div class="hasdaq-brand">
-        <div class="hasdaq-copy"><small class="hasdaq-eyebrow">HANI INVESTMENT DESK</small><b>HASDAQ BOARD</b><span>성민 대표님 투자자산 흐름 · 실제 월간 기록 기준</span></div>
+      <div class="hasdaq-brand hani-master-copy">
+        <div class="hasdaq-copy"><small class="hasdaq-eyebrow hani-master-eyebrow">HANI INVESTMENT DESK</small><b class="hani-master-title">HASDAQ BOARD</b><span class="hani-master-description">성민 대표님 투자자산 흐름 · 실제 월간 기록 기준</span></div>
       </div>
       <div class="hasdaq-move ${tone}"><strong>${esc(move)}</strong><small>${esc(pct === null ? sub : '전월 대비 자산 증감률 · ' + sub)}</small></div>
+      <div class="hani-master-scene"><img src="./assets/heroes/investment.png" alt=""></div>
     `;
 
     const title = q('#brokerAssetChart')?.closest('.card')?.querySelector('.sh h3');

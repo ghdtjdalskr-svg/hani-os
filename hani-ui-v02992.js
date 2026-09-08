@@ -7,18 +7,23 @@
   const safe=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   const number=v=>Number(v)||0, currentMonth=()=>new Date().toLocaleDateString('en-CA').slice(0,7);
   const money=v=>`${Math.round(number(v)).toLocaleString('ko-KR')}원`;
+  const heroImages={asset:"./assets/heroes/asset.png",ledger:"./assets/heroes/ledger.png",diet:"./assets/heroes/diet.png",exercise:"./assets/heroes/exercise.png",reading:"./assets/heroes/reading.png",movie:"./assets/heroes/movie.png",study:"./assets/heroes/study.png",campus:"./assets/heroes/campus.png",travel:"./assets/heroes/travel.png"};
   function quizMetrics(){
     const completed=(state.learningQuizzes||[]).filter(x=>x.status==='completed'&&(number(x.total)||(x.questions||[]).length));
     let correct=0,total=0;completed.forEach(x=>{const t=number(x.total)||(x.questions||[]).length,c=Number.isFinite(Number(x.correctCount))?number(x.correctCount):(Number.isFinite(Number(x.score))?Math.round(t*number(x.score)/100):0);correct+=c;total+=t});
     return {completed,correct,total,rate:total?Math.round(correct/total*100):null,wrong:Math.max((state.learningWrongAnswers||[]).length,total-correct),pending:(state.learningQuizzes||[]).filter(x=>x.status!=='completed').length};
   }
-  function hero(id,{tone,kicker,title,copy,value='기록 없음',change='',stats=[],mark='',scene=tone}){
+  function hero(id,{tone,kicker,title,copy,value='기록 없음',change='',scene=tone}){
     const root=q(`#${id}`);if(!root)return null;let el=q(':scope > .index-hero-v02992',root);
-    if(!el){el=document.createElement('div');el.className=`index-hero-v02992 index-hero-${tone}`;root.prepend(el)}
-    el.className=`index-hero-v02992 index-hero-${tone} spatial-hero-v02994 spatial-scene-${scene}`;
-    const brand=mark||({finance:'HANI',ledger:'JISPI',health:'N&E',activity:'10K',content:'HINA',learning:'225',campus:'UNI',travel:'HANI'}[tone]||'HANI');
-    el.innerHTML=`<div class="spatial-hero-copy"><div class="index-hero-heading">${brand?`<span class="index-hero-mark" aria-hidden="true">${safe(brand)}</span>`:''}<div><span class="index-hero-kicker">${safe(kicker)}</span><div class="index-hero-titleline"><h2>${safe(title)}</h2>${value?`<strong class="index-hero-value">${safe(value)}</strong>`:''}${change?`<span class="index-hero-change ${change.startsWith('+')||change.includes('목표 대비 +')?'up':change.startsWith('-')?'down':''}">${safe(change)}</span>`:''}</div><p>${safe(copy)}</p></div></div>${stats.length?`<div class="index-hero-stats">${stats.map(x=>`<span>${safe(x)}</span>`).join('')}</div>`:''}</div><div class="spatial-hero-photo" aria-hidden="true"></div>`;
+    if(!el){el=document.createElement('div');root.prepend(el)}
+    el.className=`index-hero-v02992 hani-master-hero spatial-scene-${scene}`;
+    el.innerHTML=`<div class="hani-master-copy"><span class="hani-master-eyebrow">${safe(kicker)}</span><div class="hani-master-titleline"><h2 class="hani-master-title">${safe(title)}</h2>${value?`<strong class="hani-master-metric">${safe(value)}</strong>`:''}${change?`<span class="hani-master-change">${safe(change)}</span>`:''}</div><p class="hani-master-description">${safe(copy)}</p></div><div class="hani-master-scene"><img src="${heroImages[scene]||heroImages.asset}" alt=""></div>`;
     return el;
+  }
+  // Display only: do not change the selected input or persistent UI state.
+  function ledgerHeroRecord(){
+    const records=state.ledgerMonths||[],selected=q('#ledgerMonth')?.value;
+    return records.find(x=>x.month===selected)||[...records].sort((a,b)=>String(a.month).localeCompare(String(b.month))).at(-1)||null;
   }
   function brokerRows(){return typeof officialBrokerSorted==='function'?officialBrokerSorted():[]}
   function brokerSummary(){const rows=brokerRows(),last=rows.at(-1),prev=rows.at(-2),c=last&&typeof brokerCalc==='function'?brokerCalc(last):null,p=prev&&typeof brokerCalc==='function'?brokerCalc(prev):null,d=c&&p?c.total-p.total:null,r=d!==null&&p.total?d/p.total*100:null;return {rows,last,c,d,r}}
@@ -40,8 +45,8 @@
     qa('#asset .asset-dashboard-card .sh h3').forEach(x=>x.textContent='자산 핵심 지표');
   }
   function arrangeNavigation(){
-    const ledger=q('#ledger'),board=q('#ledger .ledger-market-board'),tabs=q('#ledger > .tabs'),picker=q('#ledger .money-month-picker');q('#ledger .money-intro')?.remove();
-    if(ledger&&board&&tabs){let nav=q('#ledger > .page-nav-context-v02992');if(!nav){nav=document.createElement('div');nav.className='page-nav-context-v02992';nav.append(tabs);const context=document.createElement('div');context.className='page-context-v02992';nav.append(context);if(picker)context.append(picker)}const rec=(state.ledgerMonths||[]).find(x=>x.month===(q('#ledgerMonth')?.value||currentMonth())),c=rec&&typeof ledgerCalc==='function'?ledgerCalc(rec):null,period=rec&&typeof ledgerSettlementPeriod==='function'?ledgerSettlementPeriod(rec.month):null,over=c&&c.targetT?c.jispiT-c.targetT:null,ratio=over!==null&&c.targetT?`${over>=0?'+':''}${(over/c.targetT*100).toFixed(1)}%`:'목표 비교 없음';hero('ledger',{tone:'ledger',scene:'ledger',mark:'JISPI',kicker:'JISPI MARKET · MONTHLY',title:'JISPI MARKET',copy:'확정된 가계부 원장을 기준으로 읽는 월간 소비 지표입니다.',value:c?money(c.jispiT):'결산 대기',change:c&&over!==null?`목표 대비 ${over>=0?'+':''}${money(over)} · ${ratio}`:ratio,stats:c?[`JISPI-C ${money(c.jispiC)}`,`총지출 ${money(c.total)}`,`거래 ${(rec.items||[]).length}건`,`결산 ${rec.month}`,period?`${period.periodStart} ~ ${period.periodEnd}`:'결산기간 없음']:['선택한 달의 확정 원장 기준',q('#ledgerMonth')?.value||currentMonth()]});const h=q('#ledger > .index-hero-v02992');if(h&&nav)h.after(nav)}
+    const ledger=q('#ledger'),board=q('#ledger .ledger-market-board'),tabs=q('#ledger > .tabs')||q('#ledger > .page-nav-context-v02992 .tabs'),picker=q('#ledger .money-month-picker');q('#ledger .money-intro')?.remove();
+    if(ledger&&board&&tabs){let nav=q('#ledger > .page-nav-context-v02992');if(!nav){nav=document.createElement('div');nav.className='page-nav-context-v02992';nav.append(tabs);const context=document.createElement('div');context.className='page-context-v02992';nav.append(context);if(picker)context.append(picker)}const rec=ledgerHeroRecord(),c=rec&&typeof ledgerCalc==='function'?ledgerCalc(rec):null,period=rec&&typeof ledgerSettlementPeriod==='function'?ledgerSettlementPeriod(rec.month):null,over=c&&c.targetT?c.jispiT-c.targetT:null,ratio=over!==null&&c.targetT?`${over>=0?'+':''}${(over/c.targetT*100).toFixed(1)}%`:'목표 비교 없음';hero('ledger',{tone:'ledger',scene:'ledger',mark:'JISPI',kicker:'JISPI MARKET · MONTHLY',title:'JISPI MARKET',copy:'확정된 가계부 원장을 기준으로 읽는 월간 소비 지표입니다.',value:c?money(c.jispiT):'확정 결산 기록 없음',change:c&&over!==null?`${rec.month} · 목표 대비 ${over>=0?'+':''}${money(over)} · ${ratio} · ${ledgerJispiStatus(c.jispiT,c.targetT)}`:'',stats:c?[`JISPI-C ${money(c.jispiC)}`,`총지출 ${money(c.total)}`,`거래 ${(rec.items||[]).length}건`,`결산 ${rec.month}`,period?`${period.periodStart} ~ ${period.periodEnd}`:'결산기간 없음']:['선택한 달의 확정 원장 기준',q('#ledgerMonth')?.value||currentMonth()]});const h=q('#ledger > .index-hero-v02992');if(h&&nav)h.after(nav)}
     const inv=q('#investment'),invTabs=q('#investment > .investment-tabs-main');if(inv&&invTabs&&!q('#investment > .page-nav-context-v02992')){const nav=document.createElement('div');nav.className='page-nav-context-v02992';invTabs.before(nav);nav.append(invTabs)}
     const overviewHead=q('#investment .investment-overview-head'),year=q('#overviewYearSelect')?.closest('.field'),invNav=q('#investment > .page-nav-context-v02992');if(year&&invNav){let context=q('.page-context-v02992',invNav);if(!context){context=document.createElement('div');context.className='page-context-v02992';invNav.append(context)}context.append(year)}if(overviewHead){q(':scope > div:first-child',overviewHead)?.remove();if(!overviewHead.children.length)overviewHead.remove()}
   }
