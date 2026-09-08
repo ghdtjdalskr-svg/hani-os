@@ -5,8 +5,10 @@ import { closeSync, openSync, readFileSync, readSync, statSync, writeFileSync } 
 import path from "node:path";
 
 const CONTRACT_VERSION = "1.0.0";
-const TOOL_VERSION = "0.2.0";
+const TOOL_VERSION = "0.3.0";
 const PROTECTED_STORAGE_KEY = ["hani", "os", "life", "v23"].join("_");
+const YUNA_DRAFT_FILE = "hani-yuna-helpdesk.js";
+const YUNA_DRAFT_KEY = "hani_yuna_helpdesk_draft_v1";
 
 const args = process.argv.slice(2);
 const option = name => {
@@ -356,6 +358,14 @@ function storageCallPattern() {
   return new RegExp(`${storageObject}\\s*${storageMethod}\\s*\\(`);
 }
 
+function isAllowedYunaDraftMutation(record, snapshots) {
+  if (record.path !== YUNA_DRAFT_FILE || record.change !== "added") return false;
+  const source = snapshots.get(record.path)?.headText || "";
+  const hasExactKey = new RegExp(`\\bconst\\s+DRAFT_KEY\\s*=\\s*["']${YUNA_DRAFT_KEY}["']\\s*;`).test(source);
+  if (!hasExactKey) return false;
+  return /^\s*function\s+persist\(\).*sessionStorage\.(?:setItem|removeItem)\(DRAFT_KEY\b/.test(record.text);
+}
+
 function detectRisks(fileChanges, records, snapshots = new Map()) {
   const codeRecords = records.filter(record => isExecutableSource(record.path));
   const executableRecords = codeRecords.map(record => ({ ...record, scanText: record.scanText ?? stripNonCode(record.text) }));
@@ -384,7 +394,9 @@ function detectRisks(fileChanges, records, snapshots = new Map()) {
   ];
 
   const outOfScope = fileChanges.filter(change => !isAllowedPath(change.path));
-  const storageChanges = executableRecords.filter(record => storageCall.test(record.scanText));
+  const allStorageChanges = executableRecords.filter(record => storageCall.test(record.scanText));
+  const allowedYunaDraftChanges = allStorageChanges.filter(record => isAllowedYunaDraftMutation(record, snapshots));
+  const storageChanges = allStorageChanges.filter(record => !isAllowedYunaDraftMutation(record, snapshots));
   const protectedKeyChanges = codeRecords.filter(record => record.text.includes(PROTECTED_STORAGE_KEY));
   const supabaseContextFiles = new Set(fileChanges.filter(change => {
     const snapshot = snapshots.get(change.path);
@@ -426,6 +438,7 @@ function detectRisks(fileChanges, records, snapshots = new Map()) {
   const checks = [
     makeCheck("changed_file_scope", "변경 파일 허용 범위", outOfScope, "모든 변경 파일이 허용 범위 안에 있습니다.", "허용 범위 밖의 파일이 변경되었습니다.", "path-out-of-scope"),
     makeCheck("storage_mutation", "브라우저 저장소 쓰기 변경", storageChanges, "localStorage/sessionStorage set/remove/clear 호출 변경이 없습니다.", "localStorage 또는 sessionStorage 쓰기·삭제 호출이 변경되었습니다.", "storage-mutation"),
+    makeInformationalCheck("yuna_temporary_draft_storage", "YUNA 임시 draft 저장소", allowedYunaDraftChanges, "YUNA 전용 임시 draft 저장소 변경이 없습니다.", "보호 데이터와 분리된 고정 sessionStorage key의 set/remove만 허용했습니다.", "yuna-temporary-draft"),
     makeCheck("protected_storage_key", "보호 Storage Key 변경", protectedKeyChanges, `${PROTECTED_STORAGE_KEY} 관련 실행 코드 변경이 없습니다.`, `${PROTECTED_STORAGE_KEY} 관련 실행 코드가 변경되었습니다.`, "protected-storage-key"),
     makeCheck("supabase_mutation", "Supabase 쓰기 변경", supabaseWrites, "Supabase insert/update/delete/upsert 호출 변경이 없습니다.", "Supabase 쓰기 호출이 변경되었습니다.", "supabase-mutation"),
     makeInformationalCheck("event_binding_change", "DOM 이벤트 연결 변경", eventChanges, "onclick/addEventListener/.click() 연결 변경이 없습니다.", "DOM 이벤트 연결 변경을 Arin Review handoff에 기록했습니다.", "event-binding"),
@@ -503,6 +516,20 @@ function selfTest() {
   ];
   for (const source of storageNotations) {
     if (checkStatus(resultForSource(source), "storage_mutation") !== "BLOCKED") throw new Error(`self-test storage notation failed: ${source}`);
+  }
+  const allowedYunaSource = [
+    `const DRAFT_KEY="${YUNA_DRAFT_KEY}";`,
+    "function persist(){sessionStorage.setItem(DRAFT_KEY, 'draft');sessionStorage.removeItem(DRAFT_KEY)}"
+  ].join("\n");
+  const allowedYunaChecks = resultForFile(allowedYunaSource, YUNA_DRAFT_FILE);
+  if (checkStatus(allowedYunaChecks, "storage_mutation") !== "PASS" || checkStatus(allowedYunaChecks, "yuna_temporary_draft_storage") !== "PASS") throw new Error("self-test YUNA temporary draft allowance failed");
+  for (const unsafeYunaSource of [
+    `const DRAFT_KEY="wrong_key";\nfunction persist(){sessionStorage.setItem(DRAFT_KEY, 'draft')}`,
+    `const DRAFT_KEY="${YUNA_DRAFT_KEY}";\nfunction persist(){localStorage.setItem(DRAFT_KEY, 'draft')}`,
+    `const DRAFT_KEY="${YUNA_DRAFT_KEY}";\nfunction persist(){sessionStorage.clear()}`,
+    `const DRAFT_KEY="${YUNA_DRAFT_KEY}";\nfunction other(){sessionStorage.setItem(DRAFT_KEY, 'draft')}`
+  ]) {
+    if (checkStatus(resultForFile(unsafeYunaSource, YUNA_DRAFT_FILE), "storage_mutation") !== "BLOCKED") throw new Error("self-test unsafe YUNA storage rejection failed");
   }
   if (!isUiFile(changes[1], snapshots)) throw new Error("self-test full-file UI detection failed");
   const localEventSource = "button.addEventListener('click', handler);";
