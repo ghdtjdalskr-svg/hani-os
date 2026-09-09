@@ -26,5 +26,12 @@ assert.equal(api.visionDraft({confidence:.9,financial_detected:true,extracted_te
 const place=api.parse('하남에 "루프트리"란 카페 분위기 너무 좋던데?');
 assert.equal(place.target,'travelWish');assert.equal(place.data.destination,'루프트리');assert.equal(place.entities.location,'하남');assert.equal(place.entities.type,'카페');assert.match(place.data.note,/분위기/);
 for(const answer of ['장소는 루프트리야','장소 이름은 루프트리야','장소이름이 루프트리야','가게 이름은 루프트리야','카페 이름은 루프트리야','이름은 루프트리']){const d=api.parse('와 여기 맛있다 ㅋㅋ 맛집 등록해줘');assert.deepEqual(Array.from(d.missing),['destination']);const before={reason:d.data.reason,note:d.data.note};api.hydrateMissing(d,answer);assert.equal(d.data.destination,'루프트리');assert.deepEqual({reason:d.data.reason,note:d.data.note},before)}
+const patched=api.parse('하남에 루프트리란 카페 분위기 너무 좋던데?'),original=structuredClone(patched);
+api.patchPlaceDraft(patched,'지역은 성남');assert.equal(patched.entities.location,'성남');assert.equal(patched.data.destination,original.data.destination);assert.equal(patched.entities.type,original.entities.type);
+api.patchPlaceDraft(patched,'유형은 맛집');assert.equal(patched.entities.type,'맛집');assert.equal(patched.entities.location,'성남');
+api.patchPlaceDraft(patched,'메모는 분위기 좋아');assert.equal(patched.data.reason,'분위기 좋아');assert.equal(patched.data.destination,'루프트리');
+api.patchPlaceDraft(patched,'평점은 4.5점');assert.equal(patched.data.rating,4.5);assert.equal(patched.data.reason,'분위기 좋아');
+api.patchPlaceDraft(patched,'방문일은 9월 8일');assert.match(patched.data.expectedDate,/^20\d{2}-09-08$/);assert.equal(patched.data.rating,4.5);
+api.patchPlaceDraft(patched,'장소는 새루프트리야');assert.equal(patched.data.destination,'새루프트리');assert.equal(patched.entities.location,'성남');
 assert.equal(api.getDraftKey(),'hani_yuna_helpdesk_draft_v1');
 console.log('PASS: YUNA text/Vision, Place extraction and field patch, media regression, finance routing, isolated draft key');
