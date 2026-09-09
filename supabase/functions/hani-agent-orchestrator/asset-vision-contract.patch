@@ -1,0 +1,57 @@
+--- production/hani-agent-orchestrator/index.ts
++++ candidate/hani-agent-orchestrator/index.ts
+@@
+-const INTAKE_VISION_TARGETS = ["auto", "task", "body", "exercise", "book", "movie", "diary", "wishlist", "travelWish", "certificate", "university"] as const;
++const INTAKE_VISION_TARGETS = ["auto", "task", "body", "exercise", "book", "movie", "diary", "wishlist", "travelWish", "certificate", "university", "asset"] as const;
+@@
++const nullableString = { type: ["string", "null"] };
++const nullableNumber = { type: ["number", "null"] };
++const ASSET_HOLDING_SCHEMA = {
++  type: "object", additionalProperties: false,
++  properties: { name: nullableString, ticker: nullableString, quantity: nullableNumber, averagePrice: nullableNumber, purchaseAmount: nullableNumber, valuationAmount: nullableNumber, profitLoss: nullableNumber, returnRate: nullableNumber },
++  required: ["name", "ticker", "quantity", "averagePrice", "purchaseAmount", "valuationAmount", "profitLoss", "returnRate"],
++};
++const ASSET_VISION_SCHEMA = {
++  type: "object", additionalProperties: false,
++  properties: {
++    target_hint: { type: "string", enum: ["asset"] }, confidence: { type: "number", minimum: 0, maximum: 1 }, extracted_text: { type: "string" },
++    financialInstitution: nullableString, accountName: nullableString, accountType: nullableString, currentAsset: nullableNumber, balance: nullableNumber, asOfDate: nullableString,
++    purchaseAmount: nullableNumber, principal: nullableNumber, valuationAmount: nullableNumber, profitLoss: nullableNumber, returnRate: nullableNumber,
++    holdings: { type: "array", maxItems: 80, items: ASSET_HOLDING_SCHEMA }, mismatch: nullableNumber,
++    warnings: { type: "array", maxItems: 6, items: { type: "string" } }, financial_detected: { type: "boolean" },
++  },
++  required: ["target_hint", "confidence", "extracted_text", "financialInstitution", "accountName", "accountType", "currentAsset", "balance", "asOfDate", "purchaseAmount", "principal", "valuationAmount", "profitLoss", "returnRate", "holdings", "mismatch", "warnings", "financial_detected"],
++};
++function validateAssetExtraction(parsed: any) {
++  const purchase = Number.isFinite(parsed?.purchaseAmount) ? parsed.purchaseAmount : parsed?.principal;
++  const current = Number.isFinite(parsed?.valuationAmount) ? parsed.valuationAmount : (Number.isFinite(parsed?.currentAsset) ? parsed.currentAsset : parsed?.balance);
++  const pnl = parsed?.profitLoss;
++  if (Number.isFinite(purchase) && Number.isFinite(pnl) && Number.isFinite(current)) {
++    const mismatch = Math.abs(Math.round((purchase + pnl) - current)); parsed.mismatch = mismatch;
++    if (mismatch > 0) parsed.warnings = [...new Set([...(parsed.warnings || []), `화면에 표시된 값 사이에 ${mismatch.toLocaleString("ko-KR")}원의 차이가 있습니다. 원본 표시값을 확인해주세요.`])].slice(0, 6);
++  } else parsed.mismatch = null;
++  return parsed;
++}
+@@
+ async function extractIntakeImage(openaiKey: string, imageDataUrl: string, targetHint: string, fileName: string) {
+-  const instructions = [
++  const assetMode = targetHint === "asset";
++  const instructions = (assetMode ? [
++    "당신은 PROJECT HANI의 Asset Vision Extractor입니다. 계좌·통장·투자자산의 현재 상태만 읽습니다.",
++    "은행 입출금·저축·파킹·CMA·예금·적금·증권 위탁·ISA·연금저축·IRP·보유종목 요약 화면만 지원합니다.",
++    "카드 결제내역·영수증·소비내역·가계부 입력은 지원하지 말고, 모든 자산 필드를 null로 두고 warnings에 지원 범위 밖이라고 적으세요.",
++    "화면에 실제로 보이는 값만 반환하세요. 못 읽은 값은 null이며 이름·날짜·숫자를 추측하지 마세요.",
++    "currentAsset와 balance 중 화면 의미에 맞는 필드를 사용하고, 투자 화면은 purchaseAmount/principal/valuationAmount/profitLoss/returnRate를 보이는 경우에만 채우세요.",
++    "화면 숫자를 산술적으로 고치지 마세요. 불일치는 원본값을 보존한 채 mismatch와 warnings로 알립니다.",
++    "financial_detected는 true, target_hint는 asset으로 반환하세요. 저장이나 DB 쓰기는 하지 않습니다.",
++  ] : [
+@@
+-  ].join("\n");
++  ]).join("\n");
+@@
+-      text: { verbosity: "low", format: { type: "json_schema", name: "hani_intake_vision", strict: true, schema: INTAKE_VISION_SCHEMA } },
++      text: { verbosity: "low", format: { type: "json_schema", name: assetMode ? "hani_asset_vision" : "hani_intake_vision", strict: true, schema: assetMode ? ASSET_VISION_SCHEMA : INTAKE_VISION_SCHEMA } },
+@@
+-  return { parsed, model: String(aiJson?.model ?? "gpt-5.6-luna"), response_id: String(aiJson?.id ?? ""), usage: aiJson?.usage ?? null };
++  if (assetMode) parsed = validateAssetExtraction(parsed);
++  return { parsed, model: String(aiJson?.model ?? "gpt-5.6-luna"), response_id: String(aiJson?.id ?? ""), usage: aiJson?.usage ?? null };

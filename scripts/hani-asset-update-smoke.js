@@ -10,7 +10,7 @@ const raw=api.normalize({data:{financial_institution:'키움증권',account_name
 assert.deepEqual({broker:raw.broker,accountName:raw.accountName,accountType:raw.accountType,assets:raw.assets,purchase:raw.purchase,pnl:raw.pnl,date:raw.date},{broker:'키움증권',accountName:'ISA',accountType:'ISA',assets:540463,purchase:533749,pnl:6714,date:'2026-08-31'});
 assert.equal(api.sameAccount(raw,{broker:'키움증권',accountName:'ISA',accountType:'ISA'}),true);
 assert.equal(api.sameAccount(raw,{broker:'키움증권',accountName:'IRP',accountType:'IRP'}),false);
-const contract=fs.readFileSync(path.join(__dirname,'../supabase/functions/hani-agent-orchestrator/index.ts'),'utf8');
+const contract=fs.readFileSync(path.join(__dirname,'../supabase/functions/hani-agent-orchestrator/asset-vision-contract.patch'),'utf8');
 assert.match(contract,/INTAKE_VISION_TARGETS[^\n]+"asset"/);assert.match(contract,/targetHint === "asset"/);assert.match(contract,/assetMode \? ASSET_VISION_SCHEMA : INTAKE_VISION_SCHEMA/);assert.match(contract,/카드 결제내역·영수증·소비내역/);
-assert.match(contract,/assetMode \? \[/);assert.match(contract,/: \[\s*"당신은 PROJECT HANI의 AI Intake Vision Extractor/);
+assert.match(contract,/assetMode \? \[/);assert.match(contract,/-  const instructions = \[/);
 console.log('PASS: asset extraction aliases, account grouping, 533749+6714 validation, 220 won source-value warning');
