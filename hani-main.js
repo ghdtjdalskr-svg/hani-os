@@ -653,6 +653,7 @@ if(manage){manage.innerHTML='<div class="instrument-manager-note"><b>종목 관�
 setupInvestmentRc21Layout();
 document.querySelectorAll("[data-view]").forEach(b=>b.addEventListener("click",()=>showView(b.dataset.view)));
 document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>showView(b.dataset.go)));
+if($("homeYunaQuick"))$("homeYunaQuick").onclick=()=>{showView("intake");setTimeout(()=>$("yunaInput")?.focus(),80)};
 const GROUP_COLLAPSE_KEY="hani_os_group_collapse_v1";
 function savedCollapsedGroups(){
   try{const v=JSON.parse(localStorage.getItem(GROUP_COLLAPSE_KEY)||"[]");return Array.isArray(v)?v:[]}catch(e){return []}
@@ -2902,7 +2903,7 @@ async function cloudSyncCycle(reason="manual"){
       await cloudPushLocalRow(remote,localState,localHash);cloudAutoSyncReady=true;cloudStartPolling();return;
     }
     if(decision.action==="conflict"){
-      cloudAutoSyncReady=false;cloudStopAutoSync(`${decision.reason} 자동 덮어쓰기를 중단했습니다. 고급 설정에서 최신 쪽을 기준본으로 한 번만 선택해 주세요.`,"error");return;
+      cloudAutoSyncReady=false;cloudStopAutoSync("PC와 모바일 양쪽에서 변경된 데이터가 있어 자동 동기화를 잠시 멈췄어요. 어느 쪽도 자동으로 덮어쓰지 않습니다. ‘차이 확인’에서 Local과 Cloud를 비교해 주세요.","error");return;
     }
     cloudAutoSyncReady=false;cloudStopAutoSync(decision.reason||"자동 동기화를 안전하게 진행할 수 없어 중단했습니다.","warn");
   }catch(e){
@@ -2942,6 +2943,8 @@ function renderCloudPanel(){
   }
   if(head)head.textContent=cloudUser?(cloudAutoSyncReady?"CLOUD · SYNC":"CLOUD · LOGIN"):"CLOUD · READY";
   if(msg)msg.textContent=cloudRuntime.message||"";
+  const conflictAction=$("cloudConflictAction"),isConflict=cloudRuntime.sync==="STOP"&&/Local과 Cloud가 모두 변경|양쪽.*변경/.test(cloudRuntime.message||"");
+  if(conflictAction){conflictAction.hidden=!isConflict;conflictAction.onclick=()=>{$("cloudAdvanced")?.setAttribute("open","");$("cloudCompare")?.scrollIntoView({behavior:"smooth",block:"center"})}}
   if(grid){
     const meta=cloudMeta();
     const rows=[
@@ -3585,7 +3588,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.98";
+const HANI_DISPLAY_VERSION="2.9.99";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
