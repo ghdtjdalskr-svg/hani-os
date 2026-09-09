@@ -13,6 +13,7 @@ const escapeHtml=value=>clean(value).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&
 const firstMatch=(text,re,index=1)=>{const m=String(text).match(re);return m?clean(m[index]):""};
 const explicitDate=text=>{const s=clean(text);if(/오늘/.test(s))return todayIso();if(/내일/.test(s))return offsetIso(1);if(/어제/.test(s))return offsetIso(-1);const iso=s.match(/(20\d{2})[.\/-](\d{1,2})[.\/-](\d{1,2})/);if(iso)return `${iso[1]}-${iso[2].padStart(2,"0")}-${iso[3].padStart(2,"0")}`;const md=s.match(/(?:^|\s)(\d{1,2})월\s*(\d{1,2})일/);if(md)return `${new Date().getFullYear()}-${md[1].padStart(2,"0")}-${md[2].padStart(2,"0")}`;return ""};
 const ratingFrom=text=>{const m=String(text).match(/(?:별점|평점)?\s*(\d(?:\.\d)?)\s*점/);return m?Math.max(.1,Math.min(5,Math.round(Number(m[1])*10)/10)):null};
+const placeNamePatch=text=>clean(text).replace(/^(?:장소\s*이름|장소이름|가게\s*이름|카페\s*이름|장소|이름)(?:은|는|이|가)?\s*[:：]?\s*/,"").replace(/(?:이야|야|입니다|이에요|예요)[.!]?$/g,"").trim();
 
 function routeIntent(text){
   const s=clean(text).toLowerCase();
@@ -55,8 +56,18 @@ function parseTask(text){
 
 function parsePlace(text){
   const s=clean(text),date=explicitDate(s);
-  let destination=s.replace(/(?:오늘|어제|내일)\s*/g,"").replace(/(?:맛집|카페|식당|명소|장소)?\s*(?:에)?\s*(?:다녀왔어|다녀왔다|방문했어|방문했다|가보고\s*싶어|기록해줘).*$/g,"").replace(/[.!]+$/g,"").trim();
-  return {target:"travelWish",data:{destination,reason:/다녀왔|방문/.test(s)?"방문 기록":"장소 기록",expectedDate:date,transport:"",places:destination,foods:"",restaurants:/맛집|카페|식당/.test(s)?destination:"",lodging:"",note:s,itinerary:[]},missing:[!destination&&"destination"].filter(Boolean)};
+  const type=/카페/.test(s)?"카페":/맛집|식당/.test(s)?"맛집":/명소/.test(s)?"명소":"장소";
+  const quoted=firstMatch(s,/["“']([^"”']{1,80})["”']/),named=firstMatch(s,/(?:^|\s)([^\s"“']{1,40}?)(?:이란|란|이라는|라는)\s*(?:카페|맛집|식당|명소|장소)/);
+  const location=firstMatch(s,/^(?:오늘|어제|내일)?\s*([^\s"“']{1,24}?)(?:에|에서)\s*(?=["“']|[^\s]+(?:이란|란|이라는|라는)\s*(?:카페|맛집|식당|명소|장소))/);
+  let destination=quoted||named;
+  if(!destination){
+    const direct=s.match(/^(?:와\s*)?(?:여기\s*)?(.+?)\s*(?:맛집|카페|식당|명소|장소)(?:에)?\s*(?:다녀왔어|다녀왔다|방문했어|방문했다|가보고\s*싶어|등록해줘|기록해줘)/);
+    destination=clean(direct?.[1]||"").replace(/^(?:오늘|어제|내일)\s*/,"");
+    if(/^(?:여기|거기|저기)|맛있|좋다|좋네|좋아|ㅋㅋ|ㅎㅎ/.test(destination))destination="";
+  }
+  const impression=firstMatch(s,/(분위기[^?!.]*(?:좋\w*|예쁘\w*|멋지\w*)|맛있\w*|또\s*가고\s*싶\w*)/);
+  const visited=/다녀왔|방문했|맛있/.test(s),reason=impression||(`${type} ${visited?"방문":"저장"}`);
+  return {target:"travelWish",data:{destination,reason,expectedDate:date,transport:"",places:[location,destination].filter(Boolean).join(" · "),foods:"",restaurants:/맛집|카페|식당/.test(s)?destination:"",lodging:"",note:impression,itinerary:[]},entities:{location,type,visited},missing:[!destination&&"destination"].filter(Boolean)};
 }
 
 function parseDiary(text){
@@ -82,7 +93,10 @@ function hydrateMissing(draft,answer){
   else if(field==="date")draft.data.date=yes?todayIso():explicitDate(value);
   else if(field==="due")draft.data.due=yes?todayIso():explicitDate(value);
   else if(field==="title"){if(draft.target==="task")draft.data.text=value;else draft.data.title=value;}
-  else if(field==="destination")draft.data.destination=value;
+  else if(field==="destination"){
+    draft.data.destination=placeNamePatch(value)||value;
+    if(draft.data.restaurants!==undefined)draft.data.restaurants=draft.data.destination;
+  }
   if((field==="watchedDate"&&!draft.data.watchedDate)||(field==="completedDate"&&!draft.data.completedDate)||(field==="date"&&!draft.data.date)||(field==="due"&&!draft.data.due))return draft;
   draft.missing.shift();return draft;
 }
@@ -104,11 +118,13 @@ function applyAvatar(){const image=typeof sidebarAgentImages!=="undefined"?sideb
 
 function askNext(){if(!model.draft?.missing?.length)return;const field=model.draft.missing[0];model.status="확인 필요";say("yuna",QUESTIONS[field]||"이 값만 알려주세요.")}
 function editDraft(text){
- const d=model.draft, rating=ratingFrom(text),date=explicitDate(text),title=firstMatch(text,/제목(?:은|을)?\s*[:：]?\s*(.+)/);
+ const d=model.draft, rating=ratingFrom(text),date=explicitDate(text),placeName=d.target==="travelWish"?placeNamePatch(text):"",title=firstMatch(text,/제목(?:은|을)?\s*[:：]?\s*(.+)/);
  if(rating!==null&&(d.target==="movie"||d.target==="book"))d.data.rating=rating;
  if(date){if(d.target==="movie")d.data.watchedDate=date;else if(d.target==="book"&&d.data.status!=="read"){d.entities=d.entities||{};d.entities.readingDate=date;}else d.data[d.target==="book"?"completedDate":d.target==="task"?"due":"date"]=date;}
- if(title){d.data[d.target==="task"?"text":d.target==="travelWish"?"destination":"title"]=title;}
- say("yuna",rating!==null||date||title?"바꾼 내용을 Preview에 반영했어요.":"수정할 필드를 확인하기 어려워요. 수정 버튼에서 제목·날짜·평점 중 바꿀 부분을 알려주세요.");
+ if(placeName){d.data.destination=clean(placeName).replace(/(?:이야|입니다|이에요|예요)[.!]?$/g,"");d.data.restaurants=d.data.destination;}
+ if(title&&d.target!=="travelWish"){d.data[d.target==="task"?"text":"title"]=title;}
+ const changed=rating!==null||date||title||placeName,help=d.target==="travelWish"?"장소 이름·지역·유형·방문일·메모 중 바꿀 부분을 알려주세요.":d.target==="task"?"할 일이나 기한 중 바꿀 부분을 알려주세요.":d.target==="diary"?"제목·날짜·내용 중 바꿀 부분을 알려주세요.":"제목·날짜·평점 중 바꿀 부분을 알려주세요.";
+ say("yuna",changed?"바꾼 내용을 Preview에 반영했어요.":`수정할 필드를 확인하기 어려워요. ${help}`);
 }
 function submitText(){const input=root.querySelector("#yunaInput"),text=clean(input.value);if(model.resume||model.status==="유나 분석 중"||(!text&&!model.image))return;if(text){say("user",text);model.input=""}model.status="유나 분석 중";if(routeIntent(text)){model.draft=parse(text);model.editing=false;model.status="확인 필요";say("yuna","전문 탭을 열어 확인할 수 있어요. 입력 내용은 이곳에 남겨둘게요.");persist();render();return;}if(model.editing&&model.draft?.mode==="draft"){editDraft(text);model.editing=false;model.status=model.draft.missing.length?"확인 필요":"Preview 준비 완료";persist();render();return;}if(model.draft?.mode==="draft"&&model.draft.missing.length&&text){hydrateMissing(model.draft,text);if(model.draft.missing.length)askNext();else{model.status="Preview 준비 완료";say("yuna","말씀해 주신 내용까지 반영했어요. 저장 전 Preview를 확인해 주세요.")}}else if(model.image){analyzeImage(text);return}else{model.draft=parse(text,model.category);if(model.draft.mode==="route"){model.status="확인 필요";say("yuna",`${model.draft.label}에서 안전하게 이어갈게요. 직접 저장하지 않았습니다.`)}else if(model.draft.missing.length)askNext();else{model.status="Preview 준비 완료";say("yuna","필요한 정보가 모두 있어요. 저장 전 Preview를 확인해 주세요.")}}persist();render()}
 
@@ -154,7 +170,7 @@ function saveApproved(){if(model.editing)return;if(model.resume||!model.draft||m
 function openRoute(){const id=model.draft?.route;if(!id)return;showView(id)}
 function clearAll(){model={messages:[],draft:null,input:"",category:"auto",status:"대기 중",image:null,resume:null};persist();render()}
 
-function bindDynamic(){root.querySelector("#yunaSave")?.addEventListener("click",saveApproved);root.querySelector("#yunaEdit")?.addEventListener("click",()=>{model.editing=true;model.input="";model.status="수정 중";say("yuna","바꿀 부분만 알려주세요. 예: 평점 4점, 날짜 어제, 제목 셜록");persist();render();root.querySelector("#yunaInput")?.focus()});root.querySelector("#yunaRoute")?.addEventListener("click",openRoute);root.querySelector("#yunaRemoveImage")?.addEventListener("click",()=>{model.image=null;persist();render()});root.querySelector("#yunaResume")?.addEventListener("click",()=>{Object.assign(model,model.resume,{resume:null});render()});root.querySelector("#yunaRestart")?.addEventListener("click",clearAll)}
+function bindDynamic(){root.querySelector("#yunaSave")?.addEventListener("click",saveApproved);root.querySelector("#yunaEdit")?.addEventListener("click",()=>{model.editing=true;model.input="";model.status="수정 중";const help=model.draft?.target==="travelWish"?"예: 장소 이름은 루프트리, 지역은 하남, 메모는 분위기 좋음":"예: 평점 4점, 날짜 어제, 제목 셜록";say("yuna",`바꿀 부분만 알려주세요. ${help}`);persist();render();root.querySelector("#yunaInput")?.focus()});root.querySelector("#yunaRoute")?.addEventListener("click",openRoute);root.querySelector("#yunaRemoveImage")?.addEventListener("click",()=>{model.image=null;persist();render()});root.querySelector("#yunaResume")?.addEventListener("click",()=>{Object.assign(model,model.resume,{resume:null});render()});root.querySelector("#yunaRestart")?.addEventListener("click",clearAll)}
 function bindStatic(){const input=root.querySelector("#yunaInput");input.addEventListener("input",()=>{model.input=input.value;input.style.height="auto";input.style.height=Math.min(112,input.scrollHeight)+"px";persist()});input.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey&&!e.isComposing){e.preventDefault();submitText()}});root.querySelector("#yunaSend").addEventListener("click",submitText);root.querySelector("#yunaNew").addEventListener("click",clearAll);root.querySelector("#yunaMobileNew").addEventListener("click",clearAll);root.querySelector("#yunaCategory").addEventListener("change",e=>{model.category=e.target.value;persist();render()});root.querySelectorAll("[data-yuna-kind]").forEach(btn=>btn.addEventListener("click",()=>{model.category=btn.dataset.yunaKind;persist();render();root.querySelector("#yunaInput")?.focus()}));root.querySelector("#yunaFile").addEventListener("change",e=>{const file=e.target.files?.[0];if(!file)return;if(!/^image\/(png|jpeg|webp)$/i.test(file.type)||file.size>12*1024*1024)return alert("PNG·JPG·WEBP, 12MB 이하 이미지만 올릴 수 있어요.");model.image=file;model.status="사진 준비됨";render()});root.querySelector("#yunaPlus").addEventListener("click",()=>root.querySelector("#yunaFile").click());if("webkitSpeechRecognition" in window||"SpeechRecognition" in window){const voice=root.querySelector("#yunaVoice");voice.hidden=false;voice.addEventListener("click",startVoice)}}
 function startVoice(){const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;if(!Recognition)return;const r=new Recognition();r.lang="ko-KR";r.interimResults=false;r.onresult=e=>{const input=root.querySelector("#yunaInput");input.value=clean(`${input.value} ${e.results[0][0].transcript}`);model.input=input.value;persist()};r.onerror=()=>say("yuna","음성을 정확히 듣지 못했어요. 텍스트로 입력해 주세요.");r.start()}
 

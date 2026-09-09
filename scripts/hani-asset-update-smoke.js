@@ -1,0 +1,13 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),path=require('node:path');
+const sandbox={window:{},document:{getElementById(){return null;}},console};
+vm.createContext(sandbox);vm.runInContext(fs.readFileSync(path.join(__dirname,'../hani-asset-update-v1.js'),'utf8'),sandbox);
+const api=sandbox.window.HANI_ASSET_UPDATE_V1;
+const ok=api.validation({purchase:533749,pnl:6714,assets:540463,evaluation:null});
+assert.equal(ok.ok,true);assert.match(ok.message,/검산 완료/);
+const mismatch=api.validation({purchase:873620,pnl:-46225,assets:null,evaluation:827615});
+assert.equal(mismatch.ok,false);assert.match(mismatch.message,/220원의 차이/);
+const raw=api.normalize({data:{financial_institution:'키움증권',account_name:'ISA',account_type:'ISA',total_assets:'540,463원',total_purchase:'533,749',total_pnl:'6,714',as_of_date:'2026-08-31'}});
+assert.deepEqual({broker:raw.broker,accountName:raw.accountName,accountType:raw.accountType,assets:raw.assets,purchase:raw.purchase,pnl:raw.pnl,date:raw.date},{broker:'키움증권',accountName:'ISA',accountType:'ISA',assets:540463,purchase:533749,pnl:6714,date:'2026-08-31'});
+assert.equal(api.sameAccount(raw,{broker:'키움증권',accountName:'ISA',accountType:'ISA'}),true);
+assert.equal(api.sameAccount(raw,{broker:'키움증권',accountName:'IRP',accountType:'IRP'}),false);
+console.log('PASS: asset extraction aliases, account grouping, 533749+6714 validation, 220 won source-value warning');

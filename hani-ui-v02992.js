@@ -46,7 +46,7 @@
     const qm=quizMetrics();hero('study',{tone:'learning',scene:'study',kicker:'LEARNING INDEX',title:'HINKEI 225',copy:'저장된 Quiz 제출 결과로 계산한 학습성과 지표입니다.',value:qm.rate===null?'제출 기록 없음':`${qm.rate}%`,change:qm.completed.length?`완료 Quiz ${qm.completed.length}회 기준`:'Quiz 제출 후 정답률 표시',stats:[`퀴즈 ${(state.learningQuizzes||[]).length}`,`오답 ${qm.wrong}`,`미완료 ${qm.pending}`]});
     hero('university',{tone:'campus',scene:'campus',mark:'',kicker:'HANI OS · CAMPUS',title:'낭만 캠퍼스 라이프',copy:'실제 학기·과목·학사일정을 한눈에 보는 캠퍼스 데스크입니다.',value:'',change:'',stats:[]});
     hero('travel',{tone:'travel',scene:'travel',mark:'',kicker:'HANI OS · TRAVEL ARCHIVE',title:'여행 아카이브',copy:'실제 여행 기록과 가고 싶은 장소를 연결해 보는 여행 데스크입니다.',value:'',change:'',stats:[]});
-    hero('investmentIntake',{tone:'finance',scene:'monthEnd',mark:'',kicker:'ASSET UPDATE · MONTH-END',title:'자산 업데이트',copy:'가계부 확정본과 투자 계좌 업데이트를 한곳에서 준비합니다.',value:'',change:'',stats:[]});q('.ledger-import .sh h3')?.replaceChildren(document.createTextNode('가계부 확정본 Import'));
+    hero('investmentIntake',{tone:'finance',scene:'monthEnd',mark:'',kicker:'ASSET UPDATE · MONTH-END',title:'월말정산',copy:'가계부 확정본과 투자 계좌 업데이트를 한곳에서 준비합니다.',value:'',change:'',stats:[]});q('.ledger-import .sh h3')?.replaceChildren(document.createTextNode('가계부 확정본 Import'));
     qa('#asset .asset-dashboard-card .sh h3').forEach(x=>x.textContent='자산 핵심 지표');
   }
   function arrangeNavigation(){
