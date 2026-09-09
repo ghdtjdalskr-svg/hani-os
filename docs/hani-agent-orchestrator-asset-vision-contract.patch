@@ -1,38 +1,61 @@
---- production/hani-agent-orchestrator/index.ts
-+++ candidate/hani-agent-orchestrator/index.ts
-@@
+diff --git a/supabase/functions/hani-agent-orchestrator/index.ts b/supabase/functions/hani-agent-orchestrator/index.ts
+index 30b3086..8eced0e 100644
+--- a/supabase/functions/hani-agent-orchestrator/index.ts
++++ b/supabase/functions/hani-agent-orchestrator/index.ts
+@@ -2708,7 +2708,7 @@ const ROUTER_V2_SCHEMA = {
+   ],
+ };
+ 
 -const INTAKE_VISION_TARGETS = ["auto", "task", "body", "exercise", "book", "movie", "diary", "wishlist", "travelWish", "certificate", "university"] as const;
 +const INTAKE_VISION_TARGETS = ["auto", "task", "body", "exercise", "book", "movie", "diary", "wishlist", "travelWish", "certificate", "university", "asset"] as const;
-@@
+ const INTAKE_VISION_SCHEMA = {
+   type: "object",
+   additionalProperties: false,
+@@ -2723,8 +2723,58 @@ const INTAKE_VISION_SCHEMA = {
+   required: ["target_hint", "confidence", "extracted_text", "structured_json", "warnings", "financial_detected"],
+ };
+ 
 +const nullableString = { type: ["string", "null"] };
 +const nullableNumber = { type: ["number", "null"] };
 +const ASSET_HOLDING_SCHEMA = {
 +  type: "object", additionalProperties: false,
-+  properties: { name: nullableString, ticker: nullableString, quantity: nullableNumber, averagePrice: nullableNumber, purchaseAmount: nullableNumber, valuationAmount: nullableNumber, profitLoss: nullableNumber, returnRate: nullableNumber },
++  properties: {
++    name: nullableString, ticker: nullableString, quantity: nullableNumber,
++    averagePrice: nullableNumber, purchaseAmount: nullableNumber,
++    valuationAmount: nullableNumber, profitLoss: nullableNumber, returnRate: nullableNumber,
++  },
 +  required: ["name", "ticker", "quantity", "averagePrice", "purchaseAmount", "valuationAmount", "profitLoss", "returnRate"],
 +};
 +const ASSET_VISION_SCHEMA = {
 +  type: "object", additionalProperties: false,
 +  properties: {
-+    target_hint: { type: "string", enum: ["asset"] }, confidence: { type: "number", minimum: 0, maximum: 1 }, extracted_text: { type: "string" },
-+    financialInstitution: nullableString, accountName: nullableString, accountType: nullableString, currentAsset: nullableNumber, balance: nullableNumber, asOfDate: nullableString,
-+    purchaseAmount: nullableNumber, principal: nullableNumber, valuationAmount: nullableNumber, profitLoss: nullableNumber, returnRate: nullableNumber,
-+    holdings: { type: "array", maxItems: 80, items: ASSET_HOLDING_SCHEMA }, mismatch: nullableNumber,
-+    warnings: { type: "array", maxItems: 6, items: { type: "string" } }, financial_detected: { type: "boolean" },
++    target_hint: { type: "string", enum: ["asset"] },
++    confidence: { type: "number", minimum: 0, maximum: 1 },
++    extracted_text: { type: "string" },
++    financialInstitution: nullableString, accountName: nullableString, accountType: nullableString,
++    currentAsset: nullableNumber, balance: nullableNumber, asOfDate: nullableString,
++    purchaseAmount: nullableNumber, principal: nullableNumber, valuationAmount: nullableNumber,
++    profitLoss: nullableNumber, returnRate: nullableNumber,
++    holdings: { type: "array", maxItems: 80, items: ASSET_HOLDING_SCHEMA },
++    mismatch: nullableNumber,
++    warnings: { type: "array", maxItems: 6, items: { type: "string" } },
++    financial_detected: { type: "boolean" },
 +  },
 +  required: ["target_hint", "confidence", "extracted_text", "financialInstitution", "accountName", "accountType", "currentAsset", "balance", "asOfDate", "purchaseAmount", "principal", "valuationAmount", "profitLoss", "returnRate", "holdings", "mismatch", "warnings", "financial_detected"],
 +};
++
 +function validateAssetExtraction(parsed: any) {
 +  const purchase = Number.isFinite(parsed?.purchaseAmount) ? parsed.purchaseAmount : parsed?.principal;
 +  const current = Number.isFinite(parsed?.valuationAmount) ? parsed.valuationAmount : (Number.isFinite(parsed?.currentAsset) ? parsed.currentAsset : parsed?.balance);
 +  const pnl = parsed?.profitLoss;
 +  if (Number.isFinite(purchase) && Number.isFinite(pnl) && Number.isFinite(current)) {
-+    const mismatch = Math.abs(Math.round((purchase + pnl) - current)); parsed.mismatch = mismatch;
++    const mismatch = Math.abs(Math.round((purchase + pnl) - current));
++    parsed.mismatch = mismatch;
 +    if (mismatch > 0) parsed.warnings = [...new Set([...(parsed.warnings || []), `화면에 표시된 값 사이에 ${mismatch.toLocaleString("ko-KR")}원의 차이가 있습니다. 원본 표시값을 확인해주세요.`])].slice(0, 6);
 +  } else parsed.mismatch = null;
 +  return parsed;
 +}
-@@
++
  async function extractIntakeImage(openaiKey: string, imageDataUrl: string, targetHint: string, fileName: string) {
 -  const instructions = [
 +  const assetMode = targetHint === "asset";
@@ -45,13 +68,32 @@
 +    "화면 숫자를 산술적으로 고치지 마세요. 불일치는 원본값을 보존한 채 mismatch와 warnings로 알립니다.",
 +    "financial_detected는 true, target_hint는 asset으로 반환하세요. 저장이나 DB 쓰기는 하지 않습니다.",
 +  ] : [
-@@
+     "당신은 PROJECT HANI의 AI Intake Vision Extractor입니다.",
+     "사용자가 제공한 스크린샷/이미지를 읽고 HANI OS Preview용 데이터만 추출하세요.",
+     "이미지에 실제로 보이는 정보만 사용하고, 보이지 않는 날짜·수치·이름을 추측하거나 만들어내지 마세요.",
+@@ -2744,7 +2794,7 @@ async function extractIntakeImage(openaiKey: string, imageDataUrl: string, targe
+     "날짜가 이미지에 없으면 빈 문자열로 두세요. 숫자는 단위를 제거한 숫자로 넣어도 됩니다.",
+     "extracted_text에는 사람이 검토할 수 있도록 핵심 원문을 간결하게 보존하세요.",
+     "결과는 지정된 JSON Schema만 따르세요.",
 -  ].join("\n");
 +  ]).join("\n");
-@@
+ 
+   const aiRes = await fetch("https://api.openai.com/v1/responses", {
+     method: "POST",
+@@ -2761,7 +2811,7 @@ async function extractIntakeImage(openaiKey: string, imageDataUrl: string, targe
+       }],
+       max_output_tokens: 2400,
+       reasoning: { effort: "none" },
 -      text: { verbosity: "low", format: { type: "json_schema", name: "hani_intake_vision", strict: true, schema: INTAKE_VISION_SCHEMA } },
 +      text: { verbosity: "low", format: { type: "json_schema", name: assetMode ? "hani_asset_vision" : "hani_intake_vision", strict: true, schema: assetMode ? ASSET_VISION_SCHEMA : INTAKE_VISION_SCHEMA } },
-@@
--  return { parsed, model: String(aiJson?.model ?? "gpt-5.6-luna"), response_id: String(aiJson?.id ?? ""), usage: aiJson?.usage ?? null };
+       store: false,
+     }),
+   });
+@@ -2771,6 +2821,7 @@ async function extractIntakeImage(openaiKey: string, imageDataUrl: string, targe
+   if (!outputText) throw new Error("HANI Intake Vision 응답이 비어 있습니다.");
+   let parsed: any;
+   try { parsed = JSON.parse(outputText); } catch (_) { throw new Error("HANI Intake Vision JSON 파싱에 실패했습니다."); }
 +  if (assetMode) parsed = validateAssetExtraction(parsed);
-+  return { parsed, model: String(aiJson?.model ?? "gpt-5.6-luna"), response_id: String(aiJson?.id ?? ""), usage: aiJson?.usage ?? null };
+   return { parsed, model: String(aiJson?.model ?? "gpt-5.6-luna"), response_id: String(aiJson?.id ?? ""), usage: aiJson?.usage ?? null };
+ }
+ 
