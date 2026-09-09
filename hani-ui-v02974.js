@@ -147,6 +147,13 @@ html:not([data-season]){
   white-space:nowrap!important;
 }
 
+/* Preserve the complete official ensemble within the existing sidebar card. */
+#sidebar .sidebar-team-mini{padding:0!important}
+#sidebar .sidebar-team-official-photo{display:block;width:100%;height:auto;object-fit:contain;border-radius:17px 17px 0 0}
+#sidebar .sidebar-team-mini .sidebar-team-head{width:auto!important;margin:0!important;padding:10px 12px!important}
+#sidebar .sidebar-team-head b{font-size:12px!important}
+#sidebar .sidebar-team-mini:before,#sidebar .sidebar-team-mini:after{display:none!important}
+
 /* Every major group follows the same geometry. Office loses its special card treatment. */
 #sidebar .group{
   background:transparent!important;
@@ -243,8 +250,8 @@ html:not([data-season]){
   box-shadow:0 7px 17px rgba(54,66,90,.055)!important;
 }
 #haniSidebarTeamPhotoV02973 .hani-team-photo-frame{
-  height:126px!important;
-  display:flex!important;
+  height:auto!important;
+  display:block!important;
   align-items:center!important;
   justify-content:center!important;
   overflow:hidden!important;
@@ -253,7 +260,7 @@ html:not([data-season]){
 }
 #haniSidebarTeamPhotoV02973 img{
   width:100%!important;
-  height:100%!important;
+  height:auto!important;
   object-fit:contain!important;
   object-position:center!important;
 }
@@ -298,7 +305,7 @@ html:not([data-season]){
 }
 
 @media(max-width:650px){
-  #haniSidebarTeamPhotoV02973 .hani-team-photo-frame{height:118px!important}
+  #haniSidebarTeamPhotoV02973 .hani-team-photo-frame{height:auto!important}
 }
 `;
     document.head.appendChild(style);

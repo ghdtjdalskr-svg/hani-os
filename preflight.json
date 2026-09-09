@@ -1,0 +1,94 @@
+{
+  "contract_version": "2.0.0",
+  "gate_contract_sha256": "d58e2b336db2165e10d85d286182be994999148f069b92a7f697b8f5f47b5e25",
+  "release_kind": "RUNTIME",
+  "candidate_sha": "2bc7b2c228d406b5d443b0c7a96b4c62ef246107",
+  "base_main_sha": "cb88f88ba4bf90d5d5fdec4623c8f919d3ca4de2",
+  "package_sha256": "23516ddeac4b78ec831bfa98ef4d540b98dba3fad9320d0cfeb4f05c53dd56d4",
+  "preflight_state": "PASS",
+  "hina_equivalent_state": "PASS",
+  "queue_state": "READY",
+  "manual_preview_required": true,
+  "checks": [
+    {
+      "id": "candidate_freeze",
+      "status": "PASS",
+      "detail": "candidate/base SHA are frozen and distinct"
+    },
+    {
+      "id": "package_integrity",
+      "status": "PASS",
+      "detail": "canonical Package SHA matches frozen manifest"
+    },
+    {
+      "id": "release_paths",
+      "status": "PASS",
+      "detail": "path allowlist, uniqueness and file limit"
+    },
+    {
+      "id": "package_size",
+      "status": "PASS",
+      "detail": "51 files / 8131612 bytes"
+    },
+    {
+      "id": "runtime_closure",
+      "status": "PASS",
+      "detail": "self-contained recursive runtime closure"
+    },
+    {
+      "id": "js_syntax",
+      "status": "PASS",
+      "detail": "all packaged JavaScript parses"
+    },
+    {
+      "id": "tag_balance",
+      "status": "PASS",
+      "detail": "script/style tags balanced"
+    },
+    {
+      "id": "display_version",
+      "status": "PASS",
+      "detail": "{\"title\":\"2.9.100\",\"login\":\"2.9.100\",\"sidebar\":\"2.9.100\",\"sideFoot\":\"2.9.100\",\"mainFooter\":\"2.9.100\",\"displayConst\":\"2.9.100\"}"
+    },
+    {
+      "id": "version_forward",
+      "status": "PASS",
+      "detail": "candidate v2.9.100 > production v2.9.99"
+    },
+    {
+      "id": "runtime_audit_version",
+      "status": "PASS",
+      "detail": "runtime uses HANI_DISPLAY_VERSION dynamically"
+    },
+    {
+      "id": "protected_invariants",
+      "status": "PASS",
+      "detail": "protected key and internal version present"
+    },
+    {
+      "id": "protected_write_surface",
+      "status": "PASS",
+      "detail": "protected local/cloud write surface unchanged"
+    },
+    {
+      "id": "duplicate_dom",
+      "status": "PASS",
+      "detail": "no new duplicate DOM IDs"
+    },
+    {
+      "id": "secret_scan",
+      "status": "PASS",
+      "detail": "no blocked secret pattern"
+    },
+    {
+      "id": "ui_anchors",
+      "status": "PASS",
+      "detail": "core UI anchors present"
+    },
+    {
+      "id": "pc_mobile_smoke",
+      "status": "MANUAL",
+      "detail": "browser interaction remains representative manual Preview"
+    }
+  ]
+}
