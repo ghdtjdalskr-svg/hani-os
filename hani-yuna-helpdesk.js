@@ -5,7 +5,7 @@ const DRAFT_KEY="hani_yuna_helpdesk_draft_v1";
 const DIRECT_TARGETS=new Set(["task","book","movie","travelWish","diary"]);
 const LABELS={task:"할 일",book:"책 · 독서",movie:"영화 · 드라마",travelWish:"장소",diary:"생활 기록"};
 const DESTINATIONS={task:"할 일",book:"성민의 서재",movie:"시청 아카이브",travelWish:"여행 Wish · 장소",diary:"일기 · 생활 기록"};
-const QUESTIONS={readingDate:"읽기 시작일이 아직 없어요. 오늘로 기록할까요?",watchedDate:"언제 본 기록인지 아직 없어요. 오늘로 기록할까요?",completedDate:"완독일이 아직 없어요. 오늘로 기록할까요?",due:"언제까지 할 일인지 알려주세요.",title:"제목만 알려주세요.",destination:"장소 이름만 알려주세요.",date:"기록 날짜가 아직 없어요. 오늘로 기록할까요?"};
+const QUESTIONS={readingDate:"읽기 시작일이 아직 없어요. 오늘로 기록할까요?",watchedDate:"시청일은 오늘로 할까요?",season:"시즌을 정확히 확인하기 어려워요. 시즌 번호만 알려주세요.",episode:"몇 화까지 봤는지 회차만 알려주세요.",rating:"평점을 정확히 확인하기 어려워요. 평점만 알려주세요.",completedDate:"완독일이 아직 없어요. 오늘로 기록할까요?",due:"언제까지 할 일인지 알려주세요.",title:"제목만 알려주세요.",destination:"장소 이름만 알려주세요.",date:"기록 날짜가 아직 없어요. 오늘로 기록할까요?"};
 const todayIso=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`};
 const offsetIso=days=>{const d=new Date();d.setDate(d.getDate()+days);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`};
 const clean=value=>String(value??"").replace(/\s+/g," ").trim();
@@ -37,7 +37,7 @@ function parseMovie(text){
   let title=s.replace(/(?:오늘|어제)\s*/g,"").replace(/(?:별점|평점)?\s*\d(?:\.\d)?\s*점[.!]?/g,"").replace(/시즌\s*\d+/g,"").replace(/\d+\s*화(?:까지)?/g,"").replace(/(?:영화|드라마|애니|시리즈)?\s*(?:을|를)?\s*(?:봤어|봤다|봤음|시청했어|시청했다).*$/g,"").replace(/[.!]+$/g,"").trim();
   title=title.replace(/^(?:넷플릭스|티빙|왓챠|웨이브|디즈니\+?)\s*/i,"").trim();
   const data={status:"watched",contentType:season||episode?"시리즈":/드라마/.test(s)?"드라마":"영화",origin:"",title,director:"",actors:"",rating,watchedDate,review:[season&&`시즌 ${season}`,episode&&`${episode}화까지`].filter(Boolean).join(" · ")};
-  return {target:"movie",data,missing:[!title&&"title",!watchedDate&&"watchedDate"].filter(Boolean)};
+  return {target:"movie",data,entities:{season,episode},missing:[!title&&"title",!watchedDate&&"watchedDate"].filter(Boolean)};
 }
 
 function parseBook(text){
@@ -74,6 +74,9 @@ function hydrateMissing(draft,answer){
   if(!draft?.missing?.length)return draft;
   const field=draft.missing[0],value=clean(answer),yes=/^(?:응|네|예|좋아|그래|오늘|오늘로)(?:요)?[.!]?$/.test(value);
   if(field==="watchedDate")draft.data.watchedDate=yes?todayIso():explicitDate(value);
+  else if(field==="season"){const season=firstMatch(value,/(\d+)/);if(!season)return draft;draft.entities=draft.entities||{};draft.entities.season=season;draft.data.contentType="시리즈";draft.data.review=[`시즌 ${season}`,draft.entities.episode&&`${draft.entities.episode}화까지`].filter(Boolean).join(" · ");}
+  else if(field==="episode"){const episode=firstMatch(value,/(\d+)/);if(!episode)return draft;draft.entities=draft.entities||{};draft.entities.episode=episode;draft.data.contentType="시리즈";draft.data.review=[draft.entities.season&&`시즌 ${draft.entities.season}`,`${episode}화까지`].filter(Boolean).join(" · ");}
+  else if(field==="rating"){const rating=ratingFrom(value)||(/^\d(?:\.\d)?$/.test(value)?Number(value):null);if(!(rating>=.1&&rating<=5))return draft;draft.data.rating=Math.round(rating*10)/10;}
   else if(field==="readingDate"){draft.entities=draft.entities||{};draft.entities.readingDate=yes?todayIso():explicitDate(value);if(!draft.entities.readingDate)return draft;}
   else if(field==="completedDate")draft.data.completedDate=yes?todayIso():explicitDate(value);
   else if(field==="date")draft.data.date=yes?todayIso():explicitDate(value);
@@ -117,9 +120,10 @@ function visionDraft(extraction,userText="",hint="auto"){
   if(extraction?.financial_detected)return {mode:"route",...routeIntent(userText||clean(extraction?.extracted_text)||"자산 업데이트")};
   if(!payload||!Number.isFinite(confidence)||confidence<.65)return null;
   if(kind==="movie"){
-    const title=clean(payload.title||payload.name),season=clean(payload.season||payload.season_number),episode=clean(payload.episode||payload.episode_number),rawRating=Number(payload.rating),rating=Number.isFinite(rawRating)?Math.max(.1,Math.min(5,Math.round(rawRating*10)/10)):ratingFrom(String(payload.rating??"")),watchedDate=explicitDate(clean(payload.watchedDate||payload.watched_date||payload.date));
+    const title=clean(payload.title||payload.name),season=clean(payload.season||payload.season_number),episode=clean(payload.episode||payload.episode_number),ratingText=clean(payload.rating),rawRating=ratingText===""?NaN:Number(ratingText),rating=Number.isFinite(rawRating)?Math.max(.1,Math.min(5,Math.round(rawRating*10)/10)):ratingFrom(ratingText),watchedDate=explicitDate(clean(payload.watchedDate||payload.watched_date||payload.date));
     if(!title)return null;
-    return {mode:"draft",source:"VISION",target:"movie",data:{status:"watched",contentType:season||episode?"시리즈":"영화",origin:"",title,director:"",actors:"",rating,watchedDate,review:[season&&`시즌 ${season}`,episode&&`${episode}화까지`].filter(Boolean).join(" · ")},missing:[!watchedDate&&"watchedDate"].filter(Boolean),vision:{confidence,warnings}};
+    const warningText=warnings.map(clean).join(" ").toLowerCase(),uncertain=field=>warningText.includes(field)||({season:/시즌/,episode:/회차|에피소드|\d+화/,rating:/평점|별점/}[field]||/$^/).test(warningText);
+    return {mode:"draft",source:"VISION",target:"movie",data:{status:"watched",contentType:clean(payload.contentType||payload.content_type)||(season||episode?"시리즈":"영화"),origin:"",title,director:"",actors:"",rating,watchedDate,review:[season&&`시즌 ${season}`,episode&&`${episode}화까지`].filter(Boolean).join(" · ")},entities:{season,episode},missing:[uncertain("season")&&!season&&"season",uncertain("episode")&&!episode&&"episode",uncertain("rating")&&rating===null&&"rating",!watchedDate&&"watchedDate"].filter(Boolean),vision:{confidence,warnings}};
   }
   const evidence=clean(extraction?.extracted_text);return evidence?parse([evidence,userText].filter(Boolean).join(" "),kind||hint):null;
 }
