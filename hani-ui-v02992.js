@@ -16,6 +16,7 @@
     jispi:{agent:'jieun',name:'지은',role:'생활 자산관리사',scene:'spending',line:'잘 쓴 돈도 기록해 두자. 우리 생활의 취향이니까.'},
     hinkei:{agent:'hina',name:'히나',role:'학습 담당',scene:'learning',line:'틀린 문제도 다음 정답으로 가는 힌트야!'}
   };
+  const designSceneSrc=key=>q('img[data-design-scene="'+key+'"]',q('#haniDesignAssets')?.content)?.getAttribute('src')||'';
   const profile=agent=>canonicalProfileImages[agent]||canonicalProfileImages.hani;
   function speakerMarkup(agent,name,role,line){return `<img src="${profile(agent)}" alt="${safe(name)}" width="64" height="64"><div><small>${safe(name)} · ${safe(role)}</small><p>${safe(line)}</p></div>`}
   function mountDesignSlots(){
@@ -30,9 +31,9 @@
     const account=q('#assetAccountManager');if(account&&!q('.ds-account-comment')){const comment=document.createElement('div');comment.className='ds-agent-comment ds-account-comment';comment.innerHTML=speakerMarkup('hani','하니','투자 담당','계좌 화면은 하나씩 차근차근. 원본과 숫자를 맞춘 다음 확정하자!');account.before(comment)}
     const intake=q('#investmentIntake > .hani-master-hero');if(intake&&!q('.ds-hero-quote',intake)){const comment=document.createElement('div');comment.className='ds-agent-comment ds-hero-quote';comment.innerHTML=speakerMarkup('hani','하니','한마디','오늘도 기록 하나면 충분해. 갓생은 누적이야!');intake.append(comment)}
   }
-  function updateCompanion(selected){const data=companions[selected]||companions.hasdaq,slot=q('.ds-companion-scene');if(!slot||slot.dataset.index===selected)return;slot.dataset.index=selected;const image=q('img',slot);image.src=`./assets/design-system-v1/${data.scene}.webp`;image.alt=`${data.name}와 동료들의 ${data.role} 웹툰 장면`;q('figcaption',slot).innerHTML=speakerMarkup(data.agent,data.name,data.role,data.line)}
+  function updateCompanion(selected){const data=companions[selected]||companions.hasdaq,slot=q('.ds-companion-scene');if(!slot||slot.dataset.index===selected)return;slot.dataset.index=selected;const image=q('img',slot);image.src=designSceneSrc(data.scene);image.alt=`${data.name}와 동료들의 ${data.role} 웹툰 장면`;q('figcaption',slot).innerHTML=speakerMarkup(data.agent,data.name,data.role,data.line)}
   const heroImages={asset:"./assets/heroes/asset.png",monthEnd:"./assets/heroes/month-end.png",ledger:"./assets/heroes/ledger.png",diet:"./assets/heroes/diet.png",exercise:"./assets/heroes/exercise.png",reading:"./assets/heroes/reading.png",movie:"./assets/heroes/movie.png",study:"./assets/heroes/study.png",campus:"./assets/heroes/campus.png",travel:"./assets/heroes/travel.png"};
-  const lifeMarketImages=["./assets/design-system-v1/srx.webp"];
+  const lifeMarketImages=[designSceneSrc("srx")];
   const lifeMarketDateKey=new Date().toLocaleDateString('en-CA');
   const lifeMarketImageSeed=[...lifeMarketDateKey].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7);
   const lifeMarketImage=lifeMarketImages[lifeMarketImageSeed%lifeMarketImages.length];

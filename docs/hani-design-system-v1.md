@@ -9,6 +9,7 @@
 | 글꼴·간격·반경·공통 카드·반응형 | `hani-design-system.css` | 파일의 tokens → shared → domain → responsive 순서를 유지한다. 동일 선택자를 파일 끝에 계속 추가하지 말고 소유 규칙을 수정한다. |
 | 기존 페이지 Hero·담당자 통합·보조 지표 | `hani-ui-v02992.js` | 기존 페이지 Skeleton 소유자를 사용한다. 새 Observer, 이벤트 위임, renderer wrapper를 추가하지 않는다. |
 | 지수별 장면·담당자·대사 | 같은 파일의 `companions` | 키는 기존 6개 지수 ID. 장면과 프로필은 별개 역할이다. |
+| 장면 파일 경로 | `index.html`의 `haniDesignAssets` template | inert 이미지 레지스트리로 배포 closure에 포함한다. 선택된 장면만 실제 이미지로 로드하며 새 경로를 JS 문자열만으로 추가하지 않는다. |
 | 공식 프로필 9명 | `hani-main.js`의 `canonicalProfileImages` | 복제 레지스트리를 만들지 않는다. `nauen`/`suyeon`은 기존 호환 별칭만 유지한다. |
 | 메인 그래프와 시장 방향 계산 | `hani-main.js`의 `renderLifeMarket` | 기존 원장을 읽는다. 저장 데이터나 입력 로직을 변경하지 않는다. |
 | 퀴즈 정답률 | `homeQuizMetrics` | 완료 퀴즈만, 문항 수로 가중. Hero·카드·보조 표시가 같은 계산을 사용한다. |
