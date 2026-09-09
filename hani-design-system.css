@@ -1,0 +1,164 @@
+/* HANI Design System v1
+ * Canonical visual owner: tokens → shared surfaces → domain layouts → responsive.
+ * Existing JS owns data/events. This file never hides an input or changes its order.
+ */
+:root{--ds-font:'SUIT Variable','Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,sans-serif;--ds-ink:#28374c;--ds-muted:#718096;--ds-line:#e8e8f1;--ds-paper:#fff;--ds-radius:20px;--ds-gap:18px;--ds-purple:#7656b3;--ds-shadow:0 6px 22px #3a305005}
+body,input,textarea,select,button{font-family:var(--ds-font)}
+#app{font-family:var(--ds-font);color:var(--ds-ink)}
+#app .view{font-size:15px;line-height:1.55}
+#app .view :is(.card,.asset-dashboard-card){border-radius:var(--ds-radius);border-color:var(--ds-line);box-shadow:var(--ds-shadow)}
+#app .view>.grid{gap:var(--ds-gap)}
+#app .view .card{padding:22px}
+#app .view .sh{gap:12px;align-items:center;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--ds-line)}
+#app .view .sh h3{font-size:20px;line-height:1.35;letter-spacing:-.035em}
+#app .view .eyebrow{font-size:11px;font-weight:800;letter-spacing:.1em}
+#app .view :is(input,textarea,select){font-family:var(--ds-font);font-size:15px;border-radius:12px}
+#app .view :is(.field>label,.note){font-size:13px;line-height:1.65}
+#app .view .btn{font-family:var(--ds-font);font-size:14px;min-height:38px;border-radius:11px}
+#app .view .btn:focus-visible,#app [data-life-index]:focus-visible{outline:3px solid #997bed;outline-offset:3px}
+#app .view .pill{font-size:11px}
+/* Hero stays compact; the scene supports the page title, never covers data. */
+#app .hani-master-hero{position:relative;min-height:0!important;height:210px!important;grid-template-columns:55% 45%!important;border-radius:22px!important;margin-bottom:18px!important;overflow:hidden}
+#app .hani-master-copy{padding:26px 30px!important;min-width:0}
+#app .hani-master-title{font-family:var(--ds-font)!important;font-size:30px!important;letter-spacing:-.04em!important;line-height:1.25!important}
+#app .hani-master-metric{font-size:32px!important;font-variant-numeric:tabular-nums}
+#app .hani-master-description{font-size:15px!important;line-height:1.6!important}
+#app .hani-master-eyebrow{font-size:11px!important}
+#app .hani-master-scene{min-width:0;height:100%!important}
+#app .hani-master-scene img{width:100%;height:100%;object-fit:cover}
+#app .hani-master-hero:has(.ds-integrated-agent){height:250px!important}
+#app .hani-master-hero:has(.ds-integrated-agent) .hani-master-copy{align-self:start!important;padding-top:22px!important}
+#app #aiBanner.ds-integrated-agent{position:absolute!important;bottom:12px!important;right:18px!important;left:auto!important;width:66%!important;min-height:0!important;height:auto!important;margin:0!important;padding:0!important;background:none!important;border:0!important;box-shadow:none!important;display:block!important;overflow:visible!important}
+#app #aiBanner.ds-integrated-agent:before,#app #aiBanner.ds-integrated-agent:after,#app .ds-integrated-agent .ai-banner-copy{display:none!important}
+#app .ds-integrated-agent .ai-character-zone{position:static!important;width:100%!important;display:flex!important;align-items:center!important;gap:12px!important;padding:0!important;background:transparent!important;justify-content:flex-end!important}
+#app .ds-integrated-agent .ai-avatar{width:56px!important;height:62px!important;min-width:56px!important;border-radius:16px!important;position:static!important}
+#app .ds-integrated-agent .ai-quote{position:relative!important;inset:auto!important;flex:1!important;width:auto!important;padding:10px 14px!important;background:#fffffff2!important;min-height:0!important;box-shadow:none!important;border:1px solid #e7dfee!important;border-radius:15px!important}
+#app .ds-integrated-agent .ai-quote span{font-size:11px!important}
+#app .ds-integrated-agent .ai-quote b{font-size:15px!important;line-height:1.45!important}
+body[data-view=home] #aiBanner,body[data-view=investmentIntake] #aiBanner{display:none!important}
+/* Dashboard: one shared grid rhythm and a character-led companion panel. */
+#app .ds-team-hero{display:grid;grid-template-columns:44% 56%;height:240px;background:linear-gradient(115deg,#eee7f6,#f5f0f7 55%,#eae9f4);border:1px solid #eae4f0;border-radius:24px;overflow:hidden;margin-bottom:16px}
+#app .ds-team-hero>div:first-child{padding:28px 32px;align-self:center}
+#app .ds-team-hero h2{font-size:32px;line-height:1.3;color:#5a447a;letter-spacing:-.04em;margin:10px 0}
+#app .ds-team-hero p{font-size:15px;color:var(--ds-muted);margin:0}
+#app .ds-team-art{position:relative;min-width:0;min-height:0;height:240px;padding:10px 18px 0;overflow:hidden;background:radial-gradient(ellipse at 60% 100%,#d9cfe7,transparent 75%)}
+/* The source's faces occupy the upper 530/810px. A 580px width keeps all nine
+ * faces inside 240px while allowing the unneeded lower-body area to fall below. */
+#app .ds-team-art img{display:block;width:100%;max-width:580px;height:auto;margin-inline:auto;object-position:center top;filter:drop-shadow(0 8px 12px #65517816);border-radius:18px;mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+#app .home-dialogue-shell{position:relative;display:block!important;padding:18px 20px!important;min-height:0!important;border:1px solid var(--ds-line);border-radius:20px;margin-bottom:20px}
+#app .home-dialogue-main{align-items:flex-start;gap:16px}
+#app .home-dialogue-avatar{width:64px!important;height:72px!important;flex:0 0 64px;border-radius:18px!important}
+#app .home-dialogue-copy{min-width:0;flex:1}
+#app #homeDialogueLabel{display:block;min-height:38px;padding-right:370px}
+#app #homeDialogueSpeaker{display:none}
+#app #homeDialogueText{font-size:18px!important;line-height:1.55;background:#faf7ff;border:1px solid #e6dcf5;border-radius:16px;padding:13px 16px;margin:0 0 8px}
+#app .home-dialogue-chat{margin:0;gap:8px;flex-wrap:wrap}
+#app .home-dialogue-line{font-size:13px!important;line-height:1.5}
+#app .home-welcome-actions{position:absolute;right:20px;top:14px;display:flex!important;gap:7px!important;flex-wrap:wrap}
+#app .home-welcome-badge{display:none}
+#app #homeYunaQuick{position:static!important;transform:none!important;box-shadow:none!important;inset:auto!important;min-height:38px;padding:8px 13px;font-size:14px;border-radius:11px}
+#app #lifeMarketGrid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px!important;align-items:stretch}
+#app #lifeMarketGrid>.home-kpi{height:248px!important;min-height:248px!important;max-height:none!important;min-width:0;border-radius:20px!important;padding:20px!important;text-align:left}
+#app #lifeMarketGrid [data-life-index]>.kpi-head{font-size:18px!important}
+#app #lifeMarketGrid .kpi-head>span{font-size:18px!important;line-height:1.4}
+#app #lifeMarketGrid [data-life-index]>strong{font-size:32px!important;line-height:1.25;letter-spacing:-.035em}
+#app #lifeMarketGrid [data-life-index]>small{font-size:13px!important}
+#app #lifeMarketGrid .life-card-descriptor{font-size:12px!important}
+#app #lifeMarketFeatured{display:none!important}
+#app #lifeMarketGrid>#lifeMarketBanner{grid-column:span 2!important;display:grid!important;grid-template-columns:42% 58%!important;grid-template-rows:1fr!important;gap:0!important;padding:0!important;overflow:hidden;position:relative;background:#fff!important}
+#app #lifeMarketBanner>img{position:absolute!important;inset:0 auto 0 0!important;width:42%!important;height:100%!important;object-fit:cover!important;opacity:1!important;filter:none!important}
+#app #lifeMarketBanner .mood-copy{position:static!important;grid-column:2;padding:18px!important;background:transparent!important;backdrop-filter:none!important;border:0!important;box-shadow:none!important;display:flex;flex-direction:column;justify-content:center;gap:8px;min-width:0}
+#app #lifeMarketBanner .mood-copy>small{font-size:12px}
+#app #lifeMarketBanner .mood-copy>strong{font-size:23px!important;line-height:1.3}
+#app #lifeMarketState{font-size:30px;color:#7656aa}
+#app #lifeMarketCounts{display:flex;flex-wrap:wrap;gap:6px;font-size:14px!important;margin:0}
+#app #lifeMarketCounts span{padding:5px 9px;background:#f2f3f7;border-radius:9px}
+#app #lifeMarketCounts b{font-size:21px;margin-left:4px}
+#app #lifeMarketCounts .up{color:#c1506b;background:#fff0f3}
+#app #lifeMarketCounts .down{color:#377eba;background:#edf5ff}
+#app .life-market-comment{margin:0;border-top:1px solid var(--ds-line);padding-top:8px;font-size:15px!important;line-height:1.45}
+#app .life-market-comment b{font-size:11px;display:block;color:#8563ac}
+#app .home-dashboard-grid{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)!important;gap:18px!important;align-items:stretch;margin-top:18px}
+#app .home-trend-card,#app .home-mix-card{height:660px!important;min-height:660px!important;display:flex;flex-direction:column;min-width:0;overflow:hidden}
+#app #home .home-trend-card,#app #home .home-mix-card{padding:22px!important}
+#app .home-side-stack{display:block!important;min-width:0}
+#app .home-lower-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:18px!important}
+#app .home-lower-grid>.home-activity-card{grid-column:1/-1;min-height:0!important;height:auto!important}
+#app .home-lower-grid>.home-team-panel{grid-column:1/-1}
+#app .home-trend-value strong{font-size:42px!important;letter-spacing:-.04em}
+#app .home-trend-value>span{font-size:14px!important}
+#app .home-chart-stage{flex:1;min-height:260px!important;height:auto!important;display:flex;align-items:center}
+#app #homeTrendSvg{width:100%!important;height:100%!important;max-height:350px}
+#app #homeTrendAxis{display:flex!important;justify-content:space-between!important;padding:0 26px!important;font-size:13px!important}
+#app #homeTrendAxis span{font-size:13px!important}
+#app #homeTrendBadge{font-size:14px!important;background:var(--life-accent-soft,#eee9fa)!important;color:var(--life-accent,#735cf4)!important;box-shadow:none!important}
+#app .home-trend-footer{font-size:13px!important;flex-wrap:wrap;gap:8px}
+#app .home-trend-footer>span,#app .home-trend-footer b{font-size:12px!important}
+#app .ds-companion-scene{margin:0 -22px 14px;flex:none}
+#app .ds-companion-scene>img{display:block;width:100%;height:auto;aspect-ratio:3/1;object-fit:contain;background:#f6f2fa}
+#app .ds-agent-comment{display:flex;align-items:center;gap:12px;padding:14px 0;min-width:0}
+#app .ds-agent-comment>img{width:58px;height:64px;object-fit:cover;border:2px solid white;border-radius:17px;box-shadow:0 3px 12px #43314b14;flex:none}
+#app .ds-agent-comment>div{position:relative;flex:1;min-width:0;background:#f9f3ff;border:1px solid #e9dff2;border-radius:16px;padding:12px 15px}
+#app .ds-agent-comment>div:before{content:'';position:absolute;left:-6px;top:24px;width:10px;height:10px;border-left:1px solid #e9dff2;border-bottom:1px solid #e9dff2;background:inherit;transform:rotate(45deg)}
+#app .ds-agent-comment small{font-size:12px;font-weight:800;color:#8a67a3}
+#app .ds-agent-comment p{font-size:15px!important;font-weight:650;line-height:1.6;margin:4px 0 0!important}
+#app .ds-companion-scene figcaption{padding:12px 22px 0}
+#app .home-donut-row{display:block!important;flex:1;min-height:0}
+#app #homeMixDonut.secondary-widget-v02992{width:100%!important;height:100%!important;min-height:0!important;display:grid!important;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)!important;gap:16px!important;border:0!important;border-radius:0!important;padding:0!important}
+#app .secondary-widget-value{font-size:24px!important;line-height:1.3;overflow-wrap:anywhere}
+#app .secondary-widget-details{display:grid;width:100%!important;min-width:0;align-content:center;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#app .secondary-widget-details>div{padding:10px;background:#f8f7fc;border-radius:12px;min-width:0}
+#app .secondary-widget-details small{display:block;font-size:12px!important;color:var(--ds-muted)}
+#app .secondary-widget-details b{display:block;font-size:20px!important;white-space:normal!important;overflow-wrap:anywhere}
+#app .secondary-donut,#app .secondary-score-ring{width:116px!important;height:116px!important}
+#app .secondary-donut i{width:78px!important;height:78px!important}
+#app .secondary-score-ring b{font-size:19px!important}
+#app #homeMixDonut[data-widget=ne100]{grid-template-columns:1fr!important}
+#app #homeMixDonut[data-widget=ne100] .secondary-widget-visual{display:none!important}
+#app #homeMixDonut[data-widget=ne100] .secondary-widget-details b{font-size:26px!important}
+/* Month-end: equal panels, a wide line of dialogue, useful writing space. */
+#app #investmentIntake>.grid{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}
+#app #investmentIntake>.grid>.card{grid-column:auto!important;display:flex;flex-direction:column;margin:0;min-width:0}
+#app #investmentIntake .ledger-import>.field{flex:1;display:flex;flex-direction:column;min-height:230px}
+#app #investmentIntake .ledger-import textarea{flex:1;min-height:190px}
+#app #investmentIntake .ledger-import>.ds-agent-comment{margin-top:auto}
+#app #investmentIntake .asset-capture-intro{padding:12px;min-height:0;gap:10px}
+#app #investmentIntake .asset-capture-intro p{font-size:14px;line-height:1.55}
+#app #investmentIntake .asset-capture-character{width:24px;height:24px;flex:0 0 24px;font-size:16px;background:none;box-shadow:none}
+#app #investmentIntake .asset-account-edit-row{padding:10px 0;min-height:64px;border:0;border-bottom:1px solid var(--ds-line);border-radius:0;box-shadow:none;background:none}
+#app #investmentIntake .asset-account-edit-list{gap:0}
+#app #investmentIntake .asset-account-edit-row b{font-size:15px}
+#app #investmentIntake .asset-account-edit-row span{font-size:12px}
+#app #assetCaptureStatus:empty,#app #assetCapturePreview:empty{display:none}
+#app .ds-jieun>div{background:#fff8ef;border-color:#f0e1cf}
+#app .ds-jieun small{color:#ae7960}
+#app #investmentIntake .hani-master-hero{height:280px!important}
+#app #investmentIntake .hani-master-copy{align-self:start;padding:30px!important}
+#app #investmentIntake .hani-master-title{font-size:46px!important}
+#app #investmentIntake .hani-master-description{font-size:17px!important;max-width:500px}
+#app .ds-hero-quote{position:absolute;right:24px;bottom:14px;width:min(740px,65%);padding:0;flex-direction:row-reverse}
+#app .ds-hero-quote>img{width:76px;height:86px}
+#app .ds-hero-quote p{font-size:19px!important}
+#app .ds-hero-quote>div{background:#fffdfcf2;border-color:#cfbddd}
+#app .ds-hero-quote>div:before{left:auto;right:-6px;transform:rotate(225deg)}
+/* Strong editorial products retain their own internals. */
+#app #newsroom .investment-news-board-shell>.sh{flex-wrap:wrap;gap:12px}
+#app #newsroom .investment-news-board-shell>.sh>div:first-child{min-width:200px;flex:1}
+#app #newsroom .investment-news-board-shell .sh-actions{display:flex;flex-wrap:wrap;gap:8px;min-width:0}
+#app #newsroom .investment-news-board-shell .sh-actions select{min-width:105px;max-width:100%}
+#app #newsroom #haniCloseAllCommentsV02982{white-space:nowrap;flex:none}
+@media(max-width:760px){#app .hani-master-hero:has(.ds-integrated-agent){height:auto!important}#app .ds-integrated-agent .ai-quote b{font-size:14px!important}}
+@media(max-width:1450px){#app #lifeMarketGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:1200px){#app .home-dashboard-grid{grid-template-columns:1fr!important}#app .home-trend-card,#app .home-mix-card{height:auto!important;min-height:530px!important}#app .home-chart-stage{height:300px!important;flex:none}#app .ds-companion-scene>img{max-height:260px}#app .home-donut-row{min-height:200px}}
+@media(max-width:760px){#app .view{font-size:15px}#app .view .card{padding:17px}#app .view .sh h3{font-size:19px}#app .hani-master-hero{height:auto!important;min-height:180px!important;grid-template-columns:1fr!important}#app .hani-master-copy{padding:22px!important;z-index:1}#app .hani-master-title{font-size:28px!important}#app .hani-master-metric{font-size:28px!important}#app .hani-master-scene{height:120px!important;order:2!important}#app .ds-team-hero{height:auto;grid-template-columns:1fr}#app .ds-team-hero>div:first-child{padding:22px}#app .ds-team-hero h2{font-size:28px}#app .ds-team-art{height:180px;padding:0 12px}#app .home-dialogue-shell{padding:16px!important}#app .home-dialogue-avatar{width:48px!important;height:56px!important;flex-basis:48px}#app .home-dialogue-main{gap:10px}#app #homeDialogueLabel{padding:0;min-height:22px}#app #homeDialogueText{font-size:16px!important;padding:12px}#app .home-welcome-actions{position:static;margin-top:12px;justify-content:flex-end}#app .home-dialogue-line{font-size:12px!important}#app .home-trend-value strong{font-size:34px!important}#app .home-trend-card,#app .home-mix-card{height:auto!important;min-height:0!important}#app .ds-companion-scene{margin-left:-17px;margin-right:-17px}#app .ds-companion-scene figcaption{padding:12px 17px 0}#app .secondary-widget-details b{font-size:18px!important}#app .ds-agent-comment p{font-size:14px!important}#app .ds-agent-comment>img{width:48px;height:56px}#app #investmentIntake>.grid{grid-template-columns:1fr}#app #investmentIntake .hani-master-hero{height:auto!important;padding-bottom:100px}#app #investmentIntake .hani-master-title{font-size:36px!important}#app #investmentIntake .hani-master-scene{height:120px!important}#app .ds-hero-quote{width:auto;left:16px;right:16px;bottom:16px}#app .ds-hero-quote p{font-size:16px!important}#app .ds-hero-quote>img{width:56px;height:66px}}
+@media(max-width:480px){#app #lifeMarketGrid{grid-template-columns:1fr!important}#app #lifeMarketGrid>#lifeMarketBanner{grid-column:auto;height:auto!important;min-height:0!important;display:block!important}#app #lifeMarketBanner>img{position:static!important;width:100%!important;height:auto!important;aspect-ratio:3/1;object-fit:contain!important}#app #lifeMarketBanner .mood-copy{padding:18px!important}#app #homeMixDonut.secondary-widget-v02992{grid-template-columns:1fr!important}#app .secondary-widget-visual{display:flex;align-items:center;justify-content:space-around;gap:12px}#app .secondary-widget-details{grid-template-columns:repeat(2,minmax(0,1fr))}#app .home-trend-footer{font-size:12px!important}}
+@media(max-width:760px){
+  #app #newsroom .investment-news-board-shell>.sh>div:first-child{flex-basis:100%}
+  #app #newsroom .investment-news-board-shell .sh-actions{width:100%}
+  #app #home .home-trend-card,#app #home .home-mix-card{padding:17px!important}
+  #app .home-lower-grid{grid-template-columns:1fr!important}
+  #app .view>.hani-master-hero{display:flex!important;flex-direction:column!important;height:auto!important;padding:0!important}
+  #app .view>.hani-master-hero>.hani-master-copy{order:1!important;padding:22px!important;width:100%!important}
+  #app .view>.hani-master-hero>.hani-master-scene{order:2!important;width:100%!important;height:100px!important;flex:none!important}
+  #app #aiBanner.ds-integrated-agent,#app .ds-hero-quote{position:relative!important;inset:auto!important;order:3!important;width:auto!important;margin:12px 14px!important;flex:none!important}
+}

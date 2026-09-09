@@ -203,6 +203,8 @@
   }
 
   function ensureNewsLogo(cell,identity) {
+    // v2.9.101: the canonical v02983 renderer owns newsroom logos.
+    if(window.HANI_UI_V02983_NEWSROOM_LOGO_CANONICAL && cell?.closest('#newsroom')) return;
     if(!cell||!identity)return;
     qa('.hani-news-logo-v02980,.hani-security-logo-v02979,.hani-security-logo-v02978,.hani-security-logo-v02976',cell).forEach(x=>x.remove());
     const copy=wrapNewsCell(cell);
