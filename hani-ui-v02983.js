@@ -133,8 +133,9 @@
     cell.classList.add('hani-news-stockcell-v02983');
 
     if(alreadyClean) return;
-    all.forEach(x=>x.remove());
-    cell.insertBefore(makeLogo(identity),cell.firstChild);
+    const keep=canonical[0];
+    all.forEach(x=>{if(x!==keep)x.remove()});
+    if(!keep)cell.insertBefore(makeLogo(identity),cell.firstChild);
   }
 
   function normalizeNewsroomLogos() {
@@ -161,7 +162,7 @@
   }
 
   let timer=0;
-  function schedule(ms=70){clearTimeout(timer);timer=setTimeout(()=>{normalizeNewsroomLogos();selfAudit()},ms)}
+  function schedule(ms=70){if(timer)return;timer=setTimeout(()=>{timer=0;normalizeNewsroomLogos();selfAudit()},ms)}
   function burst(){[0,90,220,500,1000,2200].forEach(ms=>setTimeout(()=>{normalizeNewsroomLogos();selfAudit()},ms))}
 
   function boot() {

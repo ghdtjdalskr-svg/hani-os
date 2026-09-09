@@ -153,9 +153,11 @@
     qa('.hani-security-logo-v02976,.hani-security-logo-v02977,.hani-security-logo-v02978,.hani-security-logo-v02979', root).forEach(el=>el.remove());
   }
   function placeLogo(target, identity, size='md') {
+    if(window.HANI_UI_V02982_NEWSROOM_EVENT_IDENTITY_FIX && target?.closest('#investment') && /ETF|KODEX|TIGER|ACE|ROBO|RISE|SOL|PLUS/i.test(target.textContent||''))return;
     // v2.9.101: the canonical v02983 renderer owns newsroom logos.
     if(window.HANI_UI_V02983_NEWSROOM_LOGO_CANONICAL && target?.closest('#newsroom')) return;
     if (!target || !identity) return;
+    if(q(':scope > .hani-security-logo-v02979.brand-'+identity.id,target))return;
     clearLogos(target);
     target.classList.add('hani-security-cell-v02979');
     target.style.setProperty('--security-color', identity.color || '#64748b');
@@ -295,7 +297,7 @@
 
   function decorateHero() {
     const view=document.body?.dataset?.view || qa('.view.active')[0]?.id || 'home', group=GROUP_BY_VIEW[view]||'system', theme=GROUP_THEME[group]||GROUP_THEME.system, banner=q('#aiBanner');
-    if(!banner)return; banner.dataset.haniV02979='1'; banner.dataset.haniGroup=group; banner.style.setProperty('--hani-hero-bg',theme.bg); banner.style.setProperty('--hani-hero-accent',theme.accent); banner.style.setProperty('background',theme.bg,'important'); banner.style.setProperty('background-image','none','important');
+    if(!banner)return; if(window.HANI_UI_V02992){banner.style.removeProperty('background');banner.style.removeProperty('background-image');return;} banner.dataset.haniV02979='1'; banner.dataset.haniGroup=group; banner.style.setProperty('--hani-hero-bg',theme.bg); banner.style.setProperty('--hani-hero-accent',theme.accent); banner.style.setProperty('background',theme.bg,'important'); banner.style.setProperty('background-image','none','important');
   }
 
   function polishHasdaq() {
@@ -373,7 +375,7 @@
   function refresh() {
     decorateHero(); renderLifeMarket(); polishHasdaq(); decorateInvestment(); decorateNewsroom(); selfAudit();
   }
-  let timer=0; function schedule(ms=80){clearTimeout(timer);timer=setTimeout(refresh,ms)}
+  let timer=0; function schedule(ms=80){if(timer)return;timer=setTimeout(()=>{timer=0;refresh()},ms)}
   function boot() {
     injectStyle(); refresh();
     const observer=new MutationObserver(records=>{const meaningful=records.some(r=>r.type==='attributes'||Array.from(r.addedNodes||[]).some(n=>n.nodeType===1&&!n.matches?.('.hani-security-logo-v02979,.hani-hasdaq-inline-v02979,#haniLifeMarketV02979')));if(meaningful)schedule(90)});
