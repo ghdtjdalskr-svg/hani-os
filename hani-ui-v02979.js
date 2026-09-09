@@ -153,6 +153,8 @@
     qa('.hani-security-logo-v02976,.hani-security-logo-v02977,.hani-security-logo-v02978,.hani-security-logo-v02979', root).forEach(el=>el.remove());
   }
   function placeLogo(target, identity, size='md') {
+    // v2.9.101: the canonical v02983 renderer owns newsroom logos.
+    if(window.HANI_UI_V02983_NEWSROOM_LOGO_CANONICAL && target?.closest('#newsroom')) return;
     if (!target || !identity) return;
     clearLogos(target);
     target.classList.add('hani-security-cell-v02979');

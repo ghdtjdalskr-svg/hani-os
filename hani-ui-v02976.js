@@ -101,6 +101,8 @@
   }
 
   function prependLogo(target, identity, size = 'md') {
+    // v2.9.101: the canonical v02983 renderer owns newsroom logos.
+    if(window.HANI_UI_V02983_NEWSROOM_LOGO_CANONICAL && target?.closest('#newsroom')) return;
     if (!target || !identity) return;
     if (q(':scope > .hani-security-logo-v02976', target)) return;
     target.classList.add('hani-security-with-logo-v02976');
@@ -412,6 +414,8 @@ header.top.ui26-top #cloudHeaderState{font-weight:780!important;color:#788499!im
   }
 
   function enhanceCommentControls() {
+    // The v02982 event owner also owns comment controls.
+    if(window.HANI_UI_V02982_NEWSROOM_EVENT_IDENTITY_FIX) return;
     const rows = qa('#newsroom .newsroom-v03-row,#newsroom .investment-news-board-row');
     rows.forEach(row => {
       const title = q('.newsroom-v03-title,.news-col-title', row);

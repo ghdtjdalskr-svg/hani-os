@@ -129,6 +129,8 @@
   }
 
   function placeLogo(target, identity, size='md', wrap=true, cleanupRoot=null) {
+    // v2.9.101: the canonical v02983 renderer owns newsroom logos.
+    if(window.HANI_UI_V02983_NEWSROOM_LOGO_CANONICAL && target?.closest('#newsroom')) return;
     if (!target || !identity) return;
     clearSecurityLogos(cleanupRoot || target);
     target.classList.add('hani-security-with-logo-v02978');
@@ -379,6 +381,8 @@ header.top.ui26-top{
   }
 
   function installCommentControls() {
+    // The v02982 event owner also owns comment controls.
+    if(window.HANI_UI_V02982_NEWSROOM_EVENT_IDENTITY_FIX) return;
     qa('#newsroom .hani-news-comment-chip-v02978').forEach(el=>el.remove());
     feedRows().forEach(row => {
       const count = countComments(row); if (!count) return;

@@ -357,6 +357,8 @@ html:not([data-season]){
   }
 
   function fixCommentChips() {
+    // The v02982 event owner also owns comment controls.
+    if(window.HANI_UI_V02982_NEWSROOM_EVENT_IDENTITY_FIX) return;
     qa('#newsroom button.hani-news-comment-chip-v02970').forEach(oldChip => {
       const row = oldChip.closest('.newsroom-v03-row,.investment-news-board-row');
       const chip = document.createElement('span');

@@ -242,6 +242,8 @@ td.hani-etf-target-v02982>.hani-etf-logo-v02982{position:absolute!important;left
   }
 
   function ensureNewsLogo(cell, identity) {
+    // v2.9.101: the canonical v02983 renderer owns newsroom logos.
+    if(window.HANI_UI_V02983_NEWSROOM_LOGO_CANONICAL && cell?.closest('#newsroom')) return;
     if(!cell || !identity) return;
     const current=q(':scope > .hani-news-logo-v02982',cell);
     if(current?.dataset.stockId===identity.id) return;
@@ -283,7 +285,9 @@ td.hani-etf-target-v02982>.hani-etf-logo-v02982{position:absolute!important;left
     if(!row) return false;
     if(row.classList.contains('open')||row.classList.contains('is-open')||row.classList.contains('expanded')) return true;
     if(q('[aria-expanded="true"]',row)) return true;
-    return panels(row).some(el=>!el.hidden && getComputedStyle(el).display!=='none');
+    // A descendant can have display:block while its ancestor is hidden.
+    // Only a rendered panel represents an open row.
+    return panels(row).some(el=>!el.hidden && el.getClientRects().length>0 && getComputedStyle(el).display!=='none');
   }
 
   function forceRowState(row,open) {
@@ -329,6 +333,7 @@ td.hani-etf-target-v02982>.hani-etf-logo-v02982{position:absolute!important;left
   }
 
   function installCommentButtons() {
+    qa('#newsroom .hani-close-all-comments-v02976,#haniCloseAllCommentsV02978,#haniCloseAllCommentsV02981').forEach(el=>el.remove());
     feedRows().forEach(row=>{
       const count=commentCount(row), title=q('.newsroom-v03-title,.news-col-title',row);
       if(!title || count<=0) return;

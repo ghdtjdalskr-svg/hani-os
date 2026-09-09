@@ -186,6 +186,8 @@
   }
   function toggleOneClick(row){const open=rowOpen(row);if(open)setRowOpen(row,false);else primeAndOpen(row)}
   function installCommentControls(){
+    // The v02982 event owner also owns comment controls.
+    if(window.HANI_UI_V02982_NEWSROOM_EVENT_IDENTITY_FIX) return;
     feedRows().forEach(row=>{
       const count=commentCount(row),title=q('.newsroom-v03-title,.news-col-title',row);if(!title||count<=0)return;
       let btn=q('.hani-news-comment-oneclick-v02981',title);if(!btn){btn=document.createElement('button');btn.type='button';btn.className='hani-news-comment-oneclick-v02981';const headline=q('b,strong',title);if(headline)headline.insertAdjacentElement('afterend',btn);else title.appendChild(btn)}

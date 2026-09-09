@@ -306,6 +306,8 @@
   }
 
   function enhanceCommentChips() {
+    // The v02982 event owner also owns comment controls.
+    if(window.HANI_UI_V02982_NEWSROOM_EVENT_IDENTITY_FIX) return;
     getFeedRows().forEach(row => {
       const title = q('.newsroom-v03-title,.news-col-title', row);
       if (!title) return;
