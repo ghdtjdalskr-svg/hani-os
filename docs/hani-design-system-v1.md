@@ -74,3 +74,7 @@ Codex가 같은 작업 안에서 수행한 정적·화면 검증이며 별도 �
 - 미검증: 실제 로그인 계정으로 Cloud 연동 및 개인 원장 화면 read-back. 해당 쓰기·인증·schema 코드는 변경하지 않았다.
 
 성민 대표님의 전체 적용·안전한 자체 판단·가능한 자동 배포 지시 범위에서 PR과 배포를 진행한다. 데이터 migration, schema 변경, 운영 원장 삭제는 이 승인 범위로 확대 해석하지 않는다.
+
+
+## v2.9.102 cinema cast correction
+Built-in imagegen precise-object-edit: remove all background audience; retain three foreground women, cinema seats, projector light and 3:1 framing. Saved asset: assets/design-system-v1/hina-cinema-v2.webp. All seven design scenes visually rechecked. Versioned filename prevents reuse of the previous cached image. No event, storage or Cloud changes.
