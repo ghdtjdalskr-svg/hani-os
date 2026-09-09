@@ -175,6 +175,7 @@ td.hani-etf-target-v02982>.hani-etf-logo-v02982{position:absolute!important;left
   function etfTarget(anchor) {
     if (!anchor) return null;
     if (anchor.matches('td')) return anchor;
+    const cell=anchor.closest('td');if(cell)return cell;
     const p=anchor.parentElement;
     if (p && !p.matches('tr,table,tbody,thead') && txt(p).length<=190 && !!resolveEtf(txt(p))) return p;
     return anchor;
@@ -184,7 +185,10 @@ td.hani-etf-target-v02982>.hani-etf-logo-v02982{position:absolute!important;left
     const identity=resolveEtf(txt(anchor));
     if (!anchor || !identity) return;
     const target=etfTarget(anchor) || anchor;
-    if (!q(':scope > .hani-etf-logo-v02982',target)) target.insertBefore(etfLogo(identity),target.firstChild);
+    qa('.hani-etf-logo-v02980,.hani-security-logo-v02979,.hani-security-logo-v02978,.hani-security-logo-v02976',target).forEach(el=>el.remove());
+    const existing=qa('.hani-etf-logo-v02982',target);existing.slice(1).forEach(el=>el.remove());
+    if (!existing.length) target.insertBefore(etfLogo(identity),target.firstChild);
+    target.classList.remove('hani-security-cell-v02979','hani-security-with-logo-v02978','hani-etf-cell-v02980');
     target.classList.add('hani-etf-target-v02982');
     target.dataset.haniEtfV02982=identity.id;
   }

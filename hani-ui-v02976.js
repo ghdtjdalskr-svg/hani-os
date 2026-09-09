@@ -101,6 +101,7 @@
   }
 
   function prependLogo(target, identity, size = 'md') {
+    if(window.HANI_UI_V02982_NEWSROOM_EVENT_IDENTITY_FIX && target?.closest('#investment'))return;
     // v2.9.101: the canonical v02983 renderer owns newsroom logos.
     if(window.HANI_UI_V02983_NEWSROOM_LOGO_CANONICAL && target?.closest('#newsroom')) return;
     if (!target || !identity) return;
@@ -520,6 +521,7 @@ header.top.ui26-top #cloudHeaderState{font-weight:780!important;color:#788499!im
   }
 
   function ensureHasdaqBoard() {
+    if(window.HANI_UI_V02992){q("#haniHasdaqBoardV02976")?.remove();return;}
     const host = q('#investOverviewAll') || q('#investment');
     if (!host) return;
     let board = q('#haniHasdaqBoardV02976');

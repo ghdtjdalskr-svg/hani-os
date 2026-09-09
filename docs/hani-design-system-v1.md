@@ -78,3 +78,34 @@ Codex가 같은 작업 안에서 수행한 정적·화면 검증이며 별도 �
 
 ## v2.9.102 cinema cast correction
 Built-in imagegen precise-object-edit: remove all background audience; retain three foreground women, cinema seats, projector light and 3:1 framing. Saved asset: assets/design-system-v1/hina-cinema-v2.webp. All seven design scenes visually rechecked. Versioned filename prevents reuse of the previous cached image. No event, storage or Cloud changes.
+
+## v2.9.103 — 전체 화면 규격화
+
+### 수정 기준
+- 모든 `.view`는 하나의 Hero를 사용한다. `hani-ui-v02992.js`의 `hero()` / `mountSkeletons()`가 생성·갱신을 소유한다. 기존 투자 Hero 생산자는 양보하고 뉴스룸의 중복 배너는 제거한다.
+- `hani-design-system.css`의 **Canonical page frame**이 유일한 공통 규격이다. 높이는 desktop 240px / mobile 300px, 제목은 32px / 27px. `--ds-hero-*`, `--ds-title-size`, `--ds-avatar-size`, `--ds-gap`을 변경한다. 개별 페이지에 같은 역할의 CSS override를 덧붙이지 않는다.
+- 기존 `#aiBanner`는 복제하지 않고 활성 Hero로 이동한다. 월말정산 방식의 가로 말풍선과 오른쪽 프로필을 중앙에 정렬한다. 오래된 inline 배경 지정은 기존 소유자 v79에서 중단한다.
+- 일반 페이지에도 같은 Hero를 적용한다. 유나 메신저는 자신의 본문만 갱신하고 공유 Hero 노드는 보존한다. 유나 인포데스크의 캐릭터는 유나를 사용한다.
+- Hero 하단 간격과 탐색 줄을 공통화한다. 뉴스룸 모드·주간 아카이브·새로고침은 한 줄의 탐색 영역에 배치한다.
+- 입력/요약 카드의 프로필 워터마크는 표시하지 않는다. JISPI 상단 중복 금액은 제거하고 아래 실제 상세 지표는 보존한다.
+- 지은 코멘트는 프로필+읽기용 말풍선으로 표시하며, 기존 수정/저장 이벤트와 원장 저장 경로를 유지한다.
+- 시즌 색은 캔버스, Hero, 말풍선 테두리, 카드 테두리, 선택 탭과 포커스에 적용한다. 도메인 색과 상승/하락의 의미색은 유지한다. 계절 전환 저장 경로는 변경하지 않는다.
+
+### 로고 소유권
+- 투자 일반 종목 로고: v79. 이전 v76/v78 생산자는 투자 영역을 수정하지 않는다.
+- 투자 ETF 로고: v82. 앞선 ETF 생산자는 양보한다. 셀 내부의 로고는 문서 흐름을 따르며 absolute positioning으로 이름을 덮지 않는다.
+- 뉴스룸 로고: v83. 정체성이 같은 노드는 유지하고 중복만 제거한다.
+- v79/v83의 예약은 최초 갱신 예약을 유지한다. 연속 DOM 변화가 예약을 무한 연기하는 debounce starvation을 방지한다. 새 Observer나 새 전역 이벤트 계층은 추가하지 않았다.
+
+### 공식 캐릭터 검수
+- asset: 하니·지은·히나 / spending: 지은·하니·히나 / learning: 히나·지은·하니 / steps: 하루·지은·히나 / SRX: 하니·지은·히나 — 공식 프로필과 대조하여 유지.
+- cinema: 히나·하루·민지로 재제작. `assets/design-system-v1/hina-cinema-canonical.webp`.
+- running: 나은·하니·지은으로 재제작. `assets/design-system-v1/naeun-running-canonical.webp`.
+- Built-in imagegen 사용. 각 장면의 3명 공식 프로필을 참조 이미지로 제공했다. 공통 프롬프트: 정확한 얼굴/헤어/눈/액세서리와 원화 스타일 유지, 지정된 성인 여성 3명만 등장, 추가 인물·실루엣·남성·텍스트 없음, 얼굴이 잘리지 않는 3:1 구도. 영화관은 3D 안경과 팝콘, 러닝은 나은 선두와 힘들어하는 하니·지은. 생성본 육안 검수 후 WebP 포맷 변환만 수행했다.
+
+### 검증 및 범위
+- 28개 메뉴 × 4계절 × desktop/mobile = 224개 조합: Hero 1개, 공통 높이, 가로 넘침과 말풍선 경계 확인.
+- 기존 66개 메뉴/지수 전환 검사도 실행했다. 최종 수정 후에는 변경된 Hero·로고·코멘트 경로를 별도로 검증했다.
+- 주간 아카이브와 관심 기사 fixture로 종합/관심 4회 전환 및 로고 노드 유지 확인. 대표 종목 5개에서 로고 1개와 이름 비겹침 확인, desktop/mobile 모두 통과.
+- 검증용 데이터는 별도의 메모리 저장소 preview에서만 사용하며 배포 파일에 fixture/auth 우회를 포함하지 않는다.
+- 원장·Cloud·인증·schema 변경 없음. 운영 로그인/Cloud 상태는 배포 후 접근 가능한 범위까지만 확인하고 미검증 사항을 보고한다.

@@ -20,8 +20,9 @@
   const profile=agent=>canonicalProfileImages[agent]||canonicalProfileImages.hani;
   function speakerMarkup(agent,name,role,line){return `<img src="${profile(agent)}" alt="${safe(name)}" width="64" height="64"><div><small>${safe(name)} · ${safe(role)}</small><p>${safe(line)}</p></div>`}
   function mountDesignSlots(){
-    const active=q('.view.active'),banner=q('#aiBanner'),target=active?.id!=='investmentIntake'?q(':scope > .hani-master-hero',active):null;
+    const active=q('.view.active'),banner=q('#aiBanner'),target=active?.id!=='home'?q(':scope > .hani-master-hero',active):null;
     if(banner){banner.classList.toggle('ds-integrated-agent',!!target);if(target&&banner.parentElement!==target)target.append(banner);else if(!target&&banner.parentElement!==q('main.main'))q('main.main > header').after(banner)}
+    if(active?.id==='intake'){q('#aiAvatar').style.backgroundImage='url('+profile('yuna')+')';q('#aiQuote span').textContent='유나 한마디';q('#aiQuote b').textContent='말씀해 주세요. 저장 전 꼭 보여드릴게요.';const h=q('.hani-master-title',target);if(h)h.textContent='유나 인포데스크'}
     const home=q('#home');
     if(home&&!q('.ds-team-hero',home)){const el=document.createElement('div');el.className='ds-team-hero';el.innerHTML='<div><span class="eyebrow">DASHBOARD · HANI OS</span><h2>오늘의 삶도,<br>함께 운영합니다.</h2><p>기록이 모여 만드는 우리 회사의 하루</p></div><div class="ds-team-art"><img src="./assets/team/hani-team-office.webp" alt="HANI OS의 아홉 라이프 파트너"></div>';home.prepend(el)}
     const actions=q('.home-welcome-actions'),yuna=q('#homeYunaQuick');if(actions&&yuna&&!actions.contains(yuna))actions.append(yuna);
@@ -29,10 +30,11 @@
     const recent=q('.home-activity-card'),lower=q('.home-lower-grid');if(recent&&lower&&!lower.contains(recent))lower.insertBefore(recent,q('.home-team-panel',lower));
     const ledger=q('#investmentIntake .ledger-import');if(ledger&&!q('.ds-agent-comment',ledger)){const comment=document.createElement('div');comment.className='ds-agent-comment ds-jieun';comment.innerHTML=speakerMarkup('jieun','지은','생활 자산관리사','이번 달도 수고했어! 붙여넣고 미리보기에서 같이 확인하자.');ledger.append(comment)}
     const account=q('#assetAccountManager');if(account&&!q('.ds-account-comment')){const comment=document.createElement('div');comment.className='ds-agent-comment ds-account-comment';comment.innerHTML=speakerMarkup('hani','하니','투자 담당','계좌 화면은 하나씩 차근차근. 원본과 숫자를 맞춘 다음 확정하자!');account.before(comment)}
-    const intake=q('#investmentIntake > .hani-master-hero');if(intake&&!q('.ds-hero-quote',intake)){const comment=document.createElement('div');comment.className='ds-agent-comment ds-hero-quote';comment.innerHTML=speakerMarkup('hani','하니','한마디','오늘도 기록 하나면 충분해. 갓생은 누적이야!');intake.append(comment)}
+    const comment=q('.ledger-jieun-comment');if(comment&&!q('.ds-comment-portrait',comment)){const img=document.createElement('img');img.className='ds-comment-portrait';img.src=profile('jieun');img.alt='지은';q('#ledgerJieunComment').before(img)}
+    if(comment)comment.classList.toggle('is-editing',!q('#ledgerJieunEditor').hidden);
   }
   function updateCompanion(selected){const data=companions[selected]||companions.hasdaq,slot=q('.ds-companion-scene');if(!slot||slot.dataset.index===selected)return;slot.dataset.index=selected;const image=q('img',slot);image.src=designSceneSrc(data.scene);image.alt=`${data.name}와 동료들의 ${data.role} 웹툰 장면`;q('figcaption',slot).innerHTML=speakerMarkup(data.agent,data.name,data.role,data.line)}
-  const heroImages={asset:"./assets/heroes/asset.png",monthEnd:"./assets/heroes/month-end.png",ledger:"./assets/heroes/ledger.png",diet:"./assets/heroes/diet.png",exercise:"./assets/heroes/exercise.png",reading:"./assets/heroes/reading.png",movie:"./assets/heroes/movie.png",study:"./assets/heroes/study.png",campus:"./assets/heroes/campus.png",travel:"./assets/heroes/travel.png"};
+  const heroImages={asset:"./assets/heroes/asset.png",monthEnd:"./assets/heroes/month-end.png",ledger:"./assets/heroes/ledger.png",diet:"./assets/heroes/diet.png",exercise:"./assets/heroes/exercise.png",reading:"./assets/heroes/reading.png",movie:"./assets/heroes/movie.png",study:"./assets/heroes/study.png",campus:"./assets/heroes/campus.png",travel:"./assets/heroes/travel.png",investment:"./assets/heroes/investment.png",newsroom:"./assets/heroes/newsroom.png"};
   const lifeMarketImages=[designSceneSrc("srx")];
   const lifeMarketDateKey=new Date().toLocaleDateString('en-CA');
   const lifeMarketImageSeed=[...lifeMarketDateKey].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7);
@@ -41,7 +43,7 @@
   function hero(id,{tone,kicker,title,copy,value='기록 없음',change='',scene=tone}){
     const root=q(`#${id}`);if(!root)return null;let el=q(':scope > .index-hero-v02992',root);
     if(!el){el=document.createElement('div');root.prepend(el);el.innerHTML='<div class="hani-master-copy"><span class="hani-master-eyebrow"></span><div class="hani-master-titleline"><h2 class="hani-master-title"></h2><strong class="hani-master-metric"></strong><span class="hani-master-change"></span></div><p class="hani-master-description"></p></div><div class="hani-master-scene"><img alt=""></div>'}
-    const className=`index-hero-v02992 hani-master-hero spatial-scene-${scene}`;if(el.className!==className)el.className=className;
+    const className=`index-hero-v02992 hani-master-hero ds-page-hero spatial-scene-${scene}`;if(el.className!==className)el.className=className;
     const direction=change&&/(^|[\s·:])[-−↓]/.test(change.trim())?'down':change&&/(^|[\s·:])[+↑]/.test(change.trim())?'up':'neutral';
     const updateText=(selector,value)=>{const node=q(selector,el);if(node.textContent!==value)node.textContent=value};
     updateText('.hani-master-eyebrow',kicker);
@@ -49,8 +51,8 @@
     const metric=q('.hani-master-metric',el),delta=q('.hani-master-change',el);
     updateText('.hani-master-metric',value);metric.hidden=!value;updateText('.hani-master-change',change);delta.hidden=!change;if(delta.className!==`hani-master-change ${direction}`)delta.className=`hani-master-change ${direction}`;
     updateText('.hani-master-description',copy);
-    const image=q('.hani-master-scene img',el),src=heroImages[scene]||heroImages.asset;
-    if(image.getAttribute('src')!==src)image.setAttribute('src',src);
+    const image=q('.hani-master-scene img',el),src=heroImages[scene]||'';image.parentElement.hidden=!src;
+    if(src){if(image.getAttribute('src')!==src)image.setAttribute('src',src)}else image.removeAttribute('src');
     return el;
   }
   // Display only: do not change the selected input or persistent UI state.
@@ -61,6 +63,13 @@
   function brokerRows(){return typeof officialBrokerSorted==='function'?officialBrokerSorted():[]}
   function brokerSummary(){const rows=brokerRows(),last=rows.at(-1),prev=rows.at(-2),c=last&&typeof brokerCalc==='function'?brokerCalc(last):null,p=prev&&typeof brokerCalc==='function'?brokerCalc(prev):null,d=c&&p?c.total-p.total:null,r=d!==null&&p.total?d/p.total*100:null;return {rows,last,c,d,r}}
   function mountSkeletons(){
+    // Every route shares one persistent Hero. This function owns the frame only.
+    qa('.view').filter(v=>v.id!=='home').forEach(v=>{const m=pageMeta[v.id]||[v.id,'','work'];if(!q(':scope > .index-hero-v02992',v))hero(v.id,{tone:m[2],scene:'plain',kicker:String(m[2]||'HANI OS').toUpperCase(),title:m[0],copy:m[1],value:''})});
+    const investmentSummary=brokerSummary();
+    hero('investment',{tone:'finance',scene:'investment',kicker:'HANI INVESTMENT DESK',title:'투자 · HASDAQ BOARD',copy:'월간 스냅샷으로 계좌별 자산과 흐름을 확인합니다.',value:'',change:investmentSummary.r===null?'':('전월 대비 '+(investmentSummary.r>=0?'+':'')+investmentSummary.r.toFixed(2)+'%')});
+    hero('newsroom',{tone:'finance',scene:'newsroom',kicker:'HANI NEWS DESK',title:'오늘의 시장을 읽는 뉴스룸',copy:'종합 시황과 관심종목의 의미 있는 변화를 모아봅니다.',value:''});
+    q('#investNews > .hani-master-hero')?.remove();
+
     const b=brokerSummary();
     hero('asset',{tone:'finance',scene:'asset',mark:'',kicker:'JIEUN · LONG-TERM ASSET INDEX',title:'성민 국채 10년물',copy:'실제 월간 자산 기록의 장기 흐름을 읽는 자산 데스크입니다.',value:b.c?money(b.c.total):'기록 없음',change:b.d===null?'':`${b.d>=0?'+':''}${money(b.d)} · ${b.r>=0?'+':''}${(b.r||0).toFixed(2)}%`});
     const bodies=[...(state.body||[])].sort((a,b)=>String(a.date||'').localeCompare(String(b.date||''))),body=bodies.at(-1),prevBody=bodies.at(-2),goal=number(state.goals?.weight2||state.goals?.weight1),delta=body&&prevBody?number(body.weight)-number(prevBody.weight):null,bmi=body?(number(body.bmi)||number(body.weight)/Math.pow(number(state.profile?.heightCm)/100,2)):0;
@@ -79,7 +88,7 @@
   }
   function arrangeNavigation(){
     const ledger=q('#ledger'),board=q('#ledger .ledger-market-board'),tabs=q('#ledger > .tabs')||q('#ledger > .page-nav-context-v02992 .tabs'),picker=q('#ledger .money-month-picker');q('#ledger .money-intro')?.remove();
-    if(ledger&&board&&tabs){let nav=q('#ledger > .page-nav-context-v02992');if(!nav){nav=document.createElement('div');nav.className='page-nav-context-v02992';nav.append(tabs);const context=document.createElement('div');context.className='page-context-v02992';nav.append(context);if(picker)context.append(picker)}const rec=ledgerHeroRecord(),c=rec&&typeof ledgerCalc==='function'?ledgerCalc(rec):null,period=rec&&typeof ledgerSettlementPeriod==='function'?ledgerSettlementPeriod(rec.month):null,over=c&&c.targetT?c.jispiT-c.targetT:null,ratio=over!==null&&c.targetT?`${over>=0?'+':''}${(over/c.targetT*100).toFixed(1)}%`:'목표 비교 없음';hero('ledger',{tone:'ledger',scene:'ledger',mark:'JISPI',kicker:'JISPI MARKET · MONTHLY',title:'JISPI MARKET',copy:'확정된 가계부 원장을 기준으로 읽는 월간 소비 지표입니다.',value:c?money(c.jispiT):'확정 결산 기록 없음',change:c&&over!==null?`${rec.month} · 목표 대비 ${over>=0?'+':''}${money(over)} · ${ratio} · ${ledgerJispiStatus(c.jispiT,c.targetT)}`:'',stats:c?[`JISPI-C ${money(c.jispiC)}`,`총지출 ${money(c.total)}`,`거래 ${(rec.items||[]).length}건`,`결산 ${rec.month}`,period?`${period.periodStart} ~ ${period.periodEnd}`:'결산기간 없음']:['선택한 달의 확정 원장 기준',q('#ledgerMonth')?.value||currentMonth()]});const h=q('#ledger > .index-hero-v02992');if(h&&nav)h.after(nav)}
+    if(ledger&&board&&tabs){let nav=q('#ledger > .page-nav-context-v02992');if(!nav){nav=document.createElement('div');nav.className='page-nav-context-v02992';nav.append(tabs);const context=document.createElement('div');context.className='page-context-v02992';nav.append(context);if(picker)context.append(picker)}const rec=ledgerHeroRecord(),c=rec&&typeof ledgerCalc==='function'?ledgerCalc(rec):null,period=rec&&typeof ledgerSettlementPeriod==='function'?ledgerSettlementPeriod(rec.month):null,over=c&&c.targetT?c.jispiT-c.targetT:null,ratio=over!==null&&c.targetT?`${over>=0?'+':''}${(over/c.targetT*100).toFixed(1)}%`:'목표 비교 없음';hero('ledger',{tone:'ledger',scene:'ledger',mark:'JISPI',kicker:'JISPI MARKET · MONTHLY',title:'JISPI MARKET',copy:'확정된 가계부 원장을 기준으로 읽는 월간 소비 지표입니다.',value:'',change:c&&over!==null?`${rec.month} · 목표 대비 ${over>=0?'+':''}${money(over)} · ${ratio} · ${ledgerJispiStatus(c.jispiT,c.targetT)}`:'',stats:c?[`JISPI-C ${money(c.jispiC)}`,`총지출 ${money(c.total)}`,`거래 ${(rec.items||[]).length}건`,`결산 ${rec.month}`,period?`${period.periodStart} ~ ${period.periodEnd}`:'결산기간 없음']:['선택한 달의 확정 원장 기준',q('#ledgerMonth')?.value||currentMonth()]});const h=q('#ledger > .index-hero-v02992');if(h&&nav)h.after(nav)}
     const inv=q('#investment'),invTabs=q('#investment > .investment-tabs-main');if(inv&&invTabs&&!q('#investment > .page-nav-context-v02992')){const nav=document.createElement('div');nav.className='page-nav-context-v02992';invTabs.before(nav);nav.append(invTabs)}
     const overviewHead=q('#investment .investment-overview-head'),year=q('#overviewYearSelect')?.closest('.field'),invNav=q('#investment > .page-nav-context-v02992');if(year&&invNav){let context=q('.page-context-v02992',invNav);if(!context){context=document.createElement('div');context.className='page-context-v02992';invNav.append(context)}context.append(year)}if(overviewHead){q(':scope > div:first-child',overviewHead)?.remove();if(!overviewHead.children.length)overviewHead.remove()}
   }
@@ -101,7 +110,7 @@
     const hasVisual=items.length&&(selected!=='harukei'||monthSteps.length)&&(selected!=='hinkei'||qm.completed.length);mix.innerHTML=`<div class="secondary-widget-visual"><strong class="secondary-widget-value">${safe(value)}</strong>${hasVisual?visual:'<span class="secondary-empty">비교 데이터 없음</span>'}${selected==='ne100'&&items.length?`<div class="secondary-progress-track"><i style="--p:${progress}%"></i></div>`:''}</div><div class="secondary-widget-details">${items.length?items.slice(0,6).map(([a,b])=>`<div><small>${safe(a)}</small><b title="${safe(b)}">${safe(b)}</b></div>`).join(''):'<div class="secondary-empty">해당 지수의 기록이 아직 없습니다.</div>'}</div>`;if(total)total.hidden=true;if(unit)unit.hidden=true;if(legend)legend.innerHTML='';
     const badge=q('#homeTrendBadge'),latest=(selected==='hasdaq'?brokerSummary().rows:(selected==='ne100'?state.body:selected==='harukei'?state.exercise:selected==='jispi'?state.ledgerMonths:selected==='hinkei'?qm.completed:[...(state.books||[]),...(state.movies||[])])).length;if(badge){badge.hidden=!latest;badge.textContent=latest?value:''}const footerGoal=q('#homeInvestGoal'),footerPeriod=q('#homeLatestPeriod');if(footerGoal)footerGoal.textContent={hasdaq:money(state.goals?.investment),ne100:`${number(state.goals?.weight2||state.goals?.weight1)||'-'}kg`,hinaJones:'월간 완료',harukei:'10,000보',jispi:last?money(typeof ledgerCalc==='function'?ledgerCalc(last).targetT:0):'목표 미설정',hinkei:'정답률 100%'}[selected]||'-';if(footerPeriod)footerPeriod.textContent={hasdaq:brokerSummary().last?.period||'-',ne100:state.body?.at(-1)?.date||'-',hinaJones:currentMonth(),harukei:state.exercise?.at(-1)?.date||'-',jispi:last?.month||'-',hinkei:qm.completed.at(-1)?.updatedAt?.slice(0,10)||'-'}[selected]||'-';
   }
-  function cleanupNewsroom(){q('#haniLifeMarketV02979')?.remove();const nav=q('#haniWeeklyArchiveNavV02970'),actions=q('.newsroom-content-actions');if(nav&&actions&&!actions.contains(nav)){nav.classList.add('compact');actions.prepend(nav)}const usage=q('#investmentNewsUsage');if(usage)usage.textContent='뉴스 데이터는 Life OS 핵심 원장과 분리되어 안전하게 유지됩니다.'}
+  function cleanupNewsroom(){const news=q('#newsroom'),tabs=q('.newsroom-mode-tabs',news),tools=q('.newsroom-content-actions',news);if(tabs&&tools&&!q('.ds-news-navigation',news)){const nav=document.createElement('div');nav.className='ds-news-navigation page-nav-context-v02992';tabs.before(nav);nav.append(tabs,tools)}q('#haniLifeMarketV02979')?.remove();const nav=q('#haniWeeklyArchiveNavV02970'),actions=q('.newsroom-content-actions');if(nav&&actions&&!actions.contains(nav)){nav.classList.add('compact');actions.prepend(nav)}const usage=q('#investmentNewsUsage');if(usage)usage.textContent='뉴스 데이터는 Life OS 핵심 원장과 분리되어 안전하게 유지됩니다.'}
   let queued=false;function refresh(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;mountSkeletons();arrangeNavigation();mountDesignSlots();improveLifeMarket();cleanupNewsroom();if(q('#exercise.active')&&typeof drawExercise==='function')requestAnimationFrame(drawExercise)})}
   document.addEventListener('click',()=>setTimeout(refresh,0));document.addEventListener('change',()=>setTimeout(refresh,0));
   refresh();setTimeout(refresh,120);

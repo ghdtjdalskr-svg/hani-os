@@ -17,25 +17,6 @@ body,input,textarea,select,button{font-family:var(--ds-font)}
 #app .view .btn{font-family:var(--ds-font);font-size:14px;min-height:38px;border-radius:11px}
 #app .view .btn:focus-visible,#app [data-life-index]:focus-visible{outline:3px solid #997bed;outline-offset:3px}
 #app .view .pill{font-size:11px}
-/* Hero stays compact; the scene supports the page title, never covers data. */
-#app .hani-master-hero{position:relative;min-height:0!important;height:210px!important;grid-template-columns:55% 45%!important;border-radius:22px!important;margin-bottom:18px!important;overflow:hidden}
-#app .hani-master-copy{padding:26px 30px!important;min-width:0}
-#app .hani-master-title{font-family:var(--ds-font)!important;font-size:30px!important;letter-spacing:-.04em!important;line-height:1.25!important}
-#app .hani-master-metric{font-size:32px!important;font-variant-numeric:tabular-nums}
-#app .hani-master-description{font-size:15px!important;line-height:1.6!important}
-#app .hani-master-eyebrow{font-size:11px!important}
-#app .hani-master-scene{min-width:0;height:100%!important}
-#app .hani-master-scene img{width:100%;height:100%;object-fit:cover}
-#app .hani-master-hero:has(.ds-integrated-agent){height:250px!important}
-#app .hani-master-hero:has(.ds-integrated-agent) .hani-master-copy{align-self:start!important;padding-top:22px!important}
-#app #aiBanner.ds-integrated-agent{position:absolute!important;bottom:12px!important;right:18px!important;left:auto!important;width:66%!important;min-height:0!important;height:auto!important;margin:0!important;padding:0!important;background:none!important;border:0!important;box-shadow:none!important;display:block!important;overflow:visible!important}
-#app #aiBanner.ds-integrated-agent:before,#app #aiBanner.ds-integrated-agent:after,#app .ds-integrated-agent .ai-banner-copy{display:none!important}
-#app .ds-integrated-agent .ai-character-zone{position:static!important;width:100%!important;display:flex!important;align-items:center!important;gap:12px!important;padding:0!important;background:transparent!important;justify-content:flex-end!important}
-#app .ds-integrated-agent .ai-avatar{width:56px!important;height:62px!important;min-width:56px!important;border-radius:16px!important;position:static!important}
-#app .ds-integrated-agent .ai-quote{position:relative!important;inset:auto!important;flex:1!important;width:auto!important;padding:10px 14px!important;background:#fffffff2!important;min-height:0!important;box-shadow:none!important;border:1px solid #e7dfee!important;border-radius:15px!important}
-#app .ds-integrated-agent .ai-quote span{font-size:11px!important}
-#app .ds-integrated-agent .ai-quote b{font-size:15px!important;line-height:1.45!important}
-body[data-view=home] #aiBanner,body[data-view=investmentIntake] #aiBanner{display:none!important}
 /* Dashboard: one shared grid rhythm and a character-led companion panel. */
 #app .ds-team-hero{display:grid;grid-template-columns:44% 56%;height:240px;background:linear-gradient(115deg,#eee7f6,#f5f0f7 55%,#eae9f4);border:1px solid #eae4f0;border-radius:24px;overflow:hidden;margin-bottom:16px}
 #app .ds-team-hero>div:first-child{padding:28px 32px;align-self:center}
@@ -132,33 +113,112 @@ body[data-view=home] #aiBanner,body[data-view=investmentIntake] #aiBanner{displa
 #app #assetCaptureStatus:empty,#app #assetCapturePreview:empty{display:none}
 #app .ds-jieun>div{background:#fff8ef;border-color:#f0e1cf}
 #app .ds-jieun small{color:#ae7960}
-#app #investmentIntake .hani-master-hero{height:280px!important}
-#app #investmentIntake .hani-master-copy{align-self:start;padding:30px!important}
-#app #investmentIntake .hani-master-title{font-size:46px!important}
-#app #investmentIntake .hani-master-description{font-size:17px!important;max-width:500px}
-#app .ds-hero-quote{position:absolute;right:24px;bottom:14px;width:min(740px,65%);padding:0;flex-direction:row-reverse}
-#app .ds-hero-quote>img{width:76px;height:86px}
-#app .ds-hero-quote p{font-size:19px!important}
-#app .ds-hero-quote>div{background:#fffdfcf2;border-color:#cfbddd}
-#app .ds-hero-quote>div:before{left:auto;right:-6px;transform:rotate(225deg)}
 /* Strong editorial products retain their own internals. */
 #app #newsroom .investment-news-board-shell>.sh{flex-wrap:wrap;gap:12px}
 #app #newsroom .investment-news-board-shell>.sh>div:first-child{min-width:200px;flex:1}
 #app #newsroom .investment-news-board-shell .sh-actions{display:flex;flex-wrap:wrap;gap:8px;min-width:0}
 #app #newsroom .investment-news-board-shell .sh-actions select{min-width:105px;max-width:100%}
 #app #newsroom #haniCloseAllCommentsV02982{white-space:nowrap;flex:none}
-@media(max-width:760px){#app .hani-master-hero:has(.ds-integrated-agent){height:auto!important}#app .ds-integrated-agent .ai-quote b{font-size:14px!important}}
+@media(max-width:760px){}
 @media(max-width:1450px){#app #lifeMarketGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media(max-width:1200px){#app .home-dashboard-grid{grid-template-columns:1fr!important}#app .home-trend-card,#app .home-mix-card{height:auto!important;min-height:530px!important}#app .home-chart-stage{height:300px!important;flex:none}#app .ds-companion-scene>img{max-height:260px}#app .home-donut-row{min-height:200px}}
-@media(max-width:760px){#app .view{font-size:15px}#app .view .card{padding:17px}#app .view .sh h3{font-size:19px}#app .hani-master-hero{height:auto!important;min-height:180px!important;grid-template-columns:1fr!important}#app .hani-master-copy{padding:22px!important;z-index:1}#app .hani-master-title{font-size:28px!important}#app .hani-master-metric{font-size:28px!important}#app .hani-master-scene{height:120px!important;order:2!important}#app .ds-team-hero{height:auto;grid-template-columns:1fr}#app .ds-team-hero>div:first-child{padding:22px}#app .ds-team-hero h2{font-size:28px}#app .ds-team-art{height:180px;padding:0 12px}#app .home-dialogue-shell{padding:16px!important}#app .home-dialogue-avatar{width:48px!important;height:56px!important;flex-basis:48px}#app .home-dialogue-main{gap:10px}#app #homeDialogueLabel{padding:0;min-height:22px}#app #homeDialogueText{font-size:16px!important;padding:12px}#app .home-welcome-actions{position:static;margin-top:12px;justify-content:flex-end}#app .home-dialogue-line{font-size:12px!important}#app .home-trend-value strong{font-size:34px!important}#app .home-trend-card,#app .home-mix-card{height:auto!important;min-height:0!important}#app .ds-companion-scene{margin-left:-17px;margin-right:-17px}#app .ds-companion-scene figcaption{padding:12px 17px 0}#app .secondary-widget-details b{font-size:18px!important}#app .ds-agent-comment p{font-size:14px!important}#app .ds-agent-comment>img{width:48px;height:56px}#app #investmentIntake>.grid{grid-template-columns:1fr}#app #investmentIntake .hani-master-hero{height:auto!important;padding-bottom:100px}#app #investmentIntake .hani-master-title{font-size:36px!important}#app #investmentIntake .hani-master-scene{height:120px!important}#app .ds-hero-quote{width:auto;left:16px;right:16px;bottom:16px}#app .ds-hero-quote p{font-size:16px!important}#app .ds-hero-quote>img{width:56px;height:66px}}
+@media(max-width:760px){#app .view{font-size:15px}#app .view .card{padding:17px}#app .view .sh h3{font-size:19px}#app .ds-team-hero{height:auto;grid-template-columns:1fr}#app .ds-team-hero>div:first-child{padding:22px}#app .ds-team-hero h2{font-size:28px}#app .ds-team-art{height:180px;padding:0 12px}#app .home-dialogue-shell{padding:16px!important}#app .home-dialogue-avatar{width:48px!important;height:56px!important;flex-basis:48px}#app .home-dialogue-main{gap:10px}#app #homeDialogueLabel{padding:0;min-height:22px}#app #homeDialogueText{font-size:16px!important;padding:12px}#app .home-welcome-actions{position:static;margin-top:12px;justify-content:flex-end}#app .home-dialogue-line{font-size:12px!important}#app .home-trend-value strong{font-size:34px!important}#app .home-trend-card,#app .home-mix-card{height:auto!important;min-height:0!important}#app .ds-companion-scene{margin-left:-17px;margin-right:-17px}#app .ds-companion-scene figcaption{padding:12px 17px 0}#app .secondary-widget-details b{font-size:18px!important}#app .ds-agent-comment p{font-size:14px!important}#app .ds-agent-comment>img{width:48px;height:56px}#app #investmentIntake>.grid{grid-template-columns:1fr}}
 @media(max-width:480px){#app #lifeMarketGrid{grid-template-columns:1fr!important}#app #lifeMarketGrid>#lifeMarketBanner{grid-column:auto;height:auto!important;min-height:0!important;display:block!important}#app #lifeMarketBanner>img{position:static!important;width:100%!important;height:auto!important;aspect-ratio:3/1;object-fit:contain!important}#app #lifeMarketBanner .mood-copy{padding:18px!important}#app #homeMixDonut.secondary-widget-v02992{grid-template-columns:1fr!important}#app .secondary-widget-visual{display:flex;align-items:center;justify-content:space-around;gap:12px}#app .secondary-widget-details{grid-template-columns:repeat(2,minmax(0,1fr))}#app .home-trend-footer{font-size:12px!important}}
 @media(max-width:760px){
   #app #newsroom .investment-news-board-shell>.sh>div:first-child{flex-basis:100%}
   #app #newsroom .investment-news-board-shell .sh-actions{width:100%}
   #app #home .home-trend-card,#app #home .home-mix-card{padding:17px!important}
   #app .home-lower-grid{grid-template-columns:1fr!important}
-  #app .view>.hani-master-hero{display:flex!important;flex-direction:column!important;height:auto!important;padding:0!important}
-  #app .view>.hani-master-hero>.hani-master-copy{order:1!important;padding:22px!important;width:100%!important}
-  #app .view>.hani-master-hero>.hani-master-scene{order:2!important;width:100%!important;height:100px!important;flex:none!important}
-  #app #aiBanner.ds-integrated-agent,#app .ds-hero-quote{position:relative!important;inset:auto!important;order:3!important;width:auto!important;margin:12px 14px!important;flex:none!important}
 }
+/* Canonical page frame: shared by every route. Adjust tokens here, not page overrides. */
+:root{--ds-hero-height:240px;--ds-hero-padding:28px;--ds-title-size:32px;--ds-avatar-size:80px;--ds-season:#8d6daf;--ds-season-soft:#f4edf9;--ds-canvas:#f7f3fa;--ds-muted:#637087}
+:root[data-season=spring]{--ds-season:#ae5687;--ds-season-soft:#fbedf4;--ds-canvas:#fbf4f8}
+:root[data-season=summer]{--ds-season:#147f96;--ds-season-soft:#e4f5f7;--ds-canvas:#f0f8fa}
+:root[data-season=autumn]{--ds-season:#a86530;--ds-season-soft:#faf0df;--ds-canvas:#faf5ee}
+:root[data-season=winter]{--ds-season:#526f9a;--ds-season-soft:#eaf0fa;--ds-canvas:#f1f5fb}
+html body,#app,.main{background-color:var(--ds-canvas)!important}
+#app .view>.ds-page-hero{position:relative!important;display:grid!important;grid-template-columns:47% 53%!important;align-items:center!important;height:var(--ds-hero-height)!important;min-height:var(--ds-hero-height)!important;padding:0!important;margin:0 0 var(--ds-gap)!important;border:1px solid color-mix(in srgb,var(--ds-season) 15%,white)!important;border-radius:22px!important;overflow:hidden!important;background:linear-gradient(110deg,var(--ds-season-soft),color-mix(in srgb,var(--ds-season-soft) 40%,white))!important;box-shadow:var(--ds-shadow)!important;--hero-surface:var(--ds-season-soft);--hero-ink:var(--ds-ink);--hero-muted:var(--ds-muted)}
+#app .view>.ds-page-hero>.hani-master-copy{grid-area:1/1!important;align-self:center!important;justify-content:center!important;padding:var(--ds-hero-padding)!important;gap:8px!important;z-index:2}
+#app .ds-page-hero .hani-master-titleline{display:flex!important;flex-wrap:wrap!important;gap:8px 12px!important;align-items:baseline!important;margin:0!important}
+#app .ds-page-hero .hani-master-title{font:750 var(--ds-title-size)/1.3 var(--ds-font)!important;letter-spacing:-.035em!important;color:color-mix(in srgb,var(--hero-accent,var(--ds-season)) 65%,#28374c)!important;margin:0!important;word-break:keep-all;overflow-wrap:break-word}
+#app .ds-page-hero .hani-master-eyebrow{font:800 11px/1.5 var(--ds-font)!important;color:var(--ds-season)!important;letter-spacing:.12em!important}
+#app .ds-page-hero .hani-master-description{font:400 15px/1.6 var(--ds-font)!important;color:var(--ds-muted)!important;max-width:100%!important;margin:0!important;word-break:keep-all}
+#app .ds-page-hero :is(.hani-master-metric,.hani-master-change){font:700 16px/1.5 var(--ds-font)!important;color:var(--ds-ink)!important}
+#app .ds-page-hero>.hani-master-scene{position:absolute!important;inset:0 0 0 42%!important;width:auto!important;height:100%!important;opacity:.65;pointer-events:none;mask-image:linear-gradient(90deg,transparent,#000 38%)}
+#app .ds-page-hero>.hani-master-scene[hidden]{display:none!important}
+#app .ds-page-hero>.hani-master-scene img{width:100%;height:100%;object-fit:cover}
+#app .ds-page-hero.spatial-scene-newsroom{--hero-accent:#456583}
+#app .ds-page-hero>.hani-master-scene:after{background:linear-gradient(90deg,var(--ds-season-soft),transparent 65%)!important}
+#app .ds-page-hero #aiBanner.ds-integrated-agent{display:block!important;position:relative!important;grid-area:1/2!important;align-self:center!important;inset:auto!important;width:auto!important;height:auto!important;min-height:0!important;padding:0!important;margin:0 var(--ds-hero-padding) 0 12px!important;background:transparent!important;border:0!important;box-shadow:none!important;animation:none!important;overflow:visible!important;z-index:3}
+#app .ds-integrated-agent:before,#app .ds-integrated-agent:after,#app .ds-integrated-agent .ai-banner-copy{display:none!important}
+#app .ds-page-hero .ai-character-zone{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-end!important;gap:14px!important;position:static!important;width:100%!important;height:auto!important;padding:0!important;min-height:0!important;background:none!important;border:0!important;box-shadow:none!important}
+#app .ds-page-hero .ai-quote{position:relative!important;inset:auto!important;flex:1!important;min-width:0!important;width:auto!important;max-width:none!important;padding:14px 18px!important;border-radius:18px!important;border:1px solid color-mix(in srgb,var(--ds-season) 28%,white)!important;background:#fffffff0!important;box-shadow:0 5px 18px #28374c08!important;transform:none!important}
+#app .ds-page-hero .ai-quote span{font:750 12px/1.5 var(--ds-font)!important;color:var(--ds-season)!important}
+#app .ds-page-hero .ai-quote b{font:700 19px/1.55 var(--ds-font)!important;color:var(--ds-ink)!important;word-break:keep-all!important;overflow-wrap:break-word;white-space:normal!important;text-wrap:pretty}
+#app .ds-page-hero .ai-avatar{position:static!important;width:var(--ds-avatar-size)!important;height:90px!important;min-width:var(--ds-avatar-size)!important;flex:0 0 var(--ds-avatar-size)!important;border-radius:18px!important;border:3px solid white!important;background-position:center 15%!important;background-size:cover!important;box-shadow:0 5px 18px #28374c18!important;transform:none!important}
+body[data-view=home] #aiBanner{display:none!important}
+#app .ds-team-hero{height:var(--ds-hero-height);margin-bottom:var(--ds-gap);background:linear-gradient(110deg,var(--ds-season-soft),var(--ds-canvas));border-color:color-mix(in srgb,var(--ds-season) 15%,white)}
+#app .ds-team-art{padding-right:0;background:none}
+#app .ds-team-art img{margin-left:auto;margin-right:0}
+#app .ds-team-hero h2{color:var(--ds-season)}
+#app .home-dialogue-main{align-items:center!important}
+#app #homeDialogueLabel{min-height:24px;margin-bottom:5px;padding-right:350px}
+#app .home-welcome-actions{top:6px}
+#app #homeDialogueText{background:color-mix(in srgb,var(--ds-season-soft) 55%,white);border-color:color-mix(in srgb,var(--ds-season) 20%,white)}
+#app .view>.page-nav-context-v02992,#app .view>.tabs{margin-bottom:var(--ds-gap)}
+#app .view .sh{min-height:44px}
+#app .view .sh-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+#app .view .note,#app .view .muted{color:var(--ds-muted)}
+#app .view :is(.card,.asset-dashboard-card){border-color:color-mix(in srgb,var(--ds-season) 12%,white)}
+#app .view .card>.sh h3:before{background:var(--ds-season)!important}
+#app .view :is(.tab.active,.newsroom-mode-btn.active){background:var(--ds-season-soft)!important;color:var(--ds-season)!important;box-shadow:none!important}
+#app .view :is(input,textarea,select):focus-visible{outline:2px solid var(--ds-season);outline-offset:2px}
+/* Information surfaces never use portrait watermarks. */
+#app :is(.investment-live,.library-shelf,.cinema-archive):before,#app :is(.investment-live,.library-shelf,.cinema-archive):after,#app :is(#asset,#diet,#exercise) .grid>.card.full:first-child:before,#app :is(#asset,#diet,#exercise) .grid>.card.full:first-child:after{content:none!important;background-image:none!important}
+/* Editorial quote: persistent display slot, existing editor and save path retained. */
+#app .ledger-jieun-comment{display:grid;grid-template-columns:64px minmax(0,1fr);gap:14px;align-content:center;background:var(--ds-season-soft)!important;color:var(--ds-ink)!important;padding:20px!important;border:1px solid color-mix(in srgb,var(--ds-season) 25%,white)!important;border-radius:18px}
+#app .ledger-comment-head{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:10px}
+#app .ledger-comment-head :is(span,h4){color:var(--ds-season)!important}
+#app .ds-comment-portrait{width:64px;height:76px;object-fit:cover;border:3px solid white;border-radius:16px;align-self:center}
+#app #ledgerJieunComment{font-size:20px!important;font-weight:700;line-height:1.6!important;margin:0!important;padding:15px!important;background:#fff!important;color:var(--ds-ink)!important;border-radius:16px;word-break:keep-all;overflow-wrap:anywhere;height:auto!important;max-height:none!important;overflow:visible!important;display:block!important;-webkit-line-clamp:unset!important}
+#app .ledger-comment-editor{grid-column:1/-1}
+#app .ledger-jieun-comment.is-editing #ledgerJieunComment,#app .ledger-jieun-comment.is-editing .ds-comment-portrait{display:none}
+#app #ledgerJieunEditor[hidden]{display:none!important}
+/* Header controls and pane visibility have one geometry, independent of archive content. */
+#app #newsroom .newsroom-mode-tabs{position:relative!important;z-index:2;margin:0 0 10px!important}
+#app #newsroom .newsroom-content-actions{margin:0 0 12px!important;min-height:0!important}
+#app #newsroom .newsroom-pane[hidden]{display:none!important}
+#app #newsroom .newsroom-pane:not([hidden]){display:block!important}
+#app #newsroom .newsroom-pane>.sh{margin-top:0!important}
+/* Table logo and text occupy separate tracks; symbol never overlays the name. */
+#app #investment .hani-etf-target-v02982{position:relative!important;padding-left:0!important;display:flex!important;align-items:center!important;gap:12px!important;min-width:0}
+#app #investment td.hani-etf-target-v02982{display:table-cell!important;padding:14px!important}
+#app #investment .hani-etf-logo-v02982{position:relative!important;inset:auto!important;display:inline-grid!important;vertical-align:middle!important;flex:0 0 36px!important;width:36px!important;height:36px!important;margin:0 10px 0 0!important;transform:none!important}
+#app #investment .hani-etf-target-v02982 :is(b,strong){white-space:normal;overflow-wrap:anywhere}
+#app .view .empty{padding:24px!important;min-height:0!important;font-size:14px!important;color:var(--ds-muted)}
+@media(max-width:760px){
+ :root{--ds-hero-height:300px;--ds-hero-padding:20px;--ds-title-size:27px;--ds-avatar-size:58px}
+ #app .view>.ds-page-hero{display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:stretch!important;height:var(--ds-hero-height)!important;min-height:var(--ds-hero-height)!important;gap:16px!important}
+ #app .view>.ds-page-hero>.hani-master-copy{padding:0 var(--ds-hero-padding)!important;flex:none!important;width:100%!important;align-self:stretch!important}
+ #app .ds-page-hero>.hani-master-scene{inset:0!important;opacity:.12;mask-image:none}
+ #app .ds-page-hero #aiBanner.ds-integrated-agent{margin:0 var(--ds-hero-padding)!important;flex:none!important}
+ #app .ds-page-hero .ai-avatar{height:68px!important}
+ #app .ds-page-hero .ai-quote{padding:12px!important}
+ #app .ds-page-hero .ai-quote b{font-size:16px!important}
+ #app .ds-page-hero .hani-master-description{font-size:14px!important}
+ #app .ds-team-hero{height:300px;grid-template-columns:1fr;grid-template-rows:130px 170px}
+ #app .ds-team-hero>div:first-child{padding:18px 20px}
+ #app .ds-team-hero h2{font-size:25px;margin:5px 0}
+ #app .ds-team-art{height:170px;padding:0}
+ #app .ds-team-art img{width:100%;max-width:360px;margin-left:auto}
+ #app #homeDialogueLabel{padding-right:0;min-height:0}
+ #app .home-welcome-actions{position:static;margin-top:12px}
+ #app #ledgerJieunComment{font-size:18px!important}
+ #app .page-nav-context-v02992{flex-wrap:wrap}
+}
+#app #newsroom .ds-news-navigation{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;padding:6px}
+#app #newsroom .ds-news-navigation .newsroom-mode-tabs{margin:0!important;flex:none}
+#app #newsroom .ds-news-navigation .newsroom-content-actions{margin:0!important;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#app #newsroom .newsroom-pane{margin-top:0!important;padding-top:0!important}
+#app #newsroom .newsroom-pane>.newsroom-section-head{margin-top:0!important}
+@media(max-width:1000px){#app #newsroom .ds-news-navigation{flex-wrap:wrap}#app #newsroom .ds-news-navigation .newsroom-content-actions{width:100%}}
