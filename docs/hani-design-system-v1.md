@@ -109,3 +109,12 @@ Built-in imagegen precise-object-edit: remove all background audience; retain th
 - 주간 아카이브와 관심 기사 fixture로 종합/관심 4회 전환 및 로고 노드 유지 확인. 대표 종목 5개에서 로고 1개와 이름 비겹침 확인, desktop/mobile 모두 통과.
 - 검증용 데이터는 별도의 메모리 저장소 preview에서만 사용하며 배포 파일에 fixture/auth 우회를 포함하지 않는다.
 - 원장·Cloud·인증·schema 변경 없음. 운영 로그인/Cloud 상태는 배포 후 접근 가능한 범위까지만 확인하고 미검증 사항을 보고한다.
+
+## v2.9.104 — Compact domain Hero / security identity repair
+
+- 공통 Hero 높이를 desktop 190px, 390px mobile 230px로 축소한다. 모바일에서는 eyebrow를 생략하고 설명을 한 줄로 제한해 긴 말풍선도 프레임 안에 유지한다.
+- 계절 테마는 전체 캔버스와 일반 컨트롤에 유지하되 Hero는 `ds-tone-*`별 고유 accent/soft 색을 사용한다. 따라서 같은 메뉴의 Hero 색은 계절 전환과 무관하게 유지된다.
+- Hero 제목은 사이드바 메뉴명과 지표·보드명을 `메뉴 - 현재 제목`으로 연결한다. 값의 변화가 양수면 red, 음수면 blue를 사용한다.
+- 말풍선과 프로필은 Hero 오른쪽 끝에 정렬한다. 배경 장면 위에서 텍스트가 읽히도록 흰색 말풍선과 메뉴 accent 테두리를 유지한다.
+- 투자 표의 ETF 셀에는 `.hani-etf-cell-content-v02982` 단일 flex wrapper를 사용한다. 로고와 종목명을 같은 행의 분리된 영역으로 유지하고, 전체 투자 행을 먼저 검사한 뒤 leaf 보정을 실행해 로고 누락을 방지한다.
+- 28개 메뉴 × 4계절 × desktop/mobile 224개 조합과 14개 대표 주식·ETF 로고를 desktop/mobile에서 검사한다.

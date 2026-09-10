@@ -7,6 +7,8 @@
   const safe=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   const number=v=>Number(v)||0, currentMonth=()=>new Date().toLocaleDateString('en-CA').slice(0,7);
   const money=v=>`${Math.round(number(v)).toLocaleString('ko-KR')}원`;
+  const menuLabel=id=>q(`.nav-btn[data-view="${id}"] .txt`)?.textContent?.trim()||pageMeta[id]?.[0]||id;
+  const titled=(id,title)=>{const label=menuLabel(id);return !title||title===label?label:`${label} - ${title}`};
   // Canonical presentation metadata. No state writes; scenes and speakers live here.
   const companions={
     hasdaq:{agent:'hani',name:'하니',role:'투자 담당',scene:'asset',line:'숫자는 차분하게, 내일은 조금 더 든든하게.'},
@@ -43,11 +45,11 @@
   function hero(id,{tone,kicker,title,copy,value='기록 없음',change='',scene=tone}){
     const root=q(`#${id}`);if(!root)return null;let el=q(':scope > .index-hero-v02992',root);
     if(!el){el=document.createElement('div');root.prepend(el);el.innerHTML='<div class="hani-master-copy"><span class="hani-master-eyebrow"></span><div class="hani-master-titleline"><h2 class="hani-master-title"></h2><strong class="hani-master-metric"></strong><span class="hani-master-change"></span></div><p class="hani-master-description"></p></div><div class="hani-master-scene"><img alt=""></div>'}
-    const className=`index-hero-v02992 hani-master-hero ds-page-hero spatial-scene-${scene}`;if(el.className!==className)el.className=className;
+    const className=`index-hero-v02992 hani-master-hero ds-page-hero ds-tone-${tone} spatial-scene-${scene}`;if(el.className!==className)el.className=className;
     const direction=change&&/(^|[\s·:])[-−↓]/.test(change.trim())?'down':change&&/(^|[\s·:])[+↑]/.test(change.trim())?'up':'neutral';
     const updateText=(selector,value)=>{const node=q(selector,el);if(node.textContent!==value)node.textContent=value};
     updateText('.hani-master-eyebrow',kicker);
-    updateText('.hani-master-title',title);
+    updateText('.hani-master-title',titled(id,title));
     const metric=q('.hani-master-metric',el),delta=q('.hani-master-change',el);
     updateText('.hani-master-metric',value);metric.hidden=!value;updateText('.hani-master-change',change);delta.hidden=!change;if(delta.className!==`hani-master-change ${direction}`)delta.className=`hani-master-change ${direction}`;
     updateText('.hani-master-description',copy);
@@ -66,8 +68,8 @@
     // Every route shares one persistent Hero. This function owns the frame only.
     qa('.view').filter(v=>v.id!=='home').forEach(v=>{const m=pageMeta[v.id]||[v.id,'','work'];if(!q(':scope > .index-hero-v02992',v))hero(v.id,{tone:m[2],scene:'plain',kicker:String(m[2]||'HANI OS').toUpperCase(),title:m[0],copy:m[1],value:''})});
     const investmentSummary=brokerSummary();
-    hero('investment',{tone:'finance',scene:'investment',kicker:'HANI INVESTMENT DESK',title:'투자 · HASDAQ BOARD',copy:'월간 스냅샷으로 계좌별 자산과 흐름을 확인합니다.',value:'',change:investmentSummary.r===null?'':('전월 대비 '+(investmentSummary.r>=0?'+':'')+investmentSummary.r.toFixed(2)+'%')});
-    hero('newsroom',{tone:'finance',scene:'newsroom',kicker:'HANI NEWS DESK',title:'오늘의 시장을 읽는 뉴스룸',copy:'종합 시황과 관심종목의 의미 있는 변화를 모아봅니다.',value:''});
+    hero('investment',{tone:'finance',scene:'investment',kicker:'HANI INVESTMENT DESK',title:'HASDAQ BOARD',copy:'월간 스냅샷으로 계좌별 자산과 흐름을 확인합니다.',value:'',change:investmentSummary.r===null?'':('전월 대비 '+(investmentSummary.r>=0?'+':'')+investmentSummary.r.toFixed(2)+'%')});
+    hero('newsroom',{tone:'finance',scene:'newsroom',kicker:'HANI NEWS DESK',title:'오늘의 시장',copy:'종합 시황과 관심종목의 의미 있는 변화를 모아봅니다.',value:''});
     q('#investNews > .hani-master-hero')?.remove();
 
     const b=brokerSummary();
