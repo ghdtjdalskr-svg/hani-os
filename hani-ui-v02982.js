@@ -52,6 +52,8 @@
 
 .hani-etf-target-v02982{position:relative!important;min-width:0!important}
 .hani-etf-target-v02982:not(td){display:flex!important;align-items:center!important;gap:11px!important}
+.hani-etf-cell-content-v02982{display:flex!important;align-items:center!important;gap:10px!important;min-width:0!important;width:100%!important}
+.hani-etf-cell-content-v02982>:not(.hani-etf-logo-v02982){min-width:0!important}
 td.hani-etf-target-v02982{padding-left:58px!important}
 td.hani-etf-target-v02982>.hani-etf-logo-v02982{position:absolute!important;left:16px!important;top:50%!important;transform:translateY(-50%)!important}
 .hani-etf-logo-v02982{
@@ -186,8 +188,13 @@ td.hani-etf-target-v02982>.hani-etf-logo-v02982{position:absolute!important;left
     if (!anchor || !identity) return;
     const target=etfTarget(anchor) || anchor;
     qa('.hani-etf-logo-v02980,.hani-security-logo-v02979,.hani-security-logo-v02978,.hani-security-logo-v02976',target).forEach(el=>el.remove());
-    const existing=qa('.hani-etf-logo-v02982',target);existing.slice(1).forEach(el=>el.remove());
-    if (!existing.length) target.insertBefore(etfLogo(identity),target.firstChild);
+    let host=target;
+    if(target.matches('td')){
+      host=q(':scope > .hani-etf-cell-content-v02982',target);
+      if(!host){host=document.createElement('div');host.className='hani-etf-cell-content-v02982';while(target.firstChild)host.append(target.firstChild);target.append(host)}
+    }
+    const existing=qa('.hani-etf-logo-v02982',host);existing.slice(1).forEach(el=>el.remove());
+    if (!existing.length) host.insertBefore(etfLogo(identity),host.firstChild);
     target.classList.remove('hani-security-cell-v02979','hani-security-with-logo-v02978','hani-etf-cell-v02980');
     target.classList.add('hani-etf-target-v02982');
     target.dataset.haniEtfV02982=identity.id;
@@ -196,6 +203,7 @@ td.hani-etf-target-v02982>.hani-etf-logo-v02982{position:absolute!important;left
   function decorateEtfs() {
     const root=q('#investment');
     if (!root) return;
+    qa('tr',root).forEach(row=>{const cell=q('td:first-child',row);if(cell&&resolveEtf(txt(cell)))ensureEtfLogo(cell)});
     leafEtfAnchors(root).forEach(ensureEtfLogo);
   }
 
