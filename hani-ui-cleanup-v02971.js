@@ -34,7 +34,7 @@
     wishlist: 'Wish-list',
     travel: '여행',
     movie: '시청 아카이브',
-    game: '게임',
+    game: '스포츠',
     diary: '일기',
     tasks: '할 일',
     calendar: '캘린더',
