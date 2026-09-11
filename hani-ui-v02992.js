@@ -36,7 +36,7 @@
     if(comment)comment.classList.toggle('is-editing',!q('#ledgerJieunEditor').hidden);
   }
   function updateCompanion(selected){const data=companions[selected]||companions.hasdaq,slot=q('.ds-companion-scene');if(!slot||slot.dataset.index===selected)return;slot.dataset.index=selected;const image=q('img',slot);image.src=designSceneSrc(data.scene);image.alt=`${data.name}와 동료들의 ${data.role} 웹툰 장면`;q('figcaption',slot).innerHTML=speakerMarkup(data.agent,data.name,data.role,data.line)}
-  const heroImages={asset:"./assets/heroes/asset.png",monthEnd:"./assets/heroes/month-end.png",ledger:"./assets/heroes/ledger.png",diet:"./assets/heroes/diet.png",exercise:"./assets/heroes/exercise.png",reading:"./assets/heroes/reading.png",movie:"./assets/heroes/movie.png",study:"./assets/heroes/study.png",campus:"./assets/heroes/campus.png",travel:"./assets/heroes/travel.png",investment:"./assets/heroes/investment.png",newsroom:"./assets/heroes/newsroom.png",sports:"./assets/sports/hani-sports-hero-v1.png"};
+  const heroImages={asset:"./assets/heroes/asset.png",monthEnd:"./assets/heroes/month-end.png",ledger:"./assets/heroes/ledger.png",diet:"./assets/heroes/diet.png",exercise:"./assets/heroes/exercise.png",reading:"./assets/heroes/reading.png",movie:"./assets/heroes/movie.png",study:"./assets/heroes/study.png",campus:"./assets/heroes/campus.png",travel:"./assets/heroes/travel.png",investment:"./assets/heroes/investment.png",newsroom:"./assets/heroes/newsroom.png"};
   const lifeMarketImages=[designSceneSrc("srx")];
   const lifeMarketDateKey=new Date().toLocaleDateString('en-CA');
   const lifeMarketImageSeed=[...lifeMarketDateKey].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7);
@@ -85,7 +85,7 @@
     const qm=quizMetrics();hero('study',{tone:'learning',scene:'study',kicker:'LEARNING INDEX',title:'HINKEI 225',copy:'저장된 Quiz 제출 결과로 계산한 학습성과 지표입니다.',value:qm.rate===null?'제출 기록 없음':`${qm.rate}%`,change:qm.completed.length?`완료 Quiz ${qm.completed.length}회 기준`:'Quiz 제출 후 정답률 표시',stats:[`퀴즈 ${(state.learningQuizzes||[]).length}`,`오답 ${qm.wrong}`,`미완료 ${qm.pending}`]});
     hero('university',{tone:'campus',scene:'campus',mark:'',kicker:'HANI OS · CAMPUS',title:'낭만 캠퍼스 라이프',copy:'실제 학기·과목·학사일정을 한눈에 보는 캠퍼스 데스크입니다.',value:'',change:'',stats:[]});
     hero('travel',{tone:'travel',scene:'travel',mark:'',kicker:'HANI OS · TRAVEL ARCHIVE',title:'여행 아카이브',copy:'실제 여행 기록과 가고 싶은 장소를 연결해 보는 여행 데스크입니다.',value:'',change:'',stats:[]});
-    hero('game',{tone:'sports',scene:'sports',kicker:'HANI OS · SPORTS LOUNGE',title:'SPORTS HUB',copy:'양키스·KIA·레알 마드리드·Dplus KIA를 한눈에 보는 가벼운 응원 라운지입니다.',value:'',change:''});
+    hero('game',{tone:'sports',scene:'none',kicker:'HANI OS · SPORTS LOUNGE',title:'SPORTS HUB',copy:'양키스·KIA·레알 마드리드·Dplus KIA를 한눈에 보는 가벼운 응원 라운지입니다.',value:'',change:''});
     hero('investmentIntake',{tone:'finance',scene:'monthEnd',mark:'',kicker:'ASSET UPDATE · MONTH-END',title:'월말정산',copy:'가계부 확정본과 투자 계좌 업데이트를 한곳에서 준비합니다.',value:'',change:'',stats:[]});q('.ledger-import .sh h3')?.replaceChildren(document.createTextNode('가계부 확정본 Import'));
     qa('#asset .asset-dashboard-card .sh h3').forEach(x=>x.textContent='자산 핵심 지표');
   }
