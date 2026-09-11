@@ -236,3 +236,60 @@ body[data-view=home] #aiBanner{display:none!important}
 #app #newsroom .newsroom-pane{margin-top:0!important;padding-top:0!important}
 #app #newsroom .newsroom-pane>.newsroom-section-head{margin-top:0!important}
 @media(max-width:1000px){#app #newsroom .ds-news-navigation{flex-wrap:wrap}#app #newsroom .ds-news-navigation .newsroom-content-actions{width:100%}}
+
+/* v2.9.105 · Travel archive elevation on the canonical card system. */
+#app #travel{--travel-deep:#237c80;--travel-warm:#d98232;--travel-sand:#fbf4e8}
+#app #travel .travel-tabs{display:flex;gap:8px;padding:6px;border:1px solid color-mix(in srgb,var(--travel-deep) 16%,white);border-radius:18px;background:#fff;overflow-x:auto}
+#app #travel .travel-tabs .tab{flex:1;min-width:max-content;border-radius:12px}
+#app #travel .travel-tabs .tab.active{background:color-mix(in srgb,var(--travel-deep) 12%,white)!important;color:var(--travel-deep)!important}
+#app #travel .module-kpi{border-top:3px solid color-mix(in srgb,var(--travel-deep) 75%,white);background:linear-gradient(150deg,#fff,color-mix(in srgb,var(--travel-sand) 42%,white))}
+#app #travel .module-kpi:nth-child(3),#app #travel .module-kpi:nth-child(4){border-top-color:color-mix(in srgb,var(--travel-warm) 76%,white)}
+#app #travel .travel-section-kicker{display:block;margin:0 0 3px;color:var(--travel-deep);font:900 10px/1.2 var(--ds-font);letter-spacing:.12em}
+#app #travel .travel-source-note{margin:10px 0 14px;padding:10px 12px;border-left:4px solid var(--travel-warm);border-radius:10px;background:var(--travel-sand);color:var(--ds-muted);font-size:12px;line-height:1.55}
+#app #travel .travel-card{position:relative;min-height:220px;padding:18px;border-color:color-mix(in srgb,var(--travel-deep) 18%,white);background:linear-gradient(150deg,#fff,color-mix(in srgb,var(--travel-sand) 38%,white));box-shadow:var(--ds-shadow)}
+#app #travel .travel-card:before{content:"";position:absolute;inset:0 auto 0 0;width:4px;border-radius:18px 0 0 18px;background:var(--travel-deep)}
+#app #travel .travel-card h4{font-size:20px!important;line-height:1.35}
+#app #travel .travel-destination{color:var(--travel-deep)}
+#app #travel .travel-plan-chip{background:color-mix(in srgb,var(--travel-deep) 10%,white);color:var(--travel-deep)}
+#app #travel .travel-plan-chip.warm{background:color-mix(in srgb,var(--travel-warm) 13%,white);color:#aa5b13}
+#app #travel .travel-wish-card:before{background:var(--travel-warm)}
+#app #travel .travel-wish-copy{margin-top:12px;padding:11px 12px;border-radius:13px;background:#fff;border:1px solid color-mix(in srgb,var(--travel-warm) 18%,white)}
+#app #travel .travel-wish-copy b{display:block;margin-bottom:5px;color:#a65b18;font-size:11px}
+#app #travel .travel-wish-copy p{margin:0;color:var(--ds-ink);font-size:13px;line-height:1.6;white-space:pre-wrap}
+#app #travel .travel-planning-note{margin-bottom:14px;background:linear-gradient(135deg,#fff,var(--travel-sand))}
+#app #travel .travel-planning-note textarea{min-height:110px}
+#app #travel .travel-archive-grid{grid-template-columns:repeat(auto-fill,minmax(265px,1fr))}
+#app #travel .travel-archive-card{min-height:215px;border-color:color-mix(in srgb,var(--travel-warm) 18%,white);background:linear-gradient(150deg,#fff,var(--travel-sand));box-shadow:var(--ds-shadow)}
+#app #travel .travel-archive-type{background:color-mix(in srgb,var(--travel-warm) 12%,white);color:#a75c18}
+#app #travel .travel-archive-trip{max-width:58%;color:var(--travel-deep)}
+#app #travel .travel-archive-card h4{font-size:19px!important}
+#travelTripDetailModal .modal-card{width:min(1120px,100%)!important}
+#travelTripDetailModal .travel-detail-columns{grid-template-columns:1fr}
+#travelTripDetailModal .travel-itinerary-table-wrap{margin-top:10px;border:1px solid var(--line);border-radius:15px;overflow:auto;background:#fff}
+#travelTripDetailModal .travel-itinerary-table{width:100%;min-width:850px;border-collapse:collapse}
+#travelTripDetailModal .travel-itinerary-table th{padding:9px 10px;background:#f5faf9;color:#477476;font-size:10px;text-align:left;white-space:nowrap}
+#travelTripDetailModal .travel-itinerary-table td{padding:10px;border-top:1px solid var(--line);font-size:11px;line-height:1.5;vertical-align:top}
+#travelTripDetailModal .travel-itinerary-table td:nth-child(1),#travelTripDetailModal .travel-itinerary-table td:nth-child(2){white-space:nowrap}
+#travelTripDetailModal .travel-itinerary-table td b,#travelTripDetailModal .travel-itinerary-table td>small{display:block!important}
+#travelTripDetailModal .travel-itinerary-table td small{margin-top:3px;color:var(--muted)}
+#travelTripDetailModal .travel-row-actions{display:flex;gap:5px;justify-content:flex-end}
+#travelTripDetailModal .travel-row-actions .btn{padding:6px 8px!important;min-width:0}
+@media(max-width:700px){
+ #app #travel .module-kpis{gap:8px}
+ #app #travel .module-kpi{padding:12px}
+ #app #travel .travel-card{min-height:0;padding:16px}
+ #app #travel .travel-archive-toolbar{grid-template-columns:1fr}
+ #app #travel .travel-archive-trip{max-width:62%}
+ #travelTripDetailModal .travel-itinerary-table-wrap{border:0;overflow:visible;background:transparent}
+ #travelTripDetailModal .travel-itinerary-table{display:block;min-width:0}
+ #travelTripDetailModal .travel-itinerary-table thead{display:none}
+ #travelTripDetailModal .travel-itinerary-table tbody{display:grid;gap:10px}
+ #travelTripDetailModal .travel-itinerary-table tr{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px;border:1px solid var(--line);border-left:4px solid #237c80;border-radius:14px;background:#fff}
+ #travelTripDetailModal .travel-itinerary-table td{display:grid;grid-template-columns:82px minmax(0,1fr);gap:8px;padding:0;border:0;font-size:12px;white-space:normal!important}
+ #travelTripDetailModal .travel-itinerary-table td:before{content:attr(data-label);color:var(--muted);font-size:10px;font-weight:850}
+ #travelTripDetailModal .travel-itinerary-table td:nth-child(n+3){grid-column:1/-1}
+ #travelTripDetailModal .travel-itinerary-table td:last-child{display:block;margin-top:3px}
+ #travelTripDetailModal .travel-itinerary-table td:last-child:before{display:none}
+ #travelTripDetailModal .travel-row-actions{justify-content:flex-start;flex-wrap:wrap}
+ #travelTripDetailModal .travel-row-actions .btn{flex:1}
+}
