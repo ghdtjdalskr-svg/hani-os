@@ -167,9 +167,11 @@ html body,#app,.main{background-color:var(--ds-canvas)!important}
 #app .ds-page-hero .ai-avatar{position:static!important;width:var(--ds-avatar-size)!important;height:80px!important;min-width:var(--ds-avatar-size)!important;flex:0 0 var(--ds-avatar-size)!important;border-radius:18px!important;border:3px solid white!important;background-position:center 15%!important;background-size:cover!important;box-shadow:0 5px 18px #28374c18!important;transform:none!important}
 body[data-view=home] #aiBanner{display:none!important}
 #app .ds-team-hero{height:var(--ds-hero-height);margin-bottom:var(--ds-gap);background:linear-gradient(110deg,#f0edff,#f8f6ff);border-color:#ded7f4}
-#app .ds-team-art{padding-right:0;background:none}
+#app .ds-team-hero>div:first-child{align-self:center;min-height:0;padding:20px 24px}
+#app .ds-team-art{height:var(--ds-hero-height);padding:0 0 0 12px;background:none}
 #app .ds-team-art img{margin-left:auto;margin-right:0}
-#app .ds-team-hero h2{color:#624c9a}
+#app .ds-team-hero h2{font-size:var(--ds-title-size);line-height:1.25;margin:6px 0;color:#624c9a}
+#app .ds-team-hero p{line-height:1.45}
 #app .home-dialogue-main{align-items:center!important}
 #app #homeDialogueLabel{min-height:24px;margin-bottom:5px;padding-right:350px}
 #app .home-welcome-actions{top:6px}
@@ -217,9 +219,10 @@ body[data-view=home] #aiBanner{display:none!important}
  #app .ds-page-hero .hani-master-eyebrow{display:none!important}
  #app .ds-page-hero .hani-master-description{font-size:13px!important;line-height:1.45!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
  #app .ds-page-hero .hani-master-titleline{gap:4px 8px!important}
- #app .ds-team-hero{height:230px;grid-template-columns:42% 58%;grid-template-rows:1fr}
- #app .ds-team-hero>div:first-child{padding:18px 20px}
- #app .ds-team-hero h2{font-size:25px;margin:5px 0}
+ #app .ds-team-hero{height:230px;grid-template-columns:58% 42%;grid-template-rows:1fr}
+ #app .ds-team-hero>div:first-child{padding:16px 14px}
+ #app .ds-team-hero h2{font-size:21px;line-height:1.22;margin:5px 0}
+ #app .ds-team-hero p{font-size:13px;line-height:1.4}
  #app .ds-team-art{height:230px;padding:0}
  #app .ds-team-art img{width:100%;max-width:360px;margin-left:auto}
  #app #homeDialogueLabel{padding-right:0;min-height:0}
