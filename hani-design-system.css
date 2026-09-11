@@ -296,6 +296,9 @@ body[data-view=home] #aiBanner{display:none!important}
 
 /* v2.9.106 · Sports hub — four clubs, one lightweight lounge. */
 #app .ds-page-hero.ds-tone-sports{--hero-accent:#24324a;--hero-soft:#eef1f6}
+#app .ds-page-hero[class*="spatial-scene-portrait"]>.hani-master-scene{inset:0 0 0 57%!important;width:auto!important;opacity:.78;mask-image:linear-gradient(90deg,transparent,#000 28%)}
+#app .ds-page-hero[class*="spatial-scene-portrait"]>.hani-master-scene img{object-position:center 18%}
+#app .ds-page-hero:is(.spatial-scene-teamOffice,.spatial-scene-teamPicnic)>.hani-master-scene img{object-position:center 30%}
 #app #game.sports-hub{--sports-ink:#172033;--sports-muted:#68758a;display:none}
 #app #game.sports-hub.active{display:block}
 #app #game .sports-hub-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin:2px 0 14px}
@@ -305,10 +308,13 @@ body[data-view=home] #aiBanner{display:none!important}
 #app #game .sports-updated{flex:none;padding:7px 10px;border:1px solid #dce2eb;border-radius:999px;background:#fff;color:#66738a;font:800 10px/1 var(--ds-font);letter-spacing:.08em}
 #app #game .sports-feature-banner{position:relative;height:clamp(285px,31vw,390px);margin:0 0 16px;border:1px solid #25324b33;border-radius:22px;overflow:hidden;background:#10192a;box-shadow:0 12px 30px #24324a1f}
 #app #game .sports-feature-banner:after{content:"";position:absolute;inset:55% 0 0;background:linear-gradient(0deg,#080e1dc7,transparent)}
-#app #game .sports-feature-banner img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 48%}
-#app #game .sports-feature-banner figcaption{position:absolute;left:20px;bottom:17px;z-index:1;display:grid;gap:4px;color:#fff;text-shadow:0 2px 9px #000}
+#app #game .sports-feature-banner img{display:block;width:100%;height:100%;object-fit:contain;object-position:center 48%}
+#app #game .sports-feature-banner figcaption{position:absolute;left:24px;top:50%;z-index:2;display:grid;gap:5px;color:#fff;text-shadow:0 2px 9px #000;transform:translateY(-50%)}
 #app #game .sports-feature-banner figcaption span{font:900 9px/1 var(--ds-font);letter-spacing:.15em}
-#app #game .sports-feature-banner figcaption b{font:750 17px/1.2 var(--ds-font);letter-spacing:-.015em}
+#app #game .sports-feature-banner figcaption b{font:800 clamp(30px,4vw,54px)/1 var(--ds-font);letter-spacing:-.045em}
+#app #game .sports-cast-labels{position:absolute;right:14px;bottom:13px;z-index:2;display:grid;grid-template-columns:repeat(7,minmax(48px,1fr));gap:4px;width:69%}
+#app #game .sports-cast-labels>span{display:grid;gap:2px;padding:6px 5px;border:1px solid #ffffff3d;border-radius:9px;background:#07101ac7;color:#fff;font:850 10px/1 var(--ds-font);text-align:center;backdrop-filter:blur(6px)}
+#app #game .sports-cast-labels small{color:#dbe5f5;font:700 7px/1 var(--ds-font);letter-spacing:.06em}
 #app #game .sports-team-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 #app #game .sports-team-card{--team-bg:#101b2d;--team-fg:#fff;--team-muted:#c5cfdf;--team-line:#ffffff24;--team-chip:#ffffff16;position:relative;min-width:0;min-height:330px;padding:20px;border:1px solid var(--team-line);border-radius:22px;overflow:hidden;background:var(--team-bg);color:var(--team-fg);box-shadow:0 10px 28px #24324a17}
 #app #game .sports-team-card:after{content:"";position:absolute;right:-34px;bottom:-58px;width:150px;height:150px;border:34px solid #ffffff0d;border-radius:50%;pointer-events:none}
@@ -361,7 +367,10 @@ body[data-view=home] #aiBanner{display:none!important}
  #app #game .sports-updated{margin-top:2px}
  #app #game .sports-feature-banner{height:250px;margin-bottom:13px;border-radius:19px}
  #app #game .sports-feature-banner img{object-fit:contain;object-position:center center}
- #app #game .sports-feature-banner figcaption{left:15px;bottom:13px}
+ #app #game .sports-feature-banner figcaption{left:15px;top:24px;transform:none}
+ #app #game .sports-feature-banner figcaption b{font-size:28px}
+ #app #game .sports-cast-labels{right:8px;bottom:8px;grid-template-columns:repeat(4,1fr);gap:3px;width:calc(100% - 16px)}
+ #app #game .sports-cast-labels>span{padding:4px 3px;font-size:9px}
  #app #game .sports-team-grid{grid-template-columns:1fr;gap:11px}
  #app #game .sports-team-card{min-height:0;padding:16px;border-radius:19px}
  #app #game .sports-team-header{grid-template-columns:50px minmax(0,1fr) auto;gap:10px}
