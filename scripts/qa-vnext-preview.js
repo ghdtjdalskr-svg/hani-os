@@ -38,9 +38,25 @@ const path = require('path');
     }));
     const yuna = await page.evaluate(() => ({
       parsed: window.HANI_YUNA_HELPDESK?.parse('제목은 AI 패권전쟁이야 오늘 다 읽었고'),
+      imageAndText: window.HANI_YUNA_HELPDESK?.visionDraft({
+        confidence: .94, target_hint: 'task', extracted_text: '전자책 표지',
+        structured_json: JSON.stringify([{ target: 'task', data: { title: '전자책' } }]),
+        warnings: [],
+      }, '제목은 AI 패권전쟁이야 오늘 다 읽었고', 'auto'),
       scrollable: (() => { const x=document.querySelector('#yunaConversation'); return !!x && getComputedStyle(x).overflowY === 'auto'; })(),
     }));
-    results.push({ viewport, sports, yuna, errors });
+    const media = await page.evaluate(() => {
+      const original = state.movies;
+      state.movies = [
+        { id:'qa-1', status:'watched', contentType:'시리즈', origin:'국외', title:'밴드 오브 브라더스', watchedDate:'2026-09-09', rating:4.7, review:'시즌 1 · 1화까지' },
+        { id:'qa-2', status:'watched', contentType:'시리즈', origin:'국외', title:'밴드 오브 브라더스', watchedDate:'2026-09-10', rating:4.9, review:'시즌 1 · 2화까지' },
+      ];
+      renderMovies();
+      const snapshot={ count:document.querySelector('#movieSeriesCount')?.textContent, text:document.querySelector('#movieSeriesArchive')?.innerText };
+      state.movies=original;renderMovies();
+      return snapshot;
+    });
+    results.push({ viewport, sports, yuna, media, errors });
     await page.close();
   }
   await browser.close();

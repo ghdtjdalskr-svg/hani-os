@@ -1943,10 +1943,10 @@ $("saveBook").onclick=async()=>{
 const MOVIE_CONTENT_TYPES=["영화","드라마","애니메이션","시리즈","다큐멘터리","예능","기타"];
 function movieContentType(v,def="기타"){const s=String(v||"").trim();return MOVIE_CONTENT_TYPES.includes(s)?s:def}
 function movieSeriesMeta(m){
-  const source=`${m?.title||""} ${m?.review||""}`,season=source.match(/(?:시즌|season|s)\s*0*(\d+)/i),episode=source.match(/(?:에피소드|episode|ep\.?|e|제)?\s*0*(\d+)\s*(?:화|까지)?/i);
+  const source=`${m?.title||""} ${m?.review||""}`,season=source.match(/(?:시즌|season|s)\s*0*(\d+)/i),episode=source.match(/(?:에피소드|episode|ep\.?|e|제)\s*0*(\d+)\s*화?|\b0*(\d+)\s*화/i),episodeNo=episode?.[1]||episode?.[2];
   if(!season&&!episode)return null;
   const base=String(m?.title||"").replace(/\s*(?:시즌|season|s)\s*0*\d+.*$/i,"").replace(/\s*(?:에피소드|episode|ep\.?|e|제)\s*0*\d+\s*(?:화)?\s*$/i,"").trim();
-  return {base:base||String(m?.title||"").trim(),season:Math.max(1,Number(season?.[1]||1)),episode:episode?Math.max(1,Number(episode[1])):null};
+  return {base:base||String(m?.title||"").trim(),season:Math.max(1,Number(season?.[1]||1)),episode:episodeNo?Math.max(1,Number(episodeNo)):null};
 }
 function renderMovieSeriesArchive(){
   const target=$("movieSeriesArchive"),count=$("movieSeriesCount");if(!target||!count)return;
