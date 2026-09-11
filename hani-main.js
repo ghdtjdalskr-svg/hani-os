@@ -1942,6 +1942,19 @@ $("saveBook").onclick=async()=>{
 
 const MOVIE_CONTENT_TYPES=["영화","드라마","애니메이션","시리즈","다큐멘터리","예능","기타"];
 function movieContentType(v,def="기타"){const s=String(v||"").trim();return MOVIE_CONTENT_TYPES.includes(s)?s:def}
+function movieSeriesMeta(m){
+  const source=`${m?.title||""} ${m?.review||""}`,season=source.match(/(?:시즌|season|s)\s*0*(\d+)/i),episode=source.match(/(?:에피소드|episode|ep\.?|e|제)?\s*0*(\d+)\s*(?:화|까지)?/i);
+  if(!season&&!episode)return null;
+  const base=String(m?.title||"").replace(/\s*(?:시즌|season|s)\s*0*\d+.*$/i,"").replace(/\s*(?:에피소드|episode|ep\.?|e|제)\s*0*\d+\s*(?:화)?\s*$/i,"").trim();
+  return {base:base||String(m?.title||"").trim(),season:Math.max(1,Number(season?.[1]||1)),episode:episode?Math.max(1,Number(episode[1])):null};
+}
+function renderMovieSeriesArchive(){
+  const target=$("movieSeriesArchive"),count=$("movieSeriesCount");if(!target||!count)return;
+  const groups=new Map();
+  (state.movies||[]).filter(m=>m.status==="watched"&&["시리즈","드라마","애니메이션"].includes(movieContentType(m.contentType,"기타"))).forEach(m=>{const meta=movieSeriesMeta(m);if(!meta)return;const key=meta.base.toLocaleLowerCase();if(!groups.has(key))groups.set(key,{title:meta.base,rows:[]});groups.get(key).rows.push({...meta,record:m})});
+  const rows=[...groups.values()].sort((a,b)=>a.title.localeCompare(b.title,"ko"));count.textContent=`${rows.length}개 시리즈`;
+  target.innerHTML=rows.map(group=>{const episodes=group.rows.filter(x=>x.episode!==null).sort((a,b)=>a.season-b.season||a.episode-b.episode),latest=[...group.rows].sort((a,b)=>String(b.record.watchedDate||b.record.updatedAt||"").localeCompare(String(a.record.watchedDate||a.record.updatedAt||"")))[0],ratings=group.rows.map(x=>ratingValue(x.record.rating)).filter(x=>x!==null),score=ratings.length?(ratings.reduce((a,b)=>a+b,0)/ratings.length).toFixed(1):"-",seasons=[...new Set(group.rows.map(x=>x.season))].sort((a,b)=>a-b);return `<article class="series-progress-card"><div class="series-progress-head"><div><span>${esc(seasons.map(x=>`SEASON ${x}`).join(" · "))}</span><h4>${esc(group.title)}</h4></div><b>${score==="-"?"평점 없음":`★ ${score}`}</b></div><div class="series-progress-summary"><span><b>${episodes.length||group.rows.length}</b> 기록</span><span>최근 ${latest?.episode?`EP${String(latest.episode).padStart(2,"0")}`:"시즌 기록"}</span><span>${esc(latest?.record.watchedDate||"날짜 미입력")}</span></div><div class="series-episode-list">${episodes.length?episodes.map(x=>`<span title="${esc(x.record.review||"")}"><i>✓</i>S${String(x.season).padStart(2,"0")} · EP${String(x.episode).padStart(2,"0")}<small>${x.record.rating?`★ ${esc(x.record.rating)}`:""}</small></span>`).join(""):'<span class="series-season-only"><i>✓</i>회차가 없는 기존 시즌 기록</span>'}</div></article>`}).join("")||'<div class="empty">시즌·회차가 명확한 기존 기록이 생기면 자동으로 묶어 보여드려요.</div>';
+}
 function movieCard(m){const type=movieContentType(m.contentType,"기타");return `<article class="archive-card">${m.poster?`<img class="archive-cover" src="${esc(m.poster)}" alt="${esc(m.title)} 포스터">`:'<div class="archive-cover placeholder">🎬</div>'}<div><div class="archive-tags"><span class="topic-tag movie-type-tag">${esc(type)}</span><span class="topic-tag" style="--tag:${m.origin==="국내"?"#58bce8":"#8b63dc"}">${esc(m.origin||"국외")}</span></div><h4>${esc(m.title)}</h4><div class="archive-meta">감독 ${esc(m.director||"미입력")}${m.actors?`<br>배우 ${esc(m.actors)}`:""}${m.status==="watched"?`<br>${stars(m.rating)}`:""}${m.status==="watched"&&m.watchedDate?` · ${esc(m.watchedDate)}`:""}</div>${m.review?`<div class="archive-review">${esc(m.review)}</div>`:""}</div><div class="archive-actions"><button class="btn sm" data-movie-toggle="${m.id}">${m.status==="watched"?"관람 예정작으로":"관람 완료로"}</button><button class="btn sm" data-movie-edit="${m.id}">수정</button><button class="btn sm danger" data-movie-delete="${m.id}">삭제</button></div></article>`}
 function updateMovieFormState(){const watched=$("movieStatus").value==="watched";$("movieRating").disabled=!watched;$("movieDate").disabled=!watched;$("movieRatingField").classList.toggle("is-disabled",!watched);$("movieDateField").classList.toggle("is-disabled",!watched);$("movieReviewLabel").textContent=watched?"관람 후기":"보고 싶은 이유 / 기대평";$("movieReview").placeholder=watched?"관람 후 인상과 감상을 남겨요.":"이 작품을 보고 싶은 이유를 남겨요.";ratingPreview("movieRating","movieRatingPreview","관람 완료 후 입력할 수 있어요.")}
 function resetMovieForm(){["movieEditId","movieTitle","movieDirector","movieActors","movieReview"].forEach(id=>$(id).value="");$("movieStatus").value="wish";$("movieContentType").value="영화";$("movieOrigin").value="국내";$("movieRating").value="";$("movieDate").value="";$("moviePoster").value="";$("saveMovie").textContent="작품 저장";updateMovieFormState()}
@@ -1953,6 +1966,7 @@ function renderMovies(){
     avg=ratings.length?ratings.reduce((a,b)=>a+b,0)/ratings.length:0,five=ratings.filter(v=>v===5).length;
   $("movieCount").textContent=state.movies.length+"편";$("wishMovieCount").textContent=wish.length+"편";$("watchedMovieCount").textContent=watched.length+"편";
   $("movieStats").innerHTML=[["전체 기록",state.movies.length+"편"],["관람 예정",allWish.length+"편"],["관람 완료",completedWatched.length+"편"],["평균 평점",avg?`${avg.toFixed(1)}점 · 만점 ${five}편`:"-"]].map(([l,v])=>`<div class="stat"><div class="label">${l}</div><div class="value">${v}</div></div>`).join("");
+  renderMovieSeriesArchive();
   $("wishMovies").innerHTML=wish.map(movieCard).join("")||'<div class="empty">조건에 맞는 관람 예정작이 없습니다.</div>';$("watchedMovies").innerHTML=watched.map(movieCard).join("")||'<div class="empty">조건에 맞는 관람 작품이 없습니다.</div>';
   $("movieSort").value=sort;$("movieMinRating").value=min||"";$("movieSearch").value=search;$("movieTypeFilter").value=typeFilter;
   $("movieSort").onchange=()=>{state.ui.movieSort=$("movieSort").value;save();renderMovies()};$("movieMinRating").oninput=()=>{state.ui.movieMinRating=Math.max(0,Math.min(5,n($("movieMinRating").value)));save();renderMovies()};$("movieSearch").oninput=()=>{state.ui.movieSearch=$("movieSearch").value;renderMovies()};$("movieTypeFilter").onchange=()=>{state.ui.movieTypeFilter=$("movieTypeFilter").value;save();renderMovies()};
@@ -3654,7 +3668,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.107";
+const HANI_DISPLAY_VERSION="2.9.108";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
