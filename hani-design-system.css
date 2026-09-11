@@ -383,3 +383,44 @@ body[data-view=home] #aiBanner{display:none!important}
  #app #game .sports-source-note{text-align:left;line-height:1.5}
  #app #game .sports-legacy-note summary{align-items:flex-start;flex-direction:column;gap:3px}
 }
+
+/* v2.9.108 · HANI GROUP corporate identity, Sports Board and Media Archive v2. */
+#app .sidebar-team-mini{display:grid!important;grid-template-columns:1fr!important;min-height:0!important;padding:10px!important;gap:9px!important}
+#app .sidebar-team-official-photo{display:block!important;width:100%!important;height:112px!important;object-fit:cover!important;object-position:center 36%!important;border-radius:14px!important}
+#app .sidebar-corporate-lockup{display:grid;place-items:center;min-height:76px;padding:4px 7px;border:1px solid rgba(92,51,160,.13);border-radius:13px;background:#fff;overflow:hidden}
+#app .sidebar-corporate-lockup img{display:block;width:100%;height:72px;object-fit:contain}
+#app .sidebar-team-faces{margin-top:0!important}
+#app .hani-group-profile-banner{position:relative;min-height:300px;padding:0!important;border-radius:24px!important;overflow:hidden;background:#f8f7ff}
+#app .hani-group-profile-banner>img{display:block;width:100%;height:clamp(300px,31vw,430px);object-fit:cover;object-position:center}
+#app .hani-group-profile-banner figcaption{position:absolute;z-index:2;left:clamp(22px,4vw,60px);top:50%;width:min(34%,430px);transform:translateY(-50%)}
+#app .hani-group-profile-banner figcaption>img{display:block;width:min(100%,390px);height:auto;aspect-ratio:2/1;object-fit:contain;mix-blend-mode:multiply}
+#app .hani-group-profile-banner figcaption p{margin:8px 4px 13px;color:#51466b;font-size:clamp(12px,1.1vw,15px);font-weight:680;line-height:1.65;word-break:keep-all}
+#app .hani-group-profile-banner figcaption div{display:flex;gap:6px;flex-wrap:wrap}
+#app .hani-group-profile-banner figcaption span{padding:6px 8px;border:1px solid #6e42b129;border-radius:999px;background:#fff;color:#6944a4;font-size:8px;font-weight:900;letter-spacing:.09em}
+#app #game .sports-view-tabs{display:flex;gap:7px;margin:0 0 12px;padding:5px;border:1px solid #e0e4eb;border-radius:15px;background:#f7f8fa;overflow-x:auto;scrollbar-width:none}
+#app #game .sports-view-tabs button{flex:0 0 auto;padding:9px 12px;border:0;border-radius:10px;background:transparent;color:#647086;font:850 10px/1 var(--ds-font);letter-spacing:.04em;cursor:pointer}
+#app #game .sports-view-tabs button.active{background:#fff;color:#172033;box-shadow:0 4px 12px #24324a12}
+#app #game [data-sports-panel][hidden]{display:none!important}
+#app #game .sports-home-overview{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+#app #game .sports-home-overview>button{--team-bg:#101b2d;--team-fg:#fff;--team-muted:#c5cfdf;display:grid;grid-template-columns:46px minmax(0,1fr) auto;align-items:center;gap:9px;min-width:0;padding:12px;border:1px solid #ffffff20;border-radius:17px;background:var(--team-bg);color:var(--team-fg);text-align:left;cursor:pointer;box-shadow:0 7px 18px #24324a12}
+#app #game .sports-home-overview img{width:46px;height:40px;padding:5px;box-sizing:border-box;object-fit:contain;border-radius:11px;background:#fff}
+#app #game .sports-home-overview span{min-width:0}.sports-home-overview small{display:block;color:var(--team-muted);font-size:8px;font-weight:850}.sports-home-overview b{display:block;margin-top:5px;font-size:13px;white-space:nowrap}.sports-home-overview b i{opacity:.5;font-style:normal}
+#app #game .sports-home-overview em{padding:4px 5px;border-radius:6px;background:#fff;color:#24324a;font-size:8px;font-style:normal;font-weight:950}
+#app #game .sports-home-overview em.win{color:#0f724c;background:#dff7e9}.sports-home-overview em.loss{color:#1d61ab;background:#e3efff}
+#app #game .sports-team-grid{grid-template-columns:minmax(0,1fr)}
+#app #game .sports-team-card{width:100%;min-height:0;box-sizing:border-box}
+#app #game .sports-match-logo{display:grid!important;place-items:center;width:44px;height:44px;padding:5px;border-radius:12px;background:#fff;color:#172033!important;font-size:10px!important;font-weight:950!important;text-align:center!important;overflow:hidden}
+#app #game .sports-match-logo img{width:100%;height:100%;object-fit:contain}#app #game .sports-match-logo img.sports-logo-crop{transform:scale(2.1)}.sports-opponent-mark{border:1px solid #dce2eb}
+#app #movie .series-archive-v2{order:1;grid-column:1/-1;padding:20px 22px;border-radius:24px;background:linear-gradient(145deg,#fff,#f8f5ff)}
+#app #movie .series-archive-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+#app #movie .series-progress-card{min-width:0;padding:16px;border:1px solid #e4def4;border-radius:17px;background:#fff;box-shadow:0 8px 20px rgba(65,55,100,.05)}
+#app #movie .series-progress-head{display:flex;justify-content:space-between;gap:10px}.series-progress-head span{color:#7658bd;font-size:8px;font-weight:900;letter-spacing:.1em}.series-progress-head h4{margin:4px 0 0;font-size:17px}.series-progress-head>b{color:#7658bd;font-size:12px;white-space:nowrap}
+#app #movie .series-progress-summary{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.series-progress-summary span{padding:6px 8px;border-radius:9px;background:#f6f4fb;color:#6e6b7d;font-size:10px}.series-progress-summary b{color:#4f3ca0}
+#app #movie .series-episode-list{display:flex;flex-wrap:wrap;gap:6px}.series-episode-list>span{display:flex;align-items:center;gap:5px;padding:7px 8px;border:1px solid #e7e3f1;border-radius:9px;color:#4f4b5f;font-size:10px;font-weight:750}.series-episode-list i{display:grid;place-items:center;width:14px;height:14px;border-radius:50%;background:#735cf4;color:#fff;font-size:8px;font-style:normal}.series-episode-list small{color:#8a82a2;font-size:9px}
+@media(max-width:1000px){#app #game .sports-home-overview{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){
+ #app .hani-group-profile-banner{min-height:340px;background:#fff}.hani-group-profile-banner>img{position:absolute;left:0;right:0;bottom:0;width:100%;height:150px!important;object-fit:contain!important;object-position:center bottom!important}.hani-group-profile-banner:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#fff 0 48%,transparent 70%);pointer-events:none}
+ #app .hani-group-profile-banner figcaption{left:18px;right:18px;top:12px;width:auto;transform:none}.hani-group-profile-banner figcaption>img{width:175px;height:88px}.hani-group-profile-banner figcaption p{max-width:330px;margin:0 4px 8px;font-size:11px;line-height:1.5}
+ #app #game .sports-home-overview{grid-template-columns:1fr}.sports-home-overview>button{grid-template-columns:44px minmax(0,1fr) auto!important}
+ #app #movie .series-archive-grid{grid-template-columns:1fr}.series-progress-card{padding:13px!important}
+}

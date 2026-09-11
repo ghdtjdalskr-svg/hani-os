@@ -189,6 +189,29 @@
       .map(x => ({ type: x.type || 'general', topic: x.topic || '', wrong_count: Number(x.wrongCount || 1), question: String(x.question || '').slice(0, 260) }));
   }
 
+  function newsroomQuestionSources() {
+    try {
+      const posts = typeof investmentNewsArchiveRuntime !== 'undefined' && Array.isArray(investmentNewsArchiveRuntime.posts) ? investmentNewsArchiveRuntime.posts : [];
+      return posts.filter(x => x?.source_verified !== false).slice(0, 12).map(x => ({
+        title:String(x.title || '').slice(0, 180), summary:String(x.summary || '').slice(0, 420),
+        why_it_matters:String(x.why_it_matters || '').slice(0, 420), source_name:String(x.source_name || '').slice(0, 80),
+        source_url:String(x.source_url || '').slice(0, 500), published_at:String(x.published_at || x.event_at || '').slice(0, 32),
+      })).filter(x => x.title && x.source_name);
+    } catch (_) { return []; }
+  }
+
+  function promptFingerprint(value) { return String(value || '').toLowerCase().replace(/[^0-9a-z가-힣]+/g, ' ').trim().split(/\s+/).filter(x => x.length > 1); }
+  function tooSimilarPrompt(a, b) { const aa=new Set(promptFingerprint(a)),bb=new Set(promptFingerprint(b));if(!aa.size||!bb.size)return false;let same=0;aa.forEach(x=>{if(bb.has(x))same++});return same/Math.min(aa.size,bb.size)>=.82; }
+  function validateQuestionSet(project, questions) {
+    const previous=(state.learningQuizzes||[]).filter(x=>x.projectId===project.id).slice(-6).flatMap(x=>x.questions||[]).map(x=>x.prompt);
+    const allowedTypes=new Set(['definition','cause & effect','cause_effect','scenario','data interpretation','data_interpretation','current issue','current_issue','portfolio / investment decision','portfolio','investment decision','general']);
+    questions.forEach((question,index)=>{
+      if(new Set(question.choices.map(x=>x.toLowerCase())).size!==4)throw new Error(`${index+1}번 문제 선택지가 중복되어 저장을 중단했습니다.`);
+      if(questions.slice(0,index).some(x=>tooSimilarPrompt(x.prompt,question.prompt))||previous.some(x=>tooSimilarPrompt(x,question.prompt)))throw new Error(`${index+1}번 문제가 최근 문제와 지나치게 유사해 저장을 중단했습니다.`);
+      if(project.category==='economy'&&!allowedTypes.has(String(question.type||'').toLowerCase()))throw new Error(`${index+1}번 문제 유형을 확인하지 못해 저장을 중단했습니다.`);
+    });
+  }
+
   function learningCommit(message, notify = true) {
     ensureLearningState();
     if (typeof commit !== 'function') throw new Error('HANI OS 저장 함수를 찾지 못했습니다.');
@@ -344,6 +367,14 @@
           quiz_size: quizSize,
         },
         weaknesses: recentWeaknesses(project.id),
+        question_sources: project.category === 'economy' ? newsroomQuestionSources() : [],
+        engine_contract: project.category === 'economy' ? {
+          version:'HANI Question Engine v2', objective:'경제·시장 사건을 개념과 시장 영향에 연결해 이해하는지 평가',
+          distribution:{foundation:4,macro_market:5,equity_corporate:4,current_issue:5,weakness_variant:2},
+          difficulty:{easy:4,medium:10,hard:6},
+          question_types:['Definition','Cause & Effect','Scenario','Data Interpretation','Current Issue','Portfolio / Investment Decision'],
+          rules:['Current Issue는 제공된 Newsroom source로만 출제','숫자 단순 암기 금지','오답은 다른 상황으로 변형','동일 질문·예문·선택지만 바꾼 중복 금지','정답 하나와 해설 일치'],
+        } : { version:'HANI Question Engine v2', domain:'JLPT 및 일반 학습', rules:['경제 문제 규칙을 혼합하지 않음','프로젝트 목표와 집중영역을 우선'] },
       }),
     });
     const result = await res.json().catch(() => ({}));
@@ -355,6 +386,7 @@
         throw new Error(`${i + 1}번 문제 구조가 불완전해 저장을 중단했습니다.`);
       }
     }
+    validateQuestionSet(project, questions);
     return questions;
   }
 
@@ -411,9 +443,9 @@
               <div class="study-project-form" id="studyProjectForm" hidden>
                 <input id="studyProjectEditId" type="hidden">
                 <div class="span2"><label>프로젝트명</label><input id="studyProjectName" placeholder="예: JLPT N3"></div>
-                <div><label>분류</label><select id="studyProjectCategory"><option value="jlpt">JLPT</option><option value="certificate">자격증</option><option value="university">대학교</option><option value="ai">AI/실무</option><option value="other">기타</option></select></div>
+                <div><label>분류</label><select id="studyProjectCategory"><option value="jlpt">JLPT</option><option value="economy">경제·금융·시장</option><option value="certificate">자격증</option><option value="university">대학교</option><option value="ai">AI/실무</option><option value="other">기타</option></select></div>
                 <div><label>시험일 · 선택</label><input id="studyProjectTargetDate" type="date"></div>
-                <div class="span2"><label>집중영역</label><div class="study-focus-grid" id="studyProjectFocusAreas"><label class="study-focus-chip"><input type="checkbox" value="어휘">어휘</label><label class="study-focus-chip"><input type="checkbox" value="문법">문법</label><label class="study-focus-chip"><input type="checkbox" value="독해">독해</label><label class="study-focus-chip"><input type="checkbox" value="청해">청해</label><label class="study-focus-chip"><input type="checkbox" value="이론">이론</label><label class="study-focus-chip"><input type="checkbox" value="실기">실기</label></div></div>
+                <div class="span2"><label>집중영역</label><div class="study-focus-grid" id="studyProjectFocusAreas"><label class="study-focus-chip"><input type="checkbox" value="어휘">어휘</label><label class="study-focus-chip"><input type="checkbox" value="문법">문법</label><label class="study-focus-chip"><input type="checkbox" value="독해">독해</label><label class="study-focus-chip"><input type="checkbox" value="청해">청해</label><label class="study-focus-chip"><input type="checkbox" value="경제기초">경제기초</label><label class="study-focus-chip"><input type="checkbox" value="거시경제">거시경제</label><label class="study-focus-chip"><input type="checkbox" value="주식·기업">주식·기업</label><label class="study-focus-chip"><input type="checkbox" value="시장해석">시장해석</label><label class="study-focus-chip"><input type="checkbox" value="이론">이론</label><label class="study-focus-chip"><input type="checkbox" value="실기">실기</label></div></div>
                 <div><label>생성주기</label><select id="studyProjectSchedule"><option value="daily">매일</option><option value="mon_wed_fri">월·수·금</option><option value="every_2_days">2일마다</option><option value="every_3_days" selected>3일마다</option><option value="weekly">매주</option><option value="monthly">한 달마다</option><option value="manual">수동</option></select></div>
                 <div><label>문제 수</label><select id="studyProjectQuizSize"><option value="5">5문제</option><option value="10">10문제</option><option value="15">15문제</option><option value="20" selected>20문제</option></select></div>
                 <div class="span2 study-actions-row"><button class="btn primary" type="button" id="studyProjectSave">프로젝트 저장</button><button class="btn" type="button" id="studyProjectPreset">JLPT N3 빠른 시작</button><button class="btn ghost" type="button" id="studyProjectCancel">취소</button></div>
@@ -447,7 +479,7 @@
     if (!activeProjectId || !projects.some(x => x.id === activeProjectId)) activeProjectId = projects[0]?.id || '';
     box.innerHTML = projects.length ? projects.map(p => {
       const view = normalizeProject(p), s = projectProgress(p), pct = s.total ? Math.round(s.completed / s.total * 100) : 0;
-      return `<button class="study-project-row ${p.id === activeProjectId ? 'is-active' : ''}" type="button" data-study-project="${safe(p.id)}"><b>${safe(p.name)}<span class="study-project-state ${safe(view.status)}">${view.status === 'paused' ? '일시중지' : '학습 중'}</span></b><span>${safe(({jlpt:'JLPT',certificate:'자격증',university:'대학교',ai:'AI/실무',other:'기타'}[p.category] || '기타'))}${view.examDate ? ` · 시험 ${safe(view.examDate)}` : ''} · ${safe(SCHEDULE_LABELS[view.scheduleType])} · ${view.quizSize}문제</span><div class="study-progress-line"><i style="--p:${pct}%"></i><span>${s.completed}/${s.total} · 평균 ${s.avg}점</span></div></button>`;
+      return `<button class="study-project-row ${p.id === activeProjectId ? 'is-active' : ''}" type="button" data-study-project="${safe(p.id)}"><b>${safe(p.name)}<span class="study-project-state ${safe(view.status)}">${view.status === 'paused' ? '일시중지' : '학습 중'}</span></b><span>${safe(({jlpt:'JLPT',economy:'경제·금융·시장',certificate:'자격증',university:'대학교',ai:'AI/실무',other:'기타'}[p.category] || '기타'))}${view.examDate ? ` · 시험 ${safe(view.examDate)}` : ''} · ${safe(SCHEDULE_LABELS[view.scheduleType])} · ${view.quizSize}문제</span><div class="study-progress-line"><i style="--p:${pct}%"></i><span>${s.completed}/${s.total} · 평균 ${s.avg}점</span></div></button>`;
     }).join('') : `<div class="study-empty"><b>첫 학습 프로젝트를 만들어보세요.</b><br>JLPT N3부터 바로 시작할 수 있어요.</div>`;
     qa('[data-study-project]', box).forEach(btn => btn.onclick = () => { activeProjectId = btn.dataset.studyProject || ''; activeQuizId = ''; renderLearning(); });
   }
