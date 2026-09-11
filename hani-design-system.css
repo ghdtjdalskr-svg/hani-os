@@ -306,7 +306,7 @@ body[data-view=home] #aiBanner{display:none!important}
 #app #game .sports-hub-head h3{margin:0;color:var(--sports-ink);font:800 24px/1.3 var(--ds-font);letter-spacing:-.035em}
 #app #game .sports-hub-head p{margin:5px 0 0;color:var(--sports-muted);font-size:13px}
 #app #game .sports-updated{flex:none;padding:7px 10px;border:1px solid #dce2eb;border-radius:999px;background:#fff;color:#66738a;font:800 10px/1 var(--ds-font);letter-spacing:.08em}
-#app #game .sports-feature-banner{position:relative;height:clamp(285px,31vw,390px);margin:0 0 16px;border:1px solid #25324b33;border-radius:22px;overflow:hidden;background:#10192a;box-shadow:0 12px 30px #24324a1f}
+#app #game .sports-feature-banner{position:relative;width:100%;height:clamp(285px,31vw,390px);box-sizing:border-box;margin:0 0 16px;border:1px solid #25324b33;border-radius:22px;overflow:hidden;background:#10192a;box-shadow:0 12px 30px #24324a1f}
 #app #game .sports-feature-banner:after{content:"";position:absolute;inset:55% 0 0;background:linear-gradient(0deg,#080e1dc7,transparent)}
 #app #game .sports-feature-banner img{display:block;width:100%;height:100%;object-fit:contain;object-position:center 48%}
 #app #game .sports-feature-banner figcaption{position:absolute;left:24px;top:50%;z-index:2;display:grid;gap:5px;color:#fff;text-shadow:0 2px 9px #000;transform:translateY(-50%)}
@@ -315,7 +315,7 @@ body[data-view=home] #aiBanner{display:none!important}
 #app #game .sports-cast-labels{position:absolute;right:14px;bottom:13px;z-index:2;display:grid;grid-template-columns:repeat(7,minmax(48px,1fr));gap:4px;width:69%}
 #app #game .sports-cast-labels>span{display:grid;gap:2px;padding:6px 5px;border:1px solid #ffffff3d;border-radius:9px;background:#07101ac7;color:#fff;font:850 10px/1 var(--ds-font);text-align:center;backdrop-filter:blur(6px)}
 #app #game .sports-cast-labels small{color:#dbe5f5;font:700 7px/1 var(--ds-font);letter-spacing:.06em}
-#app #game .sports-team-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+#app #game .sports-team-grid{display:grid;width:100%;box-sizing:border-box;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 #app #game .sports-team-card{--team-bg:#101b2d;--team-fg:#fff;--team-muted:#c5cfdf;--team-line:#ffffff24;--team-chip:#ffffff16;position:relative;min-width:0;min-height:330px;padding:20px;border:1px solid var(--team-line);border-radius:22px;overflow:hidden;background:var(--team-bg);color:var(--team-fg);box-shadow:0 10px 28px #24324a17}
 #app #game .sports-team-card:after{content:"";position:absolute;right:-34px;bottom:-58px;width:150px;height:150px;border:34px solid #ffffff0d;border-radius:50%;pointer-events:none}
 #app #game .team-yankees{--team-bg:linear-gradient(145deg,#0b1526,#162b4a);--team-muted:#bdc9db}
