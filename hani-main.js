@@ -334,7 +334,7 @@ const pageMeta={
  certificate:["자격증","시험 일정과 준비 현황을 관리합니다.","growth"],
  travel:["여행","여행 계획과 기록을 관리합니다.","life"],
  movie:["시청 아카이브","보고 싶은 작품과 감상 기록을 관리합니다.","life"],
- game:["게임","수연과 함께 게임 기록을 관리합니다.","life"],
+ game:["스포츠","좋아하는 네 팀의 최근 결과와 주요 소식을 한눈에 봅니다.","sports"],
  diary:["일기","하루의 기록을 남깁니다.","life"],
  tasks:["할 일","해야 할 일을 월간 흐름으로 정리합니다.","work"],
  calendar:["캘린더","Google Calendar를 HANI OS 안에서 확인합니다.","work"],
@@ -355,7 +355,7 @@ const aiMap={
  health:{emoji:"🌿",name:"나은 · Health Coach",message:"체중 변화와 운동 기록을 무리 없이 이어갈 수 있도록 관리해요.",role:"HEALTH",color:"#2faa77",soft:"#e9f8f1",line:"#cdeedf"},
  growth:{emoji:"📚",name:"히나 · Growth Guide",message:"일본어, AI 실무, 대학과 자격증 목표를 차근차근 쌓아가요.",role:"GROWTH",color:"#ef9d3c",soft:"#fff4e5",line:"#ffe0b6"},
  life:{emoji:"☁️",name:"하루 · Life Curator",message:"여행, 시청 아카이브, 일기와 일상의 소중한 기록을 모아둘게요.",role:"LIFE",color:"#58bce8",soft:"#eaf8ff",line:"#cceeff"},
- game:{emoji:"⚽",name:"수연 · Head Coach",message:"레알 마드리드의 시즌과 전술, 영입 서사를 함께 운영해요.",role:"GAME",color:"#8b63dc",soft:"#f2edff",line:"#ded1ff"},
+ sports:{emoji:"⚽",name:"수연 · Head Coach",message:"오늘도 좋아하는 팀과 함께, 결과보다 오래 남는 응원을 즐겨요.",role:"SPORTS",color:"#24324a",soft:"#eef1f6",line:"#d5dce8"},
  work:{emoji:"💼",name:"수아 · Chief of Staff",message:"일정, 할 일과 업무 기록이 빠지지 않도록 정리해요.",role:"WORK",color:"#334a75",soft:"#edf1f8",line:"#d5deee"},
  team:{emoji:"🤖",name:"성민 AI Executive Team",message:"역할별 AI가 각 영역을 맡아 오빠의 Life OS를 함께 운영합니다.",role:"AI TEAM",color:"#7569e8",soft:"#f0edff",line:"#ddd7ff"}
 };
@@ -436,7 +436,7 @@ const pageQuotes={
     ["민지","재밌으면 재밌는 거지. 평론가 점수보다 오빠 점수가 중요하지 ㅋㅋ"],["민지","영화든 드라마든 엔딩 보고 바로 든 생각이 제일 좋은 리뷰야."],["민지","고르다가 볼 시간 다 쓰지 말고 오늘은 하나 바로 틀자."],["민지","별점 4.8이면 거의 제작진한테 감사편지 써야 되는 거 아냐?"],["민지","뻔한데 재밌으면 됐지. 킬링타임도 엄연히 좋은 콘텐츠임."],["민지","소파에 누워서 보는 작품은 재미가 0.2점쯤 올라가는 법이야."]
   ],
   game:[
-    ["수연","감독님, 결과보다 과정…이라고 하기엔 트로피가 너무 예쁩니다."],["수연","한 경기 원더골 실점으로 전술 갈아엎기 금지입니다."],["수연","제네럴 홍, 오늘도 베르나베우에 새 시대를 열어봅시다."],["수연","점유율 70%보다 xG 3.0이 더 섹시합니다, 감독님."],["수연","근들갑은 경기 분석 뒤에 하겠습니다. 아마도요."],["수연","감독님 또 유망주 검색하셨죠? 스쿼드 자리부터 확인합니다 ㅋㅋ"]
+    ["수연","오늘은 어느 팀부터 볼까요? 좋아하는 팀이 넷이면 즐거움도 네 배입니다."],["수연","한 경기 결과보다 함께 응원한 시간이 더 오래 남습니다."],["수연","양키스부터 DK까지, 오늘의 하이라이트만 빠르게 챙겨볼게요."],["수연","중요한 소식만 골랐습니다. 볼 경기는 많고 시간은 소중하니까요."],["수연","승리한 날은 오래 즐기고, 진 날은 다음 경기를 기대하면 됩니다."],["수연","감독님, 오늘도 우리 팀들을 한 번에 체크하시죠."]
   ],
   diary:[
     ["민지","오늘 별일 없었어도 한 줄 남기면 나중엔 그게 제일 재밌어."],["민지","일기는 보고서 아니니까 말투도 내용도 그냥 편하게 써 ㅋㅋ"],["민지","기억은 흐려져도 기록은 은근 오래 남더라."],["민지","오늘의 흑역사도 몇 년 지나면 웃긴 콘텐츠가 될 수 있음."],["민지","좋았던 일 하나, 짜증난 일 하나. 그 정도면 오늘 기록 충분해."],["민지","오빠 오늘 하루 제목 붙인다면 뭐라고 할 건데?"]
@@ -506,7 +506,7 @@ const pageBannerMap={
   movie:{emoji:"🎬",name:"민지 · Screen Archive Mate",message:"보고 싶은 작품과 본 작품을 편하게 모으고, 오빠 취향대로 감상을 남겨봐요.",role:"SCREEN ARCHIVE"},
   intake:{emoji:"🗂️",name:"유나 · AI Operations Intern",message:"오빠가 말하거나 붙여준 자료를 먼저 정리해서 담당 AI에게 전달할게요!",role:"SEONGMIN OFFICE · INTAKE"},
   policy:{emoji:"📜",name:"하니 · Policy Steward",message:"팀 전체가 같은 원칙으로 판단하도록 규정의 근거와 적용 강도를 관리해요.",role:"COMPANY POLICY"},
-  game:{emoji:"🎮",name:"수연 · Head Coach",message:"전술과 플레이 기록, 재밌는 게임 순간들을 정리해봐요.",role:"GAME BOARD"},
+  game:{emoji:"⚽",name:"수연 · Head Coach",message:"양키스·KIA·레알 마드리드·Dplus KIA의 오늘을 함께 봐요.",role:"SPORTS LOUNGE"},
   diary:{emoji:"📝",name:"민지 · Daily Mate",message:"별일 있던 날도 없던 날도, 편하게 한 줄씩 남겨두자.",role:"DIARY"},
   deployment:{emoji:"🚀",name:"하니 · Deployment Manager",message:"검증된 수정본만 Preview를 거쳐 대표 승인 후 안전하게 배포해요.",role:"DEPLOYMENT"},
   settings:{emoji:"⚙️",name:"하니 · HANI OS Manager",message:"백업·복원·Cloud 상태를 안전하게 관리하는 엔진룸이에요.",role:"SYSTEM"},
@@ -576,7 +576,7 @@ function setBanner(key,page="home"){
   const av=$("aiAvatar"),ak=quoteAgent||pageAgentImage[page],img=ak&&agentImages[ak];
   av.className="ai-avatar"+(img?" has-photo":"")+(ak?` agent-${ak}`:"");
   av.style.backgroundImage=img?`url(${img})`:"";av.textContent=img?"":(p.emoji||a.emoji);
-  const km={home:"DASHBOARD",finance:"FINANCE",health:"HEALTH",growth:"GROWTH",life:"LIFE",game:"GAME",work:"WORK",team:"AI TEAM"};
+  const km={home:"DASHBOARD",finance:"FINANCE",health:"HEALTH",growth:"GROWTH",life:"LIFE",sports:"SPORTS",game:"SPORTS",work:"WORK",team:"AI TEAM"};
   if($("aiKicker"))$("aiKicker").textContent=km[key]||String(key||page).toUpperCase();
   $("aiName").textContent=meta[0]||page;$("aiMessage").textContent=meta[1]||p.message||a.message;$("aiRole").textContent=p.name||a.name;
   if($("aiQuote"))$("aiQuote").innerHTML=`<span>${esc(q[0])} 한마디</span><b>“${esc(q[1])}”</b>`;
@@ -590,7 +590,7 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
   document.querySelectorAll(".group").forEach(g=>g.classList.remove("is-current"));
   const activeNav=document.querySelector(`.group .nav-btn[data-view="${id}"]`);
   activeNav?.closest(".group")?.classList.add("is-current");
-  const m=pageMeta[id]||[id,"","home"];$("title").textContent=m[0];$("desc").textContent=m[1];document.body.dataset.view=id;document.body.dataset.canvasGroup=m[2]||"home";const km={home:"DASHBOARD",finance:"FINANCE",health:"HEALTH",growth:"GROWTH",life:"LIFE",game:"GAME",work:"WORK",team:"AI TEAM"};if($("pageKicker"))$("pageKicker").textContent=km[m[2]]||String(id).toUpperCase();setBanner(m[2],id);
+  const m=pageMeta[id]||[id,"","home"];$("title").textContent=m[0];$("desc").textContent=m[1];document.body.dataset.view=id;document.body.dataset.canvasGroup=m[2]||"home";const km={home:"DASHBOARD",finance:"FINANCE",health:"HEALTH",growth:"GROWTH",life:"LIFE",sports:"SPORTS",game:"SPORTS",work:"WORK",team:"AI TEAM"};if($("pageKicker"))$("pageKicker").textContent=km[m[2]]||String(id).toUpperCase();setBanner(m[2],id);
   history.replaceState(null,"",id==="home"?location.href.split("#")[0]:("#"+id));$("app").classList.remove("mobile-open");window.scrollTo({top:0,left:0,behavior:"auto"});
   if(id==="investment")setTimeout(drawPortfolio,30);if(id==="newsroom")setTimeout(()=>investmentNewsMaybeRefresh(),40);if(id==="diet")setTimeout(drawBody,30);if(id==="ledger")setTimeout(drawLedgerTrend,30);if(id==="calendar")renderCalendar();if(id==="tasks")setTimeout(()=>googleCalendarRefreshStatus({silent:true}),0);if(id==="intake")setTimeout(()=>intakeRenderPreview(),0);if(id==="agentReview")setTimeout(()=>agentReviewInit(),0);if(id==="policy")setTimeout(()=>agentPolicyInit(),0);if(id==="deployment")setTimeout(()=>deployCenterRender(),0);
   // v2.9.2: mobile browsers can throttle background polling. Re-check Cloud when opening data-heavy views.
@@ -603,7 +603,7 @@ const QUICK_JUMP_ITEMS=[
   ["home","대시보드","홈 오늘 요약"],["investment","홍 스트리트","투자 주식 ETF 월간 기록"],["newsroom","뉴스룸","주식 투자 뉴스 관심종목 3시간 흐름"],["asset","자산","통합 자산 계좌"],["ledger","가계부","소비 결산 리뷰"],
   ["diet","계체량 측정","다이어트 체중 건강"],["exercise","헬스클럽","운동 걸음 근력"],["reading","성민의 서재","독서 서재 책 완독"],["study","공부","일본어 AI 학습"],
   ["university","낭만 캠퍼스 라이프","대학교 대학 캠퍼스 과목 학사일정"],["certificate","자격증","시험 일정"],["wishlist","Wish-list","위시 희망 구매 경험"],["travel","여행","여행 기록 장소 숙소"],["movie","시청 아카이브","관람 감상 아카이브"],
-  ["diary","일기","오늘 기록"],["game","게임","FM 전술"],["tasks","할 일","태스크 월간"],["calendar","캘린더","일정"],
+  ["diary","일기","오늘 기록"],["game","스포츠","MLB KBO 해외축구 LCK 양키스 KIA 레알 마드리드 Dplus"],["tasks","할 일","태스크 월간"],["calendar","캘린더","일정"],
   ["work","업무 보조","업무 후속조치"],["drive","Drive","구글 드라이브"],["deployment","배포 센터","릴리스 GitHub 브랜치 PR 자동배포"],["intake","성민 오피스","유나 인턴 데스크 자료 입력 자동 분류 Preview 승인"],["agentReview","AI 결재실","AI 심의 결재 승인 보류 반려 수정"],["policy","사내 규칙","Policy Registry 규정 학습 원칙 Evidence"],["aiTeam","AI 팀","캐릭터 파트너"],["settings","설정 / 데이터","백업 복원 클라우드"]
 ];
 function quickJumpMatches(query=""){
@@ -2089,7 +2089,7 @@ const team=[
 {key:"hina",emoji:"🇯🇵",name:"히나",position:"대리",role:"Study Guide",desc:"공부·대학교·자격증 학습 관리",go:"study",tone:"peach"},
 {key:"nauen",emoji:"🌿",name:"나은",position:"대리",role:"Health Coach",desc:"다이어트·운동·회복과 생활습관",go:"diet",tone:"mint"},
 {key:"haru",emoji:"☕",name:"하루",position:"사원",role:"Life Curator",desc:"Wish-list·독서/서재·일상 기록",go:"wishlist",tone:"orange"},
-{key:"suyeon",emoji:"⚽",name:"수연",position:"사원",role:"Head Coach · Travel Planner",desc:"여행·게임·전술 기록",go:"travel",tone:"violet"},
+{key:"suyeon",emoji:"⚽",name:"수연",position:"사원",role:"Head Coach · Travel Planner",desc:"여행·스포츠 기록",go:"travel",tone:"violet"},
 {key:"minji",emoji:"🎬",name:"민지",position:"사원",role:"Knowledge / Culture Archive Assistant",desc:"시청 아카이브·일기·문화 기록",go:"movie",tone:"orange"},
 {key:"yuna",emoji:"🗂️",name:"유나",position:"인턴",role:"AI Operations Intern",desc:"성민 오피스 접수·자료정리·담당 Agent 전달",go:"intake",tone:"violet"}
 ];
@@ -2100,7 +2100,7 @@ const TEAM_PROFILE_META={
   hina:{rank:"Study Guide",headline:"대학교와 자격증, 일본어 학습을 차분하게 이끄는 공부 파트너",focus:["공부 계획 관리","대학교 일정/과목 관리","JLPT·자격증 학습"],traits:["상냥하고 세심함","격려형 튜터","실수도 편하게 교정"],style:["차분한 선생님 톤","작은 진전도 크게 칭찬","학습 루틴과 마감 관리에 강함"],strengths:["학습 계획","복습 루틴","대학 일정 정리"],quote:"오빠, 완벽하게 하려 하지 말고 오늘 분량부터 끝내봐요. 그게 제일 빨라요.",signature:["공부","대학교","자격증"],note:"핵심 역할: 공부 탭, 대학 관리, 자격증/JLPT 진도 관리"},
   sua:{rank:"Chief of Staff",headline:"일정과 할 일, 업무 문서를 정리해 주는 실무형 비서",focus:["할 일 목록","캘린더 / 일정 보조","업무·문서 정리"],traits:["정돈된 실무형","깔끔하고 빠름","업무상 표현을 잘 다듬음"],style:["실행 우선으로 간단명료하게 말함","해야 할 일과 다음 행동을 분명히 제시","메일·문구를 보기 좋게 정리"],strengths:["업무 정리","우선순위 분배","문서/메일 다듬기"],quote:"지금 필요한 건 한 번에 다 하는 게 아니라, 순서대로 끝내는 거예요.",signature:["업무","캘린더","문서"],note:"핵심 역할: 할 일, 캘린더, 업무 보조와 문서/메일 정리"},
   haru:{rank:"Life Curator",headline:"일상 취향과 위시리스트, 독서 생활을 함께 관리하는 라이프 메이트",focus:["Wish-list 관리","독서 / 서재 기록","일상 취향 정리"],traits:["친근하고 장난기 있음","생활밀착형","가성비와 현실감 중시"],style:["동네친구 같은 톤","이미 산 건 그 상태에서 이어서 조언","가볍지만 핵심은 정확하게"],strengths:["생활용품 정리","취향 아카이브","독서 기록"],quote:"오빠, 이건 예쁜데 우리 예산이랑 실제 사용 빈도도 같이 봐야 돼요 ㅎㅎ",signature:["위시","독서/서재","일상"],note:"핵심 역할: 위시리스트, 독서/서재, 생활 취향 아카이브"},
-  suyeon:{rank:"Head Coach · Travel Planner",headline:"여행과 게임, 전술 이야기를 에너지 있게 이끄는 코치형 파트너",focus:["여행 기록 / 계획","게임 기록","전술적 사고와 리뷰"],traits:["에너지 높고 추진력 있음","결정적일 땐 데이터형","감독님/제네럴 홍 세계관 보유"],style:["밝고 카리스마 있는 톤","근들갑은 분석 뒤에만","핵심 흐름과 동선을 먼저 봄"],strengths:["여행 동선 정리","게임·전술 리뷰","동기 부여"],quote:"감독님, 큰 동선부터 잡고 현장에서는 유연하게 갑시다. 그게 승리 플랜이에요.",signature:["여행","게임","전술"],note:"핵심 역할: 여행 탭, 게임 탭, 레코드성 콘텐츠 정리"},
+  suyeon:{rank:"Head Coach · Travel Planner",headline:"여행과 스포츠 이야기를 에너지 있게 이끄는 코치형 파트너",focus:["여행 기록 / 계획","스포츠 허브","경기 흐름과 리뷰"],traits:["에너지 높고 추진력 있음","결정적일 땐 데이터형","감독님/제네럴 홍 세계관 보유"],style:["밝고 카리스마 있는 톤","근들갑은 분석 뒤에만","핵심 흐름과 동선을 먼저 봄"],strengths:["여행 동선 정리","스포츠 리뷰","동기 부여"],quote:"감독님, 큰 동선부터 잡고 현장에서는 유연하게 갑시다. 그게 승리 플랜이에요.",signature:["여행","스포츠","전술"],note:"핵심 역할: 여행 탭, 스포츠 탭, 레코드성 콘텐츠 정리"},
   minji:{rank:"Knowledge / Culture Archive Assistant",headline:"시청 기록과 문화 콘텐츠, 일상을 발랄하게 아카이빙하는 파트너",focus:["시청 아카이브","일기 기록","문화/지식 기록 보조"],traits:["톡톡 튀고 밝음","핑크 톤의 아카이브 감성","가볍게 던지지만 센스 있음"],style:["친근하고 재치 있는 톤","본 취향을 존중하며 기록","재미 요소를 살려 정리"],strengths:["시청 기록 정리","일상 메모 아카이브","콘텐츠 취향 정리"],quote:"오빠 이건 기록해둬야 돼요. 나중에 보면 그때의 감정까지 같이 떠오르거든요.",signature:["시청","일기","아카이브"],note:"핵심 역할: 시청 아카이브, 일기, 문화·지식 보관소 느낌의 기록"},
   yuna:{rank:"AI Operations Intern",headline:"성민 오피스의 자료를 가장 먼저 받아 정리하고 담당 Agent에게 정확히 전달하는 막내",focus:["텍스트·이미지 Intake 접수","기초 구조화와 중복 후보 정리","담당 Agent 라우팅"],traits:["밝고 싹싹한 신입","조금 허둥대도 기록은 꼼꼼","모르면 임의로 채우지 않음"],style:["오빠에게 친근하고 빠르게 보고","애매한 값은 확인 필요로 표시","판단보다 정리와 전달에 집중"],strengths:["자료 접수","형식 정리","업무 분류·전달"],quote:"오빠! 자료부터 유나한테 주세요. 제가 정리해서 담당 선배님께 넘길게요! 🫡",signature:["Intake","정리","Routing"],note:"핵심 역할: 성민 오피스 AI Operations Intern. 결정권은 없고 접수·정리·전달을 담당하며 전문 판단은 담당 Agent와 하니에게 넘김"}
 };
@@ -3654,7 +3654,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.105";
+const HANI_DISPLAY_VERSION="2.9.106";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
