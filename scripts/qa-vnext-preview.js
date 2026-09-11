@@ -29,8 +29,26 @@ const path = require('path');
       await page.waitForTimeout(180);
       await page.screenshot({ path: path.join(output, `${viewport.name}-${view}.png`), fullPage: true });
     }
-    await page.evaluate(() => document.querySelector('[data-sports-tab="kia"]')?.click());
-    await page.waitForTimeout(80);
+    await page.evaluate(() => {
+      document.querySelectorAll('.view').forEach(x => x.classList.toggle('active', x.id === 'game'));
+      document.querySelectorAll('.nav-btn').forEach(x => x.classList.toggle('active', x.dataset.view === 'game'));
+    });
+    const teamDetails = [];
+    for (const team of ['yankees', 'kia', 'madrid', 'dplus']) {
+      await page.evaluate(id => document.querySelector(`[data-sports-tab="${id}"]`)?.click(), team);
+      await page.waitForTimeout(80);
+      teamDetails.push(await page.evaluate(id => {
+        const panel = document.querySelector(`[data-sports-panel="${id}"]`);
+        const logos = [...(panel?.querySelectorAll('.sports-score img') || [])];
+        return {
+          team: id,
+          logoCount: logos.length,
+          loadedLogoCount: logos.filter(img => img.complete && img.naturalWidth > 0).length,
+          logoAlts: logos.map(img => img.alt),
+        };
+      }, team));
+      await page.screenshot({ path: path.join(output, `${viewport.name}-game-${team}.png`), fullPage: true });
+    }
     const sports = await page.evaluate(() => ({
       activeTab: document.querySelector('.sports-view-tabs .active')?.dataset.sportsTab,
       visiblePanels: [...document.querySelectorAll('#game [data-sports-panel]')].filter(x => !x.hidden).map(x => x.dataset.sportsPanel),
@@ -56,7 +74,7 @@ const path = require('path');
       state.movies=original;renderMovies();
       return snapshot;
     });
-    results.push({ viewport, sports, yuna, media, errors });
+    results.push({ viewport, sports: { ...sports, teamDetails }, yuna, media, errors });
     await page.close();
   }
   await browser.close();

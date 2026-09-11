@@ -409,8 +409,8 @@ body[data-view=home] #aiBanner{display:none!important}
 #app #game .sports-home-overview em.win{color:#0f724c;background:#dff7e9}.sports-home-overview em.loss{color:#1d61ab;background:#e3efff}
 #app #game .sports-team-grid{grid-template-columns:minmax(0,1fr)}
 #app #game .sports-team-card{width:100%;min-height:0;box-sizing:border-box}
-#app #game .sports-match-logo{display:grid!important;place-items:center;width:44px;height:44px;padding:5px;border-radius:12px;background:#fff;color:#172033!important;font-size:10px!important;font-weight:950!important;text-align:center!important}
-#app #game .sports-match-logo img{width:100%;height:100%;object-fit:contain}.sports-opponent-mark{border:1px solid #dce2eb}
+#app #game .sports-match-logo{display:grid!important;place-items:center;width:44px;height:44px;padding:5px;border-radius:12px;background:#fff;color:#172033!important;font-size:10px!important;font-weight:950!important;text-align:center!important;overflow:hidden}
+#app #game .sports-match-logo img{width:100%;height:100%;object-fit:contain}#app #game .sports-match-logo img.sports-logo-crop{transform:scale(2.1)}.sports-opponent-mark{border:1px solid #dce2eb}
 #app #movie .series-archive-v2{order:1;grid-column:1/-1;padding:20px 22px;border-radius:24px;background:linear-gradient(145deg,#fff,#f8f5ff)}
 #app #movie .series-archive-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
 #app #movie .series-progress-card{min-width:0;padding:16px;border:1px solid #e4def4;border-radius:17px;background:#fff;box-shadow:0 8px 20px rgba(65,55,100,.05)}
