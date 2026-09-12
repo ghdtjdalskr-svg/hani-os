@@ -1,4 +1,4 @@
-/* HANI OS v2.9.110 · Page Skeleton / Main Character Banner · Sports final */
+/* HANI OS v2.9.111 · Page Skeleton / Main Character Banner · Sports team palettes */
 (() => {
   'use strict';
   if (window.HANI_UI_V02992) return;
@@ -49,14 +49,14 @@
         eyebrow:'SPORTS LOUNGE · KBO',title:'KIA TIGERS',
         description:'KIA 타이거즈의 최근 경기 결과와 이번 주 주요 소식을 확인합니다.',
         quote:'타이거즈의 흐름, 마지막 경기와 소식부터 확인해요.',
-        sceneImage:'',scenePosition:'right center',sceneVariant:'baseball-kia',
+        sceneImage:'',scenePosition:'right center',sceneVariant:'baseball-kia',palette:'kia-red',
         sceneAlt:'수연과 HANI OS 팀이 경기를 응원하는 Sports Lounge 웹툰 장면'
       }),
       madrid:Object.freeze({
         eyebrow:'SPORTS LOUNGE · FOOTBALL',title:'REAL MADRID',
         description:'레알 마드리드의 최근 경기 결과와 이번 주 주요 소식을 확인합니다.',
         quote:'베르나베우의 오늘도 결과와 장면을 함께 챙겨볼까요?',
-        sceneImage:'',scenePosition:'right center',sceneVariant:'football-madrid',
+        sceneImage:'',scenePosition:'right center',sceneVariant:'football-madrid',palette:'madrid-white',
         sceneAlt:'수연과 HANI OS 팀이 경기를 응원하는 Sports Lounge 웹툰 장면'
       }),
       dplus:Object.freeze({
@@ -87,7 +87,7 @@
     }
     const variant=mainCharacterBannerVariants.has(config.variant)?config.variant:'single-character';
     el.className=`ds-main-character-banner ds-main-character-banner--${variant} ds-tone-${config.tone||'work'}`;
-    el.dataset.owner=config.owner||'';el.dataset.category=config.category||'';el.dataset.menu=config.menu||'';el.dataset.sceneVariant=config.sceneVariant||'';el.dataset.sceneFallback=String(Boolean(config.sceneFallback));
+    el.dataset.owner=config.owner||'';el.dataset.category=config.category||'';el.dataset.menu=config.menu||'';el.dataset.sceneVariant=config.sceneVariant||'';el.dataset.sceneFallback=String(Boolean(config.sceneFallback));el.dataset.palette=config.palette||'sports-night';
     [['--mcb-scene-position',config.scenePosition],['--mcb-scene-width',config.sceneWidth],['--mcb-scene-fit',config.sceneFit]].forEach(([property,value])=>value?el.style.setProperty(property,value):el.style.removeProperty(property));
     const titleId=`${id}MainCharacterBannerTitle`;
     el.setAttribute('role','group');el.setAttribute('aria-labelledby',titleId);
@@ -225,5 +225,5 @@
   let queued=false;function refresh(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;mountSkeletons();arrangeNavigation();mountDesignSlots();improveLifeMarket();cleanupNewsroom();bindSportsBoard();if(q('#exercise.active')&&typeof drawExercise==='function')requestAnimationFrame(drawExercise)})}
   document.addEventListener('click',()=>setTimeout(refresh,0));document.addEventListener('change',()=>setTimeout(refresh,0));
   refresh();setTimeout(refresh,120);
-  console.info('[HANI OS] v2.9.110 Page Skeleton ready · Sports Main Character Banner final');
+  console.info('[HANI OS] v2.9.111 Page Skeleton ready · Sports team banner palettes');
 })();

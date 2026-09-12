@@ -302,13 +302,15 @@ body[data-view=home] #aiBanner{display:none!important}
 #app #game.sports-hub{--sports-ink:#172033;--sports-muted:#68758a;display:none}
 #app #game.sports-hub.active{display:block}
 
-/* v2.9.110 · Main Character Banner shell. Sports is the first final consumer. */
-#app .ds-main-character-banner{--mcb-accent:#f0bd66;--mcb-ink:#fff;--mcb-muted:#d8e0ef;--mcb-bg:#0d1729;--mcb-scene-position:76% 48%;--mcb-scene-width:100%;--mcb-scene-fit:cover;position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,54%) minmax(0,46%);align-items:stretch;width:100%;height:232px;min-height:232px;box-sizing:border-box;margin:0 0 14px;border:1px solid #ffffff24;border-radius:22px;overflow:hidden;background:var(--mcb-bg);box-shadow:var(--ds-shadow)}
-#app .ds-main-character-banner:after{content:"";position:absolute;z-index:1;inset:0;background:linear-gradient(90deg,#081325 0%,#0a1625f5 31%,#0a1625b8 52%,#0a162525 78%,transparent 100%);pointer-events:none}
+/* v2.9.111 · Main Character Banner shell. Sports is the first final consumer. */
+#app .ds-main-character-banner{--mcb-accent:#f0bd66;--mcb-ink:#fff;--mcb-muted:#d8e0ef;--mcb-bg:#0d1729;--mcb-overlay:linear-gradient(90deg,#081325 0%,#0a1625f5 31%,#0a1625b8 52%,#0a162525 78%,transparent 100%);--mcb-overlay-mobile:linear-gradient(90deg,#071223f5 0%,#071223e8 48%,#07122387 78%,#0712234d 100%);--mcb-agent-accent:#a36a13;--mcb-scene-position:76% 48%;--mcb-scene-width:100%;--mcb-scene-fit:cover;position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,54%) minmax(0,46%);align-items:stretch;width:100%;height:232px;min-height:232px;box-sizing:border-box;margin:0 0 14px;border:1px solid #ffffff24;border-radius:22px;overflow:hidden;background:var(--mcb-bg);box-shadow:var(--ds-shadow)}
+#app .ds-main-character-banner:after{content:"";position:absolute;z-index:1;inset:0;background:var(--mcb-overlay);pointer-events:none}
 #app .ds-main-character-banner--single-character{--mcb-scene-position:82% 30%}
 #app .ds-main-character-banner--duo-or-trio{--mcb-scene-position:74% 38%}
 #app .ds-main-character-banner--group{--mcb-scene-position:right center;--mcb-scene-width:74%;--mcb-scene-fit:contain}
 #app .ds-main-character-banner.ds-tone-sports{--mcb-accent:#f5c26b;--mcb-bg:#0b1425}
+#app .ds-main-character-banner[data-palette="kia-red"]{--mcb-accent:#ffd4da;--mcb-ink:#fff;--mcb-muted:#ffe2e6;--mcb-bg:#9f1024;--mcb-agent-accent:#b3132a;--mcb-overlay:linear-gradient(90deg,#85091cfb 0%,#a41027f4 34%,#8e1022ce 57%,#5d081665 82%,transparent 100%);--mcb-overlay-mobile:linear-gradient(90deg,#85091cf7 0%,#9f1024eb 52%,#790b1dab 80%,#4f07146b 100%)}
+#app .ds-main-character-banner[data-palette="madrid-white"]{--mcb-accent:#a67d22;--mcb-ink:#16213b;--mcb-muted:#526077;--mcb-bg:#fbfaf6;--mcb-agent-accent:#9a7421;--mcb-overlay:linear-gradient(90deg,#fff 0%,#fffefaed 38%,#f8f6efc7 59%,#fffefa52 82%,transparent 100%);--mcb-overlay-mobile:linear-gradient(90deg,#fffefaf5 0%,#fffefaeb 52%,#fffefaad 80%,#fffefa72 100%);border-color:#d9deea}
 #app .ds-main-character-banner__scene{position:absolute;z-index:0;inset:0;margin:0;overflow:hidden;pointer-events:none}
 #app .ds-main-character-banner__scene img{display:block;width:var(--mcb-scene-width);height:100%;margin-left:auto;object-fit:var(--mcb-scene-fit);object-position:var(--mcb-scene-position)}
 #app .ds-main-character-banner__copy{position:relative;z-index:2;grid-column:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;min-width:0;padding:22px 26px;color:var(--mcb-ink)}
@@ -321,7 +323,7 @@ body[data-view=home] #aiBanner{display:none!important}
 #app .ds-main-character-banner .ai-avatar{position:static!important;flex:0 0 48px!important;width:48px!important;height:54px!important;min-width:48px!important;border:2px solid #fff!important;border-radius:14px!important;background-size:cover!important;background-position:center 18%!important;box-shadow:0 7px 20px #0005!important;transform:none!important}
 #app .ds-main-character-banner .ai-quote{position:relative!important;inset:auto!important;flex:1 1 auto!important;width:auto!important;min-width:0!important;max-width:none!important;margin:0!important;padding:10px 13px!important;border:1px solid #ffffff5c!important;border-radius:14px!important;background:#fffefaee!important;box-shadow:0 7px 20px #0003!important;transform:none!important}
 #app .ds-main-character-banner .ai-quote:after{content:""!important;position:absolute!important;left:-7px!important;right:auto!important;top:50%!important;width:12px!important;height:12px!important;border:0!important;border-left:1px solid #ffffff5c!important;border-bottom:1px solid #ffffff5c!important;background:#fffefa!important;transform:translateY(-50%) rotate(45deg)!important}
-#app .ds-main-character-banner .ai-quote span{display:block!important;margin:0 0 3px!important;color:#a36a13!important;font:900 10px/1.3 var(--ds-font)!important;letter-spacing:.04em!important}
+#app .ds-main-character-banner .ai-quote span{display:block!important;margin:0 0 3px!important;color:var(--mcb-agent-accent)!important;font:900 10px/1.3 var(--ds-font)!important;letter-spacing:.04em!important}
 #app .ds-main-character-banner .ai-quote b{display:block!important;margin:0!important;color:#243047!important;font:760 15px/1.42 var(--ds-font)!important;letter-spacing:-.015em!important;white-space:normal!important;word-break:keep-all!important;overflow-wrap:break-word!important}
 #app #game .sports-team-grid{display:grid;width:100%;box-sizing:border-box;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 #app #game .sports-team-card{--team-bg:#101b2d;--team-fg:#fff;--team-muted:#c5cfdf;--team-line:#ffffff24;--team-chip:#ffffff16;position:relative;min-width:0;min-height:330px;padding:20px;border:1px solid var(--team-line);border-radius:22px;overflow:hidden;background:var(--team-bg);color:var(--team-fg);box-shadow:0 10px 28px #24324a17}
@@ -373,7 +375,7 @@ body[data-view=home] #aiBanner{display:none!important}
 @media(max-width:700px){
  #app .ds-main-character-banner{display:block;height:248px;min-height:248px;border-radius:19px}
  #app .ds-main-character-banner--group{--mcb-scene-position:center center;--mcb-scene-width:100%}
- #app .ds-main-character-banner:after{background:linear-gradient(90deg,#071223f5 0%,#071223e8 48%,#07122387 78%,#0712234d 100%)}
+ #app .ds-main-character-banner:after{background:var(--mcb-overlay-mobile)}
  #app .ds-main-character-banner__copy{width:100%;height:100%;box-sizing:border-box;padding:17px 16px}
  #app .ds-main-character-banner__eyebrow{font-size:9px}
  #app .ds-main-character-banner__title{margin-top:6px;font-size:25px;line-height:1.2}
