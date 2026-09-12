@@ -143,7 +143,7 @@
   }
 
   function ensureEtfLogo(target, identity) {
-    if(window.HANI_UI_V02982_NEWSROOM_EVENT_IDENTITY_FIX && target?.closest('#investment') && /ETF|KODEX|TIGER|ACE|ROBO|RISE|SOL|PLUS/i.test(target.textContent||''))return;
+    if(window.HANI_CANONICAL_LOGO_OWNERS?.investment && target?.closest('#investment')) return;
     if (!target || !identity) return;
     qa('.hani-etf-logo-v02980,.hani-security-logo-v02979.etf,.hani-security-logo-v02978.etf,.hani-security-logo-v02976.etf',target).forEach(x=>x.remove());
     target.classList.add('hani-etf-cell-v02980');

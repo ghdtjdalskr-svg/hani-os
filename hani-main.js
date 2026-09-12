@@ -23,6 +23,13 @@ const CLOUD_SAFETY_KEY="hani_os_cloud_safety_snapshot_v1";
 const CLOUD_EMERGENCY_RESOLVED_KEY="hani_os_emergency_recovery_resolved_v2913";
 const CLOUD_EMERGENCY_PRE_RESTORE_KEY="hani_os_emergency_before_restore_v2913";
 const CLOUD_EMERGENCY_RESTORED_KEY="hani_os_emergency_investment_restored_v2913";
+const HANI_LOGO_SYSTEM_VERSION="2.9.114";
+const HANI_CANONICAL_LOGO_OWNERS=Object.freeze({
+  brand:"hani-main",
+  investment:"hani-main",
+  newsroom:"hani-ui-v02983"
+});
+window.HANI_CANONICAL_LOGO_OWNERS=HANI_CANONICAL_LOGO_OWNERS;
 let cloudClient=null;
 let cloudUser=null;
 let cloudRuntime={status:"설정 필요",tone:"warn",message:"Cloud 설정을 입력하면 연결을 준비합니다.",revision:null,updatedAt:"",verifiedAt:"",device:"",sync:"OFF"};
@@ -985,7 +992,99 @@ function investmentSecurityMeta(h={}){
   const marketText=market==="KR"?"국내":market==="US"?"해외":"기타";
   return {typeKey,typeLabel,marketKey,marketText,ticker:String(h.ticker||inst?.ticker||"").trim()};
 }
-function investmentSecurityNameHtml(h={}){const m=investmentSecurityMeta(h);return `<b class="security-name">${esc(h.name||"종목")}</b><div class="security-meta"><span class="security-badge type-${m.typeKey}">${esc(m.typeLabel)}</span><span class="security-badge market-${m.marketKey}">${m.marketText}</span>${m.ticker?`<span class="security-ticker">${esc(m.ticker)}</span>`:""}</div>`}
+const HANI_BRAND_LOGO_ASSET="./assets/brand/hani-group-ci-official.webp";
+const INVESTMENT_LOGO_COMPANIES=[
+  {id:"samsung",rx:/(삼성전자(?:우)?|005930|005935|SAMSUNG)/i,label:"Samsung Electronics",color:"#1428a0",fallback:"SAMSUNG",icon:"https://cdn.simpleicons.org/samsung/FFFFFF"},
+  {id:"lg",rx:/(LG전자(?:우)?|066570|066575|LG ELECTRONICS)/i,label:"LG Electronics",color:"#a50034",fallback:"LG",icon:"https://cdn.simpleicons.org/lg/FFFFFF"},
+  {id:"nvidia",rx:/(엔비디아|NVIDIA|\bNVDA\b)/i,label:"NVIDIA",color:"#76b900",fallback:"N",icon:"https://cdn.simpleicons.org/nvidia/FFFFFF"},
+  {id:"amazon",rx:/(아마존|AMAZON|\bAMZN\b|\bAWS\b)/i,label:"Amazon",color:"#232f3e",fallback:"a",kind:"amazon"},
+  {id:"alphabet",rx:/(알파벳|GOOGLE|\bGOOGL\b|\bGOOG\b)/i,label:"Alphabet / Google",color:"#ffffff",fallback:"G",kind:"google"},
+  {id:"skhynix",rx:/(SK\s*하이닉스|하이닉스|000660|SK\s*HYNIX)/i,label:"SK hynix",color:"#e6002d",fallback:"SK",icon:"https://cdn.simpleicons.org/skhynix/FFFFFF"}
+];
+const INVESTMENT_LOGO_ISSUERS=[
+  {id:"ace",rx:/\bACE\b/i,label:"ACE",color:"#647f9e"},
+  {id:"kodex",rx:/\bKODEX\b/i,label:"KODEX",color:"#1769e0"},
+  {id:"sol",rx:/\bSOL\b/i,label:"SOL",color:"#078bc8"},
+  {id:"tiger",rx:/\bTIGER\b/i,label:"TIGER",color:"#e34a3f"},
+  {id:"robo",rx:/\bROBO\b|로보\s*글로벌|로보틱스\/자동화/i,label:"ROBO",color:"#2877ef"},
+  {id:"rise",rx:/\bRISE\b/i,label:"RISE",color:"#e4b900",dark:true},
+  {id:"plus",rx:/\bPLUS\b/i,label:"PLUS",color:"#f47a1f"},
+  {id:"koact",rx:/\bKOACT\b/i,label:"KOACT",color:"#2468f2"}
+];
+const INVESTMENT_LOGO_FALLBACK_COLORS=["#61748d","#4b78a8","#4b8e82","#8a6da8","#a06b54","#6675a8"];
+function investmentLogoTheme(raw=""){
+  const s=String(raw).toUpperCase();
+  if(/NASDAQ\s*100|나스닥\s*100|나스닥100/.test(s))return{kind:"text",label:"N100"};
+  if(/S&P\s*500|S&P500/.test(s))return{kind:"text",label:"S&P"};
+  if(/국채|채권|TREASURY|BOND/.test(s))return{kind:"bond"};
+  if(/반도체|HBM|SEMICONDUCT/.test(s))return{kind:"chip"};
+  if(/배당|DIVIDEND/.test(s))return{kind:"dividend"};
+  if(/ROBO|로봇|자동화|ROBOT|휴머노이드/.test(s))return{kind:"robot"};
+  if(/방산|DEFEN/.test(s))return{kind:"shield"};
+  if(/헬스|HEALTH/.test(s))return{kind:"health"};
+  if(/AI|인공지능|전력|인프라/.test(s))return{kind:"ai"};
+  if(/금액티브|GOLD|골드|금\s/.test(s))return{kind:"gold"};
+  if(/커버드콜|COVERED/.test(s))return{kind:"covered"};
+  return{kind:"etf"};
+}
+function investmentLogoStableKey(raw=""){
+  let hash=0;for(const c of String(raw))hash=(hash*31+c.codePointAt(0))>>>0;return hash;
+}
+function investmentLogoFallbackMark(name="",ticker=""){
+  const latin=String(ticker||"").toUpperCase().replace(/[^A-Z0-9]/g,"");
+  if(latin&&!/^\d+$/.test(latin))return latin.slice(0,4);
+  const cleaned=String(name||"").replace(/\([^)]*\)/g," ").replace(/[^0-9A-Za-z가-힣]+/g," ").trim();
+  const words=cleaned.split(/\s+/).filter(Boolean);
+  if(words.length>1&&words.some(w=>/[A-Za-z]/.test(w)))return words.map(w=>w[0]).join("").toUpperCase().slice(0,4);
+  return (cleaned.match(/[가-힣]/g)||cleaned.match(/[A-Za-z0-9]/g)||["·"]).slice(0,3).join("").toUpperCase();
+}
+function resolveInvestmentLogo(input={}){
+  const h=typeof input==="string"?{name:input}:input||{},m=investmentSecurityMeta(h);
+  const name=String(h.name||"종목").trim(),ticker=String(h.ticker||m.ticker||"").trim(),raw=[name,ticker,h.issuer||h.issuerName||h.provider||h.fundHouse||"",h.className||"",m.typeLabel||""].join(" ");
+  const company=INVESTMENT_LOGO_COMPANIES.find(x=>x.rx.test(raw));
+  if(company)return{...company,type:"stock",source:company.icon?"mapped":"fallback"};
+  const issuer=INVESTMENT_LOGO_ISSUERS.find(x=>x.rx.test(raw));
+  if(issuer)return{...issuer,type:"etf",fallback:issuer.label,theme:investmentLogoTheme(raw),source:"fallback"};
+  const key=investmentLogoStableKey(`${name}|${ticker}|${m.typeKey}`),isEtf=m.typeKey==="etf"||/\bETF\b/i.test(raw);
+  return{id:`fallback-${key.toString(36)}`,type:isEtf?"etf":m.typeKey||"other",label:name||ticker||"종목",fallback:investmentLogoFallbackMark(name,ticker),theme:isEtf?investmentLogoTheme(raw):null,color:INVESTMENT_LOGO_FALLBACK_COLORS[key%INVESTMENT_LOGO_FALLBACK_COLORS.length],source:"fallback"};
+}
+function investmentLogoIconSvg(kind="etf"){
+  const c='viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
+  const icons={
+    bond:`<svg ${c}><circle cx="12" cy="12" r="8"/><path d="M12 6v12M15 8.5c-.8-.7-1.8-1-3-1-1.8 0-3 .8-3 2 0 1.4 1.3 1.8 3.1 2.2 1.8.4 3 .9 3 2.3 0 1.4-1.3 2.3-3.2 2.3-1.3 0-2.5-.4-3.4-1.2"/></svg>`,
+    chip:`<svg ${c}><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M9 2v3M12 2v3M15 2v3M9 19v3M12 19v3M15 19v3M2 9h3M2 12h3M2 15h3M19 9h3M19 12h3M19 15h3"/></svg>`,
+    dividend:`<svg ${c}><circle cx="12" cy="12" r="8"/><path d="M8.5 12h7M12 8.5v7"/></svg>`,
+    robot:`<svg ${c}><rect x="5" y="7" width="14" height="11" rx="3"/><path d="M9 12h.01M15 12h.01M9 16h6M12 3v4"/></svg>`,
+    shield:`<svg ${c}><path d="M12 3 19 6v5c0 4.6-2.8 8-7 10-4.2-2-7-5.4-7-10V6l7-3Z"/></svg>`,
+    health:`<svg ${c}><path d="M9 4h6v5h5v6h-5v5H9v-5H4V9h5V4Z"/></svg>`,
+    ai:`<svg ${c}><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg>`,
+    gold:`<svg ${c}><path d="m7 8 2-3h6l2 3 2 9H5l2-9Z"/><path d="M8 11h8"/></svg>`,
+    covered:`<svg ${c}><path d="M4 8h11l-3-3M20 16H9l3 3"/></svg>`,
+    etf:`<svg ${c}><path d="M4 18V9M10 18V5M16 18v-7M22 18V3"/></svg>`
+  };
+  return icons[kind]||icons.etf;
+}
+function investmentSecurityLogoHtml(h={}){
+  const identity=resolveInvestmentLogo(h),theme=identity.theme||{};
+  const glyph=identity.type==="etf"?(theme.kind==="text"?`<b class="hani-investment-logo-theme">${esc(theme.label)}</b>`:investmentLogoIconSvg(theme.kind)):`<b class="hani-investment-logo-fallback">${esc(identity.fallback)}</b>`;
+  const issuer=identity.type==="etf"?`<small>${esc(identity.fallback)}</small>`:"";
+  const image=identity.icon?`<img src="${esc(identity.icon)}" alt="" loading="eager" referrerpolicy="no-referrer" onload="this.parentElement.classList.add('is-loaded')" onerror="this.remove()">`:"";
+  return `<span class="hani-investment-logo type-${esc(identity.type)} brand-${esc(identity.id)}${identity.dark?" dark":""}" data-hani-investment-logo="${esc(identity.id)}" data-logo-source="${esc(identity.source)}" role="img" aria-label="${esc(identity.label)} 로고" style="--investment-logo-color:${esc(identity.color)}"><span class="hani-investment-logo-glyph">${glyph}${issuer}</span>${image}</span>`;
+}
+function investmentSecurityIdentityHtml(h={},detailHtml=""){
+  return `<div class="hani-investment-security">${investmentSecurityLogoHtml(h)}<div class="hani-investment-security-copy"><b class="security-name">${esc(h.name||"종목")}</b>${detailHtml}</div></div>`;
+}
+function investmentSecurityNameHtml(h={}){const m=investmentSecurityMeta(h);return investmentSecurityIdentityHtml(h,`<div class="security-meta"><span class="security-badge type-${m.typeKey}">${esc(m.typeLabel)}</span><span class="security-badge market-${m.marketKey}">${m.marketText}</span>${m.ticker?`<span class="security-ticker">${esc(m.ticker)}</span>`:""}</div>`)}
+function normalizeHaniBrandLogos(root=document){
+  root.querySelectorAll?.('[data-hani-brand-logo]').forEach(host=>{
+    const logos=Array.from(host.querySelectorAll(':scope > img'));
+    const logo=logos.shift()||document.createElement('img');
+    logos.forEach(x=>x.remove());
+    logo.src=HANI_BRAND_LOGO_ASSET;logo.alt="HANI GROUP 공식 로고";logo.width=1774;logo.height=887;
+    if(!logo.parentElement)host.appendChild(logo);
+  });
+}
+window.HANI_LOGO_SYSTEM=Object.freeze({version:HANI_LOGO_SYSTEM_VERSION,owners:HANI_CANONICAL_LOGO_OWNERS,brandAsset:HANI_BRAND_LOGO_ASSET,resolveInvestment:resolveInvestmentLogo});
 function canonicalTicker(ticker="",market=""){const t=String(ticker||"").trim().toUpperCase(),m=inferMarket(t,market);return m==="KR"&&/^A\d{6}$/.test(t)?t.slice(1):t}
 function normalizeBrokerHolding(x={}){const ticker=String(x.ticker||"").trim();return {id:x.id||uid(),instrumentId:String(x.instrumentId||""),name:String(x.name||""),market:inferMarket(ticker,x.market),ticker,quantity:nullableNum(x.quantity),buyPrice:nullableNum(x.buyPrice??x.averagePrice),currentPrice:nullableNum(x.currentPrice),purchaseAmount:nullableNum(x.purchaseAmount),evaluationAmount:nullableNum(x.evaluationAmount),pnl:nullableNum(x.pnl),returnRate:nullableNum(x.returnRate),weight:nullableNum(x.weight),fee:nullableNum(x.fee),tax:nullableNum(x.tax)}}
 function normalizeBrokerAccount(x={}){return {id:x.id||uid(),accountId:String(x.accountId||""),accountName:String(x.accountName||"계좌"),enabled:x.enabled!==false,estimatedAssets:nullableNum(x.estimatedAssets),totalPurchase:nullableNum(x.totalPurchase),totalEvaluation:nullableNum(x.totalEvaluation),totalPnl:nullableNum(x.totalPnl),totalReturn:nullableNum(x.totalReturn),loanAmount:nullableNum(x.loanAmount),holdings:Array.isArray(x.holdings)?x.holdings.map(normalizeBrokerHolding):[]}}
@@ -1036,9 +1135,10 @@ function brokerHoldingHtml(aidx,hidx,h){
   if(master){h.name=master.name;h.ticker=master.ticker||h.ticker;h.market=master.market||inferMarket(h.ticker,h.market)}
   const auto=brokerHoldingAuto(h),hasOverride=[h.purchaseAmount,h.evaluationAmount,h.pnl,h.returnRate].some(v=>v!==null&&v!==undefined);
   const pnlClass=auto.pnl===null?"":auto.pnl>=0?"good":"bad";
+  const security=master||h,logo=String(security?.name||security?.ticker||"").trim()?investmentSecurityLogoHtml(security):"";
   return `<div class="broker-holding" data-broker-holding="${aidx}:${hidx}">
   <div class="rc2-holding-grid rc21">
-    <div class="field holding-name"><label>종목 선택</label><select data-bh="instrumentId">${brokerInstrumentOptions(selected)}</select><div class="sub master-meta">${master?`${esc(marketLabel(master.market))}${master.ticker?` · ${esc(master.ticker)}`:""}`:"종목 관리에서 먼저 등록하세요."}</div></div>
+    <div class="field holding-name"><label>종목 선택</label><div class="broker-security-select">${logo}<div><select data-bh="instrumentId">${brokerInstrumentOptions(selected)}</select><div class="sub master-meta">${master?`${esc(marketLabel(master.market))}${master.ticker?` · ${esc(master.ticker)}`:""}`:"종목 관리에서 먼저 등록하세요."}</div></div></div></div>
     <div class="field"><label>보유수량</label><input data-bh="quantity" type="number" min="0" step="any" value="${h.quantity??""}" placeholder="0"></div>
     <div class="field"><label>평균단가</label><input data-bh="buyPrice" type="number" step="any" value="${h.buyPrice??""}" placeholder="증권사 평단"></div>
     <div class="field"><label>현재가</label><input data-bh="currentPrice" type="number" step="any" value="${h.currentPrice??""}" placeholder="기록 시점"></div>
@@ -1095,7 +1195,7 @@ function renderAnnualInvestment(){
   const rows=annualRows(yearSelect.value),first=rows[0],latest=rows.at(-1),firstTotal=first?brokerCalc(first).total:null,latestTotal=latest?brokerCalc(latest).total:null,change=first&&latest?latestTotal-firstTotal:null;$("annualInvestmentMonths").textContent=rows.length+"개월 기록";$("annualInvestmentStats").innerHTML=[["첫 기록 자산",first?won(firstTotal):"-",""],["최근 자산",latest?won(latestTotal):"-",""],["기간 변화",change===null?"-":signedWon(change),change===null?"":investmentMoveClass(change)],["기록 개월",rows.length+"개월",""]].map(([l,v,cl])=>`<div class="broker-kpi"><div class="label">${l}</div><div class="value ${cl}">${v}</div></div>`).join("");$("annualMonthList").innerHTML=rows.length?rows.map((s,i)=>{const c=brokerCalc(s),prev=i?brokerCalc(rows[i-1]).total:null,d=prev===null?null:c.total-prev;return `<div class="annual-month-card"><div class="month">${esc(s.period)}</div><div><b>${won(c.total)}</b><div class="sub ${investmentMoveClass(c.pnl)}">평가손익 ${signedWon(c.pnl)}</div></div><div class="${d===null?"invest-flat":investmentMoveClass(d)}">${d===null?"기준":signedWon(d)}</div></div>`}).join(""):'<div class="empty">이 연도의 월간 기록이 없습니다.</div>';
   const stockMeta=new Map();rows.forEach(s=>brokerAggregatedHoldings(s).forEach(h=>{if(!stockMeta.has(h.key))stockMeta.set(h.key,{key:h.key,name:h.name,ticker:h.ticker,market:h.market})}));const stocks=[...stockMeta.values()].sort((a,b)=>compareNames(a.name,b.name)),sel=$("annualStockSelect"),oldKey=state.ui.annualStockKey||sel.value;
   if(stocks.length){sel.innerHTML=stocks.map(x=>`<option value="${esc(x.key)}" ${x.key===oldKey?"selected":""}>${esc(x.name)}${x.ticker?` · ${esc(x.ticker)}`:""}</option>`).join("");if(!stocks.some(x=>x.key===sel.value))sel.value=stocks[0].key;state.ui.annualStockKey=sel.value}else{sel.innerHTML='<option value="">종목 기록 없음</option>';state.ui.annualStockKey=""}
-  const summaries=stocks.map(meta=>{const data=rows.map(s=>annualHoldingMap(s).get(meta.key)||null),firstH=data[0]||{quantity:0,evaluation:null,avgPrice:null,pnl:null},lastH=data.at(-1)||{quantity:0,evaluation:null,avgPrice:null,pnl:null};return {...meta,firstQty:n(firstH.quantity),lastQty:n(lastH.quantity),lastAvg:lastH.avgPrice,lastEval:lastH.evaluation,lastPnl:lastH.pnl}});$("annualStockCount").textContent=summaries.length+"종목";$("annualStockRows").innerHTML=summaries.map(x=>`<tr><td><b>${esc(x.name)}</b>${x.ticker?`<div class="sub">${esc(marketLabel(x.market))} · ${esc(x.ticker)}</div>`:""}</td><td>${num(x.firstQty)}</td><td>${num(x.lastQty)}</td><td>${x.lastQty-x.firstQty>0?"+":""}${num(x.lastQty-x.firstQty)}</td><td>${x.lastAvg===null||x.lastAvg===undefined?"-":won(x.lastAvg)}</td><td>${x.lastEval===null||x.lastEval===undefined?"-":won(x.lastEval)}</td><td class="${investmentMoveClass(x.lastPnl)}">${x.lastPnl===null||x.lastPnl===undefined?"-":signedWon(x.lastPnl)}</td></tr>`).join("")||'<tr><td colspan="7">이 연도에 기록된 종목이 없습니다.</td></tr>';renderAnnualStockDetail(rows);drawAnnualInvestmentCharts();yearSelect.onchange=()=>{state.ui.investmentYear=yearSelect.value;save();renderAnnualInvestment()};sel.onchange=()=>{state.ui.annualStockKey=sel.value;save();renderAnnualStockDetail(annualRows(yearSelect.value));drawAnnualInvestmentCharts()}
+  const summaries=stocks.map(meta=>{const data=rows.map(s=>annualHoldingMap(s).get(meta.key)||null),firstH=data[0]||{quantity:0,evaluation:null,avgPrice:null,pnl:null},lastH=data.at(-1)||{quantity:0,evaluation:null,avgPrice:null,pnl:null};return {...meta,firstQty:n(firstH.quantity),lastQty:n(lastH.quantity),lastAvg:lastH.avgPrice,lastEval:lastH.evaluation,lastPnl:lastH.pnl}});$("annualStockCount").textContent=summaries.length+"종목";$("annualStockRows").innerHTML=summaries.map(x=>`<tr><td>${investmentSecurityIdentityHtml(x,x.ticker?`<div class="sub">${esc(marketLabel(x.market))} · ${esc(x.ticker)}</div>`:"")}</td><td>${num(x.firstQty)}</td><td>${num(x.lastQty)}</td><td>${x.lastQty-x.firstQty>0?"+":""}${num(x.lastQty-x.firstQty)}</td><td>${x.lastAvg===null||x.lastAvg===undefined?"-":won(x.lastAvg)}</td><td>${x.lastEval===null||x.lastEval===undefined?"-":won(x.lastEval)}</td><td class="${investmentMoveClass(x.lastPnl)}">${x.lastPnl===null||x.lastPnl===undefined?"-":signedWon(x.lastPnl)}</td></tr>`).join("")||'<tr><td colspan="7">이 연도에 기록된 종목이 없습니다.</td></tr>';renderAnnualStockDetail(rows);drawAnnualInvestmentCharts();yearSelect.onchange=()=>{state.ui.investmentYear=yearSelect.value;save();renderAnnualInvestment()};sel.onchange=()=>{state.ui.annualStockKey=sel.value;save();renderAnnualStockDetail(annualRows(yearSelect.value));drawAnnualInvestmentCharts()}
 }
 function renderAnnualStockDetail(rows){
   const key=$("annualStockSelect")?.value;if(!key||!rows.length){$("annualStockSummary").innerHTML=[["첫 수량","-"],["최근 수량","-"],["수량 변화","-"],["통합 평균단가","-"],["최근 평가액","-"],["최근 손익","-"]].map(([l,v])=>`<span class="mini-metric">${l}<b>${v}</b></span>`).join("");$("annualStockHistoryRows").innerHTML='<tr><td colspan="8">종목을 선택하면 월별 상세가 표시됩니다.</td></tr>';$("annualStockAccounts").innerHTML='<div class="empty">최근 계좌별 기록이 없습니다.</div>';$("annualStockAccountBadge").textContent="기록 없음";return}
@@ -1145,8 +1245,9 @@ function renderWatchlist(){
   $("watchFilter").value=filter;$("watchSearch").value=state.ui.watchlistSearch||"";$("watchCount").textContent=rows.length+"종목";
   $("watchList").innerHTML=rows.map(x=>{
     const held=watchIsHeld(x),tracking=x.newsTracking!==false;
+    const detail=`<div class="watchlist-meta"><span class="watchlist-status ${x.status}">${watchStatusLabel(x.status)}</span>${held?'<span class="instrument-status held">현재 보유중</span>':""}<span class="watch-news-badge ${tracking?"on":"off"}">${tracking?"📰 뉴스 추적":"뉴스 추적 OFF"}</span><span>${esc(x.registeredDate)}</span><span>${esc(marketLabel(x.market))}${x.ticker?` · ${esc(x.ticker)}`:""}</span></div>`;
     return `<div class="watchlist-item">
-      <div class="row start"><div><div class="watchlist-meta"><span class="watchlist-status ${x.status}">${watchStatusLabel(x.status)}</span>${held?'<span class="instrument-status held">현재 보유중</span>':""}<span class="watch-news-badge ${tracking?"on":"off"}">${tracking?"📰 뉴스 추적":"뉴스 추적 OFF"}</span><span>${esc(x.registeredDate)}</span><span>${esc(marketLabel(x.market))}${x.ticker?` · ${esc(x.ticker)}`:""}</span></div><h4>${esc(x.name)}</h4></div>
+      <div class="row start">${investmentSecurityIdentityHtml(x,detail)}
       <div class="watchlist-actions">${tracking?`<button class="btn sm" data-watch-news="${x.id}">뉴스 보기</button>`:""}<button class="btn sm" data-watch-toggle-news="${x.id}">${tracking?"추적 끄기":"추적 켜기"}</button><button class="btn sm" data-watch-edit="${x.id}">수정</button><button class="btn sm danger" data-watch-delete="${x.id}">삭제</button></div></div>
       ${x.reason?`<div class="watchlist-thesis"><b>관심 이유 / 투자 아이디어</b>\n${esc(x.reason)}</div>`:""}
       <div class="sub" style="margin-top:8px">관심 매수가 ${x.targetPrice===null?"미입력":won(x.targetPrice)}${x.note?` · ${esc(x.note)}`:""}</div>
@@ -1417,13 +1518,13 @@ function renderInvestmentHighlights(){
   if(prev){const pm=annualHoldingMap(prev);collector=hs.map(h=>({h,d:n(h.quantity)-n(pm.get(h.key)?.quantity)})).filter(x=>x.d>0).sort((a,b)=>b.d-a.d)[0]||null}
   const calc=brokerCalc(latest),srcAcc=new Map((latest.accounts||[]).map(a=>[a.accountId,a])),accRows=calc.accounts.map(a=>({a,rate:srcAcc.get(a.accountId)?.totalReturn??a.rate})).filter(x=>x.rate!==null&&x.rate!==undefined),bestAcc=accRows.sort((a,b)=>n(b.rate)-n(a.rate))[0],largest=[...calc.accounts].sort((a,b)=>n(b.assets)-n(a.assets))[0];
   const items=[
-    ["🏆","이달의 효자종목",positive?positive.name:"아직 없음",positive?signedWon(positive.pnl):"플러스 손익 종목 없음"],
-    ["🚀","수익률 1위",bestRate?bestRate.name:"기록 없음",bestRate?pct(n(bestRate.rate)):"-"],
-    ["🌱","가장 많이 모은 종목",collector?collector.h.name:(prev?"추가매수 없음":"다음 기록부터"),collector?`전월 대비 +${num(collector.d)}주`:(prev?"수량 증가 없음":"전월 비교 필요")],
-    ["👑","이달의 일등계좌",bestAcc?bestAcc.a.accountName:"기록 없음",bestAcc?pct(n(bestAcc.rate)):"-"],
-    ["💰","가장 큰 계좌",largest?.accountName||"기록 없음",largest?won(largest.assets):"-"]
+    {ico:"🏆",label:"이달의 효자종목",value:positive?positive.name:"아직 없음",sub:positive?signedWon(positive.pnl):"플러스 손익 종목 없음",security:positive},
+    {ico:"🚀",label:"수익률 1위",value:bestRate?bestRate.name:"기록 없음",sub:bestRate?pct(n(bestRate.rate)):"-",security:bestRate},
+    {ico:"🌱",label:"가장 많이 모은 종목",value:collector?collector.h.name:(prev?"추가매수 없음":"다음 기록부터"),sub:collector?`전월 대비 +${num(collector.d)}주`:(prev?"수량 증가 없음":"전월 비교 필요"),security:collector?.h},
+    {ico:"👑",label:"이달의 일등계좌",value:bestAcc?bestAcc.a.accountName:"기록 없음",sub:bestAcc?pct(n(bestAcc.rate)):"-"},
+    {ico:"💰",label:"가장 큰 계좌",value:largest?.accountName||"기록 없음",sub:largest?won(largest.assets):"-"}
   ];
-  box.innerHTML=items.map(([ico,l,v,sub])=>`<div class="highlight-card"><span class="highlight-ico">${ico}</span><div><small>${l}</small><b>${esc(String(v))}</b><span>${esc(String(sub))}</span></div></div>`).join("")
+  box.innerHTML=items.map(item=>`<div class="highlight-card">${item.security?investmentSecurityLogoHtml(item.security):`<span class="highlight-ico">${item.ico}</span>`}<div><small>${item.label}</small><b>${esc(String(item.value))}</b><span>${esc(String(item.sub))}</span></div></div>`).join("")
 }
 function accountSnapshotAt(s,id){return brokerCalc(s).accounts.find(a=>a.accountId===id)||null}
 function renderInvestmentAccountOverview(){
@@ -1455,7 +1556,7 @@ $("addAccount").onclick=()=>{const name=$("accName").value.trim(),type=$("accTyp
 
 function renderInstruments(){
   if(!$("instrumentRows"))return;const rows=sortedInstruments();$("instrumentCount").textContent=rows.length+"개";
-  $("instrumentRows").innerHTML=rows.map(i=>{const u=masterUsage(i),badges=[u.held.length?'<span class="instrument-status held">보유중</span>':u.ever?'<span class="instrument-status past">보유 종료</span>':'<span class="instrument-status">등록</span>',u.watch?'<span class="watchlist-status interest">관심</span>':""];return `<tr><td><b>${esc(i.name)}</b><div class="sub">${badges.join(" ")}</div></td><td>${esc(i.className||"기타")}</td><td>${esc(marketLabel(i.market||inferMarket(i.ticker,"")))}</td><td>${esc(i.ticker||"-")}</td><td>${u.held.map(esc).join(", ")||"-"}</td><td><div class="acts"><button class="btn sm" data-edit-instrument="${i.id}">수정</button>${!u.watch?`<button class="btn sm" data-master-watch="${i.id}">관심 등록</button>`:""}<button class="btn sm danger" data-delete-instrument="${i.id}">삭제</button></div></td></tr>`}).join("")||'<tr><td colspan="6">등록 종목이 없습니다. 먼저 추적할 종목을 등록해 주세요.</td></tr>';
+  $("instrumentRows").innerHTML=rows.map(i=>{const u=masterUsage(i),badges=[u.held.length?'<span class="instrument-status held">보유중</span>':u.ever?'<span class="instrument-status past">보유 종료</span>':'<span class="instrument-status">등록</span>',u.watch?'<span class="watchlist-status interest">관심</span>':""];return `<tr><td>${investmentSecurityIdentityHtml(i,`<div class="sub">${badges.join(" ")}</div>`)}</td><td>${esc(i.className||"기타")}</td><td>${esc(marketLabel(i.market||inferMarket(i.ticker,"")))}</td><td>${esc(i.ticker||"-")}</td><td>${u.held.map(esc).join(", ")||"-"}</td><td><div class="acts"><button class="btn sm" data-edit-instrument="${i.id}">수정</button>${!u.watch?`<button class="btn sm" data-master-watch="${i.id}">관심 등록</button>`:""}<button class="btn sm danger" data-delete-instrument="${i.id}">삭제</button></div></td></tr>`}).join("")||'<tr><td colspan="6">등록 종목이 없습니다. 먼저 추적할 종목을 등록해 주세요.</td></tr>';
   document.querySelectorAll("[data-edit-instrument]").forEach(b=>b.onclick=()=>{const i=instrumentBy(b.dataset.editInstrument);if(!i)return;$("instrumentEditId").value=i.id;$("instrumentName").value=i.name;$("instrumentClass").value=i.className||"기타";$("instrumentMarket").value=i.market||inferMarket(i.ticker,"");$("instrumentTicker").value=i.ticker||"";$("addInstrument").textContent="수정 저장";$("instrumentName").scrollIntoView({behavior:"smooth",block:"center"})});
   document.querySelectorAll("[data-master-watch]").forEach(b=>b.onclick=()=>{const i=instrumentBy(b.dataset.masterWatch);if(!i)return;resetWatchlist();$("watchName").value=i.name;$("watchTicker").value=i.ticker||"";$("watchMarket").value=i.market||inferMarket(i.ticker,"");$("watchDate").value=today();$("watchName").scrollIntoView({behavior:"smooth",block:"center"})});
   document.querySelectorAll("[data-delete-instrument]").forEach(b=>b.onclick=()=>{const id=b.dataset.deleteInstrument,i=instrumentBy(id),u=i?masterUsage(i):null;if(!i)return;if(state.transactions.some(t=>t.instrumentId===id)||u?.ever||u?.watch)return alert("월간 기록·관심종목·거래내역에 연결된 종목은 삭제할 수 없습니다. 기록 보존을 위해 종목을 유지해 주세요.");if(!confirm("이 종목을 삭제할까요?"))return;state.instruments=state.instruments.filter(x=>x.id!==id);commit("종목을 삭제했습니다.")})
@@ -1479,7 +1580,7 @@ $("addTransaction").onclick=()=>{
 };
 function renderTransactions(){
   const filter=$("txFilterAccount").value||"all";const rows=[...state.transactions].sort((a,b)=>(b.date||"").localeCompare(a.date||"")||(b.createdAt||"").localeCompare(a.createdAt||"")).filter(t=>filter==="all"||t.accountId===filter);$("transactionCount").textContent=state.transactions.length+"건";
-  $("transactionRows").innerHTML=rows.map(t=>{const a=accountBy(t.accountId),i=instrumentBy(t.instrumentId),isSec=t.type==="매수"||t.type==="매도";return `<tr><td>${esc(t.date)}</td><td>${esc(a?.name||"-")}</td><td><b>${esc(t.type)}</b></td><td>${isSec?esc(i?.name||"-"):"-"}</td><td>${isSec?num(t.qty):"-"}</td><td>${isSec?won(t.price):won(t.amount)}</td><td>${isSec?won(t.fee):"-"}</td><td>${esc(t.note||"-")}</td><td><button class="btn sm danger" data-delete-tx="${t.id}">삭제</button></td></tr>`}).join("")||'<tr><td colspan="9">거래 기록이 없습니다.</td></tr>';
+  $("transactionRows").innerHTML=rows.map(t=>{const a=accountBy(t.accountId),i=instrumentBy(t.instrumentId),isSec=t.type==="매수"||t.type==="매도",security=i||{name:"삭제된 종목",ticker:"",market:""};return `<tr${isSec?' class="security-row"':""}><td>${esc(t.date)}</td><td>${esc(a?.name||"-")}</td><td><b>${esc(t.type)}</b></td><td>${isSec?investmentSecurityIdentityHtml(security):"-"}</td><td>${isSec?num(t.qty):"-"}</td><td>${isSec?won(t.price):won(t.amount)}</td><td>${isSec?won(t.fee):"-"}</td><td>${esc(t.note||"-")}</td><td><button class="btn sm danger" data-delete-tx="${t.id}">삭제</button></td></tr>`}).join("")||'<tr><td colspan="9">거래 기록이 없습니다.</td></tr>';
   document.querySelectorAll("[data-delete-tx]").forEach(b=>b.onclick=()=>{if(!confirm("이 거래를 삭제할까요? 보유수량과 현금이 다시 계산됩니다."))return;state.transactions=state.transactions.filter(t=>t.id!==b.dataset.deleteTx);autoSnapshot();commit("거래를 삭제했습니다.")});
 }
 $("txFilterAccount").onchange=renderTransactions;
@@ -3670,7 +3771,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.113";
+const HANI_DISPLAY_VERSION="2.9.114";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
@@ -4040,7 +4141,7 @@ async function agentReviewInit(){
 async function agentPolicyInit(){if(!$("policy"))return;if($("agentRefreshPolicies"))$("agentRefreshPolicies").onclick=()=>agentLoadPolicyRegistry();if(!agentRequireCloud())return;try{await agentLoadPolicyRegistry()}catch(e){console.error("Policy init",e);if($("agentPolicyRegistry"))$("agentPolicyRegistry").innerHTML=`<div class="empty">사내 규칙을 불러오지 못했습니다.<br>${esc(e?.message||e)}</div>`}}
 
 
-function renderAll(){syncHaniDisplayVersion();refreshSelects();renderAccounts();renderInstruments();renderHoldings();renderTransactions();renderMonthlySnapshots();renderInvestmentQuickSuite();renderInvestmentHighlights();renderInvestmentAccountOverview();renderInvestmentNews();syncOverviewYearMirror();renderPortfolio();renderAssets();renderLedger();renderWishlist();renderBody();renderExercise();renderReading();renderMovies();renderDiary();renderCampus();renderTravel();renderCertificates();renderTasks();renderCalendar();renderTeam();renderNotes();renderHome();renderStoragePanel()}
+function renderAll(){syncHaniDisplayVersion();normalizeHaniBrandLogos();refreshSelects();renderAccounts();renderInstruments();renderHoldings();renderTransactions();renderMonthlySnapshots();renderInvestmentQuickSuite();renderInvestmentHighlights();renderInvestmentAccountOverview();renderInvestmentNews();syncOverviewYearMirror();renderPortfolio();renderAssets();renderLedger();renderWishlist();renderBody();renderExercise();renderReading();renderMovies();renderDiary();renderCampus();renderTravel();renderCertificates();renderTasks();renderCalendar();renderTeam();renderNotes();renderHome();renderStoragePanel()}
 function downloadJson(serialized,filename){const blob=new Blob([serialized],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function exportData({suffix="",silent=false}={}){
   try{

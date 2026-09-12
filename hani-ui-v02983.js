@@ -36,6 +36,8 @@
 
   function resolveStock(raw) {
     const s=String(raw||'').replace(/\s+/g,' ').trim();
+    const shared=window.HANI_LOGO_SYSTEM?.resolveInvestment;
+    if(typeof shared==='function') return shared({name:s});
     for(const item of STOCKS) if(item.rx.test(s)) return item;
     return null;
   }

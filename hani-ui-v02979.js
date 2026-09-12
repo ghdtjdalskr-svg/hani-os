@@ -153,7 +153,7 @@
     qa('.hani-security-logo-v02976,.hani-security-logo-v02977,.hani-security-logo-v02978,.hani-security-logo-v02979', root).forEach(el=>el.remove());
   }
   function placeLogo(target, identity, size='md') {
-    if(window.HANI_UI_V02982_NEWSROOM_EVENT_IDENTITY_FIX && target?.closest('#investment') && /ETF|KODEX|TIGER|ACE|ROBO|RISE|SOL|PLUS/i.test(target.textContent||''))return;
+    if(window.HANI_CANONICAL_LOGO_OWNERS?.investment && target?.closest('#investment')) return;
     // v2.9.101: the canonical v02983 renderer owns newsroom logos.
     if(window.HANI_UI_V02983_NEWSROOM_LOGO_CANONICAL && target?.closest('#newsroom')) return;
     if (!target || !identity) return;

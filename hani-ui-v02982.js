@@ -201,6 +201,7 @@ td.hani-etf-target-v02982>.hani-etf-logo-v02982{position:absolute!important;left
   }
 
   function decorateEtfs() {
+    if(window.HANI_CANONICAL_LOGO_OWNERS?.investment) return;
     const root=q('#investment');
     if (!root) return;
     qa('tr',root).forEach(row=>{const cell=q('td:first-child',row);if(cell&&resolveEtf(txt(cell)))ensureEtfLogo(cell)});
