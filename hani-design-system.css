@@ -302,7 +302,7 @@ body[data-view=home] #aiBanner{display:none!important}
 #app #game.sports-hub{--sports-ink:#172033;--sports-muted:#68758a;display:none}
 #app #game.sports-hub.active{display:block}
 
-/* v2.9.112 · Main Character Banner shell. Sports is the first final consumer. */
+/* v2.9.113 · Main Character Banner shell. Scene ownership is per sidebar menu. */
 #app .ds-main-character-banner{--mcb-accent:#f0bd66;--mcb-ink:#fff;--mcb-muted:#d8e0ef;--mcb-bg:#0d1729;--mcb-scene-position:76% 48%;--mcb-scene-width:100%;--mcb-scene-fit:cover;position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,54%) minmax(0,46%);align-items:stretch;width:100%;height:232px;min-height:232px;box-sizing:border-box;margin:0 0 14px;border:1px solid #ffffff24;border-radius:22px;overflow:hidden;background:var(--mcb-bg);box-shadow:var(--ds-shadow)}
 #app .ds-main-character-banner:after{content:"";position:absolute;z-index:1;inset:0;background:linear-gradient(90deg,#081325 0%,#0a1625f5 31%,#0a1625b8 52%,#0a162525 78%,transparent 100%);pointer-events:none}
 #app .ds-main-character-banner--single-character{--mcb-scene-position:82% 30%}
