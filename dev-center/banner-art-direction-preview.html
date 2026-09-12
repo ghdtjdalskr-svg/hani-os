@@ -16,12 +16,16 @@
       <small>Preview only · v2.9.114 baseline</small>
     </a>
     <div class="preview-controls">
+      <a class="preview-page-link" href="./banner-seasonal-preview.html">4계절 비교</a>
       <div class="segmented" role="group" aria-label="화면 크기">
         <button type="button" data-mode="desktop">Desktop</button>
         <button type="button" data-mode="mobile">390px</button>
         <button type="button" data-mode="compare" class="active">함께 보기</button>
       </div>
-      <label class="season-control">계절 분위기
+      <label class="select-control">메뉴 범위
+        <select id="categoryFilter" aria-label="카테고리 필터"></select>
+      </label>
+      <label class="select-control">계절 분위기
         <select id="seasonSelect" aria-label="계절 분위기 선택">
           <option value="spring">봄</option>
           <option value="summer">여름</option>
@@ -36,15 +40,22 @@
     <section class="preview-intro">
       <div>
         <span class="intro-kicker">UNIFIED MAIN CHARACTER BANNER · ART DIRECTION STUDY</span>
-        <h1>같은 HANI OS 안의,<br>서로 다른 다섯 공간</h1>
-        <p>Sports에서 승인된 높이와 정보 위계를 고정하고, Category Theme과 Sidebar Menu Scene만 바꾼 비교 시안입니다.</p>
+        <h1>같은 HANI OS 안의,<br>서로 다른 스물다섯 공간</h1>
+        <p>Sports에서 승인된 높이와 정보 위계를 고정하고, 스포츠를 제외한 모든 Sidebar Menu의 Category Theme과 Scene을 비교하는 운영 적용 전 시안입니다.</p>
       </div>
       <dl class="system-rules">
         <div><dt>Frame</dt><dd>공통 232px</dd></div>
         <div><dt>Profile</dt><dd>작은 canonical avatar</dd></div>
         <div><dt>Scene</dt><dd>사이드바 메뉴당 1개</dd></div>
-        <div><dt>Scope</dt><dd>Preview only</dd></div>
+        <div><dt>Scope</dt><dd>25 menus · Preview only</dd></div>
       </dl>
+    </section>
+
+    <section class="scene-audit" aria-label="Scene 완성도 점검 결과">
+      <div><span>SCENE AUDIT</span><b>시안 완성도 표시</b></div>
+      <p><strong>16</strong> 고유 캐릭터 Scene</p>
+      <p class="needs"><strong>7</strong> 인물 Scene 보완 필요</p>
+      <p class="duplicate"><strong>1쌍</strong> 자산 ↔ 가계부 유사 구도</p>
     </section>
 
     <nav class="jump-nav" aria-label="시안 빠른 이동" id="jumpNav"></nav>
@@ -53,7 +64,7 @@
     <section class="recommendation">
       <span>RECOMMENDED CANONICAL DIRECTION</span>
       <h2>공통 프레임은 고정하고, 장면의 서사와 Category 색만 메뉴에 맞게 바꿉니다.</h2>
-      <p>투자는 전문적인 분석 공간, 공부는 일본어 학습 공간, 시청 아카이브는 편안한 감상 공간, 일기는 조용한 개인 공간, AI 결재실은 살아 있는 의사결정 공간으로 읽혀야 합니다. 프로필은 담당자 확인용 작은 avatar로만 유지합니다.</p>
+      <p>오피스는 운영의 흐름, 재무는 기록과 판단, 건강은 생활 루틴, 성장은 학습과 축적, 라이프는 계획과 추억, 업무는 실행과 관리로 읽혀야 합니다. 같은 카테고리는 색과 공기의 결을 공유하고, 각 Sidebar Menu는 하나의 고유 Scene만 소유합니다.</p>
     </section>
   </main>
 
