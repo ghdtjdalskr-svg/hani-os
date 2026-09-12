@@ -1,5 +1,5 @@
 /* =========================================================
-   HANI OS v2.9.87 · Learning Board v1.1
+   HANI OS v2.9.115 · Learning Board v1.1
    Backward-compatible state extension only.
    - learningProjects
    - learningQuizzes
@@ -13,7 +13,7 @@
 
   const PATCH_ID = 'HANI_STUDY_V02984';
   const STYLE_ID = 'hani-study-v02984-style';
-  const VERSION = '2.9.87';
+  const VERSION = '2.9.115';
   if (window[PATCH_ID]) return;
   window[PATCH_ID] = true;
 
@@ -34,6 +34,9 @@
   let activeQuizId = '';
   let activeStudyTab = 'board';
   let activeWrongId = '';
+  let quizArchivePage = 1;
+  let quizArchiveMonth = 'all';
+  const QUIZ_ARCHIVE_PAGE_SIZE = 10;
   let busy = false;
   let projectFormMode = 'create';
   const autoGenerationAttempts = new Set();
@@ -462,6 +465,14 @@
         <div id="studyWrongPanel" hidden></div>
         <div id="studyHistoryPanel" hidden></div>
       </div>`;
+    const engine=q('.study-engine-grid',root),quick=q('.study-quick-note',root);
+    if(engine&&quick&&quick.parentElement!==engine)engine.append(quick);
+    const projectCard=q('.study-engine-grid>div:first-child>.study-card-v02984',root);
+    if(projectCard&&!projectCard.closest('.study-projects-collapsible')){
+      const details=document.createElement('details');details.className='study-projects-collapsible';details.open=true;
+      const summary=document.createElement('summary');summary.innerHTML='<span><b>학습 프로젝트</b><small>설정·중지·재개·종료·삭제 기능을 그대로 사용합니다.</small></span><em>접기</em>';
+      projectCard.before(details);details.append(summary,projectCard);details.addEventListener('toggle',()=>{summary.querySelector('em').textContent=details.open?'접기':'열기'});
+    }
   }
 
   function projectProgress(project) {
@@ -583,9 +594,11 @@
       main.innerHTML = `<div class="study-card-v02984 study-main-empty"><div><b>학습 프로젝트를 선택해 주세요.</b><span>왼쪽에서 프로젝트를 만들면 Daily Quiz가 시작됩니다.</span></div></div>`;
       return;
     }
-    const view = normalizeProject(project), date = localToday(), quizzes = projectQuizzes(project.id), todayQuiz = quizzes.find(x => quizDate(x) === date), pending = quizzes.filter(x => x.status !== 'completed'), completed = quizzes.filter(x => x.status === 'completed');
+    const view = normalizeProject(project), date = localToday(), allQuizzes = projectQuizzes(project.id), todayQuiz = allQuizzes.find(x => quizDate(x) === date), pending = allQuizzes.filter(x => x.status !== 'completed'), completed = allQuizzes.filter(x => x.status === 'completed'), archiveMonths = [...new Set(allQuizzes.map(x => quizDate(x).slice(0,7)).filter(x => /^\d{4}-\d{2}$/.test(x)))].sort((a,b)=>b.localeCompare(a)), filteredQuizzes = quizArchiveMonth === 'all' ? allQuizzes : allQuizzes.filter(x => quizDate(x).startsWith(quizArchiveMonth)), archivePages = Math.max(1, Math.ceil(filteredQuizzes.length / QUIZ_ARCHIVE_PAGE_SIZE));
+    quizArchivePage = Math.min(archivePages, Math.max(1, quizArchivePage));
+    const quizzes = filteredQuizzes.slice((quizArchivePage - 1) * QUIZ_ARCHIVE_PAGE_SIZE, quizArchivePage * QUIZ_ARCHIVE_PAGE_SIZE);
     const scheduled = isScheduledDate(project, date), failed = generationFailures.get(`${project.id}|${date}`) || '', paused = view.status === 'paused';
-    if (!activeQuizId || !quizById(activeQuizId) || quizById(activeQuizId)?.projectId !== project.id) activeQuizId = todayQuiz?.id || pending[0]?.id || quizzes[0]?.id || '';
+    if (!activeQuizId || !quizById(activeQuizId) || quizById(activeQuizId)?.projectId !== project.id) activeQuizId = todayQuiz?.id || pending[0]?.id || allQuizzes[0]?.id || '';
     const activeQuiz = quizById(activeQuizId);
     main.innerHTML = `
       <div class="study-card-v02984 study-today-card">
@@ -594,10 +607,12 @@
         <div class="note" style="margin-top:8px">${paused ? '일시중지 상태입니다. 기존 문제세트와 오답은 계속 볼 수 있으며 새 문제 생성은 차단됩니다.' : failed ? `자동 생성 실패 · ${safe(failed)} · 버튼으로 한 번씩 다시 시도할 수 있습니다.` : scheduled ? '오늘은 자동 생성 대상일입니다. 프로젝트 진입 시 세트가 없으면 한 번만 요청합니다.' : '오늘은 정기 생성일이 아닙니다. 필요하면 수동으로 생성할 수 있습니다.'}${pending.filter(x => quizDate(x) < date).length ? ` · 지난 미완료 ${pending.filter(x => quizDate(x) < date).length}개` : ''}</div>
         <div class="study-project-tools"><button class="btn sm" type="button" id="studyProjectEdit">설정 수정</button>${paused ? '<button class="btn sm primary" type="button" id="studyProjectResume">학습 재개</button>' : '<button class="btn sm" type="button" id="studyProjectPause">학습 중지</button>'}<button class="btn sm" type="button" id="studyProjectComplete">프로젝트 종료</button><button class="btn sm ghost" type="button" id="studyProjectDelete">프로젝트 삭제</button></div>
       </div>
-      <div class="study-card-v02984" style="margin-top:16px">
-        <div class="study-card-head"><h3>문제세트 아카이브</h3><span class="study-status">완료 ${completed.length} · 미완료 ${pending.length}</span></div>
-        <div class="study-board-wrap"><table class="study-board"><thead><tr><th class="study-board-no">No</th><th>제목</th><th>상태</th><th>점수</th><th>작성일</th></tr></thead><tbody>${quizzes.length ? quizzes.slice(0, 40).map((x, index) => { const no = Number(x.sequenceNo || (quizzes.length - index)); const total = Number(x.total || x.questions?.length || 0); const status = x.status === 'completed' ? '완료' : x.status === 'in_progress' ? '풀이 중' : '미완료'; return `<tr class="study-board-row ${x.id === activeQuizId ? 'is-active' : ''}" data-study-quiz="${safe(x.id)}"><td class="study-board-no">${no}</td><td class="study-board-title">${safe(x.title || `${project.name} 문제세트 #${String(no).padStart(3, '0')}`)}</td><td><span class="study-status ${safe(x.status || 'pending')}">${status}</span></td><td class="study-board-score">${x.status === 'completed' ? `${quizCorrectCount(x) ?? 0}/${total}` : '-'}</td><td>${safe(quizDate(x) || String(x.createdAt || '').slice(0, 10))}</td></tr>`; }).join('') : '<tr><td colspan="5"><div class="study-empty">아직 문제세트가 없습니다.</div></td></tr>'}</tbody></table></div>
-      </div>
+      <details class="study-card-v02984 study-quiz-archive" style="margin-top:16px" open>
+        <summary><span><b>문제세트 아카이브</b><small>완료 ${completed.length} · 미완료 ${pending.length} · 전체 ${allQuizzes.length}</small></span><em>접기</em></summary>
+        <div class="study-archive-controls"><label>월별 보기<select id="studyArchiveMonth"><option value="all">전체 기간</option>${archiveMonths.map(month=>`<option value="${safe(month)}" ${quizArchiveMonth===month?'selected':''}>${safe(month.replace('-', '년 '))}월</option>`).join('')}</select></label><span>${filteredQuizzes.length}개 세트</span></div>
+        <div class="study-board-wrap"><table class="study-board"><thead><tr><th class="study-board-no">No</th><th>제목</th><th>상태</th><th>점수</th><th>작성일</th></tr></thead><tbody>${quizzes.length ? quizzes.map((x, index) => { const no = Number(x.sequenceNo || (filteredQuizzes.length - ((quizArchivePage-1)*QUIZ_ARCHIVE_PAGE_SIZE+index))); const total = Number(x.total || x.questions?.length || 0); const status = x.status === 'completed' ? '완료' : x.status === 'in_progress' ? '풀이 중' : '미완료'; return `<tr class="study-board-row ${x.id === activeQuizId ? 'is-active' : ''}" data-study-quiz="${safe(x.id)}"><td class="study-board-no">${no}</td><td class="study-board-title">${safe(x.title || `${project.name} 문제세트 #${String(no).padStart(3, '0')}`)}</td><td><span class="study-status ${safe(x.status || 'pending')}">${status}</span></td><td class="study-board-score">${x.status === 'completed' ? `${quizCorrectCount(x) ?? 0}/${total}` : '-'}</td><td>${safe(quizDate(x) || String(x.createdAt || '').slice(0, 10))}</td></tr>`; }).join('') : '<tr><td colspan="5"><div class="study-empty">선택한 기간에 문제세트가 없습니다.</div></td></tr>'}</tbody></table></div>
+        ${filteredQuizzes.length > QUIZ_ARCHIVE_PAGE_SIZE ? `<nav class="study-pagination" aria-label="문제세트 페이지"><button class="btn sm" id="studyArchivePrev" type="button" ${quizArchivePage<=1?'disabled':''}>이전</button><span><b>${quizArchivePage}</b> / ${archivePages}</span><button class="btn sm" id="studyArchiveNext" type="button" ${quizArchivePage>=archivePages?'disabled':''}>다음</button></nav>` : ''}
+      </details>
       ${renderQuizDetail(project, activeQuiz)}`;
 
     q('#studyGenerateQuiz')?.addEventListener('click', () => todayQuiz ? selectQuiz(todayQuiz.id) : generateTodayQuiz(project));
@@ -606,6 +621,10 @@
     q('#studyProjectResume')?.addEventListener('click', () => { if (resumeProject(project.id)) renderLearning(); });
     q('#studyProjectComplete')?.addEventListener('click', () => { if (completeProjectWithConfirmation(project.id)) { activeStudyTab = 'history'; renderLearning(); } });
     q('#studyProjectDelete')?.addEventListener('click', () => { if (archiveProjectWithConfirmation(project.id)) renderLearning(); });
+    q('#studyArchiveMonth')?.addEventListener('change', event => { quizArchiveMonth = event.target.value || 'all'; quizArchivePage = 1; renderLearning(); });
+    q('#studyArchivePrev')?.addEventListener('click', () => { quizArchivePage = Math.max(1, quizArchivePage - 1); renderLearning(); });
+    q('#studyArchiveNext')?.addEventListener('click', () => { quizArchivePage = Math.min(archivePages, quizArchivePage + 1); renderLearning(); });
+    q('.study-quiz-archive')?.addEventListener('toggle', event => { const label=q(':scope > summary em',event.currentTarget);if(label)label.textContent=event.currentTarget.open?'접기':'열기'; });
     qa('[data-study-quiz]', main).forEach(el => el.onclick = () => selectQuiz(el.dataset.studyQuiz || ''));
     if (activeQuiz && activeQuiz.status !== 'completed') {
       qa('input[type="radio"]', q('#studyQuizDetail')).forEach(input => input.onchange = () => {
@@ -917,7 +936,7 @@
       derivedTaskCount: derivedLearningTasks().length,
       studyMounted: !!q('#studyEngineV02984'),
     });
-    console.info('[HANI OS] v2.9.87 Learning Board v1.1 ready');
+    console.info('[HANI OS] v2.9.115 Learning Board · paged archive ready');
   }
 
   boot();
