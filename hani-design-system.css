@@ -326,14 +326,14 @@ body[data-view=home] #aiBanner{display:none!important}
 #app #game.sports-hub.active{display:block}
 
 /* v2.9.113 · Main Character Banner shell. Scene ownership is per sidebar menu. */
-#app .ds-main-character-banner{--mcb-accent:#f0bd66;--mcb-ink:#fff;--mcb-muted:#d8e0ef;--mcb-bg:#0d1729;--mcb-scene-position:76% 48%;--mcb-scene-width:100%;--mcb-scene-fit:cover;position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,54%) minmax(0,46%);align-items:stretch;width:100%;height:232px;min-height:232px;box-sizing:border-box;margin:0 0 14px;border:1px solid #ffffff24;border-radius:22px;overflow:hidden;background:var(--mcb-bg);box-shadow:var(--ds-shadow)}
-#app .ds-main-character-banner:after{content:"";position:absolute;z-index:1;inset:0;background:linear-gradient(90deg,#081325 0%,#0a1625f5 31%,#0a1625b8 52%,#0a162525 78%,transparent 100%);pointer-events:none}
+#app .ds-main-character-banner{--mcb-accent:#f0bd66;--mcb-ink:#fff;--mcb-muted:#d8e0ef;--mcb-bg:#0d1729;--mcb-border:#ffffff24;--mcb-overlay:linear-gradient(90deg,#081325 0%,#0a1625f5 37%,#0a1625a8 58%,transparent 86%);--mcb-overlay-mobile:linear-gradient(90deg,#081325f7 0%,#0a1625e8 56%,#0a16259c 100%);--mcb-status-bg:#07111da6;--mcb-status-line:#ffffff38;--mcb-scene-position:76% 48%;--mcb-scene-width:min(48%,760px);--mcb-scene-fit:cover;--mcb-scene-mask:linear-gradient(90deg,transparent 0%,#000 17%,#000 100%);position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,54%) minmax(0,46%);align-items:stretch;width:100%;height:232px;min-height:232px;box-sizing:border-box;margin:0 0 14px;border:1px solid var(--mcb-border);border-radius:22px;overflow:hidden;background:var(--mcb-bg);box-shadow:var(--ds-shadow)}
+#app .ds-main-character-banner:after{content:"";position:absolute;z-index:1;inset:0;background:var(--mcb-overlay);pointer-events:none}
 #app .ds-main-character-banner--single-character{--mcb-scene-position:82% 30%}
 #app .ds-main-character-banner--duo-or-trio{--mcb-scene-position:74% 38%}
 #app .ds-main-character-banner--group{--mcb-scene-position:right center;--mcb-scene-width:74%;--mcb-scene-fit:contain}
 #app .ds-main-character-banner.ds-tone-sports{--mcb-accent:#f5c26b;--mcb-bg:#0b1425}
 #app .ds-main-character-banner__scene{position:absolute;z-index:0;inset:0;margin:0;overflow:hidden;pointer-events:none}
-#app .ds-main-character-banner__scene img{display:block;width:var(--mcb-scene-width);height:100%;margin-left:auto;object-fit:var(--mcb-scene-fit);object-position:var(--mcb-scene-position)}
+#app .ds-main-character-banner__scene img{display:block;width:var(--mcb-scene-width);height:100%;margin-left:auto;object-fit:var(--mcb-scene-fit);object-position:var(--mcb-scene-position);-webkit-mask-image:var(--mcb-scene-mask);mask-image:var(--mcb-scene-mask)}
 #app .ds-main-character-banner__copy{position:relative;z-index:2;grid-column:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;min-width:0;padding:22px 26px;color:var(--mcb-ink)}
 #app .ds-main-character-banner__eyebrow{color:var(--mcb-accent);font:900 10px/1.3 var(--ds-font);letter-spacing:.15em}
 #app .ds-main-character-banner__title{margin:7px 0 5px;color:var(--mcb-ink);font:780 30px/1.18 var(--ds-font);letter-spacing:-.045em;word-break:keep-all;overflow-wrap:break-word}
@@ -345,7 +345,7 @@ body[data-view=home] #aiBanner{display:none!important}
 #app .ds-main-character-banner .ai-avatar{position:static!important;flex:0 0 48px!important;width:48px!important;height:54px!important;min-width:48px!important;border:2px solid #fff!important;border-radius:14px!important;background-size:cover!important;background-position:center 18%!important;box-shadow:0 7px 20px #0005!important;transform:none!important}
 #app .ds-main-character-banner .ai-quote{position:relative!important;inset:auto!important;flex:1 1 auto!important;width:auto!important;min-width:0!important;max-width:none!important;margin:0!important;padding:10px 13px!important;border:1px solid #ffffff5c!important;border-radius:14px!important;background:#fffefaee!important;box-shadow:0 7px 20px #0003!important;transform:none!important}
 #app .ds-main-character-banner .ai-quote:after{content:""!important;position:absolute!important;left:-7px!important;right:auto!important;top:50%!important;width:12px!important;height:12px!important;border:0!important;border-left:1px solid #ffffff5c!important;border-bottom:1px solid #ffffff5c!important;background:#fffefa!important;transform:translateY(-50%) rotate(45deg)!important}
-#app .ds-main-character-banner .ai-quote span{display:block!important;margin:0 0 3px!important;color:#a36a13!important;font:900 10px/1.3 var(--ds-font)!important;letter-spacing:.04em!important}
+#app .ds-main-character-banner .ai-quote span{display:block!important;margin:0 0 3px!important;color:var(--mcb-agent-accent,var(--mcb-accent))!important;font:900 10px/1.3 var(--ds-font)!important;letter-spacing:.04em!important}
 #app .ds-main-character-banner .ai-quote b{display:block!important;margin:0!important;color:#243047!important;font:760 15px/1.42 var(--ds-font)!important;letter-spacing:-.015em!important;white-space:normal!important;word-break:keep-all!important;overflow-wrap:break-word!important}
 #app #game .sports-team-grid{display:grid;width:100%;box-sizing:border-box;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 #app #game .sports-team-card{--team-bg:#101b2d;--team-fg:#fff;--team-muted:#c5cfdf;--team-line:#ffffff24;--team-chip:#ffffff16;position:relative;min-width:0;min-height:330px;padding:20px;border:1px solid var(--team-line);border-radius:22px;overflow:hidden;background:var(--team-bg);color:var(--team-fg);box-shadow:0 10px 28px #24324a17}
@@ -397,7 +397,7 @@ body[data-view=home] #aiBanner{display:none!important}
 @media(max-width:700px){
  #app .ds-main-character-banner{display:block;height:248px;min-height:248px;border-radius:19px}
  #app .ds-main-character-banner--group{--mcb-scene-position:center center;--mcb-scene-width:100%}
- #app .ds-main-character-banner:after{background:linear-gradient(90deg,#071223f5 0%,#071223e8 48%,#07122387 78%,#0712234d 100%)}
+ #app .ds-main-character-banner:after{background:var(--mcb-overlay-mobile)}
  #app .ds-main-character-banner__copy{width:100%;height:100%;box-sizing:border-box;padding:17px 16px}
  #app .ds-main-character-banner__eyebrow{font-size:9px}
  #app .ds-main-character-banner__title{margin-top:6px;font-size:25px;line-height:1.2}
@@ -419,7 +419,7 @@ body[data-view=home] #aiBanner{display:none!important}
  #app #game .sports-legacy-note summary{align-items:flex-start;flex-direction:column;gap:3px}
 }
 
-/* v2.9.115 · Phase 1 canonical menu frame and list density. */
+/* v2.9.116 · Category palette and full-scene banner fit. */
 :root{
  --season-page-glow:#efdff3;--season-card:#fffefa;--season-line:#e8ddea;--season-motif:#bd79a0;
 }
@@ -431,18 +431,19 @@ html body{background-image:radial-gradient(circle at 86% 3%,color-mix(in srgb,va
 #app .main{background:linear-gradient(150deg,color-mix(in srgb,var(--season-page-glow) 18%,transparent),transparent 34%)!important}
 #app .view :is(.card,.asset-dashboard-card,.module-toolbar,.page-nav-context-v02992){background-color:color-mix(in srgb,var(--season-card) 96%,transparent)!important;border-color:var(--season-line)!important}
 
-#app .ds-main-character-banner{--mcb-accent:#f0bd66;--mcb-bg:#10192a;--mcb-scene-position-mobile:72% center;--mcb-scene-fit-mobile:cover}
-#app .ds-main-character-banner.ds-tone-office{--mcb-accent:#d6b0ff;--mcb-bg:#211c35}
-#app .ds-main-character-banner.ds-tone-finance{--mcb-accent:#ffc65d;--mcb-bg:#0d1930}
-#app .ds-main-character-banner.ds-tone-health{--mcb-accent:#75e2bd;--mcb-bg:#0c2927}
-#app .ds-main-character-banner.ds-tone-growth{--mcb-accent:#ffc070;--mcb-bg:#2b1b27}
-#app .ds-main-character-banner.ds-tone-life{--mcb-accent:#83dced;--mcb-bg:#0b2631}
-#app .ds-main-character-banner.ds-tone-work{--mcb-accent:#a9c8fa;--mcb-bg:#152238}
-#app .ds-main-character-banner.ds-tone-company{--mcb-accent:#f0b9df;--mcb-bg:#2a1830}
-#app .ds-main-character-banner.ds-tone-system{--mcb-accent:#b9c7dc;--mcb-bg:#182232}
-#app .ds-main-character-banner__status{display:inline-flex;align-items:center;max-width:100%;margin-top:8px;padding:5px 9px;border:1px solid #ffffff38;border-radius:999px;background:#07111da6;color:#fff;font-size:11px;font-weight:800;line-height:1.25}
+#app .ds-main-character-banner{--mcb-scene-position-mobile:72% center;--mcb-scene-fit-mobile:cover}
+#app .ds-main-character-banner.ds-tone-office{--mcb-accent:#7550a5;--mcb-ink:#2e2540;--mcb-muted:#655b76;--mcb-bg:linear-gradient(135deg,#f4eeff 0%,#e7def6 100%);--mcb-border:#cfc0e3;--mcb-status-bg:#fffaf0d9;--mcb-status-line:#bca9d2;--mcb-overlay:linear-gradient(90deg,#f4eeff 0%,#f4eefff5 43%,#eee6f9ce 58%,#eee6f94d 74%,transparent 89%);--mcb-overlay-mobile:linear-gradient(90deg,#f4eefff8 0%,#f4eeffee 57%,#eee6f9ad 100%)}
+#app .ds-main-character-banner.ds-tone-finance{--mcb-accent:#9a6000;--mcb-ink:#263142;--mcb-muted:#626a76;--mcb-bg:linear-gradient(135deg,#fff6e5 0%,#ecdbb9 100%);--mcb-border:#d8c397;--mcb-status-bg:#fffaf1e8;--mcb-status-line:#d3b97d;--mcb-overlay:linear-gradient(90deg,#fff6e5 0%,#fff6e5f5 43%,#f6e8cbce 58%,#f2dfba4d 74%,transparent 89%);--mcb-overlay-mobile:linear-gradient(90deg,#fff6e5fa 0%,#fff6e5ef 57%,#f1dfb9b5 100%)}
+#app .ds-main-character-banner.ds-tone-health{--mcb-accent:#087d65;--mcb-ink:#173d36;--mcb-muted:#4d6b64;--mcb-bg:linear-gradient(135deg,#e9f8f2 0%,#cfeadc 100%);--mcb-border:#acd7c5;--mcb-status-bg:#f7fffbe8;--mcb-status-line:#9dcdb9;--mcb-overlay:linear-gradient(90deg,#e9f8f2 0%,#e9f8f2f5 43%,#ddf1e8ce 58%,#cfeadc4d 74%,transparent 89%);--mcb-overlay-mobile:linear-gradient(90deg,#e9f8f2fa 0%,#e9f8f2ef 57%,#cfeadcb5 100%)}
+#app .ds-main-character-banner.ds-tone-growth{--mcb-accent:#b55721;--mcb-ink:#4a2d29;--mcb-muted:#765b53;--mcb-bg:linear-gradient(135deg,#fff1e5 0%,#efd7c3 100%);--mcb-border:#dfbea5;--mcb-status-bg:#fffaf5e8;--mcb-status-line:#d9ad8b;--mcb-overlay:linear-gradient(90deg,#fff1e5 0%,#fff1e5f5 43%,#f8e5d5ce 58%,#efd7c34d 74%,transparent 89%);--mcb-overlay-mobile:linear-gradient(90deg,#fff1e5fa 0%,#fff1e5ef 57%,#efd7c3b5 100%)}
+#app .ds-main-character-banner.ds-tone-life{--mcb-accent:#087d97;--mcb-ink:#183d50;--mcb-muted:#526f7b;--mcb-bg:linear-gradient(135deg,#eaf8fb 0%,#d2e9f0 100%);--mcb-border:#acd3dd;--mcb-status-bg:#f7fdffe8;--mcb-status-line:#9ccbd6;--mcb-overlay:linear-gradient(90deg,#eaf8fb 0%,#eaf8fbf5 43%,#deeff4ce 58%,#d2e9f04d 74%,transparent 89%);--mcb-overlay-mobile:linear-gradient(90deg,#eaf8fbfa 0%,#eaf8fbef 57%,#d2e9f0b5 100%)}
+#app .ds-main-character-banner.ds-tone-work{--mcb-accent:#345f9d;--mcb-ink:#213754;--mcb-muted:#596b82;--mcb-bg:linear-gradient(135deg,#edf3ff 0%,#d8e3f4 100%);--mcb-border:#b9c9df;--mcb-status-bg:#f7faffeb;--mcb-status-line:#aebfd8;--mcb-overlay:linear-gradient(90deg,#edf3ff 0%,#edf3fff5 43%,#e3ebf8ce 58%,#d8e3f44d 74%,transparent 89%);--mcb-overlay-mobile:linear-gradient(90deg,#edf3fffa 0%,#edf3ffef 57%,#d8e3f4b8 100%)}
+#app .ds-main-character-banner.ds-tone-company{--mcb-accent:#985183;--mcb-ink:#4b2e48;--mcb-muted:#755f73;--mcb-bg:linear-gradient(135deg,#f9edf7 0%,#ead9e9 100%);--mcb-border:#dabbd4;--mcb-status-bg:#fff9fde8;--mcb-status-line:#cea9c6;--mcb-overlay:linear-gradient(90deg,#f9edf7 0%,#f9edf7f5 43%,#f2e4f0ce 58%,#ead9e94d 74%,transparent 89%);--mcb-overlay-mobile:linear-gradient(90deg,#f9edf7fa 0%,#f9edf7ef 57%,#ead9e9b8 100%)}
+#app .ds-main-character-banner.ds-tone-system{--mcb-accent:#d2def2;--mcb-agent-accent:#526d95;--mcb-up:#ff8195;--mcb-down:#7db7ff;--mcb-ink:#f7f9fc;--mcb-muted:#d4dce8;--mcb-bg:linear-gradient(135deg,#26364b 0%,#172336 100%);--mcb-border:#52637b;--mcb-status-bg:#111b2ab8;--mcb-status-line:#718096;--mcb-overlay:linear-gradient(90deg,#26364b 0%,#26364bf5 43%,#1f2d41ce 58%,#1723364d 74%,transparent 89%);--mcb-overlay-mobile:linear-gradient(90deg,#26364bfa 0%,#26364bef 57%,#172336c2 100%)}
+#app .ds-main-character-banner.ds-tone-sports{--mcb-accent:#315f9f;--mcb-ink:#1d3555;--mcb-muted:#586c84;--mcb-bg:linear-gradient(135deg,#edf4ff 0%,#dae5f6 100%);--mcb-border:#b8c9e1;--mcb-status-bg:#f8fbffeb;--mcb-status-line:#aebfd8;--mcb-overlay:linear-gradient(90deg,#edf4ff 0%,#edf4fff5 43%,#e4ecf8ce 58%,#dae5f64d 74%,transparent 89%);--mcb-overlay-mobile:linear-gradient(90deg,#edf4fffa 0%,#edf4ffef 57%,#dae5f6b8 100%)}
+#app .ds-main-character-banner__status{display:inline-flex;align-items:center;max-width:100%;margin-top:8px;padding:5px 9px;border:1px solid var(--mcb-status-line);border-radius:999px;background:var(--mcb-status-bg);color:var(--mcb-ink);font-size:11px;font-weight:800;line-height:1.25}
 #app .ds-main-character-banner__status[hidden]{display:none}
-#app .ds-main-character-banner__status.up{color:#ff8898}#app .ds-main-character-banner__status.down{color:#7cb7ff}
+#app .ds-main-character-banner__status.up{color:var(--mcb-up,#c83d56)}#app .ds-main-character-banner__status.down{color:var(--mcb-down,#356fbd)}
 #app .ds-main-character-banner__seasonal-fx{position:absolute;z-index:1;inset:0;overflow:hidden;pointer-events:none}
 #app .ds-main-character-banner__seasonal-fx:before,#app .ds-main-character-banner__seasonal-fx:after{content:"";position:absolute;pointer-events:none}
 :root[data-season=spring] #app .ds-main-character-banner__seasonal-fx{background:radial-gradient(circle at 18% 8%,#ffd8e833,transparent 24%),linear-gradient(120deg,#ffdeec14,transparent 48%)}
@@ -499,7 +500,7 @@ html body{background-image:radial-gradient(circle at 86% 3%,color-mix(in srgb,va
 #app .movie-summary-card .stat .value{font-size:18px!important}
 
 @media(max-width:760px){
- #app .ds-main-character-banner{height:236px;min-height:236px;--mcb-scene-position:var(--mcb-scene-position-mobile);--mcb-scene-fit:var(--mcb-scene-fit-mobile)}
+ #app .ds-main-character-banner{height:236px;min-height:236px;--mcb-scene-position:var(--mcb-scene-position-mobile);--mcb-scene-width:100%;--mcb-scene-fit:var(--mcb-scene-fit-mobile);--mcb-scene-mask:none}
  #app .ds-main-character-banner__copy{padding:15px 14px}.ds-main-character-banner__title{font-size:23px!important}.ds-main-character-banner__description{font-size:11px!important}.ds-main-character-banner__agent{margin-top:12px!important;transform:none!important}
  #app .phase1-post-row,#app .media-work-row,#app .diary-card.phase1-post-row{grid-template-columns:1fr!important;gap:8px}.diary-card .diary-mood{display:none!important}.phase1-post-row :is(.diary-actions,.wishlist-item-actions),.media-work-row>.archive-actions{justify-content:flex-end}
  #app .media-work-row{grid-template-columns:1fr}.media-episode-row{grid-template-columns:1fr}.media-work-identity{grid-template-columns:44px minmax(0,1fr)}.media-work-identity>img,.media-work-placeholder{width:44px;height:52px}

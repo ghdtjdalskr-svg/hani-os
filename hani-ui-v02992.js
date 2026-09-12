@@ -1,4 +1,4 @@
-/* HANI OS v2.9.115 · Unified Main Character Banner + Phase 1 UI cleanup */
+/* HANI OS v2.9.116 · Category palette + scene fit refinement */
 (() => {
   'use strict';
   if (window.HANI_UI_V02992) return;
@@ -814,5 +814,5 @@
   let queued=false;function refresh(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;mountSkeletons();arrangeNavigation();mountDesignSlots();organizePhase1Layouts();improveLifeMarket();cleanupNewsroom();bindSportsBoard();if(q('#exercise.active')&&typeof drawExercise==='function')requestAnimationFrame(drawExercise)})}
   document.addEventListener('click',()=>setTimeout(refresh,0));document.addEventListener('change',()=>setTimeout(refresh,0));
   refresh();setTimeout(refresh,120);
-  console.info('[HANI OS] v2.9.115 Unified Main Character Banner ready · 26 menu scenes · seasonal atmosphere');
+  console.info('[HANI OS] v2.9.116 Unified Main Character Banner ready · category palette · full-scene fit');
 })();
