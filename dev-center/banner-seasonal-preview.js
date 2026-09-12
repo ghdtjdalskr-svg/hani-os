@@ -20,6 +20,7 @@
 
   const banner = (item,season) => `<section class="main-character-banner theme-${esc(item.theme)}" data-menu-scene="${esc(item.id)}" data-season-variant="${esc(season.id)}" style="${sceneStyle(item)}" role="group" aria-label="${esc(item.menu)} ${esc(season.label)} 배너 시안">
     <figure class="main-character-banner__scene"><img src="${esc(item.scene)}" alt="${esc(item.sceneAlt)}"></figure>
+    <span class="seasonal-fx" aria-hidden="true"></span>
     <div class="main-character-banner__copy">
       <span class="banner-eyebrow">${esc(item.eyebrow)}</span>
       <h3 class="banner-title">${esc(item.title)}</h3>
@@ -38,7 +39,7 @@
     <div class="seasonal-page-surface">
       ${banner(item,season)}
       ${contentPeek(item)}
-      <div class="seasonal-token-row" aria-label="계절 변화 요소"><span>PAGE</span><span>CARD</span><span>BORDER</span><span>CHIP</span><span>LIGHT</span></div>
+      <div class="seasonal-token-row" aria-label="계절 변화 요소"><span>PAGE</span><span>CARD</span><span>BORDER</span><span>CHIP</span><span>LIGHT</span><span>MOTION</span></div>
     </div>
   </section>`;
 
@@ -55,4 +56,21 @@
 
   root.innerHTML = menus.map(menu).join('');
   document.querySelector('#seasonalJump').innerHTML = menus.map(item => `<a href="#seasonal-${esc(item.id)}">${esc(item.menu)}</a>`).join('');
+
+  const focus = document.querySelector('#seasonFocus');
+  const focusMount = document.querySelector('#seasonFocusMount');
+  const focusMenu = document.querySelector('#focusMenu');
+  const focusSeason = document.querySelector('#focusSeason');
+  focusMenu.innerHTML = menus.map(item => `<option value="${esc(item.id)}">${esc(item.menu)}</option>`).join('');
+  focusSeason.innerHTML = seasons.map(season => `<option value="${esc(season.id)}"${season.id === 'autumn' ? ' selected' : ''}>${esc(season.label)} · ${esc(season.summary)}</option>`).join('');
+  const renderFocus = () => {
+    const item = menus.find(menuItem => menuItem.id === focusMenu.value) || menus[0];
+    const season = seasons.find(seasonItem => seasonItem.id === focusSeason.value) || seasons[2];
+    focus.dataset.season = season.id;
+    document.body.dataset.season = season.id;
+    focusMount.innerHTML = `<div class="seasonal-page-surface season-focus__surface">${banner(item,season)}${contentPeek(item)}<div class="seasonal-token-row"><span>${esc(season.label)}</span><span>GLOBAL PAGE</span><span>SCENE FIXED</span><span>ATMOSPHERE FX</span></div></div>`;
+  };
+  focusMenu.addEventListener('change',renderFocus);
+  focusSeason.addEventListener('change',renderFocus);
+  renderFocus();
 })();

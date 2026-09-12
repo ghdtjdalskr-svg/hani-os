@@ -14,7 +14,7 @@
     <a class="preview-brand" href="#top" aria-label="시안 맨 위로 이동">
       <span>HANI OS</span>
       <b>Seasonal Theme Preview</b>
-      <small>Menu Scene fixed · atmosphere changes only</small>
+      <small>Final candidate · Scene fixed · atmosphere FX</small>
     </a>
     <div class="preview-controls">
       <a class="preview-page-link" href="./banner-art-direction-preview.html">25개 메뉴 전체 보기</a>
@@ -32,7 +32,7 @@
       <dl class="system-rules">
         <div><dt>Scene</dt><dd>메뉴별 원본 유지</dd></div>
         <div><dt>Layout</dt><dd>공통 배너 고정</dd></div>
-        <div><dt>Theme</dt><dd>주변 UI + 공기감</dd></div>
+        <div><dt>Theme</dt><dd>UI + Light + Motion</dd></div>
         <div><dt>Scope</dt><dd>5 menus × 4 seasons</dd></div>
       </dl>
     </section>
@@ -42,6 +42,17 @@
       <div data-season="summer"><b>SUMMER</b><span>청량함 · 깨끗한 선명도</span></div>
       <div data-season="autumn"><b>AUTUMN</b><span>오렌지·와인 · 성숙한 온기</span></div>
       <div data-season="winter"><b>WINTER</b><span>네이비·실버 · 또렷한 공기</span></div>
+    </section>
+
+    <section class="season-focus" id="seasonFocus" data-season="autumn" aria-label="계절 전체 화면 체감 Preview">
+      <header class="season-focus__head">
+        <div><span>LIVE ATMOSPHERE FOCUS</span><h2>전체 화면에서 계절 효과 확인</h2><p>메뉴 Scene은 유지하고 페이지 배경·표면·조명·움직임을 함께 전환합니다.</p></div>
+        <div class="season-focus__controls">
+          <label>메뉴<select id="focusMenu" aria-label="계절 효과 대표 메뉴"></select></label>
+          <label>계절<select id="focusSeason" aria-label="계절 효과 선택"></select></label>
+        </div>
+      </header>
+      <div id="seasonFocusMount"></div>
     </section>
 
     <section class="seasonal-preview-list" id="seasonalPreviewList" aria-live="polite"></section>

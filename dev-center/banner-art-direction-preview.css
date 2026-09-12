@@ -29,7 +29,12 @@ html{scroll-behavior:smooth;background:var(--canvas)}
 body{margin:0;color:var(--ink);font-family:var(--font);background:
   var(--season-motif),
   radial-gradient(circle at 12% 0%,color-mix(in srgb,var(--season-soft) 92%,transparent),transparent 32rem),
-  linear-gradient(180deg,var(--paper) 0,var(--canvas) 36rem);background-size:auto,auto,auto;transition:background .24s ease}
+  linear-gradient(180deg,var(--paper) 0,var(--canvas) 36rem);background-size:auto,auto,auto;transition:background .42s ease}
+body:before{content:"";position:fixed;z-index:0;inset:72px 0 0;pointer-events:none;opacity:.36;background-repeat:repeat;will-change:background-position,opacity,transform}
+body[data-season="spring"]:before{background-image:radial-gradient(ellipse at center,rgba(218,116,159,.28) 0 18%,transparent 22%),radial-gradient(ellipse at center,rgba(121,180,145,.20) 0 16%,transparent 20%);background-position:18px 10px,104px 72px;background-size:170px 210px,230px 250px;animation:ambientFall 26s linear infinite}
+body[data-season="summer"]:before{opacity:.30;background-image:radial-gradient(ellipse at center,rgba(68,187,213,.22),transparent 62%),linear-gradient(118deg,transparent 38%,rgba(255,255,255,.34) 48%,transparent 58%);background-position:0 0,-260px 0;background-size:430px 290px,720px 100%;animation:ambientShimmer 15s ease-in-out infinite}
+body[data-season="autumn"]:before{opacity:.32;background-image:radial-gradient(ellipse at center,rgba(197,119,52,.25) 0 18%,transparent 23%),radial-gradient(ellipse at center,rgba(128,51,44,.16) 0 15%,transparent 20%);background-position:20px 0,130px 85px;background-size:210px 260px,280px 310px;animation:ambientFall 32s linear infinite}
+body[data-season="winter"]:before{opacity:.38;background-image:radial-gradient(circle,rgba(120,151,193,.28) 0 1.2px,transparent 1.8px),radial-gradient(circle,rgba(255,255,255,.86) 0 1px,transparent 1.6px);background-position:0 0,78px 54px;background-size:150px 190px,210px 240px;animation:ambientFall 24s linear infinite}
 button,select{font:inherit}
 button{cursor:pointer}
 .preview-toolbar{position:sticky;z-index:50;top:0;display:flex;align-items:center;justify-content:space-between;gap:22px;min-height:72px;padding:10px max(22px,calc((100vw - 1540px)/2));border-bottom:1px solid var(--season-border);background:color-mix(in srgb,var(--paper) 88%,transparent);box-shadow:0 7px 24px var(--season-shadow);backdrop-filter:blur(18px)}
@@ -45,7 +50,7 @@ button{cursor:pointer}
 .segmented button.active{color:#fff;background:var(--season);box-shadow:0 5px 12px color-mix(in srgb,var(--season) 28%,transparent)}
 .select-control{display:flex;align-items:center;gap:7px;padding-left:4px;color:#748097;font-size:10px;font-weight:750}
 .select-control select{height:42px;padding:0 31px 0 12px;border:1px solid var(--line);border-radius:12px;color:var(--ink);font-size:12px;font-weight:800;background:var(--paper)}
-.preview-shell{width:min(1540px,calc(100% - 44px));margin:0 auto;padding:32px 0 80px}
+.preview-shell{position:relative;z-index:1;width:min(1540px,calc(100% - 44px));margin:0 auto;padding:32px 0 80px}
 .preview-intro{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(440px,.8fr);align-items:end;gap:40px;padding:30px 34px;border:1px solid var(--season-border);border-radius:26px;background:var(--season-motif),linear-gradient(135deg,var(--paper) 0%,color-mix(in srgb,var(--season-soft) 74%,var(--paper)) 100%);box-shadow:var(--shadow)}
 .intro-kicker{display:block;color:var(--season);font-size:10px;font-weight:950;letter-spacing:.16em}
 .preview-intro h1{margin:10px 0 9px;font-size:36px;line-height:1.15;letter-spacing:-.05em}
@@ -60,6 +65,8 @@ button{cursor:pointer}
 .scene-audit>div b{margin-top:2px;font-size:11px}
 .scene-audit p{margin:0;padding:7px 9px;border-radius:999px;color:#4b586f;font-size:9px;font-weight:750;background:var(--season-chip)}
 .scene-audit p strong{margin-right:3px;color:var(--season-strong);font-size:11px}
+.scene-audit p.clear{color:#28745d;background:#e8f7f0}
+.scene-audit p.clear strong{color:#177258}
 .scene-audit p.needs{color:#8e4b20;background:#fff0df}
 .scene-audit p.needs strong{color:#9a4b1d}
 .scene-audit p.duplicate{color:#903d5a;background:#ffeaf1}
@@ -77,7 +84,7 @@ button{cursor:pointer}
 .category-head p{margin:0;color:var(--muted);font-size:11px;line-height:1.5}
 .category-head>b{flex:0 0 auto;padding:8px 11px;border-radius:999px;color:var(--category-accent);font-size:9px;letter-spacing:.08em;background:var(--paper)}
 .category-cards{display:grid;min-width:0;max-width:100%;gap:20px}
-.art-card{min-width:0;max-width:100%;scroll-margin-top:98px;padding:20px;border:1px solid var(--season-border);border-radius:25px;background:var(--season-motif),var(--season-card);box-shadow:0 10px 30px var(--season-shadow)}
+.art-card{min-width:0;max-width:100%;scroll-margin-top:98px;padding:20px;border:1px solid var(--season-border);border-radius:25px;background:var(--season-motif),var(--season-card);box-shadow:0 10px 30px var(--season-shadow);transition:background .42s ease,border-color .42s ease,box-shadow .42s ease}
 .art-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:15px}
 .art-title-row{display:flex;align-items:flex-start;gap:12px;min-width:0}
 .art-number{display:grid;place-items:center;flex:0 0 36px;width:36px;height:36px;border-radius:11px;color:var(--art-accent);font-size:11px;font-weight:950;background:var(--art-soft)}
@@ -95,9 +102,20 @@ button{cursor:pointer}
 .preview-frame.mobile{width:390px;max-width:100%;justify-self:end}
 .main-character-banner{--scene-position:center center;position:relative;isolation:isolate;width:100%;height:232px;overflow:hidden;border:1px solid rgba(255,255,255,.22);border-radius:17px;color:#fff;background:var(--banner-bg);box-shadow:0 12px 28px rgba(24,32,53,.16)}
 .main-character-banner__scene{position:absolute;z-index:0;inset:0;margin:0;background:var(--banner-bg)}
-.main-character-banner__scene img{display:block;width:100%;height:100%;object-fit:var(--scene-fit,cover);object-position:var(--scene-position);filter:var(--scene-filter);transition:filter .24s ease}
+.main-character-banner__scene img{display:block;width:100%;height:100%;object-fit:var(--scene-fit,cover);object-position:var(--scene-position);filter:var(--scene-filter);transform:scale(1.002);transition:filter .42s ease,transform .8s ease}
+.main-character-banner:hover .main-character-banner__scene img{transform:scale(1.012)}
 .main-character-banner:before{content:"";position:absolute;z-index:1;inset:0;background:var(--scene-grade);pointer-events:none}
 .main-character-banner:after{content:"";position:absolute;z-index:2;inset:0;background:linear-gradient(90deg,var(--banner-bg) 0%,color-mix(in srgb,var(--banner-bg) 95%,transparent) 30%,color-mix(in srgb,var(--banner-bg) 66%,transparent) 48%,transparent 78%);pointer-events:none}
+.seasonal-fx{position:absolute;z-index:2;inset:0 0 0 46%;overflow:hidden;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 24%,#000 100%);mask-image:linear-gradient(90deg,transparent 0,#000 24%,#000 100%)}
+.seasonal-fx:before,.seasonal-fx:after{content:"";position:absolute;display:block;will-change:transform,opacity}
+body:not(.seasonal-page)[data-season="spring"] .seasonal-fx:before,.seasonal-variant[data-season="spring"] .seasonal-fx:before,.season-focus[data-season="spring"] .seasonal-fx:before{top:-24px;left:16%;width:10px;height:6px;border-radius:85% 15% 80% 20%;background:rgba(255,202,224,.86);box-shadow:72px 34px rgba(245,171,203,.72),148px 8px rgba(255,225,237,.82),228px 66px rgba(219,132,174,.64),312px 20px rgba(255,214,231,.76),386px 82px rgba(197,151,179,.58);animation:springPetalDrift 12s linear infinite}
+body:not(.seasonal-page)[data-season="spring"] .seasonal-fx:after,.seasonal-variant[data-season="spring"] .seasonal-fx:after,.season-focus[data-season="spring"] .seasonal-fx:after{top:-36px;left:38%;width:7px;height:5px;border-radius:20% 80% 20% 80%;background:rgba(226,139,180,.66);box-shadow:96px 52px rgba(255,222,236,.78),190px 16px rgba(241,173,202,.62),282px 74px rgba(255,210,229,.72),360px 30px rgba(205,148,178,.55);animation:springPetalDrift 17s 2.4s linear infinite}
+body:not(.seasonal-page)[data-season="summer"] .seasonal-fx:before,.seasonal-variant[data-season="summer"] .seasonal-fx:before,.season-focus[data-season="summer"] .seasonal-fx:before{inset:-55% -25%;background:linear-gradient(116deg,transparent 36%,rgba(133,228,242,.08) 44%,rgba(255,255,255,.34) 50%,rgba(99,199,226,.09) 57%,transparent 66%);filter:blur(10px);transform:translateX(-34%);animation:summerLightSweep 9s ease-in-out infinite}
+body:not(.seasonal-page)[data-season="summer"] .seasonal-fx:after,.seasonal-variant[data-season="summer"] .seasonal-fx:after,.season-focus[data-season="summer"] .seasonal-fx:after{right:6%;bottom:-45%;width:72%;height:88%;border-radius:50%;background:radial-gradient(ellipse,rgba(86,207,226,.22),transparent 68%);filter:blur(8px);animation:summerWaterBreath 7s ease-in-out infinite}
+body:not(.seasonal-page)[data-season="autumn"] .seasonal-fx:before,.seasonal-variant[data-season="autumn"] .seasonal-fx:before,.season-focus[data-season="autumn"] .seasonal-fx:before{top:-22px;left:18%;width:11px;height:7px;border-radius:90% 10% 75% 25%;background:rgba(218,142,72,.74);box-shadow:88px 40px rgba(171,83,51,.62),176px 12px rgba(230,170,94,.68),252px 68px rgba(126,51,47,.52),334px 20px rgba(204,119,55,.65),410px 74px rgba(234,181,106,.57);animation:autumnLeafDrift 15s linear infinite}
+body:not(.seasonal-page)[data-season="autumn"] .seasonal-fx:after,.seasonal-variant[data-season="autumn"] .seasonal-fx:after,.season-focus[data-season="autumn"] .seasonal-fx:after{top:-42px;left:42%;width:8px;height:6px;border-radius:20% 80% 15% 85%;background:rgba(154,69,48,.58);box-shadow:116px 32px rgba(223,150,74,.62),214px 82px rgba(131,55,45,.48),310px 18px rgba(239,184,106,.58);animation:autumnLeafDrift 21s 3s linear infinite}
+body:not(.seasonal-page)[data-season="winter"] .seasonal-fx:before,.seasonal-variant[data-season="winter"] .seasonal-fx:before,.season-focus[data-season="winter"] .seasonal-fx:before{top:-18px;left:14%;width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.92);box-shadow:50px 28px 0 1px rgba(211,229,248,.78),112px 2px rgba(255,255,255,.88),178px 62px 0 1px rgba(185,211,240,.70),246px 18px rgba(255,255,255,.90),326px 76px 0 1px rgba(199,220,244,.72),402px 30px rgba(255,255,255,.86);animation:winterSnowDrift 11s linear infinite}
+body:not(.seasonal-page)[data-season="winter"] .seasonal-fx:after,.seasonal-variant[data-season="winter"] .seasonal-fx:after,.season-focus[data-season="winter"] .seasonal-fx:after{top:-30px;left:36%;width:3px;height:3px;border-radius:50%;background:rgba(222,237,252,.84);box-shadow:74px 50px rgba(255,255,255,.82),142px 14px 0 1px rgba(189,214,241,.70),214px 82px rgba(255,255,255,.86),292px 34px rgba(208,226,246,.76),372px 98px rgba(255,255,255,.82);animation:winterSnowDrift 17s 1.8s linear infinite}
 .main-character-banner__copy{position:relative;z-index:3;display:flex;flex-direction:column;justify-content:center;width:57%;height:100%;padding:20px 24px}
 .banner-eyebrow{color:var(--banner-accent);font-size:9px;font-weight:950;letter-spacing:.15em}
 .banner-title{margin:7px 0 5px;color:#fff;font-size:26px;line-height:1.16;font-weight:830;letter-spacing:-.05em;word-break:keep-all}
@@ -121,6 +139,7 @@ button{cursor:pointer}
 .preview-frame.mobile .main-character-banner{height:252px;border-radius:15px}
 .preview-frame.mobile .main-character-banner:after{background:linear-gradient(90deg,color-mix(in srgb,var(--banner-bg) 98%,transparent) 0%,color-mix(in srgb,var(--banner-bg) 90%,transparent) 48%,color-mix(in srgb,var(--banner-bg) 48%,transparent) 100%)}
 .preview-frame.mobile .main-character-banner__scene img{object-fit:var(--scene-fit-mobile,var(--scene-fit,cover));object-position:var(--scene-position-mobile,72% center)}
+.preview-frame.mobile .seasonal-fx{left:34%;opacity:.72}
 .preview-frame.mobile .main-character-banner__copy{justify-content:flex-end;width:100%;padding:16px}
 .preview-frame.mobile .banner-eyebrow{font-size:8px}
 .preview-frame.mobile .banner-title{max-width:93%;margin-top:5px;font-size:22px;line-height:1.16}
@@ -145,6 +164,18 @@ body[data-mode="mobile"] .preview-frame.mobile{margin:0 auto}
 .recommendation span{color:#d8bdff;font-size:9px;font-weight:950;letter-spacing:.16em}
 .recommendation h2{max-width:880px;margin:9px 0 8px;font-size:24px;line-height:1.35;letter-spacing:-.035em;word-break:keep-all}
 .recommendation p{max-width:1020px;margin:0;color:#d9dbe8;font-size:12px;line-height:1.72;word-break:keep-all}
+@keyframes ambientFall{from{background-position:18px -220px,104px -160px}to{background-position:-42px 520px,164px 610px}}
+@keyframes ambientShimmer{0%,100%{background-position:0 0,-420px 0;opacity:.22}50%{background-position:80px 28px,420px 0;opacity:.38}}
+@keyframes springPetalDrift{0%{transform:translate3d(0,-22px,0) rotate(0);opacity:0}9%{opacity:.72}82%{opacity:.64}100%{transform:translate3d(-54px,292px,0) rotate(310deg);opacity:0}}
+@keyframes summerLightSweep{0%,15%{transform:translateX(-46%) skewX(-8deg);opacity:.14}55%{transform:translateX(34%) skewX(-8deg);opacity:.72}100%{transform:translateX(64%) skewX(-8deg);opacity:.08}}
+@keyframes summerWaterBreath{0%,100%{transform:translate3d(0,4%,0) scale(.92);opacity:.26}50%{transform:translate3d(-8%,-4%,0) scale(1.12);opacity:.58}}
+@keyframes autumnLeafDrift{0%{transform:translate3d(0,-28px,0) rotate(0);opacity:0}10%{opacity:.67}84%{opacity:.55}100%{transform:translate3d(62px,300px,0) rotate(390deg);opacity:0}}
+@keyframes winterSnowDrift{0%{transform:translate3d(0,-18px,0);opacity:0}10%{opacity:.78}86%{opacity:.70}100%{transform:translate3d(-34px,284px,0);opacity:0}}
+@media(prefers-reduced-motion:reduce){
+  body:before,.seasonal-fx:before,.seasonal-fx:after{animation:none!important}
+  .main-character-banner__scene img{transition:none}
+  .main-character-banner:hover .main-character-banner__scene img{transform:scale(1.002)}
+}
 @media(max-width:1120px){
   .preview-pair{grid-template-columns:1fr}
   .preview-frame.mobile{justify-self:start}
@@ -172,6 +203,7 @@ body[data-mode="mobile"] .preview-frame.mobile{margin:0 auto}
   .preview-frame.desktop{display:none}
   .preview-frame.mobile{display:block!important;width:100%}
   .preview-frame.mobile .main-character-banner{height:252px}
+  .seasonal-fx{left:34%;opacity:.72}
   .recommendation{padding:24px 20px}
   .recommendation h2{font-size:21px}
 }

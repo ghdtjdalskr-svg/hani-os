@@ -22,18 +22,18 @@
 | 성민 오피스 | 사내 규칙 | SUA | New | `assets/banner-preview-v1/company-rules-board-v1.webp` |
 | 성민 오피스 | 배포 센터 | SUA | New | `assets/banner-preview-v1/deployment-control-v1.webp` |
 | 재무 | 투자 | HANI | New | `assets/banner-preview-v1/investment-market-room-v1.webp` |
-| 재무 | 자산 업데이트 | HANI | Needs Character | `assets/heroes/month-end.png` |
-| 재무 | 자산 | JIEUN | Near Duplicate | `assets/design-system-v1/asset.webp` |
-| 재무 | 가계부 | JIEUN | Near Duplicate | `assets/design-system-v1/spending.webp` |
-| 재무 | 뉴스룸 | HANI | Needs Character | `assets/heroes/newsroom.png` |
-| 건강 | 다이어트 | NAEUN | Needs Character | `assets/heroes/diet.png` |
+| 재무 | 자산 업데이트 | HANI | New | `assets/banner-preview-v1/month-end-reconciliation-v1.webp` |
+| 재무 | 자산 | JIEUN | New | `assets/banner-preview-v1/long-term-asset-archive-v1.webp` |
+| 재무 | 가계부 | JIEUN | Reuse + Crop | `assets/design-system-v1/spending.webp` |
+| 재무 | 뉴스룸 | HANI | New | `assets/banner-preview-v1/market-news-editor-v1.webp` |
+| 건강 | 다이어트 | NAEUN | New | `assets/banner-preview-v1/nutrition-tracking-v1.webp` |
 | 건강 | 운동 | NAEUN | Reuse + Crop | `assets/design-system-v1/naeun-running-canonical.webp` |
-| 성장 | 독서·서재 | MINJI | Needs Character | `assets/heroes/reading.png` |
+| 성장 | 독서·서재 | MINJI | New | `assets/banner-preview-v1/personal-library-v1.webp` |
 | 성장 | 공부 | HINA | New | `assets/banner-preview-v1/study-jlpt-room-v1.webp` |
-| 성장 | 대학교 관리 | HARU | Needs Character | `assets/heroes/campus.png` |
-| 성장 | 자격증 | HINA | Needs Character | `assets/heroes/study.png` |
+| 성장 | 대학교 관리 | HARU | New | `assets/banner-preview-v1/campus-planner-v1.webp` |
+| 성장 | 자격증 | HINA | New | `assets/banner-preview-v1/certification-roadmap-v1.webp` |
 | 라이프 | Wish-list | HARU | New | `assets/banner-preview-v1/wishlist-planning-v1.webp` |
-| 라이프 | 여행 | SOOYEON | Needs Character | `assets/heroes/travel.png` |
+| 라이프 | 여행 | SOOYEON | New | `assets/banner-preview-v1/travel-route-planning-v1.webp` |
 | 라이프 | 시청 아카이브 | MINJI | Reuse + Crop | `assets/design-system-v1/hina-cinema-canonical.webp` |
 | 라이프 | 일기 | HARU | New | `assets/banner-preview-v1/diary-night-desk-v1.webp` |
 | 업무 / 시스템 | 할 일 | SUA | New | `assets/banner-preview-v1/tasks-kanban-v1.webp` |
@@ -145,12 +145,28 @@
 - **Reason:** 홈시네마, 몰입, 팝콘, 따뜻한 상영관이라는 메뉴 의미가 즉시 읽히며 우측의 MINJI가 화면을 가리키는 동작도 살아 있다.
 - **Condition:** Scene은 우측 중심으로 crop하고 quote/avatar는 MINJI를 사용한다. HINA가 중앙에 보이므로 실제 전체 적용 전 담당성 체감은 한 차례 더 확인한다.
 
-## Scene 중복·공백 Audit
+## 최종 보완 생성 장면
 
-- **Exact binary duplicate:** 없음.
-- **Visual near-duplicate:** `자산`과 `가계부`는 서로 다른 파일이지만 JIEUN·HANI·HINA 3인, 좌석, 카메라 거리, 표정과 포즈가 거의 같아 별도 메뉴 Scene으로 인식되기 어렵다. 두 메뉴 중 적어도 하나는 새 구도 제작이 필요하다.
-- **Characterless environment scenes:** `자산 업데이트`, `뉴스룸`, `다이어트`, `독서·서재`, `대학교 관리`, `자격증`, `여행`의 7개는 소품·공간 배경만 있고 담당 캐릭터가 장면 안에 없다. 깨진 이미지가 아니라 기존 배경 재사용 후보이나, Unified Main Character Banner의 최종안으로는 캐릭터 Scene 보완이 필요하다.
-- Preview 화면에서는 위 7개를 `Needs Character`, 자산·가계부를 `Near Duplicate`로 표시해 완성된 신규 Scene과 구분한다.
+| Menu | Scene intent | Final asset | Preserved source |
+|---|---|---|---|
+| 자산 업데이트 | HANI의 원장·계좌·계산기 월말 대조 | `assets/banner-preview-v1/month-end-reconciliation-v1.webp` | `exec-72d30612-1c5f-4f39-9f47-e1a8602db73d.png` |
+| 뉴스룸 | HANI의 신문·브리핑 Market Editor 데스크 | `assets/banner-preview-v1/market-news-editor-v1.webp` | `exec-25f2ef70-3f03-4f5e-9a31-85aee4482f50.png` |
+| 다이어트 | NAEUN의 균형 식단 준비와 기록 | `assets/banner-preview-v1/nutrition-tracking-v1.webp` | `exec-faefc7e1-16cf-4c7e-a977-00b575827cb0.png` |
+| 독서·서재 | MINJI의 개인 서재 독서와 문장 기록 | `assets/banner-preview-v1/personal-library-v1.webp` | `exec-2aea82dd-2026-4ed3-af7a-fb2a6fa3e732.png` |
+| 대학교 관리 | HARU의 학기 플래너·과제 카드 정리 | `assets/banner-preview-v1/campus-planner-v1.webp` | `exec-fd391465-1af4-4731-9ca3-3038dd9adbc8.png` |
+| 자격증 | HINA의 시험 일정·로드맵·모의시험 관리 | `assets/banner-preview-v1/certification-roadmap-v1.webp` | `exec-d5eadc44-d502-4360-adea-6236acb5cc54.png` |
+| 여행 | SOOYEON의 지도·티켓 기반 동선 설계 | `assets/banner-preview-v1/travel-route-planning-v1.webp` | `exec-3a1b3754-2e7a-4567-9781-216f984122c8.png` |
+| 자산 | JIEUN 단독 장기 자산 아카이브 | `assets/banner-preview-v1/long-term-asset-archive-v1.webp` | `exec-ffd5ba7f-d6b8-4d49-bdb3-36dde6b49bb5.png` |
+
+원본 PNG는 모두 `C:/Users/홍성민/.codex/generated_images/01a08730-46bb-75a1-938d-848ffe42c081/`에 보존한다. 생성 공통 제약은 canonical profile identity 유지, 약 3:1 구도, 왼쪽 UI 안전영역, 얼굴과 정수리 비절단, 담당자 외 인물 및 남성 금지, 이미지 내부 텍스트·숫자·로고·watermark 금지다.
+
+## Scene 중복·공백 Audit — Resolved
+
+- **25개 메뉴 모두 담당 캐릭터가 Scene 안에 존재한다.**
+- **Characterless environment scene:** 0개.
+- **Visual near-duplicate:** 0쌍. `자산`은 JIEUN 단독 장기 자산 아카이브로 교체하고 `가계부`의 영수증 소비정리 장면은 유지해 역할과 구도를 분리했다.
+- **Exact duplicated source between menus:** 0개.
+- 각 Sidebar Menu는 하나의 Scene owner와 하나의 source asset을 사용하며 Desktop/Mobile은 crop만 달리한다.
 
 ## Seasonal Theme Preview
 
@@ -158,9 +174,9 @@
 
 | Season | Page / Surface | Border / Chip | Light grading | Decorative motif |
 |---|---|---|---|---|
-| Spring | 밝은 아이보리·블러시 핑크 | 로즈·연한 민트 계열 | 밝기와 생동감 소폭 상승 | 작은 블룸 점 형태 |
-| Summer | 깨끗한 아이스 화이트·아쿠아 | 시안·스카이 계열 | 채도와 대비 소폭 상승 | 투명한 물방울 점 형태 |
-| Autumn | 크림·웜 베이지 | 오렌지·브라운·와인 계열 | 약한 웜톤과 세피아 | 작은 앰버 점 형태 |
-| Winter | 실버 화이트·쿨 그레이 | 네이비·블루 계열 | 채도 절제, 대비와 또렷함 상승 | 작은 서리 점 형태 |
+| Spring | 밝은 아이보리·블러시 핑크 | 로즈·연한 민트 계열 | 밝기와 생동감 소폭 상승 | 가장자리 꽃잎·빛가루가 천천히 이동 |
+| Summer | 깨끗한 아이스 화이트·아쿠아 | 시안·스카이 계열 | 채도와 대비 소폭 상승 | 물빛 반사와 광선 sweep |
+| Autumn | 크림·웜 베이지 | 오렌지·브라운·와인 계열 | 약한 웜톤과 세피아 | 작은 낙엽과 금빛 입자가 느리게 이동 |
+| Winter | 실버 화이트·쿨 그레이 | 네이비·블루 계열 | 채도 절제, 대비와 또렷함 상승 | 미세한 눈 입자와 차가운 하이라이트 |
 
-운영 권장 구조는 **메뉴 Scene 유지 + 전역 Seasonal Token 교체**다. 계절이 바뀌어도 Sidebar Menu별 장면 소유권과 Category Theme은 그대로 두고, page background, surrounding card, divider, chip, shadow, scene light filter만 전역 변수로 적용한다. HANI OS 기본 계절은 현재 정체성과 가장 자연스럽게 연결되는 Autumn이 적합하다.
+운영 권장 구조는 **메뉴 Scene 유지 + 전역 Seasonal Token + CSS Atmosphere FX 교체**다. 계절이 바뀌어도 Sidebar Menu별 장면 소유권과 Category Theme은 그대로 두고 page background, surrounding card, divider, chip, shadow, scene light filter와 가장자리 FX만 전역 변수로 적용한다. FX는 문구 안전영역을 침범하지 않으며 Mobile에서는 밀도를 낮추고 `prefers-reduced-motion` 환경에서는 정적인 장식으로 대체한다. HANI OS 기본 계절은 현재 정체성과 가장 자연스럽게 연결되는 Autumn이 적합하다.

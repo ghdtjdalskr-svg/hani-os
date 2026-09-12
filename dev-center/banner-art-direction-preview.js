@@ -49,32 +49,32 @@
     {
       id:'asset-update',category:'finance',theme:'finance',menu:'자산 업데이트',eyebrow:'FINANCE · MONTH-END UPDATE',title:'자산 업데이트 - 월말정산',
       description:'가계부 확정본과 투자 계좌 정보를 한곳에서 차분하게 갱신하는 공간입니다.',agent:'하니',role:'Finance Lead',avatar:profile('hani'),
-      quote:'이번 달 기록을 맞춰두면 다음 달 판단이 훨씬 편해져요.',scene:existing('heroes/month-end.png'),sceneAlt:'체크 문서와 계산기가 놓인 월말 정산 책상',
-      characters:'HANI',assetStatus:'Needs Character',assetNote:'기존 월말정산 배경만 있음 · 캐릭터 Scene 보완 필요',scenePosition:'68% center',sceneMobile:'66% center',content:[['LEDGER','가계부 확정'],['ACCOUNTS','계좌 업데이트'],['CHECK','저장 전 확인']]
+      quote:'이번 달 기록을 맞춰두면 다음 달 판단이 훨씬 편해져요.',scene:generated('month-end-reconciliation-v1.webp'),sceneAlt:'하니가 원장과 계좌 명세서, 계산기를 대조하며 월말 정산을 진행하는 장면',
+      characters:'HANI',assetStatus:'New',assetNote:'신규 생성 · 월말 대조 Scene',content:[['LEDGER','가계부 확정'],['ACCOUNTS','계좌 업데이트'],['CHECK','저장 전 확인']]
     },
     {
       id:'assets',category:'finance',theme:'finance',menu:'자산',eyebrow:'FINANCE · LONG-TERM ASSET INDEX',title:'자산 - 성민 국채 10년물',
       description:'장기 자산의 축적과 변화 흐름을 안정적으로 읽는 자산 관리 공간입니다.',agent:'지은',role:'Asset Manager',avatar:profile('jieun'),
-      quote:'자산은 한 번에 커지지 않아. 안 새는 돈이 쌓여서 체력이 돼.',scene:existing('design-system-v1/asset.webp'),sceneAlt:'지은과 동료들이 자산 리포트와 태블릿을 함께 확인하는 장면',
-      characters:'JIEUN · HANI · HINA',assetStatus:'Near Duplicate',assetNote:'가계부와 동일 3인·유사 구도 · 장면 분리 필요',scenePosition:'66% center',sceneMobile:'70% center',content:[['NET ASSET','순자산'],['FLOW','월간 변화'],['HISTORY','장기 기록']]
+      quote:'자산은 한 번에 커지지 않아. 안 새는 돈이 쌓여서 체력이 돼.',scene:generated('long-term-asset-archive-v1.webp'),sceneAlt:'지은이 장기 자산 원장과 태블릿을 비교하는 차분한 자산 아카이브 장면',
+      characters:'JIEUN',assetStatus:'New',assetNote:'신규 생성 · 장기 자산 아카이브 Scene',content:[['NET ASSET','순자산'],['FLOW','월간 변화'],['HISTORY','장기 기록']]
     },
     {
       id:'ledger',category:'finance',theme:'finance',menu:'가계부',eyebrow:'FINANCE · MONTHLY SPENDING',title:'가계부 - JISPI MARKET',
       description:'영수증과 월간 소비를 정리해 다음 달을 편하게 만드는 소비 리뷰 공간입니다.',agent:'지은',role:'Life Finance',avatar:profile('jieun'),
       quote:'후회보다 패턴을 찾자. 다음 달에 편해질 한 가지만 남기면 돼.',scene:existing('design-system-v1/spending.webp'),sceneAlt:'지은과 동료들이 영수증과 계산기를 보며 소비를 정리하는 장면',
-      characters:'JIEUN · HANI · HINA',assetStatus:'Near Duplicate',assetNote:'자산과 동일 3인·유사 구도 · 소비 Scene 분리 필요',scenePosition:'66% center',sceneMobile:'70% center',content:[['JISPI-T','실질 지출'],['JISPI-C','핵심 소비'],['COMMENT','지은 코멘트']]
+      characters:'JIEUN · HANI · HINA',assetStatus:'Reuse + Crop',assetNote:'기존 영수증 소비정리 Scene 재사용 · 자산과 구도 분리 완료',scenePosition:'66% center',sceneMobile:'70% center',content:[['JISPI-T','실질 지출'],['JISPI-C','핵심 소비'],['COMMENT','지은 코멘트']]
     },
     {
       id:'newsroom',category:'finance',theme:'finance',menu:'뉴스룸',eyebrow:'FINANCE · MARKET NEWS DESK',title:'뉴스룸 - MARKET NEWS DESK',
       description:'종합 시장과 관심종목의 의미 있는 변화만 브리핑하는 뉴스 공간입니다.',agent:'하니',role:'Market Editor',avatar:profile('hani'),
-      quote:'뉴스의 양보다 판단을 바꾸는 재료가 있는지 먼저 볼게요.',scene:existing('heroes/newsroom.png'),sceneAlt:'신문과 머그컵이 놓인 차분한 시장 뉴스 데스크',
-      characters:'HANI',assetStatus:'Needs Character',assetNote:'기존 뉴스룸 배경만 있음 · 캐릭터 Scene 보완 필요',scenePosition:'68% center',sceneMobile:'67% center',content:[['MARKET','종합 뉴스'],['WATCHLIST','관심종목'],['ARCHIVE','주간 시황']]
+      quote:'뉴스의 양보다 판단을 바꾸는 재료가 있는지 먼저 볼게요.',scene:generated('market-news-editor-v1.webp'),sceneAlt:'하니가 신문과 시장 브리핑 자료를 검토하는 뉴스 편집 데스크 장면',
+      characters:'HANI',assetStatus:'New',assetNote:'신규 생성 · Market Editor Scene',content:[['MARKET','종합 뉴스'],['WATCHLIST','관심종목'],['ARCHIVE','주간 시황']]
     },
     {
       id:'diet',category:'health',theme:'health',menu:'다이어트',eyebrow:'HEALTH · DAILY NUTRITION',title:'다이어트 - N&E 100',
       description:'식단과 체중 흐름을 부담 없이 이어가는 생활 밀착형 건강 공간입니다.',agent:'나은',role:'Health Mate',avatar:profile('naeun'),
-      quote:'완벽한 하루보다 다시 기록하는 하루가 몸을 더 오래 바꿔요.',scene:existing('heroes/diet.png'),sceneAlt:'샐러드와 건강 식재료가 준비된 밝은 주방',
-      characters:'NAEUN',assetStatus:'Needs Character',assetNote:'기존 식단 배경만 있음 · 캐릭터 Scene 보완 필요',scenePosition:'68% center',sceneMobile:'66% center',content:[['WEIGHT','현재 체중'],['MEAL','오늘 식단'],['TREND','기간 변화']]
+      quote:'완벽한 하루보다 다시 기록하는 하루가 몸을 더 오래 바꿔요.',scene:generated('nutrition-tracking-v1.webp'),sceneAlt:'나은이 균형 잡힌 식사를 준비하고 식단 노트에 기록하는 밝은 주방 장면',
+      characters:'NAEUN',assetStatus:'New',assetNote:'신규 생성 · Nutrition Tracking Scene',content:[['WEIGHT','현재 체중'],['MEAL','오늘 식단'],['TREND','기간 변화']]
     },
     {
       id:'exercise',category:'health',theme:'health',menu:'운동',eyebrow:'HEALTH · ACTIVE ROUTINE',title:'운동 - HARUKEI 10K',
@@ -85,8 +85,8 @@
     {
       id:'reading',category:'growth',theme:'growth',menu:'독서·서재',eyebrow:'GROWTH · LIBRARY ARCHIVE',title:'독서·서재 - LIBRARY INDEX',
       description:'읽은 책과 남기고 싶은 문장을 차분하게 보관하는 개인 서재입니다.',agent:'민지',role:'Archive Mate',avatar:profile('minji'),
-      quote:'좋았던 문장은 접어두지 말고, 나중의 나를 위해 남겨두자.',scene:existing('heroes/reading.png'),sceneAlt:'햇살이 들어오는 조용한 책장과 독서 공간',
-      characters:'MINJI',assetStatus:'Needs Character',assetNote:'기존 서재 배경만 있음 · 캐릭터 Scene 보완 필요',scenePosition:'66% center',sceneMobile:'65% center',content:[['READING','읽는 중'],['BOOKSHELF','나의 서재'],['NOTES','문장 기록']]
+      quote:'좋았던 문장은 접어두지 말고, 나중의 나를 위해 남겨두자.',scene:generated('personal-library-v1.webp'),sceneAlt:'민지가 개인 서재에서 책을 읽고 좋아하는 문장을 기록하는 장면',
+      characters:'MINJI',assetStatus:'New',assetNote:'신규 생성 · Personal Library Scene',content:[['READING','읽는 중'],['BOOKSHELF','나의 서재'],['NOTES','문장 기록']]
     },
     {
       id:'study',category:'growth',theme:'growth',menu:'공부',eyebrow:'GROWTH · JAPANESE STUDY ROOM',title:'공부 - HINKEI 225',
@@ -97,14 +97,14 @@
     {
       id:'campus',category:'growth',theme:'growth',menu:'대학교 관리',eyebrow:'GROWTH · CAMPUS PLANNER',title:'대학교 관리 - CAMPUS PLANNER',
       description:'학기 일정과 수업, 과제 진행을 한곳에서 정리하는 학생 플래너입니다.',agent:'하루',role:'Campus Mate',avatar:profile('haru'),
-      quote:'마감부터 보이면 마음이 복잡해져. 이번 주 한 칸씩 먼저 채우자.',scene:existing('heroes/campus.png'),sceneAlt:'강의실과 교재가 보이는 차분한 캠퍼스 공간',
-      characters:'HARU',assetStatus:'Needs Character',assetNote:'기존 캠퍼스 배경만 있음 · 캐릭터 Scene 보완 필요',scenePosition:'68% center',sceneMobile:'65% center',content:[['SEMESTER','학기 현황'],['ASSIGNMENT','과제 일정'],['COURSE','수업 관리']]
+      quote:'마감부터 보이면 마음이 복잡해져. 이번 주 한 칸씩 먼저 채우자.',scene:generated('campus-planner-v1.webp'),sceneAlt:'하루가 캠퍼스 책상에서 학기 플래너와 과제 카드를 정리하는 장면',
+      characters:'HARU',assetStatus:'New',assetNote:'신규 생성 · Campus Planning Scene',content:[['SEMESTER','학기 현황'],['ASSIGNMENT','과제 일정'],['COURSE','수업 관리']]
     },
     {
       id:'certificate',category:'growth',theme:'growth',menu:'자격증',eyebrow:'GROWTH · EXAM ROADMAP',title:'자격증 - LEVEL UP BOARD',
       description:'시험 일정과 준비 상태, 합격 목표를 현실적으로 관리하는 학습 공간입니다.',agent:'히나',role:'Learning Mate',avatar:profile('hina'),
-      quote:'접수일 놓치고 공부만 열심히 하면 정말 슬퍼. 일정부터 확인!',scene:existing('heroes/study.png'),sceneAlt:'교재와 노트가 놓인 밝고 정돈된 시험 준비 책상',
-      characters:'HINA',assetStatus:'Needs Character',assetNote:'기존 학습 배경만 있음 · 캐릭터 Scene 보완 필요',scenePosition:'68% center',sceneMobile:'66% center',content:[['EXAM','다가오는 시험'],['PLAN','학습 계획'],['RESULT','결과 기록']]
+      quote:'접수일 놓치고 공부만 열심히 하면 정말 슬퍼. 일정부터 확인!',scene:generated('certification-roadmap-v1.webp'),sceneAlt:'히나가 자격증 시험 로드맵과 모의시험 자료를 확인하는 준비실 장면',
+      characters:'HINA',assetStatus:'New',assetNote:'신규 생성 · Certification Roadmap Scene',content:[['EXAM','다가오는 시험'],['PLAN','학습 계획'],['RESULT','결과 기록']]
     },
     {
       id:'wishlist',category:'life',theme:'life',menu:'Wish-list',eyebrow:'LIFE · WISH PLANNING LAB',title:'Wish-list - WISH LAB',
@@ -115,8 +115,8 @@
     {
       id:'travel',category:'life',theme:'life',menu:'여행',eyebrow:'LIFE · TRAVEL PLANNING',title:'여행 - TRAVEL COMPASS',
       description:'지도와 티켓, 일정표를 펼쳐 여행의 동선을 설계하는 계획 공간입니다.',agent:'수연',role:'Travel Coach',avatar:profile('sooyeon'),
-      quote:'예쁜 곳은 많아. 이동이 편한 순서로 묶으면 여행이 더 오래 기억나.',scene:existing('heroes/travel.png'),sceneAlt:'여행 가방과 일정 노트가 놓인 밝은 여행 계획 테이블',
-      characters:'SOOYEON',assetStatus:'Needs Character',assetNote:'기존 여행 계획 배경만 있음 · 캐릭터 Scene 보완 필요',scenePosition:'66% center',sceneMobile:'67% center',content:[['TRIP','여행 계획'],['ROUTE','일정표'],['PLACE','명소 보관']]
+      quote:'예쁜 곳은 많아. 이동이 편한 순서로 묶으면 여행이 더 오래 기억나.',scene:generated('travel-route-planning-v1.webp'),sceneAlt:'수연이 지도와 티켓을 펼쳐 여행 동선을 설계하는 밝은 계획실 장면',
+      characters:'SOOYEON',assetStatus:'New',assetNote:'신규 생성 · Travel Route Scene',content:[['TRIP','여행 계획'],['ROUTE','일정표'],['PLACE','명소 보관']]
     },
     {
       id:'media',category:'life',theme:'life',menu:'시청 아카이브',eyebrow:'LIFE · CINEMA ARCHIVE',title:'시청 아카이브 - CINEMA LOG',
@@ -177,6 +177,7 @@
 
   const banner = item => `<section class="main-character-banner theme-${esc(item.theme)}" data-menu-scene="${esc(item.id)}" style="--scene-position:${esc(item.scenePosition || 'center center')};--scene-position-mobile:${esc(item.sceneMobile || '72% center')};--scene-fit:${esc(item.sceneFit || 'cover')};--scene-fit-mobile:${esc(item.sceneFitMobile || item.sceneFit || 'cover')}" role="group" aria-label="${esc(item.menu)} 배너 시안">
     <figure class="main-character-banner__scene"><img src="${esc(item.scene)}" alt="${esc(item.sceneAlt)}"></figure>
+    <span class="seasonal-fx" aria-hidden="true"></span>
     <div class="main-character-banner__copy">
       <span class="banner-eyebrow">${esc(item.eyebrow)}</span>
       <h3 class="banner-title">${esc(item.title)}</h3>
