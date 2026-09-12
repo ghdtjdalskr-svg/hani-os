@@ -206,6 +206,29 @@ body[data-view=home] #aiBanner{display:none!important}
 #app #investment td.hani-etf-target-v02982{display:table-cell!important;padding:14px!important}
 #app #investment .hani-etf-logo-v02982{position:relative!important;inset:auto!important;display:inline-grid!important;vertical-align:middle!important;flex:0 0 36px!important;width:36px!important;height:36px!important;margin:0!important;transform:none!important}
 #app #investment .hani-etf-target-v02982 :is(b,strong){white-space:normal;overflow-wrap:anywhere}
+/* v2.9.114 · one source-rendered Investment logo per security row/card. */
+#app #investment .hani-investment-security{display:grid;grid-template-columns:36px minmax(0,1fr);align-items:center;gap:10px;min-width:0;flex:1 1 auto}
+#app #investment .hani-investment-security-copy{display:grid;gap:3px;min-width:0}
+#app #investment .hani-investment-security .security-name{display:block;min-width:0;color:inherit;line-height:1.25;white-space:normal;overflow-wrap:anywhere}
+#app #investment .hani-investment-logo{--investment-logo-color:#61748d;position:relative;display:inline-grid;place-items:center;flex:0 0 36px;width:36px;height:36px;margin:0;border:1px solid color-mix(in srgb,var(--investment-logo-color) 76%,#fff);border-radius:10px;background:var(--investment-logo-color);color:#fff;overflow:hidden;box-shadow:0 3px 9px color-mix(in srgb,var(--investment-logo-color) 19%,transparent);isolation:isolate}
+#app #investment .hani-investment-logo-glyph{position:absolute;inset:0;display:grid;place-items:center;color:inherit;transition:opacity .12s ease}
+#app #investment .hani-investment-logo-glyph svg{width:18px;height:18px;margin-top:-4px}
+#app #investment .hani-investment-logo-glyph small{position:absolute;left:3px;right:3px;bottom:3px;color:inherit;font-size:5.5px;font-weight:1000;line-height:1;letter-spacing:.03em;text-align:center;white-space:nowrap}
+#app #investment .hani-investment-logo-fallback{font:1000 7px/1 Arial,sans-serif;letter-spacing:-.02em;text-align:center;white-space:nowrap}
+#app #investment .hani-investment-logo-theme{font:1000 8px/1 Arial,sans-serif;letter-spacing:-.04em;text-align:center;white-space:nowrap}
+#app #investment .hani-investment-logo>img{position:absolute;z-index:2;inset:16%;display:block;width:68%;height:68%;object-fit:contain;opacity:0}
+#app #investment .hani-investment-logo.is-loaded>img{opacity:1}
+#app #investment .hani-investment-logo.is-loaded>.hani-investment-logo-glyph{opacity:0}
+#app #investment .hani-investment-logo.brand-samsung .hani-investment-logo-fallback{font-size:5.5px}
+#app #investment .hani-investment-logo.brand-amazon .hani-investment-logo-fallback{font-size:19px;transform:translateY(-2px)}
+#app #investment .hani-investment-logo.brand-amazon:after{content:"";position:absolute;left:25%;right:18%;bottom:21%;height:5px;border-bottom:2px solid #ff9900;border-radius:0 0 55% 55%;transform:rotate(-7deg)}
+#app #investment .hani-investment-logo.brand-alphabet{border-color:#d8dee8;color:#4285f4;background:#fff}
+#app #investment .hani-investment-logo.brand-alphabet .hani-investment-logo-fallback{font-size:18px;background:conic-gradient(from -40deg,#4285f4 0 25%,#34a853 0 45%,#fbbc05 0 67%,#ea4335 0 82%,#4285f4 0);background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+#app #investment .highlight-card>.hani-investment-logo{align-self:center}
+#app #investment .watchlist-item>.row.start>.hani-investment-security{align-self:flex-start}
+#app #investment .broker-security-select{display:grid;grid-template-columns:36px minmax(0,1fr);align-items:center;gap:9px;min-width:0}
+#app #investment .broker-security-select>div{min-width:0}
+#app #investment .broker-security-select select{width:100%;min-width:0}
 #app .view .empty{padding:24px!important;min-height:0!important;font-size:14px!important;color:var(--ds-muted)}
 @media(max-width:760px){
  :root{--ds-hero-height:230px;--ds-hero-padding:16px;--ds-title-size:23px;--ds-avatar-size:54px}
@@ -399,12 +422,14 @@ body[data-view=home] #aiBanner{display:none!important}
 #app .sidebar-team-mini{display:grid!important;grid-template-columns:1fr!important;min-height:0!important;padding:10px!important;gap:9px!important}
 #app .sidebar-team-official-photo{display:block!important;width:100%!important;height:112px!important;object-fit:cover!important;object-position:center 36%!important;border-radius:14px!important}
 #app .sidebar-corporate-lockup{display:grid;place-items:center;min-height:76px;padding:4px 7px;border:1px solid rgba(92,51,160,.13);border-radius:13px;background:#fff;overflow:hidden}
-#app .sidebar-corporate-lockup img{display:block;width:100%;height:72px;object-fit:contain}
+#app .hani-brand-logo-frame{position:relative;display:block;width:100%;aspect-ratio:1774/745;overflow:hidden;background:#fff}
+#app .hani-brand-logo-frame>img{position:absolute;left:0;top:0;display:block;width:100%!important;height:auto!important;max-width:none!important}
+#app .sidebar-corporate-lockup .hani-brand-logo-frame{width:min(100%,171px)}
 #app .sidebar-team-faces{margin-top:0!important}
 #app .hani-group-profile-banner{position:relative;min-height:300px;padding:0!important;border-radius:24px!important;overflow:hidden;background:#f8f7ff}
 #app .hani-group-profile-banner>img{display:block;width:100%;height:clamp(300px,31vw,430px);object-fit:cover;object-position:center}
 #app .hani-group-profile-banner figcaption{position:absolute;z-index:2;left:clamp(22px,4vw,60px);top:50%;width:min(34%,430px);transform:translateY(-50%)}
-#app .hani-group-profile-banner figcaption>img{display:block;width:min(100%,390px);height:auto;aspect-ratio:2/1;object-fit:contain;mix-blend-mode:multiply}
+#app .hani-group-profile-banner figcaption>.hani-brand-logo-frame{width:min(100%,390px);mix-blend-mode:multiply}
 #app .hani-group-profile-banner figcaption p{margin:8px 4px 13px;color:#51466b;font-size:clamp(12px,1.1vw,15px);font-weight:680;line-height:1.65;word-break:keep-all}
 #app .hani-group-profile-banner figcaption div{display:flex;gap:6px;flex-wrap:wrap}
 #app .hani-group-profile-banner figcaption span{padding:6px 8px;border:1px solid #6e42b129;border-radius:999px;background:#fff;color:#6944a4;font-size:8px;font-weight:900;letter-spacing:.09em}
@@ -450,7 +475,7 @@ body[data-view=home] #aiBanner{display:none!important}
 @media(max-width:1000px){#app #game .sports-home-panel{padding:14px 15px}}
 @media(max-width:700px){
  #app .hani-group-profile-banner{min-height:340px;background:#fff}.hani-group-profile-banner>img{position:absolute;left:0;right:0;bottom:0;width:100%;height:150px!important;object-fit:contain!important;object-position:center bottom!important}.hani-group-profile-banner:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#fff 0 48%,transparent 70%);pointer-events:none}
- #app .hani-group-profile-banner figcaption{left:18px;right:18px;top:12px;width:auto;transform:none}.hani-group-profile-banner figcaption>img{width:175px;height:88px}.hani-group-profile-banner figcaption p{max-width:330px;margin:0 4px 8px;font-size:11px;line-height:1.5}
+ #app .hani-group-profile-banner figcaption{left:18px;right:18px;top:12px;width:auto;transform:none}.hani-group-profile-banner figcaption>.hani-brand-logo-frame{width:175px}.hani-group-profile-banner figcaption p{max-width:330px;margin:0 4px 8px;font-size:11px;line-height:1.5}
  #app #game .sports-home-overview{grid-template-columns:1fr;gap:10px}
  #app #game .sports-home-panel{min-height:138px;padding:13px 14px;border-radius:17px}
  #app #game .sports-home-team{grid-template-columns:49px minmax(0,1fr) auto;gap:9px}

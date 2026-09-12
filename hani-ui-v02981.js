@@ -140,6 +140,7 @@
     el.classList.add('hani-etf-title-v02981');el.dataset.haniEtfV02981=identity.id;
   }
   function decorateEtfs(){
+    if(window.HANI_CANONICAL_LOGO_OWNERS?.investment) return;
     const root=q('#investment');if(!root)return;
     directEtfNameNodes(root).forEach(el=>ensureEtfOnName(el,resolveEtf(txt(el))));
     /* Fallback for custom row markup: find the smallest row-like block containing an ETF name + code. */
