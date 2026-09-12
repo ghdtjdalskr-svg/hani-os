@@ -1,4 +1,4 @@
-/* HANI OS v2.9.112 · Page Skeleton / Main Character Banner · Sports dashboard palettes */
+/* HANI OS v2.9.113 · Sidebar Menu Scene scope · Sports shared scene */
 (() => {
   'use strict';
   if (window.HANI_UI_V02992) return;
@@ -22,60 +22,57 @@
   const profile=agent=>canonicalProfileImages[agent]||canonicalProfileImages.hani;
   function speakerMarkup(agent,name,role,line){return `<img src="${profile(agent)}" alt="${safe(name)}" width="64" height="64"><div><small>${safe(name)} · ${safe(role)}</small><p>${safe(line)}</p></div>`}
   const mainCharacterBannerVariants=new Set(['single-character','duo-or-trio','group']);
-  // Category Theme owns the shared room; Menu Scene only swaps presentation config.
+  // Banner layers: Seasonal Theme (CSS) -> Category Theme -> Sidebar Menu Scene.
+  // Internal tabs may change copy and data, but never own or swap scene assets.
   const mainCharacterCategoryThemes=Object.freeze({
     sports:Object.freeze({
-      tone:'sports',variant:'group',owner:'sooyeon',profile:'sooyeon',speaker:'수연',role:'Head Coach',
-      sceneFallback:'./assets/sports/hani-sports-hero-v1.webp',sceneWidth:'74%',sceneFit:'contain'
+      tone:'sports',variant:'group'
     })
   });
-  const mainCharacterMenuScenes=Object.freeze({
+  const mainCharacterSidebarMenuConfig=Object.freeze({
     game:Object.freeze({
-      home:Object.freeze({
-        eyebrow:'HANI OS · SPORTS LOUNGE',title:'SPORTS HUB',
-        description:'성민의 응원팀을 한눈에 보는 가벼운 응원 라운지입니다.',
-        quote:'감독님, 오늘은 어느 팀부터 확인할까요?',
-        sceneImage:'./assets/sports/hani-sports-hero-v1.webp',scenePosition:'right center',sceneVariant:'sports-lounge',
-        sceneAlt:'수연과 HANI OS 팀이 스포츠 라운지에서 함께 경기를 응원하는 웹툰 장면'
-      }),
+      sidebarMenuKey:'game',category:'sports',owner:'sooyeon',profile:'sooyeon',speaker:'수연',role:'Head Coach',
+      eyebrow:'HANI OS · SPORTS LOUNGE',title:'SPORTS HUB',
+      description:'성민의 응원팀을 한눈에 보는 가벼운 응원 라운지입니다.',
+      quote:'감독님, 오늘은 어느 팀부터 확인할까요?',
+      sceneImage:'./assets/sports/hani-sports-hero-v1.webp',scenePosition:'right center',sceneVariant:'sports-lounge',
+      sceneWidth:'74%',sceneFit:'contain',
+      sceneAlt:'수연과 HANI OS 팀이 스포츠 라운지에서 함께 경기를 응원하는 웹툰 장면'
+    })
+  });
+  const mainCharacterInternalContent=Object.freeze({
+    game:Object.freeze({
       yankees:Object.freeze({
         eyebrow:'SPORTS LOUNGE · MLB',title:'NEW YORK YANKEES',
         description:'뉴욕 양키스의 최근 경기 결과와 이번 주 주요 소식을 확인합니다.',
-        quote:'핀스트라이프의 오늘, 최근 경기부터 차분히 볼게요.',
-        sceneImage:'',scenePosition:'right center',sceneVariant:'baseball-yankees',
-        sceneAlt:'수연과 HANI OS 팀이 경기를 응원하는 Sports Lounge 웹툰 장면'
+        quote:'핀스트라이프의 오늘, 최근 경기부터 차분히 볼게요.'
       }),
       kia:Object.freeze({
         eyebrow:'SPORTS LOUNGE · KBO',title:'KIA TIGERS',
         description:'KIA 타이거즈의 최근 경기 결과와 이번 주 주요 소식을 확인합니다.',
-        quote:'타이거즈의 흐름, 마지막 경기와 소식부터 확인해요.',
-        sceneImage:'',scenePosition:'right center',sceneVariant:'baseball-kia',
-        sceneAlt:'수연과 HANI OS 팀이 경기를 응원하는 Sports Lounge 웹툰 장면'
+        quote:'타이거즈의 흐름, 마지막 경기와 소식부터 확인해요.'
       }),
       madrid:Object.freeze({
         eyebrow:'SPORTS LOUNGE · FOOTBALL',title:'REAL MADRID',
         description:'레알 마드리드의 최근 경기 결과와 이번 주 주요 소식을 확인합니다.',
-        quote:'베르나베우의 오늘도 결과와 장면을 함께 챙겨볼까요?',
-        sceneImage:'',scenePosition:'right center',sceneVariant:'football-madrid',
-        sceneAlt:'수연과 HANI OS 팀이 경기를 응원하는 Sports Lounge 웹툰 장면'
+        quote:'베르나베우의 오늘도 결과와 장면을 함께 챙겨볼까요?'
       }),
       dplus:Object.freeze({
         eyebrow:'SPORTS LOUNGE · ESPORTS',title:'DPLUS KIA',
         description:'Dplus KIA의 최근 경기 결과와 이번 주 주요 소식을 확인합니다.',
-        quote:'경기 결과와 팀 소식, 중요한 것부터 빠르게 볼게요.',
-        sceneImage:'',scenePosition:'right center',sceneVariant:'esports-dplus',
-        sceneAlt:'수연과 HANI OS 팀이 경기를 응원하는 Sports Lounge 웹툰 장면'
+        quote:'경기 결과와 팀 소식, 중요한 것부터 빠르게 볼게요.'
       })
     })
   });
-  function mainCharacterBannerConfig(category,id,menu='home'){
-    const theme=mainCharacterCategoryThemes[category];
-    const menus=mainCharacterMenuScenes[id];
-    if(!theme||!menus)return null;
-    const menuConfig=menus[menu]||menus.home;
-    const hasDedicatedScene=Boolean(menuConfig.sceneImage);
-    return {...theme,...menuConfig,category,menu,sceneImage:menuConfig.sceneImage||theme.sceneFallback,sceneFallback:!hasDedicatedScene};
+  function mainCharacterBannerConfig(sidebarMenuKey,internalView='home'){
+    const sidebarMenu=mainCharacterSidebarMenuConfig[sidebarMenuKey];
+    const theme=mainCharacterCategoryThemes[sidebarMenu?.category];
+    const contentByView=mainCharacterInternalContent[sidebarMenuKey]||{};
+    if(!sidebarMenu||!theme)return null;
+    const resolvedView=internalView==='home'||contentByView[internalView]?internalView:'home';
+    return {...theme,...sidebarMenu,...(contentByView[resolvedView]||{}),internalView:resolvedView};
   }
+  const mainCharacterInternalViewExists=(sidebarMenuKey,internalView)=>internalView==='home'||Boolean(mainCharacterInternalContent[sidebarMenuKey]?.[internalView]);
   function mainCharacterBanner(id,config){
     const root=q(`#${id}`);if(!root||!config)return null;
     let el=q(':scope > .ds-main-character-banner',root);
@@ -87,7 +84,7 @@
     }
     const variant=mainCharacterBannerVariants.has(config.variant)?config.variant:'single-character';
     el.className=`ds-main-character-banner ds-main-character-banner--${variant} ds-tone-${config.tone||'work'}`;
-    el.dataset.owner=config.owner||'';el.dataset.category=config.category||'';el.dataset.menu=config.menu||'';el.dataset.sceneVariant=config.sceneVariant||'';el.dataset.sceneFallback=String(Boolean(config.sceneFallback));
+    el.dataset.owner=config.owner||'';el.dataset.category=config.category||'';el.dataset.menu=config.sidebarMenuKey||id;el.dataset.internalView=config.internalView||'';el.dataset.sceneVariant=config.sceneVariant||'';el.removeAttribute('data-scene-fallback');
     [['--mcb-scene-position',config.scenePosition],['--mcb-scene-width',config.sceneWidth],['--mcb-scene-fit',config.sceneFit]].forEach(([property,value])=>value?el.style.setProperty(property,value):el.style.removeProperty(property));
     const titleId=`${id}MainCharacterBannerTitle`;
     el.setAttribute('role','group');el.setAttribute('aria-labelledby',titleId);
@@ -108,9 +105,9 @@
     const kicker=q('#aiKicker',banner),name=q('#aiName',banner),message=q('#aiMessage',banner),role=q('#aiRole',banner);
     if(kicker)kicker.textContent=String(config.category||'HANI OS').toUpperCase();if(name)name.textContent=titled(id,config.title);if(message)message.textContent=config.description||'';if(role)role.textContent=`${config.speaker||'하니'} · ${config.role||''}`;
   }
-  function currentSportsMenu(){const root=q('#game'),key=root?.dataset.sportsMenu||q('[data-sports-tab].active',root)?.dataset.sportsTab||'home';return mainCharacterMenuScenes.game[key]?key:'home'}
+  function currentSportsMenu(){const root=q('#game'),key=root?.dataset.sportsMenu||q('[data-sports-tab].active',root)?.dataset.sportsTab||'home';return mainCharacterInternalViewExists('game',key)?key:'home'}
   function renderSportsBanner(menu=currentSportsMenu()){
-    const config=mainCharacterBannerConfig('sports','game',menu),el=mainCharacterBanner('game',config);syncMainCharacterBannerAgent('game',config);return el;
+    const config=mainCharacterBannerConfig('game',menu),el=mainCharacterBanner('game',config);syncMainCharacterBannerAgent('game',config);return el;
   }
   function mountDesignSlots(){
     const active=q('.view.active'),banner=q('#aiBanner'),target=active?.id!=='home'?q(':scope > :is(.hani-master-hero,.ds-main-character-banner)',active):null,agentSlot=target?(q('[data-main-character-banner-agent-slot]',target)||target):null;
@@ -210,7 +207,7 @@
   function bindSportsBoard(){
     const root=q('#game');if(!root)return;
     const select=requested=>{
-      const key=mainCharacterMenuScenes.game[requested]?requested:'home';root.dataset.sportsMenu=key;
+      const key=mainCharacterInternalViewExists('game',requested)?requested:'home';root.dataset.sportsMenu=key;
       qa('[data-sports-tab]',root).forEach(btn=>{const active=btn.dataset.sportsTab===key;btn.classList.toggle('active',active);btn.setAttribute('aria-selected',String(active));btn.tabIndex=active?0:-1});
       qa('[data-sports-panel]',root).forEach(panel=>panel.hidden=panel.dataset.sportsPanel!==key);
       renderSportsBanner(key);
@@ -225,5 +222,5 @@
   let queued=false;function refresh(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;mountSkeletons();arrangeNavigation();mountDesignSlots();improveLifeMarket();cleanupNewsroom();bindSportsBoard();if(q('#exercise.active')&&typeof drawExercise==='function')requestAnimationFrame(drawExercise)})}
   document.addEventListener('click',()=>setTimeout(refresh,0));document.addEventListener('change',()=>setTimeout(refresh,0));
   refresh();setTimeout(refresh,120);
-  console.info('[HANI OS] v2.9.112 Page Skeleton ready · Sports dashboard palettes');
+  console.info('[HANI OS] v2.9.113 Sidebar Menu Scene scope ready · Sports shared scene');
 })();
