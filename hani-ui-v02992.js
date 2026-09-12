@@ -1,4 +1,4 @@
-/* HANI OS v2.9.92 · Page Skeleton / Index Hero · read-only UI patch */
+/* HANI OS v2.9.92 · Page Skeleton / Index Hero · Phase 1 banner prototype */
 (() => {
   'use strict';
   if (window.HANI_UI_V02992) return;
@@ -21,9 +21,40 @@
   const designSceneSrc=key=>q('img[data-design-scene="'+key+'"]',q('#haniDesignAssets')?.content)?.getAttribute('src')||'';
   const profile=agent=>canonicalProfileImages[agent]||canonicalProfileImages.hani;
   function speakerMarkup(agent,name,role,line){return `<img src="${profile(agent)}" alt="${safe(name)}" width="64" height="64"><div><small>${safe(name)} · ${safe(role)}</small><p>${safe(line)}</p></div>`}
+  const mainCharacterBannerVariants=new Set(['single-character','duo-or-trio','group']);
+  const mainCharacterBanners={
+    game:{
+      tone:'sports',variant:'group',owner:'sooyeon',eyebrow:'HANI OS · SPORTS LOUNGE',
+      title:'SPORTS HUB',description:'성민의 응원팀을 한눈에 보는 가벼운 응원 라운지입니다.',
+      scene:'./assets/sports/hani-sports-hero-v1.webp',
+      sceneAlt:'수연과 HANI OS 팀이 스포츠 펍에서 함께 경기를 응원하는 웹툰 장면'
+    }
+  };
+  function mainCharacterBanner(id,config){
+    const root=q(`#${id}`);if(!root||!config)return null;
+    let el=q(':scope > .ds-main-character-banner',root);
+    if(!el){
+      el=document.createElement('section');
+      el.dataset.mainCharacterBanner=id;
+      el.innerHTML='<figure class="ds-main-character-banner__scene"><img width="2172" height="724"></figure><div class="ds-main-character-banner__copy"><span class="ds-main-character-banner__eyebrow"></span><h2 class="ds-main-character-banner__title"></h2><p class="ds-main-character-banner__description"></p><div class="ds-main-character-banner__agent" data-main-character-banner-agent-slot></div></div>';
+      root.prepend(el);
+    }
+    const variant=mainCharacterBannerVariants.has(config.variant)?config.variant:'single-character';
+    el.className=`ds-main-character-banner ds-main-character-banner--${variant} ds-tone-${config.tone||'work'}`;
+    el.dataset.owner=config.owner||'';
+    const titleId=`${id}MainCharacterBannerTitle`;
+    el.setAttribute('role','group');el.setAttribute('aria-labelledby',titleId);
+    const title=q('.ds-main-character-banner__title',el);title.id=titleId;title.textContent=titled(id,config.title);
+    q('.ds-main-character-banner__eyebrow',el).textContent=config.eyebrow||'';
+    q('.ds-main-character-banner__description',el).textContent=config.description||'';
+    const image=q('.ds-main-character-banner__scene img',el);
+    if(image.getAttribute('src')!==config.scene)image.setAttribute('src',config.scene||'');
+    image.alt=config.sceneAlt||'';
+    return el;
+  }
   function mountDesignSlots(){
-    const active=q('.view.active'),banner=q('#aiBanner'),target=active?.id!=='home'?q(':scope > .hani-master-hero',active):null;
-    if(banner){banner.classList.toggle('ds-integrated-agent',!!target);if(target&&banner.parentElement!==target)target.append(banner);else if(!target&&banner.parentElement!==q('main.main'))q('main.main > header').after(banner)}
+    const active=q('.view.active'),banner=q('#aiBanner'),target=active?.id!=='home'?q(':scope > :is(.hani-master-hero,.ds-main-character-banner)',active):null,agentSlot=target?(q('[data-main-character-banner-agent-slot]',target)||target):null;
+    if(banner){banner.classList.toggle('ds-integrated-agent',!!target);if(agentSlot&&banner.parentElement!==agentSlot)agentSlot.append(banner);else if(!target&&banner.parentElement!==q('main.main'))q('main.main > header').after(banner)}
     if(active?.id==='intake'){q('#aiAvatar').style.backgroundImage='url('+profile('yuna')+')';q('#aiQuote span').textContent='유나 한마디';q('#aiQuote b').textContent='말씀해 주세요. 저장 전 꼭 보여드릴게요.';const h=q('.hani-master-title',target);if(h)h.textContent='유나 인포데스크'}
     const home=q('#home');
     if(home&&!q('.ds-team-hero',home)){const el=document.createElement('div');el.className='ds-team-hero';el.innerHTML='<div><span class="eyebrow">DASHBOARD · HANI OS</span><h2>오늘의 삶도,<br>함께 운영합니다.</h2><p>기록이 모여 만드는 우리 회사의 하루</p></div><div class="ds-team-art"><img src="./assets/team/hani-team-office.webp" alt="HANI OS의 아홉 라이프 파트너"></div>';home.prepend(el)}
@@ -67,7 +98,8 @@
   function brokerSummary(){const rows=brokerRows(),last=rows.at(-1),prev=rows.at(-2),c=last&&typeof brokerCalc==='function'?brokerCalc(last):null,p=prev&&typeof brokerCalc==='function'?brokerCalc(prev):null,d=c&&p?c.total-p.total:null,r=d!==null&&p.total?d/p.total*100:null;return {rows,last,c,d,r}}
   function mountSkeletons(){
     // Every route shares one persistent Hero. This function owns the frame only.
-    qa('.view').filter(v=>v.id!=='home').forEach(v=>{const m=pageMeta[v.id]||[v.id,'','work'];if(!q(':scope > .index-hero-v02992',v))hero(v.id,{tone:m[2],scene:genericHeroScenes[v.id]||'plain',kicker:String(m[2]||'HANI OS').toUpperCase(),title:m[0],copy:m[1],value:''})});
+    qa('.view').filter(v=>v.id!=='home'&&v.id!=='game').forEach(v=>{const m=pageMeta[v.id]||[v.id,'','work'];if(!q(':scope > .index-hero-v02992',v))hero(v.id,{tone:m[2],scene:genericHeroScenes[v.id]||'plain',kicker:String(m[2]||'HANI OS').toUpperCase(),title:m[0],copy:m[1],value:''})});
+    q('#game > .index-hero-v02992')?.remove();mainCharacterBanner('game',mainCharacterBanners.game);
     const investmentSummary=brokerSummary();
     hero('investment',{tone:'finance',scene:'investment',kicker:'HANI INVESTMENT DESK',title:'HASDAQ BOARD',copy:'월간 스냅샷으로 계좌별 자산과 흐름을 확인합니다.',value:'',change:investmentSummary.r===null?'':('전월 대비 '+(investmentSummary.r>=0?'+':'')+investmentSummary.r.toFixed(2)+'%')});
     hero('newsroom',{tone:'finance',scene:'newsroom',kicker:'HANI NEWS DESK',title:'오늘의 시장',copy:'종합 시황과 관심종목의 의미 있는 변화를 모아봅니다.',value:''});
@@ -86,7 +118,6 @@
     const qm=quizMetrics();hero('study',{tone:'learning',scene:'study',kicker:'LEARNING INDEX',title:'HINKEI 225',copy:'저장된 Quiz 제출 결과로 계산한 학습성과 지표입니다.',value:qm.rate===null?'제출 기록 없음':`${qm.rate}%`,change:qm.completed.length?`완료 Quiz ${qm.completed.length}회 기준`:'Quiz 제출 후 정답률 표시',stats:[`퀴즈 ${(state.learningQuizzes||[]).length}`,`오답 ${qm.wrong}`,`미완료 ${qm.pending}`]});
     hero('university',{tone:'campus',scene:'campus',mark:'',kicker:'HANI OS · CAMPUS',title:'낭만 캠퍼스 라이프',copy:'실제 학기·과목·학사일정을 한눈에 보는 캠퍼스 데스크입니다.',value:'',change:'',stats:[]});
     hero('travel',{tone:'travel',scene:'travel',mark:'',kicker:'HANI OS · TRAVEL ARCHIVE',title:'여행 아카이브',copy:'실제 여행 기록과 가고 싶은 장소를 연결해 보는 여행 데스크입니다.',value:'',change:'',stats:[]});
-    hero('game',{tone:'sports',scene:'none',kicker:'HANI OS · SPORTS LOUNGE',title:'SPORTS HUB',copy:'양키스·KIA·레알 마드리드·Dplus KIA를 한눈에 보는 가벼운 응원 라운지입니다.',value:'',change:''});
     hero('investmentIntake',{tone:'finance',scene:'monthEnd',mark:'',kicker:'ASSET UPDATE · MONTH-END',title:'월말정산',copy:'가계부 확정본과 투자 계좌 업데이트를 한곳에서 준비합니다.',value:'',change:'',stats:[]});q('.ledger-import .sh h3')?.replaceChildren(document.createTextNode('가계부 확정본 Import'));
     qa('#asset .asset-dashboard-card .sh h3').forEach(x=>x.textContent='자산 핵심 지표');
   }
@@ -119,5 +150,5 @@
   let queued=false;function refresh(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;mountSkeletons();arrangeNavigation();mountDesignSlots();improveLifeMarket();cleanupNewsroom();bindSportsBoard();if(q('#exercise.active')&&typeof drawExercise==='function')requestAnimationFrame(drawExercise)})}
   document.addEventListener('click',()=>setTimeout(refresh,0));document.addEventListener('change',()=>setTimeout(refresh,0));
   refresh();setTimeout(refresh,120);
-  console.info('[HANI OS] v2.9.92 Page Skeleton ready · read-only UI patch');
+  console.info('[HANI OS] v2.9.109 Page Skeleton ready · Sports Main Character Banner prototype');
 })();
