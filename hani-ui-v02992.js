@@ -1,4 +1,4 @@
-/* HANI OS v2.9.92 · Page Skeleton / Index Hero · read-only UI patch */
+/* HANI OS v2.9.112 · Page Skeleton / Main Character Banner · Sports dashboard palettes */
 (() => {
   'use strict';
   if (window.HANI_UI_V02992) return;
@@ -21,9 +21,101 @@
   const designSceneSrc=key=>q('img[data-design-scene="'+key+'"]',q('#haniDesignAssets')?.content)?.getAttribute('src')||'';
   const profile=agent=>canonicalProfileImages[agent]||canonicalProfileImages.hani;
   function speakerMarkup(agent,name,role,line){return `<img src="${profile(agent)}" alt="${safe(name)}" width="64" height="64"><div><small>${safe(name)} · ${safe(role)}</small><p>${safe(line)}</p></div>`}
+  const mainCharacterBannerVariants=new Set(['single-character','duo-or-trio','group']);
+  // Category Theme owns the shared room; Menu Scene only swaps presentation config.
+  const mainCharacterCategoryThemes=Object.freeze({
+    sports:Object.freeze({
+      tone:'sports',variant:'group',owner:'sooyeon',profile:'sooyeon',speaker:'수연',role:'Head Coach',
+      sceneFallback:'./assets/sports/hani-sports-hero-v1.webp',sceneWidth:'74%',sceneFit:'contain'
+    })
+  });
+  const mainCharacterMenuScenes=Object.freeze({
+    game:Object.freeze({
+      home:Object.freeze({
+        eyebrow:'HANI OS · SPORTS LOUNGE',title:'SPORTS HUB',
+        description:'성민의 응원팀을 한눈에 보는 가벼운 응원 라운지입니다.',
+        quote:'감독님, 오늘은 어느 팀부터 확인할까요?',
+        sceneImage:'./assets/sports/hani-sports-hero-v1.webp',scenePosition:'right center',sceneVariant:'sports-lounge',
+        sceneAlt:'수연과 HANI OS 팀이 스포츠 라운지에서 함께 경기를 응원하는 웹툰 장면'
+      }),
+      yankees:Object.freeze({
+        eyebrow:'SPORTS LOUNGE · MLB',title:'NEW YORK YANKEES',
+        description:'뉴욕 양키스의 최근 경기 결과와 이번 주 주요 소식을 확인합니다.',
+        quote:'핀스트라이프의 오늘, 최근 경기부터 차분히 볼게요.',
+        sceneImage:'',scenePosition:'right center',sceneVariant:'baseball-yankees',
+        sceneAlt:'수연과 HANI OS 팀이 경기를 응원하는 Sports Lounge 웹툰 장면'
+      }),
+      kia:Object.freeze({
+        eyebrow:'SPORTS LOUNGE · KBO',title:'KIA TIGERS',
+        description:'KIA 타이거즈의 최근 경기 결과와 이번 주 주요 소식을 확인합니다.',
+        quote:'타이거즈의 흐름, 마지막 경기와 소식부터 확인해요.',
+        sceneImage:'',scenePosition:'right center',sceneVariant:'baseball-kia',
+        sceneAlt:'수연과 HANI OS 팀이 경기를 응원하는 Sports Lounge 웹툰 장면'
+      }),
+      madrid:Object.freeze({
+        eyebrow:'SPORTS LOUNGE · FOOTBALL',title:'REAL MADRID',
+        description:'레알 마드리드의 최근 경기 결과와 이번 주 주요 소식을 확인합니다.',
+        quote:'베르나베우의 오늘도 결과와 장면을 함께 챙겨볼까요?',
+        sceneImage:'',scenePosition:'right center',sceneVariant:'football-madrid',
+        sceneAlt:'수연과 HANI OS 팀이 경기를 응원하는 Sports Lounge 웹툰 장면'
+      }),
+      dplus:Object.freeze({
+        eyebrow:'SPORTS LOUNGE · ESPORTS',title:'DPLUS KIA',
+        description:'Dplus KIA의 최근 경기 결과와 이번 주 주요 소식을 확인합니다.',
+        quote:'경기 결과와 팀 소식, 중요한 것부터 빠르게 볼게요.',
+        sceneImage:'',scenePosition:'right center',sceneVariant:'esports-dplus',
+        sceneAlt:'수연과 HANI OS 팀이 경기를 응원하는 Sports Lounge 웹툰 장면'
+      })
+    })
+  });
+  function mainCharacterBannerConfig(category,id,menu='home'){
+    const theme=mainCharacterCategoryThemes[category];
+    const menus=mainCharacterMenuScenes[id];
+    if(!theme||!menus)return null;
+    const menuConfig=menus[menu]||menus.home;
+    const hasDedicatedScene=Boolean(menuConfig.sceneImage);
+    return {...theme,...menuConfig,category,menu,sceneImage:menuConfig.sceneImage||theme.sceneFallback,sceneFallback:!hasDedicatedScene};
+  }
+  function mainCharacterBanner(id,config){
+    const root=q(`#${id}`);if(!root||!config)return null;
+    let el=q(':scope > .ds-main-character-banner',root);
+    if(!el){
+      el=document.createElement('section');
+      el.dataset.mainCharacterBanner=id;
+      el.innerHTML='<figure class="ds-main-character-banner__scene"><img width="2172" height="724"></figure><div class="ds-main-character-banner__copy"><span class="ds-main-character-banner__eyebrow"></span><h2 class="ds-main-character-banner__title"></h2><p class="ds-main-character-banner__description"></p><div class="ds-main-character-banner__agent" data-main-character-banner-agent-slot></div></div>';
+      root.prepend(el);
+    }
+    const variant=mainCharacterBannerVariants.has(config.variant)?config.variant:'single-character';
+    el.className=`ds-main-character-banner ds-main-character-banner--${variant} ds-tone-${config.tone||'work'}`;
+    el.dataset.owner=config.owner||'';el.dataset.category=config.category||'';el.dataset.menu=config.menu||'';el.dataset.sceneVariant=config.sceneVariant||'';el.dataset.sceneFallback=String(Boolean(config.sceneFallback));
+    [['--mcb-scene-position',config.scenePosition],['--mcb-scene-width',config.sceneWidth],['--mcb-scene-fit',config.sceneFit]].forEach(([property,value])=>value?el.style.setProperty(property,value):el.style.removeProperty(property));
+    const titleId=`${id}MainCharacterBannerTitle`;
+    el.setAttribute('role','group');el.setAttribute('aria-labelledby',titleId);
+    const title=q('.ds-main-character-banner__title',el);title.id=titleId;title.textContent=titled(id,config.title);
+    q('.ds-main-character-banner__eyebrow',el).textContent=config.eyebrow||'';
+    q('.ds-main-character-banner__description',el).textContent=config.description||'';
+    const image=q('.ds-main-character-banner__scene img',el);
+    if(image.getAttribute('src')!==config.sceneImage)image.setAttribute('src',config.sceneImage||'');
+    image.alt=config.sceneAlt||'';
+    return el;
+  }
+  function syncMainCharacterBannerAgent(id,config){
+    const root=q(`#${id}`),el=q(':scope > .ds-main-character-banner',root),banner=q('#aiBanner');
+    if(!root?.classList.contains('active')||!el||!banner||!el.contains(banner)||!config)return;
+    const agent=config.profile||config.owner||'hani',avatar=q('#aiAvatar',banner),quote=q('#aiQuote',banner),image=profile(agent);
+    if(avatar){avatar.className=`ai-avatar has-photo agent-${agent}`;avatar.style.backgroundImage=`url(${image})`;avatar.textContent=''}
+    if(quote){let label=q(':scope > span',quote),body=q(':scope > b',quote);if(!label||!body){quote.replaceChildren();label=document.createElement('span');body=document.createElement('b');quote.append(label,body)}label.textContent=`${config.speaker||'하니'} 한마디`;body.textContent=`“${config.quote||''}”`}
+    const kicker=q('#aiKicker',banner),name=q('#aiName',banner),message=q('#aiMessage',banner),role=q('#aiRole',banner);
+    if(kicker)kicker.textContent=String(config.category||'HANI OS').toUpperCase();if(name)name.textContent=titled(id,config.title);if(message)message.textContent=config.description||'';if(role)role.textContent=`${config.speaker||'하니'} · ${config.role||''}`;
+  }
+  function currentSportsMenu(){const root=q('#game'),key=root?.dataset.sportsMenu||q('[data-sports-tab].active',root)?.dataset.sportsTab||'home';return mainCharacterMenuScenes.game[key]?key:'home'}
+  function renderSportsBanner(menu=currentSportsMenu()){
+    const config=mainCharacterBannerConfig('sports','game',menu),el=mainCharacterBanner('game',config);syncMainCharacterBannerAgent('game',config);return el;
+  }
   function mountDesignSlots(){
-    const active=q('.view.active'),banner=q('#aiBanner'),target=active?.id!=='home'?q(':scope > .hani-master-hero',active):null;
-    if(banner){banner.classList.toggle('ds-integrated-agent',!!target);if(target&&banner.parentElement!==target)target.append(banner);else if(!target&&banner.parentElement!==q('main.main'))q('main.main > header').after(banner)}
+    const active=q('.view.active'),banner=q('#aiBanner'),target=active?.id!=='home'?q(':scope > :is(.hani-master-hero,.ds-main-character-banner)',active):null,agentSlot=target?(q('[data-main-character-banner-agent-slot]',target)||target):null;
+    if(banner){banner.classList.toggle('ds-integrated-agent',!!target);if(agentSlot&&banner.parentElement!==agentSlot)agentSlot.append(banner);else if(!target&&banner.parentElement!==q('main.main'))q('main.main > header').after(banner)}
+    if(active?.id==='game')renderSportsBanner();
     if(active?.id==='intake'){q('#aiAvatar').style.backgroundImage='url('+profile('yuna')+')';q('#aiQuote span').textContent='유나 한마디';q('#aiQuote b').textContent='말씀해 주세요. 저장 전 꼭 보여드릴게요.';const h=q('.hani-master-title',target);if(h)h.textContent='유나 인포데스크'}
     const home=q('#home');
     if(home&&!q('.ds-team-hero',home)){const el=document.createElement('div');el.className='ds-team-hero';el.innerHTML='<div><span class="eyebrow">DASHBOARD · HANI OS</span><h2>오늘의 삶도,<br>함께 운영합니다.</h2><p>기록이 모여 만드는 우리 회사의 하루</p></div><div class="ds-team-art"><img src="./assets/team/hani-team-office.webp" alt="HANI OS의 아홉 라이프 파트너"></div>';home.prepend(el)}
@@ -67,7 +159,8 @@
   function brokerSummary(){const rows=brokerRows(),last=rows.at(-1),prev=rows.at(-2),c=last&&typeof brokerCalc==='function'?brokerCalc(last):null,p=prev&&typeof brokerCalc==='function'?brokerCalc(prev):null,d=c&&p?c.total-p.total:null,r=d!==null&&p.total?d/p.total*100:null;return {rows,last,c,d,r}}
   function mountSkeletons(){
     // Every route shares one persistent Hero. This function owns the frame only.
-    qa('.view').filter(v=>v.id!=='home').forEach(v=>{const m=pageMeta[v.id]||[v.id,'','work'];if(!q(':scope > .index-hero-v02992',v))hero(v.id,{tone:m[2],scene:genericHeroScenes[v.id]||'plain',kicker:String(m[2]||'HANI OS').toUpperCase(),title:m[0],copy:m[1],value:''})});
+    qa('.view').filter(v=>v.id!=='home'&&v.id!=='game').forEach(v=>{const m=pageMeta[v.id]||[v.id,'','work'];if(!q(':scope > .index-hero-v02992',v))hero(v.id,{tone:m[2],scene:genericHeroScenes[v.id]||'plain',kicker:String(m[2]||'HANI OS').toUpperCase(),title:m[0],copy:m[1],value:''})});
+    q('#game > .index-hero-v02992')?.remove();renderSportsBanner(currentSportsMenu());
     const investmentSummary=brokerSummary();
     hero('investment',{tone:'finance',scene:'investment',kicker:'HANI INVESTMENT DESK',title:'HASDAQ BOARD',copy:'월간 스냅샷으로 계좌별 자산과 흐름을 확인합니다.',value:'',change:investmentSummary.r===null?'':('전월 대비 '+(investmentSummary.r>=0?'+':'')+investmentSummary.r.toFixed(2)+'%')});
     hero('newsroom',{tone:'finance',scene:'newsroom',kicker:'HANI NEWS DESK',title:'오늘의 시장',copy:'종합 시황과 관심종목의 의미 있는 변화를 모아봅니다.',value:''});
@@ -86,7 +179,6 @@
     const qm=quizMetrics();hero('study',{tone:'learning',scene:'study',kicker:'LEARNING INDEX',title:'HINKEI 225',copy:'저장된 Quiz 제출 결과로 계산한 학습성과 지표입니다.',value:qm.rate===null?'제출 기록 없음':`${qm.rate}%`,change:qm.completed.length?`완료 Quiz ${qm.completed.length}회 기준`:'Quiz 제출 후 정답률 표시',stats:[`퀴즈 ${(state.learningQuizzes||[]).length}`,`오답 ${qm.wrong}`,`미완료 ${qm.pending}`]});
     hero('university',{tone:'campus',scene:'campus',mark:'',kicker:'HANI OS · CAMPUS',title:'낭만 캠퍼스 라이프',copy:'실제 학기·과목·학사일정을 한눈에 보는 캠퍼스 데스크입니다.',value:'',change:'',stats:[]});
     hero('travel',{tone:'travel',scene:'travel',mark:'',kicker:'HANI OS · TRAVEL ARCHIVE',title:'여행 아카이브',copy:'실제 여행 기록과 가고 싶은 장소를 연결해 보는 여행 데스크입니다.',value:'',change:'',stats:[]});
-    hero('game',{tone:'sports',scene:'none',kicker:'HANI OS · SPORTS LOUNGE',title:'SPORTS HUB',copy:'양키스·KIA·레알 마드리드·Dplus KIA를 한눈에 보는 가벼운 응원 라운지입니다.',value:'',change:''});
     hero('investmentIntake',{tone:'finance',scene:'monthEnd',mark:'',kicker:'ASSET UPDATE · MONTH-END',title:'월말정산',copy:'가계부 확정본과 투자 계좌 업데이트를 한곳에서 준비합니다.',value:'',change:'',stats:[]});q('.ledger-import .sh h3')?.replaceChildren(document.createTextNode('가계부 확정본 Import'));
     qa('#asset .asset-dashboard-card .sh h3').forEach(x=>x.textContent='자산 핵심 지표');
   }
@@ -115,9 +207,23 @@
     const badge=q('#homeTrendBadge'),latest=(selected==='hasdaq'?brokerSummary().rows:(selected==='ne100'?state.body:selected==='harukei'?state.exercise:selected==='jispi'?state.ledgerMonths:selected==='hinkei'?qm.completed:[...(state.books||[]),...(state.movies||[])])).length;if(badge){badge.hidden=!latest;badge.textContent=latest?value:''}const footerGoal=q('#homeInvestGoal'),footerPeriod=q('#homeLatestPeriod');if(footerGoal)footerGoal.textContent={hasdaq:money(state.goals?.investment),ne100:`${number(state.goals?.weight2||state.goals?.weight1)||'-'}kg`,hinaJones:'월간 완료',harukei:'10,000보',jispi:last?money(typeof ledgerCalc==='function'?ledgerCalc(last).targetT:0):'목표 미설정',hinkei:'정답률 100%'}[selected]||'-';if(footerPeriod)footerPeriod.textContent={hasdaq:brokerSummary().last?.period||'-',ne100:state.body?.at(-1)?.date||'-',hinaJones:currentMonth(),harukei:state.exercise?.at(-1)?.date||'-',jispi:last?.month||'-',hinkei:qm.completed.at(-1)?.updatedAt?.slice(0,10)||'-'}[selected]||'-';
   }
   function cleanupNewsroom(){const news=q('#newsroom'),tabs=q('.newsroom-mode-tabs',news),tools=q('.newsroom-content-actions',news);if(tabs&&tools&&!q('.ds-news-navigation',news)){const nav=document.createElement('div');nav.className='ds-news-navigation page-nav-context-v02992';tabs.before(nav);nav.append(tabs,tools)}q('#haniLifeMarketV02979')?.remove();const nav=q('#haniWeeklyArchiveNavV02970'),actions=q('.newsroom-content-actions');if(nav&&actions&&!actions.contains(nav)){nav.classList.add('compact');actions.prepend(nav)}const usage=q('#investmentNewsUsage');if(usage)usage.textContent='뉴스 데이터는 Life OS 핵심 원장과 분리되어 안전하게 유지됩니다.'}
-  function bindSportsBoard(){const root=q('#game');if(!root||root.dataset.sportsBound)return;root.dataset.sportsBound='1';const select=key=>{qa('[data-sports-tab]',root).forEach(btn=>{const active=btn.dataset.sportsTab===key;btn.classList.toggle('active',active);btn.setAttribute('aria-selected',String(active))});qa('[data-sports-panel]',root).forEach(panel=>panel.hidden=panel.dataset.sportsPanel!==key)};qa('[data-sports-tab]',root).forEach(btn=>btn.addEventListener('click',()=>select(btn.dataset.sportsTab)));qa('[data-sports-open]',root).forEach(btn=>btn.addEventListener('click',()=>select(btn.dataset.sportsOpen)));select('home')}
+  function bindSportsBoard(){
+    const root=q('#game');if(!root)return;
+    const select=requested=>{
+      const key=mainCharacterMenuScenes.game[requested]?requested:'home';root.dataset.sportsMenu=key;
+      qa('[data-sports-tab]',root).forEach(btn=>{const active=btn.dataset.sportsTab===key;btn.classList.toggle('active',active);btn.setAttribute('aria-selected',String(active));btn.tabIndex=active?0:-1});
+      qa('[data-sports-panel]',root).forEach(panel=>panel.hidden=panel.dataset.sportsPanel!==key);
+      renderSportsBanner(key);
+    };
+    if(root.dataset.sportsBound){renderSportsBanner(currentSportsMenu());return}
+    root.dataset.sportsBound='1';
+    qa('[data-sports-tab]',root).forEach(btn=>{const key=btn.dataset.sportsTab;btn.setAttribute('role','tab');btn.id=`sportsTab-${key}`;btn.setAttribute('aria-controls',`sportsPanel-${key}`);btn.addEventListener('click',()=>select(key))});
+    qa('[data-sports-panel]',root).forEach(panel=>{const key=panel.dataset.sportsPanel;panel.id=`sportsPanel-${key}`;panel.setAttribute('role','tabpanel');panel.setAttribute('aria-labelledby',`sportsTab-${key}`)});
+    qa('[data-sports-open]',root).forEach(btn=>btn.addEventListener('click',()=>select(btn.dataset.sportsOpen)));
+    select(currentSportsMenu());
+  }
   let queued=false;function refresh(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;mountSkeletons();arrangeNavigation();mountDesignSlots();improveLifeMarket();cleanupNewsroom();bindSportsBoard();if(q('#exercise.active')&&typeof drawExercise==='function')requestAnimationFrame(drawExercise)})}
   document.addEventListener('click',()=>setTimeout(refresh,0));document.addEventListener('change',()=>setTimeout(refresh,0));
   refresh();setTimeout(refresh,120);
-  console.info('[HANI OS] v2.9.92 Page Skeleton ready · read-only UI patch');
+  console.info('[HANI OS] v2.9.112 Page Skeleton ready · Sports dashboard palettes');
 })();
