@@ -1,4 +1,4 @@
-/* HANI OS v2.9.116 · Category palette + scene fit refinement */
+/* HANI OS v2.9.117 · Dashboard command scene + sports cadence refinement */
 (() => {
   'use strict';
   if (window.HANI_UI_V02992) return;
@@ -51,6 +51,28 @@
   }
 });
   const mainCharacterSidebarMenuConfig=Object.freeze({
+    "home":Object.freeze({
+  sidebarMenuKey: "home",
+  category: "independent",
+  owner: "hani",
+  profile: "hani",
+  speaker: "하니",
+  role: "Chief of Staff",
+  eyebrow: "DASHBOARD · HANI OS",
+  title: "대시보드 - HANI OS",
+  description: "아홉 명의 팀이 각자의 자리에서 움직이는 오늘의 회사 운영 화면입니다.",
+  quote: "각자의 일이 연결되도록 오늘의 흐름부터 정리해둘게요.",
+  sceneImage: "./assets/team/hani-team-office-active-v2.jpg",
+  scenePosition: "right center",
+  scenePositionMobile: "64% center",
+  sceneFit: "cover",
+  sceneFitMobile: "cover",
+  sceneWidth: "min(64%, 820px)",
+  sceneVariant: "dashboard-command",
+  sceneAlt: "HANI OS 아홉 명의 팀원이 회사에서 각자 업무를 수행하는 장면",
+  variant: "group",
+  tone: "company"
+}),
     "intake":Object.freeze({
   sidebarMenuKey: "intake",
   category: "office",
@@ -606,13 +628,14 @@
   role: "Head Coach",
   eyebrow: "HANI OS · SPORTS LOUNGE",
   title: "스포츠 - SPORTS HUB",
-  description: "성민의 응원팀을 한눈에 보는 가벼운 응원 라운지입니다.",
+  description: "야구는 매일, 축구와 e스포츠는 주 1회 흐름을 확인하는 응원 라운지입니다.",
   quote: "감독님, 오늘은 어느 팀부터 확인할까요?",
   sceneImage: "./assets/sports/hani-sports-hero-v1.webp",
   scenePosition: "right center",
   scenePositionMobile: "center center",
-  sceneFit: "contain",
+  sceneFit: "cover",
   sceneFitMobile: "cover",
+  sceneWidth: "min(64%, 760px)",
   sceneVariant: "sports-lounge",
   sceneAlt: "수연과 HANI OS 팀이 스포츠 라운지에서 함께 경기를 응원하는 웹툰 장면",
   variant: "group",
@@ -623,22 +646,22 @@
     game:Object.freeze({
       yankees:Object.freeze({
         eyebrow:'SPORTS LOUNGE · MLB',title:'NEW YORK YANKEES',
-        description:'뉴욕 양키스의 최근 경기 결과와 이번 주 주요 소식을 확인합니다.',
+        description:'뉴욕 양키스의 최근 경기 결과를 매일 갱신해 확인합니다.',
         quote:'핀스트라이프의 오늘, 최근 경기부터 차분히 볼게요.'
       }),
       kia:Object.freeze({
         eyebrow:'SPORTS LOUNGE · KBO',title:'KIA TIGERS',
-        description:'KIA 타이거즈의 최근 경기 결과와 이번 주 주요 소식을 확인합니다.',
+        description:'KIA 타이거즈의 최근 경기 결과를 매일 갱신해 확인합니다.',
         quote:'타이거즈의 흐름, 마지막 경기와 소식부터 확인해요.'
       }),
       madrid:Object.freeze({
         eyebrow:'SPORTS LOUNGE · FOOTBALL',title:'REAL MADRID',
-        description:'레알 마드리드의 최근 경기 결과와 이번 주 주요 소식을 확인합니다.',
+        description:'레알 마드리드의 최근 결과와 주요 소식을 주 1회 갱신합니다.',
         quote:'베르나베우의 오늘도 결과와 장면을 함께 챙겨볼까요?'
       }),
       dplus:Object.freeze({
         eyebrow:'SPORTS LOUNGE · ESPORTS',title:'DPLUS KIA',
-        description:'Dplus KIA의 최근 경기 결과와 이번 주 주요 소식을 확인합니다.',
+        description:'Dplus KIA의 최근 결과와 주요 소식을 주 1회 갱신합니다.',
         quote:'경기 결과와 팀 소식, 중요한 것부터 빠르게 볼게요.'
       })
     })
@@ -689,12 +712,12 @@
     const config=mainCharacterBannerConfig('game',menu),el=mainCharacterBanner('game',config);syncMainCharacterBannerAgent('game',config);return el;
   }
   function mountDesignSlots(){
-    const active=q('.view.active'),banner=q('#aiBanner'),target=active?.id!=='home'?q(':scope > :is(.hani-master-hero,.ds-main-character-banner)',active):null,agentSlot=target?(q('[data-main-character-banner-agent-slot]',target)||target):null;
+    const active=q('.view.active'),banner=q('#aiBanner'),target=q(':scope > :is(.hani-master-hero,.ds-main-character-banner)',active),agentSlot=target?(q('[data-main-character-banner-agent-slot]',target)||target):null;
     if(banner){banner.classList.toggle('ds-integrated-agent',!!target);if(agentSlot&&banner.parentElement!==agentSlot)agentSlot.append(banner);else if(!target&&banner.parentElement!==q('main.main'))q('main.main > header').after(banner)}
     if(active?.id==='game')renderSportsBanner();else if(active?.id&&mainCharacterSidebarMenuConfig[active.id])syncMainCharacterBannerAgent(active.id,mainCharacterBannerConfig(active.id,'home'));
     if(active?.id==='intake'){q('#aiAvatar').style.backgroundImage='url('+profile('yuna')+')';q('#aiQuote span').textContent='유나 한마디';q('#aiQuote b').textContent='말씀해 주세요. 저장 전 꼭 보여드릴게요.';const h=q('.hani-master-title',target);if(h)h.textContent='유나 인포데스크'}
     const home=q('#home');
-    if(home&&!q('.ds-team-hero',home)){const el=document.createElement('div');el.className='ds-team-hero';el.innerHTML='<div><span class="eyebrow">DASHBOARD · HANI OS</span><h2>오늘의 삶도,<br>함께 운영합니다.</h2><p>기록이 모여 만드는 우리 회사의 하루</p></div><div class="ds-team-art"><img src="./assets/team/hani-team-office.webp" alt="HANI OS의 아홉 라이프 파트너"></div>';home.prepend(el)}
+    q(':scope > .ds-team-hero',home)?.remove();
     const actions=q('.home-welcome-actions'),yuna=q('#homeYunaQuick');if(actions&&yuna&&!actions.contains(yuna))actions.append(yuna);
     const side=q('.home-mix-card');if(side&&!q('.ds-companion-scene',side)){const scene=document.createElement('figure');scene.className='ds-companion-scene';scene.innerHTML='<img alt="" width="2172" height="724"><figcaption class="ds-agent-comment"></figcaption>';q('.sh',side).after(scene)}
     const recent=q('.home-activity-card'),lower=q('.home-lower-grid');if(recent&&lower&&!lower.contains(recent))lower.insertBefore(recent,q('.home-team-panel',lower));
@@ -814,5 +837,5 @@
   let queued=false;function refresh(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;mountSkeletons();arrangeNavigation();mountDesignSlots();organizePhase1Layouts();improveLifeMarket();cleanupNewsroom();bindSportsBoard();if(q('#exercise.active')&&typeof drawExercise==='function')requestAnimationFrame(drawExercise)})}
   document.addEventListener('click',()=>setTimeout(refresh,0));document.addEventListener('change',()=>setTimeout(refresh,0));
   refresh();setTimeout(refresh,120);
-  console.info('[HANI OS] v2.9.116 Unified Main Character Banner ready · category palette · full-scene fit');
+  console.info('[HANI OS] v2.9.117 Unified Main Character Banner ready · dashboard command scene · sports cadence');
 })();

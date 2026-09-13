@@ -601,3 +601,79 @@ html body{background-image:radial-gradient(circle at 86% 3%,color-mix(in srgb,va
  #app #game .sports-home-recent{margin-top:10px;padding-top:9px}
  #app #movie .series-archive-grid{grid-template-columns:1fr}.series-progress-card{padding:13px!important}
 }
+
+/* v2.9.117 · Dashboard command scene, full-width market signal board and sports cadence. */
+#app #home>.ds-main-character-banner{
+ --mcb-accent:#6d43ad;--mcb-ink:#35254e;--mcb-muted:#655775;
+ --mcb-bg:linear-gradient(135deg,#f2eaff 0%,#ddd2f1 100%);--mcb-border:#c9b7df;
+ --mcb-overlay:linear-gradient(90deg,#f2eaff 0%,#f2eafff7 39%,#eadff5d9 54%,#e3d7f175 69%,transparent 88%);
+ --mcb-overlay-mobile:linear-gradient(90deg,#f2eafffa 0%,#f2eaffed 52%,#e3d7f1a8 100%);
+ box-shadow:0 13px 30px rgba(92,61,130,.13)
+}
+#app #home>.ds-main-character-banner .ds-main-character-banner__scene img{filter:saturate(.96) contrast(1.02)}
+#app #game>.ds-main-character-banner{--mcb-scene-mask:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.16) 12%,#000 31%,#000 100%)}
+
+#app #lifeMarketGrid>#lifeMarketBanner{
+ grid-column:span 2!important;display:grid!important;grid-template-columns:minmax(150px,34%) minmax(0,66%)!important;
+ grid-template-rows:1fr!important;width:100%!important;height:224px!important;min-height:224px!important;padding:0!important;
+ overflow:hidden;position:relative;background:linear-gradient(135deg,#171d30,#292645)!important
+}
+#app #lifeMarketBanner>img{position:absolute!important;inset:0 auto 0 0!important;width:34%!important;height:100%!important;min-height:0!important;object-fit:cover!important;object-position:center 42%!important}
+#app #lifeMarketBanner:after{background:linear-gradient(90deg,transparent 0%,rgba(20,25,43,.08) 27%,rgba(20,25,43,.18) 34%,transparent 47%)!important}
+#app #lifeMarketBanner .mood-copy{
+ position:static!important;grid-column:2!important;display:grid!important;
+ grid-template-columns:minmax(0,1fr)!important;grid-template-areas:"kicker" "headline" "counts" "comment"!important;
+ align-items:center!important;align-content:center!important;gap:6px!important;
+ min-width:0!important;padding:14px 16px!important;border:0!important;border-radius:0!important;
+ background:linear-gradient(125deg,rgba(255,255,255,.98),rgba(249,247,255,.94))!important;box-shadow:none!important;backdrop-filter:none!important
+}
+#app #lifeMarketBanner .mood-copy>small{grid-area:kicker;color:#6552aa!important;font-size:12px!important;font-weight:950!important;letter-spacing:.05em}
+#app #lifeMarketBanner .mood-copy>strong{grid-area:headline;display:block!important;margin:0!important;color:#252b3d!important;font-size:clamp(23px,1.7vw,30px)!important;line-height:1.15!important;white-space:nowrap!important;letter-spacing:-.035em}
+#app #lifeMarketBanner #lifeMarketState{display:inline!important;color:#6a4dc4;font-size:1.08em;font-weight:1000}
+#app #lifeMarketCounts{
+ grid-area:counts;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ width:100%!important;gap:8px!important;margin:0!important;color:#596275!important;font-size:12px!important;font-weight:850!important
+}
+#app #lifeMarketCounts span{
+ display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+ min-width:0!important;min-height:64px!important;padding:7px 5px!important;border:1px solid #e0e4ec!important;
+ border-radius:13px!important;background:#f4f5f8!important;text-align:center!important;box-shadow:0 5px 14px rgba(44,50,69,.05)
+}
+#app #lifeMarketCounts b{display:block!important;margin:3px 0 0!important;font-size:clamp(28px,2.3vw,36px)!important;line-height:1!important;font-weight:1000!important}
+#app #lifeMarketCounts .up{color:#c83d56!important;border-color:#f1c8d0!important;background:linear-gradient(145deg,#fff5f7,#ffe8ed)!important}
+#app #lifeMarketCounts .down{color:#356fbd!important;border-color:#c8d9ef!important;background:linear-gradient(145deg,#f5f9ff,#e8f2ff)!important}
+#app #lifeMarketBanner .life-market-comment{grid-area:comment!important;display:grid!important;gap:2px!important;margin:2px 0 0!important;padding:7px 0 0!important;border-top:1px solid rgba(78,86,108,.14)!important;background:transparent!important}
+#app #lifeMarketBanner .life-market-comment b{color:#6652c2!important;font-size:10px!important}
+#app #lifeMarketBanner .life-market-comment span{color:#41495d!important;font-size:12px!important;line-height:1.4!important}
+#app #lifeMarketMood{display:none!important}
+
+#app #game .sports-update-policy{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:-3px 0 12px}
+#app #game .sports-update-policy span{display:flex;align-items:center;gap:8px;min-width:0;padding:9px 12px;border:1px solid #dfe5ef;border-radius:12px;background:#fff;color:#647086;font-size:10px;font-weight:720;line-height:1.35}
+#app #game .sports-update-policy b{flex:0 0 auto;padding:5px 7px;border-radius:8px;font-size:9px;letter-spacing:.02em}
+#app #game .sports-update-policy .daily b{color:#185f91;background:#e9f5ff}
+#app #game .sports-update-policy .weekly b{color:#6651a4;background:#f1edff}
+#app #game .sports-home-panel[data-sports-cadence="daily"] .sports-home-foot>small{padding:4px 7px;border-radius:999px;background:#dff3ff;color:#194f78}
+#app #game .sports-home-panel[data-sports-cadence="weekly"] .sports-home-foot>small{padding:4px 7px;border-radius:999px;background:#f0ebff;color:#57438d}
+#app #game .team-madrid[data-sports-cadence="weekly"] .sports-home-foot>small{background:#e9e4f5;color:#433663}
+
+@media(max-width:900px){
+ #app #lifeMarketGrid>#lifeMarketBanner{grid-template-columns:minmax(145px,32%) minmax(0,68%)!important}
+ #app #lifeMarketBanner>img{width:32%!important}
+ #app #lifeMarketBanner .mood-copy{gap:6px!important;padding:13px 14px!important}
+ #app #lifeMarketCounts span{min-height:62px!important}#app #lifeMarketCounts b{font-size:30px!important}
+}
+@media(max-width:700px){
+ #app .ds-main-character-banner__scene img{width:100%!important;object-position:var(--mcb-scene-position-mobile)!important;object-fit:var(--mcb-scene-fit-mobile)!important}
+ #app #game>.ds-main-character-banner{--mcb-scene-mask:none}
+ #app #game .sports-update-policy{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+ #app #lifeMarketGrid>#lifeMarketBanner{grid-column:1!important;display:block!important;height:auto!important;min-height:0!important}
+ #app #lifeMarketBanner>img{position:static!important;display:block!important;width:100%!important;height:auto!important;aspect-ratio:3/1!important;object-fit:cover!important}
+ #app #lifeMarketBanner .mood-copy{display:grid!important;padding:15px!important}
+ #app #lifeMarketCounts{gap:7px!important}
+ #app #lifeMarketCounts span{min-height:70px!important;padding:8px 4px!important;font-size:12px!important}
+ #app #lifeMarketCounts b{font-size:28px!important}
+ #app #lifeMarketBanner .mood-copy>strong{font-size:25px!important}
+ #app #game .sports-update-policy span{align-items:flex-start;flex-direction:column;gap:5px}
+}
