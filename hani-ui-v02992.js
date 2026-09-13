@@ -1,4 +1,4 @@
-/* HANI OS v2.9.117 · Dashboard command scene + sports cadence refinement */
+/* HANI OS v2.9.118 · Dashboard command scene + sports cadence refinement */
 (() => {
   'use strict';
   if (window.HANI_UI_V02992) return;
@@ -837,5 +837,5 @@
   let queued=false;function refresh(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;mountSkeletons();arrangeNavigation();mountDesignSlots();organizePhase1Layouts();improveLifeMarket();cleanupNewsroom();bindSportsBoard();if(q('#exercise.active')&&typeof drawExercise==='function')requestAnimationFrame(drawExercise)})}
   document.addEventListener('click',()=>setTimeout(refresh,0));document.addEventListener('change',()=>setTimeout(refresh,0));
   refresh();setTimeout(refresh,120);
-  console.info('[HANI OS] v2.9.117 Unified Main Character Banner ready · dashboard command scene · sports cadence');
+  console.info('[HANI OS] v2.9.118 Unified Main Character Banner ready · dashboard command scene · sports cadence');
 })();
