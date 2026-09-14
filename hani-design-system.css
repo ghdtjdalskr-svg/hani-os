@@ -480,10 +480,14 @@ html body{background-image:radial-gradient(circle at 86% 3%,color-mix(in srgb,va
 #app .wishlist-ai{padding:4px 7px;border-radius:999px;background:#eef1f5;color:#68758a;font-size:10px;font-weight:850}#app .wishlist-ai.reviewed{background:#e4f7ed;color:#17724f}#app .wishlist-review-state{margin-top:8px;padding:9px 10px;border-radius:10px;background:color-mix(in srgb,var(--ds-season-soft) 46%,white)}#app .wishlist-review-state p{margin:3px 0 0;color:var(--ds-muted);font-size:12px}
 #app .wishlist-kpis{display:flex!important;gap:7px!important;margin:0 0 10px!important}.wishlist-kpis>div{display:flex!important;align-items:center!important;gap:6px!important;min-height:0!important;padding:7px 10px!important;border-radius:10px!important}.wishlist-kpis small,.wishlist-kpis b{font-size:12px!important}.wishlist-toolbar{display:flex!important;gap:8px!important;margin-bottom:8px!important}.wishlist-toolbar>*{min-height:36px!important}
 
-#app :is(#wishMovies,#watchedMovies){display:block!important}
-#app .media-work-row{grid-template-columns:minmax(260px,.8fr) minmax(240px,1fr) auto}
+#app #readBooks{grid-template-columns:repeat(4,minmax(0,1fr))}
+#app :is(#wishMovies,#watchedMovies){display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+#app .media-work-row{grid-template-columns:1fr;align-content:start;padding:14px;border:1px solid var(--season-line);border-radius:16px;background:#fff;box-shadow:var(--ds-shadow)}
+#app .media-work-row:last-child{border-bottom:1px solid var(--season-line)}
 #app .media-work-identity{display:grid;grid-template-columns:52px minmax(0,1fr);align-items:center;gap:11px;min-width:0}.media-work-identity>img,.media-work-placeholder{display:grid;place-items:center;width:52px;height:62px;object-fit:cover;border-radius:12px;background:#f1eef7}.media-work-identity span{color:var(--ds-season);font-size:10px;font-weight:850}.media-work-identity h4{margin:3px 0;font-size:17px}.media-work-identity small{color:var(--ds-muted);font-size:11px}
-#app .media-work-row>details{grid-column:1/-1;padding:9px 0 0}.media-work-row>details>summary{color:var(--ds-season);font-size:12px;font-weight:850;cursor:pointer}.media-episode-stack{display:grid;gap:8px;margin-top:9px}.media-episode-row{display:grid;grid-template-columns:minmax(150px,.45fr) minmax(220px,1fr) auto;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--ds-season-soft) 44%,white)}.media-episode-row span small{display:block;color:var(--ds-muted);font-size:10px}.media-episode-row p{margin:0;color:var(--ds-muted);font-size:12px}
+#app .media-work-row>.archive-actions{margin-top:auto}#app .media-work-row>details{grid-column:1/-1;padding:9px 0 0}.media-work-row>details>summary{color:var(--ds-season);font-size:12px;font-weight:850;cursor:pointer}.media-episode-stack{display:grid;gap:8px;margin-top:9px}.media-episode-row{display:grid;grid-template-columns:1fr;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--ds-season-soft) 44%,white)}.media-episode-row span small{display:block;color:var(--ds-muted);font-size:10px}.media-episode-row p{margin:0;color:var(--ds-muted);font-size:12px}
+
+@media(max-width:1400px){#app #readBooks,#app :is(#wishMovies,#watchedMovies){grid-template-columns:repeat(3,minmax(0,1fr))}}
 
 #app #newsroom .investment-news-entity-row{display:grid!important;grid-template-columns:42px minmax(140px,.32fr) minmax(240px,1fr) auto!important;align-items:center!important;gap:11px!important;padding:11px 12px!important;text-align:left!important}
 #app #newsroom .news-entity-logo{display:block;min-width:0}.news-entity-main b{font-size:14px!important}.news-entity-main span{font-size:10px!important}.news-entity-summary{display:-webkit-box!important;overflow:hidden!important;font-size:12px!important;line-height:1.45!important;-webkit-box-orient:vertical;-webkit-line-clamp:2}
@@ -503,7 +507,7 @@ html body{background-image:radial-gradient(circle at 86% 3%,color-mix(in srgb,va
  #app .ds-main-character-banner{height:236px;min-height:236px;--mcb-scene-position:var(--mcb-scene-position-mobile);--mcb-scene-width:100%;--mcb-scene-fit:var(--mcb-scene-fit-mobile);--mcb-scene-mask:none}
  #app .ds-main-character-banner__copy{padding:15px 14px}.ds-main-character-banner__title{font-size:23px!important}.ds-main-character-banner__description{font-size:11px!important}.ds-main-character-banner__agent{margin-top:12px!important;transform:none!important}
  #app .phase1-post-row,#app .media-work-row,#app .diary-card.phase1-post-row{grid-template-columns:1fr!important;gap:8px}.diary-card .diary-mood{display:none!important}.phase1-post-row :is(.diary-actions,.wishlist-item-actions),.media-work-row>.archive-actions{justify-content:flex-end}
- #app .media-work-row{grid-template-columns:1fr}.media-episode-row{grid-template-columns:1fr}.media-work-identity{grid-template-columns:44px minmax(0,1fr)}.media-work-identity>img,.media-work-placeholder{width:44px;height:52px}
+ #app #readBooks,#app :is(#wishMovies,#watchedMovies){grid-template-columns:1fr}#app .media-work-row{grid-template-columns:1fr}.media-episode-row{grid-template-columns:1fr}.media-work-identity{grid-template-columns:44px minmax(0,1fr)}.media-work-identity>img,.media-work-placeholder{width:44px;height:52px}
  #app .wishlist-kpis{display:grid!important;grid-template-columns:1fr 1fr}.wishlist-toolbar{display:grid!important;grid-template-columns:1fr 1fr}.wishlist-toolbar input{grid-column:1/-1}
  #app :is(#movie,#reading,#diary) .section-head-inline{display:block!important}
  #app :is(#movie,#reading,#diary) .inline-tools{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;margin-top:12px!important}
@@ -602,7 +606,7 @@ html body{background-image:radial-gradient(circle at 86% 3%,color-mix(in srgb,va
  #app #movie .series-archive-grid{grid-template-columns:1fr}.series-progress-card{padding:13px!important}
 }
 
-/* v2.9.118 · Dashboard command scene, original-slot market signals and sports cadence. */
+/* v2.9.119 · Library and viewing archive density refinement. */
 #app #home>.ds-main-character-banner{
  --mcb-accent:#6d43ad;--mcb-ink:#35254e;--mcb-muted:#655775;
  --mcb-bg:linear-gradient(135deg,#f2eaff 0%,#ddd2f1 100%);--mcb-border:#c9b7df;
