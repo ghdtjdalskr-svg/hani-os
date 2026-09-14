@@ -34,4 +34,3 @@ for (const teamId of ["yankees", "kia", "madrid", "dplus"]) {
 }
 
 process.exitCode = failed ? 1 : 0;
-
