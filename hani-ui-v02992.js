@@ -1,4 +1,4 @@
-/* HANI OS v2.9.118 · Dashboard command scene + sports cadence refinement */
+/* HANI OS v2.9.119 · Library and viewing archive density refinement */
 (() => {
   'use strict';
   if (window.HANI_UI_V02992) return;
@@ -813,6 +813,7 @@
     details.addEventListener('toggle',()=>{q('summary em',details).textContent=details.open?'접기':'열기'});
   }
   function organizePhase1Layouts(){
+    phase1CollapsibleForm('reading','.reading-input-card','독서 기록 입력','필요할 때 열어 읽을 책과 완독 기록을 등록합니다.');
     phase1CollapsibleForm('movie','.movie-input-card','시청 기록 입력','필요할 때 열어 작품·시즌·회차를 등록합니다.');
     phase1CollapsibleForm('diary','.diary-form','일기 작성','필요할 때 열어 오늘의 기록을 작성합니다.');
     const diaryStats=q('#diary .compact-dashboard');if(diaryStats)diaryStats.hidden=true;
@@ -837,5 +838,5 @@
   let queued=false;function refresh(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;mountSkeletons();arrangeNavigation();mountDesignSlots();organizePhase1Layouts();improveLifeMarket();cleanupNewsroom();bindSportsBoard();if(q('#exercise.active')&&typeof drawExercise==='function')requestAnimationFrame(drawExercise)})}
   document.addEventListener('click',()=>setTimeout(refresh,0));document.addEventListener('change',()=>setTimeout(refresh,0));
   refresh();setTimeout(refresh,120);
-  console.info('[HANI OS] v2.9.118 Unified Main Character Banner ready · dashboard command scene · sports cadence');
+  console.info('[HANI OS] v2.9.119 Library and viewing archive UX ready');
 })();
