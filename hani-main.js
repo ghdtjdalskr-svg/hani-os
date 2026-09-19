@@ -2522,6 +2522,44 @@ function cloudReadFormConfig(){
   const email=$("cloudEmail").value.trim();
   return {url,key,email};
 }
+const SPORTS_CACHE_UI=Object.freeze({
+  yankees:{selector:"team-yankees",teamName:"New York Yankees",teamCode:"NYY",teamFirst:false},
+  kia:{selector:"team-kia",teamName:"KIA Tigers",teamCode:"KIA",teamFirst:false},
+  madrid:{selector:"team-madrid",teamName:"Real Madrid C.F.",teamCode:"RMA",teamFirst:true},
+  dplus:{selector:"team-dplus",teamName:"Dplus KIA",teamCode:"DK",teamFirst:false}
+});
+let sportsCacheRuntime={loading:false,loadedAt:0};
+function sportsCacheDate(value,{time=false}={}){const d=new Date(value);if(Number.isNaN(d.getTime()))return "-";return new Intl.DateTimeFormat("ko-KR",time?{timeZone:"Asia/Seoul",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"}:{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit"}).format(d)}
+function sportsOpponentCode(opponent){const id=String(opponent?.id||"").replace(/[^A-Za-z0-9]/g,"").toUpperCase();if(id&&id.length<=5)return id;const words=String(opponent?.name||"").match(/[A-Za-z0-9가-힣]+/g)||[];return (words.length>1?words.map(x=>x[0]).join(""):words[0]?.slice(0,3)||"OPP").toUpperCase().slice(0,5)}
+function sportsCacheRowValid(row){const game=row?.last_game,score=game?.score;return !!SPORTS_CACHE_UI[row?.team_id]&&!!game?.opponent?.name&&/^\d{4}-\d{2}-\d{2}$/.test(String(game.date||""))&&Number.isInteger(score?.team)&&score.team>=0&&Number.isInteger(score?.opponent)&&score.opponent>=0&&["WIN","LOSS","DRAW"].includes(game.result)}
+function sportsSetResult(el,result){if(!el)return;el.textContent=result;el.classList.remove("win","loss","draw");el.classList.add(String(result||"").toLowerCase())}
+function sportsApplyCacheRow(row){
+  if(!sportsCacheRowValid(row))return false;
+  const meta=SPORTS_CACHE_UI[row.team_id],game=row.last_game,next=row.next_game||null,opponent=game.opponent,opponentCode=sportsOpponentCode(opponent),teamScore=game.score.team,opponentScore=game.score.opponent;
+  const home=document.querySelector(`#game .sports-home-panel.${meta.selector}`);
+  if(home){
+    sportsSetResult(home.querySelector(".sports-home-team em"),game.result);
+    const recent=home.querySelector(".sports-home-recent small");if(recent)recent.textContent=`최근 경기 · ${sportsCacheDate(`${game.date}T12:00:00Z`)}`;
+    const labels=home.querySelectorAll(".sports-home-score > span"),scores=home.querySelectorAll(".sports-home-score > b");
+    if(labels.length>=2&&scores.length>=2){labels[0].textContent=meta.teamFirst?meta.teamCode:opponentCode;labels[1].textContent=meta.teamFirst?opponentCode:meta.teamCode;scores[0].textContent=meta.teamFirst?teamScore:opponentScore;scores[1].textContent=meta.teamFirst?opponentScore:teamScore}
+    const nextSlot=home.querySelector(".sports-home-foot > span");if(nextSlot)nextSlot.textContent=next?.dateTime?`다음 경기 · ${sportsCacheDate(next.dateTime,{time:true})} · ${next.opponent?.name||"상대 미정"}`:"다음 일정 미정";
+  }
+  const detail=document.querySelector(`#game .sports-team-card.${meta.selector}`);
+  if(detail){
+    const result=detail.querySelector(".sports-result"),head=result?.querySelector(":scope > div:first-child");
+    const dateLabel=head?.querySelector("span");if(dateLabel)dateLabel.textContent=`LAST GAME · ${sportsCacheDate(`${game.date}T12:00:00Z`)}`;
+    sportsSetResult(head?.querySelector("strong"),game.result);
+    const score=result?.querySelector(".sports-score"),marks=score?.querySelectorAll(":scope > span"),scores=score?.querySelectorAll(":scope > b");
+    if(marks?.length>=2&&scores?.length>=2){const opponentIndex=meta.teamFirst?1:0;const opponentMark=marks[opponentIndex];opponentMark.textContent=opponentCode;opponentMark.classList.add("sports-opponent-mark");opponentMark.setAttribute("aria-label",opponent.name);scores[0].textContent=meta.teamFirst?teamScore:opponentScore;scores[1].textContent=meta.teamFirst?opponentScore:teamScore}
+    const place=game.venue||game.competition||"";const matchup=game.homeAway==="home"?`${meta.teamName} vs ${opponent.name}`:`${opponent.name} vs ${meta.teamName}`;const summary=result?.querySelector(":scope > p");if(summary)summary.textContent=place?`${matchup} · ${place}`:matchup;
+    const news=detail.querySelector(".sports-news a");if(news&&row.source?.url){news.href=row.source.url;const title=news.querySelector("b"),source=news.querySelector("span");if(title)title.textContent=`${opponent.name}전 ${teamScore}–${opponentScore}, 최근 경기 결과 반영`;if(source)source.textContent=`${row.source.provider||"공식 일정"} · ${sportsCacheDate(`${game.date}T12:00:00Z`)}`}
+  }
+  return true;
+}
+async function sportsCacheLoad(force=false){
+  if(!cloudClient||sportsCacheRuntime.loading)return false;if(!force&&sportsCacheRuntime.loadedAt&&Date.now()-sportsCacheRuntime.loadedAt<300000)return true;sportsCacheRuntime.loading=true;
+  try{const {data,error}=await cloudClient.from("hani_sports_cache").select("team_id,league,last_game,next_game,source,status,last_success_at,data_updated_at,updated_at").in("team_id",Object.keys(SPORTS_CACHE_UI));if(error)throw error;const rows=Array.isArray(data)?data:[],applied=rows.filter(sportsApplyCacheRow);if(!applied.length)throw new Error("검증 가능한 Sports Cache가 없습니다.");sportsCacheRuntime.loadedAt=Date.now();const latest=applied.map(row=>row.last_success_at||row.updated_at).filter(Boolean).sort().at(-1);const note=document.querySelector("#game .sports-source-note");if(note&&latest)note.textContent=`경기 정보는 서버에서 자동 확인됩니다. 마지막 정상 확인: ${sportsCacheDate(latest,{time:true})}. 실패 시 마지막 정상 데이터가 유지됩니다.`;return true}catch(e){console.warn("Sports cache load",e);return false}finally{sportsCacheRuntime.loading=false}
+}
 function cloudCreateClient(config){
   if(!window.supabase?.createClient)throw new Error("Supabase JS를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.");
   try{cloudAuthSubscription?.unsubscribe?.()}catch(e){}
@@ -2530,6 +2568,7 @@ function cloudCreateClient(config){
     auth:{persistSession:true,storage:window.localStorage,autoRefreshToken:true,detectSessionInUrl:true,flowType:"implicit"}
   });
   cloudBindAuthEvents();
+  queueMicrotask(()=>sportsCacheLoad().catch(()=>{}));
   return cloudClient;
 }
 
@@ -3736,7 +3775,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.120";
+const HANI_DISPLAY_VERSION="2.9.121";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
