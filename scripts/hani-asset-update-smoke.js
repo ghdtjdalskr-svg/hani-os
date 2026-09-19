@@ -19,9 +19,15 @@ assert.equal(api.sameAccount(raw,{broker:'키움증권',accountName:'IRP',accoun
 const accounts=[{id:'toss',name:'토스',type:'미국투자용',broker:'토스증권'},{id:'isa',name:'ISA',type:'중개형 ISA',broker:'키움증권'}];
 const auto=api.resolveAccountMatch(sourceValues,accounts,{});assert.equal(auto.kind,'matched');assert.equal(auto.account.id,'toss');assert.equal(auto.candidates.length,1);
 const ambiguous=api.resolveAccountMatch({...sourceValues,broker:'키움증권'},[...accounts,{id:'pension',name:'연금',type:'연금저축',broker:'키움증권'}],{});assert.equal(ambiguous.kind,'ambiguous');assert.equal(ambiguous.candidates.length,2);
-const create=api.resolveAccountMatch({...sourceValues,broker:'미래에셋증권'},accounts,{});assert.equal(create.kind,'new');assert.equal(create.candidates.length,0);
+const unresolved=api.resolveAccountMatch({...sourceValues,broker:'미래에셋증권'},accounts);assert.equal(unresolved.kind,'unresolved');assert.equal(unresolved.candidates.length,0);
+const generic=api.resolveAccountMatch({...sourceValues,broker:'',accountName:'홍성민',accountType:'위탁종합'},accounts);assert.equal(generic.kind,'unresolved');
+assert.equal(api.resolveAccountMatch({...sourceValues,accountName:'홍성민',accountType:'위탁종합'},accounts).kind,'unresolved');
+assert.equal(api.resolveAccountMatch({...sourceValues,broker:'',accountName:'위탁종합'},accounts).kind,'unresolved');
+assert.equal(api.resolveAccountMatch({...sourceValues,broker:'',accountName:'종합'},accounts).kind,'unresolved');
+const conflict=api.resolveAccountMatch({...sourceValues,accountName:'ISA'},accounts);assert.equal(conflict.kind,'unresolved');
+const override=api.resolveAccountMatch({...sourceValues,broker:'미래에셋증권',accountName:'홍성민',accountId:'toss'},accounts);assert.equal(override.kind,'matched');assert.equal(override.account.id,'toss');assert.equal(override.reason,'selected');
 const missing=api.resolveAccountMatch({...sourceValues,accountId:'gone'},accounts,{});assert.equal(missing.kind,'missing');assert.equal(missing.account,null);
 const contract=fs.readFileSync(path.join(__dirname,'../docs/hani-agent-orchestrator-asset-vision-contract.patch'),'utf8');
 assert.match(contract,/INTAKE_VISION_TARGETS[^\n]+"asset"/);assert.match(contract,/targetHint === "asset"/);assert.match(contract,/assetMode \? ASSET_VISION_SCHEMA : INTAKE_VISION_SCHEMA/);assert.match(contract,/카드 결제내역·영수증·소비내역/);
 assert.match(contract,/assetMode \? \[/);assert.match(contract,/-  const instructions = \[/);
-console.log('PASS: screenshot-only normalization, unique Toss auto-match, ambiguity/new modes, 1 won warning, large mismatch blocker, source-value priority');
+console.log('PASS: screenshot-only normalization, unique Toss auto-match, explicit account override, unresolved OCR never creates, 1 won warning, large mismatch blocker, source-value priority');

@@ -9,12 +9,13 @@ const today=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Seoul",year:"numeric
 const period=today.slice(0,7);
 const initialState={
   version:"2.9.15-safe-baseline-bootstrap",
-  accounts:[{id:"toss",name:"토스",type:"미국투자용",broker:"토스증권",number:"",openingCash:0}],
-  investmentBrokerSnapshots:[{id:"snapshot-toss",mode:"actual",period,snapshotDate:today,status:"confirmed",note:"before screenshot update",accounts:[{id:"snapshot-account-toss",accountId:"toss",accountName:"토스",enabled:true,estimatedAssets:600000,totalPurchase:610000,totalEvaluation:600000,totalPnl:-10000,totalReturn:-1.64,loanAmount:null,holdings:[]}],createdAt:"2026-09-01T00:00:00.000Z",updatedAt:"2026-09-01T00:00:00.000Z",revision:1}],
+  accounts:[{id:"toss",name:"토스",type:"미국투자용",broker:"토스증권",number:"",openingCash:0},{id:"isa",name:"ISA",type:"중개형 ISA",broker:"키움증권",number:"",openingCash:0}],
+  investmentBrokerSnapshots:[{id:"snapshot-toss",mode:"actual",period,snapshotDate:today,status:"confirmed",note:"before screenshot update",accounts:[{id:"snapshot-account-toss",accountId:"toss",accountName:"토스",enabled:true,estimatedAssets:600000,totalPurchase:610000,totalEvaluation:600000,totalPnl:-10000,totalReturn:-1.64,loanAmount:null,holdings:[]},{id:"snapshot-account-isa",accountId:"isa",accountName:"ISA",enabled:true,estimatedAssets:900000,totalPurchase:880000,totalEvaluation:900000,totalPnl:20000,totalReturn:2.27,loanAmount:null,holdings:[]}],createdAt:"2026-09-01T00:00:00.000Z",updatedAt:"2026-09-01T00:00:00.000Z",revision:1}],
   tasks:[{id:"keep-task",title:"보존 확인",status:"todo"}],
-  ui:{series:["total","toss"]},meta:{lastSavedAt:"",lastBackupAt:"",lastImportAt:""}
+  ui:{series:["total","toss","isa"]},meta:{lastSavedAt:"",lastBackupAt:"",lastImportAt:""}
 };
-const extraction={target_hint:"asset",financial_institution:"토스",account_type:"증권 위탁",total_evaluation:"633,890원",total_purchase:"648,865원",total_pnl:"-14,974원",total_return:"-2.3%"};
+const autoExtraction={target_hint:"asset",financial_institution:"토스",account_type:"증권 위탁",total_evaluation:"633,890원",total_purchase:"648,865원",total_pnl:"-14,974원",total_return:"-2.3%"};
+let extraction=autoExtraction;
 
 (async()=>{
   const browser=await chromium.launch({headless:true,executablePath:process.env.HANI_CHROME_PATH||"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"});
@@ -40,7 +41,8 @@ const extraction={target_hint:"asset",financial_institution:"토스",account_typ
   assert.equal(beforeAnalysis.investmentBrokerSnapshots[0].accounts[0].estimatedAssets,600000);
   await page.locator("#assetCaptureAnalyze").click();
   await page.getByText("기존 토스 계좌를 업데이트합니다.",{exact:true}).waitFor({state:"visible"});
-  assert.equal(await page.locator("#assetAccountChoice").count(),0,"unique Toss account must not render a dropdown");
+  assert.equal(await page.locator("#assetAccountChoice").count(),1,"matched account keeps an optional override");
+  assert.equal(await page.locator(".asset-account-override").getAttribute("open"),null,"unique match must not require a choice");
   assert.match(await page.locator(".asset-validation").innerText(),/WARNING.*미세 오차 1원.*저장 가능/s);
   assert.equal(await page.locator("#assetPreviewApprove").isEnabled(),true);
   assert.match(await page.locator("#assetCapturePreview").innerText(),/600,000원 → 633,890원/);
@@ -48,19 +50,63 @@ const extraction={target_hint:"asset",financial_institution:"토스",account_typ
   await page.getByText(/저장 성공 · 토스 계좌가 633,890원으로 업데이트되었습니다/).waitFor({state:"visible"});
   const saved=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),storageKey);
   const savedAccount=saved.investmentBrokerSnapshots.find(x=>x.id==="snapshot-toss").accounts.find(x=>x.accountId==="toss");
-  assert.equal(saved.accounts.length,1);assert.equal(saved.tasks.some(x=>x.id==="keep-task"),true);
+  assert.equal(saved.accounts.length,2);assert.equal(saved.tasks.some(x=>x.id==="keep-task"),true);
   assert.equal(savedAccount.estimatedAssets,633890);assert.equal(savedAccount.totalEvaluation,633890);assert.equal(savedAccount.totalPurchase,648865);assert.equal(savedAccount.totalPnl,-14974);assert.equal(savedAccount.totalReturn,-2.3);
   await page.reload({waitUntil:"networkidle"});
   await page.evaluate(()=>{unlockLoginGate();cloudClient={auth:{getSession:async()=>({data:{session:{access_token:"browser-smoke"}},error:null})}};cloudUser={id:"browser-smoke"}});
   const reloaded=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),storageKey),reloadedAccount=reloaded.investmentBrokerSnapshots.find(x=>x.id==="snapshot-toss").accounts.find(x=>x.accountId==="toss");
-  assert.equal(reloadedAccount.estimatedAssets,633890);assert.equal(reloadedAccount.totalPnl,-14974);assert.equal(reloaded.accounts.length,1);assert.equal(reloaded.tasks.some(x=>x.id==="keep-task"),true);
+  assert.equal(reloadedAccount.estimatedAssets,633890);assert.equal(reloadedAccount.totalPnl,-14974);assert.equal(reloaded.accounts.length,2);assert.equal(reloaded.tasks.some(x=>x.id==="keep-task"),true);
   await page.getByRole("button",{name:"자산",exact:true}).click();assert.equal(await page.locator("#asset").isVisible(),true);
   await page.getByRole("button",{name:"자산 업데이트",exact:true}).click();assert.equal(await page.locator("#investmentIntake").isVisible(),true);
+  await page.getByRole("button",{name:"+ 새 계좌 등록"}).click();
+  assert.equal(await page.locator("#afName").getAttribute("value"),"","explicit new-account form must not inherit OCR name");
+  await page.locator("#afCancel").click();
+  extraction={target_hint:"asset",financial_institution:"미래에셋증권",account_name:"홍성민",account_type:"위탁종합",total_evaluation:"633,891원",total_purchase:"648,866원",total_pnl:"-14,974원",total_return:"-2.3%"};
+  await page.locator("#assetCaptureFiles").setInputFiles(path.join(__dirname,"../godsaeng_icon_webtoon.png"));
+  await page.locator("#assetCaptureAnalyze").click();
+  await page.getByText(/자동 매칭이 확실하지 않습니다/).waitFor({state:"visible"});
+  assert.equal(await page.locator("#assetAccountChoice option").count(),3,"every registered account must be selectable");
+  assert.equal(await page.locator("#assetPreviewApprove").isEnabled(),false,"unresolved OCR must not create an account");
+  assert.doesNotMatch(await page.locator("#assetCapturePreview").innerText(),/새 계좌를 생성합니다/);
+  await page.locator("#assetAccountChoice").selectOption("toss");
+  assert.match(await page.locator("#assetCapturePreview").innerText(),/기존 토스 계좌를 업데이트합니다/);
+  assert.match(await page.locator("#assetCapturePreview").innerText(),/OCR 계좌명·상품명\s*홍성민/);
+  assert.equal(await page.locator("#assetPreviewApprove").isEnabled(),true);
+  await page.locator("#assetPreviewApprove").click();
+  await page.getByText(/저장 성공 · 토스 계좌가 633,891원으로 업데이트되었습니다/).waitFor({state:"visible"});
+  const overridden=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),storageKey);
+  assert.equal(overridden.accounts.length,2);assert.equal(overridden.accounts.find(a=>a.id==="toss").name,"토스");
+  assert.equal(overridden.investmentBrokerSnapshots[0].accounts.find(a=>a.accountId==="toss").estimatedAssets,633891);
+  assert.equal(overridden.investmentBrokerSnapshots[0].accounts.find(a=>a.accountId==="isa").estimatedAssets,900000);
+  await page.locator("#assetCaptureAnalyze").click();
+  await page.getByText(/지난번에는 토스 계좌를 선택했습니다/).waitFor({state:"visible"});
+  assert.equal(await page.locator("#assetPreviewApprove").isEnabled(),false);
+  await page.locator("#assetAccountChoice").selectOption("toss");
+  await page.locator("#assetPreviewApprove").click();
+  await page.getByText(/저장 성공 · 토스 계좌가 633,891원으로 업데이트되었습니다/).waitFor({state:"visible"});
+  const repeated=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),storageKey);
+  assert.equal(repeated.accounts.length,2,"repeated OCR must not add accounts");
+  assert.equal(repeated.investmentBrokerSnapshots[0].accounts.find(a=>a.accountId==="isa").estimatedAssets,900000);
+  extraction=autoExtraction;
+  await page.locator("#assetCaptureAnalyze").click();
+  await page.getByText("기존 토스 계좌를 업데이트합니다.",{exact:true}).waitFor({state:"visible"});
+  await page.locator(".asset-account-override summary").click();
+  await page.locator("#assetAccountChoice").selectOption("isa");
+  assert.match(await page.locator("#assetCapturePreview").innerText(),/기존 ISA 계좌를 업데이트합니다/);
+  await page.locator("#assetPreviewCancel").click();
+  await page.reload({waitUntil:"networkidle"});
+  await page.evaluate(()=>{unlockLoginGate();cloudClient={auth:{getSession:async()=>({data:{session:{access_token:"browser-smoke"}},error:null})}};cloudUser={id:"browser-smoke"}});
+  const overrideReloaded=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),storageKey);
+  assert.equal(overrideReloaded.accounts.length,2);
+  assert.equal(overrideReloaded.investmentBrokerSnapshots[0].accounts.find(a=>a.accountId==="toss").estimatedAssets,633891);
+  assert.equal(overrideReloaded.investmentBrokerSnapshots[0].accounts.find(a=>a.accountId==="isa").estimatedAssets,900000);
+  await page.getByRole("button",{name:"자산 업데이트",exact:true}).click();
+  extraction=autoExtraction;
   await page.setViewportSize({width:390,height:844});
   await page.locator("#assetCaptureFiles").setInputFiles(path.join(__dirname,"../godsaeng_icon_webtoon.png"));
   await page.locator("#assetCaptureAnalyze").click();
   await page.getByText("기존 토스 계좌를 업데이트합니다.",{exact:true}).waitFor({state:"visible"});
-  assert.equal(await page.locator("#assetAccountChoice").count(),0);
+  assert.equal(await page.locator(".asset-account-override").getAttribute("open"),null);
   const mobile=await page.evaluate(()=>({overflow:document.documentElement.scrollWidth-window.innerWidth,logos:[...document.images].filter(x=>x.getClientRects().length).map(x=>({alt:x.alt,ok:x.complete&&x.naturalWidth>0}))}));
   assert.ok(mobile.overflow<=1,`mobile horizontal overflow: ${mobile.overflow}`);assert.equal(mobile.logos.every(x=>x.ok),true,`unloaded visible logo: ${JSON.stringify(mobile.logos.filter(x=>!x.ok))}`);
   await page.evaluate(()=>{Storage.prototype.setItem=()=>{throw new DOMException("QA forced write failure","QuotaExceededError")}});
@@ -68,6 +114,6 @@ const extraction={target_hint:"asset",financial_institution:"토스",account_typ
   await page.getByText(/저장 실패:/).waitFor({state:"visible"});
   assert.match(await page.locator("#assetCaptureStatus").innerText(),/저장 실패: 브라우저 저장 공간이 부족합니다/);
   assert.deepEqual(errors,[]);
-  console.log(JSON.stringify({state:"PASS",desktop:{clipboardPaste:true,preAnalysisWrite:false,autoMatch:true,dropdown:false,warning:"1원",saved:633890},reload:{persisted:true,pnl:-14974,dataLoss:0},mobile:{width:390,overflow:mobile.overflow,visibleLogos:mobile.logos.length},saveFailureFeedback:true,pageErrors:errors.length},null,2));
+  console.log(JSON.stringify({state:"PASS",desktop:{clipboardPaste:true,preAnalysisWrite:false,autoMatch:true,overrideOptional:true,warning:"1원",saved:633890},manualOverride:{ocrNameIgnored:true,selectedAccount:"toss",repeatedNoNewAccounts:true,otherAccountUnchanged:true,inMemoryHint:true},reload:{persisted:true,pnl:-14974,dataLoss:0},mobile:{width:390,overflow:mobile.overflow,visibleLogos:mobile.logos.length},saveFailureFeedback:true,pageErrors:errors.length},null,2));
   await browser.close();
 })().catch(error=>{console.error(error);process.exit(1)});
