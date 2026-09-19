@@ -14,6 +14,10 @@ const raw=api.normalize({data:{financial_institution:'키움증권',account_name
 assert.deepEqual({broker:raw.broker,accountName:raw.accountName,accountType:raw.accountType,assets:raw.assets,purchase:raw.purchase,pnl:raw.pnl,date:raw.date},{broker:'키움증권',accountName:'ISA',accountType:'ISA',assets:540463,purchase:533749,pnl:6714,date:'2026-08-31'});
 const sourceValues=api.normalize({financialInstitution:'토스',accountType:'증권 위탁',total_evaluation:'633,890원',total_purchase:'648,865원',total_pnl:'-14,974원',total_return:'-2.3%'});
 assert.equal(sourceValues.assets,633890);assert.equal(sourceValues.evaluation,633890);assert.equal(sourceValues.pnl,-14974);
+const hanaCash=api.normalize({target_hint:'asset',financialInstitution:'하나증권',accountName:'종합매매',accountType:'주식',currentAsset:null,balance:2270,extracted_text:'계좌번호 : 40690545-010 종합매매 예수금 2,270'});
+const hanaSummary=api.normalize({target_hint:'asset',financialInstitution:'하나증권',accountName:'종합매매',accountType:'주식',currentAsset:160490,balance:2270,valuationAmount:158220,extracted_text:'종합매매 40690545-010 예수금 2,270 평가금액 158,220 총평가금액 160,490'});
+const hanaMerged=api.mergeScreens([hanaCash,hanaSummary]);
+assert.equal(api.sameAccount(hanaCash,hanaSummary),true);assert.equal(hanaMerged.accountNumber,'40690545-010');assert.equal(hanaMerged.assets,160490);assert.equal(hanaMerged.evaluation,158220);assert.equal(hanaMerged.balance,2270);assert.equal(hanaMerged.reconciliation.difference,0);
 assert.equal(api.sameAccount(raw,{broker:'키움증권',accountName:'ISA',accountType:'ISA'}),true);
 assert.equal(api.sameAccount(raw,{broker:'키움증권',accountName:'IRP',accountType:'IRP'}),false);
 const accounts=[{id:'toss',name:'토스',type:'미국투자용',broker:'토스증권'},{id:'isa',name:'ISA',type:'중개형 ISA',broker:'키움증권'}];
@@ -30,4 +34,5 @@ const missing=api.resolveAccountMatch({...sourceValues,accountId:'gone'},account
 const contract=fs.readFileSync(path.join(__dirname,'../docs/hani-agent-orchestrator-asset-vision-contract.patch'),'utf8');
 assert.match(contract,/INTAKE_VISION_TARGETS[^\n]+"asset"/);assert.match(contract,/targetHint === "asset"/);assert.match(contract,/assetMode \? ASSET_VISION_SCHEMA : INTAKE_VISION_SCHEMA/);assert.match(contract,/카드 결제내역·영수증·소비내역/);
 assert.match(contract,/assetMode \? \[/);assert.match(contract,/-  const instructions = \[/);
+assert.match(contract,/총평가금액·총자산은 currentAsset/);assert.match(contract,/예수금·현금잔고는 balance/);assert.match(contract,/주식·펀드 평가금액은 valuationAmount/);
 console.log('PASS: screenshot-only normalization, unique Toss auto-match, explicit account override, unresolved OCR never creates, 1 won warning, large mismatch blocker, source-value priority');
