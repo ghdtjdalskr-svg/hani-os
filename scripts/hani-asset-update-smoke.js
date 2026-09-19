@@ -31,8 +31,12 @@ assert.equal(api.resolveAccountMatch({...sourceValues,broker:'',accountName:'종
 const conflict=api.resolveAccountMatch({...sourceValues,accountName:'ISA'},accounts);assert.equal(conflict.kind,'unresolved');
 const override=api.resolveAccountMatch({...sourceValues,broker:'미래에셋증권',accountName:'홍성민',accountId:'toss'},accounts);assert.equal(override.kind,'matched');assert.equal(override.account.id,'toss');assert.equal(override.reason,'selected');
 const missing=api.resolveAccountMatch({...sourceValues,accountId:'gone'},accounts,{});assert.equal(missing.kind,'missing');assert.equal(missing.account,null);
+const deletable=api.accountDeleteImpact({investmentBrokerSnapshots:[{accounts:[{accountId:'wrong'}]}]},'wrong');
+assert.deepEqual(JSON.parse(JSON.stringify(deletable)),{brokerSnapshots:1,monthlySnapshots:0,transactions:0,cashFlows:0,journals:0,blocking:false});
+const protectedAccount=api.accountDeleteImpact({transactions:[{accountId:'used'}],investmentMonthlySnapshots:[{accounts:[{accountId:'used'}]}],investmentCashFlows:[{accountId:'other',toAccountId:'used'}],investmentJournal:[{accountId:'used'}]},'used');
+assert.deepEqual(JSON.parse(JSON.stringify(protectedAccount)),{brokerSnapshots:0,monthlySnapshots:1,transactions:1,cashFlows:1,journals:1,blocking:true});
 const contract=fs.readFileSync(path.join(__dirname,'../docs/hani-agent-orchestrator-asset-vision-contract.patch'),'utf8');
 assert.match(contract,/INTAKE_VISION_TARGETS[^\n]+"asset"/);assert.match(contract,/targetHint === "asset"/);assert.match(contract,/assetMode \? ASSET_VISION_SCHEMA : INTAKE_VISION_SCHEMA/);assert.match(contract,/카드 결제내역·영수증·소비내역/);
 assert.match(contract,/assetMode \? \[/);assert.match(contract,/-  const instructions = \[/);
 assert.match(contract,/총평가금액·총자산은 currentAsset/);assert.match(contract,/예수금·현금잔고는 balance/);assert.match(contract,/주식·펀드 평가금액은 valuationAmount/);
-console.log('PASS: screenshot-only normalization, unique Toss auto-match, explicit account override, unresolved OCR never creates, 1 won warning, large mismatch blocker, source-value priority');
+console.log('PASS: screenshot-only normalization, unique Toss auto-match, explicit account override, unresolved OCR never creates, 1 won warning, large mismatch blocker, source-value priority, safe account-delete impact');
