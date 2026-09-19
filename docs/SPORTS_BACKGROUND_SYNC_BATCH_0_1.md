@@ -1,15 +1,15 @@
-# HANI OS Sports Background Sync — Batch 0–1
+# HANI OS Sports Background Sync — Batch 0–2
 
-Status: local design and read-only fetch candidate only. Nothing in this document or branch has been applied to Production, Supabase, Cron, the frontend, or `main`.
+Status: implemented on an isolated branch and applied to Supabase after the representative's deployment approval. GitHub Pages and `main` merge remain the final release steps.
 
 ## Baseline and collision gate
 
-- Baseline: `origin/main` `ccb0243e4e880c48444cf41b997244b7caf4314e`
-- Display version: `2.9.118`
-- Latest UI bundle loaded by `index.html`: `hani-ui-v02992.js?v=2.9.118`
+- Baseline: `origin/main` `654af6b1e9e7473882d30320307db3576b369877`
+- Display version candidate: `2.9.121`
+- Latest UI bundle loaded by `index.html`: `hani-ui-v02992.js?v=2.9.121`
 - GitHub: no open pull requests at the start of this batch.
 - Supabase: project healthy, no development branches, no active non-idle database session observed.
-- Other HANI Codex UI tasks were active, so this work uses isolated branch `hani/sports-background-sync-v1` and an isolated worktree.
+- This work uses isolated branch `hani/sports-background-sync-v2` and worktree `C:\Users\홍성민\Documents\HANI_OS_DEV\.audit\sports-background-sync-v2`.
 
 ## Batch 0 — verified Newsroom contract
 
@@ -90,18 +90,29 @@ All four official-source adapters returned a valid normalized candidate without 
 
 - Yankees: latest completed game and next game found through MLB Stats API.
 - KIA Tigers: latest completed game and next game found through KBO's official schedule endpoint.
-- Real Madrid: first-team male squad filter prevented academy and women's fixtures from entering the cache candidate.
+- Real Madrid: an exact football first-team squad filter prevents basketball, academy, and women's fixtures from entering the cache candidate.
 - Dplus KIA: latest completed LCK series found in LoL Esports Apollo server state; no next match was published in the fetched page state.
 
-The first probe intentionally failed KBO, Real Madrid filtering, and LoL Esports extraction. Those failures were corrected against the observed official response shapes and the full probe was rerun successfully. This confirms why candidate validation must run before any future cache write.
+The first probe intentionally failed KBO, Real Madrid filtering, and LoL Esports extraction. Those failures were corrected against the observed official response shapes and the full probe was rerun successfully. A further QA pass found that an in-progress KBO `0–0` row has no official review link; such rows are now treated as scheduled, never as completed, so they cannot overwrite a last-known-good result.
 
-## Mandatory approval boundary before Batch 2
+## Batch 2 — server cache and scheduled sync
 
-Do not proceed without the representative's explicit approval. Batch 2 would introduce all of the following Supabase write/schema work:
+After explicit deployment approval, the following components were applied:
 
-1. A minimal cache table and RLS/grants migration candidate.
-2. A server-only atomic upsert path.
-3. A `hani-sports-sync` Edge Function wrapper with custom Cron-secret authentication.
-4. Cron registration.
+1. `public.hani_sports_cache`: one public read-only row per team, with `last_game`, `next_game`, source, status, freshness timestamps, and last error code.
+2. `public.hani_sports_sync_auth`: server-only SHA-256 hash used to authenticate scheduled calls. The plaintext secret is generated inside Supabase Vault and is not stored in the repository, browser, or logs.
+3. `hani-sports-sync` Edge Function v1: official-source fetch, normalization, candidate validation, regression protection, atomic REST upsert, and last-known-good preservation on failure.
+4. Four Supabase Cron jobs with seasonal expressions: Yankees/KIA daily March–November, Real Madrid weekly January–May and August–December, Dplus KIA weekly January–November, plus a July 29–31 Real Madrid resume-discovery check.
+5. Frontend read path in `hani-main.js`: public cache SELECT only, verified row application to existing Sports slots, and static HTML fallback when Cloud data is unavailable.
 
-Supabase's 2026 Data API exposure change means the future migration must explicitly pair grants with RLS. The frontend should receive SELECT only; only the server-side function may write. No service-role or secret value may appear in repository files, logs, or browser code.
+Supabase's 2026 Data API exposure change was handled by pairing explicit grants and RLS. The frontend has SELECT only; only the server-side function has write privileges. No service-role or secret value appears in repository files, logs, or browser code.
+
+## QA evidence
+
+- Node syntax checks: `hani-main.js` and `supabase/functions/hani-sports-sync/index.ts` PASS.
+- Contract tests: PASS, including seasonal blackouts, source validation, freshness, regression rejection, custom cron authentication, and invalid team scope.
+- Live official-source probe on 2026-09-15: Yankees, KIA, Real Madrid, and Dplus KIA all returned valid normalized candidates.
+- Supabase manual authenticated sync: HTTP 200; all four teams updated and read back.
+- Supabase cache verification: 4 fresh rows; anonymous SELECT allowed; anonymous INSERT and auth-table SELECT denied; RLS enabled on both tables.
+- Supabase Cron verification: 4 active Sports jobs with the seasonal schedules above.
+- Browser smoke QA opened the local v2.9.121 candidate with no browser warnings or errors. The authenticated Sports body remains unavailable without a QA login, so its visual state must be verified after deployment with an authenticated session; static fallback, JS syntax, DOM selector paths, cache contract, and production read-back cover the unauthenticated release checks.

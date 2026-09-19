@@ -1,4 +1,4 @@
-import { fetchTeamCandidate, validateCandidate } from "./sports-sync/core.mjs";
+import { fetchTeamCandidate, validateCandidate } from "../supabase/functions/hani-sports-sync/index.ts";
 
 const nowArg = process.argv.find((arg) => arg.startsWith("--now="))?.slice(6);
 const now = nowArg ? new Date(nowArg) : new Date();

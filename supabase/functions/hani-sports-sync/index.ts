@@ -1,6 +1,6 @@
 const DAY_MS = 86_400_000;
 
-export const SPORTS_SYNC_VERSION = "0.1.0-dry-run";
+export const SPORTS_SYNC_VERSION = "1.0.0";
 
 export const TEAM_CONFIG = Object.freeze({
   yankees: Object.freeze({
@@ -173,15 +173,16 @@ function parseKboRow(row, seasonYear) {
   const isHome = teams[1] === "KIA";
   const teamIndex = isHome ? 1 : 0;
   const gameLink = String(cells[3]?.Text || "").match(/href=['"]([^'"]+)/i)?.[1] || "";
+  const completed = !!gameLink && scoreTokens.length === 2;
   return {
     id: gameLink.match(/gameId=([^&'"]+)/i)?.[1] || `${date}-${teams.join("-")}`,
     date,
     dateTime: isoOrNull(dateTime),
-    state: cancelled ? "cancelled" : scoreTokens.length === 2 ? "final" : "scheduled",
+    state: cancelled ? "cancelled" : completed ? "final" : "scheduled",
     homeAway: isHome ? "home" : "away",
     opponent: { id: teams[1 - teamIndex], name: teams[1 - teamIndex] },
-    teamScore: scoreTokens.length === 2 ? scoreTokens[teamIndex] : NaN,
-    opponentScore: scoreTokens.length === 2 ? scoreTokens[1 - teamIndex] : NaN,
+    teamScore: completed ? scoreTokens[teamIndex] : NaN,
+    opponentScore: completed ? scoreTokens[1 - teamIndex] : NaN,
     competition: "KBO League",
     venue: stripTags(cells[7]?.Text),
     sourceUrl: gameLink ? new URL(gameLink, "https://www.koreabaseball.com").toString() : null,
@@ -243,7 +244,9 @@ export function parseRealMadridHtml(html, now = new Date()) {
     value?.dateTime && value?.homeTeam?.name && value?.awayTeam?.name && value?.competition?.name
   ));
   const events = uniqueBy(rows, (row) => String(row?.id || `${row?.dateTime}|${row?.description?.plaintext || ""}`))
-    .filter((row) => (row?.squad?.tag || []).some((tag) => String(tag).includes("primer-equipo-masculino")))
+    .filter((row) => (row?.squad?.tag || []).some((tag) =>
+      /:sports\/futbol\/primer-equipo-masculino(?:$|[/?#])/i.test(String(tag))
+    ))
     .filter((row) => [row.homeTeam?.name, row.awayTeam?.name].some((name) => /^Real Madrid(?: C\.F\.)?$/i.test(cleanText(name))))
     .map((row) => {
       const isHome = /^Real Madrid(?: C\.F\.)?$/i.test(cleanText(row.homeTeam?.name));
@@ -427,3 +430,158 @@ export async function fetchTeamCandidate(teamId, { now = new Date(), fetchImpl =
   const html = await response.text();
   return teamId === "madrid" ? parseRealMadridHtml(html, now) : parseDplusHtml(html, now);
 }
+
+const SPORTS_TEAM_IDS = Object.freeze(Object.keys(TEAM_CONFIG));
+
+function jsonResponse(payload, status = 200) {
+  return new Response(JSON.stringify(payload), {
+    status,
+    headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" },
+  });
+}
+
+async function sha256Hex(value) {
+  const bytes = new TextEncoder().encode(String(value || ""));
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function safeEqual(left, right) {
+  const a = String(left || "");
+  const b = String(right || "");
+  if (a.length !== b.length) return false;
+  let mismatch = 0;
+  for (let index = 0; index < a.length; index += 1) mismatch |= a.charCodeAt(index) ^ b.charCodeAt(index);
+  return mismatch === 0;
+}
+
+function serviceHeaders(serviceRoleKey, extra = {}) {
+  return {
+    apikey: serviceRoleKey,
+    Authorization: `Bearer ${serviceRoleKey}`,
+    "Content-Type": "application/json",
+    ...extra,
+  };
+}
+
+async function restJson(url, options, label) {
+  const response = await fetch(url, options);
+  const text = await response.text();
+  let payload = null;
+  if (text) {
+    try { payload = JSON.parse(text); }
+    catch { payload = text.slice(0, 300); }
+  }
+  if (!response.ok) throw new Error(`${label} HTTP ${response.status}${payload?.message ? `: ${payload.message}` : ""}`);
+  return payload;
+}
+
+async function authorizeCron(req, supabaseUrl, serviceRoleKey) {
+  const supplied = req.headers.get("x-hani-sports-secret") || "";
+  if (!supplied || supplied.length > 256) return false;
+  const rows = await restJson(
+    `${supabaseUrl}/rest/v1/hani_sports_sync_auth?singleton_id=eq.cron&select=secret_sha256&limit=1`,
+    { headers: serviceHeaders(serviceRoleKey) },
+    "Sports auth read",
+  );
+  const expected = Array.isArray(rows) ? rows[0]?.secret_sha256 : "";
+  return safeEqual(await sha256Hex(supplied), expected);
+}
+
+async function readCache(supabaseUrl, serviceRoleKey) {
+  const rows = await restJson(
+    `${supabaseUrl}/rest/v1/hani_sports_cache?select=team_id,league,last_game,next_game,source,status,last_attempt_at,last_success_at,data_updated_at,updated_at,error_code`,
+    { headers: serviceHeaders(serviceRoleKey) },
+    "Sports cache read",
+  );
+  return new Map((Array.isArray(rows) ? rows : []).map((row) => [row.team_id, row]));
+}
+
+function previousCandidate(row) {
+  if (!row) return null;
+  return { teamId: row.team_id, league: row.league, lastGame: row.last_game, nextGame: row.next_game, source: row.source };
+}
+
+async function upsertCandidate(supabaseUrl, serviceRoleKey, candidate, nowIso) {
+  const row = {
+    team_id: candidate.teamId,
+    league: candidate.league,
+    last_game: candidate.lastGame,
+    next_game: candidate.nextGame,
+    source: candidate.source,
+    status: "fresh",
+    last_attempt_at: nowIso,
+    last_success_at: nowIso,
+    data_updated_at: nowIso,
+    updated_at: nowIso,
+    error_code: null,
+  };
+  const rows = await restJson(
+    `${supabaseUrl}/rest/v1/hani_sports_cache?on_conflict=team_id`,
+    {
+      method: "POST",
+      headers: serviceHeaders(serviceRoleKey, { Prefer: "resolution=merge-duplicates,return=representation" }),
+      body: JSON.stringify(row),
+    },
+    `Sports cache upsert ${candidate.teamId}`,
+  );
+  if (!Array.isArray(rows) || rows[0]?.team_id !== candidate.teamId) throw new Error(`Sports cache read-back missing: ${candidate.teamId}`);
+  return rows[0];
+}
+
+async function markAttemptFailed(supabaseUrl, serviceRoleKey, teamId, nowIso, error) {
+  const errorCode = cleanText(error?.message || error || "SYNC_FAILED", 180).replace(/[^A-Za-z0-9가-힣 ._:/()-]/g, "_");
+  await restJson(
+    `${supabaseUrl}/rest/v1/hani_sports_cache?team_id=eq.${encodeURIComponent(teamId)}`,
+    {
+      method: "PATCH",
+      headers: serviceHeaders(serviceRoleKey, { Prefer: "return=minimal" }),
+      body: JSON.stringify({ status: "error", last_attempt_at: nowIso, updated_at: nowIso, error_code: errorCode }),
+    },
+    `Sports cache failure mark ${teamId}`,
+  );
+}
+
+export async function handleSportsSync(req) {
+  if (req.method !== "POST") return jsonResponse({ ok: false, error: "METHOD_NOT_ALLOWED" }, 405);
+  const supabaseUrl = String(globalThis.Deno?.env?.get("SUPABASE_URL") || "").replace(/\/$/, "");
+  const serviceRoleKey = String(globalThis.Deno?.env?.get("SUPABASE_SERVICE_ROLE_KEY") || "");
+  if (!supabaseUrl || !serviceRoleKey) return jsonResponse({ ok: false, error: "SERVER_CONFIG_MISSING" }, 500);
+  try {
+    if (!await authorizeCron(req, supabaseUrl, serviceRoleKey)) return jsonResponse({ ok: false, error: "UNAUTHORIZED" }, 401);
+    const body = await req.json().catch(() => ({}));
+    const force = body?.force === true;
+    const requested = Array.isArray(body?.teams) ? body.teams : SPORTS_TEAM_IDS;
+    const teams = [...new Set(requested.map((value) => cleanText(value, 24)).filter((teamId) => SPORTS_TEAM_IDS.includes(teamId)))];
+    if (!teams.length || teams.length !== requested.length) return jsonResponse({ ok: false, error: "TEAM_SCOPE_INVALID" }, 400);
+
+    const now = new Date();
+    const nowIso = now.toISOString();
+    const cache = await readCache(supabaseUrl, serviceRoleKey);
+    const results = [];
+    for (const teamId of teams) {
+      const previous = cache.get(teamId) || null;
+      const due = shouldFetchTeam(teamId, previous?.last_success_at, now, force);
+      if (!due.due) {
+        results.push({ teamId, state: "skipped", reason: due.reason });
+        continue;
+      }
+      try {
+        const candidate = await fetchTeamCandidate(teamId, { now });
+        const validation = validateCandidate(candidate, previousCandidate(previous), now);
+        if (!validation.ok) throw new Error(`VALIDATION_FAILED:${validation.errors.join(",")}`);
+        const saved = await upsertCandidate(supabaseUrl, serviceRoleKey, candidate, nowIso);
+        results.push({ teamId, state: "updated", lastSuccessAt: saved.last_success_at });
+      } catch (error) {
+        if (previous) await markAttemptFailed(supabaseUrl, serviceRoleKey, teamId, nowIso, error).catch(() => {});
+        results.push({ teamId, state: "failed", error: cleanText(error?.message || error, 180) });
+      }
+    }
+    const failed = results.filter((item) => item.state === "failed").length;
+    return jsonResponse({ ok: failed === 0, version: SPORTS_SYNC_VERSION, results }, failed ? 502 : 200);
+  } catch (error) {
+    return jsonResponse({ ok: false, error: cleanText(error?.message || error || "SYNC_FAILED", 180) }, 500);
+  }
+}
+
+if (typeof globalThis.Deno !== "undefined") globalThis.Deno.serve(handleSportsSync);

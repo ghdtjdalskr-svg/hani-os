@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import {
   TEAM_CONFIG,
   freshnessState,
+  handleSportsSync,
   isTeamActive,
   parseDplusHtml,
   parseKboSchedule,
@@ -9,7 +10,7 @@ import {
   parseRealMadridHtml,
   shouldFetchTeam,
   validateCandidate,
-} from "./sports-sync/core.mjs";
+} from "../supabase/functions/hani-sports-sync/index.ts";
 
 const now = new Date("2026-09-15T00:00:00Z");
 
@@ -20,6 +21,7 @@ assert.deepEqual(isTeamActive("madrid", "2026-07-30T00:00:00Z"), { active: true,
 assert.deepEqual(isTeamActive("dplus", "2026-12-15T00:00:00Z"), { active: false, reason: "BLACKOUT_MONTH" });
 assert.equal(shouldFetchTeam("dplus", "2026-09-10T00:00:00Z", now).due, false);
 assert.equal(shouldFetchTeam("dplus", "2026-09-01T00:00:00Z", now).due, true);
+assert.deepEqual(shouldFetchTeam("dplus", "2026-09-10T00:00:00Z", now, true), { due: true, reason: "FORCED" });
 assert.equal(freshnessState("yankees", "2026-09-14T00:00:00Z", now).freshness, "fresh");
 assert.equal(freshnessState("yankees", "2026-09-12T00:00:00Z", now).freshness, "stale");
 assert.equal(freshnessState("dplus", "2026-09-08T00:00:00Z", now).freshness, "fresh");
@@ -42,12 +44,18 @@ const kbo = parseKboSchedule([{ year: 2026, payload: { rows: [
     {}, {}, {}, { Text: "광주" }, { Text: "-" },
   ] },
   { row: [
+    { Text: "09.15(화)" }, { Text: "<b>18:30</b>" },
+    { Text: '<span>KIA</span><em><span class="same">0</span><span>vs</span><span class="same">0</span></em><span>SSG</span>' },
+    { Text: "" }, {}, {}, {}, { Text: "문학" }, { Text: "-" },
+  ] },
+  { row: [
     { Text: "09.16(수)" }, { Text: "<b>18:30</b>" },
     { Text: "<span>KIA</span><em><span>vs</span></em><span>삼성</span>" }, {}, {}, {}, {}, { Text: "대구" }, { Text: "-" },
   ] },
 ] } }], now);
 assert.equal(kbo.lastGame.score.team, 9);
 assert.equal(kbo.lastGame.opponent.name, "한화");
+assert.equal(kbo.nextGame.opponent.name, "SSG");
 assert.equal(kbo.nextGame.homeAway, "away");
 assert.equal(validateCandidate(kbo, null, now).ok, true);
 
@@ -69,10 +77,17 @@ const realState = { schedule: [{
   squad: { tag: ["realmadrid-com:sports/futbol/cantera-masculina/juvenil-a"] },
   homeTeam: { optaId: "tal", name: "Talavera U19" }, awayTeam: { optaId: "rmu19", name: "Real Madrid" },
   homeTeamScoreTotal: "0", awayTeamScoreTotal: "4",
+}, {
+  id: "basketball-1", dateTime: "2026-09-18T18:00:00Z", status: "finished",
+  competition: { name: "EuroLeague" }, description: { plaintext: "Real Madrid vs Dubai Basketball" },
+  squad: { tag: ["realmadrid-com:sports/baloncesto/primer-equipo-masculino"] },
+  homeTeam: { optaId: "rmb", name: "Real Madrid" }, awayTeam: { optaId: "dub", name: "Dubai Basketball" },
+  homeTeamScoreTotal: "98", awayTeamScoreTotal: "95",
 }] };
 const realHtml = `<script id="ng-state" type="application/json">${JSON.stringify(realState)}</script>`;
 const madrid = parseRealMadridHtml(realHtml, now);
 assert.equal(madrid.lastGame.result, "WIN");
+assert.equal(madrid.lastGame.opponent.name, "Rayo Vallecano");
 assert.equal(madrid.nextGame.opponent.name, "Atlético de Madrid");
 assert.equal(validateCandidate(madrid, null, now).ok, true);
 
@@ -104,4 +119,21 @@ regression.lastGame.eventId = "older-event";
 assert.deepEqual(validateCandidate(regression, mlb, now).errors.includes("LAST_GAME_REGRESSION"), true);
 
 assert.deepEqual(Object.keys(TEAM_CONFIG), ["yankees", "kia", "madrid", "dplus"]);
+
+const originalDeno = globalThis.Deno;
+const originalFetch = globalThis.fetch;
+const cronSecret = "unit-test-secret";
+const cronSecretHash = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(cronSecret));
+const cronSecretHex = [...new Uint8Array(cronSecretHash)].map(byte => byte.toString(16).padStart(2, "0")).join("");
+globalThis.Deno = { env: { get: key => key === "SUPABASE_URL" ? "https://unit-test.supabase.co" : key === "SUPABASE_SERVICE_ROLE_KEY" ? "unit-service-role" : "" } };
+globalThis.fetch = async url => {
+  if (String(url).includes("hani_sports_sync_auth")) return new Response(JSON.stringify([{ secret_sha256: cronSecretHex }]), { status: 200 });
+  throw new Error(`Unexpected wrapper fetch: ${url}`);
+};
+const unauthorized = await handleSportsSync(new Request("https://unit-test/functions/v1/hani-sports-sync", { method: "POST", headers: { "x-hani-sports-secret": "wrong" }, body: "{}" }));
+assert.equal(unauthorized.status, 401);
+const invalidScope = await handleSportsSync(new Request("https://unit-test/functions/v1/hani-sports-sync", { method: "POST", headers: { "x-hani-sports-secret": cronSecret, "content-type": "application/json" }, body: JSON.stringify({ teams: ["unknown"] }) }));
+assert.equal(invalidScope.status, 400);
+globalThis.fetch = originalFetch;
+if (originalDeno === undefined) delete globalThis.Deno; else globalThis.Deno = originalDeno;
 console.log("HANI Sports sync contract tests: PASS");
