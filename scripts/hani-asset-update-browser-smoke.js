@@ -1,5 +1,6 @@
 const {chromium}=require("playwright");
 const assert=require("node:assert/strict");
+const fs=require("node:fs");
 const path=require("node:path");
 
 const url=process.env.HANI_PREVIEW_URL||"http://127.0.0.1:4173";
@@ -18,6 +19,7 @@ const extraction={target_hint:"asset",financial_institution:"토스",account_typ
 (async()=>{
   const browser=await chromium.launch({headless:true,executablePath:process.env.HANI_CHROME_PATH||"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"});
   const context=await browser.newContext({viewport:{width:1440,height:1000},timezoneId:"Asia/Seoul"});
+  await context.grantPermissions(["clipboard-read","clipboard-write"],{origin:new URL(url).origin});
   await context.addInitScript(({key,state,origin})=>{if(location.origin===origin){if(!localStorage.getItem(key))localStorage[key]=JSON.stringify(state);localStorage.hani_os_gate_session_v2="1"}},{key:storageKey,state:initialState,origin:new URL(url).origin});
   await context.route("**/functions/v1/hani-agent-orchestrator",route=>route.fulfill({status:200,contentType:"application/json",body:JSON.stringify({ok:true,extraction})}));
   const page=await context.newPage(),errors=[];
@@ -27,7 +29,15 @@ const extraction={target_hint:"asset",financial_institution:"토스",account_typ
   await page.evaluate(()=>{unlockLoginGate();cloudClient={auth:{getSession:async()=>({data:{session:{access_token:"browser-smoke"}},error:null})}};cloudUser={id:"browser-smoke"}});
   if(await page.getByRole("button",{name:"자산 업데이트",exact:true}).count()===0)throw new Error(`자산 업데이트 메뉴를 찾지 못했습니다. title=${await page.title()} body=${(await page.locator("body").innerText()).slice(0,500)} pageErrors=${errors.join(" | ")}`);
   await page.getByRole("button",{name:"자산 업데이트",exact:true}).click();
-  await page.locator("#assetCaptureFiles").setInputFiles(path.join(__dirname,"../godsaeng_icon_webtoon.png"));
+  const imageBase64=fs.readFileSync(path.join(__dirname,"../godsaeng_icon_webtoon.png")).toString("base64");
+  await page.evaluate(base64=>{const bytes=Uint8Array.from(atob(base64),c=>c.charCodeAt(0));return navigator.clipboard.write([new ClipboardItem({"image/png":new Blob([bytes],{type:"image/png"})})])},imageBase64);
+  await page.locator("#assetCapturePasteZone").click();
+  await page.keyboard.press("Control+V");
+  await page.getByText(/클립보드 이미지 1장 첨부/).waitFor({state:"visible"});
+  assert.equal(await page.locator("#assetCaptureAnalyze").isEnabled(),true);
+  assert.match(await page.locator("#assetCaptureFileList").innerText(),/account-clipboard-.*\.png/);
+  const beforeAnalysis=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),storageKey);
+  assert.equal(beforeAnalysis.investmentBrokerSnapshots[0].accounts[0].estimatedAssets,600000);
   await page.locator("#assetCaptureAnalyze").click();
   await page.getByText("기존 토스 계좌를 업데이트합니다.",{exact:true}).waitFor({state:"visible"});
   assert.equal(await page.locator("#assetAccountChoice").count(),0,"unique Toss account must not render a dropdown");
@@ -58,6 +68,6 @@ const extraction={target_hint:"asset",financial_institution:"토스",account_typ
   await page.getByText(/저장 실패:/).waitFor({state:"visible"});
   assert.match(await page.locator("#assetCaptureStatus").innerText(),/저장 실패: 브라우저 저장 공간이 부족합니다/);
   assert.deepEqual(errors,[]);
-  console.log(JSON.stringify({state:"PASS",desktop:{autoMatch:true,dropdown:false,warning:"1원",saved:633890},reload:{persisted:true,pnl:-14974,dataLoss:0},mobile:{width:390,overflow:mobile.overflow,visibleLogos:mobile.logos.length},saveFailureFeedback:true,pageErrors:errors.length},null,2));
+  console.log(JSON.stringify({state:"PASS",desktop:{clipboardPaste:true,preAnalysisWrite:false,autoMatch:true,dropdown:false,warning:"1원",saved:633890},reload:{persisted:true,pnl:-14974,dataLoss:0},mobile:{width:390,overflow:mobile.overflow,visibleLogos:mobile.logos.length},saveFailureFeedback:true,pageErrors:errors.length},null,2));
   await browser.close();
 })().catch(error=>{console.error(error);process.exit(1)});
