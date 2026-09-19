@@ -3,11 +3,11 @@
   'use strict';
 
   const CHANNELS = [
-    { key: 'semiconductor', label: '국내 반도체', note: '삼성전자 · SK하이닉스', kind: 'INDUSTRY', mark: 'KR' },
-    { key: 'lg', label: 'LG전자', note: '가전 · 전장 · AI 제품', kind: 'COMPANY', mark: 'LG' },
-    { key: 'infra', label: 'AI 인프라 & 클라우드', note: '칩 · 데이터센터 · 클라우드', kind: 'ECOSYSTEM', mark: 'AI' },
-    { key: 'frontier', label: 'Frontier AI', note: 'OpenAI · Anthropic', kind: 'COMPANIES', mark: 'FM' },
-    { key: 'world', label: '주요 국제 정세', note: '정책 · 외교 · 공급망', kind: 'CONTEXT', mark: '🌐' },
+    { key: 'semiconductor', label: '국내 반도체', note: '삼성전자 · SK하이닉스', marks: [['samsung', 'SAMSUNG'], ['sk', 'SK']] },
+    { key: 'lg', label: 'LG전자', note: '가전 · 전장 · AI 제품', marks: [['lg', 'LG']] },
+    { key: 'infra', label: 'AI 인프라 & 클라우드', note: '칩 · 데이터센터 · 클라우드', marks: [['nvidia', 'N'], ['amazon', 'a'], ['google', 'G'], ['microsoft', 'M']] },
+    { key: 'frontier', label: 'Frontier AI', note: 'OpenAI · Anthropic', marks: [['openai', '◎'], ['anthropic', 'AI']] },
+    { key: 'world', label: '주요 국제 정세', note: '정책 · 외교 · 공급망', marks: [['world', '🌐']] },
   ];
   const MOODS = {
     POSITIVE: ['🚀 호재 · 대~풀~롱', '📈 호재 · 탄력 받는 중', '✨ 호재 · 흐름 좋다'],
@@ -66,7 +66,10 @@
     });
     const panels = root.querySelector('.company-followup-panels');
     if (!panels) return;
-    panels.innerHTML = CHANNELS.map((c, i) => `<article class="company-followup-panel panel-${c.key}"><div class="followup-panel-head"><div><span>${String(i + 1).padStart(2, '0')} · ${esc(c.label)}</span><h4>${esc(obj(payload.headlines)[c.key] || c.note)}</h4></div><div class="followup-logo-stack"><span class="followup-channel-symbol ${c.key}">${esc(c.mark)}</span></div></div><div class="followup-issue-grid">${arr(channels[c.key]).length ? arr(channels[c.key]).slice(0, 3).map((x, j) => issueMarkup(x, j, post?.period_key || '', readSet, post?.id)).join('') : `<div class="followup-empty">${post ? '이번 주에는 확인된 핵심 변화가 없습니다.' : '첫 주간 F/U 발행을 기다리고 있습니다.'}</div>`}</div></article>`).join('');
+    panels.innerHTML = CHANNELS.map((c, i) => {
+      const marks = c.marks.map(([name, copy]) => name === 'world' ? `<span class="followup-channel-symbol world">${esc(copy)}</span>` : `<span class="followup-company-mark ${esc(name)}">${esc(copy)}</span>`).join('');
+      return `<article class="company-followup-panel panel-${c.key}"><div class="followup-panel-head"><div><span>${String(i + 1).padStart(2, '0')} · ${esc(c.label)}</span><h4>${esc(obj(payload.headlines)[c.key] || c.note)}</h4></div><div class="followup-logo-stack" aria-label="${esc(c.note)}">${marks}</div></div><div class="followup-issue-grid">${arr(channels[c.key]).length ? arr(channels[c.key]).slice(0, 3).map((x, j) => issueMarkup(x, j, post?.period_key || '', readSet, post?.id)).join('') : `<div class="followup-empty">${post ? '이번 주에는 확인된 핵심 변화가 없습니다.' : '첫 주간 F/U 발행을 기다리고 있습니다.'}</div>`}</div></article>`;
+    }).join('');
     if (post && !readSet.has(post.id) && typeof markRead === 'function') {
       panels.querySelectorAll('.followup-issue summary').forEach(item => item.addEventListener('click', () => {
         markRead(post.id);
