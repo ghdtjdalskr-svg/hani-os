@@ -2002,9 +2002,9 @@ $("saveBook").onclick=async()=>{
 const MOVIE_CONTENT_TYPES=["영화","드라마","애니메이션","시리즈","다큐멘터리","예능","기타"];
 function movieContentType(v,def="기타"){const s=String(v||"").trim();return MOVIE_CONTENT_TYPES.includes(s)?s:def}
 function movieSeriesMeta(m){
-  const title=String(m?.title||""),source=`${title} ${m?.review||""}`,season=source.match(/(?:시즌|season|s)\s*0*(\d+)/i),episode=source.match(/(?:에피소드|episode|ep\.?|e|제)\s*0*(\d+(?:\s*(?:,|·|\/|~|-)\s*0*\d+)*)\s*화?|\b0*(\d+(?:\s*(?:,|·|\/|~|-)\s*0*\d+)*)\s*화/i),episodeText=episode?.[1]||episode?.[2]||"",episodes=[];
-  if(!season&&!episode)return null;
-  episodeText.split(/\s*[,·\/]\s*/).filter(Boolean).forEach(part=>{const range=part.match(/^(\d+)\s*[~-]\s*(\d+)$/),start=Number(range?.[1]||part),end=Number(range?.[2]||part);if(!Number.isFinite(start)||!Number.isFinite(end))return;for(let value=Math.max(1,start);value<=Math.min(end,start+99);value++)if(!episodes.includes(value))episodes.push(value)});
+  const title=String(m?.title||""),source=`${title} ${m?.review||""}`,season=source.match(/(?:시즌|season|s)\s*0*(\d+)/i),explicitEpisodes=[...source.matchAll(/(?:에피소드|episode|ep\.?|\be|제)\s*0*(\d+(?:\s*(?:,|\/|~|-)\s*0*\d+)*)\s*화?/gi)].map(match=>match[1]),bareEpisode=explicitEpisodes.length?null:source.match(/(?:^|[^\d])0*(\d+(?:\s*(?:,|\/|~|-)\s*0*\d+)*)\s*화/i),episodeTexts=explicitEpisodes.length?explicitEpisodes:[bareEpisode?.[1]||""],episodes=[];
+  if(!season&&!episodeTexts.some(Boolean))return null;
+  episodeTexts.forEach(episodeText=>episodeText.split(/\s*[,\/]\s*/).filter(Boolean).forEach(part=>{const range=part.match(/^(\d+)\s*[~-]\s*(\d+)$/),start=Number(range?.[1]||part),end=Number(range?.[2]||part);if(!Number.isFinite(start)||!Number.isFinite(end))return;for(let value=Math.max(1,start);value<=Math.min(end,start+99);value++)if(!episodes.includes(value))episodes.push(value)}));
   const titleSeason=title.match(/(?:시즌|season|s)\s*0*\d+/i),titleEpisode=title.match(/(?:에피소드|episode|ep\.?|e|제)\s*0*\d/i),cut=[titleSeason?.index,titleEpisode?.index].filter(Number.isInteger),base=(cut.length?title.slice(0,Math.min(...cut)):title).replace(/[\s·|/:-]+$/g,"").trim();
   return {base:base||title.trim(),season:Math.max(1,Number(season?.[1]||1)),episode:episodes[0]||null,episodes};
 }
@@ -3777,7 +3777,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.126";
+const HANI_DISPLAY_VERSION="2.9.127";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
