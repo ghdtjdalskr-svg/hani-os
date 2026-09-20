@@ -3,7 +3,6 @@
   "use strict";
   const root=document.getElementById("haniOfficeLive"),map=document.getElementById("haniOfficeMap");
   if(!root||!map)return;
-  const base="./assets/ai-approval-characters/v3-animation-approved-transparent-group-";
   const people=[
     ["hani","하니","a",0,"leader",[20,21]],
     ["jieun","지은","a",1,"01",[12,55]],
@@ -56,7 +55,7 @@
   function label(actor,value,mood=false){actor.querySelector(".hani-office-status").textContent=value;actor.dataset.mood=String(mood);actor.setAttribute("aria-label",`${actor.dataset.name}: ${value}`)}
   for(const [key,name,group,row,seat,home] of people){
     const actor=document.createElement("div");actor.className="hani-office-actor";actor.dataset.person=key;actor.dataset.name=name;actor.dataset.seat=seat;actor.dataset.spot="seat";
-    const sprite=document.createElement("div");sprite.className="hani-office-sprite";sprite.style.setProperty("--sheet",`url('${base+group}.png')`);sprite.style.backgroundPosition=`0% ${["0%","50%","100%"][row]}`;sprite.dataset.row=String(row);
+    const sprite=document.createElement("div");sprite.className=`hani-office-sprite hani-office-sheet-${group}`;sprite.style.backgroundPosition=`0% ${["0%","50%","100%"][row]}`;sprite.dataset.row=String(row);
     const status=document.createElement("span");status.className="hani-office-status";actor.append(sprite,status);actorLayer.append(actor);place(actor,home);label(actor,`${statusPools[key][0].icon} ${statusPools[key][0].label}`);actors.set(key,actor);history.set(key,-1);
   }
   function changeOne(){

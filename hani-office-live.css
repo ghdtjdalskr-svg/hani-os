@@ -11,6 +11,7 @@
 .hani-office-actor{position:absolute;width:96px;height:96px;margin:-96px 0 0 -48px;transition:left 1.35s ease-in-out,top 1.35s ease-in-out,opacity .3s;pointer-events:none}
 .hani-office-actor:after{content:"";position:absolute;left:50%;bottom:3px;width:33px;height:8px;translate:-50% 0;border-radius:50%;background:rgba(41,35,59,.24);filter:blur(2px)}
 .hani-office-sprite{position:relative;z-index:1;width:96px;height:96px;background-image:var(--sheet);background-repeat:no-repeat;background-size:600% 300%;filter:drop-shadow(0 3px 3px rgba(42,36,51,.2))}
+.hani-office-sheet-a{--sheet:url("./assets/ai-approval-characters/v3-animation-approved-transparent-group-a.webp")}.hani-office-sheet-b{--sheet:url("./assets/ai-approval-characters/v3-animation-approved-transparent-group-b.webp")}.hani-office-sheet-c{--sheet:url("./assets/ai-approval-characters/v3-animation-approved-transparent-group-c.webp")}
 .hani-office-actor[data-called="true"] .hani-office-sprite{filter:drop-shadow(0 0 9px #7457d8)}
 .hani-office-status{position:absolute;z-index:12;left:50%;bottom:94px;min-width:130px;max-width:185px;translate:-50% 0;padding:7px 10px;border:1px solid #d7cbed;border-radius:12px;background:#fff;color:#352b47;box-shadow:0 8px 18px rgba(38,29,57,.17);font-size:11px;font-weight:900;text-align:center;line-height:1.25;white-space:normal}
 .hani-office-status:after{content:"";position:absolute;left:calc(50% - 5px);bottom:-6px;width:10px;height:10px;rotate:45deg;border-right:1px solid #d7cbed;border-bottom:1px solid #d7cbed;background:#fff}
