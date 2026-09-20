@@ -2,7 +2,9 @@
 
 ## 기준선
 
-- Production/Main: `4f011be` · HANI OS v2.9.123
+- 최초 구현 기준선: `4f011be` · HANI OS v2.9.123
+- 통합 기준선: `01efcec` · HANI OS v2.9.125 (자산 업데이트 변경 보존)
+- 현재 Preview 표시 버전: v2.9.126
 - 배포 Orchestrator 기준선: `hani-agent-orchestrator` v46
 - 배포 함수 원문 SHA-256: `fc36b8594ceff62fb6cdb8c3b51956ede4dd966b9e7297775554461a7decd16a` (v46/v1.8.1)
 - 구현 브랜치: `hani/meeting-engine-v2-batch1`
@@ -91,3 +93,5 @@ HANI Decision의 `deliverable_type`을 입력으로 별도 Builder가 Structured
 - 운영 v46 대비 검토 패치: `docs/hani-agent-orchestrator-meeting-engine-v2-batch1.patch`
 
 테스트는 Git의 v1.8.0 원본에 v46 재구성 패치를 적용해 배포 함수 원문 해시를 확인하고, Batch 1 패치를 적용해 시나리오를 실행한다. 실제 배포 시 재구성된 전체 소스를 사용하며 기존 `verify_jwt=false` 설정을 유지해야 한다. 이번 Preview 단계에서는 Edge Function, DB, Production을 변경하지 않는다. 적용 전 운영 함수 버전·해시를 다시 확인한다.
+
+최신 `main`과의 통합 후 결재실 시나리오 A–D, Desktop/Mobile 390 UI, 자산 업데이트 단위·브라우저 회귀 및 v2.9.125 기준 사전 QA가 통과했다. UI Preview는 fixture 기반이며 실제 운영 Case write/read-back 또는 Edge Function 배포 검증을 대신하지 않는다. 대표 Preview 승인과 별도 Release Gate 전에는 배포하지 않는다.
