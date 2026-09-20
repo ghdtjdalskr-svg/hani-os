@@ -33,5 +33,22 @@ api.patchPlaceDraft(patched,'메모는 분위기 좋아');assert.equal(patched.d
 api.patchPlaceDraft(patched,'평점은 4.5점');assert.equal(patched.data.rating,4.5);assert.equal(patched.data.reason,'분위기 좋아');
 api.patchPlaceDraft(patched,'방문일은 9월 8일');assert.match(patched.data.expectedDate,/^20\d{2}-09-08$/);assert.equal(patched.data.rating,4.5);
 api.patchPlaceDraft(patched,'장소는 새루프트리야');assert.equal(patched.data.destination,'새루프트리');assert.equal(patched.entities.location,'성남');
+
+const pending={mode:'draft',target:'book',data:{status:'wish',title:'잘못 읽은 OCR 제목',author:'OCR 저자',topic:'교양',rating:null,completedDate:'',review:'기존 메모'},entities:{readingDate:''},missing:[]};
+let result=api.patchBookDraft(pending,`책 제목 AGI, 천사인가 악마인가
+지은이 : 김대식
+평점 : 4.2
+한줄평 : AI에 대한 두려움과 경외심.
+바벨론의 탑이 생각나는 내용이었다.
+오늘 다 읽었어`);
+assert.equal(result.changed,true);assert.equal(pending.data.title,'AGI, 천사인가 악마인가');assert.equal(pending.data.author,'김대식');assert.equal(pending.data.rating,4.2);assert.equal(pending.data.review,'AI에 대한 두려움과 경외심. 바벨론의 탑이 생각나는 내용이었다.');assert.equal(pending.data.status,'read');assert.match(pending.data.completedDate,/^20\d{2}-\d{2}-\d{2}$/);assert.equal(pending.entities.readingDate,'');
+
+const inline=structuredClone(pending);api.patchBookDraft(inline,'책 제목 새 제목 지은이 새 저자');assert.equal(inline.data.title,'새 제목');assert.equal(inline.data.author,'새 저자');
+const authorOnly=structuredClone(pending),authorBefore=structuredClone(authorOnly.data);api.patchBookDraft(authorOnly,'저자: 다른 저자');assert.equal(authorOnly.data.author,'다른 저자');assert.deepEqual({...authorOnly.data,author:authorBefore.author},authorBefore);
+const completion={mode:'draft',target:'book',data:{status:'wish',title:'읽는 책',author:'저자',topic:'교양',rating:null,completedDate:'',review:'읽기 시작'},entities:{readingDate:''},missing:['readingDate']};api.patchBookDraft(completion,'오늘 다 읽었어');assert.equal(completion.data.status,'read');assert.match(completion.data.completedDate,/^20\d{2}-\d{2}-\d{2}$/);assert.equal(completion.entities.readingDate,'');assert.equal(completion.missing.length,0);
+const badOcr=structuredClone(pending);badOcr.data.title='OCR 오인식';badOcr.data.author='OCR 저자';badOcr.data.rating=null;api.patchBookDraft(badOcr,'도서명: 정확한 제목\n작가: 정확한 저자\n내 평점: 3.9');assert.equal(badOcr.data.title,'정확한 제목');assert.equal(badOcr.data.author,'정확한 저자');assert.equal(badOcr.data.rating,3.9);
+const unsafeTitle=structuredClone(pending),unsafeBefore=structuredClone(unsafeTitle.data);result=api.patchBookDraft(unsafeTitle,'제목: 새 제목 저자: 섞인 값 평점: 4.1');assert.deepEqual(unsafeTitle.data,unsafeBefore);assert.deepEqual(Array.from(result.invalid),['title']);
+const ocrOnly=api.visionDraft({confidence:.94,target_hint:'book',extracted_text:'OCR 책 제목을 오늘 다 읽었어. 외부 평점 4.8점',structured_json:JSON.stringify([{target:'book',data:{title:'OCR 책 제목',rating:4.8}}]),warnings:[]},'', 'book');assert.equal(ocrOnly.data.rating,null);
+const userRated=api.visionDraft({confidence:.94,target_hint:'book',extracted_text:'OCR 책 제목을 오늘 다 읽었어. 외부 평점 4.8점',structured_json:JSON.stringify([{target:'book',data:{title:'OCR 책 제목',rating:4.8}}]),warnings:[]},'내 평점: 4.2', 'book');assert.equal(userRated.data.rating,4.2);
 assert.equal(api.getDraftKey(),'hani_yuna_helpdesk_draft_v1');
-console.log('PASS: YUNA text/Vision, Place extraction and field patch, media regression, finance routing, isolated draft key');
+console.log('PASS: YUNA text/Vision, Book structured Preview correction 7/7, Place field patch, media regression, finance routing, isolated draft key');
