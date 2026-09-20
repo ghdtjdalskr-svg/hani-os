@@ -1,0 +1,43 @@
+diff --git a/supabase/functions/hani-agent-orchestrator/index.ts b/supabase/functions/hani-agent-orchestrator/index.ts
+index 8eced0e..f88a8a8 100644
+--- a/supabase/functions/hani-agent-orchestrator/index.ts
++++ b/supabase/functions/hani-agent-orchestrator/index.ts
+@@ -1,5 +1,5 @@
+ // PROJECT HANI
+-// hani-agent-orchestrator v1.8.0 · Investment Newsroom v0.3 + Purchase Review v2
++// hani-agent-orchestrator v1.8.1 · Investment Newsroom v0.3 + Purchase Review v2
+ // Phase 11: Adaptive Policy Engine v0.2 + confidence-weighted policy evidence.
+ // Learned rules are advisory heuristics that strengthen/weaken with evidence.
+ // Constitution / hard-stop governance remains representative-controlled.
+@@ -2751,7 +2751,6 @@ const ASSET_VISION_SCHEMA = {
+   },
+   required: ["target_hint", "confidence", "extracted_text", "financialInstitution", "accountName", "accountType", "currentAsset", "balance", "asOfDate", "purchaseAmount", "principal", "valuationAmount", "profitLoss", "returnRate", "holdings", "mismatch", "warnings", "financial_detected"],
+ };
+-
+ function validateAssetExtraction(parsed: any) {
+   const purchase = Number.isFinite(parsed?.purchaseAmount) ? parsed.purchaseAmount : parsed?.principal;
+   const current = Number.isFinite(parsed?.valuationAmount) ? parsed.valuationAmount : (Number.isFinite(parsed?.currentAsset) ? parsed.currentAsset : parsed?.balance);
+@@ -2783,7 +2782,9 @@ async function extractIntakeImage(openaiKey: string, imageDataUrl: string, targe
+     "target_hint가 auto가 아니면 그 대상을 우선 고려하되 이미지 내용과 명백히 충돌하면 warnings에 적고 실제 안전한 target_hint를 반환하세요.",
+     "structured_json은 반드시 JSON 문자열이어야 하며, 가능하면 [{\"target\":\"body\",\"data\":{...}}] 형태의 배열 문자열로 작성하세요.",
+     "body 필드: date, weight, fat, muscle. exercise: date, steps, distance, strength, note. book: title, author, status, rating, completedDate, review.",
+-    "movie: title, director, actors, status, rating, watchedDate, review, origin. diary: date, mood, title, content. wishlist: name, kind(item/experience), category, estimatedPrice, priority(high/medium/low), status(consider/planned/purchased/hold), reason, note, sourceType. travelWish: destination, reason, expectedDate, transport, places, foods, restaurants, lodging, note.",
++    "movie는 영화뿐 아니라 드라마·시리즈·애니·다큐·예능 시청 기록을 포함합니다. movie 필드: contentType, title, season, episode, director, actors, status, rating, watchedDate, review, origin. contentType은 영화/드라마/시리즈/애니/다큐/예능 중 하나로 반환하세요. season과 episode는 화면에 보이는 숫자로, rating은 0.1~5 숫자로 구조화하세요.",
++    "이미 시청한 내용(봤어/시청 완료/몇 화까지 봄/평점 표시)은 status=watched로 반환하고 wish로 분류하지 마세요. wish는 보고 싶다는 의사가 명시된 경우에만 사용하세요.",
++    "movie의 title/season/episode/rating/watchedDate 중 이미지에 없거나 흐려서 확정할 수 없는 값은 빈 문자열 또는 null로 두고, warnings에 movie.<field> 미확인 형식으로 해당 필드만 적으세요. 확실히 읽은 다른 필드는 그대로 보존하세요. diary: date, mood, title, content. wishlist: name, kind(item/experience), category, estimatedPrice, priority(high/medium/low), status(consider/planned/purchased/hold), reason, note, sourceType. travelWish: destination, reason, expectedDate, transport, places, foods, restaurants, lodging, note.",
+     "certificate: name, issuer, grade, examDate, status, resultDate, score, result. task: text, due.",
+     "university는 강의계획표·주차별 계획·과제/퀴즈/시험 공지용입니다. data는 semesterTerm, courseName, weeks, assessments 구조를 사용하세요.",
+     "university.weeks 각 항목: week, startAt, endAt, topic, lectures(문자열 배열 권장), evaluation, reference. 화면에 보이는 1교시/2교시/3교시 제목은 lectures에 순서대로 보존하세요.",
+@@ -2793,6 +2794,7 @@ async function extractIntakeImage(openaiKey: string, imageDataUrl: string, targe
+     "여러 주차가 한 이미지에 있으면 보이는 모든 주차를 weeks 배열에 빠짐없이 넣으세요. 표 머리글이나 빈 셀은 데이터로 만들지 마세요.",
+     "날짜가 이미지에 없으면 빈 문자열로 두세요. 숫자는 단위를 제거한 숫자로 넣어도 됩니다.",
+     "extracted_text에는 사람이 검토할 수 있도록 핵심 원문을 간결하게 보존하세요.",
++    "confidence는 이미지 가독성뿐 아니라 보이는 핵심 필드의 추출 완전성도 반영하세요. warnings가 있거나 화면에 보이는 title/season/episode/rating/status 중 하나라도 구조화하지 못했다면 0.79 이하로 낮추고, 핵심 내용을 거의 읽지 못했다면 0.49 이하로 낮추세요. 이미지에 애초에 없는 날짜를 만들거나 그것만으로 과신하지 마세요.",
+     "결과는 지정된 JSON Schema만 따르세요.",
+   ]).join("\n");
+ 
+@@ -4690,3 +4692,4 @@ Deno.serve(async (req) => {
+ 
+   return json({ ok: false, error: "UNKNOWN_ACTION", message: "지원하지 않는 action입니다." }, 400);
+ });
++

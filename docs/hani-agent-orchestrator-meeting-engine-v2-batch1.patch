@@ -1,0 +1,477 @@
+diff --git a/supabase/functions/hani-agent-orchestrator/index.ts b/supabase/functions/hani-agent-orchestrator/index.ts
+index f88a8a8..6af4d2b 100644
+--- a/supabase/functions/hani-agent-orchestrator/index.ts
++++ b/supabase/functions/hani-agent-orchestrator/index.ts
+@@ -1,5 +1,5 @@
+ // PROJECT HANI
+-// hani-agent-orchestrator v1.8.1 · Investment Newsroom v0.3 + Purchase Review v2
++// hani-agent-orchestrator v1.9.0 · Meeting Engine v2 Batch 1 readiness gate
+ // Phase 11: Adaptive Policy Engine v0.2 + confidence-weighted policy evidence.
+ // Learned rules are advisory heuristics that strengthen/weaken with evidence.
+ // Constitution / hard-stop governance remains representative-controlled.
+@@ -1166,6 +1166,13 @@ type VerificationOutput = {
+   research_blocking: boolean;
+   research_items: string[];
+   blocker_reason: string;
++  decision_status?: "READY" | "NEED_USER_INFO" | "NEED_RESEARCH" | "UNRESOLVED" | "HOLD";
++  ready_for_decision?: boolean;
++  blocking_questions?: string[];
++  useful_information?: string[];
++  optional_information?: string[];
++  clarification_round?: number;
++  same_case_resume?: boolean;
+ };
+ 
+ type HaniSynthesisOutput = {
+@@ -1405,7 +1412,9 @@ async function runVerification(openaiKey: string, existingCase: any, reviews: an
+     "2) conditional_checks: 결재는 가능하지만 실제 구매/Commit 직전에 확인해야 하는 조건.",
+     "3) optimization_questions: 알면 더 나은 선택이 가능하지만 없어도 결재 가능한 보조정보.",
+     "missing은 backward compatibility 필드이며 decision_blockers와 같은 내용만 넣으세요.",
+-    "consolidated_questions와 human_required_questions에는 대표만이 답할 수 있는 decision_blockers만 최대 3개 넣고 두 필드는 같은 의미로 유지하세요.",
++    "consolidated_questions와 human_required_questions에는 대표만이 답할 수 있는 decision_blockers만 중요도 순으로 최대 2개 넣고 두 필드는 같은 의미로 유지하세요.",
++    "없어도 합리적인 진행이 가능한 정보는 decision_blockers나 human_required_questions에 넣지 마세요. 품질 보강 정보는 conditional_checks, 취향·세부 조정은 optimization_questions에 넣으세요.",
++    "판정 기준은 '이 정보가 없으면 결론 또는 실행안이 크게 달라지는가'입니다. 단순히 있으면 좋은 정보는 BLOCKING이 아닙니다.",
+     "research_required_items에는 AI가 내부조회/웹조사/구매팀 탐색으로 해결해야 할 항목만 넣고 research_items와 같은 의미로 유지하세요.",
+     "대표에게 묻기 전에 정보 소유자를 먼저 판단하세요.",
+     "PURCHASE_REVIEW에서 대표에게 후보 제품명·상품 링크·판매처·현재 가격을 찾아달라고 요구하는 것은 금지합니다. 이것은 PROCUREMENT/Research 업무입니다.",
+@@ -1577,12 +1586,20 @@ function resolvedPurchaseTopics(existingCase: any): Set<string> {
+ }
+ 
+ function questionAlreadyAnswered(question: string, existingCase: any): boolean {
++  const normalize = (value: unknown) => String(value || "")
++    .toLocaleLowerCase("ko-KR")
++    .replace(/[^0-9a-z가-힣]+/gi, "")
++    .trim();
++  const key = normalize(question);
++  const memory = collectRepresentativeAnswerMemory(existingCase?.context);
++  if (key && memory.some((row) => normalize(row.question) === key && normalize(row.answer))) return true;
++
+   if (String(existingCase?.workflow || "").toUpperCase() !== "PURCHASE_REVIEW") return false;
+   const topics = purchaseQuestionTopics(question);
+   if (!topics.length) return false;
+   const resolved = resolvedPurchaseTopics(existingCase);
+-  // A question is considered answered only when all of its detected semantic topics
+-  // have previously been covered. This is conservative enough to avoid hiding genuinely new facts.
++  // Purchase questions may be paraphrased between rounds. Treat a semantic topic as
++  // answered only when every detected topic exists in Answer Memory.
+   return topics.every((topic) => resolved.has(topic));
+ }
+ 
+@@ -1610,7 +1627,6 @@ function applyHumanQuestionBudgetPolicy(
+   questions = questions.filter((q) => !questionAlreadyAnswered(String(q), existingCase));
+   blockers = blockers.filter((q) => !questionAlreadyAnswered(String(q), existingCase));
+ 
+-  const shouldBound = workflow === "PURCHASE_REVIEW" && ["LOW", "MEDIUM"].includes(risk) && (forceFinalize || humanRounds >= 2 || latestReviewRound >= 3);
+   const conditional = [...(v.conditional_checks || [])];
+   const optimization = [...(v.optimization_questions || [])];
+   const anomalies = [...(v.anomalies || [])];
+@@ -1619,17 +1635,10 @@ function applyHumanQuestionBudgetPolicy(
+     anomalies.unshift(`Answer Memory로 이미 답한 의미의 반복 질문 ${repeatedQuestions.length}개를 제거했습니다.`);
+   }
+ 
+-  if (shouldBound && (questions.length || blockers.length)) {
+-    const remaining = [...blockers, ...questions].filter((x, i, a) => a.indexOf(x) === i);
+-    for (const item of remaining.slice(0, 5)) {
+-      if (!conditional.some((x) => String(x).includes(String(item)))) {
+-        conditional.push(`구매/실행 직전 필요 시 재확인: ${item}`);
+-      }
+-    }
+-    questions = [];
+-    blockers = [];
+-    anomalies.unshift("HUMAN_REQUIRED 질문 상한을 적용해 비핵심 불확실성을 조건부 확인사항으로 전환했습니다.");
+-  }
++  // Meeting Engine v2: round count is never a reason to erase a real blocker.
++  // forceFinalize only affects soft purchase anomalies in the separate policy below.
++  // A missing fact that can change the decision remains BLOCKING and produces HOLD.
++  void workflow; void risk; void humanRounds; void forceFinalize; void latestReviewRound;
+ 
+   const researchBlocking = Boolean(v.research_blocking && candidates.length === 0);
+   const hasHardStop = (v.critical_anomalies || []).length > 0 || (v.existing_data_mismatch || []).length > 0 || (v.conflicts || []).length > 0;
+@@ -1639,10 +1648,10 @@ function applyHumanQuestionBudgetPolicy(
+   return {
+     ...v,
+     status,
+-    missing: blockers.slice(0, 3),
+-    decision_blockers: blockers.slice(0, 3),
+-    consolidated_questions: questions.slice(0, 3),
+-    human_required_questions: questions.slice(0, 3),
++    missing: blockers.slice(0, 2),
++    decision_blockers: blockers.slice(0, 2),
++    consolidated_questions: questions.slice(0, 2),
++    human_required_questions: questions.slice(0, 2),
+     conditional_checks: conditional.slice(0, 5),
+     optimization_questions: optimization.slice(0, 5),
+     anomalies: anomalies.slice(0, 5),
+@@ -1864,8 +1873,8 @@ function normalizeVerification(v: VerificationOutput): VerificationOutput {
+     ...v,
+     missing,
+     decision_blockers: blockers,
+-    consolidated_questions: questions.slice(0, 3),
+-    human_required_questions: questions.slice(0, 3),
++    consolidated_questions: questions.slice(0, 2),
++    human_required_questions: questions.slice(0, 2),
+     research_items: researchItems.slice(0, 8),
+     research_required_items: researchItems.slice(0, 8),
+     research_needed: Boolean(v.research_needed || researchItems.length),
+@@ -1879,6 +1888,61 @@ function normalizeVerification(v: VerificationOutput): VerificationOutput {
+   };
+ }
+ 
++type DecisionReadinessStatus = "READY" | "NEED_USER_INFO" | "NEED_RESEARCH" | "UNRESOLVED" | "HOLD";
++
++function applyDecisionReadinessGate(
++  v: VerificationOutput,
++  existingCase: any,
++  latestReviewRound: number,
++): VerificationOutput {
++  const unique = (items: unknown[], limit: number) => [...new Set(
++    (Array.isArray(items) ? items : [])
++      .map((item) => cleanText(item, 1000))
++      .filter(Boolean),
++  )].slice(0, limit);
++  const questions = unique([
++    ...((v.human_required_questions?.length ? v.human_required_questions : v.consolidated_questions) || []),
++    ...(v.decision_blockers || []),
++  ], 2);
++  const blockers = unique([...(v.decision_blockers || []), ...questions], 2);
++  const useful = unique(v.conditional_checks || [], 5);
++  const optional = unique(v.optimization_questions || [], 5);
++  const hasIntegrityStop = (v.critical_anomalies || []).length > 0 ||
++    (v.existing_data_mismatch || []).length > 0 || v.status === "FAIL";
++
++  let decisionStatus: DecisionReadinessStatus = "READY";
++  if (hasIntegrityStop) decisionStatus = "HOLD";
++  else if ((v.conflicts || []).length > 0 || v.status === "CONFLICT") decisionStatus = "UNRESOLVED";
++  else if (questions.length > 0 || blockers.length > 0) decisionStatus = "NEED_USER_INFO";
++  else if (v.research_blocking) decisionStatus = "NEED_RESEARCH";
++  else if (v.status !== "PASS") decisionStatus = "HOLD";
++
++  const ready = decisionStatus === "READY";
++  const context = asObject(existingCase?.context);
++  return {
++    ...v,
++    status: ready ? "PASS" : v.status,
++    missing: blockers,
++    decision_blockers: blockers,
++    consolidated_questions: questions,
++    human_required_questions: questions,
++    decision_status: decisionStatus,
++    ready_for_decision: ready,
++    blocking_questions: questions,
++    useful_information: useful,
++    optional_information: optional,
++    clarification_round: Math.max(
++      Number((context as any).human_question_round_count || 0),
++      Math.max(0, latestReviewRound - 1),
++    ),
++    same_case_resume: true,
++    blocker_reason: ready ? "" : String(v.blocker_reason || blockers[0] ||
++      (decisionStatus === "NEED_RESEARCH" ? "최신 자료 확인이 필요합니다." :
++      decisionStatus === "UNRESOLVED" ? "중요한 이견이 아직 해소되지 않았습니다." :
++      "현재 정보로 실행 가능한 결론을 만들 수 없습니다.")),
++  };
++}
++
+ type PurchaseAxis = { key: string; label: string; emoji: string; weight: number; reason: string };
+ 
+ function purchaseModeFromCase(existingCase: any): string {
+@@ -3486,7 +3550,11 @@ Deno.serve(async (req) => {
+     const caseAdjusted = applyCasePolicyToVerification(raw, existingCase.context);
+     const owned = applyInformationOwnershipPolicy(caseAdjusted, existingCase);
+     const bounded = applyHumanQuestionBudgetPolicy(owned, existingCase, latestReviewRound, false);
+-    const verification = normalizeVerification(bounded);
++    const verification = applyDecisionReadinessGate(
++      normalizeVerification(bounded),
++      existingCase,
++      latestReviewRound,
++    );
+     const humanQuestions = verification.human_required_questions || verification.consolidated_questions || [];
+     const researchItems = verification.research_required_items || verification.research_items || [];
+ 
+@@ -3496,7 +3564,7 @@ Deno.serve(async (req) => {
+         verification_status: verification.status,
+         verification: { ...verification, stage: "PREFLIGHT", preflight_at: new Date().toISOString() },
+         hani_final: {},
+-        status: "REVIEW_COMPLETE",
++        status: verification.decision_status === "READY" ? "REVIEW_COMPLETE" : "HELD",
+       })
+       .eq("id", existingCase.id).eq("user_id", auth.user.id)
+       .select("id,case_code,status,verification_status,verification,updated_at").single();
+@@ -3504,19 +3572,21 @@ Deno.serve(async (req) => {
+ 
+     await admin.from("hani_agent_events").insert({
+       user_id: auth.user.id, case_id: existingCase.id,
+-      event_type: "PURPOSE_PREFLIGHT_COMPLETED", actor_type: "UTILITY", actor_key: "PREFLIGHT_V0.9.1",
+-      payload: { review_round: latestReviewRound, human_required_count: humanQuestions.length, research_required_count: researchItems.length, research_blocking: verification.research_blocking },
++      event_type: "DECISION_READINESS_CHECKED", actor_type: "UTILITY", actor_key: "READINESS_GATE_V2.0",
++      payload: { stage: "PREFLIGHT", decision_status: verification.decision_status, ready_for_decision: verification.ready_for_decision, review_round: latestReviewRound, human_required_count: humanQuestions.length, research_required_count: researchItems.length, research_blocking: verification.research_blocking },
+     });
+ 
+     return json({
+-      ok: true, service: "PROJECT HANI", function: "hani-agent-orchestrator", version: "1.7.0",
++      ok: true, service: "PROJECT HANI", function: "hani-agent-orchestrator", version: "1.9.0",
+       action: "PREFLIGHT_CASE", case: updatedCase, verification: updatedCase.verification,
+       human_required_questions: humanQuestions, research_required_items: researchItems,
+       can_auto_research: humanQuestions.length === 0 && (verification.research_needed || researchItems.length > 0),
+       hani_state_touched: false,
+       message: humanQuestions.length
+-        ? "대표만 알 수 있는 구매 목적/사용환경을 먼저 확인합니다. 제품 후보 탐색은 답변 후 AI 구매팀이 수행합니다."
+-        : "대표 추가질문 없이 AI 구매팀/Research 단계로 진행할 수 있습니다.",
++        ? "결론을 바꿀 수 있는 핵심 정보가 필요합니다. 같은 Case에서 답변 후 회의를 이어갑니다."
++        : verification.decision_status === "NEED_RESEARCH"
++        ? "대표 질문 대신 최신 자료 확인이 필요합니다. 같은 Case에서 Research 후 이어갑니다."
++        : "Decision Readiness Gate를 통과해 다음 검토 단계로 진행할 수 있습니다.",
+     });
+   }
+ 
+@@ -3781,7 +3851,7 @@ Deno.serve(async (req) => {
+       return json({ ok: false, error: "CASE_NOT_FOUND", message: "본인 소유의 안건을 찾지 못했습니다." }, 404);
+     }
+ 
+-    if (existingCase.status !== "REVIEW_COMPLETE") {
++    if (!["REVIEW_COMPLETE", "HELD"].includes(existingCase.status)) {
+       return json({
+         ok: false,
+         error: "INVALID_CASE_STATUS",
+@@ -3804,7 +3874,7 @@ Deno.serve(async (req) => {
+       }, 409);
+     }
+ 
+-    if (forceReverify && existingCase.status !== "REVIEW_COMPLETE") {
++    if (forceReverify && !["REVIEW_COMPLETE", "HELD"].includes(existingCase.status)) {
+       return json({
+         ok: false,
+         error: "REVERIFY_STATUS_BLOCKED",
+@@ -3868,7 +3938,11 @@ Deno.serve(async (req) => {
+         existingCase,
+         forceFinalizeWithCurrentContext,
+       );
+-      verification = normalizeVerification(forceFinalizedVerification);
++      verification = applyDecisionReadinessGate(
++        normalizeVerification(forceFinalizedVerification),
++        existingCase,
++        latestReviewRound,
++      );
+       verificationNormalized =
+         rawVerification.status !== verification.status ||
+         JSON.stringify(rawVerification.decision_blockers || []) !==
+@@ -3876,49 +3950,57 @@ Deno.serve(async (req) => {
+         JSON.stringify(rawVerification.consolidated_questions || []) !==
+           JSON.stringify(verification.consolidated_questions || []);
+ 
+-      // 3) HANI synthesizes against the FINAL normalized Verification,
+-      //    never against the raw model verdict.
+-      haniResult = await runHaniSynthesis(
+-        openaiKey,
+-        existingCase,
+-        reviews,
+-        verification,
+-      );
++      // 3) HANI Decision is created only after the readiness gate passes.
++      //    NEED_USER_INFO / NEED_RESEARCH / UNRESOLVED / HOLD are valid outcomes,
++      //    not incomplete drafts that should be disguised as a final decision.
++      if (verification.decision_status === "READY" && verification.ready_for_decision === true) {
++        haniResult = await runHaniSynthesis(
++          openaiKey,
++          existingCase,
++          reviews,
++          verification,
++        );
++      }
+     } catch (e) {
+       console.error("verify_and_synthesize OpenAI failure", e);
+       return json({
+         ok: false,
+-        error: "VERIFY_SYNTHESIS_GENERATION_FAILED",
+-        message: e instanceof Error ? e.message : "Verification/HANI Synthesis 생성에 실패했습니다.",
++        error: "READINESS_OR_SYNTHESIS_GENERATION_FAILED",
++        message: e instanceof Error ? e.message : "Decision Readiness 또는 HANI Synthesis 생성에 실패했습니다.",
+         db_write: false,
+         hani_state_touched: false,
+       }, 502);
+     }
+ 
+-    const parsedHani = { ...haniResult.parsed } as HaniSynthesisOutput;
+-    if (verification.status === "PASS") {
++    let haniFinal: any = {};
++    if (haniResult) {
++      const parsedHani = { ...haniResult.parsed } as HaniSynthesisOutput;
+       parsedHani.representative_questions = [];
+-      if (parsedHani.recommendation === "NEEDS_DATA") parsedHani.recommendation = "CONDITIONAL";
+-      parsedHani.ready_for_decision = true;
++      if (parsedHani.ready_for_decision !== true) {
++        verification.decision_status = "HOLD";
++        verification.ready_for_decision = false;
++        verification.blocker_reason = String(parsedHani.executive_summary || "하니 종합 검토에서 결정 준비가 되지 않았습니다.");
++        haniResult = null;
++      } else {
++        if (parsedHani.recommendation === "NEEDS_DATA") parsedHani.recommendation = "CONDITIONAL";
++        const scorecard = purchaseScorecard(existingCase, reviews, parsedHani);
++        haniFinal = {
++          ...parsedHani,
++          ...(scorecard ? { purchase_scorecard: scorecard } : {}),
++          generated_by: "HANI",
++          display_name: "하니",
++          rank: "부장",
++          role: "CHIEF_OF_STAFF",
++          provider: "OPENAI",
++          model: haniResult.model,
++          generated_at: new Date().toISOString(),
++          verification_status: verification.status,
++          decision_status: verification.decision_status,
++        };
++      }
+     }
+-    const scorecard = purchaseScorecard(existingCase, reviews, parsedHani);
+-    const haniFinal = {
+-      ...parsedHani,
+-      ...(scorecard ? { purchase_scorecard: scorecard } : {}),
+-      generated_by: "HANI",
+-      display_name: "하니",
+-      rank: "부장",
+-      role: "CHIEF_OF_STAFF",
+-      provider: "OPENAI",
+-      model: haniResult.model,
+-      generated_at: new Date().toISOString(),
+-      verification_status: verification.status,
+-    };
+ 
+-    const nextStatus =
+-      verification.status === "PASS" && haniFinal.ready_for_decision
+-        ? "AWAITING_APPROVAL"
+-        : "REVIEW_COMPLETE";
++    const nextStatus = haniResult ? "AWAITING_APPROVAL" : "HELD";
+ 
+     const { data: updatedCase, error: updateError } = await admin
+       .from("hani_agent_cases")
+@@ -3949,19 +4031,19 @@ Deno.serve(async (req) => {
+       admin,
+       auth.user.id,
+       existingCase,
+-      haniFinal.policy_learning_candidates,
++      haniFinal.policy_learning_candidates || [],
+     );
+     const policyEvidenceUpdate = await applyPolicyEvidence(
+       admin,
+       auth.user.id,
+       existingCase,
+-      haniFinal.policy_evidence,
++      haniFinal.policy_evidence || [],
+     );
+     await recordPolicyApplications(admin, auth.user.id, existingCase);
+ 
+     const usage = usageTotals([
+       { usage: verificationResult.usage },
+-      { usage: haniResult.usage },
++      { usage: haniResult?.usage },
+     ]);
+ 
+     const eventRows = [
+@@ -3973,6 +4055,8 @@ Deno.serve(async (req) => {
+         actor_key: "VERIFICATION_ENGINE_V1.2.0",
+         payload: {
+           status: verification.status,
++          decision_status: verification.decision_status,
++          ready_for_decision: verification.ready_for_decision,
+           raw_status: rawVerification.status,
+           normalized: verificationNormalized,
+           case_policy_applied: true,
+@@ -3991,7 +4075,7 @@ Deno.serve(async (req) => {
+           model: verificationResult.model,
+         },
+       },
+-      {
++      ...(haniResult ? [{
+         user_id: auth.user.id,
+         case_id: existingCase.id,
+         event_type: "HANI_SYNTHESIS_COMPLETED",
+@@ -4007,7 +4091,20 @@ Deno.serve(async (req) => {
+           verification_input_status: verification.status,
+           raw_verification_status: rawVerification.status,
+         },
+-      },
++      }] : [{
++        user_id: auth.user.id,
++        case_id: existingCase.id,
++        event_type: "HANI_SYNTHESIS_DEFERRED",
++        actor_type: "UTILITY",
++        actor_key: "READINESS_GATE_V2.0",
++        payload: {
++          decision_status: verification.decision_status,
++          blocker_reason: verification.blocker_reason,
++          review_round: latestReviewRound,
++          same_case_resume: true,
++          next_status: nextStatus,
++        },
++      }]),
+       ...(policySync.created > 0 ? [{
+         user_id: auth.user.id,
+         case_id: existingCase.id,
+@@ -4031,7 +4128,7 @@ Deno.serve(async (req) => {
+       ok: true,
+       service: "PROJECT HANI",
+       function: "hani-agent-orchestrator",
+-      version: "1.7.0",
++      version: "1.9.0",
+       action: "VERIFY_AND_SYNTHESIZE",
+       case: {
+         id: updatedCase.id,
+@@ -4043,6 +4140,8 @@ Deno.serve(async (req) => {
+       verification_normalized: verificationNormalized,
+       raw_verification_status: rawVerification.status,
+       hani_verification_input_status: verification.status,
++      decision_status: verification.decision_status,
++      ready_for_decision: verification.ready_for_decision,
+       verification_triage: {
+         decision_blockers: verification.decision_blockers.length,
+         conditional_checks: verification.conditional_checks.length,
+@@ -4066,8 +4165,8 @@ Deno.serve(async (req) => {
+       representative_decision_created: false,
+       commit_executed: false,
+       message: updatedCase.status === "AWAITING_APPROVAL"
+-        ? "Verification과 하니 부장 Executive Synthesis가 완료되어 대표 결재 대기 상태입니다."
+-        : "Verification과 하니 부장 Executive Synthesis가 완료되었습니다. 실제 의사결정 차단 정보가 남아 있어 아직 대표 결재 단계로 넘기지 않았습니다.",
++        ? "Decision Readiness Gate를 통과해 하니 부장 Decision과 대표 결재 대기 상태가 준비됐습니다."
++        : `${verification.decision_status}: 결론을 만들지 않고 같은 Case를 안전하게 대기합니다.`,
+     });
+   }
+ 
+@@ -4095,7 +4194,7 @@ Deno.serve(async (req) => {
+       return json({ ok: false, error: "CASE_NOT_FOUND", message: "본인 소유의 안건을 찾지 못했습니다." }, 404);
+     }
+ 
+-    if (!["REVIEW_COMPLETE", "ANALYZING"].includes(existingCase.status)) {
++    if (!["REVIEW_COMPLETE", "ANALYZING", "HELD"].includes(existingCase.status)) {
+       return json({
+         ok: false,
+         error: "INVALID_CASE_STATUS",
+@@ -4198,7 +4297,7 @@ Deno.serve(async (req) => {
+     // Auto-Research runs AFTER round-1 reviews, and run_reviews intentionally moves
+     // the case to REVIEW_COMPLETE. Therefore Research must accept both states.
+     // research_case itself returns the case to ANALYZING before round-2 reviews.
+-    if (!["ANALYZING", "REVIEW_COMPLETE"].includes(existingCase.status)) {
++    if (!["ANALYZING", "REVIEW_COMPLETE", "HELD"].includes(existingCase.status)) {
+       return json({ ok: false, error: "INVALID_CASE_STATUS", message: `현재 상태(${existingCase.status})에서는 Research를 실행하지 않습니다.` }, 409);
+     }
+ 
+@@ -4459,13 +4558,15 @@ Deno.serve(async (req) => {
+     const aiRecommendation = cleanText((haniFinal as any).recommendation, 32).toUpperCase();
+ 
+     // Representative Decision is a human governance action, not an automatic Commit.
+-    // A non-PASS Verification may still be approved/held/rejected/revised as an explicit override;
+-    // the override flag preserves that fact and hani_state is never auto-committed here.
+-    if (existingCase.status === "AWAITING_APPROVAL" && (haniFinal as any).ready_for_decision !== true) {
++    // Meeting Engine v2 never permits APPROVE before both gates pass. HOLD/REJECT/
++    // REVISION_REQUESTED remain human governance actions and still never auto-commit.
++    const decisionReady = existingCase.verification_status === "PASS" &&
++      (haniFinal as any).ready_for_decision === true;
++    if (representativeDecision === "APPROVE" && !decisionReady) {
+       return json({
+         ok: false,
+-        error: "HANI_NOT_READY",
+-        message: "하니 Executive Synthesis가 결재 준비 상태가 아닙니다.",
++        error: "DECISION_READINESS_REQUIRED",
++        message: "Decision Readiness Gate와 Verification PASS 전에는 승인할 수 없습니다.",
+       }, 409);
+     }
+ 
