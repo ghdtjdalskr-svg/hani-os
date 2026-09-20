@@ -65,6 +65,8 @@ index 30b3086..8eced0e 100644
 +    "카드 결제내역·영수증·소비내역·가계부 입력은 지원하지 말고, 모든 자산 필드를 null로 두고 warnings에 지원 범위 밖이라고 적으세요.",
 +    "화면에 실제로 보이는 값만 반환하세요. 못 읽은 값은 null이며 이름·날짜·숫자를 추측하지 마세요.",
 +    "currentAsset와 balance 중 화면 의미에 맞는 필드를 사용하고, 투자 화면은 purchaseAmount/principal/valuationAmount/profitLoss/returnRate를 보이는 경우에만 채우세요.",
++    "증권 계좌 요약의 총평가금액·총자산은 currentAsset, 예수금·현금잔고는 balance, 주식·펀드 평가금액은 valuationAmount로 구분하세요. 서로 더하거나 같은 값으로 복제하지 마세요.",
++    "한 종목의 평가금액을 계좌 전체 currentAsset로 올리지 마세요. 계좌번호가 보이면 extracted_text에 그대로 포함해 여러 화면이 같은 계좌인지 검증할 수 있게 하세요.",
 +    "화면 숫자를 산술적으로 고치지 마세요. 불일치는 원본값을 보존한 채 mismatch와 warnings로 알립니다.",
 +    "financial_detected는 true, target_hint는 asset으로 반환하세요. 저장이나 DB 쓰기는 하지 않습니다.",
 +  ] : [
