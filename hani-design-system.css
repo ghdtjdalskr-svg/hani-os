@@ -281,11 +281,19 @@ body[data-view=home] #aiBanner{display:none!important}
 #app #travel .travel-wish-copy p{margin:0;color:var(--ds-ink);font-size:13px;line-height:1.6;white-space:pre-wrap}
 #app #travel .travel-planning-note{margin-bottom:14px;background:linear-gradient(135deg,#fff,var(--travel-sand))}
 #app #travel .travel-planning-note textarea{min-height:110px}
-#app #travel .travel-archive-grid{grid-template-columns:repeat(auto-fill,minmax(265px,1fr))}
-#app #travel .travel-archive-card{min-height:215px;border-color:color-mix(in srgb,var(--travel-warm) 18%,white);background:linear-gradient(150deg,#fff,var(--travel-sand));box-shadow:var(--ds-shadow)}
+#app #travel .travel-archive-toolbar{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+#app #travel .travel-place-list{display:grid;gap:8px;margin-top:12px}
+#app #travel .travel-place-row{display:grid;grid-template-columns:minmax(230px,1.5fr) 92px minmax(170px,1.3fr) minmax(125px,.9fr) auto;align-items:center;gap:14px;padding:14px 16px;border:1px solid color-mix(in srgb,var(--travel-deep) 17%,white);border-radius:15px;background:linear-gradient(110deg,#fff,var(--travel-sand));box-shadow:var(--ds-shadow)}
+#app #travel .travel-place-primary{display:flex;align-items:center;gap:12px;min-width:0}
+#app #travel .travel-place-primary h4{font-size:16px!important;line-height:1.35;margin:0 0 4px;overflow-wrap:anywhere}
+#app #travel .travel-place-primary small,#app #travel .travel-place-detail small,#app #travel .travel-place-source small{display:block;color:var(--ds-muted);font-size:11px;line-height:1.45}
+#app #travel .travel-place-rating{font-size:16px;font-weight:900;color:#ac641c;white-space:nowrap}
+#app #travel .travel-place-detail{min-width:0}
+#app #travel .travel-place-detail b{display:block;margin-bottom:4px;font-size:12px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#app #travel .travel-place-source{display:grid;gap:3px}
+#app #travel .travel-place-actions{display:flex;gap:5px;justify-content:flex-end;white-space:nowrap}
+#app #travel .travel-place-actions .btn{min-width:0;padding:7px 9px!important}
 #app #travel .travel-archive-type{background:color-mix(in srgb,var(--travel-warm) 12%,white);color:#a75c18}
-#app #travel .travel-archive-trip{max-width:58%;color:var(--travel-deep)}
-#app #travel .travel-archive-card h4{font-size:19px!important}
 #travelTripDetailModal .modal-card{width:min(1120px,100%)!important}
 #travelTripDetailModal .travel-detail-columns{grid-template-columns:1fr}
 #travelTripDetailModal .travel-itinerary-table-wrap{margin-top:10px;border:1px solid var(--line);border-radius:15px;overflow:auto;background:#fff}
@@ -302,7 +310,11 @@ body[data-view=home] #aiBanner{display:none!important}
  #app #travel .module-kpi{padding:12px}
  #app #travel .travel-card{min-height:0;padding:16px}
  #app #travel .travel-archive-toolbar{grid-template-columns:1fr}
- #app #travel .travel-archive-trip{max-width:62%}
+ #app #travel .travel-place-row{grid-template-columns:1fr auto;gap:10px}
+ #app #travel .travel-place-primary{grid-column:1/-1}
+ #app #travel .travel-place-detail{grid-column:1/-1}
+ #app #travel .travel-place-source{grid-column:1}
+ #app #travel .travel-place-actions{grid-column:2;align-self:end}
  #travelTripDetailModal .travel-itinerary-table-wrap{border:0;overflow:visible;background:transparent}
  #travelTripDetailModal .travel-itinerary-table{display:block;min-width:0}
  #travelTripDetailModal .travel-itinerary-table thead{display:none}
