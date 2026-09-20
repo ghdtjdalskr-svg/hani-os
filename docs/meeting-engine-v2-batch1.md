@@ -88,6 +88,7 @@ HANI Decision의 `deliverable_type`을 입력으로 별도 Builder가 Structured
 - 클라이언트 시나리오: `node scripts/hani-meeting-engine-v2-client.test.mjs`
 - 서버 패치 재구성 시나리오: `node scripts/hani-meeting-engine-v2-batch1.test.mjs`
 - Desktop/Mobile UI: `node scripts/hani-meeting-engine-v2-ui-smoke.mjs`
+- 정적 Preview의 연속 답변 전환: `node scripts/hani-meeting-preview-regression.mjs`
 - 정적 설명 Preview: `docs/ai-approval-meeting-engine-v2-batch1-preview.html` (운영 Case와 분리)
 - 운영 v46 재구성 패치: `docs/hani-agent-orchestrator-v46-baseline.patch`
 - 운영 v46 대비 검토 패치: `docs/hani-agent-orchestrator-meeting-engine-v2-batch1.patch`
@@ -95,3 +96,5 @@ HANI Decision의 `deliverable_type`을 입력으로 별도 Builder가 Structured
 테스트는 Git의 v1.8.0 원본에 v46 재구성 패치를 적용해 배포 함수 원문 해시를 확인하고, Batch 1 패치를 적용해 시나리오를 실행한다. 실제 배포 시 재구성된 전체 소스를 사용하며 기존 `verify_jwt=false` 설정을 유지해야 한다. 이번 Preview 단계에서는 Edge Function, DB, Production을 변경하지 않는다. 적용 전 운영 함수 버전·해시를 다시 확인한다.
 
 최신 `main`과의 통합 후 결재실 시나리오 A–D, Desktop/Mobile 390 UI, 자산 업데이트 단위·브라우저 회귀 및 v2.9.125 기준 사전 QA가 통과했다. UI Preview는 fixture 기반이며 실제 운영 Case write/read-back 또는 Edge Function 배포 검증을 대신하지 않는다. 대표 Preview 승인과 별도 Release Gate 전에는 배포하지 않는다.
+
+Preview의 오사카 Case는 답변을 두 번 받아 다음 질문과 시연용 READY 상태까지 이동한다. 입력은 페이지 메모리에만 보관하며 실제 AI 판정이나 Case 저장으로 오인되지 않도록 화면에 명시했다.
