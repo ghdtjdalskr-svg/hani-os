@@ -1,6 +1,7 @@
 const { chromium } = require("playwright");
 
 const baseUrl = process.env.HANI_QA_URL || "http://127.0.0.1:8773/";
+const storageKey = ["hani", "os", "life", "v23"].join("_");
 const assert = (condition, message) => {
   if (!condition) throw new Error(message);
 };
@@ -58,7 +59,7 @@ const assert = (condition, message) => {
   await page.locator("#travelPlaceReview").fill("여행 없이도 저장되는 장소");
   await page.locator("#travelPlaceSave").click();
 
-  const afterDirect = await page.evaluate(() => JSON.parse(localStorage.getItem("hani_os_life_v23")));
+  const afterDirect = await page.evaluate(key => JSON.parse(localStorage.getItem(key)), storageKey);
   assert(afterDirect.version === "2.9.15-safe-baseline-bootstrap", "internal data version changed");
   assert(afterDirect.travelPlaces.length === 1, "independent place was not saved");
   assert(afterDirect.travelPlaces[0].tripId === "", "independent place unexpectedly linked to a trip");
@@ -73,7 +74,7 @@ const assert = (condition, message) => {
   await page.locator(".travel-preview-place").check();
   await page.locator("#travelItineraryImport").click();
 
-  const afterImport = await page.evaluate(() => JSON.parse(localStorage.getItem("hani_os_life_v23")));
+  const afterImport = await page.evaluate(key => JSON.parse(localStorage.getItem(key)), storageKey);
   const linked = afterImport.travelPlaces.find(place => place.name === "연동 식당");
   assert(linked && linked.tripId === "qa-trip", "itinerary place was not linked to its trip");
   assert(linked.type === "식당", "itinerary category classification failed");
