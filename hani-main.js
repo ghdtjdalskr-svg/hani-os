@@ -1314,7 +1314,7 @@ function investmentNewsMarkRead(entity,item){if(item?._archive_post_id){investme
 function investmentNewsHaniView(entity,item){if(item?._archive_post_id)return String(item.hani_view||"").trim()||"HANI View 대기";const store=investmentNewsSocialRead(),saved=store[item._news_key||investmentNewsEventKey(entity,item)],view=String(saved?.hani_view||item.hani_view||"").trim();return view||"v0.3 서버 브리핑 적용 후 HANI View가 표시됩니다."}
 
 let investmentNewsArchiveRuntime={loading:false,loaded:false,error:"",loadedAt:0,posts:[],readSet:new Set(),weeklySelectedId:""};
-function investmentNewsArchivePosts(type=""){const rows=agentArray(investmentNewsArchiveRuntime.posts);return (type?rows.filter(x=>x.post_type===type):rows).sort((a,b)=>String(b.published_at||b.created_at||"").localeCompare(String(a.published_at||a.created_at||"")))}
+function investmentNewsArchivePosts(type=""){const rows=agentArray(investmentNewsArchiveRuntime.posts);return (type?rows.filter(x=>x.post_type===type&&!(type==="WEEKLY"&&agentObj(agentObj(x.payload).company_followup).version===1)):rows).sort((a,b)=>String(b.published_at||b.created_at||"").localeCompare(String(a.published_at||a.created_at||"")))}
 function investmentNewsArchiveInterestRows(){return investmentNewsArchivePosts("INTEREST").map(p=>{const meta=agentObj(p.payload),item={title:p.title||"",summary:p.summary||"",why_it_matters:p.why_it_matters||"",hani_view:p.hani_view||"",published_at:p.event_at||p.published_at||"",source_name:p.source_name||"",source_url:p.source_url||"",source_verified:p.source_verified===true,source_grade:p.source_grade||"MEDIA",sentiment:p.sentiment||"NEUTRAL",importance:n(p.importance)||1,event_type:meta.event_type||"NEWS",scope:meta.scope||"COMPANY_COMMON",comments:agentArray(p.comments),_archive_post_id:p.id,_archive_payload:meta},entity={name:p.entity_name||p.ticker||"종목",ticker:p.ticker||"",market:p.market||"OTHER",issuer_name:meta.issuer_name||p.entity_name||"",issuer_ticker:meta.issuer_ticker||p.ticker||"",security_type:meta.security_type||"OTHER",signal:meta.signal||p.sentiment||"NEUTRAL",summary:meta.entity_summary||p.summary||"",watch_point:meta.watch_point||""};return {entity,item,postId:p.id}})}
 function investmentNewsArchiveEntities(rows=investmentNewsArchiveInterestRows()){const m=new Map();for(const r of rows){const key=r.entity.ticker||r.entity.name;if(!m.has(key))m.set(key,{...r.entity,signal:r.item.sentiment||r.entity.signal,summary:r.entity.summary||r.item.summary,news:[]});m.get(key).news.push(r.item)}return [...m.values()]}
 function investmentNewsArchiveIsRead(item){const id=item?._archive_post_id;return !!id&&investmentNewsArchiveRuntime.readSet instanceof Set&&investmentNewsArchiveRuntime.readSet.has(id)}
@@ -1386,6 +1386,7 @@ function investmentNewsFiveDayBrief(entity={}){
 }
 function renderInvestmentNews(){
   if(!$("investmentNewsFeed"))return;
+  window.HANI_COMPANY_FOLLOWUP_RENDER?.(investmentNewsArchiveRuntime.posts,investmentNewsArchiveRuntime.readSet,investmentNewsArchiveRuntime.loading,investmentNewsArchiveRuntime.error,id=>investmentNewsArchiveMarkRead({_archive_post_id:id}));
   const targets=investmentNewsTargets(),cache=investmentNewsReadCache(),data=investmentNewsAttachStableSocial(agentObj(cache?.data)),fresh=investmentNewsCacheFresh(cache,targets),archiveRows=investmentNewsArchiveInterestRows(),archiveActive=investmentNewsArchiveRuntime.loaded&&archiveRows.length>0,entities=archiveActive?investmentNewsArchiveEntities(archiveRows):agentArray(data.entities),mode=state.ui.investmentNewsMode==="general"?"general":"interest";
   state.ui.investmentNewsMode=mode;
   document.querySelectorAll("[data-newsroom-mode]").forEach(btn=>{
@@ -3778,7 +3779,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.128";
+const HANI_DISPLAY_VERSION="2.9.129";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
