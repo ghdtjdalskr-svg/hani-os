@@ -1,5 +1,5 @@
 /* =========================================================
-   HANI OS v2.9.123 · Learning Board v1.2
+   HANI OS v2.9.133 · Learning Board v1.3
    Backward-compatible state extension only.
    - learningProjects
    - learningQuizzes
@@ -13,7 +13,7 @@
 
   const PATCH_ID = 'HANI_STUDY_V02984';
   const STYLE_ID = 'hani-study-v02984-style';
-  const VERSION = '2.9.123';
+  const VERSION = '2.9.133';
   if (window[PATCH_ID]) return;
   window[PATCH_ID] = true;
 
@@ -206,32 +206,78 @@
   }
 
   const PROMPT_STOP_WORDS = new Set(['다음','가장','대한','관한','설명','것은','것으로','보기','옳은','옳지','적절한','적절하지','고르시오','무엇인가','해당하는','있는','없는','경우','문항','문제']);
-  function normalizePromptText(value) { return String(value || '').toLowerCase().replace(/[^0-9a-z가-힣]+/g, ' ').replace(/\s+/g, ' ').trim(); }
+  function normalizePromptText(value) { return String(value || '').normalize('NFKC').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').replace(/\s+/g, ' ').trim(); }
   function promptFingerprint(value) { return normalizePromptText(value).split(' ').filter(x => x.length > 1 && !PROMPT_STOP_WORDS.has(x)); }
-  function tooSimilarPrompt(a, b) {
-    const normalizedA=normalizePromptText(a),normalizedB=normalizePromptText(b);
-    if(!normalizedA||!normalizedB)return false;
-    if(normalizedA===normalizedB)return true;
-    const aa=new Set(promptFingerprint(a)),bb=new Set(promptFingerprint(b));
-    if(Math.min(aa.size,bb.size)<5)return false;
-    let same=0;aa.forEach(x=>{if(bb.has(x))same++});
-    const containment=same/Math.min(aa.size,bb.size),jaccard=same/(aa.size+bb.size-same);
-    return containment>=.92&&jaccard>=.72;
+  function overlapRatio(a,b) { const aa=new Set(a),bb=new Set(b);if(!aa.size||!bb.size)return 0;let same=0;aa.forEach(x=>{if(bb.has(x))same++});return same/Math.max(aa.size,bb.size); }
+  function promptSimilarity(a,b) {
+    const left=normalizePromptText(a),right=normalizePromptText(b);
+    if(!left||!right)return 0;
+    if(left===right)return 1;
+    const grams=text=>{const compact=text.replace(/\s/g,'');return Array.from({length:Math.max(0,compact.length-1)},(_,i)=>compact.slice(i,i+2))};
+    return overlapRatio(grams(left),grams(right));
   }
+  function correctChoice(question) { return normalizePromptText(question?.choices?.[question.answerIndex]||''); }
+  function duplicateLevel(a,b) {
+    const promptA=normalizePromptText(a?.prompt),promptB=normalizePromptText(b?.prompt);
+    if(!promptA||!promptB)return 'new';
+    const answerA=correctChoice(a),answerB=correctChoice(b);
+    const optionsA=(a.choices||[]).map(normalizePromptText),optionsB=(b.choices||[]).map(normalizePromptText);
+    const sameAnswer=!!answerA&&answerA===answerB;
+    const optionOverlap=overlapRatio(optionsA,optionsB);
+    if(promptA===promptB&&sameAnswer&&optionOverlap===1)return 'exact';
+    if(promptA===promptB)return 'near';
+    if(sameAnswer&&optionOverlap>=.75&&promptSimilarity(promptA,promptB)>=.82)return 'near';
+    return 'new';
+  }
+  function tooSimilarPrompt(a,b) { return normalizePromptText(a)===normalizePromptText(b)&&!!normalizePromptText(a); }
   function duplicateQuestionError(index, scope, prompt) {
     const error=new Error(`${index+1}번 문제가 ${scope} 문제와 실질적으로 중복되어 새 구성으로 다시 요청합니다.`);
     error.code='QUESTION_SIMILARITY';
     error.duplicatePrompt=String(prompt||'').slice(0,260);
     return error;
   }
-  function validateQuestionSet(project, questions) {
-    const previous=(state.learningQuizzes||[]).filter(x=>x.projectId===project.id).slice(-6).flatMap(x=>x.questions||[]).map(x=>x.prompt);
+  function validQuestion(question,project) {
     const allowedTypes=new Set(['definition','cause & effect','cause_effect','scenario','data interpretation','data_interpretation','current issue','current_issue','portfolio / investment decision','portfolio','investment decision','general']);
+    return !!question?.prompt&&question.choices?.length===4&&question.answerIndex>=0&&!!question.explanation&&new Set(question.choices.map(normalizePromptText)).size===4&&(project.category!=='economy'||allowedTypes.has(String(question.type||'').toLowerCase()));
+  }
+  function recentQuestions(projectId) { return (state.learningQuizzes||[]).filter(x=>x.projectId===projectId).slice(-6).flatMap(x=>x.questions||[]).map(normalizeQuestion); }
+  function recentLearningPoints(projectId) {
+    const counts=new Map();
+    (state.learningQuizzes||[]).filter(x=>x.projectId===projectId).slice(-2).flatMap(x=>x.questions||[]).forEach(x=>{
+      const point=String(x.topic||x.type||'').trim();if(point)counts.set(point,(counts.get(point)||0)+1);
+    });
+    return [...counts].sort((a,b)=>b[1]-a[1]).slice(0,12).map(([point,count])=>({point,count}));
+  }
+  function collectQuizCandidates(project,candidates,accepted,previous,fallbackCandidates=[]) {
+    let rejected=0;
+    for(const question of candidates){
+      if(accepted.length>=normalizeProject(project).quizSize)break;
+      if(!validQuestion(question,project)){rejected++;continue;}
+      const compared=[...previous,...accepted].map(old=>duplicateLevel(old,question));
+      if(compared.includes('exact')){rejected++;continue;}
+      if(compared.includes('near')){fallbackCandidates.push(question);rejected++;continue;}
+      accepted.push(question);
+    }
+    return rejected;
+  }
+  function replacementBatchSize(remaining) { return [5,10,15,20].find(size=>size>=remaining)||20; }
+  function useLeastSimilarFallback(project,accepted,previous,fallbackCandidates) {
+    const quizSize=normalizeProject(project).quizSize;
+    const score=question=>Math.max(0,...[...previous,...accepted].map(x=>promptSimilarity(x.prompt,question.prompt)));
+    for(const question of fallbackCandidates.sort((a,b)=>score(a)-score(b))){
+      if(accepted.length>=quizSize)break;
+      const comparisons=[...previous,...accepted];
+      if(comparisons.some(x=>duplicateLevel(x,question)==='exact'||normalizePromptText(x.prompt)===normalizePromptText(question.prompt)))continue;
+      if(score(question)>=.92)continue;
+      accepted.push(question);
+    }
+  }
+  function validateQuestionSet(project, questions, { allowNear=false } = {}) {
+    const previous=recentQuestions(project.id);
     questions.forEach((question,index)=>{
-      if(new Set(question.choices.map(x=>x.toLowerCase())).size!==4)throw new Error(`${index+1}번 문제 선택지가 중복되어 저장을 중단했습니다.`);
-      if(questions.slice(0,index).some(x=>tooSimilarPrompt(x.prompt,question.prompt)))throw duplicateQuestionError(index,'같은 세트의',question.prompt);
-      if(previous.some(x=>tooSimilarPrompt(x,question.prompt)))throw duplicateQuestionError(index,'최근',question.prompt);
-      if(project.category==='economy'&&!allowedTypes.has(String(question.type||'').toLowerCase()))throw new Error(`${index+1}번 문제 유형을 확인하지 못해 저장을 중단했습니다.`);
+      if(!validQuestion(question,project))throw new Error(`${index+1}번 문제의 구조·정답·보기가 불완전합니다.`);
+      if(questions.slice(0,index).some(x=>duplicateLevel(x,question)==='exact'||(!allowNear&&duplicateLevel(x,question)==='near')))throw duplicateQuestionError(index,'같은 세트의',question.prompt);
+      if(previous.some(x=>duplicateLevel(x,question)==='exact'||(!allowNear&&duplicateLevel(x,question)==='near')))throw duplicateQuestionError(index,'최근',question.prompt);
     });
   }
 
@@ -369,7 +415,8 @@
     if (error) throw error;
     if (!session?.access_token) throw new Error('로그인 세션을 확인하지 못했습니다.');
     const quizSize = normalizeProject(project).quizSize;
-    const recentPrompts=(state.learningQuizzes||[]).filter(x=>x.projectId===project.id).slice(-6).flatMap(x=>x.questions||[]).map(x=>String(x.prompt||'').slice(0,260)).filter(Boolean).slice(-40);
+    const previous=recentQuestions(project.id);
+    const recentPrompts=previous.map(x=>String(x.prompt||'').slice(0,260)).filter(Boolean).slice(-40);
     const requestBody = {
         local_date: localToday(),
         project: {
@@ -391,10 +438,15 @@
           difficulty:{easy:4,medium:10,hard:6},
           question_types:['Definition','Cause & Effect','Scenario','Data Interpretation','Current Issue','Portfolio / Investment Decision'],
           rules:['Current Issue는 제공된 Newsroom source로만 출제','숫자 단순 암기 금지','오답은 다른 상황으로 변형','동일 질문·예문·선택지만 바꾼 중복 금지','정답 하나와 해설 일치'],
-        } : { version:'HANI Question Engine v2', domain:'JLPT 및 일반 학습', rules:['경제 문제 규칙을 혼합하지 않음','프로젝트 목표와 집중영역을 우선'] },
+        } : { version:'HANI Question Engine v2', domain:'JLPT 및 일반 학습', rules:['경제 문제 규칙을 혼합하지 않음','프로젝트 목표와 집중영역을 우선','같은 학습 포인트는 새 문장·상황·보기로 반복 가능','어휘·문법·짧은 문맥·표현/용법을 다양하게 구성'] },
       };
-    let lastSimilarityError=null;
-    for(let attempt=1;attempt<=3;attempt++){
+    const accepted=[];
+    const fallbackCandidates=[];
+    let rejected=0;
+    for(let attempt=1;attempt<=8&&accepted.length<quizSize;attempt++){
+      const remaining=quizSize-accepted.length;
+      const batchSize=replacementBatchSize(remaining);
+      const retryGoal=attempt===1?requestBody.project.goal:[requestBody.project.goal,'추가 문제만 필요합니다. 이미 출제한 질문 문장을 반복하지 말고 같은 문법·어휘도 다른 상황과 보기로 물으세요.',...accepted.slice(-2).map(x=>`재사용 금지: ${x.prompt.slice(0,120)}`)].filter(Boolean).join(' ').slice(0,780);
       const res = await fetch(`${cfg.url}/functions/v1/hani-learning-quiz`, {
         method: 'POST',
         headers: {
@@ -404,31 +456,28 @@
         },
         body: JSON.stringify({
           ...requestBody,
+          project:{...requestBody.project,goal:retryGoal,quiz_size:batchSize},
           generation_feedback:{
             attempt,
+            requested_count:remaining,
+            accepted_prompts:accepted.map(x=>x.prompt.slice(0,260)),
             avoid_prompts:recentPrompts,
-            rejected_prompt:lastSimilarityError?.duplicatePrompt||'',
-            instruction:attempt===1?'최근 문제와 핵심 질문이 중복되지 않게 구성':'직전 결과의 중복 문항을 다른 개념·상황·자료 유형으로 전면 교체',
+            recent_learning_points:recentLearningPoints(project.id),
+            weakness_review_priority:true,
+            instruction:attempt===1?'같은 학습 요소는 새로운 문장·상황·보기로 복습 가능':'이미 통과한 문항은 유지합니다. 부족한 문항만 새 문장·상황·보기로 생성하세요. 같은 학습 포인트는 허용하지만 문제 복사는 금지합니다.',
           },
         }),
       });
       const result = await res.json().catch(() => ({}));
       if (!res.ok || result?.ok === false) throw new Error(result?.message || result?.error || `퀴즈 생성 실패 (${res.status})`);
       const questions = Array.isArray(result?.quiz?.questions) ? result.quiz.questions.map(normalizeQuestion) : [];
-      if (questions.length !== quizSize) throw new Error(`퀴즈 생성 결과가 ${quizSize}문제가 아닙니다. (${questions.length}문제)`);
-      for (const [i, question] of questions.entries()) {
-        if (!question.prompt || question.choices.length !== 4 || question.answerIndex < 0 || !question.explanation) {
-          throw new Error(`${i + 1}번 문제 구조가 불완전해 저장을 중단했습니다.`);
-        }
-      }
-      try { validateQuestionSet(project, questions); return questions; }
-      catch(error){
-        if(error?.code!=='QUESTION_SIMILARITY')throw error;
-        lastSimilarityError=error;
-        if(attempt===3)throw new Error('유사 문항을 자동으로 세 번 다시 구성했지만 중복이 남았습니다. 잠시 후 다시 생성해 주세요. 기존 문제와 데이터는 변경되지 않았습니다.');
-      }
+      if (!questions.length) throw new Error('퀴즈 생성 결과에 유효한 문제가 없습니다.');
+      rejected+=collectQuizCandidates(project,questions,accepted,previous,fallbackCandidates);
     }
-    throw lastSimilarityError||new Error('퀴즈를 생성하지 못했습니다.');
+    if(accepted.length<quizSize)useLeastSimilarFallback(project,accepted,previous,fallbackCandidates);
+    if(accepted.length!==quizSize)throw new Error(`유효한 문제가 ${accepted.length}/${quizSize}개여서 저장하지 않았습니다. 기존 문제와 데이터는 유지됩니다. (${rejected}개 문항 교체 시도)`);
+    validateQuestionSet(project,accepted,{allowNear:true});
+    return accepted;
   }
 
   function style() {
@@ -970,7 +1019,7 @@
   window.HANI_STUDY_V02984_TEST = {
     ensureLearningState, normalizeProject, normalizeQuestion, normalizeQuiz, questionKey,
     quizDate, isScheduledDate, shouldGenerateForDate, nextSequenceNo, derivedLearningTasks, activeProjects, boardProjects, visibleProjects, completedProjects, wrongRows, wrongGroups, renderWrongTab,
-    normalizePromptText, promptFingerprint, tooSimilarPrompt, validateQuestionSet,
+    normalizePromptText, promptFingerprint, promptSimilarity, duplicateLevel, collectQuizCandidates, useLeastSimilarFallback, replacementBatchSize, tooSimilarPrompt, validateQuestionSet, quizApi,
     upsertWrongAnswer, persistNewProject, persistProjectUpdate, archiveProjectWithConfirmation,
     pauseProject, resumeProject, completeProjectWithConfirmation, confirmWrongAnswer, retryWrongAnswer, masterWrongAnswer,
     persistGeneratedQuiz, persistQuizAnswer, gradeQuiz,
@@ -993,7 +1042,7 @@
       derivedTaskCount: derivedLearningTasks().length,
       studyMounted: !!q('#studyEngineV02984'),
     });
-    console.info('[HANI OS] v2.9.123 Learning Board · project-scoped tabs and exam paper ready');
+    console.info('[HANI OS] v2.9.133 Learning Board · per-item duplicate fallback ready');
   }
 
   boot();
