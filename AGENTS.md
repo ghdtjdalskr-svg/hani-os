@@ -102,7 +102,7 @@
 
 LIGHT와 NORMAL 작업도 Release Candidate에 포함될 때는 Candidate Freeze 이후 One-Pass 및 HINA 절차를 거친다. Risk Tier는 개발 중 검증 범위를 정하며 Release Gate를 우회하지 않는다.
 
-개발 완료 후 최소한 다음 항목을 검증한다.
+아래 항목은 최종 runtime Release의 체크리스트다. 개발 중에는 Risk Tier와 변경 영향에 해당하는 항목만 검증하고, 적용되지 않는 항목은 이유와 함께 N/A로 기록한다.
 
 - 운영 코드 또는 배포 파일이 변경되는 Release의 버전 증가 여부
 - 필요한 파일 누락 여부
@@ -142,3 +142,13 @@ LIGHT와 NORMAL 작업도 Release Candidate에 포함될 때는 Candidate Freeze
 - 가능한 경우 개발 Agent가 직접 파일 수정, 테스트, branch 및 PR 준비까지 수행한다.
 - 작업 결과는 성민 대표님이 Preview에서 판단할 수 있도록 구체적으로 준비한다.
 - 최종 목표는 **대표는 미리보기 확인 → 승인만** 하는 흐름이다.
+
+## 9. Context 및 검사 재사용
+
+- 기본 실행은 개발 Agent 한 명과 자동 검사다. 역할 이름만 바꾸어 동일한 증거를 재검토하거나 독립 리뷰라고 보고하지 않는다.
+- 도구 출력은 관련 함수, diff, 실패 요약으로 제한한다. 전체 로그는 필요할 때만 읽는다. 동일 상태의 반복 polling과 실행 파일 위치 재탐색을 피한다.
+- 서로 다른 기능은 짧은 handoff(branch/SHA/files/tests/blocker)로 분리한다. 사용자 요청 없이 새 탭을 만들지 않는다.
+- 기존 승인은 범위가 유지되는 한 재사용한다. 데이터·배포 승인 요건 자체는 생략하지 않는다.
+- 증거 재사용은 candidate/base/package/contract 및 관련 실행환경이 모두 동일할 때만 허용한다. 변경 또는 실패가 발생하면 영향받는 검사를 다시 실행한다.
+- 문서 전용 PR은 runtime build/version/Production 검증 N/A다. CI에서 허용한 문서 경로 외에는 보수적으로 기존 검사로 처리한다. Self-Protection은 그대로 유지한다.
+- 다른 탭에 규칙을 적용하기 위해 기존 branch/worktree를 임의 merge/rebase하거나 미완료 파일을 덮어쓰지 않는다.
