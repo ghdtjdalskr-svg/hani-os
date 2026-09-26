@@ -2,7 +2,16 @@
 
 The releasable runtime package is built first from one frozen candidate commit. Every automated decision after that is bound to `candidate_sha`, `package_sha256`, and the version/hash of `one-pass-gate-contract.json`.
 
-This document defines ownership and flow. Phase A does not change GitHub workflows, release scripts, the Deploy Bridge, or Production behavior.
+This document defines ownership and flow. The efficiency rollout changes local guidance and PR check scheduling only; it does not change the Deploy Bridge or Production behavior.
+
+## PR check scheduling
+
+- `hani-ci-scope.mjs` classifies the exact base/head diff, including deletions and both sides of renames (rename detection disabled).
+- Only additions/modifications of `AGENTS.md` and this document are documentation-only. Existing Yuri safety checks still run; runtime package/version checks are N/A. Unknown paths, deletions, and mixed changes retain full preflight.
+- Release-contract self-tests (including two deterministic fixture builds) run when scripts, dev-center metadata, or workflows change. Ordinary runtime PRs build their candidate package once and run existing One-Pass checks.
+- The existing job name, PR triggers, and independent Self-Protection gate are retained. This does not authorize bypassing any required check.
+- Local development uses targeted tests; CI evidence is not repeatedly reinterpreted under different reviewer names. Reuse requires unchanged base/candidate/package/contract and relevant environment. Deployment-time identity and drift checks remain mandatory.
+- The user-level HANI policy covers new local sessions. Existing chats receive an explicit instruction; older worktrees are not rewritten. Repository workflow changes take effect only after the reviewed PR is merged.
 
 ## Modes
 

@@ -28,6 +28,7 @@ jobs:
               ".github/workflows/hani-dev-center-gate.yml",
               ".github/workflows/hani-dev-center-self-protect.yml",
               "scripts/hani-release-preqa.mjs",
+              "scripts/hani-ci-scope.mjs",
               "scripts/hani-one-pass-release.mjs",
               "scripts/hani-one-pass-rules.mjs",
               "scripts/hani-release-package.mjs",
