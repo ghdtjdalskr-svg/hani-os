@@ -1,5 +1,5 @@
 /* =========================================================
-   HANI OS v2.9.133 · Learning Board v1.3
+   HANI OS v2.9.134 · Learning Board v1.4
    Backward-compatible state extension only.
    - learningProjects
    - learningQuizzes
@@ -13,7 +13,7 @@
 
   const PATCH_ID = 'HANI_STUDY_V02984';
   const STYLE_ID = 'hani-study-v02984-style';
-  const VERSION = '2.9.133';
+  const VERSION = '2.9.134';
   if (window[PATCH_ID]) return;
   window[PATCH_ID] = true;
 
@@ -248,19 +248,19 @@
     });
     return [...counts].sort((a,b)=>b[1]-a[1]).slice(0,12).map(([point,count])=>({point,count}));
   }
-  function collectQuizCandidates(project,candidates,accepted,previous,fallbackCandidates=[]) {
+  function collectQuizCandidates(project,candidates,accepted,previous,fallbackCandidates=[],rejectedPrompts=[]) {
     let rejected=0;
     for(const question of candidates){
       if(accepted.length>=normalizeProject(project).quizSize)break;
       if(!validQuestion(question,project)){rejected++;continue;}
       const compared=[...previous,...accepted].map(old=>duplicateLevel(old,question));
-      if(compared.includes('exact')){rejected++;continue;}
-      if(compared.includes('near')){fallbackCandidates.push(question);rejected++;continue;}
+      if(compared.includes('exact')){rejectedPrompts.push(String(question.prompt||'').slice(0,260));rejected++;continue;}
+      if(compared.includes('near')){fallbackCandidates.push(question);rejectedPrompts.push(String(question.prompt||'').slice(0,260));rejected++;continue;}
       accepted.push(question);
     }
     return rejected;
   }
-  function replacementBatchSize(remaining) { return [5,10,15,20].find(size=>size>=remaining)||20; }
+  function replacementBatchSize(remaining) { return Math.max(1,Math.min(20,Number(remaining)||1)); }
   function useLeastSimilarFallback(project,accepted,previous,fallbackCandidates) {
     const quizSize=normalizeProject(project).quizSize;
     const score=question=>Math.max(0,...[...previous,...accepted].map(x=>promptSimilarity(x.prompt,question.prompt)));
@@ -442,6 +442,7 @@
       };
     const accepted=[];
     const fallbackCandidates=[];
+    const rejectedPrompts=[];
     let rejected=0;
     for(let attempt=1;attempt<=8&&accepted.length<quizSize;attempt++){
       const remaining=quizSize-accepted.length;
@@ -462,6 +463,7 @@
             requested_count:remaining,
             accepted_prompts:accepted.map(x=>x.prompt.slice(0,260)),
             avoid_prompts:recentPrompts,
+            rejected_prompts:[...new Set(rejectedPrompts.filter(Boolean))].slice(-60),
             recent_learning_points:recentLearningPoints(project.id),
             weakness_review_priority:true,
             instruction:attempt===1?'같은 학습 요소는 새로운 문장·상황·보기로 복습 가능':'이미 통과한 문항은 유지합니다. 부족한 문항만 새 문장·상황·보기로 생성하세요. 같은 학습 포인트는 허용하지만 문제 복사는 금지합니다.',
@@ -472,7 +474,7 @@
       if (!res.ok || result?.ok === false) throw new Error(result?.message || result?.error || `퀴즈 생성 실패 (${res.status})`);
       const questions = Array.isArray(result?.quiz?.questions) ? result.quiz.questions.map(normalizeQuestion) : [];
       if (!questions.length) throw new Error('퀴즈 생성 결과에 유효한 문제가 없습니다.');
-      rejected+=collectQuizCandidates(project,questions,accepted,previous,fallbackCandidates);
+      rejected+=collectQuizCandidates(project,questions,accepted,previous,fallbackCandidates,rejectedPrompts);
     }
     if(accepted.length<quizSize)useLeastSimilarFallback(project,accepted,previous,fallbackCandidates);
     if(accepted.length!==quizSize)throw new Error(`유효한 문제가 ${accepted.length}/${quizSize}개여서 저장하지 않았습니다. 기존 문제와 데이터는 유지됩니다. (${rejected}개 문항 교체 시도)`);
@@ -1042,7 +1044,7 @@
       derivedTaskCount: derivedLearningTasks().length,
       studyMounted: !!q('#studyEngineV02984'),
     });
-    console.info('[HANI OS] v2.9.133 Learning Board · per-item duplicate fallback ready');
+    console.info('[HANI OS] v2.9.134 Learning Board · feedback-aware duplicate regeneration ready');
   }
 
   boot();
