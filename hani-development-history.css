@@ -1,0 +1,43 @@
+/* HANI OS v2.9.135 · Shared Development History · read-only UI */
+#app .hani-development-snapshot{grid-column:1/-1;margin-top:14px;padding:18px;border-color:color-mix(in srgb,var(--ds-season,#7550a5) 18%,var(--line));background:linear-gradient(145deg,#fff,color-mix(in srgb,var(--season-soft,#f6f1ff) 60%,#fff));box-shadow:var(--hani-frame-shadow,0 8px 24px #27324a0d)}
+#app .hani-history-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:14px}
+#app .hani-history-head span,#app .hani-dev-history-overview>div>span{color:var(--ds-season,#7550a5);font-size:10px;font-weight:950;letter-spacing:.14em}
+#app .hani-history-head h3,#app .hani-dev-history-overview h3{margin:4px 0 3px;color:var(--ds-ink,#273349);font-size:20px;letter-spacing:-.035em}
+#app .hani-history-head p,#app .hani-dev-history-overview p{margin:0;color:var(--muted,#7d8798);font-size:11px;line-height:1.55}
+#app .hani-history-compact{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+#app .hani-history-row{position:relative;display:grid;grid-template-columns:9px minmax(0,1fr) auto;gap:10px;align-items:start;min-width:0;padding:12px 13px;border:1px solid #e6e8f0;border-radius:14px;background:#fffc}
+#app .hani-history-marker{width:8px;height:8px;margin-top:6px;border-radius:999px;background:#7c69d7;box-shadow:0 0 0 4px #7c69d718}
+#app .hani-history-row[data-history-status="released"] .hani-history-marker{background:#2ca77a;box-shadow:0 0 0 4px #2ca77a18}
+#app .hani-history-row[data-history-status="process"] .hani-history-marker{background:#e5913c;box-shadow:0 0 0 4px #e5913c18}
+#app .hani-history-copy{min-width:0}
+#app .hani-history-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+#app .hani-history-version{color:#4f476d;font-size:10px;font-weight:950}
+#app .hani-history-status{display:inline-flex;padding:3px 6px;border-radius:999px;background:#eee9ff;color:#6952c0;font-size:8px;font-weight:950;letter-spacing:.05em}
+#app .hani-history-status.is-released{background:#e9f8f2;color:#25805f}
+#app .hani-history-status.is-process{background:#fff2e4;color:#b66a26}
+#app .hani-history-meta time{color:#9aa1af;font-size:9px;font-weight:750}
+#app .hani-history-row h4{margin:6px 0 3px;color:#2d3446;font-size:13px;line-height:1.35}
+#app .hani-history-row p{margin:0;color:#747d8e;font-size:10.5px;line-height:1.55}
+#app .hani-history-row code{align-self:start;padding:3px 5px;border-radius:6px;background:#f4f5f8;color:#8b93a2;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:8px}
+#app .hani-dev-history-shell{display:grid;gap:12px}
+#app .hani-dev-history-overview{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px;border:1px solid #e2e5ed;border-radius:20px;background:linear-gradient(135deg,#fff,#f5f2ff);box-shadow:var(--hani-frame-shadow,0 8px 24px #27324a0d)}
+#app .hani-dev-history-overview p{max-width:700px}
+#app .hani-history-kpis{display:grid;grid-template-columns:repeat(3,88px);gap:8px}
+#app .hani-history-kpis>div{display:grid;place-items:center;min-height:72px;padding:9px;border:1px solid #e4e1f2;border-radius:14px;background:#fff}
+#app .hani-history-kpis b{color:#4f3fa4;font-size:22px}.hani-history-kpis small{color:#858c9c;font-size:9px;font-weight:850}
+#app .hani-history-toolbar{display:flex;gap:6px;overflow-x:auto;padding:6px;border:1px solid #e4e6ed;border-radius:14px;background:#fff}
+#app .hani-history-toolbar button{flex:0 0 auto;min-height:34px;padding:7px 12px;border:0;border-radius:10px;background:transparent;color:#747d8d;font-size:11px;font-weight:900}
+#app .hani-history-toolbar button.is-active{background:var(--ds-season,#7550a5);color:#fff;box-shadow:0 5px 14px color-mix(in srgb,var(--ds-season,#7550a5) 22%,transparent)}
+#app .hani-history-list{display:grid;gap:9px}
+#app .hani-history-list .hani-history-row{padding:15px 16px;background:#fff}
+#app .hani-history-list .hani-history-row h4{font-size:15px}
+#app .hani-history-list .hani-history-row p{font-size:11.5px}
+@media(max-width:850px){
+  #app .hani-history-compact{grid-template-columns:1fr}
+  #app .hani-history-head,#app .hani-dev-history-overview{align-items:flex-start;flex-direction:column}
+  #app .hani-history-kpis{width:100%;grid-template-columns:repeat(3,minmax(0,1fr))}
+  #app .hani-history-kpis>div{min-height:62px}
+  #app .hani-history-row{grid-template-columns:9px minmax(0,1fr)}
+  #app .hani-history-row code{grid-column:2;justify-self:start}
+}
+@media(max-width:420px){#app .hani-development-snapshot{padding:14px}#app .hani-history-row{padding:11px}#app .hani-history-kpis{gap:5px}}
