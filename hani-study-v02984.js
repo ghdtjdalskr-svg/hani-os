@@ -1,5 +1,5 @@
 /* =========================================================
-   HANI OS v2.9.134 · Learning Board v1.4
+   HANI OS v2.9.139 · Learning Board v1.5
    Backward-compatible state extension only.
    - learningProjects
    - learningQuizzes
@@ -13,7 +13,7 @@
 
   const PATCH_ID = 'HANI_STUDY_V02984';
   const STYLE_ID = 'hani-study-v02984-style';
-  const VERSION = '2.9.134';
+  const VERSION = '2.9.139';
   if (window[PATCH_ID]) return;
   window[PATCH_ID] = true;
 
@@ -237,8 +237,7 @@
     return error;
   }
   function validQuestion(question,project) {
-    const allowedTypes=new Set(['definition','cause & effect','cause_effect','scenario','data interpretation','data_interpretation','current issue','current_issue','portfolio / investment decision','portfolio','investment decision','general']);
-    return !!question?.prompt&&question.choices?.length===4&&question.answerIndex>=0&&!!question.explanation&&new Set(question.choices.map(normalizePromptText)).size===4&&(project.category!=='economy'||allowedTypes.has(String(question.type||'').toLowerCase()));
+    return !!question?.prompt&&question.choices?.length===4&&question.answerIndex>=0&&!!question.explanation&&new Set(question.choices.map(normalizePromptText)).size===4;
   }
   function recentQuestions(projectId) { return (state.learningQuizzes||[]).filter(x=>x.projectId===projectId).slice(-6).flatMap(x=>x.questions||[]).map(normalizeQuestion); }
   function recentLearningPoints(projectId) {
@@ -247,6 +246,18 @@
       const point=String(x.topic||x.type||'').trim();if(point)counts.set(point,(counts.get(point)||0)+1);
     });
     return [...counts].sort((a,b)=>b[1]-a[1]).slice(0,12).map(([point,count])=>({point,count}));
+  }
+  function recentQuestionRotation(projectId) {
+    const rows=(state.learningQuizzes||[]).filter(x=>x.projectId===projectId).slice(-8).flatMap(x=>x.questions||[]).map(normalizeQuestion).slice(-60);
+    const counts=new Map();
+    rows.forEach((question,index)=>{
+      const type=String(question.type||'general').trim().slice(0,80);
+      const topic=String(question.topic||'').trim().slice(0,100);
+      const key=`${type.toLowerCase()}|${topic.toLowerCase()}`;
+      const current=counts.get(key)||{type,topic,count:0,last_seen:index};
+      current.count+=1;current.last_seen=index;counts.set(key,current);
+    });
+    return [...counts.values()].sort((a,b)=>b.last_seen-a.last_seen).slice(0,24);
   }
   function collectQuizCandidates(project,candidates,accepted,previous,fallbackCandidates=[],rejectedPrompts=[]) {
     let rejected=0;
@@ -434,11 +445,12 @@
         question_sources: project.category === 'economy' ? newsroomQuestionSources() : [],
         engine_contract: project.category === 'economy' ? {
           version:'HANI Question Engine v2', objective:'경제·시장 사건을 개념과 시장 영향에 연결해 이해하는지 평가',
-          distribution:{foundation:4,macro_market:5,equity_corporate:4,current_issue:5,weakness_variant:2},
-          difficulty:{easy:4,medium:10,hard:6},
+          rotation_pools:['경제 기초·금융 원리','금리·물가·환율·채권','주식·밸류에이션·실적','기업·산업·정책','포트폴리오·리스크','최근 경제·시장 이슈'],
+          difficulty_mix:['easy','medium','medium','hard'],
           question_types:['Definition','Cause & Effect','Scenario','Data Interpretation','Current Issue','Portfolio / Investment Decision'],
-          rules:['Current Issue는 제공된 Newsroom source로만 출제','숫자 단순 암기 금지','오답은 다른 상황으로 변형','동일 질문·예문·선택지만 바꾼 중복 금지','정답 하나와 해설 일치'],
-        } : { version:'HANI Question Engine v2', domain:'JLPT 및 일반 학습', rules:['경제 문제 규칙을 혼합하지 않음','프로젝트 목표와 집중영역을 우선','같은 학습 포인트는 새 문장·상황·보기로 반복 가능','어휘·문법·짧은 문맥·표현/용법을 다양하게 구성'] },
+          rules:['문제 수에 맞춰 rotation_pools와 question_types를 동적으로 순환','Current Issue는 제공된 Newsroom source로만 출제','source가 없으면 시사 사실을 꾸며내지 말고 검증 가능한 경제 원리·가상 시나리오로 대체','숫자 단순 암기 금지','오답은 다른 상황으로 변형','정답 하나와 해설 일치'],
+        } : project.category === 'jlpt' ? { version:'HANI Question Engine v2', domain:'JLPT', rotation_pools:['문자·어휘 읽기','문맥 어휘','유의어·용법','문법 형식','문장 배열','문맥 문법','단문 독해','중문 독해','정보 검색'], rules:['경제 문제 규칙을 혼합하지 않음','실제 기출문제를 복제하지 않고 기출 유형 기반 새 문제로 구성','프로젝트 목표와 집중영역을 우선','최근에 덜 나온 유형·주제·상황을 먼저 출제','같은 학습 포인트는 새 문장·상황·보기로 반복 가능'] }
+          : { version:'HANI Question Engine v2', domain:'일반 학습', rules:['프로젝트 목표와 집중영역을 우선','최근에 덜 나온 유형·주제를 우선','같은 학습 포인트는 새 문장·상황·보기로 반복 가능'] },
       };
     const accepted=[];
     const fallbackCandidates=[];
@@ -465,8 +477,9 @@
             avoid_prompts:recentPrompts,
             rejected_prompts:[...new Set(rejectedPrompts.filter(Boolean))].slice(-60),
             recent_learning_points:recentLearningPoints(project.id),
+            recent_question_rotation:recentQuestionRotation(project.id),
             weakness_review_priority:true,
-            instruction:attempt===1?'같은 학습 요소는 새로운 문장·상황·보기로 복습 가능':'이미 통과한 문항은 유지합니다. 부족한 문항만 새 문장·상황·보기로 생성하세요. 같은 학습 포인트는 허용하지만 문제 복사는 금지합니다.',
+            instruction:attempt===1?'최근에 덜 나온 유형과 주제를 먼저 순환하고, 같은 학습 요소는 새로운 문장·상황·보기로 복습할 수 있습니다.':'이미 통과한 문항은 유지합니다. 부족한 문항만 최근에 덜 나온 유형·주제로 생성하세요. 같은 학습 포인트는 허용하지만 문제 복사는 금지합니다.',
           },
         }),
       });
@@ -1021,7 +1034,7 @@
   window.HANI_STUDY_V02984_TEST = {
     ensureLearningState, normalizeProject, normalizeQuestion, normalizeQuiz, questionKey,
     quizDate, isScheduledDate, shouldGenerateForDate, nextSequenceNo, derivedLearningTasks, activeProjects, boardProjects, visibleProjects, completedProjects, wrongRows, wrongGroups, renderWrongTab,
-    normalizePromptText, promptFingerprint, promptSimilarity, duplicateLevel, collectQuizCandidates, useLeastSimilarFallback, replacementBatchSize, tooSimilarPrompt, validateQuestionSet, quizApi,
+    normalizePromptText, promptFingerprint, promptSimilarity, duplicateLevel, validQuestion, recentQuestionRotation, collectQuizCandidates, useLeastSimilarFallback, replacementBatchSize, tooSimilarPrompt, validateQuestionSet, quizApi,
     upsertWrongAnswer, persistNewProject, persistProjectUpdate, archiveProjectWithConfirmation,
     pauseProject, resumeProject, completeProjectWithConfirmation, confirmWrongAnswer, retryWrongAnswer, masterWrongAnswer,
     persistGeneratedQuiz, persistQuizAnswer, gradeQuiz,
@@ -1044,7 +1057,7 @@
       derivedTaskCount: derivedLearningTasks().length,
       studyMounted: !!q('#studyEngineV02984'),
     });
-    console.info('[HANI OS] v2.9.134 Learning Board · feedback-aware duplicate regeneration ready');
+    console.info('[HANI OS] v2.9.139 Learning Board · category rotation quiz generation ready');
   }
 
   boot();
