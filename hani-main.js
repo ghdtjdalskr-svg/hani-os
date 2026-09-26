@@ -1304,7 +1304,7 @@ function investmentNewsSafeUrl(value){try{const u=new URL(String(value||""));ret
 function investmentNewsGradeLabel(v){return {OFFICIAL:"공식/확정",MEDIA:"언론보도",BROKER:"증권사 전망",RUMOR:"시장루머"}[v]||"출처 미분류"}
 function investmentNewsSentimentLabel(v){return {POSITIVE:"호재",NEUTRAL:"중립",NEGATIVE:"악재",MIXED:"혼재",NO_NEWS:"신규 없음"}[v]||"중립"}
 function investmentNewsImpactLabel(v){return {POSITIVE:"📈 호재",NEUTRAL:"➖ 중립",NEGATIVE:"📉 악재",MIXED:"⚖️ 혼재",NO_NEWS:"➖ 신규 없음"}[v]||"➖ 중립"}
-function investmentNewsCommentToneLabel(v){return {ANALYSIS:"분석",SHORT:"한마디",BANTER:"잡담",COUNTER:"반론",CAUTION:"체크"}[String(v||"").toUpperCase()]||"의견"}
+function investmentNewsCommentToneLabel(v){return {ANALYSIS:"분석",POSITIVE:"긍정",SKEPTICAL:"의심",QUESTION:"질문",REACTION:"반응",LIGHT:"가벼운 한마디",COUNTERPOINT:"반론",CHECK:"체크",SHORT:"한마디",PRACTICAL:"현실 체크",LIFE:"생활 반응",TREND:"트렌드",BANTER:"잡담",COUNTER:"반론",CAUTION:"주의"}[String(v||"").toUpperCase()]||"의견"}
 function investmentNewsTone(v){return v==="POSITIVE"?"positive":v==="NEGATIVE"?"negative":v==="MIXED"?"mixed":"neutral"}
 function investmentNewsScopeLabel(v){return v==="PREFERRED_DIRECT"?"⭐ 우선주 직접":v==="BOTH"?"🏢+⭐ 공통·직접":"🏢 기업 공통"}
 function investmentNewsFmtTime(v){if(!v)return "시간 미확인";const s=String(v).trim();if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s;const d=new Date(s);if(Number.isNaN(d.getTime()))return esc(s);return new Intl.DateTimeFormat("ko-KR",{month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"}).format(d)}
@@ -3798,7 +3798,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.136";
+const HANI_DISPLAY_VERSION="2.9.137";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
