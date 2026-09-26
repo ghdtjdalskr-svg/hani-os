@@ -1,7 +1,14 @@
 diff --git a/supabase/functions/hani-agent-orchestrator/index.ts b/supabase/functions/hani-agent-orchestrator/index.ts
-index 8eced0e..b3f65f1 100644
+index 6af4d2b..00d064c 100644
 --- a/supabase/functions/hani-agent-orchestrator/index.ts
 +++ b/supabase/functions/hani-agent-orchestrator/index.ts
+@@ -1,5 +1,5 @@
+ // PROJECT HANI
+-// hani-agent-orchestrator v1.9.0 · Meeting Engine v2 Batch 1 readiness gate
++// hani-agent-orchestrator v1.9.1 · Meeting Character Voice Layer
+ // Phase 11: Adaptive Policy Engine v0.2 + confidence-weighted policy evidence.
+ // Learned rules are advisory heuristics that strengthen/weaken with evidence.
+ // Constitution / hard-stop governance remains representative-controlled.
 @@ -771,6 +771,110 @@ type AgentReviewOutput = {
    notes: string;
  };
@@ -139,7 +146,7 @@ index 8eced0e..b3f65f1 100644
      "중요 운영규칙:",
      "- 직급이나 하니 부장의 의견은 근거가 아니다. 독립적으로 판단한다.",
      "- 제공된 Source/Context에 없는 현재 가격, 최신 제품정보, 행사, 재무수치, 사용자 취향을 만들어내지 않는다.",
-@@ -1969,9 +2076,14 @@ async function runHaniSynthesis(
+@@ -2033,9 +2140,14 @@ async function runHaniSynthesis(
    verification: VerificationOutput,
  ) {
    const instructions = [
@@ -155,3 +162,30 @@ index 8eced0e..b3f65f1 100644
      "PURCHASE_REVIEW에서는 context.router_v2.purchase_decision_mode를 먼저 확인하세요. BUY_OR_NOT이면 ① 살지 말지 ② 산다면 어떤 후보 ③ 구매 방식 ④ 시점을 정리합니다. SELECT_PRODUCT/CONDITION_SEARCH이면 구매 필요를 재심의하지 말고 ① 구매 전제/목적 ② 가장 적합한 후보와 대안 ③ 선택 포인트/구매 전 확인 ④ 시점을 정리합니다. UPGRADE_REPLACE이면 기존 제품 대비 교체 가치와 후보를 정리합니다.",
      "PURCHASE_REVIEW의 BUY_OR_NOT/UPGRADE_REPLACE에서는 기존 데이터상 충분한지와 추가/대체 이유를 해석하세요. SELECT_PRODUCT/CONDITION_SEARCH에서는 '구매는 확정'이라는 사용자의 결정 목적을 존중하고, 안전·명백한 모순이 없는 한 구매 자체를 다시 반대하지 마세요.",
      "SELECT_PRODUCT에서는 최저가를 자동 1위로 만들지 마세요. Agent별 candidate_scores와 평가축 차이를 보존하고 사용 목적상 중요한 축에 더 큰 의미를 두세요. 평균점수가 근소하게 높다는 이유만으로 기계적으로 선택하지 마세요.",
+@@ -3167,7 +3279,7 @@ Deno.serve(async (req) => {
+       ok: true,
+       service: "PROJECT HANI",
+       function: "hani-agent-orchestrator",
+-      version: "1.7.0",
++      version: "1.9.1",
+       phase: "INVESTMENT_NEWS_V0_3_PURCHASE_REVIEW_V2",
+       authenticated: true,
+       user_id: auth.user.id,
+@@ -3577,7 +3689,7 @@ Deno.serve(async (req) => {
+     });
+ 
+     return json({
+-      ok: true, service: "PROJECT HANI", function: "hani-agent-orchestrator", version: "1.9.0",
++      ok: true, service: "PROJECT HANI", function: "hani-agent-orchestrator", version: "1.9.1",
+       action: "PREFLIGHT_CASE", case: updatedCase, verification: updatedCase.verification,
+       human_required_questions: humanQuestions, research_required_items: researchItems,
+       can_auto_research: humanQuestions.length === 0 && (verification.research_needed || researchItems.length > 0),
+@@ -4128,7 +4240,7 @@ Deno.serve(async (req) => {
+       ok: true,
+       service: "PROJECT HANI",
+       function: "hani-agent-orchestrator",
+-      version: "1.9.0",
++      version: "1.9.1",
+       action: "VERIFY_AND_SYNTHESIZE",
+       case: {
+         id: updatedCase.id,

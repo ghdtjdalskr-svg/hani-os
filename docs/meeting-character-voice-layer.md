@@ -39,4 +39,4 @@
 - Agent 선정 및 역할 배정 변경 없음
 - Decision Readiness/HOLD/승인 로직 변경 없음
 - Living Office와 Newsroom Persona 변경 없음
-- 운영 함수 배포 없음
+- 이 문서의 Patch 자체는 배포를 수행하지 않으며, 승인된 Release Flow에서만 운영 함수에 반영한다.
