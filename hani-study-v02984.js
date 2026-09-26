@@ -1,5 +1,5 @@
 /* =========================================================
-   HANI OS v2.9.138 · Learning Board v1.5
+   HANI OS v2.9.139 · Learning Board v1.5
    Backward-compatible state extension only.
    - learningProjects
    - learningQuizzes
@@ -13,7 +13,7 @@
 
   const PATCH_ID = 'HANI_STUDY_V02984';
   const STYLE_ID = 'hani-study-v02984-style';
-  const VERSION = '2.9.138';
+  const VERSION = '2.9.139';
   if (window[PATCH_ID]) return;
   window[PATCH_ID] = true;
 
@@ -1057,7 +1057,7 @@
       derivedTaskCount: derivedLearningTasks().length,
       studyMounted: !!q('#studyEngineV02984'),
     });
-    console.info('[HANI OS] v2.9.138 Learning Board · category rotation quiz generation ready');
+    console.info('[HANI OS] v2.9.139 Learning Board · category rotation quiz generation ready');
   }
 
   boot();
