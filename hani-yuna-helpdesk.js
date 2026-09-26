@@ -50,17 +50,27 @@ function parseBook(text){
   return {target:"book",data,entities:{readingDate:date},missing:[!title&&"title",!date&&(completed?"completedDate":"readingDate")].filter(Boolean)};
 }
 
-const BOOK_PATCH_LABEL=/(^|[\r\n,]\s*)(책\s*제목|책이름|도서명|제목|지은이|저자|작가|내\s*평점|별점|평점|한\s*줄\s*평|한줄평|감상|후기|리뷰|읽기\s*시작한\s*날|시작일|다\s*읽은\s*날|읽은\s*날|완독일)\s*(?:은|는|이|가|을|를)?\s*[:：]?\s*|(\s+)(책\s*제목|책이름|도서명|지은이|내\s*평점|별점|평점|한\s*줄\s*평|한줄평|감상|후기|리뷰|읽기\s*시작한\s*날|시작일|다\s*읽은\s*날|읽은\s*날|완독일)\s*(?:은|는|이|가|을|를)?\s*[:：]?\s*/g;
-const BOOK_TITLE_UNSAFE=/(?:저자|지은이|작가|평점|별점|한\s*줄\s*평|한줄평|후기|리뷰|완독(?:일)?|시작일)\s*[:：]/;
+const BOOK_PATCH_LABEL=/(^|[\r\n,]\s*)(책\s*제목|책이름|도서명|제목|지은이|저자|작가|내\s*평점|별점|평점|한\s*줄\s*평|한줄평|감상|후기|리뷰|읽기\s*시작한\s*날|시작일|다\s*읽은\s*날|읽은\s*날|완독일)\s*(?:은|는|이|가|을|를)?\s*[:：]?\s*|(\s+)(책\s*제목|책이름|도서명|제목|지은이|저자|작가|내\s*평점|별점|평점|한\s*줄\s*평|한줄평|감상|후기|리뷰|읽기\s*시작한\s*날|시작일|다\s*읽은\s*날|읽은\s*날|완독일)\s*(?:은|는|이|가|을|를)?\s*[:：]?\s*/g;
+const BOOK_TITLE_UNSAFE=/(?:^|[\s,;])(?:저자|지은이|작가|평점|별점|내\s*평점|한\s*줄\s*평|한줄평|감상|후기|리뷰)\s*(?:은|는|이|가|을|를)?\s*(?:[:：]|\S)/;
+const BOOK_COMPLETED_INTENT=/(?:오늘\s*)?(?:다\s*읽었(?:어|다)?|다\s*읽음|다\s*읽은\s*걸로(?:\s*(?:해\s*줘|진행))?|완독(?:했어|했다|함|완료)?|읽었어|읽기\s*완료|읽기\s*끝)/i;
+const BOOK_READING_INTENT=/읽기\s*시작|읽는\s*중|읽고\s*있어/i;
+const BOOK_START_DATE_IGNORED=/(?:시작일|읽기\s*시작(?:일|한\s*날)?)(?:은|는|이|가)?\s*(?:상관\s*없|필요\s*없|불필요|몰라도|기록하지\s*마|빼\s*줘)/i;
 function bookPatchField(label){const key=clean(label).replace(/\s/g,"");if(/^(?:책제목|책이름|도서명|제목)$/.test(key))return "title";if(/^(?:지은이|저자|작가)$/.test(key))return "author";if(/^(?:내평점|별점|평점)$/.test(key))return "rating";if(/^(?:한줄평|감상|후기|리뷰)$/.test(key))return "review";if(/^(?:읽기시작한날|시작일)$/.test(key))return "startDate";return "completedDate"}
-function bookCorrectionIntent(text){const s=String(text||"");BOOK_PATCH_LABEL.lastIndex=0;return BOOK_PATCH_LABEL.test(s)||/(?:오늘\s*)?(?:다\s*읽었어|다\s*읽음|완독|읽었어|읽기\s*끝)|읽기\s*시작|읽는\s*중|읽고\s*있어/.test(s)}
+function bookCorrectionIntent(text){const s=String(text||"");BOOK_PATCH_LABEL.lastIndex=0;return BOOK_PATCH_LABEL.test(s)||BOOK_COMPLETED_INTENT.test(s)||BOOK_READING_INTENT.test(s)}
+function cleanBookPatchValue(value,field){
+  let next=String(value||"").replace(/^[\s,;]+|[\s,;]+$/g,"").trim();
+  next=next.replace(/\n\s*(?:오늘\s*)?(?:다\s*읽었(?:어|다)?|다\s*읽음|다\s*읽은\s*걸로(?:\s*(?:해\s*줘|진행))?|완독(?:했어|했다|함|완료)?|읽었어|읽기\s*완료|읽기\s*끝)[.!]?\s*$/i,"").trim();
+  next=next.replace(/\s*(?:로|으로)?\s*(?:바꿔\s*줘|수정해\s*줘|변경해\s*줘)\s*[.!]?$/i,"").trim();
+  if(field==="title"||field==="author")next=next.replace(/(?:이고|이야|야|입니다|이에요|예요)\s*[.!]?$/i,"").trim();
+  return next;
+}
 function parseBookCorrection(text){
   const raw=String(text||"").replace(/\r\n?/g,"\n").trim(),matches=[];BOOK_PATCH_LABEL.lastIndex=0;let m;
   while((m=BOOK_PATCH_LABEL.exec(raw))){const prefix=m[1]??m[3]??"",label=m[2]||m[4];matches.push({index:m.index+prefix.length,valueStart:BOOK_PATCH_LABEL.lastIndex,field:bookPatchField(label)})}
   const patch={},invalid=[];
-  matches.forEach((hit,i)=>{const end=i+1<matches.length?matches[i+1].index:raw.length;let value=raw.slice(hit.valueStart,end).replace(/^[\s,;]+|[\s,;]+$/g,"").trim();if(hit.field==="review")value=value.replace(/\n\s*(?:오늘\s*)?(?:다\s*읽었어|다\s*읽음|완독(?:했어|함)?|읽었어|읽기\s*끝)[.!]?\s*$/i,"").trim();if(!value)return;if(hit.field==="rating"){const n=Number((value.match(/\d(?:\.\d)?/)||[])[0]);if(Number.isFinite(n)&&n>=.1&&n<=5)patch.rating=Math.round(n*10)/10;return}if(hit.field==="startDate"||hit.field==="completedDate"){const date=explicitDate(value);if(date)patch[hit.field]=date;return}if(hit.field==="title"&&(value.length>160||BOOK_TITLE_UNSAFE.test(value))){invalid.push("title");return}patch[hit.field]=clean(value)});
-  if(/(?:오늘\s*)?(?:다\s*읽었어|다\s*읽음|완독|읽었어|읽기\s*끝)/.test(raw)){patch.status="read";patch.completedDate=explicitDate(raw)||todayIso()}
-  else if(/읽기\s*시작|읽는\s*중|읽고\s*있어/.test(raw)){patch.status="wish";patch.completedDate=""}
+  matches.forEach((hit,i)=>{const end=i+1<matches.length?matches[i+1].index:raw.length,value=cleanBookPatchValue(raw.slice(hit.valueStart,end),hit.field);if(!value)return;if(hit.field==="rating"){const n=Number((value.match(/\d(?:\.\d)?/)||[])[0]);if(Number.isFinite(n)&&n>=.1&&n<=5)patch.rating=Math.round(n*10)/10;return}if(hit.field==="startDate"||hit.field==="completedDate"){if(hit.field==="startDate"&&BOOK_START_DATE_IGNORED.test(raw))return;const date=explicitDate(value);if(date)patch[hit.field]=date;return}if(hit.field==="title"&&(value.length>160||BOOK_TITLE_UNSAFE.test(value))){invalid.push("title");return}patch[hit.field]=clean(value)});
+  if(BOOK_COMPLETED_INTENT.test(raw)){patch.status="read";patch.completedDate=explicitDate(raw)||todayIso()}
+  else if(BOOK_READING_INTENT.test(raw)){patch.status="wish";patch.completedDate=""}
   return {patch,invalid};
 }
 function patchBookDraft(d,text){
@@ -153,7 +163,7 @@ function editDraft(text){
  const bookResult=d.target==="book"?patchBookDraft(d,text):null;
  const placeChanged=isPlace&&patchPlaceDraft(d,text);
  if(rating!==null&&d.target==="movie")d.data.rating=rating;
- if(date&&!isPlace){if(d.target==="movie")d.data.watchedDate=date;else if(d.target==="book"&&d.data.status!=="read"){d.entities=d.entities||{};d.entities.readingDate=date;}else d.data[d.target==="book"?"completedDate":d.target==="task"?"due":"date"]=date;}
+ if(date&&!isPlace&&d.target!=="book"){if(d.target==="movie")d.data.watchedDate=date;else d.data[d.target==="task"?"due":"date"]=date;}
  if(title&&d.target!=="travelWish"&&d.target!=="book"){d.data[d.target==="task"?"text":"title"]=title;}
  const changed=d.target==="book"?bookResult.changed:isPlace?placeChanged:rating!==null||date||title,help=d.target==="travelWish"?"장소 이름·지역·유형·방문일·메모·평점 중 바꿀 부분을 알려주세요.":d.target==="book"?"책 제목·지은이·평점·한줄평·상태·날짜 중 바꿀 필드만 알려주세요.":d.target==="task"?"할 일이나 기한 중 바꿀 부분을 알려주세요.":d.target==="diary"?"제목·날짜·내용 중 바꿀 부분을 알려주세요.":"제목·날짜·평점 중 바꿀 부분을 알려주세요.";
  say("yuna",bookResult?.invalid?.length?"제목에 다른 필드가 섞여 있어 반영하지 않았어요. 필드별로 다시 나눠 알려주세요.":changed?"바꾼 내용을 Preview에 반영했어요.":`수정할 필드를 확인하기 어려워요. ${help}`);
