@@ -4,6 +4,8 @@
 
 이 문서는 이 저장소 전체에 적용되는 최상위 개발 규칙이다. 이 저장소에서 작업하는 모든 개발 Agent는 작업 계획, 코드 변경, 테스트, Release QA, Git 및 배포 과정에서 이 규칙을 항상 따라야 한다.
 
+이 문서는 PROJECT HANI의 **일반 안전규칙에 대한 Canonical Source**이다. 작업 Prompt는 기본 안전규칙을 장문으로 반복하지 않고 `AGENTS.md 준수`로 참조할 수 있다. 작업별 추가 제한, 승인 범위, 대상 파일과 배포 조건은 Prompt에 별도로 기록한다.
+
 ## 1. 프로젝트
 
 - 프로젝트명은 **PROJECT HANI / HANI OS**이다.
@@ -37,9 +39,10 @@
 
 ## 4. 개발 작업 원칙
 
-- 작업 시작 시 원격 `origin/main`의 최신성을 확인하고 현재 작업 기준선과 비교한다.
+- 새로운 개발 세션 시작, Candidate Freeze, `main` drift 의심, CRITICAL 작업 시 원격 `origin/main`의 최신성을 확인하고 현재 작업 기준선과 비교한다.
+- 같은 세션에서 연속된 LIGHT 또는 NORMAL Patch를 수행할 때 동일한 main SHA, 표시 버전, 최신 Runtime JS를 반복 확인하지 않는다.
 - 작업 도중 `main`이 진행된 경우 임의로 merge 또는 rebase하지 않는다. 현재 기준선과 최신 `main`의 차이, 작업에 미치는 영향, 필요한 대응을 성민 대표님께 보고한다.
-- 작업 시작 전 항상 현재 `main` SHA, 화면 표시 버전, 마지막으로 로드되는 최신 UI JS 파일을 확인한다.
+- 위 기준선 확인 시 현재 `main` SHA, 화면 표시 버전, 마지막으로 로드되는 최신 UI JS 파일을 함께 확인한다.
 - 정상 동작 중인 기능은 요청 범위 밖에서 불필요하게 변경하지 않는다.
 - 문제를 해결하기 위해 기존 코드 위에 새로운 JS, event 또는 renderer layer를 계속 추가하지 않는다.
 - 변경 전에 기존 DOM, Event, Renderer의 실제 소유 경로와 실행 순서를 분석한다.
@@ -47,6 +50,27 @@
 - 반복적인 DOM create/delete보다 **Persistent Slot + Update** 구조를 우선 검토한다.
 - UI 수정은 가능하면 **READ-ONLY UI PATCH**로 수행한다.
 - 수정 범위는 요구사항을 충족하는 최소 범위로 제한하고, 기존 데이터 경로와 정상 동작을 보존한다.
+
+### Development Mode
+
+개별 Patch 개발은 다음 흐름을 따른다.
+
+`Scoped Discovery → Patch → Risk-tier Targeted Test`
+
+- 먼저 `dev-center/codemap.json`에서 feature owner, dependency symbol, DOM/event anchor와 targeted test를 확인한다.
+- owner 파일과 필요한 symbol 주변만 우선 읽고, CODEMAP anchor가 없거나 오래된 경우에만 검색 범위를 확장한다.
+- CODEMAP anchor가 사라졌거나 경로가 맞지 않으면 `CODEMAP_MISS`로 처리하고 실제 코드 검색으로 fallback한다. 틀린 CODEMAP 정보를 사실로 사용하지 않는다.
+- 큰 파일 전체 읽기, Full Package Build, One-Pass Full Preflight, HINA Full QA, Production read-back을 Patch마다 반복하지 않는다.
+
+### Candidate Mode
+
+성민 대표님이 Preview Candidate 준비를 요청하거나 여러 Patch가 완료된 경우에만 Candidate Mode로 전환한다.
+
+`Candidate Freeze → Build 1회 → One-Pass Preflight 1회 → HINA Independent Verification 1회 → Preview / Arin → 성민 대표 승인 → identity 재확인 → Merge → Production Read-back`
+
+- Candidate Freeze 이후의 모든 자동 결과는 동일한 candidate SHA, package SHA 및 gate contract hash에 연결한다.
+- Candidate 내용이 변경되면 기존 PASS를 재사용하지 않고 새 Candidate로 다시 Freeze한다.
+- HINA는 frozen Candidate를 독립 검증한다. 동일한 identity가 유지되는 동안 다른 단계에서 동일 Package를 불필요하게 재구성하지 않는다.
 
 ## 5. 금지 및 승인 필요 작업
 
@@ -70,6 +94,14 @@
 
 ## 6. Release QA
 
+### Risk Tier
+
+- **LIGHT**: 문구, spacing, CSS, 캐릭터 Comment, 이미지 배치 등. 관련 파일 syntax와 해당 화면·컴포넌트 targeted QA만 수행한다.
+- **NORMAL**: Quiz generation, Newsroom logic, Asset matching, Intake parsing, 일반 UI interaction 등. feature owner와 관련 dependency를 확인하고 targeted regression을 수행한다.
+- **CRITICAL**: `hani_os_life_v23`, storage write, Cloud Sync, Supabase write/schema, auth, delete/recovery, release pipeline 등. 기존 Full Safety Audit과 승인 절차를 유지한다.
+
+LIGHT와 NORMAL 작업도 Release Candidate에 포함될 때는 Candidate Freeze 이후 One-Pass 및 HINA 절차를 거친다. Risk Tier는 개발 중 검증 범위를 정하며 Release Gate를 우회하지 않는다.
+
 개발 완료 후 최소한 다음 항목을 검증한다.
 
 - 운영 코드 또는 배포 파일이 변경되는 Release의 버전 증가 여부
@@ -92,14 +124,15 @@
 
 - **하니**: PM / Chief of Staff / 요구사항 정리 / 위험 판단 / 최종 종합
 - **개발 Agent(Codex)**: 실제 코드 변경 / 파일 작업 / 테스트
-- **유리**: Pre-QA / Release Validation
-- **아린**: 필요 시 UI/UX Review
+- **유리**: 변경 범위 / UI 여부 / owner path / event layering 위험 / One-Pass가 소유하지 않는 특수 검사
+- **아린**: UI 변경 시 Preview UI/UX Review. Machine Safety Gate를 반복하지 않는다.
 - **히나**: Final QA / Release Gate
 - **성민 대표님**: Preview 확인 및 최종 승인
 
 ### 목표 개발 Flow
 
-`성민 요구 → 하니 Spec → 개발 Agent → Static Test → 유리 Pre-QA → 필요 시 아린 Review → 히나 Final QA → Preview → 성민 승인 → PR/main merge → Pages → Production Read-back`
+- Development: `성민 요구 → 하니 Spec → 개발 Agent → Scoped Discovery → Patch → Risk-tier Targeted Test`
+- Candidate: `Candidate Freeze → Build → One-Pass Preflight → 히나 독립 검증 → Preview / 필요 시 아린 Review → 성민 승인 → identity 재확인 → PR/main merge → Pages → Production Read-back`
 
 각 Agent는 자신의 단계 결과와 확인하지 못한 위험을 다음 단계에 명확히 전달한다. 성민 대표님의 최종 승인 전에는 승인 이후 단계로 진행하지 않는다.
 
