@@ -61,6 +61,8 @@ for (const [key, prompt] of Object.entries(prompts)) {
 }
 assert.match(server, /meetingVoicePrompt\(agent\?\.agent_key\)/);
 assert.match(server, /meetingVoicePrompt\("HANI"\)/);
+assert.match(server, /hani-agent-orchestrator v1\.9\.1 · Meeting Character Voice Layer/);
+assert.match(server, /if \(action === "health"\)[\s\S]{0,240}version: "1\.9\.1"/);
 assert.doesNotMatch(patchText, /^\+.*(?:route_case|applyDecisionReadinessGate|representative_decision|\.from\(|\.insert\(|\.update\(|\.upsert\(|\.delete\()/m);
 
 console.log("Meeting Character Voice A-H targeted QA: PASS");
