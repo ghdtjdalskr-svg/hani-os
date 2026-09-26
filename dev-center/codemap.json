@@ -1,0 +1,244 @@
+{
+  "schemaVersion": "1.0.0",
+  "purpose": "Fast, advisory lookup from a HANI feature to its current owner files, dependency symbols, DOM/event anchors, and targeted tests.",
+  "lastVerifiedSha": "6d1016a821de2dc750fb90303f24abbff3ee1e04",
+  "usage": [
+    "Look up the feature before broad repository search.",
+    "Read owner files and only the dependency symbol neighborhoods needed for the task.",
+    "If a file or anchor is missing, report CODEMAP_MISS and fall back to targeted code search.",
+    "Treat CODEMAP as navigation metadata, never as proof that runtime behavior is correct."
+  ],
+  "staleProtection": {
+    "result": "CODEMAP_MISS",
+    "conditions": [
+      "owner path does not exist",
+      "declared symbol or DOM/event anchor does not exist",
+      "the current main is newer than lastVerifiedSha and the touched feature has changed"
+    ],
+    "fallback": "Search the named feature and adjacent runtime references, then update CODEMAP in a separate reviewed patch when ownership changed."
+  },
+  "features": [
+    {
+      "feature": "dashboard",
+      "label": "Dashboard",
+      "risk": "NORMAL",
+      "owners": [
+        { "file": "hani-main.js", "symbols": ["renderHome", "renderHomeMiniCharts", "homeQuizMetrics", "renderLifeMarket"] },
+        { "file": "hani-ui-v02992.js", "symbols": ["mountSkeletons", "improveLifeMarket", "refresh"] }
+      ],
+      "dependencies": [
+        { "file": "hani-main.js", "symbols": ["calculate", "brokerCalc"] },
+        { "file": "hani-study-v02984.js", "symbols": ["renderHomeDerived"] }
+      ],
+      "dom": ["#home", "#homeTrendSvg", "#homeMixLegend", "#homeTaskMini"],
+      "events": ["[data-life-index]", "[data-go]"],
+      "targetedTests": ["node scripts/hani-design-system-qa.mjs", "manual: dashboard KPI, chart, navigation and derived-task read-back"],
+      "lastVerifiedSha": "6d1016a821de2dc750fb90303f24abbff3ee1e04"
+    },
+    {
+      "feature": "asset-update",
+      "label": "Asset Update",
+      "risk": "CRITICAL",
+      "owners": [
+        { "file": "hani-asset-update-v1.js", "symbols": ["normalize", "resolveAccountMatch", "approve", "executeAccountDelete", "run"] }
+      ],
+      "dependencies": [
+        { "file": "hani-main.js", "symbols": ["normalizeBrokerHolding", "brokerCalc", "instrumentBy", "commit", "agentApi"] }
+      ],
+      "dom": ["#investmentIntake", "#assetCaptureV1", "#assetCapturePreview", "#assetAccountManager"],
+      "events": ["#assetCaptureAnalyze", "[data-asset-edit]", "[data-asset-delete]"],
+      "targetedTests": ["node scripts/hani-asset-update-smoke.js", "node scripts/hani-asset-update-browser-smoke.js"],
+      "lastVerifiedSha": "6d1016a821de2dc750fb90303f24abbff3ee1e04"
+    },
+    {
+      "feature": "investment",
+      "label": "Investment",
+      "risk": "CRITICAL",
+      "owners": [
+        { "file": "hani-main.js", "symbols": ["calculate", "renderPortfolio", "renderAssets", "renderInvestmentJournal", "saveBroker"] }
+      ],
+      "dependencies": [
+        { "file": "hani-main.js", "symbols": ["normalizeBrokerHolding", "normalizeBrokerSnapshot", "brokerCalc", "officialBrokerLatest"] }
+      ],
+      "dom": ["#investment", "#investmentLiveTotal", "#brokerLatestHoldingRows", "#assetStats"],
+      "events": ["#brokerHistoryMode", "#journalSave", "#watchSave"],
+      "targetedTests": ["manual: snapshot calculation, portfolio totals, journal and account isolation regression"],
+      "lastVerifiedSha": "6d1016a821de2dc750fb90303f24abbff3ee1e04"
+    },
+    {
+      "feature": "newsroom",
+      "label": "Newsroom",
+      "risk": "CRITICAL",
+      "owners": [
+        { "file": "hani-main.js", "symbols": ["renderInvestmentNews", "investmentNewsRefresh", "investmentNewsArchiveLoad", "investmentNewsArchiveSubmit"] },
+        { "file": "hani-newsroom-ux-v02970.js", "symbols": ["applyPagination", "enhanceNewBadges", "ensureWeeklyArchiveNav", "applyAll"] },
+        { "file": "hani-company-followup-preview.js", "symbols": ["render"] }
+      ],
+      "dependencies": [
+        { "file": "hani-main.js", "symbols": ["investmentNewsTargets", "agentApi", "cloudClient"] }
+      ],
+      "dom": ["#newsroom", "#newsroomGeneralPane", "#newsroomInterestPane", "#investmentNewsFeed"],
+      "events": ["#investmentNewsRefresh", "#investmentNewsEntityFilter", "#investmentNewsGradeFilter"],
+      "targetedTests": ["node scripts/hani-newsroom-followup-smoke.mjs", "manual: archive write/read-back and filter regression"],
+      "lastVerifiedSha": "6d1016a821de2dc750fb90303f24abbff3ee1e04"
+    },
+    {
+      "feature": "yuna-intake",
+      "label": "YUNA Intake",
+      "risk": "NORMAL",
+      "owners": [
+        { "file": "hani-yuna-helpdesk.js", "symbols": ["routeIntent", "parse", "parseBookCorrection", "patchBookDraft", "saveApproved", "init"] },
+        { "file": "hani-yuna-helpdesk.css", "symbols": [] }
+      ],
+      "dependencies": [
+        { "file": "hani-main.js", "symbols": ["intakeNaturalBook", "intakeNaturalMovie", "agentApi", "commit"] }
+      ],
+      "dom": ["#intake", "#intakeDeskCard", "#intakeRouteStatus"],
+      "events": ["#homeYunaQuick", "#yunaSend", "#yunaSave"],
+      "targetedTests": ["node scripts/hani-yuna-smoke.js", "manual: Preview correction followed by explicit approval and read-back"],
+      "lastVerifiedSha": "6d1016a821de2dc750fb90303f24abbff3ee1e04"
+    },
+    {
+      "feature": "reading",
+      "label": "Reading",
+      "risk": "NORMAL",
+      "owners": [
+        { "file": "hani-main.js", "symbols": ["bookCard", "updateBookFormState", "resetBookForm", "renderReading"] }
+      ],
+      "dependencies": [
+        { "file": "hani-main.js", "symbols": ["commit", "ratingPreview", "intakeNaturalBook"] },
+        { "file": "hani-yuna-helpdesk.js", "symbols": ["parseBook", "parseBookCorrection", "patchBookDraft"] }
+      ],
+      "dom": ["#reading", "#bookTitle", "#readBooks", "#wishBooks"],
+      "events": ["#saveBook", "[data-book-edit]", "[data-book-delete]", "[data-book-toggle]"],
+      "targetedTests": ["node scripts/hani-yuna-smoke.js", "manual: reading form, shelf layout and existing-book read-back"],
+      "lastVerifiedSha": "6d1016a821de2dc750fb90303f24abbff3ee1e04"
+    },
+    {
+      "feature": "study-daily-quiz",
+      "label": "Study / Daily Quiz",
+      "risk": "NORMAL",
+      "owners": [
+        { "file": "hani-study-v02984.js", "symbols": ["normalizeProject", "normalizeQuiz", "generateTodayQuiz", "gradeQuiz", "renderLearning", "derivedLearningTasks"] }
+      ],
+      "dependencies": [
+        { "file": "hani-main.js", "symbols": ["commit", "agentApi", "renderTasks"] }
+      ],
+      "dom": ["#study", "#studyEngineV02984", "#studyProjectList"],
+      "events": ["#studyGenerateQuiz", "#studyProjectSave", "[data-study-quiz]"],
+      "targetedTests": ["browser: window.HANI_STUDY_V02984_TEST", "manual: legacy quiz, generation, grading, wrong-answer and rollback paths"],
+      "lastVerifiedSha": "6d1016a821de2dc750fb90303f24abbff3ee1e04"
+    },
+    {
+      "feature": "travel",
+      "label": "Travel",
+      "risk": "NORMAL",
+      "owners": [
+        { "file": "hani-main.js", "symbols": ["normalizeTravelTrip", "normalizeTravelPlace", "renderTravel", "renderTravelArchive", "renderTravelDetailLists"] }
+      ],
+      "dependencies": [
+        { "file": "hani-main.js", "symbols": ["commit", "openTravelTripModal", "openTravelPlaceModal", "renderTravelImportPreview"] }
+      ],
+      "dom": ["#travel", "#travelTripModal", "#travelPlaceModal", "#travelTripDetailModal"],
+      "events": ["#travelTripSave", "#travelPlaceSave", "#travelItineraryImport"],
+      "targetedTests": ["node scripts/hani-travel-places-browser-smoke.js", "manual: trip/place isolation, import preview and rollback regression"],
+      "lastVerifiedSha": "6d1016a821de2dc750fb90303f24abbff3ee1e04"
+    },
+    {
+      "feature": "media-archive",
+      "label": "Media Archive",
+      "risk": "NORMAL",
+      "owners": [
+        { "file": "hani-main.js", "symbols": ["movieSeriesMeta", "updateMovieFormState", "resetMovieForm", "renderMovies"] }
+      ],
+      "dependencies": [
+        { "file": "hani-main.js", "symbols": ["commit", "intakeNaturalMovie", "intakeMovieContentType"] },
+        { "file": "hani-yuna-helpdesk.js", "symbols": ["parseMovie"] }
+      ],
+      "dom": ["#movie", "#movieTitle", "#watchedMovies", "#wishMovies"],
+      "events": ["#saveMovie", "[data-movie-edit]", "[data-movie-delete]", "[data-movie-toggle]"],
+      "targetedTests": ["node scripts/hani-yuna-smoke.js", "manual: series grouping, episode count, edit/delete and legacy item regression"],
+      "lastVerifiedSha": "6d1016a821de2dc750fb90303f24abbff3ee1e04"
+    },
+    {
+      "feature": "sports",
+      "label": "Sports",
+      "risk": "NORMAL",
+      "owners": [
+        { "file": "hani-main.js", "symbols": ["sportsCacheRowValid", "sportsApplyCacheRow", "sportsCacheLoad"] },
+        { "file": "hani-ui-v02992.js", "symbols": ["currentSportsMenu", "renderSportsBanner", "bindSportsBoard"] }
+      ],
+      "dependencies": [
+        { "file": "hani-main.js", "symbols": ["cloudClient", "renderNotes"] }
+      ],
+      "dom": ["#game", "#sportsLegacyNote"],
+      "events": ["[data-sports-tab]", "#sportsLegacyNote"],
+      "targetedTests": ["node scripts/hani-sports-sync-contract.test.mjs", "manual: last-good cache display and menu navigation"],
+      "lastVerifiedSha": "6d1016a821de2dc750fb90303f24abbff3ee1e04"
+    },
+    {
+      "feature": "ai-approval-room",
+      "label": "AI Approval Room",
+      "risk": "CRITICAL",
+      "owners": [
+        { "file": "hani-main.js", "symbols": ["agentLoadCases", "renderAgentCaseDetail", "agentSubmitNewRequest", "agentRecordDecision", "agentReviewInit"] }
+      ],
+      "dependencies": [
+        { "file": "hani-main.js", "symbols": ["agentApi", "agentLoadPolicyRegistry", "agentFinalizeWithCurrentContext"] }
+      ],
+      "dom": ["#agentReview", "#agentPolicyRegistry", "#agentDecisionDock"],
+      "events": ["#agentSubmitRequest", "#agentDecisionDockToggle", "[data-agent-decision]"],
+      "targetedTests": ["manual: case create, review round, decision, policy and read-back contract"],
+      "lastVerifiedSha": "6d1016a821de2dc750fb90303f24abbff3ee1e04"
+    },
+    {
+      "feature": "living-office",
+      "label": "Living Office",
+      "risk": "NORMAL",
+      "owners": [
+        { "file": "hani-office-live.js", "symbols": ["homeAll", "walk", "renderMeeting", "openMeeting", "returnOffice"] },
+        { "file": "hani-office-live.css", "symbols": [] }
+      ],
+      "dependencies": [
+        { "file": "hani-main.js", "symbols": ["agentDetailCache", "renderAgentCaseDetail"] }
+      ],
+      "dom": ["#haniOfficeLive", "#agentReview"],
+      "events": ["window.haniOfficeLiveUpdate", "office meeting open/return controls"],
+      "targetedTests": ["node scripts/hani-meeting-engine-v2-ui-smoke.mjs", "node scripts/hani-meeting-preview-regression.mjs"],
+      "lastVerifiedSha": "6d1016a821de2dc750fb90303f24abbff3ee1e04"
+    },
+    {
+      "feature": "cloud-sync",
+      "label": "Cloud Sync",
+      "risk": "CRITICAL",
+      "owners": [
+        { "file": "hani-main.js", "symbols": ["cloudReadRow", "cloudApplyRemoteRow", "cloudPushLocalRow", "cloudSyncDecision", "cloudSyncCycle", "initCloudBridge"] }
+      ],
+      "dependencies": [
+        { "file": "hani-main.js", "symbols": ["cloudSaveSafetySnapshot", "cloudMergeProtectedMedia", "save", "commit"] }
+      ],
+      "dom": ["#cloudHeaderState", "#cloudStatePill", "#cloudSyncNow"],
+      "events": ["auth state change", "window focus", "online/offline lifecycle"],
+      "targetedTests": ["browser: cloudSyncSelfTest()", "manual: Local-first conflict, revision guard and safety-snapshot read-back"],
+      "lastVerifiedSha": "6d1016a821de2dc750fb90303f24abbff3ee1e04"
+    },
+    {
+      "feature": "release-center",
+      "label": "Release Center",
+      "risk": "CRITICAL",
+      "owners": [
+        { "file": "hani-main.js", "symbols": ["deployBridgeApi", "deployCenterDiscover", "deployCenterStagePackage", "deployCenterMerge", "deployRenderQaReport"] },
+        { "file": "supabase/functions/hani-deploy-bridge/index.ts", "symbols": ["runHinaReleaseQa", "runHinaModularQa", "runSuppliedModularQa"] }
+      ],
+      "dependencies": [
+        { "file": "scripts/hani-release-package.mjs", "symbols": [] },
+        { "file": "scripts/hani-one-pass-release.mjs", "symbols": [] },
+        { "file": "dev-center/one-pass-gate-contract.json", "symbols": [] }
+      ],
+      "dom": ["#deployment", "#deployQueueCard", "#deployHinaReport", "#deployMergeBtn"],
+      "events": ["#deployPackageStageBtn", "#deployInboxRefreshBtn", "#deployMergeBtn"],
+      "targetedTests": ["node scripts/hani-one-pass-release.mjs --self-test", "node scripts/hani-release-preqa.mjs --self-test", "manual: frozen identity and Production read-back contract"],
+      "lastVerifiedSha": "6d1016a821de2dc750fb90303f24abbff3ee1e04"
+    }
+  ]
+}
