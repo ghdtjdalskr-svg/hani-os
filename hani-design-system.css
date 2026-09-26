@@ -44,7 +44,7 @@ body,input,textarea,select,button{font-family:var(--ds-font)}
 #app #lifeMarketGrid .kpi-head>span{font-size:18px!important;line-height:1.4}
 #app #lifeMarketGrid [data-life-index]>strong{font-size:32px!important;line-height:1.25;letter-spacing:-.035em}
 #app #lifeMarketGrid [data-life-index]>small{font-size:13px!important}
-#app #lifeMarketGrid .life-card-descriptor{font-size:12px!important}
+#app #lifeMarketGrid .life-card-descriptor{font-size:15px!important;font-weight:850!important}
 #app #lifeMarketFeatured{display:none!important}
 #app #lifeMarketGrid>#lifeMarketBanner{grid-column:span 2!important;display:grid!important;grid-template-columns:42% 58%!important;grid-template-rows:1fr!important;gap:0!important;padding:0!important;overflow:hidden;position:relative;background:#fff!important}
 #app #lifeMarketBanner>img{position:absolute!important;inset:0 auto 0 0!important;width:42%!important;height:100%!important;object-fit:cover!important;opacity:1!important;filter:none!important}
@@ -679,8 +679,8 @@ html body{background-image:radial-gradient(circle at 86% 3%,color-mix(in srgb,va
  min-width:0!important;padding:14px 16px!important;border:0!important;border-radius:0!important;
  background:linear-gradient(125deg,rgba(255,255,255,.98),rgba(249,247,255,.94))!important;box-shadow:none!important;backdrop-filter:none!important
 }
-#app #lifeMarketBanner .mood-copy>small{grid-area:kicker;color:#6552aa!important;font-size:12px!important;font-weight:950!important;letter-spacing:.05em}
-#app #lifeMarketBanner .mood-copy>strong{grid-area:headline;display:block!important;margin:0!important;color:#252b3d!important;font-size:clamp(23px,1.7vw,30px)!important;line-height:1.15!important;white-space:nowrap!important;letter-spacing:-.035em}
+#app #lifeMarketBanner .mood-copy>small{grid-area:kicker;color:#6552aa!important;font-size:14px!important;font-weight:950!important;letter-spacing:.05em;text-align:center!important}
+#app #lifeMarketBanner .mood-copy>strong{grid-area:headline;display:block!important;margin:0!important;color:#252b3d!important;font-size:clamp(26px,1.85vw,34px)!important;line-height:1.15!important;text-align:center!important;text-wrap:balance;word-break:keep-all;letter-spacing:-.035em}
 #app #lifeMarketBanner #lifeMarketState{display:inline!important;color:#6a4dc4;font-size:1.08em;font-weight:1000}
 #app #lifeMarketCounts{
  grid-area:counts;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
@@ -698,6 +698,15 @@ html body{background-image:radial-gradient(circle at 86% 3%,color-mix(in srgb,va
 #app #lifeMarketBanner .life-market-comment b{color:#6652c2!important;font-size:10px!important}
 #app #lifeMarketBanner .life-market-comment span{color:#41495d!important;font-size:12px!important;line-height:1.4!important}
 #app #lifeMarketMood{display:none!important}
+
+/* vNext QA · body metrics fill the available row and record inputs read as actions. */
+#app #diet #bodyMetricStats{width:100%!important;grid-template-columns:repeat(4,minmax(0,1fr))!important}
+#app :is(#reading,#movie) .phase1-collapsible-form{border:1px solid color-mix(in srgb,var(--ds-season) 42%,var(--season-line))!important;background:linear-gradient(135deg,color-mix(in srgb,var(--ds-season-soft) 62%,white),#fff)!important;box-shadow:0 8px 22px color-mix(in srgb,var(--ds-season) 9%,transparent)!important}
+#app :is(#reading,#movie) .phase1-collapsible-form>summary{min-height:76px;border-left:5px solid var(--ds-season);background:linear-gradient(90deg,color-mix(in srgb,var(--ds-season-soft) 72%,white),transparent 72%)}
+#app :is(#reading,#movie) .phase1-collapsible-form>summary span:before{display:inline-flex;margin-bottom:5px;padding:3px 7px;border-radius:999px;background:var(--ds-season);color:#fff;font-size:9px;font-weight:950;letter-spacing:.08em;content:"RECORD INPUT"}
+#app :is(#reading,#movie) .phase1-collapsible-form>summary b{font-size:19px!important}
+#app :is(#reading,#movie) .phase1-collapsible-form>summary em{padding:7px 11px;border:1px solid color-mix(in srgb,var(--ds-season) 32%,white);border-radius:999px;background:#fff;font-size:13px!important}
+#app :is(#reading,#movie) .phase1-collapsible-form[open]>summary{border-bottom:1px solid var(--season-line)}
 
 #app #game .sports-update-policy{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:-3px 0 12px}
 #app #game .sports-update-policy span{display:flex;align-items:center;gap:8px;min-width:0;padding:9px 12px;border:1px solid #dfe5ef;border-radius:12px;background:#fff;color:#647086;font-size:10px;font-weight:720;line-height:1.35}
@@ -729,6 +738,8 @@ html body{background-image:radial-gradient(circle at 86% 3%,color-mix(in srgb,va
  #app #lifeMarketBanner .mood-copy>strong{font-size:25px!important}
  #app #game .sports-update-policy span{align-items:flex-start;flex-direction:column;gap:5px}
 }
+@media(max-width:760px){#app #diet #bodyMetricStats{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:480px){#app #diet #bodyMetricStats{grid-template-columns:1fr!important}}
 
 /* v2.9.131 · Design System Migration Phase 1
  * Canonical owner for the global frame, sidebar and top utility presentation.
