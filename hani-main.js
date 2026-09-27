@@ -3072,9 +3072,21 @@ function cloudSyncSelfTest(){
     [cloudSyncDecision({hasBaseline:true,localMeaningful:true,remoteMeaningful:true,localHash:B,remoteHash:R,baselineHash:B,appliedRevision:5,remoteRevision:6}).action,"pull"],
     [cloudSyncDecision({hasBaseline:true,localMeaningful:true,remoteMeaningful:true,localHash:L,remoteHash:R,baselineHash:B,appliedRevision:5,remoteRevision:6}).action,"conflict"],
     [cloudSyncDecision({hasBaseline:true,localMeaningful:true,remoteMeaningful:true,localHash:L,remoteHash:R,baselineHash:B,appliedRevision:6,remoteRevision:6}).action,"stop"],
-    [cloudSyncDecision({hasBaseline:true,localMeaningful:true,remoteMeaningful:true,localHash:B,remoteHash:R,baselineHash:B,appliedRevision:7,remoteRevision:6}).action,"stop"]
+    [cloudSyncDecision({hasBaseline:true,localMeaningful:true,remoteMeaningful:true,localHash:B,remoteHash:R,baselineHash:B,appliedRevision:7,remoteRevision:6}).action,"stop"],
+    [cloudShouldFetchFullState("poll",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),false],
+    [cloudShouldFetchFullState("focus",{revision:8},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),true],
+    [cloudShouldFetchFullState("visible",null,{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),true],
+    [cloudShouldFetchFullState("local-save",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),true]
   ];
   return cases.every(([got,want])=>got===want);
+}
+function cloudShouldFetchFullState(reason,remoteMeta,localMeta=cloudMeta()){
+  // Frequent lifecycle checks stay metadata-only while the verified revision is unchanged.
+  if(!["poll","focus","visible"].includes(reason))return true;
+  const appliedRevision=Number(localMeta?.appliedRevision),remoteRevision=Number(remoteMeta?.revision);
+  const hasVerifiedBaseline=localMeta?.syncEngine===CLOUD_SYNC_ENGINE&&localMeta?.hashSchema===CLOUD_HASH_SCHEMA&&!!localMeta?.lastSyncedHash&&Number.isFinite(appliedRevision);
+  if(!hasVerifiedBaseline||!remoteMeta||!Number.isFinite(remoteRevision))return true;
+  return remoteRevision!==appliedRevision;
 }
 async function cloudSyncCycle(reason="manual"){
   if(!cloudClient||!cloudUser)return;
@@ -3082,6 +3094,10 @@ async function cloudSyncCycle(reason="manual"){
   cloudSyncBusy=true;
   try{
     if(!cloudSyncSelfTest())throw new Error("Sync Core 자체 검증에 실패해 자동 동기화를 시작하지 않았습니다.");
+    if(["poll","focus","visible"].includes(reason)){
+      const remoteMeta=await cloudFetchMeta();
+      if(!cloudShouldFetchFullState(reason,remoteMeta,cloudMeta()))return;
+    }
     const remote=await cloudReadRow();
     const localState=cloudComparableState(state);
     const localMeaningful=cloudHasMeaningfulLocalData(localState);
@@ -3798,7 +3814,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.139";
+const HANI_DISPLAY_VERSION="2.9.140";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
