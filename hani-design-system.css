@@ -830,3 +830,46 @@ html body{background-image:radial-gradient(circle at 86% 3%,color-mix(in srgb,va
  #app .main{padding-left:var(--hani-space-mobile)!important;padding-right:var(--hani-space-mobile)!important}
  #app .ui26-top .storage-strip>span{font-size:8.5px}
 }
+
+/* v2.9.141 · Office IA + read-only monthly report */
+#app .monthly-report-shell{display:grid;gap:14px}
+#app .monthly-report-hero{padding:22px 24px;background:linear-gradient(135deg,color-mix(in srgb,var(--ds-season-soft) 72%,#fff),#fff)}
+#app .monthly-report-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}
+#app .monthly-report-heading h3{margin:5px 0 4px;font-size:26px;line-height:1.15;color:#18233d}
+#app .monthly-report-heading p{margin:0;color:#69748a;font-size:13px}
+#app .monthly-report-period{display:grid;gap:6px;min-width:180px;color:#59647a;font-size:11px;font-weight:850}
+#app .monthly-report-period input{min-height:42px;padding:8px 11px;border:1px solid var(--hani-frame-line);border-radius:var(--hani-radius-control);background:#fff;color:#18233d;font:800 14px/1 var(--hani-font-sans)}
+#app .monthly-report-readonly{display:inline-flex;align-items:center;margin-top:16px;padding:7px 10px;border-radius:999px;background:#eef7f3;color:var(--color-state-success);font-size:10px;font-weight:900;letter-spacing:.04em}
+#app .monthly-report-kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+#app .monthly-report-kpi{display:grid;gap:7px;min-height:112px;padding:16px}
+#app .monthly-report-kpi>span{color:#737e94;font-size:11px;font-weight:850}
+#app .monthly-report-kpi>strong{color:#1c2945;font-size:20px;line-height:1.15;overflow-wrap:anywhere}
+#app .monthly-report-kpi>small{color:#7c879c;font-size:10px;line-height:1.45}
+#app .monthly-report-insight{display:grid;grid-template-columns:68px minmax(0,1fr);align-items:center;gap:16px;padding:18px 20px;border-color:color-mix(in srgb,var(--ds-season) 20%,#dfe3ec);background:linear-gradient(100deg,#fff,color-mix(in srgb,var(--ds-season-soft) 56%,#fff))}
+#app .monthly-report-insight-avatar{width:68px;height:68px;overflow:hidden;border:1px solid var(--hani-frame-line);border-radius:22px;background:#fff}
+#app .monthly-report-insight-avatar img{width:100%;height:100%;object-fit:cover}
+#app .monthly-report-insight span,#app .monthly-report-domain-head span{color:var(--ds-season);font-size:9px;font-weight:900;letter-spacing:.09em}
+#app .monthly-report-insight h3{margin:4px 0 5px;color:#1b2741;font-size:17px}
+#app .monthly-report-insight p{margin:0;color:#526078;font-size:12px;line-height:1.65}
+#app .monthly-report-domains{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#app .monthly-report-domain{padding:18px;border-left:4px solid var(--report-tone,#7569e8)}
+#app .monthly-report-domain.tone-finance{--report-tone:#476de7}#app .monthly-report-domain.tone-money{--report-tone:#d88448}#app .monthly-report-domain.tone-health{--report-tone:#2fae88}#app .monthly-report-domain.tone-activity{--report-tone:#3b93d1}#app .monthly-report-domain.tone-culture{--report-tone:#9a61d0}
+#app .monthly-report-domain-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+#app .monthly-report-domain-head h3{margin:3px 0 0;color:#1b2741;font-size:17px}
+#app .monthly-report-domain-head>b{padding:5px 7px;border-radius:999px;background:#f2f4f8;color:#6d778b;font-size:9px}
+#app .monthly-report-domain>p{min-height:36px;margin:11px 0;color:#68758b;font-size:11px;line-height:1.55}
+#app .monthly-report-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#app .monthly-report-metrics>div{display:grid;gap:5px;min-width:0;padding:10px;border-radius:10px;background:#f7f8fb}
+#app .monthly-report-metrics span{color:#7a8599;font-size:9px;font-weight:800}
+#app .monthly-report-metrics strong{color:#26334d;font-size:12px;line-height:1.4;overflow-wrap:anywhere}
+
+@media(max-width:1080px){#app .monthly-report-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:700px){
+ #app .monthly-report-heading{display:grid}
+ #app .monthly-report-period{width:100%;min-width:0}
+ #app .monthly-report-kpis,#app .monthly-report-domains{grid-template-columns:1fr}
+ #app .monthly-report-insight{grid-template-columns:54px minmax(0,1fr);padding:15px}
+ #app .monthly-report-insight-avatar{width:54px;height:54px;border-radius:17px}
+ #app .monthly-report-metrics{grid-template-columns:1fr}
+ #app .monthly-report-domain>p{min-height:0}
+}

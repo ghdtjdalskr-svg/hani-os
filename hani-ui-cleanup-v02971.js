@@ -17,7 +17,7 @@
   const NAV_LABELS = {
     home: '대시보드',
     intake: '인포데스크',
-    agentReview: 'AI 결재실',
+    agentReview: '경영회의실',
     policy: '사내 규칙',
     deployment: '배포 센터',
     investment: '투자',
