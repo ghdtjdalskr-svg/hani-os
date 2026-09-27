@@ -4214,46 +4214,78 @@ async function agentReviewInit(){
 async function agentPolicyInit(){if(!$("policy"))return;if($("agentRefreshPolicies"))$("agentRefreshPolicies").onclick=()=>agentLoadPolicyRegistry();if(!agentRequireCloud())return;try{await agentLoadPolicyRegistry()}catch(e){console.error("Policy init",e);if($("agentPolicyRegistry"))$("agentPolicyRegistry").innerHTML=`<div class="empty">사내 규칙을 불러오지 못했습니다.<br>${esc(e?.message||e)}</div>`}}
 
 let monthlyReportMonth="";
-function monthlyReportPrevMonth(month){const match=String(month||"").match(/^(\d{4})-(\d{2})$/);if(!match)return "";const d=new Date(Number(match[1]),Number(match[2])-2,1);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`}
+// Report adapters only read existing records; never normalize or persist source data.
+function monthlyReportDate(value){
+  if(typeof value!=="string"||!/^\d{4}-\d{2}-\d{2}$/.test(value))return "";
+  const date=new Date(value+"T00:00:00Z");return Number.isFinite(date.getTime())&&date.toISOString().slice(0,10)===value?value:"";
+}
+function monthlyReportKoreaDate(value=new Date()){
+  if(typeof value!=="string"&&!(value instanceof Date))return "";
+  if(typeof value==="string"&&(!/^\d{4}-\d{2}-\d{2}T/.test(value)||!/(Z|[+-]\d{2}:\d{2})$/i.test(value)||!monthlyReportDate(value.slice(0,10))))return "";
+  const date=new Date(value);if(!Number.isFinite(date.getTime()))return "";
+  return new Intl.DateTimeFormat("sv-SE",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit"}).format(date);
+}
+function monthlyReportBookDate(row){
+  const completed=monthlyReportDate(row.completedDate),read=monthlyReportDate(row.readDate);
+  if((row.completedDate&&!completed)||(row.readDate&&!read)||(completed&&read&&completed!==read))return "";
+  return completed||read;
+}
+function monthlyReportDaily(rows){
+  // A date is a daily snapshot, not an additive event. Latest explicit update wins;
+  // tied/absent update timestamps use the last saved row, without changing storage.
+  const days=new Map();for(const row of rows){const old=days.get(row.date),stamp=x=>Date.parse(x.updatedAt||x.createdAt||"")||0;if(!old||stamp(row)>=stamp(old))days.set(row.date,row)}
+  return [...days.values()].sort((a,b)=>a.date.localeCompare(b.date));
+}
+function monthlyReportPrevMonth(month){if(!monthlyReportDate(`${month}-01`))return "";const [year,number]=month.split("-").map(Number);return number===1?`${String(year-1).padStart(4,"0")}-12`:`${year}-${String(number-1).padStart(2,"0")}`}
 function monthlyReportAvailableMonths(){
-  const months=new Set(),add=value=>{const month=String(value||"").slice(0,7);if(/^\d{4}-\d{2}$/.test(month))months.add(month)};
+  const months=new Set(),cutoff=monthlyReportKoreaDate(),add=value=>{const date=monthlyReportDate(value?.length===7?`${value}-01`:value);if(date&&date<=cutoff)months.add(date.slice(0,7))};
   (state.investmentBrokerSnapshots||[]).filter(x=>x?.mode==="actual"&&x?.status==="confirmed").forEach(x=>add(x.period));
   (state.ledgerMonths||[]).forEach(x=>add(x.month));
   (state.body||[]).forEach(x=>add(x.date));(state.exercise||[]).forEach(x=>add(x.date));
-  (state.books||[]).forEach(x=>add(x.completedDate||x.readDate));(state.movies||[]).forEach(x=>add(x.watchedDate));
+  (state.books||[]).filter(x=>x.status==="read").forEach(x=>add(monthlyReportBookDate(x)));(state.movies||[]).filter(x=>x.status==="watched").forEach(x=>add(x.watchedDate));
+  (state.learningQuizzes||[]).filter(x=>x.status==="completed").forEach(x=>add(monthlyReportKoreaDate(x.completedAt||"")));
   return [...months].sort();
 }
-function monthlyReportSnapshot(month){
-  const previousMonth=monthlyReportPrevMonth(month),findBroker=period=>(state.investmentBrokerSnapshots||[]).filter(x=>x?.mode==="actual"&&x?.status==="confirmed"&&x.period===period).sort((a,b)=>String(a.updatedAt||"").localeCompare(String(b.updatedAt||""))).at(-1)||null,
+function monthlyReportSnapshot(month,asOf=monthlyReportKoreaDate()){
+  const cutoff=monthlyReportDate(asOf),validMonth=!!monthlyReportDate(`${month}-01`),inMonth=value=>{const date=monthlyReportDate(value);return !!(validMonth&&cutoff&&date&&date<=cutoff&&date.slice(0,7)===month)},positive=value=>Number.isFinite(Number(value))&&Number(value)>0,
+    previousMonth=monthlyReportPrevMonth(month),findBroker=period=>(state.investmentBrokerSnapshots||[]).filter(x=>x?.mode==="actual"&&x?.status==="confirmed"&&x.period===period&&monthlyReportDate(x.snapshotDate)&&x.snapshotDate<=cutoff&&x.snapshotDate.slice(0,7)===period).sort((a,b)=>a.snapshotDate.localeCompare(b.snapshotDate)||String(a.updatedAt||"").localeCompare(String(b.updatedAt||""))).at(-1)||null,
     investment=findBroker(month),previousInvestment=findBroker(previousMonth),investmentCalc=investment?brokerCalc(investment):null,previousInvestmentCalc=previousInvestment?brokerCalc(previousInvestment):null,
-    ledger=ledgerFind(month),previousLedger=ledgerFind(previousMonth),ledgerSummary=ledger?ledgerCalc(ledger):null,previousLedgerSummary=previousLedger?ledgerCalc(previousLedger):null,
-    body=(state.body||[]).filter(x=>String(x.date||"").startsWith(month)).sort((a,b)=>String(a.date).localeCompare(String(b.date))),exercise=(state.exercise||[]).filter(x=>String(x.date||"").startsWith(month)),
-    books=(state.books||[]).filter(x=>x.status==="read"&&String(x.completedDate||x.readDate||"").startsWith(month)),movies=(state.movies||[]).filter(x=>x.status==="watched"&&String(x.watchedDate||"").startsWith(month)),
-    ratings=[...books,...movies].map(x=>ratingValue(x.rating)).filter(x=>x!==null),firstBody=body[0]||null,lastBody=body.at(-1)||null,totalSteps=exercise.reduce((sum,x)=>sum+n(x.steps),0),totalDistance=exercise.reduce((sum,x)=>sum+n(x.distance),0);
-  return {month,previousMonth,investment,investmentCalc,previousInvestmentCalc,ledger,ledgerSummary,previousLedgerSummary,body,exercise,books,movies,ratings,firstBody,lastBody,totalSteps,totalDistance,recordCount:(investment?1:0)+(ledger?1:0)+body.length+exercise.length+books.length+movies.length};
+    ledgerFor=period=>{const raw=monthlyReportDate(`${period}-01`)&&`${period}-01`<=cutoff?ledgerFind(period):null;return raw?{...raw,items:(raw.items||[]).filter(x=>monthlyReportDate(x.date)&&x.date<=cutoff)}:null},
+    ledger=ledgerFor(month),previousLedger=ledgerFor(previousMonth),ledgerSummary=ledger?ledgerCalc(ledger):null,previousLedgerSummary=previousLedger?ledgerCalc(previousLedger):null,
+    bodyRows=(state.body||[]).filter(x=>inMonth(x.date)&&positive(x.weight)),exerciseRows=(state.exercise||[]).filter(x=>inMonth(x.date)),body=monthlyReportDaily(bodyRows),exercise=monthlyReportDaily(exerciseRows),
+    books=(state.books||[]).filter(x=>x.status==="read"&&inMonth(monthlyReportBookDate(x))),movies=(state.movies||[]).filter(x=>x.status==="watched"&&inMonth(x.watchedDate)),
+    quizzes=(state.learningQuizzes||[]).filter(x=>x.status==="completed"&&inMonth(monthlyReportKoreaDate(x.completedAt||""))),
+    scoredQuizzes=quizzes.filter(x=>x.total!==null&&x.total!==""&&Number.isInteger(Number(x.total))&&Number(x.total)>0&&x.correctCount!==null&&x.correctCount!==""&&Number.isInteger(Number(x.correctCount))&&Number(x.correctCount)>=0&&Number(x.correctCount)<=Number(x.total)),
+    quizTotal=scoredQuizzes.reduce((sum,x)=>sum+Number(x.total),0),quizCorrect=scoredQuizzes.reduce((sum,x)=>sum+Number(x.correctCount),0),
+    ratings=[...books,...movies].map(x=>ratingValue(x.rating)).filter(x=>x!==null),firstBody=body[0]||null,lastBody=body.at(-1)||null,stepDays=exercise.filter(x=>positive(x.steps)),distanceDays=exercise.filter(x=>positive(x.distance)),totalSteps=stepDays.reduce((sum,x)=>sum+Number(x.steps),0),totalDistance=distanceDays.reduce((sum,x)=>sum+Number(x.distance),0),
+    defaultPeriod=validMonth?ledgerSettlementPeriod(month):{periodStart:"",periodEnd:""},ledgerPeriod=ledger&&monthlyReportDate(ledger.periodStart)&&monthlyReportDate(ledger.periodEnd)&&ledger.periodStart<=ledger.periodEnd?{periodStart:ledger.periodStart,periodEnd:ledger.periodEnd}:defaultPeriod;
+  return {month,previousMonth,investment,investmentCalc,previousInvestmentCalc,ledger,ledgerPeriod,ledgerSummary,previousLedgerSummary,body,exercise,books,movies,ratings,firstBody,lastBody,totalSteps,totalDistance,stepDays,distanceDays,quizzes,scoredQuizzes,quizTotal,quizCorrect,duplicateDays:bodyRows.length-body.length+exerciseRows.length-exercise.length,recordCount:(investment?1:0)+(ledger?1:0)+body.length+exercise.length+books.length+movies.length+quizzes.length};
 }
 function monthlyReportDelta(value,previous,formatter=won){if(previous===null||previous===undefined)return "전월 기록 없음";const delta=n(value)-n(previous);return `전월 대비 ${delta>0?"+":""}${formatter(delta)}`}
 function monthlyReportDomainCard({tone,eyebrow,title,summary,metrics,empty}){return `<article class="card monthly-report-domain tone-${tone}"><div class="monthly-report-domain-head"><div><span>${esc(eyebrow)}</span><h3>${esc(title)}</h3></div><b>${empty?"기록 없음":"RECORDED"}</b></div><p>${esc(summary)}</p><div class="monthly-report-metrics">${metrics.map(([label,value])=>`<div><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join("")}</div></article>`}
 function renderMonthlyReport(){
   const input=$("monthlyReportMonth"),kpis=$("monthlyReportKpis"),domains=$("monthlyReportDomains");if(!input||!kpis||!domains)return;
-  const months=monthlyReportAvailableMonths();if(!/^\d{4}-\d{2}$/.test(monthlyReportMonth))monthlyReportMonth=months.at(-1)||monthKeyNow();input.value=monthlyReportMonth;input.onchange=()=>{monthlyReportMonth=input.value||monthKeyNow();renderMonthlyReport()};
-  const report=monthlyReportSnapshot(monthlyReportMonth),investmentTotal=report.investmentCalc?.total,investmentGoal=n(state.goals?.investment),goalRate=report.investmentCalc&&investmentGoal?investmentTotal/investmentGoal*100:null,spend=report.ledgerSummary?.jispiT,bodyDelta=report.firstBody&&report.lastBody?n(report.lastBody.weight)-n(report.firstBody.weight):null,cultureCount=report.books.length+movieViewingUnits(report.movies),avgRating=report.ratings.length?report.ratings.reduce((a,b)=>a+b,0)/report.ratings.length:null;
+  const months=monthlyReportAvailableMonths();if(!monthlyReportDate(`${monthlyReportMonth}-01`))monthlyReportMonth=months.at(-1)||monthlyReportKoreaDate().slice(0,7);input.value=monthlyReportMonth;input.onchange=()=>{monthlyReportMonth=input.value||monthlyReportKoreaDate().slice(0,7);renderMonthlyReport()};
+  const report=monthlyReportSnapshot(monthlyReportMonth),investmentTotal=report.investmentCalc?.total,spend=report.ledgerSummary?.jispiT,bodyDelta=report.firstBody&&report.lastBody?n(report.lastBody.weight)-n(report.firstBody.weight):null,cultureCount=report.books.length+report.movies.length,avgRating=report.ratings.length?report.ratings.reduce((a,b)=>a+b,0)/report.ratings.length:null,
+    stepAverage=report.stepDays.length?`${Math.round(report.totalSteps/report.stepDays.length).toLocaleString()}보`:"걸음 기록 없음",settlementLabel=`${report.ledgerPeriod.periodStart} ~ ${report.ledgerPeriod.periodEnd}`,accuracy=report.quizTotal?`${(report.quizCorrect/report.quizTotal*100).toFixed(1)}%`:"채점 수치 없음";
   kpis.innerHTML=[
     ["투자 자산",report.investmentCalc?won(investmentTotal):"기록 없음",report.investmentCalc?monthlyReportDelta(investmentTotal,report.previousInvestmentCalc?.total):"확정 월간 기록 기준"],
-    ["생활 지출",report.ledgerSummary?won(spend):"기록 없음",report.ledgerSummary?monthlyReportDelta(spend,report.previousLedgerSummary?.jispiT):"월말 결산 기준"],
-    ["신체 기록",report.body.length?`${num(report.lastBody.weight)}kg`:"기록 없음",report.body.length>1?`월초 대비 ${bodyDelta>0?"+":""}${bodyDelta.toFixed(2)}kg`:`${report.body.length}일 기록`],
-    ["활동 일수",report.exercise.length?`${report.exercise.length}일`:"기록 없음",report.exercise.length?`평균 ${Math.round(report.totalSteps/report.exercise.length).toLocaleString()}보`:"운동 기록 기준"],
-    ["문화 기록",cultureCount?`${cultureCount}편`:"기록 없음",cultureCount?`책 ${report.books.length}권 · 시청 ${movieViewingUnits(report.movies)}편`:"완료 기록 기준"]
+    ["생활 지출",report.ledgerSummary?won(spend):"기록 없음",report.ledgerSummary?monthlyReportDelta(spend,report.previousLedgerSummary?.jispiT):"결산기간 기준"],
+    ["신체 기록",report.body.length?`${num(report.lastBody.weight)}kg`:"기록 없음",report.body.length>1?`첫 측정 대비 ${bodyDelta>0?"+":""}${bodyDelta.toFixed(2)}kg`:`${report.body.length}일 기록`],
+    ["활동 일수",report.exercise.length?`${report.exercise.length}일`:"기록 없음",report.stepDays.length?`걸음 기록일 평균 ${stepAverage}`:"걸음 기록 없음"],
+    ["문화 기록",cultureCount?`${cultureCount}건`:"기록 없음",cultureCount?`완독 ${report.books.length}권 · 시청 기록 ${report.movies.length}건`:"완료 기록 기준"]
   ].map(([label,value,meta])=>`<div class="card monthly-report-kpi"><span>${esc(label)}</span><strong>${esc(value)}</strong><small>${esc(meta)}</small></div>`).join("");
-  const highlights=[];if(report.investmentCalc)highlights.push(`투자 목표 달성률은 ${goalRate.toFixed(1)}%입니다.`);if(report.ledgerSummary)highlights.push(`생활 지출은 ${won(spend)}이며 가장 큰 항목은 ${report.ledgerSummary.biggest?report.ledgerSummary.biggest.content:report.ledgerSummary.biggestCategory[0]}입니다.`);if(report.exercise.length)highlights.push(`${report.exercise.length}일 동안 ${report.totalSteps.toLocaleString()}보를 기록했습니다.`);if(cultureCount)highlights.push(`문화 기록은 책 ${report.books.length}권, 시청 ${movieViewingUnits(report.movies)}편입니다.`);
-  $("monthlyReportInsightTitle").textContent=report.recordCount?`${ledgerMonthLabel(report.month)} 기록이 ${report.recordCount}개 영역·건으로 연결됐습니다.`:`${ledgerMonthLabel(report.month)}은 아직 기록을 기다리는 달입니다.`;
+  const highlights=[];if(report.investmentCalc)highlights.push(`확정 투자 자산은 ${won(investmentTotal)}입니다.`);if(report.ledgerSummary)highlights.push(`생활 지출은 ${won(spend)}입니다. 결산기간은 ${settlementLabel}입니다.`);if(report.stepDays.length)highlights.push(`걸음을 기록한 ${report.stepDays.length}일 동안 ${report.totalSteps.toLocaleString()}보를 기록했습니다.`);if(cultureCount)highlights.push(`완독 ${report.books.length}권, 시청 기록 ${report.movies.length}건입니다.`);if(report.quizzes.length)highlights.push(`학습 ${report.quizzes.length}세트를 완료했습니다. 문항 기준 정답률은 ${accuracy}입니다.`);
+  if(report.duplicateDays)highlights.push(`같은 날짜의 중복 운동·신체 기록 ${report.duplicateDays}건은 마지막 갱신 기록으로 묶었습니다.`);
+  $("monthlyReportInsightTitle").textContent=report.recordCount?`${ledgerMonthLabel(report.month)}의 기록을 모았습니다.`:`${ledgerMonthLabel(report.month)}은 아직 기록을 기다리는 달입니다.`;
   $("monthlyReportInsight").textContent=highlights.length?highlights.join(" "):"이 달에는 요약할 기존 기록이 없습니다. 기록이 생기면 저장값을 바꾸지 않고 자동으로 정리합니다.";
   domains.innerHTML=[
-    monthlyReportDomainCard({tone:"finance",eyebrow:"FINANCE",title:"투자",empty:!report.investmentCalc,summary:report.investmentCalc?"확정된 투자 월간 기록을 기준으로 계산했습니다.":"선택한 달의 확정 투자 기록이 없습니다.",metrics:report.investmentCalc?[["총자산",won(investmentTotal)],["전월 변화",monthlyReportDelta(investmentTotal,report.previousInvestmentCalc?.total)],["목표 달성",goalRate===null?"목표 없음":`${goalRate.toFixed(1)}%`]]:[["총자산","기록 없음"],["전월 변화","비교 불가"],["목표 달성","계산 보류"]]}),
-    monthlyReportDomainCard({tone:"money",eyebrow:"MONEY",title:"소비",empty:!report.ledgerSummary,summary:report.ledgerSummary?"월말 결산의 회수예정액을 반영한 생활 지출입니다.":"선택한 달의 소비 결산이 없습니다.",metrics:report.ledgerSummary?[["생활 지출",won(spend)],["최대 항목",report.ledgerSummary.biggest?.content||report.ledgerSummary.biggestCategory[0]],["전월 변화",monthlyReportDelta(spend,report.previousLedgerSummary?.jispiT)]]:[["생활 지출","기록 없음"],["최대 항목","기록 없음"],["전월 변화","비교 불가"]]}),
-    monthlyReportDomainCard({tone:"health",eyebrow:"HEALTH",title:"신체",empty:!report.body.length,summary:report.body.length?`${report.body.length}일의 신체 기록을 날짜 순서로 비교했습니다.`:"선택한 달의 신체 기록이 없습니다.",metrics:report.body.length?[["최근 체중",`${num(report.lastBody.weight)}kg`],["월초 대비",report.body.length>1?`${bodyDelta>0?"+":""}${bodyDelta.toFixed(2)}kg`:"비교 기록 없음"],["기록 일수",`${report.body.length}일`]]:[["최근 체중","기록 없음"],["월초 대비","비교 불가"],["기록 일수","기록 없음"]]}),
-    monthlyReportDomainCard({tone:"activity",eyebrow:"ACTIVITY",title:"활동",empty:!report.exercise.length,summary:report.exercise.length?"선택한 달에 저장된 운동 기록을 합산했습니다.":"선택한 달의 활동 기록이 없습니다.",metrics:report.exercise.length?[["총 걸음",`${report.totalSteps.toLocaleString()}보`],["총 거리",`${num(report.totalDistance)}km`],["하루 평균",`${Math.round(report.totalSteps/report.exercise.length).toLocaleString()}보`]]:[["총 걸음","기록 없음"],["총 거리","기록 없음"],["하루 평균","계산 보류"]]}),
-    monthlyReportDomainCard({tone:"culture",eyebrow:"CULTURE",title:"문화",empty:!cultureCount,summary:cultureCount?"완독과 관람 완료 기록만 포함했습니다.":"선택한 달의 완독·관람 완료 기록이 없습니다.",metrics:cultureCount?[["완독",`${report.books.length}권`],["시청",`${movieViewingUnits(report.movies)}편`],["평균 평점",avgRating===null?"평가 없음":`${avgRating.toFixed(1)}점`]]:[["완독","기록 없음"],["시청","기록 없음"],["평균 평점","평가 없음"]]})
+    monthlyReportDomainCard({tone:"finance",eyebrow:"FINANCE",title:"투자",empty:!report.investmentCalc,summary:"확정 실적만 포함합니다. 당시 목표 이력이 없어 현재 목표를 소급 적용하지 않습니다.",metrics:[["총자산",report.investmentCalc?won(investmentTotal):"기록 없음"],["전월 변화",report.investmentCalc?monthlyReportDelta(investmentTotal,report.previousInvestmentCalc?.total):"비교 불가"],["목표 달성","당시 목표 미보관"]]}),
+    monthlyReportDomainCard({tone:"money",eyebrow:"MONEY",title:"소비",empty:!report.ledgerSummary,summary:`결산기간 ${settlementLabel}. 회수예정액을 반영하며 달력월 합계와 다릅니다. 미래·날짜 미확인 항목은 제외합니다.`,metrics:report.ledgerSummary?[["생활 지출",won(spend)],["최대 항목",report.ledgerSummary.biggest?.content||report.ledgerSummary.biggestCategory[0]],["전월 변화",monthlyReportDelta(spend,report.previousLedgerSummary?.jispiT)]]:[["생활 지출","기록 없음"],["최대 항목","기록 없음"],["전월 변화","비교 불가"]]}),
+    monthlyReportDomainCard({tone:"health",eyebrow:"HEALTH",title:"신체",empty:!report.body.length,summary:report.body.length?`${report.firstBody.date} ~ ${report.lastBody.date}, 유효한 체중 측정 ${report.body.length}일을 비교했습니다.`:"선택한 달의 유효한 체중 기록이 없습니다.",metrics:report.body.length?[["최근 체중",`${num(report.lastBody.weight)}kg`],["첫 측정 대비",report.body.length>1?`${bodyDelta>0?"+":""}${bodyDelta.toFixed(2)}kg`:"비교 기록 없음"],["측정 일수",`${report.body.length}일`]]:[["최근 체중","기록 없음"],["첫 측정 대비","비교 불가"],["측정 일수","기록 없음"]]}),
+    monthlyReportDomainCard({tone:"activity",eyebrow:"ACTIVITY",title:"활동",empty:!report.exercise.length,summary:`운동 기록 ${report.exercise.length}일 중 걸음 기록 ${report.stepDays.length}일 기준입니다. 미입력·0보는 평균에서 제외합니다.`,metrics:[["총 걸음",report.stepDays.length?`${report.totalSteps.toLocaleString()}보`:"기록 없음"],["기록된 거리",report.distanceDays.length?`${num(report.totalDistance)}km`:"기록 없음"],["걸음 기록일 평균",stepAverage]]}),
+    monthlyReportDomainCard({tone:"culture",eyebrow:"CULTURE",title:"문화",empty:!cultureCount,summary:"완료 날짜가 확인되는 기록만 포함합니다. 시리즈·회차 묶음과 관계없이 저장한 입력 1건을 시청 1건으로 셉니다.",metrics:[["완독",`${report.books.length}권`],["시청 기록",`${report.movies.length}건`],["평균 평점",avgRating===null?"평가 없음":`${avgRating.toFixed(1)}점`]]}),
+    monthlyReportDomainCard({tone:"culture",eyebrow:"LEARNING",title:"학습",empty:!report.quizzes.length,summary:`한국시간 완료일 기준입니다. 채점 수치가 확인된 ${report.scoredQuizzes.length}/${report.quizzes.length}세트의 문항을 합산했습니다. 할일·대학은 집계하지 않습니다.`,metrics:[["완료 세트",`${report.quizzes.length}세트`],["확인된 정답 / 문항",`${report.quizCorrect} / ${report.quizTotal}문항`],["문항 기준 정답률",accuracy]]})
   ].join("");
 }
 

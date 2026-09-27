@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
-import { createReadStream, existsSync, statSync } from 'node:fs';
+import { createReadStream, existsSync, statSync, mkdirSync } from 'node:fs';
 import { extname, join, normalize, resolve } from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
@@ -23,15 +23,17 @@ const seed={
     {id:'l-sep',month:'2026-09',items:[{id:'lb',date:'2026-09-01',content:'월세',amount:1200000,category:'fixed',reimbursement:0},{id:'lc',date:'2026-09-02',content:'식비',amount:300000,category:'variable',reimbursement:0}]}
   ],
   body:[{id:'b1',date:'2026-09-01',weight:101},{id:'b2',date:'2026-09-30',weight:99.5}],
-  exercise:[{id:'e1',date:'2026-09-03',steps:8000,distance:6},{id:'e2',date:'2026-09-04',steps:12000,distance:9}],
+  exercise:[{id:'e1',date:'2026-09-03',steps:8000,distance:6},{id:'e2',date:'2026-09-04',steps:12000,distance:9},{id:'e3',date:'2026-09-05',steps:0,strength:true}],
   books:[{id:'book',status:'read',title:'테스트 책',completedDate:'2026-09-12',rating:4.5}],
-  movies:[{id:'movie',status:'watched',contentType:'영화',title:'테스트 영화',watchedDate:'2026-09-15',rating:4}]
+  movies:[{id:'movie',status:'watched',contentType:'드라마',title:'테스트 시리즈',review:'시즌 1 · 12화까지',watchedDate:'2026-09-15',rating:4}]
 };
+seed.learningQuizzes=[{id:'q1',status:'completed',completedAt:'2026-08-31T15:00:00Z',total:10,correctCount:10},{id:'q2',status:'completed',completedAt:'2026-09-10T12:00:00Z',total:30,correctCount:15}];
 
 const browser=await chromium.launch({headless:true,executablePath:'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'});
 try{
   for(const viewport of [{width:1440,height:1000,name:'desktop'},{width:390,height:844,name:'mobile'}]){
     const page=await browser.newPage({viewport}),errors=[];
+    await page.clock.install({time:new Date('2026-09-30T12:00:00Z')});
     page.on('pageerror',error=>errors.push(error.message));page.on('console',message=>{if(message.type()==='error')errors.push(message.text())});
     await page.addInitScript(value=>localStorage.setItem('hani_os_life_v23',JSON.stringify(value)),seed);
     await page.goto(`http://127.0.0.1:${port}/#monthlyReport`,{waitUntil:'load'});
@@ -44,6 +46,10 @@ try{
     assert((await page.locator('#monthlyReport').innerText()).includes('1,500,000원'),`${viewport.name}: ledger total`);
     assert((await page.locator('#monthlyReport').innerText()).includes('-1.50kg'),`${viewport.name}: body delta`);
     assert((await page.locator('#monthlyReport').innerText()).includes('10,000보'),`${viewport.name}: steps average`);
+    const reportText=await page.locator('#monthlyReport').innerText();
+    for(const text of ['시청 기록 1건','첫 측정 대비','62.5%','2026-08-18 ~ 2026-09-17','당시 목표 미보관'])assert(reportText.includes(text),`${viewport.name}: ${text}`);
+    mkdirSync(join(root,'artifacts/monthly-report'),{recursive:true});
+    await page.locator('#monthlyReport').screenshot({path:join(root,`artifacts/monthly-report/${viewport.name}.png`)});
     const before=await page.evaluate(()=>localStorage.getItem('hani_os_life_v23'));
     await page.locator('#monthlyReportMonth').fill('2026-07');await page.locator('#monthlyReportMonth').dispatchEvent('change');await page.waitForTimeout(80);
     const after=await page.evaluate(()=>localStorage.getItem('hani_os_life_v23'));
