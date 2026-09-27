@@ -48,7 +48,17 @@ try{
     assert((await page.locator('#monthlyReport').innerText()).includes('10,000보'),`${viewport.name}: steps average`);
     const reportText=await page.locator('#monthlyReport').innerText();
     for(const text of ['시청 기록 1건','첫 측정 대비','62.5%','2026-08-18 ~ 2026-09-17','당시 목표 미보관'])assert(reportText.includes(text),`${viewport.name}: ${text}`);
+    await page.evaluate(()=>{document.querySelector('#haniContextRemote')?.style.setProperty('display','none','important');document.querySelector('.hani-remote-mobile-trigger')?.style.setProperty('display','none','important')});
     mkdirSync(join(root,'artifacts/monthly-report'),{recursive:true});
+    await page.locator('[data-report-board="quarterly"]').click();
+    assert(await page.locator('#monthlyReportQuarterlyPanel').isVisible(),`${viewport.name}: quarterly preview board`);
+    assert((await page.locator('#monthlyReportQuarterlyPanel').innerText()).includes('분기 집계는 아직 연결하지 않았습니다'),`${viewport.name}: quarterly honest state`);
+    await page.locator('#monthlyReport').screenshot({path:join(root,`artifacts/monthly-report/${viewport.name}-quarterly.png`)});
+    await page.locator('[data-report-board="annual"]').click();
+    assert(await page.locator('#monthlyReportAnnualPanel').isVisible(),`${viewport.name}: annual preview board`);
+    assert((await page.locator('#monthlyReportAnnualPanel').innerText()).includes('아직 연간 판정·목표 달성 집계는 제공하지 않습니다'),`${viewport.name}: annual honest state`);
+    await page.locator('#monthlyReport').screenshot({path:join(root,`artifacts/monthly-report/${viewport.name}-annual.png`)});
+    await page.locator('[data-report-board="monthly"]').click();
     await page.locator('#monthlyReport').screenshot({path:join(root,`artifacts/monthly-report/${viewport.name}.png`)});
     const before=await page.evaluate(()=>localStorage.getItem('hani_os_life_v23'));
     await page.locator('#monthlyReportMonth').fill('2026-07');await page.locator('#monthlyReportMonth').dispatchEvent('change');await page.waitForTimeout(80);

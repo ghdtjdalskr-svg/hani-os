@@ -19,7 +19,7 @@ const state={
 const freeze=x=>{if(x&&typeof x==='object'){Object.values(x).forEach(freeze);Object.freeze(x)}return x};
 freeze(state);
 const elements=new Map();
-const context=vm.createContext({state,n:x=>Number(x)||0,brokerCalc:x=>({total:x.total}),ledgerFind:month=>state.ledgerMonths.find(x=>x.month===month),ratingValue:x=>x==null?null:Number(x),won:x=>`${x}원`,num:x=>String(x),esc:x=>String(x),ledgerMonthLabel:x=>x,$:id=>{if(!elements.has(id))elements.set(id,{});return elements.get(id)}});
+const context=vm.createContext({state,agentImages:{hani:'hani.webp',jieun:'jieun.webp',naeun:'naeun.webp',sooyeon:'sooyeon.webp',haru:'haru.webp',hina:'hina.webp'},n:x=>Number(x)||0,brokerCalc:x=>({total:x.total}),ledgerFind:month=>state.ledgerMonths.find(x=>x.month===month),ratingValue:x=>x==null?null:Number(x),won:x=>`${x}원`,num:x=>String(x),esc:x=>String(x),ledgerMonthLabel:x=>x,$:id=>{if(!elements.has(id))elements.set(id,{});return elements.get(id)}});
 vm.runInContext(ledger+settlement+'\n'+block,context);
 const run=expression=>vm.runInContext(expression,context);
 assert.equal(run('monthlyReportDate("2026-02-29")'),'');

@@ -3822,7 +3822,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.142";
+const HANI_DISPLAY_VERSION="2.9.143";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
@@ -4214,6 +4214,12 @@ async function agentReviewInit(){
 async function agentPolicyInit(){if(!$("policy"))return;if($("agentRefreshPolicies"))$("agentRefreshPolicies").onclick=()=>agentLoadPolicyRegistry();if(!agentRequireCloud())return;try{await agentLoadPolicyRegistry()}catch(e){console.error("Policy init",e);if($("agentPolicyRegistry"))$("agentPolicyRegistry").innerHTML=`<div class="empty">사내 규칙을 불러오지 못했습니다.<br>${esc(e?.message||e)}</div>`}}
 
 let monthlyReportMonth="";
+let monthlyReportBoard="monthly";
+const monthlyReportOwners=Object.freeze({
+  finance:{key:"hani",name:"하니",role:"INVESTMENT LEAD"},money:{key:"jieun",name:"지은",role:"LIFE FINANCE"},
+  health:{key:"naeun",name:"나은",role:"WELLNESS"},activity:{key:"sooyeon",name:"수연",role:"ACTIVITY COACH"},
+  culture:{key:"haru",name:"하루",role:"CULTURE CURATOR"},learning:{key:"hina",name:"히나",role:"LEARNING LEAD"}
+});
 // Report adapters only read existing records; never normalize or persist source data.
 function monthlyReportDate(value){
   if(typeof value!=="string"||!/^\d{4}-\d{2}-\d{2}$/.test(value))return "";
@@ -4262,9 +4268,11 @@ function monthlyReportSnapshot(month,asOf=monthlyReportKoreaDate()){
   return {month,previousMonth,investment,investmentCalc,previousInvestmentCalc,ledger,ledgerPeriod,ledgerSummary,previousLedgerSummary,body,exercise,books,movies,ratings,firstBody,lastBody,totalSteps,totalDistance,stepDays,distanceDays,quizzes,scoredQuizzes,quizTotal,quizCorrect,duplicateDays:bodyRows.length-body.length+exerciseRows.length-exercise.length,recordCount:(investment?1:0)+(ledger?1:0)+body.length+exercise.length+books.length+movies.length+quizzes.length};
 }
 function monthlyReportDelta(value,previous,formatter=won){if(previous===null||previous===undefined)return "전월 기록 없음";const delta=n(value)-n(previous);return `전월 대비 ${delta>0?"+":""}${formatter(delta)}`}
-function monthlyReportDomainCard({tone,eyebrow,title,summary,metrics,empty}){return `<article class="card monthly-report-domain tone-${tone}"><div class="monthly-report-domain-head"><div><span>${esc(eyebrow)}</span><h3>${esc(title)}</h3></div><b>${empty?"기록 없음":"RECORDED"}</b></div><p>${esc(summary)}</p><div class="monthly-report-metrics">${metrics.map(([label,value])=>`<div><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join("")}</div></article>`}
+function monthlyReportDomainCard({tone,eyebrow,title,summary,metrics,empty,owner}){const key=owner||({FINANCE:"finance",MONEY:"money",HEALTH:"health",ACTIVITY:"activity",CULTURE:"culture",LEARNING:"learning"})[eyebrow],agent=monthlyReportOwners[key]||monthlyReportOwners.finance;return `<article class="monthly-report-domain tone-${tone}"><div class="monthly-report-domain-head"><div><span>${esc(eyebrow)}</span><h3>${esc(title)}</h3></div><b>${empty?"기록 없음":"RECORDED"}</b></div><div class="monthly-report-agent"><img src="${esc(agentImages[agent.key]||agentImages.hani)}" alt="${esc(agent.name)}"><div class="monthly-report-speech"><span>${esc(agent.name)} · ${esc(agent.role)}</span><p>“${esc(summary)}”</p></div></div><div class="monthly-report-metrics">${metrics.map(([label,value])=>`<div><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join("")}</div></article>`}
+function monthlyReportRenderBoard(){if(typeof document==="undefined")return;const allowed=["monthly","quarterly","annual"];if(!allowed.includes(monthlyReportBoard))monthlyReportBoard="monthly";document.querySelectorAll("#monthlyReport [data-report-board]").forEach(button=>{const active=button.dataset.reportBoard===monthlyReportBoard;button.classList.toggle("active",active);button.setAttribute("aria-selected",String(active));button.onclick=()=>{monthlyReportBoard=button.dataset.reportBoard;monthlyReportRenderBoard()}});document.querySelectorAll("#monthlyReport [data-report-panel]").forEach(panel=>{const active=panel.dataset.reportPanel===monthlyReportBoard;panel.hidden=!active;panel.classList.toggle("active",active)})}
 function renderMonthlyReport(){
   const input=$("monthlyReportMonth"),kpis=$("monthlyReportKpis"),domains=$("monthlyReportDomains");if(!input||!kpis||!domains)return;
+  monthlyReportRenderBoard();
   const months=monthlyReportAvailableMonths();if(!monthlyReportDate(`${monthlyReportMonth}-01`))monthlyReportMonth=months.at(-1)||monthlyReportKoreaDate().slice(0,7);input.value=monthlyReportMonth;input.onchange=()=>{monthlyReportMonth=input.value||monthlyReportKoreaDate().slice(0,7);renderMonthlyReport()};
   const report=monthlyReportSnapshot(monthlyReportMonth),investmentTotal=report.investmentCalc?.total,spend=report.ledgerSummary?.jispiT,bodyDelta=report.firstBody&&report.lastBody?n(report.lastBody.weight)-n(report.firstBody.weight):null,cultureCount=report.books.length+report.movies.length,avgRating=report.ratings.length?report.ratings.reduce((a,b)=>a+b,0)/report.ratings.length:null,
     stepAverage=report.stepDays.length?`${Math.round(report.totalSteps/report.stepDays.length).toLocaleString()}보`:"걸음 기록 없음",settlementLabel=`${report.ledgerPeriod.periodStart} ~ ${report.ledgerPeriod.periodEnd}`,accuracy=report.quizTotal?`${(report.quizCorrect/report.quizTotal*100).toFixed(1)}%`:"채점 수치 없음";
