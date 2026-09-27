@@ -101,9 +101,9 @@
   profile: "hani",
   speaker: "하니",
   role: "Chief of Staff",
-  eyebrow: "OFFICE · HANI DECISION BOARD",
-  title: "AI 결재실 - DECISION BOARD",
-  description: "하니가 필요한 전문가를 불러 안건을 검토하고 결정을 준비하는 보드룸입니다.",
+  eyebrow: "OFFICE · HANI BOARDROOM",
+  title: "경영회의실 - HANI BOARDROOM",
+  description: "하니가 필요한 전문가를 불러 안건을 검토하고 대표 결정을 준비하는 경영회의실입니다.",
   quote: "확인할 건 직원들이 확인하고, 결정할 건 대표가 결정합니다.",
   sceneImage: "./assets/banner-preview-v1/ai-approval-boardroom-v1.webp",
   scenePosition: "center center",
@@ -113,6 +113,27 @@
   sceneVariant: "approval",
   sceneAlt: "하니가 수아와 유나와 함께 안건을 검토하는 보드룸 장면",
   variant: "duo-or-trio",
+  tone: "office"
+}),
+    "monthlyReport":Object.freeze({
+  sidebarMenuKey: "monthlyReport",
+  category: "office",
+  owner: "hani",
+  profile: "hani",
+  speaker: "하니",
+  role: "Chief of Staff",
+  eyebrow: "OFFICE · MONTHLY REVIEW",
+  title: "월간 보고 - HANI MONTHLY REPORT",
+  description: "투자·소비·건강·활동·문화 기록을 선택한 달 기준으로 읽기 전용 요약합니다.",
+  quote: "기록은 바꾸지 않고, 한 달의 흐름만 선명하게 정리할게요.",
+  sceneImage: "./assets/banner-preview-v1/ai-approval-boardroom-v1.webp",
+  scenePosition: "center center",
+  scenePositionMobile: "72% center",
+  sceneFit: "cover",
+  sceneFitMobile: "cover",
+  sceneVariant: "report",
+  sceneAlt: "하니가 HANI GROUP 월간 보고를 정리하는 장면",
+  variant: "single-character",
   tone: "office"
 }),
     "policy":Object.freeze({
@@ -715,7 +736,7 @@
     const active=q('.view.active'),banner=q('#aiBanner'),target=q(':scope > :is(.hani-master-hero,.ds-main-character-banner)',active),agentSlot=target?(q('[data-main-character-banner-agent-slot]',target)||target):null;
     if(banner){banner.classList.toggle('ds-integrated-agent',!!target);if(agentSlot&&banner.parentElement!==agentSlot)agentSlot.append(banner);else if(!target&&banner.parentElement!==q('main.main'))q('main.main > header').after(banner)}
     if(active?.id==='game')renderSportsBanner();else if(active?.id&&mainCharacterSidebarMenuConfig[active.id])syncMainCharacterBannerAgent(active.id,mainCharacterBannerConfig(active.id,'home'));
-    if(active?.id==='intake'){q('#aiAvatar').style.backgroundImage='url('+profile('yuna')+')';q('#aiQuote span').textContent='유나 한마디';q('#aiQuote b').textContent='말씀해 주세요. 저장 전 꼭 보여드릴게요.';const h=q('.hani-master-title',target);if(h)h.textContent='유나 인포데스크'}
+    if(active?.id==='intake'){q('#aiAvatar').style.backgroundImage='url('+profile('yuna')+')';q('#aiQuote span').textContent='유나 한마디';q('#aiQuote b').textContent='말씀해 주세요. 저장 전 꼭 보여드릴게요.';const h=q('.hani-master-title',target);if(h)h.textContent='인포데스크'}
     const home=q('#home');
     q(':scope > .ds-team-hero',home)?.remove();
     const actions=q('.home-welcome-actions'),yuna=q('#homeYunaQuick');if(actions&&yuna&&!actions.contains(yuna))actions.append(yuna);
@@ -728,7 +749,7 @@
   }
   function updateCompanion(selected){const data=companions[selected]||companions.hasdaq,slot=q('.ds-companion-scene');if(!slot||slot.dataset.index===selected)return;slot.dataset.index=selected;const image=q('img',slot);image.src=designSceneSrc(data.scene);image.alt=`${data.name}와 동료들의 ${data.role} 웹툰 장면`;q('figcaption',slot).innerHTML=speakerMarkup(data.agent,data.name,data.role,data.line)}
   const heroImages={asset:"./assets/heroes/asset.png",monthEnd:"./assets/heroes/month-end.png",ledger:"./assets/heroes/ledger.png",diet:"./assets/heroes/diet.png",exercise:"./assets/heroes/exercise.png",reading:"./assets/heroes/reading.png",movie:"./assets/heroes/movie.png",study:"./assets/heroes/study.png",campus:"./assets/heroes/campus.png",travel:"./assets/heroes/travel.png",investment:"./assets/heroes/investment.png",newsroom:"./assets/heroes/newsroom.png",portraitHani:"./assets/profiles/hani-profile-hani.webp",portraitHina:"./assets/profiles/hani-profile-hina.webp",portraitHaru:"./assets/profiles/hani-profile-haru.webp",portraitMinji:"./assets/profiles/hani-profile-minji.webp",portraitSua:"./assets/profiles/hani-profile-sua.webp",portraitYuna:"./assets/profiles/hani-profile-yuna.webp",teamOffice:"./assets/team/hani-team-office.webp",teamPicnic:"./assets/team/hani-team-picnic.webp",lifeMarket:"./assets/design-system-v1/srx.webp",learningScene:"./assets/design-system-v1/learning.webp"};
-  const genericHeroScenes={intake:'portraitYuna',agentReview:'teamOffice',policy:'portraitHani',deployment:'portraitHani',certificate:'learningScene',wishlist:'lifeMarket',diary:'portraitMinji',tasks:'portraitSua',calendar:'portraitSua',work:'portraitSua',drive:'portraitYuna',dev:'teamOffice',aiTeam:'teamPicnic',settings:'portraitHani'};
+  const genericHeroScenes={intake:'portraitYuna',agentReview:'teamOffice',monthlyReport:'portraitHani',policy:'portraitHani',deployment:'portraitHani',certificate:'learningScene',wishlist:'lifeMarket',diary:'portraitMinji',tasks:'portraitSua',calendar:'portraitSua',work:'portraitSua',drive:'portraitYuna',dev:'teamOffice',aiTeam:'teamPicnic',settings:'portraitHani'};
   const lifeMarketImages=[designSceneSrc("srx")];
   const lifeMarketDateKey=new Date().toLocaleDateString('en-CA');
   const lifeMarketImageSeed=[...lifeMarketDateKey].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7);

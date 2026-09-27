@@ -24,13 +24,13 @@ const server=createServer((request,response)=>{
 await new Promise(resolveReady=>server.listen(0,'127.0.0.1',resolveReady));
 const port=server.address().port;
 
-const viewIds=['home','agentReview','intake','investmentIntake','investment','newsroom','reading','study','movie','game','settings'];
+const viewIds=['home','agentReview','monthlyReport','intake','investmentIntake','investment','newsroom','reading','study','movie','game','settings'];
 const viewports=[
   {name:'desktop-1280',width:1280,height:900},
   {name:'desktop-1440',width:1440,height:1000},
   {name:'mobile-390',width:390,height:844},
 ];
-const report={version:'2.9.135',base:'origin/main@730657b38ebcfeac07ccc6116298850c69b267dc',generatedAt:new Date().toISOString(),viewports:[],invariants:{}};
+const report={version:'2.9.141',base:'origin/main@dbe4ba7be472dc409cca59276a87f7e86b790025',generatedAt:new Date().toISOString(),viewports:[],invariants:{}};
 
 const browser=await chromium.launch({headless:true,executablePath:'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'});
 try{
@@ -74,7 +74,7 @@ try{
       assert.equal(snapshot.overflow,0,`${id}: horizontal viewport overflow`);
       assert.deepEqual(snapshot.broken,[],`${id}: visible image load`);
       testedViews.push(snapshot);
-      if(['home','agentReview','investment','game'].includes(id))await page.screenshot({path:join(output,`${viewport.name}-${id}.png`),fullPage:true});
+      if(['home','agentReview','monthlyReport','investment','game'].includes(id))await page.screenshot({path:join(output,`${viewport.name}-${id}.png`),fullPage:true});
     }
 
     if(viewport.width>850){
@@ -146,7 +146,7 @@ try{
   };
   assert.equal(report.invariants.storageKey,['hani','os','life','v23'].join('_'));
   assert.equal(report.invariants.internalVersion,'2.9.15-safe-baseline-bootstrap');
-  assert.equal(report.invariants.displayVersion,'2.9.135');
+  assert.equal(report.invariants.displayVersion,report.version);
   assert.deepEqual(report.invariants.duplicateIds,[]);
   assert(report.invariants.phase1Tokens);
   const errors=report.viewports.flatMap(entry=>entry.consoleErrors);

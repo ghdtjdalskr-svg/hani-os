@@ -28,6 +28,6 @@ assert.doesNotMatch(metaReader,/select\("state,/,"metadata query must not includ
 const protectedKey=["hani","os","life","v23"].join("_");
 assert.ok(source.includes(`const STORAGE_KEY="${protectedKey}"`),"protected storage key is unchanged");
 assert.match(source,/const VERSION="2\.9\.15-safe-baseline-bootstrap"/,"internal data version is unchanged");
-assert.match(source,/const HANI_DISPLAY_VERSION="2\.9\.140"/,"runtime display version is updated");
+assert.match(source,/const HANI_DISPLAY_VERSION="2\.9\.141"/,"runtime display version is updated");
 
 console.log("HANI Cloud Egress Sync: PASS");
