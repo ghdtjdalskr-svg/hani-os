@@ -2,7 +2,7 @@
   "contract_version": "2.0.0",
   "package_format": "HANI_ONE_PASS_RELEASE_V2",
   "entrypoints": ["index.html"],
-  "limits": { "max_files": 80, "max_total_bytes": 12000000, "max_single_file_bytes": 5000000 },
+  "limits": { "max_files": 81, "max_total_bytes": 12000000, "max_single_file_bytes": 5000000 },
   "required_storage_key": "hani_os_life_v23",
   "required_internal_version": "2.9.15-safe-baseline-bootstrap",
   "required_ui_anchors": ["loginGate", "app", "sidebar", "home", "deployment"],
