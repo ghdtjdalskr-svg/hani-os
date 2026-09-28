@@ -479,6 +479,7 @@ header.top.ui26-top #cloudHeaderState{font-weight:780!important;color:#788499!im
     });
 
     qa('#investmentHighlights > *,#asset .card').forEach(card => {
+      if (card.closest('#assetMarket')) return; // Market renderer owns per-symbol identity.
       if (q('.hani-security-logo-v02976', card)) return;
       const candidates = qa('b,strong,h3,h4', card);
       for (const target of candidates) {

@@ -1,0 +1,17 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {buildCatalog,publishCatalog,markets} from '../market-gateway/catalog-publisher.mjs';
+import M from '../hani-market-data.js';
+const now=Date.parse('2026-09-28T00:00:00Z');
+test('preferred and extended provider symbols remain canonical, paths are rejected',()=>{assert.equal(M.symbol('A00088K'),'00088K');assert.equal(M.validSymbol('00088K'),true);assert.equal(M.validSymbol('2109801G'),true);assert.equal(M.validSymbol('0'),false);assert.equal(M.validSymbol('../00088K'),false);});
+const lists=Object.fromEntries(markets.map(m=>[m,[{symbol:m.startsWith('K')?'005930':'AAPL',name:'검증 종목',market:m,currency:M.currency(m),securityType:'STOCK',private:'not published'}]]));
+test('catalog has bounded sanitized content-addressed chunks; invalid source fails closed',()=>{const b=buildCatalog(lists,now);assert.equal(b.count,7);assert.doesNotMatch(JSON.stringify([...b.objects]),/not published/);assert.throws(()=>buildCatalog({...lists,KOSPI:[{...lists.KOSPI[0],currency:'USD'}]},now));});
+test('publish verifies chunks before pointer, daily reuse and failure preserve old index',async()=>{const saved=new Map(),calls=[];const storage={readIndex:async()=>saved.has('catalog/index.json')?JSON.parse(saved.get('catalog/index.json')):null,put:async(p,b)=>{calls.push(p);saved.set(p,b);},read:async p=>saved.get(p)};
+  assert.equal((await publishCatalog({lists:async()=>lists,storage,now})).success,true);assert.equal(calls.at(-1),'catalog/index.json');
+  assert.equal((await publishCatalog({lists:async()=>assert.fail('daily fetch'),storage,now:now+1000})).skipped,true);
+  const old=saved.get('catalog/index.json');await assert.rejects(publishCatalog({lists:async()=>lists,storage:{...storage,read:async()=> 'corrupt'},now:now+86400000}));assert.equal(saved.get('catalog/index.json'),old);
+});
+test('browser lazy-loads only chosen market, single-flights, searches nonholding symbols',async()=>{const b=buildCatalog(lists,now),reads=[],files=new Map(b.objects);files.set('catalog/index.json',JSON.stringify(b.index));const c=M.createCatalogClient({getSession:async()=>({user:{id:'u'},access_token:'test'}),now:()=>now,download:async p=>{reads.push(p);return new Blob([files.get(p.slice(2))]);}});
+  const [r]=await Promise.all([c.search('검증','NASDAQ'),c.search('검증','NASDAQ')]);assert.equal(r.result[0].symbol,'AAPL');assert.equal(reads.length,2);await c.search('AAPL','NASDAQ');assert.equal(reads.length,2);assert.equal(r.scope,'toss-active');
+});
+test('corrupt chunks and signed-out sessions cannot return catalog candidates',async()=>{const b=buildCatalog(lists,now);let session={user:{id:'u'},access_token:'test'};const c=M.createCatalogClient({getSession:async()=>session,now:()=>now,download:async p=>new Blob([p.endsWith('index.json')?JSON.stringify(b.index):'{}'])});await assert.rejects(c.search('검증','KOSPI'));session=null;await assert.rejects(c.search('검증','KOSPI'));});

@@ -1,0 +1,27 @@
+const {test}=require('node:test');
+const assert=require('node:assert/strict');
+const M=require('../hani-market-data.js');
+const meta=[{symbol:'005930',name:'삼성전자',currency:'KRW',market:'KOSPI'}];
+test('lookup candidates canonicalize and deduplicate but reject wrong market/currency and invalid code',()=>{
+  const rows=[...meta,{...meta[0],symbol:'A005930'},{...meta[0],currency:'USD'},{...meta[0],symbol:'../x'},null,{...meta[0],market:'NASDAQ'}];
+  assert.deepEqual(M.searchCandidates(rows,'삼성 전자','KOSPI'),meta);
+  assert.deepEqual(M.searchCandidates(rows,'005930','KOSPI'),meta);
+  assert.deepEqual(M.searchCandidates(rows,'삼','KOSPI'),[]);assert.deepEqual(M.searchCandidates(rows,'삼성','NYSE'),[]);
+});
+test('chart colors are stable per canonical ticker and not tied to quotes or account order',()=>{assert.equal(M.chartColor('A005930'),M.chartColor('005930'));assert.equal(M.chartColor('nvda'),M.chartColor('NVDA'));assert.notEqual(M.chartColor('005930'),M.chartColor('AAPL'));assert.equal(M.chartColor(''),'#64748b');assert.ok(new Set(['NVDA','005930','AAPL','0038A0','0064K0'].map(M.chartColor)).size>=3);});
+const p={key:'a:1',accountId:'a',instrumentId:'samsung',ticker:'A005930',quantity:4,buyPrice:68000,purchaseAmount:null,recordedEvaluation:270000};
+const master=[{id:'samsung',ticker:'005930'}],r=M.resolve(p,master,meta);
+const quote={symbol:'005930',lastPrice:'72000',currency:'KRW',timestamp:'2026-09-27T01:00:00Z'};
+test('canonical symbols preserve US punctuation and normalized name variations',()=>{assert.equal(M.symbol('A005930'),'005930');assert.equal(M.symbol('brk.b'),'BRK.B');assert.equal(M.name('삼성전자 우'),M.name('삼성전자우'));assert.equal(M.validSymbol('../orders'),false);});
+test('read-only valuation follows units and original cost',()=>{const before=JSON.stringify(p),v=M.evaluate(p,r,quote,Date.parse(quote.timestamp));assert.equal(v.valuation,288000);assert.equal(v.pnl,16000);assert.ok(Math.abs(v.rate-5.88235294)<.00001);assert.equal(JSON.stringify(p),before);});
+test('missing or invalid price never becomes zero, cash or a new holding',()=>{for(const value of [null,'',0,-1,'NaN']){const v=M.evaluate(p,r,{...quote,lastPrice:value});assert.equal(v.valuation,null);assert.equal(v.recordedEvaluation,270000);}assert.equal(M.evaluate(p,r,{...quote,currency:'USD'}).valuation,null);assert.equal(M.evaluate({...p,quantity:null},r,quote).valuation,null);});
+test('unknown and future timestamps are not reported fresh',()=>{assert.equal(M.evaluate(p,r,{...quote,timestamp:null}).priceStatus,'time-unknown');assert.equal(M.evaluate(p,r,{...quote,timestamp:'2100-01-01'}).priceStatus,'time-unknown');assert.equal(M.evaluate(p,r,quote,Date.parse(quote.timestamp)+300000).priceStatus,'last-known');});
+test('conflicting master cannot be silently repriced',()=>{assert.equal(M.resolve({...p,ticker:'005935'},master,meta).status,'conflict');});
+test('USD holdings are valued but ambiguous legacy cost does not fabricate PnL',()=>{const resolution={status:'matched',symbol:'AAPL',currency:'USD'},q={symbol:'AAPL',currency:'USD',lastPrice:200};const v=M.evaluate({...p,quantity:2},resolution,q);assert.equal(v.valuation,400);assert.equal(v.pnl,null);assert.equal(v.rate,null);});
+test('account records use latest per account, preserve unmatched and never mutate',()=>{
+  const s={accounts:[{id:'a',name:'토스'},{id:'b',name:'하나'}],investmentBrokerSnapshots:[{mode:'actual',status:'confirmed',period:'2026-08',accounts:[{accountId:'a',enabled:true,holdings:[p]},{accountId:'b',enabled:true,holdings:[{name:'미연결',evaluationAmount:300000}]}]},{mode:'actual',status:'confirmed',period:'2026-09',accounts:[{accountId:'a',enabled:true,holdings:[{...p,quantity:5}]}]}]};
+  const copy=JSON.stringify(s),rows=M.positions(s);assert.equal(rows.length,2);assert.equal(rows.find(x=>x.accountId==='a').quantity,5);assert.equal(rows.find(x=>x.accountId==='b').recordedEvaluation,300000);assert.deepEqual(M.positions(s),rows);assert.equal(JSON.stringify(s),copy);
+});
+test('summary separates KRW/USD and explicitly counts unmatched',()=>{const a=M.evaluate(p,r,quote),b=M.evaluate({...p,quantity:1},{status:'matched',symbol:'AAPL',currency:'USD'},{symbol:'AAPL',currency:'USD',lastPrice:200}),c=M.evaluate(p,{status:'unmatched'},null);const s=M.summarize([a,b,c]);assert.equal(s.priced,2);assert.equal(s.total,3);assert.equal(s.totals.KRW.valuation,288000);assert.equal(s.totals.USD.valuation,200);assert.equal(s.unpriced[0].recordedEvaluation,270000);});
+test('candles sort, deduplicate inclusive pages, omit invalid values',()=>{const rows=M.candles([{timestamp:'2026-09-02',closePrice:2},{timestamp:'2026-09-01',closePrice:1},{timestamp:'2026-09-02',closePrice:3},{timestamp:'bad',closePrice:4},{timestamp:'2026-09-03',closePrice:null}]);assert.deepEqual(rows.map(x=>x.closePrice),[1,3]);});
+test('client batches, caches and rejects unauthenticated requests',async()=>{let count=0;const client=M.createClient({baseUrl:'https://market.example',getToken:async()=>'test',fetcher:async()=>{count++;return {ok:true,json:async()=>({result:meta})};}});await Promise.all([client.stocks(['005930','A005930']),client.stocks(['005930'])]);await client.stocks(['005930']);assert.equal(count,1);await M.createClient({baseUrl:'https://market.example',getToken:async()=>null}).prices(['005930']).then(()=>assert.fail(),e=>assert.match(e.message,/로그인/));assert.throws(()=>M.createClient({baseUrl:'http://evil.example',getToken:async()=>null}));});

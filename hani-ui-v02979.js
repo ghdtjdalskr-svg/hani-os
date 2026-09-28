@@ -356,7 +356,7 @@
     qa(selectors).forEach(row=>{
       if(row.closest('#newsroom'))return; if(isAccountOnly(row)){clearLogos(row);return;} const identity=resolveIdentity(text(row)); if(!identity)return; const cell=q('td:first-child',row)||row.firstElementChild||row; placeLogo(cell,identity,'md'); row.dataset.haniSecurityV02979=identity.id;
     });
-    qa('#investmentHighlights > *,#asset .card').forEach(card=>{if(card.closest('#newsroom')||isAccountOnly(card))return; const identity=resolveIdentity(text(card)); if(!identity)return; const target=qa('b,strong,h3,h4',card).find(x=>resolveIdentity(text(x))); if(target)placeLogo(target,identity,'md')});
+    qa('#investmentHighlights > *,#asset .card').forEach(card=>{if(card.closest('#assetMarket')||card.closest('#newsroom')||isAccountOnly(card))return; const identity=resolveIdentity(text(card)); if(!identity)return; const target=qa('b,strong,h3,h4',card).find(x=>resolveIdentity(text(x))); if(target)placeLogo(target,identity,'md')});
   }
 
   function selfAudit() {
