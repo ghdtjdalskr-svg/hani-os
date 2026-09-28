@@ -4,16 +4,19 @@
   const app=$("#app");
   if(!app||$("#haniContextRemote"))return;
 
+  const sharedBanners=[
+    ["life-office-lounge-v1.jpg","HANI · JIEUN · SUA · YUNA"],
+    ["life-book-cafe-v1.jpg","MINJI · HARU · HINA"],
+    ["life-brunch-v1.jpg","NAEUN · SOOYEON · YUNA"],
+    ["life-media-night-v1.jpg","HANI · HARU · MINJI · SOOYEON"]
+  ];
   const banners={
-    spring:["spring-1.jpg","spring-2.jpg"],summer:["summer-1.jpg","summer-2.jpg"],
-    autumn:["autumn-1.jpg","autumn-2.jpg"],winter:["winter-1.jpg","winter-2.jpg"]
+    spring:[["spring-1.jpg","HINA · JIEUN · MINJI · SUA"],["spring-2.jpg","HANI · HARU · SOOYEON · YUNA"],...sharedBanners],
+    summer:[["summer-1.jpg","MINJI · NAEUN · SUA"],["summer-2.jpg","HANI · HINA · SOOYEON · YUNA"],...sharedBanners],
+    autumn:[["autumn-1.jpg","JIEUN · NAEUN · SUA"],["autumn-2.jpg","HANI · HARU · HINA · MINJI · YUNA"],...sharedBanners],
+    winter:[["winter-1.jpg","HINA · MINJI · NAEUN · SUA · YUNA"],["winter-2.jpg","HANI · HARU · JIEUN · SOOYEON"],...sharedBanners]
   };
-  const bannerMembers={
-    spring:["HINA · JIEUN · MINJI · SUA","HANI · HARU · SOOYEON · YUNA"],
-    summer:["MINJI · NAEUN · SUA","HANI · HINA · SOOYEON · YUNA"],
-    autumn:["JIEUN · NAEUN · SUA","HANI · HARU · HINA · MINJI · YUNA"],
-    winter:["HINA · MINJI · NAEUN · SUA · YUNA","HANI · HARU · JIEUN · SOOYEON"]
-  };
+  const bannerPicks=new Map();
   const defaults={
     home:{primary:"오늘 할 일",action:{view:"tasks"},agent:"HANI",recent:"최근 활동",recentTarget:"#homeRecentActivity",sections:[["시장","#lifeMarketGrid"],["자산","#homeDashboardGrid"],["AI TEAM","#homeDialogueText"]]},
     intake:{primary:"새 기록 접수",focus:"#yunaInput,#intakeSourceText",agent:"YUNA",recent:"최근 접수",recentTarget:"#yunaConversation,#intakePreview",sections:[["빠른 접수","#yunaInput,#intakeSourceText"],["Preview","#yunaConversation,#intakePreview"]]},
@@ -72,8 +75,9 @@
   const focusTarget=selector=>{const el=visibleTarget(selector);if(!el)return false;el.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(()=>el.focus?.({preventScroll:true}),260);return true};
   const countFrom=selector=>{const text=visibleTarget(selector)?.textContent||"";const match=text.replaceAll(",","").match(/\d+/);return match?Number(match[0]):0};
   const season=()=>["spring","summer","autumn","winter"].includes(document.documentElement.dataset.season)?document.documentElement.dataset.season:"spring";
-  const variant=()=>{const start=new Date(new Date().getFullYear(),0,0);const day=Math.floor((new Date()-start)/86400000);return (day+Object.keys(defaults).indexOf(viewId()))%2};
-  const updateBanner=()=>{const s=season(),i=Math.max(0,variant()),img=$(".hani-remote-scene img",rail);img.src=`./assets/context-remote/${banners[s][i]}`;img.alt=`HANI OS 공식 프로필 ${s} 계절 배너 · ${bannerMembers[s][i]}`;$("[data-remote-season]",rail).textContent=({spring:"SPRING",summer:"SUMMER",autumn:"AUTUMN",winter:"WINTER"})[s];$("[data-remote-members]",rail).textContent=bannerMembers[s][i]};
+  const randomIndex=length=>{if(length<2)return 0;if(globalThis.crypto?.getRandomValues){const value=new Uint32Array(1);crypto.getRandomValues(value);return value[0]%length}return Math.floor(Math.random()*length)};
+  const variant=s=>{const key=`${s}:${viewId()}`;if(!bannerPicks.has(key))bannerPicks.set(key,randomIndex(banners[s].length));return bannerPicks.get(key)};
+  const updateBanner=()=>{const s=season(),entry=banners[s][variant(s)]||banners[s][0],[file,members]=entry,img=$(".hani-remote-scene img",rail);img.src=`./assets/context-remote/${file}`;img.alt=`HANI OS 공식 프로필 ${s} 라이프 배너 · ${members}`;$("[data-remote-season]",rail).textContent=({spring:"SPRING",summer:"SUMMER",autumn:"AUTUMN",winter:"WINTER"})[s];$("[data-remote-members]",rail).textContent=members};
   const update=()=>{const c=config(),title=$("#title")?.textContent?.trim()||viewId();$("[data-remote-current]",rail).textContent=title;$("[data-remote-primary]",rail).textContent=c.primary||"현재 화면 보기";$("[data-remote-yuna]",rail).textContent=`${title} Context로 시작`;$("[data-remote-agent]",rail).textContent=`담당 Agent · ${c.agent||"HANI"}`;$("[data-remote-recent]",rail).textContent=c.recent||"최근 항목";const links=$("[data-remote-links]",rail);links.innerHTML="";(c.sections||[]).filter(([,target])=>visibleTarget(target)).slice(0,4).forEach(([label,target])=>{const b=document.createElement("button");b.type="button";b.className="hani-remote-link";b.textContent=label;b.dataset.target=target;links.append(b)});const alert=$("[data-remote-action=alert]",rail),count=countFrom(c.alert);alert.hidden=!c.alert||count<1;if(!alert.hidden){$("[data-remote-alert]",rail).textContent=c.alertLabel||"확인 필요";$("[data-remote-count]",rail).textContent=String(count)}updateBanner()};
 
   rail.addEventListener("click",e=>{const shortcut=e.target.closest(".hani-remote-link");if(shortcut){moveTo(shortcut.dataset.target);return}const action=e.target.closest("[data-remote-action]")?.dataset.remoteAction;if(!action)return;const c=config();if(action==="current")moveTo(`#${viewId()}`);if(action==="primary"){if(c.action?.view)goView(c.action.view);else if(c.click)visibleTarget(c.click)?.click();else if(c.focus)focusTarget(c.focus);else moveTo(`#${viewId()}`)}if(action==="yuna"){goView("intake");setTimeout(()=>focusTarget("#yunaInput,#intakeSourceText"),180)}if(action==="agent")goView("aiTeam");if(action==="recent")moveTo(c.recentTarget||`#${viewId()}`);if(action==="alert")moveTo(c.recentTarget||c.alert);if(action==="top")window.scrollTo({top:0,behavior:"smooth"})});
