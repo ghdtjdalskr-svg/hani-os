@@ -1,0 +1,34 @@
+# Instrument lookup preview — 2026-09-28
+
+UI-only preparation, not production deployment or live full-universe search.
+
+- Static lookup slot in the existing instrument form; existing layout relocation preserves it.
+- Existing market client supplies results: gateway search uses its market-list route; private-cache mode searches collected stocks only and explicitly labels that limitation.
+- Validate market/currency/code, normalize Korean A-prefix, deduplicate, bound results to 20.
+- Selection fills name/ticker/market only, with new instrument class set to Other for manual confirmation; provider does not supply reliable classification.
+- No commit, storage write, cloud write, quantity or cost mutation; existing save handler remains sole owner and unchanged.
+- Duplicate ticker, editing a different instrument and form edits after searching prevent accidental replacement. Query changes invalidate old results; textContent prevents result-name HTML injection.
+
+Evidence: 12 targeted data tests passed. Isolated browser tests passed in both gateway-response fixture and cache-fixture modes, exercising selection, duplicate protection, stale form protection, edit protection, original save handler identity, zero protected-storage writes and unchanged account/instrument/holding data. Mobile lookup screenshot inspected. These are fixture tests, not live whole-market search.
+
+Remaining approval: whole-market catalog ingestion and a dedicated private catalog path with corresponding access-policy changes. Existing permissions cover only latest price snapshot and content-addressed chart objects. Do not repurpose chart paths or enlarge existing price payload to bypass that boundary. No catalog writes/policy changes made. After approval, measure bounded catalog payload/transfer, implement atomic publication and read-only lookup, then verify real-provider results before declaring whole-market availability.
+
+## Approved catalog implementation — 2026-09-28 (supersedes pending approval above)
+
+User approved dedicated catalog caching/access. Current remote main d47ae3808af1a60b95dafb58dbab9e214a0e1095 / 2.9.141 differs from working base 27791a19ec4823d2c643141bc4d427ec644e3cff. Last loaded main script remains hani-development-history-v1.js?v=2.9.135. No merge/rebase/deployment performed.
+
+Official provider schema https://openapi.tossinvest.com/openapi-docs/latest/openapi.json documents /api/v1/stocks/all: trading-eligible ACTIVE instruments by exchange, no pagination, daily caching recommended. ListedStock lacks market/currency, assigned from requested exchange; securityType supplies ETF/stock form classification. STOCK_ALL is one request/second per https://openapi.tossinvest.com/openapi-docs/overview.md. Collector now spaces markets by 1100ms. Korean actual responses included 00088K and 2109801G; lexical validation now allows bounded numeric-leading extended codes, with exact provider identity still required.
+
+Remote migration hani_market_catalog_owner_paths added three policies only (SELECT/INSERT/UPDATE with USING and WITH CHECK), owner-only/nonanonymous, exact catalog/index.json or catalog/<sha256>.json paths. Existing price/chart policies, private JSON-only 262144-byte bucket, asset tables/storage key/internal version unchanged. catalog-access.sql records exact SQL and policy-only rollback (no data deletion). Actual installed policy expressions: 32/32 tests. Anonymous HTTP catalog read: 400, denied. Owner publish/read-back succeeded. Advisory warnings are pre-existing, not changed: [function search path](https://supabase.com/docs/guides/database/database-linter?lint=0011_function_search_path_mutable), [pg_net schema](https://supabase.com/docs/guides/database/database-linter?lint=0014_extension_in_public), [password protection](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection), and [calendar/release RLS no policies](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy).
+
+Live catalog published 2026-09-27T23:29:49.178Z: 15392 instruments across 7 exchanges; 42 content-addressed chunks plus index, 1552063 chunk bytes / 1555712 total bytes. All chunks read back and SHA256 checked before index switch. Strict failure preserves existing index; min24h skip on repeat invocation; no automatic refresh schedule or cleanup/deletion installed. Run verify-live-cache.ps1 -Catalog explicitly, stopping/restarting the price watcher to preserve single Toss token owner. No holdings or account fields enter catalog. Bound: 400 rows/chunk, 20k rows/market, 8MiB total; browser loads only selected exchange and reuses in memory. Index refresh is daily per browser session; no protected local storage cache.
+
+47 targeted automated tests passed. Actual cached NASDAQ catalog used in isolated browser to select a nonheld symbol and populate form; no automatic asset writes. 18 price/chart rendering regression also passed against last-known cache. Credentials remain in Node, fake browser auth adapter means real SDK login/physical phone remains unverified. Cache-fixture browser fallback tests passed. Frontend catalog feature enabled only for configured cache mode; runtime price/cache connection is still not activated in production.
+
+Operational caveat: price watcher restarted (launcher 29824 / child 43220); last report 2026-09-27T23:31:47Z failed with incomplete-quotes. It retains last successful price snapshot (2026-09-27T23:28:33.015Z), uses existing backoff, and stops after three failures. Do not label current price refresh healthy or infer upstream cause. Catalog publication/search succeeded independently. No production deployment, scheduler install, original asset writes or schema migration of HANI state.
+
+### Resume verification — 2026-09-28 20:00 KST
+
+Superseding the operational caveat: status at 2026-09-28T11:00:41.0158295Z reports successful publication, 18 symbols / zero unresolved, 5671 bytes. Both original watcher processes (pwsh 29824, node 43220) verified alive. This establishes subsequent recovery, not the precise historical upstream failure cause or absence of intermittent failures between reports. No data-safety gate was relaxed and no collector restart was performed in this continuation.
+
+Previously blocked final checks now completed: 47/47 targeted tests, syntax checks for market view and catalog runner, three PowerShell parse checks (zero errors), diff whitespace check (only existing CRLF warning). The preceding actual catalog/browser and policy evidence remains applicable: no runtime change in this continuation. Remaining release work: integrate explicitly against current main, freeze candidate, mandated release checks, authenticated production browser/physical-phone read-back. This is not a deployment or full-release PASS. Catalog refresh remains explicit/manual, limited to once per 24 hours; no recurring catalog job or PC startup task exists.

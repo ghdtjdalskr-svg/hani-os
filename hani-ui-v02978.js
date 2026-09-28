@@ -334,6 +334,7 @@ header.top.ui26-top{
     });
 
     qa('#investmentHighlights > *,#asset .card').forEach(card => {
+      if (card.closest('#assetMarket')) return; // Do not infer a logo from all holdings together.
       if (card.closest('#newsroom')) return;
       if (isAccountOnlyBlock(card)) { clearSecurityLogos(card); return; }
       const identity = resolveSecurity(txt(card));

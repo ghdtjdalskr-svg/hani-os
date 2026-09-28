@@ -1,0 +1,37 @@
+#assetMarket{background:linear-gradient(145deg,var(--panel,#fff),#f8f7ff);min-width:0}
+#assetMarket .market-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+#assetMarket .market-toolbar select{max-width:240px}
+.instrument-lookup{padding:12px;border:1px solid var(--line,#e6e9f0);border-radius:12px;min-width:0}
+.instrument-lookup-controls{display:flex;gap:8px;flex-wrap:wrap}
+.instrument-lookup-controls input{flex:1;min-width:120px}
+#instrumentLookupResults{display:grid;gap:8px;margin-top:8px}
+#instrumentLookupResults .instrument-lookup-result{text-align:left;white-space:normal;overflow-wrap:anywhere;line-height:1.6}
+#app #assetMarket .hani-remote-mobile-trigger.is-market-inline{position:static;inset:auto;z-index:auto;box-shadow:none;flex-shrink:0}
+#assetMarket .market-summary{display:flex;gap:24px;flex-wrap:wrap;margin:18px 0}
+#assetMarket .market-summary div{display:grid;gap:6px}
+#assetMarket .market-summary strong{font-size:26px;color:var(--ui-purple,#735cf4)}
+#assetMarket small,#assetMarket .market-note,#assetMarket .market-summary span{font-size:12px;color:var(--muted,#68738a);line-height:1.7}
+#assetMarket .market-main{margin:22px 0;padding:20px;border:1px solid var(--line,#e5e6f0);border-radius:20px;background:var(--panel,#fff)}
+#assetMarket #marketPrice{font-size:30px;display:block;margin:8px 0;color:var(--text,#243753)}
+#assetMarket .market-chart{min-height:240px;margin:12px 0}
+#assetMarket svg{display:block;width:100%;height:auto;color:var(--market-series,#64748b);fill:currentColor}
+#assetMarket svg text{font:12px sans-serif;fill:var(--muted,#68738a)}
+#assetMarket .market-price-line{fill:none;stroke:currentColor;stroke-width:3;vector-effect:non-scaling-stroke}
+#assetMarket .market-grid{fill:none;stroke:var(--line,#e6e9f0);stroke-width:1}
+#assetMarket .market-average{fill:none;stroke:#cf983b;stroke-width:1.5;stroke-dasharray:7 5}
+#assetMarket .market-average-note{font-size:12px;color:var(--muted,#68738a);line-height:1.6;text-align:right;overflow-wrap:anywhere}
+#assetMarket .market-periods{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+#assetMarket [aria-pressed=true]{background:#eeeaff;border-color:#a290ed}
+#assetMarket .market-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#assetMarket .market-holding{display:grid;text-align:left;gap:7px;border:1px solid var(--line,#e6e9f0);border-radius:16px;padding:16px;background:var(--panel,#fff);color:var(--text,#243753);cursor:pointer;min-width:0}
+#assetMarket .market-holding b,#assetMarket .market-holding span{overflow-wrap:anywhere}
+#assetMarket .market-holding strong{font-size:20px}
+#assetMarket .market-holding span{font-size:12px}
+#assetMarket .market-mini{min-height:45px}
+#assetMarket .market-empty{display:grid;place-items:center;min-height:150px;color:var(--muted,#68738a);text-align:center}
+#assetMarket .market-mini .market-empty{min-height:45px;font-size:11px}
+#assetMarket #marketResolve{border-top:1px solid var(--line,#e6e9f0);padding-top:12px;margin-top:12px}
+#assetMarket #marketSearchResults{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+#assetMarket button:focus-visible,#assetMarket input:focus-visible,#assetMarket select:focus-visible{outline:3px solid #8071db;outline-offset:2px}
+@media(max-width:700px){#assetMarket .market-cards{grid-template-columns:1fr 1fr}#assetMarket .market-main{padding:12px}#assetMarket .market-chart{min-height:160px}#assetMarket .market-summary strong{font-size:23px}}
+@media(max-width:420px){#assetMarket .market-cards{grid-template-columns:1fr}#assetMarket .market-chart{min-height:125px}}

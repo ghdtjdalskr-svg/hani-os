@@ -63,6 +63,8 @@
   const mobileTrigger=document.createElement("button");mobileTrigger.type="button";mobileTrigger.className="hani-remote-mobile-trigger";mobileTrigger.innerHTML="<span>✦</span> HANI Remote";mobileTrigger.setAttribute("aria-controls",rail.id);mobileTrigger.setAttribute("aria-expanded","false");app.append(mobileTrigger);
 
   const viewId=()=>document.body.dataset.view||$(".view.active")?.id||"home";
+  // On the market screen use its existing toolbar, not a floating chart overlay.
+  const placeMobileTrigger=()=>{const slot=innerWidth<=850&&viewId()==='asset'?document.querySelector('#assetMarket .market-toolbar'):null;const target=slot||app;if(mobileTrigger.parentElement!==target)target.append(mobileTrigger);mobileTrigger.classList.toggle('is-market-inline',!!slot)};
   const config=()=>defaults[viewId()]||{primary:"현재 화면 보기",agent:"HANI",recent:"최근 항목",recentTarget:`#${viewId()}`,sections:[["현재 화면",`#${viewId()}`]]};
   const visibleTarget=selector=>{try{return selector?$(selector):null}catch{return null}};
   const goView=id=>{const nav=$(`[data-view="${id}"]`);if(nav){nav.click();return true}return false};
@@ -81,9 +83,11 @@
   $(".hani-remote-close",rail).addEventListener("click",()=>setMobile(false));
   document.addEventListener("keydown",e=>{if(e.key==="Escape")setMobile(false)});
   new MutationObserver(update).observe(document.body,{attributes:true,attributeFilter:["data-view"]});
+  new MutationObserver(placeMobileTrigger).observe(document.body,{attributes:true,attributeFilter:["data-view"]});
   new MutationObserver(updateBanner).observe(document.documentElement,{attributes:true,attributeFilter:["data-season"]});
   document.addEventListener("click",e=>{const route=e.target.closest("[data-view]");if(route&&route!==document.body)setTimeout(()=>{update();setMobile(false)},0)});
-  window.addEventListener("resize",()=>{if(innerWidth>850)setMobile(false)},{passive:true});
+  window.addEventListener("resize",()=>{if(innerWidth>850)setMobile(false);placeMobileTrigger()},{passive:true});
+  placeMobileTrigger();
   update();
   window.HANI_CONTEXT_REMOTE_V1=Object.freeze({update});
 })();
