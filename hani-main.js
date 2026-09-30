@@ -90,7 +90,7 @@ function seriesColor(id){
 const freshState=()=>({
   version:VERSION,
   accounts:structuredClone(seedAccounts),
-  instruments:[],transactions:[],snapshots:[],investmentMonthlySnapshots:[],investmentBrokerSnapshots:[],investmentCashFlows:[],investmentJournal:[],investmentWatchlist:[],ledgerMonths:[],spendReviews:[],body:[],exercise:[],cardio:[],strength:[],books:[],movies:[],diaries:[],tasks:[],campusSemesters:[],travelTrips:[],travelPlaces:[],travelWishlist:[],certificates:[],wishlistItems:[],learningProjects:[],learningQuizzes:[],learningWrongAnswers:[],
+  instruments:[],transactions:[],snapshots:[],investmentMonthlySnapshots:[],investmentBrokerSnapshots:[],investmentCashFlows:[],investmentJournal:[],investmentWatchlist:[],ledgerMonths:[],spendReviews:[],body:[],exercise:[],cardio:[],strength:[],books:[],movies:[],diaries:[],tasks:[],campusSemesters:[],travelTrips:[],travelPlaces:[],travelWishlist:[],certificates:[],wishlistItems:[],learningProjects:[],learningQuizzes:[],learningWrongAnswers:[],monthlyReports:[],
   profile:{heightCm:188},
   goals:{investment:100000000,weight1:110,weight2:100,reading:30,readingAnnual:30,readingMonthly:2},
   calendarUrl:"",
@@ -251,6 +251,7 @@ function normalizeState(d){
     travelWishlist:Array.isArray(d?.travelWishlist)?d.travelWishlist.map(normalizeTravelWish):[],
     certificates:Array.isArray(d?.certificates)?d.certificates.map(normalizeCertificate):[],
     wishlistItems:Array.isArray(d?.wishlistItems)?d.wishlistItems.map(normalizeWishItem):[],
+    monthlyReports:Array.isArray(d?.monthlyReports)?d.monthlyReports:[],
     pageNotes
   };
   delete normalized._haniBackup;delete normalized.exportedAt;delete normalized.data;
@@ -4269,12 +4270,12 @@ function monthlyReportSnapshot(month,asOf=monthlyReportKoreaDate()){
   return {month,previousMonth,investment,investmentCalc,previousInvestmentCalc,ledger,ledgerPeriod,ledgerSummary,previousLedgerSummary,body,exercise,books,movies,ratings,firstBody,lastBody,totalSteps,totalDistance,stepDays,distanceDays,quizzes,scoredQuizzes,quizTotal,quizCorrect,duplicateDays:bodyRows.length-body.length+exerciseRows.length-exercise.length,recordCount:(investment?1:0)+(ledger?1:0)+body.length+exercise.length+books.length+movies.length+quizzes.length};
 }
 function monthlyReportDelta(value,previous,formatter=won){if(previous===null||previous===undefined)return "전월 기록 없음";const delta=n(value)-n(previous);return `전월 대비 ${delta>0?"+":""}${formatter(delta)}`}
-function monthlyReportDomainCard({tone,eyebrow,title,headline,comment,basis,metrics,empty,owner}){const key=owner||({FINANCE:"finance",MONEY:"money",HEALTH:"health",ACTIVITY:"activity",CULTURE:"culture",LEARNING:"learning"})[eyebrow],agent=monthlyReportOwners[key]||monthlyReportOwners.finance;return `<article class="monthly-report-domain tone-${tone}"><div class="monthly-report-domain-head"><div><span>${esc(eyebrow)}</span><h3>${esc(title)}</h3></div><b>${empty?"기록 없음":"이번 달"}</b></div><div class="monthly-report-takeaway"><span>이번 달 핵심</span><strong>${esc(headline)}</strong></div><div class="monthly-report-agent"><img src="${esc(agentImages[agent.key]||agentImages.hani)}" alt="${esc(agent.name)}"><div class="monthly-report-speech"><span>${esc(agent.name)} · ${esc(agent.role)}</span><p>${esc(comment)}</p></div></div><div class="monthly-report-metrics">${metrics.map(([label,value])=>`<div><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join("")}</div><details class="monthly-report-basis"><summary>집계 기준</summary><p>${esc(basis)}</p></details></article>`}
+function monthlyReportDomainCard({tone,eyebrow,title,headline,comment,basis,metrics,empty,owner}){const key=owner||({FINANCE:"finance",MONEY:"money",HEALTH:"health",ACTIVITY:"activity",CULTURE:"culture",LEARNING:"learning"})[eyebrow],agent=monthlyReportOwners[key]||monthlyReportOwners.finance;return `<article class="monthly-report-domain tone-${tone}"><div class="monthly-report-domain-head"><div><span>${esc(eyebrow)}</span><h3>${esc(title)}</h3></div><b>${empty?"기록 없음":"해당 월"}</b></div><div class="monthly-report-takeaway"><span>월간 핵심</span><strong>${esc(headline)}</strong></div><div class="monthly-report-agent"><img src="${esc(agentImages[agent.key]||agentImages.hani)}" alt="${esc(agent.name)}"><div class="monthly-report-speech"><span>${esc(agent.name)} · ${esc(agent.role)}</span><p>${esc(comment)}</p></div></div><div class="monthly-report-metrics">${metrics.map(([label,value])=>`<div><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join("")}</div><details class="monthly-report-basis"><summary>집계 기준</summary><p>${esc(basis)}</p></details></article>`}
 function monthlyReportRenderBoard(){if(typeof document==="undefined")return;const allowed=["monthly","quarterly","annual"];if(!allowed.includes(monthlyReportBoard))monthlyReportBoard="monthly";document.querySelectorAll("#monthlyReport [data-report-board]").forEach(button=>{const active=button.dataset.reportBoard===monthlyReportBoard;button.classList.toggle("active",active);button.setAttribute("aria-selected",String(active));button.onclick=()=>{monthlyReportBoard=button.dataset.reportBoard;monthlyReportRenderBoard()}});document.querySelectorAll("#monthlyReport [data-report-panel]").forEach(panel=>{const active=panel.dataset.reportPanel===monthlyReportBoard;panel.hidden=!active;panel.classList.toggle("active",active)})}
-function renderMonthlyReport(){
+function monthlyReportBuildCurrent(){
   const input=$("monthlyReportMonth"),kpis=$("monthlyReportKpis"),domains=$("monthlyReportDomains");if(!input||!kpis||!domains)return;
   monthlyReportRenderBoard();
-  const months=monthlyReportAvailableMonths();if(!monthlyReportDate(`${monthlyReportMonth}-01`))monthlyReportMonth=months.at(-1)||monthlyReportKoreaDate().slice(0,7);input.value=monthlyReportMonth;input.onchange=()=>{monthlyReportMonth=input.value||monthlyReportKoreaDate().slice(0,7);renderMonthlyReport()};
+  input.value=monthlyReportMonth;
   const report=monthlyReportSnapshot(monthlyReportMonth),investmentTotal=report.investmentCalc?.total,spend=report.ledgerSummary?.jispiT,bodyDelta=report.firstBody&&report.lastBody?n(report.lastBody.weight)-n(report.firstBody.weight):null,cultureCount=report.books.length+report.movies.length,avgRating=report.ratings.length?report.ratings.reduce((a,b)=>a+b,0)/report.ratings.length:null,
     stepAverage=report.stepDays.length?`${Math.round(report.totalSteps/report.stepDays.length).toLocaleString()}보`:"걸음 기록 없음",settlementLabel=`${report.ledgerPeriod.periodStart} ~ ${report.ledgerPeriod.periodEnd}`,accuracy=report.quizTotal?`${(report.quizCorrect/report.quizTotal*100).toFixed(1)}%`:"채점 수치 없음",
     largestLivingExpense=(report.ledger?.items||[]).filter(x=>["fixed","variable","special"].includes(x.category)&&n(x.amount)>0).sort((a,b)=>n(b.amount)-n(a.amount))[0]||null;
@@ -4296,6 +4297,70 @@ function renderMonthlyReport(){
     monthlyReportDomainCard({tone:"culture",eyebrow:"CULTURE",title:"문화",empty:!cultureCount,headline:cultureCount?`완독 ${report.books.length}권 · 시청 ${report.movies.length}건`:"완료 기록이 없어요",comment:cultureCount?`오빠, 이번 달은 완독 ${report.books.length}권과 시청 ${report.movies.length}건을 남겼네. 숫자보다 어떤 작품이 기억에 남았는지가 더 궁금해. ${avgRating===null?"감상이 생기면 한 줄만 남겨줘. 다음 추천에 써먹을게 ㅋㅋ":"별점 기록도 다음 추천에 써먹어야지 ㅋㅋ"}`:"오빠, 이번 달 완료한 작품 기록은 조용했네. 억지로 채울 필요 없어. 기억에 남은 작품이 생기면 그때 남겨두자.",basis:"완료 날짜가 확인된 기록만 포함합니다. 시리즈·회차 묶음과 관계없이 저장한 입력 1건을 시청 1건으로 셉니다.",metrics:[["완독",`${report.books.length}권`],["시청 기록",`${report.movies.length}건`],["평균 평점",avgRating===null?"평가 없음":`${avgRating.toFixed(1)}점`]]}),
     monthlyReportDomainCard({tone:"learning",eyebrow:"LEARNING",title:"학습",empty:!report.quizzes.length,headline:report.quizTotal?`${report.quizTotal}문항 중 ${report.quizCorrect}문항 정답`:report.quizzes.length?`${report.quizzes.length}세트 완료`:"완료한 문제 세트가 없어요",comment:report.quizTotal?`오빠, 이번 달은 ${report.quizTotal}문항 중 ${report.quizCorrect}문항 정답이라 ${accuracy}야. ${report.quizTotal>report.quizCorrect?`아깝다아… 틀린 ${report.quizTotal-report.quizCorrect}문항에서 반복되는 유형부터 보자. ここ大事！`:"이번엔 전부 맞혔네! 같은 유형에서도 정확도가 이어지는지 보자 ㅋㅋ"}`:report.quizzes.length?"오빠, 완료한 세트는 있는데 채점 수치가 없어서 정답률은 말할 수 없어. 숫자는 확인된 것만 쓰자.":"오빠, 이번 달 완료한 문제 세트는 아직 없어. 다음 기록이 쌓이면 정확도부터 같이 보자.",basis:`한국시간 완료일 기준입니다. 채점 수치가 확인된 ${report.scoredQuizzes.length}/${report.quizzes.length}세트의 문항을 합산합니다. 할일·대학은 집계하지 않습니다.`,metrics:[["완료 세트",`${report.quizzes.length}세트`],["확인된 정답 / 문항",`${report.quizCorrect} / ${report.quizTotal}문항`],["문항 기준 정답률",accuracy]]})
   ].join("");
+}
+
+function monthlyReportStored(month){
+  return (state.monthlyReports||[]).findLast(row=>row?.month===month&&row?.view&&Array.isArray(row.view.kpis)&&Array.isArray(row.view.domains))||null;
+}
+function monthlyReportCaptureView(){
+  return {
+    kpis:[...$("monthlyReportKpis").children].map(card=>[card.querySelector("span")?.textContent||"",card.querySelector("strong")?.textContent||"",card.querySelector("small")?.textContent||""]),
+    insightTitle:$("monthlyReportInsightTitle").textContent,
+    insight:$("monthlyReportInsight").textContent,
+    domains:[...$("monthlyReportDomains").children].map(card=>({
+      tone:[...card.classList].find(name=>name.startsWith("tone-"))?.slice(5)||"finance",
+      eyebrow:card.querySelector(".monthly-report-domain-head span")?.textContent||"",
+      title:card.querySelector(".monthly-report-domain-head h3")?.textContent||"",
+      empty:card.querySelector(".monthly-report-domain-head b")?.textContent==="기록 없음",
+      headline:card.querySelector(".monthly-report-takeaway strong")?.textContent||"",
+      comment:card.querySelector(".monthly-report-speech p")?.textContent||"",
+      basis:card.querySelector(".monthly-report-basis p")?.textContent||"",
+      metrics:[...card.querySelectorAll(".monthly-report-metrics > div")].map(metric=>[metric.querySelector("span")?.textContent||"",metric.querySelector("strong")?.textContent||""])
+    }))
+  };
+}
+function monthlyReportPresentStored(row){
+  const view=row.view,tones=["finance","money","health","activity","culture","learning"];
+  $("monthlyReportKpis").innerHTML=view.kpis.filter(metric=>Array.isArray(metric)).map(([label,value,meta])=>`<div class="card monthly-report-kpi"><span>${esc(label)}</span><strong>${esc(value)}</strong><small>${esc(meta)}</small></div>`).join("");
+  $("monthlyReportInsightTitle").textContent=String(view.insightTitle||"");
+  $("monthlyReportInsight").textContent=String(view.insight||"");
+  $("monthlyReportDomains").innerHTML=view.domains.filter(domain=>domain&&Array.isArray(domain.metrics)).map(domain=>monthlyReportDomainCard({...domain,tone:tones.includes(domain.tone)?domain.tone:"finance",metrics:domain.metrics.filter(metric=>Array.isArray(metric))})).join("");
+  for(const id of ["monthlyReportKpis","monthlyReportInsightCard","monthlyReportDomains"])$(id).hidden=false;
+}
+function monthlyReportGenerate(month){
+  const current=monthlyReportKoreaDate().slice(0,7),report=monthlyReportSnapshot(month),previous=monthlyReportStored(month);
+  if(!monthlyReportDate(`${month}-01`)||month>=current||!report.recordCount)return;
+  if(previous&&!confirm(`${month} 보고서를 다시 생성할까요?\n기존 보고서 내용은 새 보고서로 교체됩니다. 원본 기록은 변경하지 않습니다.`))return;
+  monthlyReportBuildCurrent();
+  const row={month,generatedAt:new Date().toISOString(),format:1,view:monthlyReportCaptureView()},before=state.monthlyReports;
+  state.monthlyReports=[...(Array.isArray(before)?before:[]).filter(item=>item?.month!==month),row];
+  const result=save();
+  if(!result.ok){state.monthlyReports=before;alert("보고서 저장에 실패했습니다. 기존 보고서는 유지됩니다.");renderMonthlyReport();return}
+  renderMonthlyReport();toast(previous?"월간보고를 다시 생성했습니다.":"월간보고를 생성했습니다.");
+}
+function renderMonthlyReport(){
+  const input=$("monthlyReportMonth"),archive=$("monthlyReportArchive"),pending=$("monthlyReportPending");
+  if(!input||!archive||!pending)return;
+  monthlyReportRenderBoard();
+  const current=monthlyReportKoreaDate().slice(0,7),closedMonths=monthlyReportAvailableMonths().filter(month=>month<current);
+  const rows=(state.monthlyReports||[]).filter(row=>typeof row?.month==="string"&&row?.view&&monthlyReportDate(`${row.month}-01`)).sort((a,b)=>b.month.localeCompare(a.month));
+  if(!monthlyReportDate(`${monthlyReportMonth}-01`))monthlyReportMonth=rows[0]?.month||closedMonths.at(-1)||monthlyReportPrevMonth(current);
+  input.value=monthlyReportMonth;input.max=monthlyReportPrevMonth(current);
+  input.onchange=()=>{monthlyReportMonth=input.value||monthlyReportPrevMonth(current);renderMonthlyReport()};
+  archive.innerHTML=`<b>보관된 보고서</b>${rows.length?rows.map(row=>`<button type="button" data-monthly-archive="${esc(row.month)}" class="${row.month===monthlyReportMonth?"active":""}" aria-label="${esc(row.month)} 월간보고 열기">${esc(row.month)}</button>`).join(""):'<span>아직 생성된 보고서가 없습니다.</span>'}`;
+  archive.querySelectorAll("[data-monthly-archive]").forEach(button=>button.onclick=()=>{monthlyReportMonth=button.dataset.monthlyArchive;renderMonthlyReport()});
+  const stored=monthlyReportStored(monthlyReportMonth),closed=monthlyReportMonth<current,hasRecords=closed&&monthlyReportSnapshot(monthlyReportMonth).recordCount>0;
+  if(stored){
+    monthlyReportPresentStored(stored);
+    pending.hidden=false;
+    pending.innerHTML=`<h4>${esc(stored.month)} 보고서 · 생성 완료</h4><p>생성 시각 ${esc(formatDateTime(stored.generatedAt))}. 원본 기록이 바뀌어도 이 보고서는 자동으로 바뀌지 않습니다.</p><button type="button" id="monthlyReportGenerateBtn" ${hasRecords?"":"disabled"}>보고서 다시 생성</button>`;
+    $("monthlyReportGenerateBtn").onclick=()=>monthlyReportGenerate(monthlyReportMonth);
+    return;
+  }
+  for(const id of ["monthlyReportKpis","monthlyReportInsightCard","monthlyReportDomains"])$(id).hidden=true;
+  pending.hidden=false;
+  pending.innerHTML=`<h4>${esc(monthlyReportMonth)} 월간보고가 없습니다.</h4><p>${closed?(hasRecords?"해당 월의 기록을 확인한 뒤 보고서를 생성할 수 있습니다.":"이 달에는 보고서로 만들 완료 기록이 없습니다."):"해당 월이 끝난 뒤에만 보고서를 생성할 수 있습니다."}</p><button type="button" id="monthlyReportGenerateBtn" ${hasRecords?"":"disabled"}>보고서 생성</button>`;
+  $("monthlyReportGenerateBtn").onclick=()=>monthlyReportGenerate(monthlyReportMonth);
 }
 
 

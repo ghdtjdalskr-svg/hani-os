@@ -822,17 +822,19 @@
         <div class="monthly-report-board-panel active" id="monthlyReportMonthlyPanel" data-report-panel="monthly">
           <div class="monthly-report-hero">
             <div class="monthly-report-heading">
-              <div><span class="monthly-report-kicker">HANI EXECUTIVE REPORT ROOM</span><h3>월간 보고</h3><p>각 담당자가 기존 Life OS 기록을 바꾸지 않고 한 달의 흐름으로 브리핑합니다.</p></div>
+              <div><span class="monthly-report-kicker">HANI EXECUTIVE REPORT ROOM</span><h3>월간 보고</h3><p>지난달부터 보고서를 직접 생성합니다. 생성한 보고서는 당시 내용 그대로 보관됩니다.</p></div>
               <label class="monthly-report-period">보고 월<input type="month" id="monthlyReportMonth" aria-label="월간 보고 기준 월"></label>
             </div>
-            <div class="monthly-report-readonly">READ ONLY · 조회만으로 기존 데이터를 변경하지 않습니다.</div>
+            <div class="monthly-report-readonly">월 선택·열람은 읽기 전용 · 생성 버튼을 누를 때만 저장합니다.</div>
           </div>
-          <div class="monthly-report-kpis" id="monthlyReportKpis"></div>
-          <div class="monthly-report-insight">
+          <div class="monthly-report-archive" id="monthlyReportArchive" aria-label="생성된 월간보고 목록"></div>
+          <div class="monthly-report-pending" id="monthlyReportPending"></div>
+          <div class="monthly-report-kpis" id="monthlyReportKpis" hidden></div>
+          <div class="monthly-report-insight" id="monthlyReportInsightCard" hidden>
             <div class="monthly-report-insight-avatar"><img src="./assets/profiles/hani-profile-hani.webp" alt="하니"></div>
             <div><span>HANI · CHIEF OF STAFF</span><h3 id="monthlyReportInsightTitle">기록을 확인하고 있습니다.</h3><p id="monthlyReportInsight">선택한 달의 기록만 사용해 요약합니다.</p></div>
           </div>
-          <div class="monthly-report-domains" id="monthlyReportDomains"></div>
+          <div class="monthly-report-domains" id="monthlyReportDomains" hidden></div>
         </div>
 
         <div class="monthly-report-board-panel" id="monthlyReportQuarterlyPanel" data-report-panel="quarterly" hidden>

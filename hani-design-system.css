@@ -850,6 +850,16 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 #app .monthly-report-period{display:grid;gap:7px;min-width:180px;color:#aab4c9;font-size:10px;font-weight:850;letter-spacing:.05em}
 #app .monthly-report-period input{min-height:42px;padding:8px 11px;border:1px solid var(--report-line);border-radius:11px;background:#0f1626;color:var(--report-white);color-scheme:dark;font:800 14px/1 var(--hani-font-sans)}
 #app .monthly-report-readonly{display:inline-flex;align-items:center;margin-top:17px;padding:7px 10px;border:1px solid rgba(70,218,168,.22);border-radius:999px;background:rgba(48,177,135,.1);color:#68d9b4;font-size:9px;font-weight:900;letter-spacing:.05em}
+#app .monthly-report-kpis[hidden],#app .monthly-report-insight[hidden],#app .monthly-report-domains[hidden],#app .monthly-report-pending[hidden]{display:none!important}
+#app .monthly-report-archive{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:14px;border:1px solid var(--report-line);border-radius:16px;background:#141d2e;color:#cbd4e7}
+#app .monthly-report-archive>b{margin-right:5px;font-size:13px}
+#app .monthly-report-archive>span{font-size:13px;color:#aeb9ce}
+#app .monthly-report-archive button{padding:9px 13px;border:1px solid #394764;border-radius:10px;background:#1c2940;color:#e6eaff;font:800 13px/1.2 var(--hani-font-sans);cursor:pointer}
+#app .monthly-report-archive button.active{border-color:#a995ff;background:#5546a0;color:#fff}
+#app .monthly-report-pending{display:grid;gap:12px;justify-items:start;padding:25px;border:1px dashed #596783;border-radius:17px;background:#151e2e;color:#e3e9f6}
+#app .monthly-report-pending h4{margin:0;font-size:19px}#app .monthly-report-pending p{margin:0;color:#b7c3d8;font-size:14px;line-height:1.55}
+#app .monthly-report-pending button{padding:11px 17px;border:0;border-radius:11px;background:#896bf0;color:#fff;font:900 14px/1.2 var(--hani-font-sans);cursor:pointer}
+#app .monthly-report-pending button:disabled{opacity:.5;cursor:not-allowed}
 #app .monthly-report-kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
 #app .monthly-report-kpi{grid-column:span 2}
 #app .monthly-report-kpi:nth-child(n+4){grid-column:span 3}
