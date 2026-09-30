@@ -20,7 +20,7 @@
 
 각 단계는 실제 데이터와 이벤트가 있어야 화면에서 완료된 발언으로 표시한다. 로딩 중에는 단계 상태만 표시하고 Agent 의견을 만들어내지 않는다.
 
-현재 운영 함수의 `run_reviews`는 전문 Agent들을 병렬 호출하고 전체 결과를 한 번에 저장한다. 1차 Review에 다른 Agent 의견이 주입되지 않으므로, **현재 패치만으로 진짜 Cross Review가 구현되지는 않는다.** 이를 구현하려면 저장된 1차 Review를 입력으로 하는 별도 교차 검토 단계, 단계별 결과 식별자와 재시도·비용 상한이 필요하다. UI가 독립 Review를 대화처럼 번갈아 보여주더라도 실제 교차 검토라고 부르지 않는다.
+현재 운영 함수의 `run_reviews`는 전문 Agent들을 병렬 호출하고 전체 결과를 한 번에 저장한다. 1차 Review에 다른 Agent 의견이 주입되지 않으므로, Voice 패치만으로는 실제 교차 검토가 되지 않는다. 이번 후보의 별도 `run_cross_review` 패치가 저장된 해당 라운드 Review와 앞선 발언을 입력으로 사용하고 결과 Event를 저장한다. 함수가 운영에 반영되기 전까지 Production의 독립 Review를 실제 회의라고 부르지 않는다.
 
 ## Registry 확장 방향
 
@@ -28,4 +28,4 @@
 
 ## 비변경 영역
 
-Case/Review 저장 구조, Supabase schema, Router 선정, Decision Readiness, 승인·Commit, 기존 데이터는 이 패치에서 변경하지 않는다. 실제 함수 반영과 진짜 Cross Review 단계는 별도 Release Gate에서 검증한다.
+Case/Review 저장 구조, Supabase schema, Router 선정, 승인·Commit, 기존 데이터는 이 후보에서 변경하지 않는다. 저장된 교차 검토 결과를 Decision Readiness와 하니 종합에 전달하는 변경은 별도 Cross Review 패치에 포함된다. 실제 함수 반영과 실제 Case 결과는 Release Gate에서 검증한다.
