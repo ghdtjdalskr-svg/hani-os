@@ -22,7 +22,7 @@ export function createPublisher({source,storage,userId,now=Date.now}){
       for(const code of codes)for(const period of chartPeriods){
         if(onlyMissingCharts&&charts[code+'/'+period])continue;
         const raw=await source.chart(code,period);
-        const data={symbol:code,period,interval:raw.interval,adjusted:raw.adjusted,complete:raw.complete===true,result:M.candles(raw.result).map(r=>pick(r,['timestamp','closePrice','currency']))};
+        const data={symbol:code,period,interval:raw.interval,adjusted:raw.adjusted,complete:raw.complete===true,result:M.candles(raw.result).map(r=>pick(r,['timestamp','openPrice','highPrice','lowPrice','closePrice','volume','currency']))};
         if(!data.result.length)throw Error('Empty chart; last cache preserved');
         const expectedCurrency=stocks.find(s=>s.symbol===code).currency;
         if(data.result.some(c=>c.currency!==expectedCurrency||Date.parse(c.timestamp)>now()+60000))throw Error('Invalid chart currency or time; last cache preserved');

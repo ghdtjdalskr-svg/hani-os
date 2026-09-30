@@ -17,6 +17,14 @@
 #assetMarket svg{display:block;width:100%;height:auto;color:var(--market-series,#64748b);fill:currentColor}
 #assetMarket svg text{font:12px sans-serif;fill:var(--muted,#68738a)}
 #assetMarket .market-price-line{fill:none;stroke:currentColor;stroke-width:3;vector-effect:non-scaling-stroke}
+#assetMarket .market-chart-tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12px}
+#assetMarket .market-ma{fill:none;stroke-width:1.5;vector-effect:non-scaling-stroke}
+#assetMarket .market-ma5{color:#159570;stroke:#159570}
+#assetMarket .market-ma20{color:#9861cf;stroke:#9861cf}
+#assetMarket .market-volume{opacity:.65}
+#assetMarket .market-chart-readout{font-size:12px;line-height:1.8;min-height:44px;color:var(--text,#243753);font-variant-numeric:tabular-nums}
+#assetMarket .market-chart-slider{display:flex;align-items:center;gap:12px;font-size:12px}
+#assetMarket .market-chart-slider input{flex:1;min-width:0}
 #assetMarket .market-grid{fill:none;stroke:var(--line,#e6e9f0);stroke-width:1}
 #assetMarket .market-average{fill:none;stroke:#cf983b;stroke-width:1.5;stroke-dasharray:7 5}
 #assetMarket .market-average-note{font-size:12px;color:var(--muted,#68738a);line-height:1.6;text-align:right;overflow-wrap:anywhere}
