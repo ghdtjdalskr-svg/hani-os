@@ -2480,6 +2480,8 @@ function homeQuizMetrics(){
 }
 function renderLifeTicker(data,directionByKey){
   const track=$("lifeTickerTrack");if(!track)return;
+  const pause=$("lifeTickerPause"),ticker=$("lifeTicker");
+  if(pause&&ticker&&!pause.dataset.bound){pause.dataset.bound="1";pause.addEventListener("click",()=>{const paused=ticker.classList.toggle("is-paused");pause.setAttribute("aria-label",paused?"시세판 다시 재생":"시세판 일시정지");pause.title=paused?"시세판 다시 재생":"시세판 일시정지";pause.textContent=paused?"▶":"Ⅱ"})}
   const items=[["hasdaq","HASDAQ 자산","pct"],["ne100","N&E 체중","pct"],["jispi","JISPI 소비","pct"],["hinaJones","READ 독서·시청","count"],["harukei","STEP 걸음","pct"],["hinkei","JLPT 정답률","pp"]];
   const groupHtml=items.map(([key,label,unit])=>{
     const rows=data[key]?.rows||[],last=rows.at(-1),prev=rows.at(-2),hasCurrent=last&&Number.isFinite(Number(last.value)),hasDelta=hasCurrent&&prev&&Number.isFinite(Number(prev.value));
