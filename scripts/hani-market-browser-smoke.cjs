@@ -16,7 +16,9 @@ const server=http.createServer((req,res)=>{const pathname=decodeURIComponent(new
       if(u.pathname==='/v1/stocks')body={result:stocks};else if(u.pathname==='/v1/prices')body={result:stocks.map(s=>({...s,lastPrice:s.currency==='KRW'?72000:210,timestamp:new Date().toISOString()}))};
       else if(u.pathname==='/v1/chart'){charts++;const kr=u.searchParams.get('symbol')==='005930';body={result:Array.from({length:24},(_,i)=>({timestamp:new Date(Date.now()-(24-i)*86400000).toISOString(),closePrice:kr?66500+i*200+Math.sin(i)*600:180+i,currency:kr?'KRW':'USD'})),complete:true,adjusted:false};}
       else if(u.pathname==='/v1/search')body={result:stocks};
-      else body={result:[]};await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(body)});
+      else body={result:[]};
+      if(u.pathname==='/v1/chart')body.result=body.result.map((c,i)=>({...c,openPrice:c.closePrice*(i%2?1.005:.995),highPrice:c.closePrice*1.01,lowPrice:c.closePrice*.99,volume:i===0?0:1000+i*80}));
+      await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(body)});
     });
     await context.addInitScript(s=>{localStorage.setItem('hani_os_life_v23',JSON.stringify(s));localStorage.setItem('hani_os_gate_session_v2','1');},stateFixture);
     const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.dismiss());
@@ -44,6 +46,16 @@ const server=http.createServer((req,res)=>{const pathname=decodeURIComponent(new
     assert.equal(await page.locator('#assetMarket [class*="security-logo"],#assetMarket [data-hani-investment-logo]').count(),0,'legacy card-wide logo inference must not enter market component');
     const before=await page.evaluate(()=>JSON.stringify({accounts:state.accounts,instruments:state.instruments,snapshots:state.investmentBrokerSnapshots}));
     await page.evaluate(()=>{window.marketWrites=0;const original=Storage.prototype.setItem;Storage.prototype.setItem=function(k,v){if(k==='hani_os_life_v23')window.marketWrites++;return original.call(this,k,v);};});
+    const chartCalls=charts;
+    await page.locator('[data-chart-style="candle"]').click();
+    assert.equal(await page.locator('#marketChart .market-candle').count(),cacheMode?0:24);
+    if(cacheMode)assert.match(await page.locator('#marketChart').innerText(),/OHLC 미제공 24개/);
+    else assert.equal(await page.locator('#marketChart .market-volume').count(),24);
+    assert.equal(await page.locator('#marketChart path.market-ma').count(),2);
+    await page.locator('[data-chart-index]').fill('0');
+    assert.match(await page.locator('.market-chart-readout').innerText(),cacheMode?/거래량 미제공/:/거래량 0/);
+    assert.equal(charts,chartCalls,'chart style and inspection must not fetch');
+    await page.locator('[data-chart-style="line"]').click();
     await page.locator('#marketAccount').selectOption('b');await page.locator('#marketInstrument').filter({hasText:'애플'}).waitFor();await page.locator('#marketChart svg').waitFor();assert.match(await page.locator('#marketPosition').innerText(),/손익 —/);
     assert.notEqual(await seriesColor(),firstColor,'different fixture tickers should have distinct colors');
     await page.locator('[data-market-period="1Y"]').click();await page.locator('#marketChart svg').waitFor();
@@ -53,6 +65,7 @@ const server=http.createServer((req,res)=>{const pathname=decodeURIComponent(new
     assert.equal(await page.evaluate(()=>window.marketWrites),0);assert.equal(await page.evaluate(()=>JSON.stringify({accounts:state.accounts,instruments:state.instruments,snapshots:state.investmentBrokerSnapshots})),before);
     fail=false;await page.locator('#marketRefresh').click();await page.locator('#marketStatus').filter({hasText:cacheMode?'PC 마지막 수집':'응답 정상'}).waitFor();await page.locator('#marketChart svg').waitFor();
     if(process.env.HANI_MARKET_SCREENSHOT){
+      await page.locator('[data-chart-style="candle"]').click();
       // Isolate the inspected component from existing sticky global chrome, only in this test context.
       await page.evaluate(()=>{for(const el of document.querySelectorAll('body *')){if(!el.closest('#assetMarket')&&['fixed','sticky'].includes(getComputedStyle(el).position))el.style.visibility='hidden';}const banner=document.createElement('p');banner.textContent='개발 미리보기 · 테스트 데이터 · 실제 토스 미연결';banner.style.cssText='padding:12px;background:#fff2d5;border-radius:12px;color:#7c510b';document.getElementById('assetMarket').prepend(banner);});
       await page.locator('#assetMarket').screenshot({path:process.env.HANI_MARKET_SCREENSHOT});
