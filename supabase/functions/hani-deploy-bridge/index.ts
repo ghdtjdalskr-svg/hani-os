@@ -846,6 +846,61 @@ Deno.serve(async (req) => {
       return json({ ok: qa.ok, action, ...qa }, qa.ok ? 200 : 409);
     }
 
+    // Read-only HINA Gate for an existing feature PR. It does not stage, merge,
+    // enqueue, or create another PR. All identities must match the frozen package.
+    if (action === "qa_existing_pr") {
+      const prNumber = Number(payload.pr_number || 0);
+      const candidateSha = cleanText(payload.candidate_sha, 80);
+      const expectedMainSha = cleanText(payload.expected_main_sha, 80);
+      const expectedPackageSha = cleanText(payload.package_sha256, 80);
+      const suppliedPaths = Array.isArray(payload.package_paths) ? payload.package_paths : [];
+      const paths = suppliedPaths.map(normalizeReleasePath);
+      const uniquePaths = [...new Set(paths)].sort();
+      if (!Number.isSafeInteger(prNumber) || prNumber <= 0 || !/^[a-f0-9]{40}$/.test(candidateSha) ||
+          !/^[a-f0-9]{40}$/.test(expectedMainSha) || !/^[a-f0-9]{64}$/.test(expectedPackageSha) ||
+          cleanText(payload.gate_contract_version, 40) !== GATE_CONTRACT_VERSION ||
+          cleanText(payload.gate_contract_sha256, 80) !== GATE_CONTRACT_SHA256 ||
+          cleanText(payload.preflight_state, 20) !== "PASS" ||
+          paths.length === 0 || paths.length > MAX_RELEASE_FILES || paths.length !== uniquePaths.length ||
+          !uniquePaths.includes(TARGET_PATH) || uniquePaths.some((path) => !isAllowedReleasePath(path))) {
+        return json({ ok: false, error: "Frozen PR/package/contract 입력이 유효하지 않습니다." }, 400);
+      }
+      const pr = await getPullRequest(githubToken, prNumber);
+      const headRef = cleanText(pr?.head?.ref, 200);
+      if (cleanText(pr?.state, 30) !== "open" || pr?.base?.ref !== BASE_BRANCH ||
+          pr?.head?.repo?.full_name !== `${GITHUB_OWNER}/${GITHUB_REPO}` ||
+          !headRef.startsWith("hani/") || pr?.head?.sha !== candidateSha) {
+        return json({ ok: false, error: "PR의 저장소·대상·브랜치·후보 SHA가 일치하지 않습니다." }, 409);
+      }
+      const mainBefore = cleanText((await getMainRef(githubToken))?.object?.sha, 80);
+      if (mainBefore !== expectedMainSha) return json({ ok: false, error: "main 기준선이 변경되었습니다." }, 409);
+      const changed = releaseFilePolicy(await getPullRequestFiles(githubToken, prNumber));
+      if (!changed.ok || changed.paths.some((path) => !uniquePaths.includes(path))) {
+        return json({ ok: false, error: "PR 변경 파일이 패키지 허용 범위를 벗어났습니다." }, 409);
+      }
+      const runtimePaths = await runtimePackagePaths(githubToken, candidateSha);
+      if (runtimePaths.some((path) => !uniquePaths.includes(path))) {
+        return json({ ok: false, error: "실행 모듈이 패키지에서 누락되었습니다." }, 409);
+      }
+      const snapshot = await packageSnapshot(githubToken, candidateSha, uniquePaths);
+      if (snapshot.package_sha256 !== expectedPackageSha) {
+        return json({ ok: false, error: "PR 파일과 One-Pass 패키지 SHA가 일치하지 않습니다." }, 409);
+      }
+      const qa = await runHinaModularQa(githubToken, candidateSha, expectedMainSha, { ignorePrNumber: prNumber });
+      const mainAfter = cleanText((await getMainRef(githubToken))?.object?.sha, 80);
+      if (mainAfter !== expectedMainSha) return json({ ok: false, error: "검증 중 main 기준선이 변경되었습니다.", qa }, 409);
+      const prAfter = await getPullRequest(githubToken, prNumber);
+      if (prAfter?.head?.sha !== candidateSha || cleanText(prAfter?.state, 30) !== "open") {
+        return json({ ok: false, error: "검증 중 PR 후보가 변경되었습니다.", qa }, 409);
+      }
+      return json({
+        ok: qa.ok, action, state: qa.state, pr_number: prNumber, candidate_sha: candidateSha,
+        base_main_sha: expectedMainSha, package_sha256: snapshot.package_sha256,
+        gate_contract_version: GATE_CONTRACT_VERSION, gate_contract_sha256: GATE_CONTRACT_SHA256,
+        qa, note: "읽기 전용 HINA 검증입니다. 새 PR·Queue·병합·배포는 생성하지 않습니다.",
+      }, qa.ok ? 200 : 409);
+    }
+
     if (action === "pending_release") {
       const openPrs = await listOpenPullRequests(githubToken);
       const releasePrs = (Array.isArray(openPrs) ? openPrs : [])
