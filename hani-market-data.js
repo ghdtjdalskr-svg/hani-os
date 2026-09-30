@@ -19,14 +19,14 @@
   function positions(state,transactionRows=[]){
     // Select latest explicit account record independently. Never concatenate historical snapshots.
     const latest=new Map(), accounts=new Map((state.accounts||[]).map(a=>[a.id,a]));
-    const rows=(state.investmentBrokerSnapshots||[]).filter(s=>s.mode==='actual'&&s.status==='confirmed').slice().sort((a,b)=>String(a.period||'').localeCompare(String(b.period||''))||String(a.updatedAt||'').localeCompare(String(b.updatedAt||'')));
+    const rows=(state.investmentBrokerSnapshots||[]).filter(s=>(s.mode==='actual'||s.mode==='positions'&&s.recordType==='positions')&&s.status==='confirmed').slice().sort((a,b)=>String(a.period||'').localeCompare(String(b.period||''))||String(a.snapshotDate||'').localeCompare(String(b.snapshotDate||''))||String(a.updatedAt||'').localeCompare(String(b.updatedAt||'')));
     for(const snapshot of rows) for(const account of snapshot.accounts||[]) if(account.enabled&&accounts.has(account.accountId)) latest.set(account.accountId,{account,snapshot});
     const result=[...latest.values()].flatMap(({account,snapshot})=>(account.holdings||[]).map((h,index)=>({
       key:account.accountId+':'+(h.id||index),accountId:account.accountId,accountName:accounts.get(account.accountId).name,
       instrumentId:h.instrumentId||'',rawName:h.rawName||h.name||'',name:h.name||h.rawName||'이름 미확인',
       ticker:symbol(h.ticker||h.rawTicker),quantity:number(h.quantity),buyPrice:number(h.buyPrice),purchaseAmount:number(h.purchaseAmount),
-      recordedEvaluation:number(h.evaluationAmount),recordedPnl:number(h.pnl),recordedCurrency:h.currency||null,
-      holdingAsOf:snapshot.asOfDate||snapshot.period||'',
+      recordedEvaluation:number(h.evaluationAmount),recordedPnl:number(h.pnl),recordedCurrency:h.currency||null,buyCurrency:['KRW','USD'].includes(h.buyCurrency)?h.buyCurrency:null,
+      holdingAsOf:snapshot.asOfDate||snapshot.snapshotDate||snapshot.period||'',
     })));
     for(const h of transactionRows)if(accounts.has(h.accountId)&&!latest.has(h.accountId)){
       const instrument=(state.instruments||[]).find(i=>i.id===h.instrumentId);
@@ -57,9 +57,10 @@
     if(position.quantity===null||position.quantity<0)return result;
     result.valuation=position.quantity*price;
     // Legacy records have no explicit currency. Only domestic KRW cost is safe to infer.
-    const costCurrency=position.recordedCurrency||(resolution.currency==='KRW'?'KRW':null);
+    const costCurrency=position.buyCurrency||position.recordedCurrency||(resolution.currency==='KRW'?'KRW':null);
     if(costCurrency===resolution.currency){
-      result.cost=position.purchaseAmount??(position.buyPrice===null?null:position.quantity*position.buyPrice);
+      // Explicit buy currency describes unit cost, not legacy aggregate purchaseAmount.
+      result.cost=position.buyCurrency?(position.buyPrice===null?null:position.quantity*position.buyPrice):(position.purchaseAmount??(position.buyPrice===null?null:position.quantity*position.buyPrice));
       if(result.cost!==null&&result.cost>=0){result.pnl=result.valuation-result.cost;result.rate=result.cost>0?result.pnl/result.cost*100:null;}
     }
     return result;
