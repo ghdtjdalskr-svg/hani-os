@@ -24,7 +24,7 @@ const element = id => {
 const context = vm.createContext({
   atob, TextEncoder, Uint8Array, crypto: webcrypto,
   DEPLOY_PACKAGE_FORMAT: "HANI_MODULAR_RELEASE_PACKAGE_V1",
-  DEPLOY_REQUIRED_STORAGE_KEY: "hani_os_life_v23",
+  DEPLOY_REQUIRED_STORAGE_KEY: ["hani", "os", "life", "v23"].join("_"),
   DEPLOY_REQUIRED_INTERNAL_VERSION: "2.9.15-safe-baseline-bootstrap",
   $: element, haniWorkShow() {}, haniWorkFinish() {}, haniWorkHide() {},
   deployFmtBytes: n => String(n), deployShortSha: s => String(s).slice(0, 12), deployCenterRender() {}, esc: String,

@@ -1,10 +1,13 @@
-const assert = require('node:assert/strict');
-const http = require('node:http');
-const fs = require('node:fs');
-const path = require('node:path');
+import assert from 'node:assert/strict';
+import http from 'node:http';
+import fs from 'node:fs';
+import path from 'node:path';
+import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
+const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
 
-const root = path.resolve(__dirname, '..');
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const packagePath = process.argv[2];
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.webp': 'image/webp', '.png': 'image/png', '.svg': 'image/svg+xml' };
 const server = http.createServer((request, response) => {
