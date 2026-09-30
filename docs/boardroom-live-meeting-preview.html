@@ -18,7 +18,7 @@
     <section class="hani-office-live" id="haniOfficeLive" aria-label="HANI GROUP 사무실">
       <div class="hani-office-live-head"><div><small>HANI GROUP · LIVING OFFICE</small><h3>하니네 사무실</h3><p>배정된 Agent가 회의실로 이동한 뒤 실제 진행 상태를 보여줍니다.</p></div><div class="hani-office-live-actions"><span id="haniOfficeCaseState">평상시 근무 중</span><button class="btn" id="haniOfficeMeetingOpen" type="button" disabled>회의실 보기</button><button class="btn" id="haniOfficeReturn" type="button" hidden>사무실로 돌아가기</button></div></div>
       <div class="hani-office-scroll"><div class="hani-office-map" id="haniOfficeMap" data-state="idle"><img class="hani-office-background" src="assets/ai-approval-concepts/v3-office-background-empty-8-seats.webp" alt="화이트 오피스"><img class="hani-office-ci" src="assets/brand/hani-group-ci-official.webp" alt="" aria-hidden="true"><img class="hani-office-foreground hani-office-foreground-leader" src="assets/ai-approval-concepts/v3-office-background-empty-8-seats.webp" alt="" aria-hidden="true"><img class="hani-office-foreground hani-office-foreground-row1" src="assets/ai-approval-concepts/v3-office-background-empty-8-seats.webp" alt="" aria-hidden="true"><img class="hani-office-foreground hani-office-foreground-row2" src="assets/ai-approval-concepts/v3-office-background-empty-8-seats.webp" alt="" aria-hidden="true"><div id="haniOfficeActors"></div></div></div>
-      <div class="hani-office-meeting" id="haniOfficeMeeting" hidden><div class="hani-office-meeting-title"><div><small>ACTUAL CASE REVIEW</small><h4 id="haniOfficeMeetingTitle">회의실</h4><p id="haniOfficeMeetingMeta"></p></div><button class="btn" id="haniOfficeReportLink" type="button">전체 검토서 보기 ↓</button></div><div class="hani-office-participants" id="haniOfficeParticipants" aria-live="polite" hidden></div><div class="hani-office-conversation" id="haniOfficeConversation"></div><div class="hani-office-questions" id="haniOfficeQuestions" hidden></div></div>
+      <div class="hani-office-meeting" id="haniOfficeMeeting" hidden><div class="hani-office-meeting-title"><div><small>SAMPLE MEETING · 화면 예시</small><h4 id="haniOfficeMeetingTitle">회의실</h4><p id="haniOfficeMeetingMeta"></p></div><button class="btn" id="haniOfficeReportLink" type="button">전체 검토서 보기 ↓</button></div><div class="hani-office-participants" id="haniOfficeParticipants" aria-live="polite" hidden></div><div class="hani-office-conversation" id="haniOfficeConversation"></div><div class="hani-office-questions" id="haniOfficeQuestions" hidden></div></div>
     </section>
     <div id="agentCaseDetail"></div>
   </main>
@@ -34,6 +34,7 @@
       const c=stage==="READY"?{...sampleCase,hani_final:{executive_summary:"예시 문구: 예산과 동선의 확인 조건을 분리했습니다. 숙소 지역이 확정되면 일정을 결정할 수 있습니다."}}:sampleCase;
       window.haniOfficeLiveStage({stage,case:c,reviews,...(stage==="SUMMONING"?{selected_agents:[{agent_key:"JIEUN"},{agent_key:"SOOYEON"}]}:{}),...(stage==="CROSS_REVIEW"?{cross_review:sampleCross}:{})});
       window.haniOfficeLiveUpdate({case:c,reviews});
+      document.getElementById("haniOfficeMeetingMeta").textContent="화면 예시 · 실제 Case/DB와 연결되지 않음";
     }));
   </script>
 </body>
