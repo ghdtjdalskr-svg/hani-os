@@ -47,7 +47,12 @@ try{
     assert((await page.locator('#monthlyReport').innerText()).includes('-1.50kg'),`${viewport.name}: body delta`);
     assert((await page.locator('#monthlyReport').innerText()).includes('10,000보'),`${viewport.name}: steps average`);
     const reportText=await page.locator('#monthlyReport').innerText();
-    for(const text of ['시청 기록 1건','첫 측정 대비','62.5%','2026-08-18 ~ 2026-09-17','당시 목표 미보관'])assert(reportText.includes(text),`${viewport.name}: ${text}`);
+    for(const text of ['시청 기록 1건','첫 측정 대비','62.5%','당시 목표 미보관','이번 달 핵심','집계 기준'])assert(reportText.includes(text),`${viewport.name}: ${text}`);
+    assert(reportText.includes('이번 달 정답률은 62.5%예요'),`${viewport.name}: learning agent interprets the result`);
+    assert(!reportText.includes('미입력·0보는 평균에서 제외합니다'),`${viewport.name}: calculation note remains collapsed`);
+    await page.locator('.tone-money .monthly-report-basis summary').click();
+    assert((await page.locator('.tone-money .monthly-report-basis').innerText()).includes('2026-08-18 ~ 2026-09-17'),`${viewport.name}: settlement basis opens`);
+    await page.locator('.tone-money .monthly-report-basis summary').click();
     await page.evaluate(()=>{document.querySelector('#haniContextRemote')?.style.setProperty('display','none','important');document.querySelector('.hani-remote-mobile-trigger')?.style.setProperty('display','none','important')});
     mkdirSync(join(root,'artifacts/monthly-report'),{recursive:true});
     await page.locator('[data-report-board="quarterly"]').click();
