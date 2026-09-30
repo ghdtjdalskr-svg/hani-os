@@ -20,7 +20,8 @@ foreach($path in $credentialPaths){
 $repository=Split-Path -Parent $PSScriptRoot
 $commit=(& git -C $repository rev-parse HEAD).Trim()
 if($LASTEXITCODE -ne 0 -or $commit -notmatch '^[a-f0-9]{40}$'){throw 'Committed source required'}
-$tracked=@('hani-market-data.js','market-gateway/verify-live-cache.ps1','market-gateway/login-watch.ps1','market-gateway/portfolio-collector.mjs','market-gateway/pc-collector.mjs','market-gateway/cache-publisher.mjs','market-gateway/server.mjs','market-gateway/session-manager.mjs','market-gateway/save-session-private.ps1','market-gateway/bootstrap-login-watch.ps1','market-gateway/install-login-watch.ps1')
+$runtimeFiles=@('hani-market-data.js','market-gateway/verify-live-cache.ps1','market-gateway/login-watch.ps1','market-gateway/portfolio-collector.mjs','market-gateway/pc-collector.mjs','market-gateway/cache-publisher.mjs','market-gateway/server.mjs','market-gateway/session-manager.mjs','market-gateway/save-session-private.ps1')
+$tracked=$runtimeFiles+@('market-gateway/bootstrap-login-watch.ps1','market-gateway/install-login-watch.ps1')
 if(@(& git -C $repository status --porcelain -- $tracked).Count){throw 'Collector source has uncommitted changes'}
 $nodePath=Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'Programs/nodejs/node.exe'
 if(-not [IO.File]::Exists($nodePath)){throw 'Stable Node installation not found'}
@@ -50,6 +51,10 @@ try {
         if($bytes.Length -lt 1 -or $bytes.Length -gt 32768){throw 'Encrypted credential changed'}
         $ciphertexts+=,$bytes
         $writer.Write([int]$bytes.Length);$writer.Write($bytes)
+    }
+    foreach($relative in $runtimeFiles){
+        $source=Join-Path $repository $relative
+        $writer.Write([Security.Cryptography.SHA256]::HashData([IO.File]::ReadAllBytes($source)))
     }
     $writer.Flush()
     $reply=[byte[]]::new(1)

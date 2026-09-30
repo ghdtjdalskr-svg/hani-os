@@ -10,10 +10,7 @@ $pipe=$null;$reader=$null;$writer=$null;$encrypted=@();$plain=$null
 try {
     if($PipeName -cnotmatch '^hani-market-[a-f0-9]{32}$' -or $Commit -cnotmatch '^[a-f0-9]{40}$'){throw 'Invalid bootstrap identity'}
     $sourceRoot=Split-Path -Parent $PSScriptRoot
-    $actual=(& git -C $sourceRoot rev-parse HEAD).Trim()
-    if($LASTEXITCODE -ne 0 -or $actual -ne $Commit){throw 'Source commit changed'}
     $tracked=@('hani-market-data.js','market-gateway/verify-live-cache.ps1','market-gateway/login-watch.ps1','market-gateway/portfolio-collector.mjs','market-gateway/pc-collector.mjs','market-gateway/cache-publisher.mjs','market-gateway/server.mjs','market-gateway/session-manager.mjs','market-gateway/save-session-private.ps1')
-    if(@(& git -C $sourceRoot status --porcelain -- $tracked).Count){throw 'Collector source changed'}
     $pipe=[IO.Pipes.NamedPipeClientStream]::new('.',$PipeName,[IO.Pipes.PipeDirection]::InOut)
     $pipe.Connect(30000)
     $reader=[IO.BinaryReader]::new($pipe);$writer=[IO.BinaryWriter]::new($pipe)
@@ -26,6 +23,13 @@ try {
         try { $parsed=[Text.Encoding]::UTF8.GetString($plain)|ConvertFrom-Json; if(-not $parsed){throw 'Invalid credential format'} }
         finally { [Array]::Clear($plain,0,$plain.Length);$plain=$null;$parsed=$null }
         $encrypted+=,[pscustomobject]@{Name=$name;Bytes=$bytes}
+    }
+    foreach($relative in $tracked){
+        $expected=$reader.ReadBytes(32)
+        if($expected.Length -ne 32){throw 'Incomplete source verification'}
+        $source=Join-Path $sourceRoot $relative
+        $actual=[Security.Cryptography.SHA256]::HashData([IO.File]::ReadAllBytes($source))
+        if(-not [Security.Cryptography.CryptographicOperations]::FixedTimeEquals($expected,$actual)){throw 'Collector source changed'}
     }
     $privateDir=Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'HANI_OS_Market'
     if(Test-Path -LiteralPath $privateDir){
