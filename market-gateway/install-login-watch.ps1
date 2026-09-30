@@ -41,7 +41,7 @@ foreach($relative in $tracked){
 }
 $entry=Join-Path $runtimeRoot 'market-gateway/login-watch.ps1'
 $arguments='-NoProfile -NonInteractive -WindowStyle Hidden -File "'+$entry+'" -NodePath "'+$nodePath+'"'
-$action=New-ScheduledTaskAction -Execute $powershell -Argument $arguments -WorkingDirectory (Join-Path $runtimeRoot 'market-gateway')
+$action=New-ScheduledTaskAction -Execute $powershell -Argument $arguments
 $trigger=New-ScheduledTaskTrigger -AtLogOn -User $user
 $trigger.Delay='PT1M'
 $principal=New-ScheduledTaskPrincipal -UserId $user -LogonType Interactive -RunLevel Limited
@@ -49,6 +49,7 @@ $settings=New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -ExecutionTi
 $task=New-ScheduledTask -Action $action -Trigger $trigger -Principal $principal -Settings $settings
 $null=Register-ScheduledTask -TaskName $taskName -InputObject $task -ErrorAction Stop
 $installed=Get-ScheduledTask -TaskName $taskName -ErrorAction Stop
-if($installed.Actions.Execute -ne $powershell -or $installed.Actions.Arguments -notlike ('*'+$entry+'*') -or $installed.Principal.UserId -ne $user){throw 'Scheduled task read-back failed'}
+$taskSid=([Security.Principal.NTAccount]$installed.Principal.UserId).Translate([Security.Principal.SecurityIdentifier]).Value
+if($installed.Actions.Execute -ne $powershell -or $installed.Actions.Arguments -notlike ('*'+$entry+'*') -or $taskSid -ne [Security.Principal.WindowsIdentity]::GetCurrent().User.Value){throw 'Scheduled task read-back failed'}
 if($StartNow){Start-ScheduledTask -TaskName $taskName -ErrorAction Stop}
 [pscustomobject]@{installed=$true;taskName=$taskName;trigger='current-user logon + 1 minute';startedNow=[bool]$StartNow;runtimeCommit=$commit;chartRefresh='manual only'} | ConvertTo-Json -Compress
