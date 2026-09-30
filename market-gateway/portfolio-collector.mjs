@@ -27,7 +27,7 @@ export function createPortfolioCollector(input,{fetcher=fetch,now=Date.now,persi
   const collect=createPcCollector({supabaseUrl:url,supabaseKey:key,allowedUserId:uid,origin:'https://ghdtjdalskr-svg.github.io',clientId:input.toss.clientId,clientSecret:input.toss.clientSecret},{getAccessToken:session.getToken,fetcher,now});
   let cached=null,at=0;
   async function read(path,max){const r=await fetcher(url+path,{headers:{apikey:key,Authorization:'Bearer '+await session.getToken()},redirect:'error',signal:AbortSignal.timeout(15000),cache:'no-store'});if(!r.ok)throw Error('Read failed');const text=await r.text();if(Buffer.byteLength(text)>max)throw Error('Read limit exceeded');return {text,data:JSON.parse(text)};}
-  return async function tick({seedCharts=false,diagnose=false}={}){
+  return async function tick({seedCharts=false,refreshCharts=false,diagnose=false}={}){
     let stage='session';try{
       await session.verify();stage='holding-codes';
       if(!cached||now()-at>=3600000){
@@ -38,18 +38,20 @@ export function createPortfolioCollector(input,{fetcher=fetch,now=Date.now,persi
       }
       if(diagnose)return {success:true,stage:'holding-codes',symbols:cached.codes.length,unresolved:cached.unresolved,holdingCount:cached.holdingCount,exceptions:cached.exceptions||[]};
       if(!cached.codes.length||cached.codes.length>200)return {success:false,stage:'holding-codes',reason:'no-supported-codes',unresolved:cached.unresolved};
-      stage='collect-publish';const result=await collect(cached.codes,seedCharts?{chartPeriods:['1M'],onlyMissingCharts:true}:{});if(result.skipped)return {success:true,skipped:true};
+      if(refreshCharts&&cached.codes.length>25)return {success:false,stage:'holding-codes',reason:'too-many-symbols-for-chart-refresh'};
+      const periods=refreshCharts?['1D','1W','1M','3M','6M','1Y']:seedCharts?['1M']:[];
+      stage='collect-publish';const result=await collect(cached.codes,refreshCharts?{chartPeriods:periods,requireOhlc:true}:seedCharts?{chartPeriods:periods,onlyMissingCharts:true}:{});if(result.skipped)return {success:true,skipped:true};
       stage='read-back';const saved=await read('/storage/v1/object/authenticated/hani-market-cache/'+uid+'/latest.json?verification='+result.digest,65536);
       if(createHash('sha256').update(saved.text).digest('hex')!==result.digest)throw Error('Read-back differs');
       let chartCount=0,chartBytes=0;
-      if(seedCharts){stage='chart-read-back';for(const code of cached.codes){const ref=saved.data.charts[code+'/1M'];
+      if(periods.length){stage='chart-read-back';for(const code of cached.codes)for(const period of periods){const ref=saved.data.charts[code+'/'+period];
         if(!/^charts\/[a-f0-9]{64}\.json$/.test(ref||''))throw Error('Missing chart reference');
         const chart=await read('/storage/v1/object/authenticated/hani-market-cache/'+uid+'/'+ref,262144);
-        if(createHash('sha256').update(chart.text).digest('hex')!==ref.slice(7,-5)||chart.data.symbol!==code||chart.data.period!=='1M')throw Error('Chart mismatch');
+        if(createHash('sha256').update(chart.text).digest('hex')!==ref.slice(7,-5)||chart.data.symbol!==code||chart.data.period!==period)throw Error('Chart mismatch');
         chartCount++;chartBytes+=Buffer.byteLength(chart.text);
       }}
-      return {success:true,published:true,readBack:true,symbols:cached.codes.length,unresolved:cached.unresolved,holdingCount:cached.holdingCount,bytes:result.bytes,collectedAt:saved.data.collectedAt,...(seedCharts?{chartCount,chartBytes}:{})};
-    }catch(error){const reasons={'HANI login required':'login-required','HANI session refresh failed':'refresh-rejected','Session persistence failed; sign in again':'session-save-failed','Owner mismatch':'owner-mismatch','Invalid session':'invalid-session','Invalid refreshed session':'invalid-refresh-response','Regressed quotes; last cache preserved':'regressed-quotes','Incomplete market response; last cache preserved':'incomplete-quotes','Market collection failed':'market-source-failed'};return {success:false,stage,reason:reasons[error?.message]||'operation-failed'};}
+      return {success:true,published:true,readBack:true,symbols:cached.codes.length,unresolved:cached.unresolved,holdingCount:cached.holdingCount,bytes:result.bytes,collectedAt:saved.data.collectedAt,...(periods.length?{chartCount,chartBytes}:{})};
+    }catch(error){const reasons={'HANI login required':'login-required','HANI session refresh failed':'refresh-rejected','Session persistence failed; sign in again':'session-save-failed','Owner mismatch':'owner-mismatch','Invalid session':'invalid-session','Invalid refreshed session':'invalid-refresh-response','Regressed quotes; last cache preserved':'regressed-quotes','Incomplete market response; last cache preserved':'incomplete-quotes','Market collection failed':'market-source-failed','Empty chart; last cache preserved':'empty-chart','OHLC chart unavailable; last cache preserved':'ohlc-unavailable','Invalid chart currency or time; last cache preserved':'invalid-chart','Cache size limit':'cache-size-limit','Private cache publish failed':'cache-publish-failed'};return {success:false,stage,reason:reasons[error?.message]||'operation-failed'};}
   };
 }
 export async function runCollectionLoop(tick,{watch=false,sleep=delay,report=()=>{}}={}){
@@ -61,8 +63,8 @@ export async function runCollectionLoop(tick,{watch=false,sleep=delay,report=()=
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){
   try{let raw='';for await(const chunk of process.stdin){raw+=chunk;if(Buffer.byteLength(raw)>65536)throw Error('Input too large');}const input=JSON.parse(raw);raw='';
-    const tick=createPortfolioCollector(input),seedCharts=process.argv.includes('--seed-charts'),diagnose=process.argv.includes('--diagnose');
-    if(seedCharts&&process.argv.includes('--watch'))throw Error('Chart seeding must be one-shot');
-    process.exitCode=await runCollectionLoop(()=>tick({seedCharts,diagnose}),{watch:process.argv.includes('--watch'),report:result=>process.stdout.write(JSON.stringify(result)+'\n')});
+    const tick=createPortfolioCollector(input),seedCharts=process.argv.includes('--seed-charts'),refreshCharts=process.argv.includes('--refresh-charts'),diagnose=process.argv.includes('--diagnose');
+    if((seedCharts||refreshCharts)&&process.argv.includes('--watch')||seedCharts&&refreshCharts)throw Error('Chart collection must be one-shot');
+    process.exitCode=await runCollectionLoop(()=>tick({seedCharts,refreshCharts,diagnose}),{watch:process.argv.includes('--watch'),report:result=>process.stdout.write(JSON.stringify(result)+'\n')});
   }catch{process.stdout.write('{"success":false,"stage":"private-input"}\n');process.exitCode=1;}
 }

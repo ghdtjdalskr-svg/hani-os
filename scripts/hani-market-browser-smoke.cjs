@@ -3,6 +3,7 @@ const {chromium}=require('playwright');
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'..');
 const cacheMode=process.env.HANI_MARKET_CACHE_TEST==='1';
+const cacheOhlc=cacheMode&&process.env.HANI_MARKET_CACHE_OHLC_TEST==='1';
 const stateFixture={version:'2.9.15-safe-baseline-bootstrap',accounts:[{id:'a',name:'토스',broker:'토스증권',type:'위탁'},{id:'b',name:'하나',broker:'하나증권',type:'위탁'}],instruments:[{id:'s',name:'삼성전자',ticker:'005930',market:'국내',price:68000}],transactions:[],snapshots:[],investmentBrokerSnapshots:[{id:'fixture',period:'2026-09',mode:'actual',status:'confirmed',accounts:[{id:'sa',accountId:'a',enabled:true,estimatedAssets:1000000,totalEvaluation:900000,totalPurchase:880000,holdings:[{id:'h',instrumentId:'s',name:'삼성전자',ticker:'005930',quantity:4,buyPrice:68000,purchaseAmount:272000,currentPrice:67500,evaluationAmount:270000,pnl:-2000},{id:'u',name:'코드 미확인 종목',quantity:null,evaluationAmount:300000}]},{id:'sb',accountId:'b',enabled:true,estimatedAssets:200000,totalEvaluation:200000,holdings:[{id:'us',name:'애플',ticker:'AAPL',quantity:1,buyPrice:150,currentPrice:200,evaluationAmount:200}]}]}],ui:{series:['total']},meta:{}};
 const server=http.createServer((req,res)=>{const pathname=decodeURIComponent(new URL(req.url,'http://local').pathname),file=path.resolve(root,'.'+(pathname==='/'?'/index.html':pathname));if(!file.startsWith(root+path.sep)){res.writeHead(403);return res.end();}try{let data=fs.readFileSync(file);if(file.endsWith('index.html'))data=data.toString().replace('<meta name="hani-market-gateway" content="">','<meta name="hani-market-gateway" content="https://market.test">');res.setHeader('Content-Type',({'.html':'text/html','.js':'text/javascript','.css':'text/css','.png':'image/png','.webp':'image/webp'})[path.extname(file)]||'application/octet-stream');res.end(data);}catch(_){res.writeHead(404);res.end();}});
 (async()=>{
@@ -23,15 +24,15 @@ const server=http.createServer((req,res)=>{const pathname=decodeURIComponent(new
     await context.addInitScript(s=>{localStorage.setItem('hani_os_life_v23',JSON.stringify(s));localStorage.setItem('hani_os_gate_session_v2','1');},stateFixture);
     const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.dismiss());
     await page.goto(url,{waitUntil:'networkidle'});
-    if(cacheMode)await page.evaluate(()=>{
+    if(cacheMode)await page.evaluate(cacheOhlc=>{
       document.querySelector('meta[name="hani-market-catalog"]')?.remove(); // Legacy-cache fallback fixture.
       if(document.querySelector('meta[name="hani-market-cache"]')?.content!=='hani-market-cache')throw Error('Runtime cache configuration is missing');
       const stocks=[{symbol:'005930',name:'삼성전자',currency:'KRW',market:'KOSPI'},{symbol:'AAPL',name:'애플',currency:'USD',market:'NASDAQ'}];
       const files={},charts={},collectedAt='2026-09-20T01:00:00Z';let n=0;
-      for(const s of stocks)for(const period of ['1D','1W','1M','3M','6M','1Y']){const ref='charts/'+(++n).toString(16).padStart(64,'0')+'.json';charts[s.symbol+'/'+period]=ref;files['fixture/'+ref]={symbol:s.symbol,period,adjusted:false,complete:true,result:Array.from({length:24},(_,i)=>({timestamp:new Date(Date.parse(collectedAt)-(24-i)*86400000).toISOString(),closePrice:s.currency==='KRW'?68000+i*100:180+i,currency:s.currency}))};}
+      for(const s of stocks)for(const period of ['1D','1W','1M','3M','6M','1Y']){const ref='charts/'+(++n).toString(16).padStart(64,'0')+'.json';charts[s.symbol+'/'+period]=ref;files['fixture/'+ref]={symbol:s.symbol,period,adjusted:false,complete:true,result:Array.from({length:24},(_,i)=>{const closePrice=s.currency==='KRW'?68000+i*100:180+i;return {timestamp:new Date(Date.parse(collectedAt)-(24-i)*86400000).toISOString(),closePrice,currency:s.currency,...(cacheOhlc?{openPrice:closePrice*.995,highPrice:closePrice*1.01,lowPrice:closePrice*.99,volume:1000+i}: {})};})};}
       files['fixture/latest.json']={version:1,collectedAt,stocks,quotes:stocks.map(s=>({symbol:s.symbol,currency:s.currency,lastPrice:s.currency==='KRW'?72000:210,timestamp:collectedAt})),charts};
       window.mockMarketStorage={from:()=>({download:async path=>({data:new Blob([JSON.stringify(files[path])])})})};
-    });
+    },cacheOhlc);
     if(!cacheMode)await page.evaluate(()=>document.querySelector('meta[name="hani-market-cache"]')?.remove());
     await page.evaluate(()=>{unlockLoginGate();cloudClient={auth:{getSession:async()=>({data:{session:{access_token:'test-session',user:{id:'fixture'}}}})},storage:window.mockMarketStorage};showView('asset');});
     await page.locator('#marketStatus').filter({hasText:cacheMode?'PC 마지막 수집':'응답 정상'}).waitFor();await page.locator('#marketChart svg').waitFor();
@@ -48,12 +49,12 @@ const server=http.createServer((req,res)=>{const pathname=decodeURIComponent(new
     await page.evaluate(()=>{window.marketWrites=0;const original=Storage.prototype.setItem;Storage.prototype.setItem=function(k,v){if(k==='hani_os_life_v23')window.marketWrites++;return original.call(this,k,v);};});
     const chartCalls=charts;
     await page.locator('[data-chart-style="candle"]').click();
-    assert.equal(await page.locator('#marketChart .market-candle').count(),cacheMode?0:24);
-    if(cacheMode)assert.match(await page.locator('#marketChart').innerText(),/OHLC 미제공 24개/);
+    assert.equal(await page.locator('#marketChart .market-candle').count(),cacheMode&&!cacheOhlc?0:24);
+    if(cacheMode&&!cacheOhlc)assert.match(await page.locator('#marketChart').innerText(),/OHLC 미제공 24개/);
     else assert.equal(await page.locator('#marketChart .market-volume').count(),24);
     assert.equal(await page.locator('#marketChart path.market-ma').count(),2);
     await page.locator('[data-chart-index]').fill('0');
-    assert.match(await page.locator('.market-chart-readout').innerText(),cacheMode?/거래량 미제공/:/거래량 0/);
+    assert.match(await page.locator('.market-chart-readout').innerText(),cacheMode?(cacheOhlc?/거래량 1,000/:/거래량 미제공/):/거래량 0/);
     assert.equal(charts,chartCalls,'chart style and inspection must not fetch');
     await page.locator('[data-chart-style="line"]').click();
     await page.locator('#marketAccount').selectOption('b');await page.locator('#marketInstrument').filter({hasText:'애플'}).waitFor();await page.locator('#marketChart svg').waitFor();assert.match(await page.locator('#marketPosition').innerText(),/손익 —/);
