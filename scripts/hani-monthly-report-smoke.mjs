@@ -48,7 +48,7 @@ try{
     assert((await page.locator('#monthlyReport').innerText()).includes('10,000보'),`${viewport.name}: steps average`);
     const reportText=await page.locator('#monthlyReport').innerText();
     for(const text of ['시청 기록 1건','첫 측정 대비','62.5%','당시 목표 미보관','이번 달 핵심','집계 기준'])assert(reportText.includes(text),`${viewport.name}: ${text}`);
-    assert(reportText.includes('이번 달 정답률은 62.5%예요'),`${viewport.name}: learning agent interprets the result`);
+    assert(reportText.includes('40문항 중 25문항 정답이라 62.5%야'),`${viewport.name}: HINA interprets the verified result in character`);
     assert(!reportText.includes('미입력·0보는 평균에서 제외합니다'),`${viewport.name}: calculation note remains collapsed`);
     await page.locator('.tone-money .monthly-report-basis summary').click();
     assert((await page.locator('.tone-money .monthly-report-basis').innerText()).includes('2026-08-18 ~ 2026-09-17'),`${viewport.name}: settlement basis opens`);
