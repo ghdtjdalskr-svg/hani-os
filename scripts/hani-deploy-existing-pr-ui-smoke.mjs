@@ -46,6 +46,18 @@ const server = http.createServer((request, response) => {
         await page.locator('#deployPackageFile').setInputFiles(packagePath);
         await page.waitForFunction(() => document.querySelector('#deployPackageSha')?.textContent?.startsWith('PASS'), null, { timeout: 30000 });
         assert(await button.isEnabled(), 'valid frozen package should enable existing PR QA');
+        await page.evaluate(() => {
+          deployRuntime.qa = { state: 'HINA_QA_PASS', marker: 'other-release' };
+          window.__existingPrActions = [];
+          deployBridgeApi = async (action, payload) => {
+            window.__existingPrActions.push(action);
+            return { candidate_sha: payload.candidate_sha, package_sha256: payload.package_sha256, qa: { state: 'HINA_QA_PASS', checks: [] } };
+          };
+        });
+        await button.click();
+        const readOnly = await page.evaluate(() => ({ actions: window.__existingPrActions, qaMarker: deployRuntime.qa?.marker }));
+        assert.deepEqual(readOnly.actions, ['qa_existing_pr']);
+        assert.equal(readOnly.qaMarker, 'other-release', 'read-only QA must not authorize another release');
       }
       const size = await page.locator('.deploy-existing-pr').evaluate(node => ({ width: node.scrollWidth, client: node.clientWidth }));
       assert(size.width <= size.client + 1, 'PR controls overflow viewport');

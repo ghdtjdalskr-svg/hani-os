@@ -3749,10 +3749,10 @@ async function deployCenterQaExistingPr(){
       preflight_state:"PASS"
     });
     if(r.candidate_sha!==pkg.candidate_sha||r.package_sha256!==pkg.package_sha256)throw new Error("HINA 결과의 후보/패키지 SHA가 일치하지 않습니다.");
-    deployRuntime.qa=r.qa||null;deployRenderQaReport(deployRuntime.qa);
+    deployRenderQaReport(r.qa||null);
     if(out){out.className="deploy-result ok";out.textContent=`기존 PR #${prNumber} · HINA PASS · 새 PR/병합/배포 없음`}
   }catch(e){
-    deployRuntime.qa=e.payload?.qa||null;deployRenderQaReport(deployRuntime.qa);
+    deployRenderQaReport(e.payload?.qa||null);
     if(out){out.className="deploy-result bad";out.textContent=`기존 PR HINA 검증 실패 · ${e.message||String(e)}`}
   }finally{deploySetBusy(false)}
 }
