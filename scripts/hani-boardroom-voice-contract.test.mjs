@@ -17,6 +17,7 @@ for (const patch of [
   "hani-agent-orchestrator-meeting-engine-v2-batch1.patch",
   "hani-agent-orchestrator-meeting-voice.patch",
   "hani-agent-orchestrator-boardroom-voice.patch",
+  "hani-agent-orchestrator-boardroom-cross-review.patch",
 ]) execFileSync("git", ["apply", "--ignore-space-change", "--ignore-whitespace", "--whitespace=nowarn", path.join(root, "docs", patch)], { cwd: temp });
 
 const source = fs.readFileSync(sourcePath, "utf8");
@@ -39,5 +40,8 @@ assert.match(meetingVoicePrompt("SUA"), /Vendor 사실은 확인 전 확정하�
 assert.match(meetingVoicePrompt("YUNA"), /빈 값을 추정하지 않고/);
 assert.match(source, /HANI Final은 합의점·의미 있는 이견·남은 결정 조건·추천안과 대표의 다음 결정을 분리/);
 assert.match(source, /Promise\.all\(\s*selectedAgents\.map/);
+assert.match(source, /action === "run_cross_review"/);
+assert.match(source, /event_type: "CROSS_REVIEW_COMPLETED"/);
+assert.match(source, /caseWithCrossReview\(existingCase, crossReview\)/);
 console.log("Boardroom voice contract: 9 profiles, address/domain/factual safeguards PASS");
-console.log("Architecture check: first-round reviews remain parallel; true cross-review requires a later engine stage");
+console.log("Architecture check: independent reviews remain, then actual cross-review turns feed readiness and synthesis PASS");

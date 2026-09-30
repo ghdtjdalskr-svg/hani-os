@@ -37,6 +37,7 @@ function scenario({preflightStatus="READY",humanQuestions=[]}={}){
       if(action==="create_case")return {case:{id:"case-1",title:"10월 여행 검토",status:"DRAFT"}};
       if(action==="route_case")return {case:{id:"case-1",status:"ANALYZING"},selected_agents:[{agent_key:"JIEUN"},{agent_key:"SOOYEON"}]};
       if(action==="run_reviews")return review.promise;
+      if(action==="run_cross_review")return {conversation:{review_round:1,turns:[{speaker:"JIEUN",reply_to:"review:SOOYEON",content:"실제 교차 검토"}]}};
       if(action==="preflight_case")return {verification:{decision_status:preflightStatus},human_required_questions:humanQuestions,research_required_items:[]};
       if(action==="verify_and_synthesize")return {ok:true};
       throw new Error(`unexpected action ${action}`);
@@ -57,6 +58,8 @@ for(const options of [{},{preflightStatus:"NEED_USER_INFO",humanQuestions:["여�
   test.review.resolve({reviews:[{agent_key:"JIEUN",review_round:1,summary:"실제 저장된 응답"}]});
   await run;
   assert.ok(test.stages.some(item=>item.stage==="REVIEW_COMPLETE"&&item.reviews.length===1));
+  assert.ok(test.calls.indexOf("run_reviews")<test.calls.indexOf("run_cross_review")&&test.calls.indexOf("run_cross_review")<test.calls.indexOf("preflight_case"));
+  assert.ok(test.stages.some(item=>item.stage==="CROSS_REVIEW"&&item.cross_review?.turns.length===1));
   assert.equal(test.stages.at(-1).stage,options.humanQuestions?.length?"NEED_USER_INFO":"READY");
   assert.equal(test.context.agentLiveCaseId,"");
 }
@@ -74,14 +77,14 @@ const answerSource=source.slice(answerStart,start);
     agentArray:value=>Array.isArray(value)?value:[],agentObj:value=>value&&typeof value==="object"&&!Array.isArray(value)?value:{},
     agentLatestReviewRound:reviews=>Math.max(0,...reviews.map(review=>review.review_round)),
     agentLoadCases:async({selectId})=>{assert.equal(selectId,"case-1");context.agentDetailCache={case:{id:"case-1",status:"AWAITING_APPROVAL",verification:{decision_status:"READY"}},reviews:[...previous.reviews,{agent_key:"SOOYEON",review_round:2,summary:"추가 답변 반영"}]}},
-    agentApi:async(action,payload)=>{calls.push({action,payload});if(action==="run_reviews")return {reviews:[{agent_key:"SOOYEON",review_round:2,summary:"추가 답변 반영"}]};return {ok:true}},
+    agentApi:async(action,payload)=>{calls.push({action,payload});if(action==="run_reviews")return {reviews:[{agent_key:"SOOYEON",review_round:2,summary:"추가 답변 반영"}]};if(action==="run_cross_review")return {conversation:{review_round:2,turns:[]}};return {ok:true}},
     confirm:()=>true,alert:message=>{throw new Error(message)},console,
     stageLabelsFallback:()=>"REVIEW_COMPLETE"
   };
   vm.createContext(context);
   vm.runInContext(`${answerSource}\nthis.submitAnswer=agentSubmitAnswers;`,context);
   await context.submitAnswer();
-  assert.deepEqual(calls.map(call=>call.action),["apply_representative_context","run_reviews","verify_and_synthesize"]);
+  assert.deepEqual(calls.map(call=>call.action),["apply_representative_context","run_reviews","run_cross_review","verify_and_synthesize"]);
   assert.ok(calls.every(call=>call.payload.case_id==="case-1"),"representative answer must stay in the same Case");
   assert.equal(calls[0].payload.representative_context.qa[0].answer,"하카타역 근처");
   assert.equal(calls[1].payload.review_round,2);
