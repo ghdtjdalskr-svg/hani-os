@@ -34,11 +34,17 @@ const selectors = {
   main: '#app .main',
   header: '#app .ui26-top',
   hasdaq: '#lifeMarketGrid > .home-kpi:nth-child(1)',
+  hasdaqValue: '#lifeMarketGrid > .home-kpi:nth-child(1) strong',
   health: '#lifeMarketGrid > .home-kpi:nth-child(2)',
+  healthValue: '#lifeMarketGrid > .home-kpi:nth-child(2) strong',
   culture: '#lifeMarketGrid > .home-kpi:nth-child(3)',
+  cultureValue: '#lifeMarketGrid > .home-kpi:nth-child(3) strong',
   activity: '#lifeMarketGrid > .home-kpi:nth-child(4)',
+  activityValue: '#lifeMarketGrid > .home-kpi:nth-child(4) strong',
   jispi: '#lifeMarketGrid > .home-kpi:nth-child(5)',
+  jispiValue: '#lifeMarketGrid > .home-kpi:nth-child(5) strong',
   learning: '#lifeMarketGrid > .home-kpi:nth-child(6)',
+  learningValue: '#lifeMarketGrid > .home-kpi:nth-child(6) strong',
   dietMetric: '#bodyMetricStats .stat:first-child',
   dietCard: '#diet .grid > .card.full:first-child',
   dietStatus: '#diet .pill.health',
@@ -47,6 +53,8 @@ const selectors = {
 };
 const readStyles = selectors => {
   const result = { season: document.documentElement.dataset.season, view: document.body.dataset.view };
+  const rootStyle = getComputedStyle(document.documentElement);
+  result.semantic = Object.fromEntries(['--color-data-up', '--color-data-down', '--color-state-success', '--color-state-warning', '--color-state-critical'].map(name => [name, rootStyle.getPropertyValue(name).trim()]));
   for (const [name, selector] of Object.entries(selectors)) {
     const element = document.querySelector(selector);
     if (!element) { result[name] = null; continue; }
@@ -127,7 +135,8 @@ const readStyles = selectors => {
       for (const [key, current] of Object.entries(report)) {
         const previous = before[key];
         assert(previous, `${key}: missing baseline`);
-        for (const name of ['hasdaq', 'health', 'culture', 'activity', 'jispi', 'learning', 'dietMetric', 'dietCard', 'dietStatus', 'sidebar', 'remote']) {
+        assert.deepEqual(current.semantic, previous.semantic, `${key}: semantic tokens changed`);
+        for (const name of ['hasdaq', 'hasdaqValue', 'health', 'healthValue', 'culture', 'cultureValue', 'activity', 'activityValue', 'jispi', 'jispiValue', 'learning', 'learningValue', 'dietMetric', 'dietCard', 'dietStatus', 'sidebar', 'remote']) {
           if (!previous[name] || !current[name]) continue;
           for (const property of ['backgroundColor', 'backgroundImage', 'borderColor', 'color']) {
             assert.equal(current[name][property], previous[name][property], `${key}: ${name}.${property} changed`);
