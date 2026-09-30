@@ -21,7 +21,7 @@ const server = http.createServer((request, response) => {
   response.writeHead(200, { 'Content-Type': types[path.extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-store' });
   if (phase === 'before' && relative === 'hani-design-system.css') {
     const candidate = fs.readFileSync(file, 'utf8');
-    const baseline = candidate.replace(/\/\* Neutral Surface Pilot:[\s\S]*?\*\/\r?\nbody:is\(\[data-view="home"\],\[data-view="diet"\]\)\{--ds-canvas:#f8f7f4;--season-page-glow:#e8e5de\}\r?\n/, '');
+    const baseline = candidate.replace(/\/\* Neutral Surface Pilot:[\s\S]*?\*\/\r?\n:root\{--surface-canvas:#f8f7f4;--surface-glow:#e8e5de\}\r?\nbody:is\(\[data-view="home"\],\[data-view="diet"\]\)\{--ds-canvas:var\(--surface-canvas\);--season-page-glow:var\(--surface-glow\)\}\r?\n/, '');
     assert.notEqual(baseline, candidate, 'pilot rule missing from CSS');
     response.end(baseline);
     return;
