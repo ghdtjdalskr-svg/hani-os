@@ -589,11 +589,14 @@ html body{background-image:radial-gradient(circle at 86% 3%,color-mix(in srgb,va
 
 /* v2.9.108 · HANI GROUP corporate identity, Sports Board and Media Archive v2. */
 #app .sidebar-team-mini{display:grid!important;grid-template-columns:1fr!important;min-height:0!important;padding:10px!important;gap:9px!important}
-#app .sidebar-team-official-photo{display:block!important;width:100%!important;height:112px!important;object-fit:cover!important;object-position:center 36%!important;border-radius:14px!important}
-#app .sidebar-corporate-lockup{display:grid;place-items:center;min-height:76px;padding:4px 7px;border:1px solid rgba(92,51,160,.13);border-radius:13px;background:#fff;overflow:hidden}
+#app .sidebar-team-official-photo{display:block!important;width:100%!important;height:auto!important;aspect-ratio:1672/941;object-fit:contain!important;object-position:center!important;border-radius:11px 11px 0 0!important}
+#app .sidebar-corporate-lockup{display:grid;grid-template-columns:108px minmax(0,1fr);align-items:center;gap:6px;min-height:52px;padding:3px 6px;border:0;border-radius:0 0 11px 11px;background:#fff;overflow:hidden}
 #app .hani-brand-logo-frame{position:relative;display:block;width:100%;aspect-ratio:1774/745;overflow:hidden;background:#fff}
 #app .hani-brand-logo-frame>img{position:absolute;left:0;top:0;display:block;width:100%!important;height:auto!important;max-width:none!important}
-#app .sidebar-corporate-lockup .hani-brand-logo-frame{width:min(100%,171px)}
+#app .sidebar-corporate-lockup .hani-brand-logo-frame{width:108px}
+#app .sidebar-corporate-copy{display:grid;gap:3px;min-width:0;color:#5e418c}
+#app .sidebar-corporate-copy b{font-size:10px;line-height:1;font-weight:950;letter-spacing:.07em}
+#app .sidebar-corporate-copy small{font-size:7px;line-height:1.15;font-weight:750;letter-spacing:.01em;color:#777188}
 #app .sidebar-team-faces{margin-top:0!important}
 #app .hani-group-profile-banner{position:relative;min-height:300px;padding:0!important;border-radius:24px!important;overflow:hidden;background:#f8f7ff}
 #app .hani-group-profile-banner>img{display:block;width:100%;height:clamp(300px,31vw,430px);object-fit:cover;object-position:center}
@@ -770,8 +773,8 @@ html body{background-image:radial-gradient(circle at 86% 3%,color-mix(in srgb,va
 #app .side .brand small{margin-top:4px;font-size:9px!important}
 #app .side .side-toggle{border-radius:var(--hani-radius-control)!important}
 #app .side .sidebar-team-mini{gap:6px!important;margin:5px 0 9px!important;padding:8px!important;border-radius:var(--hani-radius-card)!important;box-shadow:0 5px 16px color-mix(in srgb,var(--season-accent) 7%,transparent)!important}
-#app .side .sidebar-team-official-photo{height:72px!important;border-radius:11px!important}
-#app .side .sidebar-corporate-lockup{min-height:48px;padding:2px 6px;border-radius:10px}
+#app .side .sidebar-team-official-photo{height:auto!important;border-radius:11px 11px 0 0!important}
+#app .side .sidebar-corporate-lockup{min-height:52px;padding:3px 6px;border-radius:0 0 11px 11px}
 #app .side .sidebar-team-faces{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px!important}
 #app .side .sidebar-team-face{padding:4px 3px 5px!important;gap:3px!important;border-radius:10px!important;box-shadow:none!important}
 #app .side .sidebar-team-photo{height:36px!important;border-radius:8px!important}
