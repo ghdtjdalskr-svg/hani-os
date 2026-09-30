@@ -22,3 +22,14 @@ test('publish minimum interval prevents repeated transfer',async()=>{const f=fix
 test('chart seed repeated invocation reuses existing immutable objects without new chart requests',async()=>{const f=fixture();await f.publish(['005930'],{chartPeriods:['1M'],onlyMissingCharts:true});const count=f.files.size;f.tick(300001);f.source.chart=async()=>{assert.fail('chart recollected');};await f.publish(['005930'],{chartPeriods:['1M'],onlyMissingCharts:true});assert.equal(f.files.size,count);});
 test('foreign currency and future chart rows cannot replace last good snapshot',async()=>{const f=fixture();await f.publish(['005930']);const good=f.files.get(uid+'/latest.json');for(const row of [{timestamp:quotes[0].timestamp,closePrice:123,currency:'USD'},{timestamp:'2100-01-01',closePrice:123,currency:'KRW'}]){f.tick(300001);f.source.chart=async()=>({result:[row]});await assert.rejects(f.publish(['005930'],{chartPeriods:['1M']}),/Invalid chart/);assert.equal(f.files.get(uid+'/latest.json'),good);}});
 test('price-only cycle retains lazy chart references and rejects older quotes',async()=>{const f=fixture();await f.publish(['005930'],{chartPeriods:['1M']});const refs=JSON.parse(f.files.get(uid+'/latest.json')).charts;f.tick(300001);await f.publish(['005930']);assert.deepEqual(JSON.parse(f.files.get(uid+'/latest.json')).charts,refs);f.tick(300001);f.source.prices=async()=>[{...quotes[0],timestamp:'2020-01-01'}];await assert.rejects(f.publish(['005930']),/Regressed/);});
+test('OHLCV survives publisher and reader without leaking holdings; old chart remains recoverable',async()=>{
+  const f=fixture();await f.publish(['005930'],{chartPeriods:['1M']});
+  const old=JSON.parse(f.files.get(uid+'/latest.json')),oldRef=old.charts['005930/1M'];
+  f.tick(300001);const candle={timestamp:quotes[0].timestamp,openPrice:'71000',highPrice:'73000',lowPrice:'70000',closePrice:72000,volume:'0',currency:'KRW',quantity:99,accountId:'private'};
+  f.source.chart=async()=>({result:[candle],interval:'1d',adjusted:false,complete:true});
+  await f.publish(['005930'],{chartPeriods:['1M']});
+  const next=JSON.parse(f.files.get(uid+'/latest.json'));assert.notEqual(next.charts['005930/1M'],oldRef);assert.ok(f.files.has(uid+'/'+oldRef));
+  const row=(await f.client().chart('005930','1M')).result[0];assert.equal(row.openPrice,'71000');assert.equal(row.highPrice,'73000');assert.equal(row.lowPrice,'70000');assert.equal(row.volume,'0');assert.equal(row.quantity,undefined);assert.equal(row.accountId,undefined);
+  const good=f.files.get(uid+'/latest.json');f.tick(300001);f.source.chart=async()=>({result:Array.from({length:2000},(_,i)=>({...candle,timestamp:new Date(time-i*86400000).toISOString()}))});
+  await assert.rejects(f.publish(['005930'],{chartPeriods:['1M']}),/size limit/);assert.equal(f.files.get(uid+'/latest.json'),good);
+});
