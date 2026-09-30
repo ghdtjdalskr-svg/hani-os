@@ -31,8 +31,26 @@
     if(!rows.some(r=>r.key===selected))selected=rows[0]?.key||'';
   }
   let plotSequence=0;
+  let chartStyle='line';
+  function chartNumber(v){return v===null||v===undefined||String(v).trim()===''?null:Number.isFinite(Number(v))?Number(v):null;}
+  function detailPlot(data,buyPrice,code){
+    const values=M.candles(data),w=Math.max(320,Math.min(900,root.clientWidth-70)),h=380;
+    const valid=c=>{const o=chartNumber(c.openPrice),hi=chartNumber(c.highPrice),lo=chartNumber(c.lowPrice);return o>0&&lo>0&&hi>=Math.max(o,c.closePrice)&&lo<=Math.min(o,c.closePrice)&&hi>=lo;};
+    const candleMode=chartStyle==='candle',range=values.flatMap(c=>valid(c)?[Number(c.lowPrice),Number(c.highPrice)]:[c.closePrice]);if(buyPrice!==null)range.push(buyPrice);
+    const min=Math.min(...range),max=Math.max(...range),span=Math.max(max-min,max*.002,.01),labels=[0,1,2,3].map(i=>(max-i*(max-min)/3).toLocaleString('ko-KR',{maximumFractionDigits:2}));
+    const left=Math.max(76,...labels.map(s=>s.length*7+16)),right=w-18,top=20,bottom=245,vt=277,vb=335,step=(right-left-12)/Math.max(1,values.length-1),bar=Math.max(1,Math.min(14,step*.65));
+    const x=i=>left+6+i*step,y=v=>top+(max+span*.08-v)/(span*1.16)*(bottom-top),clip='market-plot-'+(++plotSequence);
+    const path=items=>items.map(({i,v},j)=>(j?'L':'M')+x(i)+','+y(v)).join(' ');
+    const averages=[5,20].map(n=>({n,points:values.flatMap((c,i)=>i<n-1?[]:[{i,v:values.slice(i-n+1,i+1).reduce((s,c)=>s+c.closePrice,0)/n}])}));
+    const volumes=values.map(c=>chartNumber(c.volume)),vmax=Math.max(1,...volumes.filter(v=>v!==null&&v>=0));
+    const price=candleMode?values.map((c,i)=>valid(c)?'<g class="market-candle" style="color:'+(c.closePrice>=Number(c.openPrice)?'#e44c68':'#397ee8')+'"><path stroke="currentColor" d="M'+x(i)+','+y(Number(c.highPrice))+' V'+y(Number(c.lowPrice))+'"/><rect x="'+(x(i)-bar/2)+'" y="'+Math.min(y(Number(c.openPrice)),y(c.closePrice))+'" width="'+bar+'" height="'+Math.max(1,Math.abs(y(Number(c.openPrice))-y(c.closePrice)))+'"/></g>':'').join(''):'<path class="market-price-line" d="'+path(values.map((c,i)=>({i,v:c.closePrice})))+'"/>';
+    const grid=labels.map((s,i)=>'<path class="market-grid" d="M'+left+','+y(max-i*(max-min)/3)+' H'+right+'"/><text class="market-y-tick" x="'+(left-10)+'" y="'+y(max-i*(max-min)/3)+'" text-anchor="end">'+escape(s)+'</text>').join('');
+    const missing=values.filter(c=>!valid(c)).length;
+    return '<div class="market-chart-tools"><button type="button" class="btn sm" data-chart-style="line" aria-pressed="'+!candleMode+'">가격선</button><button type="button" class="btn sm" data-chart-style="candle" aria-pressed="'+candleMode+'">캔들</button><span class="market-ma5">5봉 평균</span><span class="market-ma20">20봉 평균</span></div><svg data-market-detail="true" data-left="'+left+'" data-right="'+right+'" style="--market-series:'+M.chartColor(code)+'" viewBox="0 0 '+w+' '+h+'" role="img" aria-label="가격·이동평균·거래량 차트"><defs><clipPath id="'+clip+'"><rect x="'+left+'" y="'+top+'" width="'+(right-left)+'" height="'+(bottom-top)+'"/></clipPath></defs>'+grid+'<g class="market-plot-area" clip-path="url(#'+clip+')">'+price+averages.map(a=>'<path class="market-ma market-ma'+a.n+'" d="'+path(a.points)+'"/>').join('')+(buyPrice===null?'':'<path class="market-average" d="M'+(left+6)+','+y(buyPrice)+' H'+(right-6)+'"/>')+'</g><text x="'+left+'" y="268">거래량</text>'+values.map((c,i)=>volumes[i]===null||volumes[i]<0?'':'<rect class="market-volume" fill="'+(valid(c)?c.closePrice>=Number(c.openPrice)?'#e44c68':'#397ee8':'#94a3b8')+'" x="'+(x(i)-bar/2)+'" y="'+(vb-volumes[i]/vmax*(vb-vt))+'" width="'+bar+'" height="'+(volumes[i]/vmax*(vb-vt))+'"/>').join('')+'<text class="market-x-tick" x="'+left+'" y="360">'+escape(values[0].timestamp.slice(0,10))+'</text><text class="market-x-tick" x="'+right+'" y="360" text-anchor="end">'+escape(values.at(-1).timestamp.slice(0,10))+'</text></svg><div class="market-chart-readout" aria-live="polite">차트를 가리키거나 터치해 상세 가격을 확인하세요.</div><label class="market-chart-slider">날짜 선택<input type="range" data-chart-index min="0" max="'+(values.length-1)+'" value="'+(values.length-1)+'" aria-label="차트 날짜 선택"></label><div class="market-note">'+(period==='1D'?'평균선은 제공된 분봉 기준':'일봉 기준 5일·20일 평균')+' · 충분한 봉이 쌓인 위치부터 표시'+(candleMode&&missing?' · OHLC 미제공 '+missing+'개 봉 제외':'')+(volumes.some(v=>v===null)?' · 거래량 미제공 구간 있음':'')+(buyPrice===null?'':' · 점선: 내 평균매입가 '+escape(buyPrice.toLocaleString('ko-KR')))+'</div>';
+  }
   function plot(data,buyPrice=null,mini=false,code=''){
     const values=M.candles(data);if(values.length<2)return '<div class="market-empty">가격 기록이 충분하지 않습니다.</div>';
+    if(!mini)return detailPlot(values,buyPrice,code);
     const w=mini?900:Math.max(320,Math.min(900,root.clientWidth-70)),h=mini?100:300,points=values.map(c=>c.closePrice),range=points.concat(buyPrice!==null?[buyPrice]:[]),min=Math.min(...range),max=Math.max(...range),span=Math.max(max-min,max*.002,0.01);
     const labels=[0,1,2,3].map(i=>(max-i*(max-min)/3).toLocaleString('ko-KR',{maximumFractionDigits:2}));
     const left=mini?5:Math.max(76,Math.max(...labels.map(s=>s.length))*7+16),right=w-(mini?5:18),top=mini?5:24,bottom=h-(mini?5:48);
@@ -103,6 +121,14 @@
   $('marketAccount').addEventListener('change',()=>{render();drawMain();miniCharts(generation);});
   $('marketRefresh').addEventListener('click',()=>{client?.clear();refresh();});
   $('marketMore').addEventListener('click',()=>{expanded=!expanded;render();});
+  function inspectPoint(index){
+    if(!lastPlot)return;const c=lastPlot.points[Math.max(0,Math.min(lastPlot.points.length-1,index))];if(!c)return;
+    const fmt=v=>{const n=chartNumber(v);return n===null?'미제공':n.toLocaleString('ko-KR',{maximumFractionDigits:4});};
+    const el=root.querySelector('.market-chart-readout');if(el)el.textContent=c.timestamp.slice(0,16).replace('T',' ')+' · '+(c.currency||'')+' · 시가 '+fmt(c.openPrice)+' · 고가 '+fmt(c.highPrice)+' · 저가 '+fmt(c.lowPrice)+' · 종가 '+fmt(c.closePrice)+' · 거래량 '+fmt(c.volume);
+  }
+  $('marketChart').addEventListener('click',e=>{const b=e.target.closest('[data-chart-style]');if(b&&lastPlot){chartStyle=b.dataset.chartStyle;$('marketChart').innerHTML=plot(lastPlot.points,lastPlot.avg,false,lastPlot.code);}});
+  $('marketChart').addEventListener('pointermove',e=>{const svg=e.target.closest('svg[data-market-detail]');if(!svg||!lastPlot)return;const r=svg.getBoundingClientRect(),px=(e.clientX-r.left)*svg.viewBox.baseVal.width/r.width,left=Number(svg.dataset.left)+6,right=Number(svg.dataset.right)-6;inspectPoint(Math.round((px-left)/(right-left)*(lastPlot.points.length-1)));});
+  $('marketChart').addEventListener('input',e=>{if(e.target.matches('[data-chart-index]'))inspectPoint(Number(e.target.value));});
   root.addEventListener('click',event=>{const holding=event.target.closest('[data-market-holding]'),button=event.target.closest('[data-market-period]');if(holding){selected=holding.dataset.marketHolding;render();drawMain();}if(button){period=button.dataset.marketPeriod;render();drawMain();}});
   $('marketSearchButton').addEventListener('click',async()=>{
     const key=selected,query=$('marketSearch').value,market=$('marketSearchMarket').value;
@@ -153,5 +179,5 @@
     query.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();search();}});
   }
   if(typeof ResizeObserver!=='undefined')new ResizeObserver(()=>{if(lastPlot)$('marketChart').innerHTML=plot(lastPlot.points,lastPlot.avg,false,lastPlot.code);}).observe(root);
-  window.HaniAssetMarket={sync};sync();
+  window.HaniAssetMarket={sync,async resolveHoldings(holdings){const c=configured();if(!c)return false;const masters=state.instruments||[],codes=holdings.map(h=>h.ticker||masters.find(i=>i.id===h.instrumentId)?.ticker);try{const info=await c.stocks(codes);return holdings.length>0&&holdings.every(h=>M.resolve(h,masters,info).status==='matched');}catch(_){return false;}},async verifyCatalogInstrument(instrument){const c=configured(),code=M.symbol(instrument?.ticker);if(!c?.catalog||!M.validSymbol(code))return false;const domestic=/^(KR|KOSPI|KOSDAQ|국내)$/.test(instrument.market)||/^\d{6}$/.test(code),markets=domestic?['KOSPI','KOSDAQ','KR_ETC']:['NYSE','NASDAQ','AMEX','US_ETC'];for(const market of markets){try{const found=await c.search(code,market);if(found.result?.some(s=>M.symbol(s.symbol)===code&&s.currency===(domestic?'KRW':'USD')))return true;}catch(_){return false;}}return false;}};sync();
 })();

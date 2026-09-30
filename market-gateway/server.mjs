@@ -48,7 +48,7 @@ export function createGateway(config,{fetcher=fetch,now=Date.now}={}){
       const oldest=result.candles.at(-1),past=oldest&&(period==='1D'?oldest.timestamp.slice(0,10)!==day:Date.parse(oldest.timestamp)<cutoff);
       if(!result.nextBefore||past||!oldest){complete=true;break;}if(seen.has(result.nextBefore))break;seen.add(result.nextBefore);before=result.nextBefore;
     }
-    return {result:Market.candles(all).map(c=>pick(c,['timestamp','closePrice','currency'])),period,interval,adjusted:false,complete,source:'Toss',fetchedAt:new Date(now()).toISOString()};
+    return {result:Market.candles(all).map(c=>pick(c,['timestamp','openPrice','highPrice','lowPrice','closePrice','volume','currency'])),period,interval,adjusted:false,complete,source:'Toss',fetchedAt:new Date(now()).toISOString()};
   }
   return async function handler(req,res){
     const headers={'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Vary':'Origin'};
