@@ -439,6 +439,9 @@ body[data-view=home] #aiBanner{display:none!important}
 :root[data-season=summer]{--season-page-glow:#c9edf1;--season-card:#fbfeff;--season-line:#cce6ea;--season-motif:#3bb5c1}
 :root[data-season=autumn]{--season-page-glow:#ecd5b5;--season-card:#fffdf8;--season-line:#e7d4bc;--season-motif:#bd713b}
 :root[data-season=winter]{--season-page-glow:#cedced;--season-card:#fbfdff;--season-line:#cfdae8;--season-motif:#7798bd}
+/* Neutral Surface Pilot: structural canvas/glow for Dashboard and Diet. */
+:root{--surface-canvas:#f8f7f4;--surface-glow:#e8e5de}
+body:is([data-view="home"],[data-view="diet"]){--ds-canvas:var(--surface-canvas);--season-page-glow:var(--surface-glow)}
 html body{background-image:radial-gradient(circle at 86% 3%,color-mix(in srgb,var(--season-page-glow) 54%,transparent),transparent 31%),linear-gradient(145deg,var(--ds-canvas),color-mix(in srgb,var(--ds-canvas) 80%,white))!important;background-attachment:fixed!important}
 #app .main{background:linear-gradient(150deg,color-mix(in srgb,var(--season-page-glow) 18%,transparent),transparent 34%)!important}
 #app .view :is(.card,.asset-dashboard-card,.module-toolbar,.page-nav-context-v02992){background-color:color-mix(in srgb,var(--season-card) 96%,transparent)!important;border-color:var(--season-line)!important}
