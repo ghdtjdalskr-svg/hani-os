@@ -928,3 +928,29 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
  #app .monthly-report-future-head{padding:22px 18px}#app .monthly-report-future-head h3{font-size:21px}
  #app .monthly-report-future-card{grid-template-columns:52px minmax(0,1fr);min-height:0;padding:16px}#app .monthly-report-future-card>img{width:52px;height:52px}
 }
+
+/* Dashboard status and Life Market ticker · final presentation override. */
+#app header.top.ui26-top .storage-strip{display:flex!important;flex-wrap:nowrap!important;align-items:center;gap:0!important;max-width:100%;margin:0;font-size:12px!important;color:#7d6e63!important;white-space:nowrap}
+#app header.top.ui26-top .storage-strip>span,#app header.top.ui26-top .storage-strip>span:not(.save-badge){display:inline!important;min-height:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;font-weight:500;color:inherit!important;white-space:nowrap!important;overflow-wrap:normal!important}
+#app header.top.ui26-top .storage-strip>span+span::before{content:"·";margin:0 8px;color:#c9bcae}
+#app header.top.ui26-top .storage-strip .save-badge{position:relative;padding-left:14px!important;border:0!important;background:transparent!important;box-shadow:none!important;font-weight:600;color:#2b2320!important}
+#app header.top.ui26-top .storage-strip .save-badge::before{content:"";position:absolute;left:0;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:#2e9e6b}
+#app header.top.ui26-top .storage-strip .save-badge.error{color:#b83a3a!important}
+#app header.top.ui26-top .storage-strip .save-badge.error::before{background:#b83a3a}
+#app .life-ticker{display:flex;align-items:center;height:36px;margin:0 0 14px;border-radius:10px;background:#2b2320;color:#f6efe6;overflow:hidden;font-size:12px;font-variant-numeric:tabular-nums}
+#app .life-ticker-brand{flex-shrink:0;padding:0 14px;font-weight:700;letter-spacing:.08em;color:#d9924f;border-right:1px solid #4a3f39}
+#app .life-ticker-viewport{flex:1;min-width:0;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent)}
+#app .life-ticker-track{display:inline-flex;white-space:nowrap;will-change:transform;animation:life-ticker-scroll var(--ticker-duration,36s) linear infinite}
+#app .life-ticker-group{display:inline-flex;flex-shrink:0}
+#app .life-ticker:hover .life-ticker-track{animation-play-state:paused}
+#app .life-ticker-item{display:inline-flex;align-items:center;gap:7px;padding:0 18px;border-right:1px solid #4a3f39}
+#app .life-ticker-label{color:#d8cbbc}
+#app .life-ticker-value{color:#f6efe6;font-weight:700}
+#app .life-ticker-item b{font-weight:700}
+#app .life-ticker-item b.up{color:#ff8aa0}
+#app .life-ticker-item b.down{color:#8ab8ff}
+#app .life-ticker-item b.flat{color:#b3a496}
+@keyframes life-ticker-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){#app .life-ticker-track{animation:none}#app .life-ticker-viewport{overflow-x:auto;mask-image:none;-webkit-mask-image:none}#app .life-ticker-group[aria-hidden="true"]{display:none}}
+@media(min-width:851px) and (max-width:1500px){#app header.top.ui26-top{grid-template-columns:minmax(0,1fr);gap:7px}#app header.top.ui26-top .top-actions{justify-content:flex-start}}
+@media(max-width:850px){#app header.top.ui26-top .storage-strip{display:flex!important;width:auto;max-width:100%;overflow:hidden;font-size:11px!important}#app header.top.ui26-top .storage-strip>span:nth-child(3){display:none!important}#app header.top.ui26-top .storage-strip>span:nth-child(4)::before{margin:0 5px}#app .life-ticker{height:32px;margin-bottom:10px;font-size:11px}#app .life-ticker-brand{padding:0 10px}}
