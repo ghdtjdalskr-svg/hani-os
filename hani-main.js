@@ -4415,14 +4415,13 @@ function renderMonthlyReport(){
   const stored=monthlyReportStored(monthlyReportMonth),closed=monthlyReportMonth<current,hasRecords=closed&&monthlyReportSnapshot(monthlyReportMonth).recordCount>0;
   if(stored){
     monthlyReportPresentStored(stored);
-    pending.hidden=false;
-    pending.innerHTML=`<h4>${esc(stored.month)} 보고서 · 생성 완료</h4><p>생성 시각 ${esc(formatDateTime(stored.generatedAt))}. 원본 기록이 바뀌어도 이 보고서는 자동으로 바뀌지 않습니다.</p><button type="button" id="monthlyReportGenerateBtn" ${hasRecords?"":"disabled"}>보고서 다시 생성</button>`;
-    $("monthlyReportGenerateBtn").onclick=()=>monthlyReportGenerate(monthlyReportMonth);
-    return;
+  }else{
+    for(const id of ["monthlyReportKpis","monthlyReportInsightCard","monthlyReportDomains"])$(id).hidden=true;
   }
-  for(const id of ["monthlyReportKpis","monthlyReportInsightCard","monthlyReportDomains"])$(id).hidden=true;
+  const heading=stored?`${stored.month} 보고서 · 생성 완료`:`${monthlyReportMonth} 월간보고가 없습니다.`;
+  const description=stored?`생성 시각 ${formatDateTime(stored.generatedAt)}. 원본 기록이 바뀌어도 이 보고서는 자동으로 바뀌지 않습니다.`:closed?(hasRecords?"해당 월의 기록을 확인한 뒤 보고서를 생성할 수 있습니다.":"이 달에는 보고서로 만들 완료 기록이 없습니다."):"해당 월이 끝난 뒤에만 보고서를 생성할 수 있습니다.";
   pending.hidden=false;
-  pending.innerHTML=`<h4>${esc(monthlyReportMonth)} 월간보고가 없습니다.</h4><p>${closed?(hasRecords?"해당 월의 기록을 확인한 뒤 보고서를 생성할 수 있습니다.":"이 달에는 보고서로 만들 완료 기록이 없습니다."):"해당 월이 끝난 뒤에만 보고서를 생성할 수 있습니다."}</p><button type="button" id="monthlyReportGenerateBtn" ${hasRecords?"":"disabled"}>보고서 생성</button>`;
+  pending.innerHTML=`<h4>${esc(heading)}</h4><p>${esc(description)}</p><button type="button" id="monthlyReportGenerateBtn" ${hasRecords?"":"disabled"}>${stored?"보고서 다시 생성":"보고서 생성"}</button>`;
   $("monthlyReportGenerateBtn").onclick=()=>monthlyReportGenerate(monthlyReportMonth);
 }
 
