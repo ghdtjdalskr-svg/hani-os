@@ -138,6 +138,32 @@ function releaseFilePolicy(files: any[]) {
   return { ok, paths, invalidPaths, destructive, duplicates };
 }
 
+// Existing feature PRs can contain tests and this bridge source alongside the
+// runtime closure. These paths are never accepted into a deployable package.
+function existingPrQaFilePolicy(files: any[], pr: any) {
+  const entries = Array.isArray(files) ? files.map((file: any) => ({
+    path: normalizeReleasePath(file?.filename),
+    status: cleanText(file?.status, 40),
+  })) : [];
+  const runtime = entries.filter((entry) => isAllowedReleasePath(entry.path));
+  const ancillary = entries.filter((entry) => !isAllowedReleasePath(entry.path));
+  const testPaths = ancillary.filter((entry) => /^scripts\/hani-[A-Za-z0-9._-]+(?:-test|-smoke)\.mjs$/.test(entry.path));
+  const bridgePaths = ancillary.filter((entry) => entry.path === "supabase/functions/hani-deploy-bridge/index.ts");
+  const unrecognized = ancillary.filter((entry) => !testPaths.includes(entry) && !bridgePaths.includes(entry));
+  const labels = Array.isArray(pr?.labels) ? pr.labels.map((label: any) => cleanText(label?.name, 100)) : [];
+  const bridgeApproved = bridgePaths.length === 0 ||
+    (cleanText(pr?.user?.login, 100).toLowerCase() === GITHUB_OWNER.toLowerCase() &&
+      labels.includes("hani-gate-change-approved"));
+  const paths = entries.map((entry) => entry.path);
+  const runtimePolicy = releaseFilePolicy(runtime.map((entry) => ({ filename: entry.path, status: entry.status })));
+  const ok = entries.length > 0 && entries.length <= MAX_RELEASE_FILES + 8 &&
+    runtimePolicy.ok && ancillary.length <= 8 && unrecognized.length === 0 && bridgePaths.length <= 1 &&
+    bridgeApproved && paths.every(Boolean) && new Set(paths).size === paths.length &&
+    entries.every((entry) => !["removed", "renamed"].includes(entry.status));
+  return { ok, runtimePaths: runtimePolicy.paths, ancillaryPaths: ancillary.map((entry) => entry.path),
+    bridgeApproved, unrecognizedPaths: unrecognized.map((entry) => entry.path) };
+}
+
 function validateHtml(html: string) {
   const issues: string[] = [];
   const bytes = new TextEncoder().encode(html).byteLength;
@@ -874,9 +900,14 @@ Deno.serve(async (req) => {
       }
       const mainBefore = cleanText((await getMainRef(githubToken))?.object?.sha, 80);
       if (mainBefore !== expectedMainSha) return json({ ok: false, error: "main 기준선이 변경되었습니다." }, 409);
-      const changed = releaseFilePolicy(await getPullRequestFiles(githubToken, prNumber));
-      if (!changed.ok || changed.paths.some((path) => !uniquePaths.includes(path))) {
-        return json({ ok: false, error: "PR 변경 파일이 패키지 허용 범위를 벗어났습니다." }, 409);
+      const prFiles = await getPullRequestFiles(githubToken, prNumber);
+      if (!Array.isArray(prFiles) || prFiles.length !== Number(pr?.changed_files || 0) || prFiles.length > MAX_RELEASE_FILES + 8) {
+        return json({ ok: false, error: "PR 변경 파일 목록이 완전하지 않습니다." }, 409);
+      }
+      const changed = existingPrQaFilePolicy(prFiles, pr);
+      if (!changed.ok || changed.runtimePaths.some((path) => !uniquePaths.includes(path))) {
+        return json({ ok: false, error: "PR 변경 파일의 실행/보조 범위를 검증하지 못했습니다.",
+          invalid_paths: changed.unrecognizedPaths, bridge_approval_confirmed: changed.bridgeApproved }, 409);
       }
       const runtimePaths = await runtimePackagePaths(githubToken, candidateSha);
       if (runtimePaths.some((path) => !uniquePaths.includes(path))) {
@@ -890,14 +921,18 @@ Deno.serve(async (req) => {
       const mainAfter = cleanText((await getMainRef(githubToken))?.object?.sha, 80);
       if (mainAfter !== expectedMainSha) return json({ ok: false, error: "검증 중 main 기준선이 변경되었습니다.", qa }, 409);
       const prAfter = await getPullRequest(githubToken, prNumber);
-      if (prAfter?.head?.sha !== candidateSha || cleanText(prAfter?.state, 30) !== "open") {
+      if (prAfter?.head?.sha !== candidateSha || cleanText(prAfter?.state, 30) !== "open" ||
+          Number(prAfter?.changed_files || 0) !== prFiles.length ||
+          !existingPrQaFilePolicy(prFiles, prAfter).ok) {
         return json({ ok: false, error: "검증 중 PR 후보가 변경되었습니다.", qa }, 409);
       }
       return json({
         ok: qa.ok, action, state: qa.state, pr_number: prNumber, candidate_sha: candidateSha,
         base_main_sha: expectedMainSha, package_sha256: snapshot.package_sha256,
         gate_contract_version: GATE_CONTRACT_VERSION, gate_contract_sha256: GATE_CONTRACT_SHA256,
-        qa, note: "읽기 전용 HINA 검증입니다. 새 PR·Queue·병합·배포는 생성하지 않습니다.",
+        qa, qa_scope: { runtime_package: qa.ok ? "HINA_VERIFIED" : "HINA_FAILED", ancillary_paths: changed.ancillaryPaths,
+          ancillary_review: changed.ancillaryPaths.length ? "SEPARATE_REVIEW_REQUIRED" : "NOT_APPLICABLE" },
+        note: "읽기 전용 HINA 실행 영역 검증입니다. 보조 파일은 패키지에 포함되지 않으며 별도 검토 대상입니다. 새 PR·Queue·병합·배포는 생성하지 않습니다.",
       }, qa.ok ? 200 : 409);
     }
 
