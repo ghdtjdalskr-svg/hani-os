@@ -14,7 +14,7 @@ const state={
   movies:[{status:'watched',watchedDate:'2026-09-04',title:'시리즈',review:'시즌 1 · 12화까지'},{status:'watched',watchedDate:'2026-09-05',title:'시리즈',review:'시즌 2 · 24화까지'}],
   learningQuizzes:[{status:'completed',completedAt:'2026-08-31T15:00:00Z',total:10,correctCount:10},{status:'completed',completedAt:'2026-09-01T01:00:00+09:00',total:30,correctCount:15},{status:'completed',completedAt:'2026-08-31T14:59:59Z',total:20,correctCount:20},{status:'completed',total:20,correctCount:20},{status:'completed',completedAt:'2026-09-02T01:00:00Z',total:20,correctCount:null},{status:'pending',completedAt:'2026-09-02T01:00:00Z'}],
   investmentBrokerSnapshots:[{mode:'actual',status:'confirmed',period:'2026-09',snapshotDate:'2026-09-20',total:100},{mode:'actual',status:'confirmed',period:'2026-09',snapshotDate:'2026-09-30',total:999},{mode:'plan',status:'confirmed',period:'2026-09',snapshotDate:'2026-09-21',total:999}],
-  ledgerMonths:[{month:'2026-09',items:[{date:'2026-09-01',category:'fixed',amount:100,reimbursement:10},{date:'2026-09-02',category:'finance',amount:500},{date:'2026-09-30',category:'variable',amount:999}]}]
+  ledgerMonths:[{month:'2026-09',items:[{date:'2026-09-01',category:'fixed',content:'생활비',amount:100,reimbursement:10},{date:'2026-09-02',category:'finance',content:'금융예치',amount:500},{date:'2026-09-30',category:'variable',amount:999}]}]
 };
 const freeze=x=>{if(x&&typeof x==='object'){Object.values(x).forEach(freeze);Object.freeze(x)}return x};
 freeze(state);
@@ -37,13 +37,14 @@ assert.equal(r.investmentCalc.total,100);assert.equal(r.ledgerSummary.jispiT,90)
 assert.equal(run('monthlyReportSnapshot("2026-10","2026-09-27").recordCount'),0);
 assert.equal(run('monthlyReportSnapshot("2026-13","2026-09-27").recordCount'),0);
 // Render against a fixed cutoff while preserving the production implementation.
-run('const reportOriginalSnapshot=monthlyReportSnapshot;monthlyReportSnapshot=month=>reportOriginalSnapshot(month,"2026-09-27");monthlyReportMonth="2026-09";renderMonthlyReport()');
+run('const reportOriginalSnapshot=monthlyReportSnapshot;monthlyReportSnapshot=month=>reportOriginalSnapshot(month,"2026-09-27");monthlyReportMonth="2026-09";monthlyReportBuildCurrent()');
 const html=[...elements.values()].map(x=>x.innerHTML||x.textContent||'').join('\n');
 for(const label of ['62.5%','시청 기록 2건','첫 측정 대비','10,000보','당시 목표 미보관','2026-08-18 ~ 2026-09-17'])assert(html.includes(label),label);
 assert(!html.includes('10000.0%'));assert(!html.includes('월초 대비'));
+assert(html.includes('최대 생활 지출'));assert(html.includes('생활비'));assert(!html.includes('금융예치'),'finance category must not be named the largest living expense');
 assert.equal(JSON.stringify(state),before,'snapshot/render must not mutate any source record');
 context.state=freeze({exercise:[{date:'2026-09-03',steps:0,strength:true}],body:[],books:[],movies:[],learningQuizzes:[]});
-run('renderMonthlyReport()');
+run('monthlyReportBuildCurrent()');
 assert(elements.get('monthlyReportDomains').innerHTML.includes('걸음 기록 없음'),'strength-only activity must not imply observed zero steps');
 assert.equal(run('monthlyReportKoreaDate(null)'),'');
 console.log('PASS: strict dates, KST boundary, future exclusion, daily dedup, positive-step average, media input units, book compatibility/conflict, weighted quiz accuracy, historical target isolation, settlement basis, renderer, immutable state');

@@ -90,7 +90,7 @@ function seriesColor(id){
 const freshState=()=>({
   version:VERSION,
   accounts:structuredClone(seedAccounts),
-  instruments:[],transactions:[],snapshots:[],investmentMonthlySnapshots:[],investmentBrokerSnapshots:[],investmentCashFlows:[],investmentJournal:[],investmentWatchlist:[],ledgerMonths:[],spendReviews:[],body:[],exercise:[],cardio:[],strength:[],books:[],movies:[],diaries:[],tasks:[],campusSemesters:[],travelTrips:[],travelPlaces:[],travelWishlist:[],certificates:[],wishlistItems:[],learningProjects:[],learningQuizzes:[],learningWrongAnswers:[],
+  instruments:[],transactions:[],snapshots:[],investmentMonthlySnapshots:[],investmentBrokerSnapshots:[],investmentCashFlows:[],investmentJournal:[],investmentWatchlist:[],ledgerMonths:[],spendReviews:[],body:[],exercise:[],cardio:[],strength:[],books:[],movies:[],diaries:[],tasks:[],campusSemesters:[],travelTrips:[],travelPlaces:[],travelWishlist:[],certificates:[],wishlistItems:[],learningProjects:[],learningQuizzes:[],learningWrongAnswers:[],monthlyReports:[],
   profile:{heightCm:188},
   goals:{investment:100000000,weight1:110,weight2:100,reading:30,readingAnnual:30,readingMonthly:2},
   calendarUrl:"",
@@ -251,6 +251,7 @@ function normalizeState(d){
     travelWishlist:Array.isArray(d?.travelWishlist)?d.travelWishlist.map(normalizeTravelWish):[],
     certificates:Array.isArray(d?.certificates)?d.certificates.map(normalizeCertificate):[],
     wishlistItems:Array.isArray(d?.wishlistItems)?d.wishlistItems.map(normalizeWishItem):[],
+    monthlyReports:Array.isArray(d?.monthlyReports)?d.monthlyReports:[],
     pageNotes
   };
   delete normalized._haniBackup;delete normalized.exportedAt;delete normalized.data;
@@ -353,7 +354,7 @@ const pageMeta={
  deployment:["배포 센터","Preview 브랜치부터 대표 승인 배포까지 안전하게 관리합니다.","work"],
  intake:["성민 오피스","유나 인턴에게 말하거나 자료를 붙이면 담당 AI가 검토하고 Preview로 정리합니다.","team"],
  agentReview:["경영회의실","AI TEAM의 검토 안건과 대표 결정을 한곳에서 관리합니다.","team"],
- monthlyReport:["월간 보고","기존 기록을 월 단위로 모아 읽기 전용 보고서로 확인합니다.","team"],
+ monthlyReport:["라이프 리포트","한 달의 흐름을 돌아보고, 분기·연간 발표로 이어갈 보고 공간입니다.","team"],
  policy:["사내 규칙","AI TEAM이 공통으로 참고하는 운영 원칙과 학습 규정을 관리합니다.","team"],
  aiTeam:["AI 팀","역할별 담당 AI와 서비스 바로가기를 확인합니다.","team"],
  settings:["설정 / 데이터","캘린더, 백업, 복원과 초기화를 관리합니다.","work"],
@@ -521,7 +522,7 @@ const pageBannerMap={
   movie:{emoji:"🎬",name:"민지 · Screen Archive Mate",message:"보고 싶은 작품과 본 작품을 편하게 모으고, 오빠 취향대로 감상을 남겨봐요.",role:"SCREEN ARCHIVE"},
   intake:{emoji:"🗂️",name:"유나 · AI Operations Intern",message:"오빠가 말하거나 붙여준 자료를 먼저 정리해서 담당 AI에게 전달할게요!",role:"SEONGMIN OFFICE · INTAKE"},
   agentReview:{emoji:"🏛️",name:"하니 · Chief of Staff",message:"AI TEAM의 검토를 모아 대표가 결정할 수 있는 안건으로 정리해요.",role:"HANI BOARDROOM"},
-  monthlyReport:{emoji:"📊",name:"하니 · Chief of Staff",message:"기존 Life OS 기록을 바꾸지 않고 월간 흐름으로 정리해요.",role:"HANI MONTHLY REPORT"},
+  monthlyReport:{emoji:"📊",name:"하니 · Chief of Staff",message:"담당자들과 한 달의 흐름을 짚어볼게요. 분기·연간 발표도 이곳에 이어질 예정이에요.",role:"HANI LIFE REPORT"},
   policy:{emoji:"📜",name:"하니 · Policy Steward",message:"팀 전체가 같은 원칙으로 판단하도록 규정의 근거와 적용 강도를 관리해요.",role:"COMPANY POLICY"},
   game:{emoji:"⚽",name:"수연 · Head Coach",message:"양키스·KIA·레알 마드리드·Dplus KIA의 오늘을 함께 봐요.",role:"SPORTS LOUNGE"},
   diary:{emoji:"📝",name:"민지 · Daily Mate",message:"별일 있던 날도 없던 날도, 편하게 한 줄씩 남겨두자.",role:"DIARY"},
@@ -2753,7 +2754,7 @@ function cloudHasMeaningfulLocalData(value=state){
     "instruments","transactions","snapshots","investmentMonthlySnapshots",
     "investmentBrokerSnapshots","investmentCashFlows","investmentJournal",
     "investmentWatchlist","body","exercise","cardio","strength","books",
-    "movies","diaries","tasks","ledgerMonths","spendReviews","campusSemesters","travelTrips","travelPlaces","travelWishlist","certificates","wishlistItems","learningProjects","learningQuizzes","learningWrongAnswers"
+    "movies","diaries","tasks","ledgerMonths","spendReviews","campusSemesters","travelTrips","travelPlaces","travelWishlist","certificates","wishlistItems","learningProjects","learningQuizzes","learningWrongAnswers","monthlyReports"
   ];
   if(arrays.some(k=>Array.isArray(d[k])&&d[k].length>0))return true;
   if(String(d.calendarUrl||"").trim())return true;
@@ -3848,7 +3849,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.150";
+const HANI_DISPLAY_VERSION="2.9.151";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
@@ -4332,14 +4333,15 @@ function monthlyReportSnapshot(month,asOf=monthlyReportKoreaDate()){
   return {month,previousMonth,investment,investmentCalc,previousInvestmentCalc,ledger,ledgerPeriod,ledgerSummary,previousLedgerSummary,body,exercise,books,movies,ratings,firstBody,lastBody,totalSteps,totalDistance,stepDays,distanceDays,quizzes,scoredQuizzes,quizTotal,quizCorrect,duplicateDays:bodyRows.length-body.length+exerciseRows.length-exercise.length,recordCount:(investment?1:0)+(ledger?1:0)+body.length+exercise.length+books.length+movies.length+quizzes.length};
 }
 function monthlyReportDelta(value,previous,formatter=won){if(previous===null||previous===undefined)return "전월 기록 없음";const delta=n(value)-n(previous);return `전월 대비 ${delta>0?"+":""}${formatter(delta)}`}
-function monthlyReportDomainCard({tone,eyebrow,title,summary,metrics,empty,owner}){const key=owner||({FINANCE:"finance",MONEY:"money",HEALTH:"health",ACTIVITY:"activity",CULTURE:"culture",LEARNING:"learning"})[eyebrow],agent=monthlyReportOwners[key]||monthlyReportOwners.finance;return `<article class="monthly-report-domain tone-${tone}"><div class="monthly-report-domain-head"><div><span>${esc(eyebrow)}</span><h3>${esc(title)}</h3></div><b>${empty?"기록 없음":"RECORDED"}</b></div><div class="monthly-report-agent"><img src="${esc(agentImages[agent.key]||agentImages.hani)}" alt="${esc(agent.name)}"><div class="monthly-report-speech"><span>${esc(agent.name)} · ${esc(agent.role)}</span><p>“${esc(summary)}”</p></div></div><div class="monthly-report-metrics">${metrics.map(([label,value])=>`<div><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join("")}</div></article>`}
+function monthlyReportDomainCard({tone,eyebrow,title,headline,comment,basis,metrics,empty,owner}){const key=owner||({FINANCE:"finance",MONEY:"money",HEALTH:"health",ACTIVITY:"activity",CULTURE:"culture",LEARNING:"learning"})[eyebrow],agent=monthlyReportOwners[key]||monthlyReportOwners.finance;return `<article class="monthly-report-domain tone-${tone}"><div class="monthly-report-domain-head"><div><span>${esc(eyebrow)}</span><h3>${esc(title)}</h3></div><b>${empty?"기록 없음":"해당 월"}</b></div><div class="monthly-report-takeaway"><span>월간 핵심</span><strong>${esc(headline)}</strong></div><div class="monthly-report-agent"><img src="${esc(agentImages[agent.key]||agentImages.hani)}" alt="${esc(agent.name)}"><div class="monthly-report-speech"><span>${esc(agent.name)} · ${esc(agent.role)}</span><p>${esc(comment)}</p></div></div><div class="monthly-report-metrics">${metrics.map(([label,value])=>`<div><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join("")}</div><details class="monthly-report-basis"><summary>집계 기준</summary><p>${esc(basis)}</p></details></article>`}
 function monthlyReportRenderBoard(){if(typeof document==="undefined")return;const allowed=["monthly","quarterly","annual"];if(!allowed.includes(monthlyReportBoard))monthlyReportBoard="monthly";document.querySelectorAll("#monthlyReport [data-report-board]").forEach(button=>{const active=button.dataset.reportBoard===monthlyReportBoard;button.classList.toggle("active",active);button.setAttribute("aria-selected",String(active));button.onclick=()=>{monthlyReportBoard=button.dataset.reportBoard;monthlyReportRenderBoard()}});document.querySelectorAll("#monthlyReport [data-report-panel]").forEach(panel=>{const active=panel.dataset.reportPanel===monthlyReportBoard;panel.hidden=!active;panel.classList.toggle("active",active)})}
-function renderMonthlyReport(){
+function monthlyReportBuildCurrent(){
   const input=$("monthlyReportMonth"),kpis=$("monthlyReportKpis"),domains=$("monthlyReportDomains");if(!input||!kpis||!domains)return;
   monthlyReportRenderBoard();
-  const months=monthlyReportAvailableMonths();if(!monthlyReportDate(`${monthlyReportMonth}-01`))monthlyReportMonth=months.at(-1)||monthlyReportKoreaDate().slice(0,7);input.value=monthlyReportMonth;input.onchange=()=>{monthlyReportMonth=input.value||monthlyReportKoreaDate().slice(0,7);renderMonthlyReport()};
+  input.value=monthlyReportMonth;
   const report=monthlyReportSnapshot(monthlyReportMonth),investmentTotal=report.investmentCalc?.total,spend=report.ledgerSummary?.jispiT,bodyDelta=report.firstBody&&report.lastBody?n(report.lastBody.weight)-n(report.firstBody.weight):null,cultureCount=report.books.length+report.movies.length,avgRating=report.ratings.length?report.ratings.reduce((a,b)=>a+b,0)/report.ratings.length:null,
-    stepAverage=report.stepDays.length?`${Math.round(report.totalSteps/report.stepDays.length).toLocaleString()}보`:"걸음 기록 없음",settlementLabel=`${report.ledgerPeriod.periodStart} ~ ${report.ledgerPeriod.periodEnd}`,accuracy=report.quizTotal?`${(report.quizCorrect/report.quizTotal*100).toFixed(1)}%`:"채점 수치 없음";
+    stepAverage=report.stepDays.length?`${Math.round(report.totalSteps/report.stepDays.length).toLocaleString()}보`:"걸음 기록 없음",settlementLabel=`${report.ledgerPeriod.periodStart} ~ ${report.ledgerPeriod.periodEnd}`,accuracy=report.quizTotal?`${(report.quizCorrect/report.quizTotal*100).toFixed(1)}%`:"채점 수치 없음",
+    largestLivingExpense=(report.ledger?.items||[]).filter(x=>["fixed","variable","special"].includes(x.category)&&n(x.amount)>0).sort((a,b)=>n(b.amount)-n(a.amount))[0]||null;
   kpis.innerHTML=[
     ["투자 자산",report.investmentCalc?won(investmentTotal):"기록 없음",report.investmentCalc?monthlyReportDelta(investmentTotal,report.previousInvestmentCalc?.total):"확정 월간 기록 기준"],
     ["생활 지출",report.ledgerSummary?won(spend):"기록 없음",report.ledgerSummary?monthlyReportDelta(spend,report.previousLedgerSummary?.jispiT):"결산기간 기준"],
@@ -4347,18 +4349,80 @@ function renderMonthlyReport(){
     ["활동 일수",report.exercise.length?`${report.exercise.length}일`:"기록 없음",report.stepDays.length?`걸음 기록일 평균 ${stepAverage}`:"걸음 기록 없음"],
     ["문화 기록",cultureCount?`${cultureCount}건`:"기록 없음",cultureCount?`완독 ${report.books.length}권 · 시청 기록 ${report.movies.length}건`:"완료 기록 기준"]
   ].map(([label,value,meta])=>`<div class="card monthly-report-kpi"><span>${esc(label)}</span><strong>${esc(value)}</strong><small>${esc(meta)}</small></div>`).join("");
-  const highlights=[];if(report.investmentCalc)highlights.push(`확정 투자 자산은 ${won(investmentTotal)}입니다.`);if(report.ledgerSummary)highlights.push(`생활 지출은 ${won(spend)}입니다. 결산기간은 ${settlementLabel}입니다.`);if(report.stepDays.length)highlights.push(`걸음을 기록한 ${report.stepDays.length}일 동안 ${report.totalSteps.toLocaleString()}보를 기록했습니다.`);if(cultureCount)highlights.push(`완독 ${report.books.length}권, 시청 기록 ${report.movies.length}건입니다.`);if(report.quizzes.length)highlights.push(`학습 ${report.quizzes.length}세트를 완료했습니다. 문항 기준 정답률은 ${accuracy}입니다.`);
-  if(report.duplicateDays)highlights.push(`같은 날짜의 중복 운동·신체 기록 ${report.duplicateDays}건은 마지막 갱신 기록으로 묶었습니다.`);
-  $("monthlyReportInsightTitle").textContent=report.recordCount?`${ledgerMonthLabel(report.month)}의 기록을 모았습니다.`:`${ledgerMonthLabel(report.month)}은 아직 기록을 기다리는 달입니다.`;
-  $("monthlyReportInsight").textContent=highlights.length?highlights.join(" "):"이 달에는 요약할 기존 기록이 없습니다. 기록이 생기면 저장값을 바꾸지 않고 자동으로 정리합니다.";
+  const highlights=[];if(report.investmentCalc&&report.previousInvestmentCalc)highlights.push(investmentTotal===report.previousInvestmentCalc.total?"투자 자산은 전월과 같아요.":`투자 자산은 전월보다 ${won(Math.abs(investmentTotal-report.previousInvestmentCalc.total))} ${investmentTotal>report.previousInvestmentCalc.total?"늘었어요":"줄었어요"}.`);if(report.ledgerSummary&&report.previousLedgerSummary)highlights.push(spend===report.previousLedgerSummary.jispiT?"생활 지출은 이전 결산과 같아요.":`생활 지출은 이전 결산보다 ${won(Math.abs(spend-report.previousLedgerSummary.jispiT))} ${spend<report.previousLedgerSummary.jispiT?"적어요":"많아요"}.`);if(report.quizTotal)highlights.push(`학습은 ${report.quizTotal}문항 중 ${report.quizCorrect}문항을 맞혔어요.`);if(report.stepDays.length)highlights.push(`걸음을 기록한 날의 평균은 ${stepAverage}예요.`);
+  $("monthlyReportInsightTitle").textContent=report.recordCount?`${ledgerMonthLabel(report.month)} · 이번 달 무엇이 달라졌을까요?`:`${ledgerMonthLabel(report.month)}은 아직 기록을 기다리는 달입니다.`;
+  $("monthlyReportInsight").textContent=highlights.length?highlights.slice(0,3).join(" "):report.recordCount?"영역별 담당자의 한줄평을 보며 이번 달 결과와 다음에 확인할 점을 살펴보세요.":"이 달에는 요약할 기록이 없습니다.";
   domains.innerHTML=[
-    monthlyReportDomainCard({tone:"finance",eyebrow:"FINANCE",title:"투자",empty:!report.investmentCalc,summary:"확정 실적만 포함합니다. 당시 목표 이력이 없어 현재 목표를 소급 적용하지 않습니다.",metrics:[["총자산",report.investmentCalc?won(investmentTotal):"기록 없음"],["전월 변화",report.investmentCalc?monthlyReportDelta(investmentTotal,report.previousInvestmentCalc?.total):"비교 불가"],["목표 달성","당시 목표 미보관"]]}),
-    monthlyReportDomainCard({tone:"money",eyebrow:"MONEY",title:"소비",empty:!report.ledgerSummary,summary:`결산기간 ${settlementLabel}. 회수예정액을 반영하며 달력월 합계와 다릅니다. 미래·날짜 미확인 항목은 제외합니다.`,metrics:report.ledgerSummary?[["생활 지출",won(spend)],["최대 항목",report.ledgerSummary.biggest?.content||report.ledgerSummary.biggestCategory[0]],["전월 변화",monthlyReportDelta(spend,report.previousLedgerSummary?.jispiT)]]:[["생활 지출","기록 없음"],["최대 항목","기록 없음"],["전월 변화","비교 불가"]]}),
-    monthlyReportDomainCard({tone:"health",eyebrow:"HEALTH",title:"신체",empty:!report.body.length,summary:report.body.length?`${report.firstBody.date} ~ ${report.lastBody.date}, 유효한 체중 측정 ${report.body.length}일을 비교했습니다.`:"선택한 달의 유효한 체중 기록이 없습니다.",metrics:report.body.length?[["최근 체중",`${num(report.lastBody.weight)}kg`],["첫 측정 대비",report.body.length>1?`${bodyDelta>0?"+":""}${bodyDelta.toFixed(2)}kg`:"비교 기록 없음"],["측정 일수",`${report.body.length}일`]]:[["최근 체중","기록 없음"],["첫 측정 대비","비교 불가"],["측정 일수","기록 없음"]]}),
-    monthlyReportDomainCard({tone:"activity",eyebrow:"ACTIVITY",title:"활동",empty:!report.exercise.length,summary:`운동 기록 ${report.exercise.length}일 중 걸음 기록 ${report.stepDays.length}일 기준입니다. 미입력·0보는 평균에서 제외합니다.`,metrics:[["총 걸음",report.stepDays.length?`${report.totalSteps.toLocaleString()}보`:"기록 없음"],["기록된 거리",report.distanceDays.length?`${num(report.totalDistance)}km`:"기록 없음"],["걸음 기록일 평균",stepAverage]]}),
-    monthlyReportDomainCard({tone:"culture",eyebrow:"CULTURE",title:"문화",empty:!cultureCount,summary:"완료 날짜가 확인되는 기록만 포함합니다. 시리즈·회차 묶음과 관계없이 저장한 입력 1건을 시청 1건으로 셉니다.",metrics:[["완독",`${report.books.length}권`],["시청 기록",`${report.movies.length}건`],["평균 평점",avgRating===null?"평가 없음":`${avgRating.toFixed(1)}점`]]}),
-    monthlyReportDomainCard({tone:"culture",eyebrow:"LEARNING",title:"학습",empty:!report.quizzes.length,summary:`한국시간 완료일 기준입니다. 채점 수치가 확인된 ${report.scoredQuizzes.length}/${report.quizzes.length}세트의 문항을 합산했습니다. 할일·대학은 집계하지 않습니다.`,metrics:[["완료 세트",`${report.quizzes.length}세트`],["확인된 정답 / 문항",`${report.quizCorrect} / ${report.quizTotal}문항`],["문항 기준 정답률",accuracy]]})
+    monthlyReportDomainCard({tone:"finance",eyebrow:"FINANCE",title:"투자",empty:!report.investmentCalc,headline:report.investmentCalc?(report.previousInvestmentCalc?(investmentTotal===report.previousInvestmentCalc.total?"전월과 자산 동일":`전월 대비 ${investmentTotal>report.previousInvestmentCalc.total?"+":""}${won(investmentTotal-report.previousInvestmentCalc.total)}`):`확정 자산 ${won(investmentTotal)}`):"확정 기록이 없어요",comment:report.investmentCalc?(report.previousInvestmentCalc?`오빠, 이번 달 자산은 전월보다 ${investmentTotal>report.previousInvestmentCalc.total?`${won(investmentTotal-report.previousInvestmentCalc.total)} 늘었어`:investmentTotal<report.previousInvestmentCalc.total?`${won(report.previousInvestmentCalc.total-investmentTotal)} 줄었어`:"변함없어"}. 여기까지는 팩트. 입금과 시장 수익을 나눠 봐야 진짜 성과가 보여.`:`오빠, 이번 달 확정 자산은 ${won(investmentTotal)}야. 전월 확정값이 없으니 성과 판단은 잠깐 보류하자.`):"오빠, 이번 달 확정 자산이 없어서 투자 흐름은 아직 판단할 수 없어. 기록이 생기면 그때 같이 보자.",basis:"해당 월의 확정 실제 스냅샷만 사용합니다. 당시 목표 이력이 없어 현재 목표를 과거에 적용하지 않습니다.",metrics:[["총자산",report.investmentCalc?won(investmentTotal):"기록 없음"],["전월 변화",report.investmentCalc?monthlyReportDelta(investmentTotal,report.previousInvestmentCalc?.total):"비교 불가"],["목표 달성","당시 목표 미보관"]]}),
+    monthlyReportDomainCard({tone:"money",eyebrow:"MONEY",title:"소비",empty:!report.ledgerSummary,headline:report.ledgerSummary?(report.previousLedgerSummary?(spend===report.previousLedgerSummary.jispiT?"이전 결산과 지출 동일":`이전 결산보다 ${won(Math.abs(spend-report.previousLedgerSummary.jispiT))} ${spend<report.previousLedgerSummary.jispiT?"적게 지출":"더 지출"}`):`생활 지출 ${won(spend)}`):"소비 결산이 없어요",comment:report.ledgerSummary?(report.previousLedgerSummary?`오빠, 이번 생활 지출은 이전 결산보다 ${spend===report.previousLedgerSummary.jispiT?"같아":`${won(Math.abs(spend-report.previousLedgerSummary.jispiT))} ${spend>report.previousLedgerSummary.jispiT?"늘었어":"줄었어"}`}. 이 차이만으로 과소비라 하진 않을게. ${largestLivingExpense?`가장 큰 항목인 ${largestLivingExpense.content||"기타"}가 일회성인지 반복되는지`:"큰 지출 항목이 반복되는지"} 먼저 보자.`:`오빠, 이번 생활 지출은 ${won(spend)}야. 이전 결산이 없으니 흐름을 단정하지 말고 다음 결산과 비교하자.`):"오빠, 이번 달 소비 결산이 없네. 숫자 없이 지출을 평가하진 않을게.",basis:`결산기간 ${settlementLabel}. 회수예정액을 반영합니다. 미래·날짜 미확인 항목은 제외하며 달력월 합계와 다릅니다.`,metrics:report.ledgerSummary?[["생활 지출",won(spend)],["최대 생활 지출",largestLivingExpense?.content||"기록 없음"],["전월 변화",monthlyReportDelta(spend,report.previousLedgerSummary?.jispiT)]]:[["생활 지출","기록 없음"],["최대 생활 지출","기록 없음"],["전월 변화","비교 불가"]]}),
+    monthlyReportDomainCard({tone:"health",eyebrow:"HEALTH",title:"신체",empty:!report.body.length,headline:report.body.length?(report.body.length>1?`첫 측정 대비 ${bodyDelta>0?"+":""}${bodyDelta.toFixed(2)}kg`:`최근 측정 ${num(report.lastBody.weight)}kg`):"체중 기록이 없어요",comment:report.body.length?(report.body.length>1?`오빠~, 첫 측정과 최근 측정을 비교하면 ${bodyDelta<0?`${Math.abs(bodyDelta).toFixed(2)}kg 내려왔네`:bodyDelta>0?`${bodyDelta.toFixed(2)}kg 올라왔네`:"같네"}. 이 숫자만으로 몸 상태를 단정하진 말자. 여기서 더 굶거나 운동으로 갚는 것도 금지야 ㅋㅋ`:"오빠~, 이번 달은 아직 한 번 측정했어. 하루 숫자보다 다음 기록까지의 흐름을 보자."):"오빠~, 이번 달 측정 기록은 없네. 억지로 숫자를 채우기보다 다음 기록에서 흐름을 보자.",basis:report.body.length?`${report.firstBody.date} ~ ${report.lastBody.date}의 유효한 체중 측정 ${report.body.length}일을 비교합니다. 같은 날짜는 마지막 기록을 사용합니다.`:"유효한 양수 체중 측정만 포함합니다.",metrics:report.body.length?[["최근 체중",`${num(report.lastBody.weight)}kg`],["첫 측정 대비",report.body.length>1?`${bodyDelta>0?"+":""}${bodyDelta.toFixed(2)}kg`:"비교 기록 없음"],["측정 일수",`${report.body.length}일`]]:[["최근 체중","기록 없음"],["첫 측정 대비","비교 불가"],["측정 일수","기록 없음"]]}),
+    monthlyReportDomainCard({tone:"activity",eyebrow:"ACTIVITY",title:"활동",empty:!report.exercise.length,headline:report.stepDays.length?`${report.stepDays.length}일 평균 ${stepAverage}`:report.exercise.length?`운동 기록 ${report.exercise.length}일`:"활동 기록이 없어요",comment:report.stepDays.length?`오빠, 걸음 기록 ${report.stepDays.length}일의 평균은 ${stepAverage}야. ${report.stepDays.length<3?"아직 한 경기로 시즌 전술을 바꿀 단계는 아니야":"기록한 날의 페이스는 확인했어"}. 다음 달엔 기록 일수와 페이스를 같이 보자.`:report.exercise.length?"오빠, 운동 기록은 남았어. 걸음 수가 없으니 걷기 페이스는 판단하지 않겠어. 기록된 운동 흐름부터 보자.":"오빠, 이번 달 활동 기록은 없네. 기록이 생기면 그때 페이스를 잡아보자.",basis:`운동 기록 ${report.exercise.length}일 중 양수 걸음이 기록된 ${report.stepDays.length}일 기준입니다. 미입력·0보는 평균에서 제외합니다. 같은 날짜는 마지막 기록을 사용합니다.`,metrics:[["총 걸음",report.stepDays.length?`${report.totalSteps.toLocaleString()}보`:"기록 없음"],["기록된 거리",report.distanceDays.length?`${num(report.totalDistance)}km`:"기록 없음"],["걸음 기록일 평균",stepAverage]]}),
+    monthlyReportDomainCard({tone:"culture",eyebrow:"CULTURE",title:"문화",empty:!cultureCount,headline:cultureCount?`완독 ${report.books.length}권 · 시청 ${report.movies.length}건`:"완료 기록이 없어요",comment:cultureCount?`오빠, 이번 달은 완독 ${report.books.length}권과 시청 ${report.movies.length}건을 남겼네. 숫자보다 어떤 작품이 기억에 남았는지가 더 궁금해. ${avgRating===null?"감상이 생기면 한 줄만 남겨줘. 다음 추천에 써먹을게 ㅋㅋ":"별점 기록도 다음 추천에 써먹어야지 ㅋㅋ"}`:"오빠, 이번 달 완료한 작품 기록은 조용했네. 억지로 채울 필요 없어. 기억에 남은 작품이 생기면 그때 남겨두자.",basis:"완료 날짜가 확인된 기록만 포함합니다. 시리즈·회차 묶음과 관계없이 저장한 입력 1건을 시청 1건으로 셉니다.",metrics:[["완독",`${report.books.length}권`],["시청 기록",`${report.movies.length}건`],["평균 평점",avgRating===null?"평가 없음":`${avgRating.toFixed(1)}점`]]}),
+    monthlyReportDomainCard({tone:"learning",eyebrow:"LEARNING",title:"학습",empty:!report.quizzes.length,headline:report.quizTotal?`${report.quizTotal}문항 중 ${report.quizCorrect}문항 정답`:report.quizzes.length?`${report.quizzes.length}세트 완료`:"완료한 문제 세트가 없어요",comment:report.quizTotal?`오빠, 이번 달은 ${report.quizTotal}문항 중 ${report.quizCorrect}문항 정답이라 ${accuracy}야. ${report.quizTotal>report.quizCorrect?`아깝다아… 틀린 ${report.quizTotal-report.quizCorrect}문항에서 반복되는 유형부터 보자. ここ大事！`:"이번엔 전부 맞혔네! 같은 유형에서도 정확도가 이어지는지 보자 ㅋㅋ"}`:report.quizzes.length?"오빠, 완료한 세트는 있는데 채점 수치가 없어서 정답률은 말할 수 없어. 숫자는 확인된 것만 쓰자.":"오빠, 이번 달 완료한 문제 세트는 아직 없어. 다음 기록이 쌓이면 정확도부터 같이 보자.",basis:`한국시간 완료일 기준입니다. 채점 수치가 확인된 ${report.scoredQuizzes.length}/${report.quizzes.length}세트의 문항을 합산합니다. 할일·대학은 집계하지 않습니다.`,metrics:[["완료 세트",`${report.quizzes.length}세트`],["확인된 정답 / 문항",`${report.quizCorrect} / ${report.quizTotal}문항`],["문항 기준 정답률",accuracy]]})
   ].join("");
+}
+
+function monthlyReportStored(month){
+  return (state.monthlyReports||[]).findLast(row=>row?.month===month&&row?.view&&Array.isArray(row.view.kpis)&&Array.isArray(row.view.domains))||null;
+}
+function monthlyReportCaptureView(){
+  return {
+    kpis:[...$("monthlyReportKpis").children].map(card=>[card.querySelector("span")?.textContent||"",card.querySelector("strong")?.textContent||"",card.querySelector("small")?.textContent||""]),
+    insightTitle:$("monthlyReportInsightTitle").textContent,
+    insight:$("monthlyReportInsight").textContent,
+    domains:[...$("monthlyReportDomains").children].map(card=>({
+      tone:[...card.classList].find(name=>name.startsWith("tone-"))?.slice(5)||"finance",
+      eyebrow:card.querySelector(".monthly-report-domain-head span")?.textContent||"",
+      title:card.querySelector(".monthly-report-domain-head h3")?.textContent||"",
+      empty:card.querySelector(".monthly-report-domain-head b")?.textContent==="기록 없음",
+      headline:card.querySelector(".monthly-report-takeaway strong")?.textContent||"",
+      comment:card.querySelector(".monthly-report-speech p")?.textContent||"",
+      basis:card.querySelector(".monthly-report-basis p")?.textContent||"",
+      metrics:[...card.querySelectorAll(".monthly-report-metrics > div")].map(metric=>[metric.querySelector("span")?.textContent||"",metric.querySelector("strong")?.textContent||""])
+    }))
+  };
+}
+function monthlyReportPresentStored(row){
+  const view=row.view,tones=["finance","money","health","activity","culture","learning"];
+  $("monthlyReportKpis").innerHTML=view.kpis.filter(metric=>Array.isArray(metric)).map(([label,value,meta])=>`<div class="card monthly-report-kpi"><span>${esc(label)}</span><strong>${esc(value)}</strong><small>${esc(meta)}</small></div>`).join("");
+  $("monthlyReportInsightTitle").textContent=String(view.insightTitle||"");
+  $("monthlyReportInsight").textContent=String(view.insight||"");
+  $("monthlyReportDomains").innerHTML=view.domains.filter(domain=>domain&&Array.isArray(domain.metrics)).map(domain=>monthlyReportDomainCard({...domain,tone:tones.includes(domain.tone)?domain.tone:"finance",metrics:domain.metrics.filter(metric=>Array.isArray(metric))})).join("");
+  for(const id of ["monthlyReportKpis","monthlyReportInsightCard","monthlyReportDomains"])$(id).hidden=false;
+}
+function monthlyReportGenerate(month){
+  const current=monthlyReportKoreaDate().slice(0,7),report=monthlyReportSnapshot(month),previous=monthlyReportStored(month);
+  if(!monthlyReportDate(`${month}-01`)||month>=current||!report.recordCount)return;
+  if(previous&&!confirm(`${month} 보고서를 다시 생성할까요?\n기존 보고서 내용은 새 보고서로 교체됩니다. 원본 기록은 변경하지 않습니다.`))return;
+  monthlyReportBuildCurrent();
+  const row={month,generatedAt:new Date().toISOString(),format:1,view:monthlyReportCaptureView()},before=state.monthlyReports;
+  state.monthlyReports=[...(Array.isArray(before)?before:[]).filter(item=>item?.month!==month),row];
+  const result=save();
+  if(!result.ok){state.monthlyReports=before;alert("보고서 저장에 실패했습니다. 기존 보고서는 유지됩니다.");renderMonthlyReport();return}
+  renderMonthlyReport();toast(previous?"월간보고를 다시 생성했습니다.":"월간보고를 생성했습니다.");
+}
+function renderMonthlyReport(){
+  const input=$("monthlyReportMonth"),archive=$("monthlyReportArchive"),pending=$("monthlyReportPending");
+  if(!input||!archive||!pending)return;
+  monthlyReportRenderBoard();
+  const current=monthlyReportKoreaDate().slice(0,7),closedMonths=monthlyReportAvailableMonths().filter(month=>month<current);
+  const rows=(state.monthlyReports||[]).filter(row=>typeof row?.month==="string"&&row?.view&&monthlyReportDate(`${row.month}-01`)).sort((a,b)=>b.month.localeCompare(a.month));
+  if(!monthlyReportDate(`${monthlyReportMonth}-01`))monthlyReportMonth=rows[0]?.month||closedMonths.at(-1)||monthlyReportPrevMonth(current);
+  input.value=monthlyReportMonth;input.max=monthlyReportPrevMonth(current);
+  input.onchange=()=>{monthlyReportMonth=input.value||monthlyReportPrevMonth(current);renderMonthlyReport()};
+  archive.innerHTML=`<b>보관된 보고서</b>${rows.length?rows.map(row=>`<button type="button" data-monthly-archive="${esc(row.month)}" class="${row.month===monthlyReportMonth?"active":""}" aria-label="${esc(row.month)} 월간보고 열기">${esc(row.month)}</button>`).join(""):'<span>아직 생성된 보고서가 없습니다.</span>'}`;
+  archive.querySelectorAll("[data-monthly-archive]").forEach(button=>button.onclick=()=>{monthlyReportMonth=button.dataset.monthlyArchive;renderMonthlyReport()});
+  const stored=monthlyReportStored(monthlyReportMonth),closed=monthlyReportMonth<current,hasRecords=closed&&monthlyReportSnapshot(monthlyReportMonth).recordCount>0;
+  if(stored){
+    monthlyReportPresentStored(stored);
+  }else{
+    for(const id of ["monthlyReportKpis","monthlyReportInsightCard","monthlyReportDomains"])$(id).hidden=true;
+  }
+  const heading=stored?`${stored.month} 보고서 · 생성 완료`:`${monthlyReportMonth} 월간보고가 없습니다.`;
+  const description=stored?`생성 시각 ${formatDateTime(stored.generatedAt)}. 원본 기록이 바뀌어도 이 보고서는 자동으로 바뀌지 않습니다.`:closed?(hasRecords?"해당 월의 기록을 확인한 뒤 보고서를 생성할 수 있습니다.":"이 달에는 보고서로 만들 완료 기록이 없습니다."):"해당 월이 끝난 뒤에만 보고서를 생성할 수 있습니다.";
+  pending.hidden=false;
+  pending.innerHTML=`<h4>${esc(heading)}</h4><p>${esc(description)}</p><button type="button" id="monthlyReportGenerateBtn" ${hasRecords?"":"disabled"}>${stored?"보고서 다시 생성":"보고서 생성"}</button>`;
+  $("monthlyReportGenerateBtn").onclick=()=>monthlyReportGenerate(monthlyReportMonth);
 }
 
 
