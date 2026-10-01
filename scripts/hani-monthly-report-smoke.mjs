@@ -40,7 +40,7 @@ try{
     await page.evaluate(()=>{document.querySelector('#loginGate')?.style.setProperty('display','none','important');document.querySelector('#app')?.classList.remove('login-locked');document.querySelector('#app')?.setAttribute('aria-hidden','false')});
     await page.waitForTimeout(450);
     const labels=await page.locator('.office-group .group-body .nav-btn .txt').allTextContents();
-    assert.deepEqual(labels.slice(0,5),['인포데스크','경영회의실','월간 보고','사내 규칙','배포 센터'],`${viewport.name}: office IA order`);
+    assert.deepEqual(labels.slice(0,5),['인포데스크','경영회의실','라이프 리포트','사내 규칙','배포 센터'],`${viewport.name}: office IA order`);
     assert(await page.locator('#monthlyReport.view.active').count(),`${viewport.name}: monthly route active`);
     assert(await page.locator('#monthlyReportKpis').isHidden(),`${viewport.name}: no live dashboard before manual generation`);
     assert(await page.locator('#monthlyReportGenerateBtn').isEnabled(),`${viewport.name}: closed month can be generated`);
@@ -51,6 +51,9 @@ try{
     assert((await page.locator('#monthlyReport').innerText()).includes('-1.50kg'),`${viewport.name}: body delta`);
     assert((await page.locator('#monthlyReport').innerText()).includes('10,000보'),`${viewport.name}: steps average`);
     const reportText=await page.locator('#monthlyReport').innerText();
+    const typography=await page.locator('.monthly-report-domain').first().evaluate(card=>({comment:parseFloat(getComputedStyle(card.querySelector('.monthly-report-speech p')).fontSize),headline:parseFloat(getComputedStyle(card.querySelector('.monthly-report-takeaway strong')).fontSize),color:getComputedStyle(card.querySelector('.monthly-report-takeaway strong')).color}));
+    assert(typography.comment>=18&&typography.headline>=26,`${viewport.name}: readable presenter typography`);
+    assert.notEqual(typography.color,'rgb(245, 247, 255)',`${viewport.name}: domain-colored headline emphasis`);
     for(const text of ['시청 기록 1건','첫 측정 대비','62.5%','당시 목표 미보관','월간 핵심','집계 기준'])assert(reportText.includes(text),`${viewport.name}: ${text}`);
     assert(reportText.includes('40문항 중 25문항 정답이라 62.5%야'),`${viewport.name}: HINA interprets the verified result in character`);
     assert(!reportText.includes('미입력·0보는 평균에서 제외합니다'),`${viewport.name}: calculation note remains collapsed`);
