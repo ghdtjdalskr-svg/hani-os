@@ -1,0 +1,139 @@
+diff --git a/supabase/functions/hani-agent-orchestrator/index.ts b/supabase/functions/hani-agent-orchestrator/index.ts
+--- a/supabase/functions/hani-agent-orchestrator/index.ts
++++ b/supabase/functions/hani-agent-orchestrator/index.ts
+@@ -1,5 +1,5 @@
+ // PROJECT HANI
+-// hani-agent-orchestrator v1.9.2 · Meeting Character Voice Layer
++// hani-agent-orchestrator v1.9.3 · Meeting Character Voice Layer
+ // Phase 11: Adaptive Policy Engine v0.2 + confidence-weighted policy evidence.
+ // Learned rules are advisory heuristics that strengthen/weaken with evidence.
+ // Constitution / hard-stop governance remains representative-controlled.
+@@ -510,7 +510,43 @@
+   list.push({ agent_key, display_name, rank, role, reason, required });
+ }
+ 
+-function buildRouting(input: {
++const EXPLICIT_AGENT_ROSTER = [
++  { agent_key: "HANI", display_name: "하니", role: "CHIEF_OF_STAFF" },
++  { agent_key: "JIEUN", display_name: "지은", role: "FINANCE_RISK" },
++  { agent_key: "NAEUN", display_name: "나은", role: "HEALTH_REVIEW" },
++  { agent_key: "HINA", display_name: "히나", role: "STUDY_REVIEW" },
++  { agent_key: "SUA", display_name: "수아", role: "WORK_OPERATIONS" },
++  { agent_key: "HARU", display_name: "하루", role: "USER_EXPERIENCE" },
++  { agent_key: "MINJI", display_name: "민지", role: "DECISION_MEMORY" },
++  { agent_key: "SUYEON", display_name: "수연", role: "TRAVEL_SPORTS" },
++  { agent_key: "YUNA", display_name: "유나", role: "DATA_INTAKE" },
++];
++
++function explicitlyRequestedAgents(source: string): string[] {
++  const aliases: Record<string, string> = {
++    HANI: "HANI", JIEUN: "JIEUN", NAEUN: "NAEUN", HINA: "HINA",
++    SUA: "SUA", HARU: "HARU", MINJI: "MINJI", SUYEON: "SUYEON",
++    SOOYEON: "SUYEON", YUNA: "YUNA",
++    "하니": "HANI", "지은": "JIEUN", "나은": "NAEUN", "히나": "HINA",
++    "수아": "SUA", "하루": "HARU", "민지": "MINJI", "수연": "SUYEON", "유나": "YUNA",
++  };
++  const requested: string[] = [];
++  const namePattern = /(?<![A-Za-z가-힣])(SOOYEON|SUYEON|JIEUN|NAEUN|MINJI|HANI|HINA|HARU|YUNA|SUA|하니|지은|나은|히나|수아|하루|민지|수연|유나)(?:에게|하고|랑|와|과|의|가|이|는|은|를|을|도)?(?=$|[\s,，·/&])/gi;
++  for (const clause of String(source || "").slice(0, 6000).split(/[.!?。！？\n]+/)) {
++    if (!/(불러|소집|참여|함께|관점|의견|검토|논의|회의|물어봐|생각해)/i.test(clause)) continue;
++    for (const match of clause.matchAll(namePattern)) {
++      const key = aliases[match[1].toUpperCase()] || aliases[match[1]];
++      if (!key) continue;
++      const after = clause.slice((match.index || 0) + match[0].length);
++      if (/^\s*(빼|제외|부르지|소집하지|참여시키지)/.test(after)) continue;
++      if (key === "HARU" && /^\s*(동안|만|종일|정도|내내)/.test(after)) continue;
++      if (!requested.includes(key)) requested.push(key);
++    }
++  }
++  return requested;
++}
++
++function buildRouting(input: {
+   workflow: string;
+   risk_level: string;
+   title: string;
+@@ -688,15 +724,40 @@
+     verification_reason = "CRITICAL 위험도: Verification 강제";
+   }
+ 
+-  // Pilot concurrency cap: keep required specialists first, then optional specialists.
+-  if (selected.length > 5) {
+-    const requiredAgents = selected.filter((x) => x.required);
+-    const optionalAgents = selected.filter((x) => !x.required);
+-    selected.splice(0, selected.length, ...[...requiredAgents, ...optionalAgents].slice(0, 5));
+-  }
+-
+-  return {
+-    engine_version: "1.7.0",
++  // Representative-named participants are explicit requests, not inferred topic keywords.
++  const requestedAgents = explicitlyRequestedAgents(input.source_text || input.title);
++  const requestedExperts = requestedAgents.filter((key) => key !== "HANI");
++  for (const key of requestedExperts) {
++    const identity = EXPLICIT_AGENT_ROSTER.find((agent) => agent.agent_key === key);
++    if (!identity) continue;
++    const existing = selected.find((agent) => agent.agent_key === key);
++    if (existing) {
++      existing.required = true;
++      existing.reason += " · 대표 명시 요청";
++    } else {
++      addAgent(selected, key, identity.display_name, "대리", identity.role, "대표가 이 Agent의 관점을 명시 요청", true);
++    }
++  }
++  // Place named experts first for the limited cross-review speaker slots.
++  const ordered = [
++    ...selected.filter((agent) => agent.agent_key === "HANI"),
++    ...requestedExperts.map((key) => selected.find((agent) => agent.agent_key === key)).filter((agent): agent is RouteMember => !!agent),
++    ...selected.filter((agent) => agent.agent_key !== "HANI" && !requestedExperts.includes(agent.agent_key) && agent.required),
++    ...selected.filter((agent) => agent.agent_key !== "HANI" && !requestedExperts.includes(agent.agent_key) && !agent.required),
++  ];
++  const requiredCount = ordered.filter((agent) => agent.required).length;
++  const capacityConflict = requestedExperts.length > 3 || requiredCount > 5;
++  selected.splice(0, selected.length, ...ordered.slice(0, 5));
++
++  return {
++    engine_version: "1.7.1",
++    requested_agents: requestedAgents,
++    capacity_conflict: capacityConflict ? {
++      requested_experts: requestedExperts.length,
++      required_agents: requiredCount,
++      max_agents: 5,
++      max_cross_review_experts: 3,
++    } : null,
+     strategy: "MINIMUM_RELEVANT_AGENTS",
+     selected_agents: selected,
+     chair,
+@@ -3645,15 +3706,24 @@
+       }, 409);
+     }
+ 
+-    const routing = buildRouting({
+-      workflow: existingCase.workflow,
+-      risk_level: existingCase.risk_level,
+-      title: existingCase.title,
+-      source_text: existingCase.source_text,
+-      context: asObject(existingCase.context),
+-    });
+-
+-    const { data: updatedCase, error: updateError } = await admin
++    const routing = buildRouting({
++      workflow: existingCase.workflow,
++      risk_level: existingCase.risk_level,
++      title: existingCase.title,
++      source_text: existingCase.source_text,
++      context: asObject(existingCase.context),
++    });
++
++    if (routing.capacity_conflict) {
++      return json({
++        ok: false,
++        error: "REQUESTED_AGENTS_EXCEED_MEETING_CAPACITY",
++        message: "지명한 Agent와 필수 전문가가 회의 정원을 넘습니다. 한 번에 지명할 전문 Agent를 최대 3명으로 좁혀 새 안건으로 접수해 주세요.",
++        capacity: routing.capacity_conflict,
++      }, 422);
++    }
++
++    const { data: updatedCase, error: updateError } = await admin
+       .from("hani_agent_cases")
+       .update({
+         routing,
