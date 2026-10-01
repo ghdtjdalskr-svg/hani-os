@@ -3842,12 +3842,13 @@ let agentCasesCache=[];
 let agentActiveCaseId="";
 let agentDetailCache=null;
 let agentWorkspaceBusy=false;
+let agentLiveCaseId="";
 let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0,learning:0,active:0,adaptive:0,established:0}};
 
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.149";
+const HANI_DISPLAY_VERSION="2.9.150";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
@@ -3859,7 +3860,7 @@ function agentArray(v){return Array.isArray(v)?v:[]}
 function agentObj(v){return v&&typeof v==="object"&&!Array.isArray(v)?v:{}}
 function agentFmtDate(v){if(!v)return "-";const d=new Date(v);if(Number.isNaN(d.getTime()))return String(v);return new Intl.DateTimeFormat("ko-KR",{month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"}).format(d)}
 function agentFriendlyWork(message=""){const m=String(message||"");if(/Router v2.*의도|안건 의도 분석/i.test(m))return {agent:"hani",title:"하니가 요청을 이해하는 중",step:"HANI · REQUEST UNDERSTANDING",message:"무슨 검토가 필요한지 정리하고 담당 팀을 고르고 있어요."};if(/Router v2 재분류|재분류/i.test(m))return {agent:"hani",title:"하니가 추가 답변을 반영하는 중",step:"HANI · REQUEST UPDATE",message:"오빠 답변을 반영해서 검토 방향을 다시 정리하고 있어요."};if(/안건 접수/i.test(m))return {agent:"sua",title:"수아가 안건을 접수하는 중",step:"SUA · CASE INTAKE",message:"검토 기록을 만들고 다음 담당자에게 넘길 준비를 하고 있어요."};if(/담당 Agent 배정/i.test(m))return {agent:"hani",title:"하니가 담당 팀을 배정하는 중",step:"HANI · TEAM ROUTING",message:"필요한 전문 Agent만 골라서 업무를 나누고 있어요."};if(/전문 Agent.*심의|전문 심의/i.test(m))return {agent:"hani",title:"담당 Agent들이 의견을 모으는 중",step:"AI TEAM · REVIEW",message:"각 담당자가 자기 영역에서 검토한 뒤 하니에게 의견을 올리고 있어요."};if(/External Research|Research/i.test(m))return {agent:"haru",title:"필요한 최신 정보를 확인하는 중",step:"AI TEAM · RESEARCH",message:"구매 후보와 외부 정보를 확인해 판단 근거를 보강하고 있어요."};if(/Verification|HINA|검증|Gate/i.test(m))return {agent:"hina",title:"히나가 검증하고 하니가 종합하는 중",step:"HINA · VERIFICATION",message:"빠진 조건·충돌·근거를 확인한 뒤 대표 결재안으로 정리하고 있어요."};const agent=haniWorkAgentKey(m);return {agent,title:m||"AI TEAM이 작업 중",step:agent==="hina"?"HINA · VERIFICATION":"AI TEAM · WORKING",message:"현재 단계를 처리하고 있어요. 완료되면 결과 화면으로 자연스럽게 이어집니다."}}
-function agentSetBusy(busy,message=""){agentWorkspaceBusy=busy;const view=$("agentReview");if(view)view.classList.toggle("agent-busy",busy);const f=agentFriendlyWork(message);const pill=$("agentWorkspaceState");if(pill)pill.innerHTML=busy?`<span class="agent-loading">${esc(f.title)}</span>`:"AGENT WORKSPACE";if(busy)haniWorkShow(f);else haniWorkHide()}
+function agentSetBusy(busy,message=""){agentWorkspaceBusy=busy;const view=$("agentReview");if(view)view.classList.toggle("agent-busy",busy&&!agentLiveCaseId);const submit=$("agentSubmitRequest");if(submit)submit.disabled=busy;const f=agentFriendlyWork(message);const pill=$("agentWorkspaceState");if(pill)pill.innerHTML=busy?`<span class="agent-loading">${esc(f.title)}</span>`:"AGENT WORKSPACE";if(busy&&!agentLiveCaseId)haniWorkShow(f);else haniWorkHide(agentLiveCaseId?0:320)}
 function agentRequireCloud(){if(!cloudClient||!cloudUser){const box=$("agentCaseList");if(box)box.innerHTML='<div class="empty">먼저 HANI OS Cloud 로그인을 완료해 주세요.</div>';return false}return true}
 async function agentApi(action,payload={}){
   if(!agentRequireCloud())throw new Error("Cloud 로그인이 필요합니다.");
@@ -4116,6 +4117,7 @@ async function agentResumeReview(){
   try{
     if(researchPolicy!=="NONE"){agentSetBusy(true,"대표 목적/환경 반영 · AI 구매팀 Research 갱신 중");await agentApi("research_case",{case_id:c.id,force_refresh:true,reason:"RECOVER_AFTER_DUPLICATE_ROUND"})}
     agentSetBusy(true,`${nextRound}차 전문 Agent 재심의 중`);await agentApi("run_reviews",{case_id:c.id,review_round:nextRound});
+    agentSetBusy(true,"전문 Agent 교차 검토 중");await agentApi("run_cross_review",{case_id:c.id,review_round:nextRound});
     agentSetBusy(true,"Decision Readiness · 하니 재검토 중");await agentApi("verify_and_synthesize",{case_id:c.id,force_reverify:true});
     toast(`${nextRound}차 재검토를 이어서 완료했습니다.`);await agentLoadCases({selectId:c.id})
   }catch(e){console.error("Resume Agent review",e);alert("중단된 재검토 복구 중 오류가 발생했습니다.\n"+(e?.message||e));await agentLoadCases({selectId:c.id}).catch(()=>{})}
@@ -4126,6 +4128,28 @@ function agentQuestionsHtml(v,h,c){
   if(!["REVIEW_COMPLETE","ANALYZING","HELD"].includes(c.status))return `<div class="agent-subsection"><div class="agent-subsection-title"><b>대표 추가정보</b></div>${agentListHtml(questions.map(item=>item.text))}</div>`;
   if(!asking.length)return `<div class="agent-subsection agent-readiness-optional"><div class="agent-subsection-title"><b>비필수 참고 정보</b><span class="agent-status">진행 가능</span></div>${agentListHtml(questions.map(item=>item.text))}<div class="agent-question agent-additional-condition"><div class="agent-question-label"><span>OPTIONAL INPUT</span><b>추가로 반영할 조건</b></div><textarea id="agentAdditionalCondition" placeholder="새 조건이 있다면 적어주세요. (선택)"></textarea></div><div class="sub" style="margin-top:8px">이 정보가 없어도 합리적인 기본값 또는 미확인 표시로 진행할 수 있습니다.</div><div class="form-actions"><button class="btn primary" id="agentSubmitAnswers" type="button">조건 반영하고 재검토</button><button class="btn" id="agentOptionalGateRecheck" type="button">현재 정보로 다시 확인</button></div></div>`;
   return `<div class="agent-subsection agent-readiness-questions"><div class="agent-subsection-title"><b>결론을 바꿀 수 있는 질문 · BLOCKING</b><span class="agent-status warn">이번 ${asking.length}개</span></div><div class="agent-question-list">${asking.map((q,i)=>`<div class="agent-question" data-question-kind="${esc(q.kind)}"><div class="agent-question-label"><span>BLOCKING</span><b>${i+1}. ${esc(q.text)}</b></div><textarea data-agent-answer="${i}" data-agent-question="${esc(q.text)}" placeholder="답변을 입력하세요"></textarea></div>`).join("")}</div><div class="agent-question agent-additional-condition"><div class="agent-question-label"><span>OPTIONAL INPUT</span><b>추가로 반영할 조건</b></div><textarea id="agentAdditionalCondition" placeholder="예: 호텔은 난바역 근처로 할게. (선택)"></textarea></div><div class="form-actions"><button class="btn primary" id="agentSubmitAnswers" type="button">같은 Case에 답변 반영</button></div><div class="sub" style="margin-top:8px">${blocking.length>2?`질문을 한꺼번에 늘리지 않기 위해 우선순위가 높은 2개만 표시합니다. 답변 후 남은 ${blocking.length-2}개를 다시 판정합니다.`:"답변과 추가 조건을 같은 Case Context에 누적한 뒤 Decision Readiness를 다시 확인합니다."}</div></div>`;
+}
+function agentCrossReviewResumeHtml(c,h,reviews,events){
+  const round=agentLatestReviewRound(reviews),saved=agentArray(events).some(event=>event.event_type==="CROSS_REVIEW_COMPLETED"&&Number(agentObj(event.payload).review_round)===round);
+  if(c.status!=="REVIEW_COMPLETE"||!round||Object.keys(agentObj(h)).length)return "";
+  return `<div class="agent-subsection"><div class="agent-subsection-title"><b>저장된 검토에서 회의 이어가기</b><span class="agent-status warn">RECOVERY</span></div><div class="agent-check">${saved?"교차 검토 발언도 저장되어 있습니다. 결론 준비부터 이어갈 수 있습니다.":"독립 검토 의견은 안전하게 저장되어 있습니다. 이어서 실제 교차 검토와 결정 준비를 진행할 수 있습니다."}</div><div class="form-actions"><button class="btn primary" id="agentResumeCrossReview" type="button">회의 이어가기</button></div></div>`;
+}
+async function agentResumeCrossReview(){
+  const c=agentDetailCache?.case;if(!c)return;let round=agentLatestReviewRound(agentDetailCache.reviews||[]);
+  try{
+    agentLiveCaseId=c.id;agentSetBusy(true,"전문 Agent 교차 검토 재개 중");window.haniOfficeLiveStage?.({stage:"CROSS_REVIEW"});
+    const cross=await agentApi("run_cross_review",{case_id:c.id,review_round:round});window.haniOfficeLiveStage?.({stage:"CROSS_REVIEW",cross_review:cross.conversation});
+    agentSetBusy(true,"Decision Readiness 사전 점검 중");const preflight=await agentApi("preflight_case",{case_id:c.id}),questions=agentArray(preflight.human_required_questions),items=agentArray(preflight.research_required_items),status=String(agentObj(preflight.verification).decision_status||"READY");
+    if(questions.length||["HOLD","UNRESOLVED"].includes(status)||(status==="NEED_RESEARCH"&&!items.length)){await agentLoadCases({selectId:c.id});window.haniOfficeLiveStage?.({stage:questions.length?"NEED_USER_INFO":status});return}
+    const router=agentObj(agentObj(c.context).router_v2),policy=String(router.external_research||"NONE").toUpperCase();
+    if(round===1&&(policy!=="NONE"||(preflight.can_auto_research&&items.length))){
+      agentSetBusy(true,"필요한 자료 확인 중");window.haniOfficeLiveStage?.({stage:"RESEARCH"});await agentApi("research_case",{case_id:c.id,force_refresh:true,reason:"CROSS_REVIEW_RECOVERY"});
+      round++;agentSetBusy(true,`${round}차 전문 Agent 재심의 중`);const next=await agentApi("run_reviews",{case_id:c.id,review_round:round});window.haniOfficeLiveStage?.({stage:"MEETING_ROUND_2",reviews:[...agentArray(agentDetailCache.reviews),...agentArray(next.reviews)]});
+      agentSetBusy(true,"전문 Agent 재교차 검토 중");const nextCross=await agentApi("run_cross_review",{case_id:c.id,review_round:round});window.haniOfficeLiveStage?.({stage:"CROSS_REVIEW",cross_review:nextCross.conversation});
+    }
+    agentSetBusy(true,"하니 결론 정리 중");window.haniOfficeLiveStage?.({stage:"SYNTHESIZING"});await agentApi("verify_and_synthesize",{case_id:c.id,force_reverify:true});await agentLoadCases({selectId:c.id});window.haniOfficeLiveStage?.({stage:agentDetailCache?.case?.status==="AWAITING_APPROVAL"?"READY":"HELD"});
+  }catch(e){console.error("Resume cross review",e);window.haniOfficeLiveStage?.({stage:"ERROR"});alert("회의를 이어가지 못했습니다. 기존 검토는 보존됩니다.\n"+(e?.message||e));await agentLoadCases({selectId:c.id}).catch(()=>{})}
+  finally{agentLiveCaseId="";agentSetBusy(false)}
 }
 function agentApprovedWishDraft(c,h){const ctx=agentObj(c?.context),research=agentObj(ctx.external_research),proc=agentObj(research.procurement),candidates=agentArray(research.candidate_options),scorecard=agentPurchaseScorecard(h),selection=String(scorecard.haniPick||h?.product_selection||"").trim(),selectionNorm=selection.toLocaleLowerCase("ko-KR").replace(/\s+/g,""),picked=candidates.find(x=>selectionNorm&&String(x?.name||"").toLocaleLowerCase("ko-KR").replace(/\s+/g,"")&&selectionNorm.includes(String(x?.name||"").toLocaleLowerCase("ko-KR").replace(/\s+/g,"")))||candidates[0]||null,name=String(picked?.name||selection||c?.title||"승인 구매 후보").replace(/^(1순위|우선 검토)\s*[:·-]?\s*/i,"").trim(),reason=agentSafeText(h?.summary||h?.executive_summary||h?.purchase_eligibility||"AI TEAM 구매 검토 후 대표 승인",260),note=[c?.case_code?`경영회의실 ${c.case_code} 승인`:"경영회의실 승인",selection&&selection!==name?`결론: ${selection}`:"",picked?.fit?`적합성: ${picked.fit}`:""].filter(Boolean).join(" · ");return normalizeWishItem({kind:"item",name,category:String(picked?.category||proc.recommended_category||"기타"),price:picked?.observed_price_krw??null,priority:"medium",status:"consider",reason,note,sourceType:"agent",sourceLabel:String(c?.case_code||c?.id||""),createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()})}
 function agentWishAlreadySynced(c,draft=null){const key=String(c?.case_code||c?.id||""),nameKey=String(draft?.name||"").toLocaleLowerCase("ko-KR").replace(/[\s·\-_/()\[\]{}:："'“”‘’.,]+/g,"");return Boolean((state.wishlistItems||[]).some(x=>(key&&x.sourceType==="agent"&&x.sourceLabel===key)||(nameKey&&String(x.name||"").toLocaleLowerCase("ko-KR").replace(/[\s·\-_/()\[\]{}:："'“”‘’.,]+/g,"")===nameKey)))}
@@ -4149,6 +4173,7 @@ function renderAgentCaseDetail(){
     <div class="agent-subsection"><div class="agent-subsection-title"><b>전문 Agent 의견</b><span class="agent-status">${agentLatestReviewRound(reviews)}차 Review</span></div><div class="agent-position-list">${agentPositionsHtml(h,reviews)}</div></div>
     ${agentActionGuideHtml(c,h,v,reviews)}
     ${agentResumeHtml(c,h,v,reviews)}
+    ${agentCrossReviewResumeHtml(c,h,reviews,events)}
     ${agentInternalContextHtml(c)}
     ${agentAppliedPolicyHtml(c)}
     ${agentPolicyEvidenceHtml(h)}
@@ -4158,7 +4183,7 @@ function renderAgentCaseDetail(){
     ${agentPolicyLearningHtml(c,h)}
     ${agentQuestionsHtml(v,h,c)}
     <div class="agent-decision-dock ${overrideMode?"override-mode":""} ${dockCollapsed?"is-collapsed":""}" id="agentDecisionDock"><div class="row start agent-decision-dock-head"><div><b>성민 대표님 최종 결재</b><div class="sub">${ready?"Decision Readiness를 통과해 승인할 수 있습니다.":`${agentReadinessDescription(readiness)} 승인 버튼은 잠겨 있습니다.`} · Life OS ${esc(lifeStatus)}</div></div><div class="agent-decision-dock-head-actions"><span class="agent-status ${ready?"ok":"warn"}">${esc(readiness.label)}</span><button class="btn sm agent-decision-dock-toggle" id="agentDecisionDockToggle" type="button" aria-expanded="${dockCollapsed?"false":"true"}" title="${dockCollapsed?"최종 결재창 펼치기":"최종 결재창 접기"}">${dockCollapsed?"▴ 펼치기":"▾ 접기"}</button></div></div><div class="agent-decision-dock-body">${overrideMode?`<div class="form-actions" style="margin:10px 0 2px"><button class="btn" id="agentGateRecheck" type="button">↻ Decision Readiness 다시 확인</button></div>`:""}<div class="agent-note"><textarea id="agentRepresentativeNote" placeholder="선택 메모 · 보류/반려/수정 요청 사유를 남겨주세요."></textarea></div><div class="agent-decision-actions"><button class="btn approve" data-agent-decision="APPROVE" type="button" ${canApprove?"":"disabled"} title="${canApprove?"Decision 승인":"Decision Readiness 통과 후 승인할 수 있습니다."}">✓ 승인</button><button class="btn hold" data-agent-decision="HOLD" type="button" ${canDecide?"":"disabled"}>⏸ 보류</button><button class="btn danger" data-agent-decision="REJECT" type="button" ${canDecide?"":"disabled"}>✕ 반려</button><button class="btn" data-agent-decision="REVISION_REQUESTED" type="button" ${canDecide?"":"disabled"}>↺ 수정 요청</button></div>${latestDecision?`<div class="agent-last-decision"><b>최근 대표 결정 · ${esc(AGENT_DECISION_LABELS[latestDecision.representative_decision]||latestDecision.representative_decision)}</b><br>${esc(agentFmtDate(latestDecision.decided_at))} · AI 권고 ${esc(AGENT_VERDICT_LABELS[latestDecision.ai_recommendation]||latestDecision.ai_recommendation||"-")} · Override ${latestDecision.override?"YES":"NO"} · Life OS ${esc(lifeStatus)}</div>`:""}${wishEligible?`<div class="agent-life-actions"><div><b>${wishSynced?"✓ Wish-list 반영 완료":"승인 결과를 Life OS에 반영할까요?"}</b><span>${wishSynced?"이 안건에서 선택한 구매 후보가 Wish-list에 연결되어 있습니다.":"대표 승인은 판단 이력만 남깁니다. 아래 버튼을 눌러야 실제 Wish-list에 후보가 저장됩니다."}</span></div><button class="btn ${wishSynced?"":"primary"}" id="agentSendToWishlist" type="button">${wishSynced?"Wish-list 열기":"♥ Wish-list에 담기"}</button></div>`:""}</div></div>`;
-  if($("agentDecisionDockToggle"))$("agentDecisionDockToggle").onclick=agentToggleDecisionDock;root.querySelectorAll("[data-agent-decision]").forEach(b=>b.onclick=()=>agentRecordDecision(b.dataset.agentDecision));if($("agentSubmitAnswers"))$("agentSubmitAnswers").onclick=agentSubmitAnswers;if($("agentFinalizeCurrent"))$("agentFinalizeCurrent").onclick=agentFinalizeWithCurrentContext;if($("agentGateRecheck"))$("agentGateRecheck").onclick=agentRecheckReadiness;if($("agentOptionalGateRecheck"))$("agentOptionalGateRecheck").onclick=agentRecheckReadiness;if($("agentResumeReview"))$("agentResumeReview").onclick=agentResumeReview;if($("agentSyncPolicyCandidates"))$("agentSyncPolicyCandidates").onclick=agentSyncCasePolicyCandidates;if($("agentSendToWishlist"))$("agentSendToWishlist").onclick=()=>wishSynced?showView("wishlist"):agentSendApprovedPurchaseToWishlist();
+  if($("agentDecisionDockToggle"))$("agentDecisionDockToggle").onclick=agentToggleDecisionDock;root.querySelectorAll("[data-agent-decision]").forEach(b=>b.onclick=()=>agentRecordDecision(b.dataset.agentDecision));if($("agentSubmitAnswers"))$("agentSubmitAnswers").onclick=agentSubmitAnswers;if($("agentFinalizeCurrent"))$("agentFinalizeCurrent").onclick=agentFinalizeWithCurrentContext;if($("agentGateRecheck"))$("agentGateRecheck").onclick=agentRecheckReadiness;if($("agentOptionalGateRecheck"))$("agentOptionalGateRecheck").onclick=agentRecheckReadiness;if($("agentResumeReview"))$("agentResumeReview").onclick=agentResumeReview;if($("agentResumeCrossReview"))$("agentResumeCrossReview").onclick=agentResumeCrossReview;if($("agentSyncPolicyCandidates"))$("agentSyncPolicyCandidates").onclick=agentSyncCasePolicyCandidates;if($("agentSendToWishlist"))$("agentSendToWishlist").onclick=()=>wishSynced?showView("wishlist"):agentSendApprovedPurchaseToWishlist();
   window.haniOfficeLiveUpdate?.(agentDetailCache);
 }
 async function agentRecordDecision(decision){
@@ -4168,7 +4193,7 @@ async function agentRecordDecision(decision){
     if(!note)return alert("어떻게 고칠지 자연어로 적어 주세요. 예: ‘가격은 150만원 기준으로 보고, 나머지 조건은 그대로 유지해줘.’");
     const previousRound=agentLatestReviewRound(agentDetailCache?.reviews||[]),nextRound=Math.max(2,previousRound+1),router=agentObj(agentObj(c.context).router_v2),researchPolicy=String(router.external_research||"NONE").toUpperCase();
     if(!confirm(`수정 요청을 반영해 ${nextRound}차 재검토할까요?\n\n“${note}”\n\n• 기존 Review/근거는 삭제하지 않습니다.\n• 언급하지 않은 조건은 그대로 유지합니다.\n• 수정 요청만 새 대표 Context로 추가합니다.`))return;
-    try{agentSetBusy(true,"대표 수정 요청 기록 중");await agentApi("representative_decision",{case_id:c.id,representative_decision:"REVISION_REQUESTED",representative_note:note});if(researchPolicy!=="NONE"){agentSetBusy(true,"수정 조건 반영 · 필요한 Research 갱신 중");await agentApi("research_case",{case_id:c.id,force_refresh:true,reason:"REPRESENTATIVE_REVISION_REQUESTED"})}agentSetBusy(true,`${nextRound}차 전문 Agent 재심의 중`);await agentApi("run_reviews",{case_id:c.id,review_round:nextRound});agentSetBusy(true,"Verification · 하니 수정안 재종합 중");await agentApi("verify_and_synthesize",{case_id:c.id,force_reverify:true});if($("agentRepresentativeNote"))$("agentRepresentativeNote").value="";toast("수정 요청을 이력에 남기고, 요청한 부분만 반영해 결재안을 다시 만들었습니다.");await agentLoadCases({selectId:c.id})}catch(e){console.error("Representative revision",e);alert("자연어 수정 반영 중 오류가 발생했습니다.\n"+(e?.message||e));await agentLoadCases({selectId:c.id}).catch(()=>{})}finally{agentSetBusy(false)}return;
+    try{agentSetBusy(true,"대표 수정 요청 기록 중");await agentApi("representative_decision",{case_id:c.id,representative_decision:"REVISION_REQUESTED",representative_note:note});if(researchPolicy!=="NONE"){agentSetBusy(true,"수정 조건 반영 · 필요한 Research 갱신 중");await agentApi("research_case",{case_id:c.id,force_refresh:true,reason:"REPRESENTATIVE_REVISION_REQUESTED"})}agentSetBusy(true,`${nextRound}차 전문 Agent 재심의 중`);await agentApi("run_reviews",{case_id:c.id,review_round:nextRound});agentSetBusy(true,"전문 Agent 재교차 검토 중");await agentApi("run_cross_review",{case_id:c.id,review_round:nextRound});agentSetBusy(true,"Verification · 하니 수정안 재종합 중");await agentApi("verify_and_synthesize",{case_id:c.id,force_reverify:true});if($("agentRepresentativeNote"))$("agentRepresentativeNote").value="";toast("수정 요청을 이력에 남기고, 요청한 부분만 반영해 결재안을 다시 만들었습니다.");await agentLoadCases({selectId:c.id})}catch(e){console.error("Representative revision",e);alert("자연어 수정 반영 중 오류가 발생했습니다.\n"+(e?.message||e));await agentLoadCases({selectId:c.id}).catch(()=>{})}finally{agentSetBusy(false)}return;
   }
   if(["HOLD","REJECT"].includes(decision)&&!note)return alert(`${label} 이유를 한 줄이라도 남겨 주세요. 이후 Decision Feedback에서 참고합니다.`);
   const msg=decision==="APPROVE"?`「${c.title}」을 승인할까요?\n\n승인은 대표 결정 이력만 기록합니다.\n구매안건은 승인 후 ‘Wish-list에 담기’를 눌러야 Life OS에 반영됩니다.`:`「${c.title}」을 ${label} 처리할까요?\n\n이유: ${note}\n기존 Review와 결정 이력은 보존됩니다.`;
@@ -4193,19 +4218,23 @@ async function agentSubmitAnswers(){
   const c=agentDetailCache?.case;if(!c)return;const answers=[...document.querySelectorAll("[data-agent-answer]")].map(el=>({question:String(el.dataset.agentQuestion||"").trim(),answer:el.value.trim()})),additionalCondition=$("agentAdditionalCondition")?.value.trim()||"";
   if(!answers.length&&!additionalCondition)return alert("추가할 조건을 입력해 주세요.");
   if(answers.some(x=>!x.answer))return alert("대표 추가질문에 모두 답변해 주세요.");if(!confirm("답변을 Case Context에 반영하고 재검토를 진행할까요?"))return;
+  const priorReviews=agentArray(agentDetailCache?.reviews),showStage=(stage,extra={})=>{if(agentActiveCaseId===c.id)window.haniOfficeLiveStage?.({stage,...extra})};agentLiveCaseId=c.id;
   try{
     const previousRound=agentLatestReviewRound(agentDetailCache?.reviews||[]),nextRound=Math.max(2,previousRound+1);
-    agentSetBusy(true,"대표 답변 반영 중");await agentApi("apply_representative_context",{case_id:c.id,representative_context:{qa:answers,additional_condition:additionalCondition,supplied_at:new Date().toISOString(),source:"HANI_OS_AGENT_UI",previous_review_round:previousRound}});
+    agentSetBusy(true,"대표 답변 반영 중");showStage("PREFLIGHT");await agentApi("apply_representative_context",{case_id:c.id,representative_context:{qa:answers,additional_condition:additionalCondition,supplied_at:new Date().toISOString(),source:"HANI_OS_AGENT_UI",previous_review_round:previousRound}});
     const router=agentObj(agentObj(c.context).router_v2),researchPolicy=String(router.external_research||"NONE").toUpperCase();
-    if(researchPolicy!=="NONE"){agentSetBusy(true,"대표 목적/환경 반영 · AI 구매팀 Research 갱신 중");await agentApi("research_case",{case_id:c.id,force_refresh:true,reason:"REPRESENTATIVE_CONTEXT_UPDATED"})}
-    agentSetBusy(true,`${nextRound}차 전문 Agent 재심의 중`);await agentApi("run_reviews",{case_id:c.id,review_round:nextRound});
-    agentSetBusy(true,"Decision Readiness 재확인 중");await agentApi("verify_and_synthesize",{case_id:c.id,force_reverify:true});
-    await agentLoadCases({selectId:c.id})
-  }catch(e){console.error("Representative answers",e);alert("답변 반영/재검토 중 오류가 발생했습니다.\n"+(e?.message||e))}
-  finally{agentSetBusy(false)}
+    if(researchPolicy!=="NONE"){agentSetBusy(true,"대표 목적/환경 반영 · AI 구매팀 Research 갱신 중");showStage("RESEARCH");await agentApi("research_case",{case_id:c.id,force_refresh:true,reason:"REPRESENTATIVE_CONTEXT_UPDATED"})}
+    agentSetBusy(true,`${nextRound}차 전문 Agent 재심의 중`);showStage("MEETING_ROUND_2");const revised=await agentApi("run_reviews",{case_id:c.id,review_round:nextRound});showStage("REVIEW_COMPLETE",{reviews:[...priorReviews,...agentArray(revised.reviews)]});
+    agentSetBusy(true,"전문 Agent 교차 검토 중");showStage("CROSS_REVIEW");const cross=await agentApi("run_cross_review",{case_id:c.id,review_round:nextRound});showStage("CROSS_REVIEW",{cross_review:cross.conversation});
+    agentSetBusy(true,"Decision Readiness 재확인 중");showStage("SYNTHESIZING");await agentApi("verify_and_synthesize",{case_id:c.id,force_reverify:true});
+    await agentLoadCases({selectId:c.id});const finalCase=agentDetailCache?.case,finalStatus=String(agentObj(finalCase?.verification).decision_status||"").toUpperCase();showStage(finalCase?.status==="AWAITING_APPROVAL"?"READY":stageLabelsFallback(finalStatus,finalCase?.status))
+  }catch(e){console.error("Representative answers",e);showStage("ERROR");alert("답변 반영/재검토 중 오류가 발생했습니다.\n"+(e?.message||e))}
+  finally{agentLiveCaseId="";agentSetBusy(false)}
 }
 async function agentSubmitNewRequest(){
   const input=$("agentRequestInput"),text=input?.value.trim()||"";if(!text)return alert("AI TEAM에 맡길 요청을 입력해 주세요.");
+  let createdId="",liveCase=null;const liveReviews=[];
+  const showStage=(stage,extra={})=>{if(createdId&&agentActiveCaseId===createdId)window.haniOfficeLiveStage?.({stage,reviews:liveReviews,...extra})};
   try{
     agentSetBusy(true,"요청 의도 분석 중");
     let classified=await agentApi("classify_request",{source_text:text}),router=agentObj(classified.router),routerSource=text;
@@ -4217,21 +4246,31 @@ async function agentSubmitNewRequest(){
     if(!confirm(`새 Agent 안건으로 접수할까요?\n\n${agentRouterLabel(router)}\n\n※ HANI OS 내부자료는 읽기 전용 요약만 Case Context에 첨부됩니다.\n※ AI/API 비용이 발생할 수 있습니다.`))return;
     agentSetBusy(true,"안건 접수 중");
     const created=await agentApi("create_case",{workflow:router.primary_intent||"GENERAL_REVIEW",title:agentTitleFromText(text),risk_level:router.risk_level||"LOW",source_type:"USER_TEXT",source_text:text,context:{origin:"HANI_OS_AGENT_UI",ui_version:HANI_DISPLAY_VERSION,router_v2:router,internal_data:internalData,router_source_with_answers:routerSource!==text?routerSource:undefined}}),id=created.case?.id;if(!id)throw new Error("생성된 Case ID를 확인하지 못했습니다.");
-    agentSetBusy(true,"담당 Agent 배정 중");await agentApi("route_case",{case_id:id});
-    agentSetBusy(true,"전문 Agent 1차 심의 중");await agentApi("run_reviews",{case_id:id,review_round:1});
+    createdId=id;liveCase={...created.case,id,title:created.case?.title||agentTitleFromText(text)};agentLiveCaseId=id;agentActiveCaseId=id;agentDetailCache=null;
+    const detail=$("agentCaseDetail");if(detail)detail.innerHTML='<div class="agent-detail-empty">안건을 접수했습니다. 회의실에서 검토 진행을 확인해 주세요.</div>';
+    haniWorkHide(0);showStage("INTAKE",{case:liveCase});showStage("ROUTING");
+    agentSetBusy(true,"담당 Agent 배정 중");const routed=await agentApi("route_case",{case_id:id});
+    liveCase={...liveCase,...agentObj(routed.case)};showStage("SUMMONING",{case:liveCase,selected_agents:agentArray(routed.selected_agents)});
+    agentSetBusy(true,"전문 Agent 1차 심의 중");showStage("MEETING_ROUND_1");const firstReview=await agentApi("run_reviews",{case_id:id,review_round:1});
+    liveReviews.push(...agentArray(firstReview.reviews));showStage("REVIEW_COMPLETE");
+    agentSetBusy(true,"전문 Agent 교차 검토 중");showStage("CROSS_REVIEW");const firstCross=await agentApi("run_cross_review",{case_id:id,review_round:1});showStage("CROSS_REVIEW",{cross_review:firstCross.conversation});
     const researchPolicy=String(router.external_research||"NONE").toUpperCase();
-    agentSetBusy(true,"Decision Readiness 사전 점검 중");const preflight=await agentApi("preflight_case",{case_id:id}),humanQs=agentArray(preflight.human_required_questions),researchItems=agentArray(preflight.research_required_items),preflightStatus=String(agentObj(preflight.verification).decision_status||"READY");
-    if(humanQs.length){if(input)input.value="";toast("결론을 바꿀 수 있는 핵심 정보가 필요합니다. 같은 Case에서 이어갑니다.");await agentLoadCases({selectId:id});return}
-    if(["HOLD","UNRESOLVED"].includes(preflightStatus)||(preflightStatus==="NEED_RESEARCH"&&!researchItems.length)){if(input)input.value="";toast(`${AGENT_READINESS_LABELS[preflightStatus]||preflightStatus} 상태로 Case를 안전하게 보존했습니다.`);await agentLoadCases({selectId:id});return}
+    agentSetBusy(true,"Decision Readiness 사전 점검 중");showStage("PREFLIGHT");const preflight=await agentApi("preflight_case",{case_id:id}),humanQs=agentArray(preflight.human_required_questions),researchItems=agentArray(preflight.research_required_items),preflightStatus=String(agentObj(preflight.verification).decision_status||"READY");
+    if(humanQs.length){if(input)input.value="";showStage("NEED_USER_INFO");toast("결론을 바꿀 수 있는 핵심 정보가 필요합니다. 같은 Case에서 이어갑니다.");await agentLoadCases({selectId:id});return}
+    if(["HOLD","UNRESOLVED"].includes(preflightStatus)||(preflightStatus==="NEED_RESEARCH"&&!researchItems.length)){if(input)input.value="";showStage(preflightStatus);toast(`${AGENT_READINESS_LABELS[preflightStatus]||preflightStatus} 상태로 Case를 안전하게 보존했습니다.`);await agentLoadCases({selectId:id});return}
     if(researchPolicy==="REQUIRED"||researchPolicy==="IF_NEEDED"||(preflight.can_auto_research&&researchItems.length)){
-      agentSetBusy(true,"필요한 최신 자료 확인 중");await agentApi("research_case",{case_id:id,force_refresh:true,reason:"READINESS_PREFLIGHT_PASSED"});
-      agentSetBusy(true,"Research 반영 2차 전문 심의 중");await agentApi("run_reviews",{case_id:id,review_round:2});
+      agentSetBusy(true,"필요한 최신 자료 확인 중");showStage("RESEARCH");await agentApi("research_case",{case_id:id,force_refresh:true,reason:"READINESS_PREFLIGHT_PASSED"});
+      agentSetBusy(true,"Research 반영 2차 전문 심의 중");showStage("MEETING_ROUND_2");const secondReview=await agentApi("run_reviews",{case_id:id,review_round:2});
+      liveReviews.push(...agentArray(secondReview.reviews));showStage("REVIEW_COMPLETE");
+      agentSetBusy(true,"전문 Agent 재교차 검토 중");showStage("CROSS_REVIEW");const secondCross=await agentApi("run_cross_review",{case_id:id,review_round:2});showStage("CROSS_REVIEW",{cross_review:secondCross.conversation});
     }
-    agentSetBusy(true,"Decision Readiness · 하니 종합 판단 중");await agentApi("verify_and_synthesize",{case_id:id,force_reverify:true});
-    if(input)input.value="";toast("Decision Readiness 점검을 완료했습니다.");await agentLoadCases({selectId:id})
-  }catch(e){console.error("New Agent request",e);alert("AI TEAM 검토 중 오류가 발생했습니다.\\n"+(e?.message||e));await agentLoadCases().catch(()=>{})}
-  finally{agentSetBusy(false)}
+    agentSetBusy(true,"Decision Readiness · 하니 종합 판단 중");showStage("SYNTHESIZING");await agentApi("verify_and_synthesize",{case_id:id,force_reverify:true});
+    if(input)input.value="";toast("Decision Readiness 점검을 완료했습니다.");await agentLoadCases({selectId:id});
+    const finalCase=agentDetailCache?.case,finalStatus=String(agentObj(finalCase?.verification).decision_status||"").toUpperCase();showStage(finalCase?.status==="AWAITING_APPROVAL"?"READY":stageLabelsFallback(finalStatus,finalCase?.status))
+  }catch(e){console.error("New Agent request",e);if(createdId)showStage("ERROR");alert("AI TEAM 검토 중 오류가 발생했습니다.\\n"+(e?.message||e));await agentLoadCases(createdId?{selectId:createdId}:{}).catch(()=>{})}
+  finally{agentLiveCaseId="";agentSetBusy(false)}
 }
+function stageLabelsFallback(status,caseStatus){return ["NEED_USER_INFO","NEED_RESEARCH","UNRESOLVED","HOLD"].includes(status)?status:caseStatus==="HELD"?"HELD":"REVIEW_COMPLETE"}
 async function agentReviewInit(){
   if(!$("agentReview"))return;if($("agentSubmitRequest"))$("agentSubmitRequest").onclick=agentSubmitNewRequest;if($("agentRefreshCases"))$("agentRefreshCases").onclick=async()=>{try{agentSetBusy(true,"안건 새로고침 중");await agentLoadCases({selectId:agentActiveCaseId})}catch(e){console.error("Agent refresh",e);alert("Agent Workspace를 새로고침하지 못했습니다.\n"+(e?.message||e))}finally{agentSetBusy(false)}};
   if(!agentRequireCloud())return;try{await agentLoadCases({selectId:agentActiveCaseId})}catch(e){console.error("Agent init",e);if($("agentCaseList"))$("agentCaseList").innerHTML=`<div class="empty">Agent Workspace를 불러오지 못했습니다.<br>${esc(e?.message||e)}</div>`}

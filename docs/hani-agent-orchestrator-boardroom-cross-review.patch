@@ -1,0 +1,230 @@
+diff --git a/supabase/functions/hani-agent-orchestrator/index.ts b/supabase/functions/hani-agent-orchestrator/index.ts
+index ce55a2c..ad08813 100644
+--- a/supabase/functions/hani-agent-orchestrator/index.ts
++++ b/supabase/functions/hani-agent-orchestrator/index.ts
+@@ -1,5 +1,5 @@
+ // PROJECT HANI
+-// hani-agent-orchestrator v1.9.1 · Meeting Character Voice Layer
++// hani-agent-orchestrator v1.9.2 · Meeting Character Voice Layer
+ // Phase 11: Adaptive Policy Engine v0.2 + confidence-weighted policy evidence.
+ // Learned rules are advisory heuristics that strengthen/weaken with evidence.
+ // Constitution / hard-stop governance remains representative-controlled.
+@@ -1536,12 +1536,53 @@ function reviewForPrompt(review: any) {
+   };
+ }
+ 
++const CROSS_REVIEW_TURN_SCHEMA = {
++  type: "object", additionalProperties: false,
++  properties: {
++    stance: { type: "string", enum: ["AGREE", "QUALIFY", "DISAGREE", "QUESTION"] },
++    content: { type: "string" },
++    unresolved: { type: "boolean" },
++    source_refs: { type: "array", maxItems: 4, items: { type: "string" } },
++  },
++  required: ["stance", "content", "unresolved", "source_refs"],
++};
++const CROSS_REVIEW_SUMMARY_SCHEMA = {
++  type: "object", additionalProperties: false,
++  properties: {
++    agreement: { type: "string" }, disagreement: { type: "string" },
++    missing_condition: { type: "string" }, next_decision: { type: "string" },
++  },
++  required: ["agreement", "disagreement", "missing_condition", "next_decision"],
++};
++
++async function loadCrossReview(admin: any, userId: string, caseId: string, reviewRound: number) {
++  const { data, error } = await admin.from("hani_agent_events")
++    .select("id,payload,created_at").eq("user_id", userId).eq("case_id", caseId)
++    .eq("event_type", "CROSS_REVIEW_COMPLETED")
++    .order("created_at", { ascending: false }).limit(25);
++  if (error) throw new Error(`Cross Review 조회 실패: ${error.message}`);
++  return (data || []).find((row: any) => Number(row?.payload?.review_round) === reviewRound) || null;
++}
++
++function caseWithCrossReview(existingCase: any, event: any) {
++  if (!event?.payload) return existingCase;
++  return { ...existingCase, context: {
++    ...asObject(existingCase.context),
++    boardroom_cross_review: {
++      review_round: event.payload.review_round,
++      turns: event.payload.turns || [],
++      hani_issue_summary: event.payload.hani_issue_summary || {},
++    },
++  } };
++}
++
+ async function runVerification(openaiKey: string, existingCase: any, reviews: any[]) {
+   const instructions = [
+     "당신은 PROJECT HANI의 Verification Engine입니다.",
+     "당신은 의사결정자가 아니라 검사관입니다.",
+     "Agent 의견 중 누락, 충돌, 이상, 중복, 기존 데이터 불일치를 분리해서 검출하세요.",
+     "Agent들의 missing_data를 그대로 전부 복사하지 말고 의미가 겹치는 항목을 정리하세요.",
++    "context.boardroom_cross_review가 있으면 실제 교차 발언과 하니 쟁점 요약을 검사한다. 상대 논점에 대한 반론, 미해결 조건, 추가 조사 필요를 반영하되 존재하지 않는 발언을 만들지 않는다.",
+     "정보 부족은 반드시 세 등급으로 분류하세요:",
+     "1) decision_blockers: 없으면 지금 결재안 자체를 만들 수 없는 핵심 정보.",
+     "2) conditional_checks: 결재는 가능하지만 실제 구매/Commit 직전에 확인해야 하는 조건.",
+@@ -2184,6 +2225,7 @@ async function runHaniSynthesis(
+     "대표가 특정 제품을 지정하지 않았으면 대표에게 후보 제품을 찾아오라고 하지 마세요. context.external_research.candidate_options가 있으면 product_selection에 실제 후보 1~3개를 이름과 적합 이유로 제시하세요.",
+     "재무 Agent가 실제 자산/부채/현금흐름 근거로 시점 반대를 제시하면 숨기지 말고 timing에 '언제/어떤 조건이면 재검토할지'를 구체화하세요. 예산 한도는 구매 허가가 아닙니다.",
+     "Agent 간 찬반이 갈리면 다수결로 지우지 말고 key_conflicts에 남기고, 최종 권고가 왜 그 이견을 받아들이거나 기각했는지 executive_summary에 반영하세요.",
++    "context.boardroom_cross_review가 있으면 실제 저장된 발언과 hani_issue_summary의 합의·이견·남은 조건을 반영하세요. 독립 Review와 상충하면 근거를 밝히고, 미해결 반론을 합의로 바꾸지 마세요.",
+     "구매가 아닌 안건에서는 기존 JSON 필드명을 그대로 사용하되 의미를 일반화하세요: purchase_eligibility=결정 가능 여부, product_selection=핵심 권고안, purchase_method=진행 방식, timing=시점/다음 단계.",
+     "정보가 부족하면 특정 모델·가격·구매시기를 상상해서 확정하지 마세요.",
+     "Verification이 NEEDS_DATA/CONFLICT/FAIL이면 ready_for_decision=true로 만들지 마세요.",
+@@ -3309,7 +3351,7 @@ Deno.serve(async (req) => {
+       ok: true,
+       service: "PROJECT HANI",
+       function: "hani-agent-orchestrator",
+-      version: "1.9.1",
++      version: "1.9.2",
+       phase: "INVESTMENT_NEWS_V0_3_PURCHASE_REVIEW_V2",
+       authenticated: true,
+       user_id: auth.user.id,
+@@ -3684,7 +3726,8 @@ Deno.serve(async (req) => {
+ 
+     let result: any;
+     try {
+-      result = await runVerification(openaiKey, existingCase, reviews);
++      const crossReview = await loadCrossReview(admin, auth.user.id, existingCase.id, latestReviewRound);
++      result = await runVerification(openaiKey, caseWithCrossReview(existingCase, crossReview), reviews);
+     } catch (e) {
+       return json({ ok: false, error: "PREFLIGHT_FAILED", message: e instanceof Error ? e.message : "Preflight 생성에 실패했습니다." }, 502);
+     }
+@@ -3719,7 +3762,7 @@ Deno.serve(async (req) => {
+     });
+ 
+     return json({
+-      ok: true, service: "PROJECT HANI", function: "hani-agent-orchestrator", version: "1.9.1",
++      ok: true, service: "PROJECT HANI", function: "hani-agent-orchestrator", version: "1.9.2",
+       action: "PREFLIGHT_CASE", case: updatedCase, verification: updatedCase.verification,
+       human_required_questions: humanQuestions, research_required_items: researchItems,
+       can_auto_research: humanQuestions.length === 0 && (verification.research_needed || researchItems.length > 0),
+@@ -3967,6 +4010,99 @@ Deno.serve(async (req) => {
+   }
+ 
+ 
++  if (action === "run_cross_review") {
++    const openaiKey = Deno.env.get("OPENAI_API_KEY") ?? "";
++    if (!openaiKey) return json({ ok: false, error: "OPENAI_SECRET_MISSING" }, 500);
++    const caseId = cleanText(body.case_id, 64);
++    const reviewRound = Math.max(1, Math.min(20, Number(body.review_round || 1)));
++    if (!caseId) return json({ ok: false, error: "CASE_ID_REQUIRED" }, 400);
++    const { data: existingCase, error: caseError } = await admin.from("hani_agent_cases")
++      .select("id,user_id,case_code,workflow,title,status,risk_level,source_type,source_text,context,routing")
++      .eq("id", caseId).eq("user_id", auth.user.id).single();
++    if (caseError || !existingCase) return json({ ok: false, error: "CASE_NOT_FOUND" }, 404);
++    let priorEvent: any;
++    try { priorEvent = await loadCrossReview(admin, auth.user.id, caseId, reviewRound); }
++    catch (e) { return json({ ok: false, error: "CROSS_REVIEW_PRECHECK_FAILED", message: String(e) }, 500); }
++    if (priorEvent) return json({ ok: true, action: "RUN_CROSS_REVIEW", review_round: reviewRound, reused: true, conversation: priorEvent.payload, event_id: priorEvent.id });
++    if (existingCase.status !== "REVIEW_COMPLETE") return json({ ok: false, error: "REVIEWS_REQUIRED" }, 409);
++
++    const { data: allReviews, error: reviewsError } = await admin.from("hani_agent_reviews")
++      .select("id,review_round,agent_key,role,verdict,summary,reasons,risks,conditions,missing_data,evidence")
++      .eq("case_id", caseId).eq("user_id", auth.user.id).eq("review_round", reviewRound)
++      .order("created_at", { ascending: true });
++    if (reviewsError || !allReviews?.length) return json({ ok: false, error: "REVIEWS_REQUIRED" }, 409);
++    const selected = Array.isArray(existingCase.routing?.selected_agents) ? existingCase.routing.selected_agents : [];
++    const experts = selected.filter((agent: any) =>
++      String(agent?.agent_key || "").toUpperCase() !== "HANI" &&
++      allReviews.some((review: any) => String(review.agent_key).toUpperCase() === String(agent.agent_key).toUpperCase())
++    ).slice(0, 3);
++    if (!experts.length) return json({ ok: false, error: "ROUTED_EXPERT_REQUIRED" }, 409);
++    const compactReviews = allReviews.map((review: any) => ({
++      agent_key: review.agent_key, role: review.role, verdict: review.verdict,
++      summary: review.summary, reasons: review.reasons, risks: review.risks,
++      conditions: review.conditions, missing_data: review.missing_data, evidence: review.evidence,
++    }));
++    const speakers = experts.length === 1
++      ? [{ agent_key: "HANI", role: "CHAIR" }, experts[0]] : experts;
++    const turns: any[] = [];
++    const startedAt = Date.now();
++    const modelResults: any[] = [];
++    try {
++      for (let index = 0; index < speakers.length; index++) {
++        const speaker = speakers[index];
++        const targetRef = index === 0
++          ? `review:${String(experts.length === 1 ? experts[0].agent_key : experts[1].agent_key).toUpperCase()}`
++          : `turn:${index}`;
++        const target = index === 0
++          ? compactReviews.find((review: any) => `review:${String(review.agent_key).toUpperCase()}` === targetRef)
++          : turns[index - 1];
++        const result = await callStructuredJson(openaiKey, "hani_cross_review_turn", CROSS_REVIEW_TURN_SCHEMA,
++          [meetingVoicePrompt(speaker.agent_key),
++            "이는 독립 보고가 아니라 실제 저장된 다른 사람의 주장에 답하는 회의다.",
++            "TARGET의 구체 논점을 받아 동의·한정·반론·질문 중 하나로 응답한다. 사람을 공격하거나 억지 합의하지 않는다.",
++            "Case/Review/이전 발언에 없는 사실·수치·조사결과를 만들지 않는다. 불확실하면 확인 조건으로 남긴다.",
++            "중요 위험일수록 농담을 줄인다. 2~4문장으로 간결하게 말한다.",
++            "source_refs에는 사용한 review:AGENT 또는 turn:N 식별자만 쓴다. TARGET 식별자는 반드시 포함한다.",
++          ].join("\n"), JSON.stringify({
++            case: { title: existingCase.title, risk_level: existingCase.risk_level, source_text: existingCase.source_text, context: compactContextForAgentReview(existingCase.context) },
++            speaker: speaker.agent_key, target_ref: targetRef, target,
++            first_round_reviews: compactReviews, prior_turns: turns,
++          }), 850);
++        const parsed = result.parsed;
++        const content = cleanText(parsed?.content, 850);
++        if (content.length < 12) throw new Error(`${speaker.agent_key} 교차 발언이 비어 있습니다.`);
++        const allowedRefs = new Set([...compactReviews.map((review: any) => `review:${String(review.agent_key).toUpperCase()}`), ...turns.map((turn: any) => turn.turn_id)]);
++        const sourceRefs = [...new Set([targetRef, ...(Array.isArray(parsed.source_refs) ? parsed.source_refs : []).filter((ref: unknown) => allowedRefs.has(String(ref)))])].slice(0, 4);
++        turns.push({ turn_id: `turn:${index + 1}`, speaker: String(speaker.agent_key).toUpperCase(),
++          reply_to: targetRef, claim_ref: targetRef, stance: parsed.stance,
++          content, unresolved: parsed.unresolved === true, source_refs: sourceRefs });
++        modelResults.push(result);
++      }
++      const summary = await callStructuredJson(openaiKey, "hani_cross_review_summary", CROSS_REVIEW_SUMMARY_SCHEMA,
++        [meetingVoicePrompt("HANI"),
++          "실제 1차 Review와 교차 발언만으로 쟁점을 정리한다. 합의가 없다면 없다고 말한다.",
++          "agreement, disagreement, missing_condition, next_decision을 각각 한두 문장으로 쓴다.",
++          "전문 판단의 소유자를 유지하고 대표만이 답할 조건과 AI가 조사할 조건을 구분한다.",
++        ].join("\n"), JSON.stringify({ case: { title: existingCase.title, risk_level: existingCase.risk_level }, reviews: compactReviews, turns }), 800);
++      modelResults.push(summary);
++      const issueSummary = Object.fromEntries(["agreement", "disagreement", "missing_condition", "next_decision"]
++        .map(key => [key, cleanText(summary.parsed?.[key], 500)]));
++      const payload = { review_round: reviewRound, turns, hani_issue_summary: issueSummary,
++        usage: usageTotals(modelResults), latency_ms: Date.now() - startedAt };
++      const { data: event, error: eventError } = await admin.from("hani_agent_events").insert({
++        user_id: auth.user.id, case_id: caseId, event_type: "CROSS_REVIEW_COMPLETED",
++        actor_type: "SYSTEM", actor_key: "BOARDROOM_CROSS_REVIEW_V1", payload,
++      }).select("id").single();
++      if (eventError || !event) throw new Error(`Cross Review 저장 실패: ${eventError?.message || "이벤트가 반환되지 않았습니다."}`);
++      return json({ ok: true, action: "RUN_CROSS_REVIEW", review_round: reviewRound,
++        conversation: payload, event_id: event.id, reused: false, hani_state_touched: false });
++    } catch (e) {
++      return json({ ok: false, error: "CROSS_REVIEW_FAILED",
++        message: e instanceof Error ? e.message : "교차 검토에 실패했습니다.",
++        first_round_reviews_preserved: true, hani_state_touched: false }, 502);
++    }
++  }
++
+   if (action === "verify_and_synthesize") {
+     const openaiKey = Deno.env.get("OPENAI_API_KEY") ?? "";
+     if (!openaiKey) {
+@@ -4056,7 +4192,9 @@ Deno.serve(async (req) => {
+ 
+     try {
+       // 1) Verification model output
+-      verificationResult = await runVerification(openaiKey, existingCase, reviews);
++      const crossReview = await loadCrossReview(admin, auth.user.id, existingCase.id, latestReviewRound);
++      const boardroomCase = caseWithCrossReview(existingCase, crossReview);
++      verificationResult = await runVerification(openaiKey, boardroomCase, reviews);
+       rawVerification = verificationResult.parsed as VerificationOutput;
+ 
+       // 2) Server governance/policy normalization MUST happen before HANI sees it.
+@@ -4098,7 +4236,7 @@ Deno.serve(async (req) => {
+       if (verification.decision_status === "READY" && verification.ready_for_decision === true) {
+         haniResult = await runHaniSynthesis(
+           openaiKey,
+-          existingCase,
++          boardroomCase,
+           reviews,
+           verification,
+         );
+@@ -4270,7 +4408,7 @@ Deno.serve(async (req) => {
+       ok: true,
+       service: "PROJECT HANI",
+       function: "hani-agent-orchestrator",
+-      version: "1.9.1",
++      version: "1.9.2",
+       action: "VERIFY_AND_SYNTHESIZE",
+       case: {
+         id: updatedCase.id,
