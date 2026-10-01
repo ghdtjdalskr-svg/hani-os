@@ -8,7 +8,7 @@ diff --git a/supabase/functions/hani-agent-orchestrator/index.ts b/supabase/func
  // Phase 11: Adaptive Policy Engine v0.2 + confidence-weighted policy evidence.
  // Learned rules are advisory heuristics that strengthen/weaken with evidence.
  // Constitution / hard-stop governance remains representative-controlled.
-@@ -510,7 +510,43 @@
+@@ -510,7 +510,47 @@
    list.push({ agent_key, display_name, rank, role, reason, required });
  }
  
@@ -34,15 +34,19 @@ diff --git a/supabase/functions/hani-agent-orchestrator/index.ts b/supabase/func
 +    "수아": "SUA", "하루": "HARU", "민지": "MINJI", "수연": "SUYEON", "유나": "YUNA",
 +  };
 +  const requested: string[] = [];
-+  const namePattern = /(?<![A-Za-z가-힣])(SOOYEON|SUYEON|JIEUN|NAEUN|MINJI|HANI|HINA|HARU|YUNA|SUA|하니|지은|나은|히나|수아|하루|민지|수연|유나)(?:에게|하고|랑|와|과|의|가|이|는|은|를|을|도)?(?=$|[\s,，·/&])/gi;
++  const namePattern = /(?<![A-Za-z가-힣])(SOOYEON|SUYEON|JIEUN|NAEUN|MINJI|HANI|HINA|HARU|YUNA|SUA|하니|지은|나은|히나|수아|하루|민지|수연|유나)(?:에게|하고|랑|와|과|의|가|이|는|은|를|을|도|만)?(?=$|[\s,，·/&])/gi;
 +  for (const clause of String(source || "").slice(0, 6000).split(/[.!?。！？\n]+/)) {
 +    if (!/(불러|소집|참여|함께|관점|의견|검토|논의|회의|물어봐|생각해)/i.test(clause)) continue;
 +    for (const match of clause.matchAll(namePattern)) {
 +      const key = aliases[match[1].toUpperCase()] || aliases[match[1]];
 +      if (!key) continue;
 +      const after = clause.slice((match.index || 0) + match[0].length);
-+      if (/^\s*(빼|제외|부르지|소집하지|참여시키지)/.test(after)) continue;
++      const negativeAt = after.search(/(?:없이|빼|제외|부르지|소집하지|참여시키지|포함하지|안\s*(?:불러|소집|참여))/);
++      const positiveAt = after.search(/(?:불러|소집|참여|함께|관점|의견|검토|논의|물어봐|생각해)/);
++      if (negativeAt >= 0 && negativeAt < 60 && (positiveAt < 0 || negativeAt <= positiveAt)) continue;
 +      if (key === "HARU" && /^\s*(동안|만|종일|정도|내내)/.test(after)) continue;
++      if (key === "HARU" && match[0].endsWith("만") &&
++          !/^\s*(불러|소집|참여|의견|관점|회의에\s*(?:참여|불러|소집))/.test(after)) continue;
 +      if (!requested.includes(key)) requested.push(key);
 +    }
 +  }
@@ -53,7 +57,7 @@ diff --git a/supabase/functions/hani-agent-orchestrator/index.ts b/supabase/func
    workflow: string;
    risk_level: string;
    title: string;
-@@ -688,15 +724,40 @@
+@@ -688,15 +728,40 @@
      verification_reason = "CRITICAL 위험도: Verification 강제";
    }
  
@@ -103,7 +107,7 @@ diff --git a/supabase/functions/hani-agent-orchestrator/index.ts b/supabase/func
      strategy: "MINIMUM_RELEVANT_AGENTS",
      selected_agents: selected,
      chair,
-@@ -3645,15 +3706,24 @@
+@@ -3645,15 +3710,24 @@
        }, 409);
      }
  
@@ -137,3 +141,15 @@ diff --git a/supabase/functions/hani-agent-orchestrator/index.ts b/supabase/func
        .from("hani_agent_cases")
        .update({
          routing,
+@@ -3688,8 +3762,9 @@
+       service: "PROJECT HANI",
+       function: "hani-agent-orchestrator",
+       version: "1.7.0",
+-      action: "ROUTE_CASE",
+-      case: updatedCase,
++      action: "ROUTE_CASE",
++      routing_version: routing.engine_version,
++      case: updatedCase,
+       selected_agents: routing.selected_agents,
+       chair: routing.chair,
+       verification: routing.verification,
