@@ -33,3 +33,16 @@ test('OHLCV survives publisher and reader without leaking holdings; old chart re
   const good=f.files.get(uid+'/latest.json');f.tick(300001);f.source.chart=async()=>({result:Array.from({length:2000},(_,i)=>({...candle,timestamp:new Date(time-i*86400000).toISOString()}))});
   await assert.rejects(f.publish(['005930'],{chartPeriods:['1M']}),/size limit/);assert.equal(f.files.get(uid+'/latest.json'),good);
 });
+test('explicit multi-period refresh replaces close-only refs and retains old immutable charts',async()=>{
+  const f=fixture();await f.publish(['005930'],{chartPeriods:['1M']});
+  const old=JSON.parse(f.files.get(uid+'/latest.json')),oldRef=old.charts['005930/1M'];f.tick(300001);
+  f.source.chart=async(_code,period)=>({period,interval:period==='1D'?'1m':'1d',adjusted:false,complete:true,result:[0,1].map(i=>({timestamp:new Date(time-i*86400000).toISOString(),openPrice:71000,highPrice:73000,lowPrice:70000,closePrice:72000,volume:100,currency:'KRW'}))});
+  const periods=['1D','1W','1M','3M','6M','1Y'];await f.publish(['005930'],{chartPeriods:periods,requireOhlc:true});
+  const next=JSON.parse(f.files.get(uid+'/latest.json'));assert.notEqual(next.charts['005930/1M'],oldRef);assert.ok(f.files.has(uid+'/'+oldRef));
+  for(const period of periods){assert.match(next.charts['005930/'+period],/^charts\/[a-f0-9]{64}\.json$/);assert.equal((await f.client().chart('005930',period)).result.length,2);}
+});
+test('explicit refresh with close-only candles cannot replace last good pointer',async()=>{
+  const f=fixture();await f.publish(['005930'],{chartPeriods:['1M']});const good=f.files.get(uid+'/latest.json');f.tick(300001);
+  await assert.rejects(f.publish(['005930'],{chartPeriods:['1M'],requireOhlc:true}),/OHLC chart unavailable/);
+  assert.equal(f.files.get(uid+'/latest.json'),good);
+});
