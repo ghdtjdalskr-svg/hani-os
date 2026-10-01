@@ -2,8 +2,8 @@
 
 ## 현재 후보와 보류 조건
 
-- 검토 PR: #132 (`hani/boardroom-live-meeting`), Draft. 현재 표시 후보 버전은 `v2.9.149`다.
-- 2026-10-01 확인 당시 `origin/main`은 `e4be98743e410015995c530109c937e6af435621` (`v2.9.148`)이다. 다른 배포가 진행 중이므로 이 기준선과 후보 버전은 잠정값이다.
+- 기존 검토 PR #132는 병합 없이 닫혔다. `hani/boardroom-live-meeting`을 새 main에 통합한 뒤 새 PR을 연다. 현재 표시 후보 버전은 `v2.9.150`이다.
+- 2026-10-01 재확인 당시 `origin/main`은 `90b8508` (`v2.9.149`)이다. 배포 시 기준선이 다시 이동했는지 재확인한다.
 - 운영 `hani-agent-orchestrator`는 v48 / 소스 v1.9.1이다. 현재 운영 소스는 `scripts/hani-boardroom-rebuild-edge.mjs --production-baseline`의 결과와 줄 끝 및 파일 끝 빈 줄을 정규화하면 일치한다. 정규화된 기준선 SHA-256은 `6ce3451f539c8e45f91e7a523acdec80a560e9cfcbe9c374976e17999a8022b1`이다.
 - 신규 후보 Edge Function은 `scripts/hani-boardroom-rebuild-edge.mjs`로 재구성하며 소스 v1.9.2다. 현재 생성 파일 SHA-256은 `0d8adbac85d5cac9893f34a7b5b093989387efd436648ceaf351445e753026ec`이다. 운영 함수는 아직 교체하지 않았다.
 - Runtime 파일 81개의 누락 검사, 패키지 무결성 검증, 커밋 기준 Yuri Pre-QA, 대상 회귀 테스트가 통과했다. 패키지는 현재 커밋과 main 기준선에 묶여 있으므로 두 값 중 하나라도 바뀌면 다시 생성한다.
