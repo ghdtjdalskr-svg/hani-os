@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const out = process.argv[2] && !process.argv[2].startsWith("--") ? process.argv[2] : fs.mkdtempSync(path.join(os.tmpdir(), "hani-boardroom-edge-"));
 const withoutCross = process.argv.includes("--no-cross");
+const withoutParticipants = process.argv.includes("--no-participants");
 const productionBaseline = process.argv.includes("--production-baseline");
 const sourcePath = path.join(out, "supabase/functions/hani-agent-orchestrator/index.ts");
 fs.mkdirSync(path.dirname(sourcePath), { recursive: true });
@@ -17,8 +18,9 @@ for (const patch of [
   "hani-agent-orchestrator-meeting-voice.patch",
   "hani-agent-orchestrator-boardroom-voice.patch",
   "hani-agent-orchestrator-boardroom-cross-review.patch",
+  "hani-agent-orchestrator-explicit-participants.patch",
 ]) {
-  if ((withoutCross && patch.includes("cross-review")) || (productionBaseline && patch.includes("boardroom-"))) continue;
+  if ((withoutCross && /cross-review|explicit-participants/.test(patch)) || (withoutParticipants && patch.includes("explicit-participants")) || (productionBaseline && /boardroom-|explicit-participants/.test(patch))) continue;
   const patchPath = path.join(root, "docs", patch);
   if (fs.existsSync(patchPath)) execFileSync("git", ["apply", "--ignore-space-change", "--ignore-whitespace", "--whitespace=nowarn", patchPath], { cwd: out });
 }
