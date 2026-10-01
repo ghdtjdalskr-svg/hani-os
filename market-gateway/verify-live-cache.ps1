@@ -1,4 +1,4 @@
-param([switch]$Portfolio,[switch]$Watch,[switch]$SeedCharts,[switch]$Diagnose,[switch]$BrowserCheck,[switch]$Catalog,[switch]$Preview,[switch]$SdkBrowserCheck)
+param([switch]$Portfolio,[switch]$Watch,[switch]$SeedCharts,[switch]$RefreshCharts,[switch]$Diagnose,[switch]$BrowserCheck,[switch]$Catalog,[switch]$Preview,[switch]$SdkBrowserCheck)
 # Decrypt only in memory and send to the child through stdin. No secret command-line arguments.
 $ErrorActionPreference='Stop'
 Add-Type -AssemblyName System.Security.Cryptography.ProtectedData
@@ -11,6 +11,7 @@ try {
     if($BrowserCheck -and ($Portfolio -or $Watch -or $SeedCharts -or $Diagnose)){throw 'Browser check is read-only and standalone'}
     if($Diagnose -and (-not $Portfolio -or $Watch -or $SeedCharts)){throw 'Diagnostic requires one-shot portfolio mode'}
     if($SeedCharts -and (-not $Portfolio -or $Watch)){throw 'Chart seed requires one-shot portfolio mode'}
+    if($RefreshCharts -and (-not $Portfolio -or $Watch -or $SeedCharts -or $Diagnose)){throw 'Chart refresh requires standalone one-shot portfolio mode'}
     $dir=Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'HANI_OS_Market'
     $directory=Get-Item -LiteralPath $dir -Force
     if($directory.Attributes -band [IO.FileAttributes]::ReparsePoint){throw 'Unsafe directory'}
@@ -44,6 +45,7 @@ try {
     if($SdkBrowserCheck){$start.ArgumentList.Add('--sdk')}
     if($Watch){$start.ArgumentList.Add('--watch')}
     if($SeedCharts){$start.ArgumentList.Add('--seed-charts')}
+    if($RefreshCharts){$start.ArgumentList.Add('--refresh-charts')}
     if($Diagnose){$start.ArgumentList.Add('--diagnose')}
     $start.Environment['HANI_MARKET_PWSH']=(Get-Process -Id $PID).Path
     $start.UseShellExecute=$false;$start.CreateNoWindow=$true;$start.RedirectStandardInput=$true;$start.RedirectStandardOutput=$true;$start.RedirectStandardError=$true

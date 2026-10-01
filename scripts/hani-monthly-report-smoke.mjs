@@ -60,6 +60,7 @@ try{
     const first=await page.evaluate(()=>JSON.parse(localStorage.getItem('hani_os_life_v23')));
     assert.equal(first.monthlyReports.length,1,`${viewport.name}: one persisted report`);
     assert(await page.evaluate(()=>cloudSyncSelfTest()),`${viewport.name}: existing Cloud sync safety decisions remain valid`);
+    assert(await page.evaluate(()=>cloudHasMeaningfulLocalData({monthlyReports:[{month:'2026-09',view:{}}]})),`${viewport.name}: archive-only data is preserved as meaningful local data`);
     assert(await page.evaluate(()=>{const full=JSON.parse(localStorage.getItem('hani_os_life_v23')),without=structuredClone(full);delete without.monthlyReports;return !cloudSame(cloudSyncFingerprintState(full),cloudSyncFingerprintState(without))}),`${viewport.name}: report archive participates in Cloud conflict fingerprint`);
     assert.deepEqual(first.body.map(({id,date,weight})=>({id,date,weight})),seed.body,`${viewport.name}: source body values unchanged`);
     assert.deepEqual(first.books,seed.books,`${viewport.name}: source books unchanged`);

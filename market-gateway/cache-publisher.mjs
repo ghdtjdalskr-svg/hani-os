@@ -7,7 +7,7 @@ export function createPublisher({source,storage,userId,now=Date.now}){
   let busy=false,last=0;const uploaded=new Set();
   async function upload(path,value,limit,upsert){const body=JSON.stringify(value);if(Buffer.byteLength(body)>limit)throw Error('Cache size limit');
     const {error}=await storage.upload(userId+'/'+path,body,{contentType:'application/json',cacheControl:'0',upsert});if(error)throw Error('Private cache publish failed');}
-  return async function publish(values,{chartPeriods=[],onlyMissingCharts=false}={}){
+  return async function publish(values,{chartPeriods=[],onlyMissingCharts=false,requireOhlc=false}={}){
     if(busy)throw Error('Collection already running');if(last&&now()-last<300000)return {skipped:true};
     const codes=[...new Set(values.map(M.symbol))];if(!codes.length||codes.length>200||codes.some(c=>!M.validSymbol(c)))throw Error('Invalid symbols');
     if(chartPeriods.some(p=>!['1D','1W','1M','3M','6M','1Y'].includes(p)))throw Error('Invalid period');
@@ -24,6 +24,7 @@ export function createPublisher({source,storage,userId,now=Date.now}){
         const raw=await source.chart(code,period);
         const data={symbol:code,period,interval:raw.interval,adjusted:raw.adjusted,complete:raw.complete===true,result:M.candles(raw.result).map(r=>pick(r,['timestamp','openPrice','highPrice','lowPrice','closePrice','volume','currency']))};
         if(!data.result.length)throw Error('Empty chart; last cache preserved');
+        if(requireOhlc&&data.result.filter(c=>[c.openPrice,c.highPrice,c.lowPrice,c.closePrice].every(v=>Number.isFinite(Number(v))&&Number(v)>0)&&Number(c.lowPrice)<=Math.min(Number(c.openPrice),Number(c.closePrice))&&Number(c.highPrice)>=Math.max(Number(c.openPrice),Number(c.closePrice))).length<2)throw Error('OHLC chart unavailable; last cache preserved');
         const expectedCurrency=stocks.find(s=>s.symbol===code).currency;
         if(data.result.some(c=>c.currency!==expectedCurrency||Date.parse(c.timestamp)>now()+60000))throw Error('Invalid chart currency or time; last cache preserved');
         const ref='charts/'+createHash('sha256').update(JSON.stringify(data)).digest('hex')+'.json';
