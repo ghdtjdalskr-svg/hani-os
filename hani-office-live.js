@@ -14,6 +14,7 @@
     ["sooyeon","수연","c",1,"07",[34,80]],
     ["yuna","유나","c",2,"08",[44,80]]
   ];
+  function personKey(value){const raw=String(value||"").trim().toLowerCase();return raw==="suyeon"?"sooyeon":raw==="nauen"?"naeun":raw}
   const statusPools={
     hani:[{mode:'work',label:'안건 검토 중',tone:'work',icon:'📌',spot:'seat'},{mode:'work',label:'결재 도장 찍는 중',tone:'work',icon:'✅',spot:'seat'},{mode:'work',label:'팀 캘린더 정리 중',tone:'work',icon:'🗓',spot:'seat'},{mode:'work',label:'회의 자료 순서 다시 보는 중',tone:'research',icon:'📑',spot:'seat'},{mode:'idle',label:'직원들 자리 슬쩍 둘러보는 중',tone:'social',icon:'👀',spot:'staffAisle'},{mode:'work',label:'팀 흐름 한눈에 보는 중',tone:'research',icon:'🧭',spot:'seat',signature:true,fx:'🔭'}],
     jieun:[{mode:'work',label:'보고서 작성 중',tone:'research',icon:'📊',spot:'seat'},{mode:'work',label:'예산 숫자와 씨름 중',tone:'mischief',icon:'🧮',spot:'seat'},{mode:'work',label:'메일 쓰는 중',tone:'work',icon:'✉️',spot:'seat'},{mode:'work',label:'영수증 숫자 맞춰보는 중',tone:'research',icon:'🧾',spot:'seat'},{mode:'work',label:'소수점 셋째 자리까지 검산 중',tone:'research',icon:'🔢',spot:'seat',signature:true,fx:'🧮'}],
@@ -48,8 +49,8 @@
     ["sua","yuna","🗓 일정 입력 내용 같이 확인 중",[41,48],[51,48]]
   ];
   const meetingPositions=[[64,80],[75,80],[86,80],[64,89],[75,89],[86,89]];
-  const actorLayer=document.getElementById("haniOfficeActors"),conversation=document.getElementById("haniOfficeConversation"),meetingBox=document.getElementById("haniOfficeMeeting"),openButton=document.getElementById("haniOfficeMeetingOpen"),returnButton=document.getElementById("haniOfficeReturn"),caseState=document.getElementById("haniOfficeCaseState");
-  const actors=new Map(),history=new Map(),pairUntil=new Map();let tick=0,frame=0,caseData=null,meeting=false,travelId=0;
+  const actorLayer=document.getElementById("haniOfficeActors"),conversation=document.getElementById("haniOfficeConversation"),meetingBox=document.getElementById("haniOfficeMeeting"),participantBar=document.getElementById("haniOfficeParticipants"),questionSlot=document.getElementById("haniOfficeQuestions"),openButton=document.getElementById("haniOfficeMeetingOpen"),returnButton=document.getElementById("haniOfficeReturn"),caseState=document.getElementById("haniOfficeCaseState");
+  const actors=new Map(),history=new Map(),pairUntil=new Map();let tick=0,frame=0,caseData=null,meeting=false,travelId=0,liveStage="",liveAgents=null,liveCross=null;
   const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
   function place(actor,position){actor.style.left=position[0]+"%";actor.style.top=position[1]+"%"}
   function label(actor,value,mood=false){actor.querySelector(".hani-office-status").textContent=value;actor.dataset.mood=String(mood);actor.setAttribute("aria-label",`${actor.dataset.name}: ${value}`)}
@@ -84,24 +85,43 @@
     return true;
   }
   function textLine(name,text,key,summary=false){const row=document.createElement("div");row.className="hani-office-line"+(summary?" hani-office-line-summary":"");const img=document.createElement("img");img.src=`./assets/profiles/hani-profile-${key||"hani"}.webp`;img.alt="";img.loading="lazy";const body=document.createElement("div");body.className="hani-office-line-body";const title=document.createElement("b");title.textContent=name;const para=document.createElement("p");para.textContent=text;body.append(title,para);row.append(img,body);conversation.append(row)}
+  const stageLabels={INTAKE:"하니가 안건을 접수했습니다.",ROUTING:"담당 Agent를 배정하고 있습니다.",SUMMONING:"선택된 Agent가 회의실로 이동 중입니다.",MEETING_ROUND_1:"1차 검토 중 · 실제 의견을 기다리고 있습니다.",REVIEW_COMPLETE:"저장된 Agent 의견을 확인했습니다.",CROSS_REVIEW:"Agent들이 서로의 실제 의견을 검토하고 있습니다.",PREFLIGHT:"하니가 빠진 조건을 확인하고 있습니다.",NEED_USER_INFO:"대표님의 추가 답변을 기다리고 있습니다.",RESEARCH:"필요한 자료를 조사하고 있습니다.",MEETING_ROUND_2:"조사 결과를 반영해 2차 검토 중입니다.",SYNTHESIZING:"하니가 실제 검토 결과를 종합 중입니다.",READY:"결정 준비가 완료됐습니다.",HELD:"안건이 보류되었습니다. 같은 Case에서 이어갈 수 있습니다.",UNRESOLVED:"중요 이견이 남아 재검토가 필요합니다.",NEED_RESEARCH:"추가 자료 확인이 필요합니다.",ERROR:"진행 중 문제가 발생했습니다. 저장된 Case 상태를 확인해 주세요."};
+  function stageText(){return stageLabels[liveStage]||"실제 검토 의견 보기"}
+  function syncQuestions(freshDetail=false){
+    if(!questionSlot)return;
+    const detail=document.getElementById("agentCaseDetail"),source=detail?.querySelector(".agent-readiness-questions");
+    if(!meeting||meetingBox.hidden){
+      if(questionSlot.firstElementChild&&detail){const dock=detail.querySelector("#agentDecisionDock");detail.insertBefore(questionSlot.firstElementChild,dock||null)}
+      questionSlot.hidden=true;return;
+    }
+    if(source&&source!==questionSlot.firstElementChild)questionSlot.replaceChildren(source);
+    else if(!source&&freshDetail)questionSlot.replaceChildren();
+    questionSlot.hidden=!questionSlot.firstElementChild;
+  }
+  function renderParticipants(){if(!participantBar)return;participantBar.hidden=!liveStage||!liveAgents?.length;if(participantBar.hidden)return;participantBar.replaceChildren();for(const key of liveAgents){const member=people.find(person=>person[0]===key),chip=document.createElement("span"),actualReview=caseData?.reviews?.some(review=>personKey(review.agent_key)===key);let state="대기";if(liveStage==="SUMMONING")state="이동 중";else if(key==="hani"&&liveStage==="SYNTHESIZING")state="종합 중";else if(key==="hani"&&liveStage==="READY"&&caseData?.case?.hani_final?.executive_summary)state="결론 정리됨";else if(key!=="hani"&&["MEETING_ROUND_1","MEETING_ROUND_2"].includes(liveStage))state="검토 중";else if(liveStage==="CROSS_REVIEW")state=key==="hani"?"쟁점 정리":"교차 검토 중";else if(actualReview)state="의견 저장됨";chip.textContent=`${member?.[1]||key} · ${state}`;participantBar.append(chip)}}
   function renderMeeting(){
-    conversation.replaceChildren();const detail=caseData;if(!detail)return;
+    conversation.replaceChildren();const detail=caseData;if(!detail)return;renderParticipants();
     const c=detail.case||{},h=c.hani_final&&typeof c.hani_final==="object"?c.hani_final:{};
     document.getElementById("haniOfficeMeetingTitle").textContent=c.title||"선택한 안건";
     const reviews=Array.isArray(detail.reviews)?detail.reviews:[],round=Math.max(0,...reviews.map(r=>Number(r.review_round)||0));
-    document.getElementById("haniOfficeMeetingMeta").textContent=`${c.case_code||"CASE"} · ${round}차 검토 · 저장된 실제 의견만 표시`;
+    document.getElementById("haniOfficeMeetingMeta").textContent=`${c.case_code||"CASE"} · ${round?`${round}차 검토`+" · ":""}저장된 실제 의견만 표시`;
     const latest=reviews.filter(r=>(Number(r.review_round)||0)===round);
-    if(!latest.length){const empty=document.createElement("div");empty.className="hani-office-empty";empty.textContent="아직 저장된 Agent 검토 의견이 없습니다. 아래 안건 상태와 질문을 확인해 주세요.";conversation.append(empty)}
-    latest.forEach(r=>{const key=people.find(p=>[p[0],p[1]].includes(String(r.agent_key||"").toLowerCase()))?.[0]||"hani";const name=people.find(p=>p[0]===key)?.[1]||String(r.agent_key||"Agent");textLine(`${name} · ${r.verdict||"검토"}`,r.summary||r.key_point||"검토 내용이 비어 있습니다.",key)});
-    if(h.executive_summary)textLine("하니 · 종합",h.executive_summary,"hani",true);
-    else {const empty=document.createElement("div");empty.className="hani-office-empty";empty.textContent="하니의 종합 결론은 아직 준비 중입니다. 결정 가능 여부는 아래 원본 검토서에서 확인하세요.";conversation.append(empty)}
+    if(liveStage){const status=document.createElement("div");status.className="hani-office-empty";status.setAttribute("role","status");status.textContent=stageText();conversation.append(status)}
+    if(!latest.length){const empty=document.createElement("div");empty.className="hani-office-empty";empty.textContent=liveStage?"Agent 의견은 실제 검토가 완료되고 저장되면 표시됩니다.":"아직 저장된 Agent 검토 의견이 없습니다. 아래 안건 상태와 질문을 확인해 주세요.";conversation.append(empty)}
+    latest.forEach(r=>{const key=personKey(r.agent_key),person=people.find(p=>p[0]===key),name=person?.[1]||String(r.agent_key||"Agent");textLine(`${name} · ${r.verdict||"검토"}`,r.summary||r.key_point||"검토 내용이 비어 있습니다.",person?.[0]||"hani")});
+    const stored=Array.isArray(detail.events)?detail.events.filter(event=>event.event_type==="CROSS_REVIEW_COMPLETED"&&Number(event.payload?.review_round)===round).at(-1)?.payload:null;
+    const cross=stored||((Number(liveCross?.review_round)===round)?liveCross:null);
+    if(cross){const stanceLabels={AGREE:"동의",QUALIFY:"보완",DISAGREE:"반론",QUESTION:"질문"};for(const turn of Array.isArray(cross.turns)?cross.turns:[]){const key=personKey(turn.speaker),person=people.find(p=>p[0]===key);textLine(`${person?.[1]||turn.speaker} · ${stanceLabels[turn.stance]||"답변"}`,turn.content||"",key)}const issue=cross.hani_issue_summary||{},parts=[["합의",issue.agreement],["이견",issue.disagreement],["남은 조건",issue.missing_condition],["다음 판단",issue.next_decision]].filter(([,value])=>value);if(parts.length)textLine("하니 · 쟁점 정리",parts.map(([label,value])=>`${label}: ${value}`).join("\n"),"hani",true)}
+    if(h.executive_summary&&(!liveStage||["READY","HELD","UNRESOLVED","NEED_RESEARCH","NEED_USER_INFO"].includes(liveStage)))textLine("하니 · 종합",h.executive_summary,"hani",true);
+    else if(latest.length&&!liveStage){const empty=document.createElement("div");empty.className="hani-office-empty";empty.textContent="하니의 종합 결론은 아직 준비 중입니다. 결정 가능 여부는 아래 원본 검토서에서 확인하세요.";conversation.append(empty)}
   }
-  function selectedAgents(){const reviews=Array.isArray(caseData?.reviews)?caseData.reviews:[],round=Math.max(0,...reviews.map(r=>Number(r.review_round)||0));const keys=["hani"];for(const r of reviews.filter(r=>(Number(r.review_round)||0)===round)){const key=String(r.agent_key||"").toLowerCase();const person=people.find(p=>p[0]===key||p[1]===key);if(person&&!keys.includes(person[0]))keys.push(person[0])}return keys.slice(0,6)}
-  async function openMeeting(){if(!caseData||meeting)return;meeting=true;openButton.disabled=true;caseState.textContent="회의실로 이동 중";const selected=selectedAgents();if(!await walk(selected))return;meetingBox.hidden=false;returnButton.hidden=false;map.dataset.state="meeting";caseState.textContent="실제 검토 의견 보기";renderMeeting();meetingBox.scrollIntoView({behavior:reduced?"instant":"smooth",block:"nearest"})}
-  async function returnOffice(){if(!meeting)return;meetingBox.hidden=true;returnButton.hidden=true;caseState.textContent="자리로 복귀 중";const selected=selectedAgents();await walk(selected,true);homeAll();meeting=false;map.dataset.state="idle";openButton.disabled=!caseData;caseState.textContent=caseData?"안건 선택됨 · 회의실 준비":"평상시 근무 중"}
+  function selectedAgents(){if(liveAgents?.length)return liveAgents;const reviews=Array.isArray(caseData?.reviews)?caseData.reviews:[],round=Math.max(0,...reviews.map(r=>Number(r.review_round)||0));const keys=["hani"];for(const r of reviews.filter(r=>(Number(r.review_round)||0)===round)){const key=personKey(r.agent_key),person=people.find(p=>p[0]===key||p[1]===key);if(person&&!keys.includes(person[0]))keys.push(person[0])}return keys.slice(0,6)}
+  async function openMeeting(){if(!caseData||meeting)return;meeting=true;openButton.disabled=true;caseState.textContent="회의실로 이동 중";const selected=selectedAgents();if(!await walk(selected))return;meetingBox.hidden=false;returnButton.hidden=false;map.dataset.state="meeting";caseState.textContent=stageText();renderMeeting();syncQuestions();meetingBox.scrollIntoView({behavior:reduced?"instant":"smooth",block:"nearest"})}
+  async function returnOffice(){if(!meeting)return;meetingBox.hidden=true;returnButton.hidden=true;syncQuestions();caseState.textContent="자리로 복귀 중";const selected=selectedAgents();await walk(selected,true);homeAll();meeting=false;map.dataset.state="idle";openButton.disabled=!caseData;caseState.textContent=caseData?"안건 선택됨 · 회의실 준비":"평상시 근무 중"}
   openButton.addEventListener("click",openMeeting);returnButton.addEventListener("click",returnOffice);
   document.getElementById("haniOfficeReportLink").addEventListener("click",()=>document.getElementById("agentCaseDetail")?.scrollIntoView({behavior:reduced?"instant":"smooth",block:"start"}));
-  window.haniOfficeLiveUpdate=detail=>{caseData=detail?.case?detail:null;openButton.disabled=!caseData;caseState.textContent=caseData?"안건 선택됨 · 회의실 준비":"평상시 근무 중";if(meeting){if(caseData)renderMeeting();else void returnOffice()}};
+  window.haniOfficeLiveUpdate=detail=>{if(caseData?.case?.id!==detail?.case?.id){liveStage="";liveAgents=null;liveCross=null}caseData=detail?.case?detail:null;openButton.disabled=!caseData||meeting;caseState.textContent=caseData?stageText():"평상시 근무 중";if(meeting){if(caseData){renderMeeting();syncQuestions(true)}else void returnOffice()}};
+  window.haniOfficeLiveStage=({stage,case:activeCase,selected_agents,reviews,cross_review}={})=>{if(activeCase){if(caseData?.case?.id!==activeCase.id){liveAgents=null;liveCross=null;caseData={case:activeCase,reviews:[]}}else caseData.case={...caseData.case,...activeCase}}if(Array.isArray(selected_agents)){liveAgents=["hani"];for(const member of selected_agents){const key=personKey(member?.agent_key);if(people.some(person=>person[0]===key)&&!liveAgents.includes(key))liveAgents.push(key)}liveAgents=liveAgents.slice(0,6)}if(Array.isArray(reviews)&&caseData)caseData.reviews=reviews;if(cross_review)liveCross=cross_review;if(stage)liveStage=stage;openButton.disabled=!caseData||meeting;caseState.textContent=stageText();if(stage==="SUMMONING"&&liveAgents?.length&&!meeting)void openMeeting();else if(meeting&&!meetingBox.hidden)renderMeeting()};
   if(typeof agentDetailCache!=="undefined"&&agentDetailCache?.case)window.haniOfficeLiveUpdate(agentDetailCache);
   setInterval(()=>{if(reduced||meeting)return;frame=1-frame;for(const actor of actors.values()){const sprite=actor.querySelector(".hani-office-sprite"),row=Number(sprite.dataset.row);sprite.style.backgroundPosition=`${frame?"20%":"0%"} ${["0%","50%","100%"][row]}`}},600);
   setInterval(changeOne,4200);
