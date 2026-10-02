@@ -233,7 +233,7 @@
     injectStyle();installOneClickCapture();refresh();
     const ob=new MutationObserver(records=>{const meaningful=records.some(r=>r.type==='attributes'||Array.from(r.addedNodes||[]).some(n=>n.nodeType===1&&!n.matches?.('.hani-etf-logo-v02981,.hani-news-comment-oneclick-v02981,#haniInvestmentSummaryHostV02981')));if(meaningful)schedule(100)});
     ob.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['data-view']});
-    document.addEventListener('click',ev=>{if(ev.target.closest?.('[data-view],#investment button,#investment select,#newsroom select'))setTimeout(refresh,130)},true);
+    document.addEventListener('click',ev=>{if(ev.target.closest?.('#signatureFinishChoices'))return;if(ev.target.closest?.('[data-view],#investment button,#investment select,#newsroom select'))setTimeout(refresh,130)},true);
     window.setTimeout(refresh,350);window.setTimeout(refresh,1100);
     console.info('[HANI OS] v2.9.81 newsroom one-click / investment cleanup / ETF identity ready');
   }

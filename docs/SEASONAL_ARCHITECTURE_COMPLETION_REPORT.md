@@ -1,6 +1,20 @@
 # HANI Seasonal Architecture Completion Report
 
-검증일: 2026-10-03 KST. Preview 단계, 미병합/미배포.
+검증일: 2026-10-03 KST. 배포 승인 받음. 미병합/미배포.
+
+## Galaxy integration / v2.9.156 (supersedes historical Preview below)
+
+- 사용자 승인: 배포 요청 및 main drift 통합에 대한 “응”. 추가 배포 승인 불필요.
+- 최신 main: `321acc064d9dafca2efc56375baab0f290ea0097`, 운영 표시 2.9.155. 원격 재확인 일치.
+- Galaxy main을 feature branch에 통합. 기존 두 Finish, 설정 UI, 저장 경로, pilot(Home/Diet/Settings) 범위 유지.
+- 이번 추가 변경은 CSS 2개, Season의 legacy attribute 보존 1줄, 표시·캐시 버전 2.9.156. 신규 artwork/resolver 없음.
+- 충돌 해결 시 일반 패널을 전체 .card로 덮지 않고 Home named panels 및 Diet/Settings의 직접 grid card로 한정. Domain/semantic 소유 색상 보존.
+- 어두운 마감의 흰 generic panel/밝은 글자 회귀를 실제 스크린샷에서 발견하여 수정. 재검증 통과.
+- 최신 main과 비교: 1440/390px × Porcelain/Midnight × 사계절 = 16 조합. 구조 시즌 불변, 6 Domain 카드 및 up/down, Hero src/geometry, Remote decode/sheet, 계절·Finish reload, 실제 Finish radio, Sports pilot 이탈, uncaught JS error 0 통과.
+- 데이터: 격리 browser context에서 protected storage 값 불변. 업무 write/auth/cloud 구현 변경 없음. 외부 네트워크 차단 환경이므로 운영 로그인·Cloud 연동 PASS를 의미하지 않음.
+- 증거 JSON 및 gallery는 v2.9.156으로 갱신. 아래 2.9.155 설명은 이전 Preview 이력.
+- Release gate: 별도 frozen package One-Pass 결과를 사용. 운영 Chrome 경고창에서 브라우저 제어가 timeout되어 인증된 Deploy Bridge HINA 검증 연결이 아직 불가. HINA/merge/Pages/production read-back 미완료.
+- 기존 feature branch에는 감사 문서·PNG·QA script도 포함되어 read-only existing-PR gate 파일 허용범위를 벗어남. 정상 package staging을 통해 runtime-only release PR을 준비해야 함. Gate 정책 변경/우회 금지.
 
 ## Baseline
 

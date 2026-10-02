@@ -12,6 +12,7 @@
   const PAGE_SIZE = 20;
   const PAGED_OUT = 'hani-newsroom-paged-out-v02970';
   const ROOT_SELECTOR = '#newsroom';
+  const OBSERVER_OPTIONS = {subtree:true, childList:true, characterData:true, attributes:true, attributeFilter:['class','hidden','aria-expanded','data-read','data-is-read','data-unread']};
 
   let visibleLimit = PAGE_SIZE;
   let scheduled = false;
@@ -234,7 +235,7 @@
     }
     if (more) {
       more.hidden = shown >= rows.length;
-      if (!more.hidden) more.textContent = `이전 뉴스 ${Math.min(PAGE_SIZE, rows.length - shown)}건 더 보기`;
+      if (!more.hidden) setText(more, `이전 뉴스 ${Math.min(PAGE_SIZE, rows.length - shown)}건 더 보기`);
     }
   }
 
@@ -393,7 +394,11 @@
     const weeklyTitle = q('#investmentNewsWeeklyTitle');
 
     if (!buttons.length) {
-      select.innerHTML = `<option value="0">${fallbackLabel}</option>`;
+      const signature = JSON.stringify([{i:0,label:fallbackLabel}]);
+      if(select.dataset.signature!==signature){
+        const option=document.createElement('option');option.value='0';option.textContent=fallbackLabel;
+        select.replaceChildren(option);select.dataset.signature=signature;
+      }
       select.disabled = true;
 
       if (weeklyTitle && /^(이번 주 시장 한눈에|주간 종합 시황)$/i.test(String(weeklyTitle.textContent || '').trim())) {
@@ -483,7 +488,7 @@
         title.appendChild(chip);
       }
       chip.dataset.direction = direction.key;
-      chip.textContent = direction.label;
+      setText(chip, direction.label);
       chip.title = '해당 주간 브리핑 문구에서 읽은 시장 방향입니다.';
     });
   }
@@ -491,14 +496,21 @@
   function applyAll() {
     const root = q(ROOT_SELECTOR);
     if (!root) return;
-    injectStyle();
-    normalizeEntityRows();
-    applyPagination();
-    enhanceNewBadges();
-    enhanceCommentChips();
-    ensureWeeklyArchiveNav();
-    enhanceMarketDirections();
-    root.dataset.newsroomUxPatch = PATCH_ID;
+    // This observer consumes native updates, not the synchronous decoration it owns.
+    // Otherwise fallback options / hidden attributes schedule applyAll forever.
+    observer?.disconnect();
+    try {
+      injectStyle();
+      normalizeEntityRows();
+      applyPagination();
+      enhanceNewBadges();
+      enhanceCommentChips();
+      ensureWeeklyArchiveNav();
+      enhanceMarketDirections();
+      root.dataset.newsroomUxPatch = PATCH_ID;
+    } finally {
+      observer?.observe(root, OBSERVER_OPTIONS);
+    }
   }
 
   function scheduleApply() {
@@ -534,7 +546,7 @@
       bindFilterReset();
       scheduleApply();
     });
-    observer.observe(root, {subtree:true, childList:true, characterData:true, attributes:true, attributeFilter:['class','hidden','aria-expanded','data-read','data-is-read','data-unread']});
+    observer.observe(root, OBSERVER_OPTIONS);
   }
 
   if (document.readyState === 'loading') {

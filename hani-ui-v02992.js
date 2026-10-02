@@ -857,7 +857,8 @@
     select(currentSportsMenu());
   }
   let queued=false;function refresh(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;mountSkeletons();arrangeNavigation();mountDesignSlots();organizePhase1Layouts();improveLifeMarket();cleanupNewsroom();bindSportsBoard();if(q('#exercise.active')&&typeof drawExercise==='function')requestAnimationFrame(drawExercise)})}
-  document.addEventListener('click',()=>setTimeout(refresh,0));document.addEventListener('change',()=>setTimeout(refresh,0));
+  // Finish selection is CSS-only; do not rebuild page/card slots for these controls.
+  document.addEventListener('click',event=>{if(!event.target.closest('#signatureFinishChoices'))setTimeout(refresh,0)});document.addEventListener('change',event=>{if(!event.target.closest('#signatureFinishChoices'))setTimeout(refresh,0)});
   refresh();setTimeout(refresh,120);
   console.info('[HANI OS] v2.9.119 Library and viewing archive UX ready');
 })();

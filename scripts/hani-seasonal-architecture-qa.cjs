@@ -8,7 +8,8 @@ const mode = process.argv.includes('--baseline') ? 'baseline' : 'candidate';
 const output = path.resolve(process.env.HANI_SEASON_QA_OUTPUT || path.join(require('node:os').tmpdir(), 'hani-seasonal-architecture-qa'));
 fs.mkdirSync(output, { recursive: true });
 const types = {'.html':'text/html', '.js':'text/javascript', '.css':'text/css', '.jpg':'image/jpeg', '.png':'image/png', '.webp':'image/webp', '.svg':'image/svg+xml'};
-const baselineFiles = mode==='baseline' ? new Map(['index.html','hani-main.js','hani-design-system.css','hani-context-remote.css'].map(file => [file,require('node:child_process').execFileSync('git',['show',`ff8c9ea22ba990d0771b390972e7ccb39610d097:${file}`],{cwd:root,maxBuffer:10*1024*1024})])) : new Map();
+const baselineSha='321acc064d9dafca2efc56375baab0f290ea0097';
+const baselineFiles = mode==='baseline' ? new Map(['index.html','hani-main.js','hani-design-system.css','hani-context-remote.css'].map(file => [file,require('node:child_process').execFileSync('git',['show',`${baselineSha}:${file}`],{cwd:root,maxBuffer:10*1024*1024})])) : new Map();
 const server = http.createServer((req, res) => {
   const file = path.resolve(root, '.' + (new URL(req.url, 'http://localhost').pathname === '/' ? '/index.html' : decodeURIComponent(new URL(req.url, 'http://localhost').pathname)));
   if (!file.startsWith(root + path.sep) || !fs.existsSync(file) || !fs.statSync(file).isFile()) { res.writeHead(404); res.end(); return; }
@@ -21,7 +22,7 @@ const server = http.createServer((req, res) => {
   const browser = await chromium.launch({headless:true, executablePath:'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'});
   const report = {mode, at:new Date().toISOString(), viewports:[], externalRequestsBlocked:0};
   try {
-    for (const width of [1440,390]) {
+    for (const width of [1440,390]) for(const finish of ['porcelain-cream','midnight-black']) {
       const context = await browser.newContext({viewport:{width,height:900}});
       await context.route('**/*', route => {
         if (new URL(route.request().url()).hostname === '127.0.0.1') return route.continue();
@@ -38,6 +39,7 @@ const server = http.createServer((req, res) => {
       });
       await page.goto(`http://127.0.0.1:${server.address().port}`,{waitUntil:'load'});
       await reveal();
+      await page.evaluate(f=>applySignatureFinish(f,true),finish);
       await page.waitForSelector('#haniContextRemote .hani-remote-scene img');
       // Complete existing route/layout initialization before measuring either build.
       await page.waitForTimeout(600);
@@ -53,10 +55,11 @@ const server = http.createServer((req, res) => {
         probe.innerHTML='<span class="up">+1%</span><span class="down">−1%</span>';
         host.append(probe);
       });
-      const result={width,seasons:[],errors};
+      const result={width,finish,seasons:[],errors};
       for (const season of ['spring','summer','autumn','winter']) {
         await page.evaluate(s => applySeasonTheme(s,false),season);
         await page.waitForTimeout(180);
+        assert.equal(await page.evaluate(()=>document.documentElement.dataset.finish),finish,'Season changed Finish');
         const snapshot = await page.evaluate(async () => {
           const style = (selector,pseudo=null) => { const el=document.querySelector(selector); if(!el)throw new Error('Missing '+selector);const s=getComputedStyle(el,pseudo);return {bg:s.backgroundColor,image:s.backgroundImage,border:s.borderTopColor,color:s.color,shadow:s.boxShadow}; };
           const hero=document.querySelector('#home>.ds-main-character-banner');
@@ -74,22 +77,29 @@ const server = http.createServer((req, res) => {
         });
         result.seasons.push(snapshot);
         assert.notEqual(snapshot.semantic.up.color,snapshot.semantic.down.color,'Semantic fixture must exercise distinct up/down styles');
-        await page.screenshot({path:path.join(output,`${mode}-${width}-${season}-home.png`)});
+        await page.screenshot({path:path.join(output,`${mode}-${width}-${finish}-${season}-home.png`)});
         await page.evaluate(() => { document.querySelector('.nav-btn[data-view="diet"]').click(); });
         await page.waitForTimeout(100);
-        await page.screenshot({path:path.join(output,`${mode}-${width}-${season}-diet.png`)});
+        await page.waitForTimeout(180);
+        const dietStyle=await page.evaluate(()=>{const s=getComputedStyle(document.querySelector('#diet .card'));return {bg:s.backgroundColor,color:s.color,border:s.borderTopColor};});
+        snapshot.activeDiet=dietStyle;
+        await page.screenshot({path:path.join(output,`${mode}-${width}-${finish}-${season}-diet.png`)});
         await page.evaluate(() => { document.querySelector('.nav-btn[data-view="home"]').click(); });
         if(width===390){
           await page.locator('.hani-remote-mobile-trigger').click();
           await page.waitForTimeout(270);
-          await page.screenshot({path:path.join(output,`${mode}-${width}-${season}-remote.png`)});
+          await page.screenshot({path:path.join(output,`${mode}-${width}-${finish}-${season}-remote.png`)});
           await page.locator('.hani-remote-close').click();
         }
       }
       if(mode==='candidate') {
-        const baseline=JSON.parse(fs.readFileSync(path.join(output,'baseline.json'),'utf8')).viewports.find(v=>v.width===width);
+        const baseline=JSON.parse(fs.readFileSync(path.join(output,'baseline.json'),'utf8')).viewports.find(v=>v.width===width&&v.finish===finish);
         for(const [i,s] of result.seasons.entries()) {
           assert.deepEqual(s.structure,result.seasons[0].structure,`${width} ${s.season}: structural surfaces vary`);
+          assert.deepEqual(s.activeDiet,result.seasons[0].activeDiet,'Active Diet surface varies by season');
+          const expectedPanel=finish==='midnight-black'?'rgb(21, 23, 28)':'rgb(255, 255, 255)';
+          assert.equal(s.activeDiet.bg,expectedPanel,'Diet generic panel does not follow Finish');
+          assert.equal(s.structure.panel.bg,expectedPanel,'Home generic panel does not follow Finish');
           const expectedDomains=structuredClone(baseline.seasons[i].domains);
           // Finance's old inherited --ui-purple followed season. Its canonical purple
           // is now explicit; preserve every other domain property against baseline.
@@ -110,12 +120,28 @@ const server = http.createServer((req, res) => {
           const root=document.documentElement,remote=document.querySelector('.hani-remote-scene img');
           const src=remote.src,season=root.dataset.season;
           const before=getComputedStyle(document.querySelector('#haniContextRemote')).backgroundColor;
-          root.style.setProperty('--surface-panel','#e5e7eb');
+          root.style.setProperty('--surface-page','#e5e7eb');
           const after=getComputedStyle(document.querySelector('#haniContextRemote')).backgroundColor;
           return {before,after,seasonPreserved:root.dataset.season===season,artworkPreserved:remote.src===src};
         });
         assert.notEqual(result.appearance.before,result.appearance.after);
         assert(result.appearance.seasonPreserved&&result.appearance.artworkPreserved);
+        await page.evaluate(()=>{document.documentElement.style.removeProperty('--surface-page');document.querySelector('.nav-btn[data-view="settings"]').click();});
+        await page.waitForTimeout(250);
+        const otherFinish=finish==='midnight-black'?'porcelain-cream':'midnight-black';
+        await page.locator(`input[name="signatureFinish"][value="${otherFinish}"]`).check();
+        assert.equal(await page.evaluate(()=>document.documentElement.dataset.finish),otherFinish);
+        await page.locator(`input[name="signatureFinish"][value="${finish}"]`).check();
+        await page.waitForTimeout(300);
+        assert.equal(await page.locator('.galaxy-finishes').evaluate(el=>getComputedStyle(el).backgroundColor),finish==='midnight-black'?'rgb(21, 23, 28)':'rgb(255, 255, 255)','Settings panel Finish mismatch');
+        await page.evaluate(()=>scrollTo(0,0));
+        await page.screenshot({path:path.join(output,`${mode}-${width}-${finish}-settings.png`)});
+        await page.evaluate(()=>document.querySelector('.nav-btn[data-view="game"]').click());
+        await page.waitForTimeout(250);
+        assert.equal(await page.evaluate(()=>document.body.hasAttribute('data-finish-pilot')),false,'Finish pilot leaked to Sports');
+        assert.equal(await page.evaluate(()=>getComputedStyle(document.body).getPropertyValue('--surface-canvas').trim()),'#f8f7f4','Non-pilot canvas is not light');
+        await page.evaluate(()=>document.querySelector('.nav-btn[data-view="home"]').click());
+        result.finishControlsAndPilotBoundary=true;
       }
       // Exercise the existing button and storage path, then reload the isolated profile.
       await page.evaluate(()=>document.querySelector('#theme').click());
@@ -123,6 +149,7 @@ const server = http.createServer((req, res) => {
       assert.equal(selected.season,selected.saved);
       await page.reload({waitUntil:'load'});
       assert.equal(await page.evaluate(()=>document.documentElement.dataset.season),selected.season);
+      assert.equal(await page.evaluate(()=>document.documentElement.dataset.finish),finish,'Finish preference lost on reload');
       assert.equal(await page.evaluate(()=>localStorage.getItem('hani_os_life_v23')),storageBefore,'Business storage changed');
       assert.deepEqual(errors,[],`${width}: JS errors`);
       result.preference=selected;result.protectedStorageUnchanged=true;
