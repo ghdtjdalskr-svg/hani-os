@@ -76,8 +76,8 @@ html:not([data-season]){
 /* Sidebar gets the visible pastel atmosphere. */
 #sidebar.side{
   background:
-    radial-gradient(circle at 18% 6%, rgba(255,255,255,.78) 0 7%, transparent 7.5%),
-    linear-gradient(180deg,var(--hani-side-a) 0%,var(--hani-side-b) 100%)!important;
+    var(--appearance-side-motif,radial-gradient(circle at 18% 6%, rgba(255,255,255,.78) 0 7%, transparent 7.5%)),
+    linear-gradient(180deg,var(--appearance-page,var(--hani-side-a)) 0%,var(--appearance-panel,var(--hani-side-b)) 100%)!important;
   border-right:0!important;
   box-shadow:none!important;
 }
@@ -87,10 +87,10 @@ html:not([data-season]){
 #sidebar .sidebar-team-mini{
   position:relative!important;
   overflow:hidden!important;
-  background:linear-gradient(135deg,var(--hani-brand-a),var(--hani-brand-b))!important;
+  background:linear-gradient(135deg,var(--appearance-raised,var(--hani-brand-a)),var(--appearance-panel,var(--hani-brand-b)))!important;
   border:1px solid rgba(255,255,255,.20)!important;
   box-shadow:0 8px 20px rgba(60,72,104,.10)!important;
-  color:#fff!important;
+  color:var(--appearance-ink,#fff)!important;
 }
 #sidebar .sidebar-brand-hero:before,
 #sidebar .sidebar-brand-hero:after,
@@ -171,11 +171,11 @@ html:not([data-season]){
   border-radius:12px!important;
   background:transparent!important;
   box-shadow:none!important;
-  color:#505c70!important;
+  color:var(--appearance-ink,#505c70)!important;
 }
 #sidebar .group>.group-head:hover,
 #sidebar .office-group>.office-main-nav:hover{
-  background:rgba(255,255,255,.52)!important;
+  background:var(--appearance-raised,rgba(255,255,255,.52))!important;
 }
 #sidebar .office-group>.office-main-nav>.ico,
 #sidebar .office-group>.office-main-nav small{
@@ -188,7 +188,7 @@ html:not([data-season]){
 }
 #sidebar .group>.group-head .name,
 #sidebar .office-group>.office-main-nav .name{
-  color:#505c70!important;
+  color:var(--appearance-ink,#505c70)!important;
   font-size:14px!important;
   line-height:1.2!important;
   font-weight:900!important;
@@ -211,22 +211,22 @@ html:not([data-season]){
   border-color:transparent!important;
   background:transparent!important;
   box-shadow:none!important;
-  color:#626d7f!important;
+  color:var(--appearance-muted,#626d7f)!important;
 }
 #sidebar .group-body .nav-btn .txt{
-  color:#626d7f!important;
+  color:var(--appearance-muted,#626d7f)!important;
   font-weight:760!important;
 }
 #sidebar .group-body .nav-btn:hover{
-  background:rgba(255,255,255,.48)!important;
+  background:var(--appearance-raised,rgba(255,255,255,.48))!important;
 }
 #sidebar .group-body .nav-btn.active{
-  background:#fff!important;
+  background:var(--appearance-raised,#fff)!important;
   border:1px solid color-mix(in srgb,var(--hani-season-dot) 22%,#e2e7ef)!important;
   box-shadow:0 5px 14px rgba(54,66,90,.055)!important;
 }
 #sidebar .group-body .nav-btn.active .txt{
-  color:#394455!important;
+  color:var(--appearance-ink,#394455)!important;
   font-weight:950!important;
 }
 
