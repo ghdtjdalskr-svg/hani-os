@@ -256,13 +256,13 @@
   function setIndexCard(card,{name,em,strong,move,detail,color}) {
     if(!card)return;
     card.classList.add('hani-index-card-v02979'); card.style.setProperty('--index-color',color);
-    const head=q('.kpi-head span',card)||q('.kpi-head',card)?.firstElementChild; if(head)head.textContent=name;
-    const e=q('.kpi-head em',card); if(e)e.textContent=em;
-    const s=q(':scope > strong',card)||q('strong',card); if(s&&strong!==undefined)s.textContent=strong;
+    const head=q('.kpi-head span',card)||q('.kpi-head',card)?.firstElementChild; if(head&&head.textContent!==name)head.textContent=name;
+    const e=q('.kpi-head em',card); if(e&&e.textContent!==em)e.textContent=em;
+    const s=q(':scope > strong',card)||q('strong',card); if(s&&strong!==undefined&&s.textContent!==strong)s.textContent=strong;
     qa('.hani-index-move-v02978,.hani-index-detail-v02978',card).forEach(x=>x.remove());
     let mv=q('.hani-index-move-v02979',card); if(!mv){mv=document.createElement('span');(s||card).insertAdjacentElement(s?'afterend':'beforeend',mv)}
-    mv.className=`hani-index-move-v02979 ${move.tone||'na'}`; mv.textContent=move.label;
-    let dt=q('.hani-index-detail-v02979',card); if(!dt){dt=document.createElement('small');mv.insertAdjacentElement('afterend',dt)} dt.className='hani-index-detail-v02979'; dt.textContent=detail||'';
+    mv.className=`hani-index-move-v02979 ${move.tone||'na'}`; if(mv.textContent!==move.label)mv.textContent=move.label;
+    let dt=q('.hani-index-detail-v02979',card); if(!dt){dt=document.createElement('small');mv.insertAdjacentElement('afterend',dt)} dt.className='hani-index-detail-v02979'; if(dt.textContent!==(detail||''))dt.textContent=detail||'';
     qa(':scope > small:not(.hani-index-detail-v02979)',card).forEach(old=>old.style.display='none');
   }
 
@@ -304,8 +304,13 @@
     const board=q('#haniHasdaqBoardV02976'), st=getStateSafe(); if(!board||!st)return;
     const cur=investByMonth(st,CURRENT_MONTH), prev=investByMonth(st,PREV_MONTH), mv=movement(cur?.v??null,prev?.v??null,false);
     const brand=q('.hasdaq-brand',board)||board, title=qa('b,strong,h2,h3',brand).find(el=>/HASDAQ\s*BOARD/i.test(text(el)))||qa('b,strong,h2,h3',board).find(el=>/HASDAQ\s*BOARD/i.test(text(el))); if(!title)return;
-    qa('.hani-hasdaq-inline-v02978,.hani-hasdaq-inline-v02979',brand).forEach(x=>x.remove());
-    const chip=document.createElement('span'); chip.className=`hani-hasdaq-inline-v02979 ${mv.tone||'na'}`; chip.innerHTML=mv.pct===null?'비교 데이터 준비 중':`${mv.pct>0?'↑':mv.pct<0?'↓':'—'} ${mv.pct>0?'+':''}${mv.pct.toFixed(2)}% <small>전월 대비</small>`; title.insertAdjacentElement('afterend',chip);
+    qa('.hani-hasdaq-inline-v02978',brand).forEach(x=>x.remove());
+    // Persistent value slot: replacing it made the v02980 observer refresh us back.
+    let chip=q('.hani-hasdaq-inline-v02979',brand);
+    if(!chip){chip=document.createElement('span');title.insertAdjacentElement('afterend',chip)}
+    chip.className=`hani-hasdaq-inline-v02979 ${mv.tone||'na'}`;
+    const html=mv.pct===null?'비교 데이터 준비 중':`${mv.pct>0?'↑':mv.pct<0?'↓':'—'} ${mv.pct>0?'+':''}${mv.pct.toFixed(2)}% <small>전월 대비</small>`;
+    if(chip.innerHTML!==html)chip.innerHTML=html;
   }
 
   function newsUpperRows() {
@@ -380,7 +385,7 @@
     injectStyle(); refresh();
     const observer=new MutationObserver(records=>{const meaningful=records.some(r=>r.type==='attributes'||Array.from(r.addedNodes||[]).some(n=>n.nodeType===1&&!n.matches?.('.hani-security-logo-v02979,.hani-hasdaq-inline-v02979,#haniLifeMarketV02979')));if(meaningful)schedule(90)});
     observer.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['data-view']});
-    document.addEventListener('click',ev=>{if(ev.target.closest?.('[data-view]'))setTimeout(refresh,120)},true);
+    document.addEventListener('click',ev=>{if(ev.target.closest?.('#signatureFinishChoices'))return;if(ev.target.closest?.('[data-view]'))setTimeout(refresh,120)},true);
     window.setTimeout(refresh,350); window.setTimeout(refresh,1200);
     console.info('[HANI OS] v2.9.79 LIFE MARKET / Security Identity ready · read-only UI patch');
   }
