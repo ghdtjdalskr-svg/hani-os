@@ -609,6 +609,7 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
   const activeNav=document.querySelector(`.group .nav-btn[data-view="${id}"]`);
   activeNav?.closest(".group")?.classList.add("is-current");
   const m=pageMeta[id]||[id,"","home"];$("title").textContent=m[0];$("desc").textContent=m[1];document.body.dataset.view=id;document.body.dataset.canvasGroup=m[2]||"home";const km={home:"DASHBOARD",finance:"FINANCE",health:"HEALTH",growth:"GROWTH",life:"LIFE",sports:"SPORTS",game:"SPORTS",work:"WORK",team:"AI TEAM"};if($("pageKicker"))$("pageKicker").textContent=km[m[2]]||String(id).toUpperCase();setBanner(m[2],id);
+  updateFinishScope();
   history.replaceState(null,"",id==="home"?location.href.split("#")[0]:("#"+id));$("app").classList.remove("mobile-open");window.scrollTo({top:0,left:0,behavior:"auto"});
   window.HaniAssetMarket?.sync();
   if(id==="investment")setTimeout(drawPortfolio,30);if(id==="newsroom")setTimeout(()=>investmentNewsMaybeRefresh(),40);if(id==="diet")setTimeout(drawBody,30);if(id==="ledger")setTimeout(drawLedgerTrend,30);if(id==="calendar")renderCalendar();if(id==="tasks")setTimeout(()=>googleCalendarRefreshStatus({silent:true}),0);if(id==="intake")setTimeout(()=>intakeRenderPreview(),0);if(id==="agentReview")setTimeout(()=>agentReviewInit(),0);if(id==="monthlyReport")setTimeout(()=>renderMonthlyReport(),0);if(id==="policy")setTimeout(()=>agentPolicyInit(),0);if(id==="deployment")setTimeout(()=>deployCenterRender(),0);
@@ -711,12 +712,37 @@ function applySeasonTheme(key,saveChoice=false){
   delete document.documentElement.dataset.theme;
   document.documentElement.dataset.season=key;
   if(saveChoice)localStorage.setItem(SEASON_THEME_KEY,key);
-  const meta=document.querySelector('meta[name="theme-color"]');
-  if(meta)meta.setAttribute("content",SEASON_THEMES[key].themeColor);
+  updateFinishScope();
   if($("theme"))$("theme").innerHTML=`${SEASON_THEMES[key].icon} <span>${SEASON_THEMES[key].label} 테마</span>`;
   setTimeout(()=>{drawPortfolio();drawBody();drawLedgerTrend();drawMonthlyAssetChart();drawBrokerChart();drawAnnualInvestmentCharts();drawInvestmentAccountChart();if(activeAccountId)drawAccountChart(activeAccountId)},30);
 }
 const initialSeason=localStorage.getItem(SEASON_THEME_KEY)||defaultSeasonTheme();
+// Appearance is an independent UI preference. It never reads/writes life data.
+function updateFinishScope(){
+  const pilot=["home","diet","settings"].includes(document.body.dataset.view||"home");
+  document.body.toggleAttribute("data-finish-pilot",pilot);
+  const dark=pilot&&document.documentElement.dataset.finish==="midnight-black";
+  const meta=document.querySelector('meta[name="theme-color"]');
+  if(meta)meta.setAttribute("content",pilot?(dark?"#0e0f12":"#f8f7f4"):(SEASON_THEMES[document.documentElement.dataset.season]?.themeColor||"#f8f7f4"));
+}
+function applySignatureFinish(value,saveChoice=false){
+  const finish=["porcelain-cream","midnight-black"].includes(value)?value:"porcelain-cream";
+  document.documentElement.dataset.finish=finish;
+  updateFinishScope();
+  document.querySelectorAll('input[name="signatureFinish"]').forEach(input=>{input.checked=input.value===finish});
+  const status=$("signatureFinishStatus");
+  if(status)status.textContent=`${finish==="midnight-black"?"Midnight Black":"Porcelain Cream"} · Pilot 적용`;
+  if(saveChoice){
+    try{localStorage.setItem("hani_os_signature_finish_v1",finish)}
+    catch(e){if(status)status.textContent="현재 화면에만 적용됐습니다. 이 브라우저에서는 설정 저장이 제한됩니다."}
+  }
+}
+let initialFinish="porcelain-cream";
+try{initialFinish=localStorage.getItem("hani_os_signature_finish_v1")||initialFinish}catch(e){}
+applySignatureFinish(initialFinish);
+$("signatureFinishChoices")?.addEventListener("change",event=>{
+  if(event.target.matches('input[name="signatureFinish"]'))applySignatureFinish(event.target.value,true);
+});
 applySeasonTheme(initialSeason,false);
 $("theme").onclick=()=>{
   const order=["spring","summer","autumn","winter"],current=document.documentElement.dataset.season||"spring";
@@ -3870,7 +3896,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.154";
+const HANI_DISPLAY_VERSION="2.9.155";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
