@@ -410,6 +410,8 @@ html:not([data-season]){
   }
 
   function renderNumericPager() {
+    // v02975 owns real-article pagination; do not keep rebuilding the retired pager.
+    if(window.HANI_NEWSROOM_CLARITY_V02975)return;
     const feed = q('#investmentNewsFeed');
     if (!feed) return;
 
