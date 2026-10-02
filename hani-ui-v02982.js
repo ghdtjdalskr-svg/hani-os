@@ -430,6 +430,7 @@ td.hani-etf-target-v02982>.hani-etf-logo-v02982{position:absolute!important;left
     });
     ob.observe(document.body,{subtree:true,childList:true});
     document.addEventListener('click',ev=>{
+      if(ev.target.closest?.('#signatureFinishChoices'))return;
       if(ev.target.closest?.('[data-view],#investment button,#investment select,#newsroom select'))burst();
     },true);
     burst();
