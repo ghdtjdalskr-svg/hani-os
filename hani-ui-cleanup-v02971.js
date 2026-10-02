@@ -364,6 +364,7 @@
 
   function bindNavigationHeaderSync() {
     document.addEventListener('click', e => {
+      if (e.target.closest?.('#signatureFinishChoices')) return;
       const btn = e.target.closest?.('[data-view],[data-quick-view],[data-go]');
       if (!btn) return;
       setTimeout(syncCurrentHeader, 0);

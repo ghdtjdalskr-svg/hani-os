@@ -25,6 +25,7 @@
 
   const q = (sel, root = document) => root.querySelector(sel);
   const qa = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const setText = (el,value) => {if(el&&el.textContent!==value)el.textContent=value};
 
   const SENTINEL_PATTERNS = [
     /NO_MATERIAL_NEW_DISCLOSURE/i,
@@ -339,7 +340,7 @@
       stamp.className = 'hani-summary-date-v02974-r2';
       main.appendChild(stamp);
     }
-    stamp.textContent = label;
+    setText(stamp,label);
   }
 
   function updateSummaryRows(){
@@ -353,7 +354,7 @@
       const checks = sentinels.filter(row => rowMatchesEntity(row, identity));
 
       const count = q('.news-entity-count', summaryRow);
-      if (count) count.textContent = actual.length > 0 ? `${actual.length}건` : '신규 뉴스 없음';
+      setText(count,actual.length > 0 ? `${actual.length}건` : '신규 뉴스 없음');
 
       const latestReal = actual[0] || null;
       const latestCheck = checks[0] || null;
@@ -370,10 +371,10 @@
 
       if (actual.length === 0 && checks.length > 0) {
         const summary = q('.news-entity-summary', summaryRow);
-        if (summary) summary.textContent = '최근 확인 기준 유의미한 신규 기사·공시가 없습니다.';
+        setText(summary,'최근 확인 기준 유의미한 신규 기사·공시가 없습니다.');
         const signal = q('.news-entity-signal', summaryRow);
         if (signal) {
-          signal.textContent = '— 신규 없음';
+          setText(signal,'— 신규 없음');
           signal.title = '개별 뉴스 기사가 아니라 최신 확인 상태입니다.';
         }
       }
@@ -383,7 +384,7 @@
   function clarifyBoardHeader(){
     const sub = q('#newsroom .investment-news-board-shell>.sh .sub');
     if (sub) {
-      sub.textContent = '개별 기사 원문 · 출처 · 영향도 · HANI View · AI TEAM 댓글을 확인합니다. “신규 뉴스 없음” 확인 상태는 기사로 표시하지 않습니다.';
+      setText(sub,'개별 기사 원문 · 출처 · 영향도 · HANI View · AI TEAM 댓글을 확인합니다. “신규 뉴스 없음” 확인 상태는 기사로 표시하지 않습니다.');
     }
   }
 
@@ -427,7 +428,10 @@
 
     const status = q('.pager-status', pager);
     const pages = q('.pager-pages', pager);
-    status.textContent = `실제 뉴스 ${start+1}–${end} / ${total}건`;
+    setText(status,`실제 뉴스 ${start+1}–${end} / ${total}건`);
+    const signature=JSON.stringify([currentPage,total]);
+    if(pages.dataset.signature===signature)return;
+    pages.dataset.signature=signature;
     pages.innerHTML = '';
 
     const addButton = (label, page, disabled, active, aria) => {
@@ -465,12 +469,18 @@
 
   function refresh(){
     scheduled = false;
-    injectStyle();
-    classifyRows();
-    ensureSummaryHead();
-    updateSummaryRows();
-    clarifyBoardHeader();
-    renderPager();
+    observer?.disconnect();
+    try {
+      injectStyle();
+      classifyRows();
+      ensureSummaryHead();
+      updateSummaryRows();
+      clarifyBoardHeader();
+      renderPager();
+    } finally {
+      const root=q('#newsroom');
+      if(root)observer?.observe(root,{childList:true,subtree:true});
+    }
   }
 
   function queueRefresh(){

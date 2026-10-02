@@ -292,10 +292,12 @@
       line=document.createElement('div'); line.className='hani-hasdaq-titleline-v02980';
       title.parentElement.insertBefore(line,title); line.appendChild(title);
     }
-    qa('.hani-hasdaq-change-v02980',line).forEach(x=>x.remove());
-    const chip=document.createElement('span'); chip.className=`hani-hasdaq-change-v02980 ${tone}`;
-    chip.innerHTML=pct?`<span class="value">${tone==='up'?'↑ ':tone==='down'?'↓ ':''}${pct.startsWith('-')||pct.startsWith('+')?pct:(tone==='up'?'+':'')+pct}%</span><small>전월 대비</small>`:`<span class="value">—</span><small>비교 데이터 준비 중</small>`;
-    line.appendChild(chip);
+    // Keep the same slot so the older identity observer is not retriggered forever.
+    let chip=q('.hani-hasdaq-change-v02980',line);
+    if(!chip){chip=document.createElement('span');line.appendChild(chip)}
+    chip.className=`hani-hasdaq-change-v02980 ${tone}`;
+    const html=pct?`<span class="value">${tone==='up'?'↑ ':tone==='down'?'↓ ':''}${pct.startsWith('-')||pct.startsWith('+')?pct:(tone==='up'?'+':'')+pct}%</span><small>전월 대비</small>`:`<span class="value">—</span><small>비교 데이터 준비 중</small>`;
+    if(chip.innerHTML!==html)chip.innerHTML=html;
   }
 
   function selfAudit(){
@@ -329,7 +331,7 @@
       if(meaningful)schedule(110);
     });
     observer.observe(document.body,{subtree:true,childList:true});
-    document.addEventListener('click',ev=>{if(ev.target.closest?.('[data-view],#investment button,#newsroom button,#newsroom select'))setTimeout(refresh,140)},true);
+    document.addEventListener('click',ev=>{if(ev.target.closest?.('#signatureFinishChoices'))return;if(ev.target.closest?.('[data-view],#investment button,#newsroom button,#newsroom select'))setTimeout(refresh,140)},true);
     window.setTimeout(refresh,350);window.setTimeout(refresh,1000);
     console.info('[HANI OS] v2.9.80 Final Visual Polish ready · read-only UI patch');
   }
