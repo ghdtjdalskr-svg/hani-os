@@ -132,11 +132,7 @@ body,input,textarea,select,button{font-family:var(--ds-font)}
 }
 /* Canonical page frame: shared by every route. Adjust tokens here, not page overrides. */
 :root{--ds-hero-height:190px;--ds-hero-padding:24px;--ds-title-size:29px;--ds-avatar-size:72px;--ds-season:#8d6daf;--ds-season-soft:#f4edf9;--ds-canvas:#f7f3fa;--ds-muted:#637087}
-:root[data-season=spring]{--ds-season:#ae5687;--ds-season-soft:#fbedf4;--ds-canvas:#fbf4f8}
-:root[data-season=summer]{--ds-season:#147f96;--ds-season-soft:#e4f5f7;--ds-canvas:#f0f8fa}
-:root[data-season=autumn]{--ds-season:#a86530;--ds-season-soft:#faf0df;--ds-canvas:#faf5ee}
-:root[data-season=winter]{--ds-season:#526f9a;--ds-season-soft:#eaf0fa;--ds-canvas:#f1f5fb}
-html body,#app,.main{background-color:var(--ds-canvas)!important}
+html body,#app,.main{background-color:var(--surface-canvas)!important}
 #app .view>.ds-page-hero{position:relative!important;display:grid!important;grid-template-columns:minmax(360px,42%) minmax(0,58%)!important;align-items:center!important;height:var(--ds-hero-height)!important;min-height:var(--ds-hero-height)!important;padding:0!important;margin:0 0 var(--ds-gap)!important;border:1px solid color-mix(in srgb,var(--hero-accent) 16%,white)!important;border-radius:22px!important;overflow:hidden!important;background:linear-gradient(110deg,var(--hero-soft),color-mix(in srgb,var(--hero-soft) 38%,white))!important;box-shadow:var(--ds-shadow)!important;--hero-accent:#7569e8;--hero-soft:#f0edff;--hero-surface:var(--hero-soft);--hero-ink:var(--ds-ink);--hero-muted:var(--ds-muted)}
 #app .ds-page-hero.ds-tone-finance{--hero-accent:#3f78d4;--hero-soft:#eaf3ff}
 #app .ds-page-hero.ds-tone-health{--hero-accent:#24986d;--hero-soft:#e8f7f0}
@@ -180,7 +176,6 @@ body[data-view=home] #aiBanner{display:none!important}
 #app .view .sh{min-height:44px}
 #app .view .sh-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
 #app .view .note,#app .view .muted{color:var(--ds-muted)}
-#app .view :is(.card,.asset-dashboard-card){border-color:color-mix(in srgb,var(--ds-season) 12%,white)}
 #app .view .card>.sh h3:before{background:var(--ds-season)!important}
 #app .view :is(.tab.active,.newsroom-mode-btn.active){background:var(--ds-season-soft)!important;color:var(--ds-season)!important;box-shadow:none!important}
 #app .view :is(input,textarea,select):focus-visible{outline:2px solid var(--ds-season);outline-offset:2px}
@@ -439,12 +434,39 @@ body[data-view=home] #aiBanner{display:none!important}
 :root[data-season=summer]{--season-page-glow:#c9edf1;--season-card:#fbfeff;--season-line:#cce6ea;--season-motif:#3bb5c1}
 :root[data-season=autumn]{--season-page-glow:#ecd5b5;--season-card:#fffdf8;--season-line:#e7d4bc;--season-motif:#bd713b}
 :root[data-season=winter]{--season-page-glow:#cedced;--season-card:#fbfdff;--season-line:#cfdae8;--season-motif:#7798bd}
-/* Neutral Surface Pilot: structural canvas/glow for Dashboard and Diet. */
-:root{--surface-canvas:#f8f7f4;--surface-glow:#e8e5de}
-body:is([data-view="home"],[data-view="diet"]){--ds-canvas:var(--surface-canvas);--season-page-glow:var(--surface-glow)}
-html body{background-image:radial-gradient(circle at 86% 3%,color-mix(in srgb,var(--season-page-glow) 54%,transparent),transparent 31%),linear-gradient(145deg,var(--ds-canvas),color-mix(in srgb,var(--ds-canvas) 80%,white))!important;background-attachment:fixed!important}
-#app .main{background:linear-gradient(150deg,color-mix(in srgb,var(--season-page-glow) 18%,transparent),transparent 34%)!important}
-#app .view :is(.card,.asset-dashboard-card,.module-toolbar,.page-nav-context-v02992){background-color:color-mix(in srgb,var(--season-card) 96%,transparent)!important;border-color:var(--season-line)!important}
+/* Appearance owns structural surfaces. Season selectors never assign these tokens.
+ * App-scoped aliases serve existing/injected stylesheet consumers; root seasonal
+ * tokens remain available to the unchanged login presentation. Domain and semantic
+ * palettes retain their owners. */
+:root{
+ --surface-canvas:#f8f7f4;--surface-glow:#e8e5de;--surface-page:#f8f7f4;
+ --surface-panel:#fff;--surface-raised:#fafbff;--border-subtle:#e8e8f1;
+ --text-primary:#28374c;--text-secondary:#637087;
+ --control-accent:#7656b3;--control-accent-secondary:#9279ba;--control-soft:#f0edf6;
+ --domain-finance-accent:#7559f3;
+}
+#app .finance-tone{--ui-purple:var(--domain-finance-accent)}
+#app{
+ --ds-canvas:var(--surface-canvas);--ds-paper:var(--surface-panel);--ds-line:var(--border-subtle);
+ --ds-ink:var(--text-primary);--ds-muted:var(--text-secondary);
+ --ds-season:var(--control-accent);--ds-season-soft:var(--control-soft);
+ --season-card:var(--surface-panel);--season-line:var(--border-subtle);--season-page-glow:var(--surface-glow);
+ --season-accent:var(--control-accent);--season-accent2:var(--control-accent-secondary);
+ --season-soft:var(--control-soft);--season-tint:var(--surface-raised);
+ --hani-season-canvas:var(--surface-canvas);--hani-season-surface:var(--surface-panel);
+ --hani-season-soft:var(--control-soft);--hani-season-line:var(--border-subtle);
+ --hani-season-accent:var(--control-accent);--hani-season-accent2:var(--control-accent-secondary);
+ --hani-season-ink:var(--text-primary);--hani-season-dot:var(--control-accent);
+ --hani-side-a:var(--surface-panel);--hani-side-b:var(--surface-page);--hani-side-line:var(--border-subtle);
+ --hani-brand-a:var(--control-accent);--hani-brand-b:var(--control-accent-secondary);
+ --ui-bg:var(--surface-canvas);--ui-purple:var(--control-accent);--primary:var(--control-accent);
+ --panel:var(--surface-panel);--panel2:var(--surface-raised);--line:var(--border-subtle);
+}
+html body{background-image:radial-gradient(circle at 86% 3%,color-mix(in srgb,var(--surface-glow) 54%,transparent),transparent 31%),linear-gradient(145deg,var(--surface-canvas),color-mix(in srgb,var(--surface-canvas) 80%,white))!important;background-attachment:fixed!important}
+#app .main{background:linear-gradient(150deg,color-mix(in srgb,var(--surface-glow) 18%,transparent),transparent 34%),var(--surface-page)!important}
+/* No blanket .view .card paint: base generic surfaces and specific domain rules
+ * retain their cascade. Only these identified structural toolbars are mapped. */
+#app .view :is(.module-toolbar,.page-nav-context-v02992){background-color:var(--surface-panel)!important;border-color:var(--border-subtle)!important}
 
 #app .ds-main-character-banner{--mcb-scene-position-mobile:72% center;--mcb-scene-fit-mobile:cover}
 #app .ds-main-character-banner.ds-tone-office{--mcb-accent:#7550a5;--mcb-ink:#2e2540;--mcb-muted:#655b76;--mcb-bg:linear-gradient(135deg,#f4eeff 0%,#e7def6 100%);--mcb-border:#cfc0e3;--mcb-status-bg:#fffaf0d9;--mcb-status-line:#bca9d2;--mcb-overlay:linear-gradient(90deg,#f4eeff 0%,#f4eefff5 43%,#eee6f9ce 58%,#eee6f94d 74%,transparent 89%);--mcb-overlay-mobile:linear-gradient(90deg,#f4eefff8 0%,#f4eeffee 57%,#eee6f9ad 100%)}
@@ -460,6 +482,7 @@ html body{background-image:radial-gradient(circle at 86% 3%,color-mix(in srgb,va
 #app .ds-main-character-banner__status[hidden]{display:none}
 #app .ds-main-character-banner__status.up{color:var(--mcb-up,#c83d56)}#app .ds-main-character-banner__status.down{color:var(--mcb-down,#356fbd)}
 #app .ds-main-character-banner__seasonal-fx{position:absolute;z-index:1;inset:0;overflow:hidden;pointer-events:none}
+#app #home>.ds-main-character-banner .ds-main-character-banner__seasonal-fx{display:none}
 #app .ds-main-character-banner__seasonal-fx:before,#app .ds-main-character-banner__seasonal-fx:after{content:"";position:absolute;pointer-events:none}
 :root[data-season=spring] #app .ds-main-character-banner__seasonal-fx{background:radial-gradient(circle at 18% 8%,#ffd8e833,transparent 24%),linear-gradient(120deg,#ffdeec14,transparent 48%)}
 :root[data-season=spring] #app .ds-main-character-banner__seasonal-fx:before{width:7px;height:7px;left:72%;top:18%;border-radius:70% 20% 70% 20%;background:#ffd1df;box-shadow:72px 24px #fff0f5aa,145px -3px #f6aeca99,210px 64px #ffdbe799,-430px 118px #ffcfdf66;transform:rotate(22deg);animation:season-fall 13s linear infinite}
@@ -758,8 +781,8 @@ html body{background-image:radial-gradient(circle at 86% 3%,color-mix(in srgb,va
  --hani-radius-control:8px;--hani-radius-card:14px;--hani-radius-banner:18px;--hani-radius-pill:9999px;
  --color-data-up:#c83d56;--color-data-down:#356fbd;
  --color-state-success:#18785b;--color-state-warning:#a56816;--color-state-critical:#b72e43;
- --hani-frame-line:color-mix(in srgb,var(--ds-season) 16%,#dfe3ec);
- --hani-frame-surface:color-mix(in srgb,var(--season-card) 94%,#fff);
+ --hani-frame-line:var(--border-subtle);
+ --hani-frame-surface:var(--surface-panel);
  --hani-frame-shadow:0 8px 24px rgba(44,46,74,.065);
  --ds-gap:var(--hani-space-grid);
 }

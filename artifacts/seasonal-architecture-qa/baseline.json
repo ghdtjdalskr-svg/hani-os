@@ -1,0 +1,1061 @@
+{
+  "mode": "baseline",
+  "at": "2026-10-02T15:14:17.151Z",
+  "viewports": [
+    {
+      "width": 1440,
+      "seasons": [
+        {
+          "season": "spring",
+          "structure": {
+            "canvas": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "radial-gradient(circle at 86% 3%, color(srgb 0.909804 0.898039 0.870588 / 0.54), rgba(0, 0, 0, 0) 31%), linear-gradient(145deg, rgb(248, 247, 244), color(srgb 0.978039 0.974902 0.96549))",
+              "border": "rgb(32, 38, 56)",
+              "color": "rgb(32, 38, 56)",
+              "shadow": "none"
+            },
+            "app": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "page": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(150deg, color(srgb 0.909804 0.898039 0.870588 / 0.18), rgba(0, 0, 0, 0) 34%)",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "panel": {
+              "bg": "color(srgb 1 0.980392 0.984314 / 0.96)",
+              "image": "none",
+              "border": "rgb(236, 207, 221)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "diet": {
+              "bg": "color(srgb 1 0.980392 0.984314 / 0.96)",
+              "image": "none",
+              "border": "rgb(236, 207, 221)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "remote": {
+              "bg": "color(srgb 1 0.981176 0.984941)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "sidebar": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.78) 0px, rgba(255, 255, 255, 0.78) 7%, rgba(0, 0, 0, 0) 7.5%), linear-gradient(rgb(255, 241, 246) 0%, rgb(246, 239, 251) 100%)",
+              "border": "rgb(48, 55, 70)",
+              "color": "rgb(48, 55, 70)",
+              "shadow": "none"
+            },
+            "header": {
+              "bg": "color(srgb 1 0.981569 0.985255)",
+              "image": "none",
+              "border": "rgba(102, 115, 140, 0.13)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(48, 61, 86, 0.043) 0px 7px 22px 0px"
+            }
+          },
+          "domains": {
+            "hasdaq": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(243, 239, 255))",
+              "border": "rgb(141, 120, 247)",
+              "color": "rgb(117, 89, 243)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "ne100": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(236, 250, 246))",
+              "border": "color(srgb 0.810392 0.894196 0.913176)",
+              "color": "rgb(37, 188, 165)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinaJones": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(255, 244, 232))",
+              "border": "color(srgb 0.921529 0.875333 0.861176)",
+              "color": "rgb(255, 151, 63)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "harukei": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(238, 245, 255))",
+              "border": "color(srgb 0.825176 0.866157 0.953451)",
+              "color": "rgb(66, 133, 244)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "jispi": {
+              "bg": "rgb(255, 246, 236)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinkei": {
+              "bg": "rgb(245, 240, 255)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            }
+          },
+          "semantic": {
+            "up": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 245, 247), rgb(255, 232, 237))",
+              "border": "rgb(241, 200, 208)",
+              "color": "rgb(200, 61, 86)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            },
+            "down": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(245, 249, 255), rgb(232, 242, 255))",
+              "border": "rgb(200, 217, 239)",
+              "color": "rgb(53, 111, 189)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            }
+          },
+          "hero": {
+            "src": "./assets/team/hani-team-office-active-v2.jpg",
+            "width": 832,
+            "height": 232,
+            "fx": "block"
+          },
+          "remoteSrc": "./assets/context-remote/life-book-cafe-v1.jpg",
+          "overflow": 0
+        },
+        {
+          "season": "summer",
+          "structure": {
+            "canvas": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "radial-gradient(circle at 86% 3%, color(srgb 0.909804 0.898039 0.870588 / 0.54), rgba(0, 0, 0, 0) 31%), linear-gradient(145deg, rgb(248, 247, 244), color(srgb 0.978039 0.974902 0.96549))",
+              "border": "rgb(32, 38, 56)",
+              "color": "rgb(32, 38, 56)",
+              "shadow": "none"
+            },
+            "app": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "page": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(150deg, color(srgb 0.909804 0.898039 0.870588 / 0.18), rgba(0, 0, 0, 0) 34%)",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "panel": {
+              "bg": "oklab(0.995028 -0.00260306 -0.00217345 / 0.96)",
+              "image": "none",
+              "border": "rgb(204, 230, 234)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "diet": {
+              "bg": "color(srgb 0.984314 0.996078 1 / 0.96)",
+              "image": "none",
+              "border": "rgb(204, 230, 234)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "remote": {
+              "bg": "color(srgb 0.984941 0.996235 1)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "sidebar": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.78) 0px, rgba(255, 255, 255, 0.78) 7%, rgba(0, 0, 0, 0) 7.5%), linear-gradient(rgb(237, 250, 250) 0%, rgb(237, 245, 252) 100%)",
+              "border": "rgb(41, 61, 72)",
+              "color": "rgb(41, 61, 72)",
+              "shadow": "none"
+            },
+            "header": {
+              "bg": "color(srgb 0.985255 0.996314 1)",
+              "image": "none",
+              "border": "rgba(102, 115, 140, 0.13)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(48, 61, 86, 0.043) 0px 7px 22px 0px"
+            }
+          },
+          "domains": {
+            "hasdaq": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(243, 239, 255))",
+              "border": "rgb(141, 120, 247)",
+              "color": "rgb(22, 143, 162)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "ne100": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(236, 250, 246))",
+              "border": "color(srgb 0.810392 0.894196 0.913176)",
+              "color": "rgb(37, 188, 165)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinaJones": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(255, 244, 232))",
+              "border": "color(srgb 0.921529 0.875333 0.861176)",
+              "color": "rgb(255, 151, 63)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "harukei": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(238, 245, 255))",
+              "border": "color(srgb 0.825176 0.866157 0.953451)",
+              "color": "rgb(66, 133, 244)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "jispi": {
+              "bg": "rgb(255, 246, 236)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinkei": {
+              "bg": "rgb(245, 240, 255)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            }
+          },
+          "semantic": {
+            "up": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 245, 247), rgb(255, 232, 237))",
+              "border": "rgb(241, 200, 208)",
+              "color": "rgb(200, 61, 86)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            },
+            "down": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(245, 249, 255), rgb(232, 242, 255))",
+              "border": "rgb(200, 217, 239)",
+              "color": "rgb(53, 111, 189)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            }
+          },
+          "hero": {
+            "src": "./assets/team/hani-team-office-active-v2.jpg",
+            "width": 832,
+            "height": 232,
+            "fx": "block"
+          },
+          "remoteSrc": "./assets/context-remote/life-brunch-v1.jpg",
+          "overflow": 0
+        },
+        {
+          "season": "autumn",
+          "structure": {
+            "canvas": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "radial-gradient(circle at 86% 3%, color(srgb 0.909804 0.898039 0.870588 / 0.54), rgba(0, 0, 0, 0) 31%), linear-gradient(145deg, rgb(248, 247, 244), color(srgb 0.978039 0.974902 0.96549))",
+              "border": "rgb(32, 38, 56)",
+              "color": "rgb(32, 38, 56)",
+              "shadow": "none"
+            },
+            "app": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "page": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(150deg, color(srgb 0.909804 0.898039 0.870588 / 0.18), rgba(0, 0, 0, 0) 34%)",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "panel": {
+              "bg": "oklab(0.994193 0.000208761 0.00694117 / 0.96)",
+              "image": "none",
+              "border": "rgb(231, 212, 188)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "diet": {
+              "bg": "color(srgb 1 0.992157 0.972549 / 0.96)",
+              "image": "none",
+              "border": "rgb(231, 212, 188)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "remote": {
+              "bg": "color(srgb 1 0.992471 0.973647)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "sidebar": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.78) 0px, rgba(255, 255, 255, 0.78) 7%, rgba(0, 0, 0, 0) 7.5%), linear-gradient(rgb(251, 240, 228) 0%, rgb(248, 238, 232) 100%)",
+              "border": "rgb(62, 56, 52)",
+              "color": "rgb(62, 56, 52)",
+              "shadow": "none"
+            },
+            "header": {
+              "bg": "color(srgb 1 0.992627 0.974196)",
+              "image": "none",
+              "border": "rgba(102, 115, 140, 0.13)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(48, 61, 86, 0.043) 0px 7px 22px 0px"
+            }
+          },
+          "domains": {
+            "hasdaq": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(243, 239, 255))",
+              "border": "rgb(141, 120, 247)",
+              "color": "rgb(184, 109, 57)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "ne100": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(236, 250, 246))",
+              "border": "color(srgb 0.810392 0.894196 0.913176)",
+              "color": "rgb(37, 188, 165)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinaJones": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(255, 244, 232))",
+              "border": "color(srgb 0.921529 0.875333 0.861176)",
+              "color": "rgb(255, 151, 63)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "harukei": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(238, 245, 255))",
+              "border": "color(srgb 0.825176 0.866157 0.953451)",
+              "color": "rgb(66, 133, 244)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "jispi": {
+              "bg": "rgb(255, 246, 236)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinkei": {
+              "bg": "rgb(245, 240, 255)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            }
+          },
+          "semantic": {
+            "up": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 245, 247), rgb(255, 232, 237))",
+              "border": "rgb(241, 200, 208)",
+              "color": "rgb(200, 61, 86)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            },
+            "down": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(245, 249, 255), rgb(232, 242, 255))",
+              "border": "rgb(200, 217, 239)",
+              "color": "rgb(53, 111, 189)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            }
+          },
+          "hero": {
+            "src": "./assets/team/hani-team-office-active-v2.jpg",
+            "width": 832,
+            "height": 232,
+            "fx": "block"
+          },
+          "remoteSrc": "./assets/context-remote/life-brunch-v1.jpg",
+          "overflow": 0
+        },
+        {
+          "season": "winter",
+          "structure": {
+            "canvas": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "radial-gradient(circle at 86% 3%, color(srgb 0.909804 0.898039 0.870588 / 0.54), rgba(0, 0, 0, 0) 31%), linear-gradient(145deg, rgb(248, 247, 244), color(srgb 0.978039 0.974902 0.96549))",
+              "border": "rgb(32, 38, 56)",
+              "color": "rgb(32, 38, 56)",
+              "shadow": "none"
+            },
+            "app": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "page": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(150deg, color(srgb 0.909804 0.898039 0.870588 / 0.18), rgba(0, 0, 0, 0) 34%)",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "panel": {
+              "bg": "oklab(0.993094 -0.00123557 -0.00311579 / 0.96)",
+              "image": "none",
+              "border": "rgb(207, 218, 232)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "diet": {
+              "bg": "color(srgb 0.984314 0.992157 1 / 0.96)",
+              "image": "none",
+              "border": "rgb(207, 218, 232)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "remote": {
+              "bg": "color(srgb 0.984941 0.992471 1)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "sidebar": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.78) 0px, rgba(255, 255, 255, 0.78) 7%, rgba(0, 0, 0, 0) 7.5%), linear-gradient(rgb(238, 244, 251) 0%, rgb(242, 240, 250) 100%)",
+              "border": "rgb(45, 57, 75)",
+              "color": "rgb(45, 57, 75)",
+              "shadow": "none"
+            },
+            "header": {
+              "bg": "color(srgb 0.985255 0.992627 1)",
+              "image": "none",
+              "border": "rgba(102, 115, 140, 0.13)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(48, 61, 86, 0.043) 0px 7px 22px 0px"
+            }
+          },
+          "domains": {
+            "hasdaq": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(243, 239, 255))",
+              "border": "rgb(141, 120, 247)",
+              "color": "rgb(76, 112, 169)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "ne100": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(236, 250, 246))",
+              "border": "color(srgb 0.810392 0.894196 0.913176)",
+              "color": "rgb(37, 188, 165)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinaJones": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(255, 244, 232))",
+              "border": "color(srgb 0.921529 0.875333 0.861176)",
+              "color": "rgb(255, 151, 63)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "harukei": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(238, 245, 255))",
+              "border": "color(srgb 0.825176 0.866157 0.953451)",
+              "color": "rgb(66, 133, 244)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "jispi": {
+              "bg": "rgb(255, 246, 236)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinkei": {
+              "bg": "rgb(245, 240, 255)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            }
+          },
+          "semantic": {
+            "up": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 245, 247), rgb(255, 232, 237))",
+              "border": "rgb(241, 200, 208)",
+              "color": "rgb(200, 61, 86)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            },
+            "down": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(245, 249, 255), rgb(232, 242, 255))",
+              "border": "rgb(200, 217, 239)",
+              "color": "rgb(53, 111, 189)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            }
+          },
+          "hero": {
+            "src": "./assets/team/hani-team-office-active-v2.jpg",
+            "width": 832,
+            "height": 231.99998474121094,
+            "fx": "block"
+          },
+          "remoteSrc": "./assets/context-remote/life-brunch-v1.jpg",
+          "overflow": 0
+        }
+      ],
+      "errors": [],
+      "preference": {
+        "season": "spring",
+        "saved": "spring"
+      },
+      "protectedStorageUnchanged": true
+    },
+    {
+      "width": 390,
+      "seasons": [
+        {
+          "season": "spring",
+          "structure": {
+            "canvas": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "radial-gradient(circle at 86% 3%, color(srgb 0.909804 0.898039 0.870588 / 0.54), rgba(0, 0, 0, 0) 31%), linear-gradient(145deg, rgb(248, 247, 244), color(srgb 0.978039 0.974902 0.96549))",
+              "border": "rgb(32, 38, 56)",
+              "color": "rgb(32, 38, 56)",
+              "shadow": "none"
+            },
+            "app": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "page": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(150deg, color(srgb 0.909804 0.898039 0.870588 / 0.18), rgba(0, 0, 0, 0) 34%)",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "panel": {
+              "bg": "color(srgb 1 0.980392 0.984314 / 0.96)",
+              "image": "none",
+              "border": "rgb(236, 207, 221)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "diet": {
+              "bg": "color(srgb 1 0.980392 0.984314 / 0.96)",
+              "image": "none",
+              "border": "rgb(236, 207, 221)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "remote": {
+              "bg": "color(srgb 1 0.98098 0.984784)",
+              "image": "none",
+              "border": "color(srgb 0.843765 0.801726 0.862118)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(29, 34, 54, 0.22) 0px -18px 50px 0px"
+            },
+            "sidebar": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.78) 0px, rgba(255, 255, 255, 0.78) 7%, rgba(0, 0, 0, 0) 7.5%), linear-gradient(rgb(255, 241, 246) 0%, rgb(246, 239, 251) 100%)",
+              "border": "rgb(48, 55, 70)",
+              "color": "rgb(48, 55, 70)",
+              "shadow": "none"
+            },
+            "header": {
+              "bg": "color(srgb 1 0.981569 0.985255)",
+              "image": "none",
+              "border": "rgba(102, 115, 140, 0.13)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(48, 61, 86, 0.043) 0px 7px 22px 0px"
+            }
+          },
+          "domains": {
+            "hasdaq": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(243, 239, 255))",
+              "border": "rgb(141, 120, 247)",
+              "color": "rgb(117, 89, 243)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "ne100": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(236, 250, 246))",
+              "border": "color(srgb 0.810392 0.894196 0.913176)",
+              "color": "rgb(37, 188, 165)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinaJones": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(255, 244, 232))",
+              "border": "color(srgb 0.921529 0.875333 0.861176)",
+              "color": "rgb(255, 151, 63)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "harukei": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(238, 245, 255))",
+              "border": "color(srgb 0.825176 0.866157 0.953451)",
+              "color": "rgb(66, 133, 244)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "jispi": {
+              "bg": "rgb(255, 246, 236)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinkei": {
+              "bg": "rgb(245, 240, 255)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            }
+          },
+          "semantic": {
+            "up": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 245, 247), rgb(255, 232, 237))",
+              "border": "rgb(241, 200, 208)",
+              "color": "rgb(200, 61, 86)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            },
+            "down": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(245, 249, 255), rgb(232, 242, 255))",
+              "border": "rgb(200, 217, 239)",
+              "color": "rgb(53, 111, 189)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            }
+          },
+          "hero": {
+            "src": "./assets/team/hani-team-office-active-v2.jpg",
+            "width": 358,
+            "height": 236,
+            "fx": "block"
+          },
+          "remoteSrc": "./assets/context-remote/life-brunch-v1.jpg",
+          "overflow": 0
+        },
+        {
+          "season": "summer",
+          "structure": {
+            "canvas": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "radial-gradient(circle at 86% 3%, color(srgb 0.909804 0.898039 0.870588 / 0.54), rgba(0, 0, 0, 0) 31%), linear-gradient(145deg, rgb(248, 247, 244), color(srgb 0.978039 0.974902 0.96549))",
+              "border": "rgb(32, 38, 56)",
+              "color": "rgb(32, 38, 56)",
+              "shadow": "none"
+            },
+            "app": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "page": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(150deg, color(srgb 0.909804 0.898039 0.870588 / 0.18), rgba(0, 0, 0, 0) 34%)",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "panel": {
+              "bg": "color(srgb 0.984314 0.996078 1 / 0.96)",
+              "image": "none",
+              "border": "rgb(204, 230, 234)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "diet": {
+              "bg": "color(srgb 0.984314 0.996078 1 / 0.96)",
+              "image": "none",
+              "border": "rgb(204, 230, 234)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "remote": {
+              "bg": "color(srgb 0.984784 0.996196 1)",
+              "image": "none",
+              "border": "color(srgb 0.747137 0.827451 0.871529)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(29, 34, 54, 0.22) 0px -18px 50px 0px"
+            },
+            "sidebar": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.78) 0px, rgba(255, 255, 255, 0.78) 7%, rgba(0, 0, 0, 0) 7.5%), linear-gradient(rgb(237, 250, 250) 0%, rgb(237, 245, 252) 100%)",
+              "border": "rgb(41, 61, 72)",
+              "color": "rgb(41, 61, 72)",
+              "shadow": "none"
+            },
+            "header": {
+              "bg": "color(srgb 0.985255 0.996314 1)",
+              "image": "none",
+              "border": "rgba(102, 115, 140, 0.13)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(48, 61, 86, 0.043) 0px 7px 22px 0px"
+            }
+          },
+          "domains": {
+            "hasdaq": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(243, 239, 255))",
+              "border": "rgb(141, 120, 247)",
+              "color": "rgb(22, 143, 162)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "ne100": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(236, 250, 246))",
+              "border": "color(srgb 0.810392 0.894196 0.913176)",
+              "color": "rgb(37, 188, 165)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinaJones": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(255, 244, 232))",
+              "border": "color(srgb 0.921529 0.875333 0.861176)",
+              "color": "rgb(255, 151, 63)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "harukei": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(238, 245, 255))",
+              "border": "color(srgb 0.825176 0.866157 0.953451)",
+              "color": "rgb(66, 133, 244)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "jispi": {
+              "bg": "rgb(255, 246, 236)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinkei": {
+              "bg": "rgb(245, 240, 255)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            }
+          },
+          "semantic": {
+            "up": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 245, 247), rgb(255, 232, 237))",
+              "border": "rgb(241, 200, 208)",
+              "color": "rgb(200, 61, 86)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            },
+            "down": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(245, 249, 255), rgb(232, 242, 255))",
+              "border": "rgb(200, 217, 239)",
+              "color": "rgb(53, 111, 189)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            }
+          },
+          "hero": {
+            "src": "./assets/team/hani-team-office-active-v2.jpg",
+            "width": 358,
+            "height": 236,
+            "fx": "block"
+          },
+          "remoteSrc": "./assets/context-remote/summer-1.jpg",
+          "overflow": 0
+        },
+        {
+          "season": "autumn",
+          "structure": {
+            "canvas": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "radial-gradient(circle at 86% 3%, color(srgb 0.909804 0.898039 0.870588 / 0.54), rgba(0, 0, 0, 0) 31%), linear-gradient(145deg, rgb(248, 247, 244), color(srgb 0.978039 0.974902 0.96549))",
+              "border": "rgb(32, 38, 56)",
+              "color": "rgb(32, 38, 56)",
+              "shadow": "none"
+            },
+            "app": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "page": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(150deg, color(srgb 0.909804 0.898039 0.870588 / 0.18), rgba(0, 0, 0, 0) 34%)",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "panel": {
+              "bg": "color(srgb 1 0.992157 0.972549 / 0.96)",
+              "image": "none",
+              "border": "rgb(231, 212, 188)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "diet": {
+              "bg": "color(srgb 1 0.992157 0.972549 / 0.96)",
+              "image": "none",
+              "border": "rgb(231, 212, 188)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "remote": {
+              "bg": "color(srgb 1 0.992392 0.973373)",
+              "image": "none",
+              "border": "color(srgb 0.84 0.811137 0.807529)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(29, 34, 54, 0.22) 0px -18px 50px 0px"
+            },
+            "sidebar": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.78) 0px, rgba(255, 255, 255, 0.78) 7%, rgba(0, 0, 0, 0) 7.5%), linear-gradient(rgb(251, 240, 228) 0%, rgb(248, 238, 232) 100%)",
+              "border": "rgb(62, 56, 52)",
+              "color": "rgb(62, 56, 52)",
+              "shadow": "none"
+            },
+            "header": {
+              "bg": "color(srgb 1 0.992627 0.974196)",
+              "image": "none",
+              "border": "rgba(102, 115, 140, 0.13)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(48, 61, 86, 0.043) 0px 7px 22px 0px"
+            }
+          },
+          "domains": {
+            "hasdaq": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(243, 239, 255))",
+              "border": "rgb(141, 120, 247)",
+              "color": "rgb(184, 109, 57)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "ne100": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(236, 250, 246))",
+              "border": "color(srgb 0.810392 0.894196 0.913176)",
+              "color": "rgb(37, 188, 165)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinaJones": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(255, 244, 232))",
+              "border": "color(srgb 0.921529 0.875333 0.861176)",
+              "color": "rgb(255, 151, 63)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "harukei": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(238, 245, 255))",
+              "border": "color(srgb 0.825176 0.866157 0.953451)",
+              "color": "rgb(66, 133, 244)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "jispi": {
+              "bg": "rgb(255, 246, 236)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinkei": {
+              "bg": "rgb(245, 240, 255)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            }
+          },
+          "semantic": {
+            "up": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 245, 247), rgb(255, 232, 237))",
+              "border": "rgb(241, 200, 208)",
+              "color": "rgb(200, 61, 86)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            },
+            "down": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(245, 249, 255), rgb(232, 242, 255))",
+              "border": "rgb(200, 217, 239)",
+              "color": "rgb(53, 111, 189)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            }
+          },
+          "hero": {
+            "src": "./assets/team/hani-team-office-active-v2.jpg",
+            "width": 358,
+            "height": 236,
+            "fx": "block"
+          },
+          "remoteSrc": "./assets/context-remote/life-brunch-v1.jpg",
+          "overflow": 0
+        },
+        {
+          "season": "winter",
+          "structure": {
+            "canvas": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "radial-gradient(circle at 86% 3%, color(srgb 0.909804 0.898039 0.870588 / 0.54), rgba(0, 0, 0, 0) 31%), linear-gradient(145deg, rgb(248, 247, 244), color(srgb 0.978039 0.974902 0.96549))",
+              "border": "rgb(32, 38, 56)",
+              "color": "rgb(32, 38, 56)",
+              "shadow": "none"
+            },
+            "app": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "page": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(150deg, color(srgb 0.909804 0.898039 0.870588 / 0.18), rgba(0, 0, 0, 0) 34%)",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "panel": {
+              "bg": "oklab(0.993092 -0.00123773 -0.00313085 / 0.96)",
+              "image": "none",
+              "border": "rgb(207, 218, 232)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "diet": {
+              "bg": "color(srgb 0.984314 0.992157 1 / 0.96)",
+              "image": "none",
+              "border": "rgb(207, 218, 232)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "remote": {
+              "bg": "color(srgb 0.984784 0.992392 1)",
+              "image": "none",
+              "border": "color(srgb 0.786039 0.817412 0.874039)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(29, 34, 54, 0.22) 0px -18px 50px 0px"
+            },
+            "sidebar": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.78) 0px, rgba(255, 255, 255, 0.78) 7%, rgba(0, 0, 0, 0) 7.5%), linear-gradient(rgb(238, 244, 251) 0%, rgb(242, 240, 250) 100%)",
+              "border": "rgb(45, 57, 75)",
+              "color": "rgb(45, 57, 75)",
+              "shadow": "none"
+            },
+            "header": {
+              "bg": "color(srgb 0.985255 0.992627 1)",
+              "image": "none",
+              "border": "rgba(102, 115, 140, 0.13)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(48, 61, 86, 0.043) 0px 7px 22px 0px"
+            }
+          },
+          "domains": {
+            "hasdaq": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(243, 239, 255))",
+              "border": "rgb(141, 120, 247)",
+              "color": "rgb(76, 112, 169)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "ne100": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(236, 250, 246))",
+              "border": "color(srgb 0.810392 0.894196 0.913176)",
+              "color": "rgb(37, 188, 165)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinaJones": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(255, 244, 232))",
+              "border": "color(srgb 0.921529 0.875333 0.861176)",
+              "color": "rgb(255, 151, 63)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "harukei": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(238, 245, 255))",
+              "border": "color(srgb 0.825176 0.866157 0.953451)",
+              "color": "rgb(66, 133, 244)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "jispi": {
+              "bg": "rgb(255, 246, 236)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinkei": {
+              "bg": "rgb(245, 240, 255)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            }
+          },
+          "semantic": {
+            "up": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 245, 247), rgb(255, 232, 237))",
+              "border": "rgb(241, 200, 208)",
+              "color": "rgb(200, 61, 86)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            },
+            "down": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(245, 249, 255), rgb(232, 242, 255))",
+              "border": "rgb(200, 217, 239)",
+              "color": "rgb(53, 111, 189)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            }
+          },
+          "hero": {
+            "src": "./assets/team/hani-team-office-active-v2.jpg",
+            "width": 358,
+            "height": 236,
+            "fx": "block"
+          },
+          "remoteSrc": "./assets/context-remote/life-brunch-v1.jpg",
+          "overflow": 0
+        }
+      ],
+      "errors": [],
+      "preference": {
+        "season": "spring",
+        "saved": "spring"
+      },
+      "protectedStorageUnchanged": true
+    }
+  ],
+  "externalRequestsBlocked": 12
+}

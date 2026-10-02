@@ -1,0 +1,1073 @@
+{
+  "mode": "candidate",
+  "at": "2026-10-02T15:14:28.499Z",
+  "viewports": [
+    {
+      "width": 1440,
+      "seasons": [
+        {
+          "season": "spring",
+          "structure": {
+            "canvas": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "radial-gradient(circle at 86% 3%, color(srgb 0.909804 0.898039 0.870588 / 0.54), rgba(0, 0, 0, 0) 31%), linear-gradient(145deg, rgb(248, 247, 244), color(srgb 0.978039 0.974902 0.96549))",
+              "border": "rgb(32, 38, 56)",
+              "color": "rgb(32, 38, 56)",
+              "shadow": "none"
+            },
+            "app": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "page": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "linear-gradient(150deg, color(srgb 0.909804 0.898039 0.870588 / 0.18), rgba(0, 0, 0, 0) 34%), none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "panel": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(232, 232, 241)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "diet": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(232, 232, 241)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "remote": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "sidebar": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.78) 0px, rgba(255, 255, 255, 0.78) 7%, rgba(0, 0, 0, 0) 7.5%), linear-gradient(rgb(255, 255, 255) 0%, rgb(248, 247, 244) 100%)",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "header": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgba(102, 115, 140, 0.13)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(48, 61, 86, 0.043) 0px 7px 22px 0px"
+            }
+          },
+          "domains": {
+            "hasdaq": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(243, 239, 255))",
+              "border": "rgb(141, 120, 247)",
+              "color": "rgb(117, 89, 243)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "ne100": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(236, 250, 246))",
+              "border": "color(srgb 0.810392 0.894196 0.913176)",
+              "color": "rgb(37, 188, 165)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinaJones": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(255, 244, 232))",
+              "border": "color(srgb 0.921529 0.875333 0.861176)",
+              "color": "rgb(255, 151, 63)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "harukei": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(238, 245, 255))",
+              "border": "color(srgb 0.825176 0.866157 0.953451)",
+              "color": "rgb(66, 133, 244)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "jispi": {
+              "bg": "rgb(255, 246, 236)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinkei": {
+              "bg": "rgb(245, 240, 255)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            }
+          },
+          "semantic": {
+            "up": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 245, 247), rgb(255, 232, 237))",
+              "border": "rgb(241, 200, 208)",
+              "color": "rgb(200, 61, 86)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            },
+            "down": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(245, 249, 255), rgb(232, 242, 255))",
+              "border": "rgb(200, 217, 239)",
+              "color": "rgb(53, 111, 189)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            }
+          },
+          "hero": {
+            "src": "./assets/team/hani-team-office-active-v2.jpg",
+            "width": 832,
+            "height": 232,
+            "fx": "none"
+          },
+          "remoteSrc": "./assets/context-remote/life-brunch-v1.jpg",
+          "overflow": 0
+        },
+        {
+          "season": "summer",
+          "structure": {
+            "canvas": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "radial-gradient(circle at 86% 3%, color(srgb 0.909804 0.898039 0.870588 / 0.54), rgba(0, 0, 0, 0) 31%), linear-gradient(145deg, rgb(248, 247, 244), color(srgb 0.978039 0.974902 0.96549))",
+              "border": "rgb(32, 38, 56)",
+              "color": "rgb(32, 38, 56)",
+              "shadow": "none"
+            },
+            "app": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "page": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "linear-gradient(150deg, color(srgb 0.909804 0.898039 0.870588 / 0.18), rgba(0, 0, 0, 0) 34%), none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "panel": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(232, 232, 241)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "diet": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(232, 232, 241)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "remote": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "sidebar": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.78) 0px, rgba(255, 255, 255, 0.78) 7%, rgba(0, 0, 0, 0) 7.5%), linear-gradient(rgb(255, 255, 255) 0%, rgb(248, 247, 244) 100%)",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "header": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgba(102, 115, 140, 0.13)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(48, 61, 86, 0.043) 0px 7px 22px 0px"
+            }
+          },
+          "domains": {
+            "hasdaq": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(243, 239, 255))",
+              "border": "rgb(141, 120, 247)",
+              "color": "rgb(117, 89, 243)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "ne100": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(236, 250, 246))",
+              "border": "color(srgb 0.810392 0.894196 0.913176)",
+              "color": "rgb(37, 188, 165)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinaJones": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(255, 244, 232))",
+              "border": "color(srgb 0.921529 0.875333 0.861176)",
+              "color": "rgb(255, 151, 63)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "harukei": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(238, 245, 255))",
+              "border": "color(srgb 0.825176 0.866157 0.953451)",
+              "color": "rgb(66, 133, 244)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "jispi": {
+              "bg": "rgb(255, 246, 236)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinkei": {
+              "bg": "rgb(245, 240, 255)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            }
+          },
+          "semantic": {
+            "up": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 245, 247), rgb(255, 232, 237))",
+              "border": "rgb(241, 200, 208)",
+              "color": "rgb(200, 61, 86)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            },
+            "down": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(245, 249, 255), rgb(232, 242, 255))",
+              "border": "rgb(200, 217, 239)",
+              "color": "rgb(53, 111, 189)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            }
+          },
+          "hero": {
+            "src": "./assets/team/hani-team-office-active-v2.jpg",
+            "width": 832,
+            "height": 232,
+            "fx": "none"
+          },
+          "remoteSrc": "./assets/context-remote/life-brunch-v1.jpg",
+          "overflow": 0
+        },
+        {
+          "season": "autumn",
+          "structure": {
+            "canvas": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "radial-gradient(circle at 86% 3%, color(srgb 0.909804 0.898039 0.870588 / 0.54), rgba(0, 0, 0, 0) 31%), linear-gradient(145deg, rgb(248, 247, 244), color(srgb 0.978039 0.974902 0.96549))",
+              "border": "rgb(32, 38, 56)",
+              "color": "rgb(32, 38, 56)",
+              "shadow": "none"
+            },
+            "app": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "page": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "linear-gradient(150deg, color(srgb 0.909804 0.898039 0.870588 / 0.18), rgba(0, 0, 0, 0) 34%), none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "panel": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(232, 232, 241)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "diet": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(232, 232, 241)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "remote": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "sidebar": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.78) 0px, rgba(255, 255, 255, 0.78) 7%, rgba(0, 0, 0, 0) 7.5%), linear-gradient(rgb(255, 255, 255) 0%, rgb(248, 247, 244) 100%)",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "header": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgba(102, 115, 140, 0.13)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(48, 61, 86, 0.043) 0px 7px 22px 0px"
+            }
+          },
+          "domains": {
+            "hasdaq": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(243, 239, 255))",
+              "border": "rgb(141, 120, 247)",
+              "color": "rgb(117, 89, 243)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "ne100": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(236, 250, 246))",
+              "border": "color(srgb 0.810392 0.894196 0.913176)",
+              "color": "rgb(37, 188, 165)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinaJones": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(255, 244, 232))",
+              "border": "color(srgb 0.921529 0.875333 0.861176)",
+              "color": "rgb(255, 151, 63)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "harukei": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(238, 245, 255))",
+              "border": "color(srgb 0.825176 0.866157 0.953451)",
+              "color": "rgb(66, 133, 244)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "jispi": {
+              "bg": "rgb(255, 246, 236)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinkei": {
+              "bg": "rgb(245, 240, 255)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            }
+          },
+          "semantic": {
+            "up": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 245, 247), rgb(255, 232, 237))",
+              "border": "rgb(241, 200, 208)",
+              "color": "rgb(200, 61, 86)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            },
+            "down": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(245, 249, 255), rgb(232, 242, 255))",
+              "border": "rgb(200, 217, 239)",
+              "color": "rgb(53, 111, 189)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            }
+          },
+          "hero": {
+            "src": "./assets/team/hani-team-office-active-v2.jpg",
+            "width": 832,
+            "height": 231.99998474121094,
+            "fx": "none"
+          },
+          "remoteSrc": "./assets/context-remote/life-office-lounge-v1.jpg",
+          "overflow": 0
+        },
+        {
+          "season": "winter",
+          "structure": {
+            "canvas": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "radial-gradient(circle at 86% 3%, color(srgb 0.909804 0.898039 0.870588 / 0.54), rgba(0, 0, 0, 0) 31%), linear-gradient(145deg, rgb(248, 247, 244), color(srgb 0.978039 0.974902 0.96549))",
+              "border": "rgb(32, 38, 56)",
+              "color": "rgb(32, 38, 56)",
+              "shadow": "none"
+            },
+            "app": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "page": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "linear-gradient(150deg, color(srgb 0.909804 0.898039 0.870588 / 0.18), rgba(0, 0, 0, 0) 34%), none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "panel": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(232, 232, 241)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "diet": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(232, 232, 241)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "remote": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "sidebar": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.78) 0px, rgba(255, 255, 255, 0.78) 7%, rgba(0, 0, 0, 0) 7.5%), linear-gradient(rgb(255, 255, 255) 0%, rgb(248, 247, 244) 100%)",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "header": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgba(102, 115, 140, 0.13)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(48, 61, 86, 0.043) 0px 7px 22px 0px"
+            }
+          },
+          "domains": {
+            "hasdaq": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(243, 239, 255))",
+              "border": "rgb(141, 120, 247)",
+              "color": "rgb(117, 89, 243)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "ne100": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(236, 250, 246))",
+              "border": "color(srgb 0.810392 0.894196 0.913176)",
+              "color": "rgb(37, 188, 165)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinaJones": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(255, 244, 232))",
+              "border": "color(srgb 0.921529 0.875333 0.861176)",
+              "color": "rgb(255, 151, 63)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "harukei": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(238, 245, 255))",
+              "border": "color(srgb 0.825176 0.866157 0.953451)",
+              "color": "rgb(66, 133, 244)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "jispi": {
+              "bg": "rgb(255, 246, 236)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinkei": {
+              "bg": "rgb(245, 240, 255)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            }
+          },
+          "semantic": {
+            "up": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 245, 247), rgb(255, 232, 237))",
+              "border": "rgb(241, 200, 208)",
+              "color": "rgb(200, 61, 86)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            },
+            "down": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(245, 249, 255), rgb(232, 242, 255))",
+              "border": "rgb(200, 217, 239)",
+              "color": "rgb(53, 111, 189)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            }
+          },
+          "hero": {
+            "src": "./assets/team/hani-team-office-active-v2.jpg",
+            "width": 832,
+            "height": 232,
+            "fx": "none"
+          },
+          "remoteSrc": "./assets/context-remote/winter-2.jpg",
+          "overflow": 0
+        }
+      ],
+      "errors": [],
+      "appearance": {
+        "before": "rgb(255, 255, 255)",
+        "after": "rgb(229, 231, 235)",
+        "seasonPreserved": true,
+        "artworkPreserved": true
+      },
+      "preference": {
+        "season": "autumn",
+        "saved": "autumn"
+      },
+      "protectedStorageUnchanged": true
+    },
+    {
+      "width": 390,
+      "seasons": [
+        {
+          "season": "spring",
+          "structure": {
+            "canvas": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "radial-gradient(circle at 86% 3%, color(srgb 0.909804 0.898039 0.870588 / 0.54), rgba(0, 0, 0, 0) 31%), linear-gradient(145deg, rgb(248, 247, 244), color(srgb 0.978039 0.974902 0.96549))",
+              "border": "rgb(32, 38, 56)",
+              "color": "rgb(32, 38, 56)",
+              "shadow": "none"
+            },
+            "app": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "page": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "linear-gradient(150deg, color(srgb 0.909804 0.898039 0.870588 / 0.18), rgba(0, 0, 0, 0) 34%), none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "panel": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(232, 232, 241)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "diet": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(232, 232, 241)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "remote": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(232, 232, 241)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(29, 34, 54, 0.22) 0px -18px 50px 0px"
+            },
+            "sidebar": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.78) 0px, rgba(255, 255, 255, 0.78) 7%, rgba(0, 0, 0, 0) 7.5%), linear-gradient(rgb(255, 255, 255) 0%, rgb(248, 247, 244) 100%)",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "header": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgba(102, 115, 140, 0.13)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(48, 61, 86, 0.043) 0px 7px 22px 0px"
+            }
+          },
+          "domains": {
+            "hasdaq": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(243, 239, 255))",
+              "border": "rgb(141, 120, 247)",
+              "color": "rgb(117, 89, 243)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "ne100": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(236, 250, 246))",
+              "border": "color(srgb 0.810392 0.894196 0.913176)",
+              "color": "rgb(37, 188, 165)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinaJones": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(255, 244, 232))",
+              "border": "color(srgb 0.921529 0.875333 0.861176)",
+              "color": "rgb(255, 151, 63)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "harukei": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(238, 245, 255))",
+              "border": "color(srgb 0.825176 0.866157 0.953451)",
+              "color": "rgb(66, 133, 244)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "jispi": {
+              "bg": "rgb(255, 246, 236)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinkei": {
+              "bg": "rgb(245, 240, 255)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            }
+          },
+          "semantic": {
+            "up": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 245, 247), rgb(255, 232, 237))",
+              "border": "rgb(241, 200, 208)",
+              "color": "rgb(200, 61, 86)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            },
+            "down": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(245, 249, 255), rgb(232, 242, 255))",
+              "border": "rgb(200, 217, 239)",
+              "color": "rgb(53, 111, 189)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            }
+          },
+          "hero": {
+            "src": "./assets/team/hani-team-office-active-v2.jpg",
+            "width": 358,
+            "height": 236,
+            "fx": "none"
+          },
+          "remoteSrc": "./assets/context-remote/life-office-lounge-v1.jpg",
+          "overflow": 0
+        },
+        {
+          "season": "summer",
+          "structure": {
+            "canvas": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "radial-gradient(circle at 86% 3%, color(srgb 0.909804 0.898039 0.870588 / 0.54), rgba(0, 0, 0, 0) 31%), linear-gradient(145deg, rgb(248, 247, 244), color(srgb 0.978039 0.974902 0.96549))",
+              "border": "rgb(32, 38, 56)",
+              "color": "rgb(32, 38, 56)",
+              "shadow": "none"
+            },
+            "app": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "page": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "linear-gradient(150deg, color(srgb 0.909804 0.898039 0.870588 / 0.18), rgba(0, 0, 0, 0) 34%), none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "panel": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(232, 232, 241)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "diet": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(232, 232, 241)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "remote": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(232, 232, 241)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(29, 34, 54, 0.22) 0px -18px 50px 0px"
+            },
+            "sidebar": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.78) 0px, rgba(255, 255, 255, 0.78) 7%, rgba(0, 0, 0, 0) 7.5%), linear-gradient(rgb(255, 255, 255) 0%, rgb(248, 247, 244) 100%)",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "header": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgba(102, 115, 140, 0.13)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(48, 61, 86, 0.043) 0px 7px 22px 0px"
+            }
+          },
+          "domains": {
+            "hasdaq": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(243, 239, 255))",
+              "border": "rgb(141, 120, 247)",
+              "color": "rgb(117, 89, 243)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "ne100": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(236, 250, 246))",
+              "border": "color(srgb 0.810392 0.894196 0.913176)",
+              "color": "rgb(37, 188, 165)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinaJones": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(255, 244, 232))",
+              "border": "color(srgb 0.921529 0.875333 0.861176)",
+              "color": "rgb(255, 151, 63)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "harukei": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(238, 245, 255))",
+              "border": "color(srgb 0.825176 0.866157 0.953451)",
+              "color": "rgb(66, 133, 244)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "jispi": {
+              "bg": "rgb(255, 246, 236)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinkei": {
+              "bg": "rgb(245, 240, 255)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            }
+          },
+          "semantic": {
+            "up": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 245, 247), rgb(255, 232, 237))",
+              "border": "rgb(241, 200, 208)",
+              "color": "rgb(200, 61, 86)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            },
+            "down": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(245, 249, 255), rgb(232, 242, 255))",
+              "border": "rgb(200, 217, 239)",
+              "color": "rgb(53, 111, 189)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            }
+          },
+          "hero": {
+            "src": "./assets/team/hani-team-office-active-v2.jpg",
+            "width": 358,
+            "height": 236,
+            "fx": "none"
+          },
+          "remoteSrc": "./assets/context-remote/summer-1.jpg",
+          "overflow": 0
+        },
+        {
+          "season": "autumn",
+          "structure": {
+            "canvas": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "radial-gradient(circle at 86% 3%, color(srgb 0.909804 0.898039 0.870588 / 0.54), rgba(0, 0, 0, 0) 31%), linear-gradient(145deg, rgb(248, 247, 244), color(srgb 0.978039 0.974902 0.96549))",
+              "border": "rgb(32, 38, 56)",
+              "color": "rgb(32, 38, 56)",
+              "shadow": "none"
+            },
+            "app": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "page": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "linear-gradient(150deg, color(srgb 0.909804 0.898039 0.870588 / 0.18), rgba(0, 0, 0, 0) 34%), none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "panel": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(232, 232, 241)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "diet": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(232, 232, 241)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "remote": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(232, 232, 241)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(29, 34, 54, 0.22) 0px -18px 50px 0px"
+            },
+            "sidebar": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.78) 0px, rgba(255, 255, 255, 0.78) 7%, rgba(0, 0, 0, 0) 7.5%), linear-gradient(rgb(255, 255, 255) 0%, rgb(248, 247, 244) 100%)",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "header": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgba(102, 115, 140, 0.13)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(48, 61, 86, 0.043) 0px 7px 22px 0px"
+            }
+          },
+          "domains": {
+            "hasdaq": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(243, 239, 255))",
+              "border": "rgb(141, 120, 247)",
+              "color": "rgb(117, 89, 243)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "ne100": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(236, 250, 246))",
+              "border": "color(srgb 0.810392 0.894196 0.913176)",
+              "color": "rgb(37, 188, 165)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinaJones": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(255, 244, 232))",
+              "border": "color(srgb 0.921529 0.875333 0.861176)",
+              "color": "rgb(255, 151, 63)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "harukei": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(238, 245, 255))",
+              "border": "color(srgb 0.825176 0.866157 0.953451)",
+              "color": "rgb(66, 133, 244)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "jispi": {
+              "bg": "rgb(255, 246, 236)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinkei": {
+              "bg": "rgb(245, 240, 255)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            }
+          },
+          "semantic": {
+            "up": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 245, 247), rgb(255, 232, 237))",
+              "border": "rgb(241, 200, 208)",
+              "color": "rgb(200, 61, 86)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            },
+            "down": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(245, 249, 255), rgb(232, 242, 255))",
+              "border": "rgb(200, 217, 239)",
+              "color": "rgb(53, 111, 189)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            }
+          },
+          "hero": {
+            "src": "./assets/team/hani-team-office-active-v2.jpg",
+            "width": 358,
+            "height": 236,
+            "fx": "none"
+          },
+          "remoteSrc": "./assets/context-remote/life-brunch-v1.jpg",
+          "overflow": 0
+        },
+        {
+          "season": "winter",
+          "structure": {
+            "canvas": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "radial-gradient(circle at 86% 3%, color(srgb 0.909804 0.898039 0.870588 / 0.54), rgba(0, 0, 0, 0) 31%), linear-gradient(145deg, rgb(248, 247, 244), color(srgb 0.978039 0.974902 0.96549))",
+              "border": "rgb(32, 38, 56)",
+              "color": "rgb(32, 38, 56)",
+              "shadow": "none"
+            },
+            "app": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "page": {
+              "bg": "rgb(248, 247, 244)",
+              "image": "linear-gradient(150deg, color(srgb 0.909804 0.898039 0.870588 / 0.18), rgba(0, 0, 0, 0) 34%), none",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "panel": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(232, 232, 241)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "diet": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(232, 232, 241)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(58, 48, 80, 0.02) 0px 6px 22px 0px"
+            },
+            "remote": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgb(232, 232, 241)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(29, 34, 54, 0.22) 0px -18px 50px 0px"
+            },
+            "sidebar": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.78) 0px, rgba(255, 255, 255, 0.78) 7%, rgba(0, 0, 0, 0) 7.5%), linear-gradient(rgb(255, 255, 255) 0%, rgb(248, 247, 244) 100%)",
+              "border": "rgb(40, 55, 76)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "none"
+            },
+            "header": {
+              "bg": "rgb(255, 255, 255)",
+              "image": "none",
+              "border": "rgba(102, 115, 140, 0.13)",
+              "color": "rgb(40, 55, 76)",
+              "shadow": "rgba(48, 61, 86, 0.043) 0px 7px 22px 0px"
+            }
+          },
+          "domains": {
+            "hasdaq": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(243, 239, 255))",
+              "border": "rgb(141, 120, 247)",
+              "color": "rgb(117, 89, 243)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "ne100": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(236, 250, 246))",
+              "border": "color(srgb 0.810392 0.894196 0.913176)",
+              "color": "rgb(37, 188, 165)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinaJones": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(255, 244, 232))",
+              "border": "color(srgb 0.921529 0.875333 0.861176)",
+              "color": "rgb(255, 151, 63)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "harukei": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 255, 255), rgb(238, 245, 255))",
+              "border": "color(srgb 0.825176 0.866157 0.953451)",
+              "color": "rgb(66, 133, 244)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "jispi": {
+              "bg": "rgb(255, 246, 236)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            },
+            "hinkei": {
+              "bg": "rgb(245, 240, 255)",
+              "image": "none",
+              "border": "rgb(232, 231, 244)",
+              "color": "rgb(40, 48, 68)",
+              "shadow": "rgba(54, 50, 105, 0.055) 0px 10px 26px 0px"
+            }
+          },
+          "semantic": {
+            "up": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(255, 245, 247), rgb(255, 232, 237))",
+              "border": "rgb(241, 200, 208)",
+              "color": "rgb(200, 61, 86)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            },
+            "down": {
+              "bg": "rgba(0, 0, 0, 0)",
+              "image": "linear-gradient(145deg, rgb(245, 249, 255), rgb(232, 242, 255))",
+              "border": "rgb(200, 217, 239)",
+              "color": "rgb(53, 111, 189)",
+              "shadow": "rgba(44, 50, 69, 0.05) 0px 5px 14px 0px"
+            }
+          },
+          "hero": {
+            "src": "./assets/team/hani-team-office-active-v2.jpg",
+            "width": 358,
+            "height": 236,
+            "fx": "none"
+          },
+          "remoteSrc": "./assets/context-remote/life-office-lounge-v1.jpg",
+          "overflow": 0
+        }
+      ],
+      "errors": [],
+      "appearance": {
+        "before": "rgb(255, 255, 255)",
+        "after": "rgb(229, 231, 235)",
+        "seasonPreserved": true,
+        "artworkPreserved": true
+      },
+      "preference": {
+        "season": "autumn",
+        "saved": "autumn"
+      },
+      "protectedStorageUnchanged": true
+    }
+  ],
+  "externalRequestsBlocked": 12
+}
