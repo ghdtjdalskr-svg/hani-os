@@ -490,6 +490,7 @@ header.top.ui26-top{
     return fallbackSelector?q(fallbackSelector,q('#home')):null;
   }
   function renderLifeIndices(){
+    if(q('#dataHubStatus'))return; // Six Dashboard metrics have a single Batch C owner.
     const root=q('#home'); const grid=q('.home-kpi-grid',root); if(!grid)return; const st=getStateSafe(); if(!st)return;
     grid.classList.add('hani-life-indices-v02978');
     const finance=cardForValue('homeAsset','.home-kpi.finance-tone');
