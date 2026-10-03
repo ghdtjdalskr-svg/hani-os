@@ -4,12 +4,13 @@ import assert from 'node:assert/strict';
 
 // Deliberately narrow: unknown paths and deletions retain full preflight.
 const docs = new Set(['AGENTS.md', 'dev-center/one-pass-release.md']);
+const isDocumentation = file => docs.has(file) || /^docs\/development-history\/[A-Za-z0-9._/-]+\.md$/.test(file);
 function classify(records) {
   const docsOnly = records.length > 0 && records.every(([status, file]) =>
-    ['A', 'M'].includes(status) && docs.has(file));
+    ['A', 'M'].includes(status) && isDocumentation(file));
   return {
     docs_only: docsOnly,
-    tooling: records.some(([, file]) => !docs.has(file) &&
+    tooling: records.some(([, file]) => !isDocumentation(file) &&
       /^(scripts\/|dev-center\/|\.github\/workflows\/)/.test(file)),
   };
 }
@@ -23,7 +24,11 @@ if (process.argv.includes('--self-test')) {
   assert.equal(classify([['D', 'dev-center/one-pass-gate-contract.json']]).tooling, true);
   assert.equal(classify([]).docs_only, false);
   assert.equal(classify([['A', 'docs/unknown.md']]).docs_only, false);
-  console.log('scope self-test: 9/9 PASS');
+  assert.equal(classify([['A', 'docs/development-history/INDEX.md']]).docs_only, true);
+  assert.equal(classify([['D', 'docs/development-history/INDEX.md']]).docs_only, false);
+  assert.equal(classify([['A', 'docs/development-history/tool.js']]).docs_only, false);
+  assert.equal(classify([['A', 'docs/development-history/INDEX.md'], ['M', 'index.html']]).docs_only, false);
+  console.log('scope self-test: 13/13 PASS');
 } else {
   const [base, head] = process.argv.slice(2);
   if (![base, head].every(sha => /^[a-f0-9]{40}$/.test(sha || ''))) throw new Error('Exact base/head SHA required');
