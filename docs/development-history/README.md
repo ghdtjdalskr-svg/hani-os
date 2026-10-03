@@ -16,6 +16,7 @@
 | 상태 | 의미 |
 |---|---|
 | `PRODUCTION` | 운영 반영과 read-back까지 완료 |
+| `PAGES_LIVE` | main과 Pages 반영은 확인했지만 전체 기능 read-back은 아직 미확인 |
 | `PARTIAL` | 일부가 운영 반영됐지만 정의한 최종 범위는 남음 |
 | `CANDIDATE` | 구현 또는 검증 후보이며 main/Production 완료가 아님 |
 | `DEFERRED` | 보류 사유가 있고 재진단 또는 승인이 필요 |
@@ -27,4 +28,4 @@
 - [중앙 인덱스](./INDEX.md)
 - [2026-10-04 기준 프로젝트 상태](./2026-10-04-p0-project-status.md)
 - [PR61·68 및 오래된 후보 분류](./2026-10-04-pr-triage.md)
-
+- [v2.9.165 main drift 및 Pages 상태](./2026-10-04-v2.9.165-aura-menu-status.md)

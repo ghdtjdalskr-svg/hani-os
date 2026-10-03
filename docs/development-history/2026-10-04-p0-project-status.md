@@ -1,7 +1,8 @@
 # HANI OS 프로젝트 상태 · v2.9.164 기준
 
 - 확인일: 2026-10-04 KST
-- 기준선: `origin/main` / `f5274ce`
+- P0 시작 기준선: `f5274ce` / v2.9.164
+- 최신 확인 main: `b80c620` / v2.9.165
 - 목적: 완료·부분 완료·후보·미착수를 최신 Production 기준으로 재분류
 
 ## Production 완료
@@ -17,6 +18,12 @@
 | Dashboard Topbar / LIFE MARKET ticker | `PRODUCTION` | v2.9.153 |
 | Toss 시장가격·종목 검색 | `PRODUCTION` | v2.9.145 |
 | holdings-only 계좌 업데이트 | `PRODUCTION` | v2.9.148 |
+
+## 최신 main 진행 상태
+
+| 프로젝트 | 상태 | 근거 |
+|---|---|---|
+| AURA·배포센터 메뉴 그룹 조정 v2.9.165 | `PAGES_LIVE` | PR159 main 병합, Pages v2.9.165와 `hani-main.js?v=2.9.165` 응답 확인. 운영 메뉴 클릭 전체 read-back은 P0에서 재실행하지 않음 |
 
 ## 부분 완료 또는 후보
 
@@ -43,7 +50,7 @@
 
 ## 다음 실행 순서
 
-1. P0 중앙 기록과 오래된 후보 분류를 유지·갱신한다.
+1. P0 중앙 기록과 오래된 후보 분류를 유지·갱신하고, v2.9.165 전체 read-back 결과가 나오면 상태를 보완한다.
 2. P1 핫픽스를 v2.9.164에서 재진단하고 포트폴리오 대비를 보완한다.
 3. Asset Input canonical contract를 먼저 고정한다.
 4. Goal Registry 계약을 고정한 뒤 분기·연간 집계를 연결한다.
@@ -53,4 +60,3 @@
 ## 데이터·배포 영향
 
 이 기록 작업은 문서 전용이다. `hani_os_life_v23`, `2.9.15-safe-baseline-bootstrap`, Supabase, schema, Cloud write, 운영 runtime과 표시 버전을 변경하지 않는다. main 병합·배포도 수행하지 않는다.
-

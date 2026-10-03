@@ -1,8 +1,10 @@
 # HANI 개발 히스토리 · 중앙 인덱스
 
 - 기준일: 2026-10-04 KST
-- Production 기준선: `f5274cebc24b617ad13df70d354e31504470de70`
-- 표시 버전: `v2.9.164`
+- P0 시작 기준선: `f5274cebc24b617ad13df70d354e31504470de70` / v2.9.164
+- 최신 확인 main: `b80c620ae817a469ee13d837656899654da25c74` / v2.9.165
+- Pages 표시 버전: `v2.9.165` 확인
+- 마지막 전체 Production 원장: `v2.9.164`
 - 최신 UI layer: `hani-ui-v02992.js?v=2.9.164`
 - 마지막 별도 기능 script: `hani-development-history-v1.js?v=2.9.135`
 
@@ -10,8 +12,9 @@
 
 | 분류 | 문서 | 상태 |
 |---|---|---|
-| 전체 상태 | `2026-10-04-p0-project-status.md` | 현재 기준 |
-| 오래된 후보 | `2026-10-04-pr-triage.md` | PR61·68 분류 완료 |
+| 전체 상태 | `2026-10-04/p0-project-status-v2.9.165.md` | 현재 기준 |
+| 오래된 후보 | `2026-10-04/pr61-pr68-triage-v2.9.165.md` | PR61·68 분류 완료 |
+| main drift | `2026-10-04/v2.9.165-aura-menu-status.md` | Pages live / 기능 read-back 미완료 |
 | Boardroom | `2026-10-04/boardroom-participant-routing-v2.9.150.md` | Production |
 | Devlog | `2026-10-04/hani-devlog-automation-foundation.md` | Candidate / live test 미완료 |
 | HANI AURA | `2026-10-03/v2.9.161-hani-aura-release-record.md` | Production 원장 사본 |
@@ -25,6 +28,7 @@
 
 | 날짜 | 버전 | 핵심 변경 | Production SHA |
 |---|---|---|---|
+| 2026-10-04 | v2.9.165 | AURA·배포센터 사이드바 메뉴 그룹 조정 | `b80c620` · Pages live, 전체 read-back 미완료 |
 | 2026-10-04 | v2.9.164 | Data Hub Batch A/B/C, Dashboard 6대 지표 | `f5274ce` |
 | 2026-10-04 | v2.9.163 | 탭별 canonical 캐릭터 한마디 | `ad3a041` |
 | 2026-10-04 | v2.9.162 | 읽기 전용 Live Portfolio | `022b296` |
@@ -49,3 +53,4 @@
 - 운영 화면의 기존 개발 히스토리는 v2.9.135 이후 릴리스를 아직 표시하지 않는다.
 - v2.9.161, v2.9.162, v2.9.163, v2.9.164의 상세 원장은 개별 release worktree에 있고 현재 `origin/main`에는 포함되지 않았다.
 - 이번 P0는 중앙 인덱스와 상태 분류를 만들며, 운영 화면이나 release runtime은 변경하지 않는다.
+- P0 문서 후보 생성 중 main이 v2.9.165로 이동했다. 변경 파일은 `hani-main.js`, `index.html`이며 이 문서 경로와 겹치지 않는다. 임의 merge/rebase는 하지 않았다.
