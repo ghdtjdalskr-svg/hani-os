@@ -719,19 +719,19 @@ function applySeasonTheme(key,saveChoice=false){
 const initialSeason=localStorage.getItem(SEASON_THEME_KEY)||defaultSeasonTheme();
 // Appearance is an independent UI preference. It never reads/writes life data.
 function updateFinishScope(){
-  const pilot=["home","diet","settings"].includes(document.body.dataset.view||"home");
-  document.body.toggleAttribute("data-finish-pilot",pilot);
-  const dark=pilot&&document.documentElement.dataset.finish==="midnight-black";
+  document.body.setAttribute("data-finish-active","");
+  const finish=document.documentElement.dataset.finish;
   const meta=document.querySelector('meta[name="theme-color"]');
-  if(meta)meta.setAttribute("content",pilot?(dark?"#0e0f12":"#f8f7f4"):(SEASON_THEMES[document.documentElement.dataset.season]?.themeColor||"#f8f7f4"));
+  if(meta)meta.setAttribute("content",{"midnight-black":"#0e0f12","titanium-graphite":"#242528","sakura-pink":"#faf6f7","alpine-blue":"#f3f7fa"}[finish]||"#f8f7f4");
 }
 function applySignatureFinish(value,saveChoice=false){
-  const finish=["porcelain-cream","midnight-black"].includes(value)?value:"porcelain-cream";
+  const names={"porcelain-cream":"Porcelain Cream","titanium-graphite":"Titanium Graphite","midnight-black":"Midnight Black","sakura-pink":"Sakura Pink","alpine-blue":"Alpine Blue"};
+  const finish=Object.prototype.hasOwnProperty.call(names,value)?value:"porcelain-cream";
   document.documentElement.dataset.finish=finish;
   updateFinishScope();
   document.querySelectorAll('input[name="signatureFinish"]').forEach(input=>{input.checked=input.value===finish});
   const status=$("signatureFinishStatus");
-  if(status)status.textContent=`${finish==="midnight-black"?"Midnight Black":"Porcelain Cream"} · Pilot 적용`;
+  if(status)status.textContent=`${names[finish]} · 전체 공통 화면 적용`;
   if(saveChoice){
     try{localStorage.setItem("hani_os_signature_finish_v1",finish)}
     catch(e){if(status)status.textContent="현재 화면에만 적용됐습니다. 이 브라우저에서는 설정 저장이 제한됩니다."}
@@ -3896,7 +3896,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.156";
+const HANI_DISPLAY_VERSION="2.9.157";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
