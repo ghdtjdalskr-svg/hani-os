@@ -1975,7 +1975,7 @@ function renderBody(){
   const active=state.ui.bodyMetric||'weight';
   $('bodyMetricTabs').innerHTML=[...Object.entries(BODY_METRICS),['summary',{label:'전체 요약'}]].map(([k,v])=>`<button class="tab ${active===k?'active':''}" data-body-metric="${k}">${v.label}</button>`).join('');
   document.querySelectorAll('[data-body-metric]').forEach(btn=>btn.onclick=()=>{state.ui.bodyMetric=btn.dataset.bodyMetric;save();renderBody()});
-  $('bodyPeriod').value=period;$('bodyPeriod').onchange=()=>{state.ui.bodyPeriod=$('bodyPeriod').value;uiResetPage('body');save();renderBody()};renderBodyMetricStats();drawBody();$('homeWeight').textContent=overallLatest?n(overallLatest.weight).toFixed(2)+'kg':'기록 없음';const yearRows=lifePeriodRows(allRows,'year'),yearFirst=yearRows[0],yearLast=yearRows.at(-1),yearDelta=yearFirst&&yearLast?n(yearLast.weight)-n(yearFirst.weight):null;$('homeWeightGoal').textContent=yearDelta===null?`${today().slice(0,4)}년 기록 없음`:`${today().slice(0,4)}년 ${yearDelta>0?'+':''}${yearDelta.toFixed(2)}kg · 1차 ${g1}kg`;
+  $('bodyPeriod').value=period;$('bodyPeriod').onchange=()=>{state.ui.bodyPeriod=$('bodyPeriod').value;uiResetPage('body');save();renderBody()};renderBodyMetricStats();drawBody();dataHubRenderDashboard();
 }
 function renderBodyMetricStats(){
   const key=state.ui.bodyMetric||"weight",rows=bodyPeriodRows(state.body);
@@ -2447,15 +2447,7 @@ function homeMiniBars(values,color="#ff973f"){
   const nums=(values||[]).map(Number).filter(Number.isFinite),max=Math.max(1,...nums);if(!nums.length)return '<svg viewBox="0 0 120 64" preserveAspectRatio="xMidYMid meet"><path d="M4 52H116" stroke="#e9eaf3" stroke-width="1" stroke-dasharray="3 4"/></svg>';const gap=4,w=(112-gap*(nums.length-1))/nums.length;return `<svg viewBox="0 0 120 64" preserveAspectRatio="xMidYMid meet"><path d="M4 52H116" stroke="#e9eaf3" stroke-width="1" stroke-dasharray="3 4"/>${nums.map((v,i)=>{const bh=Math.max(3,(v/max)*44),x=4+i*(w+gap),y=52-bh;return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${bh.toFixed(1)}" rx="${Math.min(4,w/2).toFixed(1)}" fill="${color}" opacity="${.42+i/(nums.length*1.8)}"/>`}).join('')}</svg>`
 }
 function lastMonthKeys(count=6){const out=[],d=new Date();d.setDate(1);for(let i=count-1;i>=0;i--){const x=new Date(d.getFullYear(),d.getMonth()-i,1);out.push(`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}`)}return out}
-function renderHomeMiniCharts(){
-  const official=officialBrokerSorted().slice(-6);if($("homeAssetMini"))$("homeAssetMini").innerHTML=homeMiniLine(official.map(s=>brokerCalc(s).total),'#7658f6');
-  const body=[...(state.body||[])].sort((a,b)=>String(a.date||'').localeCompare(String(b.date||''))).slice(-7);if($("homeWeightMini"))$("homeWeightMini").innerHTML=homeMiniLine(body.map(r=>n(r.weight)),'#25bca5');
-  const exerciseYear=lifePeriodRows(state.exercise||[],"year").slice(-7);if($("homeExerciseMini"))$("homeExerciseMini").innerHTML=homeMiniBars(exerciseYear.map(r=>n(r.steps)),'#4285f4');
-  const months=lastMonthKeys(6),
-    bookCounts=months.map(m=>(state.books||[]).filter(b=>b.status==='read'&&completedInMonthByToday(b.readDate||b.completedDate,m)).length),
-    movieCounts=months.map(m=>(state.movies||[]).filter(x=>x.status==='watched'&&completedInMonthByToday(x.watchedDate,m)).length);
-  if($("homeBooksMini"))$("homeBooksMini").innerHTML=homeMiniBars(bookCounts,'#ff973f');if($("homeMoviesMini"))$("homeMoviesMini").innerHTML=homeMiniBars(movieCounts,'#f45d98')
-}
+function renderHomeMiniCharts(){ /* Plots are painted by dataHubRenderDashboard only. */ }
 const HOME_DIALOGUES=[
   {agent:"hani",kind:"오늘의 명언",text:"기록은 기억을 이긴다. 오늘 한 줄이 다음 달의 오빠를 도와줘.",chat:[{agent:"sua",text:"그럼 대표님 오늘 할 일부터 한 줄씩 지우시죠."},{agent:"yuna",text:"저… 대학 자료 넣다가 할 일이 많이 늘었는데요… 🥹"},{agent:"hani",text:"유나야 그건 네 잘못 아니다 ㅋㅋ 마감 있는 것부터 간다."}]},
   {agent:"jieun",kind:"지은의 한마디",text:"돈은 많이 버는 날보다, 새는 돈을 막은 날에 더 오래 남아요.",chat:[{agent:"haru",text:"Wish-list에 올리는 건 소비 아니죠? 일단 올려만 둘게요 😇"},{agent:"jieun",text:"올리는 건 무료. 결제 버튼부터 누르는 건 유료입니다."},{agent:"hani",text:"둘 다 맞음. 검토와 구매는 분리 ㅋㅋ"}]},
@@ -2482,8 +2474,8 @@ function renderHomeDialogue(force=false){if(!$("homeDialogueText"))return;const 
 function homeTrendSvg(rows){if(!(rows||[]).length)return "";const values=rows.map(r=>n(r.value)),w=760,h=210,p=18,min=Math.min(...values),max=Math.max(...values),span=Math.max(1,max-min);const pts=values.map((v,i)=>{const x=values.length===1?w*.5:p+(w-p*2)*(i/(values.length-1));const y=values.length===1?h*.48:h-p-((v-min)/span)*(h-p*2);return [x,y]});const guides=[0,1,2,3].map(i=>{const y=p+((h-p*2)/3)*i;return `<line x1="${p}" y1="${y.toFixed(1)}" x2="${w-p}" y2="${y.toFixed(1)}" stroke="#e9edf8" stroke-width="1" />`}).join("");const last=pts.at(-1);if(values.length===1)return `<defs><radialGradient id="homePointGlow"><stop offset="0%" stop-color="#806cf8" stop-opacity=".22"/><stop offset="100%" stop-color="#806cf8" stop-opacity="0"/></radialGradient></defs>${guides}<circle cx="${last[0]}" cy="${last[1]}" r="46" fill="url(#homePointGlow)"/><circle cx="${last[0]}" cy="${last[1]}" r="7" fill="#fff" stroke="#7658f6" stroke-width="4"/><path d="M${last[0]} ${last[1]+10}V182" stroke="#7658f6" stroke-opacity=".24" stroke-width="2"/>`;const line=pts.map((pt,i)=>`${i?"L":"M"}${pt[0].toFixed(1)} ${pt[1].toFixed(1)}`).join(" "),area=`M${pts[0][0].toFixed(1)} ${(h-p).toFixed(1)} ${pts.map(pt=>`L${pt[0].toFixed(1)} ${pt[1].toFixed(1)}`).join(" ")} L${pts.at(-1)[0].toFixed(1)} ${(h-p).toFixed(1)} Z`;return `<defs><linearGradient id="homeTrendFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8b7cff" stop-opacity="0.28"/><stop offset="100%" stop-color="#8b7cff" stop-opacity="0.02"/></linearGradient><linearGradient id="homeTrendLine" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#7a5ff7"/><stop offset="100%" stop-color="#4a8cff"/></linearGradient></defs>${guides}<path d="${area}" fill="url(#homeTrendFill)"/><path d="${line}" fill="none" stroke="url(#homeTrendLine)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="6" fill="#fff" stroke="#7658f6" stroke-width="3.5"/>`}
 function homeCalendarHtml(baseDate=today()){const d=new Date(baseDate),y=d.getFullYear(),m=d.getMonth(),monthLabel=`${y}년 ${String(m+1).padStart(2,"0")}월`,first=new Date(y,m,1),last=new Date(y,m+1,0),start=first.getDay();const total=last.getDate(),todayKey=today(),taskDates=new Set((state.tasks||[]).filter(t=>!t.done&&String(t.due||"").startsWith(`${y}-${String(m+1).padStart(2,"0")}`)).map(t=>String(t.due)));const cells=[];for(let i=0;i<start;i++)cells.push('<div class="home-cal-day is-empty"></div>');for(let day=1;day<=total;day++){const key=`${y}-${String(m+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;const cls=['home-cal-day'];if(key===todayKey)cls.push('is-today');if(taskDates.has(key))cls.push('has-task');cells.push(`<div class="${cls.join(' ')}">${day}</div>`)}const week=['일','월','화','수','목','금','토'].map(x=>`<div class="home-cal-weekday">${x}</div>`).join('');return `<div class="home-cal-head"><b>${monthLabel}</b><span>오늘 ${todayKey}</span></div><div class="home-cal-grid">${week}${cells.join('')}</div>`}
 function homeKpiHtml(value,unit,decimals=0){const x=n(value),num=decimals?x.toLocaleString("ko-KR",{minimumFractionDigits:decimals,maximumFractionDigits:decimals}):Math.round(x).toLocaleString("ko-KR");return `${num}<span class="kpi-unit">${unit}</span>`}
-function renderHome(){renderHomeDialogue();const c=calculate(),official=officialBrokerSorted(),latest=official.at(-1)||null,prev=official.length>1?official.at(-2):null,latestCalc=latest?brokerCalc(latest):null,prevCalc=prev?brokerCalc(prev):null,homeTotal=latestCalc?latestCalc.total:c.total,goal=n(state.goals.investment),rate=goal?homeTotal/goal*100:0;$("homeAsset").innerHTML=homeKpiHtml(homeTotal,"원");$("homeInvestGoal").textContent=goal>=100000000?(goal/100000000).toFixed(goal%100000000?1:0)+"억원":won(goal);$("homeInvestRate").textContent="달성률 "+rate.toFixed(2)+"%";if($("homeTrendTotal"))$("homeTrendTotal").textContent=won(homeTotal);if($("homeLatestPeriod"))$("homeLatestPeriod").textContent=latest?`${latest.period} · ${latest.snapshotDate||''}`:"공식 기록 없음";const change=latestCalc&&prevCalc?latestCalc.total-prevCalc.total:null,changeRate=prevCalc&&prevCalc.total?change/prevCalc.total*100:null;if($("homeTrendChange"))$("homeTrendChange").textContent=change!==null?`${prev.period} 대비 ${change>0?'+':''}${won(change)} · ${changeRate>0?'+':''}${(changeRate||0).toFixed(2)}%`:'첫 공식 투자 기록이 시작되었어요. 다음 달부터 흐름 비교가 가능해요.';const trendRows=official.slice(-6).map(s=>({label:s.period,value:brokerCalc(s).total})),svg=homeTrendSvg(trendRows);if($("homeTrendSvg"))$("homeTrendSvg").innerHTML=svg;if($("homeTrendBadge")){const badge=$("homeTrendBadge");badge.hidden=!latest;badge.textContent=latest?homeAmountCompact(homeTotal):""}if($("homeTrendAxis"))$("homeTrendAxis").innerHTML=trendRows.map(r=>`<span>${esc(monthLabelShort(r.label))}</span>`).join("");if($("homeTrendEmpty")){const empty=$("homeTrendEmpty");empty.style.display=svg?(official.length===1?"flex":"none"):"grid";empty.textContent=latest?'첫 공식 투자 기록이 시작되었어요. 다음 달부터 자산 흐름을 비교할 수 있어요.':'공식 투자 snapshot이 아직 없어요. 월간 기록을 저장하면 흐름을 그릴 수 있어요.'}
-  const accounts=latestCalc?latestCalc.accounts.filter(a=>n(a.assets)>0):[];if($("homeMixTotal"))$("homeMixTotal").textContent=homeAmountCompact(homeTotal);if($("homeMixDonut")){const donut=$("homeMixDonut");if(accounts.length&&homeTotal>0){let start=0;const parts=accounts.map(a=>{const pctVal=n(a.assets)/homeTotal*100,end=start+pctVal,color=seriesColor(a.accountId);const piece=`${color} ${start.toFixed(2)}% ${end.toFixed(2)}%`;start=end;return piece});donut.style.background=`conic-gradient(${parts.join(',')})`}else donut.style.background='conic-gradient(#eef0f8 0 100%)'}if($("homeMixLegend"))$("homeMixLegend").innerHTML=accounts.length?accounts.map(a=>{const pctVal=homeTotal?n(a.assets)/homeTotal*100:0;return `<div class="home-legend-row"><i class="series-dot" style="--series-color:${seriesColor(a.accountId)};background:${seriesColor(a.accountId)}"></i><div class="name">${esc(a.accountName)}</div><div class="meta">${pctVal.toFixed(1)}%</div><div class="sub">${esc(homeAmountCompact(a.assets))}</div></div>`}).join(''):'<div class="empty">공식 snapshot을 저장하면 계좌별 자산 비중이 표시됩니다.</div>';
+function renderHome(){renderHomeDialogue();const official=officialBrokerSorted(),latest=official.at(-1)||null,latestCalc=latest?brokerCalc(latest):null;
+  // Canonical Data Hub owns the Dashboard analysis; account mix remains in Finance.
   const currentMonth=today().slice(0,7),todayKey=today(),
     monthTasks=(state.tasks||[]).filter(t=>!t.done&&String(t.due||"").startsWith(currentMonth))
       .sort((a,b)=>String(a.due||"9999-99-99").localeCompare(String(b.due||"9999-99-99"))||String(a.time||"").localeCompare(String(b.time||"")));
@@ -2518,13 +2510,13 @@ function renderHome(){renderHomeDialogue();const c=calculate(),official=official
     exerciseStepDays=exerciseYear.filter(r=>n(r.steps)>0),
     exerciseAvg=exerciseStepDays.length?Math.round(exerciseTotal/exerciseStepDays.length):0,
     exerciseStrength=exerciseYear.filter(r=>r.strength).length;
-  if($("homeWeight"))$("homeWeight").innerHTML=lastBody?homeKpiHtml(lastBody.weight,"kg",2):"기록 없음";
-  if($("homeWeightGoal"))$("homeWeightGoal").textContent=bodyYearDelta===null?`${year}년 기록 없음`:`${year}년 ${bodyYearDelta>0?"+":""}${bodyYearDelta.toFixed(2)}kg · 연간 변화`;
-  if($("homeBooks"))$("homeBooks").innerHTML=homeKpiHtml(bookMonth,"권");
+  // Dashboard metric is rendered by dataHubRenderDashboard.
+  // Dashboard metric is rendered by dataHubRenderDashboard.
+  // Dashboard metric is rendered by dataHubRenderDashboard.
   if($("homeMovies"))$("homeMovies").innerHTML=homeKpiHtml(movieMonth,"편");
   if($("homeExerciseLabel"))$("homeExerciseLabel").textContent=`${year}년 운동`;
-  if($("homeExerciseSteps"))$("homeExerciseSteps").innerHTML=homeKpiHtml(exerciseTotal,"보");
-  if($("homeExerciseAvg"))$("homeExerciseAvg").textContent=exerciseYear.length?`평균 ${exerciseAvg.toLocaleString()}보 · 근력 ${exerciseStrength}일`:`${year}년 기록 없음`;
+  // Dashboard metric is rendered by dataHubRenderDashboard.
+  // Dashboard metric is rendered by dataHubRenderDashboard.
   renderHomeMiniCharts();renderLifeMarket()}
 
 let activeLifeIndex="hasdaq";
@@ -2588,9 +2580,9 @@ function renderLifeMarket(){
   const moodPhrases=["오늘도 시장은 전쟁이다..!","대 풀 롱...? 하니가 아직 버튼 안 줬는데요?","데이터는 평온한데 대표님 마음만 상한가","오늘도 성민 AI TEAM은 야근 중입니다","시장은 열렸고, 하니는 계산기를 들었다"],mood=moodPhrases[seed%moodPhrases.length];
   const directionNames=['투자','건강','콘텐츠','활동','소비','학습'],rising=directionNames.filter((_,i)=>directions[i]>0),falling=directionNames.filter((_,i)=>directions[i]<0),factLine=[rising.length?`상승 ${rising.join('·')}`:'상승 지표 없음',falling.length?`점검 ${falling.join('·')}`:'하락 지표 없음'].join(' · ');
   if($("lifeMarketState"))$("lifeMarketState").textContent=label;if($("lifeMarketCounts"))$("lifeMarketCounts").innerHTML=`<span class="up">호재 <b>${good}</b></span><span>보합 <b>${flat}</b></span><span class="down">악재 <b>${bad}</b></span>`;if($("lifeMarketBrief"))$("lifeMarketBrief").innerHTML=`<span>${esc(brief)}</span><small>${esc(factLine)}</small>`;if($("lifeMarketFeatured"))$("lifeMarketFeatured").dataset.marketState=key;if($("lifeMarketBanner"))$("lifeMarketBanner").dataset.marketState=key;if($("lifeMarketMood"))$("lifeMarketMood").textContent=mood;
-  if($("homeJispi"))$("homeJispi").textContent=data.jispi.valueText;if($("homeJispiMeta"))$("homeJispiMeta").textContent=latestLedger?`${ledgerMonthLabel(latestLedger.month)} · ${ledgerJispiStatus(lc.jispiT,lc.targetT)}`:"월간 소비 결산";if($("homeHinkei"))$("homeHinkei").textContent=data.hinkei.valueText;if($("homeHinkeiMeta"))$("homeHinkeiMeta").textContent=`퀴즈 ${(state.learningQuizzes||[]).length} · 오답 ${(state.learningWrongAnswers||[]).length}`;if($("homeContentMeta"))$("homeContentMeta").textContent=`독서 ${(state.books||[]).filter(x=>String(x.readDate||x.completedDate||"").startsWith(currentMonth)).length} · 시청 ${(state.movies||[]).filter(x=>String(x.watchedDate||"").startsWith(currentMonth)).length}`;
+  // Dashboard card values are not written by the legacy ticker owner.
   document.querySelectorAll("[data-life-index]").forEach(btn=>{btn.classList.toggle("is-selected",btn.dataset.lifeIndex===activeLifeIndex);btn.onclick=()=>{activeLifeIndex=btn.dataset.lifeIndex;renderLifeMarket()}});
-  const selected=data[activeLifeIndex]||data.hasdaq;if($("homeAnalysisKicker"))$("homeAnalysisKicker").textContent=selected.kicker;if($("homeAnalysisTitle"))$("homeAnalysisTitle").textContent=selected.title;if($("homeAnalysisDetail"))$("homeAnalysisDetail").dataset.go=selected.route;if($("homeSecondaryTitle"))$("homeSecondaryTitle").textContent=selected.secondary;if($("homeRecentTitle"))$("homeRecentTitle").textContent=selected.recent;if($("homeTrendTotal"))$("homeTrendTotal").textContent=selected.valueText;if($("homeTrendSvg"))$("homeTrendSvg").innerHTML=homeTrendSvg(selected.rows);if($("homeTrendAxis"))$("homeTrendAxis").innerHTML=selected.rows.map(r=>`<span>${esc(activeLifeIndex==="ne100"?String(r.label).slice(5).replace("-","."):monthLabelShort(String(r.label).slice(0,7)))}</span>`).join("");if($("homeTrendEmpty")){$("homeTrendEmpty").style.display=selected.rows.length?"none":"grid";$("homeTrendEmpty").textContent=`${selected.title} 기록이 아직 없어요.`}if(activeLifeIndex!=="hasdaq")renderLifeMarketSide(selected,latestLedger,lc);
+  dataHubRenderDashboard();
 }
 function renderLifeMarketSide(selected,ledger,lc){const rows=selected.rows||[],latest=rows.at(-1),prev=rows.at(-2),delta=latest&&prev?n(latest.value)-n(prev.value):null;if($("homeTrendChange"))$("homeTrendChange").textContent=delta===null?"기록이 쌓이면 최근 흐름을 비교해요.":`직전 기록 대비 ${delta>0?"+":""}${num(delta)}`;if($("homeLatestPeriod"))$("homeLatestPeriod").textContent=latest?.label||"-";if($("homeMixDonut"))$("homeMixDonut").style.background="conic-gradient(#806cf8 0 68%,#edf0f8 68% 100%)";if($("homeMixTotal"))$("homeMixTotal").textContent=selected.valueText;if($("homeMixUnit"))$("homeMixUnit").textContent="현재값";let items=[];if(activeLifeIndex==="ne100"){const b=(state.body||[]).slice().sort((a,b)=>String(a.date).localeCompare(String(b.date))).at(-1),goal=n(state.goals.weight2||state.goals.weight1);items=[["현재 BMI",b?.bmi?num(b.bmi):"-"],["목표까지",b&&goal?`${Math.abs(n(b.weight)-goal).toFixed(1)}kg`:"-"]]}else if(activeLifeIndex==="hinaJones")items=[["이번 달 완독",`${(state.books||[]).filter(x=>String(x.readDate||x.completedDate||"").startsWith(today().slice(0,7))).length}권`],["이번 달 시청",`${(state.movies||[]).filter(x=>String(x.watchedDate||"").startsWith(today().slice(0,7))).length}편`]];else if(activeLifeIndex==="harukei"){const recent=(state.exercise||[]).filter(x=>n(x.steps)>0).slice(-30),avg=recent.length?Math.round(recent.reduce((a,x)=>a+n(x.steps),0)/recent.length):0;items=[["평균 걸음수",`${avg.toLocaleString()}보`],["10,000보 달성",`${recent.filter(x=>n(x.steps)>=10000).length}/${recent.length}일`]]}else if(activeLifeIndex==="jispi"&&lc)items=[["고정비",won(lc.fixed)],["변동비",won(lc.variable)],["특별지출",won(lc.special)],["금융·자산",won(lc.finance)]];else if(activeLifeIndex==="hinkei")items=[["프로젝트",`${(state.learningProjects||[]).length}개`],["퀴즈",`${(state.learningQuizzes||[]).length}개`],["미완료",`${(state.learningQuizzes||[]).filter(x=>x.status!=="completed").length}개`],["오답",`${(state.learningWrongAnswers||[]).length}개`]];if($("homeMixLegend"))$("homeMixLegend").innerHTML=items.map(([a,b])=>`<div class="home-legend-row"><div class="name">${esc(a)}</div><div class="meta">${esc(b)}</div></div>`).join("")||'<div class="empty">현재 데이터에서 계산할 기록이 없습니다.</div>';let recent=[];if(activeLifeIndex==="ne100")recent=(state.body||[]).slice(-5).reverse().map(x=>[`${num(x.weight)}kg`,x.date]);else if(activeLifeIndex==="hinaJones")recent=[...(state.books||[]).map(x=>[x.title,x.readDate||x.completedDate]),...(state.movies||[]).map(x=>[x.title,x.watchedDate])].filter(x=>x[1]).sort((a,b)=>String(b[1]).localeCompare(String(a[1]))).slice(0,5);else if(activeLifeIndex==="harukei")recent=(state.exercise||[]).slice(-5).reverse().map(x=>[`${n(x.steps).toLocaleString()}보`,x.date]);else if(activeLifeIndex==="jispi")recent=(state.ledgerMonths||[]).slice().sort((a,b)=>b.month.localeCompare(a.month)).slice(0,5).map(x=>[`${ledgerMonthLabel(x.month)} 결산`,formatDateTime(x.importedAt||x.updatedAt)]);else if(activeLifeIndex==="hinkei")recent=(state.learningQuizzes||[]).slice().sort((a,b)=>String(b.updatedAt||b.scheduledDate).localeCompare(String(a.updatedAt||a.scheduledDate))).slice(0,5).map(x=>[x.title||"학습 퀴즈",String(x.updatedAt||x.scheduledDate).slice(0,10)]);if($("recentActivity"))$("recentActivity").innerHTML=recent.length?recent.map(x=>`<div class="home-feed-item tone-finance"><div class="home-feed-dot"></div><div><b>${esc(x[0]||"기록")}</b><div class="sub">${esc(x[1]||"")}</div></div></div>`).join(""):'<div class="empty">최근 기록이 없습니다.</div>'}
 
@@ -2613,6 +2605,10 @@ function cloudMeta(){return cloudLoadJson(CLOUD_META_KEY,{})}
 function cloudSetRuntime(status,message,tone="warn",extra={}){
   cloudRuntime={...cloudRuntime,...extra,status,message,tone};
   renderCloudPanel();
+  dataHubAuditSource();
+  // Existing sync completion is a source-change boundary, not a visual paint.
+  if(extra.sync==="ON")queueMicrotask(()=>dataHubRefresh());
+  else if(extra.sync&&extra.sync!=="ON")dataHubInvalidate();
 }
 function cloudValidateUrl(url){
   let u;try{u=new URL(url)}catch(e){throw new Error("Project URL 형식을 확인해 주세요.")}
@@ -2680,6 +2676,7 @@ async function sportsCacheLoad(force=false){
   try{const {data,error}=await cloudClient.from("hani_sports_cache").select("team_id,league,last_game,next_game,source,status,last_success_at,data_updated_at,updated_at").in("team_id",Object.keys(SPORTS_CACHE_UI));if(error)throw error;const rows=Array.isArray(data)?data:[],applied=rows.filter(sportsApplyCacheRow);if(!applied.length)throw new Error("검증 가능한 Sports Cache가 없습니다.");sportsCacheRuntime.loadedAt=Date.now();const latest=applied.map(row=>row.last_success_at||row.updated_at).filter(Boolean).sort().at(-1);const note=document.querySelector("#game .sports-source-note");if(note&&latest)note.textContent=`경기 정보는 서버에서 자동 확인됩니다. 마지막 정상 확인: ${sportsCacheDate(latest,{time:true})}. 실패 시 마지막 정상 데이터가 유지됩니다.`;return true}catch(e){console.warn("Sports cache load",e);return false}finally{sportsCacheRuntime.loading=false}
 }
 function cloudCreateClient(config){
+  dataHubInvalidate(); // Client/project replacement cannot retain the prior consumer.
   if(!window.supabase?.createClient)throw new Error("Supabase JS를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.");
   try{cloudAuthSubscription?.unsubscribe?.()}catch(e){}
   cloudAuthSubscription=null;
@@ -2751,6 +2748,7 @@ function cloudBindAuthEvents(){
   const {data}=cloudClient.auth.onAuthStateChange((event,session)=>{
     cloudOwnerVerificationEpoch++;
     cloudOwnerVerification?.invalidate();
+    dataHubInvalidate();
     if($("cloudOwnerVerificationResult"))$("cloudOwnerVerificationResult").textContent="세션 변경: 소유권 검증을 다시 실행해 주세요.";
     if(event==="PASSWORD_RECOVERY"){
       cloudEnterRecoveryMode(session);
@@ -3339,6 +3337,77 @@ function cloudCreateRuntimeOwnerVerifier({getClient, getContext, getSource, comp
   };
 }
 
+let dataHubRuntime=null,dataHubVerifier=null;
+function dataHubContext(){return cloudUser&&cloudClient?{projectRef:new URL(cloudConfig().url).hostname,
+  userId:cloudUser.id,datasetId:"operational-life-state",sessionEpoch:String(cloudOwnerVerificationEpoch)}:null}
+function dataHubBinding(){const binding=dataHubVerifier?.getBinding();return binding?{...binding,sessionEpoch:String(binding.sessionEpoch)}:null}
+function dataHubInvalidate(){dataHubVerifier?.invalidate();dataHubRuntime?.invalidate()}
+function dataHubAuditSource(){dataHubRuntime?.auditSource()}
+async function dataHubRefresh(){
+  if(!window.HANI_DATA_HUB){dataHubRenderDashboard();return}
+  if(!dataHubRuntime)dataHubRuntime=window.HANI_DATA_HUB.createDashboardRuntime({
+    getSource:()=>state,getContext:dataHubContext,getBinding:dataHubBinding,
+    // No historical Goal Registry exists yet. Do not import state.goals/default targets.
+    getGoals:()=>[],canonical:{version:"85c8110-brokerCalc-ledgerCalc",
+      brokerTotal:row=>brokerCalc(row).total,ledgerSpending:row=>ledgerCalc(row).jispiT},
+    verify:async()=>{
+      dataHubVerifier?.invalidate();
+      dataHubVerifier=cloudCreateRuntimeOwnerVerifier({getClient:()=>cloudClient,getContext:dataHubContext,
+        getSource:()=>state,comparable:cloudSyncFingerprintState});
+      return dataHubVerifier.verify();
+    },onChange:dataHubRenderDashboard
+  });
+  await dataHubRuntime.refresh();dataHubRenderDashboard();
+}
+function dataHubRenderDashboard(){
+  const api=window.HANI_DATA_HUB,view=dataHubRuntime?.peek()||{status:"OWNER_BINDING_BLOCKED",metrics:[],cache:"DISABLED"};
+  const slots=api?.DASHBOARD_SLOTS||[["hasdaq","","homeAsset","homeInvestRate"],["ne100","","homeWeight","homeWeightGoal"],
+    ["hinaJones","","homeBooks","homeContentMeta"],["harukei","","homeExerciseSteps","homeExerciseAvg"],
+    ["jispi","","homeJispi","homeJispiMeta"],["hinkei","","homeHinkei","homeHinkeiMeta"]];
+  const text=metric=>api?.dashboardText(metric)||{value:"—",comparison:"원본 검증 대기",status:"OWNER_BINDING_BLOCKED"};
+  for(const [key,,valueId,metaId] of slots){
+    const metric=view.metrics.find(m=>m.key===key),display=text(metric);
+    if($(valueId))$(valueId).textContent=display.value;
+    if($(metaId))$(metaId).textContent=display.comparison+" · "+display.status+
+      (metric?.row.observed_days!==undefined?` · 관측 ${metric.row.observed_days}일`:"")+
+      (metric?.row.reasons.includes("ZERO_STEPS_AMBIGUITY")?" · 0보 입력 구분 불가":"");
+    const card=document.querySelector(`#lifeMarketGrid [data-life-index="${key}"]`);
+    if(card){card.dataset.metricStatus=display.status;card.title=display.detail||display.comparison;
+      card.querySelectorAll('.life-card-spark,.life-card-move,.life-card-graph-empty').forEach(el=>{el.textContent=""});
+      const mini=card.querySelector('.home-mini-chart');
+      if(mini){const values=metric?[...(metric.comparison.baseline?[metric.comparison.baseline.value]:[]),
+        ...(metric.row.value!==null?[metric.row.value]:[])]:[];
+        mini.innerHTML=homeMiniLine(values,{hasdaq:'#7658f6',ne100:'#25bca5',hinaJones:'#ff973f',harukei:'#4285f4'}[key])}}
+  }
+  const status=$("dataHubStatus");if(status)status.textContent=view.status==="VERIFIED"?
+    `${view.month} · Data Hub · ${view.cache==="MEMORY_ONLY"?"메모리 계산 (캐시 사용 불가)":"검증된 파생 캐시"} · 원본 변경 없음`:
+    "원본 검증 대기 · Local·Cloud 불일치 시 캐시 비활성화";
+  const selected=view.metrics.find(m=>m.key===activeLifeIndex),display=text(selected);
+  const slot=slots.find(s=>s[0]===activeLifeIndex)||slots[0];
+  const labels={hasdaq:["HASDAQ · FINANCE","확인된 투자계좌 총액","investment"],ne100:["N&E · HEALTH","당월 최근 체중","diet"],
+    hinaJones:["READ · CULTURE","당월 완독","reading"],harukei:["STEP · ACTIVITY","당월 관측일 평균 걸음","exercise"],
+    jispi:["JISPI · LEDGER","18→17 소비 결산","ledger"],hinkei:["HINKEI · STUDY","당월 가중 퀴즈 정답률","study"]};
+  const label=labels[slot[0]];
+  if($("homeAnalysisKicker"))$("homeAnalysisKicker").textContent=label[0];
+  if($("homeAnalysisTitle"))$("homeAnalysisTitle").textContent=label[1];
+  if($("homeAnalysisDetail"))$("homeAnalysisDetail").dataset.go=label[2];
+  if($("homeTrendTotal"))$("homeTrendTotal").textContent=display.value;
+  if($("homeTrendChange"))$("homeTrendChange").textContent=display.comparison;
+  if($("homeTrendBadge")){$("homeTrendBadge").hidden=!selected;$("homeTrendBadge").textContent=display.status}
+  const points=selected?[...(selected.comparison.baseline?[{label:selected.comparison.baseline.month,value:selected.comparison.baseline.value}]:[]),
+    ...(selected.row.value!==null?[{label:selected.row.month,value:selected.row.value}]:[])]:[];
+  if($("homeTrendSvg"))$("homeTrendSvg").innerHTML=homeTrendSvg(points);
+  if($("homeTrendAxis"))$("homeTrendAxis").innerHTML=points.map(p=>`<span>${esc(p.label)}</span>`).join("");
+  if($("homeTrendEmpty")){$("homeTrendEmpty").style.display=points.length?"none":"grid";$("homeTrendEmpty").textContent=selected?"해당 월 데이터 없음":"원본 검증 대기"}
+  if($("homeInvestGoal"))$("homeInvestGoal").textContent=selected?.comparison.target===null||!selected?"Target not set":String(selected.comparison.target);
+  if($("homeLatestPeriod"))$("homeLatestPeriod").textContent=selected?.row.as_of||"—";
+  if($("homeSecondaryKicker"))$("homeSecondaryKicker").textContent="MONTHLY METRIC";
+  if($("homeSecondaryTitle"))$("homeSecondaryTitle").textContent=label[1]+" · 비교 기준";
+  if($("homeMixDonut")){$("homeMixDonut").style.background="none";$("homeMixDonut").classList.add("secondary-widget-v02992");
+    const html=`<div class="secondary-widget-visual"><strong class="secondary-widget-value">${esc(display.value)}</strong></div><div class="secondary-widget-details"><div><small>비교</small><b>${esc(display.comparison)}</b></div><div><small>데이터 품질</small><b>${esc(display.detail||display.status)}</b></div></div>`;
+    if($("homeMixDonut").dataset.hubHtml!==html){$("homeMixDonut").innerHTML=html;$("homeMixDonut").dataset.hubHtml=html}}
+  if($("homeMixLegend"))$("homeMixLegend").textContent="";
+}
 let cloudOwnerVerificationEpoch=1;
 let cloudOwnerVerification=null;
 let cloudOwnerVerificationBusy=false;
@@ -3361,7 +3430,7 @@ async function cloudVerifySourceOwner(){
     const verified=result.status==="VERIFIED"&&!!cloudOwnerVerification.getBinding();
     const reason=result.reason;
     out.textContent=verified?
-      "VERIFIED · 검증 시점의 Local 원본과 서버 인증 계정의 Cloud 원본이 일치합니다. 이후 변경 시 재검증이 필요합니다. 캐시·Dashboard는 연결하지 않았습니다.":
+      "VERIFIED · 검증 시점의 Local 원본과 서버 인증 계정의 Cloud 원본이 일치합니다. 이후 변경 시 재검증이 필요합니다. 이 버튼 자체는 캐시를 생성하지 않습니다.":
       reason==="LOCAL_CLOUD_SOURCE_MISMATCH"?
       "OWNER_BINDING_BLOCKED · Local과 Cloud 원본이 다릅니다. 어느 쪽도 덮어쓰지 않았습니다.":
       "OWNER_BINDING_BLOCKED · 계정·세션·원본을 확인하지 못했거나 검증 중 변경되었습니다. 데이터는 변경하지 않았습니다.";
@@ -3689,6 +3758,7 @@ function bindCloudBridgeControls(){
   if($("cloudLogout"))$("cloudLogout").onclick=cloudLogout;
   if($("cloudSyncNow"))$("cloudSyncNow").onclick=cloudManualSync;
   if($("cloudVerifySourceOwner"))$("cloudVerifySourceOwner").onclick=cloudVerifySourceOwner;
+  if($("dataHubRefresh"))$("dataHubRefresh").onclick=dataHubRefresh;
   if($("cloudFirstCopy"))$("cloudFirstCopy").onclick=cloudFirstCopy;
   if($("cloudRestore"))$("cloudRestore").onclick=cloudRestoreToLocal;
   if($("cloudCompare"))$("cloudCompare").onclick=cloudCompare;
@@ -4068,7 +4138,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.163";
+const HANI_DISPLAY_VERSION="2.9.164";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
@@ -4645,7 +4715,7 @@ function renderMonthlyReport(){
 }
 
 
-function renderAll(){syncHaniDisplayVersion();normalizeHaniBrandLogos();refreshSelects();renderAccounts();renderInstruments();renderHoldings();renderTransactions();renderMonthlySnapshots();renderInvestmentQuickSuite();renderInvestmentHighlights();renderInvestmentAccountOverview();renderInvestmentNews();syncOverviewYearMirror();renderPortfolio();renderAssets();renderLedger();renderWishlist();renderBody();renderExercise();renderReading();renderMovies();renderDiary();renderCampus();renderTravel();renderCertificates();renderTasks();renderCalendar();renderTeam();renderNotes();renderHome();renderMonthlyReport();renderStoragePanel()}
+function renderAll(){dataHubAuditSource();syncHaniDisplayVersion();normalizeHaniBrandLogos();refreshSelects();renderAccounts();renderInstruments();renderHoldings();renderTransactions();renderMonthlySnapshots();renderInvestmentQuickSuite();renderInvestmentHighlights();renderInvestmentAccountOverview();renderInvestmentNews();syncOverviewYearMirror();renderPortfolio();renderAssets();renderLedger();renderWishlist();renderBody();renderExercise();renderReading();renderMovies();renderDiary();renderCampus();renderTravel();renderCertificates();renderTasks();renderCalendar();renderTeam();renderNotes();renderHome();renderMonthlyReport();renderStoragePanel()}
 function downloadJson(serialized,filename){const blob=new Blob([serialized],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function exportData({suffix="",silent=false}={}){
   try{
