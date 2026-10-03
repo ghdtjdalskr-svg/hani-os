@@ -26,5 +26,6 @@ if (process.argv.includes('--check')) {
   if (!existing || existing[0].replace(/\r\n/g, '\n') !== region) throw new Error('STALE_DATA_HUB_BUNDLE');
 } else {
   if (!/^\s*"use strict";/.test(main)) throw new Error('UNEXPECTED_MAIN_ENTRYPOINT');
-  fs.writeFileSync(target, existing ? main.replace(pattern, region) : main.replace('"use strict";', `"use strict";\n${region}\n`));
+  const output = existing ? main.replace(pattern, region) : main.replace('"use strict";', `"use strict";\n${region}\n`);
+  fs.writeFileSync(target, output.replace(/(\/\/ END GENERATED HANI DATA HUB)\s+(?=const VERSION=)/, '$1\n'));
 }
