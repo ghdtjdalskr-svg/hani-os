@@ -1,8 +1,8 @@
-# HANI OS 프로젝트 상태 · v2.9.164 기준
+# HANI OS 프로젝트 상태 · v2.9.166 기준
 
 - 확인일: 2026-10-04 KST
 - P0 시작 기준선: `f5274ce` / v2.9.164
-- 최신 확인 main: `b80c620` / v2.9.165
+- 최신 확인 main: `3a7979d` / v2.9.166
 - 목적: 완료·부분 완료·후보·미착수를 최신 Production 기준으로 재분류
 
 ## P0 완료
@@ -27,6 +27,7 @@
 | Dashboard Topbar / LIFE MARKET ticker | `PRODUCTION` | v2.9.153 |
 | Toss 시장가격·종목 검색 | `PRODUCTION` | v2.9.145 |
 | holdings-only 계좌 업데이트 | `PRODUCTION` | v2.9.148 |
+| P1 안정화 재진단·포트폴리오 대비 | `PRODUCTION` | v2.9.166, PR161, 5 Finish·PC/Mobile·운영 read-back |
 
 ## 최신 main 진행 상태
 
@@ -43,8 +44,6 @@
 | 9-agent Voice Registry | `PARTIAL` | 탭 문구는 운영 완료, 공통 서버 Registry는 별도 재검토 필요 |
 | HANI GROUP 조직 Hub | `PARTIAL` | 브랜드·AI Team은 있으나 전용 조직 운영 Hub는 미완료 |
 | HANI DEVLOG Automation | `CANDIDATE` | Gemini CLI 0.62.0, dry-run 34 PASS; live 생성 실패 후 미재시도, main 미병합 |
-| 안정화 핫픽스 | `DEFERRED` | 최신 v2.9.164에서 실제 재현 후 최소 패치 여부 결정 |
-| 포트폴리오 테마 대비 | `DEFERRED` | 밝은/어두운 Finish와 PC/모바일 가독성 보완 필요 |
 
 ## Backlog
 
@@ -59,12 +58,11 @@
 
 ## 다음 실행 순서
 
-1. P0 중앙 기록은 이후 배포 완료 보고와 함께 유지·갱신하고, v2.9.165 전체 read-back 결과가 나오면 상태를 보완한다.
-2. P1 핫픽스를 최신 main 기준에서 재진단하고 포트폴리오 대비를 보완한다.
-3. Asset Input canonical contract를 먼저 고정한다.
-4. Goal Registry 계약을 고정한 뒤 분기·연간 집계를 연결한다.
-5. Portfolio 월간 Snapshot과 Data Hub D/E를 진행한다.
-6. Production-only Devlog와 선택적 Drive Vault를 연결한다.
+1. P0 중앙 기록과 P1 Production 상태를 이후 배포 완료 보고와 함께 유지·갱신한다.
+2. Asset Input canonical contract의 평균매입가 optional·Partial/Complete 경계를 별도 보호 승인 후 고정한다.
+3. Goal Registry 계약을 고정한 뒤 분기·연간 집계를 연결한다.
+4. Portfolio 월간 Snapshot과 Data Hub D/E를 진행한다.
+5. Production-only Devlog와 선택적 Drive Vault를 연결한다.
 
 ## 진행상황 갱신 규칙
 

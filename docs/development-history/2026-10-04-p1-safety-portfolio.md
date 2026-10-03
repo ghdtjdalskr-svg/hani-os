@@ -2,8 +2,10 @@
 
 - 확인일: 2026-10-04 KST
 - 기준선: `183be6c9cab0c4e2a3ac062a3f37838491be92f9` / v2.9.165
-- 후보: `hani/p1-safety-portfolio` / v2.9.166
-- 상태: `CANDIDATE`
+- 배포 브랜치: `hani/p1-safety-portfolio` / v2.9.166
+- PR: `#161`
+- Production main: `3a7979d1782eefab539fc0ba441eec0b961ab8e3`
+- 상태: `PRODUCTION`
 
 ## 안정화 핫픽스 재진단
 
@@ -54,4 +56,4 @@
 - Asset Update static smoke: `PASS`
 - Asset Update browser smoke: `PASS` · data loss 0 · page error 0
 - 보호 storage key 이름과 내부 데이터 버전: 변경 없음
-- Production: 미배포 · 대표 Preview 승인 전
+- Production: `PASS` · main 병합, Pages v2.9.166, 최신 JS·CSS, 포트폴리오 탭과 개발센터 read-back 확인
