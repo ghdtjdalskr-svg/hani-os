@@ -698,21 +698,40 @@ $("sideToggle").onclick=()=>{const mini=$("app").classList.toggle("sidebar-mini"
 $("mobileMenu").onclick=()=>$("app").classList.add("mobile-open");$("overlay").onclick=()=>$("app").classList.remove("mobile-open");
 if(localStorage.getItem(SIDEBAR_KEY)==="1"){$("app").classList.add("sidebar-mini");$("sideToggle").textContent="›"}
 const SEASON_THEMES={
-  spring:{label:"봄",icon:"🌸",themeColor:"#f7f5ff"},
-  summer:{label:"여름",icon:"🌊",themeColor:"#f1fbfb"},
-  autumn:{label:"가을",icon:"🍂",themeColor:"#fff8f0"},
-  winter:{label:"겨울",icon:"❄️",themeColor:"#f3f7fc"}
+  spring:{label:"봄",icon:"🌸",themeColor:"#f7f5ff",collection:"SPRING",mood:"부드러운 햇살 · 새로운 시작"},
+  summer:{label:"여름",icon:"🌊",themeColor:"#f1fbfb",collection:"SUMMER",mood:"맑은 빛 · 시원한 여유"},
+  autumn:{label:"가을",icon:"🍂",themeColor:"#fff8f0",collection:"AUTUMN",mood:"따뜻한 노을 · 차분한 몰입"},
+  winter:{label:"겨울",icon:"❄️",themeColor:"#f3f7fc",collection:"WINTER",mood:"은은한 푸른빛 · 포근한 휴식"}
 };
+let seasonTransitionTimer;
+function syncSeasonCollection(){
+  const season=document.documentElement.dataset.season,meta=SEASON_THEMES[season];
+  if(!meta)return;
+  document.querySelectorAll('input[name="seasonCollection"]').forEach(input=>{input.checked=input.value===season});
+  const status=$("seasonCollectionStatus");
+  if(status)status.textContent=`${(document.documentElement.dataset.finish||"porcelain-cream").replaceAll("-"," ").toUpperCase()} × ${meta.collection} COLLECTION · ${meta.mood}`;
+}
 function defaultSeasonTheme(){
   const m=new Date().getMonth()+1;
   return [3,4,5].includes(m)?"spring":[6,7,8].includes(m)?"summer":[9,10,11].includes(m)?"autumn":"winter";
 }
 function applySeasonTheme(key,saveChoice=false){
   if(!SEASON_THEMES[key])key="spring";
-  // Season owns artwork/preference only; preserve legacy appearance attributes.
+  // Season owns ambient light/artwork only, never Finish/domain surface tokens.
+  const changed=document.documentElement.dataset.season!==key;
   document.documentElement.dataset.season=key;
   if(saveChoice)localStorage.setItem(SEASON_THEME_KEY,key);
   updateFinishScope();
+  syncSeasonCollection();
+  if(saveChoice&&changed){
+    const transition=$("seasonTransition");
+    if(transition){
+      clearTimeout(seasonTransitionTimer);
+      transition.hidden=false;
+      transition.textContent=`${SEASON_THEMES[key].icon} ${SEASON_THEMES[key].collection} COLLECTION · ${SEASON_THEMES[key].mood}`;
+      seasonTransitionTimer=setTimeout(()=>{transition.hidden=true},2400);
+    }
+  }
   if($("theme"))$("theme").innerHTML=`${SEASON_THEMES[key].icon} <span>${SEASON_THEMES[key].label} 테마</span>`;
   setTimeout(()=>{drawPortfolio();drawBody();drawLedgerTrend();drawMonthlyAssetChart();drawBrokerChart();drawAnnualInvestmentCharts();drawInvestmentAccountChart();if(activeAccountId)drawAccountChart(activeAccountId)},30);
 }
@@ -729,6 +748,7 @@ function applySignatureFinish(value,saveChoice=false){
   const finish=Object.prototype.hasOwnProperty.call(names,value)?value:"porcelain-cream";
   document.documentElement.dataset.finish=finish;
   updateFinishScope();
+  syncSeasonCollection();
   document.querySelectorAll('input[name="signatureFinish"]').forEach(input=>{input.checked=input.value===finish});
   const status=$("signatureFinishStatus");
   if(status)status.textContent=`${names[finish]} · 전체 공통 화면 적용`;
@@ -744,6 +764,9 @@ $("signatureFinishChoices")?.addEventListener("change",event=>{
   if(event.target.matches('input[name="signatureFinish"]'))applySignatureFinish(event.target.value,true);
 });
 applySeasonTheme(initialSeason,false);
+$("seasonCollectionChoices")?.addEventListener("change",event=>{
+  if(event.target.matches('input[name="seasonCollection"]'))applySeasonTheme(event.target.value,true);
+});
 $("theme").onclick=()=>{
   const order=["spring","summer","autumn","winter"],current=document.documentElement.dataset.season||"spring";
   applySeasonTheme(order[(order.indexOf(current)+1)%order.length],true);
@@ -3911,7 +3934,7 @@ function deployPackagePathAllowed(path=""){const p=deployNormalizeReleasePath(pa
 async function deploySha256Bytes(bytes){const digest=await crypto.subtle.digest("SHA-256",bytes);return [...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,"0")).join("")}
 async function deployPackageHash(files=[]){const enc=new TextEncoder(),entries=[];for(const f of [...files].sort((a,b)=>a.path.localeCompare(b.path))){const bytes=f.encoding==="base64"?Uint8Array.from(atob(String(f.content??"")),c=>c.charCodeAt(0)):enc.encode(String(f.content??""));entries.push({path:f.path,bytes:bytes.byteLength,sha256:await deploySha256Bytes(bytes)})}const canonical=entries.map(e=>`${e.path}\t${e.bytes}\t${e.sha256}`).join("\n");return {entries,package_sha256:await deploySha256Bytes(enc.encode(canonical)),total_bytes:entries.reduce((n,e)=>n+e.bytes,0)}}
 function deployPackageClear(){deployPackageCandidate=null;const f=$("deployPackageFile");if(f)f.value="";if($("deployPackageName"))$("deployPackageName").textContent="-";if($("deployPackageFiles"))$("deployPackageFiles").textContent="-";if($("deployPackageSha"))$("deployPackageSha").textContent="대기";if($("deployPackageBase"))$("deployPackageBase").textContent="-";if($("deployPackageResult")){ $("deployPackageResult").className="deploy-result";$("deployPackageResult").textContent="패키지를 선택하면 HANI OS가 내용·허용 경로·Package SHA·기준 main을 먼저 확인합니다."}deployCenterRender()}
-async function deployCenterReadPackage(file){const out=$("deployPackageResult");deployPackageCandidate=null;if(!file){deployPackageClear();return}try{haniWorkShow({agent:"hani",title:"AI Release Package를 확인하고 있어요.",step:"HANI · PACKAGE INTAKE",message:"파일 구성과 Package SHA를 로컬에서 먼저 확인합니다."});if(out){out.className="deploy-result";out.textContent="릴리스 패키지 구조와 SHA를 확인하고 있습니다…"}const raw=await file.text(),pkg=JSON.parse(raw);if(pkg?.format!==DEPLOY_PACKAGE_FORMAT&&pkg?.format!=="HANI_ONE_PASS_RELEASE_V2")throw new Error(`지원하지 않는 패키지 형식입니다. (${pkg?.format||"format 없음"})`);const files=Array.isArray(pkg.files)?pkg.files.map(f=>({path:deployNormalizeReleasePath(f?.path),content:String(f?.content??""),encoding:f?.encoding==="base64"?"base64":"utf8"})):[];if(!files.length)throw new Error("패키지 파일이 비어 있습니다.");if(files.length>82)throw new Error("패키지 파일 수가 허용 범위를 초과합니다.");const paths=files.map(f=>f.path),invalid=paths.filter(p=>!deployPackagePathAllowed(p)),dups=paths.filter((p,i)=>paths.indexOf(p)!==i);if(invalid.length)throw new Error(`허용되지 않은 release 경로: ${invalid.join(", ")}`);if(dups.length)throw new Error(`중복 release 경로: ${[...new Set(dups)].join(", ")}`);if(files.some(f=>f.encoding==="base64"&&!/^assets\/[A-Za-z0-9._/-]+\.(?:png|webp|svg|jpg|jpeg|gif|ico)$/i.test(f.path)))throw new Error("base64는 이미지 자산만 허용됩니다.");if(!paths.includes("index.html"))throw new Error("패키지에 index.html이 없습니다.");const invariantSource=files.filter(f=>/\.(?:html|js)$/i.test(f.path)).map(f=>f.content).join("\n");if(!invariantSource.includes(DEPLOY_REQUIRED_STORAGE_KEY)||!invariantSource.includes(DEPLOY_REQUIRED_INTERNAL_VERSION))throw new Error("HANI OS 핵심 데이터 불변조건을 패키지 HTML/JS 전체에서 확인하지 못했습니다.");const hash=await deployPackageHash(files),expected=String(pkg.package_sha256||"").toLowerCase();if(hash.total_bytes>14000000)throw new Error("패키지 총 크기가 허용 범위를 초과합니다.");if(expected&&hash.package_sha256!==expected)throw new Error(`Package SHA 불일치 · expected ${expected.slice(0,12)}… / local ${hash.package_sha256.slice(0,12)}…`);deployPackageCandidate={format:DEPLOY_PACKAGE_FORMAT,label:String(pkg.label||"").slice(0,60),release_notes:String(pkg.release_notes||"").slice(0,1800),base_main_sha:String(pkg.base_main_sha||pkg.expected_main_sha||"").trim(),package_sha256:hash.package_sha256,files,total_bytes:hash.total_bytes,file_name:file.name,candidate_sha:String(pkg.candidate_sha||""),gate_contract_version:String(pkg.gate_contract_version||""),gate_contract_sha256:String(pkg.gate_contract_sha256||"")};if($("deployPackageName"))$("deployPackageName").textContent=deployPackageCandidate.label||file.name;if($("deployPackageFiles"))$("deployPackageFiles").textContent=`${files.length}개 · ${deployFmtBytes(hash.total_bytes)}`;if($("deployPackageSha"))$("deployPackageSha").textContent=`PASS · ${hash.package_sha256.slice(0,10)}`;if($("deployPackageBase"))$("deployPackageBase").textContent=deployPackageCandidate.base_main_sha?deployShortSha(deployPackageCandidate.base_main_sha):"현재 main 사용";if(out){out.className="deploy-result ok";out.innerHTML=`<strong>PACKAGE LOCAL PASS</strong> · ${esc(deployPackageCandidate.label||file.name)}<br>${files.length} files · ${esc(deployFmtBytes(hash.total_bytes))} · SHA ${esc(hash.package_sha256.slice(0,16))}…`}haniWorkFinish(true,"릴리스 패키지 확인 완료! 💜")}catch(e){deployPackageCandidate=null;if(out){out.className="deploy-result bad";out.textContent=e.message||String(e)}if($("deployPackageSha"))$("deployPackageSha").textContent="FAIL";haniWorkFinish(false,"패키지를 멈추고 확인할게요.")}finally{haniWorkHide(700);deployCenterRender()}}
+async function deployCenterReadPackage(file){const out=$("deployPackageResult");deployPackageCandidate=null;if(!file){deployPackageClear();return}try{haniWorkShow({agent:"hani",title:"AI Release Package를 확인하고 있어요.",step:"HANI · PACKAGE INTAKE",message:"파일 구성과 Package SHA를 로컬에서 먼저 확인합니다."});if(out){out.className="deploy-result";out.textContent="릴리스 패키지 구조와 SHA를 확인하고 있습니다…"}const raw=await file.text(),pkg=JSON.parse(raw);if(pkg?.format!==DEPLOY_PACKAGE_FORMAT&&pkg?.format!=="HANI_ONE_PASS_RELEASE_V2")throw new Error(`지원하지 않는 패키지 형식입니다. (${pkg?.format||"format 없음"})`);const files=Array.isArray(pkg.files)?pkg.files.map(f=>({path:deployNormalizeReleasePath(f?.path),content:String(f?.content??""),encoding:f?.encoding==="base64"?"base64":"utf8"})):[];if(!files.length)throw new Error("패키지 파일이 비어 있습니다.");if(files.length>86)throw new Error("패키지 파일 수가 허용 범위를 초과합니다.");const paths=files.map(f=>f.path),invalid=paths.filter(p=>!deployPackagePathAllowed(p)),dups=paths.filter((p,i)=>paths.indexOf(p)!==i);if(invalid.length)throw new Error(`허용되지 않은 release 경로: ${invalid.join(", ")}`);if(dups.length)throw new Error(`중복 release 경로: ${[...new Set(dups)].join(", ")}`);if(files.some(f=>f.encoding==="base64"&&!/^assets\/[A-Za-z0-9._/-]+\.(?:png|webp|svg|jpg|jpeg|gif|ico)$/i.test(f.path)))throw new Error("base64는 이미지 자산만 허용됩니다.");if(!paths.includes("index.html"))throw new Error("패키지에 index.html이 없습니다.");const invariantSource=files.filter(f=>/\.(?:html|js)$/i.test(f.path)).map(f=>f.content).join("\n");if(!invariantSource.includes(DEPLOY_REQUIRED_STORAGE_KEY)||!invariantSource.includes(DEPLOY_REQUIRED_INTERNAL_VERSION))throw new Error("HANI OS 핵심 데이터 불변조건을 패키지 HTML/JS 전체에서 확인하지 못했습니다.");const hash=await deployPackageHash(files),expected=String(pkg.package_sha256||"").toLowerCase();if(hash.total_bytes>14100000)throw new Error("패키지 총 크기가 허용 범위를 초과합니다.");if(expected&&hash.package_sha256!==expected)throw new Error(`Package SHA 불일치 · expected ${expected.slice(0,12)}… / local ${hash.package_sha256.slice(0,12)}…`);deployPackageCandidate={format:DEPLOY_PACKAGE_FORMAT,label:String(pkg.label||"").slice(0,60),release_notes:String(pkg.release_notes||"").slice(0,1800),base_main_sha:String(pkg.base_main_sha||pkg.expected_main_sha||"").trim(),package_sha256:hash.package_sha256,files,total_bytes:hash.total_bytes,file_name:file.name,candidate_sha:String(pkg.candidate_sha||""),gate_contract_version:String(pkg.gate_contract_version||""),gate_contract_sha256:String(pkg.gate_contract_sha256||"")};if($("deployPackageName"))$("deployPackageName").textContent=deployPackageCandidate.label||file.name;if($("deployPackageFiles"))$("deployPackageFiles").textContent=`${files.length}개 · ${deployFmtBytes(hash.total_bytes)}`;if($("deployPackageSha"))$("deployPackageSha").textContent=`PASS · ${hash.package_sha256.slice(0,10)}`;if($("deployPackageBase"))$("deployPackageBase").textContent=deployPackageCandidate.base_main_sha?deployShortSha(deployPackageCandidate.base_main_sha):"현재 main 사용";if(out){out.className="deploy-result ok";out.innerHTML=`<strong>PACKAGE LOCAL PASS</strong> · ${esc(deployPackageCandidate.label||file.name)}<br>${files.length} files · ${esc(deployFmtBytes(hash.total_bytes))} · SHA ${esc(hash.package_sha256.slice(0,16))}…`}haniWorkFinish(true,"릴리스 패키지 확인 완료! 💜")}catch(e){deployPackageCandidate=null;if(out){out.className="deploy-result bad";out.textContent=e.message||String(e)}if($("deployPackageSha"))$("deployPackageSha").textContent="FAIL";haniWorkFinish(false,"패키지를 멈추고 확인할게요.")}finally{haniWorkHide(700);deployCenterRender()}}
 async function deployCenterStagePackage(){const pkg=deployPackageCandidate,out=$("deployPackageResult");if(!pkg)return;deployRuntime.qa=null;deployRenderQaReport(null);try{deploySetBusy(true);haniWorkShow({agent:"hani",title:"Preview 릴리스를 준비하고 있어요.",step:"HANI · RELEASE PRODUCER",message:"현재 main 기준선 확인 후 HINA Gate로 전달합니다."});if(out){out.className="deploy-result";out.textContent="운영 main 기준선을 확인하고 있습니다…"}const h=await deployBridgeApi("health");deployRuntime.health=h;if(!h.github_reachable||!h.main_sha)throw new Error(h.github_error||"GitHub 기준선을 확인하지 못했습니다.");if(pkg.base_main_sha&&pkg.base_main_sha!==h.main_sha)throw new Error(`이 패키지는 이전 main 기준으로 준비되었습니다. package ${deployShortSha(pkg.base_main_sha)} / current ${deployShortSha(h.main_sha)}`);haniWorkShow({agent:"hina",title:"히나가 모듈 패키지를 독립 검증 중입니다.",step:"HINA · MODULAR GATE",message:"데이터 불변조건·Secret·운영 main 차이를 다시 확인합니다."});if(out)out.textContent="HINA Modular Gate 검증 후 Preview 브랜치와 PR을 생성합니다…";const r=await deployBridgeApi("stage_modular_release",{label:pkg.label||`v${HANI_DISPLAY_VERSION}-release`,release_notes:pkg.release_notes||"HANI OS internal Release Package",expected_main_sha:h.main_sha,package_sha256:pkg.package_sha256,gate_contract_version:h.gate_contract_version,gate_contract_sha256:h.gate_contract_sha256,preflight_state:"PASS",files:pkg.files});if(r.package_sha256!==pkg.package_sha256)throw new Error("Bridge read-back Package SHA가 로컬 검증값과 다릅니다.");deployRuntime.stage={pr_number:r.pr_number,pr_url:r.pr_url,branch:r.branch,release_commit_sha:"",html_sha256:r.index_sha256||"",candidate_version:r.qa?.candidate_version||String(pkg.label||"").match(/v?(\d+\.\d+\.\d+)/)?.[1]||"",release_notes:pkg.release_notes||"",source:"OS_PACKAGE",ready_for_approval:false};deployRuntime.qa=r.qa||null;deployRuntime.pending=null;deployRuntime.merged=null;deploySaveSession();deployRenderQaReport(r.qa||null);if(out){out.className="deploy-result ok";out.innerHTML=`<strong>PREVIEW PR READY</strong> · HINA Gate PASS · PR #${esc(r.pr_number)}<br>Package SHA ${esc(String(r.package_sha256||"").slice(0,16))}… · Inbox 최종 재검증 중${r.pr_url?`<br><a href="${esc(r.pr_url)}" target="_blank" rel="noopener">GitHub Preview PR 열기 ↗</a>`:""}`}deployPackageClear();await deployCenterDiscover(true);haniWorkFinish(true,"Preview 준비 완료! 대표 승인만 남았어요. 💜")}catch(e){deployRuntime.qa=e.payload?.qa||null;deployRenderQaReport(deployRuntime.qa);if(out){out.className="deploy-result bad";out.textContent=e.message||String(e)}haniWorkFinish(false,"Preview 생성을 멈추고 확인할게요.")}finally{deploySetBusy(false)}}
 async function deployCenterQaExistingPr(){
   const pkg=deployPackageCandidate,out=$("deployPackageResult"),prNumber=Number($("deployExistingPrNumber")?.value||0);
@@ -4029,7 +4052,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.159";
+const HANI_DISPLAY_VERSION="2.9.160";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
