@@ -3,6 +3,10 @@
   'use strict';
   if (window.HANI_UI_V02992) return;
   window.HANI_UI_V02992 = true;
+  let selectCharacterQuote=null;
+  import('./hani-tab-character-lines.mjs?v=2.9.163').then(({createTabQuoteSelector})=>{
+    selectCharacterQuote=createTabQuoteSelector();refresh();
+  }).catch(()=>console.warn('[HANI OS] Character quotes unavailable; existing banner copy retained.'));
   const q=(s,r=document)=>r?.querySelector?.(s)||null, qa=(s,r=document)=>r?.querySelectorAll?Array.from(r.querySelectorAll(s)):[];
   const safe=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   const number=v=>Number(v)||0, currentMonth=()=>new Date().toLocaleDateString('en-CA').slice(0,7);
@@ -722,6 +726,8 @@
   function syncMainCharacterBannerAgent(id,config){
     const root=q(`#${id}`),el=q(':scope > .ds-main-character-banner',root),banner=q('#aiBanner');
     if(!root?.classList.contains('active')||!el||!banner||!el.contains(banner)||!config)return;
+    const voice=selectCharacterQuote?.(id,config.internalView||'home');
+    if(voice){config={...config,owner:voice.agent,profile:voice.agent,speaker:voice.speaker,role:voice.role,quote:voice.quote};el.dataset.owner=voice.agent;}
     const agent=config.profile||config.owner||'hani',avatar=q('#aiAvatar',banner),quote=q('#aiQuote',banner),image=profile(agent);
     if(avatar){avatar.className=`ai-avatar has-photo agent-${agent}`;avatar.style.backgroundImage=`url(${image})`;avatar.textContent=''}
     if(quote){let label=q(':scope > span',quote),body=q(':scope > b',quote);if(!label||!body){quote.replaceChildren();label=document.createElement('span');body=document.createElement('b');quote.append(label,body)}label.textContent=`${config.speaker||'하니'} 한마디`;body.textContent=`“${config.quote||''}”`}
@@ -736,7 +742,7 @@
     const active=q('.view.active'),banner=q('#aiBanner'),target=q(':scope > :is(.hani-master-hero,.ds-main-character-banner)',active),agentSlot=target?(q('[data-main-character-banner-agent-slot]',target)||target):null;
     if(banner){banner.classList.toggle('ds-integrated-agent',!!target);if(agentSlot&&banner.parentElement!==agentSlot)agentSlot.append(banner);else if(!target&&banner.parentElement!==q('main.main'))q('main.main > header').after(banner)}
     if(active?.id==='game')renderSportsBanner();else if(active?.id&&mainCharacterSidebarMenuConfig[active.id])syncMainCharacterBannerAgent(active.id,mainCharacterBannerConfig(active.id,'home'));
-    if(active?.id==='intake'){q('#aiAvatar').style.backgroundImage='url('+profile('yuna')+')';q('#aiQuote span').textContent='유나 한마디';q('#aiQuote b').textContent='말씀해 주세요. 저장 전 꼭 보여드릴게요.';const h=q('.hani-master-title',target);if(h)h.textContent='인포데스크'}
+    if(active?.id==='intake'){const h=q('.hani-master-title',target);if(h)h.textContent='인포데스크'}
     const home=q('#home');
     q(':scope > .ds-team-hero',home)?.remove();
     const actions=q('.home-welcome-actions'),yuna=q('#homeYunaQuick');if(actions&&yuna&&!actions.contains(yuna))actions.append(yuna);
