@@ -597,20 +597,80 @@ html body{background-image:radial-gradient(circle at 86% 3%,color-mix(in srgb,va
 #app #settings .seasonal-collection{background:radial-gradient(ellipse at 0 0,color-mix(in srgb,var(--collection-light) 18%,transparent),transparent 65%),var(--surface-panel)!important}
 .seasonal-collection fieldset{padding:0;margin:24px 0 18px;border:0;min-width:0}
 .seasonal-collection legend{margin-bottom:14px;font-size:13px;color:var(--text-secondary)}
-.season-choices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.season-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .season-choice{position:relative;min-width:0;cursor:pointer;border:1px solid var(--border-subtle);border-radius:18px;background:var(--surface-raised);color:var(--text-primary)}
 .season-choice>input{position:absolute;top:12px;left:12px;width:20px;height:20px;accent-color:var(--control-accent);z-index:1}
-.season-choice>img{display:block;width:100%;height:300px;object-fit:contain;background:var(--surface-raised);border-radius:18px 18px 0 0}
+.season-choice>img{display:block;width:100%;height:auto;aspect-ratio:3/1;object-fit:contain;background:var(--surface-raised);border-radius:18px 18px 0 0}
+.seasonal-life-banner{margin:18px 0 24px;border:1px solid var(--border-subtle);border-radius:18px;background:var(--surface-panel);color:var(--text-primary);min-width:0}
+.seasonal-life-banner>img{display:block;width:100%;height:auto;aspect-ratio:3/1;object-fit:contain;border-radius:17px 17px 0 0}
+.seasonal-life-banner>figcaption{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;padding:14px 18px;font-size:14px;line-height:1.6}
+.seasonal-life-banner>figcaption span{font-size:13px;color:var(--text-secondary)}
 .season-choice>span{display:grid;gap:9px;padding:18px}
 .season-choice b{font-size:13px;letter-spacing:.08em}.season-choice strong{font-size:18px;line-height:1.45}.season-choice small{font-size:13px;color:var(--text-secondary);line-height:1.6}
 .season-choice em{font-size:12px;color:var(--control-accent);font-style:normal;font-weight:800;visibility:hidden}
 .season-choice:has(input:checked){outline:2px solid var(--control-accent);outline-offset:3px}.season-choice:has(input:checked) em{visibility:visible}
 .season-choice:has(input:focus-visible){outline:3px solid var(--border-strong);outline-offset:5px}
 #seasonCollectionStatus{font-size:14px;line-height:1.7;color:var(--text-secondary)}
+/* HANI AURA: one compact showroom; existing Finish/Season controls remain owners. */
+:root[data-finish="porcelain-cream"]{--surface-canvas:#eee5d5;--surface-page:#f6efdf;--surface-panel:#fffaf0;--surface-raised:#fffdf8;--surface-glow:#d8c4a1;--border-subtle:#d6c8ae;--border-strong:#8b7856;--control-accent:#806337;--control-accent-secondary:#a38554;--control-soft:#eee3cd}
+:root[data-finish="sakura-pink"]{--surface-canvas:#eed7e0;--surface-page:#f5e5eb;--surface-panel:#fff5f8;--surface-raised:#fffafd;--surface-glow:#dca4bb;--border-subtle:#d9b6c6;--border-strong:#986077;--control-accent:#a84d75;--control-accent-secondary:#bb7090;--control-soft:#f3dbe6}
+:root[data-finish="alpine-blue"]{--surface-canvas:#d6e6f3;--surface-page:#e6f0f8;--surface-panel:#f5faff;--surface-raised:#fbfdff;--surface-glow:#9fc4df;--border-subtle:#aac7dd;--border-strong:#567e9d;--control-accent:#356e98;--control-accent-secondary:#598baa;--control-soft:#dcecf7}
+.nav-aura{margin:8px 0 16px;border:1px solid var(--border-subtle);border-radius:14px;background:linear-gradient(110deg,color-mix(in srgb,var(--collection-light) 28%,transparent),transparent),var(--surface-raised)}
+.nav-aura .nav-btn{width:100%;min-width:0}.nav-aura .dashboard-nav-copy{display:grid;gap:3px}.nav-aura small{font-size:10px;color:var(--text-secondary)}.nav-aura .dashboard-arrow{margin-left:auto}
+#app .side{box-shadow:inset 0 3px 0 var(--collection-light)}
+:root[data-season="spring"]{--season-frame-art:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2080%2024%22%20fill%3D%22none%22%20stroke%3D%22%23b8678c%22%20stroke-width%3D%221.3%22%3E%3Cpath%20d%3D%22M18%2012c-9-9-9%204%200%200%209-9-4-9%200%200%209%209%209-4%200%200-9%209%204%209%200%200Z%22%2F%3E%3Ccircle%20cx%3D%2218%22%20cy%3D%2212%22%20r%3D%221.7%22%20fill%3D%22%23b8678c%22%2F%3E%3Cpath%20d%3D%22M52%209c7-6%2012%202%203%206-4-1-5-3-3-6Z%22%2F%3E%3Ccircle%20cx%3D%2270%22%20cy%3D%226%22%20r%3D%221%22%20fill%3D%22%23b8678c%22%2F%3E%3C%2Fsvg%3E')}
+:root[data-season="summer"]{--season-frame-art:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2080%2024%22%20fill%3D%22none%22%20stroke%3D%22%23278c9d%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M3%2010c6-7%2012%207%2018%200s12%207%2018%200%2012%207%2018%200%2012%207%2018%200M3%2017c6-7%2012%207%2018%200s12%207%2018%200%2012%207%2018%200%2012%207%2018%200%22%2F%3E%3C%2Fsvg%3E')}
+:root[data-season="autumn"]{--season-frame-art:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2080%2024%22%20fill%3D%22none%22%20stroke%3D%22%23a76b35%22%20stroke-width%3D%221.4%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%2019%2026%205C12%203%205%2012%2012%2019c8%206%2017-3%2014-14M11%2020l-3%202M15%2012l1%205M21%208l1%205M52%2017%2065%205c-13-1-19%207-13%2012%208%205%2016-3%2013-12M51%2018l-3%203%22%2F%3E%3C%2Fsvg%3E')}
+:root[data-season="winter"]{--season-frame-art:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2080%2024%22%20fill%3D%22none%22%20stroke%3D%22%23668fba%22%20stroke-width%3D%221.3%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M19%203v18M11%207l16%2010M11%2017%2027%207M16%205l3%203%203-3M16%2019l3-3%203%203M11%2010l4-1-1-4M24%2019l-1-4%204-1M11%2014l4%201-1%204M24%205l-1%204%204%201M56%206v12M51%209l10%206M51%2015l10-6%22%2F%3E%3Ccircle%20cx%3D%2273%22%20cy%3D%226%22%20r%3D%221%22%20fill%3D%22%23668fba%22%2F%3E%3C%2Fsvg%3E')}
+.season-frame-band{height:18px;margin:4px 0 10px;background-image:var(--season-frame-art);background-size:80px 24px;background-position:right center;background-repeat:repeat-x;opacity:.48;pointer-events:none;user-select:none}
+/* Readability: pale domain artwork keeps its own local ink in every Finish. */
+body[data-finish-active] #app :is(.company-followup-preview,.hani-weekly-archive-nav-v02970){--text-primary:#283044;--text-secondary:#526176;--text-muted:#526176;--surface-raised:#fff;--border-strong:#8290a4;background-color:#fff!important}
+body[data-finish-active] #app :is(#reading,#movie) .phase1-collapsible-form>summary{--text-primary:#283044;--text-secondary:#526176;--ds-muted:#526176;color:#283044}
+body[data-finish-active] #app #homeDialogueText{color:#283044}
+body[data-finish-active] #app :is(.nav-home,.nav-aura) .nav-btn{color:var(--text-primary)!important}
+body[data-finish-active] #app #sidebar :is(.nav-home,.nav-aura) .nav-btn .txt{color:var(--text-primary)!important}
+body[data-finish-active] #app #sidebar .nav-home .nav-btn{background:var(--surface-raised)!important;color:var(--text-primary)!important}
+body[data-finish-active] #app #newsroom .investment-news-board-shell>.sh .sub{color:#526176!important}
+body[data-finish-active] #app .view .btn.finance{background:#245eb5!important;color:#fff!important;border-color:#245eb5!important}
+body[data-finish-active] #app .view .btn.health{background:#197255!important;color:#fff!important;border-color:#197255!important}
+body[data-finish-active] #app .view .btn.primary{background:var(--control-accent)!important;color:#fff!important;border-color:var(--control-accent)!important}
+.nav-aura{position:relative;isolation:isolate}
+.nav-aura:before{content:"";position:absolute;inset:0 16px 0 auto;width:64px;background-image:var(--season-frame-art);background-position:center;background-size:80px 24px;background-repeat:no-repeat;opacity:.42;pointer-events:none;z-index:-1}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) .season-frame-band{opacity:.75}
+.aura-heading{display:flex;align-items:center;justify-content:space-between;gap:24px;margin:4px 0 20px;color:var(--text-primary)}
+.aura-wordmark{display:flex;align-items:baseline;gap:10px;white-space:nowrap}.aura-wordmark>span{font-size:15px;font-weight:800;letter-spacing:.18em}.aura-wordmark>strong{font-size:42px;font-weight:750;letter-spacing:-.06em;line-height:1.1}
+.aura-heading h2{font-size:20px;margin:0 0 5px}.aura-heading p{font-size:10px;letter-spacing:.16em;margin:0;color:var(--text-secondary)}
+.aura-showroom{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:20px;align-items:start}
+.aura-preview{min-width:0;margin:0;border:1px solid var(--border-subtle);border-radius:20px;background:linear-gradient(140deg,color-mix(in srgb,var(--collection-light) 22%,transparent),transparent),var(--surface-panel);color:var(--text-primary)}
+.aura-preview>img{display:block;width:100%;height:auto;aspect-ratio:3/1;object-fit:contain;border-radius:19px 19px 0 0}
+.aura-preview figcaption{padding:24px}.aura-preview-kicker{font-size:10px;letter-spacing:.14em;color:var(--text-secondary)}
+.aura-preview h3{font-size:clamp(24px,2.5vw,38px);line-height:1.25;margin:16px 0}
+#auraCurrentCombination{font-size:14px;font-weight:750;line-height:1.7}#auraPreviewCast{font-size:12px;color:var(--text-secondary)}
+.aura-product-sample{display:flex;gap:12px;border:1px solid var(--border-subtle);border-radius:14px;background:var(--surface-canvas);padding:14px;margin-top:20px;min-width:0}
+.aura-sample-sidebar{width:24px;flex-shrink:0;border-radius:6px;background:var(--control-accent)}
+.aura-product-sample>div{display:grid;gap:10px;min-width:0}.aura-product-sample b{font-size:15px}.aura-product-sample div>span{font-size:12px;line-height:1.6;color:var(--text-secondary)}.aura-product-sample i{display:block;width:72px;height:8px;border-radius:5px;background:var(--control-accent)}
+.aura-controls{min-width:0}.aura-tabs{margin:0 0 14px}.aura-tabs .tab{flex:1}
+/* AURA has its own product masthead, not the generic character Hero. */
+body[data-view="aura"] #aiBanner{display:none!important}
+#aura .galaxy-finishes,#aura .seasonal-collection{padding:20px;margin:0;min-width:0;color:var(--text-primary);background:var(--surface-panel)!important;border-color:var(--border-subtle)!important}
+#aura .galaxy-heading{margin-bottom:10px}#aura .galaxy-heading h3{font-size:12px;color:var(--text-secondary)}
+#aura .galaxy-finishes fieldset{margin:16px 0}#aura .galaxy-finishes legend{color:var(--text-secondary)}
+#aura .galaxy-choices{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+#aura .galaxy-signature-choices{grid-template-columns:repeat(2,minmax(0,1fr))}
+#aura .galaxy-choice{min-height:130px;padding:14px 12px;gap:12px;border-radius:14px;box-shadow:none}
+#aura .galaxy-swatch{width:30px;height:40px;flex-basis:40px;align-self:flex-start;margin:0;border-radius:8px;transform:none;box-shadow:inset 0 1px 2px #fff8,2px 3px 6px #0002}
+#aura .galaxy-choice input{top:12px;right:12px;width:16px;height:16px}
+#aura .galaxy-choice-copy b{font-size:12px}#aura .galaxy-choice-copy small{font-size:11px}
+#aura .seasonal-collection fieldset{margin:14px 0}#aura .season-choices{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#aura .season-choice>span{gap:5px;padding:12px}#aura .season-choice strong{font-size:14px}#aura .season-choice small{font-size:11px}
+#aura .season-choice>input{width:16px;height:16px;top:8px;left:8px}
+#aura .galaxy-scope-note,#aura #seasonCollectionStatus{font-size:12px}
+@media(max-width:1000px){.aura-showroom{grid-template-columns:minmax(0,1fr)}.aura-preview{display:grid;grid-template-columns:1fr 1fr}.aura-preview>img{align-self:center;border-radius:18px}.aura-preview figcaption{padding:18px}.aura-preview h3{font-size:24px}.aura-product-sample{display:none}}
+@media(max-width:500px){.aura-heading{display:block}.aura-heading>div+div{margin-top:10px}.aura-wordmark>strong{font-size:36px}.aura-heading h2{font-size:17px}.aura-preview{display:block}.aura-preview figcaption{padding:16px}.aura-preview h3{font-size:22px;margin:10px 0}.aura-controls .card{padding:14px!important}#aura .galaxy-choice{min-height:125px;padding:12px 8px}#aura .galaxy-choice-copy b{font-size:10px}#aura .galaxy-choices{gap:7px}}
 #app .hani-remote-season-greeting{margin:0;padding:13px;border:1px solid var(--border-subtle);border-radius:13px;background:linear-gradient(130deg,color-mix(in srgb,var(--collection-light) 15%,transparent),transparent),var(--surface-panel);color:var(--text-primary);font-size:13px;line-height:1.65}
 #app .hani-remote-season-greeting b{display:block;margin-bottom:5px;font-size:12px}#app .hani-remote-season-greeting span{display:block}
 @media(max-width:1200px){.season-choices{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:500px){.season-choices{grid-template-columns:minmax(0,1fr)}.season-choice>img{height:320px}.season-transition{top:72px;font-size:13px;padding:12px 16px}}
+@media(max-width:500px){.season-choices{grid-template-columns:minmax(0,1fr)}.season-transition{top:72px;font-size:13px;padding:12px 16px}.seasonal-life-banner>figcaption{padding:12px}}
 @media(prefers-reduced-motion:reduce){.season-transition,#app:has(#seasonTransition:not([hidden])) .hani-remote-scene{animation:none}}
 @media(prefers-reduced-motion:reduce){#app .ds-main-character-banner__seasonal-fx:before{animation:none!important}}
 

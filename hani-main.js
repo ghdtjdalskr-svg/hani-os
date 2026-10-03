@@ -357,6 +357,7 @@ const pageMeta={
  monthlyReport:["라이프 리포트","한 달의 흐름을 돌아보고, 분기·연간 발표로 이어갈 보고 공간입니다.","team"],
  policy:["사내 규칙","AI TEAM이 공통으로 참고하는 운영 원칙과 학습 규정을 관리합니다.","team"],
  aiTeam:["AI 팀","역할별 담당 AI와 서비스 바로가기를 확인합니다.","team"],
+ aura:["HANI AURA","나의 색과 계절로 일상의 화면을 꾸밉니다.","team"],
  settings:["설정 / 데이터","캘린더, 백업, 복원과 초기화를 관리합니다.","work"],
  shopping:["쇼핑","v2.2 호환 페이지입니다.","life"]
 };
@@ -620,6 +621,7 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
 }
 
 const QUICK_JUMP_ITEMS=[
+  ["aura","HANI AURA","화면 꾸미기 색상 계절 테마 appearance finish season"],
   ["home","대시보드","홈 오늘 요약"],["investment","홍 스트리트","투자 주식 ETF 월간 기록"],["newsroom","뉴스룸","주식 투자 뉴스 관심종목 3시간 흐름"],["asset","자산","통합 자산 계좌"],["ledger","가계부","소비 결산 리뷰"],
   ["diet","계체량 측정","다이어트 체중 건강"],["exercise","헬스클럽","운동 걸음 근력"],["reading","성민의 서재","독서 서재 책 완독"],["study","공부","일본어 AI 학습"],
   ["university","낭만 캠퍼스 라이프","대학교 대학 캠퍼스 과목 학사일정"],["certificate","자격증","시험 일정"],["wishlist","Wish-list","위시 희망 구매 경험"],["travel","여행","여행 기록 장소 숙소"],["movie","시청 아카이브","관람 감상 아카이브"],
@@ -704,9 +706,23 @@ const SEASON_THEMES={
   winter:{label:"겨울",icon:"❄️",themeColor:"#f3f7fc",collection:"WINTER",mood:"은은한 푸른빛 · 포근한 휴식"}
 };
 let seasonTransitionTimer;
+const SEASON_COLLECTION_ARTWORK={
+  spring:{src:"./assets/seasonal-collection/spring-v2.webp",title:"벚꽃 사진 산책",cast:"하니 · 히나 · 나은 · 유나",alt:"하니·히나·나은·유나의 벚꽃 사진 산책"},
+  summer:{src:"./assets/seasonal-collection/summer-v2.webp",title:"선글라스 쓰고, 바다로",cast:"하니 · 히나 · 나은 · 유나",alt:"네 명 모두 선글라스를 쓴 하니·히나·나은·유나의 해안 드라이브"},
+  autumn:{src:"./assets/seasonal-collection/autumn-v2.webp",title:"함께 만드는 가을 저녁",cast:"나은 · 하니 · 히나 · 유나",alt:"비 오는 가을날 함께 요리하는 나은·하니·히나·유나"},
+  winter:{src:"./assets/seasonal-collection/winter-v2.webp",title:"후드 뒤집어쓰고, 눈싸움!",cast:"하루 · 민지 · 지은 · 수아",alt:"패딩 후드를 쓰고 눈싸움하는 하루·민지·지은·수아"}
+};
 function syncSeasonCollection(){
   const season=document.documentElement.dataset.season,meta=SEASON_THEMES[season];
   if(!meta)return;
+  const artwork=SEASON_COLLECTION_ARTWORK[season],image=$("seasonalLifeArtwork");
+  if(image&&artwork){if(image.getAttribute("src")!==artwork.src)image.setAttribute("src",artwork.src);image.alt=artwork.alt;}
+  if($("seasonalLifeLabel")&&artwork)$("seasonalLifeLabel").textContent=`${meta.collection} · ${artwork.title}`;
+  if($("seasonalLifeCast")&&artwork)$("seasonalLifeCast").textContent=artwork.cast;
+  const preview=$("auraPreviewArtwork");
+  if(preview&&artwork){if(preview.getAttribute("src")!==artwork.src)preview.src=artwork.src;preview.alt=artwork.alt;}
+  if($("auraCurrentCombination"))$("auraCurrentCombination").textContent=`${(document.documentElement.dataset.finish||"porcelain-cream").replaceAll("-"," ").toUpperCase()} × ${meta.collection}`;
+  if($("auraPreviewCast")&&artwork)$("auraPreviewCast").textContent=artwork.cast;
   document.querySelectorAll('input[name="seasonCollection"]').forEach(input=>{input.checked=input.value===season});
   const status=$("seasonCollectionStatus");
   if(status)status.textContent=`${(document.documentElement.dataset.finish||"porcelain-cream").replaceAll("-"," ").toUpperCase()} × ${meta.collection} COLLECTION · ${meta.mood}`;
@@ -741,7 +757,7 @@ function updateFinishScope(){
   document.body.setAttribute("data-finish-active","");
   const finish=document.documentElement.dataset.finish;
   const meta=document.querySelector('meta[name="theme-color"]');
-  if(meta)meta.setAttribute("content",{"midnight-black":"#0e0f12","titanium-graphite":"#242528","sakura-pink":"#faf6f7","alpine-blue":"#f3f7fa"}[finish]||"#f8f7f4");
+  if(meta)meta.setAttribute("content",{"midnight-black":"#0e0f12","titanium-graphite":"#242528","sakura-pink":"#eed7e0","alpine-blue":"#d6e6f3"}[finish]||"#eee5d5");
 }
 function applySignatureFinish(value,saveChoice=false){
   const names={"porcelain-cream":"Porcelain Cream","titanium-graphite":"Titanium Graphite","midnight-black":"Midnight Black","sakura-pink":"Sakura Pink","alpine-blue":"Alpine Blue"};
@@ -4052,7 +4068,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.160";
+const HANI_DISPLAY_VERSION="2.9.161";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
