@@ -9,7 +9,9 @@ import { tmpdir } from 'node:os';
 const require=createRequire(import.meta.url);
 const { chromium }=require('playwright');
 const root=resolve(fileURLToPath(new URL('..',import.meta.url)));
-const output=resolve(process.env.HANI_PHASE1_QA_OUTPUT||join(tmpdir(),'hani-design-system-phase1-v29135'));
+const runtimeSource=readFileSync(join(root,'hani-main.js'),'utf8');
+const candidateVersion=(runtimeSource.match(/const HANI_DISPLAY_VERSION="([^"]+)"/)||[])[1]||'unknown';
+const output=resolve(process.env.HANI_PHASE1_QA_OUTPUT||join(tmpdir(),`hani-design-system-phase1-v${candidateVersion.replaceAll('.','')}`));
 mkdirSync(output,{recursive:true});
 
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.svg':'image/svg+xml','.json':'application/json; charset=utf-8'};
@@ -24,13 +26,13 @@ const server=createServer((request,response)=>{
 await new Promise(resolveReady=>server.listen(0,'127.0.0.1',resolveReady));
 const port=server.address().port;
 
-const viewIds=['home','agentReview','monthlyReport','intake','investmentIntake','investment','newsroom','reading','study','movie','game','settings'];
+const viewIds=['home','agentReview','monthlyReport','intake','investmentIntake','investment','newsroom','reading','study','movie','game','dev','settings'];
 const viewports=[
   {name:'desktop-1280',width:1280,height:900},
   {name:'desktop-1440',width:1440,height:1000},
   {name:'mobile-390',width:390,height:844},
 ];
-const report={version:'2.9.141',base:'origin/main@dbe4ba7be472dc409cca59276a87f7e86b790025',generatedAt:new Date().toISOString(),viewports:[],invariants:{}};
+const report={version:candidateVersion,base:'candidate-worktree',generatedAt:new Date().toISOString(),viewports:[],invariants:{}};
 
 const browser=await chromium.launch({headless:true,executablePath:'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'});
 try{
@@ -74,7 +76,7 @@ try{
       assert.equal(snapshot.overflow,0,`${id}: horizontal viewport overflow`);
       assert.deepEqual(snapshot.broken,[],`${id}: visible image load`);
       testedViews.push(snapshot);
-      if(['home','agentReview','monthlyReport','investment','game'].includes(id))await page.screenshot({path:join(output,`${viewport.name}-${id}.png`),fullPage:true});
+      if(['home','agentReview','monthlyReport','investment','game','dev'].includes(id))await page.screenshot({path:join(output,`${viewport.name}-${id}.png`),fullPage:true});
     }
 
     if(viewport.width>850){

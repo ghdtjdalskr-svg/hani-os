@@ -1,10 +1,10 @@
 /* Scoped visual treatment only. No source or calculation changes. */
-#portfolioLivePreview{--p-ink:#22324a;--p-muted:#697a94;--p-line:#e6eaf3;min-width:0;padding:32px;color:var(--p-ink);background:linear-gradient(135deg,#f9faff,#fff 35%,#fff 80%,#f8fbff);border:1px solid #e1e6f2;border-radius:26px;box-shadow:0 12px 40px -24px #43588140;font-family:inherit;line-height:1.5;font-variant-numeric:tabular-nums}
+#portfolioLivePreview{--p-ink:#22324a;--p-muted:#697a94;--p-line:#e6eaf3;color-scheme:light;min-width:0;padding:32px;color:var(--p-ink);background-color:#fff;background-image:linear-gradient(135deg,#f9faff,#fff 35%,#fff 80%,#f8fbff);border:1px solid #e1e6f2;border-radius:26px;box-shadow:0 12px 40px -24px #43588140;font-family:inherit;line-height:1.5;font-variant-numeric:tabular-nums}
 #portfolioLivePreview *{box-sizing:border-box}
 #portfolioLivePreview header{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
 #portfolioLivePreview header>div:first-child{position:relative;padding-left:17px}
 #portfolioLivePreview header>div:first-child::before{content:"";position:absolute;left:0;top:3px;width:4px;height:40px;border-radius:8px;background:linear-gradient(#8b6beb,#5286eb)}
-#portfolioLivePreview h3{margin:0 0 5px;font-size:25px;letter-spacing:-.9px;font-weight:800}
+#portfolioLivePreview h3{margin:0 0 5px;color:var(--p-ink)!important;font-size:25px;letter-spacing:-.9px;font-weight:800}
 #portfolioLivePreview small,.portfolio-note{color:var(--p-muted)}
 #portfolioLivePreview header small{font-size:11px;letter-spacing:.25px}
 .portfolio-controls{display:flex;gap:12px}
@@ -27,7 +27,7 @@
 .portfolio-summary>div:first-child strong{color:#6654c8}
 .portfolio-summary>div:nth-child(2) strong{color:#238a7a}
 .portfolio-summary>div:nth-child(3) strong{color:#a57943}
-#portfolioLivePreview h4{margin:28px 0 14px;font-size:14px;letter-spacing:-.3px;font-weight:750}
+#portfolioLivePreview h4{margin:28px 0 14px;color:var(--p-ink)!important;font-size:14px;letter-spacing:-.3px;font-weight:750}
 .portfolio-treemap{position:relative;height:280px;border-radius:18px;overflow:hidden;background:#f0f3fa;border:4px solid #f0f3fa}
 .portfolio-treemap>div{position:absolute;border:3px solid #f0f3fa;border-radius:12px;color:white;padding:18px;overflow:hidden;background-image:linear-gradient(135deg,#ffffff18,#0000000c)!important}
 .portfolio-treemap span{display:block;color:white!important;font-weight:750;font-size:15px;letter-spacing:-.3px}
@@ -36,16 +36,17 @@
 .portfolio-table-wrap{overflow-x:auto;margin-top:24px;border:1px solid var(--p-line);border-radius:16px;background:#fff}
 #portfolioLivePreview table{width:100%;border-collapse:collapse;font-size:13px}
 #portfolioLivePreview th,#portfolioLivePreview td{padding:17px 14px;text-align:right;border-bottom:1px solid #edf0f6;white-space:nowrap}
+#portfolioLivePreview td{color:var(--p-ink)}
 #portfolioLivePreview th{background:#f7f8fc;color:#7b87a0;font-size:11px;font-weight:650}
 #portfolioLivePreview th:first-child,#portfolioLivePreview td:first-child{text-align:left;white-space:normal;min-width:155px}
 #portfolioLivePreview tbody tr:last-child td{border-bottom:0}
 #portfolioLivePreview tbody tr:hover{background:#fafbff}
 #portfolioLivePreview td small{display:block;margin-top:5px;font-size:11px}
 #portfolioLivePreview td:nth-child(4),#portfolioLivePreview td:nth-child(5){font-weight:650}
-#portfolioLivePreview details p{max-width:340px;padding:12px;background:#f5f7fc;border-radius:9px;font-size:12px;line-height:1.8;overflow-wrap:anywhere;font-weight:400}
-#portfolioLivePreview summary{cursor:pointer;font-weight:650}
+#portfolioLivePreview details p{max-width:340px;padding:12px;background:#f5f7fc;color:var(--p-ink);border-radius:9px;font-size:12px;line-height:1.8;overflow-wrap:anywhere;font-weight:400}
+#portfolioLivePreview summary{color:var(--p-ink);cursor:pointer;font-weight:650}
 .portfolio-bars>div{position:relative;padding:16px 0 24px;border-bottom:1px solid #edf0f6;font-size:13px}
-.portfolio-bars b{font-weight:650}
+.portfolio-bars b{color:var(--p-ink);font-weight:650}
 .portfolio-bars span{float:right;color:#667791;font-size:12px}
 .portfolio-bars i{position:absolute;left:0;bottom:8px;height:7px;border-radius:8px;box-shadow:0 2px 4px #526ca015}
 .portfolio-note{margin:22px 0 0;padding-top:16px;border-top:1px solid var(--p-line);font-size:11px;line-height:1.8}

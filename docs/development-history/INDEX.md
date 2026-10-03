@@ -23,6 +23,7 @@
 | Portfolio | `2026-10-04/v2.9.162-portfolio-analytics-release-record.md` | Production 원장 사본 |
 | Character Voice | `2026-10-04/v2.9.163-tab-character-voice-release-record.md` | Production 원장 사본 |
 | Data Hub | `2026-10-04/v2.9.164-data-hub-release-record.md` | Production 원장 사본 |
+| P1 안정성·Portfolio | `2026-10-04-p1-safety-portfolio.md` | Candidate · Asset Input 보호 변경 제외 |
 
 ## 최근 Production 계보
 

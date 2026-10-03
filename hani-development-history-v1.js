@@ -2,6 +2,13 @@
 (()=>{
   if(window.HANI_DEVELOPMENT_HISTORY_V1)return;
   const HISTORY=Object.freeze([
+    {id:"v2.9.166",date:"2026-10-04",status:"released",title:"P1 Safety · Portfolio Contrast",summary:"오래된 안정화 핫픽스를 최신 main 기준으로 다시 분류하고, 5개 Finish에서 밝은 포트폴리오 카드의 제목·표·상세 글자 대비를 보강했습니다. Asset Input 계약은 보호 저장 경로를 변경하지 않고 남은 승인 항목만 분리했습니다.",ref:"PR #161"},
+    {id:"P0",date:"2026-10-04",status:"process",title:"Central Development History",summary:"개발 기록을 중앙 폴더와 저장소 문서로 취합하고 완료·후보·보류·대체 상태를 구분했습니다. 오래된 PR 61·68은 후속 운영 릴리스로 대체된 후보로 정리했습니다.",ref:"183be6c"},
+    {id:"v2.9.165",date:"2026-10-04",status:"pages",title:"AURA · Deployment Menu Group",summary:"사이드바에서 AURA와 배포센터 메뉴 그룹을 정리했습니다. main과 Pages 반영은 확인됐고 전체 메뉴 기능 read-back은 별도 상태로 유지합니다.",ref:"b80c620"},
+    {id:"v2.9.164",date:"2026-10-04",status:"released",title:"HANI Data Hub · Batch A/B/C",summary:"월별 Metric Registry와 비교 엔진, 재생성 가능한 IndexedDB 파생 캐시를 만들고 Dashboard 6대 지표를 실제 데이터 기준으로 연결했습니다.",ref:"f5274ce"},
+    {id:"v2.9.163",date:"2026-10-04",status:"released",title:"Canonical Tab Character Voice",summary:"28개 화면과 스포츠 세부 화면의 담당 캐릭터 한마디를 공식 프로필 기준으로 통일했습니다.",ref:"ad3a041"},
+    {id:"v2.9.162",date:"2026-10-04",status:"released",title:"Live Portfolio Analytics",summary:"보유 수량과 확인된 현재가로 평가액·비중을 계산하는 읽기 전용 포트폴리오와 계좌·통화 필터, Desktop·Mobile 시각화를 추가했습니다.",ref:"022b296"},
+    {id:"v2.9.161",date:"2026-10-03",status:"released",title:"HANI AURA · Seasonal Collection",summary:"5개 Signature Finish와 계절 컬렉션을 분리하고 Remote·Sidebar·주요 화면의 공통 Surface를 정리했습니다.",ref:"6d46ec9"},
     {id:"v2.9.135",date:"2026-09-27",status:"preview",title:"Context Remote · Seasonal Character Rail",summary:"화면별 주요 작업·유나 빠른 입력·담당 Agent·최근 항목·조건부 알림을 묶은 Context Remote와 공식 9인 프로필 기반 사계절 세로 배너 8장을 추가했습니다.",ref:"c631d7d"},
     {id:"Meeting Preview",date:"2026-09-27",status:"preview",title:"Meeting Deliberation · Cross Review",summary:"실제 안건을 기준으로 Agent 소집, 상호 검토와 결론 흐름을 연결하는 회의 Preview를 준비했습니다.",ref:"f7117cf"},
     {id:"Design System P1",date:"2026-09-21",status:"preview",title:"Global Frame · Sidebar · Top Utility",summary:"전역 프레임 토큰, 사이드바 정보 구조, 상단 Utility와 주요 화면의 시각 계층을 일관된 디자인 시스템으로 정리했습니다.",ref:"df73d3a"},
@@ -22,7 +29,7 @@
     {id:"v2.9.120",date:"2026-09-15",status:"released",title:"Library · Watch Archive",summary:"독서와 시청 기록을 아카이브 중심으로 재구성하고 목록 탐색과 상세 기록 가독성을 개선했습니다.",ref:"654af6b"}
   ]);
   const esc=value=>String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[char]);
-  const statusLabel={preview:"PREVIEW",released:"운영 반영",process:"PROCESS"};
+  const statusLabel={preview:"PREVIEW",released:"운영 반영",pages:"PAGES LIVE",process:"PROCESS"};
   const row=entry=>`<article class="hani-history-row" data-history-status="${esc(entry.status)}"><div class="hani-history-marker" aria-hidden="true"></div><div class="hani-history-copy"><div class="hani-history-meta"><span class="hani-history-version">${esc(entry.id)}</span><span class="hani-history-status is-${esc(entry.status)}">${esc(statusLabel[entry.status]||entry.status)}</span><time datetime="${esc(entry.date)}">${esc(entry.date.replaceAll("-","."))}</time></div><h4>${esc(entry.title)}</h4><p>${esc(entry.summary)}</p></div><code>${esc(entry.ref)}</code></article>`;
   const openDev=()=>{const nav=document.querySelector('.nav-btn[data-view="dev"]');if(nav)nav.click();else if(typeof showView==="function")showView("dev");setTimeout(()=>document.querySelector("#haniDevelopmentHistory")?.scrollIntoView({behavior:"smooth",block:"start"}),80)};
   function mountHome(){
