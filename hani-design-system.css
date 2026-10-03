@@ -570,7 +570,7 @@ html body{background-image:radial-gradient(circle at 86% 3%,color-mix(in srgb,va
 #app .ds-main-character-banner__status{display:inline-flex;align-items:center;max-width:100%;margin-top:8px;padding:5px 9px;border:1px solid var(--mcb-status-line);border-radius:999px;background:var(--mcb-status-bg);color:var(--mcb-ink);font-size:11px;font-weight:800;line-height:1.25}
 #app .ds-main-character-banner__status[hidden]{display:none}
 #app .ds-main-character-banner__status.up{color:var(--mcb-up,#c83d56)}#app .ds-main-character-banner__status.down{color:var(--mcb-down,#356fbd)}
-#app .ds-main-character-banner__seasonal-fx{position:absolute;z-index:1;inset:0;overflow:hidden;pointer-events:none}
+#app .ds-main-character-banner__seasonal-fx{display:none}
 #app #home>.ds-main-character-banner .ds-main-character-banner__seasonal-fx{display:none}
 #app .ds-main-character-banner__seasonal-fx:before,#app .ds-main-character-banner__seasonal-fx:after{content:"";position:absolute;pointer-events:none}
 :root[data-season=spring] #app .ds-main-character-banner__seasonal-fx{background:radial-gradient(circle at 18% 8%,#ffd8e833,transparent 24%),linear-gradient(120deg,#ffdeec14,transparent 48%)}
@@ -581,9 +581,37 @@ html body{background-image:radial-gradient(circle at 86% 3%,color-mix(in srgb,va
 :root[data-season=autumn] #app .ds-main-character-banner__seasonal-fx:before{width:8px;height:13px;left:77%;top:12%;border-radius:80% 20% 80% 20%;background:#d98845;box-shadow:84px 35px #f2bd6d99,168px -4px #a95b3999,-330px 126px #e9a35077;transform:rotate(35deg);animation:season-fall 15s linear infinite reverse}
 :root[data-season=winter] #app .ds-main-character-banner__seasonal-fx{background:linear-gradient(120deg,#c5e0ff10,transparent 55%),radial-gradient(circle at 86% 0,#eaf5ff38,transparent 30%)}
 :root[data-season=winter] #app .ds-main-character-banner__seasonal-fx:before{width:4px;height:4px;left:70%;top:14%;border-radius:50%;background:#fff;box-shadow:39px 31px #ffffffbb,90px -2px #fff,140px 54px #ffffffaa,195px 17px #fff,-360px 94px #ffffff77,-180px 28px #ffffff77;animation:season-snow 11s linear infinite}
-@keyframes season-fall{50%{transform:translate(-28px,78px) rotate(155deg)}100%{transform:translate(-55px,165px) rotate(290deg)}}
-@keyframes season-ripple{50%{transform:scale(1.12);opacity:.55}}
-@keyframes season-snow{100%{transform:translate(-24px,190px)}}
+/* Ambient light lives behind content; Finish and Hero surfaces stay unchanged. */
+:root{--collection-light:#e5b9cb;--collection-light-second:#fff2cb}
+:root[data-season=spring]{--collection-light:#e5b9cb;--collection-light-second:#fff2cb}
+:root[data-season=summer]{--collection-light:#73cdd7;--collection-light-second:#c3e8fd}
+:root[data-season=autumn]{--collection-light:#daa169;--collection-light-second:#ead3b8}
+:root[data-season=winter]{--collection-light:#9bb7dd;--collection-light-second:#c6cbe9}
+#app>.main{background-image:radial-gradient(ellipse 55% 600px at 0 0,color-mix(in srgb,var(--collection-light) 30%,transparent),transparent 80%),radial-gradient(ellipse 45% 520px at 100% 100px,color-mix(in srgb,var(--collection-light-second) 25%,transparent),transparent 80%)!important;background-attachment:fixed}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app>.main{background-image:radial-gradient(ellipse 60% 600px at 0 0,color-mix(in srgb,var(--collection-light) 16%,transparent),transparent 80%),radial-gradient(ellipse 40% 500px at 100% 90px,color-mix(in srgb,var(--collection-light-second) 12%,transparent),transparent 80%)!important}
+.season-transition{position:fixed;z-index:120;left:50%;top:90px;transform:translateX(-50%);max-width:min(600px,calc(100vw - 32px));width:max-content;box-sizing:border-box;padding:16px 24px;border:1px solid var(--border-strong);border-radius:18px;background:var(--surface-panel);color:var(--text-primary);box-shadow:0 12px 45px #0002;font:700 15px/1.6 var(--hani-font-sans);text-align:center;pointer-events:none;animation:collection-enter .6s ease both}
+.season-transition[hidden]{display:none}
+@keyframes collection-enter{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
+#app:has(#seasonTransition:not([hidden])) .hani-remote-scene{animation:collection-scene-enter .6s ease both}
+@keyframes collection-scene-enter{from{opacity:.35}to{opacity:1}}
+#app #settings .seasonal-collection{background:radial-gradient(ellipse at 0 0,color-mix(in srgb,var(--collection-light) 18%,transparent),transparent 65%),var(--surface-panel)!important}
+.seasonal-collection fieldset{padding:0;margin:24px 0 18px;border:0;min-width:0}
+.seasonal-collection legend{margin-bottom:14px;font-size:13px;color:var(--text-secondary)}
+.season-choices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.season-choice{position:relative;min-width:0;cursor:pointer;border:1px solid var(--border-subtle);border-radius:18px;background:var(--surface-raised);color:var(--text-primary)}
+.season-choice>input{position:absolute;top:12px;left:12px;width:20px;height:20px;accent-color:var(--control-accent);z-index:1}
+.season-choice>img{display:block;width:100%;height:300px;object-fit:contain;background:var(--surface-raised);border-radius:18px 18px 0 0}
+.season-choice>span{display:grid;gap:9px;padding:18px}
+.season-choice b{font-size:13px;letter-spacing:.08em}.season-choice strong{font-size:18px;line-height:1.45}.season-choice small{font-size:13px;color:var(--text-secondary);line-height:1.6}
+.season-choice em{font-size:12px;color:var(--control-accent);font-style:normal;font-weight:800;visibility:hidden}
+.season-choice:has(input:checked){outline:2px solid var(--control-accent);outline-offset:3px}.season-choice:has(input:checked) em{visibility:visible}
+.season-choice:has(input:focus-visible){outline:3px solid var(--border-strong);outline-offset:5px}
+#seasonCollectionStatus{font-size:14px;line-height:1.7;color:var(--text-secondary)}
+#app .hani-remote-season-greeting{margin:0;padding:13px;border:1px solid var(--border-subtle);border-radius:13px;background:linear-gradient(130deg,color-mix(in srgb,var(--collection-light) 15%,transparent),transparent),var(--surface-panel);color:var(--text-primary);font-size:13px;line-height:1.65}
+#app .hani-remote-season-greeting b{display:block;margin-bottom:5px;font-size:12px}#app .hani-remote-season-greeting span{display:block}
+@media(max-width:1200px){.season-choices{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:500px){.season-choices{grid-template-columns:minmax(0,1fr)}.season-choice>img{height:320px}.season-transition{top:72px;font-size:13px;padding:12px 16px}}
+@media(prefers-reduced-motion:reduce){.season-transition,#app:has(#seasonTransition:not([hidden])) .hani-remote-scene{animation:none}}
 @media(prefers-reduced-motion:reduce){#app .ds-main-character-banner__seasonal-fx:before{animation:none!important}}
 
 #app .hani-pagination{display:flex;align-items:center;justify-content:center;gap:12px;margin:14px 0 2px;padding-top:12px;border-top:1px solid var(--season-line);font-size:12px;color:var(--ds-muted)}

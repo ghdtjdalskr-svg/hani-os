@@ -47,6 +47,7 @@
 #app.hani-remote-mini .hani-remote-item{display:grid;grid-template-columns:1fr;place-items:center;min-height:42px;padding:5px}
 #app.hani-remote-mini .hani-remote-icon{width:30px;height:30px}
 #app.hani-remote-mini .hani-remote-utility{width:100%}
+@media(min-width:851px){#app.hani-remote-mini .hani-remote-season-greeting{display:none}}
 #app .hani-remote-mobile-trigger{display:none}
 @media (max-width:1180px) and (min-width:851px){
   #app.app{grid-template-columns:var(--sidebar) minmax(0,1fr) 208px}
@@ -72,6 +73,9 @@
   #app .hani-remote-item.is-alert{position:relative}
   #app .hani-remote-copy small{white-space:normal}
   #app .hani-remote-section{grid-column:1/-1;grid-row:3}
+  #app .hani-remote-season-greeting{grid-column:1/-1;grid-row:3}
+  #app .hani-remote-section{grid-row:4}
+  #app .hani-remote-utility{grid-row:5}
   #app .hani-remote-utility{grid-column:1/-1;margin-top:0}
   #app.hani-remote-mini .hani-context-remote{align-items:stretch;padding:10px 14px max(16px,env(safe-area-inset-bottom))}
   #app.hani-remote-mini .hani-remote-brand,#app.hani-remote-mini .hani-remote-copy,#app.hani-remote-mini .hani-remote-section{display:block}
