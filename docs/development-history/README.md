@@ -30,3 +30,4 @@
 - [2026-10-04 기준 프로젝트 상태](./2026-10-04-p0-project-status.md)
 - [PR61·68 및 오래된 후보 분류](./2026-10-04-pr-triage.md)
 - [v2.9.165 main drift 및 Pages 상태](./2026-10-04-v2.9.165-aura-menu-status.md)
+- [P1 안정성 재진단·포트폴리오 대비·Asset Input 계약](./2026-10-04-p1-safety-portfolio.md)
