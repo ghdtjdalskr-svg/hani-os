@@ -46,7 +46,7 @@ await vm.runInContext("deployCenterReadPackage", context)({ text: async () => JS
 assert.equal(vm.runInContext("deployPackageCandidate", context), null);
 assert.equal(element("deployPackageSha").textContent, "FAIL");
 const tooMany=structuredClone(pkg);
-while(tooMany.files.length<=82)tooMany.files.push({path:`assets/qa-limit-${tooMany.files.length}.png`,encoding:'base64',content:'AA=='});
+while(tooMany.files.length<=86)tooMany.files.push({path:`assets/qa-limit-${tooMany.files.length}.png`,encoding:'base64',content:'AA=='});
 await vm.runInContext("deployCenterReadPackage",context)({text:async()=>JSON.stringify(tooMany),name:'too-many.json'});
 assert.equal(vm.runInContext('deployPackageCandidate',context),null);
 assert.match(element('deployPackageResult').textContent,/파일 수/);
