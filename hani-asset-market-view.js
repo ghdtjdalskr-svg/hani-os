@@ -5,6 +5,9 @@
   const money=(n,c)=>n===null?'—':new Intl.NumberFormat('ko-KR',{style:'currency',currency:c||'KRW',maximumFractionDigits:c==='USD'?2:0}).format(n);
   let client=null,metadata=[],quotes=[],rows=[],selected='',period='1M',generation=0,chartGeneration=0,timer=null,signature='',busy=false,expanded=false,lastPlot=null;
   const overrides=new Map(),chartCache=new Map();
+  let analyticsAvailable=false,analyticsOwner=null;
+  const analyticsIdentity=()=>typeof cloudUser!=='undefined'?cloudUser?.id||null:null;
+  function analyticsSource(){const available=analyticsAvailable&&analyticsOwner===analyticsIdentity();return {state:structuredClone({accounts:state.accounts||[],instruments:state.instruments||[],investmentBrokerSnapshots:state.investmentBrokerSnapshots||[]}),stocks:available?structuredClone(metadata):[],quotes:available?structuredClone(quotes):[],cashObservations:[]};}
   function status(message){$('marketStatus').textContent=message;const s=$('marketSettingsStatus');if(s)s.textContent=message;}
   function isActive(){return document.body.dataset.view==='asset'&&!document.hidden;}
   function configured(){
@@ -77,6 +80,7 @@
     $('marketResolve').hidden=!r||r.resolution.status==='matched';
     $('marketResolveReason').textContent=r?.resolution.reason||'';
     root.querySelectorAll('[data-market-period]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.marketPeriod===period)));
+    window.dispatchEvent(new Event('hani:market-updated'));
   }
   async function drawMain(){
     const r=rows.find(r=>r.key===selected),id=++chartGeneration;lastPlot=null;
@@ -101,16 +105,17 @@
     }
   }
   async function refresh(){
-    if(!isActive()||busy)return;busy=true;const id=++generation;
+    if(!isActive()||busy)return;busy=true;const id=++generation,analyticsRequestOwner=analyticsIdentity();
     try{
       render();const c=configured();if(!c){status('연결 안 됨 · 서버 연결 전입니다. 기존 기록은 그대로 유지됩니다.');return;}
       status('종목정보·가격 확인 중…');
       const codes=positions().map(p=>p.ticker||M.symbol((state.instruments||[]).find(i=>i.id===p.instrumentId)?.ticker));
       metadata=await c.stocks(codes);if(id!==generation)return;
       quotes=await c.prices(metadata.map(s=>s.symbol));if(id!==generation)return;
+      analyticsAvailable=true;analyticsOwner=analyticsRequestOwner;
       render();const info=c.info?.();status(info?'PC 마지막 수집 '+new Date(info.collectedAt).toLocaleString('ko-KR')+' · 저장된 시세 표시 · 실시간 아님':'가격·종목정보 응답 정상 · 마지막 조회 '+new Date().toLocaleTimeString('ko-KR')+' · 원본 기록 보존');
       await drawMain();await miniCharts(id);
-    }catch(e){if(id===generation){status(e.message);render();await drawMain();}}
+    }catch(e){if(id===generation){analyticsAvailable=false;status(e.message);render();await drawMain();}}
     finally{busy=false;if(id!==generation&&isActive())refresh();}
   }
   function sync(){
@@ -179,5 +184,119 @@
     query.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();search();}});
   }
   if(typeof ResizeObserver!=='undefined')new ResizeObserver(()=>{if(lastPlot)$('marketChart').innerHTML=plot(lastPlot.points,lastPlot.avg,false,lastPlot.code);}).observe(root);
-  window.HaniAssetMarket={sync,async resolveHoldings(holdings){const c=configured();if(!c)return false;const masters=state.instruments||[],codes=holdings.map(h=>h.ticker||masters.find(i=>i.id===h.instrumentId)?.ticker);try{const info=await c.stocks(codes);return holdings.length>0&&holdings.every(h=>M.resolve(h,masters,info).status==='matched');}catch(_){return false;}},async verifyCatalogInstrument(instrument){const c=configured(),code=M.symbol(instrument?.ticker);if(!c?.catalog||!M.validSymbol(code))return false;const domestic=/^(KR|KOSPI|KOSDAQ|국내)$/.test(instrument.market)||/^\d{6}$/.test(code),markets=domestic?['KOSPI','KOSDAQ','KR_ETC']:['NYSE','NASDAQ','AMEX','US_ETC'];for(const market of markets){try{const found=await c.search(code,market);if(found.result?.some(s=>M.symbol(s.symbol)===code&&s.currency===(domestic?'KRW':'USD')))return true;}catch(_){return false;}}return false;}};sync();
+  window.HaniAssetMarket={sync,analyticsSource,async resolveHoldings(holdings){const c=configured();if(!c)return false;const masters=state.instruments||[],codes=holdings.map(h=>h.ticker||masters.find(i=>i.id===h.instrumentId)?.ticker);try{const info=await c.stocks(codes);return holdings.length>0&&holdings.every(h=>M.resolve(h,masters,info).status==='matched');}catch(_){return false;}},async verifyCatalogInstrument(instrument){const c=configured(),code=M.symbol(instrument?.ticker);if(!c?.catalog||!M.validSymbol(code))return false;const domestic=/^(KR|KOSPI|KOSDAQ|국내)$/.test(instrument.market)||/^\d{6}$/.test(code),markets=domestic?['KOSPI','KOSDAQ','KR_ETC']:['NYSE','NASDAQ','AMEX','US_ETC'];for(const market of markets){try{const found=await c.search(code,market);if(found.result?.some(s=>M.symbol(s.symbol)===code&&s.currency===(domestic?'KRW':'USD')))return true;}catch(_){return false;}}return false;}};sync();
+})();
+/* HANI PORTFOLIO READ-ONLY BUNDLE START */
+/* Phase A: pure read-only projection. No storage, network, FX or source mutation. */
+(function(root){
+  'use strict';
+  const M=typeof module==='object'&&module.exports?require('./hani-market-data.js'):root.HaniMarketData;
+  const finite=M.number;
+  function build(state,{stocks=[],quotes=[],cashObservations=[],now=Date.now(),accountId=''}={}){
+    const masters=state.instruments||[], positions=M.positions(state).filter(p=>!accountId||p.accountId===accountId);
+    const seen=new Map(), holdings=[];
+    for(const p of positions){
+      const master=masters.find(i=>i.id===p.instrumentId),code=M.symbol(p.ticker||master?.ticker);
+      const hint=master?.market;
+      const hintedCurrency=M.currency(hint)||(/^(KR|국내)$/.test(hint)?'KRW':/^(US|해외)$/.test(hint)?'USD':null);
+      const candidates=stocks.filter(s=>M.symbol(s.symbol)===code&&(!hintedCurrency||s.currency===hintedCurrency));
+      const resolution=candidates.length===1?M.resolve(p,masters,candidates):{status:'unmatched',reason:'종목정보 없음 또는 중복'};
+      const stock=resolution.stock;
+      const currency=resolution.currency||M.currency(hint)||(/^(KR|국내)$/.test(hint)?'KRW':/^(US|해외)$/.test(hint)?'USD':'UNKNOWN');
+      const identity=resolution.status==='matched'?stock.market+':'+code:p.instrumentId?'master:'+p.instrumentId:'raw:'+p.key;
+      const key=p.accountId+':'+identity,quantity=p.quantity!==null&&p.quantity>=0?p.quantity:null;
+      const matchingQuotes=quotes.filter(q=>M.symbol(q.symbol)===resolution.symbol&&q.currency===resolution.currency);
+      const quote=matchingQuotes.length===1?matchingQuotes[0]:null, price=finite(quote?.lastPrice),stamp=Date.parse(quote?.timestamp);
+      const verified=resolution.status==='matched'&&price!==null&&price>0&&Number.isFinite(stamp)&&stamp<=now+60000;
+      const marketValue=verified&&quantity!==null&&Number.isFinite(quantity*price)?quantity*price:null;
+      const costCurrency=p.buyCurrency||p.recordedCurrency||null;
+      const rawCost=p.buyCurrency?(quantity!==null&&p.buyPrice!==null?quantity*p.buyPrice:null):p.purchaseAmount;
+      const cost=rawCost!==null&&rawCost>=0&&Number.isFinite(rawCost)&&costCurrency?rawCost:null;
+      const row={key,account_id:p.accountId,account:p.accountName,instrument_id:p.instrumentId||null,instrument:identity,name:p.name,ticker:code||null,
+        quantity,holding_as_of:p.holdingAsOf,source:'confirmed-broker-snapshot',source_completeness:'UNKNOWN',
+        market:stock?.market||master?.market||null,asset_class:master?.className||null,currency,
+        market_price:verified?price:null,price_currency:verified?resolution.currency:null,price_as_of:verified?quote.timestamp:null,
+        price_status:verified?(now-stamp<=120000?'RECENT':'LAST_KNOWN'):'NO_DATA',market_value:marketValue,
+        recorded_value:p.recordedEvaluation,recorded_value_currency:p.recordedCurrency||null,
+        recorded_purchase_amount:p.purchaseAmount,recorded_buy_price:p.buyPrice,recorded_buy_currency:p.buyCurrency,
+        cost_basis:cost,cost_currency:cost===null?null:costCurrency,cost_basis_status:cost===null?'NO_DATA':'RECORDED',
+        average_purchase_price:cost!==null&&quantity>0?cost/quantity:null,
+        pnl:marketValue!==null&&cost!==null&&costCurrency===resolution.currency?marketValue-cost:null,
+        return_rate:marketValue!==null&&cost>0&&costCurrency===resolution.currency?(marketValue-cost)/cost:null,
+        security_weight:null,portfolio_weight:null,status:quantity===0?'EXPLICIT_ZERO':quantity===null?'QUANTITY_NO_DATA':'ACTIVE',resolution_status:resolution.status};
+      if(seen.has(key)){
+        const earlier=seen.get(key);
+        if(earlier.quantity!==row.quantity||earlier.recorded_value!==row.recorded_value||earlier.cost_basis!==row.cost_basis||earlier.cost_currency!==row.cost_currency||earlier.ticker!==row.ticker||earlier.resolution_status!==row.resolution_status){
+          earlier.status='HOLDING_CONFLICT';earlier.market_value=null;earlier.quantity=null;
+        }
+        earlier.duplicate_records=(earlier.duplicate_records||1)+1;
+      }else{seen.set(key,row);holdings.push(row);}
+    }
+    const buckets={};
+    for(const c of [...new Set(holdings.map(h=>h.currency))]){
+      const scoped=holdings.filter(h=>h.currency===c),active=scoped.filter(h=>h.status!=='EXPLICIT_ZERO'),priced=active.filter(h=>h.market_value!==null);
+      const total=priced.length?priced.reduce((sum,h)=>sum+h.market_value,0):null;
+      const accounts=(state.accounts||[]).filter(a=>!accountId||a.id===accountId).map(a=>a.id);
+      // Cash needs explicit amount, scope, timestamp and provenance. Residual is never accepted.
+      const cash=accounts.map(id=>cashObservations.filter(o=>o.account_id===id&&o.currency===c&&o.status==='CONFIRMED'&&o.source&&o.kind==='EXPLICIT_CASH'&&finite(o.amount)!==null&&finite(o.amount)>=0&&Number.isFinite(Date.parse(o.as_of))&&Date.parse(o.as_of)<=now+60000));
+      const cashComplete=accounts.length>0&&cash.every(list=>list.length===1);
+      const cashTotal=cashComplete?cash.reduce((sum,list)=>sum+finite(list[0].amount),0):null;
+      const unknown=holdings.some(h=>h.currency==='UNKNOWN'&&h.status!=='EXPLICIT_ZERO');
+      const coverage=active.length===0?'NO_DATA':priced.length===active.length&&!unknown?'COMPLETE':'PARTIAL';
+      const portfolioTotal=total!==null&&cashTotal!==null?total+cashTotal:null;
+      const weightMode=coverage==='COMPLETE'&&portfolioTotal>0?'PORTFOLIO':'SECURITY';
+      for(const h of scoped){h.security_weight=h.market_value!==null&&total>0?h.market_value/total:null;h.portfolio_weight=h.market_value!==null&&portfolioTotal>0?h.market_value/portfolioTotal:null;}
+      buckets[c]={currency:c,securities_value:total,confirmed_cash:cashTotal,cash_status:cashComplete?'CONFIRMED':'NO_DATA',portfolio_value:portfolioTotal,
+        coverage,priced_count:priced.length,holding_count:active.length,unpriced_count:active.length-priced.length,weight_mode:weightMode};
+    }
+    return {version:'live-preview-1',as_of:new Date(now).toISOString(),holdings,buckets,
+      limitations:['보유목록 완전성과 종목별 실제 관측일은 기존 기록에서 확인할 수 없습니다.','현금성 차액을 현금으로 사용하지 않습니다.','통화 간 합산·환산과 월간 공식 이력은 제공하지 않습니다.']};
+  }
+  const api={build};if(typeof module==='object'&&module.exports)module.exports=api;else root.HaniPortfolioAnalytics=api;
+})(globalThis);
+/* Read-only Phase B; consumes the existing market reader, never fetches or saves. */
+(function(){
+  'use strict';
+  const root=document.getElementById('portfolioLivePreview'),A=window.HaniPortfolioAnalytics,M=window.HaniMarketData;
+  if(!root||!A||!M)return;
+  const e=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const money=(n,c)=>n===null?'미확인':c==='UNKNOWN'?n.toLocaleString('ko-KR'):new Intl.NumberFormat('ko-KR',{style:'currency',currency:c,maximumFractionDigits:c==='USD'?2:0}).format(n);
+  const pct=n=>n===null?'—':(n*100).toFixed(1)+'%';
+  let currency='KRW',account='',tab='overview',dimension='instrument',model=null;
+  root.innerHTML='<header><div><h3>내 포트폴리오</h3><small>LIVE · 읽기 전용 Preview · 월간 공식 기록 아님</small></div><div class="portfolio-controls"><label>계좌<select data-p-account></select></label><label>통화<select data-p-currency></select></label></div></header><nav aria-label="포트폴리오 보기"><button type="button" data-p-tab="overview">요약</button><button type="button" data-p-tab="holdings">보유종목</button><button type="button" data-p-tab="allocation">구성</button></nav><p data-p-coverage role="status"></p><div data-p-content></div><p class="portfolio-note">보유일과 가격 기준일은 다를 수 있습니다. 미분류 차액은 현금으로 계산하지 않으며, 통화 간 합산은 하지 않습니다. 월간 이력은 다음 단계에서 제공합니다.</p>';
+  const content=root.querySelector('[data-p-content]');
+  function weight(h,b){return b.weight_mode==='PORTFOLIO'?h.portfolio_weight:h.security_weight;}
+  function aggregates(rows,key){const map=new Map();for(const h of rows){if(h.market_value===null)continue;const id=h[key]||'미확인',old=map.get(id)||{id,name:key==='instrument'?h.name:id,value:0,color:M.chartColor(h.ticker||id)};old.value+=h.market_value;map.set(id,old);}return [...map.values()].sort((a,b)=>b.value-a.value);}
+  // Recursive area bisection: area, not quantity, encodes value.
+  function tile(items,x=0,y=0,w=100,h=100){
+    if(!items.length)return [];if(items.length===1)return [{...items[0],x,y,w,h}];
+    const total=items.reduce((s,r)=>s+r.value,0);let cut=1,sum=items[0].value;
+    while(cut<items.length-1&&sum+items[cut].value<=total/2){sum+=items[cut++].value;}
+    const ratio=sum/total;return w>=h?[...tile(items.slice(0,cut),x,y,w*ratio,h),...tile(items.slice(cut),x+w*ratio,y,w*(1-ratio),h)]:[...tile(items.slice(0,cut),x,y,w,h*ratio),...tile(items.slice(cut),x,y+h*ratio,w,h*(1-ratio))];
+  }
+  function bars(items,total){if(!items.length)return '<p>가격이 연결된 투자상품이 없어 구성을 표시할 수 없습니다.</p>';return '<div class="portfolio-bars">'+items.slice(0,8).map(r=>'<div><b>'+e(r.name)+'</b><span>'+money(r.value,currency)+' · '+pct(total>0?r.value/total:null)+'</span><i style="width:'+Math.max(0,total>0?r.value/total*100:0)+'%;background:'+r.color+'"></i></div>').join('')+'</div>'+(items.length>8?'<p>평가액 상위 8개 표시 · 나머지 '+(items.length-8)+'개는 보유종목 탭에서 확인하세요.</p>':'');}
+  function table(rows,b){return '<div class="portfolio-table-wrap"><table><thead><tr><th>종목 / 계좌</th><th>수량</th><th>시장 가격</th><th>현재 평가액</th><th>'+(b.weight_mode==='PORTFOLIO'?'포트폴리오 비중':'종목 내 비중')+'</th></tr></thead><tbody>'+rows.map(h=>'<tr><td><details><summary>'+e(h.name)+'</summary><p>'+e(h.account)+' · '+e(h.ticker||'코드 미확인')+'<br>보유 기준 '+e(h.holding_as_of||'미확인')+'<br>가격 기준 '+e(h.price_as_of||'미확인')+' · '+e(h.price_status)+'<br>기록 평가액 '+(h.recorded_value===null?'미기록':e(h.recorded_value)+' (원본 단위; 현재 평가와 별도)')+'<br>매입원가 '+(h.cost_basis===null?'NO_DATA':money(h.cost_basis,h.cost_currency))+'<br>원가 없으면 평균매입가·손익·수익률 미제공'+(h.status==='HOLDING_CONFLICT'?'<br>중복 기록 충돌 · 평가 제외':'')+'</p></details><small>'+e(h.account)+'</small></td><td>'+e(h.quantity??'미확인')+'</td><td>'+money(h.market_price,h.price_currency||currency)+'</td><td>'+money(h.market_value,currency)+'</td><td>'+pct(weight(h,b))+'</td></tr>').join('')+'</tbody></table></div>';}
+  function render(){
+    const source=window.HaniAssetMarket?.analyticsSource?.();if(!source){content.textContent='기존 시세 연결을 기다리고 있습니다.';return;}
+    model=A.build(source.state,{...source,accountId:account});
+    const accounts=source.state.accounts||[],ac=root.querySelector('[data-p-account]');
+    if(account&&!accounts.some(a=>a.id===account)){account='';model=A.build(source.state,source);}
+    ac.innerHTML='<option value="">전체 계좌</option>'+accounts.map(a=>'<option value="'+e(a.id)+'">'+e(a.name)+'</option>').join('');ac.value=account;
+    const currencies=Object.keys(model.buckets);if(!currencies.includes(currency))currency=currencies[0]||'KRW';
+    const cc=root.querySelector('[data-p-currency]');cc.innerHTML=(currencies.length?currencies:['KRW']).map(c=>'<option value="'+e(c)+'">'+(c==='UNKNOWN'?'통화 미확인':e(c))+'</option>').join('');cc.value=currency;
+    root.querySelectorAll('[data-p-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.pTab===tab)));
+    const b=model.buckets[currency];if(!b){root.querySelector('[data-p-coverage]').textContent='확정된 보유기록 없음';content.textContent='계좌에서 종목과 수량을 기록하면 분석을 시작합니다.';return;}
+    const rows=model.holdings.filter(h=>h.currency===currency&&h.status!=='EXPLICIT_ZERO').sort((a,b)=>(b.market_value??-1)-(a.market_value??-1)),items=aggregates(rows,'instrument');
+    const unknown=model.holdings.filter(h=>h.currency==='UNKNOWN'&&h.status!=='EXPLICIT_ZERO').length;
+    root.querySelector('[data-p-coverage]').textContent=(currency==='UNKNOWN'?'통화 미확인':currency)+' · 가격 평가 '+b.priced_count+'/'+b.holding_count+'개 · '+({COMPLETE:'가격 연결 완료',PARTIAL:'부분 평가',NO_DATA:'평가 미확인'}[b.coverage])+' ('+b.coverage+') · '+(b.weight_mode==='PORTFOLIO'?'포트폴리오 비중':'종목 내 비중 (가격 연결분 기준)')+(b.cash_status==='NO_DATA'?' · 명시적 현금 미확인':'')+(unknown?' · 통화 미확인 투자기록 '+unknown+'개 — 통화 선택에서 조회':'')+' · 보유목록 완전성 미확인';
+    if(tab==='holdings'){content.innerHTML=table(rows,b);return;}
+    if(tab==='allocation'){
+      const grouped=aggregates(rows,dimension);
+      content.innerHTML='<label>구성 기준 <select data-p-dimension>'+[['instrument','종목'],['account','계좌'],['asset_class','자산분류'],['market','시장 / 거래소'],['currency','통화']].map(([v,label])=>'<option value="'+v+'" '+(v===dimension?'selected':'')+'>'+label+'</option>').join('')+'</select></label><p>가격 연결 투자상품 내 구성 · 현금 제외 · 시장은 국가/투자노출과 다릅니다.</p>'+bars(grouped,b.securities_value);return;
+    }
+    content.innerHTML='<div class="portfolio-summary"><div><small>가격 연결 투자상품</small><strong>'+money(b.securities_value,currency)+'</strong></div><div><small>확인된 현금</small><strong>'+money(b.confirmed_cash,currency)+'</strong></div><div><small>미평가 보유기록</small><strong>'+b.unpriced_count+'개</strong></div></div><h4>가격 연결 투자상품 내 구성 · 현금 제외</h4><div class="portfolio-treemap" aria-label="종목별 투자 평가액 면적">'+(items.some(r=>r.value>0)?tile(items.filter(r=>r.value>0)).map(r=>'<div style="left:'+r.x+'%;top:'+r.y+'%;width:'+r.w+'%;height:'+r.h+'%;background:'+r.color+'" title="'+e(r.name)+' '+money(r.value,currency)+'"><span>'+e(r.name)+'</span><small>'+money(r.value,currency)+'</small></div>').join(''):'<p>가격이 연결된 투자상품이 없어 구성을 표시할 수 없습니다.</p>')+'</div><div class="portfolio-mobile-bars">'+bars(items,b.securities_value)+'</div>'+table(rows.slice(0,8),b)+(rows.length>8?'<p>상위 목록 외 '+(rows.length-8)+'개는 보유종목 탭에서 확인하세요.</p>':'');
+  }
+  root.addEventListener('click',event=>{const b=event.target.closest('[data-p-tab]');if(b){tab=b.dataset.pTab;render();}});
+  root.addEventListener('change',event=>{if(event.target.matches('[data-p-account]'))account=event.target.value;else if(event.target.matches('[data-p-currency]'))currency=event.target.value;else if(event.target.matches('[data-p-dimension]'))dimension=event.target.value;else return;render();});
+  window.addEventListener('hani:market-updated',render);render();
 })();
