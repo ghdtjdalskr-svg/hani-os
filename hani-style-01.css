@@ -1359,7 +1359,7 @@ input:focus,select:focus,textarea:focus{border-color:color-mix(in srgb,var(--sea
 }
 .sidebar-brand-hero h1{
   margin:0!important;
-  color:#fff!important;
+  color:var(--appearance-ink,#fff)!important;
   font-size:22px!important;
   line-height:1.12!important;
   font-weight:700!important;
@@ -1370,7 +1370,7 @@ input:focus,select:focus,textarea:focus{border-color:color-mix(in srgb,var(--sea
 .sidebar-brand-hero small{
   display:block!important;
   margin-top:6px!important;
-  color:rgba(255,255,255,.76)!important;
+  color:var(--appearance-muted,rgba(255,255,255,.76))!important;
   font-size:8.8px!important;
   font-weight:650!important;
   letter-spacing:.015em!important;
@@ -1383,9 +1383,9 @@ input:focus,select:focus,textarea:focus{border-color:color-mix(in srgb,var(--sea
   width:31px!important;
   height:31px!important;
   border-radius:10px!important;
-  background:rgba(255,255,255,.18)!important;
-  color:#fff!important;
-  border:1px solid rgba(255,255,255,.28)!important;
+  background:var(--appearance-raised,rgba(255,255,255,.18))!important;
+  color:var(--appearance-ink,#fff)!important;
+  border:1px solid var(--appearance-line,rgba(255,255,255,.28))!important;
   box-shadow:none!important;
   backdrop-filter:blur(8px);
 }
