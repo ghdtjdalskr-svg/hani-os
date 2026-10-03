@@ -5,6 +5,9 @@
   const money=(n,c)=>n===null?'—':new Intl.NumberFormat('ko-KR',{style:'currency',currency:c||'KRW',maximumFractionDigits:c==='USD'?2:0}).format(n);
   let client=null,metadata=[],quotes=[],rows=[],selected='',period='1M',generation=0,chartGeneration=0,timer=null,signature='',busy=false,expanded=false,lastPlot=null;
   const overrides=new Map(),chartCache=new Map();
+  let analyticsAvailable=false,analyticsOwner=null;
+  const analyticsIdentity=()=>typeof cloudUser!=='undefined'?cloudUser?.id||null:null;
+  function analyticsSource(){const available=analyticsAvailable&&analyticsOwner===analyticsIdentity();return {state:structuredClone({accounts:state.accounts||[],instruments:state.instruments||[],investmentBrokerSnapshots:state.investmentBrokerSnapshots||[]}),stocks:available?structuredClone(metadata):[],quotes:available?structuredClone(quotes):[],cashObservations:[]};}
   function status(message){$('marketStatus').textContent=message;const s=$('marketSettingsStatus');if(s)s.textContent=message;}
   function isActive(){return document.body.dataset.view==='asset'&&!document.hidden;}
   function configured(){
@@ -77,6 +80,7 @@
     $('marketResolve').hidden=!r||r.resolution.status==='matched';
     $('marketResolveReason').textContent=r?.resolution.reason||'';
     root.querySelectorAll('[data-market-period]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.marketPeriod===period)));
+    window.dispatchEvent(new Event('hani:market-updated'));
   }
   async function drawMain(){
     const r=rows.find(r=>r.key===selected),id=++chartGeneration;lastPlot=null;
@@ -101,16 +105,17 @@
     }
   }
   async function refresh(){
-    if(!isActive()||busy)return;busy=true;const id=++generation;
+    if(!isActive()||busy)return;busy=true;const id=++generation,analyticsRequestOwner=analyticsIdentity();
     try{
       render();const c=configured();if(!c){status('연결 안 됨 · 서버 연결 전입니다. 기존 기록은 그대로 유지됩니다.');return;}
       status('종목정보·가격 확인 중…');
       const codes=positions().map(p=>p.ticker||M.symbol((state.instruments||[]).find(i=>i.id===p.instrumentId)?.ticker));
       metadata=await c.stocks(codes);if(id!==generation)return;
       quotes=await c.prices(metadata.map(s=>s.symbol));if(id!==generation)return;
+      analyticsAvailable=true;analyticsOwner=analyticsRequestOwner;
       render();const info=c.info?.();status(info?'PC 마지막 수집 '+new Date(info.collectedAt).toLocaleString('ko-KR')+' · 저장된 시세 표시 · 실시간 아님':'가격·종목정보 응답 정상 · 마지막 조회 '+new Date().toLocaleTimeString('ko-KR')+' · 원본 기록 보존');
       await drawMain();await miniCharts(id);
-    }catch(e){if(id===generation){status(e.message);render();await drawMain();}}
+    }catch(e){if(id===generation){analyticsAvailable=false;status(e.message);render();await drawMain();}}
     finally{busy=false;if(id!==generation&&isActive())refresh();}
   }
   function sync(){
@@ -179,5 +184,5 @@
     query.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();search();}});
   }
   if(typeof ResizeObserver!=='undefined')new ResizeObserver(()=>{if(lastPlot)$('marketChart').innerHTML=plot(lastPlot.points,lastPlot.avg,false,lastPlot.code);}).observe(root);
-  window.HaniAssetMarket={sync,async resolveHoldings(holdings){const c=configured();if(!c)return false;const masters=state.instruments||[],codes=holdings.map(h=>h.ticker||masters.find(i=>i.id===h.instrumentId)?.ticker);try{const info=await c.stocks(codes);return holdings.length>0&&holdings.every(h=>M.resolve(h,masters,info).status==='matched');}catch(_){return false;}},async verifyCatalogInstrument(instrument){const c=configured(),code=M.symbol(instrument?.ticker);if(!c?.catalog||!M.validSymbol(code))return false;const domestic=/^(KR|KOSPI|KOSDAQ|국내)$/.test(instrument.market)||/^\d{6}$/.test(code),markets=domestic?['KOSPI','KOSDAQ','KR_ETC']:['NYSE','NASDAQ','AMEX','US_ETC'];for(const market of markets){try{const found=await c.search(code,market);if(found.result?.some(s=>M.symbol(s.symbol)===code&&s.currency===(domestic?'KRW':'USD')))return true;}catch(_){return false;}}return false;}};sync();
+  window.HaniAssetMarket={sync,analyticsSource,async resolveHoldings(holdings){const c=configured();if(!c)return false;const masters=state.instruments||[],codes=holdings.map(h=>h.ticker||masters.find(i=>i.id===h.instrumentId)?.ticker);try{const info=await c.stocks(codes);return holdings.length>0&&holdings.every(h=>M.resolve(h,masters,info).status==='matched');}catch(_){return false;}},async verifyCatalogInstrument(instrument){const c=configured(),code=M.symbol(instrument?.ticker);if(!c?.catalog||!M.validSymbol(code))return false;const domestic=/^(KR|KOSPI|KOSDAQ|국내)$/.test(instrument.market)||/^\d{6}$/.test(code),markets=domestic?['KOSPI','KOSDAQ','KR_ETC']:['NYSE','NASDAQ','AMEX','US_ETC'];for(const market of markets){try{const found=await c.search(code,market);if(found.result?.some(s=>M.symbol(s.symbol)===code&&s.currency===(domestic?'KRW':'USD')))return true;}catch(_){return false;}}return false;}};sync();
 })();

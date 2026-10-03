@@ -561,7 +561,12 @@
 
     <section id="newsroom" class="view"><div id="newsroomMount"></div></section>
 
-    <section id="asset" class="view"><div class="grid">
+    <section id="asset" class="view">
+      <div class="tabs" data-tabs="assetViewTabs" aria-label="자산 화면 선택">
+        <button class="tab active" type="button" data-panel="assetOverviewPanel">자산 현황</button>
+        <button class="tab" type="button" data-panel="assetPortfolioPanel">내 포트폴리오</button>
+      </div>
+      <div class="panel active" id="assetOverviewPanel"><div class="grid">
       <div class="card full asset-dashboard-card"><div class="sh"><h3>통합 자산 대시보드 · 저장 기록</h3><span class="pill finance">ASSET</span></div><div class="stats" id="assetStats"></div></div>
       <section class="card full" id="assetMarket" aria-label="현재 가격 기준 투자평가">
         <div class="market-toolbar"><div><span class="eyebrow purple">MY ASSETS · MARKET</span><h3>내 자산의 움직임</h3></div><div><label for="marketAccount">계좌 </label><select id="marketAccount"><option value="">전체 계좌</option></select> <button class="btn sm" type="button" id="marketRefresh">가격 새로고침</button></div></div>
@@ -576,7 +581,9 @@
         <h3>보유종목 가격 흐름</h3><div class="market-cards" id="marketCards"></div><button type="button" class="btn sm" id="marketMore" hidden>전체 보기</button>
         <p class="market-note">현재 평가는 저장된 수량 기준 추정치입니다. 거래·입출금·수수료·세금·환율 변동을 자동 반영하지 않습니다. 매수·매도 후에는 기존 자산 업데이트에서 보유정보를 갱신해주세요.</p>
       </section>
-      <div class="card wide"><div class="sh"><h3>계좌별 자산 · 저장 기록</h3></div><div class="account-grid" id="assetAccounts"></div></div><div class="card sidec"><div class="sh"><h3>구성 · 저장 기록</h3></div><div class="list" id="assetComposition"></div></div></div></section>
+      <div class="card wide"><div class="sh"><h3>계좌별 자산 · 저장 기록</h3></div><div class="account-grid" id="assetAccounts"></div></div><div class="card sidec"><div class="sh"><h3>구성 · 저장 기록</h3></div><div class="list" id="assetComposition"></div></div></div></div>
+      <div class="panel" id="assetPortfolioPanel"><section class="card full" id="portfolioLivePreview" aria-label="읽기 전용 포트폴리오 Preview"></section></div>
+    </section>
     <section id="investmentIntake" class="view">
       <div class="grid">
         <div class="card full ledger-import">
@@ -1473,7 +1480,10 @@
 <link rel="stylesheet" href="./hani-asset-market.css?v=2.9.150">
 <meta name="hani-market-catalog" content="enabled">
 <script src="./hani-market-data.js?v=2.9.150"></script>
+<script src="./hani-portfolio-analytics.js?v=live-preview-1"></script>
 <script src="./hani-asset-market-view.js?v=2.9.150"></script>
+<link rel="stylesheet" href="./hani-portfolio-preview.css?v=live-preview-1">
+<script src="./hani-portfolio-preview.js?v=live-preview-1"></script>
 <link rel="stylesheet" href="./hani-context-remote.css?v=2.9.161">
 <script src="./hani-context-remote-v1.js?v=2.9.161"></script>
 <link rel="stylesheet" href="./hani-development-history.css?v=2.9.135">
