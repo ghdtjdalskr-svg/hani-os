@@ -57,6 +57,10 @@
 5. Portfolio 월간 Snapshot과 Data Hub D/E를 진행한다.
 6. Production-only Devlog와 선택적 Drive Vault를 연결한다.
 
+## 진행상황 갱신 규칙
+
+앞으로 위 우선순위의 특정 작업이 Production read-back까지 완료되면 이 상태표에서 해당 작업을 `PRODUCTION`으로 이동하고 완료일·버전·근거를 기록한다. 동시에 다음 미완료 작업의 선행 관계와 우선순위를 갱신해 성민 대표님께 완료 결과와 함께 보고한다.
+
 ## 데이터·배포 영향
 
 이 기록 작업은 문서 전용이다. `hani_os_life_v23`, `2.9.15-safe-baseline-bootstrap`, Supabase, schema, Cloud write, 운영 runtime과 표시 버전을 변경하지 않는다. main 병합·배포도 수행하지 않는다.
