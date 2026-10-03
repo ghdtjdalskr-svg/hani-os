@@ -21,7 +21,7 @@
 
 ## Runtime Integration
 
-- Pure core and isolated store remain separate source modules. A deterministic classic-script bundle loads them through the existing runtime architecture without changing release tooling or adding a second app lifecycle.
+- Pure core and isolated store remain separate source modules. A deterministic classic-script bundle is embedded in a delimited generated region of the existing `hani-main.js` entrypoint, without changing release tooling or adding a second app lifecycle. The first release package exceeded the existing 86-file limit by one; consolidating the same generated code preserves that limit without removing other features.
 - Runtime adapter calls existing `brokerCalc(row).total` and `ledgerCalc(row).jispiT`, never a competing financial calculator.
 - Existing sync completion schedules refresh outside paint. Manual “지표 검증·갱신” uses the same bridge.
 - Visual paint only consumes a current in-memory view. It does not calculate, authenticate or write a generation. Repeated paint/unchanged completion does not republish.
