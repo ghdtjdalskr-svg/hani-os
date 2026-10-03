@@ -2,13 +2,13 @@
 
 - 기준일: 2026-10-04 KST
 - P0 시작 기준선: `f5274cebc24b617ad13df70d354e31504470de70` / v2.9.164
-- 최신 확인 main: `b80c620ae817a469ee13d837656899654da25c74` / v2.9.165
-- Pages 표시 버전: `v2.9.165` 확인
-- 마지막 전체 Production 원장: `v2.9.164`
+- 최신 확인 main: `3a7979d1782eefab539fc0ba441eec0b961ab8e3` / v2.9.166
+- Pages 표시 버전: `v2.9.166` 확인
+- 마지막 전체 Production 원장: `v2.9.166`
 - P0 중앙 기록 정리: `COMPLETED` (2026-10-04)
 - 오래된 PR 정리: PR61·68 `CLOSED / SUPERSEDED` (branch 삭제 없음)
 - 최신 UI layer: `hani-ui-v02992.js?v=2.9.164`
-- 마지막 별도 기능 script: `hani-development-history-v1.js?v=2.9.135`
+- 마지막 별도 기능 script: `hani-development-history-v1.js?v=2.9.166`
 
 ## 현재 읽을 문서
 
@@ -23,7 +23,7 @@
 | Portfolio | `2026-10-04/v2.9.162-portfolio-analytics-release-record.md` | Production 원장 사본 |
 | Character Voice | `2026-10-04/v2.9.163-tab-character-voice-release-record.md` | Production 원장 사본 |
 | Data Hub | `2026-10-04/v2.9.164-data-hub-release-record.md` | Production 원장 사본 |
-| P1 안정성·Portfolio | `2026-10-04-p1-safety-portfolio.md` | Candidate · Asset Input 보호 변경 제외 |
+| P1 안정성·Portfolio | `2026-10-04-p1-safety-portfolio.md` | Production · Asset Input 보호 변경 제외 |
 
 ## 최근 Production 계보
 
@@ -31,6 +31,7 @@
 
 | 날짜 | 버전 | 핵심 변경 | Production SHA |
 |---|---|---|---|
+| 2026-10-04 | v2.9.166 | P1 안정화 재진단·포트폴리오 대비·개발센터 최신화 | `3a7979d` |
 | 2026-10-04 | v2.9.165 | AURA·배포센터 사이드바 메뉴 그룹 조정 | `b80c620` · Pages live, 전체 read-back 미완료 |
 | 2026-10-04 | v2.9.164 | Data Hub Batch A/B/C, Dashboard 6대 지표 | `f5274ce` |
 | 2026-10-04 | v2.9.163 | 탭별 canonical 캐릭터 한마디 | `ad3a041` |
@@ -53,7 +54,6 @@
 
 ## 기록 공백
 
-- 운영 화면의 기존 개발 히스토리는 v2.9.135 이후 릴리스를 아직 표시하지 않는다.
-- v2.9.161, v2.9.162, v2.9.163, v2.9.164의 상세 원장은 개별 release worktree에 있고 현재 `origin/main`에는 포함되지 않았다.
-- 이번 P0는 중앙 인덱스와 상태 분류를 만들며, 운영 화면이나 release runtime은 변경하지 않는다.
-- P0 문서 후보 생성 중 main이 v2.9.165로 이동했다. 변경 파일은 `hani-main.js`, `index.html`이며 이 문서 경로와 겹치지 않는다. 임의 merge/rebase는 하지 않았다.
+- 운영 개발센터는 v2.9.166에서 v2.9.161~166, P0 중앙 기록을 최신순으로 표시한다.
+- v2.9.161~164의 상세 원장은 중앙 사본으로 보존한다.
+- Asset Input canonical contract의 보호 write 변경은 P1에서 수행하지 않았으며 별도 승인이 필요하다.
