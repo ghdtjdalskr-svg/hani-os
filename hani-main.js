@@ -2710,6 +2710,9 @@ function cloudBindAuthEvents(){
   if(!cloudClient)return;
   try{cloudAuthSubscription?.unsubscribe?.()}catch(e){}
   const {data}=cloudClient.auth.onAuthStateChange((event,session)=>{
+    cloudOwnerVerificationEpoch++;
+    cloudOwnerVerification?.invalidate();
+    if($("cloudOwnerVerificationResult"))$("cloudOwnerVerificationResult").textContent="세션 변경: 소유권 검증을 다시 실행해 주세요.";
     if(event==="PASSWORD_RECOVERY"){
       cloudEnterRecoveryMode(session);
       setTimeout(cloudNavigateToRecovery,0);
@@ -3203,6 +3206,41 @@ function cloudBindLifecycle(){
   document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&cloudUser&&cloudAutoSyncReady)cloudSyncCycle("visible")});
 }
 
+let cloudOwnerVerificationEpoch=1;
+let cloudOwnerVerification=null;
+let cloudOwnerVerificationBusy=false;
+async function cloudVerifySourceOwner(){
+  if(cloudOwnerVerificationBusy)return;
+  const out=$("cloudOwnerVerificationResult"),button=$("cloudVerifySourceOwner");
+  if(!out)return;
+  cloudOwnerVerificationBusy=true;if(button)button.disabled=true;
+  out.textContent="읽기 전용 검증 중입니다. 데이터는 변경하지 않습니다.";
+  try{
+    if(!cloudClient||!cloudUser)throw new Error("SESSION_UNAVAILABLE");
+    const {createRuntimeOwnerVerifier}=await import("./js/hani-runtime-owner-verifier.js");
+    cloudOwnerVerification?.invalidate();
+    cloudOwnerVerification=createRuntimeOwnerVerifier({
+      getClient:()=>cloudClient,
+      getContext:()=>cloudUser&&cloudClient?{projectRef:new URL(cloudConfig().url).hostname,
+        userId:cloudUser.id,datasetId:"operational-life-state",sessionEpoch:cloudOwnerVerificationEpoch}:null,
+      getSource:()=>state,comparable:cloudSyncFingerprintState
+    });
+    const result=await cloudOwnerVerification.verify();
+    const verified=result.status==="VERIFIED"&&!!cloudOwnerVerification.getBinding();
+    const reason=result.reason;
+    out.textContent=verified?
+      "VERIFIED · 검증 시점의 Local 원본과 서버 인증 계정의 Cloud 원본이 일치합니다. 이후 변경 시 재검증이 필요합니다. 캐시·Dashboard는 연결하지 않았습니다.":
+      reason==="LOCAL_CLOUD_SOURCE_MISMATCH"?
+      "OWNER_BINDING_BLOCKED · Local과 Cloud 원본이 다릅니다. 어느 쪽도 덮어쓰지 않았습니다.":
+      "OWNER_BINDING_BLOCKED · 계정·세션·원본을 확인하지 못했거나 검증 중 변경되었습니다. 데이터는 변경하지 않았습니다.";
+  }catch{
+    out.textContent="OWNER_BINDING_BLOCKED · 로그인 또는 검증 연결을 확인해 주세요. 데이터는 변경하지 않았습니다.";
+  }finally{
+    // Diagnostic evidence must not become a persistent/runtime binding.
+    cloudOwnerVerification?.invalidate();cloudOwnerVerification=null;
+    cloudOwnerVerificationBusy=false;if(button)button.disabled=!cloudUser;
+  }
+}
 function renderCloudPanel(){
   const pill=$("cloudStatePill"),msg=$("cloudMessage"),grid=$("cloudStatusGrid"),head=$("cloudHeaderState");
   const bridge=$("cloudBridgeCard");
@@ -3251,6 +3289,7 @@ function renderCloudPanel(){
   if($("cloudFirstCopy"))$("cloudFirstCopy").disabled=!cloudUser||!cloudHasMeaningfulLocalData(state);
   if($("cloudRestore"))$("cloudRestore").disabled=!cloudUser;
   if($("cloudCompare"))$("cloudCompare").disabled=!cloudUser;
+  if($("cloudVerifySourceOwner"))$("cloudVerifySourceOwner").disabled=!cloudUser||cloudOwnerVerificationBusy;
 }
 async function cloudFetchMeta({silent=false}={}){
   if(!cloudClient||!cloudUser)return null;
@@ -3517,6 +3556,7 @@ function bindCloudBridgeControls(){
   if($("cloudCancelRecovery"))$("cloudCancelRecovery").onclick=cloudCancelRecovery;
   if($("cloudLogout"))$("cloudLogout").onclick=cloudLogout;
   if($("cloudSyncNow"))$("cloudSyncNow").onclick=cloudManualSync;
+  if($("cloudVerifySourceOwner"))$("cloudVerifySourceOwner").onclick=cloudVerifySourceOwner;
   if($("cloudFirstCopy"))$("cloudFirstCopy").onclick=cloudFirstCopy;
   if($("cloudRestore"))$("cloudRestore").onclick=cloudRestoreToLocal;
   if($("cloudCompare"))$("cloudCompare").onclick=cloudCompare;
@@ -3896,7 +3936,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.158";
+const HANI_DISPLAY_VERSION="2.9.159";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
