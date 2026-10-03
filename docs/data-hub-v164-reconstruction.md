@@ -19,6 +19,10 @@
 
 ## Data preservation and rollback
 
+## Mobile quality disclosure correction
+
+Arin found the STEP zero-input ambiguity disclosure truncated at 390px. Only `#homeExerciseAvg` now wraps its existing canonical text; no metric, data or event path changed. Fresh light/dark synthetic screenshots show the complete disclosure and Arin confirmed readability. The previous runtime PR155/package is obsolete and must not merge. This correction requires a new frozen candidate/package and affected release gates; actual-account ownership QA remains unverified.
+
 Source data remains authoritative; only verified derived IndexedDB generations may be published. No restore, deletion, schema, source write or Cloud mutation semantics added. Owner mismatch blocks cache activation. Returning to v163 runtime requires no source migration; derived cache can be ignored/regenerated.
 
 After successful deployment, save the actual PR/candidate/main/Pages/JS/function evidence in `docs/release-records/2026-10-04-v2.9.164-data-hub.md`, without credentials or original user records. Do not mark this preparation as deployed.
