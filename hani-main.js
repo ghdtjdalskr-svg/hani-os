@@ -2710,6 +2710,9 @@ function cloudBindAuthEvents(){
   if(!cloudClient)return;
   try{cloudAuthSubscription?.unsubscribe?.()}catch(e){}
   const {data}=cloudClient.auth.onAuthStateChange((event,session)=>{
+    cloudOwnerVerificationEpoch++;
+    cloudOwnerVerification?.invalidate();
+    if($("cloudOwnerVerificationResult"))$("cloudOwnerVerificationResult").textContent="세션 변경: 소유권 검증을 다시 실행해 주세요.";
     if(event==="PASSWORD_RECOVERY"){
       cloudEnterRecoveryMode(session);
       setTimeout(cloudNavigateToRecovery,0);
@@ -3203,6 +3206,134 @@ function cloudBindLifecycle(){
   document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&cloudUser&&cloudAutoSyncReady)cloudSyncCycle("visible")});
 }
 
+function cloudCreateOwnerBindingGate({getContext, getSource, verifyUser, readOwnedSource, comparable, onInvalidate = () => {}}) {
+  const stable = value => {
+    if (Array.isArray(value)) return '[' + value.map(stable).join(',') + ']';
+    if (value && typeof value === 'object') return '{' + Object.keys(value).sort()
+      .map(key => JSON.stringify(key) + ':' + stable(value[key])).join(',') + '}';
+    return JSON.stringify(value) ?? 'null';
+  };
+
+  if (![getContext, getSource, verifyUser, readOwnedSource, comparable, onInvalidate].every(value => typeof value === 'function'))
+    throw new TypeError('Read-only owner dependencies required');
+  let epoch = 0, binding = null, verifiedSource = null, verifiedContext = null, verifiedContent = null;
+  const invalidate = () => { epoch++; binding = null; verifiedSource = null; verifiedContext = null; verifiedContent = null; onInvalidate(); };
+  const signature = context => context && context.userId && context.projectRef && context.datasetId && context.sessionEpoch &&
+    stable({userId: context.userId, projectRef: context.projectRef, datasetId: context.datasetId, sessionEpoch: context.sessionEpoch});
+  function getBinding() {
+    if (!binding) return null;
+    try {
+      if (signature(getContext()) !== verifiedContext || getSource() !== verifiedSource ||
+          stable(comparable(structuredClone(getSource()))) !== verifiedContent) { invalidate(); return null; }
+    } catch { invalidate(); return null; }
+    return {...binding};
+  }
+  async function verify() {
+    invalidate(); const token = epoch;
+    try {
+      const context = getContext(), contextSignature = signature(context), source = getSource();
+      if (!contextSignature || !source || typeof source !== 'object') throw new Error('SESSION_OR_SOURCE_UNAVAILABLE');
+      // Capture the source before any asynchronous read. Do not normalize/migrate it.
+      const initial = stable(comparable(structuredClone(source)));
+      const check = () => {
+        if (token !== epoch || signature(getContext()) !== contextSignature || getSource() !== source ||
+            stable(comparable(structuredClone(getSource()))) !== initial) throw new Error('CONTEXT_OR_SOURCE_CHANGED');
+      };
+      const user = await verifyUser(); check();
+      if (!user?.id || user.id !== context.userId) throw new Error('SERVER_USER_MISMATCH');
+      // Must return a SELECT result under the same authenticated session, not admin/MCP state.
+      const remote = await readOwnedSource(user.id); check();
+      if (!remote || remote.user_id !== user.id || !remote.state || !Number.isInteger(remote.revision) || remote.revision < 0)
+        throw new Error('OWNED_SOURCE_UNAVAILABLE');
+      if (stable(comparable(structuredClone(remote.state))) !== initial) throw new Error('LOCAL_CLOUD_SOURCE_MISMATCH');
+      verifiedContext = contextSignature; verifiedSource = source; verifiedContent = initial;
+      binding = Object.freeze({projectRef: context.projectRef, userId: user.id, sourceOwnerId: remote.user_id,
+        sourceOwnerVerified: true, datasetId: context.datasetId, sessionEpoch: context.sessionEpoch});
+      return {status: 'VERIFIED', binding: {...binding}, evidence: {revision: remote.revision, method: 'server-user-owned-row-source-equality'}};
+    } catch (error) {
+      // An older in-flight attempt must not invalidate a newer successful session.
+      if (token === epoch) invalidate();
+      return {status: 'OWNER_BINDING_BLOCKED', reason: error.message, binding: null};
+    }
+  }
+  return {verify, getBinding, invalidate};
+}
+
+function cloudCreateRuntimeOwnerVerifier({getClient, getContext, getSource, comparable, onInvalidate}) {
+  if (typeof getClient !== 'function') throw new TypeError('Existing Cloud client required');
+  let capturedClient = null;
+  const requireClient = () => {
+    if (!capturedClient || getClient() !== capturedClient) throw new Error('CLOUD_CLIENT_CHANGED');
+    return capturedClient;
+  };
+  const gate = cloudCreateOwnerBindingGate({getContext, getSource, comparable, onInvalidate,
+    verifyUser: async () => {
+      const client = requireClient();
+      const {data, error} = await client.auth.getUser();
+      requireClient();
+      if (error) throw new Error('SERVER_USER_UNAVAILABLE');
+      return data?.user;
+    },
+    readOwnedSource: async userId => {
+      const client = requireClient();
+      const {data, error} = await client.from('hani_state')
+        .select('user_id,state,revision').eq('user_id', userId).limit(1);
+      requireClient();
+      if (error) throw new Error('OWNED_SOURCE_UNAVAILABLE');
+      return data?.[0] ?? null;
+    }
+  });
+  let busy = false;
+  return {
+    async verify() {
+      if (busy) return {status: 'OWNER_BINDING_BLOCKED', reason: 'VERIFICATION_BUSY', binding: null};
+      busy = true;
+      capturedClient = getClient();
+      try { return await gate.verify(); }
+      finally { busy = false; }
+    },
+    getBinding() {
+      if (getClient() !== capturedClient) { gate.invalidate(); return null; }
+      return gate.getBinding();
+    },
+    invalidate: gate.invalidate
+  };
+}
+
+let cloudOwnerVerificationEpoch=1;
+let cloudOwnerVerification=null;
+let cloudOwnerVerificationBusy=false;
+async function cloudVerifySourceOwner(){
+  if(cloudOwnerVerificationBusy)return;
+  const out=$("cloudOwnerVerificationResult"),button=$("cloudVerifySourceOwner");
+  if(!out)return;
+  cloudOwnerVerificationBusy=true;if(button)button.disabled=true;
+  out.textContent="읽기 전용 검증 중입니다. 데이터는 변경하지 않습니다.";
+  try{
+    if(!cloudClient||!cloudUser)throw new Error("SESSION_UNAVAILABLE");
+    cloudOwnerVerification?.invalidate();
+    cloudOwnerVerification=cloudCreateRuntimeOwnerVerifier({
+      getClient:()=>cloudClient,
+      getContext:()=>cloudUser&&cloudClient?{projectRef:new URL(cloudConfig().url).hostname,
+        userId:cloudUser.id,datasetId:"operational-life-state",sessionEpoch:cloudOwnerVerificationEpoch}:null,
+      getSource:()=>state,comparable:cloudSyncFingerprintState
+    });
+    const result=await cloudOwnerVerification.verify();
+    const verified=result.status==="VERIFIED"&&!!cloudOwnerVerification.getBinding();
+    const reason=result.reason;
+    out.textContent=verified?
+      "VERIFIED · 검증 시점의 Local 원본과 서버 인증 계정의 Cloud 원본이 일치합니다. 이후 변경 시 재검증이 필요합니다. 캐시·Dashboard는 연결하지 않았습니다.":
+      reason==="LOCAL_CLOUD_SOURCE_MISMATCH"?
+      "OWNER_BINDING_BLOCKED · Local과 Cloud 원본이 다릅니다. 어느 쪽도 덮어쓰지 않았습니다.":
+      "OWNER_BINDING_BLOCKED · 계정·세션·원본을 확인하지 못했거나 검증 중 변경되었습니다. 데이터는 변경하지 않았습니다.";
+  }catch{
+    out.textContent="OWNER_BINDING_BLOCKED · 로그인 또는 검증 연결을 확인해 주세요. 데이터는 변경하지 않았습니다.";
+  }finally{
+    // Diagnostic evidence must not become a persistent/runtime binding.
+    cloudOwnerVerification?.invalidate();cloudOwnerVerification=null;
+    cloudOwnerVerificationBusy=false;if(button)button.disabled=!cloudUser;
+  }
+}
 function renderCloudPanel(){
   const pill=$("cloudStatePill"),msg=$("cloudMessage"),grid=$("cloudStatusGrid"),head=$("cloudHeaderState");
   const bridge=$("cloudBridgeCard");
@@ -3251,6 +3382,7 @@ function renderCloudPanel(){
   if($("cloudFirstCopy"))$("cloudFirstCopy").disabled=!cloudUser||!cloudHasMeaningfulLocalData(state);
   if($("cloudRestore"))$("cloudRestore").disabled=!cloudUser;
   if($("cloudCompare"))$("cloudCompare").disabled=!cloudUser;
+  if($("cloudVerifySourceOwner"))$("cloudVerifySourceOwner").disabled=!cloudUser||cloudOwnerVerificationBusy;
 }
 async function cloudFetchMeta({silent=false}={}){
   if(!cloudClient||!cloudUser)return null;
@@ -3517,6 +3649,7 @@ function bindCloudBridgeControls(){
   if($("cloudCancelRecovery"))$("cloudCancelRecovery").onclick=cloudCancelRecovery;
   if($("cloudLogout"))$("cloudLogout").onclick=cloudLogout;
   if($("cloudSyncNow"))$("cloudSyncNow").onclick=cloudManualSync;
+  if($("cloudVerifySourceOwner"))$("cloudVerifySourceOwner").onclick=cloudVerifySourceOwner;
   if($("cloudFirstCopy"))$("cloudFirstCopy").onclick=cloudFirstCopy;
   if($("cloudRestore"))$("cloudRestore").onclick=cloudRestoreToLocal;
   if($("cloudCompare"))$("cloudCompare").onclick=cloudCompare;
@@ -3896,7 +4029,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.158";
+const HANI_DISPLAY_VERSION="2.9.159";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
