@@ -13,6 +13,7 @@
 // - Core HANI invariants are checked before a release can be staged.
 
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { resolveRuntimeClosure, isTextArtifact } from "./runtime-closure.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -26,12 +27,12 @@ const BASE_BRANCH = "main";
 const TARGET_PATH = "index.html";
 const RELEASE_PREFIX = "hani/release-";
 const MAX_HTML_BYTES = 9_500_000;
-const MAX_RELEASE_FILES = 81;
-const MAX_RELEASE_TOTAL_BYTES = 12_000_000;
+const MAX_RELEASE_FILES = 82;
+const MAX_RELEASE_TOTAL_BYTES = 14_000_000;
 const MAX_RELEASE_SINGLE_FILE_BYTES = 5_000_000;
 const MODULAR_QA_PROFILE = "HINA_RELEASE_GATE_v0.2_MULTI_FILE";
-const GATE_CONTRACT_VERSION = "2.0.0";
-const GATE_CONTRACT_SHA256 = "e74213454c75488314b07df6bacb633716bb8e253ac95b67915954e3699e86d5";
+const GATE_CONTRACT_VERSION = "2.0.1";
+const GATE_CONTRACT_SHA256 = "ac11fedd49248ea63dac5fcd6d718225b487c6a05f6f67a76d8c0898064ff943";
 const LEGACY_MODULAR_EXTRAS_BY_PACKAGE: Record<string, string[]> = {
   "afb69591840e54938b2c65c292769197ec0fba9043bd3eb2d5d93f776368ee51": ["hani-ui-v02977.js"],
 };
@@ -99,6 +100,15 @@ function utf8ToBase64(text: string): string {
     binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
   }
   return btoa(binary);
+}
+
+// Avoid the per-character iterator/callback allocations of Uint8Array.from.
+// Keep atob's existing validation and exact decoded bytes for all gate hashes.
+function base64ToBytes(content: string): Uint8Array {
+  const binary = atob(content);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return bytes;
 }
 
 async function sha256Hex(text: string): Promise<string> {
@@ -304,17 +314,28 @@ async function githubRuntimeCombined(token: string, ref = BASE_BRANCH): Promise<
   const stylePaths = localStylePaths(indexHtml);
   const styles: string[] = [];
   const scripts: string[] = [];
-  for (const path of stylePaths) styles.push(await githubRawFile(token, path, ref));
-  for (const path of scriptPaths) scripts.push(await githubRawFile(token, path, ref));
+  for (let i = 0; i < stylePaths.length; i += 4) styles.push(...await Promise.all(stylePaths.slice(i, i + 4).map(path => githubRawFile(token, path, ref))));
+  for (let i = 0; i < scriptPaths.length; i += 4) scripts.push(...await Promise.all(scriptPaths.slice(i, i + 4).map(path => githubRawFile(token, path, ref))));
   return { indexHtml, runtimeText: [indexHtml, ...styles, ...scripts].join("\n/* HANI MODULAR RUNTIME BOUNDARY */\n"), scriptPaths, stylePaths };
 }
 
 async function runtimePackagePaths(token: string, ref: string): Promise<string[]> {
-  const indexHtml = await githubRawContent(token, ref);
-  const paths = [TARGET_PATH, ...localStylePaths(indexHtml), ...localScriptPaths(indexHtml)]
-    .map(normalizeReleasePath)
-    .filter(Boolean);
-  const unique = [...new Set(paths)].sort();
+  // Use the same recursive reference closure as the frozen package producer.
+  // A supplied manifest is never trusted to extend the runtime allowlist.
+  const tree = await githubFetch(`/repos/${GITHUB_OWNER}/${GITHUB_REPO}/git/trees/${encodeURIComponent(ref)}?recursive=1`, token);
+  if (tree.truncated || !Array.isArray(tree.tree)) throw new Error("런타임 파일 트리를 완전히 확인하지 못했습니다.");
+  const paths = new Set<string>(tree.tree.filter((entry: any) => entry.type === "blob" && isAllowedReleasePath(entry.path)).map((entry: any) => entry.path));
+  const cache = new Map<string, Uint8Array>();
+  const textPaths = [...paths].filter(isTextArtifact);
+  for (let i = 0; i < textPaths.length; i += 4) {
+    await Promise.all(textPaths.slice(i, i + 4).map(async path => cache.set(path, await githubRawBytes(token, path, ref))));
+  }
+  const closure = await resolveRuntimeClosure({
+    exists: (path: string) => paths.has(path),
+    read: (path: string) => cache.has(path) ? new TextDecoder().decode(cache.get(path)) : "",
+  });
+  if (closure.missing.length) throw new Error("런타임에서 참조하는 파일이 누락되었습니다.");
+  const unique = closure.files;
   if (!unique.length || unique[0] !== TARGET_PATH && !unique.includes(TARGET_PATH)) throw new Error("모듈 런타임 패키지에 index.html이 없습니다.");
   if (unique.length > MAX_RELEASE_FILES) throw new Error(`런타임 패키지 파일 수가 허용 범위(${MAX_RELEASE_FILES})를 초과했습니다.`);
   const invalid = unique.filter((path) => !isAllowedReleasePath(path));
@@ -328,13 +349,17 @@ async function packageSnapshot(token: string, ref: string, paths: string[]) {
   if (unique.length > MAX_RELEASE_FILES) throw new Error(`패키지 파일 수가 허용 범위(${MAX_RELEASE_FILES})를 초과했습니다.`);
   const entries: Array<{ path: string; bytes: number; sha256: string }> = [];
   let totalBytes = 0;
-  for (const path of unique) {
-    if (!isAllowedReleasePath(path)) throw new Error(`허용되지 않은 release 경로입니다: ${path}`);
-    const bytes = await githubRawBytes(token, path, ref);
+  if (unique.some(path => !isAllowedReleasePath(path))) throw new Error("허용되지 않은 release 경로입니다.");
+  for (let i = 0; i < unique.length; i += 4) {
+    const batch = unique.slice(i, i + 4);
+    const batchBytes = await Promise.all(batch.map(path => githubRawBytes(token, path, ref)));
+    for (let j = 0; j < batch.length; j++) {
+    const path = batch[j], bytes = batchBytes[j];
     if (bytes.byteLength > MAX_RELEASE_SINGLE_FILE_BYTES) throw new Error(`단일 파일 크기 제한 초과: ${path} (${bytes.byteLength} bytes)`);
     totalBytes += bytes.byteLength;
     if (totalBytes > MAX_RELEASE_TOTAL_BYTES) throw new Error(`패키지 총 크기가 허용 범위(${MAX_RELEASE_TOTAL_BYTES})를 초과했습니다.`);
     entries.push({ path, bytes: bytes.byteLength, sha256: await sha256Bytes(bytes) });
+    }
   }
   const canonical = entries.map((e) => `${e.path}\t${e.bytes}\t${e.sha256}`).join("\n");
   return { entries, total_bytes: totalBytes, package_sha256: await sha256Hex(canonical) };
@@ -501,7 +526,7 @@ async function updateIndexOnBranch(token: string, branch: string, html: string, 
 async function putTextFileOnBranch(token: string, branch: string, pathValue: string, content: string, message: string, encoding = "utf8") {
   const path = normalizeReleasePath(pathValue);
   if (!isAllowedReleasePath(path)) throw new Error(`허용되지 않은 release 경로입니다: ${path}`);
-  const bytes = encoding === "base64" ? Uint8Array.from(atob(content), c => c.charCodeAt(0)) : new TextEncoder().encode(content);
+  const bytes = encoding === "base64" ? base64ToBytes(content) : new TextEncoder().encode(content);
   if (bytes.byteLength > MAX_RELEASE_SINGLE_FILE_BYTES) throw new Error(`단일 파일 크기 제한 초과: ${path} (${bytes.byteLength} bytes)`);
 
   const apiPath = `/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path.split("/").map(encodeURIComponent).join("/")}`;
@@ -541,7 +566,7 @@ function suppliedPackageSnapshot(files: Array<{ path: string; content: string; e
   if (!paths.includes(TARGET_PATH)) throw new Error("모듈 패키지에 index.html이 없습니다.");
 
   const entries = normalized.map((f) => {
-    const bytes = f.encoding === "base64" ? Uint8Array.from(atob(f.content), c => c.charCodeAt(0)) : new TextEncoder().encode(f.content);
+    const bytes = f.encoding === "base64" ? base64ToBytes(f.content) : new TextEncoder().encode(f.content);
     if (bytes.byteLength > MAX_RELEASE_SINGLE_FILE_BYTES) throw new Error(`단일 파일 크기 제한 초과: ${f.path} (${bytes.byteLength} bytes)`);
     return { path: f.path, content: f.content, encoding: f.encoding, bytes };
   });
@@ -1063,7 +1088,19 @@ Deno.serve(async (req) => {
       try {
         await createBranch(githubToken, branch, mainCommitSha);
         branchCreated = true;
+        const mainTree = await githubFetch(`/repos/${GITHUB_OWNER}/${GITHUB_REPO}/git/trees/${mainCommitSha}?recursive=1`, githubToken);
+        if (mainTree.truncated || !Array.isArray(mainTree.tree)) throw new Error("운영 파일 트리를 완전히 확인하지 못했습니다.");
+        const mainBlobs = new Map(mainTree.tree.filter((entry: any) => entry.type === "blob").map((entry: any) => [entry.path, entry.sha]));
         for (const file of [...files].sort((a,b) => a.path.localeCompare(b.path))) {
+          // Git blob identity is only an upload optimization; full SHA-256
+          // package read-back and both independent HINA gates remain below.
+          const bytes = supplied.entries.find(entry => entry.path === file.path)!.bytes;
+          const header = new TextEncoder().encode(`blob ${bytes.byteLength}\0`);
+          const blob = new Uint8Array(header.length + bytes.length);
+          blob.set(header); blob.set(bytes, header.length);
+          const digest = await crypto.subtle.digest("SHA-1", blob);
+          const blobSha = [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, "0")).join("");
+          if (mainBlobs.get(file.path) === blobSha) continue;
           await putTextFileOnBranch(githubToken, branch, file.path, file.content, `HANI OS modular release: ${label || file.path}`, file.encoding);
         }
 
