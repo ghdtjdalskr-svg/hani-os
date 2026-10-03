@@ -5,6 +5,8 @@
 - 최신 확인 main: `b80c620ae817a469ee13d837656899654da25c74` / v2.9.165
 - Pages 표시 버전: `v2.9.165` 확인
 - 마지막 전체 Production 원장: `v2.9.164`
+- P0 중앙 기록 정리: `COMPLETED` (2026-10-04)
+- 오래된 PR 정리: PR61·68 `CLOSED / SUPERSEDED` (branch 삭제 없음)
 - 최신 UI layer: `hani-ui-v02992.js?v=2.9.164`
 - 마지막 별도 기능 script: `hani-development-history-v1.js?v=2.9.135`
 
@@ -13,7 +15,7 @@
 | 분류 | 문서 | 상태 |
 |---|---|---|
 | 전체 상태 | `2026-10-04/p0-project-status-v2.9.165.md` | 현재 기준 |
-| 오래된 후보 | `2026-10-04/pr61-pr68-triage-v2.9.165.md` | PR61·68 분류 완료 |
+| 오래된 후보 | `2026-10-04/pr61-pr68-triage-v2.9.165.md` | PR61·68 분류·종료 완료 |
 | main drift | `2026-10-04/v2.9.165-aura-menu-status.md` | Pages live / 기능 read-back 미완료 |
 | Boardroom | `2026-10-04/boardroom-participant-routing-v2.9.150.md` | Production |
 | Devlog | `2026-10-04/hani-devlog-automation-foundation.md` | Candidate / live test 미완료 |
