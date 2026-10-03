@@ -32,11 +32,11 @@ try{
       cloudClient={auth:{getUser:async()=>({data:{user:{id:'synthetic-owner'}},error:null})},from:()=>({select:()=>({eq:()=>({limit:async()=>({data:[{user_id:'synthetic-owner',state:structuredClone(state),revision:1}],error:null})})})})};
       renderCloudPanel();
     });
-    const before=await page.evaluate(()=>localStorage.getItem('hani_os_life_v23'));
+    const before=await page.evaluate(()=>localStorage.getItem(STORAGE_KEY));
     const errorsBefore=errors.length;
     await page.locator('#cloudVerifySourceOwner').click();
     await page.waitForFunction(()=>document.querySelector('#cloudOwnerVerificationResult').textContent.startsWith('VERIFIED'));
-    assert.equal(await page.evaluate(()=>localStorage.getItem('hani_os_life_v23')),before);
+    assert.equal(await page.evaluate(()=>localStorage.getItem(STORAGE_KEY)),before);
     assert.equal(await page.evaluate(()=>cloudOwnerVerification),null);
     assert.equal((await page.evaluate(()=>indexedDB.databases())).some(db=>db.name==='hani_data_hub_v1'),false);
     assert.equal(errors.length,errorsBefore);

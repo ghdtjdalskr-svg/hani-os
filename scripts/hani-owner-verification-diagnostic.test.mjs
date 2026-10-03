@@ -1,19 +1,18 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-import * as bridge from '../js/hani-runtime-owner-verifier.js';
 
 const main=fs.readFileSync(new URL('../hani-main.js',import.meta.url),'utf8');
-const start=main.indexOf('let cloudOwnerVerificationEpoch=1;');
+const start=main.indexOf('function cloudCreateOwnerBindingGate(');
 const end=main.indexOf('function renderCloudPanel(){',start);
 assert.ok(start>0&&end>start);
-const code=main.slice(start,end).replace('await import("./js/hani-runtime-owner-verifier.js")','bridge');
+const code=main.slice(start,end);
 let count=0;
 for(const mode of ['match','mismatch','auth-error','read-error','logout','source-change','client-change']){
   const source={books:[],body:[{weight:70}],meta:{saveAt:'local'}};
   const before=JSON.stringify(source),elements={cloudOwnerVerificationResult:{textContent:''},cloudVerifySourceOwner:{disabled:false}};
   const calls=[];
-  const context=vm.createContext({bridge,structuredClone,URL,state:source,cloudUser:{id:'fixture-a'},
+  const context=vm.createContext({structuredClone,URL,state:source,cloudUser:{id:'fixture-a'},
     $:id=>elements[id],cloudConfig:()=>({url:'https://fixture.supabase.co'}),
     cloudSyncFingerprintState:value=>{const copy=structuredClone(value);delete copy.meta;return copy;}});
   context.cloudClient={auth:{getUser:async()=>({data:{user:{id:'fixture-a'}},error:mode==='auth-error'})},

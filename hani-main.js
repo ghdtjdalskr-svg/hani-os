@@ -3206,6 +3206,100 @@ function cloudBindLifecycle(){
   document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&cloudUser&&cloudAutoSyncReady)cloudSyncCycle("visible")});
 }
 
+function cloudCreateOwnerBindingGate({getContext, getSource, verifyUser, readOwnedSource, comparable, onInvalidate = () => {}}) {
+  const stable = value => {
+    if (Array.isArray(value)) return '[' + value.map(stable).join(',') + ']';
+    if (value && typeof value === 'object') return '{' + Object.keys(value).sort()
+      .map(key => JSON.stringify(key) + ':' + stable(value[key])).join(',') + '}';
+    return JSON.stringify(value) ?? 'null';
+  };
+
+  if (![getContext, getSource, verifyUser, readOwnedSource, comparable, onInvalidate].every(value => typeof value === 'function'))
+    throw new TypeError('Read-only owner dependencies required');
+  let epoch = 0, binding = null, verifiedSource = null, verifiedContext = null, verifiedContent = null;
+  const invalidate = () => { epoch++; binding = null; verifiedSource = null; verifiedContext = null; verifiedContent = null; onInvalidate(); };
+  const signature = context => context && context.userId && context.projectRef && context.datasetId && context.sessionEpoch &&
+    stable({userId: context.userId, projectRef: context.projectRef, datasetId: context.datasetId, sessionEpoch: context.sessionEpoch});
+  function getBinding() {
+    if (!binding) return null;
+    try {
+      if (signature(getContext()) !== verifiedContext || getSource() !== verifiedSource ||
+          stable(comparable(structuredClone(getSource()))) !== verifiedContent) { invalidate(); return null; }
+    } catch { invalidate(); return null; }
+    return {...binding};
+  }
+  async function verify() {
+    invalidate(); const token = epoch;
+    try {
+      const context = getContext(), contextSignature = signature(context), source = getSource();
+      if (!contextSignature || !source || typeof source !== 'object') throw new Error('SESSION_OR_SOURCE_UNAVAILABLE');
+      // Capture the source before any asynchronous read. Do not normalize/migrate it.
+      const initial = stable(comparable(structuredClone(source)));
+      const check = () => {
+        if (token !== epoch || signature(getContext()) !== contextSignature || getSource() !== source ||
+            stable(comparable(structuredClone(getSource()))) !== initial) throw new Error('CONTEXT_OR_SOURCE_CHANGED');
+      };
+      const user = await verifyUser(); check();
+      if (!user?.id || user.id !== context.userId) throw new Error('SERVER_USER_MISMATCH');
+      // Must return a SELECT result under the same authenticated session, not admin/MCP state.
+      const remote = await readOwnedSource(user.id); check();
+      if (!remote || remote.user_id !== user.id || !remote.state || !Number.isInteger(remote.revision) || remote.revision < 0)
+        throw new Error('OWNED_SOURCE_UNAVAILABLE');
+      if (stable(comparable(structuredClone(remote.state))) !== initial) throw new Error('LOCAL_CLOUD_SOURCE_MISMATCH');
+      verifiedContext = contextSignature; verifiedSource = source; verifiedContent = initial;
+      binding = Object.freeze({projectRef: context.projectRef, userId: user.id, sourceOwnerId: remote.user_id,
+        sourceOwnerVerified: true, datasetId: context.datasetId, sessionEpoch: context.sessionEpoch});
+      return {status: 'VERIFIED', binding: {...binding}, evidence: {revision: remote.revision, method: 'server-user-owned-row-source-equality'}};
+    } catch (error) {
+      // An older in-flight attempt must not invalidate a newer successful session.
+      if (token === epoch) invalidate();
+      return {status: 'OWNER_BINDING_BLOCKED', reason: error.message, binding: null};
+    }
+  }
+  return {verify, getBinding, invalidate};
+}
+
+function cloudCreateRuntimeOwnerVerifier({getClient, getContext, getSource, comparable, onInvalidate}) {
+  if (typeof getClient !== 'function') throw new TypeError('Existing Cloud client required');
+  let capturedClient = null;
+  const requireClient = () => {
+    if (!capturedClient || getClient() !== capturedClient) throw new Error('CLOUD_CLIENT_CHANGED');
+    return capturedClient;
+  };
+  const gate = cloudCreateOwnerBindingGate({getContext, getSource, comparable, onInvalidate,
+    verifyUser: async () => {
+      const client = requireClient();
+      const {data, error} = await client.auth.getUser();
+      requireClient();
+      if (error) throw new Error('SERVER_USER_UNAVAILABLE');
+      return data?.user;
+    },
+    readOwnedSource: async userId => {
+      const client = requireClient();
+      const {data, error} = await client.from('hani_state')
+        .select('user_id,state,revision').eq('user_id', userId).limit(1);
+      requireClient();
+      if (error) throw new Error('OWNED_SOURCE_UNAVAILABLE');
+      return data?.[0] ?? null;
+    }
+  });
+  let busy = false;
+  return {
+    async verify() {
+      if (busy) return {status: 'OWNER_BINDING_BLOCKED', reason: 'VERIFICATION_BUSY', binding: null};
+      busy = true;
+      capturedClient = getClient();
+      try { return await gate.verify(); }
+      finally { busy = false; }
+    },
+    getBinding() {
+      if (getClient() !== capturedClient) { gate.invalidate(); return null; }
+      return gate.getBinding();
+    },
+    invalidate: gate.invalidate
+  };
+}
+
 let cloudOwnerVerificationEpoch=1;
 let cloudOwnerVerification=null;
 let cloudOwnerVerificationBusy=false;
@@ -3217,9 +3311,8 @@ async function cloudVerifySourceOwner(){
   out.textContent="읽기 전용 검증 중입니다. 데이터는 변경하지 않습니다.";
   try{
     if(!cloudClient||!cloudUser)throw new Error("SESSION_UNAVAILABLE");
-    const {createRuntimeOwnerVerifier}=await import("./js/hani-runtime-owner-verifier.js");
     cloudOwnerVerification?.invalidate();
-    cloudOwnerVerification=createRuntimeOwnerVerifier({
+    cloudOwnerVerification=cloudCreateRuntimeOwnerVerifier({
       getClient:()=>cloudClient,
       getContext:()=>cloudUser&&cloudClient?{projectRef:new URL(cloudConfig().url).hostname,
         userId:cloudUser.id,datasetId:"operational-life-state",sessionEpoch:cloudOwnerVerificationEpoch}:null,

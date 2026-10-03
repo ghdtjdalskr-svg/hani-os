@@ -20,14 +20,14 @@
 - Actual diagnostic-function synthetic fixtures: 7 PASS (match/mismatch/auth/read error/logout/source change/client change); original source unchanged, result contains no private fixture ID/data, no binding retained.
 - Desktop 1440/mobile 390 UI fixture PASS: original button/result markup, disabled before login, aria-live, no overflow, no storage. This is NOT a full-app UI review or representative preview.
 - Monthly Report aggregation regression PASS; hani-main.js syntax PASS.
-- Actual complete-runtime synthetic browser test PASS at 1440/390 with Porcelain Cream/Midnight Black: canonical button binding and dynamic imports executed, owned source equality displayed VERIFIED, protected storage key unchanged, no Data Hub DB, no retained binding, new JS errors=0. External services were blocked; this is not a real user session/Production read-back. Auth failure/change cases remain function-level fixtures rather than complete-browser auth-provider tests.
+- Actual complete-runtime synthetic browser test PASS after packaging correction at 1440/390 with Porcelain Cream/Midnight Black covers canonical button binding, owned source equality, protected storage key unchanged, no Data Hub DB, no retained binding and new JS errors=0. External services are blocked; this is not a real user session/Production read-back. Auth failure/change cases remain function-level fixtures rather than complete-browser auth-provider tests. The storage assertion reads the app's existing STORAGE_KEY rather than defining a second hardcoded key; package gate separately checks the protected constant against baseline.
 - Protection: existing storage/Cloud write bodies and internal version intentionally unchanged. Final package/preflight evidence must be produced against the frozen candidate, not inferred from these tests.
 
 ## Remaining gates / limitations
 
 - Real representative same-origin Local equality remains unverified. Real auth-provider logout/token-change transitions require final auth review; current session-change coverage is synthetic.
 - Frozen package/One-Pass and independent final HINA are release requirements. Script-generated HINA-equivalent evidence is not independent review. Do not call this Production-ready without remaining evidence and representative preview.
-- New script paths use existing js/*.js release allowlist; release tooling was not modified to admit them. Runtime closure must include both modules.
+- First frozen candidate f3175aa was BLOCKED: 84 files exceeded max_files=82, and the classic-JS parser rejected ESM exports. Corrective candidate embeds the prepared pure gate/bridge in the existing hani-main.js owner section; no extra runtime file, import or tool/limit changes. Re-freeze and repeat affected checks; do not reuse the failed candidate's gate evidence.
 - No push/PR/main merge/Production deploy authorized or performed in this preparation. Representative Production authorization is required to run this new action on their operating origin.
 - Rollback: return to previous approved runtime/remove diagnostic action/module references. No source/cache cleanup because this diagnostic creates neither.
 
