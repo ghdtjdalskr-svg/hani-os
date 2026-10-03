@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
 const root=new URL('../',import.meta.url);
 const current=fs.readFileSync(new URL('hani-main.js',root),'utf8');
-const base=execFileSync('git',['show','85c8110ee310c1d0cb4aa3cdbf3275a07e5593e6:hani-main.js'],{cwd:root,encoding:'utf8',maxBuffer:8*1024*1024});
+const base=execFileSync('git',['show','ad3a04103f32e4e5b1a75f8a0b7f01a275634f88:hani-main.js'],{cwd:root,encoding:'utf8',maxBuffer:8*1024*1024});
 // These existing multiline declarations end with an unindented closing brace.
 // Fail rather than silently reuse evidence if their declaration shape changes.
 const extract=(code,name)=>{
