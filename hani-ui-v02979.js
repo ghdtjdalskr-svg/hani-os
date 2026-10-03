@@ -267,6 +267,7 @@
   }
 
   function renderLifeMarket() {
+    if(q('#dataHubStatus'))return; // Do not substitute prior records or legacy targets.
     const root=q('#home'), grid=q('.home-kpi-grid',root), st=getStateSafe(); if(!root||!grid||!st)return;
     grid.classList.add('hani-life-indices-v02979');
     const finance=findCard(root,'homeAsset',/최근\s*총자산|투자|자산/);
