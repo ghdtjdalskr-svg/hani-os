@@ -79,7 +79,7 @@ body,input,textarea,select,button{font-family:var(--ds-font)}
 #app .ds-companion-scene>img{display:block;width:100%;height:auto;aspect-ratio:3/1;object-fit:contain;background:#f6f2fa}
 #app .ds-agent-comment{display:flex;align-items:center;gap:12px;padding:14px 0;min-width:0}
 #app .ds-agent-comment>img{width:58px;height:64px;object-fit:cover;border:2px solid white;border-radius:17px;box-shadow:0 3px 12px #43314b14;flex:none}
-#app .ds-agent-comment>div{position:relative;flex:1;min-width:0;background:#f9f3ff;border:1px solid #e9dff2;border-radius:16px;padding:12px 15px}
+#app .ds-agent-comment>div{position:relative;flex:1;min-width:0;background:#f9f3ff;color:#283044;border:1px solid #e9dff2;border-radius:16px;padding:12px 15px}
 #app .ds-agent-comment>div:before{content:'';position:absolute;left:-6px;top:24px;width:10px;height:10px;border-left:1px solid #e9dff2;border-bottom:1px solid #e9dff2;background:inherit;transform:rotate(45deg)}
 #app .ds-agent-comment small{font-size:12px;font-weight:800;color:#8a67a3}
 #app .ds-agent-comment p{font-size:15px!important;font-weight:650;line-height:1.6;margin:4px 0 0!important}
@@ -435,23 +435,47 @@ body[data-view=home] #aiBanner{display:none!important}
 :root[data-season=autumn]{--season-page-glow:#ecd5b5;--season-card:#fffdf8;--season-line:#e7d4bc;--season-motif:#bd713b}
 :root[data-season=winter]{--season-page-glow:#cedced;--season-card:#fbfdff;--season-line:#cfdae8;--season-motif:#7798bd}
 /* HANI GALAXY: root palette, shared structural contract; no Finish x Page rules. */
-/* Shared pilot consumers. Identity cards/heroes keep their original local ink. */
-body[data-finish-pilot] #app{color:var(--text-primary)}
-body[data-finish-pilot]{--appearance-side-motif:linear-gradient(transparent,transparent)}
-body[data-finish-pilot] #app .card{color:var(--text-primary)}
-body[data-finish-pilot] #app :is(.home-kpi,.life-market-banner,.ds-main-character-banner,.ds-page-hero,.stat){--text:#28374c;--ink:#283044;--muted:#637087;--panel:#fff;--panel2:#fafbff;color-scheme:light}
-body[data-finish-pilot] #app .home-kpi:not([data-life-index]){color:#28374c}
-body[data-finish-pilot] #app :is(.life-market-banner,.ds-main-character-banner,.ds-page-hero,.stat){color:#28374c}
-body[data-finish-pilot] #app .view :is(input,select,textarea){background:var(--surface-raised);color:var(--text-primary);border-color:var(--border-strong);color-scheme:var(--finish-scheme)}
-body[data-finish-pilot] #app .view :is(input,textarea)::placeholder{color:var(--text-muted);opacity:1}
-body[data-finish-pilot] #app :is(.view .btn:not(.primary):not(.health):not(.finance):not(.danger),header.top .top-actions .btn,.quick-jump,.quick-jump input,.quick-jump-menu){background:var(--surface-raised)!important;color:var(--text-primary)!important;border-color:var(--border-strong)!important}
-body[data-finish-pilot] #app #sidebar .group-body .nav-btn .txt{color:var(--text-secondary)!important}
-body[data-finish-pilot] #app #sidebar .group-body .nav-btn.active .txt{color:var(--text-primary)!important}
-body[data-finish-pilot] #app .view :is(input,select,textarea,.btn):focus-visible{outline-color:var(--structure-accent)}
-body[data-finish-pilot] #app .view :is(.sub,.field>label){color:var(--text-secondary)}
-body[data-finish-pilot] #app .view :is(.home-kpi,.stat,.ds-main-character-banner,.ds-page-hero) .sub{color:#637087}
-body[data-finish-pilot] #app .modal-card{color:var(--text-primary)}
-body[data-finish-pilot] #app .tw tr:hover td{background:var(--surface-raised)}
+/* Neutral fallback before Finish initialization. Artwork reads root data-season. */
+body{--ds-canvas:#f8f7f4;--ds-season:#79674c;--ds-season-soft:#f1efe9;--season-page-glow:#e8e5de;--season-card:#fff;--season-line:#dedcd6;--structural-gradient-end:#f8f7f4;--appearance-panel:#fff;--appearance-page:#fbfaf7;--appearance-raised:#fff;--appearance-ink:#292a2d;--appearance-muted:#62646b;--appearance-line:#dedcd6;--appearance-accent:#79674c;--appearance-side-motif:linear-gradient(transparent,transparent);--hani-frame-line:#dedcd6;--hani-frame-surface:#fbfaf7}
+/* Shared Finish consumers. Identity cards/heroes keep their original local ink. */
+body[data-finish-active] #app{color:var(--text-primary)}
+body[data-finish-active]{--appearance-side-motif:linear-gradient(transparent,transparent)}
+body[data-finish-active] #app .card{color:var(--text-primary)}
+body[data-finish-active] #app :is(.home-kpi,.life-market-banner,.ds-main-character-banner,.ds-page-hero,.stat){--text:#28374c;--ink:#283044;--ui-ink:#283044;--ui-sub:#637087;--ds-ink:#283044;--ds-muted:#637087;--muted:#637087;--panel:#fff;--panel2:#fafbff;color-scheme:light}
+body[data-finish-active] #app .home-kpi:not([data-life-index]){color:#28374c}
+body[data-finish-active] #app :is(.life-market-banner,.ds-main-character-banner,.ds-page-hero,.stat){color:#28374c}
+body[data-finish-active] :is(.view,.modal) :is(input,select,textarea){background:var(--surface-raised);color:var(--text-primary);border-color:var(--border-strong);color-scheme:var(--finish-scheme)}
+body[data-finish-active] :is(.view,.modal) :is(input,textarea)::placeholder{color:var(--text-muted);opacity:1}
+body[data-finish-active] #app :is(:is(.view,.modal) .btn:not(.primary):not(.health):not(.finance):not(.danger),header.top .top-actions .btn,.quick-jump,.quick-jump input,.quick-jump-menu){background:var(--surface-raised)!important;color:var(--text-primary)!important;border-color:var(--border-strong)!important}
+body[data-finish-active] #app #sidebar .group-body .nav-btn .txt{color:var(--text-secondary)!important}
+body[data-finish-active] #app #sidebar .group-body .nav-btn.active .txt{color:var(--text-primary)!important}
+body[data-finish-active] #app #sidebar .group .group-body .nav-btn.active{background:var(--surface-raised)!important;color:var(--text-primary)!important}
+body[data-finish-active] #app .view :is(input,select,textarea,.btn):focus-visible{outline-color:var(--structure-accent)}
+body[data-finish-active] #app .view :is(.sub,.field>label){color:var(--text-secondary)}
+body[data-finish-active] #app .view :is(.home-kpi,.stat,.ds-main-character-banner,.ds-page-hero) .sub{color:#637087}
+body[data-finish-active] .modal-card{color:var(--text-primary)}
+body[data-finish-active] :is(.modal-card,.quick-jump-menu){background:var(--surface-panel);border-color:var(--border-subtle)}
+body[data-finish-active] .modal :is(.field>label,.sub){color:var(--text-secondary)}
+body[data-finish-active] .toast{background:var(--surface-raised);color:var(--text-primary);border:1px solid var(--border-strong)}
+body[data-finish-active] #app .quick-jump-item b{color:var(--text-primary)}
+body[data-finish-active] #app :is(.quick-jump-item:hover,.quick-jump-item:focus){background:var(--surface-raised)}
+/* Generic nested panels; leave domain cards, badges, artwork and report boards intact. */
+body[data-finish-active] #app :is(.home-task-summary,.policy-scope-grid>div,.study-card-v02984,.study-project-switcher,.task-calendar-kpis>span,.ui26-member,.hani-office-live){background:var(--surface-panel)!important;color:var(--text-primary);border-color:var(--border-subtle)}
+body[data-finish-active] #app :is(.card>.sh h3,.study-card-head h3,.study-project-switcher-head h3,.member-copy b){color:var(--text-primary)!important}
+body[data-finish-active] #app :is(.member-copy p,.asset-capture-intro p,.archive-copy b){color:var(--text-secondary)!important}
+body[data-finish-active] #app .study-main-empty b{color:var(--text-primary)}
+body[data-finish-active] #app .asset-paste-zone{color:#283044}
+body[data-finish-active] #app :is(.deploy-card,.deploy-mini,.hina-qa-layer,.hani-office-line-body,.hani-office-empty,.hani-office-questions .agent-subsection){background:var(--surface-panel)!important;color:var(--text-primary);border-color:var(--border-subtle)}
+body[data-finish-active] #app .deploy-card h4{color:var(--text-primary)}
+body[data-finish-active] #app .deploy-mini span{color:var(--text-secondary)}
+body[data-finish-active] #app :is(.deploy-mini b,.hina-qa-copy b,.deploy-field label){color:var(--text-primary)}
+body[data-finish-active] #app :is(.deploy-package-drop,.deploy-package-kpis>div){background:var(--surface-panel);color:var(--text-primary);border-color:var(--border-subtle)}
+body[data-finish-active] #app .deploy-inbox-card{background:var(--surface-panel)!important;color:var(--text-primary);border-color:var(--border-subtle)}
+body[data-finish-active] #app .deploy-inbox-card>.deploy-card-head h4{color:var(--text-primary)}
+body[data-finish-active] #app .investment-news-target.empty{background:var(--surface-raised);color:var(--text-secondary)}
+/* Compatibility: original pale domain content keeps dark local ink, not shell ink. */
+body[data-finish-active] #app :is(#assetComposition .item,.ledger-jieun-comment,.company-followup-preview,.module-kpi){--text:#283044;--muted:#637087;--ds-ink:#283044;--ds-muted:#637087;--ui-ink:#283044;--ui-sub:#637087;color:#283044}
+body[data-finish-active] #app .tw tr:hover td{background:var(--surface-raised)}
 .galaxy-finishes{min-width:0}
 .galaxy-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:16px}
 .galaxy-wordmark{font:750 30px/1.15 var(--hani-galaxy-display-font);letter-spacing:.025em;margin:0 0 9px}
@@ -459,13 +483,17 @@ body[data-finish-pilot] #app .tw tr:hover td{background:var(--surface-raised)}
 .galaxy-pilot{font-size:10px;letter-spacing:.07em;color:var(--text-muted)}
 .galaxy-finishes fieldset{border:0;padding:0;margin:24px 0 18px;min-width:0}
 .galaxy-finishes legend{font-size:11px;letter-spacing:.08em;color:var(--text-secondary);margin-bottom:12px}
-.galaxy-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.galaxy-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.galaxy-signature-choices{grid-template-columns:repeat(2,minmax(0,1fr))}
 .galaxy-choice{position:relative;display:flex;align-items:center;gap:16px;min-height:128px;padding:20px;border:1px solid var(--border-subtle);border-radius:var(--hani-radius-card);background:var(--surface-raised);cursor:pointer}
 .galaxy-choice:has(input:checked){border-color:var(--structure-accent);box-shadow:inset 0 0 0 1px var(--structure-accent)}
 .galaxy-choice:has(input:focus-visible){outline:3px solid var(--structure-accent);outline-offset:3px}
 .galaxy-choice input{position:absolute;right:14px;top:14px;width:18px;height:18px;accent-color:var(--structure-accent)}
 .galaxy-swatch{width:58px;height:68px;flex:0 0 58px;border-radius:18px;border:1px solid #85858544;box-shadow:inset 0 1px 2px #ffffff55,0 5px 12px #00000012}
 .galaxy-swatch-cream{background:linear-gradient(125deg,#fff 0%,#f8f7f4 52%,#e8e5de 100%)}
+.galaxy-swatch-graphite{background:linear-gradient(125deg,#53565c 0%,#36383d 40%,#242528 100%)}
+.galaxy-swatch-sakura{background:linear-gradient(125deg,#fff 0%,#faf6f7 52%,#e3d7dd 100%)}
+.galaxy-swatch-alpine{background:linear-gradient(125deg,#fff 0%,#f3f7fa 52%,#d6e0e9 100%)}
 .galaxy-swatch-midnight{background:linear-gradient(125deg,#363a43 0%,#1b1e24 40%,#0e0f12 100%)}
 .galaxy-choice-copy{min-width:0;padding-right:8px}
 .galaxy-choice-copy b{display:block;font:650 15px/1.45 var(--hani-galaxy-display-font);letter-spacing:.025em;overflow-wrap:anywhere}
@@ -475,13 +503,16 @@ body[data-finish-pilot] #app .tw tr:hover td{background:var(--surface-raised)}
 #signatureFinishStatus{font-size:14px;color:var(--text-primary)}
 .galaxy-scope-note{font-size:12px;line-height:1.7}
 @media(max-width:760px){.galaxy-heading{display:block}.galaxy-pilot{display:block;margin-top:10px}.galaxy-wordmark{font-size:26px}.galaxy-choices{grid-template-columns:1fr}.galaxy-choice{min-height:120px;padding:18px}}
-@media(prefers-reduced-motion:no-preference){body[data-finish-pilot],body[data-finish-pilot] #app :is(.card,.ui26-top,.galaxy-choice){transition:background-color .16s ease,border-color .16s ease,color .16s ease}}
+@media(prefers-reduced-motion:no-preference){body[data-finish-active],body[data-finish-active] #app :is(.card,.ui26-top,.galaxy-choice){transition:background-color .16s ease,border-color .16s ease,color .16s ease}}
 :root{--surface-canvas:#f8f7f4;--surface-page:#fbfaf7;--surface-panel:#fff;--surface-raised:#fff;--surface-glow:#e8e5de;--text-primary:#292a2d;--text-secondary:#62646b;--text-muted:#697078;--border-subtle:#dedcd6;--border-strong:#8b8983;--structure-accent:#79674c;--finish-scheme:light;--hani-galaxy-display-font:'Samsung Sharp Sans','Pretendard Variable',Pretendard,system-ui,sans-serif}
 :root[data-finish="midnight-black"]{--surface-canvas:#0e0f12;--surface-page:#111318;--surface-panel:#15171c;--surface-raised:#1b1e24;--surface-glow:#1b1e24;--text-primary:#f5f2ed;--text-secondary:#b9bac0;--text-muted:#a8a9ae;--border-subtle:#292c33;--border-strong:#777b86;--structure-accent:#c0b6a5;--finish-scheme:dark}
-body[data-finish-pilot]{--ds-canvas:var(--surface-canvas);--season-page-glow:var(--surface-glow);--structural-gradient-end:var(--surface-canvas);--appearance-panel:var(--surface-panel);--appearance-page:var(--surface-page);--appearance-raised:var(--surface-raised);--appearance-ink:var(--text-primary);--appearance-muted:var(--text-secondary);--appearance-line:var(--border-subtle);--appearance-accent:var(--structure-accent);--panel:var(--surface-panel);--panel2:var(--surface-raised);--text:var(--text-primary);--muted:var(--text-secondary);--line:var(--border-subtle);--ds-line:var(--border-subtle);--hani-frame-line:var(--border-subtle);--hani-frame-surface:var(--surface-page);color:var(--text-primary);color-scheme:var(--finish-scheme)}
+:root[data-finish="titanium-graphite"]{--surface-canvas:#242528;--surface-page:#292b2f;--surface-panel:#2d2f33;--surface-raised:#36383d;--surface-glow:#36383d;--text-primary:#f1f0ed;--text-secondary:#b8b7b2;--text-muted:#b0b0b6;--border-subtle:#45474c;--border-strong:#92969f;--structure-accent:#b7b2a6;--finish-scheme:dark}
+:root[data-finish="sakura-pink"]{--surface-canvas:#faf6f7;--surface-page:#fcf9fa;--surface-panel:#fffcfd;--surface-raised:#fff;--surface-glow:#e3d7dd;--text-primary:#302a2e;--text-secondary:#6e6269;--text-muted:#71656c;--border-subtle:#e3d7dd;--border-strong:#93818b;--structure-accent:#98647c;--finish-scheme:light}
+:root[data-finish="alpine-blue"]{--surface-canvas:#f3f7fa;--surface-page:#f8fafc;--surface-panel:#fcfdff;--surface-raised:#fff;--surface-glow:#d6e0e9;--text-primary:#29313a;--text-secondary:#606d7b;--text-muted:#637181;--border-subtle:#d6e0e9;--border-strong:#7f8d9e;--structure-accent:#537994;--finish-scheme:light}
+body[data-finish-active]{--ds-canvas:var(--surface-canvas);--season-page-glow:var(--surface-glow);--structural-gradient-end:var(--surface-canvas);--appearance-panel:var(--surface-panel);--appearance-page:var(--surface-page);--appearance-raised:var(--surface-raised);--appearance-ink:var(--text-primary);--appearance-muted:var(--text-secondary);--appearance-line:var(--border-subtle);--appearance-accent:var(--structure-accent);--panel:var(--surface-panel);--panel2:var(--surface-raised);--text:var(--text-primary);--muted:var(--text-secondary);--line:var(--border-subtle);--ds-line:var(--border-subtle);--ds-ink:var(--text-primary);--ds-muted:var(--text-muted);--ui-ink:var(--text-primary);--ui-sub:var(--text-secondary);--bg:var(--surface-canvas);--season-card:var(--surface-panel);--season-line:var(--border-subtle);--hani-frame-line:var(--border-subtle);--hani-frame-surface:var(--surface-page);color:var(--text-primary);color-scheme:var(--finish-scheme)}
+#app .view :is(.card,.asset-dashboard-card,.module-toolbar,.page-nav-context-v02992){background-color:var(--appearance-panel,color-mix(in srgb,var(--season-card) 96%,transparent))!important;border-color:var(--appearance-line,var(--season-line))!important}
 :root{--control-accent:#7656b3;--control-accent-secondary:#9279ba;--control-soft:#f0edf6;--domain-finance-accent:#7559f3}
-/* Preserve the upstream Finish pilot boundary; other pages use neutral light structure. */
-body:not([data-finish-pilot]){--surface-canvas:#f8f7f4;--surface-page:#fbfaf7;--surface-panel:#fff;--surface-raised:#fff;--surface-glow:#e8e5de;--text-primary:#292a2d;--text-secondary:#62646b;--border-subtle:#dedcd6}
+/* Batch E expands the Finish boundary while retaining neutral control tokens. */
 /* Structural compatibility aliases inside app; Login retains root Season tokens. */
 #app .finance-tone{--ui-purple:var(--domain-finance-accent)}
 #app{
