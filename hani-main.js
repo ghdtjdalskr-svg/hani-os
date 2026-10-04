@@ -1258,6 +1258,7 @@ const pageMeta={
  work:["업무 보조","업무 진행상황과 후속조치를 기록합니다.","work"],
  drive:["Drive","Google Drive로 바로 이동합니다.","work"],
  dev:["개발센터","HANI OS 릴리스와 로드맵을 확인합니다.","work"],
+ geminiReports:["Gemini 개발 보고서","개발의 배경부터 결과와 남은 과제까지 읽기 쉽게 확인합니다.","work"],
  deployment:["배포 센터","Preview 브랜치부터 대표 승인 배포까지 안전하게 관리합니다.","work"],
  intake:["성민 오피스","유나 인턴에게 말하거나 자료를 붙이면 담당 AI가 검토하고 Preview로 정리합니다.","team"],
  agentReview:["경영회의실","AI TEAM의 검토 안건과 대표 결정을 한곳에서 관리합니다.","team"],
@@ -1520,6 +1521,7 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
   updateFinishScope();
   history.replaceState(null,"",id==="home"?location.href.split("#")[0]:("#"+id));$("app").classList.remove("mobile-open");window.scrollTo({top:0,left:0,behavior:"auto"});
   window.HaniAssetMarket?.sync();
+  if(id==="geminiReports")window.HaniGeminiReports?.render();
   if(id==="investment")setTimeout(drawPortfolio,30);if(id==="newsroom")setTimeout(()=>investmentNewsMaybeRefresh(),40);if(id==="diet")setTimeout(drawBody,30);if(id==="ledger")setTimeout(drawLedgerTrend,30);if(id==="calendar")renderCalendar();if(id==="tasks")setTimeout(()=>googleCalendarRefreshStatus({silent:true}),0);if(id==="intake")setTimeout(()=>intakeRenderPreview(),0);if(id==="agentReview")setTimeout(()=>agentReviewInit(),0);if(id==="monthlyReport")setTimeout(()=>renderMonthlyReport(),0);if(id==="policy")setTimeout(()=>agentPolicyInit(),0);if(id==="deployment")setTimeout(()=>deployCenterRender(),0);
   // v2.9.2: mobile browsers can throttle background polling. Re-check Cloud when opening data-heavy views.
   if(["home","investment","asset"].includes(id)&&cloudUser&&!cloudRecoveryMode){
@@ -5045,7 +5047,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.168";
+const HANI_DISPLAY_VERSION="2.9.169";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
@@ -5957,3 +5959,111 @@ if(CLOUD_AUTH_BOOT.hasAuthCallback){
   initCloudBridge().finally(()=>loginGateStatus("이메일과 비밀번호로 로그인해 주세요."));
 }
 window.addEventListener("resize",()=>{drawPortfolio();drawBody();drawLedgerTrend();drawMonthlyAssetChart();drawBrokerChart();drawAnnualInvestmentCharts();drawInvestmentAccountChart();if(activeAccountId)drawAccountChart(activeAccountId)});
+
+/* HANI_GEMINI_REPORTS_BUNDLE_START */
+globalThis.HaniGeminiReportCatalog=Object.freeze({"reports":[{"title":"데이터 허브 기반과 월간 카드 6개","release_version":"v2.9.164","review_status":"approved","file":"2026-10-04-v2.9.164-data-hub.md","id":"2026-10-04-v2.9.164-data-hub","date":"2026-10-04","previous_report_id":null,"body":"# HANI OS v2.9.164 개발노트\n\n## 이번 업데이트 한줄 요약\n월간 지표를 계산하는 데이터 허브 기반과 대시보드 카드 6개를 배포하고, 모바일 걸음 안내의 가독성을 개선했습니다.\n\n| 버전 | 배포일 | 현재 상태 |\n|---|---|---|\n| v2.9.164 | 2026-10-04 | 배포 완료 |\n\n## 왜 바꿨나요?\n이 기능을 처음 기획한 배경은 Release 기록에서 확인되지 않습니다. 이번에는 v2.9.163을 기준으로 공통 지표 계산과 원본에서 다시 만들 수 있는 별도 계산 결과 보관 공간을 마련하고, 대시보드 월간 카드 6개에 연결했습니다.\n\n## 내가 실제로 체감하는 변화\n| 항목 | 이번에 달라진 점 | 현재 확인 상태 |\n|---|---|---|\n| 모바일 가독성 | 걸음 수의 관측일·0보 안내가 생략되지 않도록 줄바꿈 조정 | 가상 데이터 390px 화면에서 확인; 실제 계정 추가 검증은 미실시 |\n| 대시보드 카드 6개 | 카드 선택 시 분석 제목 전환, 데이터 없음·목표 미설정 상태 표시 | 실제 운영 화면에서 확인 |\n\n## 내부적으로 무엇이 달라졌나요?\n| 진행 단계 | 한 일 | 결과 |\n|---|---|---|\n| 구현 | 공통 지표 계산, 별도 계산 결과 보관 공간, 대시보드 월간 카드 6개 연결 | 개발 완료 |\n| 검증 | 단위/컨트롤러 테스트 및 합성 시나리오 검증, 서버 게이트 확인 | 통과 |\n| 배포 | 승인된 실행 파일 묶음을 운영에 반영하고 표시 버전·실제 파일·기능 다시 확인 | 배포 완료 |\n\n## 데이터나 안전에 영향이 있나요?\n기존 원본 저장·Cloud 변경 함수와 데이터 구조는 이번 개발에서 바꾸지 않았습니다. 계산 결과는 원본과 분리해 보관하고, 원본 소유권이 맞지 않으면 사용을 차단합니다. 기록이 없는 미리보기 환경은 정상 로그인·기존 동기화로 초기 로딩했으며 강제 복원·덮어쓰기 버튼은 사용하지 않았습니다.\n\nLocal/Cloud 원본 일치와 코드 경계는 확인했습니다. 원본 전체를 직접 바이트 단위로 전후 비교한 검증과 실제 계정의 390px 추가 검증은 수행하지 않았습니다.\n\n## 아직 남은 것\n| 남은 항목 | 상태/제한 |\n|---|---|\n| 기존 표시 기능 | Life Market ticker·SRX는 이번 카드 전환 범위 밖. 카드와 같은 집계 기준이라고 보장하지 않음 |\n| 현재월 데이터 | 현재월은 데이터 없음 상태이며 과거 월 값으로 대체하지 않음 |\n| 추가 모바일 검증 | 실제 계정 390px 추가 검증은 수행하지 않음 (가상 검증만 수행) |\n| 후속 기능 | 목표 이력, 포트폴리오 다차원 데이터셋, Drive 연동, 별도 Data Hub 전체 페이지는 미구현 |\n| 후속 디자인 | 포트폴리오 밝은 테마의 대비 개선은 별도 후보이며 이번 배포에 포함되지 않음 |\n\n## 대표가 알아둘 점\n완료된 범위는 데이터 허브 기반과 월간 카드 6개, 모바일 걸음 안내 개선입니다. 전체 데이터 허브 페이지나 후속 포트폴리오 작업까지 완료된 것은 아닙니다. 후속 일정이나 비용은 원문에 기록되어 있지 않습니다.\n\n기술 기록은 2026-10-04-v2.9.164-data-hub.md 참조. 이 문서는 기술 기록을 쉽게 풀어 쓴 검토용 문서입니다.\n\n작성: Gemini 3.5 Flash-Lite. 원장 대조·누락 및 표현 보완: Codex. 2026-10-04 대표님 공개 배포 승인.\n"}],"catalog_version":1});
+/* Read-only Gemini report library. No model, storage or Cloud calls. */
+(function (global) {
+  'use strict';
+  const STATUSES = {source_compared_awaiting_user_review:'대표님 검토 대기', approved:'검토 완료'};
+  function parseMarkdown(text) {
+    const lines = String(text).replace(/^\uFEFF/, '').split(/\r?\n/), blocks=[];
+    for (let i=0;i<lines.length;i++) {
+      const line=lines[i].trim(); if (!line) continue;
+      const heading=/^(#{1,3})\s+(.+)$/.exec(line);
+      if (heading) {blocks.push({type:'heading',level:heading[1].length,text:heading[2]});continue;}
+      if (line.startsWith('|') && /^\|?\s*:?-{3,}/.test((lines[i+1]||'').trim())) {
+        const cells=value=>value.trim().replace(/^\||\|$/g,'').split('|').map(v=>v.trim());
+        const header=cells(line), rows=[];i++;
+        while ((lines[i+1]||'').trim().startsWith('|')) { rows.push(cells(lines[++i])); }
+        blocks.push({type:'table',header,rows});continue;
+      }
+      if (/^[-*]\s+/.test(line)) {blocks.push({type:'bullet',text:line.slice(2)});continue;}
+      const paragraph=[line];
+      while (i+1<lines.length && lines[i+1].trim() && !/^(?:#{1,3}\s|\||[-*]\s)/.test(lines[i+1].trim())) {paragraph.push(lines[++i].trim());}
+      blocks.push({type:'paragraph',text:paragraph.join(' ')});
+    }
+    return blocks;
+  }
+  function selectReports(reports, query='', status='all') {
+    const q=query.trim().toLocaleLowerCase('ko');
+    return reports.filter(r=>(status==='all'||r.review_status===status)&&[r.title,r.release_version,r.date].join(' ').toLocaleLowerCase('ko').includes(q))
+      .slice().sort((a,b)=>b.date.localeCompare(a.date)||b.id.localeCompare(a.id));
+  }
+  function validateCatalog(value) {
+    if (!value || value.catalog_version!==1 || !Array.isArray(value.reports)||value.reports.length>300) throw Error('catalog');
+    const ids=new Set();
+    for (const r of value.reports) {
+      if (!r||!/^\d{4}-\d{2}-\d{2}-[a-z0-9.-]+$/.test(r.id)||ids.has(r.id)||typeof r.title!=='string'||r.title.length>160||
+          !/^\d{4}-\d{2}-\d{2}$/.test(r.date)||!/^v\d+\.\d+\.\d+$/.test(r.release_version)||
+          !Object.hasOwn(STATUSES,r.review_status)||!/^\d{4}-\d{2}-\d{2}-[a-z0-9.-]+\.md$/.test(r.file)||
+          typeof r.body!=='string'||!r.body.trim()||r.body.length>100000||
+          (r.previous_report_id!==null&&typeof r.previous_report_id!=='string')) throw Error('report');
+      ids.add(r.id);
+    }
+    for(const r of value.reports) if(r.previous_report_id!==null&&!ids.has(r.previous_report_id)) throw Error('previous');
+    return value.reports;
+  }
+  if(typeof module==='object'&&module.exports) {module.exports={parseMarkdown,selectReports,validateCatalog};return;}
+  const el=(tag,text,className)=>{const node=document.createElement(tag);if(text!==undefined)node.textContent=text;if(className)node.className=className;return node;};
+  // Documents are text only. Never interpret their HTML, script or Markdown links.
+  function text(node,value) {
+    String(value).split(/(\*\*[^*]+\*\*)/g).forEach(part=>node.append(part.startsWith('**')&&part.endsWith('**')?el('strong',part.slice(2,-2)):document.createTextNode(part)));
+  }
+  let reports=null, loading=null, activeId=null, detailSequence=0, bound=false;
+  const cache=new Map();
+  const status=message=>{document.getElementById('geminiReportStatus').textContent=message;};
+  function renderList() {
+    const list=document.getElementById('geminiReportList');list.replaceChildren();
+    const rows=selectReports(reports||[],document.getElementById('geminiReportSearch').value,document.getElementById('geminiReportFilter').value);
+    document.getElementById('geminiReportCount').textContent=`보고서 ${rows.length}건`;
+    if(!rows.length){list.append(el('p',reports?.length?'검색 조건에 맞는 보고서가 없습니다.':'아직 등록된 보고서가 없습니다.','sub'));return;}
+    rows.forEach(r=>{
+      const button=el('button',undefined,'gemini-report-item');button.type='button';button.dataset.reportId=r.id;button.setAttribute('aria-pressed',String(r.id===activeId));
+      button.append(el('span',`${r.date} · ${r.release_version}`,'gemini-report-date'),el('strong',r.title),el('span',STATUSES[r.review_status],'gemini-report-badge'));
+      list.append(button);
+    });
+  }
+  async function openReport(id) {
+    const report=reports?.find(r=>r.id===id);if(!report)return;
+    const sequence=++detailSequence;activeId=id;renderList();
+    const article=document.getElementById('geminiReportDetail');article.setAttribute('aria-busy','true');article.replaceChildren(el('p','보고서를 불러오고 있습니다.','sub'));
+    try {
+      let body=cache.get(report.id);
+      if(!body){body=report.body;cache.set(report.id,body);}
+      if(sequence!==detailSequence)return;
+      article.replaceChildren(el('p',`${report.date} · Gemini 작성 / Codex 원장 대조 · ${STATUSES[report.review_status]}`,'gemini-report-byline'));
+      parseMarkdown(body).forEach(block=>{
+        if(block.type==='table') {
+          const wrap=el('div',undefined,'gemini-report-table-wrap'),table=el('table'),head=el('thead'),row=el('tr');
+          block.header.forEach(value=>{const cell=el('th');cell.scope='col';text(cell,value);row.append(cell);});head.append(row);table.append(head);
+          const tbody=el('tbody');block.rows.forEach(values=>{const tr=el('tr');block.header.forEach((_,i)=>{const td=el('td');text(td,values[i]||'');tr.append(td);});tbody.append(tr);});
+          table.append(tbody);wrap.append(table);article.append(wrap);
+        } else {
+          const node=el(block.type==='heading'?`h${Math.min(block.level+1,4)}`:'p',undefined,block.type==='bullet'?'gemini-report-bullet':undefined);text(node,block.text);article.append(node);
+        }
+      });
+      if(report.previous_report_id) {const previous=el('button','이전 보고서 보기','btn');previous.type='button';previous.dataset.reportId=report.previous_report_id;article.append(previous);}
+      status('저장된 보고서입니다. 열람 시 Gemini를 호출하지 않습니다.');
+    } catch {if(sequence===detailSequence){article.replaceChildren(el('p','보고서를 읽지 못했습니다. 아래 버튼으로 다시 불러올 수 있습니다.','sub'));const retry=el('button','보고서 다시 불러오기','btn');retry.type='button';retry.dataset.reportId=id;article.append(retry);status('보고서 읽기 실패');}}
+    finally {if(sequence===detailSequence)article.setAttribute('aria-busy','false');}
+  }
+  async function render(refresh=false) {
+    if(!document.getElementById('geminiReports'))return;
+    if(!bound){
+      bound=true;document.getElementById('geminiReportSearch').addEventListener('input',renderList);document.getElementById('geminiReportFilter').addEventListener('change',renderList);
+      document.getElementById('geminiReports').addEventListener('click',event=>{const button=event.target.closest('button');if(button?.dataset.reportId)void openReport(button.dataset.reportId);if(button?.id==='geminiReportRefresh')void render(true);});
+    }
+    if(loading)return loading;
+    if(reports&&!refresh){renderList();return;}
+    loading=Promise.resolve().then(async()=>{
+      status('보고서 목록을 불러오고 있습니다.');
+      try {const catalog=global.HaniGeminiReportCatalog;if(JSON.stringify(catalog)?.length>1000000)throw Error('size');reports=validateCatalog(catalog);if(refresh)cache.clear();if(!reports.some(report=>report.id===activeId))activeId=null;renderList();status('배포 기록을 바탕으로 작성한 보고서입니다. 새 배포 내용은 페이지를 다시 열면 반영됩니다.');if(reports.length&&(refresh||!activeId))await openReport(activeId||selectReports(reports)[0].id);else if(!reports.length){++detailSequence;document.getElementById('geminiReportDetail').replaceChildren(el('p','아직 등록된 보고서가 없습니다.','sub'));}}
+      catch {status('목록을 읽지 못했습니다. 목록 새로고침으로 다시 확인해 주세요.');}
+      finally {loading=null;}
+    });return loading;
+  }
+  global.HaniGeminiReports={render};
+  if(document.getElementById('geminiReports')?.classList?.contains('active'))void render();
+})(globalThis);
+/* HANI_GEMINI_REPORTS_BUNDLE_END */
