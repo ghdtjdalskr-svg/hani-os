@@ -221,8 +221,10 @@
       const quote=matchingQuotes.length===1?matchingQuotes[0]:null, price=finite(quote?.lastPrice),stamp=Date.parse(quote?.timestamp);
       const verified=resolution.status==='matched'&&price!==null&&price>0&&Number.isFinite(stamp)&&stamp<=now+60000;
       const marketValue=verified&&quantity!==null&&Number.isFinite(quantity*price)?quantity*price:null;
-      const costCurrency=p.buyCurrency||p.recordedCurrency||null;
-      const rawCost=p.buyCurrency?(quantity!==null&&p.buyPrice!==null?quantity*p.buyPrice:null):p.purchaseAmount;
+      // Match the canonical read-only market evaluator: legacy domestic costs are KRW,
+      // but an unspecified foreign cost currency must never be inferred.
+      const costCurrency=p.buyCurrency||p.recordedCurrency||(resolution.currency==='KRW'?'KRW':null);
+      const rawCost=p.buyCurrency?(quantity!==null&&p.buyPrice!==null?quantity*p.buyPrice:null):(p.purchaseAmount??(quantity!==null&&p.buyPrice!==null?quantity*p.buyPrice:null));
       const cost=rawCost!==null&&rawCost>=0&&Number.isFinite(rawCost)&&costCurrency?rawCost:null;
       const row={key,account_id:p.accountId,account:p.accountName,instrument_id:p.instrumentId||null,instrument:identity,name:p.name,ticker:code||null,
         quantity,quantity_comparison:quantityComparison(state,p),holding_as_of:p.holdingAsOf,source:'confirmed-broker-snapshot',source_completeness:p.sourceCompleteness||'UNKNOWN',
