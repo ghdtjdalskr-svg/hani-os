@@ -39,7 +39,7 @@
 - Portfolio의 canonical read path는 최신 confirmed account snapshot을 계좌별로 하나만 선택한다.
 - KRW/USD는 환율 검증 없이 합산하지 않는다.
 
-별도 승인 후 구현할 항목:
+v2.9.166 당시 별도 승인 후 구현할 항목 (후속 v2.9.168에서 완료):
 
 - 평균매입가를 optional로 전환하고 원가 미확인 시 손익·수익률을 계산하지 않는 저장 계약
 - `Partial Update`와 `Complete Holding List`의 명시적 입력 모드
@@ -47,6 +47,8 @@
 - ticker·instrumentId·정규화 이름의 안정적인 identity 우선순위와 충돌 처리
 
 위 항목은 `hani_os_life_v23` 쓰기 검증과 저장 의미를 바꾸므로 이 후보에서는 코드 변경하지 않았다. Supabase, schema, Cloud write도 변경하지 않았다.
+
+2026-10-04 후속 승인으로 위 계약을 구현했고 v2.9.168 / PR165 / Production `9099d89`에서 Pages 및 실제 운영 응답을 실행한 기능 read-back을 완료했다. 상세 근거는 `2026-10-04-v2.9.168-asset-input-canonical-contract.md`에 기록한다. P1과 Asset Input 선행 작업은 모두 완료 상태다.
 
 ## 검증 결과
 

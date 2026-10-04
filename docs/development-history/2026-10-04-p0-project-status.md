@@ -1,8 +1,8 @@
-# HANI OS 프로젝트 상태 · v2.9.166 기준
+# HANI OS 프로젝트 상태 · v2.9.168 기준
 
 - 확인일: 2026-10-04 KST
 - P0 시작 기준선: `f5274ce` / v2.9.164
-- 최신 확인 main: `3a7979d` / v2.9.166
+- 최신 확인 runtime main: `9099d89` / v2.9.168
 - 목적: 완료·부분 완료·후보·미착수를 최신 Production 기준으로 재분류
 
 ## P0 완료
@@ -28,6 +28,8 @@
 | Toss 시장가격·종목 검색 | `PRODUCTION` | v2.9.145 |
 | holdings-only 계좌 업데이트 | `PRODUCTION` | v2.9.148 |
 | P1 안정화 재진단·포트폴리오 대비 | `PRODUCTION` | v2.9.166, PR161, 5 Finish·PC/Mobile·운영 read-back |
+| Asset Input canonical contract | `PRODUCTION` | 2026-10-04 · v2.9.168 · PR165 · 평균매입가 선택·Partial/Complete·identity·Pages/기능 read-back PASS |
+| HANI AURA Campaign Posters | `PRODUCTION` | v2.9.167 · PR164 · 후속 v2.9.168에서 이미지·스타일 보존 확인 |
 
 ## 최신 main 진행 상태
 
@@ -40,7 +42,6 @@
 | 프로젝트 | 상태 | 남은 경계 |
 |---|---|---|
 | Goal & Guidance | `PARTIAL` | 분기>연간>없음 resolver는 있으나 영구 Goal Registry와 입력 UI 없음 |
-| Asset Input canonical contract | `PARTIAL` | Partial/Complete, 누락 종목, 명시적 0, instrument identity 계약 확정 필요 |
 | 9-agent Voice Registry | `PARTIAL` | 탭 문구는 운영 완료, 공통 서버 Registry는 별도 재검토 필요 |
 | HANI GROUP 조직 Hub | `PARTIAL` | 브랜드·AI Team은 있으나 전용 조직 운영 Hub는 미완료 |
 | HANI DEVLOG Automation | `CANDIDATE` | Gemini CLI 0.62.0, dry-run 34 PASS; live 생성 실패 후 미재시도, main 미병합 |
@@ -58,11 +59,11 @@
 
 ## 다음 실행 순서
 
-1. P0 중앙 기록과 P1 Production 상태를 이후 배포 완료 보고와 함께 유지·갱신한다.
-2. Asset Input canonical contract의 평균매입가 optional·Partial/Complete 경계를 별도 보호 승인 후 고정한다.
-3. Goal Registry 계약을 고정한 뒤 분기·연간 집계를 연결한다.
-4. Portfolio 월간 Snapshot과 Data Hub D/E를 진행한다.
-5. Production-only Devlog와 선택적 Drive Vault를 연결한다.
+1. P0 기록 정리, P1 안정화·Portfolio 대비, Asset Input canonical contract는 Production 완료로 유지한다.
+2. 다음 핵심 기능은 분기·연간 Report 실제 집계와 공통 서버 Voice Registry 재검토다. 목표 비교는 Goal Registry 계약·이력 설계를 선행한다.
+3. Portfolio 월간 Snapshot·종목별 History와 Data Hub D/E를 진행한다. Asset 입력 계약은 선행 완료됐다.
+4. 로컬 CSV·JSON Export 후 선택적 Drive Vault를 연결한다. Production-only Devlog는 병행 후보이며 live 생성 성공이 남아 있다.
+5. 운영 개발센터의 v2.9.168 Preview 상태 문구를 다음 runtime 릴리스에서 Production으로 갱신한다. 이번 배포 후 기록은 문서 전용이다.
 
 ## 진행상황 갱신 규칙
 
