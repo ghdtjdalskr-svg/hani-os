@@ -3172,7 +3172,9 @@ const team=[
 {key:"minji",emoji:"🎬",name:"민지",position:"사원",role:"Knowledge / Culture Archive Assistant",desc:"시청 아카이브·일기·문화 기록",go:"movie",tone:"orange"},
 {key:"yuna",emoji:"🗂️",name:"유나",position:"인턴",role:"AI Operations Intern",desc:"성민 오피스 접수·자료정리·담당 Agent 전달",go:"intake",tone:"violet"}
 ];
+const developmentTeam=[{key:"gemini",emoji:"💠",name:"제미나이",position:"보고 담당",role:"Development Report Writer",desc:"주간 요약·주요 기능 완료 보고서 작성",go:"geminiReports",tone:"blue"}];
 const TEAM_PROFILE_META={
+  gemini:{rank:"개발 보고팀",headline:"개발의 배경부터 결과와 남은 과제까지 쉽게 전하는 보고서 담당",focus:["확정된 공식 개발 기록 요약","주간 개발 보고서 작성","주요 기능 완료 보고서 작성"],traits:["근거를 중심으로 정리","비개발자도 이해할 수 있게 설명","완료와 미검증 항목을 구분"],style:["성민 대표님께 결론부터 보고","표와 요약으로 변화 설명","배경·과정·결과·남은 과제 순서로 전달"],strengths:["여러 배포를 주간 단위로 요약","핵심 변화와 영향 정리","보고서 초안 작성"],quote:"대표님, 무엇을 왜 바꿨고 어디까지 확인했는지 정리해 드리겠습니다.",signature:["주간 요약","기능 완료","개발 보고"],note:"Gemini는 보고서 초안을 작성합니다. Codex가 공식 기록과 대조하고 성민 대표님이 공개를 승인합니다. 이 프로필에서 직접 Gemini를 호출하거나 개발·배포를 실행하지 않습니다."},
   hani:{rank:"Executive Lead",headline:"오빠의 Life OS 전체 구조와 방향을 총괄하는 메인 파트너",focus:["대시보드 전체 흐름 관리","투자/설정/데이터 총괄","경영회의실 대표 종합"],traits:["친근하지만 판단은 냉정","데이터 보존과 안정성 최우선","전체 그림을 먼저 보는 PM형"],style:["오빠라고 부르며 친근하게 대화","팩트와 가설을 분리해서 설명","중요한 건 먼저 결론부터 말해줌"],strengths:["우선순위 정리","프로젝트 구조화","에이전트 의견 종합"],quote:"오빠, 전체 흐름은 내가 잡을게. 각 파트는 팀원들이 잘 굴러가게 만들면 돼.",signature:["총괄","투자","설정/데이터"],note:"핵심 역할: 대시보드, 투자, 설정/데이터, 경영회의실 대표 종합 판단"},
   jieun:{rank:"Finance Lead",headline:"돈의 흐름과 소비 습관을 숫자로 정리해 주는 자산 파트너",focus:["자산 현황 관리","가계부 / 월 결산","현금흐름과 예산 통제"],traits:["차분하고 현실적","감정보다 숫자 우선","새는 돈을 먼저 잡는 타입"],style:["고객님·오빠 톤을 오가며 말함","쓴 금액보다 이유를 먼저 봄","과소비에는 부드럽지만 단호하게 제동"],strengths:["예산 점검","소비 복기","저축 여력 찾기"],quote:"잔고보다 흐름이에요. 오빠 돈이 어디서 와서 어디로 가는지가 먼저예요.",signature:["자산","가계부","현금흐름"],note:"핵심 역할: 자산 탭, 가계부 탭, 카드/소비 기록과 월간 결산 정리"},
   nauen:{rank:"Health Coach",headline:"체중 감량과 생활 습관을 꾸준하게 밀어주는 건강 파트너",focus:["체중 추세 관리","식단 / 운동 기록","회복·생활습관 피드백"],traits:["밝고 애교 많음","필요할 때는 강하게 제동","지속 가능한 감량을 중시"],style:["오빠를 귀엽게 놀리면서도 관리","극단적 제한식은 말림","추세와 루틴을 함께 봄"],strengths:["다이어트 동기 부여","과식 후 리커버리","루틴 점검"],quote:"신발 내려놔. 무리한 운동 말고 오늘 할 수 있는 루틴부터 갑시다 오빠.",signature:["다이어트","운동","건강 습관"],note:"핵심 역할: 다이어트 탭, 운동 탭, 체중·식단·생활습관 코칭"},
@@ -3185,18 +3187,18 @@ const TEAM_PROFILE_META={
 };
 let activeTeamProfileKey="hani";
 function teamMeta(key){return TEAM_PROFILE_META[key]||TEAM_PROFILE_META.hani}
-function teamByKey(key){return team.find(x=>x.key===key)||team[0]}
-function teamCard(x){const img=agentImages[x.key];return `<button class="member ui26-member tone-${x.tone}" data-team-key="${x.key}" data-go="${x.go}" title="${x.name} 프로필 보기"><div class="member-visual ${img?'has-photo':''}" ${img?`style="background-image:url(${img})"`:''}>${img?'':`<span>${x.emoji}</span><small>DESIGN<br>COMING SOON</small>`}</div><div class="member-copy"><span class="member-role">${x.role}</span><b>${x.name}</b><p>${x.desc}</p><span class="member-link"></span></div></button>`}
+function teamByKey(key){return team.find(x=>x.key===key)||developmentTeam.find(x=>x.key===key)||team[0]}
+function teamCard(x){const img=agentImages[x.key];return `<button class="member ui26-member tone-${x.tone}" data-team-key="${x.key}" data-go="${x.go}" title="${x.name} 프로필 보기"><div class="member-visual ${img?'has-photo':''}" ${img?`style="background-image:url(${img})"`:''}>${img?'':`<span>${x.emoji}</span><small>${x.key==="gemini"?"개발 보고팀":"DESIGN<br>COMING SOON"}</small>`}</div><div class="member-copy"><span class="member-role">${x.role}</span><b>${x.name}</b><p>${x.desc}</p><span class="member-link"></span></div></button>`}
 function teamListHtml(items){return `<ul>${items.map(v=>`<li>${esc(v)}</li>`).join("")}</ul>`}
 function updateTeamActiveState(key){document.querySelectorAll(".ui26-member[data-team-key]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.teamKey===key));document.querySelectorAll(".sidebar-team-face[data-team-key]").forEach(btn=>btn.classList.toggle("active",btn.dataset.teamKey===key));}
 function renderTeamProfile(key=activeTeamProfileKey){
-  const panel=$("teamProfilePanel");if(!panel)return;const member=teamByKey(key),meta=teamMeta(key),img=sidebarAgentImages[key]||agentImages[key]||"";activeTeamProfileKey=member.key;
-  if($("teamProfileBadge"))$("teamProfileBadge").textContent=member.name;
-  panel.innerHTML=`<div class="ai-team-profile-visual tone-${member.tone}"><div class="ai-team-profile-avatar" style="${img?`background-image:url(${img})`:''}"></div><div class="ai-team-profile-tag">${esc(meta.rank||member.role)}</div><div class="ai-team-profile-quote">“${esc(meta.quote||member.desc)}”</div></div><div class="ai-team-profile-body"><div class="ai-team-profile-head"><div><div class="ai-team-profile-role">${esc(member.role)}</div><h3>${esc(member.name)}</h3><div class="ai-team-profile-sub">${esc(meta.headline||member.desc)}</div></div><div class="ai-team-profile-actions"><button class="btn sm primary" type="button" id="teamProfileGoMain">담당 화면 열기</button></div></div><div class="ai-team-mood">${(meta.signature||[]).map(v=>`<span class="pill">${esc(v)}</span>`).join("")}</div><div class="ai-team-meta-grid"><div class="ai-team-meta-card"><b>담당 역할</b>${teamListHtml(meta.focus||[])}</div><div class="ai-team-meta-card"><b>성향</b>${teamListHtml(meta.traits||[])}</div><div class="ai-team-meta-card"><b>대화 스타일</b>${teamListHtml(meta.style||[])}</div><div class="ai-team-meta-card"><b>강점</b>${teamListHtml(meta.strengths||[])}</div></div><div class="ai-team-profile-note">${esc(meta.note||member.desc)}</div></div>`;
-  const goBtn=$("teamProfileGoMain");if(goBtn)goBtn.onclick=()=>showView(member.go||"home");
+  const isDevelopment=developmentTeam.some(x=>x.key===key),panel=$(isDevelopment?"developmentTeamProfilePanel":"teamProfilePanel");if(!panel)return;const member=teamByKey(key),meta=teamMeta(key),img=sidebarAgentImages[key]||agentImages[key]||"";activeTeamProfileKey=member.key;
+  const badge=$(isDevelopment?"developmentTeamProfileBadge":"teamProfileBadge");if(badge)badge.textContent=member.name;
+  panel.innerHTML=`<div class="ai-team-profile-visual tone-${member.tone}"><div class="ai-team-profile-avatar" style="${img?`background-image:url(${img})`:''}">${!img?`<span style="font-size:64px" aria-label="${esc(member.name)}">${esc(member.emoji)}</span>`:""}</div><div class="ai-team-profile-tag">${esc(meta.rank||member.role)}</div><div class="ai-team-profile-quote">“${esc(meta.quote||member.desc)}”</div></div><div class="ai-team-profile-body"><div class="ai-team-profile-head"><div><div class="ai-team-profile-role">${esc(member.role)}</div><h3>${esc(member.name)}</h3><div class="ai-team-profile-sub">${esc(meta.headline||member.desc)}</div></div><div class="ai-team-profile-actions"><button class="btn sm primary" type="button" id="${isDevelopment?"developmentTeamProfileGoMain":"teamProfileGoMain"}">담당 화면 열기</button></div></div><div class="ai-team-mood">${(meta.signature||[]).map(v=>`<span class="pill">${esc(v)}</span>`).join("")}</div><div class="ai-team-meta-grid"><div class="ai-team-meta-card"><b>담당 역할</b>${teamListHtml(meta.focus||[])}</div><div class="ai-team-meta-card"><b>성향</b>${teamListHtml(meta.traits||[])}</div><div class="ai-team-meta-card"><b>대화 스타일</b>${teamListHtml(meta.style||[])}</div><div class="ai-team-meta-card"><b>강점</b>${teamListHtml(meta.strengths||[])}</div></div><div class="ai-team-profile-note">${esc(meta.note||member.desc)}</div></div>`;
+  const goBtn=$(isDevelopment?"developmentTeamProfileGoMain":"teamProfileGoMain");if(goBtn)goBtn.onclick=()=>showView(member.go||"home");
   updateTeamActiveState(member.key);
 }
-function openTeamProfile(key,{showTeam=true}={}){const member=teamByKey(key);activeTeamProfileKey=member.key;if(showTeam)showView("aiTeam");renderTeamProfile(member.key);const card=$("teamProfilePanel");if(card&&showTeam)card.scrollIntoView({behavior:"smooth",block:"start"})}
+function openTeamProfile(key,{showTeam=true}={}){const member=teamByKey(key);activeTeamProfileKey=member.key;if(showTeam)showView("aiTeam");renderTeamProfile(member.key);const card=$(developmentTeam.some(x=>x.key===member.key)?"developmentTeamProfilePanel":"teamProfilePanel");if(card&&showTeam)card.scrollIntoView({behavior:"smooth",block:"start"})}
 function renderSidebarTeamFaces(){
   const el=$("sidebarTeamFaces");if(!el)return;
   const picks=team.map(x=>x.key);
@@ -3204,7 +3206,7 @@ function renderSidebarTeamFaces(){
   el.querySelectorAll("[data-team-key]").forEach(b=>b.onclick=()=>openTeamProfile(b.dataset.teamKey,{showTeam:true}));
   updateTeamActiveState(activeTeamProfileKey||team[0]?.key||"hani");
 }
-function renderTeam(){const html=team.map(teamCard).join("");if($("teamList"))$("teamList").innerHTML=html;if($("homeTeamList"))$("homeTeamList").innerHTML=html;renderSidebarTeamFaces();document.querySelectorAll(".ui26-member[data-team-key]").forEach(b=>b.onclick=()=>openTeamProfile(b.dataset.teamKey,{showTeam:true}));renderTeamProfile(activeTeamProfileKey||team[0]?.key||"hani")}
+function renderTeam(){const selectedKey=activeTeamProfileKey;const html=team.map(teamCard).join("");if($("teamList"))$("teamList").innerHTML=html;if($("homeTeamList"))$("homeTeamList").innerHTML=html;if($("developmentTeamList"))$("developmentTeamList").innerHTML=developmentTeam.map(teamCard).join("");renderSidebarTeamFaces();document.querySelectorAll(".ui26-member[data-team-key]").forEach(b=>b.onclick=()=>openTeamProfile(b.dataset.teamKey,{showTeam:true}));renderTeamProfile(developmentTeam.some(x=>x.key===activeTeamProfileKey)?"hani":activeTeamProfileKey||"hani");renderTeamProfile(developmentTeam.some(x=>x.key===selectedKey)?selectedKey:developmentTeam[0]?.key||"gemini");activeTeamProfileKey=selectedKey;updateTeamActiveState(selectedKey)}
 
 
 // ===== v2.9.0 Campus MVP =====
@@ -5061,7 +5063,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.173";
+const HANI_DISPLAY_VERSION="2.9.174";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
