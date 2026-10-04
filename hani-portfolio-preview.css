@@ -28,10 +28,12 @@
 .portfolio-summary>div:nth-child(2) strong{color:#238a7a}
 .portfolio-summary>div:nth-child(3) strong{color:#a57943}
 #portfolioLivePreview h4{margin:28px 0 14px;color:var(--p-ink)!important;font-size:14px;letter-spacing:-.3px;font-weight:750}
-.portfolio-treemap{position:relative;height:280px;border-radius:18px;overflow:hidden;background:#f0f3fa;border:4px solid #f0f3fa}
-.portfolio-treemap>div{position:absolute;border:3px solid #f0f3fa;border-radius:12px;color:white;padding:18px;overflow:hidden;background-image:linear-gradient(135deg,#ffffff18,#0000000c)!important}
-.portfolio-treemap span{display:block;color:white!important;font-weight:750;font-size:15px;letter-spacing:-.3px}
-.portfolio-treemap small{display:block;color:#ffffffe0!important;margin-top:6px;font-size:13px}
+.portfolio-treemap{position:relative;height:440px;border-radius:12px;overflow:hidden;background:#182231;border:2px solid #182231}
+.portfolio-treemap>div{position:absolute;border:2px solid #182231;border-radius:2px;color:white;padding:8px;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;container-type:size}
+.portfolio-treemap span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:white!important;font-weight:750;font-size:clamp(10px,12cqw,22px);letter-spacing:-.3px;max-width:100%}
+.portfolio-treemap small{display:block;color:#ffffffe0!important;margin-top:4px;font-size:clamp(9px,9cqw,15px);white-space:nowrap;max-width:100%;overflow:hidden}
+.portfolio-quantity-change{color:#536682!important;font-weight:600}
+@container (max-height:45px){.portfolio-treemap small{display:none}}
 .portfolio-treemap>p{padding:20px;color:var(--p-muted)}
 .portfolio-table-wrap{overflow-x:auto;margin-top:24px;border:1px solid var(--p-line);border-radius:16px;background:#fff}
 #portfolioLivePreview table{width:100%;border-collapse:collapse;font-size:13px}
