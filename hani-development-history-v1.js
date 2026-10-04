@@ -2,6 +2,7 @@
 (()=>{
   if(window.HANI_DEVELOPMENT_HISTORY_V1)return;
   const HISTORY=Object.freeze([
+    {id:"v2.9.168",date:"2026-10-04",status:"preview",title:"Asset Input · Canonical Holding Contract",summary:"평균매입가를 선택 입력으로 바꾸고, 부분 업데이트와 전체 보유목록을 명시적으로 구분했습니다. 누락 종목은 자동 매도하지 않으며 전체 목록은 기존 보유종목 포함과 대표 확인을 요구합니다. 종목 ID 우선 매칭과 포트폴리오 완전성 표시를 함께 보강했습니다.",ref:"Preview Candidate"},
     {id:"v2.9.166",date:"2026-10-04",status:"released",title:"P1 Safety · Portfolio Contrast",summary:"오래된 안정화 핫픽스를 최신 main 기준으로 다시 분류하고, 5개 Finish에서 밝은 포트폴리오 카드의 제목·표·상세 글자 대비를 보강했습니다. Asset Input 계약은 보호 저장 경로를 변경하지 않고 남은 승인 항목만 분리했습니다.",ref:"PR #161"},
     {id:"P0",date:"2026-10-04",status:"process",title:"Central Development History",summary:"개발 기록을 중앙 폴더와 저장소 문서로 취합하고 완료·후보·보류·대체 상태를 구분했습니다. 오래된 PR 61·68은 후속 운영 릴리스로 대체된 후보로 정리했습니다.",ref:"183be6c"},
     {id:"v2.9.165",date:"2026-10-04",status:"pages",title:"AURA · Deployment Menu Group",summary:"사이드바에서 AURA와 배포센터 메뉴 그룹을 정리했습니다. main과 Pages 반영은 확인됐고 전체 메뉴 기능 read-back은 별도 상태로 유지합니다.",ref:"b80c620"},

@@ -213,7 +213,7 @@
       const rawCost=p.buyCurrency?(quantity!==null&&p.buyPrice!==null?quantity*p.buyPrice:null):p.purchaseAmount;
       const cost=rawCost!==null&&rawCost>=0&&Number.isFinite(rawCost)&&costCurrency?rawCost:null;
       const row={key,account_id:p.accountId,account:p.accountName,instrument_id:p.instrumentId||null,instrument:identity,name:p.name,ticker:code||null,
-        quantity,holding_as_of:p.holdingAsOf,source:'confirmed-broker-snapshot',source_completeness:'UNKNOWN',
+        quantity,holding_as_of:p.holdingAsOf,source:'confirmed-broker-snapshot',source_completeness:p.sourceCompleteness||'UNKNOWN',
         market:stock?.market||master?.market||null,asset_class:master?.className||null,currency,
         market_price:verified?price:null,price_currency:verified?resolution.currency:null,price_as_of:verified?quote.timestamp:null,
         price_status:verified?(now-stamp<=120000?'RECENT':'LAST_KNOWN'):'NO_DATA',market_value:marketValue,
@@ -243,14 +243,16 @@
       const cashTotal=cashComplete?cash.reduce((sum,list)=>sum+finite(list[0].amount),0):null;
       const unknown=holdings.some(h=>h.currency==='UNKNOWN'&&h.status!=='EXPLICIT_ZERO');
       const coverage=active.length===0?'NO_DATA':priced.length===active.length&&!unknown?'COMPLETE':'PARTIAL';
+      const holdingsCompleteness=active.length>0&&active.every(h=>h.source_completeness==='COMPLETE')?'COMPLETE':active.some(h=>h.source_completeness==='PARTIAL')?'PARTIAL':'UNKNOWN';
       const portfolioTotal=total!==null&&cashTotal!==null?total+cashTotal:null;
       const weightMode=coverage==='COMPLETE'&&portfolioTotal>0?'PORTFOLIO':'SECURITY';
       for(const h of scoped){h.security_weight=h.market_value!==null&&total>0?h.market_value/total:null;h.portfolio_weight=h.market_value!==null&&portfolioTotal>0?h.market_value/portfolioTotal:null;}
       buckets[c]={currency:c,securities_value:total,confirmed_cash:cashTotal,cash_status:cashComplete?'CONFIRMED':'NO_DATA',portfolio_value:portfolioTotal,
-        coverage,priced_count:priced.length,holding_count:active.length,unpriced_count:active.length-priced.length,weight_mode:weightMode};
+        coverage,holdings_completeness:holdingsCompleteness,priced_count:priced.length,holding_count:active.length,unpriced_count:active.length-priced.length,weight_mode:weightMode};
     }
+    const completenessKnown=holdings.length>0&&holdings.filter(h=>h.status!=='EXPLICIT_ZERO').every(h=>h.source_completeness==='COMPLETE');
     return {version:'live-preview-1',as_of:new Date(now).toISOString(),holdings,buckets,
-      limitations:['보유목록 완전성과 종목별 실제 관측일은 기존 기록에서 확인할 수 없습니다.','현금성 차액을 현금으로 사용하지 않습니다.','통화 간 합산·환산과 월간 공식 이력은 제공하지 않습니다.']};
+      limitations:[...(completenessKnown?[]:['보유목록 전체 확인 여부가 없거나 부분 업데이트인 기록이 포함되어 있습니다.']),'종목별 실제 관측일은 기존 기록에서 확인할 수 없습니다.','현금성 차액을 현금으로 사용하지 않습니다.','통화 간 합산·환산과 월간 공식 이력은 제공하지 않습니다.']};
   }
   const api={build};if(typeof module==='object'&&module.exports)module.exports=api;else root.HaniPortfolioAnalytics=api;
 })(globalThis);
@@ -288,7 +290,7 @@
     const b=model.buckets[currency];if(!b){root.querySelector('[data-p-coverage]').textContent='확정된 보유기록 없음';content.textContent='계좌에서 종목과 수량을 기록하면 분석을 시작합니다.';return;}
     const rows=model.holdings.filter(h=>h.currency===currency&&h.status!=='EXPLICIT_ZERO').sort((a,b)=>(b.market_value??-1)-(a.market_value??-1)),items=aggregates(rows,'instrument');
     const unknown=model.holdings.filter(h=>h.currency==='UNKNOWN'&&h.status!=='EXPLICIT_ZERO').length;
-    root.querySelector('[data-p-coverage]').textContent=(currency==='UNKNOWN'?'통화 미확인':currency)+' · 가격 평가 '+b.priced_count+'/'+b.holding_count+'개 · '+({COMPLETE:'가격 연결 완료',PARTIAL:'부분 평가',NO_DATA:'평가 미확인'}[b.coverage])+' ('+b.coverage+') · '+(b.weight_mode==='PORTFOLIO'?'포트폴리오 비중':'종목 내 비중 (가격 연결분 기준)')+(b.cash_status==='NO_DATA'?' · 명시적 현금 미확인':'')+(unknown?' · 통화 미확인 투자기록 '+unknown+'개 — 통화 선택에서 조회':'')+' · 보유목록 완전성 미확인';
+    root.querySelector('[data-p-coverage]').textContent=(currency==='UNKNOWN'?'통화 미확인':currency)+' · 가격 평가 '+b.priced_count+'/'+b.holding_count+'개 · '+({COMPLETE:'가격 연결 완료',PARTIAL:'부분 평가',NO_DATA:'평가 미확인'}[b.coverage])+' ('+b.coverage+') · '+(b.weight_mode==='PORTFOLIO'?'포트폴리오 비중':'종목 내 비중 (가격 연결분 기준)')+(b.cash_status==='NO_DATA'?' · 명시적 현금 미확인':'')+(unknown?' · 통화 미확인 투자기록 '+unknown+'개 — 통화 선택에서 조회':'')+' · '+({COMPLETE:'보유목록 전체 확인',PARTIAL:'보유목록 부분 업데이트',UNKNOWN:'보유목록 완전성 미확인'}[b.holdings_completeness]||'보유목록 완전성 미확인');
     if(tab==='holdings'){content.innerHTML=table(rows,b);return;}
     if(tab==='allocation'){
       const grouped=aggregates(rows,dimension);

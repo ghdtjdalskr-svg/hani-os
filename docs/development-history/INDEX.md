@@ -24,6 +24,7 @@
 | Character Voice | `2026-10-04/v2.9.163-tab-character-voice-release-record.md` | Production 원장 사본 |
 | Data Hub | `2026-10-04/v2.9.164-data-hub-release-record.md` | Production 원장 사본 |
 | P1 안정성·Portfolio | `2026-10-04-p1-safety-portfolio.md` | Production · Asset Input 보호 변경 제외 |
+| Asset Input canonical contract | `2026-10-04-v2.9.168-asset-input-canonical-contract.md` | Preview Candidate · 대표 승인 대기 |
 
 ## 최근 Production 계보
 
@@ -31,6 +32,7 @@
 
 | 날짜 | 버전 | 핵심 변경 | Production SHA |
 |---|---|---|---|
+| 2026-10-04 | v2.9.167 | HANI AURA Campaign Posters · 5 Finish 반응형 Hero | `d67f3be` |
 | 2026-10-04 | v2.9.166 | P1 안정화 재진단·포트폴리오 대비·개발센터 최신화 | `3a7979d` |
 | 2026-10-04 | v2.9.165 | AURA·배포센터 사이드바 메뉴 그룹 조정 | `b80c620` · Pages live, 전체 read-back 미완료 |
 | 2026-10-04 | v2.9.164 | Data Hub Batch A/B/C, Dashboard 6대 지표 | `f5274ce` |
@@ -52,8 +54,14 @@
 | 2026-09-29 | v2.9.146 | HANI Remote rotating banners | `6fd9757` |
 | 2026-09-29 | v2.9.145 | Toss 시장 데이터·종목 검색 | `eeccbef` |
 
+## 현재 Preview 후보
+
+| 날짜 | 버전 | 핵심 변경 | 브랜치 |
+|---|---|---|---|
+| 2026-10-04 | v2.9.168 | Asset Input canonical contract · Partial/Complete · optional cost | `hani/asset-canonical-contract` |
+
 ## 기록 공백
 
 - 운영 개발센터는 v2.9.166에서 v2.9.161~166, P0 중앙 기록을 최신순으로 표시한다.
 - v2.9.161~164의 상세 원장은 중앙 사본으로 보존한다.
-- Asset Input canonical contract의 보호 write 변경은 P1에서 수행하지 않았으며 별도 승인이 필요하다.
+- Asset Input canonical contract는 별도 승인 후 최신 v2.9.167 AURA 기준선 위에 v2.9.168 Preview 후보로 통합했으며 Production 승인 전이다.
