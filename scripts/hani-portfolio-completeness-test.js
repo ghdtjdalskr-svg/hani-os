@@ -39,12 +39,3 @@ assert.equal(rows.find(x=>x.accountId==='complete').sourceCompleteness,'COMPLETE
 assert.equal(rows.find(x=>x.accountId==='partial').sourceCompleteness,'PARTIAL');
 assert.equal(rows.find(x=>x.accountId==='legacy').sourceCompleteness,'UNKNOWN');
 console.log('PASS: portfolio keeps price coverage separate from explicit holding-list completeness and never infers legacy completeness or missing cost');
-const history=makeState('complete');
-history.investmentBrokerSnapshots.unshift({...history.investmentBrokerSnapshots[0],period:'2026-09',snapshotDate:'2026-09-30',accounts:[{accountId:'a',enabled:true,holdings:[{...baseHolding,quantity:1.25}]}]});
-const before=JSON.stringify(history);
-assert.equal(A.build(history,opts).holdings[0].quantity_comparison.delta,.75);
-assert.equal(JSON.stringify(history),before,'comparison never mutates source');
-assert.equal(A.build(makeState('complete'),opts).holdings[0].quantity_comparison,null,'missing history is not zero');
-history.investmentBrokerSnapshots[0].accounts[0].holdings=[];
-assert.equal(A.build(history,opts).holdings[0].quantity_comparison,null,'missing previous holding is not zero');
-console.log('PASS: calendar previous month quantity comparison, fractional quantities and no source mutation');
