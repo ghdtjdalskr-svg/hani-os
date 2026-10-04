@@ -1626,6 +1626,20 @@ function syncSeasonCollection(){
   if(!meta)return;
   const artwork=SEASON_COLLECTION_ARTWORK[season],image=$("seasonalLifeArtwork");
   if(image&&artwork){if(image.getAttribute("src")!==artwork.src)image.setAttribute("src",artwork.src);image.alt=artwork.alt;}
+  const sidebarArtwork=$("sidebarSeasonArtwork");
+  if(sidebarArtwork&&artwork){
+    const sidebarSrc={
+      spring:"./assets/seasonal-collection/sidebar-spring-v1.webp",
+      summer:"./assets/seasonal-collection/sidebar-summer-v2.webp",
+      autumn:"./assets/seasonal-collection/sidebar-autumn-v2.webp",
+      winter:"./assets/seasonal-collection/sidebar-winter-v2.webp"
+    }[season];
+    if(sidebarArtwork.getAttribute("src")!==sidebarSrc)sidebarArtwork.setAttribute("src",sidebarSrc);
+    const sidebarScene={spring:"꽃 작업실",summer:"해변 아이스크림 가게",autumn:"가을 레코드숍",winter:"겨울 오두막의 코코아 시간"};
+    const sidebarCast={spring:"하니·히나·유나·하루",summer:"나은·수연·수아·유나",autumn:"지은·민지·하루·하니",winter:"수연·지은·수아·히나"};
+    sidebarArtwork.alt=`${meta.label} · ${sidebarScene[season]}의 ${sidebarCast[season]}`;
+    sidebarArtwork.width=1536;sidebarArtwork.height=1024;
+  }
   if($("seasonalLifeLabel")&&artwork)$("seasonalLifeLabel").textContent=`${meta.collection} · ${artwork.title}`;
   if($("seasonalLifeCast")&&artwork)$("seasonalLifeCast").textContent=artwork.cast;
   const preview=$("auraPreviewArtwork");
@@ -5047,7 +5061,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.169";
+const HANI_DISPLAY_VERSION="2.9.170";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
