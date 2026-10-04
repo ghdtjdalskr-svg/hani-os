@@ -1,0 +1,41 @@
+const fs=require('node:fs');
+const vm=require('node:vm');
+const assert=require('node:assert/strict');
+const path=require('node:path');
+const M=require('../hani-market-data.js');
+
+const source=fs.readFileSync(path.join(__dirname,'../hani-asset-market-view.js'),'utf8');
+const start=source.indexOf('/* HANI PORTFOLIO READ-ONLY BUNDLE START */');
+const end=source.indexOf('/* Read-only Phase B;',start);
+assert.ok(start>=0&&end>start,'portfolio analytics bundle markers');
+const sandbox={module:{exports:{}},exports:{},require:()=>M,console,Date};
+sandbox.globalThis=sandbox;
+vm.createContext(sandbox);
+vm.runInContext(source.slice(start,end),sandbox);
+const A=sandbox.module.exports;
+const baseHolding={instrumentId:'aapl',name:'Apple',ticker:'AAPL',quantity:2,buyPrice:null};
+const instruments=[{id:'aapl',name:'Apple',ticker:'AAPL',market:'US',className:'주식'}];
+const stocks=[{symbol:'AAPL',name:'Apple',market:'NASDAQ',currency:'USD'}];
+const quotes=[{symbol:'AAPL',currency:'USD',lastPrice:200,timestamp:'2026-10-04T00:00:00.000Z'}];
+const makeState=mode=>({accounts:[{id:'a',name:'계좌'}],instruments,investmentBrokerSnapshots:[{mode:'positions',recordType:'positions',status:'confirmed',period:'2026-10',snapshotDate:'2026-10-04',...(mode?{holdingListMode:mode}:{}),accounts:[{accountId:'a',enabled:true,...(mode?{holdingListMode:mode}:{}),holdings:[baseHolding]}]}]});
+const opts={stocks,quotes,now:Date.parse('2026-10-04T00:01:00.000Z')};
+const complete=A.build(makeState('complete'),opts);
+assert.equal(complete.holdings[0].source_completeness,'COMPLETE');
+assert.equal(complete.buckets.USD.holdings_completeness,'COMPLETE');
+assert.equal(complete.limitations.some(x=>x.includes('부분 업데이트')),false);
+const partial=A.build(makeState('partial'),opts);
+assert.equal(partial.buckets.USD.holdings_completeness,'PARTIAL');
+assert.equal(partial.limitations.some(x=>x.includes('부분 업데이트')),true);
+const legacy=A.build(makeState(''),opts);
+assert.equal(legacy.buckets.USD.holdings_completeness,'UNKNOWN');
+assert.equal(legacy.holdings[0].cost_basis,null,'missing average price never fabricates cost');
+assert.equal(legacy.holdings[0].pnl,null,'missing average price never fabricates PnL');
+const mixedState={accounts:[{id:'complete',name:'전체'},{id:'partial',name:'부분'},{id:'legacy',name:'기존'}],instruments,investmentBrokerSnapshots:[
+  {mode:'positions',recordType:'positions',status:'confirmed',period:'2026-10',holdingListMode:'complete',accounts:[{accountId:'complete',enabled:true,holdings:[baseHolding]}]},
+  {mode:'positions',recordType:'positions',status:'confirmed',period:'2026-10',accounts:[{accountId:'partial',enabled:true,holdingListMode:'partial',holdings:[baseHolding]},{accountId:'legacy',enabled:true,holdings:[baseHolding]}]}
+]};
+const rows=M.positions(mixedState);
+assert.equal(rows.find(x=>x.accountId==='complete').sourceCompleteness,'COMPLETE');
+assert.equal(rows.find(x=>x.accountId==='partial').sourceCompleteness,'PARTIAL');
+assert.equal(rows.find(x=>x.accountId==='legacy').sourceCompleteness,'UNKNOWN');
+console.log('PASS: portfolio keeps price coverage separate from explicit holding-list completeness and never infers legacy completeness or missing cost');

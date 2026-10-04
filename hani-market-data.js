@@ -21,18 +21,18 @@
     const latest=new Map(), accounts=new Map((state.accounts||[]).map(a=>[a.id,a]));
     const rows=(state.investmentBrokerSnapshots||[]).filter(s=>(s.mode==='actual'||s.mode==='positions'&&s.recordType==='positions')&&s.status==='confirmed').slice().sort((a,b)=>String(a.period||'').localeCompare(String(b.period||''))||String(a.snapshotDate||'').localeCompare(String(b.snapshotDate||''))||String(a.updatedAt||'').localeCompare(String(b.updatedAt||'')));
     for(const snapshot of rows) for(const account of snapshot.accounts||[]) if(account.enabled&&accounts.has(account.accountId)) latest.set(account.accountId,{account,snapshot});
-    const result=[...latest.values()].flatMap(({account,snapshot})=>(account.holdings||[]).map((h,index)=>({
+    const result=[...latest.values()].flatMap(({account,snapshot})=>{const listMode=account.holdingListMode||snapshot.holdingListMode,sourceCompleteness=listMode==='complete'?'COMPLETE':listMode==='partial'?'PARTIAL':'UNKNOWN';return (account.holdings||[]).map((h,index)=>({
       key:account.accountId+':'+(h.id||index),accountId:account.accountId,accountName:accounts.get(account.accountId).name,
       instrumentId:h.instrumentId||'',rawName:h.rawName||h.name||'',name:h.name||h.rawName||'이름 미확인',
       ticker:symbol(h.ticker||h.rawTicker),quantity:number(h.quantity),buyPrice:number(h.buyPrice),purchaseAmount:number(h.purchaseAmount),
       recordedEvaluation:number(h.evaluationAmount),recordedPnl:number(h.pnl),recordedCurrency:h.currency||null,buyCurrency:['KRW','USD'].includes(h.buyCurrency)?h.buyCurrency:null,
-      holdingAsOf:snapshot.asOfDate||snapshot.snapshotDate||snapshot.period||'',
-    })));
+      holdingAsOf:snapshot.asOfDate||snapshot.snapshotDate||snapshot.period||'',sourceCompleteness,
+    }))});
     for(const h of transactionRows)if(accounts.has(h.accountId)&&!latest.has(h.accountId)){
       const instrument=(state.instruments||[]).find(i=>i.id===h.instrumentId);
       result.push({key:h.accountId+':'+h.instrumentId,accountId:h.accountId,accountName:accounts.get(h.accountId).name,instrumentId:h.instrumentId,
         name:instrument?.name||'이름 미확인',rawName:instrument?.name||'',ticker:symbol(instrument?.ticker),quantity:number(h.qty),buyPrice:number(h.avg),purchaseAmount:number(h.cost),
-        recordedEvaluation:number(h.market),recordedPnl:number(h.pnl),recordedCurrency:instrument?.currency||null,holdingAsOf:'HANI 거래 기록 기준'});
+        recordedEvaluation:number(h.market),recordedPnl:number(h.pnl),recordedCurrency:instrument?.currency||null,holdingAsOf:'HANI 거래 기록 기준',sourceCompleteness:'UNKNOWN'});
     }
     return result;
   }

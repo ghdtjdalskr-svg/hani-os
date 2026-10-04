@@ -38,6 +38,17 @@ assert.equal(preserved.length,1);assert.equal(preserved[0].quantity,4);assert.eq
 const sparsePreserved=api.mergeWithExistingHoldings([{name:'KODEX 200TR',ticker:'278530',quantity:4}],[{id:'original-holding',name:'KODEX 200TR',ticker:'278530',currentPrice:39555},{id:'untouched-holding',name:'보존할 종목',ticker:'123456'}]);
 assert.equal(sparsePreserved.length,2);assert.equal(sparsePreserved[0].id,'original-holding');assert.equal(sparsePreserved[0].currentPrice,39555);assert.equal(sparsePreserved[1].id,'untouched-holding');
 assert.equal(api.mergeHoldings([{name:'동명이종목',ticker:'111111',quantity:1},{name:'동명이종목',ticker:'222222',quantity:2}]).length,2);
+const stableIdentity=api.mergeWithExistingHoldings([{instrumentId:'canonical',name:'OCR 다른 이름',ticker:'A005930',quantity:3}],[{id:'saved',instrumentId:'canonical',name:'삼성전자',ticker:'005930',market:'KR',quantity:2}]);
+assert.equal(stableIdentity.length,1);assert.equal(stableIdentity[0].name,'삼성전자');assert.equal(stableIdentity[0].ticker,'005930');assert.equal(stableIdentity[0].market,'KR');assert.equal(stableIdentity[0].quantity,3);
+assert.equal(api.sameHolding({instrumentId:'one',ticker:'005930',name:'같은 이름'},{instrumentId:'two',ticker:'005930',name:'같은 이름'}),false);
+assert.equal(api.sameHolding({ticker:'A005930',name:'이름 A'},{ticker:'005930',name:'이름 B'}),true);
+const optionalCostFields=api.missingReviewFields({positionsOnly:true,marketLinked:true,date:'2026-10-04',holdings:[{name:'AAPL',ticker:'AAPL',quantity:2,buyPrice:null}]},{type:'위탁'},null);
+assert.equal(optionalCostFields.length,0);
+const costCurrencyFields=api.missingReviewFields({positionsOnly:true,marketLinked:true,date:'2026-10-04',holdings:[{name:'AAPL',ticker:'AAPL',quantity:2,buyPrice:100}]},{type:'위탁'},null);
+assert.equal(JSON.stringify(costCurrencyFields.map(x=>x.key)),JSON.stringify(['buyCurrency']));
+const priorComplete=[{instrumentId:'a',ticker:'AAPL',quantity:2},{instrumentId:'b',ticker:'MSFT',quantity:1},{instrumentId:'sold',ticker:'NVDA',quantity:0}];
+assert.equal(JSON.stringify(api.completeListMissing([{instrumentId:'a',ticker:'AAPL',quantity:3}],priorComplete).map(x=>x.instrumentId)),JSON.stringify(['b']));
+assert.equal(api.completeListMissing([{instrumentId:'a',quantity:3},{instrumentId:'b',quantity:0}],priorComplete).length,0);
 assert.equal(api.sameAccount(raw,{broker:'키움증권',accountName:'ISA',accountType:'ISA'}),true);
 assert.equal(api.sameAccount(raw,{broker:'키움증권',accountName:'IRP',accountType:'IRP'}),false);
 const accounts=[{id:'toss',name:'토스',type:'미국투자용',broker:'토스증권'},{id:'isa',name:'ISA',type:'중개형 ISA',broker:'키움증권'}];

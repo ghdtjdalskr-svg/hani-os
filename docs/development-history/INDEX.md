@@ -24,6 +24,7 @@
 | Character Voice | `2026-10-04/v2.9.163-tab-character-voice-release-record.md` | Production 원장 사본 |
 | Data Hub | `2026-10-04/v2.9.164-data-hub-release-record.md` | Production 원장 사본 |
 | P1 안정성·Portfolio | `2026-10-04-p1-safety-portfolio.md` | Production · Asset Input 보호 변경 제외 |
+| Asset Input canonical contract | `2026-10-04-v2.9.167-asset-input-canonical-contract.md` | Preview Candidate · 대표 승인 대기 |
 
 ## 최근 Production 계보
 
@@ -52,8 +53,14 @@
 | 2026-09-29 | v2.9.146 | HANI Remote rotating banners | `6fd9757` |
 | 2026-09-29 | v2.9.145 | Toss 시장 데이터·종목 검색 | `eeccbef` |
 
+## 현재 Preview 후보
+
+| 날짜 | 버전 | 핵심 변경 | 브랜치 |
+|---|---|---|---|
+| 2026-10-04 | v2.9.167 | Asset Input canonical contract · Partial/Complete · optional cost | `hani/asset-canonical-contract` |
+
 ## 기록 공백
 
 - 운영 개발센터는 v2.9.166에서 v2.9.161~166, P0 중앙 기록을 최신순으로 표시한다.
 - v2.9.161~164의 상세 원장은 중앙 사본으로 보존한다.
-- Asset Input canonical contract의 보호 write 변경은 P1에서 수행하지 않았으며 별도 승인이 필요하다.
+- Asset Input canonical contract는 별도 승인 후 v2.9.167 Preview 후보로 구현했으며 Production 승인 전이다.
