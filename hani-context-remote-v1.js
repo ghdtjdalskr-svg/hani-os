@@ -69,7 +69,7 @@
 
   const viewId=()=>document.body.dataset.view||$(".view.active")?.id||"home";
   // On the market screen use its existing toolbar, not a floating chart overlay.
-  const placeMobileTrigger=()=>{const slot=innerWidth<=850&&viewId()==='asset'?document.querySelector('#assetMarket .market-toolbar'):null;const target=slot||app;if(mobileTrigger.parentElement!==target)target.append(mobileTrigger);mobileTrigger.classList.toggle('is-market-inline',!!slot)};
+  const placeMobileTrigger=()=>{const mobile=innerWidth<=850,view=viewId(),marketSlot=mobile&&view==='asset'?document.querySelector('#assetMarket .market-toolbar'):null,intakeSlot=mobile&&view==='intake'?document.querySelector('header.top .top-actions'):null;const target=marketSlot||intakeSlot||app;if(mobileTrigger.parentElement!==target)target.append(mobileTrigger);mobileTrigger.classList.toggle('is-market-inline',!!marketSlot);mobileTrigger.classList.toggle('is-intake-inline',!!intakeSlot)};
   const config=()=>defaults[viewId()]||{primary:"현재 화면 보기",agent:"HANI",recent:"최근 항목",recentTarget:`#${viewId()}`,sections:[["현재 화면",`#${viewId()}`]]};
   const visibleTarget=selector=>{try{return selector?$(selector):null}catch{return null}};
   const goView=id=>{const nav=$(`[data-view="${id}"]`);if(nav){nav.click();return true}return false};
