@@ -3474,7 +3474,7 @@ function renderLifeTicker(data,directionByKey){
     const signed=value=>`${value>0?"+":""}${value}`;
     const delta=!validDelta?"-":unit==="count"?`${signed(Math.round(difference))}건`:unit==="pp"?`${signed(Math.round(difference))}%p`:`${signed((difference/Math.abs(n(prev.value))*100).toFixed(1))}%`;
     const direction=validDelta?(directionByKey[key]||0):0,tone=direction>0?"up":direction<0?"down":"flat",arrow=direction>0?"▲":direction<0?"▼":"–";
-    return `<span class="life-ticker-item"><span class="life-ticker-label">${esc(label)}</span><span class="life-ticker-value">${esc(current)}</span><b class="${tone}">${arrow} ${esc(delta)}</b></span>`;
+    return `<span class="life-ticker-item"><span class="life-ticker-label">${esc(label)}</span><span class="life-ticker-value">${esc(current)}</span><b class="${tone}">${arrow} ${esc(delta)}</b><small>${last?`최근 기록 ${esc(last.label)}`:'기록 없음'}</small></span>`;
   }).join("");
   if(track.dataset.sig===groupHtml)return;
   track.dataset.sig=groupHtml;
@@ -3500,6 +3500,7 @@ function renderLifeMarket(){
   const directions=[lifeDirection(assetRows),lifeDirection(bodyRows,{lowerBetter:true}),lifeDirection(contentRows),lifeDirection(stepRows),lifeDirection(ledgerRows,{lowerBetter:true}),lifeDirection(learningRows)],good=directions.filter(x=>x>0).length,bad=directions.filter(x=>x<0).length,flat=6-good-bad;
   const directionByKey={hasdaq:directions[0],ne100:directions[1],hinaJones:directions[2],harukei:directions[3],jispi:directions[4],hinkei:directions[5]};
   renderLifeTicker(data,directionByKey);
+  if($("lifeMarketBasis"))$("lifeMarketBasis").textContent="최신 기록 흐름 · 지표별 기록 기간이 다를 수 있습니다. 이번 달 카드와 별도 집계입니다.";
   let key=good===6?"strong":good>=4?"bull":bad>=5?"circuit":bad>=4?"sidecar":bad>good?"bear":"mixed",label={strong:"초강세",bull:"상승 우세",mixed:"혼조",bear:"약세",sidecar:"사이드카",circuit:"서킷브레이커"}[key];
   const phrases=LIFE_MARKET_BRIEFS[key],seed=[...`${today()}|${key}`].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7),brief=phrases[seed%phrases.length];
   const moodPhrases=["오늘도 시장은 전쟁이다..!","대 풀 롱...? 하니가 아직 버튼 안 줬는데요?","데이터는 평온한데 대표님 마음만 상한가","오늘도 성민 AI TEAM은 야근 중입니다","시장은 열렸고, 하니는 계산기를 들었다"],mood=moodPhrases[seed%moodPhrases.length];
@@ -4290,6 +4291,7 @@ function dataHubRenderDashboard(){
     ["hinaJones","","homeBooks","homeContentMeta"],["harukei","","homeExerciseSteps","homeExerciseAvg"],
     ["jispi","","homeJispi","homeJispiMeta"],["hinkei","","homeHinkei","homeHinkeiMeta"]];
   const text=metric=>api?.dashboardText(metric)||{value:"—",comparison:"원본 검증 대기",status:"OWNER_BINDING_BLOCKED"};
+  if($("dataHubPeriod"))$("dataHubPeriod").textContent=`이번 달 ${view.month||today().slice(0,7)} · 아래 6개 카드 기준`;
   for(const [key,,valueId,metaId] of slots){
     const metric=view.metrics.find(m=>m.key===key),display=text(metric);
     if($(valueId))$(valueId).textContent=display.value;
@@ -5063,7 +5065,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.174";
+const HANI_DISPLAY_VERSION="2.9.175";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
