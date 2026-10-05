@@ -163,7 +163,52 @@ test('rate and point targets', () => {
 
 test('extra definitions pass the core registry validation', () => {
   const registry = core.createRegistry([...core.DEFAULT_REGISTRY, ...EXTRA_DEFINITIONS]);
-  assert.equal(registry.length, core.DEFAULT_REGISTRY.length + 3);
+  assert.equal(registry.length, core.DEFAULT_REGISTRY.length + EXTRA_DEFINITIONS.length);
+});
+
+// Goal Registry UI (hani-main.js): extract GOAL_METRICS and goalRegistryBuildDraft read-only.
+function loadGoalDraft() {
+  const source = readFileSync(root + 'hani-main.js', 'utf8');
+  const start = source.indexOf('const GOAL_METRICS=[');
+  const end = source.indexOf('function renderGoalRegistry(){');
+  assert.ok(start > 0 && end > start, 'Goal Registry region not found');
+  return new Function(source.slice(start, end) + '\nreturn {GOAL_METRICS, goalRegistryBuildDraft};')();
+}
+
+test('goal registry UI: BMI and body fat metrics match the period definitions', () => {
+  const {GOAL_METRICS} = loadGoalDraft();
+  for (const id of ['body_bmi', 'body_fat_percent']) {
+    const ui = GOAL_METRICS.find(item => item[0] === id), definition = def(id);
+    assert.ok(ui, id + ' missing from GOAL_METRICS');
+    assert.equal(ui[2], definition.unit); assert.equal(ui[3], definition.goal_semantics);
+  }
+});
+
+test('goal registry UI: a 2027 Q1 BMI 25 goal can be drafted today; implausible BMI is rejected', () => {
+  const {goalRegistryBuildDraft} = loadGoalDraft();
+  const now = '2026-10-05T12:00:00.000Z';
+  const draft = goalRegistryBuildDraft([], {metric_id: 'body_bmi', goal_type: 'quarter', year: '2027', quarter: '1',
+    value: '25', effective_from: '2027-01-01'}, now, 'id1');
+  assert.deepEqual({...draft.entry}, {goal_id: 'id1', revision: 1, metric_id: 'body_bmi', goal_type: 'quarter', year: 2027,
+    quarter: 1, value: 25, unit: 'kg/m²', semantics: 'point_target', effective_from: '2027-01-01', effective_to: '2027-03-31',
+    created_at: now, status: 'active'});
+  assert.throws(() => goalRegistryBuildDraft([], {metric_id: 'body_bmi', goal_type: 'quarter', year: '2027', quarter: '1',
+    value: '70', effective_from: '2027-01-01'}, now, 'id2'));
+  assert.throws(() => goalRegistryBuildDraft([], {metric_id: 'body_fat_percent', goal_type: 'annual', year: '2027',
+    value: '120', effective_from: '2027-01-01'}, now, 'id3'));
+  // Existing rule kept: a goal cannot start before its period.
+  assert.throws(() => goalRegistryBuildDraft([], {metric_id: 'body_bmi', goal_type: 'quarter', year: '2027', quarter: '1',
+    value: '25', effective_from: '2026-10-05'}, now, 'id4'));
+});
+
+test('BMI goal progress: quarter-end BMI vs target 25', () => {
+  const d = def('body_bmi'), q = {type: 'quarter', year: 2027, quarter: 1};
+  const metric = aggregatePeriod([row(d, '2027-01', 29.1), row(d, '2027-02', 28.2), row(d, '2027-03', 27.4)], d, q, {asOf: '2027-04-01'});
+  const resolved = resolvePeriodGoal([goal(d, {goal_type: 'quarter', year: 2027, quarter: 1, value: 25,
+    effective_from: '2027-01-01', effective_to: '2027-03-31', created_at: '2026-10-05T21:00:00+09:00'})], d, q,
+    {asOf: '2027-04-01', evaluationAt: '2027-04-01T09:00:00+09:00'});
+  const progress = goalProgress(metric, resolved, d);
+  assert.equal(metric.value, 27.4); assert.ok(Math.abs(progress.gap - 2.4) < 1e-9); assert.equal(progress.interpretation, 'unclassified');
 });
 
 function calc(source, month, asOf) {
@@ -177,8 +222,8 @@ function calc(source, month, asOf) {
 test('integration: extra adapters through the real core calculateMonth', () => {
   const source = deepFreeze({
     investmentBrokerSnapshots: [], ledgerMonths: [], books: [], learningQuizzes: [],
-    body: [{id: 'b1', date: '2026-03-02', weight: 105, fat: 28.4}, {id: 'b2', date: '2026-03-20', weight: 104, fat: 27.9},
-      {id: 'b3', date: '2026-03-25', weight: 104, fat: null}, {id: 'b4', date: '2026-02-10', weight: 106, fat: 29}],
+    body: [{id: 'b1', date: '2026-03-02', weight: 105, fat: 28.4, bmi: 29.71}, {id: 'b2', date: '2026-03-20', weight: 104, fat: 27.9, bmi: 29.43},
+      {id: 'b3', date: '2026-03-25', weight: 104, fat: null, bmi: 29.42}, {id: 'b4', date: '2026-02-10', weight: 106, fat: 29, bmi: 29.99}],
     exercise: [{id: 'e1', date: '2026-03-01', steps: 9000, distance: 0, strength: false},
       {id: 'e2', date: '2026-03-03', steps: 4000, distance: 3.2, strength: false},
       {id: 'e3', date: '2026-03-05', steps: 0, distance: 0, strength: true}, {id: 'e4', date: '2026-02-05', distance: 5}],
@@ -188,6 +233,7 @@ test('integration: extra adapters through the real core calculateMonth', () => {
   const rows = calc(source, '2026-03', '2026-03-31');
   const get = id => rows.find(item => item.metric_id === id);
   assert.equal(get('body_fat_percent').value, 27.9); assert.equal(get('body_fat_percent').status, 'CONFIRMED');
+  assert.equal(get('body_bmi').value, 29.42, 'BMI uses the last measured day even when fat is blank');
   assert.equal(get('exercise_days_count').value, 2, 'step-only day is not a workout day');
   assert.equal(get('media_watched_count').value, 2);
   const flagged = calc({...source, movies: [...source.movies, {id: 'm5', status: 'watched', watchedDate: '2026-13-40'}]}, '2026-03', '2026-03-31');
