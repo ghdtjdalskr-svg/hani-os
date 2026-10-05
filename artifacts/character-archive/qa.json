@@ -1,0 +1,29 @@
+{
+  "scope": "Isolated real Archive renderer, not full authenticated OS",
+  "results": [
+    {
+      "width": 1440,
+      "cards": 10,
+      "loadedProfiles": 9,
+      "details": 10,
+      "overflow": false,
+      "consoleErrors": [],
+      "storageWrites": false,
+      "externalRequests": false,
+      "darkTokens": true
+    },
+    {
+      "width": 390,
+      "cards": 10,
+      "loadedProfiles": 9,
+      "details": 10,
+      "overflow": false,
+      "consoleErrors": [],
+      "storageWrites": false,
+      "externalRequests": false,
+      "darkTokens": true
+    }
+  ],
+  "fullOsRegression": "UNVERIFIED",
+  "production": "NOT DEPLOYED"
+}
