@@ -47,7 +47,7 @@ AGENTS.md §11에 따른 첫 운영 기록입니다.
 
 ## 6호 · v2.9.190 · PR215 (merge c5e2dd0)
 
-- 탑승 1: Post-Audit Stabilization Hotfix(`hani/post-audit-stabilization-followup-20261006` b82ef0a) — 투자 미확인 값을 0으로 계산하지 않음, 새 월 첫 계좌 업데이트 시 직전 확정 월 이월, 보호 쓰기 탐지 보강(One-Pass 규칙·테스트는 이 개발도구 PR).
+- 탑승 1: Post-Audit Stabilization Hotfix(`hani/post-audit-stabilization-followup-20261006` b82ef0a) — 투자 미확인 값을 0으로 계산하지 않음, 새 월 첫 계좌 업데이트 시 직전 확정 월 이월, 보호 쓰기 탐지 보강(One-Pass 보호 규칙 보강은 보호 파일이라 대표님 승인 라벨이 필요해 PR217로 분리, 승인 대기).
 - 탑승 2: 대시보드 월 1회 투자·소비 입력 기준 표시(`hani/dashboard-report-followup-20261006` 9ec1ffd).
 - 통합: `hani-main.js` 충돌은 두 새 함수(`goalPeriodReadContext`, `dataHubLatestRecordMonth`)를 모두 유지. `hani-asset-update-v1.js` 캐시 태그를 2.9.169 → 2.9.190으로 올려 새 파일이 실제 로드되게 함.
 - 기능 간 상호작용: 핫픽스 이후 계좌 없는 확정 스냅샷의 총액은 0이 아니라 미확인(null). 대시보드 UI 테스트 샘플이 계좌 없는 확정 기록이라 실패 → 샘플에 계좌 1개를 넣음(테스트만 변경, 화면 로직 변경 없음).
