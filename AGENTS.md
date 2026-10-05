@@ -152,3 +152,13 @@ LIGHT와 NORMAL 작업도 Release Candidate에 포함될 때는 Candidate Freeze
 - 증거 재사용은 candidate/base/package/contract 및 관련 실행환경이 모두 동일할 때만 허용한다. 변경 또는 실패가 발생하면 영향받는 검사를 다시 실행한다.
 - 문서 전용 PR은 runtime build/version/Production 검증 N/A다. CI에서 허용한 문서 경로 외에는 보수적으로 기존 검사로 처리한다. Self-Protection은 그대로 유지한다.
 - 다른 탭에 규칙을 적용하기 위해 기존 branch/worktree를 임의 merge/rebase하거나 미완료 파일을 덮어쓰지 않는다.
+
+## 10. AI 공통 개발 허브
+
+- 작업 시작 시 `docs/development-history/START-HERE.md`와 `CURRENT.md`를 읽고, 해당 작업의 인수인계와 결정 기록만 추가로 확인한다.
+- 공통 개발 사실의 원본은 이 저장소다. Notion은 요약과 원문 링크를 보여주며, 충돌 시 기준 SHA와 실제 증거를 확인한다.
+- 구현 완료, main 병합, Pages 반영, Production read-back을 구분한다. 오래된 기록이나 대화만으로 완료를 선언하지 않는다.
+- 작업 전 담당 AI·branch·base SHA·수정 범위를 작업별 인수인계에 기록한다. 타 AI의 작업 파일을 덮어쓰지 않는다. 같은 범위를 동시에 수정해야 하면 담당을 먼저 조정한다.
+- 작업 종료/중단 시 `HANDOFF-TEMPLATE.md` 형식으로 변경·검증·미검증·blocker·다음 행동을 남긴다. 작업별 파일을 사용하고 공통 현황은 확인된 결과만 갱신한다.
+- 기록 공유는 작업 권한이나 배포 승인이 아니다. 대표님의 실제 승인 범위·근거를 보존하고, AI 제안을 승인으로 바꾸어 기록하지 않는다.
+- AI 연결이나 자동 갱신을 실제로 검증하지 않았다면 연결 완료로 보고하지 않는다. 서로 다른 worktree에서는 최신 문서 commit이 있는지 먼저 확인하며 자동 merge/rebase하지 않는다.

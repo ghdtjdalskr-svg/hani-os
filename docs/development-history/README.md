@@ -1,5 +1,7 @@
 # HANI Development History
 
+**새 AI와 새 작업의 시작점:** [공통 개발 허브](START-HERE.md) → [최신 현황](CURRENT.md). 아래 날짜별 기록은 당시의 확인 근거를 보존합니다.
+
 이 디렉터리는 PROJECT HANI의 개발 상태를 한곳에서 찾기 위한 버전 관리 원본이다. 사용자용 중앙 사본은 `C:\Users\홍성민\Documents\HANI_DEV_HISTORY`에 둔다.
 
 ## 기록 원칙

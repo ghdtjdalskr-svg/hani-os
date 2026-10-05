@@ -1,5 +1,7 @@
 # HANI 개발 히스토리 · 중앙 인덱스
 
+> 최신 공통 현황은 [CURRENT.md](CURRENT.md), 새 AI의 진입점은 [START-HERE.md](START-HERE.md)입니다. 아래 기준선·상태는 2026-10-04 역사적 snapshot이며 최신 main 상태로 간주하지 않습니다.
+
 - 기준일: 2026-10-04 KST
 - P0 시작 기준선: `f5274cebc24b617ad13df70d354e31504470de70` / v2.9.164
 - 최신 확인 main: `3a7979d1782eefab539fc0ba441eec0b961ab8e3` / v2.9.166
