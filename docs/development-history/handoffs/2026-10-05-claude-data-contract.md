@@ -21,7 +21,7 @@
 - 실행한 검증: 코드 읽기(`hani-main.js` Data Hub core 1~430행, Goal Registry 1205~1263행, 월간 보고서 5589~5700행, 기존 목표 경로). 문서 CI는 PR에서 확인
 - 실행하지 않은 검증 / 남은 위험: 운영 데이터·실기기 미확인. 다른 탭의 미병합 코드 미확인. CODEMAP에 goal/data-hub 항목 없음(`CODEMAP_MISS`)
 - 데이터·저장소·Cloud·schema 영향: 없음
-- PR / Preview / 배포 원문 링크: PR 생성 후 기록
+- PR / Preview / 배포 원문 링크: https://github.com/ghdtjdalskr-svg/hani-os/pull/187 (첫 head 2f47d09: 로컬 pre-QA 12/12 PASS, CI 2/2 PASS)
 - main / Pages / 표시 버전 / 실제 JS 로딩 / 기능 read-back: 문서 전용으로 N/A
 
 ## 다음 담당에게
