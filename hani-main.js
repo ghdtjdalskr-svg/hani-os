@@ -1299,6 +1299,7 @@ function goalRegistryBuildDraft(registry,input,now,id){
   next.push(entry);return {before:JSON.stringify(registry),next,old:active[0]?registry.find(g=>g.goal_id===old.goal_id&&g.revision===old.revision):null,entry};
 }
 function renderGoalRegistry(){
+  window.HANI_GOAL_PROGRESS?.render();
   const host=$('goalRegistryContent');if(!host)return;
   const registry=state.goalRegistry===undefined?[]:state.goalRegistry;
   if(!Array.isArray(registry)){host.textContent='목표 이력 형식을 확인해 주세요. 기존 데이터는 변경하지 않습니다.';return;}
@@ -4476,6 +4477,7 @@ async function dataHubRefresh(){
   await dataHubRuntime.refresh();dataHubRenderDashboard();
 }
 function dataHubRenderDashboard(){
+  window.HANI_GOAL_PROGRESS?.render();
   const api=window.HANI_DATA_HUB,view=dataHubRuntime?.peek()||{status:"OWNER_BINDING_BLOCKED",metrics:[],cache:"DISABLED"};
   const slots=api?.DASHBOARD_SLOTS||[["hasdaq","","homeAsset","homeInvestRate"],["ne100","","homeWeight","homeWeightGoal"],
     ["hinaJones","","homeBooks","homeContentMeta"],["harukei","","homeExerciseSteps","homeExerciseAvg"],
@@ -4524,6 +4526,14 @@ function dataHubRenderDashboard(){
     const html=`<div class="secondary-widget-visual"><strong class="secondary-widget-value">${esc(display.value)}</strong></div><div class="secondary-widget-details"><div><small>비교</small><b>${esc(display.comparison)}</b></div><div><small>데이터 품질</small><b>${esc(display.detail||display.status)}</b></div></div>`;
     if($("homeMixDonut").dataset.hubHtml!==html){$("homeMixDonut").innerHTML=html;$("homeMixDonut").dataset.hubHtml=html}}
   if($("homeMixLegend"))$("homeMixLegend").textContent="";
+}
+// Read-only period projection; use the existing live owner/source verification.
+function goalPeriodReadContext(){
+  dataHubAuditSource();
+  const view=dataHubRuntime?.peek();
+  if(view?.status!=="VERIFIED"||!view.asOf||!dataHubBinding())return null;
+  return {source:structuredClone(state),asOf:view.asOf,evaluationAt:new Date().toISOString(),
+    canonical:{version:"85c8110-brokerCalc-ledgerCalc",brokerTotal:row=>brokerCalc(row).total,ledgerSpending:row=>ledgerCalc(row).jispiT}};
 }
 let cloudOwnerVerificationEpoch=1;
 let cloudOwnerVerification=null;
