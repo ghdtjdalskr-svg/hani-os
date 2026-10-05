@@ -239,6 +239,56 @@
       "events": ["#deployPackageStageBtn", "#deployInboxRefreshBtn", "#deployMergeBtn"],
       "targetedTests": ["node scripts/hani-one-pass-release.mjs --self-test", "node scripts/hani-release-preqa.mjs --self-test", "manual: frozen identity and Production read-back contract"],
       "lastVerifiedSha": "6d1016a821de2dc750fb90303f24abbff3ee1e04"
+    },
+    {
+      "feature": "goal-registry",
+      "label": "Goal Registry",
+      "risk": "NORMAL",
+      "owners": [
+        { "file": "hani-main.js", "symbols": ["GOAL_METRICS", "goalRegistryBuildDraft", "renderGoalRegistry"] }
+      ],
+      "dependencies": [
+        { "file": "hani-main.js", "symbols": ["save", "dataHubInvalidate", "dataHubRefresh", "resolveGoal"] },
+        { "file": "data-hub/period-goal.mjs", "symbols": ["resolvePeriodGoal", "goalProgress", "EXTRA_DEFINITIONS"] }
+      ],
+      "dom": ["#settings", "#goalRegistryPanel", "#goalRegistryContent", "#goalRegistryForm", "#goalRegistryPreview"],
+      "events": ["#goalRegistryForm submit/change", "#goalRegistryApprove", "#goalRegistryCancel"],
+      "targetedTests": ["node --test scripts/hani-goal-period.test.mjs", "manual: Preview → approve → history read-back; additive revisions only"],
+      "notes": "state.goalRegistry is the goal source of truth (D-20261005-06). Legacy state.goals and ledger targetT/targetC are display-only.",
+      "lastVerifiedSha": "a7bb9137083d83f8170ac103ad7603bc6d6ac603"
+    },
+    {
+      "feature": "data-hub",
+      "label": "Data Hub",
+      "risk": "CRITICAL",
+      "owners": [
+        { "file": "hani-main.js", "symbols": ["calculateMonth", "resolveGoal", "compareMetric", "createDashboardRuntime", "dataHubRefresh", "dataHubRenderDashboard", "dataHubLibraryProjection"] },
+        { "file": "data-hub/period-goal.mjs", "symbols": ["aggregatePeriod", "periodRange", "goalProgress", "EXTRA_ADAPTERS"] }
+      ],
+      "dependencies": [
+        { "file": "hani-main.js", "symbols": ["brokerCalc", "ledgerCalc", "cloudCreateRuntimeOwnerVerifier", "dataHubContext", "dataHubBinding"] }
+      ],
+      "dom": ["#dataHubPeriod", "#dataHubStatus", "#dataHubRefresh", "#dataHubLibraryPanel", "#dataHubLibraryContent"],
+      "events": ["#dataHubRefresh", "#dataHubExportJson", "#dataHubExportCsv"],
+      "targetedTests": ["node --test scripts/hani-goal-period.test.mjs", "manual: owner-verified dashboard metrics and IndexedDB cache rebuild"],
+      "notes": "The core block in hani-main.js is a generated bundle (BEGIN GENERATED HANI DATA HUB); its generator scripts/hani-data-hub-bundle.mjs is not on main. data-hub/period-goal.mjs is standalone and not loaded by the app.",
+      "lastVerifiedSha": "a7bb9137083d83f8170ac103ad7603bc6d6ac603"
+    },
+    {
+      "feature": "monthly-report",
+      "label": "Monthly / Quarterly / Annual Report",
+      "risk": "NORMAL",
+      "owners": [
+        { "file": "hani-main.js", "symbols": ["monthlyReportSnapshot", "monthlyReportBuildCurrent", "monthlyReportRenderBoard", "monthlyReportStored", "monthlyReportGenerate"] }
+      ],
+      "dependencies": [
+        { "file": "hani-main.js", "symbols": ["brokerCalc", "ledgerCalc", "ledgerFind", "commit"] }
+      ],
+      "dom": ["#monthlyReport", "#monthlyReportMonth", "#monthlyReportKpis", "#monthlyReportDomains", "#monthlyReportQuarterlyPanel", "#monthlyReportAnnualPanel"],
+      "events": ["[data-report-board]", "#monthlyReportGenerateBtn"],
+      "targetedTests": ["node scripts/hani-monthly-report-aggregation-test.mjs", "node scripts/hani-monthly-report-smoke.mjs"],
+      "notes": "Monthly report computes separately from the Data Hub core and stores rendered text only (common data contract G5/G6).",
+      "lastVerifiedSha": "a7bb9137083d83f8170ac103ad7603bc6d6ac603"
     }
   ]
 }
