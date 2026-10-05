@@ -194,15 +194,68 @@
       .map(x => ({ type: x.type || 'general', topic: x.topic || '', wrong_count: Number(x.wrongCount || 1), question: String(x.question || '').slice(0, 260) }));
   }
 
-  function newsroomQuestionSources() {
-    try {
-      const posts = typeof investmentNewsArchiveRuntime !== 'undefined' && Array.isArray(investmentNewsArchiveRuntime.posts) ? investmentNewsArchiveRuntime.posts : [];
-      return posts.filter(x => x?.source_verified !== false).slice(0, 12).map(x => ({
-        title:String(x.title || '').slice(0, 180), summary:String(x.summary || '').slice(0, 420),
-        why_it_matters:String(x.why_it_matters || '').slice(0, 420), source_name:String(x.source_name || '').slice(0, 80),
-        source_url:String(x.source_url || '').slice(0, 500), published_at:String(x.published_at || x.event_at || '').slice(0, 32),
-      })).filter(x => x.title && x.source_name);
-    } catch (_) { return []; }
+  function newsroomQuestionSources(posts = [], now = Date.now()) {
+    const obj = x => x && typeof x === 'object' && !Array.isArray(x) ? x : {};
+    const list = x => Array.isArray(x) ? x : [];
+    const text = (x, max) => String(x || '').trim().slice(0, max);
+    const buckets = new Map(), seen = new Set();
+    const add = (item, post, kind, references = []) => {
+      if (post.source_verified === false || item.source_verified === false) return;
+      const date = text(item.event_at || item.published_at || post.event_at || post.published_at, 32);
+      const stamp = Date.parse(date);
+      if (!Number.isFinite(stamp) || stamp > now || now - stamp > 21 * 86400000) return;
+      const reference = references.find(s => {
+        try { return s?.verified !== false && s?.source_verified !== false && text(s.name, 80) && /^https?:$/.test(new URL(s.url).protocol); } catch (_) { return false; }
+      });
+      const title = text(item.title, 180), summary = text(item.summary, 700);
+      if (!reference || !title || !summary) return;
+      const key = `${title}|${reference.url}`;
+      if (seen.has(key)) return;
+      seen.add(key);
+      const rows = buckets.get(kind) || [];
+      rows.push({ title, summary, why_it_matters:text(item.why_it_matters || item.next_check, 420),
+        source_name:text(reference.name, 80), source_url:text(reference.url, 500), published_at:date, material:kind });
+      buckets.set(kind, rows);
+    };
+    for (const post of list(posts).slice().sort((a,b) => String(b?.published_at || '').localeCompare(String(a?.published_at || ''))).slice(0, 60)) {
+      if (!post || post.source_verified === false) continue;
+      const payload = obj(post.payload), followup = obj(payload.company_followup);
+      if (followup.version === 1) {
+        for (const [channel, issues] of Object.entries(obj(followup.channels))) {
+          for (const issue of list(issues)) add(obj(issue), post, channel, list(issue?.sources));
+        }
+      } else {
+        const weekly = obj(payload.weekly_brief);
+        const macro = list(weekly.macro_flow).filter(x => typeof x === 'string').join(' · ');
+        add({...post, summary:[post.summary || payload.market_brief, macro].filter(Boolean).join(' · ')}, post,
+          post.post_type === 'WEEKLY' ? 'macro' : 'company',
+          [{name:post.source_name, url:post.source_url}, ...list(weekly.sources), ...list(payload.sources).map(s => ({
+            ...obj(s), name:s?.name || s?.title || post.source_name,
+          }))]);
+      }
+    }
+    // Round-robin across channels so a busy company feed cannot crowd out macro/AI.
+    const sources = [], groups = [...buckets.values()];
+    for (let index = 0; sources.length < 18 && groups.some(rows => rows[index]); index++) {
+      for (const rows of groups) if (rows[index] && sources.length < 18) sources.push(rows[index]);
+    }
+    return sources.map((source, index) => ({...source, source_id:`N${index + 1}`}));
+  }
+
+  async function loadQuizNewsSources() {
+    // Read the canonical Archive directly; do not render Newsroom (which marks reads).
+    const {data, error} = await cloudClient.from('hani_newsroom_posts')
+      .select('post_type,title,summary,why_it_matters,source_name,source_url,source_verified,event_at,published_at,payload')
+      .eq('user_id', cloudUser.id).order('published_at', {ascending:false}).limit(60);
+    if (error) throw new Error('출제용 뉴스 조회에 실패했습니다. 기초문제로 조용히 대체하지 않습니다. 잠시 후 다시 시도해 주세요.');
+    return newsroomQuestionSources(data);
+  }
+
+  function newsMaterialMinimum(size, sources) { return sources.length ? Math.ceil(size / 3) : 0; }
+  function hasNewsMaterial(question, sources) {
+    return sources.some(s => String(question.prompt || '').includes(s.title)
+      && String(question.explanation || '').includes(`[${s.source_id}]`)
+      && String(question.explanation || '').includes(s.source_url));
   }
 
   const PROMPT_STOP_WORDS = new Set(['다음','가장','대한','관한','설명','것은','것으로','보기','옳은','옳지','적절한','적절하지','고르시오','무엇인가','해당하는','있는','없는','경우','문항','문제']);
@@ -426,6 +479,8 @@
     if (error) throw error;
     if (!session?.access_token) throw new Error('로그인 세션을 확인하지 못했습니다.');
     const quizSize = normalizeProject(project).quizSize;
+    const questionSources = project.category === 'economy' ? await loadQuizNewsSources() : [];
+    const newsMinimum = newsMaterialMinimum(quizSize, questionSources);
     const previous=recentQuestions(project.id);
     const recentPrompts=previous.map(x=>String(x.prompt||'').slice(0,260)).filter(Boolean).slice(-40);
     const requestBody = {
@@ -442,7 +497,7 @@
           quiz_size: quizSize,
         },
         weaknesses: recentWeaknesses(project.id),
-        question_sources: project.category === 'economy' ? newsroomQuestionSources() : [],
+        question_sources: questionSources,
         engine_contract: project.category === 'economy' ? {
           version:'HANI Question Engine v2', objective:'경제·시장 사건을 개념과 시장 영향에 연결해 이해하는지 평가',
           rotation_pools:['경제 기초·금융 원리','금리·물가·환율·채권','주식·밸류에이션·실적','기업·산업·정책','포트폴리오·리스크','최근 경제·시장 이슈'],
@@ -459,6 +514,7 @@
     for(let attempt=1;attempt<=8&&accepted.length<quizSize;attempt++){
       const remaining=quizSize-accepted.length;
       const batchSize=replacementBatchSize(remaining);
+      const newsNeeded = Math.max(0, newsMinimum - accepted.filter(x => hasNewsMaterial(x, questionSources)).length);
       const retryGoal=attempt===1?requestBody.project.goal:[requestBody.project.goal,'추가 문제만 필요합니다. 이미 출제한 질문 문장을 반복하지 말고 같은 문법·어휘도 다른 상황과 보기로 물으세요.',...accepted.slice(-2).map(x=>`재사용 금지: ${x.prompt.slice(0,120)}`)].filter(Boolean).join(' ').slice(0,780);
       const res = await fetch(`${cfg.url}/functions/v1/hani-learning-quiz`, {
         method: 'POST',
@@ -470,6 +526,7 @@
         body: JSON.stringify({
           ...requestBody,
           project:{...requestBody.project,goal:retryGoal,quiz_size:batchSize},
+          engine_contract:{...requestBody.engine_contract,news_material_minimum:Math.min(batchSize,newsNeeded)},
           generation_feedback:{
             attempt,
             requested_count:remaining,
@@ -487,11 +544,19 @@
       if (!res.ok || result?.ok === false) throw new Error(result?.message || result?.error || `퀴즈 생성 실패 (${res.status})`);
       const questions = Array.isArray(result?.quiz?.questions) ? result.quiz.questions.map(normalizeQuestion) : [];
       if (!questions.length) throw new Error('퀴즈 생성 결과에 유효한 문제가 없습니다.');
-      rejected+=collectQuizCandidates(project,questions,accepted,previous,fallbackCandidates,rejectedPrompts);
+      const ordered = questions.slice().sort((a,b) => Number(hasNewsMaterial(b,questionSources)) - Number(hasNewsMaterial(a,questionSources)));
+      for (const question of ordered) {
+        const needed = Math.max(0,newsMinimum - accepted.filter(x => hasNewsMaterial(x,questionSources)).length);
+        if (!hasNewsMaterial(question,questionSources) && quizSize-accepted.length <= needed) continue;
+        rejected+=collectQuizCandidates(project,[question],accepted,previous,fallbackCandidates,rejectedPrompts);
+      }
     }
     if(accepted.length<quizSize)useLeastSimilarFallback(project,accepted,previous,fallbackCandidates);
     if(accepted.length!==quizSize)throw new Error(`유효한 문제가 ${accepted.length}/${quizSize}개여서 저장하지 않았습니다. 기존 문제와 데이터는 유지됩니다. (${rejected}개 문항 교체 시도)`);
     validateQuestionSet(project,accepted,{allowNear:true});
+    if (accepted.filter(x => hasNewsMaterial(x,questionSources)).length < newsMinimum) throw new Error('뉴스·기업 사례 문항이 필요한 만큼 포함되지 않아 저장하지 않았습니다. 기존 문제는 유지됩니다.');
+    // Cite in the existing explanation text, not a new stored question schema.
+    if (project.category === 'economy' && !questionSources.length) accepted[0].explanation += '\n[뉴스 소재 안내] 최근 21일 내 출처가 확인된 뉴스 자료가 없어 이번 세트는 원리·가상 상황 중심입니다.';
     return accepted;
   }
 
@@ -715,6 +780,7 @@
         <div class="study-card-v02984 study-today-card">
         <div class="study-today-top"><div class="study-today-title"><span>${safe(view.category.toUpperCase())} · ${safe(date)}</span><b>${safe(project.name)} Learning Board</b></div>${todayQuiz?.status === 'completed' ? `<div class="study-score">${safe(quizStatusLabel(todayQuiz))}</div>` : paused ? '<span class="study-status in_progress">학습 중지</span>' : `<button class="btn primary" id="studyGenerateQuiz" type="button" ${busy ? 'disabled' : ''}>${todayQuiz ? '오늘 세트 열기' : busy ? '생성 중…' : failed ? '다시 생성' : view.scheduleType === 'manual' ? '문제세트 생성' : scheduled ? '오늘 세트 생성' : '수동 생성'}</button>`}</div>
         <div class="study-project-summary"><span class="study-chip">${safe(SCHEDULE_LABELS[view.scheduleType])}</span><span class="study-chip">${view.quizSize}문제</span>${view.examDate ? `<span class="study-chip">시험 ${safe(view.examDate)}</span>` : ''}${view.focusAreas.map(x => `<span class="study-chip">${safe(x)}</span>`).join('')}</div>
+        ${view.category === 'economy' ? '<div class="note">새 세트는 최근 뉴스·기업·거시경제 사례와 개념 문제를 함께 구성합니다. 뉴스 자료가 있으면 약 1/3 이상을 실제 사례로 출제하며 난이도 설정은 유지합니다. 이미 생성된 세트는 다시 쓰지 않습니다.</div>' : ''}
         <div class="note" style="margin-top:8px">${paused ? '일시중지 상태입니다. 기존 문제세트와 오답은 계속 볼 수 있으며 새 문제 생성은 차단됩니다.' : failed ? `자동 생성 실패 · ${safe(failed)} · 버튼으로 한 번씩 다시 시도할 수 있습니다.` : scheduled ? '오늘은 자동 생성 대상일입니다. 프로젝트 진입 시 세트가 없으면 한 번만 요청합니다.' : '오늘은 정기 생성일이 아닙니다. 필요하면 수동으로 생성할 수 있습니다.'}${pending.filter(x => quizDate(x) < date).length ? ` · 지난 미완료 ${pending.filter(x => quizDate(x) < date).length}개` : ''}</div>
         <div class="study-project-tools"><button class="btn sm" type="button" id="studyProjectEdit">설정 수정</button>${paused ? '<button class="btn sm primary" type="button" id="studyProjectResume">학습 재개</button>' : '<button class="btn sm" type="button" id="studyProjectPause">학습 중지</button>'}<button class="btn sm" type="button" id="studyProjectComplete">프로젝트 종료</button><button class="btn sm ghost" type="button" id="studyProjectDelete">프로젝트 삭제</button></div>
         </div>
@@ -1035,6 +1101,7 @@
     ensureLearningState, normalizeProject, normalizeQuestion, normalizeQuiz, questionKey,
     quizDate, isScheduledDate, shouldGenerateForDate, nextSequenceNo, derivedLearningTasks, activeProjects, boardProjects, visibleProjects, completedProjects, wrongRows, wrongGroups, renderWrongTab,
     normalizePromptText, promptFingerprint, promptSimilarity, duplicateLevel, validQuestion, recentQuestionRotation, collectQuizCandidates, useLeastSimilarFallback, replacementBatchSize, tooSimilarPrompt, validateQuestionSet, quizApi,
+    newsroomQuestionSources, loadQuizNewsSources, newsMaterialMinimum, hasNewsMaterial,
     upsertWrongAnswer, persistNewProject, persistProjectUpdate, archiveProjectWithConfirmation,
     pauseProject, resumeProject, completeProjectWithConfirmation, confirmWrongAnswer, retryWrongAnswer, masterWrongAnswer,
     persistGeneratedQuiz, persistQuizAnswer, gradeQuiz,
