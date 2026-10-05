@@ -3600,7 +3600,7 @@ function renderLifeTicker(data,directionByKey){
   const track=$("lifeTickerTrack");if(!track)return;
   const pause=$("lifeTickerPause"),ticker=$("lifeTicker");
   if(pause&&ticker&&!pause.dataset.bound){pause.dataset.bound="1";pause.addEventListener("click",()=>{const paused=ticker.classList.toggle("is-paused");pause.setAttribute("aria-label",paused?"시세판 다시 재생":"시세판 일시정지");pause.title=paused?"시세판 다시 재생":"시세판 일시정지";pause.textContent=paused?"▶":"Ⅱ"})}
-  const items=[["hasdaq","HASDAQ 자산","pct"],["ne100","N&E 체중","pct"],["jispi","JISPI 소비","pct"],["hinaJones","READ 독서·시청","count"],["harukei","STEP 걸음","pct"],["hinkei","JLPT 정답률","pp"]];
+  const items=[["hasdaq","HASDAQ 자산","pct"],["ne100","N&E 체중","pct"],["jispi","JISPI 소비","pct"],["hinaJones","HINA JONES 독서·시청","count"],["harukei","HARUKEI 10K 걸음","pct"],["hinkei","HINKEI 225 학습","pp"]];
   const groupHtml=items.map(([key,label,unit])=>{
     const rows=data[key]?.rows||[],last=rows.at(-1),prev=rows.at(-2),hasCurrent=last&&Number.isFinite(Number(last.value)),hasDelta=hasCurrent&&prev&&Number.isFinite(Number(prev.value));
     const current=hasCurrent?{hasdaq:()=>won(last.value),ne100:()=>`${num(last.value)}kg`,jispi:()=>won(last.value),hinaJones:()=>`${Math.round(n(last.value))}건`,harukei:()=>`${Math.round(n(last.value)).toLocaleString("ko-KR")}보`,hinkei:()=>`${Math.round(n(last.value))}%`}[key]():"-";
@@ -4492,9 +4492,9 @@ function dataHubRenderDashboard(){
     "원본 검증 대기 · Local·Cloud 불일치 시 캐시 비활성화";
   const selected=view.metrics.find(m=>m.key===activeLifeIndex),display=text(selected);
   const slot=slots.find(s=>s[0]===activeLifeIndex)||slots[0];
-  const labels={hasdaq:["HASDAQ · FINANCE","확인된 투자계좌 총액","investment"],ne100:["N&E · HEALTH","당월 최근 체중","diet"],
-    hinaJones:["READ · CULTURE","당월 완독","reading"],harukei:["STEP · ACTIVITY","당월 관측일 평균 걸음","exercise"],
-    jispi:["JISPI · LEDGER","18→17 소비 결산","ledger"],hinkei:["HINKEI · STUDY","당월 가중 퀴즈 정답률","study"]};
+  const labels={hasdaq:["HASDAQ · FINANCE","확인된 투자계좌 총액","investment"],ne100:["N&E 100 · HEALTH","당월 최근 체중","diet"],
+    hinaJones:["HINA JONES · CULTURE","당월 완독","reading"],harukei:["HARUKEI 10K · ACTIVITY","당월 관측일 평균 걸음","exercise"],
+    jispi:["JISPI · LEDGER","18→17 소비 결산","ledger"],hinkei:["HINKEI 225 · STUDY","당월 가중 퀴즈 정답률","study"]};
   const label=labels[slot[0]];
   if($("homeAnalysisKicker"))$("homeAnalysisKicker").textContent=label[0];
   if($("homeAnalysisTitle"))$("homeAnalysisTitle").textContent=label[1];
@@ -5287,7 +5287,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.180";
+const HANI_DISPLAY_VERSION="2.9.181";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
