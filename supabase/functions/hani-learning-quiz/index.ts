@@ -3,6 +3,13 @@
 // Authenticated only · server-side OpenAI key · ZERO database/hani_state write
 
 import { createClient } from "npm:@supabase/supabase-js@2";
+// Server-only authorization. Never derive the allowlist from request/user metadata.
+function ownerAccess(user: { id?: string } | null, configuredId: string | undefined) {
+  const allowedId = (configuredId || "").trim();
+  if (!allowedId) return { ok: false, status: 503, error: "OWNER_ACCESS_NOT_CONFIGURED" };
+  if (!user?.id || user.id !== allowedId) return { ok: false, status: 403, error: "OWNER_ACCESS_DENIED" };
+  return { ok: true, status: 200, error: "" };
+}
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -105,6 +112,8 @@ Deno.serve(async (req) => {
   if (!supabaseUrl || !publishableKey || !openaiKey) return json({ ok:false, error:"SERVER_CONFIG_ERROR", message:"서버 인증/API 설정을 확인하지 못했습니다." }, 500);
   const user = await authenticatedUser(req, supabaseUrl, publishableKey);
   if (!user) return json({ ok:false, error:"INVALID_SESSION", message:"HANI OS 로그인 세션이 필요합니다." }, 401);
+  const access = ownerAccess(user, Deno.env.get("HANI_OWNER_USER_ID"));
+  if (!access.ok) return json({ ok:false, error:access.error, message:access.status === 503 ? "서버 사용 권한 설정을 확인하지 못했습니다." : "이 계정에는 학습 생성 권한이 없습니다.", db_write:false, hani_state_touched:false }, access.status);
 
   const body = asObject(await req.json().catch(() => ({}))); const project = asObject(body.project); const feedback = asObject(body.generation_feedback);
   const projectName = cleanText(project.name, 120);

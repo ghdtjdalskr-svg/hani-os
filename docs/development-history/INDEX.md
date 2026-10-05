@@ -1,3 +1,5 @@
+> 시점 보존: 아래 기준선·원장은 2026-10-04 당시 기록입니다. 2026-10-05 통합 품질 개선의 구현·검증 상태는 [별도 현황](../quality-improvement-status.md)을 확인하세요. 기존 검증 결과를 현재 후보의 PASS로 재사용하지 않습니다.
+
 # HANI 개발 히스토리 · 중앙 인덱스
 
 > 최신 공통 현황은 [CURRENT.md](CURRENT.md), [전체 탭 원장](2026-10-05-all-tabs-status.md), 새 AI의 진입점은 [START-HERE.md](START-HERE.md)입니다. 아래 기준선·상태는 2026-10-04 역사적 snapshot이며 최신 main 상태로 간주하지 않습니다.

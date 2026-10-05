@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import contract from "../dev-center/one-pass-gate-contract.json" with { type: "json" };
-import { contractHash, evaluatePackage } from "./hani-one-pass-rules.mjs";
+import { contractHash, evaluatePackage, modularRuntimeText } from "./hani-one-pass-rules.mjs";
 
 const root=path.resolve(import.meta.dirname,"..");const argv=process.argv.slice(2);const option=(n,d="")=>{const i=argv.indexOf(n);return i<0?d:argv[i+1]};
 const git=args=>execFileSync("git",args,{cwd:root,encoding:"utf8",maxBuffer:100*1024*1024}).trim();
@@ -13,10 +13,13 @@ function load(file){return JSON.parse(fs.readFileSync(path.resolve(file),"utf8")
 function run(pkg,productionVersion,baselineOnly=false){
   if(pkg.gate_contract_version!==contract.contract_version||pkg.gate_contract_sha256!==contractHash(contract))throw new Error("gate-contract version/hash mismatch");
   const currentMain=git(["rev-parse",option("--base","origin/main")]);if(currentMain!==pkg.base_main_sha)throw new Error(`current main baseline drift: ${currentMain} != ${pkg.base_main_sha}`);
+  for(const file of pkg.files){const committed=execFileSync("git",["show",pkg.candidate_sha+":"+file.path],{cwd:root,encoding:null,maxBuffer:32*1024*1024});const supplied=file.encoding==="base64"?Buffer.from(file.content,"base64"):Buffer.from(file.content,"utf8");if(!committed.equals(supplied))throw new Error("package entry differs from frozen commit: "+file.path)}
   const baseFiles=pkg.files.filter(f=>/\.(?:html|js|css)$/i.test(f.path)).map(f=>{try{return readRef(pkg.base_main_sha,f.path)}catch{return ""}}).join("\n");
   const runtimePaths=new Set(pkg.files.map(f=>f.path));const changed=git(["diff","--name-only",pkg.base_main_sha,pkg.candidate_sha]).split("\n").filter(Boolean);baselineOnly=baselineOnly||!changed.some(file=>runtimePaths.has(file));
   productionVersion=productionVersion||(baseFiles.match(/HANI_DISPLAY_VERSION\s*=\s*["'](\d+\.\d+\.\d+)/)||[])[1]||"";
-  const result=evaluatePackage({pkg,baseFiles,productionVersion,contract,baselineOnly});
+  let protectedApproval=null;
+  if(process.env.HANI_PROTECTED_WRITE_APPROVAL){const policy=JSON.parse(process.env.HANI_PROTECTED_WRITE_APPROVAL);const baselineMap=new Map(pkg.files.filter(f=>/\.(?:html|js|css)$/i.test(f.path)).map(f=>[f.path,readRef(pkg.base_main_sha,f.path)]));protectedApproval={policy,evidenceText:process.env.HANI_PROTECTED_WRITE_EVIDENCE||"",baselineRuntimeText:modularRuntimeText(baselineMap)}}
+  const result=evaluatePackage({pkg,baseFiles,productionVersion,contract,baselineOnly,protectedApproval});
   const evidence={contract_version:contract.contract_version,gate_contract_sha256:contractHash(contract),release_kind:baselineOnly?"DEV_TOOLING_ONLY":"RUNTIME",candidate_sha:pkg.candidate_sha,base_main_sha:pkg.base_main_sha,package_sha256:pkg.package_sha256,preflight_state:result.ok?"PASS":"BLOCKED",hina_equivalent_state:baselineOnly?"N/A_DEV_TOOLING":result.ok?"PASS":"BLOCKED",queue_state:baselineOnly?"N/A_DEV_TOOLING":result.ok?"READY":"BLOCKED",manual_preview_required:!baselineOnly,checks:result.checks};
   process.stdout.write(`${JSON.stringify(evidence,null,2)}\n`);if(!result.ok)process.exitCode=2;return evidence;
 }
