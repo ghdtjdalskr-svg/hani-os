@@ -45,6 +45,9 @@ jobs:
         run: node scripts/hani-release-package.mjs build --candidate "${{ github.event.pull_request.head.sha }}" --base "${{ github.event.pull_request.base.sha }}" --output "$RUNNER_TEMP/hani-one-pass-package.json"
       - name: One-Pass Preflight
         if: steps.scope.outputs.docs_only != 'true'
+        env:
+          HANI_PROTECTED_WRITE_APPROVAL: ${{ vars.HANI_PROTECTED_WRITE_APPROVAL }}
+          HANI_PROTECTED_WRITE_EVIDENCE: ${{ vars.HANI_PROTECTED_WRITE_EVIDENCE }}
         run: node scripts/hani-one-pass-release.mjs --package "$RUNNER_TEMP/hani-one-pass-package.json" --base "${{ github.event.pull_request.base.sha }}" > "$RUNNER_TEMP/hani-one-pass-evidence.json"
       - name: Publish immutable package and evidence
         if: steps.scope.outputs.docs_only != 'true'

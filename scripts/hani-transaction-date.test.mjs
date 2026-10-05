@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';import fs from 'node:fs';import vm from 'node:vm';
+const source=fs.readFileSync(new URL('../hani-main.js',import.meta.url),'utf8');const start=source.indexOf('function txSorted('),end=source.indexOf('function monthKeyNow()',start);
+const state={accounts:[{id:'a',openingCash:100000}],instruments:[{id:'i',price:100}],transactions:[]};const ctx={state,n:x=>Number(x)||0,instrumentBy:id=>state.instruments.find(i=>i.id===id)};vm.createContext(ctx);vm.runInContext(source.slice(start,end),ctx);
+const buy={id:'buy',accountId:'a',instrumentId:'i',type:'매수',date:'2026-05-01',createdAt:'2026-05-01T01:00:00Z',qty:10,price:100,fee:0};
+const sale={id:'sale',accountId:'a',instrumentId:'i',type:'매도',date:'2026-01-01',qty:10,price:100,fee:25};
+state.transactions=[buy];assert.equal(ctx.availableQty('a','i','2026-01-01'),0);assert.equal(ctx.availableQty('a','i','2026-05-01'),10);assert.equal(ctx.calculate().total,100000);
+state.transactions=[buy,sale];const untouched=JSON.stringify(state.transactions);assert.equal(ctx.calculate().total,100000);assert.equal(ctx.calculate().holdings[0].qty,10);assert.equal(ctx.calculate().issues[0].id,'sale');assert.equal(JSON.stringify(state.transactions),untouched);
+state.transactions=[buy,{...sale,date:'2026-05-02',qty:4,fee:10}];assert.equal(ctx.calculate().holdings[0].qty,6);assert.equal(ctx.calculate().total,99990);assert.equal(ctx.calculate().issues.length,0);
+state.transactions=[buy,{...sale,date:'2026-05-02',qty:15,fee:10}];assert.equal(ctx.calculate().totalCash,99990);assert.equal(ctx.calculate().holdings.length,0);assert.equal(ctx.calculate().issues.length,1);
+state.transactions=[buy,{...sale,date:'2026-05-01',createdAt:'2026-05-01T02:00:00Z',fee:0}];assert.equal(ctx.calculate().total,100000);assert.equal(ctx.calculate().issues.length,0);
+state.transactions=[{...buy,accountId:'a'},{...sale,accountId:'other'}];assert.equal(ctx.availableQty('other','i','2026-05-01'),0);
+console.log('PASS date cutoff, same-day creation order, partial sale/fee, excess quantity warning, no invalid proceeds, source unchanged.');
