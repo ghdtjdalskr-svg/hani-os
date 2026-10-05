@@ -1,3 +1,4 @@
+// CommonJS test, using the repository's supported .js tooling extension.
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const {stripTypeScriptTypes}=require('node:module');
 const client=fs.readFileSync('hani-study-v02984.js','utf8');
