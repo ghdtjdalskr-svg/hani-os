@@ -262,7 +262,13 @@
   }
 
   const PROMPT_STOP_WORDS = new Set(['다음','가장','대한','관한','설명','것은','것으로','보기','옳은','옳지','적절한','적절하지','고르시오','무엇인가','해당하는','있는','없는','경우','문항','문제']);
-  function normalizePromptText(value) { return String(value || '').normalize('NFKC').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').replace(/\s+/g, ' ').trim(); }
+  function questionFocus(value) {
+    const prompt=String(value||'');
+    const marker=prompt.indexOf('[질문]');
+    return prompt.startsWith('[실제 뉴스') && marker>=0 && prompt.slice(marker+4).trim()
+      ? prompt.slice(marker+4).trim() : prompt;
+  }
+  function normalizePromptText(value) { return questionFocus(value).normalize('NFKC').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').replace(/\s+/g, ' ').trim(); }
   function promptFingerprint(value) { return normalizePromptText(value).split(' ').filter(x => x.length > 1 && !PROMPT_STOP_WORDS.has(x)); }
   function overlapRatio(a,b) { const aa=new Set(a),bb=new Set(b);if(!aa.size||!bb.size)return 0;let same=0;aa.forEach(x=>{if(bb.has(x))same++});return same/Math.max(aa.size,bb.size); }
   function promptSimilarity(a,b) {
@@ -321,8 +327,8 @@
       if(accepted.length>=normalizeProject(project).quizSize)break;
       if(!validQuestion(question,project)){rejected++;continue;}
       const compared=[...previous,...accepted].map(old=>duplicateLevel(old,question));
-      if(compared.includes('exact')){rejectedPrompts.push(String(question.prompt||'').slice(0,260));rejected++;continue;}
-      if(compared.includes('near')){fallbackCandidates.push(question);rejectedPrompts.push(String(question.prompt||'').slice(0,260));rejected++;continue;}
+      if(compared.includes('exact')){rejectedPrompts.push(questionFocus(question.prompt).slice(0,260));rejected++;continue;}
+      if(compared.includes('near')){fallbackCandidates.push(question);rejectedPrompts.push(questionFocus(question.prompt).slice(0,260));rejected++;continue;}
       accepted.push(question);
     }
     return rejected;
@@ -485,7 +491,7 @@
     const questionSources = project.category === 'economy' ? await loadQuizNewsSources() : [];
     const newsMinimum = newsMaterialMinimum(quizSize, questionSources);
     const previous=recentQuestions(project.id);
-    const recentPrompts=previous.map(x=>String(x.prompt||'').slice(0,260)).filter(Boolean).slice(-40);
+    const recentPrompts=previous.map(x=>questionFocus(x.prompt).slice(0,260)).filter(Boolean).slice(-40);
     const requestBody = {
         local_date: localToday(),
         project: {
@@ -518,7 +524,7 @@
       const remaining=quizSize-accepted.length;
       const batchSize=replacementBatchSize(remaining);
       const newsNeeded = Math.max(0, newsMinimum - accepted.filter(x => hasNewsMaterial(x, questionSources)).length);
-      const retryGoal=attempt===1?requestBody.project.goal:[requestBody.project.goal,'추가 문제만 필요합니다. 이미 출제한 질문 문장을 반복하지 말고 같은 문법·어휘도 다른 상황과 보기로 물으세요.',...accepted.slice(-2).map(x=>`재사용 금지: ${x.prompt.slice(0,120)}`)].filter(Boolean).join(' ').slice(0,780);
+      const retryGoal=attempt===1?requestBody.project.goal:[requestBody.project.goal,'추가 문제만 필요합니다. 이미 출제한 질문 문장을 반복하지 말고 같은 문법·어휘도 다른 상황과 보기로 물으세요.',...accepted.slice(-2).map(x=>`재사용 금지: ${questionFocus(x.prompt).slice(0,120)}`)].filter(Boolean).join(' ').slice(0,780);
       const res = await fetch(`${cfg.url}/functions/v1/hani-learning-quiz`, {
         method: 'POST',
         headers: {
@@ -533,7 +539,7 @@
           generation_feedback:{
             attempt,
             requested_count:remaining,
-            accepted_prompts:accepted.map(x=>x.prompt.slice(0,260)),
+            accepted_prompts:accepted.map(x=>questionFocus(x.prompt).slice(0,260)),
             avoid_prompts:recentPrompts,
             rejected_prompts:[...new Set(rejectedPrompts.filter(Boolean))].slice(-60),
             recent_learning_points:recentLearningPoints(project.id),
@@ -1104,7 +1110,7 @@
     ensureLearningState, normalizeProject, normalizeQuestion, normalizeQuiz, questionKey,
     quizDate, isScheduledDate, shouldGenerateForDate, nextSequenceNo, derivedLearningTasks, activeProjects, boardProjects, visibleProjects, completedProjects, wrongRows, wrongGroups, renderWrongTab,
     normalizePromptText, promptFingerprint, promptSimilarity, duplicateLevel, validQuestion, recentQuestionRotation, collectQuizCandidates, useLeastSimilarFallback, replacementBatchSize, tooSimilarPrompt, validateQuestionSet, quizApi,
-    newsroomQuestionSources, loadQuizNewsSources, newsMaterialMinimum, hasNewsMaterial,
+    newsroomQuestionSources, loadQuizNewsSources, newsMaterialMinimum, hasNewsMaterial, questionFocus,
     upsertWrongAnswer, persistNewProject, persistProjectUpdate, archiveProjectWithConfirmation,
     pauseProject, resumeProject, completeProjectWithConfirmation, confirmWrongAnswer, retryWrongAnswer, masterWrongAnswer,
     persistGeneratedQuiz, persistQuizAnswer, gradeQuiz,
