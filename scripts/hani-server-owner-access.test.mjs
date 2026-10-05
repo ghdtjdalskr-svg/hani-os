@@ -11,7 +11,7 @@ assert.equal(ownerAccess({id:'owner'},' owner ').ok,true);
 assert.equal(ownerAccess({id:'other',user_metadata:{owner:true}},'owner').ok,false);
 for(const slug of ['hani-deploy-bridge','hani-learning-quiz']){
   const raw=fs.readFileSync(new URL(`../supabase/functions/${slug}/index.ts`,import.meta.url),'utf8');
-  assert.equal(raw.match(/function ownerAccess[\s\S]*?\n}/)[0],helper,'same authorization contract');
+  assert.equal(raw.match(/function ownerAccess[\s\S]*?\n}/)[0].replaceAll('\r\n','\n'),helper.replaceAll('\r\n','\n'),'same authorization contract');
   const source=stripTypeScriptTypes(raw).replace(/^import .*;\r?\n/gm,'');
   // Execute actual top-level handler with fake verified auth and no external services.
   for(const [id,allowed,status] of [['other','owner',403],['owner','',503],[null,'owner',401]]){

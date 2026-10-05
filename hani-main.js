@@ -1165,8 +1165,9 @@ function releaseImportSyncHold(expectedHold){
   if(localStorage.getItem(IMPORT_SYNC_HOLD_KEY)!==null)throw new Error("Cloud 기준은 확인했지만 동기화 보류 해제를 저장하지 못했습니다.");
   importSyncHold=false;
 }
-function assertCloudSourceReady({allowImport=false}={}){
+function assertCloudSourceReady({allowImport=false,expectedHold}={}){
   if(loadRecovery.active)throw new Error(lastLoadError);
+  if(allowImport&&localStorage.getItem(IMPORT_SYNC_HOLD_KEY)!==expectedHold)throw new Error("Cloud 확인 후 복원 상태가 변경되어 반영을 중단했습니다.");
   if((importSyncHold||readImportSyncHold())&&!allowImport)throw new Error("백업 복원은 이 기기에만 적용됐습니다. '이 기기 Local을 Cloud 기준으로 확정'에서 내용을 확인해야 다른 기기에 반영됩니다.");
 }
 function removeProtectedState(){
@@ -1903,7 +1904,7 @@ function showLoginRecoveryGate(message="복구 링크를 확인하고 있습니�
   app?.classList.add("login-locked");
   app?.setAttribute("aria-hidden","true");
   if($("loginNormalPanel"))$("loginNormalPanel").style.display="none";
-  if($("loginRecoveryPanel"))$("loginRecoveryPanel").style.display="";
+  if($("loginRecoveryPanel"))$("loginRecoveryPanel").style.display="block";
   if($("loginGateTitle"))$("loginGateTitle").textContent="비밀번호 재설정";
   if($("loginGateSubtitle"))$("loginGateSubtitle").textContent="새 비밀번호를 정한 뒤 다시 로그인하면 됩니다.";
   loginGateStatus(message,"warn");
@@ -3954,15 +3955,19 @@ async function safetyArchiveList(){
   const db=await safetyArchiveOpen();try{return await new Promise((resolve,reject)=>{const tx=db.transaction("snapshots","readonly"),req=tx.objectStore("snapshots").getAll();tx.oncomplete=()=>resolve(req.result||[]);tx.onerror=tx.onabort=()=>reject(new Error("백업 목록을 읽지 못했습니다."))})}finally{db.close()}
 }
 async function safetyArchiveWrite(payload){
-  const serialized=JSON.stringify(payload),db=await safetyArchiveOpen();let id;
+  const serialized=JSON.stringify(payload),db=await safetyArchiveOpen();let id,committed=false;
   try{
     await new Promise((resolve,reject)=>{const tx=db.transaction("snapshots","readwrite"),req=tx.objectStore("snapshots").add({payload,verified:false});req.onsuccess=()=>{id=req.result};tx.oncomplete=resolve;tx.onerror=tx.onabort=()=>reject(new Error("백업 보관 공간이 부족하거나 저장 권한이 없습니다."))});
     const verified=await new Promise((resolve,reject)=>{const tx=db.transaction("snapshots","readonly"),req=tx.objectStore("snapshots").get(id);tx.oncomplete=()=>resolve(req.result);tx.onerror=tx.onabort=()=>reject(new Error("백업 재읽기에 실패했습니다."))});
     if(JSON.stringify(verified?.payload)!==serialized)throw new Error("백업 재읽기 값이 일치하지 않습니다.");
     await new Promise((resolve,reject)=>{const tx=db.transaction("snapshots","readwrite");tx.objectStore("snapshots").put({...verified,verified:true});tx.oncomplete=resolve;tx.onerror=tx.onabort=()=>reject(new Error("백업 확인 표시를 저장하지 못했습니다."))});
+    committed=true;
     let retentionApplied=true;
-    await new Promise((resolve,reject)=>{const tx=db.transaction("snapshots","readwrite"),store=tx.objectStore("snapshots"),req=store.getAll();req.onsuccess=()=>{for(const row of req.result.filter(row=>row.verified===true).sort((a,b)=>b.id-a.id).slice(3))store.delete(row.id)};tx.oncomplete=resolve;tx.onerror=tx.onabort=()=>reject(new Error("이전 백업 정리가 보류되었습니다."))}).catch(()=>{retentionApplied=false});
+    await new Promise((resolve,reject)=>{const tx=db.transaction("snapshots","readwrite"),store=tx.objectStore("snapshots"),req=store.getAll();req.onsuccess=()=>{try{for(const row of req.result.filter(row=>row.verified===true).sort((a,b)=>b.id-a.id).slice(3))store.delete(row.id)}catch(_){tx.abort()}};tx.oncomplete=resolve;tx.onerror=tx.onabort=()=>reject(new Error("이전 백업 정리가 보류되었습니다."))}).catch(()=>{retentionApplied=false});
     return {saved:true,retentionApplied};
+  }catch(error){
+    if(id!==undefined&&!committed)await new Promise(resolve=>{const tx=db.transaction("snapshots","readwrite");tx.objectStore("snapshots").delete(id);tx.oncomplete=tx.onerror=tx.onabort=resolve}).catch(()=>{});
+    throw error;
   }finally{db.close()}
 }
 async function renderSafetyArchive(){
@@ -3970,7 +3975,7 @@ async function renderSafetyArchive(){
   if(status)status.textContent=safetyArchiveStatus;
   try{
     const rows=(await safetyArchiveList()).filter(row=>row.verified===true).sort((a,b)=>b.id-a.id);
-    list.replaceChildren();for(const row of rows){const button=document.createElement("button");button.type="button";button.className="btn";button.textContent=formatDateTime(row.payload.savedAt)+" · 원본 전체 내려받기";button.onclick=()=>downloadJson(JSON.stringify(row.payload.state,null,2),"HANI_OS_safety_"+row.id+".json");list.append(button)}
+    list.replaceChildren();for(const [index,row] of rows.entries()){const button=document.createElement("button");button.type="button";button.className="btn";button.textContent=(index===0?"최신":"이전 "+index)+" · "+formatDateTime(row.payload.savedAt)+" · 원본 전체 내려받기";button.onclick=()=>downloadJson(JSON.stringify(row.payload.state,null,2),"HANI_OS_safety_"+row.id+".json");list.append(button)}
     if(!rows.length)list.textContent="보관된 안전 백업이 없습니다.";
   }catch(_){list.textContent="백업 보관소를 읽지 못했습니다. 기존 Local과 이전 안전 사본은 유지됩니다."}
 }
@@ -4206,15 +4211,15 @@ async function cloudApplyRemoteRow(remote,remoteHash,{announce=false}={}){
     state=previousState;renderAll();throw e;
   }finally{cloudApplyingRemote=false}
 }
-async function cloudPushLocalRow(remote,localState,localHash,{allowImport=false}={}){
-  assertCloudSourceReady({allowImport});
+async function cloudPushLocalRow(remote,localState,localHash,{allowImport=false,expectedHold}={}){
+  assertCloudSourceReady({allowImport,expectedHold});
   if(!cloudHasMeaningfulLocalData(localState))throw new Error("빈 Local 상태는 Cloud에 업로드할 수 없습니다.");
   const expectedRevision=Number(remote?.revision);
   if(!Number.isFinite(expectedRevision))throw new Error("Cloud revision을 확인할 수 없어 업로드를 중단했습니다.");
   const remoteState=cloudComparableState(remote?.state||{});
   const outgoing=cloudMergeProtectedMedia(localState,remoteState);
   const outgoingHash=await cloudStateHash(outgoing);
-  assertCloudSourceReady({allowImport});
+  assertCloudSourceReady({allowImport,expectedHold});
   if(!cloudSame(localState,cloudComparableState(state)))throw new Error("Cloud 요청 중 Local이 변경되어 반영을 중단했습니다.");
   const {data,error}=await cloudClient.from("hani_state").update({state:structuredClone(outgoing),device:cloudDeviceLabel()}).eq("user_id",cloudUser.id).eq("revision",expectedRevision).select("state,revision,updated_at,device");
   if(error)throw error;
@@ -4224,6 +4229,7 @@ async function cloudPushLocalRow(remote,localState,localHash,{allowImport=false}
   if(!Number.isFinite(writtenRevision)||writtenRevision!==expectedRevision+1)throw new Error(`Cloud revision 증가 검증 실패: ${expectedRevision} → ${written.revision}. DB revision 트리거를 확인해야 합니다.`);
   const returnedHash=await cloudStateHash(written.state);
   if(returnedHash!==outgoingHash)throw new Error("Cloud 저장 후 반환된 state가 Local과 일치하지 않습니다.");
+  assertCloudSourceReady({allowImport,expectedHold});
   if(!cloudSame(localState,cloudComparableState(state)))throw new Error("Cloud 응답을 기다리는 동안 Local이 변경되었습니다. 새 Local 기록을 유지하며 자동 반영을 중지합니다.");
   if(!cloudSame(outgoing,localState)){const serialized=JSON.stringify(outgoing);writeProtectedState(serialized);if(localStorage.getItem(STORAGE_KEY)!==serialized)throw new Error("Media Guard 병합 후 Local read-back 검증에 실패했습니다.");state=outgoing;renderAll()}
   const now=new Date().toISOString(),meta=cloudSaveSyncMeta(written,outgoingHash,{lastPushAt:now,verifiedAt:now,appliedRevision:writtenRevision});
@@ -4764,7 +4770,7 @@ async function cloudFirstCopy(){
         const localSummary=cloudSummaryText(localState),remoteSummary=cloudSummaryText(remoteState);
         if(!confirm(`현재 이 기기의 Local을 Cloud 기준본으로 확정할까요?\n\n이 기기 Local: ${localSummary}\n현재 Cloud: ${remoteSummary}\nCloud revision: ${remote.revision}\n\n안전 절차\n• 기존 Cloud state를 브라우저 내부 안전 스냅샷으로 먼저 보관합니다.\n• 안전 스냅샷 read-back이 실패하면 Cloud에는 쓰지 않습니다.\n• revision ${remote.revision}이 그대로일 때만 조건부 UPDATE합니다.\n• 저장 후 revision +1과 반환 state hash까지 검증합니다.\n• 현재 Local 데이터는 이 작업으로 삭제하지 않습니다.\n\n이 Local이 최신 기준본이라는 것을 확인한 경우에만 계속하세요.`))return;
         if(!await cloudSaveSafetySnapshot(`before_local_baseline_promote_r${remote.revision}`,remote.state))throw new Error("Cloud 기준본 변경 전 기존 Cloud 안전 스냅샷을 만들지 못해 작업을 중단했습니다.");
-        const written=await cloudPushLocalRow(remote,localState,localHash,{allowImport:true});
+        const written=await cloudPushLocalRow(remote,localState,localHash,{allowImport:true,expectedHold:holdAtStart});
         releaseImportSyncHold(holdAtStart);cloudAutoSyncReady=true;cloudStartPolling();
         cloudSetRuntime("기준본 확정 완료",`이 기기 Local을 Cloud revision ${written.revision} 기준본으로 확정했습니다. 이제 자동 동기화를 시작합니다.`,"ok",{revision:written.revision,updatedAt:written.updated_at,device:written.device||"",sync:"ON",localSummary:cloudSummaryText(state),remoteSummary:cloudSummaryText(written.state)});
         alert(`이 기기 Local을 Cloud 기준본으로 확정했습니다.\nrevision ${remote.revision} → ${written.revision}\n\n이제 다른 기기에서는 'Cloud를 이 기기 기준으로 적용'을 한 번 실행한 뒤 자동 동기화를 사용하세요.`);
@@ -4772,13 +4778,13 @@ async function cloudFirstCopy(){
       }
       if(!confirm(`Cloud row는 있으나 의미 있는 데이터가 없습니다. 현재 Local을 revision ${remote.revision} 위에 조건부로 업로드할까요?\n\n${backupSummary(localState)}`))return;
       if(!await cloudSaveSafetySnapshot(`before_local_baseline_promote_empty_r${remote.revision}`,remote.state))throw new Error("Cloud 기준본 변경 전 안전 스냅샷을 만들지 못해 작업을 중단했습니다.");
-      const written=await cloudPushLocalRow(remote,localState,localHash,{allowImport:true});
+      const written=await cloudPushLocalRow(remote,localState,localHash,{allowImport:true,expectedHold:holdAtStart});
       releaseImportSyncHold(holdAtStart);cloudAutoSyncReady=true;cloudStartPolling();
       alert(`Local → Cloud 최초 반영을 완료했습니다. revision ${written.revision}`);
       return;
     }
     if(!confirm(`Cloud row가 없습니다. 현재 Local을 최초 기준본으로 생성할까요?\n\n${backupSummary(localState)}\n\n동시에 다른 기기가 Cloud row를 만들면 이 작업은 실패하고 덮어쓰지 않습니다.`))return;
-    assertCloudSourceReady({allowImport:true});
+    assertCloudSourceReady({allowImport:true,expectedHold:holdAtStart});
     if(!cloudSame(localState,cloudComparableState(state)))throw new Error("Cloud 요청 중 Local이 변경되어 최초 반영을 중단했습니다.");
     const {data,error}=await cloudClient.from("hani_state").insert({user_id:cloudUser.id,state:structuredClone(localState),device:cloudDeviceLabel()}).select("state,revision,updated_at,device");
     if(error)throw error;
