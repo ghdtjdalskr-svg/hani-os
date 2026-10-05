@@ -22,7 +22,9 @@
 
 ## 검증 / 영향
 
-- 최종 문서 변경 검사 결과는 이 파일의 아래 검증 결과에 기록합니다.
+- 문서 변경 검사: `0be3eb266acfabe7a2443f9765449c387b2e6cd4` 기준 pre-QA PASS, UI review N/A. 로컬 Node v24.20.0. GitHub CI는 별도 확인 필요.
+- CI 변경 범위 분류: 같은 SHA 기준 `docs_only=true`, `tooling=false`. 분류 도구 self-test 13/13 PASS.
+- 시작 안내의 로컬 문서 링크 4개 확인, `git diff --check` 통과. 연결 문서의 정적 검사이며 AI의 실제 읽기 성공 증거가 아님.
 - 문서 전용: runtime 표시 버전·DOM·UI·Production QA N/A.
 - 운영 코드, 보호 저장소, 내부 데이터 버전, Cloud write/schema 변경 없음.
 - main 병합·배포·Notion 페이지 게시 없음. Claude/Gemini 실제 읽기 확인 없음.
