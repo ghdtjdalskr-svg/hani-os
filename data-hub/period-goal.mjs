@@ -239,6 +239,11 @@ export const EXTRA_DEFINITIONS = freeze([
     direction: 'goalDependent', source: 'body', adapter: 'body_fat', goal_semantics: 'point_target',
     description: 'Last valid observed body fat percentage within the calendar month',
     validation: 'valid_date_fat_between_0_and_100_daily_representative', zero_policy: 'zero_invalid', sample_basis: 'valid_observed_days'},
+  {...common, metric_id: 'body_bmi', name: 'BMI', domain: 'Health', kind: 'point_in_time', aggregation: 'last_valid',
+    quarter_aggregation: 'last_valid', annual_aggregation: 'last_valid', unit: 'kg/m²', comparison: 'exact_previous_month',
+    direction: 'goalDependent', source: 'body', adapter: 'body_bmi', goal_semantics: 'point_target',
+    description: 'Last valid stored BMI within the calendar month (computed by the app from weight and the height setting at save time)',
+    validation: 'valid_date_bmi_between_5_and_100_daily_representative', zero_policy: 'zero_invalid', sample_basis: 'valid_observed_days'},
   {...common, metric_id: 'exercise_days_count', name: 'WORKOUT', domain: 'Activity', kind: 'cumulative', aggregation: 'sum',
     quarter_aggregation: 'sum', annual_aggregation: 'sum', unit: 'day', comparison: 'exact_previous_month',
     direction: 'higherBetter', source: 'exercise', adapter: 'exercise_days', goal_semantics: 'cumulative_total',
@@ -276,17 +281,23 @@ function latestPerDay(entries, context) {
 const numeric = value => value === null || value === undefined || String(value).trim() === '' ? null :
   Number.isFinite(Number(value)) ? Number(value) : NaN;
 
-export const EXTRA_ADAPTERS = freeze({
-  body_fat(rows, context) {
+// Last valid daily value of one body-record field; blank means "not measured that day".
+function bodyPoint(field, min, max, invalidReason) {
+  return (rows, context) => {
     const entries = inPeriod(rows, context, row => row.date).filter(({row}) => {
-      const fat = numeric(row.fat);
-      if (fat === null) return false; // not measured that day
-      if (Number.isNaN(fat) || fat <= 0 || fat > 100) { context.reasons.push('INVALID_BODY_FAT'); return false; }
+      const value = numeric(row[field]);
+      if (value === null) return false;
+      if (Number.isNaN(value) || value <= min || value > max) { context.reasons.push(invalidReason); return false; }
       return true;
     });
     const days = latestPerDay(entries, context), last = days.at(-1);
-    return {value: last ? Number(last.row.fat) : null, sample_count: days.length, as_of: last?.date ?? null};
-  },
+    return {value: last ? Number(last.row[field]) : null, sample_count: days.length, as_of: last?.date ?? null};
+  };
+}
+
+export const EXTRA_ADAPTERS = freeze({
+  body_fat: bodyPoint('fat', 0, 100, 'INVALID_BODY_FAT'),
+  body_bmi: bodyPoint('bmi', 5, 100, 'INVALID_BMI'),
   exercise_days(rows, context) {
     const days = new Set();
     for (const {row, date} of inPeriod(rows, context, row => row.date)) {

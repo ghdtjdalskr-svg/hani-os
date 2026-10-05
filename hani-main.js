@@ -1275,14 +1275,15 @@ function save({recover=false}={}){
 const GOAL_METRICS=[
   ['investment_total_krw','투자자산','KRW','point_target'],['body_weight_kg','체중','kg','point_target'],
   ['books_completed_count','완독','book','cumulative_total'],['steps_daily_average','일평균 걸음','steps/day','daily_average'],
-  ['spending_jispi_krw','월 지출 예산','KRW','monthly_budget'],['quiz_accuracy_percent','퀴즈 정답률','%','rate']
+  ['spending_jispi_krw','월 지출 예산','KRW','monthly_budget'],['quiz_accuracy_percent','퀴즈 정답률','%','rate'],
+  ['body_bmi','BMI','kg/m²','point_target'],['body_fat_percent','체지방률','%','point_target']
 ];
 let goalRegistryDraft=null;
 function goalRegistryBuildDraft(registry,input,now,id){
   if(!Array.isArray(registry))throw Error('목표 이력 형식을 확인해 주세요.');
   const def=GOAL_METRICS.find(x=>x[0]===input.metric_id),value=Number(input.value),year=Number(input.year),quarter=Number(input.quarter);
   const date=String(input.effective_from||''),clock=new Date(now),day=new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul'}).format(clock);
-  if(!def||!Number.isFinite(value)||value<=0||(def[2]==='%'&&value>100)||!Number.isInteger(year)||year<2000||year>2100||!['annual','quarter'].includes(input.goal_type))throw Error('목표 종류·기간·값을 확인해 주세요.');
+  if(!def||!Number.isFinite(value)||value<=0||(def[2]==='%'&&value>100)||(def[2]==='kg/m²'&&(value<10||value>60))||!Number.isInteger(year)||year<2000||year>2100||!['annual','quarter'].includes(input.goal_type))throw Error('목표 종류·기간·값을 확인해 주세요.');
   if(input.goal_type==='quarter'&&(!Number.isInteger(quarter)||quarter<1||quarter>4))throw Error('분기를 확인해 주세요.');
   const startMonth=input.goal_type==='quarter'?(quarter-1)*3+1:1,endMonth=input.goal_type==='quarter'?quarter*3:12;
   const periodStart=`${year}-${String(startMonth).padStart(2,'0')}-01`,periodEnd=new Date(Date.UTC(year,endMonth,0)).toISOString().slice(0,10);
@@ -1302,6 +1303,14 @@ function renderGoalRegistry(){
   const registry=state.goalRegistry===undefined?[]:state.goalRegistry;
   if(!Array.isArray(registry)){host.textContent='목표 이력 형식을 확인해 주세요. 기존 데이터는 변경하지 않습니다.';return;}
   host.innerHTML='<p class="sub">분기·연간 목표를 적용일부터 기록합니다. 기존 목표 설정이나 과거 기록은 바꾸지 않습니다.</p><form id="goalRegistryForm"><div class="form-grid"><label class="field">지표<select name="metric_id">'+GOAL_METRICS.map(d=>`<option value="${d[0]}">${d[1]} · ${d[2]}</option>`).join('')+'</select></label><label class="field">기간<select name="goal_type"><option value="quarter">분기</option><option value="annual">연간</option></select></label><label class="field">연도<input name="year" type="number" min="2000" max="2100" value="'+today().slice(0,4)+'"></label><label class="field">분기<select name="quarter">'+[1,2,3,4].map(q=>`<option value="${q}" ${q===Math.ceil(Number(today().slice(5,7))/3)?'selected':''}>${q}분기</option>`).join('')+'</select></label><label class="field">목표값<input name="value" type="number" min="0" step="any" required></label><label class="field">적용일<input name="effective_from" type="date" value="'+today()+'" min="'+today()+'" required></label></div><button class="btn" type="submit">변경 Preview</button></form><div id="goalRegistryPreview" aria-live="polite"></div><details><summary>목표 변경 이력 · '+registry.length+'건</summary>'+registry.slice().reverse().map(g=>`<p>${esc(GOAL_METRICS.find(d=>d[0]===g.metric_id)?.[1]||g.metric_id)} · ${esc(g.year)} ${g.goal_type==='quarter'?esc(g.quarter)+'분기':'연간'} · ${esc(g.value)} ${esc(g.unit)} · ${esc(g.effective_from)}~${esc(g.effective_to)} · revision ${esc(g.revision)} · ${esc(g.status)}</p>`).join('')+'</details>';
+  // A future period's goal starts no earlier than the period start (e.g. 2027 Q1 -> 2027-01-01).
+  $('goalRegistryForm').onchange=e=>{
+    if(!['year','quarter','goal_type'].includes(e.target.name))return;
+    const f=e.currentTarget.elements,y=Number(f.year.value),q=Number(f.quarter.value);
+    const start=`${y}-${f.goal_type.value==='quarter'&&q>=1&&q<=4?String((q-1)*3+1).padStart(2,'0'):'01'}-01`;
+    const min=Number.isInteger(y)&&y>=2000&&y<=2100&&start>today()?start:today();
+    f.effective_from.min=min;f.effective_from.value=min;
+  };
   $('goalRegistryForm').onsubmit=e=>{
     e.preventDefault();
     try{
@@ -5287,7 +5296,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.181";
+const HANI_DISPLAY_VERSION="2.9.183";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
