@@ -8,7 +8,7 @@ import {contractHash,evaluatePackage,canonicalPackageHash} from './hani-one-pass
 const source=fs.readFileSync(new URL('../supabase/functions/hani-deploy-bridge/index.ts',import.meta.url),'utf8');
 const old=JSON.parse(execFileSync('git',['show','92c47086e1aa528436e4a626da82e6d99fae0eec:dev-center/one-pass-gate-contract.json'],{encoding:'utf8'}));
 assert.deepEqual({...contract,contract_version:old.contract_version,limits:old.limits},old,'only version and capacity may change');
-assert.equal(contract.limits.max_files,92);assert.equal(contract.limits.max_total_bytes,16400000);
+assert.equal(contract.limits.max_files,128);assert.equal(contract.limits.max_total_bytes,19000000);
 assert.equal(contract.limits.max_single_file_bytes,old.limits.max_single_file_bytes);
 const maxFiles=Number(source.match(/const MAX_RELEASE_FILES = (\d+);/)[1]);
 const maxTotal=Number(source.match(/const MAX_RELEASE_TOTAL_BYTES = ([\d_]+);/)[1].replaceAll('_',''));
@@ -23,10 +23,10 @@ const snapshot=new AsyncFunction('normalizeReleasePath','MAX_RELEASE_FILES','isA
 let sizes=[];
 const server=await snapshot(x=>x,maxFiles,()=>true,async(_t,p)=>({byteLength:sizes[Number(p.split('.')[0])]}),maxSingle,maxTotal,async()=> 'a'.repeat(64),async()=> 'b'.repeat(64));
 const paths=n=>Array.from({length:n},(_,i)=>`${i}.png`);
-sizes=Array(92).fill(1);assert.equal((await server('fixture','fixture',paths(92))).entries.length,92);
-await assert.rejects(()=>server('fixture','fixture',paths(93)),/파일 수/);
-sizes=[5000000,5000000,5000000,1400000];assert.equal((await server('fixture','fixture',paths(4))).total_bytes,16400000);
-sizes=[5000000,5000000,5000000,1400001];await assert.rejects(()=>server('fixture','fixture',paths(4)),/총 크기/);
+sizes=Array(128).fill(1);assert.equal((await server('fixture','fixture',paths(128))).entries.length,128);
+await assert.rejects(()=>server('fixture','fixture',paths(129)),/파일 수/);
+sizes=[5000000,5000000,5000000,4000000];assert.equal((await server('fixture','fixture',paths(4))).total_bytes,19000000);
+sizes=[5000000,5000000,5000000,4000001];await assert.rejects(()=>server('fixture','fixture',paths(4)),/총 크기/);
 sizes=[5000001];await assert.rejects(()=>server('fixture','fixture',paths(1)),/단일 파일/);
 const pkg=process.argv[2]?JSON.parse(fs.readFileSync(process.argv[2],'utf8')):{candidate_sha:'a'.repeat(40),base_main_sha:'b'.repeat(40),files:[{path:'index.html',content:'<title>HANI v2.9.167</title>'},...Array.from({length:84},(_,i)=>({path:`hani-fixture-${i}.js`,content:'// fixture'})),...Array.from({length:3},(_,i)=>({path:i===0?'assets/seasonal-collection/aura-season-campaign-v1.webp':`assets/fixture-${i}.png`,encoding:'base64',content:Buffer.alloc(4000000).toString('base64')}))]};
 pkg.gate_contract_version=contract.contract_version;pkg.gate_contract_sha256=contractHash(contract);
@@ -35,5 +35,5 @@ const evaluate=p=>evaluatePackage({pkg:p,baseFiles,productionVersion:'2.9.166',c
 assert.equal(evaluate(pkg).find(c=>c.id==='release_paths').status,'PASS');assert.equal(evaluate(pkg).find(c=>c.id==='package_size').status,'PASS');
 const extra=structuredClone(pkg);while(extra.files.length<=contract.limits.max_files)extra.files.push({path:'assets/capacity-test-'+extra.files.length+'.png',encoding:'base64',content:'AA=='});assert.equal(evaluate(extra).find(c=>c.id==='release_paths').status,'BLOCKED');
 const overflow=structuredClone(pkg);const image=overflow.files.find(f=>f.path==='assets/seasonal-collection/aura-season-campaign-v1.webp');const total=canonicalPackageHash(overflow.files).total_bytes;
-image.content=Buffer.concat([Buffer.from(image.content,'base64'),Buffer.alloc(16400000-total)]).toString('base64');assert.equal(evaluate(overflow).find(c=>c.id==='package_size').status,'PASS');image.content=Buffer.concat([Buffer.from(image.content,'base64'),Buffer.alloc(1)]).toString('base64');assert.equal(evaluate(overflow).find(c=>c.id==='package_size').status,'BLOCKED');
-console.log(JSON.stringify({pass:true,contract:contract.contract_version,contractHash:contractHash(contract),checks:['minimal contract change','client/server parity','authentication retained','92 accepted / 93 rejected','16400000 accepted / 16400001 rejected','single-file 5000001 rejected','actual AURA closure accepted']}));
+let remaining=contract.limits.max_total_bytes-total;for(const file of overflow.files.filter(f=>f.encoding==='base64')){const bytes=Buffer.from(file.content,'base64'),grow=Math.min(remaining,contract.limits.max_single_file_bytes-bytes.length);if(grow>0){file.content=Buffer.concat([bytes,Buffer.alloc(grow)]).toString('base64');remaining-=grow;}if(!remaining)break;}assert.equal(remaining,0,'fixture can reach total limit without exceeding single-file limit');assert.equal(evaluate(overflow).find(c=>c.id==='package_size').status,'PASS');const room=overflow.files.find(f=>f.encoding==='base64'&&Buffer.from(f.content,'base64').length<contract.limits.max_single_file_bytes);assert.ok(room);room.content=Buffer.concat([Buffer.from(room.content,'base64'),Buffer.alloc(1)]).toString('base64');assert.equal(evaluate(overflow).find(c=>c.id==='package_size').status,'BLOCKED');
+console.log(JSON.stringify({pass:true,contract:contract.contract_version,contractHash:contractHash(contract),checks:['minimal contract change','client/server parity','authentication retained','128 accepted / 129 rejected','19000000 accepted / 19000001 rejected','single-file 5000001 rejected','actual AURA closure accepted']}));
