@@ -970,6 +970,7 @@
 <div class="data-status-grid" id="storageStats"></div>
 <div class="note storage-warning"><b>v2.9.18 Stable Sync + Travel Archive + Ambient Canvas</b><br>Local/Cloud 기준이 불명확하거나 양쪽이 동시에 변경된 경우에는 자동으로 어느 쪽도 덮어쓰지 않습니다. Cloud → Local 반영 전에는 내부 안전 스냅샷과 read-back 검증을 통과해야 하며, <code>hani_os_life_v23</code>는 그대로 유지됩니다.</div>
 <div class="sub" id="storageMessage" style="margin-top:10px"></div></div>
+<div class="card full" id="loadRecoveryPanel" hidden role="alert"><h3>기록 원본 보호 중</h3><p>읽기 오류로 기록을 표시하지 못했습니다. 빈 화면이 데이터 삭제를 뜻하지 않습니다. 원본은 유지하며 저장과 Cloud 반영을 중지했습니다.</p><p class="sub" id="loadRecoveryCopyStatus"></p><div class="actions"><button class="btn" id="loadRecoveryExport" type="button">원본 파일 내려받기</button><button class="btn" id="loadRecoveryImport" type="button">검증된 백업으로 복원</button></div></div>
 
 <div class="card full cloud-bridge-card" id="cloudBridgeCard">
   <div class="cloud-bridge-head">
