@@ -57,7 +57,7 @@
     const heading = root.querySelector('.company-followup-head .eyebrow');
     if (heading) heading.textContent = 'WEEKLY COMPANY & INDUSTRY F/U';
     if (cycle) cycle.innerHTML = post
-      ? `<b>${esc(payload.week_label || dateLabel(post.published_at) || '최근 발행')}</b><span>발행 · ${esc(dateLabel(post.published_at))}</span><em>핵심 이슈 ${count}</em>`
+      ? `<b>최근 F/U · ${esc(payload.week_label || dateLabel(post.published_at) || '최근 발행')}</b><span>발행 · ${esc(dateLabel(post.published_at))} · 종합시황 주차와 별도</span><em>핵심 이슈 ${count}</em>`
       : `<b>아직 발행 전</b><span>${esc(error || (loading ? '뉴스룸을 불러오는 중' : '확인된 주간 F/U가 없습니다'))}</span><em>핵심 이슈 0</em>`;
     root.querySelectorAll('.company-followup-channels label').forEach(label => {
       const key = label.getAttribute('for')?.replace('followup-', '');
