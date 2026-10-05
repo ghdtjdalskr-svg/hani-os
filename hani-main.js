@@ -2023,10 +2023,11 @@ function initLoginGate(){
 }
 
 
-function txSorted(){return [...state.transactions].sort((a,b)=>(a.date||"").localeCompare(b.date||"")||(a.createdAt||"").localeCompare(b.createdAt||""))}
-function calculate(){
+function txSorted(transactions=state.transactions){return [...transactions].sort((a,b)=>(a.date||"").localeCompare(b.date||"")||(a.createdAt||"").localeCompare(b.createdAt||""))}
+function calculate(transactions=state.transactions){
+  const issues=[];
   const acc={};state.accounts.forEach(a=>acc[a.id]={cash:n(a.openingCash),deposits:0,withdrawals:0,holdings:{}});
-  for(const t of txSorted()){
+  for(const t of txSorted(transactions)){
     const A=acc[t.accountId];if(!A)continue;
     const amount=n(t.amount),qty=n(t.qty),price=n(t.price),fee=n(t.fee);
     if(t.type==="입금"){A.cash+=amount;A.deposits+=amount;continue}
@@ -2037,14 +2038,16 @@ function calculate(){
     if(t.type==="매수"){
       const addCost=qty*price+fee;H.cost+=addCost;H.qty+=qty;H.avg=H.qty>0?H.cost/H.qty:0;A.cash-=addCost;
     }else if(t.type==="매도"){
-      const sellQty=Math.min(qty,H.qty);const removed=H.avg*sellQty;H.qty-=sellQty;H.cost=Math.max(0,H.cost-removed);H.avg=H.qty>0?H.cost/H.qty:0;A.cash+=qty*price-fee;
+      const sellQty=Math.max(0,Math.min(qty,H.qty));
+      if(qty>H.qty+1e-9)issues.push({id:t.id,message:"매도일 기준 보유수량 초과 · 실제 보유분만 계산"});
+      const removed=H.avg*sellQty;H.qty-=sellQty;H.cost=Math.max(0,H.cost-removed);H.avg=H.qty>0?H.cost/H.qty:0;A.cash+=sellQty*price-(sellQty>0?fee:0);
     }
   }
   let totalCash=0,totalMarket=0,totalCost=0;const holdings=[];
   state.accounts.forEach(a=>{const A=acc[a.id];A.market=0;A.cost=0;Object.entries(A.holdings).forEach(([instrumentId,h])=>{if(h.qty<=0.00000001)return;const i=instrumentBy(instrumentId);const enteredPrice=n(i?.price),valuationPrice=enteredPrice>0?enteredPrice:h.avg;const market=h.qty*valuationPrice;const pnl=market-h.cost;A.market+=market;A.cost+=h.cost;holdings.push({accountId:a.id,instrumentId,qty:h.qty,avg:h.avg,cost:h.cost,valuationPrice,priceFallback:enteredPrice<=0,market,pnl,rate:h.cost?pnl/h.cost*100:0})});A.total=A.cash+A.market;totalCash+=A.cash;totalMarket+=A.market;totalCost+=A.cost});
-  return {accounts:acc,holdings,totalCash,totalMarket,totalCost,total:totalCash+totalMarket,pnl:totalMarket-totalCost};
+  return {accounts:acc,holdings,totalCash,totalMarket,totalCost,total:totalCash+totalMarket,pnl:totalMarket-totalCost,issues};
 }
-function availableQty(accountId,instrumentId){return calculate().holdings.find(h=>h.accountId===accountId&&h.instrumentId===instrumentId)?.qty||0}
+function availableQty(accountId,instrumentId,asOf=""){return calculate(asOf?state.transactions.filter(t=>(t.date||"")<=asOf):state.transactions).holdings.find(h=>h.accountId===accountId&&h.instrumentId===instrumentId)?.qty||0}
 
 
 function monthKeyNow(){return today().slice(0,7)}
@@ -2716,13 +2719,14 @@ $("txType").onchange=updateTxForm;
 $("addTransaction").onclick=()=>{
   const type=$("txType").value,accountId=$("txAccount").value,date=$("txDate").value;if(!date||!accountId)return alert("날짜와 계좌를 선택하세요.");const t={id:uid(),date,accountId,type,note:$("txNote").value.trim(),createdAt:new Date().toISOString()};
   if(type==="매수"||type==="매도"){
-    if(!state.instruments.length)return alert("먼저 종목을 등록하세요.");t.instrumentId=$("txInstrument").value;t.qty=n($("txQty").value);t.price=n($("txPrice").value);t.fee=n($("txFee").value);if(!t.instrumentId||t.qty<=0||t.price<=0)return alert("종목, 수량, 거래단가를 확인하세요.");if(type==="매도"&&t.qty>availableQty(accountId,t.instrumentId)+1e-9)return alert("보유수량보다 많이 매도할 수 없습니다.");const instrument=instrumentBy(t.instrumentId);if(instrument&&n(instrument.price)<=0)instrument.price=t.price;
+    if(!state.instruments.length)return alert("먼저 종목을 등록하세요.");t.instrumentId=$("txInstrument").value;t.qty=n($("txQty").value);t.price=n($("txPrice").value);t.fee=n($("txFee").value);if(!t.instrumentId||t.qty<=0||t.price<=0)return alert("종목, 수량, 거래단가를 확인하세요.");if(type==="매도"&&t.qty>availableQty(accountId,t.instrumentId,date)+1e-9)return alert("매도일 기준 보유수량보다 많이 매도할 수 없습니다.");const instrument=instrumentBy(t.instrumentId);if(instrument&&n(instrument.price)<=0)instrument.price=t.price;
   }else{t.amount=n($("txAmount").value);if(type!=="현금조정"&&t.amount<=0)return alert("금액을 입력하세요.");if(type==="현금조정"&&t.amount===0)return alert("0이 아닌 조정금액을 입력하세요.")}
   state.transactions.push(t);["txQty","txPrice","txAmount","txNote"].forEach(id=>$(id).value="");$("txFee").value="0";autoSnapshot();commit("거래를 저장했습니다.");
 };
 function renderTransactions(){
+  const issueMap=new Map(calculate().issues.map(x=>[x.id,x.message]));
   const filter=$("txFilterAccount").value||"all";const rows=[...state.transactions].sort((a,b)=>(b.date||"").localeCompare(a.date||"")||(b.createdAt||"").localeCompare(a.createdAt||"")).filter(t=>filter==="all"||t.accountId===filter);$("transactionCount").textContent=state.transactions.length+"건";
-  $("transactionRows").innerHTML=rows.map(t=>{const a=accountBy(t.accountId),i=instrumentBy(t.instrumentId),isSec=t.type==="매수"||t.type==="매도",security=i||{name:"삭제된 종목",ticker:"",market:""};return `<tr${isSec?' class="security-row"':""}><td>${esc(t.date)}</td><td>${esc(a?.name||"-")}</td><td><b>${esc(t.type)}</b></td><td>${isSec?investmentSecurityIdentityHtml(security):"-"}</td><td>${isSec?num(t.qty):"-"}</td><td>${isSec?won(t.price):won(t.amount)}</td><td>${isSec?won(t.fee):"-"}</td><td>${esc(t.note||"-")}</td><td><button class="btn sm danger" data-delete-tx="${t.id}">삭제</button></td></tr>`}).join("")||'<tr><td colspan="9">거래 기록이 없습니다.</td></tr>';
+  $("transactionRows").innerHTML=rows.map(t=>{const a=accountBy(t.accountId),i=instrumentBy(t.instrumentId),isSec=t.type==="매수"||t.type==="매도",security=i||{name:"삭제된 종목",ticker:"",market:""};return `<tr${isSec?' class="security-row"':""}><td>${esc(t.date)}</td><td>${esc(a?.name||"-")}</td><td><b>${esc(t.type)}</b></td><td>${isSec?investmentSecurityIdentityHtml(security):"-"}</td><td>${isSec?num(t.qty):"-"}</td><td>${isSec?won(t.price):won(t.amount)}</td><td>${isSec?won(t.fee):"-"}</td><td>${esc(t.note||"-")}${issueMap.has(t.id)?'<br><span class="danger">'+esc(issueMap.get(t.id))+'</span>':""}</td><td><button class="btn sm danger" data-delete-tx="${t.id}">삭제</button></td></tr>`}).join("")||'<tr><td colspan="9">거래 기록이 없습니다.</td></tr>';
   document.querySelectorAll("[data-delete-tx]").forEach(b=>b.onclick=()=>{if(!confirm("이 거래를 삭제할까요? 보유수량과 현금이 다시 계산됩니다."))return;state.transactions=state.transactions.filter(t=>t.id!==b.dataset.deleteTx);autoSnapshot();commit("거래를 삭제했습니다.")});
 }
 $("txFilterAccount").onchange=renderTransactions;
