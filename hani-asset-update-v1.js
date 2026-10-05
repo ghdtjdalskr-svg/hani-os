@@ -62,7 +62,9 @@ function accountDeleteImpact(data={},accountId=""){
   const journals=(data.investmentJournal||[]).filter(x=>x.accountId===accountId).length;
   return {brokerSnapshots,monthlySnapshots,transactions,cashFlows,journals,blocking:monthlySnapshots+transactions+cashFlows+journals>0};
 }
-window.HANI_ASSET_UPDATE_V1={normalize,validation,sameAccount,merge,mergeScreens,mergeHoldings,mergeWithExistingHoldings,completeListMissing,holdingIdentity,sameHolding,resolveAccountMatch,typeMatch,accountDeleteImpact,missingReviewFields};
+function selectSnapshotBase(date,snapshots=[]){const period=text(date).slice(0,7),actual=snapshots.filter(s=>s?.recordType!=="positions"&&s?.mode==="actual"),ordered=[...actual].sort((a,b)=>text(a.period).localeCompare(text(b.period))||text(a.updatedAt).localeCompare(text(b.updatedAt)));const same=[...ordered].reverse().find(s=>s.period===period);if(same)return {kind:"same-period",snapshot:same};const previous=ordered.filter(s=>s.status==="confirmed"&&s.period<period).at(-1);return previous?{kind:"previous-confirmed",snapshot:previous}:{kind:"blank",snapshot:null}}
+function prepareSnapshotBase(date,snapshots=[],makeId=()=>uid(),now=()=>new Date().toISOString()){const period=text(date).slice(0,7),selected=selectSnapshotBase(date,snapshots);if(!selected.snapshot)return {kind:"blank",snapshot:null};const snapshot=structuredClone(selected.snapshot);if(selected.kind==="same-period")return {kind:selected.kind,snapshot};const timestamp=now();snapshot.id=makeId();snapshot.period=period;snapshot.snapshotDate=date;snapshot.status="draft";snapshot.note="";snapshot.flowSummary=null;snapshot.accounts=(snapshot.accounts||[]).map(account=>({...account,id:makeId(),holdings:(account.holdings||[]).map(holding=>({...holding,id:makeId()}))}));snapshot.createdAt=timestamp;snapshot.updatedAt=timestamp;snapshot.revision=1;return {kind:selected.kind,snapshot}}
+window.HANI_ASSET_UPDATE_V1={normalize,validation,sameAccount,merge,mergeScreens,mergeHoldings,mergeWithExistingHoldings,completeListMissing,holdingIdentity,sameHolding,resolveAccountMatch,typeMatch,accountDeleteImpact,missingReviewFields,selectSnapshotBase,prepareSnapshotBase};
 if(!root)return;
 function isCash(t){return /입출금|현금|저축|파킹|CMA|예금|적금|주택|비상금/i.test(text(t))}
 function missingReviewFields(d,account,old){
@@ -102,7 +104,7 @@ function accountResolution(d){return resolveAccountMatch(d,state.accounts)}
 function selectedAccount(){return state.accounts.find(a=>a.id===selectedAccountId)||null}
 function updateCaptureReadyState(){const ready=!!selectedAccount();if(files)files.disabled=!ready;if(pasteZone)pasteZone.setAttribute("aria-disabled",ready?"false":"true");const label=files?.closest(".asset-file-label");if(label)label.classList.toggle("is-disabled",!ready);if(analyze)analyze.disabled=!ready||!selected.length}
 function renderCaptureAccountSelect(){if(!accountSelect)return;const previous=selectedAccountId;accountSelect.innerHTML='<option value="">기존 계좌를 먼저 선택하세요</option>'+state.accounts.map(a=>`<option value="${safe(a.id)}">${safe(a.name)} · ${safe(a.broker)} · ${safe(a.type)}</option>`).join("");selectedAccountId=state.accounts.some(a=>a.id===previous)?previous:"";accountSelect.value=selectedAccountId;updateCaptureReadyState()}
-function baseForDate(date){const period=date.slice(0,7),saved=[...brokerSorted("actual")].reverse().find(s=>s.period===period);return saved?normalizeBrokerSnapshot(structuredClone(saved)):brokerBlank("actual")}
+function baseForDate(date){const period=date.slice(0,7),prepared=prepareSnapshotBase(date,state.investmentBrokerSnapshots||[]);if(prepared.snapshot)return normalizeBrokerSnapshot(prepared.snapshot);const blank=brokerBlank("actual");blank.period=period;blank.snapshotDate=date;return blank}
 function money(x){return x===null?"미확인":Math.round(x).toLocaleString("ko-KR")+"원"}
 function accountLabel(d){return d.accountName||d.broker||d.accountType||"새 투자계좌"}
 function render(){
