@@ -5,7 +5,7 @@
 - 작업 ID: STUDY-REAL-NEWS-20261005
 - 갱신일: 2026-10-05 KST
 - 담당: Codex 개발 / 별도 study_review Agent 읽기 전용 검토
-- 상태: 실제 모델 검증 대기. Production 배포 미완료.
+- 상태: 실제 모델 검증 실패(뉴스 소재 quota) 원인 진단 중. Production 배포 미완료.
 - 작업 트리: `.worktrees/study-news-release-final`, branch `hani/study-news-release-final`
 - 개발 base: `4cd5613742742708df6207f8f386b3f90c977778`; 최신 확인 main: `c544592e427b44fd7c7c530213a790f50e92bce8` (공통 허브 문서만 추가)
 - 개발 SHA: `0ebc5094aa8e9e81b300b4b85892fd4ce74ee331`. 최종 릴리스 후보 아님.
@@ -23,7 +23,10 @@
 - PR183: https://github.com/ghdtjdalskr-svg/hani-os/pull/183 . 오래된 후보의 자동 배포를 막기 위해 One-Pass-Preflight BLOCKED / QA HOLD로 표시함. 병합 안 함.
 - 검증용 `hani-learning-quiz-preview` v1을 기존 quiz 소스와 동일하게 배포(JWT 검증 true, auth.getUser 유지, DB write 없음). 운영 `hani-learning-quiz`는 변경하지 않음. 실제 검증 후 운영 함수 배포/read-back과 검증용 함수 정리 판단이 남음.
 - 로컬 실제 모델 검증 화면: http://127.0.0.1:8789/ . `.audit/live-quiz-qa.html` / `.audit/serve-live-qa.cjs`. auth.persistSession=false, 비밀번호 DOM 초기화, 운영 학습 기록 저장 안 함. 실제5/20 각1회 호출, 실패 자동 재시도 없음.
-- 현재 실제 모델 JSON 완결성, 뉴스 비율, 정답/해설 의미 검증은 대기. PASS로 보고하지 않음.
+- 대표님 첨부 화면에서 인증 이후 실제 모델 뉴스 소재 quota 검증 실패 확인. 실패 응답은 기존에 세부 실패 조건을 반환하지 않아 어느 필드가 누락됐는지 확정하지 못함. 원문 요약 일치 실패라고 단정하지 않음.
+- 2026-10-05 진단 보강: 동일 뉴스 검증 조건 유지, 실패 응답에 문항 번호/자료 ID/누락 조건 이름만 추가. 비밀번호·토큰·뉴스 원문·사용자 기록을 진단에 출력하지 않음. mocked 서버 테스트에서 quota 차단 및 비밀정보 미출력 PASS. 기존 quota/auth/schema/write 정책 불변.
+- 검증용 함수 진단 소스 배포 및 read-back 일치 확인(최신 조회 v3, verify_jwt=true), 운영 함수 미변경. 로컬 QA 페이지는 실패 진단 표시 및 메모리 로그인 재사용 버튼 추가. 기존 탭은 로그인 대기였고 로컬 서버 종료로 연결도 끊겨 있었음. 서버 재시작 및 새 페이지 로딩 확인. 대표님 최초 로그인 1회 필요; 이후 같은 페이지에서 검증 재시도 가능, 자동 재시도 없음.
+- 실제 모델 JSON 완결성, 뉴스 비율, 정답/해설 의미 검증은 미완료. PASS로 보고하지 않음. 진단 결과 확인 전 구조 변경이나 검증 기준 완화 안 함.
 - main merge / Pages v179 / 최신 JS 실제 로딩 / 실제 기능 read-back: 모두 미수행. 운영 화면에서 v178 확인.
 
 ## 다음 담당에게
