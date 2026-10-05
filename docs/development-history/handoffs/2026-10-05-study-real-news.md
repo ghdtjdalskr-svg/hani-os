@@ -1,5 +1,18 @@
 # 공부 실제 뉴스 출제 보강 인수인계
 
+## 최신 재개 상태 · 2026-10-05 KST
+
+- 대표님 요청: “응 배포까지 마무리해줘”. 기존 공부 패치 배포 승인 유지. 다른 담당 후보의 수정/폐기/병합 권한으로 확대하지 않음.
+- 최신 기준 main: `bec89d309c2a5792ec3f136a63e595b6a3850a06`, 실제 브라우저 표시 v2.9.180. 품질 개선 PR192의 보호/인증 변경 및 최신 공통 지침 유지.
+- 새 작업 트리: `.worktrees/study-news-release-v182`, branch `hani/study-news-release-v182`. 본 작업의 기능/테스트/인수인계 커밋만 재적용. 원래 모든 작업 트리와 미커밋 변경 보존. main/index와 다른 담당 변경은 아직 수정하지 않음.
+- 최신 기준선 검사: 뉴스 mocked 실제 handler 및 client query/material/freshness/quota/JLPT/무변경 검사, v04 회귀, 서버 owner allow/deny 및 무외부효과, 공부 JS syntax 모두 PASS. 과거 실제 모델5/20 결과는 같은 생성 로직의 개발 증거이며 새 release identity의 HINA 증거로 재사용하지 않음.
+- 실제 서버 배포센터 확인: 로그인/Cloud 연결 정상. PR195(v2.9.181) 서버 HINA BLOCKED. 상세의 예상 main `830fe42bf499`와 현재 `bec89d309c2a` 불일치. UI Queue에 이전 PR191 BLOCKED도 표시되어 Inbox PR195와 분리해서 기록. 단순 확인창 응답 문제로 단정하지 않음.
+- 배포 충돌 경계: PR195는 다른 담당의 명칭 복원 후보. 후보를 수정/폐기하거나 직접 GitHub merge로 HINA 우회하지 않음. 공부 v182 이름의 새 브랜치는 준비 작업이며 표시 버전/후보 Freeze/새 패키지/서버 최종 검증은 아직 수행하지 않음.
+- 다음: PR195 담당이 최신 main 기준으로 후보를 다시 검증하고 운영 반영하거나 대표님이 배포 순서를 별도로 정한 뒤, 실제 최신 main 위에서 공부 다음 버전을 확정. 새 패키지·One-Pass·서버 HINA→승인된 canonical 배포→Pages 및 quiz0.4.1 소스·실제 기능 read-back. 공부 Production 배포는 미완료.
+- 서버0.4.1 운영 배포·새 AI 호출·데이터 쓰기·schema/auth/release tooling 변경 없음. Notion 현황판에 위 진행/차단 내용을 기록하고 읽어 확인할 예정.
+
+아래 내용은 이전 개발/후보 이력이며 위 최신 상태가 우선한다.
+
 ## 작업 식별
 
 - 작업 ID: STUDY-REAL-NEWS-20261005
