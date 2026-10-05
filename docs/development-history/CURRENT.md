@@ -38,6 +38,7 @@
 
 | 항목 | 현재 상태 | 다음 경계 |
 |---|---|---|
+| 대시보드 월 1회 투자·소비 표시 (2026-10-06 후속) | 독립 탑승 대기 / runtime98decce, 조회월·최근 확정 날짜/마감 기간 표시. 가상 PC1440/390·계산·원본 보존 PASS. [인수인계](handoffs/2026-10-06-dashboard-monthly-cadence-boarded.md) | Claude 최신 main22c0021 통합·실제 인증 Preview·열차 gate·운영 read-back. 기존 보고 QA와 별개 |
 | 분기 Conference Room/PPT | Preview 구현·격리 PC/모바일·PPT 검사 보고. 실제 Q&A 화면 응답 확인 보고, 가독성 수정 중 | 실제 답변 포함 PPT·최신 후보·최종 배포 검사 |
 | 연간 보고 뷰어 | 예시 무대·PDF 원본 뷰어·등록/복구 모의 검사 | 실제 인증 등록/read-back/복구·배포. 전체 연간 결산 완료 아님 |
 | 보고서 기반 목표 초안 | 수정 가능한 미확정 제안 Preview | 최신 v178 Registry 계약·승인·통합 검증 |

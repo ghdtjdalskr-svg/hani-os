@@ -1,5 +1,5 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),path=require('node:path');
-const sandbox={window:{},document:{getElementById(){return null;}},console};
+const sandbox={window:{},document:{getElementById(){return null;}},console,structuredClone};
 vm.createContext(sandbox);vm.runInContext(fs.readFileSync(path.join(__dirname,'../hani-asset-update-v1.js'),'utf8'),sandbox);
 const api=sandbox.window.HANI_ASSET_UPDATE_V1;
 const ok=api.validation({purchase:533749,pnl:6714,assets:540463,evaluation:null});
@@ -66,8 +66,21 @@ const deletable=api.accountDeleteImpact({investmentBrokerSnapshots:[{accounts:[{
 assert.deepEqual(JSON.parse(JSON.stringify(deletable)),{brokerSnapshots:1,monthlySnapshots:0,transactions:0,cashFlows:0,journals:0,blocking:false});
 const protectedAccount=api.accountDeleteImpact({transactions:[{accountId:'used'}],investmentMonthlySnapshots:[{accounts:[{accountId:'used'}]}],investmentCashFlows:[{accountId:'other',toAccountId:'used'}],investmentJournal:[{accountId:'used'}]},'used');
 assert.deepEqual(JSON.parse(JSON.stringify(protectedAccount)),{brokerSnapshots:0,monthlySnapshots:1,transactions:1,cashFlows:1,journals:1,blocking:true});
+const snapshotRows=[
+  {id:'aug',mode:'actual',period:'2026-08',status:'confirmed',updatedAt:'2026-08-31T10:00:00Z'},
+  {id:'sep-draft',mode:'actual',period:'2026-09',status:'draft',updatedAt:'2026-09-01T10:00:00Z'},
+  {id:'sep-confirmed',mode:'actual',period:'2026-09',status:'confirmed',updatedAt:'2026-09-30T10:00:00Z'},
+  {id:'positions',mode:'positions',recordType:'positions',period:'2026-10',status:'confirmed',updatedAt:'2026-10-01T10:00:00Z'}
+];
+assert.deepEqual(JSON.parse(JSON.stringify(api.selectSnapshotBase('2026-10-06',snapshotRows))),{kind:'previous-confirmed',snapshot:snapshotRows[2]});
+assert.deepEqual(JSON.parse(JSON.stringify(api.selectSnapshotBase('2026-09-15',snapshotRows))),{kind:'same-period',snapshot:snapshotRows[2]});
+assert.deepEqual(JSON.parse(JSON.stringify(api.selectSnapshotBase('2026-07-15',snapshotRows))),{kind:'blank',snapshot:null});
+let nextId=0;
+const carried=api.prepareSnapshotBase('2026-10-06',[{...snapshotRows[2],accounts:[{id:'old-account',accountId:'toss',holdings:[{id:'old-holding',ticker:'AAPL'}] }],flowSummary:{deposit:5},createdAt:'old',revision:8}],()=>`new-${++nextId}`,()=>"2026-10-06T00:00:00.000Z");
+assert.equal(carried.kind,'previous-confirmed');assert.equal(carried.snapshot.id,'new-1');assert.equal(carried.snapshot.period,'2026-10');assert.equal(carried.snapshot.snapshotDate,'2026-10-06');assert.equal(carried.snapshot.status,'draft');assert.equal(carried.snapshot.accounts[0].id,'new-2');assert.equal(carried.snapshot.accounts[0].accountId,'toss');assert.equal(carried.snapshot.accounts[0].holdings[0].id,'new-3');assert.equal(carried.snapshot.flowSummary,null);assert.equal(carried.snapshot.revision,1);
+assert.equal(snapshotRows[2].id,'sep-confirmed','source snapshot identity remains untouched');
 const contract=fs.readFileSync(path.join(__dirname,'../docs/hani-agent-orchestrator-asset-vision-contract.patch'),'utf8');
 assert.match(contract,/INTAKE_VISION_TARGETS[^\n]+"asset"/);assert.match(contract,/targetHint === "asset"/);assert.match(contract,/assetMode \? ASSET_VISION_SCHEMA : INTAKE_VISION_SCHEMA/);assert.match(contract,/카드 결제내역·영수증·소비내역/);
 assert.match(contract,/assetMode \? \[/);assert.match(contract,/-  const instructions = \[/);
 assert.match(contract,/총평가금액·총자산은 currentAsset/);assert.match(contract,/예수금·현금잔고는 balance/);assert.match(contract,/주식·펀드 평가금액은 valuationAmount/);
-console.log('PASS: account-first normalization, missing-value questions, date validation, duplicate holding merge, current-price confirmation, missing-field preservation, 1 won warning, large mismatch blocker, source-value priority, safe account-delete impact');
+console.log('PASS: account-first normalization, missing-value questions, date validation, duplicate holding merge, current-price confirmation, missing-field preservation, prior confirmed month selection, 1 won warning, large mismatch blocker, source-value priority, safe account-delete impact');
