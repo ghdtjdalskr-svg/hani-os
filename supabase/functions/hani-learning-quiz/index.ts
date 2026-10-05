@@ -71,6 +71,7 @@ function newsMaterialCount(questions: any[], sources: any[]) {
     && String(q?.prompt || '').includes(s.summary.slice(0,260))
     && String(q?.prompt || '').includes(`자료 기준일 ${s.published_at.slice(0,10)}`)
     && String(q?.prompt || '').includes(s.source_name)
+    && (s.material!=='macro' || String(q?.prompt || '').includes('[저장된 브리핑 요약]'))
     && String(q?.explanation || '').includes(`[${s.source_id}]`)
     && String(q?.explanation || '').includes(s.source_url))).length;
 }
@@ -101,6 +102,7 @@ function systemPrompt(quizSize: number, weaknessCount: number, category: string,
     "뉴스 소재 문제는 실제 뉴스 내용을 읽고 사건→원리→영향을 묻도록 하세요. 기업명만 끼운 가상 상황이나 단순 용어 정의에 출처만 붙이지 마세요.",
     "뉴스 소재 문제의 prompt는 줄바꿈으로 다음 형식을 따르세요: [실제 뉴스 · 자료 기준일 YYYY-MM-DD] / source.title 원문 / 출처: source.source_name / [뉴스 요약] source.summary의 앞 260자를 원문 그대로(짧으면 전체) / [질문] 해당 뉴스 내용을 적용하는 질문. YYYY-MM-DD는 source.published_at의 앞 10자입니다. 슬래시는 줄바꿈을 뜻합니다. 저장된 자료 기준일을 원문 기사의 발행일이라고 단정하지 마세요. prompt는 1200자 이내로 작성하세요.",
     "그 문제의 해설 끝에 정확한 [source_id], source_name, published_at, source_url을 그대로 인용하세요. 예: [N1] 출처명 · 자료 기준일 · https://... . 사실과 경제적 해석을 구분하고, 이 출처 표기를 기초 개념 문제에는 붙이지 마세요.",
+    "material이 macro인 자료는 여러 기사를 종합한 저장 브리핑입니다. [뉴스 요약] 대신 [저장된 브리핑 요약]으로 표시하고 출처명 옆에 '브리핑 대표 참고출처 · 단일 기사 요약 아님'을 쓰세요. 하나의 URL이 브리핑 전체의 모든 사실을 직접 입증한다고 주장하지 말고, 해설도 저장된 브리핑에 기반한 경제 원리 해석으로 한정하세요.",
     "자료가 여러 분야이면 국내 반도체·기업, 클라우드·AI, 국제정세·거시경제를 순환하고 같은 기사만 반복하지 마세요. 추가 웹검색이나 자료에 없는 최신 사실을 만들어내지 마세요.",
   ];
   const jlpt = [
