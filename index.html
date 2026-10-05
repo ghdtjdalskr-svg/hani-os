@@ -331,7 +331,7 @@
           <div class="card wide"><div class="sh"><h3>월별 투자자산 흐름</h3><span class="pill finance">MONTHLY ARCHIVE</span></div><div class="chart"><canvas id="brokerAssetChart"></canvas></div><div class="archive-disclaimer">자산 증감에는 추가 납입·출금과 시장 가격 변화가 함께 포함될 수 있습니다. 투자수익률로 해석하지 않습니다.</div></div>
           <div class="card sidec"><div class="sh"><h3>최근 투자 기록</h3><span class="pill finance" id="brokerLatestBadge">기록 없음</span></div><div id="brokerLatestSummary" class="empty">월간 기록을 저장하면 최근 계좌 현황이 표시됩니다.</div></div>
           <div class="card full"><div class="sh"><h3>최근 보유종목 · 계좌 통합</h3><div class="latest-holdings-toolbar"><div class="field"><label>계좌 보기</label><select id="latestHoldingAccountFilter"><option value="all">전체 계좌 통합</option></select></div><span class="pill finance" id="brokerLatestHoldingCount">0종목</span></div></div>
-            <div class="tw"><table><thead><tr><th>종목</th><th>계좌</th><th>수량</th><th>평균단가</th><th>현재가</th><th>매입금액</th><th>평가금액</th><th>평가손익</th><th>수익률</th></tr></thead><tbody id="brokerLatestHoldingRows"></tbody></table></div>
+            <p class="table-scroll-hint">좌우로 밀어서 전체 보기 ↔</p><div class="tw table-readable-scroll" tabindex="0" role="region" aria-label="투자 표: 좌우로 이동하여 전체 보기"><table><thead><tr><th>종목</th><th>계좌</th><th>수량</th><th>평균단가</th><th>현재가</th><th>매입금액</th><th>평가금액</th><th>평가손익</th><th>수익률</th></tr></thead><tbody id="brokerLatestHoldingRows"></tbody></table></div>
             <div class="source-value-note">전체 계좌 통합 시 평균단가는 계좌별 매입금액을 합산해 계산합니다. 현재가는 같은 기준월에 기록된 값의 수량가중 대표값이며, 계좌별 원본값은 각각 보존됩니다.</div>
           </div>
 
@@ -548,7 +548,7 @@
       </div>
 
       <div id="investHoldings" class="panel">
-        <div class="card"><div class="sh"><h3>계좌별 보유내역</h3><span class="pill finance">AUTO CALC</span></div><div class="stats" id="holdingStats"></div><div class="tw" style="margin-top:14px"><table><thead><tr><th>계좌</th><th>종목</th><th>수량</th><th>평균단가</th><th>현재가</th><th>평가액</th><th>평가손익</th><th>수익률</th></tr></thead><tbody id="holdingRows"></tbody></table></div></div>
+        <div class="card"><div class="sh"><h3>계좌별 보유내역</h3><span class="pill finance">AUTO CALC</span></div><div class="stats" id="holdingStats"></div><p class="table-scroll-hint">좌우로 밀어서 전체 보기 ↔</p><div class="tw table-readable-scroll" tabindex="0" role="region" aria-label="투자 표: 좌우로 이동하여 전체 보기" style="margin-top:14px"><table><thead><tr><th>계좌</th><th>종목</th><th>수량</th><th>평균단가</th><th>현재가</th><th>평가액</th><th>평가손익</th><th>수익률</th></tr></thead><tbody id="holdingRows"></tbody></table></div></div>
       </div>
 
       <div id="investTransactions" class="panel">
@@ -564,7 +564,7 @@
             <div class="field tx-cash"><label id="txAmountLabel">금액</label><input id="txAmount" type="number" step="any" placeholder="현금조정은 +/- 입력"></div>
             <div class="field span2"><label>메모</label><input id="txNote" placeholder="선택 입력"></div>
           </div><div class="note" id="txGuide" style="margin-top:12px">입금액을 입력하면 해당 계좌의 현금잔액에 반영됩니다.</div><div class="form-actions"><button class="btn finance" id="addTransaction">거래 저장</button></div></div>
-          <div class="card wide"><div class="sh"><h3>전체 거래내역</h3><div class="sh-actions"><select id="txFilterAccount" class="btn sm"><option value="all">전체 계좌</option></select><span class="pill finance" id="transactionCount">0건</span></div></div><div class="tw"><table><thead><tr><th>날짜</th><th>계좌</th><th>유형</th><th>종목</th><th>수량</th><th>단가/금액</th><th>수수료</th><th>메모</th><th>관리</th></tr></thead><tbody id="transactionRows"></tbody></table></div></div>
+          <div class="card wide"><div class="sh"><h3>전체 거래내역</h3><div class="sh-actions"><select id="txFilterAccount" class="btn sm"><option value="all">전체 계좌</option></select><span class="pill finance" id="transactionCount">0건</span></div></div><p class="table-scroll-hint">좌우로 밀어서 전체 보기 ↔</p><div class="tw table-readable-scroll" tabindex="0" role="region" aria-label="투자 표: 좌우로 이동하여 전체 보기"><table><thead><tr><th>날짜</th><th>계좌</th><th>유형</th><th>종목</th><th>수량</th><th>단가/금액</th><th>수수료</th><th>메모</th><th>관리</th></tr></thead><tbody id="transactionRows"></tbody></table></div></div>
         </div>
       </div>
 
@@ -1491,12 +1491,12 @@
   <img data-design-scene="learning" src="./assets/design-system-v1/learning.webp" alt="">
   <img data-design-scene="srx" src="./assets/design-system-v1/srx.webp" alt="">
 </template>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script>
 <script src="./hani-main.js?v=2.9.178"></script>
 <script src="./hani-office-live.js?v=2.9.150" defer></script>
 <script src="./hani-newsroom-ux-v02970.js?v=2.9.178"></script>
 <script src="./hani-ui-cleanup-v02971.js?v=2.9.161"></script>
-<script src="./hani-stability-polish-v02972.js"></script>
+<script src="./hani-stability-polish-v02972.js?v=2.9.178"></script>
 <script src="./hani-ui-v02973.js?v=2.9.161"></script>
 <script src="./hani-ui-v02974.js?v=2.9.161"></script>
 <script src="./hani-ui-v02975.js?v=2.9.161"></script>

@@ -1880,6 +1880,7 @@ function clearLoginGateSession(){
   try{localStorage.removeItem(HANI_GATE_SESSION_KEY);sessionStorage.removeItem(HANI_GATE_SESSION_KEY)}catch(e){console.warn("Gate session marker clear failed",e)}
 }
 function lockLoginGate(message="이메일과 비밀번호로 로그인해 주세요."){
+  document.body.classList.add("login-scroll-locked");
   loginGateUnlocked=false;
   const gate=$("loginGate"),app=$("app");
   gate?.classList.remove("is-hidden","is-recovery");
@@ -1893,6 +1894,7 @@ function lockLoginGate(message="이메일과 비밀번호로 로그인해 주세
   setTimeout(()=>$("loginGatePassword")?.focus(),80);
 }
 function showLoginRecoveryGate(message="복구 링크를 확인하고 있습니다."){
+  document.body.classList.add("login-scroll-locked");
   loginGateUnlocked=false;
   const gate=$("loginGate"),app=$("app");
   gate?.classList.remove("is-hidden");
@@ -1906,6 +1908,7 @@ function showLoginRecoveryGate(message="복구 링크를 확인하고 있습니�
   loginGateStatus(message,"warn");
 }
 function unlockLoginGate(){
+  document.body.classList.remove("login-scroll-locked");
   loginGateUnlocked=true;
   const gate=$("loginGate"),app=$("app");
   app?.classList.remove("login-locked");
@@ -3733,7 +3736,7 @@ async function sportsCacheLoad(force=false){
 }
 function cloudCreateClient(config){
   dataHubInvalidate(); // Client/project replacement cannot retain the prior consumer.
-  if(!window.supabase?.createClient)throw new Error("Supabase JS를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.");
+  if(!window.supabase?.createClient)throw new Error("로그인 연결 도구를 불러오지 못했습니다. 인터넷 연결을 확인하고 새로고침해 주세요. 기기의 기존 기록은 유지됩니다.");
   try{cloudAuthSubscription?.unsubscribe?.()}catch(e){}
   cloudAuthSubscription=null;
   cloudClient=window.supabase.createClient(config.url,config.key,{
@@ -3864,7 +3867,7 @@ function cloudCanonical(value){
 function cloudSame(a,b){return JSON.stringify(cloudCanonical(a))===JSON.stringify(cloudCanonical(b))}
 function cloudDeviceLabel(){
   const platform=navigator.userAgentData?.platform||navigator.platform||"Browser";
-  return (`HANI OS R${CLOUD_SYNC_ENGINE} · v2.9.76 · ${platform}`).slice(0,120);
+  return (`HANI OS R${CLOUD_SYNC_ENGINE} · v${HANI_DISPLAY_VERSION} · ${platform}`).slice(0,120);
 }
 function cloudRecordCount(d=state){
   return (d.transactions?.length||0)+(d.investmentMonthlySnapshots?.length||0)+(d.investmentBrokerSnapshots?.length||0)+(d.investmentCashFlows?.length||0)+(d.investmentJournal?.length||0)+(d.body?.length||0)+(d.exercise?.length||0)+(d.books?.length||0)+(d.movies?.length||0)+(d.diaries?.length||0)+(d.tasks?.length||0)+(d.campusSemesters?.length||0)+(d.travelTrips?.length||0)+(d.travelPlaces?.length||0)+(d.travelWishlist?.length||0)+(d.certificates?.length||0)+(d.wishlistItems?.length||0)+(d.learningProjects?.length||0)+(d.learningQuizzes?.length||0)+(d.learningWrongAnswers?.length||0);
@@ -4576,6 +4579,7 @@ async function initCloudBridge(){
   if($("cloudPublishableKey"))$("cloudPublishableKey").value=cfg.key||"";
   if($("cloudEmail"))$("cloudEmail").value=cfg.email||"";
   bindCloudBridgeControls();
+  if(!window.supabase?.createClient){loginGateStatus("로그인 연결 도구를 불러오지 못했습니다. 연결을 확인하고 새로고침해 주세요. 기기의 기록은 그대로 보관 중입니다.","error");cloudSetRuntime("연결 도구 확인 필요","로그인 라이브러리 로드 실패 · 기기 기록 보존 · Cloud 반영 중지","error",{sync:"OFF"});return;}
   if(!cfg.url||!cfg.key){
     cloudSetRuntime("연결 설정 필요","고급 설정에서 Cloud 연결 정보를 확인해 주세요.","warn");
     return;
@@ -6148,6 +6152,7 @@ if(CLOUD_AUTH_BOOT.hasAuthCallback){
   // Recovery callback must be consumed before any page navigation can erase the auth hash.
   showLoginRecoveryGate("복구 링크를 인증하고 있습니다.");
   initCloudBridge().finally(()=>{
+    if(!window.supabase?.createClient)return;
     if(cloudRecoveryMode){
       showLoginRecoveryGate(cloudUser?"복구 인증 완료. 새 비밀번호를 입력해 주세요.":"복구 세션을 확인하지 못했습니다. 최신 복구 링크인지 확인해 주세요.");
     }else{
@@ -6156,7 +6161,7 @@ if(CLOUD_AUTH_BOOT.hasAuthCallback){
   });
 }else{
   showView(location.hash.slice(1)||"home");
-  initCloudBridge().finally(()=>loginGateStatus("이메일과 비밀번호로 로그인해 주세요."));
+  initCloudBridge().finally(()=>{if(window.supabase?.createClient)loginGateStatus("이메일과 비밀번호로 로그인해 주세요.")});
 }
 window.addEventListener("resize",()=>{drawPortfolio();drawBody();drawLedgerTrend();drawMonthlyAssetChart();drawBrokerChart();drawAnnualInvestmentCharts();drawInvestmentAccountChart();if(activeAccountId)drawAccountChart(activeAccountId)});
 
