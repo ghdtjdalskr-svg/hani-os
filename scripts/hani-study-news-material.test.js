@@ -10,7 +10,7 @@ const sources=[{post_type:'WEEKLY',published_at:day,payload:{company_followup:{v
   {title:'출처 없음',summary:'근거 없음',published_at:day}];
 let rows=sources,queryError=null,requestMode='news',queries=0,requests=[];
 const scenarios=['고객 인증을 통과한 생산업체의 공급 물량 증가는 매출에 어떻게 연결되는가?', '전력 요금이 오른 데이터센터의 운영 비용을 해석하는 방법은 무엇인가?', '금리를 동결한 중앙은행의 정책이 가계 대출 부담에 미치는 경로는?', '환율 변화가 원자재 수입 가격과 영업 이익률에 주는 영향을 고르시오.', '기업의 신규 투자 집행으로 감가상각비가 늘어날 때 손익 판단 기준은?'];
-const articlePrompt=s=>`[실제 뉴스 · 자료 기준일 ${s.published_at.slice(0,10)}]\n${s.title}\n출처: ${s.source_name}\n[뉴스 요약] ${s.summary.slice(0,260)}\n[질문]`;
+const articlePrompt=s=>`[실제 뉴스 · 자료 기준일 ${s.published_at.slice(0,10)}]\n${s.title}\n출처: ${s.source_name}\n${s.material==='macro'?'[저장된 브리핑 요약]':'[뉴스 요약]'} ${s.summary.slice(0,260)}\n[질문]`;
 const state={learningProjects:[],learningQuizzes:[],learningWrongAnswers:[]};
 const mainNode={innerHTML:'',querySelectorAll:()=>[]};
 const snapshot=JSON.stringify(state);
@@ -37,6 +37,8 @@ const project={id:'p',name:'경제 사례 학습',category:'economy',quizSize:5,
   assert.equal(api.hasNewsMaterial({prompt:articlePrompt(s).replace('자료 기준일','기사 발행일'),explanation:citation},[s]),false);
   assert.equal(api.questionFocus(articlePrompt(s)+' 매출에 미치는 영향은?'),'매출에 미치는 영향은?');
   assert.equal(api.questionFocus('기존 개념 질문은?'),'기존 개념 질문은?');
+  const macro=normalized.find(x=>x.material==='macro');
+  assert.equal(api.hasNewsMaterial({prompt:articlePrompt(macro).replace('[저장된 브리핑 요약]','[뉴스 요약]'),explanation:`[${macro.source_id}] ${macro.source_url}`},[macro]),false);
   assert.equal(api.newsroomQuestionSources([{...sources[0],source_verified:false}]).length,0);
   assert.equal(api.newsroomQuestionSources([{...sources[3],published_at:new Date(Date.now()+86400000).toISOString()}]).length,0);
   const questions=await api.quizApi(project);assert.equal(queries,1);assert.equal(questions.length,5);assert.equal(requests[0].engine_contract.news_material_minimum,2);assert.equal(questions[0].difficulty,'easy');
