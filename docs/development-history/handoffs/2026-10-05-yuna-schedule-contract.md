@@ -1,5 +1,7 @@
 # YUNA Schedule Intent & Date Range Fix Report
 
+> 최신 상태 (2026-10-06 KST): 대표님이 실제 저장 문제가 아니라 입력 해석 문제라고 정정하고 “그렇게 수정해줘”로 Preview-only 수정을 승인. 아래 10-05 진단은 당시 기록이며, 현재는 승인 범위 구현·targeted 검증 완료, 배포 열차 탑승 대기. 실제 일정 저장 계약은 여전히 후속 작업이다.
+
 - 담당: Codex / 2026-10-05 KST.
 - branch: `hani/yuna-schedule-contract`.
 - base/latest main 확인: `8ba5056f91e905bb4e7d1caf0d051e1869fc98f1` (PR204).
@@ -78,3 +80,29 @@
 ## Next
 
 **BLOCKED — canonical 일정 계약이 없어 사용자가 요청한 STOP 조건 충족. 최소 구현안/별도 승인 범위 결정 후 재개.**
+
+## 2026-10-06 — 승인된 Preview-only 수정 / 탑승 인수인계
+
+- 담당 Codex, branch `hani/yuna-schedule-contract`, base `8ba5056f91e905bb4e7d1caf0d051e1869fc98f1`. 최초 진단 commit `9331e372e5f0bc18bc4e9b23990bad30591e25bf` 이후 구현. 최종 SHA는 branch HEAD/Notion 카드 참조.
+- 승인 근거: 대표님 “지금도 할일로 저장하진 않아. 다만 입력한 내용을 제대로 못읽고 텍스트 전부를 할일로 입력하는게 문제야” → “그렇게 수정해줘”. 입력 의도/제목/기간 해석과 Preview만 승인. 실제 일정 저장·Cloud/schema 변경 승인 아님.
+- 운영 변경 파일: `hani-yuna-helpdesk.js` 하나. 새 schedule intent/range parser, schedule-preview 분리, 전용 Preview 및 제목/날짜 수정. 기존 전문 탭 라우팅을 우선 유지. 새 handler/renderer layer를 추가하지 않고 기존 parse/render/edit 경로를 사용.
+- 테스트 파일: `scripts/hani-yuna-schedule.test.js`, `scripts/hani-yuna-schedule-ui.test.mjs`. 문서: 이 인수인계.
+- 실제 요청 문장의 결과: 일정 / 제목 `찐막채 송년회` / 시작 `2026-12-12` / 종료 `2026-12-13` / 종일 `true`. 종료일은 사용자에게 보여주는 포함 종료일이며, 서버 Calendar의 exclusive end 계약으로 사용하지 않는다.
+- 범위: 월/일 두 날짜·축약 13일까지·물결·하이픈·ISO·연도 명시 지원. 단일 날짜는 시작=종료. 잘못된 날짜/역전/불명확한 기간/시간은 경고. 전문 탭 라우팅과 일반 마감 할 일 유지. 일정 저장 버튼 없음, 기존 saveApproved mode guard 그대로 유지.
+- 저장 안전: 보호 LocalStorage/commit/intakeApplyRow/Cloud/schema 수정 없음. 기존 sessionStorage 초안 보존만 재사용. 실제 사용자 데이터 접근 없음.
+
+### 실행한 검사와 Preview 근거
+
+1. `node --check hani-yuna-helpdesk.js` — PASS.
+2. `node scripts/hani-yuna-smoke.js` — PASS, 기존 Book correction A-H / text·Vision / Place / media / finance routing.
+3. `node scripts/hani-yuna-schedule.test.js` — PASS, 고정 Date 2026-10-06, 대표 입력·6개 기간 표현·단일 일정·task deadline 3개·Book/Movie/Place/Diary·오류 날짜/연도/시간·전문 라우팅. parser write 0, 합성 state 보존.
+4. `node scripts/hani-yuna-schedule-ui.test.mjs <playwright index.mjs> <Chrome executable>` — PASS, 실제 index/JS/CSS를 별도 로컬 서버에서 로드, 외부 서비스 차단·격리 브라우저의 합성 데이터 사용. 1440/390 × Porcelain Cream/Midnight Black 총 4 조합: 대표 입력 필드, 저장 버튼 없음, 제목/날짜 수정, 모바일 수정/새 접수 접근, 가로 overflow 없음, deadline Task 저장 버튼 유지. Preview/수정 중 합성 application state 동일·localStorage write 0·intakeApplyRow 호출 0.
+5. 증거 이미지: 로컬 `artifacts/yuna-schedule/{1440,390}-{porcelain-cream,midnight-black}.png`. 실제 화면 육안 확인: 제목·기간·종일·미지원 안내 표시. 이 화면은 개발 Preview이며 Production 결과 아님. 이미지 자체는 branch에 포함하지 않으며 위 UI 검사로 재생성 가능.
+
+### 배포 담당에게
+
+- 표시 버전 `2.9.184`, YUNA cache tag `2.9.136`, `HANI_DISPLAY_VERSION` 변경 없음. 운영 PR/main 병합/배포 없음.
+- 함께 배포할 서버 Edge Function·설정·schema: **없음**. Frontend 변경만 열차에 통합 후 배포 담당이 버전/cache를 한 번 올린다.
+- 통합 후 위 targeted 검사를 다시 실행하고 열차의 package/HINA/승인/Production read-back을 수행한다. 이 기능 담당의 targeted 검사는 release QA를 대신하지 않는다.
+- 미검증/제약: 실제 일정 저장·Google Calendar·Cloud·중복/동기화는 구현하지 않음. 실제 모바일 키보드/음성/OCR 일정 해석은 미검증. 규칙 기반 parser로 모든 자연어 표현을 보장하지 않음. 기존 YUNA 표면은 Midnight에서도 밝은 카드 스타일을 유지하며 이번 작업은 테마 변경이 아님.
+- Notion HANI-23: 제목/요약/승인 범위/검증/다음 행동을 갱신하고 저장 후 읽기 확인. 상태 **탑승 대기**. 대표님 새 데이터 승인 요청 없음; 열차 후보 Preview·배포 승인은 배포 담당 흐름에서 수행.
