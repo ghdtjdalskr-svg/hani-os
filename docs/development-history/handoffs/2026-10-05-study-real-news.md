@@ -2,6 +2,9 @@
 
 ## 최신 재개 상태 · 2026-10-05 KST
 
+- 최종 재개: 대시보드 PR196의 운영 v2.9.181 완료 보고와 main `a7bb9137083d83f8170ac103ad7603bc6d6ac603` 확인. 해당 지표명/보호 변경을 그대로 유지한 새 작업 트리 `.worktrees/study-news-release-v182-final`, branch `hani/study-news-release-v182-final`에 본 작업만 적용. 버전2.9.182 및 공부 JS 캐시 갱신. 아래 bec89d3 기반 준비 기록과 PR195 실패 기록은 과거 이력.
+- 대표님 기존 배포 승인 및 “배포 진행해줘”에 따라 새 후보 Freeze/패키지/One-Pass/서버 HINA 후 canonical 배포를 진행. 운영 quiz0.4.1과 사이트 양쪽 실제 source/기능 read-back 전에는 완료로 표시하지 않음.
+
 - 대표님 요청: “응 배포까지 마무리해줘”. 기존 공부 패치 배포 승인 유지. 다른 담당 후보의 수정/폐기/병합 권한으로 확대하지 않음.
 - 최신 기준 main: `bec89d309c2a5792ec3f136a63e595b6a3850a06`, 실제 브라우저 표시 v2.9.180. 품질 개선 PR192의 보호/인증 변경 및 최신 공통 지침 유지.
 - 새 작업 트리: `.worktrees/study-news-release-v182`, branch `hani/study-news-release-v182`. 본 작업의 기능/테스트/인수인계 커밋만 재적용. 원래 모든 작업 트리와 미커밋 변경 보존. main/index와 다른 담당 변경은 아직 수정하지 않음.
