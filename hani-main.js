@@ -1278,6 +1278,32 @@ const GOAL_METRICS=[
   ['spending_jispi_krw','월 지출 예산','KRW','monthly_budget'],['quiz_accuracy_percent','퀴즈 정답률','%','rate']
 ];
 let goalRegistryDraft=null;
+function goalRegistryBuildDeleteDraft(registry,index){
+  if(!Array.isArray(registry)||!Number.isInteger(index)||!registry[index])throw Error('삭제할 목표를 다시 확인해 주세요.');
+  const entry=structuredClone(registry[index]),next=structuredClone(registry);
+  next.splice(index,1);
+  return {before:JSON.stringify(registry),next,entry};
+}
+function bindGoalRegistryPreview(){
+  const box=$('goalRegistryPreview');
+  $('goalRegistryCancel').onclick=()=>{
+    goalRegistryDraft=null;box.textContent='취소했습니다. 저장하지 않았습니다.';
+  };
+  $('goalRegistryApprove').onclick=()=>{
+    const draft=goalRegistryDraft;if(!draft)return;
+    if(JSON.stringify(state.goalRegistry||[])!==draft.before){
+      goalRegistryDraft=null;box.textContent='목표 이력이 변경됐습니다. Preview를 다시 확인해 주세요.';return;
+    }
+    const old=state.goalRegistry;
+    state.goalRegistry=structuredClone(draft.next);
+    const result=save();
+    if(!result.ok){
+      if(old===undefined)delete state.goalRegistry;else state.goalRegistry=old;
+      box.textContent='저장에 실패했습니다. 기존 목표를 유지합니다.';return;
+    }
+    goalRegistryDraft=null;renderGoalRegistry();dataHubInvalidate();dataHubRefresh();
+  };
+}
 function goalRegistryBuildDraft(registry,input,now,id){
   if(!Array.isArray(registry))throw Error('목표 이력 형식을 확인해 주세요.');
   const def=GOAL_METRICS.find(x=>x[0]===input.metric_id),value=Number(input.value),year=Number(input.year),quarter=Number(input.quarter);
@@ -1302,29 +1328,26 @@ function renderGoalRegistry(){
   const registry=state.goalRegistry===undefined?[]:state.goalRegistry;
   if(!Array.isArray(registry)){host.textContent='목표 이력 형식을 확인해 주세요. 기존 데이터는 변경하지 않습니다.';return;}
   host.innerHTML='<p class="sub">분기·연간 목표를 적용일부터 기록합니다. 기존 목표 설정이나 과거 기록은 바꾸지 않습니다.</p><form id="goalRegistryForm"><div class="form-grid"><label class="field">지표<select name="metric_id">'+GOAL_METRICS.map(d=>`<option value="${d[0]}">${d[1]} · ${d[2]}</option>`).join('')+'</select></label><label class="field">기간<select name="goal_type"><option value="quarter">분기</option><option value="annual">연간</option></select></label><label class="field">연도<input name="year" type="number" min="2000" max="2100" value="'+today().slice(0,4)+'"></label><label class="field">분기<select name="quarter">'+[1,2,3,4].map(q=>`<option value="${q}" ${q===Math.ceil(Number(today().slice(5,7))/3)?'selected':''}>${q}분기</option>`).join('')+'</select></label><label class="field">목표값<input name="value" type="number" min="0" step="any" required></label><label class="field">적용일<input name="effective_from" type="date" value="'+today()+'" min="'+today()+'" required></label></div><button class="btn" type="submit">변경 Preview</button></form><div id="goalRegistryPreview" aria-live="polite"></div><details><summary>목표 변경 이력 · '+registry.length+'건</summary>'+registry.slice().reverse().map(g=>`<p>${esc(GOAL_METRICS.find(d=>d[0]===g.metric_id)?.[1]||g.metric_id)} · ${esc(g.year)} ${g.goal_type==='quarter'?esc(g.quarter)+'분기':'연간'} · ${esc(g.value)} ${esc(g.unit)} · ${esc(g.effective_from)}~${esc(g.effective_to)} · revision ${esc(g.revision)} · ${esc(g.status)}</p>`).join('')+'</details>';
+  host.querySelectorAll('details p').forEach((row,reverseIndex)=>{
+    const index=registry.length-1-reverseIndex,button=document.createElement('button');
+    button.type='button';button.className='btn';button.textContent='삭제 Preview';
+    button.onclick=()=>{
+      try{
+        goalRegistryDraft=goalRegistryBuildDeleteDraft(registry,index);
+        const g=goalRegistryDraft.entry,box=$('goalRegistryPreview');
+        box.innerHTML=`<div class="note"><b>목표 삭제 Preview</b><p>${esc(GOAL_METRICS.find(x=>x[0]===g.metric_id)?.[1]||g.metric_id)} · ${esc(g.year)} ${g.goal_type==='quarter'?esc(g.quarter)+'분기':'연간'} · ${esc(g.value)} ${esc(g.unit)} · revision ${esc(g.revision)}</p><p>이 목표 이력 한 건만 삭제합니다. 실제 체중·생활 기록과 다른 목표는 유지합니다. 이전 목표를 다시 활성화하지 않습니다.</p><button class="btn" id="goalRegistryCancel" type="button">취소</button> <button class="btn" id="goalRegistryApprove" type="button">승인하고 삭제</button></div>`;
+        bindGoalRegistryPreview();
+      }catch(error){goalRegistryDraft=null;$('goalRegistryPreview').textContent=error.message;}
+    };
+    row.append(' ',button);
+  });
   $('goalRegistryForm').onsubmit=e=>{
     e.preventDefault();
     try{
       goalRegistryDraft=goalRegistryBuildDraft(registry,Object.fromEntries(new FormData(e.currentTarget)),new Date().toISOString(),uid());
       const d=goalRegistryDraft,box=$('goalRegistryPreview');
       box.innerHTML=`<div class="note"><b>${esc(GOAL_METRICS.find(x=>x[0]===d.entry.metric_id)[1])}</b><p>기존 ${d.old?esc(d.old.value)+' '+esc(d.old.unit):'미설정'} → 변경 ${esc(d.entry.value)} ${esc(d.entry.unit)}</p><p>${esc(d.entry.effective_from)}부터 적용 · 과거 실적과 기존 목표 설정은 유지</p><button class="btn" id="goalRegistryCancel" type="button">취소</button> <button class="btn" id="goalRegistryApprove" type="button">승인하고 저장</button></div>`;
-      $('goalRegistryCancel').onclick=()=>{
-        goalRegistryDraft=null;box.textContent='취소했습니다. 저장하지 않았습니다.';
-      };
-      $('goalRegistryApprove').onclick=()=>{
-        const draft=goalRegistryDraft;if(!draft)return;
-        if(JSON.stringify(state.goalRegistry||[])!==draft.before){
-          goalRegistryDraft=null;box.textContent='목표 이력이 변경됐습니다. Preview를 다시 확인해 주세요.';return;
-        }
-        const old=state.goalRegistry;
-        state.goalRegistry=structuredClone(draft.next);
-        const result=save();
-        if(!result.ok){
-          if(old===undefined)delete state.goalRegistry;else state.goalRegistry=old;
-          box.textContent='저장에 실패했습니다. 기존 목표를 유지합니다.';return;
-        }
-        goalRegistryDraft=null;renderGoalRegistry();dataHubInvalidate();dataHubRefresh();
-      };
+      bindGoalRegistryPreview();
     }catch(error){
       goalRegistryDraft=null;$('goalRegistryPreview').textContent=error.message;
     }
@@ -5287,7 +5310,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.181";
+const HANI_DISPLAY_VERSION="2.9.182";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
