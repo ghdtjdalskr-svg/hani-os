@@ -35,6 +35,8 @@ const project={id:'p',name:'경제 사례 학습',category:'economy',quizSize:5,
   assert.equal(api.hasNewsMaterial({prompt:articlePrompt(s),explanation:citation},[s]),true);
   assert.equal(api.hasNewsMaterial({prompt:articlePrompt(s).replace(s.summary.slice(0,260),'가상 상황'),explanation:citation},[s]),false);
   assert.equal(api.hasNewsMaterial({prompt:articlePrompt(s).replace('자료 기준일','기사 발행일'),explanation:citation},[s]),false);
+  assert.equal(api.questionFocus(articlePrompt(s)+' 매출에 미치는 영향은?'),'매출에 미치는 영향은?');
+  assert.equal(api.questionFocus('기존 개념 질문은?'),'기존 개념 질문은?');
   assert.equal(api.newsroomQuestionSources([{...sources[0],source_verified:false}]).length,0);
   assert.equal(api.newsroomQuestionSources([{...sources[3],published_at:new Date(Date.now()+86400000).toISOString()}]).length,0);
   const questions=await api.quizApi(project);assert.equal(queries,1);assert.equal(questions.length,5);assert.equal(requests[0].engine_contract.news_material_minimum,2);assert.equal(questions[0].difficulty,'easy');
