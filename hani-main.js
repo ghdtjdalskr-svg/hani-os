@@ -1278,6 +1278,7 @@ const GOAL_METRICS=[
   ['spending_jispi_krw','월 지출 예산','KRW','monthly_budget'],['quiz_accuracy_percent','퀴즈 정답률','%','rate'],
   ['body_bmi','BMI','kg/m²','point_target'],['body_fat_percent','체지방률','%','point_target']
 ];
+const goalRegistryActions=label=>'<button class="btn" id="goalRegistryCancel" type="button">취소</button> <button class="btn" id="goalRegistryApprove" type="button">'+esc(label)+'</button>';
 let goalRegistryDraft=null;
 function goalRegistryBuildDeleteDraft(registry,index){
   if(!Array.isArray(registry)||!Number.isInteger(index)||!registry[index])throw Error('삭제할 목표를 다시 확인해 주세요.');
@@ -1344,7 +1345,7 @@ function renderGoalRegistry(){
       try{
         goalRegistryDraft=goalRegistryBuildDeleteDraft(registry,index);
         const g=goalRegistryDraft.entry,box=$('goalRegistryPreview');
-        box.innerHTML=`<div class="note"><b>목표 삭제 Preview</b><p>${esc(GOAL_METRICS.find(x=>x[0]===g.metric_id)?.[1]||g.metric_id)} · ${esc(g.year)} ${g.goal_type==='quarter'?esc(g.quarter)+'분기':'연간'} · ${esc(g.value)} ${esc(g.unit)} · revision ${esc(g.revision)}</p><p>이 목표 이력 한 건만 삭제합니다. 실제 체중·생활 기록과 다른 목표는 유지합니다. 이전 목표를 다시 활성화하지 않습니다.</p><button class="btn" id="goalRegistryCancel" type="button">취소</button> <button class="btn" id="goalRegistryApprove" type="button">승인하고 삭제</button></div>`;
+        box.innerHTML=`<div class="note"><b>목표 삭제 Preview</b><p>${esc(GOAL_METRICS.find(x=>x[0]===g.metric_id)?.[1]||g.metric_id)} · ${esc(g.year)} ${g.goal_type==='quarter'?esc(g.quarter)+'분기':'연간'} · ${esc(g.value)} ${esc(g.unit)} · revision ${esc(g.revision)}</p><p>이 목표 이력 한 건만 삭제합니다. 실제 체중·생활 기록과 다른 목표는 유지합니다. 이전 목표를 다시 활성화하지 않습니다.</p>${goalRegistryActions('승인하고 삭제')}</div>`;
         bindGoalRegistryPreview();
       }catch(error){goalRegistryDraft=null;$('goalRegistryPreview').textContent=error.message;}
     };
@@ -1355,7 +1356,7 @@ function renderGoalRegistry(){
     try{
       goalRegistryDraft=goalRegistryBuildDraft(registry,Object.fromEntries(new FormData(e.currentTarget)),new Date().toISOString(),uid());
       const d=goalRegistryDraft,box=$('goalRegistryPreview');
-      box.innerHTML=`<div class="note"><b>${esc(GOAL_METRICS.find(x=>x[0]===d.entry.metric_id)[1])}</b><p>기존 ${d.old?esc(d.old.value)+' '+esc(d.old.unit):'미설정'} → 변경 ${esc(d.entry.value)} ${esc(d.entry.unit)}</p><p>${esc(d.entry.effective_from)}부터 적용 · 과거 실적과 기존 목표 설정은 유지</p><button class="btn" id="goalRegistryCancel" type="button">취소</button> <button class="btn" id="goalRegistryApprove" type="button">승인하고 저장</button></div>`;
+      box.innerHTML=`<div class="note"><b>${esc(GOAL_METRICS.find(x=>x[0]===d.entry.metric_id)[1])}</b><p>기존 ${d.old?esc(d.old.value)+' '+esc(d.old.unit):'미설정'} → 변경 ${esc(d.entry.value)} ${esc(d.entry.unit)}</p><p>${esc(d.entry.effective_from)}부터 적용 · 과거 실적과 기존 목표 설정은 유지</p>${goalRegistryActions('승인하고 저장')}</div>`;
       bindGoalRegistryPreview();
     }catch(error){
       goalRegistryDraft=null;$('goalRegistryPreview').textContent=error.message;
