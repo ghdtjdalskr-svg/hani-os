@@ -5,7 +5,7 @@
 - 작업 ID: STUDY-REAL-NEWS-20261005
 - 갱신일: 2026-10-05 KST
 - 담당: Codex 개발 / 별도 study_review Agent 읽기 전용 검토
-- 상태: 실제 모델 검증 실패(뉴스 소재 quota) 원인 진단 중. Production 배포 미완료.
+- 상태: 실제 모델 quota 실패 원인 확인 및 canonical source display 수정. 수정 후 실제 모델 검증은 인증 대기. Production 배포 미완료.
 - 작업 트리: `.worktrees/study-news-release-final`, branch `hani/study-news-release-final`
 - 개발 base: `4cd5613742742708df6207f8f386b3f90c977778`; 최신 확인 main: `c544592e427b44fd7c7c530213a790f50e92bce8` (공통 허브 문서만 추가)
 - 개발 SHA: `0ebc5094aa8e9e81b300b4b85892fd4ce74ee331`. 최종 릴리스 후보 아님.
@@ -27,6 +27,10 @@
 - 2026-10-05 진단 보강: 동일 뉴스 검증 조건 유지, 실패 응답에 문항 번호/자료 ID/누락 조건 이름만 추가. 비밀번호·토큰·뉴스 원문·사용자 기록을 진단에 출력하지 않음. mocked 서버 테스트에서 quota 차단 및 비밀정보 미출력 PASS. 기존 quota/auth/schema/write 정책 불변.
 - 검증용 함수 진단 소스 배포 및 read-back 일치 확인(최신 조회 v3, verify_jwt=true), 운영 함수 미변경. 로컬 QA 페이지는 실패 진단 표시 및 메모리 로그인 재사용 버튼 추가. 기존 탭은 로그인 대기였고 로컬 서버 종료로 연결도 끊겨 있었음. 서버 재시작 및 새 페이지 로딩 확인. 대표님 최초 로그인 1회 필요; 이후 같은 페이지에서 검증 재시도 가능, 자동 재시도 없음.
 - 실제 모델 JSON 완결성, 뉴스 비율, 정답/해설 의미 검증은 미완료. PASS로 보고하지 않음. 진단 결과 확인 전 구조 변경이나 검증 기준 완화 안 함.
+- 대표님 전달 실제 응답: size5 / quota2 / matched1. Q1 N1은 summary, briefing_label만 누락; Q2 N2 정상, Q3~5 source_reference 없음. model_status=completed, output_tokens1401, db_write=false. 토큰 제한이나 로그인 실패가 아닌 macro 요약/표시 불일치로 확인.
+- 수정: canonicalNewsContext는 기존 structured 뉴스 prefix/[질문]/허용 적용형type + 정확 title/date/name + 해설의 단일 자료ID/URL이 확인될 때만 source의 원문 요약과 브리핑 표시를 구성함. 질문/보기/정답/해설 보존, 없는 출처 연결·Definition 승격·새 저장 경로 없음. 원문을 모델이 재작성하지 않는 prompt로 보강. 클라이언트 원문 quota 검증은 그대로 유지.
+- 자동 테스트: macro 요약 재작성/표시 누락 재현 후 정확 원문 복구 PASS, 질문 보존 PASS, Definition 승격 방지 PASS, 기존 quota/회귀 PASS. study_review 별도 읽기 전용 재검토에서 구현 안전 blocker 없음. 실제 요약→질문→정답 의미 검증은 아직 미완료.
+- 수정 검증용 소스 배포 후 현재 탭의 DOM은 로그인 대기, retryVisible=false. 토큰 추출·다른 탭 세션 복사하지 않음. 대표님이 현재 페이지에서 인증해야 actual5/20 진행 가능. 운영 함수/PR183 HOLD 유지.
 - main merge / Pages v179 / 최신 JS 실제 로딩 / 실제 기능 read-back: 모두 미수행. 운영 화면에서 v178 확인.
 
 ## 다음 담당에게
