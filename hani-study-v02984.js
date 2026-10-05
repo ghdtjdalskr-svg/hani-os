@@ -257,6 +257,7 @@
       && String(question.prompt || '').includes(s.summary.slice(0,260))
       && String(question.prompt || '').includes(`자료 기준일 ${s.published_at.slice(0,10)}`)
       && String(question.prompt || '').includes(s.source_name)
+      && (s.material!=='macro' || String(question.prompt || '').includes('[저장된 브리핑 요약]'))
       && String(question.explanation || '').includes(`[${s.source_id}]`)
       && String(question.explanation || '').includes(s.source_url));
   }
