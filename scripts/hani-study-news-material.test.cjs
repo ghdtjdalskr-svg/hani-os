@@ -9,6 +9,7 @@ const sources=[{post_type:'WEEKLY',published_at:day,payload:{company_followup:{v
   {title:'출처 없음',summary:'근거 없음',published_at:day}];
 let rows=sources,queryError=null,requestMode='news',queries=0,requests=[];
 const scenarios=['고객 인증을 통과한 생산업체의 공급 물량 증가는 매출에 어떻게 연결되는가?', '전력 요금이 오른 데이터센터의 운영 비용을 해석하는 방법은 무엇인가?', '금리를 동결한 중앙은행의 정책이 가계 대출 부담에 미치는 경로는?', '환율 변화가 원자재 수입 가격과 영업 이익률에 주는 영향을 고르시오.', '기업의 신규 투자 집행으로 감가상각비가 늘어날 때 손익 판단 기준은?'];
+const articlePrompt=s=>`[실제 뉴스 · 자료 기준일 ${s.published_at.slice(0,10)}]\n${s.title}\n출처: ${s.source_name}\n[뉴스 요약] ${s.summary.slice(0,260)}\n[질문]`;
 const state={learningProjects:[],learningQuizzes:[],learningWrongAnswers:[]};
 const mainNode={innerHTML:'',querySelectorAll:()=>[]};
 const snapshot=JSON.stringify(state);
@@ -16,7 +17,7 @@ const query={select(){return this},eq(key,id){assert.equal(key,'user_id');assert
 const context=vm.createContext({window:{},state,document:{querySelector:s=>s==='#studyMainPanel'?mainNode:null,querySelectorAll:()=>[]},Date,URL,console,crypto:require('node:crypto').webcrypto,
   cloudClient:{from(table){assert.equal(table,'hani_newsroom_posts');return query},auth:{getSession:async()=>({data:{session:{access_token:'fixture-only'}}})}},cloudUser:{id:'fixture-user'},
   cloudConfig:()=>({url:'https://fixture.invalid',key:'fixture-only'}),
-  fetch:async(_url,opts)=>{const b=JSON.parse(opts.body);requests.push(b);const questions=Array.from({length:b.project.quiz_size},(_,i)=>({prompt:`${requestMode==='news'&&b.question_sources.length?b.question_sources[i%b.question_sources.length].title:''} ${scenarios[i%scenarios.length]} ${requests.length}-${i}`,choices:['매출 증가','매출 감소','변화 없음','판단 불가'],answer_index:0,type:'Scenario',topic:'기업 사례',difficulty:'easy',explanation:requestMode==='news'&&b.question_sources.length?`사건과 원리 연결 [${b.question_sources[i%b.question_sources.length].source_id}] ${b.question_sources[i%b.question_sources.length].source_url}`:'기초 원리 설명'}));return {ok:true,json:async()=>({ok:true,quiz:{questions}})}},
+  fetch:async(_url,opts)=>{const b=JSON.parse(opts.body);requests.push(b);const questions=Array.from({length:b.project.quiz_size},(_,i)=>({prompt:`${requestMode==='news'&&b.question_sources.length?articlePrompt(b.question_sources[i%b.question_sources.length]):''} ${scenarios[i%scenarios.length]} ${requests.length}-${i}`,choices:['매출 증가','매출 감소','변화 없음','판단 불가'],answer_index:0,type:'Scenario',topic:'기업 사례',difficulty:'easy',explanation:requestMode==='news'&&b.question_sources.length?`사건과 원리 연결 [${b.question_sources[i%b.question_sources.length].source_id}] ${b.question_sources[i%b.question_sources.length].source_url}`:'기초 원리 설명'}));return {ok:true,json:async()=>({ok:true,quiz:{questions}})}},
 });
 // Execute the actual owner functions without booting the UI or invoking automatic generation.
 vm.runInContext(client.replace(/\n  boot\(\);\s*\n\}\)\(\);\s*$/, '\n window.renderStudyFixture=()=>{activeProjectId="p";renderMain();};\n})();'),context);
@@ -28,6 +29,11 @@ const project={id:'p',name:'경제 사례 학습',category:'economy',quizSize:5,
   assert.deepEqual(Array.from(normalized,s=>s.source_id),['N1','N2','N3','N4']);
   assert.equal(api.newsMaterialMinimum(5,normalized),2);assert.equal(api.newsMaterialMinimum(20,normalized),7);
   assert.equal(api.hasNewsMaterial({prompt:'금리의 정의는?',explanation:'[N1] https://example.com/samsung'},normalized),false);
+  const s=normalized[0],citation=`[${s.source_id}] ${s.source_url}`;
+  assert.equal(api.hasNewsMaterial({prompt:s.title,explanation:citation},[s]),false,'Title and citation alone are not article context.');
+  assert.equal(api.hasNewsMaterial({prompt:articlePrompt(s),explanation:citation},[s]),true);
+  assert.equal(api.hasNewsMaterial({prompt:articlePrompt(s).replace(s.summary.slice(0,260),'가상 상황'),explanation:citation},[s]),false);
+  assert.equal(api.hasNewsMaterial({prompt:articlePrompt(s).replace('자료 기준일','기사 발행일'),explanation:citation},[s]),false);
   assert.equal(api.newsroomQuestionSources([{...sources[0],source_verified:false}]).length,0);
   assert.equal(api.newsroomQuestionSources([{...sources[3],published_at:new Date(Date.now()+86400000).toISOString()}]).length,0);
   const questions=await api.quizApi(project);assert.equal(queries,1);assert.equal(questions.length,5);assert.equal(requests[0].engine_contract.news_material_minimum,2);assert.equal(questions[0].difficulty,'easy');
@@ -41,12 +47,14 @@ const project={id:'p',name:'경제 사례 학습',category:'economy',quizSize:5,
   const edgeContext=vm.createContext({URL,Date,Response,Request,console,
     createClient:()=>({auth:{getUser:async()=>({data:{user:{id:'fixture-user'}},error:null})}}),
     Deno:{env:{get:()=> 'fixture-only'},serve:fn=>{handler=fn}},
-    fetch:async(_url,opts)=>{modelRequest=JSON.parse(opts.body);const body=JSON.parse(modelRequest.input);return {ok:true,json:async()=>({output_text:JSON.stringify({questions:Array.from({length:body.project.quiz_size},()=>({prompt:requestMode==='news'?body.question_sources[0]?.title:'기초 정의',explanation:requestMode==='news'?`[N1] ${body.question_sources[0]?.source_url}`:'基本説明'}))})})}},
+    fetch:async(_url,opts)=>{modelRequest=JSON.parse(opts.body);const body=JSON.parse(modelRequest.input);return {ok:true,json:async()=>({output_text:JSON.stringify({questions:Array.from({length:body.project.quiz_size},()=>({prompt:requestMode==='news'?articlePrompt(body.question_sources[0]):requestMode==='title-only'?body.question_sources[0].title:'기초 정의',explanation:requestMode!=='basic'?`[N1] ${body.question_sources[0]?.source_url}`:'基本説明'}))})})}},
   });
   vm.runInContext(stripTypeScriptTypes(edge.replace(/^import .*;\r?\n/m,'')),edgeContext);
   requestMode='news';const body={project:{name:'경제',category:'economy',quiz_size:5},question_sources:normalized,engine_contract:{news_material_minimum:2}};
   const request=()=>new Request('https://fixture.invalid',{method:'POST',headers:{Authorization:'Bearer fixture-only'},body:JSON.stringify(body)});
   const good=await handler(request());assert.equal(good.status,200);assert.equal((await good.json()).news_material_minimum,2);assert.match(modelRequest.instructions,/난이도를 높이라는 요청이 아닙니다/);
+  assert.match(modelRequest.instructions,/앞 260자를 원문 그대로/);
+  requestMode='title-only';assert.equal((await handler(request())).status,502);
   requestMode='basic';const bad=await handler(request());assert.equal(bad.status,502);assert.equal((await bad.json()).error,'QUIZ_NEWS_MATERIAL_MISSING');
   assert.equal(/localStorage\.(setItem|removeItem|clear)/.test(client),false);
   assert.equal(/\.from\([^)]*\)\s*\.\s*(insert|update|delete|upsert)/.test(edge),false);

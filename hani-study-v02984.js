@@ -254,6 +254,9 @@
   function newsMaterialMinimum(size, sources) { return sources.length ? Math.ceil(size / 3) : 0; }
   function hasNewsMaterial(question, sources) {
     return sources.some(s => String(question.prompt || '').includes(s.title)
+      && String(question.prompt || '').includes(s.summary.slice(0,260))
+      && String(question.prompt || '').includes(`자료 기준일 ${s.published_at.slice(0,10)}`)
+      && String(question.prompt || '').includes(s.source_name)
       && String(question.explanation || '').includes(`[${s.source_id}]`)
       && String(question.explanation || '').includes(s.source_url));
   }
@@ -751,7 +754,7 @@
       <div class="study-exam-instructions">${graded?'해설과 오답 표시를 확인하세요. 틀린 문항은 오답노트에 자동 누적됩니다.':'답안은 선택 즉시 안전하게 임시 저장됩니다. 모든 문항을 선택하면 채점 버튼이 활성화됩니다.'}</div>
       ${quiz.questions.map((question, qi) => {
         const selected = quiz.answers[qi];
-        return `<article class="study-question ${graded ? 'is-graded' : ''}" data-study-question="${qi}"><div class="study-question-head"><span>Q${qi + 1}</span><span>${safe(question.type || 'general')}</span><span>${safe(question.difficulty || 'medium')}</span></div><h4>${safe(question.prompt)}</h4><div class="study-choices">${question.choices.map((choice, ci) => {
+        return `<article class="study-question ${graded ? 'is-graded' : ''}" data-study-question="${qi}"><div class="study-question-head"><span>Q${qi + 1}</span><span>${safe(question.type || 'general')}</span><span>${safe(question.difficulty || 'medium')}</span></div><h4 style="white-space:pre-line">${safe(question.prompt)}</h4><div class="study-choices">${question.choices.map((choice, ci) => {
           const correct = graded && ci === question.answerIndex, wrong = graded && ci === selected && ci !== question.answerIndex;
           return `<label class="study-choice ${correct ? 'is-correct' : wrong ? 'is-wrong' : ''}"><input type="radio" name="study-q-${safe(quiz.id)}-${qi}" value="${ci}" ${selected === ci ? 'checked' : ''} ${graded ? 'disabled' : ''}><span>${ci + 1}. ${safe(choice)}</span></label>`;
         }).join('')}</div>${graded ? `<div class="study-explanation"><b>정답 ${question.answerIndex + 1}번</b> · ${safe(question.explanation)}</div>` : ''}</article>`;
