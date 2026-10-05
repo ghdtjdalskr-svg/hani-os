@@ -3,9 +3,11 @@
 import { spawnSync } from "node:child_process";
 import { closeSync, openSync, readFileSync, readSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import {evaluateProtectedWriteContract} from "./hani-protected-write-contract.mjs";
+import {sha256,canonicalPackageHash,modularRuntimeText} from "./hani-one-pass-rules.mjs";
 
 const CONTRACT_VERSION = "1.0.0";
-const TOOL_VERSION = "0.3.0";
+const TOOL_VERSION = "0.4.0";
 const PROTECTED_STORAGE_KEY = ["hani", "os", "life", "v23"].join("_");
 const YUNA_DRAFT_FILE = "hani-yuna-helpdesk.js";
 const YUNA_DRAFT_KEY = "hani_yuna_helpdesk_draft_v1";
@@ -596,6 +598,26 @@ function main() {
   const snapshots = buildSourceSnapshots(uniqueChanges, { worktree, comparisonBaseSha, commitSha });
   const scannedRecords = attachScanText(records, snapshots);
   const { checks } = detectRisks(uniqueChanges, scannedRecords, snapshots);
+  const protectionPath=option("--protected-package");
+  if(protectionPath&&!worktree){
+    let contractResult={ok:false,reason:"Missing reviewed policy"};
+    try{
+      const pkg=JSON.parse(readFileSync(protectionPath,"utf8")),policy=JSON.parse(process.env.HANI_PROTECTED_WRITE_APPROVAL||"null"),evidenceText=process.env.HANI_PROTECTED_WRITE_EVIDENCE||"",evidence=JSON.parse(evidenceText);
+      const actual=canonicalPackageHash(pkg.files),map=new Map(pkg.files.filter(f=>/\.(html|js|css)$/i.test(f.path)).map(f=>[f.path,f.encoding==='base64'?Buffer.from(f.content,'base64').toString('utf8'):f.content]));
+      const baselineMap=new Map([...map.keys()].map(file=>[file,git(['show',baseMainSha+':'+file]).stdout]));
+      const runtime=modularRuntimeText(map),count=rx=>[...runtime.matchAll(rx)].length;
+      contractResult=evaluateProtectedWriteContract({policy,evidence,evidenceHash:sha256(evidenceText),baselineSha:baseMainSha,candidateSha:commitSha,runtimeHash:sha256(runtime),baselineRuntimeHash:sha256(modularRuntimeText(baselineMap)),packageHash:actual.package_sha256,now:Date.now(),surface:{storage_key:(runtime.match(/const\s+STORAGE_KEY\s*=\s*["']([^"']+)/)||[])[1],internal_version:(runtime.match(/const\s+VERSION\s*=\s*["']([^"']+)/)||[])[1],writes:count(/localStorage\.setItem\(STORAGE_KEY/g),removes:count(/localStorage\.removeItem\(STORAGE_KEY/g),clears:count(/localStorage\.clear\s*\(/g),cloud_calls:count(/\.from\(["']hani_state["']\)/g)}});
+      if(pkg.candidate_sha!==commitSha||pkg.base_main_sha!==baseMainSha||pkg.package_sha256!==actual.package_sha256||!pkg.files.every(file=>{const result=spawnSync("git",["show",commitSha+":"+file.path],{encoding:null,maxBuffer:32*1024*1024});const bytes=file.encoding==="base64"?Buffer.from(file.content,"base64"):Buffer.from(file.content,"utf8");return result.status===0&&sha256(result.stdout)===sha256(bytes)}))contractResult={ok:false,reason:"Package identity drift"};
+      if(contractResult.ok){
+        for(const check of checks.filter(x=>['storage_mutation','protected_storage_key','event_layering_risk'].includes(x.id)&&x.status==='BLOCKED')){
+          const files=[...new Set(check.evidence.map(item=>item.split(':')[0]))];
+          const exact=files.length>0&&files.every(file=>evidence.reviewed_files?.[file]===sha256(git(['show',commitSha+':'+file]).stdout));
+          if(exact){check.status='PASS';check.detail='승인된 정확한 소스·패키지·실행 증거로 보존 계약 검증 완료 (원래 검토 사유 유지)';}
+        }
+      }
+    }catch(_){contractResult={ok:false,reason:"Invalid protection package/policy/evidence"}}
+    checks.push({id:'protected_preservation_contract',label:'승인된 원본 보존 계약',status:contractResult.ok?'PASS':'BLOCKED',detail:contractResult.reason,evidence:[]});
+  }
   const uiFiles = uniqueChanges.filter(change => isUiFile(change, snapshots)).map(change => change.path);
   checks.push({
     id: "changed_files_inventory",
