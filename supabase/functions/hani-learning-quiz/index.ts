@@ -61,6 +61,9 @@ async function authenticatedUser(req: Request, supabaseUrl: string, publishableK
 
 function newsMaterialCount(questions: any[], sources: any[]) {
   return questions.filter(q => sources.some(s => String(q?.prompt || '').includes(s.title)
+    && String(q?.prompt || '').includes(s.summary.slice(0,260))
+    && String(q?.prompt || '').includes(`자료 기준일 ${s.published_at.slice(0,10)}`)
+    && String(q?.prompt || '').includes(s.source_name)
     && String(q?.explanation || '').includes(`[${s.source_id}]`)
     && String(q?.explanation || '').includes(s.source_url))).length;
 }
@@ -88,9 +91,9 @@ function systemPrompt(quizSize: number, weaknessCount: number, category: string,
     "단순 숫자 암기보다 사건→경제 원리→시장·기업·투자 판단의 연결을 묻고, 해설에 그 연결을 설명하세요.",
     sourceCount > 0 ? "Current Issue의 구체적 사실은 제공된 Newsroom source에 근거하고, 출처에 없는 수치·사건은 만들지 마세요." : "검증된 Newsroom source가 없으므로 최신 사건인 것처럼 꾸미지 말고, 시점에 덜 민감한 원리와 명시적인 가상 시나리오를 사용하세요.",
     `이번 요청은 최소 ${newsMinimum}문제를 제공된 실제 뉴스의 사건·기업·정책·거시경제 상황에 연결하세요. 난이도를 높이라는 요청이 아닙니다. 기존 난이도와 프로젝트 목표를 유지하세요.`,
-    "뉴스 소재 문제는 지문에 실제 기업명 또는 사건·정책과 기사 시점을 밝혀 사건→원리→영향을 묻고, 단순 용어 정의에 출처만 붙이지 마세요.",
-    "뉴스 소재 문제의 지문에는 참고한 source의 title을 원문 그대로 짧은 제목으로 넣은 뒤, 그 사건을 적용하는 질문을 이어 쓰세요.",
-    "그 문제의 해설 끝에 정확한 [source_id], source_name, published_at, source_url을 그대로 인용하세요. 예: [N1] 출처명 · 기사 시점 · https://... . 이 출처 표기를 기초 개념 문제에는 붙이지 마세요.",
+    "뉴스 소재 문제는 실제 뉴스 내용을 읽고 사건→원리→영향을 묻도록 하세요. 기업명만 끼운 가상 상황이나 단순 용어 정의에 출처만 붙이지 마세요.",
+    "뉴스 소재 문제의 prompt는 줄바꿈으로 다음 형식을 따르세요: [실제 뉴스 · 자료 기준일 YYYY-MM-DD] / source.title 원문 / 출처: source.source_name / [뉴스 요약] source.summary의 앞 260자를 원문 그대로(짧으면 전체) / [질문] 해당 뉴스 내용을 적용하는 질문. YYYY-MM-DD는 source.published_at의 앞 10자입니다. 슬래시는 줄바꿈을 뜻합니다. 저장된 자료 기준일을 원문 기사의 발행일이라고 단정하지 마세요. prompt는 1200자 이내로 작성하세요.",
+    "그 문제의 해설 끝에 정확한 [source_id], source_name, published_at, source_url을 그대로 인용하세요. 예: [N1] 출처명 · 자료 기준일 · https://... . 사실과 경제적 해석을 구분하고, 이 출처 표기를 기초 개념 문제에는 붙이지 마세요.",
     "자료가 여러 분야이면 국내 반도체·기업, 클라우드·AI, 국제정세·거시경제를 순환하고 같은 기사만 반복하지 마세요. 추가 웹검색이나 자료에 없는 최신 사실을 만들어내지 마세요.",
   ];
   const jlpt = [
