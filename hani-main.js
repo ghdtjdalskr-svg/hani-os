@@ -1158,7 +1158,8 @@ function setImportSyncHold(){
   if(cloudPollTimer){clearInterval(cloudPollTimer);cloudPollTimer=null}
   cloudAutoSyncReady=false;cloudSyncPending=false;
 }
-function releaseImportSyncHold(){
+function releaseImportSyncHold(expectedHold){
+  if(localStorage.getItem(IMPORT_SYNC_HOLD_KEY)!==expectedHold)throw new Error("복원 상태가 변경되어 동기화 보류를 유지합니다.");
   if(!importSyncHold)return;
   localStorage.removeItem(IMPORT_SYNC_HOLD_KEY);
   if(localStorage.getItem(IMPORT_SYNC_HOLD_KEY)!==null)throw new Error("Cloud 기준은 확인했지만 동기화 보류 해제를 저장하지 못했습니다.");
@@ -1166,7 +1167,7 @@ function releaseImportSyncHold(){
 }
 function assertCloudSourceReady({allowImport=false}={}){
   if(loadRecovery.active)throw new Error(lastLoadError);
-  if(importSyncHold&&!allowImport)throw new Error("백업 복원은 이 기기에만 적용됐습니다. '이 기기 Local을 Cloud 기준으로 확정'에서 내용을 확인해야 다른 기기에 반영됩니다.");
+  if((importSyncHold||readImportSyncHold())&&!allowImport)throw new Error("백업 복원은 이 기기에만 적용됐습니다. '이 기기 Local을 Cloud 기준으로 확정'에서 내용을 확인해야 다른 기기에 반영됩니다.");
 }
 function removeProtectedState(){
   if(loadRecovery.active)throw new Error(lastLoadError);
@@ -3938,20 +3939,48 @@ function cloudMergeProtectedMedia(target,source){
   });
   return out;
 }
-function cloudSaveSafetySnapshot(reason,value=state){
-  const payload={savedAt:new Date().toISOString(),reason:String(reason||"cloud-sync"),storageKey:STORAGE_KEY,state:structuredClone(value||{})};
-  let previous=null;
-  try{previous=localStorage.getItem(CLOUD_SAFETY_KEY)}catch(e){}
+// Full snapshots are private to this device. The protected Local key and legacy safety copy are never migrated/deleted.
+let safetyArchiveStatus="아직 새 안전 백업이 없습니다.";
+function safetyArchiveOpen(){
+  return new Promise((resolve,reject)=>{
+    let settled=false;const timer=setTimeout(()=>{settled=true;reject(new Error("백업 보관소 응답 지연"))},5000);
+    const request=indexedDB.open("hani_safety_backups_v1",1);
+    request.onupgradeneeded=()=>{if(!request.result.objectStoreNames.contains("snapshots"))request.result.createObjectStore("snapshots",{keyPath:"id",autoIncrement:true})};
+    request.onerror=request.onblocked=()=>{if(settled)return;settled=true;clearTimeout(timer);reject(new Error("백업 보관소를 열지 못했습니다."))};
+    request.onsuccess=()=>{if(settled){request.result.close();return}settled=true;clearTimeout(timer);request.result.onversionchange=()=>request.result.close();resolve(request.result)};
+  });
+}
+async function safetyArchiveList(){
+  const db=await safetyArchiveOpen();try{return await new Promise((resolve,reject)=>{const tx=db.transaction("snapshots","readonly"),req=tx.objectStore("snapshots").getAll();tx.oncomplete=()=>resolve(req.result||[]);tx.onerror=tx.onabort=()=>reject(new Error("백업 목록을 읽지 못했습니다."))})}finally{db.close()}
+}
+async function safetyArchiveWrite(payload){
+  const serialized=JSON.stringify(payload),db=await safetyArchiveOpen();let id;
   try{
-    const serialized=JSON.stringify(payload);
-    localStorage.setItem(CLOUD_SAFETY_KEY,serialized);
-    if(localStorage.getItem(CLOUD_SAFETY_KEY)!==serialized)throw new Error("safety snapshot read-back mismatch");
-    return true;
-  }catch(e){
-    console.error("Cloud safety snapshot",e);
-    try{if(previous===null)localStorage.removeItem(CLOUD_SAFETY_KEY);else localStorage.setItem(CLOUD_SAFETY_KEY,previous)}catch(_){}
-    return false;
-  }
+    await new Promise((resolve,reject)=>{const tx=db.transaction("snapshots","readwrite"),req=tx.objectStore("snapshots").add({payload,verified:false});req.onsuccess=()=>{id=req.result};tx.oncomplete=resolve;tx.onerror=tx.onabort=()=>reject(new Error("백업 보관 공간이 부족하거나 저장 권한이 없습니다."))});
+    const verified=await new Promise((resolve,reject)=>{const tx=db.transaction("snapshots","readonly"),req=tx.objectStore("snapshots").get(id);tx.oncomplete=()=>resolve(req.result);tx.onerror=tx.onabort=()=>reject(new Error("백업 재읽기에 실패했습니다."))});
+    if(JSON.stringify(verified?.payload)!==serialized)throw new Error("백업 재읽기 값이 일치하지 않습니다.");
+    await new Promise((resolve,reject)=>{const tx=db.transaction("snapshots","readwrite");tx.objectStore("snapshots").put({...verified,verified:true});tx.oncomplete=resolve;tx.onerror=tx.onabort=()=>reject(new Error("백업 확인 표시를 저장하지 못했습니다."))});
+    let retentionApplied=true;
+    await new Promise((resolve,reject)=>{const tx=db.transaction("snapshots","readwrite"),store=tx.objectStore("snapshots"),req=store.getAll();req.onsuccess=()=>{for(const row of req.result.filter(row=>row.verified===true).sort((a,b)=>b.id-a.id).slice(3))store.delete(row.id)};tx.oncomplete=resolve;tx.onerror=tx.onabort=()=>reject(new Error("이전 백업 정리가 보류되었습니다."))}).catch(()=>{retentionApplied=false});
+    return {saved:true,retentionApplied};
+  }finally{db.close()}
+}
+async function renderSafetyArchive(){
+  const list=$("safetyArchiveList"),status=$("safetyArchiveStatus");if(!list)return;
+  if(status)status.textContent=safetyArchiveStatus;
+  try{
+    const rows=(await safetyArchiveList()).filter(row=>row.verified===true).sort((a,b)=>b.id-a.id);
+    list.replaceChildren();for(const row of rows){const button=document.createElement("button");button.type="button";button.className="btn";button.textContent=formatDateTime(row.payload.savedAt)+" · 원본 전체 내려받기";button.onclick=()=>downloadJson(JSON.stringify(row.payload.state,null,2),"HANI_OS_safety_"+row.id+".json");list.append(button)}
+    if(!rows.length)list.textContent="보관된 안전 백업이 없습니다.";
+  }catch(_){list.textContent="백업 보관소를 읽지 못했습니다. 기존 Local과 이전 안전 사본은 유지됩니다."}
+}
+async function cloudSaveSafetySnapshot(reason,value=state){
+  const payload={savedAt:new Date().toISOString(),reason:String(reason||"cloud-sync"),storageKey:STORAGE_KEY,state:structuredClone(value||{})};
+  let archiveOk=false,retentionApplied=false,legacyOk=false,previous=null,legacyRead=false,legacyWritten=false;
+  try{const result=await safetyArchiveWrite(payload);archiveOk=result.saved;retentionApplied=result.retentionApplied}catch(_){}
+  try{previous=localStorage.getItem(CLOUD_SAFETY_KEY);legacyRead=true;const serialized=JSON.stringify(payload);localStorage.setItem(CLOUD_SAFETY_KEY,serialized);legacyWritten=true;if(localStorage.getItem(CLOUD_SAFETY_KEY)!==serialized)throw new Error("Legacy snapshot read-back mismatch");legacyOk=true}catch(_){try{if(legacyRead&&legacyWritten){if(previous!==null)localStorage.setItem(CLOUD_SAFETY_KEY,previous);else localStorage.removeItem(CLOUD_SAFETY_KEY)}}catch(__){}}
+  safetyArchiveStatus=archiveOk?(retentionApplied?"원본 전체 백업을 별도 보관소에 저장하고 재읽기로 확인했습니다. 최근 3개를 유지합니다.":"새 원본 백업을 확인했습니다. 이전 백업 정리가 보류되어 3개를 초과할 수 있습니다."):legacyOk?"별도 보관소를 사용할 수 없어 기존 안전 사본 1개만 보관했습니다. 이력은 늘리지 못했습니다.":"안전 백업을 만들지 못했습니다. 저장 공간·권한을 확인해 주세요. Cloud 반영을 중단합니다.";
+  void renderSafetyArchive();return archiveOk||legacyOk;
 }
 
 function cloudEmergencyResolved(){try{return localStorage.getItem(CLOUD_EMERGENCY_RESOLVED_KEY)==="1"}catch(e){return false}}
@@ -4152,8 +4181,10 @@ async function cloudApplyRemoteRow(remote,remoteHash,{announce=false}={}){
   const serialized=JSON.stringify(candidate);
   let previousRaw=null;
   try{previousRaw=localStorage.getItem(STORAGE_KEY)}catch(e){}
+  if(!await cloudSaveSafetySnapshot(`before_cloud_pull_r${remote?.revision??"unknown"}`,previousState))throw new Error("Cloud 반영 전 안전 스냅샷을 만들지 못해 동기화를 중단했습니다.");
+  assertCloudSourceReady();
+  if(!cloudSame(state,previousState)||localStorage.getItem(STORAGE_KEY)!==previousRaw)throw new Error("백업 중 Local이 변경되어 Cloud 수신을 중단했습니다.");
   try{
-    if(!cloudSaveSafetySnapshot(`before_cloud_pull_r${remote?.revision??"unknown"}`,previousState))throw new Error("Cloud 반영 전 안전 스냅샷을 만들지 못해 동기화를 중단했습니다.");
     cloudApplyingRemote=true;
     writeProtectedState(serialized);
     const verified=localStorage.getItem(STORAGE_KEY);
@@ -4193,6 +4224,7 @@ async function cloudPushLocalRow(remote,localState,localHash,{allowImport=false}
   if(!Number.isFinite(writtenRevision)||writtenRevision!==expectedRevision+1)throw new Error(`Cloud revision 증가 검증 실패: ${expectedRevision} → ${written.revision}. DB revision 트리거를 확인해야 합니다.`);
   const returnedHash=await cloudStateHash(written.state);
   if(returnedHash!==outgoingHash)throw new Error("Cloud 저장 후 반환된 state가 Local과 일치하지 않습니다.");
+  if(!cloudSame(localState,cloudComparableState(state)))throw new Error("Cloud 응답을 기다리는 동안 Local이 변경되었습니다. 새 Local 기록을 유지하며 자동 반영을 중지합니다.");
   if(!cloudSame(outgoing,localState)){const serialized=JSON.stringify(outgoing);writeProtectedState(serialized);if(localStorage.getItem(STORAGE_KEY)!==serialized)throw new Error("Media Guard 병합 후 Local read-back 검증에 실패했습니다.");state=outgoing;renderAll()}
   const now=new Date().toISOString(),meta=cloudSaveSyncMeta(written,outgoingHash,{lastPushAt:now,verifiedAt:now,appliedRevision:writtenRevision});
   cloudSetRuntime("동기화 완료",`Local 변경을 Cloud revision ${writtenRevision}으로 반영했습니다.`,"ok",{revision:writtenRevision,updatedAt:written.updated_at,verifiedAt:meta.verifiedAt,device:written.device||"",sync:"ON",localSummary:cloudSummaryText(outgoing),remoteSummary:cloudSummaryText(written.state)});
@@ -4714,6 +4746,8 @@ async function cloudFirstCopy(){
   if(importSyncHold&&!confirm("복원한 백업을 Cloud 기준으로 확정하여 다른 기기에도 반영할까요?\n기존 Cloud 내용과 revision을 다시 확인하고, 변경 전 원본 보관과 조건부 쓰기 검사를 수행합니다."))return;
   if(!cloudClient||!cloudUser)return alert("먼저 Cloud 로그인을 완료해 주세요.");
   if(!cloudHasMeaningfulLocalData(state))return alert("빈 Local 상태는 Cloud에 업로드할 수 없습니다.");
+  if(cloudSyncBusy||cloudApplyingRemote)return alert("동기화가 진행 중입니다. 완료된 뒤 다시 확인해 주세요.");
+  cloudSyncBusy=true;
   try{
     const remote=await cloudReadRow();
     if(localStorage.getItem(IMPORT_SYNC_HOLD_KEY)!==holdAtStart)throw new Error("처리 중 백업이 복원되어 Cloud 반영을 중단했습니다. 복원 내용을 다시 확인해 주세요.");
@@ -4722,24 +4756,24 @@ async function cloudFirstCopy(){
       const remoteState=cloudComparableState(remote.state),remoteHash=await cloudStateHash(remoteState);
       if(localHash===remoteHash){
         const meta=cloudSaveSyncMeta(remote,remoteHash,{verifiedAt:new Date().toISOString(),appliedRevision:remote.revision});
-        releaseImportSyncHold();cloudAutoSyncReady=true;cloudStartPolling();
+        releaseImportSyncHold(holdAtStart);cloudAutoSyncReady=true;cloudStartPolling();
         cloudSetRuntime("동기화 정상",`이미 Local과 Cloud가 동일합니다. revision ${remote.revision}.`,"ok",{revision:remote.revision,updatedAt:remote.updated_at,verifiedAt:meta.verifiedAt,device:remote.device||"",sync:"ON",localSummary:cloudSummaryText(localState),remoteSummary:cloudSummaryText(remoteState)});
         return;
       }
       if(cloudHasMeaningfulLocalData(remoteState)){
         const localSummary=cloudSummaryText(localState),remoteSummary=cloudSummaryText(remoteState);
         if(!confirm(`현재 이 기기의 Local을 Cloud 기준본으로 확정할까요?\n\n이 기기 Local: ${localSummary}\n현재 Cloud: ${remoteSummary}\nCloud revision: ${remote.revision}\n\n안전 절차\n• 기존 Cloud state를 브라우저 내부 안전 스냅샷으로 먼저 보관합니다.\n• 안전 스냅샷 read-back이 실패하면 Cloud에는 쓰지 않습니다.\n• revision ${remote.revision}이 그대로일 때만 조건부 UPDATE합니다.\n• 저장 후 revision +1과 반환 state hash까지 검증합니다.\n• 현재 Local 데이터는 이 작업으로 삭제하지 않습니다.\n\n이 Local이 최신 기준본이라는 것을 확인한 경우에만 계속하세요.`))return;
-        if(!cloudSaveSafetySnapshot(`before_local_baseline_promote_r${remote.revision}`,remote.state))throw new Error("Cloud 기준본 변경 전 기존 Cloud 안전 스냅샷을 만들지 못해 작업을 중단했습니다.");
+        if(!await cloudSaveSafetySnapshot(`before_local_baseline_promote_r${remote.revision}`,remote.state))throw new Error("Cloud 기준본 변경 전 기존 Cloud 안전 스냅샷을 만들지 못해 작업을 중단했습니다.");
         const written=await cloudPushLocalRow(remote,localState,localHash,{allowImport:true});
-        releaseImportSyncHold();cloudAutoSyncReady=true;cloudStartPolling();
+        releaseImportSyncHold(holdAtStart);cloudAutoSyncReady=true;cloudStartPolling();
         cloudSetRuntime("기준본 확정 완료",`이 기기 Local을 Cloud revision ${written.revision} 기준본으로 확정했습니다. 이제 자동 동기화를 시작합니다.`,"ok",{revision:written.revision,updatedAt:written.updated_at,device:written.device||"",sync:"ON",localSummary:cloudSummaryText(state),remoteSummary:cloudSummaryText(written.state)});
         alert(`이 기기 Local을 Cloud 기준본으로 확정했습니다.\nrevision ${remote.revision} → ${written.revision}\n\n이제 다른 기기에서는 'Cloud를 이 기기 기준으로 적용'을 한 번 실행한 뒤 자동 동기화를 사용하세요.`);
         return;
       }
       if(!confirm(`Cloud row는 있으나 의미 있는 데이터가 없습니다. 현재 Local을 revision ${remote.revision} 위에 조건부로 업로드할까요?\n\n${backupSummary(localState)}`))return;
-      if(!cloudSaveSafetySnapshot(`before_local_baseline_promote_empty_r${remote.revision}`,remote.state))throw new Error("Cloud 기준본 변경 전 안전 스냅샷을 만들지 못해 작업을 중단했습니다.");
+      if(!await cloudSaveSafetySnapshot(`before_local_baseline_promote_empty_r${remote.revision}`,remote.state))throw new Error("Cloud 기준본 변경 전 안전 스냅샷을 만들지 못해 작업을 중단했습니다.");
       const written=await cloudPushLocalRow(remote,localState,localHash,{allowImport:true});
-      releaseImportSyncHold();cloudAutoSyncReady=true;cloudStartPolling();
+      releaseImportSyncHold(holdAtStart);cloudAutoSyncReady=true;cloudStartPolling();
       alert(`Local → Cloud 최초 반영을 완료했습니다. revision ${written.revision}`);
       return;
     }
@@ -4751,15 +4785,17 @@ async function cloudFirstCopy(){
     const written=data?.[0];if(!written)throw new Error("Cloud 최초 생성 결과가 없습니다.");
     const returnedHash=await cloudStateHash(written.state);if(returnedHash!==localHash)throw new Error("Cloud 최초 생성 후 state 검증에 실패했습니다.");
     const now=new Date().toISOString(),meta=cloudSaveSyncMeta(written,localHash,{lastPushAt:now,verifiedAt:now,appliedRevision:written.revision});
-    releaseImportSyncHold();cloudAutoSyncReady=true;cloudStartPolling();
+    releaseImportSyncHold(holdAtStart);cloudAutoSyncReady=true;cloudStartPolling();
     cloudSetRuntime("동기화 완료",`Cloud 최초 기준본을 생성했습니다. revision ${written.revision}.`,"ok",{revision:written.revision,updatedAt:written.updated_at,verifiedAt:meta.verifiedAt,device:written.device||"",sync:"ON",localSummary:cloudSummaryText(localState),remoteSummary:cloudSummaryText(written.state)});
   }catch(e){
     console.error("Cloud first copy",e);cloudStopAutoSync(e?.message||"최초 Cloud 반영에 실패했습니다.","error");alert("Local → Cloud 반영에 실패했습니다.\n"+(e?.message||"오류를 확인해 주세요.")+"\n\nLocal 데이터는 그대로 유지됩니다.");
-  }
+  }finally{cloudSyncBusy=false}
 }
 async function cloudRestoreToLocal(){
   if(loadRecovery.active||importSyncHold)return alert(loadRecovery.active?lastLoadError:"복원한 백업을 확인한 뒤 Cloud 기준으로 확정해 주세요.");
   if(!cloudClient||!cloudUser)return alert("먼저 Cloud 로그인을 완료해 주세요.");
+  if(cloudSyncBusy||cloudApplyingRemote)return alert("동기화가 진행 중입니다. 완료된 뒤 다시 확인해 주세요.");
+  cloudSyncBusy=true;
   try{
     cloudAutoSyncReady=false;if(cloudPollTimer){clearInterval(cloudPollTimer);cloudPollTimer=null}
     const remote=await cloudReadRow();if(!remote?.state)throw new Error("Cloud에 복원할 HANI state가 없습니다.");
@@ -4773,7 +4809,9 @@ async function cloudRestoreToLocal(){
       cloudAutoSyncReady=true;cloudStartPolling();cloudSetRuntime("이미 동일",`현재 Local이 Cloud revision ${remote.revision}과 동일합니다.`,"ok",{...meta,sync:"ON",localSummary:cloudSummaryText(state),remoteSummary:cloudSummaryText(rawRemote)});return;
     }
     if(!confirm(`Cloud revision ${remote.revision}을 이 기기에 직접 복원할까요?\n\n현재 Local: ${cloudSummaryText(previousState)}\nCloud: ${cloudSummaryText(rawRemote)}\n\n• 복원 직전 Local 전체 상태를 브라우저 내부 안전 스냅샷으로 저장합니다.\n• 안전 스냅샷 생성에 실패하면 복원을 실행하지 않습니다.\n• 기존 Local 표지/포스터는 Cloud 값이 비어 있어도 보호합니다.\n• Cloud 원본은 이 작업으로 변경하지 않습니다.`)){cloudSetRuntime("복원 취소","현재 Local을 유지합니다.","warn",{sync:"WAIT"});return}
-    if(!cloudSaveSafetySnapshot(`before_manual_cloud_restore_r${remote.revision}`,previousState))throw new Error("복원 전 안전 스냅샷을 만들지 못해 작업을 중단했습니다.");
+    if(!await cloudSaveSafetySnapshot(`before_manual_cloud_restore_r${remote.revision}`,previousState))throw new Error("복원 전 안전 스냅샷을 만들지 못해 작업을 중단했습니다.");
+    assertCloudSourceReady();
+    if(!cloudSame(state,previousState))throw new Error("백업 중 Local이 변경되어 수동 복원을 중단했습니다.");
     let previousRaw=null;try{previousRaw=localStorage.getItem(STORAGE_KEY)}catch(e){}
     const serialized=JSON.stringify(candidate);
     try{
@@ -4789,6 +4827,7 @@ async function cloudRestoreToLocal(){
       state=previousState;renderAll();throw inner;
     }
   }catch(e){console.error("Cloud restore",e);cloudStopAutoSync(e?.message||"Cloud → Local 복원에 실패했습니다.","error");alert("Cloud → Local 복원에 실패했습니다.\n"+(e?.message||"오류를 확인해 주세요.")+"\n\n기존 Local은 유지됩니다.")}
+  finally{cloudSyncBusy=false}
 }
 async function cloudCompare(){
   if(!cloudClient||!cloudUser)return alert("먼저 Cloud 로그인을 완료해 주세요.");
@@ -5844,6 +5883,7 @@ function validateBackup(raw){
 function backupSummary(d){return `계좌 ${d.accounts?.length||0}개 · 종목 ${(d.instruments||d.assets||[]).length}개 · 거래 ${(d.transactions||d.trades||[]).length}건 · 월간 스냅샷 ${(d.investmentMonthlySnapshots||[]).length+(d.investmentBrokerSnapshots||[]).length}건 · 보조 입출금 ${(d.investmentCashFlows||[]).length}건 · 투자일기 ${(d.investmentJournal||[]).length}건 · 관심종목 ${(d.investmentWatchlist||[]).length}개 · 소비결산 ${(d.ledgerMonths||[]).length}개월 · 소비리뷰 ${(d.spendReviews||[]).length}건 · 책 ${(d.books||[]).length}권 · 시청 ${(d.movies||[]).length}편 · 일기 ${(d.diaries||[]).length}개 · 학기 ${(d.campusSemesters||[]).length}개 · 여행 ${(d.travelTrips||[]).length}회 · 장소 ${(d.travelPlaces||[]).length}곳 · 여행 Wish ${(d.travelWishlist||[]).length}곳 · 자격증 ${(d.certificates||[]).length}개 · Wish ${(d.wishlistItems||[]).length}개`}
 if($("loadRecoveryExport"))$("loadRecoveryExport").onclick=downloadRecoveryOriginal;
 if($("loadRecoveryImport"))$("loadRecoveryImport").onclick=()=>$("importFile").click();
+if($("safetyArchivePanel"))$("safetyArchivePanel").ontoggle=()=>{if($("safetyArchivePanel").open)void renderSafetyArchive()};
 $("exportBtn").onclick=()=>exportData();$("quickBackup").onclick=()=>exportData();$("importBtn").onclick=()=>$("importFile").click();
 $("importFile").onchange=async e=>{
   const file=e.target.files?.[0];if(!file)return;
