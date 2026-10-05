@@ -947,6 +947,10 @@ let cloudSyncPending=false;
 let cloudSyncTimer=null;
 let cloudPollTimer=null;
 let cloudLifecycleBound=false;
+let cloudNetworkRetryPending=false;
+let cloudNetworkRetryAt=0;
+let cloudComparisonEpoch=0;
+let cloudSafetyBackupBusy=false;
 let cloudRecoveryMode=false;
 let cloudAuthSubscription=null;
 let loginGateUnlocked=false;
@@ -1236,6 +1240,7 @@ function bytesLabel(bytes){if(!Number.isFinite(bytes))return "-";if(bytes<1024)r
 function serializedBytes(value){try{return new TextEncoder().encode(value).length}catch(e){return value.length*2}}
 function formatDateTime(value){if(!value)return "-";const d=new Date(value);return Number.isNaN(d.getTime())?"-":d.toLocaleString("ko-KR",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"})}
 function updateStorageStatus(result=lastSaveResult){
+  cloudClearComparison();
   lastSaveResult=result||lastSaveResult;
   const badge=$("saveStateBadge"),label=$("lastSavedLabel");
   if(badge){
@@ -3673,6 +3678,7 @@ function cloudConfig(){
 }
 function cloudMeta(){return cloudLoadJson(CLOUD_META_KEY,{})}
 function cloudSetRuntime(status,message,tone="warn",extra={}){
+  cloudClearComparison();
   cloudRuntime={...cloudRuntime,...extra,status,message,tone};
   renderCloudPanel();
   dataHubAuditSource();
@@ -4170,6 +4176,7 @@ async function cloudReadRow(){
 }
 function cloudStopAutoSync(message="",tone="warn"){
   cloudAutoSyncReady=false;
+  cloudNetworkRetryPending=false;
   if(cloudPollTimer){clearInterval(cloudPollTimer);cloudPollTimer=null}
   if(message)cloudSetRuntime("동기화 중지",message,tone,{sync:"STOP"});
   else renderCloudPanel();
@@ -4246,6 +4253,7 @@ async function cloudPushLocalRow(remote,localState,localHash,{allowImport=false,
   return written;
 }
 function cloudSyncDecision({hasBaseline,localMeaningful,remoteMeaningful,localHash,remoteHash,baselineHash,appliedRevision,remoteRevision}){
+  if(remoteMeaningful&&(!Number.isSafeInteger(remoteRevision)||remoteRevision<0))return {action:"stop",reason:"Cloud revision을 확인할 수 없어 자동 반영을 중단했습니다."};
   if(!remoteMeaningful){
     if(!localMeaningful)return {action:"idle-empty",reason:"Local과 Cloud 모두 비어 있습니다."};
     return {action:"stop",reason:"Cloud 실데이터가 비어 있습니다. Local을 자동 업로드하지 않습니다."};
@@ -4294,16 +4302,30 @@ function cloudSyncSelfTest(){
 function cloudShouldFetchFullState(reason,remoteMeta,localMeta=cloudMeta()){
   // Frequent lifecycle checks stay metadata-only while the verified revision is unchanged.
   if(!["poll","focus","visible"].includes(reason))return true;
-  const appliedRevision=Number(localMeta?.appliedRevision),remoteRevision=Number(remoteMeta?.revision);
+  const appliedRevision=cloudRevisionNumber(localMeta?.appliedRevision),remoteRevision=cloudRevisionNumber(remoteMeta?.revision);
   const hasVerifiedBaseline=localMeta?.syncEngine===CLOUD_SYNC_ENGINE&&localMeta?.hashSchema===CLOUD_HASH_SCHEMA&&!!localMeta?.lastSyncedHash&&Number.isFinite(appliedRevision);
   if(!hasVerifiedBaseline||!remoteMeta||!Number.isFinite(remoteRevision))return true;
   return remoteRevision!==appliedRevision;
+}
+function cloudRevisionNumber(value){
+  if(value===null||value===undefined||value===""||typeof value==="boolean")return NaN;
+  const revision=Number(value);return Number.isSafeInteger(revision)&&revision>=0?revision:NaN;
+}
+function cloudIsNetworkFailure(error){
+  return navigator.onLine===false||/failed to fetch|fetch failed|networkerror|network request failed|load failed|err_network|err_internet_disconnected/i.test(String(error?.message||error||""));
+}
+function cloudRetryAfterNetwork(reason){
+  if(!cloudNetworkRetryPending||!cloudUser||cloudRecoveryMode||loadRecovery.active||importSyncHold||cloudSyncBusy||navigator.onLine===false)return;
+  if(Date.now()-cloudNetworkRetryAt<5000)return;
+  cloudNetworkRetryPending=false;cloudNetworkRetryAt=Date.now();
+  void cloudSyncCycle("network-"+reason);
 }
 async function cloudSyncCycle(reason="manual"){
   if(loadRecovery.active||importSyncHold){cloudStopAutoSync(loadRecovery.active?lastLoadError:"복원한 백업은 이 기기에만 보관 중입니다. Cloud 반영은 별도 확인이 필요합니다.","warn");return}
   if(!cloudClient||!cloudUser)return;
   if(cloudSyncBusy){cloudSyncPending=true;return}
   cloudSyncBusy=true;
+  cloudNetworkRetryPending=false;
   try{
     if(!cloudSyncSelfTest())throw new Error("Sync Core 자체 검증에 실패해 자동 동기화를 시작하지 않았습니다.");
     if(["poll","focus","visible"].includes(reason)){
@@ -4323,8 +4345,8 @@ async function cloudSyncCycle(reason="manual"){
     const [localHash,remoteHash]=await Promise.all([cloudStateHash(localState),cloudStateHash(remoteState)]);
     const meta=cloudMeta(),remoteMeaningful=cloudHasMeaningfulLocalData(remoteState);
     const baselineHash=String(meta.lastSyncedHash||"");
-    const appliedRevision=Number(meta.appliedRevision);
-    const remoteRevision=Number(remote.revision);
+    const appliedRevision=cloudRevisionNumber(meta.appliedRevision);
+    const remoteRevision=cloudRevisionNumber(remote.revision);
     const hasBaseline=meta.syncEngine===CLOUD_SYNC_ENGINE&&meta.hashSchema===CLOUD_HASH_SCHEMA&&!!baselineHash&&Number.isFinite(appliedRevision);
     cloudRuntime={...cloudRuntime,revision:remote.revision,updatedAt:remote.updated_at,device:remote.device||"",localSummary:cloudSummaryText(localState),remoteSummary:cloudSummaryText(remoteState)};
     const decision=cloudSyncDecision({hasBaseline,localMeaningful,remoteMeaningful,localHash,remoteHash,baselineHash,appliedRevision:Number.isFinite(appliedRevision)?appliedRevision:-1,remoteRevision:Number.isFinite(remoteRevision)?remoteRevision:-1});
@@ -4347,6 +4369,10 @@ async function cloudSyncCycle(reason="manual"){
     cloudAutoSyncReady=false;cloudStopAutoSync(decision.reason||"자동 동기화를 안전하게 진행할 수 없어 중단했습니다.","warn");
   }catch(e){
     console.error("Cloud sync",reason,e);cloudAutoSyncReady=false;cloudStopAutoSync(e?.message||"Cloud 동기화 중 오류가 발생했습니다.","error");
+    if(cloudIsNetworkFailure(e)){
+      cloudNetworkRetryPending=true;
+      cloudSetRuntime("연결 확인 필요","이 기기의 기록은 그대로 보관 중입니다. 연결이 돌아오면 원본과 Cloud 기준을 다시 확인합니다. 직접 다시 확인하려면 ‘지금 동기화’를 눌러 주세요.","warn",{sync:"OFFLINE"});
+    }
   }finally{
     cloudSyncBusy=false;if(cloudSyncPending){cloudSyncPending=false;setTimeout(()=>cloudSyncCycle("queued"),120)}
   }
@@ -4355,8 +4381,9 @@ async function cloudSyncCycle(reason="manual"){
 function cloudBindLifecycle(){
   if(cloudLifecycleBound)return;
   cloudLifecycleBound=true;
-  window.addEventListener("focus",()=>{if(cloudUser&&cloudAutoSyncReady)cloudSyncCycle("focus")});
-  document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&cloudUser&&cloudAutoSyncReady)cloudSyncCycle("visible")});
+  window.addEventListener("focus",()=>{if(cloudUser&&cloudAutoSyncReady)cloudSyncCycle("focus");else cloudRetryAfterNetwork("focus")});
+  document.addEventListener("visibilitychange",()=>{if(document.visibilityState!=="visible")return;if(cloudUser&&cloudAutoSyncReady)cloudSyncCycle("visible");else cloudRetryAfterNetwork("visible")});
+  window.addEventListener("online",()=>cloudRetryAfterNetwork("online"));
 }
 
 function cloudCreateOwnerBindingGate({getContext, getSource, verifyUser, readOwnedSource, comparable, onInvalidate = () => {}}) {
@@ -4582,8 +4609,15 @@ function renderCloudPanel(){
   }
   if(head)head.textContent=cloudUser?(cloudAutoSyncReady?"CLOUD · SYNC":"CLOUD · LOGIN"):"CLOUD · READY";
   if(msg)msg.textContent=cloudRuntime.message||"";
+  const differencePanel=$("cloudDifferencePanel");
+  if(differencePanel?.dataset.owner&&differencePanel.dataset.owner!==cloudUser?.id){
+    cloudComparisonEpoch++;differencePanel.hidden=true;delete differencePanel.dataset.owner;
+    $("cloudDifferenceSummary")?.replaceChildren();$("cloudDifferenceList")?.replaceChildren();
+  }
   const conflictAction=$("cloudConflictAction"),isConflict=cloudRuntime.sync==="STOP"&&/Local과 Cloud가 모두 변경|양쪽.*변경/.test(cloudRuntime.message||"");
-  if(conflictAction){conflictAction.hidden=!isConflict;conflictAction.onclick=()=>{$("cloudAdvanced")?.setAttribute("open","");$("cloudCompare")?.scrollIntoView({behavior:"smooth",block:"center"})}}
+  if(conflictAction){conflictAction.hidden=!cloudUser||(!isConflict&&!["STOP","CHECK","WAIT"].includes(cloudRuntime.sync));conflictAction.onclick=cloudCompare}
+  const restoreGuide=$("cloudRestoreGuide");
+  if(restoreGuide)restoreGuide.textContent=!cloudUser?"로그인 후 Cloud 기록을 확인할 수 있습니다. 이 기기의 기록은 유지됩니다.":cloudHasMeaningfulLocalData(state)?"이 기기에 기록이 있습니다. 차이를 확인한 뒤 어느 쪽을 적용할지 선택해 주세요. 복원 전에는 현재 원본을 안전 백업합니다.":"새 기기에서는 로그인 후 Cloud 기록을 안전하게 가져옵니다. 복원이 멈췄다면 ‘차이 확인’으로 원인을 확인해 주세요.";
   if(grid){
     const meta=cloudMeta();
     const rows=[
@@ -4844,31 +4878,59 @@ async function cloudRestoreToLocal(){
   }catch(e){console.error("Cloud restore",e);cloudStopAutoSync(e?.message||"Cloud → Local 복원에 실패했습니다.","error");alert("Cloud → Local 복원에 실패했습니다.\n"+(e?.message||"오류를 확인해 주세요.")+"\n\n기존 Local은 유지됩니다.")}
   finally{cloudSyncBusy=false}
 }
+function cloudClearComparison(){
+  cloudComparisonEpoch++;
+  const panel=$("cloudDifferencePanel");if(panel){panel.hidden=true;delete panel.dataset.owner}
+  $("cloudDifferenceSummary")?.replaceChildren();$("cloudDifferenceList")?.replaceChildren();
+}
 async function cloudCompare(){
   if(!cloudClient||!cloudUser)return alert("먼저 Cloud 로그인을 완료해 주세요.");
+  const epoch=++cloudComparisonEpoch,owner=cloudUser.id;
+  const panel=$("cloudDifferencePanel"),summary=$("cloudDifferenceSummary"),list=$("cloudDifferenceList");
+  if(panel){panel.hidden=false;panel.dataset.owner=owner}
+  if(summary)summary.textContent="Cloud 원본을 읽어 비교 중입니다. 기록은 변경하지 않습니다.";
+  if(list)list.replaceChildren();
   try{
-    cloudSetRuntime("비교 중","Cloud 상태를 읽어 현재 로컬 상태와 비교하고 있습니다.","warn");
-    const {data,error}=await cloudClient.from("hani_state").select("state,revision,updated_at,device").eq("user_id",cloudUser.id).limit(1);
+    const {data,error}=await cloudClient.from("hani_state").select("state,revision,updated_at,device").eq("user_id",owner).limit(1);
     if(error)throw error;
     const remote=data?.[0];
+    if(epoch!==cloudComparisonEpoch||cloudUser?.id!==owner)return;
     if(!remote)throw new Error("Cloud에 저장된 HANI state가 없습니다.");
     const localComparable=cloudComparableState(state),remoteComparable=cloudComparableState(remote.state);
     const [localHash,remoteHash]=await Promise.all([cloudStateHash(localComparable),cloudStateHash(remoteComparable)]);
+    if(epoch!==cloudComparisonEpoch||cloudUser?.id!==owner)return;
+    if(!cloudSame(localComparable,cloudComparableState(state)))throw new Error("비교 중 이 기기의 기록이 변경됐습니다. 다시 확인해 주세요.");
     const same=localHash===remoteHash;
-    const checkedAt=new Date().toISOString();
-    if(same){
-      const meta=cloudSaveSyncMeta(remote,remoteHash,{verifiedAt:checkedAt});
-      cloudAutoSyncReady=true;
-      cloudStartPolling();
-      cloudSetRuntime("동일",`Local과 Cloud 실데이터가 동일합니다. revision ${remote.revision}. 자동 동기화 기준을 갱신했습니다.`,"ok",{revision:remote.revision,updatedAt:remote.updated_at,verifiedAt:meta.verifiedAt,device:remote.device||"",sync:"ON"});
-    }else{
-      cloudSetRuntime("차이 발견",`Local과 Cloud에 차이가 있습니다. 자동으로 덮어쓰지 않습니다. revision ${remote.revision}.`,"warn",{revision:remote.revision,updatedAt:remote.updated_at,verifiedAt:cloudRuntime.verifiedAt,device:remote.device||"",sync:"CHECK"});
+    const meta=cloudMeta(),appliedRevision=cloudRevisionNumber(meta.appliedRevision);
+    const decision=cloudSyncDecision({hasBaseline:meta.syncEngine===CLOUD_SYNC_ENGINE&&meta.hashSchema===CLOUD_HASH_SCHEMA&&!!meta.lastSyncedHash&&Number.isFinite(appliedRevision),localMeaningful:cloudHasMeaningfulLocalData(localComparable),remoteMeaningful:cloudHasMeaningfulLocalData(remoteComparable),localHash,remoteHash,baselineHash:meta.lastSyncedHash||"",appliedRevision,remoteRevision:cloudRevisionNumber(remote.revision)});
+    const held=loadRecovery.active||importSyncHold||cloudRecoveryMode;
+    const assessment={establish:"동기화 기준을 확인할 수 있는 상태입니다.",pull:"Cloud 내용을 이 기기에 가져올 수 있는 후보입니다.",push:"이 기기의 변경만 확인된 상태입니다.","idle-empty":"양쪽에 생활 기록이 없습니다."}[decision.action]||decision.reason;
+    if(summary)summary.textContent=(held?"복구 확인 중이므로 자동 반영은 보류합니다. ":"")+(same?"생활 기록이 동일합니다. ":"생활 기록에 차이가 있습니다. ")+assessment+" 비교만 수행했으며 기록과 동기화 기준은 변경하지 않았습니다.";
+    const labels={transactions:"가계부 거래",ledgerMonths:"월별 가계부",investmentBrokerSnapshots:"투자 계좌",investmentMonthlySnapshots:"월별 투자",investmentCashFlows:"투자 입출금",investmentJournal:"투자 기록",body:"체중·신체",exercise:"운동",cardio:"유산소",strength:"근력",books:"독서",movies:"시청",tasks:"할 일",diaries:"일기",goalRegistry:"목표 이력",monthlyReports:"월간 보고",learningQuizzes:"공부 퀴즈",learningProjects:"공부 프로젝트",learningWrongAnswers:"오답",travelTrips:"여행",travelPlaces:"장소",travelWishlist:"여행 희망",profile:"프로필",accounts:"계좌 설정",goals:"기존 목표",pageNotes:"메모"};
+    const local=cloudSyncFingerprintState(localComparable),cloud=cloudSyncFingerprintState(remoteComparable);
+    for(const key of new Set([...Object.keys(local),...Object.keys(cloud)])){
+      if(cloudSame(local[key],cloud[key]))continue;
+      const item=document.createElement("li");
+      const counts=Array.isArray(local[key])||Array.isArray(cloud[key])?` · 이 기기 ${Array.isArray(local[key])?local[key].length:0}건 / Cloud ${Array.isArray(cloud[key])?cloud[key].length:0}건`:" · 내용 차이";
+      item.textContent=(labels[key]||"기타 저장 항목")+counts;list?.append(item);
     }
-    alert(same?`Local ↔ Cloud 비교 완료\n실데이터 기준 두 상태가 동일합니다.\nrevision: ${remote.revision}`:`Local ↔ Cloud 비교 결과: 차이가 있습니다.\n\n자동으로 어느 쪽도 덮어쓰지 않습니다.\n• 이 기기가 최신이면: '이 기기 Local을 Cloud 기준으로 확정'\n• Cloud가 최신이면: 'Cloud를 이 기기 기준으로 적용'\n\n기준을 한 번 확정하면 이후부터 revision 기반 자동 동기화가 동작합니다.`);
+    panel?.scrollIntoView({behavior:"smooth",block:"nearest"});
   }catch(e){
     console.error("Cloud compare",e);
-    cloudSetRuntime("비교 실패",e?.message||"Cloud 비교에 실패했습니다.","error");
+    if(epoch===cloudComparisonEpoch&&cloudUser?.id===owner&&summary)summary.textContent="비교하지 못했습니다. "+(e?.message||"연결을 확인해 주세요.")+" 이 기기와 Cloud 기록은 변경하지 않았습니다.";
   }
+}
+async function cloudCreateManualSafetyBackup(){
+  if(cloudSafetyBackupBusy)return;
+  const button=$("cloudCreateSafetyBackup");cloudSafetyBackupBusy=true;if(button)button.disabled=true;
+  try{
+    assertCloudSourceReady();
+    const original=structuredClone(state);
+    if(!await cloudSaveSafetySnapshot("manual_full_backup",original))throw new Error("안전 백업을 저장하지 못했습니다.");
+    $("safetyArchivePanel")?.setAttribute("open","");
+    await renderSafetyArchive();toast("현재 원본을 안전 백업하고 재읽기로 확인했습니다.");
+  }catch(error){safetyArchiveStatus=error?.message||"안전 백업을 만들지 못했습니다.";await renderSafetyArchive()}
+  finally{cloudSafetyBackupBusy=false;if(button)button.disabled=false}
 }
 async function cloudManualSync(){
   if(!cloudClient||!cloudUser)return alert("먼저 Cloud 로그인을 완료해 주세요.");
@@ -4894,6 +4956,7 @@ function bindCloudBridgeControls(){
   if($("cloudFirstCopy"))$("cloudFirstCopy").onclick=cloudFirstCopy;
   if($("cloudRestore"))$("cloudRestore").onclick=cloudRestoreToLocal;
   if($("cloudCompare"))$("cloudCompare").onclick=cloudCompare;
+  if($("cloudCreateSafetyBackup"))$("cloudCreateSafetyBackup").onclick=cloudCreateManualSafetyBackup;
 }
 
 let dataHubLibraryTab="overview";

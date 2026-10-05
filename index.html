@@ -1030,6 +1030,14 @@
   <div class="cloud-status-grid" id="cloudStatusGrid"></div>
   <div class="cloud-message" id="cloudMessage">Cloud 연결 상태를 확인하고 있습니다.</div>
   <button class="btn cloud-conflict-action" id="cloudConflictAction" type="button" hidden>차이 확인</button>
+  <p class="sub" id="cloudRestoreGuide"></p>
+  <section id="cloudDifferencePanel" aria-labelledby="cloudDifferenceTitle" hidden>
+    <h4 id="cloudDifferenceTitle">이 기기와 Cloud 차이</h4>
+    <p class="sub" id="cloudDifferenceSummary" role="status" aria-live="polite"></p>
+    <ul id="cloudDifferenceList"></ul>
+    <p class="sub">건수가 같아도 내용이 다를 수 있습니다. 양쪽에 필요한 기록이 있다면 먼저 각각 백업해 주세요. 고급 복구 도구의 원본 선택은 한쪽 전체를 적용하는 작업입니다.</p>
+  </section>
+  <div class="actions"><button class="btn" id="cloudCreateSafetyBackup" type="button">현재 원본 안전 백업</button></div>
 
   <details class="cloud-advanced" id="cloudAdvanced">
     <summary>고급 설정 · 복구 도구</summary>
