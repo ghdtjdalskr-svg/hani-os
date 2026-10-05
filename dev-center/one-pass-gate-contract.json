@@ -1,5 +1,5 @@
 {
-  "contract_version": "2.0.5",
+  "contract_version": "2.0.6",
   "package_format": "HANI_ONE_PASS_RELEASE_V2",
   "entrypoints": ["index.html"],
   "limits": { "max_files": 92, "max_total_bytes": 16400000, "max_single_file_bytes": 5000000 },

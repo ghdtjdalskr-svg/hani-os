@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import vm from "node:vm";
+import { evaluateProtectedWriteContract } from "./hani-protected-write-contract.mjs";
 import { collectReferences } from "./hani-runtime-closure.mjs";
 
 export const sha256 = value => createHash("sha256").update(value).digest("hex");
@@ -18,7 +19,7 @@ export function versionSnapshot(text) {
 export function semverGreater(a,b){const x=String(a).split(".").map(Number),y=String(b).split(".").map(Number);if(x.length!==3||y.length!==3||[...x,...y].some(Number.isNaN))return false;for(let i=0;i<3;i++){if(x[i]>y[i])return true;if(x[i]<y[i])return false;}return false;}
 export function duplicateIds(html){const counts=new Map();for(const m of html.matchAll(/\bid=["']([^"']+)["']/g))counts.set(m[1],(counts.get(m[1])||0)+1);return [...counts].filter(([,n])=>n>1).map(([id])=>id).sort();}
 export function protectedSurface(text, contract){const count=rx=>[...text.matchAll(rx)].length;return {storage_key:(text.match(/const\s+STORAGE_KEY\s*=\s*["']([^"']+)/)||[])[1]||"",internal_version:(text.match(/const\s+VERSION\s*=\s*["']([^"']+)/)||[])[1]||"",storage_writes:count(/localStorage\.setItem\(STORAGE_KEY/g),storage_removes:count(/localStorage\.removeItem\(STORAGE_KEY/g),storage_clears:count(/localStorage\.clear\s*\(/g),cloud_writes:count(/\.from\(["']hani_state["']\)[\s\S]{0,160}?\.(?:insert|update|delete|upsert)\s*\(/g),required_storage_key:contract.required_storage_key,required_internal_version:contract.required_internal_version};}
-export function evaluatePackage({pkg,baseFiles,productionVersion,contract,baselineOnly=false}){
+export function evaluatePackage({pkg,baseFiles,productionVersion,contract,baselineOnly=false,protectedApproval=null}){
   const checks=[];const add=(id,ok,detail,manual=false)=>checks.push({id,status:manual?"MANUAL":ok?"PASS":"BLOCKED",detail});
   const paths=pkg.files.map(f=>f.path), allowed=contract.allowed_paths.map(x=>new RegExp(x,"i"));
   const hash=canonicalPackageHash(pkg.files), map=new Map(pkg.files.map(f=>[f.path,f.encoding==="base64"?Buffer.from(f.content,"base64").toString("utf8"):String(f.content)]));
@@ -35,10 +36,21 @@ export function evaluatePackage({pkg,baseFiles,productionVersion,contract,baseli
   add("version_forward",baselineOnly?candidate===productionVersion:semverGreater(candidate,productionVersion),baselineOnly?`production baseline v${productionVersion}`:`candidate v${candidate} > production v${productionVersion}`);
   const audit=[...runtime.matchAll(/\bui_version\s*:\s*["'](\d+\.\d+\.\d+)["']/g)].map(m=>m[1]);add("runtime_audit_version",audit.every(v=>v===candidate),audit.length?`audit literals: ${[...new Set(audit)].join(", ")}`:"runtime uses HANI_DISPLAY_VERSION dynamically");
   add("protected_invariants",runtime.includes(contract.required_storage_key)&&runtime.includes(contract.required_internal_version),"protected key and internal version present");
-  const current=protectedSurface(runtime,contract),base=protectedSurface(baseFiles,contract);add("protected_write_surface",JSON.stringify(current)===JSON.stringify(base),"protected local/cloud write surface unchanged");
+  const current=protectedSurface(runtime,contract),base=protectedSurface(baseFiles,contract);let reviewed={ok:false,reason:"Unchanged surface required by default"};
+  if(JSON.stringify(current)!==JSON.stringify(base)&&protectedApproval){
+    const evidenceText=protectedApproval.evidenceText||"";
+    try{reviewed=evaluateProtectedWriteContract({policy:protectedApproval.policy,evidence:JSON.parse(evidenceText),evidenceHash:sha256(evidenceText),baselineSha:pkg.base_main_sha,candidateSha:pkg.candidate_sha,runtimeHash:sha256(modularRuntimeText(map)),baselineRuntimeHash:sha256(protectedApproval.baselineRuntimeText||""),packageHash:hash.package_sha256,now:Date.now(),surface:{storage_key:current.storage_key,internal_version:current.internal_version,writes:current.storage_writes,removes:current.storage_removes,clears:current.storage_clears,cloud_calls:[...runtime.matchAll(/\.from\(["']hani_state["']\)/g)].length}})}catch(_){reviewed={ok:false,reason:"Malformed evidence"}}
+    add("protected_preservation_contract",reviewed.ok,reviewed.reason);
+  }
+  add("protected_write_surface",JSON.stringify(current)===JSON.stringify(base)||reviewed.ok,reviewed.ok?reviewed.reason:"protected local/cloud write surface unchanged");
   const baseDup=new Set(duplicateIds(baseFiles)),newDup=duplicateIds(html).filter(x=>!baseDup.has(x));add("duplicate_dom",newDup.length===0,newDup.length?newDup.join(", "):"no new duplicate DOM IDs");
   add("secret_scan",contract.secret_patterns.every(x=>!new RegExp(x).test(runtime)),"no blocked secret pattern");
   add("ui_anchors",contract.required_ui_anchors.every(id=>new RegExp(`id=["']${id}["']`).test(html)),"core UI anchors present");
   add("pc_mobile_smoke",false,"browser interaction remains representative manual Preview",true);
   return {checks,ok:checks.every(c=>c.status!=="BLOCKED"),hash,candidate_version:candidate};
+}
+
+export function modularRuntimeText(map){
+ const html=map.get("index.html")||"",refs=kind=>[...html.matchAll(kind==='style'?/<link\b[^>]*href=["']([^"']+)["'][^>]*>/gi:/<script\b[^>]*src=["']([^"']+)["'][^>]*>/gi)].map(m=>m[1]).filter(x=>!/^https?:|^\/\//i.test(x)).map(x=>x.replace(/^\.\//,'').split(/[?#]/)[0]).filter(x=>kind==='style'?/\.css$/i.test(x):/\.js$/i.test(x));
+ return [html,...refs('style').map(p=>map.get(p)||""),...refs('script').map(p=>map.get(p)||"")].join("\n/* HANI MODULAR RUNTIME BOUNDARY */\n");
 }

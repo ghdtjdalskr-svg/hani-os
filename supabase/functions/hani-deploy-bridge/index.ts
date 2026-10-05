@@ -14,6 +14,13 @@
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { resolveRuntimeClosure, isTextArtifact } from "./runtime-closure.ts";
+// Server-only authorization. Never derive the allowlist from request/user metadata.
+function ownerAccess(user: { id?: string } | null, configuredId: string | undefined) {
+  const allowedId = (configuredId || "").trim();
+  if (!allowedId) return { ok: false, status: 503, error: "OWNER_ACCESS_NOT_CONFIGURED" };
+  if (!user?.id || user.id !== allowedId) return { ok: false, status: 403, error: "OWNER_ACCESS_DENIED" };
+  return { ok: true, status: 200, error: "" };
+}
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -31,8 +38,8 @@ const MAX_RELEASE_FILES = 92;
 const MAX_RELEASE_TOTAL_BYTES = 16_400_000;
 const MAX_RELEASE_SINGLE_FILE_BYTES = 5_000_000;
 const MODULAR_QA_PROFILE = "HINA_RELEASE_GATE_v0.2_MULTI_FILE";
-const GATE_CONTRACT_VERSION = "2.0.5";
-const GATE_CONTRACT_SHA256 = "a12771c046cd2e6dc6f6e9ea623ae02ff614f7649f135a796e2fd4a349841091";
+const GATE_CONTRACT_VERSION = "2.0.6";
+const GATE_CONTRACT_SHA256 = "a83b5e5c7e2962bdb36f48d33fd46561cbeeaf70d073c1d543436ddb1c478f2e";
 const LEGACY_MODULAR_EXTRAS_BY_PACKAGE: Record<string, string[]> = {
   "afb69591840e54938b2c65c292769197ec0fba9043bd3eb2d5d93f776368ee51": ["hani-ui-v02977.js"],
 };
@@ -250,6 +257,34 @@ function duplicateIds(html: string): string[] {
   return [...counts.entries()].filter(([, count]) => count > 1).map(([id]) => id).sort();
 }
 
+// HANI_PROTECTED_CONTRACT_START
+function evaluateProtectedWriteContract(input: any) {
+  const deny = reason => ({ ok: false, reason });
+  try {
+    const { policy, evidence, evidenceHash, baselineSha, candidateSha, runtimeHash, baselineRuntimeHash, packageHash, surface, now } = input;
+    const sha = value => typeof value === "string" && /^[0-9a-f]{64}$/.test(value);
+    const commit = value => typeof value === "string" && /^[0-9a-f]{40}$/.test(value);
+    if (!policy || policy.version !== 1 || policy.approval !== "OWNER_REVIEWED" || !policy.approval_id) return deny("No reviewed server policy");
+    if (!commit(policy.base_sha) || !commit(policy.source_candidate_sha) || policy.base_sha === policy.source_candidate_sha) return deny("Invalid frozen commit identity");
+    if (![policy.runtime_sha256, policy.baseline_runtime_sha256, policy.package_sha256, policy.evidence_sha256].every(sha)) return deny("Invalid frozen hashes");
+    if (!Number.isFinite(Date.parse(policy.expires_at)) || Date.parse(policy.expires_at) <= now) return deny("Approval expired");
+    if (baselineSha !== policy.base_sha || (candidateSha && candidateSha !== policy.source_candidate_sha)) return deny("Commit drift");
+    if (runtimeHash !== policy.runtime_sha256 || baselineRuntimeHash !== policy.baseline_runtime_sha256 || packageHash !== policy.package_sha256) return deny("Source or package drift");
+    if (!evidence || evidenceHash !== policy.evidence_sha256 || evidence.version !== 1 || evidence.status !== "PASS") return deny("Evidence absent or changed");
+    if (evidence.base_sha !== policy.base_sha || evidence.candidate_sha !== policy.source_candidate_sha || evidence.runtime_sha256 !== runtimeHash || evidence.baseline_runtime_sha256 !== baselineRuntimeHash || evidence.package_sha256 !== packageHash) return deny("Evidence identity drift");
+    const minimum = { protected_runtime: 28, backup_runtime: 11, access_ui: 6, transaction_runtime: 1, owner_handlers: 2, storage_gate_negative: 19 };
+    if (!Array.isArray(evidence.tests)) return deny("Missing execution matrix");
+    for (const [id, count] of Object.entries(minimum)) {
+      const rows = evidence.tests.filter(row => row.id === id);
+      if (rows.length !== 1 || rows[0].status !== "PASS" || !Number.isInteger(rows[0].cases) || rows[0].cases < count || !sha(rows[0].test_sha256) || !sha(rows[0].output_sha256)) return deny("Incomplete execution: " + id);
+    }
+    if (surface.storage_key !== "hani_os_life_v23" || surface.internal_version !== "2.9.15-safe-baseline-bootstrap" || surface.writes !== 2 || surface.removes !== 1 || surface.clears !== 0 || surface.cloud_calls !== 6) return deny("Protected contract changed");
+    return { ok: true, reason: "Reviewed exact source/package and complete preservation evidence", approval_id: policy.approval_id };
+  } catch (_) { return deny("Malformed approval or evidence"); }
+}
+
+// HANI_PROTECTED_CONTRACT_END
+
 function protectedSurface(html: string) {
   return {
     storageDeclaration: firstMatch(html, /const\s+STORAGE_KEY\s*=\s*["']([^"']+)["']/),
@@ -369,7 +404,7 @@ async function listOpenPullRequests(token: string) {
   return await githubFetch(`/repos/${GITHUB_OWNER}/${GITHUB_REPO}/pulls?state=open&base=${encodeURIComponent(BASE_BRANCH)}&per_page=50`, token);
 }
 
-async function runHinaReleaseQa(html: string, githubToken: string, expectedMainSha = "", options: { ignorePrNumber?: number; mainTextOverride?: string; qaProfile?: string } = {}) {
+async function runHinaReleaseQa(html: string, githubToken: string, expectedMainSha = "", options: { ignorePrNumber?: number; mainTextOverride?: string; qaProfile?: string; protectedPackageHash?: string } = {}) {
   const checks: QaCheck[] = [];
   const basic = validateHtml(html);
   qaCheck(checks, "BASIC_INVARIANTS", "기본 불변조건", basic.ok, basic.ok ? "필수 HTML/스토리지/내부 버전 조건 유지" : basic.issues.join(" | "));
@@ -402,7 +437,16 @@ async function runHinaReleaseQa(html: string, githubToken: string, expectedMainS
   qaCheck(checks, "STORAGE_KEY_DECLARATION", "핵심 Storage Key", candidateProtected.storageDeclaration === REQUIRED_STORAGE_KEY, `STORAGE_KEY=${candidateProtected.storageDeclaration || "미확인"}`);
   qaCheck(checks, "INTERNAL_VERSION_DECLARATION", "내부 데이터 버전", candidateProtected.internalVersionDeclaration === REQUIRED_INTERNAL_VERSION, `VERSION=${candidateProtected.internalVersionDeclaration || "미확인"}`);
   const protectedCountsSame = candidateProtected.haniStateCalls === mainProtected.haniStateCalls && candidateProtected.storageWrites === mainProtected.storageWrites && candidateProtected.storageRemoves === mainProtected.storageRemoves;
-  qaCheck(checks, "PROTECTED_WRITE_SURFACE", "핵심 데이터 쓰기 표면", protectedCountsSame,
+  let preservationApproval: any = { ok: false, reason: "Default unchanged-surface gate" };
+  if (!protectedCountsSame && options.qaProfile === MODULAR_QA_PROFILE && options.protectedPackageHash) {
+    try {
+      const policy = JSON.parse(Deno.env.get("HANI_PROTECTED_WRITE_APPROVAL") || "null");
+      const evidenceText = Deno.env.get("HANI_PROTECTED_WRITE_EVIDENCE") || "";
+      preservationApproval = evaluateProtectedWriteContract({policy,evidence:JSON.parse(evidenceText),evidenceHash:await sha256Hex(evidenceText),baselineSha:mainSha,candidateSha:"",runtimeHash:candidateHash,baselineRuntimeHash:mainHash,packageHash:options.protectedPackageHash,now:Date.now(),surface:{storage_key:candidateProtected.storageDeclaration,internal_version:candidateProtected.internalVersionDeclaration,writes:candidateProtected.storageWrites,removes:candidateProtected.storageRemoves,clears:countMatches(html,/localStorage\.clear\s*\(/g),cloud_calls:candidateProtected.haniStateCalls}});
+    } catch (_) { preservationApproval = { ok:false,reason:"Approval/evidence not configured or invalid" }; }
+    qaCheck(checks,"PROTECTED_PRESERVATION_CONTRACT","승인된 원본 보존 계약",preservationApproval.ok,preservationApproval.reason);
+  }
+  qaCheck(checks, "PROTECTED_WRITE_SURFACE", "핵심 데이터 쓰기 표면", protectedCountsSame || preservationApproval.ok,
     `hani_state ${mainProtected.haniStateCalls}→${candidateProtected.haniStateCalls}, Local write ${mainProtected.storageWrites}→${candidateProtected.storageWrites}, remove ${mainProtected.storageRemoves}→${candidateProtected.storageRemoves}`);
 
   const baselineDupes = new Set(duplicateIds(mainHtml));
@@ -452,6 +496,7 @@ async function runHinaModularQa(githubToken: string, candidateRef: string, expec
     ignorePrNumber: options.ignorePrNumber,
     mainTextOverride: mainRuntime.runtimeText,
     qaProfile: MODULAR_QA_PROFILE,
+    protectedPackageHash: Deno.env.get("HANI_PROTECTED_WRITE_APPROVAL") ? await packageSnapshot(githubToken,candidateRef,await runtimePackagePaths(githubToken,candidateRef)).then(x=>x.package_sha256) : undefined,
   });
   const allTextSecretFree = secretLeakFree(candidateRuntime.runtimeText);
   if (!allTextSecretFree) {
@@ -584,8 +629,9 @@ async function suppliedPackageHash(entries: Array<{ path: string; content: strin
   return { entries: hashed, package_sha256: await sha256Hex(canonical) };
 }
 
-async function runSuppliedModularQa(files: Array<{ path: string; content: string }>, githubToken: string, expectedMainSha = "") {
-  const byPath = new Map(files.map((f) => [normalizeReleasePath(f.path), String(f.content ?? "")]));
+async function runSuppliedModularQa(files: Array<{ path: string; content: string; encoding?: string }>, githubToken: string, expectedMainSha = "") {
+  const supplied=suppliedPackageSnapshot(files);
+  const byPath = new Map(supplied.entries.filter(f=>isTextArtifact(f.path)).map(f=>[f.path,new TextDecoder("utf-8",{fatal:true}).decode(f.bytes)]));
   const indexHtml = byPath.get(TARGET_PATH) || "";
   const scriptPaths = localScriptPaths(indexHtml);
   const stylePaths = localStylePaths(indexHtml);
@@ -593,7 +639,8 @@ async function runSuppliedModularQa(files: Array<{ path: string; content: string
   if (missing.length) throw new Error(`index.html이 참조하는 로컬 모듈이 패키지에 없습니다: ${missing.join(", ")}`);
   const runtimeText = [indexHtml, ...stylePaths.map((x) => byPath.get(x) || ""), ...scriptPaths.map((x) => byPath.get(x) || "")].join("\n/* HANI MODULAR RUNTIME BOUNDARY */\n");
   const mainRuntime = await githubRuntimeCombined(githubToken, BASE_BRANCH);
-  const qa = await runHinaReleaseQa(runtimeText, githubToken, expectedMainSha, { mainTextOverride: mainRuntime.runtimeText, qaProfile: MODULAR_QA_PROFILE });
+  const protectedPackageHash=(await suppliedPackageHash(supplied.entries)).package_sha256;
+  const qa = await runHinaReleaseQa(runtimeText, githubToken, expectedMainSha, { mainTextOverride: mainRuntime.runtimeText, qaProfile: MODULAR_QA_PROFILE,protectedPackageHash });
   const secretOk = secretLeakFree(runtimeText);
   qa.checks.push({ id: "MODULAR_SECRET_SCAN", layer: "HINA_SERVER", label: "모듈 Secret 노출 검사", status: secretOk ? "PASS" : "FAIL", detail: secretOk ? `index + local CSS ${stylePaths.length}개 + local JS ${scriptPaths.length}개 검사` : "모듈 런타임에서 secret 형식 문자열 검출" });
   if (!secretOk) { qa.failure_count += 1; qa.ok = false; qa.state = "HINA_QA_FAIL"; }
@@ -832,11 +879,12 @@ Deno.serve(async (req) => {
     const githubToken = Deno.env.get("GITHUB_DEPLOY_TOKEN") ?? "";
 
     if (!supabaseUrl || !publishableKey) return json({ ok: false, error: "Supabase 환경변수가 준비되지 않았습니다." }, 500);
-    const secretKey = supabaseSecretKey();
-    const admin = secretKey ? createClient(supabaseUrl, secretKey, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } }) : null;
-
     const { user, error: authError } = await getAuthenticatedUser(req, supabaseUrl, publishableKey);
     if (!user) return json({ ok: false, error: authError }, 401);
+    const access = ownerAccess(user, Deno.env.get("HANI_OWNER_USER_ID"));
+    if (!access.ok) return json({ ok: false, error: access.error }, access.status);
+    const secretKey = supabaseSecretKey();
+    const admin = secretKey ? createClient(supabaseUrl, secretKey, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } }) : null;
 
     const payload = asObject(await req.json().catch(() => ({})));
     const action = cleanText(payload.action, 80);
