@@ -37,3 +37,19 @@ AGENTS.md §11에 따른 첫 운영 기록입니다.
 - 원 탭 Playwright 테스트(`hani-goal-delete-test.js`, `hani-yuna-schedule-ui.test.mjs`)는 이 PC에 Playwright가 없어 실행하지 못했고, 같은 시나리오를 브라우저 창에서 수동 재현.
 - 운영 페이지 최초 로드 때 `/hani-os/undefined` 404 1건이 관찰됨(v2.9.185 로드). 이번 변경과 무관해 보이며 원인 미조사.
 - 탑승 대기 잔여: 분기 발표회의실·PPT·연간 뷰어(누락된 QA 탭) — 그 탭이 QA 미완료로 운영 반영 불가라고 기록.
+
+## 5호 · v2.9.189 · PR214 (merge 4a777fc)
+
+- 탑승: 분야별 목표 · 분기·연간 진행 조회(`hani/goal-period-screen-followup` 278bd86). 설정 목표 관리 아래 읽기 전용 패널.
+- 1차 후보 PR212는 CI One-Pass BLOCKED: 새 런타임 파일 `hani-goal-progress.js`가 base main에 없어 `git show <base>:hani-goal-progress.js` 실패. 해결: PR213으로 번들·생성기·테스트·인수인계를 index 미참조 상태로 main에 선반영(화면 변화 없음) → 새 base(9147bb3)에서 열차 재구성(PR214), PR212 닫음. 새 런타임 파일이 있는 열차는 앞으로도 이 순서(미참조 선반영 → 열차)로 진행.
+- PR 본문을 PowerShell 배열로 다시 쓰다 줄바꿈이 사라져 배포센터가 Manifest를 못 읽음(BLOCKED) → 본문 줄바꿈 복구 후 HINA PASS.
+- 운영 read-back: v2.9.189, `hani-goal-progress.js` 운영본=main, `hani-main.js`는 GitHub Pages 캐시 때문에 약 3분 뒤 main과 일치. 로그인 화면에서 패널 렌더, BMI 목표 25 표시(10월 실적 기록 없음).
+
+## 6호 · v2.9.190 · PR215 (merge c5e2dd0)
+
+- 탑승 1: Post-Audit Stabilization Hotfix(`hani/post-audit-stabilization-followup-20261006` b82ef0a) — 투자 미확인 값을 0으로 계산하지 않음, 새 월 첫 계좌 업데이트 시 직전 확정 월 이월, 보호 쓰기 탐지 보강(One-Pass 보호 규칙 보강은 보호 파일이라 대표님 승인 라벨이 필요해 PR217로 분리, 승인 대기).
+- 탑승 2: 대시보드 월 1회 투자·소비 입력 기준 표시(`hani/dashboard-report-followup-20261006` 9ec1ffd).
+- 통합: `hani-main.js` 충돌은 두 새 함수(`goalPeriodReadContext`, `dataHubLatestRecordMonth`)를 모두 유지. `hani-asset-update-v1.js` 캐시 태그를 2.9.169 → 2.9.190으로 올려 새 파일이 실제 로드되게 함.
+- 기능 간 상호작용: 핫픽스 이후 계좌 없는 확정 스냅샷의 총액은 0이 아니라 미확인(null). 대시보드 UI 테스트 샘플이 계좌 없는 확정 기록이라 실패 → 샘플에 계좌 1개를 넣음(테스트만 변경, 화면 로직 변경 없음).
+- 검증: 단위 27/27, 대시보드 UI 1440/390(+startup), 목표 진행 UI 4조합, 자산 smoke, 390 모바일 겹침 PASS. Playwright는 Codex 런타임 캐시의 모듈 + Edge로 실행.
+- 운영 read-back: v2.9.190, `hani-main.js`·`hani-asset-update-v1.js`·`index.html` 운영본=main. 로그인 화면에서 조회 월 2026-10, 투자 카드 “최근 확정 자산 · 2026-09”, 소비 카드 “최근 마감 소비 · 2026-08-18~2026-09-17” 표시.
