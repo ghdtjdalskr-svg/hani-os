@@ -1,5 +1,5 @@
 // PROJECT HANI
-// hani-learning-quiz v0.4.0 · READ-ONLY Category Rotation Quiz Generator
+// hani-learning-quiz v0.4.1 · READ-ONLY News Material Quiz Generator
 // Authenticated only · server-side OpenAI key · ZERO database/hani_state write
 
 import { createClient } from "npm:@supabase/supabase-js@2";
@@ -66,7 +66,13 @@ async function authenticatedUser(req: Request, supabaseUrl: string, publishableK
   return error ? null : user;
 }
 
-function systemPrompt(quizSize: number, weaknessCount: number, category: string, sourceCount: number, isRetry: boolean) {
+function newsMaterialCount(questions: any[], sources: any[]) {
+  return questions.filter(q => sources.some(s => String(q?.prompt || '').includes(s.title)
+    && String(q?.explanation || '').includes(`[${s.source_id}]`)
+    && String(q?.explanation || '').includes(s.source_url))).length;
+}
+
+function systemPrompt(quizSize: number, weaknessCount: number, category: string, sourceCount: number, isRetry: boolean, newsMinimum = 0) {
   const shared = [
     "당신은 PROJECT HANI의 히나 학습 Agent입니다.",
     `사용자의 학습 프로젝트와 최근 약점을 바탕으로 오늘 풀 객관식 ${quizSize}문제를 만듭니다.`,
@@ -88,6 +94,11 @@ function systemPrompt(quizSize: number, weaknessCount: number, category: string,
     "문제 type은 Definition, Cause & Effect, Scenario, Data Interpretation, Current Issue, Portfolio / Investment Decision 중 의미상 가장 가까운 값을 사용하세요.",
     "단순 숫자 암기보다 사건→경제 원리→시장·기업·투자 판단의 연결을 묻고, 해설에 그 연결을 설명하세요.",
     sourceCount > 0 ? "Current Issue의 구체적 사실은 제공된 Newsroom source에 근거하고, 출처에 없는 수치·사건은 만들지 마세요." : "검증된 Newsroom source가 없으므로 최신 사건인 것처럼 꾸미지 말고, 시점에 덜 민감한 원리와 명시적인 가상 시나리오를 사용하세요.",
+    `이번 요청은 최소 ${newsMinimum}문제를 제공된 실제 뉴스의 사건·기업·정책·거시경제 상황에 연결하세요. 난이도를 높이라는 요청이 아닙니다. 기존 난이도와 프로젝트 목표를 유지하세요.`,
+    "뉴스 소재 문제는 지문에 실제 기업명 또는 사건·정책과 기사 시점을 밝혀 사건→원리→영향을 묻고, 단순 용어 정의에 출처만 붙이지 마세요.",
+    "뉴스 소재 문제의 지문에는 참고한 source의 title을 원문 그대로 짧은 제목으로 넣은 뒤, 그 사건을 적용하는 질문을 이어 쓰세요.",
+    "그 문제의 해설 끝에 정확한 [source_id], source_name, published_at, source_url을 그대로 인용하세요. 예: [N1] 출처명 · 기사 시점 · https://... . 이 출처 표기를 기초 개념 문제에는 붙이지 마세요.",
+    "자료가 여러 분야이면 국내 반도체·기업, 클라우드·AI, 국제정세·거시경제를 순환하고 같은 기사만 반복하지 마세요. 추가 웹검색이나 자료에 없는 최신 사실을 만들어내지 마세요.",
   ];
   const jlpt = [
     "JLPT 프로젝트라면 문제 지시문은 한국어로, 실제 어휘·문법·독해 예문은 일본어로 쓰세요.",
@@ -132,7 +143,18 @@ Deno.serve(async (req) => {
   const recentQuestionRotation = (Array.isArray(feedback.recent_question_rotation) ? feedback.recent_question_rotation : []).slice(0, 24).map((raw) => {
     const item = asObject(raw); return { type: cleanText(item.type, 80), topic: cleanText(item.topic, 100), count: boundedInteger(item.count, 1, 1, 100) };
   }).filter((item) => item.type || item.topic);
-  const sources = Array.isArray(body.question_sources) ? body.question_sources.slice(0, 24) : [];
+  const sources = (Array.isArray(body.question_sources) ? body.question_sources.slice(0, 24) : []).map(raw => {
+    const s = asObject(raw);
+    return {source_id:cleanText(s.source_id, 12), title:cleanText(s.title,180), summary:cleanText(s.summary,700),
+      why_it_matters:cleanText(s.why_it_matters,420), source_name:cleanText(s.source_name,80),
+      source_url:cleanText(s.source_url,500), published_at:cleanText(s.published_at,32), material:cleanText(s.material,60)};
+  }).filter(s => {
+    const stamp = Date.parse(s.published_at);
+    try { return /^N\d+$/.test(s.source_id) && s.title && s.summary && s.source_name && /^https?:$/.test(new URL(s.source_url).protocol)
+      && Number.isFinite(stamp) && stamp <= Date.now() && Date.now()-stamp <= 21*86400000; } catch (_) { return false; }
+  });
+  const requestedNewsMinimum = Number(asObject(body.engine_contract).news_material_minimum);
+  const newsMinimum = category === 'economy' && sources.length ? boundedInteger(requestedNewsMinimum,Math.ceil(quizSize/3),0,quizSize) : 0;
   const weaknessQuestionCount = Math.max(1, Math.min(8, Math.round(quizSize * 0.33)));
   const weaknesses = (Array.isArray(body.weaknesses) ? body.weaknesses : []).slice(0, 12).map((raw: any) => ({
     type: cleanText(raw?.type, 80), topic: cleanText(raw?.topic, 100), wrong_count: Math.max(1, Math.min(20, Number(raw?.wrong_count || 1))), question: cleanText(raw?.question, 260),
@@ -148,12 +170,13 @@ Deno.serve(async (req) => {
   const startedAt = Date.now();
   const res = await fetch("https://api.openai.com/v1/responses", {
     method: "POST", headers: { "Authorization": `Bearer ${openaiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ model: "gpt-5.6-luna", instructions: systemPrompt(quizSize, weaknessQuestionCount, category, sources.length, attempt > 1 || acceptedPrompts.length > 0), input, max_output_tokens: Math.max(1800, Math.min(7000, quizSize * 350)), reasoning: { effort: "none" }, text: { verbosity: "low", format: { type: "json_schema", name: "hani_daily_learning_quiz", strict: true, schema: quizSchema(quizSize) } }, store: false }),
+    body: JSON.stringify({ model: "gpt-5.6-luna", instructions: systemPrompt(quizSize, weaknessQuestionCount, category, sources.length, attempt > 1 || acceptedPrompts.length > 0, newsMinimum), input, max_output_tokens: Math.max(1800, Math.min(7000, quizSize * 350)), reasoning: { effort: "none" }, text: { verbosity: "low", format: { type: "json_schema", name: "hani_daily_learning_quiz", strict: true, schema: quizSchema(quizSize) } }, store: false }),
   });
   const ai = await res.json().catch(() => ({}));
   if (!res.ok) return json({ ok:false, error:"QUIZ_MODEL_FAILED", message:ai?.error?.message || `OpenAI ${res.status}`, db_write:false, hani_state_touched:false }, 502);
   const output = extractOutputText(ai); let quiz: any = null;
   try { quiz = JSON.parse(output); } catch (_) { return json({ ok:false, error:"QUIZ_PARSE_FAILED", message:"퀴즈 JSON 파싱에 실패했습니다.", db_write:false, hani_state_touched:false }, 502); }
   if (!Array.isArray(quiz?.questions) || quiz.questions.length !== quizSize) return json({ ok:false, error:"QUIZ_COUNT_INVALID", message:`정확히 ${quizSize}문제를 생성하지 못했습니다.`, db_write:false, hani_state_touched:false }, 502);
-  return json({ ok:true, service:"PROJECT HANI", function:"hani-learning-quiz", version:"0.4.0", feedback_applied:true, category_rotation_applied:true, requested_count:requestedCount, quiz, model:String(ai?.model || "gpt-5.6-luna"), usage:ai?.usage || null, latency_ms:Date.now() - startedAt, db_write:false, hani_state_touched:false, store:false, message:`오늘의 학습 퀴즈 ${quizSize}문제를 생성했습니다. 서버는 학습 기록을 저장하지 않았습니다.` });
+  if (newsMaterialCount(quiz.questions,sources) < newsMinimum) return json({ok:false,error:'QUIZ_NEWS_MATERIAL_MISSING',message:'실제 뉴스 소재와 출처가 필요한 만큼 포함되지 않아 저장하지 않았습니다. 기존 문제는 유지됩니다.',db_write:false,hani_state_touched:false},502);
+  return json({ ok:true, service:"PROJECT HANI", function:"hani-learning-quiz", version:"0.4.1", feedback_applied:true, category_rotation_applied:true, news_material_minimum:newsMinimum, requested_count:requestedCount, quiz, model:String(ai?.model || "gpt-5.6-luna"), usage:ai?.usage || null, latency_ms:Date.now() - startedAt, db_write:false, hani_state_touched:false, store:false, message:`오늘의 학습 퀴즈 ${quizSize}문제를 생성했습니다. 서버는 학습 기록을 저장하지 않았습니다.` });
 });
