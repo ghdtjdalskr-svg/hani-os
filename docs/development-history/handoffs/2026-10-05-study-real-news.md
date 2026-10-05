@@ -5,9 +5,9 @@
 - 작업 ID: STUDY-REAL-NEWS-20261005
 - 갱신일: 2026-10-05 KST
 - 담당: Codex 개발 / 별도 study_review Agent 읽기 전용 검토
-- 상태: 실제 모델 quota 실패 원인 확인 및 canonical source display 수정. 수정 후 실제 모델 검증은 인증 대기. Production 배포 미완료.
-- 작업 트리: `.worktrees/study-news-release-final`, branch `hani/study-news-release-final`
-- 개발 base: `4cd5613742742708df6207f8f386b3f90c977778`; 최신 확인 main: `c544592e427b44fd7c7c530213a790f50e92bce8` (공통 허브 문서만 추가)
+- 상태: 실제 모델5/20 구조·뉴스 quota 통과 및 대표 Preview 확인. 최신 main의 owner 보호를 보존해 릴리스 후보 준비 중. Production 배포 미완료.
+- 작업 트리: `.worktrees/study-news-release-main-v179`, branch `hani/study-news-release-main-v179`. 이전 모든 작업 트리 보존.
+- 현재 base: `9ef4ea5af80bf7206fe7cdc59168022adb689eba` / 표시178 / 운영bridge34, contract2.0.8 / 운영quiz8,0.4.0 owner 보호 적용. 이전 base4cd5613/c544592와의 차이는 공통 문서 및 gate/owner 보호 변경이며 최신 규칙 보존.
 - 개발 SHA: `0ebc5094aa8e9e81b300b4b85892fd4ce74ee331`. 최종 릴리스 후보 아님.
 - 승인 근거: 이 대화의 “응 검증 및 배포 진행해줘”, “이어서 진행”. 공부 패치 검증·배포 승인; 저장 구조/Cloud write/auth/schema/릴리스 도구 변경 승인 아님.
 - 범위: 공부 소유 모듈, quiz Edge Function, 테스트. main/index는 표시 버전 및 캐시 갱신만. 다른 담당의 자산 기능/공통 허브 변경은 덮어쓰지 않음.
@@ -31,6 +31,10 @@
 - 수정: canonicalNewsContext는 기존 structured 뉴스 prefix/[질문]/허용 적용형type + 정확 title/date/name + 해설의 단일 자료ID/URL이 확인될 때만 source의 원문 요약과 브리핑 표시를 구성함. 질문/보기/정답/해설 보존, 없는 출처 연결·Definition 승격·새 저장 경로 없음. 원문을 모델이 재작성하지 않는 prompt로 보강. 클라이언트 원문 quota 검증은 그대로 유지.
 - 자동 테스트: macro 요약 재작성/표시 누락 재현 후 정확 원문 복구 PASS, 질문 보존 PASS, Definition 승격 방지 PASS, 기존 quota/회귀 PASS. study_review 별도 읽기 전용 재검토에서 구현 안전 blocker 없음. 실제 요약→질문→정답 의미 검증은 아직 미완료.
 - 수정 검증용 소스 배포 후 현재 탭의 DOM은 로그인 대기, retryVisible=false. 토큰 추출·다른 탭 세션 복사하지 않음. 대표님이 현재 페이지에서 인증해야 actual5/20 진행 가능. 운영 함수/PR183 HOLD 유지.
+- 이후 실제 결과 탭2057863667 확인(이전 검증 탭과 별개): size5/count5/news2/min2/output1173, size20/count20/news12/min7/output4574. 두 요청 모두 DB write=false, local learning records unchanged=true. 기존 토큰 상한 내 완료. 대표님 “예 잘나오는것같아요”로 Preview 확인.
+- 실제 질문·정답·해설의 경제 원리 연결 점검: 할인율/자사주 수급/재임차 자본 부담/AI 인프라/IP 협력/개인AI/Agent보안/주주환원/집중위험/채권가격. 저장 원문 자료를 기준으로 해석하며 기사 자체의 원문 전체 사실검증 완료를 주장하지 않음. `.audit/live-model-review.md`.
+- 현재 live 표본 품질 한계: 20문제 정답 위치 모두1번, 일부 쉬운 오답,260자 요약 중간 종료, 기존 URL형 출처명. Q17은 summary가 없어 quota 불인정(전체12/7 통과). 보기 순서와 뉴스룸 원본을 이번 뉴스 연결 범위에서 임의 변경하지 않음.
+- 최신 main branch에 이 작업 커밋만 분리 반영, 기존 ownerAccess 그대로 유지. 뉴스 mocked handler/auth 소유자 회귀/v04 targeted test PASS. 실제 Preview 모델 생성 로직은 동일하며 owner 인증 경계는 새 후보에서 별도 검증.
 - main merge / Pages v179 / 최신 JS 실제 로딩 / 실제 기능 read-back: 모두 미수행. 운영 화면에서 v178 확인.
 
 ## 다음 담당에게
