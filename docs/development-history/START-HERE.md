@@ -9,7 +9,7 @@
 - [공통 허브 준비 인수인계](handoffs/2026-10-05-shared-hub.md)
 - [기존 개발·배포 히스토리](INDEX.md)
 
-현재 허브 문서는 GitHub 별도 브랜치와 [PR182](https://github.com/ghdtjdalskr-svg/hani-os/pull/182)로 공유했습니다. [Notion 현황판](https://app.notion.com/p/3f0c5275707481ba8d9bfa582d2c3fcf) 생성과 Codex의 읽기 확인을 완료했습니다. main 병합, Claude·Gemini 실제 연결, 자동 동기화는 아직 확인하지 않았습니다.
+허브와 Claude 지침은 PR181·182로 main에 반영됐습니다(c544592). [전체 HANI 탭 원장](2026-10-05-all-tabs-status.md)과 CURRENT는 2026-10-05 취합 후보입니다. [Notion 현황판](https://app.notion.com/p/3f0c5275707481ba8d9bfa582d2c3fcf)에 같은 상태와 근거를 표시합니다. 대표님은 전체 현황 정리 후 Claude 연결을 요청할 예정입니다. Claude의 실제 허브 읽기·자동 동기화는 아직 미검증입니다.
 
 ## AI가 시작할 때
 
@@ -36,14 +36,14 @@
 | 도구 | 준비된 것 | 아직 확인할 것 |
 |---|---|---|
 | Codex | `AGENTS.md`에서 이 허브로 연결 | 다음 세션에서 실제 읽기 확인 |
-| Claude Code | 같은 저장소·공통 지침 사용 방식 정리 | 설치 버전·프로젝트 지침 설정·실제 읽기/인수인계 작성 |
+| Claude Code | 설치·실행 확인, PR181의 CLAUDE.md가 AGENTS.md import | 대표님 연결 요청 후 최신 기록 읽기/인수인계 작성 |
 | Claude 일반 채팅 / ChatGPT 일반 채팅 | Notion 요약 공유 방안 | 각 앱의 연결·로그인·페이지 접근 권한 |
-| Gemini | 같은 문서를 사용하는 운영 규칙 | 사용하는 앱/CLI 확인 후 지침 연결 |
+| Gemini | CLI 0.62.0, 단발 개발노트 생성·저장 성공 기록 | 최신 공통 허브 읽기 및 지속 갱신 검증 |
 | Notion | 계정 접근·현황판 생성·Codex 읽기 확인 완료 | Claude/Gemini의 같은 페이지 접근, 작업 종료 갱신 검증 |
 
-Claude Code에서 `AGENTS.md`를 직접 읽지 못하는 환경은 `CLAUDE.md`의 `@AGENTS.md` import 방식으로 연결할 수 있습니다. 추가 파일의 기존 CI 분류 영향도 먼저 확인합니다. Gemini도 해당 도구의 지원 지침 방식으로 이 허브를 가리키게 합니다. 설치하지 않은 도구의 자동 읽기를 가정하지 않습니다.
+main의 `CLAUDE.md`는 `@AGENTS.md`를 import합니다. AGENTS는 공통 허브 읽기와 인수인계를 요구합니다. 이 파일 연결이 실제 Claude 세션의 읽기 성공 증거는 아닙니다. Gemini의 단발 노트 생성 성공도 허브 자동 동기화와 구분합니다.
 
-서로 다른 기기·worktree는 GitHub의 공유 문서 commit을 받아야 최신 상태를 봅니다. 이 후보가 아직 공유되지 않은 단계에서는 다른 AI가 자동으로 접근할 수 없습니다.
+서로 다른 기기·worktree는 GitHub의 공유 문서 commit을 확인해야 최신 상태를 봅니다. 오래된 작업 공간을 임의 merge/rebase하지 않고 새 작업은 최신 기준선에서 시작합니다.
 
 ## Notion 첫 화면 구성안
 

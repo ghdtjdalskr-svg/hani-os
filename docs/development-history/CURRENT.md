@@ -1,55 +1,61 @@
 # HANI 최신 개발 현황
 
-- 갱신일: 2026-10-05 KST
-- 저장소 기준: `90b7440bf3bb285cfbe1713ac6c7a870e502f5bc` / PR180
-- 근거: 이번 세션의 `origin/main` fetch, commit 및 관련 코드 확인
-- 코드 표시 버전: `HANI_DISPLAY_VERSION = 2.9.178`
-- index의 최신 UI layer 참조: `hani-ui-v02992.js?v=2.9.178`
-- index의 마지막 별도 script 참조: `hani-development-history-v1.js?v=2.9.169`
-- 위 값은 저장소 정적 확인입니다. 이번 작업에서 운영 화면·실제 JS 로딩·기능 read-back을 확인하지 않았습니다.
+- 갱신일: 2026-10-05 KST / 전체 HANI 개발 탭 취합
+- 기준 main: c544592e427b44fd7c7c530213a790f50e92bce8 (PR181·182)
+- 최신 제품: v2.9.178 / PR180 / 90b7440
+- 근거: [전체 탭 원장](2026-10-05-all-tabs-status.md), 담당 완료 보고·기존 원장·GitHub PR/main 대조
+- 아래는 담당 검증 보고를 취합한 결과입니다. 이번 작업에서 운영 기능을 재실행하지 않았습니다.
+- 진행 중 작업은 조회 시점 snapshot이며, 이후 담당의 최신 인수인계로 갱신합니다.
 
-## 성민 대표님이 정한 우선순위
+## 대표님 방향
 
-1. 분야별 목표 설정을 완성하고 추후 분기·연간 보고서와 연결합니다.
-2. 목표·실적·기간·보고서가 같은 데이터 정의를 쓰도록 정리합니다.
-3. 분기·연간 결과 및 다음 기간 Guidance를 연결합니다.
-4. 백업·내보내기·복구 기반을 확인한 뒤 Google Drive Vault를 연결합니다.
-5. 투자 History, 모바일 상태 복원, 보고서 출력, 기타 외부 연동을 진행합니다.
+분야별 목표 설정 완성 → 분기·연간 보고서 연결 → 공통 데이터 정의 → 백업·내보내기·복구 → Google Drive Vault 순서입니다. 데이터 보존 결함 보완은 제품 작업보다 앞설 수 있습니다.
 
-이 순서는 제품 우선순위입니다. 데이터 구조 변경·migration·Cloud write·배포에 대한 포괄 승인은 아닙니다.
+전체 탭 현황판 정리가 끝난 뒤 대표님이 Claude에 연결을 요청합니다. 이번 취합에서는 Claude 실행·연결을 시작하지 않습니다. 기능 개발·보호 게이트·Cloud·main·배포는 실제 승인 범위를 확인합니다.
 
-## 이번에 확인한 최신 차이
+## 완료 또는 운영 기록이 있는 항목
 
-| 항목 | 상태 | 근거 / 남은 확인 |
+| 항목 | 확인 상태와 근거 | 남은 경계 |
 |---|---|---|
-| Goal Registry | main 병합·코드 확인, 운영 미검증 | PR180. `renderGoalRegistry`, `goalRegistryBuildDraft`와 Preview·승인 저장·변경 이력 경로 존재. 이번 작업에서 저장 실행 안 함 |
-| 분야별 목표 범위 | 기본 6개 지표 코드 확인 | 투자자산·체중·완독·일평균 걸음·월 지출 예산·퀴즈 정답률. 대표님이 원하는 전체 분야와 일치하는지는 미확정 |
-| 분기·연간 목표 입력 | 코드 확인, 동작 미검증 | 연도·분기·목표값·적용일 입력 존재. 실제 목표 조회·보고서 연결 검증 필요 |
-| 읽기 전용 Data Hub P2 | PR180 병합 확인 | 실제 화면과 집계 정확성은 이번 작업에서 확인하지 않음 |
-| AI 공통 개발 허브 | GitHub 공유·PR182 초안 생성 | main 미병합. 최초 후보 문서 CI 통과, AGENTS 보호 변경 대표 승인 확보·최종 검사 확인 중 |
-| Notion | 현황판 생성·Codex 읽기 확인 | [현황판](https://app.notion.com/p/3f0c5275707481ba8d9bfa582d2c3fcf). 자동 동기화 없음 |
-| Claude / Gemini 연결 | 준비 대기 | 사용하는 도구·공통 문서 접근·인수인계 실제 작성 확인 필요 |
+| Goal Registry·목표 이력 | PR180/v178 운영 화면·최신 JS 확인 보고. 6개 지표·분기/연간 입력·Preview/승인/이력 | 전체 분야 범위·보고서 통합·기기별 실제 검증 |
+| Data Hub | A/B/C·Dashboard v164 및 별도 읽기 화면 v178 운영 보고 | 목표·보고서의 완전한 통합 |
+| Live Portfolio | v162 운영, v171~173 지도/캔들/캐시/원가 개선 main 반영 | 공식 월별 Snapshot/History |
+| Asset canonical contract·Toss | v168 Production, 평균매입가 선택·Partial/Complete·identity. 시세/검색·holdings-only 운영 기록 | 전체 입력 자동화 |
+| Portfolio 대비·P1 재진단 | v166 Production 원장 | 오래된 탭의 미완료 문구를 후속 원장으로 정정 |
+| GALAXY/AURA·Design System | v155~161·167·170 기록/main, 5 Finish·계절·포스터 | 접근성 전체 완료는 미확인 |
+| 모바일 조작·기간 안내 | PR176/v175 main | 경로·draft·scroll 복원 전체 완료는 아님 |
+| 뉴스룸 | PR178/v177 가독성·주차 main | 실제 뉴스 출제 PR183과 별개 |
+| 월간 Life Report | 기본 운영 기록 | Conference Room/PPT/연간 뷰어는 후보 |
+| Boardroom routing | v150/함수 v50 운영 보고 | 배포 기록 PR157은 미병합 문서 |
+| 캐릭터 한마디 | v163, 28개 탭·스포츠4화면 운영 보고 | 서버 Voice Registry 실제 대화 |
+| AI 개발·보고팀 | PR175/v174 운영 read-back 보고 | 생활팀9명 유지, Gemini 별도 프로필·보고서 이동 |
+| Gemini 보고서 메뉴·생성 | PR168/v169 main, 로컬 실제 생성·저장·원장 대조 성공 | 상시 자동 트리거/동기화 |
+| 여행 맛집·명소 | v130 Production 완료 보고 | 해당 탭 남은 작업 없음 |
+| 효율화·중앙 기록·PR 정리 | PR114, P0 완료 / PR61·68 종료 | 과거 중앙 폴더 미생성 요약은 대체 |
+| AI 공통 허브 | PR181·182 main/파일 확인 | CLAUDE→AGENTS→허브. 실제 Claude 읽기 미검증 |
 
-## 이전 기록에서 이어받은 상태
+## 개발 중·검증 대기·보류
 
-아래는 2026-10-04 개발 기록의 상태를 인용한 요약입니다. 이번 세션의 재검증 결과가 아닙니다.
-
-| 항목 | 기존 기록 | 다음 경계 |
+| 항목 | 현재 상태 | 다음 경계 |
 |---|---|---|
-| GALAXY/AURA, Live Portfolio, Data Hub A/B/C, Toss | 운영 완료 기록 있음 | 관련 후속 변경 시 검증 |
-| Asset Input canonical contract | v2.9.168 운영 완료 기록 있음 | 옛 표의 미완료 표기 대신 해당 원장 확인 |
-| 월간 Life Report | 기본 구현·운영 기록 있음 | Data Hub 및 목표 연결 확인 |
-| 분기·연간 Report | backlog 기록 | 최신 코드의 집계·목표 비교·Guidance 범위를 좁게 확인 |
-| Portfolio Snapshot/History | backlog 기록 | 월별 공식 Snapshot 설계 |
-| Google Drive Vault / Export | backlog 기록 | 백업·복구 계약, 실제 진행 여부 확인 |
-| DEVLOG 자동화 | candidate 기록 | live 생성 성공·공유 원장 확인. 설계만 있다고 단정하지 않음 |
-| 외부 모델 공통 실행계층 | backlog 기록 | 공통 개발 문서 공유와 별개 기능 |
+| 분기 Conference Room/PPT | Preview 구현·격리 PC/모바일·PPT 검사 보고. 실제 Q&A 화면 응답 확인 보고, 가독성 수정 중 | 실제 답변 포함 PPT·최신 후보·최종 배포 검사 |
+| 연간 보고 뷰어 | 예시 무대·PDF 원본 뷰어·등록/복구 모의 검사 | 실제 인증 등록/read-back/복구·배포. 전체 연간 결산 완료 아님 |
+| 보고서 기반 목표 초안 | 수정 가능한 미확정 제안 Preview | 최신 v178 Registry 계약·승인·통합 검증 |
+| 목표 저장/기기 동기화·삭제 | 승인 목표 보존 보고. 현재 한 건 삭제 Preview/승인 구현·검증 중, 실제 삭제 전 | 중복 클릭/실패/다른 기록 보존·배포 검증, 모바일 read-back. 개인 목표값 제외 |
+| 원본 보호/백업/복구/거래/로그인/서버 권한 | 가상 검증 완료 보고, 미배포. 원본27·백업11·화면6 검사 | 소유 계정 설정·실제 Android·최종 릴리스 |
+| 강화 보호 게이트 | 부정19·연결12·필수7묶음 통과 보고. 접수 화면 한도를 서버 기준에 맞춰 경계 검사 후 최신 후보 재검증 중 | 정책 승인/최종 게이트·서버 설정·운영 미완료 |
+| 실제 뉴스 출제 | PR183 OPEN. 중복·출처 보강, 별도 실제 AI 검증 화면 준비 | 해당 탭의 로그인 검증 대기·실제5/20문제 정답 품질·새 후보/서버 게이트 |
+| 공통 서버 Voice Registry | PR128 OPEN/보류. 후속 서버 정의 확인 보고 | 9명 실제 대화 미검증. PR 미병합=전체 미구현으로 단정 금지 |
+| 원래 안정화 핫픽스 | 원래 탭은 Fact Check 후 중단 | P1/Asset 해결 범위 완료. 신규 유실 재현은 위 품질 후보 |
+| 텔레그램 알림 | 발송/Windows 자동 실행 중지 보고 | 앱 반복 자동화 중지 거절 기록, 실제 중지 상태 미확인 |
+| DEVLOG 상시 자동화 | 단발 생성·저장 성공/메뉴 운영 | 배포 후 자동 생성·지속 허브 갱신은 미완료 |
 
-Micro-interaction, Mobile Persistence, Cloud Restore, Cloud-first, HANI GROUP, Messenger, Conference Call, Committee, IR 출력, 외부 API 확장의 최신 상태는 이번 범위에서 확인하지 않았습니다. 대화의 초기 로드맵은 참고 자료이며 완료 근거로 사용하지 않습니다.
+## 완료 근거 없는 장기 항목
 
-## 다음 담당이 할 일
+Mobile State Persistence 전체, 새기기 Cloud Restore UX, Cloud-first 전환, 완전한 분기/연간 집계·목표 비교·Next Guidance, 공식 Recalibration, Portfolio 공식 월별 이력, Google Drive Vault, 전체 Export/Backfill, Organization Hub, Messenger, 정식 Monthly Committee, Toss 외 API 확대, 외부 모델 공통 실행계층.
 
-- 공통 허브는 [PR182](https://github.com/ghdtjdalskr-svg/hani-os/pull/182)와 Notion으로 공유했습니다. AGENTS 허브 규칙·승인 라벨 적용은 대표님이 승인했습니다. 최종 검사 확인과 별도 main 병합 승인이 남았습니다.
-- 기능 개발은 Goal Registry가 없다고 재구현하지 말고, PR180의 실제 입력·이력·보고서 연결 범위를 확인합니다.
-- 운영 데이터에 테스트 목표를 임의 저장하지 않습니다. 승인된 테스트 환경과 안전 검증 범위를 정합니다.
-- 2026-10-04 `INDEX.md`와 상태표는 역사적 snapshot입니다. 최신 기준은 이 문서와 이후 확인 근거를 사용합니다.
+분기 PPT·백업 Preview를 IR 출력·복구 운영 완료로 표시하지 않습니다. Data Hub 내보내기 코드 존재도 Drive 연동 완료 근거가 아닙니다.
+
+## 다음 담당
+
+[전체 탭 원장](2026-10-05-all-tabs-status.md)에서 담당과 후보를 확인합니다. 타 작업의 파일·branch를 임의 수정/merge/rebase하지 않습니다. Claude 연결은 대표님의 후속 요청을 기다립니다. 오래된 INDEX/배포 기록은 역사적 근거로 보존합니다.
