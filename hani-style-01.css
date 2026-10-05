@@ -1142,9 +1142,9 @@ input:focus,select:focus,textarea:focus{border-color:color-mix(in srgb,var(--sea
 .app.login-locked{visibility:hidden!important}
 .login-gate{
   position:fixed;inset:0;z-index:100000;
-  display:grid;place-items:center;
+  display:grid;place-items:center;place-items:safe center;
   padding:26px;
-  overflow:auto;
+  overflow:auto;overscroll-behavior:contain;
   opacity:1;visibility:visible;
   transition:opacity .22s ease,visibility .22s ease;
   background:
@@ -1153,6 +1153,9 @@ input:focus,select:focus,textarea:focus{border-color:color-mix(in srgb,var(--sea
     linear-gradient(135deg,var(--season-tint),#fff 48%,var(--season-soft));
 }
 .login-gate.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
+body.login-scroll-locked{overflow:hidden}
+.table-scroll-hint{display:none}
+@media(max-width:600px){.table-scroll-hint{display:block;font-size:12px;color:var(--muted,#666);margin:6px 0}.table-readable-scroll:focus-visible{outline:2px solid var(--season-accent,#7569e8);outline-offset:3px}}
 .login-gate-bg{position:fixed;pointer-events:none;border-radius:50%;filter:blur(2px);opacity:.42}
 .login-orb-a{width:420px;height:420px;left:-130px;bottom:-170px;background:color-mix(in srgb,var(--season-accent) 13%,transparent)}
 .login-orb-b{width:330px;height:330px;right:-80px;top:-100px;background:color-mix(in srgb,var(--season-accent2) 13%,transparent)}
