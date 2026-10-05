@@ -9,7 +9,7 @@
 - [공통 허브 준비 인수인계](handoffs/2026-10-05-shared-hub.md)
 - [기존 개발·배포 히스토리](INDEX.md)
 
-현재 허브는 저장소 문서로 준비한 후보입니다. Notion·Claude·Gemini 연결과 자동 동기화는 아직 확인하지 않았습니다.
+현재 허브 문서는 GitHub 별도 브랜치와 [PR182](https://github.com/ghdtjdalskr-svg/hani-os/pull/182)로 공유했습니다. [Notion 현황판](https://app.notion.com/p/3f0c5275707481ba8d9bfa582d2c3fcf) 생성과 Codex의 읽기 확인을 완료했습니다. main 병합, Claude·Gemini 실제 연결, 자동 동기화는 아직 확인하지 않았습니다.
 
 ## AI가 시작할 때
 
@@ -39,7 +39,7 @@
 | Claude Code | 같은 저장소·공통 지침 사용 방식 정리 | 설치 버전·프로젝트 지침 설정·실제 읽기/인수인계 작성 |
 | Claude 일반 채팅 / ChatGPT 일반 채팅 | Notion 요약 공유 방안 | 각 앱의 연결·로그인·페이지 접근 권한 |
 | Gemini | 같은 문서를 사용하는 운영 규칙 | 사용하는 앱/CLI 확인 후 지침 연결 |
-| Notion | 아래 페이지 구성 준비 | 계정 연결·페이지 생성·최초 읽기/쓰기 확인 |
+| Notion | 계정 접근·현황판 생성·Codex 읽기 확인 완료 | Claude/Gemini의 같은 페이지 접근, 작업 종료 갱신 검증 |
 
 Claude Code에서 `AGENTS.md`를 직접 읽지 못하는 환경은 `CLAUDE.md`의 `@AGENTS.md` import 방식으로 연결할 수 있습니다. 추가 파일의 기존 CI 분류 영향도 먼저 확인합니다. Gemini도 해당 도구의 지원 지침 방식으로 이 허브를 가리키게 합니다. 설치하지 않은 도구의 자동 읽기를 가정하지 않습니다.
 

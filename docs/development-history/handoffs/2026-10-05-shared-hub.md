@@ -2,7 +2,7 @@
 
 - 날짜: 2026-10-05 KST
 - 담당: Codex
-- 상태: 문서 후보 준비 / 외부 연결 대기
+- 상태: GitHub 공유·Notion 생성 완료 / 보호 지침 대표 승인 확보 / main 미병합
 - branch: `hani/shared-development-hub`
 - base SHA: `90b7440bf3bb285cfbe1713ac6c7a870e502f5bc`
 - 위치: `.worktrees/shared-development-hub`
@@ -27,12 +27,14 @@
 - 시작 안내의 로컬 문서 링크 4개 확인, `git diff --check` 통과. 연결 문서의 정적 검사이며 AI의 실제 읽기 성공 증거가 아님.
 - 문서 전용: runtime 표시 버전·DOM·UI·Production QA N/A.
 - 운영 코드, 보호 저장소, 내부 데이터 버전, Cloud write/schema 변경 없음.
-- main 병합·배포·Notion 페이지 게시 없음. Claude/Gemini 실제 읽기 확인 없음.
+- [PR182](https://github.com/ghdtjdalskr-svg/hani-os/pull/182) 초안 생성·공유 완료. 992d1a0의 GitHub One-Pass 문서 CI 성공, Gate Self-Protection은 AGENTS 변경 승인 라벨이 없어 차단. 보호 검사 변경·우회 없음.
+- [Notion 현황판](https://app.notion.com/p/3f0c5275707481ba8d9bfa582d2c3fcf) 생성 및 fetch로 본문 재확인 완료. Claude/Gemini 실제 읽기와 자동 동기화는 미확인.
+- main 병합·배포 없음. 문서 현황 갱신 이후 candidate 검사는 새 SHA로 확인할 것.
 
 ## 다음 행동
 
-1. 같은 문서 commit을 공유할 GitHub PR을 준비하고 기존 문서 CI를 통과시킵니다. main 병합은 별도 승인 경계입니다.
-2. Notion 계정 연결 후 START-HERE의 현황판 구조로 페이지를 만들고 원문 링크·기준 SHA를 넣습니다.
+1. AGENTS.md 허브 읽기·인수인계 규칙 및 `hani-gate-change-approved` 라벨은 대표님이 승인했습니다(D-20261005-05). 승인 라벨 적용 이후 최신 SHA 검사 결과를 확인합니다. main 병합은 별도 승인 경계입니다.
+2. PR 최신 SHA와 검증 결과를 Notion 현황판에 반영합니다.
 3. Claude가 Claude Code인지 일반 채팅인지 확인하고 공통 기록을 읽고 인수인계를 작성하는 실제 경로를 검증합니다. Gemini는 필요 시 연결합니다.
 
 담당 AI가 서로 다른 작업 공간에 있으면 최신 문서 commit을 먼저 확인해야 합니다. 현재 문서 파일 자체는 자동 동기화나 작업 잠금 시스템이 아닙니다.
