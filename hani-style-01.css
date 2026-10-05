@@ -2610,3 +2610,12 @@ body[data-canvas-group="team"]{--canvas-a:#7569e8;--canvas-b:#d875a3;--canvas-c:
 
 /* Canonical portrait background for the asset owner. */
 #asset .grid>.card.full:first-child:before{background-image:url("./assets/profiles/hani-profile-jieun.webp")}
+
+/* Deployment approval stays in the page so authorized agents can use normal UI controls. */
+.deploy-approval-dialog{width:min(520px,calc(100% - 32px));max-height:calc(100dvh - 32px);overflow:auto;box-sizing:border-box;border:1px solid #c9c3eb;border-radius:20px;padding:24px;color:#25213e;background:#fff;box-shadow:0 20px 70px rgba(38,31,69,.24)}
+.deploy-approval-dialog::backdrop{background:rgba(28,24,51,.45)}
+.deploy-approval-dialog h3{margin:0 0 14px;font-size:21px}
+.deploy-approval-dialog p{line-height:1.65;overflow-wrap:anywhere}
+.deploy-approval-dialog .deploy-actions{justify-content:flex-end;margin-top:20px}
+.deploy-approval-dialog button:focus-visible{outline:3px solid #6f54c7;outline-offset:3px}
+@media(max-width:560px){.deploy-approval-dialog{padding:20px}.deploy-approval-dialog .deploy-actions{display:flex;flex-wrap:wrap}.deploy-approval-dialog button{min-height:44px;flex:1}}
