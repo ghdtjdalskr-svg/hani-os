@@ -36,14 +36,24 @@ try{
    dataHubRenderDashboard();
   });
   const before=await page.evaluate(()=>localStorage.getItem(STORAGE_KEY));
+  if(process.argv.includes('--startup'))await page.evaluate(()=>{dataHubRuntime=null;});
   await page.locator('#dataHubMonth').fill('2026-09');await page.locator('#dataHubMonth').dispatchEvent('change');
+  if(process.argv.includes('--startup')){
+   await page.waitForTimeout(600);
+   console.log('startup diagnostic:',await page.evaluate(async()=>{const result=await dataHubRuntime?.refresh();return {status:result?.status,reason:result?.reason,month:result?.month}}));
+  }
   await page.waitForFunction(()=>dataHubRuntime?.peek().status==='VERIFIED',{},{timeout:3000});
   assert((await page.locator('#dataHubPeriod').innerText()).includes('2026-09'));
   assert((await page.locator('#dataHubPeriodHelp').innerText()).includes('데이터 삭제'));
   assert.equal(await page.evaluate(()=>dataHubRuntime.peek().asOf),await page.evaluate(()=>today()));
   await page.evaluate(()=>{window.periodFixtureVerified=false;});
+  if(process.argv.includes('--startup'))await page.evaluate(()=>{
+   cloudClient={auth:{getUser:async()=>({data:{user:{id:'fixture-owner'}},error:null})},from:()=>({select:()=>({eq:()=>({limit:async()=>({data:[],error:null})})})})};
+  });
   await page.locator('#dataHubMonth').fill('2026-08');await page.locator('#dataHubMonth').dispatchEvent('change');
+  await page.evaluate(async()=>{await dataHubRuntime?.refresh()});
   await page.waitForFunction(()=>dataHubRuntime?.peek().status==='OWNER_BINDING_BLOCKED');
+  assert.notEqual(await page.evaluate(()=>dataHubRuntime.peek().reason),'NOT_VERIFIED','must check finished rejection, not initial invalidation');
   assert.equal(await page.locator('#homeAsset').innerText(),'—');
   assert((await page.locator('#dataHubPeriodHelp').innerText()).includes('원본 검증'));
   assert.equal(await page.evaluate(()=>localStorage.getItem(STORAGE_KEY)),before);

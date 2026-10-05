@@ -22,3 +22,11 @@
 - 분기·연간 보고 후보는 이 branch에 아직 이식하지 않음. 기존 5b1d7d6 보존. 목표 패널 복원(v185)과 기존 보고 후보의 충돌 조정 및 실제 답변 PPT·인증 연간 등록/복구 검증 남음.
 - 운영 UI/표시 버전/JS read-back·로그인 실사용·서버 기능 read-back 미검증. 서버 변경/함께 배포할 새 함수 없음. 보고 서버 dialogue v1/annual v2는 기존 후보 인계 확인 대상.
 - 상태: **후속 진행 중, 탑승 가능 완성본 아님**. 버전185 및 캐시태그 유지. 운영 PR/main/배포 없음. 원본·qa-evidence는 commit 제외.
+
+## 대표님 지표 미표시 제보 · 2026-10-06
+
+- 첨부 화면은 조회9월·6개 카드 모두 OWNER_BINDING_BLOCKED. 빈 월 NO_DATA와 다른 검증 차단이며, 데이터 삭제/Local·Cloud 실제 불일치 원인은 화면만으로 확정 불가.
+- 추가 패치: dashboard runtime의 실패 단계를 메모리 reason으로 보존하여 상태줄에 안전 코드만 표시. owner reason allowlist + 계산 phase enum만 사용, exception message/개인 원본/계정/비밀정보 노출 없음. 수치 차단/원본 비교·인증 및 저장 로직 유지. 실패 reason은 진단용이며 binding 권한 아님.
+- 신규 테스트: 임의/private 오류 내용은 OWNER_CHECK로 제한. 가상 startup 경로 첫 이벤트는 NOT_VERIFIED 상태 지속이 재현됐으나, 이후 기존 runtime.refresh 재검증으로 실제 가상 source 일치와 6지표 VERIFIED 확인. PC1440/390. fake Cloud 원본 없음 시 완료된 거부(초기 NOT_VERIFIED가 아님)와 원본 보존도 확인.
+- 이 결과는 초기 자동 검증 안정성 해결 PASS가 아님. 실제 대표님 계정에서 지표 검증·갱신 및 새 확인 코드/read-only 원본 진단 결과 필요. Cloud/복원/backup 담당 구현 수정 없음. 분기/연간 QA는 여전히 남음.
+- 실행: `node scripts/hani-dashboard-period.test.mjs`; `node scripts/hani-dashboard-period-ui.test.mjs <playwright> <chrome> --startup`. PASS 범위는 가상 사용자 검증/재검증·월 선택·거부 결과 및 보존, 실제 계정/운영 PASS 아님.

@@ -796,7 +796,7 @@ const signature = value => JSON.stringify(value);
 function createDashboardRuntime({verify, getBinding, getContext, getSource, canonical,
   getGoals = () => [], getCoverage = () => ({}), getMonth = () => null, clock = () => new Date().toISOString(),
   storeFactory = createMetricsStore, onChange = () => {}}) {
-  let epoch = 0, active = null, busy = false;
+  let epoch = 0, active = null, busy = false, failure = 'NOT_VERIFIED';
   const store = storeFactory({getBinding});
   // Read-only period selection: retain the real verification/as-of clock.
   function selectedMonth() {
@@ -804,7 +804,7 @@ function createDashboardRuntime({verify, getBinding, getContext, getSource, cano
     return /^\d{4}-(0[1-9]|1[0-2])$/.test(requested || '') && requested <= current ? requested : current;
   }
   function invalidate() {
-    epoch++; active = null; store.invalidate(); onChange();
+    epoch++; active = null; failure = 'NOT_VERIFIED'; store.invalidate(); onChange();
   }
   function live(token, binding) {
     return token === epoch && signature(getBinding()) === signature(binding);
@@ -813,7 +813,7 @@ function createDashboardRuntime({verify, getBinding, getContext, getSource, cano
     // Paint never verifies, calculates or writes. Context checks are O(1).
     if (active && (signature(getContext()) !== active.context || getSource() !== active.source ||
       koreaDate(clock()) !== active.asOf || selectedMonth() !== active.view.month)) invalidate();
-    return active ? copy(active.view) : {status: 'OWNER_BINDING_BLOCKED', metrics: [], cache: 'DISABLED'};
+    return active ? copy(active.view) : {status: 'OWNER_BINDING_BLOCKED', metrics: [], cache: 'DISABLED', reason: failure};
   }
   function auditSource() {
     // Called once at the existing full source-render boundary, not each visual paint.
@@ -824,18 +824,28 @@ function createDashboardRuntime({verify, getBinding, getContext, getSource, cano
     if (active && getBinding() && signature(getContext()) === active.context && koreaDate(clock()) === active.asOf && selectedMonth() === active.view.month)
       return peek();
     busy = true; invalidate(); const token = epoch;
+    let phase = 'OWNER_CHECK';
+    const blocked = reason => {
+      if (token === epoch) { active = null; failure = reason; onChange(); }
+      return {status: 'OWNER_BINDING_BLOCKED', metrics: [], cache: 'DISABLED', reason};
+    };
     try {
       const verification = await verify();
-      if (token !== epoch) return {status: 'CONTEXT_CHANGED'};
+      if (token !== epoch) return blocked('CONTEXT_CHANGED');
       const binding = getBinding();
-      if (verification.status !== 'VERIFIED' || !binding) return peek();
+      if (verification.status !== 'VERIFIED' || !binding) {
+        const safeReasons = ['LOCAL_CLOUD_SOURCE_MISMATCH','SERVER_USER_UNAVAILABLE','SERVER_USER_MISMATCH','OWNED_SOURCE_UNAVAILABLE','SESSION_OR_SOURCE_UNAVAILABLE','CONTEXT_OR_SOURCE_CHANGED','CLOUD_CLIENT_CHANGED','VERIFICATION_BUSY'];
+        return blocked(safeReasons.includes(verification.reason) ? verification.reason : 'OWNER_CHECK');
+      }
+      phase = 'SOURCE_SNAPSHOT';
       const sourceRef = getSource(), context = signature(getContext()), now = clock(), asOf = koreaDate(now);
       const month = selectedMonth(), months = [previousMonth(month), month];
       const source = Object.fromEntries(DEFAULT_REGISTRY.map(def => [def.source, copy(sourceRef[def.source])]));
       const goals = copy(getGoals()), coverage = copy(getCoverage());
       let cached = {status: 'CACHE_MISS', rows: []}, cache = 'MEMORY_ONLY';
       try { await store.activate(binding); cached = await store.readActive(); } catch { /* safe memory fallback */ }
-      if (!live(token, binding)) return {status: 'CONTEXT_CHANGED'};
+      if (!live(token, binding)) return blocked('CONTEXT_CHANGED');
+      phase = 'METRIC_CALCULATION';
       const sourceContexts = {};
       const rows = months.flatMap(m => {
         const sourceContext = Object.fromEntries(DEFAULT_REGISTRY.map(def => [def.source,
@@ -852,9 +862,10 @@ function createDashboardRuntime({verify, getBinding, getContext, getSource, cano
         ready: months.every(m => sourceContexts[m][def.source].ready),
         complete: months.every(m => sourceContexts[m][def.source].complete)
       }]));
+      phase = 'CACHE_PREPARATION';
       const prepared = await prepareSnapshot(source, {rows, months, asOf, createdAt: now, sourceContext,
         canonicalVersion: canonical.version, binding});
-      if (!live(token, binding)) return {status: 'CONTEXT_CHANGED'};
+      if (!live(token, binding)) return blocked('CONTEXT_CHANGED');
       let consumedRows = rows;
       try {
         const current = await store.readActive(prepared);
@@ -865,7 +876,8 @@ function createDashboardRuntime({verify, getBinding, getContext, getSource, cano
           cache = published.status === 'PUBLISHED' || published.status === 'UNCHANGED' ? published.status : 'MEMORY_ONLY';
         }
       } catch { /* IndexedDB unavailable must not break HANI */ }
-      if (!live(token, binding) || signature(getContext()) !== context || getSource() !== sourceRef || selectedMonth() !== month) return {status: 'CONTEXT_CHANGED'};
+      if (!live(token, binding) || signature(getContext()) !== context || getSource() !== sourceRef || selectedMonth() !== month) return blocked('CONTEXT_CHANGED');
+      phase = 'METRIC_COMPARISON';
       const metrics = DEFAULT_REGISTRY.map(def => {
         const row = consumedRows.find(r => r.month === month && r.metric_id === def.metric_id);
         const baseline = consumedRows.find(r => r.month === months[0] && r.metric_id === def.metric_id);
@@ -876,8 +888,7 @@ function createDashboardRuntime({verify, getBinding, getContext, getSource, cano
       active = {context, source: sourceRef, asOf, view: {status: 'VERIFIED', metrics, cache, month, asOf}};
       onChange(); return peek();
     } catch {
-      if (token === epoch) { active = null; onChange(); }
-      return {status: 'OWNER_BINDING_BLOCKED', metrics: [], cache: 'DISABLED'};
+      return blocked(phase);
     } finally { busy = false; }
   }
   return {refresh, invalidate, auditSource, peek};
@@ -4520,7 +4531,7 @@ function dataHubRenderDashboard(){
   }
   const status=$("dataHubStatus");if(status)status.textContent=view.status==="VERIFIED"?
     `${view.month} · Data Hub · ${view.cache==="MEMORY_ONLY"?"메모리 계산 (캐시 사용 불가)":"검증된 파생 캐시"} · 원본 변경 없음`:
-    "원본 검증 대기 · Local·Cloud 불일치 시 캐시 비활성화";
+    "원본 검증 대기 · Local·Cloud 불일치 시 캐시 비활성화"+(view.reason?` · 확인 코드: ${view.reason}`:"");
   const selected=view.metrics.find(m=>m.key===activeLifeIndex),display=text(selected);
   const slot=slots.find(s=>s[0]===activeLifeIndex)||slots[0];
   const labels={hasdaq:["HASDAQ · FINANCE","확인된 투자계좌 총액","investment"],ne100:["N&E 100 · HEALTH","당월 최근 체중","diet"],

@@ -23,6 +23,7 @@ for(const [requested,expected] of [[null,'2026-10'],['2026-09','2026-09'],['2025
 }
 selected='2026-09';assert.equal(runtime.peek().status,'OWNER_BINDING_BLOCKED','changed selection invalidates old view');checks++;
 verified=false;runtime.invalidate();assert.equal((await runtime.refresh()).status,'OWNER_BINDING_BLOCKED');assert.equal(runtime.peek().metrics.length,0);checks++;
+assert.equal(runtime.peek().reason,'OWNER_CHECK');
 assert.equal(JSON.stringify(source),before,'source never changes');
 assert(!main.slice(begin,end).includes('getMonth = () => null, clock = () => getMonth'), 'no date spoofing');
 console.log(`PASS: ${checks} period cases; actual bundled runtime; real as-of preserved; blocked source remains hidden; source unchanged. Not authenticated UI QA.`);
@@ -33,3 +34,7 @@ assert.equal(latest({body:[{date:'2026-09-01'},{date:'2027-01-01'}],books:[{read
 assert.equal(latest({body:[{date:'bad'}],ledgerMonths:[{month:'2026-13'}]},'2026-10'),null);
 assert.equal(latest({},'2026-10'),null);
 console.log('PASS: latest-input-month dates, future rejection, missing dates; no metric values fabricated.');
+const privateFailure=api.createDashboardRuntime({getSource:()=>source,getContext:()=>binding,getBinding:()=>null,
+ verify:async()=>({status:'OWNER_BINDING_BLOCKED',reason:'SECRET_OR_PRIVATE_DIAGNOSTIC'}),canonical:{version:'fixture'}});
+await privateFailure.refresh();assert.equal(privateFailure.peek().reason,'OWNER_CHECK','arbitrary error content never printed');
+console.log('PASS: safe diagnostic reason allowlist; arbitrary details hidden.');
