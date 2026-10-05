@@ -34,13 +34,13 @@ try{
   for(const viewport of [{width:1440,height:1000,name:'desktop'},{width:390,height:844,name:'mobile'}]){
     const page=await browser.newPage({viewport}),errors=[];
     await page.clock.install({time:new Date('2026-10-01T12:00:00Z')});
-    page.on('pageerror',error=>errors.push(error.message));page.on('console',message=>{if(message.type()==='error')errors.push(message.text())});
+    page.on('pageerror',error=>errors.push(error.message));page.on('console',message=>{if(message.type()==='error')errors.push(message.text())});page.on('response',response=>{if(response.status()>=400)console.log(`HTTP ${response.status()} ${new URL(response.url()).pathname}`)});
     await page.addInitScript(value=>{if(!sessionStorage.getItem('monthlySmokeSeeded')){localStorage.setItem('hani_os_life_v23',JSON.stringify(value));sessionStorage.setItem('monthlySmokeSeeded','1')}},seed);
     await page.goto(`http://127.0.0.1:${port}/#monthlyReport`,{waitUntil:'load'});
     await page.evaluate(()=>{document.querySelector('#loginGate')?.style.setProperty('display','none','important');document.querySelector('#app')?.classList.remove('login-locked');document.querySelector('#app')?.setAttribute('aria-hidden','false')});
     await page.waitForTimeout(450);
     const labels=await page.locator('.office-group .group-body .nav-btn .txt').allTextContents();
-    assert.deepEqual(labels.slice(0,5),['인포데스크','경영회의실','라이프 리포트','사내 규칙','배포 센터'],`${viewport.name}: office IA order`);
+    assert.deepEqual(labels.slice(0,4),['인포데스크','경영회의실','컨퍼런스 룸','사내 규칙'],`${viewport.name}: report remains in office IA`);
     assert(await page.locator('#monthlyReport.view.active').count(),`${viewport.name}: monthly route active`);
     assert(await page.locator('#monthlyReportKpis').isHidden(),`${viewport.name}: no live dashboard before manual generation`);
     assert(await page.locator('#monthlyReportGenerateBtn').isEnabled(),`${viewport.name}: closed month can be generated`);
@@ -98,12 +98,122 @@ try{
     await page.evaluate(()=>{document.querySelector('#haniContextRemote')?.style.setProperty('display','none','important');document.querySelector('.hani-remote-mobile-trigger')?.style.setProperty('display','none','important')});
     mkdirSync(join(root,'artifacts/monthly-report'),{recursive:true});
     await page.locator('[data-report-board="quarterly"]').click();
+    assert.equal(await page.locator('.nav-btn[data-view="monthlyReport"] .txt').innerText(),'컨퍼런스 룸',`${viewport.name}: conference room navigation label`);
     assert(await page.locator('#monthlyReportQuarterlyPanel').isVisible(),`${viewport.name}: quarterly preview board`);
-    assert((await page.locator('#monthlyReportQuarterlyPanel').innerText()).includes('분기 집계는 아직 연결하지 않았습니다'),`${viewport.name}: quarterly honest state`);
+    assert((await page.locator('#monthlyReportQuarterlyPanel').innerText()).includes('우리의 실적'),`${viewport.name}: quarterly report connected`);
+    assert.equal(await page.locator('#earningsQuarterly [data-call-scene]').count(),10,`${viewport.name}: ten presenter scenes`);
+    for(const key of ['overview','finance','health','learning','reading','culture','outlook','plan','qa'])assert.equal(await page.locator(`#earningsQuarterly [data-call-scene="${key}"]`).count(),1,`${viewport.name}: ${key} scene`);
+    assert.equal(await page.locator('#earningsQuarterly [data-call-scene=learning] img').getAttribute('alt'),'히나');
+    assert.equal(await page.locator('#earningsQuarterly [data-call-scene=finance] .earnings-call-track em').count(),1,`${viewport.name}: missing month is unknown`);
+    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`${viewport.name}: quarterly has no page overflow`);
+    assert.equal(await page.locator('#earningsQuarterly .scene-finance .earnings-keynote-line').evaluate(el=>parseInt(getComputedStyle(el).fontSize)),viewport.name==='mobile'?28:34,`${viewport.name}: keynote typography`);
+    for(const key of ['opening','overview','health','learning','reading','culture','outlook','qa'])await page.locator(`#earningsQuarterly [data-call-scene="${key}"]`).screenshot({path:join(root,`artifacts/monthly-report/${viewport.name}-${key}-scene.png`)});
+    await page.locator('#earningsQuarterly [data-call-scene=finance]').screenshot({path:join(root,`artifacts/monthly-report/${viewport.name}-finance-scene.png`)});
+    await page.locator('#earningsQuarterly [data-call-scene=plan]').screenshot({path:join(root,`artifacts/monthly-report/${viewport.name}-plan-scene.png`)});
+    const beforeEarnings=await page.evaluate(()=>localStorage.getItem('hani_os_life_v23'));
+    const quarterly=await page.evaluate(()=>earningsAggregate('quarterly','2026-Q3','2026-10-01'));
+    assert.equal(quarterly.quizTotal,40);assert.equal(quarterly.quizCorrect,25);assert.equal(quarterly.accuracy,62.5);
+    assert.equal(quarterly.end,100000000);assert.equal(quarterly.start,null);assert.equal(quarterly.coverage,2);assert.equal(quarterly.spend,2500000);
+    const missing=await page.evaluate(()=>earningsAggregate('quarterly','2026-Q1','2026-10-01'));assert.equal(missing.records,0);assert.equal(missing.spend,null);assert.equal(missing.end,null);
+    assert.deepEqual(await page.evaluate(()=>earningsMonths('quarterly','2026-Q5')),[]);
+    await page.locator('#earningsQuarterly [data-earnings-context]').fill('올해 감량 목표 달성. 다음에는 유지가 우선이야.');
+    await page.locator('#earningsQuarterly [data-earnings-question]').fill('다음 목표는?');await page.locator('#earningsQuarterly button[type="submit"]').click();
+    assert((await page.locator('#earningsQuarterly').innerText()).includes('Cloud 로그인'),`${viewport.name}: no fake AI offline`);
+    assert.equal(await page.locator('#earningsQuarterly [data-earnings-question]').inputValue(),'다음 목표는?',`${viewport.name}: failed question retained`);
+    await page.evaluate(()=>{window.earningsTestOldClient=cloudClient;window.earningsTestOldUser=cloudUser;cloudUser={id:'earnings-fixture'};cloudClient={auth:{getSession:async()=>({data:{session:{access_token:'fixture-only'}}})}};earningsRender('quarterly','2026-Q3')});
+    let captured;
+    await page.route('**/functions/v1/hani-earnings-dialogue',route=>{captured=route.request().postDataJSON();return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({ok:true,answer:'現在の状況を確認しましょう。 <script>unsafe()</script>',guidance:['추가 감량 대신 유지 가능성을 먼저 확인합니다.']})})});
+    await page.locator('#earningsQuarterly [data-earnings-context]').fill('내년에는 유지');await page.locator('#earningsQuarterly [data-earnings-question]').fill('다음 목표는?');await page.locator('#earningsQuarterly button[type="submit"]').click();await page.locator('#earningsQuarterly .earnings-messages').getByText('대표님',{exact:true}).waitFor();
+    assert.equal(captured.context,'내년에는 유지');assert.equal(captured.summary.rows,undefined);assert.equal(captured.question,'다음 목표는?');assert.equal(await page.locator('#earningsQuarterly script').count(),0);assert((await page.locator('#earningsQuarterly').innerText()).includes('유지 가능성'));
+    const readableAnswer=await page.evaluate(()=>{
+      const answer='이 답변은 화면 검사용 합성 문장입니다. 확인된 학습 정답률은 62.5%이며 실제 문항 수를 기준으로 계산했습니다. '+ '담당자별 성과와 확인하지 못한 부분을 구분하여 이야기합니다. 원본 수치를 그대로 유지하고 빈 기록을 실패로 해석하지 않습니다. '.repeat(4)+'<script>unsafe()</script> 다음 목표는 미확정 제안이며 자동 저장하지 않습니다.';
+      earningsDraft('quarterly','2026-Q3').answer=answer;earningsRender('quarterly','2026-Q3');
+      const node=document.querySelector('.scene-qa .earnings-call-answer'),style=getComputedStyle(node);
+      return {same:node.textContent.replace(/\s+/g,'')===answer.replace(/\s+/g,''),paragraphs:node.querySelectorAll('p').length,font:parseFloat(style.fontSize),align:style.textAlign,scripts:node.querySelectorAll('script').length};
+    });
+    assert(readableAnswer.same&&readableAnswer.paragraphs>=3&&readableAnswer.scripts===0,`${viewport.name}: Q&A paragraph grouping preserves content and escapes markup`);
+    assert.equal(readableAnswer.font,viewport.name==='mobile'?18:20);assert.equal(readableAnswer.align,'left');
+    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`${viewport.name}: long Q&A no page overflow`);
+    await page.locator('#earningsQuarterly .scene-qa').screenshot({path:join(root,`artifacts/monthly-report/${viewport.name}-qa-readable.png`)});
+    await page.evaluate(()=>{cloudUser={id:'different-fixture'};earningsRender('quarterly','2026-Q3')});assert.equal(await page.locator('#earningsQuarterly .earnings-messages p').count(),0,`${viewport.name}: owner separation`);
+    await page.evaluate(()=>{cloudClient=window.earningsTestOldClient;cloudUser=window.earningsTestOldUser;delete window.earningsTestOldClient;delete window.earningsTestOldUser;earningsRender('quarterly','2026-Q3')});
+    const downloadPromise=page.waitForEvent('download');await page.locator('#earningsQuarterly [data-earnings-ppt]').click();const download=await downloadPromise;assert(download.suggestedFilename().endsWith('.pptx'));await download.saveAs(join(root,`artifacts/monthly-report/${viewport.name}-earnings.pptx`));
+    const pptContent=await page.evaluate(async()=>{
+      const r=earningsAggregate('quarterly','2026-Q3','2026-10-01');
+      const d={context:'',answer:'긴 답변의 마지막 확인 문장입니다. '.repeat(90)+'답변 끝 확인',guidance:['미확정 전망 끝 확인']};
+      const content=new TextDecoder().decode(await (await earningsPptx(r,d)).arrayBuffer());
+      const xmlEscape=value=>String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      return {titles:earningsCallProgramme(r,d).scenes.map((scene,index)=>content.includes(xmlEscape(`${String(index+1).padStart(2,'0')} · ${scene.name} · ${scene.title}`))),metrics:['100,000,000원','2,500,000원','25/40문항','62.5%'].map(value=>content.includes(value)),unknown:content.includes('미확인'),longAnswer:content.includes('답변 끝 확인'),guidance:content.includes('미확정 전망 끝 확인'),images:content.includes('image/jpeg')&&content.includes('ppt/media/image2.jpg'),resolved:!content.includes('{{TITLE}}')&&!content.includes('{{P00}}')};
+    });
+    assert(pptContent.titles.every(Boolean),`${viewport.name}: PPT shares all ten web presenter titles`);
+    assert(pptContent.metrics.every(Boolean),`${viewport.name}: PPT includes six-metric overview facts`);
+    assert(pptContent.unknown&&pptContent.longAnswer&&pptContent.guidance,`${viewport.name}: PPT preserves unknown values and long remarks without truncation`);
+    assert(pptContent.images&&pptContent.resolved,`${viewport.name}: presenter images embedded and editable stage tokens resolved`);
+    assert.equal(await page.evaluate(()=>localStorage.getItem('hani_os_life_v23')),beforeEarnings,`${viewport.name}: earnings/PPT/Q&A do not write canonical data`);
     await page.locator('#monthlyReport').screenshot({path:join(root,`artifacts/monthly-report/${viewport.name}-quarterly.png`)});
     await page.locator('[data-report-board="annual"]').click();
     assert(await page.locator('#monthlyReportAnnualPanel').isVisible(),`${viewport.name}: annual preview board`);
-    assert((await page.locator('#monthlyReportAnnualPanel').innerText()).includes('아직 연간 판정·목표 달성 집계는 제공하지 않습니다'),`${viewport.name}: annual honest state`);
+    assert((await page.locator('#monthlyReportAnnualPanel').innerText()).includes('자동 생성한 실적이나 목표를 대신 넣지 않습니다'),`${viewport.name}: annual does not invent historical goals`);
+    assert.equal(await page.locator('#earningsAnnual [data-earnings-context]').count(),0,`${viewport.name}: annual has no automatic AI or goal extraction`);
+    assert.equal(await page.locator('#annualReportList .annual-story-stage section').count(),4,`${viewport.name}: annual empty design scenes`);
+    assert((await page.locator('#annualReportList').innerText()).includes('DESIGN PREVIEW'),`${viewport.name}: design example clearly labelled`);
+    assert.equal(await page.locator('#annualReportList .annual-story-speakers article').count(),5,`${viewport.name}: annual presenter prompts`);
+    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`${viewport.name}: annual no page overflow`);
+    for(const key of ['cover','overview','presenters','next'])await page.locator(`#annualReportList .annual-story-${key}`).screenshot({path:join(root,`artifacts/monthly-report/${viewport.name}-annual-${key}.png`)});
+    const annual=await page.evaluate(()=>earningsAggregate('annual','2026','2026-10-01'));
+    assert.equal(annual.months.length,12);assert.equal(annual.closed,false);assert.equal(annual.spend,2500000);assert.equal(annual.quizTotal,40);assert.equal(annual.coverage,2);assert.equal(annual.end,null);
+    assert(await page.locator('#annualReportRegister').isDisabled(),`${viewport.name}: annual registration requires validation`);
+    if(viewport.name==='desktop'){
+      const longDownloadPromise=page.waitForEvent('download');
+      await page.evaluate(()=>{const r=earningsAggregate('annual','2026','2026-10-01');r.rows[0].books=Array.from({length:8},(_,i)=>({title:`긴 장면 ${i+1} · ${'완료한 책과 기억할 이야기 '.repeat(8)}`}));const d={context:'현재 상황과 목표를 충분히 설명하는 메모입니다. '.repeat(40).slice(0,1800),answer:'이 답변은 길이 검증용 합성 문장입니다. 실제 AI 응답으로 간주하지 않습니다. '.repeat(40).slice(0,2400),guidance:Array(3).fill('상황을 먼저 확인하고 유지와 성장 방향을 검토하는 미확정 제안입니다. '.repeat(10).slice(0,400))};earningsDownload(r,d)});
+      await (await longDownloadPromise).saveAs(join(root,'artifacts/monthly-report/desktop-annual-long.pptx'));
+    }
+    assert.equal(await page.evaluate(()=>localStorage.getItem('hani_os_life_v23')),beforeEarnings,`${viewport.name}: annual/long export preserves canonical data`);
+    const goalBefore=await page.evaluate(()=>JSON.stringify({goals:state.goals,registry:state.goalRegistry}));
+    await page.evaluate(()=>showView("settings"));
+    assert.equal(await page.locator('#goalRegistryPanel').count(),1);
+    assert.equal(await page.locator('#earningsGoalSettings').count(),0);
+    await page.locator('#earningsGoalPeriod').selectOption('2026-Q3');
+    const registryForm=page.locator('#goalRegistryForm');
+    await registryForm.locator('[name="metric_id"]').selectOption('investment_total_krw');
+    await page.locator('#earningsGoalImport').click();
+    assert.equal(await registryForm.locator('[name="value"]').inputValue(),'100000000');
+    assert.equal(await registryForm.locator('[name="goal_type"]').inputValue(),'quarter');
+    assert.equal(await registryForm.locator('[name="quarter"]').inputValue(),'4');
+    assert.equal(await registryForm.locator('[name="year"]').inputValue(),'2026');
+    assert.equal(await page.evaluate(()=>JSON.stringify({goals:state.goals,registry:state.goalRegistry})),goalBefore,'import is DOM-only');
+    await registryForm.locator('[name="value"]').fill('120000000');
+    await registryForm.locator('button[type="submit"]').click();
+    assert((await page.locator('#goalRegistryPreview').innerText()).includes('120000000'));
+    assert.equal(await page.evaluate(()=>JSON.stringify({goals:state.goals,registry:state.goalRegistry})),goalBefore,'preview is not approval');
+    await registryForm.locator('[name="value"]').fill('125000000');
+    assert.equal(await page.locator('#goalRegistryApprove').count(),0,'edited input invalidates pending approval');
+    await registryForm.locator('button[type="submit"]').click();
+    assert((await page.locator('#goalRegistryPreview').innerText()).includes('125000000'));
+    await page.locator('#goalRegistryCancel').click();
+    await registryForm.locator('[name="metric_id"]').selectOption('books_completed_count');
+    await page.locator('#earningsGoalImport').click();
+    const bookCount=await page.evaluate(()=>earningsAggregate('quarterly','2026-Q3').books);
+    assert.equal(await registryForm.locator('[name="value"]').inputValue(),String(bookCount));
+    await registryForm.locator('[name="metric_id"]').selectOption('body_weight_kg');
+    await registryForm.locator('[name="value"]').fill('95');
+    await page.locator('#earningsGoalImport').click();
+    assert.equal(await registryForm.locator('[name="value"]').inputValue(),'95','no automatic weight-loss target');
+    assert((await page.locator('#earningsGoalBasis').innerText()).includes('추가 감량'));
+    const invalid=await page.evaluate(()=>({
+      missing:earningsRegistryProposal(earningsAggregate('quarterly','2026-Q1','2026-10-05'),'investment_total_krw','2026-10-05'),
+      past:earningsRegistryProposal({...earningsAggregate('quarterly','2026-Q3'),period:'2026-Q1'},'investment_total_krw','2026-10-05'),
+      rollover:earningsRegistryProposal({...earningsAggregate('quarterly','2026-Q3'),period:'2026-Q4'},'investment_total_krw','2027-01-05')
+    }));
+    assert.equal(invalid.missing.available,false);
+    assert.equal(invalid.past.available,false);
+    assert.equal(invalid.rollover.year,2027);
+    assert.equal(invalid.rollover.quarter,1);
+    assert.equal(await page.evaluate(()=>localStorage.getItem('hani_os_life_v23')),beforeEarnings,'proposal/edit/preview/cancel preserves protected storage');
+    assert.equal(await page.evaluate(()=>JSON.stringify({goals:state.goals,registry:state.goalRegistry})),goalBefore);
+    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),viewport.name+': registry no page overflow');
+    await page.locator('#goalRegistryPanel').screenshot({path:join(root,'artifacts/monthly-report/'+viewport.name+'-goal-registry.png')});
+    await page.evaluate(()=>showView("monthlyReport"));
     await page.locator('#monthlyReport').screenshot({path:join(root,`artifacts/monthly-report/${viewport.name}-annual.png`)});
     await page.locator('[data-report-board="monthly"]').click();
     await page.locator('#monthlyReport').screenshot({path:join(root,`artifacts/monthly-report/${viewport.name}.png`)});
@@ -118,5 +228,5 @@ try{
     const actionable=[...new Set(errors)].filter(error=>!error.includes('ERR_NETWORK_ACCESS_DENIED')&&!error.includes('ERR_CONNECTION_REFUSED')&&!error.includes('Supabase JS를 불러오지 못했습니다')&&!error.includes('monthly-smoke-forced-failure'));assert.deepEqual(actionable,[],`${viewport.name}: console errors`);
     await page.close();
   }
-  console.log(JSON.stringify({state:'PASS',checks:['manual closed-month gate','persisted snapshot','source preservation','explicit regeneration','historical accumulation','save failure rollback','no-data/current-month gate','desktop/mobile overflow']},null,2));
+  console.log(JSON.stringify({state:'PASS',checks:['manual closed-month gate','persisted snapshot','source preservation','explicit regeneration','historical accumulation','save failure rollback','no-data/current-month gate','desktop/mobile overflow','quarterly keynote and editable PPT','Q&A paragraph fidelity and readability','canonical Goal Registry DOM-only proposals, edit/preview/cancel and stale approval invalidation']},null,2));
 }finally{await browser.close();await new Promise(resolveClosed=>server.close(resolveClosed))}
