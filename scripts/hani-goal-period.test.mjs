@@ -175,6 +175,16 @@ function loadGoalDraft() {
   return new Function(source.slice(start, end) + '\nreturn {GOAL_METRICS, goalRegistryBuildDraft};')();
 }
 
+// Regression (v2.9.180 dropped these calls and left both settings panels blank).
+test('settings view renders the Data Hub library and Goal Registry panels', () => {
+  const source = readFileSync(root + 'hani-main.js', 'utf8');
+  const start = source.indexOf('function renderStoragePanel(){');
+  assert.ok(start > 0, 'renderStoragePanel not found');
+  const body = source.slice(start, source.indexOf('\n}', start));
+  assert.ok(body.includes('renderDataHubLibrary();'), 'renderStoragePanel must render the Data Hub library');
+  assert.ok(body.includes('renderGoalRegistry();'), 'renderStoragePanel must render the Goal Registry');
+});
+
 test('goal registry UI: BMI and body fat metrics match the period definitions', () => {
   const {GOAL_METRICS} = loadGoalDraft();
   for (const id of ['body_bmi', 'body_fat_percent']) {
