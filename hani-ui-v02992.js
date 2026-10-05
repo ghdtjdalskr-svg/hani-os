@@ -1073,7 +1073,7 @@ function createTabQuoteSelector(random = Math.random) {
     const diaryStats=q('#diary .compact-dashboard');if(diaryStats)diaryStats.hidden=true;
     const series=q('#movieSeriesSection');if(series)series.hidden=true;
   }
-  function cleanupNewsroom(){const news=q('#newsroom'),tabs=q('.newsroom-mode-tabs',news),tools=q('.newsroom-content-actions',news);if(tabs&&tools&&!q('.ds-news-navigation',news)){const nav=document.createElement('div');nav.className='ds-news-navigation page-nav-context-v02992';tabs.before(nav);nav.append(tabs,tools)}q('#haniLifeMarketV02979')?.remove();const nav=q('#haniWeeklyArchiveNavV02970'),actions=q('.newsroom-content-actions');if(nav&&actions&&!actions.contains(nav)){nav.classList.add('compact');actions.prepend(nav)}const usage=q('#investmentNewsUsage');if(usage)usage.textContent='뉴스 데이터는 Life OS 핵심 원장과 분리되어 안전하게 유지됩니다.'}
+  function cleanupNewsroom(){const news=q('#newsroom'),tabs=q('.newsroom-mode-tabs',news),tools=q('.newsroom-content-actions',news);if(tabs&&tools&&!q('.ds-news-navigation',news)){const nav=document.createElement('div');nav.className='ds-news-navigation page-nav-context-v02992';tabs.before(nav);nav.append(tabs,tools)}q('#haniLifeMarketV02979')?.remove();const nav=q('#haniWeeklyArchiveNavV02970'),general=q('#newsroomGeneralPane');if(nav&&general&&nav.parentElement!==general){nav.classList.remove('compact');general.prepend(nav)}const usage=q('#investmentNewsUsage');if(usage)usage.textContent='뉴스 데이터는 Life OS 핵심 원장과 분리되어 안전하게 유지됩니다.'}
   function bindSportsBoard(){
     const root=q('#game');if(!root)return;
     const select=requested=>{

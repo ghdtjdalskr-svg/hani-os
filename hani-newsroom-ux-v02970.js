@@ -376,7 +376,7 @@
       nav.className = 'hani-weekly-archive-nav-v02970';
       nav.innerHTML = `
         <div class="archive-copy">
-          <b>주차별 시장 아카이브</b>
+          <b>종합시황 · 주차별 아카이브</b>
           <span class="archive-status"></span>
         </div>
         <select class="archive-select" aria-label="주간 시황 아카이브 주차 선택"></select>
@@ -406,9 +406,9 @@
       }
 
       if (permissionDenied) {
-        setText(status, 'Cloud Archive 읽기 권한 확인 필요 · 현재는 이번 주 fallback 화면입니다.');
+        setText(status, '종합시황 보관함의 읽기 권한 확인 필요 · 현재 주차 대체 화면이며 저장된 보고서는 아닙니다.');
       } else {
-        setText(status, '현재 주차 표시 · 첫 주간 Archive가 저장되면 과거 주차가 이 목록에 누적됩니다.');
+        setText(status, '종합시황의 현재 주차 표시 · 저장된 보고서는 아직 없습니다. 관심 F/U는 별도 발행 주차입니다.');
       }
       return;
     }
@@ -439,7 +439,7 @@
       setText(weeklyTitle, `${activeLabel} · 시장 한눈에`);
     }
 
-    setText(status, `총 ${buttons.length}주 저장 · 최신 주차가 기본 표시되고 이전 주차는 이 목록에서 다시 볼 수 있습니다.`);
+    setText(status, `선택한 종합시황 · ${activeLabel} · 총 ${buttons.length}주 보관. 이 선택은 관심 F/U에 적용되지 않습니다.`);
   }
 
   function countMatches(text, patterns) {
