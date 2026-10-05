@@ -794,10 +794,15 @@ const DASHBOARD_SLOTS = Object.freeze([
 const copy = value => structuredClone(value);
 const signature = value => JSON.stringify(value);
 function createDashboardRuntime({verify, getBinding, getContext, getSource, canonical,
-  getGoals = () => [], getCoverage = () => ({}), clock = () => new Date().toISOString(),
+  getGoals = () => [], getCoverage = () => ({}), getMonth = () => null, clock = () => new Date().toISOString(),
   storeFactory = createMetricsStore, onChange = () => {}}) {
   let epoch = 0, active = null, busy = false;
   const store = storeFactory({getBinding});
+  // Read-only period selection: retain the real verification/as-of clock.
+  function selectedMonth() {
+    const current = koreaDate(clock()).slice(0, 7), requested = getMonth();
+    return /^\d{4}-(0[1-9]|1[0-2])$/.test(requested || '') && requested <= current ? requested : current;
+  }
   function invalidate() {
     epoch++; active = null; store.invalidate(); onChange();
   }
@@ -807,7 +812,7 @@ function createDashboardRuntime({verify, getBinding, getContext, getSource, cano
   function peek() {
     // Paint never verifies, calculates or writes. Context checks are O(1).
     if (active && (signature(getContext()) !== active.context || getSource() !== active.source ||
-      koreaDate(clock()) !== active.asOf)) invalidate();
+      koreaDate(clock()) !== active.asOf || selectedMonth() !== active.view.month)) invalidate();
     return active ? copy(active.view) : {status: 'OWNER_BINDING_BLOCKED', metrics: [], cache: 'DISABLED'};
   }
   function auditSource() {
@@ -816,7 +821,7 @@ function createDashboardRuntime({verify, getBinding, getContext, getSource, cano
   }
   async function refresh() {
     if (busy) return {status: 'BUSY'};
-    if (active && getBinding() && signature(getContext()) === active.context && koreaDate(clock()) === active.asOf)
+    if (active && getBinding() && signature(getContext()) === active.context && koreaDate(clock()) === active.asOf && selectedMonth() === active.view.month)
       return peek();
     busy = true; invalidate(); const token = epoch;
     try {
@@ -825,7 +830,7 @@ function createDashboardRuntime({verify, getBinding, getContext, getSource, cano
       const binding = getBinding();
       if (verification.status !== 'VERIFIED' || !binding) return peek();
       const sourceRef = getSource(), context = signature(getContext()), now = clock(), asOf = koreaDate(now);
-      const month = asOf.slice(0, 7), months = [previousMonth(month), month];
+      const month = selectedMonth(), months = [previousMonth(month), month];
       const source = Object.fromEntries(DEFAULT_REGISTRY.map(def => [def.source, copy(sourceRef[def.source])]));
       const goals = copy(getGoals()), coverage = copy(getCoverage());
       let cached = {status: 'CACHE_MISS', rows: []}, cache = 'MEMORY_ONLY';
@@ -860,7 +865,7 @@ function createDashboardRuntime({verify, getBinding, getContext, getSource, cano
           cache = published.status === 'PUBLISHED' || published.status === 'UNCHANGED' ? published.status : 'MEMORY_ONLY';
         }
       } catch { /* IndexedDB unavailable must not break HANI */ }
-      if (!live(token, binding) || signature(getContext()) !== context || getSource() !== sourceRef) return {status: 'CONTEXT_CHANGED'};
+      if (!live(token, binding) || signature(getContext()) !== context || getSource() !== sourceRef || selectedMonth() !== month) return {status: 'CONTEXT_CHANGED'};
       const metrics = DEFAULT_REGISTRY.map(def => {
         const row = consumedRows.find(r => r.month === month && r.metric_id === def.metric_id);
         const baseline = consumedRows.find(r => r.month === months[0] && r.metric_id === def.metric_id);
@@ -4453,7 +4458,7 @@ function cloudCreateRuntimeOwnerVerifier({getClient, getContext, getSource, comp
   };
 }
 
-let dataHubRuntime=null,dataHubVerifier=null;
+let dataHubRuntime=null,dataHubVerifier=null,dataHubSelectedMonth=null;
 function dataHubContext(){return cloudUser&&cloudClient?{projectRef:new URL(cloudConfig().url).hostname,
   userId:cloudUser.id,datasetId:"operational-life-state",sessionEpoch:String(cloudOwnerVerificationEpoch)}:null}
 function dataHubBinding(){const binding=dataHubVerifier?.getBinding();return binding?{...binding,sessionEpoch:String(binding.sessionEpoch)}:null}
@@ -4462,7 +4467,7 @@ function dataHubAuditSource(){dataHubRuntime?.auditSource()}
 async function dataHubRefresh(){
   if(!window.HANI_DATA_HUB){dataHubRenderDashboard();return}
   if(!dataHubRuntime)dataHubRuntime=window.HANI_DATA_HUB.createDashboardRuntime({
-    getSource:()=>state,getContext:dataHubContext,getBinding:dataHubBinding,
+    getSource:()=>state,getContext:dataHubContext,getBinding:dataHubBinding,getMonth:()=>dataHubSelectedMonth,
     // Only approved history participates; never import legacy/default scalar targets.
     getGoals:()=>Array.isArray(state.goalRegistry)?state.goalRegistry:[],canonical:{version:"85c8110-brokerCalc-ledgerCalc",
       brokerTotal:row=>brokerCalc(row).total,ledgerSpending:row=>ledgerCalc(row).jispiT},
@@ -4481,7 +4486,24 @@ function dataHubRenderDashboard(){
     ["hinaJones","","homeBooks","homeContentMeta"],["harukei","","homeExerciseSteps","homeExerciseAvg"],
     ["jispi","","homeJispi","homeJispiMeta"],["hinkei","","homeHinkei","homeHinkeiMeta"]];
   const text=metric=>api?.dashboardText(metric)||{value:"—",comparison:"원본 검증 대기",status:"OWNER_BINDING_BLOCKED"};
-  if($("dataHubPeriod"))$("dataHubPeriod").textContent=`이번 달 ${view.month||today().slice(0,7)} · 아래 6개 카드 기준`;
+  const month=dataHubSelectedMonth||today().slice(0,7);
+  if($("dataHubMonth")){
+    $("dataHubMonth").value=month;$("dataHubMonth").max=today().slice(0,7);
+    $("dataHubMonth").onchange=async()=>{
+      const value=$("dataHubMonth").value;
+      if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(value)||value>today().slice(0,7)){$("dataHubMonth").value=month;return}
+      dataHubSelectedMonth=value;dataHubRuntime?.invalidate();await dataHubRefresh();
+    };
+  }
+  if($("dataHubPeriod"))$("dataHubPeriod").textContent=`조회 월 ${view.month||month} · 아래 6개 카드 기준`;
+  if($("dataHubPeriodHelp"))$("dataHubPeriodHelp").textContent=view.status==="VERIFIED"?
+    "6개 지표는 선택한 월의 기록만 집계합니다. 기록 없음은 데이터 삭제나 원본 검증 실패를 뜻하지 않습니다. 과거 기록은 조회 월을 바꿔 확인하세요. 기록 없는 값을 0이나 이전 값으로 채우지 않습니다. 할 일·캘린더는 이번 달 기준입니다.":
+    "원본 검증을 통과하기 전에는 수치를 표시하지 않습니다. 로그인·연결을 확인한 뒤 지표 검증·갱신을 눌러 주세요. 불일치가 계속되면 설정의 읽기 전용 원본 확인 결과를 확인하세요. 자동 덮어쓰기나 복구는 실행하지 않습니다.";
+  if($("dataHubLatestRecord")){
+    const latest=view.status==="VERIFIED"?dataHubLatestRecordMonth(state,today().slice(0,7)):null;
+    $("dataHubLatestRecord").textContent=view.status!=="VERIFIED"?"최근 기록 안내도 원본 검증 후 표시합니다.":
+      latest?`입력 기록의 최근 월: ${latest} · 확정 지표 여부는 각 카드에서 확인하세요.`:"날짜가 확인되는 입력 기록이 없습니다.";
+  }
   for(const [key,,valueId,metaId] of slots){
     const metric=view.metrics.find(m=>m.key===key),display=text(metric);
     if($(valueId))$(valueId).textContent=display.value;
@@ -4524,6 +4546,11 @@ function dataHubRenderDashboard(){
     const html=`<div class="secondary-widget-visual"><strong class="secondary-widget-value">${esc(display.value)}</strong></div><div class="secondary-widget-details"><div><small>비교</small><b>${esc(display.comparison)}</b></div><div><small>데이터 품질</small><b>${esc(display.detail||display.status)}</b></div></div>`;
     if($("homeMixDonut").dataset.hubHtml!==html){$("homeMixDonut").innerHTML=html;$("homeMixDonut").dataset.hubHtml=html}}
   if($("homeMixLegend"))$("homeMixLegend").textContent="";
+}
+function dataHubLatestRecordMonth(source,currentMonth){
+  const fields={investmentBrokerSnapshots:["period"],body:["date"],books:["readDate","completedDate"],exercise:["date"],ledgerMonths:["month"],learningQuizzes:["completedAt","scheduledDate"]};
+  const months=Object.entries(fields).flatMap(([key,names])=>(Array.isArray(source?.[key])?source[key]:[]).flatMap(row=>names.map(name=>String(row?.[name]||"").slice(0,7))));
+  return months.filter(month=>/^\d{4}-(0[1-9]|1[0-2])$/.test(month)&&month<=currentMonth).sort().at(-1)||null;
 }
 let cloudOwnerVerificationEpoch=1;
 let cloudOwnerVerification=null;

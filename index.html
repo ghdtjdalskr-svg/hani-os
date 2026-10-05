@@ -275,7 +275,9 @@
         <figcaption id="seasonalLifeCaption"><b id="seasonalLifeLabel">SPRING · 벚꽃 사진 산책</b><span id="seasonalLifeCast">하니 · 히나 · 나은 · 유나</span></figcaption>
       </figure>
       <div class="life-market-head"><div><span class="eyebrow purple">LIFE MARKET</span><h3>성민 라이프 마켓</h3></div><span>카드를 선택하면 아래 분석이 함께 바뀝니다.</span></div>
-      <p class="sub"><b id="dataHubPeriod">이번 달 · 아래 6개 카드 기준</b><br><span id="dataHubStatus" role="status" aria-live="polite">원본 검증 대기</span> <button class="btn sm" id="dataHubRefresh" type="button">지표 검증·갱신</button></p>
+      <p class="sub"><label for="dataHubMonth">지표 조회 월 </label><input id="dataHubMonth" type="month" aria-describedby="dataHubPeriodHelp"><br><b id="dataHubPeriod">조회 월 · 아래 6개 카드 기준</b><br><span id="dataHubStatus" role="status" aria-live="polite">원본 검증 대기</span> <button class="btn sm" id="dataHubRefresh" type="button">지표 검증·갱신</button></p>
+      <p class="sub" id="dataHubPeriodHelp" role="status" aria-live="polite">원본 검증 전에는 기록을 표시하지 않습니다.</p>
+      <p class="sub" id="dataHubLatestRecord">최근 기록 안내도 원본 검증 후 표시합니다.</p>
       <div class="home-kpi-grid life-market-grid" id="lifeMarketGrid">
         <button class="home-kpi finance-tone is-selected" data-life-index="hasdaq"><div class="kpi-head"><span>HASDAQ</span><em>FINANCE</em></div><strong id="homeAsset">0원</strong><small id="homeInvestRate">달성률 0%</small><div class="home-mini-chart" id="homeAssetMini"></div></button>
         <button class="home-kpi health-tone" data-life-index="ne100"><div class="kpi-head"><span>N&amp;E 100</span><em>HEALTH</em></div><strong id="homeWeight">기록 없음</strong><small id="homeWeightGoal">목표를 확인해요</small><div class="home-mini-chart" id="homeWeightMini"></div></button>
