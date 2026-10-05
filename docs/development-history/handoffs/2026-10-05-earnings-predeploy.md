@@ -13,6 +13,8 @@
 - 보호 경계: 보호 키/내부 버전·최신 보호/auth/backup·계약 2.0.8 유지. 실제 연간 QA 파일 등록은 운영 write이므로 별도 명시 승인 확인 필요. 개인 원본/인증정보를 인수인계에 포함하지 않음.
 - 최신 main에는 이후 목표/배포 확인 UI 변경이 존재하므로 hani-main/index 충돌 조정 필요. 이 base 그대로 통합/배포 금지. 다른 branch·PR 수정 없음.
 - 다음: Claude가 최신 main과 범위 diff 대조 → 충돌 조정 → 남은 기능 QA → 동일 후보 필수 gate → 배포 열차 절차. 개발 담당은 운영 PR을 열지 않음.
+- 인계 commit 검사: JS syntax 통과. tracked diff는 CRLF 허용 검사 통과했으나 신규 vendor PDF.js 2파일의 첫 주석 trailing whitespace 경고가 staged 전체 검사에서 발견됨. 원본 vendor를 변경하지 않았으며 최종 전체 diff PASS 아님.
+- 과거 자동 배포 `hani-3`의 설정은 현재 계정 `.codex/automations`에서 발견되지 않음. 새 자동 배포를 등록하지 않으며 이 작업에서 PR/병합/배포를 실행하지 않음. 과거 다른 계정 자동화의 중지 확인은 미완료.
 
 ## 작업 식별
 
