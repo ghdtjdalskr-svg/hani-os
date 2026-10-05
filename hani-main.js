@@ -4920,6 +4920,8 @@ function renderDataHubLibrary(){
   if($("dataHubExportCsv"))$("dataHubExportCsv").onclick=()=>{const cell=v=>'"'+String(v??"").replace(/"/g,'""')+'"';download('\uFEFF'+[["month","asOfDate","total","currency"],...dataHubLibraryProjection().monthly.map(r=>[r.month,r.asOfDate,r.total,r.currency])].map(r=>r.map(cell).join(",")).join("\r\n"),"text/csv;charset=utf-8","csv")};
 }
 function renderStoragePanel(){
+  renderDataHubLibrary();
+  renderGoalRegistry();
   const recoveryPanel=$("loadRecoveryPanel");if(recoveryPanel)recoveryPanel.hidden=!loadRecovery.active;
   const copyStatus=$("loadRecoveryCopyStatus");if(copyStatus)copyStatus.textContent=loadRecovery.verified?"원본 격리 사본의 재읽기 확인을 완료했습니다. 검증된 백업을 선택해 복원할 수 있습니다.":"격리 사본을 보관하지 못했습니다. 원본은 유지합니다. 먼저 내려받고 저장 공간·권한을 확인한 뒤 다시 열어 주세요.";
 
@@ -5301,7 +5303,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.184";
+const HANI_DISPLAY_VERSION="2.9.185";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
