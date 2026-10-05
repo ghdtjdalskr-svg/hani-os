@@ -30,3 +30,15 @@
 - 신규 테스트: 임의/private 오류 내용은 OWNER_CHECK로 제한. 가상 startup 경로 첫 이벤트는 NOT_VERIFIED 상태 지속이 재현됐으나, 이후 기존 runtime.refresh 재검증으로 실제 가상 source 일치와 6지표 VERIFIED 확인. PC1440/390. fake Cloud 원본 없음 시 완료된 거부(초기 NOT_VERIFIED가 아님)와 원본 보존도 확인.
 - 이 결과는 초기 자동 검증 안정성 해결 PASS가 아님. 실제 대표님 계정에서 지표 검증·갱신 및 새 확인 코드/read-only 원본 진단 결과 필요. Cloud/복원/backup 담당 구현 수정 없음. 분기/연간 QA는 여전히 남음.
 - 실행: `node scripts/hani-dashboard-period.test.mjs`; `node scripts/hani-dashboard-period-ui.test.mjs <playwright> <chrome> --startup`. PASS 범위는 가상 사용자 검증/재검증·월 선택·거부 결과 및 보존, 실제 계정/운영 PASS 아님.
+
+## 월 1회 투자·소비 입력 주기 개선 / 2026-10-06
+
+- 대표님 승인: 투자·소비는 매달 한 번 입력하므로 최근 확정 기록을 실제 기준월과 함께 표시하도록 개선. 개발·검증만, 배포 열차 유지.
+- 변경 파일: `hani-main.js` 기존 dashboard runtime/renderer, `index.html` 투자·소비 meta 줄바꿈, `scripts/hani-dashboard-period.test.mjs`, `scripts/hani-dashboard-period-ui.test.mjs`, 이 인수인계.
+- 투자: 조회 월 이하 최근 실제 confirmed 비포지션 snapshot의 canonical 총액. 소비: 실제 오늘까지 종료된 18→17 결산 중 조회 월 이하 최근 유효 입력. 조회 월을 과거로 바꾸면 그 이후 기록을 가져오지 않음. 종료되지 않은 소비 결산·invalid/stale·미확인 빈 ledger의 0은 확정 기록으로 채택하지 않음.
+- 원본 관측의 row.month/as_of/결산기간을 그대로 유지. 해당 기준월의 정확한 전월 및 목표를 비교하며, 없는 전월/과거 목표를 추정하지 않음. 일별 지표는 선택 월 그대로. Coverage 미확인은 PARTIAL 유지(결산기간 종료가 원본 완전성 인증은 아님). 검증 차단 우회 없음.
+- 기존 월간 엔진·저장 schema·protected source·auth·Cloud write 변경 없음. 필요한 실제 기준월과 전월을 기존 파생 캐시 generation에 포함하며 새 저장 키/경로 없음. 현재 bundle generator 부재 위험은 앞 기록과 동일.
+- PASS: `node scripts/hani-dashboard-period.test.mjs` 기존 period 7/latest-date 3/안전 code + 월간 입력·기준 날짜·정확한 전월·분기 경계 예산·과거 조회·draft/future·소비 open/closed·빈 ledger·다른 지표 scope·원본 불변 실행 검증. `node --check hani-main.js`; `git -c core.whitespace=cr-at-eol diff --check`.
+- PASS: `node scripts/hani-dashboard-period-ui.test.mjs <playwright> <chrome>` 가상 PC1440/모바일390 실제 renderer/event·최근 자산/소비 기간 표시·다른 지표 선택 월 유지·검증 거부·protected storage 불변. 기준 날짜가 ellipsis로 잘리던 부분은 기존 meta 슬롯 줄바꿈으로 수정 후 재검증. 격리 QA 화면은 `qa-evidence/dashboard-monthly-cadence-{1440,390}.png` (commit 제외). 실제 계정/운영 화면 PASS 아님.
+- 회귀 PASS: `node --test scripts/hani-goal-period.test.mjs` 19건; `node scripts/hani-owner-verification-diagnostic.test.mjs` 7건.
+- 이번 월간 표시 개선 개발·targeted test 완료. 전체 후속 상태는 **진행 중**: 실제 계정 초기 검증·보고 후보 이식/실제 답변 PPT·인증 연간 QA는 아직 남음. 새 서버 함수/배포 순서 변경 없음. 버전185·캐시태그 유지, main/운영 PR/배포 없음. Claude 열차 인계 시 이 범위와 전체 미검증을 구분해야 함.

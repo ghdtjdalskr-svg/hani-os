@@ -29,7 +29,7 @@ try{
    // is separately covered by hani-owner-verification-runtime.test.mjs.
    window.periodFixtureVerified=true;
    const binding={projectRef:'fixture',userId:'fixture-owner',sourceOwnerId:'fixture-owner',sourceOwnerVerified:true,datasetId:'fixture',sessionEpoch:'1'};
-   dataHubRuntime=window.HANI_DATA_HUB.createDashboardRuntime({getSource:()=>state,getContext:()=>binding,getBinding:()=>window.periodFixtureVerified?binding:null,
+   dataHubRuntime=window.HANI_DATA_HUB.createDashboardRuntime({getSource:()=>window.periodFixtureSource||state,getContext:()=>binding,getBinding:()=>window.periodFixtureVerified?binding:null,
     verify:async()=>({status:window.periodFixtureVerified?'VERIFIED':'OWNER_BINDING_BLOCKED'}),getMonth:()=>dataHubSelectedMonth,
     canonical:{version:'fixture',brokerTotal:row=>brokerCalc(row).total,ledgerSpending:row=>ledgerCalc(row).jispiT},onChange:dataHubRenderDashboard,
     storeFactory:()=>({invalidate(){},async activate(){throw new Error('Isolated memory store')}})});
@@ -46,6 +46,21 @@ try{
   assert((await page.locator('#dataHubPeriod').innerText()).includes('2026-09'));
   assert((await page.locator('#dataHubPeriodHelp').innerText()).includes('데이터 삭제'));
   assert.equal(await page.evaluate(()=>dataHubRuntime.peek().asOf),await page.evaluate(()=>today()));
+  if(!process.argv.includes('--startup')){
+   await page.evaluate(async()=>{
+    window.periodFixtureSource={...structuredClone(state),investmentBrokerSnapshots:[
+     {mode:'actual',status:'confirmed',period:'2026-09',snapshotDate:'2026-09-30',accounts:[]}],
+     ledgerMonths:[{month:'2026-09',items:[{date:'2026-09-10',category:'variable',amount:70000}]}]};
+    dataHubSelectedMonth='2026-10';dataHubRuntime.invalidate();await dataHubRuntime.refresh();
+   });
+   assert((await page.locator('#homeInvestRate').innerText()).includes('최근 확정 자산 · 2026-09 · 2026-09-30'));
+   assert((await page.locator('#homeJispiMeta').innerText()).includes('최근 마감 소비 · 2026-08-18~2026-09-17'));
+   assert.notEqual(await page.locator('#homeAsset').innerText(),'기록 없음');
+   assert.equal(await page.evaluate(()=>dataHubRuntime.peek().metrics.find(m=>m.key==='ne100').row.month),'2026-10');
+   assert.equal(await page.evaluate(()=>localStorage.getItem(STORAGE_KEY)),before);
+   const out=path.join(root,'qa-evidence');fs.mkdirSync(out,{recursive:true});
+   await page.locator('#lifeMarketGrid').screenshot({path:path.join(out,`dashboard-monthly-cadence-${width}.png`)});
+  }
   await page.evaluate(()=>{window.periodFixtureVerified=false;});
   if(process.argv.includes('--startup'))await page.evaluate(()=>{
    cloudClient={auth:{getUser:async()=>({data:{user:{id:'fixture-owner'}},error:null})},from:()=>({select:()=>({eq:()=>({limit:async()=>({data:[],error:null})})})})};

@@ -839,24 +839,46 @@ function createDashboardRuntime({verify, getBinding, getContext, getSource, cano
       }
       phase = 'SOURCE_SNAPSHOT';
       const sourceRef = getSource(), context = signature(getContext()), now = clock(), asOf = koreaDate(now);
-      const month = selectedMonth(), months = [previousMonth(month), month];
+      const month = selectedMonth();
       const source = Object.fromEntries(DEFAULT_REGISTRY.map(def => [def.source, copy(sourceRef[def.source])]));
       const goals = copy(getGoals()), coverage = copy(getCoverage());
       let cached = {status: 'CACHE_MISS', rows: []}, cache = 'MEMORY_ONLY';
       try { await store.activate(binding); cached = await store.readActive(); } catch { /* safe memory fallback */ }
       if (!live(token, binding)) return blocked('CONTEXT_CHANGED');
       phase = 'METRIC_CALCULATION';
-      const sourceContexts = {};
-      const rows = months.flatMap(m => {
+      const sourceContexts = {}, calculated = new Map();
+      const calculate = m => {
+        if (calculated.has(m)) return calculated.get(m);
         const sourceContext = Object.fromEntries(DEFAULT_REGISTRY.map(def => [def.source,
           {ready: Array.isArray(source[def.source]), complete: false, ...(coverage[m]?.[def.source] || {})}]));
         // No period-completeness provenance in operational books: absence is NOT a confirmed zero.
         if (!sourceContext.books.complete && !source.books?.some(row => row.status === 'read' &&
           String(row.readDate || row.completedDate || '').startsWith(m))) sourceContext.books.ready = false;
         sourceContexts[m] = sourceContext;
-        return calculateMonth(source, {month: m, asOf, calculatedAt: now, canonical, sourceContext,
+        const result = calculateMonth(source, {month: m, asOf, calculatedAt: now, canonical, sourceContext,
           previousRows: cached.rows || []});
-      });
+        calculated.set(m, result); return result;
+      };
+      // Monthly-entry cards retain their true source period, never fabricate a current-month observation.
+      // Coverage uncertainty stays PARTIAL; invalid/stale observations and empty unverified ledgers cannot qualify.
+      const basisMonths = {};
+      for (const [id, sourceKey, field] of [
+        ['investment_total_krw', 'investmentBrokerSnapshots', 'period'],
+        ['spending_jispi_krw', 'ledgerMonths', 'month']
+      ]) {
+        const candidates = [...new Set((source[sourceKey] || []).map(row => row[field]))]
+          .filter(m => /^\d{4}-(0[1-9]|1[0-2])$/.test(m || '') && m <= month).sort().reverse();
+        for (const m of candidates) {
+          if (id === 'spending_jispi_krw' && `${m}-17` > asOf) continue;
+          const row = calculate(m).find(r => r.metric_id === id);
+          if (row.value !== null && ['CONFIRMED', 'PARTIAL'].includes(row.status) &&
+              row.reasons.every(reason => reason === 'COVERAGE_UNVERIFIED') &&
+              (row.sample_count > 0 || row.coverage.complete)) { basisMonths[id] = m; break; }
+        }
+      }
+      const months = [...new Set([previousMonth(month), month,
+        ...Object.values(basisMonths).flatMap(m => [previousMonth(m), m])])].sort();
+      const rows = months.flatMap(calculate);
       // One coherent generation uses the conservative intersection of period coverage.
       const sourceContext = Object.fromEntries(DEFAULT_REGISTRY.map(def => [def.source, {
         ready: months.every(m => sourceContexts[m][def.source].ready),
@@ -879,10 +901,14 @@ function createDashboardRuntime({verify, getBinding, getContext, getSource, cano
       if (!live(token, binding) || signature(getContext()) !== context || getSource() !== sourceRef || selectedMonth() !== month) return blocked('CONTEXT_CHANGED');
       phase = 'METRIC_COMPARISON';
       const metrics = DEFAULT_REGISTRY.map(def => {
-        const row = consumedRows.find(r => r.month === month && r.metric_id === def.metric_id);
-        const baseline = consumedRows.find(r => r.month === months[0] && r.metric_id === def.metric_id);
-        const goal = resolveGoal(goals, def, {month, asOf, evaluationAt: now});
-        return {key: DASHBOARD_SLOTS.find(s => s[1] === def.metric_id)[0], row,
+        const monthlyEntry = ['investment_total_krw', 'spending_jispi_krw'].includes(def.metric_id);
+        const basisMonth = basisMonths[def.metric_id] || month;
+        const calculatedRow = consumedRows.find(r => r.month === basisMonth && r.metric_id === def.metric_id);
+        // An open settlement or invalid latest entry is not a confirmed monthly result.
+        const row = monthlyEntry && !basisMonths[def.metric_id] ? {...calculatedRow, value: null} : calculatedRow;
+        const baseline = consumedRows.find(r => r.month === previousMonth(basisMonth) && r.metric_id === def.metric_id);
+        const goal = resolveGoal(goals, def, {month: basisMonth, asOf, evaluationAt: now});
+        return {key: DASHBOARD_SLOTS.find(s => s[1] === def.metric_id)[0], row, monthlyEntry,
           comparison: compareMetric(row, baseline, def, goal), goal};
       });
       active = {context, source: sourceRef, asOf, view: {status: 'VERIFIED', metrics, cache, month, asOf}};
@@ -914,7 +940,10 @@ function dashboardText(metric) {
   const quality = row.reasons.includes('ZERO_STEPS_AMBIGUITY') ? ' · 0보 입력 구분 불가' : '';
   const observed = row.observed_days !== undefined ? ` · 관측 ${row.observed_days}일` : '';
   const period = row.period_basis === 'settlement_18_17' ? ` · ${row.period_start}~${row.period_end} (18→17)` : '';
-  return {value, comparison, status: row.status,
+  const basis = !metric.monthlyEntry ? '' : row.value === null ? '확정 기록 대기' :
+    row.metric_id === 'investment_total_krw' ? `최근 확정 자산 · ${row.month} · ${row.as_of}` :
+    `최근 마감 소비 · ${row.period_start}~${row.period_end}`;
+  return {value, comparison, status: row.status, basis,
     detail: `${row.status} · 기준 ${row.as_of || '미확인'}${observed}${quality}${period}`};
 }
 
@@ -4506,9 +4535,9 @@ function dataHubRenderDashboard(){
       dataHubSelectedMonth=value;dataHubRuntime?.invalidate();await dataHubRefresh();
     };
   }
-  if($("dataHubPeriod"))$("dataHubPeriod").textContent=`조회 월 ${view.month||month} · 아래 6개 카드 기준`;
+  if($("dataHubPeriod"))$("dataHubPeriod").textContent=`조회 월 ${view.month||month} · 투자·소비는 최근 확정 기록 기준`;
   if($("dataHubPeriodHelp"))$("dataHubPeriodHelp").textContent=view.status==="VERIFIED"?
-    "6개 지표는 선택한 월의 기록만 집계합니다. 기록 없음은 데이터 삭제나 원본 검증 실패를 뜻하지 않습니다. 과거 기록은 조회 월을 바꿔 확인하세요. 기록 없는 값을 0이나 이전 값으로 채우지 않습니다. 할 일·캘린더는 이번 달 기준입니다.":
+    "투자는 조회 월까지의 최근 확정 자산, 소비는 종료된 결산기간(전월 18일~당월 17일)의 최근 입력 기록을 표시합니다. 각 카드에 실제 기준월·기간을 명시하며 미확인 범위는 그대로 표시합니다. 다른 지표는 선택한 월 기준입니다. 기록 없음은 데이터 삭제를 뜻하지 않으며, 없는 비교값은 추정하지 않습니다. 할 일·캘린더는 이번 달 기준입니다.":
     "원본 검증을 통과하기 전에는 수치를 표시하지 않습니다. 로그인·연결을 확인한 뒤 지표 검증·갱신을 눌러 주세요. 불일치가 계속되면 설정의 읽기 전용 원본 확인 결과를 확인하세요. 자동 덮어쓰기나 복구는 실행하지 않습니다.";
   if($("dataHubLatestRecord")){
     const latest=view.status==="VERIFIED"?dataHubLatestRecordMonth(state,today().slice(0,7)):null;
@@ -4518,7 +4547,7 @@ function dataHubRenderDashboard(){
   for(const [key,,valueId,metaId] of slots){
     const metric=view.metrics.find(m=>m.key===key),display=text(metric);
     if($(valueId))$(valueId).textContent=display.value;
-    if($(metaId))$(metaId).textContent=display.comparison+" · "+display.status+
+    if($(metaId))$(metaId).textContent=(display.basis?display.basis+" · ":"")+display.comparison+" · "+display.status+
       (metric?.row.observed_days!==undefined?` · 관측 ${metric.row.observed_days}일`:"")+
       (metric?.row.reasons.includes("ZERO_STEPS_AMBIGUITY")?" · 0보 입력 구분 불가":"");
     const card=document.querySelector(`#lifeMarketGrid [data-life-index="${key}"]`);
