@@ -76,6 +76,27 @@ function newsMaterialCount(questions: any[], sources: any[]) {
     && String(q?.explanation || '').includes(s.source_url))).length;
 }
 
+// Return only validation flags, never credentials, source bodies or user records.
+function newsMaterialDiagnostics(questions: any[], sources: any[]) {
+  return questions.map((q, index) => {
+    const prompt = String(q?.prompt || ''), explanation = String(q?.explanation || '');
+    const source = sources.find(s => explanation.includes(`[${s.source_id}]`))
+      || sources.find(s => prompt.includes(s.title));
+    if (!source) return { question: index + 1, source_id: null, missing: ['source_reference'] };
+    const checks = {
+      title: prompt.includes(source.title),
+      summary: prompt.includes(source.summary.slice(0,260)),
+      date: prompt.includes(`자료 기준일 ${source.published_at.slice(0,10)}`),
+      source_name: prompt.includes(source.source_name),
+      briefing_label: source.material !== 'macro' || prompt.includes('[저장된 브리핑 요약]'),
+      source_id: explanation.includes(`[${source.source_id}]`),
+      source_url: explanation.includes(source.source_url),
+    };
+    return { question: index + 1, source_id: source.source_id,
+      missing: Object.entries(checks).filter(([,pass]) => !pass).map(([name]) => name) };
+  });
+}
+
 function systemPrompt(quizSize: number, weaknessCount: number, category: string, sourceCount: number, isRetry: boolean, newsMinimum = 0) {
   const shared = [
     "당신은 PROJECT HANI의 히나 학습 Agent입니다.",
@@ -182,6 +203,7 @@ Deno.serve(async (req) => {
   const output = extractOutputText(ai); let quiz: any = null;
   try { quiz = JSON.parse(output); } catch (_) { return json({ ok:false, error:"QUIZ_PARSE_FAILED", message:"퀴즈 JSON 파싱에 실패했습니다.", db_write:false, hani_state_touched:false }, 502); }
   if (!Array.isArray(quiz?.questions) || quiz.questions.length !== quizSize) return json({ ok:false, error:"QUIZ_COUNT_INVALID", message:`정확히 ${quizSize}문제를 생성하지 못했습니다.`, db_write:false, hani_state_touched:false }, 502);
-  if (newsMaterialCount(quiz.questions,sources) < newsMinimum) return json({ok:false,error:'QUIZ_NEWS_MATERIAL_MISSING',message:'실제 뉴스 소재와 출처가 필요한 만큼 포함되지 않아 저장하지 않았습니다. 기존 문제는 유지됩니다.',db_write:false,hani_state_touched:false},502);
+  const newsCount = newsMaterialCount(quiz.questions,sources);
+  if (newsCount < newsMinimum) return json({ok:false,error:'QUIZ_NEWS_MATERIAL_MISSING',message:'실제 뉴스 소재와 출처가 필요한 만큼 포함되지 않아 저장하지 않았습니다. 기존 문제는 유지됩니다.',validation:{required:newsMinimum,matched:newsCount,questions:newsMaterialDiagnostics(quiz.questions,sources)},usage:ai?.usage || null,model_status:ai?.status || null,db_write:false,hani_state_touched:false},502);
   return json({ ok:true, service:"PROJECT HANI", function:"hani-learning-quiz", version:"0.4.1", feedback_applied:true, category_rotation_applied:true, news_material_minimum:newsMinimum, requested_count:requestedCount, quiz, model:String(ai?.model || "gpt-5.6-luna"), usage:ai?.usage || null, latency_ms:Date.now() - startedAt, db_write:false, hani_state_touched:false, store:false, message:`오늘의 학습 퀴즈 ${quizSize}문제를 생성했습니다. 서버는 학습 기록을 저장하지 않았습니다.` });
 });

@@ -60,7 +60,10 @@ const project={id:'p',name:'경제 사례 학습',category:'economy',quizSize:5,
   const good=await handler(request());assert.equal(good.status,200);assert.equal((await good.json()).news_material_minimum,2);assert.match(modelRequest.instructions,/난이도를 높이라는 요청이 아닙니다/);
   assert.match(modelRequest.instructions,/앞 260자를 원문 그대로/);
   requestMode='title-only';assert.equal((await handler(request())).status,502);
-  requestMode='basic';const bad=await handler(request());assert.equal(bad.status,502);assert.equal((await bad.json()).error,'QUIZ_NEWS_MATERIAL_MISSING');
+  requestMode='basic';const bad=await handler(request());assert.equal(bad.status,502);const rejected=await bad.json();assert.equal(rejected.error,'QUIZ_NEWS_MATERIAL_MISSING');
+  assert.equal(rejected.validation.required,2);assert.equal(rejected.validation.matched,0);
+  assert.deepEqual(Array.from(rejected.validation.questions[0].missing),['source_reference']);
+  assert.equal(JSON.stringify(rejected).includes('fixture-only'),false,'Diagnostics must not expose credentials.');
   assert.equal(/localStorage\.(setItem|removeItem|clear)/.test(client),false);
   assert.equal(/\.from\([^)]*\)\s*\.\s*(insert|update|delete|upsert)/.test(edge),false);
   state.learningProjects=[project];const callsBefore=requests.length;context.window.renderStudyFixture();
