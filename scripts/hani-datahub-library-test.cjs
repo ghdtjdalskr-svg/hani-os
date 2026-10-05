@@ -1,0 +1,12 @@
+'use strict';
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const source=fs.readFileSync(require('node:path').join(__dirname,'../hani-main.js'),'utf8');
+const code=source.slice(source.indexOf('function dataHubLibraryProjection()'),source.indexOf('function renderDataHubLibrary()'));
+const state={goalRegistry:[{goal_id:'goal',value:100}]},before=JSON.stringify(state);
+const ctx={state,structuredClone,officialBrokerSorted:()=>[{period:'2026-09',snapshotDate:'2026-09-30'}],brokerCalc:()=>({total:540463}),brokerAggregatedHoldings:()=>[{name:'ETF',ticker:'123',quantity:4,hasEvaluation:false,evaluation:0}],dataHubRuntime:{peek:()=>({status:'OWNER_BINDING_BLOCKED',metrics:[{private:'never-export'}]})},window:{HANI_DATA_HUB:{dashboardText:()=>({value:'10',comparison:'target'})}}};
+vm.createContext(ctx);vm.runInContext(code,ctx);
+const result=ctx.dataHubLibraryProjection();assert.equal(result.monthly[0].total,540463);assert.equal(result.monthly[0].holdings[0].evaluation,null);assert.equal(result.metrics.length,0);assert.equal(JSON.stringify(state),before);
+result.goals[0].value=999;assert.equal(state.goalRegistry[0].value,100);
+ctx.dataHubRuntime.peek=()=>({status:'VERIFIED',metrics:[{key:'hasdaq',row:{month:'2026-09',value:10,accountNumber:'excluded'},owner:'excluded'}]});
+const verified=ctx.dataHubLibraryProjection();assert.equal(verified.metrics.length,1);assert.equal(JSON.stringify(verified).includes('excluded'),false);
+console.log('PASS: confirmed history, missing evaluation retained, owner-blocked metrics withheld, export allowlist and zero mutation');

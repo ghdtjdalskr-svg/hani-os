@@ -4724,7 +4724,31 @@ function bindCloudBridgeControls(){
   if($("cloudCompare"))$("cloudCompare").onclick=cloudCompare;
 }
 
+let dataHubLibraryTab="overview";
+function dataHubLibraryProjection(){
+  const monthly=officialBrokerSorted().map(s=>{const c=brokerCalc(s),quantitiesKnown=(s.accounts||[]).filter(a=>a.enabled).every(a=>(a.holdings||[]).every(h=>h.quantity!==null&&h.quantity!==undefined&&h.quantity!==""&&Number.isFinite(Number(h.quantity))));return {month:s.period,asOfDate:s.snapshotDate,total:c.total,currency:"KRW",source:"confirmed-broker-snapshot",holdings:brokerAggregatedHoldings(s).map(h=>({key:h.key,name:h.name,ticker:h.ticker,quantity:quantitiesKnown?h.quantity:null,evaluation:h.hasEvaluation?h.evaluation:null}))}});
+  for(const row of monthly){const date=new Date(row.month+"-01T00:00:00Z");if(!Number.isFinite(date.getTime()))continue;date.setUTCMonth(date.getUTCMonth()-1);const previous=monthly.filter(r=>r.month===date.toISOString().slice(0,7));for(const h of row.holdings){const matches=previous.length===1?previous[0].holdings.filter(p=>h.key&&p.key===h.key):[];h.quantityDelta=matches.length===1&&h.quantity!==null&&matches[0].quantity!==null?h.quantity-matches[0].quantity:null}}
+  const verified=dataHubRuntime?.peek();
+  return {schema:"hani-data-hub-export-v1",monthly,metrics:verified?.status==="VERIFIED"?verified.metrics.map(m=>({key:m.key,month:m.row.month,value:m.row.value,display:window.HANI_DATA_HUB.dashboardText(m)})):[],metricStatus:verified?.status||"OWNER_BINDING_BLOCKED",goals:Array.isArray(state.goalRegistry)?structuredClone(state.goalRegistry):[]};
+}
+function renderDataHubLibrary(){
+  const host=$("dataHubLibraryContent");if(!host)return;
+  const data=dataHubLibraryProjection(),tabs=[["overview","Overview"],["monthly","Monthly"],["metrics","Metrics"],["goals","Goals"],["export","Export"]];
+  const table=(heads,rows)=>`<div style="overflow-x:auto"><table><thead><tr>${heads.map(h=>`<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.join("")||`<tr><td colspan="${heads.length}">확인된 기록이 없습니다.</td></tr>`}</tbody></table></div>`;
+  let body="";
+  if(dataHubLibraryTab==="overview")body=`<p>확정 월간 기록 ${data.monthly.length}건 · 승인된 목표 이력 ${data.goals.length}건</p><p class="sub">월간 기록은 저장 당시의 확정값입니다. 현재 시장가격으로 과거 값을 바꾸지 않습니다. 지표는 원본 검증이 완료된 경우에만 표시합니다.</p>`;
+  if(dataHubLibraryTab==="monthly")body=table(["기준월","기준일","확정 자산","보유 수량 · 전달 대비"],data.monthly.map(row=>`<tr><td>${esc(row.month)}</td><td>${esc(row.asOfDate||"미확인")}</td><td>${won(row.total)}</td><td>${row.holdings.map(h=>`${esc(h.name)} ${h.quantity===null?"수량 미확인":esc(String(h.quantity))+"주"} · ${h.quantityDelta===null?"비교 미확인":(h.quantityDelta>0?"+":"")+esc(String(h.quantityDelta))+"주"}`).join("<br>")||"보유목록 미확인"}</td></tr>`));
+  if(dataHubLibraryTab==="metrics")body=data.metricStatus!=="VERIFIED"?'<p>원본 검증 대기 · 지표를 임의 계산하지 않습니다.</p>':table(["지표","현재 값","비교"],data.metrics.map(m=>{const t=m.display;return `<tr><td>${esc(m.key)}</td><td>${esc(t.value)}</td><td>${esc(t.comparison)}</td></tr>`}));
+  if(dataHubLibraryTab==="goals")body='<p class="sub">목표 생성과 수정은 아래 목표 관리에서 Preview 승인 후 적용합니다.</p>'+table(["지표","목표","적용 시작","상태"],data.goals.map(g=>`<tr><td>${esc(g.metric_id)}</td><td>${esc(String(g.value))} ${esc(g.unit)}</td><td>${esc(g.effective_from)}</td><td>${esc(g.status)}</td></tr>`));
+  if(dataHubLibraryTab==="export")body='<p class="sub">이 보관함의 확정 월간 기록·검증 지표·승인 목표만 내보냅니다. 계좌번호·로그인 정보는 포함하지 않습니다.</p><button class="btn" id="dataHubExportJson">JSON 다운로드</button> <button class="btn" id="dataHubExportCsv">월간 CSV 다운로드</button>';
+  host.innerHTML=`<div style="display:flex;gap:6px;flex-wrap:wrap">${tabs.map(([id,label])=>`<button class="btn sm" data-hub-tab="${id}" aria-pressed="${id===dataHubLibraryTab}">${label}</button>`).join("")}</div>${body}`;
+  host.querySelectorAll('[data-hub-tab]').forEach(b=>b.onclick=()=>{dataHubLibraryTab=b.dataset.hubTab;renderDataHubLibrary()});
+  const download=(content,type,ext)=>{const url=URL.createObjectURL(new Blob([content],{type})),a=document.createElement("a");a.href=url;a.download=`hani-data-hub-${today()}.${ext}`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
+  if($("dataHubExportJson"))$("dataHubExportJson").onclick=()=>download(JSON.stringify(dataHubLibraryProjection(),null,2),"application/json","json");
+  if($("dataHubExportCsv"))$("dataHubExportCsv").onclick=()=>{const cell=v=>'"'+String(v??"").replace(/"/g,'""')+'"';download('\uFEFF'+[["month","asOfDate","total","currency"],...dataHubLibraryProjection().monthly.map(r=>[r.month,r.asOfDate,r.total,r.currency])].map(r=>r.map(cell).join(",")).join("\r\n"),"text/csv;charset=utf-8","csv")};
+}
 function renderStoragePanel(){
+  renderDataHubLibrary();
   renderGoalRegistry();
   const stats=$("storageStats");if(!stats)return;
   let raw="";try{raw=localStorage.getItem(STORAGE_KEY)||""}catch(e){}const recordCount=state.transactions.length+(state.investmentMonthlySnapshots?.length||0)+(state.investmentBrokerSnapshots?.length||0)+(state.investmentCashFlows?.length||0)+(state.investmentJournal?.length||0)+(state.ledgerMonths?.length||0)+(state.spendReviews?.length||0)+state.body.length+state.exercise.length+state.books.length+state.movies.length+state.diaries.length+state.tasks.length+(state.campusSemesters?.length||0)+(state.travelTrips?.length||0)+(state.travelPlaces?.length||0)+(state.travelWishlist?.length||0)+(state.certificates?.length||0)+(state.wishlistItems?.length||0)+(state.learningProjects?.length||0)+(state.learningQuizzes?.length||0)+(state.learningWrongAnswers?.length||0);
