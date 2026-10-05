@@ -794,12 +794,17 @@ const DASHBOARD_SLOTS = Object.freeze([
 const copy = value => structuredClone(value);
 const signature = value => JSON.stringify(value);
 function createDashboardRuntime({verify, getBinding, getContext, getSource, canonical,
-  getGoals = () => [], getCoverage = () => ({}), clock = () => new Date().toISOString(),
+  getGoals = () => [], getCoverage = () => ({}), getMonth = () => null, clock = () => new Date().toISOString(),
   storeFactory = createMetricsStore, onChange = () => {}}) {
-  let epoch = 0, active = null, busy = false;
+  let epoch = 0, active = null, busy = false, failure = 'NOT_VERIFIED';
   const store = storeFactory({getBinding});
+  // Read-only period selection: retain the real verification/as-of clock.
+  function selectedMonth() {
+    const current = koreaDate(clock()).slice(0, 7), requested = getMonth();
+    return /^\d{4}-(0[1-9]|1[0-2])$/.test(requested || '') && requested <= current ? requested : current;
+  }
   function invalidate() {
-    epoch++; active = null; store.invalidate(); onChange();
+    epoch++; active = null; failure = 'NOT_VERIFIED'; store.invalidate(); onChange();
   }
   function live(token, binding) {
     return token === epoch && signature(getBinding()) === signature(binding);
@@ -807,8 +812,8 @@ function createDashboardRuntime({verify, getBinding, getContext, getSource, cano
   function peek() {
     // Paint never verifies, calculates or writes. Context checks are O(1).
     if (active && (signature(getContext()) !== active.context || getSource() !== active.source ||
-      koreaDate(clock()) !== active.asOf)) invalidate();
-    return active ? copy(active.view) : {status: 'OWNER_BINDING_BLOCKED', metrics: [], cache: 'DISABLED'};
+      koreaDate(clock()) !== active.asOf || selectedMonth() !== active.view.month)) invalidate();
+    return active ? copy(active.view) : {status: 'OWNER_BINDING_BLOCKED', metrics: [], cache: 'DISABLED', reason: failure};
   }
   function auditSource() {
     // Called once at the existing full source-render boundary, not each visual paint.
@@ -816,40 +821,73 @@ function createDashboardRuntime({verify, getBinding, getContext, getSource, cano
   }
   async function refresh() {
     if (busy) return {status: 'BUSY'};
-    if (active && getBinding() && signature(getContext()) === active.context && koreaDate(clock()) === active.asOf)
+    if (active && getBinding() && signature(getContext()) === active.context && koreaDate(clock()) === active.asOf && selectedMonth() === active.view.month)
       return peek();
     busy = true; invalidate(); const token = epoch;
+    let phase = 'OWNER_CHECK';
+    const blocked = reason => {
+      if (token === epoch) { active = null; failure = reason; onChange(); }
+      return {status: 'OWNER_BINDING_BLOCKED', metrics: [], cache: 'DISABLED', reason};
+    };
     try {
       const verification = await verify();
-      if (token !== epoch) return {status: 'CONTEXT_CHANGED'};
+      if (token !== epoch) return blocked('CONTEXT_CHANGED');
       const binding = getBinding();
-      if (verification.status !== 'VERIFIED' || !binding) return peek();
+      if (verification.status !== 'VERIFIED' || !binding) {
+        const safeReasons = ['LOCAL_CLOUD_SOURCE_MISMATCH','SERVER_USER_UNAVAILABLE','SERVER_USER_MISMATCH','OWNED_SOURCE_UNAVAILABLE','SESSION_OR_SOURCE_UNAVAILABLE','CONTEXT_OR_SOURCE_CHANGED','CLOUD_CLIENT_CHANGED','VERIFICATION_BUSY'];
+        return blocked(safeReasons.includes(verification.reason) ? verification.reason : 'OWNER_CHECK');
+      }
+      phase = 'SOURCE_SNAPSHOT';
       const sourceRef = getSource(), context = signature(getContext()), now = clock(), asOf = koreaDate(now);
-      const month = asOf.slice(0, 7), months = [previousMonth(month), month];
+      const month = selectedMonth();
       const source = Object.fromEntries(DEFAULT_REGISTRY.map(def => [def.source, copy(sourceRef[def.source])]));
       const goals = copy(getGoals()), coverage = copy(getCoverage());
       let cached = {status: 'CACHE_MISS', rows: []}, cache = 'MEMORY_ONLY';
       try { await store.activate(binding); cached = await store.readActive(); } catch { /* safe memory fallback */ }
-      if (!live(token, binding)) return {status: 'CONTEXT_CHANGED'};
-      const sourceContexts = {};
-      const rows = months.flatMap(m => {
+      if (!live(token, binding)) return blocked('CONTEXT_CHANGED');
+      phase = 'METRIC_CALCULATION';
+      const sourceContexts = {}, calculated = new Map();
+      const calculate = m => {
+        if (calculated.has(m)) return calculated.get(m);
         const sourceContext = Object.fromEntries(DEFAULT_REGISTRY.map(def => [def.source,
           {ready: Array.isArray(source[def.source]), complete: false, ...(coverage[m]?.[def.source] || {})}]));
         // No period-completeness provenance in operational books: absence is NOT a confirmed zero.
         if (!sourceContext.books.complete && !source.books?.some(row => row.status === 'read' &&
           String(row.readDate || row.completedDate || '').startsWith(m))) sourceContext.books.ready = false;
         sourceContexts[m] = sourceContext;
-        return calculateMonth(source, {month: m, asOf, calculatedAt: now, canonical, sourceContext,
+        const result = calculateMonth(source, {month: m, asOf, calculatedAt: now, canonical, sourceContext,
           previousRows: cached.rows || []});
-      });
+        calculated.set(m, result); return result;
+      };
+      // Monthly-entry cards retain their true source period, never fabricate a current-month observation.
+      // Coverage uncertainty stays PARTIAL; invalid/stale observations and empty unverified ledgers cannot qualify.
+      const basisMonths = {};
+      for (const [id, sourceKey, field] of [
+        ['investment_total_krw', 'investmentBrokerSnapshots', 'period'],
+        ['spending_jispi_krw', 'ledgerMonths', 'month']
+      ]) {
+        const candidates = [...new Set((Array.isArray(source[sourceKey]) ? source[sourceKey] : []).map(row => row?.[field]))]
+          .filter(m => /^\d{4}-(0[1-9]|1[0-2])$/.test(m || '') && m <= month).sort().reverse();
+        for (const m of candidates) {
+          if (id === 'spending_jispi_krw' && `${m}-17` > asOf) continue;
+          const row = calculate(m).find(r => r.metric_id === id);
+          if (row.value !== null && ['CONFIRMED', 'PARTIAL'].includes(row.status) &&
+              row.reasons.every(reason => reason === 'COVERAGE_UNVERIFIED') &&
+              (row.sample_count > 0 || row.coverage.complete)) { basisMonths[id] = m; break; }
+        }
+      }
+      const months = [...new Set([previousMonth(month), month,
+        ...Object.values(basisMonths).flatMap(m => [previousMonth(m), m])])].sort();
+      const rows = months.flatMap(calculate);
       // One coherent generation uses the conservative intersection of period coverage.
       const sourceContext = Object.fromEntries(DEFAULT_REGISTRY.map(def => [def.source, {
         ready: months.every(m => sourceContexts[m][def.source].ready),
         complete: months.every(m => sourceContexts[m][def.source].complete)
       }]));
+      phase = 'CACHE_PREPARATION';
       const prepared = await prepareSnapshot(source, {rows, months, asOf, createdAt: now, sourceContext,
         canonicalVersion: canonical.version, binding});
-      if (!live(token, binding)) return {status: 'CONTEXT_CHANGED'};
+      if (!live(token, binding)) return blocked('CONTEXT_CHANGED');
       let consumedRows = rows;
       try {
         const current = await store.readActive(prepared);
@@ -860,19 +898,23 @@ function createDashboardRuntime({verify, getBinding, getContext, getSource, cano
           cache = published.status === 'PUBLISHED' || published.status === 'UNCHANGED' ? published.status : 'MEMORY_ONLY';
         }
       } catch { /* IndexedDB unavailable must not break HANI */ }
-      if (!live(token, binding) || signature(getContext()) !== context || getSource() !== sourceRef) return {status: 'CONTEXT_CHANGED'};
+      if (!live(token, binding) || signature(getContext()) !== context || getSource() !== sourceRef || selectedMonth() !== month) return blocked('CONTEXT_CHANGED');
+      phase = 'METRIC_COMPARISON';
       const metrics = DEFAULT_REGISTRY.map(def => {
-        const row = consumedRows.find(r => r.month === month && r.metric_id === def.metric_id);
-        const baseline = consumedRows.find(r => r.month === months[0] && r.metric_id === def.metric_id);
-        const goal = resolveGoal(goals, def, {month, asOf, evaluationAt: now});
-        return {key: DASHBOARD_SLOTS.find(s => s[1] === def.metric_id)[0], row,
+        const monthlyEntry = ['investment_total_krw', 'spending_jispi_krw'].includes(def.metric_id);
+        const basisMonth = basisMonths[def.metric_id] || month;
+        const calculatedRow = consumedRows.find(r => r.month === basisMonth && r.metric_id === def.metric_id);
+        // An open settlement or invalid latest entry is not a confirmed monthly result.
+        const row = monthlyEntry && !basisMonths[def.metric_id] ? {...calculatedRow, value: null} : calculatedRow;
+        const baseline = consumedRows.find(r => r.month === previousMonth(basisMonth) && r.metric_id === def.metric_id);
+        const goal = resolveGoal(goals, def, {month: basisMonth, asOf, evaluationAt: now});
+        return {key: DASHBOARD_SLOTS.find(s => s[1] === def.metric_id)[0], row, monthlyEntry,
           comparison: compareMetric(row, baseline, def, goal), goal};
       });
       active = {context, source: sourceRef, asOf, view: {status: 'VERIFIED', metrics, cache, month, asOf}};
       onChange(); return peek();
     } catch {
-      if (token === epoch) { active = null; onChange(); }
-      return {status: 'OWNER_BINDING_BLOCKED', metrics: [], cache: 'DISABLED'};
+      return blocked(phase);
     } finally { busy = false; }
   }
   return {refresh, invalidate, auditSource, peek};
@@ -898,7 +940,10 @@ function dashboardText(metric) {
   const quality = row.reasons.includes('ZERO_STEPS_AMBIGUITY') ? ' · 0보 입력 구분 불가' : '';
   const observed = row.observed_days !== undefined ? ` · 관측 ${row.observed_days}일` : '';
   const period = row.period_basis === 'settlement_18_17' ? ` · ${row.period_start}~${row.period_end} (18→17)` : '';
-  return {value, comparison, status: row.status,
+  const basis = !metric.monthlyEntry ? '' : row.value === null ? '확정 기록 대기' :
+    row.metric_id === 'investment_total_krw' ? `최근 확정 자산 · ${row.month} · ${row.as_of}` :
+    `최근 마감 소비 · ${row.period_start}~${row.period_end}`;
+  return {value, comparison, status: row.status, basis,
     detail: `${row.status} · 기준 ${row.as_of || '미확인'}${observed}${quality}${period}`};
 }
 
@@ -2260,7 +2305,8 @@ function normalizeBrokerSnapshot(x={}){const now=new Date().toISOString(),period
 function brokerBlank(mode="actual"){return normalizeBrokerSnapshot({mode:"actual",period:monthKeyNow(),snapshotDate:today(),status:"draft",accounts:state.accounts.map(a=>normalizeBrokerAccount({accountId:a.id,accountName:a.name,enabled:["isa","pension","irp"].includes(a.id)}))})}
 function cashFlowSummary(period){const rows=(state.investmentCashFlows||[]).filter(x=>(x.date||"").slice(0,7)===period);let deposit=0,withdrawal=0,transfer=0;rows.forEach(x=>{if(x.type==="deposit")deposit+=n(x.amount);else if(x.type==="withdrawal")withdrawal+=n(x.amount);else transfer+=n(x.amount)});return {deposit,withdrawal,net:deposit-withdrawal,transfer}}
 function brokerHoldingCalc(h){let purchase=h.purchaseAmount,evaluation=h.evaluationAmount,pnl=h.pnl,rate=h.returnRate;if(purchase===null&&h.quantity!==null&&h.buyPrice!==null)purchase=h.quantity*h.buyPrice;if(evaluation===null&&h.quantity!==null&&h.currentPrice!==null)evaluation=h.quantity*h.currentPrice;if(pnl===null&&purchase!==null&&evaluation!==null)pnl=evaluation-purchase;if(rate===null&&purchase)pnl!==null&&(rate=pnl/purchase*100);return {...h,purchase,evaluation,pnl,rate}}
-function brokerCalc(snapshot){const accounts=(snapshot.accounts||[]).filter(a=>a.enabled).map(a=>{const holdings=(a.holdings||[]).map(brokerHoldingCalc),evaluation=a.totalEvaluation!==null?a.totalEvaluation:holdings.reduce((s,h)=>s+n(h.evaluation),0),purchase=a.totalPurchase!==null?a.totalPurchase:holdings.reduce((s,h)=>s+n(h.purchase),0),pnl=a.totalPnl!==null?a.totalPnl:(evaluation-purchase),rate=a.totalReturn!==null?a.totalReturn:(purchase?pnl/purchase*100:null),assets=a.estimatedAssets!==null?a.estimatedAssets:evaluation,cashLike=assets-evaluation;return {...a,holdings,evaluation,purchase,pnl,rate,assets,cashLike}});const total=accounts.reduce((s,a)=>s+n(a.assets),0),evaluation=accounts.reduce((s,a)=>s+n(a.evaluation),0),purchase=accounts.reduce((s,a)=>s+n(a.purchase),0),pnl=accounts.reduce((s,a)=>s+n(a.pnl),0),flow=snapshot.flowSummary||cashFlowSummary(snapshot.period);return {accounts,total,evaluation,purchase,pnl,rate:purchase?pnl/purchase*100:null,cashLike:total-evaluation,flow}}
+function brokerKnownSum(rows,key){if(!rows.length||rows.some(row=>row[key]===null||row[key]===undefined))return null;return rows.reduce((sum,row)=>sum+Number(row[key]),0)}
+function brokerCalc(snapshot){const accounts=(snapshot.accounts||[]).filter(a=>a.enabled).map(a=>{const holdings=(a.holdings||[]).map(brokerHoldingCalc),evaluation=a.totalEvaluation!==null?a.totalEvaluation:brokerKnownSum(holdings,"evaluation"),purchase=a.totalPurchase!==null?a.totalPurchase:brokerKnownSum(holdings,"purchase"),pnl=a.totalPnl!==null?a.totalPnl:(evaluation!==null&&purchase!==null?evaluation-purchase:null),rate=a.totalReturn!==null?a.totalReturn:(purchase&&pnl!==null?pnl/purchase*100:null),assets=a.estimatedAssets!==null?a.estimatedAssets:evaluation,cashLike=assets!==null&&evaluation!==null?assets-evaluation:null;return {...a,holdings,evaluation,purchase,pnl,rate,assets,cashLike}});const total=brokerKnownSum(accounts,"assets"),evaluation=brokerKnownSum(accounts,"evaluation"),purchase=brokerKnownSum(accounts,"purchase"),pnl=brokerKnownSum(accounts,"pnl"),flow=snapshot.flowSummary||cashFlowSummary(snapshot.period);return {accounts,total,evaluation,purchase,pnl,rate:purchase&&pnl!==null?pnl/purchase*100:null,cashLike:total!==null&&evaluation!==null?total-evaluation:null,flow}}
 function brokerSorted(mode="all"){return [...(state.investmentBrokerSnapshots||[])].filter(s=>s.recordType!=="positions"&&(mode==="all"||s.mode===mode)).sort((a,b)=>(a.period||"").localeCompare(b.period||"")||(a.updatedAt||"").localeCompare(b.updatedAt||""))}
 function officialBrokerSorted(){return brokerSorted("actual").filter(s=>s.status==="confirmed")}
 function officialBrokerLatest(){return officialBrokerSorted().at(-1)||null}
@@ -4478,7 +4524,7 @@ function cloudCreateRuntimeOwnerVerifier({getClient, getContext, getSource, comp
   };
 }
 
-let dataHubRuntime=null,dataHubVerifier=null;
+let dataHubRuntime=null,dataHubVerifier=null,dataHubSelectedMonth=null;
 function dataHubContext(){return cloudUser&&cloudClient?{projectRef:new URL(cloudConfig().url).hostname,
   userId:cloudUser.id,datasetId:"operational-life-state",sessionEpoch:String(cloudOwnerVerificationEpoch)}:null}
 function dataHubBinding(){const binding=dataHubVerifier?.getBinding();return binding?{...binding,sessionEpoch:String(binding.sessionEpoch)}:null}
@@ -4487,7 +4533,7 @@ function dataHubAuditSource(){dataHubRuntime?.auditSource()}
 async function dataHubRefresh(){
   if(!window.HANI_DATA_HUB){dataHubRenderDashboard();return}
   if(!dataHubRuntime)dataHubRuntime=window.HANI_DATA_HUB.createDashboardRuntime({
-    getSource:()=>state,getContext:dataHubContext,getBinding:dataHubBinding,
+    getSource:()=>state,getContext:dataHubContext,getBinding:dataHubBinding,getMonth:()=>dataHubSelectedMonth,
     // Only approved history participates; never import legacy/default scalar targets.
     getGoals:()=>Array.isArray(state.goalRegistry)?state.goalRegistry:[],canonical:{version:"85c8110-brokerCalc-ledgerCalc",
       brokerTotal:row=>brokerCalc(row).total,ledgerSpending:row=>ledgerCalc(row).jispiT},
@@ -4507,11 +4553,28 @@ function dataHubRenderDashboard(){
     ["hinaJones","","homeBooks","homeContentMeta"],["harukei","","homeExerciseSteps","homeExerciseAvg"],
     ["jispi","","homeJispi","homeJispiMeta"],["hinkei","","homeHinkei","homeHinkeiMeta"]];
   const text=metric=>api?.dashboardText(metric)||{value:"—",comparison:"원본 검증 대기",status:"OWNER_BINDING_BLOCKED"};
-  if($("dataHubPeriod"))$("dataHubPeriod").textContent=`이번 달 ${view.month||today().slice(0,7)} · 아래 6개 카드 기준`;
+  const month=dataHubSelectedMonth||today().slice(0,7);
+  if($("dataHubMonth")){
+    $("dataHubMonth").value=month;$("dataHubMonth").max=today().slice(0,7);
+    $("dataHubMonth").onchange=async()=>{
+      const value=$("dataHubMonth").value;
+      if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(value)||value>today().slice(0,7)){$("dataHubMonth").value=month;return}
+      dataHubSelectedMonth=value;dataHubRuntime?.invalidate();await dataHubRefresh();
+    };
+  }
+  if($("dataHubPeriod"))$("dataHubPeriod").textContent=`조회 월 ${view.month||month} · 투자·소비는 최근 확정 기록 기준`;
+  if($("dataHubPeriodHelp"))$("dataHubPeriodHelp").textContent=view.status==="VERIFIED"?
+    "투자는 조회 월까지의 최근 확정 자산, 소비는 종료된 결산기간(전월 18일~당월 17일)의 최근 입력 기록을 표시합니다. 각 카드에 실제 기준월·기간을 명시하며 미확인 범위는 그대로 표시합니다. 다른 지표는 선택한 월 기준입니다. 기록 없음은 데이터 삭제를 뜻하지 않으며, 없는 비교값은 추정하지 않습니다. 할 일·캘린더는 이번 달 기준입니다.":
+    "원본 검증을 통과하기 전에는 수치를 표시하지 않습니다. 로그인·연결을 확인한 뒤 지표 검증·갱신을 눌러 주세요. 불일치가 계속되면 설정의 읽기 전용 원본 확인 결과를 확인하세요. 자동 덮어쓰기나 복구는 실행하지 않습니다.";
+  if($("dataHubLatestRecord")){
+    const latest=view.status==="VERIFIED"?dataHubLatestRecordMonth(state,today().slice(0,7)):null;
+    $("dataHubLatestRecord").textContent=view.status!=="VERIFIED"?"최근 기록 안내도 원본 검증 후 표시합니다.":
+      latest?`입력 기록의 최근 월: ${latest} · 확정 지표 여부는 각 카드에서 확인하세요.`:"날짜가 확인되는 입력 기록이 없습니다.";
+  }
   for(const [key,,valueId,metaId] of slots){
     const metric=view.metrics.find(m=>m.key===key),display=text(metric);
     if($(valueId))$(valueId).textContent=display.value;
-    if($(metaId))$(metaId).textContent=display.comparison+" · "+display.status+
+    if($(metaId))$(metaId).textContent=(display.basis?display.basis+" · ":"")+display.comparison+" · "+display.status+
       (metric?.row.observed_days!==undefined?` · 관측 ${metric.row.observed_days}일`:"")+
       (metric?.row.reasons.includes("ZERO_STEPS_AMBIGUITY")?" · 0보 입력 구분 불가":"");
     const card=document.querySelector(`#lifeMarketGrid [data-life-index="${key}"]`);
@@ -4524,7 +4587,7 @@ function dataHubRenderDashboard(){
   }
   const status=$("dataHubStatus");if(status)status.textContent=view.status==="VERIFIED"?
     `${view.month} · Data Hub · ${view.cache==="MEMORY_ONLY"?"메모리 계산 (캐시 사용 불가)":"검증된 파생 캐시"} · 원본 변경 없음`:
-    "원본 검증 대기 · Local·Cloud 불일치 시 캐시 비활성화";
+    "원본 검증 대기 · Local·Cloud 불일치 시 캐시 비활성화"+(view.reason?` · 확인 코드: ${view.reason}`:"");
   const selected=view.metrics.find(m=>m.key===activeLifeIndex),display=text(selected);
   const slot=slots.find(s=>s[0]===activeLifeIndex)||slots[0];
   const labels={hasdaq:["HASDAQ · FINANCE","확인된 투자계좌 총액","investment"],ne100:["N&E 100 · HEALTH","당월 최근 체중","diet"],
@@ -4558,6 +4621,11 @@ function goalPeriodReadContext(){
   if(view?.status!=="VERIFIED"||!view.asOf||!dataHubBinding())return null;
   return {source:structuredClone(state),asOf:view.asOf,evaluationAt:new Date().toISOString(),
     canonical:{version:"85c8110-brokerCalc-ledgerCalc",brokerTotal:row=>brokerCalc(row).total,ledgerSpending:row=>ledgerCalc(row).jispiT}};
+}
+function dataHubLatestRecordMonth(source,currentMonth){
+  const fields={investmentBrokerSnapshots:["period"],body:["date"],books:["readDate","completedDate"],exercise:["date"],ledgerMonths:["month"],learningQuizzes:["completedAt","scheduledDate"]};
+  const months=Object.entries(fields).flatMap(([key,names])=>(Array.isArray(source?.[key])?source[key]:[]).flatMap(row=>names.map(name=>String(row?.[name]||"").slice(0,7))));
+  return months.filter(month=>/^\d{4}-(0[1-9]|1[0-2])$/.test(month)&&month<=currentMonth).sort().at(-1)||null;
 }
 let cloudOwnerVerificationEpoch=1;
 let cloudOwnerVerification=null;
@@ -5337,7 +5405,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.189";
+const HANI_DISPLAY_VERSION="2.9.190";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
