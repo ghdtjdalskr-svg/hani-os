@@ -52,13 +52,20 @@ const project={id:'p',name:'경제 사례 학습',category:'economy',quizSize:5,
   const edgeContext=vm.createContext({URL,Date,Response,Request,console,
     createClient:()=>({auth:{getUser:async()=>({data:{user:{id:'fixture-user'}},error:null})}}),
     Deno:{env:{get:()=> 'fixture-only'},serve:fn=>{handler=fn}},
-    fetch:async(_url,opts)=>{modelRequest=JSON.parse(opts.body);const body=JSON.parse(modelRequest.input);return {ok:true,json:async()=>({output_text:JSON.stringify({questions:Array.from({length:body.project.quiz_size},()=>({prompt:requestMode==='news'?articlePrompt(body.question_sources[0]):requestMode==='title-only'?body.question_sources[0].title:'기초 정의',explanation:requestMode!=='basic'?`[N1] ${body.question_sources[0]?.source_url}`:'基本説明'}))})})}},
+    fetch:async(_url,opts)=>{modelRequest=JSON.parse(opts.body);const body=JSON.parse(modelRequest.input);return {ok:true,json:async()=>({output_text:JSON.stringify({questions:Array.from({length:body.project.quiz_size},()=>({type:requestMode==='definition'?'Definition':'Scenario',prompt:requestMode==='macro-rewrite'||requestMode==='definition'?articlePrompt(body.question_sources.find(s=>s.material==='macro')).replace('[저장된 브리핑 요약]','[뉴스 요약]').replace(body.question_sources.find(s=>s.material==='macro').summary.slice(0,260),'모델이 바꿔 쓴 요약')+' 물가와 환율의 변화가 수입 기업 비용에 미치는 영향은?':requestMode==='news'?articlePrompt(body.question_sources[0])+' 고객 수요와 매출의 관계는?':requestMode==='title-only'?body.question_sources[0].title:'기초 정의',explanation:requestMode==='macro-rewrite'||requestMode==='definition'?`[${body.question_sources.find(s=>s.material==='macro').source_id}] ${body.question_sources.find(s=>s.material==='macro').source_url}`:requestMode!=='basic'?`[N1] ${body.question_sources[0]?.source_url}`:'基本説明'}))})})}},
   });
   vm.runInContext(stripTypeScriptTypes(edge.replace(/^import .*;\r?\n/m,'')),edgeContext);
   requestMode='news';const body={project:{name:'경제',category:'economy',quiz_size:5},question_sources:normalized,engine_contract:{news_material_minimum:2}};
   const request=()=>new Request('https://fixture.invalid',{method:'POST',headers:{Authorization:'Bearer fixture-only'},body:JSON.stringify(body)});
   const good=await handler(request());assert.equal(good.status,200);assert.equal((await good.json()).news_material_minimum,2);assert.match(modelRequest.instructions,/난이도를 높이라는 요청이 아닙니다/);
-  assert.match(modelRequest.instructions,/앞 260자를 원문 그대로/);
+  assert.match(modelRequest.instructions,/서버가.*요약 원문을 구성/);
+  requestMode='macro-rewrite';const repaired=await handler(request());assert.equal(repaired.status,200);
+  const repairedQuiz=(await repaired.json()).quiz;
+  assert.match(repairedQuiz.questions[0].prompt,/\[저장된 브리핑 요약\]/);
+  assert.ok(repairedQuiz.questions[0].prompt.includes(macro.summary.slice(0,260)));
+  assert.ok(repairedQuiz.questions[0].prompt.endsWith('물가와 환율의 변화가 수입 기업 비용에 미치는 영향은?'));
+  assert.equal(repairedQuiz.questions[0].prompt.includes('모델이 바꿔 쓴 요약'),false);
+  requestMode='definition';assert.equal((await handler(request())).status,502,'Definition-only question cannot acquire real-news status through canonicalization.');
   requestMode='title-only';assert.equal((await handler(request())).status,502);
   requestMode='basic';const bad=await handler(request());assert.equal(bad.status,502);const rejected=await bad.json();assert.equal(rejected.error,'QUIZ_NEWS_MATERIAL_MISSING');
   assert.equal(rejected.validation.required,2);assert.equal(rejected.validation.matched,0);
