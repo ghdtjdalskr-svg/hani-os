@@ -1326,6 +1326,7 @@ function goalRegistryBuildDraft(registry,input,now,id){
   next.push(entry);return {before:JSON.stringify(registry),next,old:active[0]?registry.find(g=>g.goal_id===old.goal_id&&g.revision===old.revision):null,entry};
 }
 function renderGoalRegistry(){
+  window.HANI_GOAL_PROGRESS?.render();
   const host=$('goalRegistryContent');if(!host)return;
   const registry=state.goalRegistry===undefined?[]:state.goalRegistry;
   if(!Array.isArray(registry)){host.textContent='목표 이력 형식을 확인해 주세요. 기존 데이터는 변경하지 않습니다.';return;}
@@ -4500,6 +4501,7 @@ async function dataHubRefresh(){
   await dataHubRuntime.refresh();dataHubRenderDashboard();
 }
 function dataHubRenderDashboard(){
+  window.HANI_GOAL_PROGRESS?.render();
   const api=window.HANI_DATA_HUB,view=dataHubRuntime?.peek()||{status:"OWNER_BINDING_BLOCKED",metrics:[],cache:"DISABLED"};
   const slots=api?.DASHBOARD_SLOTS||[["hasdaq","","homeAsset","homeInvestRate"],["ne100","","homeWeight","homeWeightGoal"],
     ["hinaJones","","homeBooks","homeContentMeta"],["harukei","","homeExerciseSteps","homeExerciseAvg"],
@@ -4548,6 +4550,14 @@ function dataHubRenderDashboard(){
     const html=`<div class="secondary-widget-visual"><strong class="secondary-widget-value">${esc(display.value)}</strong></div><div class="secondary-widget-details"><div><small>비교</small><b>${esc(display.comparison)}</b></div><div><small>데이터 품질</small><b>${esc(display.detail||display.status)}</b></div></div>`;
     if($("homeMixDonut").dataset.hubHtml!==html){$("homeMixDonut").innerHTML=html;$("homeMixDonut").dataset.hubHtml=html}}
   if($("homeMixLegend"))$("homeMixLegend").textContent="";
+}
+// Read-only period projection; use the existing live owner/source verification.
+function goalPeriodReadContext(){
+  dataHubAuditSource();
+  const view=dataHubRuntime?.peek();
+  if(view?.status!=="VERIFIED"||!view.asOf||!dataHubBinding())return null;
+  return {source:structuredClone(state),asOf:view.asOf,evaluationAt:new Date().toISOString(),
+    canonical:{version:"85c8110-brokerCalc-ledgerCalc",brokerTotal:row=>brokerCalc(row).total,ledgerSpending:row=>ledgerCalc(row).jispiT}};
 }
 let cloudOwnerVerificationEpoch=1;
 let cloudOwnerVerification=null;
@@ -5327,7 +5337,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.188";
+const HANI_DISPLAY_VERSION="2.9.189";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
