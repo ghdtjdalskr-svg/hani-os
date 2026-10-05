@@ -866,7 +866,7 @@ function createDashboardRuntime({verify, getBinding, getContext, getSource, cano
         ['investment_total_krw', 'investmentBrokerSnapshots', 'period'],
         ['spending_jispi_krw', 'ledgerMonths', 'month']
       ]) {
-        const candidates = [...new Set((source[sourceKey] || []).map(row => row[field]))]
+        const candidates = [...new Set((Array.isArray(source[sourceKey]) ? source[sourceKey] : []).map(row => row?.[field]))]
           .filter(m => /^\d{4}-(0[1-9]|1[0-2])$/.test(m || '') && m <= month).sort().reverse();
         for (const m of candidates) {
           if (id === 'spending_jispi_krw' && `${m}-17` > asOf) continue;

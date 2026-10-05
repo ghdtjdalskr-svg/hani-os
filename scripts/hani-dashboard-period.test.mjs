@@ -76,4 +76,11 @@ query='2026-10';now='2026-10-18T03:00:00Z';result=await monthly.refresh();assert
 monthlySource.ledgerMonths[2].items=[];monthly.invalidate();result=await monthly.refresh();assert.equal(metric('jispi').row.month,'2026-09','empty unverified ledger cannot become a confirmed zero');
 monthlySource.ledgerMonths[2].items=[{date:'2026-10-01',category:'variable',amount:900}];
 assert.equal(JSON.stringify(monthlySource),monthlyBefore,'monthly derivation never changes source');
+const unavailable={...monthlySource,investmentBrokerSnapshots:{unavailable:true},ledgerMonths:null};
+const incomplete=api.createDashboardRuntime({getSource:()=>unavailable,getContext:()=>binding,getBinding:()=>binding,
+ verify:async()=>({status:'VERIFIED'}),clock:()=>now,canonical:{version:'fixture'},
+ storeFactory:()=>({invalidate(){},async activate(){throw new Error('Isolated memory store')}})});
+const incompleteView=await incomplete.refresh();assert.equal(incompleteView.status,'VERIFIED');
+assert.equal(incompleteView.metrics.find(m=>m.key==='hasdaq').row.value,null);
+assert.equal(incompleteView.metrics.find(m=>m.key==='jispi').row.value,null);
 console.log('PASS: monthly cadence, true basis/date, exact baseline, open/closed settlement, draft/future rejection, empty unverified zero rejection, daily scope, source preservation.');
