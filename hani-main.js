@@ -4920,6 +4920,8 @@ function renderDataHubLibrary(){
   if($("dataHubExportCsv"))$("dataHubExportCsv").onclick=()=>{const cell=v=>'"'+String(v??"").replace(/"/g,'""')+'"';download('\uFEFF'+[["month","asOfDate","total","currency"],...dataHubLibraryProjection().monthly.map(r=>[r.month,r.asOfDate,r.total,r.currency])].map(r=>r.map(cell).join(",")).join("\r\n"),"text/csv;charset=utf-8","csv")};
 }
 function renderStoragePanel(){
+  renderDataHubLibrary();
+  renderGoalRegistry();
   const recoveryPanel=$("loadRecoveryPanel");if(recoveryPanel)recoveryPanel.hidden=!loadRecovery.active;
   const copyStatus=$("loadRecoveryCopyStatus");if(copyStatus)copyStatus.textContent=loadRecovery.verified?"원본 격리 사본의 재읽기 확인을 완료했습니다. 검증된 백업을 선택해 복원할 수 있습니다.":"격리 사본을 보관하지 못했습니다. 원본은 유지합니다. 먼저 내려받고 저장 공간·권한을 확인한 뒤 다시 열어 주세요.";
 
