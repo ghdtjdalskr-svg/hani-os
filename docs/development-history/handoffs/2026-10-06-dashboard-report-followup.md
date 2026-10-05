@@ -42,3 +42,10 @@
 - PASS: `node scripts/hani-dashboard-period-ui.test.mjs <playwright> <chrome>` 가상 PC1440/모바일390 실제 renderer/event·최근 자산/소비 기간 표시·다른 지표 선택 월 유지·검증 거부·protected storage 불변. 기준 날짜가 ellipsis로 잘리던 부분은 기존 meta 슬롯 줄바꿈으로 수정 후 재검증. 격리 QA 화면은 `qa-evidence/dashboard-monthly-cadence-{1440,390}.png` (commit 제외). 실제 계정/운영 화면 PASS 아님.
 - 회귀 PASS: `node --test scripts/hani-goal-period.test.mjs` 19건; `node scripts/hani-owner-verification-diagnostic.test.mjs` 7건.
 - 이번 월간 표시 개선 개발·targeted test 완료. 전체 후속 상태는 **진행 중**: 실제 계정 초기 검증·보고 후보 이식/실제 답변 PPT·인증 연간 QA는 아직 남음. 새 서버 함수/배포 순서 변경 없음. 버전185·캐시태그 유지, main/운영 PR/배포 없음. Claude 열차 인계 시 이 범위와 전체 미검증을 구분해야 함.
+
+## 독립 탑승 인계 / 2026-10-06
+
+- 대표님 “탑승대기까지 이어서 작업해줘”에 따라 대시보드 개선만 분리 인계. runtime98decce / branch `hani/dashboard-report-followup-20261006`. 상세 [월간 입력 주기 탑승 인수인계](2026-10-06-dashboard-monthly-cadence-boarded.md).
+- 원본 비배열/없음 사례를 추가 검증했고 PC1440/모바일390 UI·period·목표19·owner진단7를 최종 개발 내용으로 재실행 PASS. 가상 검사/실제 계정 미검증의 경계 유지.
+- 최신 main22c0021 코드188로 drift 확인·보고. merge/rebase 없이 base185 유지. 기능 통합·최종 gate는 Claude 담당.
+- 대시보드 독립 항목은 **탑승 대기**. 기존 HANI-7 분기·연간 보고 QA는 **진행 중**이며 동일 branch에 보고 후보를 이식하거나 완료로 표시하지 않음.
