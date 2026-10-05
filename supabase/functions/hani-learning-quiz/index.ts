@@ -1,5 +1,5 @@
 // PROJECT HANI
-// hani-learning-quiz v0.4.0 · READ-ONLY Category Rotation Quiz Generator
+// hani-learning-quiz v0.4.1 · READ-ONLY News Material Quiz Generator
 // Authenticated only · server-side OpenAI key · ZERO database/hani_state write
 
 import { createClient } from "npm:@supabase/supabase-js@2";
@@ -66,7 +66,58 @@ async function authenticatedUser(req: Request, supabaseUrl: string, publishableK
   return error ? null : user;
 }
 
-function systemPrompt(quizSize: number, weaknessCount: number, category: string, sourceCount: number, isRetry: boolean) {
+function newsMaterialCount(questions: any[], sources: any[]) {
+  return questions.filter(q => sources.some(s => String(q?.prompt || '').includes(s.title)
+    && String(q?.prompt || '').includes(s.summary.slice(0,260))
+    && String(q?.prompt || '').includes(`자료 기준일 ${s.published_at.slice(0,10)}`)
+    && String(q?.prompt || '').includes(s.source_name)
+    && (s.material!=='macro' || String(q?.prompt || '').includes('[저장된 브리핑 요약]'))
+    && String(q?.explanation || '').includes(`[${s.source_id}]`)
+    && String(q?.explanation || '').includes(s.source_url))).length;
+}
+
+// Assemble source display from the supplied archive, not a model's rephrasing.
+// Never promote an unstructured/basic question or invent a source association.
+function canonicalNewsContext(question: any, sources: any[]) {
+  const prompt = String(question?.prompt || ''), explanation = String(question?.explanation || '');
+  const marker = prompt.indexOf('[질문]');
+  const focus = marker < 0 ? '' : prompt.slice(marker + 4).trim();
+  const allowedTypes = ['Cause & Effect', 'Scenario', 'Data Interpretation', 'Current Issue', 'Portfolio / Investment Decision'];
+  if (!prompt.startsWith('[실제 뉴스') || !focus || !allowedTypes.includes(question?.type)) return question;
+  const referenced = sources.filter(s => explanation.includes(`[${s.source_id}]`));
+  if (referenced.length !== 1) return question;
+  const source = referenced[0];
+  if (!prompt.includes(source.title) || !prompt.includes(source.source_name)
+    || !prompt.includes(`자료 기준일 ${source.published_at.slice(0,10)}`)
+    || !explanation.includes(source.source_url)) return question;
+  const briefing = source.material === 'macro';
+  const prefix = `[실제 뉴스 · 자료 기준일 ${source.published_at.slice(0,10)}]\n${source.title}\n출처: ${source.source_name}${briefing ? ' · 브리핑 대표 참고출처 · 단일 기사 요약 아님' : ''}\n${briefing ? '[저장된 브리핑 요약]' : '[뉴스 요약]'} ${source.summary.slice(0,260)}\n[질문] ${focus}`;
+  if (prefix.length > 1200) return question;
+  return { ...question, prompt: prefix };
+}
+
+// Return only validation flags, never credentials, source bodies or user records.
+function newsMaterialDiagnostics(questions: any[], sources: any[]) {
+  return questions.map((q, index) => {
+    const prompt = String(q?.prompt || ''), explanation = String(q?.explanation || '');
+    const source = sources.find(s => explanation.includes(`[${s.source_id}]`))
+      || sources.find(s => prompt.includes(s.title));
+    if (!source) return { question: index + 1, source_id: null, missing: ['source_reference'] };
+    const checks = {
+      title: prompt.includes(source.title),
+      summary: prompt.includes(source.summary.slice(0,260)),
+      date: prompt.includes(`자료 기준일 ${source.published_at.slice(0,10)}`),
+      source_name: prompt.includes(source.source_name),
+      briefing_label: source.material !== 'macro' || prompt.includes('[저장된 브리핑 요약]'),
+      source_id: explanation.includes(`[${source.source_id}]`),
+      source_url: explanation.includes(source.source_url),
+    };
+    return { question: index + 1, source_id: source.source_id,
+      missing: Object.entries(checks).filter(([,pass]) => !pass).map(([name]) => name) };
+  });
+}
+
+function systemPrompt(quizSize: number, weaknessCount: number, category: string, sourceCount: number, isRetry: boolean, newsMinimum = 0) {
   const shared = [
     "당신은 PROJECT HANI의 히나 학습 Agent입니다.",
     `사용자의 학습 프로젝트와 최근 약점을 바탕으로 오늘 풀 객관식 ${quizSize}문제를 만듭니다.`,
@@ -88,6 +139,12 @@ function systemPrompt(quizSize: number, weaknessCount: number, category: string,
     "문제 type은 Definition, Cause & Effect, Scenario, Data Interpretation, Current Issue, Portfolio / Investment Decision 중 의미상 가장 가까운 값을 사용하세요.",
     "단순 숫자 암기보다 사건→경제 원리→시장·기업·투자 판단의 연결을 묻고, 해설에 그 연결을 설명하세요.",
     sourceCount > 0 ? "Current Issue의 구체적 사실은 제공된 Newsroom source에 근거하고, 출처에 없는 수치·사건은 만들지 마세요." : "검증된 Newsroom source가 없으므로 최신 사건인 것처럼 꾸미지 말고, 시점에 덜 민감한 원리와 명시적인 가상 시나리오를 사용하세요.",
+    `이번 요청은 최소 ${newsMinimum}문제를 제공된 실제 뉴스의 사건·기업·정책·거시경제 상황에 연결하세요. 난이도를 높이라는 요청이 아닙니다. 기존 난이도와 프로젝트 목표를 유지하세요.`,
+    "뉴스 소재 문제는 실제 뉴스 내용을 읽고 사건→원리→영향을 묻도록 하세요. 기업명만 끼운 가상 상황이나 단순 용어 정의에 출처만 붙이지 마세요.",
+    "뉴스 소재 문제의 prompt는 줄바꿈으로 다음 형식을 따르세요: [실제 뉴스 · 자료 기준일 YYYY-MM-DD] / source.title 원문 / 출처: source.source_name / [질문] 해당 뉴스 내용을 적용하는 질문. YYYY-MM-DD는 source.published_at의 앞 10자입니다. 슬래시는 줄바꿈을 뜻합니다. 서버가 [질문] 앞에 저장된 뉴스/브리핑 요약 원문을 구성하므로 요약을 다시 쓰지 마세요. 질문과 해설은 해당 요약에 근거해야 합니다. 저장된 자료 기준일을 원문 기사의 발행일이라고 단정하지 마세요. prompt는 1200자 이내로 작성하세요.",
+    "그 문제의 해설 끝에 정확한 [source_id], source_name, published_at, source_url을 그대로 인용하세요. 예: [N1] 출처명 · 자료 기준일 · https://... . 사실과 경제적 해석을 구분하고, 이 출처 표기를 기초 개념 문제에는 붙이지 마세요.",
+    "material이 macro인 자료는 여러 기사를 종합한 저장 브리핑입니다. 서버가 [저장된 브리핑 요약]과 '브리핑 대표 참고출처 · 단일 기사 요약 아님' 표시를 구성합니다. 요약을 별도로 쓰지 마세요. 하나의 URL이 브리핑 전체의 모든 사실을 직접 입증한다고 주장하지 말고, 해설도 저장된 브리핑에 기반한 경제 원리 해석으로 한정하세요.",
+    "자료가 여러 분야이면 국내 반도체·기업, 클라우드·AI, 국제정세·거시경제를 순환하고 같은 기사만 반복하지 마세요. 추가 웹검색이나 자료에 없는 최신 사실을 만들어내지 마세요.",
   ];
   const jlpt = [
     "JLPT 프로젝트라면 문제 지시문은 한국어로, 실제 어휘·문법·독해 예문은 일본어로 쓰세요.",
@@ -132,7 +189,18 @@ Deno.serve(async (req) => {
   const recentQuestionRotation = (Array.isArray(feedback.recent_question_rotation) ? feedback.recent_question_rotation : []).slice(0, 24).map((raw) => {
     const item = asObject(raw); return { type: cleanText(item.type, 80), topic: cleanText(item.topic, 100), count: boundedInteger(item.count, 1, 1, 100) };
   }).filter((item) => item.type || item.topic);
-  const sources = Array.isArray(body.question_sources) ? body.question_sources.slice(0, 24) : [];
+  const sources = (Array.isArray(body.question_sources) ? body.question_sources.slice(0, 24) : []).map(raw => {
+    const s = asObject(raw);
+    return {source_id:cleanText(s.source_id, 12), title:cleanText(s.title,180), summary:cleanText(s.summary,700),
+      why_it_matters:cleanText(s.why_it_matters,420), source_name:cleanText(s.source_name,80),
+      source_url:cleanText(s.source_url,500), published_at:cleanText(s.published_at,32), material:cleanText(s.material,60)};
+  }).filter(s => {
+    const stamp = Date.parse(s.published_at);
+    try { return /^N\d+$/.test(s.source_id) && s.title && s.summary && s.source_name && /^https?:$/.test(new URL(s.source_url).protocol)
+      && Number.isFinite(stamp) && stamp <= Date.now() && Date.now()-stamp <= 21*86400000; } catch (_) { return false; }
+  });
+  const requestedNewsMinimum = Number(asObject(body.engine_contract).news_material_minimum);
+  const newsMinimum = category === 'economy' && sources.length ? boundedInteger(requestedNewsMinimum,Math.ceil(quizSize/3),0,quizSize) : 0;
   const weaknessQuestionCount = Math.max(1, Math.min(8, Math.round(quizSize * 0.33)));
   const weaknesses = (Array.isArray(body.weaknesses) ? body.weaknesses : []).slice(0, 12).map((raw: any) => ({
     type: cleanText(raw?.type, 80), topic: cleanText(raw?.topic, 100), wrong_count: Math.max(1, Math.min(20, Number(raw?.wrong_count || 1))), question: cleanText(raw?.question, 260),
@@ -148,12 +216,15 @@ Deno.serve(async (req) => {
   const startedAt = Date.now();
   const res = await fetch("https://api.openai.com/v1/responses", {
     method: "POST", headers: { "Authorization": `Bearer ${openaiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ model: "gpt-5.6-luna", instructions: systemPrompt(quizSize, weaknessQuestionCount, category, sources.length, attempt > 1 || acceptedPrompts.length > 0), input, max_output_tokens: Math.max(1800, Math.min(7000, quizSize * 350)), reasoning: { effort: "none" }, text: { verbosity: "low", format: { type: "json_schema", name: "hani_daily_learning_quiz", strict: true, schema: quizSchema(quizSize) } }, store: false }),
+    body: JSON.stringify({ model: "gpt-5.6-luna", instructions: systemPrompt(quizSize, weaknessQuestionCount, category, sources.length, attempt > 1 || acceptedPrompts.length > 0, newsMinimum), input, max_output_tokens: Math.max(1800, Math.min(7000, quizSize * 350)), reasoning: { effort: "none" }, text: { verbosity: "low", format: { type: "json_schema", name: "hani_daily_learning_quiz", strict: true, schema: quizSchema(quizSize) } }, store: false }),
   });
   const ai = await res.json().catch(() => ({}));
   if (!res.ok) return json({ ok:false, error:"QUIZ_MODEL_FAILED", message:ai?.error?.message || `OpenAI ${res.status}`, db_write:false, hani_state_touched:false }, 502);
   const output = extractOutputText(ai); let quiz: any = null;
   try { quiz = JSON.parse(output); } catch (_) { return json({ ok:false, error:"QUIZ_PARSE_FAILED", message:"퀴즈 JSON 파싱에 실패했습니다.", db_write:false, hani_state_touched:false }, 502); }
   if (!Array.isArray(quiz?.questions) || quiz.questions.length !== quizSize) return json({ ok:false, error:"QUIZ_COUNT_INVALID", message:`정확히 ${quizSize}문제를 생성하지 못했습니다.`, db_write:false, hani_state_touched:false }, 502);
-  return json({ ok:true, service:"PROJECT HANI", function:"hani-learning-quiz", version:"0.4.0", feedback_applied:true, category_rotation_applied:true, requested_count:requestedCount, quiz, model:String(ai?.model || "gpt-5.6-luna"), usage:ai?.usage || null, latency_ms:Date.now() - startedAt, db_write:false, hani_state_touched:false, store:false, message:`오늘의 학습 퀴즈 ${quizSize}문제를 생성했습니다. 서버는 학습 기록을 저장하지 않았습니다.` });
+  if (category === 'economy') quiz.questions = quiz.questions.map((question: any) => canonicalNewsContext(question, sources));
+  const newsCount = newsMaterialCount(quiz.questions,sources);
+  if (newsCount < newsMinimum) return json({ok:false,error:'QUIZ_NEWS_MATERIAL_MISSING',message:'실제 뉴스 소재와 출처가 필요한 만큼 포함되지 않아 저장하지 않았습니다. 기존 문제는 유지됩니다.',validation:{required:newsMinimum,matched:newsCount,questions:newsMaterialDiagnostics(quiz.questions,sources)},usage:ai?.usage || null,model_status:ai?.status || null,db_write:false,hani_state_touched:false},502);
+  return json({ ok:true, service:"PROJECT HANI", function:"hani-learning-quiz", version:"0.4.1", feedback_applied:true, category_rotation_applied:true, news_material_minimum:newsMinimum, requested_count:requestedCount, quiz, model:String(ai?.model || "gpt-5.6-luna"), usage:ai?.usage || null, latency_ms:Date.now() - startedAt, db_write:false, hani_state_touched:false, store:false, message:`오늘의 학습 퀴즈 ${quizSize}문제를 생성했습니다. 서버는 학습 기록을 저장하지 않았습니다.` });
 });
