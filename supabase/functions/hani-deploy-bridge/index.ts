@@ -14,6 +14,13 @@
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { resolveRuntimeClosure, isTextArtifact } from "./runtime-closure.ts";
+// Server-only authorization. Never derive the allowlist from request/user metadata.
+function ownerAccess(user: { id?: string } | null, configuredId: string | undefined) {
+  const allowedId = (configuredId || "").trim();
+  if (!allowedId) return { ok: false, status: 503, error: "OWNER_ACCESS_NOT_CONFIGURED" };
+  if (!user?.id || user.id !== allowedId) return { ok: false, status: 403, error: "OWNER_ACCESS_DENIED" };
+  return { ok: true, status: 200, error: "" };
+}
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -832,11 +839,12 @@ Deno.serve(async (req) => {
     const githubToken = Deno.env.get("GITHUB_DEPLOY_TOKEN") ?? "";
 
     if (!supabaseUrl || !publishableKey) return json({ ok: false, error: "Supabase 환경변수가 준비되지 않았습니다." }, 500);
-    const secretKey = supabaseSecretKey();
-    const admin = secretKey ? createClient(supabaseUrl, secretKey, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } }) : null;
-
     const { user, error: authError } = await getAuthenticatedUser(req, supabaseUrl, publishableKey);
     if (!user) return json({ ok: false, error: authError }, 401);
+    const access = ownerAccess(user, Deno.env.get("HANI_OWNER_USER_ID"));
+    if (!access.ok) return json({ ok: false, error: access.error }, access.status);
+    const secretKey = supabaseSecretKey();
+    const admin = secretKey ? createClient(supabaseUrl, secretKey, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } }) : null;
 
     const payload = asObject(await req.json().catch(() => ({})));
     const action = cleanText(payload.action, 80);
