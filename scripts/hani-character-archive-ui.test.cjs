@@ -14,6 +14,9 @@ await page.locator('.ca-hero').scrollIntoViewIfNeeded();await page.screenshot({p
 await page.locator('.ca-grid').screenshot({path:path.join(output,`${width}-grid.png`)});
 for(const c of data.characters){await page.locator(`.ca-grid [data-character-profile="${c.id}"]`).click();assert.equal(await page.locator('#caDetailTitle').textContent(),c.nameKo);assert.equal(await page.locator('#caDetailTitle').evaluate(el=>el===document.activeElement),true);
 assert.equal(await page.locator(`.ca-grid [data-character-profile="${c.id}"]`).getAttribute('aria-expanded'),'true');
+assert.equal(await page.locator('#caDetail .ca-visual-story').count(),1);assert.equal(await page.locator('.ca-mir').count(),0);
+assert.equal(await page.locator('#caDetail .ca-axis-graphic').textContent(),c.axis.replace(/\s*↔\s*/,'↔'));
+if(c.id==='hani')await page.locator('#caDetail .ca-visual-story').screenshot({path:path.join(output,`${width}-identity-graphic.png`)});
 await page.locator('#caDetail details').evaluateAll(nodes=>nodes.forEach(n=>n.open=true));assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`${width}/${c.id} no horizontal overflow`);
 if(c.id==='mir'){assert.equal(await page.locator('#caDetail img').count(),0);await page.locator('#caDetail').screenshot({path:path.join(output,`${width}-mir-detail.png`)});}
 await page.locator('#caDetail details').evaluateAll(nodes=>nodes.forEach(n=>n.open=false));}

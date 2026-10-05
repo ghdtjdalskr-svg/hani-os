@@ -11,3 +11,4 @@ CODEMAP_MISS: Archive 항목 없음. 실제 앵커 확인. 기존 assets/profile
 보고서: docs/M9-MIR-CHARACTER-ARCHIVE-REPORT.md. Preview http://127.0.0.1:8806/.
 최종 main 76d3bed: 검사 도구 2개만 변경. 운영 파일 겹침 없음. merge/rebase하지 않음. 탑승 시 최신 gate 재검증 필요.
 상태: 대표 Preview 준비. 기능 브랜치 보존/탑승 대기이며 Production NOT DEPLOYED. 버전 증가는 Release Train 담당 범위.
+후속: 퍼스널 컬러칩·담당 영역 그래픽·관계 프로필 조합 추가, MIR 고정 소개 중복 제거. data Registry/원문 변경 없음.

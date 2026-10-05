@@ -1,4 +1,35 @@
 /* Scoped, token-led read-only Archive. No other view styles or data semantics. */
+/* Identity graphics derive only from Canon fields; no ratings or inferred traits. */
+#characterArchive .ca-color-story{display:flex;gap:16px;flex-wrap:wrap;margin:18px 0 24px}#characterArchive .ca-color-story>div{display:flex;align-items:center;gap:8px}#characterArchive .ca-color-story span{width:28px;height:28px;border-radius:50%;border:1px solid #80808066;box-shadow:inset 0 0 0 3px #ffffff55}#characterArchive .ca-color-story small{font-size:11px;color:var(--ca-muted)}
+#characterArchive .ca-grid .ca-character-card{background:linear-gradient(155deg,color-mix(in srgb,var(--ca-accent) 18%,transparent),transparent 70%),var(--ca-paper)}
+#characterArchive .ca-character-card .ca-profile-button{border-color:color-mix(in srgb,var(--ca-accent) 45%,var(--ca-line))}
+#characterArchive .ca-visual-story{margin:24px 0;border:1px solid color-mix(in srgb,var(--ca-accent) 40%,var(--ca-line));border-radius:20px;padding:24px;background:linear-gradient(135deg,color-mix(in srgb,var(--ca-accent) 16%,transparent),transparent 70%),var(--ca-soft)}
+#characterArchive .ca-visual-heading{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+#characterArchive .ca-visual-heading>span{font-size:10px;letter-spacing:.15em;color:var(--ca-muted)}
+#characterArchive .ca-visual-heading>b{font-size:20px}
+#characterArchive .ca-axis-graphic{display:flex;align-items:center;justify-content:space-between;gap:14px;border-radius:40px;padding:16px 24px;border:1px solid var(--ca-line);background:var(--ca-paper);font-size:14px}
+#characterArchive .ca-axis-graphic>span{font-size:28px;color:var(--ca-muted)}
+#characterArchive .ca-role-map{display:grid;grid-template-columns:150px minmax(0,1fr);align-items:center;gap:32px;margin:24px 0}
+#characterArchive .ca-role-hub{display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center}
+#characterArchive .ca-role-hub>.ca-mini{width:100px;border:5px solid color-mix(in srgb,var(--ca-accent) 30%,var(--ca-paper));box-shadow:0 0 0 7px color-mix(in srgb,var(--ca-accent) 10%,transparent)}
+#characterArchive .ca-role-hub>small{font-size:10px;letter-spacing:.1em;color:var(--ca-muted)}
+#characterArchive .ca-role-nodes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#characterArchive .ca-role-nodes>div{display:flex;align-items:center;gap:12px;border:1px solid var(--ca-line);background:var(--ca-paper);padding:14px;border-radius:12px}
+#characterArchive .ca-role-nodes span{display:grid;place-items:center;flex-shrink:0;width:36px;height:36px;border-radius:10px;background:color-mix(in srgb,var(--ca-accent) 22%,var(--ca-paper));font-size:22px}
+#characterArchive .ca-role-nodes b{font-size:13px;font-weight:600}
+#characterArchive .ca-identity-stamps{display:grid;grid-template-columns:1fr 2fr;gap:12px}
+#characterArchive .ca-identity-stamps>div{padding:16px;background:var(--ca-paper);border-radius:12px;border-left:4px solid var(--ca-accent)}
+#characterArchive .ca-identity-stamps span{display:block;font-size:10px;letter-spacing:.12em;color:var(--ca-muted);margin-bottom:6px}
+#characterArchive .ca-identity-stamps b{font-size:14px;white-space:pre-line}
+#characterArchive .ca-visual-note{display:block;margin-top:16px;color:var(--ca-muted);font-size:11px}
+#characterArchive .ca-person-label{display:flex;align-items:center;gap:12px}
+#characterArchive .ca-person-label>.ca-mini{width:50px;flex-shrink:0}
+#characterArchive .ca-section .ca-relationship-grid>div{border-top:3px solid var(--ca-accent);background:linear-gradient(135deg,color-mix(in srgb,var(--ca-accent) 12%,transparent),transparent),var(--ca-soft)}
+#characterArchive .ca-chemistry{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:18px;flex-wrap:wrap}
+#characterArchive .ca-chemistry>div{width:65px;text-align:center;display:flex;flex-direction:column;gap:8px;font-size:12px}
+#characterArchive .ca-chemistry .ca-mini{border:3px solid color-mix(in srgb,var(--ca-accent) 40%,var(--ca-paper))}
+#characterArchive .ca-link{font-size:22px;color:var(--ca-muted)}
+@media(max-width:600px){#characterArchive .ca-visual-story{padding:16px}#characterArchive .ca-role-map{grid-template-columns:1fr;gap:18px}#characterArchive .ca-role-nodes{grid-template-columns:1fr}#characterArchive .ca-identity-stamps{grid-template-columns:1fr}#characterArchive .ca-axis-graphic{padding:12px;font-size:11px}#characterArchive .ca-visual-heading>b{font-size:18px}}
 #characterArchive{--ca-ink:var(--text-primary,var(--ds-ink,#28374c));--ca-muted:var(--text-secondary,#637087);--ca-paper:var(--surface-panel,#fff);--ca-line:var(--border-subtle,#e7e4ed);--ca-soft:var(--surface-raised,#faf8fc);color:var(--ca-ink)}
 #characterArchive *{box-sizing:border-box;min-width:0}
 #characterArchiveContent{max-width:1420px;margin:auto}

@@ -80,7 +80,15 @@ NOT DEPLOYED
 
 ## Next
 
+## 퍼스널 컬러·그래픽 보강 (2026-10-06)
+
+대표님 요청으로 캐릭터 카드 색상 면적을 확대하고, 선택 상세에 Canon VISUAL의 컬러명과 시각적 색상칩을 추가.
+색상칩 HEX는 디자인 표현값이며 새 캐릭터 설정을 정의하지 않음.
+프로필 중심 담당 영역 맵, AXIS 양극 연결, Rank/Seniority 별도 스탬프, 관계·Team Dynamics의 공식 프로필 조합 추가.
+하단 MIR 고정 소개는 제거. MIR 카드 선택 상세에서만 MIR 정체성·원문 확인 가능.
+Canon 문구, data Registry, 저장소/Cloud/API 경로 변경 없음. 운영 배포 없음.
+새 그래픽 10명 전환·1440/390 가로 넘침·원문·기존 메뉴 회귀 재검증. 증거 PNG: 1440-identity-graphic.png, 390-identity-graphic.png.
+
 READY FOR REPRESENTATIVE PREVIEW
 Preview: http://127.0.0.1:8806/
 대표님 화면 확인 후 Release Train 탑승 범위를 판단. Production 승인 별도 필요.
-
