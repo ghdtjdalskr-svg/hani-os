@@ -1,5 +1,18 @@
 /* Scoped, token-led read-only Archive. No other view styles or data semantics. */
 /* Identity graphics derive only from Canon fields; no ratings or inferred traits. */
+#characterArchive .ca-core.ca-computer{padding:12%;background:radial-gradient(ellipse at 50% 30%,#edf8fc,#e4deef 60%,#cbd3df);gap:0;border-radius:18px}
+#characterArchive .ca-computer .ca-monitor{display:flex;flex-direction:column;width:100%;height:70%;border:2px solid #8693a7;border-radius:8px;background:linear-gradient(135deg,#fafcff,#aebacb);padding:4px;box-shadow:0 8px 15px #28374826}
+#characterArchive .ca-monitor-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;min-height:0;border-radius:4px;background:radial-gradient(circle at 50% 36%,#557789,#1e304a 65%,#17243a);color:#eefaff;overflow:hidden}
+#characterArchive .ca-screen-core{font-size:clamp(12px,2vw,32px);line-height:1;color:#c7edff;text-shadow:0 0 12px #b1dcff}
+#characterArchive .ca-screen-name{font-size:clamp(10px,1.6vw,22px);letter-spacing:.12em;font-weight:700}
+#characterArchive .ca-computer .ca-monitor-screen small{font-size:6px;color:#e5ecff;letter-spacing:.08em;margin-top:2px}
+#characterArchive .ca-monitor-chin{display:flex;justify-content:center;height:5px;padding-top:3px}
+#characterArchive .ca-monitor-chin i{width:3px;height:3px;border-radius:50%;background:#437c77}
+#characterArchive .ca-computer .ca-monitor-stand{width:12%;height:10%;background:linear-gradient(90deg,#8c9aaf,#edf2f7,#9faac0)}
+#characterArchive .ca-computer .ca-monitor-base{width:48%;height:4%;border-radius:50% 50% 3px 3px;background:#a1aec2;box-shadow:0 4px 8px #28374826}
+#characterArchive .ca-computer.ca-mini .ca-screen-core{font-size:16px}
+#characterArchive .ca-computer.ca-mini .ca-screen-name{font-size:11px}
+#characterArchive .ca-computer.ca-mini .ca-monitor-screen small{font-size:5px}
 #characterArchive .ca-orbit{position:relative;height:440px;margin:20px 0;background:radial-gradient(ellipse at center,color-mix(in srgb,var(--ca-accent) 18%,transparent),transparent 65%)}
 #characterArchive .ca-orbit svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 #characterArchive .ca-orbit :is(ellipse,path){fill:none;stroke:var(--ca-accent);stroke-width:.18;opacity:.3}
