@@ -1,0 +1,9 @@
+{
+  "base": "c43ba2f1ce24c05e2cb16338e920fcf73731de0a",
+  "results": [
+    "Desktop 1440: five equal teams, 16 profiles, 9 images/7 placeholders, all filters, empty/reset, 5 team dialogs, person dialog, Escape/focus return, no errors/overflow PASS",
+    "Mobile 390 / narrow 320: no horizontal overflow; Hina dialog layout PASS",
+    "Integrated app DOM/canonical navigation AI team ↔ organization PASS; protected key unchanged across navigation. Signed-in visual QA NOT tested; gate not bypassed.",
+    "New module has no storage/network/auth dependencies PASS"
+  ]
+}

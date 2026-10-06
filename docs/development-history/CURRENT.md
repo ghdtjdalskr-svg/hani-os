@@ -1,5 +1,9 @@
 # HANI 최신 개발 현황
 
+## 2026-10-07 · HANI GROUP Organization Hub Preview (Codex)
+
+그래픽 중심 조직도·팀 소개·인물 갤러리의 1차 Preview 구현/targeted QA 완료, 디자인 승인 대기. branch `hani/organization-hub-preview-20261007`, base `c43ba2f1`, 표시 버전 `v2.9.190` 유지. 5팀 병렬 구조, M9 기존 이미지 9명 + 신규 제안 7명 이니셜. 신규 바이블 확정/실제 로그인 통합 시각 QA/독립 UI 리뷰는 남음. **배포 열차 탑승·main 병합·운영 배포 아님.** [작업 인수인계](handoffs/2026-10-07-organization-hub-preview.md), [설계/Preview](../organization-hub-design.md). 아래는 기존 시점 기록이며 수정하지 않음.
+
 - 갱신일: 2026-10-05 KST / 전체 HANI 개발 탭 취합
 - 기준 main: c544592e427b44fd7c7c530213a790f50e92bce8 (PR181·182)
 - 최신 제품: v2.9.178 / PR180 / 90b7440

@@ -1472,6 +1472,7 @@ const pageMeta={
  monthlyReport:["라이프 리포트","한 달의 흐름을 돌아보고, 분기·연간 발표로 이어갈 보고 공간입니다.","team"],
  policy:["사내 규칙","AI TEAM이 공통으로 참고하는 운영 원칙과 학습 규정을 관리합니다.","team"],
  aiTeam:["AI 팀","역할별 담당 AI와 서비스 바로가기를 확인합니다.","team"],
+ organization:["HANI GROUP","사람과 전문성으로 연결되는 우리의 조직.","team"],
  aura:["HANI AURA","나의 색과 계절로 일상의 화면을 꾸밉니다.","team"],
  settings:["설정 / 데이터","캘린더, 백업, 복원과 초기화를 관리합니다.","work"],
  shopping:["쇼핑","v2.2 호환 페이지입니다.","life"]

@@ -1,0 +1,70 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import {pathToFileURL} from 'node:url';
+const runtime=process.env.HANI_PLAYWRIGHT_MODULE||'C:/Users/홍성민/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs';
+const {chromium}=await import(pathToFileURL(runtime).href);
+const browser=await chromium.launch({executablePath:process.env.HANI_CHROME||'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true});
+const base=process.env.HANI_PREVIEW_URL||'http://127.0.0.1:8791';
+const out=path.resolve('qa-evidence/organization-hub');fs.mkdirSync(out,{recursive:true});
+const results=[];
+try{
+ const page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.route('**/*',route=>new URL(route.request().url()).origin===base?route.continue():route.abort());
+ await page.goto(base+'/docs/organization-hub-preview.html');
+ await page.locator('.ogh-person').last().waitFor();
+ assert.equal(await page.locator('.ogh-node').count(),5);
+ assert.equal(await page.locator('.ogh-person:visible').count(),16);
+ assert.equal(await page.locator('.ogh-person-image>img').count(),9);
+ assert.equal(await page.locator('.ogh-person-image>.ogh-placeholder').count(),7);
+ const nodes=await page.locator('.ogh-node').evaluateAll(nodes=>nodes.map(n=>Math.round(n.getBoundingClientRect().top)));
+ assert.equal(new Set(nodes).size,1,'Five teams share equal row');
+ await page.locator('[data-group="M9"]').click();assert.equal(await page.locator('.ogh-person:visible').count(),9);
+ await page.locator('[data-group="AI STAFF"]').click();assert.equal(await page.locator('.ogh-person:visible').count(),7);
+ await page.locator('#ogh-team-filter').selectOption('strategy');assert.equal(await page.locator('.ogh-person:visible').count(),1);
+ await page.locator('#ogh-search').fill('<img src=x onerror=alert(1)>');assert.equal(await page.locator('.ogh-person:visible').count(),0);
+ await page.locator('[data-reset]').click();assert.equal(await page.locator('.ogh-person:visible').count(),16);
+ await page.locator('#ogh-search').fill('Codex');assert.equal(await page.locator('.ogh-person:visible').count(),1);
+ await page.locator('#ogh-search').fill('');
+ const opener=page.locator('[data-card-person="hani"]');await opener.click();
+ await page.locator('dialog[open]').waitFor();assert.match(await page.locator('#ogh-detail-title').innerText(),/하니/);
+ await page.keyboard.press('Escape');assert.equal(await page.locator('dialog[open]').count(),0);assert.equal(await opener.evaluate(e=>e===document.activeElement),true);
+ for(const [id,count] of [['strategy',3],['platform',6],['finance',2],['life',4],['business',1]]){
+   await page.locator('.ogh-node-title[data-team="'+id+'"]').click();assert.equal(await page.locator('.ogh-detail-members .ogh-avatar').count(),count);
+   await page.locator('.ogh-close').click();
+ }
+ await page.locator('[data-card-person="mir"]').click();assert.match(await page.locator('.ogh-detail').innerText(),/제안안/);await page.keyboard.press('Escape');
+ await page.evaluate(async()=>{for(const img of document.querySelectorAll('.ogh img')){img.loading='eager';await img.decode();}});
+ assert.deepEqual(errors,[]);
+ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+ await page.locator('.ogh-mast').click();await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:path.join(out,'desktop.png'),fullPage:true});
+ await page.screenshot({path:path.join(out,'desktop-first-screen.png')});
+ results.push('Desktop 1440: five equal teams, 16 profiles, 9 images/7 placeholders, all filters, empty/reset, 5 team dialogs, person dialog, Escape/focus return, no errors/overflow PASS');
+ await page.setViewportSize({width:390,height:844});
+ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+ await page.locator('[data-card-person="hina"]').click();assert.equal(await page.locator('dialog').evaluate(e=>e.scrollWidth<=e.clientWidth),true);
+ await page.screenshot({path:path.join(out,'mobile-dialog.png')});await page.keyboard.press('Escape');
+ await page.locator('.ogh-mast').click();await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:path.join(out,'mobile.png'),fullPage:true});
+ await page.screenshot({path:path.join(out,'mobile-first-screen.png')});
+ await page.setViewportSize({width:320,height:740});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+ results.push('Mobile 390 / narrow 320: no horizontal overflow; Hina dialog layout PASS');
+ // Full app route is inspected without signing in or bypassing its authentication gate.
+ await page.setViewportSize({width:1440,height:1000});
+ await page.goto(base+'/index.html#organization');await page.locator('#haniOrganizationHub .ogh-person').last().waitFor({state:'attached'});
+ assert.equal(await page.locator('#organization.active').count(),1);
+ assert.equal(await page.locator('.side-bottom [data-view="organization"]').count(),1);
+ const protectedBefore=await page.evaluate(()=>localStorage.getItem('hani_os_life_v23'));
+ // Invoke canonical navigation via existing buttons in isolated browser; no auth/session mutation.
+ await page.locator('.side-bottom [data-view="aiTeam"]').evaluate(e=>e.click());
+ assert.equal(await page.locator('#aiTeam.active').count(),1);
+ await page.locator('.side-bottom [data-view="organization"]').evaluate(e=>e.click());
+ assert.equal(await page.locator('#organization.active').count(),1);
+ assert.equal(await page.locator('#haniOrganizationHub .ogh-person').count(),16);
+ assert.equal(await page.evaluate(()=>localStorage.getItem('hani_os_life_v23')),protectedBefore);
+ results.push('Integrated app DOM/canonical navigation AI team ↔ organization PASS; protected key unchanged across navigation. Signed-in visual QA NOT tested; gate not bypassed.');
+ const module=fs.readFileSync('hani-organization-hub.js','utf8');assert.doesNotMatch(module,/localStorage|sessionStorage|\bfetch\s*\(|supabase|XMLHttpRequest/);
+ results.push('New module has no storage/network/auth dependencies PASS');
+ fs.writeFileSync(path.join(out,'results.json'),JSON.stringify({base:'c43ba2f1ce24c05e2cb16338e920fcf73731de0a',results},null,2));
+ console.log(results.join('\n'));
+} finally {await browser.close();}

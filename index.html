@@ -228,6 +228,7 @@
       </div>
     </div>
     <div class="side-bottom">
+      <button class="nav-btn" data-view="organization"><span class="ico"><svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="5" rx="1"/><path d="M12 7v5M4 16v-4h16v4"/><rect x="1" y="16" width="6" height="5" rx="1"/><rect x="9" y="16" width="6" height="5" rx="1"/><rect x="17" y="16" width="6" height="5" rx="1"/></svg></span><span class="txt">HANI GROUP</span></button>
 
       <button class="nav-btn" data-view="aiTeam"><span class="ico"><svg viewBox="0 0 24 24"><rect x="5" y="7" width="14" height="12" rx="3"/><path d="M9 12h.01M15 12h.01M9 16h6M12 3v4"/></svg></span><span class="txt">AI 팀</span></button>
       <button class="nav-btn" data-view="settings"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.4 1a7 7 0 0 0-1.7-1L14.5 3h-5L9.2 6a7 7 0 0 0-1.7 1L5.1 6 3 9.5 5.1 11a7 7 0 0 0 0 2L3 14.5 5.1 18l2.4-1a7 7 0 0 0 1.7 1l.3 3h5l.3-3a7 7 0 0 0 1.7-1l2.4 1 2.1-3.5L18.9 13a7 7 0 0 0 .1-1Z"/></svg></span><span class="txt">설정 / 데이터</span></button>
@@ -918,6 +919,7 @@
     </section>
 
     <section id="aiTeam" class="view ui26-ai-team"><div class="grid"><figure class="card full hani-group-profile-banner"><img src="./assets/brand/hani-group-company-profile-v1.webp" alt="HANI GROUP 아홉 팀원이 함께 일하는 웹툰형 회사 소개 장면" width="2172" height="724"><figcaption><span class="hani-brand-logo-frame" data-hani-brand-logo><img src="./assets/brand/hani-group-ci-official.webp" alt="HANI GROUP 공식 로고" width="1774" height="887"></span><p>Personal Life OS와 AI Orchestration을 연결해<br>성민 대표님의 더 나은 오늘을 함께 운영합니다.</p><div><span>PERSONAL AI COMPANY</span><span>ONE TEAM · NINE SPECIALISTS</span></div></figcaption></figure><div class="card full team-intro"><div><span class="eyebrow purple">HANI GROUP · EXECUTIVE TEAM</span><h3>각자 다른 전문성, 하나의 Life OS.</h3><p>기록·재무·건강·학습·문화·여행·업무를 아홉 파트너가 나누어 맡고, 하나의 기준으로 연결합니다.</p></div><div class="team-intro-badge">HANI GROUP</div></div><div class="card full"><div class="sh"><h3>AI Executive Team</h3><span class="pill">TEAM</span></div><div class="team ui26-team-grid" id="teamList"></div></div><div class="card full"><div class="sh"><div><span class="eyebrow purple">AI DEVELOPMENT &amp; REPORTING</span><h3>AI 개발·보고팀</h3></div><span class="pill">개발 지원</span></div><p class="sub">개발 실행·검증·보고를 담당하는 별도 팀입니다. 현재 제미나이가 개발 보고서를 맡고, Claude와 Codex 에이전트는 추후 등록할 예정입니다.</p><div class="team ui26-team-grid" id="developmentTeamList"></div></div><div class="card full ai-team-profile-card"><div class="sh"><h3>개발·보고팀 프로필</h3><span class="pill" id="developmentTeamProfileBadge">제미나이</span></div><div id="developmentTeamProfilePanel" class="ai-team-profile-shell"></div></div><div class="card full ai-team-profile-card"><div class="sh"><h3>팀원 프로필 & 성향</h3><span class="pill" id="teamProfileBadge">하니</span></div><div id="teamProfilePanel" class="ai-team-profile-shell"></div></div><div class="card full"><div class="sh"><h3>바로가기</h3></div><div class="quick-links"><a class="external" href="https://chatgpt.com" target="_blank" rel="noopener">💬 ChatGPT</a><a class="external" href="https://gemini.google.com" target="_blank" rel="noopener">✨ Gemini</a><a class="external" href="https://calendar.google.com" target="_blank" rel="noopener">📅 Google Calendar</a><a class="external" href="https://github.com" target="_blank" rel="noopener">🐙 GitHub</a><a class="external" href="https://drive.google.com" target="_blank" rel="noopener">📂 Google Drive</a></div></div></div></section>
+    <section id="organization" class="view" aria-label="HANI GROUP 조직 소개"><div id="haniOrganizationHub"></div></section>
     <section id="aura" class="view">
       <div class="aura-showroom">
         <figure class="aura-preview aura-preview--finish">
@@ -1541,5 +1543,7 @@
 <link rel="stylesheet" href="./hani-development-history.css?v=2.9.169">
 <script src="./hani-development-history-v1.js?v=2.9.190"></script>
 <script src="./hani-goal-progress.js?v=2.9.190"></script>
+<link rel="stylesheet" href="./hani-organization-hub.css">
+<script src="./hani-organization-hub.js"></script>
 </body>
 </html>
