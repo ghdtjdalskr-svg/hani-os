@@ -1472,6 +1472,7 @@ const pageMeta={
  monthlyReport:["라이프 리포트","한 달의 흐름을 돌아보고, 분기·연간 발표로 이어갈 보고 공간입니다.","team"],
  policy:["사내 규칙","AI TEAM이 공통으로 참고하는 운영 원칙과 학습 규정을 관리합니다.","team"],
  aiTeam:["AI 팀","역할별 담당 AI와 서비스 바로가기를 확인합니다.","team"],
+ characterArchive:["M9 + MIR","HANI GROUP CHARACTER ARCHIVE · 각자의 방식으로 함께하는 멤버들.","team"],
  aura:["HANI AURA","나의 색과 계절로 일상의 화면을 꾸밉니다.","team"],
  settings:["설정 / 데이터","캘린더, 백업, 복원과 초기화를 관리합니다.","work"],
  shopping:["쇼핑","v2.2 호환 페이지입니다.","life"]
@@ -1737,6 +1738,7 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
 }
 
 const QUICK_JUMP_ITEMS=[
+  ["characterArchive","M9 + MIR Character Archive","HANI GROUP 캐릭터 프로필 Canon 관계 직급 연차 미르"],
   ["aura","HANI AURA","화면 꾸미기 색상 계절 테마 appearance finish season"],
   ["home","대시보드","홈 오늘 요약"],["investment","홍 스트리트","투자 주식 ETF 월간 기록"],["newsroom","뉴스룸","주식 투자 뉴스 관심종목 3시간 흐름"],["asset","자산","통합 자산 계좌"],["ledger","가계부","소비 결산 리뷰"],
   ["diet","계체량 측정","다이어트 체중 건강"],["exercise","헬스클럽","운동 걸음 근력"],["reading","성민의 서재","독서 서재 책 완독"],["study","공부","일본어 AI 학습"],
@@ -5405,7 +5407,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.190";
+const HANI_DISPLAY_VERSION="2.9.191";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
