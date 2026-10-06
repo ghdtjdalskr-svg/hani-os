@@ -1321,8 +1321,10 @@ const GOAL_METRICS=[
   ['investment_total_krw','투자자산','KRW','point_target'],['body_weight_kg','체중','kg','point_target'],
   ['books_completed_count','완독','book','cumulative_total'],['steps_daily_average','일평균 걸음','steps/day','daily_average'],
   ['spending_jispi_krw','월 지출 예산','KRW','monthly_budget'],['quiz_accuracy_percent','퀴즈 정답률','%','rate'],
-  ['body_bmi','BMI','kg/m²','point_target'],['body_fat_percent','체지방률','%','point_target']
+  ['body_bmi','BMI','kg/m²','point_target'],['body_fat_percent','체지방률','%','point_target'],
+  ['media_watched_count','시청 작품 수','title','cumulative_total']
 ];
+const goalRegistryUnit=unit=>unit==='title'?'편':unit;
 const goalRegistryActions=label=>'<button class="btn" id="goalRegistryCancel" type="button">취소</button> <button class="btn" id="goalRegistryApprove" type="button">'+esc(label)+'</button>';
 let goalRegistryDraft=null;
 function goalRegistryBuildDeleteDraft(registry,index){
@@ -1354,6 +1356,7 @@ function bindGoalRegistryPreview(){
 function goalRegistryBuildDraft(registry,input,now,id){
   if(!Array.isArray(registry))throw Error('목표 이력 형식을 확인해 주세요.');
   const def=GOAL_METRICS.find(x=>x[0]===input.metric_id),value=Number(input.value),year=Number(input.year),quarter=Number(input.quarter);
+  if(input.metric_id==='media_watched_count'&&!Number.isInteger(value))throw Error('시청 작품 수 목표는 정수로 입력해 주세요.');
   const date=String(input.effective_from||''),clock=new Date(now),day=new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul'}).format(clock);
   if(!def||!Number.isFinite(value)||value<=0||(def[2]==='%'&&value>100)||(def[2]==='kg/m²'&&(value<10||value>60))||!Number.isInteger(year)||year<2000||year>2100||!['annual','quarter'].includes(input.goal_type))throw Error('목표 종류·기간·값을 확인해 주세요.');
   if(input.goal_type==='quarter'&&(!Number.isInteger(quarter)||quarter<1||quarter>4))throw Error('분기를 확인해 주세요.');
@@ -1370,14 +1373,43 @@ function goalRegistryBuildDraft(registry,input,now,id){
   const entry={goal_id:old?.goal_id||id,revision,metric_id:def[0],goal_type:input.goal_type,year,...(input.goal_type==='quarter'?{quarter}:{}),value,unit:def[2],semantics:def[3],effective_from:date,effective_to:periodEnd,created_at:clock.toISOString(),status:'active'};
   next.push(entry);return {before:JSON.stringify(registry),next,old:active[0]?registry.find(g=>g.goal_id===old.goal_id&&g.revision===old.revision):null,entry};
 }
+function goalBudgetReference(rows,month){
+  const validMonth=value=>typeof value==='string'&&/^\d{4}-(0[1-9]|1[0-2])$/.test(value);
+  if(!Array.isArray(rows)||!validMonth(month))return {status:'NO_REFERENCE'};
+  const eligible=rows.filter(row=>row&&validMonth(row.month)&&row.month<=month);
+  const latest=eligible.map(row=>row.month).sort().at(-1);
+  if(!latest)return {status:'NO_REFERENCE'};
+  const matches=eligible.filter(row=>row.month===latest);
+  if(matches.length!==1)return {status:'CONFLICT',month:latest};
+  const base=Number(matches[0].targetT);
+  return Number.isFinite(base)&&base>0?{status:'READY',month:latest,base}:{status:'INVALID_REFERENCE',month:latest};
+}
+function renderGoalBudgetSuggestion(){
+  const form=$('goalRegistryForm'),host=$('goalBudgetSuggestion');if(!form||!host)return;
+  const metric=form.elements.metric_id.value;
+  host.hidden=!['spending_jispi_krw','media_watched_count'].includes(metric);
+  if(host.hidden){host.textContent='';return;}
+  if(metric==='media_watched_count'){host.textContent='시청 완료로 저장된 작품 기록 1건을 1편으로 계산합니다. 시청일이 있어야 기간 실적에 반영됩니다.';return;}
+  const ref=goalBudgetReference(state.ledgerMonths,today().slice(0,7));
+  if(ref.status!=='READY'||!window.HANI_GOAL_PROGRESS?.suggestMonthlyBudget){host.textContent=ref.status==='CONFLICT'?'같은 결산월의 기준이 중복되어 제안할 수 없습니다. 가계부 목표를 확인해 주세요.':'제안할 가계부 월 목표가 없습니다. 목표값을 직접 입력해 주세요.';return;}
+  const proposal=window.HANI_GOAL_PROGRESS.suggestMonthlyBudget(ref.base);
+  host.innerHTML=`<p>${esc(ref.month)} 가계부 월 목표 ${won(ref.base)} + 여유 15% = <b>${won(proposal.value)}</b></p><button class="btn" type="button" id="goalBudgetUseSuggestion">제안값으로 입력</button><p class="sub">입력칸에만 반영합니다. 변경 Preview와 승인을 거쳐 저장합니다.</p>`;
+  $('goalBudgetUseSuggestion').onclick=()=>{form.elements.value.value=proposal.value;goalRegistryDraft=null;$('goalRegistryPreview').textContent='제안값을 입력했습니다. 변경 Preview를 확인해 주세요.';};
+}
 function renderGoalRegistry(){
   window.HANI_GOAL_PROGRESS?.render();
   const host=$('goalRegistryContent');if(!host)return;
   const registry=state.goalRegistry===undefined?[]:state.goalRegistry;
   if(!Array.isArray(registry)){host.textContent='목표 이력 형식을 확인해 주세요. 기존 데이터는 변경하지 않습니다.';return;}
-  host.innerHTML='<p class="sub">분기·연간 목표를 적용일부터 기록합니다. 기존 목표 설정이나 과거 기록은 바꾸지 않습니다.</p><form id="goalRegistryForm"><div class="form-grid"><label class="field">지표<select name="metric_id">'+GOAL_METRICS.map(d=>`<option value="${d[0]}">${d[1]} · ${d[2]}</option>`).join('')+'</select></label><label class="field">기간<select name="goal_type"><option value="quarter">분기</option><option value="annual">연간</option></select></label><label class="field">연도<input name="year" type="number" min="2000" max="2100" value="'+today().slice(0,4)+'"></label><label class="field">분기<select name="quarter">'+[1,2,3,4].map(q=>`<option value="${q}" ${q===Math.ceil(Number(today().slice(5,7))/3)?'selected':''}>${q}분기</option>`).join('')+'</select></label><label class="field">목표값<input name="value" type="number" min="0" step="any" required></label><label class="field">적용일<input name="effective_from" type="date" value="'+today()+'" min="'+today()+'" required></label></div><button class="btn" type="submit">변경 Preview</button></form><div id="goalRegistryPreview" aria-live="polite"></div><details><summary>목표 변경 이력 · '+registry.length+'건</summary>'+registry.slice().reverse().map(g=>`<p>${esc(GOAL_METRICS.find(d=>d[0]===g.metric_id)?.[1]||g.metric_id)} · ${esc(g.year)} ${g.goal_type==='quarter'?esc(g.quarter)+'분기':'연간'} · ${esc(g.value)} ${esc(g.unit)} · ${esc(g.effective_from)}~${esc(g.effective_to)} · revision ${esc(g.revision)} · ${esc(g.status)}</p>`).join('')+'</details>';
+  host.innerHTML='<p class="sub">분기·연간 목표를 적용일부터 기록합니다. 기존 목표 설정이나 과거 기록은 바꾸지 않습니다.</p><form id="goalRegistryForm"><div class="form-grid"><label class="field">지표<select name="metric_id">'+GOAL_METRICS.map(d=>`<option value="${d[0]}">${d[1]} · ${goalRegistryUnit(d[2])}</option>`).join('')+'</select></label><label class="field">기간<select name="goal_type"><option value="quarter">분기</option><option value="annual">연간</option></select></label><label class="field">연도<input name="year" type="number" min="2000" max="2100" value="'+today().slice(0,4)+'"></label><label class="field">분기<select name="quarter">'+[1,2,3,4].map(q=>`<option value="${q}" ${q===Math.ceil(Number(today().slice(5,7))/3)?'selected':''}>${q}분기</option>`).join('')+'</select></label><label class="field">목표값<input name="value" type="number" min="0" step="any" required></label><label class="field">적용일<input name="effective_from" type="date" value="'+today()+'" min="'+today()+'" required></label></div><button class="btn" type="submit">변경 Preview</button></form><div id="goalRegistryPreview" aria-live="polite"></div><details><summary>목표 변경 이력 · '+registry.length+'건</summary>'+registry.slice().reverse().map(g=>`<p>${esc(GOAL_METRICS.find(d=>d[0]===g.metric_id)?.[1]||g.metric_id)} · ${esc(g.year)} ${g.goal_type==='quarter'?esc(g.quarter)+'분기':'연간'} · ${esc(g.value)} ${esc(goalRegistryUnit(g.unit))} · ${esc(g.effective_from)}~${esc(g.effective_to)} · revision ${esc(g.revision)} · ${esc(g.status)}</p>`).join('')+'</details>';
   // A future period's goal starts no earlier than the period start (e.g. 2027 Q1 -> 2027-01-01).
+  const suggestion=document.createElement('div');suggestion.id='goalBudgetSuggestion';suggestion.setAttribute('aria-live','polite');suggestion.hidden=true;
+  $('goalRegistryForm').append(suggestion);
   $('goalRegistryForm').onchange=e=>{
+    goalRegistryDraft=null;$('goalRegistryPreview').textContent='';
+    if(e.target.name==='metric_id'){
+      e.currentTarget.elements.value.step=e.target.value==='media_watched_count'?'1':'any';renderGoalBudgetSuggestion();return;
+    }
     if(!['year','quarter','goal_type'].includes(e.target.name))return;
     const f=e.currentTarget.elements,y=Number(f.year.value),q=Number(f.quarter.value);
     const start=`${y}-${f.goal_type.value==='quarter'&&q>=1&&q<=4?String((q-1)*3+1).padStart(2,'0'):'01'}-01`;
@@ -1391,7 +1423,7 @@ function renderGoalRegistry(){
       try{
         goalRegistryDraft=goalRegistryBuildDeleteDraft(registry,index);
         const g=goalRegistryDraft.entry,box=$('goalRegistryPreview');
-        box.innerHTML=`<div class="note"><b>목표 삭제 Preview</b><p>${esc(GOAL_METRICS.find(x=>x[0]===g.metric_id)?.[1]||g.metric_id)} · ${esc(g.year)} ${g.goal_type==='quarter'?esc(g.quarter)+'분기':'연간'} · ${esc(g.value)} ${esc(g.unit)} · revision ${esc(g.revision)}</p><p>이 목표 이력 한 건만 삭제합니다. 실제 체중·생활 기록과 다른 목표는 유지합니다. 이전 목표를 다시 활성화하지 않습니다.</p>${goalRegistryActions('승인하고 삭제')}</div>`;
+        box.innerHTML=`<div class="note"><b>목표 삭제 Preview</b><p>${esc(GOAL_METRICS.find(x=>x[0]===g.metric_id)?.[1]||g.metric_id)} · ${esc(g.year)} ${g.goal_type==='quarter'?esc(g.quarter)+'분기':'연간'} · ${esc(g.value)} ${esc(goalRegistryUnit(g.unit))} · revision ${esc(g.revision)}</p><p>이 목표 이력 한 건만 삭제합니다. 실제 체중·생활 기록과 다른 목표는 유지합니다. 이전 목표를 다시 활성화하지 않습니다.</p>${goalRegistryActions('승인하고 삭제')}</div>`;
         bindGoalRegistryPreview();
       }catch(error){goalRegistryDraft=null;$('goalRegistryPreview').textContent=error.message;}
     };
@@ -1402,7 +1434,7 @@ function renderGoalRegistry(){
     try{
       goalRegistryDraft=goalRegistryBuildDraft(registry,Object.fromEntries(new FormData(e.currentTarget)),new Date().toISOString(),uid());
       const d=goalRegistryDraft,box=$('goalRegistryPreview');
-      box.innerHTML=`<div class="note"><b>${esc(GOAL_METRICS.find(x=>x[0]===d.entry.metric_id)[1])}</b><p>기존 ${d.old?esc(d.old.value)+' '+esc(d.old.unit):'미설정'} → 변경 ${esc(d.entry.value)} ${esc(d.entry.unit)}</p><p>${esc(d.entry.effective_from)}부터 적용 · 과거 실적과 기존 목표 설정은 유지</p>${goalRegistryActions('승인하고 저장')}</div>`;
+      box.innerHTML=`<div class="note"><b>${esc(GOAL_METRICS.find(x=>x[0]===d.entry.metric_id)[1])}</b><p>기존 ${d.old?esc(d.old.value)+' '+esc(goalRegistryUnit(d.old.unit)):'미설정'} → 변경 ${esc(d.entry.value)} ${esc(goalRegistryUnit(d.entry.unit))}</p><p>${esc(d.entry.effective_from)}부터 적용 · 과거 실적과 기존 목표 설정은 유지</p>${goalRegistryActions('승인하고 저장')}</div>`;
       bindGoalRegistryPreview();
     }catch(error){
       goalRegistryDraft=null;$('goalRegistryPreview').textContent=error.message;
@@ -5013,7 +5045,7 @@ function renderDataHubLibrary(){
   if(dataHubLibraryTab==="overview")body=`<p>확정 월간 기록 ${data.monthly.length}건 · 승인된 목표 이력 ${data.goals.length}건</p><p class="sub">월간 기록은 저장 당시의 확정값입니다. 현재 시장가격으로 과거 값을 바꾸지 않습니다. 지표는 원본 검증이 완료된 경우에만 표시합니다.</p>`;
   if(dataHubLibraryTab==="monthly")body=table(["기준월","기준일","확정 자산","보유 수량 · 전달 대비"],data.monthly.map(row=>`<tr><td>${esc(row.month)}</td><td>${esc(row.asOfDate||"미확인")}</td><td>${won(row.total)}</td><td>${row.holdings.map(h=>`${esc(h.name)} ${h.quantity===null?"수량 미확인":esc(String(h.quantity))+"주"} · ${h.quantityDelta===null?"비교 미확인":(h.quantityDelta>0?"+":"")+esc(String(h.quantityDelta))+"주"}`).join("<br>")||"보유목록 미확인"}</td></tr>`));
   if(dataHubLibraryTab==="metrics")body=data.metricStatus!=="VERIFIED"?'<p>원본 검증 대기 · 지표를 임의 계산하지 않습니다.</p>':table(["지표","현재 값","비교"],data.metrics.map(m=>{const t=m.display;return `<tr><td>${esc(m.key)}</td><td>${esc(t.value)}</td><td>${esc(t.comparison)}</td></tr>`}));
-  if(dataHubLibraryTab==="goals")body='<p class="sub">목표 생성과 수정은 아래 목표 관리에서 Preview 승인 후 적용합니다.</p>'+table(["지표","목표","적용 시작","상태"],data.goals.map(g=>`<tr><td>${esc(g.metric_id)}</td><td>${esc(String(g.value))} ${esc(g.unit)}</td><td>${esc(g.effective_from)}</td><td>${esc(g.status)}</td></tr>`));
+  if(dataHubLibraryTab==="goals")body='<p class="sub">목표 생성과 수정은 아래 목표 관리에서 Preview 승인 후 적용합니다.</p>'+table(["지표","목표","적용 시작","상태"],data.goals.map(g=>`<tr><td>${esc(g.metric_id)}</td><td>${esc(String(g.value))} ${esc(goalRegistryUnit(g.unit))}</td><td>${esc(g.effective_from)}</td><td>${esc(g.status)}</td></tr>`));
   if(dataHubLibraryTab==="export")body='<p class="sub">이 보관함의 확정 월간 기록·검증 지표·승인 목표만 내보냅니다. 계좌번호·로그인 정보는 포함하지 않습니다.</p><button class="btn" id="dataHubExportJson">JSON 다운로드</button> <button class="btn" id="dataHubExportCsv">월간 CSV 다운로드</button>';
   host.innerHTML=`<div style="display:flex;gap:6px;flex-wrap:wrap">${tabs.map(([id,label])=>`<button class="btn sm" data-hub-tab="${id}" aria-pressed="${id===dataHubLibraryTab}">${label}</button>`).join("")}</div>${body}`;
   host.querySelectorAll('[data-hub-tab]').forEach(b=>b.onclick=()=>{dataHubLibraryTab=b.dataset.hubTab;renderDataHubLibrary()});

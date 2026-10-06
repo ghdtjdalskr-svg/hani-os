@@ -7,7 +7,8 @@ export function projectGoalPeriod({source,canonical,asOf,evaluationAt,period,met
  const rows=periodMonths(period).flatMap(month=>core.calculateMonth(source,{month,asOf,calculatedAt:evaluationAt,
   registry:definitions,adapters:{...core.SOURCE_ADAPTERS,...EXTRA_ADAPTERS},canonical,
   sourceContext:Object.fromEntries(definitions.map(d=>[d.source,{ready:Array.isArray(source[d.source])&&
-   (d.source!=='books'||source.books.some(row=>row.status==='read'&&String(row.readDate||row.completedDate||'').startsWith(month))),complete:false}]))}));
+   (d.source!=='books'||source.books.some(row=>row.status==='read'&&String(row.readDate||row.completedDate||'').startsWith(month)))&&
+   (d.source!=='movies'||source.movies.some(row=>row.status==='watched'&&core.validDate(row.watchedDate)&&row.watchedDate.startsWith(month))),complete:false}]))}));
  return definitions.map(definition=>{
   const actual=aggregatePeriod(rows,definition,period,{asOf});
   const goal=resolvePeriodGoal(source.goalRegistry||[],definition,period,{asOf,evaluationAt});

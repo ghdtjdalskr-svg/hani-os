@@ -751,7 +751,7 @@ const EXTRA_ADAPTERS = freeze({
 
 return {PERIOD_ENGINE_VERSION,BUDGET_MARGIN,metricPeriod,periodMonths,periodRange,aggregatePeriod,resolvePeriodGoal,goalProgress,suggestMonthlyBudget,EXTRA_DEFINITIONS,EXTRA_ADAPTERS};
 })();
-const {EXTRA_DEFINITIONS,EXTRA_ADAPTERS,periodMonths,aggregatePeriod,resolvePeriodGoal,goalProgress}=periodEngine;
+const {EXTRA_DEFINITIONS,EXTRA_ADAPTERS,periodMonths,aggregatePeriod,resolvePeriodGoal,goalProgress,suggestMonthlyBudget}=periodEngine;
 
 // Shared read-only projection. Report callers can consume these same numeric facts.
 function projectGoalPeriod({source,canonical,asOf,evaluationAt,period,metricIds}){
@@ -759,7 +759,8 @@ function projectGoalPeriod({source,canonical,asOf,evaluationAt,period,metricIds}
  const rows=periodMonths(period).flatMap(month=>core.calculateMonth(source,{month,asOf,calculatedAt:evaluationAt,
   registry:definitions,adapters:{...core.SOURCE_ADAPTERS,...EXTRA_ADAPTERS},canonical,
   sourceContext:Object.fromEntries(definitions.map(d=>[d.source,{ready:Array.isArray(source[d.source])&&
-   (d.source!=='books'||source.books.some(row=>row.status==='read'&&String(row.readDate||row.completedDate||'').startsWith(month))),complete:false}]))}));
+   (d.source!=='books'||source.books.some(row=>row.status==='read'&&String(row.readDate||row.completedDate||'').startsWith(month)))&&
+   (d.source!=='movies'||source.movies.some(row=>row.status==='watched'&&core.validDate(row.watchedDate)&&row.watchedDate.startsWith(month))),complete:false}]))}));
  return definitions.map(definition=>{
   const actual=aggregatePeriod(rows,definition,period,{asOf});
   const goal=resolvePeriodGoal(source.goalRegistry||[],definition,period,{asOf,evaluationAt});
@@ -767,8 +768,8 @@ function projectGoalPeriod({source,canonical,asOf,evaluationAt,period,metricIds}
  });
 }
 
-const names={investment_total_krw:'투자자산',body_weight_kg:'체중',books_completed_count:'완독',steps_daily_average:'일평균 걸음',spending_jispi_krw:'월 지출 예산',quiz_accuracy_percent:'퀴즈 정답률',body_bmi:'BMI',body_fat_percent:'체지방률'};
-const units={KRW:'원',book:'권','steps/day':'보/일'};
+const names={investment_total_krw:'투자자산',body_weight_kg:'체중',books_completed_count:'완독',steps_daily_average:'일평균 걸음',spending_jispi_krw:'월 지출 예산',quiz_accuracy_percent:'퀴즈 정답률',body_bmi:'BMI',body_fat_percent:'체지방률',media_watched_count:'시청 작품 수'};
+const units={KRW:'원',book:'권','steps/day':'보/일',title:'편'};
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const number=value=>Number.isFinite(value)?value.toLocaleString('ko-KR',{maximumFractionDigits:2}):'—';
 const clock=()=>new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul'}).format(new Date());
@@ -806,7 +807,7 @@ function read(requestedPeriod){
  const context=goalPeriodReadContext();
  return context?projectGoalPeriod({...context,period:requestedPeriod,metricIds:Object.keys(names)}):null;
 }
-window.HANI_GOAL_PROGRESS=Object.freeze({render,read});
+window.HANI_GOAL_PROGRESS=Object.freeze({render,read,suggestMonthlyBudget});
 render();
 
 })();
