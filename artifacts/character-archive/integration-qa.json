@@ -1,0 +1,25 @@
+{
+  "results": [
+    {
+      "width": 1440,
+      "archive": true,
+      "originalTeam": 9,
+      "settings": true,
+      "stateSame": true,
+      "storageSame": true,
+      "consoleErrors": [],
+      "cloud": "External requests blocked; no authenticated testing"
+    },
+    {
+      "width": 390,
+      "archive": true,
+      "originalTeam": 9,
+      "settings": true,
+      "stateSame": true,
+      "storageSame": true,
+      "consoleErrors": [],
+      "cloud": "External requests blocked; no authenticated testing"
+    }
+  ],
+  "scope": "Actual OS empty disposable browser; no login or cloud"
+}
