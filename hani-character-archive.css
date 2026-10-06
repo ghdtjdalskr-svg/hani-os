@@ -1,6 +1,21 @@
 /* Scoped, token-led read-only Archive. No other view styles or data semantics. */
 /* Identity graphics derive only from Canon fields; no ratings or inferred traits. */
-#characterArchive .ca-core.ca-computer{padding:12%;background:radial-gradient(ellipse at 50% 30%,#edf8fc,#e4deef 60%,#cbd3df);gap:0;border-radius:18px}
+#characterArchive .ca-core.ca-computer{padding:12px;background:radial-gradient(ellipse at 50% 30%,#edf8fc,#e4deef 60%,#cbd3df);gap:0;border-radius:18px}
+#characterArchive .ca-core.ca-computer.ca-mini{padding:5px;box-sizing:border-box;flex-shrink:0}
+#characterArchive .ca-computer.ca-mini .ca-monitor{padding:2px;min-height:26px;border-width:1px}
+#characterArchive .ca-computer.ca-mini .ca-monitor-screen{min-height:22px}
+#characterArchive .ca-computer.ca-mini .ca-screen-core{font-size:10px;line-height:10px}
+#characterArchive .ca-computer.ca-mini .ca-screen-name{font-size:9px;line-height:11px}
+#characterArchive .ca-computer.ca-mini .ca-monitor-screen small{display:none}
+#characterArchive .ca-white-note{background:var(--ca-paper);padding:12px 16px;border-radius:14px;margin-top:12px;border:1px solid var(--ca-line)}
+#characterArchive .ca-white-note p{margin:0}
+#characterArchive .ca-connection-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}
+#characterArchive .ca-connection-cards article{display:flex;flex-direction:column;gap:12px;background:var(--ca-paper);border:1px solid var(--ca-line);border-radius:16px;padding:18px}
+#characterArchive .ca-connection-cards .ca-chemistry{justify-content:flex-start;margin:0}
+#characterArchive .ca-connection-cards h4{margin:0 0 10px;font-size:16px;color:color-mix(in srgb,#9d70ad 65%,var(--ca-ink))}
+#characterArchive .ca-connection-cards b{font-size:12px;color:var(--ca-muted)}
+#characterArchive .ca-connection-cards p{margin:8px 0 0;font-size:14px}
+@media(max-width:600px){#characterArchive .ca-connection-cards{grid-template-columns:1fr}}
 #characterArchive .ca-computer .ca-monitor{display:flex;flex-direction:column;width:100%;height:70%;border:2px solid #8693a7;border-radius:8px;background:linear-gradient(135deg,#fafcff,#aebacb);padding:4px;box-shadow:0 8px 15px #28374826}
 #characterArchive .ca-monitor-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;min-height:0;border-radius:4px;background:radial-gradient(circle at 50% 36%,#557789,#1e304a 65%,#17243a);color:#eefaff;overflow:hidden}
 #characterArchive .ca-screen-core{font-size:clamp(12px,2vw,32px);line-height:1;color:#c7edff;text-shadow:0 0 12px #b1dcff}
@@ -114,6 +129,17 @@
 
 /* Editorial composition: photo covers, visual chapters, and optional long reading. */
 /* HANI profile album: soft pastels, photo-card edges, and warm personal notes. */
+#characterArchive .ca-group-cover{margin:0;align-self:center}
+#characterArchive .ca-group-cover img{display:block;width:100%;height:auto;border-radius:24px;border:6px solid var(--ca-paper);box-shadow:0 10px 30px #62426918}
+#characterArchive .ca-group-cover figcaption{text-align:center;font-size:12px;color:color-mix(in srgb,#a26d9e 65%,var(--ca-ink));margin-top:14px}
+#characterArchive .ca-section.ca-essence{position:relative;overflow:hidden;padding:64px 28px;isolation:isolate}
+#characterArchive .ca-ending-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%;opacity:.24;z-index:-1}
+#characterArchive .ca-ending-note{max-width:760px;margin:auto;padding:28px;border-radius:24px;background:color-mix(in srgb,var(--ca-paper) 87%,transparent);border:1px solid var(--ca-line);backdrop-filter:blur(3px)}
+#characterArchive .ca-ending-note h2{color:color-mix(in srgb,#a268a0 65%,var(--ca-ink));font-size:32px;letter-spacing:-.03em;margin:14px 0}
+#characterArchive .ca-ending-note p{font-size:15px;line-height:2;white-space:pre-line}
+#characterArchive .ca-core.ca-computer.ca-mini .ca-screen-core{font-size:10px;line-height:10px}
+#characterArchive .ca-core.ca-computer.ca-mini .ca-screen-name{font-size:9px;line-height:11px}
+@media(max-width:600px){#characterArchive .ca-section.ca-essence{padding:36px 12px}#characterArchive .ca-ending-note{padding:20px 14px}#characterArchive .ca-ending-note h2{font-size:25px}#characterArchive .ca-ending-photo{object-fit:cover;opacity:.2}}
 #characterArchive .ca-section .ca-relationship-grid>div[style]{background:linear-gradient(135deg,color-mix(in srgb,var(--ca-accent) 25%,var(--ca-paper)),color-mix(in srgb,var(--ca-accent) 9%,var(--ca-paper)));border-color:color-mix(in srgb,var(--ca-accent) 35%,var(--ca-line))}
 #characterArchive .ca-dynamics article:nth-child(3n+1),#characterArchive .ca-rule-cards li:nth-child(4n+1){--ca-tint:#e7a9c4}
 #characterArchive .ca-dynamics article:nth-child(3n+2),#characterArchive .ca-rule-cards li:nth-child(4n+2){--ca-tint:#b9a6e4}

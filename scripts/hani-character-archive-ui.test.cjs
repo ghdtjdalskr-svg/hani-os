@@ -8,6 +8,10 @@ for(const width of [1440,390]){const context=await browser.newContext({viewport:
 assert.equal(await page.locator('[data-character-card]').count(),10);assert.equal(await page.locator('.ca-grid img').count(),9);assert.equal(await page.locator('[data-character-card="mir"] img').count(),0);
 for(const portrait of await page.locator('.ca-grid img').all()){await portrait.scrollIntoViewIfNeeded();await portrait.evaluate(image=>image.decode());}
 assert.equal(await page.locator('.ca-grid img').evaluateAll(images=>images.every(i=>i.complete&&i.naturalWidth>0)),true);
+await page.locator('.ca-group-cover img').evaluate(i=>i.decode());assert.equal(await page.locator('.ca-group-cover img').evaluate(i=>i.naturalWidth>0),true);
+await page.locator('.ca-ending-photo').evaluate(i=>{i.loading='eager';return i.decode();});await page.locator('.ca-essence').screenshot({path:path.join(output,`${width}-ending.png`)});
+await page.locator('.ca-relationship-grid').screenshot({path:path.join(output,`${width}-color-relationships.png`)});
+assert.equal(await page.locator('.ca-person-label .ca-monitor-screen').evaluate(el=>{const r=el.getBoundingClientRect();return r.width>20&&r.height>=20;}),true,'compact MIR screen visible');
 assert.equal(await page.locator('.ca-grid').evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(' ').length),width===1440?5:2);
 assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
 await page.locator('.ca-hero').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(output,`${width}-overview.png`)});
@@ -19,6 +23,7 @@ assert.equal(await page.locator('#caDetail .ca-axis-graphic').textContent(),c.ax
 assert.equal(await page.locator('#caDetail .ca-orbit').count(),1);assert.equal(await page.locator('#caDetail .ca-personality-art').count(),1);
 if(c.id==='hani'){await page.locator('#caDetail .ca-visual-story').screenshot({path:path.join(output,`${width}-identity-graphic.png`)});await page.locator('#caDetail .ca-personality-art').screenshot({path:path.join(output,`${width}-personality-graphic.png`)});}
 await page.locator('#caDetail details').evaluateAll(nodes=>nodes.forEach(n=>n.open=true));assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`${width}/${c.id} no horizontal overflow`);
+if(c.id==='hina')await page.locator('.ca-connection-cards').screenshot({path:path.join(output,`${width}-connections.png`)});
 if(c.id==='mir'){assert.equal(await page.locator('#caDetail img').count(),0);await page.locator('#caDetail').screenshot({path:path.join(output,`${width}-mir-detail.png`)});}
 await page.locator('#caDetail details').evaluateAll(nodes=>nodes.forEach(n=>n.open=false));}
 assert.equal(await page.evaluate(()=>localStorage.length),0);assert.deepEqual(errors,[]);assert.equal(requests.some(url=>new URL(url).origin!==origin),false);

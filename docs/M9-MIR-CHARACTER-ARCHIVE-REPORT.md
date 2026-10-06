@@ -102,3 +102,13 @@ READY FOR REPRESENTATIVE PREVIEW
 MIR 후속: 대표님 요청에 따라 기존 추상 Core를 컴퓨터 모니터 안에 배치. Pearl/Silver 외장, Cyan/Violet 빛, MIR/AI ENTITY 표식. Canon의 Visual 추상 Core를 유지하는 디자인 표현이며 인간 프로필·새 성격·데이터 변경 없음. 1440/390 및 기존 메뉴 회귀 재검증 PASS.
 Preview: http://127.0.0.1:8806/
 대표님 화면 확인 후 Release Train 탑승 범위를 판단. Production 승인 별도 필요.
+
+## 단체 화보·한국어 소개·엔딩 보강 / 2026-10-07
+
+- 첫 화면의 개인 프로필 반복을 새 M9 9인 단체 화보로 교체. 같은 이미지를 엔딩의 은은한 배경으로 사용하고 본문에는 흰 반투명 면을 유지했습니다.
+- built-in image_gen으로 제작. 결과는 `assets/character-archive/m9-group-portrait-v1.png` (1536×1024, 2,553,767 bytes). 제작 근거와 최종 프롬프트는 `docs/M9-GROUP-ARTWORK-PROMPT.md`에 저장했습니다.
+- 담당 영역과 케미 소개를 한국어로 표시하고 흰색 내부 카드에 인물·설명을 묶었습니다. 공식 개인 프로필과 원본 Canon Registry는 그대로입니다.
+- MIR 작은 프로필은 부모 폭 기준 퍼센트 padding으로 찌그러지던 문제를 고정 여백으로 수정했습니다.
+- static/Canon 검사 및 1440/390 isolated UI·실제 빈 OS 메뉴 통합 회귀 PASS. 새 이미지 decode, MIR 화면 크기, 10명 선택, overflow/console/storage 검사 포함. Hero·관계 카드·엔딩 스크린샷 확인 완료.
+- 실제 로그인/Cloud/전체 운영 회귀와 Release HINA는 미검증. 운영 버전/cache tag 변경 없음, Production NOT DEPLOYED.
+- 배포 담당자는 새 PNG를 반드시 포함하고 최신 기능 branch와 열차 후보 간 차이를 확인해야 합니다. Notion의 PR219/v191 대기 기록은 별도 배포 담당 기록이며 이번 추가 수정의 포함·배포 증거가 아닙니다.
