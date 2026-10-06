@@ -90,5 +90,8 @@ Canon 문구, data Registry, 저장소/Cloud/API 경로 변경 없음. 운영 �
 새 그래픽 10명 전환·1440/390 가로 넘침·원문·기존 메뉴 회귀 재검증. 증거 PNG: 1440-identity-graphic.png, 390-identity-graphic.png.
 
 READY FOR REPRESENTATIVE PREVIEW
+후속 그래픽 v2: 담당 영역 박스를 프로필 중심 원형 연결 맵으로 교체. Canon PERSONALITY 앞 6개 키워드의 시각 타일과 원문 TAGLINE 말풍선 추가. 원문 전체는 기존 상세/Canon Original에서 유지.
+코드·SVG 기반 그래픽이며 새 이미지 생성/설정 추가 없음. 정적 검사 및 격리 1440/390 모든 인물 그래픽·선택·펼침·OS 메뉴 회귀 PASS. 저장소/Cloud/auth 변경 없음.
+추가 시각 증거: 1440/390-identity-graphic.png, 1440/390-personality-graphic.png. Production NOT DEPLOYED.
 Preview: http://127.0.0.1:8806/
 대표님 화면 확인 후 Release Train 탑승 범위를 판단. Production 승인 별도 필요.

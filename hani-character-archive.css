@@ -1,5 +1,26 @@
 /* Scoped, token-led read-only Archive. No other view styles or data semantics. */
 /* Identity graphics derive only from Canon fields; no ratings or inferred traits. */
+#characterArchive .ca-orbit{position:relative;height:440px;margin:20px 0;background:radial-gradient(ellipse at center,color-mix(in srgb,var(--ca-accent) 18%,transparent),transparent 65%)}
+#characterArchive .ca-orbit svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+#characterArchive .ca-orbit :is(ellipse,path){fill:none;stroke:var(--ca-accent);stroke-width:.18;opacity:.3}
+#characterArchive .ca-orbit ellipse{stroke-dasharray:1 1}
+#characterArchive .ca-orbit .ca-inner-orbit{opacity:.12;stroke-dasharray:none}
+#characterArchive .ca-orbit-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:8px}
+#characterArchive .ca-orbit-center>.ca-mini{width:112px;border:6px solid var(--ca-paper);box-shadow:0 0 0 7px color-mix(in srgb,var(--ca-accent) 20%,transparent)}
+#characterArchive .ca-orbit-center>small{font-size:10px;letter-spacing:.12em;color:var(--ca-muted)}
+#characterArchive .ca-orbit-node{position:absolute;transform:translate(-50%,-50%);width:140px;display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center}
+#characterArchive .ca-orbit-node>span{display:grid;place-items:center;width:46px;height:46px;border-radius:16px;box-shadow:0 5px 16px #0000000a;background:var(--ca-paper);border:2px solid color-mix(in srgb,var(--ca-accent) 40%,var(--ca-paper));font-size:26px}
+#characterArchive .ca-orbit-node>b{font-size:13px;line-height:1.4;background:var(--ca-soft);padding:4px 7px;border-radius:7px;overflow-wrap:anywhere}
+#characterArchive .ca-personality-art{margin:24px 0;padding:24px;border-radius:20px;border:1px solid var(--ca-line);background:var(--ca-soft)}
+#characterArchive .ca-trait-mosaic{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#characterArchive .ca-trait-mosaic>div{display:flex;align-items:center;gap:14px;border-radius:14px;background:linear-gradient(135deg,color-mix(in srgb,var(--ca-accent) 18%,transparent),transparent),var(--ca-paper);padding:18px;border:1px solid var(--ca-line)}
+#characterArchive .ca-trait-mosaic span{font-size:34px;color:var(--ca-muted)}
+#characterArchive .ca-trait-mosaic b{font-size:15px;line-height:1.5}
+#characterArchive .ca-speech-scene{display:flex;align-items:center;gap:22px;margin-top:24px}
+#characterArchive .ca-speech-scene>.ca-mini{width:78px;flex-shrink:0}
+#characterArchive .ca-speech-scene>blockquote{position:relative;border:1px solid var(--ca-line);border-radius:18px;background:var(--ca-paper);padding:18px 24px;font-size:18px;margin:0}
+#characterArchive .ca-speech-scene>blockquote:before{content:'';position:absolute;left:-9px;top:calc(50% - 9px);width:16px;height:16px;background:var(--ca-paper);border-left:1px solid var(--ca-line);border-bottom:1px solid var(--ca-line);transform:rotate(45deg)}
+@media(max-width:600px){#characterArchive .ca-orbit{height:510px}#characterArchive .ca-orbit-node{width:88px}#characterArchive .ca-orbit-node>b{font-size:11px}#characterArchive .ca-orbit-node>span{width:36px;height:36px;font-size:22px}#characterArchive .ca-orbit-center>.ca-mini{width:76px}#characterArchive .ca-personality-art{padding:16px}#characterArchive .ca-trait-mosaic{grid-template-columns:repeat(2,minmax(0,1fr))}#characterArchive .ca-trait-mosaic>div{padding:12px;gap:8px}#characterArchive .ca-trait-mosaic span{font-size:24px}#characterArchive .ca-trait-mosaic b{font-size:13px}#characterArchive .ca-speech-scene{gap:14px}#characterArchive .ca-speech-scene>.ca-mini{width:52px}#characterArchive .ca-speech-scene>blockquote{font-size:14px;padding:14px}}
 #characterArchive .ca-color-story{display:flex;gap:16px;flex-wrap:wrap;margin:18px 0 24px}#characterArchive .ca-color-story>div{display:flex;align-items:center;gap:8px}#characterArchive .ca-color-story span{width:28px;height:28px;border-radius:50%;border:1px solid #80808066;box-shadow:inset 0 0 0 3px #ffffff55}#characterArchive .ca-color-story small{font-size:11px;color:var(--ca-muted)}
 #characterArchive .ca-grid .ca-character-card{background:linear-gradient(155deg,color-mix(in srgb,var(--ca-accent) 18%,transparent),transparent 70%),var(--ca-paper)}
 #characterArchive .ca-character-card .ca-profile-button{border-color:color-mix(in srgb,var(--ca-accent) 45%,var(--ca-line))}
