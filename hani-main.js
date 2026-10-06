@@ -991,6 +991,8 @@ let cloudSyncBusy=false;
 let cloudSyncPending=false;
 let cloudSyncTimer=null;
 let cloudPollTimer=null;
+// Memory-only copy of the last verified Cloud row; never persisted. Lets unchanged-remote saves skip the full-state download.
+let cloudVerifiedRemote=null;
 let cloudLifecycleBound=false;
 let cloudRecoveryMode=false;
 let cloudAuthSubscription=null;
@@ -4240,7 +4242,7 @@ async function cloudReadRow(){
   return data?.[0]||null;
 }
 function cloudStopAutoSync(message="",tone="warn"){
-  cloudAutoSyncReady=false;
+  cloudAutoSyncReady=false;cloudVerifiedRemote=null;
   if(cloudPollTimer){clearInterval(cloudPollTimer);cloudPollTimer=null}
   if(message)cloudSetRuntime("동기화 중지",message,tone,{sync:"STOP"});
   else renderCloudPanel();
@@ -4283,6 +4285,7 @@ async function cloudApplyRemoteRow(remote,remoteHash,{announce=false}={}){
     const rawRemoteHash=remoteHash||await cloudStateHash(cloudComparableState(remote.state));
     const mediaPreserved=effectiveHash!==rawRemoteHash;
     const meta=cloudSaveSyncMeta(remote,mediaPreserved?rawRemoteHash:effectiveHash,{lastPullAt:new Date().toISOString(),verifiedAt:new Date().toISOString(),appliedRevision:remote.revision});
+    cloudRememberVerifiedRemote(remote,cloudComparableState(remote.state),rawRemoteHash);
     cloudSetRuntime(mediaPreserved?"동기화 완료 · 미디어 보호":"동기화 완료",mediaPreserved?`Cloud revision ${remote.revision}을 반영했고 Local의 기존 표지/포스터를 보호했습니다. 보호된 미디어는 다음 안전 업로드에서 Cloud에 보완됩니다.`:`Cloud revision ${remote.revision}을 이 기기에 반영했습니다.`,"ok",{revision:remote.revision,updatedAt:remote.updated_at,verifiedAt:meta.verifiedAt,device:remote.device||"",sync:"ON",localSummary:cloudSummaryText(state),remoteSummary:cloudSummaryText(remote.state)});
     if(announce)toast("Cloud의 최신 변경을 이 기기에 반영했습니다.");
     return true;
@@ -4301,20 +4304,20 @@ async function cloudPushLocalRow(remote,localState,localHash,{allowImport=false,
   const outgoingHash=await cloudStateHash(outgoing);
   assertCloudSourceReady({allowImport,expectedHold});
   if(!cloudSame(localState,cloudComparableState(state)))throw new Error("Cloud 요청 중 Local이 변경되어 반영을 중단했습니다.");
-  const {data,error}=await cloudClient.from("hani_state").update({state:structuredClone(outgoing),device:cloudDeviceLabel()}).eq("user_id",cloudUser.id).eq("revision",expectedRevision).select("state,revision,updated_at,device");
+  // Egress: the ~2MB state is not echoed back; the revision lock plus the +1 check verify the write.
+  const {data,error}=await cloudClient.from("hani_state").update({state:structuredClone(outgoing),device:cloudDeviceLabel()}).eq("user_id",cloudUser.id).eq("revision",expectedRevision).select("revision,updated_at,device");
   if(error)throw error;
   const written=data?.[0];
-  if(!written){const latest=await cloudReadRow().catch(()=>null),latestRev=latest?.revision??"?";throw new Error(`Cloud revision이 ${expectedRevision}에서 ${latestRev}(으)로 바뀌었습니다. 다른 기기의 변경을 덮지 않도록 중단했습니다.`)}
+  if(!written){const latest=await cloudFetchMeta({silent:true}),latestRev=latest?.revision??"?";throw new Error(`Cloud revision이 ${expectedRevision}에서 ${latestRev}(으)로 바뀌었습니다. 다른 기기의 변경을 덮지 않도록 중단했습니다.`)}
   const writtenRevision=Number(written.revision);
   if(!Number.isFinite(writtenRevision)||writtenRevision!==expectedRevision+1)throw new Error(`Cloud revision 증가 검증 실패: ${expectedRevision} → ${written.revision}. DB revision 트리거를 확인해야 합니다.`);
-  const returnedHash=await cloudStateHash(written.state);
-  if(returnedHash!==outgoingHash)throw new Error("Cloud 저장 후 반환된 state가 Local과 일치하지 않습니다.");
   assertCloudSourceReady({allowImport,expectedHold});
   if(!cloudSame(localState,cloudComparableState(state)))throw new Error("Cloud 응답을 기다리는 동안 Local이 변경되었습니다. 새 Local 기록을 유지하며 자동 반영을 중지합니다.");
   if(!cloudSame(outgoing,localState)){const serialized=JSON.stringify(outgoing);writeProtectedState(serialized);if(localStorage.getItem(STORAGE_KEY)!==serialized)throw new Error("Media Guard 병합 후 Local read-back 검증에 실패했습니다.");state=outgoing;renderAll()}
   const now=new Date().toISOString(),meta=cloudSaveSyncMeta(written,outgoingHash,{lastPushAt:now,verifiedAt:now,appliedRevision:writtenRevision});
-  cloudSetRuntime("동기화 완료",`Local 변경을 Cloud revision ${writtenRevision}으로 반영했습니다.`,"ok",{revision:writtenRevision,updatedAt:written.updated_at,verifiedAt:meta.verifiedAt,device:written.device||"",sync:"ON",localSummary:cloudSummaryText(outgoing),remoteSummary:cloudSummaryText(written.state)});
-  return written;
+  cloudRememberVerifiedRemote(written,outgoing,outgoingHash);
+  cloudSetRuntime("동기화 완료",`Local 변경을 Cloud revision ${writtenRevision}으로 반영했습니다.`,"ok",{revision:writtenRevision,updatedAt:written.updated_at,verifiedAt:meta.verifiedAt,device:written.device||"",sync:"ON",localSummary:cloudSummaryText(outgoing),remoteSummary:cloudSummaryText(outgoing)});
+  return {...written,state:outgoing};
 }
 function cloudSyncDecision({hasBaseline,localMeaningful,remoteMeaningful,localHash,remoteHash,baselineHash,appliedRevision,remoteRevision}){
   if(!remoteMeaningful){
@@ -4358,7 +4361,14 @@ function cloudSyncSelfTest(){
     [cloudShouldFetchFullState("poll",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),false],
     [cloudShouldFetchFullState("focus",{revision:8},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),true],
     [cloudShouldFetchFullState("visible",null,{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),true],
-    [cloudShouldFetchFullState("local-save",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),true]
+    [cloudShouldFetchFullState("local-save",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),true],
+    [cloudCanUseVerifiedRemote("local-save",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7},{userId:"u",revision:7,hash:B},"u"),true],
+    [cloudCanUseVerifiedRemote("local-save",{revision:8},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7},{userId:"u",revision:7,hash:B},"u"),false],
+    [cloudCanUseVerifiedRemote("local-save",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7},{userId:"u",revision:7,hash:R},"u"),false],
+    [cloudCanUseVerifiedRemote("local-save",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7},{userId:"other",revision:7,hash:B},"u"),false],
+    [cloudCanUseVerifiedRemote("manual",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7},{userId:"u",revision:7,hash:B},"u"),false],
+    [cloudCanUseVerifiedRemote("local-save",null,{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7},{userId:"u",revision:7,hash:B},"u"),false],
+    [cloudCanUseVerifiedRemote("local-save",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7},null,"u"),false]
   ];
   return cases.every(([got,want])=>got===want);
 }
@@ -4369,6 +4379,16 @@ function cloudShouldFetchFullState(reason,remoteMeta,localMeta=cloudMeta()){
   const hasVerifiedBaseline=localMeta?.syncEngine===CLOUD_SYNC_ENGINE&&localMeta?.hashSchema===CLOUD_HASH_SCHEMA&&!!localMeta?.lastSyncedHash&&Number.isFinite(appliedRevision);
   if(!hasVerifiedBaseline||!remoteMeta||!Number.isFinite(remoteRevision))return true;
   return remoteRevision!==appliedRevision;
+}
+function cloudCanUseVerifiedRemote(reason,remoteMeta,localMeta,cache,userId){
+  // Local saves reuse the verified in-memory row only while Cloud still reports the same revision.
+  if(!["local-save","queued"].includes(reason))return false;
+  if(cloudShouldFetchFullState("poll",remoteMeta,localMeta))return false;
+  return !!cache&&!!userId&&cache.userId===userId&&Number(cache.revision)===Number(localMeta.appliedRevision)&&cache.hash===localMeta.lastSyncedHash;
+}
+function cloudRememberVerifiedRemote(row,comparableState,hash){
+  const revision=Number(row?.revision);
+  cloudVerifiedRemote=cloudUser?.id&&Number.isFinite(revision)&&hash?{userId:cloudUser.id,revision,hash,state:structuredClone(comparableState)}:null;
 }
 async function cloudSyncCycle(reason="manual"){
   if(loadRecovery.active||importSyncHold){cloudStopAutoSync(loadRecovery.active?lastLoadError:"복원한 백업은 이 기기에만 보관 중입니다. Cloud 반영은 별도 확인이 필요합니다.","warn");return}
@@ -4381,7 +4401,12 @@ async function cloudSyncCycle(reason="manual"){
       const remoteMeta=await cloudFetchMeta();
       if(!cloudShouldFetchFullState(reason,remoteMeta,cloudMeta()))return;
     }
-    const remote=await cloudReadRow();
+    let remote=null;
+    if(["local-save","queued"].includes(reason)){
+      const remoteMeta=await cloudFetchMeta(),cache=cloudVerifiedRemote;
+      if(cloudCanUseVerifiedRemote(reason,remoteMeta,cloudMeta(),cache,cloudUser?.id))remote={state:structuredClone(cache.state),revision:remoteMeta.revision,updated_at:remoteMeta.updated_at,device:remoteMeta.device};
+    }
+    if(!remote)remote=await cloudReadRow();
     assertCloudSourceReady();
     const localState=cloudComparableState(state);
     const localMeaningful=cloudHasMeaningfulLocalData(localState);
@@ -4404,6 +4429,7 @@ async function cloudSyncCycle(reason="manual"){
     }
     if(decision.action==="establish"){
       const now=new Date().toISOString(),m=cloudSaveSyncMeta(remote,remoteHash,{verifiedAt:now,appliedRevision:remote.revision});
+      cloudRememberVerifiedRemote(remote,remoteState,remoteHash);
       cloudAutoSyncReady=true;cloudSetRuntime("동기화 정상",`Local과 Cloud 기준을 확인했습니다. revision ${remote.revision}.`,"ok",{revision:remote.revision,updatedAt:remote.updated_at,verifiedAt:m.verifiedAt,device:remote.device||"",sync:"ON",localSummary:cloudSummaryText(state),remoteSummary:cloudSummaryText(remoteState)});cloudStartPolling();return;
     }
     if(decision.action==="pull"){
