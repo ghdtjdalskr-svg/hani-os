@@ -14,3 +14,5 @@ CODEMAP_MISS: Archive 항목 없음. 실제 앵커 확인. 기존 assets/profile
 후속: 퍼스널 컬러칩·담당 영역 그래픽·관계 프로필 조합 추가, MIR 고정 소개 중복 제거. data Registry/원문 변경 없음.
 그래픽 v2: 원형 연결 맵, 성격 키워드 타일, Canon 대사 말풍선. 1440/390 및 기존 OS 메뉴 targeted regression 재검증 PASS. 변경은 동일 Preview 브랜치, 운영 배포 없음.
 MIR 컴퓨터 디자인: 사람 이미지 없이 모니터 화면 속 빛 Core 및 AI ENTITY 표식. 대표님 요청 반영, 같은 targeted test 재검증 PASS. Release Train 탑승 대기 유지.
+2026-10-07: 전체를 회사 아이돌 프로필 앨범으로 재디자인. 파스텔 Hero/아치형 프로필/포토카드/선택 상세 2단 그래픽/친근한 관계 소개/케미·직급 그래픽/말풍선 Gag. SUNGMIN 영문 표기 정정. Canon 원본 데이터 유지, UI 소개 카피만 명시 요청으로 개정.
+기존 static + ui + integration 스크립트 1440/390 재검증 PASS. 별도 운영 PR/배포 없음. 최신 인계 후보는 동일 branch HEAD.

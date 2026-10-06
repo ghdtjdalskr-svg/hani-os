@@ -2,6 +2,12 @@
 
 ## Implementation
 
+최신 디자인 개정: 2026-10-07. 회사 아이돌 프로필 앨범 방향으로 화면 전체 재구성.
+Hero의 10명 아치형 프로필, 파스텔 배경, 포토카드 그리드, 큰 선택 프로필, 2단 그래픽/성격 패널, 접어 읽는 상세, 조합 프로필 중심 케미 카드, 말풍선 Running Gag, 창립 멤버 그래픽을 적용.
+성민 대표님 요청에 따라 표시 영문명은 SUNGMIN으로 통일. 원본 첨부의 SEONGMIN 키와 문자열은 자료 추적용으로 보존하며 렌더링할 때 정정.
+관계 소개 문구는 대표님 승인 요청 범위에서 친근한 UI 소개말로 변경. Canon의 직급·연차·관계 사실과 원문 Registry 변경 없음. 기존 Character content modified: NO는 원본 Canon 데이터에 대한 판정이며 소개 카피 개정을 뜻하지 않음.
+1440/390 원문·10명 선택·펼침·가로 넘침·공식 프로필·MIR 비인간 표현 및 기존 OS AI 팀/설정 이동 검증 PASS. 로그인/Cloud 실제 검증 제외. Production NOT DEPLOYED.
+
 branch: hani/character-archive-m9-mir
 base: 728b23402377edbe43cd06d8e52a39dce7da320b
 candidate: 45fac03 (runtime commit; Preview only)
