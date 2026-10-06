@@ -114,6 +114,41 @@
 
 /* Editorial composition: photo covers, visual chapters, and optional long reading. */
 /* HANI profile album: soft pastels, photo-card edges, and warm personal notes. */
+#characterArchive .ca-section .ca-relationship-grid>div[style]{background:linear-gradient(135deg,color-mix(in srgb,var(--ca-accent) 25%,var(--ca-paper)),color-mix(in srgb,var(--ca-accent) 9%,var(--ca-paper)));border-color:color-mix(in srgb,var(--ca-accent) 35%,var(--ca-line))}
+#characterArchive .ca-dynamics article:nth-child(3n+1),#characterArchive .ca-rule-cards li:nth-child(4n+1){--ca-tint:#e7a9c4}
+#characterArchive .ca-dynamics article:nth-child(3n+2),#characterArchive .ca-rule-cards li:nth-child(4n+2){--ca-tint:#b9a6e4}
+#characterArchive .ca-dynamics article:nth-child(3n),#characterArchive .ca-rule-cards li:nth-child(4n+3){--ca-tint:#9ecfbe}
+#characterArchive .ca-rule-cards li:nth-child(4n){--ca-tint:#e1c292}
+#characterArchive .ca-section .ca-dynamics article,#characterArchive .ca-section .ca-rule-cards li{background:linear-gradient(140deg,color-mix(in srgb,var(--ca-tint) 35%,var(--ca-paper)),color-mix(in srgb,var(--ca-tint) 14%,var(--ca-paper)));border-color:color-mix(in srgb,var(--ca-tint) 55%,var(--ca-line))}
+#characterArchive .ca-section .ca-founders>div:first-child{background:linear-gradient(135deg,#ddbbda44,#dcc6ee33),var(--ca-paper);border-color:#bd9ac955}
+#characterArchive .ca-section .ca-founders>div:last-child{background:linear-gradient(135deg,#abd8c755,#e6d0a333),var(--ca-paper);border-color:#84b5a755}
+#characterArchive .ca-section .ca-gags details{background:linear-gradient(145deg,color-mix(in srgb,var(--ca-accent) 25%,var(--ca-paper)),color-mix(in srgb,var(--ca-accent) 9%,var(--ca-paper)));border-color:color-mix(in srgb,var(--ca-accent) 35%,var(--ca-line))}
+#characterArchive .ca-boundary-grid details:nth-child(3n+1){background:color-mix(in srgb,#e7a9c4 18%,var(--ca-paper))}
+#characterArchive .ca-boundary-grid details:nth-child(3n+2){background:color-mix(in srgb,#b9a6e4 18%,var(--ca-paper))}
+#characterArchive .ca-boundary-grid details:nth-child(3n){background:color-mix(in srgb,#9ecfbe 18%,var(--ca-paper))}
+#characterArchive h1{color:color-mix(in srgb,#a25291 65%,var(--ca-ink));text-shadow:2px 3px 0 #ccacdd20}
+#characterArchive .ca-m9-spark{font-size:.45em;vertical-align:top;margin-left:12px;color:color-mix(in srgb,#b88dc6 70%,var(--ca-ink))}
+#characterArchive .ca-m9-alias{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:-6px 0 22px}
+#characterArchive .ca-m9-alias b{color:color-mix(in srgb,#8b60b0 70%,var(--ca-ink));font-size:19px}
+#characterArchive .ca-m9-alias>span{padding:4px 12px;border-radius:30px;background:#e9bcd333;color:color-mix(in srgb,#aa4c83 70%,var(--ca-ink));font-weight:700}
+#characterArchive .ca-m9-alias>small{font-size:11px;color:var(--ca-muted);flex-basis:100%}
+#characterArchive .ca-hero .ca-avatar-row{grid-template-columns:repeat(3,minmax(0,1fr));max-width:470px;margin:auto}
+#characterArchive .ca-hero .ca-avatar-row .ca-mini{aspect-ratio:1}
+#characterArchive .ca-hero .ca-cover-title{color:color-mix(in srgb,#8f65b0 55%,var(--ca-ink))}
+#characterArchive .ca-cover-caption h3,#characterArchive .ca-person-label b,#characterArchive .ca-gag-quote,#characterArchive .ca-detail-head h2{color:color-mix(in srgb,var(--ca-accent,#805c96) 70%,var(--ca-ink))}
+#characterArchive .ca-section-head h2,#characterArchive .ca-reading-label h3{color:color-mix(in srgb,#9872b2 60%,var(--ca-ink))}
+#characterArchive .ca-section:nth-of-type(2n) .ca-section-head h2{color:color-mix(in srgb,#b9678c 60%,var(--ca-ink))}
+#characterArchive .ca-section:nth-of-type(3n) .ca-section-head h2{color:color-mix(in srgb,#558c9b 60%,var(--ca-ink))}
+#characterArchive .ca-relationship-grid p,#characterArchive .ca-detail-head blockquote{color:color-mix(in srgb,var(--ca-accent,#805c96) 55%,var(--ca-ink))}
+#characterArchive .ca-visual-heading>b,#characterArchive .ca-trait-mosaic b,#characterArchive .ca-axis-graphic b{color:color-mix(in srgb,var(--ca-accent,#805c96) 65%,var(--ca-ink))}
+#characterArchive .ca-grid .ca-special-card{grid-column:1/-1;display:flex;flex-direction:row;align-items:center;gap:18px;padding:12px 20px;border:1px solid var(--ca-line);box-shadow:none}
+#characterArchive .ca-special-card .ca-cover-photo{width:76px;flex-shrink:0}
+#characterArchive .ca-special-card .ca-cover-photo>.ca-core{aspect-ratio:1}
+#characterArchive .ca-special-card .ca-cover-number{display:none}
+#characterArchive .ca-special-card .ca-cover-caption{display:flex;align-items:center;gap:20px;flex:1;padding:0;flex-wrap:wrap}
+#characterArchive .ca-special-card .ca-cover-caption h3{font-size:18px;margin:0}
+#characterArchive .ca-special-card .ca-cover-caption .ca-profile-button{width:auto;margin-left:auto;border:0;padding:0}
+@media(max-width:600px){#characterArchive .ca-grid .ca-special-card{gap:12px;padding:12px}#characterArchive .ca-special-card .ca-cover-photo{width:60px}#characterArchive .ca-special-card .ca-cover-caption{gap:7px}#characterArchive .ca-special-card .ca-cover-caption>small{flex-basis:100%}#characterArchive .ca-m9-alias b{font-size:16px}}
 #characterArchive .ca-hero{position:relative;background:radial-gradient(ellipse at 90% 0%,#e7d9ff55,transparent 55%),radial-gradient(ellipse at 0% 100%,#ffdce755,transparent 55%),var(--ca-paper);border-color:color-mix(in srgb,#d9b5d5 50%,var(--ca-line))}
 #characterArchive .ca-hero:after{content:'✧';position:absolute;top:16px;right:24px;font-size:36px;color:#b997d2;pointer-events:none}
 #characterArchive .ca-cover-title{color:var(--ca-ink)}
