@@ -1754,11 +1754,12 @@ if('scrollRestoration' in history)history.scrollRestoration='manual';
 const NAVIGATION_VIEWS=new Set(['home','reading','movie','monthlyReport','diet','exercise','diary','calendar','university','wishlist','travel']);
 let navigationCurrent='',navigationBooted=false,navigationRestored=false,navigationTimer=0;
 function navigationRead(){
-  try{const row=JSON.parse(localStorage.getItem(NAVIGATION_KEY));return row?.version===1&&NAVIGATION_VIEWS.has(row.view)&&Number.isFinite(row.y)&&row.y>=0&&row.y<=1000000?{version:1,view:row.view,y:row.y}:null}catch{return null}
+  try{const row=JSON.parse(localStorage.getItem(NAVIGATION_KEY));if(!(row?.version===1&&NAVIGATION_VIEWS.has(row.view)&&Number.isFinite(row.y)&&row.y>=0&&row.y<=1000000))return null;const safe={version:1,view:row.view,y:row.y};if(row.view==='monthlyReport'&&['monthly','quarterly','annual'].includes(row.board))safe.board=row.board;return safe}catch{return null}
 }
 function navigationPersist(view,y){
   if(!NAVIGATION_VIEWS.has(view)||!Number.isFinite(y)||y<0)return;
-  try{localStorage.setItem(NAVIGATION_KEY,JSON.stringify({version:1,view,y:Math.min(1000000,Math.round(y))}))}catch{/* Navigation remains usable when browser storage is unavailable. */}
+  const row={version:1,view,y:Math.min(1000000,Math.round(y))};if(view==='monthlyReport'&&['monthly','quarterly','annual'].includes(monthlyReportBoard))row.board=monthlyReportBoard;
+  try{localStorage.setItem(NAVIGATION_KEY,JSON.stringify(row))}catch{/* Navigation remains usable when browser storage is unavailable. */}
 }
 function navigationInitialView(hash){return hash||navigationRead()?.view||'home'}
 function navigationRestore(){
@@ -1766,6 +1767,7 @@ function navigationRestore(){
   if(!loginGateUnlocked||navigationRestored)return;
   navigationRestored=true;
   const view=document.body.dataset.view,target=row?.view===view?row.y:0;
+  if(view==='monthlyReport'&&row?.view===view&&row.board){monthlyReportBoard=row.board;monthlyReportRenderBoard()}
   requestAnimationFrame(()=>requestAnimationFrame(()=>{if(view===document.body.dataset.view)window.scrollTo({top:Math.min(target,Math.max(0,document.documentElement.scrollHeight-innerHeight)),left:0,behavior:'instant'})}));
 }
 window.addEventListener('scroll',()=>{clearTimeout(navigationTimer);if(!navigationBooted||!loginGateUnlocked)return;navigationTimer=setTimeout(()=>{if(loginGateUnlocked)navigationPersist(navigationCurrent,window.scrollY)},150)},{passive:true});
@@ -5948,7 +5950,7 @@ function monthlyReportSnapshot(month,asOf=monthlyReportKoreaDate()){
 }
 function monthlyReportDelta(value,previous,formatter=won){if(previous===null||previous===undefined)return "전월 기록 없음";const delta=n(value)-n(previous);return `전월 대비 ${delta>0?"+":""}${formatter(delta)}`}
 function monthlyReportDomainCard({tone,eyebrow,title,headline,comment,basis,metrics,empty,owner}){const key=owner||({FINANCE:"finance",MONEY:"money",HEALTH:"health",ACTIVITY:"activity",CULTURE:"culture",LEARNING:"learning"})[eyebrow],agent=monthlyReportOwners[key]||monthlyReportOwners.finance;return `<article class="monthly-report-domain tone-${tone}"><div class="monthly-report-domain-head"><div><span>${esc(eyebrow)}</span><h3>${esc(title)}</h3></div><b>${empty?"기록 없음":"해당 월"}</b></div><div class="monthly-report-takeaway"><span>월간 핵심</span><strong>${esc(headline)}</strong></div><div class="monthly-report-agent"><img src="${esc(agentImages[agent.key]||agentImages.hani)}" alt="${esc(agent.name)}"><div class="monthly-report-speech"><span>${esc(agent.name)} · ${esc(agent.role)}</span><p>${esc(comment)}</p></div></div><div class="monthly-report-metrics">${metrics.map(([label,value])=>`<div><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join("")}</div><details class="monthly-report-basis"><summary>집계 기준</summary><p>${esc(basis)}</p></details></article>`}
-function monthlyReportRenderBoard(){if(typeof document==="undefined")return;const allowed=["monthly","quarterly","annual"];if(!allowed.includes(monthlyReportBoard))monthlyReportBoard="monthly";document.querySelectorAll("#monthlyReport [data-report-board]").forEach(button=>{const active=button.dataset.reportBoard===monthlyReportBoard;button.classList.toggle("active",active);button.setAttribute("aria-selected",String(active));button.onclick=()=>{monthlyReportBoard=button.dataset.reportBoard;monthlyReportRenderBoard()}});document.querySelectorAll("#monthlyReport [data-report-panel]").forEach(panel=>{const active=panel.dataset.reportPanel===monthlyReportBoard;panel.hidden=!active;panel.classList.toggle("active",active)})}
+function monthlyReportRenderBoard(){if(typeof document==="undefined")return;const allowed=["monthly","quarterly","annual"];if(!allowed.includes(monthlyReportBoard))monthlyReportBoard="monthly";document.querySelectorAll("#monthlyReport [data-report-board]").forEach(button=>{const active=button.dataset.reportBoard===monthlyReportBoard;button.classList.toggle("active",active);button.setAttribute("aria-selected",String(active));button.onclick=()=>{monthlyReportBoard=button.dataset.reportBoard;monthlyReportRenderBoard();if(navigationBooted&&loginGateUnlocked)navigationPersist(navigationCurrent,window.scrollY)}});document.querySelectorAll("#monthlyReport [data-report-panel]").forEach(panel=>{const active=panel.dataset.reportPanel===monthlyReportBoard;panel.hidden=!active;panel.classList.toggle("active",active)})}
 function monthlyReportBuildCurrent(){
   const input=$("monthlyReportMonth"),kpis=$("monthlyReportKpis"),domains=$("monthlyReportDomains");if(!input||!kpis||!domains)return;
   monthlyReportRenderBoard();
