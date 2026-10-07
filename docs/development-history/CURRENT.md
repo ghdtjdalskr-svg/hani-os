@@ -1,3 +1,12 @@
+# 최종 탑승본 업데이트 · 2026-10-07
+
+HANI-7/28/31/33 최종 기능 결합 runtime: `hani/report-navigation-ready-20261007@c4b32803f3f5e418151464366a21f19719156b12`. [최종 인수인계](handoffs/2026-10-07-report-navigation-ready.md). 공통 목표 슬롯/발표/PDF/모바일 board 기능 충돌 해결 및 주요 발표 실적 공통 API 연결. 이전 개별 branch와 goal-report-ready 결합본 중복 적용 금지. 기존 source/tooling main691385cf 변경과 최신 열차 범위 대조 필요, main merge/rebase하지 않음.
+
+결합 코드 단위31 및 공통 UI4/목표UI4/navigation PC·모바일/월간 저장 회귀/annual mock/PPT14·28 package/layout/render PASS. 실제 auth/Cloud/Android/운영 register·activate/AI/독립HINA 미검증. runtime v190/cache 유지, 운영 PR/main/배포 없음.
+
+Drive 개발 사전검사 HANI-35 `hani/drive-precheck-complete-20261007@05c9bcf` 준비. 입력 초안 HANI-34 계정 lifecycle 설계 보류, 실제 Drive OAuth/업로드/복원 및 HANI GROUP 디자인 승인·실제 Cloud 검증은 별도. 이전 요약의 HANI7 진행 중/기능 충돌 경계는 최종 결합본으로 해결한 범위만 정정됨.
+# HANI 최신 개발 현황 · 2026-10-07
+
 # HANI 최신 개발 현황
 
 ## 2026-10-08 · Organization Hub 탑승 인계 (Codex)
