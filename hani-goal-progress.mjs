@@ -1,6 +1,7 @@
 import {projectGoalPeriod} from './data-hub/goal-period-view.mjs';
-const names={investment_total_krw:'투자자산',body_weight_kg:'체중',books_completed_count:'완독',steps_daily_average:'일평균 걸음',spending_jispi_krw:'월 지출 예산',quiz_accuracy_percent:'퀴즈 정답률',body_bmi:'BMI',body_fat_percent:'체지방률'};
-const units={KRW:'원',book:'권','steps/day':'보/일'};
+import {suggestMonthlyBudget} from './data-hub/period-goal.mjs';
+const names={investment_total_krw:'투자자산',body_weight_kg:'체중',books_completed_count:'완독',steps_daily_average:'일평균 걸음',spending_jispi_krw:'월 지출 예산',quiz_accuracy_percent:'퀴즈 정답률',body_bmi:'BMI',body_fat_percent:'체지방률',media_watched_count:'시청 작품 수'};
+const units={KRW:'원',book:'권','steps/day':'보/일',title:'편'};
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const number=value=>Number.isFinite(value)?value.toLocaleString('ko-KR',{maximumFractionDigits:2}):'—';
 const clock=()=>new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul'}).format(new Date());
@@ -38,5 +39,5 @@ function read(requestedPeriod){
  const context=goalPeriodReadContext();
  return context?projectGoalPeriod({...context,period:requestedPeriod,metricIds:Object.keys(names)}):null;
 }
-window.HANI_GOAL_PROGRESS=Object.freeze({render,read});
+window.HANI_GOAL_PROGRESS=Object.freeze({render,read,suggestMonthlyBudget});
 render();
