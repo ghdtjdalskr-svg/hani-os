@@ -28,7 +28,7 @@ try{
   await page.locator('#goalProgressYear').fill('2026');await page.locator('#goalProgressYear').dispatchEvent('change');await page.locator('#goalProgressQuarter').selectOption('1');
   const bmi=panel.locator('article').filter({has:page.locator('h4',{hasText:/^BMI$/})});assert.match(await bmi.innerText(),/실적 27/);assert.match(await bmi.innerText(),/목표 25/);assert.match(await bmi.innerText(),/목표 대비 \+2/);
   assert.deepEqual(await page.evaluate(()=>{const x=window.HANI_GOAL_PROGRESS.read({type:'quarter',year:2026,quarter:1}).find(x=>x.definition.metric_id==='body_bmi');return [x.actual.value,x.progress.target,x.progress.gap]}),[27,25,2]);
-  assert.equal(await panel.locator('article').count(),8);if(width===390)assert.ok((await bmi.boundingBox()).width>250,'mobile cards readable');assert.match(await panel.innerText(),/일부 기록/);
+  assert.equal(await panel.locator('article').count(),9);if(width===390)assert.ok((await bmi.boundingBox()).width>250,'mobile cards readable');assert.match(await panel.innerText(),/일부 기록/);
   await panel.scrollIntoViewIfNeeded();assert.ok(await panel.evaluate(e=>e.scrollWidth<=e.clientWidth+1));assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await panel.screenshot({path:path.join(evidence,`${width}-${finish}.png`),style:'.ui26-top,#haniContextRemote,.hani-remote-mobile-trigger{visibility:hidden!important}'});
   await page.locator('#goalProgressType').selectOption('annual');assert.match(await bmi.innerText(),/목표 —/);assert.equal(await page.locator('#goalProgressQuarter').isVisible(),false);
   await page.evaluate(()=>{window.goalTestAllowed=false;window.HANI_GOAL_PROGRESS.render()});assert.match(await panel.innerText(),/원본 검증 대기/);assert.equal(await panel.locator('article').count(),0);
