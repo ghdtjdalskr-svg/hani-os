@@ -1716,8 +1716,33 @@ function setBanner(key,page="home"){
   if($("aiQuote"))$("aiQuote").innerHTML=`<span>${esc(q[0])} 한마디</span><b>“${esc(q[1])}”</b>`;
   /* v2.8.2: decorative scene removed; character speech is the visual focus */
 }
+// UI position only. Never put forms, records, credentials or Cloud state here.
+const NAVIGATION_KEY='hani_os_navigation_v1';
+if('scrollRestoration' in history)history.scrollRestoration='manual';
+const NAVIGATION_VIEWS=new Set(['home','reading','movie','monthlyReport','diet','exercise','diary','calendar','university','wishlist','travel']);
+let navigationCurrent='',navigationBooted=false,navigationRestored=false,navigationTimer=0;
+function navigationRead(){
+  try{const row=JSON.parse(localStorage.getItem(NAVIGATION_KEY));return row?.version===1&&NAVIGATION_VIEWS.has(row.view)&&Number.isFinite(row.y)&&row.y>=0&&row.y<=1000000?{version:1,view:row.view,y:row.y}:null}catch{return null}
+}
+function navigationPersist(view,y){
+  if(!NAVIGATION_VIEWS.has(view)||!Number.isFinite(y)||y<0)return;
+  try{localStorage.setItem(NAVIGATION_KEY,JSON.stringify({version:1,view,y:Math.min(1000000,Math.round(y))}))}catch{/* Navigation remains usable when browser storage is unavailable. */}
+}
+function navigationInitialView(hash){return hash||navigationRead()?.view||'home'}
+function navigationRestore(){
+  const row=navigationRead();navigationBooted=true;
+  if(!loginGateUnlocked||navigationRestored)return;
+  navigationRestored=true;
+  const view=document.body.dataset.view,target=row?.view===view?row.y:0;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{if(view===document.body.dataset.view)window.scrollTo({top:Math.min(target,Math.max(0,document.documentElement.scrollHeight-innerHeight)),left:0,behavior:'instant'})}));
+}
+window.addEventListener('scroll',()=>{clearTimeout(navigationTimer);if(!navigationBooted||!loginGateUnlocked)return;navigationTimer=setTimeout(()=>{if(loginGateUnlocked)navigationPersist(navigationCurrent,window.scrollY)},150)},{passive:true});
+window.addEventListener('pagehide',()=>{if(navigationBooted&&loginGateUnlocked)navigationPersist(navigationCurrent,window.scrollY)});
+window.addEventListener('load',navigationRestore,{once:true});
 function showView(id){
   if(!$(id))id="home";
+  clearTimeout(navigationTimer);navigationCurrent=NAVIGATION_VIEWS.has(id)?id:'';
+  if(navigationBooted&&loginGateUnlocked)navigationPersist(navigationCurrent,0);
   document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));$(id).classList.add("active");
 
 document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===id));
@@ -1995,6 +2020,7 @@ function unlockLoginGate(){
   app?.classList.remove("login-locked");
   app?.setAttribute("aria-hidden","false");
   gate?.classList.add("is-hidden");
+  navigationRestore();
 }
 function loginGateConfig(email=""){
   const cfg=cloudConfig(),nextEmail=String(email||cfg.email||"").trim();
@@ -6324,7 +6350,7 @@ if(CLOUD_AUTH_BOOT.hasAuthCallback){
     }
   });
 }else{
-  showView(location.hash.slice(1)||"home");
+  showView(navigationInitialView(location.hash.slice(1)));
   initCloudBridge().finally(()=>{if(window.supabase?.createClient)loginGateStatus("이메일과 비밀번호로 로그인해 주세요.")});
 }
 window.addEventListener("resize",()=>{drawPortfolio();drawBody();drawLedgerTrend();drawMonthlyAssetChart();drawBrokerChart();drawAnnualInvestmentCharts();drawInvestmentAccountChart();if(activeAccountId)drawAccountChart(activeAccountId)});
