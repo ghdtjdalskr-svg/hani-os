@@ -4358,18 +4358,21 @@ function cloudSyncSelfTest(){
     [cloudShouldFetchFullState("poll",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),false],
     [cloudShouldFetchFullState("focus",{revision:8},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),true],
     [cloudShouldFetchFullState("visible",null,{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),true],
-    [cloudShouldFetchFullState("local-save",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),true]
+    [cloudShouldFetchFullState("local-save",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),true],
+    [cloudShouldFetchFullState("view-home",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),false],
+    [cloudShouldFetchFullState("view-asset",{revision:8},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),true]
   ];
   return cases.every(([got,want])=>got===want);
 }
 function cloudShouldFetchFullState(reason,remoteMeta,localMeta=cloudMeta()){
-  // Frequent lifecycle checks stay metadata-only while the verified revision is unchanged.
-  if(!["poll","focus","visible"].includes(reason))return true;
+  // Frequent lifecycle checks (including data-heavy view re-checks) stay metadata-only while the verified revision is unchanged.
+  if(!cloudIsLifecycleCheck(reason))return true;
   const appliedRevision=Number(localMeta?.appliedRevision),remoteRevision=Number(remoteMeta?.revision);
   const hasVerifiedBaseline=localMeta?.syncEngine===CLOUD_SYNC_ENGINE&&localMeta?.hashSchema===CLOUD_HASH_SCHEMA&&!!localMeta?.lastSyncedHash&&Number.isFinite(appliedRevision);
   if(!hasVerifiedBaseline||!remoteMeta||!Number.isFinite(remoteRevision))return true;
   return remoteRevision!==appliedRevision;
 }
+function cloudIsLifecycleCheck(reason){return ["poll","focus","visible"].includes(reason)||/^view-/.test(String(reason||""))}
 async function cloudSyncCycle(reason="manual"){
   if(loadRecovery.active||importSyncHold){cloudStopAutoSync(loadRecovery.active?lastLoadError:"복원한 백업은 이 기기에만 보관 중입니다. Cloud 반영은 별도 확인이 필요합니다.","warn");return}
   if(!cloudClient||!cloudUser)return;
@@ -4377,9 +4380,10 @@ async function cloudSyncCycle(reason="manual"){
   cloudSyncBusy=true;
   try{
     if(!cloudSyncSelfTest())throw new Error("Sync Core 자체 검증에 실패해 자동 동기화를 시작하지 않았습니다.");
-    if(["poll","focus","visible"].includes(reason)){
-      const remoteMeta=await cloudFetchMeta();
-      if(!cloudShouldFetchFullState(reason,remoteMeta,cloudMeta()))return;
+    if(cloudIsLifecycleCheck(reason)){
+      const remoteMeta=await cloudFetchMeta(),meta=cloudMeta();
+      const localClean=!/^view-/.test(reason)||(await cloudStateHash(cloudComparableState(state)))===String(meta.lastSyncedHash||"");
+      if(localClean&&!cloudShouldFetchFullState(reason,remoteMeta,meta))return;
     }
     const remote=await cloudReadRow();
     assertCloudSourceReady();

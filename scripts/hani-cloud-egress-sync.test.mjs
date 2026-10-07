@@ -19,6 +19,10 @@ assert.equal(shouldFetch("visible",{revision:8},baseline),true,"new remote revis
 assert.equal(shouldFetch("poll",null,baseline),true,"missing metadata fails closed to full state");
 assert.equal(shouldFetch("poll",{revision:7},{...baseline,lastSyncedHash:""}),true,"unverified baseline fetches full state");
 assert.equal(shouldFetch("local-save",{revision:7},baseline),true,"local writes retain full conflict verification");
+assert.equal(shouldFetch("view-home",{revision:7},baseline),false,"unchanged data-heavy view re-check stays metadata-only");
+assert.equal(shouldFetch("view-asset",{revision:8},baseline),true,"view re-check fetches full state on a new remote revision");
+assert.equal(shouldFetch("view-investment",null,baseline),true,"view re-check fails closed without metadata");
+assert.equal(shouldFetch("manual",{revision:7},baseline),true,"manual sync keeps full verification");
 
 const cycle=source.slice(source.indexOf("async function cloudSyncCycle"),source.indexOf("function cloudBindLifecycle"));
 assert.ok(cycle.indexOf("await cloudFetchMeta()")<cycle.indexOf("await cloudReadRow()"),"metadata gate precedes full-state read");
@@ -28,6 +32,7 @@ assert.doesNotMatch(metaReader,/select\("state,/,"metadata query must not includ
 const protectedKey=["hani","os","life","v23"].join("_");
 assert.ok(source.includes(`const STORAGE_KEY="${protectedKey}"`),"protected storage key is unchanged");
 assert.match(source,/const VERSION="2\.9\.15-safe-baseline-bootstrap"/,"internal data version is unchanged");
-assert.match(source,/const HANI_DISPLAY_VERSION="2\.9\.141"/,"runtime display version is updated");
+assert.ok(cycle.includes("cloudIsLifecycleCheck(reason)"),"cycle uses the shared lifecycle gate");
+assert.match(cycle,/localClean=!\/\^view-\/\.test\(reason\)\|\|/,"view re-check still syncs when this device has unsynced changes");
 
 console.log("HANI Cloud Egress Sync: PASS");
