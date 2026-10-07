@@ -28,6 +28,22 @@
 - 로그인 큰 사진과 프로필 패널처럼 큰 화면은 원본을 유지한다.
 - Codex 「누락된 QA 수행하기」 탭의 신규 캐릭터(서윤·도연·세린·유리·아린·채원·MIR·뮤즈) 조직도는 그 탭 작업이 끝난 뒤 같은 도구로 처리한다. 대표님이 2026-10-08에 허락했다.
 
+## 2단계 런타임 변경 (branch `hani/seoyun-profile-thumbs-ui` 2f5ca9a, 탑승 대기)
+
+- `hani-main.js`
+  - `sidebarAgentImages`가 원본 대신 `thumb/*-256.webp`를 가리킨다. 기존 별칭이 있던 자리라, 사이드바 얼굴·홈 대화·업무 카드·리뷰 화면이 자동으로 썸네일을 쓴다.
+  - AI 배너 아바타(`aiAvatar`)와 팀 카드(`teamCard`)도 썸네일로 바꿨다.
+  - 큰 팀 프로필 패널은 원본(`agentImages`)으로 바꿨다. 로그인 큰 사진은 그대로 원본이다.
+- `hani-ui-v02992.js`: `profile()`이 썸네일을 쓴다. 대상은 64px 화자 사진, 배너, 지은 코멘트 사진이다.
+- 변경하지 않은 것: `canonicalProfileImages`와 `agentImages` 원본 경로, 데이터와 저장 경로.
+- 열차에서 할 일: 버전을 올리고, `index.html`의 `hani-main.js`·`hani-ui-v02992.js` `?v=` 태그를 올린다.
+- 선행 조건: PR222(썸네일 파일)가 main에 먼저 반영돼 있어야 한다.
+- 테스트: `node scripts/hani-profile-thumbs-ui.test.cjs <playwright> <msedge.exe>` PASS. 확인한 내용은 다음과 같다.
+  - 썸네일 11개 항목이 전부 256px다.
+  - 배너가 썸네일을 쓴다.
+  - 로그인 사진은 원본이다.
+  - 썸네일이 모두 200으로 응답하고 profile 404가 없다.
+
 ## 검증
 
 - 18장 생성을 확인했다.
