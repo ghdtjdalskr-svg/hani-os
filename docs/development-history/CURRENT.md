@@ -1,4 +1,17 @@
-# HANI 최신 개발 현황
+# HANI 최신 개발 현황 · 2026-10-07
+
+- 이번 갱신은 탑승 준비 상태이며 운영 배포 확인이 아니다. runtime base `c43ba2f1ce24c05e2cb16338e920fcf73731de0a`, 마지막 검증 운영 v2.9.190. 실제 최신 배포 여부는 배포 담당의 read-back을 확인할 것.
+- 최우선 목표/보고 연결 HANI-28+31: `hani/goal-report-ready-20261007@d9feed895185d3579907f952ae81897c6d0c2146` 탑승 대기. 시청 목표/예산 제안/월간·분기·연간 9지표/다음 기간 검토 DOM 연결 모두 결합. 이전 branch 두 개 중복 적용 금지. 단위31 및 UI/월간 저장 회귀 PASS, 운영 로그인·Cloud 미검증. [인수인계](handoffs/2026-10-07-goal-report-ready.md).
+- 모바일 HANI-33: `hani/navigation-state-20261007@9aa7e385c4aa0328dcfde01b9c4928cfa63c3ce3` 탑승 대기. 마지막 일반 화면/scroll/보고 board, 별도 UI key만 사용. PC/모바일 격리 PASS, Android/실제 로그인 미검증. [인수인계](handoffs/2026-10-07-navigation-state.md).
+- HANI-7 PPT/PDF 고유 기능: HANI 안정화 핫픽스 수행 탭에 최신 main 범위 이식/격리 검증/push 인계 배정, 진행 중. 운영 파일 등록 승인 없이 실제 write 금지. 예전 v181 branch 전체 통합 금지.
+- 입력 초안 HANI-34: 자산 업데이트실 담당 조사/설계 문서 준비, 보류. 계정 전환 즉시 복원 DOM 무효화 알림 계약을 먼저 정해야 함. 입력 저장 기능 완료 아님.
+- Cloud HANI-24/29/32 및 캐릭터 HANI-27: Notion 담당 보고는 탑승 대기. 실제 auth/Cloud·기기/운영 검증 미완료. HANI-27 최신 화보 기능 branch와 기존 열차 후보의 차이는 담당이 결정할 것.
+- HANI GROUP HANI-30: 담당 탭 작업 지속/승인 대기, 최신 프로필 미커밋 보고. 디자인 승인 완료·탑승으로 추정하지 않음.
+- Drive: [권한/파일/복구 설계](handoffs/2026-10-07-drive-vault-design.md)만 완료. OAuth 실계정 연결/업로드/복원 미구현. 공통 LLM 실행계층/정식 Guidance 승인 원장 등 장기 로드맵과 구분.
+- 개발·검증/push/Notion 확인까지. 버전/cache 증가·운영 PR/main 병합/배포는 Claude release train 담당. 데이터 보존/승인 게이트 유지.
+
+아래 2026-10-05 기록은 당시의 취합 이력이며, 현재 상태는 위 요약과 각 작업의 최신 인수인계/Notion 카드를 기준으로 확인한다.
+## 2026-10-05 취합 이력
 
 - 갱신일: 2026-10-05 KST / 전체 HANI 개발 탭 취합
 - 기준 main: c544592e427b44fd7c7c530213a790f50e92bce8 (PR181·182)
