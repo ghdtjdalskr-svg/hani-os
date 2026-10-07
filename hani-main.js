@@ -5895,6 +5895,7 @@ function monthlyReportBuildCurrent(){
   const input=$("monthlyReportMonth"),kpis=$("monthlyReportKpis"),domains=$("monthlyReportDomains");if(!input||!kpis||!domains)return;
   monthlyReportRenderBoard();
   input.value=monthlyReportMonth;
+  if(typeof window!=='undefined'&&window.HANI_GOAL_PROGRESS?.renderMonthly){const result=window.HANI_GOAL_PROGRESS.renderMonthly(monthlyReportMonth);if(result)return result!=='BLOCKED';}
   const report=monthlyReportSnapshot(monthlyReportMonth),investmentTotal=report.investmentCalc?.total,spend=report.ledgerSummary?.jispiT,bodyDelta=report.firstBody&&report.lastBody?n(report.lastBody.weight)-n(report.firstBody.weight):null,cultureCount=report.books.length+report.movies.length,avgRating=report.ratings.length?report.ratings.reduce((a,b)=>a+b,0)/report.ratings.length:null,
     stepAverage=report.stepDays.length?`${Math.round(report.totalSteps/report.stepDays.length).toLocaleString()}보`:"걸음 기록 없음",settlementLabel=`${report.ledgerPeriod.periodStart} ~ ${report.ledgerPeriod.periodEnd}`,accuracy=report.quizTotal?`${(report.quizCorrect/report.quizTotal*100).toFixed(1)}%`:"채점 수치 없음",
     largestLivingExpense=(report.ledger?.items||[]).filter(x=>["fixed","variable","special"].includes(x.category)&&n(x.amount)>0).sort((a,b)=>n(b.amount)-n(a.amount))[0]||null;
@@ -5947,10 +5948,11 @@ function monthlyReportPresentStored(row){
   for(const id of ["monthlyReportKpis","monthlyReportInsightCard","monthlyReportDomains"])$(id).hidden=false;
 }
 function monthlyReportGenerate(month){
+  if(typeof window!=='undefined'&&window.HANI_GOAL_PROGRESS&&!window.HANI_GOAL_PROGRESS.read({type:'month',year:Number(month.slice(0,4)),month:Number(month.slice(5,7))})){toast('원본 검증을 먼저 확인해 주세요.');return;}
   const current=monthlyReportKoreaDate().slice(0,7),report=monthlyReportSnapshot(month),previous=monthlyReportStored(month);
   if(!monthlyReportDate(`${month}-01`)||month>=current||!report.recordCount)return;
   if(previous&&!confirm(`${month} 보고서를 다시 생성할까요?\n기존 보고서 내용은 새 보고서로 교체됩니다. 원본 기록은 변경하지 않습니다.`))return;
-  monthlyReportBuildCurrent();
+  if(monthlyReportBuildCurrent()===false)return;
   const row={month,generatedAt:new Date().toISOString(),format:1,view:monthlyReportCaptureView()},before=state.monthlyReports;
   state.monthlyReports=[...(Array.isArray(before)?before:[]).filter(item=>item?.month!==month),row];
   const result=save();
