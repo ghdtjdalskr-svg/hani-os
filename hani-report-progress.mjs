@@ -43,7 +43,7 @@ function renderReportProgress(){
  }
  }finally{reportRendering=false;}
 }
-window.HANI_GOAL_PROGRESS=Object.freeze({render:()=>{render();renderReportProgress()},read:reportRead,renderReport:renderReportProgress,renderMonthly:renderCommonMonthlyReport});
+window.HANI_GOAL_PROGRESS=Object.freeze({...window.HANI_GOAL_PROGRESS,render:()=>{render();renderReportProgress()},read:reportRead,renderReport:renderReportProgress,renderMonthly:renderCommonMonthlyReport});
 renderReportProgress();
 function renderCommonMonthlyReport(month){
  const match=/^(\d{4})-(0[1-9]|1[0-2])$/.exec(month);if(!match)return false;
