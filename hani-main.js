@@ -991,7 +991,13 @@ let cloudSyncBusy=false;
 let cloudSyncPending=false;
 let cloudSyncTimer=null;
 let cloudPollTimer=null;
+// Memory-only copy of the last verified Cloud row; never persisted. Lets unchanged-remote saves skip the full-state download.
+let cloudVerifiedRemote=null;
 let cloudLifecycleBound=false;
+let cloudNetworkRetryPending=false;
+let cloudNetworkRetryAt=0;
+let cloudComparisonEpoch=0;
+let cloudSafetyBackupBusy=false;
 let cloudRecoveryMode=false;
 let cloudAuthSubscription=null;
 let loginGateUnlocked=false;
@@ -1281,6 +1287,7 @@ function bytesLabel(bytes){if(!Number.isFinite(bytes))return "-";if(bytes<1024)r
 function serializedBytes(value){try{return new TextEncoder().encode(value).length}catch(e){return value.length*2}}
 function formatDateTime(value){if(!value)return "-";const d=new Date(value);return Number.isNaN(d.getTime())?"-":d.toLocaleString("ko-KR",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"})}
 function updateStorageStatus(result=lastSaveResult){
+  cloudClearComparison();
   lastSaveResult=result||lastSaveResult;
   const badge=$("saveStateBadge"),label=$("lastSavedLabel");
   if(badge){
@@ -1321,8 +1328,10 @@ const GOAL_METRICS=[
   ['investment_total_krw','투자자산','KRW','point_target'],['body_weight_kg','체중','kg','point_target'],
   ['books_completed_count','완독','book','cumulative_total'],['steps_daily_average','일평균 걸음','steps/day','daily_average'],
   ['spending_jispi_krw','월 지출 예산','KRW','monthly_budget'],['quiz_accuracy_percent','퀴즈 정답률','%','rate'],
-  ['body_bmi','BMI','kg/m²','point_target'],['body_fat_percent','체지방률','%','point_target']
+  ['body_bmi','BMI','kg/m²','point_target'],['body_fat_percent','체지방률','%','point_target'],
+  ['media_watched_count','시청 작품 수','title','cumulative_total']
 ];
+const goalRegistryUnit=unit=>unit==='title'?'편':unit;
 const goalRegistryActions=label=>'<button class="btn" id="goalRegistryCancel" type="button">취소</button> <button class="btn" id="goalRegistryApprove" type="button">'+esc(label)+'</button>';
 let goalRegistryDraft=null;
 function goalRegistryBuildDeleteDraft(registry,index){
@@ -1354,6 +1363,7 @@ function bindGoalRegistryPreview(){
 function goalRegistryBuildDraft(registry,input,now,id){
   if(!Array.isArray(registry))throw Error('목표 이력 형식을 확인해 주세요.');
   const def=GOAL_METRICS.find(x=>x[0]===input.metric_id),value=Number(input.value),year=Number(input.year),quarter=Number(input.quarter);
+  if(input.metric_id==='media_watched_count'&&!Number.isInteger(value))throw Error('시청 작품 수 목표는 정수로 입력해 주세요.');
   const date=String(input.effective_from||''),clock=new Date(now),day=new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul'}).format(clock);
   if(!def||!Number.isFinite(value)||value<=0||(def[2]==='%'&&value>100)||(def[2]==='kg/m²'&&(value<10||value>60))||!Number.isInteger(year)||year<2000||year>2100||!['annual','quarter'].includes(input.goal_type))throw Error('목표 종류·기간·값을 확인해 주세요.');
   if(input.goal_type==='quarter'&&(!Number.isInteger(quarter)||quarter<1||quarter>4))throw Error('분기를 확인해 주세요.');
@@ -1370,14 +1380,43 @@ function goalRegistryBuildDraft(registry,input,now,id){
   const entry={goal_id:old?.goal_id||id,revision,metric_id:def[0],goal_type:input.goal_type,year,...(input.goal_type==='quarter'?{quarter}:{}),value,unit:def[2],semantics:def[3],effective_from:date,effective_to:periodEnd,created_at:clock.toISOString(),status:'active'};
   next.push(entry);return {before:JSON.stringify(registry),next,old:active[0]?registry.find(g=>g.goal_id===old.goal_id&&g.revision===old.revision):null,entry};
 }
+function goalBudgetReference(rows,month){
+  const validMonth=value=>typeof value==='string'&&/^\d{4}-(0[1-9]|1[0-2])$/.test(value);
+  if(!Array.isArray(rows)||!validMonth(month))return {status:'NO_REFERENCE'};
+  const eligible=rows.filter(row=>row&&validMonth(row.month)&&row.month<=month);
+  const latest=eligible.map(row=>row.month).sort().at(-1);
+  if(!latest)return {status:'NO_REFERENCE'};
+  const matches=eligible.filter(row=>row.month===latest);
+  if(matches.length!==1)return {status:'CONFLICT',month:latest};
+  const base=Number(matches[0].targetT);
+  return Number.isFinite(base)&&base>0?{status:'READY',month:latest,base}:{status:'INVALID_REFERENCE',month:latest};
+}
+function renderGoalBudgetSuggestion(){
+  const form=$('goalRegistryForm'),host=$('goalBudgetSuggestion');if(!form||!host)return;
+  const metric=form.elements.metric_id.value;
+  host.hidden=!['spending_jispi_krw','media_watched_count'].includes(metric);
+  if(host.hidden){host.textContent='';return;}
+  if(metric==='media_watched_count'){host.textContent='시청 완료로 저장된 작품 기록 1건을 1편으로 계산합니다. 시청일이 있어야 기간 실적에 반영됩니다.';return;}
+  const ref=goalBudgetReference(state.ledgerMonths,today().slice(0,7));
+  if(ref.status!=='READY'||!window.HANI_GOAL_PROGRESS?.suggestMonthlyBudget){host.textContent=ref.status==='CONFLICT'?'같은 결산월의 기준이 중복되어 제안할 수 없습니다. 가계부 목표를 확인해 주세요.':'제안할 가계부 월 목표가 없습니다. 목표값을 직접 입력해 주세요.';return;}
+  const proposal=window.HANI_GOAL_PROGRESS.suggestMonthlyBudget(ref.base);
+  host.innerHTML=`<p>${esc(ref.month)} 가계부 월 목표 ${won(ref.base)} + 여유 15% = <b>${won(proposal.value)}</b></p><button class="btn" type="button" id="goalBudgetUseSuggestion">제안값으로 입력</button><p class="sub">입력칸에만 반영합니다. 변경 Preview와 승인을 거쳐 저장합니다.</p>`;
+  $('goalBudgetUseSuggestion').onclick=()=>{form.elements.value.value=proposal.value;goalRegistryDraft=null;$('goalRegistryPreview').textContent='제안값을 입력했습니다. 변경 Preview를 확인해 주세요.';};
+}
 function renderGoalRegistry(){
   window.HANI_GOAL_PROGRESS?.render();
   const host=$('goalRegistryContent');if(!host)return;
   const registry=state.goalRegistry===undefined?[]:state.goalRegistry;
   if(!Array.isArray(registry)){host.textContent='목표 이력 형식을 확인해 주세요. 기존 데이터는 변경하지 않습니다.';return;}
-  host.innerHTML='<p class="sub">분기·연간 목표를 적용일부터 기록합니다. 기존 목표 설정이나 과거 기록은 바꾸지 않습니다.</p><form id="goalRegistryForm"><div class="form-grid"><label class="field">지표<select name="metric_id">'+GOAL_METRICS.map(d=>`<option value="${d[0]}">${d[1]} · ${d[2]}</option>`).join('')+'</select></label><label class="field">기간<select name="goal_type"><option value="quarter">분기</option><option value="annual">연간</option></select></label><label class="field">연도<input name="year" type="number" min="2000" max="2100" value="'+today().slice(0,4)+'"></label><label class="field">분기<select name="quarter">'+[1,2,3,4].map(q=>`<option value="${q}" ${q===Math.ceil(Number(today().slice(5,7))/3)?'selected':''}>${q}분기</option>`).join('')+'</select></label><label class="field">목표값<input name="value" type="number" min="0" step="any" required></label><label class="field">적용일<input name="effective_from" type="date" value="'+today()+'" min="'+today()+'" required></label></div><button class="btn" type="submit">변경 Preview</button></form><div id="goalRegistryPreview" aria-live="polite"></div><details><summary>목표 변경 이력 · '+registry.length+'건</summary>'+registry.slice().reverse().map(g=>`<p>${esc(GOAL_METRICS.find(d=>d[0]===g.metric_id)?.[1]||g.metric_id)} · ${esc(g.year)} ${g.goal_type==='quarter'?esc(g.quarter)+'분기':'연간'} · ${esc(g.value)} ${esc(g.unit)} · ${esc(g.effective_from)}~${esc(g.effective_to)} · revision ${esc(g.revision)} · ${esc(g.status)}</p>`).join('')+'</details>';
+  host.innerHTML='<p class="sub">분기·연간 목표를 적용일부터 기록합니다. 기존 목표 설정이나 과거 기록은 바꾸지 않습니다.</p><form id="goalRegistryForm"><div class="form-grid"><label class="field">지표<select name="metric_id">'+GOAL_METRICS.map(d=>`<option value="${d[0]}">${d[1]} · ${goalRegistryUnit(d[2])}</option>`).join('')+'</select></label><label class="field">기간<select name="goal_type"><option value="quarter">분기</option><option value="annual">연간</option></select></label><label class="field">연도<input name="year" type="number" min="2000" max="2100" value="'+today().slice(0,4)+'"></label><label class="field">분기<select name="quarter">'+[1,2,3,4].map(q=>`<option value="${q}" ${q===Math.ceil(Number(today().slice(5,7))/3)?'selected':''}>${q}분기</option>`).join('')+'</select></label><label class="field">목표값<input name="value" type="number" min="0" step="any" required></label><label class="field">적용일<input name="effective_from" type="date" value="'+today()+'" min="'+today()+'" required></label></div><button class="btn" type="submit">변경 Preview</button></form><div id="goalRegistryPreview" aria-live="polite"></div><details><summary>목표 변경 이력 · '+registry.length+'건</summary>'+registry.slice().reverse().map(g=>`<p>${esc(GOAL_METRICS.find(d=>d[0]===g.metric_id)?.[1]||g.metric_id)} · ${esc(g.year)} ${g.goal_type==='quarter'?esc(g.quarter)+'분기':'연간'} · ${esc(g.value)} ${esc(goalRegistryUnit(g.unit))} · ${esc(g.effective_from)}~${esc(g.effective_to)} · revision ${esc(g.revision)} · ${esc(g.status)}</p>`).join('')+'</details>';
   // A future period's goal starts no earlier than the period start (e.g. 2027 Q1 -> 2027-01-01).
+  const suggestion=document.createElement('div');suggestion.id='goalBudgetSuggestion';suggestion.setAttribute('aria-live','polite');suggestion.hidden=true;
+  $('goalRegistryForm').append(suggestion);
   $('goalRegistryForm').onchange=e=>{
+    goalRegistryDraft=null;$('goalRegistryPreview').textContent='';
+    if(e.target.name==='metric_id'){
+      e.currentTarget.elements.value.step=e.target.value==='media_watched_count'?'1':'any';renderGoalBudgetSuggestion();return;
+    }
     if(!['year','quarter','goal_type'].includes(e.target.name))return;
     const f=e.currentTarget.elements,y=Number(f.year.value),q=Number(f.quarter.value);
     const start=`${y}-${f.goal_type.value==='quarter'&&q>=1&&q<=4?String((q-1)*3+1).padStart(2,'0'):'01'}-01`;
@@ -1391,7 +1430,7 @@ function renderGoalRegistry(){
       try{
         goalRegistryDraft=goalRegistryBuildDeleteDraft(registry,index);
         const g=goalRegistryDraft.entry,box=$('goalRegistryPreview');
-        box.innerHTML=`<div class="note"><b>목표 삭제 Preview</b><p>${esc(GOAL_METRICS.find(x=>x[0]===g.metric_id)?.[1]||g.metric_id)} · ${esc(g.year)} ${g.goal_type==='quarter'?esc(g.quarter)+'분기':'연간'} · ${esc(g.value)} ${esc(g.unit)} · revision ${esc(g.revision)}</p><p>이 목표 이력 한 건만 삭제합니다. 실제 체중·생활 기록과 다른 목표는 유지합니다. 이전 목표를 다시 활성화하지 않습니다.</p>${goalRegistryActions('승인하고 삭제')}</div>`;
+        box.innerHTML=`<div class="note"><b>목표 삭제 Preview</b><p>${esc(GOAL_METRICS.find(x=>x[0]===g.metric_id)?.[1]||g.metric_id)} · ${esc(g.year)} ${g.goal_type==='quarter'?esc(g.quarter)+'분기':'연간'} · ${esc(g.value)} ${esc(goalRegistryUnit(g.unit))} · revision ${esc(g.revision)}</p><p>이 목표 이력 한 건만 삭제합니다. 실제 체중·생활 기록과 다른 목표는 유지합니다. 이전 목표를 다시 활성화하지 않습니다.</p>${goalRegistryActions('승인하고 삭제')}</div>`;
         bindGoalRegistryPreview();
       }catch(error){goalRegistryDraft=null;$('goalRegistryPreview').textContent=error.message;}
     };
@@ -1402,7 +1441,7 @@ function renderGoalRegistry(){
     try{
       goalRegistryDraft=goalRegistryBuildDraft(registry,Object.fromEntries(new FormData(e.currentTarget)),new Date().toISOString(),uid());
       const d=goalRegistryDraft,box=$('goalRegistryPreview');
-      box.innerHTML=`<div class="note"><b>${esc(GOAL_METRICS.find(x=>x[0]===d.entry.metric_id)[1])}</b><p>기존 ${d.old?esc(d.old.value)+' '+esc(d.old.unit):'미설정'} → 변경 ${esc(d.entry.value)} ${esc(d.entry.unit)}</p><p>${esc(d.entry.effective_from)}부터 적용 · 과거 실적과 기존 목표 설정은 유지</p>${goalRegistryActions('승인하고 저장')}</div>`;
+      box.innerHTML=`<div class="note"><b>${esc(GOAL_METRICS.find(x=>x[0]===d.entry.metric_id)[1])}</b><p>기존 ${d.old?esc(d.old.value)+' '+esc(goalRegistryUnit(d.old.unit)):'미설정'} → 변경 ${esc(d.entry.value)} ${esc(goalRegistryUnit(d.entry.unit))}</p><p>${esc(d.entry.effective_from)}부터 적용 · 과거 실적과 기존 목표 설정은 유지</p>${goalRegistryActions('승인하고 저장')}</div>`;
       bindGoalRegistryPreview();
     }catch(error){
       goalRegistryDraft=null;$('goalRegistryPreview').textContent=error.message;
@@ -1472,6 +1511,7 @@ const pageMeta={
  monthlyReport:["라이프 리포트","한 달의 흐름을 돌아보고, 분기·연간 발표로 이어갈 보고 공간입니다.","team"],
  policy:["사내 규칙","AI TEAM이 공통으로 참고하는 운영 원칙과 학습 규정을 관리합니다.","team"],
  aiTeam:["AI 팀","역할별 담당 AI와 서비스 바로가기를 확인합니다.","team"],
+ characterArchive:["M9 + MIR","HANI GROUP CHARACTER ARCHIVE · 각자의 방식으로 함께하는 멤버들.","team"],
  aura:["HANI AURA","나의 색과 계절로 일상의 화면을 꾸밉니다.","team"],
  settings:["설정 / 데이터","캘린더, 백업, 복원과 초기화를 관리합니다.","work"],
  shopping:["쇼핑","v2.2 호환 페이지입니다.","life"]
@@ -1716,8 +1756,33 @@ function setBanner(key,page="home"){
   if($("aiQuote"))$("aiQuote").innerHTML=`<span>${esc(q[0])} 한마디</span><b>“${esc(q[1])}”</b>`;
   /* v2.8.2: decorative scene removed; character speech is the visual focus */
 }
+// UI position only. Never put forms, records, credentials or Cloud state here.
+const NAVIGATION_KEY='hani_os_navigation_v1';
+if('scrollRestoration' in history)history.scrollRestoration='manual';
+const NAVIGATION_VIEWS=new Set(['home','reading','movie','monthlyReport','diet','exercise','diary','calendar','university','wishlist','travel']);
+let navigationCurrent='',navigationBooted=false,navigationRestored=false,navigationTimer=0;
+function navigationRead(){
+  try{const row=JSON.parse(localStorage.getItem(NAVIGATION_KEY));return row?.version===1&&NAVIGATION_VIEWS.has(row.view)&&Number.isFinite(row.y)&&row.y>=0&&row.y<=1000000?{version:1,view:row.view,y:row.y}:null}catch{return null}
+}
+function navigationPersist(view,y){
+  if(!NAVIGATION_VIEWS.has(view)||!Number.isFinite(y)||y<0)return;
+  try{localStorage.setItem(NAVIGATION_KEY,JSON.stringify({version:1,view,y:Math.min(1000000,Math.round(y))}))}catch{/* Navigation remains usable when browser storage is unavailable. */}
+}
+function navigationInitialView(hash){return hash||navigationRead()?.view||'home'}
+function navigationRestore(){
+  const row=navigationRead();navigationBooted=true;
+  if(!loginGateUnlocked||navigationRestored)return;
+  navigationRestored=true;
+  const view=document.body.dataset.view,target=row?.view===view?row.y:0;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{if(view===document.body.dataset.view)window.scrollTo({top:Math.min(target,Math.max(0,document.documentElement.scrollHeight-innerHeight)),left:0,behavior:'instant'})}));
+}
+window.addEventListener('scroll',()=>{clearTimeout(navigationTimer);if(!navigationBooted||!loginGateUnlocked)return;navigationTimer=setTimeout(()=>{if(loginGateUnlocked)navigationPersist(navigationCurrent,window.scrollY)},150)},{passive:true});
+window.addEventListener('pagehide',()=>{if(navigationBooted&&loginGateUnlocked)navigationPersist(navigationCurrent,window.scrollY)});
+window.addEventListener('load',navigationRestore,{once:true});
 function showView(id){
   if(!$(id))id="home";
+  clearTimeout(navigationTimer);navigationCurrent=NAVIGATION_VIEWS.has(id)?id:'';
+  if(navigationBooted&&loginGateUnlocked)navigationPersist(navigationCurrent,0);
   document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));$(id).classList.add("active");
 
 document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===id));
@@ -1737,6 +1802,7 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
 }
 
 const QUICK_JUMP_ITEMS=[
+  ["characterArchive","M9 + MIR Character Archive","HANI GROUP 캐릭터 프로필 Canon 관계 직급 연차 미르"],
   ["aura","HANI AURA","화면 꾸미기 색상 계절 테마 appearance finish season"],
   ["home","대시보드","홈 오늘 요약"],["investment","홍 스트리트","투자 주식 ETF 월간 기록"],["newsroom","뉴스룸","주식 투자 뉴스 관심종목 3시간 흐름"],["asset","자산","통합 자산 계좌"],["ledger","가계부","소비 결산 리뷰"],
   ["diet","계체량 측정","다이어트 체중 건강"],["exercise","헬스클럽","운동 걸음 근력"],["reading","성민의 서재","독서 서재 책 완독"],["study","공부","일본어 AI 학습"],
@@ -1995,6 +2061,7 @@ function unlockLoginGate(){
   app?.classList.remove("login-locked");
   app?.setAttribute("aria-hidden","false");
   gate?.classList.add("is-hidden");
+  navigationRestore();
 }
 function loginGateConfig(email=""){
   const cfg=cloudConfig(),nextEmail=String(email||cfg.email||"").trim();
@@ -3744,6 +3811,7 @@ function cloudConfig(){
 }
 function cloudMeta(){return cloudLoadJson(CLOUD_META_KEY,{})}
 function cloudSetRuntime(status,message,tone="warn",extra={}){
+  cloudClearComparison();
   cloudRuntime={...cloudRuntime,...extra,status,message,tone};
   renderCloudPanel();
   dataHubAuditSource();
@@ -4240,7 +4308,8 @@ async function cloudReadRow(){
   return data?.[0]||null;
 }
 function cloudStopAutoSync(message="",tone="warn"){
-  cloudAutoSyncReady=false;
+  cloudAutoSyncReady=false;cloudVerifiedRemote=null;
+  cloudNetworkRetryPending=false;
   if(cloudPollTimer){clearInterval(cloudPollTimer);cloudPollTimer=null}
   if(message)cloudSetRuntime("동기화 중지",message,tone,{sync:"STOP"});
   else renderCloudPanel();
@@ -4283,6 +4352,7 @@ async function cloudApplyRemoteRow(remote,remoteHash,{announce=false}={}){
     const rawRemoteHash=remoteHash||await cloudStateHash(cloudComparableState(remote.state));
     const mediaPreserved=effectiveHash!==rawRemoteHash;
     const meta=cloudSaveSyncMeta(remote,mediaPreserved?rawRemoteHash:effectiveHash,{lastPullAt:new Date().toISOString(),verifiedAt:new Date().toISOString(),appliedRevision:remote.revision});
+    cloudRememberVerifiedRemote(remote,cloudComparableState(remote.state),rawRemoteHash);
     cloudSetRuntime(mediaPreserved?"동기화 완료 · 미디어 보호":"동기화 완료",mediaPreserved?`Cloud revision ${remote.revision}을 반영했고 Local의 기존 표지/포스터를 보호했습니다. 보호된 미디어는 다음 안전 업로드에서 Cloud에 보완됩니다.`:`Cloud revision ${remote.revision}을 이 기기에 반영했습니다.`,"ok",{revision:remote.revision,updatedAt:remote.updated_at,verifiedAt:meta.verifiedAt,device:remote.device||"",sync:"ON",localSummary:cloudSummaryText(state),remoteSummary:cloudSummaryText(remote.state)});
     if(announce)toast("Cloud의 최신 변경을 이 기기에 반영했습니다.");
     return true;
@@ -4301,22 +4371,23 @@ async function cloudPushLocalRow(remote,localState,localHash,{allowImport=false,
   const outgoingHash=await cloudStateHash(outgoing);
   assertCloudSourceReady({allowImport,expectedHold});
   if(!cloudSame(localState,cloudComparableState(state)))throw new Error("Cloud 요청 중 Local이 변경되어 반영을 중단했습니다.");
-  const {data,error}=await cloudClient.from("hani_state").update({state:structuredClone(outgoing),device:cloudDeviceLabel()}).eq("user_id",cloudUser.id).eq("revision",expectedRevision).select("state,revision,updated_at,device");
+  // Egress: the ~2MB state is not echoed back; the revision lock plus the +1 check verify the write.
+  const {data,error}=await cloudClient.from("hani_state").update({state:structuredClone(outgoing),device:cloudDeviceLabel()}).eq("user_id",cloudUser.id).eq("revision",expectedRevision).select("revision,updated_at,device");
   if(error)throw error;
   const written=data?.[0];
-  if(!written){const latest=await cloudReadRow().catch(()=>null),latestRev=latest?.revision??"?";throw new Error(`Cloud revision이 ${expectedRevision}에서 ${latestRev}(으)로 바뀌었습니다. 다른 기기의 변경을 덮지 않도록 중단했습니다.`)}
+  if(!written){const latest=await cloudFetchMeta({silent:true}),latestRev=latest?.revision??"?";throw new Error(`Cloud revision이 ${expectedRevision}에서 ${latestRev}(으)로 바뀌었습니다. 다른 기기의 변경을 덮지 않도록 중단했습니다.`)}
   const writtenRevision=Number(written.revision);
   if(!Number.isFinite(writtenRevision)||writtenRevision!==expectedRevision+1)throw new Error(`Cloud revision 증가 검증 실패: ${expectedRevision} → ${written.revision}. DB revision 트리거를 확인해야 합니다.`);
-  const returnedHash=await cloudStateHash(written.state);
-  if(returnedHash!==outgoingHash)throw new Error("Cloud 저장 후 반환된 state가 Local과 일치하지 않습니다.");
   assertCloudSourceReady({allowImport,expectedHold});
   if(!cloudSame(localState,cloudComparableState(state)))throw new Error("Cloud 응답을 기다리는 동안 Local이 변경되었습니다. 새 Local 기록을 유지하며 자동 반영을 중지합니다.");
   if(!cloudSame(outgoing,localState)){const serialized=JSON.stringify(outgoing);writeProtectedState(serialized);if(localStorage.getItem(STORAGE_KEY)!==serialized)throw new Error("Media Guard 병합 후 Local read-back 검증에 실패했습니다.");state=outgoing;renderAll()}
   const now=new Date().toISOString(),meta=cloudSaveSyncMeta(written,outgoingHash,{lastPushAt:now,verifiedAt:now,appliedRevision:writtenRevision});
-  cloudSetRuntime("동기화 완료",`Local 변경을 Cloud revision ${writtenRevision}으로 반영했습니다.`,"ok",{revision:writtenRevision,updatedAt:written.updated_at,verifiedAt:meta.verifiedAt,device:written.device||"",sync:"ON",localSummary:cloudSummaryText(outgoing),remoteSummary:cloudSummaryText(written.state)});
-  return written;
+  cloudRememberVerifiedRemote(written,outgoing,outgoingHash);
+  cloudSetRuntime("동기화 완료",`Local 변경을 Cloud revision ${writtenRevision}으로 반영했습니다.`,"ok",{revision:writtenRevision,updatedAt:written.updated_at,verifiedAt:meta.verifiedAt,device:written.device||"",sync:"ON",localSummary:cloudSummaryText(outgoing),remoteSummary:cloudSummaryText(outgoing)});
+  return {...written,state:outgoing};
 }
 function cloudSyncDecision({hasBaseline,localMeaningful,remoteMeaningful,localHash,remoteHash,baselineHash,appliedRevision,remoteRevision}){
+  if(remoteMeaningful&&(!Number.isSafeInteger(remoteRevision)||remoteRevision<0))return {action:"stop",reason:"Cloud revision을 확인할 수 없어 자동 반영을 중단했습니다."};
   if(!remoteMeaningful){
     if(!localMeaningful)return {action:"idle-empty",reason:"Local과 Cloud 모두 비어 있습니다."};
     return {action:"stop",reason:"Cloud 실데이터가 비어 있습니다. Local을 자동 업로드하지 않습니다."};
@@ -4358,30 +4429,70 @@ function cloudSyncSelfTest(){
     [cloudShouldFetchFullState("poll",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),false],
     [cloudShouldFetchFullState("focus",{revision:8},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),true],
     [cloudShouldFetchFullState("visible",null,{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),true],
-    [cloudShouldFetchFullState("local-save",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),true]
+    [cloudShouldFetchFullState("local-save",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),true],
+    [cloudShouldFetchFullState("view-home",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),false],
+    [cloudShouldFetchFullState("view-asset",{revision:8},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),true],
+    [cloudCanUseVerifiedRemote("local-save",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7},{userId:"u",revision:7,hash:B},"u"),true],
+    [cloudCanUseVerifiedRemote("local-save",{revision:8},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7},{userId:"u",revision:7,hash:B},"u"),false],
+    [cloudCanUseVerifiedRemote("local-save",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7},{userId:"u",revision:7,hash:R},"u"),false],
+    [cloudCanUseVerifiedRemote("local-save",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7},{userId:"other",revision:7,hash:B},"u"),false],
+    [cloudCanUseVerifiedRemote("manual",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7},{userId:"u",revision:7,hash:B},"u"),false],
+    [cloudCanUseVerifiedRemote("local-save",null,{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7},{userId:"u",revision:7,hash:B},"u"),false],
+    [cloudCanUseVerifiedRemote("local-save",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7},null,"u"),false]
   ];
   return cases.every(([got,want])=>got===want);
 }
 function cloudShouldFetchFullState(reason,remoteMeta,localMeta=cloudMeta()){
-  // Frequent lifecycle checks stay metadata-only while the verified revision is unchanged.
-  if(!["poll","focus","visible"].includes(reason))return true;
-  const appliedRevision=Number(localMeta?.appliedRevision),remoteRevision=Number(remoteMeta?.revision);
+  // Frequent lifecycle checks (including data-heavy view re-checks) stay metadata-only while the verified revision is unchanged.
+  if(!cloudIsLifecycleCheck(reason))return true;
+  const appliedRevision=cloudRevisionNumber(localMeta?.appliedRevision),remoteRevision=cloudRevisionNumber(remoteMeta?.revision);
   const hasVerifiedBaseline=localMeta?.syncEngine===CLOUD_SYNC_ENGINE&&localMeta?.hashSchema===CLOUD_HASH_SCHEMA&&!!localMeta?.lastSyncedHash&&Number.isFinite(appliedRevision);
   if(!hasVerifiedBaseline||!remoteMeta||!Number.isFinite(remoteRevision))return true;
   return remoteRevision!==appliedRevision;
+}
+function cloudIsLifecycleCheck(reason){return ["poll","focus","visible"].includes(reason)||/^view-/.test(String(reason||""))}
+function cloudCanUseVerifiedRemote(reason,remoteMeta,localMeta,cache,userId){
+  // Local saves reuse the verified in-memory row only while Cloud still reports the same revision.
+  if(!["local-save","queued"].includes(reason))return false;
+  if(cloudShouldFetchFullState("poll",remoteMeta,localMeta))return false;
+  return !!cache&&!!userId&&cache.userId===userId&&Number(cache.revision)===Number(localMeta.appliedRevision)&&cache.hash===localMeta.lastSyncedHash;
+}
+function cloudRememberVerifiedRemote(row,comparableState,hash){
+  const revision=Number(row?.revision);
+  cloudVerifiedRemote=cloudUser?.id&&Number.isFinite(revision)&&hash?{userId:cloudUser.id,revision,hash,state:structuredClone(comparableState)}:null;
+}
+function cloudRevisionNumber(value){
+  if(value===null||value===undefined||value===""||typeof value==="boolean")return NaN;
+  const revision=Number(value);return Number.isSafeInteger(revision)&&revision>=0?revision:NaN;
+}
+function cloudIsNetworkFailure(error){
+  return navigator.onLine===false||/failed to fetch|fetch failed|networkerror|network request failed|load failed|err_network|err_internet_disconnected/i.test(String(error?.message||error||""));
+}
+function cloudRetryAfterNetwork(reason){
+  if(!cloudNetworkRetryPending||!cloudUser||cloudRecoveryMode||loadRecovery.active||importSyncHold||cloudSyncBusy||navigator.onLine===false)return;
+  if(Date.now()-cloudNetworkRetryAt<5000)return;
+  cloudNetworkRetryPending=false;cloudNetworkRetryAt=Date.now();
+  void cloudSyncCycle("network-"+reason);
 }
 async function cloudSyncCycle(reason="manual"){
   if(loadRecovery.active||importSyncHold){cloudStopAutoSync(loadRecovery.active?lastLoadError:"복원한 백업은 이 기기에만 보관 중입니다. Cloud 반영은 별도 확인이 필요합니다.","warn");return}
   if(!cloudClient||!cloudUser)return;
   if(cloudSyncBusy){cloudSyncPending=true;return}
   cloudSyncBusy=true;
+  cloudNetworkRetryPending=false;
   try{
     if(!cloudSyncSelfTest())throw new Error("Sync Core 자체 검증에 실패해 자동 동기화를 시작하지 않았습니다.");
-    if(["poll","focus","visible"].includes(reason)){
-      const remoteMeta=await cloudFetchMeta();
-      if(!cloudShouldFetchFullState(reason,remoteMeta,cloudMeta()))return;
+    if(cloudIsLifecycleCheck(reason)){
+      const remoteMeta=await cloudFetchMeta(),meta=cloudMeta();
+      const localClean=!/^view-/.test(reason)||(await cloudStateHash(cloudComparableState(state)))===String(meta.lastSyncedHash||"");
+      if(localClean&&!cloudShouldFetchFullState(reason,remoteMeta,meta))return;
     }
-    const remote=await cloudReadRow();
+    let remote=null;
+    if(["local-save","queued"].includes(reason)){
+      const remoteMeta=await cloudFetchMeta(),cache=cloudVerifiedRemote;
+      if(cloudCanUseVerifiedRemote(reason,remoteMeta,cloudMeta(),cache,cloudUser?.id))remote={state:structuredClone(cache.state),revision:remoteMeta.revision,updated_at:remoteMeta.updated_at,device:remoteMeta.device};
+    }
+    if(!remote)remote=await cloudReadRow();
     assertCloudSourceReady();
     const localState=cloudComparableState(state);
     const localMeaningful=cloudHasMeaningfulLocalData(localState);
@@ -4394,8 +4505,8 @@ async function cloudSyncCycle(reason="manual"){
     const [localHash,remoteHash]=await Promise.all([cloudStateHash(localState),cloudStateHash(remoteState)]);
     const meta=cloudMeta(),remoteMeaningful=cloudHasMeaningfulLocalData(remoteState);
     const baselineHash=String(meta.lastSyncedHash||"");
-    const appliedRevision=Number(meta.appliedRevision);
-    const remoteRevision=Number(remote.revision);
+    const appliedRevision=cloudRevisionNumber(meta.appliedRevision);
+    const remoteRevision=cloudRevisionNumber(remote.revision);
     const hasBaseline=meta.syncEngine===CLOUD_SYNC_ENGINE&&meta.hashSchema===CLOUD_HASH_SCHEMA&&!!baselineHash&&Number.isFinite(appliedRevision);
     cloudRuntime={...cloudRuntime,revision:remote.revision,updatedAt:remote.updated_at,device:remote.device||"",localSummary:cloudSummaryText(localState),remoteSummary:cloudSummaryText(remoteState)};
     const decision=cloudSyncDecision({hasBaseline,localMeaningful,remoteMeaningful,localHash,remoteHash,baselineHash,appliedRevision:Number.isFinite(appliedRevision)?appliedRevision:-1,remoteRevision:Number.isFinite(remoteRevision)?remoteRevision:-1});
@@ -4404,6 +4515,7 @@ async function cloudSyncCycle(reason="manual"){
     }
     if(decision.action==="establish"){
       const now=new Date().toISOString(),m=cloudSaveSyncMeta(remote,remoteHash,{verifiedAt:now,appliedRevision:remote.revision});
+      cloudRememberVerifiedRemote(remote,remoteState,remoteHash);
       cloudAutoSyncReady=true;cloudSetRuntime("동기화 정상",`Local과 Cloud 기준을 확인했습니다. revision ${remote.revision}.`,"ok",{revision:remote.revision,updatedAt:remote.updated_at,verifiedAt:m.verifiedAt,device:remote.device||"",sync:"ON",localSummary:cloudSummaryText(state),remoteSummary:cloudSummaryText(remoteState)});cloudStartPolling();return;
     }
     if(decision.action==="pull"){
@@ -4418,6 +4530,10 @@ async function cloudSyncCycle(reason="manual"){
     cloudAutoSyncReady=false;cloudStopAutoSync(decision.reason||"자동 동기화를 안전하게 진행할 수 없어 중단했습니다.","warn");
   }catch(e){
     console.error("Cloud sync",reason,e);cloudAutoSyncReady=false;cloudStopAutoSync(e?.message||"Cloud 동기화 중 오류가 발생했습니다.","error");
+    if(cloudIsNetworkFailure(e)){
+      cloudNetworkRetryPending=true;
+      cloudSetRuntime("연결 확인 필요","이 기기의 기록은 그대로 보관 중입니다. 연결이 돌아오면 원본과 Cloud 기준을 다시 확인합니다. 직접 다시 확인하려면 ‘지금 동기화’를 눌러 주세요.","warn",{sync:"OFFLINE"});
+    }
   }finally{
     cloudSyncBusy=false;if(cloudSyncPending){cloudSyncPending=false;setTimeout(()=>cloudSyncCycle("queued"),120)}
   }
@@ -4426,8 +4542,9 @@ async function cloudSyncCycle(reason="manual"){
 function cloudBindLifecycle(){
   if(cloudLifecycleBound)return;
   cloudLifecycleBound=true;
-  window.addEventListener("focus",()=>{if(cloudUser&&cloudAutoSyncReady)cloudSyncCycle("focus")});
-  document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&cloudUser&&cloudAutoSyncReady)cloudSyncCycle("visible")});
+  window.addEventListener("focus",()=>{if(cloudUser&&cloudAutoSyncReady)cloudSyncCycle("focus");else cloudRetryAfterNetwork("focus")});
+  document.addEventListener("visibilitychange",()=>{if(document.visibilityState!=="visible")return;if(cloudUser&&cloudAutoSyncReady)cloudSyncCycle("visible");else cloudRetryAfterNetwork("visible")});
+  window.addEventListener("online",()=>cloudRetryAfterNetwork("online"));
 }
 
 function cloudCreateOwnerBindingGate({getContext, getSource, verifyUser, readOwnedSource, comparable, onInvalidate = () => {}}) {
@@ -4684,8 +4801,15 @@ function renderCloudPanel(){
   }
   if(head)head.textContent=cloudUser?(cloudAutoSyncReady?"CLOUD · SYNC":"CLOUD · LOGIN"):"CLOUD · READY";
   if(msg)msg.textContent=cloudRuntime.message||"";
+  const differencePanel=$("cloudDifferencePanel");
+  if(differencePanel?.dataset.owner&&differencePanel.dataset.owner!==cloudUser?.id){
+    cloudComparisonEpoch++;differencePanel.hidden=true;delete differencePanel.dataset.owner;
+    $("cloudDifferenceSummary")?.replaceChildren();$("cloudDifferenceList")?.replaceChildren();
+  }
   const conflictAction=$("cloudConflictAction"),isConflict=cloudRuntime.sync==="STOP"&&/Local과 Cloud가 모두 변경|양쪽.*변경/.test(cloudRuntime.message||"");
-  if(conflictAction){conflictAction.hidden=!isConflict;conflictAction.onclick=()=>{$("cloudAdvanced")?.setAttribute("open","");$("cloudCompare")?.scrollIntoView({behavior:"smooth",block:"center"})}}
+  if(conflictAction){conflictAction.hidden=!cloudUser||(!isConflict&&!["STOP","CHECK","WAIT"].includes(cloudRuntime.sync));conflictAction.onclick=cloudCompare}
+  const restoreGuide=$("cloudRestoreGuide");
+  if(restoreGuide)restoreGuide.textContent=!cloudUser?"로그인 후 Cloud 기록을 확인할 수 있습니다. 이 기기의 기록은 유지됩니다.":cloudHasMeaningfulLocalData(state)?"이 기기에 기록이 있습니다. 차이를 확인한 뒤 어느 쪽을 적용할지 선택해 주세요. 복원 전에는 현재 원본을 안전 백업합니다.":"새 기기에서는 로그인 후 Cloud 기록을 안전하게 가져옵니다. 복원이 멈췄다면 ‘차이 확인’으로 원인을 확인해 주세요.";
   if(grid){
     const meta=cloudMeta();
     const rows=[
@@ -4946,31 +5070,59 @@ async function cloudRestoreToLocal(){
   }catch(e){console.error("Cloud restore",e);cloudStopAutoSync(e?.message||"Cloud → Local 복원에 실패했습니다.","error");alert("Cloud → Local 복원에 실패했습니다.\n"+(e?.message||"오류를 확인해 주세요.")+"\n\n기존 Local은 유지됩니다.")}
   finally{cloudSyncBusy=false}
 }
+function cloudClearComparison(){
+  cloudComparisonEpoch++;
+  const panel=$("cloudDifferencePanel");if(panel){panel.hidden=true;delete panel.dataset.owner}
+  $("cloudDifferenceSummary")?.replaceChildren();$("cloudDifferenceList")?.replaceChildren();
+}
 async function cloudCompare(){
   if(!cloudClient||!cloudUser)return alert("먼저 Cloud 로그인을 완료해 주세요.");
+  const epoch=++cloudComparisonEpoch,owner=cloudUser.id;
+  const panel=$("cloudDifferencePanel"),summary=$("cloudDifferenceSummary"),list=$("cloudDifferenceList");
+  if(panel){panel.hidden=false;panel.dataset.owner=owner}
+  if(summary)summary.textContent="Cloud 원본을 읽어 비교 중입니다. 기록은 변경하지 않습니다.";
+  if(list)list.replaceChildren();
   try{
-    cloudSetRuntime("비교 중","Cloud 상태를 읽어 현재 로컬 상태와 비교하고 있습니다.","warn");
-    const {data,error}=await cloudClient.from("hani_state").select("state,revision,updated_at,device").eq("user_id",cloudUser.id).limit(1);
+    const {data,error}=await cloudClient.from("hani_state").select("state,revision,updated_at,device").eq("user_id",owner).limit(1);
     if(error)throw error;
     const remote=data?.[0];
+    if(epoch!==cloudComparisonEpoch||cloudUser?.id!==owner)return;
     if(!remote)throw new Error("Cloud에 저장된 HANI state가 없습니다.");
     const localComparable=cloudComparableState(state),remoteComparable=cloudComparableState(remote.state);
     const [localHash,remoteHash]=await Promise.all([cloudStateHash(localComparable),cloudStateHash(remoteComparable)]);
+    if(epoch!==cloudComparisonEpoch||cloudUser?.id!==owner)return;
+    if(!cloudSame(localComparable,cloudComparableState(state)))throw new Error("비교 중 이 기기의 기록이 변경됐습니다. 다시 확인해 주세요.");
     const same=localHash===remoteHash;
-    const checkedAt=new Date().toISOString();
-    if(same){
-      const meta=cloudSaveSyncMeta(remote,remoteHash,{verifiedAt:checkedAt});
-      cloudAutoSyncReady=true;
-      cloudStartPolling();
-      cloudSetRuntime("동일",`Local과 Cloud 실데이터가 동일합니다. revision ${remote.revision}. 자동 동기화 기준을 갱신했습니다.`,"ok",{revision:remote.revision,updatedAt:remote.updated_at,verifiedAt:meta.verifiedAt,device:remote.device||"",sync:"ON"});
-    }else{
-      cloudSetRuntime("차이 발견",`Local과 Cloud에 차이가 있습니다. 자동으로 덮어쓰지 않습니다. revision ${remote.revision}.`,"warn",{revision:remote.revision,updatedAt:remote.updated_at,verifiedAt:cloudRuntime.verifiedAt,device:remote.device||"",sync:"CHECK"});
+    const meta=cloudMeta(),appliedRevision=cloudRevisionNumber(meta.appliedRevision);
+    const decision=cloudSyncDecision({hasBaseline:meta.syncEngine===CLOUD_SYNC_ENGINE&&meta.hashSchema===CLOUD_HASH_SCHEMA&&!!meta.lastSyncedHash&&Number.isFinite(appliedRevision),localMeaningful:cloudHasMeaningfulLocalData(localComparable),remoteMeaningful:cloudHasMeaningfulLocalData(remoteComparable),localHash,remoteHash,baselineHash:meta.lastSyncedHash||"",appliedRevision,remoteRevision:cloudRevisionNumber(remote.revision)});
+    const held=loadRecovery.active||importSyncHold||cloudRecoveryMode;
+    const assessment={establish:"동기화 기준을 확인할 수 있는 상태입니다.",pull:"Cloud 내용을 이 기기에 가져올 수 있는 후보입니다.",push:"이 기기의 변경만 확인된 상태입니다.","idle-empty":"양쪽에 생활 기록이 없습니다."}[decision.action]||decision.reason;
+    if(summary)summary.textContent=(held?"복구 확인 중이므로 자동 반영은 보류합니다. ":"")+(same?"생활 기록이 동일합니다. ":"생활 기록에 차이가 있습니다. ")+assessment+" 비교만 수행했으며 기록과 동기화 기준은 변경하지 않았습니다.";
+    const labels={transactions:"가계부 거래",ledgerMonths:"월별 가계부",investmentBrokerSnapshots:"투자 계좌",investmentMonthlySnapshots:"월별 투자",investmentCashFlows:"투자 입출금",investmentJournal:"투자 기록",body:"체중·신체",exercise:"운동",cardio:"유산소",strength:"근력",books:"독서",movies:"시청",tasks:"할 일",diaries:"일기",goalRegistry:"목표 이력",monthlyReports:"월간 보고",learningQuizzes:"공부 퀴즈",learningProjects:"공부 프로젝트",learningWrongAnswers:"오답",travelTrips:"여행",travelPlaces:"장소",travelWishlist:"여행 희망",profile:"프로필",accounts:"계좌 설정",goals:"기존 목표",pageNotes:"메모"};
+    const local=cloudSyncFingerprintState(localComparable),cloud=cloudSyncFingerprintState(remoteComparable);
+    for(const key of new Set([...Object.keys(local),...Object.keys(cloud)])){
+      if(cloudSame(local[key],cloud[key]))continue;
+      const item=document.createElement("li");
+      const counts=Array.isArray(local[key])||Array.isArray(cloud[key])?` · 이 기기 ${Array.isArray(local[key])?local[key].length:0}건 / Cloud ${Array.isArray(cloud[key])?cloud[key].length:0}건`:" · 내용 차이";
+      item.textContent=(labels[key]||"기타 저장 항목")+counts;list?.append(item);
     }
-    alert(same?`Local ↔ Cloud 비교 완료\n실데이터 기준 두 상태가 동일합니다.\nrevision: ${remote.revision}`:`Local ↔ Cloud 비교 결과: 차이가 있습니다.\n\n자동으로 어느 쪽도 덮어쓰지 않습니다.\n• 이 기기가 최신이면: '이 기기 Local을 Cloud 기준으로 확정'\n• Cloud가 최신이면: 'Cloud를 이 기기 기준으로 적용'\n\n기준을 한 번 확정하면 이후부터 revision 기반 자동 동기화가 동작합니다.`);
+    panel?.scrollIntoView({behavior:"smooth",block:"nearest"});
   }catch(e){
     console.error("Cloud compare",e);
-    cloudSetRuntime("비교 실패",e?.message||"Cloud 비교에 실패했습니다.","error");
+    if(epoch===cloudComparisonEpoch&&cloudUser?.id===owner&&summary)summary.textContent="비교하지 못했습니다. "+(e?.message||"연결을 확인해 주세요.")+" 이 기기와 Cloud 기록은 변경하지 않았습니다.";
   }
+}
+async function cloudCreateManualSafetyBackup(){
+  if(cloudSafetyBackupBusy)return;
+  const button=$("cloudCreateSafetyBackup");cloudSafetyBackupBusy=true;if(button)button.disabled=true;
+  try{
+    assertCloudSourceReady();
+    const original=structuredClone(state);
+    if(!await cloudSaveSafetySnapshot("manual_full_backup",original))throw new Error("안전 백업을 저장하지 못했습니다.");
+    $("safetyArchivePanel")?.setAttribute("open","");
+    await renderSafetyArchive();toast("현재 원본을 안전 백업하고 재읽기로 확인했습니다.");
+  }catch(error){safetyArchiveStatus=error?.message||"안전 백업을 만들지 못했습니다.";await renderSafetyArchive()}
+  finally{cloudSafetyBackupBusy=false;if(button)button.disabled=false}
 }
 async function cloudManualSync(){
   if(!cloudClient||!cloudUser)return alert("먼저 Cloud 로그인을 완료해 주세요.");
@@ -4996,6 +5148,7 @@ function bindCloudBridgeControls(){
   if($("cloudFirstCopy"))$("cloudFirstCopy").onclick=cloudFirstCopy;
   if($("cloudRestore"))$("cloudRestore").onclick=cloudRestoreToLocal;
   if($("cloudCompare"))$("cloudCompare").onclick=cloudCompare;
+  if($("cloudCreateSafetyBackup"))$("cloudCreateSafetyBackup").onclick=cloudCreateManualSafetyBackup;
 }
 
 let dataHubLibraryTab="overview";
@@ -5013,7 +5166,7 @@ function renderDataHubLibrary(){
   if(dataHubLibraryTab==="overview")body=`<p>확정 월간 기록 ${data.monthly.length}건 · 승인된 목표 이력 ${data.goals.length}건</p><p class="sub">월간 기록은 저장 당시의 확정값입니다. 현재 시장가격으로 과거 값을 바꾸지 않습니다. 지표는 원본 검증이 완료된 경우에만 표시합니다.</p>`;
   if(dataHubLibraryTab==="monthly")body=table(["기준월","기준일","확정 자산","보유 수량 · 전달 대비"],data.monthly.map(row=>`<tr><td>${esc(row.month)}</td><td>${esc(row.asOfDate||"미확인")}</td><td>${won(row.total)}</td><td>${row.holdings.map(h=>`${esc(h.name)} ${h.quantity===null?"수량 미확인":esc(String(h.quantity))+"주"} · ${h.quantityDelta===null?"비교 미확인":(h.quantityDelta>0?"+":"")+esc(String(h.quantityDelta))+"주"}`).join("<br>")||"보유목록 미확인"}</td></tr>`));
   if(dataHubLibraryTab==="metrics")body=data.metricStatus!=="VERIFIED"?'<p>원본 검증 대기 · 지표를 임의 계산하지 않습니다.</p>':table(["지표","현재 값","비교"],data.metrics.map(m=>{const t=m.display;return `<tr><td>${esc(m.key)}</td><td>${esc(t.value)}</td><td>${esc(t.comparison)}</td></tr>`}));
-  if(dataHubLibraryTab==="goals")body='<p class="sub">목표 생성과 수정은 아래 목표 관리에서 Preview 승인 후 적용합니다.</p>'+table(["지표","목표","적용 시작","상태"],data.goals.map(g=>`<tr><td>${esc(g.metric_id)}</td><td>${esc(String(g.value))} ${esc(g.unit)}</td><td>${esc(g.effective_from)}</td><td>${esc(g.status)}</td></tr>`));
+  if(dataHubLibraryTab==="goals")body='<p class="sub">목표 생성과 수정은 아래 목표 관리에서 Preview 승인 후 적용합니다.</p>'+table(["지표","목표","적용 시작","상태"],data.goals.map(g=>`<tr><td>${esc(g.metric_id)}</td><td>${esc(String(g.value))} ${esc(goalRegistryUnit(g.unit))}</td><td>${esc(g.effective_from)}</td><td>${esc(g.status)}</td></tr>`));
   if(dataHubLibraryTab==="export")body='<p class="sub">이 보관함의 확정 월간 기록·검증 지표·승인 목표만 내보냅니다. 계좌번호·로그인 정보는 포함하지 않습니다.</p><button class="btn" id="dataHubExportJson">JSON 다운로드</button> <button class="btn" id="dataHubExportCsv">월간 CSV 다운로드</button>';
   host.innerHTML=`<div style="display:flex;gap:6px;flex-wrap:wrap">${tabs.map(([id,label])=>`<button class="btn sm" data-hub-tab="${id}" aria-pressed="${id===dataHubLibraryTab}">${label}</button>`).join("")}</div>${body}`;
   host.querySelectorAll('[data-hub-tab]').forEach(b=>b.onclick=()=>{dataHubLibraryTab=b.dataset.hubTab;renderDataHubLibrary()});
@@ -5405,7 +5558,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.190";
+const HANI_DISPLAY_VERSION="2.9.191";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
@@ -5895,6 +6048,7 @@ function monthlyReportBuildCurrent(){
   const input=$("monthlyReportMonth"),kpis=$("monthlyReportKpis"),domains=$("monthlyReportDomains");if(!input||!kpis||!domains)return;
   monthlyReportRenderBoard();
   input.value=monthlyReportMonth;
+  if(typeof window!=='undefined'&&window.HANI_GOAL_PROGRESS?.renderMonthly){const result=window.HANI_GOAL_PROGRESS.renderMonthly(monthlyReportMonth);if(result)return result!=='BLOCKED';}
   const report=monthlyReportSnapshot(monthlyReportMonth),investmentTotal=report.investmentCalc?.total,spend=report.ledgerSummary?.jispiT,bodyDelta=report.firstBody&&report.lastBody?n(report.lastBody.weight)-n(report.firstBody.weight):null,cultureCount=report.books.length+report.movies.length,avgRating=report.ratings.length?report.ratings.reduce((a,b)=>a+b,0)/report.ratings.length:null,
     stepAverage=report.stepDays.length?`${Math.round(report.totalSteps/report.stepDays.length).toLocaleString()}보`:"걸음 기록 없음",settlementLabel=`${report.ledgerPeriod.periodStart} ~ ${report.ledgerPeriod.periodEnd}`,accuracy=report.quizTotal?`${(report.quizCorrect/report.quizTotal*100).toFixed(1)}%`:"채점 수치 없음",
     largestLivingExpense=(report.ledger?.items||[]).filter(x=>["fixed","variable","special"].includes(x.category)&&n(x.amount)>0).sort((a,b)=>n(b.amount)-n(a.amount))[0]||null;
@@ -5947,10 +6101,11 @@ function monthlyReportPresentStored(row){
   for(const id of ["monthlyReportKpis","monthlyReportInsightCard","monthlyReportDomains"])$(id).hidden=false;
 }
 function monthlyReportGenerate(month){
+  if(typeof window!=='undefined'&&window.HANI_GOAL_PROGRESS&&!window.HANI_GOAL_PROGRESS.read({type:'month',year:Number(month.slice(0,4)),month:Number(month.slice(5,7))})){toast('원본 검증을 먼저 확인해 주세요.');return;}
   const current=monthlyReportKoreaDate().slice(0,7),report=monthlyReportSnapshot(month),previous=monthlyReportStored(month);
   if(!monthlyReportDate(`${month}-01`)||month>=current||!report.recordCount)return;
   if(previous&&!confirm(`${month} 보고서를 다시 생성할까요?\n기존 보고서 내용은 새 보고서로 교체됩니다. 원본 기록은 변경하지 않습니다.`))return;
-  monthlyReportBuildCurrent();
+  if(monthlyReportBuildCurrent()===false)return;
   const row={month,generatedAt:new Date().toISOString(),format:1,view:monthlyReportCaptureView()},before=state.monthlyReports;
   state.monthlyReports=[...(Array.isArray(before)?before:[]).filter(item=>item?.month!==month),row];
   const result=save();
@@ -6324,7 +6479,7 @@ if(CLOUD_AUTH_BOOT.hasAuthCallback){
     }
   });
 }else{
-  showView(location.hash.slice(1)||"home");
+  showView(navigationInitialView(location.hash.slice(1)));
   initCloudBridge().finally(()=>{if(window.supabase?.createClient)loginGateStatus("이메일과 비밀번호로 로그인해 주세요.")});
 }
 window.addEventListener("resize",()=>{drawPortfolio();drawBody();drawLedgerTrend();drawMonthlyAssetChart();drawBrokerChart();drawAnnualInvestmentCharts();drawInvestmentAccountChart();if(activeAccountId)drawAccountChart(activeAccountId)});
