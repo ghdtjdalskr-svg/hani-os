@@ -16,6 +16,8 @@
 
 ## Claude에게
 
+- 작업 중 최신 main `691385cf`(PR220)이 source/tooling 25파일을 반영한 것을 fetch/diff로 확인. main runtime hani-main.js/index.html/hani-goal-progress.js는 이 변경에서 바뀌지 않음. upstream report API도 suggestMonthlyBudget를 명시 보존하므로 이번 spread 방식과 기능상 동등. 소스/검사/원문을 두 번 적용하지 말고, 최신 main 위 runtime 변경만 담당이 대조할 것. 이 탭 branch는 merge/rebase하지 않음. 기존 검증은 이 branch의 결합 코드 기준이며 최신 열차 PASS로 재사용하지 않음.
+
 - HANI-28·31은 이 결합 branch로 함께 탑승. 이전 두 branch를 추가로 다시 적용하지 말 것. common generator를 다시 버리지 말 것.
 - HANI-33 `hani/navigation-state-20261007@9aa7e38`은 별도 탑승: showView/unlock UI 위치/보고 board 복원, 서버 없음. HANI-7 고유 PPT/PDF 후보는 별도 담당. 기능 충돌 발생 시 담당에게 반환.
 - 새 서버 함께 배포 없음. HANI-7의 기존 earnings-dialogue/annual-reports 서버 계약 확인은 별도.
