@@ -1,5 +1,5 @@
 /* Scoped editorial identity. Does not change other HANI views or theme controls. */
-#haniOrganizationHub.ogh{--ogh-ink:#282e2b;--ogh-muted:#626960;--ogh-paper:#f5f4ee;--ogh-line:#d6d9ce;color:var(--ogh-ink);background:var(--ogh-paper);font-family:Arial,'Malgun Gothic',sans-serif;line-height:1.5;padding:0 clamp(20px,4vw,64px);border-radius:20px;isolation:isolate;container-type:inline-size;overflow:clip}
+#haniOrganizationHub.ogh{--ogh-ink:#111c32;--ogh-muted:#526079;--ogh-paper:#fff;--ogh-line:#dce2ed;color:var(--ogh-ink);background:var(--ogh-paper);font-family:Arial,'Malgun Gothic',sans-serif;line-height:1.5;padding:0 clamp(20px,4vw,64px);border-radius:20px;isolation:isolate;container-type:inline-size;overflow:clip}
 #haniOrganizationHub *,#haniOrganizationHub *::before,#haniOrganizationHub *::after{box-sizing:border-box}
 #haniOrganizationHub :is(h1,h2,h3,p,figure){margin:0;color:inherit}
 #haniOrganizationHub button{font:inherit;color:inherit;cursor:pointer;min-width:0;white-space:normal;box-shadow:none;text-transform:none;letter-spacing:normal}
@@ -17,33 +17,33 @@
 #haniOrganizationHub .ogh-hero{display:grid;grid-template-columns:1fr 1.15fr;gap:36px;padding:50px 0 38px;align-items:center}
 #haniOrganizationHub .ogh-hero h1{font-size:clamp(34px,4.4vw,66px);line-height:1.2;letter-spacing:-3px;font-weight:800;margin:24px 0}
 #haniOrganizationHub .ogh-hero h1 em{font-style:normal;position:relative;z-index:0;white-space:nowrap}
-#haniOrganizationHub .ogh-hero h1 em::after{content:'';position:absolute;left:-5%;right:-5%;bottom:4%;height:32%;background:#dce7ac;z-index:-1;transform:rotate(-3deg)}
+#haniOrganizationHub .ogh-hero h1 em::after{content:'';position:absolute;left:-5%;right:-5%;bottom:4%;height:32%;background:#dce8ff;z-index:-1;transform:none}
 #haniOrganizationHub .ogh-hero p{font-size:14px;line-height:1.9;color:var(--ogh-muted)}
 #haniOrganizationHub .ogh-cta{background:var(--ogh-ink);color:#fff;border:0;padding:14px 21px;border-radius:30px;margin:28px 0 30px;display:inline-flex;gap:25px;align-items:center;font-size:12px}
 #haniOrganizationHub .ogh-cta:hover{background:#465347}
 #haniOrganizationHub .ogh-signature{font-size:9px;letter-spacing:1.5px;font-weight:700;display:flex;gap:18px;align-items:center}
 #haniOrganizationHub .ogh-signature span{color:var(--ogh-muted);font:italic 13px Georgia,serif;letter-spacing:0;font-weight:400}
-#haniOrganizationHub .ogh-hero-art{position:relative;min-width:0;padding:12px;background:#e5e6df;transform:rotate(1deg)}
-#haniOrganizationHub .ogh-hero-art>img{width:100%;height:355px;object-position:center;border-radius:120px 120px 3px 3px}
+#haniOrganizationHub .ogh-hero-art{position:relative;min-width:0;padding:12px;background:#eef2f9;transform:none}
+#haniOrganizationHub .ogh-hero-art>img{width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;border-radius:8px}
 #haniOrganizationHub .ogh-hero-art figcaption{display:flex;justify-content:space-between;gap:8px;padding:15px 2px 3px;font-size:10px}
-#haniOrganizationHub .ogh-seal{position:absolute;right:-17px;bottom:52px;background:#dfe9b4;width:90px;height:90px;border-radius:50%;display:grid;place-content:center;text-align:center;font-size:14px;line-height:1.15;font-weight:900;letter-spacing:1px;transform:rotate(12deg);border:5px solid var(--ogh-paper)}
+#haniOrganizationHub .ogh-seal{position:absolute;right:-17px;bottom:52px;background:#dce8ff;width:90px;height:90px;border-radius:50%;display:grid;place-content:center;text-align:center;font-size:14px;line-height:1.15;font-weight:900;letter-spacing:1px;transform:none;border:5px solid var(--ogh-paper)}
 #haniOrganizationHub .ogh-strip{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:20px 0;border-block:1px solid var(--ogh-line);font-size:9px;letter-spacing:1px;color:var(--ogh-muted)}
 #haniOrganizationHub .ogh-section{padding:64px 0 0;scroll-margin-top:30px}
 #haniOrganizationHub .ogh-section-head{display:flex;justify-content:space-between;gap:24px;align-items:flex-end;margin-bottom:34px}
 #haniOrganizationHub .ogh-section h2{font-size:clamp(27px,3vw,39px);line-height:1.3;letter-spacing:-1.8px;margin-top:12px}
 #haniOrganizationHub .ogh-section-head>p{font-size:12px;color:var(--ogh-muted);line-height:1.8;text-align:right}
-#haniOrganizationHub .ogh-org{padding:28px 20px 20px;background:#eaece4;border-radius:5px;background-image:radial-gradient(#c9cec2 .65px,transparent .65px);background-size:13px 13px}
+#haniOrganizationHub .ogh-org{padding:28px 20px 20px;background:#f3f6fb;border-radius:5px;background-image:radial-gradient(#c6d2e7 .65px,transparent .65px);background-size:13px 13px}
 #haniOrganizationHub .ogh-chair{width:max-content;max-width:100%;margin:0 auto;display:flex;align-items:center;gap:13px;background:var(--ogh-ink);color:#fff;padding:15px 22px;border-radius:60px;position:relative}
-#haniOrganizationHub .ogh-chair::after{content:'';position:absolute;top:100%;height:34px;width:1px;background:#a1a99b;left:50%}
-#haniOrganizationHub .ogh-chair-icon{display:grid;place-items:center;width:44px;height:44px;border:1px solid #7f8a76;border-radius:50%;color:#e0e9b7;font:italic 30px Georgia,serif}
+#haniOrganizationHub .ogh-chair::after{content:'';position:absolute;top:100%;height:34px;width:1px;background:#a9b8d0;left:50%}
+#haniOrganizationHub .ogh-chair-icon{width:64px;height:64px;flex-shrink:0;border:1px solid #6685b3;border-radius:50%;object-fit:cover}
 #haniOrganizationHub .ogh-chair small{display:block;font-size:8px;letter-spacing:1.6px;color:#d4dacb}
 #haniOrganizationHub .ogh-chair strong{font-size:20px;font-weight:600;display:block}
 #haniOrganizationHub .ogh-chair strong>span{font-size:12px;font-weight:400}
 #haniOrganizationHub .ogh-chair-note{font-size:10px;border-left:1px solid #637060;padding-left:14px;color:#d4dacb;margin-left:8px}
 #haniOrganizationHub .ogh-branches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:64px;position:relative;align-items:start}
-#haniOrganizationHub .ogh-branches::before{content:'';height:1px;background:#a1a99b;position:absolute;top:-30px;left:10%;right:10%}
-#haniOrganizationHub .ogh-node{position:relative;background:#fffefa;border:1px solid #dadfd2;border-radius:12px;min-width:0;min-height:232px}
-#haniOrganizationHub .ogh-node::before{content:'';width:1px;height:30px;position:absolute;top:-31px;left:50%;background:#a1a99b}
+#haniOrganizationHub .ogh-branches::before{content:'';height:1px;background:#a9b8d0;position:absolute;top:-30px;left:10%;right:10%}
+#haniOrganizationHub .ogh-node{position:relative;background:#fff;border:1px solid #dae2ef;border-radius:12px;min-width:0;min-height:232px}
+#haniOrganizationHub .ogh-node::before{content:'';width:1px;height:30px;position:absolute;top:-31px;left:50%;background:#a9b8d0}
 #haniOrganizationHub .ogh-node-title{display:block;text-align:left;width:100%;padding:15px 13px 13px;border:0;background:transparent;border-radius:11px 11px 0 0;position:relative}
 #haniOrganizationHub .ogh-node-title:hover{background:var(--tint)}
 #haniOrganizationHub .ogh-node-symbol{display:grid;place-items:center;width:42px;height:42px;color:var(--team);background:var(--tint);font-size:25px;border-radius:50%;margin-bottom:15px}
@@ -51,6 +51,11 @@
 #haniOrganizationHub .ogh-node-title h3{font-size:14px;line-height:1.6;letter-spacing:-.6px;margin-top:6px;word-break:keep-all;min-height:44px}
 #haniOrganizationHub .ogh-node-arrow{position:absolute;right:13px;top:17px;font-size:18px;color:var(--team)}
 #haniOrganizationHub .ogh-node-people{display:flex;flex-wrap:wrap;gap:8px;padding:0 12px 16px}
+#haniOrganizationHub .ogh-node-people .ogh-avatar{width:100%;display:grid;grid-template-columns:42px minmax(0,1fr);align-items:center;text-align:left;gap:8px;justify-items:stretch}
+#haniOrganizationHub .ogh-node-people .ogh-avatar img{width:42px;height:48px;border-radius:6px}
+#haniOrganizationHub .ogh-nameplate{display:block;width:100%;min-width:0;background:#f3f6fb;border:1px solid #dce2ed;border-radius:6px;padding:8px;text-align:left}
+#haniOrganizationHub .ogh-nameplate strong{display:block;font-size:13px;line-height:1.4}
+#haniOrganizationHub .ogh-nameplate small{display:block;font-size:11px;font-weight:400;line-height:1.5;color:#526079;margin-top:3px;overflow-wrap:anywhere}
 #haniOrganizationHub .ogh-avatar{padding:0;background:none;border:0;display:grid;justify-items:center;gap:4px;border-radius:8px;width:35px;font-size:9px}
 #haniOrganizationHub .ogh-avatar :is(img,.ogh-placeholder){width:34px;height:38px;object-position:50% 15%;border-radius:13px 13px 8px 8px}
 #haniOrganizationHub .ogh-avatar .ogh-placeholder{border:1px dashed var(--team);font-size:15px;background:var(--tint)}
@@ -86,7 +91,7 @@
 #haniOrganizationHub .ogh-filters button{padding:9px 15px;border:0;border-radius:25px;background:transparent;font-size:11px;color:var(--ogh-muted)}
 #haniOrganizationHub .ogh-filters button[aria-pressed=true]{background:var(--ogh-ink);color:#fff}
 #haniOrganizationHub .ogh-select-label>span{display:none}
-#haniOrganizationHub :is(select,input){font:inherit;font-size:12px;color:var(--ogh-ink);height:38px;border:1px solid var(--ogh-line);background:#fffefa;border-radius:4px;width:auto;box-shadow:none;padding:8px 10px;min-width:0;max-width:100%}
+#haniOrganizationHub :is(select,input){font:inherit;font-size:12px;color:var(--ogh-ink);height:38px;border:1px solid var(--ogh-line);background:#fff;border-radius:4px;width:auto;box-shadow:none;padding:8px 10px;min-width:0;max-width:100%}
 #haniOrganizationHub select{width:182px}
 #haniOrganizationHub .ogh-search-label{display:flex;align-items:center;gap:6px}
 #haniOrganizationHub .ogh-search-label>span{font-size:25px}
@@ -95,8 +100,8 @@
 #haniOrganizationHub #ogh-count{font-weight:700;letter-spacing:1px}
 #haniOrganizationHub .ogh-people-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:30px 20px}
 #haniOrganizationHub .ogh-person{background:none;border:0;border-radius:0;padding:0;text-align:left}
-#haniOrganizationHub .ogh-person-image{position:relative;background:var(--tint);border-radius:90px 90px 4px 4px;overflow:hidden;aspect-ratio:4/5}
-#haniOrganizationHub .ogh-person:nth-child(3n+2) .ogh-person-image{border-radius:4px 4px 65px 4px}
+#haniOrganizationHub .ogh-person-image{position:relative;background:var(--tint);border-radius:8px;overflow:hidden;aspect-ratio:4/5}
+#haniOrganizationHub .ogh-person:nth-child(3n+2) .ogh-person-image{border-radius:8px}
 #haniOrganizationHub .ogh-person:nth-child(3n) .ogh-person-image{border-radius:4px}
 #haniOrganizationHub .ogh-person-image>.ogh-portrait{width:100%;height:100%;object-position:center 10%;transition:transform .3s}
 #haniOrganizationHub .ogh-person:hover .ogh-person-image>.ogh-portrait{transform:scale(1.035)}
@@ -108,7 +113,7 @@
 #haniOrganizationHub .ogh-placeholder small{font-size:8px;letter-spacing:1.5px;margin-top:20px;z-index:1}
 #haniOrganizationHub .ogh-person-badge{position:absolute;left:12px;bottom:12px;background:#fffef5eb;padding:4px 8px;border-radius:20px;font-size:8px;letter-spacing:.6px;color:#343b31}
 #haniOrganizationHub .ogh-person-arrow{position:absolute;right:12px;bottom:10px;font-size:23px;background:#fffef5eb;border-radius:50%;width:29px;height:29px;display:grid;place-content:center;color:#343b31}
-#haniOrganizationHub .ogh-person-caption{padding:15px 0 0}
+#haniOrganizationHub .ogh-person-caption{padding:14px 16px;background:#f3f6fb;border:1px solid var(--ogh-line);border-top:3px solid var(--team);border-radius:0 0 8px 8px;min-height:110px}
 #haniOrganizationHub .ogh-person-caption>small{font-size:9px;color:var(--team)}
 #haniOrganizationHub .ogh-person-caption h3{font-size:20px;margin:5px 0;letter-spacing:-.6px;display:flex;align-items:baseline;flex-wrap:wrap;gap:9px}
 #haniOrganizationHub .ogh-person-caption h3>span{font-size:10px;font-weight:400;color:var(--ogh-muted);letter-spacing:0}
@@ -118,7 +123,7 @@
 #haniOrganizationHub .ogh-footer{margin-top:65px;padding:30px 0;display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid var(--ogh-line);color:var(--ogh-muted)}
 #haniOrganizationHub .ogh-footer p{font:italic 14px Georgia,serif}
 #haniOrganizationHub .ogh-footer>span:last-child{font-size:8px;letter-spacing:1px}
-#haniOrganizationHub .ogh-dialog{position:fixed;inset:0;margin:auto;width:min(760px,calc(100% - 32px));max-height:calc(100dvh - 40px);padding:0;border:0;border-radius:12px;overflow:auto;background:#f8f7f1;color:var(--ogh-ink);box-shadow:0 30px 90px #0004}
+#haniOrganizationHub .ogh-dialog{position:fixed;inset:0;margin:auto;width:min(760px,calc(100% - 32px));max-height:calc(100dvh - 40px);padding:0;border:0;border-radius:12px;overflow:auto;background:#fff;color:var(--ogh-ink);box-shadow:0 30px 90px #0004}
 #haniOrganizationHub .ogh-dialog::backdrop{background:#18251ee0;backdrop-filter:blur(6px)}
 #haniOrganizationHub .ogh-close{position:absolute;right:12px;top:12px;z-index:2;width:42px;height:42px;border:1px solid #ccd0c4;border-radius:50%;background:#fffff6;color:#333;font-size:26px;line-height:1}
 #haniOrganizationHub .ogh-detail{display:grid;grid-template-columns:.8fr 1fr}
@@ -136,13 +141,13 @@
 #haniOrganizationHub .ogh-detail-scene img{width:100%;height:230px;object-position:65% center}
 #haniOrganizationHub .ogh-detail-scene+.ogh-detail-copy{grid-column:1/-1;padding-top:26px}
 #haniOrganizationHub .ogh-detail-members{display:flex;flex-wrap:wrap;gap:14px}
-#haniOrganizationHub .ogh-detail-members .ogh-avatar{width:48px;font-size:11px}
+#haniOrganizationHub .ogh-detail-members .ogh-avatar{width:130px;font-size:11px}
 #haniOrganizationHub .ogh-detail-members .ogh-avatar :is(img,.ogh-placeholder){width:48px;height:54px}
 @container (max-width:880px){
  #haniOrganizationHub .ogh-edition{display:none}
  #haniOrganizationHub .ogh-hero{gap:24px}
  #haniOrganizationHub .ogh-hero h1{font-size:42px}
- #haniOrganizationHub .ogh-hero-art>img{height:300px}
+ #haniOrganizationHub .ogh-hero-art>img{height:auto}
  #haniOrganizationHub .ogh-branches{gap:7px}
  #haniOrganizationHub .ogh-node-title{padding:12px 8px}
  #haniOrganizationHub .ogh-node-title h3{font-size:12px;min-height:40px}
@@ -158,7 +163,7 @@
  #haniOrganizationHub .ogh-hero{grid-template-columns:1fr;padding-top:30px;gap:22px}
  #haniOrganizationHub .ogh-hero h1{font-size:44px;margin:20px 0;letter-spacing:-2px}
  #haniOrganizationHub .ogh-kicker{font-size:8px;letter-spacing:1.3px}
- #haniOrganizationHub .ogh-hero-art>img{height:auto;aspect-ratio:1439/810;border-radius:45px 45px 3px 3px}
+ #haniOrganizationHub .ogh-hero-art>img{height:auto;aspect-ratio:1439/810;border-radius:8px}
  #haniOrganizationHub .ogh-seal{right:-9px;width:75px;height:75px;font-size:12px}
  #haniOrganizationHub .ogh-signature{display:none}
  #haniOrganizationHub .ogh-cta{margin:22px 0 0}
@@ -201,7 +206,7 @@
  #haniOrganizationHub .ogh-search-label input{width:100%;font-size:11px}
  #haniOrganizationHub .ogh-search-label>span{display:none}
  #haniOrganizationHub .ogh-people-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:23px 12px}
- #haniOrganizationHub .ogh-person-image{border-radius:60px 60px 4px 4px}
+ #haniOrganizationHub .ogh-person-image{border-radius:8px}
  #haniOrganizationHub .ogh-person-caption h3{font-size:19px;gap:6px}
  #haniOrganizationHub .ogh-person-caption>small{font-size:8px}
  #haniOrganizationHub .ogh-person-caption p{font-size:10px}
@@ -215,3 +220,74 @@
  #haniOrganizationHub .ogh-detail-scene img{height:180px}
 }
 @media(prefers-reduced-motion:reduce){#haniOrganizationHub *{transition:none!important;scroll-behavior:auto!important}}
+#haniOrganizationHub{--ogh-heading:Bahnschrift,'Malgun Gothic',sans-serif}
+#haniOrganizationHub :is(h1,h2,h3,.ogh-wordmark){font-family:var(--ogh-heading)}
+#haniOrganizationHub[data-typography=editorial]{--ogh-heading:Georgia,'Batang',serif}
+#haniOrganizationHub[data-typography=classic]{--ogh-heading:'Segoe UI','Malgun Gothic',sans-serif}
+#haniOrganizationHub .ogh-hero h1{font-weight:800;letter-spacing:-2px;line-height:1.18}
+#haniOrganizationHub .ogh-hero h1 em{color:#4562e6}
+#haniOrganizationHub .ogh-hero h1 em::after{height:4px;left:0;right:0;bottom:-8%;background:linear-gradient(90deg,#4562e6,#b798ed)}
+#haniOrganizationHub[data-typography=editorial] .ogh-hero h1{font-weight:600;letter-spacing:-3px;line-height:1.3}
+#haniOrganizationHub[data-typography=classic] .ogh-hero h1{font-weight:500;letter-spacing:-2px;line-height:1.35}
+#haniOrganizationHub .ogh-hero p{font-size:15px}
+#haniOrganizationHub .ogh-type-controls{display:flex;align-items:center;flex-wrap:wrap;gap:12px;padding:14px 0;border-bottom:1px solid var(--ogh-line)}
+#haniOrganizationHub .ogh-type-controls>span{font-size:10px;letter-spacing:1px;font-weight:700}
+#haniOrganizationHub .ogh-type-controls>div{display:flex;gap:4px}
+#haniOrganizationHub .ogh-type-controls button{background:#f1f4fa;border:1px solid transparent;border-radius:20px;padding:7px 13px;font-size:11px}
+#haniOrganizationHub .ogh-type-controls button[aria-pressed=true]{background:#172444;color:#fff}
+#haniOrganizationHub .ogh-type-controls small{font-size:10px;color:var(--ogh-muted)}
+/* Team-specific panels use actual member portraits, never unrelated scenes. */
+#haniOrganizationHub .ogh-team-tabs{display:flex;border-bottom:1px solid var(--ogh-line);overflow-x:auto;gap:6px;padding:0 0 1px}
+#haniOrganizationHub .ogh-team-tabs button{flex:1 0 auto;background:transparent;border:0;border-bottom:3px solid transparent;border-radius:0;padding:17px 13px;color:var(--ogh-muted);font-size:12px;text-align:left}
+#haniOrganizationHub .ogh-team-tabs button span{display:block;font-size:9px;letter-spacing:1px;margin-bottom:6px}
+#haniOrganizationHub .ogh-team-tabs button[aria-selected=true]{color:#215ad5;border-bottom-color:#215ad5;background:#f3f7ff}
+#haniOrganizationHub .ogh-team-panel{padding:30px 0 20px}
+#haniOrganizationHub .ogh-node{border-top:4px solid var(--team);background:linear-gradient(180deg,var(--tint),#fff 230px)}
+#haniOrganizationHub .ogh-node[data-department=strategy]{border-radius:24px 24px 12px 12px}
+#haniOrganizationHub .ogh-node[data-department=platform]{border-radius:4px 20px 4px 20px}
+#haniOrganizationHub .ogh-node[data-department=finance]{border-radius:4px;border-top-style:double;border-top-width:6px}
+#haniOrganizationHub .ogh-node[data-department=life]{border-radius:28px 8px 28px 8px}
+#haniOrganizationHub .ogh-node[data-department=business]{border-radius:8px 28px 8px 8px}
+#haniOrganizationHub .ogh-node-title{border-bottom:1px solid var(--team);margin-bottom:14px}
+#haniOrganizationHub .ogh-leader-badge,#haniOrganizationHub .ogh-person-caption h3>.ogh-leader-badge{display:inline-block;padding:2px 6px;border-radius:4px;background:var(--team);color:#fff;font-size:9px;font-weight:700;letter-spacing:0;vertical-align:middle;white-space:nowrap}
+#haniOrganizationHub .ogh-directory-layout{display:grid;grid-template-columns:190px minmax(0,1fr);gap:24px}
+#haniOrganizationHub .ogh-directory-main{min-width:0}
+#haniOrganizationHub .ogh-team-rail{display:flex;flex-direction:column;gap:8px;align-self:start;position:sticky;top:20px}
+#haniOrganizationHub .ogh-team-rail>.ogh-kicker{padding:8px}
+#haniOrganizationHub .ogh-team-rail button{display:flex;align-items:center;gap:10px;text-align:left;border:1px solid transparent;border-radius:10px;background:#f5f7fb;padding:10px;font-size:11px;line-height:1.5}
+#haniOrganizationHub .ogh-team-rail button[aria-pressed=true]{border-color:var(--team,#172444);background:var(--tint,#e7ecf5);box-shadow:inset 3px 0 var(--team,#172444)}
+#haniOrganizationHub .ogh-rail-icon{display:grid;place-items:center;width:32px;height:32px;flex-shrink:0;border-radius:9px;background:var(--tint,#e7ecf5);color:var(--team,#172444);font-size:22px}
+#haniOrganizationHub .ogh-team-rail small{display:block;font-size:9px;color:var(--ogh-muted);letter-spacing:1px;margin-top:3px}
+#haniOrganizationHub .ogh-directory-main .ogh-people-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+@container(max-width:880px){#haniOrganizationHub .ogh-directory-layout{grid-template-columns:155px minmax(0,1fr);gap:16px}#haniOrganizationHub .ogh-directory-main .ogh-people-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@container(max-width:620px){#haniOrganizationHub .ogh-directory-layout{grid-template-columns:1fr}#haniOrganizationHub .ogh-team-rail{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}#haniOrganizationHub .ogh-team-rail>.ogh-kicker{grid-column:1/-1}#haniOrganizationHub .ogh-team-rail button{font-size:10px;padding:8px;gap:6px}}
+#haniOrganizationHub .ogh-team-banner{grid-column:1/-1;overflow:hidden;border-radius:12px;background:#eef3fa;margin-bottom:18px}
+#haniOrganizationHub .ogh-team-banner img{width:100%;height:auto;aspect-ratio:1672/941;object-fit:contain}
+#haniOrganizationHub .ogh-team-banner figcaption{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:14px 18px;font-size:11px;color:var(--ogh-muted)}
+#haniOrganizationHub .ogh-team-banner figcaption>span:first-child{font-weight:700;letter-spacing:1px}
+#haniOrganizationHub .ogh-team-banner+.ogh-detail-copy{grid-column:1/-1;padding-top:18px}
+#haniOrganizationHub .ogh-panel-summary{display:flex;justify-content:space-between;gap:25px;align-items:center;background:#f3f6fb;border-radius:8px;padding:28px}
+#haniOrganizationHub .ogh-panel-summary h3{font-size:28px;letter-spacing:-1px;line-height:1.35;margin:14px 0}
+#haniOrganizationHub .ogh-panel-summary p{font-size:14px;margin-bottom:20px;color:var(--ogh-muted)}
+#haniOrganizationHub .ogh-panel-index{font-size:85px;line-height:1;font-weight:800;color:#becce4;letter-spacing:-5px}
+#haniOrganizationHub .ogh-panel-meta{display:flex;justify-content:space-between;gap:16px;margin:25px 0 20px;font-size:10px;letter-spacing:.5px}
+#haniOrganizationHub .ogh-panel-meta p{font-size:11px;color:var(--ogh-muted);letter-spacing:0}
+#haniOrganizationHub .ogh-panel-members{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px}
+#haniOrganizationHub .ogh-panel-member .ogh-avatar{width:100%;justify-items:start;gap:10px;font-size:17px;font-weight:600;text-align:left}
+#haniOrganizationHub .ogh-panel-member .ogh-avatar :is(img,.ogh-placeholder){width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:8px}
+#haniOrganizationHub .ogh-panel-member>small{font-size:11px;color:var(--ogh-muted)}
+#haniOrganizationHub .ogh-panel-member>p{font-size:11px;margin-top:5px;color:var(--ogh-muted)}
+#haniOrganizationHub .ogh-detail-team-art{grid-column:1/-1;display:flex;justify-content:center;gap:8px;padding:60px 24px 24px;background:var(--tint);flex-wrap:wrap}
+#haniOrganizationHub .ogh-detail-team-art :is(img,.ogh-placeholder){width:100px;height:115px;object-fit:cover;object-position:50% 15%;border-radius:6px}
+#haniOrganizationHub .ogh-detail-team-art+.ogh-detail-copy{grid-column:1/-1;padding-top:25px}
+#haniOrganizationHub .ogh-signature span,#haniOrganizationHub .ogh-footer p{font:12px Arial,sans-serif;letter-spacing:0}
+@container(max-width:880px){#haniOrganizationHub .ogh-panel-members{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@container(max-width:620px){
+ #haniOrganizationHub .ogh-team-tabs button{padding:14px 12px;font-size:11px}
+ #haniOrganizationHub .ogh-panel-summary{padding:20px;gap:10px}
+ #haniOrganizationHub .ogh-panel-summary h3{font-size:22px}
+ #haniOrganizationHub .ogh-panel-summary p{font-size:12px}
+ #haniOrganizationHub .ogh-panel-index{font-size:48px;letter-spacing:-2px}
+ #haniOrganizationHub .ogh-panel-meta{display:grid}
+ #haniOrganizationHub .ogh-panel-members{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+}
