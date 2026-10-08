@@ -1505,6 +1505,7 @@ const pageMeta={
  drive:["Drive","Google Drive로 바로 이동합니다.","work"],
  dev:["개발센터","HANI OS 릴리스와 로드맵을 확인합니다.","work"],
  geminiReports:["Gemini 개발 보고서","개발의 배경부터 결과와 남은 과제까지 읽기 쉽게 확인합니다.","work"],
+ aiBudget:["AI 주간 예산","Codex 두 계정과 Claude·Gemini의 사용 한도와 회복 예정 시간을 확인합니다.","team"],
  deployment:["배포 센터","Preview 브랜치부터 대표 승인 배포까지 안전하게 관리합니다.","work"],
  intake:["성민 오피스","유나 인턴에게 말하거나 자료를 붙이면 담당 AI가 검토하고 Preview로 정리합니다.","team"],
  agentReview:["경영회의실","AI TEAM의 검토 안건과 대표 결정을 한곳에서 관리합니다.","team"],
@@ -1796,6 +1797,7 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
   history.replaceState(null,"",id==="home"?location.href.split("#")[0]:("#"+id));$("app").classList.remove("mobile-open");window.scrollTo({top:0,left:0,behavior:"auto"});
   window.HaniAssetMarket?.sync();
   if(id==="geminiReports")window.HaniGeminiReports?.render();
+  if(id==="aiBudget")window.HaniAiBudget?.render();
   if(id==="investment")setTimeout(drawPortfolio,30);if(id==="newsroom")setTimeout(()=>investmentNewsMaybeRefresh(),40);if(id==="diet")setTimeout(drawBody,30);if(id==="ledger")setTimeout(drawLedgerTrend,30);if(id==="calendar")renderCalendar();if(id==="tasks")setTimeout(()=>googleCalendarRefreshStatus({silent:true}),0);if(id==="intake")setTimeout(()=>intakeRenderPreview(),0);if(id==="agentReview")setTimeout(()=>agentReviewInit(),0);if(id==="monthlyReport")setTimeout(()=>renderMonthlyReport(),0);if(id==="policy")setTimeout(()=>agentPolicyInit(),0);if(id==="deployment")setTimeout(()=>deployCenterRender(),0);
   // v2.9.2: mobile browsers can throttle background polling. Re-check Cloud when opening data-heavy views.
   if(["home","investment","asset"].includes(id)&&cloudUser&&!cloudRecoveryMode){
@@ -1805,6 +1807,7 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
 
 const QUICK_JUMP_ITEMS=[
   ["characterArchive","M9 + MIR Character Archive","HANI GROUP 캐릭터 프로필 Canon 관계 직급 연차 미르"],
+  ["aiBudget","AI 주간 예산","Codex Claude Gemini 토큰 사용량 주간 세션 한도 회복 재충전"],
   ["aura","HANI AURA","화면 꾸미기 색상 계절 테마 appearance finish season"],
   ["home","대시보드","홈 오늘 요약"],["investment","홍 스트리트","투자 주식 ETF 월간 기록"],["newsroom","뉴스룸","주식 투자 뉴스 관심종목 3시간 흐름"],["asset","자산","통합 자산 계좌"],["ledger","가계부","소비 결산 리뷰"],
   ["diet","계체량 측정","다이어트 체중 건강"],["exercise","헬스클럽","운동 걸음 근력"],["reading","성민의 서재","독서 서재 책 완독"],["study","공부","일본어 AI 학습"],

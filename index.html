@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#202a42">
+<link rel="stylesheet" href="./hani-ai-budget.css">
 <link rel="apple-touch-icon" href="./godsaeng_icon_webtoon.png">
 <link rel="icon" type="image/png" href="./godsaeng_icon_webtoon.png">
 <!-- HANI DEPLOY INVARIANT MIRROR · bootstrap compatibility only: hani_os_life_v23 | 2.9.15-safe-baseline-bootstrap -->
@@ -229,6 +230,7 @@
     </div>
     <div class="side-bottom">
 
+      <button class="nav-btn" data-view="aiBudget" type="button"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M7 15v-3M12 15V8M17 15v-5"/></svg></span><span class="txt">AI 주간 예산</span></button>
       <button class="nav-btn" data-view="organization" type="button"><span class="ico"><svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="5" rx="1"/><path d="M12 7v5M4 16v-4h16v4"/><rect x="1" y="16" width="6" height="5" rx="1"/><rect x="9" y="16" width="6" height="5" rx="1"/><rect x="17" y="16" width="6" height="5" rx="1"/></svg></span><span class="txt">HANI GROUP</span></button>
       <button class="nav-btn" data-view="characterArchive" type="button" title="HANI GROUP Character Archive"><span class="ico" aria-hidden="true">✧</span><span class="txt">M9 + MIR</span></button>
       <button class="nav-btn" data-view="aiTeam"><span class="ico"><svg viewBox="0 0 24 24"><rect x="5" y="7" width="14" height="12" rx="3"/><path d="M9 12h.01M15 12h.01M9 16h6M12 3v4"/></svg></span><span class="txt">AI 팀</span></button>
@@ -1366,6 +1368,18 @@
         </details>
       </div>
     </section>
+    <section id="aiBudget" class="view">
+      <div class="card budget-hero"><div><span class="eyebrow purple">AI RESOURCE DESK</span><h2>이번 주, AI 예산은 얼마나 남았을까?</h2><p class="sub">Codex 두 계정과 Claude·Gemini의 사용 한도를 한곳에서 확인해요. 서비스가 알려준 회복 주기에 맞춰 표시합니다.</p></div><div class="budget-summary"><span class="sub">최근 한도 확인</span><strong id="aiBudgetConnected">0 / 4</strong></div></div>
+      <div class="budget-toolbar"><button class="btn" id="aiBudgetRefresh" type="button">이 PC에서 사용량 가져오기</button><label class="btn" for="aiBudgetImport">요약 파일 가져오기</label><input id="aiBudgetImport" type="file" accept="application/json,.json" hidden><button class="btn" id="aiBudgetExport" type="button">요약 내보내기</button><button class="btn" type="button" data-go="aiTeam">AI 팀 보기</button></div>
+      <p id="aiBudgetNotice" role="status" aria-live="polite"></p>
+      <div class="budget-grid" id="aiBudgetCards"></div>
+      <div class="card budget-editor" id="aiBudgetEditor" hidden><h3>공식 화면에서 확인한 사용량 기록</h3><p class="sub">자동 조회값과 구분해 표시합니다. 회복 시각은 한국 시간으로 입력해 주세요.</p><form id="aiBudgetForm"><label for="aiBudgetAccount">계정</label><select id="aiBudgetAccount"><option value="codex-1">Codex 1</option><option value="codex-2">Codex 2</option><option value="claude-1">Claude</option><option value="gemini-1">Gemini</option></select>
+      <div class="budget-input-row"><b>세션 한도</b><div class="budget-form-grid"><label>사용률 (%)<input id="budget-session-used" type="number" min="0" max="100" step="0.1" placeholder="확인한 값만 입력"></label><label>회복 예정 (한국 시간)<input id="budget-session-reset" type="datetime-local"></label></div></div>
+      <div class="budget-input-row"><b>주간 한도</b><div class="budget-form-grid"><label>사용률 (%)<input id="budget-weekly-used" type="number" min="0" max="100" step="0.1" placeholder="확인한 값만 입력"></label><label>회복 예정 (한국 시간)<input id="budget-weekly-reset" type="datetime-local"></label></div></div>
+      <div class="budget-input-row"><b>일간 한도</b><div class="budget-form-grid"><label>사용률 (%)<input id="budget-daily-used" type="number" min="0" max="100" step="0.1" placeholder="확인한 값만 입력"></label><label>회복 예정 (한국 시간)<input id="budget-daily-reset" type="datetime-local"></label></div></div>
+      <div class="budget-actions"><button class="btn primary" type="submit">기록 저장</button><button class="btn" id="aiBudgetCancel" type="button">취소</button></div></form></div>
+      <div class="card budget-note"><b>‘주간 예산’은 AI 사용 한도를 모아 보는 이름이에요.</b><p class="sub">구독 한도는 남은 토큰 수와 다릅니다. 회복 시각이 지나도 자동으로 100% 남음으로 바꾸지 않고 재확인을 기다립니다. Gemini CLI 세션 토큰은 Gemini 웹앱의 전체 사용량을 뜻하지 않습니다.</p><p class="sub" id="aiBudgetSaveState"></p><p class="sub">PC 연결은 로컬 사용량 도우미가 실행 중일 때 사용할 수 있어요. 휴대폰은 요약 파일 가져오기와 직접 기록을 지원하며, 기기 간 자동 공유는 아직 연결하지 않았습니다.</p></div>
+    </section>
     <section id="geminiReports" class="view">
   <details class="card" id="geminiStaffProfile" style="margin-bottom:16px"><summary style="cursor:pointer;padding:12px 0"><strong>💠 제미나이</strong> · 개발 보고팀</summary><h3>개발 보고서 작성 담당</h3><p>공식 배포 기록을 바탕으로 개발 배경·변화·결과·남은 과제를 알기 쉽게 정리합니다.</p><p class="sub">보고서 작성: Gemini · 원장 대조: Codex · 최종 검토: 성민 대표님</p></details>
   <div class="card gemini-reports-intro"><div><span class="gemini-reports-eyebrow">HANI DEVELOPMENT REPORTS</span><h2>개발의 흐름을 한눈에</h2><p class="sub">왜 시작했는지, 무엇이 달라졌는지, 아직 남은 일은 무엇인지.<br>배포 기록을 바탕으로 작성한 보고서를 날짜별로 모았습니다.</p></div><button class="btn" id="geminiReportRefresh" type="button">목록 새로고침</button></div>
@@ -1560,5 +1574,7 @@
 <script src="./hani-character-archive.js?v=2.9.191"></script>
 <link rel="stylesheet" href="./hani-organization-hub.css?v=2.9.191">
 <script src="./hani-organization-hub.js?v=2.9.191"></script>
+<script src="./hani-ai-budget-core.js?v=2.9.191"></script>
+<script src="./hani-ai-budget.js?v=2.9.191"></script>
 </body>
 </html>

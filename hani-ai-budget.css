@@ -1,0 +1,15 @@
+#aiBudget{--budget-accent:var(--accent,#7569e8)}
+#aiBudget .budget-hero{display:flex;justify-content:space-between;align-items:center;gap:20px;background:linear-gradient(130deg,var(--card,#fff),var(--soft,#eef1ff));margin-bottom:18px}
+#aiBudget .budget-hero h2{margin:8px 0;font-size:26px}#aiBudget .budget-hero p{max-width:620px;line-height:1.65}
+#aiBudget .budget-summary{text-align:right;min-width:100px}#aiBudget .budget-summary strong{display:block;font-size:34px;color:var(--budget-accent)}
+#aiBudget .budget-toolbar,#aiBudget .budget-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}#aiBudget .budget-toolbar{margin:16px 0}#aiBudget .budget-toolbar label{cursor:pointer}
+#aiBudget .budget-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}#aiBudget .budget-account{min-width:0}
+#aiBudget .budget-account-head,#aiBudget .budget-window-head{display:flex;justify-content:space-between;align-items:center;gap:12px}#aiBudget .budget-account h3{font-size:22px;margin:7px 0}#aiBudget .budget-symbol{font-size:34px;color:var(--budget-accent)}
+#aiBudget .budget-window{padding:16px 0;border-bottom:1px solid var(--line,#dce3f0)}#aiBudget .budget-window-head span{font-size:12px;color:var(--muted,#62718a)}
+#aiBudget .budget-value{font-size:32px;font-weight:800;margin:12px 0;color:var(--text,#202a42)}#aiBudget .budget-value small{font-size:13px;font-weight:500;margin-left:8px}
+#aiBudget .budget-meter{height:9px;border-radius:10px;overflow:hidden;background:var(--line,#e2e7f2)}#aiBudget .budget-meter i{height:100%;display:block;background:var(--budget-accent);border-radius:10px}#aiBudget .low .budget-meter i,#aiBudget .limited .budget-meter i{background:#d48231}
+#aiBudget .expired .budget-meter i,#aiBudget .stale .budget-meter i{background:#8992a7}#aiBudget .budget-window p{font-size:13px;line-height:1.55;margin:9px 0 0;color:var(--muted,#62718a)}
+#aiBudget .budget-source{margin:16px 0;overflow-wrap:anywhere}#aiBudget .budget-token{font-size:14px;padding:12px;background:var(--soft,#eef1ff);border-radius:12px}#aiBudget .budget-note{line-height:1.65;margin:18px 0}
+#aiBudget .budget-editor{margin-top:18px}#aiBudget [hidden]{display:none!important}#aiBudget .budget-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}#aiBudget input,#aiBudget select{width:100%;min-height:44px}#aiBudget label{font-size:13px;line-height:1.5}#aiBudget .budget-input-row{border-top:1px solid var(--line,#dce3f0);padding-top:12px;margin-top:12px}
+#aiBudget .budget-actions .btn,#aiBudget .budget-toolbar .btn{min-height:44px}#aiBudgetNotice{min-height:24px;line-height:1.6}
+@media(max-width:700px){#aiBudget .budget-grid{grid-template-columns:1fr}#aiBudget .budget-hero{align-items:flex-start;gap:12px}#aiBudget .budget-hero h2{font-size:23px}#aiBudget .budget-summary{min-width:65px}#aiBudget .budget-summary strong{font-size:27px}#aiBudget .budget-form-grid{grid-template-columns:1fr}#aiBudget .budget-window-head{align-items:flex-start;flex-wrap:wrap}}
