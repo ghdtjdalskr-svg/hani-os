@@ -6,7 +6,7 @@
 - 대표님 승인: B안 미리보기 확인 후 “탑승대기까지 진행하자”. 운영 병합·배포 승인은 아님.
 - 브랜치: `hani/character-archive-m9-mir`.
 - 기능 완료 SHA: `ebb3ab3ca95d84869ffdb0e1ee10f1bd947de807` (이후 문서만 추가 가능).
-- 상태: 기능·검증 완료 / GitHub 탑승 인계 준비. Notion 상태 갱신은 외부 공유 승인 대기이며 아직 등록 완료로 보지 않음.
+- 상태: 탑승 대기. 대표님의 외부 공유 명시 승인 후 GitHub 기능 브랜치 push 및 원격 HEAD `7deec8b8710bc460f736728fe1cef0c26b1d1b38` 확인. Notion HANI-27 요약·탑승 대기 상태를 저장하고 다시 읽어 확인함. 이 후속 문서는 기능 코드 변경 없음.
 - 작업트리: `.worktrees/character-archive-m9-mir`.
 - 원래 base: `728b23402377edbe43cd06d8e52a39dce7da320b`.
 - 시작 시 확인 main: `691385cf11faa7906a0d27472d8e32884f2be1ea`.
@@ -43,7 +43,8 @@
 - 실제 인증 OS 전체 회귀, 최신 main 통합 후 QA, One-Pass, 독립 UI 검수, 서버 HINA, Production read-back은 미수행.
 - 최신 main에서 구조 충돌 시 파일 전체 덮어쓰기 금지. 기능 충돌은 이 작업 담당에게 반환.
 - 추가 PNG 원본으로 용량 증가. 최종 열차 package 용량 gate는 미검증이며 기존 제한 우회 금지.
-- Notion HANI-27의 이전 PR219/v191 기록은 이번 완성본의 배포 근거 아님. 이전 외부 전송 차단을 우회하지 않고 요약·SHA·링크 공유 승인을 요청한 상태.
+- Notion HANI-27의 기존 PR219/PR221 열차 기록은 이번 완성본의 포함·배포 근거 아님. 대표님은 지정 GitHub 기능 브랜치의 코드·자산·검증 문서 업로드와 HANI-27 요약·SHA·링크 공유를 명시 승인함. 기존 다른 담당의 열차 추천/PR 속성은 보존하고 새 완성본의 추가 통합 필요성을 맨 위에 기록함.
+- Notion 기록: https://app.notion.com/p/3f0c5275707481788016d8e5c97610f2 — 2026-10-08 KST 저장 후 read-back 확인.
 
 ## 다음 담당
 
