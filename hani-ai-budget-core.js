@@ -2,8 +2,8 @@
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.HaniAiBudgetCore=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
   const slots=Object.freeze([
-    {id:'codex-1',provider:'codex',label:'Codex 1',url:'https://chatgpt.com/codex/settings/usage'},
-    {id:'codex-2',provider:'codex',label:'Codex 2',url:'https://chatgpt.com/codex/settings/usage'},
+    {id:'codex-1',provider:'codex',label:'Codex 주력',url:'https://chatgpt.com/codex/settings/usage'},
+    {id:'codex-2',provider:'codex',label:'Codex 보조',url:'https://chatgpt.com/codex/settings/usage'},
     {id:'claude-1',provider:'claude',label:'Claude',url:'https://claude.ai/settings/usage'},
     {id:'gemini-1',provider:'gemini',label:'Gemini',url:'https://gemini.google.com/'}
   ]);
