@@ -5,6 +5,8 @@
 - 2026-10-08 KST / Codex / NORMAL 읽기 전용 소개 UI.
 - 대표님 승인: B안 미리보기 확인 후 “탑승대기까지 진행하자”. 운영 병합·배포 승인은 아님.
 - 브랜치: `hani/character-archive-m9-mir`.
+- 기능 완료 SHA: `ebb3ab3ca95d84869ffdb0e1ee10f1bd947de807` (이후 문서만 추가 가능).
+- 상태: 기능·검증 완료 / GitHub 탑승 인계 준비. Notion 상태 갱신은 외부 공유 승인 대기이며 아직 등록 완료로 보지 않음.
 - 작업트리: `.worktrees/character-archive-m9-mir`.
 - 원래 base: `728b23402377edbe43cd06d8e52a39dce7da320b`.
 - 시작 시 확인 main: `691385cf11faa7906a0d27472d8e32884f2be1ea`.
