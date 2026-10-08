@@ -23,4 +23,5 @@
 - Independent Arin/HINA, 실제 인증 UI, Production HTTPS→localhost 권한, main/Pages/read-back 미검증. 개인 실제 사용량 요약은 공개 사이트 패키지에 포함 금지.
 - 함께 배포할 Edge Function 없음. 로컬 Node 도우미 실행 필요. 기기 간 자동 공유는 비공개 저장 설계/승인 필요.
 - 현재는 기능 일부가 준비된 1차 후보이며 네 서비스의 완전 자동 연동 완료가 아님.
+- 대표님 지정 표시: Codex 주력/보조, 두 카드 상품명 GPT · Plus. Claude · Pro, Gemini · Pro. 상품명은 사용자 제공 정보이며 자동 구독 조회·검증 완료로 해석하지 않음. 계정 ID/수집·저장 경로 불변.
 - 후속 사용자 요청: 관리 담당을 서윤으로 지정하고 임시 문자 아이콘 대신 실제 로고 적용. 기존 서윤 v7 프로필과 공식 사이트의 OpenAI/Claude/Gemini 원본 자산을 로컬 번들로 반영. Codex는 공급자 OpenAI 로고와 Codex 이름을 함께 표시. 출처 assets/ai-budget/SOURCES.md. PC1440/모바일390 화면·담당명·4개 로고 및 이미지 로딩 검사 PASS. 데이터/수집 기능은 변경 없음.

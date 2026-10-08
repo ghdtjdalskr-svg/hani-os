@@ -1,4 +1,5 @@
 #aiBudget{--budget-accent:var(--accent,#7569e8)}
+#aiBudget .budget-plan{display:inline-block;font-size:12px;font-weight:700;padding:4px 9px;border-radius:8px;background:var(--soft,#eef1ff);color:var(--text,#202a42)}
 #aiBudget .budget-manager{display:flex;align-items:center;gap:16px;margin:16px 0}#aiBudget .budget-manager>img{width:72px;height:72px;object-fit:cover;object-position:center 25%;border-radius:18px;flex-shrink:0}#aiBudget .budget-manager h3{margin:5px 0}#aiBudget .budget-manager p{margin:4px 0;line-height:1.6}#aiBudget .budget-symbol{width:56px;height:56px;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:14px;flex-shrink:0}#aiBudget .budget-symbol img{display:block;width:44px;height:44px;object-fit:contain}
 #aiBudget .budget-hero{display:flex;justify-content:space-between;align-items:center;gap:20px;background:linear-gradient(130deg,var(--card,#fff),var(--soft,#eef1ff));margin-bottom:18px}
 #aiBudget .budget-hero h2{margin:8px 0;font-size:26px}#aiBudget .budget-hero p{max-width:620px;line-height:1.65}
