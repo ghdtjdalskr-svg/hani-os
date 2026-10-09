@@ -39,7 +39,7 @@ try{
  assert.equal(await page.locator('#ogh-teams img[src*="banner-preview"]').count(),0);
  assert.equal(await page.locator('.ogh-person:visible').count(),17);
  assert.equal(await page.locator('.ogh-person-image>img').count(),17);
- assert.match(await page.locator('[data-card-person="seoyun"] img').getAttribute('src'),/hani-staff-seoyun-v7\.png$/);
+ assert.match(await page.locator('[data-card-person="seoyun"] img').getAttribute('src'),/hani-staff-seoyun-v7\.webp$/);
  assert.equal(await page.locator('.ogh-person-image>.ogh-placeholder').count(),0);
  for(const id of ['mir','seoyun','dohyun','serin','yuri','arin','gaeun','taeo']){
    const badge=page.locator('.ogh-node-people [data-person="'+id+'"] .ogh-nameplate');
@@ -51,7 +51,7 @@ try{
  await page.locator('[data-group="M9"]').click();assert.equal(await page.locator('.ogh-person:visible').count(),9);
  await page.locator('[data-group="AI STAFF"]').click();assert.equal(await page.locator('.ogh-person:visible').count(),8);
  await page.evaluate(async()=>{for(const img of document.querySelectorAll('.ogh-person img')){img.loading='eager';await img.decode();}});
- await page.locator('#ogh-people').screenshot({path:path.join(out,'staff-nameplates.png')});
+ await page.locator('#ogh-people').screenshot({path:path.join(out,'staff-nameplates.webp')});
  await page.locator('#ogh-team-filter').selectOption('strategy');assert.equal(await page.locator('.ogh-person:visible').count(),2);
  assert.equal(await page.locator('[data-filter-team="strategy"]').getAttribute('aria-pressed'),'true');
  await page.locator('#ogh-search').fill('<img src=x onerror=alert(1)>');assert.equal(await page.locator('.ogh-person:visible').count(),0);
@@ -72,18 +72,18 @@ try{
  assert.match(await page.locator('#ogh-panel-strategy').innerText(),/뮤즈 · 가은/);
  assert.match(await page.locator('#ogh-panel-strategy').innerText(),/회장 비서/);
  assert.equal(await page.locator('.ogh-chair img').count(),1);
- await page.locator('#ogh-teams').screenshot({path:path.join(out,'team-banner-desktop.png')});
+ await page.locator('#ogh-teams').screenshot({path:path.join(out,'team-banner-desktop.webp')});
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
- await page.locator('.ogh-mast').click();await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:path.join(out,'desktop.png'),fullPage:true});
- await page.screenshot({path:path.join(out,'desktop-first-screen.png')});
+ await page.locator('.ogh-mast').click();await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:path.join(out,'desktop.webp'),fullPage:true});
+ await page.screenshot({path:path.join(out,'desktop-first-screen.webp')});
  results.push('Desktop 1440: five equal teams, 17 portraits including 8 female AI staff, name/job plates, all filters, empty/reset, 5 team dialogs, person dialog, Escape/focus return, no errors/overflow PASS');
  await page.setViewportSize({width:390,height:844});
- await page.locator('#ogh-teams').screenshot({path:path.join(out,'team-banner-mobile.png')});
+ await page.locator('#ogh-teams').screenshot({path:path.join(out,'team-banner-mobile.webp')});
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
  await page.locator('[data-card-person="hina"]').click();assert.equal(await page.locator('dialog').evaluate(e=>e.scrollWidth<=e.clientWidth),true);
- await page.screenshot({path:path.join(out,'mobile-dialog.png')});await page.keyboard.press('Escape');
- await page.locator('.ogh-mast').click();await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:path.join(out,'mobile.png'),fullPage:true});
- await page.screenshot({path:path.join(out,'mobile-first-screen.png')});
+ await page.screenshot({path:path.join(out,'mobile-dialog.webp')});await page.keyboard.press('Escape');
+ await page.locator('.ogh-mast').click();await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:path.join(out,'mobile.webp'),fullPage:true});
+ await page.screenshot({path:path.join(out,'mobile-first-screen.webp')});
  await page.setViewportSize({width:320,height:740});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
  results.push('Mobile 390 / narrow 320: no horizontal overflow; Hina dialog layout PASS');
  // Full app route is inspected without signing in or bypassing its authentication gate.
