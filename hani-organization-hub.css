@@ -1,9 +1,9 @@
 /* Scoped editorial identity. Does not change other HANI views or theme controls. */
-#haniOrganizationHub.ogh{--ogh-ink:#111c32;--ogh-muted:#526079;--ogh-paper:#fff;--ogh-line:#dce2ed;color:var(--ogh-ink);background:var(--ogh-paper);font-family:Arial,'Malgun Gothic',sans-serif;line-height:1.5;padding:0 clamp(20px,4vw,64px);border-radius:20px;isolation:isolate;container-type:inline-size;overflow:clip}
+#haniOrganizationHub.ogh{--ogh-ink:#111c32;--ogh-muted:#526079;--ogh-paper:#fff;--ogh-line:#dce2ed;color:var(--ogh-ink);background:var(--ogh-paper);font-family:var(--ds-font,'SUIT Variable','Pretendard Variable',Pretendard,'Malgun Gothic',sans-serif);line-height:1.5;padding:0 clamp(20px,4vw,64px);border-radius:20px;isolation:isolate;container-type:inline-size;overflow:clip}
 #haniOrganizationHub *,#haniOrganizationHub *::before,#haniOrganizationHub *::after{box-sizing:border-box}
 #haniOrganizationHub :is(h1,h2,h3,p,figure){margin:0;color:inherit}
 #haniOrganizationHub button{font:inherit;color:inherit;cursor:pointer;min-width:0;white-space:normal;box-shadow:none;text-transform:none;letter-spacing:normal}
-#haniOrganizationHub button:focus-visible,#haniOrganizationHub input:focus-visible,#haniOrganizationHub select:focus-visible{outline:3px solid #695585;outline-offset:4px}
+#haniOrganizationHub button:focus-visible,#haniOrganizationHub input:focus-visible,#haniOrganizationHub select:focus-visible{outline:3px solid var(--structure-accent,#695585);outline-offset:4px}
 #haniOrganizationHub [hidden]{display:none!important}
 #haniOrganizationHub img{display:block;max-width:100%;object-fit:cover}
 #haniOrganizationHub .ogh-mast{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:28px 0;border-bottom:1px solid var(--ogh-line)}
@@ -291,3 +291,24 @@
  #haniOrganizationHub .ogh-panel-meta{display:grid}
  #haniOrganizationHub .ogh-panel-members{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
 }
+/* HANI OS design alignment (2026-10-09, 서윤 + 서린 review): shared shape tokens, dark finishes, touch targets. */
+#haniOrganizationHub.ogh{--ogh-radius-card:var(--ds-radius-card,16px);--ogh-radius-photo:var(--ds-radius-photo,12px);--ogh-radius-pill:999px;--ogh-soft:#f3f6fb;--ogh-inverse:#111c32}
+#haniOrganizationHub :is(.ogh-node,.ogh-dialog,.ogh-team-banner,.ogh-panel-summary){border-radius:var(--ogh-radius-card)}
+#haniOrganizationHub .ogh-person-caption{border-radius:0 0 var(--ogh-radius-photo) var(--ogh-radius-photo)}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #haniOrganizationHub.ogh{--ogh-ink:var(--text-primary);--ogh-muted:var(--text-secondary);--ogh-paper:var(--surface-raised);--ogh-line:var(--border-subtle);--ogh-soft:var(--surface-panel);--ogh-inverse:#2c3a5a;color-scheme:dark}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #haniOrganizationHub :is(.ogh-cta,.ogh-chair,.ogh-filters button[aria-pressed=true],.ogh-empty button,.ogh-type-controls button[aria-pressed=true]){background:var(--ogh-inverse);color:#fff}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #haniOrganizationHub :is(.ogh-org,.ogh-nameplate,.ogh-person-caption,.ogh-panel-summary,.ogh-hero-art,.ogh-team-banner,.ogh-type-controls button,.ogh-team-rail button){background-color:var(--ogh-soft);border-color:var(--ogh-line)}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #haniOrganizationHub .ogh-org{background-image:radial-gradient(color-mix(in srgb,var(--text-muted) 35%,transparent) .65px,transparent .65px)}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #haniOrganizationHub .ogh-node{background:linear-gradient(180deg,color-mix(in srgb,var(--tint) 22%,var(--ogh-paper)),var(--ogh-paper) 230px);border-color:var(--ogh-line)}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #haniOrganizationHub :is(.ogh-dialog,.ogh-team-open,.ogh-close,select,input){background:var(--ogh-paper);color:var(--ogh-ink);border-color:var(--ogh-line)}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #haniOrganizationHub :is(.ogh-nameplate small,.ogh-org-foot,.ogh-manifesto p,.ogh-flower){color:var(--ogh-muted)}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #haniOrganizationHub .ogh-manifesto{background:color-mix(in srgb,#e1e8ce 14%,var(--ogh-soft))}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #haniOrganizationHub :is(.ogh-tags>span,.ogh-rail-icon){background:color-mix(in srgb,var(--tint,#e7ecf5) 22%,var(--ogh-paper));color:var(--ogh-ink)}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #haniOrganizationHub .ogh-team-rail button[aria-pressed=true]{background:color-mix(in srgb,var(--tint,#e7ecf5) 28%,var(--ogh-paper))}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #haniOrganizationHub :is(.ogh-seal,.ogh-hero h1 em::after){background:color-mix(in srgb,#dce8ff 25%,var(--ogh-paper))}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #haniOrganizationHub .ogh-hero h1 em{color:#8ea3ff}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #haniOrganizationHub .ogh-team-tabs button[aria-selected=true]{color:#8ea3ff;border-bottom-color:#8ea3ff;background:var(--ogh-soft)}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #haniOrganizationHub .ogh-panel-index{color:color-mix(in srgb,var(--text-muted) 55%,transparent)}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #haniOrganizationHub :is(.ogh-person-badge,.ogh-person-arrow){background:color-mix(in srgb,var(--ogh-paper) 88%,transparent);color:var(--ogh-ink)}
+/* Touch targets: at least 44px on phones. */
+@media (max-width:760px){#haniOrganizationHub :is(.ogh-filters button,.ogh-type-controls button,.ogh-team-tabs button,.ogh-team-rail button,.ogh-close,.ogh-empty button){min-height:44px}#haniOrganizationHub .ogh-avatar{min-width:44px;min-height:44px}#haniOrganizationHub .ogh-close{min-width:44px}}
