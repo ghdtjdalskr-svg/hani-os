@@ -262,7 +262,7 @@ function createTabQuoteSelector(random = Math.random) {
     hinkei:{agent:'hina',name:'히나',role:'학습 담당',scene:'learning',line:'틀린 문제도 다음 정답으로 가는 힌트야!'}
   };
   const designSceneSrc=key=>q('img[data-design-scene="'+key+'"]',q('#haniDesignAssets')?.content)?.getAttribute('src')||'';
-  const profile=agent=>canonicalProfileImages[agent]||canonicalProfileImages.hani;
+  const profile=agent=>sidebarAgentImages[agent]||sidebarAgentImages.hani;
   function speakerMarkup(agent,name,role,line){return `<img src="${profile(agent)}" alt="${safe(name)}" width="64" height="64"><div><small>${safe(name)} · ${safe(role)}</small><p>${safe(line)}</p></div>`}
   const mainCharacterBannerVariants=new Set(['single-character','duo-or-trio','group']);
   // Banner layers: Seasonal Theme (CSS) -> Category Theme -> Sidebar Menu Scene.

@@ -1512,6 +1512,7 @@ const pageMeta={
  policy:["사내 규칙","AI TEAM이 공통으로 참고하는 운영 원칙과 학습 규정을 관리합니다.","team"],
  aiTeam:["AI 팀","역할별 담당 AI와 서비스 바로가기를 확인합니다.","team"],
  characterArchive:["M9 + MIR","HANI GROUP CHARACTER ARCHIVE · 각자의 방식으로 함께하는 멤버들.","team"],
+ organization:["HANI GROUP","사람과 전문성으로 연결되는 우리의 조직.","team"],
  aura:["HANI AURA","나의 색과 계절로 일상의 화면을 꾸밉니다.","team"],
  settings:["설정 / 데이터","캘린더, 백업, 복원과 초기화를 관리합니다.","work"],
  shopping:["쇼핑","v2.2 호환 페이지입니다.","life"]
@@ -1539,7 +1540,8 @@ const canonicalProfileImages=Object.freeze({
   yuna:"./assets/profiles/hani-profile-yuna.webp"
 });
 const agentImages=Object.freeze({...canonicalProfileImages,nauen:canonicalProfileImages.naeun,suyeon:canonicalProfileImages.sooyeon});
-const sidebarAgentImages=agentImages;
+// Small avatars (30-150px) use pre-resized 256px thumbnails; the 720px originals look jagged when the browser shrinks them 10-20x.
+const sidebarAgentImages=Object.freeze(Object.fromEntries(Object.entries(agentImages).map(([k,v])=>[k,v.replace("./assets/profiles/","./assets/profiles/thumb/").replace(/\.webp$/,"-256.webp")])));
 const pageAgentImage={home:"hani",investment:"hani",newsroom:"hani",asset:"jieun",ledger:"jieun",cards:"jieun",wishlist:"haru",diet:"nauen",exercise:"nauen",travel:"suyeon",university:"hina",study:"hina",certificate:"hina",reading:"haru",movie:"minji",diary:"minji",game:"suyeon",settings:"hani",work:"sua",tasks:"sua",calendar:"sua",drive:"sua",dev:"hani",deployment:"hani",intake:"yuna",agentReview:"hani",monthlyReport:"hani",policy:"hani",aiTeam:"hani"};
 const YUNA_AVATAR=canonicalProfileImages.yuna;
 const YUNA_PORTRAIT=canonicalProfileImages.yuna;
@@ -1747,7 +1749,7 @@ function setBanner(key,page="home"){
   const a=aiMap[key]||aiMap.home,p=pageBannerMap[page]||{},meta=pageMeta[page]||[page,"",key];
   const el=$("aiBanner");el.style.setProperty("--banner",a.color);el.style.setProperty("--banner-soft",a.soft);el.style.setProperty("--banner-line",a.line);
   const q=pageQuote(page),quoteAgent={"하니":"hani","지은":"jieun","나은":"nauen","히나":"hina","수아":"sua","하루":"haru","수연":"suyeon","민지":"minji","유나":"yuna"}[q[0]]||"";
-  const av=$("aiAvatar"),ak=quoteAgent||pageAgentImage[page],img=ak&&agentImages[ak];
+  const av=$("aiAvatar"),ak=quoteAgent||pageAgentImage[page],img=ak&&sidebarAgentImages[ak];
   av.className="ai-avatar"+(img?" has-photo":"")+(ak?` agent-${ak}`:"");
   av.style.backgroundImage=img?`url(${img})`:"";av.textContent=img?"":(p.emoji||a.emoji);
   const km={home:"DASHBOARD",finance:"FINANCE",health:"HEALTH",growth:"GROWTH",life:"LIFE",sports:"SPORTS",game:"SPORTS",work:"WORK",team:"AI TEAM"};
@@ -3470,11 +3472,11 @@ const TEAM_PROFILE_META={
 let activeTeamProfileKey="hani";
 function teamMeta(key){return TEAM_PROFILE_META[key]||TEAM_PROFILE_META.hani}
 function teamByKey(key){return team.find(x=>x.key===key)||developmentTeam.find(x=>x.key===key)||team[0]}
-function teamCard(x){const img=agentImages[x.key];return `<button class="member ui26-member tone-${x.tone}" data-team-key="${x.key}" data-go="${x.go}" title="${x.name} 프로필 보기"><div class="member-visual ${img?'has-photo':''}" ${img?`style="background-image:url(${img})"`:''}>${img?'':`<span>${x.emoji}</span><small>${x.key==="gemini"?"개발 보고팀":"DESIGN<br>COMING SOON"}</small>`}</div><div class="member-copy"><span class="member-role">${x.role}</span><b>${x.name}</b><p>${x.desc}</p><span class="member-link"></span></div></button>`}
+function teamCard(x){const img=sidebarAgentImages[x.key];return `<button class="member ui26-member tone-${x.tone}" data-team-key="${x.key}" data-go="${x.go}" title="${x.name} 프로필 보기"><div class="member-visual ${img?'has-photo':''}" ${img?`style="background-image:url(${img})"`:''}>${img?'':`<span>${x.emoji}</span><small>${x.key==="gemini"?"개발 보고팀":"DESIGN<br>COMING SOON"}</small>`}</div><div class="member-copy"><span class="member-role">${x.role}</span><b>${x.name}</b><p>${x.desc}</p><span class="member-link"></span></div></button>`}
 function teamListHtml(items){return `<ul>${items.map(v=>`<li>${esc(v)}</li>`).join("")}</ul>`}
 function updateTeamActiveState(key){document.querySelectorAll(".ui26-member[data-team-key]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.teamKey===key));document.querySelectorAll(".sidebar-team-face[data-team-key]").forEach(btn=>btn.classList.toggle("active",btn.dataset.teamKey===key));}
 function renderTeamProfile(key=activeTeamProfileKey){
-  const isDevelopment=developmentTeam.some(x=>x.key===key),panel=$(isDevelopment?"developmentTeamProfilePanel":"teamProfilePanel");if(!panel)return;const member=teamByKey(key),meta=teamMeta(key),img=sidebarAgentImages[key]||agentImages[key]||"";activeTeamProfileKey=member.key;
+  const isDevelopment=developmentTeam.some(x=>x.key===key),panel=$(isDevelopment?"developmentTeamProfilePanel":"teamProfilePanel");if(!panel)return;const member=teamByKey(key),meta=teamMeta(key),img=agentImages[key]||"";activeTeamProfileKey=member.key;
   const badge=$(isDevelopment?"developmentTeamProfileBadge":"teamProfileBadge");if(badge)badge.textContent=member.name;
   panel.innerHTML=`<div class="ai-team-profile-visual tone-${member.tone}"><div class="ai-team-profile-avatar" style="${img?`background-image:url(${img})`:''}">${!img?`<span style="font-size:64px" aria-label="${esc(member.name)}">${esc(member.emoji)}</span>`:""}</div><div class="ai-team-profile-tag">${esc(meta.rank||member.role)}</div><div class="ai-team-profile-quote">“${esc(meta.quote||member.desc)}”</div></div><div class="ai-team-profile-body"><div class="ai-team-profile-head"><div><div class="ai-team-profile-role">${esc(member.role)}</div><h3>${esc(member.name)}</h3><div class="ai-team-profile-sub">${esc(meta.headline||member.desc)}</div></div><div class="ai-team-profile-actions"><button class="btn sm primary" type="button" id="${isDevelopment?"developmentTeamProfileGoMain":"teamProfileGoMain"}">담당 화면 열기</button></div></div><div class="ai-team-mood">${(meta.signature||[]).map(v=>`<span class="pill">${esc(v)}</span>`).join("")}</div><div class="ai-team-meta-grid"><div class="ai-team-meta-card"><b>담당 역할</b>${teamListHtml(meta.focus||[])}</div><div class="ai-team-meta-card"><b>성향</b>${teamListHtml(meta.traits||[])}</div><div class="ai-team-meta-card"><b>대화 스타일</b>${teamListHtml(meta.style||[])}</div><div class="ai-team-meta-card"><b>강점</b>${teamListHtml(meta.strengths||[])}</div></div><div class="ai-team-profile-note">${esc(meta.note||member.desc)}</div></div>`;
   const goBtn=$(isDevelopment?"developmentTeamProfileGoMain":"teamProfileGoMain");if(goBtn)goBtn.onclick=()=>showView(member.go||"home");
