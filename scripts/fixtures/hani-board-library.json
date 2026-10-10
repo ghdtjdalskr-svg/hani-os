@@ -1,0 +1,45 @@
+{
+  "threads": [
+    {
+      "id": "fixture-library-tea",
+      "authorId": "hani",
+      "category": "LOUNGE",
+      "title": "커피를 줄이려다가 찻잔만 늘었어요",
+      "body": "보리차 담을 잔을 고르다 회의 시작을 놓칠 뻔했어요. 히나, 제 책상에 잔 하나만 남겨주세요 ㅋㅋ",
+      "topics": ["차", "책상"],
+      "season": null,
+      "weekday": null,
+      "comments": [
+        {"authorId": "hina", "body": "하니 언니, 잔을 치우는 것보다 장바구니부터 닫아야겠는데요 ㅋㅋ", "replyTo": null, "afterMin": 5},
+        {"authorId": "hani", "body": "들켰네요. 오늘은 진짜 여기까지만 살게요.", "replyTo": 0, "afterMin": 17},
+        {"authorId": "mir", "body": "같은 차인데 잔이 바뀌면 맛도 다르게 느껴지나요?", "replyTo": null, "afterMin": 45}
+      ]
+    },
+    {
+      "id": "fixture-library-walk",
+      "authorId": "naeun",
+      "category": "LIFE",
+      "title": "점심 먹고 한 바퀴만 걸을 분?",
+      "body": "오늘은 속도 욕심 안 내고 걸으려고요. 수연 씨가 먼저 가도 저는 천천히 따라갈게요.",
+      "topics": ["산책", "점심"],
+      "season": null,
+      "weekday": null,
+      "comments": [
+        {"authorId": "sooyeon", "body": "나은 차장님 옆에서 걸을게요. 오늘은 저도 쉬엄쉬엄 가요!", "replyTo": null, "afterMin": 12}
+      ]
+    },
+    {
+      "id": "fixture-library-review",
+      "authorId": "dohyun",
+      "category": "WORK",
+      "title": "테스트 이름 바꾸다 점심 시간이 됐어요",
+      "body": "유리 님 덕에 실패 메시지만 읽어도 어디가 틀렸는지 보이네요. 이제 이름 고민은 그만하고 밥 먹으러 갑니다.",
+      "topics": ["테스트", "코드"],
+      "season": null,
+      "weekday": null,
+      "comments": [
+        {"authorId": "yuri", "body": "좋아요. 실패 이유가 바로 보이면 다음 점검도 한결 빠르겠어요.", "replyTo": null, "afterMin": 3}
+      ]
+    }
+  ]
+}

@@ -6,7 +6,7 @@ import {api,handlers,context,roster,plain,rest,inspection,saveFailure} from "./h
 
 const board=fs.readFileSync(new URL("../hani-board.js",import.meta.url),"utf8");
 const index=fs.readFileSync(new URL("../index.html",import.meta.url),"utf8");
-const markup=index.slice(index.indexOf('<section id="board"'),index.indexOf('<section id="characterArchive"'));
+const markup=index.match(/<section id="board"[\s\S]*?<\/section>/)[0];
 const initial={...plain(api.freshState()),futureState:{preserve:"yes"}};
 initial.books=[{id:"sandbox-baseline",title:"Existing local record"}];
 initial.boardPosts=[{id:"legacy",title:'회의 <img src=x onerror="bad()">',body:"첫 줄\n사실: 테스트 일정 논의",authorId:roster.chairman.id,category:"WORK",pinned:true,createdAt:"2026-10-09T00:00:00Z",future:{keep:true}}];
@@ -66,17 +66,14 @@ handlers.openPost("popular");assert.equal(api.getState().boardPosts.find(p=>p.id
 const viewSaves=inspection().queues;handlers.openPost("popular");
 assert.equal(inspection().queues,viewSaves,"successful retry consumes one session view");
 
+vm.runInContext(fs.readFileSync(new URL("../hani-relationship-seed.js",import.meta.url),"utf8"),context);
 for(const category of ["WORK","LIFE","MEMORY","LOUNGE"]){
   const input={...initial.boardPosts[0],category};
-  const a=handlers.storyTemplate(input,1),b=handlers.storyTemplate(input,2);
-  assert.ok(a.length>0&&a.length<=handlers.replySafetyBound);
-  assert.equal(a[0].stage,"발단");if(a.length>=3)assert.equal(a.at(-2).stage,"반전");if(a.length>1)assert.equal(a.at(-1).stage,"마무리");
-  assert.ok(a.every(c=>roster.people.some(p=>p.id===c.authorId)));
-  assert.ok(a.every(c=>handlers.candidateScore(c.authorId,input,input,[]).relevant),"preview participants fit the topic");
-  assert.notDeepEqual(plain(a),plain(b),"regeneration varies the thread");
-  assert.deepEqual(plain(a),plain(handlers.storyTemplate(input,1)),"deterministic for same input/round");
-  if(category!=="LOUNGE")assert.ok(!a.some(c=>/가상의 탕비실|상상 속 휴게실/.test(c.body)));
-  else if(a.length>1)assert.ok(a.some(c=>/가상의 탕비실|상상 속 휴게실/.test(c.body)));
+  const a=handlers.ownerReactions(input,input,[],1);
+  assert.ok(a.length>=1&&a.length<=3);
+  assert.ok(a.every(c=>roster.people.some(p=>p.id===c.authorId)&&c.toOwner));
+  assert.deepEqual(plain(a),plain(handlers.ownerReactions(input,input,[],1)),"deterministic preview");
+  assert.ok(a.every(c=>c.body.length<90&&!/「|“|모임|탕비실/.test(c.body)),"short reactions stay with the source");
 }
 let before=inspection().queues;
 assert.equal(await handlers.previewThread("legacy"),true);
@@ -94,7 +91,7 @@ const generated=api.getState().boardComments.slice(countBefore);
 assert.ok(generated.length>0&&generated.length<=handlers.replySafetyBound);
 assert.equal(new Set(generated.map(c=>c.threadId)).size,1);
 assert.ok(generated[0].threadId);assert.equal(generated[0].parentId,"");
-assert.ok(generated.slice(1).every(c=>c.parentId===generated[0].id));
+assert.ok(generated.every(c=>c.parentId===""));
 assert.ok(generated.every(c=>c.generated===true&&c.postId==="legacy"&&roster.people.some(p=>p.id===c.authorId)));
 assert.equal(handlers.postPreview(),false,"double posting blocked");
 assert.deepEqual(rest(api.getState()),unrelated,"no new top-level state or unrelated writes");
@@ -116,6 +113,8 @@ assert.deepEqual(plain(restored.boardPosts),plain(api.getState().boardPosts));
 assert.deepEqual(plain(restored.boardComments),plain(api.getState().boardComments));
 assert.equal(JSON.parse(inspection().serial).boardComments.at(-1).generated,true,"real storage read-back retains new fields");
 console.log("PASS: roster/story/category variation, preview/regenerate/cancel no write, atomic post, failure retry, stale/recovery guard, backup round-trip");
+
+handlers.refreshLiving(); // Prime the one-time cleanup before the history view checks.
 
 // Minimal DOM records HTML/events; CSS layout and native dialog behavior require browser QA.
 const slots=new Map();
@@ -142,7 +141,10 @@ let restoredScroll=null;context.window.scrollTo=options=>{restoredScroll=options
 context.document.getElementById=id=>id==="board"?root:null;
 const sessionRecords=new Map();context.sessionStorage={getItem:key=>sessionRecords.get(key)||null,setItem:(key,value)=>sessionRecords.set(key,value)};
 vm.runInContext(board,context);let ui=context.window.HaniBoard;
-const click=dataset=>root.listeners.click({target:{closest:()=>({dataset,hasAttribute:()=>false})}});
+const click=dataset=>root.listeners.click({preventDefault(){},target:{closest:()=>({dataset,hasAttribute:()=>false})}});
+const profileRoutes=[];context.showView=route=>profileRoutes.push(route);
+const beforeProfile=inspection().saves;click({boardPerson:'hani'});
+assert.equal(profileRoutes.at(-1),'organization/people/hani');assert.equal(inspection().saves,beforeProfile,'author navigation is read-only');
 const flush=async()=>{await Promise.resolve();await Promise.resolve()};
 assert.equal(ui.savePost({title:"목록 공지",body:"상단 고정 확인",category:"WORK",pinned:true}),true);
 assert.equal(ui.savePost({title:'<script>bad()</script>',body:'A\n<img src=x onerror="bad()">',category:"LOUNGE"}),true);
@@ -157,7 +159,7 @@ assert.deepEqual([...slots.get("list").innerHTML.matchAll(/<th scope="col">([^<]
 const pinnedRow=slots.get("list").innerHTML.indexOf('board-row board-pinned'),normalRow=slots.get("list").innerHTML.indexOf('class="board-row"');
 assert.ok(pinnedRow>=0&&normalRow>pinnedRow,"pinned notice precedes normal rows");
 assert.ok(slots.get("list").innerHTML.includes('board-mobile-two-line'));
-assert.ok(slots.get("list").innerHTML.includes('title="성민 · 회장"'));
+assert.ok(slots.get("list").innerHTML.includes('title="성민 · 회장 · HANI GROUP"'));
 assert.ok(/<img[^>]+loading="lazy"[^>]+decoding="async"[^>]+width="28"[^>]+height="28"/.test(slots.get("list").innerHTML));
 assert.ok(/<img[^>]+width="40"[^>]+height="40"/.test(slots.get("article").innerHTML));
 const sessionViews=api.getState().boardPosts.find(p=>p.id===xss.id).views;
@@ -165,17 +167,17 @@ vm.runInContext(board,context);ui=context.window.HaniBoard;ui.openPost(xss.id);
 assert.equal(api.getState().boardPosts.find(p=>p.id===xss.id).views,sessionViews,"sessionStorage prevents view increment after module reload");
 click({board:"react"});await flush();
 assert.equal(slots.get("preview").open,true);assert.equal(slots.get("previewPost").disabled,false);
-assert.equal(slots.get("previewLabel").textContent,"AI 연결 전 미리보기");
+assert.equal(slots.get("previewLabel").textContent,"직원 반응 미리보기");
 assert.ok(!/<script>|<img src=x/.test(slots.get("previewComments").innerHTML));
 before=inspection().queues;slots.get("preview").listeners.cancel();slots.get("preview").close();
 assert.equal(ui.postPreview(),false);assert.equal(inspection().queues,before);
 click({board:"react"});await flush();click({board:"previewPost"});
 assert.equal(inspection().queues,before+1);assert.equal(slots.get("preview").open,false);
-const first=api.getState().boardComments.find(c=>c.postId===xss.id&&!c.parentId);click({boardReply:first.id});
+const first=api.getState().boardComments.find(c=>c.postId===xss.id&&!c.parentId&&!c.pending);click({boardReply:first.id});
 assert.ok(slots.get("replyContext").textContent.includes("에게 답글"));
 slots.get("commentForm").elements.body.value="이벤트 답글";
 slots.get("commentForm").listeners.submit({preventDefault(){},currentTarget:slots.get("commentForm")});
-assert.equal(api.getState().boardComments.at(-1).parentId,first.id);
+assert.equal(api.getState().boardComments.findLast(c=>c.authorId===roster.chairman.id).parentId,first.id);
 assert.ok(slots.get("comments").innerHTML.includes("board-reply"));
 assert.ok(/<strong class="board-comment-count">\d+<\/strong>/.test(slots.get("list").innerHTML),"comment count is a bold number");
 click({boardLike:xss.id});assert.equal(api.getState().boardPosts.find(p=>p.id===xss.id).likes,1);

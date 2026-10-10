@@ -139,7 +139,8 @@ const remoteHash=await api.cloudStateHash({...empty,boardComments:[comment]});
 assert.notEqual(baseHash,localHash);assert.notEqual(baseHash,remoteHash);
 const decision={hasBaseline:true,localMeaningful:true,remoteMeaningful:true,
   localHash,remoteHash,baselineHash:baseHash,appliedRevision:3,remoteRevision:4};
-assert.equal(api.cloudSyncDecision(decision).action,"conflict");
+assert.equal(api.cloudSyncDecision({...decision,syncPolicy:"manual"}).action,"conflict"); // 확인 후 선택 mode keeps the old prompt
+assert.equal(api.cloudSyncDecision(decision).action,"pull"); // Cloud 우선 (default): Cloud wins after the local safety archive
 assert.equal(api.cloudSyncDecision({...decision,remoteHash:baseHash,remoteRevision:3}).action,"push");
 assert.equal(api.cloudSyncDecision({...decision,localHash:baseHash}).action,"pull");
 const commentsBefore=plain(api.getState().boardComments);
@@ -174,7 +175,7 @@ const routeContext=vm.createContext({
   NAVIGATION_VIEWS:new Set(["board","home"]),navigationTimer:null,navigationCurrent:"",
   navigationBooted:false,loginGateUnlocked:false,pageMeta:{},clearTimeout(){},setBanner(){},updateFinishScope(){},cloudUser:null
 });
-vm.runInContext(fn("showView")+'\nshowView("board/post%2Fwith%20spaces");',routeContext);
+vm.runInContext(fn("organizationRoute")+'\n'+fn("settingsRoute")+'\n'+fn("showView")+'\nshowView("board/post%2Fwith%20spaces");',routeContext);
 assert.equal(routeContext.document.body.dataset.view,"board");assert.equal(boardRenders,1);
 assert.equal(routeWrites.at(-1),"#board/post%2Fwith%20spaces","post hash survives canonical showView");
 vm.runInContext('showView("board");',routeContext);assert.equal(routeWrites.at(-1),"#board/post%2Fwith%20spaces");

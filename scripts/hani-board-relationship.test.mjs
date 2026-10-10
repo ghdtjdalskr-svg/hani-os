@@ -65,7 +65,7 @@ for(let i=0;i<40;i++){
   assert.ok(!rows.some(c=>["gaeun","haru","sua","taeo"].includes(c.authorId)),"unrelated staff do not join technical topic");
   assert.ok(rows.every(c=>!c.body.includes("오빠")),"WORK seed voice/quirks/callbacks cannot leak casual address");
 }
-assert.ok(participating>0&&participating<40,"Phase 3 energy still allows quiet and active threads");
+assert.ok(participating===40,"relevant owner texts receive one to three reactions");
 for(const member of roster.people)for(const category of ["WORK","LIFE","LOUNGE","MEMORY"]){
   const input={...post,id:"generated-address-"+member.id+category,category,title:"같이 이야기해요",body:"@"+member.name+" 의견을 알려주세요"};
   const rows=h.queueReplies(input,input,[],now);
@@ -75,18 +75,18 @@ for(const member of roster.people)for(const category of ["WORK","LIFE","LOUNGE",
   }
 }
 const empty={...post,title:"zzzz",body:"zzzz",category:"MEMORY"};
-assert.equal(h.queueReplies(empty,empty,[],now).length,0,"no relevance means no automatic replies");
+const affinityReplies=h.queueReplies(empty,empty,[],now);
+assert.ok(affinityReplies.length>=1&&affinityReplies.length<=3,"owner reactions can use relationship affinity");
+assert.ok(affinityReplies.every(c=>h.candidateScore(c.authorId,empty,empty,[]).affinity>0));
 const source={id:"mention",authorId:"seongmin",body:"@MIR 왜 그렇게 봤나요?"};
 assert.ok(h.queueReplies(empty,source,[],now).some(c=>c.authorId==="mir"),"explicit mention is relevant");
 const pair={...post,id:"pair",category:"LOUNGE",authorId:"hani",title:"히나와 일본어 퀴즈",body:"@히나 넌 너무 직진해."};
-const history=[];
-for(let i=0;i<40;i++)history.push(...h.queueReplies({...pair,id:"pair-"+i},{...pair,id:"pair-"+i},[],now));
-const callbackRows=history.filter(c=>seed.relations.some(r=>[...(r.callbacks||[]),r.insideJoke].filter(Boolean).some(s=>c.body.includes("‘"+s+"’"))));
-assert.ok(callbackRows.length>0&&callbackRows.length<history.length/3,"callbacks occasional, not every reply");
-const replies=h.queueReplies(pair,pair,[],now);
-assert.ok(replies.some(c=>c.authorId==="hina"&&c.body.includes("하니 언니")),"relation nickname is used in actual generated body");
+assert.equal(h.queueReplies(pair,pair,[],now).length,0,"staff discussion comes only from the library");
+assert.equal(h.ownerReactions(pair,pair,[],1).length,0,"staff preview cannot regenerate templates");
+const ownerSource={id:"own-source",authorId:"seongmin",body:"@수아 질문이 있어요"};
+assert.ok(h.queueReplies(pair,ownerSource,[],now).some(c=>c.authorId==="sua"&&c.body.includes("매니저님")),"owner relation nickname in actual reaction");
 const queues=inspection().queues,state=plain(api.getState());
-h.storyTemplate(pair,1);assert.equal(inspection().queues,queues);assert.deepEqual(plain(api.getState()),state,"read-only preview");
+h.ownerReactions(post,post,[],1);assert.equal(inspection().queues,queues);assert.deepEqual(plain(api.getState()),state,"read-only preview");
 // Partial seed keeps existing archive fields; cache also handles removing a seed.
 const full=context.HaniRelationshipSeed;
 context.HaniRelationshipSeed={people:[{id:"hani",voice:"Seed voice"}],relations:[]};
@@ -98,6 +98,6 @@ const root={querySelector:s=>slots.get(s.match(/data-board="([^"]+)"/)?.[1])||nu
 context.document.getElementById=id=>id==="board"?root:null;
 api.setState({...state,boardPosts:[{...post,authorId:"mir"}],boardComments:[]});
 vm.runInContext(fs.readFileSync(new URL("../hani-board.js",import.meta.url),"utf8"),context);
-assert.ok(slots.get("list").innerHTML.includes("AI ENTITY · SPECIAL MEMBER"),"MIR rendered title replaces rank");
+assert.ok(slots.get("list").innerHTML.includes("MIR · AI ENTITY"),"MIR rendered title replaces rank");
 assert.ok(!slots.get("list").innerHTML.includes("MIR · Native Intelligence"));
 console.log("PASS: seed personas/modes, relation nickname, chairman address, six-person/category oppa gate, scoring/avoid/relevance, callbacks, read-only preview, MIR rendered label");

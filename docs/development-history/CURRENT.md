@@ -1,3 +1,7 @@
+# 2026-10-11 · 사이드바·입장 화면 UTF-8 후속 (도연/Codex)
+
+`hani/navlogin-20261011`, base `7d77f23`의 기존 미커밋 작업을 보존해 오피스 5메뉴·회사 소개 4탭·설정 사내 규칙 탭·테마 스튜디오·입장 화면 명칭을 보완했습니다. navlogin35/cloud-first40 및 관련 Node 회귀·보호 원문 비교 통과. **브라우저와 Git subprocess EPERM으로 safety/UI·보호 게이트 통합 검증은 차단, 미커밋·미push·미배포 상태입니다.** 표시/캐시 v2.9.201 유지, 신규 runtime 파일 없음. Notion append는 자동 승인 검토의 approval policy never 거절로 갱신 대기. [최신 인수인계](handoffs/2026-10-11-navlogin.md). 다음은 검증 가능한 환경의 브라우저/통합 검사이며, 배포 열차 완료로 보지 않습니다. 아래 다른 담당 기록은 보존합니다.
+
 # 최종 탑승본 업데이트 · 2026-10-07
 
 HANI-7/28/31/33 최종 기능 결합 runtime: `hani/report-navigation-ready-20261007@c4b32803f3f5e418151464366a21f19719156b12`. [최종 인수인계](handoffs/2026-10-07-report-navigation-ready.md). 공통 목표 슬롯/발표/PDF/모바일 board 기능 충돌 해결 및 주요 발표 실적 공통 API 연결. 이전 개별 branch와 goal-report-ready 결합본 중복 적용 금지. 기존 source/tooling main691385cf 변경과 최신 열차 범위 대조 필요, main merge/rebase하지 않음.
