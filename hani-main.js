@@ -985,6 +985,8 @@ window.HANI_CANONICAL_LOGO_OWNERS=HANI_CANONICAL_LOGO_OWNERS;
 let cloudClient=null;
 let cloudUser=null;
 window.HANI_MEDIA?.setAccountProvider(()=>cloudUser?.id||"");
+window.HANI_MEDIA?.setCloudProvider(()=>cloudClient&&cloudUser?.id?
+  {client:cloudClient,userId:cloudUser.id}:null);
 window.addEventListener("hani-media-ready",()=>{if(!loadRecovery.active){renderReading();renderMovies()}});
 let cloudSessionFullReads=0,cloudSessionMetaChecks=0;
 let cloudRuntime={status:"설정 필요",tone:"warn",message:"Cloud 설정을 입력하면 연결을 준비합니다.",revision:null,updatedAt:"",verifiedAt:"",device:"",sync:"OFF"};
@@ -3311,7 +3313,69 @@ async function mediaBackupState(value){
   alert("불완전 백업: 참조 이미지가 누락되었거나 미디어 보관소를 읽지 못했습니다. 백업과 후속 작업을 중단합니다.");
   return null;
 }
+let mediaBBusy=false;
+function mediaBCanRun(){
+  return !!(window.HANI_MEDIA&&cloudClient&&cloudUser?.id&&navigator.onLine!==false&&
+    cloudAutoSyncReady&&cloudRuntime.sync==="ON"&&!cloudSyncBusy&&!cloudApplyingRemote&&
+    !loadRecovery.active&&!importSyncHold&&!cloudRecoveryMode);
+}
+function mediaBStatus(message){const el=$("mediaBResult");if(el)el.textContent=message}
+function mediaBConfirm(){
+  const dialog=$("mediaBDialog");
+  if(!dialog||typeof dialog.showModal!=="function")return Promise.resolve(false);
+  dialog.returnValue="";
+  return new Promise(resolve=>{
+    dialog.onclose=()=>{dialog.onclose=null;resolve(dialog.returnValue==="approve")};
+    try{dialog.showModal()}catch(_){dialog.onclose=null;resolve(false)}
+  });
+}
+async function mediaRunB(){
+  if(mediaBBusy||!mediaBCanRun())return;
+  mediaBBusy=true;renderMediaPreview();
+  const original=state,before=JSON.stringify(state),client=cloudClient,owner=cloudUser.id,epoch=cloudOwnerVerificationEpoch;
+  const guard=()=>mediaBCanRun()&&state===original&&JSON.stringify(state)===before&&
+    cloudClient===client&&cloudUser?.id===owner&&cloudOwnerVerificationEpoch===epoch;
+  try{
+    if(!await mediaBConfirm())return;
+    if(!guard())throw Error("확인 중 계정·기록·Cloud 상태가 변경됐습니다.");
+    const auth=await client.auth.getUser();
+    if(auth.error||auth.data?.user?.id!==owner||!guard())throw Error("소유 계정 로그인을 확인하지 못했습니다.");
+    const result=await window.HANI_MEDIA.prepareB({
+      state:JSON.parse(before),client,userId:owner,guard,progress:mediaBStatus,
+      snapshot:async()=>{
+        const full=await window.HANI_MEDIA.reembed(JSON.parse(before));
+        if(!full?.complete||!full.data||!guard())return false;
+        return await cloudSaveSafetySnapshot("before_media_stage_b",full.data);
+      }
+    });
+    if(!result.ok)throw Error(result.error);
+    const verifiedAuth=await client.auth.getUser();
+    if(verifiedAuth.error||verifiedAuth.data?.user?.id!==owner||!guard())
+      throw Error("최종 소유 계정·기록 검증에 실패했습니다.");
+    mediaBStatus("d · 검증된 참조를 한 번 저장 · 기록의 원본 이미지는 그대로");
+    const candidate=structuredClone(original);
+    for(const change of result.changes){
+      const row=candidate[change.kind][change.index];
+      if(row.id!==change.id||row[change.field]!==change.data||row[change.field+"Ref"])
+        throw Error("참조 추가 직전 기록이 달라졌습니다.");
+      row[change.field+"Ref"]=change.ref;
+    }
+    if(result.changes.length){
+      state=candidate; // One mutation, then the existing normal save/Cloud queue.
+      let saved=false;
+      try{saved=save()?.ok===true}
+      finally{if(!saved)state=original}
+      if(!saved)throw Error("기존 저장 경로에서 저장하지 못했습니다. 참조 추가를 중단했습니다.");
+      try{renderAll()}catch(_){toast("참조는 저장됐습니다. 화면을 새로 확인해 주세요.")}
+    }
+    mediaBStatus("e · "+result.count+"장 보관 확인 · 기록의 원본 이미지는 그대로 · 충돌 "+
+      result.conflicts.length+"건"+(result.conflicts.length?" (기존 참조 보존)":""));
+  }catch(error){mediaBStatus("중단 · "+(error?.message||"이중 보관 실패"))}
+  finally{mediaBBusy=false;renderMediaPreview()}
+}
 function renderMediaPreview(){
+  const button=$("mediaRunB");
+  if(button){button.disabled=mediaBBusy||!mediaBCanRun();button.onclick=mediaRunB}
   const host=$("mediaSeparationStats");if(!host)return;
   try{
     const report=window.HANI_MEDIA?.dryRunReport(state);if(!report)return;
@@ -4103,12 +4167,8 @@ function cloudRecordCount(d=state){
   return (d.transactions?.length||0)+(d.investmentMonthlySnapshots?.length||0)+(d.investmentBrokerSnapshots?.length||0)+(d.investmentCashFlows?.length||0)+(d.investmentJournal?.length||0)+(d.body?.length||0)+(d.exercise?.length||0)+(d.books?.length||0)+(d.movies?.length||0)+(d.diaries?.length||0)+(d.tasks?.length||0)+(d.campusSemesters?.length||0)+(d.travelTrips?.length||0)+(d.travelPlaces?.length||0)+(d.travelWishlist?.length||0)+(d.certificates?.length||0)+(d.wishlistItems?.length||0)+(d.learningProjects?.length||0)+(d.learningQuizzes?.length||0)+(d.learningWrongAnswers?.length||0);
 }
 
-// TODO(media-stage-A/hash-contract): keep cloudMediaSignature (row matching),
-// comparable/fingerprint, protected-media merge, Data Hub ownership and monthly
-// fingerprints unchanged. Normalizing to a digest changes existing inline hashes;
-// normalizing refs to cached inline makes hashes depend on IDB hydration/account.
-// B/C require a deterministic shared digest contract and migration approval.
-// Never infer content equality from an unverified coverRef/posterRef.
+// B: coverRef/posterRef are ordinary record fields; hashes include them so they sync normally.
+// C (ref-only content equivalence) requires its own approved contract.
 function cloudComparableState(value){
   try{
     const out=structuredClone(value&&typeof value==="object"?value:{});
@@ -4867,6 +4927,7 @@ async function cloudVerifySourceOwner(){
   }
 }
 function renderCloudPanel(){
+  renderMediaPreview();
   renderCloudTransferUsage();
   const pill=$("cloudStatePill"),msg=$("cloudMessage"),grid=$("cloudStatusGrid"),head=$("cloudHeaderState");
   const bridge=$("cloudBridgeCard");
@@ -5651,7 +5712,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.195";
+const HANI_DISPLAY_VERSION="2.9.196";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
