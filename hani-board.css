@@ -1,0 +1,11 @@
+/* Shared design tokens also follow midnight-black / titanium-graphite finishes. */
+#board .board-body{white-space:pre-wrap;overflow-wrap:anywhere;color:var(--text-primary)}
+#board .item{align-items:flex-start}
+#board .item>div{min-width:0;width:100%}
+#board .acts{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+#board [data-board-filter][aria-pressed="true"]{outline:2px solid var(--text-secondary);outline-offset:2px}
+#board button{min-height:44px}
+#board input:not([type="checkbox"]),#board select,#board textarea{width:100%;box-sizing:border-box}
+#board [hidden]{display:none!important}
+#board dialog{background:var(--surface-raised);color:var(--text-primary);border:1px solid var(--border-subtle);max-width:min(520px,90vw)}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #board{color-scheme:dark}
