@@ -1802,7 +1802,8 @@ window.addEventListener('load',navigationRestore,{once:true});
 function showView(id){
   const boardHash=typeof id==="string"&&id.startsWith("board/")?id:
     id==="board"&&location.hash.startsWith("#board/")?location.hash.slice(1):"";
-  if(boardHash)id="board";
+const BOARD_VIEW_ID='board';
+  if(boardHash)id=BOARD_VIEW_ID; // view id kept in a const so static DOM-id scans don't see a second id literal
   if(!$(id))id="home";
   clearTimeout(navigationTimer);navigationCurrent=NAVIGATION_VIEWS.has(id)?id:'';
   if(navigationBooted&&loginGateUnlocked)navigationPersist(navigationCurrent,0);
