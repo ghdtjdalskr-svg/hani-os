@@ -651,7 +651,7 @@ body[data-finish-active] #app .view .btn.primary{background:var(--control-accent
 .aura-preview h3{font-size:36px;line-height:1.18;margin:14px 0 12px;letter-spacing:-.055em;color:#382e48}
 .aura-campaign-description{font-size:12px;margin:0;color:#685871}.aura-campaign-cast{font-size:10px;margin:10px 0 0;color:#685871}
 .aura-poster-signature{display:grid;justify-items:center;gap:8px;padding:22px 18px 24px;background:linear-gradient(145deg,#fffaf3,#ece5f5);border-radius:0 0 19px 19px;color:#382e48}
-.aura-poster-signature .aura-wordmark{display:grid;justify-items:center;gap:2px}.aura-poster-signature .aura-wordmark>span{font-size:10px;letter-spacing:.32em}.aura-poster-signature .aura-wordmark>strong{font-size:46px;letter-spacing:-.065em}.aura-poster-signature>span{font-size:8px;letter-spacing:.24em;color:#6b5d7c}
+.aura-poster-signature .aura-wordmark{display:grid;justify-items:center;gap:2px;white-space:normal}.aura-poster-signature .aura-wordmark>span{font-size:10px;letter-spacing:.32em;white-space:nowrap}.aura-poster-signature .aura-wordmark>strong{font-size:clamp(24px,2.8vw,38px);letter-spacing:-.065em;word-break:keep-all}.aura-poster-signature>span{font-size:8px;letter-spacing:.24em;color:#6b5d7c}
 /* Match the selection rail without enlarging the campaign vertically. */
 @media(min-width:801px){
   .aura-preview{display:grid;grid-template-columns:minmax(0,42fr) minmax(0,58fr);grid-template-rows:1fr auto;max-width:100%;box-sizing:border-box}
@@ -685,7 +685,7 @@ body[data-view="aura"] #aiBanner{display:none!important}
 #aura .season-choice:has(input[value="summer"]){--collection-poster:#d5edf0;--collection-ink:#124958;--collection-muted:#3e6470}
 #aura .season-choice:has(input[value="autumn"]){--collection-poster:#eedaC5;--collection-ink:#563321;--collection-muted:#765741}
 #aura .season-choice:has(input[value="winter"]){--collection-poster:#dce6f4;--collection-ink:#263e67;--collection-muted:#526480}
-#aura .season-choice:before{content:"HANI AURA";order:3;text-align:center;padding:16px 14px;font-size:18px;letter-spacing:.08em;font-weight:800}
+#aura .season-choice:before{content:"테마 스튜디오";order:3;text-align:center;padding:16px 14px;font-size:18px;letter-spacing:.08em;font-weight:800}
 #aura .season-choice>img{border-radius:0;width:100%;height:auto;aspect-ratio:3/1;object-fit:contain;background:transparent}
 #aura .season-choice>span{order:-1;gap:8px;padding:24px 14px 18px;text-align:center}#aura .season-choice b{font-size:10px;letter-spacing:.1em}#aura .season-choice strong{font-size:22px;line-height:1.2;letter-spacing:-.035em;word-break:keep-all}#aura .season-choice small{font-size:10px;color:var(--collection-muted);word-break:keep-all}#aura .season-choice em{font-size:10px;color:var(--collection-ink)}
 #aura .season-choice>input{width:18px;height:18px;top:10px;left:auto;right:10px;accent-color:var(--collection-ink)}

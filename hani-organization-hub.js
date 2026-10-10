@@ -105,6 +105,10 @@
     teamRail.querySelectorAll('[data-filter-team]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.filterTeam===select.value)));
   }
   function showDetail(type,id) {
+    if(type==='person'&&id==='seongmin'){
+      detail.innerHTML='<div class="ogh-detail-copy"><span class="ogh-kicker">CHAIRMAN</span>'+DETAIL_TITLE_OPEN+'성민 회장</h2><p>HANI GROUP의 방향과 최종 의사결정을 담당합니다.</p></div>';
+      if(!dialog.open)dialog.showModal();root.querySelector('.ogh-close').focus();return;
+    }
     const item=(type==='person'?people:teams).find(x=>x.id===id);
     if(!item) return;
     const t=type==='person'?teamOf(item.team):item;
@@ -144,7 +148,12 @@
     else if(button.dataset.teamTab)selectTeam(button.dataset.teamTab);
     else if(button.dataset.person)showDetail('person',button.dataset.person);
     else if(button.dataset.team)showDetail('team',button.dataset.team);
-    else if(button.dataset.scroll)root.querySelector(`#${button.dataset.scroll}`).scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
+    else if(button.dataset.scroll){
+      if(document.querySelector('.organization-tabs')){
+        showView('organization/people');
+      }
+      root.querySelector(`#${button.dataset.scroll}`).scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
+    }
     else if(button.dataset.group){group=button.dataset.group;filterPeople();}
     else if(button.dataset.filterTeam){select.value=button.dataset.filterTeam;filterPeople();}
     else if(button.hasAttribute('data-reset')){group='ALL';search.value='';select.value='all';filterPeople();}
@@ -152,4 +161,22 @@
   dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();}});
   search.addEventListener('input',filterPeople);select.addEventListener('change',filterPeople);
   filterPeople();
+  function selectHubTab(tab){
+    const directoryMode=tab==='people'||tab==='aiTeam';
+    root.dataset.hubTab=tab;
+    root.querySelectorAll('.ogh-hero,.ogh-strip').forEach(node=>{node.hidden=directoryMode});
+    root.querySelectorAll('#ogh-chart,#ogh-teams,.ogh-type-controls').forEach(node=>{node.hidden=tab!=='people'});
+    root.querySelector('.ogh-mast nav').hidden=tab!=='people';
+    directory.hidden=!directoryMode;
+    group=tab==='aiTeam'?'AI STAFF':'ALL';select.value='all';search.value='';filterPeople();
+  }
+  function openPerson(id){
+    if(id!=='seongmin'&&!people.some(p=>p.id===id))return false;
+    const card=root.querySelector('[data-card-person="'+id+'"]');
+    card?.focus({preventScroll:true});showDetail('person',id);return true;
+  }
+  window.HaniOrganizationHub=Object.freeze({selectTab:selectHubTab,openPerson});
+  if(document.querySelector('.organization-tabs')){
+    selectHubTab(root.dataset.hubTab||'overview');
+  }
 })();

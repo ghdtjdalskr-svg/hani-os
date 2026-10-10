@@ -312,3 +312,10 @@
 :root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #haniOrganizationHub :is(.ogh-person-badge,.ogh-person-arrow){background:color-mix(in srgb,var(--ogh-paper) 88%,transparent);color:var(--ogh-ink)}
 /* Touch targets: at least 44px on phones. */
 @media (max-width:760px){#haniOrganizationHub :is(.ogh-filters button,.ogh-type-controls button,.ogh-team-tabs button,.ogh-team-rail button,.ogh-close,.ogh-empty button){min-height:44px}#haniOrganizationHub .ogh-avatar{min-width:44px;min-height:44px}#haniOrganizationHub .ogh-close{min-width:44px}}
+.organization-tabs,.settings-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+:is(.organization-tabs,.settings-tabs) [role="tab"]{font:inherit;color:var(--text-primary);background:var(--surface-raised);border:1px solid var(--border-strong);border-radius:12px;padding:12px 18px;cursor:pointer}
+:is(.organization-tabs,.settings-tabs) [aria-selected="true"]{font-weight:800;border-color:var(--structure-accent)}
+:is(.organization-tabs,.settings-tabs) [role="tab"]:focus-visible{outline:2px solid var(--structure-accent);outline-offset:3px}
+#organization [hidden]{display:none!important}
+#settings>.settings-panel[hidden]{display:none!important}
+@media(max-width:480px){.organization-tabs,.settings-tabs{gap:5px}:is(.organization-tabs,.settings-tabs) [role="tab"]{padding:10px 12px;font-size:13px}}
