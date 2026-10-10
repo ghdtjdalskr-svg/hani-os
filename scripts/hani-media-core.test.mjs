@@ -169,3 +169,133 @@ assert.equal(incompleteExport.ok,false);
 assert.equal(incompleteExport.files.length,0);
 assert.ok(incompleteExport.messages.some(v=>v.includes("불완전 백업")));
 console.log("PASS: digest, verified IDB, account isolation, resolve, pure dry run, reembed, import, HTML parity, HASH-UNCHANGED");
+
+function fakeCloud(){
+  const rows=new Map(),requests=[],client={rows,requests,failInsert:false,corrupt:false};
+  client.auth={getUser:async()=>({data:{user:{id:"account-a"}},error:null})};
+  client.from=table=>{
+    assert.equal(table,"hani_media");
+    let columns,owner,ids,range;
+    const query={
+      select(value){columns=value;return query},
+      eq(key,value){assert.equal(key,"user_id");owner=value;return query},
+      order(key){assert.equal(key,"media_id");return query},
+      range(start,end){range=[start,end];return query},
+      in(key,value){assert.equal(key,"media_id");ids=[...value];return query},
+      insert(row){
+        requests.push({insert:structuredClone(row)});
+        if(client.failInsert)return Promise.resolve({error:{code:"42501"}});
+        const key=JSON.stringify([row.user_id,row.media_id]);
+        if(rows.has(key))return Promise.resolve({error:{code:"23505"}});
+        rows.set(key,structuredClone(row));return Promise.resolve({error:null});
+      },
+      then(resolve,reject){
+        requests.push({columns,owner,ids,range});
+        let data=[...rows.values()].filter(row=>row.user_id===owner&&(!ids||ids.includes(row.media_id)))
+          .sort((a,b)=>a.media_id.localeCompare(b.media_id));
+        if(range)data=data.slice(range[0],range[1]+1);
+        data=data.map(row=>Object.fromEntries(columns.split(",").map(key=>[key,
+          key==="data"&&client.corrupt?other:row[key]])));
+        return Promise.resolve({data,error:null}).then(resolve,reject);
+      }
+    };
+    return query;
+  };
+  return client;
+}
+async function runBCase({failInsert=false,corrupt=false,snapshot=true,conflict=false,saveOk=true,busyMs=0}={}){
+  const local=loadMedia(fakeIdb()),client=fakeCloud();
+  client.failInsert=failInsert;client.corrupt=corrupt;
+  const value=structuredClone(fixture);
+  if(conflict)value.books[0].coverRef="media:sha256:"+"f".repeat(64);
+  let saves=0,snapshots=0,queued=0,pushes=0;
+  const messages=[];
+  const ctx=vm.createContext({
+    window:local.window,state:value,cloudClient:client,cloudUser:{id:"account-a"},
+    cloudOwnerVerificationEpoch:1,navigator:{onLine:true},cloudAutoSyncReady:true,
+    cloudRuntime:{sync:"ON"},cloudSyncBusy:false,cloudApplyingRemote:false,
+    loadRecovery:{active:false},importSyncHold:false,cloudRecoveryMode:false,
+    structuredClone,JSON,Error,$:()=>null,renderMediaPreview(){},
+    CLOUD_SYNC_ENGINE:"test",CLOUD_HASH_SCHEMA:"test",cloudVerifiedRemote:null,
+    cloudSyncPending:false,cloudNetworkRetryPending:false,
+    cloudSyncSelfTest:()=>true,cloudIsLifecycleCheck:()=>false,
+    cloudFetchMeta:async()=>({revision:5}),cloudCanUseVerifiedRemote:()=>false,
+    cloudReadRow:async()=>({state:structuredClone(fixture),revision:5}),
+    assertCloudSourceReady(){},cloudHasMeaningfulLocalData:()=>true,
+    cloudStateHash:async()=>"same",cloudRevisionNumber:Number,
+    cloudMeta:()=>({syncEngine:"test",hashSchema:"test",lastSyncedHash:"same",appliedRevision:5}),
+    cloudPushLocalRow:async(remote,outgoing)=>{
+      pushes++;assert.equal(remote.revision,5);assert.equal(outgoing.books[0].cover,image);
+      assert.ok(outgoing.movies[0].posterRef);return {revision:6,state:outgoing};
+    },
+    cloudSaveSyncMeta:()=>({verifiedAt:"test"}),cloudRememberVerifiedRemote(){},
+    cloudSetRuntime(){},cloudSummaryText:()=>"",cloudStartPolling(){},
+    cloudStopAutoSync(message){throw Error(message)},cloudIsNetworkError:()=>false,setTimeout,
+    cloudSaveSafetySnapshot:async(reason,full)=>{
+      snapshots++;assert.equal(reason,"before_media_stage_b");
+      assert.equal(full.books[0].cover,image);return snapshot;
+    },
+    cloudQueueSync(){queued++},
+    save(){saves++;return {ok:saveOk}},renderAll(){},toast(){}
+  });
+  vm.runInContext("let mediaBBusy=false;\n"+
+    ["mediaBCanRun","mediaBWaitIdle","mediaBStatus","mediaBConfirm","mediaRunB"]
+      .map(name=>extractFunction(source,name)).join("\n")+
+    "\nmediaBConfirm=async()=>true;mediaBStatus=m=>messages.push(m);"+
+    "\nthis.run=mediaRunB;",Object.assign(ctx,{messages}));
+  if(busyMs){ctx.cloudSyncBusy=true;setTimeout(()=>{ctx.cloudSyncBusy=false},busyMs)}
+  await Promise.all([ctx.run(),ctx.run()]); // Double-click must execute once.
+  return {ctx,client,saves,snapshots,queued,messages,value,pushCount:()=>pushes};
+}
+const happy=await runBCase();
+assert.equal(happy.saves,1);assert.equal(happy.snapshots,1);
+assert.equal(happy.ctx.state.books[0].coverRef,ref);
+assert.equal(happy.ctx.state.books[0].cover,image);
+assert.equal(happy.ctx.state.movies[0].poster,other);
+const busy=await runBCase({busyMs:400});
+assert.equal(busy.saves,1,"a focus/poll Cloud check during the click waits instead of aborting");
+assert.equal(busy.ctx.state.books[0].coverRef,ref);
+for(const options of [{failInsert:true},{corrupt:true},{snapshot:false},{saveOk:false}]){
+  const result=await runBCase(options);
+  assert.equal(JSON.stringify(result.ctx.state),JSON.stringify(fixture),"failure leaves no new refs");
+  assert.equal(result.saves,options.saveOk===false?1:0);
+  if(options.snapshot===false)assert.equal(result.client.requests.length,0,"snapshot failure before media queries");
+}
+const conflict=await runBCase({conflict:true});
+assert.equal(conflict.ctx.state.books[0].coverRef,"media:sha256:"+"f".repeat(64));
+assert.ok(conflict.messages.some(m=>m.includes("충돌 1건")));
+const duplicate=fakeCloud(),record={media_id:ref,mime:"image/png",bytes:Buffer.byteLength(image),data:image};
+assert.equal(await media.cloudPut(duplicate,"account-a",record),true);
+assert.equal(await media.cloudPut(duplicate,"account-a",record),true,"duplicate insert succeeds");
+const otherRef=await media.digest(other);
+assert.equal(await media.cloudPut(duplicate,"account-a",{
+  media_id:otherRef,mime:"image/png",bytes:Buffer.byteLength(other),data:other
+}),true);
+const asked=await media.cloudGet(duplicate,"account-a",[ref]);
+assert.equal(asked.size,1);assert.equal(asked.get(ref),image);
+const getRequest=duplicate.requests.findLast(r=>r.ids);
+assert.deepEqual(getRequest.ids,[ref],"Cloud only requests asked IDs");
+await media.cloudList(duplicate,"account-a");
+assert.equal(duplicate.requests.at(-1).columns,"media_id","list never requests bodies");
+assert.equal((await media.cloudGet(duplicate,"other-owner",[ref])).size,0,"owner-scoped reads");
+
+const withRefs=structuredClone(fixture);
+withRefs.books[0].coverRef=ref;withRefs.movies[0].posterRef=await media.digest(other);
+for(const engine of [webcrypto,{}]){
+  assert.notEqual(await cloud(source,engine)(withRefs),await cloud(source,engine)(fixture),
+    "added refs are ordinary data and sync through the normal hash/push path");
+  assert.equal(await cloud(source,engine)(fixture),await cloud(baseline,engine)(fixture),"HASH-UNCHANGED");
+}
+
+const hydrated=loadMedia(fakeIdb()),hydrationClient=fakeCloud();
+hydrationClient.rows.set(JSON.stringify(["account-a",ref]),{...record,user_id:"account-a"});
+let ready=0;
+hydrated.window.Event=class{constructor(type){this.type=type}};
+hydrated.window.dispatchEvent=event=>{if(event.type==="hani-media-ready")ready++};
+hydrated.media.setCloudProvider(()=>({client:hydrationClient,userId:"account-a"}));
+for(let i=0;i<4;i++)assert.equal(hydrated.media.resolve({coverRef:ref},"cover"),"");
+await new Promise(resolve=>setTimeout(resolve,150));
+assert.equal(hydrated.media.resolve({coverRef:ref},"cover"),image);
+assert.equal(hydrationClient.requests.filter(r=>r.ids).length,1,"debounced fetch, once per session");
+assert.ok(ready>0,"existing media-ready event after verified cache");
+console.log("PASS B: busy-sync wait, snapshot gate, upload/read-back failures, one save, conflicts, duplicate insert, refs change hash, inline-only hash unchanged, scoped reads, hydration");
