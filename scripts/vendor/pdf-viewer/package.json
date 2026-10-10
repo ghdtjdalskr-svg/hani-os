@@ -1,0 +1,5 @@
+{
+  "private": true,
+  "type": "module",
+  "dependencies": { "pdfjs-dist": "6.4.299", "esbuild": "0.25.12" }
+}

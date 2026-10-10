@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HANI 보유종목 맵 미리보기</title>
+  <link rel="stylesheet" href="../../hani-portfolio-preview.css">
+  <style>body{margin:0;padding:24px;background:#f5f7fa;font:14px system-ui}main{max-width:1080px;margin:auto}@media(max-width:600px){body{padding:8px}}</style>
+</head>
+<body>
+  <main><p>개발 미리보기 · 합성 데이터</p><section id="portfolioLivePreview"></section></main>
+  <script>
+    const names=['TIGER 미국S&P500','KODEX 미국나스닥100','ACE 미국배당다우존스','삼성전자','tiger 미국테크TOP10','TIGERX 일반종목','SOL 미국배당다우존스','RISE 미국S&P500'];
+    const instruments=names.map((name,i)=>({id:'i'+i,name,ticker:String(100000+i),market:'KR',className:i===3||i===5?'주식':'ETF'}));
+    const source={state:{accounts:[{id:'a',name:'합성 계좌'}],instruments,investmentBrokerSnapshots:[{mode:'positions',recordType:'positions',status:'confirmed',period:'2026-10',snapshotDate:'2026-10-08',holdingListMode:'complete',accounts:[{accountId:'a',enabled:true,holdings:instruments.map((i,n)=>({instrumentId:i.id,name:i.name,ticker:i.ticker,quantity:8-n,buyPrice:9000,buyCurrency:'KRW'}))}]}]},stocks:instruments.map(i=>({symbol:i.ticker,name:i.name,market:'KOSPI',currency:'KRW'})),quotes:instruments.map(i=>({symbol:i.ticker,currency:'KRW',lastPrice:10000,timestamp:new Date().toISOString()}))};
+    window.HaniAssetMarket={analyticsSource:()=>source};
+  </script>
+  <script src="../../hani-market-data.js"></script>
+  <script src="../../hani-asset-market-view.js"></script>
+</body>
+</html>
