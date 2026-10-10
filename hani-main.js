@@ -3314,10 +3314,16 @@ async function mediaBackupState(value){
   return null;
 }
 let mediaBBusy=false;
+// Stable preconditions only; a short focus/poll check (cloudSyncBusy) must not disable the button.
 function mediaBCanRun(){
   return !!(window.HANI_MEDIA&&cloudClient&&cloudUser?.id&&navigator.onLine!==false&&
-    cloudAutoSyncReady&&cloudRuntime.sync==="ON"&&!cloudSyncBusy&&!cloudApplyingRemote&&
+    cloudAutoSyncReady&&cloudRuntime.sync==="ON"&&
     !loadRecovery.active&&!importSyncHold&&!cloudRecoveryMode);
+}
+async function mediaBWaitIdle(limit=30000){
+  const until=Date.now()+limit;
+  while((cloudSyncBusy||cloudApplyingRemote)&&Date.now()<until)await new Promise(r=>setTimeout(r,300));
+  return !cloudSyncBusy&&!cloudApplyingRemote;
 }
 function mediaBStatus(message){const el=$("mediaBResult");if(el)el.textContent=message}
 function mediaBConfirm(){
@@ -3332,11 +3338,17 @@ function mediaBConfirm(){
 async function mediaRunB(){
   if(mediaBBusy||!mediaBCanRun())return;
   mediaBBusy=true;renderMediaPreview();
-  const original=state,before=JSON.stringify(state),client=cloudClient,owner=cloudUser.id,epoch=cloudOwnerVerificationEpoch;
+  const client=cloudClient,owner=cloudUser.id;
+  let original=state,before=JSON.stringify(state);
+  // Session refresh events are fine; a different owner/client or any record change aborts.
   const guard=()=>mediaBCanRun()&&state===original&&JSON.stringify(state)===before&&
-    cloudClient===client&&cloudUser?.id===owner&&cloudOwnerVerificationEpoch===epoch;
+    cloudClient===client&&cloudUser?.id===owner;
   try{
     if(!await mediaBConfirm())return;
+    mediaBStatus("Cloud 확인이 끝나기를 기다리는 중…");
+    if(!await mediaBWaitIdle())throw Error("Cloud 확인이 끝나지 않았습니다. 잠시 후 다시 눌러 주세요.");
+    // Baseline is taken after confirm + idle so a focus check during the dialog is not a conflict.
+    if(state!==original&&cloudClient===client&&cloudUser?.id===owner){original=state;before=JSON.stringify(state)}
     if(!guard())throw Error("확인 중 계정·기록·Cloud 상태가 변경됐습니다.");
     const auth=await client.auth.getUser();
     if(auth.error||auth.data?.user?.id!==owner||!guard())throw Error("소유 계정 로그인을 확인하지 못했습니다.");
@@ -3349,6 +3361,7 @@ async function mediaRunB(){
       }
     });
     if(!result.ok)throw Error(result.error);
+    await mediaBWaitIdle();
     const verifiedAuth=await client.auth.getUser();
     if(verifiedAuth.error||verifiedAuth.data?.user?.id!==owner||!guard())
       throw Error("최종 소유 계정·기록 검증에 실패했습니다.");
@@ -5712,7 +5725,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.196";
+const HANI_DISPLAY_VERSION="2.9.197";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
