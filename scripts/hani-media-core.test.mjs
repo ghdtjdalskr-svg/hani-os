@@ -409,6 +409,18 @@ assert.equal(eligibilityCloud.requests.at(-1).columns,"media_id");
 eligibilityCloud.rows.delete(JSON.stringify(["account-a",ref]));
 await assert.rejects(()=>eligibility.media.verifyRefs(preflight),/Cloud/);
 
+// A browser that never ran stage B: empty cache, but the record still carries the inline copy.
+const fresh=loadMedia(fakeIdb()),freshCloud=fakeCloud();
+freshCloud.rows.set(JSON.stringify(["account-a",ref]),{
+  user_id:"account-a",media_id:ref,data:image,mime:"image/png",bytes:Buffer.byteLength(image)});
+const dualOnly={accounts:[],books:[{id:"b1",cover:image,coverRef:ref}],movies:[]};
+assert.equal((await fresh.media.verifyRefs({state:dualOnly,client:freshCloud,userId:"account-a",guard:()=>true,localOnly:true})).count,1,
+  "fresh browser seeds its cache from the matching inline copy");
+assert.equal(await fresh.media.get(ref),image,"seeded cache holds the verified image");
+const tampered=loadMedia(fakeIdb());
+await assert.rejects(()=>tampered.media.verifyRefs({state:{accounts:[],books:[{id:"b1",cover:other,coverRef:ref}],movies:[]},
+  client:freshCloud,userId:"account-a",guard:()=>true,localOnly:true}),/기기에/,"inline that does not match the ref is never cached");
+
 const checkbox={checked:false,required:false,closest:()=>({hidden:false})},approve={};
 let dialog;
 const dialogVm=vm.createContext({$:id=>({
