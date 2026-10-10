@@ -36,7 +36,7 @@ vm.createContext(sandbox);
 vm.runInContext(`
 ${constant("STORAGE_KEY")};${constant("CLOUD_META_KEY")};${constant("CLOUD_HASH_SCHEMA")};${constant("CLOUD_SYNC_ENGINE")};
 const HANI_DISPLAY_VERSION="sim";
-var state={},cloudClient=null,cloudUser=null,cloudRuntime={},cloudAutoSyncReady=false,cloudApplyingRemote=false,cloudSyncBusy=false,cloudSyncPending=false,cloudSyncTimer=null,cloudPollTimer=null${hasCache?",cloudVerifiedRemote=null":""}${source.includes("let cloudSessionFullReads")?",cloudSessionFullReads=0,cloudSessionMetaChecks=0;function renderCloudTransferUsage(){}":";"}
+var state={},cloudClient=null,cloudUser=null,cloudRuntime={},cloudAutoSyncReady=false,cloudApplyingRemote=false,cloudSyncBusy=false,cloudSyncPending=false,cloudChoicePreview=null,cloudSyncTimer=null,cloudPollTimer=null${hasCache?",cloudVerifiedRemote=null":""}${source.includes("let cloudSessionFullReads")?",cloudSessionFullReads=0,cloudSessionMetaChecks=0;function renderCloudTransferUsage(){}":";"}
 var loadRecovery={active:false},importSyncHold=false,lastLoadError="",brokerDraft=null,monthlyDraft=null,lastSaveResult=null,runtimeLog=[];
 function normalizeState(x){return x}
 function writeProtectedState(s){localStorage.setItem(STORAGE_KEY,s)}
