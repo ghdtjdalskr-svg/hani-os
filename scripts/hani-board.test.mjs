@@ -44,6 +44,8 @@ const context=vm.createContext({
   localStorage:{getItem:key=>{assert.equal(key,"hani_os_life_v23");return serial}},
   writeProtectedState:value=>{if(fail)throw Error("quota");serial=value},
   updateStorageStatus(){},cloudQueueSync(){queues++},cloudApplyingRemote:false,
+  cloudUser:{id:"sandbox-owner"},cloudAutoSyncReady:true,cloudRuntime:{sync:"ON"},
+  importSyncHold:false,cloudRecoveryMode:false,
   isQuotaError:()=>false,serializedBytes:value=>value.length,
   mediaHasRefs:()=>false,renderStoragePanel(){},toast(){},downloadRecoveryOriginal(){},
   alert:message=>assert.fail("unexpected modal: "+message),
@@ -148,10 +150,41 @@ assert.equal(handlers.deleteOwn("comment",comment.id),true);
 assert.ok(api.getState().boardComments.some(c=>c.id==="staff-comment"));
 const boardMarkup=html.slice(html.indexOf('<section id="board"'),html.indexOf('<section id="settings"'));
 assert.ok(boardMarkup.includes("<dialog")&&boardMarkup.includes("직원 반응 받기"));
-assert.ok(/disabled[^>]*>직원 반응 받기/.test(boardMarkup));
+assert.ok(/data-board="react"[^>]*>직원 반응 받기/.test(boardMarkup));
+assert.ok(boardMarkup.includes('data-board="preview"'));
 assert.equal((html.match(/id="board"/g)||[]).length,1);
 assert.ok(html.indexOf('./hani-board.js')>html.indexOf('./hani-organization-hub.js'));
 assert.ok(css.includes("midnight-black")&&css.includes("titanium-graphite"));
+assert.equal(handlers.boardDate("2026-10-09T15:05:00Z",Date.parse("2026-10-10T01:00:00Z")),"00:05","today uses KST time across the UTC boundary");
+assert.equal(handlers.boardDate("2026-10-09T14:59:00Z",Date.parse("2026-10-10T01:00:00Z")),"10.09","previous KST day uses month.day");
+assert.equal(handlers.boardDate("invalid"),"시간 미상");
+assert.ok(css.includes("@media(max-width:600px)")&&css.includes(".board-mobile-two-line")&&css.includes(".board-mobile-label"));
+assert.ok(css.includes("text-overflow:ellipsis")&&css.includes("height:40px"));
+assert.ok(boardMarkup.indexOf('data-board="detail"')<boardMarkup.indexOf('data-board="list"'),"content view stays above the list");
+assert.deepEqual([...boardMarkup.matchAll(/data-board-filter="([^"]+)"/g)].map(m=>m[1]),["POPULAR","ALL","WORK","LIFE","MEMORY","LOUNGE"]);
+assert.ok(boardMarkup.includes("직원 새 글·답글"));
+// Exercise the canonical view owner, so a reload with a post hash cannot fall back to home.
+const routeNodes=new Map(),routeWrites=[];let boardRenders=0;
+const routeNode=id=>{if(!routeNodes.has(id))routeNodes.set(id,{classList:{add(){},remove(){},toggle(){}}});return routeNodes.get(id)};
+const routeContext=vm.createContext({
+  $:routeNode,document:{body:{dataset:{}},querySelectorAll:()=>[],querySelector:()=>null},
+  window:{scrollTo(){},HaniBoard:{render(){boardRenders++}}},
+  history:{replaceState(_state,_title,url){routeWrites.push(url)}},
+  location:{hash:"#board/post%2Fwith%20spaces",href:"https://example.test/#board/post%2Fwith%20spaces"},
+  NAVIGATION_VIEWS:new Set(["board","home"]),navigationTimer:null,navigationCurrent:"",
+  navigationBooted:false,loginGateUnlocked:false,pageMeta:{},clearTimeout(){},setBanner(){},updateFinishScope(){},cloudUser:null
+});
+vm.runInContext(fn("showView")+'\nshowView("board/post%2Fwith%20spaces");',routeContext);
+assert.equal(routeContext.document.body.dataset.view,"board");assert.equal(boardRenders,1);
+assert.equal(routeWrites.at(-1),"#board/post%2Fwith%20spaces","post hash survives canonical showView");
+vm.runInContext('showView("board");',routeContext);assert.equal(routeWrites.at(-1),"#board/post%2Fwith%20spaces");
+vm.runInContext('showView("home");',routeContext);assert.equal(routeContext.document.body.dataset.view,"home");
+assert.equal(routeWrites.at(-1),"https://example.test/","other views keep their existing hash behavior");
 assert.ok(!/\.(?:clear|insert|update|delete|upsert)\s*\(/.test(board));
 assert.ok(!/\b(?:alert|confirm)\s*\(/.test(board));
 console.log("PASS: real handlers/save, rollback, ownership, normalization, backup, unknown fields, Cloud conflict/hash/count, static UI contract");
+
+// Reuse the real persistence/backup fixture for Phase 2 behavior checks.
+export {api,handlers,context,roster,plain,rest};
+export const inspection=()=>({queues,serial,files});
+export const saveFailure=value=>{fail=value};

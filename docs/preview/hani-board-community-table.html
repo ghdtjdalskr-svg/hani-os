@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base href="../../"><title>사내 게시판 · 격리 미리보기</title>
+<style>
+:root{--text-primary:#252b35;--text-secondary:#697586;--surface-raised:#f6f8fa;--border-subtle:#dde2e8;--accent:#287cbe;color-scheme:light;font-family:system-ui,-apple-system,"Malgun Gothic",sans-serif}
+body{margin:0;background:#f1f3f6;color:var(--text-primary)}main{max-width:1100px;margin:24px auto;padding:0 16px}.preview-note{font-size:13px;color:#53627a}
+.grid{display:grid;gap:16px}.card{background:white;border:1px solid var(--border-subtle);padding:20px;border-radius:8px}.sh{display:flex;align-items:center;justify-content:space-between;gap:10px}.sh h3{margin:0;font-size:20px}.sub{font-size:12px;color:var(--text-secondary)}.btn{border:1px solid var(--border-subtle);border-radius:5px;background:white;color:var(--text-primary);padding:8px 12px;cursor:pointer}.btn:disabled{opacity:.5;cursor:default}.sm{font-size:12px}.pill{font-size:12px;padding:3px 8px;border:1px solid var(--border-subtle);border-radius:5px}.field{margin:12px 0}input,textarea,select{padding:9px;border:1px solid var(--border-subtle);border-radius:4px;background:white;color:inherit}label{font-size:13px}label>input,label>select,label>textarea{display:block;margin-top:6px}.empty{padding:20px;text-align:center}.danger{color:#c44747}
+@media(max-width:600px){main{margin:12px auto;padding:0 10px}.card{padding:12px}.sh h3{font-size:17px}.sh .pill{white-space:nowrap}}
+</style><link rel="stylesheet" href="./hani-board.css"></head><body><main><p class="preview-note">격리 미리보기 · 모든 글과 댓글은 예시입니다. 변경 내용은 이 화면의 메모리에만 남습니다.</p>
+<section id="board" class="view active" aria-label="사내 게시판"><div class="grid">
+      <div class="card full" data-board="detail" hidden>
+        <button class="btn sm" type="button" data-board="closePost">목록으로 · 닫기</button>
+        <div data-board="article"></div>
+        <h4>댓글</h4><div data-board="comments"></div>
+        <form data-board="commentForm">
+          <p class="sub" data-board="replyContext" role="status" aria-live="polite"></p>
+          <div class="field"><label>회장 댓글<textarea name="body" rows="3" maxlength="5000" required></textarea></label></div>
+          <div class="acts"><button class="btn" type="submit" data-board="commentSubmit">댓글 게시</button><button class="btn" type="button" data-board-cancel>작성 취소</button></div>
+        </form>
+        <button class="btn" type="button" data-board="react">직원 반응 받기</button>
+      </div>
+      <div class="card full">
+        <div class="sh"><h3>HANI GROUP BOARD · 사내 게시판</h3><span class="pill" data-board="counts"></span></div>
+        <div class="acts board-tabs" role="group" aria-label="게시글 분류">
+          <button class="board-tab" type="button" data-board-filter="POPULAR" aria-pressed="false">🏠 인기</button>
+          <button class="board-tab" type="button" data-board-filter="ALL" aria-pressed="true">전체</button>
+          <button class="board-tab" type="button" data-board-filter="WORK" aria-pressed="false">WORK</button>
+          <button class="board-tab" type="button" data-board-filter="LIFE" aria-pressed="false">LIFE</button>
+          <button class="board-tab" type="button" data-board-filter="MEMORY" aria-pressed="false">MEMORY</button>
+          <button class="board-tab" type="button" data-board-filter="LOUNGE" aria-pressed="false">LOUNGE</button>
+        </div>
+        <p class="sub" data-board="author"></p>
+        <p class="sub" data-board="syncNotice" hidden>Cloud 동기화가 준비되면 새 글과 답글이 도착해요.</p>
+        <div class="board-living-toolbar">
+          <label>직원 새 글·답글<select data-board="replyMode"><option value="auto">자동 게시(기본)</option><option value="review">미리보기 후 게시</option></select></label>
+          <button class="btn" type="button" data-board="arriveNow">지금 반응 받기</button>
+          <button class="btn" type="button" data-board="attendance">📅 오늘 출석 도장</button>
+        </div>
+        <p class="sub">직원 새 글은 자동 게시되고, 답글은 시간차로 도착해요. 미리보기 후 게시를 선택하면 초안을 확인할 수 있어요. @이름으로 동료를 불러보세요.</p>
+        <div data-board="unread" class="acts"></div>
+        <details class="board-tray" data-board="trayPanel" open hidden><summary data-board="trayCount">📬 새 글 도착</summary>
+          <div data-board="tray"></div>
+          <details><summary>나중에 올릴 초안</summary><div data-board="archive"></div></details>
+        </details>
+        <label class="board-search">게시글 검색<input type="search" data-board="search" maxlength="200" placeholder="제목 · 내용 · 작성자 검색"></label>
+        <p class="sub" data-board="listCount" role="status" aria-live="polite"></p>
+        <div data-board="list" class="board-list"></div>
+        <button class="btn board-more" type="button" data-board="more" hidden>더 보기 · 20개</button>
+        <details class="board-week" open><summary>이번 주 활동</summary><div data-board="activity" class="board-activity"></div></details>
+        <div class="board-week"><h4>🏆 주간 BEST</h4><div data-board="best" class="acts"></div></div>
+      </div>
+      <div class="card full">
+        <details data-board="composer"><summary>✍ 회장 글쓰기</summary>
+        <form data-board="postForm">
+          <div class="field"><label>제목<input name="title" maxlength="200" required></label></div>
+          <div class="field"><label>분류<select name="category"><option>WORK</option><option>LIFE</option><option>MEMORY</option><option>LOUNGE</option></select></label></div>
+          <div class="field"><label>내용<textarea name="body" rows="6" maxlength="20000" required></textarea></label></div>
+          <label><input name="pinned" type="checkbox"> 공지로 목록 상단에 고정</label>
+          <div class="acts"><button class="btn" type="submit" data-board="postSubmit">글 게시</button><button class="btn" type="button" data-board-cancel>작성 취소</button></div>
+        </form>
+        </details>
+      </div>
+      <p class="sub full" data-board="status" role="status" aria-live="polite"></p>
+      <dialog class="deploy-approval-dialog" data-board="confirm" aria-label="게시판 변경 확인">
+        <form method="dialog"><h3>게시판 변경 확인</h3><p data-board="confirmText"></p>
+          <div class="deploy-actions"><button class="deploy-btn" value="cancel" autofocus>취소</button><button class="deploy-btn safe" value="approve">확인</button></div>
+        </form>
+      </dialog>
+      <dialog data-board="preview" aria-label="직원 반응 미리보기">
+        <h3>직원 반응 미리보기</h3>
+        <p class="sub" data-board="previewLabel" role="status" aria-live="polite"></p>
+        <p class="sub">미리보기는 저장되지 않습니다. 내용을 확인한 뒤 게시해 주세요.</p>
+        <div data-board="previewComments"></div>
+        <div class="acts">
+          <form method="dialog"><button class="btn" value="cancel" autofocus>취소</button></form>
+          <button class="btn" type="button" data-board="regenerate">다시 생성</button>
+          <button class="btn" type="button" data-board="previewPost" disabled>게시</button>
+        </div>
+      </dialog>
+    </div></section>
+</main>
+<script src="./hani-organization-hub.js"></script>
+<script>
+let previewSequence=0;
+const uid=()=>"preview-"+(++previewSequence),cloudUser={id:"preview-owner"},cloudAutoSyncReady=true,cloudRuntime={sync:"ON"},
+ loadRecovery={active:false},importSyncHold=false,cloudRecoveryMode=false,loginGateUnlocked=true;
+const sessionStorage={getItem:()=>null,setItem(){}},save=()=>({ok:true});
+const cloudHasMeaningfulLocalData=()=>true;
+const sampleMembers=[window.HaniOrganizationRoster.chairman,...window.HaniOrganizationRoster.people];
+const titles=["게시판 이용 안내 · 서로의 이야기를 편하게 나눠주세요","오늘의 점심 메뉴 투표","가벼운 산책이 생각보다 좋네요","이번 주 개발 일지","책 읽다가 기억하고 싶은 한 문장","회의가 끝난 뒤 짧은 후기","주말 음악 추천 받아요","커피 한 잔과 오후의 작은 휴식","일정 정리하고 함께 확인해요","오늘의 지출을 돌아보며","식단 노트 · 맛있게 먹는 방법","동아리 모임에 같이 가실 분","올해 기억하고 싶은 장면","작은 습관을 천천히 이어가요","여행 계획 · 다음엔 어디로 갈까요","오후 업무를 마치고 한 줄","길고 긴 제목도 목록에서는 한 줄로 보여요 · 필요한 내용은 제목을 눌러 본문에서 읽어보세요","오늘 하루도 모두 수고하셨습니다"];
+let state={books:[{id:"preview-baseline",title:"예시"}],boardComments:[],boardPosts:sampleMembers.map((p,i)=>({
+ id:"sample-"+p.id,authorId:p.id,title:titles[i],body:titles[i]+"\n\n사내 게시판 UI를 확인하기 위한 예시 이야기입니다.\n제목을 눌러 글을 읽고 추천·댓글·답글을 확인해 보세요.",
+ category:["WORK","LIFE","MEMORY","LOUNGE"][i%4],pinned:i===0,createdAt:new Date(Date.now()-(i<3?i*1800000:i*86400000)).toISOString(),
+ views:80+i*7,likes:i%4?i:0,...(i===1?{poll:{options:["한식","샐러드","면 요리"],votes:{}}}:{}),...(i===3?{seriesId:"dev-log",episode:3}:{})
+}))};
+state.boardComments=[
+ {id:"sample-comment",postId:"sample-hani",authorId:"naeun",body:"저도 같이 산책하고 싶어요.",createdAt:new Date().toISOString()},
+ {id:"sample-reply",postId:"sample-hani",authorId:"seongmin",parentId:"sample-comment",body:"좋아요. 함께 이야기해요.",createdAt:new Date().toISOString()},
+ {id:"sample-staff-reply",postId:"sample-hani",authorId:"seoyun",parentId:"sample-comment",body:"끝나고 커피도 한 잔 할까요?",createdAt:new Date().toISOString()}
+];
+state.boardPosts.push({id:"sample-draft",authorId:"dohyun",category:"WORK",title:"직원 초안 미리보기",body:"미리보기 후 게시 모드에서 올리기·나중에·삭제를 확인하는 예시입니다.",generated:true,draft:true,createdAt:new Date().toISOString()});
+</script><script src="./hani-board.js"></script></body></html>

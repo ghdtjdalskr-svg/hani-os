@@ -335,8 +335,8 @@ async function runCCase({rollback=false,snapshot=true,saveOk=true,missing=false,
     },
     save(){saves++;events.push("save");return {ok:saveOk}}
   });
-  vm.runInContext("let mediaBBusy=false,mediaCBusy=false;\n"+
-    ["mediaBCanRun","mediaBWaitIdle","mediaCStatus","mediaCConfirm","mediaRunC"]
+  vm.runInContext("let mediaBBusy=false,mediaCBusy=false,mediaCEligibility=null;\n"+
+    ["mediaBCanRun","mediaBWaitIdle","mediaCBlockedReason","mediaCEligibilityReason","mediaCStatus","mediaCConfirm","mediaRunC"]
       .map(name=>extractFunction(source,name)).join("\n")+
     "\nmediaCConfirm=async()=>!cancel;mediaCStatus=m=>messages.push(m);"+
     "\nthis.run=mediaRunC;",Object.assign(ctx,{messages,cancel}));
@@ -354,16 +354,16 @@ assert.equal(cHappy.local.media.resolve(cHappy.ctx.state.books[0],"cover"),image
 assert.equal((await cHappy.local.media.reembed(cHappy.ctx.state)).data.books[0].cover,image);
 assert.equal(cHappy.client.requests.some(r=>r.insert),false,"C adds no Cloud writes");
 const cMismatch=await runCCase({mismatch:true});
-assert.equal(cMismatch.saves,1);
+assert.equal(cMismatch.saves,0,"eligibility mismatch stops before any save");
 assert.equal(cMismatch.ctx.state.books[0].cover,other);
-assert.equal(cMismatch.ctx.state.movies[0].poster,"");
-assert.ok(cMismatch.messages.some(m=>m.includes("불일치 1건")));
+assert.equal(cMismatch.ctx.state.movies[0].poster,other,"all inline images preserved when eligibility fails");
+assert.ok(cMismatch.messages.some(m=>m.includes("이미지 1장이 기록과 일치하지 않아요")));
 for(const options of [{missing:true},{missingBody:true},{corrupt:true},{snapshot:false},{saveOk:false},{cancel:true}]){
   const result=await runCCase(options);
   assert.equal(JSON.stringify(result.ctx.state),result.before,"failure/cancel preserves inline and meta");
   assert.equal(result.saves,options.saveOk===false?1:0);
   if(options.cancel)assert.equal(result.snapshots,0);
-  if(options.snapshot===false)assert.equal(result.client.requests.length,0);
+  if(options.snapshot===false)assert.equal(result.client.requests.some(r=>r.insert),false,"eligibility reads are allowed, no media writes before backup");
 }
 for(const options of [{race:true},{ownerChange:true}]){
   const result=await runCCase(options);
@@ -371,7 +371,7 @@ for(const options of [{race:true},{ownerChange:true}]){
   assert.equal(result.ctx.state.books[0].cover,image);
 }
 const coldC=await runCCase({warm:false});
-assert.equal(coldC.saves,1,"verified Cloud bodies hydrate missing IDB before mutation");
+assert.equal(coldC.saves,1,"verified inline copies seed missing IDB before C mutation");
 const cRollback=await runCCase({rollback:true,warm:false});
 assert.equal(cRollback.saves,1);assert.equal(cRollback.snapshots,1);
 assert.equal(cRollback.ctx.state.books[0].cover,image);assert.equal(cRollback.ctx.state.movies[0].poster,other);
