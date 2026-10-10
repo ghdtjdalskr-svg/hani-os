@@ -984,6 +984,7 @@ const HANI_CANONICAL_LOGO_OWNERS=Object.freeze({
 window.HANI_CANONICAL_LOGO_OWNERS=HANI_CANONICAL_LOGO_OWNERS;
 let cloudClient=null;
 let cloudUser=null;
+let cloudSessionFullReads=0,cloudSessionMetaChecks=0;
 let cloudRuntime={status:"설정 필요",tone:"warn",message:"Cloud 설정을 입력하면 연결을 준비합니다.",revision:null,updatedAt:"",verifiedAt:"",device:"",sync:"OFF"};
 let cloudAutoSyncReady=false;
 let cloudApplyingRemote=false;
@@ -1409,6 +1410,7 @@ function renderGoalRegistry(){
   const registry=state.goalRegistry===undefined?[]:state.goalRegistry;
   if(!Array.isArray(registry)){host.textContent='목표 이력 형식을 확인해 주세요. 기존 데이터는 변경하지 않습니다.';return;}
   host.innerHTML='<p class="sub">분기·연간 목표를 적용일부터 기록합니다. 기존 목표 설정이나 과거 기록은 바꾸지 않습니다.</p><form id="goalRegistryForm"><div class="form-grid"><label class="field">지표<select name="metric_id">'+GOAL_METRICS.map(d=>`<option value="${d[0]}">${d[1]} · ${goalRegistryUnit(d[2])}</option>`).join('')+'</select></label><label class="field">기간<select name="goal_type"><option value="quarter">분기</option><option value="annual">연간</option></select></label><label class="field">연도<input name="year" type="number" min="2000" max="2100" value="'+today().slice(0,4)+'"></label><label class="field">분기<select name="quarter">'+[1,2,3,4].map(q=>`<option value="${q}" ${q===Math.ceil(Number(today().slice(5,7))/3)?'selected':''}>${q}분기</option>`).join('')+'</select></label><label class="field">목표값<input name="value" type="number" min="0" step="any" required></label><label class="field">적용일<input name="effective_from" type="date" value="'+today()+'" min="'+today()+'" required></label></div><button class="btn" type="submit">변경 Preview</button></form><div id="goalRegistryPreview" aria-live="polite"></div><details><summary>목표 변경 이력 · '+registry.length+'건</summary>'+registry.slice().reverse().map(g=>`<p>${esc(GOAL_METRICS.find(d=>d[0]===g.metric_id)?.[1]||g.metric_id)} · ${esc(g.year)} ${g.goal_type==='quarter'?esc(g.quarter)+'분기':'연간'} · ${esc(g.value)} ${esc(goalRegistryUnit(g.unit))} · ${esc(g.effective_from)}~${esc(g.effective_to)} · revision ${esc(g.revision)} · ${esc(g.status)}</p>`).join('')+'</details>';
+  renderQuarterKickoff(host,registry);
   // A future period's goal starts no earlier than the period start (e.g. 2027 Q1 -> 2027-01-01).
   const suggestion=document.createElement('div');suggestion.id='goalBudgetSuggestion';suggestion.setAttribute('aria-live','polite');suggestion.hidden=true;
   $('goalRegistryForm').append(suggestion);
@@ -3178,7 +3180,47 @@ function uiMountPagination(anchor,key,pageData,render,label='기록'){
   host.innerHTML=`<button type="button" class="btn sm" data-page-move="-1" ${page<=1?'disabled':''}>이전</button><span><b>${page}</b> / ${pages} · 총 ${total}${label}</span><button type="button" class="btn sm" data-page-move="1" ${page>=pages?'disabled':''}>다음</button>`;
   host.querySelectorAll('[data-page-move]').forEach(btn=>btn.onclick=()=>{uiDisplayPages[key]=Math.min(pages,Math.max(1,page+Number(btn.dataset.pageMove)));render()});
 }
+function careKoreaPeriod(now=new Date()){const day=new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul'}).format(now),year=Number(day.slice(0,4)),quarter=Math.ceil(Number(day.slice(5,7))/3),start=Date.UTC(year,(quarter-1)*3,1),end=Date.UTC(year,quarter*3,0);return {day,year,quarter,start,end,at:Date.parse(day+'T00:00:00Z'),now:now.getTime()}}
+function careApprovedGoals(registry,period){return (Array.isArray(registry)?registry:[]).filter(g=>g&&g.status==='active'&&g.year===period.year&&(g.goal_type==='annual'||g.goal_type==='quarter'&&g.quarter===period.quarter)&&Number.isFinite(Number(g.value))&&Number(g.value)>0&&Number.isFinite(Date.parse(g.created_at))&&Date.parse(g.created_at)<=period.now)}
+function dietPaceMarkup(period=careKoreaPeriod()){
+  const goal=careApprovedGoals(state.goalRegistry,period).filter(g=>['body_bmi','body_weight_kg','body_weight'].includes(g.metric_id)&&g.effective_from<=period.day&&g.effective_to>=period.day).sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at)||(Number(b.revision)||0)-(Number(a.revision)||0))[0];
+  if(!goal)return '<p class="sub">이번 기간의 체중·BMI 목표를 목표 원장에서 정해 볼까요? Preview와 승인 후에 페이스를 함께 살펴봐요.</p>';
+  const validDate=d=>/^\d{4}-\d{2}-\d{2}$/.test(d)&&Number.isFinite(Date.parse(d+'T00:00:00Z'))&&new Date(d+'T00:00:00Z').toISOString().slice(0,10)===d;
+  const daily=new Map();(Array.isArray(state.body)?state.body:[]).forEach(r=>{if(r&&validDate(r.date)&&r.date<=period.day&&Number.isFinite(Number(r.weight))&&Number(r.weight)>0)daily.set(r.date,r)});
+  const rows=[...daily.values()].sort((a,b)=>a.date.localeCompare(b.date)),recent=rows.filter(r=>Date.parse(r.date+'T00:00:00Z')>=period.at-28*86400000);
+  if(recent.length<2)return '<p class="sub">최근 4주에 서로 다른 날의 체중 기록을 두 번 이상 남겨 주시면 목표까지의 페이스를 살펴봐요.</p>';
+  const height=Number(state.profile?.heightCm)/100,bmiGoal=goal.metric_id==='body_bmi';
+  if(bmiGoal&&!(Number.isFinite(height)&&height>0))return '<p class="sub">신체 설정에서 키를 확인해 주시면 BMI 목표를 체중 페이스로 함께 살펴봐요.</p>';
+  const last=rows.at(-1),first=recent[0],weight=Number(last.weight),target=Number(goal.value)*(bmiGoal?height*height:1),baseline=rows.filter(r=>r.date<=goal.effective_from).at(-1)||rows[0],direction=target>Number(baseline.weight)?1:-1;
+  const end=goal.goal_type==='quarter'?period.end:Date.UTC(period.year,12,0),weeks=(end+86400000-period.at)/(7*86400000),remaining=Math.max(0,(target-weight)*direction),needed=remaining/weeks,actual=(weight-Number(first.weight))/((Date.parse(last.date+'T00:00:00Z')-Date.parse(first.date+'T00:00:00Z'))/(7*86400000)),extra=Math.max(0,needed-actual*direction);
+  const verdict=remaining===0?'목표에 도착했어요. 편안하게 흐름을 살펴봐요.':extra<0.005?'이 속도면 목표 기간 안에 도착해요':`주당 ${extra.toFixed(2)}kg 더 필요해요`;
+  const fields=[['현재 BMI / 체중',`${Number.isFinite(height)&&height>0?(weight/(height*height)).toFixed(2):'키 미확인'} / ${weight.toFixed(2)}kg`],['승인 목표',bmiGoal?`BMI ${Number(goal.value).toFixed(2)} · ${target.toFixed(2)}kg`:`${target.toFixed(2)}kg`],['기간 종료일까지',`${weeks.toFixed(1)}주`],['필요한 주당 변화량',`${remaining?direction<0?'-':'+':''}${needed.toFixed(2)}kg/주`],['최근 4주 실제 평균',`${actual>0?'+':''}${actual.toFixed(2)}kg/주`]];
+  return `<div class="stats">${fields.map(([label,value])=>`<div class="stat"><div class="label">${esc(label)}</div><div class="value">${esc(value)}</div></div>`).join('')}</div><p>${esc(verdict)}</p><p class="sub">${esc(first.date)}~${esc(last.date)} 기록 사이 변화량을 주당 평균으로 계산해요. 기록 기반 추정이며 건강상 권장 감량 속도를 뜻하지 않아요.</p>`;
+}
+function renderDietPace(){const grid=$('diet')?.querySelector('.grid');if(!grid)return;let card=grid.querySelector('[data-diet-pace]');if(!card){card=document.createElement('div');card.className='card full';card.setAttribute('data-diet-pace','');grid.prepend(card)}card.innerHTML='<div class="sh"><h3>다이어트 페이스메이커</h3></div>'+dietPaceMarkup()}
+function renderQuarterKickoff(host,registry){
+  const period=careKoreaPeriod(),approved=careApprovedGoals(registry,period).filter(g=>g.goal_type==='quarter'),missing=GOAL_METRICS.filter(d=>!approved.some(g=>g.metric_id===d[0])),early=period.at-period.start<14*86400000;
+  if(!early&&approved.length)return;
+  const card=document.createElement('div');card.className='note';
+  card.innerHTML='<h3>이번 분기 목표 정할까요?</h3><p class="sub">목표가 없는 지표를 골라 입력해요. Preview와 승인 전에는 저장하지 않아요.</p>'+(missing.length?missing.map(d=>`<p>${esc(d[1])} <button class="btn sm" type="button" data-quarter-goal="${esc(d[0])}">목표 입력</button></p>`).join(''):'<p class="sub">이번 분기의 모든 지표에 승인 목표가 있어요.</p>');
+  host.prepend(card);
+  card.querySelectorAll('[data-quarter-goal]').forEach(button=>button.onclick=()=>{
+    const form=$('goalRegistryForm'),preview=$('goalRegistryPreview');if(!form||!preview)return;
+    const current=careKoreaPeriod(),f=form.elements;f.goal_type.value='quarter';f.year.value=current.year;f.quarter.value=current.quarter;f.metric_id.value=button.dataset.quarterGoal;f.value.value='';f.value.step=f.metric_id.value==='media_watched_count'?'1':'any';f.effective_from.min=current.day;f.effective_from.value=current.day;
+    goalRegistryDraft=null;preview.textContent='입력칸을 채웠어요. 목표값을 확인하고 변경 Preview를 눌러 주세요.';renderGoalBudgetSuggestion();
+    if(f.metric_id.value==='spending_jispi_krw'){const ref=goalBudgetReference(state.ledgerMonths,current.day.slice(0,7)),proposal=ref.status==='READY'?window.HANI_GOAL_PROGRESS?.suggestMonthlyBudget?.(ref.base):null;if(Number.isFinite(proposal?.value)&&proposal.value>0)f.value.value=proposal.value}
+    form.scrollIntoView({block:'nearest'});f.value.focus();
+  });
+}
+function renderCloudTransferUsage(){
+  const stats=$('storageStats');if(!stats)return;let card=stats.parentElement.querySelector('[data-cloud-transfer]');if(!card){card=document.createElement('div');card.className='note';card.setAttribute('data-cloud-transfer','');stats.after(card)}
+  // Reuse the size measured at the last save; stringify the whole state only if no save has run yet.
+  let bytes=Number(lastSaveResult?.bytes);if(!Number.isFinite(bytes)||bytes<=0){try{bytes=serializedBytes(JSON.stringify(state))}catch(e){card.textContent='현재 기록의 용량을 계산하지 못했어요.';return}}
+  const estimated=cloudSessionFullReads*bytes;
+  card.innerHTML=`<h3>Cloud 전송량</h3><p>현재 로컬 기록 ${bytesLabel(bytes)} · 전체 Cloud 다운로드 1회 약 ${bytesLabel(bytes)}</p><p>이번 세션 전체 읽기 ${cloudSessionFullReads}회 · 메타데이터 확인 ${cloudSessionMetaChecks}회</p><p class="sub">요청 시도 횟수예요. 현재 기록 크기로 추정하며 Cloud 원본 크기·압축·통신 부가 용량은 달라질 수 있어요. 새로고침하면 횟수는 다시 시작해요.</p>${estimated>200*1000*1000?'<p class="sub">이번 세션 전체 읽기 추정량이 200MB를 넘었어요. 잦은 전체 확인은 잠시 쉬어 가도 좋아요.</p>':''}`;
+}
 function renderBody(){
+  renderDietPace();
   const allRows=[...state.body].sort((a,b)=>a.date.localeCompare(b.date)),period=state.ui.bodyPeriod||'year',rows=bodyPeriodRows(allRows),overallLatest=allRows.at(-1)||null,periodFirst=rows[0]||null,periodLast=rows.at(-1)||null,start=n(periodFirst?.weight),periodCurrent=n(periodLast?.weight),current=n(overallLatest?.weight),delta=start&&periodCurrent?periodCurrent-start:null,g1=n(state.goals.weight1),g2=n(state.goals.weight2);
   $('heightLabel').textContent=num(state.profile.heightCm)+'cm';if($('dietGoal1Label'))$('dietGoal1Label').textContent=g1+'kg';if($('dietGoal2Label'))$('dietGoal2Label').textContent=g2+'kg';if($('dietSummaryPeriod'))$('dietSummaryPeriod').textContent=`${lifePeriodLabel(period)} 기준`;if($('bodyPeriodBasis'))$('bodyPeriodBasis').textContent=lifePeriodBasis(period);
   $('dietStats').innerHTML=[['기간 시작 체중',start?start.toFixed(2)+'kg':'-'],['현재 체중',current?current.toFixed(2)+'kg':'-'],['기간 증감',delta===null?'-':`${delta>0?'+':''}${delta.toFixed(2)}kg`],['기록 일수',rows.length+'일'],['목표',`1차 ${g1}kg · 2차 ${g2}kg`]].map(([l,v],i)=>`<div class="stat ${i===2?(delta===null?'':delta<=0?'stat-good':'stat-bad'):''}"><div class="label">${l}</div><div class="value">${v}</div></div>`).join('');
@@ -3688,7 +3730,13 @@ function renderHomeDialogue(force=false){if(!$("homeDialogueText"))return;const 
 function homeTrendSvg(rows){if(!(rows||[]).length)return "";const values=rows.map(r=>n(r.value)),w=760,h=210,p=18,min=Math.min(...values),max=Math.max(...values),span=Math.max(1,max-min);const pts=values.map((v,i)=>{const x=values.length===1?w*.5:p+(w-p*2)*(i/(values.length-1));const y=values.length===1?h*.48:h-p-((v-min)/span)*(h-p*2);return [x,y]});const guides=[0,1,2,3].map(i=>{const y=p+((h-p*2)/3)*i;return `<line x1="${p}" y1="${y.toFixed(1)}" x2="${w-p}" y2="${y.toFixed(1)}" stroke="#e9edf8" stroke-width="1" />`}).join("");const last=pts.at(-1);if(values.length===1)return `<defs><radialGradient id="homePointGlow"><stop offset="0%" stop-color="#806cf8" stop-opacity=".22"/><stop offset="100%" stop-color="#806cf8" stop-opacity="0"/></radialGradient></defs>${guides}<circle cx="${last[0]}" cy="${last[1]}" r="46" fill="url(#homePointGlow)"/><circle cx="${last[0]}" cy="${last[1]}" r="7" fill="#fff" stroke="#7658f6" stroke-width="4"/><path d="M${last[0]} ${last[1]+10}V182" stroke="#7658f6" stroke-opacity=".24" stroke-width="2"/>`;const line=pts.map((pt,i)=>`${i?"L":"M"}${pt[0].toFixed(1)} ${pt[1].toFixed(1)}`).join(" "),area=`M${pts[0][0].toFixed(1)} ${(h-p).toFixed(1)} ${pts.map(pt=>`L${pt[0].toFixed(1)} ${pt[1].toFixed(1)}`).join(" ")} L${pts.at(-1)[0].toFixed(1)} ${(h-p).toFixed(1)} Z`;return `<defs><linearGradient id="homeTrendFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8b7cff" stop-opacity="0.28"/><stop offset="100%" stop-color="#8b7cff" stop-opacity="0.02"/></linearGradient><linearGradient id="homeTrendLine" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#7a5ff7"/><stop offset="100%" stop-color="#4a8cff"/></linearGradient></defs>${guides}<path d="${area}" fill="url(#homeTrendFill)"/><path d="${line}" fill="none" stroke="url(#homeTrendLine)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="6" fill="#fff" stroke="#7658f6" stroke-width="3.5"/>`}
 function homeCalendarHtml(baseDate=today()){const d=new Date(baseDate),y=d.getFullYear(),m=d.getMonth(),monthLabel=`${y}년 ${String(m+1).padStart(2,"0")}월`,first=new Date(y,m,1),last=new Date(y,m+1,0),start=first.getDay();const total=last.getDate(),todayKey=today(),taskDates=new Set((state.tasks||[]).filter(t=>!t.done&&String(t.due||"").startsWith(`${y}-${String(m+1).padStart(2,"0")}`)).map(t=>String(t.due)));const cells=[];for(let i=0;i<start;i++)cells.push('<div class="home-cal-day is-empty"></div>');for(let day=1;day<=total;day++){const key=`${y}-${String(m+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;const cls=['home-cal-day'];if(key===todayKey)cls.push('is-today');if(taskDates.has(key))cls.push('has-task');cells.push(`<div class="${cls.join(' ')}">${day}</div>`)}const week=['일','월','화','수','목','금','토'].map(x=>`<div class="home-cal-weekday">${x}</div>`).join('');return `<div class="home-cal-head"><b>${monthLabel}</b><span>오늘 ${todayKey}</span></div><div class="home-cal-grid">${week}${cells.join('')}</div>`}
 function homeKpiHtml(value,unit,decimals=0){const x=n(value),num=decimals?x.toLocaleString("ko-KR",{minimumFractionDigits:decimals,maximumFractionDigits:decimals}):Math.round(x).toLocaleString("ko-KR");return `${num}<span class="kpi-unit">${unit}</span>`}
+function haniCareMemory(){return haniCareMemory.session||(haniCareMemory.session={dismissed:false,homeNotice:null,storageNotice:null,checklist:null})}
+function haniCareNeedsInstall(){const ua=navigator.userAgent||"",ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);return ios&&/Safari\//.test(ua)&&/Version\//.test(ua)&&!/CriOS|FxiOS|EdgiOS|OPiOS|OPT\/|DuckDuckGo|GSA\//.test(ua)&&navigator.standalone!==true&&!(typeof window.matchMedia==="function"&&window.matchMedia("(display-mode: standalone)").matches)}
+function haniCareNotice(parent,before,key){if(!parent)return;const memory=haniCareMemory(),visible=!memory.dismissed&&haniCareNeedsInstall();if(!memory[key]&&visible){const slot=document.createElement("div");slot.className="note hani-care-notice";const markup='<p>아이폰 사파리는 7일 동안 열지 않으면 이 기기 기록을 지울 수 있어요. 공유 → \'홈 화면에 추가\'로 앱처럼 쓰면 안전해요.</p><button class="btn sm" type="button" aria-label="홈 화면 추가 안내 닫기">닫기</button>';slot.innerHTML=markup;slot.querySelector("button").onclick=()=>{memory.dismissed=true;[memory.homeNotice,memory.storageNotice].forEach(x=>{if(x)x.hidden=true})};parent.insertBefore(slot,before);memory[key]=slot}if(memory[key])memory[key].hidden=!visible}
+function haniCareChecklist(date=monthlyReportKoreaDate()){const day=Number(date.slice(8,10));if(day<15||day>20||!monthlyReportDate(date))return null;const month=date.slice(0,7),period=ledgerSettlementPeriod(month),start=new Date(date+"T00:00:00Z");start.setUTCDate(start.getUTCDate()-(start.getUTCDay()+6)%7);const weekStart=start.toISOString().slice(0,10),ledger=(state.ledgerMonths||[]).some(x=>x?.month===month&&(x.status==="confirmed"||x.confirmed===true||(!x.status&&x.confirmed!==false&&x.importVersion==="LEDGER_FINAL_V1"&&!!x.importedAt))),investment=(state.investmentBrokerSnapshots||[]).some(x=>x?.period===month&&x.mode==="actual"&&x.recordType!=="positions"&&x.status==="confirmed"),body=(state.body||[]).some(x=>{const d=monthlyReportDate(x?.date);return d&&d>=weekStart&&d<=date&&Number.isFinite(Number(x.weight))&&Number(x.weight)>0});return {month,period,weekStart,items:[{label:"① 가계부 이번 결산월 확정",done:ledger,view:"ledger"},{label:"② 이번 달 투자 계좌 스냅샷 확정",done:investment,view:"investment"},{label:"③ 체중 기록 이번 주",done:body,view:"diet"}]}}
+function renderHaniCareHome(){const home=$("home");if(!home)return;const memory=haniCareMemory();haniCareNotice(home,home.firstChild,"homeNotice");const data=haniCareChecklist();if(!memory.checklist&&data){const slot=document.createElement("section");slot.className="card full hani-care-checklist";slot.setAttribute("aria-label","월말 정산 도우미");home.insertBefore(slot,memory.homeNotice?memory.homeNotice.nextSibling:home.firstChild);memory.checklist=slot}const slot=memory.checklist;if(!slot)return;slot.hidden=!data;if(!data)return;slot.innerHTML=`<div class="sh"><h3>월말 정산 도우미</h3><span class="pill">${esc(data.month)} · 18일 결산</span></div><p class="sub">가계부 ${esc(data.period.periodStart)} ~ ${esc(data.period.periodEnd)} · 체중은 월요일부터 오늘까지 확인해요.</p><ul class="hani-care-list">${data.items.map(x=>`<li><span>${x.done?"✓":"○"} ${esc(x.label)} · ${x.done?"완료했어요":"아직이에요"}</span>${x.done?"":`<button class="btn sm" type="button" data-hani-care-view="${x.view}">확인하러 가요</button>`}</li>`).join("")}</ul>`;slot.querySelectorAll("[data-hani-care-view]").forEach(b=>b.onclick=()=>showView(b.dataset.haniCareView))}
 function renderHome(){renderHomeDialogue();const official=officialBrokerSorted(),latest=official.at(-1)||null,latestCalc=latest?brokerCalc(latest):null;
+  renderHaniCareHome();
   // Canonical Data Hub owns the Dashboard analysis; account mix remains in Finance.
   const currentMonth=today().slice(0,7),todayKey=today(),
     monthTasks=(state.tasks||[]).filter(t=>!t.done&&String(t.due||"").startsWith(currentMonth))
@@ -4307,6 +4355,7 @@ function cloudSaveSyncMeta(remote,hash,extra={}){
 
 async function cloudReadRow(){
   if(!cloudClient||!cloudUser)throw new Error("Cloud 로그인이 필요합니다.");
+  cloudSessionFullReads++;renderCloudTransferUsage();
   const {data,error}=await cloudClient
     .from("hani_state")
     .select("state,revision,updated_at,device")
@@ -4787,6 +4836,7 @@ async function cloudVerifySourceOwner(){
   }
 }
 function renderCloudPanel(){
+  renderCloudTransferUsage();
   const pill=$("cloudStatePill"),msg=$("cloudMessage"),grid=$("cloudStatusGrid"),head=$("cloudHeaderState");
   const bridge=$("cloudBridgeCard");
   if(bridge){
@@ -4845,6 +4895,7 @@ function renderCloudPanel(){
 }
 async function cloudFetchMeta({silent=false}={}){
   if(!cloudClient||!cloudUser)return null;
+  cloudSessionMetaChecks++;renderCloudTransferUsage();
   const {data,error}=await cloudClient.from("hani_state").select("revision,updated_at,device").eq("user_id",cloudUser.id).limit(1);
   if(error){if(!silent)throw error;return null}
   const row=data?.[0]||null;
@@ -5190,6 +5241,7 @@ function renderStoragePanel(){
 
   const stats=$("storageStats");if(!stats)return;
   let raw="";try{raw=localStorage.getItem(STORAGE_KEY)||""}catch(e){}const recordCount=state.transactions.length+(state.investmentMonthlySnapshots?.length||0)+(state.investmentBrokerSnapshots?.length||0)+(state.investmentCashFlows?.length||0)+(state.investmentJournal?.length||0)+(state.ledgerMonths?.length||0)+(state.spendReviews?.length||0)+state.body.length+state.exercise.length+state.books.length+state.movies.length+state.diaries.length+state.tasks.length+(state.campusSemesters?.length||0)+(state.travelTrips?.length||0)+(state.travelPlaces?.length||0)+(state.travelWishlist?.length||0)+(state.certificates?.length||0)+(state.wishlistItems?.length||0)+(state.learningProjects?.length||0)+(state.learningQuizzes?.length||0)+(state.learningWrongAnswers?.length||0);
+  haniCareNotice(stats.parentNode,stats,"storageNotice");
   const rows=[
     ["저장 위치","현재 브라우저"],
     ["마지막 저장",formatDateTime(state.meta?.lastSavedAt)],
@@ -5197,6 +5249,7 @@ function renderStoragePanel(){
     ["저장 데이터",`${bytesLabel(serializedBytes(raw))} · 기록 ${recordCount}건`]
   ];
   stats.innerHTML=rows.map(([l,v])=>`<div class="data-status-item"><div class="label">${l}</div><b>${v}</b></div>`).join("");
+  renderCloudTransferUsage();
   const pill=$("storageStatePill"),message=$("storageMessage");
   if(pill){pill.textContent=loadRecovery.active?"원본 보호 중":lastSaveResult?.ok===false?"ERROR":"LOCAL · OK";pill.classList.toggle("danger",lastSaveResult?.ok===false)}
   if(message)message.textContent=lastLoadError||(importSyncHold?"백업 복원 후 Cloud 자동 반영을 보류하고 있습니다.":"")||lastSaveResult?.message||"브라우저 저장 상태를 확인했습니다.";
@@ -5566,7 +5619,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.192";
+const HANI_DISPLAY_VERSION="2.9.193";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
