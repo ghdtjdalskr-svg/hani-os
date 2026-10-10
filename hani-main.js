@@ -1665,6 +1665,8 @@ const pageQuotes={
 };
 const pageQuoteLast={};
 function pageQuote(page){
+  const voice=window.HaniPageQuote?.(page);
+  if(voice)return [voice.speaker,voice.quote];
   const rows=pageQuotes[page]||pageQuotes.home;
   if(!rows.length)return ["하니","오늘도 천천히 이어가자."];
   let idx=Math.floor(Math.random()*rows.length);
@@ -1893,10 +1895,18 @@ function persistCollapsedGroups(){
   try{localStorage.setItem(GROUP_COLLAPSE_KEY,JSON.stringify(vals))}catch(e){}
 }
 savedCollapsedGroups().forEach(k=>document.querySelector(`.group[data-color="${k}"]`)?.classList.add("collapsed"));
-document.querySelectorAll(".group-head").forEach(b=>b.addEventListener("click",()=>{
-  b.closest(".group").classList.toggle("collapsed");
-  persistCollapsedGroups();
-}));
+document.querySelectorAll(".group-head").forEach(b=>{
+  const group=b.closest(".group"),body=group.querySelector(".group-body");
+  b.type="button";
+  if(body){body.id=body.id||`navGroup-${group.dataset.color}`;b.setAttribute("aria-controls",body.id)}
+  const sync=()=>b.setAttribute("aria-expanded",String(!group.classList.contains("collapsed")));
+  sync();
+  b.addEventListener("click",()=>{
+    group.classList.toggle("collapsed");
+    sync();
+    persistCollapsedGroups();
+  });
+});
 document.querySelectorAll("[data-tabs]").forEach(t=>t.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{t.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");const parent=t.closest('.page-nav-context-v02992')?.parentElement||t.parentElement;parent.querySelectorAll(":scope > .panel").forEach(x=>x.classList.remove("active"));$(b.dataset.panel).classList.add("active");if(t.classList.contains("investment-tabs-main"))t.scrollIntoView({behavior:"smooth",block:"start"});if(b.dataset.panel==="investNews")setTimeout(()=>investmentNewsMaybeRefresh(),40);setTimeout(()=>{drawPortfolio();drawBody();drawLedgerTrend();drawMonthlyAssetChart();drawBrokerChart();drawAnnualInvestmentCharts();drawInvestmentAccountChart()},30)})));
 document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",()=>closeModal(b.dataset.close)));
 document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)m.classList.remove("open")}));
@@ -3402,7 +3412,7 @@ function mediaCConfirm(rollback=false){
   $("mediaCTitle").textContent=rollback?"표지·포스터 다시 내장":"표지·포스터 C단계";
   $("mediaCDescription").textContent=rollback?
     "비어 있는 표지·포스터를 검증된 기기 또는 Cloud 이미지로 다시 채웁니다. 참조와 최소 쓰기 버전은 유지합니다.":
-    "기록을 약 2.16MB에서 0.3MB로 줄입니다. 모든 기기와 열린 탭을 v2.9.198 이상으로 새로고침한 뒤 실행하세요. 전체 안전 백업과 이미지 보관을 확인하고, 일치하는 내장 이미지만 비웁니다. 다른 기기는 받기만 하세요.";
+    "기록을 약 2.16MB에서 0.3MB로 줄입니다. 모든 기기와 열린 탭을 v2.9.199 이상으로 새로고침한 뒤 실행하세요. 전체 안전 백업과 이미지 보관을 확인하고, 일치하는 내장 이미지만 비웁니다. 다른 기기는 받기만 하세요.";
   check.checked=false;check.required=!rollback;check.closest("label").hidden=rollback;
   approve.textContent=rollback?"다시 내장 실행":"C단계 실행";approve.disabled=!rollback;
   check.onchange=()=>{approve.disabled=!rollback&&!check.checked};
@@ -5935,7 +5945,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.198";
+const HANI_DISPLAY_VERSION="2.9.199";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];

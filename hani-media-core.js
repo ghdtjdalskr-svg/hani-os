@@ -259,8 +259,16 @@
       if(!isRef(ref))throw Error("잘못된 이미지 참조가 있습니다.");
       refs.add(ref);
     }
+    // A browser that did not run stage B has an empty cache; seed it from the record's own
+    // inline copy, but only when that copy hashes to the ref.
+    const inlineByRef=new Map();
+    for(const [kind,field] of fields)for(const row of state[kind]||[]){
+      const ref=row?.[field+"Ref"],data=row?.[field];
+      if(ref&&typeof data==="string"&&data.startsWith("data:")&&!inlineByRef.has(ref))inlineByRef.set(ref,data);
+    }
     for(const ref of refs){
-      const data=await get(ref);check();
+      let data=await get(ref);check();
+      if(!data&&inlineByRef.has(ref)&&await digest(inlineByRef.get(ref))===ref){data=await put(ref,inlineByRef.get(ref));check()}
       if(data)bodies.set(ref,data);
       else if(localOnly)throw Error("기기에 검증된 참조 이미지가 없습니다.");
     }
