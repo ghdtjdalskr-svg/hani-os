@@ -1003,6 +1003,7 @@ let cloudNetworkRetryPending=false;
 let cloudNetworkRetryAt=0;
 let cloudComparisonEpoch=0;
 let cloudSafetyBackupBusy=false;
+let cloudChoicePreview=null;
 let cloudRecoveryMode=false;
 let cloudAuthSubscription=null;
 let loginGateUnlocked=false;
@@ -1054,6 +1055,7 @@ const freshState=()=>({
   version:VERSION,
   accounts:structuredClone(seedAccounts),
   instruments:[],transactions:[],snapshots:[],investmentMonthlySnapshots:[],investmentBrokerSnapshots:[],investmentCashFlows:[],investmentJournal:[],investmentWatchlist:[],ledgerMonths:[],spendReviews:[],body:[],exercise:[],cardio:[],strength:[],books:[],movies:[],diaries:[],tasks:[],campusSemesters:[],travelTrips:[],travelPlaces:[],travelWishlist:[],certificates:[],wishlistItems:[],learningProjects:[],learningQuizzes:[],learningWrongAnswers:[],monthlyReports:[],
+  boardPosts:[],boardComments:[],
   profile:{heightCm:188},
   goals:{investment:100000000,weight1:110,weight2:100,reading:30,readingAnnual:30,readingMonthly:2},
   calendarUrl:"",
@@ -1189,6 +1191,7 @@ function validateStoredRecords(raw){
   // Stage A: coverRef/posterRef are optional record fields; preserve them verbatim.
   if(!raw||typeof raw!=="object"||Array.isArray(raw))throw new Error("Invalid saved state root");
   const lists=["accounts","instruments","transactions","snapshots","investmentMonthlySnapshots","investmentBrokerSnapshots","investmentCashFlows","investmentJournal","investmentWatchlist","ledgerMonths","spendReviews","body","exercise","cardio","strength","books","movies","diaries","tasks","campusSemesters","travelTrips","travelPlaces","travelWishlist","certificates","wishlistItems","learningProjects","learningQuizzes","learningWrongAnswers","monthlyReports","goalRegistry"];
+  lists.push("boardPosts","boardComments");
   for(const key of lists){
     if(raw[key]===undefined)continue;
     if(!Array.isArray(raw[key])||raw[key].some(row=>!row||typeof row!=="object"||Array.isArray(row)))throw new Error("Invalid saved record list");
@@ -1275,6 +1278,8 @@ function normalizeState(d){
     books:Array.isArray(d?.books)?d.books:[],
     movies:Array.isArray(d?.movies)?d.movies:[],
     diaries,
+    boardPosts:Array.isArray(d?.boardPosts)?d.boardPosts:[],
+    boardComments:Array.isArray(d?.boardComments)?d.boardComments:[],
     tasks:Array.isArray(d?.tasks)?d.tasks:[],
     campusSemesters:Array.isArray(d?.campusSemesters)?d.campusSemesters.map(normalizeCampusSemester):[],
     travelTrips:Array.isArray(d?.travelTrips)?d.travelTrips.map(normalizeTravelTrip):[],
@@ -1506,6 +1511,7 @@ const pageMeta={
  movie:["시청 아카이브","보고 싶은 작품과 감상 기록을 관리합니다.","life"],
  game:["스포츠","좋아하는 네 팀의 최근 결과와 주요 소식을 한눈에 봅니다.","sports"],
  diary:["일기","하루의 기록을 남깁니다.","life"],
+ board:["사내 게시판","HANI GROUP의 업무와 일상을 나눕니다.","team"],
  tasks:["할 일","해야 할 일을 월간 흐름으로 정리합니다.","work"],
  calendar:["캘린더","Google Calendar를 HANI OS 안에서 확인합니다.","work"],
  work:["업무 보조","업무 진행상황과 후속조치를 기록합니다.","work"],
@@ -1769,7 +1775,7 @@ function setBanner(key,page="home"){
 // UI position only. Never put forms, records, credentials or Cloud state here.
 const NAVIGATION_KEY='hani_os_navigation_v1';
 if('scrollRestoration' in history)history.scrollRestoration='manual';
-const NAVIGATION_VIEWS=new Set(['home','reading','movie','monthlyReport','diet','exercise','diary','calendar','university','wishlist','travel']);
+const NAVIGATION_VIEWS=new Set(['home','reading','movie','monthlyReport','diet','exercise','diary','board','calendar','university','wishlist','travel']);
 let navigationCurrent='',navigationBooted=false,navigationRestored=false,navigationTimer=0;
 function navigationRead(){
   try{const row=JSON.parse(localStorage.getItem(NAVIGATION_KEY));if(!(row?.version===1&&NAVIGATION_VIEWS.has(row.view)&&Number.isFinite(row.y)&&row.y>=0&&row.y<=1000000))return null;const safe={version:1,view:row.view,y:row.y};if(row.view==='monthlyReport'&&['monthly','quarterly','annual'].includes(row.board))safe.board=row.board;return safe}catch{return null}
@@ -1805,6 +1811,7 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
   updateFinishScope();
   history.replaceState(null,"",id==="home"?location.href.split("#")[0]:("#"+id));$("app").classList.remove("mobile-open");window.scrollTo({top:0,left:0,behavior:"auto"});
   window.HaniAssetMarket?.sync();
+  if(id==="board")window.HaniBoard?.render();
   if(id==="geminiReports")window.HaniGeminiReports?.render();
   if(id==="aiBudget")window.HaniAiBudget?.render();
   if(id==="investment")setTimeout(drawPortfolio,30);if(id==="newsroom")setTimeout(()=>investmentNewsMaybeRefresh(),40);if(id==="diet")setTimeout(drawBody,30);if(id==="ledger")setTimeout(drawLedgerTrend,30);if(id==="calendar")renderCalendar();if(id==="tasks")setTimeout(()=>googleCalendarRefreshStatus({silent:true}),0);if(id==="intake")setTimeout(()=>intakeRenderPreview(),0);if(id==="agentReview")setTimeout(()=>agentReviewInit(),0);if(id==="monthlyReport")setTimeout(()=>renderMonthlyReport(),0);if(id==="policy")setTimeout(()=>agentPolicyInit(),0);if(id==="deployment")setTimeout(()=>deployCenterRender(),0);
@@ -1815,6 +1822,7 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
 }
 
 const QUICK_JUMP_ITEMS=[
+  ["board","사내 게시판","HANI GROUP BOARD WORK LIFE MEMORY LOUNGE"],
   ["characterArchive","M9 + MIR Character Archive","HANI GROUP 캐릭터 프로필 Canon 관계 직급 연차 미르"],
   ["aiBudget","AI 주간 예산","Codex Claude Gemini 토큰 사용량 주간 세션 한도 회복 재충전"],
   ["aura","HANI AURA","화면 꾸미기 색상 계절 테마 appearance finish season"],
@@ -3305,12 +3313,12 @@ function mediaHasRefs(value){
   return [["books","cover"],["movies","poster"]].some(([kind,field])=>
     Array.isArray(value?.[kind])&&value[kind].some(row=>row?.[field+"Ref"]&&!row?.[field]));
 }
-async function mediaBackupState(value){
+async function mediaBackupState(value,{silent=false}={}){
   try{
     const result=await window.HANI_MEDIA?.reembed(value);
     if(result?.complete&&result.data)return result.data;
   }catch(_){}
-  alert("불완전 백업: 참조 이미지가 누락되었거나 미디어 보관소를 읽지 못했습니다. 백업과 후속 작업을 중단합니다.");
+  if(!silent)alert("불완전 백업: 참조 이미지가 누락되었거나 미디어 보관소를 읽지 못했습니다. 백업과 후속 작업을 중단합니다.");
   return null;
 }
 let mediaBBusy=false;
@@ -3336,7 +3344,7 @@ function mediaBConfirm(){
   });
 }
 async function mediaRunB(){
-  if(mediaBBusy||!mediaBCanRun())return;
+  if(mediaBBusy||mediaCBusy||!mediaBCanRun())return;
   mediaBBusy=true;renderMediaPreview();
   const client=cloudClient,owner=cloudUser.id;
   let original=state,before=JSON.stringify(state);
@@ -3386,9 +3394,94 @@ async function mediaRunB(){
   }catch(error){mediaBStatus("중단 · "+(error?.message||"이중 보관 실패"))}
   finally{mediaBBusy=false;renderMediaPreview()}
 }
+let mediaCBusy=false,mediaCCheck=0;
+function mediaCStatus(message){const el=$("mediaCResult");if(el)el.textContent=message}
+function mediaCConfirm(rollback=false){
+  const dialog=$("mediaCDialog"),check=$("mediaCDevices"),approve=$("mediaCApprove");
+  if(!dialog||!check||!approve||typeof dialog.showModal!=="function")return Promise.resolve(false);
+  $("mediaCTitle").textContent=rollback?"표지·포스터 다시 내장":"표지·포스터 C단계";
+  $("mediaCDescription").textContent=rollback?
+    "비어 있는 표지·포스터를 검증된 기기 또는 Cloud 이미지로 다시 채웁니다. 참조와 최소 쓰기 버전은 유지합니다.":
+    "기록을 약 2.16MB에서 0.3MB로 줄입니다. 모든 기기와 열린 탭을 v2.9.198 이상으로 새로고침한 뒤 실행하세요. 전체 안전 백업과 이미지 보관을 확인하고, 일치하는 내장 이미지만 비웁니다. 다른 기기는 받기만 하세요.";
+  check.checked=false;check.required=!rollback;check.closest("label").hidden=rollback;
+  approve.textContent=rollback?"다시 내장 실행":"C단계 실행";approve.disabled=!rollback;
+  check.onchange=()=>{approve.disabled=!rollback&&!check.checked};
+  dialog.returnValue="";
+  return new Promise(resolve=>{
+    dialog.onclose=()=>{dialog.onclose=null;check.onchange=null;
+      resolve(dialog.returnValue==="approve"&&(rollback||check.checked))};
+    try{dialog.showModal()}catch(_){dialog.onclose=null;check.onchange=null;resolve(false)}
+  });
+}
+async function mediaRunC(rollback=false){
+  if(mediaBBusy||mediaCBusy||!mediaBCanRun())return;
+  mediaCBusy=true;renderMediaPreview();
+  const client=cloudClient,owner=cloudUser.id;
+  let original=state,before=JSON.stringify(state);
+  const guard=()=>mediaBCanRun()&&state===original&&JSON.stringify(state)===before&&
+    cloudClient===client&&cloudUser?.id===owner;
+  try{
+    if(!await mediaCConfirm(rollback))return;
+    mediaCStatus("Cloud 확인이 끝나기를 기다리는 중…");
+    if(!await mediaBWaitIdle())throw Error("Cloud 확인이 끝나지 않았습니다. 잠시 후 다시 눌러 주세요.");
+    if(state!==original&&cloudClient===client&&cloudUser?.id===owner){original=state;before=JSON.stringify(state)}
+    if(!guard())throw Error("확인 중 계정·기록·Cloud 상태가 변경됐습니다.");
+    const auth=await client.auth.getUser();
+    if(auth.error||auth.data?.user?.id!==owner||!guard())throw Error("소유 계정 로그인을 확인하지 못했습니다.");
+    mediaCStatus("원본 전체 안전 백업 생성·재읽기 확인…");
+    const full=await window.HANI_MEDIA.reembed(JSON.parse(before));
+    if(!full?.complete||!full.data||!guard())throw Error("불완전 백업: 이미지 누락으로 중단합니다.");
+    if(!await cloudSaveSafetySnapshot(rollback?"before_media_stage_c_rollback":"before_media_stage_c",full.data))
+      throw Error("안전 백업을 확인하지 못했습니다.");
+    if(!guard())throw Error("안전 백업 중 기록이 변경됐습니다.");
+    mediaCStatus("기기·Cloud 이미지 digest 확인…");
+    const result=await window.HANI_MEDIA.prepareC({state:JSON.parse(before),client,userId:owner,guard,rollback});
+    if(!result.ok)throw Error(result.error);
+    if(!await mediaBWaitIdle())throw Error("Cloud 확인 대기 시간이 초과됐습니다.");
+    const verifiedAuth=await client.auth.getUser();
+    if(verifiedAuth.error||verifiedAuth.data?.user?.id!==owner||!guard()||cloudSyncBusy||cloudApplyingRemote)
+      throw Error("최종 소유 계정·기록 검증에 실패했습니다.");
+    if(result.changes.length){
+      const candidate=structuredClone(original);
+      for(const change of result.changes){
+        const row=candidate[change.kind][change.index];
+        if(row.id!==change.id||(row[change.field]||"")!==change.data||row[change.field+"Ref"]!==change.ref)
+          throw Error("변경 직전 기록이 달라졌습니다.");
+        row[change.field]=change.value;
+      }
+      if(!rollback){
+        candidate.meta=candidate.meta||{};
+        candidate.meta.minMediaWriterVersion=HANI_DISPLAY_VERSION;
+      }
+      state=candidate; // One mutation; existing save owns storage and Cloud queuing.
+      let saved=false;
+      try{saved=save()?.ok===true}finally{if(!saved)state=original}
+      if(!saved)throw Error("기존 저장 경로에서 저장하지 못했습니다. 원본을 유지합니다.");
+      try{renderAll()}catch(_){toast("저장됐습니다. 화면을 새로 확인해 주세요.")}
+    }
+    mediaCStatus((rollback?"다시 내장":"C단계")+" · "+result.changes.length+"장 저장 · digest 불일치 "+
+      result.conflicts.length+"건 보존");
+  }catch(error){mediaCStatus("중단 · "+(error?.message||"이미지 분리·복구 실패"))}
+  finally{mediaCBusy=false;renderMediaPreview()}
+}
+function renderMediaCControls(){
+  const button=$("mediaRunC"),rollback=$("mediaRollbackC"),token=++mediaCCheck;
+  if(rollback){rollback.disabled=mediaBBusy||mediaCBusy||!mediaBCanRun()||!mediaHasRefs(state);
+    rollback.onclick=()=>mediaRunC(true)}
+  if(!button)return;
+  button.disabled=true;button.onclick=()=>mediaRunC(false);
+  if(mediaBBusy||mediaCBusy||!mediaBCanRun())return;
+  const original=state,before=JSON.stringify(state),client=cloudClient,owner=cloudUser.id;
+  const guard=()=>token===mediaCCheck&&!mediaBBusy&&!mediaCBusy&&mediaBCanRun()&&
+    state===original&&JSON.stringify(state)===before&&cloudClient===client&&cloudUser?.id===owner;
+  void window.HANI_MEDIA.verifyRefs({state:JSON.parse(before),client,userId:owner,guard,localOnly:true})
+    .then(result=>{if(guard())button.disabled=result.count===0})
+    .catch(()=>{if(token===mediaCCheck)button.disabled=true});
+}
 function renderMediaPreview(){
+  renderMediaCControls();
   const button=$("mediaRunB");
-  if(button){button.disabled=mediaBBusy||!mediaBCanRun();button.onclick=mediaRunB}
+  if(button){button.disabled=mediaBBusy||mediaCBusy||!mediaBCanRun();button.onclick=mediaRunB}
   const host=$("mediaSeparationStats");if(!host)return;
   try{
     const report=window.HANI_MEDIA?.dryRunReport(state);if(!report)return;
@@ -4177,7 +4270,7 @@ function cloudDeviceLabel(){
   return (`HANI OS R${CLOUD_SYNC_ENGINE} · v${HANI_DISPLAY_VERSION} · ${platform}`).slice(0,120);
 }
 function cloudRecordCount(d=state){
-  return (d.transactions?.length||0)+(d.investmentMonthlySnapshots?.length||0)+(d.investmentBrokerSnapshots?.length||0)+(d.investmentCashFlows?.length||0)+(d.investmentJournal?.length||0)+(d.body?.length||0)+(d.exercise?.length||0)+(d.books?.length||0)+(d.movies?.length||0)+(d.diaries?.length||0)+(d.tasks?.length||0)+(d.campusSemesters?.length||0)+(d.travelTrips?.length||0)+(d.travelPlaces?.length||0)+(d.travelWishlist?.length||0)+(d.certificates?.length||0)+(d.wishlistItems?.length||0)+(d.learningProjects?.length||0)+(d.learningQuizzes?.length||0)+(d.learningWrongAnswers?.length||0);
+  return (d.boardPosts?.length||0)+(d.boardComments?.length||0)+(d.transactions?.length||0)+(d.investmentMonthlySnapshots?.length||0)+(d.investmentBrokerSnapshots?.length||0)+(d.investmentCashFlows?.length||0)+(d.investmentJournal?.length||0)+(d.body?.length||0)+(d.exercise?.length||0)+(d.books?.length||0)+(d.movies?.length||0)+(d.diaries?.length||0)+(d.tasks?.length||0)+(d.campusSemesters?.length||0)+(d.travelTrips?.length||0)+(d.travelPlaces?.length||0)+(d.travelWishlist?.length||0)+(d.certificates?.length||0)+(d.wishlistItems?.length||0)+(d.learningProjects?.length||0)+(d.learningQuizzes?.length||0)+(d.learningWrongAnswers?.length||0);
 }
 
 // B: coverRef/posterRef are ordinary record fields; hashes include them so they sync normally.
@@ -4211,6 +4304,7 @@ function cloudHasMeaningfulLocalData(value=state){
     "investmentWatchlist","body","exercise","cardio","strength","books",
     "movies","diaries","tasks","ledgerMonths","spendReviews","campusSemesters","travelTrips","travelPlaces","travelWishlist","certificates","wishlistItems","learningProjects","learningQuizzes","learningWrongAnswers","monthlyReports","goalRegistry"
   ];
+  arrays.push("boardPosts","boardComments");
   if(arrays.some(k=>Array.isArray(d[k])&&d[k].length>0))return true;
   if(String(d.calendarUrl||"").trim())return true;
   if(d.pageNotes&&Object.values(d.pageNotes).some(v=>String(v||"").trim()))return true;
@@ -4240,9 +4334,13 @@ function cloudMergeProtectedMedia(target,source){
     const byId=new Map(oldRows.filter(x=>x?.id).map(x=>[x.id,x]));
     const bySig=new Map(oldRows.map(x=>[cloudMediaSignature(type,x),x]));
     out[type]=newRows.map(row=>{
-      if(row?.[key])return row;
+      if(row?.[key]||/^media:sha256:[a-f0-9]{64}$/.test(row?.[key+"Ref"]||""))return row;
       const old=(row?.id&&byId.get(row.id))||bySig.get(cloudMediaSignature(type,row));
-      return old?.[key]?{...row,[key]:old[key]}:row;
+      if(!old)return row;
+      const restored={...row};
+      if(old[key])restored[key]=old[key];
+      if(/^media:sha256:[a-f0-9]{64}$/.test(old[key+"Ref"]||""))restored[key+"Ref"]=old[key+"Ref"];
+      return restored;
     });
   });
   return out;
@@ -4488,7 +4586,7 @@ function cloudQueueSync(delay=650){
   if(cloudSyncTimer)clearTimeout(cloudSyncTimer);
   cloudSyncTimer=setTimeout(()=>cloudSyncCycle("local-save"),delay);
 }
-async function cloudApplyRemoteRow(remote,remoteHash,{announce=false}={}){
+async function cloudApplyRemoteRow(remote,remoteHash,{announce=false,verifyRemote=null}={}){
   assertCloudSourceReady();
   const previousState=structuredClone(state);
   let candidate=normalizeState(structuredClone(remote?.state||{}));
@@ -4497,6 +4595,7 @@ async function cloudApplyRemoteRow(remote,remoteHash,{announce=false}={}){
   let previousRaw=null;
   try{previousRaw=localStorage.getItem(STORAGE_KEY)}catch(e){}
   if(!await cloudSaveSafetySnapshot(`before_cloud_pull_r${remote?.revision??"unknown"}`,previousState))throw new Error("Cloud 반영 전 안전 스냅샷을 만들지 못해 동기화를 중단했습니다.");
+  if(verifyRemote)await verifyRemote();
   assertCloudSourceReady();
   if(!cloudSame(state,previousState)||localStorage.getItem(STORAGE_KEY)!==previousRaw)throw new Error("백업 중 Local이 변경되어 Cloud 수신을 중단했습니다.");
   try{
@@ -4638,7 +4737,9 @@ function cloudRetryAfterNetwork(reason){
 async function cloudSyncCycle(reason="manual"){
   if(loadRecovery.active||importSyncHold){cloudStopAutoSync(loadRecovery.active?lastLoadError:"복원한 백업은 이 기기에만 보관 중입니다. Cloud 반영은 별도 확인이 필요합니다.","warn");return}
   if(!cloudClient||!cloudUser)return;
+  if(cloudChoicePreview&&reason!=="manual")return;
   if(cloudSyncBusy){cloudSyncPending=true;return}
+  cloudChoicePreview=null;
   cloudSyncBusy=true;
   cloudNetworkRetryPending=false;
   try{
@@ -4671,6 +4772,10 @@ async function cloudSyncCycle(reason="manual"){
     const hasBaseline=meta.syncEngine===CLOUD_SYNC_ENGINE&&meta.hashSchema===CLOUD_HASH_SCHEMA&&!!baselineHash&&Number.isFinite(appliedRevision);
     cloudRuntime={...cloudRuntime,revision:remote.revision,updatedAt:remote.updated_at,device:remote.device||"",localSummary:cloudSummaryText(localState),remoteSummary:cloudSummaryText(remoteState)};
     const decision=cloudSyncDecision({hasBaseline,localMeaningful,remoteMeaningful,localHash,remoteHash,baselineHash,appliedRevision:Number.isFinite(appliedRevision)?appliedRevision:-1,remoteRevision:Number.isFinite(remoteRevision)?remoteRevision:-1});
+    if(decision.action==="pull"&&cloudNeedsRestoreChoice(localState,remote)){
+      cloudPrepareChoice(remote,localState,localHash,remoteHash,"restore");
+      cloudStopAutoSync("Cloud에 보관된 기록이 있어요. 아래에서 내용을 확인하고 ‘Cloud 기록 가져오기’를 선택해 주세요.");return;
+    }
     if(decision.action==="idle-empty"){
       cloudAutoSyncReady=false;cloudSetRuntime("대기",decision.reason,"warn",{sync:"WAIT"});cloudStartPolling();return;
     }
@@ -4686,6 +4791,7 @@ async function cloudSyncCycle(reason="manual"){
       await cloudPushLocalRow(remote,localState,localHash);cloudAutoSyncReady=true;cloudStartPolling();return;
     }
     if(decision.action==="conflict"){
+      cloudPrepareChoice(remote,localState,localHash,remoteHash,"conflict");
       cloudAutoSyncReady=false;cloudStopAutoSync("PC와 모바일 양쪽에서 변경된 데이터가 있어 자동 동기화를 잠시 멈췄어요. 어느 쪽도 자동으로 덮어쓰지 않습니다. ‘차이 확인’에서 Local과 Cloud를 비교해 주세요.","error");return;
     }
     cloudAutoSyncReady=false;cloudStopAutoSync(decision.reason||"자동 동기화를 안전하게 진행할 수 없어 중단했습니다.","warn");
@@ -4940,6 +5046,7 @@ async function cloudVerifySourceOwner(){
   }
 }
 function renderCloudPanel(){
+  window.HANI_DRIVE_VAULT?.schedule();
   renderMediaPreview();
   renderCloudTransferUsage();
   const pill=$("cloudStatePill"),msg=$("cloudMessage"),grid=$("cloudStatusGrid"),head=$("cloudHeaderState");
@@ -4997,6 +5104,7 @@ function renderCloudPanel(){
   if($("cloudRestore"))$("cloudRestore").disabled=!cloudUser;
   if($("cloudCompare"))$("cloudCompare").disabled=!cloudUser;
   if($("cloudVerifySourceOwner"))$("cloudVerifySourceOwner").disabled=!cloudUser||cloudOwnerVerificationBusy;
+  renderCloudChoice();
 }
 async function cloudFetchMeta({silent=false}={}){
   if(!cloudClient||!cloudUser)return null;
@@ -5234,6 +5342,106 @@ async function cloudRestoreToLocal(){
   }catch(e){console.error("Cloud restore",e);cloudStopAutoSync(e?.message||"Cloud → Local 복원에 실패했습니다.","error");alert("Cloud → Local 복원에 실패했습니다.\n"+(e?.message||"오류를 확인해 주세요.")+"\n\n기존 Local은 유지됩니다.")}
   finally{cloudSyncBusy=false}
 }
+function cloudNeedsRestoreChoice(local,remote){
+  return !cloudHasMeaningfulLocalData(local)&&!!remote?.state&&cloudHasMeaningfulLocalData(remote.state);
+}
+async function cloudExecuteChoice(preview,choice,ops){
+  if(!preview||!["local","cloud","pause"].includes(choice))throw new Error("선택할 원본을 다시 확인해 주세요.");
+  if(choice==="pause")return false;
+  if(preview.mode==="restore"&&choice!=="cloud")throw new Error("새 기기에는 Cloud 기록을 가져올 수 있습니다.");
+  await ops.verify();
+  if(choice==="local"){
+    if(!await ops.snapshot("choice_remote_r"+preview.remote.revision,preview.remote.state))throw new Error("Cloud 안전 백업을 만들지 못해 멈췄어요.");
+  }
+  if(!await ops.snapshot("choice_local_r"+preview.remote.revision,preview.local))throw new Error("이 기기 안전 백업을 만들지 못해 멈췄어요.");
+  if(choice==="local")await ops.verifySnapshots();
+  await ops.verify();
+  if(choice==="local")await ops.push(preview.remote,preview.local,preview.localHash);
+  else await ops.apply(preview.remote,preview.remoteHash,{announce:true,verifyRemote:ops.verify});
+  return true;
+}
+async function cloudVerifyChoice(preview){
+  const check=()=>{
+    assertCloudSourceReady();
+    if(cloudRecoveryMode||cloudUser?.id!==preview.owner||cloudClient!==preview.client||cloudChoicePreview!==preview)throw new Error("로그인이나 복구 상태가 바뀌었어요. 다시 확인해 주세요.");
+    if(!cloudSame(preview.local,cloudComparableState(state))||localStorage.getItem(STORAGE_KEY)!==preview.localRaw)throw new Error("이 기기 기록이 바뀌었어요. 다시 비교한 뒤 선택해 주세요.");
+  };
+  check();
+  const meta=await cloudFetchMeta();
+  check();
+  if(!Number.isFinite(cloudRevisionNumber(preview.remote.revision))||cloudRevisionNumber(meta?.revision)!==cloudRevisionNumber(preview.remote.revision)||meta?.updated_at!==preview.remote.updated_at||meta?.device!==preview.remote.device)throw new Error("Cloud 기록이 바뀌었어요. 덮어쓰지 않고 멈췄어요. ‘지금 동기화’로 다시 비교해 주세요.");
+}
+function cloudPrepareChoice(remote,local,localHash,remoteHash,mode){
+  cloudChoicePreview={owner:cloudUser.id,client:cloudClient,remote:structuredClone(remote),local:structuredClone(local),localRaw:localStorage.getItem(STORAGE_KEY),localHash,remoteHash,mode};
+}
+function renderCloudChoice(){
+  const preview=cloudChoicePreview;
+  const visible=!!preview&&preview.owner===cloudUser?.id&&preview.client===cloudClient&&!cloudRecoveryMode&&!loadRecovery.active&&!importSyncHold;
+  const restore=visible&&preview.mode==="restore"&&cloudNeedsRestoreChoice(state,preview.remote),conflict=visible&&preview.mode==="conflict";
+  const panel=$("cloudChoicePanel"),banner=$("cloudChoiceBanner"),dialog=$("cloudChoiceDialog");
+  if(panel)panel.hidden=!(restore||conflict);
+  if(banner)banner.hidden=!conflict;
+  if(!visible){if(dialog?.open)dialog.close();return}
+  const title=restore?"새 기기에서도 이어서 기록해요":"양쪽 기록이 달라 잠시 멈췄어요";
+  if($("cloudChoiceTitle"))$("cloudChoiceTitle").textContent=title;
+  const summary="이 기기 · "+formatDateTime(preview.local.meta?.lastSavedAt)+" · "+cloudDeviceLabel()+" / Cloud · "+formatDateTime(preview.remote.updated_at)+" · "+(preview.remote.device||"저장 기기 미확인");
+  if($("cloudChoiceSummary"))$("cloudChoiceSummary").textContent=summary;
+  if($("cloudChoiceOpen"))$("cloudChoiceOpen").textContent=restore?"Cloud 기록 가져오기":"차이 확인하고 원본 선택";
+  cloudRenderCategoryDifference(preview.local,preview.remote.state,$("cloudChoiceList"),true);
+  if($("cloudChoiceImport"))$("cloudChoiceImport").hidden=!restore;
+}
+function cloudOpenChoice(){
+  renderCloudChoice();
+  const preview=cloudChoicePreview,dialog=$("cloudChoiceDialog");
+  if(!preview||$("cloudChoicePanel")?.hidden||cloudSyncBusy||cloudApplyingRemote||!dialog)return;
+  $("cloudChoiceDialogSummary").textContent=$("cloudChoiceSummary").textContent;
+  cloudRenderCategoryDifference(preview.local,preview.remote.state,$("cloudChoiceDialogList"),true);
+  $("cloudChoiceLocal").hidden=preview.mode==="restore";
+  $("cloudChoiceStatus").textContent="선택 전 안전 백업을 확인해요. 한쪽 원본 전체를 적용하며, 기존 표지·포스터 보호는 유지해요.";
+  if(!dialog.open)dialog.showModal();
+  $("cloudChoicePause").focus();
+}
+async function cloudChooseOriginal(choice){
+  const preview=cloudChoicePreview,dialog=$("cloudChoiceDialog");
+  if(cloudSyncBusy||cloudApplyingRemote)return;
+  if(choice==="pause"){dialog?.close();return}
+  cloudSyncBusy=true;cloudStopAutoSync();
+  const buttons=["cloudChoiceLocal","cloudChoiceCloud","cloudChoicePause"];
+  buttons.forEach(id=>{if($(id))$(id).disabled=true});
+  try{
+    const done=await cloudExecuteChoice(preview,choice,{
+      verify:()=>cloudVerifyChoice(preview),
+      snapshot:cloudSaveSafetySnapshot,
+      verifySnapshots:async()=>{
+        const rows=await safetyArchiveList();
+        const saved=(reason,value)=>rows.some(row=>row.verified===true&&row.payload?.reason===reason&&cloudSame(row.payload.state,value));
+        if(!saved("choice_remote_r"+preview.remote.revision,preview.remote.state)||!saved("choice_local_r"+preview.remote.revision,preview.local))throw new Error("양쪽 안전 백업을 함께 보관하지 못했어요. 저장 공간·권한을 확인해 주세요.");
+      },
+      push:cloudPushLocalRow,apply:cloudApplyRemoteRow
+    });
+    if(done){if(cloudUser?.id!==preview.owner||cloudClient!==preview.client)throw new Error("로그인 상태가 바뀌어 자동 동기화를 멈췄어요.");cloudChoicePreview=null;dialog?.close();cloudAutoSyncReady=true;cloudStartPolling();renderCloudPanel()}
+  }catch(error){
+    cloudStopAutoSync(error?.message||"원본을 적용하지 못했어요. 다시 확인해 주세요.","error");
+    if($("cloudChoiceStatus"))$("cloudChoiceStatus").textContent=error?.message||"다시 확인해 주세요.";
+  }finally{
+    cloudSyncPending=false;cloudSyncBusy=false;
+    buttons.forEach(id=>{if($(id))$(id).disabled=false});
+  }
+}
+function cloudRenderCategoryDifference(localComparable,remoteComparable,list,includeEqual=false){
+  if(!list)return;
+  list.replaceChildren();
+  const labels={transactions:"가계부 거래",ledgerMonths:"월별 가계부",investmentBrokerSnapshots:"투자 계좌",investmentMonthlySnapshots:"월별 투자",investmentCashFlows:"투자 입출금",investmentJournal:"투자 기록",body:"체중·신체",exercise:"운동",cardio:"유산소",strength:"근력",books:"독서",movies:"시청",tasks:"할 일",diaries:"일기",goalRegistry:"목표 이력",monthlyReports:"월간 보고",learningQuizzes:"공부 퀴즈",learningProjects:"공부 프로젝트",learningWrongAnswers:"오답",travelTrips:"여행",travelPlaces:"장소",travelWishlist:"여행 희망",profile:"프로필",accounts:"계좌 설정",goals:"기존 목표",pageNotes:"메모"};
+  const local=cloudSyncFingerprintState(localComparable),cloud=cloudSyncFingerprintState(remoteComparable);
+  for(const key of new Set([...Object.keys(local),...Object.keys(cloud)])){
+    const same=cloudSame(local[key],cloud[key]);
+    if(same&&(!includeEqual||!Array.isArray(cloud[key])||!cloud[key].length))continue;
+    const item=document.createElement("li");
+    const counts=Array.isArray(local[key])||Array.isArray(cloud[key])?` · 이 기기 ${Array.isArray(local[key])?local[key].length:0}건 / Cloud ${Array.isArray(cloud[key])?cloud[key].length:0}건`:" · 내용 차이";
+    item.textContent=(labels[key]||"기타 저장 항목")+counts+(same?" · 동일":"");
+    list.append(item);
+  }
+}
 function cloudClearComparison(){
   cloudComparisonEpoch++;
   const panel=$("cloudDifferencePanel");if(panel){panel.hidden=true;delete panel.dataset.owner}
@@ -5262,14 +5470,7 @@ async function cloudCompare(){
     const held=loadRecovery.active||importSyncHold||cloudRecoveryMode;
     const assessment={establish:"동기화 기준을 확인할 수 있는 상태입니다.",pull:"Cloud 내용을 이 기기에 가져올 수 있는 후보입니다.",push:"이 기기의 변경만 확인된 상태입니다.","idle-empty":"양쪽에 생활 기록이 없습니다."}[decision.action]||decision.reason;
     if(summary)summary.textContent=(held?"복구 확인 중이므로 자동 반영은 보류합니다. ":"")+(same?"생활 기록이 동일합니다. ":"생활 기록에 차이가 있습니다. ")+assessment+" 비교만 수행했으며 기록과 동기화 기준은 변경하지 않았습니다.";
-    const labels={transactions:"가계부 거래",ledgerMonths:"월별 가계부",investmentBrokerSnapshots:"투자 계좌",investmentMonthlySnapshots:"월별 투자",investmentCashFlows:"투자 입출금",investmentJournal:"투자 기록",body:"체중·신체",exercise:"운동",cardio:"유산소",strength:"근력",books:"독서",movies:"시청",tasks:"할 일",diaries:"일기",goalRegistry:"목표 이력",monthlyReports:"월간 보고",learningQuizzes:"공부 퀴즈",learningProjects:"공부 프로젝트",learningWrongAnswers:"오답",travelTrips:"여행",travelPlaces:"장소",travelWishlist:"여행 희망",profile:"프로필",accounts:"계좌 설정",goals:"기존 목표",pageNotes:"메모"};
-    const local=cloudSyncFingerprintState(localComparable),cloud=cloudSyncFingerprintState(remoteComparable);
-    for(const key of new Set([...Object.keys(local),...Object.keys(cloud)])){
-      if(cloudSame(local[key],cloud[key]))continue;
-      const item=document.createElement("li");
-      const counts=Array.isArray(local[key])||Array.isArray(cloud[key])?` · 이 기기 ${Array.isArray(local[key])?local[key].length:0}건 / Cloud ${Array.isArray(cloud[key])?cloud[key].length:0}건`:" · 내용 차이";
-      item.textContent=(labels[key]||"기타 저장 항목")+counts;list?.append(item);
-    }
+    cloudRenderCategoryDifference(localComparable,remoteComparable,list);
     panel?.scrollIntoView({behavior:"smooth",block:"nearest"});
   }catch(e){
     console.error("Cloud compare",e);
@@ -5313,6 +5514,13 @@ function bindCloudBridgeControls(){
   if($("cloudRestore"))$("cloudRestore").onclick=cloudRestoreToLocal;
   if($("cloudCompare"))$("cloudCompare").onclick=cloudCompare;
   if($("cloudCreateSafetyBackup"))$("cloudCreateSafetyBackup").onclick=cloudCreateManualSafetyBackup;
+  if($("cloudChoiceOpen"))$("cloudChoiceOpen").onclick=cloudOpenChoice;
+  if($("cloudChoiceBannerOpen"))$("cloudChoiceBannerOpen").onclick=cloudOpenChoice;
+  if($("cloudChoiceImport"))$("cloudChoiceImport").onclick=()=>$("importBtn")?.click();
+  if($("cloudChoiceLocal"))$("cloudChoiceLocal").onclick=()=>cloudChooseOriginal("local");
+  if($("cloudChoiceCloud"))$("cloudChoiceCloud").onclick=()=>cloudChooseOriginal("cloud");
+  if($("cloudChoicePause"))$("cloudChoicePause").onclick=()=>cloudChooseOriginal("pause");
+  if($("cloudChoiceDialog"))$("cloudChoiceDialog").oncancel=e=>{if(cloudSyncBusy||cloudApplyingRemote)e.preventDefault()};
 }
 
 let dataHubLibraryTab="overview";
@@ -5339,6 +5547,8 @@ function renderDataHubLibrary(){
   if($("dataHubExportCsv"))$("dataHubExportCsv").onclick=()=>{const cell=v=>'"'+String(v??"").replace(/"/g,'""')+'"';download('\uFEFF'+[["month","asOfDate","total","currency"],...dataHubLibraryProjection().monthly.map(r=>[r.month,r.asOfDate,r.total,r.currency])].map(r=>r.map(cell).join(",")).join("\r\n"),"text/csv;charset=utf-8","csv")};
 }
 function renderStoragePanel(){
+  window.HaniBoard?.render();
+  const boardRecordCount=(state.boardPosts?.length||0)+(state.boardComments?.length||0);
   renderMediaPreview();
   renderDataHubLibrary();
   renderGoalRegistry();
@@ -5352,7 +5562,7 @@ function renderStoragePanel(){
     ["저장 위치","현재 브라우저"],
     ["마지막 저장",formatDateTime(state.meta?.lastSavedAt)],
     ["마지막 백업",formatDateTime(state.meta?.lastBackupAt)],
-    ["저장 데이터",`${bytesLabel(serializedBytes(raw))} · 기록 ${recordCount}건`]
+    ["저장 데이터",`${bytesLabel(serializedBytes(raw))} · 기록 ${recordCount+boardRecordCount}건`]
   ];
   stats.innerHTML=rows.map(([l,v])=>`<div class="data-status-item"><div class="label">${l}</div><b>${v}</b></div>`).join("");
   renderCloudTransferUsage();
@@ -5725,7 +5935,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.197";
+const HANI_DISPLAY_VERSION="2.9.198";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
@@ -6583,6 +6793,37 @@ function renderMonthlyReport(){
 
 function renderAll(){dataHubAuditSource();syncHaniDisplayVersion();normalizeHaniBrandLogos();refreshSelects();renderAccounts();renderInstruments();renderHoldings();renderTransactions();renderMonthlySnapshots();renderInvestmentQuickSuite();renderInvestmentHighlights();renderInvestmentAccountOverview();renderInvestmentNews();syncOverviewYearMirror();renderPortfolio();renderAssets();renderLedger();renderWishlist();renderBody();renderExercise();renderReading();renderMovies();renderDiary();renderCampus();renderTravel();renderCertificates();renderTasks();renderCalendar();renderTeam();renderNotes();renderHome();renderMonthlyReport();renderStoragePanel()}
 function downloadJson(serialized,filename){const blob=new Blob([serialized],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function buildBackupPayload(value,exportedAt,mediaState=null){
+  const payload={...value,meta:{...value.meta,lastBackupAt:exportedAt},version:VERSION,exportedAt,
+    _haniBackup:{app:"HANI OS Life Edition",format:1,version:VERSION,storageKey:STORAGE_KEY,exportedAt}};
+  if(mediaState){payload.books=mediaState.books;payload.movies=mediaState.movies}
+  return payload;
+}
+function driveVaultContext(){
+  return {owner:cloudUser?.id||"",epoch:cloudOwnerVerificationEpoch,
+    ready:!!(cloudUser?.id&&cloudAutoSyncReady&&!loadRecovery.active&&!cloudRecoveryMode&&
+      !importSyncHold&&!cloudSyncBusy&&!cloudApplyingRemote)};
+}
+window.HANI_DRIVE_BACKUP=Object.freeze({
+  context:driveVaultContext,
+  async build(ticket){
+    const original=state,before=JSON.stringify(state),context=driveVaultContext();
+    if(!context.ready||context.owner!==ticket.owner||context.epoch!==ticket.epoch)throw Error("OWNER");
+    const snapshot=JSON.parse(before);
+    const embedded=mediaHasRefs(snapshot)?await mediaBackupState(snapshot,{silent:true}):snapshot;
+    if(!embedded||mediaHasRefs(embedded))throw Error("INCOMPLETE");
+    const after=driveVaultContext();
+    if(state!==original||JSON.stringify(state)!==before||!after.ready||
+      after.owner!==ticket.owner||after.epoch!==ticket.epoch)throw Error("OWNER");
+    return JSON.stringify(buildBackupPayload(snapshot,new Date().toISOString(),embedded),null,2);
+  },
+  validate(text){
+    const parsed=JSON.parse(text),checked=validateBackup(parsed),meta=parsed._haniBackup;
+    if(!meta||meta.format!==1||meta.version!==VERSION||meta.storageKey!==STORAGE_KEY||
+      parsed.version!==VERSION||checked.kind!=="current"||mediaHasRefs(checked.data))throw Error("INCOMPLETE");
+    validateStoredRecords(checked.data);
+  }
+});
 async function exportDataWithMedia(options){
   try{
   const original=state,before=JSON.stringify(state),owner=cloudUser?.id||"";
@@ -6599,8 +6840,7 @@ function exportData({suffix="",silent=false}={},mediaState=null){
   try{
     const exportedAt=new Date().toISOString();state.meta={...freshState().meta,...(state.meta||{}),lastBackupAt:exportedAt};
     const saveResult=save();
-    const payload={...state,version:VERSION,exportedAt,_haniBackup:{app:"HANI OS Life Edition",format:1,version:VERSION,storageKey:STORAGE_KEY,exportedAt}};
-    if(mediaState){payload.books=mediaState.books;payload.movies=mediaState.movies}
+    const payload=buildBackupPayload(state,exportedAt,mediaState);
     const serialized=JSON.stringify(payload,null,2),safeSuffix=suffix?`_${suffix.replace(/[^a-zA-Z0-9가-힣_-]/g,"_")}`:"";
     downloadJson(serialized,`HANI_OS_v${VERSION}_backup_${today()}${safeSuffix}.json`);
     renderStoragePanel();if(!silent)toast(saveResult.ok?"백업 파일을 만들었습니다.":"브라우저 저장은 실패했지만 현재 메모리 데이터로 백업 파일을 만들었습니다.");
@@ -6614,9 +6854,10 @@ function validateBackup(raw){
   const hasAccounts=Array.isArray(data.accounts),isCurrent=hasAccounts&&["instruments","transactions","books","movies","body","exercise"].some(k=>Array.isArray(data[k])),isV22=hasAccounts&&(Array.isArray(data.assets)||Array.isArray(data.trades)||Array.isArray(data.cash));
   if(!isCurrent&&!isV22)throw new Error("HANI OS 데이터 구조를 확인할 수 없습니다.");
   if(data.accounts.some(a=>!a||typeof a!=="object"))throw new Error("계좌 데이터가 손상되었습니다.");
+  validateStoredRecords({boardPosts:data.boardPosts,boardComments:data.boardComments});
   return {data,kind:isCurrent?"current":"v22"};
 }
-function backupSummary(d){return `계좌 ${d.accounts?.length||0}개 · 종목 ${(d.instruments||d.assets||[]).length}개 · 거래 ${(d.transactions||d.trades||[]).length}건 · 월간 스냅샷 ${(d.investmentMonthlySnapshots||[]).length+(d.investmentBrokerSnapshots||[]).length}건 · 보조 입출금 ${(d.investmentCashFlows||[]).length}건 · 투자일기 ${(d.investmentJournal||[]).length}건 · 관심종목 ${(d.investmentWatchlist||[]).length}개 · 소비결산 ${(d.ledgerMonths||[]).length}개월 · 소비리뷰 ${(d.spendReviews||[]).length}건 · 책 ${(d.books||[]).length}권 · 시청 ${(d.movies||[]).length}편 · 일기 ${(d.diaries||[]).length}개 · 학기 ${(d.campusSemesters||[]).length}개 · 여행 ${(d.travelTrips||[]).length}회 · 장소 ${(d.travelPlaces||[]).length}곳 · 여행 Wish ${(d.travelWishlist||[]).length}곳 · 자격증 ${(d.certificates||[]).length}개 · Wish ${(d.wishlistItems||[]).length}개`}
+function backupSummary(d){return `계좌 ${d.accounts?.length||0}개 · 종목 ${(d.instruments||d.assets||[]).length}개 · 거래 ${(d.transactions||d.trades||[]).length}건 · 월간 스냅샷 ${(d.investmentMonthlySnapshots||[]).length+(d.investmentBrokerSnapshots||[]).length}건 · 보조 입출금 ${(d.investmentCashFlows||[]).length}건 · 투자일기 ${(d.investmentJournal||[]).length}건 · 관심종목 ${(d.investmentWatchlist||[]).length}개 · 소비결산 ${(d.ledgerMonths||[]).length}개월 · 소비리뷰 ${(d.spendReviews||[]).length}건 · 책 ${(d.books||[]).length}권 · 시청 ${(d.movies||[]).length}편 · 일기 ${(d.diaries||[]).length}개 · 학기 ${(d.campusSemesters||[]).length}개 · 여행 ${(d.travelTrips||[]).length}회 · 장소 ${(d.travelPlaces||[]).length}곳 · 여행 Wish ${(d.travelWishlist||[]).length}곳 · 자격증 ${(d.certificates||[]).length}개 · Wish ${(d.wishlistItems||[]).length}개 · 게시글 ${(d.boardPosts||[]).length}개 · 댓글 ${(d.boardComments||[]).length}개`}
 if($("loadRecoveryExport"))$("loadRecoveryExport").onclick=downloadRecoveryOriginal;
 if($("loadRecoveryImport"))$("loadRecoveryImport").onclick=()=>$("importFile").click();
 if($("safetyArchivePanel"))$("safetyArchivePanel").ontoggle=()=>{if($("safetyArchivePanel").open)void renderSafetyArchive()};

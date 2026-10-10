@@ -4,8 +4,6 @@
   // One title id shared by the person and team dialogs (only one is open at a time).
   const DETAIL_TITLE_OPEN='<h2 id="ogh-detail-title">';
   const root = document.getElementById('haniOrganizationHub');
-  if (!root || root.dataset.mounted) return;
-  root.dataset.mounted = 'true';
   const teams = [
     {id:'strategy',name:'전략기획실',en:'STRATEGY',color:'#685486',tint:'#eee7f4',symbol:'✳',line:'그룹 전략과 실행 우선순위를 설계합니다.',tags:['전략','조율','운영'],mood:'전체를 보면서, 작은 맥락도 놓치지 않습니다.',collab:'모든 팀의 전문성을 연결하는 운영 허브',scene:'ai-approval-boardroom-v1.webp'},
     {id:'platform',name:'AI플랫폼개발실',en:'AI PLATFORM',color:'#43637f',tint:'#e6edf3',symbol:'⌘',line:'AI 제품과 자동화 시스템을 개발합니다.',tags:['개발','QA','자동화'],mood:'아이디어보다 한 걸음 더. 실제로 작동하게.',collab:'전략기획실과 제품화 · 히나와 사용자 관점 검수',scene:'development-studio-v1.webp'},
@@ -33,6 +31,13 @@
     ,['taeo','채원','솔루션 매니저','business','Claude · 기업 업무','고객 요구를 분석하고 제안과 후속 실행을 지원합니다.','B2B · 제안 · 기술 검토','AI STAFF']
   ];
   const people = rows.map(([id,name,rank,team,role,line,keywords,group])=>({id,name,rank,team,role,line,keywords,group})).sort((a,b)=>Number(b.group==='M9')-Number(a.group==='M9'));
+  window.HaniOrganizationRoster=Object.freeze({
+    chairman:Object.freeze({id:"seongmin",name:"성민",rank:"회장",team:"HANI GROUP"}),
+    teams:Object.freeze(teams.map(({id,name})=>Object.freeze({id,name}))),
+    people:Object.freeze(people.map(({id,name,rank,team,group})=>Object.freeze({id,name,rank,team,group})))
+  });
+  if (!root || root.dataset.mounted) return;
+  root.dataset.mounted = 'true';
   const teamOf = id => teams.find(t=>t.id===id);
   const leaders={strategy:'hani',platform:'seoyun',finance:'jieun',life:'naeun',business:'sua'};
   const leaderBadge=p=>leaders[p.team]===p.id?'<span class="ogh-leader-badge">팀장</span>':'';
