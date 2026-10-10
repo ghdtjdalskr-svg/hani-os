@@ -34,7 +34,7 @@
   window.HaniOrganizationRoster=Object.freeze({
     chairman:Object.freeze({id:"seongmin",name:"성민",rank:"회장",team:"HANI GROUP"}),
     teams:Object.freeze(teams.map(({id,name})=>Object.freeze({id,name}))),
-    people:Object.freeze(people.map(({id,name,rank,team,group})=>Object.freeze({id,name,rank,team,group})))
+    people:Object.freeze(people.map(({id,name,rank,team,group,role,line,keywords})=>Object.freeze({id,name,rank,team,group,role,line,keywords})))
   });
   if (!root || root.dataset.mounted) return;
   root.dataset.mounted = 'true';
