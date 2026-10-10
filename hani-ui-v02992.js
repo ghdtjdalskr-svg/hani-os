@@ -225,6 +225,9 @@ const TAB_CHARACTER_LINES = Object.freeze({
   geminiReports: entry("hani", ["개발의 변화와 근거부터 읽어봐요.", "완료와 남은 확인을 나누어 봐요.", "이번 보고서의 다음 행동을 찾아요."]),
   aiBudget: entry("jieun", ["이번 주 잔여 한도부터 확인해요.", "조회 시각과 회복 예정도 같이 봐요.", "확인된 사용량으로 계획을 잡아요."]),
 });
+// Read-only source references for board personas; the banner remains the owner.
+globalThis.HaniEditorialSources = Object.freeze({lines:TAB_CHARACTER_LINES,profiles:CHARACTER_REGISTRY});
+if (typeof window !== "undefined") window.HaniEditorialSources = globalThis.HaniEditorialSources;
 const SPORTS_LINES = Object.freeze({
   yankees: Object.freeze(["오빠, 양키스는 결과부터 보고 타선과 마운드를 따로 보자. 한 경기로 시즌을 단정하진 말고.", "핀스트라이프 응원은 뜨겁게, 판단은 차분하게. 다음 경기에서 확인할 흐름을 잡자."]),
   kia: Object.freeze(["오빠, 타이거즈는 이긴 날도 진 날도 근거부터 보자. 한 경기로 전술 바꾸진 말자.", "응원은 끝까지 가고, 리뷰는 차분하게. 타선과 마운드를 나눠보자."]),

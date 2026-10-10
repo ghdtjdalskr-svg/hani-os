@@ -8,4 +8,56 @@
 #board input:not([type="checkbox"]),#board select,#board textarea{width:100%;box-sizing:border-box}
 #board [hidden]{display:none!important}
 #board dialog{background:var(--surface-raised);color:var(--text-primary);border:1px solid var(--border-subtle);max-width:min(520px,90vw)}
+#board .board-tabs{gap:6px}
+#board [data-board="composer"] summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:700}
+#board .board-search{display:block;max-width:640px;font-size:13px;color:var(--text-secondary)}
+#board .board-search input{margin-top:6px}
+#board .board-row{padding:14px 4px;border-bottom:1px solid var(--border-subtle)}
+#board .board-pinned{background:var(--surface-raised);border-radius:8px;padding-inline:12px}
+#board .board-row-title{display:flex;align-items:baseline;gap:8px;min-width:0}
+#board .board-row-title>.pill{flex-shrink:0;font-size:11px}
+#board .board-title{flex:1;min-width:0;text-align:left;background:none;border:0;color:var(--text-primary);font:inherit;cursor:pointer;overflow-wrap:anywhere;padding:0}
+#board .board-title:hover{text-decoration:underline}
+#board .board-title[aria-pressed="true"]{font-weight:700}
+#board .board-title:focus-visible{outline:2px solid var(--text-secondary);outline-offset:3px}
+#board .board-notice,#board .board-comment-count{color:var(--text-secondary);font-weight:700;font-size:12px;white-space:nowrap}
+#board .board-row-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--text-secondary);margin-top:6px}
+#board .board-author{display:inline-flex;align-items:center;gap:7px;min-width:0;max-width:100%;overflow-wrap:anywhere}
+#board .board-author>span:last-child{min-width:0}
+#board .board-avatar{width:28px;height:28px;object-fit:cover;border-radius:50%;flex:0 0 28px}
+#board .board-initial{display:inline-flex;align-items:center;justify-content:center;background:var(--surface-raised);border:1px solid var(--border-subtle);font-size:12px;box-sizing:border-box}
+#board .board-more{display:block;width:100%;margin-top:16px}
+#board .board-detail-meta,#board .board-comment header{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px}
+#board [data-board="article"] h3{font-size:22px;line-height:1.5;overflow-wrap:anywhere;margin:12px 0}
+#board [data-board="article"]>.board-body{padding:16px 0;line-height:1.8}
+#board [data-board-like][aria-pressed="true"]{outline:2px solid var(--text-secondary)}
+#board .board-comment{padding:16px 0;border-bottom:1px solid var(--border-subtle)}
+#board .board-comment .board-body{line-height:1.7;margin:10px 0}
+#board .board-reply{margin-left:24px;padding-left:14px;border-left:2px solid var(--border-subtle)}
+#board .board-reply::before{content:"↳ 답글";display:block;margin-bottom:8px;font-size:11px;color:var(--text-secondary)}
+#board dialog[data-board="preview"]{width:620px;max-width:calc(100vw - 32px);max-height:85dvh;box-sizing:border-box;overflow:auto;border-radius:14px;padding:20px}
+#board dialog::backdrop{background:rgb(0 0 0 / .5)}
+#board dialog .acts form{margin:0}
+@media(max-width:480px){
+  #board .board-tabs .btn{padding-inline:10px;font-size:12px}
+  #board .board-row-meta{gap:6px 10px}
+  #board .board-row-meta .board-author{flex-basis:100%}
+  #board .board-row-title{gap:6px}
+  #board .board-reply{margin-left:12px;padding-left:10px}
+  #board dialog[data-board="preview"]{padding:14px}
+}
 :root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #board{color-scheme:dark}
+#board .board-living-toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:end;margin:14px 0}
+#board .board-living-toolbar label{flex:1 1 200px;max-width:340px}
+#board .board-tray,#board .board-week{margin:16px 0;padding:14px;border:1px solid var(--border-subtle);border-radius:12px;background:var(--surface-raised)}
+#board summary{cursor:pointer;min-height:44px;line-height:1.6;overflow-wrap:anywhere}
+#board .board-draft{padding:16px 0;border-bottom:1px solid var(--border-subtle);min-width:0}
+#board .board-draft h4{margin:10px 0;overflow-wrap:anywhere}
+#board .board-draft .board-body{line-height:1.8;max-height:260px;overflow:auto}
+#board .board-new{display:inline-block;margin-left:6px;padding:2px 6px;border-radius:6px;font-size:11px;color:var(--text-primary);background:var(--surface-raised);border:1px solid var(--border-subtle)}
+#board .board-activity{display:flex;flex-wrap:wrap;gap:8px}
+#board .board-member{font-size:12px;line-height:1.6;padding:5px 8px;border:1px solid var(--border-subtle);border-radius:8px;color:var(--text-secondary)}
+#board .board-member.is-active{color:var(--text-primary);font-weight:600}
+#board .board-poll{display:flex;flex-wrap:wrap;gap:8px;border:1px solid var(--border-subtle);padding:12px;margin:12px 0;min-width:0}
+#board .board-poll button{overflow-wrap:anywhere;max-width:100%}
+#board [data-board-reaction][aria-pressed="true"],#board [data-board-vote][aria-pressed="true"]{outline:2px solid var(--text-secondary)}
