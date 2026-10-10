@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   // One title id shared by the person and team dialogs (only one is open at a time).
-  const DETAIL_TITLE_ID='ogh-detail-title';
+  const DETAIL_TITLE_OPEN='<h2 id="ogh-detail-title">';
   const root = document.getElementById('haniOrganizationHub');
   if (!root || root.dataset.mounted) return;
   root.dataset.mounted = 'true';
@@ -105,8 +105,8 @@
     const t=type==='person'?teamOf(item.team):item;
     dialog.style.setProperty('--team',t.color);dialog.style.setProperty('--tint',t.tint);
     detail.innerHTML=type==='person'
-      ? `<div class="ogh-detail-portrait">${portrait(item)}</div><div class="ogh-detail-copy"><span class="ogh-kicker">${item.group} / ${t.en}</span><h2 id="${DETAIL_TITLE_ID}">${item.name} <small>${item.rank}</small></h2><p class="ogh-detail-role">${item.role}</p><p class="ogh-detail-line">${item.line}</p>${tags(item.keywords.split(' · '))}<p class="ogh-detail-note">${item.group==='M9'?'기존 캐릭터 이미지와 직급을 유지합니다.':'신규 이름·역할은 제안안입니다. 프로필은 M9 그림체를 바탕으로 개별 설계한 시안입니다.'}</p><button type="button" class="ogh-detail-link" data-team="${t.id}">${t.name} 소개 ↗</button></div>`
-      : `${teamBanner(t)}<div class="ogh-detail-copy"><span class="ogh-kicker">${t.en}</span><h2 id="${DETAIL_TITLE_ID}">${t.name}</h2><p class="ogh-detail-line">${t.line}</p>${tags(t.tags)}<p>${t.mood}</p><p class="ogh-detail-note">${t.collab}</p><div class="ogh-detail-members">${members(t.id).map(avatar).join('')}</div></div>`;
+      ? `<div class="ogh-detail-portrait">${portrait(item)}</div><div class="ogh-detail-copy"><span class="ogh-kicker">${item.group} / ${t.en}</span>${DETAIL_TITLE_OPEN}${item.name} <small>${item.rank}</small></h2><p class="ogh-detail-role">${item.role}</p><p class="ogh-detail-line">${item.line}</p>${tags(item.keywords.split(' · '))}<p class="ogh-detail-note">${item.group==='M9'?'기존 캐릭터 이미지와 직급을 유지합니다.':'신규 이름·역할은 제안안입니다. 프로필은 M9 그림체를 바탕으로 개별 설계한 시안입니다.'}</p><button type="button" class="ogh-detail-link" data-team="${t.id}">${t.name} 소개 ↗</button></div>`
+      : `${teamBanner(t)}<div class="ogh-detail-copy"><span class="ogh-kicker">${t.en}</span>${DETAIL_TITLE_OPEN}${t.name}</h2><p class="ogh-detail-line">${t.line}</p>${tags(t.tags)}<p>${t.mood}</p><p class="ogh-detail-note">${t.collab}</p><div class="ogh-detail-members">${members(t.id).map(avatar).join('')}</div></div>`;
     if(!dialog.open) dialog.showModal();
     root.querySelector('.ogh-close').focus();
   }
