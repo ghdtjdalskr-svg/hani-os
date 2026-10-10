@@ -153,7 +153,7 @@ async function exported(text,value,patched){
     freshState:()=>({meta:{}}),save:()=>({ok:true}),today:()=>"2026-10-10",
     renderStoragePanel(){},toast:v=>messages.push(v),alert:v=>messages.push(v),
     downloadJson:(data,name)=>files.push({data,name})});
-  const names=patched?["mediaHasRefs","mediaBackupState","exportDataWithMedia","exportData"]:["exportData"];
+  const names=patched?["mediaHasRefs","mediaBackupState","exportDataWithMedia",...(text.includes("function buildBackupPayload(")?["buildBackupPayload"]:[]),"exportData"]:["exportData"];
   vm.runInContext(names.map(n=>extractFunction(text,n)).join("\n")+"\nthis.export=exportData;",ctx);
   const result=ctx.export();
   if(!patched||!media.hasRefs(value))assert.equal(result,true,"inline synchronous export contract");
@@ -194,6 +194,7 @@ function fakeCloud(){
         let data=[...rows.values()].filter(row=>row.user_id===owner&&(!ids||ids.includes(row.media_id)))
           .sort((a,b)=>a.media_id.localeCompare(b.media_id));
         if(range)data=data.slice(range[0],range[1]+1);
+        if(ids&&client.omitBodies)data=[];
         data=data.map(row=>Object.fromEntries(columns.split(",").map(key=>[key,
           key==="data"&&client.corrupt?other:row[key]])));
         return Promise.resolve({data,error:null}).then(resolve,reject);
@@ -238,7 +239,7 @@ async function runBCase({failInsert=false,corrupt=false,snapshot=true,conflict=f
     cloudQueueSync(){queued++},
     save(){saves++;return {ok:saveOk}},renderAll(){},toast(){}
   });
-  vm.runInContext("let mediaBBusy=false;\n"+
+  vm.runInContext("let mediaBBusy=false,mediaCBusy=false;\n"+
     ["mediaBCanRun","mediaBWaitIdle","mediaBStatus","mediaBConfirm","mediaRunB"]
       .map(name=>extractFunction(source,name)).join("\n")+
     "\nmediaBConfirm=async()=>true;mediaBStatus=m=>messages.push(m);"+
@@ -299,3 +300,131 @@ assert.equal(hydrated.media.resolve({coverRef:ref},"cover"),image);
 assert.equal(hydrationClient.requests.filter(r=>r.ids).length,1,"debounced fetch, once per session");
 assert.ok(ready>0,"existing media-ready event after verified cache");
 console.log("PASS B: busy-sync wait, snapshot gate, upload/read-back failures, one save, conflicts, duplicate insert, refs change hash, inline-only hash unchanged, scoped reads, hydration");
+
+async function runCCase({rollback=false,snapshot=true,saveOk=true,missing=false,corrupt=false,
+  warm=true,missingBody=false,mismatch=false,busyMs=0,cancel=false,race=false,ownerChange=false}={}){
+  const local=loadMedia(fakeIdb()),client=fakeCloud(),value=structuredClone(fixture);
+  const otherRef=await local.media.digest(other);
+  value.books[0].coverRef=ref;value.movies[0].posterRef=otherRef;
+  if(rollback){value.books[0].cover="";value.movies[0].poster="";
+    value.meta.minMediaWriterVersion="2.9.197"}
+  if(mismatch)value.books[0].cover=other;
+  for(const [id,data] of [[ref,image],[otherRef,other]]){
+    if(warm)assert.equal(await local.media.put(id,data),data);
+    if(!missing||id!==otherRef)client.rows.set(JSON.stringify(["account-a",id]),{
+      user_id:"account-a",media_id:id,data,mime:"image/png",bytes:Buffer.byteLength(data)});
+  }
+  client.corrupt=corrupt;client.omitBodies=missingBody;
+  local.media.setCloudProvider(()=>({client,userId:"account-a"}));
+  const before=JSON.stringify(value),messages=[],events=[];
+  let saves=0,snapshots=0;
+  const ctx=vm.createContext({
+    window:local.window,state:value,cloudClient:client,cloudUser:{id:"account-a"},
+    navigator:{onLine:true},cloudAutoSyncReady:true,cloudRuntime:{sync:"ON"},
+    cloudSyncBusy:false,cloudApplyingRemote:false,loadRecovery:{active:false},
+    importSyncHold:false,cloudRecoveryMode:false,HANI_DISPLAY_VERSION:"2.9.197",
+    structuredClone,JSON,Error,Date,setTimeout,$:()=>null,renderMediaPreview(){},toast(){},renderAll(){},
+    cloudSaveSafetySnapshot:async(reason,full)=>{
+      snapshots++;events.push("snapshot");
+      assert.equal(reason,rollback?"before_media_stage_c_rollback":"before_media_stage_c");
+      assert.equal(full.books[0].cover,mismatch?other:image);
+      assert.equal(full.movies[0].poster,other);
+      if(race)ctx.state.books[0].title="edited during snapshot";
+      if(ownerChange)ctx.cloudUser={id:"other-owner"};
+      return snapshot;
+    },
+    save(){saves++;events.push("save");return {ok:saveOk}}
+  });
+  vm.runInContext("let mediaBBusy=false,mediaCBusy=false;\n"+
+    ["mediaBCanRun","mediaBWaitIdle","mediaCStatus","mediaCConfirm","mediaRunC"]
+      .map(name=>extractFunction(source,name)).join("\n")+
+    "\nmediaCConfirm=async()=>!cancel;mediaCStatus=m=>messages.push(m);"+
+    "\nthis.run=mediaRunC;",Object.assign(ctx,{messages,cancel}));
+  if(busyMs){ctx.cloudSyncBusy=true;setTimeout(()=>{ctx.cloudSyncBusy=false},busyMs)}
+  await Promise.all([ctx.run(rollback),ctx.run(rollback)]);
+  return {ctx,client,local,before,messages,events,saves,snapshots};
+}
+const cHappy=await runCCase({busyMs:350});
+assert.equal(cHappy.saves,1);assert.equal(cHappy.snapshots,1);
+assert.deepEqual(cHappy.events,["snapshot","save"]);
+assert.equal(cHappy.ctx.state.books[0].cover,"");assert.equal(cHappy.ctx.state.movies[0].poster,"");
+assert.equal(cHappy.ctx.state.books[0].coverRef,ref);
+assert.equal(cHappy.ctx.state.meta.minMediaWriterVersion,"2.9.197");
+assert.equal(cHappy.local.media.resolve(cHappy.ctx.state.books[0],"cover"),image);
+assert.equal((await cHappy.local.media.reembed(cHappy.ctx.state)).data.books[0].cover,image);
+assert.equal(cHappy.client.requests.some(r=>r.insert),false,"C adds no Cloud writes");
+const cMismatch=await runCCase({mismatch:true});
+assert.equal(cMismatch.saves,1);
+assert.equal(cMismatch.ctx.state.books[0].cover,other);
+assert.equal(cMismatch.ctx.state.movies[0].poster,"");
+assert.ok(cMismatch.messages.some(m=>m.includes("불일치 1건")));
+for(const options of [{missing:true},{missingBody:true},{corrupt:true},{snapshot:false},{saveOk:false},{cancel:true}]){
+  const result=await runCCase(options);
+  assert.equal(JSON.stringify(result.ctx.state),result.before,"failure/cancel preserves inline and meta");
+  assert.equal(result.saves,options.saveOk===false?1:0);
+  if(options.cancel)assert.equal(result.snapshots,0);
+  if(options.snapshot===false)assert.equal(result.client.requests.length,0);
+}
+for(const options of [{race:true},{ownerChange:true}]){
+  const result=await runCCase(options);
+  assert.equal(result.saves,0,"changed owner/state cannot commit a prepared plan");
+  assert.equal(result.ctx.state.books[0].cover,image);
+}
+const coldC=await runCCase({warm:false});
+assert.equal(coldC.saves,1,"verified Cloud bodies hydrate missing IDB before mutation");
+const cRollback=await runCCase({rollback:true,warm:false});
+assert.equal(cRollback.saves,1);assert.equal(cRollback.snapshots,1);
+assert.equal(cRollback.ctx.state.books[0].cover,image);assert.equal(cRollback.ctx.state.movies[0].poster,other);
+assert.equal(cRollback.ctx.state.meta.minMediaWriterVersion,"2.9.197");
+const failedRollback=await runCCase({rollback:true,warm:false,missing:true});
+assert.equal(failedRollback.saves,0);
+assert.equal(JSON.stringify(failedRollback.ctx.state),failedRollback.before);
+
+const guardVm=vm.createContext({structuredClone});
+vm.runInContext(["cloudMediaSignature","cloudMergeProtectedMedia"].map(n=>extractFunction(source,n)).join("\n")+
+  "\nthis.merge=cloudMergeProtectedMedia;",guardVm);
+const dual=structuredClone(fixture);dual.books[0].coverRef=ref;
+const refOnly=structuredClone(dual);refOnly.books[0].cover="";
+assert.equal(guardVm.merge(refOnly,dual).books[0].cover,"","pull/push accepts ref-only media");
+assert.equal(guardVm.merge(dual,refOnly).books[0].cover,image);
+const lost=structuredClone(refOnly);delete lost.books[0].coverRef;
+assert.equal(guardVm.merge(lost,dual).books[0].cover,image,"real loss restores inline");
+assert.equal(guardVm.merge(lost,refOnly).books[0].coverRef,ref,"real loss restores a ref-only source");
+const different=structuredClone(refOnly);different.books[0].coverRef=await media.digest(other);
+assert.equal(guardVm.merge(different,dual).books[0].cover,"","new valid ref is preserved");
+const malformed=structuredClone(lost);malformed.books[0].coverRef="invalid";
+assert.equal(guardVm.merge(malformed,dual).books[0].cover,image);
+assert.equal(JSON.stringify(dual),JSON.stringify({...fixture,books:[{...fixture.books[0],coverRef:ref}]}),
+  "merge never mutates source");
+
+const eligibility=loadMedia(fakeIdb()),eligibilityCloud=fakeCloud();
+eligibilityCloud.rows.set(JSON.stringify(["account-a",ref]),{
+  user_id:"account-a",media_id:ref,data:image,mime:"image/png",bytes:Buffer.byteLength(image)});
+const preflight={state:linked,client:eligibilityCloud,userId:"account-a",guard:()=>true,localOnly:true};
+await assert.rejects(()=>eligibility.media.verifyRefs(preflight),/기기에/);
+assert.equal(eligibilityCloud.requests.length,0,"eligibility never hydrates");
+await eligibility.media.put(ref,image);
+assert.equal((await eligibility.media.verifyRefs(preflight)).count,1);
+assert.equal(eligibilityCloud.requests.at(-1).columns,"media_id");
+eligibilityCloud.rows.delete(JSON.stringify(["account-a",ref]));
+await assert.rejects(()=>eligibility.media.verifyRefs(preflight),/Cloud/);
+
+const checkbox={checked:false,required:false,closest:()=>({hidden:false})},approve={};
+let dialog;
+const dialogVm=vm.createContext({$:id=>({
+  mediaCDialog:dialog,mediaCDevices:checkbox,mediaCApprove:approve,
+  mediaCTitle:{},mediaCDescription:{}
+})[id]});
+vm.runInContext(extractFunction(source,"mediaCConfirm")+"\nthis.confirm=mediaCConfirm;",dialogVm);
+dialog={showModal(){}};
+let confirmation=dialogVm.confirm();
+assert.equal(approve.disabled,true);assert.equal(checkbox.required,true);
+dialog.returnValue="approve";dialog.onclose();
+assert.equal(await confirmation,false,"unchecked checkbox cannot approve even by synthetic close");
+confirmation=dialogVm.confirm();checkbox.checked=true;checkbox.onchange();
+assert.equal(approve.disabled,false);dialog.returnValue="approve";dialog.onclose();
+assert.equal(await confirmation,true);
+confirmation=dialogVm.confirm();dialog.returnValue="";dialog.onclose();
+assert.equal(await confirmation,false,"ESC/cancel makes no mutation");
+console.log("PASS C: snapshot gate, single save, wait-idle, mismatch, Cloud missing/corrupt, rollback, owner/state race, resolver/export, ref-only guard, eligibility, checkbox");
+
