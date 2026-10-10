@@ -105,7 +105,15 @@
       const owner=account(),data=JSON.parse(JSON.stringify(state)),missing=[];
       for(const [kind,field] of fields)for(const row of data[kind]||[]){
         if(!row?.[field+"Ref"]||inline(row[field]))continue;
-        const value=await get(row[field+"Ref"]);
+        let value=await get(row[field+"Ref"]);
+        if(!value&&account()===owner){
+          const context=cloudProvider();
+          if(context?.userId===owner&&context.client){
+            const remote=await cloudGet(context.client,owner,[row[field+"Ref"]]);
+            if(account()===owner&&cloudProvider()?.client===context.client)
+              value=await put(row[field+"Ref"],remote?.get(row[field+"Ref"]));
+          }
+        }
         if(value&&account()===owner)row[field]=value;
         else missing.push({kind,id:row.id||"",ref:row[field+"Ref"]});
       }
@@ -240,6 +248,61 @@
       return {ok:true,count,changes,links,conflicts};
     }catch(error){return {ok:false,count:0,changes:[],conflicts,error:error?.message||"이중 보관 검증 실패"}}
   }
+
+  // Preflight and plans never mutate state; hydration reuses verified IDB put.
+  async function verifyRefs({state,client,userId,guard,localOnly=false,requireCloud=true}){
+    const check=()=>{if(account()!==userId||guard()!==true)throw Error("계정·기록·Cloud 상태가 변경됐습니다.")};
+    check();
+    const refs=new Set(),bodies=new Map();
+    for(const [kind,field] of fields)for(const row of state[kind]||[]){
+      const ref=row?.[field+"Ref"];if(!ref)continue;
+      if(!isRef(ref))throw Error("잘못된 이미지 참조가 있습니다.");
+      refs.add(ref);
+    }
+    for(const ref of refs){
+      const data=await get(ref);check();
+      if(data)bodies.set(ref,data);
+      else if(localOnly)throw Error("기기에 검증된 참조 이미지가 없습니다.");
+    }
+    if(requireCloud){
+      const listed=await cloudList(client,userId);check();
+      if(!listed||[...refs].some(ref=>!listed.has(ref)))throw Error("Cloud 이미지 보관 목록이 누락됐습니다.");
+    }
+    if(!localOnly){
+      // C verifies every Cloud body, even when the local cache is warm.
+      const wanted=[...refs].filter(ref=>requireCloud||!bodies.has(ref));
+      if(wanted.length){
+        const remote=await cloudGet(client,userId,wanted);check();
+        if(!remote||wanted.some(ref=>!remote.has(ref)))throw Error("Cloud 이미지 본문이 누락됐거나 digest가 다릅니다.");
+        for(const ref of wanted){
+          if(!bodies.has(ref)){
+            const data=await put(ref,remote.get(ref));check();
+            if(!data)throw Error("기기 이미지 재읽기 검증에 실패했습니다.");
+            bodies.set(ref,data);
+          }
+        }
+      }
+    }
+    check();return {bodies,count:refs.size};
+  }
+  async function prepareC({state,client,userId,guard,rollback=false}){
+    try{
+      const verified=await verifyRefs({state,client,userId,guard,requireCloud:!rollback});
+      const changes=[],conflicts=[];
+      for(const [kind,field] of fields)for(const [index,row] of (state[kind]||[]).entries()){
+        const ref=row?.[field+"Ref"];if(!ref)continue;
+        const data=row[field]||"";
+        if(rollback){
+          if(!data)changes.push({kind,index,field,id:row.id,data,ref,value:verified.bodies.get(ref)});
+        }else if(data){
+          if(await digest(data)===ref)changes.push({kind,index,field,id:row.id,data,ref,value:""});
+          else conflicts.push({kind,index,field,id:row.id,ref});
+        }
+        if(account()!==userId||guard()!==true)throw Error("계정·기록·Cloud 상태가 변경됐습니다.");
+      }
+      return {ok:true,changes,conflicts};
+    }catch(error){return {ok:false,changes:[],conflicts:[],error:error?.message||"이미지 검증 실패"}}
+  }
   root.HANI_MEDIA=Object.freeze({digest,isRef,resolve,get,put,has,hasRefs,reembed,dryRunReport,setAccountProvider,
-    setCloudProvider,cloudList,cloudPut,cloudGet,prepareB});
+    setCloudProvider,cloudList,cloudPut,cloudGet,prepareB,verifyRefs,prepareC});
 })(window);
