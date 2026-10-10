@@ -12,22 +12,68 @@ assert.ok(aside,"canonical sidebar");
 const views=text=>Array.from(text.matchAll(/data-view="([^"]+)"/g),m=>m[1]);
 const groups=Array.from(aside.matchAll(/<div class="group[^"]*" data-color="([^"]+)">([\s\S]*?)<\/div>\s*<\/div>/g),m=>[m[1],views(m[2])]);
 assert.deepEqual(groups,[
-  ["office",["intake","agentReview","monthlyReport","policy","aura"]],
+  ["office",["intake","agentReview","monthlyReport","organization","board"]],
   ["finance",["investment","investmentIntake","asset","ledger","newsroom"]],
   ["health",["diet","exercise"]],
   ["growth",["reading","study","university","certificate"]],
   ["life",["wishlist","travel","movie","game","diary"]],
-  ["team",["organization","board","characterArchive","aiTeam"]],
   ["work",["tasks","calendar","work","drive"]],
-  ["development",["dev","geminiReports","deployment","aiBudget"]]
+  ["development",["aiWork","dev","geminiReports","deployment","aiBudget"]]
 ]);
 const navViews=views(aside);
 assert.equal(navViews[0],"home");
 assert.equal(navViews.at(-1),"settings");
 assert.equal(new Set(navViews).size,navViews.length,"unique nav views");
-assert.deepEqual(views(aside.match(/<div class="side-bottom">([\s\S]*?)<\/div>/)[1]),["settings"]);
+assert.deepEqual(views(aside.match(/<div class="side-bottom">([\s\S]*?)<\/div>/)[1]),["aura","settings"]);
+const office=aside.match(/data-color="office">([\s\S]*?)<\/div>\s*<\/div>/)[1];
+assert.deepEqual(Array.from(office.matchAll(/<span class="txt">([^<]+)<\/span>/g),m=>m[1]),["인포데스크","경영회의실","컨퍼런스 룸","회사 소개","사내 게시판"]);
+assert.doesNotMatch(aside,/data-color="team"|data-view="policy"|data-view="aiTeam"|data-view="characterArchive"/);
+assert.match(html,/data-settings-tab="policy"[^>]*>사내 규칙<\/button>/);
+assert.doesNotMatch(html+main,/HANI AURA/);
+assert.doesNotMatch(read('hani-design-system.css'),/content:\s*["']HANI AURA["']/);
+assert.doesNotMatch(read('hani-development-history-v1.js'),/HANI AURA/);
+assert.match(main,/aura:\["테마 스튜디오"/);
 const ids=Array.from(html.matchAll(/\bid="([^"]+)"/g),m=>m[1]);
 assert.equal(new Set(ids).size,ids.length,"no duplicate markup ids");
+const loadedScripts=[...new Set([...html.matchAll(/src="\.\/([^"?]+\.js)(?:\?[^"']*)?"/g)].map(m=>m[1]))];
+const literalCounts=new Map();
+for(const match of (html+'\n'+loadedScripts.map(read).join('\n')).matchAll(/\bid=["']([^"']+)["']/g))literalCounts.set(match[1],(literalCounts.get(match[1])||0)+1);
+for(const id of ['organization','settings','settingsData','settings-tab-data','settings-tab-policy','characterArchive','loginGateFinish'])assert.equal(literalCounts.get(id),1,id+' unique across HTML/runtime JS strings');
+// Parse ancestors so moving a tab cannot accidentally nest it inside Cloud recovery.
+const stack=[],parents=new Map(),voidTags=new Set(['area','base','br','col','embed','hr','img','input','link','meta','param','source','track','wbr']);
+const markup=html.replace(/<!--[\s\S]*?-->/g,'').replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi,'');
+for(const match of markup.matchAll(/<\/?([a-z][a-z0-9]*)\b(?:[^>"']|"[^"]*"|'[^']*')*>/gi)){
+  const tag=match[1].toLowerCase(),text=match[0];
+  if(text.startsWith('</')){const i=stack.findLastIndex(n=>n.tag===tag);if(i>=0)stack.length=i;continue}
+  const id=text.match(/\bid="([^"]+)"/)?.[1];
+  if(id)parents.set(id,stack.map(n=>n.id).filter(Boolean));
+  if(!voidTags.has(tag)&&!text.endsWith('/>'))stack.push({tag,id});
+}
+assert.equal(parents.get('policy').at(-1),'settings','policy is a direct settings panel');
+assert.ok(parents.get('cloudBridgeCard').includes('settingsData'));
+assert.ok(parents.get('loadRecoveryPanel').includes('settingsData'));
+assert.ok(parents.get('cloudChoicePanel').includes('cloudBridgeCard'));
+assert.ok(parents.get('cloudChoicePanel').includes('settingsData'));
+assert.equal(parents.get('reading').includes('settings'),false,'later views remain outside settings');
+const hubSource=read('hani-organization-hub.js');
+const selectHub=hubSource.match(/  function selectHubTab\(tab\)\{[\s\S]*?\n  \}/)[0];
+const intro=[{hidden:false},{hidden:false}],chart=[{hidden:false},{hidden:false},{hidden:false}],mast={hidden:false},directory={hidden:false},select={value:''},search={value:''},root={dataset:{},querySelectorAll:s=>s.includes('.ogh-hero')?intro:chart,querySelector:()=>mast};
+const hubContext=vm.createContext({root,directory,select,search,group:'ALL',filterPeople(){}});vm.runInContext(selectHub,hubContext);
+for(const tab of ['overview','people','aiTeam']){
+  hubContext.selectHubTab(tab);
+  assert.equal(intro.every(n=>n.hidden),tab!=='overview');assert.equal(chart.every(n=>n.hidden),tab!=='people');
+  assert.equal(directory.hidden,tab==='overview');assert.equal(mast.hidden,tab!=='people');assert.equal(hubContext.group,tab==='aiTeam'?'AI STAFF':'ALL');
+}
+const clickOwner=hubSource.match(/  root.addEventListener\('click',e=>\{[\s\S]*?\n  \}\);/)[0];
+let onHubClick;const scrollRoutes=[],scrolled=[];
+root.addEventListener=(_name,fn)=>{onHubClick=fn};root.contains=()=>true;
+root.querySelector=s=>s==='.ogh-mast nav'?mast:{scrollIntoView:()=>scrolled.push(s)};
+Object.assign(hubContext,{document:{querySelector:()=>true},matchMedia:()=>({matches:true}),showView:value=>{scrollRoutes.push(value);hubContext.selectHubTab('people')}});
+vm.runInContext(clickOwner,hubContext);
+for(const target of ['ogh-chart','ogh-teams','ogh-people']){
+  hubContext.selectHubTab('overview');const button={dataset:{scroll:target},matches:()=>false};onHubClick({target:{closest:()=>button}});
+  assert.equal(scrollRoutes.at(-1),'organization/people');assert.equal(chart.every(n=>!n.hidden),true);assert.equal(scrolled.at(-1),'#'+target);
+}
 
 const bundle=ui.match(/\/\/ BEGIN CANONICAL TAB VOICE BUNDLE([\s\S]*?)\/\/ END CANONICAL TAB VOICE BUNDLE/)?.[1];
 assert.ok(bundle,"existing quote source");

@@ -24,7 +24,7 @@ function extractFunction(name){
 const constant=name=>source.match(new RegExp(`const ${name}=([^;\\n]+)`))[0];
 
 const names=["cloudCanonical","cloudSame","cloudComparableState","cloudSyncFingerprintState","cloudHasMeaningfulLocalData","cloudMergeProtectedMedia","cloudStateHash","cloudSaveSyncMeta","cloudReadRow","cloudStopAutoSync","cloudStartPolling","cloudApplyRemoteRow","cloudPushLocalRow","cloudSyncDecision","cloudSyncSelfTest","cloudShouldFetchFullState","cloudSyncCycle","cloudFetchMeta","cloudMeta","cloudSaveJson","cloudLoadJson"];
-const optional=["cloudCanUseVerifiedRemote","cloudRememberVerifiedRemote","cloudIsLifecycleCheck","cloudRevisionNumber","cloudIsNetworkFailure","cloudRetryAfterNetwork"];
+const optional=["cloudSyncPolicy","cloudPrepareChoice","cloudCanUseVerifiedRemote","cloudRememberVerifiedRemote","cloudIsLifecycleCheck","cloudRevisionNumber","cloudIsNetworkFailure","cloudRetryAfterNetwork"];
 const fns=[...names,...optional.filter(n=>source.includes(`function ${n}(`))].map(extractFunction).join("\n");
 const hasCache=source.includes("let cloudVerifiedRemote=");
 
@@ -37,11 +37,11 @@ vm.runInContext(`
 ${constant("STORAGE_KEY")};${constant("CLOUD_META_KEY")};${constant("CLOUD_HASH_SCHEMA")};${constant("CLOUD_SYNC_ENGINE")};
 const HANI_DISPLAY_VERSION="sim";
 var state={},cloudClient=null,cloudUser=null,cloudRuntime={},cloudAutoSyncReady=false,cloudApplyingRemote=false,cloudSyncBusy=false,cloudSyncPending=false,cloudChoicePreview=null,cloudSyncTimer=null,cloudPollTimer=null${hasCache?",cloudVerifiedRemote=null":""}${source.includes("let cloudSessionFullReads")?",cloudSessionFullReads=0,cloudSessionMetaChecks=0;function renderCloudTransferUsage(){}":";"}
-var loadRecovery={active:false},importSyncHold=false,lastLoadError="",brokerDraft=null,monthlyDraft=null,lastSaveResult=null,runtimeLog=[];
+var loadRecovery={active:false},importSyncHold=false,cloudRecoveryMode=false,cloudComparisonEpoch=0,lastLoadError="",brokerDraft=null,monthlyDraft=null,lastSaveResult=null,runtimeLog=[];
 function normalizeState(x){return x}
 function writeProtectedState(s){localStorage.setItem(STORAGE_KEY,s)}
 function removeProtectedState(){localStorage.removeItem(STORAGE_KEY)}
-function renderAll(){} function renderCloudPanel(){} function toast(){} function dataHubAuditSource(){}
+function renderAll(){} function renderCloudPanel(){} function renderCloudChoice(){} function toast(){} function dataHubAuditSource(){}
 function serializedBytes(s){return s.length}
 function assertCloudSourceReady(){}
 function cloudDeviceLabel(){return "SIM"}
@@ -50,7 +50,7 @@ function cloudRecordCount(){return 0}
 async function cloudSaveSafetySnapshot(){return true}
 function cloudSummaryText(){return ""}
 ${fns}
-this.api={cloudSyncCycle,cloudSyncSelfTest,get:()=>({state,cloudAutoSyncReady,runtimeLog${hasCache?",cache:cloudVerifiedRemote":""}}),set:(k,v)=>{if(k==="state")state=v;if(k==="client")cloudClient=v;if(k==="user")cloudUser=v;if(k==="ready")cloudAutoSyncReady=v}};
+this.api={cloudSyncCycle,cloudSyncSelfTest,get:()=>({state,cloudAutoSyncReady,cloudChoicePreview,runtimeLog${hasCache?",cache:cloudVerifiedRemote":""}}),set:(k,v)=>{if(k==="state")state=v;if(k==="client")cloudClient=v;if(k==="user")cloudUser=v;if(k==="ready")cloudAutoSyncReady=v}};
 `,sandbox);
 const api=sandbox.api;
 
@@ -105,9 +105,11 @@ assert.deepEqual(db.row.state.transactions.map(t=>t.id),["t1","t2","t3","t4"],"C
 const saveEgress=db.egress-before,saveFullReads=db.fullReads-readsBefore;
 
 // 3. Another device writes; then a local save must NOT overwrite it.
+sandbox.localStorage.setItem(vm.runInContext("CLOUD_META_KEY",sandbox),JSON.stringify({...JSON.parse(sandbox.localStorage.getItem(vm.runInContext("CLOUD_META_KEY",sandbox))),syncPolicy:"manual"})); // Legacy conflict STOP regression.
 db.row={...db.row,state:{...structuredClone(db.row.state),instruments:[...db.row.state.instruments,{id:"i2",name:"other device"}]},revision:14,device:"phone"};
 edit(5);await api.cloudSyncCycle("local-save");
 assert.equal(api.get().cloudAutoSyncReady,false,"both-sides change stops auto sync");
+assert.equal(api.get().cloudChoicePreview?.mode,"conflict","manual policy reaches the real conflict choice path");
 assert.equal(db.row.revision,14,"other device row is not overwritten");
 assert.ok(db.row.state.instruments.some(i=>i.id==="i2"),"other device data preserved");
 assert.ok(api.get().state.transactions.some(t=>t.id==="t5"),"local edit preserved");
@@ -122,6 +124,7 @@ edit(6);
 db2.beforeUpdate=d=>{d.row={...d.row,state:{...d.row.state,instruments:[{id:"race"}]},revision:21,device:"phone"}};
 await api.cloudSyncCycle("local-save");
 assert.equal(api.get().cloudAutoSyncReady,false,"revision lock stops the racing save");
+assert.match(api.get().runtimeLog.at(-1),/Cloud revision이 20에서 21/,"race stops for the actual revision guard");
 assert.equal(db2.row.revision,21);assert.deepEqual(db2.row.state.instruments,[{id:"race"}],"racing device data preserved");
 
 // 5. Account switch never reuses another account's memory row.

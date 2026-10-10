@@ -12,11 +12,11 @@ try{
   const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.dismiss());
   await page.goto(origin);await page.waitForFunction(()=>typeof cloudSyncCycle==='function');
   await page.evaluate(()=>{
-   window.testCloud={reads:0,writes:0,fail:null,remote:null};state=freshState();state.books=[{id:'synthetic',title:'Local book'}];save();
+   cloudSaveJson(CLOUD_META_KEY,{...cloudMeta(),syncPolicy:'manual'});window.testCloud={reads:0,writes:0,fail:null,remote:null};state=freshState();state.books=[{id:'synthetic',title:'Local book'}];save();
    cloudUser={id:'synthetic-owner',email:'synthetic@example.invalid'};loadRecovery.active=false;importSyncHold=false;
    window.seedBaseline=async()=>{if(!state.books.length){state.books=[{id:'synthetic',title:'Local book'}];save();}testCloud.remote={state:structuredClone(state),revision:7,updated_at:'2026-10-06T00:00:00Z'};cloudSaveSyncMeta(testCloud.remote,await cloudStateHash(state),{appliedRevision:7});cloudAutoSyncReady=true;cloudNetworkRetryPending=false;cloudNetworkRetryAt=0;cloudSetRuntime('정상','synthetic','ok',{sync:'ON'});};
    const q={select:()=>q,eq:()=>q,limit:async()=>{testCloud.reads++;if(testCloud.fail)throw testCloud.fail;return {data:[structuredClone(testCloud.remote)]}},update:()=>{testCloud.writes++;throw Error('unexpected write')},insert:()=>{testCloud.writes++;throw Error('unexpected insert')}};cloudClient={from:()=>q};cloudBindLifecycle();
-   document.querySelector('#loginGate').style.display='none';document.querySelector('#app').classList.remove('login-locked');document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.querySelector('#settings').classList.add('active');
+   document.querySelector('#loginGate').style.display='none';document.querySelector('#app').classList.remove('login-locked');document.querySelector('#app').inert=false;/* synthetic fixture only */document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.querySelector('#settings').classList.add('active');
   });
   const network=await page.evaluate(async()=>{await seedBaseline();const raw=localStorage.getItem(STORAGE_KEY);testCloud.fail=new TypeError('Failed to fetch');await cloudSyncCycle('manual');return {pending:cloudNetworkRetryPending,sync:cloudRuntime.sync,kept:localStorage.getItem(STORAGE_KEY)===raw,writes:testCloud.writes};});
   assert.deepEqual(network,{pending:true,sync:'OFFLINE',kept:true,writes:0});cases++;
@@ -33,12 +33,13 @@ try{
   const invalid=await page.evaluate(async()=>{importSyncHold=false;await seedBaseline();testCloud.remote.revision=null;const raw=localStorage.getItem(STORAGE_KEY);await cloudSyncCycle('manual');return {sync:cloudRuntime.sync,pending:cloudNetworkRetryPending,kept:localStorage.getItem(STORAGE_KEY)===raw};});
   assert.deepEqual(invalid,{sync:'STOP',pending:false,kept:true});cases++;
   const auth=await page.evaluate(async()=>{await seedBaseline();testCloud.fail={message:'permission denied',code:'42501'};await cloudSyncCycle('manual');return {sync:cloudRuntime.sync,pending:cloudNetworkRetryPending};});assert.deepEqual(auth,{sync:'STOP',pending:false});cases++;
-  const empty=await page.evaluate(async()=>{testCloud.fail=null;state=freshState();save();localStorage.removeItem(CLOUD_META_KEY);testCloud.remote={state:freshState(),revision:9};testCloud.remote.state.books=[{id:'restored',title:'Cloud-only book'}];await cloudSyncCycle('manual');return {sync:cloudRuntime.sync,empty:state.books.length===0,shown:!document.querySelector('#cloudChoicePanel').hidden,writes:testCloud.writes};});
+  const empty=await page.evaluate(async()=>{testCloud.fail=null;state=freshState();save();localStorage.removeItem(CLOUD_META_KEY);cloudSaveJson(CLOUD_META_KEY,{syncPolicy:'manual'});testCloud.remote={state:freshState(),revision:9};testCloud.remote.state.books=[{id:'restored',title:'Cloud-only book'}];await cloudSyncCycle('manual');return {sync:cloudRuntime.sync,empty:state.books.length===0,shown:!document.querySelector('#cloudChoicePanel').hidden,writes:testCloud.writes};});
   assert.deepEqual(empty,{sync:'STOP',empty:true,shown:true,writes:0});cases++;
   await page.locator('#cloudChoiceOpen').click();await page.locator('#cloudChoiceCloud').click();await page.waitForFunction(()=>!cloudSyncBusy&&cloudRuntime.sync==='ON');
   const restored=await page.evaluate(async()=>({book:state.books[0]?.id,readback:JSON.parse(localStorage.getItem(STORAGE_KEY)).books[0]?.id,backedUp:(await safetyArchiveList()).filter(x=>x.verified).some(x=>x.payload.state.books.length===0),writes:testCloud.writes}));
   assert.deepEqual(restored,{book:'restored',readback:'restored',backedUp:true,writes:0});cases++;
-  const denial=await page.evaluate(async()=>{state=freshState();save();localStorage.removeItem(CLOUD_META_KEY);const raw=localStorage.getItem(STORAGE_KEY),original=cloudSaveSafetySnapshot;cloudSaveSafetySnapshot=async()=>false;try{await cloudSyncCycle('manual');await cloudChooseOriginal('cloud');return {sync:cloudRuntime.sync,rawKept:localStorage.getItem(STORAGE_KEY)===raw,empty:state.books.length===0};}finally{cloudSaveSafetySnapshot=original}});
+  assert.equal(await page.locator('#cloudSyncPolicy').isEnabled(),true,'policy selector is usable after manual restore');
+  const denial=await page.evaluate(async()=>{state=freshState();save();localStorage.removeItem(CLOUD_META_KEY);cloudSaveJson(CLOUD_META_KEY,{syncPolicy:'manual'});const raw=localStorage.getItem(STORAGE_KEY),original=cloudSaveSafetySnapshot;cloudSaveSafetySnapshot=async()=>false;try{await cloudSyncCycle('manual');await cloudChooseOriginal('cloud');return {sync:cloudRuntime.sync,rawKept:localStorage.getItem(STORAGE_KEY)===raw,empty:state.books.length===0};}finally{cloudSaveSafetySnapshot=original}});
   assert.deepEqual(denial,{sync:'STOP',rawKept:true,empty:true});cases++;
   await page.evaluate(async()=>{await seedBaseline();testCloud.remote.state.books[0].title='remote difference';cloudAutoSyncReady=false;cloudRuntime.sync='STOP';renderCloudPanel();await cloudCompare();});
   const manualBefore=await page.evaluate(()=>localStorage.getItem(STORAGE_KEY));await page.locator('#cloudCreateSafetyBackup').click();await page.waitForFunction(()=>!cloudSafetyBackupBusy);
@@ -46,6 +47,35 @@ try{
   assert.equal(await page.evaluate(async()=>(await safetyArchiveList()).filter(x=>x.verified).some(x=>x.payload.reason==='manual_full_backup')),true);cases++;
   await page.evaluate(()=>{state.books[0].title='new local after comparison';save()});
   assert.equal(await page.locator('#cloudDifferencePanel').isVisible(),false);cases++;
+  // Default policy: the real archive/apply/baseline paths run without opening the choice dialog.
+  const auto=await page.evaluate(async()=>{
+    await seedBaseline();state.books[0].title='new Local work';save();
+    testCloud.remote.state.books[0].title='Cloud concurrent work';testCloud.remote.revision=8;
+    testCloud.remote.updated_at='2026-10-11T00:00:00Z';testCloud.remote.device='phone';
+    const localBefore=structuredClone(state);cloudChoicePreview=null;
+    cloudSaveJson(CLOUD_META_KEY,{...cloudMeta(),syncPolicy:'cloud-first'});
+    await cloudSyncCycle('manual');
+    return {sync:cloudRuntime.sync,title:state.books[0].title,revision:cloudMeta().appliedRevision,
+      backedUp:(await safetyArchiveList()).some(x=>x.verified&&cloudSame(x.payload.state,localBefore)),
+      panel:document.querySelector('#cloudChoicePanel').hidden,dialog:document.querySelector('#cloudChoiceDialog').open,
+      policy:document.querySelector('#cloudSyncPolicy').value,enabled:!document.querySelector('#cloudSyncPolicy').disabled,writes:testCloud.writes};
+  });
+  assert.deepEqual(auto,{sync:'ON',title:'Cloud concurrent work',revision:8,backedUp:true,panel:true,dialog:false,policy:'cloud-first',enabled:true,writes:0});cases++;
+  const autoDenied=await page.evaluate(async()=>{
+    state.books[0].title='keep Local on backup failure';save();testCloud.remote.revision=9;
+    testCloud.remote.state.books[0].title='new Cloud';const raw=localStorage.getItem(STORAGE_KEY),original=cloudSaveSafetySnapshot;
+    cloudSaveSafetySnapshot=async()=>false;
+    try{await cloudSyncCycle('manual');return {sync:cloudRuntime.sync,kept:localStorage.getItem(STORAGE_KEY)===raw,revision:cloudMeta().appliedRevision,writes:testCloud.writes};}
+    finally{cloudSaveSafetySnapshot=original}
+  });
+  assert.deepEqual(autoDenied,{sync:'STOP',kept:true,revision:8,writes:0});cases++;
+  const autoEmpty=await page.evaluate(async()=>{
+    state=freshState();save();localStorage.removeItem(CLOUD_META_KEY);await cloudSyncCycle('manual');
+    return {sync:cloudRuntime.sync,title:state.books[0].title,revision:cloudMeta().appliedRevision,
+      backedUp:(await safetyArchiveList()).some(x=>x.verified&&x.payload.reason==='before_cloud_pull_r9'&&x.payload.state.books.length===0),
+      panel:document.querySelector('#cloudChoicePanel').hidden,writes:testCloud.writes};
+  });
+  assert.deepEqual(autoEmpty,{sync:'ON',title:'new Cloud',revision:9,backedUp:true,panel:true,writes:0});cases++;
   await page.evaluate(async()=>{await cloudCompare();cloudUser=null;renderCloudPanel()});
   assert.equal(await page.locator('#cloudDifferencePanel').isVisible(),false);cases++;
   await page.evaluate(async()=>{cloudUser={id:'synthetic-owner',email:'synthetic@example.invalid'};cloudStopAutoSync('Local과 Cloud 내용이 달라 자동 반영을 멈췄습니다. 차이를 확인해 주세요.');await cloudCompare()});

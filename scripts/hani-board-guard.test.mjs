@@ -1,6 +1,7 @@
 // node scripts/hani-board-guard.test.mjs — isolated state; no storage or network.
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import {fixtureLibrary} from "./hani-board-library-fixture.mjs";
 
 const read=name=>fs.readFileSync(new URL("../"+name,import.meta.url),"utf8");
 const board=read("hani-board.js"),main=read("hani-main.js"),hub=read("hani-organization-hub.js");
@@ -52,7 +53,7 @@ const blocked=[
   ["cloud recovery",{cloudRecoveryMode:true}]
 ];
 for(const [label,changes] of blocked){
-  const t=setup(changes),before=JSON.stringify(t.env.state),events=t.listeners.length,notice=t.slots.get("syncNotice");
+  const t=setup({window:{HaniBoardLibrary:{threads:fixtureLibrary(3)}},...changes}),before=JSON.stringify(t.env.state),events=t.listeners.length,notice=t.slots.get("syncNotice");
   assert.equal(t.saves(),0,label+": initial render must not save");
   assert.equal(t.api.generateDaily().length,0,label+": no drafts");
   assert.equal(t.api.refreshLiving(),false);
@@ -77,7 +78,7 @@ t.env.cloudRuntime.sync="ON";t.api.render();assert.equal(t.saves(),0);
 t.env.state.books=[{id:"restored",title:"Cloud baseline"}];t.api.render();
 assert.equal(t.saves(),1,"next existing render generates daily drafts");
 assert.equal(t.api.postDrafts().length,0,"ready default publishes staff posts");
-assert.equal(t.api.listPosts().length,3,"ready default keeps all three daily posts");
+assert.equal(t.api.listPosts().length,0,"empty library stays quiet after readiness");
 assert.equal(t.slots.get("syncNotice").hidden,true);
 assert.equal(t.slots.get("postSubmit").disabled,false);
 t.api.render();assert.equal(t.saves(),1,"daily generation remains idempotent");

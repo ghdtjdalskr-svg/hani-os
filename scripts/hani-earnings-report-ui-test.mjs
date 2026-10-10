@@ -3,15 +3,16 @@ import { createServer } from 'node:http';
 import { createReadStream, existsSync, statSync, mkdirSync } from 'node:fs';
 import { extname, join, normalize, resolve } from 'node:path';
 import { createRequire } from 'node:module';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const require=createRequire(import.meta.url);
-const { chromium }=require('playwright');
+const { chromium }=process.argv[2]?await import(pathToFileURL(process.argv[2]).href):require('playwright');
 const root=resolve(fileURLToPath(new URL('..',import.meta.url)));
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.webp':'image/webp','.png':'image/png','.svg':'image/svg+xml'};
 const server=createServer((request,response)=>{const pathname=decodeURIComponent(new URL(request.url,'http://127.0.0.1').pathname),relative=pathname==='/'?'index.html':pathname.replace(/^\/+/,''),file=normalize(join(root,relative));if(!file.startsWith(root)||!existsSync(file)||!statSync(file).isFile()){response.writeHead(404);response.end('Not found');return}response.writeHead(200,{'Content-Type':types[extname(file).toLowerCase()]||'application/octet-stream','Cache-Control':'no-store'});createReadStream(file).pipe(response)});
 await new Promise(resolveReady=>server.listen(0,'127.0.0.1',resolveReady));
 const port=server.address().port;
+const origin=`http://127.0.0.1:${port}`;
 const seed={
   version:'2.9.15-safe-baseline-bootstrap',accounts:[],instruments:[],transactions:[],snapshots:[],investmentMonthlySnapshots:[],investmentCashFlows:[],investmentJournal:[],investmentWatchlist:[],spendReviews:[],diaries:[],tasks:[],campusSemesters:[],travelTrips:[],travelPlaces:[],travelWishlist:[],certificates:[],wishlistItems:[],learningProjects:[],learningQuizzes:[],learningWrongAnswers:[],calendarUrl:'',pageNotes:{},meta:{},profile:{heightCm:188},goals:{investment:100000000,weight1:110,weight2:100,reading:30,readingAnnual:30,readingMonthly:2},ui:{},
   investmentBrokerSnapshots:[
@@ -29,19 +30,34 @@ const seed={
 };
 seed.learningQuizzes=[{id:'q1',status:'completed',completedAt:'2026-08-31T15:00:00Z',total:10,correctCount:10},{id:'q2',status:'completed',completedAt:'2026-09-10T12:00:00Z',total:30,correctCount:15}];
 
-const browser=await chromium.launch({headless:true,executablePath:'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'});
+const browser=await chromium.launch({headless:true,executablePath:process.argv[3]||'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'});
 try{
   for(const viewport of [{width:1440,height:1000,name:'desktop'},{width:390,height:844,name:'mobile'}]){
-    const page=await browser.newPage({viewport}),errors=[];
+    const page=await browser.newPage({viewport}),errors=[],blockedRequests=new Set();
     await page.clock.install({time:new Date('2026-10-01T12:00:00Z')});
+    // Match report-common/goal-progress: UI fixtures must never contact real Auth/Cloud.
+    // Specific sports/Q&A mock routes override this fallback; local assets still load.
+    await page.route('**/*',route=>{
+      const url=route.request().url();
+      if(new URL(url).origin===origin)return route.continue();
+      blockedRequests.add(url);return route.abort('blockedbyclient');
+    });
     await page.route('**/rest/v1/hani_sports_cache*',route=>route.fulfill({status:200,contentType:'application/json',body:'[]',headers:{'content-range':'0-0/0'}}));
-    page.on('pageerror',error=>errors.push(error.message));page.on('console',message=>{if(message.type()==='error')errors.push(message.text())});page.on('response',response=>{if(response.status()>=400)console.log(`HTTP ${response.status()} ${new URL(response.url()).pathname}`)});
+    page.on('pageerror',error=>errors.push(error.message));page.on('console',message=>{if(message.type()==='error'&&!(message.text().includes('ERR_BLOCKED_BY_CLIENT')&&blockedRequests.has(message.location().url)))errors.push(message.text())});page.on('response',response=>{if(response.status()>=400)console.log(`HTTP ${response.status()} ${new URL(response.url()).pathname}`)});
     await page.addInitScript(value=>{if(!sessionStorage.getItem('monthlySmokeSeeded')){localStorage.setItem('hani_os_life_v23',JSON.stringify(value));sessionStorage.setItem('monthlySmokeSeeded','1')}},seed);
-    await page.goto(`http://127.0.0.1:${port}/#monthlyReport`,{waitUntil:'load'});
-    await page.evaluate(()=>{document.querySelector('#loginGate')?.style.setProperty('display','none','important');document.querySelector('#app')?.classList.remove('login-locked');document.querySelector('#app')?.setAttribute('aria-hidden','false')});
+    await page.goto(`${origin}/#monthlyReport`,{waitUntil:'load'});
+    await page.waitForFunction(()=>loginGateInitialized&&!!window.HANI_GOAL_PROGRESS?.renderReport);
+    assert.deepEqual(await page.evaluate(()=>({client:cloudClient,user:cloudUser,session:loginGateSessionActive()})),{client:null,user:null,session:false},`${viewport.name}: UI-only setup has no real Cloud session`);
+    // Existing explicit UI-test path; real entry still requires per-session login.
+    // Wait for boot first, then for the gate's .22s visibility transition to finish.
+    await page.evaluate(()=>{unlockLoginGate();showView('monthlyReport')});
+    await page.locator('#loginGate').waitFor({state:'hidden'});
+    assert.equal(await page.locator('#loginGate').isVisible(),false,`${viewport.name}: entry screen dismissed`);
+    assert.deepEqual(await page.locator('#app').evaluate(app=>({inert:app.inert,locked:app.classList.contains('login-locked'),ariaHidden:app.getAttribute('aria-hidden')})),{inert:false,locked:false,ariaHidden:'false'},`${viewport.name}: app unlocked for report interactions`);
     await page.waitForTimeout(450);
+    assert.equal(await page.locator('#loginGate').isVisible(),false,`${viewport.name}: entry screen stays dismissed after boot`);
     const labels=await page.locator('.office-group .group-body .nav-btn .txt').allTextContents();
-    assert.deepEqual(labels.slice(0,4),['인포데스크','경영회의실','컨퍼런스 룸','사내 규칙'],`${viewport.name}: report remains in office IA`);
+    assert.deepEqual(labels.slice(0,4),['인포데스크','경영회의실','컨퍼런스 룸','회사 소개'],`${viewport.name}: report remains in office IA`);
     assert(await page.locator('#monthlyReport.view.active').count(),`${viewport.name}: monthly route active`);
     await page.locator('[data-report-board="quarterly"]').click();assert.equal(await page.locator('[data-earnings-ppt]').count(),0,'unverified source cannot expose presentation/export');assert.match(await page.locator('#earningsQuarterly').innerText(),/원본 검증 대기/);
     await page.evaluate(()=>{goalPeriodReadContext=()=>({source:structuredClone(state),asOf:'2026-10-01',evaluationAt:'2026-10-01T12:00:00Z',canonical:{brokerTotal:row=>brokerCalc(row).total,ledgerSpending:row=>ledgerCalc(row).jispiT}})});

@@ -24,6 +24,7 @@ try{
       document.querySelector('#loginGate').hidden=true;
       document.querySelector('#loginGate').style.display='none';
       document.querySelector('#app').classList.remove('login-locked');
+      document.querySelector('#app').inert=false; // Synthetic fixture only; production entry is tested separately.
       document.querySelector('#app').setAttribute('aria-hidden','false');
       document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
       document.querySelector('#settings').classList.add('active');

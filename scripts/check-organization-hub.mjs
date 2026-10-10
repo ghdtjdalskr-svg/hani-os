@@ -2,9 +2,9 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {pathToFileURL} from 'node:url';
-const runtime=process.env.HANI_PLAYWRIGHT_MODULE||'C:/Users/홍성민/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs';
+const runtime=process.argv[2]||process.env.HANI_PLAYWRIGHT_MODULE||'C:/Users/홍성민/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs';
 const {chromium}=await import(pathToFileURL(runtime).href);
-const browser=await chromium.launch({executablePath:process.env.HANI_CHROME||'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true});
+const browser=await chromium.launch({executablePath:process.argv[3]||process.env.HANI_CHROME||'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true});
 const base=process.env.HANI_PREVIEW_URL||'http://127.0.0.1:8791';
 const out=path.resolve('qa-evidence/organization-hub');fs.mkdirSync(out,{recursive:true});
 const results=[];
@@ -90,16 +90,36 @@ try{
  await page.setViewportSize({width:1440,height:1000});
  await page.goto(base+'/index.html#organization');await page.locator('#haniOrganizationHub .ogh-person').last().waitFor({state:'attached'});
  assert.equal(await page.locator('#organization.active').count(),1);
- assert.equal(await page.locator('.group[data-color="team"] [data-view="organization"]').count(),1); // HANI GROUP nav group (2026-10-10 regroup)
+ assert.equal(await page.locator('.group[data-color="office"] [data-view="organization"]').count(),1);
+ assert.equal(await page.locator('.group[data-color="team"]').count(),0);
+ assert.deepEqual(await page.locator('.organization-tabs [role="tab"]').allTextContents(),['개요','조직도','M9 + MIR','AI 팀']);
+ assert.equal((await page.locator('.side [data-view="organization"] .txt').textContent()).trim(),'회사 소개');
  const protectedBefore=await page.evaluate(()=>localStorage.getItem('hani_os_life_v23'));
  // Invoke canonical navigation via existing buttons in isolated browser; no auth/session mutation.
- await page.locator('.side [data-view="aiTeam"]').evaluate(e=>e.click());
- assert.equal(await page.locator('#aiTeam.active').count(),1);
+ await page.evaluate(()=>showView('aiTeam'));
+ assert.equal(await page.locator('#organization.active').count(),1);
+ assert.equal(await page.locator('[data-organization-tab="aiTeam"]').getAttribute('aria-selected'),'true');
+ assert.equal(await page.locator('.ogh-person:not([hidden])').count(),8);
  await page.locator('.side [data-view="organization"]').evaluate(e=>e.click());
  assert.equal(await page.locator('#organization.active').count(),1);
  assert.equal(await page.locator('#haniOrganizationHub .ogh-person').count(),17);
+ for(const [route,tab] of [['characterArchive','archive'],['organization/people','people'],['organization','overview']]){
+   await page.evaluate(route=>showView(route),route);
+   assert.equal(await page.locator('[data-organization-tab="'+tab+'"]').getAttribute('aria-selected'),'true');
+   assert.equal(await page.locator('#characterArchive').evaluate(e=>e.hidden),tab!=='archive');
+   if(tab!=='archive')assert.equal(await page.locator('#ogh-chart').evaluate(e=>e.hidden),tab!=='people','조직도 tab owns chart');
+ }
+ await page.evaluate(()=>showView('policy'));
+ assert.equal(await page.locator('#settings.active').count(),1);
+ assert.equal(await page.locator('#policy').evaluate(e=>e.parentElement.id),'settings');
+ assert.equal(await page.locator('#policy').evaluate(e=>e.hidden),false);
+ assert.equal(await page.locator('#settingsData').evaluate(e=>e.hidden),true);
+ assert.equal(await page.locator('.side [data-view="policy"]').count(),0);
+ await page.evaluate(()=>showView('organization/people/hani'));
+ assert.equal(await page.locator('.ogh-dialog').evaluate(e=>e.open),false,'deep links do not put a dialog over login');
+ assert.equal(await page.locator('#app').evaluate(e=>e.inert),true,'navigation never unlocks auth gate');
  assert.equal(await page.evaluate(()=>localStorage.getItem('hani_os_life_v23')),protectedBefore);
- results.push('Integrated app DOM/canonical navigation AI team ↔ organization PASS; protected key unchanged across navigation. Signed-in visual QA NOT tested; gate not bypassed.');
+ results.push('Integrated organization aliases/tabs/person card PASS; auth gate remains inert and protected key unchanged. Signed-in visual QA NOT tested.');
  const module=fs.readFileSync('hani-organization-hub.js','utf8');assert.doesNotMatch(module,/localStorage|sessionStorage|\bfetch\s*\(|supabase|XMLHttpRequest/);
  results.push('New module has no storage/network/auth dependencies PASS');
  fs.writeFileSync(path.join(out,'results.json'),JSON.stringify({base:'c43ba2f1ce24c05e2cb16338e920fcf73731de0a',results},null,2));
