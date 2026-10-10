@@ -2118,8 +2118,8 @@ body{font-size:15.3px!important}
 .ai-character-zone .ai-quote:after{right:-10px!important;width:18px!important;height:18px!important}
 
 @media(max-width:1350px){
-  .ai-banner{grid-template-columns:minmax(0,1fr) 590px!important}
-  .ai-character-zone{width:590px!important;max-width:590px!important;min-width:590px!important;grid-template-columns:minmax(0,444px) 130px!important;grid-template-rows:126px!important;column-gap:16px!important}
+  .ai-banner{grid-template-columns:minmax(220px,1fr) minmax(0,590px)!important}
+  .ai-character-zone{width:100%!important;max-width:590px!important;min-width:0!important;grid-template-columns:minmax(0,444px) 130px!important;grid-template-rows:126px!important;column-gap:16px!important}
   .ai-character-zone .ai-quote{max-width:444px!important;padding:16px 18px!important}
   .ai-character-zone .ai-quote b{font-size:17px!important}
   .ai-character-zone .ai-avatar{width:124px!important;height:124px!important;border-radius:25px!important}
