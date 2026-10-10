@@ -1505,13 +1505,15 @@ const pageMeta={
  drive:["Drive","Google Drive로 바로 이동합니다.","work"],
  dev:["개발센터","HANI OS 릴리스와 로드맵을 확인합니다.","work"],
  geminiReports:["Gemini 개발 보고서","개발의 배경부터 결과와 남은 과제까지 읽기 쉽게 확인합니다.","work"],
+ aiBudget:["AI 주간 예산","Codex 두 계정과 Claude·Gemini의 사용 한도와 회복 예정 시간을 확인합니다.","team"],
  deployment:["배포 센터","Preview 브랜치부터 대표 승인 배포까지 안전하게 관리합니다.","work"],
  intake:["성민 오피스","유나 인턴에게 말하거나 자료를 붙이면 담당 AI가 검토하고 Preview로 정리합니다.","team"],
  agentReview:["경영회의실","AI TEAM의 검토 안건과 대표 결정을 한곳에서 관리합니다.","team"],
- monthlyReport:["라이프 리포트","한 달의 흐름을 돌아보고, 분기·연간 발표로 이어갈 보고 공간입니다.","team"],
+ monthlyReport:["컨퍼런스 룸","월간 기록을 돌아보고, 담당자들과 분기 성과를 발표하고 연간 보고서를 나누는 공간입니다.","team"],
  policy:["사내 규칙","AI TEAM이 공통으로 참고하는 운영 원칙과 학습 규정을 관리합니다.","team"],
  aiTeam:["AI 팀","역할별 담당 AI와 서비스 바로가기를 확인합니다.","team"],
  characterArchive:["M9 + MIR","HANI GROUP CHARACTER ARCHIVE · 각자의 방식으로 함께하는 멤버들.","team"],
+ organization:["HANI GROUP","사람과 전문성으로 연결되는 우리의 조직.","team"],
  aura:["HANI AURA","나의 색과 계절로 일상의 화면을 꾸밉니다.","team"],
  settings:["설정 / 데이터","캘린더, 백업, 복원과 초기화를 관리합니다.","work"],
  shopping:["쇼핑","v2.2 호환 페이지입니다.","life"]
@@ -1539,7 +1541,8 @@ const canonicalProfileImages=Object.freeze({
   yuna:"./assets/profiles/hani-profile-yuna.webp"
 });
 const agentImages=Object.freeze({...canonicalProfileImages,nauen:canonicalProfileImages.naeun,suyeon:canonicalProfileImages.sooyeon});
-const sidebarAgentImages=agentImages;
+// Small avatars (30-150px) use pre-resized 256px thumbnails; the 720px originals look jagged when the browser shrinks them 10-20x.
+const sidebarAgentImages=Object.freeze(Object.fromEntries(Object.entries(agentImages).map(([k,v])=>[k,v.replace("./assets/profiles/","./assets/profiles/thumb/").replace(/\.webp$/,"-256.webp")])));
 const pageAgentImage={home:"hani",investment:"hani",newsroom:"hani",asset:"jieun",ledger:"jieun",cards:"jieun",wishlist:"haru",diet:"nauen",exercise:"nauen",travel:"suyeon",university:"hina",study:"hina",certificate:"hina",reading:"haru",movie:"minji",diary:"minji",game:"suyeon",settings:"hani",work:"sua",tasks:"sua",calendar:"sua",drive:"sua",dev:"hani",deployment:"hani",intake:"yuna",agentReview:"hani",monthlyReport:"hani",policy:"hani",aiTeam:"hani"};
 const YUNA_AVATAR=canonicalProfileImages.yuna;
 const YUNA_PORTRAIT=canonicalProfileImages.yuna;
@@ -1678,7 +1681,7 @@ const pageBannerMap={
   movie:{emoji:"🎬",name:"민지 · Screen Archive Mate",message:"보고 싶은 작품과 본 작품을 편하게 모으고, 오빠 취향대로 감상을 남겨봐요.",role:"SCREEN ARCHIVE"},
   intake:{emoji:"🗂️",name:"유나 · AI Operations Intern",message:"오빠가 말하거나 붙여준 자료를 먼저 정리해서 담당 AI에게 전달할게요!",role:"SEONGMIN OFFICE · INTAKE"},
   agentReview:{emoji:"🏛️",name:"하니 · Chief of Staff",message:"AI TEAM의 검토를 모아 대표가 결정할 수 있는 안건으로 정리해요.",role:"HANI BOARDROOM"},
-  monthlyReport:{emoji:"📊",name:"하니 · Chief of Staff",message:"담당자들과 한 달의 흐름을 짚어볼게요. 분기·연간 발표도 이곳에 이어질 예정이에요.",role:"HANI LIFE REPORT"},
+  monthlyReport:{emoji:"📊",name:"하니 · Chief of Staff",message:"컨퍼런스 룸에 오신 것을 환영해요. 담당자들과 이번 성과와 다음 이야기를 나눠볼게요.",role:"HANI CONFERENCE ROOM"},
   policy:{emoji:"📜",name:"하니 · Policy Steward",message:"팀 전체가 같은 원칙으로 판단하도록 규정의 근거와 적용 강도를 관리해요.",role:"COMPANY POLICY"},
   game:{emoji:"⚽",name:"수연 · Head Coach",message:"양키스·KIA·레알 마드리드·Dplus KIA의 오늘을 함께 봐요.",role:"SPORTS LOUNGE"},
   diary:{emoji:"📝",name:"민지 · Daily Mate",message:"별일 있던 날도 없던 날도, 편하게 한 줄씩 남겨두자.",role:"DIARY"},
@@ -1747,7 +1750,7 @@ function setBanner(key,page="home"){
   const a=aiMap[key]||aiMap.home,p=pageBannerMap[page]||{},meta=pageMeta[page]||[page,"",key];
   const el=$("aiBanner");el.style.setProperty("--banner",a.color);el.style.setProperty("--banner-soft",a.soft);el.style.setProperty("--banner-line",a.line);
   const q=pageQuote(page),quoteAgent={"하니":"hani","지은":"jieun","나은":"nauen","히나":"hina","수아":"sua","하루":"haru","수연":"suyeon","민지":"minji","유나":"yuna"}[q[0]]||"";
-  const av=$("aiAvatar"),ak=quoteAgent||pageAgentImage[page],img=ak&&agentImages[ak];
+  const av=$("aiAvatar"),ak=quoteAgent||pageAgentImage[page],img=ak&&sidebarAgentImages[ak];
   av.className="ai-avatar"+(img?" has-photo":"")+(ak?` agent-${ak}`:"");
   av.style.backgroundImage=img?`url(${img})`:"";av.textContent=img?"":(p.emoji||a.emoji);
   const km={home:"DASHBOARD",finance:"FINANCE",health:"HEALTH",growth:"GROWTH",life:"LIFE",sports:"SPORTS",game:"SPORTS",work:"WORK",team:"AI TEAM"};
@@ -1762,11 +1765,12 @@ if('scrollRestoration' in history)history.scrollRestoration='manual';
 const NAVIGATION_VIEWS=new Set(['home','reading','movie','monthlyReport','diet','exercise','diary','calendar','university','wishlist','travel']);
 let navigationCurrent='',navigationBooted=false,navigationRestored=false,navigationTimer=0;
 function navigationRead(){
-  try{const row=JSON.parse(localStorage.getItem(NAVIGATION_KEY));return row?.version===1&&NAVIGATION_VIEWS.has(row.view)&&Number.isFinite(row.y)&&row.y>=0&&row.y<=1000000?{version:1,view:row.view,y:row.y}:null}catch{return null}
+  try{const row=JSON.parse(localStorage.getItem(NAVIGATION_KEY));if(!(row?.version===1&&NAVIGATION_VIEWS.has(row.view)&&Number.isFinite(row.y)&&row.y>=0&&row.y<=1000000))return null;const safe={version:1,view:row.view,y:row.y};if(row.view==='monthlyReport'&&['monthly','quarterly','annual'].includes(row.board))safe.board=row.board;return safe}catch{return null}
 }
 function navigationPersist(view,y){
   if(!NAVIGATION_VIEWS.has(view)||!Number.isFinite(y)||y<0)return;
-  try{localStorage.setItem(NAVIGATION_KEY,JSON.stringify({version:1,view,y:Math.min(1000000,Math.round(y))}))}catch{/* Navigation remains usable when browser storage is unavailable. */}
+  const row={version:1,view,y:Math.min(1000000,Math.round(y))};if(view==='monthlyReport'&&['monthly','quarterly','annual'].includes(monthlyReportBoard))row.board=monthlyReportBoard;
+  try{localStorage.setItem(NAVIGATION_KEY,JSON.stringify(row))}catch{/* Navigation remains usable when browser storage is unavailable. */}
 }
 function navigationInitialView(hash){return hash||navigationRead()?.view||'home'}
 function navigationRestore(){
@@ -1774,6 +1778,7 @@ function navigationRestore(){
   if(!loginGateUnlocked||navigationRestored)return;
   navigationRestored=true;
   const view=document.body.dataset.view,target=row?.view===view?row.y:0;
+  if(view==='monthlyReport'&&row?.view===view&&row.board){monthlyReportBoard=row.board;monthlyReportRenderBoard()}
   requestAnimationFrame(()=>requestAnimationFrame(()=>{if(view===document.body.dataset.view)window.scrollTo({top:Math.min(target,Math.max(0,document.documentElement.scrollHeight-innerHeight)),left:0,behavior:'instant'})}));
 }
 window.addEventListener('scroll',()=>{clearTimeout(navigationTimer);if(!navigationBooted||!loginGateUnlocked)return;navigationTimer=setTimeout(()=>{if(loginGateUnlocked)navigationPersist(navigationCurrent,window.scrollY)},150)},{passive:true});
@@ -1794,6 +1799,7 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
   history.replaceState(null,"",id==="home"?location.href.split("#")[0]:("#"+id));$("app").classList.remove("mobile-open");window.scrollTo({top:0,left:0,behavior:"auto"});
   window.HaniAssetMarket?.sync();
   if(id==="geminiReports")window.HaniGeminiReports?.render();
+  if(id==="aiBudget")window.HaniAiBudget?.render();
   if(id==="investment")setTimeout(drawPortfolio,30);if(id==="newsroom")setTimeout(()=>investmentNewsMaybeRefresh(),40);if(id==="diet")setTimeout(drawBody,30);if(id==="ledger")setTimeout(drawLedgerTrend,30);if(id==="calendar")renderCalendar();if(id==="tasks")setTimeout(()=>googleCalendarRefreshStatus({silent:true}),0);if(id==="intake")setTimeout(()=>intakeRenderPreview(),0);if(id==="agentReview")setTimeout(()=>agentReviewInit(),0);if(id==="monthlyReport")setTimeout(()=>renderMonthlyReport(),0);if(id==="policy")setTimeout(()=>agentPolicyInit(),0);if(id==="deployment")setTimeout(()=>deployCenterRender(),0);
   // v2.9.2: mobile browsers can throttle background polling. Re-check Cloud when opening data-heavy views.
   if(["home","investment","asset"].includes(id)&&cloudUser&&!cloudRecoveryMode){
@@ -1803,6 +1809,7 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
 
 const QUICK_JUMP_ITEMS=[
   ["characterArchive","M9 + MIR Character Archive","HANI GROUP 캐릭터 프로필 Canon 관계 직급 연차 미르"],
+  ["aiBudget","AI 주간 예산","Codex Claude Gemini 토큰 사용량 주간 세션 한도 회복 재충전"],
   ["aura","HANI AURA","화면 꾸미기 색상 계절 테마 appearance finish season"],
   ["home","대시보드","홈 오늘 요약"],["investment","홍 스트리트","투자 주식 ETF 월간 기록"],["newsroom","뉴스룸","주식 투자 뉴스 관심종목 3시간 흐름"],["asset","자산","통합 자산 계좌"],["ledger","가계부","소비 결산 리뷰"],
   ["diet","계체량 측정","다이어트 체중 건강"],["exercise","헬스클럽","운동 걸음 근력"],["reading","성민의 서재","독서 서재 책 완독"],["study","공부","일본어 AI 학습"],
@@ -3470,11 +3477,11 @@ const TEAM_PROFILE_META={
 let activeTeamProfileKey="hani";
 function teamMeta(key){return TEAM_PROFILE_META[key]||TEAM_PROFILE_META.hani}
 function teamByKey(key){return team.find(x=>x.key===key)||developmentTeam.find(x=>x.key===key)||team[0]}
-function teamCard(x){const img=agentImages[x.key];return `<button class="member ui26-member tone-${x.tone}" data-team-key="${x.key}" data-go="${x.go}" title="${x.name} 프로필 보기"><div class="member-visual ${img?'has-photo':''}" ${img?`style="background-image:url(${img})"`:''}>${img?'':`<span>${x.emoji}</span><small>${x.key==="gemini"?"개발 보고팀":"DESIGN<br>COMING SOON"}</small>`}</div><div class="member-copy"><span class="member-role">${x.role}</span><b>${x.name}</b><p>${x.desc}</p><span class="member-link"></span></div></button>`}
+function teamCard(x){const img=sidebarAgentImages[x.key];return `<button class="member ui26-member tone-${x.tone}" data-team-key="${x.key}" data-go="${x.go}" title="${x.name} 프로필 보기"><div class="member-visual ${img?'has-photo':''}" ${img?`style="background-image:url(${img})"`:''}>${img?'':`<span>${x.emoji}</span><small>${x.key==="gemini"?"개발 보고팀":"DESIGN<br>COMING SOON"}</small>`}</div><div class="member-copy"><span class="member-role">${x.role}</span><b>${x.name}</b><p>${x.desc}</p><span class="member-link"></span></div></button>`}
 function teamListHtml(items){return `<ul>${items.map(v=>`<li>${esc(v)}</li>`).join("")}</ul>`}
 function updateTeamActiveState(key){document.querySelectorAll(".ui26-member[data-team-key]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.teamKey===key));document.querySelectorAll(".sidebar-team-face[data-team-key]").forEach(btn=>btn.classList.toggle("active",btn.dataset.teamKey===key));}
 function renderTeamProfile(key=activeTeamProfileKey){
-  const isDevelopment=developmentTeam.some(x=>x.key===key),panel=$(isDevelopment?"developmentTeamProfilePanel":"teamProfilePanel");if(!panel)return;const member=teamByKey(key),meta=teamMeta(key),img=sidebarAgentImages[key]||agentImages[key]||"";activeTeamProfileKey=member.key;
+  const isDevelopment=developmentTeam.some(x=>x.key===key),panel=$(isDevelopment?"developmentTeamProfilePanel":"teamProfilePanel");if(!panel)return;const member=teamByKey(key),meta=teamMeta(key),img=agentImages[key]||"";activeTeamProfileKey=member.key;
   const badge=$(isDevelopment?"developmentTeamProfileBadge":"teamProfileBadge");if(badge)badge.textContent=member.name;
   panel.innerHTML=`<div class="ai-team-profile-visual tone-${member.tone}"><div class="ai-team-profile-avatar" style="${img?`background-image:url(${img})`:''}">${!img?`<span style="font-size:64px" aria-label="${esc(member.name)}">${esc(member.emoji)}</span>`:""}</div><div class="ai-team-profile-tag">${esc(meta.rank||member.role)}</div><div class="ai-team-profile-quote">“${esc(meta.quote||member.desc)}”</div></div><div class="ai-team-profile-body"><div class="ai-team-profile-head"><div><div class="ai-team-profile-role">${esc(member.role)}</div><h3>${esc(member.name)}</h3><div class="ai-team-profile-sub">${esc(meta.headline||member.desc)}</div></div><div class="ai-team-profile-actions"><button class="btn sm primary" type="button" id="${isDevelopment?"developmentTeamProfileGoMain":"teamProfileGoMain"}">담당 화면 열기</button></div></div><div class="ai-team-mood">${(meta.signature||[]).map(v=>`<span class="pill">${esc(v)}</span>`).join("")}</div><div class="ai-team-meta-grid"><div class="ai-team-meta-card"><b>담당 역할</b>${teamListHtml(meta.focus||[])}</div><div class="ai-team-meta-card"><b>성향</b>${teamListHtml(meta.traits||[])}</div><div class="ai-team-meta-card"><b>대화 스타일</b>${teamListHtml(meta.style||[])}</div><div class="ai-team-meta-card"><b>강점</b>${teamListHtml(meta.strengths||[])}</div></div><div class="ai-team-profile-note">${esc(meta.note||member.desc)}</div></div>`;
   const goBtn=$(isDevelopment?"developmentTeamProfileGoMain":"teamProfileGoMain");if(goBtn)goBtn.onclick=()=>showView(member.go||"home");
@@ -3958,6 +3965,7 @@ function cloudBindAuthEvents(){
     cloudOwnerVerificationEpoch++;
     cloudOwnerVerification?.invalidate();
     dataHubInvalidate();
+    if(event==="SIGNED_OUT"||(annualReportState.owner&&annualReportState.owner!==session?.user?.id))annualReportInvalidate();
     if($("cloudOwnerVerificationResult"))$("cloudOwnerVerificationResult").textContent="세션 변경: 소유권 검증을 다시 실행해 주세요.";
     if(event==="PASSWORD_RECOVERY"){
       cloudEnterRecoveryMode(session);
@@ -5558,7 +5566,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.191";
+const HANI_DISPLAY_VERSION="2.9.192";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
@@ -6043,7 +6051,284 @@ function monthlyReportSnapshot(month,asOf=monthlyReportKoreaDate()){
 }
 function monthlyReportDelta(value,previous,formatter=won){if(previous===null||previous===undefined)return "전월 기록 없음";const delta=n(value)-n(previous);return `전월 대비 ${delta>0?"+":""}${formatter(delta)}`}
 function monthlyReportDomainCard({tone,eyebrow,title,headline,comment,basis,metrics,empty,owner}){const key=owner||({FINANCE:"finance",MONEY:"money",HEALTH:"health",ACTIVITY:"activity",CULTURE:"culture",LEARNING:"learning"})[eyebrow],agent=monthlyReportOwners[key]||monthlyReportOwners.finance;return `<article class="monthly-report-domain tone-${tone}"><div class="monthly-report-domain-head"><div><span>${esc(eyebrow)}</span><h3>${esc(title)}</h3></div><b>${empty?"기록 없음":"해당 월"}</b></div><div class="monthly-report-takeaway"><span>월간 핵심</span><strong>${esc(headline)}</strong></div><div class="monthly-report-agent"><img src="${esc(agentImages[agent.key]||agentImages.hani)}" alt="${esc(agent.name)}"><div class="monthly-report-speech"><span>${esc(agent.name)} · ${esc(agent.role)}</span><p>${esc(comment)}</p></div></div><div class="monthly-report-metrics">${metrics.map(([label,value])=>`<div><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join("")}</div><details class="monthly-report-basis"><summary>집계 기준</summary><p>${esc(basis)}</p></details></article>`}
-function monthlyReportRenderBoard(){if(typeof document==="undefined")return;const allowed=["monthly","quarterly","annual"];if(!allowed.includes(monthlyReportBoard))monthlyReportBoard="monthly";document.querySelectorAll("#monthlyReport [data-report-board]").forEach(button=>{const active=button.dataset.reportBoard===monthlyReportBoard;button.classList.toggle("active",active);button.setAttribute("aria-selected",String(active));button.onclick=()=>{monthlyReportBoard=button.dataset.reportBoard;monthlyReportRenderBoard()}});document.querySelectorAll("#monthlyReport [data-report-panel]").forEach(panel=>{const active=panel.dataset.reportPanel===monthlyReportBoard;panel.hidden=!active;panel.classList.toggle("active",active)})}
+function monthlyReportRenderBoard(){if(typeof document==="undefined")return;const allowed=["monthly","quarterly","annual"];if(!allowed.includes(monthlyReportBoard))monthlyReportBoard="monthly";document.querySelectorAll("#monthlyReport [data-report-board]").forEach(button=>{const active=button.dataset.reportBoard===monthlyReportBoard;button.classList.toggle("active",active);button.setAttribute("aria-selected",String(active));button.onclick=()=>{monthlyReportBoard=button.dataset.reportBoard;monthlyReportRenderBoard();if(navigationBooted&&loginGateUnlocked)navigationPersist(navigationCurrent,window.scrollY)}});document.querySelectorAll("#monthlyReport [data-report-panel]").forEach(panel=>{const active=panel.dataset.reportPanel===monthlyReportBoard;panel.hidden=!active;panel.classList.toggle("active",active)});if(monthlyReportBoard!=="monthly"){earningsRender(monthlyReportBoard);window.HANI_GOAL_PROGRESS?.renderReport?.()}}
+
+// Earnings reports are derived read-only views. Draft conversations never enter state/save/cloud.
+const earningsDrafts=new Map();
+function earningsMonths(kind,period){
+  const match=String(period).match(kind==="annual"?/^(\d{4})$/:/^(\d{4})-Q([1-4])$/);if(!match||Number(match[1])<1900||Number(match[1])>9999)return [];
+  const start=kind==="annual"?1:(Number(match[2])-1)*3+1;return Array.from({length:kind==="annual"?12:3},(_,i)=>`${match[1]}-${String(start+i).padStart(2,"0")}`);
+}
+function earningsAggregate(kind,period,asOf=monthlyReportKoreaDate()){
+  const months=earningsMonths(kind,period),rows=months.map(month=>monthlyReportSnapshot(month,asOf)),eligible=rows.filter(r=>`${r.month}-01`<=asOf),body=rows.flatMap(r=>r.body),first=body[0],last=body.at(-1),count=key=>rows.reduce((sum,r)=>sum+r[key].length,0),sum=key=>rows.reduce((total,r)=>total+r[key],0),finance=rows.at(-1),baseline=months.length?monthlyReportSnapshot(monthlyReportPrevMonth(months[0]),asOf):null,
+    end=finance?.investmentCalc?.total??null,start=baseline?.investmentCalc?.total??null,ledger=eligible.filter(r=>r.ledgerSummary),spend=ledger.length?ledger.reduce((total,r)=>total+r.ledgerSummary.jispiT,0):null,quizTotal=sum("quizTotal"),quizCorrect=sum("quizCorrect"),stepDays=count("stepDays"),delta=first&&last&&first.date!==last.date?Number(last.weight)-Number(first.weight):null;
+  const report={kind,period,asOf,months,rows,eligible:eligible.length,coverage:eligible.filter(r=>r.recordCount).length,records:sum("recordCount"),closed:!!months.length&&months.at(-1)<asOf.slice(0,7),end,start,assetDelta:end!==null&&start!==null?end-start:null,spend,ledgerCoverage:ledger.length,bodyDelta:delta,firstBody:first?{date:first.date,weight:Number(first.weight)}:null,lastBody:last?{date:last.date,weight:Number(last.weight)}:null,steps:sum("totalSteps"),stepDays,activityDays:count("exercise"),books:count("books"),movies:count("movies"),quizTotal,quizCorrect,accuracy:quizTotal?quizCorrect/quizTotal*100:null};
+  const request=kind==='annual'?{type:'annual',year:Number(period)}:{type:'quarter',year:Number(period.slice(0,4)),quarter:Number(period.at(-1))};
+  const common=window.HANI_GOAL_PROGRESS?.read(request);
+  if(common){const value=id=>common.find(row=>row.definition.metric_id===id)?.actual.value??null;report.end=value('investment_total_krw');report.spend=value('spending_jispi_krw');report.accuracy=value('quiz_accuracy_percent');report.books=value('books_completed_count');report.movies=value('media_watched_count');report.assetDelta=report.end!==null&&report.start!==null?report.end-report.start:null;report.commonFacts=true;}
+  return report;
+}
+function earningsNarrative(r){
+  const facts=[r.end===null?"확인된 투자 기록이 없어 자산 성과를 판정하지 않았습니다.":`최근 확인 투자 자산 ${won(r.end)}${r.assetDelta===null?" · 시작 직전 월 기록 없음":` · 시작 직전 월 대비 ${r.assetDelta>=0?"+":""}${won(r.assetDelta)}`}. 입출금이 섞이므로 투자 수익률은 아닙니다.`,r.spend===null?"생활 결산 기록이 없습니다.":`생활 지출 ${won(r.spend)} · ${r.ledgerCoverage}/${r.months.length}개 결산월. 달력월과 다른 결산기간 기준입니다.`,r.lastBody?`신체 기록 ${r.firstBody.date} ${r.firstBody.weight}kg → ${r.lastBody.date} ${r.lastBody.weight}kg${r.bodyDelta===null?" · 변화 판정에 두 날짜가 필요합니다":` · ${r.bodyDelta>=0?"+":""}${r.bodyDelta.toFixed(2)}kg`}. 감량을 항상 성과로 보지는 않습니다.`:"신체 기록이 없어 건강 성과를 추정하지 않았습니다.",`활동 ${r.activityDays}일 · 걸음 ${r.steps.toLocaleString()}보 (${r.stepDays}개 양수 기록일). 완독 ${r.books===null?'미확인':r.books+'권'} · 시청 ${r.movies===null?'미확인':r.movies+'건'}은 기록된 완료 항목만 집계했습니다.`,r.accuracy===null?"채점 수치가 없어 학습 정답률을 판정하지 않았습니다.":`학습 ${r.quizTotal}문항 중 ${r.quizCorrect}문항 정답 · ${r.accuracy.toFixed(1)}%. 월별 정답률 평균 대신 문항 수로 가중했습니다.`];
+  const guidance=[r.bodyDelta!==null&&r.bodyDelta<0?"체중이 줄었습니다. 추가 감량을 자동 목표로 삼지 않고 현재 상태·만족도·유지 가능성을 먼저 확인합니다.":"신체 목표는 현재 상태와 원하는 방향을 먼저 확인합니다. 건강 판단이나 감량 처방은 하지 않습니다.",r.coverage<r.months.length?"빈 달은 실패나 0 실적이 아닙니다. 다음 기간에는 필요한 기록부터 꾸준히 남기는 방향을 검토합니다.":"기록이 있는 달과 영역별 공백을 함께 살펴보고 지속 가능한 기록 주기를 정합니다.","과거 목표 이력이 없으므로 달성/실패는 판정하지 않습니다. 다음 목표는 유지·성장·전환 중 대표님의 상황을 듣고 제안하며 자동 저장하지 않습니다."];
+  const milestones=r.rows.flatMap(row=>[...row.books.map(x=>`완독 · ${String(x.title||x.name||"책").slice(0,90)}`),...row.movies.map(x=>`시청 · ${String(x.title||x.name||"작품").slice(0,90)}`)]).slice(0,8);
+  return {facts,guidance,milestones};
+}
+function earningsPeriods(kind){const now=monthlyReportKoreaDate(),months=[...monthlyReportAvailableMonths(),monthlyReportPrevMonth(now.slice(0,7)),now.slice(0,7)],periods=months.map(m=>kind==="annual"?m.slice(0,4):`${m.slice(0,4)}-Q${Math.ceil(Number(m.slice(5))/3)}`);return [...new Set(periods)].sort().reverse()}
+function earningsDraft(kind,period){const owner=cloudUser?.id||"local",key=`${owner}:${kind}:${period}`;if(!earningsDrafts.has(key))earningsDrafts.set(key,{kind,period,context:"",question:"",messages:[],answer:"",guidance:[],busy:false,error:"",owner});return earningsDrafts.get(key)}
+function earningsCallProgramme(r,draft){
+const narrative=earningsNarrative(r),guidance=draft.guidance.length?draft.guidance:narrative.guidance,quantity=(value,known,unit)=>known?`${value.toLocaleString()}${unit}`:"미확인",metrics=[['최근 확인 투자 자산',r.end===null?'미확인':won(r.end)],['분기 생활 지출',r.spend===null?'미확인':won(r.spend)],['학습 채점',r.quizTotal?`${r.quizCorrect}/${r.quizTotal}문항`:'미확인'],['활동 기록',quantity(r.activityDays,r.activityDays,'일')],['완독',quantity(r.books,r.books,'권')],['학습 정답률',r.accuracy===null?'미확인':`${r.accuracy.toFixed(1)}%`]];
+  const plan=[['재무','확정 월별 스냅샷과 결산을 이어서 확인','입출금과 자산 변화를 구분해 설명할 근거 확보'],['신체·활동','현재 상태를 듣고 유지·변화 방향 논의','대표님이 선택한 방향의 지속 가능성 확인'],['학습','실제 채점 문항과 복습 기록 확인','학습 공백과 이해도를 구분할 근거 확보'],['생활·문화','기억할 독서·시청 장면을 대화로 정리','활동 수량과 개인적 의미를 함께 회고']];
+  return {metrics,plan,scenes:[
+    {key:'opening',owner:'hani',name:'하니',role:'오프닝',title:`${r.period} · 우리의 실적`,headline:r.closed?'분기 실적발표':'진행 중 누적 발표',speech:r.records?`성민 대표님, 이번 분기에 확인한 ${r.records}건의 기록을 담당자들과 함께 발표할게요.`:'이 분기는 기록이 없어 성과를 판단하지 않았어요. 아직 모르는 부분부터 함께 확인할게요.',basis:`기록 있는 달 ${r.coverage}/${r.months.length}. 모든 영역이 완전하다는 뜻은 아닙니다.`},
+{key:'overview',owner:'hani',name:'하니',role:'종합 성과',title:'이번 분기에 확인한 성과',headline:'확인된 기록을 한눈에',speech:'이번 발표의 중심은 현재 성과입니다. 확인된 자산과 지출, 활동과 완독, 실제 채점 결과부터 살펴볼게요.',basis:'빈 기록은 0 실적이나 실패로 판정하지 않습니다.',metrics},
+    {key:'finance',owner:'jieun',name:'지은',role:'재무 발표',title:'자산과 생활 결산',headline:r.end===null?'기간 말 자산 미확인':won(r.end),speech:`${narrative.facts[0]} ${narrative.facts[1]}`,basis:'투자 자산 변화는 입출금이 포함돼 수익률과 다릅니다. 생활 지출은 월별 결산기간 기준입니다.',series:r.rows.map(row=>({label:row.month.slice(5)+'월',value:row.investmentCalc?.total??null})),unit:'원'},
+    {key:'health',owner:'naeun',name:'나은',role:'신체·활동 발표',title:'우리 몸과 활동의 기록',headline:r.lastBody?`${r.lastBody.weight.toFixed(2)}kg`:'신체 기록 미확인',speech:narrative.facts[2],basis:'실제 측정일 사이의 변화이며 건강 상태나 목표 달성 여부를 판정하지 않습니다.',series:r.rows.map(row=>({label:row.month.slice(5)+'월',value:row.stepDays.length?row.totalSteps:null})),unit:'보'},
+    {key:'learning',owner:'hina',name:'히나',role:'학습 발표',title:'실제 문항으로 본 학습',headline:r.accuracy===null?'채점 기록 미확인':`${r.accuracy.toFixed(1)}%`,speech:narrative.facts[4],basis:'총 문항 수 기준 정답률. 기록이 없는 달은 미확인입니다.',series:r.rows.map(row=>({label:row.month.slice(5)+'월',value:row.quizTotal?row.quizCorrect/row.quizTotal*100:null})),unit:'%',ceiling:100},
+    {key:'reading',owner:'haru',name:'하루',role:'독서 발표',title:'책에서 남은 장면',headline:quantity(r.books,r.books,'권 완독'),speech:r.books?`이번 분기에 완독한 책은 ${r.books}권이에요. 수량과 함께 어떤 장면이 남았는지도 듣고 싶어요.`:'완독 기록을 확인하지 못했어요. 읽지 않았다는 뜻은 아니에요.',basis:'완료일이 선택 분기에 속하는 원본 기록 기준.',items:r.rows.flatMap(row=>row.books.map(b=>String(b.title||b.name||'제목 미입력'))).slice(0,6)},
+    {key:'culture',owner:'minji',name:'민지',role:'문화 발표',title:'우리가 즐긴 이야기',headline:quantity(r.movies,r.movies,'건 시청'),speech:r.movies?`완료한 시청 기록은 ${r.movies}건이에요. 대표님에게 기억에 남은 작품과 순간을 다음 대화에 담아볼까요?`:'완료한 시청 기록이 없어요. 감상 경험을 0으로 판단하지 않을게요.',basis:'완료일 기준 작품 기록 수. 시리즈 회차 수와는 다릅니다.',items:r.rows.flatMap(row=>row.movies.map(m=>String(m.title||m.name||'제목 미입력'))).slice(0,6)},
+    {key:'outlook',owner:'hani',name:'하니',role:'다음 분기 전망',title:'다음 분기에 기대하는 변화',headline:'대표님의 상황을 먼저',speech:'다음 방향은 현재 상황을 듣고 함께 정할게요. 아래 전망은 확정 목표나 성과 약속이 아닌 제안이에요.',basis:'과거 목표를 추정하지 않으며 새 목표를 자동 저장하지 않습니다.',items:guidance},
+    {key:'plan',owner:'hani',name:'하니',role:'추진 방향',title:'다음 분기 실행 논의',headline:'방향과 기대효과',speech:'분기 초에 우선순위를 합의하고, 중간에 기록을 확인한 뒤 분기 말에 다시 회고하는 흐름을 제안해요.',basis:'제안 일정과 기대효과는 미확정입니다. 구체적인 목표 수치는 대표님과 논의 후 정합니다.',plan},
+    {key:'qa',owner:'hani',name:'하니',role:'Q&A',title:'성과 다음의 대화',headline:'대표님께 마이크를',speech:draft.answer||'가장 의미 있었던 변화는 무엇인가요? 다음 분기에는 유지하고 싶은 것과 바꾸고 싶은 것을 알려주세요.',basis:draft.answer?'하니 AI 참고 의견. 원본 실적이나 확정 목표를 대신하지 않습니다.':'대화 시작 질문입니다. 아직 실제 AI 답변이 아닙니다.'}
+  ]};
+}
+function earningsCallKeynote(scene){
+  const keynotes={opening:'우리의 일상. 그룹의 실적.',overview:'작은 기록들이 모여, 꽤 큰 이야기가 됩니다.',finance:'숫자는 차갑게. 발표는 뜨겁게.',health:'한 걸음의 업데이트. 다음 걸음의 시작.',learning:'정답만 발표하지 않습니다. 모르는 것도 발표합니다.',reading:'다 읽었습니다. 이제 이야기가 시작됩니다.',culture:'엔딩 크레딧 뒤에도, 이야기는 남습니다.',outlook:'그리고, 다음 분기가 있습니다.',plan:'기대는 크게. 약속은 신중하게.',qa:'One more question?'};
+  return (scene.key==='reading'&&!scene.items?.length?'다음 페이지의 이야기를 기다립니다.':keynotes[scene.key])||'';
+}
+function earningsCallSceneHtml(scene,index){
+  const keynote=earningsCallKeynote(scene),stage=scene.key==='opening'?`<img class="earnings-keynote-team" src="./assets/team/hani-team-office.webp" alt="HANI GROUP 담당자 팀"><img class="earnings-keynote-ci" src="./assets/brand/hani-group-ci-official.webp" alt="HANI GROUP">`:'';
+  const speech=scene.key==='qa'?earningsCallAnswerHtml(scene.speech):`<p class="earnings-call-speech">${esc(scene.speech)}</p>`;
+  const timeline=scene.key==='plan'?'<div class="earnings-keynote-timeline" aria-label="다음 분기 제안 일정"><div><b>분기 초</b><span>대표님과 우선순위 합의</span></div><div><b>분기 중</b><span>기록과 현재 상황 확인</span></div><div><b>분기 말</b><span>성과와 남은 질문 회고</span></div></div>':'';
+  const img=agentImages[scene.owner]||agentImages.hani,series=scene.series,max=scene.ceiling||Math.max(1,...(series||[]).filter(x=>x.value!==null).map(x=>Math.abs(x.value))),chart=series?`<div class="earnings-call-chart" aria-label="월별 ${esc(scene.title)}">${series.map(point=>`<div class="earnings-call-bar"><span>${esc(point.label)}</span><div class="earnings-call-track">${point.value===null?'<em>미확인</em>':`<i style="width:${Math.min(100,Math.max(0,point.value/max*100))}%"></i>`}</div><b>${point.value===null?'—':esc(Number(point.value.toFixed(1)).toLocaleString()+scene.unit)}</b></div>`).join('')}</div>`:'';
+  return `<article class="earnings-call-scene scene-${esc(scene.key)}" data-call-scene="${esc(scene.key)}">${stage}<div class="earnings-call-presenter"><img src="${esc(img)}" alt="${esc(scene.name)}"><span>${esc(scene.name)}</span><small>${esc(scene.role)}</small></div><div class="earnings-call-content"><div class="earnings-call-label">${String(index+1).padStart(2,'0')} / 10</div><p class="earnings-keynote-line">${esc(keynote)}</p><h3>${esc(scene.title)}</h3><strong class="earnings-call-headline">${esc(scene.headline)}</strong>${speech}${scene.metrics?`<div class="earnings-call-metrics">${scene.metrics.map(([label,value])=>`<div><span>${esc(label)}</span><b>${esc(value)}</b></div>`).join('')}</div>`:''}${chart}${scene.items?.length?`<ul class="earnings-call-items">${scene.items.map(text=>`<li>${esc(text)}</li>`).join('')}</ul>`:''}${timeline}${scene.plan?`<div class="earnings-table"><table><thead><tr><th>분야</th><th>추진 방향</th><th>조건부 기대효과</th></tr></thead><tbody>${scene.plan.map(row=>`<tr>${row.map(cell=>`<td>${esc(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`:''}<details class="earnings-call-basis"><summary>발표 기준</summary><p>${esc(scene.basis)}</p></details></div></article>`;
+}
+function earningsCallAnswerHtml(text){
+  const paragraphs=[];
+  for(const block of String(text).split(/\n\s*\n/)){
+    let paragraph='';
+    for(const sentence of block.split(/(?<=[.!?。])\s+(?=\S)/u)){
+      if(paragraph&&paragraph.length+sentence.length>170){paragraphs.push(paragraph);paragraph=''}
+      paragraph+=(paragraph?' ':'')+sentence;
+    }
+    if(paragraph.trim())paragraphs.push(paragraph.trim());
+  }
+  return `<div class="earnings-call-speech earnings-call-answer">${paragraphs.map(paragraph=>`<p>${esc(paragraph)}</p>`).join('')}</div>`;
+}
+function earningsRender(kind,period){
+  if(kind==="annual"){annualReportRender();return}
+  if(!goalPeriodReadContext()){const host=$('earningsQuarterly');if(host)host.innerHTML='<p role="status">원본 검증 대기 · 발표와 PPT는 원본 검증 후 표시합니다.</p>';return}
+  const host=$(kind==="annual"?"earningsAnnual":"earningsQuarterly");if(!host)return;const periods=earningsPeriods(kind);period=period||host.dataset.period||periods.find(p=>earningsAggregate(kind,p).closed)||periods[0];if(!periods.includes(period))period=periods[0];host.dataset.period=period;
+  const r=earningsAggregate(kind,period),draft=earningsDraft(kind,period),narrative=earningsNarrative(r),list=items=>items.map(item=>`<p>${esc(item)}</p>`).join("");
+  host.innerHTML=`<div class="earnings-controls"><label>보고 기간 <select data-earnings-period>${periods.map(p=>`<option ${p===period?"selected":""}>${esc(p)}</option>`).join("")}</select></label><button type="button" data-earnings-ppt ${r.records?"":"disabled"}>PPT 다운로드</button></div><p class="sub">${r.closed?"완료 기간":"진행 중 · 누적 Preview"} · 기록 있는 달 ${r.coverage}/${r.months.length} · 확인 ${esc(r.asOf)} · 원본에서 다시 집계하는 읽기 전용 보고</p><div class="earnings-call-programme">${earningsCallProgramme(r,draft).scenes.map(earningsCallSceneHtml).join("")}</div><details class="card"><summary>월별 근거 · 빈 달은 0으로 판정하지 않습니다</summary><div class="earnings-table"><table><thead><tr><th>월</th><th>투자 자산</th><th>생활 지출</th><th>완독</th><th>학습</th></tr></thead><tbody>${r.rows.map(row=>`<tr><th>${esc(row.month)}</th><td>${row.investmentCalc?esc(won(row.investmentCalc.total)):"—"}</td><td>${row.ledgerSummary?esc(won(row.ledgerSummary.jispiT)):"—"}</td><td>${row.books.length||"—"}</td><td>${row.quizTotal?`${row.quizCorrect}/${row.quizTotal}`:"—"}</td></tr>`).join("")}</tbody></table></div><p>확정 스냅샷과 완료 기록을 원본에서 다시 집계합니다. 원본 수정 후 이 보고는 달라질 수 있습니다.</p></details><form class="card earnings-chat"><h3>하니와 이야기하기</h3><label>현재 상황·이전 목표·기억할 장면<textarea data-earnings-context maxlength="1800" placeholder="예: 올해 감량 목표는 달성했고, 내년에는 유지가 우선이야." ${draft.busy?"disabled":""}>${esc(draft.context)}</textarea></label><p class="sub">질문할 때 선택 기간 요약과 입력한 상황·최근 대화만 AI 서버로 보냅니다. 원본·목표·대화는 저장하지 않으며 새로고침하면 대화는 사라집니다.</p><div class="earnings-messages" aria-live="polite">${draft.messages.map(m=>`<p><b>${m.role==="user"?"대표님":"하니"}</b><br>${esc(m.content)}</p>`).join("")}</div><label>질문<input data-earnings-question maxlength="800" placeholder="이번 실적을 어떻게 해석하면 좋을까?" ${draft.busy?"disabled":""}></label><button type="submit" ${draft.busy||!r.records?"disabled":""}>${draft.busy?"하니가 생각하고 있어요…":"하니에게 질문"}</button><p role="status">${esc(draft.error)}</p></form>`;
+  host.querySelector("[data-earnings-period]").onchange=e=>earningsRender(kind,e.target.value);host.querySelector("[data-earnings-context]").oninput=e=>draft.context=e.target.value;const questionInput=host.querySelector("[data-earnings-question]");questionInput.value=draft.question;questionInput.oninput=e=>draft.question=e.target.value;host.querySelector("[data-earnings-ppt]").onclick=()=>earningsDownload(r,draft);host.querySelector("form").onsubmit=async e=>{e.preventDefault();const question=questionInput.value.trim();if(!question||draft.busy)return;await earningsAsk(r,draft,question);if(host.dataset.period===period)earningsRender(kind,period)};
+}
+async function earningsAsk(r,draft,question){
+  const owner=cloudUser?.id;if(!cloudClient||!owner){draft.error="하니 Q&A는 Cloud 로그인 후 사용할 수 있습니다.";return}draft.busy=true;draft.error="";earningsRender(r.kind,r.period);
+  try{const {data:{session},error}=await cloudClient.auth.getSession();if(error||!session?.access_token||cloudUser?.id!==owner)throw Error("로그인 상태가 바뀌었습니다. 다시 로그인해 주세요.");const cfg=cloudConfig(),summary={...r};delete summary.rows;const response=await fetch(`${cfg.url}/functions/v1/hani-earnings-dialogue`,{method:"POST",headers:{"Content-Type":"application/json",apikey:cfg.key,Authorization:`Bearer ${session.access_token}`},body:JSON.stringify({summary,context:draft.context,messages:draft.messages.slice(-8),question}),signal:AbortSignal.timeout(45000)});if(!response.ok)throw Error(response.status===404?"보고 Q&A 서버가 아직 배포되지 않았습니다. 보고 열람과 PPT 다운로드는 사용할 수 있습니다.":"하니 연결에 실패했습니다. 입력은 유지되며 다시 시도할 수 있습니다.");const result=await response.json();if(cloudUser?.id!==owner||draft.owner!==owner)throw Error("사용자 변경으로 응답을 반영하지 않았습니다.");if(!result.ok||typeof result.answer!=="string"||!Array.isArray(result.guidance))throw Error("응답 형식을 확인하지 못했습니다.");draft.messages.push({role:"user",content:question},{role:"assistant",content:result.answer.slice(0,2400)});draft.messages=draft.messages.slice(-12);draft.guidance=result.guidance.filter(x=>typeof x==="string").slice(0,3).map(x=>x.slice(0,400));draft.answer=result.answer;
+    draft.question="";
+  }catch(e){draft.error=e?.message||"하니 연결에 실패했습니다."}finally{draft.busy=false}
+}
+// Annual reports live only in the approved private archive, never in life state.
+const annualReportState={owner:null,epoch:0,year:new Date().getFullYear(),rows:[],busy:false,validated:null,pdfTask:null,pdf:null,renderTask:null,viewEpoch:0,page:1,zoom:1};
+function annualReportInvalidate(){
+  const s=annualReportState;s.epoch++;s.owner=null;s.rows=[];s.validated=null;s.busy=false;annualReportClosePdf();
+  const host=$("earningsAnnual");if(host){host.replaceChildren();delete host.dataset.mounted}
+}
+function annualReportClosePdf(){
+  const s=annualReportState;s.viewEpoch++;s.renderTask?.cancel();s.renderTask=null;
+  s.pdfTask?.destroy().catch(()=>{});s.pdfTask=null;s.pdf=null;s.page=1;s.zoom=1;
+  const canvas=$("annualReportCanvas");if(canvas){canvas.width=0;canvas.height=0}const viewer=$("annualReportViewer");if(viewer)viewer.hidden=true;
+}
+function annualReportStatus(text){const out=$("annualReportStatus");if(out)out.textContent=text}
+function annualReportError(error){return ({ACCOUNT_QUOTA:"보관 한도 100MiB에 도달했습니다. 기존 보고서는 보존됩니다.",FILE_SIZE:"파일당 최대 10MiB입니다.",PDF_PAGE_LIMIT:"PDF는 최대 60페이지입니다.",ACTIVE_PDF:"실행·링크·첨부·폼이 있는 PDF는 보관할 수 없습니다.",ACTIVE_PPTX:"실행 가능한 내용이 있는 PPTX는 보관할 수 없습니다.",EXTERNAL_PPTX:"외부 파일을 연결한 PPTX는 보관할 수 없습니다.",INVALID_SESSION:"Cloud 로그인을 다시 확인해 주세요.",OWNER_CHANGED:"로그인 계정이 바뀌어 작업을 중단했습니다.",INTEGRITY:"파일 무결성을 확인하지 못했습니다. 이전 보고서는 유지됩니다.",REPORT_FAILED:"보고서를 처리하지 못했습니다. 파일은 유지되며 다시 시도할 수 있습니다."})[error?.message]||"보고서를 처리하지 못했습니다. 이전 보고서는 유지됩니다."}
+async function annualReportOwner(){
+  const owner=cloudUser?.id,s=annualReportState,epoch=s.epoch;
+  if(!owner||!cloudClient)throw Error("INVALID_SESSION");
+  const {data,error}=await cloudClient.auth.getSession();
+  if(error||!data?.session||data.session.user?.id!==owner||cloudUser?.id!==owner||s.epoch!==epoch)throw Error("OWNER_CHANGED");
+  if(s.owner&&s.owner!==owner)throw Error("OWNER_CHANGED");s.owner=owner;
+  return {owner,epoch};
+}
+function annualReportGuard(ticket){if(annualReportState.epoch!==ticket.epoch||cloudUser?.id!==ticket.owner||annualReportState.owner!==ticket.owner)throw Error("OWNER_CHANGED")}
+async function annualReportHash(bytes){return Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256",bytes)),b=>b.toString(16).padStart(2,"0")).join("")}
+function annualReportValidRecord(row,owner){
+  const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  return row?.owner_id===owner&&uuid.test(row.revision_id||"")&&row.status==="ready"&&Number.isInteger(row.year)&&row.year>=1900&&row.year<=9999&&typeof row.title==="string"&&row.title.length<=120&&Number.isInteger(row.page_count)&&row.page_count>=1&&row.page_count<=60&&Array.isArray(row.files)&&row.files.length>=1&&row.files.length<=2&&row.files.some(f=>f.kind==="pdf")&&new Set(row.files.map(f=>f.kind)).size===row.files.length&&row.files.every(f=>["pdf","pptx"].includes(f.kind)&&f.path===`${owner}/${row.year}/${row.revision_id}/report.${f.kind}`&&Number.isInteger(f.size)&&f.size>0&&f.size<=10485760&&/^[0-9a-f]{64}$/.test(f.sha256||""));
+}
+async function annualReportInvoke(body,ticket){
+  annualReportGuard(ticket);const {data,error}=await cloudClient.functions.invoke("hani-annual-reports",{body});annualReportGuard(ticket);
+  if(error){let detail;try{detail=await error.context?.json()}catch{}throw Error(detail?.error||"REPORT_FAILED")}
+  if(!data?.ok)throw Error(data?.error||"REPORT_FAILED");return data;
+}
+function annualReportBusy(busy){
+  annualReportState.busy=busy;const host=$("earningsAnnual");if(!host)return;
+  host.querySelectorAll("form input,form button,[data-annual-revision-action],#annualReportYear,#annualReportRefresh").forEach(el=>el.disabled=busy);
+  const register=$("annualReportRegister");if(register)register.disabled=busy||!annualReportState.validated;
+}
+function annualReportRender(){
+  const host=$("earningsAnnual"),s=annualReportState;if(!host)return;
+  if(s.owner&&s.owner!==cloudUser?.id)annualReportInvalidate();
+  if(host.dataset.mounted)return;host.dataset.mounted="true";
+  host.innerHTML=`<div class="annual-report-intro"><img src="./assets/profiles/hani-profile-hani.webp" alt="하니"><div><span>YOUR YEAR, YOUR STORY</span><h3>성민 대표님과 함께 만든 한 해</h3><p>마스터 템플릿을 바탕으로 GPT와 회고·새 목표·전망을 완성하세요. PDF는 디자인 그대로 표시하고, PPTX는 편집 원본으로 보관합니다.</p><p class="sub">업로드는 AI 분석이나 기존 목표·생활 데이터 변경을 실행하지 않습니다.</p></div></div><div class="earnings-controls"><label>보고 연도 <input id="annualReportYear" type="number" min="1900" max="9999" value="${s.year}"></label><button id="annualReportRefresh" type="button">보관함 새로고침</button></div><div id="annualReportList" class="annual-report-list"></div><details class="card annual-report-upload" open><summary>새 보고서 · 수정본 등록</summary><form id="annualReportForm"><label>보고서 제목<input id="annualReportTitle" maxlength="120" value="${s.year} · 우리의 연간 보고서" required></label><div class="annual-report-file-grid"><label>표시할 PDF · 필수<input id="annualReportPdf" type="file" accept=".pdf,application/pdf" required></label><label>편집 원본 PPTX · 선택<input id="annualReportPptx" type="file" accept=".pptx,application/vnd.openxmlformats-officedocument.presentationml.presentation"></label></div><p class="sub">파일당 10MiB · PDF 최대 60페이지 · 계정별 보관 100MiB. 실행·외부 연결이 포함된 파일은 거부됩니다. 이전 수정본은 삭제하지 않습니다.</p><div class="earnings-controls"><button type="submit">안전 검사 · 미리보기</button><button id="annualReportRegister" type="button" disabled>이 보고서로 등록</button><button id="annualReportCancel" type="button">선택 취소</button></div></form></details><p id="annualReportStatus" role="status" aria-live="polite"></p><section id="annualReportViewer" class="annual-report-viewer" hidden aria-label="연간 PDF 열람"><div class="earnings-controls"><button id="annualReportPrev" type="button" aria-label="이전 페이지">이전</button><span id="annualReportPage" aria-live="polite"></span><button id="annualReportNext" type="button" aria-label="다음 페이지">다음</button><button id="annualReportZoomOut" type="button" aria-label="축소">−</button><button id="annualReportZoomIn" type="button" aria-label="확대">+</button><button id="annualReportFullscreen" type="button">전체화면</button><button id="annualReportClose" type="button">닫기</button></div><div class="annual-report-canvas-wrap"><canvas id="annualReportCanvas" aria-label="PDF 슬라이드"></canvas></div></section>`;
+  $("annualReportYear").onchange=()=>{const y=Number($("annualReportYear").value);if(!Number.isInteger(y)||y<1900||y>9999){$("annualReportYear").value=s.year;return}s.year=y;annualReportClearSelection();$("annualReportTitle").value=`${y} · 우리의 연간 보고서`;annualReportLoad()};
+  $("annualReportRefresh").onclick=()=>annualReportLoad();
+  $("annualReportForm").onsubmit=e=>{e.preventDefault();annualReportValidate()};
+  $("annualReportRegister").onclick=()=>annualReportRegister();$("annualReportCancel").onclick=()=>annualReportClearSelection();
+  for(const id of ["annualReportTitle","annualReportPdf","annualReportPptx"])$(id).oninput=()=>{s.validated=null;$("annualReportRegister").disabled=true;annualReportClosePdf();annualReportStatus("선택 내용이 바뀌었습니다. 다시 안전 검사를 실행해 주세요.")};
+  $("annualReportPrev").onclick=()=>annualReportMove(-1);$("annualReportNext").onclick=()=>annualReportMove(1);
+  $("annualReportZoomOut").onclick=()=>annualReportZoom(-.25);$("annualReportZoomIn").onclick=()=>annualReportZoom(.25);
+  $("annualReportClose").onclick=()=>annualReportClosePdf();$("annualReportFullscreen").onclick=()=>{$("annualReportViewer").requestFullscreen?.().catch(()=>annualReportStatus("이 환경은 전체화면을 지원하지 않습니다."))};
+  annualReportLoad();
+}
+function annualReportClearSelection(){annualReportState.validated=null;annualReportClosePdf();$("annualReportPdf").value="";$("annualReportPptx").value="";$("annualReportRegister").disabled=true;annualReportStatus("선택을 취소했습니다. 기존 보고서는 그대로입니다.")}
+async function annualReportLoad(){
+  const s=annualReportState;if(s.busy)return;let ticket;annualReportBusy(true);
+  try{ticket=await annualReportOwner();const year=s.year;const {data,error}=await cloudClient.from("hani_annual_report_revisions").select("revision_id,owner_id,year,title,files,page_count,is_current,status,created_at").eq("owner_id",ticket.owner).eq("year",year).eq("status","ready").order("created_at",{ascending:false}).limit(100);annualReportGuard(ticket);if(error||!Array.isArray(data)||!data.every(row=>annualReportValidRecord(row,ticket.owner)))throw Error("REPORT_FAILED");s.rows=data;annualReportRenderList();annualReportStatus(data.length?"비공개 보관함을 확인했습니다. 최근 수정본 최대 100개를 표시합니다.":"아직 등록한 보고서가 없습니다. 완성한 PDF를 올려주세요.");}
+  catch(error){if(!ticket||s.epoch===ticket.epoch){s.rows=[];annualReportRenderList();annualReportStatus(annualReportError(error))}}
+  finally{if(!ticket||s.epoch===ticket.epoch)annualReportBusy(false)}
+}
+function annualReportEmptyStage(year){
+  const presenters=[['jieun','지은','재무','숫자 너머, 어떤 선택이 남았나요?'],['naeun','나은','신체·활동','올해의 나를, 내 기준으로 돌아봅니다.'],['hina','히나','학습','배운 것과 아직 궁금한 것. 둘 다 우리의 성장입니다.'],['haru','하루','독서','책장을 넘긴 뒤에도 남은 이야기.'],['minji','민지','문화','우리의 한 해에는 어떤 장면이 있었나요?']];
+  return `<div class="annual-story-stage" aria-label="연간 발표 디자인 예시">
+    <section class="annual-story-cover"><img class="annual-story-team" src="./assets/team/hani-team-office.webp" alt="HANI GROUP 담당자 팀"><div class="annual-story-cover-copy"><span class="annual-story-example">DESIGN PREVIEW · 내용 작성 전</span><p class="annual-story-eyebrow">HANI GROUP · ${esc(year)} ANNUAL CONFERENCE</p><h3>한 해의 기록.<br>우리만의 이야기.</h3><p>숫자로 다 말할 수 없는 한 해를,<br>성민 대표님과 함께 완성합니다.</p><span class="annual-story-awaiting">한 해의 이야기를 기다리고 있어요</span></div></section>
+    <section class="annual-story-overview"><span class="annual-story-eyebrow">01 · THE YEAR IN FOCUS</span><h3>성과보다 먼저,<br>기억하고 싶은 한 해.</h3><p>아래는 발표 구성의 예시입니다. 아직 실적이나 목표가 채워진 보고서는 아닙니다.</p><div class="annual-story-prompts"><div><span>올해를 표현하는 한 문장</span><b>대표님의 이야기로</b></div><div><span>가장 의미 있었던 변화</span><b>대화로 함께 발견</b></div><div><span>남기고 싶은 주요 장면</span><b>직접 고르는 기록</b></div></div></section>
+    <section class="annual-story-presenters"><span class="annual-story-eyebrow">02 · OUR PEOPLE, OUR STORIES</span><h3>각자의 자리에서.<br>하나의 이야기로.</h3><div class="annual-story-speakers">${presenters.map(([id,name,role,line])=>`<article><img src="./assets/profiles/hani-profile-${id}.webp" alt="${name}"><div><span>${name} · ${role}</span><p>${line}</p><small>발표 내용은 GPT와 함께 작성</small></div></article>`).join('')}</div></section>
+    <section class="annual-story-next"><span class="annual-story-eyebrow">03 · WHAT COMES NEXT</span><h3>다음 해의 가능성.<br>아직 정해지지 않은 만큼.</h3><p>새 목표를 만들 수도, 지금의 방향을 이어갈 수도 있어요. 대표님의 상황을 이야기하며 결정합니다.</p><div class="annual-story-journey"><div><b>함께 이야기하기</b><span>GPT와 회고·새 목표·전망 작성</span></div><div><b>보고서 완성하기</b><span>PDF로 디자인, PPTX로 편집 원본 준비</span></div><div><b>이 무대에 올리기</b><span>아래에서 검사·미리보기 후 직접 등록</span></div></div><p class="annual-story-safety">자동 생성한 실적이나 목표를 대신 넣지 않습니다. 등록한 PDF는 자체 디자인 그대로 표시하며, 이 예시 구성으로 변환하지 않습니다.</p></section>
+  </div>`;
+}
+function annualReportRenderList(){
+  const host=$("annualReportList"),s=annualReportState;if(!host)return;
+host.innerHTML=s.rows.length?s.rows.map((row,i)=>`<article class="card annual-report-revision"><div><span>${row.is_current?"대표 보고서":"보존된 수정본"} · ${row.page_count}페이지</span><h3>${esc(row.title)}</h3><p class="sub">${esc(String(row.created_at).slice(0,10))} · ${esc((row.files.reduce((n,f)=>n+f.size,0)/1048576).toFixed(2))}MiB</p></div><div class="earnings-controls"><button type="button" data-annual-revision-action="view" data-row="${i}">보고서 보기</button><button type="button" data-annual-revision-action="pdf" data-row="${i}">PDF 받기</button>${row.files.some(f=>f.kind==="pptx")?`<button type="button" data-annual-revision-action="pptx" data-row="${i}">PPTX 원본</button>`:""}${row.is_current?"":`<button type="button" data-annual-revision-action="activate" data-row="${i}">이 수정본으로 복구</button>`}</div></article>`).join(""):annualReportEmptyStage(s.year);
+  host.querySelectorAll("[data-annual-revision-action]").forEach(button=>button.onclick=()=>annualReportRevision(s.rows[Number(button.dataset.row)],button.dataset.annualRevisionAction));
+}
+async function annualReportValidate(){
+  const s=annualReportState;if(s.busy)return;let ticket;s.validated=null;annualReportBusy(true);
+  try{ticket=await annualReportOwner();const pdf=$("annualReportPdf").files[0],pptx=$("annualReportPptx").files[0],title=$("annualReportTitle").value.trim(),year=s.year;
+    if(!pdf||!title||title.length>120)throw Error("REPORT_FAILED");if([pdf,pptx].filter(Boolean).some(f=>f.size<=0||f.size>10485760))throw Error("FILE_SIZE");
+    const revision=crypto.randomUUID(),form=new FormData();for(const [key,value] of Object.entries({action:"validate",year,title,revision_id:revision}))form.append(key,String(value));form.append("pdf",pdf);if(pptx)form.append("pptx",pptx);
+    annualReportStatus("PDF・PPTX 안전성을 확인하고 있습니다…");
+    const result=await annualReportInvoke(form,ticket);
+    const row={...result,year,title,owner_id:result.owner_id,status:"ready"};if(result.validated!==true||result.revision_id!==revision||!annualReportValidRecord(row,ticket.owner))throw Error("INTEGRITY");
+    for(const [kind,file] of [["pdf",pdf],["pptx",pptx]])if(file){const receipt=result.files.find(f=>f.kind===kind);if(!receipt||receipt.size!==file.size||await annualReportHash(await file.arrayBuffer())!==receipt.sha256)throw Error("INTEGRITY")}
+    if(result.files.length!==(pptx?2:1))throw Error("INTEGRITY");annualReportGuard(ticket);
+    await annualReportOpenPdf(new Uint8Array(await pdf.arrayBuffer()),ticket);annualReportGuard(ticket);
+    s.validated={ticket,revision,year,title,pdf,pptx,files:result.files,page_count:result.page_count};annualReportStatus(`안전 검사 완료 · ${result.page_count}페이지. 아직 저장되지 않았습니다. 미리보기 확인 후 ‘이 보고서로 등록’을 눌러주세요.`);
+  }catch(error){if(!ticket||s.epoch===ticket.epoch){s.validated=null;annualReportClosePdf();annualReportStatus(annualReportError(error))}}
+  finally{if(!ticket||s.epoch===ticket.epoch)annualReportBusy(false)}
+}
+async function annualReportRegister(){
+  const s=annualReportState,v=s.validated;if(s.busy||!v)return;let ticket;annualReportBusy(true);
+  try{ticket=await annualReportOwner();annualReportGuard(v.ticket);const form=new FormData();for(const [key,value] of Object.entries({action:"register",year:v.year,title:v.title,revision_id:v.revision}))form.append(key,String(value));form.append("pdf",v.pdf);if(v.pptx)form.append("pptx",v.pptx);
+    annualReportStatus("비공개 보관 · 실제 파일 확인 중입니다. 창을 닫지 말아 주세요.");const result=await annualReportInvoke(form,ticket),row=result.record;
+    if(!annualReportValidRecord(row,ticket.owner)||row.revision_id!==v.revision||row.year!==v.year||row.title!==v.title||row.is_current!==true||row.page_count!==v.page_count||row.files.length!==v.files.length||!v.files.every(f=>row.files.some(r=>r.path===f.path&&r.sha256===f.sha256&&r.size===f.size)))throw Error("INTEGRITY");
+    const {data,error}=await cloudClient.from("hani_annual_report_revisions").select("*").eq("revision_id",v.revision).eq("owner_id",ticket.owner).single();annualReportGuard(ticket);if(error||!annualReportValidRecord(data,ticket.owner)||!data.is_current)throw Error("INTEGRITY");
+    for(const kind of row.files.map(f=>f.kind))await annualReportDownloadBytes(row,kind,ticket);
+    annualReportGuard(ticket);s.rows=[data,...s.rows.filter(r=>r.revision_id!==v.revision).map(r=>({...r,is_current:false}))];s.validated=null;annualReportRenderList();annualReportStatus("등록 완료 · 실제 파일과 보관 기록을 확인했습니다. 이전 수정본은 보존했습니다.");
+  }catch(error){if(!ticket||s.epoch===ticket.epoch)annualReportStatus(annualReportError(error))}
+  finally{if(!ticket||s.epoch===ticket.epoch)annualReportBusy(false)}
+}
+async function annualReportDownloadBytes(row,kind,ticket){
+  annualReportGuard(ticket);if(!annualReportValidRecord(row,ticket.owner))throw Error("INTEGRITY");const receipt=row.files.find(f=>f.kind===kind);if(!receipt)throw Error("INTEGRITY");
+  const {data,error}=await cloudClient.storage.from("hani-annual-reports").download(receipt.path);annualReportGuard(ticket);if(error||!data||data.size!==receipt.size)throw Error("INTEGRITY");const bytes=new Uint8Array(await data.arrayBuffer());if(await annualReportHash(bytes)!==receipt.sha256)throw Error("INTEGRITY");annualReportGuard(ticket);return bytes;
+}
+async function annualReportRevision(row,action){
+  const s=annualReportState;if(s.busy)return;
+  if(action==="activate"&&!confirm("이 수정본을 대표 보고서로 복구할까요? 현재 보고서와 모든 이전 파일은 보존됩니다."))return;
+  let ticket;annualReportBusy(true);
+  try{ticket=await annualReportOwner();if(!annualReportValidRecord(row,ticket.owner))throw Error("INTEGRITY");
+    if(action==="activate"){const {record}=await annualReportInvoke({action:"activate",revision_id:row.revision_id},ticket);if(!annualReportValidRecord(record,ticket.owner)||record.revision_id!==row.revision_id||!record.is_current)throw Error("INTEGRITY");const {data,error}=await cloudClient.from("hani_annual_report_revisions").select("*").eq("owner_id",ticket.owner).eq("revision_id",row.revision_id).single();annualReportGuard(ticket);if(error||!annualReportValidRecord(data,ticket.owner)||!data.is_current)throw Error("INTEGRITY");s.rows=s.rows.map(r=>({...r,is_current:r.revision_id===row.revision_id}));annualReportRenderList();annualReportStatus("복구 완료 · 이전 보고서와 원본 파일은 모두 보존됩니다.");}
+    else{const kind=action==="view"?"pdf":action,bytes=await annualReportDownloadBytes(row,kind,ticket);if(action==="view"){await annualReportOpenPdf(bytes,ticket);annualReportStatus(`${row.title} · 확인된 PDF 원본을 표시합니다.`)}else{const url=URL.createObjectURL(new Blob([bytes],{type:kind==="pdf"?"application/pdf":"application/vnd.openxmlformats-officedocument.presentationml.presentation"}));const link=document.createElement("a");link.href=url;link.download=`HANI_${row.year}_${row.revision_id.slice(0,8)}.${kind}`;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);annualReportStatus("파일 무결성 확인 후 다운로드했습니다.")}}
+  }catch(error){if(!ticket||s.epoch===ticket.epoch)annualReportStatus(annualReportError(error))}
+  finally{if(!ticket||s.epoch===ticket.epoch)annualReportBusy(false)}
+}
+async function annualReportOpenPdf(bytes,ticket){
+  annualReportClosePdf();annualReportGuard(ticket);const s=annualReportState,epoch=s.viewEpoch;
+  if(!globalThis.pdfjsLib)throw Error("REPORT_FAILED");pdfjsLib.GlobalWorkerOptions.workerSrc="./js/hani-pdf-worker.js";
+  const task=pdfjsLib.getDocument({data:bytes,isEvalSupported:false,useWasm:false,useWorkerFetch:false,disableAutoFetch:true,disableStream:true,isOffscreenCanvasSupported:false,isImageDecoderSupported:false,maxImageSize:16000000,stopAtErrors:true});s.pdfTask=task;
+  const pdf=await task.promise;annualReportGuard(ticket);if(epoch!==s.viewEpoch){await task.destroy();throw Error("OWNER_CHANGED")}if(pdf.numPages<1||pdf.numPages>60){await task.destroy();throw Error("PDF_PAGE_LIMIT")}s.pdf=pdf;$("annualReportViewer").hidden=false;await annualReportPaint(ticket);
+}
+async function annualReportPaint(ticket){
+  const s=annualReportState;if(!s.pdf)return;const epoch=s.viewEpoch,pdf=s.pdf,pageNumber=s.page,paintEpoch=s.paintEpoch=(s.paintEpoch||0)+1,previous=s.renderTask;previous?.cancel();s.renderTask=null;
+  if(previous)await previous.promise.catch(()=>{});
+  const page=await pdf.getPage(pageNumber);annualReportGuard(ticket);if(epoch!==s.viewEpoch||paintEpoch!==s.paintEpoch||pdf!==s.pdf||pageNumber!==s.page)return;
+  const canvas=$("annualReportCanvas"),wrap=canvas.parentElement,base=page.getViewport({scale:1}),width=Math.max(240,wrap.clientWidth-24),desired=width/base.width*s.zoom,dpr=Math.min(devicePixelRatio||1,2),scale=Math.min(desired*dpr,Math.sqrt(6000000/(base.width*base.height))),viewport=page.getViewport({scale});
+  canvas.width=Math.ceil(viewport.width);canvas.height=Math.ceil(viewport.height);canvas.style.width=`${viewport.width/dpr}px`;canvas.style.height=`${viewport.height/dpr}px`;
+  $("annualReportPage").textContent=`${s.page} / ${pdf.numPages} · ${Math.round(s.zoom*100)}%`;$("annualReportPrev").disabled=s.page<=1;$("annualReportNext").disabled=s.page>=pdf.numPages;
+  const render=page.render({canvasContext:canvas.getContext("2d"),viewport,annotationMode:pdfjsLib.AnnotationMode.DISABLE});s.renderTask=render;
+  try{await render.promise;annualReportGuard(ticket)}catch(error){if(error?.name!=="RenderingCancelledException")throw error}finally{if(s.renderTask===render)s.renderTask=null}
+}
+function annualReportMove(delta){const s=annualReportState;if(!s.pdf)return;s.page=Math.max(1,Math.min(s.pdf.numPages,s.page+delta));annualReportPaint({owner:s.owner,epoch:s.epoch}).catch(()=>annualReportStatus("페이지를 표시하지 못했습니다. 원본 PDF는 다운로드할 수 있습니다."))}
+function annualReportZoom(delta){const s=annualReportState;if(!s.pdf)return;s.zoom=Math.max(.5,Math.min(2,s.zoom+delta));annualReportPaint({owner:s.owner,epoch:s.epoch}).catch(()=>annualReportStatus("확대 표시를 완료하지 못했습니다."))}
+// Native PresentationML, ZIP store: offline editable export without external data upload.
+const earningsPptStageTemplate="H4sIAAAAAAAACu2dS48jR3LHv0qDZ4WYj8hXQzOLfGoFz0qCNDawcO+BzWb3cN0PgqSk0QoC9rBHH70G7JN9MGyfvIaN9R588sdZab+DUWS/p0c9tIvqLFbMYZrsZhUz6hG/iKz4Z3wzWJxOjyaLwf5ffjN4fXY62B988JPXZ6d7X07mi+nF+bODAX+fHQz2Jufji6Pp+cmzg8EXy2OwB4OfPP9gtr84Pdp7fXZ6vtifPTsYvFouZ/vD4WL8anI2Wrx/MZucvz47Pb6Yn42Wi/cv5ifD2XyymJwvR8vpxfnZ6VAwpodno+n5waDZ2/jz06Pm5+HJ+v9P588/GO0vLk6nR2V6enr5TaN3+qaj+eir6fnJ/S8Z7S/mJ4fxdL735ej02cFAWJ5QHAz2hs8/GN76rucfDK9GMLwa0GL2cj6ZNK/Ov/xwPvt81vx1tj/++MtP53vTo+ZYHQz2zkdnk2cHg/UuV3+9/Oz6/fmX61fDe3s5uXo52n99PD/7/9t6+SUnN1+xmK0H8MDA7e2BN2OYvF6+WCzbOeKT18u9L+bTZweDb0oRQeWCUEoRgCwghIwOipA2C1OikPrb1VZc74/nk9WF8tHRepDfROV4SMgBnYmALCoIOiZwmYWSeBI6yG8PBlej5vrNcZ9Nx/OLxcXx8v3xxdnw4vh4Op5cjXwoGMfbR2819KufLxbL1QFdHbXLw3d1xhazFxfjv1rsnV98OJ9dXgdtncDrr7l37dyc1TavmmZPF8fHe6+fHQwUR6mam//rZwcDaTljbD2q9SkdN5/hTFohVp8aNx/TzOmrjw3Xg2o+P5svlh9OLs72mhfPDgbzyXjZxjFq9j36srlS19939T3N788v2nEaa4tPz/e+enYwYG2N+nJ062Gfnq9O6uLylC5fh4ujr5tPHV4cff3pvK1v9F8sL46nV8dqve+VbYvl58uvTydtHatZOwO+vLCPJseffTrfW/yqcde4urgO1/fYHTq86dvL6t9Dvn20fzpaTs/3ll/PJsejceP2fjY6PfnifO/Di+Wr6fj6Mh89+pHx4pGPDK8sWF+ga5vW/3XbqvnalOXzb755+dHLF/nbb5vfrv3lpbGrq/rqah5eEegHOCQ6wSHMJRttCzgjGaCJCpzOFhKL2geeMQviUIscUgKvOcSZ1vZBEAlr1oRagcgpoQhEBKItgUgKobrnsh8DUTetugWiP8s///iTl62gSHYCRaYkK5xC0MloQCYCWOcCoPLMcBatzZ5QtB0UCckUU2+iSAmrpVFXJOKMOa0IRYSiLaFofUV2zGk/iqJOWnULRT/NPr346ONWWISdYJG3OTnGA3CVEyAaB54ZDdoVq7UJvmAiFrXHIsPXGc5qek4rox9Ii9AqY26m57jgTlBaRCzaEou4NVcJBOuO136MRd206haLwifp5+/Modl0fOnNpuM3n3CJBx9xXX501Gx85Wvjq9H5ycQvZpPxsn2nez24O173+reHp9PZ1VFvXu/N9ydnh5PGhM8ss+iM1c7xMTo7uh7Y/J0GtqZSuhh/cTY5X65HN5+crli4eDWdLdoydLS/WM4ny/Gr1o7bzVHZLpi00KuJhFWWxIyxDB/IkpSxN/N1wimntK2ATNeOfnh9L/xAaKY7EZrxwBI65sGvQjNnPYRYCjhvlHSSSckyhWbbmSZQSouHQrP7M9aoDIVmFJptLTQT1w8ZOxTEPBqaddKq26GZ//yjz9uYIzCdAJHRQvLEHCShNaBVGYLkHjTLwXpui1I0X70lEGnOH5yvvg8iISzV8BCItgUi10WP/RiHOmnULQyVTz55mT97Rw4Nb9fCXvnV2W1IhOC0iDZA4FgAkzPgi1ZQlESMwfoo8woSM463IbE+QLwpNbRMmps7dcbxHUkwu/hqMp9dTFepOWd3PfEaBrM7MFgVHQ9XtczPB+8N5pPTphx68MFnt3L6vZdfzybtzA4Mp2ejk8nBYO/laH4yaRzpcDZbDs8mR9PR+m/vH65G/NHbJiuGzwe/+Pa9ftZrF1VY8b2v1+bdiPY0JuODLBC04oDCWfAFGegSjS0SmXIU7VHBNgV7OxvsbVTarCUqW0Ng1GrBdjVW9bdgO2htULgAOUoJyCUHa7UAW1hiyshkNU1/U8E2gYhAVJfL3nkQ9bFguwiZDXhkDDAWB74UDUl7dD4npYQlFG2rYFvKdWHCXRRJKeWtIrnbmRORiEjU9oNYtUE1WTU++9EHsZ206haJfsZe+JBf9KdcO1huJHoPhUsFiIWD82ggBiOTNAGjRCLRlkhkpNTmURJprQ0ph4hEW8uJzLvLPavx2Y/nRF206g6J/sK/+PNWciLVCRIxl5zkToOJmBoRKwdvYoHsGC9eZq4cCYfaIxEyow2jpIhQVA+Kupk+7H5SxFtLirohlECds0lRgFDSAAaMENBmUOiVYlpxmRmhaFsooqyIUPTkKOpm/rD7WRFvLSvqRvGcCE6Uwg04lgSgixw8CgHW+4Imsih9JBS1hqJm+QRHj4oIRRWhqJv5w+5nRaK1rKgbC28bZIYJl8Fjalbfdh48Og1KFB+Nt0FzRyjaFoooKyIUPTmKpNpgadBqnPajq8x10qo7KGotK3KdQJF3NmWrFMRoLKDgCpzgCZxFg80qJ1IrQtF2qhak4WgeEJBTUkQkoqSo70mRbC0p4qwTKMpC+6CMA25FBuQ5gLdCQ9DZiYxcWkNtILaEIuQcH1IVUVJEKKKkqO9JkWwtKeK8EyjS3oiSsUBQKgCaEiEUgU2DIpV1DM5pKlvYVtkCpUXEoqdnUTcTiN1Pi7C9tKgbiy1I6XTKxoIRIQMGrsBrjpB5Ud5yE7WiGbptsYjyImLR07OomxnE7udF2F5e1I3VFqQPInBngKmGRdJ48F5KkMllzxPazAyxaEuFC5QXEYuenkXdzCB2Py9S7eVF3VhvweSkGRMRlGQa0OcMXjsFNqkQuApoDeVF22IR5UXEoqdnUTcziN3Pi1R7eVE3VlwI3hmjBIJB7wBNMhC84hCDCiwwHmIKxKLtlC5QPzBiUQUs2qhzVjVeu9V+YNVYtY1+YLwbCy4Ik3TKSUEWwgFi0uB4CaBSsFropFIgleuWSEQNwYhEFZBok95Z1bjsNhuCVWNUrQ3BtDIcFVc3PvhH7wfW345btsgcH7o4e9VxqxvqOFG0sdFaiMg5oFQCvHIa0K0ar+pQFNWBthhNUcMtCqbqCqY26ghihHLIKwg8Wu1zUo1V/W24ZZQzUogATGoBGJyHYIMBlhm6mJnlkVb03VJWTw23CEQEIgJROw23ZtPxpUObjh9Rx12nc5cfHTUbX7nb+Gp0fjLxi9lkvGzf714P7o7jvf7t4el0dnXgm9d78/3J2eFk1WAbrRBje6TVSIzQHo6vBzZ/p4E92u+7LUNH+4vlfLIcv2rtuN0clR+v78lqJvlNNgmt70w4X799ajZdu/rh9a3Q+cY/sSRUMSdgTgbAJCK4lBGYxqKk1zwrTsHZlh7+c47ugXVF790AyB2v4vqn2GwXYzO+LozsWBTz6LP/Tlp1Kzb79LP8ef743R+77ELrH1MC8yqDzpgBV8tdO+1BCM4i80xKpEK0NsWijKmbfgtcyocq0bTR4lZRtNGijmCMYLSLMGoK8Lvnth8tiu6kVbdg9NPs04uPPm5l0robpWjO5xAMKjAmcEBUCM7mCNJ5mUyJxcRMLNoSiyRr9DmPsuhOXwaCEcGo7czIiHfXVVbjth/NjDpp1e2q6E/Sz3vU+adoVaxgIK1KgBEFWPQJYvQlo0nItScQkTqHOLS7HNpEx1KNx25VnVONVdtQ53Sj748uAZnNCaLhrFlWlIErSQMizz4Fna0RBCIS5xCIdhZEm+hYqvHYbYpzqjGqVnEOZ0xwK5iRT6fOGXzw2a2am72XX88m7VTvDKdno5PJwWDv5Wh+Mmkc6XA2Ww7PJkfT0fpv4v3D1ZA/els10fD5oL/iIVlMESQe6kS0x2SRTGQFGDMC5oxgM/fQtHgMzmqZOFK0R+IhCvZ2NdjbqLpZchXRVhAYtVqzXY1V/RUPoUfHY2FQjM6ATDjw3iSQWHSO2gomaEkQEg8RiAhEdbnsnQcRiYfuiYc0O+RaHDsnjxTyw5sZEBIPtcImy7mSN/WqpB56+uiMBW+zdBGEMgUwMAlWOAdMCMZi0RgyqYe2dQeQfIiis6ePzjYS2lQTx7QqH6rGqp7Lh6QPBpkHYSwCYlOgkCID5SN3KIwLhuRD29Jyk3qIWPTkLNpIZ1ON125VPVSNVb1WD2UnHQ88QVBaAhYfwLHgQQSDzgTtrLKEou2giMRDxKIKWLSRzKYar92qeKgaq3orHsqMS5eigYKYAJXLYEuQwFMSzjuHXmjiEImHiEO7y6FNZDbVeOxWxUPVWNVj8ZBIWirum4RIAWbLwFvmIUiWZIhWK0/lpCQeIhDtLog20dlU47HbFA9VY1S14iHjnBNa3NyofdIOyTvaoQeKifqsHRKcF6lJO9SJYA9L0r5YCa4UA8iYAquDA9QFXYyOBVMo2CPtEMV6uxrrbVTcXDCVwiqIi1ot2a7Gqv5qh6Q1IZaYgPNmnZLiODgVOXCO0fKgEzpDHCLtEIGIQFSVy955EJF26J52SPHRMedo8QgRxxxJO7TNYlWSDlUQnDkmWSgaUs4aMEgGIXADQggfZUiieFrXdFulCaQcotjsyWOzjTQ21UQxrSqHqrGq38qhYoKO0QqQunBA7z14ERwow7lONtvoGbGoNRZR4yGCUW0w2khkU43bblU6VI1VvZYOaRNd5DyAdjwBcqMglNzsh8lGwhqdoEnrbbGItEMEowpgtJHKphq33ap2qBqreqsdUlZbYZUB55taPmE82OgcOMtNUJILxanfA2mHiEM7zKFNVDbVeOxWtUPVWNVf7ZBPFkXiDizzqXlSFKERroJRLhqPSXhDGRFphwhEuwuiTWQ21XjsNrVD1RhVq3ZIK200k7qffYfwjnbogWKiPmuHSikmJ9IOdSLYE0bGglaA0lYCavTgrZOAPqRsMATDqd8DaYco1tvZWG+j4mbrlZCqgrio1ZLtaqzqr3aIO2U0OgsJgwXM2oBLmQNDh0w7FiynlbNIO0QgIhDV5bJ3HkSkHbrfd+hoIjQboxwZhxNzTNqhdtlEfYeqi86c8bKU4oE7lQBFkWBZMRCtyRhN8WhplmBbdwCphyg6e/robCOdTTVxTKvqoWqs6rd6KEWPqlnMVOtmkW2JAoLjEZILUmavhdZUKLctKTeJh4hFT86ijWQ21XjtVsVD1VjVa/GQZZJ5qxwEkQwgJg7BawuiKB6y4egZ5UVbQhFph4hFFbBoI5VNNV67Ve1QNVb1VjuUk/OSswQeZQD0aBvtEAfOuLeh2BwYlWyTdog4tMMc2kRlU43HblU7VI1VPdYOiaSj5wgpCdus7GPBpuQhZum5lYUbJQlEpB0iEO0siDaR2VTjsdvUDlVjVK3aIYHCMWaZ6aV2SN3tO/RmMVHPtUOctEMd0Q45ZxSaaKFkiYDOiGaxkgLChILJWYaSlhQm7RDFejsb621U3OyFMvhgT7nKgr1uWtVf7ZDBIKJzHJLMBTCslhM2zdIlyrki0WRJ2iHSDhGICER1ueydBxFph+5ph8ZicsTciLuROcQjLkg7tM1iVZIOPX1wJl10jmkLymIELFlD05MYhGdSZlm4pqaQWytNIOUQxWZPHpttpLGpJoppVTlUjVX9Vg6FZlvnGKSQMzQri4BXLoAXyfmQU04KiUWtsYj6DhGMaoPRRiKbatx2q9KhaqzqtXTISIM6SgW+2ASokgabdIBiDApttLeFVKzbYhFphwhGFcBoI5VNNW67Ve1QNVb1VjuUVEq2mCYfigIwCAU2eAYuhBwwW22o3QNph4hDu8yhTVQ21XjsVrVD1VjVX+2Qs9F7qQI4bQ2g1xEsVxysLjbwoDRGWkyBtEMEot0F0SYym2o8dpvaoWqMqlY7ZFEow6XrpXZI39EOPVBM1GvtkCqseNIOdSLYE9pxySIDx3wBtArBJ5Uhc4MuKeNdURTskXaIYr1djfU2Km7WEpUtFcRFrZZsV2NVf7VDiglvhJbADWcNhwo44wJwFhkvtsTE6TEsaYcIRASiulz2zoOItEP3+w7hoZscHo6YcmPkhzerp5B2qBU2Ud+h6qKzhIGz0HSFzJYBas8gCCMhaVuC8lEnTSuMbOsOIPUQRWdPH51tpLOpJo5pVT1UjVX9Vg/lwngxTes7niJgZB48zwIKR1aU0to5gtG2pNwkHiIWPTmLNpLZVOO1WxUPVWNVr8VDicfAfM4gk7WAhSvwWnsIrJgcmJdJB0LRdlBE2iFiUQUs2khlU43XblU7VI1V/dUO2SB9lo1qNftmcZ8CtmnKGhjnvlkbuBhaeZG0Q8ShHebQJiqbajx2q9qhaqzqr3bIhCJFtgoslw6wJAc2WgEeMYVkSlFoCUSkHSIQ7SyINpHZVOOx29QOVWNUrdoh47ThXAnZS+2Qudt36M1iItIO9V471I1ZB8dsjiwKMFIWwOws+CwNNNFGZJmZUijYI+0QxXo7G+t1s7h550u2e6YdkjIli8mAlYiAWSTwQSeIKSueWbOaMGlYSTtEICIQ1eWydx5Em2qHfgBFshMo0tplJ0oCx5QFTNqDNdIDJuWFYMxbQQ9it1WbytBY86ZO4j6KtNZGEYoIRVt6EGu7OFf86IPYTlr1fy0IOpmPZq+m4zIfnV1PMN785s15RvaWicbb2zw433h/p1fO6GEH59RlZWNLN8HbHxFKgWsxWVuMuDLs8si2c/dd7iyNlqNLfG+8s+Xo8HSy3tvy8PTyx/oUrV5+OJ8erb9qehQvTlcOlqOw5uZB6+0/IQrHb7R6b/3T8M7Ol/O9V80nNFpxeXctx6v/73vZ4R1fuPZkD9ysKLpcSf7d73/z/W//+6Fb9fYRWY4/ne+djeYvmuySIzbn42w0/+zu25dXlVfrt+Hm7SOHJYtkCnvosAzX3335ou8n6/vf/833//ybve9+969/+tt/2vuf/9r77t/+8Ke/++33//BbOoHdOIH/+Ls//vt/fvf7X+/98Q+/++6vf/2nv/+XP/5Hd+6+5sd8y060mxHPp4w9HPD8iOfxB57nbu0m7OrZ4nS2OnS2RIfOFvnIt55HTj6yS2eLfGSXzhb5yJ04j4J8ZJfOFvnILp0t8pE7cR4l+cgunS3ykV06Wx30kcPL50nDO0+pbr+/lAPcfdDY+cXZirQs54igUhCAOSBYFQqIpEQRiUUZaXE2WomACmB2uACmk5p9Wolgt5ZmCzmyYpKGlD0C+pTBaY0gksGcuAxBSwIRrURAINpZEHVStE8rEfyoXUw1Y1oL9nQrEfRW6i8sTygeTKn7JPXvRptQXTIWLSOIzAQgl43CJRbwMngrtZWBesKT1J+Cqd0NpjbSIpbVvwoCj1YVltVY1V+pf4laYZIFjLYOEJ0Ca7gHFQP3QiIyRQuuk9SfQEQgqstl7zyIqE3ovTahIzsWEyUNO9YCnRpTm9B22URtQquLzkJMyA16kEkmwBA0WCMcWGe8QmE5o9UvtnYHUJtQis6ePjrbqKFmNXFMq21Cq7Gq321CAyvRZp7BOCcBZeTgZPagUzSxiMi9oKmCbS3FRG1CiUVPzqKNGmpW47VbbRNajVW9bhOaJTciSA0m2qY9W7Lgg8kQZFDRcRET44QiahNKLNpZFm3UULMar91qm9BqrOptm9Dofdbee3DKM8CACNboBDwnL1CZXCItlE7iHOLQDnNoExlLNR67VXFONVb1t01oKC6WzCyEKBQgS80y6T6CNE5IUYLNpBIlcQ6BaIdBtImOpRqP3aY4pxqjqhXnMGmNsUJhL/uE2jt9Qh+oJlr1Cf3Fe4PVNoP9bwb3dtBsP9gfjBaLyXIxXE5GZ8NXo/MpNK9gPcD3v5oczgbv3d9S3N10Nr84np5OFuvNL9/BL6eTL87fsgP5Ljs4H719B/guO3g1PR+9ZXv1TtuP5l+8ZXv9LtufTc9/OX3LDsy7DeD8bdvbzbb/9tv/BZSdLWDGSAIA";
+let earningsPptStageCache=null;
+async function earningsPptStage(){
+  if(earningsPptStageCache)return earningsPptStageCache;
+  earningsPptStageCache=(async()=>{
+    const compressed=Uint8Array.from(atob(earningsPptStageTemplate),c=>c.charCodeAt(0));
+    const stage=JSON.parse(await new Response(new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'))).text());
+    const media={},converted=new Map();
+    for(const [target,source]of Object.entries(stage.media)){
+      if(!converted.has(source)){
+        const url=new URL(source,document.baseURI);if(url.origin!==location.origin)throw Error('Unexpected image origin');
+        const response=await fetch(url,{credentials:'same-origin'});if(!response.ok)throw Error('Presenter image unavailable');
+        const bitmap=await createImageBitmap(await response.blob()),canvas=document.createElement('canvas');
+        canvas.width=bitmap.width;canvas.height=bitmap.height;const ctx=canvas.getContext('2d');ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(bitmap,0,0);bitmap.close();
+        const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',.9));if(!blob)throw Error('Presenter image conversion failed');
+        converted.set(source,new Uint8Array(await blob.arrayBuffer()));canvas.width=canvas.height=0;
+      }
+      const jpeg=target.replace(/\.bin$/,'.jpg');media[jpeg]=converted.get(source);
+      for(const slide of stage.slides)slide.rels=slide.rels.map(rel=>rel.replace(`/${target}`,`/${jpeg}`));
+    }
+    return {...stage,media};
+  })();
+  try{return await earningsPptStageCache}catch(error){earningsPptStageCache=null;throw error}
+}
+async function earningsPptx(r,draft){
+  const x=s=>String(s).replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g,"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"),xml=s=>`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>${s}`,a="http://schemas.openxmlformats.org/drawingml/2006/main",p="http://schemas.openxmlformats.org/presentationml/2006/main",rel="http://schemas.openxmlformats.org/officeDocument/2006/relationships",emu=v=>Math.round(v*9525),transform=(left,top,width,height)=>`<a:xfrm><a:off x="${emu(left)}" y="${emu(top)}"/><a:ext cx="${emu(width)}" cy="${emu(height)}"/></a:xfrm>`,paragraph=(text,size=24,color="283A4B",bold=false)=>`<a:p><a:pPr/><a:r><a:rPr lang="ko-KR" sz="${size*100}" b="${bold?1:0}"><a:solidFill><a:srgbClr val="${color}"/></a:solidFill><a:latin typeface="Malgun Gothic"/><a:ea typeface="Malgun Gothic"/></a:rPr><a:t>${x(text)}</a:t></a:r><a:endParaRPr lang="ko-KR" sz="${size*100}"/></a:p>`,shape=(id,text,left,top,width,height,size=24,color="283A4B",bold=false)=>`<p:sp><p:nvSpPr><p:cNvPr id="${id}" name="Text ${id}"/><p:cNvSpPr txBox="1"/><p:nvPr/></p:nvSpPr><p:spPr>${transform(left,top,width,height)}<a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/><a:ln><a:noFill/></a:ln></p:spPr><p:txBody><a:bodyPr wrap="square" lIns="0" rIns="0" tIns="0" bIns="0"/><a:lstStyle/>${String(text).split("\n").map(t=>paragraph(t,size,color,bold)).join("")}</p:txBody></p:sp>`,group=`<p:nvGrpSpPr><p:cNvPr id="1" name=""/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr><p:grpSpPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="0" cy="0"/><a:chOff x="0" y="0"/><a:chExt cx="0" cy="0"/></a:xfrm></p:grpSpPr>`,files={},slides=[],narrative=earningsNarrative(r);
+  function wrap(text,limit=60){const lines=[];let line="",weight=0;for(const c of String(text)){const w=c.charCodeAt(0)>255?2:1;if(c==="\n"||weight+w>limit){lines.push(line);line="";weight=0}if(c!=="\n"){line+=c;weight+=w}}if(line)lines.push(line);return lines.join("\n")}
+  function add(title,body,extra=""){const number=slides.length+1;slides.push(xml(`<p:sld xmlns:a="${a}" xmlns:r="${rel}" xmlns:p="${p}"><p:cSld><p:bg><p:bgPr><a:solidFill><a:srgbClr val="F7F8F4"/></a:solidFill><a:effectLst/></p:bgPr></p:bg><p:spTree>${group}${shape(2,title,60,58,1080,100,34,"244E56",true)}${shape(3,body,64,176,1072,394,24)}${extra}${shape(4,`${r.period} · ${r.closed?"완료 기간":"진행 중 Preview"} · 확인 ${r.asOf} · ${number}`,64,610,1072,34,12,"65757C")}</p:spTree></p:cSld><p:clrMapOvr><a:masterClrMapping/></p:clrMapOvr></p:sld>`))}
+  function addPages(title,text){const lines=wrap(text).split("\n"),pages=Math.ceil(lines.length/10),perPage=Math.ceil(lines.length/pages);for(let i=0;i<pages;i++)add(`${title}${pages>1?` · ${i+1}`:""}`,lines.slice(i*perPage,(i+1)*perPage).join("\n"))}
+  if(r.kind==="quarterly"){
+    // The web stage and the downloadable presentation share factual content.
+    // Keep long remarks in continuation pages rather than shrinking or dropping them.
+    const scenes=earningsCallProgramme(r,draft).scenes,stage=await earningsPptStage();
+    const continuations=[];
+    Object.assign(files,stage.media);
+    scenes.forEach((scene,index)=>{
+      const detail=[scene.speech,...(scene.series||[]).map(point=>`${point.label}: ${point.value===null?'미확인':Number(point.value.toFixed(1)).toLocaleString()+scene.unit}`),...(scene.items||[])].join('\n');
+      const limit=scene.key==='opening'?38:54,lines=wrap(detail,limit).split('\n'),count=scene.key==='opening'?3:scene.key==='plan'?2:8;
+      const values={TITLE:`${String(index+1).padStart(2,'0')} · ${scene.name} · ${scene.title}`,KEYNOTE:earningsCallKeynote(scene),HEADLINE:scene.headline,PRESENTER:`${scene.name} · ${scene.role}`,BODY:lines.slice(0,count).join('\n'),BASIS:wrap(scene.basis,125),FOOTER:`HANI GROUP · ${r.period} · ${r.closed?'완료 기간':'진행 중 Preview'} · 확인 ${r.asOf} · ${index+1}`};
+      (scene.metrics||[]).forEach(([label,value],i)=>{values[`M${i}LABEL`]=label;values[`M${i}VALUE`]=value});
+      (scene.plan||[]).forEach((row,i)=>row.forEach((value,j)=>values[`P${i}${j}`]=value));
+      slides.push(stage.slides[index].xml.replace(/\{\{([A-Z0-9]+)\}\}/g,(_,key)=>x(values[key]??'')));
+      if(lines.length>count)continuations.push([`${scene.name} · ${scene.title} · 발표 상세`,lines.slice(count).join('\n')]);
+    });
+    continuations.forEach(([title,text])=>addPages(title,text));
+  }else{
+    add(`${r.period} · 연간 실적발표`,`HANI OS · PERSONAL LIFE RESULTS\n\n성민 대표님의 기록으로 만든 우리의 실적\n\n기록 있는 달 ${r.coverage}/${r.months.length} · 확인된 기록 ${r.records}건\n${r.closed?"마감된 기간의 원본 재집계":"진행 중 누적 보고 · 확정 실적 아님"}\n\n원본은 수정하지 않았습니다. 목표는 미확정 제안입니다.`);
+    narrative.facts.forEach((fact,i)=>add(["투자 · 확인된 자산","생활 · 결산 실적","신체 · 변화와 현재 상태","활동 · 문화 기록","학습 · 실제 문항 기준"][i],wrap(fact)));
+    addPages("숫자 밖의 장면",narrative.milestones.join("\n")||"완료한 독서·시청 기록이 없습니다.");
+    const guidance=draft.guidance.length?draft.guidance:narrative.guidance;guidance.forEach((g,i)=>addPages(`다음 연도 Guidance ${i+1} · 미확정`,g));
+  }
+  if(draft.context)addPages("대표님이 알려주신 현재 상황",draft.context);
+  if(draft.answer)addPages("하니 Q&A · 참고 의견",draft.answer);
+  for(let i=0;i<r.rows.length;i+=6){const rows=[["월","투자 자산","생활 지출","완독","학습"],...r.rows.slice(i,i+6).map(row=>[row.month,row.investmentCalc?won(row.investmentCalc.total):"—",row.ledgerSummary?won(row.ledgerSummary.jispiT):"—",row.books.length||"—",row.quizTotal?`${row.quizCorrect}/${row.quizTotal}`:"—"])],widths=[150,280,280,120,220];const table=`<p:graphicFrame><p:nvGraphicFramePr><p:cNvPr id="5" name="Monthly evidence"/><p:cNvGraphicFramePr/><p:nvPr/></p:nvGraphicFramePr><p:xfrm><a:off x="${emu(64)}" y="${emu(184)}"/><a:ext cx="${emu(1050)}" cy="${emu(rows.length*48)}"/></p:xfrm><a:graphic><a:graphicData uri="${a}/table"><a:tbl><a:tblPr/><a:tblGrid>${widths.map(w=>`<a:gridCol w="${emu(w)}"/>`).join("")}</a:tblGrid>${rows.map((row,j)=>`<a:tr h="${emu(48)}">${row.map(cell=>`<a:tc><a:txBody><a:bodyPr/><a:lstStyle/>${paragraph(cell,17,"283A4B",j===0)}</a:txBody><a:tcPr marL="80000" marR="40000" marT="80000" marB="40000"><a:solidFill><a:srgbClr val="${j===0?"DAE9E7":"FFFFFF"}"/></a:solidFill></a:tcPr></a:tc>`).join("")}</a:tr>`).join("")}</a:tbl></a:graphicData></a:graphic></p:graphicFrame>`;add(`월별 근거 ${i/6+1} · 빈 달은 미확인`,"",table)}
+  add("읽는 기준 · 한계",wrap("투자 자산은 기간 말 확정 스냅샷이며 수익률이 아닙니다. 생활 지출은 각 월의 결산기간 기준입니다. 걸음은 양수 기록일 기준, 학습은 총 문항 수 기준입니다. 원본 수정 시 이 보고와 이전 월간 아카이브의 수치는 다를 수 있습니다. 과거 목표를 추정하지 않았으며 목표 달성/실패를 판정하지 않습니다."));
+  const relationships=items=>xml(`<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${items.map(([id,type,target])=>`<Relationship Id="${id}" Type="${rel}/${type}" Target="${target}"/>`).join("")}</Relationships>`);
+  files["_rels/.rels"]=relationships([["rId1","officeDocument","ppt/presentation.xml"]]);files["ppt/presentation.xml"]=xml(`<p:presentation xmlns:a="${a}" xmlns:r="${rel}" xmlns:p="${p}"><p:sldMasterIdLst><p:sldMasterId id="2147483648" r:id="rIdM"/></p:sldMasterIdLst><p:sldIdLst>${slides.map((_,i)=>`<p:sldId id="${256+i}" r:id="rId${i+1}"/>`).join("")}</p:sldIdLst><p:sldSz cx="11430000" cy="6429375" type="screen16x9"/><p:notesSz cx="6858000" cy="9144000"/></p:presentation>`);files["ppt/_rels/presentation.xml.rels"]=relationships([["rIdM","slideMaster","slideMasters/slideMaster1.xml"],...slides.map((_,i)=>[`rId${i+1}`,"slide",`slides/slide${i+1}.xml`])]);
+  const colors=`<p:clrMap accent1="accent1" accent2="accent2" accent3="accent3" accent4="accent4" accent5="accent5" accent6="accent6" bg1="lt1" bg2="lt2" folHlink="folHlink" hlink="hlink" tx1="dk1" tx2="dk2"/>`;
+  files["ppt/slideMasters/slideMaster1.xml"]=xml(`<p:sldMaster xmlns:a="${a}" xmlns:r="${rel}" xmlns:p="${p}"><p:cSld><p:spTree>${group}</p:spTree></p:cSld>${colors}<p:sldLayoutIdLst><p:sldLayoutId id="2147483649" r:id="rId1"/></p:sldLayoutIdLst><p:txStyles><p:titleStyle/><p:bodyStyle/><p:otherStyle/></p:txStyles></p:sldMaster>`);files["ppt/slideMasters/_rels/slideMaster1.xml.rels"]=relationships([["rId1","slideLayout","../slideLayouts/slideLayout1.xml"],["rId2","theme","../theme/theme1.xml"]]);files["ppt/slideLayouts/slideLayout1.xml"]=xml(`<p:sldLayout xmlns:a="${a}" xmlns:r="${rel}" xmlns:p="${p}" type="blank"><p:cSld name="Blank"><p:spTree>${group}</p:spTree></p:cSld><p:clrMapOvr><a:masterClrMapping/></p:clrMapOvr></p:sldLayout>`);files["ppt/slideLayouts/_rels/slideLayout1.xml.rels"]=relationships([["rId1","slideMaster","../slideMasters/slideMaster1.xml"]]);
+  files["ppt/theme/theme1.xml"]=xml(`<a:theme xmlns:a="${a}" name="HANI"><a:themeElements><a:clrScheme name="HANI">${["dk1","lt1","dk2","lt2","accent1","accent2","accent3","accent4","accent5","accent6","hlink","folHlink"].map((key,i)=>`<a:${key}><a:srgbClr val="${["283A4B","FFFFFF","244E56","F7F8F4","244E56","837298","64898A","C38967","7A956B","607A9D","215A8E","735A91"][i]}"/></a:${key}>`).join("")}</a:clrScheme><a:fontScheme name="HANI">${["majorFont","minorFont"].map(key=>`<a:${key}><a:latin typeface="Malgun Gothic"/><a:ea typeface="Malgun Gothic"/><a:cs typeface=""/></a:${key}>`).join("")}</a:fontScheme><a:fmtScheme name="HANI"><a:fillStyleLst>${Array(3).fill('<a:solidFill><a:schemeClr val="phClr"/></a:solidFill>').join("")}</a:fillStyleLst><a:lnStyleLst>${Array(3).fill('<a:ln w="12700"><a:solidFill><a:schemeClr val="phClr"/></a:solidFill><a:prstDash val="solid"/></a:ln>').join("")}</a:lnStyleLst><a:effectStyleLst>${Array(3).fill('<a:effectStyle><a:effectLst/></a:effectStyle>').join("")}</a:effectStyleLst><a:bgFillStyleLst>${Array(3).fill('<a:solidFill><a:schemeClr val="phClr"/></a:solidFill>').join("")}</a:bgFillStyleLst></a:fmtScheme></a:themeElements></a:theme>`);
+  const stageRels=r.kind==='quarterly'?(await earningsPptStage()).slides:[];
+  slides.forEach((slide,i)=>{files[`ppt/slides/slide${i+1}.xml`]=slide;files[`ppt/slides/_rels/slide${i+1}.xml.rels`]=relationships([["rId1","slideLayout","../slideLayouts/slideLayout1.xml"]]).replace('</Relationships>',`${stageRels[i]?.rels.join('')||''}</Relationships>`)});
+  files["[Content_Types].xml"]=xml(`<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="jpg" ContentType="image/jpeg"/>${Object.keys(files).filter(key=>key.endsWith(".xml")&&!key.startsWith("_rels")).map(key=>`<Override PartName="/${key}" ContentType="application/vnd.openxmlformats-officedocument.${key==="ppt/presentation.xml"?"presentationml.presentation.main":key.includes("/slides/")?"presentationml.slide":key.includes("/slideMasters/")?"presentationml.slideMaster":key.includes("/slideLayouts/")?"presentationml.slideLayout":"theme"}+xml"/>`).join("")}</Types>`);
+  const parts=[],central=[],encoder=new TextEncoder();let offset=0;const bytes=(length,entries)=>{const b=new Uint8Array(length),v=new DataView(b.buffer);entries.forEach(([at,value,size=4])=>size===2?v.setUint16(at,value,true):v.setUint32(at,value,true));return b},crc=b=>{let c=0xffffffff;for(const value of b){c^=value;for(let k=0;k<8;k++)c=(c>>>1)^((c&1)?0xedb88320:0)}return (c^0xffffffff)>>>0};
+  for(const [name,content] of Object.entries(files)){const filename=encoder.encode(name),data=content instanceof Uint8Array?content:encoder.encode(content),checksum=crc(data),header=bytes(30,[[0,0x04034b50],[4,20,2],[6,0x800,2],[12,33,2],[14,checksum],[18,data.length],[22,data.length],[26,filename.length,2]]);parts.push(header,filename,data);central.push(bytes(46,[[0,0x02014b50],[4,20,2],[6,20,2],[8,0x800,2],[14,33,2],[16,checksum],[20,data.length],[24,data.length],[28,filename.length,2],[42,offset]]),filename);offset+=header.length+filename.length+data.length}
+  const size=central.reduce((s,b)=>s+b.length,0);return new Blob([...parts,...central,bytes(22,[[0,0x06054b50],[8,Object.keys(files).length,2],[10,Object.keys(files).length,2],[12,size],[16,offset]])],{type:"application/vnd.openxmlformats-officedocument.presentationml.presentation"});
+}
+async function earningsDownload(r,draft){const owner=cloudUser?.id,snapshot={...draft,guidance:[...(draft.guidance||[])]};try{const blob=await earningsPptx(r,snapshot);if(cloudUser?.id!==owner)throw Error('Owner changed during export');const url=URL.createObjectURL(blob),link=document.createElement("a");link.href=url;link.download=`HANI_${r.period}_${r.closed?"Results":"Preview"}.pptx`;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}catch(error){toast('발표 PPT를 만들지 못했습니다. 입력과 원본은 유지됩니다. 다시 시도해 주세요.')}}
 function monthlyReportBuildCurrent(){
   const input=$("monthlyReportMonth"),kpis=$("monthlyReportKpis"),domains=$("monthlyReportDomains");if(!input||!kpis||!domains)return;
   monthlyReportRenderBoard();
