@@ -3404,7 +3404,28 @@ async function mediaRunB(){
   }catch(error){mediaBStatus("중단 · "+(error?.message||"이중 보관 실패"))}
   finally{mediaBBusy=false;renderMediaPreview()}
 }
-let mediaCBusy=false,mediaCCheck=0;
+let mediaCBusy=false,mediaCEligibility=null;
+function mediaCBlockedReason(){
+  if(!window.HANI_MEDIA)return "이미지 보관 기능을 불러오지 못했어요.";
+  if(!cloudClient||!cloudUser?.id||!cloudAutoSyncReady||cloudRuntime.sync!=="ON")
+    return "Cloud 로그인/동기화가 꺼져 있어요.";
+  if(navigator.onLine===false)return "인터넷 연결을 확인해 주세요.";
+  if(!mediaBCanRun())return "기록 복구·가져오기가 끝난 뒤 다시 눌러 주세요.";
+  // mediaHasRefs is for already-separated images; B leaves both inline and ref.
+  if(![["books","cover"],["movies","poster"]].some(([kind,field])=>
+    Array.isArray(state?.[kind])&&state[kind].some(row=>row?.[field+"Ref"]&&
+      typeof row[field]==="string"&&row[field].startsWith("data:"))))
+    return "분리할 내장 이미지가 없어요. 먼저 B단계 이중 보관을 실행해 주세요.";
+  return "";
+}
+function mediaCEligibilityReason(error){
+  const message=error?.message||"이미지 보관 상태를 확인하지 못했어요.";
+  if(message==="기기에 검증된 참조 이미지가 없습니다.")
+    return "이 기기에 이미지 사본을 저장·확인하지 못했어요(브라우저 저장공간).";
+  if(message==="Cloud 이미지 보관 목록이 누락됐습니다.")
+    return "Cloud 보관함 목록을 확인하지 못했어요.";
+  return message;
+}
 function mediaCStatus(message){const el=$("mediaCResult");if(el)el.textContent=message}
 function mediaCConfirm(rollback=false){
   const dialog=$("mediaCDialog"),check=$("mediaCDevices"),approve=$("mediaCApprove");
@@ -3412,7 +3433,7 @@ function mediaCConfirm(rollback=false){
   $("mediaCTitle").textContent=rollback?"표지·포스터 다시 내장":"표지·포스터 C단계";
   $("mediaCDescription").textContent=rollback?
     "비어 있는 표지·포스터를 검증된 기기 또는 Cloud 이미지로 다시 채웁니다. 참조와 최소 쓰기 버전은 유지합니다.":
-    "기록을 약 2.16MB에서 0.3MB로 줄입니다. 모든 기기와 열린 탭을 v2.9.199 이상으로 새로고침한 뒤 실행하세요. 전체 안전 백업과 이미지 보관을 확인하고, 일치하는 내장 이미지만 비웁니다. 다른 기기는 받기만 하세요.";
+    "기록을 약 2.16MB에서 0.3MB로 줄입니다. 모든 기기와 열린 탭을 v2.9.200 이상으로 새로고침한 뒤 실행하세요. 전체 안전 백업과 이미지 보관을 확인하고, 일치하는 내장 이미지만 비웁니다. 다른 기기는 받기만 하세요.";
   check.checked=false;check.required=!rollback;check.closest("label").hidden=rollback;
   approve.textContent=rollback?"다시 내장 실행":"C단계 실행";approve.disabled=!rollback;
   check.onchange=()=>{approve.disabled=!rollback&&!check.checked};
@@ -3424,13 +3445,43 @@ function mediaCConfirm(rollback=false){
   });
 }
 async function mediaRunC(rollback=false){
-  if(mediaBBusy||mediaCBusy||!mediaBCanRun())return;
+  if(mediaBBusy||mediaCBusy)return;
+  if(rollback&&!mediaBCanRun())return;
+  if(!rollback){const reason=mediaCBlockedReason();if(reason){mediaCStatus(reason);return}}
   mediaCBusy=true;renderMediaPreview();
   const client=cloudClient,owner=cloudUser.id;
   let original=state,before=JSON.stringify(state);
   const guard=()=>mediaBCanRun()&&state===original&&JSON.stringify(state)===before&&
     cloudClient===client&&cloudUser?.id===owner;
   try{
+    if(!rollback){
+      mediaCStatus("기기 이미지 사본과 Cloud 보관함을 확인하는 중…");
+      const eligibility={original,before,client,owner,result:null,error:""};
+      mediaCEligibility=eligibility;
+      try{
+        const snapshot=JSON.parse(before);
+        let verificationError=null;
+        try{eligibility.result=await window.HANI_MEDIA.verifyRefs({
+          state:snapshot,client,userId:owner,guard,localOnly:true})}
+        catch(error){verificationError=error}
+        if(!guard())throw Error("확인 중 계정·기록·Cloud 상태가 변경됐습니다.");
+        let mismatches=0;
+        for(const [kind,field] of [["books","cover"],["movies","poster"]])
+          for(const row of snapshot[kind]||[]){
+            const data=row?.[field],ref=row?.[field+"Ref"];
+            if(ref&&typeof data==="string"&&data.startsWith("data:")&&
+              await window.HANI_MEDIA.digest(data)!==ref)mismatches++;
+          }
+        if(!guard())throw Error("확인 중 계정·기록·Cloud 상태가 변경됐습니다.");
+        if(mismatches)throw Error("이미지 "+mismatches+"장이 기록과 일치하지 않아요.");
+        if(verificationError)throw verificationError;
+        if(!eligibility.result?.count)throw Error("검증할 이미지 참조가 없어요.");
+        mediaCStatus("이미지 보관을 확인했어요. C단계를 실행할 수 있어요.");
+      }catch(error){
+        eligibility.error=mediaCEligibilityReason(error);
+        mediaCStatus(eligibility.error);return;
+      }
+    }
     if(!await mediaCConfirm(rollback))return;
     mediaCStatus("Cloud 확인이 끝나기를 기다리는 중…");
     if(!await mediaBWaitIdle())throw Error("Cloud 확인이 끝나지 않았습니다. 잠시 후 다시 눌러 주세요.");
@@ -3472,21 +3523,27 @@ async function mediaRunC(rollback=false){
     mediaCStatus((rollback?"다시 내장":"C단계")+" · "+result.changes.length+"장 저장 · digest 불일치 "+
       result.conflicts.length+"건 보존");
   }catch(error){mediaCStatus("중단 · "+(error?.message||"이미지 분리·복구 실패"))}
-  finally{mediaCBusy=false;renderMediaPreview()}
+  finally{
+    mediaCBusy=false;
+    const message=$("mediaCResult")?.textContent;
+    renderMediaPreview();
+    if(message)mediaCStatus(message);
+  }
 }
 function renderMediaCControls(){
-  const button=$("mediaRunC"),rollback=$("mediaRollbackC"),token=++mediaCCheck;
+  const button=$("mediaRunC"),rollback=$("mediaRollbackC");
   if(rollback){rollback.disabled=mediaBBusy||mediaCBusy||!mediaBCanRun()||!mediaHasRefs(state);
     rollback.onclick=()=>mediaRunC(true)}
   if(!button)return;
-  button.disabled=true;button.onclick=()=>mediaRunC(false);
-  if(mediaBBusy||mediaCBusy||!mediaBCanRun())return;
-  const original=state,before=JSON.stringify(state),client=cloudClient,owner=cloudUser.id;
-  const guard=()=>token===mediaCCheck&&!mediaBBusy&&!mediaCBusy&&mediaBCanRun()&&
-    state===original&&JSON.stringify(state)===before&&cloudClient===client&&cloudUser?.id===owner;
-  void window.HANI_MEDIA.verifyRefs({state:JSON.parse(before),client,userId:owner,guard,localOnly:true})
-    .then(result=>{if(guard())button.disabled=result.count===0})
-    .catch(()=>{if(token===mediaCCheck)button.disabled=true});
+  const reason=mediaCBlockedReason();
+  button.disabled=mediaBBusy||mediaCBusy;button.onclick=()=>mediaRunC(false);
+  if(mediaBBusy||mediaCBusy)return;
+  const cached=mediaCEligibility;
+  if(cached&&(cached.original!==state||cached.before!==JSON.stringify(state)||
+    cached.client!==cloudClient||cached.owner!==cloudUser?.id))mediaCEligibility=null;
+  if(reason)mediaCStatus(reason);
+  else if(mediaCEligibility?.error)mediaCStatus(mediaCEligibility.error);
+  else if(!mediaCEligibility)mediaCStatus("버튼을 누르면 기기 이미지 사본과 Cloud 보관함을 확인해요.");
 }
 function renderMediaPreview(){
   renderMediaCControls();
@@ -5945,7 +6002,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.199";
+const HANI_DISPLAY_VERSION="2.9.200";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
