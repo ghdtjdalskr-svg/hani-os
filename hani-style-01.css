@@ -2619,3 +2619,11 @@ body[data-canvas-group="team"]{--canvas-a:#7569e8;--canvas-b:#d875a3;--canvas-c:
 .deploy-approval-dialog .deploy-actions{justify-content:flex-end;margin-top:20px}
 .deploy-approval-dialog button:focus-visible{outline:3px solid #6f54c7;outline-offset:3px}
 @media(max-width:560px){.deploy-approval-dialog{padding:20px}.deploy-approval-dialog .deploy-actions{display:flex;flex-wrap:wrap}.deploy-approval-dialog button{min-height:44px;flex:1}}
+.login-gate #loginGateFinish{width:100%;min-height:44px;border:1px solid var(--border-strong,#d8dce5);border-radius:12px;padding:10px;color:var(--text-primary,#28374c);background:var(--surface-raised,#fff);font:inherit}
+.login-gate :is(button,input,select):focus-visible{outline:2px solid var(--structure-accent,#685486);outline-offset:3px}
+.login-gate{color:var(--text-primary,#28374c)}
+.login-gate .login-shell,.login-gate .login-card{background:var(--surface-panel,#fff)}
+.login-gate .login-character-panel{background:var(--surface-raised,#fff)}
+.login-gate .login-card-head h2{color:var(--text-primary,#28374c)}
+.login-cloud-tools{min-width:0;margin-top:16px;max-height:55vh;overflow:auto;overscroll-behavior:contain}
+.login-cloud-tools>.card{margin-bottom:12px}

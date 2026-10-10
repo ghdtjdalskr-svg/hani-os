@@ -10,7 +10,7 @@
     {id:"v2.9.164",date:"2026-10-04",status:"released",title:"HANI Data Hub · Batch A/B/C",summary:"월별 Metric Registry와 비교 엔진, 재생성 가능한 IndexedDB 파생 캐시를 만들고 Dashboard 6대 지표를 실제 데이터 기준으로 연결했습니다.",ref:"f5274ce"},
     {id:"v2.9.163",date:"2026-10-04",status:"released",title:"Canonical Tab Character Voice",summary:"28개 화면과 스포츠 세부 화면의 담당 캐릭터 한마디를 공식 프로필 기준으로 통일했습니다.",ref:"ad3a041"},
     {id:"v2.9.162",date:"2026-10-04",status:"released",title:"Live Portfolio Analytics",summary:"보유 수량과 확인된 현재가로 평가액·비중을 계산하는 읽기 전용 포트폴리오와 계좌·통화 필터, Desktop·Mobile 시각화를 추가했습니다.",ref:"022b296"},
-    {id:"v2.9.161",date:"2026-10-03",status:"released",title:"HANI AURA · Seasonal Collection",summary:"5개 Signature Finish와 계절 컬렉션을 분리하고 Remote·Sidebar·주요 화면의 공통 Surface를 정리했습니다.",ref:"6d46ec9"},
+    {id:"v2.9.161",date:"2026-10-03",status:"released",title:"테마 스튜디오 · Seasonal Collection",summary:"5개 Signature Finish와 계절 컬렉션을 분리하고 Remote·Sidebar·주요 화면의 공통 Surface를 정리했습니다.",ref:"6d46ec9"},
     {id:"v2.9.135",date:"2026-09-27",status:"preview",title:"Context Remote · Seasonal Character Rail",summary:"화면별 주요 작업·유나 빠른 입력·담당 Agent·최근 항목·조건부 알림을 묶은 Context Remote와 공식 9인 프로필 기반 사계절 세로 배너 8장을 추가했습니다.",ref:"c631d7d"},
     {id:"Meeting Preview",date:"2026-09-27",status:"preview",title:"Meeting Deliberation · Cross Review",summary:"실제 안건을 기준으로 Agent 소집, 상호 검토와 결론 흐름을 연결하는 회의 Preview를 준비했습니다.",ref:"f7117cf"},
     {id:"Design System P1",date:"2026-09-21",status:"preview",title:"Global Frame · Sidebar · Top Utility",summary:"전역 프레임 토큰, 사이드바 정보 구조, 상단 Utility와 주요 화면의 시각 계층을 일관된 디자인 시스템으로 정리했습니다.",ref:"df73d3a"},

@@ -1007,6 +1007,9 @@ let cloudChoicePreview=null;
 let cloudRecoveryMode=false;
 let cloudAuthSubscription=null;
 let loginGateUnlocked=false;
+let loginGateSession=false,loginGateBusy=false,loginGateAttempt=0;
+let loginGateInitialized=false;
+const loginGateCloudSlots=[];
 let loginGateCharacterKey="";
 // Auth callback은 showView()가 hash를 정리하기 전에 반드시 보존한다.
 // 토큰 문자열 자체를 별도 저장하지 않고, callback 종류/존재 여부만 메모리에 보존한다.
@@ -1524,11 +1527,12 @@ const pageMeta={
  agentReview:["경영회의실","AI TEAM의 검토 안건과 대표 결정을 한곳에서 관리합니다.","team"],
  monthlyReport:["컨퍼런스 룸","월간 기록을 돌아보고, 담당자들과 분기 성과를 발표하고 연간 보고서를 나누는 공간입니다.","team"],
  policy:["사내 규칙","AI TEAM이 공통으로 참고하는 운영 원칙과 학습 규정을 관리합니다.","team"],
+ aiWork:["AI 팀 업무 현황","AI 서비스 바로가기와 개발·보고 업무를 확인합니다.","development"],
  aiTeam:["AI 팀","역할별 담당 AI와 서비스 바로가기를 확인합니다.","team"],
  characterArchive:["M9 + MIR","HANI GROUP CHARACTER ARCHIVE · 각자의 방식으로 함께하는 멤버들.","team"],
- organization:["HANI GROUP","사람과 전문성으로 연결되는 우리의 조직.","team"],
- aura:["HANI AURA","나의 색과 계절로 일상의 화면을 꾸밉니다.","team"],
- settings:["설정 / 데이터","캘린더, 백업, 복원과 초기화를 관리합니다.","work"],
+ organization:["회사 소개","사람과 전문성으로 연결되는 우리의 조직.","team"],
+ aura:["테마 스튜디오","나의 색과 계절로 일상의 화면을 꾸밉니다.","team"],
+ settings:["설정·데이터","설정, 백업, 복원과 사내 규칙을 관리합니다.","work"],
  shopping:["쇼핑","v2.2 호환 페이지입니다.","life"]
 };
 const aiMap={
@@ -1799,7 +1803,41 @@ function navigationRestore(){
 window.addEventListener('scroll',()=>{clearTimeout(navigationTimer);if(!navigationBooted||!loginGateUnlocked)return;navigationTimer=setTimeout(()=>{if(loginGateUnlocked)navigationPersist(navigationCurrent,window.scrollY)},150)},{passive:true});
 window.addEventListener('pagehide',()=>{if(navigationBooted&&loginGateUnlocked)navigationPersist(navigationCurrent,window.scrollY)});
 window.addEventListener('load',navigationRestore,{once:true});
+function organizationRoute(value){
+  const parts=String(value||"").split("/"),legacy={organization:"overview",aiTeam:"aiTeam",characterArchive:"archive"};
+  if(!Object.hasOwn(legacy,parts[0]))return null;
+  const tabs=["overview","people","archive","aiTeam"];
+  return {tab:parts[0]==="organization"&&tabs.includes(parts[1])?parts[1]:legacy[parts[0]],person:/^[a-z][a-z0-9-]{0,40}$/.test(parts[2]||"")?parts[2]:""};
+}
+function selectOrganizationTab(tab){
+  document.querySelectorAll("[data-organization-tab]").forEach(button=>{
+    const active=button.dataset.organizationTab===tab;button.setAttribute("aria-selected",String(active));button.tabIndex=active?0:-1;
+  });
+  const archive=$("characterArchive"),hub=$("haniOrganizationHub");
+  if(archive)archive.hidden=tab!=="archive";
+  if(hub){hub.hidden=tab==="archive";hub.dataset.hubTab=tab;hub.setAttribute("aria-labelledby","organization-tab-"+tab)}
+  window.HaniOrganizationHub?.selectTab(tab);
+}
+function settingsRoute(value){
+  const parts=String(value||"").split("/");
+  if(parts[0]==="policy")return "policy";
+  if(parts[0]!=="settings")return null;
+  return parts[1]==="policy"?"policy":"data";
+}
+function selectSettingsTab(tab){
+  document.querySelectorAll("[data-settings-tab]").forEach(button=>{
+    const active=button.dataset.settingsTab===tab;
+    button.setAttribute("aria-selected",String(active));button.tabIndex=active?0:-1;
+    const panel=$(button.getAttribute("aria-controls"));if(panel)panel.hidden=!active;
+  });
+  if(tab==="policy")setTimeout(()=>agentPolicyInit(),0);
+}
 function showView(id){
+  const ORGANIZATION_VIEW_ID='organization',SETTINGS_VIEW_ID='settings';
+  const organization=organizationRoute(id);
+  if(organization){id=ORGANIZATION_VIEW_ID;selectOrganizationTab(organization.tab)}
+  const settings=settingsRoute(id);
+  if(settings){id=SETTINGS_VIEW_ID;selectSettingsTab(settings)}
   const boardHash=typeof id==="string"&&id.startsWith("board/")?id:
     id==="board"&&location.hash.startsWith("#board/")?location.hash.slice(1):"";
 const BOARD_VIEW_ID='board';
@@ -1815,7 +1853,8 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
   activeNav?.closest(".group")?.classList.add("is-current");
   const m=pageMeta[id]||[id,"","home"];$("title").textContent=m[0];$("desc").textContent=m[1];document.body.dataset.view=id;document.body.dataset.canvasGroup=m[2]||"home";const km={home:"DASHBOARD",finance:"FINANCE",health:"HEALTH",growth:"GROWTH",life:"LIFE",sports:"SPORTS",game:"SPORTS",work:"WORK",team:"AI TEAM"};if($("pageKicker"))$("pageKicker").textContent=km[m[2]]||String(id).toUpperCase();setBanner(m[2],id);
   updateFinishScope();
-  history.replaceState(null,"",id==="home"?location.href.split("#")[0]:("#"+(boardHash||id)));$("app").classList.remove("mobile-open");window.scrollTo({top:0,left:0,behavior:"auto"});
+  history.replaceState(null,"",id==="home"?location.href.split("#")[0]:("#"+(organization?"organization/"+organization.tab+(organization.person?"/"+organization.person:""):settings?"settings/"+settings:boardHash||id)));$("app").classList.remove("mobile-open");window.scrollTo({top:0,left:0,behavior:"auto"});
+  if(organization?.person&&loginGateUnlocked)window.HaniOrganizationHub?.openPerson(organization.person);
   window.HaniAssetMarket?.sync();
   if(id==="board")window.HaniBoard?.render();
   if(id==="geminiReports")window.HaniGeminiReports?.render();
@@ -1831,12 +1870,13 @@ const QUICK_JUMP_ITEMS=[
   ["board","사내 게시판","HANI GROUP BOARD WORK LIFE MEMORY LOUNGE"],
   ["characterArchive","M9 + MIR Character Archive","HANI GROUP 캐릭터 프로필 Canon 관계 직급 연차 미르"],
   ["aiBudget","AI 주간 예산","Codex Claude Gemini 토큰 사용량 주간 세션 한도 회복 재충전"],
-  ["aura","HANI AURA","화면 꾸미기 색상 계절 테마 appearance finish season"],
+  ["aura","테마 스튜디오","화면 꾸미기 색상 계절 테마 appearance finish season"],
+  ["organization","회사 소개","개요 조직도 구성원 HANI GROUP"],
   ["home","대시보드","홈 오늘 요약"],["investment","홍 스트리트","투자 주식 ETF 월간 기록"],["newsroom","뉴스룸","주식 투자 뉴스 관심종목 3시간 흐름"],["asset","자산","통합 자산 계좌"],["ledger","가계부","소비 결산 리뷰"],
   ["diet","계체량 측정","다이어트 체중 건강"],["exercise","헬스클럽","운동 걸음 근력"],["reading","성민의 서재","독서 서재 책 완독"],["study","공부","일본어 AI 학습"],
   ["university","낭만 캠퍼스 라이프","대학교 대학 캠퍼스 과목 학사일정"],["certificate","자격증","시험 일정"],["wishlist","Wish-list","위시 희망 구매 경험"],["travel","여행","여행 기록 장소 숙소"],["movie","시청 아카이브","관람 감상 아카이브"],
   ["diary","일기","오늘 기록"],["game","스포츠","MLB KBO 해외축구 LCK 양키스 KIA 레알 마드리드 Dplus"],["tasks","할 일","태스크 월간"],["calendar","캘린더","일정"],
-  ["work","업무 보조","업무 후속조치"],["drive","Drive","구글 드라이브"],["deployment","배포 센터","릴리스 GitHub 브랜치 PR 자동배포"],["intake","인포데스크","유나 인턴 데스크 자료 입력 자동 분류 Preview 승인"],["agentReview","경영회의실","HANI BOARDROOM AI 심의 결재 승인 보류 반려 수정"],["monthlyReport","월간 보고","HANI MONTHLY REPORT 투자 소비 건강 활동 문화 읽기 전용"],["policy","사내 규칙","Policy Registry 규정 학습 원칙 Evidence"],["aiTeam","AI 팀","캐릭터 파트너"],["settings","설정 / 데이터","백업 복원 클라우드"]
+  ["work","업무 보조","업무 후속조치"],["drive","Drive","구글 드라이브"],["deployment","배포 센터","릴리스 GitHub 브랜치 PR 자동배포"],["intake","인포데스크","유나 인턴 데스크 자료 입력 자동 분류 Preview 승인"],["agentReview","경영회의실","HANI BOARDROOM AI 심의 결재 승인 보류 반려 수정"],["monthlyReport","컨퍼런스 룸","HANI MONTHLY REPORT 투자 소비 건강 활동 문화 읽기 전용"],["settings/policy","사내 규칙","Policy Registry 규정 학습 원칙 Evidence"],["aiTeam","AI 팀","캐릭터 파트너"],["aiWork","AI 팀 업무 현황","개발 운영 보고"],["settings","설정·데이터","백업 복원 클라우드"]
 ];
 function quickJumpMatches(query=""){
   const q=String(query||"").trim().toLocaleLowerCase("ko-KR");
@@ -1887,6 +1927,21 @@ if(manage){manage.innerHTML='<div class="instrument-manager-note"><b>종목 관�
 [$("investAccounts"),$("investHoldings"),$("investTransactions"),$("investCashFlow")].filter(Boolean).forEach(x=>x.classList.add('rc1-hidden'));
 }
 setupInvestmentRc21Layout();
+const organizationTabs=document.querySelector(".organization-tabs");
+organizationTabs?.addEventListener("click",event=>{const button=event.target.closest("[data-organization-tab]");if(button)showView("organization/"+button.dataset.organizationTab)});
+organizationTabs?.addEventListener("keydown",event=>{
+  const buttons=[...organizationTabs.querySelectorAll("[data-organization-tab]")],index=buttons.indexOf(event.target);if(index<0)return;
+  const next=event.key==="ArrowRight"?(index+1)%buttons.length:event.key==="ArrowLeft"?(index+buttons.length-1)%buttons.length:event.key==="Home"?0:event.key==="End"?buttons.length-1:-1;
+  if(next<0)return;event.preventDefault();showView("organization/"+buttons[next].dataset.organizationTab);buttons[next].focus();
+});
+const settingsTabs=document.querySelector(".settings-tabs");
+settingsTabs?.addEventListener("click",event=>{const button=event.target.closest("[data-settings-tab]");if(button)showView("settings/"+button.dataset.settingsTab)});
+settingsTabs?.addEventListener("keydown",event=>{
+  const buttons=[...settingsTabs.querySelectorAll("[data-settings-tab]")],index=buttons.indexOf(event.target);if(index<0)return;
+  const next=event.key==="ArrowRight"?(index+1)%buttons.length:event.key==="ArrowLeft"?(index+buttons.length-1)%buttons.length:event.key==="Home"?0:event.key==="End"?buttons.length-1:-1;
+  if(next<0)return;event.preventDefault();showView("settings/"+buttons[next].dataset.settingsTab);buttons[next].focus();
+});
+window.addEventListener("hashchange",()=>{const route=location.hash.slice(1);if(organizationRoute(route)||settingsRoute(route))showView(route)});
 document.querySelectorAll("[data-view]").forEach(b=>b.addEventListener("click",()=>showView(b.dataset.view)));
 document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>showView(b.dataset.go)));
 if($("homeYunaQuick"))$("homeYunaQuick").onclick=()=>{showView("intake");setTimeout(()=>$("yunaInput")?.focus(),80)};
@@ -2036,7 +2091,8 @@ function loginGateStatus(message,tone=""){
 }
 function syncLoginThemeButtons(){
   const current=document.documentElement.dataset.season||"spring";
-  document.querySelectorAll("[data-login-theme]").forEach(b=>b.classList.toggle("active",b.dataset.loginTheme===current));
+  document.querySelectorAll("[data-login-theme]").forEach(b=>{const active=b.dataset.loginTheme===current;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active))});
+  if($("loginGateFinish"))$("loginGateFinish").value=document.documentElement.dataset.finish||"porcelain-cream";
 }
 function randomizeLoginCharacter(){
   const available=(team||[]).filter(x=>agentImages?.[x.key]);
@@ -2049,17 +2105,10 @@ function randomizeLoginCharacter(){
   if($("loginCharacterRole"))$("loginCharacterRole").textContent=pick.role;
   if($("loginCharacterQuote"))$("loginCharacterQuote").textContent=`“${LOGIN_GATE_LINES[pick.key]||"오늘도 천천히, 꾸준히 이어가요."}”`;
 }
-function loginGateSessionActive(){
-  try{
-    if(localStorage.getItem(HANI_GATE_SESSION_KEY)==="1")return true;
-    if(sessionStorage.getItem(HANI_GATE_SESSION_KEY)==="1"){localStorage.setItem(HANI_GATE_SESSION_KEY,"1");return true}
-    return false
-  }catch(e){return false}
-}
-function markLoginGateSession(){
-  try{localStorage.setItem(HANI_GATE_SESSION_KEY,"1")}catch(e){console.warn("Gate session marker failed",e)}
-}
+function loginGateSessionActive(){return loginGateSession}
+function markLoginGateSession(){loginGateSession=true}
 function clearLoginGateSession(){
+  loginGateSession=false;loginGateAttempt++;
   try{localStorage.removeItem(HANI_GATE_SESSION_KEY);sessionStorage.removeItem(HANI_GATE_SESSION_KEY)}catch(e){console.warn("Gate session marker clear failed",e)}
 }
 function lockLoginGate(message="이메일과 비밀번호로 로그인해 주세요."){
@@ -2069,9 +2118,10 @@ function lockLoginGate(message="이메일과 비밀번호로 로그인해 주세
   gate?.classList.remove("is-hidden","is-recovery");
   app?.classList.add("login-locked");
   app?.setAttribute("aria-hidden","true");
+  if(app)app.inert=true;
   if($("loginNormalPanel"))$("loginNormalPanel").style.display="";
   if($("loginRecoveryPanel"))$("loginRecoveryPanel").style.display="none";
-  if($("loginGateTitle"))$("loginGateTitle").textContent="HANI OS 로그인";
+  if($("loginGateTitle"))$("loginGateTitle").textContent="HANI OS 입장 화면";
   if($("loginGateSubtitle"))$("loginGateSubtitle").textContent="오늘의 기록을 이어가려면 로그인해 주세요.";
   if(message)loginGateStatus(message);
   setTimeout(()=>$("loginGatePassword")?.focus(),80);
@@ -2084,6 +2134,7 @@ function showLoginRecoveryGate(message="복구 링크를 확인하고 있습니�
   gate?.classList.add("is-recovery");
   app?.classList.add("login-locked");
   app?.setAttribute("aria-hidden","true");
+  if(app)app.inert=true;
   if($("loginNormalPanel"))$("loginNormalPanel").style.display="none";
   if($("loginRecoveryPanel"))$("loginRecoveryPanel").style.display="block";
   if($("loginGateTitle"))$("loginGateTitle").textContent="비밀번호 재설정";
@@ -2091,13 +2142,16 @@ function showLoginRecoveryGate(message="복구 링크를 확인하고 있습니�
   loginGateStatus(message,"warn");
 }
 function unlockLoginGate(){
+  loginGateShowCloudTools(false);
   document.body.classList.remove("login-scroll-locked");
   loginGateUnlocked=true;
   const gate=$("loginGate"),app=$("app");
   app?.classList.remove("login-locked");
   app?.setAttribute("aria-hidden","false");
+  if(app)app.inert=false;
   gate?.classList.add("is-hidden");
   navigationRestore();
+  $("title")?.setAttribute("tabindex","-1");$("title")?.focus({preventScroll:true});
 }
 function loginGateConfig(email=""){
   const cfg=cloudConfig(),nextEmail=String(email||cfg.email||"").trim();
@@ -2106,42 +2160,53 @@ function loginGateConfig(email=""){
   if($("cloudEmail"))$("cloudEmail").value=nextEmail;
   return next;
 }
+async function loginGateEnterApp(reason,attempt=loginGateAttempt){
+  const owner=cloudUser?.id,client=cloudClient;
+  if(!owner||cloudRecoveryMode)throw Error("로그인 상태를 다시 확인해 주세요.");
+  loginGateStatus("Cloud 기록을 확인하고 있습니다. 기기의 기록은 안전하게 보관합니다.","loading");
+  const current=()=>attempt===loginGateAttempt&&cloudUser?.id===owner&&cloudClient===client&&!cloudRecoveryMode;
+  await cloudFetchMeta({silent:true});
+  if(!current())return false;
+  await cloudSyncCycle(reason);
+  if(!current())return false;
+  if(loadRecovery.active||importSyncHold||cloudChoicePreview||!cloudAutoSyncReady||cloudRuntime.sync!=="ON"){
+    loginGateStatus(cloudRuntime.message||"Cloud 확인을 마치지 못했습니다. 연결을 확인하고 다시 시도해 주세요.","warn");
+    loginGateShowCloudTools(true);
+    return false;
+  }
+  markLoginGateSession();cloudBindLifecycle();unlockLoginGate();renderAll();
+  return true;
+}
 async function loginGateSubmit(){
+  if(loginGateBusy)return;
+  if(!loginGateInitialized)return loginGateStatus("로그인 연결을 준비하고 있습니다. 잠시 후 다시 시도해 주세요.","loading");
   const email=$("loginGateEmail")?.value.trim()||"",password=$("loginGatePassword")?.value||"";
-  if(!email)return loginGateStatus("이메일을 입력해 주세요.","error");
-  if(!password)return loginGateStatus("비밀번호를 입력해 주세요.","error");
+  if(!cloudUser&&!email)return loginGateStatus("이메일을 입력해 주세요.","error");
+  if(!cloudUser&&!password)return loginGateStatus("비밀번호를 입력해 주세요.","error");
   const btn=$("loginGateSubmit"),original=btn?.textContent;
+  loginGateBusy=true;const attempt=++loginGateAttempt;
   try{
-    if(btn){btn.disabled=true;btn.textContent="로그인 중…"}
-    const cfg=loginGateConfig(email);
-    if(!cloudClient)cloudCreateClient(cfg);
-    loginGateStatus("HANI Cloud 계정을 확인하고 있습니다.","loading");
-    const {data,error}=await cloudClient.auth.signInWithPassword({email,password});
-    if(error)throw error;
-    cloudUser=data?.user||data?.session?.user||null;
-    if(!cloudUser)throw new Error("로그인 세션을 만들지 못했습니다.");
-    $("loginGatePassword").value="";
-    markLoginGateSession();
-    unlockLoginGate();
-    // v2.9.8: a fresh credential login always starts from Dashboard; refresh/session restore keeps the current hash.
-    showView("home");
-    cloudSetRuntime("로그인 완료","HANI OS 로그인 완료. Local을 먼저 열고 Cloud 동기화를 확인합니다.","ok",{sync:"CHECK"});
-    try{
-      await cloudFetchMeta({silent:true});
-      cloudBindLifecycle();
-      await cloudSyncCycle("login-gate");
-    }catch(syncError){
-      console.warn("Post-login Cloud sync",syncError);
-      cloudAutoSyncReady=false;
-      cloudSetRuntime("로그인 완료 · 동기화 확인 필요","로그인은 유지됩니다. Cloud 동기화는 다음 저장/포커스에서 다시 확인합니다.","warn",{sync:"CHECK"});
+    if(btn){btn.disabled=true;btn.textContent="Cloud 확인 중…"}
+    if(!cloudUser){
+      const cfg=loginGateConfig(email);if(!cloudClient)cloudCreateClient(cfg);
+      const client=cloudClient;
+      loginGateStatus("HANI Cloud 계정을 확인하고 있습니다.","loading");
+      const {data,error}=await client.auth.signInWithPassword({email,password});
+      if(error)throw error;
+      if(attempt!==loginGateAttempt||client!==cloudClient)return;
+      cloudUser=data?.user||data?.session?.user||null;
     }
-    toast("갓생살기 프로젝트에 로그인했습니다.");
+    if(!cloudUser)throw Error("로그인 세션을 만들지 못했습니다.");
+    $("loginGatePassword").value="";
+    cloudSetRuntime("로그인 완료","Cloud 기록을 확인한 뒤 HANI OS를 엽니다.","ok",{sync:"CHECK"});
+    if(await loginGateEnterApp("login-gate",attempt))toast("HANI OS에 로그인했습니다.");
   }catch(e){
     console.error("Login gate",e);
-    if($("loginGatePassword"))$("loginGatePassword").value="";
-    loginGateStatus(e?.message||"로그인에 실패했습니다.","error");
+    if(attempt===loginGateAttempt){loginGateStatus(e?.message||"로그인에 실패했습니다.","error");if(cloudUser)loginGateShowCloudTools(true)}
   }finally{
-    if(btn){btn.disabled=false;btn.textContent=original||"갓생살기 프로젝트 시작하기"}
+    if($("loginGatePassword"))$("loginGatePassword").value="";
+    loginGateBusy=false;
+    if(btn){btn.disabled=false;btn.textContent=cloudUser&&!loginGateUnlocked?"Cloud 확인 다시 시도":original||"HANI OS 시작하기"}
   }
 }
 async function loginGateForgotPassword(){
@@ -2182,7 +2247,7 @@ async function loginGateSaveRecoveryPassword(){
     loginGateConfig(cloudUser?.email||$("loginGateEmail")?.value||"");
     // Password reset always returns to a fresh login gate.
     clearLoginGateSession();
-    try{await cloudClient.auth.signOut()}catch(e){console.warn("Post-recovery signout",e)}
+    try{await cloudClient.auth.signOut({scope:"local"})}catch(e){console.warn("Post-recovery signout",e)}
     cloudUser=null;
     lockLoginGate("비밀번호가 변경됐어요. 새 비밀번호로 로그인해 주세요.");
   }catch(e){
@@ -2193,6 +2258,9 @@ async function loginGateSaveRecoveryPassword(){
   }
 }
 function initLoginGate(){
+  clearLoginGateSession();
+  if($("loginGateSubmit"))$("loginGateSubmit").disabled=true;
+  for(const id of ["cloudBridgeCard","loadRecoveryPanel"]){const node=$(id);if(node)loginGateCloudSlots.push({node,parent:node.parentNode,next:node.nextSibling})}
   const cfg=cloudConfig();
   if($("loginGateEmail"))$("loginGateEmail").value=cfg.email||"";
   randomizeLoginCharacter();
@@ -2201,12 +2269,28 @@ function initLoginGate(){
     applySeasonTheme(btn.dataset.loginTheme,true);
     syncLoginThemeButtons();
   });
+  if($("loginGateFinish"))$("loginGateFinish").onchange=e=>{applySignatureFinish(e.target.value,true);syncLoginThemeButtons()};
   if($("loginGateSubmit"))$("loginGateSubmit").onclick=loginGateSubmit;
   if($("loginGateForgot"))$("loginGateForgot").onclick=loginGateForgotPassword;
   if($("loginGateRecoverySave"))$("loginGateRecoverySave").onclick=loginGateSaveRecoveryPassword;
   if($("loginGatePassword"))$("loginGatePassword").addEventListener("keydown",e=>{if(e.key==="Enter")loginGateSubmit()});
   if($("loginGateNewPasswordConfirm"))$("loginGateNewPasswordConfirm").addEventListener("keydown",e=>{if(e.key==="Enter")loginGateSaveRecoveryPassword()});
   lockLoginGate("HANI Cloud 연결을 준비하고 있습니다.");
+  window.addEventListener("pagehide",()=>{void cloudLogout()});
+  window.addEventListener("pageshow",event=>{if(event.persisted)lockLoginGate("다시 이용하려면 로그인해 주세요.")});
+}
+function loginGateShowCloudTools(show){
+  const host=$("loginGateCloudTools");if(!host)return;
+  host.hidden=!show;
+  for(const {node,parent,next} of loginGateCloudSlots){
+    if(show)host.append(node);
+    else parent.insertBefore(node,next?.parentNode===parent?next:null);
+  }
+}
+function loginGateConnectionReady(){
+  loginGateInitialized=true;
+  if($("loginGateSubmit"))$("loginGateSubmit").disabled=false;
+  if(window.supabase?.createClient&&!loginGateBusy&&!loginGateUnlocked)loginGateStatus("이메일과 비밀번호로 로그인해 주세요.");
 }
 
 
@@ -3794,7 +3878,14 @@ function renderTeamProfile(key=activeTeamProfileKey){
   const goBtn=$(isDevelopment?"developmentTeamProfileGoMain":"teamProfileGoMain");if(goBtn)goBtn.onclick=()=>showView(member.go||"home");
   updateTeamActiveState(member.key);
 }
-function openTeamProfile(key,{showTeam=true}={}){const member=teamByKey(key);activeTeamProfileKey=member.key;if(showTeam)showView("aiTeam");renderTeamProfile(member.key);const card=$(developmentTeam.some(x=>x.key===member.key)?"developmentTeamProfilePanel":"teamProfilePanel");if(card&&showTeam)card.scrollIntoView({behavior:"smooth",block:"start"})}
+function openTeamProfile(key,{showTeam=true}={}){
+  const member=teamByKey(key);
+  if(developmentTeam.some(x=>x.key===member.key)){
+    if(showTeam)showView("aiWork");renderTeamProfile(member.key);return;
+  }
+  const aliases={nauen:"naeun",suyeon:"sooyeon"},person=aliases[member.key]||member.key;
+  if(showTeam)showView("organization/people/"+person);
+}
 function renderSidebarTeamFaces(){
   const el=$("sidebarTeamFaces");if(!el)return;
   const picks=team.map(x=>x.key);
@@ -4130,6 +4221,15 @@ function cloudConfig(){
   };
 }
 function cloudMeta(){return cloudLoadJson(CLOUD_META_KEY,{})}
+function cloudSyncPolicy(){return cloudMeta().syncPolicy==="manual"?"manual":"cloud-first"}
+function cloudChangeSyncPolicy(value){
+  if(!["cloud-first","manual"].includes(value))return;
+  if(cloudSyncBusy||cloudApplyingRemote){renderCloudPanel();return}
+  if(!cloudSaveJson(CLOUD_META_KEY,{...cloudMeta(),syncPolicy:value})){renderCloudPanel();toast("동기화 정책을 저장하지 못했습니다. 기존 설정을 유지합니다.");return}
+  cloudChoicePreview=null;cloudClearComparison();renderCloudPanel();
+  toast(value==="cloud-first"?"Cloud 우선으로 연결합니다. 이 기기의 변경도 안전하게 보관합니다.":"차이가 생기면 직접 원본을 선택합니다.");
+  if(cloudUser&&!loadRecovery.active&&!importSyncHold&&!cloudRecoveryMode)void cloudSyncCycle("manual");
+}
 function cloudSetRuntime(status,message,tone="warn",extra={}){
   cloudClearComparison();
   cloudRuntime={...cloudRuntime,...extra,status,message,tone};
@@ -4209,8 +4309,13 @@ function cloudCreateClient(config){
   if(!window.supabase?.createClient)throw new Error("로그인 연결 도구를 불러오지 못했습니다. 인터넷 연결을 확인하고 새로고침해 주세요. 기기의 기존 기록은 유지됩니다.");
   try{cloudAuthSubscription?.unsubscribe?.()}catch(e){}
   cloudAuthSubscription=null;
+  // Remove only the configured project's old authentication entries.
+  const authKey="sb-"+new URL(config.url).hostname.split(".")[0]+"-auth-token";
+  for(const storage of [window.localStorage,window.sessionStorage]){
+    for(const key of [authKey,authKey+"-code-verifier",authKey+"-user"]){try{storage.removeItem(key)}catch(_){}}
+  }
   cloudClient=window.supabase.createClient(config.url,config.key,{
-    auth:{persistSession:true,storage:window.localStorage,autoRefreshToken:true,detectSessionInUrl:true,flowType:"implicit"}
+    auth:{persistSession:false,autoRefreshToken:true,detectSessionInUrl:true,flowType:"implicit"}
   });
   cloudBindAuthEvents();
   queueMicrotask(()=>sportsCacheLoad().catch(()=>{}));
@@ -4252,12 +4357,12 @@ function cloudNavigateToRecovery(){
     setTimeout(()=>$("cloudBridgeCard")?.scrollIntoView({behavior:"smooth",block:"start"}),80);
   }catch(e){console.warn("Recovery navigation failed",e)}
 }
-function cloudCleanAuthUrl(){
+function cloudCleanAuthUrl({preserveRoute=false}={}){
   try{
     const url=new URL(location.href);
     ["code","type","token_hash","error","error_code","error_description"].forEach(k=>url.searchParams.delete(k));
-    url.hash="";
-    history.replaceState({},document.title,url.pathname+(url.searchParams.toString()?`?${url.searchParams.toString()}`:""));
+    if(!preserveRoute||/(?:^|&)(?:access_token|refresh_token|type|error|error_description)=/.test(url.hash.slice(1)))url.hash="";
+    history.replaceState({},document.title,url.pathname+(url.searchParams.toString()?`?${url.searchParams.toString()}`:"")+url.hash);
   }catch(e){console.warn("Auth URL cleanup failed",e)}
 }
 function cloudEnterRecoveryMode(session=null,message="복구 링크가 확인되었습니다. 새 비밀번호를 입력해 주세요."){
@@ -4274,12 +4379,18 @@ function cloudExitRecoveryMode({clearUrl=true}={}){
 function cloudBindAuthEvents(){
   if(!cloudClient)return;
   try{cloudAuthSubscription?.unsubscribe?.()}catch(e){}
-  const {data}=cloudClient.auth.onAuthStateChange((event,session)=>{
+  const client=cloudClient;
+  const {data}=client.auth.onAuthStateChange((event,session)=>{
+    if(cloudClient!==client)return;
     cloudOwnerVerificationEpoch++;
     cloudOwnerVerification?.invalidate();
     dataHubInvalidate();
     if(event==="SIGNED_OUT"||(annualReportState.owner&&annualReportState.owner!==session?.user?.id))annualReportInvalidate();
     if($("cloudOwnerVerificationResult"))$("cloudOwnerVerificationResult").textContent="세션 변경: 소유권 검증을 다시 실행해 주세요.";
+    if(event==="SIGNED_OUT"){
+      clearLoginGateSession();cloudComparisonEpoch++;cloudStopAutoSync();cloudUser=null;cloudRecoveryMode=false;
+      lockLoginGate("로그아웃했습니다. 다시 이용하려면 로그인해 주세요.");
+    }
     if(event==="PASSWORD_RECOVERY"){
       cloudEnterRecoveryMode(session);
       setTimeout(cloudNavigateToRecovery,0);
@@ -4321,7 +4432,7 @@ async function cloudSaveNewPassword(){
 }
 async function cloudCancelRecovery(){
   clearLoginGateSession();
-  try{if(cloudClient)await cloudClient.auth.signOut()}catch(e){console.warn(e)}
+  try{if(cloudClient)await cloudClient.auth.signOut({scope:"local"})}catch(e){console.warn(e)}
   cloudUser=null;
   cloudRecoveryMode=false;
   cloudCleanAuthUrl();
@@ -4717,18 +4828,22 @@ async function cloudPushLocalRow(remote,localState,localHash,{allowImport=false,
   cloudSetRuntime("동기화 완료",`Local 변경을 Cloud revision ${writtenRevision}으로 반영했습니다.`,"ok",{revision:writtenRevision,updatedAt:written.updated_at,verifiedAt:meta.verifiedAt,device:written.device||"",sync:"ON",localSummary:cloudSummaryText(outgoing),remoteSummary:cloudSummaryText(outgoing)});
   return {...written,state:outgoing};
 }
-function cloudSyncDecision({hasBaseline,localMeaningful,remoteMeaningful,localHash,remoteHash,baselineHash,appliedRevision,remoteRevision}){
+function cloudSyncDecision({hasBaseline,localMeaningful,remoteMeaningful,localHash,remoteHash,baselineHash,appliedRevision,remoteRevision,syncPolicy="cloud-first"}){
   if(remoteMeaningful&&(!Number.isSafeInteger(remoteRevision)||remoteRevision<0))return {action:"stop",reason:"Cloud revision을 확인할 수 없어 자동 반영을 중단했습니다."};
   if(!remoteMeaningful){
     if(!localMeaningful)return {action:"idle-empty",reason:"Local과 Cloud 모두 비어 있습니다."};
     return {action:"stop",reason:"Cloud 실데이터가 비어 있습니다. Local을 자동 업로드하지 않습니다."};
   }
-  if(!localMeaningful)return {action:"pull",reason:"이 기기 Local이 비어 있어 Cloud를 안전 복원합니다."};
+  if(hasBaseline&&remoteRevision<appliedRevision)return {action:"stop",reason:`Cloud revision ${remoteRevision}이 이 기기의 기준 ${appliedRevision}보다 낮습니다. 롤백 가능성이 있어 중단합니다.`};
+  if(!localMeaningful){
+    if(hasBaseline&&remoteRevision===appliedRevision&&remoteHash!==baselineHash)return {action:"stop",reason:"같은 revision인데 Cloud 내용이 기준본과 달라 무결성 검증에 실패했습니다."};
+    return {action:"pull",reason:"이 기기 Local이 비어 있어 Cloud를 안전 복원합니다."};
+  }
   if(!hasBaseline){
     if(localHash===remoteHash)return {action:"establish",reason:"Local과 Cloud가 동일해 안전 기준을 설정합니다."};
+    if(syncPolicy==="cloud-first")return {action:"pull",reason:"Cloud 우선으로 이 기기의 원본을 안전 보관한 뒤 Cloud 기준을 가져옵니다."};
     return {action:"stop",reason:"이 기기의 동기화 기준이 없고 Local과 Cloud 내용이 다릅니다. 자동 덮어쓰지 않습니다."};
   }
-  if(remoteRevision<appliedRevision)return {action:"stop",reason:`Cloud revision ${remoteRevision}이 이 기기의 기준 ${appliedRevision}보다 낮습니다. 롤백 가능성이 있어 중단합니다.`};
   if(localHash===remoteHash)return {action:"establish",reason:"Local과 Cloud가 동일합니다."};
   const localDirty=localHash!==baselineHash,remoteHashChanged=remoteHash!==baselineHash;
   if(remoteRevision===appliedRevision){
@@ -4741,22 +4856,25 @@ function cloudSyncDecision({hasBaseline,localMeaningful,remoteMeaningful,localHa
       if(localDirty)return {action:"push",reason:"Cloud revision만 증가했고 실데이터는 기준본 그대로여서 Local 변경을 안전 반영합니다."};
       return {action:"establish",reason:"Cloud revision만 증가했고 실데이터는 동일합니다."};
     }
-    if(localDirty)return {action:"conflict",reason:"Local과 Cloud가 모두 변경되었습니다."};
+    if(localDirty)return {action:syncPolicy==="cloud-first"?"pull":"conflict",reason:"Local과 Cloud가 모두 변경되었습니다."};
     return {action:"pull",reason:"Cloud만 변경되었습니다."};
   }
   return {action:"stop",reason:"동기화 상태를 안전하게 판정할 수 없습니다."};
 }
 function cloudSyncSelfTest(){
-  const B="b",L="l",R="r";
+  const B="b",L="l",R="r",manualDecision=args=>cloudSyncDecision({...args,syncPolicy:"manual"});
   const cases=[
-    [cloudSyncDecision({hasBaseline:false,localMeaningful:true,remoteMeaningful:true,localHash:B,remoteHash:B,baselineHash:"",appliedRevision:-1,remoteRevision:1}).action,"establish"],
-    [cloudSyncDecision({hasBaseline:false,localMeaningful:true,remoteMeaningful:true,localHash:L,remoteHash:R,baselineHash:"",appliedRevision:-1,remoteRevision:1}).action,"stop"],
-    [cloudSyncDecision({hasBaseline:false,localMeaningful:false,remoteMeaningful:true,localHash:L,remoteHash:R,baselineHash:"",appliedRevision:-1,remoteRevision:1}).action,"pull"],
+    [manualDecision({hasBaseline:false,localMeaningful:true,remoteMeaningful:true,localHash:B,remoteHash:B,baselineHash:"",appliedRevision:-1,remoteRevision:1}).action,"establish"],
+    [manualDecision({hasBaseline:false,localMeaningful:true,remoteMeaningful:true,localHash:L,remoteHash:R,baselineHash:"",appliedRevision:-1,remoteRevision:1}).action,"stop"],
+    [manualDecision({hasBaseline:false,localMeaningful:false,remoteMeaningful:true,localHash:L,remoteHash:R,baselineHash:"",appliedRevision:-1,remoteRevision:1}).action,"pull"],
+    [manualDecision({hasBaseline:true,localMeaningful:true,remoteMeaningful:true,localHash:L,remoteHash:B,baselineHash:B,appliedRevision:5,remoteRevision:5}).action,"push"],
+    [manualDecision({hasBaseline:true,localMeaningful:true,remoteMeaningful:true,localHash:B,remoteHash:R,baselineHash:B,appliedRevision:5,remoteRevision:6}).action,"pull"],
+    [manualDecision({hasBaseline:true,localMeaningful:true,remoteMeaningful:true,localHash:L,remoteHash:R,baselineHash:B,appliedRevision:5,remoteRevision:6}).action,"conflict"],
+    [manualDecision({hasBaseline:true,localMeaningful:true,remoteMeaningful:true,localHash:L,remoteHash:R,baselineHash:B,appliedRevision:6,remoteRevision:6}).action,"stop"],
+    [manualDecision({hasBaseline:true,localMeaningful:true,remoteMeaningful:true,localHash:B,remoteHash:R,baselineHash:B,appliedRevision:7,remoteRevision:6}).action,"stop"],
+    [cloudSyncDecision({hasBaseline:false,localMeaningful:true,remoteMeaningful:true,localHash:L,remoteHash:R,remoteRevision:1}).action,"pull"],
+    [cloudSyncDecision({hasBaseline:true,localMeaningful:true,remoteMeaningful:true,localHash:L,remoteHash:R,baselineHash:B,appliedRevision:5,remoteRevision:6}).action,"pull"],
     [cloudSyncDecision({hasBaseline:true,localMeaningful:true,remoteMeaningful:true,localHash:L,remoteHash:B,baselineHash:B,appliedRevision:5,remoteRevision:5}).action,"push"],
-    [cloudSyncDecision({hasBaseline:true,localMeaningful:true,remoteMeaningful:true,localHash:B,remoteHash:R,baselineHash:B,appliedRevision:5,remoteRevision:6}).action,"pull"],
-    [cloudSyncDecision({hasBaseline:true,localMeaningful:true,remoteMeaningful:true,localHash:L,remoteHash:R,baselineHash:B,appliedRevision:5,remoteRevision:6}).action,"conflict"],
-    [cloudSyncDecision({hasBaseline:true,localMeaningful:true,remoteMeaningful:true,localHash:L,remoteHash:R,baselineHash:B,appliedRevision:6,remoteRevision:6}).action,"stop"],
-    [cloudSyncDecision({hasBaseline:true,localMeaningful:true,remoteMeaningful:true,localHash:B,remoteHash:R,baselineHash:B,appliedRevision:7,remoteRevision:6}).action,"stop"],
     [cloudShouldFetchFullState("poll",{revision:7},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),false],
     [cloudShouldFetchFullState("focus",{revision:8},{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),true],
     [cloudShouldFetchFullState("visible",null,{syncEngine:CLOUD_SYNC_ENGINE,hashSchema:CLOUD_HASH_SCHEMA,lastSyncedHash:B,appliedRevision:7}),true],
@@ -4806,6 +4924,7 @@ function cloudRetryAfterNetwork(reason){
   void cloudSyncCycle("network-"+reason);
 }
 async function cloudSyncCycle(reason="manual"){
+  if(cloudRecoveryMode){cloudStopAutoSync("계정 복구 중에는 Cloud 자동 반영을 보류합니다.","warn");return}
   if(loadRecovery.active||importSyncHold){cloudStopAutoSync(loadRecovery.active?lastLoadError:"복원한 백업은 이 기기에만 보관 중입니다. Cloud 반영은 별도 확인이 필요합니다.","warn");return}
   if(!cloudClient||!cloudUser)return;
   if(cloudChoicePreview&&reason!=="manual")return;
@@ -4813,20 +4932,28 @@ async function cloudSyncCycle(reason="manual"){
   cloudChoicePreview=null;
   cloudSyncBusy=true;
   cloudNetworkRetryPending=false;
+  const owner=cloudUser.id,client=cloudClient,epoch=cloudComparisonEpoch,syncPolicy=cloudSyncPolicy();
+  const verifyCycle=()=>{
+    assertCloudSourceReady();
+    if(cloudRecoveryMode||cloudUser?.id!==owner||cloudClient!==client||cloudComparisonEpoch!==epoch||cloudSyncPolicy()!==syncPolicy)throw new Error("로그인·복구 상태나 동기화 정책이 바뀌어 반영을 중단했습니다.");
+  };
   try{
     if(!cloudSyncSelfTest())throw new Error("Sync Core 자체 검증에 실패해 자동 동기화를 시작하지 않았습니다.");
     if(cloudIsLifecycleCheck(reason)){
       const remoteMeta=await cloudFetchMeta(),meta=cloudMeta();
+      verifyCycle();
       const localClean=!/^view-/.test(reason)||(await cloudStateHash(cloudComparableState(state)))===String(meta.lastSyncedHash||"");
+      verifyCycle();
       if(localClean&&!cloudShouldFetchFullState(reason,remoteMeta,meta))return;
     }
     let remote=null;
     if(["local-save","queued"].includes(reason)){
       const remoteMeta=await cloudFetchMeta(),cache=cloudVerifiedRemote;
+      verifyCycle();
       if(cloudCanUseVerifiedRemote(reason,remoteMeta,cloudMeta(),cache,cloudUser?.id))remote={state:structuredClone(cache.state),revision:remoteMeta.revision,updated_at:remoteMeta.updated_at,device:remoteMeta.device};
     }
     if(!remote)remote=await cloudReadRow();
-    assertCloudSourceReady();
+    verifyCycle();
     const localState=cloudComparableState(state);
     const localMeaningful=cloudHasMeaningfulLocalData(localState);
     if(!remote?.state){
@@ -4836,14 +4963,16 @@ async function cloudSyncCycle(reason="manual"){
     }
     const remoteState=cloudComparableState(remote.state);
     const [localHash,remoteHash]=await Promise.all([cloudStateHash(localState),cloudStateHash(remoteState)]);
+    verifyCycle();
+    if(!cloudSame(localState,cloudComparableState(state)))throw new Error("Cloud 비교 중 이 기기의 기록이 바뀌어 반영을 중단했습니다.");
     const meta=cloudMeta(),remoteMeaningful=cloudHasMeaningfulLocalData(remoteState);
     const baselineHash=String(meta.lastSyncedHash||"");
     const appliedRevision=cloudRevisionNumber(meta.appliedRevision);
     const remoteRevision=cloudRevisionNumber(remote.revision);
     const hasBaseline=meta.syncEngine===CLOUD_SYNC_ENGINE&&meta.hashSchema===CLOUD_HASH_SCHEMA&&!!baselineHash&&Number.isFinite(appliedRevision);
     cloudRuntime={...cloudRuntime,revision:remote.revision,updatedAt:remote.updated_at,device:remote.device||"",localSummary:cloudSummaryText(localState),remoteSummary:cloudSummaryText(remoteState)};
-    const decision=cloudSyncDecision({hasBaseline,localMeaningful,remoteMeaningful,localHash,remoteHash,baselineHash,appliedRevision:Number.isFinite(appliedRevision)?appliedRevision:-1,remoteRevision:Number.isFinite(remoteRevision)?remoteRevision:-1});
-    if(decision.action==="pull"&&cloudNeedsRestoreChoice(localState,remote)){
+    const decision=cloudSyncDecision({hasBaseline,localMeaningful,remoteMeaningful,localHash,remoteHash,baselineHash,appliedRevision:Number.isFinite(appliedRevision)?appliedRevision:-1,remoteRevision:Number.isFinite(remoteRevision)?remoteRevision:-1,syncPolicy});
+    if(syncPolicy==="manual"&&decision.action==="pull"&&cloudNeedsRestoreChoice(localState,remote)){
       cloudPrepareChoice(remote,localState,localHash,remoteHash,"restore");
       cloudStopAutoSync("Cloud에 보관된 기록이 있어요. 아래에서 내용을 확인하고 ‘Cloud 기록 가져오기’를 선택해 주세요.");return;
     }
@@ -4856,7 +4985,20 @@ async function cloudSyncCycle(reason="manual"){
       cloudAutoSyncReady=true;cloudSetRuntime("동기화 정상",`Local과 Cloud 기준을 확인했습니다. revision ${remote.revision}.`,"ok",{revision:remote.revision,updatedAt:remote.updated_at,verifiedAt:m.verifiedAt,device:remote.device||"",sync:"ON",localSummary:cloudSummaryText(state),remoteSummary:cloudSummaryText(remoteState)});cloudStartPolling();return;
     }
     if(decision.action==="pull"){
-      await cloudApplyRemoteRow(remote,remoteHash,{announce:reason!=="poll"});cloudAutoSyncReady=true;cloudStartPolling();return;
+      if(syncPolicy==="cloud-first"){
+        // The canonical apply path archives Local before writing; reuse the choice guard after the archive.
+        cloudPrepareChoice(remote,localState,localHash,remoteHash,"automatic");
+        renderCloudChoice();
+        const preview=cloudChoicePreview;
+        const verifyRemote=async()=>{verifyCycle();await cloudVerifyChoice(preview);verifyCycle()};
+        try{
+          await cloudApplyRemoteRow(remote,remoteHash,{announce:false,verifyRemote});
+          const appliedMeta=cloudMeta();
+          if(appliedMeta.lastSyncedHash!==remoteHash||cloudRevisionNumber(appliedMeta.appliedRevision)!==remoteRevision)throw new Error("Cloud 기록은 가져왔지만 동기화 기준을 저장하지 못했습니다. 안전 백업은 보관되어 있습니다.");
+          toast("Cloud 기준으로 이어서 볼 수 있어요. 이 기기의 기록은 안전하게 보관했어요.");
+        }finally{if(cloudChoicePreview===preview)cloudChoicePreview=null;renderCloudChoice()}
+      }else await cloudApplyRemoteRow(remote,remoteHash,{announce:reason!=="poll"});
+      cloudAutoSyncReady=true;cloudStartPolling();return;
     }
     if(decision.action==="push"){
       await cloudPushLocalRow(remote,localState,localHash);cloudAutoSyncReady=true;cloudStartPolling();return;
@@ -4873,7 +5015,7 @@ async function cloudSyncCycle(reason="manual"){
       cloudSetRuntime("연결 확인 필요","이 기기의 기록은 그대로 보관 중입니다. 연결이 돌아오면 원본과 Cloud 기준을 다시 확인합니다. 직접 다시 확인하려면 ‘지금 동기화’를 눌러 주세요.","warn",{sync:"OFFLINE"});
     }
   }finally{
-    cloudSyncBusy=false;if(cloudSyncPending){cloudSyncPending=false;setTimeout(()=>cloudSyncCycle("queued"),120)}
+    cloudSyncBusy=false;renderCloudPanel();if(cloudSyncPending){cloudSyncPending=false;setTimeout(()=>cloudSyncCycle("queued"),120)}
   }
 }
 
@@ -5150,7 +5292,9 @@ function renderCloudPanel(){
   const conflictAction=$("cloudConflictAction"),isConflict=cloudRuntime.sync==="STOP"&&/Local과 Cloud가 모두 변경|양쪽.*변경/.test(cloudRuntime.message||"");
   if(conflictAction){conflictAction.hidden=!cloudUser||(!isConflict&&!["STOP","CHECK","WAIT"].includes(cloudRuntime.sync));conflictAction.onclick=cloudCompare}
   const restoreGuide=$("cloudRestoreGuide");
-  if(restoreGuide)restoreGuide.textContent=!cloudUser?"로그인 후 Cloud 기록을 확인할 수 있습니다. 이 기기의 기록은 유지됩니다.":cloudHasMeaningfulLocalData(state)?"이 기기에 기록이 있습니다. 차이를 확인한 뒤 어느 쪽을 적용할지 선택해 주세요. 복원 전에는 현재 원본을 안전 백업합니다.":"새 기기에서는 로그인 후 Cloud 기록을 안전하게 가져옵니다. 복원이 멈췄다면 ‘차이 확인’으로 원인을 확인해 주세요.";
+  const policy=cloudSyncPolicy(),policySelect=$("cloudSyncPolicy");
+  if(policySelect){policySelect.value=policy;policySelect.disabled=cloudSyncBusy||cloudApplyingRemote}
+  if(restoreGuide)restoreGuide.textContent=!cloudUser?"로그인 후 Cloud 기록을 확인할 수 있습니다. 이 기기의 기록은 유지됩니다.":policy==="cloud-first"?"Cloud를 기준으로 이어서 봅니다. 양쪽 기록이 달라지면 이 기기의 원본을 안전 보관한 뒤 Cloud를 가져옵니다. 이 기기에서만 새로 만든 기록은 정상 업로드합니다.":cloudHasMeaningfulLocalData(state)?"이 기기에 기록이 있습니다. 차이를 확인한 뒤 어느 쪽을 적용할지 선택해 주세요. 복원 전에는 현재 원본을 안전 백업합니다.":"새 기기에서는 로그인 후 Cloud 기록을 확인하고 가져올 수 있습니다.";
   if(grid){
     const meta=cloudMeta();
     const rows=[
@@ -5246,32 +5390,9 @@ async function initCloudBridge(){
       return;
     }
 
-    if(cloudUser){
-      // v2.9.6: Supabase session is persisted reliably in localStorage, while a tab-scoped gate marker
-      // decides whether this is a refresh of an already unlocked tab or a fresh browser/tab entry.
-      if(loginGateSessionActive()){
-        // A valid auth session + tab marker is enough to reopen Local immediately after refresh.
-        // Cloud failures must never force the Login Gate back on a Local-first app.
-        unlockLoginGate();
-        cloudSetRuntime("로그인 복원","새로고침 후 인증 세션을 복원했습니다. Local을 먼저 열고 Cloud를 확인합니다.","ok",{sync:"CHECK"});
-        try{
-          await cloudFetchMeta({silent:true});
-          cloudBindLifecycle();
-          await cloudSyncCycle("session-restore");
-        }catch(syncError){
-          console.warn("Refresh Cloud sync",syncError);
-          cloudAutoSyncReady=false;
-          cloudSetRuntime("로그인 복원 · 동기화 확인 필요","로그인은 유지됩니다. Cloud 동기화는 다음 저장/포커스에서 다시 확인합니다.","warn",{sync:"CHECK"});
-        }
-      }else{
-        cloudAutoSyncReady=false;
-        cloudSetRuntime("로그인 확인","인증 세션은 남아 있지만 HANI OS 로그인 확인 기록이 없습니다. 한 번만 비밀번호 확인을 기다립니다.","warn",{sync:"PAUSE"});
-        lockLoginGate("이 기기에서 한 번만 비밀번호를 확인해 주세요.");
-      }
-    }else{
-      cloudUser=null;
-      cloudSetRuntime("로그인 필요","메인 로그인 화면에서 인증하면 이 기기와 Cloud가 연결됩니다.","warn",{sync:"OFF"});
-    }
+    if(cloudUser)await cloudClient.auth.signOut({scope:"local"});
+    cloudUser=null;clearLoginGateSession();
+    cloudSetRuntime("로그인 필요","HANI OS를 열 때마다 로그인해 주세요. 기기의 기록은 그대로 보관합니다.","warn",{sync:"OFF"});
   }catch(e){
     console.error("Cloud init",e);
     cloudUser=null;
@@ -5293,36 +5414,44 @@ function cloudApplyConfigFromForm(){
   return cfg;
 }
 async function cloudLogin(){
+  if(loginGateBusy)return;
+  loginGateBusy=true;const attempt=++loginGateAttempt;
   try{
     const cfg=cloudApplyConfigFromForm();
+    const client=cloudClient;
     const password=$("cloudPassword").value;
     if(!cfg.email)throw new Error("로그인 이메일을 입력해 주세요.");
     if(!password)throw new Error("로그인 비밀번호를 입력해 주세요.");
     cloudSetRuntime("로그인 중","Supabase Auth로 로그인하고 있습니다.","warn");
-    const {data,error}=await cloudClient.auth.signInWithPassword({email:cfg.email,password});
+    const {data,error}=await client.auth.signInWithPassword({email:cfg.email,password});
     $("cloudPassword").value="";
     if(error)throw error;
+    if(attempt!==loginGateAttempt||client!==cloudClient)return;
     cloudUser=data.user;
-    cloudSetRuntime("로그인 완료","Cloud 연결이 확인되었습니다. Local ↔ Cloud 기준을 확인하고 자동 동기화를 준비합니다.","ok",{sync:"CHECK"});
-    await cloudFetchMeta({silent:true});
-    cloudBindLifecycle();
-    await cloudSyncCycle("login");
-    markLoginGateSession();
+    lockLoginGate("Cloud 기록을 확인한 뒤 HANI OS를 엽니다.");
+    cloudSetRuntime("로그인 완료","Cloud 기록을 확인한 뒤 HANI OS를 엽니다.","ok",{sync:"CHECK"});
+    await loginGateEnterApp("login",attempt);
   }catch(e){
     console.error("Cloud login",e);
     $("cloudPassword").value="";
     cloudSetRuntime("로그인 실패",e?.message||"Cloud 로그인에 실패했습니다.","error");
-  }
+  }finally{loginGateBusy=false}
 }
 async function cloudLogout(){
-  cloudStopAutoSync();
-  clearLoginGateSession();
-  try{if(cloudClient)await cloudClient.auth.signOut()}catch(e){console.warn(e)}
-  cloudUser=null;
-  cloudRecoveryMode=false;
-  cloudCleanAuthUrl();
-  cloudSetRuntime("로그아웃","Cloud 세션에서 로그아웃했습니다. 로컬 데이터는 그대로 유지됩니다.","warn",{revision:null,updatedAt:"",sync:"OFF"});
+  const client=cloudClient;
+  try{cloudAuthSubscription?.unsubscribe?.()}catch(_){}cloudAuthSubscription=null;cloudClient=null;
+  try{void client?.auth.stopAutoRefresh?.()?.catch?.(()=>{})}catch(_){}
+  cloudOwnerVerificationEpoch++;cloudOwnerVerification?.invalidate();
+  clearLoginGateSession();cloudComparisonEpoch++;cloudUser=null;cloudRecoveryMode=false;cloudChoicePreview=null;
+  cloudSyncPending=false;
+  if(cloudSyncTimer){clearTimeout(cloudSyncTimer);cloudSyncTimer=null}
+  cloudStopAutoSync();dataHubInvalidate();annualReportInvalidate();
+  cloudCleanAuthUrl({preserveRoute:true});
+  cloudSetRuntime("로그아웃","현재 세션에서 로그아웃했습니다. 로컬 데이터는 그대로 유지됩니다.","warn",{revision:null,updatedAt:"",sync:"OFF"});
   lockLoginGate("로그아웃했습니다. 다시 이용하려면 로그인해 주세요.");
+  loginGateShowCloudTools(false);
+  try{if(client){const {error}=await client.auth.signOut({scope:"local"});if(error)throw error}}
+  catch(e){console.warn("Session signout",e)}
 }
 async function cloudFirstCopy(){
   if(loadRecovery.active)return alert(lastLoadError);
@@ -5373,7 +5502,7 @@ async function cloudFirstCopy(){
     cloudSetRuntime("동기화 완료",`Cloud 최초 기준본을 생성했습니다. revision ${written.revision}.`,"ok",{revision:written.revision,updatedAt:written.updated_at,verifiedAt:meta.verifiedAt,device:written.device||"",sync:"ON",localSummary:cloudSummaryText(localState),remoteSummary:cloudSummaryText(written.state)});
   }catch(e){
     console.error("Cloud first copy",e);cloudStopAutoSync(e?.message||"최초 Cloud 반영에 실패했습니다.","error");alert("Local → Cloud 반영에 실패했습니다.\n"+(e?.message||"오류를 확인해 주세요.")+"\n\nLocal 데이터는 그대로 유지됩니다.");
-  }finally{cloudSyncBusy=false}
+  }finally{cloudSyncBusy=false;renderCloudPanel()}
 }
 async function cloudRestoreToLocal(){
   if(loadRecovery.active||importSyncHold)return alert(loadRecovery.active?lastLoadError:"복원한 백업을 확인한 뒤 Cloud 기준으로 확정해 주세요.");
@@ -5411,7 +5540,7 @@ async function cloudRestoreToLocal(){
       state=previousState;renderAll();throw inner;
     }
   }catch(e){console.error("Cloud restore",e);cloudStopAutoSync(e?.message||"Cloud → Local 복원에 실패했습니다.","error");alert("Cloud → Local 복원에 실패했습니다.\n"+(e?.message||"오류를 확인해 주세요.")+"\n\n기존 Local은 유지됩니다.")}
-  finally{cloudSyncBusy=false}
+  finally{cloudSyncBusy=false;renderCloudPanel()}
 }
 function cloudNeedsRestoreChoice(local,remote){
   return !cloudHasMeaningfulLocalData(local)&&!!remote?.state&&cloudHasMeaningfulLocalData(remote.state);
@@ -5447,7 +5576,7 @@ function cloudPrepareChoice(remote,local,localHash,remoteHash,mode){
 }
 function renderCloudChoice(){
   const preview=cloudChoicePreview;
-  const visible=!!preview&&preview.owner===cloudUser?.id&&preview.client===cloudClient&&!cloudRecoveryMode&&!loadRecovery.active&&!importSyncHold;
+  const visible=!!preview&&["restore","conflict"].includes(preview.mode)&&preview.owner===cloudUser?.id&&preview.client===cloudClient&&!cloudRecoveryMode&&!loadRecovery.active&&!importSyncHold;
   const restore=visible&&preview.mode==="restore"&&cloudNeedsRestoreChoice(state,preview.remote),conflict=visible&&preview.mode==="conflict";
   const panel=$("cloudChoicePanel"),banner=$("cloudChoiceBanner"),dialog=$("cloudChoiceDialog");
   if(panel)panel.hidden=!(restore||conflict);
@@ -5497,6 +5626,7 @@ async function cloudChooseOriginal(choice){
   }finally{
     cloudSyncPending=false;cloudSyncBusy=false;
     buttons.forEach(id=>{if($(id))$(id).disabled=false});
+    renderCloudPanel();
   }
 }
 function cloudRenderCategoryDifference(localComparable,remoteComparable,list,includeEqual=false){
@@ -5537,7 +5667,7 @@ async function cloudCompare(){
     if(!cloudSame(localComparable,cloudComparableState(state)))throw new Error("비교 중 이 기기의 기록이 변경됐습니다. 다시 확인해 주세요.");
     const same=localHash===remoteHash;
     const meta=cloudMeta(),appliedRevision=cloudRevisionNumber(meta.appliedRevision);
-    const decision=cloudSyncDecision({hasBaseline:meta.syncEngine===CLOUD_SYNC_ENGINE&&meta.hashSchema===CLOUD_HASH_SCHEMA&&!!meta.lastSyncedHash&&Number.isFinite(appliedRevision),localMeaningful:cloudHasMeaningfulLocalData(localComparable),remoteMeaningful:cloudHasMeaningfulLocalData(remoteComparable),localHash,remoteHash,baselineHash:meta.lastSyncedHash||"",appliedRevision,remoteRevision:cloudRevisionNumber(remote.revision)});
+    const decision=cloudSyncDecision({hasBaseline:meta.syncEngine===CLOUD_SYNC_ENGINE&&meta.hashSchema===CLOUD_HASH_SCHEMA&&!!meta.lastSyncedHash&&Number.isFinite(appliedRevision),localMeaningful:cloudHasMeaningfulLocalData(localComparable),remoteMeaningful:cloudHasMeaningfulLocalData(remoteComparable),localHash,remoteHash,baselineHash:meta.lastSyncedHash||"",appliedRevision,remoteRevision:cloudRevisionNumber(remote.revision),syncPolicy:cloudSyncPolicy()});
     const held=loadRecovery.active||importSyncHold||cloudRecoveryMode;
     const assessment={establish:"동기화 기준을 확인할 수 있는 상태입니다.",pull:"Cloud 내용을 이 기기에 가져올 수 있는 후보입니다.",push:"이 기기의 변경만 확인된 상태입니다.","idle-empty":"양쪽에 생활 기록이 없습니다."}[decision.action]||decision.reason;
     if(summary)summary.textContent=(held?"복구 확인 중이므로 자동 반영은 보류합니다. ":"")+(same?"생활 기록이 동일합니다. ":"생활 기록에 차이가 있습니다. ")+assessment+" 비교만 수행했으며 기록과 동기화 기준은 변경하지 않았습니다.";
@@ -5579,6 +5709,7 @@ function bindCloudBridgeControls(){
   if($("cloudCancelRecovery"))$("cloudCancelRecovery").onclick=cloudCancelRecovery;
   if($("cloudLogout"))$("cloudLogout").onclick=cloudLogout;
   if($("cloudSyncNow"))$("cloudSyncNow").onclick=cloudManualSync;
+  if($("cloudSyncPolicy"))$("cloudSyncPolicy").onchange=e=>cloudChangeSyncPolicy(e.target.value);
   if($("cloudVerifySourceOwner"))$("cloudVerifySourceOwner").onclick=cloudVerifySourceOwner;
   if($("dataHubRefresh"))$("dataHubRefresh").onclick=dataHubRefresh;
   if($("cloudFirstCopy"))$("cloudFirstCopy").onclick=cloudFirstCopy;
@@ -6006,7 +6137,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.201";
+const HANI_DISPLAY_VERSION="2.9.202";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
@@ -7241,6 +7372,7 @@ if(CLOUD_AUTH_BOOT.hasAuthCallback){
   // Recovery callback must be consumed before any page navigation can erase the auth hash.
   showLoginRecoveryGate("복구 링크를 인증하고 있습니다.");
   initCloudBridge().finally(()=>{
+    loginGateConnectionReady();
     if(!window.supabase?.createClient)return;
     if(cloudRecoveryMode){
       showLoginRecoveryGate(cloudUser?"복구 인증 완료. 새 비밀번호를 입력해 주세요.":"복구 세션을 확인하지 못했습니다. 최신 복구 링크인지 확인해 주세요.");
@@ -7250,7 +7382,7 @@ if(CLOUD_AUTH_BOOT.hasAuthCallback){
   });
 }else{
   showView(navigationInitialView(location.hash.slice(1)));
-  initCloudBridge().finally(()=>{if(window.supabase?.createClient)loginGateStatus("이메일과 비밀번호로 로그인해 주세요.")});
+  initCloudBridge().finally(loginGateConnectionReady);
 }
 window.addEventListener("resize",()=>{drawPortfolio();drawBody();drawLedgerTrend();drawMonthlyAssetChart();drawBrokerChart();drawAnnualInvestmentCharts();drawInvestmentAccountChart();if(activeAccountId)drawAccountChart(activeAccountId)});
 
