@@ -90,12 +90,12 @@ try{
  await page.setViewportSize({width:1440,height:1000});
  await page.goto(base+'/index.html#organization');await page.locator('#haniOrganizationHub .ogh-person').last().waitFor({state:'attached'});
  assert.equal(await page.locator('#organization.active').count(),1);
- assert.equal(await page.locator('.side-bottom [data-view="organization"]').count(),1);
+ assert.equal(await page.locator('.group[data-color="team"] [data-view="organization"]').count(),1); // HANI GROUP nav group (2026-10-10 regroup)
  const protectedBefore=await page.evaluate(()=>localStorage.getItem('hani_os_life_v23'));
  // Invoke canonical navigation via existing buttons in isolated browser; no auth/session mutation.
- await page.locator('.side-bottom [data-view="aiTeam"]').evaluate(e=>e.click());
+ await page.locator('.side [data-view="aiTeam"]').evaluate(e=>e.click());
  assert.equal(await page.locator('#aiTeam.active').count(),1);
- await page.locator('.side-bottom [data-view="organization"]').evaluate(e=>e.click());
+ await page.locator('.side [data-view="organization"]').evaluate(e=>e.click());
  assert.equal(await page.locator('#organization.active').count(),1);
  assert.equal(await page.locator('#haniOrganizationHub .ogh-person').count(),17);
  assert.equal(await page.evaluate(()=>localStorage.getItem('hani_os_life_v23')),protectedBefore);
