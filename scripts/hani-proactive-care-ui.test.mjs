@@ -29,6 +29,7 @@ for (const [width, ua] of [[1440, null], [390, 'Mozilla/5.0 (iPhone; CPU iPhone 
     const out = {};
     showView('diet'); renderBody(); await new Promise(r => setTimeout(r, 400));
     out.diet = document.querySelector('#diet [data-diet-pace]')?.innerText.replace(/\n+/g, ' | ').slice(0, 400) || null;
+    { const keep=state.body; state.body=[{id:'c1',date:d(28),weight:99.9},{id:'c2',date:d(26),weight:99.37}]; out.dietClose=document.createElement('div').appendChild(Object.assign(document.createElement('div'),{innerHTML:dietPaceMarkup()})).innerText.replace(/\n+/g,' | ').slice(0,420); state.body=keep; }
     showView('settings'); renderStoragePanel(); await new Promise(r => setTimeout(r, 400));
     out.kickoff = [...document.querySelectorAll('#goalRegistryContent .note h3')].map(e => e.innerText);
     const btn = document.querySelector('[data-quarter-goal]');
