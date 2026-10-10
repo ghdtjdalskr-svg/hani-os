@@ -43,7 +43,7 @@ try{
     await page.waitForTimeout(450);
     await verifiedSyntheticContext(page);
     const labels=await page.locator('.office-group .group-body .nav-btn .txt').allTextContents();
-    assert.deepEqual(labels.slice(0,4),['인포데스크','경영회의실','라이프 리포트','사내 규칙'],`${viewport.name}: report office IA order`);
+    assert.deepEqual(labels.slice(0,4),['인포데스크','경영회의실','컨퍼런스 룸','사내 규칙'],`${viewport.name}: report office IA order`);
     assert(await page.locator('#monthlyReport.view.active').count(),`${viewport.name}: monthly route active`);
     assert(await page.locator('#monthlyReportKpis').isHidden(),`${viewport.name}: no live dashboard before manual generation`);
     assert(await page.locator('#monthlyReportGenerateBtn').isEnabled(),`${viewport.name}: closed month can be generated`);
@@ -104,11 +104,11 @@ try{
     mkdirSync(join(root,'artifacts/monthly-report'),{recursive:true});
     await page.locator('[data-report-board="quarterly"]').click();
     assert(await page.locator('#monthlyReportQuarterlyPanel').isVisible(),`${viewport.name}: quarterly preview board`);
-    assert((await page.locator('#monthlyReportQuarterlyPanel').innerText()).includes('분기 목표·실적은 위 공통 계산'),`${viewport.name}: quarterly honest state`);
+    assert.equal(await page.locator('#quarterGoalReport article').count(),9,`${viewport.name}: quarterly common facts visible`);
     await page.locator('#monthlyReport').screenshot({path:join(root,`artifacts/monthly-report/${viewport.name}-quarterly.png`)});
     await page.locator('[data-report-board="annual"]').click();
     assert(await page.locator('#monthlyReportAnnualPanel').isVisible(),`${viewport.name}: annual preview board`);
-    assert((await page.locator('#monthlyReportAnnualPanel').innerText()).includes('연간 목표·실적은 위 공통 계산'),`${viewport.name}: annual honest state`);
+    assert.equal(await page.locator('#annualGoalReport article').count(),9,`${viewport.name}: annual common facts visible`);
     await page.locator('#monthlyReport').screenshot({path:join(root,`artifacts/monthly-report/${viewport.name}-annual.png`)});
     await page.locator('[data-report-board="monthly"]').click();
     await page.locator('#monthlyReport').screenshot({path:join(root,`artifacts/monthly-report/${viewport.name}.png`)});

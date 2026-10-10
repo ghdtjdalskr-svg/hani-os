@@ -1,4 +1,21 @@
+# 최종 탑승본 업데이트 · 2026-10-07
+
+HANI-7/28/31/33 최종 기능 결합 runtime: `hani/report-navigation-ready-20261007@c4b32803f3f5e418151464366a21f19719156b12`. [최종 인수인계](handoffs/2026-10-07-report-navigation-ready.md). 공통 목표 슬롯/발표/PDF/모바일 board 기능 충돌 해결 및 주요 발표 실적 공통 API 연결. 이전 개별 branch와 goal-report-ready 결합본 중복 적용 금지. 기존 source/tooling main691385cf 변경과 최신 열차 범위 대조 필요, main merge/rebase하지 않음.
+
+결합 코드 단위31 및 공통 UI4/목표UI4/navigation PC·모바일/월간 저장 회귀/annual mock/PPT14·28 package/layout/render PASS. 실제 auth/Cloud/Android/운영 register·activate/AI/독립HINA 미검증. runtime v190/cache 유지, 운영 PR/main/배포 없음.
+
+Drive 개발 사전검사 HANI-35 `hani/drive-precheck-complete-20261007@05c9bcf` 준비. 입력 초안 HANI-34 계정 lifecycle 설계 보류, 실제 Drive OAuth/업로드/복원 및 HANI GROUP 디자인 승인·실제 Cloud 검증은 별도. 이전 요약의 HANI7 진행 중/기능 충돌 경계는 최종 결합본으로 해결한 범위만 정정됨.
+# HANI 최신 개발 현황 · 2026-10-07
+
 # HANI 최신 개발 현황
+
+## 2026-10-08 · Organization Hub 탑승 인계 (Codex)
+
+대표님 테크 스타일 선택 및 배포 대기 요청에 따라 현재 5팀·17명 Preview를 배포 담당에게 인계. branch `hani/organization-hub-preview-20261007`, base `c43ba2f1`, 조회 main `691385cf`. targeted PC/모바일 검사 PASS. **이미지 경량화·용량 gate, 실제 로그인 통합 UI 및 열차 gate는 남음. 운영 배포 완료 아님.** 팀 배너 배경색/확장 AI 메인 이미지도 미반영임을 구분. [최신 인수인계](handoffs/2026-10-08-organization-hub-train.md). 아래 기록은 이전 시점.
+
+## 2026-10-07 · HANI GROUP Organization Hub Preview (Codex)
+
+그래픽 중심 조직도·팀 소개·인물 갤러리의 1차 Preview 구현/targeted QA 완료, 디자인 승인 대기. branch `hani/organization-hub-preview-20261007`, base `c43ba2f1`, 표시 버전 `v2.9.190` 유지. 5팀 병렬 구조, M9 기존 이미지 9명 + 신규 제안 7명 이니셜. 신규 바이블 확정/실제 로그인 통합 시각 QA/독립 UI 리뷰는 남음. **배포 열차 탑승·main 병합·운영 배포 아님.** [작업 인수인계](handoffs/2026-10-07-organization-hub-preview.md), [설계/Preview](../organization-hub-design.md). 아래는 기존 시점 기록이며 수정하지 않음.
 
 - 갱신일: 2026-10-05 KST / 전체 HANI 개발 탭 취합
 - 기준 main: c544592e427b44fd7c7c530213a790f50e92bce8 (PR181·182)

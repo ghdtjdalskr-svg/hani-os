@@ -12,3 +12,12 @@ CODEMAP_MISS: Archive 항목 없음. 실제 앵커 확인. 기존 assets/profile
 최종 main 76d3bed: 검사 도구 2개만 변경. 운영 파일 겹침 없음. merge/rebase하지 않음. 탑승 시 최신 gate 재검증 필요.
 상태: 대표 Preview 준비. 기능 브랜치 보존/탑승 대기이며 Production NOT DEPLOYED. 버전 증가는 Release Train 담당 범위.
 후속: 퍼스널 컬러칩·담당 영역 그래픽·관계 프로필 조합 추가, MIR 고정 소개 중복 제거. data Registry/원문 변경 없음.
+그래픽 v2: 원형 연결 맵, 성격 키워드 타일, Canon 대사 말풍선. 1440/390 및 기존 OS 메뉴 targeted regression 재검증 PASS. 변경은 동일 Preview 브랜치, 운영 배포 없음.
+MIR 컴퓨터 디자인: 사람 이미지 없이 모니터 화면 속 빛 Core 및 AI ENTITY 표식. 대표님 요청 반영, 같은 targeted test 재검증 PASS. Release Train 탑승 대기 유지.
+2026-10-07: 전체를 회사 아이돌 프로필 앨범으로 재디자인. 파스텔 Hero/아치형 프로필/포토카드/선택 상세 2단 그래픽/친근한 관계 소개/케미·직급 그래픽/말풍선 Gag. SUNGMIN 영문 표기 정정. Canon 원본 데이터 유지, UI 소개 카피만 명시 요청으로 개정.
+기존 static + ui + integration 스크립트 1440/390 재검증 PASS. 별도 운영 PR/배포 없음. 최신 인계 후보는 동일 branch HEAD.
+M9 중심 추가 요청: Hero 9명/M9 단독 제목, 비공식 애칭 “Maginificent9 · 미녀9”, MIR는 작은 별도 가로 카드. 개인 컬러 텍스트와 하단 파스텔 카드 강화. 1440/390 회귀 및 하단 실제 화면 확인 완료. 데이터/버전 변경 없음.
+추가 디자인: 기존 프로필 반복 Hero 대신 새 M9 9인 단체 화보 제작·적용, 엔딩에도 반투명 배경 재사용. assets/character-archive/m9-group-portrait-v1.png 반드시 포함. 제작 프롬프트는 docs/M9-GROUP-ARTWORK-PROMPT.md.
+영문 담당 영역·케미 소개를 한국어로 표시하고, 관계 상세와 소개말에 흰색 내부 카드 추가. MIR mini의 부모 폭 기준 % padding으로 인한 찌그러짐 수정. 원본 Registry와 실제 개인 프로필 유지.
+최종 기능 a198912 push 완료. Static/Canon·1440/390 UI·빈 OS 통합 회귀 PASS. 새 이미지 및 MIR mini 크기 검사 포함. 로그인/Cloud/최종 Release gate 미검증.
+Notion HANI-27 추가 기록은 자동 보안 검토가 저장소 링크·SHA의 외부 전송 승인 부족으로 차단하여 미반영. 기존 PR219/v191 기록과 이번 추가 수정은 구분하며 기존 속성 보존. 대표님이 해당 페이지에 작업 요약·후보 SHA·저장소 문서 링크 공유를 승인하면 기록 후 read-back 필요. 차단 우회하지 않음.

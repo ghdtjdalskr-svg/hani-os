@@ -1,0 +1,22 @@
+import assert from 'node:assert/strict';import fs from 'node:fs';import path from 'node:path';import http from 'node:http';import {pathToFileURL} from 'node:url';
+const {chromium}=await import(pathToFileURL(process.argv[2]).href),root=path.resolve(import.meta.dirname,'..');
+const server=http.createServer((req,res)=>{const uri=new URL(req.url,'http://test').pathname,file=path.resolve(root,'.'+(uri==='/'?'/index.html':decodeURIComponent(uri)));if(!file.startsWith(root+path.sep)||!fs.existsSync(file)||!fs.statSync(file).isFile()){res.writeHead(404);return res.end();}res.setHeader('Content-Type',file.endsWith('.js')?'text/javascript':file.endsWith('.css')?'text/css':'text/html; charset=utf-8');res.end(fs.readFileSync(file));});
+await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin=`http://127.0.0.1:${server.address().port}`,browser=await chromium.launch({executablePath:process.argv[3],headless:true});
+try{for(const width of [390,1440]){
+ const context=await browser.newContext({viewport:{width,height:950}});await context.route('**/*',r=>new URL(r.request().url()).origin===origin?r.continue():r.abort());const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto(origin);await page.waitForFunction(()=>window.HaniAiBudget);
+ // Synthetic UI inspection only; hide authentication overlay without logging into any account.
+ await page.evaluate(()=>{unlockLoginGate();showView('aiBudget');document.getElementById('app').style.display='';document.getElementById('app').hidden=false;document.getElementById('app').classList.remove('login-locked');document.getElementById('app').removeAttribute('inert');document.querySelectorAll('[id*="auth"],[id*="login"]').forEach(el=>{if(el.getBoundingClientRect().height>300)el.style.display='none';});});
+ assert.equal(await page.locator('[data-budget-slot]').count(),4);assert.match(await page.locator('#aiBudgetCards').textContent(),/확인 불가/);
+ assert.match(await page.locator('.budget-manager').textContent(),/서윤/);await page.waitForFunction(()=>Array.from(document.querySelectorAll('#aiBudget img')).every(img=>img.complete&&img.naturalWidth>0));assert.equal(await page.locator('.budget-symbol img').count(),4);
+ await page.evaluate(()=>document.querySelector('[data-budget-edit="codex-2"]').click());await page.locator('#budget-weekly-used').fill('25');await page.locator('#budget-weekly-reset').fill('2099-10-08T09:00');await page.evaluate(()=>document.getElementById('aiBudgetForm').requestSubmit());assert.match(await page.locator('[data-budget-slot="codex-2"]').innerText(),/75%/);assert.match(await page.locator('[data-budget-slot="codex-1"]').innerText(),/확인 불가/);
+ const stored=await page.evaluate(()=>localStorage.getItem('hani_ai_budget_summary_v1'));await page.reload();await page.waitForFunction(()=>window.HaniAiBudget);assert.equal(await page.evaluate(()=>localStorage.getItem('hani_ai_budget_summary_v1')),stored);
+ await page.evaluate(()=>{unlockLoginGate();showView('aiBudget');});const lifeBefore=await page.evaluate(()=>localStorage.getItem('hani_os_life_v23'));await page.evaluate(()=>document.getElementById('aiBudgetRefresh').click());await page.waitForFunction(()=>!document.getElementById('aiBudgetRefresh').disabled);assert.equal(await page.evaluate(()=>localStorage.getItem('hani_os_life_v23')),lifeBefore);
+ await page.locator('#aiBudgetImport').setInputFiles({name:'invalid.json',mimeType:'application/json',buffer:Buffer.from('{"schemaVersion":1,"accounts":[{"id":"codex-2","provider":"claude"}]}')});assert.equal(await page.evaluate(()=>localStorage.getItem('hani_ai_budget_summary_v1')),stored);
+ assert.equal(await page.locator('#aiBudget').evaluate(el=>el.scrollWidth<=el.clientWidth+1),true);assert.deepEqual(errors,[]);
+ await page.evaluate(()=>{document.getElementById('loginGate').style.display='none';document.getElementById('app').classList.remove('login-locked');document.querySelectorAll('[class*=remote]').forEach(el=>{if(getComputedStyle(el).position==='fixed')el.style.display='none';});});fs.mkdirSync(path.join(root,'qa-evidence'),{recursive:true});await page.locator('#aiBudget').screenshot({path:path.join(root,`qa-evidence/ai-budget-${width}.png`)});await context.close();
+}}finally{await browser.close();await new Promise(r=>server.close(r));}
+console.log('PASS: 390/1440 actual app menu, four slots, isolated manual entry, reload, invalid import/failure preservation, life-key unchanged, overflow and page errors.');
+
+
+
+

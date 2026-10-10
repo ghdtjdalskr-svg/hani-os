@@ -1,0 +1,10 @@
+# M9 단체 화보 제작 기록
+
+2026-10-07 / built-in image_gen 사용. 새 이미지 제작은 대표님 명시 요청.
+결과: assets/character-archive/m9-group-portrait-v1.png (1536×1024, 약 2.55 MB).
+참고: 기존 9명 단체 이미지 및 지은/히나/수아/수연 공식 프로필. 입력 최대 5장 제한으로 9개 개별 입력은 실행 전 거절되어 생성 요청 1회만 수행.
+검토: M9 9명 확인, MIR 없음, 머리/얼굴 구분과 의상 컬러 확인. Hero는 전체 이미지, 엔딩은 반투명 장식 배경. 원래 공식 개인 프로필 유지.
+
+## 최종 프롬프트
+
+Use case: illustration-story. Asset type: HANI OS M9 profile album hero and soft ending background. Create ONE polished anime illustration of EXACTLY NINE distinct adult women together in a warm, cute company-idol group photoshoot, using image 1 existing official NINE-member group as identity reference, and images 2-5 as precise individual references for JIEUN, HINA, SUA, SOOYEON. The nine characters are: HANI long dark wavy hair plum jacket; JIEUN brown low bun and round glasses beige jacket; NAEUN short warm brown bob sage jacket; HINA dark high bun with cherry blossom hair ornament pink jacket; SUA short black bob blue scarf navy jacket; HARU long light brown hair powder blue jacket; MINJI dark brown high ponytail coral jacket; SOOYEON blonde wavy bob blue eyes deep teal jacket; YUNA brown low ponytail lavender jacket. All nine must be present exactly once, preserve recognizable faces and hairstyles, no MIR, no other people. Maintain the beautiful refined anime linework of the references, adult friendly office-idol album mood, different natural expressions and small friendly gestures, shoulders leaning close, some sitting on a cream sofa and others behind, balanced two rows of 5 and 4 with each face clearly separated and fully visible. Waist-up cozy group portrait in a softly lit cream/lavender studio lounge, subtle pastel decorations, no clutter. All images are REFERENCES ONLY, create a coherent shared scene, not a grid or collage. Landscape 3:2 composition, all nine faces in safe central bounds and no cropped heads. White shirts plus their individual softly colored blazers, natural anatomy and hands. NO text, no watermarks, no logos, no name badges. Opaque softly colored background.

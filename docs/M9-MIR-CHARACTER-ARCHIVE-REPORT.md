@@ -2,6 +2,12 @@
 
 ## Implementation
 
+최신 디자인 개정: 2026-10-07. 회사 아이돌 프로필 앨범 방향으로 화면 전체 재구성.
+Hero의 10명 아치형 프로필, 파스텔 배경, 포토카드 그리드, 큰 선택 프로필, 2단 그래픽/성격 패널, 접어 읽는 상세, 조합 프로필 중심 케미 카드, 말풍선 Running Gag, 창립 멤버 그래픽을 적용.
+성민 대표님 요청에 따라 표시 영문명은 SUNGMIN으로 통일. 원본 첨부의 SEONGMIN 키와 문자열은 자료 추적용으로 보존하며 렌더링할 때 정정.
+관계 소개 문구는 대표님 승인 요청 범위에서 친근한 UI 소개말로 변경. Canon의 직급·연차·관계 사실과 원문 Registry 변경 없음. 기존 Character content modified: NO는 원본 Canon 데이터에 대한 판정이며 소개 카피 개정을 뜻하지 않음.
+1440/390 원문·10명 선택·펼침·가로 넘침·공식 프로필·MIR 비인간 표현 및 기존 OS AI 팀/설정 이동 검증 PASS. 로그인/Cloud 실제 검증 제외. Production NOT DEPLOYED.
+
 branch: hani/character-archive-m9-mir
 base: 728b23402377edbe43cd06d8e52a39dce7da320b
 candidate: 45fac03 (runtime commit; Preview only)
@@ -90,5 +96,19 @@ Canon 문구, data Registry, 저장소/Cloud/API 경로 변경 없음. 운영 �
 새 그래픽 10명 전환·1440/390 가로 넘침·원문·기존 메뉴 회귀 재검증. 증거 PNG: 1440-identity-graphic.png, 390-identity-graphic.png.
 
 READY FOR REPRESENTATIVE PREVIEW
+후속 그래픽 v2: 담당 영역 박스를 프로필 중심 원형 연결 맵으로 교체. Canon PERSONALITY 앞 6개 키워드의 시각 타일과 원문 TAGLINE 말풍선 추가. 원문 전체는 기존 상세/Canon Original에서 유지.
+코드·SVG 기반 그래픽이며 새 이미지 생성/설정 추가 없음. 정적 검사 및 격리 1440/390 모든 인물 그래픽·선택·펼침·OS 메뉴 회귀 PASS. 저장소/Cloud/auth 변경 없음.
+추가 시각 증거: 1440/390-identity-graphic.png, 1440/390-personality-graphic.png. Production NOT DEPLOYED.
+MIR 후속: 대표님 요청에 따라 기존 추상 Core를 컴퓨터 모니터 안에 배치. Pearl/Silver 외장, Cyan/Violet 빛, MIR/AI ENTITY 표식. Canon의 Visual 추상 Core를 유지하는 디자인 표현이며 인간 프로필·새 성격·데이터 변경 없음. 1440/390 및 기존 메뉴 회귀 재검증 PASS.
 Preview: http://127.0.0.1:8806/
 대표님 화면 확인 후 Release Train 탑승 범위를 판단. Production 승인 별도 필요.
+
+## 단체 화보·한국어 소개·엔딩 보강 / 2026-10-07
+
+- 첫 화면의 개인 프로필 반복을 새 M9 9인 단체 화보로 교체. 같은 이미지를 엔딩의 은은한 배경으로 사용하고 본문에는 흰 반투명 면을 유지했습니다.
+- built-in image_gen으로 제작. 결과는 `assets/character-archive/m9-group-portrait-v1.png` (1536×1024, 2,553,767 bytes). 제작 근거와 최종 프롬프트는 `docs/M9-GROUP-ARTWORK-PROMPT.md`에 저장했습니다.
+- 담당 영역과 케미 소개를 한국어로 표시하고 흰색 내부 카드에 인물·설명을 묶었습니다. 공식 개인 프로필과 원본 Canon Registry는 그대로입니다.
+- MIR 작은 프로필은 부모 폭 기준 퍼센트 padding으로 찌그러지던 문제를 고정 여백으로 수정했습니다.
+- static/Canon 검사 및 1440/390 isolated UI·실제 빈 OS 메뉴 통합 회귀 PASS. 새 이미지 decode, MIR 화면 크기, 10명 선택, overflow/console/storage 검사 포함. Hero·관계 카드·엔딩 스크린샷 확인 완료.
+- 실제 로그인/Cloud/전체 운영 회귀와 Release HINA는 미검증. 운영 버전/cache tag 변경 없음, Production NOT DEPLOYED.
+- 배포 담당자는 새 PNG를 반드시 포함하고 최신 기능 branch와 열차 후보 간 차이를 확인해야 합니다. Notion의 PR219/v191 대기 기록은 별도 배포 담당 기록이며 이번 추가 수정의 포함·배포 증거가 아닙니다.
