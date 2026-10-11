@@ -2585,6 +2585,9 @@ body[data-canvas-group="team"]{--canvas-a:#7569e8;--canvas-b:#d875a3;--canvas-c:
 #sidebar .nav-new-pill{display:inline-block;flex:none;margin-left:6px;padding:2px 6px;border:1px solid #f28c28;border-radius:999px;font-size:9px;font-weight:900;line-height:1.2;color:#4b2609;background:#f28c28}
 :root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #sidebar .nav-new-pill{color:#ffd0a1;background:#512b10;border-color:#ac652a}
 #sidebar .nav-new-pill[hidden],.sidebar-mini #sidebar .nav-new-pill{display:none}
+/* Group header: keep NEW on the same line, right of the group name. */
+#sidebar .dashboard-nav-copy:has(> .nav-new-pill:not([hidden])) > .name{display:inline-flex !important;width:auto !important;vertical-align:middle}
+#sidebar .dashboard-nav-copy > .nav-new-pill{vertical-align:middle}
 .login-gate :is(button,input,select):focus-visible{outline:2px solid var(--structure-accent,#685486);outline-offset:3px}
 .login-gate{color:var(--text-primary,#28374c);--login-season-ink:color-mix(in srgb,var(--season-motif) 35%,var(--text-primary));background:radial-gradient(circle at 14% 10%,color-mix(in srgb,var(--collection-light) 48%,transparent),transparent 55%),radial-gradient(circle at 92% 88%,color-mix(in srgb,var(--collection-light-second) 38%,transparent),transparent 55%),var(--surface-canvas)}
 .login-gate .login-orb-a{background:color-mix(in srgb,var(--collection-light) 32%,transparent)}.login-gate .login-orb-b{background:color-mix(in srgb,var(--collection-light-second) 32%,transparent)}
@@ -2599,3 +2602,8 @@ body[data-canvas-group="team"]{--canvas-a:#7569e8;--canvas-b:#d875a3;--canvas-c:
 .login-gate .login-card-head h2{color:var(--text-primary,#28374c)}
 .login-cloud-tools{min-width:0;margin-top:16px;max-height:55vh;overflow:auto;overscroll-behavior:contain}
 .login-cloud-tools>.card{margin-bottom:12px}
+
+/* Floor labels stay inside the existing company navigation group. */
+.side .nav-floor-label{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 6px;margin:14px 12px 5px;color:var(--text-muted,var(--muted,#637087));font-size:12px;font-weight:700;line-height:1.6;opacity:.85}.side .nav-floor-number{font-size:10px;letter-spacing:.06em}.side .nav-floor-team{flex-basis:100%;font-size:9px;font-weight:500;overflow-wrap:anywhere;letter-spacing:0}
+.side .nav-floor-label:first-child{margin-top:4px}.side .nav-floor-shortcut small{font-size:9px;opacity:.65;white-space:nowrap;margin-left:auto}.side .nav-floor-shortcut .txt{white-space:normal}
+@media(max-width:600px){.side .nav-floor-label{margin-top:12px;font-size:11px}.side .nav-floor-shortcut small{font-size:10px}}

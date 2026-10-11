@@ -25,7 +25,7 @@
     policy:{primary:"규정 새로고침",click:"#agentRefreshPolicies",agent:"HANI",recent:"현재 규정",recentTarget:"#agentPolicyRegistry",sections:[["Registry","#agentPolicyRegistry"],["상태","#agentPolicyRegistryState"]]},
     deployment:{primary:"배포 상태 확인",click:"#deployExecRefreshBtn",agent:"HINA",recent:"Release Queue",recentTarget:"#deployExecutiveCard",sections:[["현황","#deployExecutiveCard"],["Inbox","#deployInboxRefreshBtn"],["HINA QA","#deployHinaQaBtn"]]},
     investment:{primary:"자산 업데이트",action:{view:"investmentIntake"},agent:"HANI",recent:"최근 월간 기록",recentTarget:"#investmentMonthly",sections:[["현황","#investmentOverview"],["월간 기록","#investmentMonthly"],["종목 관리","#investmentManage"]]},
-    investmentCommittee:{primary:"포트폴리오 보기",action:{view:"investment"},agent:"HANI",recent:"월간 위원회",recentTarget:"#icMonthly",sections:[["종목 리서치","#icResearch"],["월간 위원회","#icMonthly"]]},
+    investmentCommittee:{primary:"포트폴리오 보기",action:{view:"investment"},agent:"HANI",recent:"월간 리포트",recentTarget:"#icMonthly",sections:[["종목 리포트","#icResearch"],["월간 리포트","#icMonthly"]]},
     investmentIntake:{primary:"업데이트 입력",focus:"#ledgerImportRaw",agent:"YUNA",recent:"입력 안내",recentTarget:"#ledgerImportResult",sections:[["복붙 입력","#ledgerImportRaw"],["미리보기","#ledgerImportResult"]]},
     asset:{primary:"자산 업데이트",action:{view:"investmentIntake"},agent:"HANI",recent:"자산 현황",recentTarget:"#assetDashboard",sections:[["현황","#assetDashboard"],["계좌","#assetAccounts"]]},
     ledger:{primary:"거래 입력",focus:"#ledgerImportRaw",agent:"JIEUN",recent:"최근 결산",recentTarget:"#ledgerMonthArchive",sections:[["월간 결산","#ledgerMonthly"],["소비 리뷰","#ledgerReviews"],["상세내역","#ledgerItemRows"]]},
