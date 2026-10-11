@@ -196,6 +196,7 @@ const TAB_CHARACTER_LINES = Object.freeze({
   policy: entry("sua", ["확정된 규칙부터 함께 확인해요.", "애매한 권한은 확인 필요로 남겨요.", "규칙은 다음 행동을 돕는 기준이에요."], "BOARDROOM"),
   deployment: entry("seoyun", ["확인한 근거와 승인부터 챙겨볼게요.","미리보기에서 마지막 한 번 같이 살펴요.","실제 반영까지 꼼꼼히 확인할게요."], "BOARDROOM"),
   investment: entry("hani", ["가격과 근거를 따로 살펴봐요.", "수익률보다 계획부터 확인해요.", "서두르지 말고 변수를 나눠봐요."], "DIRECT_CHAT"),
+  investmentCommittee: entry("hani", ["종목의 근거부터 함께 점검해요.", "지난 판단과 이번 변화를 나누어 봐요.", "월간 위원회에서 다음 조건을 확인해요."], "DIRECT_CHAT"),
   investmentIntake: entry("hani", ["원본 숫자부터 함께 맞춰봐요.", "모르는 항목은 빈칸으로 남겨요.", "확정 전 미리보기와 비교해요."], "DIRECT_CHAT"),
   asset: entry("jieun", ["잔액과 앞으로 쓸 돈을 같이 봐요.", "숫자 뒤에 있는 용도도 남겨봐요.", "작은 변화부터 차분히 살펴봐요."], "DIRECT_CHAT"),
   ledger: entry("jieun", ["지출의 이유부터 같이 돌아봐요.", "잘 쓴 돈까지 혼낼 필요는 없어요.", "다음 달에 바꿀 한 가지를 찾아요."], "DIRECT_CHAT"),
@@ -537,6 +538,27 @@ function createTabQuoteSelector(random = Math.random) {
   sceneFit: "cover",
   sceneFitMobile: "cover",
   sceneVariant: "investment",
+  sceneAlt: "하니와 지은이 현대적인 시장 분석실에서 투자 데이터를 검토하는 장면",
+  variant: "duo-or-trio",
+  tone: "finance"
+}),
+    "investmentCommittee":Object.freeze({
+  sidebarMenuKey: "investmentCommittee",
+  category: "finance",
+  owner: "hani",
+  profile: "hani",
+  speaker: "하니",
+  role: "Chief Investment Strategist",
+  eyebrow: "FINANCE · INVESTMENT COMMITTEE",
+  title: "투자위원회",
+  description: "종목 리서치와 월간 위원회에서 투자 판단의 근거를 점검합니다.",
+  quote: "가격과 근거를 나누고, 판단을 바꾸는 조건을 함께 확인해요.",
+  sceneImage: "./assets/banner-preview-v1/investment-market-room-v1.webp",
+  scenePosition: "center center",
+  scenePositionMobile: "72% center",
+  sceneFit: "cover",
+  sceneFitMobile: "cover",
+  sceneVariant: "investmentCommittee",
   sceneAlt: "하니와 지은이 현대적인 시장 분석실에서 투자 데이터를 검토하는 장면",
   variant: "duo-or-trio",
   tone: "finance"
@@ -1148,7 +1170,7 @@ function createTabQuoteSelector(random = Math.random) {
   function arrangeNavigation(){
     const ledger=q('#ledger'),tabs=q('#ledger > .tabs')||q('#ledger > .page-nav-context-v02992 .tabs'),picker=q('#ledger .money-month-picker');q('#ledger .money-intro')?.remove();
     if(ledger&&tabs){let nav=q('#ledger > .page-nav-context-v02992');if(!nav){nav=document.createElement('div');nav.className='page-nav-context-v02992';tabs.before(nav);nav.append(tabs);const context=document.createElement('div');context.className='page-context-v02992';nav.append(context);if(picker)context.append(picker)}const banner=q('#ledger > .ds-main-character-banner');if(banner&&nav&&banner.nextElementSibling!==nav)banner.after(nav)}
-    const inv=q('#investment .ic-portfolio'),invTabs=q('.investment-tabs-main',inv);if(inv&&invTabs&&!q(':scope > .page-nav-context-v02992',inv)){const nav=document.createElement('div');nav.className='page-nav-context-v02992';invTabs.before(nav);nav.append(invTabs)}
+    const inv=q('#investment'),invTabs=q('.investment-tabs-main',inv);if(inv&&invTabs&&!q(':scope > .page-nav-context-v02992',inv)){const nav=document.createElement('div');nav.className='page-nav-context-v02992';invTabs.before(nav);nav.append(invTabs)}
     const overviewHead=q('#investment .investment-overview-head'),year=q('#overviewYearSelect')?.closest('.field'),select=q('#overviewYearSelect'),invNav=inv?q(':scope > .page-nav-context-v02992',inv):null;
     if(year&&invNav){let context=q('.page-context-v02992',invNav);if(!context){context=document.createElement('div');context.className='page-context-v02992';invNav.append(context)}context.append(year);const values=select?Array.from(select.options).map(x=>x.value).filter(Boolean):[];let fixed=q('.investment-year-static',year);if(values.length<=1){if(!fixed){fixed=document.createElement('strong');fixed.className='investment-year-static';year.append(fixed)}fixed.textContent=`${values[0]||new Date().getFullYear()}년`;if(select)select.hidden=true}else{fixed?.remove();if(select)select.hidden=false}}
     if(overviewHead){q(':scope > div:first-child',overviewHead)?.remove();if(!overviewHead.children.length)overviewHead.remove()}

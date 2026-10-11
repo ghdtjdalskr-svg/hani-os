@@ -665,7 +665,8 @@
     const box = q('#studyProjectList');
     if (!box) return;
     const projects = activeStudyTab === 'board' ? boardProjects() : visibleProjects();
-    if (!activeProjectId || !projects.some(x => x.id === activeProjectId)) activeProjectId = projects[0]?.id || '';
+    const linkedPending = quizById(activeQuizId)?.projectId === activeProjectId && quizById(activeQuizId)?.status !== 'completed' && projectById(activeProjectId);
+    if (!activeProjectId || (!projects.some(x => x.id === activeProjectId) && !linkedPending)) activeProjectId = projects[0]?.id || '';
     box.innerHTML = projects.length ? projects.map(p => {
       const view = normalizeProject(p), s = projectProgress(p), pct = s.total ? Math.round(s.completed / s.total * 100) : 0;
       const statusLabel=view.status==='paused'?'일시중지':view.status==='completed'?'종료':'학습 중';
@@ -770,7 +771,7 @@
     </div>`;
   }
 
-  function renderMain() {
+  function renderMain(autoGenerate = true) {
     const main = q('#studyMainPanel');
     if (!main) return;
     const project = projectById(activeProjectId);
@@ -824,16 +825,29 @@
       });
       q('#studyQuizSubmit')?.addEventListener('click', () => gradeQuiz(activeQuiz));
     }
-    maybeAutoGenerate(project);
+    if (autoGenerate) maybeAutoGenerate(project);
   }
 
+  function pendingLearningQuizzes() { return (state.learningQuizzes || []).filter(x => x.status !== 'completed'); }
+  function openPendingQuiz() {
+    const quiz=pendingLearningQuizzes().find(x=>projectById(x.projectId));
+    if (!quiz) { showView('study'); return; }
+    activeProjectId=quiz.projectId;activeQuizId=quiz.id;activeStudyTab='board';quizArchiveMonth='all';quizArchivePage=1;
+    showView('study');renderLearning(false);
+    requestAnimationFrame(()=>q('#studyQuizDetail')?.scrollIntoView({block:'start'}));
+  }
+  function renderPendingQuizNav() {
+    const count=pendingLearningQuizzes().length;
+    qa('.nav-btn[data-view="study"]').forEach(nav=>{let badge=q('[data-study-pending]',nav);if(!badge){badge=document.createElement('span');badge.className='pill';badge.dataset.studyPending='';nav.appendChild(badge)}badge.hidden=!count;badge.textContent=String(count);badge.setAttribute('aria-label','안 푼 퀴즈 '+count+'개');});
+  }
   function renderCounters() {
+    renderPendingQuizNav();
     if (q('#studyProjectCount')) q('#studyProjectCount').textContent = `프로젝트 ${boardProjects().length}`;
     if (q('#studyQuizCount')) q('#studyQuizCount').textContent = `퀴즈 ${(state.learningQuizzes || []).length}`;
     if (q('#studyWrongCount')) q('#studyWrongCount').textContent = `오답 ${(state.learningWrongAnswers || []).filter(x => x.reviewStatus !== 'mastered').length}`;
   }
 
-  function renderLearning() {
+  function renderLearning(autoGenerate = true) {
     ensureLearningState();
     injectStudyShell();
     const engine=q('#studyEngineV02984');if(engine)engine.dataset.activeStudyTab=activeStudyTab;
@@ -849,7 +863,7 @@
     renderProjectList();
     renderCounters();
     if (activeStudyTab === 'board') {
-      renderMain();
+      renderMain(autoGenerate);
       try { if (typeof renderNotes === 'function') renderNotes(); } catch (_) {}
     } else if (activeStudyTab === 'wrong') renderWrongTab();
     else renderHistory();
@@ -1065,10 +1079,11 @@
   }
 
   function renderHomeDerived() {
+    if (typeof renderHaniCareHome === 'function') renderHaniCareHome();
     const box = q('#homeTaskMini');
     if (!box) return;
     qa('.learning-derived', box).forEach(x => x.remove());
-    const rows = derivedLearningTasks();
+    const rows = derivedLearningTasks().filter(row => !row.quizId); // Pending quizzes have one canonical care card.
     if (!rows.length) return;
     if (box.querySelector('.empty')) box.innerHTML = '';
     const fragment = document.createDocumentFragment();
@@ -1108,6 +1123,7 @@
   }
 
   window.HANI_STUDY_V02984_TEST = {
+    pendingLearningQuizzes, openPendingQuiz, renderPendingQuizNav,
     ensureLearningState, normalizeProject, normalizeQuestion, normalizeQuiz, questionKey,
     quizDate, isScheduledDate, shouldGenerateForDate, nextSequenceNo, derivedLearningTasks, activeProjects, boardProjects, visibleProjects, completedProjects, wrongRows, wrongGroups, renderWrongTab,
     normalizePromptText, promptFingerprint, promptSimilarity, duplicateLevel, validQuestion, recentQuestionRotation, collectQuizCandidates, useLeastSimilarFallback, replacementBatchSize, tooSimilarPrompt, validateQuestionSet, quizApi,

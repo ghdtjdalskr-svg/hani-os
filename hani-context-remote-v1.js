@@ -25,6 +25,7 @@
     policy:{primary:"규정 새로고침",click:"#agentRefreshPolicies",agent:"HANI",recent:"현재 규정",recentTarget:"#agentPolicyRegistry",sections:[["Registry","#agentPolicyRegistry"],["상태","#agentPolicyRegistryState"]]},
     deployment:{primary:"배포 상태 확인",click:"#deployExecRefreshBtn",agent:"HINA",recent:"Release Queue",recentTarget:"#deployExecutiveCard",sections:[["현황","#deployExecutiveCard"],["Inbox","#deployInboxRefreshBtn"],["HINA QA","#deployHinaQaBtn"]]},
     investment:{primary:"자산 업데이트",action:{view:"investmentIntake"},agent:"HANI",recent:"최근 월간 기록",recentTarget:"#investmentMonthly",sections:[["현황","#investmentOverview"],["월간 기록","#investmentMonthly"],["종목 관리","#investmentManage"]]},
+    investmentCommittee:{primary:"포트폴리오 보기",action:{view:"investment"},agent:"HANI",recent:"월간 위원회",recentTarget:"#icMonthly",sections:[["종목 리서치","#icResearch"],["월간 위원회","#icMonthly"]]},
     investmentIntake:{primary:"업데이트 입력",focus:"#ledgerImportRaw",agent:"YUNA",recent:"입력 안내",recentTarget:"#ledgerImportResult",sections:[["복붙 입력","#ledgerImportRaw"],["미리보기","#ledgerImportResult"]]},
     asset:{primary:"자산 업데이트",action:{view:"investmentIntake"},agent:"HANI",recent:"자산 현황",recentTarget:"#assetDashboard",sections:[["현황","#assetDashboard"],["계좌","#assetAccounts"]]},
     ledger:{primary:"거래 입력",focus:"#ledgerImportRaw",agent:"JIEUN",recent:"최근 결산",recentTarget:"#ledgerMonthArchive",sections:[["월간 결산","#ledgerMonthly"],["소비 리뷰","#ledgerReviews"],["상세내역","#ledgerItemRows"]]},
@@ -69,11 +70,11 @@
 
   const viewId=()=>document.body.dataset.view||$(".view.active")?.id||"home";
   // On the market screen use its existing toolbar, not a floating chart overlay.
-  const placeMobileTrigger=()=>{const mobile=innerWidth<=850,view=viewId(),marketSlot=mobile&&view==='asset'?document.querySelector('#assetMarket .market-toolbar'):null,intakeSlot=mobile&&view==='intake'?document.querySelector('header.top .top-actions'):null;const target=marketSlot||intakeSlot||app;if(mobileTrigger.parentElement!==target)target.append(mobileTrigger);mobileTrigger.classList.toggle('is-market-inline',!!marketSlot);mobileTrigger.classList.toggle('is-intake-inline',!!intakeSlot)};
+  const placeMobileTrigger=()=>{const mobile=innerWidth<=850,view=viewId(),marketSlot=mobile&&view==='investment'&&document.querySelector('#investOverview.active #investOverviewStocks.active')?document.querySelector('#assetMarket .market-toolbar'):null,intakeSlot=mobile&&view==='intake'?document.querySelector('header.top .top-actions'):null;const target=marketSlot||intakeSlot||app;if(mobileTrigger.parentElement!==target)target.append(mobileTrigger);mobileTrigger.classList.toggle('is-market-inline',!!marketSlot);mobileTrigger.classList.toggle('is-intake-inline',!!intakeSlot)};
   const config=()=>defaults[viewId()]||{primary:"현재 화면 보기",agent:"HANI",recent:"최근 항목",recentTarget:`#${viewId()}`,sections:[["현재 화면",`#${viewId()}`]]};
   const visibleTarget=selector=>{try{return selector?$(selector):null}catch{return null}};
   const goView=id=>{const nav=$(`[data-view="${id}"]`);if(nav){nav.click();return true}return false};
-  const moveTo=selector=>{const el=visibleTarget(selector);if(!el)return false;el.scrollIntoView({behavior:"smooth",block:"start"});return true};
+  const moveTo=selector=>{if(viewId()==="investmentCommittee"&&(selector==="#icResearch"||selector==="#icMonthly"))window.HaniInvestmentCommittee?.select(selector.slice(1));const el=visibleTarget(selector);if(!el)return false;el.scrollIntoView({behavior:"smooth",block:"start"});return true};
   const focusTarget=selector=>{const el=visibleTarget(selector);if(!el)return false;el.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(()=>el.focus?.({preventScroll:true}),260);return true};
   const countFrom=selector=>{const text=visibleTarget(selector)?.textContent||"";const match=text.replaceAll(",","").match(/\d+/);return match?Number(match[0]):0};
   const season=()=>["spring","summer","autumn","winter"].includes(document.documentElement.dataset.season)?document.documentElement.dataset.season:"spring";
@@ -92,7 +93,7 @@
   new MutationObserver(update).observe(document.body,{attributes:true,attributeFilter:["data-view"]});
   new MutationObserver(placeMobileTrigger).observe(document.body,{attributes:true,attributeFilter:["data-view"]});
   new MutationObserver(()=>{bannerPicks.set(`${season()}:${viewId()}`,randomIndex(2));updateBanner()}).observe(document.documentElement,{attributes:true,attributeFilter:["data-season"]});
-  document.addEventListener("click",e=>{const route=e.target.closest("[data-view]");if(route&&route!==document.body)setTimeout(()=>{update();setMobile(false)},0)});
+  document.addEventListener("click",e=>{const route=e.target.closest("[data-view]");if(route&&route!==document.body)setTimeout(()=>{update();placeMobileTrigger();setMobile(false)},0);else if(e.target.closest(".investment-tabs-main,.investment-overview-tabs,[data-asset-market-link],[data-ic=portfolio]"))setTimeout(placeMobileTrigger,0)});
   window.addEventListener("resize",()=>{if(innerWidth>850)setMobile(false);placeMobileTrigger()},{passive:true});
   placeMobileTrigger();
   update();

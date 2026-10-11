@@ -1504,6 +1504,7 @@ function closeModal(id){$(id).classList.remove("open")}
 const pageMeta={
  home:["대시보드","오늘의 기록과 흐름을 한눈에 확인합니다.","home"],
  investment:["투자","월간 스냅샷으로 계좌별 자산과 자금 흐름을 기록합니다.","finance"],
+ investmentCommittee:["투자위원회","종목 리서치와 월간 위원회에서 투자 판단의 근거를 살펴봅니다.","finance"],
  investmentIntake:["자산 업데이트","가계부 확정본과 투자 계좌 자료를 안전하게 업데이트합니다.","finance"],
  newsroom:["뉴스룸","관심종목의 의미 있는 뉴스와 종목별 흐름을 시간순으로 확인합니다.","finance"],
  asset:["자산","모든 투자계좌의 자산을 통합해서 확인합니다.","finance"],
@@ -1565,7 +1566,7 @@ const canonicalProfileImages=Object.freeze({
 const agentImages=Object.freeze({...canonicalProfileImages,nauen:canonicalProfileImages.naeun,suyeon:canonicalProfileImages.sooyeon});
 // Small avatars (30-150px) use pre-resized 256px thumbnails; the 720px originals look jagged when the browser shrinks them 10-20x.
 const sidebarAgentImages=Object.freeze(Object.fromEntries(Object.entries(agentImages).map(([k,v])=>[k,v.replace("./assets/profiles/","./assets/profiles/thumb/").replace(/\.webp$/,"-256.webp")])));
-const pageAgentImage={home:"hani",investment:"hani",newsroom:"hani",asset:"jieun",ledger:"jieun",cards:"jieun",wishlist:"haru",diet:"nauen",exercise:"nauen",travel:"suyeon",university:"hina",study:"hina",certificate:"hina",reading:"haru",movie:"minji",diary:"minji",game:"suyeon",settings:"hani",work:"sua",tasks:"sua",calendar:"sua",drive:"sua",dev:"hani",deployment:"hani",intake:"yuna",agentReview:"hani",monthlyReport:"hani",policy:"hani",aiTeam:"hani"};
+const pageAgentImage={home:"hani",investment:"hani",investmentCommittee:"hani",newsroom:"hani",asset:"jieun",ledger:"jieun",cards:"jieun",wishlist:"haru",diet:"nauen",exercise:"nauen",travel:"suyeon",university:"hina",study:"hina",certificate:"hina",reading:"haru",movie:"minji",diary:"minji",game:"suyeon",settings:"hani",work:"sua",tasks:"sua",calendar:"sua",drive:"sua",dev:"hani",deployment:"hani",intake:"yuna",agentReview:"hani",monthlyReport:"hani",policy:"hani",aiTeam:"hani"};
 const YUNA_AVATAR=canonicalProfileImages.yuna;
 const YUNA_PORTRAIT=canonicalProfileImages.yuna;
 
@@ -1592,6 +1593,9 @@ const pageQuotes={
   ],
   investment:[
     ["하니","공포에 사고 환희에 팔아라! …근데 오빠, 현금흐름부터 확인."],["하니","수익률보다 먼저 보는 건 포지션 크기. 오래 살아남아야 복리도 온다."],["하니","좋은 종목도 비싸게 사면 힘들어. 가격과 이야기를 분리해서 보자."],["하니","오빠 또 차트 새로고침했지? 주가는 쳐다본다고 빨리 안 갑니다 ㅋㅋ"],["하니","빨간불은 반갑고 파란불은 싫지만, 색깔보다 계획이 먼저야."],["하니","매수 버튼은 가볍지만 포지션은 무겁습니다. 하부장 결재 맡겨주세요."]
+  ],
+  investmentCommittee:[
+    ["하니","가격과 투자 근거를 따로 점검해요."],["하니","지난 판단에서 무엇이 달라졌는지 함께 보자."],["하니","이번 달 위원회는 다음 행동의 조건부터 확인할게."]
   ],
   newsroom:[
     ["하니","뉴스는 많다고 좋은 게 아니라, 판단을 바꾸는 재료가 보여야 해."],["하니","종목 하나를 눌러 흐름부터 보자. 오늘 기사 한 줄보다 변화의 방향이 중요해."],["하니","공식 발표와 시장 기대는 같은 문장에 섞지 않습니다."],["하니","뉴스룸은 매수 버튼이 아니라 확인 버튼입니다. 판단은 기록 뒤에." ]
@@ -1690,6 +1694,7 @@ function pageQuote(page){
 
 const pageBannerMap={
   home:{emoji:"✨",name:"하니 · HANI OS Manager",message:"오늘 기록과 핵심 흐름을 한눈에 정리해서 보여줄게요.",role:"DASHBOARD"},
+  investmentCommittee:{emoji:"📋",name:"하니 · Chief Investment Strategist",message:"종목의 근거와 월간 투자 판단을 함께 점검해요.",role:"INVESTMENT"},
   investment:{emoji:"📈",name:"하니 · CIO",message:"투자 현황과 자산 흐름을 정확하게 읽을 수 있게 도와줘요.",role:"INVESTMENT"},
   newsroom:{emoji:"📰",name:"하니 · Market Editor",message:"관심종목의 새 재료를 출처와 영향으로 나눠 시간순 흐름으로 정리해요.",role:"INVESTMENT NEWS"},
   asset:{emoji:"💰",name:"지은 · Asset Manager",message:"계좌와 자산을 한곳에 모아 전체 체급과 흐름을 관리해요.",role:"ASSET"},
@@ -1837,9 +1842,15 @@ function selectSettingsTab(tab){
   });
   if(tab==="policy")setTimeout(()=>agentPolicyInit(),0);
 }
+const INVESTMENT_COMMITTEE_VIEW='investmentCommittee';
 function showView(id){
+  window.HANI_GOAL_PROGRESS?.syncGoalEditor?.(id);
   if(typeof renderNavNewBadges==="function")renderNavNewBadges();
   const ORGANIZATION_VIEW_ID='organization',SETTINGS_VIEW_ID='settings';
+  const committeeView=typeof INVESTMENT_COMMITTEE_VIEW==='string'?INVESTMENT_COMMITTEE_VIEW:'investmentCommittee';
+  const committeeRoute=String(id||'').split('/');
+  const committee=committeeRoute[0]===committeeView;
+  if(committee)id=committeeView;
   const organization=organizationRoute(id);
   if(organization){id=ORGANIZATION_VIEW_ID;selectOrganizationTab(organization.tab)}
   const settings=settingsRoute(id);
@@ -1859,13 +1870,13 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
   activeNav?.closest(".group")?.classList.add("is-current");
   const m=pageMeta[id]||[id,"","home"];$("title").textContent=m[0];$("desc").textContent=m[1];document.body.dataset.view=id;document.body.dataset.canvasGroup=m[2]||"home";const km={home:"DASHBOARD",finance:"FINANCE",health:"HEALTH",growth:"GROWTH",life:"LIFE",sports:"SPORTS",game:"SPORTS",work:"WORK",team:"AI TEAM"};if($("pageKicker"))$("pageKicker").textContent=km[m[2]]||String(id).toUpperCase();setBanner(m[2],id);
   updateFinishScope();
-  history.replaceState(null,"",id==="home"?location.href.split("#")[0]:("#"+(organization?"organization/"+organization.tab+(organization.person?"/"+organization.person:""):settings?"settings/"+settings:boardHash||id)));$("app").classList.remove("mobile-open");window.scrollTo({top:0,left:0,behavior:"auto"});
+  history.replaceState(null,"",id==="home"?location.href.split("#")[0]:("#"+(organization?"organization/"+organization.tab+(organization.person?"/"+organization.person:""):settings?"settings/"+settings:committee?committeeView+(committeeRoute[1]==="monthly"?"/monthly":""):boardHash||id)));$("app").classList.remove("mobile-open");window.scrollTo({top:0,left:0,behavior:"auto"});
   if(organization?.person&&loginGateUnlocked)window.HaniOrganizationHub?.openPerson(organization.person);
   window.HaniAssetMarket?.sync();
-  if(id==="investment")selectInvestmentSection(INVESTMENT_COMMITTEE_IDS.portfolio);
-  window.HaniInvestmentCommittee?.render();
+  if(committee)window.HaniInvestmentCommittee?.select(committeeRoute[1]==="monthly"?"monthly":"research");
   if(id==="board")window.HaniBoard?.render();
   if(id==="geminiReports")window.HaniGeminiReports?.render();
+  if(['home','intake'].includes(id)&&typeof renderHaniCareHome==='function')renderHaniCareHome();
   if(id==="aiBudget")window.HaniAiBudget?.render();
   if(id==="investment")setTimeout(drawPortfolio,30);if(id==="newsroom")setTimeout(()=>investmentNewsMaybeRefresh(),40);if(id==="diet")setTimeout(drawBody,30);if(id==="ledger")setTimeout(drawLedgerTrend,30);if(id==="calendar")renderCalendar();if(id==="tasks")setTimeout(()=>googleCalendarRefreshStatus({silent:true}),0);if(id==="intake")setTimeout(()=>intakeRenderPreview(),0);if(id==="agentReview")setTimeout(()=>agentReviewInit(),0);if(id==="monthlyReport")setTimeout(()=>renderMonthlyReport(),0);if(id==="policy")setTimeout(()=>agentPolicyInit(),0);if(id==="deployment")setTimeout(()=>deployCenterRender(),0);
   // v2.9.2: mobile browsers can throttle background polling. Re-check Cloud when opening data-heavy views.
@@ -1880,7 +1891,7 @@ const QUICK_JUMP_ITEMS=[
   ["aiBudget","AI 주간 예산","Codex Claude Gemini 토큰 사용량 주간 세션 한도 회복 재충전"],
   ["aura","테마 스튜디오","화면 꾸미기 색상 계절 테마 appearance finish season"],
   ["organization","회사 소개","개요 조직도 구성원 HANI GROUP"],
-  ["home","대시보드","홈 오늘 요약"],["investment","홍 스트리트","투자 주식 ETF 월간 기록"],["newsroom","뉴스룸","주식 투자 뉴스 관심종목 3시간 흐름"],["asset","자산","통합 자산 계좌"],["ledger","가계부","소비 결산 리뷰"],
+  ["home","대시보드","홈 오늘 요약"],["investment","투자","주식 ETF 포트폴리오 월간 기록"],["investmentCommittee","투자위원회","종목 리서치 월간 위원회 Research"],["newsroom","뉴스룸","주식 투자 뉴스 관심종목 3시간 흐름"],["asset","자산","통합 자산 계좌"],["ledger","가계부","소비 결산 리뷰"],
   ["diet","계체량 측정","다이어트 체중 건강"],["exercise","헬스클럽","운동 걸음 근력"],["reading","성민의 서재","독서 서재 책 완독"],["study","공부","일본어 AI 학습"],
   ["university","낭만 캠퍼스 라이프","대학교 대학 캠퍼스 과목 학사일정"],["certificate","자격증","시험 일정"],["wishlist","Wish-list","위시 희망 구매 경험"],["travel","여행","여행 기록 장소 숙소"],["movie","시청 아카이브","관람 감상 아카이브"],
   ["diary","일기","오늘 기록"],["game","스포츠","MLB KBO 해외축구 LCK 양키스 KIA 레알 마드리드 Dplus"],["tasks","할 일","태스크 월간"],["calendar","캘린더","일정"],
@@ -1913,30 +1924,6 @@ function setupQuickJump(){
   document.addEventListener("click",e=>{if(!box.contains(e.target))closeQuickJump()});
 }
 
-const INVESTMENT_COMMITTEE_IDS=Object.freeze({portfolio:'icPortfolio',research:'icResearch',monthly:'icMonthly',tabs:'icSections'});
-window.HaniInvestmentCommitteeIds=INVESTMENT_COMMITTEE_IDS;
-function selectInvestmentSection(id){
-  const ids=INVESTMENT_COMMITTEE_IDS,nav=$(ids.tabs);
-  if(!nav||!Object.values(ids).slice(0,3).includes(id))return;
-  [ids.portfolio,ids.research,ids.monthly].forEach(key=>{const panel=$(key);panel.hidden=key!==id;panel.classList.toggle('active',key===id)});
-  nav.querySelectorAll('[data-ic-section]').forEach(b=>{const active=b.dataset.icSection===id;b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1});
-  if(id===ids.research)window.HaniInvestmentCommittee?.enter();
-  if(id===ids.monthly)window.HaniInvestmentCommittee?.renderMonthly();
-}
-function setupInvestmentCommitteeLayout(section,tabs){
-  const ids=INVESTMENT_COMMITTEE_IDS;if($(ids.portfolio))return;
-  // IC sections use hidden; legacy .panel activation must not hide their parent.
-  const portfolio=document.createElement('div');portfolio.id=ids.portfolio;portfolio.className='active ic-portfolio';portfolio.setAttribute('role','tabpanel');
-  while(section.firstChild)portfolio.appendChild(section.firstChild);
-  const nav=document.createElement('div');nav.id=ids.tabs;nav.className='ic-section-tabs';nav.setAttribute('role','tablist');nav.setAttribute('aria-label','투자 영역');
-  [[ids.portfolio,'포트폴리오'],[ids.research,'종목 리서치'],[ids.monthly,'월간 위원회']].forEach(([id,label])=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.icSection=id;b.setAttribute('role','tab');b.setAttribute('aria-controls',id);nav.appendChild(b)});
-  const research=document.createElement('div');research.id=ids.research;research.className='ic-research';research.setAttribute('role','tabpanel');
-  const monthly=document.createElement('div');monthly.id=ids.monthly;monthly.className='ic-monthly';monthly.setAttribute('role','tabpanel');monthly.innerHTML='<div class="card ic-empty"><h3>월간 위원회</h3><p>다음 단계에서 열려요</p></div>';
-  section.append(nav,portfolio,research,monthly);
-  nav.addEventListener('click',e=>{const b=e.target.closest('[data-ic-section]');if(b)selectInvestmentSection(b.dataset.icSection)});
-  nav.addEventListener('keydown',e=>{const buttons=[...nav.children],i=buttons.indexOf(e.target);if(i<0)return;const next=e.key==='ArrowRight'?(i+1)%3:e.key==='ArrowLeft'?(i+2)%3:e.key==='Home'?0:e.key==='End'?2:-1;if(next<0)return;e.preventDefault();selectInvestmentSection(buttons[next].dataset.icSection);buttons[next].focus()});
-  selectInvestmentSection(ids.portfolio);
-}
 function setupInvestmentRc21Layout(){
 const section=$("investment"),tabs=section?.querySelector('.investment-tabs-main');if(!section||!tabs)return;
 tabs.innerHTML='<button class="tab active" data-panel="investOverview">투자 현황</button><button class="tab" data-panel="investMonthly">월간 기록</button><button class="tab" data-panel="investManage">종목 관리</button><button class="tab" data-panel="investJournal">투자 일기</button>';
@@ -1957,7 +1944,8 @@ if(yearly){const yearCard=$("annualInvestmentStats")?.closest('.card'),annualAss
 if(monthly){const editor=$("brokerEditorCard"),archive=$("brokerSnapshotRows")?.closest('.card'),oldGrid=editor?.parentElement;if(editor&&archive){const rg=document.createElement('div');rg.className='grid investment-record-grid';if(monthNote)monthNote.after(rg);else monthly.prepend(rg);rg.appendChild(editor);rg.appendChild(archive);if(oldGrid&&oldGrid.classList.contains('grid')&&!oldGrid.children.length)oldGrid.remove()}}
 if(manage){manage.innerHTML='<div class="instrument-manager-note"><b>종목 관리 = 투자 모듈의 종목 마스터</b><br>여기서 종목을 한 번 등록하면 월간 기록의 종목 선택지에 자동으로 나타납니다. 보유수량·평단·수익률은 여기서 수정하지 않고 월간 기록과 투자 현황에서 관리합니다.</div><div id="manageMasterSlot"></div><div class="manage-section" id="manageWatchSlot"></div>';if(inst){const g=inst.querySelector(':scope > .grid');if(g)$("manageMasterSlot").appendChild(g);inst.remove()}if(watch){while(watch.firstChild)$("manageWatchSlot").appendChild(watch.firstChild);watch.remove()}const price=$("instrumentPrice")?.closest('.field');if(price)price.classList.add('rc1-hidden');const fg=$("instrumentName")?.closest('.fg');if(fg&&!$("instrumentMarket")){const hidden=document.createElement('input');hidden.type='hidden';hidden.id='instrumentEditId';fg.parentElement.insertBefore(hidden,fg);const field=document.createElement('div');field.className='field';field.innerHTML='<label>시장</label><select id="instrumentMarket"><option value="">자동/미지정</option><option value="KR">한국</option><option value="US">미국</option><option value="OTHER">기타</option></select>';const tickerField=$("instrumentTicker")?.closest('.field');fg.insertBefore(field,tickerField)}const table=$("instrumentRows")?.closest('table');if(table)table.querySelector('thead').innerHTML='<tr><th>종목</th><th>분류</th><th>시장</th><th>코드 / 티커</th><th>보유계좌</th><th>관리</th></tr>';if($("addInstrument"))$("addInstrument").textContent='종목 저장'}
 [$("investAccounts"),$("investHoldings"),$("investTransactions"),$("investCashFlow")].filter(Boolean).forEach(x=>x.classList.add('rc1-hidden'));
-setupInvestmentCommitteeLayout(section,tabs);
+// Mount the same read-only market and portfolio instances in the stock pane.
+[$('assetMarket'),$('portfolioLivePreview')].filter(Boolean).forEach(node=>stocks.appendChild(node));
 }
 setupInvestmentRc21Layout();
 const organizationTabs=document.querySelector(".organization-tabs");
@@ -1974,13 +1962,13 @@ settingsTabs?.addEventListener("keydown",event=>{
   const next=event.key==="ArrowRight"?(index+1)%buttons.length:event.key==="ArrowLeft"?(index+buttons.length-1)%buttons.length:event.key==="Home"?0:event.key==="End"?buttons.length-1:-1;
   if(next<0)return;event.preventDefault();showView("settings/"+buttons[next].dataset.settingsTab);buttons[next].focus();
 });
-window.addEventListener("hashchange",()=>{const route=location.hash.slice(1);if(organizationRoute(route)||settingsRoute(route))showView(route)});
+window.addEventListener("hashchange",()=>{const route=location.hash.slice(1);if(organizationRoute(route)||settingsRoute(route)||route.split("/")[0]===INVESTMENT_COMMITTEE_VIEW)showView(route)});
 document.querySelectorAll("[data-view]").forEach(b=>b.addEventListener("click",()=>showView(b.dataset.view)));
 document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>showView(b.dataset.go)));
 if($("homeYunaQuick"))$("homeYunaQuick").onclick=()=>{showView("intake");setTimeout(()=>$("yunaInput")?.focus(),80)};
 const GROUP_COLLAPSE_KEY="hani_os_group_collapse_v1";
 // Menu freshness is a calendar-day window in KST; no read/unread persistence.
-const NAV_NEW_DATES=Object.freeze({board:"2026-10-11",organization:"2026-10-11",aura:"2026-10-11",aiBudget:"2026-10-11"});
+const NAV_NEW_DATES=Object.freeze({investmentCommittee:"2026-10-11",board:"2026-10-11",organization:"2026-10-11",aura:"2026-10-11",aiBudget:"2026-10-11"});
 function navMenuIsNew(viewId,now=Date.now()){
   const date=NAV_NEW_DATES[viewId];if(!date)return false;
   const day=Math.floor((now+9*3600000)/86400000),added=Math.floor(Date.parse(date+"T00:00:00Z")/86400000);
@@ -2024,7 +2012,7 @@ document.querySelectorAll(".group-head").forEach(b=>{
     persistCollapsedGroups();
   });
 });
-document.querySelectorAll("[data-tabs]").forEach(t=>t.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{t.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");const parent=t.closest('.page-nav-context-v02992')?.parentElement||t.parentElement;parent.querySelectorAll(":scope > .panel").forEach(x=>x.classList.remove("active"));$(b.dataset.panel).classList.add("active");if(t.classList.contains("investment-tabs-main"))t.scrollIntoView({behavior:"smooth",block:"start"});if(b.dataset.panel==="investNews")setTimeout(()=>investmentNewsMaybeRefresh(),40);setTimeout(()=>{drawPortfolio();drawBody();drawLedgerTrend();drawMonthlyAssetChart();drawBrokerChart();drawAnnualInvestmentCharts();drawInvestmentAccountChart()},30)})));
+document.querySelectorAll("[data-tabs]").forEach(t=>t.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{t.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");const parent=t.closest('.page-nav-context-v02992')?.parentElement||t.parentElement;parent.querySelectorAll(":scope > .panel").forEach(x=>x.classList.remove("active"));$(b.dataset.panel).classList.add("active");if(t.classList.contains("investment-tabs-main")||t.classList.contains("investment-overview-tabs"))window.HaniAssetMarket?.sync();if(t.classList.contains("investment-tabs-main"))t.scrollIntoView({behavior:"smooth",block:"start"});if(b.dataset.panel==="investNews")setTimeout(()=>investmentNewsMaybeRefresh(),40);setTimeout(()=>{drawPortfolio();drawBody();drawLedgerTrend();drawMonthlyAssetChart();drawBrokerChart();drawAnnualInvestmentCharts();drawInvestmentAccountChart()},30)})));
 document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",()=>closeModal(b.dataset.close)));
 document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)m.classList.remove("open")}));
 $("sideToggle").onclick=()=>{const mini=$("app").classList.toggle("sidebar-mini");localStorage.setItem(SIDEBAR_KEY,mini?"1":"0");$("sideToggle").textContent=mini?"›":"‹"};
@@ -2047,6 +2035,13 @@ function syncSeasonCollection(){
   const season=document.documentElement.dataset.season,meta=SEASON_THEMES[season];
   if(!meta)return;
   const artwork=SEASON_COLLECTION_ARTWORK[season],image=$("seasonalLifeArtwork");
+  // Persistent login artwork slots share the canonical Season preview path.
+  document.querySelectorAll("[data-login-season-artwork]").forEach(slot=>{
+    const key=slot.dataset.loginSeasonArtwork,scene=SEASON_COLLECTION_ARTWORK[key];
+    if(!scene)return;
+    if(slot.getAttribute("src")!==scene.src)slot.setAttribute("src",scene.src);
+    slot.classList.toggle("is-active",key===season);
+  });
   if(image&&artwork){if(image.getAttribute("src")!==artwork.src)image.setAttribute("src",artwork.src);image.alt=artwork.alt;}
   const sidebarArtwork=$("sidebarSeasonArtwork");
   if(sidebarArtwork&&artwork){
@@ -3033,7 +3028,8 @@ function renderInvestmentAccountOverview(){
 }
 function drawInvestmentAccountChart(){const canvas=$("overviewAccountChart");if(!canvas)return;const id=$("overviewAccountSelect")?.value,year=state.ui.investmentYear,rows=officialBrokerSorted().filter(s=>!year||String(s.period||"").startsWith(year+"-"));drawLines(canvas,rows.map(s=>s.period),[{name:accountBy(id)?.name||"계좌",color:seriesColor(id),data:rows.map(s=>accountSnapshotAt(s,id)?.assets||0)}],"월간 기록이 쌓이면 선택 계좌의 자산 흐름이 표시됩니다.")}
 function syncOverviewYearMirror(){const mirror=$("overviewYearSelect"),src=$("annualInvestmentYear");if(!mirror||!src)return;mirror.innerHTML=src.innerHTML;mirror.value=src.value;mirror.onchange=()=>{src.value=mirror.value;src.dispatchEvent(new Event("change"));setTimeout(()=>{syncOverviewYearMirror();renderInvestmentAccountOverview()},0)}}
-function activateInvestmentTab(panelId){selectInvestmentSection(INVESTMENT_COMMITTEE_IDS.portfolio);const tabs=document.querySelector('.investment-tabs-main');if(!tabs)return;const b=tabs.querySelector(`[data-panel="${panelId}"]`);if(b)b.click()}
+function activateInvestmentTab(panelId){const tabs=document.querySelector('.investment-tabs-main');if(!tabs)return;const b=tabs.querySelector(`[data-panel="${panelId}"]`);if(b)b.click()}
+function activateInvestmentStocks(){showView("investment");activateInvestmentTab("investOverview");document.querySelector('.investment-overview-tabs [data-panel="investOverviewStocks"]')?.click()}
 function renderInvestmentQuickSuite(){renderBrokerSnapshots();renderAnnualInvestment();renderCashFlows();renderWatchlist();renderInvestmentJournal()}
 
 function refreshSelects(){
@@ -4014,7 +4010,7 @@ function renderCampus(){
   const order=[{key:"major",label:"전공"},{key:"minor",label:"부전공"},{key:"liberal",label:"교양"},{key:"other",label:"기타 선택"}];$("campusCourseSections").innerHTML=order.map(g=>{const list=courses.filter(c=>campusCourseGroup(c.type).key===g.key),cr=list.reduce((a,c)=>a+n(c.credits),0);if(!list.length)return "";return `<section class="campus-course-section ${g.key}"><div class="campus-course-section-head"><div class="left"><b>${g.label}</b><small>${list.length}과목</small></div><div class="campus-credit-chips"><span class="campus-credit-chip">${num(cr)}학점</span></div></div><div class="campus-course-grid">${list.map(campusCourseCardHtml).join("")}</div></section>`}).join("")||'<div class="empty">등록된 과목이 없어요. 이번 학기 수강 과목부터 추가해 보세요.</div>';
   $("campusCourseSections").querySelectorAll("[data-campus-course]").forEach(card=>card.onclick=e=>{if(e.target.closest("button"))return;openCampusCourseDetail(card.dataset.campusCourse)});$("campusCourseSections").querySelectorAll(".campus-course-open").forEach(btn=>btn.onclick=()=>openCampusCourseDetail(btn.closest("[data-campus-course]").dataset.campusCourse));
   const events=[...(sem.events||[])].filter(e=>e.scope!=="course").sort((a,b)=>String(a.done).localeCompare(String(b.done))||String(a.date).localeCompare(String(b.date)));$("campusEventList").innerHTML=events.length?events.map(e=>`<div class="campus-event ${e.done?"done":""}" data-event-tone="${campusEventTone(e.type)}" data-campus-event="${esc(e.id)}"><div><div class="campus-event-date">${esc(e.date||"-")}</div><div class="sub">${esc(campusDday(e.date))}</div></div><div><div class="campus-event-title">${esc(e.title)}</div><div class="campus-event-meta"><span class="campus-event-type">${esc(e.type)}</span>${e.note?` · ${esc(e.note)}`:""}</div></div><div class="acts"><button class="btn sm campus-event-toggle" type="button">${e.done?"되돌리기":"완료"}</button><button class="btn sm campus-event-edit" type="button">수정</button></div></div>`).join(""):'<div class="empty">등록된 학교 전체 학사 일정이 없어요.</div>';$("campusEventList").querySelectorAll(".campus-event-toggle").forEach(btn=>btn.onclick=()=>{const e=sem.events.find(x=>x.id===btn.closest("[data-campus-event]").dataset.campusEvent);if(e){e.done=!e.done;e.updatedAt=new Date().toISOString();commit("학사 일정 상태를 변경했습니다.")}});$("campusEventList").querySelectorAll(".campus-event-edit").forEach(btn=>btn.onclick=()=>openCampusEventModal(sem.events.find(x=>x.id===btn.closest("[data-campus-event]").dataset.campusEvent)));
-  renderCampusGrades(sem);$("campusQuickNote").value=state.pageNotes?.university||"";
+  renderCampusAssignments(sem);renderCampusGrades(sem);$("campusQuickNote").value=state.pageNotes?.university||"";
 }
 
 // ===== v2.9.0 Travel MVP =====
@@ -4127,7 +4123,7 @@ function renderWishlist(){
 }
 function certificateStatusLabel(v){return v==="pass"?"합격":v==="fail"?"불합격":v==="taken"?"결과 대기":"응시 예정"}
 function resetCertificateForm(){if(!$("certificateEditId"))return;["certificateEditId","certificateName","certificateIssuer","certificateGrade","certificateResultDate","certificateScore","certificateResult"].forEach(id=>$(id).value="");$("certificateExamDate").value="";$("certificateStatus").value="planned";$("certificateSave").textContent="자격증 저장"}
-function renderCertificates(){if(!$("certificateList"))return;const rows=[...(state.certificates||[])].sort((a,b)=>String(a.examDate||"9999").localeCompare(String(b.examDate||"9999")));$("certificateCount").textContent=`${rows.length}개`;$("certificateList").innerHTML=rows.length?rows.map(c=>`<article class="certificate-card" data-certificate="${esc(c.id)}"><div class="certificate-card-head"><div><h4>${esc(c.name||"이름 없는 자격증")}</h4><div class="certificate-meta">${[c.issuer,c.grade,c.examDate?`시험 ${c.examDate}`:""].filter(Boolean).map(esc).join(" · ")}</div></div><span class="certificate-status ${esc(c.status)}">${certificateStatusLabel(c.status)}</span></div>${(c.result||c.score||c.resultDate)?`<div class="certificate-result"><b>결과</b><br>${[c.resultDate?`발표 ${c.resultDate}`:"",c.score,c.result].filter(Boolean).map(esc).join(" · ")}</div>`:""}<div class="acts"><button class="btn sm certificate-edit" type="button">수정</button><button class="btn sm danger certificate-delete" type="button">삭제</button></div></article>`).join(""):'<div class="empty" style="grid-column:1/-1">등록한 자격증이 없습니다. 시험 일정부터 가볍게 추가해 보세요.</div>';$("certificateList").querySelectorAll(".certificate-edit").forEach(btn=>btn.onclick=()=>{const c=state.certificates.find(x=>x.id===btn.closest("[data-certificate]").dataset.certificate);if(!c)return;$("certificateEditId").value=c.id;$("certificateName").value=c.name;$("certificateIssuer").value=c.issuer;$("certificateGrade").value=c.grade;$("certificateExamDate").value=c.examDate;$("certificateStatus").value=c.status;$("certificateResultDate").value=c.resultDate;$("certificateScore").value=c.score;$("certificateResult").value=c.result;$("certificateSave").textContent="수정 저장";$("certificate").scrollIntoView({behavior:"smooth"})});$("certificateList").querySelectorAll(".certificate-delete").forEach(btn=>btn.onclick=()=>{const id=btn.closest("[data-certificate]").dataset.certificate,c=state.certificates.find(x=>x.id===id);if(!c||!confirm(`'${c.name}' 자격증 기록을 삭제할까요?`))return;state.certificates=state.certificates.filter(x=>x.id!==id);commit("자격증 기록을 삭제했습니다.")})}
+function renderCertificates(){if(!$("certificateList"))return;const rows=certificateCareSorted();$("certificateCount").textContent=`${rows.length}개`;$("certificateList").innerHTML=rows.length?rows.map(c=>`<article class="certificate-card" data-certificate="${esc(c.id)}"><div class="certificate-card-head"><div><h4>${esc(c.name||"이름 없는 자격증")}</h4><div class="certificate-meta">${[c.issuer,c.grade,c.examDate?`시험 ${c.examDate}`:""].filter(Boolean).map(esc).join(" · ")}</div></div>${certificateDday(c)?`<span class="pill">${esc(certificateDday(c))}</span>`:""}<span class="certificate-status ${esc(c.status)}">${certificateStatusLabel(c.status)}</span></div>${(c.result||c.score||c.resultDate)?`<div class="certificate-result"><b>결과</b><br>${[c.resultDate?`발표 ${c.resultDate}`:"",c.score,c.result].filter(Boolean).map(esc).join(" · ")}</div>`:""}<div class="acts"><button class="btn sm certificate-edit" type="button">수정</button><button class="btn sm danger certificate-delete" type="button">삭제</button></div></article>`).join(""):'<div class="empty" style="grid-column:1/-1">등록한 자격증이 없습니다. 시험 일정부터 가볍게 추가해 보세요.</div>';$("certificateList").querySelectorAll(".certificate-edit").forEach(btn=>btn.onclick=()=>{const c=state.certificates.find(x=>x.id===btn.closest("[data-certificate]").dataset.certificate);if(!c)return;$("certificateEditId").value=c.id;$("certificateName").value=c.name;$("certificateIssuer").value=c.issuer;$("certificateGrade").value=c.grade;$("certificateExamDate").value=c.examDate;$("certificateStatus").value=c.status;$("certificateResultDate").value=c.resultDate;$("certificateScore").value=c.score;$("certificateResult").value=c.result;$("certificateSave").textContent="수정 저장";$("certificate").scrollIntoView({behavior:"smooth"})});$("certificateList").querySelectorAll(".certificate-delete").forEach(btn=>btn.onclick=()=>{const id=btn.closest("[data-certificate]").dataset.certificate,c=state.certificates.find(x=>x.id===id);if(!c||!confirm(`'${c.name}' 자격증 기록을 삭제할까요?`))return;state.certificates=state.certificates.filter(x=>x.id!==id);commit("자격증 기록을 삭제했습니다.")})}
 
 function renderNotes(){document.querySelectorAll(".generic").forEach(sec=>{const key=sec.dataset.noteKey;sec.querySelector(".page-note").value=state.pageNotes[key]||"";sec.querySelector(".save-note").onclick=()=>{state.pageNotes[key]=sec.querySelector(".page-note").value;save();toast("메모를 저장했습니다.")}})}
 
@@ -4172,7 +4168,75 @@ function haniCareMemory(){return haniCareMemory.session||(haniCareMemory.session
 function haniCareNeedsInstall(){const ua=navigator.userAgent||"",ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);return ios&&/Safari\//.test(ua)&&/Version\//.test(ua)&&!/CriOS|FxiOS|EdgiOS|OPiOS|OPT\/|DuckDuckGo|GSA\//.test(ua)&&navigator.standalone!==true&&!(typeof window.matchMedia==="function"&&window.matchMedia("(display-mode: standalone)").matches)}
 function haniCareNotice(parent,before,key){if(!parent)return;const memory=haniCareMemory(),visible=!memory.dismissed&&haniCareNeedsInstall();if(!memory[key]&&visible){const slot=document.createElement("div");slot.className="note hani-care-notice";const markup='<p>아이폰 사파리는 7일 동안 열지 않으면 이 기기 기록을 지울 수 있어요. 공유 → \'홈 화면에 추가\'로 앱처럼 쓰면 안전해요.</p><button class="btn sm" type="button" aria-label="홈 화면 추가 안내 닫기">닫기</button>';slot.innerHTML=markup;slot.querySelector("button").onclick=()=>{memory.dismissed=true;[memory.homeNotice,memory.storageNotice].forEach(x=>{if(x)x.hidden=true})};parent.insertBefore(slot,before);memory[key]=slot}if(memory[key])memory[key].hidden=!visible}
 function haniCareChecklist(date=monthlyReportKoreaDate()){const day=Number(date.slice(8,10));if(day<15||day>20||!monthlyReportDate(date))return null;const month=date.slice(0,7),period=ledgerSettlementPeriod(month),start=new Date(date+"T00:00:00Z");start.setUTCDate(start.getUTCDate()-(start.getUTCDay()+6)%7);const weekStart=start.toISOString().slice(0,10),ledger=(state.ledgerMonths||[]).some(x=>x?.month===month&&(x.status==="confirmed"||x.confirmed===true||(!x.status&&x.confirmed!==false&&x.importVersion==="LEDGER_FINAL_V1"&&!!x.importedAt))),investment=(state.investmentBrokerSnapshots||[]).some(x=>x?.period===month&&x.mode==="actual"&&x.recordType!=="positions"&&x.status==="confirmed"),body=(state.body||[]).some(x=>{const d=monthlyReportDate(x?.date);return d&&d>=weekStart&&d<=date&&Number.isFinite(Number(x.weight))&&Number(x.weight)>0});return {month,period,weekStart,items:[{label:"① 가계부 이번 결산월 확정",done:ledger,view:"ledger"},{label:"② 이번 달 투자 계좌 스냅샷 확정",done:investment,view:"investment"},{label:"③ 체중 기록 이번 주",done:body,view:"diet"}]}}
-function renderHaniCareHome(){const home=$("home");if(!home)return;const memory=haniCareMemory();haniCareNotice(home,home.firstChild,"homeNotice");const data=haniCareChecklist();if(!memory.checklist&&data){const slot=document.createElement("section");slot.className="card full hani-care-checklist";slot.setAttribute("aria-label","월말 정산 도우미");home.insertBefore(slot,memory.homeNotice?memory.homeNotice.nextSibling:home.firstChild);memory.checklist=slot}const slot=memory.checklist;if(!slot)return;slot.hidden=!data;if(!data)return;slot.innerHTML=`<div class="sh"><h3>월말 정산 도우미</h3><span class="pill">${esc(data.month)} · 18일 결산</span></div><p class="sub">가계부 ${esc(data.period.periodStart)} ~ ${esc(data.period.periodEnd)} · 체중은 월요일부터 오늘까지 확인해요.</p><ul class="hani-care-list">${data.items.map(x=>`<li><span>${x.done?"✓":"○"} ${esc(x.label)} · ${x.done?"완료했어요":"아직이에요"}</span>${x.done?"":`<button class="btn sm" type="button" data-hani-care-view="${x.view}">확인하러 가요</button>`}</li>`).join("")}</ul>`;slot.querySelectorAll("[data-hani-care-view]").forEach(b=>b.onclick=()=>showView(b.dataset.haniCareView))}
+// proactive-204: existing care owner; KST reads, explicit existing campus/intake saves only.
+function careDateAt(value){
+  const s=String(value||'').trim();if(!/^\d{4}-\d{2}-\d{2}(?:$|T)/.test(s))return NaN;
+  const day=s.slice(0,10),midnight=Date.parse(day+'T00:00:00Z');
+  if(!Number.isFinite(midnight)||new Date(midnight).toISOString().slice(0,10)!==day)return NaN;
+  return Date.parse(s.length===10?s+'T00:00:00+09:00':/Z$|[+-]\d{2}:?\d{2}$/.test(s)?s:s+'+09:00');
+}
+function careWeekStart(day){const d=new Date(day+'T00:00:00Z');d.setUTCDate(d.getUTCDate()-(d.getUTCDay()+6)%7);return d.toISOString().slice(0,10)}
+function careCampusSemester(){const rows=campusSemestersSorted(),s=rows.find(x=>x.id===state.ui?.campusActiveSemesterId)||rows.find(x=>x.status!=='archived');return s&&s.status!=='archived'?s:null}
+function careCampusGroups(day=careKoreaPeriod().day){
+  const sem=careCampusSemester();if(!sem)return [];
+  const cutoff=careDateAt(day),rows=(sem.courses||[]).flatMap(course=>(course.curriculum||[]).filter(item=>item.done===false&&careDateAt(item.endAt)<cutoff).map(item=>({sem,course,item,key:JSON.stringify([sem.id,String(item.week)])})))
+    .filter(row=>!(state.ui?.campusWeekDismissals?.[row.key]>day)).sort((a,b)=>careDateAt(a.item.endAt)-careDateAt(b.item.endAt)||String(a.item.week).localeCompare(String(b.item.week),'ko',{numeric:true})).slice(0,5);
+  const groups=[];for(const row of rows){let group=groups.find(x=>x.key===row.key);if(!group){group={key:row.key,week:row.item.week,rows:[]};groups.push(group)}group.rows.push(row)}return groups;
+}
+function careCampusComplete(rows){
+  const pending=careCampusGroups().flatMap(g=>g.rows),selected=rows.filter(r=>pending.some(p=>p.sem===r.sem&&p.course===r.course&&p.item===r.item));
+  if(!selected.length)return false;for(const r of selected)r.item.done=true;
+  try{if(commit('수강 완료를 저장했습니다.',false))return true}catch(e){alert(e.message)}
+  for(const r of selected)r.item.done=false;renderCampus();renderHaniCareHome();return false;
+}
+function careCampusDismiss(group,day=careKoreaPeriod().day){
+  if(!state.ui||!careCampusGroups(day).some(g=>g.key===group.key))return false;
+  const previous=state.ui.campusWeekDismissals,next=new Date(careWeekStart(day)+'T00:00:00Z');next.setUTCDate(next.getUTCDate()+7);
+  state.ui.campusWeekDismissals={...previous,[group.key]:next.toISOString().slice(0,10)};
+  try{if(commit('다음 주에 다시 확인할게요.',false))return true}catch(e){alert(e.message)}
+  if(previous===undefined)delete state.ui.campusWeekDismissals;else state.ui.campusWeekDismissals=previous;renderHaniCareHome();return false;
+}
+function campusAssignments(days=14,now=new Date()){
+  const sem=careCampusSemester();if(!sem)return [];
+  const day=careKoreaPeriod(now).day,start=careDateAt(day),end=start+(days+1)*86400000;
+  return (state.tasks||[]).filter(t=>!t.done&&t.sourceType==='university'&&(sem.courses||[]).some(c=>c.name===(t.courseName||t.course)||c.id===t.course))
+    .filter(t=>{const at=careDateAt(t.dueAt||t.due);return at>=start&&at<end&&(!String(t.dueAt||t.due).includes('T')||at>=now.getTime())}).slice().sort((a,b)=>careDateAt(a.dueAt||a.due)-careDateAt(b.dueAt||b.due));
+}
+function campusAssignmentAdd(courseId,title,date,time=''){
+  const sem=careCampusSemester(),course=sem?.courses?.find(c=>c.id===courseId),name=String(title||'').trim();
+  if(!course||!name||!Number.isFinite(careDateAt(date))||time&&!/^([01]\d|2[0-3]):[0-5]\d$/.test(time))return false;
+  const dueAt=date+(time?'T'+time+':00+09:00':''),row=intakeCampusTaskRows({courseName:course.name,assessments:[{type:'과제',title:name,due:date,dueDateTime:time?date+'T'+time:''}]})[0];
+  if(!row)return false;row.data.course=course.name;row.data.dueAt=dueAt;
+  intakeApplyRow(row);const task=state.tasks.at(-1);
+  try{if(commit('과제를 추가했습니다.',false))return true}catch(e){alert(e.message)}
+  const index=state.tasks.indexOf(task);if(index>=0)state.tasks.splice(index,1);renderCampus();renderHaniCareHome();return false;
+}
+function campusAssignmentMarkup(rows){return rows.length?'<ul class="hani-care-list">'+rows.map(t=>'<li><span>'+esc(t.courseName||t.course)+' · '+esc(t.text)+'<br><small>'+esc(String(t.dueAt||t.due).replace('T',' ').replace(':00+09:00',''))+'</small></span></li>').join('')+'</ul>':'<p class="sub">앞으로 14일 안에 마감하는 과제가 없어요.</p>'}
+function renderCampusAssignments(sem){
+  const form=document.querySelector('[data-campus-assignment-form]'),list=document.querySelector('[data-campus-assignments]');if(!form||!list)return;
+  const select=form.elements.courseId,previous=select.value;select.innerHTML=(sem?.status!=='archived'?sem?.courses||[]:[]).map(c=>'<option value="'+esc(c.id)+'">'+esc(c.name)+'</option>').join('');if([...select.options].some(o=>o.value===previous))select.value=previous;
+  form.querySelector('button[type=submit]').disabled=!select.options.length;
+  list.innerHTML=campusAssignmentMarkup(campusAssignments());
+  form.onsubmit=e=>{e.preventDefault();const f=form.elements;if(campusAssignmentAdd(f.courseId.value,f.title.value,f.date.value,f.time.value))form.reset()};
+}
+function certificateDays(c,day=careKoreaPeriod().day){return Math.round((careDateAt(c.examDate)-careDateAt(day))/86400000)}
+function certificateDday(c,day=careKoreaPeriod().day){const d=certificateDays(c,day);return !Number.isFinite(d)?'':d<0?'종료':d===0?'D-Day':'D-'+d}
+function certificateCareSorted(day=careKoreaPeriod().day){return [...(state.certificates||[])].sort((a,b)=>{const da=certificateDays(a,day),db=certificateDays(b,day),rank=d=>!Number.isFinite(d)?2:d<0?1:0;return rank(da)-rank(db)||(rank(da)===1?db-da:da-db)||String(a.name||'').localeCompare(String(b.name||''),'ko')})}
+function renderHaniCareCards(parent,before=null){
+  if(!parent)return;let slot=parent.querySelector(':scope > [data-hani-care-cards]');
+  if(!slot){slot=document.createElement('div');slot.dataset.haniCareCards='';slot.className='hani-care-cards';parent.insertBefore(slot,before)}
+  const groups=careCampusGroups(),assignments=campusAssignments(2),certs=certificateCareSorted().filter(c=>{const d=certificateDays(c);return d>=0&&d<=30}),quizzes=window.HANI_STUDY_V02984_TEST?.pendingLearningQuizzes?.()||[];
+  const signature=JSON.stringify([careKoreaPeriod().day,groups.map(g=>[g.key,g.rows.map(r=>[r.course.id,r.course.name,r.item.week,r.item.topic])]),assignments,certs,quizzes.map(q=>[q.id,q.projectId,q.title])]);
+  slot.hidden=!(groups.length||assignments.length||certs.length||quizzes.length);const rows=groups.flatMap(g=>g.rows),sameRows=slot._careRows?.length===rows.length&&rows.every((r,i)=>slot._careRows[i].sem===r.sem&&slot._careRows[i].course===r.course&&slot._careRows[i].item===r.item);if(slot.dataset.signature===signature&&sameRows)return;slot.dataset.signature=signature;slot._careRows=rows;
+  slot.innerHTML=(assignments.length?'<section class="card full" data-care-assignment><div class="sh"><h3>과제 마감이 다가와요</h3><span class="pill">2일 이내</span></div>'+campusAssignmentMarkup(assignments)+'<button class="btn sm" type="button" data-hani-care-view="university">대학교에서 확인</button></section>':'')+
+    groups.map((g,i)=>'<section class="card full" data-care-campus="'+i+'"><div class="sh"><h3>지난주 '+esc(g.week)+'주차 수업 다 들으셨어요?</h3></div><ul class="hani-care-list">'+g.rows.map(r=>'<li><span>'+esc(r.course.name)+' · '+esc(r.item.week)+'주차 · '+esc(r.item.topic||'주제 미입력')+'</span></li>').join('')+'</ul><div class="acts"><button class="btn sm primary" type="button" data-care-all>다 들었어</button><button class="btn sm" type="button" data-care-part aria-expanded="false">일부만</button><button class="btn sm" type="button" data-care-dismiss>못 들었어</button></div><form data-care-part-form hidden><p class="sub">다 들은 수업만 선택해 주세요.</p>'+g.rows.map((r,j)=>'<label style="display:block"><input type="checkbox" value="'+j+'"> '+esc(r.course.name)+' · '+esc(r.item.week)+'주차 · '+esc(r.item.topic||'주제 미입력')+'</label>').join('')+'<button class="btn sm primary" type="submit">저장</button></form></section>').join('')+
+    (certs.length?'<section class="card full" data-care-certificate><div class="sh"><h3>자격증 시험이 다가와요</h3><span class="pill">30일 이내</span></div><ul class="hani-care-list">'+certs.map(c=>'<li><span>'+esc(c.name)+' · '+esc(c.examDate)+'</span><b>'+esc(certificateDday(c))+'</b></li>').join('')+'</ul><button class="btn sm" type="button" data-hani-care-view="certificate">자격증 보기</button></section>':'')+
+    (quizzes.length?'<section class="card full" data-care-quiz><div class="sh"><h3>안 푼 퀴즈 '+quizzes.length+'개</h3></div><button class="btn sm" type="button" data-care-quiz-open>퀴즈 풀러 가기</button></section>':'');
+  slot.querySelectorAll('[data-hani-care-view]').forEach(b=>b.onclick=()=>showView(b.dataset.haniCareView));
+  slot.querySelector('[data-care-quiz-open]')?.addEventListener('click',()=>window.HANI_STUDY_V02984_TEST?.openPendingQuiz());
+  slot.querySelectorAll('[data-care-campus]').forEach(card=>{const group=groups[Number(card.dataset.careCampus)],form=card.querySelector('form');card.querySelector('[data-care-all]').onclick=()=>careCampusComplete(group.rows);card.querySelector('[data-care-dismiss]').onclick=()=>careCampusDismiss(group);card.querySelector('[data-care-part]').onclick=e=>{form.hidden=!form.hidden;e.currentTarget.setAttribute('aria-expanded',String(!form.hidden))};form.onsubmit=e=>{e.preventDefault();const selected=[...form.querySelectorAll('input:checked')].map(el=>group.rows[Number(el.value)]);if(selected.length)careCampusComplete(selected);else alert('다 들은 수업을 선택해 주세요.')};});
+}
+function renderHaniCareHome(){const home=$("home");if(!home)return;const memory=haniCareMemory();haniCareNotice(home,home.firstChild,"homeNotice");const data=haniCareChecklist();if(!memory.checklist&&data){const slot=document.createElement("section");slot.className="card full hani-care-checklist";slot.setAttribute("aria-label","월말 정산 도우미");home.insertBefore(slot,memory.homeNotice?memory.homeNotice.nextSibling:home.firstChild);memory.checklist=slot}renderHaniCareCards(home,memory.checklist?memory.checklist.nextSibling:memory.homeNotice?memory.homeNotice.nextSibling:home.firstChild);const desk=document.querySelector(".yuna-helpdesk");if(desk)renderHaniCareCards(desk,desk.querySelector(".yuna-desk"));const slot=memory.checklist;if(!slot)return;slot.hidden=!data;if(!data)return;slot.innerHTML=`<div class="sh"><h3>월말 정산 도우미</h3><span class="pill">${esc(data.month)} · 18일 결산</span></div><p class="sub">가계부 ${esc(data.period.periodStart)} ~ ${esc(data.period.periodEnd)} · 체중은 월요일부터 오늘까지 확인해요.</p><ul class="hani-care-list">${data.items.map(x=>`<li><span>${x.done?"✓":"○"} ${esc(x.label)} · ${x.done?"완료했어요":"아직이에요"}</span>${x.done?"":`<button class="btn sm" type="button" data-hani-care-view="${x.view}">확인하러 가요</button>`}</li>`).join("")}</ul>`;slot.querySelectorAll("[data-hani-care-view]").forEach(b=>b.onclick=()=>showView(b.dataset.haniCareView))}
 function renderHome(){renderHomeDialogue();const official=officialBrokerSorted(),latest=official.at(-1)||null,latestCalc=latest?brokerCalc(latest):null;
   renderHaniCareHome();
   // Canonical Data Hub owns the Dashboard analysis; account mix remains in Finance.
@@ -6223,7 +6287,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.203";
+const HANI_DISPLAY_VERSION="2.9.204";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
@@ -7284,7 +7348,7 @@ $("spendReviewSave").onclick=()=>{
 
 // v2.9.0 Campus event bindings
 $("campusAddSemester").onclick=()=>openCampusSemesterModal();$("campusEmptyAdd").onclick=()=>openCampusSemesterModal();
-$("campusSemesterSelect").onchange=()=>{state.ui.campusActiveSemesterId=$("campusSemesterSelect").value;save();renderCampus()};
+$("campusSemesterSelect").onchange=()=>{state.ui.campusActiveSemesterId=$("campusSemesterSelect").value;save();renderCampus();renderHaniCareHome()};
 $("campusSemesterSave").onclick=()=>{const id=$("campusSemesterEditId").value,term=$("campusSemesterTerm").value.trim();if(!term)return alert("학기명을 입력해 주세요.");const old=state.campusSemesters.find(x=>x.id===id),s=normalizeCampusSemester({id:id||uid(),term,status:$("campusSemesterState").value,startDate:$("campusSemesterStart").value,endDate:$("campusSemesterEnd").value,courses:old?.courses||[],events:old?.events||[],createdAt:old?.createdAt,updatedAt:new Date().toISOString()});const idx=state.campusSemesters.findIndex(x=>x.id===s.id);if(idx>=0)state.campusSemesters[idx]=s;else state.campusSemesters.push(s);state.ui.campusActiveSemesterId=s.id;closeModal("campusSemesterModal");commit(old?"학기 정보를 수정했습니다.":"새 학기를 등록했습니다.")};
 $("campusArchiveSemester").onclick=()=>{const s=campusActiveSemester();if(!s)return;const next=s.status==="archived"?"active":"archived";if(next==="archived"&&!confirm(`${s.term}을 아카이브할까요?\n과목과 일정은 그대로 보존됩니다.`))return;s.status=next;s.updatedAt=new Date().toISOString();commit(next==="archived"?"학기를 아카이브했습니다.":"학기를 다시 열었습니다.")};
 $("campusAddCourse").onclick=()=>openCampusCourseModal();
