@@ -13,7 +13,7 @@ const views=text=>Array.from(text.matchAll(/data-view="([^"]+)"/g),m=>m[1]);
 const groups=Array.from(aside.matchAll(/<div class="group[^"]*" data-color="([^"]+)">([\s\S]*?)<\/div>\s*<\/div>/g),m=>[m[1],views(m[2])]);
 assert.deepEqual(groups,[
   ["office",["intake","agentReview","monthlyReport","organization","board"]],
-  ["finance",["investment","investmentIntake","asset","ledger","newsroom"]],
+  ["finance",["investment","investmentCommittee","investmentIntake","asset","ledger","newsroom"]],
   ["health",["diet","exercise"]],
   ["growth",["reading","study","university","certificate"]],
   ["life",["wishlist","travel","movie","game","diary"]],

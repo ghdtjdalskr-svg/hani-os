@@ -1,9 +1,16 @@
 'use strict';
-const fs=require('node:fs'),assert=require('node:assert/strict'),{chromium}=require('playwright');
+const fs=require('node:fs'),assert=require('node:assert/strict'),path=require('node:path');
+let playwrightPath=process.argv[2];
+if(!playwrightPath){
+ try{playwrightPath=require.resolve('playwright')}
+ catch(error){if(error.code!=='MODULE_NOT_FOUND')throw error;playwrightPath=path.join(require('node:os').homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright')}
+}
+const {chromium}=require(playwrightPath);
+const browserPath=process.argv[3]||['C:/Program Files/Google/Chrome/Application/chrome.exe','C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'].find(file=>fs.existsSync(file));
 const source=fs.readFileSync(require('node:path').join(__dirname,'../hani-main.js'),'utf8');
 const code=source.slice(source.indexOf('const GOAL_METRICS='),source.indexOf('function toast('));
 (async()=>{
- const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe'});
+ const browser=await chromium.launch({headless:true,executablePath:browserPath});
  try{
   const page=await browser.newPage({viewport:{width:390,height:844}}),errors=[];
   page.on('pageerror',e=>errors.push(e.message));

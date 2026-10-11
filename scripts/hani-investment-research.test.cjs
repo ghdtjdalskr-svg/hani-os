@@ -170,79 +170,56 @@ test('actual commit/save owner persists cards/history with read-back; existing f
   context.failWrite=false;context.loadRecovery.active=true;
   assert.throws(()=>C.applyBatch(source,[{existingId:source.investmentResearchCards[0].id,card:{...source.investmentResearchCards[0],rating:'EXIT'}}],()=>context.commit('test'),options()));
   assert.equal(JSON.stringify(source),before);assert.deepEqual(writes,['existing-protected-key']);
+  // Account setting uses the same real owner; absent defaults are never persisted on read.
+  context.failWrite=false;context.loadRecovery.active=false;
+  source.ui={preserved:'keep'};source.accounts=[{id:'kiwoom',broker:'키움증권'}];
+  const settingWrites=writes.length;
+  assert.deepEqual(C.accumulationAccountIds(source),['kiwoom']);assert.equal(writes.length,settingWrites);
+  C.saveAccumulationAccounts(source,['kiwoom'],()=>context.commit('setting'));
+  assert.equal(writes.length,settingWrites+1);
+  assert.deepEqual(JSON.parse(stored.get('existing-protected-key')).ui,{preserved:'keep',icAccumulationAccountIds:['kiwoom']});
+  const oldSetting=source.ui.icAccumulationAccountIds,settingStored=stored.get('existing-protected-key');
+  for(const mode of ['quota','protection']){
+    context.failWrite=mode==='quota';context.loadRecovery.active=mode==='protection';
+    assert.throws(()=>C.saveAccumulationAccounts(source,[],()=>context.commit('setting failed')));
+    assert.equal(source.ui.icAccumulationAccountIds,oldSetting);assert.equal(stored.get('existing-protected-key'),settingStored);
+    assert.equal(writes.length,settingWrites+1);
+  }
+  context.failWrite=false;context.loadRecovery.active=false;
   // Monthly confirm uses the same real owner; quota/original-protection failure restores snapshots.
   context.loadRecovery.active=false;
   const draft=C.committeeDraft(source,'2026-10');
   C.confirmCommittee(source,draft,()=>context.commit('monthly'),options());
-  assert.equal(writes.length,2); assert.equal(context.cloudQueues,2);
+  assert.equal(writes.length,3); assert.equal(context.cloudQueues,3);
   assert.equal(JSON.parse(stored.get('existing-protected-key')).investmentCommitteeSnapshots.length,1);
   const frozen=JSON.stringify(source.investmentCommitteeSnapshots), saved=stored.get('existing-protected-key');
   for(const mode of ['quota','protection']){
     context.failWrite=mode==='quota';context.loadRecovery.active=mode==='protection';
     assert.throws(()=>C.confirmCommittee(source,draft,()=>context.commit('monthly'),{...options(),revision:true}));
     assert.equal(JSON.stringify(source.investmentCommitteeSnapshots),frozen);
-    assert.equal(stored.get('existing-protected-key'),saved);assert.equal(context.cloudQueues,2);
+    assert.equal(stored.get('existing-protected-key'),saved);assert.equal(context.cloudQueues,3);
   }
 });
-test('canonical layout owns persistent sections; existing Portfolio DOM retained; switching never saves', () => {
-  const nodes = [], classes = new WeakMap();
-  class Node {
-    constructor(tag='div'){this.tag=tag;this.children=[];this.listeners={};this.attrs={};this.dataset={};this.hidden=false;nodes.push(this);classes.set(this,new Set());this.classList={add:c=>classes.get(this).add(c),remove:c=>classes.get(this).delete(c),toggle:(c,on)=>{on?classes.get(this).add(c):classes.get(this).delete(c);},contains:c=>classes.get(this).has(c)};}
-    get firstChild(){return this.children[0]||null;}
-    set className(v){classes.set(this,new Set(v.split(/\s+/)));}
-    appendChild(n){if(n.parentElement)n.parentElement.children.splice(n.parentElement.children.indexOf(n),1);n.parentElement=this;this.children.push(n);return n;}
-    append(...items){items.forEach(i=>this.appendChild(i));}
-    setAttribute(k,v){this.attrs[k]=v;}
-    querySelectorAll(s){const descendants=this.children.flatMap(n=>[n,...n.querySelectorAll('*')]);return s==='[data-ic-section]'?descendants.filter(n=>n.dataset.icSection):descendants;}
-    addEventListener(k,handler){this.listeners[k]=handler;}
-    closest(){return this;}
-    focus(){this.focused=true;}
+test('Portfolio activation stays independent of Committee slots', () => {
+  const helper=fn('activateInvestmentTab');
+  assert.doesNotMatch(helper,/selectInvestmentSection|icPortfolio|commit|save/);
+  let clicks=0;
+  const context=vm.createContext({document:{querySelector:()=>({querySelector:()=>({click(){clicks++;}})})}});
+  vm.runInContext(helper,context);
+  for(const id of ['investOverview','investMonthly','investManage','investJournal'])context.activateInvestmentTab(id);
+  assert.equal(clicks,4);
+  assert.doesNotMatch(main,/setupInvestmentCommitteeLayout|icPortfolio|selectInvestmentSection/);
+});
+
+test('existing state normalization preserves explicit ui account selection without seeding default', () => {
+  const api=stateHarness(),legacy=api.freshState();
+  assert.equal(Object.hasOwn(legacy.ui,'icAccumulationAccountIds'),false);
+  const normalized=api.normalizeState(JSON.parse(JSON.stringify(legacy)));
+  assert.equal(Object.hasOwn(normalized.ui,'icAccumulationAccountIds'),false);
+  for(const selection of [[],['kiwoom','toss']]){
+    const saved=JSON.parse(JSON.stringify(legacy));saved.ui.icAccumulationAccountIds=selection;
+    const loaded=api.normalizeState(saved);
+    assert.deepEqual(Array.from(loaded.ui.icAccumulationAccountIds),selection);
+    assert.deepEqual(Object.keys(loaded).sort(),Object.keys(normalized).sort());
   }
-  let entries=0,monthlyEntries=0;
-  const context=vm.createContext({window:{HaniInvestmentCommittee:{enter(){entries++;},renderMonthly(){monthlyEntries++;}}},document:{createElement:tag=>new Node(tag)},$:(id)=>nodes.find(n=>n.id===id),Object});
-  vm.runInContext(main.slice(main.indexOf('const INVESTMENT_COMMITTEE_IDS='),main.indexOf('function setupInvestmentRc21Layout()')),context);
-  const section=new Node('section'),legacyTabs=new Node(),overview=new Node(),monthly=new Node();section.append(legacyTabs,overview,monthly);
-  context.setupInvestmentCommitteeLayout(section,legacyTabs);
-  const ids=context.window.HaniInvestmentCommitteeIds,portfolio=nodes.find(n=>n.id===ids.portfolio),research=nodes.find(n=>n.id===ids.research),nav=nodes.find(n=>n.id===ids.tabs);
-  assert.deepEqual(portfolio.children,[legacyTabs,overview,monthly]);assert.equal(portfolio.hidden,false);assert.equal(research.hidden,true);assert.equal(nav.children.length,3);
-  nav.listeners.click({target:nav.children[1]});assert.equal(portfolio.hidden,true);assert.equal(research.hidden,false);assert.equal(entries,1);
-  const count=nodes.length;context.setupInvestmentCommitteeLayout(section,legacyTabs);assert.equal(nodes.length,count);
-  // Match the access test: deactivate legacy panels, then activate overview directly.
-  overview.classList.add('panel');monthly.classList.add('panel');
-  context.selectInvestmentSection(ids.portfolio);
-  section.querySelectorAll('*').filter(n=>n.classList.contains('panel')).forEach(n=>n.classList.remove('active'));
-  overview.classList.add('active');
-  for(const key of [ids.portfolio,ids.research,ids.monthly])assert.equal(context.$(key).classList.contains('panel'),false);
-  assert.equal(portfolio.hidden,false);assert.equal(portfolio.classList.contains('active'),true);
-  assert.equal(research.hidden,true);
-  nav.listeners.click({target:nav.children[1]});
-  nav.listeners.keydown({target:nav.children[1],key:'ArrowRight',preventDefault(){}});assert.equal(research.hidden,true);assert.equal(nav.children[2].attrs['aria-selected'],'true');
-  assert.equal(monthlyEntries,1);
-  context.selectInvestmentSection(ids.portfolio);assert.equal(portfolio.children[1],overview);
-  // Actual showView entry must recover Portfolio after either IC section was selected.
-  const investmentView='investment';section.id=investmentView;
-  for(const id of ['title','desc','app','home']){const node=new Node();node.id=id;}
-  Object.assign(context,{clearTimeout(){},setTimeout(){},navigationTimer:0,navigationBooted:false,loginGateUnlocked:false,NAVIGATION_VIEWS:new Set(),organizationRoute:()=>null,settingsRoute:()=>null,location:{hash:'',href:'http://test/'},history:{replaceState(){}},pageMeta:{},setBanner(){},updateFinishScope(){},drawPortfolio(){},cloudUser:null,cloudRecoveryMode:false});
-  context.document.body={dataset:{}};context.document.querySelector=()=>null;
-  context.document.querySelectorAll=selector=>selector==='.view'?[section]:[];
-  context.window.scrollTo=()=>{};context.window.HaniInvestmentCommittee.render=()=>assert.equal(portfolio.hidden,false);
-  vm.runInContext(main.slice(main.indexOf('function showView('),main.indexOf('const QUICK_JUMP_ITEMS=')),context);
-  for(const key of [ids.research,ids.monthly]){
-    context.selectInvestmentSection(key);assert.equal(portfolio.hidden,true);
-    context.showView(investmentView);
-    assert.equal(portfolio.hidden,false);assert.equal(context.$(key).hidden,true);
-    assert.equal(nav.children[0].attrs['aria-selected'],'true');assert.equal(overview.classList.contains('active'),true);
-  }
-  context.selectInvestmentSection(ids.research);
-  context.window.HaniInvestmentCommittee.render=()=>{};
-  context.showView('home');assert.equal(portfolio.hidden,true);assert.equal(research.hidden,false);
-  // The existing canonical legacy-panel helper also exits Research/Monthly.
-  context.document.querySelector=selector=>selector==='.investment-tabs-main'?legacyTabs:null;
-  let clicks=0;legacyTabs.querySelector=()=>({click(){clicks++;overview.classList.add('active');}});
-  vm.runInContext(fn('activateInvestmentTab'),context);
-  for(const key of [ids.research,ids.monthly]){
-    context.selectInvestmentSection(key);context.activateInvestmentTab('legacy-overview');
-    assert.equal(portfolio.hidden,false);assert.equal(context.$(key).hidden,true);
-  }
-  assert.equal(clicks,2);assert.equal(portfolio.children[1],overview);
 });

@@ -67,23 +67,23 @@
     },
     {
       "feature": "investment-research",
-      "label": "Investment Research / Monthly Committee V1b",
+      "label": "Investment Research / Independent Committee",
       "risk": "CRITICAL",
       "owners": [
-        { "file": "hani-investment-committee.js", "symbols": ["normalizeCard", "prepareBatch", "applyBatch", "reviewReport", "openEditor", "renderReview", "committeeDraft", "prepareSnapshot", "confirmCommittee", "portfolioSummary", "ratingTimeline", "kst", "renderMonthly"] },
-        { "file": "hani-main.js", "symbols": ["setupInvestmentRc21Layout", "setupInvestmentCommitteeLayout", "selectInvestmentSection", "activateInvestmentTab"] }
+        { "file": "hani-investment-committee.js", "symbols": ["normalizeCard", "prepareBatch", "applyBatch", "reviewReport", "openEditor", "renderReview", "committeeDraft", "prepareSnapshot", "confirmCommittee", "portfolioSummary", "ratingTimeline", "kst", "renderMonthly", "selectSection"] },
+        { "file": "hani-main.js", "symbols": ["setupInvestmentRc21Layout", "showView", "activateInvestmentTab", "activateInvestmentStocks"] }
       ],
       "dependencies": [
         { "file": "hani-main.js", "symbols": ["freshState", "validateStoredRecords", "normalizeState", "cloudHasMeaningfulLocalData", "commit", "save", "calculate"] },
-        { "file": "hani-asset-market-view.js", "symbols": ["readResearchQuotes", "analyticsSource", "configured"] },
+        { "file": "hani-asset-market-view.js", "symbols": ["readResearchQuotes", "analyticsSource", "configured", "describe", "summaryHtml"] },
         { "file": "hani-market-data.js", "symbols": ["positions"] },
         { "file": "hani-ui-v02992.js", "symbols": ["arrangeNavigation"] }
       ],
-      "dom": ["#icSections", "#icPortfolio", "#icResearch", "#icMonthly", ".ic-editor", ".ic-import"],
+      "dom": ["#investmentCommittee", "#icSections", "#icResearch", "#icMonthly", "#investOverviewStocks", "#assetMarket", "#marketChart", "#portfolioLivePreview", "[data-p-summary]", "#asset [data-portfolio-summary]", ".ic-editor", ".ic-import"],
       "events": ["[data-ic-section]", "[data-ic]", "[data-ic-picker]", "[data-ic-include]", "[data-ic-status]", "[data-monthly]", ".ic-monthly-board form submit/input/change"],
-      "targetedTests": ["node scripts/hani-investment-research.test.cjs", "node scripts/hani-investment-committee.test.cjs", "node scripts/hani-investment-research-ui.test.mjs <playwright/index.mjs> <browser.exe>", "node scripts/hani-market-data-test.cjs", "node scripts/hani-portfolio-completeness-test.js", "node scripts/hani-cloud-first.test.mjs", "node scripts/hani-cloud-egress-save-sim.test.mjs"],
-      "notes": "Approved 3-array extension only. Feature work keeps v2.9.202. No auto-create, no direct storage/Cloud writes. Monthly draft is memory-only; explicit commit freezes card/quote/holding values. One snapshot per month; explicit revisions append without overwrite. KST display and combined history. Browser QA blocked by EPERM in ic1 sandbox; V1b remains uncommitted.",
-      "lastVerifiedSha": "b93925fe75f5e746a6101ed492e950516746fadc"
+      "targetedTests": ["node scripts/hani-invest-basis.test.cjs", "node scripts/hani-invest-split.test.mjs", "node scripts/hani-invest-split-safety.test.mjs <raw baseline directory>", "node scripts/hani-invest-split-ui.test.mjs <playwright/index.mjs> <browser.exe>", "node scripts/hani-nav-groups.test.mjs", "node scripts/hani-banners-203.test.mjs", "node scripts/hani-investment-research.test.cjs", "node scripts/hani-investment-committee.test.cjs", "node scripts/hani-investment-research-ui.test.mjs <playwright/index.mjs> <browser.exe>", "node scripts/hani-market-data-test.cjs", "node scripts/hani-portfolio-completeness-test.js", "node scripts/hani-cloud-first.test.mjs", "node scripts/hani-cloud-egress-save-sim.test.mjs"],
+      "notes": "2026-10-11 IA split on b23829b: independent two-tab Committee; legacy Portfolio panels stay direct. Same market/portfolio DOM moves to investment stock pane. Existing arrays, commit/save, IC data core and portfolio analytics unchanged. No storage key/schema/version changes. Follow-up basis labels use canonical brokerCalc and unchanged portfolio valuation: KST quote timestamps, confirmed record/date, same-holdings delta, dated recorded cash and estimate in stock/asset shared summaries. Edge tails: responsive map assertion and banner mounting order fixed; IC tests check bounding boxes and anchor scroll. Browser QA remains blocked by spawn EPERM; node/safety evidence in invest-split-204 handoff.",
+      "lastVerifiedSha": "b23829b268b19b44fb3de81058374866287a9741"
     },
     {
       "feature": "newsroom",

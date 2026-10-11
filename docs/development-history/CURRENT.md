@@ -1,3 +1,19 @@
+# 2026-10-11 · IC 월간 확정 UI 테스트 후속 (도연/Codex)
+
+`hani/integration-204` / base `c8bdfa7`. 실제 Edge의 UI310 실패는 초안 시작 뒤 평가액 변경으로 원본 변경 보호 검사가 확정을 거절한 테스트 흐름 문제입니다. 거절·무저장 확인 → 취소/재시작 → snapshot 존재·의견/적립식 분리·저장 read-back·설정 변경 후 frozen 보존으로 테스트만 보강했습니다. Node33·실제 UI handler synthetic 실행·syntax·mixed EOL/운영원문 불변 PASS. **전체 Edge 재실행 대기, 미커밋·미배포.** Notion append는 자동 승인 검토 정책 never 거절로 갱신 대기. [인수인계](handoffs/2026-10-11-ic-monthly-confirm-test.md). 아래 과거/타 담당 기록 보존.
+
+# 2026-10-11 ? IC Edge ? ??? ?? (??/Codex)
+
+hani/integration-204?? ??? ?? ? IC ??? ??? ???? ?? #icSections? ? locator? ?????. ?/?? assertion ??, syntax?Node25?mixed EOL ?? PASS. **?? Edge ???? launch spawn EPERM?? ???**, ???????. Notion append? ?? ?? ??? policy never ??? ?? ??. [????](handoffs/2026-10-11-ic-tab-navigation.md). ?? ?? ?? ??.
+
+# 2026-10-11 · 투자위원회 장기 적립식 (도연/Codex)
+
+`hani/integration-204` / base `c8bdfa789a13cdfafc42f3e3c685c5afefea6a92`에서 키움 기본 계좌 분류·state.ui 명시 저장·GPT 제외·선택 Research·혼합 배지·월간 별도 목록과 freeze 구현. 기존 Research 보존, main/index 및 버전/cache 불변. IC Node33·시장12·Cloud40·평가기준·보호 owner21/EOL PASS. **Edge UI는 spawn EPERM으로 실화면 미검증. 미커밋·미push·main/배포 없음.** Notion append는 자동 승인 검토 정책 never 거절로 갱신 대기. [인수인계](handoffs/2026-10-11-ic-accumulation.md). 아래 과거/타 담당 기록 보존.
+
+# 2026-10-11 · 통합 204 회귀 수정 (도연/Codex)
+
+hani/integration-204 @ ddbbf841, 외부 참조/목표 제안 탭 테스트/로그인 Git 기본 기준선/목표 삭제 실행 경로 수정, commit 없음. Node test+smoke 111개 시도: 60 PASS, 보존 테스트 2개 기존 추출 범위 불일치, 로그인 직접 실행 PARTIAL, 브라우저·Git subprocess·후보 입력 48개 차단. 보호 owner 25개+IC core 원문 보존 및 로그인 Git 원본 공급 격리 검사 PASS. 실제 UI·후보/운영 검증 미완료, Notion은 자동 승인 거절로 갱신 대기. [인수인계](handoffs/2026-10-11-integration-204-regression.md). 아래 과거/타 담당 근거 보존.
+
 # 2026-10-11 · Investment Committee V1b (도연/Codex)
 
 `hani/investment-committee-v1a`, V1a HEAD/base `d3999b4183bc23e6555557529a3b4d20f451badc`, 원격 main 조회 `b93925f` 일치. 월간 메모리 초안·확정 deep snapshot·명시 수정본 append·실카드 테마/역할·통합 Rating History·GPT 이어가기·KST 표시 구현. 승인 3배열과 기존 commit/save만 사용, v2.9.202 유지. Node 월간8+Research14·시장12·Cloud40·Portfolio·기존 save/실패복원·보호원문21/mixed EOL PASS. **Playwright browser spawn EPERM으로 desktop/390 Monthly 화면·스크린샷·console 0 미검증. V1b 미커밋·미push·PR/main/배포 없음.** Notion 기록 추가는 자동 승인 검토 approval policy never 거절로 갱신 대기. 다음 브라우저 환경 UI 검사. [V1b 인수인계](handoffs/2026-10-11-investment-committee-v1a.md#v1b--구현-및-검증-인수인계-spec-27). 아래 과거/타 담당 기록 보존.

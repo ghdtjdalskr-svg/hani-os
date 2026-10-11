@@ -8,7 +8,7 @@ const start=ui.indexOf('  const mainCharacterBannerVariants='),end=ui.indexOf(' 
 assert.ok(start>=0&&end>start,'canonical banner config anchors');
 const ctx=vm.createContext({});
 vm.runInContext(ui.slice(start,end)+';this.resolve=mainCharacterBannerConfig;this.menus=mainCharacterSidebarMenuConfig;',ctx);
-const mapping={board:'company-board-community-v1.webp',aiWork:'ai-work-status-v1.webp',geminiReports:'dev-reports-research-v1.webp',aiBudget:'ai-budget-control-v1.webp',monthlyReport:'conference-room-reports-v1.webp'};
+const mapping={investmentCommittee:'investment-market-room-v1.webp',board:'company-board-community-v1.webp',aiWork:'ai-work-status-v1.webp',geminiReports:'dev-reports-research-v1.webp',aiBudget:'ai-budget-control-v1.webp',monthlyReport:'conference-room-reports-v1.webp'};
 for(const [view,file] of Object.entries(mapping)){
   const config=ctx.resolve(view);
   assert.ok(config,view+' uses the canonical page hero');
@@ -26,10 +26,12 @@ for(const [view,file] of Object.entries(mapping)){
   assert.equal(bytes.toString('ascii',8,12),'WEBP');
 }
 assert.equal(ctx.resolve('agentReview').sceneImage,'./assets/banner-preview-v1/ai-approval-boardroom-v1.webp');
+assert.equal(ctx.resolve('investmentCommittee').owner,'hani');
+assert.equal(ctx.resolve('investmentCommittee').role,'Chief Investment Strategist');
 const renderer=ui.slice(ui.indexOf('  function mainCharacterBanner('),ui.indexOf('  function syncMainCharacterBannerAgent('));
 assert.match(renderer,/<img width="2172" height="724" loading="lazy" decoding="async">/);
 assert.match(renderer,/:scope > \.ds-main-character-banner/);
 assert.match(renderer,/root\.prepend\(el\)/);
 assert.doesNotMatch(renderer,/id=["']|\.clear\(/);
 for(const view of Object.keys(mapping))assert.equal((ui.slice(start,end).match(new RegExp('"'+view+'":Object\\.freeze','g'))||[]).length,1,'single config for '+view);
-console.log('PASS banners-203: five canonical mappings, WebP files, responsive config, shared renderer/image attrs, preserved boardroom');
+console.log('PASS banners-203: six canonical mappings, WebP files, responsive config, shared renderer/image attrs, preserved boardroom');
