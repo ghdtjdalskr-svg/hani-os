@@ -32,6 +32,7 @@
 
   let activeProjectId = '';
   let activeQuizId = '';
+  let orphanQuizId = '';
   let activeStudyTab = 'board';
   let activeWrongId = '';
   let quizArchivePage = 1;
@@ -754,20 +755,20 @@
 
   function quizStatusLabel(quiz) { const total = Number(quiz.total || quiz.questions?.length || 0); return quiz.status === 'completed' ? `${quizCorrectCount(quiz) ?? 0}/${total}` : `${quiz.answers.filter(x => Number.isInteger(x)).length}/${total} 풀이`; }
 
-  function renderQuizDetail(project, quiz) {
+  function renderQuizDetail(project, quiz, readOnly = false) {
     if (!quiz) return '';
     const graded = quiz.status === 'completed';
-    return `<div class="study-card-v02984 study-exam-sheet" id="studyQuizDetail" style="margin-top:16px">
-      <header class="study-exam-head"><div><span class="study-exam-kicker">HANI OS · MOCK EXAM</span><h3>${safe(quiz.title || `${project.name} 문제세트`)}</h3><p>${graded ? `채점 완료 · 점수 ${safe(quizStatusLabel(quiz))}` : '각 문항의 답을 하나씩 고른 뒤 마지막에 채점하세요.'}</p></div><div class="study-exam-stamp"><b>${safe(String(quizDate(quiz)).replaceAll('-','.'))}</b><span>${Number(quiz.total||quiz.questions.length)}문항</span><em class="study-status ${safe(quiz.status || 'pending')}">${safe(quizStatusLabel(quiz))}</em></div></header>
-      <div class="study-exam-instructions">${graded?'해설과 오답 표시를 확인하세요. 틀린 문항은 오답노트에 자동 누적됩니다.':'답안은 선택 즉시 안전하게 임시 저장됩니다. 모든 문항을 선택하면 채점 버튼이 활성화됩니다.'}</div>
+    return `<div class="study-card-v02984 study-exam-sheet" ${readOnly ? '' : 'id="studyQuizDetail"'} style="margin-top:16px">
+      <header class="study-exam-head"><div><span class="study-exam-kicker">HANI OS · MOCK EXAM</span><h3>${safe(quiz.title || `${project.name} 문제세트`)}</h3><p>${graded ? `채점 완료 · 점수 ${safe(quizStatusLabel(quiz))}` : readOnly ? '프로젝트에 연결하면 이어서 풀 수 있어요.' : '각 문항의 답을 하나씩 고른 뒤 마지막에 채점하세요.'}</p></div><div class="study-exam-stamp"><b>${safe(String(quizDate(quiz)).replaceAll('-','.'))}</b><span>${Number(quiz.total||quiz.questions.length)}문항</span><em class="study-status ${safe(quiz.status || 'pending')}">${safe(quizStatusLabel(quiz))}</em></div></header>
+      <div class="study-exam-instructions">${graded?'해설과 오답 표시를 확인하세요. 틀린 문항은 오답노트에 자동 누적됩니다.':readOnly ? '보존된 문제와 답안을 보여드립니다.' : '답안은 선택 즉시 안전하게 임시 저장됩니다. 모든 문항을 선택하면 채점 버튼이 활성화됩니다.'}</div>
       ${quiz.questions.map((question, qi) => {
         const selected = quiz.answers[qi];
         return `<article class="study-question ${graded ? 'is-graded' : ''}" data-study-question="${qi}"><div class="study-question-head"><span>Q${qi + 1}</span><span>${safe(question.type || 'general')}</span><span>${safe(question.difficulty || 'medium')}</span></div><h4 style="white-space:pre-line">${safe(question.prompt)}</h4><div class="study-choices">${question.choices.map((choice, ci) => {
           const correct = graded && ci === question.answerIndex, wrong = graded && ci === selected && ci !== question.answerIndex;
-          return `<label class="study-choice ${correct ? 'is-correct' : wrong ? 'is-wrong' : ''}"><input type="radio" name="study-q-${safe(quiz.id)}-${qi}" value="${ci}" ${selected === ci ? 'checked' : ''} ${graded ? 'disabled' : ''}><span>${ci + 1}. ${safe(choice)}</span></label>`;
+          return `<label class="study-choice ${correct ? 'is-correct' : wrong ? 'is-wrong' : ''}"><input type="radio" name="study-q-${safe(quiz.id)}-${qi}" value="${ci}" ${selected === ci ? 'checked' : ''} ${graded || readOnly ? 'disabled' : ''}><span>${ci + 1}. ${safe(choice)}</span></label>`;
         }).join('')}</div>${graded ? `<div class="study-explanation"><b>정답 ${question.answerIndex + 1}번</b> · ${safe(question.explanation)}</div>` : ''}</article>`;
       }).join('')}
-      ${graded ? '' : `<div class="study-submit-wrap"><div><b>답안 ${quiz.answers.filter(x => Number.isInteger(x)).length}/${Number(quiz.total || quiz.questions.length)}</b><div class="sub">모든 답은 선택 즉시 임시 저장됩니다.</div></div><button class="btn primary" type="button" id="studyQuizSubmit" ${quiz.answers.filter(x => Number.isInteger(x)).length !== Number(quiz.total || quiz.questions.length) ? 'disabled' : ''}>채점하기</button></div>`}
+      ${graded || readOnly ? '' : `<div class="study-submit-wrap"><div><b>답안 ${quiz.answers.filter(x => Number.isInteger(x)).length}/${Number(quiz.total || quiz.questions.length)}</b><div class="sub">모든 답은 선택 즉시 임시 저장됩니다.</div></div><button class="btn primary" type="button" id="studyQuizSubmit" ${quiz.answers.filter(x => Number.isInteger(x)).length !== Number(quiz.total || quiz.questions.length) ? 'disabled' : ''}>채점하기</button></div>`}
     </div>`;
   }
 
@@ -828,7 +829,57 @@
     if (autoGenerate) maybeAutoGenerate(project);
   }
 
-  function pendingLearningQuizzes() { return (state.learningQuizzes || []).filter(x => x.status !== 'completed'); }
+  function pendingLearningQuizzes() {
+    return (state.learningQuizzes || []).filter(quiz => {
+      const project = projectById(quiz.projectId);
+      return quiz.status !== 'completed' && project && !['paused', 'archived'].includes(project.status);
+    });
+  }
+  function pendingQuizProjects() {
+    const groups = new Map();
+    pendingLearningQuizzes().forEach(quiz => {
+      const project = projectById(quiz.projectId);
+      const row = groups.get(project.id) || { projectId:project.id, name:project.name, count:0 };
+      row.count++; groups.set(project.id, row);
+    });
+    return Array.from(groups.values());
+  }
+  function orphanLearningQuizzes() {
+    return (state.learningQuizzes || []).filter(quiz => {
+      const project = projectById(quiz.projectId);
+      return !project || project.status === 'archived';
+    });
+  }
+  function attachOrphanQuiz(quizId, projectId, confirmFn = window.confirm) {
+    const quiz = quizById(quizId), project = projectById(projectId);
+    if (!quiz || !orphanLearningQuizzes().includes(quiz) || !project || project.status === 'archived') return false;
+    if (!confirmFn('‘' + (quiz.title || '문제세트') + '’을 ‘' + project.name + '’에 연결할까요?\n문제, 답안, 점수는 그대로 보존됩니다.')) return false;
+    const snapshot = cloneLearningValue(quiz);
+    Object.assign(quiz, { projectId:project.id, updatedAt:nowIso() });
+    try {
+      if (learningCommit('문제세트를 ‘' + project.name + '’에 연결했습니다.')) { orphanQuizId = ''; return true; }
+    } catch (error) { console.error('[HANI Learning] quiz attachment failed', error); }
+    restoreLearningObject(quiz, snapshot);
+    return false;
+  }
+  function renderOrphanArchive() {
+    const engine = q('#studyEngineV02984');
+    if (!engine) return;
+    let slot = q(':scope > .study-orphan-archive', engine);
+    if (!slot) { slot = document.createElement('details'); slot.className = 'study-card-v02984 study-orphan-archive'; engine.append(slot); }
+    const quizzes = orphanLearningQuizzes(), projects = visibleProjects();
+    slot.hidden = !quizzes.length;
+    const selected = quizzes.find(quiz => quiz.id === orphanQuizId);
+    slot.innerHTML = '<summary>프로젝트 미지정 문제세트 · ' + quizzes.length + '개</summary><p class="note">미완료 개수에서는 제외됩니다. 기존 문제와 답안은 보존하며 프로젝트에 연결할 수 있어요.</p>' +
+      quizzes.map(quiz => '<div class="study-orphan-row"><button class="btn sm" type="button" data-study-orphan-open="' + safe(quiz.id) + '">' + safe(quiz.title || '문제세트') + ' · ' + (quiz.status === 'completed' ? '완료' : quiz.status === 'in_progress' ? '풀이 중' : '미완료') + '</button><label>연결할 프로젝트<select data-study-attach-select><option value="">프로젝트 선택</option>' + projects.map(project => '<option value="' + safe(project.id) + '">' + safe(project.name) + '</option>').join('') + '</select></label><button class="btn sm" type="button" data-study-orphan-attach="' + safe(quiz.id) + '"' + (projects.length ? '' : ' disabled') + '>연결</button></div>').join('') +
+      (selected ? renderQuizDetail({ name:'프로젝트 미지정' }, selected, true) : '');
+    qa('[data-study-orphan-open]', slot).forEach(btn => btn.onclick = () => { orphanQuizId = btn.dataset.studyOrphanOpen; renderOrphanArchive(); });
+    qa('[data-study-orphan-attach]', slot).forEach(btn => btn.onclick = () => {
+      const projectId = q('[data-study-attach-select]', btn.closest('.study-orphan-row')).value;
+      if (!projectId) return alert('연결할 프로젝트를 선택해 주세요.');
+      if (attachOrphanQuiz(btn.dataset.studyOrphanAttach, projectId)) renderLearning(false);
+    });
+  }
   function openPendingQuiz() {
     const quiz=pendingLearningQuizzes().find(x=>projectById(x.projectId));
     if (!quiz) { showView('study'); return; }
@@ -867,6 +918,7 @@
       try { if (typeof renderNotes === 'function') renderNotes(); } catch (_) {}
     } else if (activeStudyTab === 'wrong') renderWrongTab();
     else renderHistory();
+    renderOrphanArchive();
   }
 
   function toggleProjectForm(show) {
@@ -1123,7 +1175,7 @@
   }
 
   window.HANI_STUDY_V02984_TEST = {
-    pendingLearningQuizzes, openPendingQuiz, renderPendingQuizNav,
+    pendingLearningQuizzes, pendingQuizProjects, orphanLearningQuizzes, attachOrphanQuiz, renderOrphanArchive, openPendingQuiz, renderPendingQuizNav,
     ensureLearningState, normalizeProject, normalizeQuestion, normalizeQuiz, questionKey,
     quizDate, isScheduledDate, shouldGenerateForDate, nextSequenceNo, derivedLearningTasks, activeProjects, boardProjects, visibleProjects, completedProjects, wrongRows, wrongGroups, renderWrongTab,
     normalizePromptText, promptFingerprint, promptSimilarity, duplicateLevel, validQuestion, recentQuestionRotation, collectQuizCandidates, useLeastSimilarFallback, replacementBatchSize, tooSimilarPrompt, validateQuestionSet, quizApi,
