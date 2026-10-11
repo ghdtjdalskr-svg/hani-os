@@ -260,6 +260,107 @@ function createTabQuoteSelector(random = Math.random) {
   };
 }
 // END CANONICAL TAB VOICE BUNDLE
+// BEGIN HANI UI MOTION
+// Shared, ephemeral UI motion. Canonical owners call completion only after a successful save.
+const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+const motionCompleted = new Set(), motionGoals = new Map(), motionNumbers = new Map(), motionRunning = new Map();
+const motionBursts = new Set();
+function stopNumber(element) {
+  const running = motionRunning.get(element);
+  if (!running) return;
+  cancelAnimationFrame(running.frame); element.textContent = running.text;
+  element.classList.remove('hani-motion-number'); motionRunning.delete(element);
+}
+function countUp(element, text, key) {
+  if (!element) return false;
+  text = String(text);
+  const previous = motionNumbers.get(key), match = text.match(/^([+\-−]?)(\d[\d,]*(?:\.\d+)?)(.*)$/);
+  if (!element.getClientRects().length) { stopNumber(element); element.textContent = text; return false; }
+  motionNumbers.set(key, text);
+  // A renderer may replace an element while an earlier frame is still alive.
+  if (motionRunning.get(element)?.text === text && element.querySelector(".hani-motion-number-final")) return false;
+  stopNumber(element);
+  if (previous === text || motionPreference.matches || !match) {
+    element.textContent = text; return false;
+  }
+  const target = Number((match[1] + match[2]).replaceAll(',', '').replace('−', '-'));
+  if (!Number.isFinite(target)) { element.textContent = text; return false; }
+  const prior = String(previous || '').match(/^([+\-−]?)(\d[\d,]*(?:\.\d+)?)/);
+  const from = prior ? Number((prior[1] + prior[2]).replaceAll(',', '').replace('−', '-')) : 0;
+  const decimals = (match[2].split('.')[1] || '').length;
+  const final = document.createElement('span'), overlay = document.createElement('span');
+  final.className = 'hani-motion-number-final'; final.textContent = text;
+  overlay.className = 'hani-motion-number-overlay'; overlay.setAttribute('aria-hidden', 'true');
+  element.replaceChildren(final, overlay); element.classList.add('hani-motion-number');
+  const started = performance.now(), running = { text, frame:0 };
+  const tick = time => {
+    if (!element.isConnected || motionPreference.matches) { stopNumber(element); return; }
+    const progress = Math.min(1, Math.max(0, (time - started) / 560));
+    const value = from + (target - from) * (1 - Math.pow(1 - progress, 3));
+    overlay.textContent = (match[1] === '+' && value >= 0 ? '+' : '') + value.toLocaleString('ko-KR', {minimumFractionDigits:decimals, maximumFractionDigits:decimals}) + match[3];
+    if (progress >= 1) stopNumber(element);
+    else running.frame = requestAnimationFrame(tick);
+  };
+  motionRunning.set(element, running); running.frame = requestAnimationFrame(tick);
+  return true;
+}
+function celebrate(anchor, page) {
+  if (motionPreference.matches || !anchor || anchor.width <= 0 || anchor.height <= 0) return false;
+  const burst = document.createElement('span'); burst.className = 'hani-motion-burst'; burst.setAttribute('aria-hidden', 'true');
+  burst.style.left = Math.max(56, Math.min(innerWidth - 56, anchor.left + anchor.width / 2)) + 'px';
+  burst.style.top = Math.max(56, Math.min(innerHeight - 56, anchor.top + anchor.height / 2)) + 'px';
+  for (let i = 0; i < 24; i++) {
+    const particle = document.createElement('i'), angle = i * Math.PI * 2 / 24;
+    particle.style.setProperty('--motion-x', Math.cos(angle) * (30 + i % 4 * 7) + 'px');
+    particle.style.setProperty('--motion-y', Math.sin(angle) * (30 + i % 4 * 7) + 'px');
+    particle.style.background = ['#8c74ed', '#efaf61', '#59bca3', '#ec88ae'][i % 4];
+    burst.append(particle);
+  }
+  document.body.append(burst); motionBursts.add(burst);
+  setTimeout(() => { burst.remove(); motionBursts.delete(burst); }, 850);
+  const owner = TAB_CHARACTER_LINES[page] || TAB_CHARACTER_LINES.home;
+  const name = CHARACTER_REGISTRY[owner.speakerId]?.identity.split(' · ')[0] || '하니';
+  if (typeof toast === 'function') toast(name + ' · 수고했어요! ' + owner.lines[0]);
+  return true;
+}
+function completion(key, wasComplete, isComplete, anchor, page) {
+  if (!isComplete) { motionCompleted.delete(key); return false; }
+  if (wasComplete || motionCompleted.has(key)) return false;
+  motionCompleted.add(key);
+  return celebrate(anchor, page);
+}
+function trackGoal(key, rate, anchor, page) {
+  if (!Number.isFinite(rate)) return false;
+  const complete = rate >= 100, previous = motionGoals.get(key);
+  motionGoals.set(key, complete);
+  // Historical achievements on first load are not new completions.
+  if (previous === undefined) return false;
+  return completion('goal:' + key, previous, complete, anchor, page);
+}
+function refreshMotion() {
+  const home = q('#home.active'), asset = q('#asset.active');
+  if (home) ['homeAsset','homeWeight','homeBooks','homeExerciseSteps','homeJispi','homeHinkei'].forEach(id => {
+    const element = q('#' + id); if (element) countUp(element, element.querySelector('.hani-motion-number-final')?.textContent || element.textContent, id);
+  });
+  if (asset) qa('#assetStats .value').forEach((element, i) => countUp(element, element.querySelector('.hani-motion-number-final')?.textContent || element.textContent, 'asset:' + i));
+  const panel = q('#settings.active #goalProgressContent');
+  if (panel && window.HANI_GOAL_PROGRESS) {
+    const type = q('#goalProgressType', panel)?.value, year = Number(q('#goalProgressYear', panel)?.value), quarter = Number(q('#goalProgressQuarter', panel)?.value);
+    if (type && year) (window.HANI_GOAL_PROGRESS.read({type, year, quarter}) || []).forEach((fact, i) => {
+      const p = fact.progress, card = qa('.goal-progress-grid > article', panel)[i];
+      if (p.goal_status === 'RESOLVED' && card) trackGoal([p.goal_id,p.goal_revision,type,year,quarter].join(':'), p.achievement_rate, card.getBoundingClientRect(), 'settings');
+    });
+  }
+}
+motionPreference.addEventListener('change', () => {
+  if (!motionPreference.matches) return;
+  for (const element of motionRunning.keys()) stopNumber(element);
+  for (const burst of motionBursts) { burst.remove(); motionBursts.delete(burst); }
+});
+window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refreshMotion, reduced:() => motionPreference.matches});
+
+// END HANI UI MOTION
+
   const selectCharacterQuote=createTabQuoteSelector();
   window.HaniPageQuote=selectCharacterQuote;
   const q=(s,r=document)=>r?.querySelector?.(s)||null, qa=(s,r=document)=>r?.querySelectorAll?Array.from(r.querySelectorAll(s)):[];
@@ -1168,6 +1269,12 @@ function createTabQuoteSelector(random = Math.random) {
     qa('#asset .asset-dashboard-card .sh h3').forEach(x=>x.textContent='자산 핵심 지표');
   }
   function arrangeNavigation(){
+    const sideToggle = q("#sideToggle"), mini = q("#app")?.classList.contains("sidebar-mini");
+    if (sideToggle) { sideToggle.title = mini ? "사이드바 펼치기" : "사이드바 접기"; sideToggle.setAttribute("aria-label", sideToggle.title); sideToggle.setAttribute("aria-expanded", String(!mini)); }
+    qa('#sidebar .nav-btn, #sidebar .group-head').forEach(button => {
+      const label = q('.txt, .name', button)?.textContent.replace(/NEW/g, '').trim();
+      if (label) { button.title = label; button.setAttribute('aria-label', label); }
+    });
     const ledger=q('#ledger'),tabs=q('#ledger > .tabs')||q('#ledger > .page-nav-context-v02992 .tabs'),picker=q('#ledger .money-month-picker');q('#ledger .money-intro')?.remove();
     if(ledger&&tabs){let nav=q('#ledger > .page-nav-context-v02992');if(!nav){nav=document.createElement('div');nav.className='page-nav-context-v02992';tabs.before(nav);nav.append(tabs);const context=document.createElement('div');context.className='page-context-v02992';nav.append(context);if(picker)context.append(picker)}const banner=q('#ledger > .ds-main-character-banner');if(banner&&nav&&banner.nextElementSibling!==nav)banner.after(nav)}
     const inv=q('#investment'),invTabs=q('.investment-tabs-main',inv);if(inv&&invTabs&&!q(':scope > .page-nav-context-v02992',inv)){const nav=document.createElement('div');nav.className='page-nav-context-v02992';invTabs.before(nav);nav.append(invTabs)}
@@ -1211,7 +1318,7 @@ function createTabQuoteSelector(random = Math.random) {
     qa('[data-sports-open]',root).forEach(btn=>btn.addEventListener('click',()=>select(btn.dataset.sportsOpen)));
     select(currentSportsMenu());
   }
-  let queued=false;function refresh(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;mountSkeletons();arrangeNavigation();mountDesignSlots();organizePhase1Layouts();improveLifeMarket();cleanupNewsroom();bindSportsBoard();if(q('#exercise.active')&&typeof drawExercise==='function')requestAnimationFrame(drawExercise)})}
+  let queued=false;function refresh(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;mountSkeletons();arrangeNavigation();mountDesignSlots();organizePhase1Layouts();improveLifeMarket();cleanupNewsroom();bindSportsBoard();refreshMotion();if(q('#exercise.active')&&typeof drawExercise==='function')requestAnimationFrame(drawExercise)})}
   // Finish selection is CSS-only; do not rebuild page/card slots for these controls.
   document.addEventListener('click',event=>{if(!event.target.closest('#signatureFinishChoices,#seasonCollectionChoices'))setTimeout(refresh,0)});document.addEventListener('change',event=>{if(!event.target.closest('#signatureFinishChoices,#seasonCollectionChoices'))setTimeout(refresh,0)});
   refresh();setTimeout(refresh,120);

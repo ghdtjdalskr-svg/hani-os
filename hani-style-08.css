@@ -113,3 +113,38 @@
 .hani-care-cards .acts{flex-wrap:wrap}
 [data-care-part-form] label{margin:8px 0;overflow-wrap:anywhere}
 .nav-btn [data-study-pending]{flex-shrink:0;margin-left:auto;font-size:10px}
+
+/* fix-208: compact navigation owns every sidebar child; expanded layout is unchanged. */
+@media(min-width:851px){
+ #app.sidebar-mini #sidebar{padding:12px 8px!important;overflow-x:hidden!important}
+ #app.sidebar-mini #sidebar :is(.brand,.sidebar-team-mini,.office,.foot,.sidebar-corporate-lockup,.life-mark){display:none!important}
+ #app.sidebar-mini #sidebar .brand-row{min-height:36px!important;margin:0 0 8px!important;padding:0!important;justify-content:center!important;gap:0!important}
+ #app.sidebar-mini #sidebar .side-toggle{position:static!important;display:grid!important;place-items:center!important;margin:0!important;width:32px!important;height:32px!important}
+ #app.sidebar-mini #sidebar .group{margin:10px 0 6px!important;padding:0!important;min-width:0!important}
+ #app.sidebar-mini #sidebar .group-head{height:16px!important;min-height:0!important;padding:0!important;border:0!important;background:transparent!important;justify-content:center!important;gap:0!important}
+ #app.sidebar-mini #sidebar .group-head>*{display:none!important}
+ #app.sidebar-mini #sidebar .group-head:before{content:''!important;display:block!important;width:16px!important;height:2px!important;border-radius:2px!important;background:var(--accent,var(--muted))!important;box-shadow:none!important}
+ #app.sidebar-mini #sidebar .group-head:after{display:none!important}
+ #app.sidebar-mini #sidebar .group-body{margin:0!important;padding:0!important;border:0!important;gap:2px!important}
+ #app.sidebar-mini #sidebar .nav-btn{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;min-width:0!important;min-height:42px!important;padding:3px!important;margin:0!important;gap:0!important;position:relative!important}
+ #app.sidebar-mini #sidebar .nav-btn>:not(.ico):not([data-study-pending]){display:none!important}
+ #app.sidebar-mini #sidebar .nav-btn .ico{display:grid!important;place-items:center!important;width:32px!important;height:32px!important;flex:0 0 32px!important;margin:0!important;position:relative!important}
+ #app.sidebar-mini #sidebar .nav-btn .ico svg{width:22px!important;height:22px!important;margin:0!important}
+ #app.sidebar-mini #sidebar .nav-btn [data-study-pending]{position:absolute!important;top:calc(50% - 16px)!important;right:calc(50% - 16px)!important;margin:0!important;display:grid!important;place-items:center!important;min-width:12px!important;max-width:24px!important;height:12px!important;padding:0 2px!important;border-radius:6px!important;font-size:8px!important;line-height:12px!important;white-space:nowrap!important;overflow:hidden!important;z-index:1}
+ #app.sidebar-mini #sidebar [data-study-pending][hidden]{display:none!important}
+ #app.sidebar-mini #sidebar :is(.nav-new-pill,.pill:not([data-study-pending]),.nav-floor,.floor-pill){display:none!important}
+ #app.sidebar-mini #sidebar .side-bottom{margin:10px 0 0!important;padding:8px 0 0!important}
+}
+.study-orphan-archive{margin-top:16px}.study-orphan-archive[hidden]{display:none!important}
+.study-orphan-archive summary{cursor:pointer;font-size:13px;font-weight:800}
+.study-orphan-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0}
+.study-orphan-row label{display:flex;align-items:center;gap:6px;font-size:12px}.study-orphan-row select{max-width:240px}
+/* The final text reserves its original space throughout the count animation. */
+.hani-motion-number{position:relative}
+.hani-motion-number-final{opacity:0}.hani-motion-number-overlay{position:absolute;inset:0;white-space:nowrap;pointer-events:none;font-variant-numeric:tabular-nums}
+.hani-motion-burst{position:fixed;width:0;height:0;pointer-events:none;z-index:10000}
+.hani-motion-burst i{position:absolute;width:4px;height:6px;border-radius:1px;animation:hani-motion-confetti 760ms ease-out forwards}
+@keyframes hani-motion-confetti{from{opacity:1;transform:translate(0,0) rotate(0)}to{opacity:0;transform:translate(var(--motion-x),var(--motion-y)) rotate(170deg)}}
+#app :is(button,.card[tabindex],[role="button"]):focus-visible{outline:2px solid var(--primary,#7569e8);outline-offset:3px}
+@media(prefers-reduced-motion:no-preference){#app button:active,#app :is(.card,.archive-card):active:not(:has(:is(button,input,select,textarea,label,a,summary,[role="button"]):active)){scale:.98}}
+@media(prefers-reduced-motion:reduce){.hani-motion-burst{display:none!important}#app :is(button,.card,.archive-card):active{scale:none!important}.hani-motion-burst i{animation:none!important}}
