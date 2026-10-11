@@ -147,12 +147,12 @@ const ALIASES = Object.freeze({ nauen: "naeun", suyeon: "sooyeon" });
 function characterProfile(agentKey) {
   const key = String(agentKey || "").trim().toLowerCase();
   const canonicalKey = Object.hasOwn(ALIASES, key) ? ALIASES[key] : key;
-  return Object.hasOwn(CHARACTER_REGISTRY, canonicalKey) ? CHARACTER_REGISTRY[canonicalKey] : null;
+  return Object.hasOwn(CHARACTER_REGISTRY, canonicalKey) ? CHARACTER_REGISTRY[canonicalKey] : Object.hasOwn(PAGE_CHARACTER_PROFILES, canonicalKey) ? PAGE_CHARACTER_PROFILES[canonicalKey] : null;
 }
 
 function characterVoicePrompt(agentKey, mode = "DIRECT_CHAT", serious = false) {
   const profile = characterProfile(agentKey);
-  if (!profile) return "";
+  if (!profile?.voice_modes) return "";
   const selectedMode = VOICE_MODES.includes(mode) ? mode : "DIRECT_CHAT";
   return [
     "[HANI CANONICAL CHARACTER VOICE]",
@@ -194,7 +194,7 @@ const TAB_CHARACTER_LINES = Object.freeze({
   agentReview: entry("hani", ["담당자들의 근거부터 모아볼게요.", "이견도 결정 조건과 함께 남겨요.", "마지막 판단은 대표님께 맡길게요."], "BOARDROOM"),
   monthlyReport: entry("hani", ["이번 달에 남은 기록부터 돌아봐요.", "빈칸은 아직 기록이 없는 자리예요.", "다음 달에 이어갈 한 가지를 골라요."], "MONTHLY_REPORT"),
   policy: entry("sua", ["확정된 규칙부터 함께 확인해요.", "애매한 권한은 확인 필요로 남겨요.", "규칙은 다음 행동을 돕는 기준이에요."], "BOARDROOM"),
-  deployment: entry("sua", ["검증 결과와 승인 기록부터 볼게요.", "Preview 확인 뒤에 안전하게 넘겨요.", "실제 반영까지 확인하고 마무리해요."], "BOARDROOM"),
+  deployment: entry("seoyun", ["확인한 근거와 승인부터 챙겨볼게요.","미리보기에서 마지막 한 번 같이 살펴요.","실제 반영까지 꼼꼼히 확인할게요."], "BOARDROOM"),
   investment: entry("hani", ["가격과 근거를 따로 살펴봐요.", "수익률보다 계획부터 확인해요.", "서두르지 말고 변수를 나눠봐요."], "DIRECT_CHAT"),
   investmentIntake: entry("hani", ["원본 숫자부터 함께 맞춰봐요.", "모르는 항목은 빈칸으로 남겨요.", "확정 전 미리보기와 비교해요."], "DIRECT_CHAT"),
   asset: entry("jieun", ["잔액과 앞으로 쓸 돈을 같이 봐요.", "숫자 뒤에 있는 용도도 남겨봐요.", "작은 변화부터 차분히 살펴봐요."], "DIRECT_CHAT"),
@@ -213,18 +213,18 @@ const TAB_CHARACTER_LINES = Object.freeze({
   tasks: entry("sua", ["지금 움직일 한 가지부터 골라요.", "기한과 다음 행동을 함께 적어요.", "완료한 한 칸도 오늘의 진전이에요."], "DIRECT_CHAT"),
   calendar: entry("sua", ["확정 일정과 확인할 일을 나눠요.", "겹친 약속부터 차분히 풀어봐요.", "비어 있는 시간도 남겨둬요."], "DIRECT_CHAT"),
   drive: entry("sua", ["원본과 최신본부터 구분해요.", "다시 찾기 쉬운 이름을 붙여요.", "필요한 자료 위치부터 확인해요."], "DIRECT_CHAT"),
-  dev: entry("sua", ["구현과 미검증을 나누어 볼게요.", "기존 흐름부터 안전하게 점검해요.", "다음 확인 순서를 함께 잡아요."], "BOARDROOM"),
-  aiWork: entry("hani", ["실제 작업을 담당 서비스로 연결할게요.", "개발과 보고에 필요한 도구를 함께 확인해요.", "다음 실행에 필요한 근거를 먼저 살펴요."]),
+  dev: entry("seoyun", ["바뀐 부분부터 차근차근 볼게요.","아직 확인할 일도 빠짐없이 적어둘게요.","기존 흐름이 편안하게 이어지도록 챙겨요."], "BOARDROOM"),
+  aiWork: entry("seoyun", ["필요한 도구와 담당부터 맞춰볼게요.","작업 근거를 모아 다음 사람에게 잘 넘겨요.","확인할 순서를 함께 정리해둘게요."]),
   aiTeam: entry("hani", ["각자 잘하는 일을 함께 볼까요?", "담당자의 근거를 모아 연결할게요.", "팀의 역할을 알고 편하게 불러요."]),
   settings: entry("yuna", ["저장 상태와 백업부터 확인해요.", "모르는 설정은 추측하지 않아요.", "변경할 범위부터 함께 살펴봐요."]),
-  work: entry("sua", ["요구와 가능한 구성을 나눠요.", "담당과 다음 행동부터 정리해요.", "확정 전 일정도 함께 확인해요."], "DIRECT_CHAT"),
+  work: entry("seoyun", ["각자 맡은 일과 다음 순서를 같이 볼까요?","막힌 곳은 혼자 안고 있지 않아도 돼요.","작은 진전도 놓치지 않고 챙겨둘게요."], "DIRECT_CHAT"),
   game: entry("sooyeon", ["오늘은 어느 팀부터 볼까요?", "한 경기보다 시즌의 흐름을 봐요.", "응원은 편하게, 리뷰는 차분하게요."], "DIRECT_CHAT"),
   aura: entry("hani", ["오늘 마음에 드는 색을 골라봐요.", "우리 계절에 어울리는 화면을 찾아요.", "편하게 오래 볼 분위기를 골라요."]),
   organization: entry("hani", ["각 팀의 역할부터 함께 둘러봐요.", "우리 동료들이 연결되는 길을 봐요.", "필요한 담당자를 여기서 찾아봐요."]),
   board: entry("hani", ["팀에 남길 이야기를 한 줄 적어요.", "업무도 일상도 편하게 나누어 봐요.", "동료의 새 소식부터 함께 읽어요."]),
   characterArchive: entry("hani", ["우리 동료의 이야기를 만나봐요.", "좋아하는 멤버부터 펼쳐볼까요?", "각자의 성격과 관계를 둘러봐요."]),
-  geminiReports: entry("hani", ["개발의 변화와 근거부터 읽어봐요.", "완료와 남은 확인을 나누어 봐요.", "이번 보고서의 다음 행동을 찾아요."]),
-  aiBudget: entry("jieun", ["이번 주 잔여 한도부터 확인해요.", "조회 시각과 회복 예정도 같이 봐요.", "확인된 사용량으로 계획을 잡아요."]),
+  geminiReports: entry("serin", ["변화와 근거를 차분히 살펴볼게요.","관찰한 사실과 해석을 나누어 읽어요.","아직 검증하지 않은 부분도 함께 남겨요."]),
+  aiBudget: entry("seoyun", ["남은 한도를 보고 이번 주 작업을 나눠요.","조회 시각과 회복 예정도 함께 챙길게요.","여유를 조금 남기고 차근차근 진행해요."]),
 });
 // Read-only source references for board personas; the banner remains the owner.
 globalThis.HaniEditorialSources = Object.freeze({lines:TAB_CHARACTER_LINES,profiles:CHARACTER_REGISTRY});
@@ -236,6 +236,10 @@ const SPORTS_LINES = Object.freeze({
   dplus: Object.freeze(["오빠, 디플러스는 한 세트만 보고 결론내진 말자. 밴픽과 실제 플레이를 같이 보자.", "응원은 하고, 리뷰는 논점부터. 어떤 선택이 다음 세트에 이어지는지 보자."]),
 });
 
+const PAGE_CHARACTER_PROFILES=Object.freeze({
+  seoyun:Object.freeze({identity:"서윤 · 배포 팀장",image:"./assets/profiles/hani-staff-seoyun-v7.webp"}),
+  serin:Object.freeze({identity:"세린 · Gemini 연구원",image:"./assets/profiles/hani-staff-serin-v5.webp"})
+});
 // Session-memory only: redraws stay stable; re-entering advances without repeats.
 function createTabQuoteSelector(random = Math.random) {
   const indices = new Map();
@@ -273,7 +277,7 @@ function createTabQuoteSelector(random = Math.random) {
     hinkei:{agent:'hina',name:'히나',role:'학습 담당',scene:'learning',line:'틀린 문제도 다음 정답으로 가는 힌트야!'}
   };
   const designSceneSrc=key=>q('img[data-design-scene="'+key+'"]',q('#haniDesignAssets')?.content)?.getAttribute('src')||'';
-  const profile=agent=>sidebarAgentImages[agent]||sidebarAgentImages.hani;
+  const profile=agent=>PAGE_CHARACTER_PROFILES[agent]?.image||sidebarAgentImages[agent]||sidebarAgentImages.hani;
   function speakerMarkup(agent,name,role,line){return `<img src="${profile(agent)}" alt="${safe(name)}" width="64" height="64"><div><small>${safe(name)} · ${safe(role)}</small><p>${safe(line)}</p></div>`}
   const mainCharacterBannerVariants=new Set(['single-character','duo-or-trio','group']);
   // Banner layers: Seasonal Theme (CSS) -> Category Theme -> Sidebar Menu Scene.
@@ -380,7 +384,7 @@ function createTabQuoteSelector(random = Math.random) {
   title: "라이프 리포트 - HANI LIFE REPORT",
   description: "한 달의 흐름을 담당자와 함께 돌아봅니다. 분기·연간 발표는 이곳에 이어질 예정입니다.",
   quote: "기록은 바꾸지 않고, 한 달의 흐름만 선명하게 정리할게요.",
-  sceneImage: "./assets/banner-preview-v1/ai-approval-boardroom-v1.webp",
+  sceneImage: "./assets/banner-preview-v1/conference-room-reports-v1.webp",
   scenePosition: "center center",
   scenePositionMobile: "72% center",
   sceneFit: "cover",
@@ -389,6 +393,90 @@ function createTabQuoteSelector(random = Math.random) {
   sceneAlt: "하니가 HANI GROUP 월간 보고를 정리하는 장면",
   variant: "single-character",
   tone: "office"
+}),
+    "board":Object.freeze({
+  sidebarMenuKey: "board",
+  category: "office",
+  owner: "hani",
+  profile: "hani",
+  speaker: "하니",
+  role: "Chief of Staff",
+  eyebrow: "OFFICE · COMPANY BOARD",
+  title: "사내 게시판",
+  description: "팀의 업무와 일상 소식을 함께 나누는 사내 커뮤니티입니다.",
+  quote: "팀에 남길 이야기를 한 줄 적어요.",
+  sceneImage: "./assets/banner-preview-v1/company-board-community-v1.webp",
+  scenePosition: "center center",
+  scenePositionMobile: "72% center",
+  sceneFit: "cover",
+  sceneFitMobile: "cover",
+  sceneVariant: "company-board-community",
+  sceneAlt: "하니와 유나, 서윤이 사내 게시판 앞에서 소식을 나누는 장면",
+  variant: "duo-or-trio",
+  tone: "office"
+}),
+    "aiWork":Object.freeze({
+  sidebarMenuKey: "aiWork",
+  category: "work",
+  owner: "seoyun",
+  profile: "seoyun",
+  speaker: "서윤",
+  role: "AI Operations",
+  eyebrow: "WORK · AI WORK STATUS",
+  title: "AI 팀 업무 현황",
+  description: "AI 팀의 작업 상태와 담당, 다음 확인 순서를 함께 살펴봅니다.",
+  quote: "작업 근거를 모아 다음 사람에게 잘 넘겨요.",
+  sceneImage: "./assets/banner-preview-v1/ai-work-status-v1.webp",
+  scenePosition: "center center",
+  scenePositionMobile: "72% center",
+  sceneFit: "cover",
+  sceneFitMobile: "cover",
+  sceneVariant: "ai-work-status",
+  sceneAlt: "서윤과 동료들이 운영실에서 AI 팀 업무 현황을 확인하는 장면",
+  variant: "duo-or-trio",
+  tone: "work"
+}),
+    "geminiReports":Object.freeze({
+  sidebarMenuKey: "geminiReports",
+  category: "work",
+  owner: "serin",
+  profile: "serin",
+  speaker: "세린",
+  role: "Research Analyst",
+  eyebrow: "WORK · DEVELOPMENT REPORTS",
+  title: "Gemini 개발 보고서",
+  description: "개발 보고서의 변화와 근거, 아직 검증하지 않은 내용을 함께 읽습니다.",
+  quote: "관찰한 사실과 해석을 나누어 읽어요.",
+  sceneImage: "./assets/banner-preview-v1/dev-reports-research-v1.webp",
+  scenePosition: "center center",
+  scenePositionMobile: "72% center",
+  sceneFit: "cover",
+  sceneFitMobile: "cover",
+  sceneVariant: "dev-reports-research",
+  sceneAlt: "세린이 연구 도서실에서 개발 보고서와 차트를 검토하는 장면",
+  variant: "single-character",
+  tone: "work"
+}),
+    "aiBudget":Object.freeze({
+  sidebarMenuKey: "aiBudget",
+  category: "work",
+  owner: "seoyun",
+  profile: "seoyun",
+  speaker: "서윤",
+  role: "AI Operations",
+  eyebrow: "WORK · AI WEEKLY BUDGET",
+  title: "AI 주간 예산",
+  description: "이번 주 AI 사용량과 남은 한도, 회복 예정 시각을 함께 확인합니다.",
+  quote: "남은 한도를 보고 이번 주 작업을 나눠요.",
+  sceneImage: "./assets/banner-preview-v1/ai-budget-control-v1.webp",
+  scenePosition: "center center",
+  scenePositionMobile: "72% center",
+  sceneFit: "cover",
+  sceneFitMobile: "cover",
+  sceneVariant: "ai-budget-control",
+  sceneAlt: "서윤이 예산 계기와 태블릿으로 AI 사용량을 검토하는 장면",
+  variant: "single-character",
+  tone: "work"
 }),
     "policy":Object.freeze({
   sidebarMenuKey: "policy",
@@ -956,7 +1044,7 @@ function createTabQuoteSelector(random = Math.random) {
     if(!el){
       el=document.createElement('section');
       el.dataset.mainCharacterBanner=id;
-      el.innerHTML='<figure class="ds-main-character-banner__scene"><img width="2172" height="724"></figure><span class="ds-main-character-banner__seasonal-fx" aria-hidden="true"></span><div class="ds-main-character-banner__copy"><span class="ds-main-character-banner__eyebrow"></span><h2 class="ds-main-character-banner__title"></h2><p class="ds-main-character-banner__description"></p><span class="ds-main-character-banner__status" hidden></span><div class="ds-main-character-banner__agent" data-main-character-banner-agent-slot></div></div>';
+      el.innerHTML='<figure class="ds-main-character-banner__scene"><img width="2172" height="724" loading="lazy" decoding="async"></figure><span class="ds-main-character-banner__seasonal-fx" aria-hidden="true"></span><div class="ds-main-character-banner__copy"><span class="ds-main-character-banner__eyebrow"></span><h2 class="ds-main-character-banner__title"></h2><p class="ds-main-character-banner__description"></p><span class="ds-main-character-banner__status" hidden></span><div class="ds-main-character-banner__agent" data-main-character-banner-agent-slot></div></div>';
       root.prepend(el);
     }
     const variant=mainCharacterBannerVariants.has(config.variant)?config.variant:'single-character';
@@ -999,8 +1087,8 @@ function createTabQuoteSelector(random = Math.random) {
     const actions=q('.home-welcome-actions'),yuna=q('#homeYunaQuick');if(actions&&yuna&&!actions.contains(yuna))actions.append(yuna);
     const side=q('.home-mix-card');if(side&&!q('.ds-companion-scene',side)){const scene=document.createElement('figure');scene.className='ds-companion-scene';scene.innerHTML='<img alt="" width="2172" height="724"><figcaption class="ds-agent-comment"></figcaption>';q('.sh',side).after(scene)}
     const recent=q('.home-activity-card'),lower=q('.home-lower-grid');if(recent&&lower&&!lower.contains(recent))lower.insertBefore(recent,q('.home-team-panel',lower));
-    const ledger=q('#investmentIntake .ledger-import');if(ledger&&!q('.ds-agent-comment',ledger)){const comment=document.createElement('div');comment.className='ds-agent-comment ds-jieun';comment.innerHTML=speakerMarkup('jieun','지은','생활 자산관리사','이번 달도 수고했어! 붙여넣고 미리보기에서 같이 확인하자.');ledger.append(comment)}
-    const account=q('#assetAccountManager');if(account&&!q('.ds-account-comment')){const comment=document.createElement('div');comment.className='ds-agent-comment ds-account-comment';comment.innerHTML=speakerMarkup('hani','하니','투자 담당','계좌 화면은 하나씩 차근차근. 원본과 숫자를 맞춘 다음 확정하자!');account.before(comment)}
+    const ledger=q('#investmentIntake .ledger-import');if(ledger&&!q('.ds-agent-comment',ledger)){const comment=document.createElement('div');comment.className='ds-agent-comment ds-jieun';comment.innerHTML=speakerMarkup('jieun','지은','생활 자산관리사','이번 달도 수고했어! 붙여넣고 미리보기에서 같이 확인하자.');q(':scope > .sh',ledger)?.after(comment)}
+    const account=q('#assetAccountManager');if(account&&!q('.ds-account-comment')){const comment=document.createElement('div');comment.className='ds-agent-comment ds-account-comment';comment.innerHTML=speakerMarkup('hani','하니','투자 담당','계좌 화면은 하나씩 차근차근. 원본과 숫자를 맞춘 다음 확정하자!');q(':scope > .sh',account.closest('.card'))?.after(comment)}
     const comment=q('.ledger-jieun-comment');if(comment&&!q('.ds-comment-portrait',comment)){const img=document.createElement('img');img.className='ds-comment-portrait';img.src=profile('jieun');img.alt='지은';q('#ledgerJieunComment').before(img)}
     if(comment)comment.classList.toggle('is-editing',!q('#ledgerJieunEditor').hidden);
   }
@@ -1060,8 +1148,8 @@ function createTabQuoteSelector(random = Math.random) {
   function arrangeNavigation(){
     const ledger=q('#ledger'),tabs=q('#ledger > .tabs')||q('#ledger > .page-nav-context-v02992 .tabs'),picker=q('#ledger .money-month-picker');q('#ledger .money-intro')?.remove();
     if(ledger&&tabs){let nav=q('#ledger > .page-nav-context-v02992');if(!nav){nav=document.createElement('div');nav.className='page-nav-context-v02992';tabs.before(nav);nav.append(tabs);const context=document.createElement('div');context.className='page-context-v02992';nav.append(context);if(picker)context.append(picker)}const banner=q('#ledger > .ds-main-character-banner');if(banner&&nav&&banner.nextElementSibling!==nav)banner.after(nav)}
-    const inv=q('#investment'),invTabs=q('#investment > .investment-tabs-main');if(inv&&invTabs&&!q('#investment > .page-nav-context-v02992')){const nav=document.createElement('div');nav.className='page-nav-context-v02992';invTabs.before(nav);nav.append(invTabs)}
-    const overviewHead=q('#investment .investment-overview-head'),year=q('#overviewYearSelect')?.closest('.field'),select=q('#overviewYearSelect'),invNav=q('#investment > .page-nav-context-v02992');
+    const inv=q('#investment .ic-portfolio'),invTabs=q('.investment-tabs-main',inv);if(inv&&invTabs&&!q(':scope > .page-nav-context-v02992',inv)){const nav=document.createElement('div');nav.className='page-nav-context-v02992';invTabs.before(nav);nav.append(invTabs)}
+    const overviewHead=q('#investment .investment-overview-head'),year=q('#overviewYearSelect')?.closest('.field'),select=q('#overviewYearSelect'),invNav=inv?q(':scope > .page-nav-context-v02992',inv):null;
     if(year&&invNav){let context=q('.page-context-v02992',invNav);if(!context){context=document.createElement('div');context.className='page-context-v02992';invNav.append(context)}context.append(year);const values=select?Array.from(select.options).map(x=>x.value).filter(Boolean):[];let fixed=q('.investment-year-static',year);if(values.length<=1){if(!fixed){fixed=document.createElement('strong');fixed.className='investment-year-static';year.append(fixed)}fixed.textContent=`${values[0]||new Date().getFullYear()}년`;if(select)select.hidden=true}else{fixed?.remove();if(select)select.hidden=false}}
     if(overviewHead){q(':scope > div:first-child',overviewHead)?.remove();if(!overviewHead.children.length)overviewHead.remove()}
   }

@@ -2619,11 +2619,29 @@ body[data-canvas-group="team"]{--canvas-a:#7569e8;--canvas-b:#d875a3;--canvas-c:
 .deploy-approval-dialog .deploy-actions{justify-content:flex-end;margin-top:20px}
 .deploy-approval-dialog button:focus-visible{outline:3px solid #6f54c7;outline-offset:3px}
 @media(max-width:560px){.deploy-approval-dialog{padding:20px}.deploy-approval-dialog .deploy-actions{display:flex;flex-wrap:wrap}.deploy-approval-dialog button{min-height:44px;flex:1}}
-.login-gate #loginGateFinish{width:100%;min-height:44px;border:1px solid var(--border-strong,#d8dce5);border-radius:12px;padding:10px;color:var(--text-primary,#28374c);background:var(--surface-raised,#fff);font:inherit}
+.login-gate #loginGateFinish{margin:0;padding:0;border:0;min-width:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.login-design-options legend{font-size:11.5px;font-weight:900;color:var(--text-secondary);margin-bottom:8px}
+.login-design-choice{position:relative;display:grid;gap:7px;min-width:0;min-height:70px;padding:10px 24px 10px 10px;border:1px solid var(--border-strong);border-radius:12px;background:var(--surface-panel);color:var(--text-primary);cursor:pointer}
+.login-design-choice input{position:absolute;opacity:0;width:1px;height:1px}
+.login-design-swatches{display:flex;gap:5px}.login-design-swatches i{width:22px;height:18px;border-radius:5px;border:1px solid var(--border-strong);background:var(--surface-canvas)}
+.login-design-swatches i:nth-child(2){background:var(--surface-panel)}.login-design-swatches i:nth-child(3){background:var(--structure-accent)}
+.login-design-name{font-size:11px;font-weight:750;line-height:1.4;overflow-wrap:anywhere}
+.login-design-check{position:absolute;right:8px;top:8px;visibility:hidden;font-weight:900}
+.login-design-choice:has(input:checked){outline:2px solid var(--structure-accent);outline-offset:0}.login-design-choice:has(input:checked) .login-design-check{visibility:visible}
+.login-design-choice:has(input:focus-visible){outline:3px solid var(--text-primary);outline-offset:3px}
+#sidebar .nav-new-pill{display:inline-block;flex:none;margin-left:6px;padding:2px 5px;border:1px solid var(--border-strong);border-radius:6px;font-size:9px;font-weight:900;line-height:1.2;color:var(--text-primary);background:var(--surface-raised)}
+#sidebar .nav-new-pill[hidden],.sidebar-mini #sidebar .nav-new-pill{display:none}
 .login-gate :is(button,input,select):focus-visible{outline:2px solid var(--structure-accent,#685486);outline-offset:3px}
-.login-gate{color:var(--text-primary,#28374c)}
+.login-gate{color:var(--text-primary,#28374c);--login-season-ink:color-mix(in srgb,var(--season-motif) 35%,var(--text-primary));background:radial-gradient(circle at 14% 10%,color-mix(in srgb,var(--collection-light) 48%,transparent),transparent 55%),radial-gradient(circle at 92% 88%,color-mix(in srgb,var(--collection-light-second) 38%,transparent),transparent 55%),var(--surface-canvas)}
+.login-gate .login-orb-a{background:color-mix(in srgb,var(--collection-light) 32%,transparent)}.login-gate .login-orb-b{background:color-mix(in srgb,var(--collection-light-second) 32%,transparent)}
+.login-gate .login-character-panel{background:radial-gradient(ellipse at 20% 10%,color-mix(in srgb,var(--collection-light) 25%,transparent),transparent 75%),var(--surface-raised)}
+.login-gate .login-theme-options button{color:var(--text-secondary);background:var(--surface-raised);border-color:var(--border-strong)}
+.login-gate .login-theme-options button.active{background:color-mix(in srgb,var(--collection-light) 22%,var(--surface-panel));color:var(--login-season-ink);border-color:var(--login-season-ink);box-shadow:inset 0 0 0 1px var(--login-season-ink)}
+.login-gate .login-theme-block>label{color:var(--text-secondary)}
+.login-gate .login-primary-btn{background:var(--login-season-ink);color:var(--surface-panel)}
+.login-gate .login-field input{color:var(--text-primary);background:var(--surface-raised);border-color:var(--border-strong)}
 .login-gate .login-shell,.login-gate .login-card{background:var(--surface-panel,#fff)}
-.login-gate .login-character-panel{background:var(--surface-raised,#fff)}
+
 .login-gate .login-card-head h2{color:var(--text-primary,#28374c)}
 .login-cloud-tools{min-width:0;margin-top:16px;max-height:55vh;overflow:auto;overscroll-behavior:contain}
 .login-cloud-tools>.card{margin-bottom:12px}

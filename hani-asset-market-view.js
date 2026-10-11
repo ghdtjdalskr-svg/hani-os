@@ -8,6 +8,15 @@
   let analyticsAvailable=false,analyticsOwner=null;
   const analyticsIdentity=()=>typeof cloudUser!=='undefined'?cloudUser?.id||null:null;
   function analyticsSource(){const available=analyticsAvailable&&analyticsOwner===analyticsIdentity();return {state:structuredClone({accounts:state.accounts||[],instruments:state.instruments||[],investmentBrokerSnapshots:state.investmentBrokerSnapshots||[]}),stocks:available?structuredClone(metadata):[],quotes:available?structuredClone(quotes):[],cashObservations:[]};}
+  async function readResearchQuotes(cards){
+    const owner=analyticsIdentity(),c=configured();
+    if(!c)return {stocks:[],quotes:[]};
+    const codes=[...new Set(cards.map(x=>M.symbol(x.ticker||(state.instruments||[]).find(i=>i.id===x.instrumentId)?.ticker)).filter(M.validSymbol))];
+    if(!codes.length)return {stocks:[],quotes:[]};
+    const stocks=await c.stocks(codes),prices=await c.prices(codes);
+    if(owner!==analyticsIdentity())throw Error('시세 조회 중 로그인 계정이 변경되었습니다.');
+    return {stocks,quotes:prices};
+  }
   function status(message){$('marketStatus').textContent=message;const s=$('marketSettingsStatus');if(s)s.textContent=message;}
   function isActive(){return document.body.dataset.view==='asset'&&!document.hidden;}
   function configured(){
@@ -83,18 +92,26 @@
     root.querySelectorAll('[data-market-period]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.marketPeriod===period)));
     window.dispatchEvent(new Event('hani:market-updated'));
   }
+  function chartUnavailableReason(r){
+    if(!analyticsIdentity())return '로그인 후 종목 가격 그래프를 볼 수 있습니다.';
+    if(!r)return '현재 계좌 필터에 보유종목이 없습니다. 자산 업데이트의 확정 보유기록을 확인해주세요.';
+    if(r.resolution.status!=='matched')return '매칭된 보유종목 없음 · '+(r.resolution.reason||'종목 코드와 시장을 확인해주세요.');
+    if(!client||!analyticsAvailable||analyticsOwner!==analyticsIdentity())return '가격 캐시 없음 또는 읽기 실패 · 시세 수집과 서버 연결을 확인해주세요.';
+    return '';
+  }
   async function drawMain(){
     const r=rows.find(r=>r.key===selected),id=++chartGeneration;lastPlot=null;
-    $('marketChart').innerHTML='<div class="market-empty">'+(!r||r.resolution.status!=='matched'?'종목·가격 연결 후 그래프를 표시합니다.':'차트를 불러오고 있습니다…')+'</div>';$('marketChartMeta').textContent='';
-    if(!r||r.resolution.status!=='matched'||!client)return;
+    const reason=chartUnavailableReason(r);
+    $('marketChart').innerHTML='<div class="market-empty">'+escape(reason||'차트를 불러오고 있습니다…')+'</div>';$('marketChartMeta').textContent='';
+    if(reason)return;
     try{
       const data=await client.chart(r.resolution.symbol,period);if(id!==chartGeneration||!isActive())return;
       const points=M.candles(data.result).filter(c=>c.currency===r.resolution.currency);
       const avg=!data.adjusted&&r.cost!==null&&r.quantity>0?r.cost/r.quantity:null;
-      lastPlot={points,avg,code:r.resolution.symbol};$('marketChart').innerHTML=plot(points,avg,false,r.resolution.symbol);
+      lastPlot=points.length>=2?{points,avg,code:r.resolution.symbol}:null;$('marketChart').innerHTML=points.length?plot(points,avg,false,r.resolution.symbol):'<div class="market-empty">가격 캐시 없음 · 선택한 종목·기간의 수집된 가격 기록이 없습니다.</div>';
       const first=points[0],last=points.at(-1),change=first&&last?(last.closePrice/first.closePrice-1)*100:null;
       $('marketChartMeta').textContent=(change===null?'':('제공 구간 가격 등락 '+(change>=0?'+':'')+change.toFixed(2)+'% · '+first.timestamp.slice(0,10)+' ~ '+last.timestamp.slice(0,10)+' · '))+'Toss · 미수정주가 · '+(data.complete?'제공 데이터 기준':'일부 구간만 제공')+' · 평균선은 현재 보유분 기준이며 과거 실제 손익이 아닙니다.';
-    }catch(e){if(id===chartGeneration){$('marketChart').innerHTML='<div class="market-empty">'+(client.info?'해당 기간 차트가 미수집 상태이거나 읽기에 실패했습니다. 우선 1개월 차트를 확인해주세요.':'차트를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.')+'</div>';}}
+    }catch(e){if(id===chartGeneration){$('marketChart').innerHTML='<div class="market-empty">'+escape(!analyticsIdentity()?'로그인 후 종목 가격 그래프를 볼 수 있습니다.':'가격 캐시 없음 또는 읽기 실패 · '+(e.message||'선택한 종목·기간의 시세 수집을 확인해주세요.'))+'</div>';}}
   }
   async function miniCharts(id){
     // Sequential, capped at visible six: never fan out requests for every holding.
@@ -108,7 +125,7 @@
   async function refresh(){
     if(!isActive()||busy)return;busy=true;const id=++generation,analyticsRequestOwner=analyticsIdentity();
     try{
-      render();const c=configured();if(!c){status('연결 안 됨 · 서버 연결 전입니다. 기존 기록은 그대로 유지됩니다.');return;}
+      render();if(!analyticsAvailable||!client||!analyticsIdentity())await drawMain();const c=configured();if(!c){status('연결 안 됨 · 서버 연결 전입니다. 기존 기록은 그대로 유지됩니다.');return;}
       status('종목정보·가격 확인 중…');
       const codes=positions().map(p=>p.ticker||M.symbol((state.instruments||[]).find(i=>i.id===p.instrumentId)?.ticker));
       metadata=await c.stocks(codes);if(id!==generation)return;
@@ -141,6 +158,10 @@
     try{const c=configured();if(!c)throw Error('서버 연결 후 종목을 검색할 수 있습니다.');const result=await c.search(query,market);if(key!==selected)return;
       $('marketSearchResults').replaceChildren();for(const s of result.result){const b=document.createElement('button');b.type='button';b.className='btn sm';b.textContent=s.name+' · '+s.symbol+' · 이번 화면에 연결';b.addEventListener('click',()=>{overrides.set(key,s.symbol);$('marketSearchResults').replaceChildren();client.clear();refresh();});$('marketSearchResults').append(b);}if(!result.result.length)$('marketSearchResults').textContent='검색 결과가 없습니다.';
     }catch(e){$('marketSearchResults').textContent=e.message;}
+  });
+  document.querySelector('[data-asset-market-link]')?.addEventListener('click',()=>{
+    showView('asset');
+    requestAnimationFrame(()=>root.scrollIntoView({behavior:'smooth',block:'start'}));
   });
   document.addEventListener('visibilitychange',sync);
   // Lookup fills the existing form only. The canonical addInstrument handler owns saving.
@@ -185,7 +206,7 @@
     query.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();search();}});
   }
   if(typeof ResizeObserver!=='undefined')new ResizeObserver(()=>{if(lastPlot)$('marketChart').innerHTML=plot(lastPlot.points,lastPlot.avg,false,lastPlot.code);}).observe(root);
-  window.HaniAssetMarket={sync,analyticsSource,async resolveHoldings(holdings){const c=configured();if(!c)return false;const masters=state.instruments||[],codes=holdings.map(h=>h.ticker||masters.find(i=>i.id===h.instrumentId)?.ticker);try{const info=await c.stocks(codes);return holdings.length>0&&holdings.every(h=>M.resolve(h,masters,info).status==='matched');}catch(_){return false;}},async verifyCatalogInstrument(instrument){const c=configured(),code=M.symbol(instrument?.ticker);if(!c?.catalog||!M.validSymbol(code))return false;const domestic=/^(KR|KOSPI|KOSDAQ|국내)$/.test(instrument.market)||/^\d{6}$/.test(code),markets=domestic?['KOSPI','KOSDAQ','KR_ETC']:['NYSE','NASDAQ','AMEX','US_ETC'];for(const market of markets){try{const found=await c.search(code,market);if(found.result?.some(s=>M.symbol(s.symbol)===code&&s.currency===(domestic?'KRW':'USD')))return true;}catch(_){return false;}}return false;}};sync();
+  window.HaniAssetMarket={sync,analyticsSource,readResearchQuotes,async resolveHoldings(holdings){const c=configured();if(!c)return false;const masters=state.instruments||[],codes=holdings.map(h=>h.ticker||masters.find(i=>i.id===h.instrumentId)?.ticker);try{const info=await c.stocks(codes);return holdings.length>0&&holdings.every(h=>M.resolve(h,masters,info).status==='matched');}catch(_){return false;}},async verifyCatalogInstrument(instrument){const c=configured(),code=M.symbol(instrument?.ticker);if(!c?.catalog||!M.validSymbol(code))return false;const domestic=/^(KR|KOSPI|KOSDAQ|국내)$/.test(instrument.market)||/^\d{6}$/.test(code),markets=domestic?['KOSPI','KOSDAQ','KR_ETC']:['NYSE','NASDAQ','AMEX','US_ETC'];for(const market of markets){try{const found=await c.search(code,market);if(found.result?.some(s=>M.symbol(s.symbol)===code&&s.currency===(domestic?'KRW':'USD')))return true;}catch(_){return false;}}return false;}};sync();
 })();
 /* HANI PORTFOLIO READ-ONLY BUNDLE START */
 /* Phase A: pure read-only projection. No storage, network, FX or source mutation. */
