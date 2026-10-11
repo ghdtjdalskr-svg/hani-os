@@ -5,18 +5,19 @@
   let summary={schemaVersion:1,accounts:[]},busy=false,memoryOnly=false,sequence=0,collectorStatus='';
   const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const date=v=>v?new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(v)):'확인 불가';
-  const source={ 'codex-app-server':'Codex 공식 조회','codex-app':'Codex 앱 조회','claude-statusline':'Claude Code 제공','claude-code-transcripts':'Claude Code 로컬 집계','official-screen':'공식 화면 확인','gemini-cli':'Gemini CLI 세션','gemini-cli-logs':'Gemini CLI 로컬 집계','antigravity':'Antigravity /usage 조회','manual':'직접 기록'};
+  const source={ 'codex-app-server':'Codex 공식 조회','codex-app':'Codex 앱 조회','claude-statusline':'Claude Code 제공','claude-plan-usage':'Claude 플랜 사용률 가져오기','claude-code-transcripts':'Claude Code 로컬 집계','official-screen':'공식 화면 확인','gemini-cli':'Gemini CLI 세션','gemini-cli-logs':'Gemini CLI 로컬 집계','antigravity':'Antigravity /usage 조회','manual':'직접 기록'};
   const states={unknown:'확인 불가',expired:'회복 시각 경과 · 재조회 필요',stale:'갱신 필요',limited:'한도 도달',low:'잔여 한도 적음',fresh:'최근 확인'};
-  const kinds={session:'세션 한도',weekly:'주간 한도',daily:'일간 한도',other:'기타 한도'};
+  const visibleSlots=core.slots.filter(s=>s.id!=='gemini-cli');
+  const kinds={session:'5시간 한도',weekly:'주간 한도',daily:'일간 한도',other:'기타 한도'};
   function countdown(v){if(!v)return '회복 시각 확인 불가';const n=Date.parse(v)-Date.now();if(n<=0)return '시각 경과 · 실제 회복 확인 필요';const min=Math.ceil(n/60000),day=Math.floor(min/1440),h=Math.floor(min%1440/60),m=min%60;return `${day?day+'일 ':''}${h?h+'시간 ':''}${m}분 남음`;}
   function notify(message){$('aiBudgetNotice').textContent=message;}
   const number=v=>v==null?'확인 불가':esc(v.toLocaleString('ko-KR'));
   function claudeUsage(a){
     const u=a?.transcriptUsage;
-    const window=(title,w)=>`<div class="budget-window"><b>${title}</b><p>입력 + 캐시 <strong>${number(w?.inputTokens)}</strong> 토큰 · 출력 <strong>${number(w?.outputTokens)}</strong> 토큰</p><p>응답 ${number(w?.assistantTurns)}회</p></div>`;
+    const window=(title,w)=>`<div class="budget-window"><b>${title}</b><p>입력 + 캐시 <strong>${number(w?.inputTokens)}</strong> 토큰 · 출력 <strong>${number(w?.outputTokens)}</strong> 토큰</p><p>응답 ${number(w?.assistantTurns)}회 · ${number(w?.assistantTurns)}턴</p></div>`;
     const total=u?.fiveHours?.inputTokens!=null&&u?.fiveHours?.outputTokens!=null?u.fiveHours.inputTokens+u.fiveHours.outputTokens:null,max=u?.fourWeekMaxFiveHourTokens;
     const width=total!=null&&max>0?Math.min(100,total/max*100):0;
-    return `${window('최근 5시간 · 입력 + 캐시 / 출력 토큰',u?.fiveHours)}<div class="budget-personal-meter"><div class="budget-meter" ${total!=null&&max>0?`role="meter" aria-label="개인 4주 최대 5시간 토큰 대비" aria-valuemin="0" aria-valuemax="${esc(max)}" aria-valuenow="${esc(Math.min(total,max))}"`:''}><i style="width:${width}%"></i></div><p>개인 4주 최대 5시간 사용량 ${number(max)} 토큰 대비 · 수집된 기록 기준</p></div>${window('최근 7일',u?.sevenDays)}<p class="sub budget-source">마지막 활동 ${esc(date(u?.lastActivityAt))}<br>집계 시각 ${esc(date(u?.observedAt))}${u?.observedAt&&Date.now()-Date.parse(u.observedAt)>15*60000?' · 갱신 필요':''}${u?.limited?'<br>일부 로그만 집계되어 실제 사용량보다 적을 수 있습니다.':''}</p><p class="budget-hint">Claude 구독 한도 %는 공식/직접 기록이 있을 때만 표시합니다. 이 막대는 개인 사용량 비교입니다.</p>`;
+    return `<p class="budget-hint"><b>사용 추정</b> · 로컬 기록의 토큰·턴 집계이며 플랜 사용률이 아닙니다.</p>${window('최근 5시간 · 입력 + 캐시 / 출력 토큰',u?.fiveHours)}<div class="budget-personal-meter"><div class="budget-meter" ${total!=null&&max>0?`role="meter" aria-label="개인 4주 최대 5시간 토큰 대비" aria-valuemin="0" aria-valuemax="${esc(max)}" aria-valuenow="${esc(Math.min(total,max))}"`:''}><i style="width:${width}%"></i></div><p>개인 4주 최대 5시간 사용량 ${number(max)} 토큰 대비 · 수집된 기록 기준</p></div>${window('최근 7일',u?.sevenDays)}<p class="sub budget-source">마지막 활동 ${esc(date(u?.lastActivityAt))}<br>집계 시각 ${esc(date(u?.observedAt))}${u?.observedAt&&Date.now()-Date.parse(u.observedAt)>15*60000?' · 갱신 필요':''}${u?.limited?'<br>일부 로그만 집계되어 실제 사용량보다 적을 수 있습니다.':''}</p><p class="budget-hint">Claude 구독 한도 %는 공식/직접 기록이 있을 때만 표시합니다. 이 막대는 개인 사용량 비교입니다.</p>`;
   }
   function geminiUsage(a){
     const u=a?.cliUsage,expired=u?.resetsAt&&Date.parse(u.resetsAt)<=Date.now(),stale=a&&Date.now()-Date.parse(a.observedAt)>15*60000;
@@ -31,18 +32,18 @@
   }
   try{const raw=localStorage.getItem(KEY);if(raw)summary=core.normalize(JSON.parse(raw));}catch(_){notify('저장된 사용량 요약을 읽지 못했습니다. 원본은 그대로 두고 새 조회를 기다립니다.');}
   function render(){
-    const count=summary.accounts.filter(a=>a.windows.some(w=>['fresh','low','limited'].includes(core.windowState(a,w)))||a.transcriptUsage?.observedAt&&Date.now()-Date.parse(a.transcriptUsage.observedAt)<=15*60000||a.cliUsage&&Date.now()-Date.parse(a.observedAt)<=15*60000).length;
-    $('aiBudgetConnected').textContent=`${count} / ${core.slots.length}`;
+    const count=summary.accounts.filter(a=>visibleSlots.some(s=>s.id===core.slotId(a.id))).filter(a=>a.windows.some(w=>['fresh','low','limited'].includes(core.windowState(a,w)))||a.transcriptUsage?.observedAt&&Date.now()-Date.parse(a.transcriptUsage.observedAt)<=15*60000||a.cliUsage&&Date.now()-Date.parse(a.observedAt)<=15*60000).length;
+    $('aiBudgetConnected').textContent=`${count} / ${visibleSlots.length}`;
     $('aiBudgetSaveState').textContent=memoryOnly?'현재 화면에만 보관 중 · 요약 내보내기로 보관해 주세요.':'사용량 요약은 이 브라우저에 보관합니다. 생활 기록과 별도로 관리합니다.';
-    $('aiBudgetCards').innerHTML=core.slots.map(slot=>{
+    $('aiBudgetCards').innerHTML=visibleSlots.map(slot=>{
       const a=summary.accounts.find(x=>core.slotId(x.id)===slot.id);
       const windows=slot.id==='gemini-cli'?[]:a?.windows?.length?a.windows:slot.provider==='claude'?[]:slot.provider==='antigravity'?['weekly','session'].map(kind=>({kind,usedPercent:null,resetsAt:null})):[{kind:'weekly',usedPercent:null,resetsAt:null}];
-      const usage=slot.provider==='claude'?claudeUsage(a):slot.id==='gemini-cli'?geminiUsage(a):'';
+      const usage=slot.provider==='claude'&&!a?.windows?.length?claudeUsage(a):'';
       const quota=windows.map(w=>{
         const status=core.windowState(a,w),live=['fresh','low','limited'].includes(status),value=w.usedPercent,title=slot.provider==='antigravity'&&w.kind==='session'?'5시간 한도':kinds[w.kind];
         return `<div class="budget-window ${status}"><div class="budget-window-head"><b>${esc(title)}</b><span>${states[status]}</span></div><div class="budget-value">${value==null?'—':esc(Number((100-value).toFixed(2)))+'%'}<small>${value==null?'아직 확인하지 않았어요':live?'남음':'지난 조회의 잔여율'}</small></div><div class="budget-meter" ${value==null?'':'role="meter" aria-label="'+esc(title)+' 사용률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+value+'"'}><i style="width:${value??0}%"></i></div><p>${value==null?'실제 확인 전에는 0%로 표시하지 않습니다.':'사용 '+esc(Number(value.toFixed(2)))+'% · '+esc(countdown(w.resetsAt))}</p><p>회복 예정 ${esc(date(w.resetsAt))} <small>(KST · 한국 시간)</small></p></div>`;
       }).join('');
-      const quotaSource=a?.quotaObservation?`<p class="sub">한도 출처 ${esc(source[a.quotaObservation.source])} · 확인 ${esc(date(a.quotaObservation.observedAt))}</p>`:'';
+      const quotaSource=a?.quotaObservation?`<p class="sub">플랜 사용률 · ${esc(source[a.quotaObservation.source])} · 확인 ${esc(date(a.quotaObservation.observedAt))}</p>`:'';
       const plan=slot.id==='gemini-pro'?'Google AI Pro · Antigravity':slot.id==='antigravity-cg'?'Claude/GPT · Antigravity':slot.provider==='codex'?'GPT · Plus':slot.provider==='claude'?'Claude · Pro':'보조 · Gemini CLI 무료 API';
       const logo=slot.id==='antigravity-cg'?'openai':slot.id==='gemini-pro'?'gemini':slot.provider==='codex'?'openai':slot.provider;
       return `<article class="budget-account card" data-budget-slot="${esc(slot.id)}"><div class="budget-account-head"><div><span class="eyebrow">${esc(slot.provider.toUpperCase())}</span><h3>${esc(slot.label)}</h3><span class="budget-plan">${esc(plan)}</span></div><span class="budget-symbol"><img src="./assets/ai-budget/${esc(logo)}.png" alt="${esc(logo)} 로고" width="44" height="44"></span></div>${usage}${quota}${quotaSource}${slot.provider==='antigravity'?antigravityHint(a):''}${a?.tokens?.value!=null?`<p class="budget-token">${a.tokens.scope==='session'?'현재 CLI 세션 토큰':'제공된 누적 토큰'} <b>${number(a.tokens.value)}</b><br><small>구독의 남은 토큰 수와는 다릅니다.</small></p>`:''}<p class="sub budget-source">${a?`${esc(source[a.source])} · 마지막 확인 ${esc(date(a.observedAt))}`:'연결 또는 기록 대기'}</p><div class="budget-actions"><button type="button" class="btn sm" data-budget-edit="${esc(slot.id)}">사용량 기록</button><a class="btn sm" href="${esc(slot.url)}" target="_blank" rel="noopener noreferrer">공식 화면 ↗</a></div></article>`;
@@ -80,7 +81,7 @@
   });
   $('aiBudgetImport').addEventListener('change',async e=>{
     const file=e.target.files?.[0];if(!file)return;
-    try{if(file.size>65536)throw Error('사용량 요약은 64KB 이하 파일만 가져올 수 있습니다.');const incoming=core.normalize(JSON.parse(await file.text()));sequence++;save(core.merge(summary,incoming));notify('요약을 가져왔습니다. 더 오래된 계정 정보는 기존 값으로 보존했습니다.');}catch(err){notify(err.message||'파일을 확인해 주세요.');}finally{e.target.value='';}
+    try{if(file.size>65536)throw Error('사용량 요약은 64KB 이하 파일만 가져올 수 있습니다.');const incoming=core.normalizeImport(JSON.parse(await file.text()));sequence++;save(core.merge(summary,incoming));notify('요약을 가져왔습니다. 더 오래된 계정 정보는 기존 값으로 보존했습니다.');}catch(err){notify(err.message||'파일을 확인해 주세요.');}finally{e.target.value='';}
   });
   $('aiBudgetExport').addEventListener('click',()=>{
     const exported=core.normalize(summary);exported.accounts.forEach(a=>{a.fingerprint=null;});const url=URL.createObjectURL(new Blob([JSON.stringify(exported,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='hani-ai-budget-summary.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);notify('사용량과 조회 시각만 내보냈습니다. 계정 로그인 정보는 포함하지 않습니다.');

@@ -1504,7 +1504,7 @@ function closeModal(id){$(id).classList.remove("open")}
 const pageMeta={
  home:["대시보드","오늘의 기록과 흐름을 한눈에 확인합니다.","home"],
  investment:["투자","월간 스냅샷으로 계좌별 자산과 자금 흐름을 기록합니다.","finance"],
- investmentCommittee:["투자위원회","종목 리서치와 월간 위원회에서 투자 판단의 근거를 살펴봅니다.","finance"],
+ investmentCommittee:["하니 투자 리포트","종목 리포트와 월간 리포트에서 투자 판단의 근거를 살펴봅니다.","finance"],
  investmentIntake:["자산 업데이트","가계부 확정본과 투자 계좌 자료를 안전하게 업데이트합니다.","finance"],
  newsroom:["뉴스룸","관심종목의 의미 있는 뉴스와 종목별 흐름을 시간순으로 확인합니다.","finance"],
  asset:["자산","모든 투자계좌의 자산을 통합해서 확인합니다.","finance"],
@@ -1520,20 +1520,20 @@ const pageMeta={
  movie:["시청 아카이브","보고 싶은 작품과 감상 기록을 관리합니다.","life"],
  game:["스포츠","좋아하는 네 팀의 최근 결과와 주요 소식을 한눈에 봅니다.","sports"],
  diary:["일기","하루의 기록을 남깁니다.","life"],
- board:["사내 게시판","HANI GROUP의 업무와 일상을 나눕니다.","team"],
+ board:["하니 라운지","HANI GROUP의 업무와 일상을 나눕니다.","team"],
  tasks:["할 일","해야 할 일을 월간 흐름으로 정리합니다.","work"],
  calendar:["캘린더","Google Calendar를 HANI OS 안에서 확인합니다.","work"],
  work:["업무 보조","업무 진행상황과 후속조치를 기록합니다.","work"],
  drive:["Drive","Google Drive로 바로 이동합니다.","work"],
  dev:["개발센터","HANI OS 릴리스와 로드맵을 확인합니다.","work"],
- geminiReports:["Gemini 개발 보고서","개발의 배경부터 결과와 남은 과제까지 읽기 쉽게 확인합니다.","work"],
+ geminiReports:["개발 보고서","개발의 배경부터 결과와 남은 과제까지 읽기 쉽게 확인합니다.","work"],
  aiBudget:["AI 주간 예산","Codex 두 계정과 Claude·Gemini의 사용 한도와 회복 예정 시간을 확인합니다.","team"],
- deployment:["배포 센터","Preview 브랜치부터 대표 승인 배포까지 안전하게 관리합니다.","work"],
+ deployment:["배포센터","Preview 브랜치부터 대표 승인 배포까지 안전하게 관리합니다.","work"],
  intake:["성민 오피스","유나 인턴에게 말하거나 자료를 붙이면 담당 AI가 검토하고 Preview로 정리합니다.","team"],
- agentReview:["경영회의실","AI TEAM의 검토 안건과 대표 결정을 한곳에서 관리합니다.","team"],
+ agentReview:["대표실","AI TEAM의 검토 안건과 대표 결정을 한곳에서 관리합니다.","team"],
  monthlyReport:["컨퍼런스 룸","월간 기록을 돌아보고, 담당자들과 분기 성과를 발표하고 연간 보고서를 나누는 공간입니다.","team"],
  policy:["사내 규칙","AI TEAM이 공통으로 참고하는 운영 원칙과 학습 규정을 관리합니다.","team"],
- aiWork:["AI 팀 업무 현황","AI 서비스 바로가기와 개발·보고 업무를 확인합니다.","development"],
+ aiWork:["AI 업무 현황","AI 서비스 바로가기와 개발·보고 업무를 확인합니다.","development"],
  aiTeam:["AI 팀","역할별 담당 AI와 서비스 바로가기를 확인합니다.","team"],
  characterArchive:["M9 + MIR","HANI GROUP CHARACTER ARCHIVE · 각자의 방식으로 함께하는 멤버들.","team"],
  organization:["회사 소개","사람과 전문성으로 연결되는 우리의 조직.","team"],
@@ -1595,7 +1595,7 @@ const pageQuotes={
     ["하니","공포에 사고 환희에 팔아라! …근데 오빠, 현금흐름부터 확인."],["하니","수익률보다 먼저 보는 건 포지션 크기. 오래 살아남아야 복리도 온다."],["하니","좋은 종목도 비싸게 사면 힘들어. 가격과 이야기를 분리해서 보자."],["하니","오빠 또 차트 새로고침했지? 주가는 쳐다본다고 빨리 안 갑니다 ㅋㅋ"],["하니","빨간불은 반갑고 파란불은 싫지만, 색깔보다 계획이 먼저야."],["하니","매수 버튼은 가볍지만 포지션은 무겁습니다. 하부장 결재 맡겨주세요."]
   ],
   investmentCommittee:[
-    ["하니","가격과 투자 근거를 따로 점검해요."],["하니","지난 판단에서 무엇이 달라졌는지 함께 보자."],["하니","이번 달 위원회는 다음 행동의 조건부터 확인할게."]
+    ["하니","가격과 투자 근거를 따로 점검해요."],["하니","지난 판단에서 무엇이 달라졌는지 함께 보자."],["하니","이번 달 리포트는 다음 행동의 조건부터 확인할게."]
   ],
   newsroom:[
     ["하니","뉴스는 많다고 좋은 게 아니라, 판단을 바꾸는 재료가 보여야 해."],["하니","종목 하나를 눌러 흐름부터 보자. 오늘 기사 한 줄보다 변화의 방향이 중요해."],["하니","공식 발표와 시장 기대는 같은 문장에 섞지 않습니다."],["하니","뉴스룸은 매수 버튼이 아니라 확인 버튼입니다. 판단은 기록 뒤에." ]
@@ -1886,16 +1886,16 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
 }
 
 const QUICK_JUMP_ITEMS=[
-  ["board","사내 게시판","HANI GROUP BOARD WORK LIFE MEMORY LOUNGE"],
+  ["board","하니 라운지","HANI GROUP BOARD WORK LIFE MEMORY LOUNGE"],
   ["characterArchive","M9 + MIR Character Archive","HANI GROUP 캐릭터 프로필 Canon 관계 직급 연차 미르"],
   ["aiBudget","AI 주간 예산","Codex Claude Gemini 토큰 사용량 주간 세션 한도 회복 재충전"],
   ["aura","테마 스튜디오","화면 꾸미기 색상 계절 테마 appearance finish season"],
   ["organization","회사 소개","개요 조직도 구성원 HANI GROUP"],
-  ["home","대시보드","홈 오늘 요약"],["investment","투자","주식 ETF 포트폴리오 월간 기록"],["investmentCommittee","투자위원회","종목 리서치 월간 위원회 Research"],["newsroom","뉴스룸","주식 투자 뉴스 관심종목 3시간 흐름"],["asset","자산","통합 자산 계좌"],["ledger","가계부","소비 결산 리뷰"],
+  ["home","대시보드","홈 오늘 요약"],["investment","투자","주식 ETF 포트폴리오 월간 기록"],["investmentCommittee","하니 투자 리포트","종목 리포트 월간 리포트 Research"],["newsroom","뉴스룸","주식 투자 뉴스 관심종목 3시간 흐름"],["asset","자산","통합 자산 계좌"],["ledger","가계부","소비 결산 리뷰"],
   ["diet","계체량 측정","다이어트 체중 건강"],["exercise","헬스클럽","운동 걸음 근력"],["reading","성민의 서재","독서 서재 책 완독"],["study","공부","일본어 AI 학습"],
   ["university","낭만 캠퍼스 라이프","대학교 대학 캠퍼스 과목 학사일정"],["certificate","자격증","시험 일정"],["wishlist","Wish-list","위시 희망 구매 경험"],["travel","여행","여행 기록 장소 숙소"],["movie","시청 아카이브","관람 감상 아카이브"],
   ["diary","일기","오늘 기록"],["game","스포츠","MLB KBO 해외축구 LCK 양키스 KIA 레알 마드리드 Dplus"],["tasks","할 일","태스크 월간"],["calendar","캘린더","일정"],
-  ["work","업무 보조","업무 후속조치"],["drive","Drive","구글 드라이브"],["deployment","배포 센터","릴리스 GitHub 브랜치 PR 자동배포"],["intake","인포데스크","유나 인턴 데스크 자료 입력 자동 분류 Preview 승인"],["agentReview","경영회의실","HANI BOARDROOM AI 심의 결재 승인 보류 반려 수정"],["monthlyReport","컨퍼런스 룸","HANI MONTHLY REPORT 투자 소비 건강 활동 문화 읽기 전용"],["settings/policy","사내 규칙","Policy Registry 규정 학습 원칙 Evidence"],["aiTeam","AI 팀","캐릭터 파트너"],["aiWork","AI 팀 업무 현황","개발 운영 보고"],["settings","설정·데이터","백업 복원 클라우드"]
+  ["work","업무 보조","업무 후속조치"],["drive","Drive","구글 드라이브"],["deployment","배포센터","릴리스 GitHub 브랜치 PR 자동배포"],["intake","인포데스크","유나 인턴 데스크 자료 입력 자동 분류 Preview 승인"],["agentReview","대표실","HANI BOARDROOM AI 심의 결재 승인 보류 반려 수정"],["monthlyReport","컨퍼런스 룸","HANI MONTHLY REPORT 투자 소비 건강 활동 문화 읽기 전용"],["settings/policy","사내 규칙","Policy Registry 규정 학습 원칙 Evidence"],["aiTeam","AI 팀","캐릭터 파트너"],["aiWork","AI 업무 현황","개발 운영 보고"],["settings","설정·데이터","백업 복원 클라우드"]
 ];
 function quickJumpMatches(query=""){
   const q=String(query||"").trim().toLocaleLowerCase("ko-KR");
@@ -2158,10 +2158,38 @@ function randomizeLoginCharacter(){
   if($("loginCharacterRole"))$("loginCharacterRole").textContent=pick.role;
   if($("loginCharacterQuote"))$("loginCharacterQuote").textContent=`“${LOGIN_GATE_LINES[pick.key]||"오늘도 천천히, 꾸준히 이어가요."}”`;
 }
-function loginGateSessionActive(){return loginGateSession}
-function markLoginGateSession(){loginGateSession=true}
+function loginGateCookiePath(){return location.pathname.startsWith("/hani-os/")?"/hani-os/":"/"}
+function loginGateCookieOwner(){
+  try{return decodeURIComponent(document.cookie.split(";").map(v=>v.trim()).find(v=>v.startsWith("hani_login_session="))?.slice("hani_login_session=".length)||"")}catch(_){return ""}
+}
+function loginGateSessionActive(){return loginGateSession&&loginGateCookieOwner()===cloudUser?.id}
+function markLoginGateSession(){
+  if(!cloudUser?.id)return;
+  document.cookie="hani_login_session="+encodeURIComponent(cloudUser.id)+"; Path="+loginGateCookiePath()+"; Secure; SameSite=Strict";
+  loginGateSession=true;
+}
+async function loginGateResumeSession(){
+  const owner=loginGateCookieOwner(),client=cloudClient,attempt=loginGateAttempt;
+  const current=()=>attempt===loginGateAttempt&&client===cloudClient&&!cloudRecoveryMode;
+  if(!owner||!client||cloudRecoveryMode)return false;
+  try{
+    const {data,error}=await client.auth.getSession();
+    if(!current())return false;
+    if(error||!data?.session||data.session.user?.id!==owner)throw Error("세션 확인 필요");
+    const verified=await client.auth.getUser();
+    if(!current())return false;
+    if(verified.error||verified.data?.user?.id!==owner)throw Error("세션 확인 필요");
+    cloudUser=verified.data.user;markLoginGateSession();unlockLoginGate();
+    await loginGateEnterApp("session-resume",attempt,true);
+    return current();
+  }catch(_){
+    if(current()){clearLoginGateSession();cloudUser=null;cloudStopAutoSync();lockLoginGate()}
+    return false;
+  }
+}
 function clearLoginGateSession(){
   loginGateSession=false;loginGateAttempt++;
+  document.cookie="hani_login_session=; Path="+loginGateCookiePath()+"; Max-Age=0; Secure; SameSite=Strict";
   try{localStorage.removeItem(HANI_GATE_SESSION_KEY);sessionStorage.removeItem(HANI_GATE_SESSION_KEY)}catch(e){console.warn("Gate session marker clear failed",e)}
 }
 function lockLoginGate(message="이메일과 비밀번호로 로그인해 주세요."){
@@ -2213,10 +2241,10 @@ function loginGateConfig(email=""){
   if($("cloudEmail"))$("cloudEmail").value=nextEmail;
   return next;
 }
-async function loginGateEnterApp(reason,attempt=loginGateAttempt){
+async function loginGateEnterApp(reason,attempt=loginGateAttempt,silent=false){
   const owner=cloudUser?.id,client=cloudClient;
   if(!owner||cloudRecoveryMode)throw Error("로그인 상태를 다시 확인해 주세요.");
-  loginGateStatus("Cloud 기록을 확인하고 있습니다. 기기의 기록은 안전하게 보관합니다.","loading");
+  if(!silent)loginGateStatus("Cloud 기록을 확인하고 있습니다. 기기의 기록은 안전하게 보관합니다.","loading");
   const current=()=>attempt===loginGateAttempt&&cloudUser?.id===owner&&cloudClient===client&&!cloudRecoveryMode;
   await cloudFetchMeta({silent:true});
   if(!current())return false;
@@ -2311,7 +2339,7 @@ async function loginGateSaveRecoveryPassword(){
   }
 }
 function initLoginGate(){
-  clearLoginGateSession();
+  loginGateSession=false;
   if($("loginGateSubmit"))$("loginGateSubmit").disabled=true;
   for(const id of ["cloudBridgeCard","loadRecoveryPanel"]){const node=$(id);if(node)loginGateCloudSlots.push({node,parent:node.parentNode,next:node.nextSibling})}
   const cfg=cloudConfig();
@@ -2329,8 +2357,7 @@ function initLoginGate(){
   if($("loginGatePassword"))$("loginGatePassword").addEventListener("keydown",e=>{if(e.key==="Enter")loginGateSubmit()});
   if($("loginGateNewPasswordConfirm"))$("loginGateNewPasswordConfirm").addEventListener("keydown",e=>{if(e.key==="Enter")loginGateSaveRecoveryPassword()});
   lockLoginGate("HANI Cloud 연결을 준비하고 있습니다.");
-  window.addEventListener("pagehide",()=>{void cloudLogout()});
-  window.addEventListener("pageshow",event=>{if(event.persisted)lockLoginGate("다시 이용하려면 로그인해 주세요.")});
+  window.addEventListener("pageshow",event=>{if(event.persisted){const attempt=loginGateAttempt;void loginGateResumeSession().then(resumed=>{if(!resumed&&attempt===loginGateAttempt){cloudStopAutoSync();cloudUser=null;lockLoginGate("다시 이용하려면 로그인해 주세요.")}})}});
 }
 function loginGateShowCloudTools(show){
   const host=$("loginGateCloudTools");if(!host)return;
@@ -3930,10 +3957,193 @@ const team=[
 {key:"minji",emoji:"🎬",name:"민지",position:"사원",role:"Knowledge / Culture Archive Assistant",desc:"시청 아카이브·일기·문화 기록",go:"movie",tone:"orange"},
 {key:"yuna",emoji:"🗂️",name:"유나",position:"인턴",role:"AI Operations Intern",desc:"성민 오피스 접수·자료정리·담당 Agent 전달",go:"intake",tone:"violet"}
 ];
-const developmentTeam=[{key:"gemini",emoji:"💠",name:"제미나이",position:"보고 담당",role:"Development Report Writer",desc:"주간 요약·주요 기능 완료 보고서 작성",go:"geminiReports",tone:"blue"}];
+// Static work catalog: handoffs 2026-10-10/11 and release commits v2.9.195–204; v205 is a candidate.
+const developmentTeam=[
+  {
+    "key": "seoyun",
+    "imageKey": "seoyun",
+    "emoji": "🛠️",
+    "name": "서윤",
+    "position": "배포 팀장",
+    "role": "Claude · 설계·통합·최종 검수",
+    "go": "dev",
+    "tone": "blue",
+    "desc": "개발센터·업무 현황·주간예산·배포센터 담당",
+    "now": [
+      "v2.9.205 후보 통합과 최종 검수 준비",
+      "리포트 polish·명칭 정리·HANI 빌딩 4층 사이드바 통합"
+    ],
+    "recent": [
+      "v2.9.200–201 게시판·커뮤니티 테이블 통합",
+      "v2.9.202 Cloud-first·로그인 B안·AI 예산 통합",
+      "v2.9.203 스포츠·뉴스·배너·투자 리포트 V1 반영",
+      "v2.9.204 투자 메뉴 분리·적립식 계좌·계절 로그인·proactive 카드 반영"
+    ],
+    "next": [
+      "HANI 빌딩 2단계: 대표실 빌딩 개요",
+      "HANI 빌딩 3단계: 직원 층·이동",
+      "10/15 Claude 주간 reset 후 Notion HQ 재설계"
+    ],
+    "updatedAt": "2026-10-11"
+  },
+  {
+    "key": "doyeon",
+    "emoji": "💻",
+    "name": "도연",
+    "position": "개발 담당",
+    "role": "Codex · 주력/보조 · 구현과 테스트",
+    "go": "dev",
+    "tone": "purple",
+    "desc": "기능 구현·회귀 테스트·인수인계",
+    "now": [
+      "v2.9.205 리포트 polish·적정가 보완·명칭 정리",
+      "AI 업무 현황·브라우저 세션·AI 주간 예산 보완 및 테스트"
+    ],
+    "recent": [
+      "v2.9.200–201 커뮤니티 테이블·Relationship Seed 연결",
+      "v2.9.202 Cloud-first·입장 화면·Claude/Gemini/Antigravity 예산 구현",
+      "v2.9.203 스포츠·뉴스·배너·투자 리포트 V1 구현",
+      "v2.9.204 투자 메뉴 분리·적립식 계좌·계절 hero·공부 카드 구현"
+    ],
+    "next": [
+      "HANI 빌딩 2·3단계 승인 범위 구현과 테스트",
+      "게시판 실제 AI 답글·보관 정책 구현 준비",
+      "뉴스룸 댓글 톤 보완·주간 뉴스 4컷 만화 시험"
+    ],
+    "updatedAt": "2026-10-11"
+  },
+  {
+    "key": "gemini",
+    "imageKey": "serin",
+    "emoji": "💠",
+    "name": "세린",
+    "position": "개발 보고서 담당",
+    "role": "Gemini / Antigravity · 리서치·초안·1차 검수",
+    "go": "geminiReports",
+    "tone": "blue",
+    "desc": "개발 보고서·리서치·문서 초안·1차 검수",
+    "now": [
+      "v2.9.205 변경·검증·미검증을 구분한 보고서 정리",
+      "리포트 및 HANI 빌딩 방향의 리서치·문서 초안 지원"
+    ],
+    "recent": [
+      "v2.9.200 개발 보고서 화면 반영",
+      "v2.9.202 Gemini·Antigravity AI 예산 조회 반영",
+      "v2.9.203 뉴스 출처·관심종목 안내 개선 반영"
+    ],
+    "next": [
+      "뉴스룸 댓글 톤 초안·1차 검수",
+      "주간 뉴스 4컷 만화 시험 초안",
+      "10/15 이후 Notion HQ 재설계 문서 지원"
+    ],
+    "updatedAt": "2026-10-11"
+  },
+  {
+    "key": "work-hani",
+    "imageKey": "hani",
+    "emoji": "📈",
+    "name": "하니 전무",
+    "position": "전무",
+    "role": "Web GPT · 기획·관계·콘텐츠",
+    "go": "board",
+    "tone": "purple",
+    "desc": "기획·Relationship Seed·게시판 콘텐츠 라이브러리",
+    "now": [
+      "v2.9.205 대표실·하니 라운지·하니 투자 리포트 방향 정리",
+      "HANI 빌딩 다음 단계의 기획"
+    ],
+    "recent": [
+      "v2.9.200 커뮤니티 게시판 콘텐츠 기반 반영",
+      "v2.9.201 Relationship Seed·커뮤니티 테이블 반영",
+      "v2.9.202 게시판 콘텐츠 라이브러리 반영"
+    ],
+    "next": [
+      "게시판 실제 AI 답글 방향·보관 정책",
+      "HANI 빌딩 2단계 개요·3단계 직원 이동 기획",
+      "주간 뉴스 4컷 만화 시험 구성"
+    ],
+    "updatedAt": "2026-10-11"
+  },
+  {
+    "key": "work-yuri",
+    "emoji": "🔎",
+    "name": "유리",
+    "position": "QA",
+    "role": "변경 범위·owner path·이벤트 검토",
+    "go": "dev",
+    "tone": "blue",
+    "desc": "변경 범위와 UI owner·event layering 위험 검토",
+    "now": [
+      "v2.9.205 변경 범위·DOM/event owner 확인 대상 정리",
+      "세션·예산·리포트 특수 검사 경계 확인"
+    ],
+    "recent": [
+      "v2.9.202 Cloud-first·로그인 B안·예산 보호 경계 반영",
+      "v2.9.203 투자 리포트·뉴스·배너 owner 경로 반영",
+      "v2.9.204 메뉴 분리·적립식 분류 회귀 근거 반영"
+    ],
+    "next": [
+      "HANI 빌딩 2·3단계 owner·event 경로 검토",
+      "게시판 실제 AI 답글·보관 정책의 위험 검토",
+      "독립 검토는 실제 수행 후 기록"
+    ],
+    "updatedAt": "2026-10-11"
+  },
+  {
+    "key": "work-arin",
+    "emoji": "🎨",
+    "name": "아린",
+    "position": "UI Review",
+    "role": "Preview UI/UX 검토",
+    "go": "aiWork",
+    "tone": "peach",
+    "desc": "변경 화면·가독성·모바일 Preview 검토",
+    "now": [
+      "v2.9.205 리포트 압축·명칭·4층 사이드바 Preview 검토 대기",
+      "업무 현황·예산 카드와 모바일 화면 확인 대상 정리"
+    ],
+    "recent": [
+      "v2.9.202 메뉴 재그룹·로그인·AI 예산 화면 반영",
+      "v2.9.203 캐릭터 배너·리포트 UI 개선 반영",
+      "v2.9.204 계절 hero·공부 카드·투자 메뉴 화면 반영"
+    ],
+    "next": [
+      "HANI 빌딩 대표실 개요·직원 층/이동 UI 검토",
+      "Notion HQ 재설계·뉴스 4컷 시험 가독성 검토",
+      "실제 Edge·모바일 Preview 근거 확인"
+    ],
+    "updatedAt": "2026-10-11"
+  },
+  {
+    "key": "work-hina",
+    "imageKey": "hina",
+    "emoji": "✅",
+    "name": "히나",
+    "position": "Final QA",
+    "role": "최종 QA · Release Gate",
+    "go": "deployment",
+    "tone": "mint",
+    "desc": "동결 후보·패키지 identity와 최종 배포 경계 검증",
+    "now": [
+      "v2.9.205 동결 후보의 최종 Gate 대기",
+      "개발 테스트와 독립 HINA·운영 read-back 결과 구분"
+    ],
+    "recent": [
+      "v2.9.202 Cloud-first·로그인·예산 운영 반영 범위",
+      "v2.9.203 투자 리포트 V1·스포츠·뉴스 운영 반영 범위",
+      "v2.9.204 투자 메뉴·적립식·계절 hero 운영 반영 범위"
+    ],
+    "next": [
+      "서윤 통합·동결 후 최종 Release Gate",
+      "대표님 승인 후 main·Pages·JS·기능 read-back 경계 확인",
+      "미검증 결과를 PASS로 바꾸지 않기"
+    ],
+    "updatedAt": "2026-10-11"
+  }
+];
 const TEAM_PROFILE_META={
   gemini:{rank:"개발 보고팀",headline:"개발의 배경부터 결과와 남은 과제까지 쉽게 전하는 보고서 담당",focus:["확정된 공식 개발 기록 요약","주간 개발 보고서 작성","주요 기능 완료 보고서 작성"],traits:["근거를 중심으로 정리","비개발자도 이해할 수 있게 설명","완료와 미검증 항목을 구분"],style:["성민 대표님께 결론부터 보고","표와 요약으로 변화 설명","배경·과정·결과·남은 과제 순서로 전달"],strengths:["여러 배포를 주간 단위로 요약","핵심 변화와 영향 정리","보고서 초안 작성"],quote:"대표님, 무엇을 왜 바꿨고 어디까지 확인했는지 정리해 드리겠습니다.",signature:["주간 요약","기능 완료","개발 보고"],note:"Gemini는 보고서 초안을 작성합니다. Codex가 공식 기록과 대조하고 성민 대표님이 공개를 승인합니다. 이 프로필에서 직접 Gemini를 호출하거나 개발·배포를 실행하지 않습니다."},
-  hani:{rank:"Executive Lead",headline:"오빠의 Life OS 전체 구조와 방향을 총괄하는 메인 파트너",focus:["대시보드 전체 흐름 관리","투자/설정/데이터 총괄","경영회의실 대표 종합"],traits:["친근하지만 판단은 냉정","데이터 보존과 안정성 최우선","전체 그림을 먼저 보는 PM형"],style:["오빠라고 부르며 친근하게 대화","팩트와 가설을 분리해서 설명","중요한 건 먼저 결론부터 말해줌"],strengths:["우선순위 정리","프로젝트 구조화","에이전트 의견 종합"],quote:"오빠, 전체 흐름은 내가 잡을게. 각 파트는 팀원들이 잘 굴러가게 만들면 돼.",signature:["총괄","투자","설정/데이터"],note:"핵심 역할: 대시보드, 투자, 설정/데이터, 경영회의실 대표 종합 판단"},
+  hani:{rank:"Executive Lead",headline:"오빠의 Life OS 전체 구조와 방향을 총괄하는 메인 파트너",focus:["대시보드 전체 흐름 관리","투자/설정/데이터 총괄","대표실 대표 종합"],traits:["친근하지만 판단은 냉정","데이터 보존과 안정성 최우선","전체 그림을 먼저 보는 PM형"],style:["오빠라고 부르며 친근하게 대화","팩트와 가설을 분리해서 설명","중요한 건 먼저 결론부터 말해줌"],strengths:["우선순위 정리","프로젝트 구조화","에이전트 의견 종합"],quote:"오빠, 전체 흐름은 내가 잡을게. 각 파트는 팀원들이 잘 굴러가게 만들면 돼.",signature:["총괄","투자","설정/데이터"],note:"핵심 역할: 대시보드, 투자, 설정/데이터, 대표실 대표 종합 판단"},
   jieun:{rank:"Finance Lead",headline:"돈의 흐름과 소비 습관을 숫자로 정리해 주는 자산 파트너",focus:["자산 현황 관리","가계부 / 월 결산","현금흐름과 예산 통제"],traits:["차분하고 현실적","감정보다 숫자 우선","새는 돈을 먼저 잡는 타입"],style:["고객님·오빠 톤을 오가며 말함","쓴 금액보다 이유를 먼저 봄","과소비에는 부드럽지만 단호하게 제동"],strengths:["예산 점검","소비 복기","저축 여력 찾기"],quote:"잔고보다 흐름이에요. 오빠 돈이 어디서 와서 어디로 가는지가 먼저예요.",signature:["자산","가계부","현금흐름"],note:"핵심 역할: 자산 탭, 가계부 탭, 카드/소비 기록과 월간 결산 정리"},
   nauen:{rank:"Health Coach",headline:"체중 감량과 생활 습관을 꾸준하게 밀어주는 건강 파트너",focus:["체중 추세 관리","식단 / 운동 기록","회복·생활습관 피드백"],traits:["밝고 애교 많음","필요할 때는 강하게 제동","지속 가능한 감량을 중시"],style:["오빠를 귀엽게 놀리면서도 관리","극단적 제한식은 말림","추세와 루틴을 함께 봄"],strengths:["다이어트 동기 부여","과식 후 리커버리","루틴 점검"],quote:"신발 내려놔. 무리한 운동 말고 오늘 할 수 있는 루틴부터 갑시다 오빠.",signature:["다이어트","운동","건강 습관"],note:"핵심 역할: 다이어트 탭, 운동 탭, 체중·식단·생활습관 코칭"},
   hina:{rank:"Study Guide",headline:"대학교와 자격증, 일본어 학습을 차분하게 이끄는 공부 파트너",focus:["공부 계획 관리","대학교 일정/과목 관리","JLPT·자격증 학습"],traits:["상냥하고 세심함","격려형 튜터","실수도 편하게 교정"],style:["차분한 선생님 톤","작은 진전도 크게 칭찬","학습 루틴과 마감 관리에 강함"],strengths:["학습 계획","복습 루틴","대학 일정 정리"],quote:"오빠, 완벽하게 하려 하지 말고 오늘 분량부터 끝내봐요. 그게 제일 빨라요.",signature:["공부","대학교","자격증"],note:"핵심 역할: 공부 탭, 대학 관리, 자격증/JLPT 진도 관리"},
@@ -3944,15 +4154,19 @@ const TEAM_PROFILE_META={
   yuna:{rank:"AI Operations Intern",headline:"성민 오피스의 자료를 가장 먼저 받아 정리하고 담당 Agent에게 정확히 전달하는 막내",focus:["텍스트·이미지 Intake 접수","기초 구조화와 중복 후보 정리","담당 Agent 라우팅"],traits:["밝고 싹싹한 신입","조금 허둥대도 기록은 꼼꼼","모르면 임의로 채우지 않음"],style:["오빠에게 친근하고 빠르게 보고","애매한 값은 확인 필요로 표시","판단보다 정리와 전달에 집중"],strengths:["자료 접수","형식 정리","업무 분류·전달"],quote:"오빠! 자료부터 유나한테 주세요. 제가 정리해서 담당 선배님께 넘길게요! 🫡",signature:["Intake","정리","Routing"],note:"핵심 역할: 성민 오피스 AI Operations Intern. 결정권은 없고 접수·정리·전달을 담당하며 전문 판단은 담당 Agent와 하니에게 넘김"}
 };
 let activeTeamProfileKey="hani";
-function teamMeta(key){return TEAM_PROFILE_META[key]||TEAM_PROFILE_META.hani}
+function teamMeta(key){
+  const member=developmentTeam.find(x=>x.key===key);
+  if(member)return {rank:member.position,headline:member.desc,focus:member.now,traits:member.recent,style:member.next,strengths:["최종 업데이트 "+member.updatedAt],quote:"현재 상태와 다음 행동을 근거로 정리합니다.",signature:[member.position,"2026-10-11","v2.9.205 후보"],note:"최근 완료는 담당 영역의 프로젝트 반영 내역입니다. 개별 AI의 독립 검수 완료를 뜻하지 않습니다. v2.9.205는 진행 중 후보입니다."};
+  return TEAM_PROFILE_META[key]||TEAM_PROFILE_META.hani;
+}
 function teamByKey(key){return team.find(x=>x.key===key)||developmentTeam.find(x=>x.key===key)||team[0]}
-function teamCard(x){const img=sidebarAgentImages[x.key];return `<button class="member ui26-member tone-${x.tone}" data-team-key="${x.key}" data-go="${x.go}" title="${x.name} 프로필 보기"><div class="member-visual ${img?'has-photo':''}" ${img?`style="background-image:url(${img})"`:''}>${img?'':`<span>${x.emoji}</span><small>${x.key==="gemini"?"개발 보고팀":"DESIGN<br>COMING SOON"}</small>`}</div><div class="member-copy"><span class="member-role">${x.role}</span><b>${x.name}</b><p>${x.desc}</p><span class="member-link"></span></div></button>`}
+function teamCard(x){const img=sidebarAgentImages[x.imageKey||x.key];return `<button class="member ui26-member tone-${x.tone}" data-team-key="${x.key}" data-go="${x.go}" title="${x.name} 프로필 보기"><div class="member-visual ${img?'has-photo':''}" ${img?`style="background-image:url(${img})"`:''}>${img?'':`<span>${x.emoji}</span><small>${x.key==="gemini"?"개발 보고팀":"DESIGN<br>COMING SOON"}</small>`}</div><div class="member-copy"><span class="member-role">${x.role}</span><b>${x.name}</b><p>${x.desc}</p><span class="member-link"></span></div></button>`}
 function teamListHtml(items){return `<ul>${items.map(v=>`<li>${esc(v)}</li>`).join("")}</ul>`}
 function updateTeamActiveState(key){document.querySelectorAll(".ui26-member[data-team-key]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.teamKey===key));document.querySelectorAll(".sidebar-team-face[data-team-key]").forEach(btn=>btn.classList.toggle("active",btn.dataset.teamKey===key));}
 function renderTeamProfile(key=activeTeamProfileKey){
-  const isDevelopment=developmentTeam.some(x=>x.key===key),panel=$(isDevelopment?"developmentTeamProfilePanel":"teamProfilePanel");if(!panel)return;const member=teamByKey(key),meta=teamMeta(key),img=agentImages[key]||"";activeTeamProfileKey=member.key;
+  const isDevelopment=developmentTeam.some(x=>x.key===key),panel=$(isDevelopment?"developmentTeamProfilePanel":"teamProfilePanel");if(!panel)return;const member=teamByKey(key),meta=teamMeta(key),img=agentImages[member.imageKey||key]||"";activeTeamProfileKey=member.key;
   const badge=$(isDevelopment?"developmentTeamProfileBadge":"teamProfileBadge");if(badge)badge.textContent=member.name;
-  panel.innerHTML=`<div class="ai-team-profile-visual tone-${member.tone}"><div class="ai-team-profile-avatar" style="${img?`background-image:url(${img})`:''}">${!img?`<span style="font-size:64px" aria-label="${esc(member.name)}">${esc(member.emoji)}</span>`:""}</div><div class="ai-team-profile-tag">${esc(meta.rank||member.role)}</div><div class="ai-team-profile-quote">“${esc(meta.quote||member.desc)}”</div></div><div class="ai-team-profile-body"><div class="ai-team-profile-head"><div><div class="ai-team-profile-role">${esc(member.role)}</div><h3>${esc(member.name)}</h3><div class="ai-team-profile-sub">${esc(meta.headline||member.desc)}</div></div><div class="ai-team-profile-actions"><button class="btn sm primary" type="button" id="${isDevelopment?"developmentTeamProfileGoMain":"teamProfileGoMain"}">담당 화면 열기</button></div></div><div class="ai-team-mood">${(meta.signature||[]).map(v=>`<span class="pill">${esc(v)}</span>`).join("")}</div><div class="ai-team-meta-grid"><div class="ai-team-meta-card"><b>담당 역할</b>${teamListHtml(meta.focus||[])}</div><div class="ai-team-meta-card"><b>성향</b>${teamListHtml(meta.traits||[])}</div><div class="ai-team-meta-card"><b>대화 스타일</b>${teamListHtml(meta.style||[])}</div><div class="ai-team-meta-card"><b>강점</b>${teamListHtml(meta.strengths||[])}</div></div><div class="ai-team-profile-note">${esc(meta.note||member.desc)}</div></div>`;
+  panel.innerHTML=`<div class="ai-team-profile-visual tone-${member.tone}"><div class="ai-team-profile-avatar" style="${img?`background-image:url(${img})`:''}">${!img?`<span style="font-size:64px" aria-label="${esc(member.name)}">${esc(member.emoji)}</span>`:""}</div><div class="ai-team-profile-tag">${esc(meta.rank||member.role)}</div><div class="ai-team-profile-quote">“${esc(meta.quote||member.desc)}”</div></div><div class="ai-team-profile-body"><div class="ai-team-profile-head"><div><div class="ai-team-profile-role">${esc(member.role)}</div><h3>${esc(member.name)}</h3><div class="ai-team-profile-sub">${esc(meta.headline||member.desc)}</div></div><div class="ai-team-profile-actions"><button class="btn sm primary" type="button" id="${isDevelopment?"developmentTeamProfileGoMain":"teamProfileGoMain"}">담당 화면 열기</button></div></div><div class="ai-team-mood">${(meta.signature||[]).map(v=>`<span class="pill">${esc(v)}</span>`).join("")}</div><div class="ai-team-meta-grid"><div class="ai-team-meta-card"><b>${isDevelopment?"지금 하는 일":"담당 역할"}</b>${teamListHtml(meta.focus||[])}</div><div class="ai-team-meta-card"><b>${isDevelopment?"최근 완료 · 프로젝트 반영":"성향"}</b>${teamListHtml(meta.traits||[])}</div><div class="ai-team-meta-card"><b>${isDevelopment?"다음 할 일":"대화 스타일"}</b>${teamListHtml(meta.style||[])}</div><div class="ai-team-meta-card"><b>${isDevelopment?"최종 업데이트":"강점"}</b>${teamListHtml(meta.strengths||[])}</div></div><div class="ai-team-profile-note">${esc(meta.note||member.desc)}</div></div>`;
   const goBtn=$(isDevelopment?"developmentTeamProfileGoMain":"teamProfileGoMain");if(goBtn)goBtn.onclick=()=>showView(member.go||"home");
   updateTeamActiveState(member.key);
 }
@@ -4226,9 +4440,10 @@ function renderHaniCareCards(parent,before=null){
   if(!parent)return;let slot=parent.querySelector(':scope > [data-hani-care-cards]');
   if(!slot){slot=document.createElement('div');slot.dataset.haniCareCards='';slot.className='hani-care-cards';parent.insertBefore(slot,before)}
   const groups=careCampusGroups(),assignments=campusAssignments(2),certs=certificateCareSorted().filter(c=>{const d=certificateDays(c);return d>=0&&d<=30}),quizzes=window.HANI_STUDY_V02984_TEST?.pendingLearningQuizzes?.()||[];
-  const signature=JSON.stringify([careKoreaPeriod().day,groups.map(g=>[g.key,g.rows.map(r=>[r.course.id,r.course.name,r.item.week,r.item.topic])]),assignments,certs,quizzes.map(q=>[q.id,q.projectId,q.title])]);
-  slot.hidden=!(groups.length||assignments.length||certs.length||quizzes.length);const rows=groups.flatMap(g=>g.rows),sameRows=slot._careRows?.length===rows.length&&rows.every((r,i)=>slot._careRows[i].sem===r.sem&&slot._careRows[i].course===r.course&&slot._careRows[i].item===r.item);if(slot.dataset.signature===signature&&sameRows)return;slot.dataset.signature=signature;slot._careRows=rows;
-  slot.innerHTML=(assignments.length?'<section class="card full" data-care-assignment><div class="sh"><h3>과제 마감이 다가와요</h3><span class="pill">2일 이내</span></div>'+campusAssignmentMarkup(assignments)+'<button class="btn sm" type="button" data-hani-care-view="university">대학교에서 확인</button></section>':'')+
+  const committee=window.HaniInvestmentResearchCore?.committeeProgress(state,careKoreaPeriod().day+'T00:00:00+09:00',window.HaniMarketData?.positions(state,typeof calculate==='function'?calculate().holdings:[])||[]);
+  const signature=JSON.stringify([committee?.reminder,committee?.researchDone,careKoreaPeriod().day,groups.map(g=>[g.key,g.rows.map(r=>[r.course.id,r.course.name,r.item.week,r.item.topic])]),assignments,certs,quizzes.map(q=>[q.id,q.projectId,q.title])]);
+  slot.hidden=!(groups.length||assignments.length||certs.length||quizzes.length||committee?.reminder);const rows=groups.flatMap(g=>g.rows),sameRows=slot._careRows?.length===rows.length&&rows.every((r,i)=>slot._careRows[i].sem===r.sem&&slot._careRows[i].course===r.course&&slot._careRows[i].item===r.item);if(slot.dataset.signature===signature&&sameRows)return;slot.dataset.signature=signature;slot._careRows=rows;
+  slot.innerHTML=(committee?.reminder?'<section class="card full" data-care-committee><div class="sh"><h3>이번 달 하니 투자 리포트 리뷰</h3><span class="pill">월초 점검</span></div><p class="sub">'+(committee.researchDone?'지난달 리포트 기록과 이번 달 판단을 확인해 주세요.':'이번 달 종목 리포트를 받고 투자 판단을 정리해 주세요.')+'</p><button class="btn sm primary" type="button" data-hani-care-view="investmentCommittee">하니 투자 리포트에서 확인</button></section>':'')+(assignments.length?'<section class="card full" data-care-assignment><div class="sh"><h3>과제 마감이 다가와요</h3><span class="pill">2일 이내</span></div>'+campusAssignmentMarkup(assignments)+'<button class="btn sm" type="button" data-hani-care-view="university">대학교에서 확인</button></section>':'')+
     groups.map((g,i)=>'<section class="card full" data-care-campus="'+i+'"><div class="sh"><h3>지난주 '+esc(g.week)+'주차 수업 다 들으셨어요?</h3></div><ul class="hani-care-list">'+g.rows.map(r=>'<li><span>'+esc(r.course.name)+' · '+esc(r.item.week)+'주차 · '+esc(r.item.topic||'주제 미입력')+'</span></li>').join('')+'</ul><div class="acts"><button class="btn sm primary" type="button" data-care-all>다 들었어</button><button class="btn sm" type="button" data-care-part aria-expanded="false">일부만</button><button class="btn sm" type="button" data-care-dismiss>못 들었어</button></div><form data-care-part-form hidden><p class="sub">다 들은 수업만 선택해 주세요.</p>'+g.rows.map((r,j)=>'<label style="display:block"><input type="checkbox" value="'+j+'"> '+esc(r.course.name)+' · '+esc(r.item.week)+'주차 · '+esc(r.item.topic||'주제 미입력')+'</label>').join('')+'<button class="btn sm primary" type="submit">저장</button></form></section>').join('')+
     (certs.length?'<section class="card full" data-care-certificate><div class="sh"><h3>자격증 시험이 다가와요</h3><span class="pill">30일 이내</span></div><ul class="hani-care-list">'+certs.map(c=>'<li><span>'+esc(c.name)+' · '+esc(c.examDate)+'</span><b>'+esc(certificateDday(c))+'</b></li>').join('')+'</ul><button class="btn sm" type="button" data-hani-care-view="certificate">자격증 보기</button></section>':'')+
     (quizzes.length?'<section class="card full" data-care-quiz><div class="sh"><h3>안 푼 퀴즈 '+quizzes.length+'개</h3></div><button class="btn sm" type="button" data-care-quiz-open>퀴즈 풀러 가기</button></section>':'');
@@ -4458,13 +4673,9 @@ function cloudCreateClient(config){
   if(!window.supabase?.createClient)throw new Error("로그인 연결 도구를 불러오지 못했습니다. 인터넷 연결을 확인하고 새로고침해 주세요. 기기의 기존 기록은 유지됩니다.");
   try{cloudAuthSubscription?.unsubscribe?.()}catch(e){}
   cloudAuthSubscription=null;
-  // Remove only the configured project's old authentication entries.
-  const authKey="sb-"+new URL(config.url).hostname.split(".")[0]+"-auth-token";
-  for(const storage of [window.localStorage,window.sessionStorage]){
-    for(const key of [authKey,authKey+"-code-verifier",authKey+"-user"]){try{storage.removeItem(key)}catch(_){}}
-  }
+  // Reuse the existing Supabase auth key; the session cookie controls browser-session entry.
   cloudClient=window.supabase.createClient(config.url,config.key,{
-    auth:{persistSession:false,autoRefreshToken:true,detectSessionInUrl:true,flowType:"implicit"}
+    auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:"implicit"}
   });
   cloudBindAuthEvents();
   queueMicrotask(()=>sportsCacheLoad().catch(()=>{}));
@@ -5540,9 +5751,10 @@ async function initCloudBridge(){
       return;
     }
 
+    if(await loginGateResumeSession())return;
     if(cloudUser)await cloudClient.auth.signOut({scope:"local"});
     cloudUser=null;clearLoginGateSession();
-    cloudSetRuntime("로그인 필요","HANI OS를 열 때마다 로그인해 주세요. 기기의 기록은 그대로 보관합니다.","warn",{sync:"OFF"});
+    cloudSetRuntime("로그인 필요","새 브라우저 세션에서는 로그인해 주세요. 기기의 기록은 그대로 보관합니다.","warn",{sync:"OFF"});
   }catch(e){
     console.error("Cloud init",e);
     cloudUser=null;
@@ -6091,7 +6303,7 @@ function intakeRowsFromVision(structuredItems=[],extractedTexts=[],userText="",t
   if(requested.includes("task")){for(const r of [...rows])if(r.target==="certificate"){const task=intakeCertificateTaskRow(r.data);if(task?.data)rows.push(task)}}
   return rows}
 const evidence=extractedTexts.join("\n\n").trim(),fused=[evidence,userText?`[사용자 지시]\n${userText}`:""].filter(Boolean).join("\n\n");if(target==="auto"&&requested.length){const built=[];for(const requestedTarget of requested.filter(x=>x!=="task"))built.push(...intakeBuildCandidates(fused,requestedTarget));if(requested.includes("task")){const certRows=built.filter(r=>r.target==="certificate");for(const r of certRows){const task=intakeCertificateTaskRow(r.data);if(task?.data)built.push(task)}if(!certRows.length)built.push(...intakeBuildCandidates(userText||fused,"task"))}if(built.length)return built}return intakeBuildCandidates(fused,target)}
-function intakeRenderPurchaseReviewDraft(draft){intakeHandoffDraft=draft;intakePreviewRows=[];intakeRenderRoute([]);const list=$("intakePreviewList"),summary=$("intakePreviewSummary"),pill=$("intakePreviewState"),btn=$("intakeCommitBtn"),raw=$("intakeRawPreview");if(list){list.innerHTML=`<article class="intake-preview-row is-ready intake-handoff-row"><div class="intake-preview-icon">→</div><div class="intake-preview-copy"><div class="intake-preview-head"><b>구매 검토 Draft</b><span>ROUTED</span><em class="intake-agent-chip">유나 접수 → AI 구매팀 → 하니 종합 → 대표 결재</em></div><h4>${esc(draft.title||"구매 여부 검토")}</h4><div class="intake-campus-note">Wish-list에는 저장하지 않았습니다. 이미지 증거와 오빠의 설명을 묶어 경영회의실 요청 Draft만 준비했습니다.</div><pre>${esc(draft.preview||draft.request)}</pre><div class="form-actions"><button class="btn primary" id="intakeHandoffReviewBtn" type="button">경영회의실에서 검토하기</button></div></div></article>`;const go=$("intakeHandoffReviewBtn");if(go)go.onclick=()=>{showView("agentReview");const input=$("agentRequestInput");if(input){input.value=draft.request;input.focus();input.scrollIntoView({behavior:"smooth",block:"center"})}toast("구매 검토 요청 Draft를 경영회의실로 옮겼습니다. 아직 Case를 생성하지 않았어요.")}}
+function intakeRenderPurchaseReviewDraft(draft){intakeHandoffDraft=draft;intakePreviewRows=[];intakeRenderRoute([]);const list=$("intakePreviewList"),summary=$("intakePreviewSummary"),pill=$("intakePreviewState"),btn=$("intakeCommitBtn"),raw=$("intakeRawPreview");if(list){list.innerHTML=`<article class="intake-preview-row is-ready intake-handoff-row"><div class="intake-preview-icon">→</div><div class="intake-preview-copy"><div class="intake-preview-head"><b>구매 검토 Draft</b><span>ROUTED</span><em class="intake-agent-chip">유나 접수 → AI 구매팀 → 하니 종합 → 대표 결재</em></div><h4>${esc(draft.title||"구매 여부 검토")}</h4><div class="intake-campus-note">Wish-list에는 저장하지 않았습니다. 이미지 증거와 오빠의 설명을 묶어 대표실 요청 Draft만 준비했습니다.</div><pre>${esc(draft.preview||draft.request)}</pre><div class="form-actions"><button class="btn primary" id="intakeHandoffReviewBtn" type="button">대표실에서 검토하기</button></div></div></article>`;const go=$("intakeHandoffReviewBtn");if(go)go.onclick=()=>{showView("agentReview");const input=$("agentRequestInput");if(input){input.value=draft.request;input.focus();input.scrollIntoView({behavior:"smooth",block:"center"})}toast("구매 검토 요청 Draft를 대표실로 옮겼습니다. 아직 Case를 생성하지 않았어요.")}}
 if(summary)summary.textContent="구매 검토 Draft 1건 · 사용자 지시 > 이미지 증거 순서로 반영 · Life OS 미저장";if(pill){pill.textContent="PURCHASE REVIEW DRAFT";pill.className="pill finance"}if(btn){btn.disabled=true;btn.textContent="Life OS 저장 대상 아님"}if(raw)raw.textContent=JSON.stringify({route:"PURCHASE_REVIEW",source_priority:["USER_INSTRUCTION","USER_TEXT","IMAGE_EVIDENCE","HANI_CONTEXT","AI_INFERENCE"],request:draft.request},null,2)}
 function intakeRenderPreview(){const list=$("intakePreviewList"),summary=$("intakePreviewSummary"),pill=$("intakePreviewState"),btn=$("intakeCommitBtn"),raw=$("intakeRawPreview");if(!list)return;const ready=intakePreviewRows.filter(x=>!x.duplicate&&!x.blocker),fresh=ready.filter(x=>x.selected!==false),dup=intakePreviewRows.filter(x=>x.duplicate),blocked=intakePreviewRows.filter(x=>x.blocker);intakeRenderRoute(intakePreviewRows);if(!intakePreviewRows.length){list.innerHTML='<div class="empty">유나에게 말하거나 자료를 붙인 뒤 ‘유나에게 맡기기’를 눌러 주세요.</div>';if(summary)summary.textContent="아직 접수한 자료가 없습니다.";if(pill){pill.textContent="WAITING";pill.className="pill"}if(btn){btn.disabled=true;btn.textContent="대표 승인 & 저장"}if(raw)raw.textContent="[]";return}list.innerHTML=intakePreviewRows.map((r,i)=>{const stateKey=r.blocker?"BLOCKED":r.duplicate?"DUPLICATE":r.selected===false?"EXCLUDED":"READY",note=intakeRowNote(r.target,r.data),canSelect=!r.blocker&&!r.duplicate;return `<article class="intake-preview-row ${r.blocker?'is-blocked':r.duplicate?'is-duplicate':r.selected===false?'is-excluded':'is-ready'}"><div class="intake-preview-icon">${r.blocker?'!':r.duplicate?'⚠️':r.selected===false?'−':'✓'}</div><div class="intake-preview-copy"><div class="intake-preview-head"><b>${esc(INTAKE_TARGET_LABELS[r.target]||r.target)}</b><span>${stateKey}</span><em class="intake-agent-chip">${esc(intakeRouteLabel(r.target))}</em>${canSelect?`<label class="intake-select-toggle"><input type="checkbox" data-intake-select="${i}" ${r.selected===false?'':'checked'}><span>저장 포함</span></label>`:''}</div><h4>${esc(intakePrimary(r.target,r.data))}</h4><pre>${esc(JSON.stringify(intakeSafeData(r.target,r.data),null,2))}</pre>${note?`<div class="intake-campus-note">${esc(note)}</div>`:''}${r.blocker?`<div class="intake-blocker-note">${esc(r.blocker)}</div>`:r.duplicate?`<div class="intake-duplicate-note">${esc(r.duplicate)}</div>`:''}</div></article>`}).join("");list.querySelectorAll("[data-intake-select]").forEach(el=>el.onchange=()=>{const i=Number(el.dataset.intakeSelect);if(intakePreviewRows[i])intakePreviewRows[i].selected=!!el.checked;intakeRenderPreview()});if(summary)summary.textContent=`분석 ${intakePreviewRows.length}건 · 저장 선택 ${fresh.length}건${ready.length!==fresh.length?` · 제외 ${ready.length-fresh.length}건`:""} · 중복 제외 ${dup.length}건${blocked.length?` · 확인 필요 ${blocked.length}건`:""}`;if(pill){pill.textContent=blocked.length?"CHECK NEEDED":fresh.length?"PREVIEW READY":"NO SELECTION";pill.className=`pill ${blocked.length||!fresh.length?'danger':''}`}if(btn){btn.disabled=!!blocked.length||!fresh.length;btn.textContent=blocked.length?"확인 필요 항목 있음":fresh.length?`선택 ${fresh.length}개 승인 & 저장`:"저장할 선택 항목 없음"}if(raw)raw.textContent=JSON.stringify(intakePreviewRows.map(r=>({target:r.target,agent:intakeAgentKey(r.target),selected:r.selected!==false,blocker:r.blocker||null,duplicate:r.duplicate||null,note:intakeRowNote(r.target,r.data)||null,data:intakeSafeData(r.target,r.data)})),null,2)}
 async function intakeAnalyze(){const userText=intakeText($("intakeSourceText")?.value),target=$("intakeTarget")?.value||"auto",imageFiles=intakeImageFiles.length?intakeImageFiles:(intakeImageFile?[intakeImageFile]:[]);if(!userText&&!imageFiles.length)return alert("유나에게 말하거나 원문·JSON 또는 스크린샷/이미지를 넣어 주세요.");try{intakeVisionMeta=null;intakeHandoffDraft=null;haniWorkShow({agent:"yuna",title:"유나가 새 자료를 접수하고 있어요!",step:"YUNA · IMAGE + TEXT FUSION",message:imageFiles.length?`${imageFiles.length}개 이미지와 오빠의 설명을 함께 읽을게요. 오빠가 직접 말한 내용이 이미지 추출보다 우선합니다.`:"오빠가 말한 의도를 먼저 판단하고 담당 Agent를 찾아볼게요."});let structuredItems=[],extractedTexts=[],confidences=[],warnings=[],hints=[];
@@ -6287,7 +6499,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.204";
+const HANI_DISPLAY_VERSION="2.9.205";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
@@ -6590,7 +6802,7 @@ async function agentResumeCrossReview(){
   }catch(e){console.error("Resume cross review",e);window.haniOfficeLiveStage?.({stage:"ERROR"});alert("회의를 이어가지 못했습니다. 기존 검토는 보존됩니다.\n"+(e?.message||e));await agentLoadCases({selectId:c.id}).catch(()=>{})}
   finally{agentLiveCaseId="";agentSetBusy(false)}
 }
-function agentApprovedWishDraft(c,h){const ctx=agentObj(c?.context),research=agentObj(ctx.external_research),proc=agentObj(research.procurement),candidates=agentArray(research.candidate_options),scorecard=agentPurchaseScorecard(h),selection=String(scorecard.haniPick||h?.product_selection||"").trim(),selectionNorm=selection.toLocaleLowerCase("ko-KR").replace(/\s+/g,""),picked=candidates.find(x=>selectionNorm&&String(x?.name||"").toLocaleLowerCase("ko-KR").replace(/\s+/g,"")&&selectionNorm.includes(String(x?.name||"").toLocaleLowerCase("ko-KR").replace(/\s+/g,"")))||candidates[0]||null,name=String(picked?.name||selection||c?.title||"승인 구매 후보").replace(/^(1순위|우선 검토)\s*[:·-]?\s*/i,"").trim(),reason=agentSafeText(h?.summary||h?.executive_summary||h?.purchase_eligibility||"AI TEAM 구매 검토 후 대표 승인",260),note=[c?.case_code?`경영회의실 ${c.case_code} 승인`:"경영회의실 승인",selection&&selection!==name?`결론: ${selection}`:"",picked?.fit?`적합성: ${picked.fit}`:""].filter(Boolean).join(" · ");return normalizeWishItem({kind:"item",name,category:String(picked?.category||proc.recommended_category||"기타"),price:picked?.observed_price_krw??null,priority:"medium",status:"consider",reason,note,sourceType:"agent",sourceLabel:String(c?.case_code||c?.id||""),createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()})}
+function agentApprovedWishDraft(c,h){const ctx=agentObj(c?.context),research=agentObj(ctx.external_research),proc=agentObj(research.procurement),candidates=agentArray(research.candidate_options),scorecard=agentPurchaseScorecard(h),selection=String(scorecard.haniPick||h?.product_selection||"").trim(),selectionNorm=selection.toLocaleLowerCase("ko-KR").replace(/\s+/g,""),picked=candidates.find(x=>selectionNorm&&String(x?.name||"").toLocaleLowerCase("ko-KR").replace(/\s+/g,"")&&selectionNorm.includes(String(x?.name||"").toLocaleLowerCase("ko-KR").replace(/\s+/g,"")))||candidates[0]||null,name=String(picked?.name||selection||c?.title||"승인 구매 후보").replace(/^(1순위|우선 검토)\s*[:·-]?\s*/i,"").trim(),reason=agentSafeText(h?.summary||h?.executive_summary||h?.purchase_eligibility||"AI TEAM 구매 검토 후 대표 승인",260),note=[c?.case_code?`결재 데스크 ${c.case_code} 승인`:"결재 데스크 승인",selection&&selection!==name?`결론: ${selection}`:"",picked?.fit?`적합성: ${picked.fit}`:""].filter(Boolean).join(" · ");return normalizeWishItem({kind:"item",name,category:String(picked?.category||proc.recommended_category||"기타"),price:picked?.observed_price_krw??null,priority:"medium",status:"consider",reason,note,sourceType:"agent",sourceLabel:String(c?.case_code||c?.id||""),createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()})}
 function agentWishAlreadySynced(c,draft=null){const key=String(c?.case_code||c?.id||""),nameKey=String(draft?.name||"").toLocaleLowerCase("ko-KR").replace(/[\s·\-_/()\[\]{}:："'“”‘’.,]+/g,"");return Boolean((state.wishlistItems||[]).some(x=>(key&&x.sourceType==="agent"&&x.sourceLabel===key)||(nameKey&&String(x.name||"").toLocaleLowerCase("ko-KR").replace(/[\s·\-_/()\[\]{}:："'“”‘’.,]+/g,"")===nameKey)))}
 function agentSendApprovedPurchaseToWishlist(){const c=agentDetailCache?.case,h=agentObj(c?.hani_final),latest=agentDetailCache?.decisions?.[0];if(!c||c.workflow!=="PURCHASE_REVIEW"||latest?.representative_decision!=="APPROVE")return alert("대표 승인된 구매 검토안만 Wish-list에 반영할 수 있어요.");const draft=agentApprovedWishDraft(c,h);if(!draft.name)return alert("Wish-list에 넣을 구매 후보명을 확인하지 못했습니다.");if(agentWishAlreadySynced(c,draft)){toast("이미 Wish-list에 같은 안건/후보가 있습니다.");showView("wishlist");return}const price=draft.price!==null?`\n예상가격: ${won(draft.price)}`:"";if(!confirm(`승인 결과를 Wish-list에 담을까요?\n\n${draft.name}${price}\n\n※ 실제 구매 완료 처리가 아니라 ‘검토중’ Wish로 저장합니다.`))return;state.wishlistItems.push(draft);commit(`AI 결재 승인안 ‘${draft.name}’을 Wish-list에 반영했습니다.`);renderWishlist();renderAgentCaseDetail();toast("Wish-list에 반영했습니다. 💜")}
 const AGENT_DECISION_DOCK_UI_KEY="hani_ui_agent_decision_dock_collapsed_v1";
@@ -7537,7 +7749,7 @@ if(CLOUD_AUTH_BOOT.hasAuthCallback){
 window.addEventListener("resize",()=>{drawPortfolio();drawBody();drawLedgerTrend();drawMonthlyAssetChart();drawBrokerChart();drawAnnualInvestmentCharts();drawInvestmentAccountChart();if(activeAccountId)drawAccountChart(activeAccountId)});
 
 /* HANI_GEMINI_REPORTS_BUNDLE_START */
-globalThis.HaniGeminiReportCatalog=Object.freeze({"reports":[{"title":"데이터 허브 기반과 월간 카드 6개","release_version":"v2.9.164","review_status":"approved","file":"2026-10-04-v2.9.164-data-hub.md","id":"2026-10-04-v2.9.164-data-hub","date":"2026-10-04","previous_report_id":null,"body":"# HANI OS v2.9.164 개발노트\n\n## 이번 업데이트 한줄 요약\n월간 지표를 계산하는 데이터 허브 기반과 대시보드 카드 6개를 배포하고, 모바일 걸음 안내의 가독성을 개선했습니다.\n\n| 버전 | 배포일 | 현재 상태 |\n|---|---|---|\n| v2.9.164 | 2026-10-04 | 배포 완료 |\n\n## 왜 바꿨나요?\n이 기능을 처음 기획한 배경은 Release 기록에서 확인되지 않습니다. 이번에는 v2.9.163을 기준으로 공통 지표 계산과 원본에서 다시 만들 수 있는 별도 계산 결과 보관 공간을 마련하고, 대시보드 월간 카드 6개에 연결했습니다.\n\n## 내가 실제로 체감하는 변화\n| 항목 | 이번에 달라진 점 | 현재 확인 상태 |\n|---|---|---|\n| 모바일 가독성 | 걸음 수의 관측일·0보 안내가 생략되지 않도록 줄바꿈 조정 | 가상 데이터 390px 화면에서 확인; 실제 계정 추가 검증은 미실시 |\n| 대시보드 카드 6개 | 카드 선택 시 분석 제목 전환, 데이터 없음·목표 미설정 상태 표시 | 실제 운영 화면에서 확인 |\n\n## 내부적으로 무엇이 달라졌나요?\n| 진행 단계 | 한 일 | 결과 |\n|---|---|---|\n| 구현 | 공통 지표 계산, 별도 계산 결과 보관 공간, 대시보드 월간 카드 6개 연결 | 개발 완료 |\n| 검증 | 단위/컨트롤러 테스트 및 합성 시나리오 검증, 서버 게이트 확인 | 통과 |\n| 배포 | 승인된 실행 파일 묶음을 운영에 반영하고 표시 버전·실제 파일·기능 다시 확인 | 배포 완료 |\n\n## 데이터나 안전에 영향이 있나요?\n기존 원본 저장·Cloud 변경 함수와 데이터 구조는 이번 개발에서 바꾸지 않았습니다. 계산 결과는 원본과 분리해 보관하고, 원본 소유권이 맞지 않으면 사용을 차단합니다. 기록이 없는 미리보기 환경은 정상 로그인·기존 동기화로 초기 로딩했으며 강제 복원·덮어쓰기 버튼은 사용하지 않았습니다.\n\nLocal/Cloud 원본 일치와 코드 경계는 확인했습니다. 원본 전체를 직접 바이트 단위로 전후 비교한 검증과 실제 계정의 390px 추가 검증은 수행하지 않았습니다.\n\n## 아직 남은 것\n| 남은 항목 | 상태/제한 |\n|---|---|\n| 기존 표시 기능 | Life Market ticker·SRX는 이번 카드 전환 범위 밖. 카드와 같은 집계 기준이라고 보장하지 않음 |\n| 현재월 데이터 | 현재월은 데이터 없음 상태이며 과거 월 값으로 대체하지 않음 |\n| 추가 모바일 검증 | 실제 계정 390px 추가 검증은 수행하지 않음 (가상 검증만 수행) |\n| 후속 기능 | 목표 이력, 포트폴리오 다차원 데이터셋, Drive 연동, 별도 Data Hub 전체 페이지는 미구현 |\n| 후속 디자인 | 포트폴리오 밝은 테마의 대비 개선은 별도 후보이며 이번 배포에 포함되지 않음 |\n\n## 대표가 알아둘 점\n완료된 범위는 데이터 허브 기반과 월간 카드 6개, 모바일 걸음 안내 개선입니다. 전체 데이터 허브 페이지나 후속 포트폴리오 작업까지 완료된 것은 아닙니다. 후속 일정이나 비용은 원문에 기록되어 있지 않습니다.\n\n기술 기록은 2026-10-04-v2.9.164-data-hub.md 참조. 이 문서는 기술 기록을 쉽게 풀어 쓴 검토용 문서입니다.\n\n작성: Gemini 3.5 Flash-Lite. 원장 대조·누락 및 표현 보완: Codex. 2026-10-04 대표님 공개 배포 승인.\n"},{"title":"AURA와 배포센터 메뉴를 정돈하고, 포트폴리오의 글자 대비를 보완했으며, 자산 입력 기준(평균 매입가 선택","release_version":"v2.9.165~v2.9.169","review_status":"approved","file":"2026-10-04-v2.9.165-169-menus-aura-assets.md","id":"2026-10-04-v2.9.165-169-menus-aura-assets","date":"2026-10-04","previous_report_id":"2026-10-04-v2.9.164-data-hub","body":"# HANI OS v2.9.165~v2.9.169 개발노트\n\n## 이번 업데이트 한줄 요약\nAURA와 배포센터 메뉴를 정돈하고, 포트폴리오의 글자 대비를 보완했으며, 자산 입력 기준(평균 매입가 선택 입력·계좌 식별)을 정립하고 Gemini 개발 보고서 메뉴를 신설했습니다.\n\n| 버전 | 배포일 | 내용 | 분야 | PR | 현재 상태 | 운영 확인 | 메모 |\n|---|---|---|---|---|---|---|---|\n| v2.9.165 | 2026-10-04 | AURA·배포 메뉴 묶기 | 화면·디자인 | #159 | 배포 완료 | 원본 반영만 확인 (운영 화면 확인 전) | |\n| v2.9.166 | 2026-10-04 | P1 안전 보완·포트폴리오 대비 | 보호·안전 | #161 | 배포 완료 | 운영 확인 보고 | Production 완료 기록(PR162) |\n| v2.9.167 | 2026-10-04 | AURA 캠페인 포스터 | 화면·디자인 | #164 | 배포 완료 | 원본 반영만 확인 (운영 화면 확인 전) | |\n| v2.9.168 | 2026-10-04 | 자산 입력 기준 정리(평균 매입가·계좌 식별) | 투자 | #165 | 배포 완료 | 운영 확인 보고 | Production 완료 기록(PR166) |\n| v2.9.169 | 2026-10-04 | Gemini 개발 보고서 별도 메뉴 | AI 팀·개발도구 | #168 | 배포 완료 | 원본 반영만 확인 (운영 화면 확인 전) | |\n\n## 왜 바꿨나요?\n기능이 늘어나면서 상위 메뉴가 지나치게 복잡해지는 문제를 해결하기 위해 AURA를 성민 오피스 하위로 옮기고 배포센터를 시스템 메뉴로 묶었습니다. 또한 포트폴리오의 밝은 카드 테마에서 전역 테마 글자색이 번져 텍스트가 잘 보이지 않던 명암 대비 문제를 해결했습니다.\n\n아울러 자산 입력 시 평균 매입가를 모를 때 손익이 왜곡되거나 다른 계좌와 섞이는 문제를 방지하기 위해 계좌별 식별과 선택적 매입가 입력 기준을 정립했습니다. 마지막으로 AI 팀의 활동과 개발 기록을 편하게 열람할 수 있도록 Gemini 개발 보고서 메뉴를 별도로 신설했습니다. 이 외에 개별 세부 기획 배경은 Release 기록에서 확인되지 않습니다.\n\n## 내가 실제로 체감하는 변화\n| 항목 | 이번에 달라진 점 | 현재 확인 상태 |\n|---|---|---|\n| 메뉴 정돈 | AURA가 성민 오피스 하위 메뉴로 이동하고 배포센터가 업무/시스템 그룹으로 정돈됨 | GitHub Pages 원본 반영만 확인 (운영 화면 직접 조작 확인 전) |\n| 포트폴리오 가독성 | 밝은 카드 테마에서도 제목, 표, 막대 레이블 글자가 또렷하게 표시됨 (명암비 4.5:1 이상) | 실제 운영 화면에서 확인 |\n| AURA 포스터 | AURA 캠페인 포스터 화면 배치 | GitHub Pages 원본 반영만 확인 (운영 화면 직접 조작 확인 전) |\n| 자산 업데이트실 | 평균 매입가가 필수가 아닌 선택 사항으로 정리되고, 계좌별 보유 종목이 분리되어 손익 왜곡 방지 | 실제 운영 화면에서 확인 |\n| Gemini 보고서 메뉴 | AI 팀의 개발 보고서를 모아볼 수 있는 전용 메뉴 신설 | GitHub Pages 원본 반영만 확인 (운영 화면 직접 조작 확인 전) |\n\n## 내부적으로 무엇이 달라졌나요?\n| 진행 단계 | 한 일 | 결과 |\n|---|---|---|\n| 구현 | `hani-main.js` 및 `index.html` 메뉴 DOM 정리, 포트폴리오 로컬 글자색(local ink) 명시 및 라이트 스킴 고정, 자산 입력 계약(Asset Input Canonical Contract) 코드 정립, Gemini 보고서 메뉴 링크 연결 | 개발 완료 |\n| 검증 | 포트폴리오 색상 대비(WCAG AA 4.5:1) 자동 검증, 390px 모바일 가로 넘침 없음 확인, 자산 입력 브라우저 회귀 테스트(계좌 격리, 누락 종목 보존, 저장 실패 복구) 통과 | 통과 |\n| 배포 | PR #159, #161, #164, #165, #168 운영 병합 및 GitHub Pages 반영 | 배포 완료 (v2.9.166, v2.9.168 운영 확인 / v2.9.165, 167, 169 원본 반영만 확인) |\n\n## 데이터나 안전에 영향이 있나요?\n기존 원본 저장 키(`hani_os_life_v23`)의 구조 변경이나 Cloud schema 변경, Supabase 쓰기 로직 변경은 없었습니다. 자산 입력 기준 정리는 부분 업데이트(Partial Update) 시 이번 입력에 없는 종목을 임의 청산하지 않고 기존 보유 정보를 유지하도록 보호하며, 원가가 확인되지 않았을 때는 손익·수익률을 거짓으로 계산하지 않도록 안전성을 강화했습니다.\n\nv2.9.166과 v2.9.168은 실제 운영 환경에서 확인 보고되었으나, v2.9.165, v2.9.167, v2.9.169는 GitHub Pages 소스 반영까지만 확인되었고 실제 운영 브라우저 클릭 검증은 미실시 상태입니다.\n\n## 아직 남은 것\n| 남은 항목 | 상태/제한 |\n|---|---|\n| 미검증 메뉴 확인 | v2.9.165, v2.9.167, v2.9.169는 원본 반영만 확인된 상태이며 운영 화면 직접 클릭 검증 필요 |\n| 포트폴리오 심화 기능 | 다차원 데이터셋 및 시세 실시간 연동 등 후속 과제는 미포함 |\n| 완전 목록 모드 | 보유 종목 전체 리스트 입력 모드 및 누락 종목 정리 승인 절차는 후속 검토 과제로 남음 |\n\n## 대표가 알아둘 점\n메뉴 구조가 단정해지고 포트폴리오의 글자 가독성이 향상되었으며, 자산 입력 시 평균 매입가를 모를 때도 안전하게 입력할 수 있는 기반이 마련되었습니다. 다만 일부 화면 전용 패치(v2.9.165, 167, 169)는 코드 반영만 확인되고 운영 브라우저 확인이 아직 이루어지지 않았으므로 운영 화면에서 가볍게 확인해 주시면 좋습니다.\n\n기술 기록은 docs/development-history/2026-10-04-v2.9.165-aura-menu-status.md, 2026-10-04-p1-safety-portfolio.md, 2026-10-04-v2.9.168-asset-input-canonical-contract.md 참조. 이 문서는 기술 기록을 쉽게 풀어 쓴 검토용 문서입니다.\n\n작성: 세린(Gemini). 2026-10-10 작성.\n"},{"title":"포트폴리오 종목 지도와 캔들 차트 시각화, 국내 주식 매입 원가 연결, AI 개발·보고팀 화면 분리를 적용하","release_version":"v2.9.170~v2.9.178","review_status":"approved","file":"2026-10-05-v2.9.170-178-portfolio-goals.md","id":"2026-10-05-v2.9.170-178-portfolio-goals","date":"2026-10-05","previous_report_id":"2026-10-04-v2.9.165-169-menus-aura-assets","body":"# HANI OS v2.9.170~v2.9.178 개발노트\n\n## 이번 업데이트 한줄 요약\n포트폴리오 종목 지도와 캔들 차트 시각화, 국내 주식 매입 원가 연결, AI 개발·보고팀 화면 분리를 적용하고, 목표 관리의 핵심 기반인 목표 등록(Goal Registry)과 읽기 전용 Data Hub를 배포했습니다.\n\n| 버전 | 배포일 | 내용 | 분야 | PR | 현재 상태 | 운영 확인 | 메모 |\n|---|---|---|---|---|---|---|---|\n| v2.9.170 | 2026-10-05 | AURA 와이드 포스터·계절 사이드바 | 화면·디자인 | #170 | 배포 완료 | 원본 반영만 확인 (운영 화면 확인 전) | |\n| v2.9.171 | 2026-10-05 | 포트폴리오 종목 지도·캔들 차트 | 투자 | #172 | 배포 완료 | 원본 반영만 확인 (운영 화면 확인 전) | |\n| v2.9.172 | 2026-10-05 | 포트폴리오 캐시 갱신 | 투자 | #173 | 배포 완료 | 원본 반영만 확인 (운영 화면 확인 전) | |\n| v2.9.173 | 2026-10-05 | 국내 주식 매입 원가 연결 | 투자 | #174 | 배포 완료 | 원본 반영만 확인 (운영 화면 확인 전) | |\n| v2.9.174 | 2026-10-05 | AI 개발·보고팀 화면 분리 | AI 팀·개발도구 | #175 | 배포 완료 | 운영 확인 보고 | |\n| v2.9.175 | 2026-10-05 | 모바일 조작·대시보드 기간 안내 | 화면·디자인 | #176 | 배포 완료 | 원본 반영만 확인 (운영 화면 확인 전) | |\n| v2.9.177 | 2026-10-05 | 뉴스룸 가독성·주차 표시 | 뉴스·학습 | #178 | 배포 완료 | 원본 반영만 확인 (운영 화면 확인 전) | |\n| v2.9.178 | 2026-10-05 | 목표 등록(Goal Registry)과 읽기 전용 Data Hub | 목표·데이터 | #180 | 배포 완료 | 운영 확인 보고 | 운영 화면·최신 JS 확인 보고 |\n\n## 왜 바꿨나요?\n투자 포트폴리오를 한눈에 볼 수 있도록 종목 지도(트리맵)와 캔들 차트를 추가하고, 국내 주식 종목의 실제 매입 원가를 연동하여 자산 현황의 정밀도를 높였습니다. 또한 AI 팀의 규모가 커짐에 따라 개발팀과 보고팀의 화면을 분리하여 각 역할을 명확히 볼 수 있게 했습니다.\n\n가장 중요한 변화로, 성민 대표님의 다양한 목표(운동, 자산, 학습 등)를 안정적으로 등록하고 추적할 수 있도록 '목표 등록(Goal Registry)' 체계를 신설하고 이를 읽기 전용 Data Hub와 연동했습니다. 개별 화면의 세부 기획 배경 중 원자료에 없는 사항은 기록에서 확인되지 않습니다. (참고: v2.9.176은 배포 원자료에 기록되어 있지 않습니다.)\n\n## 내가 실제로 체감하는 변화\n| 항목 | 이번에 달라진 점 | 현재 확인 상태 |\n|---|---|---|\n| AURA 포스터·사이드바 | 와이드 포스터와 계절 테마가 적용된 사이드바 표시 | GitHub Pages 원본 반영만 확인 (운영 화면 직접 조작 확인 전) |\n| 포트폴리오 시각화 | 보유 종목 트리맵 지도와 캔들 차트를 통한 시세 분석 지원 | GitHub Pages 원본 반영만 확인 (운영 화면 직접 조작 확인 전) |\n| 자산 캐시 및 원가 | 포트폴리오 캐시 갱신 및 국내 주식 매입 원가 연결로 정확한 평가 제공 | GitHub Pages 원본 반영만 확인 (운영 화면 직접 조작 확인 전) |\n| AI 팀 화면 분리 | AI 개발팀과 보고팀이 별도 탭/화면으로 분리되어 탐색 용이 | 실제 운영 화면에서 확인 |\n| 모바일 대시보드 | 모바일 터치 조작 최적화 및 대시보드 기준 기간 안내 표시 | GitHub Pages 원본 반영만 확인 (운영 화면 직접 조작 확인 전) |\n| 뉴스룸 화면 | 뉴스 가독성 향상 및 주차(Weekly) 표시 안내 추가 | GitHub Pages 원본 반영만 확인 (운영 화면 직접 조작 확인 전) |\n| 목표 등록 및 Data Hub | 목표 등록(Goal Registry) 화면에서 신규 목표를 등록하고, Data Hub를 통해 읽기 전용으로 목표 현황 확인 가능 | 실제 운영 화면 및 최신 JS 로딩 확인 |\n\n## 내부적으로 무엇이 달라졌나요?\n| 진행 단계 | 한 일 | 결과 |\n|---|---|---|\n| 구현 | 차트 렌더러(트리맵, 캔들) 탑재, 국내 주식 원가 매핑 로직 추가, AI 개발/보고 화면 분리, 모바일 터치 이벤트 핸들러 보강, 목표 등록기(`goalRegistry`) 및 Data Hub 어댑터 구축 | 개발 완료 |\n| 검증 | 차트 데이터 바인딩 검증, 목표 등록 유효성 검사, One-Pass 사전 게이트 검증 및 단위 테스트 | 통과 |\n| 배포 | PR #170, #172, #173, #174, #175, #176, #178, #180 운영 반영 | 배포 완료 (v2.9.174, v2.9.178 운영 확인 / 나머지 6건 원본 반영만 확인) |\n\n## 데이터나 안전에 영향이 있나요?\n기존의 핵심 원본 데이터 키(`hani_os_life_v23`)와 Cloud DB 스키마는 변경되지 않았습니다. Data Hub는 읽기 전용으로 동작하여 원본 데이터 오염 위험이 없으며, 목표 등록(Goal Registry)은 Preview 확인 후 명시적 승인을 거쳐 저장되는 안전한 절차를 따릅니다.\n\nv2.9.174와 v2.9.178은 운영 환경에서 최신 JS 로딩과 동작이 정식으로 확인되었습니다. 반면 v2.9.170, 171, 172, 173, 175, 177은 GitHub Pages 원본 반영까지만 확인된 상태로, 운영 화면에서의 직접 검증은 후속 과제로 남아 있습니다.\n\n## 아직 남은 것\n| 남은 항목 | 상태/제한 |\n|---|---|\n| 다수 화면 운영 검증 | v2.9.170~173, 175, 177의 운영 브라우저 내 실제 렌더링 및 기능 검증 필요 |\n| 목표 지표 확장 | BMI, 체지방 등 구체적 신체 지표 목표는 후속 버전(v2.9.183 등)에서 순차 추가 예정 |\n| Data Hub 심화 계산 | 복합 목표 진행률 자동 계산 엔진의 완결은 후속 개발 예정 |\n\n## 대표가 알아둘 점\n목표를 체계적으로 관리할 수 있는 첫 단추인 '목표 등록(Goal Registry)'과 'Data Hub' 연동이 운영에 배포되어 작동하기 시작했습니다. 포트폴리오 차트와 사이드바 등 시각 요소도 풍부해졌으나, 일부 항목은 코드 반영만 확인된 상태이므로 실사용 중 특이사항이 발견되면 공유해 주시기 바랍니다.\n\n기술 기록은 docs/development-history/2026-10-05-all-tabs-status.md 및 관련 PR 기록 참조. 이 문서는 기술 기록을 쉽게 풀어 쓴 검토용 문서입니다.\n\n작성: 세린(Gemini). 2026-10-10 작성.\n"},{"title":"BMI와 체지방률 목표 등록을 추가하고, 운영 화면의 버전·최신 JS·기능 동작을 확인했습니다.","release_version":"v2.9.183","review_status":"approved","file":"2026-10-05-v2.9.183-bmi-goals.md","id":"2026-10-05-v2.9.183-bmi-goals","date":"2026-10-05","previous_report_id":"2026-10-05-v2.9.170-178-portfolio-goals","body":"# HANI OS v2.9.183 개발노트\n\n## 이번 업데이트 한줄 요약\n\nBMI와 체지방률 목표 등록을 추가하고, 운영 화면의 버전·최신 JS·기능 동작을 확인했습니다.\n\n| 버전 | 배포일 | 내용 | 분야 | PR | 현재 상태 | 운영 확인 | 메모 |\n|---|---|---|---|---|---|---|---|\n| v2.9.183 | 2026-10-05 | BMI·체지방률 목표 등록 | 목표·데이터 | #198 | 배포 완료 | 운영 확인 보고 | 운영 v2.9.183 표시·최신 JS·기능 동작 확인 |\n\n## 왜 바꿨나요?\n\nBMI·체지방률을 목표 등록에 포함했습니다. 처음 기획한 배경과 기존 목표 등록에서 불편했던 세부 내용은 기록에서 확인되지 않습니다.\n\n## 내가 실제로 체감하는 변화\n\n| 항목 | 이번에 달라진 점 | 현재 확인 상태 |\n|---|---|---|\n| 신체 지표 목표 | BMI·체지방률 목표 등록 추가 | 운영 확인 보고; 세부 입력 화면과 목표값은 기록에서 확인되지 않습니다 |\n\n## 내부적으로 무엇이 달라졌나요?\n\n| 진행 단계 | 한 일 | 결과 |\n|---|---|---|\n| 구현 | BMI·체지방률 목표 등록 | PR #198 기록 |\n| 검증 | 운영 v2.9.183 표시·최신 JS·기능 동작 확인 | 운영 확인 보고; 테스트 명령과 건수는 기록에서 확인되지 않습니다 |\n| 배포 | v2.9.183 반영 | 원본 표에 운영 확인 보고 |\n\n## 데이터나 안전에 영향이 있나요?\n\n목표 등록이 추가된 기록은 있습니다. 기존 저장 키·데이터 구조·Cloud 쓰기·schema 변경 여부와 데이터 보존 검사의 상세 결과는 기록에서 확인되지 않습니다.\n\n## 아직 남은 것\n\n| 남은 항목 | 상태/제한 |\n|---|---|\n| 추가 검증 범위 | 입력 오류·다른 기기 동기화 등 세부 검증은 기록에서 확인되지 않습니다 |\n| 후속 계획 | 추가 지표와 개발 일정은 기록에서 확인되지 않습니다 |\n\n## 대표가 알아둘 점\n\n이번 기록에서 확인되는 완료 범위는 BMI·체지방률 목표 등록과 운영 버전·최신 JS·기능 확인입니다. 모든 신체 지표나 목표 관리 전체가 완성되었다는 근거는 기록에서 확인되지 않습니다.\n\n기술 기록은 docs/gemini-reports/_SOURCE-release-log.md의 해당 버전과 PR 기록 참조. 이 문서는 원본 릴리스 표를 쉽게 풀어 쓴 검토용 문서이며, 이번 작성에서 운영 기능을 다시 실행하지 않았습니다.\n\n작성: 도연(Codex). 2026-10-10 작성.\n"},{"title":"배포 열차 1~6호로 목표 관리·실제 뉴스 출제·일정 해석 미리보기와 대시보드 입력 기준을 반영했습니다.","release_version":"v2.9.185~v2.9.190","review_status":"approved","file":"2026-10-06-trains-1-6.md","id":"2026-10-06-trains-1-6","date":"2026-10-06","previous_report_id":"2026-10-05-v2.9.183-bmi-goals","body":"# HANI OS v2.9.185~v2.9.190 개발노트\n\n## 이번 업데이트 한줄 요약\n\n배포 열차 1~6호로 목표 관리·실제 뉴스 출제·일정 해석 미리보기와 대시보드 입력 기준을 반영했습니다.\n\n| 버전 | 배포일 | 내용 | 분야 | PR | 현재 상태 | 운영 확인 | 메모 |\n|---|---|---|---|---|---|---|---|\n| v2.9.185 | 2026-10-06 | 배포 열차 1호 · 설정 화면 목표 관리·기록 보관함 복구 | 목표·데이터 | #206 | 배포 완료 | 운영 확인 보고 | 배포센터 정식 경로(HINA) 첫 배포. v2.9.180 누락 회귀 수정 |\n| v2.9.186 | 2026-10-06 | 배포 열차 2호 · 공부 실제 뉴스 출제 | 뉴스·학습 | #207 | 배포 완료 | 운영 확인 보고 | HINA PASS · 운영 JS 일치 |\n| v2.9.187 | 2026-10-06 | 배포 열차 3호 · YUNA 일정 입력 해석(미리보기) | AI 팀·개발도구 | #209 | 배포 완료 | 운영 확인 보고 | '송년회 일정' → 일정/12-12~12-13/종일 표시, 저장 0 확인 |\n| v2.9.188 | 2026-10-06 | 배포 열차 4호 · 목표 한 건 삭제 (미리보기·승인) | 목표·데이터 | #210 | 배포 완료 | 운영 확인 보고 | 삭제 Preview→취소 확인 |\n| v2.9.189 | 2026-10-06 | 배포 열차 5호 · 분야별 목표 분기·연간 진행 조회 | 목표·데이터 | #214 | 배포 완료 | 운영 확인 보고 | BMI 목표 25 표시 확인 |\n| v2.9.190 | 2026-10-06 | 배포 열차 6호 · 안정화 핫픽스 + 대시보드 월 1회 입력 기준 | 목표·데이터 | #215 | 배포 완료 | 운영 확인 보고 | 대시보드 기준월 표시 확인 |\n\n## 왜 바꿨나요?\n\n열차 1호는 v2.9.180에서 누락된 기능의 회귀를 수정했습니다. 열차 6호에는 안정화 핫픽스와 대시보드 월 1회 입력 기준이 포함되었습니다. 다른 항목의 구체적인 기획 배경은 기록에서 확인되지 않습니다.\n\n## 내가 실제로 체감하는 변화\n\n| 항목 | 이번에 달라진 점 | 현재 확인 상태 |\n|---|---|---|\n| 설정과 기록 보관함 | 설정 화면 목표 관리·기록 보관함 복구 | v2.9.185 운영 확인 보고 |\n| 공부 | 실제 뉴스 출제 | v2.9.186 HINA PASS·운영 JS 일치 |\n| YUNA 일정 해석 | '송년회 일정'을 일정/12-12~12-13/종일로 미리보기 표시 | v2.9.187 운영 확인 보고; 저장 0 확인 |\n| 목표 삭제 | 목표 한 건 삭제의 미리보기·승인 기능 | v2.9.188 삭제 미리보기 후 취소 확인; 실제 삭제 성공은 기록에서 확인되지 않습니다 |\n| 목표 진행 조회 | 분야별 목표의 분기·연간 진행 조회 | v2.9.189 BMI 목표 25 표시 확인 |\n| 대시보드 | 월 1회 입력 기준과 기준월 표시 | v2.9.190 기준월 표시 확인 |\n\n## 내부적으로 무엇이 달라졌나요?\n\n| 진행 단계 | 한 일 | 결과 |\n|---|---|---|\n| 구현 | 열차 1~6호에 목표 관리·뉴스 출제·일정 해석·삭제 미리보기·진행 조회·안정화 반영 | PR #206, #207, #209, #210, #214, #215 기록 |\n| 검증 | 뉴스 출제 HINA와 운영 JS 일치, 일정 미리보기 저장 0, 삭제 취소, 목표값·기준월 표시 | 각 항목의 원본 표 메모에서 확인; 전체 테스트 명령과 건수는 기록에서 확인되지 않습니다 |\n| 배포 | 열차 1호는 배포센터 정식 경로(HINA)의 첫 배포 | v2.9.185~190 모두 운영 확인 보고 |\n\n## 데이터나 안전에 영향이 있나요?\n\nYUNA 일정 해석은 미리보기에서 저장 0이 확인되었습니다. 목표 삭제는 미리보기 후 취소까지만 확인되어 실제 삭제 성공이나 다른 목표 보존까지 검증되었다고 볼 수 없습니다. 기존 저장 키·Cloud schema 변경 여부와 전체 안전 검사의 결과는 기록에서 확인되지 않습니다.\n\n## 아직 남은 것\n\n| 남은 항목 | 상태/제한 |\n|---|---|\n| 일정 저장 | 미리보기 이후 실제 저장 검증은 기록에서 확인되지 않습니다 |\n| 실제 목표 삭제 | 삭제 미리보기·취소 외 실행 결과는 기록에서 확인되지 않습니다 |\n| 전체 회귀·기기별 검증 | 이번 원본 표에는 상세 결과가 없어 기록에서 확인되지 않습니다 |\n\n## 대표가 알아둘 점\n\n각 열차의 운영 확인 보고가 있지만 확인한 동작은 서로 다릅니다. 일정 해석 미리보기를 저장 완료로, 삭제 취소를 실제 삭제 완료로 읽지 않도록 구분해야 합니다.\n\n기술 기록은 docs/gemini-reports/_SOURCE-release-log.md의 해당 버전과 PR 기록 참조. 이 문서는 원본 릴리스 표를 쉽게 풀어 쓴 검토용 문서이며, 이번 작성에서 운영 기능을 다시 실행하지 않았습니다.\n\n작성: 도연(Codex). 2026-10-10 작성.\n"},{"title":"표지·포스터 분리의 호환 읽기와 이중 보관 버튼을 반영하고, B단계 실행 후 이미지 보관을 확인했습니다.","release_version":"v2.9.195~v2.9.197","review_status":"approved","file":"2026-10-10-media-separation.md","id":"2026-10-10-media-separation","date":"2026-10-10","previous_report_id":"2026-10-06-trains-1-6","body":"# HANI OS v2.9.195~v2.9.197 개발노트\n\n## 이번 업데이트 한줄 요약\n\n표지·포스터 분리의 호환 읽기와 이중 보관 버튼을 반영하고, B단계 실행 후 이미지 보관을 확인했습니다.\n\n| 버전 | 배포일 | 내용 | 분야 | PR | 현재 상태 | 운영 확인 | 메모 |\n|---|---|---|---|---|---|---|---|\n| v2.9.195 | 2026-10-10 | 표지·포스터 분리 A단계 · 호환 읽기 (데이터 변화 없음) | 보호·안전 | #230 | 배포 완료 | 운영 확인 보고 | 이미지 36장 그대로, 설정 미리보기 '1.83MB → 약 327KB' |\n| v2.9.196 | 2026-10-10 | 표지·포스터 분리 B단계 · 이중 보관 버튼 | 보호·안전 | #231 | 배포 완료 | 운영 확인 보고 | 버튼 비활성 문제는 v2.9.197로 수정 |\n| v2.9.197 | 2026-10-10 | B단계 버튼 Cloud 확인 대기 보정 + 대표님 B단계 실행 | 보호·안전 | #232 | 배포 완료 | 운영 확인 보고 | 36장 보관 확인·충돌 0, Cloud 보관함 33행 |\n\n## 왜 바꿨나요?\n\n표지·포스터를 분리하는 A·B단계가 진행되었습니다. v2.9.196의 버튼 비활성 문제는 v2.9.197에서 Cloud 확인 대기를 보정해 수정했습니다. 분리를 처음 기획한 배경은 기록에서 확인되지 않습니다.\n\n## 내가 실제로 체감하는 변화\n\n| 항목 | 이번에 달라진 점 | 현재 확인 상태 |\n|---|---|---|\n| A단계 호환 읽기 | 데이터 변화 없이 호환 읽기 반영 | v2.9.195 이미지 36장 그대로 확인 |\n| 설정 미리보기 | '1.83MB → 약 327KB' 표시 | 설정 미리보기 기록; 실제 축소 완료를 뜻하는지는 기록에서 확인되지 않습니다 |\n| B단계 이중 보관 | 이중 보관 버튼 추가 후 Cloud 확인 대기 보정 | v2.9.196 버튼 비활성 문제를 v2.9.197에서 수정 |\n| 대표님 B단계 실행 | 이미지 보관 결과 확인 | v2.9.197 36장 보관·충돌 0·Cloud 보관함 33행 확인 |\n\n## 내부적으로 무엇이 달라졌나요?\n\n| 진행 단계 | 한 일 | 결과 |\n|---|---|---|\n| 구현 | A단계 호환 읽기, B단계 이중 보관 버튼, Cloud 확인 대기 보정 | PR #230, #231, #232 기록 |\n| 검증 | A단계 이미지 유지와 설정 미리보기, 대표님 B단계 실행 후 보관·충돌·Cloud 행 확인 | 이미지 36장과 Cloud 33행의 차이 설명은 기록에서 확인되지 않습니다 |\n| 배포 | v2.9.195~197 반영 | 각 버전 운영 확인 보고 |\n\n## 데이터나 안전에 영향이 있나요?\n\nA단계는 원본 표에 '데이터 변화 없음'으로 기록되어 있고 이미지 36장이 그대로 확인되었습니다. B단계는 이중 보관이며 대표님 실행 후 36장 보관·충돌 0·Cloud 보관함 33행이 확인되었습니다. 이 결과만으로 기존 이미지 삭제나 C단계 완료를 판단하지 않습니다. 저장 구조·schema·복구 검사의 세부 내용은 기록에서 확인되지 않습니다.\n\n## 아직 남은 것\n\n| 남은 항목 | 상태/제한 |\n|---|---|\n| C단계 | 이번 보고서 범위에는 실행 완료 기록이 없습니다. 후속 버전의 C단계 버튼 기록과 구분 필요 |\n| 이미지 수와 Cloud 행 수 | 36장과 33행의 차이에 대한 설명은 기록에서 확인되지 않습니다 |\n| 실제 용량·복구 검증 | 미리보기 수치 외 실제 축소 결과와 복구 성공은 기록에서 확인되지 않습니다 |\n\n## 대표가 알아둘 점\n\n설정에 나온 용량은 미리보기 값입니다. 확인된 실행은 B단계 이중 보관까지이며, C단계로 원본을 정리하거나 실제 용량 축소까지 완료했다는 근거는 기록에서 확인되지 않습니다.\n\n기술 기록은 docs/gemini-reports/_SOURCE-release-log.md의 해당 버전과 PR 기록 참조. 이 문서는 원본 릴리스 표를 쉽게 풀어 쓴 검토용 문서이며, 이번 작성에서 운영 기능을 다시 실행하지 않았습니다.\n\n작성: 도연(Codex). 2026-10-10 작성.\n"},{"title":"배포 열차 7~10호로 동기화·보고서·조직 화면과 생활 도우미를 반영하고 다이어트 페이스 계산을 보정했습니다","release_version":"v2.9.191~v2.9.194","review_status":"approved","file":"2026-10-10-trains-7-10.md","id":"2026-10-10-trains-7-10","date":"2026-10-10","previous_report_id":"2026-10-10-media-separation","body":"# HANI OS v2.9.191~v2.9.194 개발노트\n\n## 이번 업데이트 한줄 요약\n\n배포 열차 7~10호로 동기화·보고서·조직 화면과 생활 도우미를 반영하고 다이어트 페이스 계산을 보정했습니다.\n\n| 버전 | 배포일 | 내용 | 분야 | PR | 현재 상태 | 운영 확인 | 메모 |\n|---|---|---|---|---|---|---|---|\n| v2.9.191 | 2026-10-10 | 배포 열차 7호 · 탑승 7건(아카이브·Cloud 전송량 절감·동기화 안정화·보고서·시청/예산·화면 복원) | 목표·데이터 | #221 | 배포 완료 | 운영 확인 보고 | Supabase 전송량 차단 해제 후 출발. 메뉴 이동 시 메타만 조회(0KB) 확인 |\n| v2.9.192 | 2026-10-10 | 배포 열차 8호 · 디자인 정렬 + 조직도·M9 앨범·썸네일·ETF 라벨·AI 주간 예산·컨퍼런스 룸 | 화면·디자인 | #224 | 배포 완료 | 운영 확인 보고 | 새 화면 4개 운영 열람·이미지 깨짐 0 |\n| v2.9.193 | 2026-10-10 | 배포 열차 9호 · 먼저 챙겨 주는 HANI (아이폰 홈화면 안내·월말 정산 도우미·다이어트 페이스메이커·분기 목표 킥오프·Cloud 전송량) | 목표·데이터 | #225 | 배포 완료 | 운영 확인 보고 | 도연 구현·세린 검수 PASS |\n| v2.9.194 | 2026-10-10 | 배포 열차 10호 · 다이어트 페이스메이커 정확도 수정 | 목표·데이터 | #226 | 배포 완료 | 운영 확인 보고 | 2일 간격 기록 과장 → 7일 이상 간격일 때만 계산 |\n\n## 왜 바꿨나요?\n\n열차 7호는 Supabase 전송량 차단이 해제된 뒤 출발했습니다. 열차 10호는 2일 간격의 기록으로 다이어트 페이스가 과장되는 문제를 고치기 위해 7일 이상 간격일 때만 계산하도록 바꿨습니다. 다른 기능의 구체적인 기획 배경은 기록에서 확인되지 않습니다.\n\n## 내가 실제로 체감하는 변화\n\n| 항목 | 이번에 달라진 점 | 현재 확인 상태 |\n|---|---|---|\n| 아카이브·동기화·보고서 | 아카이브·Cloud 전송량 절감·동기화 안정화·보고서·시청/예산·화면 복원을 포함한 7건 반영 | v2.9.191 운영 확인 보고; 메뉴 이동 시 메타만 조회(0KB) 확인 |\n| 조직과 디자인 | 디자인 정렬·조직도·M9 앨범·썸네일·ETF 라벨·AI 주간 예산·컨퍼런스 룸 반영 | v2.9.192 새 화면 4개 운영 열람·이미지 깨짐 0 |\n| 먼저 챙겨 주는 HANI | 아이폰 홈화면 안내·월말 정산 도우미·다이어트 페이스메이커·분기 목표 킥오프·Cloud 전송량 관련 변경 | v2.9.193 운영 확인 보고; 도연 구현·세린 검수 PASS |\n| 다이어트 페이스 | 7일 이상 간격의 기록일 때만 계산 | v2.9.194 운영 확인 보고; 2일 간격 기록 과장 보정 |\n\n## 내부적으로 무엇이 달라졌나요?\n\n| 진행 단계 | 한 일 | 결과 |\n|---|---|---|\n| 구현 | 열차 7~10호에 동기화·보고서·화면·생활 도우미·페이스 계산 변경 반영 | PR #221, #224, #225, #226 기록 |\n| 검증 | 메뉴 이동 시 메타 조회, 새 화면 열람과 이미지 상태, 도연 구현·세린 검수 결과 기록 | 원본 표의 확인 범위; 상세 테스트 명령은 기록에서 확인되지 않습니다 |\n| 배포 | 전송량 차단 해제 후 열차 7호 출발, 후속 열차 8~10호 반영 | v2.9.191~194 모두 운영 확인 보고 |\n\n## 데이터나 안전에 영향이 있나요?\n\nCloud 전송량 절감과 동기화 안정화가 포함되어 있습니다. 메뉴 이동 시 메타만 조회한 결과(0KB)를 전체 Cloud 사용량이 없다는 뜻으로 해석하지 않습니다. 기존 저장 키·Cloud schema 변경 여부, 충돌 처리와 복원 안전 검사의 상세 결과는 기록에서 확인되지 않습니다.\n\n## 아직 남은 것\n\n| 남은 항목 | 상태/제한 |\n|---|---|\n| 동기화 전체 안정성 | 메뉴 이동 시 조회 외 기기별·실패 상황 검증은 기록에서 확인되지 않습니다 |\n| 새 화면별 세부 결과 | 열람한 새 화면 4개의 개별 목록과 모든 조작 결과는 기록에서 확인되지 않습니다 |\n| 페이스 계산 상세 검증 | 7일 이상 간격 기준 외 계산식·경계 테스트 결과는 기록에서 확인되지 않습니다 |\n\n## 대표가 알아둘 점\n\n운영 확인은 원본 표에 보고된 범위입니다. 이미지 깨짐 0과 메타 조회 0KB는 해당 확인 상황의 결과이며, 모든 화면·Cloud 경로의 결과를 뜻하지 않습니다.\n\n기술 기록은 docs/gemini-reports/_SOURCE-release-log.md의 해당 버전과 PR 기록 참조. 이 문서는 원본 릴리스 표를 쉽게 풀어 쓴 검토용 문서이며, 이번 작성에서 운영 기능을 다시 실행하지 않았습니다.\n\n작성: 도연(Codex). 2026-10-10 작성.\n"},{"title":"Drive 자동 백업·사내 게시판과 메뉴 정리를 반영했으며, C단계 버튼의 추가 보정은 배포 예정입니다.","release_version":"v2.9.198~v2.9.201","review_status":"approved","file":"2026-10-10-v2.9.198-200-drive-board-menus.md","id":"2026-10-10-v2.9.198-200-drive-board-menus","date":"2026-10-10","previous_report_id":"2026-10-10-trains-7-10","body":"# HANI OS v2.9.198~v2.9.201 개발노트\n\n## 이번 업데이트 한줄 요약\n\nDrive 자동 백업·사내 게시판과 메뉴 정리를 반영했으며, C단계 버튼의 추가 보정은 배포 예정입니다.\n\n| 버전 | 배포일 | 내용 | 분야 | PR | 현재 상태 | 운영 확인 | 메모 |\n|---|---|---|---|---|---|---|---|\n| v2.9.198 | 2026-10-10 | Google Drive 자동 백업 · 표지 C단계 버튼 · 충돌 선택 화면 · 사내 게시판 1단계 | 보호·안전 | #235 | 배포 완료 | 운영 확인 보고 | 테스트 39개 PASS, Drive 첫 백업 확인 |\n| v2.9.199 | 2026-10-10 | 메뉴 정리(HANI GROUP·개발·운영) · 페이지 담당 캐릭터 한마디 · 배너 폭 수정 · C단계 버튼 보정 | 화면·디자인 | #237 | 배포 완료 | 운영 확인 보고 | 8개 메뉴 그룹, 다이어트=나은·독서=하루·일기=민지 |\n| v2.9.201 | 2026-10-10 | C단계 버튼이 항상 반응하고 안 될 때 이유를 알려줌 | 보호·안전 | #239 | 배포 예정 | 운영 화면 확인 전 | 도연(주력 계정) 구현·테스트, 세린 PASS |\n\n## 왜 바꿨나요?\n\nv2.9.199에서 C단계 버튼을 보정했고, v2.9.201은 버튼이 항상 반응하며 실행할 수 없을 때 이유를 알려주도록 준비되었습니다. Drive 자동 백업·사내 게시판·메뉴 정리의 세부 기획 배경은 기록에서 확인되지 않습니다.\n\n## 내가 실제로 체감하는 변화\n\n| 항목 | 이번에 달라진 점 | 현재 확인 상태 |\n|---|---|---|\n| Drive 백업 | Google Drive 자동 백업 반영 | v2.9.198 Drive 첫 백업 확인; 지속 자동 실행과 복원 검증은 기록에서 확인되지 않습니다 |\n| 표지 C단계·충돌 선택 | C단계 버튼과 충돌 선택 화면 반영 | v2.9.198 운영 확인 보고; 실제 C단계 완료는 기록에서 확인되지 않습니다 |\n| 사내 게시판 | 사내 게시판 1단계 반영 | v2.9.198 운영 확인 보고; 세부 기능은 기록에서 확인되지 않습니다 |\n| 메뉴와 배너 | HANI GROUP·개발·운영 메뉴 정리와 배너 폭 수정 | v2.9.199 운영 확인 보고; 8개 메뉴 그룹 |\n| 페이지 담당 한마디 | 다이어트=나은·독서=하루·일기=민지 | v2.9.199 운영 확인 보고 |\n| C단계 버튼 추가 보정 | 버튼이 항상 반응하고 안 될 때 이유 안내 | v2.9.201 배포 예정; 운영 화면 확인 전 |\n\n## 내부적으로 무엇이 달라졌나요?\n\n| 진행 단계 | 한 일 | 결과 |\n|---|---|---|\n| 구현 | Drive 자동 백업·C단계 버튼·충돌 선택·게시판 1단계·메뉴·캐릭터 한마디·배너 폭 반영 | PR #235, #237 기록 |\n| 검증 | v2.9.198 테스트 39개 PASS·Drive 첫 백업 확인; v2.9.201 도연(주력 계정) 구현·테스트·세린 PASS | v2.9.201 테스트 명령과 건수는 기록에서 확인되지 않습니다 |\n| 배포 | v2.9.198·199 운영 확인 보고, v2.9.201 PR #239 배포 예정 | v2.9.201 운영 화면 확인 전 |\n\n## 데이터나 안전에 영향이 있나요?\n\nDrive 첫 백업은 확인되었지만 그 결과만으로 복원 성공이나 지속적인 자동 백업을 보장하지 않습니다. C단계 버튼과 충돌 선택 화면의 반영 기록은 있으나 실제 C단계 실행 완료·원본 제거 여부·Cloud schema 변경 여부는 기록에서 확인되지 않습니다. v2.9.201의 검수 PASS는 운영 배포 확인과 구분합니다.\n\n## 아직 남은 것\n\n| 남은 항목 | 상태/제한 |\n|---|---|\n| v2.9.201 운영 반영 | 배포 예정. 운영 버전·최신 JS·버튼 동작 확인 전 |\n| C단계 실행 결과 | 버튼 추가·보정 외 실제 실행 완료는 기록에서 확인되지 않습니다 |\n| Drive 지속 백업·복원 | 첫 백업 외 자동 실행 지속성과 복원 성공은 기록에서 확인되지 않습니다 |\n| 게시판 후속 단계 | 1단계 이후 범위·일정은 기록에서 확인되지 않습니다 |\n\n## 대표가 알아둘 점\n\n운영 확인 보고가 있는 범위는 v2.9.198과 v2.9.199입니다. v2.9.201은 구현·테스트와 세린 PASS 기록이 있어도 배포 예정이므로 운영에서 이미 해결된 것으로 안내하지 않습니다.\n\n기술 기록은 docs/gemini-reports/_SOURCE-release-log.md의 해당 버전과 PR 기록 참조. 이 문서는 원본 릴리스 표를 쉽게 풀어 쓴 검토용 문서이며, 이번 작성에서 운영 기능을 다시 실행하지 않았습니다.\n\n작성: 도연(Codex). 2026-10-10 작성.\n"}],"catalog_version":5});
+globalThis.HaniGeminiReportCatalog=Object.freeze({"reports":[{"title":"데이터 허브 기반과 월간 카드 6개","release_version":"v2.9.164","review_status":"approved","file":"2026-10-04-v2.9.164-data-hub.md","id":"2026-10-04-v2.9.164-data-hub","date":"2026-10-04","previous_report_id":null,"body":"# HANI OS v2.9.164 개발노트\n\n## 이번 업데이트 한줄 요약\n월간 지표를 계산하는 데이터 허브 기반과 대시보드 카드 6개를 배포하고, 모바일 걸음 안내의 가독성을 개선했습니다.\n\n| 버전 | 배포일 | 현재 상태 |\n|---|---|---|\n| v2.9.164 | 2026-10-04 | 배포 완료 |\n\n## 왜 바꿨나요?\n이 기능을 처음 기획한 배경은 Release 기록에서 확인되지 않습니다. 이번에는 v2.9.163을 기준으로 공통 지표 계산과 원본에서 다시 만들 수 있는 별도 계산 결과 보관 공간을 마련하고, 대시보드 월간 카드 6개에 연결했습니다.\n\n## 내가 실제로 체감하는 변화\n| 항목 | 이번에 달라진 점 | 현재 확인 상태 |\n|---|---|---|\n| 모바일 가독성 | 걸음 수의 관측일·0보 안내가 생략되지 않도록 줄바꿈 조정 | 가상 데이터 390px 화면에서 확인; 실제 계정 추가 검증은 미실시 |\n| 대시보드 카드 6개 | 카드 선택 시 분석 제목 전환, 데이터 없음·목표 미설정 상태 표시 | 실제 운영 화면에서 확인 |\n\n## 내부적으로 무엇이 달라졌나요?\n| 진행 단계 | 한 일 | 결과 |\n|---|---|---|\n| 구현 | 공통 지표 계산, 별도 계산 결과 보관 공간, 대시보드 월간 카드 6개 연결 | 개발 완료 |\n| 검증 | 단위/컨트롤러 테스트 및 합성 시나리오 검증, 서버 게이트 확인 | 통과 |\n| 배포 | 승인된 실행 파일 묶음을 운영에 반영하고 표시 버전·실제 파일·기능 다시 확인 | 배포 완료 |\n\n## 데이터나 안전에 영향이 있나요?\n기존 원본 저장·Cloud 변경 함수와 데이터 구조는 이번 개발에서 바꾸지 않았습니다. 계산 결과는 원본과 분리해 보관하고, 원본 소유권이 맞지 않으면 사용을 차단합니다. 기록이 없는 미리보기 환경은 정상 로그인·기존 동기화로 초기 로딩했으며 강제 복원·덮어쓰기 버튼은 사용하지 않았습니다.\n\nLocal/Cloud 원본 일치와 코드 경계는 확인했습니다. 원본 전체를 직접 바이트 단위로 전후 비교한 검증과 실제 계정의 390px 추가 검증은 수행하지 않았습니다.\n\n## 아직 남은 것\n| 남은 항목 | 상태/제한 |\n|---|---|\n| 기존 표시 기능 | Life Market ticker·SRX는 이번 카드 전환 범위 밖. 카드와 같은 집계 기준이라고 보장하지 않음 |\n| 현재월 데이터 | 현재월은 데이터 없음 상태이며 과거 월 값으로 대체하지 않음 |\n| 추가 모바일 검증 | 실제 계정 390px 추가 검증은 수행하지 않음 (가상 검증만 수행) |\n| 후속 기능 | 목표 이력, 포트폴리오 다차원 데이터셋, Drive 연동, 별도 Data Hub 전체 페이지는 미구현 |\n| 후속 디자인 | 포트폴리오 밝은 테마의 대비 개선은 별도 후보이며 이번 배포에 포함되지 않음 |\n\n## 대표가 알아둘 점\n완료된 범위는 데이터 허브 기반과 월간 카드 6개, 모바일 걸음 안내 개선입니다. 전체 데이터 허브 페이지나 후속 포트폴리오 작업까지 완료된 것은 아닙니다. 후속 일정이나 비용은 원문에 기록되어 있지 않습니다.\n\n기술 기록은 2026-10-04-v2.9.164-data-hub.md 참조. 이 문서는 기술 기록을 쉽게 풀어 쓴 검토용 문서입니다.\n\n작성: Gemini 3.5 Flash-Lite. 원장 대조·누락 및 표현 보완: Codex. 2026-10-04 대표님 공개 배포 승인.\n"},{"title":"AURA와 배포센터 메뉴를 정돈하고, 포트폴리오의 글자 대비를 보완했으며, 자산 입력 기준(평균 매입가 선택","release_version":"v2.9.165~v2.9.169","review_status":"approved","file":"2026-10-04-v2.9.165-169-menus-aura-assets.md","id":"2026-10-04-v2.9.165-169-menus-aura-assets","date":"2026-10-04","previous_report_id":"2026-10-04-v2.9.164-data-hub","body":"# HANI OS v2.9.165~v2.9.169 개발노트\n\n## 이번 업데이트 한줄 요약\nAURA와 배포센터 메뉴를 정돈하고, 포트폴리오의 글자 대비를 보완했으며, 자산 입력 기준(평균 매입가 선택 입력·계좌 식별)을 정립하고 개발 보고서 메뉴를 신설했습니다.\n\n| 버전 | 배포일 | 내용 | 분야 | PR | 현재 상태 | 운영 확인 | 메모 |\n|---|---|---|---|---|---|---|---|\n| v2.9.165 | 2026-10-04 | AURA·배포 메뉴 묶기 | 화면·디자인 | #159 | 배포 완료 | 원본 반영만 확인 (운영 화면 확인 전) | |\n| v2.9.166 | 2026-10-04 | P1 안전 보완·포트폴리오 대비 | 보호·안전 | #161 | 배포 완료 | 운영 확인 보고 | Production 완료 기록(PR162) |\n| v2.9.167 | 2026-10-04 | AURA 캠페인 포스터 | 화면·디자인 | #164 | 배포 완료 | 원본 반영만 확인 (운영 화면 확인 전) | |\n| v2.9.168 | 2026-10-04 | 자산 입력 기준 정리(평균 매입가·계좌 식별) | 투자 | #165 | 배포 완료 | 운영 확인 보고 | Production 완료 기록(PR166) |\n| v2.9.169 | 2026-10-04 | 개발 보고서 별도 메뉴 | AI 팀·개발도구 | #168 | 배포 완료 | 원본 반영만 확인 (운영 화면 확인 전) | |\n\n## 왜 바꿨나요?\n기능이 늘어나면서 상위 메뉴가 지나치게 복잡해지는 문제를 해결하기 위해 AURA를 성민 오피스 하위로 옮기고 배포센터를 시스템 메뉴로 묶었습니다. 또한 포트폴리오의 밝은 카드 테마에서 전역 테마 글자색이 번져 텍스트가 잘 보이지 않던 명암 대비 문제를 해결했습니다.\n\n아울러 자산 입력 시 평균 매입가를 모를 때 손익이 왜곡되거나 다른 계좌와 섞이는 문제를 방지하기 위해 계좌별 식별과 선택적 매입가 입력 기준을 정립했습니다. 마지막으로 AI 팀의 활동과 개발 기록을 편하게 열람할 수 있도록 개발 보고서 메뉴를 별도로 신설했습니다. 이 외에 개별 세부 기획 배경은 Release 기록에서 확인되지 않습니다.\n\n## 내가 실제로 체감하는 변화\n| 항목 | 이번에 달라진 점 | 현재 확인 상태 |\n|---|---|---|\n| 메뉴 정돈 | AURA가 성민 오피스 하위 메뉴로 이동하고 배포센터가 업무/시스템 그룹으로 정돈됨 | GitHub Pages 원본 반영만 확인 (운영 화면 직접 조작 확인 전) |\n| 포트폴리오 가독성 | 밝은 카드 테마에서도 제목, 표, 막대 레이블 글자가 또렷하게 표시됨 (명암비 4.5:1 이상) | 실제 운영 화면에서 확인 |\n| AURA 포스터 | AURA 캠페인 포스터 화면 배치 | GitHub Pages 원본 반영만 확인 (운영 화면 직접 조작 확인 전) |\n| 자산 업데이트실 | 평균 매입가가 필수가 아닌 선택 사항으로 정리되고, 계좌별 보유 종목이 분리되어 손익 왜곡 방지 | 실제 운영 화면에서 확인 |\n| Gemini 보고서 메뉴 | AI 팀의 개발 보고서를 모아볼 수 있는 전용 메뉴 신설 | GitHub Pages 원본 반영만 확인 (운영 화면 직접 조작 확인 전) |\n\n## 내부적으로 무엇이 달라졌나요?\n| 진행 단계 | 한 일 | 결과 |\n|---|---|---|\n| 구현 | `hani-main.js` 및 `index.html` 메뉴 DOM 정리, 포트폴리오 로컬 글자색(local ink) 명시 및 라이트 스킴 고정, 자산 입력 계약(Asset Input Canonical Contract) 코드 정립, Gemini 보고서 메뉴 링크 연결 | 개발 완료 |\n| 검증 | 포트폴리오 색상 대비(WCAG AA 4.5:1) 자동 검증, 390px 모바일 가로 넘침 없음 확인, 자산 입력 브라우저 회귀 테스트(계좌 격리, 누락 종목 보존, 저장 실패 복구) 통과 | 통과 |\n| 배포 | PR #159, #161, #164, #165, #168 운영 병합 및 GitHub Pages 반영 | 배포 완료 (v2.9.166, v2.9.168 운영 확인 / v2.9.165, 167, 169 원본 반영만 확인) |\n\n## 데이터나 안전에 영향이 있나요?\n기존 원본 저장 키(`hani_os_life_v23`)의 구조 변경이나 Cloud schema 변경, Supabase 쓰기 로직 변경은 없었습니다. 자산 입력 기준 정리는 부분 업데이트(Partial Update) 시 이번 입력에 없는 종목을 임의 청산하지 않고 기존 보유 정보를 유지하도록 보호하며, 원가가 확인되지 않았을 때는 손익·수익률을 거짓으로 계산하지 않도록 안전성을 강화했습니다.\n\nv2.9.166과 v2.9.168은 실제 운영 환경에서 확인 보고되었으나, v2.9.165, v2.9.167, v2.9.169는 GitHub Pages 소스 반영까지만 확인되었고 실제 운영 브라우저 클릭 검증은 미실시 상태입니다.\n\n## 아직 남은 것\n| 남은 항목 | 상태/제한 |\n|---|---|\n| 미검증 메뉴 확인 | v2.9.165, v2.9.167, v2.9.169는 원본 반영만 확인된 상태이며 운영 화면 직접 클릭 검증 필요 |\n| 포트폴리오 심화 기능 | 다차원 데이터셋 및 시세 실시간 연동 등 후속 과제는 미포함 |\n| 완전 목록 모드 | 보유 종목 전체 리스트 입력 모드 및 누락 종목 정리 승인 절차는 후속 검토 과제로 남음 |\n\n## 대표가 알아둘 점\n메뉴 구조가 단정해지고 포트폴리오의 글자 가독성이 향상되었으며, 자산 입력 시 평균 매입가를 모를 때도 안전하게 입력할 수 있는 기반이 마련되었습니다. 다만 일부 화면 전용 패치(v2.9.165, 167, 169)는 코드 반영만 확인되고 운영 브라우저 확인이 아직 이루어지지 않았으므로 운영 화면에서 가볍게 확인해 주시면 좋습니다.\n\n기술 기록은 docs/development-history/2026-10-04-v2.9.165-aura-menu-status.md, 2026-10-04-p1-safety-portfolio.md, 2026-10-04-v2.9.168-asset-input-canonical-contract.md 참조. 이 문서는 기술 기록을 쉽게 풀어 쓴 검토용 문서입니다.\n\n작성: 세린(Gemini). 2026-10-10 작성.\n"},{"title":"포트폴리오 종목 지도와 캔들 차트 시각화, 국내 주식 매입 원가 연결, AI 개발·보고팀 화면 분리를 적용하","release_version":"v2.9.170~v2.9.178","review_status":"approved","file":"2026-10-05-v2.9.170-178-portfolio-goals.md","id":"2026-10-05-v2.9.170-178-portfolio-goals","date":"2026-10-05","previous_report_id":"2026-10-04-v2.9.165-169-menus-aura-assets","body":"# HANI OS v2.9.170~v2.9.178 개발노트\n\n## 이번 업데이트 한줄 요약\n포트폴리오 종목 지도와 캔들 차트 시각화, 국내 주식 매입 원가 연결, AI 개발·보고팀 화면 분리를 적용하고, 목표 관리의 핵심 기반인 목표 등록(Goal Registry)과 읽기 전용 Data Hub를 배포했습니다.\n\n| 버전 | 배포일 | 내용 | 분야 | PR | 현재 상태 | 운영 확인 | 메모 |\n|---|---|---|---|---|---|---|---|\n| v2.9.170 | 2026-10-05 | AURA 와이드 포스터·계절 사이드바 | 화면·디자인 | #170 | 배포 완료 | 원본 반영만 확인 (운영 화면 확인 전) | |\n| v2.9.171 | 2026-10-05 | 포트폴리오 종목 지도·캔들 차트 | 투자 | #172 | 배포 완료 | 원본 반영만 확인 (운영 화면 확인 전) | |\n| v2.9.172 | 2026-10-05 | 포트폴리오 캐시 갱신 | 투자 | #173 | 배포 완료 | 원본 반영만 확인 (운영 화면 확인 전) | |\n| v2.9.173 | 2026-10-05 | 국내 주식 매입 원가 연결 | 투자 | #174 | 배포 완료 | 원본 반영만 확인 (운영 화면 확인 전) | |\n| v2.9.174 | 2026-10-05 | AI 개발·보고팀 화면 분리 | AI 팀·개발도구 | #175 | 배포 완료 | 운영 확인 보고 | |\n| v2.9.175 | 2026-10-05 | 모바일 조작·대시보드 기간 안내 | 화면·디자인 | #176 | 배포 완료 | 원본 반영만 확인 (운영 화면 확인 전) | |\n| v2.9.177 | 2026-10-05 | 뉴스룸 가독성·주차 표시 | 뉴스·학습 | #178 | 배포 완료 | 원본 반영만 확인 (운영 화면 확인 전) | |\n| v2.9.178 | 2026-10-05 | 목표 등록(Goal Registry)과 읽기 전용 Data Hub | 목표·데이터 | #180 | 배포 완료 | 운영 확인 보고 | 운영 화면·최신 JS 확인 보고 |\n\n## 왜 바꿨나요?\n투자 포트폴리오를 한눈에 볼 수 있도록 종목 지도(트리맵)와 캔들 차트를 추가하고, 국내 주식 종목의 실제 매입 원가를 연동하여 자산 현황의 정밀도를 높였습니다. 또한 AI 팀의 규모가 커짐에 따라 개발팀과 보고팀의 화면을 분리하여 각 역할을 명확히 볼 수 있게 했습니다.\n\n가장 중요한 변화로, 성민 대표님의 다양한 목표(운동, 자산, 학습 등)를 안정적으로 등록하고 추적할 수 있도록 '목표 등록(Goal Registry)' 체계를 신설하고 이를 읽기 전용 Data Hub와 연동했습니다. 개별 화면의 세부 기획 배경 중 원자료에 없는 사항은 기록에서 확인되지 않습니다. (참고: v2.9.176은 배포 원자료에 기록되어 있지 않습니다.)\n\n## 내가 실제로 체감하는 변화\n| 항목 | 이번에 달라진 점 | 현재 확인 상태 |\n|---|---|---|\n| AURA 포스터·사이드바 | 와이드 포스터와 계절 테마가 적용된 사이드바 표시 | GitHub Pages 원본 반영만 확인 (운영 화면 직접 조작 확인 전) |\n| 포트폴리오 시각화 | 보유 종목 트리맵 지도와 캔들 차트를 통한 시세 분석 지원 | GitHub Pages 원본 반영만 확인 (운영 화면 직접 조작 확인 전) |\n| 자산 캐시 및 원가 | 포트폴리오 캐시 갱신 및 국내 주식 매입 원가 연결로 정확한 평가 제공 | GitHub Pages 원본 반영만 확인 (운영 화면 직접 조작 확인 전) |\n| AI 팀 화면 분리 | AI 개발팀과 보고팀이 별도 탭/화면으로 분리되어 탐색 용이 | 실제 운영 화면에서 확인 |\n| 모바일 대시보드 | 모바일 터치 조작 최적화 및 대시보드 기준 기간 안내 표시 | GitHub Pages 원본 반영만 확인 (운영 화면 직접 조작 확인 전) |\n| 뉴스룸 화면 | 뉴스 가독성 향상 및 주차(Weekly) 표시 안내 추가 | GitHub Pages 원본 반영만 확인 (운영 화면 직접 조작 확인 전) |\n| 목표 등록 및 Data Hub | 목표 등록(Goal Registry) 화면에서 신규 목표를 등록하고, Data Hub를 통해 읽기 전용으로 목표 현황 확인 가능 | 실제 운영 화면 및 최신 JS 로딩 확인 |\n\n## 내부적으로 무엇이 달라졌나요?\n| 진행 단계 | 한 일 | 결과 |\n|---|---|---|\n| 구현 | 차트 렌더러(트리맵, 캔들) 탑재, 국내 주식 원가 매핑 로직 추가, AI 개발/보고 화면 분리, 모바일 터치 이벤트 핸들러 보강, 목표 등록기(`goalRegistry`) 및 Data Hub 어댑터 구축 | 개발 완료 |\n| 검증 | 차트 데이터 바인딩 검증, 목표 등록 유효성 검사, One-Pass 사전 게이트 검증 및 단위 테스트 | 통과 |\n| 배포 | PR #170, #172, #173, #174, #175, #176, #178, #180 운영 반영 | 배포 완료 (v2.9.174, v2.9.178 운영 확인 / 나머지 6건 원본 반영만 확인) |\n\n## 데이터나 안전에 영향이 있나요?\n기존의 핵심 원본 데이터 키(`hani_os_life_v23`)와 Cloud DB 스키마는 변경되지 않았습니다. Data Hub는 읽기 전용으로 동작하여 원본 데이터 오염 위험이 없으며, 목표 등록(Goal Registry)은 Preview 확인 후 명시적 승인을 거쳐 저장되는 안전한 절차를 따릅니다.\n\nv2.9.174와 v2.9.178은 운영 환경에서 최신 JS 로딩과 동작이 정식으로 확인되었습니다. 반면 v2.9.170, 171, 172, 173, 175, 177은 GitHub Pages 원본 반영까지만 확인된 상태로, 운영 화면에서의 직접 검증은 후속 과제로 남아 있습니다.\n\n## 아직 남은 것\n| 남은 항목 | 상태/제한 |\n|---|---|\n| 다수 화면 운영 검증 | v2.9.170~173, 175, 177의 운영 브라우저 내 실제 렌더링 및 기능 검증 필요 |\n| 목표 지표 확장 | BMI, 체지방 등 구체적 신체 지표 목표는 후속 버전(v2.9.183 등)에서 순차 추가 예정 |\n| Data Hub 심화 계산 | 복합 목표 진행률 자동 계산 엔진의 완결은 후속 개발 예정 |\n\n## 대표가 알아둘 점\n목표를 체계적으로 관리할 수 있는 첫 단추인 '목표 등록(Goal Registry)'과 'Data Hub' 연동이 운영에 배포되어 작동하기 시작했습니다. 포트폴리오 차트와 사이드바 등 시각 요소도 풍부해졌으나, 일부 항목은 코드 반영만 확인된 상태이므로 실사용 중 특이사항이 발견되면 공유해 주시기 바랍니다.\n\n기술 기록은 docs/development-history/2026-10-05-all-tabs-status.md 및 관련 PR 기록 참조. 이 문서는 기술 기록을 쉽게 풀어 쓴 검토용 문서입니다.\n\n작성: 세린(Gemini). 2026-10-10 작성.\n"},{"title":"BMI와 체지방률 목표 등록을 추가하고, 운영 화면의 버전·최신 JS·기능 동작을 확인했습니다.","release_version":"v2.9.183","review_status":"approved","file":"2026-10-05-v2.9.183-bmi-goals.md","id":"2026-10-05-v2.9.183-bmi-goals","date":"2026-10-05","previous_report_id":"2026-10-05-v2.9.170-178-portfolio-goals","body":"# HANI OS v2.9.183 개발노트\n\n## 이번 업데이트 한줄 요약\n\nBMI와 체지방률 목표 등록을 추가하고, 운영 화면의 버전·최신 JS·기능 동작을 확인했습니다.\n\n| 버전 | 배포일 | 내용 | 분야 | PR | 현재 상태 | 운영 확인 | 메모 |\n|---|---|---|---|---|---|---|---|\n| v2.9.183 | 2026-10-05 | BMI·체지방률 목표 등록 | 목표·데이터 | #198 | 배포 완료 | 운영 확인 보고 | 운영 v2.9.183 표시·최신 JS·기능 동작 확인 |\n\n## 왜 바꿨나요?\n\nBMI·체지방률을 목표 등록에 포함했습니다. 처음 기획한 배경과 기존 목표 등록에서 불편했던 세부 내용은 기록에서 확인되지 않습니다.\n\n## 내가 실제로 체감하는 변화\n\n| 항목 | 이번에 달라진 점 | 현재 확인 상태 |\n|---|---|---|\n| 신체 지표 목표 | BMI·체지방률 목표 등록 추가 | 운영 확인 보고; 세부 입력 화면과 목표값은 기록에서 확인되지 않습니다 |\n\n## 내부적으로 무엇이 달라졌나요?\n\n| 진행 단계 | 한 일 | 결과 |\n|---|---|---|\n| 구현 | BMI·체지방률 목표 등록 | PR #198 기록 |\n| 검증 | 운영 v2.9.183 표시·최신 JS·기능 동작 확인 | 운영 확인 보고; 테스트 명령과 건수는 기록에서 확인되지 않습니다 |\n| 배포 | v2.9.183 반영 | 원본 표에 운영 확인 보고 |\n\n## 데이터나 안전에 영향이 있나요?\n\n목표 등록이 추가된 기록은 있습니다. 기존 저장 키·데이터 구조·Cloud 쓰기·schema 변경 여부와 데이터 보존 검사의 상세 결과는 기록에서 확인되지 않습니다.\n\n## 아직 남은 것\n\n| 남은 항목 | 상태/제한 |\n|---|---|\n| 추가 검증 범위 | 입력 오류·다른 기기 동기화 등 세부 검증은 기록에서 확인되지 않습니다 |\n| 후속 계획 | 추가 지표와 개발 일정은 기록에서 확인되지 않습니다 |\n\n## 대표가 알아둘 점\n\n이번 기록에서 확인되는 완료 범위는 BMI·체지방률 목표 등록과 운영 버전·최신 JS·기능 확인입니다. 모든 신체 지표나 목표 관리 전체가 완성되었다는 근거는 기록에서 확인되지 않습니다.\n\n기술 기록은 docs/gemini-reports/_SOURCE-release-log.md의 해당 버전과 PR 기록 참조. 이 문서는 원본 릴리스 표를 쉽게 풀어 쓴 검토용 문서이며, 이번 작성에서 운영 기능을 다시 실행하지 않았습니다.\n\n작성: 도연(Codex). 2026-10-10 작성.\n"},{"title":"배포 열차 1~6호로 목표 관리·실제 뉴스 출제·일정 해석 미리보기와 대시보드 입력 기준을 반영했습니다.","release_version":"v2.9.185~v2.9.190","review_status":"approved","file":"2026-10-06-trains-1-6.md","id":"2026-10-06-trains-1-6","date":"2026-10-06","previous_report_id":"2026-10-05-v2.9.183-bmi-goals","body":"# HANI OS v2.9.185~v2.9.190 개발노트\n\n## 이번 업데이트 한줄 요약\n\n배포 열차 1~6호로 목표 관리·실제 뉴스 출제·일정 해석 미리보기와 대시보드 입력 기준을 반영했습니다.\n\n| 버전 | 배포일 | 내용 | 분야 | PR | 현재 상태 | 운영 확인 | 메모 |\n|---|---|---|---|---|---|---|---|\n| v2.9.185 | 2026-10-06 | 배포 열차 1호 · 설정 화면 목표 관리·기록 보관함 복구 | 목표·데이터 | #206 | 배포 완료 | 운영 확인 보고 | 배포센터 정식 경로(HINA) 첫 배포. v2.9.180 누락 회귀 수정 |\n| v2.9.186 | 2026-10-06 | 배포 열차 2호 · 공부 실제 뉴스 출제 | 뉴스·학습 | #207 | 배포 완료 | 운영 확인 보고 | HINA PASS · 운영 JS 일치 |\n| v2.9.187 | 2026-10-06 | 배포 열차 3호 · YUNA 일정 입력 해석(미리보기) | AI 팀·개발도구 | #209 | 배포 완료 | 운영 확인 보고 | '송년회 일정' → 일정/12-12~12-13/종일 표시, 저장 0 확인 |\n| v2.9.188 | 2026-10-06 | 배포 열차 4호 · 목표 한 건 삭제 (미리보기·승인) | 목표·데이터 | #210 | 배포 완료 | 운영 확인 보고 | 삭제 Preview→취소 확인 |\n| v2.9.189 | 2026-10-06 | 배포 열차 5호 · 분야별 목표 분기·연간 진행 조회 | 목표·데이터 | #214 | 배포 완료 | 운영 확인 보고 | BMI 목표 25 표시 확인 |\n| v2.9.190 | 2026-10-06 | 배포 열차 6호 · 안정화 핫픽스 + 대시보드 월 1회 입력 기준 | 목표·데이터 | #215 | 배포 완료 | 운영 확인 보고 | 대시보드 기준월 표시 확인 |\n\n## 왜 바꿨나요?\n\n열차 1호는 v2.9.180에서 누락된 기능의 회귀를 수정했습니다. 열차 6호에는 안정화 핫픽스와 대시보드 월 1회 입력 기준이 포함되었습니다. 다른 항목의 구체적인 기획 배경은 기록에서 확인되지 않습니다.\n\n## 내가 실제로 체감하는 변화\n\n| 항목 | 이번에 달라진 점 | 현재 확인 상태 |\n|---|---|---|\n| 설정과 기록 보관함 | 설정 화면 목표 관리·기록 보관함 복구 | v2.9.185 운영 확인 보고 |\n| 공부 | 실제 뉴스 출제 | v2.9.186 HINA PASS·운영 JS 일치 |\n| YUNA 일정 해석 | '송년회 일정'을 일정/12-12~12-13/종일로 미리보기 표시 | v2.9.187 운영 확인 보고; 저장 0 확인 |\n| 목표 삭제 | 목표 한 건 삭제의 미리보기·승인 기능 | v2.9.188 삭제 미리보기 후 취소 확인; 실제 삭제 성공은 기록에서 확인되지 않습니다 |\n| 목표 진행 조회 | 분야별 목표의 분기·연간 진행 조회 | v2.9.189 BMI 목표 25 표시 확인 |\n| 대시보드 | 월 1회 입력 기준과 기준월 표시 | v2.9.190 기준월 표시 확인 |\n\n## 내부적으로 무엇이 달라졌나요?\n\n| 진행 단계 | 한 일 | 결과 |\n|---|---|---|\n| 구현 | 열차 1~6호에 목표 관리·뉴스 출제·일정 해석·삭제 미리보기·진행 조회·안정화 반영 | PR #206, #207, #209, #210, #214, #215 기록 |\n| 검증 | 뉴스 출제 HINA와 운영 JS 일치, 일정 미리보기 저장 0, 삭제 취소, 목표값·기준월 표시 | 각 항목의 원본 표 메모에서 확인; 전체 테스트 명령과 건수는 기록에서 확인되지 않습니다 |\n| 배포 | 열차 1호는 배포센터 정식 경로(HINA)의 첫 배포 | v2.9.185~190 모두 운영 확인 보고 |\n\n## 데이터나 안전에 영향이 있나요?\n\nYUNA 일정 해석은 미리보기에서 저장 0이 확인되었습니다. 목표 삭제는 미리보기 후 취소까지만 확인되어 실제 삭제 성공이나 다른 목표 보존까지 검증되었다고 볼 수 없습니다. 기존 저장 키·Cloud schema 변경 여부와 전체 안전 검사의 결과는 기록에서 확인되지 않습니다.\n\n## 아직 남은 것\n\n| 남은 항목 | 상태/제한 |\n|---|---|\n| 일정 저장 | 미리보기 이후 실제 저장 검증은 기록에서 확인되지 않습니다 |\n| 실제 목표 삭제 | 삭제 미리보기·취소 외 실행 결과는 기록에서 확인되지 않습니다 |\n| 전체 회귀·기기별 검증 | 이번 원본 표에는 상세 결과가 없어 기록에서 확인되지 않습니다 |\n\n## 대표가 알아둘 점\n\n각 열차의 운영 확인 보고가 있지만 확인한 동작은 서로 다릅니다. 일정 해석 미리보기를 저장 완료로, 삭제 취소를 실제 삭제 완료로 읽지 않도록 구분해야 합니다.\n\n기술 기록은 docs/gemini-reports/_SOURCE-release-log.md의 해당 버전과 PR 기록 참조. 이 문서는 원본 릴리스 표를 쉽게 풀어 쓴 검토용 문서이며, 이번 작성에서 운영 기능을 다시 실행하지 않았습니다.\n\n작성: 도연(Codex). 2026-10-10 작성.\n"},{"title":"표지·포스터 분리의 호환 읽기와 이중 보관 버튼을 반영하고, B단계 실행 후 이미지 보관을 확인했습니다.","release_version":"v2.9.195~v2.9.197","review_status":"approved","file":"2026-10-10-media-separation.md","id":"2026-10-10-media-separation","date":"2026-10-10","previous_report_id":"2026-10-06-trains-1-6","body":"# HANI OS v2.9.195~v2.9.197 개발노트\n\n## 이번 업데이트 한줄 요약\n\n표지·포스터 분리의 호환 읽기와 이중 보관 버튼을 반영하고, B단계 실행 후 이미지 보관을 확인했습니다.\n\n| 버전 | 배포일 | 내용 | 분야 | PR | 현재 상태 | 운영 확인 | 메모 |\n|---|---|---|---|---|---|---|---|\n| v2.9.195 | 2026-10-10 | 표지·포스터 분리 A단계 · 호환 읽기 (데이터 변화 없음) | 보호·안전 | #230 | 배포 완료 | 운영 확인 보고 | 이미지 36장 그대로, 설정 미리보기 '1.83MB → 약 327KB' |\n| v2.9.196 | 2026-10-10 | 표지·포스터 분리 B단계 · 이중 보관 버튼 | 보호·안전 | #231 | 배포 완료 | 운영 확인 보고 | 버튼 비활성 문제는 v2.9.197로 수정 |\n| v2.9.197 | 2026-10-10 | B단계 버튼 Cloud 확인 대기 보정 + 대표님 B단계 실행 | 보호·안전 | #232 | 배포 완료 | 운영 확인 보고 | 36장 보관 확인·충돌 0, Cloud 보관함 33행 |\n\n## 왜 바꿨나요?\n\n표지·포스터를 분리하는 A·B단계가 진행되었습니다. v2.9.196의 버튼 비활성 문제는 v2.9.197에서 Cloud 확인 대기를 보정해 수정했습니다. 분리를 처음 기획한 배경은 기록에서 확인되지 않습니다.\n\n## 내가 실제로 체감하는 변화\n\n| 항목 | 이번에 달라진 점 | 현재 확인 상태 |\n|---|---|---|\n| A단계 호환 읽기 | 데이터 변화 없이 호환 읽기 반영 | v2.9.195 이미지 36장 그대로 확인 |\n| 설정 미리보기 | '1.83MB → 약 327KB' 표시 | 설정 미리보기 기록; 실제 축소 완료를 뜻하는지는 기록에서 확인되지 않습니다 |\n| B단계 이중 보관 | 이중 보관 버튼 추가 후 Cloud 확인 대기 보정 | v2.9.196 버튼 비활성 문제를 v2.9.197에서 수정 |\n| 대표님 B단계 실행 | 이미지 보관 결과 확인 | v2.9.197 36장 보관·충돌 0·Cloud 보관함 33행 확인 |\n\n## 내부적으로 무엇이 달라졌나요?\n\n| 진행 단계 | 한 일 | 결과 |\n|---|---|---|\n| 구현 | A단계 호환 읽기, B단계 이중 보관 버튼, Cloud 확인 대기 보정 | PR #230, #231, #232 기록 |\n| 검증 | A단계 이미지 유지와 설정 미리보기, 대표님 B단계 실행 후 보관·충돌·Cloud 행 확인 | 이미지 36장과 Cloud 33행의 차이 설명은 기록에서 확인되지 않습니다 |\n| 배포 | v2.9.195~197 반영 | 각 버전 운영 확인 보고 |\n\n## 데이터나 안전에 영향이 있나요?\n\nA단계는 원본 표에 '데이터 변화 없음'으로 기록되어 있고 이미지 36장이 그대로 확인되었습니다. B단계는 이중 보관이며 대표님 실행 후 36장 보관·충돌 0·Cloud 보관함 33행이 확인되었습니다. 이 결과만으로 기존 이미지 삭제나 C단계 완료를 판단하지 않습니다. 저장 구조·schema·복구 검사의 세부 내용은 기록에서 확인되지 않습니다.\n\n## 아직 남은 것\n\n| 남은 항목 | 상태/제한 |\n|---|---|\n| C단계 | 이번 보고서 범위에는 실행 완료 기록이 없습니다. 후속 버전의 C단계 버튼 기록과 구분 필요 |\n| 이미지 수와 Cloud 행 수 | 36장과 33행의 차이에 대한 설명은 기록에서 확인되지 않습니다 |\n| 실제 용량·복구 검증 | 미리보기 수치 외 실제 축소 결과와 복구 성공은 기록에서 확인되지 않습니다 |\n\n## 대표가 알아둘 점\n\n설정에 나온 용량은 미리보기 값입니다. 확인된 실행은 B단계 이중 보관까지이며, C단계로 원본을 정리하거나 실제 용량 축소까지 완료했다는 근거는 기록에서 확인되지 않습니다.\n\n기술 기록은 docs/gemini-reports/_SOURCE-release-log.md의 해당 버전과 PR 기록 참조. 이 문서는 원본 릴리스 표를 쉽게 풀어 쓴 검토용 문서이며, 이번 작성에서 운영 기능을 다시 실행하지 않았습니다.\n\n작성: 도연(Codex). 2026-10-10 작성.\n"},{"title":"배포 열차 7~10호로 동기화·보고서·조직 화면과 생활 도우미를 반영하고 다이어트 페이스 계산을 보정했습니다","release_version":"v2.9.191~v2.9.194","review_status":"approved","file":"2026-10-10-trains-7-10.md","id":"2026-10-10-trains-7-10","date":"2026-10-10","previous_report_id":"2026-10-10-media-separation","body":"# HANI OS v2.9.191~v2.9.194 개발노트\n\n## 이번 업데이트 한줄 요약\n\n배포 열차 7~10호로 동기화·보고서·조직 화면과 생활 도우미를 반영하고 다이어트 페이스 계산을 보정했습니다.\n\n| 버전 | 배포일 | 내용 | 분야 | PR | 현재 상태 | 운영 확인 | 메모 |\n|---|---|---|---|---|---|---|---|\n| v2.9.191 | 2026-10-10 | 배포 열차 7호 · 탑승 7건(아카이브·Cloud 전송량 절감·동기화 안정화·보고서·시청/예산·화면 복원) | 목표·데이터 | #221 | 배포 완료 | 운영 확인 보고 | Supabase 전송량 차단 해제 후 출발. 메뉴 이동 시 메타만 조회(0KB) 확인 |\n| v2.9.192 | 2026-10-10 | 배포 열차 8호 · 디자인 정렬 + 조직도·M9 앨범·썸네일·ETF 라벨·AI 주간 예산·컨퍼런스 룸 | 화면·디자인 | #224 | 배포 완료 | 운영 확인 보고 | 새 화면 4개 운영 열람·이미지 깨짐 0 |\n| v2.9.193 | 2026-10-10 | 배포 열차 9호 · 먼저 챙겨 주는 HANI (아이폰 홈화면 안내·월말 정산 도우미·다이어트 페이스메이커·분기 목표 킥오프·Cloud 전송량) | 목표·데이터 | #225 | 배포 완료 | 운영 확인 보고 | 도연 구현·세린 검수 PASS |\n| v2.9.194 | 2026-10-10 | 배포 열차 10호 · 다이어트 페이스메이커 정확도 수정 | 목표·데이터 | #226 | 배포 완료 | 운영 확인 보고 | 2일 간격 기록 과장 → 7일 이상 간격일 때만 계산 |\n\n## 왜 바꿨나요?\n\n열차 7호는 Supabase 전송량 차단이 해제된 뒤 출발했습니다. 열차 10호는 2일 간격의 기록으로 다이어트 페이스가 과장되는 문제를 고치기 위해 7일 이상 간격일 때만 계산하도록 바꿨습니다. 다른 기능의 구체적인 기획 배경은 기록에서 확인되지 않습니다.\n\n## 내가 실제로 체감하는 변화\n\n| 항목 | 이번에 달라진 점 | 현재 확인 상태 |\n|---|---|---|\n| 아카이브·동기화·보고서 | 아카이브·Cloud 전송량 절감·동기화 안정화·보고서·시청/예산·화면 복원을 포함한 7건 반영 | v2.9.191 운영 확인 보고; 메뉴 이동 시 메타만 조회(0KB) 확인 |\n| 조직과 디자인 | 디자인 정렬·조직도·M9 앨범·썸네일·ETF 라벨·AI 주간 예산·컨퍼런스 룸 반영 | v2.9.192 새 화면 4개 운영 열람·이미지 깨짐 0 |\n| 먼저 챙겨 주는 HANI | 아이폰 홈화면 안내·월말 정산 도우미·다이어트 페이스메이커·분기 목표 킥오프·Cloud 전송량 관련 변경 | v2.9.193 운영 확인 보고; 도연 구현·세린 검수 PASS |\n| 다이어트 페이스 | 7일 이상 간격의 기록일 때만 계산 | v2.9.194 운영 확인 보고; 2일 간격 기록 과장 보정 |\n\n## 내부적으로 무엇이 달라졌나요?\n\n| 진행 단계 | 한 일 | 결과 |\n|---|---|---|\n| 구현 | 열차 7~10호에 동기화·보고서·화면·생활 도우미·페이스 계산 변경 반영 | PR #221, #224, #225, #226 기록 |\n| 검증 | 메뉴 이동 시 메타 조회, 새 화면 열람과 이미지 상태, 도연 구현·세린 검수 결과 기록 | 원본 표의 확인 범위; 상세 테스트 명령은 기록에서 확인되지 않습니다 |\n| 배포 | 전송량 차단 해제 후 열차 7호 출발, 후속 열차 8~10호 반영 | v2.9.191~194 모두 운영 확인 보고 |\n\n## 데이터나 안전에 영향이 있나요?\n\nCloud 전송량 절감과 동기화 안정화가 포함되어 있습니다. 메뉴 이동 시 메타만 조회한 결과(0KB)를 전체 Cloud 사용량이 없다는 뜻으로 해석하지 않습니다. 기존 저장 키·Cloud schema 변경 여부, 충돌 처리와 복원 안전 검사의 상세 결과는 기록에서 확인되지 않습니다.\n\n## 아직 남은 것\n\n| 남은 항목 | 상태/제한 |\n|---|---|\n| 동기화 전체 안정성 | 메뉴 이동 시 조회 외 기기별·실패 상황 검증은 기록에서 확인되지 않습니다 |\n| 새 화면별 세부 결과 | 열람한 새 화면 4개의 개별 목록과 모든 조작 결과는 기록에서 확인되지 않습니다 |\n| 페이스 계산 상세 검증 | 7일 이상 간격 기준 외 계산식·경계 테스트 결과는 기록에서 확인되지 않습니다 |\n\n## 대표가 알아둘 점\n\n운영 확인은 원본 표에 보고된 범위입니다. 이미지 깨짐 0과 메타 조회 0KB는 해당 확인 상황의 결과이며, 모든 화면·Cloud 경로의 결과를 뜻하지 않습니다.\n\n기술 기록은 docs/gemini-reports/_SOURCE-release-log.md의 해당 버전과 PR 기록 참조. 이 문서는 원본 릴리스 표를 쉽게 풀어 쓴 검토용 문서이며, 이번 작성에서 운영 기능을 다시 실행하지 않았습니다.\n\n작성: 도연(Codex). 2026-10-10 작성.\n"},{"title":"Drive 자동 백업·하니 라운지과 메뉴 정리를 반영했으며, C단계 버튼의 추가 보정은 배포 예정입니다.","release_version":"v2.9.198~v2.9.201","review_status":"approved","file":"2026-10-10-v2.9.198-200-drive-board-menus.md","id":"2026-10-10-v2.9.198-200-drive-board-menus","date":"2026-10-10","previous_report_id":"2026-10-10-trains-7-10","body":"# HANI OS v2.9.198~v2.9.201 개발노트\n\n## 이번 업데이트 한줄 요약\n\nDrive 자동 백업·하니 라운지과 메뉴 정리를 반영했으며, C단계 버튼의 추가 보정은 배포 예정입니다.\n\n| 버전 | 배포일 | 내용 | 분야 | PR | 현재 상태 | 운영 확인 | 메모 |\n|---|---|---|---|---|---|---|---|\n| v2.9.198 | 2026-10-10 | Google Drive 자동 백업 · 표지 C단계 버튼 · 충돌 선택 화면 · 하니 라운지 1단계 | 보호·안전 | #235 | 배포 완료 | 운영 확인 보고 | 테스트 39개 PASS, Drive 첫 백업 확인 |\n| v2.9.199 | 2026-10-10 | 메뉴 정리(HANI GROUP·개발·운영) · 페이지 담당 캐릭터 한마디 · 배너 폭 수정 · C단계 버튼 보정 | 화면·디자인 | #237 | 배포 완료 | 운영 확인 보고 | 8개 메뉴 그룹, 다이어트=나은·독서=하루·일기=민지 |\n| v2.9.201 | 2026-10-10 | C단계 버튼이 항상 반응하고 안 될 때 이유를 알려줌 | 보호·안전 | #239 | 배포 예정 | 운영 화면 확인 전 | 도연(주력 계정) 구현·테스트, 세린 PASS |\n\n## 왜 바꿨나요?\n\nv2.9.199에서 C단계 버튼을 보정했고, v2.9.201은 버튼이 항상 반응하며 실행할 수 없을 때 이유를 알려주도록 준비되었습니다. Drive 자동 백업·하니 라운지·메뉴 정리의 세부 기획 배경은 기록에서 확인되지 않습니다.\n\n## 내가 실제로 체감하는 변화\n\n| 항목 | 이번에 달라진 점 | 현재 확인 상태 |\n|---|---|---|\n| Drive 백업 | Google Drive 자동 백업 반영 | v2.9.198 Drive 첫 백업 확인; 지속 자동 실행과 복원 검증은 기록에서 확인되지 않습니다 |\n| 표지 C단계·충돌 선택 | C단계 버튼과 충돌 선택 화면 반영 | v2.9.198 운영 확인 보고; 실제 C단계 완료는 기록에서 확인되지 않습니다 |\n| 하니 라운지 | 하니 라운지 1단계 반영 | v2.9.198 운영 확인 보고; 세부 기능은 기록에서 확인되지 않습니다 |\n| 메뉴와 배너 | HANI GROUP·개발·운영 메뉴 정리와 배너 폭 수정 | v2.9.199 운영 확인 보고; 8개 메뉴 그룹 |\n| 페이지 담당 한마디 | 다이어트=나은·독서=하루·일기=민지 | v2.9.199 운영 확인 보고 |\n| C단계 버튼 추가 보정 | 버튼이 항상 반응하고 안 될 때 이유 안내 | v2.9.201 배포 예정; 운영 화면 확인 전 |\n\n## 내부적으로 무엇이 달라졌나요?\n\n| 진행 단계 | 한 일 | 결과 |\n|---|---|---|\n| 구현 | Drive 자동 백업·C단계 버튼·충돌 선택·게시판 1단계·메뉴·캐릭터 한마디·배너 폭 반영 | PR #235, #237 기록 |\n| 검증 | v2.9.198 테스트 39개 PASS·Drive 첫 백업 확인; v2.9.201 도연(주력 계정) 구현·테스트·세린 PASS | v2.9.201 테스트 명령과 건수는 기록에서 확인되지 않습니다 |\n| 배포 | v2.9.198·199 운영 확인 보고, v2.9.201 PR #239 배포 예정 | v2.9.201 운영 화면 확인 전 |\n\n## 데이터나 안전에 영향이 있나요?\n\nDrive 첫 백업은 확인되었지만 그 결과만으로 복원 성공이나 지속적인 자동 백업을 보장하지 않습니다. C단계 버튼과 충돌 선택 화면의 반영 기록은 있으나 실제 C단계 실행 완료·원본 제거 여부·Cloud schema 변경 여부는 기록에서 확인되지 않습니다. v2.9.201의 검수 PASS는 운영 배포 확인과 구분합니다.\n\n## 아직 남은 것\n\n| 남은 항목 | 상태/제한 |\n|---|---|\n| v2.9.201 운영 반영 | 배포 예정. 운영 버전·최신 JS·버튼 동작 확인 전 |\n| C단계 실행 결과 | 버튼 추가·보정 외 실제 실행 완료는 기록에서 확인되지 않습니다 |\n| Drive 지속 백업·복원 | 첫 백업 외 자동 실행 지속성과 복원 성공은 기록에서 확인되지 않습니다 |\n| 게시판 후속 단계 | 1단계 이후 범위·일정은 기록에서 확인되지 않습니다 |\n\n## 대표가 알아둘 점\n\n운영 확인 보고가 있는 범위는 v2.9.198과 v2.9.199입니다. v2.9.201은 구현·테스트와 세린 PASS 기록이 있어도 배포 예정이므로 운영에서 이미 해결된 것으로 안내하지 않습니다.\n\n기술 기록은 docs/gemini-reports/_SOURCE-release-log.md의 해당 버전과 PR 기록 참조. 이 문서는 원본 릴리스 표를 쉽게 풀어 쓴 검토용 문서이며, 이번 작성에서 운영 기능을 다시 실행하지 않았습니다.\n\n작성: 도연(Codex). 2026-10-10 작성.\n"}],"catalog_version":5});
 /* Read-only Gemini report library. No model, storage or Cloud calls. */
 (function (global) {
   'use strict';
