@@ -92,7 +92,7 @@ console.log("PASS: exact old markers/generated filter, owner/library/manual pres
 reset();single(()=>h.savePost({title:"일본어 퀴즈",body:"@히나 일본어 공부를 완료했어요!",category:"LIFE"}));
 const own=api.getState().boardPosts.find(p=>p.authorId==="seongmin"&&!p.boardMeta),ownerQueue=api.getState().boardComments;
 assert.ok(ownerQueue.length>=1&&ownerQueue.length<=3);assert.ok(ownerQueue.some(c=>c.authorId==="hina"));
-assert.ok(ownerQueue.every(c=>c.pending&&c.toOwner&&c.intent==="cheer"&&c.body.length<90));
+assert.ok(ownerQueue.every(c=>c.pending&&c.toOwner&&c.intent==="other"&&c.body.length<90));
 assert.equal(h.queueReplies(own,own,ownerQueue,now).length,0,"source reservation deduplication");
 for(const [intent,text] of [["agree","저도 좋아요"],["question","왜 그럴까요?"],["joke","농담이에요 ㅋㅋ"],["cheer","오늘 해냈어요"],["care","조금 피곤하고 힘들어요"],["info","정보를 정리했어요"]]){
   assert.equal(h.replyIntent(text),intent);

@@ -1,3 +1,11 @@
+# 2026-10-11 · Investment Committee V1b (도연/Codex)
+
+`hani/investment-committee-v1a`, V1a HEAD/base `d3999b4183bc23e6555557529a3b4d20f451badc`, 원격 main 조회 `b93925f` 일치. 월간 메모리 초안·확정 deep snapshot·명시 수정본 append·실카드 테마/역할·통합 Rating History·GPT 이어가기·KST 표시 구현. 승인 3배열과 기존 commit/save만 사용, v2.9.202 유지. Node 월간8+Research14·시장12·Cloud40·Portfolio·기존 save/실패복원·보호원문21/mixed EOL PASS. **Playwright browser spawn EPERM으로 desktop/390 Monthly 화면·스크린샷·console 0 미검증. V1b 미커밋·미push·PR/main/배포 없음.** Notion 기록 추가는 자동 승인 검토 approval policy never 거절로 갱신 대기. 다음 브라우저 환경 UI 검사. [V1b 인수인계](handoffs/2026-10-11-investment-committee-v1a.md#v1b--구현-및-검증-인수인계-spec-27). 아래 과거/타 담당 기록 보존.
+
+# 2026-10-11 · Investment Committee V1a (도연/Codex)
+
+`hani/investment-committee-v1a`, base/HEAD `b93925fe75f5e746a6101ed492e950516746fadc` (조회 main 일치), v2.9.202 유지. 대표님이 승인한 3개 state 배열과 기존 commit/save 경로로 종목 Research·추적 판단 변경 이력·GPT 복사/붙여넣기/검토/선택 반영 구현. 월간 위원회는 저장 없는 V1b 안내. Research Node14, 기존 Cloud-first40·시장12·Portfolio completeness·실제 save/실패복원·기준선 owner21 원문/줄별 EOL 검사 PASS. **Playwright browser spawn EPERM으로 실화면·390 스크린샷·console 0은 미검증. 미커밋·미push·PR/배포 없음.** Notion 읽기는 성공했으나 append는 자동 승인 검토의 approval policy never 거절로 미반영. 다음은 브라우저 환경에서 작성한 UI 검사 실행. [인수인계](handoffs/2026-10-11-investment-committee-v1a.md). 다른 담당 기록은 아래 보존.
+
 # 2026-10-11 · 사이드바·입장 화면 UTF-8 후속 (도연/Codex)
 
 `hani/navlogin-20261011`, base `7d77f23`의 기존 미커밋 작업을 보존해 오피스 5메뉴·회사 소개 4탭·설정 사내 규칙 탭·테마 스튜디오·입장 화면 명칭을 보완했습니다. navlogin35/cloud-first40 및 관련 Node 회귀·보호 원문 비교 통과. **브라우저와 Git subprocess EPERM으로 safety/UI·보호 게이트 통합 검증은 차단, 미커밋·미push·미배포 상태입니다.** 표시/캐시 v2.9.201 유지, 신규 runtime 파일 없음. Notion append는 자동 승인 검토의 approval policy never 거절로 갱신 대기. [최신 인수인계](handoffs/2026-10-11-navlogin.md). 다음은 검증 가능한 환경의 브라우저/통합 검사이며, 배포 열차 완료로 보지 않습니다. 아래 다른 담당 기록은 보존합니다.

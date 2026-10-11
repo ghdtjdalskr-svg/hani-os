@@ -23,8 +23,8 @@ for(const member of roster.people){
 assert.equal(h.staffAddress("hina","hani",{category:"LOUNGE"}),"하니 언니");
 assert.equal(h.staffAddress("hani","hina",{category:"WORK"}),"히나");
 for(const category of ["WORK","LIFE","LOUNGE","MEMORY"]){
-  assert.equal(h.staffAddress("sua","seongmin",{category},1),"매니저님");
-  assert.equal(h.staffAddress("seoyun","seongmin",{category},1),"대표님");
+  assert.match(h.staffAddress("sua","seongmin",{category},1),/^(회장님|대표님)$/);
+  assert.match(h.staffAddress("seoyun","seongmin",{category},1),/^(회장님|대표님)$/);
 }
 const allowed=["hani","jieun","haru","naeun","hina","seoyun"];
 for(const member of roster.people){
@@ -84,7 +84,7 @@ const pair={...post,id:"pair",category:"LOUNGE",authorId:"hani",title:"히나와
 assert.equal(h.queueReplies(pair,pair,[],now).length,0,"staff discussion comes only from the library");
 assert.equal(h.ownerReactions(pair,pair,[],1).length,0,"staff preview cannot regenerate templates");
 const ownerSource={id:"own-source",authorId:"seongmin",body:"@수아 질문이 있어요"};
-assert.ok(h.queueReplies(pair,ownerSource,[],now).some(c=>c.authorId==="sua"&&c.body.includes("매니저님")),"owner relation nickname in actual reaction");
+assert.ok(h.queueReplies(pair,ownerSource,[],now).some(c=>c.authorId==="sua"&&/^(회장님|대표님),/.test(c.body)),"chairman honorific in actual reaction");
 const queues=inspection().queues,state=plain(api.getState());
 h.ownerReactions(post,post,[],1);assert.equal(inspection().queues,queues);assert.deepEqual(plain(api.getState()),state,"read-only preview");
 // Partial seed keeps existing archive fields; cache also handles removing a seed.

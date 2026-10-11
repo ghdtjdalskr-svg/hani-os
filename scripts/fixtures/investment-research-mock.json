@@ -1,0 +1,11 @@
+{
+  "note": "Synthetic Preview/test fixture only. Never loaded by production scripts.",
+  "cards": [
+    {"name":"삼성전자우","ticker":"005935","market":"KR","currency":"KRW","instrumentId":"mock-samsung-pref","status":"OWNED","rating":"BUY","fairValueLow":50000,"fairValue":65000,"fairValueHigh":80000,"manualPrice":{"value":55000,"currency":"KRW","asOf":"2026-10-10"},"thesis":["반도체 경쟁력 회복 점검","현금 흐름과 배당 가치","우선주 할인율 관찰"],"action":"HOLD","changeReason":"Preview 가정"},
+    {"name":"LG전자우","ticker":"066575","market":"KR","currency":"KRW","status":"OWNED","rating":"HOLD","fairValueLow":35000,"fairValue":45000,"fairValueHigh":55000,"thesis":["가전 수익성 관찰","전장 사업 성장 검증","우선주 가치 점검"],"action":"WAIT"},
+    {"name":"오리온","ticker":"271560","market":"KR","currency":"KRW","status":"OWNED","rating":"BUY","fairValueLow":90000,"fairValue":120000,"fairValueHigh":150000,"thesis":["브랜드 반복 구매","해외 시장 점유율 점검","원가 관리와 현금 창출"],"action":"ADD ON PULLBACK"},
+    {"name":"NVIDIA","ticker":"NVDA","market":"US","currency":"USD","status":"WATCH","rating":"HOLD","fairValueLow":90,"fairValue":130,"fairValueHigh":170,"thesis":["AI 투자 수요 검증","제품 경쟁력 점검","성장 대비 가치 평가"],"action":"WATCH"},
+    {"name":"Amazon","ticker":"AMZN","market":"US","currency":"USD","status":"WATCH","rating":"BUY","fairValueLow":150,"fairValue":200,"fairValueHigh":250,"thesis":["AWS 수익성 관찰","유통 효율화 확인","광고 사업 성장 점검"],"action":"WAIT"},
+    {"name":"Visa","ticker":"V","market":"US","currency":"USD","status":"WATCH","rating":"BUY","fairValueLow":220,"fairValue":280,"fairValueHigh":340,"thesis":["결제 네트워크 효과","해외 결제 성장","자본 효율성 관찰"],"action":"WATCH"}
+  ]
+}

@@ -66,6 +66,26 @@
       "lastVerifiedSha": "6d1016a821de2dc750fb90303f24abbff3ee1e04"
     },
     {
+      "feature": "investment-research",
+      "label": "Investment Research / Monthly Committee V1b",
+      "risk": "CRITICAL",
+      "owners": [
+        { "file": "hani-investment-committee.js", "symbols": ["normalizeCard", "prepareBatch", "applyBatch", "reviewReport", "openEditor", "renderReview", "committeeDraft", "prepareSnapshot", "confirmCommittee", "portfolioSummary", "ratingTimeline", "kst", "renderMonthly"] },
+        { "file": "hani-main.js", "symbols": ["setupInvestmentRc21Layout", "setupInvestmentCommitteeLayout", "selectInvestmentSection", "activateInvestmentTab"] }
+      ],
+      "dependencies": [
+        { "file": "hani-main.js", "symbols": ["freshState", "validateStoredRecords", "normalizeState", "cloudHasMeaningfulLocalData", "commit", "save", "calculate"] },
+        { "file": "hani-asset-market-view.js", "symbols": ["readResearchQuotes", "analyticsSource", "configured"] },
+        { "file": "hani-market-data.js", "symbols": ["positions"] },
+        { "file": "hani-ui-v02992.js", "symbols": ["arrangeNavigation"] }
+      ],
+      "dom": ["#icSections", "#icPortfolio", "#icResearch", "#icMonthly", ".ic-editor", ".ic-import"],
+      "events": ["[data-ic-section]", "[data-ic]", "[data-ic-picker]", "[data-ic-include]", "[data-ic-status]", "[data-monthly]", ".ic-monthly-board form submit/input/change"],
+      "targetedTests": ["node scripts/hani-investment-research.test.cjs", "node scripts/hani-investment-committee.test.cjs", "node scripts/hani-investment-research-ui.test.mjs <playwright/index.mjs> <browser.exe>", "node scripts/hani-market-data-test.cjs", "node scripts/hani-portfolio-completeness-test.js", "node scripts/hani-cloud-first.test.mjs", "node scripts/hani-cloud-egress-save-sim.test.mjs"],
+      "notes": "Approved 3-array extension only. Feature work keeps v2.9.202. No auto-create, no direct storage/Cloud writes. Monthly draft is memory-only; explicit commit freezes card/quote/holding values. One snapshot per month; explicit revisions append without overwrite. KST display and combined history. Browser QA blocked by EPERM in ic1 sandbox; V1b remains uncommitted.",
+      "lastVerifiedSha": "b93925fe75f5e746a6101ed492e950516746fadc"
+    },
+    {
       "feature": "newsroom",
       "label": "Newsroom",
       "risk": "CRITICAL",

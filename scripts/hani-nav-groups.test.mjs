@@ -57,12 +57,12 @@ assert.ok(parents.get('cloudChoicePanel').includes('settingsData'));
 assert.equal(parents.get('reading').includes('settings'),false,'later views remain outside settings');
 const hubSource=read('hani-organization-hub.js');
 const selectHub=hubSource.match(/  function selectHubTab\(tab\)\{[\s\S]*?\n  \}/)[0];
-const intro=[{hidden:false},{hidden:false}],chart=[{hidden:false},{hidden:false},{hidden:false}],mast={hidden:false},directory={hidden:false},select={value:''},search={value:''},root={dataset:{},querySelectorAll:s=>s.includes('.ogh-hero')?intro:chart,querySelector:()=>mast};
-const hubContext=vm.createContext({root,directory,select,search,group:'ALL',filterPeople(){}});vm.runInContext(selectHub,hubContext);
+const intro=[{hidden:false},{hidden:false}],chart=[{hidden:false},{hidden:false},{hidden:false}],mast={hidden:false},directory={hidden:false},overview={hidden:false},select={value:''},search={value:''},root={dataset:{},querySelectorAll:s=>s.includes('.ogh-hero')?intro:chart,querySelector:s=>s==='.ogh-overview'?overview:mast};
+const hubContext=vm.createContext({root,directory,select,search,group:'ALL',filterPeople(){},renderOverview(){}});vm.runInContext(selectHub,hubContext);
 for(const tab of ['overview','people','aiTeam']){
   hubContext.selectHubTab(tab);
   assert.equal(intro.every(n=>n.hidden),tab!=='overview');assert.equal(chart.every(n=>n.hidden),tab!=='people');
-  assert.equal(directory.hidden,tab==='overview');assert.equal(mast.hidden,tab!=='people');assert.equal(hubContext.group,tab==='aiTeam'?'AI STAFF':'ALL');
+  assert.equal(overview.hidden,tab!=='overview');assert.equal(directory.hidden,tab==='overview');assert.equal(mast.hidden,tab!=='people');assert.equal(hubContext.group,tab==='aiTeam'?'AI STAFF':'ALL');
 }
 const clickOwner=hubSource.match(/  root.addEventListener\('click',e=>\{[\s\S]*?\n  \}\);/)[0];
 let onHubClick;const scrollRoutes=[],scrolled=[];
