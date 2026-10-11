@@ -1,3 +1,19 @@
+# 2026-10-11 · green-209 패키지 용량 절감 (도연/Codex)
+
+`hani/green-209` / 시작 HEAD `ca405d4`, 원격 main `759ae68` 일치. 독서·가계부 장식 Hero 2개 무손실 WebP 추가 및 preload/heroImages URL 4개만 교체. **19,010,193 → 18,604,460바이트, 405,733바이트 절감**, 보호 한도 대비 395,540바이트 여유. 원본 PNG 보존, 362×362·RGBA 모든 픽셀 동일·closure111/누락0·syntax·mixed EOL PASS. gate·동작·데이터·버전/cache 변경 및 커밋/push/배포 없음. 실제 Preview/Android/열차 gate/운영 미검증. Notion 쓰기는 자동 승인 검토 `approval policy is never` 거절로 계획·결과 갱신 대기. [인수인계](handoffs/2026-10-11-package-size-209.md), [집계](../../artifacts/package-size-209/after.json). 아래 이전/다른 담당 기록 보존.
+
+# 2026-10-11 · AI 업무 현황 v208/v209 후속 (도연/Codex)
+
+`hani/green-209` / 시작 HEAD `c796d2a`, 조회 main `759ae68` 일치. 7명 catalog에 v208 공부 집계·접힌 사이드바·미세 동작 최근 완료 및 v209 뉴스룸/Gemini/퀴즈/첫 호칭 진행 범위 반영. AI 업무 테스트는 날짜 구조·버전 하한·미래 버전 허용/오래된 값 거절·실제 profile 렌더·기존 무쓰기 검사로 갱신. **AI 업무·공부7·퀴즈7·메뉴/보호21·원문/EOL/syntax/diff PASS.** 실제 Edge·Cloud·Android·열차/운영 미검증, 커밋·버전/cache·데이터 변경·배포 없음. Notion append는 자동 승인 검토 never 거절로 갱신 대기. [인수인계](handoffs/2026-10-11-ai-work-status-209.md). 아래 이전/다른 담당 기록 보존.
+
+# 2026-10-11 · 라운지 댓글 첫 호칭 정리 (도연/Codex)
+
+`hani/green-209`, base `8f707d7`: 댓글 표시에서 대상 첫 호칭·중복 멘션 정리, 회장님 일반 호칭/저장 원문 보존. 라이브러리 댓글 320개(part-a199/part-b121) 정리·180 스레드 runtime 재생성, 뉴스룸/세린 생성 지침 추가. 보드8·persona·실제 fixture DOM·원문/EOL 보존·builder/syntax/diff PASS. **실로그인 화면·Candidate/배포 미검증, 미커밋·버전/cache 유지.** Notion 계획 append는 자동 승인 검토의 approval policy never 거절로 갱신 대기. [인수인계](handoffs/2026-10-11-board-vocative.md). 아래 다른 담당 기록은 보존.
+
+# 2026-10-11 · green-209 뉴스룸 / Gemini 2차 의견 (도연/Codex)
+
+`hani/green-209` / base `e953601` (원격 main 일치, v2.9.207). 뉴스룸 공통 seed 말투·2~4댓글·160자/호칭/보고체/숫자 guard, 실제 운영 Edge 원본 두 함수에서 생성 부분만 수정. 투자 카드 Gemini 복사/붙여넣기·메모리 readonly·confirm 후 기존 가치평가 메모 append. 신규 Node9·기존 투자66/Cloud40·save simulation·보호 safety·실제 Edge1440/390×2테마 PASS. **미커밋·미push·버전/배포 없음.** 실제 원격 LLM/Deno/Android·열차 gate 미검증, Edge publisher/orchestrator 별도 배포 필요. Notion append는 자동 승인 검토 policy never 거절로 갱신 대기. [인수인계](handoffs/2026-10-11-green-209.md). 아래 다른 담당 기록 보존.
+
 # 2026-10-11 · fix-208 오래된 테스트 후속 (도연/Codex)
 
 `hani/fix-208` / 시작 HEAD `551c543`, 확인 main `e953601` 일치. AI 업무 v207 기대·활성 프로젝트별 3개(2+1) 집계 fixture·보이는 motion anchor 수정. 실제 checkbox를 이동시키던 card active CSS selector 1곳 수정, 눌림 중 좌표 정확 비교 추가. **Edge UI 4+4조합·Node7+21/관련 회귀·기존 안전/무쓰기·mixed EOL PASS.** JS·데이터·버전/cache 변경 및 커밋/push/배포 없음. 사용자Cloud/Android/열차 gate 미검증. Notion append 자동 승인 검토 policy never 거절로 갱신 대기. [인수인계](handoffs/2026-10-11-fix-208-stale-tests.md), [증거](../../artifacts/fix-208-stale-tests/run-status.json). 아래 이전/다른 담당 기록 보존.
