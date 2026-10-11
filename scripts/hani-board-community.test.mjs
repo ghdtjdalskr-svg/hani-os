@@ -227,4 +227,23 @@ for(const p of [roster.chairman,...roster.people]){
 assert.equal((slots.get("list").innerHTML.match(/loading="lazy" decoding="async" width="28" height="28"/g)||[]).length,18);
 console.log("PASS: all 18 roster portraits use static assets with bounded dimensions and lazy decoding");
 
+
+
+// Vocative cleanup through the board's real DOM rendering path, without saving.
+api.setState({...api.getState(),boardPosts:[{id:'vocative-dom',authorId:'taeo',title:'호칭 테스트',body:'본문',category:'LOUNGE',views:1}],boardComments:[
+  {id:'vocative-dom-root',postId:'vocative-dom',authorId:'arin',body:'채원, 직접 눌러보다 보니 좋아요.'},
+  {id:'vocative-dom-reply',postId:'vocative-dom',parentId:'vocative-dom-root',authorId:'taeo',body:'@아린 아린 선임, 숫자만 세고 있어요.'}
+]});
+context.location.hash='#board/vocative-dom';
+vm.runInContext(board,context);
+assert.equal(context.window.HaniBoard.openPost('vocative-dom'),true);
+const vocativeState=plain(api.getState()),vocativeQueues=inspection().queues;
+context.window.HaniBoard.render();
+assert.match(slots.get('comments').innerHTML,/<p class="board-body">직접 눌러보다 보니 좋아요\.<\/p>/);
+assert.match(slots.get('comments').innerHTML,/board-mention">@아린<\/span> 숫자만 세고 있어요\./);
+assert.equal((slots.get('comments').innerHTML.match(/@아린/g)||[]).length,1);
+assert.deepEqual(plain(api.getState()),vocativeState);
+assert.equal(inspection().queues,vocativeQueues);
+console.log('PASS: board DOM strips top-level/reply vocatives, retains one mention and never saves during render');
+
 await import("./hani-board-living.test.mjs");

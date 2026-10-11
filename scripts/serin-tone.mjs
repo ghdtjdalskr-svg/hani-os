@@ -10,7 +10,7 @@ for(const file of (process.env.LIMIT?['data/board-library/part-a.json']:['data/b
   const raw=JSON.parse(fs.readFileSync(file,'utf8')),list=Array.isArray(raw)?raw:raw.threads;
   for(let s=0;s<(process.env.LIMIT?6*+process.env.LIMIT:list.length);s+=6){
     const chunk=list.slice(s,s+6);
-    const prompt='도구(파일·명령)는 절대 쓰지 말고 텍스트로만 답해.\n'+rules+'\n\n직원 성격 요약:\n'+JSON.stringify(voices)+'\n\n아래 JSON 배열의 title/body/comments[].body 문자열만 다듬어서, 같은 구조의 JSON 배열만 출력해 (설명·코드펜스 금지). id/authorId/category/i/replyTo는 그대로 둬.\n'+JSON.stringify(chunk.map(strip));
+    const prompt='도구(파일·명령)는 절대 쓰지 말고 텍스트로만 답해.\n댓글을 상대 이름 부르기로 시작하지 말 것\n'+rules+'\n\n직원 성격 요약:\n'+JSON.stringify(voices)+'\n\n아래 JSON 배열의 title/body/comments[].body 문자열만 다듬어서, 같은 구조의 JSON 배열만 출력해 (설명·코드펜스 금지). id/authorId/category/i/replyTo는 그대로 둬.\n'+JSON.stringify(chunk.map(strip));
     const r=spawnSync(agy,['-p',prompt],{encoding:'utf8',maxBuffer:64*1024*1024,timeout:600000,windowsHide:true});
     let out=(r.stdout||'').trim();const a=out.indexOf('['),b=out.lastIndexOf(']');
     try{
