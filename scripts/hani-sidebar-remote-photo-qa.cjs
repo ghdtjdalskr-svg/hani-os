@@ -56,12 +56,12 @@ const server = http.createServer((request, response) => {
           const fit = getComputedStyle(image).objectFit;
           return { loaded: image.naturalWidth > 0, fit, width: box.width, height: box.height };
         });
-        assert(scene.loaded && scene.fit === 'contain' && scene.width > 0 && scene.height > 0, `${viewport.name}: ${file} is not fully shown`);
+        assert(scene.loaded && scene.fit === 'cover' && scene.width > 0 && scene.height > 0, `${viewport.name}: ${file} does not fill the Remote frame`);
         if (file === 'autumn-1.jpg') await page.screenshot({ path: path.join(output, `${viewport.name}-remote-seasonal.png`) });
       }
       await page.screenshot({ path: path.join(output, `${viewport.name}-remote.png`) });
       assert.deepEqual(errors, [], `${viewport.name}: browser errors`);
-      console.log(`${viewport.name}: team photo full aspect, compact brand bar, 12 Remote images loaded with contain`);
+      console.log(`${viewport.name}: team photo full aspect, compact brand bar, 12 Remote images loaded with cover`);
       await page.close();
     }
     console.log(`Screenshots: ${output}`);

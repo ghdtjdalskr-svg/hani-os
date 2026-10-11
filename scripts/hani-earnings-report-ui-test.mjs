@@ -33,7 +33,7 @@ seed.learningQuizzes=[{id:'q1',status:'completed',completedAt:'2026-08-31T15:00:
 const browser=await chromium.launch({headless:true,executablePath:process.argv[3]||'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'});
 try{
   for(const viewport of [{width:1440,height:1000,name:'desktop'},{width:390,height:844,name:'mobile'}]){
-    const page=await browser.newPage({viewport}),errors=[],blockedRequests=new Set();
+    const page=await browser.newPage({viewport}),errors=[],blockedRequests=new Set(),missingBuildingArt=new Set();
     await page.clock.install({time:new Date('2026-10-01T12:00:00Z')});
     // Match report-common/goal-progress: UI fixtures must never contact real Auth/Cloud.
     // Specific sports/Q&A mock routes override this fallback; local assets still load.
@@ -43,7 +43,11 @@ try{
       blockedRequests.add(url);return route.abort('blockedbyclient');
     });
     await page.route('**/rest/v1/hani_sports_cache*',route=>route.fulfill({status:200,contentType:'application/json',body:'[]',headers:{'content-range':'0-0/0'}}));
-    page.on('pageerror',error=>errors.push(error.message));page.on('console',message=>{if(message.type()==='error'&&!(message.text().includes('ERR_BLOCKED_BY_CLIENT')&&blockedRequests.has(message.location().url)))errors.push(message.text())});page.on('response',response=>{if(response.status()>=400)console.log(`HTTP ${response.status()} ${new URL(response.url()).pathname}`)});
+    page.on('pageerror',error=>errors.push(error.message));page.on('console',message=>{if(message.type()!=='error')return;const url=message.location().url;
+      // Optional floor art is absent on this branch; require the real fallback below.
+      if(/^https?:/.test(url)){const parsed=new URL(url);if(parsed.origin===origin&&/^\/assets\/building\/floor-[1-4]f-v1\.webp$/.test(parsed.pathname)&&!existsSync(join(root,parsed.pathname.slice(1)))&&message.text().includes('404')){missingBuildingArt.add(parsed.pathname);return}}
+      if(!(message.text().includes('ERR_BLOCKED_BY_CLIENT')&&blockedRequests.has(url)))errors.push(message.text());
+    });page.on('response',response=>{if(response.status()>=400)console.log(`HTTP ${response.status()} ${new URL(response.url()).pathname}`)});
     await page.addInitScript(value=>{if(!sessionStorage.getItem('monthlySmokeSeeded')){localStorage.setItem('hani_os_life_v23',JSON.stringify(value));sessionStorage.setItem('monthlySmokeSeeded','1')}},seed);
     await page.goto(`${origin}/#monthlyReport`,{waitUntil:'load'});
     await page.waitForFunction(()=>loginGateInitialized&&!!window.HANI_GOAL_PROGRESS?.renderReport);
@@ -57,7 +61,7 @@ try{
     await page.waitForTimeout(450);
     assert.equal(await page.locator('#loginGate').isVisible(),false,`${viewport.name}: entry screen stays dismissed after boot`);
     const labels=await page.locator('.office-group .group-body .nav-btn .txt').allTextContents();
-    assert.deepEqual(labels,['대표실','하니 라운지','AI 업무 현황','개발센터','개발 보고서','배포센터','AI 주간 예산','테마 스튜디오','컨퍼런스 룸','하니 투자 리포트','인포데스크','회사 소개'],`${viewport.name}: report remains in office IA`);
+    assert.deepEqual(labels,['인포데스크','대표실','컨퍼런스 룸','회사 소개','하니 라운지'],`${viewport.name}: approved v204 office order with v205 labels`);
     assert(await page.locator('#monthlyReport.view.active').count(),`${viewport.name}: monthly route active`);
     await page.locator('[data-report-board="quarterly"]').click();assert.equal(await page.locator('[data-earnings-ppt]').count(),0,'unverified source cannot expose presentation/export');assert.match(await page.locator('#earningsQuarterly').innerText(),/원본 검증 대기/);
     await page.evaluate(()=>{goalPeriodReadContext=()=>({source:structuredClone(state),asOf:'2026-10-01',evaluationAt:'2026-10-01T12:00:00Z',canonical:{brokerTotal:row=>brokerCalc(row).total,ledgerSpending:row=>ledgerCalc(row).jispiT}})});
@@ -151,6 +155,11 @@ try{
     await page.locator('#monthlyReportMonth').fill('2026-10');await page.locator('#monthlyReportMonth').dispatchEvent('change');
     assert(await page.locator('#monthlyReportGenerateBtn').isDisabled(),`${viewport.name}: current month cannot generate`);
     const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);assert.equal(overflow,0,`${viewport.name}: no horizontal overflow`);
+    if(missingBuildingArt.size){
+      await page.waitForFunction(()=>{const map=document.querySelector('#haniOfficeMap'),image=map?.querySelector('.hani-office-background');return map?.dataset.art==='fallback'&&image?.complete&&image.naturalWidth>0});
+      assert.equal(await page.locator('#haniOfficeMap .hani-office-background').getAttribute('src'),'./assets/ai-approval-concepts/v3-office-background-empty-8-seats.webp',`${viewport.name}: missing optional floor art loads existing fallback`);
+      console.log('Expected missing building art with loaded fallback',JSON.stringify([...missingBuildingArt]));
+    }
     const actionable=[...new Set(errors)].filter(error=>!error.includes('ERR_NETWORK_ACCESS_DENIED')&&!error.includes('ERR_CONNECTION_REFUSED')&&!error.includes('Supabase JS를 불러오지 못했습니다')&&!error.includes('monthly-smoke-forced-failure'));assert.deepEqual(actionable,[],`${viewport.name}: console errors`);
     await page.close();
   }
