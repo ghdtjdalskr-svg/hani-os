@@ -4017,14 +4017,15 @@ const developmentTeam=[
     "tone": "blue",
     "desc": "개발센터·업무 현황·주간예산·배포센터 담당",
     "now": [
-      "v2.9.205 후보 통합과 최종 검수 준비",
-      "리포트 polish·명칭 정리·HANI 빌딩 4층 사이드바 통합"
+      "v2.9.209 뉴스룸 댓글·Gemini 2차 의견·경제 퀴즈 후보 통합 준비",
+      "v2.9.209 라운지 첫 호칭 정리와 targeted 검증 근거 취합"
     ],
     "recent": [
       "v2.9.200–201 게시판·커뮤니티 테이블 통합",
       "v2.9.202 Cloud-first·로그인 B안·AI 예산 통합",
       "v2.9.203 스포츠·뉴스·배너·투자 리포트 V1 반영",
-      "v2.9.204 투자 메뉴 분리·적립식 계좌·계절 로그인·proactive 카드 반영"
+      "v2.9.204 투자 메뉴 분리·적립식 계좌·계절 로그인·proactive 카드 반영",
+      "v2.9.208 공부 집계·접힌 사이드바·미세 동작 통합 반영"
     ],
     "next": [
       "HANI 빌딩 2단계: 대표실 빌딩 개요",
@@ -4043,19 +4044,20 @@ const developmentTeam=[
     "tone": "purple",
     "desc": "기능 구현·회귀 테스트·인수인계",
     "now": [
-      "v2.9.205 리포트 polish·적정가 보완·명칭 정리",
-      "AI 업무 현황·브라우저 세션·AI 주간 예산 보완 및 테스트"
+      "v2.9.209 뉴스룸 댓글·라운지 첫 호칭 정리 구현과 회귀 검증",
+      "v2.9.209 Gemini 2차 의견·기초 경제 퀴즈 정합성·AI 업무 현황 보완"
     ],
     "recent": [
       "v2.9.200–201 커뮤니티 테이블·Relationship Seed 연결",
       "v2.9.202 Cloud-first·입장 화면·Claude/Gemini/Antigravity 예산 구현",
       "v2.9.203 스포츠·뉴스·배너·투자 리포트 V1 구현",
-      "v2.9.204 투자 메뉴 분리·적립식 계좌·계절 hero·공부 카드 구현"
+      "v2.9.204 투자 메뉴 분리·적립식 계좌·계절 hero·공부 카드 구현",
+      "v2.9.208 공부 집계·접힌 사이드바·미세 동작 구현·회귀 반영"
     ],
     "next": [
       "HANI 빌딩 2·3단계 승인 범위 구현과 테스트",
       "게시판 실제 AI 답글·보관 정책 구현 준비",
-      "뉴스룸 댓글 톤 보완·주간 뉴스 4컷 만화 시험"
+      "뉴스룸 댓글 톤 실제 생성 확인·주간 뉴스 4컷 만화 시험"
     ],
     "updatedAt": "2026-10-11"
   },
@@ -4070,16 +4072,17 @@ const developmentTeam=[
     "tone": "blue",
     "desc": "개발 보고서·리서치·문서 초안·1차 검수",
     "now": [
-      "v2.9.205 변경·검증·미검증을 구분한 보고서 정리",
-      "리포트 및 HANI 빌딩 방향의 리서치·문서 초안 지원"
+      "v2.9.209 경제 퀴즈 품질 리뷰·투자 Gemini 2차 의견 검증 경계 정리",
+      "v2.9.209 뉴스룸 댓글 톤·호칭과 리서치 초안 지원"
     ],
     "recent": [
       "v2.9.200 개발 보고서 화면 반영",
       "v2.9.202 Gemini·Antigravity AI 예산 조회 반영",
-      "v2.9.203 뉴스 출처·관심종목 안내 개선 반영"
+      "v2.9.203 뉴스 출처·관심종목 안내 개선 반영",
+      "v2.9.208 공부 집계·접힌 사이드바·미세 동작 반영 범위 정리"
     ],
     "next": [
-      "뉴스룸 댓글 톤 초안·1차 검수",
+      "뉴스룸 댓글 톤·경제 퀴즈 실제 응답 품질 검수",
       "주간 뉴스 4컷 만화 시험 초안",
       "10/15 이후 Notion HQ 재설계 문서 지원"
     ],
@@ -4096,13 +4099,14 @@ const developmentTeam=[
     "tone": "purple",
     "desc": "기획·Relationship Seed·게시판 콘텐츠 라이브러리",
     "now": [
-      "v2.9.205 대표실·하니 라운지·하니 투자 리포트 방향 정리",
-      "HANI 빌딩 다음 단계의 기획"
+      "v2.9.209 뉴스룸 댓글·라운지 첫 호칭·투자 2차 의견 방향 정리",
+      "v2.9.209 기초 경제 퀴즈와 기존 기능 보존 범위 정리"
     ],
     "recent": [
       "v2.9.200 커뮤니티 게시판 콘텐츠 기반 반영",
       "v2.9.201 Relationship Seed·커뮤니티 테이블 반영",
-      "v2.9.202 게시판 콘텐츠 라이브러리 반영"
+      "v2.9.202 게시판 콘텐츠 라이브러리 반영",
+      "v2.9.208 공부 집계·접힌 사이드바·미세 동작 프로젝트 반영"
     ],
     "next": [
       "게시판 실제 AI 답글 방향·보관 정책",
@@ -4121,13 +4125,14 @@ const developmentTeam=[
     "tone": "blue",
     "desc": "변경 범위와 UI owner·event layering 위험 검토",
     "now": [
-      "v2.9.205 변경 범위·DOM/event owner 확인 대상 정리",
-      "세션·예산·리포트 특수 검사 경계 확인"
+      "v2.9.209 뉴스룸·투자 2차 의견·퀴즈 DOM/event owner 검토 대상 정리",
+      "v2.9.209 기존 저장 경로·서버 생성·무쓰기 특수 검사 경계 확인"
     ],
     "recent": [
       "v2.9.202 Cloud-first·로그인 B안·예산 보호 경계 반영",
       "v2.9.203 투자 리포트·뉴스·배너 owner 경로 반영",
-      "v2.9.204 메뉴 분리·적립식 분류 회귀 근거 반영"
+      "v2.9.204 메뉴 분리·적립식 분류 회귀 근거 반영",
+      "v2.9.208 공부 집계·접힌 사이드바·미세 동작 owner·회귀 근거 반영"
     ],
     "next": [
       "HANI 빌딩 2·3단계 owner·event 경로 검토",
@@ -4146,13 +4151,14 @@ const developmentTeam=[
     "tone": "peach",
     "desc": "변경 화면·가독성·모바일 Preview 검토",
     "now": [
-      "v2.9.205 리포트 압축·명칭·4층 사이드바 Preview 검토 대기",
-      "업무 현황·예산 카드와 모바일 화면 확인 대상 정리"
+      "v2.9.209 댓글 첫 호칭·Gemini 2차 의견·퀴즈 안내 Preview 검토 대기",
+      "v2.9.209 AI 업무 현황·모바일 화면 확인 대상 정리"
     ],
     "recent": [
       "v2.9.202 메뉴 재그룹·로그인·AI 예산 화면 반영",
       "v2.9.203 캐릭터 배너·리포트 UI 개선 반영",
-      "v2.9.204 계절 hero·공부 카드·투자 메뉴 화면 반영"
+      "v2.9.204 계절 hero·공부 카드·투자 메뉴 화면 반영",
+      "v2.9.208 공부 집계·접힌 사이드바·미세 동작 화면 반영"
     ],
     "next": [
       "HANI 빌딩 대표실 개요·직원 층/이동 UI 검토",
@@ -4172,13 +4178,14 @@ const developmentTeam=[
     "tone": "mint",
     "desc": "동결 후보·패키지 identity와 최종 배포 경계 검증",
     "now": [
-      "v2.9.205 동결 후보의 최종 Gate 대기",
+      "v2.9.209 서윤 통합·동결 이후 최종 Gate 대기",
       "개발 테스트와 독립 HINA·운영 read-back 결과 구분"
     ],
     "recent": [
       "v2.9.202 Cloud-first·로그인·예산 운영 반영 범위",
       "v2.9.203 투자 리포트 V1·스포츠·뉴스 운영 반영 범위",
-      "v2.9.204 투자 메뉴·적립식·계절 hero 운영 반영 범위"
+      "v2.9.204 투자 메뉴·적립식·계절 hero 운영 반영 범위",
+      "v2.9.208 공부 집계·접힌 사이드바·미세 동작 운영 반영 범위"
     ],
     "next": [
       "서윤 통합·동결 후 최종 Release Gate",
@@ -6558,7 +6565,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.208";
+const HANI_DISPLAY_VERSION="2.9.209";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];

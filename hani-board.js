@@ -210,9 +210,32 @@
       {comment:root,nested:false},...groups.get(root.id).filter(c=>c.id!==root.id).sort(compare).map(comment=>({comment,nested:true}))
     ]);
   }
+  // Display-only cleanup. The roster owns names/ranks; stored bodies stay intact.
+  function stripLeadingVocative(value,targetIds,duplicatedMention=false){
+    let body=String(value??"");
+    const ids=Array.isArray(targetIds)?targetIds:[targetIds];
+    const regexEscape=text=>text.replace(/[.*+?^\u0024{}()|[\]\\]/g,"\\$&");
+    for(const id of ids){
+      const member=person(id);if(!member)continue;
+      const chairman=id===actor();
+      const names=chairman?[member.name,"회장님","대표님"]:[member.name,...member.name.split(/\s*·\s*/)];
+      const ranks=[member.rank,String(member.rank||"").split(/\s+/).at(-1)].filter(Boolean);
+      const namePattern=names.filter(Boolean).sort((a,b)=>b.length-a.length).map(regexEscape).join("|");
+      const rankPattern=ranks.sort((a,b)=>b.length-a.length).map(regexEscape).join("|");
+      const rankedName="(?:"+namePattern+")"+(rankPattern?"(?:\\s*(?:"+rankPattern+"))?":"")+"(?:님|씨|아|야)?";
+      const address=(chairman?"(?:"+regexEscape(member.name)+"(?:\\s*"+regexEscape(member.rank)+")?(?:님|씨)?|회장님|대표님)":rankedName)+"[,，!]?\\s+";
+      if(duplicatedMention)body=body.replace(new RegExp("^@"+address),"");
+      if(!chairman)body=body.replace(new RegExp("^"+address),"");
+    }
+    return body;
+  }
+  function commentBody(c,parent){
+    const post=posts().find(p=>p.id===c.postId);
+    return stripLeadingVocative(publicText(c.body),[parent?.authorId,post?.authorId],!!parent);
+  }
   function commentMarkup(c,nested=false,allowReply=true){
-    const parent=c.parentId&&visibleComments().find(p=>p.id===c.parentId);
-    return '<article class="board-comment'+(nested?' board-reply':'')+'"'+(c.parentId?' data-board-parent="'+escape(c.parentId)+'"':'')+'><header>'+authorCard(c.authorId)+'<span class="sub">'+stamp(c)+(c.generated?' · 직원 반응':'')+'</span></header><p class="board-body">'+(parent?'<span class="board-mention">@'+escape(parent.authorId===actor()?'회장님':authorParts(parent.authorId).name)+'</span> ':'')+escape(publicText(c.body))+'</p>'+actions(c,"comment")+
+    const parent=c.parentId&&visibleComments().find(p=>p.id===c.parentId&&p.postId===c.postId);
+    return '<article class="board-comment'+(nested?' board-reply':'')+'"'+(c.parentId?' data-board-parent="'+escape(c.parentId)+'"':'')+'><header>'+authorCard(c.authorId)+'<span class="sub">'+stamp(c)+(c.generated?' · 직원 반응':'')+'</span></header><p class="board-body">'+(parent?'<span class="board-mention">@'+escape(parent.authorId===actor()?'회장님':authorParts(parent.authorId).name)+'</span> ':'')+escape(commentBody(c,parent))+'</p>'+actions(c,"comment")+
       (allowReply?'<button class="btn sm" type="button" data-board-reply="'+escape(c.id)+'"'+(!canWrite()?' disabled':'')+'>답글</button>':"")+'</article>';
   }
   function render(){
@@ -983,7 +1006,7 @@
     renderBoard();
   }
   window.HaniBoard=Object.freeze({render:renderBoard,savePost,saveComment,deleteOwn,openPost,toggleLike,listPosts,
-    postFields,commentFields,relativeTime,boardDate,closePost,previewThread,postPreview,cancelPreview,ownerReactions,replyIntent,chairmanReplyIntent,CHAIRMAN_REPLIES,orderedComments,commentMarkup,
+    postFields,commentFields,relativeTime,boardDate,closePost,previewThread,postPreview,cancelPreview,ownerReactions,replyIntent,chairmanReplyIntent,CHAIRMAN_REPLIES,orderedComments,commentMarkup,stripLeadingVocative,
     ADDRESS_RULES,personaMap,personaMode,staffAddress,candidateScore,commentCandidates,selectAuthors,queueReplies,generateDaily,realEvents,refreshLiving,
     setReplyMode,replyMode,draftAction,postDrafts,replyDrafts,votePoll,toggleReaction,weeklyBest,weeklyActivity,
     attendance,unreadCount,mentionIds,dayKey,replySafetyBound});

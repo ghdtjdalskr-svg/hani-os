@@ -77,3 +77,6 @@ html[data-theme=dark] .ic-monthly,html[data-finish=midnight-black] .ic-monthly{-
   body[data-view="investmentCommittee"] .ic-snapshot-securities,body[data-view="investmentCommittee"] .ic-form-grid{display:block!important}body[data-view="investmentCommittee"] .ic-snapshot-security{margin-bottom:10px}
   body[data-view="investmentCommittee"] h3{break-after:avoid;page-break-after:avoid}body[data-view="investmentCommittee"] .ic-role-table thead{display:table-header-group}
 }
+
+.ic-second-opinion{margin-top:14px;padding:14px;border:1px solid var(--ic-border);border-radius:12px;background:var(--ic-surface);overflow-wrap:anywhere;color:var(--ic-text)}
+.ic-second-opinion h4{margin:0 0 6px}.ic-second-opinion p{margin:8px 0;white-space:pre-wrap}.ic-second-opinion small{display:block;color:var(--ic-muted);margin-top:6px}.ic-second-opinion ul{padding-left:20px}.ic-second-opinion .btn{margin-top:10px;white-space:normal;max-width:100%}
