@@ -22,19 +22,21 @@ try{
   await context.route('**/*',r=>new URL(r.request().url()).origin===origin?r.continue():r.abort());
   const page=await context.newPage();await page.goto(origin);await page.waitForFunction(()=>!!window.HANI_YUNA_HELPDESK&&typeof unlockLoginGate==='function');
   await page.evaluate(finish=>{unlockLoginGate();showView('intake');document.documentElement.dataset.finish=finish;document.body.dataset.finishActive='true';window.yunaStateBefore=JSON.stringify(state);window.yunaWrites=[];const original=Storage.prototype.setItem;Storage.prototype.setItem=function(k,v){if(this===localStorage)window.yunaWrites.push(k);return original.call(this,k,v)};window.yunaApplyCount=0;intakeApplyRow=()=>{window.yunaApplyCount++};},finish);
-  await page.locator('#yunaInput').fill(input);await page.locator('#yunaSend').click();
+  // Wait for this request to finish; the immediate reply precedes parsing.
+  const send=async text=>{await page.locator('#yunaInput').fill(text);await page.locator('#yunaSend').click();await page.waitForFunction(text=>document.querySelector('#yunaInput').value===''&&[...document.querySelectorAll('.yuna-message.user .yuna-bubble')].at(-1)?.textContent===text&&!document.querySelector('#yunaSend').disabled&&!document.querySelector('.yuna-message.is-typing'),text.replace(/\s+/g,' ').trim())};
+  await send(input);
   const preview=page.locator('.yuna-preview');await preview.waitFor();
   assert.deepEqual(await preview.locator('.yuna-preview-fields b').allTextContents(),['찐막채 송년회','2026-12-12','2026-12-13','예']);
   assert.equal(await page.locator('#yunaSave').count(),0);assert.match(await preview.innerText(),/일정 저장은 아직 지원하지 않습니다/);
   await preview.scrollIntoViewIfNeeded();await page.screenshot({path:path.join(evidence,`${width}-${finish}.png`)});
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'page horizontal overflow');
   assert.ok(await preview.evaluate(e=>e.scrollWidth<=e.clientWidth+1),'preview horizontal overflow');
-  await page.locator('#yunaEdit').click();await page.locator('#yunaInput').fill('제목은 새 송년회');await page.locator('#yunaSend').click();
+  await page.locator('#yunaEdit').click();await send('제목은 새 송년회');
   assert.equal(await preview.locator('.yuna-preview-fields b').first().innerText(),'새 송년회');
-  await page.locator('#yunaEdit').click();await page.locator('#yunaInput').fill('12월 14일부터 15일까지');await page.locator('#yunaSend').click();
+  await page.locator('#yunaEdit').click();await send('12월 14일부터 15일까지');
   assert.deepEqual(await preview.locator('.yuna-preview-fields b').allTextContents(),['새 송년회','2026-12-14','2026-12-15','예']);
   assert.deepEqual(await page.evaluate(()=>({same:JSON.stringify(state)===window.yunaStateBefore,writes:window.yunaWrites,apply:window.yunaApplyCount})),{same:true,writes:[],apply:0});
-  await page.locator(width===390?'#yunaMobileNew':'#yunaNew').click();await page.locator('#yunaInput').fill('내일까지 HDMI 젠더 챙기기');await page.locator('#yunaSend').click();
+  await page.locator(width===390?'#yunaMobileNew':'#yunaNew').click();await send('내일까지 HDMI 젠더 챙기기');
   assert.equal(await page.locator('#yunaSave').count(),1);assert.match(await preview.innerText(),/할 일/);
   cases++;await context.close();
  }

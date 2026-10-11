@@ -50,15 +50,25 @@ try {
     const tabs = page.locator('#investmentCommittee #icSections');
     await page.waitForFunction(() => !!document.querySelector('#investmentCommittee > .ds-main-character-banner'));
     assert.equal(await tabs.getByRole('tab').count(), 2); assert.equal(await tabs.getByRole('tab',{name:'종목 리포트'}).getAttribute('aria-selected'), 'true');
-    assert.deepEqual(await page.locator('#sidebar .nav-floor-label').allTextContents(),["4F 대표실 + 라운지 전략기획실","3F 업무 공간 AI플랫폼개발실","2F 업무 공간 재무자산관리실 · 라이프&엔터테인먼트","1F 로비 기업솔루션사업부"]);
+    assert.equal(await page.locator('#sidebar .nav-floor-label').count(),0,'approved v204 sidebar has no floor headers');
+    assert.deepEqual(await page.locator('#sidebar .group').evaluateAll(groups=>groups.map(group=>({group:group.dataset.color,views:[...group.querySelectorAll('.group-body .nav-btn')].map(button=>button.dataset.view)}))),[
+      {group:'office',views:['intake','agentReview','monthlyReport','organization','board']},
+      {group:'finance',views:['investment','investmentCommittee','investmentIntake','asset','ledger','newsroom']},
+      {group:'health',views:['diet','exercise']},{group:'growth',views:['reading','study','university','certificate']},
+      {group:'life',views:['wishlist','travel','movie','game','diary']},{group:'work',views:['tasks','calendar','drive']},
+      {group:'development',views:['aiWork','dev','geminiReports','deployment','aiBudget']}
+    ],'approved v204 groups and view order');
+    assert.equal(await page.locator('#sidebar [data-go=investmentCommittee]').count(),0,'removed duplicate report shortcut stays absent');
+    assert.equal(await page.locator('#sidebar [data-view=investmentCommittee]').count(),1,'one canonical report navigation entry');
     assert.equal(await page.locator('#sidebar [data-view=board] .txt').innerText(),'하니 라운지');
     assert.equal(await page.locator('#sidebar [data-view=agentReview] .txt').innerText(),'대표실');
     assert.equal(await page.locator('#sidebar [data-view=investmentCommittee] .txt').innerText(),'하니 투자 리포트');
-    const beforeShortcut=await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length}));
-    await page.locator('#sidebar [data-go=investmentCommittee]').evaluate(button=>button.click());
+    const beforeNavigation=await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length}));
+    await page.evaluate(()=>showView('investment'));
+    await page.locator('#sidebar [data-view=investmentCommittee]').evaluate(button=>button.click());
     assert.equal(await page.evaluate(()=>document.body.dataset.view),'investmentCommittee');
     assert.equal(await page.locator('#title').innerText(),'하니 투자 리포트');
-    assert.deepEqual(await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length})),beforeShortcut);
+    assert.deepEqual(await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length})),beforeNavigation,'canonical report navigation never writes data');
     const legacyOverview = await page.locator('#investOverviewAll').innerHTML();
     // QA1: explicit creation, save, reopen and reload; no automatic card generation.
     await tabs.getByRole('tab',{name:'종목 리포트'}).click(); const host = page.locator('.ic-research');
@@ -81,15 +91,30 @@ try {
     assert.doesNotMatch(await host.innerText(),/\d{4}-\d{2}-\d{2}T/);
     {
       const header=host.locator('.ic-header'),top=page.locator('.ui26-top');
-      for(const phase of ['initial','anchor scroll']){
+      const beforeBounds=await page.evaluate(()=>({state:JSON.stringify(state),stored:localStorage.getItem(STORAGE_KEY),writes:icWrites.length}));
+      for(const phase of ['initial','anchor scroll','visible bar']){
         if(phase==='anchor scroll')await header.evaluate(el=>el.scrollIntoView({block:'start'}));
+        if(phase==='visible bar')await page.evaluate(()=>window.scrollBy(0,-32));
         await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
-        const a=await header.boundingBox(),b=await top.boundingBox(),diagnostics={width,finish,phase,header:a,top:b,scrollY:await page.evaluate(()=>scrollY)};
+        await top.evaluate(async el=>{await Promise.all(el.getAnimations().map(animation=>animation.finished.catch(()=>{})));});
+        const geometry=await page.evaluate(()=>{
+          const el=document.querySelector('.ui26-top'),rect=el.getBoundingClientRect(),style=getComputedStyle(el);
+          const visible=el.checkVisibility({checkOpacity:true,checkVisibilityCSS:true});
+          const left=Math.max(0,rect.left),right=Math.min(innerWidth,rect.right),upper=Math.max(0,rect.top),bottom=Math.min(innerHeight,rect.bottom);
+          return {bar:{x:rect.x,y:rect.y,width:rect.width,height:rect.height},visible,hidden:el.classList.contains('is-mobile-hidden'),visibleBar:visible&&right>left&&bottom>upper?{x:left,y:upper,width:right-left,height:bottom-upper}:null,opacity:style.opacity,scrollY};
+        });
+        const a=await header.boundingBox(),b=geometry.visibleBar,diagnostics={width,finish,phase,header:a,...geometry};
         console.log('DIAGNOSTICS IC header bounds',JSON.stringify(diagnostics));
-        assert.ok(a&&b,'IC header/top bounding boxes exist: '+JSON.stringify(diagnostics));
-        const overlap=Math.min(a.x+a.width,b.x+b.width)>Math.max(a.x,b.x)&&Math.min(a.y+a.height,b.y+b.height)>Math.max(a.y,b.y)+1;
-        assert.equal(overlap,false,'sticky top bar must not overlap IC header: '+JSON.stringify(diagnostics));
+        assert.ok(a&&await header.isVisible(),'IC header remains visible: '+JSON.stringify(diagnostics));
+        assert.ok(geometry.bar.width>0&&geometry.bar.height>0,'persistent top bar retains its layout: '+JSON.stringify(diagnostics));
+        if(phase==='visible bar'){
+          assert.ok(b,'scroll up reveals the bar for overlap measurement: '+JSON.stringify(diagnostics));
+          if(width<=768)assert.equal(geometry.bar.height,44,'approved mobile status bar is one 44px row');
+        }
+        const overlap=!!b&&Math.min(a.x+a.width,b.x+b.width)>Math.max(a.x,b.x)&&Math.min(a.y+a.height,b.y+b.height)>Math.max(a.y,b.y)+1;
+        assert.equal(overlap,false,'visible top bar must not overlap IC header: '+JSON.stringify(diagnostics));
       }
+      assert.deepEqual(await page.evaluate(()=>({state:JSON.stringify(state),stored:localStorage.getItem(STORAGE_KEY),writes:icWrites.length})),beforeBounds,'scroll and header visibility never write or change data');
     }
     await host.getByRole('button',{name:'상세 / 수정'}).click();
     assert.equal(await editor.locator('[name=rating]').inputValue(),'BUY'); assert.equal(await editor.locator('details[open]').count(),0);

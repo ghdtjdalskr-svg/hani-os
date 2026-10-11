@@ -1,3 +1,15 @@
+# 2026-10-11 · 통합 206 실패 수정 (도연/Codex)
+
+`hani/integration-206` / HEAD `e22e0a9`, 확인 main `94e59cb`. 모바일 상태바의 인쇄 CSS 우선순위 오류를 screen media로 수정하고 IC 헤더를 보이는 바 기준으로 측정. 실제 Edge 리포트4조합·모바일 상태바·4층 대표실 PASS, Node83항목·기존 무쓰기/보호 assertion·mixed EOL PASS. **미커밋·버전/데이터 변경·배포 없음.** Android/운영Cloud·열차 gate 미검증, native CLI spawn EPERM은 직접 Edge 실행으로 우회. Notion 추가는 자동 승인 검토 policy never 거절로 갱신 대기. [인수인계](handoffs/2026-10-11-integration-206-failures.md). 아래 다른 담당 기록 보존.
+
+# 2026-10-11 ? building-206 ?? Edge ?? ?? (??/Codex)
+
+`hani/building-206` / HEAD `134f160`, ?? main `94e59cb` ??. ?? ?? 1?? ?? cleanup? ???? ?? ?? ??? UI ??? ??: ?? ??? tasks/calendar/drive? ??. ?? ?????/??? ????? EOL ??, Node Research15?????? ?? PASS. **Edge ??? spawn EPERM?? ??? ???, ???????.** Notion append ?? ?? ?? never ??? ?? ??. ?? Claude ?? Edge ???. [????](handoffs/2026-10-11-building-206-regression.md). ?? ?? ??.
+
+# 2026-10-11 · building-206 UI 회귀 수정 (도연/Codex)
+
+`hani/building-206` / 시작 HEAD `134f160` / 조회 main `94e59cb`: 승인된 v204 사이드바 순서·v205 명칭에 맞춰 UI 테스트 3개 수정. 5개 오피스 메뉴·7그룹 순서·재무 리포트 단일 링크/무쓰기·NEW 부모 3개, optional-art 정확한 404 분류와 실제 fallback 로딩 검사 추가. 운영 파일·데이터·버전/cache·혼합 EOL 보존. Node 건물27·Research15·월간8 및 메뉴/안전/203b PASS. **실제 Edge 재실행은 spawn EPERM으로 미검증. 미커밋·미push·미배포.** Notion 추가는 자동 승인 검토 policy never 거절로 갱신 대기. [인수인계](handoffs/2026-10-11-building-206-regression.md). 다음은 Claude의 실제 Edge 환경에서 테스트 3개 재실행. 아래 기록 보존.
+
 # 2026-10-11 · polish-205 후속 (도연/Codex)
 
 `hani/polish-205` / base `6e30e327`: AI 업무 7명·10/11 catalog, 브라우저 세션 쿠키와 유효 동일 사용자 복원, Claude 추정/플랜 import 및 Gemini/Antigravity 표시 구현. 투자 리포트 저장 뒤 header 재이동 수정. Node 로그인45·예산/업무·Research15/Monthly8·Cloud40·보호 owner21/EOL PASS. **실제 Edge spawn EPERM·보호 게이트 Git subprocess EPERM으로 UI/통합 미검증.** v204/cache·보호 write 유지, 커밋·push·main/배포 없음. Notion 기록 추가는 자동 승인 검토 never 거절로 갱신 대기. [인수인계](handoffs/2026-10-11-polish-205-session-budget-work.md). 아래 과거/타 담당 기록 보존.

@@ -12,29 +12,23 @@ assert.ok(aside,"canonical sidebar");
 const views=text=>Array.from(text.matchAll(/data-view="([^"]+)"/g),m=>m[1]);
 const groups=Array.from(aside.matchAll(/<div class="group[^"]*" data-color="([^"]+)">([\s\S]*?)<\/div>\s*<\/div>/g),m=>[m[1],views(m[2])]);
 assert.deepEqual(groups,[
-  ["office",["agentReview","board","aiWork","dev","geminiReports","deployment","aiBudget","aura","monthlyReport","intake","organization"]],
+  ["office",["intake","agentReview","monthlyReport","organization","board"]],
   ["finance",["investment","investmentCommittee","investmentIntake","asset","ledger","newsroom"]],
   ["health",["diet","exercise"]],
   ["growth",["reading","study","university","certificate"]],
   ["life",["wishlist","travel","movie","game","diary"]],
-  ["work",["tasks","calendar","work","drive"]]
+  ["work",["tasks","calendar","work","drive"]],
+  ["development",["aiWork","dev","geminiReports","deployment","aiBudget"]]
 ]);
 const navViews=views(aside);
 assert.equal(navViews[0],"home");
 assert.equal(navViews.at(-1),"settings");
 assert.equal(new Set(navViews).size,navViews.length,"unique nav views");
-assert.deepEqual(views(aside.match(/<div class="side-bottom">([\s\S]*?)<\/div>/)[1]),["settings"]);
+assert.deepEqual(views(aside.match(/<div class="side-bottom">([\s\S]*?)<\/div>/)[1]),["aura","settings"]);
 const office=aside.match(/data-color="office">([\s\S]*?)<\/div>\s*<\/div>/)[1];
-assert.deepEqual(Array.from(office.matchAll(/<span class="txt">([^<]+)<\/span>/g),m=>m[1]),["대표실","하니 라운지","AI 업무 현황","개발센터","개발 보고서","배포센터","AI 주간 예산","테마 스튜디오","컨퍼런스 룸","하니 투자 리포트","인포데스크","회사 소개"]);
-const floorSections=[...office.matchAll(/<p class="nav-floor-label">([\s\S]*?)<\/p>([\s\S]*?)(?=<p class="nav-floor-label">|$)/g)];
-const expectedFloors=[["4F","대표실 + 라운지","전략기획실",["agentReview","board"]],["3F","업무 공간","AI플랫폼개발실",["aiWork","dev","geminiReports","deployment","aiBudget","aura"]],["2F","업무 공간","재무자산관리실 · 라이프&엔터테인먼트",["monthlyReport","investmentCommittee"]],["1F","로비","기업솔루션사업부",["intake","organization"]]];
-for(const [i,section] of floorSections.entries()){
- const [floor,space,teams,links]=expectedFloors[i];
- assert.equal(section[1],'<small class="nav-floor-number">'+floor+'</small> <span>'+space+'</span> <small class="nav-floor-team">'+teams.replace(/&/g,'&amp;')+'</small>');
- assert.deepEqual([...section[2].matchAll(/data-(?:view|go)="([^"]+)"/g)].map(m=>m[1]),links,'floor links and shortcut');
- for(const team of teams.split(' · '))assert.ok(read('hani-organization-hub.js').includes("name:'"+team+"'"),'canonical team '+team);
-}
-assert.equal(floorSections.length,4);
+assert.deepEqual(Array.from(office.matchAll(/<span class="txt">([^<]+)<\/span>/g),m=>m[1]),["인포데스크","대표실","컨퍼런스 룸","회사 소개","하니 라운지"]);
+assert.doesNotMatch(aside,/nav-floor-|data-go=/,"v204 sidebar structure restored");
+assert.match(aside,/data-view="investmentCommittee"[\s\S]*?<span class="txt">하니 투자 리포트<\/span>/);
 const pageMetaSource=main.match(/const pageMeta=\{[\s\S]*?\n\};/)[0];
 const titles=vm.runInNewContext(pageMetaSource+';pageMeta');
 assert.equal(titles.agentReview[0],'대표실','canonical page title');
@@ -50,7 +44,6 @@ vm.runInContext(ui.slice(bannerStart,bannerEnd)+';this.banner=mainCharacterBanne
 assert.equal(bannerContext.banner.title,'대표실 - HANI BOARDROOM');
 assert.match(bannerContext.banner.description,/대표실입니다/);
 assert.equal(bannerContext.banner.owner,'hani','existing banner owner');
-assert.equal((office.match(/data-go="investmentCommittee"/g)||[]).length,1,'secondary 2F shortcut uses existing data-go owner');
 assert.ok(aside.indexOf('data-view="investment"')<aside.indexOf('data-view="investmentCommittee"'),'canonical report link remains next to investment');
 assert.match(main,/querySelectorAll\("\[data-go\]"\)/,'shortcut uses existing delegated route');
 assert.doesNotMatch(aside,/data-color="team"|data-view="policy"|data-view="aiTeam"|data-view="characterArchive"/);
