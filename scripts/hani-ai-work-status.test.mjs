@@ -20,6 +20,7 @@ for(const member of ctx.catalog){
   for(const item of [...member.now,...member.recent,...member.next])assert.ok(rendered.includes(ctx.esc(item)),member.name+' item rendered');
   assert.match(rendered,/개별 AI의 독립 검수 완료를 뜻하지 않습니다/);
 }
-assert.match(html,/2026-10-11 기준 · v2.9.205 후보 진행 중/);
+// The catalog is a dated snapshot, independent of the machine's current date.
+assert.match(html,/2026-10-11 기준 · v2.9.207 후보 진행 중/);
 assert.doesNotMatch(html,/Claude와 Codex 에이전트는 추후 등록/);
 console.log('PASS AI work status: 7 staff, dated static catalog, 3–5 versioned shipped items each, actual profile renderer, no writes');
