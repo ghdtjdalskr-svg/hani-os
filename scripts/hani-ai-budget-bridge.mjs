@@ -16,6 +16,10 @@ export async function writeSummary(summary,dir=privateDir){
   const target=path.join(dir,'summary.json'),temp=path.join(dir,randomUUID()+'.tmp');
   try{await fs.writeFile(temp,JSON.stringify(clean,null,2),{mode:0o600,flag:'wx'});await fs.rename(temp,target);}finally{await fs.rm(temp,{force:true});}
 }
+export async function importSummary(raw,{dir=privateDir,now=Date.now()}={}){
+  const clean=core.normalizeImport(raw,now),summary=await readSummary(dir);
+  const next=core.merge(summary,clean,now);await writeSummary(next,dir);return next;
+}
 export function assignCodexSlot(summary,fingerprint){
   if(!/^[a-f0-9]{64}$/.test(fingerprint))throw Error('identity_unavailable');
   const match=summary.accounts.find(a=>a.provider==='codex'&&a.fingerprint===fingerprint);if(match)return match.id;
@@ -253,7 +257,7 @@ if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.ur
   try{
     if(mode==='collect'){const result=await collectSummary();console.log(`사용량 집계 저장 완료: ${result.collectorStatus}`);if(result.collectorStatus!=='ready')process.exitCode=1;}
     else if(mode==='claude-statusline'){let raw='';for await(const chunk of process.stdin){raw+=chunk;if(raw.length>1024*1024)throw Error('input_too_large');}const a=claudeAccount(JSON.parse(raw)),summary=await readSummary();await writeSummary(core.merge(summary,{schemaVersion:1,accounts:[a]}));console.log('HANI AI 예산 · 한도 기록 완료');}
-    else if(mode==='import'){const file=process.argv[3];if(!file)throw Error('summary_file_required');const stat=await fs.stat(file);if(stat.size>65536)throw Error('input_too_large');const clean=core.normalize(JSON.parse(await fs.readFile(file,'utf8'))),summary=await readSummary();await writeSummary(core.merge(summary,clean));console.log('사용량 요약 저장 완료');}
+    else if(mode==='import'){const file=process.argv[3];if(!file)throw Error('summary_file_required');const stat=await fs.stat(file);if(stat.size>65536)throw Error('input_too_large');await importSummary(JSON.parse(await fs.readFile(file,'utf8')));console.log('사용량 요약 저장 완료');}
     else if(mode==='serve'){const server=createBridge();server.listen(8794,'127.0.0.1',()=>console.log('HANI AI 사용량 도우미: 127.0.0.1:8794 (읽기 전용)'));server.on('error',()=>{console.error('도우미 포트를 열지 못했습니다.');process.exitCode=1;});}
     else throw Error('unknown_command');
   }catch(e){console.error(['codex_slots_full','codex_account_changed','codex_account_not_connected','codex_cli_not_found','claude_limits_unavailable'].includes(e.message)?e.message:'사용량 조회 또는 저장 실패. 기존 요약을 보존했습니다.');process.exitCode=1;}

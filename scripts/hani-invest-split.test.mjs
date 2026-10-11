@@ -18,6 +18,7 @@ class Node {
   setAttribute(key,value){this.attrs[key]=value;}
   querySelector(){return this.children.find(child=>child.classList.contains('ds-main-character-banner'))||null;}
   after(child){const parent=this.parentElement;parent.append(child);parent.children.splice(parent.children.indexOf(child),1);parent.children.splice(parent.children.indexOf(this)+1,0,child);}
+  before(child){const parent=this.parentElement;parent.append(child);parent.children.splice(parent.children.indexOf(child),1);parent.children.splice(parent.children.indexOf(this),0,child);}
   querySelectorAll(){return this.children.filter(child=>child.dataset.icSection);}
   addEventListener(key,handler){this.listeners[key]=handler;}
   closest(){return this;}
@@ -33,7 +34,7 @@ const ctx=vm.createContext({root:{},document:{body,createElement:()=>new Node(),
 vm.runInContext(ic.slice(ic.indexOf('  const UI = '),ic.indexOf('  let framework =')).replaceAll('if (!viewSection) return;','').replaceAll('if (!host) return;',''),ctx);
 const ids=ctx.root.HaniInvestmentCommitteeIds,nav=get(ids.tabs);
 assert.deepEqual(portfolio.children,[legacyTabs,overview],'Committee does not reparent Portfolio');
-assert.equal(committee.children[0],mountedBanner,'pre-mounted banner remains first when IC module mounts later');assert.equal(committee.children[1],nav,'persistent tabs follow banner');
+assert.equal(committee.children[0],mountedBanner,'pre-mounted banner remains first when IC module mounts later');assert.equal(committee.children[1].classList.contains('ic-steps'),true,'existing polish progress slot follows banner');assert.equal(committee.children[2],nav,'persistent tabs follow progress');
 assert.equal(nav.children.length,2);assert.equal(get('icPortfolio'),undefined);
 ctx.selectSection('research');assert.equal(get(ids.research).hidden,false);assert.equal(get(ids.monthly).hidden,true);
 nav.listeners.keydown({target:nav.children[0],key:'ArrowRight',preventDefault(){}});

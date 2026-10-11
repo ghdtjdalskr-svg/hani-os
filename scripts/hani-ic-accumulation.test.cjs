@@ -22,6 +22,7 @@ const make = () => {
     {instrumentId:instruments[2].id,accountId:'h',quantity:2,recordedEvaluation:200,recordedCurrency:'KRW'},
     {instrumentId:'nocard',accountId:'k3',quantity:1,recordedEvaluation:100,recordedCurrency:'KRW'}
   ];
+  rows.forEach(h=>{h.holdingAsOf="2026-09-20";});
   return {source,rows};
 };
 
@@ -104,7 +105,7 @@ test('Monthly draft excludes accumulation from opinion lists/conviction/overlap 
   assert.deepEqual(C.portfolioSummary(source.investmentResearchCards,rows,source).overlapWarnings,[]);
   assert.deepEqual(d.accumulationSecurities.map(c=>c.name),['삼성전자우','장기 적립 ETF']);
   assert.deepEqual(d.accumulationSecurities[0].accounts.map(a=>a.name),['키움 ISA','키움 연금']);
-  assert.deepEqual(d.accumulationSecurities[0].currentValues,[{currency:'KRW',value:500}]);
+  assert.deepEqual(d.accumulationSecurities[0].currentValues,[{accountId:'k0',currency:'KRW',value:200,asOf:'2026-09-20',source:'recorded'},{accountId:'k1',currency:'KRW',value:300,asOf:'2026-09-20',source:'recorded'}]);
   assert.equal(d.accumulationSecurities[0].weight,50);assert.equal(JSON.stringify(source),before);
 });
 
@@ -126,10 +127,10 @@ test('snapshot freezes accumulation records without research fields, retains mix
 
 test('read-only values stay unknown if missing; cross-currency holdings have no invented global weight',()=>{
   const {source,rows}=make();delete rows[0].recordedEvaluation;
-  let acc=C.accumulationSecurities(source,rows);assert.deepEqual(acc[0].currentValues,[]);assert.equal(acc[0].weight,null);
+  let acc=C.accumulationSecurities(source,rows);assert.deepEqual(acc[0].currentValues,[{accountId:'k1',currency:'KRW',value:300,asOf:'2026-09-20',source:'recorded'}]);assert.equal(acc[0].weight,null);
   rows[0].recordedEvaluation=200;rows[4].recordedCurrency='USD';
   acc=C.accumulationSecurities(source,rows);assert.equal(acc[0].weight,null);assert.equal(acc[1].weight,null);
-  assert.deepEqual(acc[0].currentValues,[{currency:'KRW',value:500}]);
+  assert.deepEqual(acc[0].currentValues,[{accountId:'k0',currency:'KRW',value:200,asOf:'2026-09-20',source:'recorded'},{accountId:'k1',currency:'KRW',value:300,asOf:'2026-09-20',source:'recorded'}]);
 });
 
 test('canonical latest positions ignore old holdings and transaction fallback in explicitly empty accounts',()=>{
@@ -143,7 +144,7 @@ test('canonical latest positions ignore old holdings and transaction fallback in
   const current=M.positions(source,transaction);
   assert.equal(current.length,1);assert.equal(C.accumulationInfo(card,source,current).kind,'accumulation');
   assert.doesNotMatch(C.buildPrompt(source,current),/삼성전자우/);
-  assert.deepEqual(C.accumulationSecurities(source,current)[0].currentValues,[{currency:'KRW',value:200}]);
+  assert.deepEqual(C.accumulationSecurities(source,current)[0].currentValues,[{accountId:'k0',currency:'KRW',value:200,asOf:'2026-10-01',source:'recorded'}]);
   source.investmentBrokerSnapshots[1].accounts[0].holdings=[holding];
   assert.equal(C.accumulationInfo(card,source,M.positions(source,transaction)).kind,'mixed');
 });

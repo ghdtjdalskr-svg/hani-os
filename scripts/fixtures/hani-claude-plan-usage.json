@@ -1,0 +1,1 @@
+{"accounts":[{"id":"claude-1","provider":"claude","source":"claude-plan-usage","windows":[{"id":"weekly","usedPercent":65,"resetsAt":"2099-10-15T00:00:00Z"},{"id":"session","usedPercent":24,"resetsAt":"2099-10-11T09:00:00Z"}]}]}

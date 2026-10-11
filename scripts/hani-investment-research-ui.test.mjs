@@ -49,10 +49,19 @@ try {
     }, {finish, fixture});
     const tabs = page.locator('#investmentCommittee #icSections');
     await page.waitForFunction(() => !!document.querySelector('#investmentCommittee > .ds-main-character-banner'));
-    assert.equal(await tabs.getByRole('tab').count(), 2); assert.equal(await tabs.getByRole('tab',{name:'종목 리서치'}).getAttribute('aria-selected'), 'true');
+    assert.equal(await tabs.getByRole('tab').count(), 2); assert.equal(await tabs.getByRole('tab',{name:'종목 리포트'}).getAttribute('aria-selected'), 'true');
+    assert.deepEqual(await page.locator('#sidebar .nav-floor-label').allTextContents(),["4F 대표실 + 라운지 전략기획실","3F 업무 공간 AI플랫폼개발실","2F 업무 공간 재무자산관리실 · 라이프&엔터테인먼트","1F 로비 기업솔루션사업부"]);
+    assert.equal(await page.locator('#sidebar [data-view=board] .txt').innerText(),'하니 라운지');
+    assert.equal(await page.locator('#sidebar [data-view=agentReview] .txt').innerText(),'대표실');
+    assert.equal(await page.locator('#sidebar [data-view=investmentCommittee] .txt').innerText(),'하니 투자 리포트');
+    const beforeShortcut=await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length}));
+    await page.locator('#sidebar [data-go=investmentCommittee]').evaluate(button=>button.click());
+    assert.equal(await page.evaluate(()=>document.body.dataset.view),'investmentCommittee');
+    assert.equal(await page.locator('#title').innerText(),'하니 투자 리포트');
+    assert.deepEqual(await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length})),beforeShortcut);
     const legacyOverview = await page.locator('#investOverviewAll').innerHTML();
     // QA1: explicit creation, save, reopen and reload; no automatic card generation.
-    await tabs.getByRole('tab',{name:'종목 리서치'}).click(); const host = page.locator('.ic-research');
+    await tabs.getByRole('tab',{name:'종목 리포트'}).click(); const host = page.locator('.ic-research');
     assert.match(await host.innerText(), /HANI Investment Research를 시작해볼까요/);
     assert.equal(await page.evaluate(() => state.investmentResearchCards.length), 0);
     const beforeCreate = await page.evaluate(() => icWrites.length);
@@ -115,6 +124,27 @@ try {
     await editor.locator('[name=action]').selectOption('CUSTOM'); await editor.locator('[name=customAction]').fill('분기 실적 확인 후 검토');
     await editor.getByRole('button',{name:'Research 저장',exact:true}).click(); await editor.waitFor({state:'hidden'});
     assert.match(await host.innerText(),/120 USD/); assert.match(await host.innerText(),/분기 실적 확인 후 검토/);
+    // Polish: derived summary, missing-value detail CTA, primary action, and mobile field order.
+    const missingCard=host.locator('.ic-card').filter({has:page.getByRole('heading',{name:'NVIDIA',exact:true})});
+    assert.equal(await missingCard.locator('.ic-fair-cta').count(),1);
+    assert.doesNotMatch(await missingCard.innerText(),/미입력|미확인 \/ 미확인/);
+    assert.match(await host.locator('.ic-summary-strip').innerText(),/평균 확신도/);
+    assert.match(await host.locator('.ic-summary-strip').innerText(),/최고 확신 종목/);
+    assert.match(await host.locator('.ic-summary-strip').innerText(),/적정가 입력/);
+    assert.equal(await host.locator('.ic-rating-bars progress').count(),5);
+    assert.equal(await host.locator('.ic-action-pill').count(),2);
+    const cardsBeforeCTA=await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length}));
+    await missingCard.getByRole('button',{name:'적정가 입력하기 →',exact:true}).click();
+    assert.equal(await editor.locator('[name=name]').inputValue(),'NVIDIA');
+    await editor.getByRole('button',{name:'닫기',exact:true}).click();
+    assert.deepEqual(await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length})),cardsBeforeCTA);
+    if(width===390){
+      const order=await missingCard.evaluate(el=>['h3','.ic-rating','.ic-fair-cta','.ic-conviction','.ic-card-action'].map(q=>el.querySelector(q).getBoundingClientRect().top));
+      assert.deepEqual(order,order.slice().sort((a,b)=>a-b),'390px name → rating → Fair Value → conviction → action');
+      assert.ok(await missingCard.evaluate(el=>el.scrollWidth<=el.clientWidth+1));
+    }
+    assert.match(await page.locator('.ic-steps').innerText(),/① 리서치 받기 ✓/);
+    assert.match(await page.locator('.ic-steps').innerText(),/③ 다음 점검/);
     // GPT export → prose/fenced import → diffs → exclusion → explicit confirmation.
     await host.getByRole('button',{name:'GPT용 자료 복사'}).click();
     const copied = await page.evaluate(() => navigator.clipboard.readText()); assert.match(copied,/OUTPUT/); assert.match(copied,/changeReason/);
@@ -129,19 +159,53 @@ try {
     await importer.getByRole('button',{name:'변경 검토',exact:true}).click(); assert.equal(await importer.locator('.ic-review-item').count(),3);
     assert.match(await importer.locator('.ic-review-item').first().innerText(),/HOLD → REDUCE/); assert.match(await importer.innerText(),/가치평가 재검토/);
     assert.deepEqual(await page.evaluate(() => ({state:JSON.stringify(state),writes:icWrites.length})),beforeImport);
+    // Missing-FV warning and follow-up copy operate entirely in review memory.
+    const incomplete={...report[1]}; delete incomplete.fairValue; delete incomplete.fairValueLow; delete incomplete.fairValueHigh;
+    await importer.locator('[data-ic-report]').fill(JSON.stringify([report[0],incomplete,report[2]]));
+    await importer.getByRole('button',{name:'변경 검토',exact:true}).click();
+    assert.match(await importer.innerText(),/적정가 누락 1종목/);
+    assert.match(await importer.locator('.ic-review-item').nth(1).innerText(),/적정가 누락 – GPT에 다시 요청하거나 직접 입력/);
+    await importer.getByRole('button',{name:'누락 종목만 GPT 재요청 복사',exact:true}).click();
+    const followup=await page.evaluate(()=>navigator.clipboard.readText());
+    assert.match(followup,/Amazon/);assert.doesNotMatch(followup,/삼성전자우|Visa/);assert.match(followup,/fairValueLow/);
+    assert.deepEqual(await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length})),beforeImport);
+    // Complete a new pending card using a valuation-only response before any save.
+    await importer.locator('[data-ic-report]').fill(JSON.stringify([{name:incomplete.name,ticker:incomplete.ticker,market:incomplete.market,fairValue:report[1].fairValue,fairValueLow:report[1].fairValueLow,fairValueHigh:report[1].fairValueHigh,valuationMethod:'이익 배수',valuationNote:'후속 보완'}]));
+    await importer.getByRole('button',{name:'변경 검토',exact:true}).click();
+    assert.equal(await importer.locator('.ic-review-item').count(),3);
+    assert.doesNotMatch(await importer.innerText(),/적정가 누락/);
+    assert.deepEqual(await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length})),beforeImport);
+    await importer.locator('[data-ic-report]').fill(JSON.stringify(report));
+    await importer.getByRole('button',{name:'변경 검토',exact:true}).click();
     await importer.locator('[data-ic-include="2"]').uncheck(); await importer.getByRole('button',{name:'선택 반영',exact:true}).click(); await importer.waitFor({state:'hidden'});
     assert.deepEqual(await page.evaluate(() => state.investmentResearchCards.map(c=>c.name)),['삼성전자우','NVIDIA','Amazon']);
     // GPT continuation opens a prefilled memory-only draft and cancellation leaves state untouched.
     const afterGpt=await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length}));
-    await host.getByRole('button',{name:'이번 달 위원회로 이어서',exact:true}).click();
+    assert.equal(await host.locator('.ic-next-step').isVisible(),true);
+    assert.match(await host.locator('.ic-continue').getAttribute('class'),/primary/);
+    await host.getByRole('button',{name:'다음 단계: 이번 달 리포트 확정하기 →',exact:true}).click();
     const monthly=page.locator('.ic-monthly');
-    assert.equal(await tabs.getByRole('tab',{name:'월간 위원회'}).getAttribute('aria-selected'),'true');
-    assert.match(await monthly.innerText(),/HANI GROUP · INVESTMENT COMMITTEE · 2026 OCTOBER/);
+    async function assertMonthlyFits(phase) {
+      const layout = await monthly.evaluate(el => {
+        const box = el.getBoundingClientRect();
+        const tables = [...el.querySelectorAll(".ic-role-table")].map(table => ({width:table.getBoundingClientRect().width,minWidth:getComputedStyle(table).minWidth}));
+        const overflow = [...el.querySelectorAll("*")].filter(node => node.getClientRects().length && node.getBoundingClientRect().right > box.right + 1).slice(0,12).map(node => ({tag:node.tagName,class:node.className,width:node.getBoundingClientRect().width,scrollWidth:node.scrollWidth,clientWidth:node.clientWidth,minWidth:getComputedStyle(node).minWidth}));
+        return {scrollWidth:el.scrollWidth,clientWidth:el.clientWidth,documentWidth:document.documentElement.scrollWidth,viewport:innerWidth,tables,overflow};
+      });
+      const diagnostics = JSON.stringify({width,finish,phase,...layout});
+      if (layout.scrollWidth > layout.clientWidth + 1 || layout.documentWidth > layout.viewport + 1) await monthly.screenshot({path:path.join(evidence,`${width}-${finish}-monthly-${phase}-overflow.png`)});
+      assert.ok(layout.scrollWidth <= layout.clientWidth + 1, "Monthly report must fit its container: " + diagnostics);
+      assert.ok(layout.documentWidth <= layout.viewport + 1, "Monthly report must fit the viewport: " + diagnostics);
+      assert.ok(layout.tables.length > 0, "Portfolio role table is rendered: " + diagnostics);
+      assert.ok(layout.tables.every(table => table.minWidth === "0px" && table.width <= layout.clientWidth + 1), "Role tables must override the legacy table minimum width: " + diagnostics);
+    }
+    assert.equal(await tabs.getByRole('tab',{name:'월간 리포트'}).getAttribute('aria-selected'),'true');
+    assert.match(await monthly.innerText(),/HANI GROUP · 투자 리포트 · 2026 OCTOBER/);
     assert.match(await monthly.locator('[name=actionPlan]').inputValue(),/삼성전자우/);
     assert.match(await monthly.locator('[name=newWatchlist]').inputValue(),/Amazon/);
     assert.deepEqual(await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length})),afterGpt);
     await monthly.getByRole('button',{name:'초안 취소',exact:true}).click();
-    await tabs.getByRole('tab',{name:'종목 리서치'}).click();
+    await tabs.getByRole('tab',{name:'종목 리포트'}).click();
     // Stale import cannot silently overwrite changes; no report parsing save.
     await host.getByRole('button',{name:'리포트 붙여넣기'}).click(); await importer.locator('[data-ic-report]').fill(JSON.stringify([fixture.cards[0]])); await importer.getByRole('button',{name:'변경 검토',exact:true}).click();
     await page.evaluate(() => {state.investmentResearchCards[0].executiveComment='동시 변경';});
@@ -165,19 +229,25 @@ try {
     await editor.locator('[name=rating]').selectOption('BUY');await editor.locator('[name=fairValue]').fill('70000');
     await editor.locator('details').filter({has:page.locator('[name=themes]')}).locator('summary').click();await editor.locator('[name=themes]').fill('배당');
     await editor.getByRole('button',{name:'Research 저장',exact:true}).click();await editor.waitFor({state:'hidden'});
-    await tabs.getByRole('tab',{name:'월간 위원회'}).click();
+    await tabs.getByRole('tab',{name:'월간 리포트'}).click();
     assert.deepEqual(await monthly.locator('.ic-months button').allTextContents(),['2026.10','2026.09']);
+    const beforePastRead=await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length}));
     await monthly.locator('[data-month="2026-09"]').click();
     assert.match(await monthly.innerText(),/9월 확정 요약/);assert.equal(await monthly.locator('form').count(),0);
-    const pastRow=monthly.locator('.ic-snapshot-security').first();assert.match(await pastRow.innerText(),/65,000 KRW/);assert.match(await pastRow.innerText(),/REDUCE/);
+    // The imported opinion is REDUCE; its independent action remains fixture HOLD.
+    assert.deepEqual(await page.evaluate(()=>{const c=JSON.parse(icSeptember).securitySnapshots[0];return {rating:c.rating,action:c.action};}),{rating:'REDUCE',action:'HOLD'});
+    const pastRow=monthly.locator('.ic-snapshot-security').first();assert.match(await pastRow.innerText(),/65,000 KRW/);
+    assert.equal(await pastRow.locator('.ic-rating').innerText(),'REDUCE');
+    assert.equal(await pastRow.locator('.ic-action-plan').innerText(),'행동 보유 유지');
     await pastRow.getByRole('button',{name:'종목 상세 · Rating History'}).click();
-    assert.match(await editor.locator('.ic-timeline').innerText(),/월간 위원회 2026.09/);
+    assert.match(await editor.locator('.ic-timeline').innerText(),/월간 리포트 2026.09/);
     assert.match(await editor.locator('.ic-timeline').innerText(),/REDUCE/);assert.equal(await editor.locator('[name=rating]').inputValue(),'BUY');
-    await editor.getByRole('button',{name:'닫기',exact:true}).click();await tabs.getByRole('tab',{name:'월간 위원회'}).click();
+    await editor.getByRole('button',{name:'닫기',exact:true}).click();await tabs.getByRole('tab',{name:'월간 리포트'}).click();
+    assert.deepEqual(await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length})),beforePastRead,'past snapshot and Rating History reads must not change state or write');
     const beforeDraft=await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length}));
-    await monthly.getByRole('button',{name:'이번 달 위원회 시작',exact:true}).click();
+    await monthly.getByRole('button',{name:'이번 달 리포트 시작',exact:true}).click();
     assert.match(await monthly.locator('[name=strengthened]').inputValue(),/REDUCE → BUY/);
-    assert.match(await monthly.locator('.ic-overlap').innerText(),/HIGH · 보유 카드 3개/);
+    assert.match(await monthly.locator('.ic-overlap').innerText(),/테마 중복 주의 · 배당 · 보유 3종목/);
     await monthly.locator('[name=ratingPreset]').selectOption('SELECTIVE BUY');
     assert.equal(await monthly.locator('[name=portfolioRating]').inputValue(),'SELECTIVE BUY');
     await monthly.locator('[name=portfolioRating]').fill('HOLD / SELECTIVE BUY');
@@ -187,12 +257,17 @@ try {
     await page.evaluate(()=>HaniInvestmentCommittee.render());
     await monthly.locator('[data-month="2026-09"]').click();await monthly.locator('[data-month="2026-10"]').click();
     assert.equal(await monthly.locator('[name=executiveSummary]').inputValue(),'10월 핵심 요약');
-    assert.ok(await monthly.evaluate(el=>el.scrollWidth<=el.clientWidth+1));assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+    await assertMonthlyFits('draft');
     await monthly.screenshot({path:path.join(evidence,`${width}-${finish}-monthly-draft.png`)});
-    await monthly.getByRole('button',{name:'이번 달 위원회 확정',exact:true}).click();
+    await monthly.getByRole('button',{name:'이번 달 리포트 확정',exact:true}).click();
     assert.equal(await monthly.locator('form').count(),0);assert.match(await monthly.innerText(),/10월 핵심 요약/);
     assert.equal(await monthly.locator('[data-monthly=start]').isVisible(),false);
     assert.equal(await page.evaluate(()=>state.investmentCommitteeSnapshots.length),2);
+    assert.match(await monthly.locator('.ic-confirmed-summary').innerText(),/10월 리포트 확정 완료 · 다음 리뷰 11월 첫 주 · 체크포인트/);
+    assert.match(await page.locator('.ic-steps').innerText(),/② 이번 달 리포트 확정 ✓/);
+    const checkpointCount=await page.evaluate(()=>HaniInvestmentResearchCore.confirmedSummary(HaniInvestmentResearchCore.latestSnapshot(state,'2026-10')).checkpoints.length);
+    assert.equal(await monthly.locator('.ic-confirmed-summary li').count(),checkpointCount||1);
+    assert.equal(await host.locator('.ic-next-step').isVisible(),false);
     const original=await page.evaluate(()=>JSON.stringify(state.investmentCommitteeSnapshots[1]));
     const frozenSummary=await monthly.locator('.ic-snapshot-securities').innerText();
     // Live card edits and price cache changes cannot recompute frozen data, even in October.
@@ -205,7 +280,7 @@ try {
     await monthly.getByRole('button',{name:'수정본 추가',exact:true}).click();
     await monthly.locator('[name=executiveSummary]').fill('10월 수정된 요약');
     assert.equal(await page.evaluate(()=>state.investmentCommitteeSnapshots.length),2);
-    await monthly.getByRole('button',{name:'이번 달 위원회 확정',exact:true}).click();
+    await monthly.getByRole('button',{name:'이번 달 리포트 확정',exact:true}).click();
     assert.match(await monthly.innerText(),/수정본 2/);assert.match(await monthly.innerText(),/이전 수정본 1개/);
     assert.equal(await page.evaluate(()=>state.investmentCommitteeSnapshots.length),3);
     assert.equal(await page.evaluate(()=>JSON.stringify(state.investmentCommitteeSnapshots[1])),original);
@@ -215,7 +290,7 @@ try {
     await monthly.getByRole('button',{name:'최신 수정본 보기'}).click();
     assert.match(await monthly.innerText(),/10월 수정된 요약/);
     assert.doesNotMatch(await monthly.innerText(),/\d{4}-\d{2}-\d{2}T/);
-    assert.ok(await monthly.evaluate(el=>el.scrollWidth<=el.clientWidth+1));assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+    await assertMonthlyFits('confirmed');
     await monthly.screenshot({path:path.join(evidence,`${width}-${finish}-monthly.png`)});
     const writesBeforeGuard=await page.evaluate(()=>icWrites.length);
     const guarded=await page.evaluate(()=>{try{HaniInvestmentResearchCore.confirmCommittee(state,HaniInvestmentResearchCore.committeeDraft(state,'2026-10'),()=>commit('should not run'),{uid});return false;}catch(e){return /이미 확정/.test(e.message);}});
@@ -228,7 +303,7 @@ try {
     assert.ok(await page.evaluate(()=>icWrites.includes(STORAGE_KEY))); assert.deepEqual(errors,[]);
     // Accumulation settings: default broker rule, explicit save, GPT exclusion, optional Research and frozen Monthly list.
     await page.evaluate(()=>showView('investmentCommittee'));
-    await tabs.getByRole('tab',{name:'종목 리서치'}).click();
+    await tabs.getByRole('tab',{name:'종목 리포트'}).click();
     await page.evaluate(({fixture})=>{
       state=freshState();
       state.accounts=[{id:'ic-k',name:'키움 ISA',type:'ISA',broker:'키움증권'},{id:'ic-t',name:'토스 위탁종합',type:'위탁종합',broker:'토스증권'},{id:'ic-h',name:'하나 위탁종합',type:'위탁종합',broker:'하나증권'}];
@@ -248,6 +323,8 @@ try {
       window.icAccumulationLegacy=JSON.stringify([state.accounts,state.instruments,state.investmentResearchCards,state.investmentBrokerSnapshots]);
       HaniInvestmentCommittee.render();
     },{fixture});
+    // This scenario intentionally has no live quotes, so NEW freeze must use the dated broker value.
+    await page.evaluate(async()=>{HaniAssetMarket.readResearchQuotes=async()=>({stocks:[],quotes:[]});await HaniInvestmentCommittee.refreshPrices();});
     const settings=host.locator('.ic-accumulation-settings');
     assert.equal(await settings.getAttribute('open'),null);
     const accumulationBefore=await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length}));
@@ -292,9 +369,9 @@ try {
     await host.getByRole('button',{name:'GPT용 자료 복사',exact:true}).click();
     assert.match(await page.evaluate(()=>navigator.clipboard.readText()),/키움전용 적립 ETF/);
     await settings.locator('[data-ic-account="ic-k"]').check();await settings.getByRole('button',{name:'계좌 설정 저장',exact:true}).click();
-    await tabs.getByRole('tab',{name:'월간 위원회'}).click();
+    await tabs.getByRole('tab',{name:'월간 리포트'}).click();
     assert.match(await monthly.locator('.ic-accumulation').innerText(),/키움전용 적립 ETF/);
-    await monthly.getByRole('button',{name:'이번 달 위원회 시작',exact:true}).click();
+    await monthly.getByRole('button',{name:'이번 달 리포트 시작',exact:true}).click();
     assert.match(await monthly.locator('.ic-accumulation').innerText(),/장기 적립식 \(투자의견 없음\)/);
     assert.match(await monthly.locator('.ic-accumulation').innerText(),/키움 ISA/);
     assert.doesNotMatch(await monthly.locator('.ic-accumulation').innerText(),/Rating|Fair Value/);
@@ -306,15 +383,15 @@ try {
     assert.equal(await monthly.locator('[name=marketView]').inputValue(),'작성 중 보존');
     // Holdings changed after start: the canonical stale-draft guard must reject without saving.
     const beforeRejectedConfirm=await page.evaluate(()=>({snapshots:JSON.stringify(state.investmentCommitteeSnapshots),cards:JSON.stringify(state.investmentResearchCards),writes:icWrites.length}));
-    await monthly.getByRole('button',{name:'이번 달 위원회 확정',exact:true}).click();
+    await monthly.getByRole('button',{name:'이번 달 리포트 확정',exact:true}).click();
     assert.match(await monthly.locator('.ic-error').innerText(),/초안 작성 중 원본이 변경되었습니다/);
     assert.equal(await monthly.locator('form').count(),1);
     assert.equal(await monthly.locator('[name=marketView]').inputValue(),'작성 중 보존');
     assert.deepEqual(await page.evaluate(()=>({snapshots:JSON.stringify(state.investmentCommitteeSnapshots),cards:JSON.stringify(state.investmentResearchCards),writes:icWrites.length})),beforeRejectedConfirm);
     await monthly.getByRole('button',{name:'초안 취소',exact:true}).click();
-    await monthly.getByRole('button',{name:'이번 달 위원회 시작',exact:true}).click();
+    await monthly.getByRole('button',{name:'이번 달 리포트 시작',exact:true}).click();
     await monthly.locator('[name=marketView]').fill('작성 중 보존');
-    await monthly.getByRole('button',{name:'이번 달 위원회 확정',exact:true}).click();
+    await monthly.getByRole('button',{name:'이번 달 리포트 확정',exact:true}).click();
     assert.equal(await monthly.locator('form').count(),0);
     assert.match(await monthly.innerText(),/확정본 · 수정본 1/);
     assert.equal(await monthly.locator('[data-monthly=start]').isVisible(),false);
@@ -325,24 +402,78 @@ try {
     assert.equal(accumulationSnapshot.marketView,'작성 중 보존');
     const accumulationSecurities=accumulationSnapshot.securitySnapshots.filter(c=>c.kind==='accumulation');
     assert.deepEqual(accumulationSecurities.map(c=>c.name).sort(),['키움전용 무카드 ETF','키움전용 적립 ETF'].sort());
-    assert.deepEqual(accumulationSecurities.find(c=>c.instrumentId==='ic-only')?.currentValues,[{currency:'KRW',value:120000}]);
+    assert.deepEqual(accumulationSecurities.find(c=>c.instrumentId==='ic-only')?.currentValues,[{accountId:'ic-k',currency:'KRW',value:120000,asOf:'2026-10-10',source:'recorded'}]);
     assert.deepEqual(accumulationSnapshot.securitySnapshots.filter(c=>c.kind!=='accumulation').map(c=>c.id).sort(),['ic-r1','ic-r2']);
     assert.deepEqual(await page.evaluate(()=>JSON.parse(localStorage.getItem(STORAGE_KEY)).investmentCommitteeSnapshots),[accumulationSnapshot]);
     const frozenAccumulation=await monthly.locator('.ic-accumulation').innerText();
     const frozenAccumulationSnapshot=await page.evaluate(()=>JSON.stringify(state.investmentCommitteeSnapshots));
     assert.equal(await page.evaluate(()=>state.investmentResearchCards.length),3);
     await monthly.screenshot({path:path.join(evidence,`${width}-${finish}-accumulation.png`)});
-    await tabs.getByRole('tab',{name:'종목 리서치'}).click();
+    await tabs.getByRole('tab',{name:'종목 리포트'}).click();
     await settings.locator('[data-ic-account="ic-k"]').uncheck();await settings.getByRole('button',{name:'계좌 설정 저장',exact:true}).click();
-    await tabs.getByRole('tab',{name:'월간 위원회'}).click();
+    await tabs.getByRole('tab',{name:'월간 리포트'}).click();
     assert.equal(await monthly.locator('.ic-accumulation').innerText(),frozenAccumulation);
     assert.equal(await page.evaluate(()=>JSON.stringify(state.investmentCommitteeSnapshots)),frozenAccumulationSnapshot);
     assert.equal(await page.evaluate(()=>JSON.stringify(JSON.parse(localStorage.getItem(STORAGE_KEY)).investmentCommitteeSnapshots)),frozenAccumulationSnapshot);
     assert.equal(await page.evaluate(()=>JSON.stringify(state.investmentResearchCards)),beforeRejectedConfirm.cards);
     assert.equal(await page.evaluate(()=>state.investmentResearchCards.length),3);
+    // Confirmed report compactness and print presentation execute in real Edge.
+    assert.equal(await monthly.locator('.ic-conclusion p').count(),3);
+    assert.equal(await monthly.locator('.ic-role-table tbody tr').count(),2);
+    assert.equal(await monthly.locator('.ic-monthly-list').count(),0);
+    assert.match(await monthly.locator('.ic-empty-changes').innerText(),/첫 리포트라/);
+    assert.doesNotMatch(await monthly.innerText(),/입력 없음|해당 항목 없음|Fair Value 미입력|직전 Rating 없음/);
+    assert.match(await monthly.locator('.ic-snapshot-securities').innerText(),/행동 보유 유지|행동 관망|행동 조정 시 추가/);
+    const beforePrint=await page.evaluate(()=>({state:JSON.stringify(state),stored:localStorage.getItem(STORAGE_KEY),writes:icWrites.length}));
+    await page.emulateMedia({media:'print'});
+    assert.equal(await page.locator('#sidebar').isVisible(),false);
+    assert.equal(await page.locator('.hani-context-remote').isVisible(),false);
+    assert.equal(await page.locator('.hani-remote-mobile-trigger').isVisible(),false);
+    assert.equal(await page.locator('.ui26-top').isVisible(),false);
+    assert.equal(await monthly.locator('[data-monthly=revise]').isVisible(),false);
+    assert.equal(await monthly.locator('.ic-conclusion').isVisible(),true);
+    assert.equal(await monthly.locator('.ic-snapshot-security').first().evaluate(el=>getComputedStyle(el).breakInside),'avoid');
+    assert.match(await monthly.locator('.ic-executive').innerText(),/HANI GROUP · 투자 리포트 · 2026 OCTOBER/);
+    await monthly.screenshot({path:path.join(evidence,`${width}-${finish}-report-print.png`)});
+    assert.deepEqual(await page.evaluate(()=>({state:JSON.stringify(state),stored:localStorage.getItem(STORAGE_KEY),writes:icWrites.length})),beforePrint);
+    await page.emulateMedia({media:'screen'});
+    // Construct an old fixture lacking frozen value; render may supplement it but never backfill it.
+    await page.evaluate(()=>{
+      window.icModernState=state;state=structuredClone(state);
+      const old=state.investmentCommitteeSnapshots[0];old.marketView='';
+      old.securitySnapshots.filter(c=>c.kind==='accumulation').forEach(c=>{c.currentValues=[];});
+      const future=structuredClone(state.investmentBrokerSnapshots[0]);future.id='future';future.snapshotDate='2026-10-12';
+      future.accounts.forEach(a=>a.holdings.forEach(h=>{h.evaluationAmount=999999;}));state.investmentBrokerSnapshots.push(future);
+      HaniInvestmentCommittee.renderMonthly();
+    });
+    const legacyBefore=await page.evaluate(()=>({state:JSON.stringify(state),stored:localStorage.getItem(STORAGE_KEY),writes:icWrites.length}));
+    assert.match(await monthly.locator('.ic-accumulation').innerText(),/기록 평가액 ₩120,000 \(10\/10 기록\) · 보조 표시/);
+    assert.match(await monthly.locator('.ic-account-subtotal').innerText(),/키움 ISA 소계.*₩220,000.*보조 표시/);
+    assert.doesNotMatch(await monthly.locator('.ic-monthly-board').innerText(),/시장 관점|999,999/);
+    await page.evaluate(()=>{HaniInvestmentCommittee.renderMonthly();HaniInvestmentCommittee.renderMonthly();});
+    assert.deepEqual(await page.evaluate(()=>({state:JSON.stringify(state),stored:localStorage.getItem(STORAGE_KEY),writes:icWrites.length})),legacyBefore);
+    await page.evaluate(()=>{state=icModernState;HaniInvestmentCommittee.renderMonthly();});
+    const beforeReminder=await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length,stored:localStorage.getItem(STORAGE_KEY)}));
+    await page.evaluate(()=>{const day=careKoreaPeriod;window.icOldPeriod=day;careKoreaPeriod=()=>({...day(),day:'2026-11-01'});showView('home');renderHaniCareHome();});
+    assert.equal(await page.locator('#home [data-care-committee]').count(),1);
+    await page.evaluate(()=>showView('intake'));
+    await page.waitForFunction(()=>!!document.querySelector('.yuna-helpdesk [data-care-committee]'));
+    assert.equal(await page.locator('.yuna-helpdesk [data-care-committee]').count(),1);
+    await page.locator('.yuna-helpdesk [data-care-committee] button').click();
+    assert.equal(await page.evaluate(()=>document.body.dataset.view),'investmentCommittee');
+    // Home intentionally persists its existing UI navigation key. This is not an IC save.
+    // Keep all Life OS state and protected storage bytes identical, and reject every other write key.
+    const afterReminder=await page.evaluate(start=>({state:JSON.stringify(state),stored:localStorage.getItem(STORAGE_KEY),keys:icWrites.slice(start)}),beforeReminder.writes);
+    assert.equal(afterReminder.state,beforeReminder.state);assert.equal(afterReminder.stored,beforeReminder.stored);
+    assert.ok(afterReminder.keys.length>=1,'existing home navigation persistence ran');
+    assert.ok(afterReminder.keys.every(key=>key==='hani_os_navigation_v1'),'only existing navigation key may persist while switching through home');
+    const beforeRerender=await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length,stored:localStorage.getItem(STORAGE_KEY)}));
+    await page.evaluate(()=>{HaniInvestmentCommittee.render();HaniInvestmentCommittee.select('monthly');HaniInvestmentCommittee.render();});
+    assert.deepEqual(await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length,stored:localStorage.getItem(STORAGE_KEY)})),beforeRerender);
+    await page.evaluate(()=>{careKoreaPeriod=icOldPeriod;renderHaniCareHome();});
     const accumulationDuplicates=await page.evaluate(()=>{const ids=[...document.querySelectorAll('[id]')].map(el=>el.id);return ids.filter((id,i)=>id.startsWith('ic')&&ids.indexOf(id)!==i);});
     assert.deepEqual(accumulationDuplicates,[]);assert.deepEqual(errors,[]);
     await context.close();
   }
-  console.log('PASS Investment Research + Monthly IC + accumulation UI (Edge) 4 combinations: QA1/2/3/4/5/6/7, GPT continuation/cancel, KST, desktop header, monthly draft/no-write, freeze/revision/guard/overlap/history, 390px screenshots, legacy state/DOM, reload, app console errors 0. Synthetic only; real auth/Cloud/Android unverified.');
+  console.log('PASS Investment Report + accumulation + compact frozen report/print UI (Edge) 4 combinations: QA1/2/3/4/5/6/7, GPT continuation/cancel, KST, desktop header, monthly draft/no-write, freeze/revision/guard/overlap/history, 390px screenshots, legacy state/DOM, reload, app console errors 0. Synthetic only; real auth/Cloud/Android unverified.');
 } finally {if(browser)await browser.close(); await new Promise(resolve=>server.close(resolve));}

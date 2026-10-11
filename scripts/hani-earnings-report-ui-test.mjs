@@ -57,7 +57,7 @@ try{
     await page.waitForTimeout(450);
     assert.equal(await page.locator('#loginGate').isVisible(),false,`${viewport.name}: entry screen stays dismissed after boot`);
     const labels=await page.locator('.office-group .group-body .nav-btn .txt').allTextContents();
-    assert.deepEqual(labels.slice(0,4),['인포데스크','경영회의실','컨퍼런스 룸','회사 소개'],`${viewport.name}: report remains in office IA`);
+    assert.deepEqual(labels,['대표실','하니 라운지','AI 업무 현황','개발센터','개발 보고서','배포센터','AI 주간 예산','테마 스튜디오','컨퍼런스 룸','하니 투자 리포트','인포데스크','회사 소개'],`${viewport.name}: report remains in office IA`);
     assert(await page.locator('#monthlyReport.view.active').count(),`${viewport.name}: monthly route active`);
     await page.locator('[data-report-board="quarterly"]').click();assert.equal(await page.locator('[data-earnings-ppt]').count(),0,'unverified source cannot expose presentation/export');assert.match(await page.locator('#earningsQuarterly').innerText(),/원본 검증 대기/);
     await page.evaluate(()=>{goalPeriodReadContext=()=>({source:structuredClone(state),asOf:'2026-10-01',evaluationAt:'2026-10-01T12:00:00Z',canonical:{brokerTotal:row=>brokerCalc(row).total,ledgerSpending:row=>ledgerCalc(row).jispiT}})});

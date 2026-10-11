@@ -124,12 +124,11 @@ const card=id=>node('aiBudgetCards').innerHTML.match(new RegExp(`<article[^>]*da
 assert.match(card('claude-1'),/최근 5시간/);assert.match(card('claude-1'),/입력 \+ 캐시 <strong>30<\/strong> 토큰 · 출력 <strong>10<\/strong>/);
 assert.match(card('claude-1'),/최근 7일/);assert.match(card('claude-1'),/응답 2회/);assert.match(card('claude-1'),/width:50%/);
 assert.match(card('claude-1'),/aria-valuemax="80"/);assert.equal(card('claude-1').includes('budget-value'),false);
-assert.match(card('gemini-cli'),/2 \/ 20회/);assert.match(card('gemini-cli'),/사용 10%/);assert.match(card('gemini-cli'),/Gemini Pro\(웹\/앱\) 한도는 읽을 수 없습니다/);
-const kstReset=new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(gemini.cliUsage.resetsAt));
-assert.ok(card('gemini-cli').includes(kstReset));assert.match(card('gemini-cli'),/\(KST\)/);
+assert.equal(node('aiBudgetCards').innerHTML.includes('data-budget-slot="gemini-cli"'),false,'CLI data remains compatible but is hidden');
+assert.match(card('claude-1'),/사용 추정/);
 node('aiBudgetAccount').value='claude-1';node('budget-session-used').value='25';node('budget-session-reset').value='';
 node('aiBudgetForm').handlers.submit({preventDefault(){}});
-assert.match(card('claude-1'),/75%/);assert.match(card('claude-1'),/응답 2회/);
+assert.match(card('claude-1'),/75%/);assert.match(card('claude-1'),/플랜 사용률/);assert.equal(JSON.parse(storage.get('hani_ai_budget_summary_v1')).accounts.find(a=>a.id==='claude-1').transcriptUsage.fiveHours.assistantTurns,2);
 const later=Date.now();uiPayload={schemaVersion:1,accounts:[claudeTranscriptAccount(events,null,later),geminiLogAccount(geminiEvents,later)]};
 await node('aiBudgetRefresh').handlers.click();assert.match(card('claude-1'),/75%/);assert.match(card('claude-1'),/직접 기록/);
 const injected='<img src=x onerror=window.budgetInjected=true>';
