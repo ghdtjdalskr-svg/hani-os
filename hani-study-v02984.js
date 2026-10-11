@@ -252,7 +252,16 @@
     return newsroomQuestionSources(data);
   }
 
-  function newsMaterialMinimum(size, sources) { return sources.length ? Math.ceil(size / 3) : 0; }
+  function isBasicEconomyProject(project = {}) {
+    const text = (value, limit) => String(value || '').trim().slice(0, limit);
+    const level = text(project.level, 60) || text(project.difficulty, 60);
+    const focus = project.focus_areas || project.focusAreas || [];
+    const description = level || [text(project.name,120), text(project.goal,800), ...(Array.isArray(focus) ? focus.slice(0,12).map(x => text(x,80)).filter(Boolean) : [])].join(' ');
+    return project.category === 'economy' && /기초|\bbasic\b|\bbeginner\b/i.test(description);
+  }
+  function newsMaterialMinimum(size, sources, project = {}) {
+    return sources.length ? (isBasicEconomyProject(project) ? Math.floor(size / 4) : Math.ceil(size / 3)) : 0;
+  }
   function hasNewsMaterial(question, sources) {
     return sources.some(s => String(question.prompt || '').includes(s.title)
       && String(question.prompt || '').includes(s.summary.slice(0,260))
@@ -491,7 +500,9 @@
     if (!session?.access_token) throw new Error('로그인 세션을 확인하지 못했습니다.');
     const quizSize = normalizeProject(project).quizSize;
     const questionSources = project.category === 'economy' ? await loadQuizNewsSources() : [];
-    const newsMinimum = newsMaterialMinimum(quizSize, questionSources);
+    const basicLevel = isBasicEconomyProject(project);
+    const newsMinimum = newsMaterialMinimum(quizSize, questionSources, project);
+    const newsMaximum = basicLevel ? Math.floor(quizSize / 4) : quizSize;
     const previous=recentQuestions(project.id);
     const recentPrompts=previous.map(x=>questionFocus(x.prompt).slice(0,260)).filter(Boolean).slice(-40);
     const requestBody = {
@@ -500,6 +511,8 @@
           id: project.id,
           name: project.name,
           category: project.category,
+          level: project.level || (basicLevel ? 'basic' : undefined),
+          difficulty: project.difficulty,
           goal: project.goal,
           target_date: project.examDate || project.targetDate,
           exam_date: project.examDate || project.targetDate,
@@ -513,6 +526,7 @@
           version:'HANI Question Engine v2', objective:'경제·시장 사건을 개념과 시장 영향에 연결해 이해하는지 평가',
           rotation_pools:['경제 기초·금융 원리','금리·물가·환율·채권','주식·밸류에이션·실적','기업·산업·정책','포트폴리오·리스크','최근 경제·시장 이슈'],
           difficulty_mix:['easy','medium','medium','hard'],
+          ...(basicLevel ? {news_material_maximum:newsMaximum,core_concept_minimum:Math.ceil(quizSize/3)} : {}),
           question_types:['Definition','Cause & Effect','Scenario','Data Interpretation','Current Issue','Portfolio / Investment Decision'],
           rules:['문제 수에 맞춰 rotation_pools와 question_types를 동적으로 순환','Current Issue는 제공된 Newsroom source로만 출제','source가 없으면 시사 사실을 꾸며내지 말고 검증 가능한 경제 원리·가상 시나리오로 대체','숫자 단순 암기 금지','오답은 다른 상황으로 변형','정답 하나와 해설 일치'],
         } : project.category === 'jlpt' ? { version:'HANI Question Engine v2', domain:'JLPT', rotation_pools:['문자·어휘 읽기','문맥 어휘','유의어·용법','문법 형식','문장 배열','문맥 문법','단문 독해','중문 독해','정보 검색'], rules:['경제 문제 규칙을 혼합하지 않음','실제 기출문제를 복제하지 않고 기출 유형 기반 새 문제로 구성','프로젝트 목표와 집중영역을 우선','최근에 덜 나온 유형·주제·상황을 먼저 출제','같은 학습 포인트는 새 문장·상황·보기로 반복 가능'] }
@@ -537,7 +551,7 @@
         body: JSON.stringify({
           ...requestBody,
           project:{...requestBody.project,goal:retryGoal,quiz_size:batchSize},
-          engine_contract:{...requestBody.engine_contract,news_material_minimum:Math.min(batchSize,newsNeeded)},
+          engine_contract:{...requestBody.engine_contract,news_material_minimum:Math.min(basicLevel ? Math.floor(batchSize/4) : batchSize,newsNeeded),...(basicLevel ? {news_material_maximum:Math.min(Math.floor(batchSize/4),newsMaximum-accepted.filter(x=>hasNewsMaterial(x,questionSources)).length),core_concept_minimum:Math.ceil(batchSize/3)} : {})},
           generation_feedback:{
             attempt,
             requested_count:remaining,
@@ -557,15 +571,17 @@
       if (!questions.length) throw new Error('퀴즈 생성 결과에 유효한 문제가 없습니다.');
       const ordered = questions.slice().sort((a,b) => Number(hasNewsMaterial(b,questionSources)) - Number(hasNewsMaterial(a,questionSources)));
       for (const question of ordered) {
+        if (basicLevel && hasNewsMaterial(question,questionSources) && accepted.filter(x=>hasNewsMaterial(x,questionSources)).length >= newsMaximum) continue;
         const needed = Math.max(0,newsMinimum - accepted.filter(x => hasNewsMaterial(x,questionSources)).length);
         if (!hasNewsMaterial(question,questionSources) && quizSize-accepted.length <= needed) continue;
         rejected+=collectQuizCandidates(project,[question],accepted,previous,fallbackCandidates,rejectedPrompts);
       }
     }
-    if(accepted.length<quizSize)useLeastSimilarFallback(project,accepted,previous,fallbackCandidates);
+    if(accepted.length<quizSize)useLeastSimilarFallback(project,accepted,previous,basicLevel ? fallbackCandidates.filter(x=>!hasNewsMaterial(x,questionSources)) : fallbackCandidates);
     if(accepted.length!==quizSize)throw new Error(`유효한 문제가 ${accepted.length}/${quizSize}개여서 저장하지 않았습니다. 기존 문제와 데이터는 유지됩니다. (${rejected}개 문항 교체 시도)`);
     validateQuestionSet(project,accepted,{allowNear:true});
     if (accepted.filter(x => hasNewsMaterial(x,questionSources)).length < newsMinimum) throw new Error('뉴스·기업 사례 문항이 필요한 만큼 포함되지 않아 저장하지 않았습니다. 기존 문제는 유지됩니다.');
+    if (basicLevel && accepted.filter(x => hasNewsMaterial(x,questionSources)).length > newsMaximum) throw new Error('기초 과정의 뉴스 문항 상한을 초과해 저장하지 않았습니다. 기존 문제는 유지됩니다.');
     // Cite in the existing explanation text, not a new stored question schema.
     if (project.category === 'economy' && !questionSources.length) accepted[0].explanation += '\n[뉴스 소재 안내] 최근 21일 내 출처가 확인된 뉴스 자료가 없어 이번 세트는 원리·가상 상황 중심입니다.';
     return accepted;
@@ -792,7 +808,7 @@
         <div class="study-card-v02984 study-today-card">
         <div class="study-today-top"><div class="study-today-title"><span>${safe(view.category.toUpperCase())} · ${safe(date)}</span><b>${safe(project.name)} Learning Board</b></div>${todayQuiz?.status === 'completed' ? `<div class="study-score">${safe(quizStatusLabel(todayQuiz))}</div>` : paused ? '<span class="study-status in_progress">학습 중지</span>' : `<button class="btn primary" id="studyGenerateQuiz" type="button" ${busy ? 'disabled' : ''}>${todayQuiz ? '오늘 세트 열기' : busy ? '생성 중…' : failed ? '다시 생성' : view.scheduleType === 'manual' ? '문제세트 생성' : scheduled ? '오늘 세트 생성' : '수동 생성'}</button>`}</div>
         <div class="study-project-summary"><span class="study-chip">${safe(SCHEDULE_LABELS[view.scheduleType])}</span><span class="study-chip">${view.quizSize}문제</span>${view.examDate ? `<span class="study-chip">시험 ${safe(view.examDate)}</span>` : ''}${view.focusAreas.map(x => `<span class="study-chip">${safe(x)}</span>`).join('')}</div>
-        ${view.category === 'economy' ? '<div class="note">새 세트는 최근 뉴스·기업·거시경제 사례와 개념 문제를 함께 구성합니다. 뉴스 자료가 있으면 약 1/3 이상을 실제 사례로 출제하며 난이도 설정은 유지합니다. 이미 생성된 세트는 다시 쓰지 않습니다.</div>' : ''}
+        ${view.category === 'economy' ? `<div class="note">새 세트는 최근 뉴스·기업·거시경제 사례와 개념 문제를 함께 구성합니다. ${isBasicEconomyProject(project) ? '기초 과정은 뉴스 소재를 약 1/4 이내, 핵심 개념 확인·단일 인과 문항을 약 1/3 이상으로 구성하며 난이도 설정은 유지합니다.' : '뉴스 자료가 있으면 약 1/3 이상을 실제 사례로 출제하며 난이도 설정은 유지합니다.'} 이미 생성된 세트는 다시 쓰지 않습니다.</div>` : ''}
         <div class="note" style="margin-top:8px">${paused ? '일시중지 상태입니다. 기존 문제세트와 오답은 계속 볼 수 있으며 새 문제 생성은 차단됩니다.' : failed ? `자동 생성 실패 · ${safe(failed)} · 버튼으로 한 번씩 다시 시도할 수 있습니다.` : scheduled ? '오늘은 자동 생성 대상일입니다. 프로젝트 진입 시 세트가 없으면 한 번만 요청합니다.' : '오늘은 정기 생성일이 아닙니다. 필요하면 수동으로 생성할 수 있습니다.'}${pending.filter(x => quizDate(x) < date).length ? ` · 지난 미완료 ${pending.filter(x => quizDate(x) < date).length}개` : ''}</div>
         <div class="study-project-tools"><button class="btn sm" type="button" id="studyProjectEdit">설정 수정</button>${paused ? '<button class="btn sm primary" type="button" id="studyProjectResume">학습 재개</button>' : '<button class="btn sm" type="button" id="studyProjectPause">학습 중지</button>'}<button class="btn sm" type="button" id="studyProjectComplete">프로젝트 종료</button><button class="btn sm ghost" type="button" id="studyProjectDelete">프로젝트 삭제</button></div>
         </div>
@@ -1179,7 +1195,7 @@
     ensureLearningState, normalizeProject, normalizeQuestion, normalizeQuiz, questionKey,
     quizDate, isScheduledDate, shouldGenerateForDate, nextSequenceNo, derivedLearningTasks, activeProjects, boardProjects, visibleProjects, completedProjects, wrongRows, wrongGroups, renderWrongTab,
     normalizePromptText, promptFingerprint, promptSimilarity, duplicateLevel, validQuestion, recentQuestionRotation, collectQuizCandidates, useLeastSimilarFallback, replacementBatchSize, tooSimilarPrompt, validateQuestionSet, quizApi,
-    newsroomQuestionSources, loadQuizNewsSources, newsMaterialMinimum, hasNewsMaterial, questionFocus,
+    newsroomQuestionSources, loadQuizNewsSources, isBasicEconomyProject, newsMaterialMinimum, hasNewsMaterial, questionFocus,
     upsertWrongAnswer, persistNewProject, persistProjectUpdate, archiveProjectWithConfirmation,
     pauseProject, resumeProject, completeProjectWithConfirmation, confirmWrongAnswer, retryWrongAnswer, masterWrongAnswer,
     persistGeneratedQuiz, persistQuizAnswer, gradeQuiz,
