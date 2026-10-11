@@ -43,7 +43,7 @@ try{
     await page.waitForTimeout(450);
     await verifiedSyntheticContext(page);
     const labels=await page.locator('.office-group .group-body .nav-btn .txt').allTextContents();
-    assert.deepEqual(labels.slice(0,4),['인포데스크','경영회의실','컨퍼런스 룸','사내 규칙'],`${viewport.name}: report office IA order`);
+    assert.deepEqual(labels,['대표실','하니 라운지','AI 업무 현황','개발센터','개발 보고서','배포센터','AI 주간 예산','테마 스튜디오','컨퍼런스 룸','하니 투자 리포트','인포데스크','회사 소개'],`${viewport.name}: report office IA order`);
     assert(await page.locator('#monthlyReport.view.active').count(),`${viewport.name}: monthly route active`);
     assert(await page.locator('#monthlyReportKpis').isHidden(),`${viewport.name}: no live dashboard before manual generation`);
     assert(await page.locator('#monthlyReportGenerateBtn').isEnabled(),`${viewport.name}: closed month can be generated`);

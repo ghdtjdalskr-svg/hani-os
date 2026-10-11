@@ -1,3 +1,7 @@
+# 2026-10-11 · polish-205 후속 (도연/Codex)
+
+`hani/polish-205` / base `6e30e327`: AI 업무 7명·10/11 catalog, 브라우저 세션 쿠키와 유효 동일 사용자 복원, Claude 추정/플랜 import 및 Gemini/Antigravity 표시 구현. 투자 리포트 저장 뒤 header 재이동 수정. Node 로그인45·예산/업무·Research15/Monthly8·Cloud40·보호 owner21/EOL PASS. **실제 Edge spawn EPERM·보호 게이트 Git subprocess EPERM으로 UI/통합 미검증.** v204/cache·보호 write 유지, 커밋·push·main/배포 없음. Notion 기록 추가는 자동 승인 검토 never 거절로 갱신 대기. [인수인계](handoffs/2026-10-11-polish-205-session-budget-work.md). 아래 과거/타 담당 기록 보존.
+
 # 2026-10-11 · IC 월간 확정 UI 테스트 후속 (도연/Codex)
 
 `hani/integration-204` / base `c8bdfa7`. 실제 Edge의 UI310 실패는 초안 시작 뒤 평가액 변경으로 원본 변경 보호 검사가 확정을 거절한 테스트 흐름 문제입니다. 거절·무저장 확인 → 취소/재시작 → snapshot 존재·의견/적립식 분리·저장 read-back·설정 변경 후 frozen 보존으로 테스트만 보강했습니다. Node33·실제 UI handler synthetic 실행·syntax·mixed EOL/운영원문 불변 PASS. **전체 Edge 재실행 대기, 미커밋·미배포.** Notion append는 자동 승인 검토 정책 never 거절로 갱신 대기. [인수인계](handoffs/2026-10-11-ic-monthly-confirm-test.md). 아래 과거/타 담당 기록 보존.

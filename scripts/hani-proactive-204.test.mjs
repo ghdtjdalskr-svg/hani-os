@@ -161,7 +161,8 @@ test('unchanged lines preserve exact EOL and protected versions/keys; no added d
   // Every untouched line keeps its original terminator, including unique mixed-EOL anchors.
   const a=lines(old),b=lines(current),byText=new Map();for(const l of a){const t=l.replace(/[\r\n]+$/,'');if(!byText.has(t))byText.set(t,new Set());byText.get(t).add(l.slice(t.length));}
   for(const l of b){const t=l.replace(/[\r\n]+$/,'');if(byText.has(t))assert.ok(byText.get(t).has(l.slice(t.length)),file+' EOL '+t.slice(0,70));}
-  assert.ok(current.includes('2.9.203'));assert.equal(current.match(/2\.9\.204/g)?.length||0,old.match(/2\.9\.204/g)?.length||0);
+  assert.deepEqual(current.match(/\b2\.9\.\d+(?:-[\w.-]+)?\b/g)||[],old.match(/\b2\.9\.\d+(?:-[\w.-]+)?\b/g)||[],file+' all existing version tokens unchanged');
+  assert.deepEqual(current.match(/\?v=[^\s"'<>]+/g)||[],old.match(/\?v=[^\s"'<>]+/g)||[],file+' cache tags unchanged');
  }
  const diff=baseline?fs.readFileSync(path.join(baseline,'runtime.diff'),'utf8'):execFileSync('git',['diff','--unified=0','--','hani-main.js','index.html','hani-study-v02984.js','hani-goal-progress.js','hani-yuna-helpdesk.js'],{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024});
  const additions=diff.split('\n').filter(l=>l.startsWith('+')&&!l.startsWith('+++')).join('\n');

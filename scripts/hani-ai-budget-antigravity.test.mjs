@@ -67,8 +67,8 @@ const context=vm.createContext({window:{HaniAiBudgetCore:core},document:{getElem
 vm.runInContext(await readFile(new URL('../hani-ai-budget.js',import.meta.url),'utf8'),context);
 const card=id=>node('aiBudgetCards').innerHTML.match(new RegExp(`<article[^>]*data-budget-slot="${id}"[\\s\\S]*?</article>`))[0];
 assert.match(card('gemini-pro'),/로그인/);await node('aiBudgetRefresh').handlers.click();
-assert.equal((node('aiBudgetCards').innerHTML.match(/data-budget-slot=/g)||[]).length,6);
-assert.match(card('gemini-pro'),/Google AI Pro/);assert.match(card('gemini-pro'),/99%/);assert.match(card('gemini-pro'),/5시간 한도/);assert.match(card('antigravity-cg'),/Antigravity · Claude\/GPT/);assert.match(card('antigravity-cg'),/100%/);assert.match(card('gemini-cli'),/보조/);
+assert.equal((node('aiBudgetCards').innerHTML.match(/data-budget-slot=/g)||[]).length,5);
+assert.match(card('gemini-pro'),/Google AI Pro/);assert.match(card('gemini-pro'),/99%/);assert.match(card('gemini-pro'),/5시간 한도/);assert.match(card('antigravity-cg'),/Antigravity · Claude\/GPT/);assert.match(card('antigravity-cg'),/100%/);assert.equal(node('aiBudgetCards').innerHTML.includes('data-budget-slot="gemini-cli"'),false);
 const date=v=>new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(v));
 assert.ok(card('gemini-pro').includes(date('2026-10-11T06:30:26Z')));assert.match(card('gemini-pro'),/KST/);
 payload.accounts[0].observedAt=new Date().toISOString();payload.accounts[0].windows[1].resetsAt=new Date(Date.now()-HOUR).toISOString();await node('aiBudgetRefresh').handlers.click();
@@ -79,4 +79,4 @@ for(const [status,hint] of [['antigravity_cli_not_found',/찾지 못했습니다
 }
 payload={schemaVersion:1,accounts:parseAntigravityUsage(raw).accounts};payload.accounts[0].prompt='<img onerror=x>';
 await node('aiBudgetRefresh').handlers.click();assert.equal(node('aiBudgetCards').innerHTML.includes('onerror'),false);assert.equal(storage.get('hani_os_life_v23'),'UNCHANGED');
-console.log('PASS: Antigravity TSV, executable discovery/spawn/timeout, persisted hourly limit/failure preservation, bridge endpoint, six-card renderer/KST/hints/life-key safety.');
+console.log('PASS: Antigravity TSV, executable discovery/spawn/timeout, persisted hourly limit/failure preservation, bridge endpoint, five-card renderer/KST/hints/life-key safety.');

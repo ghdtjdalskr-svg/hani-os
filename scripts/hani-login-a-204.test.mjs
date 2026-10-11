@@ -47,19 +47,28 @@ for(const fg of ['#292a2d','#514b44','#69513a'])assert.ok(contrast(fg,'#f4f0e9')
 // White brand over the lightest artwork at the weakest scrim under text (.58).
 assert.ok(contrast('#ffffff','#6c6f73')>=4.5,'brand scrim AA');
 assert.doesNotMatch(source.slice(source.indexOf('// Persistent login artwork slots'),source.indexOf('  if(image&&artwork)')),/localStorage|commit\(|save\(|addEventListener|\.clear\(/);
-const baseDir=process.argv[2]?path.resolve(process.argv[2]):null;
+// This is a Node-only test; shared UI runners may pass Playwright and browser paths.
+const firstArg=process.argv[2],browserHarness=firstArg&&path.basename(firstArg)==='index.mjs'&&fs.statSync(firstArg).isFile();
+if(browserHarness){assert.ok(process.argv[3]&&fs.statSync(process.argv[3]).isFile(),'shared runner browser exists');assert.equal(process.argv.length,4,'shared runner takes only Playwright and browser');}
+const baseDir=firstArg&&!browserHarness?path.resolve(firstArg):null;
+// Exported integrated baseline avoids spawning git in restricted Node environments.
+const preservationDir=baseDir||process.env.HANI_LOGIN_TEST_BASELINE;
 let baseline;
 try{
-  baseline=Object.fromEntries(['hani-main.js','index.html'].map(file=>[file,baseDir?fs.readFileSync(path.join(baseDir,file),'utf8'):execFileSync('git',['show','origin/main:'+file],{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024})]));
+  baseline=Object.fromEntries(['hani-main.js','index.html'].map(file=>[file,preservationDir?fs.readFileSync(path.join(preservationDir,file),'utf8'):execFileSync('git',['show','origin/main:'+file],{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024})]));
 }catch(error){
-  if(baseDir||!['ENOENT','EPERM','EACCES'].includes(error.code))throw error;
+  if(preservationDir||!['ENOENT','EPERM','EACCES'].includes(error.code))throw error;
   console.warn('SKIP login preservation checks: git unavailable for execution ('+error.code+'); runtime/DOM/contrast checks passed.');
 }
 if(baseline){
 const baseMain=baseline['hani-main.js'];
 const added=main.match(/  \/\/ Persistent login artwork slots[^]*?  \}\);\r?\n/)[0];
 if(baseDir)assert.equal(main.replace(added,''),baseMain,'only canonical artwork sync changes; auth/write/version paths byte-identical');
-else assert.equal(extract(main.replace(added,'').replace(/\r\n/g,'\n'),'syncSeasonCollection'),extract(baseMain.replace(/\r\n/g,'\n'),'syncSeasonCollection'),'canonical artwork sync preserves baseline behavior alongside integrated features');
+else {
+  // An integrated baseline already owns these slots: compare the entire function.
+  const integrated=baseMain.includes('// Persistent login artwork slots');
+  assert.equal(extract((integrated?main:main.replace(added,'')).replace(/\r\n/g,'\n'),'syncSeasonCollection'),extract(baseMain.replace(/\r\n/g,'\n'),'syncSeasonCollection'),'canonical artwork sync preserves baseline behavior alongside integrated features');
+}
 for(const file of ['hani-main.js','index.html']){
   const baseSource=baseline[file],lines=s=>s.match(/[^\n]*(?:\n|$)/g).filter(Boolean),old=new Map(),ambiguous=new Set();
   for(const line of lines(baseSource)){const text=line.replace(/\r?\n$/,'');if(old.has(text)&&old.get(text)!==line)ambiguous.add(text);old.set(text,line)}
@@ -71,10 +80,21 @@ for(const id of ['loginCharacterPhoto','loginCharacterName','loginCharacterRole'
   const ending=text=>text.match(new RegExp('[^\\n]*id="'+id+'"[^\\n]*(\\n|$)'))[0].match(/\r?\n$/)?.[0];
   assert.equal(ending(html),ending(baseHtml),'moved partner line keeps its EOL '+id);
 }
-for(const name of ['initLoginGate','loginGateEnterApp','loginGateSubmit','loginGateForgotPassword','loginGateSaveRecoveryPassword','randomizeLoginCharacter','syncLoginThemeButtons','applySeasonTheme','applySignatureFinish','save','commit','writeProtectedState','removeProtectedState'])assert.equal(extract(source,name),extract(baseMain.replace(/\r\n/g,'\n'),name),name+' unchanged');
+// v205 explicitly changes only entry-session policy; artwork and protected owners stay exact.
+for(const name of ['initLoginGate','loginGateEnterApp']){
+  let expected=extract(baseMain.replace(/\r\n/g,'\n'),name);
+  if(!baseMain.includes('function loginGateResumeSession(')){
+    if(name==='initLoginGate')expected=expected.replace('  clearLoginGateSession();','  loginGateSession=false;')
+      .replace('  window.addEventListener("pagehide",()=>{void cloudLogout()});\n','')
+      .replace('window.addEventListener("pageshow",event=>{if(event.persisted)lockLoginGate("다시 이용하려면 로그인해 주세요.")});','window.addEventListener("pageshow",event=>{if(event.persisted){const attempt=loginGateAttempt;void loginGateResumeSession().then(resumed=>{if(!resumed&&attempt===loginGateAttempt){cloudStopAutoSync();cloudUser=null;lockLoginGate("다시 이용하려면 로그인해 주세요.")}})}});');
+    else expected=expected.replace('attempt=loginGateAttempt){','attempt=loginGateAttempt,silent=false){').replace('  loginGateStatus("Cloud 기록을 확인하고 있습니다.','  if(!silent)loginGateStatus("Cloud 기록을 확인하고 있습니다.');
+  }
+  assert.equal(extract(source,name),expected,name+' only approved session policy delta');
+}
+for(const name of ['loginGateSubmit','loginGateForgotPassword','loginGateSaveRecoveryPassword','randomizeLoginCharacter','syncLoginThemeButtons','applySeasonTheme','applySignatureFinish','save','commit','writeProtectedState','removeProtectedState'])assert.equal(extract(source,name),extract(baseMain.replace(/\r\n/g,'\n'),name),name+' unchanged');
 for(const name of ['VERSION','STORAGE_KEY','HANI_DISPLAY_VERSION']){
   const declaration=text=>text.match(new RegExp('const '+name+'=[^;\\n]+;'))?.[0];
   assert.ok(declaration(main),name+' present');assert.equal(declaration(main),declaration(baseMain),name+' unchanged');
 }
 }
-console.log((baseline?'PASS':'PARTIAL PASS')+' login-a-204: live Season/default slots, source reuse, no preview writes, AA badge/overlay/scrim, unique IDs'+(baseline?', unchanged auth/storage/version and retained mixed EOL':' (preservation checks SKIPPED)'));
+console.log((baseline?'PASS':'PARTIAL PASS')+' login-a-204: live Season/default slots, source reuse, no preview writes, AA badge/overlay/scrim, unique IDs'+(baseline?', exact approved session delta, unchanged protected owners/version and retained mixed EOL':' (preservation checks SKIPPED)'));
