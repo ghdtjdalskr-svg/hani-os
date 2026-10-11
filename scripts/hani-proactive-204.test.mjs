@@ -97,10 +97,10 @@ test('certificate D-Day and upcoming-first order without mutation',()=>{
  const f=fixture();f.state.certificates=[{id:'past',examDate:'2026-10-10'},{id:'missing'},{id:'30',examDate:'2026-11-10'},{id:'today',examDate:'2026-10-11'},{id:'23',examDate:'2026-11-03'},{id:'older',examDate:'2026-10-01'}];const before=JSON.stringify(f.state);
  assert.deepEqual(plain(f.c.certificateCareSorted()).map(t=>t.id),['today','23','30','past','older','missing']);assert.equal(f.c.certificateDday(f.state.certificates[0]),'종료');assert.equal(f.c.certificateDday(f.state.certificates[3]),'D-Day');assert.equal(f.c.certificateDday(f.state.certificates[4]),'D-23');assert.equal(f.c.certificateDday({}),'');assert.equal(JSON.stringify(f.state),before);
 });
-test('study pending metric follows existing status rule and reads without persistence',()=>{
+test('study pending metric excludes missing, paused and archived projects without persistence',()=>{
  const pending=study.slice(study.indexOf('  function pendingLearningQuizzes()'),study.indexOf('  function openPendingQuiz()'));
- const state={learningQuizzes:[{id:'pending',status:'pending'},{id:'progress',status:'in_progress'},{id:'done',status:'completed'},{id:'legacy'}]};
- const c=vm.createContext({state});vm.runInContext(pending,c);assert.deepEqual(plain(c.pendingLearningQuizzes()).map(t=>t.id),['pending','progress','legacy']);
+ const state={learningProjects:[{id:'active',status:'active'},{id:'paused',status:'paused'},{id:'archived',status:'archived'}],learningQuizzes:[{id:'pending',projectId:'active',status:'pending'},{id:'progress',projectId:'active',status:'in_progress'},{id:'done',projectId:'active',status:'completed'},{id:'legacy',projectId:'active'},{id:'orphan',status:'pending'},{id:'paused',projectId:'paused',status:'pending'},{id:'archived',projectId:'archived',status:'pending'}]};
+ const before=JSON.stringify(state),c=vm.createContext({state,projectById:id=>state.learningProjects.find(project=>project.id===id)});vm.runInContext(pending,c);assert.equal(JSON.stringify(state),before);assert.deepEqual(plain(c.pendingLearningQuizzes()).map(t=>t.id),['pending','progress','legacy']);
 });
 test('quiz reminder opens the pending quiz without automatic generation, including a closed project',()=>{
  const rows=[{id:'orphan',projectId:'missing',status:'pending'},{id:'quiz',projectId:'closed',status:'in_progress'}],project={id:'closed',status:'completed',name:'Closed project'};

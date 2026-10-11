@@ -18,6 +18,13 @@ const server=http.createServer((req,res)=>{
 await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port;
 let browser,cases=0;
 const frame=page=>page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+// A pressed native input must keep its hit target while the card remains still.
+const checkCampusInput=async(page,group)=>{
+ const input=group.locator('input[type=checkbox]').first();await input.scrollIntoViewIfNeeded();await frame(page);
+ const before=await input.boundingBox();assert.ok(before);await page.mouse.move(before.x+before.width/2,before.y+before.height/2);await page.mouse.down();
+ try{assert.equal(await group.evaluate(el=>getComputedStyle(el).scale),'none','input interaction must not scale the parent card');assert.deepEqual(await input.boundingBox(),before,'pressed checkbox keeps its hit target');}finally{await page.mouse.up();}
+ assert.equal(await input.isChecked(),true,'native click checks the input');await input.uncheck();await input.check();
+};
 const show=async(page,view)=>{await page.evaluate(view=>showView(view),view);await page.waitForFunction(view=>document.body.dataset.view===view&&document.querySelector('#'+view+'.active')?.getClientRects().length,view);await frame(page);};
 try{
  browser=await chromium.launch({executablePath:exe,headless:true});
@@ -37,24 +44,27 @@ try{
    state.campusSemesters=[{id:'semester',term:'2026-2',status:'active',courses:[course('a','자료구조'),course('b','통계학')],events:[]},{id:'archived',term:'2025-2',status:'archived',courses:[course('c','보관 과목')],events:[]}];
    state.tasks=[{id:'old-task',text:'기존 과제',due:'2026-10-13',sourceType:'university',courseName:'자료구조',done:false},{id:'far',text:'14일 과제',due:'2026-10-25',sourceType:'university',courseName:'자료구조',done:false},{id:'manual',text:'일반 할 일',due:'2026-10-12',done:false}];
    state.certificates=[{id:'past',name:'지난 시험',examDate:'2026-10-10',status:'taken'},{id:'today',name:'오늘 시험',examDate:'2026-10-11',status:'planned'},{id:'near',name:'23일 시험',examDate:'2026-11-03',resultDate:'2026-11-20',status:'planned'},{id:'far',name:'31일 시험',examDate:'2026-11-11',status:'planned'}];
-   const project=window.HANI_STUDY_V02984_TEST.normalizeProject({id:'project',name:'알림 테스트',category:'university',status:'paused',scheduleType:'manual'});
-   state.learningProjects=[project];state.learningQuizzes=[...['pending','in_progress','completed'].map((status,i)=>window.HANI_STUDY_V02984_TEST.normalizeQuiz({id:'q'+i,projectId:'project',title:'알림 퀴즈 '+i,status,date:'2026-10-10',questions:[{prompt:'표본 문항',choices:['가','나','다','라'],answerIndex:0}],answers:[null]}))];
+   const api=window.HANI_STUDY_V02984_TEST,project=(id,name,status)=>api.normalizeProject({id,name,category:'university',status,scheduleType:'manual'});
+   state.learningProjects=[project('project','알림 테스트','active'),project('other','프로젝트별 테스트','active'),project('paused','중지 프로젝트','paused'),project('archived','보관 프로젝트','archived')];
+   const quiz=(id,projectId,status)=>api.normalizeQuiz({id,projectId,title:'알림 퀴즈 '+id,status,date:'2026-10-10',questions:[{prompt:'표본 문항',choices:['가','나','다','라'],answerIndex:0}],answers:[null]});
+   state.learningQuizzes=[...['pending','in_progress','completed'].map((status,i)=>quiz('q'+i,'project',status)),quiz('other-pending','other','pending'),quiz('other-completed','other','completed'),quiz('paused-pending','paused','pending'),quiz('paused-progress','paused','in_progress'),quiz('archived-pending','archived','pending'),quiz('orphan-missing','missing','pending'),quiz('orphan-empty','','pending')];
    window.saveCalls=0;window.failSave=false;window.saved=[];save=()=>{window.saveCalls++;if(!window.failSave)window.saved.push(structuredClone(state));return {ok:!window.failSave,message:'합성 저장 결과'}};
    window.storageWrites=[];const set=Storage.prototype.setItem;Storage.prototype.setItem=function(k,v){if(this===localStorage)window.storageWrites.push(k);return set.call(this,k,v)};
    dataHubInvalidate=()=>{};dataHubRefresh=()=>{};
    goalPeriodReadContext=()=>({source:structuredClone(state),canonical:{brokerTotal:()=>0,ledgerSpending:()=>0},asOf:'2026-10-11',evaluationAt:'2026-10-11T12:00:00+09:00'});
    renderAll();showView('home');window.readBaseline=JSON.stringify(state);
   },finish);
-  await page.waitForFunction(()=>document.querySelector('#home [data-care-campus]')?.getClientRects().length&&document.querySelector('[data-study-pending]')?.textContent==='2');await frame(page);
+  await page.waitForFunction(()=>document.querySelector('#home [data-care-campus]')?.getClientRects().length&&document.querySelector('[data-study-pending]')?.textContent==='3');await frame(page);
   const home=page.locator('#home [data-hani-care-cards]');
   assert.equal(await home.locator('[data-care-campus]').count(),2);assert.equal(await home.locator('[data-care-assignment]').count(),1);assert.equal(await home.locator('[data-care-certificate]').count(),1);assert.equal(await home.locator('[data-care-quiz]').count(),1);
-  assert.match(await home.innerText(),/지난주 2주차 수업 다 들으셨어요/);assert.match(await home.innerText(),/안 푼 퀴즈 2개/);assert.doesNotMatch(await home.innerText(),/보관 과목|31일 시험/);
+  assert.match(await home.innerText(),/지난주 2주차 수업 다 들으셨어요/);assert.equal(await home.locator('[data-care-quiz] h3').innerText(),'안 푼 퀴즈 3개');assert.deepEqual(await home.locator('[data-care-quiz] li').allTextContents(),['알림 테스트 2개','프로젝트별 테스트 1개']);assert.doesNotMatch(await home.innerText(),/보관 과목|31일 시험|중지 프로젝트|보관 프로젝트/);
+  assert.deepEqual(await page.evaluate(()=>window.HANI_STUDY_V02984_TEST.pendingLearningQuizzes().map(quiz=>quiz.id)),['q0','q1','other-pending']);assert.equal(await page.locator('[data-study-pending]').getAttribute('aria-label'),'안 푼 퀴즈 3개');
   assert.equal(await page.locator('#home .learning-derived[data-learning-quiz]:not([data-learning-quiz=""])').count(),0);
   assert.equal(await page.evaluate(()=>JSON.stringify(state)===window.readBaseline),true);assert.equal(await page.evaluate(()=>window.saveCalls),0);
   await page.evaluate(()=>{window.careSlot=document.querySelector('#home [data-hani-care-cards]');renderHome();renderHome()});assert.equal(await page.evaluate(()=>window.careSlot===document.querySelector('#home [data-hani-care-cards]')),true);
   await home.locator('[data-care-quiz-open]').click();await page.waitForFunction(()=>document.querySelector('#studyQuizDetail')?.getClientRects().length);assert.match(await page.locator('#studyQuizDetail').innerText(),/알림 퀴즈/);assert.equal(await page.evaluate(()=>window.saveCalls),0);
-  await show(page,'intake');await page.waitForFunction(()=>document.querySelector('#intake [data-care-quiz]')?.getClientRects().length&&document.querySelectorAll('#intake [data-care-campus]').length===2);const desk=page.locator('#intake [data-hani-care-cards]');assert.match(await desk.innerText(),/안 푼 퀴즈 2개/);
-  const group=desk.locator('[data-care-campus]').first();await group.locator('[data-care-part]').click();await group.locator('input[type=checkbox]').first().check();
+  await show(page,'intake');await page.waitForFunction(()=>document.querySelector('#intake [data-care-quiz]')?.getClientRects().length&&document.querySelectorAll('#intake [data-care-campus]').length===2);const desk=page.locator('#intake [data-hani-care-cards]');assert.equal(await desk.locator('[data-care-quiz] h3').innerText(),'안 푼 퀴즈 3개');assert.deepEqual(await desk.locator('[data-care-quiz] li').allTextContents(),['알림 테스트 2개','프로젝트별 테스트 1개']);assert.equal(await page.evaluate(()=>JSON.stringify(state)===window.readBaseline),true);assert.equal(await page.evaluate(()=>window.saveCalls),0);
+  const group=desk.locator('[data-care-campus]').first();await group.locator('[data-care-part]').click();await checkCampusInput(page,group);
   await page.evaluate(()=>{window.deskSlot=document.querySelector('#intake [data-hani-care-cards]');window.HANI_YUNA_HELPDESK.init();renderHome()});assert.equal(await page.evaluate(()=>window.deskSlot===document.querySelector('#intake [data-hani-care-cards]')),true);assert.equal(await group.locator('input:checked').count(),1);
   await group.locator('form button[type=submit]').click();assert.equal(await page.evaluate(()=>window.saveCalls),1);assert.equal(await page.evaluate(()=>state.campusSemesters[0].courses[0].curriculum[1].done),true);assert.equal(await page.evaluate(()=>state.campusSemesters[0].courses[1].curriculum[1].done),false);
   await page.waitForFunction(()=>document.querySelectorAll('#intake [data-care-campus]').length===2&&!document.querySelector('#intake [data-care-campus]')?.textContent.includes('자료구조'));await desk.locator('[data-care-campus]').first().locator('[data-care-all]').click();await page.waitForFunction(()=>document.querySelectorAll('#intake [data-care-campus]').length===1);assert.equal(await page.evaluate(()=>state.campusSemesters[0].courses[1].curriculum[1].done),true);
@@ -75,5 +85,5 @@ try{
   assert.deepEqual(await page.evaluate(()=>window.storageWrites.filter(k=>k!=='hani_os_navigation_v1')),[]);assert.deepEqual(errors,[]);
   cases++;await context.close();
  }
- console.log(`PASS ${cases} synthetic app UI combinations: 1440/390 × Porcelain/Midnight; cards, all/partial/dismiss, task save/rollback, quiz navigation, D-Day, read-only report and existing goal Preview/save. External requests blocked. Screenshots: artifacts/proactive-204.`);
+ console.log(`PASS ${cases} synthetic app UI combinations: 1440/390 × Porcelain/Midnight; cards with per-project pending counts (paused/archived/orphans excluded), all/partial/dismiss, task save/rollback, quiz navigation, D-Day, read-only report and existing goal Preview/save. External requests blocked. Screenshots: artifacts/proactive-204.`);
 }finally{if(browser)await browser.close();await new Promise(resolve=>server.close(resolve));}

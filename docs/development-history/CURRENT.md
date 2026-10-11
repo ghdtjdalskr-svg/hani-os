@@ -1,3 +1,11 @@
+# 2026-10-11 · fix-208 오래된 테스트 후속 (도연/Codex)
+
+`hani/fix-208` / 시작 HEAD `551c543`, 확인 main `e953601` 일치. AI 업무 v207 기대·활성 프로젝트별 3개(2+1) 집계 fixture·보이는 motion anchor 수정. 실제 checkbox를 이동시키던 card active CSS selector 1곳 수정, 눌림 중 좌표 정확 비교 추가. **Edge UI 4+4조합·Node7+21/관련 회귀·기존 안전/무쓰기·mixed EOL PASS.** JS·데이터·버전/cache 변경 및 커밋/push/배포 없음. 사용자Cloud/Android/열차 gate 미검증. Notion append 자동 승인 검토 policy never 거절로 갱신 대기. [인수인계](handoffs/2026-10-11-fix-208-stale-tests.md), [증거](../../artifacts/fix-208-stale-tests/run-status.json). 아래 이전/다른 담당 기록 보존.
+
+# 2026-10-11 · fix-208 실제 Edge 실패 후속 (도연/Codex)
+
+`hani/fix-208` / 시작 HEAD `1bcc6d6`, 최신 main `e953601` 일치. 펼침 전환·media change 전달 시점을 동기화하고 숫자 높이는 같은 최종 값의 정적/실행 중/종료 후로 정확 비교. **UI test만 수정, 앱·버전/cache·데이터 원문 불변.** 실제 Edge155의1440/1024×밝은/어두운4조합·Node7+21/관련회귀·기존 안전/무쓰기·mixed EOL PASS. 미커밋·미push·미배포, 실제 사용자Cloud/Android/열차 gate 미검증. Notion 후속 추가는 자동 승인 검토 policy never 거절로 갱신 대기. [인수인계](handoffs/2026-10-11-fix-208-failures.md), [증거](../../artifacts/fix-208-failures/run-status.json). 아래 다른 담당 기록 보존.
+
 # 2026-10-11 · 통합 206 실패 수정 (도연/Codex)
 
 `hani/integration-206` / HEAD `e22e0a9`, 확인 main `94e59cb`. 모바일 상태바의 인쇄 CSS 우선순위 오류를 screen media로 수정하고 IC 헤더를 보이는 바 기준으로 측정. 실제 Edge 리포트4조합·모바일 상태바·4층 대표실 PASS, Node83항목·기존 무쓰기/보호 assertion·mixed EOL PASS. **미커밋·버전/데이터 변경·배포 없음.** Android/운영Cloud·열차 gate 미검증, native CLI spawn EPERM은 직접 Edge 실행으로 우회. Notion 추가는 자동 승인 검토 policy never 거절로 갱신 대기. [인수인계](handoffs/2026-10-11-integration-206-failures.md). 아래 다른 담당 기록 보존.
