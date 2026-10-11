@@ -1,4 +1,4 @@
-/* Organization Hub: static, read-only presentation. No app state or storage access. */
+/* Organization Hub: read-only presentation and in-memory overview. No storage writes. */
 (() => {
   'use strict';
   // One title id shared by the person and team dialogs (only one is open at a time).
@@ -57,6 +57,28 @@
   const teamBanner = t => `<figure class="ogh-team-banner"><img src="${scenePaths[t.id]}" alt="${t.name}: ${members(t.id).map(p=>p.name).join(', ')}의 협업 장면" loading="lazy" width="1672" height="941"><figcaption><span>${t.en} / AT WORK</span><span>${members(t.id).map(p=>p.name).join(' · ')}</span></figcaption></figure>`;
   root.className='ogh';
   root.dataset.typography='tech';
+  function organizationOverviewData(data,history,roster,now=Date.now()){
+    const today=new Date(now+9*3600000).toISOString().slice(0,10),month=today.slice(0,7);
+    const releases=(Array.isArray(history)?history:[]).filter(r=>/^v\d/.test(r.id||"")&&["released","pages"].includes(r.status)&&r.date<=today);
+    const unique=[...new Map(releases.map(r=>[r.id,r])).values()].sort((a,b)=>String(b.date).localeCompare(String(a.date))||String(b.id).localeCompare(String(a.id),undefined,{numeric:true}));
+    const stats=[],entryKeys=["transactions","ledgerMonths","body","exercise","cardio","strength","books","movies","diaries","tasks","campusSemesters","travelTrips","certificates","learningQuizzes"];
+    if(data&&entryKeys.some(key=>Array.isArray(data[key])))stats.push({label:"생활 기록",value:entryKeys.reduce((sum,key)=>sum+(Array.isArray(data[key])?data[key].length:0),0),unit:"건"});
+    if(Array.isArray(data?.boardPosts))stats.push({label:"게시판 글",value:data.boardPosts.length,unit:"개"});
+    if(Array.isArray(history))stats.push({label:"이번 달 배포",value:unique.filter(r=>r.date.slice(0,7)===month).length,unit:"회 · 기록 기준"});
+    if(Array.isArray(roster?.people))stats.push({label:"AI 직원",value:roster.people.length,unit:"명"});
+    const counts=new Map(),publishedPosts=(Array.isArray(data?.boardPosts)?data.boardPosts:[]).filter(r=>r&&!r.draft&&!r.pending&&!r.boardMeta&&!r.disposition),postIds=new Set(publishedPosts.map(r=>r.id));
+    const activity=[...publishedPosts,...(Array.isArray(data?.boardComments)?data.boardComments:[]).filter(r=>r&&!r.draft&&!r.pending&&!r.disposition&&postIds.has(r.postId))];
+    for(const row of activity){const date=Date.parse(row.createdAt);if(!Number.isFinite(date)||date>now||new Date(date+9*3600000).toISOString().slice(0,7)!==month)continue;counts.set(row.authorId,(counts.get(row.authorId)||0)+1)}
+    const staff=(roster?.people||[]).map(p=>({...p,count:counts.get(p.id)||0})).filter(p=>p.count>0).sort((a,b)=>b.count-a.count||a.id.localeCompare(b.id));
+    return {milestones:unique.slice(0,8),stats,employee:staff[0]||null};
+  }
+  function renderOverview(){
+    const slot=root.querySelector(".ogh-overview");if(!slot)return;
+    const model=organizationOverviewData(typeof state==="undefined"?null:state,window.HANI_DEVELOPMENT_HISTORY_V1?.entries,window.HaniOrganizationRoster),employee=model.employee;
+    slot.innerHTML='<section class="ogh-section"><div class="ogh-section-head"><div><span class="ogh-kicker">HISTORY</span><h2>HANI GROUP 연혁</h2></div><p>운영 반영이 기록된 주요 업데이트 · 전체 배포 목록과는 다를 수 있습니다.</p></div><ol class="ogh-timeline">'+model.milestones.map(r=>'<li><div><strong>'+esc(r.id)+'</strong><time datetime="'+esc(r.date)+'">'+esc(r.date)+'</time></div><p>'+esc(r.title)+'</p></li>').join('')+'</ol>'+(model.milestones.length?'':'<p class="ogh-overview-empty">공개된 배포 기록이 아직 없습니다.</p>')+'</section>'+
+      '<section class="ogh-section"><div class="ogh-section-head"><div><span class="ogh-kicker">AT A GLANCE</span><h2>숫자로 보는 HANI</h2></div><p>현재 메모리에 있는 기록과 공개 카탈로그 기준</p></div><dl class="ogh-stats">'+model.stats.map(s=>'<div><dt>'+esc(s.label)+'</dt><dd><strong>'+s.value.toLocaleString('ko-KR')+'</strong><small>'+esc(s.unit)+'</small></dd></div>').join('')+'</dl>'+(model.stats.length?'':'<p class="ogh-overview-empty">기록을 불러오면 숫자를 보여드립니다.</p>')+'</section>'+
+      '<section class="ogh-section"><div class="ogh-section-head"><div><span class="ogh-kicker">PEOPLE OF THE MONTH</span><h2>이달의 직원</h2></div><p>한국 시간 이번 달의 게시글 + 공개 댓글 기준 · 동률은 직원 ID순</p></div>'+(employee?'<div class="ogh-employee">'+portrait(employee)+'<div><h3>'+esc(employee.name)+'</h3><p>'+esc(employee.rank)+' · '+esc(teamOf(employee.team)?.name||employee.team)+'</p><strong>게시글·댓글 '+employee.count.toLocaleString('ko-KR')+'건</strong></div></div>':'<p class="ogh-overview-empty">이번 달 게시판 활동이 쌓이면 이달의 직원을 소개합니다.</p>')+'</section>';
+  }
   function renderTeamPanels(){
     return `<div class="ogh-team-tabs" role="tablist" aria-label="팀별 소개">${teams.map((t,i)=>`<button type="button" role="tab" id="ogh-tab-${t.id}" aria-controls="ogh-panel-${t.id}" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-team-tab="${t.id}"><span>0${i+1}</span>${t.name}</button>`).join('')}</div>
       <div class="ogh-team-panels">${teams.map((t,i)=>`<article class="ogh-team-panel" id="ogh-panel-${t.id}" role="tabpanel" aria-labelledby="ogh-tab-${t.id}" tabindex="0" ${i===0?'':'hidden'} style="--team:${t.color};--tint:${t.tint}">
@@ -70,6 +92,7 @@
     <header class="ogh-mast"><span class="ogh-wordmark">HANI GROUP</span><nav aria-label="조직 소개 섹션"><button type="button" data-scroll="ogh-chart">Organization</button><button type="button" data-scroll="ogh-teams">Teams</button><button type="button" data-scroll="ogh-people">People</button></nav><span class="ogh-edition">ORGANIZATION / PEOPLE / TECHNOLOGY</span></header>
     <section class="ogh-hero" aria-labelledby="ogh-title"><div class="ogh-hero-copy"><span class="ogh-kicker">HANI GROUP / PERSONAL AI COMPANY</span><h1 id="ogh-title">사람의 전문성.<br><em>AI의 실행력.</em></h1><p>전략, 기술, 재무, 라이프, 비즈니스.<br>다섯 전문 조직을 하나의 AI 운영 체계로 연결합니다.</p><button type="button" class="ogh-cta" data-scroll="ogh-chart">조직 구조 살펴보기 <span>↘</span></button><div class="ogh-signature">HANI GROUP <span>Expertise. Technology. Execution.</span></div></div><figure class="ogh-hero-art"><img src="./assets/team/hani-org-demo-day-v1.webp" alt="M9 아홉 멤버가 제품 시연 현장에서 발표·기록·검토하는 협업 장면" width="1439" height="810"><figcaption><span>INSIDE HANI / DEMO DAY</span><span>M9 · IN ACTION</span></figcaption><span class="ogh-seal" aria-hidden="true">ONE<br>TEAM<br>✳</span></figure></section>
     <div class="ogh-strip"><span>01 — STRATEGY</span><span>02 — TECHNOLOGY</span><span>03 — FINANCE</span><span>04 — LIFE</span><span>05 — BUSINESS</span></div>
+    <div class="ogh-overview"></div>
     <section id="ogh-chart" class="ogh-section" aria-labelledby="ogh-chart-title"><div class="ogh-section-head"><div><span class="ogh-kicker">01 / ORGANIZATION</span><h2 id="ogh-chart-title">하나의 그룹. 다섯 전문 조직.</h2></div><p>다섯 전문 조직, 같은 방향.<br>팀과 얼굴을 눌러 만나보세요.</p></div><div class="ogh-org"><div class="ogh-chair"><img class="ogh-chair-icon" src="./assets/team/hani-org-chair-v1.webp" alt="성민 회장 실루엣" width="80" height="80"><div><small>CHAIRMAN</small><strong>성민 <span>회장</span></strong></div><span class="ogh-chair-note">방향과 최종 의사결정</span></div><div class="ogh-branches">${teams.map((t,i)=>`<article class="ogh-node" style="--team:${t.color};--tint:${t.tint}"><button type="button" class="ogh-node-title" data-team="${t.id}" aria-label="${t.name} 팀 소개"><span class="ogh-node-symbol" aria-hidden="true">${t.symbol}</span><small>0${i+1} / ${t.en}</small><h3>${t.name}</h3><span class="ogh-node-arrow" aria-hidden="true">↗</span></button><div class="ogh-node-people">${members(t.id).map(avatar).join('')}</div></article>`).join('')}</div><div class="ogh-org-foot"><span><i></i> M9 · 기존 캐릭터</span><span><i class="ogh-dashed"></i> AI STAFF · 확장 배치안</span><span>히나 ↔ AI플랫폼개발실 <b>학습 QA · 사용자 관점 연결</b></span></div></div></section>
     <section id="ogh-teams" class="ogh-section" aria-labelledby="ogh-teams-title"><div class="ogh-section-head"><div><span class="ogh-kicker">02 / OUR TEAMS</span><h2 id="ogh-teams-title">Teams & capabilities</h2></div><p>팀을 선택해 역할과 구성원을 확인하세요.</p></div>${renderTeamPanels()}</section>
     <section id="ogh-people" class="ogh-section" aria-labelledby="ogh-people-title"><div class="ogh-section-head"><div><span class="ogh-kicker">03 / OUR PEOPLE</span><h2 id="ogh-people-title">People at HANI</h2></div><p>전문 분야별 핵심 인력과 AI 파트너</p></div><div class="ogh-controls"><div class="ogh-filters" role="group" aria-label="인원 구분">${['ALL','M9','AI STAFF'].map((g,i)=>`<button type="button" data-group="${g}" aria-pressed="${i===0}">${g}</button>`).join('')}</div><label class="ogh-select-label"><span>팀</span><select id="ogh-team-filter" aria-label="팀별 보기"><option value="all">모든 팀</option>${teams.map(t=>`<option value="${t.id}">${t.name}</option>`).join('')}</select></label><label class="ogh-search-label"><span aria-hidden="true">⌕</span><input id="ogh-search" type="search" placeholder="이름, 역할 검색" aria-label="이름 또는 역할 검색" maxlength="100"></label></div><div class="ogh-result-line"><span id="ogh-count" role="status" aria-live="polite"></span><span>신규 AI 이름·역할은 Preview 제안안입니다.</span></div><div class="ogh-people-grid">${people.map(p=>{const t=teamOf(p.team);return `<button type="button" class="ogh-person" data-person="${p.id}" data-card-person="${p.id}" style="--team:${t.color};--tint:${t.tint}"><div class="ogh-person-image">${portrait(p)}<span class="ogh-person-badge">${p.group==='M9'?'M9':'AI · 제안'}</span><span class="ogh-person-arrow" aria-hidden="true">↗</span></div><div class="ogh-person-caption"><small>${t.name}</small><h3>${p.name}<span>${p.rank}</span></h3><p>${p.role}</p></div></button>`;}).join('')}</div><div class="ogh-empty" hidden><p>조건에 맞는 팀원이 없습니다.</p><button type="button" data-reset>전체 팀원 보기</button></div></section>
@@ -163,6 +186,8 @@
   filterPeople();
   function selectHubTab(tab){
     const directoryMode=tab==='people'||tab==='aiTeam';
+    const overview=root.querySelector('.ogh-overview');
+    if(overview){overview.hidden=tab!=='overview';if(!overview.hidden)renderOverview()}
     root.dataset.hubTab=tab;
     root.querySelectorAll('.ogh-hero,.ogh-strip').forEach(node=>{node.hidden=directoryMode});
     root.querySelectorAll('#ogh-chart,#ogh-teams,.ogh-type-controls').forEach(node=>{node.hidden=tab!=='people'});
@@ -178,5 +203,5 @@
   window.HaniOrganizationHub=Object.freeze({selectTab:selectHubTab,openPerson});
   if(document.querySelector('.organization-tabs')){
     selectHubTab(root.dataset.hubTab||'overview');
-  }
+  }else renderOverview();
 })();

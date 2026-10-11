@@ -8,9 +8,11 @@
 #board [hidden]{display:none!important}
 #board dialog{background:var(--surface-raised);color:var(--text-primary);border:1px solid var(--border-subtle);max-width:min(520px,90vw)}
 #board [data-board="composer"] summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:700}
+#board .sh{flex-wrap:wrap}
+#board .sh>*,#board .board-living-toolbar label{min-width:0;max-width:100%;overflow-wrap:anywhere}
 #board .board-search{display:block;max-width:640px;font-size:13px;color:var(--text-secondary)}
 #board .board-search input{margin-top:6px}
-#board .board-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:13px}
+#board .board-table{width:100%;min-width:0;max-width:100%;border-collapse:collapse;table-layout:fixed;font-size:13px}
 #board .board-col-category{width:84px}
 #board .board-col-author{width:210px}
 #board .board-col-date{width:64px}
@@ -103,7 +105,7 @@
 @media(max-width:600px){
   #board .board-mobile-two-line,#board .board-mobile-two-line tbody{display:block}
   #board .board-mobile-two-line colgroup,#board .board-mobile-two-line thead{display:none}
-  #board .board-mobile-two-line .board-row{display:grid;grid-template-columns:auto auto auto auto 1fr;gap:6px 8px;padding:9px 4px;border-bottom:1px solid var(--border-subtle)}
+  #board .board-mobile-two-line .board-row{display:grid;grid-template-columns:auto auto auto auto minmax(0,1fr);gap:6px 8px;padding:9px 4px;border-bottom:1px solid var(--border-subtle)}
   #board .board-mobile-two-line td{height:auto;padding:0;border:0;min-width:0}
   #board .board-cell-category{grid-row:1;grid-column:1;text-align:left;align-self:center}
   #board .board-cell-category .board-category::before{content:"["}

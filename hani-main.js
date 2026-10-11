@@ -1058,6 +1058,7 @@ const freshState=()=>({
   version:VERSION,
   accounts:structuredClone(seedAccounts),
   instruments:[],transactions:[],snapshots:[],investmentMonthlySnapshots:[],investmentBrokerSnapshots:[],investmentCashFlows:[],investmentJournal:[],investmentWatchlist:[],ledgerMonths:[],spendReviews:[],body:[],exercise:[],cardio:[],strength:[],books:[],movies:[],diaries:[],tasks:[],campusSemesters:[],travelTrips:[],travelPlaces:[],travelWishlist:[],certificates:[],wishlistItems:[],learningProjects:[],learningQuizzes:[],learningWrongAnswers:[],monthlyReports:[],
+  investmentResearchCards:[],investmentResearchHistory:[],investmentCommitteeSnapshots:[],
   boardPosts:[],boardComments:[],
   profile:{heightCm:188},
   goals:{investment:100000000,weight1:110,weight2:100,reading:30,readingAnnual:30,readingMonthly:2},
@@ -1194,6 +1195,7 @@ function validateStoredRecords(raw){
   // Stage A: coverRef/posterRef are optional record fields; preserve them verbatim.
   if(!raw||typeof raw!=="object"||Array.isArray(raw))throw new Error("Invalid saved state root");
   const lists=["accounts","instruments","transactions","snapshots","investmentMonthlySnapshots","investmentBrokerSnapshots","investmentCashFlows","investmentJournal","investmentWatchlist","ledgerMonths","spendReviews","body","exercise","cardio","strength","books","movies","diaries","tasks","campusSemesters","travelTrips","travelPlaces","travelWishlist","certificates","wishlistItems","learningProjects","learningQuizzes","learningWrongAnswers","monthlyReports","goalRegistry"];
+  lists.push("investmentResearchCards","investmentResearchHistory","investmentCommitteeSnapshots");
   lists.push("boardPosts","boardComments");
   for(const key of lists){
     if(raw[key]===undefined)continue;
@@ -1272,6 +1274,9 @@ function normalizeState(d){
     investmentCashFlows:Array.isArray(d?.investmentCashFlows)?d.investmentCashFlows.map(normalizeCashFlow):[],
     investmentJournal:Array.isArray(d?.investmentJournal)?d.investmentJournal.map(normalizeInvestmentJournal):[],
     investmentWatchlist:Array.isArray(d?.investmentWatchlist)?d.investmentWatchlist.map(normalizeWatchlistItem):[],
+    investmentResearchCards:Array.isArray(d?.investmentResearchCards)?d.investmentResearchCards:[],
+    investmentResearchHistory:Array.isArray(d?.investmentResearchHistory)?d.investmentResearchHistory:[],
+    investmentCommitteeSnapshots:Array.isArray(d?.investmentCommitteeSnapshots)?d.investmentCommitteeSnapshots:[],
     ledgerMonths:Array.isArray(d?.ledgerMonths)?d.ledgerMonths.map(normalizeLedgerMonth):[],
     spendReviews:Array.isArray(d?.spendReviews)?d.spendReviews.map(normalizeSpendPurchase):[],
     body:(Array.isArray(d?.body)?d.body:[]).map(r=>normalizeBodyRecord(r,profile.heightCm)),
@@ -1833,6 +1838,7 @@ function selectSettingsTab(tab){
   if(tab==="policy")setTimeout(()=>agentPolicyInit(),0);
 }
 function showView(id){
+  if(typeof renderNavNewBadges==="function")renderNavNewBadges();
   const ORGANIZATION_VIEW_ID='organization',SETTINGS_VIEW_ID='settings';
   const organization=organizationRoute(id);
   if(organization){id=ORGANIZATION_VIEW_ID;selectOrganizationTab(organization.tab)}
@@ -1856,6 +1862,8 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
   history.replaceState(null,"",id==="home"?location.href.split("#")[0]:("#"+(organization?"organization/"+organization.tab+(organization.person?"/"+organization.person:""):settings?"settings/"+settings:boardHash||id)));$("app").classList.remove("mobile-open");window.scrollTo({top:0,left:0,behavior:"auto"});
   if(organization?.person&&loginGateUnlocked)window.HaniOrganizationHub?.openPerson(organization.person);
   window.HaniAssetMarket?.sync();
+  if(id==="investment")selectInvestmentSection(INVESTMENT_COMMITTEE_IDS.portfolio);
+  window.HaniInvestmentCommittee?.render();
   if(id==="board")window.HaniBoard?.render();
   if(id==="geminiReports")window.HaniGeminiReports?.render();
   if(id==="aiBudget")window.HaniAiBudget?.render();
@@ -1905,6 +1913,30 @@ function setupQuickJump(){
   document.addEventListener("click",e=>{if(!box.contains(e.target))closeQuickJump()});
 }
 
+const INVESTMENT_COMMITTEE_IDS=Object.freeze({portfolio:'icPortfolio',research:'icResearch',monthly:'icMonthly',tabs:'icSections'});
+window.HaniInvestmentCommitteeIds=INVESTMENT_COMMITTEE_IDS;
+function selectInvestmentSection(id){
+  const ids=INVESTMENT_COMMITTEE_IDS,nav=$(ids.tabs);
+  if(!nav||!Object.values(ids).slice(0,3).includes(id))return;
+  [ids.portfolio,ids.research,ids.monthly].forEach(key=>{const panel=$(key);panel.hidden=key!==id;panel.classList.toggle('active',key===id)});
+  nav.querySelectorAll('[data-ic-section]').forEach(b=>{const active=b.dataset.icSection===id;b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1});
+  if(id===ids.research)window.HaniInvestmentCommittee?.enter();
+  if(id===ids.monthly)window.HaniInvestmentCommittee?.renderMonthly();
+}
+function setupInvestmentCommitteeLayout(section,tabs){
+  const ids=INVESTMENT_COMMITTEE_IDS;if($(ids.portfolio))return;
+  // IC sections use hidden; legacy .panel activation must not hide their parent.
+  const portfolio=document.createElement('div');portfolio.id=ids.portfolio;portfolio.className='active ic-portfolio';portfolio.setAttribute('role','tabpanel');
+  while(section.firstChild)portfolio.appendChild(section.firstChild);
+  const nav=document.createElement('div');nav.id=ids.tabs;nav.className='ic-section-tabs';nav.setAttribute('role','tablist');nav.setAttribute('aria-label','투자 영역');
+  [[ids.portfolio,'포트폴리오'],[ids.research,'종목 리서치'],[ids.monthly,'월간 위원회']].forEach(([id,label])=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.icSection=id;b.setAttribute('role','tab');b.setAttribute('aria-controls',id);nav.appendChild(b)});
+  const research=document.createElement('div');research.id=ids.research;research.className='ic-research';research.setAttribute('role','tabpanel');
+  const monthly=document.createElement('div');monthly.id=ids.monthly;monthly.className='ic-monthly';monthly.setAttribute('role','tabpanel');monthly.innerHTML='<div class="card ic-empty"><h3>월간 위원회</h3><p>다음 단계에서 열려요</p></div>';
+  section.append(nav,portfolio,research,monthly);
+  nav.addEventListener('click',e=>{const b=e.target.closest('[data-ic-section]');if(b)selectInvestmentSection(b.dataset.icSection)});
+  nav.addEventListener('keydown',e=>{const buttons=[...nav.children],i=buttons.indexOf(e.target);if(i<0)return;const next=e.key==='ArrowRight'?(i+1)%3:e.key==='ArrowLeft'?(i+2)%3:e.key==='Home'?0:e.key==='End'?2:-1;if(next<0)return;e.preventDefault();selectInvestmentSection(buttons[next].dataset.icSection);buttons[next].focus()});
+  selectInvestmentSection(ids.portfolio);
+}
 function setupInvestmentRc21Layout(){
 const section=$("investment"),tabs=section?.querySelector('.investment-tabs-main');if(!section||!tabs)return;
 tabs.innerHTML='<button class="tab active" data-panel="investOverview">투자 현황</button><button class="tab" data-panel="investMonthly">월간 기록</button><button class="tab" data-panel="investManage">종목 관리</button><button class="tab" data-panel="investJournal">투자 일기</button>';
@@ -1925,6 +1957,7 @@ if(yearly){const yearCard=$("annualInvestmentStats")?.closest('.card'),annualAss
 if(monthly){const editor=$("brokerEditorCard"),archive=$("brokerSnapshotRows")?.closest('.card'),oldGrid=editor?.parentElement;if(editor&&archive){const rg=document.createElement('div');rg.className='grid investment-record-grid';if(monthNote)monthNote.after(rg);else monthly.prepend(rg);rg.appendChild(editor);rg.appendChild(archive);if(oldGrid&&oldGrid.classList.contains('grid')&&!oldGrid.children.length)oldGrid.remove()}}
 if(manage){manage.innerHTML='<div class="instrument-manager-note"><b>종목 관리 = 투자 모듈의 종목 마스터</b><br>여기서 종목을 한 번 등록하면 월간 기록의 종목 선택지에 자동으로 나타납니다. 보유수량·평단·수익률은 여기서 수정하지 않고 월간 기록과 투자 현황에서 관리합니다.</div><div id="manageMasterSlot"></div><div class="manage-section" id="manageWatchSlot"></div>';if(inst){const g=inst.querySelector(':scope > .grid');if(g)$("manageMasterSlot").appendChild(g);inst.remove()}if(watch){while(watch.firstChild)$("manageWatchSlot").appendChild(watch.firstChild);watch.remove()}const price=$("instrumentPrice")?.closest('.field');if(price)price.classList.add('rc1-hidden');const fg=$("instrumentName")?.closest('.fg');if(fg&&!$("instrumentMarket")){const hidden=document.createElement('input');hidden.type='hidden';hidden.id='instrumentEditId';fg.parentElement.insertBefore(hidden,fg);const field=document.createElement('div');field.className='field';field.innerHTML='<label>시장</label><select id="instrumentMarket"><option value="">자동/미지정</option><option value="KR">한국</option><option value="US">미국</option><option value="OTHER">기타</option></select>';const tickerField=$("instrumentTicker")?.closest('.field');fg.insertBefore(field,tickerField)}const table=$("instrumentRows")?.closest('table');if(table)table.querySelector('thead').innerHTML='<tr><th>종목</th><th>분류</th><th>시장</th><th>코드 / 티커</th><th>보유계좌</th><th>관리</th></tr>';if($("addInstrument"))$("addInstrument").textContent='종목 저장'}
 [$("investAccounts"),$("investHoldings"),$("investTransactions"),$("investCashFlow")].filter(Boolean).forEach(x=>x.classList.add('rc1-hidden'));
+setupInvestmentCommitteeLayout(section,tabs);
 }
 setupInvestmentRc21Layout();
 const organizationTabs=document.querySelector(".organization-tabs");
@@ -1946,6 +1979,31 @@ document.querySelectorAll("[data-view]").forEach(b=>b.addEventListener("click",(
 document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>showView(b.dataset.go)));
 if($("homeYunaQuick"))$("homeYunaQuick").onclick=()=>{showView("intake");setTimeout(()=>$("yunaInput")?.focus(),80)};
 const GROUP_COLLAPSE_KEY="hani_os_group_collapse_v1";
+// Menu freshness is a calendar-day window in KST; no read/unread persistence.
+const NAV_NEW_DATES=Object.freeze({board:"2026-10-11",organization:"2026-10-11",aura:"2026-10-11",aiBudget:"2026-10-11"});
+function navMenuIsNew(viewId,now=Date.now()){
+  const date=NAV_NEW_DATES[viewId];if(!date)return false;
+  const day=Math.floor((now+9*3600000)/86400000),added=Math.floor(Date.parse(date+"T00:00:00Z")/86400000);
+  return day>=added&&day<added+7;
+}
+let navNewBadgeTimer;
+function renderNavNewBadges(now=Date.now()){
+  const badge=(label,active)=>{
+    if(!label)return;
+    let pill=label.nextElementSibling?.classList.contains("nav-new-pill")?label.nextElementSibling:null;
+    if(active&&!pill){pill=document.createElement("span");pill.className="nav-new-pill";pill.textContent="NEW";label.after(pill)}
+    // Pill is a sibling so menuLabel's canonical text remains unchanged.
+    if(pill)pill.hidden=!active;
+  };
+  document.querySelectorAll("#sidebar .nav-btn[data-view]").forEach(button=>badge(button.querySelector(".txt"),navMenuIsNew(button.dataset.view,now)));
+  document.querySelectorAll("#sidebar .group").forEach(group=>{
+    const any=[...group.querySelectorAll(".nav-btn[data-view]")].some(button=>navMenuIsNew(button.dataset.view,now));
+    badge(group.querySelector(".group-head .name"),any);
+  });
+  clearTimeout(navNewBadgeTimer);
+  navNewBadgeTimer=setTimeout(()=>renderNavNewBadges(),86400000-((Date.now()+9*3600000)%86400000)+30);
+}
+renderNavNewBadges();
 function savedCollapsedGroups(){
   try{const v=JSON.parse(localStorage.getItem(GROUP_COLLAPSE_KEY)||"[]");return Array.isArray(v)?v:[]}catch(e){return []}
 }
@@ -2092,7 +2150,7 @@ function loginGateStatus(message,tone=""){
 function syncLoginThemeButtons(){
   const current=document.documentElement.dataset.season||"spring";
   document.querySelectorAll("[data-login-theme]").forEach(b=>{const active=b.dataset.loginTheme===current;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active))});
-  if($("loginGateFinish"))$("loginGateFinish").value=document.documentElement.dataset.finish||"porcelain-cream";
+  document.querySelectorAll('input[name="loginFinish"]').forEach(input=>{input.checked=input.value===(document.documentElement.dataset.finish||"porcelain-cream")});
 }
 function randomizeLoginCharacter(){
   const available=(team||[]).filter(x=>agentImages?.[x.key]);
@@ -2691,6 +2749,26 @@ function investmentNewsTargets(){
     .slice(0,INVESTMENT_NEWS_MAX_TARGETS)
     .map(x=>{const meta=investmentNewsIssuerMeta(x),preferredNote=meta.security_type==="PREFERRED"?`발행회사 ${meta.issuer_name}${meta.issuer_ticker?`(${meta.issuer_ticker})`:""} 공통 뉴스와 우선주 직접 요인(배당·주주환원·괴리율·유동성·공시)을 함께 추적.`:"";return {id:x.id,name:x.name,ticker:x.ticker||"",market:x.market||inferMarket(x.ticker,""),reason:[x.reason||"",preferredNote].filter(Boolean).join(" "),held:watchIsHeld(x),...meta}})
 }
+const INVESTMENT_NEWS_ALIASES=Object.freeze([
+  Object.freeze({tickers:["066570","066575"],names:["LG전자","LG 전자","LG Electronics"]}),
+  Object.freeze({tickers:["005930","005935"],names:["삼성전자","삼성 전자","Samsung Electronics"]})
+]);
+function investmentNewsIdentity(value){return String(value||"").toLocaleLowerCase("ko-KR").replace(/[^a-z0-9가-힣]/g,"")}
+function investmentNewsAliasGroup(stock){return INVESTMENT_NEWS_ALIASES.find(g=>g.tickers.includes(String(stock?.ticker||""))||g.names.some(name=>investmentNewsIdentity(name)===investmentNewsIdentity(String(stock?.issuer_name||stock?.name||"").replace(/우선주|우$/g,""))))}
+function investmentNewsMatches(stock,entity,item){
+  if(!stock||!entity)return false;
+  const group=investmentNewsAliasGroup(stock),keys=[stock.ticker,stock.name,...(group?.tickers||[]),...(group?.names||[])].map(investmentNewsIdentity).filter(Boolean);
+  if([entity.ticker,entity.name,entity.issuer_ticker,entity.issuer_name].some(value=>value&&keys.includes(investmentNewsIdentity(value))))return true;
+  const text=investmentNewsIdentity([item?.title,item?.summary].filter(Boolean).join(" "));
+  return !!group?.names.some(name=>text.includes(investmentNewsIdentity(name)))
+}
+function investmentNewsMissingReason(stock,targets,rows,{loaded=false,filteredRows=rows}={}){
+  if(stock.newsTracking===false)return "추적 꺼짐";
+  if(!targets.some(x=>x.id===stock.id))return "추적 상위 "+INVESTMENT_NEWS_MAX_TARGETS+"개 밖";
+  const matched=rows.filter(r=>investmentNewsMatches(stock,r.entity,r.item)&&investmentNewsWithinHours(r.item.published_at,72));
+  if(!matched.length)return loaded?"72시간 내 기사 없음":"뉴스 조회 대기";
+  return filteredRows.some(r=>matched.includes(r))?"":"현재 필터에 기사 없음"
+}
 function investmentNewsSignature(targets=investmentNewsTargets()){return targets.map(x=>[x.market,x.ticker||"",x.name,x.issuer_name||"",x.issuer_ticker||"",x.security_type||"",x.reason||"",x.held?1:0].join("|")).join("||")}
 function investmentNewsReadCache(){try{const raw=localStorage.getItem(INVESTMENT_NEWS_CACHE_KEY);if(!raw)return null;const x=JSON.parse(raw);if(!x||x.schema!==3||!x.data||typeof x.data!=="object")return null;return x}catch(_){return null}}
 function investmentNewsSocialRead(){try{const x=JSON.parse(localStorage.getItem(INVESTMENT_NEWS_SOCIAL_KEY)||"{}");return x&&typeof x==="object"?x:{}}catch(_){return {}}}
@@ -2798,16 +2876,20 @@ function renderInvestmentNews(){
   if($("newsroomInterestPane"))$("newsroomInterestPane").hidden=mode!=="interest";
   investmentNewsRenderWeeklyArchive(data,mode);
 
-  const validKeys=new Set(entities.map(e=>e.ticker||e.name).filter(Boolean)),requested=state.ui.investmentNewsEntity||"all",selected=requested==="all"||validKeys.has(requested)?requested:"all";
+  const interestStocks=(state.investmentWatchlist||[]).filter(x=>x&&String(x.name||"").trim()),interestRows=archiveActive?archiveRows:investmentNewsFlatten(data,{interestHours:72});
+  const validKeys=new Set([...entities,...interestStocks].map(e=>e.ticker||e.name).filter(Boolean)),requested=state.ui.investmentNewsEntity||"all",selected=requested==="all"||validKeys.has(requested)?requested:"all";
   if(selected!==requested){state.ui.investmentNewsEntity="all";save()}
 
   const targetBox=$("investmentNewsTargets");
   if(targetBox){
-    targetBox.innerHTML=targets.length
+    targetBox.innerHTML=interestStocks.length
       ?`<button type="button" class="investment-news-target ${selected==="all"?"active":""}" data-news-target="all">전체 흐름</button>`+
-        targets.map(x=>{
-          const key=x.ticker||x.name;
-          return `<button type="button" class="investment-news-target ${x.held?"held":""} ${selected===key?"active":""}" data-news-target="${esc(key)}">${x.held?"● ":""}${esc(x.name)}${x.ticker?` <small>${esc(x.ticker)}</small>`:""}${x.security_type==="PREFERRED"?` <em>우선주+기업</em>`:""}</button>`
+        interestStocks.map(stock=>{
+          const x={...stock,...investmentNewsIssuerMeta(stock),held:watchIsHeld(stock)},key=x.ticker||x.name;
+          const grade=$("investmentNewsGradeFilter")?.value||state.ui.investmentNewsGrade||"all",sentiment=$("investmentNewsSentimentFilter")?.value||state.ui.investmentNewsSentiment||"all";
+          const filteredRows=interestRows.filter(r=>(grade==="all"||r.item.source_grade===grade)&&(sentiment==="all"||r.item.sentiment===sentiment));
+          const reason=investmentNewsMissingReason(x,targets,interestRows,{loaded:!!cache||investmentNewsArchiveRuntime.loaded,filteredRows});
+          return `<button type="button" class="investment-news-target ${x.held?"held":""} ${selected===key?"active":""}" data-news-target="${esc(key)}">${x.held?"● ":""}${esc(x.name)}${x.ticker?` <small>${esc(x.ticker)}</small>`:""}${x.security_type==="PREFERRED"?` <em>우선주+기업</em>`:""}${reason?` <small>${esc(reason)}</small>`:""}</button>`
         }).join("")
       :'<span class="investment-news-target empty">종목 관리에서 뉴스 추적을 켜주세요.</span>';
     targetBox.querySelectorAll("[data-news-target]").forEach(btn=>btn.onclick=()=>{
@@ -2825,7 +2907,7 @@ function renderInvestmentNews(){
   if($("investmentNewsUpdated")){const latest=investmentNewsArchivePosts()[0];$("investmentNewsUpdated").textContent=latest?`Cloud Archive 최신 ${agentFmtDate(latest.published_at||latest.created_at)}`:cache?.savedAt?`마지막 확인 ${agentFmtDate(cache.savedAt)}${fresh?" · 3시간 캐시 유효":" · 갱신 필요"}`:"아직 검색하지 않음"}
   if($("investmentNewsPolicy"))$("investmentNewsPolicy").textContent=`종합 주차별 누적 · 관심 신규뉴스 누적 · 자동 발행 · 추적 ${targets.length}/${INVESTMENT_NEWS_MAX_TARGETS}종목`;
 
-  const selectedEntity=selected==="all"?null:entities.find(e=>(e.ticker||e.name)===selected);
+  const selectedStock=interestStocks.find(x=>(x.ticker||x.name)===selected),selectedEntity=selected==="all"?null:entities.find(e=>selectedStock?investmentNewsMatches(selectedStock,e):(e.ticker||e.name)===selected);
   if($("investmentNewsEntityBriefs")){
     $("investmentNewsEntityBriefs").innerHTML=entities.length?entities.map(e=>{
       const key=e.ticker||e.name,isActive=selected===key;
@@ -2841,7 +2923,7 @@ function renderInvestmentNews(){
 
   const entityFilter=$("investmentNewsEntityFilter");
   if(entityFilter){
-    entityFilter.innerHTML=['<option value="all">전체 종목</option>',...entities.map(e=>{
+    entityFilter.innerHTML=['<option value="all">전체 종목</option>',...[...entities,...interestStocks.filter(x=>!entities.some(e=>(e.ticker||e.name)===(x.ticker||x.name)))].map(e=>{
       const key=e.ticker||e.name;
       return `<option value="${esc(key)}">${esc(e.name)}</option>`
     })].join("");
@@ -2852,14 +2934,14 @@ function renderInvestmentNews(){
   if($("investmentNewsGradeFilter"))$("investmentNewsGradeFilter").value=grade;
   if($("investmentNewsSentimentFilter"))$("investmentNewsSentimentFilter").value=sentiment;
 
-  const allRows=archiveActive?archiveRows:investmentNewsFlatten(data,{interestHours:72}),rows=allRows.filter(r=>
-    (entityKey==="all"||(r.entity.ticker||r.entity.name)===entityKey)&&
+  const filterStock=interestStocks.find(x=>(x.ticker||x.name)===entityKey)||entities.find(e=>(e.ticker||e.name)===entityKey),allRows=interestRows,rows=allRows.filter(r=>
+    (entityKey==="all"||investmentNewsMatches(filterStock,r.entity,r.item))&&
     (grade==="all"||r.item.source_grade===grade)&&
     (sentiment==="all"||r.item.sentiment===sentiment)
   );
   if($("investmentNewsCount"))$("investmentNewsCount").textContent=rows.length+"건";
   const newsPage=uiPageSlice('investmentNews',rows,uiPageSize(8,5)),pageRows=newsPage.rows;
-  const flowLabel=selectedEntity?`${selectedEntity.name} 뉴스 흐름`:"전체 종목 뉴스 흐름";
+  const flowLabel=selectedEntity||selectedStock?`${(selectedStock||selectedEntity).name} 뉴스 흐름`:"전체 종목 뉴스 흐름";
 
   $("investmentNewsFeed").innerHTML=rows.length
     ?`<div class="investment-news-board newsroom-v03-board" role="table" aria-label="${esc(flowLabel)}">
@@ -2951,7 +3033,7 @@ function renderInvestmentAccountOverview(){
 }
 function drawInvestmentAccountChart(){const canvas=$("overviewAccountChart");if(!canvas)return;const id=$("overviewAccountSelect")?.value,year=state.ui.investmentYear,rows=officialBrokerSorted().filter(s=>!year||String(s.period||"").startsWith(year+"-"));drawLines(canvas,rows.map(s=>s.period),[{name:accountBy(id)?.name||"계좌",color:seriesColor(id),data:rows.map(s=>accountSnapshotAt(s,id)?.assets||0)}],"월간 기록이 쌓이면 선택 계좌의 자산 흐름이 표시됩니다.")}
 function syncOverviewYearMirror(){const mirror=$("overviewYearSelect"),src=$("annualInvestmentYear");if(!mirror||!src)return;mirror.innerHTML=src.innerHTML;mirror.value=src.value;mirror.onchange=()=>{src.value=mirror.value;src.dispatchEvent(new Event("change"));setTimeout(()=>{syncOverviewYearMirror();renderInvestmentAccountOverview()},0)}}
-function activateInvestmentTab(panelId){const tabs=document.querySelector('.investment-tabs-main');if(!tabs)return;const b=tabs.querySelector(`[data-panel="${panelId}"]`);if(b)b.click()}
+function activateInvestmentTab(panelId){selectInvestmentSection(INVESTMENT_COMMITTEE_IDS.portfolio);const tabs=document.querySelector('.investment-tabs-main');if(!tabs)return;const b=tabs.querySelector(`[data-panel="${panelId}"]`);if(b)b.click()}
 function renderInvestmentQuickSuite(){renderBrokerSnapshots();renderAnnualInvestment();renderCashFlows();renderWatchlist();renderInvestmentJournal()}
 
 function refreshSelects(){
@@ -4274,16 +4356,19 @@ const SPORTS_CACHE_UI=Object.freeze({
 });
 let sportsCacheRuntime={loading:false,loadedAt:0};
 function sportsCacheDate(value,{time=false}={}){const d=new Date(value);if(Number.isNaN(d.getTime()))return "-";return new Intl.DateTimeFormat("ko-KR",time?{timeZone:"Asia/Seoul",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"}:{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit"}).format(d)}
-function sportsOpponentCode(opponent){const id=String(opponent?.id||"").replace(/[^A-Za-z0-9]/g,"").toUpperCase();if(id&&id.length<=5)return id;const words=String(opponent?.name||"").match(/[A-Za-z0-9가-힣]+/g)||[];return (words.length>1?words.map(x=>x[0]).join(""):words[0]?.slice(0,3)||"OPP").toUpperCase().slice(0,5)}
+// MLB Stats API team ids -> official display abbreviations (all 30 clubs).
+const MLB_OPPONENT_CODES=Object.freeze({108:"LAA",109:"AZ",110:"BAL",111:"BOS",112:"CHC",113:"CIN",114:"CLE",115:"COL",116:"DET",117:"HOU",118:"KC",119:"LAD",120:"WSH",121:"NYM",133:"ATH",134:"PIT",135:"SD",136:"SEA",137:"SF",138:"STL",139:"TB",140:"TEX",141:"TOR",142:"MIN",143:"PHI",144:"ATL",145:"CWS",146:"MIA",147:"NYY",158:"MIL"});
+function sportsOpponentCode(opponent,league="MLB"){const raw=String(opponent?.id||"").trim(),id=raw.replace(/[^A-Za-z0-9]/g,"").toUpperCase();if(league==="MLB"&&/^\d+$/.test(raw)&&MLB_OPPONENT_CODES[raw])return MLB_OPPONENT_CODES[raw];if(id&&id.length<=5&&!/^\d+$/.test(id))return id;const words=String(opponent?.name||"").match(/[A-Za-z가-힣]+/g)||[];return (words.length>1?words.map(x=>x[0]).join(""):words[0]?.slice(0,3)||"OPP").toUpperCase().slice(0,5)}
+function sportsCompetitionLabel(game){const label=String(game?.competition||"").trim();return ({R:"정규시즌",F:"와일드카드",D:"디비전 시리즈",L:"리그 챔피언십",W:"월드 시리즈"})[label]||label}
 function sportsCacheRowValid(row){const game=row?.last_game,score=game?.score;return !!SPORTS_CACHE_UI[row?.team_id]&&!!game?.opponent?.name&&/^\d{4}-\d{2}-\d{2}$/.test(String(game.date||""))&&Number.isInteger(score?.team)&&score.team>=0&&Number.isInteger(score?.opponent)&&score.opponent>=0&&["WIN","LOSS","DRAW"].includes(game.result)}
 function sportsSetResult(el,result){if(!el)return;el.textContent=result;el.classList.remove("win","loss","draw");el.classList.add(String(result||"").toLowerCase())}
 function sportsApplyCacheRow(row){
   if(!sportsCacheRowValid(row))return false;
-  const meta=SPORTS_CACHE_UI[row.team_id],game=row.last_game,next=row.next_game||null,opponent=game.opponent,opponentCode=sportsOpponentCode(opponent),teamScore=game.score.team,opponentScore=game.score.opponent;
+  const meta=SPORTS_CACHE_UI[row.team_id],game=row.last_game,next=row.next_game||null,opponent=game.opponent,opponentCode=sportsOpponentCode(opponent,row.league||"MLB"),teamScore=game.score.team,opponentScore=game.score.opponent;
   const home=document.querySelector(`#game .sports-home-panel.${meta.selector}`);
   if(home){
     sportsSetResult(home.querySelector(".sports-home-team em"),game.result);
-    const recent=home.querySelector(".sports-home-recent small");if(recent)recent.textContent=`최근 경기 · ${sportsCacheDate(`${game.date}T12:00:00Z`)}`;
+    const recent=home.querySelector(".sports-home-recent small");if(recent)recent.textContent=`최근 경기 · ${sportsCacheDate(`${game.date}T12:00:00Z`)}${sportsCompetitionLabel(game)?` · ${sportsCompetitionLabel(game)}`:""}`;
     const labels=home.querySelectorAll(".sports-home-score > span"),scores=home.querySelectorAll(".sports-home-score > b");
     if(labels.length>=2&&scores.length>=2){labels[0].textContent=meta.teamFirst?meta.teamCode:opponentCode;labels[1].textContent=meta.teamFirst?opponentCode:meta.teamCode;scores[0].textContent=meta.teamFirst?teamScore:opponentScore;scores[1].textContent=meta.teamFirst?opponentScore:teamScore}
     const nextSlot=home.querySelector(".sports-home-foot > span");if(nextSlot)nextSlot.textContent=next?.dateTime?`다음 경기 · ${sportsCacheDate(next.dateTime,{time:true})} · ${next.opponent?.name||"상대 미정"}`:"다음 일정 미정";
@@ -4291,7 +4376,7 @@ function sportsApplyCacheRow(row){
   const detail=document.querySelector(`#game .sports-team-card.${meta.selector}`);
   if(detail){
     const result=detail.querySelector(".sports-result"),head=result?.querySelector(":scope > div:first-child");
-    const dateLabel=head?.querySelector("span");if(dateLabel)dateLabel.textContent=`LAST GAME · ${sportsCacheDate(`${game.date}T12:00:00Z`)}`;
+    const dateLabel=head?.querySelector("span");if(dateLabel)dateLabel.textContent=`LAST GAME · ${sportsCacheDate(`${game.date}T12:00:00Z`)}${sportsCompetitionLabel(game)?` · ${sportsCompetitionLabel(game)}`:""}`;
     sportsSetResult(head?.querySelector("strong"),game.result);
     const score=result?.querySelector(".sports-score"),marks=score?.querySelectorAll(":scope > span"),scores=score?.querySelectorAll(":scope > b");
     if(marks?.length>=2&&scores?.length>=2){const opponentIndex=meta.teamFirst?1:0;const opponentMark=marks[opponentIndex];opponentMark.textContent=opponentCode;opponentMark.classList.add("sports-opponent-mark");opponentMark.setAttribute("aria-label",opponent.name);scores[0].textContent=meta.teamFirst?teamScore:opponentScore;scores[1].textContent=meta.teamFirst?opponentScore:teamScore}
@@ -4486,6 +4571,7 @@ function cloudHasMeaningfulLocalData(value=state){
     "investmentWatchlist","body","exercise","cardio","strength","books",
     "movies","diaries","tasks","ledgerMonths","spendReviews","campusSemesters","travelTrips","travelPlaces","travelWishlist","certificates","wishlistItems","learningProjects","learningQuizzes","learningWrongAnswers","monthlyReports","goalRegistry"
   ];
+  arrays.push("investmentResearchCards","investmentResearchHistory","investmentCommitteeSnapshots");
   arrays.push("boardPosts","boardComments");
   if(arrays.some(k=>Array.isArray(d[k])&&d[k].length>0))return true;
   if(String(d.calendarUrl||"").trim())return true;
@@ -6137,7 +6223,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.202";
+const HANI_DISPLAY_VERSION="2.9.203";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
@@ -6993,7 +7079,7 @@ function renderMonthlyReport(){
 }
 
 
-function renderAll(){dataHubAuditSource();syncHaniDisplayVersion();normalizeHaniBrandLogos();refreshSelects();renderAccounts();renderInstruments();renderHoldings();renderTransactions();renderMonthlySnapshots();renderInvestmentQuickSuite();renderInvestmentHighlights();renderInvestmentAccountOverview();renderInvestmentNews();syncOverviewYearMirror();renderPortfolio();renderAssets();renderLedger();renderWishlist();renderBody();renderExercise();renderReading();renderMovies();renderDiary();renderCampus();renderTravel();renderCertificates();renderTasks();renderCalendar();renderTeam();renderNotes();renderHome();renderMonthlyReport();renderStoragePanel()}
+function renderAll(){dataHubAuditSource();syncHaniDisplayVersion();normalizeHaniBrandLogos();refreshSelects();renderAccounts();renderInstruments();renderHoldings();renderTransactions();renderMonthlySnapshots();renderInvestmentQuickSuite();renderInvestmentHighlights();renderInvestmentAccountOverview();renderInvestmentNews();syncOverviewYearMirror();renderPortfolio();renderAssets();renderLedger();renderWishlist();renderBody();renderExercise();renderReading();renderMovies();renderDiary();renderCampus();renderTravel();renderCertificates();renderTasks();renderCalendar();renderTeam();renderNotes();renderHome();renderMonthlyReport();renderStoragePanel();window.HaniInvestmentCommittee?.render()}
 function downloadJson(serialized,filename){const blob=new Blob([serialized],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function buildBackupPayload(value,exportedAt,mediaState=null){
   const payload={...value,meta:{...value.meta,lastBackupAt:exportedAt},version:VERSION,exportedAt,
