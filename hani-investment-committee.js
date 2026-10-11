@@ -122,6 +122,50 @@
     }
     return result;
   }
+  // Classification reads current holdings only; it never rewrites cards or account data.
+  function accumulationAccountIds(source) {
+    const explicit = source.ui?.icAccumulationAccountIds;
+    return Array.isArray(explicit) ? explicit.map(text) : (source.accounts || []).filter(a => text(a.broker).includes('키움')).map(a => text(a.id));
+  }
+  function saveAccumulationAccounts(source, ids, persist) {
+    if (!source.ui || typeof source.ui !== 'object' || Array.isArray(source.ui)) throw Error('기존 UI 설정을 확인하세요.');
+    if (!Array.isArray(ids) || ids.some(id => typeof id !== 'string')) throw Error('계좌 목록을 확인하세요.');
+    const had = Object.hasOwn(source.ui, 'icAccumulationAccountIds'), before = source.ui.icAccumulationAccountIds;
+    source.ui.icAccumulationAccountIds = [...new Set(ids.filter(id => (source.accounts || []).some(a => text(a.id) === id)))];
+    try {if (persist() !== true) throw Error('저장 검증에 실패해 계좌 설정을 되돌렸습니다.');}
+    catch (e) {if (had) source.ui.icAccumulationAccountIds = before; else delete source.ui.icAccumulationAccountIds; throw e;}
+  }
+  function currentHoldings(source, rows) {
+    return rows.filter(h => Number(h.quantity ?? h.qty) > 0).map(h => {
+      const master = (source.instruments || []).find(i => i.id === h.instrumentId);
+      return {...h, name: h.name || master?.name || '', ticker: h.ticker || master?.ticker || '', market: h.market || master?.market || '', currency: h.currency || master?.currency || ''};
+    });
+  }
+  function accumulationInfo(security, source, rows = []) {
+    const refs = currentHoldings(source, rows).filter(h => !!match(security, [h]));
+    const ids = new Set(accumulationAccountIds(source)), count = refs.filter(h => ids.has(text(h.accountId))).length;
+    return {kind: refs.length && count === refs.length ? 'accumulation' : count ? 'mixed' : 'normal', refs};
+  }
+  const opinionCards = (source, rows) => (source.investmentResearchCards || []).filter(c => ['OWNED', 'WATCH'].includes(c.status) && accumulationInfo(c, source, rows).kind !== 'accumulation');
+  function accumulationSecurities(source, rows = []) {
+    const held = currentHoldings(source, rows), valueOf = h => number(h.recordedEvaluation ?? h.evaluationAmount ?? h.currentValue);
+    const currencyOf = h => text(h.recordedCurrency || h.currency);
+    const totalCurrency = currencyOf(held[0] || {});
+    const complete = held.length && totalCurrency && held.every(h => currencyOf(h) === totalCurrency && Number.isFinite(valueOf(h)) && valueOf(h) >= 0);
+    const total = complete ? held.reduce((sum, h) => sum + valueOf(h), 0) : 0;
+    return candidates(source, held).filter(c => c.status === 'OWNED').flatMap(c => {
+      const info = accumulationInfo(c, source, held);
+      if (info.kind !== 'accumulation') return [];
+      const accounts = [...new Set(info.refs.map(h => text(h.accountId)))].map(id => ({accountId: id, name: (source.accounts || []).find(a => text(a.id) === id)?.name || info.refs.find(h => text(h.accountId) === id)?.accountName || id}));
+      const values = new Map();
+      for (const h of info.refs) {const value = valueOf(h), currency = currencyOf(h); if (Number.isFinite(value) && value >= 0 && currency) values.set(currency, (values.get(currency) || 0) + value);}
+      // Missing values never become zero and currencies are never combined without FX.
+      const allValues = info.refs.every(h => Number.isFinite(valueOf(h)) && valueOf(h) >= 0 && currencyOf(h));
+      return [{kind: 'accumulation', instrumentId: c.instrumentId, name: c.name, ticker: c.ticker, market: c.market, accounts,
+        currentValues: allValues ? [...values].map(([currency, value]) => ({currency, value})) : [],
+        weight: total > 0 ? info.refs.reduce((sum, h) => sum + valueOf(h), 0) / total * 100 : null, holdingsRefs: clone(info.refs)}];
+    });
+  }
   function parseReport(raw) {
     if (typeof raw !== 'string' || raw.length > 1000000) throw Error('JSON 리포트는 1MB 이하 텍스트로 붙여넣으세요.');
     const fragments = [raw.trim(), ...Array.from(raw.matchAll(/```(?:json)?\s*([\s\S]*?)```/gi), m => m[1])];
@@ -149,17 +193,23 @@
   function reviewReport(rows, source, holdings = [], framework = FRAMEWORK) {
     const seen = [], options = candidates(source, holdings);
     return rows.map(input => {
-      const existing = match(input, source.investmentResearchCards || []), candidate = !existing ? match(input, options) : null;
+      const held = match(input, options);
+      if (accumulationInfo(held || input, source, holdings).kind === 'accumulation') {
+        if (match(held || input, seen)) throw Error('리포트에 동일 종목이 중복되어 있습니다. 한 종목당 하나만 남기세요.');
+        seen.push(held || input);
+        return {existingId: null, card: held || input, excluded: true, include: false, reason: '', tracked: {}, fields: {}};
+      }
+      const existing = match(input, source.investmentResearchCards || []), candidate = !existing ? held : null;
       const card = normalizeCard({...input, instrumentId: existing?.instrumentId || candidate?.instrumentId || input.instrumentId || null, status: existing ? input.status ?? existing.status : candidate?.status === 'OWNED' ? 'OWNED' : 'WATCH'}, existing, framework);
       if (match(card, seen)) throw Error('리포트에 동일 종목이 중복되어 있습니다. 한 종목당 하나만 남기세요.');
       seen.push(card);
-      return {existingId: existing?.id || null, card, reason: string(input.changeReason, 'changeReason'), ...diff(existing, card)};
+      return {existingId: existing?.id || null, card, excluded: false, include: true, reason: string(input.changeReason, 'changeReason'), ...diff(existing, card)};
     });
   }
   function prepareBatch(source, items, {uid, now = new Date().toISOString(), framework = FRAMEWORK} = {}) {
     if (typeof uid !== 'function') throw Error('기존 UUID owner가 필요합니다.');
     const cards = clone(source.investmentResearchCards || []), history = clone(source.investmentResearchHistory || []), updated = [];
-    for (const item of items) {
+    for (const item of items.filter(item => !item.excluded)) {
       const byId = item.existingId ? cards.find(c => c.id === item.existingId) : null;
       if (item.existingId && !byId) throw Error('카드가 변경되었습니다. 다시 열어 확인하세요.');
       const matched = match(item.card, cards);
@@ -174,6 +224,7 @@
     return {cards, history, updated};
   }
   function applyBatch(source, items, persist, options) {
+    if (!items.some(item => !item.excluded)) throw Error('반영할 일반 종목을 하나 이상 선택하세요.');
     const prepared = prepareBatch(source, items, options), cardsBefore = source.investmentResearchCards, historyBefore = source.investmentResearchHistory;
     source.investmentResearchCards = prepared.cards; source.investmentResearchHistory = prepared.history;
     try { if (persist() !== true) throw Error('저장 검증에 실패해 Research 변경을 되돌렸습니다.'); }
@@ -220,12 +271,13 @@
     const months = (source.investmentCommitteeSnapshots || []).map(s => s.reviewMonth).filter(m => m < month).sort();
     return latestSnapshot(source, months.at(-1));
   }
-  function portfolioSummary(cards, holdingRows = []) {
+  function portfolioSummary(cards, holdingRows = [], source = {}) {
+    cards = cards.filter(c => c.kind !== 'accumulation' && accumulationInfo(c, source, holdingRows).kind !== 'accumulation');
     const groups = new Map(), roles = new Map();
     for (const card of cards.filter(c => ['OWNED', 'WATCH'].includes(c.status))) {
       for (const theme of new Set(card.themes?.length ? card.themes : ['테마 미지정'])) {
         if (!groups.has(theme)) groups.set(theme, []);
-        groups.get(theme).push({researchId: card.id, name: card.name, ticker: card.ticker, status: card.status});
+        groups.get(theme).push({researchId: card.id, name: card.name, ticker: card.ticker, status: card.status, hasAccumulation: card.hasAccumulation || accumulationInfo(card, source, holdingRows).kind === 'mixed'});
       }
       for (const role of new Set(card.portfolioRoles?.tags?.length ? card.portfolioRoles.tags : ['역할 미지정'])) {
         if (!roles.has(role)) roles.set(role, []);
@@ -246,14 +298,14 @@
   const thesisLabel = value => ({'VERY STRONG':'매우 강함',STRONG:'강함',NORMAL:'보통',WEAK:'약함',BROKEN:'훼손'})[value] || value;
   function committeeDraft(source, month = monthNow(), priceSource = {}, holdingRows = []) {
     if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(month)) throw Error('위원회 기준월을 확인하세요.');
-    const cards = (source.investmentResearchCards || []).filter(c => ['OWNED', 'WATCH'].includes(c.status));
+    const cards = opinionCards(source, holdingRows);
     const previous = priorSnapshot(source, month), lastCards = previous?.securitySnapshots || [];
-    const draft = {reviewMonth: month, portfolioRating: 'HOLD', marketView: '', executiveSummary: '', haniRecommendation: '', topConviction: cards.slice().sort((a, b) => convictionTotal(b.conviction) - convictionTotal(a.conviction)).slice(0, 3).map(c => c.name), portfolioSummary: portfolioSummary(cards, holdingRows)};
+    const draft = {accumulationSecurities: accumulationSecurities(source, holdingRows), reviewMonth: month, portfolioRating: 'HOLD', marketView: '', executiveSummary: '', haniRecommendation: '', topConviction: cards.slice().sort((a, b) => convictionTotal(b.conviction) - convictionTotal(a.conviction)).slice(0, 3).map(c => c.name), portfolioSummary: portfolioSummary(cards, holdingRows, source)};
     COMMITTEE_LISTS.forEach(k => {draft[k] = [];});
     draft.executiveSummary = cards.map(c => c.name + ' · ' + c.rating + ' · ' + c.action).join('\n');
     draft.haniRecommendation = cards.filter(c => text(c.executiveComment)).map(c => c.name + ' · ' + c.executiveComment).join('\n');
     for (const card of cards) {
-      const old = lastCards.find(c => c.id === card.id), value = valuation(card, currentPrice(card, priceSource));
+      const old = lastCards.find(c => c.kind !== 'accumulation' && c.id === card.id), value = valuation(card, currentPrice(card, priceSource));
       if (old) {
         const ratingDelta = RATINGS.indexOf(old.rating) - RATINGS.indexOf(card.rating), thesisDelta = THESIS.indexOf(old.thesisStrength) - THESIS.indexOf(card.thesisStrength);
         const change = card.name + ' · Rating ' + old.rating + ' → ' + card.rating + ' · 투자 논리 ' + thesisLabel(old.thesisStrength) + ' → ' + thesisLabel(card.thesisStrength);
@@ -276,15 +328,16 @@
     const result = {id: uid(), reviewMonth: draft.reviewMonth, revision: old ? (old.revision || 1) + 1 : 1, supersedesId: old?.id || null, confirmedAt: now};
     for (const k of ['portfolioRating', 'marketView', 'executiveSummary', 'haniRecommendation']) result[k] = string(draft[k], k);
     for (const k of COMMITTEE_LISTS) result[k] = strings(draft[k], k);
-    const cards = (source.investmentResearchCards || []).filter(c => ['OWNED', 'WATCH'].includes(c.status));
+    const cards = opinionCards(source, holdingRows);
     result.securitySnapshots = cards.map(card => {
       const price = currentPrice(card, priceSource), values = valuation(card, price);
       const refs = holdingRows.filter(h => card.instrumentId ? h.instrumentId === card.instrumentId : ticker(h.ticker) && ticker(h.ticker) === ticker(card.ticker) && marketKey(h.market) === marketKey(card.market));
-      return {...clone(card), researchId: card.id, previousRating: previousRating(card, source.investmentResearchHistory || []), currentPrice: price ? clone(price) : null, convictionScore: convictionTotal(card.conviction), ...values, holdingsRefs: clone(refs)};
+      return {...clone(card), hasAccumulation: accumulationInfo(card, source, holdingRows).kind === 'mixed', researchId: card.id, previousRating: previousRating(card, source.investmentResearchHistory || []), currentPrice: price ? clone(price) : null, convictionScore: convictionTotal(card.conviction), ...values, holdingsRefs: clone(refs)};
     });
+    result.securitySnapshots.push(...accumulationSecurities(source, holdingRows));
     result.holdingsRefs = clone(holdingRows);
     result.portfolioSummary = portfolioSummary(result.securitySnapshots, result.holdingsRefs);
-    result.topConviction = result.securitySnapshots.slice().sort((a, b) => b.convictionScore - a.convictionScore).slice(0, 3).map(c => ({researchId: c.id, name: c.name, convictionScore: c.convictionScore}));
+    result.topConviction = result.securitySnapshots.filter(c => c.kind !== 'accumulation').slice().sort((a, b) => b.convictionScore - a.convictionScore).slice(0, 3).map(c => ({researchId: c.id, name: c.name, convictionScore: c.convictionScore}));
     return clone(result);
   }
   function confirmCommittee(source, draft, persist, options) {
@@ -297,7 +350,7 @@
   function ratingTimeline(card, source) {
     if (!card) return [];
     const changes = (source.investmentResearchHistory || []).filter(h => h.researchId === card.id).map(h => ({...h, kind: 'change', date: h.changedAt}));
-    const points = (source.investmentCommitteeSnapshots || []).flatMap(s => (s.securitySnapshots || []).filter(c => c.id === card.id || c.researchId === card.id).map(c => ({kind: 'monthly', date: s.confirmedAt || s.reviewMonth + '-01', reviewMonth: s.reviewMonth, revision: s.revision || 1, rating: c.rating, fairValue: c.fairValue, currency: c.currency, convictionScore: c.convictionScore})));
+    const points = (source.investmentCommitteeSnapshots || []).flatMap(s => (s.securitySnapshots || []).filter(c => c.kind !== 'accumulation' && (c.id === card.id || c.researchId === card.id)).map(c => ({kind: 'monthly', date: s.confirmedAt || s.reviewMonth + '-01', reviewMonth: s.reviewMonth, revision: s.revision || 1, rating: c.rating, fairValue: c.fairValue, currency: c.currency, convictionScore: c.convictionScore})));
     return [...changes, ...points].sort((a, b) => (dateValue(b.date)?.getTime() || 0) - (dateValue(a.date)?.getTime() || 0) || (b.revision || 0) - (a.revision || 0));
   }
   const OUTPUT_SCHEMA = {
@@ -315,24 +368,49 @@
       }}
   };
   function buildPrompt(source, holdings = [], priceSource = {}, framework = FRAMEWORK) {
-    const cards = (source.investmentResearchCards || []).filter(c => ['OWNED', 'WATCH'].includes(c.status));
-    const withoutCards = candidates(source, holdings).filter(c => c.status === 'OWNED' && !match(c, source.investmentResearchCards || []));
+    const cards = opinionCards(source, holdings);
+    const withoutCards = candidates(source, holdings).filter(c => c.status === 'OWNED' && accumulationInfo(c, source, holdings).kind !== 'accumulation' && !match(c, source.investmentResearchCards || []));
     const data = {cards: cards.map(c => ({...Object.fromEntries(['id', ...FIELDS].map(k => [k, c[k] ?? null])), previousRating: previousRating(c, source.investmentResearchHistory || []), convictionScore: convictionTotal(c.conviction), currentPrice: currentPrice(c, priceSource)})), holdingsWithoutCards: withoutCards};
     return '성민 대표님의 Personal Investment Research OS를 검토하세요. 한국어로 판단 근거를 작성하세요.\n주가가 올랐다는 이유만으로 Fair Value를 변경하지 않는다. 모르는 가격·가치는 null로 두고 임의로 만들지 마세요. 현재가의 통화·기준일을 보존하세요. 기존 판단과 변경 이유(changeReason)를 함께 제시하세요.\n매매 실행이나 자동 저장은 없습니다. 대표님이 diff를 확인하고 선택 반영합니다. instrumentId·시장·티커를 그대로 유지하세요. WHY WE OWN IT은 3~5개, Conviction은 각 항목 0~max, max 합계 100입니다. lastReviewedAt은 검토일 ISO 날짜로 쓰세요.\n자료(JSON):\n' + JSON.stringify(data) + '\nConviction framework(JSON):\n' + JSON.stringify(framework) + '\nOUTPUT: 설명 없이 다음 정확한 JSON Schema에 맞는 카드 배열만 반환하세요.\n' + JSON.stringify(OUTPUT_SCHEMA);
   }
-  const core = {RATINGS, STATUSES, THESIS, RISKS, ACTIONS, FRAMEWORK, TRACKED, FIELDS, OUTPUT_SCHEMA, conviction, convictionTotal, normalizeCard, diff, match, candidates, parseReport, reviewReport, prepareBatch, applyBatch, previousRating, currentPrice, valuation, buildPrompt, kst, inputDate, monthNow, latestSnapshot, priorSnapshot, portfolioSummary, COMMITTEE_LISTS, committeeDraft, prepareSnapshot, confirmCommittee, ratingTimeline};
+  const core = {accumulationAccountIds, saveAccumulationAccounts, accumulationInfo, accumulationSecurities, RATINGS, STATUSES, THESIS, RISKS, ACTIONS, FRAMEWORK, TRACKED, FIELDS, OUTPUT_SCHEMA, conviction, convictionTotal, normalizeCard, diff, match, candidates, parseReport, reviewReport, prepareBatch, applyBatch, previousRating, currentPrice, valuation, buildPrompt, kst, inputDate, monthNow, latestSnapshot, priorSnapshot, portfolioSummary, COMMITTEE_LISTS, committeeDraft, prepareSnapshot, confirmCommittee, ratingTimeline};
   if (typeof module !== 'undefined' && module.exports) module.exports = core;
   root.HaniInvestmentResearchCore = core;
   if (!root.document) return;
-  // Browser UI is mounted only into persistent panels prepared by setupInvestmentRc21Layout.
-  const UI = root.HaniInvestmentCommitteeIds;
+  // This module owns the two persistent panels in the independent Committee view.
+  const UI = Object.freeze({view:'investmentCommittee',research:'icResearch',monthly:'icMonthly',tabs:'icSections'});
+  root.HaniInvestmentCommitteeIds = UI;
+  const viewSection = document.getElementById(UI.view);
+  if (!viewSection) return;
+  // Persistent slots belong only to this view; legacy Portfolio panels stay independent.
+  const nav = document.createElement('div'); nav.id = UI.tabs; nav.className = 'ic-section-tabs'; nav.setAttribute('role','tablist'); nav.setAttribute('aria-label','투자위원회');
+  const panels = [[UI.research,'종목 리서치','ic-research'],[UI.monthly,'월간 위원회','ic-monthly']];
+  for (const [key,label,className] of panels) {
+    const button = document.createElement('button'); button.type = 'button'; button.textContent = label; button.dataset.icSection = key; button.setAttribute('role','tab'); button.setAttribute('aria-controls',key); nav.append(button);
+    const panel = document.createElement('div'); panel.id = key; panel.className = className; panel.setAttribute('role','tabpanel'); panel.hidden = key !== UI.research; viewSection.append(panel);
+  }
+  const banner = viewSection.querySelector(':scope > .ds-main-character-banner');
+  if (banner) banner.after(nav); else viewSection.prepend(nav);
+  function selectSection(value) {
+    const key = value === 'monthly' || value === UI.monthly ? UI.monthly : UI.research;
+    for (const [id] of panels) {const panel = document.getElementById(id); panel.hidden = id !== key; panel.classList.toggle('active',id === key);}
+    nav.querySelectorAll('[data-ic-section]').forEach(button => {const active = button.dataset.icSection === key; button.setAttribute('aria-selected',String(active)); button.tabIndex = active ? 0 : -1;});
+    if (document.body.dataset.view === UI.view) history.replaceState(null,'','#'+UI.view+(key === UI.monthly ? '/monthly' : ''));
+    if (key === UI.monthly) renderMonthly(); else {render(); if (document.body.dataset.view === UI.view) refreshPrices();}
+  }
+  nav.addEventListener('click',event => {const button = event.target.closest('[data-ic-section]'); if (button) selectSection(button.dataset.icSection);});
+  nav.addEventListener('keydown',event => {
+    const buttons = [...nav.children], index = buttons.indexOf(event.target); if (index < 0) return;
+    const next = event.key === 'ArrowRight' ? (index+1)%buttons.length : event.key === 'ArrowLeft' ? (index+buttons.length-1)%buttons.length : event.key === 'Home' ? 0 : event.key === 'End' ? buttons.length-1 : -1;
+    if (next < 0) return; event.preventDefault(); selectSection(buttons[next].dataset.icSection); buttons[next].focus();
+  });
   const host = document.getElementById(UI.research);
   if (!host) return;
   let framework = FRAMEWORK, quoteSource = {}, quoteOwner = null, request = 0, editorCard = null, editorBaseline = '', importReview = [], importBaseline = '';
   const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
   const accountIdentity = () => typeof cloudUser !== 'undefined' ? cloudUser?.id || null : null;
   const prices = () => quoteOwner === accountIdentity() ? quoteSource : {};
-  const fingerprint = () => JSON.stringify([state.investmentResearchCards, state.investmentResearchHistory, state.instruments, state.investmentWatchlist, state.investmentBrokerSnapshots, state.transactions]);
+  const fingerprint = () => JSON.stringify([state.investmentResearchCards, state.investmentResearchHistory, state.instruments, state.investmentWatchlist, state.investmentBrokerSnapshots, state.transactions, state.accounts, state.ui?.icAccumulationAccountIds]);
   const holdings = () => root.HaniMarketData?.positions(state, typeof calculate === 'function' ? calculate().holdings : []) || [];
   const labels = {OWNED:'보유',WATCH:'관심',ARCHIVED:'보관', 'VERY STRONG':'매우 강함',STRONG:'강함',NORMAL:'보통',WEAK:'약함',BROKEN:'훼손',LOW:'낮음',MEDIUM:'보통',HIGH:'높음','VERY HIGH':'매우 높음',rating:'Rating',fairValue:'Fair Value',fairValueLow:'Fair Value 하단',fairValueHigh:'Fair Value 상단',convictionScore:'확신도',thesisStrength:'투자 논리 강도',riskLevel:'위험 수준',action:'Action',manualPrice:'수동 현재가',portfolioRoles:'포트폴리오 역할',themes:'테마',thesis:'투자 논리',bullCase:'상승 시나리오',risks:'위험 요인',invalidation:'논리 무효화 조건',nextCheckpoints:'다음 점검',executiveComment:'하니의 의견',valuationMethod:'가치평가 방법',valuationNote:'가치평가 메모',business:'사업의 질',growth:'성장과 이익',financial:'재무 건전성',valuation:'가치평가',fit:'포트폴리오 적합성',risk:'위험 관리'};
   const money = (v, currency) => v === null || v === undefined ? '미입력' : Number(v).toLocaleString('ko-KR', {maximumFractionDigits: 2}) + ' ' + (currency || '통화 미지정');
@@ -342,15 +420,28 @@
     const price = currentPrice(card, prices()), values = valuation(card, price);
     return '<p class="ic-price">현재가 ' + (price ? esc(money(price.value, price.currency)) + ' · 기준 ' + esc(kst(price.asOf, 'price')) + ' · ' + esc(price.source) : '미확인 · 상세에서 수동 가격 입력') + '</p><div class="ic-value"><span><small>Fair Value</small><b>' + esc(money(card.fairValue, card.currency)) + '</b><small>' + esc(money(card.fairValueLow, card.currency)) + ' ~ ' + esc(money(card.fairValueHigh, card.currency)) + '</small></span><span><small>현재가 대비 적정가 / 하단</small><b>' + percent(values.upside) + ' / ' + percent(values.downside) + '</b><small>상승 / 하락 여력 (하단)</small></span></div>';
   }
-  host.innerHTML = '<div class="ic-header"><div><small>HANI INVESTMENT RESEARCH</small><h2>보유의 이유, 판단의 기록</h2><p>기업 가치와 투자 논리를 확인하고 다음 행동을 기록합니다.</p></div><div class="ic-tools"><button type="button" class="btn finance" data-ic="new">+ Research 작성</button><button type="button" class="btn" data-ic="copy">GPT용 자료 복사</button><button type="button" class="btn" data-ic="import">리포트 붙여넣기</button></div></div><p class="ic-notice" role="status" aria-live="polite"></p><label class="ic-filter">카드 상태 <select data-ic-status><option value="ACTIVE">보유 + 관심</option><option value="OWNED">보유</option><option value="WATCH">관심</option><option value="ARCHIVED">보관</option><option value="ALL">전체</option></select></label><button type="button" class="btn finance ic-continue" data-ic="monthly" hidden>이번 달 위원회로 이어서</button><div class="ic-list"></div><dialog class="ic-dialog ic-editor" aria-label="Research Card 상세"></dialog><dialog class="ic-dialog ic-import" aria-label="리포트 붙여넣기 및 검토"></dialog>';
+  host.innerHTML = '<div class="ic-header"><div><small>HANI INVESTMENT RESEARCH</small><h2>보유의 이유, 판단의 기록</h2><p>기업 가치와 투자 논리를 확인하고 다음 행동을 기록합니다.</p></div><div class="ic-tools"><button type="button" class="btn finance" data-ic="new">+ Research 작성</button><button type="button" class="btn" data-ic="copy">GPT용 자료 복사</button><button type="button" class="btn" data-ic="import">리포트 붙여넣기</button></div></div><p class="ic-notice" role="status" aria-live="polite"></p><details class="ic-section ic-accumulation-settings"><summary>적립식 계좌 설정</summary><div class="ic-section-content"><p>장기 적립식 계좌만 보유한 종목은 투자의견 없이 관리합니다. 기본값은 키움증권 계좌입니다.</p><div class="ic-accumulation-accounts"></div><button type="button" class="btn" data-ic="save-accumulation">계좌 설정 저장</button></div></details><label class="ic-filter">카드 상태 <select data-ic-status><option value="ACTIVE">보유 + 관심</option><option value="OWNED">보유</option><option value="WATCH">관심</option><option value="ARCHIVED">보관</option><option value="ALL">전체</option></select></label><button type="button" class="btn finance ic-continue" data-ic="monthly" hidden>이번 달 위원회로 이어서</button><div class="ic-list"></div><dialog class="ic-dialog ic-editor" aria-label="Research Card 상세"></dialog><dialog class="ic-dialog ic-import" aria-label="리포트 붙여넣기 및 검토"></dialog>';
   const editor = host.querySelector('.ic-editor'), importDialog = host.querySelector('.ic-import');
   const notice = message => {host.querySelector('.ic-notice').textContent = message;};
+  let settingsBaseline = '';
+  function renderSettings() {
+    const baseline = JSON.stringify([state.accounts, state.ui?.icAccumulationAccountIds, accountIdentity()]);
+    if (baseline === settingsBaseline) return;
+    settingsBaseline = baseline;
+    const ids = new Set(accumulationAccountIds(state));
+    host.querySelector('.ic-accumulation-accounts').innerHTML = (state.accounts || []).map(a => '<label class="ic-field"><span><input type="checkbox" data-ic-account="' + esc(a.id) + '"' + (ids.has(text(a.id)) ? ' checked' : '') + '> ' + esc(a.name) + ' · ' + esc(a.broker || '') + '</span></label>').join('') || '<p>등록된 계좌가 없습니다.</p>';
+  }
+  const accumulationBadge = c => {
+    const kind = accumulationInfo(c, state, holdings()).kind;
+    return kind === 'accumulation' ? '<p class="ic-muted">적립식 계좌 종목 · 의견 선택 사항</p>' : kind === 'mixed' ? '<small class="ic-muted">일부 적립식</small>' : '';
+  };
   function render() {
+    renderSettings();
     const filter = host.querySelector('[data-ic-status]').value, all = state.investmentResearchCards || [];
     const cards = all.filter(c => filter === 'ALL' || (filter === 'ACTIVE' ? ['OWNED', 'WATCH'].includes(c.status) : c.status === filter));
     host.querySelector('.ic-list').innerHTML = cards.length ? cards.map(c => {
       const score = convictionTotal(c.conviction);
-      return '<article class="ic-card"><div class="ic-card-head"><div><small>' + esc((labels[c.status] || c.status) + ' · ' + c.market + ' · ' + c.ticker) + '</small><h3>' + esc(c.name) + '</h3></div>' + pill(c.rating) + '</div>' + priceHtml(c) + '<div class="ic-conviction"><span>확신도 <b>' + score + '/100</b></span><progress max="100" value="' + score + '" aria-label="Conviction ' + score + '점"></progress></div><div class="ic-card-action"><b>' + esc(c.action) + '</b><button type="button" class="btn" data-ic="edit" data-research="' + esc(c.id) + '">상세 / 수정</button></div><small>마지막 검토 ' + esc(c.lastReviewedAt ? kst(c.lastReviewedAt) : '미검토') + '</small></article>';
+      return '<article class="ic-card"><div class="ic-card-head"><div><small>' + esc((labels[c.status] || c.status) + ' · ' + c.market + ' · ' + c.ticker) + '</small><h3>' + esc(c.name) + '</h3></div>' + pill(c.rating) + '</div>' + accumulationBadge(c) + priceHtml(c) + '<div class="ic-conviction"><span>확신도 <b>' + score + '/100</b></span><progress max="100" value="' + score + '" aria-label="Conviction ' + score + '점"></progress></div><div class="ic-card-action"><button type="button" class="btn" data-ic="portfolio">보유 현황 보기</button><b>' + esc(c.action) + '</b><button type="button" class="btn" data-ic="edit" data-research="' + esc(c.id) + '">상세 / 수정</button></div><small>마지막 검토 ' + esc(c.lastReviewedAt ? kst(c.lastReviewedAt) : '미검토') + '</small></article>';
     }).join('') : '<div class="ic-empty"><h3>' + (all.length ? '이 상태의 카드가 없습니다.' : 'HANI Investment Research를 시작해볼까요?') + '</h3><p>기존 보유종목·관심종목을 선택하거나 새 WATCH 종목을 작성할 수 있어요.</p><button type="button" class="btn finance" data-ic="new">+ 첫 Research 작성</button></div>';
     renderMonthly();
   }
@@ -374,10 +465,10 @@
     editorCard = card ? clone(card) : null; editorBaseline = fingerprint();
     const c = card || {...(candidate || {}), status: candidate?.status || 'WATCH', rating: 'HOLD', thesisStrength: 'NORMAL', riskLevel: 'MEDIUM', action: 'WATCH', conviction: conviction({}, framework), thesis: [], conditions: {}, portfolioRoles: {tags: [], note: ''}};
     const options = candidates(state, holdings());
-    const picker = !card ? '<label class="ic-field">기존 보유종목 / 종목 / 관심종목 선택<select data-ic-picker><option value="">새 WATCH 종목 직접 입력</option>' + options.map((v, i) => '<option value="' + i + '">' + esc(v.category + ' · ' + v.name + ' · ' + v.ticker) + '</option>').join('') + '</select></label>' : '';
-    editor.innerHTML = '<form><div class="ic-dialog-head"><h3>' + (card ? esc(card.name) + ' · Research' : '첫 Research 작성') + '</h3><button type="button" class="btn" data-ic="close">닫기</button></div>' + picker + '<div class="ic-form-grid">' + field('name', '종목명', c.name, 'text', 'required') + field('ticker', '티커 / 종목코드', c.ticker) + field('market', '시장 (KR / US 등)', c.market) + field('currency', '가치평가 통화', c.currency || (marketKey(c.market) === 'US' ? 'USD' : 'KRW')) + select('status', '카드 상태', c.status, STATUSES) + select('rating', 'Rating', c.rating, RATINGS) + '</div><p>직전 Rating: ' + esc(card ? previousRating(card, state.investmentResearchHistory || []) || '없음' : '없음') + '</p><div class="ic-rule">주가가 올랐다는 이유만으로 Fair Value를 변경하지 않는다.</div><div class="ic-form-grid">' + field('fairValueLow', 'Fair Value 하단', c.fairValueLow, 'number', 'min="0.000001" step="any"') + field('fairValue', 'Fair Value 적정가', c.fairValue, 'number', 'min="0.000001" step="any"') + field('fairValueHigh', 'Fair Value 상단', c.fairValueHigh, 'number', 'min="0.000001" step="any"') + '</div>' + field('reason', '판단 / Fair Value 변경 이유 (선택)', '') + '<div class="ic-form-grid">' + field('valuationMethod', '가치평가 방법', c.valuationMethod) + area('valuationNote', '가치평가 메모', c.valuationNote) + '</div><div class="ic-price-preview">' + priceHtml(c) + '</div>' + section('현재가 · 캐시가 없으면 수동 입력', '<p>기존 시세 캐시가 우선입니다. 수동 현재가는 이 카드에만 기록합니다.</p><div class="ic-form-grid">' + field('manualValue', '수동 현재가', c.manualPrice?.value, 'number', 'min="0.000001" step="any"') + field('manualCurrency', '가격 통화', c.manualPrice?.currency || c.currency || 'KRW') + field('manualAsOf', '가격 기준일 / 시각', c.manualPrice?.asOf ? kst(c.manualPrice.asOf, 'datetime') : '', 'text', 'placeholder="2026.10.11 10:00 (KST)"') + '</div>') + '<h4>확신도 평가</h4><div class="ic-form-grid">' + c.conviction.dimensions.map((d, i) => field('score' + i, (labels[d.key] || d.label) + ' / ' + d.max, d.score, 'number', 'min="0" max="' + d.max + '" step="any" data-ic-score')).join('') + '</div><div class="ic-conviction"><b data-ic-total>' + convictionTotal(c.conviction) + '/100</b><progress data-ic-progress max="100" value="' + convictionTotal(c.conviction) + '"></progress></div><div class="ic-form-grid">' + select('thesisStrength', '투자 논리 강도', c.thesisStrength, THESIS) + select('riskLevel', '위험 수준', c.riskLevel, RISKS) + '</div>' + section('포트폴리오 역할 · 테마', area('roleTags', '역할 태그 (한 줄에 하나)', c.portfolioRoles?.tags) + area('roleNote', '역할 메모', c.portfolioRoles?.note) + area('themes', '테마 태그 (한 줄에 하나)', c.themes)) + section('WHY WE OWN IT · 투자 논리와 점검', area('thesis', 'WHY WE OWN IT (3~5개, 한 줄에 하나)', c.thesis) + area('bullCase', '상승 시나리오', c.bullCase) + area('risks', '위험 요인 (한 줄에 하나)', c.risks) + area('invalidation', '논리 무효화 조건 (한 줄에 하나)', c.invalidation) + area('nextCheckpoints', '다음 점검 (한 줄에 하나)', c.nextCheckpoints)) + section('Action · 매수 / 축소 / 청산 조건', select('action', 'Action', ACTIONS.includes(c.action) ? c.action : 'CUSTOM', [...ACTIONS, 'CUSTOM']) + field('customAction', '직접 입력 Action', ACTIONS.includes(c.action) ? '' : c.action) + area('actionNote', '행동 메모', c.actionNote) + area('add', '추가 매수 조건', c.conditions?.add) + area('reduce', '축소 조건', c.conditions?.reduce) + area('exit', '청산 조건', c.conditions?.exit)) + section('HANI COMMENT · 마지막 검토', '<div class="ic-hani"><img src="./assets/profiles/hani-profile-hani.webp" alt="하니"><span><b>HANI COMMENT</b><small>최고 투자 전략가</small></span></div>' + area('executiveComment', 'HANI COMMENT', c.executiveComment) + field('lastReviewedAt', '마지막 검토일 (KST)', kst(c.lastReviewedAt || new Date(), 'datetime'))) + section('Rating History · 판단 변경 이력', timeline(card)) + '<p class="ic-error" role="alert"></p><div class="ic-footer"><button type="button" class="btn" data-ic="close">취소</button><button type="submit" class="btn finance">Research 저장</button></div></form>';
+    const picker = !card ? '<label class="ic-field">기존 보유종목 / 종목 / 관심종목 선택<select data-ic-picker><option value="">새 WATCH 종목 직접 입력</option>' + options.map((v, i) => accumulationInfo(v, state, holdings()).kind === 'accumulation' ? '' : '<option value="' + i + '">' + esc(v.category + ' · ' + v.name + ' · ' + v.ticker) + '</option>').join('') + '</select></label>' + section('적립식 종목 (의견 없이 보유)', options.map((v, i) => accumulationInfo(v, state, holdings()).kind === 'accumulation' ? '<p>' + esc(v.name) + ' <button type="button" class="btn" data-ic="write-accumulation" data-candidate="' + i + '">그래도 작성</button></p>' : '').join('') || '<p>적립식 전용 종목 없음</p>') : '';
+    editor.innerHTML = '<form><div class="ic-dialog-head"><h3>' + (card ? esc(card.name) + ' · Research' : '첫 Research 작성') + '</h3><button type="button" class="btn" data-ic="close">닫기</button></div>' + picker + accumulationBadge(c) + '<div class="ic-form-grid">' + field('name', '종목명', c.name, 'text', 'required') + field('ticker', '티커 / 종목코드', c.ticker) + field('market', '시장 (KR / US 등)', c.market) + field('currency', '가치평가 통화', c.currency || (marketKey(c.market) === 'US' ? 'USD' : 'KRW')) + select('status', '카드 상태', c.status, STATUSES) + select('rating', 'Rating', c.rating, RATINGS) + '</div><p>직전 Rating: ' + esc(card ? previousRating(card, state.investmentResearchHistory || []) || '없음' : '없음') + '</p><div class="ic-rule">주가가 올랐다는 이유만으로 Fair Value를 변경하지 않는다.</div><div class="ic-form-grid">' + field('fairValueLow', 'Fair Value 하단', c.fairValueLow, 'number', 'min="0.000001" step="any"') + field('fairValue', 'Fair Value 적정가', c.fairValue, 'number', 'min="0.000001" step="any"') + field('fairValueHigh', 'Fair Value 상단', c.fairValueHigh, 'number', 'min="0.000001" step="any"') + '</div>' + field('reason', '판단 / Fair Value 변경 이유 (선택)', '') + '<div class="ic-form-grid">' + field('valuationMethod', '가치평가 방법', c.valuationMethod) + area('valuationNote', '가치평가 메모', c.valuationNote) + '</div><div class="ic-price-preview">' + priceHtml(c) + '</div>' + section('현재가 · 캐시가 없으면 수동 입력', '<p>기존 시세 캐시가 우선입니다. 수동 현재가는 이 카드에만 기록합니다.</p><div class="ic-form-grid">' + field('manualValue', '수동 현재가', c.manualPrice?.value, 'number', 'min="0.000001" step="any"') + field('manualCurrency', '가격 통화', c.manualPrice?.currency || c.currency || 'KRW') + field('manualAsOf', '가격 기준일 / 시각', c.manualPrice?.asOf ? kst(c.manualPrice.asOf, 'datetime') : '', 'text', 'placeholder="2026.10.11 10:00 (KST)"') + '</div>') + '<h4>확신도 평가</h4><div class="ic-form-grid">' + c.conviction.dimensions.map((d, i) => field('score' + i, (labels[d.key] || d.label) + ' / ' + d.max, d.score, 'number', 'min="0" max="' + d.max + '" step="any" data-ic-score')).join('') + '</div><div class="ic-conviction"><b data-ic-total>' + convictionTotal(c.conviction) + '/100</b><progress data-ic-progress max="100" value="' + convictionTotal(c.conviction) + '"></progress></div><div class="ic-form-grid">' + select('thesisStrength', '투자 논리 강도', c.thesisStrength, THESIS) + select('riskLevel', '위험 수준', c.riskLevel, RISKS) + '</div>' + section('포트폴리오 역할 · 테마', area('roleTags', '역할 태그 (한 줄에 하나)', c.portfolioRoles?.tags) + area('roleNote', '역할 메모', c.portfolioRoles?.note) + area('themes', '테마 태그 (한 줄에 하나)', c.themes)) + section('WHY WE OWN IT · 투자 논리와 점검', area('thesis', 'WHY WE OWN IT (3~5개, 한 줄에 하나)', c.thesis) + area('bullCase', '상승 시나리오', c.bullCase) + area('risks', '위험 요인 (한 줄에 하나)', c.risks) + area('invalidation', '논리 무효화 조건 (한 줄에 하나)', c.invalidation) + area('nextCheckpoints', '다음 점검 (한 줄에 하나)', c.nextCheckpoints)) + section('Action · 매수 / 축소 / 청산 조건', select('action', 'Action', ACTIONS.includes(c.action) ? c.action : 'CUSTOM', [...ACTIONS, 'CUSTOM']) + field('customAction', '직접 입력 Action', ACTIONS.includes(c.action) ? '' : c.action) + area('actionNote', '행동 메모', c.actionNote) + area('add', '추가 매수 조건', c.conditions?.add) + area('reduce', '축소 조건', c.conditions?.reduce) + area('exit', '청산 조건', c.conditions?.exit)) + section('HANI COMMENT · 마지막 검토', '<div class="ic-hani"><img src="./assets/profiles/hani-profile-hani.webp" alt="하니"><span><b>HANI COMMENT</b><small>최고 투자 전략가</small></span></div>' + area('executiveComment', 'HANI COMMENT', c.executiveComment) + field('lastReviewedAt', '마지막 검토일 (KST)', kst(c.lastReviewedAt || new Date(), 'datetime'))) + section('Rating History · 판단 변경 이력', timeline(card)) + '<p class="ic-error" role="alert"></p><div class="ic-footer"><button type="button" class="btn" data-ic="close">취소</button><button type="submit" class="btn finance">Research 저장</button></div></form>';
     editor.dataset.instrument = c.instrumentId || ''; editor._conviction = clone(c.conviction); editor._options = options;
-    if (candidate) editor.querySelector('[data-ic-picker]').value = String(options.indexOf(match(candidate, options)));
+    if (candidate && accumulationInfo(candidate, state, holdings()).kind !== 'accumulation') editor.querySelector('[data-ic-picker]').value = String(options.indexOf(match(candidate, options)));
     if (!editor.open) editor.showModal();
   }
   function readEditor() {
@@ -427,7 +518,7 @@
   const displayValue = v => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}(?:T|$)/.test(v) ? kst(v, 'datetime') + ' KST' : Array.isArray(v) ? v.map(displayValue) : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, displayValue(x)])) : v;
   const valueText = v => v === null || v === undefined ? '미입력' : typeof v === 'object' ? JSON.stringify(displayValue(v)) : String(displayValue(v));
   function renderReview() {
-    importDialog.querySelector('.ic-review').innerHTML = '<h4>선택할 종목과 변경 이유를 확인하세요.</h4>' + importReview.map((item, i) => '<article class="ic-review-item"><label><input type="checkbox" data-ic-include="' + i + '" checked> ' + esc(item.card.name) + ' · ' + (item.existingId ? '기존 카드' : '새 카드 · ' + esc(labels[item.card.status] || item.card.status)) + '</label><div class="ic-diffs">' + (Object.entries(item.tracked).map(([k, d]) => '<p><b>' + esc(labels[k] || k) + '</b> ' + esc(valueText(d.from)) + ' → ' + esc(valueText(d.to)) + '</p>').join('') || '<p>추적 판단 변경 없음 · History 추가 없음</p>') + '</div><p>이유: ' + esc(item.reason || '입력 없음 (선택 사항)') + '</p><details class="ic-section"><summary>새 내용 / 변경된 텍스트와 기타 필드 ' + Object.keys(item.fields).length + '개</summary><div class="ic-section-content">' + Object.entries(item.fields).map(([k, d]) => '<p><b>' + esc(labels[k] || k) + '</b><br>' + esc(valueText(d.from)) + ' → ' + esc(valueText(d.to)) + '</p>').join('') + '</div></details></article>').join('') + '<button type="button" class="btn finance" data-ic="apply">선택 반영</button>';
+    importDialog.querySelector('.ic-review').innerHTML = '<h4>선택할 종목과 변경 이유를 확인하세요.</h4>' + importReview.map((item, i) => '<article class="ic-review-item"><label><input type="checkbox" data-ic-include="' + i + '"' + (item.excluded ? ' disabled' : ' checked') + '> ' + esc(item.card.name) + ' · ' + (item.excluded ? '적립식 종목 · 반영 제외' : item.existingId ? '기존 카드' : '새 카드 · ' + esc(labels[item.card.status] || item.card.status)) + '</label><div class="ic-diffs">' + (Object.entries(item.tracked).map(([k, d]) => '<p><b>' + esc(labels[k] || k) + '</b> ' + esc(valueText(d.from)) + ' → ' + esc(valueText(d.to)) + '</p>').join('') || '<p>추적 판단 변경 없음 · History 추가 없음</p>') + '</div><p>이유: ' + esc(item.reason || '입력 없음 (선택 사항)') + '</p><details class="ic-section"><summary>새 내용 / 변경된 텍스트와 기타 필드 ' + Object.keys(item.fields).length + '개</summary><div class="ic-section-content">' + Object.entries(item.fields).map(([k, d]) => '<p><b>' + esc(labels[k] || k) + '</b><br>' + esc(valueText(d.from)) + ' → ' + esc(valueText(d.to)) + '</p>').join('') + '</div></details></article>').join('') + '<button type="button" class="btn finance" data-ic="apply">선택 반영</button>';
   }
   const monthlyHost = document.getElementById(UI.monthly);
   let selectedMonth = monthNow(), monthlyDraft = null, draftBaseline = '', revisionDraft = false, viewedRevision = null, monthlyOwner = accountIdentity();
@@ -438,12 +529,15 @@
   const listLabels = {strengthened: '투자 논리 강화', weakened: '투자 논리 약화', newWatchlist: '관심 종목', valuationAlerts: '가치평가 주의', deepValue: '저평가 후보', actionPlan: '실행 계획'};
   function summaryHtml(summary) {
     if (!summary?.themes?.length) return '<p>작성된 보유·관심 카드가 없습니다. 먼저 종목 리서치를 작성해 주세요.</p>';
-    return '<div class="ic-theme-list">' + summary.themes.map(t => '<article class="ic-theme"><h4>' + esc(t.theme) + '</h4><p>' + t.securities.map(c => esc(c.name) + ' <small>' + esc(labels[c.status] || c.status) + '</small>').join(' · ') + '</p></article>').join('') + '</div><details class="ic-section"><summary>포트폴리오 역할별 보기</summary><div class="ic-section-content">' + (summary.roles || []).map(r => '<p><b>' + esc(r.role) + '</b> · ' + r.securities.map(c => esc(c.name)).join(' · ') + '</p>').join('') + '</div></details>' + (summary.overlapWarnings?.length ? '<aside class="ic-overlap"><h4>Overlap Warning · 테마 중복 주의</h4>' + summary.overlapWarnings.map(w => '<p>' + esc(w.theme) + ' · HIGH · 보유 카드 ' + w.ownedCount + '개' + (w.holdingCount ? ' · 연결 보유 기록 ' + w.holdingCount + '개' : '') + '</p>').join('') + '<small>OWNED 카드 수 기준이며, 포트폴리오 금액 비중을 추정하지 않습니다.</small></aside>' : '<p class="ic-muted">테마 중복 경고 없음 · 동일 테마 보유 카드 3개 이상일 때 표시합니다.</p>');
+    return '<div class="ic-theme-list">' + summary.themes.map(t => '<article class="ic-theme"><h4>' + esc(t.theme) + '</h4><p>' + t.securities.map(c => esc(c.name) + (c.hasAccumulation ? ' <small>일부 적립식</small>' : '') + ' <small>' + esc(labels[c.status] || c.status) + '</small>').join(' · ') + '</p></article>').join('') + '</div><details class="ic-section"><summary>포트폴리오 역할별 보기</summary><div class="ic-section-content">' + (summary.roles || []).map(r => '<p><b>' + esc(r.role) + '</b> · ' + r.securities.map(c => esc(c.name)).join(' · ') + '</p>').join('') + '</div></details>' + (summary.overlapWarnings?.length ? '<aside class="ic-overlap"><h4>Overlap Warning · 테마 중복 주의</h4>' + summary.overlapWarnings.map(w => '<p>' + esc(w.theme) + ' · HIGH · 보유 카드 ' + w.ownedCount + '개' + (w.holdingCount ? ' · 연결 보유 기록 ' + w.holdingCount + '개' : '') + '</p>').join('') + '<small>OWNED 카드 수 기준이며, 포트폴리오 금액 비중을 추정하지 않습니다.</small></aside>' : '<p class="ic-muted">테마 중복 경고 없음 · 동일 테마 보유 카드 3개 이상일 때 표시합니다.</p>');
+  }
+  function accumulationHtml(rows) {
+    return '<section class="ic-accumulation"><h3>장기 적립식 (투자의견 없음)</h3>' + (rows.map(c => '<article><h4>' + esc(c.name) + '</h4><p>' + (c.accounts || []).map(a => esc(a.name)).join(' · ') + '</p><p>' + (c.currentValues?.length ? '기록 평가액 ' + c.currentValues.map(v => esc(money(v.value, v.currency))).join(' · ') : '평가액 미확인') + (c.weight !== null && c.weight !== undefined ? ' · 기록 평가액 기준 비중 ' + c.weight.toFixed(1) + '%' : '') + '</p></article>').join('') || '<p>적립식 전용 보유종목 없음</p>') + '</section>';
   }
   function frozenRows(snapshot) {
-    return '<div class="ic-snapshot-securities">' + (snapshot.securitySnapshots || []).map(c => {
+    return '<div class="ic-snapshot-securities">' + (snapshot.securitySnapshots || []).filter(c => c.kind !== 'accumulation').map(c => {
       const p = c.currentPrice;
-      return '<article class="ic-snapshot-security"><div class="ic-card-head"><h4>' + esc(c.name) + '</h4>' + pill(c.rating) + '</div><p><b>Fair Value ' + esc(money(c.fairValue, c.currency)) + '</b> · 확신도 ' + (c.convictionScore ?? '미확인') + '/100 · ' + esc(c.action) + '</p><p class="ic-price">' + (p ? '현재가 ' + esc(money(p.value, p.currency)) + ' · 기준 ' + esc(kst(p.asOf, 'price')) + ' · ' + esc(p.source) : '현재가 미확인') + '</p><p>직전 Rating ' + esc(c.previousRating || '없음') + ' · 상승 / 하락 여력 ' + percent(c.upside ?? null) + ' / ' + percent(c.downside ?? null) + '</p><button type="button" class="btn" data-monthly="history" data-research="' + esc(c.researchId || c.id) + '">종목 상세 · Rating History</button></article>';
+      return '<article class="ic-snapshot-security"><div class="ic-card-head"><h4>' + esc(c.name) + '</h4>' + pill(c.rating) + '</div>' + (c.hasAccumulation ? '<small>일부 적립식</small>' : '') + '<p><b>Fair Value ' + esc(money(c.fairValue, c.currency)) + '</b> · 확신도 ' + (c.convictionScore ?? '미확인') + '/100 · ' + esc(c.action) + '</p><p class="ic-price">' + (p ? '현재가 ' + esc(money(p.value, p.currency)) + ' · 기준 ' + esc(kst(p.asOf, 'price')) + ' · ' + esc(p.source) : '현재가 미확인') + '</p><p>직전 Rating ' + esc(c.previousRating || '없음') + ' · 상승 / 하락 여력 ' + percent(c.upside ?? null) + ' / ' + percent(c.downside ?? null) + '</p><button type="button" class="btn" data-monthly="history" data-research="' + esc(c.researchId || c.id) + '">종목 상세 · Rating History</button></article>';
     }).join('') + '</div>';
   }
   function renderMonthly() {
@@ -455,16 +549,23 @@
     const start = monthlyHost.querySelector('[data-monthly=start]'); start.hidden = !!latestSnapshot(state, monthNow());
     const board = monthlyHost.querySelector('.ic-monthly-board');
     if (monthlyDraft && monthlyDraft.reviewMonth === selectedMonth) {
-      // Update only summaries when a price response arrives; preserve focused inputs and memory draft.
-      if (board.querySelector('form')?.dataset.month === selectedMonth && board.dataset.draftRevision === String(revisionDraft)) return;
+      // The read-only summary updates in its persistent slot; editable draft inputs stay intact.
+      const summary = portfolioSummary(opinionCards(state, holdings()), holdings(), state), accumulation = accumulationSecurities(state, holdings());
+      const signature = JSON.stringify([summary, accumulation]);
+      monthlyDraft.portfolioSummary = summary; monthlyDraft.accumulationSecurities = accumulation;
+      if (board.querySelector('form')?.dataset.month === selectedMonth && board.dataset.draftRevision === String(revisionDraft)) {
+        if (board._researchSignature !== signature) {board.querySelector('.ic-monthly-research-summary').innerHTML = summaryHtml(summary) + accumulationHtml(accumulation); board._researchSignature = signature;}
+        return;
+      }
+      board._researchSignature = signature;
       board.dataset.draftRevision = String(revisionDraft);
-      board.innerHTML = '<form data-month="' + esc(selectedMonth) + '"><div class="ic-executive"><small>' + esc(committeeTitle(selectedMonth)) + '</small><h2>Executive Summary</h2><p>' + (revisionDraft ? '수정본 초안 · 확정하면 새 수정본이 추가되고 이전 기록은 보존됩니다. 종목 값은 현재 카드 기준입니다.' : '이번 달 투자위원회 초안 · 확정 전에는 저장하지 않습니다.') + '</p></div><div class="ic-form-grid">' + field('portfolioRating', '포트폴리오 판단 (직접 입력 가능)', monthlyDraft.portfolioRating) + select('ratingPreset', '판단 프리셋', '직접 입력', ['직접 입력', 'HOLD', 'SELECTIVE BUY', 'BUY', 'REDUCE', 'DEFENSIVE']) + '</div>' + area('marketView', '시장 관점', monthlyDraft.marketView) + area('executiveSummary', '핵심 요약', monthlyDraft.executiveSummary) + '<blockquote class="ic-recommendation">' + haniHeading('HANI RECOMMENDATION') + area('haniRecommendation', '하니의 제안', monthlyDraft.haniRecommendation) + '</blockquote><details class="ic-section" open><summary>이번 달 판단과 실행 계획</summary><div class="ic-section-content"><p>이전 월 최신 확정본 대비 제안입니다. 가격 관련 후보는 입력된 가격과 Fair Value로만 계산하며, 모든 목록을 편집할 수 있습니다.</p><div class="ic-form-grid">' + COMMITTEE_LISTS.map(k => area(k, listLabels[k] + ' (한 줄에 하나)', monthlyDraft[k])).join('') + '</div></div></details><h3>Portfolio Research Summary · 포트폴리오 리서치</h3>' + summaryHtml(monthlyDraft.portfolioSummary) + '<p class="ic-error" role="alert"></p><div class="ic-footer"><button type="button" class="btn" data-monthly="cancel">초안 취소</button><button type="submit" class="btn finance">이번 달 위원회 확정</button></div></form>';
+      board.innerHTML = '<form data-month="' + esc(selectedMonth) + '"><div class="ic-executive"><small>' + esc(committeeTitle(selectedMonth)) + '</small><h2>Executive Summary</h2><p>' + (revisionDraft ? '수정본 초안 · 확정하면 새 수정본이 추가되고 이전 기록은 보존됩니다. 종목 값은 현재 카드 기준입니다.' : '이번 달 투자위원회 초안 · 확정 전에는 저장하지 않습니다.') + '</p></div><div class="ic-form-grid">' + field('portfolioRating', '포트폴리오 판단 (직접 입력 가능)', monthlyDraft.portfolioRating) + select('ratingPreset', '판단 프리셋', '직접 입력', ['직접 입력', 'HOLD', 'SELECTIVE BUY', 'BUY', 'REDUCE', 'DEFENSIVE']) + '</div>' + area('marketView', '시장 관점', monthlyDraft.marketView) + area('executiveSummary', '핵심 요약', monthlyDraft.executiveSummary) + '<blockquote class="ic-recommendation">' + haniHeading('HANI RECOMMENDATION') + area('haniRecommendation', '하니의 제안', monthlyDraft.haniRecommendation) + '</blockquote><details class="ic-section" open><summary>이번 달 판단과 실행 계획</summary><div class="ic-section-content"><p>이전 월 최신 확정본 대비 제안입니다. 가격 관련 후보는 입력된 가격과 Fair Value로만 계산하며, 모든 목록을 편집할 수 있습니다.</p><div class="ic-form-grid">' + COMMITTEE_LISTS.map(k => area(k, listLabels[k] + ' (한 줄에 하나)', monthlyDraft[k])).join('') + '</div></div></details><h3>Portfolio Research Summary · 포트폴리오 리서치</h3>' + '<div class="ic-monthly-research-summary">' + summaryHtml(summary) + accumulationHtml(accumulation) + '</div><p class="ic-error" role="alert"></p><div class="ic-footer"><button type="button" class="btn" data-monthly="cancel">초안 취소</button><button type="submit" class="btn finance">이번 달 위원회 확정</button></div></form>';
       return;
     }
     board.dataset.draftRevision = '';
-    if (!snapshot) {board.innerHTML = '<div class="ic-empty"><h3>' + esc(monthLabel(selectedMonth)) + ' 월간 위원회</h3><p>이번 달 보유의 이유와 다음 행동을 함께 정리해볼까요?</p></div>'; return;}
+    if (!snapshot) {board.innerHTML = '<div class="ic-empty"><h3>' + esc(monthLabel(selectedMonth)) + ' 월간 위원회</h3><p>이번 달 보유의 이유와 다음 행동을 함께 정리해볼까요?</p></div>' + accumulationHtml(accumulationSecurities(state, holdings())); return;}
     const previous = snapshots.filter(s => s.reviewMonth === selectedMonth && s.id !== latest.id).sort((a, b) => (b.revision || 1) - (a.revision || 1));
-    board.innerHTML = '<div class="ic-executive"><small>' + esc(committeeTitle(selectedMonth)) + '</small><h2>Executive Summary</h2><p>확정본 · 수정본 ' + (snapshot.revision || 1) + ' · ' + esc(kst(snapshot.confirmedAt, 'datetime')) + ' KST</p><b>' + esc(snapshot.portfolioRating || '미입력') + '</b></div><p class="ic-frozen-note">확정 당시 값을 보관한 읽기 전용 기록입니다.</p><div class="ic-tools"><button type="button" class="btn" data-monthly="revise">수정본 추가</button>' + (snapshot.id !== latest.id ? '<button type="button" class="btn" data-monthly="latest">최신 수정본 보기</button>' : '') + '</div>' + (previous.length ? '<details class="ic-section"><summary>이전 수정본 ' + previous.length + '개</summary><div class="ic-section-content">' + previous.map(s => '<button type="button" class="btn" data-monthly="revision" data-snapshot="' + esc(s.id) + '">수정본 ' + (s.revision || 1) + ' · ' + esc(kst(s.confirmedAt)) + '</button>').join('') + '</div></details>' : '') + '<h3>시장 관점</h3><p class="ic-prose">' + esc(snapshot.marketView || '입력 없음') + '</p><h3>핵심 요약</h3><p class="ic-prose">' + esc(snapshot.executiveSummary || '입력 없음') + '</p><blockquote class="ic-recommendation">' + haniHeading('HANI RECOMMENDATION') + '<p class="ic-prose">' + esc(snapshot.haniRecommendation || '입력 없음') + '</p></blockquote><div class="ic-form-grid">' + COMMITTEE_LISTS.map(k => '<section class="ic-monthly-list"><h3>' + listLabels[k] + '</h3><ul>' + ((snapshot[k] || []).map(v => '<li>' + esc(v) + '</li>').join('') || '<li>해당 항목 없음</li>') + '</ul></section>').join('') + '</div><h3>확신도 상위 종목</h3><p>' + (snapshot.topConviction || []).map(c => esc(typeof c === 'string' ? c : c.name + ' · ' + c.convictionScore + '/100')).join(' · ') + '</p><h3>Portfolio Research Summary · 포트폴리오 리서치</h3>' + summaryHtml(snapshot.portfolioSummary) + '<h3>확정 당시 종목 판단</h3>' + frozenRows(snapshot);
+    board.innerHTML = '<div class="ic-executive"><small>' + esc(committeeTitle(selectedMonth)) + '</small><h2>Executive Summary</h2><p>확정본 · 수정본 ' + (snapshot.revision || 1) + ' · ' + esc(kst(snapshot.confirmedAt, 'datetime')) + ' KST</p><b>' + esc(snapshot.portfolioRating || '미입력') + '</b></div><p class="ic-frozen-note">확정 당시 값을 보관한 읽기 전용 기록입니다.</p><div class="ic-tools"><button type="button" class="btn" data-monthly="revise">수정본 추가</button>' + (snapshot.id !== latest.id ? '<button type="button" class="btn" data-monthly="latest">최신 수정본 보기</button>' : '') + '</div>' + (previous.length ? '<details class="ic-section"><summary>이전 수정본 ' + previous.length + '개</summary><div class="ic-section-content">' + previous.map(s => '<button type="button" class="btn" data-monthly="revision" data-snapshot="' + esc(s.id) + '">수정본 ' + (s.revision || 1) + ' · ' + esc(kst(s.confirmedAt)) + '</button>').join('') + '</div></details>' : '') + '<h3>시장 관점</h3><p class="ic-prose">' + esc(snapshot.marketView || '입력 없음') + '</p><h3>핵심 요약</h3><p class="ic-prose">' + esc(snapshot.executiveSummary || '입력 없음') + '</p><blockquote class="ic-recommendation">' + haniHeading('HANI RECOMMENDATION') + '<p class="ic-prose">' + esc(snapshot.haniRecommendation || '입력 없음') + '</p></blockquote><div class="ic-form-grid">' + COMMITTEE_LISTS.map(k => '<section class="ic-monthly-list"><h3>' + listLabels[k] + '</h3><ul>' + ((snapshot[k] || []).map(v => '<li>' + esc(v) + '</li>').join('') || '<li>해당 항목 없음</li>') + '</ul></section>').join('') + '</div><h3>확신도 상위 종목</h3><p>' + (snapshot.topConviction || []).map(c => esc(typeof c === 'string' ? c : c.name + ' · ' + c.convictionScore + '/100')).join(' · ') + '</p><h3>Portfolio Research Summary · 포트폴리오 리서치</h3>' + summaryHtml(snapshot.portfolioSummary) + '<h3>확정 당시 종목 판단</h3>' + frozenRows(snapshot) + accumulationHtml((snapshot.securitySnapshots || []).filter(c => c.kind === 'accumulation'));
   }
   function startCommittee(revision = false) {
     const month = revision ? selectedMonth : monthNow(), old = latestSnapshot(state, month);
@@ -476,7 +577,7 @@
     monthlyHost.querySelector('.ic-monthly-board').innerHTML = ''; renderMonthly();
   }
   function continueCommittee() {
-    selectInvestmentSection(UI.monthly); startCommittee(); monthlyHost.scrollIntoView({block: 'start'});
+    selectSection(UI.monthly); startCommittee(); monthlyHost.scrollIntoView({block: 'start'});
   }
   if (monthlyHost) {
     monthlyHost.innerHTML = '<div class="ic-header"><div><small>HANI MONTHLY INVESTMENT COMMITTEE</small><h2>월간 위원회</h2><p>월별로 투자 판단을 확정하고 당시의 근거를 보관합니다.</p></div><button type="button" class="btn finance" data-monthly="start">이번 달 위원회 시작</button></div><nav class="ic-months" aria-label="위원회 기준월"></nav><p class="ic-monthly-notice" role="status" aria-live="polite"></p><div class="ic-monthly-board"></div>';
@@ -500,7 +601,7 @@
         case 'history': {
           const card = (state.investmentResearchCards || []).find(c => c.id === button.dataset.research);
           if (!card) {monthlyHost.querySelector('.ic-monthly-notice').textContent = '현재 카드가 없습니다. 이 월의 확정된 종목 값은 보존되어 있습니다.'; break;}
-          selectInvestmentSection(UI.research); openEditor(card); const section = editor.querySelector('.ic-timeline')?.closest('details'); if (section) {section.open = true; section.scrollIntoView({block: 'nearest'});} break;
+          selectSection(UI.research); openEditor(card); const section = editor.querySelector('.ic-timeline')?.closest('details'); if (section) {section.open = true; section.scrollIntoView({block: 'nearest'});} break;
         }
       }
     });
@@ -518,8 +619,13 @@
     const button = event.target.closest('[data-ic]'); if (!button) return;
     try {
       switch (button.dataset.ic) {
+        case 'portfolio': activateInvestmentStocks(); break;
         case 'monthly': continueCommittee(); break;
         case 'new': openEditor(); break;
+        case 'write-accumulation': openEditor(null, editor._options[Number(button.dataset.candidate)]); break;
+        case 'save-accumulation':
+          saveAccumulationAccounts(state, [...host.querySelectorAll('[data-ic-account]:checked')].map(el => el.dataset.icAccount), () => commit('적립식 계좌 설정을 저장했습니다.'));
+          render(); break;
         case 'edit': {const card = (state.investmentResearchCards || []).find(c => c.id === button.dataset.research); if (card) openEditor(card); break;}
         case 'close': button.closest('dialog')?.close(); break;
         case 'copy': await copyPrompt(); break;
@@ -529,7 +635,7 @@
           importBaseline = fingerprint(); importDialog.querySelector('.ic-error').textContent = ''; renderReview(); break;
         case 'apply': {
           if (importBaseline !== fingerprint()) throw Error('검토 중 원본이 변경되었습니다. 변경 검토를 다시 실행하세요.');
-          const selected = [...importDialog.querySelectorAll('[data-ic-include]:checked')].map(el => importReview[Number(el.dataset.icInclude)]);
+          const selected = [...importDialog.querySelectorAll('[data-ic-include]:checked')].map(el => importReview[Number(el.dataset.icInclude)]).filter(item => !item.excluded);
           if (!selected.length) throw Error('반영할 종목을 하나 이상 선택하세요.');
           applyBatch(state, selected, () => commit('선택한 Research ' + selected.length + '개를 반영했습니다.'), {uid, framework});
           importDialog.close(); importReview = []; host.querySelector('.ic-continue').hidden = false; render(); refreshPrices(); break;
@@ -539,6 +645,6 @@
   });
   host.querySelector('[data-ic-status]').addEventListener('change', render);
   root.addEventListener('hani:market-updated', () => {quoteSource = root.HaniAssetMarket?.analyticsSource?.() || {}; quoteOwner = accountIdentity(); render();});
-  root.HaniInvestmentCommittee = {render, refreshPrices, renderMonthly, continueCommittee, setFramework(value) {conviction({}, value); framework = clone(value);}, enter() {render(); refreshPrices();}};
-  render();
+  root.HaniInvestmentCommittee = {select:selectSection,render, refreshPrices, renderMonthly, continueCommittee, setFramework(value) {conviction({}, value); framework = clone(value);}, enter() {render(); refreshPrices();}};
+  selectSection(location.hash.endsWith('/monthly') ? UI.monthly : UI.research);
 })(typeof window !== 'undefined' ? window : globalThis);

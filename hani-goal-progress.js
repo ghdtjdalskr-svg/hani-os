@@ -843,10 +843,24 @@ function reportRead(requestedPeriod){
 function reportCards(facts){
  return facts.map(({definition:d,actual:a,progress:p})=>`<article class="card"><h4>${escape(reportNames[d.metric_id])}</h4><p>실적 <b>${number(a.value)}</b> ${escape(reportUnits[d.unit]||d.unit)}</p><p>목표 <b>${number(p.target)}</b> ${escape(reportUnits[d.unit]||d.unit)}${p.semantics==='monthly_budget'?' / 월':''}</p><p>${escape(comparison(p))}</p><p class="sub">${a.value===null?'기록 없음':'일부 기록 기준'} · ${escape(a.period_start)} ~ ${escape(a.period_end)}</p>${a.months_missing.length?`<p class="sub">기록 미확인 월: ${escape(a.months_missing.join(', '))}</p>`:''}</article>`).join('');
 }
+let quarterReportTab='actual',goalEditorHome=null;
+function syncGoalEditor(view=document.body.dataset.view){
+ const editor=document.getElementById('goalRegistryPanel'),destination=document.querySelector('[data-quarter-goal-editor]');if(!editor||!destination)return;
+ if(!goalEditorHome){goalEditorHome=document.createComment('existing goal editor home');editor.before(goalEditorHome)}
+ const inGoals=view==='monthlyReport'&&monthlyReportBoard==='quarterly'&&quarterReportTab==='goals';
+ if(inGoals){if(editor.parentNode!==destination)destination.appendChild(editor)}else if(editor.previousSibling!==goalEditorHome)goalEditorHome.after(editor);
+}
+function selectQuarterReportTab(tab){
+ quarterReportTab=tab==='goals'?'goals':'actual';
+ document.querySelectorAll('[data-quarter-tab]').forEach(button=>{const active=button.dataset.quarterTab===quarterReportTab;button.setAttribute('aria-selected',String(active));button.classList.toggle('primary',active);button.onclick=()=>selectQuarterReportTab(button.dataset.quarterTab)});
+ document.querySelectorAll('[data-quarter-panel]').forEach(panel=>panel.hidden=panel.dataset.quarterPanel!==quarterReportTab);
+ syncGoalEditor();
+ if(quarterReportTab==='goals'&&!document.getElementById('goalRegistryForm'))renderGoalRegistry();
+}
 function goalDraftFromGuidance(item,value){
  if(item.action==='REVIEW')throw Error('기존 목표 이력을 먼저 확인해 주세요.');
  const n=Number(value);if(!Number.isFinite(n)||n<=0||item.unit==='%'&&n>100||item.metric_id==='media_watched_count'&&!Number.isInteger(n))throw Error('목표값을 확인해 주세요.');
- showView('settings');renderGoalRegistry();
+ if(item.period.type==='quarter'){monthlyReportBoard='quarterly';showView('monthlyReport');selectQuarterReportTab('goals')}else showView('settings');renderGoalRegistry();
  const form=document.getElementById('goalRegistryForm'),set=(name,value)=>{const el=form?.elements.namedItem(name);if(!el)throw Error('목표 입력 화면을 찾지 못했습니다.');el.value=String(value);return el;};
  const metric=set('metric_id',item.metric_id);if(metric.value!==item.metric_id)throw Error('이 목표 분야의 등록 기능은 다음 배포를 기다립니다.');
  set('goal_type',item.period.type);set('year',item.period.year);set('quarter',item.period.quarter||1);
@@ -864,18 +878,27 @@ function renderReportProgress(){
   let content='<p role="status">원본 검증 대기 · 목표와 실적을 표시하지 않습니다.</p>';
   if(facts){
    let draft=[];try{draft=guidancePreview(facts,p)}catch{}
-   content=`<p class="sub">설정의 기간 진행과 동일한 계산 결과입니다. 미확인 월을 제외한 참고 실적이며 확정 결산이 아닙니다.</p><div class="goal-progress-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px">${reportCards(facts)}</div><h4>다음 기간 목표 검토</h4><p class="sub">기존 목표를 참고값으로 제안합니다. 값 선택만으로 저장되지 않습니다. 목표 관리에서 Preview와 승인을 거쳐 주세요.</p><div class="form-grid">${draft.map((d,i)=>`<div class="card"><h4>${escape(reportNames[d.metric_id])} · ${d.period.year}년 ${d.period.quarter?d.period.quarter+'분기':'연간'}</h4><p>${escape(d.reason)}</p><label class="field">검토할 목표 (${escape(reportUnits[d.unit]||d.unit)})<input data-guidance-value="${i}" type="number" min="0" step="${d.metric_id==='media_watched_count'?'1':'any'}" value="${d.value??''}" ${d.action==='REVIEW'?'disabled':''}></label><button type="button" class="btn" data-guidance-use="${i}" ${d.action==='REVIEW'?'disabled':''}>목표 입력칸으로</button></div>`).join('')}</div>`;
+   content=`<p class="sub">설정의 기간 진행과 동일한 계산 결과입니다. 미확인 월을 제외한 참고 실적이며 확정 결산이 아닙니다.</p><div class="goal-progress-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px">${reportCards(facts)}</div>`;
+   const guidance=`<h4>다음 기간 목표 검토</h4><p class="sub">기존 목표를 참고값으로 제안합니다. 값 선택만으로 저장되지 않습니다. 목표 관리에서 Preview와 승인을 거쳐 주세요.</p><div class="form-grid">${draft.map((d,i)=>`<div class="card"><h4>${escape(reportNames[d.metric_id])} · ${d.period.year}년 ${d.period.quarter?d.period.quarter+'분기':'연간'}</h4><p>${escape(d.reason)}</p><label class="field">검토할 목표 (${escape(reportUnits[d.unit]||d.unit)})<input data-guidance-value="${i}" type="number" min="0" step="${d.metric_id==='media_watched_count'?'1':'any'}" value="${d.value??''}" ${d.action==='REVIEW'?'disabled':''}></label><button type="button" class="btn" data-guidance-use="${i}" ${d.action==='REVIEW'?'disabled':''}>목표 입력칸으로</button></div>`).join('')}</div>`;
+   if(type==='quarter'){
+    const summary=document.querySelector('[data-quarter-goal-summary]'),target=document.querySelector('[data-quarter-goal-guidance]');
+    if(summary)summary.innerHTML='<ul class="hani-care-list">'+facts.map(({definition:d,progress:p})=>'<li><span>'+escape(reportNames[d.metric_id])+' · 목표 '+number(p.target)+' '+escape(reportUnits[d.unit]||d.unit)+'</span></li>').join('')+'</ul>';
+    if(target)target.innerHTML=guidance;
+   }else content+=guidance;
    host._guidance=draft;host._factsSignature=JSON.stringify(facts);
-  }else {host._guidance=[];host._factsSignature='';}
+  }else {host._guidance=[];host._factsSignature='';if(type==='quarter'){const summary=document.querySelector('[data-quarter-goal-summary]'),guidance=document.querySelector('[data-quarter-goal-guidance]');if(summary)summary.textContent='원본 검증 대기';if(guidance)guidance.textContent='';}}
+  if(type==='quarter')content+='<button class="btn sm" type="button" data-quarter-goals-link>목표 수정은 목표 탭에서</button>';
   host.innerHTML=controls+content;
+  if(type==='quarter'){selectQuarterReportTab(quarterReportTab);host.querySelector('[data-quarter-goals-link]')?.addEventListener('click',()=>selectQuarterReportTab('goals'));}
   host.querySelectorAll('[data-report-year],[data-report-quarter]').forEach(el=>el.onchange=()=>{const year=Number(host.querySelector('[data-report-year]').value);if(!Number.isInteger(year)||year<2000||year>2100){renderReportProgress();return}reportPeriods[type]={type,year,...(type==='quarter'?{quarter:Number(host.querySelector('[data-report-quarter]').value)}:{})};renderReportProgress()});
-  host.querySelectorAll('[data-guidance-use]').forEach(button=>button.onclick=()=>{
-   try{const i=Number(button.dataset.guidanceUse),draft=host._guidance[i],signature=host._factsSignature,value=host.querySelector(`[data-guidance-value="${i}"]`).value,fresh=reportRead(reportPeriods[type]);if(!fresh||JSON.stringify(fresh)!==signature)throw Error('원본 또는 목표가 바뀌었습니다. 다시 확인해 주세요.');goalDraftFromGuidance(draft,value)}catch(e){toast(e.message);renderReportProgress()}
+  const guidanceHost=type==='quarter'?document.querySelector('[data-quarter-goal-guidance]'):host;
+  guidanceHost?.querySelectorAll('[data-guidance-use]').forEach(button=>button.onclick=()=>{
+   try{const i=Number(button.dataset.guidanceUse),draft=host._guidance[i],signature=host._factsSignature,value=guidanceHost.querySelector(`[data-guidance-value="${i}"]`).value,fresh=reportRead(reportPeriods[type]);if(!fresh||JSON.stringify(fresh)!==signature)throw Error('원본 또는 목표가 바뀌었습니다. 다시 확인해 주세요.');goalDraftFromGuidance(draft,value)}catch(e){toast(e.message);renderReportProgress()}
   });
  }
  }finally{reportRendering=false;}
 }
-window.HANI_GOAL_PROGRESS=Object.freeze({render:()=>{render();renderReportProgress()},read:reportRead,renderReport:renderReportProgress,renderMonthly:renderCommonMonthlyReport,suggestMonthlyBudget});
+window.HANI_GOAL_PROGRESS=Object.freeze({syncGoalEditor,selectQuarterReportTab,render:()=>{render();renderReportProgress()},read:reportRead,renderReport:renderReportProgress,renderMonthly:renderCommonMonthlyReport,suggestMonthlyBudget});
 renderReportProgress();
 function renderCommonMonthlyReport(month){
  const match=/^(\d{4})-(0[1-9]|1[0-2])$/.exec(month);if(!match)return false;
