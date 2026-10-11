@@ -71,6 +71,7 @@ tabsContext.selectSettingsTab('data');assert.equal(panels.data.hidden,false);ass
 const routeNodes=new Map(),routeHashes=[],drawer=[];
 const routeNode=id=>routeNodes.get(id)||routeNodes.set(id,{dataset:{},classList:{add(){},remove(name){if(id==='app')drawer.push(name)},toggle(){}},setAttribute(){}}).get(id);
 const canonical=vm.createContext({document:{body:{dataset:{}},querySelectorAll:s=>s==='[data-settings-tab]'?tabButtons:[],querySelector:()=>null},$:id=>id==='data'||id==='policy'?panels[id]:routeNode(id),window:{scrollTo(){}},history:{replaceState(_a,_b,hash){routeHashes.push(hash)}},location:{hash:'',href:'https://fixture.test/'},pageMeta:{settings:['설정·데이터','설정 및 사내 규칙','work']},navigationTimer:null,navigationBooted:false,NAVIGATION_VIEWS:new Set(['settings']),loginGateUnlocked:false,clearTimeout(){},setTimeout:fn=>fn(),agentPolicyInit(){},setBanner(){},updateFinishScope(){},cloudUser:null});
+canonical.renderNavNewBadges=()=>{};
 for(const name of ['organizationRoute','settingsRoute','selectSettingsTab','showView'])vm.runInContext(extract(name),canonical);
 for(const value of ['policy','settings/policy','settings']){
   canonical.showView(value);assert.equal(canonical.document.body.dataset.view,'settings');assert.equal(routeHashes.at(-1),value==='settings'?'#settings/data':'#settings/policy');assert.equal(panels.policy.hidden,value==='settings');assert.equal(drawer.at(-1),'mobile-open');cases++;

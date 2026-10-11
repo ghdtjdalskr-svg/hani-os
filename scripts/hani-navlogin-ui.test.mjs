@@ -23,7 +23,7 @@ try{
     assert.equal(await page.locator('#app').evaluate(e=>e.inert),true);
     assert.equal(await page.locator('#loginGateTitle').innerText(),'HANI OS 입장 화면');
     assert.equal(await page.locator('[data-organization-tab="archive"]').getAttribute('aria-selected'),'true');
-    await page.locator('#loginGateFinish').selectOption('midnight-black');await page.locator('[data-login-theme="winter"]').click();
+    await page.locator('input[name="loginFinish"][value="midnight-black"]').check();await page.locator('[data-login-theme="winter"]').click();
     assert.deepEqual(await page.evaluate(()=>[document.documentElement.dataset.finish,document.documentElement.dataset.season]),['midnight-black','winter']);
     assert.equal(await page.locator('[data-login-theme="winter"]').getAttribute('aria-pressed'),'true');
     await page.evaluate(()=>{

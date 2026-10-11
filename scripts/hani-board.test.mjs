@@ -173,7 +173,7 @@ const routeContext=vm.createContext({
   history:{replaceState(_state,_title,url){routeWrites.push(url)}},
   location:{hash:"#board/post%2Fwith%20spaces",href:"https://example.test/#board/post%2Fwith%20spaces"},
   NAVIGATION_VIEWS:new Set(["board","home"]),navigationTimer:null,navigationCurrent:"",
-  navigationBooted:false,loginGateUnlocked:false,pageMeta:{},clearTimeout(){},setBanner(){},updateFinishScope(){},cloudUser:null
+  navigationBooted:false,loginGateUnlocked:false,renderNavNewBadges(){},pageMeta:{},clearTimeout(){},setBanner(){},updateFinishScope(){},cloudUser:null
 });
 vm.runInContext(fn("organizationRoute")+'\n'+fn("settingsRoute")+'\n'+fn("showView")+'\nshowView("board/post%2Fwith%20spaces");',routeContext);
 assert.equal(routeContext.document.body.dataset.view,"board");assert.equal(boardRenders,1);
