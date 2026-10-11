@@ -94,7 +94,7 @@ let route='',scrolled=false;
 const click=section(market,"  document.querySelector('[data-asset-market-link]')", "  document.addEventListener('visibilitychange',sync);");
 vm.runInNewContext(click,{document:{querySelector:()=>({addEventListener:(event,fn)=>fn()})},showView:view=>{route=view},requestAnimationFrame:fn=>fn(),root:{scrollIntoView:options=>{scrolled=options.block==='start'}}});
 assert.equal(route,'asset');assert.equal(scrolled,true);
-assert.match(read('index.html'),/data-asset-market-link>종목 가격 그래프 보기/);
+assert.match(read('index.html'),/data-asset-market-link>투자 › 종목별 보기/);
 
 // Run the actual persistent-slot placement twice: both bubbles remain after headers.
 function card(){const header={after(node){const old=this.parent.children.indexOf(node);if(old>=0)this.parent.children.splice(old,1);this.parent.children.splice(1,0,node);node.parent=this.parent}};const parent={children:[header,{className:'field'}]};header.parent=parent;return parent;}

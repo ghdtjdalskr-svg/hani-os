@@ -9,7 +9,7 @@ const baseDir=path.resolve(process.argv[2]||path.join(import.meta.dirname,'../.a
 const baselineFile=file=>fs.existsSync(path.join(baseDir,file))?fs.readFileSync(path.join(baseDir,file),'utf8'):execFileSync('git',['show','HEAD:'+file],{encoding:'utf8',maxBuffer:64*1024*1024});
 const nav=main.slice(main.indexOf('const NAV_NEW_DATES='),main.indexOf('function renderNavNewBadges'));
 const ctx=vm.createContext({});vm.runInContext(nav,ctx);
-for(const id of ['board','organization','aura','aiBudget']){
+for(const id of ['investmentCommittee','board','organization','aura','aiBudget']){
   assert.equal(ctx.navMenuIsNew(id,Date.parse('2026-10-10T14:59:59Z')),false);
   assert.equal(ctx.navMenuIsNew(id,Date.parse('2026-10-10T15:00:00Z')),true);
   assert.equal(ctx.navMenuIsNew(id,Date.parse('2026-10-17T14:59:59Z')),true);

@@ -3,10 +3,10 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import http from 'node:http';
-import {pathToFileURL} from 'node:url';
+import {fileURLToPath,pathToFileURL} from 'node:url';
 const runtime=process.argv[2]||'C:/Users/홍성민/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs';
 const {chromium}=await import(pathToFileURL(runtime).href);
-const root=path.resolve(import.meta.dirname,'..'),out=path.join(root,'.ai-budget-private/ui-203b');fs.mkdirSync(out,{recursive:true});
+const root=path.resolve(fileURLToPath(new URL('../', import.meta.url))),out=path.join(root,'.ai-budget-private/ui-203b');fs.mkdirSync(out,{recursive:true});
 const server=http.createServer((req,res)=>{
   const uri=decodeURIComponent(new URL(req.url,'http://test').pathname),file=path.resolve(root,'.'+(uri==='/'?'/index.html':uri));
   if(!file.startsWith(root+path.sep)||uri.split('/').some(x=>x.startsWith('.'))||!fs.existsSync(file)||!fs.statSync(file).isFile()){res.writeHead(404).end();return}
@@ -41,6 +41,7 @@ try{
     await page.locator('[data-login-theme="summer"]').focus();await page.keyboard.press('Enter');assert.equal(await page.evaluate(()=>document.documentElement.dataset.season),'summer');
     await page.screenshot({path:path.join(out,'login-'+width+'.png'),fullPage:true});
     await page.evaluate(()=>{state=freshState();unlockLoginGate();showView('organization')});
+    await page.locator('#organization .ogh-overview').waitFor({state:'visible'});
     assert.equal(await page.locator('.ogh-overview').isVisible(),true);assert.equal(await page.locator('.ogh-timeline li').count(),8);assert.equal(await page.locator('.ogh-stats>div').count(),4);assert.match(await page.locator('.ogh-overview').innerText(),/이번 달 게시판 활동이 쌓이면/);
     await page.evaluate(()=>{const createdAt=new Date().toISOString();state.boardPosts=[{id:'synthetic',authorId:'hani',createdAt}];state.boardComments=[{postId:'synthetic',authorId:'hani',createdAt}];HaniOrganizationHub.selectTab('overview')});
     assert.match(await page.locator('.ogh-employee').innerText(),/하니[\s\S]*전무[\s\S]*전략기획실[\s\S]*2건/);
@@ -51,14 +52,15 @@ try{
     const newBadges=await page.locator('#sidebar .nav-btn .nav-new-pill:visible').evaluateAll(nodes=>nodes.map(n=>{
       const {left,right}=n.getBoundingClientRect();return {view:n.closest('[data-view]').dataset.view,text:n.textContent,left,right,inHorizontalViewport:right>0&&left<innerWidth};
     }));
-    console.log('NEW badge diagnostics '+JSON.stringify({width,expected:width===1440?4:0,items:newBadges}));
-    assert.equal(newBadges.length,4,'four active menu badges retain CSS visibility');
-    assert.equal(newBadges.filter(n=>n.inHorizontalViewport).length,width===1440?4:0,'NEW badges intersect the horizontal viewport');
-    assert.equal(await page.locator('#sidebar .nav-btn .nav-new-pill').count(),4,'repeat render is idempotent');
-    assert.equal(await page.locator('#sidebar .group-head .nav-new-pill').count(),2);
+    console.log('NEW badge diagnostics '+JSON.stringify({width,expected:width===1440?5:0,items:newBadges}));
+    assert.equal(newBadges.length,5,'five active menu badges retain CSS visibility');
+    assert.equal(newBadges.filter(n=>n.inHorizontalViewport).length,width===1440?5:0,'NEW badges intersect the horizontal viewport');
+    assert.equal(await page.locator('#sidebar .nav-btn .nav-new-pill').count(),5,'repeat render is idempotent');
+    assert.equal(await page.locator('#sidebar .group-head .nav-new-pill').count(),3);
     await page.evaluate(()=>renderNavNewBadges(Date.parse('2026-10-18T00:00:00Z')));assert.equal(await page.locator('#sidebar .nav-new-pill:not([hidden])').count(),0);
     await page.locator('[data-organization-tab="people"]').click();assert.equal(await page.locator('.ogh-overview').isVisible(),false);await page.locator('[data-organization-tab="overview"]').click();assert.equal(await page.locator('.ogh-overview').isVisible(),true);
     await page.evaluate(()=>showView('monthlyReport'));
+    await page.waitForFunction(()=>!!document.querySelector('#monthlyReport > .ds-main-character-banner'));
     for(const theme of ['porcelain-cream','midnight-black','titanium-graphite']){
       await page.evaluate(theme=>applySignatureFinish(theme,false),theme);
       const accents=[];
