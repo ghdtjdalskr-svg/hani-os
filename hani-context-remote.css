@@ -12,32 +12,46 @@
 #app .hani-remote-brand{font-size:11px;font-weight:950;letter-spacing:.09em;color:var(--appearance-ink,var(--ds-ink,#273349));white-space:nowrap}
 #app .hani-remote-collapse,#app .hani-remote-close{display:grid;place-items:center;width:32px;height:32px;min-width:32px;padding:0;border:1px solid var(--hani-frame-line,#e2e5ec);border-radius:9px;background:#fff;color:var(--control-accent,#7656b3);font-size:16px;font-weight:900}
 #app .hani-remote-close{display:none}
-#app .hani-remote-scene{position:relative;flex:0 0 auto;display:grid;grid-template-rows:minmax(0,1fr) auto;height:clamp(330px,42vh,430px);margin:0;overflow:hidden;border:1px solid var(--border-subtle,#e8e8f1);border-radius:16px;background:var(--surface-raised,#fafbff);box-shadow:0 9px 24px color-mix(in srgb,var(--control-accent,#7656b3) 10%,transparent)}
-/* Reserve the caption row, and inset artwork from the rounded clipping edge.
+#app .hani-remote-scene{position:relative;flex:0 0 auto;display:grid;grid-template-rows:minmax(0,1fr) auto;height:315px;margin:0;overflow:hidden;border:1px solid var(--border-subtle,#e8e8f1);border-radius:16px;background:var(--surface-raised,#fafbff);box-shadow:0 9px 24px color-mix(in srgb,var(--control-accent,#7656b3) 10%,transparent)}
+/* Reserve the caption row, and fill artwork to the rounded clipping edge.
  * Avoid a 100% flex basis competing with the caption for frame height. */
-#app .hani-remote-scene img{display:block;box-sizing:border-box;min-width:0;min-height:0;width:100%;height:100%;padding:6px;object-fit:contain;object-position:center center;background:var(--appearance-raised,#fff)}
+#app .hani-remote-scene img{display:block;box-sizing:border-box;min-width:0;min-height:0;width:100%;height:100%;padding:0;object-fit:cover;object-position:50% 35%;background:var(--appearance-raised,#fff)}
 #app .hani-remote-scene figcaption{position:static;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:7px;min-height:27px;padding:4px 9px;background:color-mix(in srgb,var(--control-accent,#7656b3) 80%,#222a3d);color:#fff}
 #app .hani-remote-scene figcaption span{font-size:9px;font-weight:900;letter-spacing:.08em}
 #app .hani-remote-scene figcaption b{font-size:9px;line-height:1.25;text-align:right}
+/* Panel-local palette; global theme tokens stay unchanged. */
+#app .hani-context-remote{--remote-ink:#263247;--remote-muted:#505b6c;--remote-row:#ffffff;--remote-line:#d4d9e2;--remote-current:#edf0fa;--remote-primary:#ffead5;--remote-primary-line:#a95b21;--remote-yuna:#fff4e5;--remote-alert:#fff0f3;--remote-focus:#5b4396}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app .hani-context-remote{--remote-ink:#f4f1eb;--remote-muted:#c2c8d2;--remote-row:#1b1e24;--remote-line:#48505f;--remote-current:#292b3f;--remote-primary:#49311e;--remote-primary-line:#eab375;--remote-yuna:#322a20;--remote-alert:#3c2530;--remote-focus:#c4b5fd}
+#app .hani-remote-item:focus-visible,#app .hani-remote-link:focus-visible,#app .hani-remote-collapse:focus-visible,#app .hani-remote-close:focus-visible{outline:2px solid var(--remote-focus);outline-offset:2px}
+#app .hani-remote-group-label{margin:2px 2px 0;padding:8px 0 0;border-top:1px solid var(--remote-line);color:var(--remote-muted);font-size:12px;font-weight:900;letter-spacing:.06em}
+#app.hani-remote-mini .hani-remote-group-label{display:none}
+#app [data-remote-action="current"]{--remote-chip:#4a548e}
+#app [data-remote-action="primary"]{--remote-chip:#995018}
+#app [data-remote-action="yuna"]{--remote-chip:#936418}
+#app [data-remote-action="agent"]{--remote-chip:#675098}
+#app [data-remote-action="recent"]{--remote-chip:#286b64}
+#app [data-remote-action="alert"]{--remote-chip:#a53d59}
+#app [data-remote-action="theme"]{--remote-chip:#80518b}
+#app [data-remote-action="top"]{--remote-chip:#40546c}
 #app .hani-remote-nav{display:grid;gap:6px}
-#app .hani-remote-item{display:grid;grid-template-columns:26px minmax(0,1fr) auto;align-items:center;gap:8px;width:100%;min-height:46px;padding:7px 8px;border:1px solid transparent;border-radius:11px;background:transparent;color:var(--appearance-muted,#586379);text-align:left}
-#app .hani-remote-item:hover{border-color:var(--hani-frame-line,#e2e5ec);background:var(--appearance-raised,#fff)}
-#app .hani-remote-item.is-current{border-color:color-mix(in srgb,var(--control-accent,#7656b3) 18%,#fff);background:var(--control-soft,#f0edf6);color:var(--control-accent,#7656b3)}
-#app .hani-remote-item.is-primary{background:linear-gradient(135deg,#dc8d45,#e39a55);color:#fff;box-shadow:0 7px 16px rgba(203,120,50,.19)}
-#app .hani-remote-item.is-yuna{background:linear-gradient(135deg,#fff8ed,#fff3e4);color:#8b5b2d}
-#app .hani-remote-item.is-alert{border-color:#f5d8df;background:#fff4f6;color:#a34358}
+#app .hani-remote-item{display:grid;grid-template-columns:30px minmax(0,1fr) auto;align-items:center;gap:8px;width:100%;min-height:60px;padding:10px 8px;box-sizing:border-box;border:1px solid var(--remote-line);border-radius:11px;background:var(--remote-row);color:var(--remote-ink);text-align:left}
+#app .hani-remote-item:hover{border-color:var(--remote-focus);box-shadow:inset 0 0 0 1px var(--remote-focus)}
+#app .hani-remote-item.is-current{border-color:var(--remote-line);background:var(--remote-current);color:var(--remote-ink)}
+#app .hani-remote-item.is-primary{border-color:var(--remote-primary-line);background:var(--remote-primary);color:var(--remote-ink);box-shadow:inset 3px 0 var(--remote-primary-line)}
+#app .hani-remote-item.is-yuna{background:var(--remote-yuna);color:var(--remote-ink)}
+#app .hani-remote-item.is-alert{border-color:var(--remote-line);background:var(--remote-alert);color:var(--remote-ink)}
 #app .hani-remote-item[hidden]{display:none}
-#app .hani-remote-icon{display:grid;place-items:center;width:26px;height:26px;border-radius:8px;background:rgba(255,255,255,.62);font-size:14px}
+#app .hani-remote-icon{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--remote-chip,#40546c);color:#fff;font-size:16px;font-weight:900}
 #app .hani-remote-copy{min-width:0}
 #app .hani-remote-copy b,#app .hani-remote-copy small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#app .hani-remote-copy b{font-size:11.5px;line-height:1.25;color:inherit}
-#app .hani-remote-copy small{margin-top:2px;font-size:8.5px;line-height:1.25;color:color-mix(in srgb,currentColor 73%,transparent)}
+#app .hani-remote-copy b{font-size:13px;line-height:1.4;font-weight:850;color:inherit}
+#app .hani-remote-copy small{margin-top:2px;font-size:12px;line-height:1.4;color:var(--remote-muted)}
 #app .hani-remote-count{display:grid;place-items:center;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#d45a72;color:#fff;font-size:9px;font-weight:950}
-#app .hani-remote-section{padding:8px;border:1px solid var(--hani-frame-line,#e2e5ec);border-radius:12px;background:var(--appearance-panel,#fff)}
-#app .hani-remote-section-label{display:block;margin:0 2px 6px;color:#8b93a3;font-size:8.5px;font-weight:900;letter-spacing:.08em}
+#app .hani-remote-section{padding:8px;border:1px solid var(--hani-frame-line,#e2e5ec);border-radius:12px;background:var(--remote-row)}
+#app .hani-remote-section-label{display:block;margin:0 2px 6px;color:var(--remote-muted);font-size:12px;font-weight:900;letter-spacing:.08em}
 #app .hani-remote-links{display:flex;flex-wrap:wrap;gap:5px}
-#app .hani-remote-link{min-height:28px;padding:5px 7px;border:0;border-radius:8px;background:#f5f3f9;color:#697285;font-size:9px;font-weight:850}
-#app .hani-remote-link:hover{background:var(--control-soft,#f0edf6);color:var(--control-accent,#7656b3)}
+#app .hani-remote-link{min-height:28px;padding:5px 7px;border:0;border-radius:8px;background:var(--remote-current);color:var(--remote-ink);font-size:12px;font-weight:850}
+#app .hani-remote-link:hover{box-shadow:inset 0 0 0 1px var(--remote-focus)}
 #app .hani-remote-utility{margin-top:auto;padding-top:7px;border-top:1px solid var(--hani-frame-line,#e2e5ec)}
 #app.hani-remote-mini .hani-context-remote{align-items:center;padding-left:8px;padding-right:8px}
 #app.hani-remote-mini .hani-remote-brand,#app.hani-remote-mini .hani-remote-copy,#app.hani-remote-mini .hani-remote-count,#app.hani-remote-mini .hani-remote-section,#app.hani-remote-mini .hani-remote-scene figcaption{display:none}
@@ -52,13 +66,15 @@
 @media (max-width:1180px) and (min-width:851px){
   #app.app{grid-template-columns:var(--sidebar) minmax(0,1fr) 208px}
   #app .hani-context-remote{padding-left:9px;padding-right:9px}
-  #app .hani-remote-scene{height:350px}
+  #app .hani-remote-scene{height:315px}
 }
 @media (max-height:820px) and (min-width:851px){
-  #app .hani-remote-scene{height:290px}
-  #app .hani-remote-item{min-height:42px;padding-top:5px;padding-bottom:5px}
+  #app .hani-remote-scene{height:310px}
+  #app .hani-remote-item{min-height:60px;padding-top:10px;padding-bottom:10px}
 }
 @media (max-width:850px){
+  #app .hani-remote-group-label{display:none}
+  #app .hani-remote-icon{width:24px;height:24px}
   #app .hani-remote-mobile-trigger.is-intake-inline{position:static;inset:auto;z-index:auto;box-shadow:none;flex-shrink:0;grid-column:1/-1;justify-self:end;width:auto;white-space:nowrap;margin-left:auto}
   #app .hani-remote-mobile-trigger{position:fixed;right:16px;bottom:max(16px,env(safe-area-inset-bottom));z-index:87;display:flex;align-items:center;gap:7px;min-height:44px;padding:10px 14px;border:1px solid color-mix(in srgb,var(--control-accent,#7656b3) 25%,#fff);border-radius:999px;background:var(--control-accent,#7656b3);color:#fff;box-shadow:0 10px 28px rgba(39,44,69,.24);font-size:12px;font-weight:900}
   #app .hani-context-remote{position:fixed;left:0;right:0;top:auto;bottom:0;z-index:90;display:grid;grid-template-columns:92px minmax(0,1fr);grid-template-rows:auto auto 1fr;gap:10px;width:100%;height:auto;max-height:min(82vh,720px);padding:10px 14px max(16px,env(safe-area-inset-bottom));border:1px solid var(--hani-frame-line,#e2e5ec);border-bottom:0;border-radius:22px 22px 0 0;background:var(--appearance-page,var(--surface-page,#fbfaf7));box-shadow:0 -18px 50px rgba(29,34,54,.22);transform:translateY(110%);transition:transform .24s ease;overflow-y:auto}

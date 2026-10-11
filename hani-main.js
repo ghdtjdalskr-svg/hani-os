@@ -1920,10 +1920,54 @@ function setupQuickJump(){
       if(first){showView(first.dataset.quickView);input.value="";closeQuickJump();input.blur()}
     }
   });
-  box.addEventListener("click",e=>{if(window.innerWidth<=900&&e.target!==input){e.stopPropagation();openQuickJump()}});
+  box.addEventListener("click",e=>{if(window.innerWidth<=900&&e.target!==input){e.stopPropagation();openQuickJump();if(window.innerWidth<=768)input.focus()}});
   document.addEventListener("click",e=>{if(!box.contains(e.target))closeQuickJump()});
+  setupMobileTopStatus();
 }
 
+
+function setupMobileTopStatus(){
+  const bar=document.querySelector('.ui26-top'),button=bar?.querySelector('.mobile-save-status'),copy=bar?.querySelector('.mobile-save-copy'),more=bar?.querySelector('.mobile-top-more'),message=bar?.querySelector('.mobile-status-message');
+  if(!bar||!button||bar.dataset.mobileStatusBound)return;
+  bar.dataset.mobileStatusBound="1";
+  const media=window.matchMedia('(max-width: 768px)'),positions=new WeakMap();
+  let scrollHidden=false,issue=false;
+  const contentFocused=()=>{const el=document.activeElement;return !!(el?.matches('input,textarea,select,[contenteditable="true"]')&&el.closest('main')&&!bar.contains(el))};
+  const visibility=()=>{
+    const keyboard=window.visualViewport&&window.innerHeight-window.visualViewport.height>120&&!bar.contains(document.activeElement);
+    const hidden=media.matches&&(contentFocused()||keyboard||(!issue&&scrollHidden&&document.activeElement!==$('quickJumpInput')&&!bar.classList.contains('mobile-more-open')&&!bar.classList.contains('mobile-status-details')));
+    bar.classList.toggle('is-mobile-hidden',!!hidden);bar.inert=!!hidden;
+  };
+  const refresh=()=>{
+    const badge=$('saveStateBadge'),cloud=$('cloudStatePill');
+    issue=badge?.classList.contains('error')||loadRecovery.active||cloudRuntime.tone==='error'||['STOP','CHECK'].includes(cloudRuntime.sync)||/충돌|저장 중지|원본 보호/.test(badge?.textContent||'');
+    bar.classList.toggle('mobile-status-error',!!issue);
+    const saved=state?.meta?.lastSavedAt,time=saved?new Date(saved):null;
+    copy.textContent=issue?'저장 확인 필요':badge?.classList.contains('ok')?(time&&!Number.isNaN(time.getTime())?'저장됨 '+time.toLocaleTimeString('ko-KR',{timeZone:'Asia/Seoul',hour:'numeric',minute:'2-digit',hour12:false}):'저장 정상'):'저장 확인 중';
+    message.textContent=[lastLoadError,lastSaveResult?.ok===false?lastSaveResult.message:'',loadRecovery.active?'원본 보호 중 · 저장 중지':'',cloud?.textContent,cloudRuntime.message].filter(Boolean).join(' · ');
+    button.setAttribute('aria-label',copy.textContent+' · 상세 보기');visibility();
+  };
+  const closeMenus=()=>{bar.classList.remove('mobile-more-open','mobile-status-details');more.setAttribute('aria-expanded','false');button.setAttribute('aria-expanded','false')};
+  button.addEventListener('click',()=>{const open=!bar.classList.contains('mobile-status-details');closeMenus();bar.classList.toggle('mobile-status-details',open);button.setAttribute('aria-expanded',String(open));visibility()});
+  more.addEventListener('click',()=>{const open=!bar.classList.contains('mobile-more-open');closeMenus();bar.classList.toggle('mobile-more-open',open);more.setAttribute('aria-expanded',String(open));visibility()});
+  document.addEventListener('click',e=>{if(!bar.contains(e.target)){closeMenus();visibility()}});
+  bar.addEventListener('keydown',e=>{if(e.key==='Escape'){closeMenus();visibility()}});
+  window.addEventListener('scroll',e=>{
+    if(!media.matches||e.target!==document)return;
+    const el=e.target===document?document.scrollingElement:e.target;
+    if(!el||typeof el.scrollTop!=='number')return;
+    const y=Math.max(0,el.scrollTop),previous=positions.get(el)||0,delta=y-previous;
+    if(Math.abs(delta)<6&&y>0)return;
+    positions.set(el,y);scrollHidden=y>12&&delta>0;visibility();
+  },{capture:true,passive:true});
+  document.addEventListener('focusin',()=>{if(contentFocused()){scrollHidden=false;closeMenus();closeQuickJump()}visibility()});
+  document.addEventListener('focusout',e=>requestAnimationFrame(()=>{if(e.target.matches('input,textarea,select,[contenteditable="true"]'))scrollHidden=false;visibility()}));
+  window.visualViewport?.addEventListener('resize',visibility);
+  media.addEventListener('change',()=>{scrollHidden=false;closeMenus();visibility()});
+  const observer=new MutationObserver(refresh);
+  for(const id of ['saveStateBadge','lastSavedLabel','cloudHeaderState','cloudStatePill','cloudMessage']){const el=$(id);if(el)observer.observe(el,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['class']})}
+  refresh();
+}
 function setupInvestmentRc21Layout(){
 const section=$("investment"),tabs=section?.querySelector('.investment-tabs-main');if(!section||!tabs)return;
 tabs.innerHTML='<button class="tab active" data-panel="investOverview">투자 현황</button><button class="tab" data-panel="investMonthly">월간 기록</button><button class="tab" data-panel="investManage">종목 관리</button><button class="tab" data-panel="investJournal">투자 일기</button>';
@@ -6178,7 +6222,18 @@ function intakeNaturalReview(text){const s=String(text||"").replace(/\s+/g," ").
 function intakeNaturalAuthor(text){const s=String(text||"").replace(/\s+/g," ").trim(),rel=s.match(/(?:^|\s)([^.,!~\n]{1,50}?)\s*(?:작가|저자)의\s+[^.,!~\n]+/i);if(rel)return String(rel[1]||"").trim().replace(/^(?:오늘|어제|지난주\s*[월화수목금토일](?:요일)?|지난\s*[월화수목금토일](?:요일)?)\s*(?:에)?\s*/i,"").replace(/^[\s"“']+|[\s"”']+$/g,"");const m=s.match(/(?:저자|작가)(?!의)(?:는|은|이|가)?\s*[:：]?\s*["“']?([^.,!~\n]+?)["”']?(?=\s*(?:[.,!~]|$))/i);return m?String(m[1]||"").trim().replace(/^[\s"“']+|[\s"”']+$/g,""):""}
 function intakeNaturalDate(text){const s=intakeNormText(text),last=s.match(/(?:지난주|지난)\s*(월|화|수|목|금|토|일)(?:요일)?/);if(last)return intakeDateFromWeekday(last[1]);if(/어제/.test(s))return intakeDayOffset(-1);if(/오늘/.test(s))return today();return ""}
 function intakeNaturalMovie(text){const s=String(text||"").replace(/\s+/g," ").trim(),verb=/(?:봤어|봤다|봤음|봤는데|봤고|시청했어|시청했다|시청함|정주행했어|정주행했다)/i,vm=verb.exec(s);if(!vm)return null;const before=s.slice(0,vm.index).trim(),quoted=[...before.matchAll(/["“']([^"”']{1,120})["”']/g)].map(x=>String(x[1]||"").trim()).filter(Boolean);let title=quoted.at(-1)||"";if(!title){let cleaned=before.replace(/^(?:나\s*)?/i,"").replace(/^(?:(?:오늘|어제|지난주\s*[월화수목금토일](?:요일)?|지난\s*[월화수목금토일](?:요일)?)\s*(?:에)?\s*)/i,"").replace(/^(?:(?:넷플릭스|쿠팡플레이|디즈니\+?|티빙|웨이브|왓챠|애플\s*tv\+?|prime\s*video|프라임\s*비디오)\s*)/i,"").replace(/^(?:(?:영화|드라마|애니메이션|애니|시리즈|다큐(?:멘터리)?|예능)\s*)/i,"").replace(/^[-–—:：·\s]+/,"").replace(/(?:을|를)?\s*(?:다\s*)?$/i,"").trim();title=cleaned.replace(/^["“']|["”']$/g,"").trim()}const watchedDate=intakeNaturalDate(s)||today();return title?{title,rating:intakeNaturalRating(s),review:intakeNaturalReview(s),watchedDate,status:"watched"}:null}
-function intakeNaturalBook(text){const s=String(text||"").replace(/\s+/g," ").trim(),verb=/(?:완독했어|완독했다|완독함|다\s*읽었어|다\s*읽었다|다\s*읽음|읽었어|읽었다|읽음)/i,vm=verb.exec(s);if(!vm)return null;const before=s.slice(0,vm.index).trim(),quoted=[...before.matchAll(/["“']([^"”']{1,160})["”']/g)].map(x=>String(x[1]||"").trim()).filter(Boolean);let title=quoted.at(-1)||"",author=intakeNaturalAuthor(s);if(!title){let cleaned=before.replace(/^(?:나\s*)?/i,"").replace(/^(?:(?:오늘|어제|지난주\s*[월화수목금토일](?:요일)?|지난\s*[월화수목금토일](?:요일)?)\s*(?:에)?\s*)/i,"").replace(/^(?:책|도서)\s*[-–—:：·]?\s*/i,"").trim(),rel=cleaned.match(/^(.{1,50}?)\s*(?:작가|저자)의\s+(.+?)(?:이라는|라는)\s*(?:책|도서)\s*(?:을|를)?$/i);if(rel){author=String(rel[1]||"").trim();title=String(rel[2]||"").trim()}else{const named=cleaned.match(/^(.+?)(?:이라는|라는)\s*(?:책|도서)\s*(?:을|를)?$/i);if(named)title=String(named[1]||"").trim();else{cleaned=cleaned.replace(/\s*(?:책|도서)?\s*(?:을|를)?\s*$/i,"").trim();title=cleaned.replace(/^["“']|["”']$/g,"").replace(/[.,!~]+$/g,"").trim()}}}return title?{title,author,rating:intakeNaturalRating(s),review:intakeNaturalReview(s),completedDate:intakeNaturalDate(s)||today(),status:"read"}:null}
+function intakeReadingToday(){return new Intl.DateTimeFormat("sv-SE",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date())}
+function intakeNaturalBook(text){
+  const s=String(text||"").replace(/\s+/g," ").trim(),verb=/(?:읽기\s*시작(?:했어|했다)?|읽고\s*있(?:어|다)?|읽는\s*중|완독(?:했어|했다|함)?|다\s*읽었(?:어|다)|다\s*읽음|읽었(?:어|다)|읽음|봤(?:어|다|음))/i,vm=verb.exec(s);
+  if(!vm)return null;
+  let before=s.slice(0,vm.index).trim().replace(/^(?:나\s+)?(?:(?:오늘|어제|지난주\s*[월화수목금토일](?:요일)?|지난\s*[월화수목금토일](?:요일)?)\s*(?:에)?\s*)/i,"").replace(/^(?:이\s*책|책|도서)\s*[-–—:：·]?\s*/i,"").trim();
+  const quoted=[...before.matchAll(/["“'‘『「]([^"”'’』」]{1,160})["”'’』」]/g)],rel=before.match(/^([가-힣]{2,5}(?:\s*[가-힣]{2,5})?|.{1,50}?\s*(?:작가|저자))의\s+(.+)$/);
+  let author=intakeNaturalAuthor(s),title=quoted.at(-1)?.[1]||"";
+  if(rel){author=rel[1].replace(/\s*(?:작가|저자)$/,"").trim();before=rel[2]}
+  if(!title)title=before.replace(/(?:이라는|라는)?\s*(?:책|도서)?\s*(?:을|를)?\s*$/i,"").replace(/[.,!~]+$/g,"").trim();
+  const completed=!/읽기\s*시작|읽고\s*있|읽는\s*중/.test(vm[0]),date=/오늘/.test(s)?intakeReadingToday():intakeNaturalDate(s)||intakeReadingToday();
+  return title?{title,author,rating:intakeNaturalRating(s),review:intakeNaturalReview(s)||(completed?"":"읽는 중"),completedDate:completed?date:"",readingDate:completed?"":date,status:completed?"read":"wish"}:null;
+}
 function intakeMovieContentType(value,text=""){const explicit=movieContentType(value,"");if(explicit)return explicit;const s=intakeNormText(`${value||""} ${text||""}`);if(/애니메이션|애니|anime|animation|극장판/.test(s))return "애니메이션";if(/다큐멘터리|다큐|documentary/.test(s))return "다큐멘터리";if(/예능|버라이어티|variety/.test(s))return "예능";if(/드라마|drama/.test(s))return "드라마";if(/시리즈|시즌|series|season/.test(s))return "시리즈";if(/영화|movie|film|관람|봤어|봤다|봤음|시청/.test(s))return "영화";return "기타"}
 function intakeJsonCandidate(text){try{return JSON.parse(text)}catch(e){return null}}
 function intakeCampusDateTime(v){const raw=intakeText(v);if(!raw)return "";const normalized=normalizeDateFlexDateTime(raw);return normalized===null?raw:normalized}
@@ -6222,7 +6277,7 @@ function intakeBuildOne(target,src={},rawText=""){
   }
   if(target==="book"){
     const natural=intakeNaturalBook(text),title=intakeText(intakePick(mergedKv,["title","book","책","도서명","제목"],natural?.title||intakeFirstContentLine(text)));if(!title)return null;const statusRaw=intakeNormText(intakePick(mergedKv,["status","상태"],natural?.status||text)),status=/완독|read|읽음|완료/.test(statusRaw)?"read":"wish";
-    return {id:uid(),status,title,author:intakeText(intakePick(mergedKv,["author","저자","작가"],natural?.author||"")),topic:intakeText(intakePick(mergedKv,["topic","분류","주제"],"교양"))||"교양",rating:status==="read"?intakeRating(intakePick(mergedKv,["rating","평점"],natural?.rating??"")):null,completedDate:status==="read"?(intakeDate(intakePick(mergedKv,["completeddate","date","완독일","날짜"],natural?.completedDate||intakeNaturalDate(text)))||""):"",review:intakeText(intakePick(mergedKv,["review","후기","한줄평","한 줄 평","감상","소감","의견","메모","이유"],natural?.review||"")),cover:"",createdAt:now,updatedAt:now};
+    return {id:uid(),status,title,author:intakeText(intakePick(mergedKv,["author","저자","작가"],natural?.author||"")),topic:intakeText(intakePick(mergedKv,["topic","분류","주제"],"교양"))||"교양",rating:status==="read"?intakeRating(intakePick(mergedKv,["rating","평점"],natural?.rating??"")):null,completedDate:status==="read"?(intakeDate(intakePick(mergedKv,["completeddate","date","완독일","날짜"],natural?.completedDate||intakeNaturalDate(text)))||""):"",review:intakeText(intakePick(mergedKv,["review","후기","한줄평","한 줄 평","감상","소감","의견","메모","이유"],natural?.readingDate?["읽기 시작일: "+natural.readingDate,natural.review].filter(Boolean).join("\n"):natural?.review||"")),cover:"",createdAt:now,updatedAt:now};
   }
   if(target==="movie"){
     const natural=intakeNaturalMovie(text),title=intakeText(intakePick(mergedKv,["title","movie","작품","작품명","제목"],natural?.title||intakeFirstContentLine(text)));if(!title)return null;const statusRaw=intakeNormText(intakePick(mergedKv,["status","상태"],natural?.status||text)),status=/관람|watched|봤|완료|시청완료/.test(statusRaw)?"watched":"wish",typeRaw=intakePick(mergedKv,["contenttype","content type","type","유형","콘텐츠 유형","콘텐츠유형","장르구분"],"");
@@ -6499,7 +6554,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.205";
+const HANI_DISPLAY_VERSION="2.9.206";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];

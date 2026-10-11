@@ -56,6 +56,7 @@
     <figure class="hani-remote-scene"><img alt="HANI OS 공식 프로필 계절 배너"><figcaption><span data-remote-season></span><b data-remote-members></b></figcaption></figure>
     <p class="hani-remote-season-greeting"><b data-remote-season-agent></b><span data-remote-season-greeting></span></p>
     <nav class="hani-remote-nav" aria-label="현재 화면 빠른 작업">
+      <p class="hani-remote-group-label">현재 화면 · 빠른 작업</p>
       <button type="button" class="hani-remote-item is-current" data-remote-action="current"><span class="hani-remote-icon">⌖</span><span class="hani-remote-copy"><b>현재 섹션</b><small data-remote-current></small></span></button>
       <button type="button" class="hani-remote-item is-primary" data-remote-action="primary"><span class="hani-remote-icon">＋</span><span class="hani-remote-copy"><b data-remote-primary></b><small>Context Primary Action</small></span></button>
       <button type="button" class="hani-remote-item is-yuna" data-remote-action="yuna"><span class="hani-remote-icon">⚡</span><span class="hani-remote-copy"><b>유나에게 빠른 입력</b><small data-remote-yuna></small></span></button>
@@ -64,7 +65,7 @@
       <button type="button" class="hani-remote-item is-alert" data-remote-action="alert" hidden><span class="hani-remote-icon">♢</span><span class="hani-remote-copy"><b data-remote-alert></b><small>확인이 필요합니다</small></span><span class="hani-remote-count" data-remote-count></span></button>
     </nav>
     <section class="hani-remote-section"><span class="hani-remote-section-label">SECTION SHORTCUTS</span><div class="hani-remote-links" data-remote-links></div></section>
-    <div class="hani-remote-utility"><button type="button" class="hani-remote-item" data-remote-action="theme"><span class="hani-remote-icon">✦</span><span class="hani-remote-copy"><b>테마 스튜디오</b><small>AURA</small></span></button><button type="button" class="hani-remote-item" data-remote-action="top"><span class="hani-remote-icon">↑</span><span class="hani-remote-copy"><b>맨 위로</b><small>Utility</small></span></button></div>`;
+    <div class="hani-remote-utility"><p class="hani-remote-group-label">화면 설정 · 이동</p><button type="button" class="hani-remote-item" data-remote-action="theme"><span class="hani-remote-icon">✦</span><span class="hani-remote-copy"><b>테마 스튜디오</b><small>AURA</small></span></button><button type="button" class="hani-remote-item" data-remote-action="top"><span class="hani-remote-icon">↑</span><span class="hani-remote-copy"><b>맨 위로</b><small>Utility</small></span></button></div>`;
   app.append(rail);
   const mobileTrigger=document.createElement("button");mobileTrigger.type="button";mobileTrigger.className="hani-remote-mobile-trigger";mobileTrigger.innerHTML="<span>✦</span> HANI Remote";mobileTrigger.setAttribute("aria-controls",rail.id);mobileTrigger.setAttribute("aria-expanded","false");app.append(mobileTrigger);
 

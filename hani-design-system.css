@@ -1203,6 +1203,36 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
  #app header.top.ui26-top .storage-strip>span:nth-child(3){display:none!important}
  #app .life-ticker{height:32px;margin-bottom:10px;font-size:11px}#app .life-ticker-brand{padding:0 10px}#app .life-ticker-pause{width:26px;height:24px;margin:0 2px}
 }
+/* Mobile header: one persistent row; desktop layout and status owners stay intact. */
+.mobile-save-status,.mobile-top-more,.mobile-status-message{display:none}
+.top-overflow-actions{display:contents}
+.quick-jump-icon{border:0;background:transparent;color:inherit;padding:0;font:inherit}
+@media screen and (max-width:768px){
+  #app .main>header.top.ui26-top{display:flex!important;position:sticky!important;top:0;height:44px!important;min-height:44px!important;padding:4px 0!important;gap:8px!important;flex-wrap:nowrap!important;align-items:center!important;transition:transform .18s ease,opacity .18s ease;transform:translateY(0)}
+  #app .main>header.top.ui26-top.is-mobile-hidden{transform:translateY(calc(-100% - 24px));opacity:0;visibility:hidden;pointer-events:none}
+  #app header.top.ui26-top .top-left{display:flex;align-items:center;min-width:0;flex:1;width:auto;gap:6px}
+  #app header.top.ui26-top .mobile-menu{width:32px!important;height:32px!important;min-width:32px;border-radius:9px;font-size:15px}
+  #app header.top.ui26-top .page-headline{min-width:0}
+  #app header.top.ui26-top .mobile-save-status{display:flex;align-items:center;gap:7px;border:0;background:transparent;color:var(--text);font-size:11px;padding:7px 3px;max-width:100%;white-space:nowrap;cursor:pointer}
+  .mobile-save-dot{width:7px;height:7px;flex-shrink:0;border-radius:50%;background:#798391}
+  .mobile-save-status .mobile-save-copy{overflow:hidden;text-overflow:ellipsis}
+  #app header.top.ui26-top:not(.mobile-status-error):has(.save-badge.ok) .mobile-save-dot{background:#218b62}
+  #app header.top.ui26-top.mobile-status-error .mobile-save-dot{background:#d43b43}
+  #app header.top.ui26-top .storage-strip{display:none!important}
+  #app header.top.ui26-top .top-actions{display:flex;width:auto;flex-wrap:nowrap!important;gap:5px!important;align-items:center}
+  #app header.top.ui26-top .header-search.quick-jump{position:static!important;flex:0 0 32px!important;height:32px!important;width:32px!important;min-width:32px!important;box-shadow:none;padding:0!important}
+  #app header.top.ui26-top .quick-jump-icon{width:30px;height:30px;font-size:22px;cursor:pointer}
+  #app header.top.ui26-top .quick-jump.open input{display:block!important;position:absolute;top:48px;left:0;right:0;width:100%;height:40px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--text)}
+  #app header.top.ui26-top .quick-jump-menu{position:absolute!important;top:94px!important;left:0!important;right:0!important;max-height:55vh!important}
+  #app header.top.ui26-top .mobile-top-more{display:block;width:32px;height:32px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text);font-size:23px;line-height:1;cursor:pointer}
+  #app header.top.ui26-top .top-overflow-actions{display:none}
+  #app header.top.ui26-top.mobile-more-open .top-overflow-actions{display:flex;position:absolute;right:0;top:48px;gap:8px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--panel);box-shadow:0 8px 24px #0002}
+  #app header.top.ui26-top.mobile-more-open .top-overflow-actions .btn span{display:inline}
+  #app header.top.ui26-top.mobile-status-details .storage-strip{display:flex!important;position:absolute;top:48px;left:0;right:0;gap:8px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--panel);box-shadow:0 8px 24px #0002;max-height:45vh;overflow:auto;overflow-wrap:anywhere}
+  #app header.top.ui26-top.mobile-status-details .mobile-status-message{display:block;width:100%;margin:0;font-size:11px}
+}
+@media screen and (max-width:768px) and (prefers-reduced-motion:reduce){#app .main>header.top.ui26-top{transition:none}}
+
 #app .life-ticker-item small{font-size:11px;color:#d8cbbc}
 #app #lifeMarketBasis,#app #dataHubPeriod{font-size:13px;line-height:1.5}
 #app .annual-report-intro{display:flex;gap:24px;align-items:center;padding:24px;margin:16px 0;background:linear-gradient(120deg,#efe7fa,#f8f4ec);border-radius:24px;color:#28374c}

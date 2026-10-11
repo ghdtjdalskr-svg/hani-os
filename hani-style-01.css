@@ -2604,6 +2604,3 @@ body[data-canvas-group="team"]{--canvas-a:#7569e8;--canvas-b:#d875a3;--canvas-c:
 .login-cloud-tools>.card{margin-bottom:12px}
 
 /* Floor labels stay inside the existing company navigation group. */
-.side .nav-floor-label{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 6px;margin:14px 12px 5px;color:var(--text-muted,var(--muted,#637087));font-size:12px;font-weight:700;line-height:1.6;opacity:.85}.side .nav-floor-number{font-size:10px;letter-spacing:.06em}.side .nav-floor-team{flex-basis:100%;font-size:9px;font-weight:500;overflow-wrap:anywhere;letter-spacing:0}
-.side .nav-floor-label:first-child{margin-top:4px}.side .nav-floor-shortcut small{font-size:9px;opacity:.65;white-space:nowrap;margin-left:auto}.side .nav-floor-shortcut .txt{white-space:normal}
-@media(max-width:600px){.side .nav-floor-label{margin-top:12px;font-size:11px}.side .nav-floor-shortcut small{font-size:10px}}
