@@ -307,19 +307,21 @@ function countUp(element, text, key) {
 function celebrate(anchor, page) {
   if (motionPreference.matches || !anchor || anchor.width <= 0 || anchor.height <= 0) return false;
   const burst = document.createElement('span'); burst.className = 'hani-motion-burst'; burst.setAttribute('aria-hidden', 'true');
-  burst.style.left = Math.max(56, Math.min(innerWidth - 56, anchor.left + anchor.width / 2)) + 'px';
-  burst.style.top = Math.max(56, Math.min(innerHeight - 56, anchor.top + anchor.height / 2)) + 'px';
-  for (let i = 0; i < 24; i++) {
-    const particle = document.createElement('i'), angle = i * Math.PI * 2 / 24;
-    particle.style.setProperty('--motion-x', Math.cos(angle) * (30 + i % 4 * 7) + 'px');
-    particle.style.setProperty('--motion-y', Math.sin(angle) * (30 + i % 4 * 7) + 'px');
+  // Completion cheers fire at the viewport centre so they are seen wherever the checkbox sits.
+  burst.style.left = innerWidth / 2 + 'px';
+  burst.style.top = innerHeight / 2 + 'px';
+  for (let i = 0; i < 48; i++) {
+    const particle = document.createElement('i'), angle = i * Math.PI * 2 / 48;
+    particle.style.setProperty('--motion-x', Math.cos(angle) * (110 + i % 5 * 34) + 'px');
+    particle.style.setProperty('--motion-y', Math.sin(angle) * (110 + i % 5 * 34) + 'px');
     particle.style.background = ['#8c74ed', '#efaf61', '#59bca3', '#ec88ae'][i % 4];
     burst.append(particle);
   }
-  document.body.append(burst); motionBursts.add(burst);
-  setTimeout(() => { burst.remove(); motionBursts.delete(burst); }, 850);
   const owner = TAB_CHARACTER_LINES[page] || TAB_CHARACTER_LINES.home;
   const name = CHARACTER_REGISTRY[owner.speakerId]?.identity.split(' · ')[0] || '하니';
+  const cheer = document.createElement('b'); cheer.className = 'hani-motion-cheer'; cheer.textContent = '🎉 ' + name + ' · 수고했어요!'; burst.append(cheer);
+  document.body.append(burst); motionBursts.add(burst);
+  setTimeout(() => { burst.remove(); motionBursts.delete(burst); }, 1500);
   if (typeof toast === 'function') toast(name + ' · 수고했어요! ' + owner.lines[0]);
   return true;
 }

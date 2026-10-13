@@ -143,7 +143,9 @@
 .hani-motion-number{position:relative}
 .hani-motion-number-final{opacity:0}.hani-motion-number-overlay{position:absolute;inset:0;white-space:nowrap;pointer-events:none;font-variant-numeric:tabular-nums}
 .hani-motion-burst{position:fixed;width:0;height:0;pointer-events:none;z-index:10000}
-.hani-motion-burst i{position:absolute;width:4px;height:6px;border-radius:1px;animation:hani-motion-confetti 760ms ease-out forwards}
+.hani-motion-burst i{position:absolute;width:9px;height:14px;border-radius:2px;animation:hani-motion-confetti 1200ms cubic-bezier(.15,.7,.3,1) forwards}
+.hani-motion-cheer{position:absolute;left:0;top:0;transform:translate(-50%,-50%);white-space:nowrap;padding:12px 22px;border-radius:999px;background:var(--surface-panel,#fff);color:var(--text-primary,#2b2840);border:2px solid var(--structure-accent,#8c74ed);box-shadow:0 14px 34px rgba(40,30,90,.22);font-size:18px;font-weight:900;animation:hani-motion-cheer 1450ms ease-out forwards}
+@keyframes hani-motion-cheer{0%{opacity:0;scale:.6}14%{opacity:1;scale:1.06}24%{scale:1}78%{opacity:1}100%{opacity:0;scale:.96}}
 @keyframes hani-motion-confetti{from{opacity:1;transform:translate(0,0) rotate(0)}to{opacity:0;transform:translate(var(--motion-x),var(--motion-y)) rotate(170deg)}}
 #app :is(button,.card[tabindex],[role="button"]):focus-visible{outline:2px solid var(--primary,#7569e8);outline-offset:3px}
 @media(prefers-reduced-motion:no-preference){#app :is(button:not(:disabled),a[href],summary,[role="button"],[data-go],.card[onclick],.archive-card[onclick]):active:not([aria-disabled="true"]){scale:.98}}
