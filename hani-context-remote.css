@@ -46,7 +46,7 @@
 #app .hani-remote-copy b,#app .hani-remote-copy small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #app .hani-remote-copy b{font-size:13px;line-height:1.4;font-weight:850;color:inherit}
 #app .hani-remote-copy small{margin-top:2px;font-size:12px;line-height:1.4;color:var(--remote-muted)}
-#app .hani-remote-count{display:grid;place-items:center;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#d45a72;color:#fff;font-size:9px;font-weight:950}
+#app .hani-remote-count{display:grid;place-items:center;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:var(--structure-accent);color:var(--structure-on-accent);font-size:9px;font-weight:950}
 #app .hani-remote-section{padding:8px;border:1px solid var(--hani-frame-line,#e2e5ec);border-radius:12px;background:var(--remote-row)}
 #app .hani-remote-section-label{display:block;margin:0 2px 6px;color:var(--remote-muted);font-size:12px;font-weight:900;letter-spacing:.08em}
 #app .hani-remote-links{display:flex;flex-wrap:wrap;gap:5px}
@@ -110,3 +110,14 @@
   #app .hani-remote-copy b{font-size:10.5px}
   #app .hani-remote-mobile-trigger{right:12px}
 }
+
+/* Persistent read-only task slot; the Finish owns accent and surface contrast. */
+#app .hani-remote-today{border-top:1px solid var(--remote-line);padding-top:8px}
+#app .hani-remote-today.is-today{border-color:var(--structure-accent)}
+#app .hani-remote-today.is-today [data-remote-action="tasks"]{border-color:var(--structure-accent);box-shadow:inset 3px 0 var(--structure-accent)}
+#app .hani-remote-today .hani-remote-count{background:var(--structure-accent);color:var(--structure-on-accent);border-color:var(--structure-accent)}
+#app .hani-remote-quizzes{display:grid;gap:6px;padding:6px 0}
+#app .hani-remote-quizzes .hani-remote-link{white-space:normal;text-align:left;line-height:1.5}
+#app .hani-remote-today [hidden]{display:none!important}
+#app.hani-remote-mini .hani-remote-today{display:none}
+@media(max-width:850px){#app .hani-remote-today{grid-column:2}}

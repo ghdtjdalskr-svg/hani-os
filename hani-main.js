@@ -2020,6 +2020,7 @@ function navMenuIsNew(viewId,now=Date.now()){
 }
 let navNewBadgeTimer;
 function renderNavNewBadges(now=Date.now()){
+  window.HANI_CONTEXT_REMOTE_V1?.update();
   const badge=(label,active)=>{
     if(!label)return;
     let pill=label.nextElementSibling?.classList.contains("nav-new-pill")?label.nextElementSibling:null;
@@ -2028,10 +2029,7 @@ function renderNavNewBadges(now=Date.now()){
     if(pill)pill.hidden=!active;
   };
   document.querySelectorAll("#sidebar .nav-btn[data-view]").forEach(button=>badge(button.querySelector(".txt"),navMenuIsNew(button.dataset.view,now)));
-  document.querySelectorAll("#sidebar .group").forEach(group=>{
-    const any=[...group.querySelectorAll(".nav-btn[data-view]")].some(button=>navMenuIsNew(button.dataset.view,now));
-    badge(group.querySelector(".group-head .name"),any);
-  });
+  document.querySelectorAll("#sidebar .group-head .nav-new-pill").forEach(pill=>pill.remove());
   clearTimeout(navNewBadgeTimer);
   navNewBadgeTimer=setTimeout(()=>renderNavNewBadges(),86400000-((Date.now()+9*3600000)%86400000)+30);
 }
@@ -3542,7 +3540,7 @@ $("addExercise").onclick=()=>{const date=$("exerciseDate").value;if(!date)return
 const TOPIC_COLORS={"교양":"#58bce8","경제·투자":"#4285f4","인문·철학":"#8b63dc","역사":"#a66b3d","소설":"#dc6279","자기계발":"#2faa77","일본어·학습":"#ef9d3c","기타":"#607d8b"};
 function stars(v){
   const x=ratingValue(v);if(x===null)return '<span class="rating-number">미평가</span>';
-  const icons=Array.from({length:5},(_,idx)=>{const fill=Math.max(0,Math.min(100,(x-idx)*100));return `<span class="rating-star" style="--fill:${fill}%">★</span>`}).join("");
+  const icons=Array.from({length:5},(_,idx)=>{const fill=Math.max(0,Math.min(100,(x-idx)*100));return `<span class="rating-star" style="--fill:${fill}%" aria-hidden="true">★</span>`}).join("");
   return `<span class="rating" aria-label="${x.toFixed(1)}점">${icons}<span class="rating-number">${x.toFixed(1)}</span></span>`;
 }
 function completedByToday(date){
@@ -4493,16 +4491,14 @@ function certificateCareSorted(day=careKoreaPeriod().day){return [...(state.cert
 function renderHaniCareCards(parent,before=null){
   if(!parent)return;let slot=parent.querySelector(':scope > [data-hani-care-cards]');
   if(!slot){slot=document.createElement('div');slot.dataset.haniCareCards='';slot.className='hani-care-cards';parent.insertBefore(slot,before)}
-  const groups=careCampusGroups(),assignments=campusAssignments(2),certs=certificateCareSorted().filter(c=>{const d=certificateDays(c);return d>=0&&d<=30}),quizzes=window.HANI_STUDY_V02984_TEST?.pendingLearningQuizzes?.()||[],quizProjects=window.HANI_STUDY_V02984_TEST?.pendingQuizProjects?.()||[];
+  const groups=careCampusGroups(),assignments=campusAssignments(2),certs=certificateCareSorted().filter(c=>{const d=certificateDays(c);return d>=0&&d<=30});
   const committee=window.HaniInvestmentResearchCore?.committeeProgress(state,careKoreaPeriod().day+'T00:00:00+09:00',window.HaniMarketData?.positions(state,typeof calculate==='function'?calculate().holdings:[])||[]);
-  const signature=JSON.stringify([committee?.reminder,committee?.researchDone,careKoreaPeriod().day,groups.map(g=>[g.key,g.rows.map(r=>[r.course.id,r.course.name,r.item.week,r.item.topic])]),assignments,certs,quizProjects,quizzes.map(q=>[q.id,q.projectId,q.title])]);
-  slot.hidden=!(groups.length||assignments.length||certs.length||quizzes.length||committee?.reminder);const rows=groups.flatMap(g=>g.rows),sameRows=slot._careRows?.length===rows.length&&rows.every((r,i)=>slot._careRows[i].sem===r.sem&&slot._careRows[i].course===r.course&&slot._careRows[i].item===r.item);if(slot.dataset.signature===signature&&sameRows)return;slot.dataset.signature=signature;slot._careRows=rows;
+  const signature=JSON.stringify([committee?.reminder,committee?.researchDone,careKoreaPeriod().day,groups.map(g=>[g.key,g.rows.map(r=>[r.course.id,r.course.name,r.item.week,r.item.topic])]),assignments,certs]);
+  slot.hidden=!(groups.length||assignments.length||certs.length||committee?.reminder);const rows=groups.flatMap(g=>g.rows),sameRows=slot._careRows?.length===rows.length&&rows.every((r,i)=>slot._careRows[i].sem===r.sem&&slot._careRows[i].course===r.course&&slot._careRows[i].item===r.item);if(slot.dataset.signature===signature&&sameRows)return;slot.dataset.signature=signature;slot._careRows=rows;
   slot.innerHTML=(committee?.reminder?'<section class="card full" data-care-committee><div class="sh"><h3>이번 달 하니 투자 리포트 리뷰</h3><span class="pill">월초 점검</span></div><p class="sub">'+(committee.researchDone?'지난달 리포트 기록과 이번 달 판단을 확인해 주세요.':'이번 달 종목 리포트를 받고 투자 판단을 정리해 주세요.')+'</p><button class="btn sm primary" type="button" data-hani-care-view="investmentCommittee">하니 투자 리포트에서 확인</button></section>':'')+(assignments.length?'<section class="card full" data-care-assignment><div class="sh"><h3>과제 마감이 다가와요</h3><span class="pill">2일 이내</span></div>'+campusAssignmentMarkup(assignments)+'<button class="btn sm" type="button" data-hani-care-view="university">대학교에서 확인</button></section>':'')+
     groups.map((g,i)=>'<section class="card full" data-care-campus="'+i+'"><div class="sh"><h3>지난주 '+esc(g.week)+'주차 수업 다 들으셨어요?</h3></div><ul class="hani-care-list">'+g.rows.map(r=>'<li><span>'+esc(r.course.name)+' · '+esc(r.item.week)+'주차 · '+esc(r.item.topic||'주제 미입력')+'</span></li>').join('')+'</ul><div class="acts"><button class="btn sm primary" type="button" data-care-all>다 들었어</button><button class="btn sm" type="button" data-care-part aria-expanded="false">일부만</button><button class="btn sm" type="button" data-care-dismiss>못 들었어</button></div><form data-care-part-form hidden><p class="sub">다 들은 수업만 선택해 주세요.</p>'+g.rows.map((r,j)=>'<label style="display:block"><input type="checkbox" value="'+j+'"> '+esc(r.course.name)+' · '+esc(r.item.week)+'주차 · '+esc(r.item.topic||'주제 미입력')+'</label>').join('')+'<button class="btn sm primary" type="submit">저장</button></form></section>').join('')+
-    (certs.length?'<section class="card full" data-care-certificate><div class="sh"><h3>자격증 시험이 다가와요</h3><span class="pill">30일 이내</span></div><ul class="hani-care-list">'+certs.map(c=>'<li><span>'+esc(c.name)+' · '+esc(c.examDate)+'</span><b>'+esc(certificateDday(c))+'</b></li>').join('')+'</ul><button class="btn sm" type="button" data-hani-care-view="certificate">자격증 보기</button></section>':'')+
-    (quizzes.length?'<section class="card full" data-care-quiz><div class="sh"><h3>안 푼 퀴즈 '+quizzes.length+'개</h3></div><ul class="hani-care-list">'+quizProjects.map(p=>'<li><span>'+esc(p.name)+' '+p.count+'개</span></li>').join('')+'</ul><button class="btn sm" type="button" data-care-quiz-open>퀴즈 풀러 가기</button></section>':'');
+    (certs.length?'<section class="card full" data-care-certificate><div class="sh"><h3>자격증 시험이 다가와요</h3><span class="pill">30일 이내</span></div><ul class="hani-care-list">'+certs.map(c=>'<li><span>'+esc(c.name)+' · '+esc(c.examDate)+'</span><b>'+esc(certificateDday(c))+'</b></li>').join('')+'</ul><button class="btn sm" type="button" data-hani-care-view="certificate">자격증 보기</button></section>':'');
   slot.querySelectorAll('[data-hani-care-view]').forEach(b=>b.onclick=()=>showView(b.dataset.haniCareView));
-  slot.querySelector('[data-care-quiz-open]')?.addEventListener('click',()=>window.HANI_STUDY_V02984_TEST?.openPendingQuiz());
   slot.querySelectorAll('[data-care-campus]').forEach(card=>{const group=groups[Number(card.dataset.careCampus)],form=card.querySelector('form');card.querySelector('[data-care-all]').onclick=()=>careCampusComplete(group.rows);card.querySelector('[data-care-dismiss]').onclick=()=>careCampusDismiss(group);card.querySelector('[data-care-part]').onclick=e=>{form.hidden=!form.hidden;e.currentTarget.setAttribute('aria-expanded',String(!form.hidden))};form.onsubmit=e=>{e.preventDefault();const selected=[...form.querySelectorAll('input:checked')].map(el=>group.rows[Number(el.value)]);if(selected.length)careCampusComplete(selected);else alert('다 들은 수업을 선택해 주세요.')};});
 }
 function renderHaniCareHome(){const home=$("home");if(!home)return;const memory=haniCareMemory();haniCareNotice(home,home.firstChild,"homeNotice");const data=haniCareChecklist();if(!memory.checklist&&data){const slot=document.createElement("section");slot.className="card full hani-care-checklist";slot.setAttribute("aria-label","월말 정산 도우미");home.insertBefore(slot,memory.homeNotice?memory.homeNotice.nextSibling:home.firstChild);memory.checklist=slot}renderHaniCareCards(home,memory.checklist?memory.checklist.nextSibling:memory.homeNotice?memory.homeNotice.nextSibling:home.firstChild);const desk=document.querySelector(".yuna-helpdesk");if(desk)renderHaniCareCards(desk,desk.querySelector(".yuna-desk"));const slot=memory.checklist;if(!slot)return;slot.hidden=!data;if(!data)return;slot.innerHTML=`<div class="sh"><h3>월말 정산 도우미</h3><span class="pill">${esc(data.month)} · 18일 결산</span></div><p class="sub">가계부 ${esc(data.period.periodStart)} ~ ${esc(data.period.periodEnd)} · 체중은 월요일부터 오늘까지 확인해요.</p><ul class="hani-care-list">${data.items.map(x=>`<li><span>${x.done?"✓":"○"} ${esc(x.label)} · ${x.done?"완료했어요":"아직이에요"}</span>${x.done?"":`<button class="btn sm" type="button" data-hani-care-view="${x.view}">확인하러 가요</button>`}</li>`).join("")}</ul>`;slot.querySelectorAll("[data-hani-care-view]").forEach(b=>b.onclick=()=>showView(b.dataset.haniCareView))}
@@ -6351,6 +6347,9 @@ function intakeExplicitWishIntent(text){return /wish-?list|위시리스트|위�
 function intakePurchaseReviewIntent(text){const s=intakeNormText(text);return !intakeExplicitWishIntent(text)&&/(?:살까|사도\s*될까|살지\s*말지|구매\s*(?:할까|고민|검토)|사고\s*싶은데|이거\s*어때|어떤 걸\s*살까)/.test(s)}
 function intakeRequestedTargets(text){const s=intakeNormText(text),out=[];if(/자격증|시험|jlpt|컴활/.test(s))out.push("certificate");if(/할\s*일|할일|todo|task/.test(s))out.push("task");if(/완독|다\s*읽|독서|서재|책/.test(s))out.push("book");if(/봤|시청|영화|드라마|애니/.test(s))out.push("movie");if(/대학교|대학관리|강의계획|주차/.test(s))out.push("university");return [...new Set(out)]}
 function intakeOverlayUserInstruction(target,data,userText){const d=structuredClone(data||{}),s=String(userText||"");if(!s.trim())return d;if(target==="book"){
+  // Explicit user title wins over a reordered extraction title; Preview only.
+  const natural=/(?:책|도서|독서|읽)/.test(s)?intakeNaturalBook(s):null;
+  if(natural?.title){d.title=natural.title;if(natural.author)d.author=natural.author}
   if(/완독|다\s*읽었|다\s*읽음|읽었어|읽었다/.test(s)){d.status="read";d.completedDate=intakeNaturalDate(s)||d.completedDate||today()}
   const rating=intakeNaturalRating(s);if(rating!==null)d.rating=rating;
   const review=intakeNaturalReview(s);if(review)d.review=review;
@@ -6565,7 +6564,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.209";
+const HANI_DISPLAY_VERSION="2.9.210";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];

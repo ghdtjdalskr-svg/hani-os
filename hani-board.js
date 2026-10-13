@@ -16,6 +16,12 @@
   const count=v=>typeof v==="number"&&Number.isFinite(v)?Math.max(0,Math.min(Number.MAX_SAFE_INTEGER,Math.floor(v))):0;
   // Read projections only: loading never rewrites legacy or unknown fields.
   const postFields=r=>({...r,views:count(r.views),likes:count(r.likes),likedByOwner:r.likedByOwner===true});
+  // Display projection only. Stored counters, popularity ordering and viewChange stay canonical.
+  function displayViews(post,now=Date.now()){
+    const created=Date.parse(post.createdAt),age=Number.isFinite(created)?Math.max(0,Math.floor((now-created)/86400000)):0;
+    const base=Math.min(180,12+hash(String(post.id||""))%137+Math.floor(Math.log2(age+1)*4));
+    return Math.min(Number.MAX_SAFE_INTEGER,count(post.views)+base);
+  }
   const commentFields=r=>({...r,parentId:typeof r.parentId==="string"?r.parentId:"",generated:r.generated===true,threadId:typeof r.threadId==="string"?r.threadId:""});
   // Tab session survives reloads. Storage failure falls back to the in-memory set.
   // This UI-only sessionStorage marker never touches the protected localStorage key.
@@ -211,7 +217,7 @@
     ]);
   }
   // Display-only cleanup. The roster owns names/ranks; stored bodies stay intact.
-  function stripLeadingVocative(value,targetIds,duplicatedMention=false){
+  function stripLeadingVocative(value,targetIds,duplicatedMention=false,mentionChip=false){
     let body=String(value??"");
     const ids=Array.isArray(targetIds)?targetIds:[targetIds];
     const regexEscape=text=>text.replace(/[.*+?^\u0024{}()|[\]\\]/g,"\\$&");
@@ -225,13 +231,13 @@
       const rankedName="(?:"+namePattern+")"+(rankPattern?"(?:\\s*(?:"+rankPattern+"))?":"")+"(?:님|씨|아|야)?";
       const address=(chairman?"(?:"+regexEscape(member.name)+"(?:\\s*"+regexEscape(member.rank)+")?(?:님|씨)?|회장님|대표님)":rankedName)+"[,，!]?\\s+";
       if(duplicatedMention)body=body.replace(new RegExp("^@"+address),"");
-      if(!chairman)body=body.replace(new RegExp("^"+address),"");
+      if(!chairman||mentionChip&&id===ids[0])body=body.replace(new RegExp("^"+address),"");
     }
     return body;
   }
   function commentBody(c,parent){
     const post=posts().find(p=>p.id===c.postId);
-    return stripLeadingVocative(publicText(c.body),[parent?.authorId,post?.authorId],!!parent);
+    return stripLeadingVocative(publicText(c.body),[parent?.authorId,post?.authorId],!!parent,!!parent);
   }
   function commentMarkup(c,nested=false,allowReply=true){
     const parent=c.parentId&&visibleComments().find(p=>p.id===c.parentId&&p.postId===c.postId);
@@ -257,7 +263,7 @@
         ((totals.get(p.id)||0)?' <strong class="board-comment-count">'+totals.get(p.id)+'</strong>':'')+
         (p.poll?'<span class="board-post-icon" title="투표" aria-label="투표">📊</span>':'')+(p.seriesId?'<span class="board-post-icon" title="연재" aria-label="연재">▤</span>':'')+newBadge(p)+'</button></td>'+
         '<td class="board-cell-author">'+authorCard(p.authorId)+'</td><td class="board-cell-date">'+stamp(p)+'</td>'+
-        '<td class="board-cell-views"><span class="board-mobile-label">조회 </span>'+p.views+'</td><td class="board-cell-likes'+(p.likes>0?' board-has-likes':'')+'"><span class="board-mobile-label">추천 </span>'+p.likes+'</td></tr>'}).join("")||
+        '<td class="board-cell-views"><span class="board-mobile-label">조회 </span>'+displayViews(p)+'</td><td class="board-cell-likes'+(p.likes>0?' board-has-likes':'')+'"><span class="board-mobile-label">추천 </span>'+p.likes+'</td></tr>'}).join("")||
         '<tr><td colspan="6" class="empty">'+(query?'검색 결과가 없습니다.':'아직 게시글이 없습니다.')+'</td></tr>')+'</tbody></table>');
     get("more").hidden=visible>=rows.length;get("listCount").textContent=rows.length+"개 글 · "+Math.min(visible,rows.length)+"개 표시";
     const raw=posts().find(p=>p.id===selected&&published(p)),post=raw&&postFields(raw);
@@ -265,7 +271,7 @@
     if(get("preview")?.open)paintPreview();
     get("replyContext").textContent=replyTo?author(comments().find(c=>c.id===replyTo)?.authorId)+"에게 답글":"";
     if(!post){html("article","");html("comments","");return}
-    html("article",'<span class="pill">'+escape(post.category)+'</span>'+(post.pinned?' <span class="board-notice">공지</span>':"")+'<h3 tabindex="-1" data-board-heading>'+escape(publicText(post.title))+'</h3><div class="board-detail-meta">'+authorCard(post.authorId,40)+'<span class="sub">'+stamp(post)+' · 조회 '+post.views+' · 추천 '+post.likes+'</span>'+newBadge(post)+'</div><p class="board-body">'+escape(publicText(post.body))+'</p>'+interactiveMarkup(post,writable)+'<button class="btn" type="button" data-board-like="'+escape(post.id)+'" aria-pressed="'+post.likedByOwner+'"'+(!writable?' disabled':'')+'>👍 추천 '+post.likes+'</button>'+actions(post,"post"));
+    html("article",'<span class="pill">'+escape(post.category)+'</span>'+(post.pinned?' <span class="board-notice">공지</span>':"")+'<h3 tabindex="-1" data-board-heading>'+escape(publicText(post.title))+'</h3><div class="board-detail-meta">'+authorCard(post.authorId,40)+'<span class="sub">'+stamp(post)+' · 조회 '+displayViews(post)+' · 추천 '+post.likes+'</span>'+newBadge(post)+'</div><p class="board-body">'+escape(publicText(post.body))+'</p>'+interactiveMarkup(post,writable)+'<button class="btn" type="button" data-board-like="'+escape(post.id)+'" aria-pressed="'+post.likedByOwner+'"'+(!writable?' disabled':'')+'>👍 추천 '+post.likes+'</button>'+actions(post,"post"));
     const thread=visibleComments().filter(c=>c.postId===post.id).map(commentFields).sort((a,b)=>String(a.createdAt).localeCompare(String(b.createdAt)));
     html("comments",orderedComments(thread).map(({comment,nested})=>commentMarkup(comment,nested,!comment.parentId)).join("")||'<p class="empty">첫 댓글을 남겨 주세요.</p>');
   }
@@ -548,8 +554,9 @@
     for(let i=0;i+13<=text.length;i++)if(body.includes(text.slice(i,i+13)))return true;
     return false;
   }
-  // Interim local replies: classify the chairman's actual comment, not the post topic.
+  // Interim replies combine the actual comment intent with its post topic.
   const CHAIRMAN_REPLIES=Object.freeze({
+    fear:Object.freeze(["걱정될 만해요. 지금 확인된 것부터 같이 살펴봐요.","불안한 마음은 이해해요. 한꺼번에 결론 내리지 않아도 괜찮아요."]),
     thanks:Object.freeze([
       "고마워요! 읽어주셔서 저도 힘나요 ㅎㅎ.","좋게 봐주셔서 뿌듯하네요!", "칭찬 들으니까 오늘 기분 좋네요 ㅎㅎ.","한마디 남겨주셔서 감사해요!",
       "알아봐 주시니까 괜히 더 신나네요.","따뜻한 말 덕분에 기운 났어요!", "이렇게 말해주시니 저도 웃게 되네요 ㅎㅎ.","응원 잘 받았어요! 다음에도 같이 이야기해요."
@@ -572,15 +579,61 @@
     ])
   });
   const CHAIRMAN_REPLY_FLAVOUR=Object.freeze({hani:"같이 챙길게요.",yuri:"확인할 건 차분히 볼게요.",jieun:"부담 없이 이어가요.",haru:"커피 한 잔 하며 들어볼게요.",seoyun:"빠뜨린 건 없는지 같이 챙겨요.",serin:"차분히 살펴볼게요."});
+  const CHAIRMAN_TOPIC_REPLIES=Object.freeze({
+    book:{
+      fear:["이 책을 읽고 걱정되셨군요. 책의 가능성이 곧 정해진 미래는 아니에요. 책갈피부터 숨 돌려요 ㅎㅎ.","이 책의 무서운 대목이 마음에 남았네요. 주장과 근거를 나눠 보면 불안도 조금 정리될 거예요."],
+      thanks:["책 이야기 함께 나눠주셔서 저도 좋아요. 다음 책갈피도 같이 열어요 ㅎㅎ.","독서 이야기 좋게 읽어주셔서 감사해요. 마음에 남은 대목도 나눠봐요."],
+      question:["이 책에서 궁금하신 대목이군요. 해당 문장과 앞뒤 맥락을 같이 볼까요?","책의 주장과 근거부터 짚어봐요. 어느 대목이 질문으로 남으셨나요?"],
+      joke:["책 읽다가 댓글에서 웃음 터졌어요 ㅋㅋ. 이 드립은 책갈피에 끼워둘게요.","이 책 이야기가 이렇게 웃겨질 줄은 몰랐네요 ㅎㅎ. 다음 페이지도 기대돼요."],
+      agree:["이 책에서 그 부분에 공감하셨군요. 어떤 문장이 특히 와닿으셨나요?","책의 그 관점에 저도 고개가 끄덕여져요. 다른 해석도 함께 나눠봐요."],
+      other:["이 책을 읽고 남은 생각이군요. 가장 기억나는 대목도 들려주세요.","독서 후에 마음에 남은 느낌이 궁금해요. 편하게 이어서 이야기해요."]
+    },
+    ai:{
+      fear:["AI 이야기라 더 걱정되셨겠어요. 무서운 시나리오가 확정된 미래는 아니에요. 비상벨은 잠깐 쉬어요 ㅎㅎ.","AI에 대한 불안은 이해해요. 실제 확인된 변화와 예상부터 나눠서 살펴봐요."],
+      thanks:["AI 이야기 좋게 봐주셔서 감사해요. 확인한 근거도 같이 챙겨둘게요.","AI 얘기를 함께 나눠주셔서 힘나요. 다음 변화도 차분히 지켜봐요."],
+      question:["AI의 어떤 변화가 궁금하신가요? 확인된 근거와 예상부터 나눠볼게요.","AI 얘기는 조건에 따라 달라져요. 어떤 사례를 생각하셨는지 들려주세요."],
+      joke:["AI 얘기하다 댓글에서 인간 웃음 버튼이 눌렸네요 ㅋㅋ.","이 AI 드립은 저도 웃었어요 ㅎㅎ. 웃음까지 자동화하진 말아요."],
+      agree:["AI의 그 관점에 공감하셨군요. 실제 사례와도 맞는지 함께 봐요.","AI 변화에 대한 생각이 통했네요. 기대와 한계도 같이 챙겨봐요."],
+      other:["AI 변화 중 어떤 부분이 가장 마음에 남으셨어요?","AI 얘기 이어서 듣고 있어요. 실제 경험도 들려주세요."]
+    },
+    stock:{
+      fear:["주식 얘기에 걱정되셨군요. 급하게 결정하기보다 상황을 차분히 확인해요.","주가 변동은 마음도 흔들죠. 확실한 수익을 단정하지 않고 걱정되는 부분부터 볼게요."],
+      thanks:["주식 이야기 읽어주셔서 감사해요. 숫자와 근거도 꼼꼼히 챙길게요.","투자 얘기를 함께 나눠주셔서 좋아요. 각자 판단 기준도 들어봐요."],
+      question:["주식에서 어떤 지표나 상황이 궁금하세요? 확인할 근거부터 같이 봐요.","투자 질문은 기간과 조건에 따라 달라져요. 생각하신 상황을 들려주세요."],
+      joke:["주식 얘기하다 웃음 수익률은 올랐네요 ㅋㅋ. 실제 수익은 별개지만요.","주가보다 댓글이 더 출렁였네요 ㅎㅎ. 이 드립엔 웃음 한 표요."],
+      agree:["투자에서 그 기준에 공감하셨군요. 숫자와 가정도 같이 확인해요.","주식 이야기에 생각이 통했네요. 반대 근거도 함께 봐두면 좋겠어요."],
+      other:["주식 얘기 이어서 듣고 있어요. 어떤 변화가 가장 눈에 들어오셨어요?","투자에 대한 생각을 남겨주셨네요. 판단할 때 중요하게 본 점도 궁금해요."]
+    },
+    exercise:{
+      fear:["운동 얘기에 걱정되셨군요. 무리하지 말고 지금 몸 상태부터 살펴요.","운동 부담이 느껴지셨나 봐요. 오늘은 강도보다 편안한 페이스를 챙겨요."],
+      thanks:["운동 이야기 좋게 봐주셔서 감사해요. 응원도 한 세트 더 드릴게요 ㅎㅎ.","운동 얘기 함께 나눠주셔서 좋아요. 오늘 컨디션도 챙겨요."],
+      question:["운동의 어떤 동작이나 상황이 궁금하세요? 컨디션과 함께 알려주세요.","운동은 몸 상태에 따라 달라져요. 궁금한 동작부터 짚어봐요."],
+      joke:["운동 얘기하다 웃음으로 복근 한 세트 했네요 ㅋㅋ.","이 운동 드립엔 저도 웃었어요 ㅎㅎ. 웃고 나서 물 한 모금요."],
+      agree:["운동에서 그 페이스에 공감하셨군요. 꾸준히 갈 수 있는지도 같이 봐요.","운동 얘기에 생각이 통했네요. 회복까지 챙기는 방향이면 좋아요."],
+      other:["운동하고 나서 몸은 어떠셨어요? 오늘 느낌도 들려주세요.","운동 이야기 듣고 있어요. 가장 만족스러웠던 순간이 궁금해요."]
+    }
+  });
+  const CHAIRMAN_BOOK_AI_FEAR=Object.freeze([
+    "이 책의 AI 디스토피아가 무섭게 느껴지셨군요. 책의 시나리오가 확정된 미래는 아니에요. 종말 버튼은 잠깐 봉인해요 ㅎㅎ.",
+    "책 속 AI 미래 때문에 불안하셨겠어요. 작가의 가정과 확인된 사실을 나눠 보면 도움이 돼요. 오늘은 책갈피부터 숨 돌려요."
+  ]);
+  const CHAIRMAN_TOPIC_FLAVOUR=Object.freeze({hani:"같이 차근차근 챙길게요.",yuri:"근거는 제가 꼼꼼히 볼게요.",jieun:"부담은 조금 내려놔요.",haru:"커피 한 잔 곁들여 들어볼게요.",seoyun:"놓친 맥락도 같이 챙겨요.",serin:"숫자와 사실은 차분히 볼게요.",hina:"빨간 펜은 잠깐 넣어둘게요 ㅎㅎ.",arin:"느낌도 편하게 들려주세요.",taeo:"무리하지 않는 쪽으로요.",yuna:"이야기 계속 듣고 있어요!",dohyun:"확인된 부분부터 짚어볼게요.",gaeun:"옆에서 함께 듣고 있을게요.",mir:"다른 관점도 한 조각 보태볼게요."});
+  function chairmanReplyTopic(post,text=""){
+    const topic=value=>/독서|도서|서재|작가|저자|(?:^|\s)책(?:$|[\s:：,.!?을은에이과도]|으로|후기|리뷰|추천)|\bbooks?\b|\breading\b/i.test(value)?"book":/주식|투자|증시|주가|stock|portfolio/i.test(value)?"stock":/운동|헬스|근력|달리기|(?:^|\s)러닝|exercise|workout/i.test(value)?"exercise":/\bAI\b|\bAGI\b|인공지능|머신러닝|딥러닝|디스토피아|챗봇/i.test(value)?"ai":"general";
+    const comment=String(text||"").replace(/@[가-힣A-Za-z]+/g,""),current=topic(comment);
+    const context=topic([post?.title,...(Array.isArray(post?.topics)?post.topics:[]),post?.topic,post?.category].filter(Boolean).join(" "));
+    return context==="book"&&current==="ai"?"book":current!=="general"?current:context!=="general"?context:topic(String(post?.body||""));
+  }
   function chairmanReplyIntent(text){
     const value=String(text||"").replace(/@[가-힣A-Za-z]+/g,"");
-    return /[?？]|왜|어떻게|궁금|알려|질문|뭐야|뭘|언제|어디|얼마|인가요|나요|할까/.test(value)?"question":
+    return /걱정|불안|두려|무섭|무서|겁나|겁이|공포|fear|worr(?:y|ied)|afraid|scared/i.test(value)?"fear":
+      /[?？]|왜|어떻게|궁금|알려|질문|뭐야|뭘|언제|어디|얼마|인가요|나요|할까/.test(value)?"question":
       /고마|감사|수고|잘했|멋지|멋져|최고|대단|좋은 글|칭찬/.test(value)?"thanks":
       /ㅋㅋ|ㅎㅎ|웃|농담|장난|드립/.test(value)?"joke":/맞아|맞네|맞습니다|동의|공감|찬성|좋아요|그러게|그렇지/.test(value)?"agree":"other";
   }
   function ownerReactions(post,source=post,history=comments(),round=0){
     if(!post||!source||source.authorId!==actor()||!sourcesReady())return [];
-    const seed=hash(source.id+source.body+round),intent=chairmanReplyIntent(source.body);
+    const seed=hash(source.id+source.body+round),intent=chairmanReplyIntent(source.body),topic=chairmanReplyTopic(post,source.body);
     let candidates=commentCandidates(post,source,history,Date.now(),seed);
     if(!candidates.length)candidates=selectAuthors(roster()?.people?.length||0,posts(),history,Date.now(),seed)
       .map(p=>({p,...candidateScore(p.id,post,source,history)})).filter(r=>r.affinity>0&&!r.avoid)
@@ -588,12 +641,13 @@
     const chosen=candidates.slice(0,1+seed%3),previewHistory=[...history];
     return chosen.map((p,i)=>{
       const address=staffAddress(p.id,actor(),post,seed+i,previewHistory);
-      const pool=CHAIRMAN_REPLIES[intent],start=hash(seed+":"+p.id+":"+i)%pool.length;
+      const aiFear=topic==="book"&&intent==="fear"&&/\bAI\b|\bAGI\b|인공지능|디스토피아/i.test([post.title,post.body,source.body].join(" "));
+      const pool=aiFear?CHAIRMAN_BOOK_AI_FEAR:CHAIRMAN_TOPIC_REPLIES[topic]?.[intent]||CHAIRMAN_REPLIES[intent],start=hash(seed+":"+p.id+":"+i)%pool.length;
       const line=pool.map((_,offset)=>pool[(start+offset)%pool.length]).find(text=>!echoesOriginal(text,source.body)&&!echoesOriginal(text,post.title));
-      const flavour=(intent==="agree"||intent==="joke")?REACTIONS[p.id]?.[intent==="agree"?0:2]:CHAIRMAN_REPLY_FLAVOUR[p.id];
+      const flavour=topic!=="general"||intent==="fear"?CHAIRMAN_TOPIC_FLAVOUR[p.id]:(intent==="agree"||intent==="joke")?REACTIONS[p.id]?.[intent==="agree"?0:2]:CHAIRMAN_REPLY_FLAVOUR[p.id];
       let body=address+(line?", "+line: "!")+(flavour?" "+flavour:"");
       if(echoesOriginal(body,source.body)||echoesOriginal(body,post.title))body=address+"!";
-      const row={authorId:p.id,body,parentIndex:null,address,toOwner:true,intent};
+      const row={authorId:p.id,body,parentIndex:null,address,toOwner:true,intent,topic};
       previewHistory.push({...row,postId:post.id,generated:true});return row;
     });
   }
@@ -1006,7 +1060,7 @@
     renderBoard();
   }
   window.HaniBoard=Object.freeze({render:renderBoard,savePost,saveComment,deleteOwn,openPost,toggleLike,listPosts,
-    postFields,commentFields,relativeTime,boardDate,closePost,previewThread,postPreview,cancelPreview,ownerReactions,replyIntent,chairmanReplyIntent,CHAIRMAN_REPLIES,orderedComments,commentMarkup,stripLeadingVocative,
+    postFields,displayViews,commentFields,relativeTime,boardDate,closePost,previewThread,postPreview,cancelPreview,ownerReactions,replyIntent,chairmanReplyIntent,chairmanReplyTopic,CHAIRMAN_TOPIC_REPLIES,CHAIRMAN_REPLIES,orderedComments,commentMarkup,stripLeadingVocative,
     ADDRESS_RULES,personaMap,personaMode,staffAddress,candidateScore,commentCandidates,selectAuthors,queueReplies,generateDaily,realEvents,refreshLiving,
     setReplyMode,replyMode,draftAction,postDrafts,replyDrafts,votePoll,toggleReaction,weeklyBest,weeklyActivity,
     attendance,unreadCount,mentionIds,dayKey,replySafetyBound});

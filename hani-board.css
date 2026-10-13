@@ -71,7 +71,7 @@
 #board .board-more{display:block;width:100%;margin-top:16px}
 #board .board-detail-meta,#board .board-comment header{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px}
 #board [data-board="article"] h3{font-size:22px;line-height:1.5;overflow-wrap:anywhere;margin:12px 0}
-#board [data-board="article"]>.board-body{padding:16px 0;line-height:1.8}
+#board [data-board="article"]>.board-body{padding:18px;line-height:1.8;border:1px solid var(--border-subtle);border-radius:12px;background:var(--surface-panel);color:var(--text-primary)}
 #board [data-board-like][aria-pressed="true"]{outline:2px solid var(--text-secondary)}
 #board .board-comment{padding:16px 0;border-bottom:1px solid var(--border-subtle)}
 #board .board-comment .board-body{line-height:1.7;margin:10px 0}
@@ -93,7 +93,7 @@
 #board .board-draft{padding:16px 0;border-bottom:1px solid var(--border-subtle);min-width:0}
 #board .board-draft h4{margin:10px 0;overflow-wrap:anywhere}
 #board .board-draft .board-body{line-height:1.8;max-height:260px;overflow:auto}
-#board .board-new{display:inline-block;margin-left:6px;padding:2px 6px;border-radius:6px;font-size:11px;color:var(--text-primary);background:var(--surface-raised);border:1px solid var(--border-subtle)}
+#board .board-new{display:inline-block;margin-left:6px;padding:2px 6px;border-radius:6px;font-size:11px;color:var(--structure-on-accent);background:var(--structure-accent);border:1px solid var(--structure-accent)}
 #board .board-activity{display:flex;flex-wrap:wrap;gap:8px}
 #board .board-member{font-size:12px;line-height:1.6;padding:5px 8px;border:1px solid var(--border-subtle);border-radius:8px;color:var(--text-secondary)}
 #board .board-member.is-active{color:var(--text-primary);font-weight:600}

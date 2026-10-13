@@ -63,7 +63,7 @@
 #newsroom .hani-news-existing-new-v02970{
   display:inline-flex!important;align-items:center!important;justify-content:center!important;
   min-height:22px!important;padding:3px 8px!important;margin-left:7px!important;border-radius:999px!important;
-  background:#6c55d9!important;color:#fff!important;border:1px solid #5c45ca!important;
+  background:var(--structure-accent)!important;color:var(--structure-on-accent)!important;border:1px solid var(--structure-accent)!important;
   font-size:10px!important;font-weight:1000!important;letter-spacing:.035em!important;
   line-height:1!important;vertical-align:middle!important;box-shadow:0 3px 9px rgba(76,57,180,.18)!important;
   opacity:1!important;visibility:visible!important
