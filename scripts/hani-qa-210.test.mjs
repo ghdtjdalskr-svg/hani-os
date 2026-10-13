@@ -46,16 +46,16 @@ test('all five Finish text/surface tokens and NEW accent foregrounds meet 4.5 in
   }
 });
 
-test('display views are deterministic, bounded by a 12–180 base, age-aware and read-only',()=>{
+test('display views are deterministic, bounded by the staff roster, age-aware and read-only',()=>{
   const before=plain(api.getState()),queues=inspection().queues,now=Date.parse('2026-10-12T00:00:00Z'),seen=new Set();
   for(let i=0;i<250;i++){
     const post=Object.freeze({id:'post-'+i,views:9,createdAt:'2026-10-01T00:00:00Z'}),count=handlers.displayViews(post,now);
-    assert.equal(count,handlers.displayViews(post,now));assert.ok(count>=21&&count<=189);seen.add(count);
+    assert.equal(count,handlers.displayViews(post,now));assert.ok(count>=9&&count<=9+roster.people.length*4);seen.add(count);
     assert.ok(handlers.displayViews(post,now+20*86400000)>=count);
     assert.equal(handlers.displayViews({...post,views:10},now),count+1);
   }
-  assert.ok(seen.size>75,'ids yield varied counters');
-  for(const createdAt of ['bad-date','2099-01-01T00:00:00Z'])assert.ok(handlers.displayViews({id:'edge',createdAt,views:-1},now)>=12);
+  assert.ok(seen.size>1,'ids yield varied staff reader counts');
+  for(const createdAt of ['bad-date','2099-01-01T00:00:00Z'])assert.ok(handlers.displayViews({id:'edge',createdAt,views:-1},now)>=0);
   assert.equal(handlers.displayViews({id:'max',views:Number.MAX_SAFE_INTEGER},now),Number.MAX_SAFE_INTEGER);
   assert.deepEqual(plain(api.getState()),before);assert.equal(inspection().queues,queues);
 });
