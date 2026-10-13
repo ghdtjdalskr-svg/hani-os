@@ -146,5 +146,5 @@
 .hani-motion-burst i{position:absolute;width:4px;height:6px;border-radius:1px;animation:hani-motion-confetti 760ms ease-out forwards}
 @keyframes hani-motion-confetti{from{opacity:1;transform:translate(0,0) rotate(0)}to{opacity:0;transform:translate(var(--motion-x),var(--motion-y)) rotate(170deg)}}
 #app :is(button,.card[tabindex],[role="button"]):focus-visible{outline:2px solid var(--primary,#7569e8);outline-offset:3px}
-@media(prefers-reduced-motion:no-preference){#app button:active,#app :is(.card,.archive-card):active:not(:has(:is(button,input,select,textarea,label,a,summary,[role="button"]):active)){scale:.98}}
+@media(prefers-reduced-motion:no-preference){#app :is(button:not(:disabled),a[href],summary,[role="button"],[data-go],.card[onclick],.archive-card[onclick]):active:not([aria-disabled="true"]){scale:.98}}
 @media(prefers-reduced-motion:reduce){.hani-motion-burst{display:none!important}#app :is(button,.card,.archive-card):active{scale:none!important}.hani-motion-burst i{animation:none!important}}
