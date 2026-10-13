@@ -1,3 +1,7 @@
+# 2026-10-13 · 라운지 문구 자연화 211 (도연/Codex)
+
+`hani/lounge-natural-211` / base `bb40d840` (`hani/train-210`). 기록 소식 11종 × 4변형·짧은 댓글·기존 경로의 직원 간 답글·첫 문장 중복 회피, QA-210 주제/감정/호칭 표시 유지. 신규6·QA23·board8 PASS, Boardroom5 assertion PASS(2개는 Node spawn EPERM 때문에 shell 재구성 fixture bridge 사용). 저장/빈도/버전/cache·mixed EOL 보존. GitHub 최신 main `8833943`으로 진행됐지만 board 시작 원문 동일, merge/rebase 없음. **실화면·열차 gate·운영 read-back 미검증, 미커밋·미push·미배포.** 서버 board draft prompt 없음/서버 diff 없음. Notion append 자동 승인 검토 policy never 거절로 갱신 대기. [인수인계](handoffs/2026-10-13-lounge-natural-211.md). 아래 기존 담당 기록 보존.
+
 # 2026-10-12 · QA-210 첨삭 복사·라운지 맥락·독서 제목 후속 (도연/Codex)
 
 `hani/qa-210` / HEAD `9691dbf` / 원격 main `24af321` API 일치. 문항·세트 오답 첨삭 복사, 6 intent × 4 topic과 인물 말투·책 AI 공포 답글, mention 표시 때만 중복 회장 호칭 제거, Intake/Yuna Vision의 사용자 책 제목 우선 적용. **Node14/14·기존QA9/9·관련회귀·기존저장/EOL PASS. 실제 Edge spawn EPERM으로 화면/clipboard 미검증. 미커밋·버전/cache 유지·운영 미반영.** 과거 저장 사건의 서버 응답 원본은 미확인. Notion append 자동 승인 검토 policy never 거절로 갱신 대기. [인수인계](handoffs/2026-10-12-qa-210-followup.md). 아래 다른 담당 기록 보존.

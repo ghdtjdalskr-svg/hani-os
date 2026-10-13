@@ -53,7 +53,7 @@ const anchor={left:10,top:10,width:30,height:30};
 test('completion once per transition; undo re-arms, historical completion silent',()=>{
  const {api,bursts,toasts}=motion();assert.equal(api.completion('task:x',false,true,anchor,'tasks'),true);
  assert.equal(api.completion('task:x',false,true,anchor,'tasks'),false);assert.equal(api.completion('task:x',true,true,anchor,'tasks'),false);
- assert.equal(bursts.length,1);assert.equal(bursts[0].children.length,24);assert.match(toasts[0],/^수아/);
+ assert.equal(bursts.length,1);assert.equal(bursts[0].children.length,49,'48 confetti + centred cheer label');assert.match(toasts[0],/^수아/);
  api.completion('task:x',true,false,anchor,'tasks');assert.equal(api.completion('task:x',false,true,anchor,'tasks'),true);
  assert.equal(api.trackGoal('goal:x',100,anchor,'home'),false);api.trackGoal('goal:y',90,anchor,'home');assert.equal(api.trackGoal('goal:y',100,anchor,'home'),true);assert.equal(api.trackGoal('goal:y',110,anchor,'home'),false);
 });
