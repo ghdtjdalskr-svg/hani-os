@@ -21,17 +21,18 @@ const label=()=>({nextElementSibling:null,after(pill){this.nextElementSibling=pi
 const groups=[['board','organization'],['aiBudget']].map(ids=>({head:label(),buttons:ids.map(view=>({dataset:{view},label:label(),querySelector(){return this.label}})),querySelectorAll(){return this.buttons},querySelector(){return this.head}}));
 const aura={dataset:{view:'aura'},label:label(),querySelector(){return this.label}},navButtons=[...groups.flatMap(g=>g.buttons),aura];
 let created=0;
-ctx.document={querySelectorAll:s=>s==='#sidebar .group'?groups:navButtons,createElement:()=>{created++;return {className:'',textContent:'',hidden:false,classList:{contains:name=>name==='nav-new-pill'}}}};
+ctx.window={};
+ctx.document={querySelectorAll:s=>s==='#sidebar .group-head .nav-new-pill'?[]:navButtons,createElement:()=>{created++;return {className:'',textContent:'',hidden:false,classList:{contains:name=>name==='nav-new-pill'}}}};
 let timerId=0;const timers=new Map();ctx.setTimeout=(fn,delay)=>{timers.set(++timerId,{fn,delay});return timerId};ctx.clearTimeout=id=>timers.delete(id);
 vm.runInContext(main.slice(main.indexOf('function renderNavNewBadges'),main.indexOf('renderNavNewBadges();',main.indexOf('function renderNavNewBadges'))),ctx);
 for(let i=0;i<3;i++)ctx.renderNavNewBadges(Date.parse('2026-10-11T00:00:00Z'));
-assert.equal(created,6,'four menu badges including standalone AURA, and two parent badges created once');
+assert.equal(created,4,'four sub-menu badges, no parent badges');
 assert.equal(aura.label.nextElementSibling.hidden,false);
-for(const g of groups){assert.equal(g.head.nextElementSibling.hidden,false);for(const b of g.buttons)assert.equal(b.label.nextElementSibling.hidden,false)}
+for(const g of groups){assert.equal(g.head.nextElementSibling,null);for(const b of g.buttons)assert.equal(b.label.nextElementSibling.hidden,false)}
 ctx.renderNavNewBadges(Date.parse('2026-10-17T15:00:00Z'));
-for(const g of groups){assert.equal(g.head.nextElementSibling.hidden,true);for(const b of g.buttons)assert.equal(b.label.nextElementSibling.hidden,true)}
+for(const g of groups){assert.equal(g.head.nextElementSibling,null);for(const b of g.buttons)assert.equal(b.label.nextElementSibling.hidden,true)}
 assert.equal(aura.label.nextElementSibling.hidden,true);
-ctx.renderNavNewBadges(Date.parse('2026-10-11T00:00:00Z'));assert.equal(created,6);
+ctx.renderNavNewBadges(Date.parse('2026-10-11T00:00:00Z'));assert.equal(created,4);
 assert.equal(timers.size,1,'refresh replaces the previous midnight timer');
 let clock=Date.parse('2026-10-17T14:59:59.975Z');ctx.Date=class extends Date{static now(){return clock}};
 ctx.renderNavNewBadges();const midnight=[...timers.values()][0];assert.equal(midnight.delay,55,'KST midnight expiry, with 30ms guard');
