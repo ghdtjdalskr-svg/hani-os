@@ -12,9 +12,10 @@ assert.equal(strip('뮤즈 · 가은 회장 비서님, 확인했어요.','gaeun'
 assert.equal(strip('가은 비서님, 확인했어요.','gaeun'),'확인했어요.');
 assert.equal(strip('미르, 좋아요.','mir'),'좋아요.');
 for(const text of ['회장님, 확인했어요.','대표님 확인했어요.','성민님, 확인했어요.','성민 회장님, 확인했어요.']){
-  assert.equal(strip(text,roster.chairman.id,true),text);
+  assert.equal(strip(text,roster.chairman.id,true,true),'확인했어요.');
+  assert.equal(strip(text,roster.chairman.id,false),text);
 }
-assert.equal(strip('@회장님 회장님, 확인했어요.',roster.chairman.id,true),'회장님, 확인했어요.');
+assert.equal(strip('@회장님 회장님, 확인했어요.',roster.chairman.id,true,true),'확인했어요.');
 for(const text of ['오늘 아린 선임, 확인했어요.','아린이 확인했어요.','아린의 의견이에요.','아린,확인했어요.','채원, 확인했어요.']){
   assert.equal(strip(text,'arin'),text);
 }
@@ -40,8 +41,8 @@ const reply=handlers.commentMarkup(state.boardComments[1],true);
 assert.equal((reply.match(/@아린/g)||[]).length,1);
 assert.match(reply,/board-mention">@아린<\/span> 숫자만 세고 있어요\. &lt;b&gt;확인&lt;\/b&gt;/);
 assert.ok(!reply.includes('아린 선임,'));
-assert.match(handlers.commentMarkup(state.boardComments[3],true),/@회장님<\/span> 회장님, 확인했어요\./);
+assert.match(handlers.commentMarkup(state.boardComments[3],true),/@회장님<\/span> 확인했어요\./);
 assert.deepEqual(plain(api.getState()),before,'render never changes stored bodies');
 assert.equal(inspection().queues,queues,'render never queues persistence');
 assert.equal((await cleanLibrary({check:true})).changed,0,'library already clean');
-console.log('PASS: vocatives, ranks/suffixes, chairman preservation, middle names, reply chip/escaping and read-only render');
+console.log('PASS: vocatives, ranks/suffixes, chairman chip-only vocative cleanup, middle names, reply chip/escaping and read-only render');

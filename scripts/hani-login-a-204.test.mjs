@@ -41,7 +41,8 @@ assert.match(css,/@media\(max-width:820px\)\{\.login-gate #loginGateFinish\{grid
 const lum=hex=>hex.slice(1).match(/../g).map(v=>{const c=parseInt(v,16)/255;return c<=.04045?c/12.92:((c+.055)/1.055)**2.4}).reduce((sum,c,i)=>sum+c*[.2126,.7152,.0722][i],0);
 const contrast=(a,b)=>(Math.max(lum(a),lum(b))+.05)/(Math.min(lum(a),lum(b))+.05);
 const badges=[...css.matchAll(/#sidebar \.nav-new-pill\{[^}]*color:(#[0-9a-f]{6});background:(#[0-9a-f]{6})/g)];
-assert.equal(badges.length,2);for(const [,fg,bg] of badges)assert.ok(contrast(fg,bg)>=4.5,fg+' / '+bg+' AA');
+// QA-210: NEW follows the Finish accent tokens; per-finish AA is measured in hani-qa-210-edge.mjs.
+assert.equal(badges.length,0);assert.match(css,/#sidebar \.nav-new-pill\{[^}]*color:var\(--structure-on-accent\);background:var\(--structure-accent\)/);
 // Worst-case partner surface: .96 warm white over black, rounded down.
 for(const fg of ['#292a2d','#514b44','#69513a'])assert.ok(contrast(fg,'#f4f0e9')>=4.5,'partner text AA '+fg);
 // White brand over the lightest artwork at the weakest scrim under text (.58).

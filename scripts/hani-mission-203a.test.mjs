@@ -117,7 +117,7 @@ assert.ok(!read('hani-design-system.css').includes('.ledger-import>.ds-agent-com
 
 const remote=read('hani-context-remote-v1.js');let themeRoute='',mobileClosed=false;
 const remoteClick=remote.split(/\r?\n/).find(line=>line.includes('rail.addEventListener("click"'));
-vm.runInNewContext(remoteClick,{rail:{addEventListener:(event,fn)=>fn({target:{closest:selector=>selector==='.hani-remote-link'?null:{dataset:{remoteAction:'theme'}}}})},config:()=>({}),goView:view=>{themeRoute=view},setMobile:value=>{mobileClosed=value===false}});
+vm.runInNewContext(remoteClick,{rail:{addEventListener:(event,fn)=>fn({target:{closest:selector=>selector==='.hani-remote-link'||selector==='[data-remote-quiz]'?null:{dataset:{remoteAction:'theme'}}}})},window:{},config:()=>({}),goView:view=>{themeRoute=view},setMobile:value=>{mobileClosed=value===false}});
 assert.equal(themeRoute,'aura');assert.equal(mobileClosed,true);
 assert.match(remote,/data-remote-action="theme"[^]*?테마 스튜디오/);
 console.log('PASS: MLB 30-team abbreviations/numeric fallback and rendered competition, LG aliases and real newsroom render/filter/reasons, page owner voices/assets, chart failure/success/navigation, persistent header bubbles, theme remote');

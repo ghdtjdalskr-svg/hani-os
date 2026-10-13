@@ -1,3 +1,11 @@
+# 2026-10-12 · QA-210 첨삭 복사·라운지 맥락·독서 제목 후속 (도연/Codex)
+
+`hani/qa-210` / HEAD `9691dbf` / 원격 main `24af321` API 일치. 문항·세트 오답 첨삭 복사, 6 intent × 4 topic과 인물 말투·책 AI 공포 답글, mention 표시 때만 중복 회장 호칭 제거, Intake/Yuna Vision의 사용자 책 제목 우선 적용. **Node14/14·기존QA9/9·관련회귀·기존저장/EOL PASS. 실제 Edge spawn EPERM으로 화면/clipboard 미검증. 미커밋·버전/cache 유지·운영 미반영.** 과거 저장 사건의 서버 응답 원본은 미확인. Notion append 자동 승인 검토 policy never 거절로 갱신 대기. [인수인계](handoffs/2026-10-12-qa-210-followup.md). 아래 다른 담당 기록 보존.
+
+# 2026-10-12 · quiz-quality-210 문항 품질·재채점 (도연/Codex)
+
+hani/quiz-quality-210 / base 24af321 (GitHub 최신 main 일치). 정답·해설 일치 검사/blind 풀이, JLPT 일본어·수준/20% 상한, 문항별 이의제기·수락 재채점/원점수 보존 구현. 신규16·기존퀴즈19·pending7·Cloud40/저장 simulation·syntax/보호 owner/mixed EOL PASS. **실제 UI/AI/Deno/Android·열차 gate 미검증, 미커밋·미push·버전/배포 없음.** 서버 별도 deploy 필요. Notion append 자동 승인 검토 never 거절로 갱신 대기. [인수인계](handoffs/2026-10-12-quiz-quality-210.md). 아래 이전/다른 담당 기록 보존.
+
 # 2026-10-11 · green-209 패키지 용량 절감 (도연/Codex)
 
 `hani/green-209` / 시작 HEAD `ca405d4`, 원격 main `759ae68` 일치. 독서·가계부 장식 Hero 2개 무손실 WebP 추가 및 preload/heroImages URL 4개만 교체. **19,010,193 → 18,604,460바이트, 405,733바이트 절감**, 보호 한도 대비 395,540바이트 여유. 원본 PNG 보존, 362×362·RGBA 모든 픽셀 동일·closure111/누락0·syntax·mixed EOL PASS. gate·동작·데이터·버전/cache 변경 및 커밋/push/배포 없음. 실제 Preview/Android/열차 gate/운영 미검증. Notion 쓰기는 자동 승인 검토 `approval policy is never` 거절로 계획·결과 갱신 대기. [인수인계](handoffs/2026-10-11-package-size-209.md), [집계](../../artifacts/package-size-209/after.json). 아래 이전/다른 담당 기록 보존.

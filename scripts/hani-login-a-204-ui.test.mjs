@@ -71,7 +71,7 @@ try{
     for(const finish of ['porcelain-cream','midnight-black','titanium-graphite']){
       await page.evaluate(value=>applySignatureFinish(value,false),finish);
       const colors=await page.locator('#sidebar .nav-new-pill:not([hidden])').evaluateAll(items=>items.map(e=>{const s=getComputedStyle(e),rgb=value=>value.match(/[\d.]+/g).map(Number);return {fg:rgb(s.color),bg:rgb(s.backgroundColor),parent:!!e.closest('.group-head')}}));
-      assert.ok(colors.some(c=>c.parent),'parent group NEW shares the pill');assert.ok(colors.some(c=>!c.parent));for(const c of colors)assert.ok(ratio(c.fg,c.bg)>=4.5,finish+' NEW AA');
+      assert.ok(!colors.some(c=>c.parent),'QA-210: group headers carry no NEW pill');assert.ok(colors.some(c=>!c.parent));for(const c of colors)assert.ok(ratio(c.fg,c.bg)>=4.5,finish+' NEW AA');
     }
     assert.deepEqual(errors,[]);cases++;await context.close();
   }
