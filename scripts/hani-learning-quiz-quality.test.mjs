@@ -14,7 +14,9 @@ function server(questions = []) {
     createClient: () => ({auth: {getUser: async () => ({data: {user: {id:'test-owner'}}, error:null})}}),
     fetch: async (url, options) => {
       assert.equal(url, 'https://api.openai.com/v1/responses');
-      request = JSON.parse(options.body);
+      const call = JSON.parse(options.body);
+      if (call.text.format.name === "hani_quiz_blind_verification") return new Response(JSON.stringify({output_text:JSON.stringify({checks:questions.map((_,i)=>({question_index:i,correct_indices:[0],ambiguous:false,jlpt_level:"NA",reason:"Fixed economy fixture solution"}))})}));
+      request = call;
       return new Response(JSON.stringify({output_text: JSON.stringify({questions}), model:'test-model'}));
     },
   });

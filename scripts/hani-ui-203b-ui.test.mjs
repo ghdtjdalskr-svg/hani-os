@@ -56,8 +56,8 @@ try{
     assert.equal(newBadges.length,5,'five active menu badges retain CSS visibility');
     assert.equal(newBadges.filter(n=>n.inHorizontalViewport).length,width===1440?5:0,'NEW badges intersect the horizontal viewport');
     assert.equal(await page.locator('#sidebar .nav-btn .nav-new-pill').count(),5,'repeat render is idempotent');
-    assert.deepEqual(await page.locator('#sidebar .group:has(.group-head .nav-new-pill:not([hidden]))').evaluateAll(groups=>groups.map(group=>group.dataset.color)),['office','finance','development'],'NEW parent groups follow the approved v204 IA');
-    assert.equal(await page.locator('#sidebar .group-head .nav-new-pill').count(),3,'repeat rendering keeps exactly one badge per active parent');
+    assert.deepEqual(await page.locator('#sidebar .group:has(.group-head .nav-new-pill:not([hidden]))').evaluateAll(groups=>groups.map(group=>group.dataset.color)),[],'QA-210: NEW stays on menu items, not group headers');
+    assert.equal(await page.locator('#sidebar .group-head .nav-new-pill').count(),0,'repeat rendering never adds group-header badges');
     await page.evaluate(()=>renderNavNewBadges(Date.parse('2026-10-18T00:00:00Z')));assert.equal(await page.locator('#sidebar .nav-new-pill:not([hidden])').count(),0);
     await page.locator('[data-organization-tab="people"]').click();assert.equal(await page.locator('.ogh-overview').isVisible(),false);await page.locator('[data-organization-tab="overview"]').click();assert.equal(await page.locator('.ogh-overview').isVisible(),true);
     await page.evaluate(()=>showView('monthlyReport'));

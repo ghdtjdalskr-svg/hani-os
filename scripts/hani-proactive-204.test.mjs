@@ -98,13 +98,13 @@ test('certificate D-Day and upcoming-first order without mutation',()=>{
  assert.deepEqual(plain(f.c.certificateCareSorted()).map(t=>t.id),['today','23','30','past','older','missing']);assert.equal(f.c.certificateDday(f.state.certificates[0]),'종료');assert.equal(f.c.certificateDday(f.state.certificates[3]),'D-Day');assert.equal(f.c.certificateDday(f.state.certificates[4]),'D-23');assert.equal(f.c.certificateDday({}),'');assert.equal(JSON.stringify(f.state),before);
 });
 test('study pending metric excludes missing, paused and archived projects without persistence',()=>{
- const pending=study.slice(study.indexOf('  function pendingLearningQuizzes()'),study.indexOf('  function openPendingQuiz()'));
+ const pending=study.slice(study.indexOf('  function pendingLearningQuizzes()'),study.indexOf('  function openPendingQuiz('));
  const state={learningProjects:[{id:'active',status:'active'},{id:'paused',status:'paused'},{id:'archived',status:'archived'}],learningQuizzes:[{id:'pending',projectId:'active',status:'pending'},{id:'progress',projectId:'active',status:'in_progress'},{id:'done',projectId:'active',status:'completed'},{id:'legacy',projectId:'active'},{id:'orphan',status:'pending'},{id:'paused',projectId:'paused',status:'pending'},{id:'archived',projectId:'archived',status:'pending'}]};
  const before=JSON.stringify(state),c=vm.createContext({state,projectById:id=>state.learningProjects.find(project=>project.id===id)});vm.runInContext(pending,c);assert.equal(JSON.stringify(state),before);assert.deepEqual(plain(c.pendingLearningQuizzes()).map(t=>t.id),['pending','progress','legacy']);
 });
 test('quiz reminder opens the pending quiz without automatic generation, including a closed project',()=>{
  const rows=[{id:'orphan',projectId:'missing',status:'pending'},{id:'quiz',projectId:'closed',status:'in_progress'}],project={id:'closed',status:'completed',name:'Closed project'};
- const box={innerHTML:''},views=[],renders=[],context=vm.createContext({state:{learningQuizzes:rows},projectById:id=>id==='closed'?project:null,quizById:id=>rows.find(q=>q.id===id),showView:id=>views.push(id),renderLearning:auto=>renders.push(auto),requestAnimationFrame:fn=>fn(),q:s=>s==='#studyProjectList'?box:null,qa:()=>[],boardProjects:()=>[],visibleProjects:()=>[project]});
+ const box={innerHTML:''},views=[],renders=[],context=vm.createContext({state:{learningQuizzes:rows},projectById:id=>id==='closed'?project:null,quizById:id=>rows.find(q=>q.id===id),showView:id=>views.push(id),renderLearning:auto=>renders.push(auto),requestAnimationFrame:fn=>fn(),quizDate:q=>q.date||'2026-10-11',localToday:()=> '2026-10-12',q:s=>s==='#studyProjectList'?box:null,qa:()=>[],boardProjects:()=>[],visibleProjects:()=>[project]});
  vm.runInContext("let activeProjectId='',activeQuizId='',activeStudyTab='',quizArchiveMonth='old',quizArchivePage=8;\n"+study.slice(study.indexOf('  function pendingLearningQuizzes()'),study.indexOf('  function renderPendingQuizNav()'))+'\n'+study.slice(study.indexOf('  function renderProjectList()'),study.indexOf('  function wrongRows()'))+'\n globalThis.readLink=()=>[activeProjectId,activeQuizId,activeStudyTab,quizArchiveMonth,quizArchivePage];',context);
  context.openPendingQuiz();context.renderProjectList();assert.deepEqual(plain(context.readLink()),['closed','quiz','board','all',1]);assert.deepEqual(views,['study']);assert.deepEqual(renders,[false]);
 });
@@ -116,7 +116,7 @@ test('care card owner preserves priority and one slot; midnight and identical so
  f.c.esc=x=>String(x??'').replaceAll('<','&lt;');
  f.c.document={createElement:()=>({dataset:{},querySelector:()=>null,querySelectorAll:()=>[],get innerHTML(){return this._html},set innerHTML(s){this._html=s;htmlWrites++}})};
  f.c.renderHaniCareCards(parent);assert.equal(creates,1);assert.equal(htmlWrites,1);
- const html=slot.innerHTML;assert.ok(html.indexOf('data-care-assignment')<html.indexOf('data-care-campus'));assert.ok(html.indexOf('data-care-campus')<html.indexOf('data-care-certificate'));assert.ok(html.indexOf('data-care-certificate')<html.indexOf('data-care-quiz'));assert.match(html,/D-23/);
+ const html=slot.innerHTML;assert.ok(html.indexOf('data-care-assignment')<html.indexOf('data-care-campus'));assert.ok(html.indexOf('data-care-campus')<html.indexOf('data-care-certificate'));assert.doesNotMatch(html,/data-care-quiz/);assert.match(html,/D-23/);
  f.c.renderHaniCareCards(parent);assert.equal(htmlWrites,1);f.state.campusSemesters[0]=structuredClone(f.state.campusSemesters[0]);f.c.renderHaniCareCards(parent);assert.equal(htmlWrites,2);
  f.c.careKoreaPeriod=()=>({day:'2026-10-12'});f.c.renderHaniCareCards(parent);assert.equal(htmlWrites,3);assert.match(slot.innerHTML,/D-22/);assert.equal(creates,1);assert.equal(f.calls,0);
 });

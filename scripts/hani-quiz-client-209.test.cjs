@@ -13,6 +13,7 @@ function fixture({newsCount=5, retry=false, noSources=false, nearNews=false}={})
   const row={title:'중앙은행 금리 동결',summary:'중앙은행은 물가 흐름을 관찰하며 기준금리를 동결했습니다.',published_at:new Date().toISOString(),source_name:'경제 기관',source_url:'https://example.test/news'};
   const make=(body,count=newsCount)=>prompts.slice(0,body.project.quiz_size).map((prompt,i)=>{
     const s=body.question_sources[0], isNews=!!s&&i<count;
+    if(body.project.category==='jlpt')return {type:'文法',topic:'日本語',difficulty:'medium',prompt:['会議','予約','連絡','研究','環境','説明','学校','旅行','仕事','健康','文化','交通','技術','発表','計画','準備','資料','受付','変更','相談'][i]+'について、最も適切な説明を選んでください。',choices:['正しい説明','反対の説明','関係のない説明','断定できる利益'],answer_index:0,explanation:'정답은 ①입니다.'};
     return {type:isNews?'Cause & Effect':'Definition',topic:prompt, difficulty:'easy',
       prompt:isNews?`[실제 뉴스 · 자료 기준일 ${s.published_at.slice(0,10)}]\n${s.title}\n출처: ${s.source_name}\n[뉴스 요약] ${s.summary.slice(0,260)}\n[질문] ${prompt}`:prompt,
       choices:['정확한 설명','반대 설명','무관한 설명','보장된 수익'],answer_index:0,
@@ -22,7 +23,7 @@ function fixture({newsCount=5, retry=false, noSources=false, nearNews=false}={})
   const server=vm.createContext({URL,Request,Response,Date,console,
     Deno:{env:{get:k=>({SUPABASE_URL:'https://example.test',SUPABASE_ANON_KEY:'test-public',OPENAI_API_KEY:'test-only',HANI_OWNER_USER_ID:'test-user'}[k])},serve:fn=>{handler=fn}},
     createClient:()=>({auth:{getUser:async()=>({data:{user:{id:'test-user'}},error:null})}}),
-    fetch:async(_url,options)=>{modelBody=JSON.parse(options.body);const body=JSON.parse(modelBody.input);return new Response(JSON.stringify({output_text:JSON.stringify({questions:make(body)})}));}
+    fetch:async(_url,options)=>{const call=JSON.parse(options.body);const body=JSON.parse(call.input);if(call.text.format.name==='hani_quiz_blind_verification')return new Response(JSON.stringify({output_text:JSON.stringify({checks:body.questions.map((_,i)=>({question_index:i,correct_indices:[0],ambiguous:false,jlpt_level:body.target_level?'N3':'NA',reason:'Fixed fixture solution'}))})}));modelBody=call;return new Response(JSON.stringify({output_text:JSON.stringify({questions:make(body)})}));}
   });
   vm.runInContext(stripTypeScriptTypes(edge.replace(/^import .*;\r?\n/gm,'')+'\nthis.api={isBasicEconomyProject,newsBalance};'),server);
   const query={select(){return this},eq(){return this},order(){return this},limit(){return Promise.resolve({data:noSources?[]:[row],error:null})}};

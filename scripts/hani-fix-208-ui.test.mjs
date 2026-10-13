@@ -28,9 +28,8 @@ try{
   await page.goto(origin);await page.waitForFunction(()=>typeof unlockLoginGate==='function'&&!!window.HaniMotion&&!!window.HANI_STUDY_V02984_TEST);
   await page.evaluate(finish=>{unlockLoginGate();document.documentElement.dataset.finish=finish;document.documentElement.dataset.theme=finish==='midnight-black'?'dark':'light';showView('study');state.learningProjects=[{id:'jlpt',name:'JLPT N3',status:'active',scheduleType:'manual'},{id:'economy',name:'주식/경제/거시경제 기초',status:'active',scheduleType:'manual'}];const api=window.HANI_STUDY_V02984_TEST;state.learningQuizzes=Array.from({length:11},(_,i)=>api.normalizeQuiz({id:'quiz-'+i,projectId:i<7?'jlpt':i<10?'economy':'gone',status:i<5||i>=7&&i<10?'completed':'pending',questions:[{prompt:'합성 문제',choices:['A','B','C','D'],answerIndex:0}],answers:[null]}));renderAll();showView('home');renderHaniCareHome();},finish);
   await page.waitForFunction(()=>document.querySelector('[data-study-pending]')?.textContent==='2');
-  assert.match(await page.locator('#home [data-care-quiz]').innerText(),/JLPT N3 2개/);
-  await page.evaluate(()=>showView('intake'));await page.waitForFunction(()=>!!document.querySelector('.yuna-helpdesk [data-care-quiz]'));
-  assert.match(await page.locator('.yuna-helpdesk [data-care-quiz]').innerText(),/JLPT N3 2개/);
+  assert.equal(await page.locator('#home [data-care-quiz]').count(),0,'QA-210: quiz reminder moved to the Remote');await page.evaluate(()=>window.HANI_CONTEXT_REMOTE_V1?.update());assert.equal(await page.locator('[data-remote-today-count]').first().textContent(),'2');
+    
   await settleSidebar(page);
   const expanded=await page.locator('#sidebar .nav-btn').evaluateAll(buttons=>buttons.map(button=>{const icon=button.querySelector('.ico').getBoundingClientRect(),rect=button.getBoundingClientRect();return [button.dataset.view,icon.width,rect.width]}));
   await page.locator('#sideToggle').click();await page.waitForFunction(()=>document.querySelector('#app').classList.contains('sidebar-mini'));
