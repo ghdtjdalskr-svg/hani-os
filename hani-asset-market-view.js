@@ -3,7 +3,7 @@
   const M=window.HaniMarketData,root=document.getElementById('assetMarket');if(!M||!root)return;
   const $=id=>document.getElementById(id),escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const money=(n,c)=>n===null?'—':new Intl.NumberFormat('ko-KR',{style:'currency',currency:c||'KRW',maximumFractionDigits:c==='USD'?2:0}).format(n);
-  let client=null,metadata=[],quotes=[],rows=[],selected='',period='1M',generation=0,chartGeneration=0,timer=null,signature='',busy=false,expanded=false,lastPlot=null;
+  let client=null,metadata=[],quotes=[],rows=[],selected='',period='3M',generation=0,chartGeneration=0,timer=null,signature='',busy=false,expanded=false,lastPlot=null;
   const overrides=new Map(),chartCache=new Map();
   let analyticsAvailable=false,analyticsOwner=null;
   const analyticsIdentity=()=>typeof cloudUser!=='undefined'?cloudUser?.id||null:null;
@@ -43,27 +43,52 @@
     if(!rows.some(r=>r.key===selected))selected=rows[0]?.key||'';
   }
   let plotSequence=0;
-  let chartStyle='line';
+  let chartStyle='candle';
   function chartNumber(v){return v===null||v===undefined||String(v).trim()===''?null:Number.isFinite(Number(v))?Number(v):null;}
-  function detailPlot(data,buyPrice,code){
-    const values=M.candles(data),w=Math.max(320,Math.min(900,root.clientWidth-70)),h=380;
-    const valid=c=>{const o=chartNumber(c.openPrice),hi=chartNumber(c.highPrice),lo=chartNumber(c.lowPrice);return o>0&&lo>0&&hi>=Math.max(o,c.closePrice)&&lo<=Math.min(o,c.closePrice)&&hi>=lo;};
-    // Visible prices own the scale; an off-screen cost basis must not compress candles.
-    const candleMode=chartStyle==='candle',range=values.flatMap(c=>valid(c)?[Number(c.lowPrice),Number(c.highPrice)]:[c.closePrice]);
-    const min=Math.min(...range),max=Math.max(...range),span=Math.max(max-min,max*.002,.01),labels=[0,1,2,3].map(i=>(max-i*(max-min)/3).toLocaleString('ko-KR',{maximumFractionDigits:2}));
-    const left=Math.max(76,...labels.map(s=>s.length*7+16)),right=w-18,top=20,bottom=245,vt=277,vb=335,step=(right-left-12)/Math.max(1,values.length-1),bar=Math.max(1,Math.min(14,step*.65));
-    const x=i=>left+6+i*step,y=v=>top+(max+span*.08-v)/(span*1.16)*(bottom-top),clip='market-plot-'+(++plotSequence);
-    const path=items=>items.map(({i,v},j)=>(j?'L':'M')+x(i)+','+y(v)).join(' ');
-    const averages=[5,20].map(n=>({n,points:values.flatMap((c,i)=>i<n-1?[]:[{i,v:values.slice(i-n+1,i+1).reduce((s,c)=>s+c.closePrice,0)/n}])}));
-    const volumes=values.map(c=>chartNumber(c.volume)),vmax=Math.max(1,...volumes.filter(v=>v!==null&&v>=0));
-    const price=candleMode?values.map((c,i)=>valid(c)?'<g class="market-candle" style="color:'+(c.closePrice>=Number(c.openPrice)?'#e44c68':'#397ee8')+'"><path stroke="currentColor" d="M'+x(i)+','+y(Number(c.highPrice))+' V'+y(Number(c.lowPrice))+'"/><rect x="'+(x(i)-bar/2)+'" y="'+Math.min(y(Number(c.openPrice)),y(c.closePrice))+'" width="'+bar+'" height="'+Math.max(1,Math.abs(y(Number(c.openPrice))-y(c.closePrice)))+'"/></g>':'').join(''):'<path class="market-price-line" d="'+path(values.map((c,i)=>({i,v:c.closePrice})))+'"/>';
-    const grid=labels.map((s,i)=>'<path class="market-grid" d="M'+left+','+y(max-i*(max-min)/3)+' H'+right+'"/><text class="market-y-tick" x="'+(left-10)+'" y="'+y(max-i*(max-min)/3)+'" text-anchor="end">'+escape(s)+'</text>').join('');
-    const missing=values.filter(c=>!valid(c)).length;
-    return '<div class="market-chart-tools"><button type="button" class="btn sm" data-chart-style="line" aria-pressed="'+!candleMode+'">가격선</button><button type="button" class="btn sm" data-chart-style="candle" aria-pressed="'+candleMode+'">캔들</button><span class="market-ma5">5봉 평균</span><span class="market-ma20">20봉 평균</span></div><svg data-market-detail="true" data-left="'+left+'" data-right="'+right+'" style="--market-series:'+M.chartColor(code)+'" viewBox="0 0 '+w+' '+h+'" role="img" aria-label="가격·이동평균·거래량 차트"><defs><clipPath id="'+clip+'"><rect x="'+left+'" y="'+top+'" width="'+(right-left)+'" height="'+(bottom-top)+'"/></clipPath></defs>'+grid+'<g class="market-plot-area" clip-path="url(#'+clip+')">'+price+averages.map(a=>'<path class="market-ma market-ma'+a.n+'" d="'+path(a.points)+'"/>').join('')+(buyPrice===null?'':'<path class="market-average" d="M'+(left+6)+','+y(buyPrice)+' H'+(right-6)+'"/>')+'</g><text x="'+left+'" y="268">거래량</text>'+values.map((c,i)=>volumes[i]===null||volumes[i]<0?'':'<rect class="market-volume" fill="'+(valid(c)?c.closePrice>=Number(c.openPrice)?'#e44c68':'#397ee8':'#94a3b8')+'" x="'+(x(i)-bar/2)+'" y="'+(vb-volumes[i]/vmax*(vb-vt))+'" width="'+bar+'" height="'+(volumes[i]/vmax*(vb-vt))+'"/>').join('')+'<text class="market-x-tick" x="'+left+'" y="360">'+escape(values[0].timestamp.slice(0,10))+'</text><text class="market-x-tick" x="'+right+'" y="360" text-anchor="end">'+escape(values.at(-1).timestamp.slice(0,10))+'</text></svg><div class="market-chart-readout" aria-live="polite">차트를 가리키거나 터치해 상세 가격을 확인하세요.</div><label class="market-chart-slider">날짜 선택<input type="range" data-chart-index min="0" max="'+(values.length-1)+'" value="'+(values.length-1)+'" aria-label="차트 날짜 선택"></label><div class="market-note">'+(period==='1D'?'평균선은 제공된 분봉 기준':'일봉 기준 5일·20일 평균')+' · 충분한 봉이 쌓인 위치부터 표시'+(candleMode&&missing?' · OHLC 미제공 '+missing+'개 봉 제외':'')+(volumes.some(v=>v===null)?' · 거래량 미제공 구간 있음':'')+(buyPrice===null?'':' · 내 평균매입가 '+escape(buyPrice.toLocaleString('ko-KR'))+(buyPrice>max?' ↑ 표시 범위 위':buyPrice<min?' ↓ 표시 범위 아래':' (점선)'))+'</div>';
+  function validCandle(c){const o=chartNumber(c.openPrice),hi=chartNumber(c.highPrice),lo=chartNumber(c.lowPrice);return o>0&&lo>0&&hi>=Math.max(o,c.closePrice)&&lo<=Math.min(o,c.closePrice)&&hi>=lo;}
+  function chartDate(stamp){return new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(stamp));}
+  function chartFormat(v){const n=chartNumber(v);return n===null?'미제공':n.toLocaleString('ko-KR',{maximumFractionDigits:2});}
+  function chartModel(values,currentPrice,start=0){
+    const candidate=chartNumber(currentPrice),current=candidate>0?candidate:values.at(-1).closePrice;
+    const visible=values.slice(start),candles=visible.filter(validCandle),range=candles.length?candles.flatMap(c=>[Number(c.lowPrice),Number(c.highPrice)]):visible.map(c=>c.closePrice);
+    const min=Math.min(...range),max=Math.max(...range),span=max>min?max-min:Math.max(max*.002,.01);
+    const averages=[5,20,60,120].filter(n=>values.length>=n).map(n=>{let sum=0;const points=[];values.forEach((c,i)=>{sum+=c.closePrice;if(i>=n)sum-=values[i-n].closePrice;if(i>=n-1)points.push({i,v:sum/n});});return {n,points};});
+    const extreme=high=>values.reduce((best,c,i)=>{if(i<start||(candles.length&&!validCandle(c)))return best;const value=validCandle(c)?Number(high?c.highPrice:c.lowPrice):c.closePrice;return !best||(high?value>best.value:value<best.value)?{i,value,date:chartDate(c.timestamp),percent:(current/value-1)*100,ohlc:validCandle(c)}:best;},null);
+    return {min,max,span,current,averages,high:extreme(true),low:extreme(false)};
   }
-  function plot(data,buyPrice=null,mini=false,code=''){
+  function chartGap(values,quoteAt){
+    if(!values.length||!Number.isFinite(Date.parse(quoteAt)))return '';
+    const last=chartDate(values.at(-1).timestamp),quote=chartDate(quoteAt);
+    if(quote<=last)return '';
+    const next=new Date(Date.parse(last)+86400000),from=(next.getUTCMonth()+1)+'/'+next.getUTCDate();
+    return from+' 이후 '+(period==='1D'?'분봉':'일봉')+' 데이터가 아직 없습니다 · 마지막 봉 '+last+' / 가격 기준 '+quote+' (휴장·수집 지연 가능)';
+  }
+  function chartPointText(c,index,averages){return chartDate(c.timestamp)+(period==='1D'?' '+new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(c.timestamp)):'')+' · '+(c.currency||'')+' · 시가 '+chartFormat(c.openPrice)+' · 고가 '+chartFormat(c.highPrice)+' · 저가 '+chartFormat(c.lowPrice)+' · 종가 '+chartFormat(c.closePrice)+' · 거래량 '+chartFormat(c.volume)+averages.flatMap(a=>{const point=a.points.find(p=>p.i===index);return point?[' · MA'+a.n+' '+chartFormat(point.v)]:[];}).join('');}
+  function chartLayout(values,currentPrice,w,buyPrice=null){
+    // Reserve the axis gutter before fitting the latest visible candles. Overlays never set Y bounds.
+    const gutter=Math.max(82,...[currentPrice,buyPrice,...values.flatMap(c=>validCandle(c)?[c.lowPrice,c.highPrice]:[c.closePrice])].filter(v=>chartNumber(v)>0).map(v=>chartFormat(v).length*6.5+30));
+    const left=8,right=w-gutter,limit=Math.max(2,Math.floor((right-left)*.68/3)),start=chartStyle==='candle'?Math.max(0,values.length-limit):0;
+    const model=chartModel(values,currentPrice,start),{min,max,span}=model,low=min-span*.06,high=max+span*.06;
+    const top=40,bottom=260,vt=290,vb=338,step=(right-left)/(values.length-start),bar=Math.max(3,Math.min(18,step*.68));
+    return {model,start,left,right,top,bottom,vt,vb,step,bar,low,high,x:i=>left+(i-start+.5)*step,y:v=>top+(high-v)/(high-low)*(bottom-top)};
+  }
+  function detailPlot(data,buyPrice,code,currentPrice=null,quoteAt=null){
+    const values=M.candles(data),w=Math.max(260,Math.min(1100,root.querySelector('.market-chart')?.clientWidth||root.clientWidth-70)),h=370;
+    const layout=chartLayout(values,currentPrice,w,buyPrice),{model,start,left,right,top,bottom,vt,vb,bar,low,high,x,y}=layout,{current,averages}=model,candleMode=chartStyle==='candle';
+    const labels=[0,1,2,3].map(i=>chartFormat(high-i*(high-low)/3)),clip='market-plot-'+(++plotSequence);
+    const path=items=>items.filter(p=>p.i>=start).map(({i,v},j)=>(j?'L':'M')+x(i)+','+y(v)).join(' ');
+    const volumes=values.map(c=>chartNumber(c.volume)),vmax=Math.max(1,...volumes.slice(start).filter(v=>v!==null&&v>=0));
+    const price=candleMode?values.map((c,i)=>i>=start&&validCandle(c)?'<g class="market-candle '+(c.closePrice>=Number(c.openPrice)?'market-up':'market-down')+'"><path stroke="currentColor" d="M'+x(i)+','+y(Number(c.highPrice))+' V'+y(Number(c.lowPrice))+'"/><rect x="'+(x(i)-bar/2)+'" y="'+Math.min(y(Number(c.openPrice)),y(c.closePrice))+'" width="'+bar+'" height="'+Math.max(1,Math.abs(y(Number(c.openPrice))-y(c.closePrice)))+'"/></g>':'').join(''):'<path class="market-price-line" d="'+path(values.map((c,i)=>({i,v:c.closePrice})))+'"/>';
+    const edge=v=>v>high?'↑':v<low?'↓':'',currentEdge=edge(current),currentY=Math.max(top,Math.min(bottom,y(current))),grid=labels.map((s,i)=>{const yy=y(high-i*(high-low)/3);return '<path class="market-grid" d="M'+left+','+yy+' H'+right+'"/>'+(Math.abs(yy-currentY)<18?'':'<text class="market-y-tick" x="'+(right+9)+'" y="'+yy+'" dominant-baseline="middle">'+escape(s)+'</text>');}).join('');
+    const annotation=(p,high)=>{const align=p.i>(start+values.length-1)/2?'end':'start',tx=Math.max(left+4,Math.min(right-4,x(p.i))),ty=y(p.value)+(high?-19:23),pct=(p.percent>=0?'+':'')+p.percent.toFixed(2)+'%',label=(high?'최고':'최저')+(p.ohlc?'':' 종가');return '<g class="market-extreme" data-extreme="'+(high?'high':'low')+'"><path d="M'+x(p.i)+','+y(p.value)+' V'+(ty+(high?5:-12))+'"/><text x="'+tx+'" y="'+ty+'" text-anchor="'+align+'">'+label+' '+escape(chartFormat(p.value))+(values[p.i].currency==='USD'?'달러':'원')+'<tspan x="'+tx+'" dy="13">'+pct+' · '+p.date.slice(2).replace(/-/g,'.')+'</tspan></text></g>';};
+    const insideBuy=chartNumber(buyPrice)>0&&!edge(buyPrice),missing=values.slice(start).filter(c=>!validCandle(c)).length,gap=chartGap(values,quoteAt);
+    const buyEdge=chartNumber(buyPrice)>0?edge(buyPrice):'',buyY=buyEdge==='↑'?top:bottom;
+    const edgeBuy=buyEdge?'<g class="market-buy-edge" data-edge="'+buyEdge+'"><text class="market-cost-label" x="'+(right-4)+'" y="'+(buyY+(buyEdge==='↑'?13:-7))+'" text-anchor="end">내 평균 '+buyEdge+' '+escape(chartFormat(buyPrice))+'</text></g>':'';
+    return '<div class="market-chart-tools"><div class="market-chart-styles" role="group" aria-label="차트 모양"><button type="button" class="btn sm" data-chart-style="line" aria-pressed="'+!candleMode+'">가격선</button><button type="button" class="btn sm" data-chart-style="candle" aria-pressed="'+candleMode+'">캔들</button></div><div class="market-ma-legend" aria-label="이동평균">'+averages.map(a=>'<span class="market-ma'+a.n+'">'+a.n+'봉 평균</span>').join('')+'</div></div><div class="market-chart-stage"><svg data-market-detail="true" data-left="'+left+'" data-right="'+right+'" data-start="'+start+'" data-top="'+top+'" data-bottom="'+bottom+'" data-low="'+low+'" data-high="'+high+'" style="--market-series:'+M.chartColor(code)+'" viewBox="0 0 '+w+' '+h+'" role="img" aria-label="가격·이동평균·거래량 차트"><defs><clipPath id="'+clip+'"><rect x="'+left+'" y="'+top+'" width="'+(right-left)+'" height="'+(bottom-top)+'"/></clipPath></defs>'+grid+'<g class="market-plot-area" clip-path="url(#'+clip+')">'+price+averages.map(a=>'<path class="market-ma market-ma'+a.n+'" d="'+path(a.points)+'"/>').join('')+(insideBuy?'<path class="market-average" d="M'+(left+6)+','+y(buyPrice)+' H'+(right-6)+'"/>':'')+'</g>'+edgeBuy+annotation(model.high,true)+annotation(model.low,false)+(insideBuy?'<text class="market-cost-label" x="'+(right-4)+'" y="'+(Math.abs(y(buyPrice)-currentY)<20?y(buyPrice)+24:y(buyPrice)-7)+'" text-anchor="end">내 평균 '+escape(chartFormat(buyPrice))+'</text>':'')+'<path class="market-current-line" d="M'+left+','+currentY+' H'+right+'"/><g class="market-current-tag" data-edge="'+currentEdge+'"><rect x="'+(right+3)+'" y="'+(currentY-10)+'" width="'+(w-right-4)+'" height="20" rx="4"/><text x="'+(right+9)+'" y="'+currentY+'" dominant-baseline="middle">'+escape((currentEdge?currentEdge+' ':'')+chartFormat(current))+'</text></g><text class="market-volume-label" x="'+left+'" y="284">거래량</text>'+values.map((c,i)=>i<start||volumes[i]===null||volumes[i]<0?'':'<rect class="market-volume '+(validCandle(c)?c.closePrice>=Number(c.openPrice)?'market-up':'market-down':'')+'" x="'+(x(i)-bar/2)+'" y="'+(vb-volumes[i]/vmax*(vb-vt))+'" width="'+bar+'" height="'+(volumes[i]/vmax*(vb-vt))+'"/>').join('')+'<text class="market-x-tick" x="'+left+'" y="360">'+escape(chartDate(values[start].timestamp))+'</text><text class="market-x-tick" x="'+right+'" y="360" text-anchor="end">'+escape(chartDate(values.at(-1).timestamp))+'</text><g class="market-crosshair" visibility="hidden"><path d="M0,'+top+' V'+vb+'"/><circle r="3"/></g></svg><div class="market-chart-tooltip" hidden></div></div><div class="market-chart-readout" aria-live="polite">차트를 가리키거나 터치해 상세 가격을 확인하세요.</div><label class="market-chart-slider">날짜 선택<input type="range" data-chart-index min="'+start+'" max="'+(values.length-1)+'" value="'+(values.length-1)+'" aria-label="차트 날짜 선택"></label>'+(gap?'<p class="market-chart-gap" role="note">'+escape(gap)+'</p>':'')+'<div class="market-note">'+(period==='1D'?'평균선은 제공된 분봉 기준':'일봉 이동평균')+' · 충분한 봉부터 표시'+(start?' · 최근 '+(values.length-start)+'개 봉 표시 (화면 폭 기준)':'')+' · 고저점 %는 해당 가격 대비 현재가 변동'+(candleMode&&missing?' · OHLC 미제공 '+missing+'개 봉 제외':'')+(volumes.some(v=>v===null)?' · 거래량 미제공 구간 있음':'')+(buyPrice===null?'':' · 내 평균매입가 '+escape(chartFormat(buyPrice))+(insideBuy?' (점선)':' · 표시 범위 밖 '+buyEdge))+'</div>';
+  }
+  function plot(data,buyPrice=null,mini=false,code='',currentPrice=null,quoteAt=null){
     const values=M.candles(data);if(values.length<2)return '<div class="market-empty">가격 기록이 충분하지 않습니다.</div>';
-    if(!mini)return detailPlot(values,buyPrice,code);
+    if(!mini)return detailPlot(values,buyPrice,code,currentPrice,quoteAt);
     const w=mini?900:Math.max(320,Math.min(900,root.clientWidth-70)),h=mini?100:300,points=values.map(c=>c.closePrice),range=points.concat(buyPrice!==null?[buyPrice]:[]),min=Math.min(...range),max=Math.max(...range),span=Math.max(max-min,max*.002,0.01);
     const labels=[0,1,2,3].map(i=>(max-i*(max-min)/3).toLocaleString('ko-KR',{maximumFractionDigits:2}));
     const left=mini?5:Math.max(76,Math.max(...labels.map(s=>s.length))*7+16),right=w-(mini?5:18),top=mini?5:24,bottom=h-(mini?5:48);
@@ -108,7 +133,7 @@
       const data=await client.chart(r.resolution.symbol,period);if(id!==chartGeneration||!isActive())return;
       const points=M.candles(data.result).filter(c=>c.currency===r.resolution.currency);
       const avg=!data.adjusted&&r.cost!==null&&r.quantity>0?r.cost/r.quantity:null;
-      lastPlot=points.length>=2?{points,avg,code:r.resolution.symbol}:null;$('marketChart').innerHTML=points.length?plot(points,avg,false,r.resolution.symbol):'<div class="market-empty">가격 캐시 없음 · 선택한 종목·기간의 수집된 가격 기록이 없습니다.</div>';
+      lastPlot=points.length>=2?{points,avg,code:r.resolution.symbol,current:r.price,quoteAt:r.priceAsOf}:null;$('marketChart').innerHTML=points.length?plot(points,avg,false,r.resolution.symbol,r.price,r.priceAsOf):'<div class="market-empty">가격 캐시 없음 · 선택한 종목·기간의 수집된 가격 기록이 없습니다.</div>';
       const first=points[0],last=points.at(-1),change=first&&last?(last.closePrice/first.closePrice-1)*100:null;
       $('marketChartMeta').textContent=(change===null?'':('제공 구간 가격 등락 '+(change>=0?'+':'')+change.toFixed(2)+'% · '+first.timestamp.slice(0,10)+' ~ '+last.timestamp.slice(0,10)+' · '))+'Toss · 미수정주가 · '+(data.complete?'제공 데이터 기준':'일부 구간만 제공')+' · 평균선은 현재 보유분 기준이며 과거 실제 손익이 아닙니다.';
     }catch(e){if(id===chartGeneration){$('marketChart').innerHTML='<div class="market-empty">'+escape(!analyticsIdentity()?'로그인 후 종목 가격 그래프를 볼 수 있습니다.':'가격 캐시 없음 또는 읽기 실패 · '+(e.message||'선택한 종목·기간의 시세 수집을 확인해주세요.'))+'</div>';}}
@@ -145,12 +170,25 @@
   $('marketRefresh').addEventListener('click',()=>{client?.clear();refresh();});
   $('marketMore').addEventListener('click',()=>{expanded=!expanded;render();});
   function inspectPoint(index){
-    if(!lastPlot)return;const c=lastPlot.points[Math.max(0,Math.min(lastPlot.points.length-1,index))];if(!c)return;
-    const fmt=v=>{const n=chartNumber(v);return n===null?'미제공':n.toLocaleString('ko-KR',{maximumFractionDigits:4});};
-    const el=root.querySelector('.market-chart-readout');if(el)el.textContent=c.timestamp.slice(0,16).replace('T',' ')+' · '+(c.currency||'')+' · 시가 '+fmt(c.openPrice)+' · 고가 '+fmt(c.highPrice)+' · 저가 '+fmt(c.lowPrice)+' · 종가 '+fmt(c.closePrice)+' · 거래량 '+fmt(c.volume);
+    if(!lastPlot)return;const svg=root.querySelector('svg[data-market-detail]'),tooltip=root.querySelector('.market-chart-tooltip');if(!svg||!tooltip)return;
+    const start=Number(svg.dataset.start);index=Math.max(start,Math.min(lastPlot.points.length-1,index));const c=lastPlot.points[index];if(!c)return;
+    const model=chartModel(lastPlot.points,lastPlot.current,start),text=chartPointText(c,index,model.averages),el=root.querySelector('.market-chart-readout');if(el)el.textContent=text;
+    const left=Number(svg.dataset.left),right=Number(svg.dataset.right),x=left+(index-start+.5)*(right-left)/(lastPlot.points.length-start),top=Number(svg.dataset.top),bottom=Number(svg.dataset.bottom),low=Number(svg.dataset.low),high=Number(svg.dataset.high),y=Math.max(top,Math.min(bottom,top+(high-c.closePrice)/(high-low)*(bottom-top)));
+    const crosshair=svg.querySelector('.market-crosshair');crosshair.setAttribute('visibility','visible');crosshair.setAttribute('transform','translate('+x+' 0)');crosshair.querySelector('circle').setAttribute('cy',String(y));
+    tooltip.textContent=text;tooltip.hidden=false;tooltip.style.left=x>svg.viewBox.baseVal.width/2?'8px':'auto';tooltip.style.right=x>svg.viewBox.baseVal.width/2?'auto':'8px';
+    const slider=root.querySelector('[data-chart-index]');if(slider)slider.value=String(index);
   }
-  $('marketChart').addEventListener('click',e=>{const b=e.target.closest('[data-chart-style]');if(b&&lastPlot){chartStyle=b.dataset.chartStyle;$('marketChart').innerHTML=plot(lastPlot.points,lastPlot.avg,false,lastPlot.code);}});
-  $('marketChart').addEventListener('pointermove',e=>{const svg=e.target.closest('svg[data-market-detail]');if(!svg||!lastPlot)return;const r=svg.getBoundingClientRect(),px=(e.clientX-r.left)*svg.viewBox.baseVal.width/r.width,left=Number(svg.dataset.left)+6,right=Number(svg.dataset.right)-6;inspectPoint(Math.round((px-left)/(right-left)*(lastPlot.points.length-1)));});
+  function inspectPointer(e){
+    const svg=e.target.closest('svg[data-market-detail]');if(!svg||!lastPlot)return;const r=svg.getBoundingClientRect(),px=(e.clientX-r.left)*svg.viewBox.baseVal.width/r.width,left=Number(svg.dataset.left),right=Number(svg.dataset.right),start=Number(svg.dataset.start);
+    inspectPoint(start+Math.floor((px-left)/(right-left)*(lastPlot.points.length-start)));
+  }
+  function hideInspection(){root.querySelector('.market-crosshair')?.setAttribute('visibility','hidden');const tooltip=root.querySelector('.market-chart-tooltip');if(tooltip)tooltip.hidden=true;}
+  $('marketChart').addEventListener('click',e=>{const b=e.target.closest('[data-chart-style]');if(b&&lastPlot){chartStyle=b.dataset.chartStyle;$('marketChart').innerHTML=plot(lastPlot.points,lastPlot.avg,false,lastPlot.code,lastPlot.current,lastPlot.quoteAt);}});
+  $('marketChart').addEventListener('pointermove',inspectPointer);
+  $('marketChart').addEventListener('pointerdown',e=>{const svg=e.target.closest('svg[data-market-detail]');if(!svg)return;if(e.pointerType!=='mouse')svg.setPointerCapture(e.pointerId);inspectPointer(e);});
+  $('marketChart').addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')hideInspection();});
+  $('marketChart').addEventListener('pointercancel',hideInspection);
+  $('marketChart').addEventListener('keydown',e=>{if(e.key==='Escape')hideInspection();});
   $('marketChart').addEventListener('input',e=>{if(e.target.matches('[data-chart-index]'))inspectPoint(Number(e.target.value));});
   root.addEventListener('click',event=>{const holding=event.target.closest('[data-market-holding]'),button=event.target.closest('[data-market-period]');if(holding){selected=holding.dataset.marketHolding;render();drawMain();}if(button){period=button.dataset.marketPeriod;render();drawMain();}});
   $('marketSearchButton').addEventListener('click',async()=>{
@@ -206,7 +244,8 @@
     $('instrumentLookupButton').addEventListener('click',search);
     query.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();search();}});
   }
-  if(typeof ResizeObserver!=='undefined')new ResizeObserver(()=>{if(lastPlot)$('marketChart').innerHTML=plot(lastPlot.points,lastPlot.avg,false,lastPlot.code);}).observe(root);
+  let chartWidth=0;
+  if(typeof ResizeObserver!=='undefined')new ResizeObserver(entries=>{const width=entries[0]?.contentRect.width;if(width===chartWidth)return;chartWidth=width;if(lastPlot)$('marketChart').innerHTML=plot(lastPlot.points,lastPlot.avg,false,lastPlot.code,lastPlot.current,lastPlot.quoteAt);}).observe(root);
   window.HaniAssetMarket={sync,analyticsSource,readResearchQuotes,async resolveHoldings(holdings){const c=configured();if(!c)return false;const masters=state.instruments||[],codes=holdings.map(h=>h.ticker||masters.find(i=>i.id===h.instrumentId)?.ticker);try{const info=await c.stocks(codes);return holdings.length>0&&holdings.every(h=>M.resolve(h,masters,info).status==='matched');}catch(_){return false;}},async verifyCatalogInstrument(instrument){const c=configured(),code=M.symbol(instrument?.ticker);if(!c?.catalog||!M.validSymbol(code))return false;const domestic=/^(KR|KOSPI|KOSDAQ|국내)$/.test(instrument.market)||/^\d{6}$/.test(code),markets=domestic?['KOSPI','KOSDAQ','KR_ETC']:['NYSE','NASDAQ','AMEX','US_ETC'];for(const market of markets){try{const found=await c.search(code,market);if(found.result?.some(s=>M.symbol(s.symbol)===code&&s.currency===(domestic?'KRW':'USD')))return true;}catch(_){return false;}}return false;}};sync();
 })();
 /* HANI PORTFOLIO READ-ONLY BUNDLE START */

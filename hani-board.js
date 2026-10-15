@@ -50,7 +50,7 @@
     return Math.min(Number.MAX_SAFE_INTEGER,count(post.likes)+boardSupporters(post,now).length);
   }
   function countTitle(post,kind,now){
-    const readers=kind==="views"?boardReaders(post,now):boardSupporters(post,now),names=readers.slice(0,3).map(p=>p.name).join(", ");
+    const readers=kind==="views"?boardReaders(post,now):boardSupporters(post,now),names=readers.slice(0,3).map(p=>displayName(p.id)).join(", ");
     const own=count(post[kind]),verb=kind==="views"?"읽었어요":"공감했어요";
     return (readers.length?"직원 "+readers.length+"명이 "+(kind==="views"?staffReads(post,now)+"번 ":"")+verb+" · "+names+(readers.length>3?" 외 "+(readers.length-3)+"명":""):"아직 직원 반응이 없어요")+
       (own?" · 회장님 "+(kind==="views"?own+"회 조회":"추천"):"");
@@ -84,7 +84,7 @@
   function authorParts(id){
     const member=person(id);if(!member)return {name:"알 수 없는 작성자",rank:"",team:""};
     const team=roster()?.teams?.find(t=>t.id===member.team);
-    return {name:id===actor()?"성민":id==="mir"?"MIR":member.name,rank:id==="mir"||seedPerson(id)?.specialEntity?"AI ENTITY":member.rank,
+    return {name:id===actor()?"성민":displayName(id),rank:id==="mir"||seedPerson(id)?.specialEntity?"AI ENTITY":member.rank,
       team:id===actor()?"HANI GROUP":team?.name||member.team||"HANI GROUP"};
   }
   const author=id=>Object.values(authorParts(id)).filter(Boolean).join(" · ");
@@ -105,6 +105,47 @@
   // Labels from earlier versions are hidden even while writes are blocked.
   const oldMarker=/\[(?:사내 세계관 이야기|기록 기반 초안)\]|에 관한 제 생각\s*:/;
   const publicText=value=>String(value??"").replace(/\[(?:사내 세계관 이야기|기록 기반 초안)\]\s*|에 관한 제 생각\s*:|#\d+\s*[·?—–-]?\s*/g,"");
+  // Roster aliases remain searchable; cards and mention chips use Korean names.
+  function displayName(id){
+    const name=String(person(id)?.name||"");
+    return name.split(/\s*·\s*/).filter(s=>/^[가-힣]+$/.test(s)).at(-1)||name;
+  }
+  const kinship=/(?:언니|누나|오빠|형님|(?:^|[\s,，])형(?=$|[\s,，.!?]))/;
+  const metaPhrase=/(?:실제\s*(?:예매|경기|점수|날씨|소식).*?(?:없이|말고)|(?:작품\s*내용|줄거리|경기\s*결과|예매\s*일정|요즘\s*순위|금액\s*비교|가격\s*비교|투자\s*얘기|재테크\s*조언|성격\s*진단).*?(?:없이|말고|대신)|유형으로\s*사람을\s*단정|대화\s*소재로만|구경거리로만|밈은\s*밈으로만|확인된\s*(?:사실|내용|만큼|것|부분)|사실(?:을|과)\s*(?:나눠|구분)|지어내|추측하지|단정하지|원문에\s*적힌\s*그대로|원문부터\s*같이)/;
+  const sentences=value=>String(value||"").match(/[^.!?。\n]+(?:[.!?。]+|$)/gu)?.map(s=>s.trim()).filter(Boolean)||[];
+  const sentenceKey=value=>String(value).replace(/^(?:회장님|대표님)[,，!]?\s*/,"").replace(/[\s.!?。,，]+/g,"").toLowerCase();
+  function generatedText(value){
+    let text=publicText(value);
+    text=text.replace(/[^.!?。\n]+(?:[.!?。]+|$)/gu,s=>metaPhrase.test(s)?"":s);
+    // Match address terms without damaging ordinary words such as 형식/유형.
+    text=text.replace(/\s*(?:언니|누나|오빠|형님)/g,"님").replace(/(^|[\s,，])형(?=$|[\s,，.!?])/g,"$1님");
+    for(const member of roster()?.people||[]){
+      if(member.name!==displayName(member.id))text=text.replaceAll(member.name,displayName(member.id));
+    }
+    return text.replace(/\bMIR\b/g,displayName("mir")).replace(/^\s*(?:님|씨|아|야)(?:\s*[,，!]\s*|\s+)/,"").trim();
+  }
+  function displayText(row,value){
+    return row?.generated&&row.authorId!==actor()?generatedText(value):publicText(value);
+  }
+  // Only newly generated drafts enter this thread-wide sentence budget.
+  function naturalComments(post,rows,history=[],source=post){
+    const used=new Set([...sentences(post.body),...history.filter(c=>c.postId===post.id).flatMap(c=>sentences(c.body))].map(sentenceKey));
+    return rows.map(row=>{
+      let body=generatedText(row.body);
+      if(source.id===post.id&&post.authorId!==actor()&&!post.ownerTied)body=body.replace(/^(?:회장님|대표님)\s*[,，!]?\s+/,"");
+      const parts=sentences(body).filter(s=>{const key=sentenceKey(s);if(!key||used.has(key))return false;used.add(key);return true;});
+      if(!parts.length){
+        const options=[...(FUN_VOICES[row.authorId]||[]),POST_FLAVOUR[row.authorId],...(PEER_LINES[chairmanReplyTopic(post)]||PEER_LINES.general)].filter(Boolean);
+        const next=options.flatMap(sentences).find(s=>!used.has(sentenceKey(s)));
+        if(next){parts.push(next);used.add(sentenceKey(next));}
+      }
+      return {...row,body:parts.join(" ")};
+    });
+  }
+  function naturalThread(thread){
+    const post={...thread,title:generatedText(thread.title),body:generatedText(thread.body)};
+    return {...post,comments:naturalComments(post,thread.comments)};
+  }
   function boardDate(value,now=Date.now()){
     const time=new Date(value).getTime();if(!Number.isFinite(time))return "시간 미상";
     const kst=new Date(time+9*3600000).toISOString();
@@ -258,11 +299,11 @@
     for(const id of ids){
       const member=person(id);if(!member)continue;
       const chairman=id===actor();
-      const names=chairman?[member.name,"회장님","대표님"]:[member.name,...member.name.split(/\s*·\s*/)];
+      const names=chairman?[member.name,"회장님","대표님"]:[member.name,...member.name.split(/\s*·\s*/),displayName(id)];
       const ranks=[member.rank,String(member.rank||"").split(/\s+/).at(-1)].filter(Boolean);
       const namePattern=names.filter(Boolean).sort((a,b)=>b.length-a.length).map(regexEscape).join("|");
       const rankPattern=ranks.sort((a,b)=>b.length-a.length).map(regexEscape).join("|");
-      const rankedName="(?:"+namePattern+")"+(rankPattern?"(?:\\s*(?:"+rankPattern+"))?":"")+"(?:님|씨|아|야)?";
+      const rankedName="(?:"+namePattern+")"+(rankPattern?"(?:\\s*(?:"+rankPattern+"))?":"")+"(?:\\s*(?:선배님|선배|언니|누나|오빠|형님|형|님|씨|아|야))?";
       const address=(chairman?"(?:"+regexEscape(member.name)+"(?:\\s*"+regexEscape(member.rank)+")?(?:님|씨)?|회장님|대표님)":rankedName)+"[,，!]?\\s+";
       if(duplicatedMention)body=body.replace(new RegExp("^@"+address),"");
       if(!chairman||mentionChip&&id===ids[0])body=body.replace(new RegExp("^"+address),"");
@@ -271,7 +312,10 @@
   }
   function commentBody(c,parent){
     const post=posts().find(p=>p.id===c.postId);
-    return stripLeadingVocative(publicText(c.body),[parent?.authorId,post?.authorId],!!parent,!!parent);
+    let text=displayText(c,c.body);
+    if(c.generated&&c.authorId!==actor()&&post?.authorId!==actor()&&!post?.ownerTied&&parent?.authorId!==actor())
+      text=text.replace(/^(?:회장님|대표님)\s*[,，!]\s*/,"");
+    return stripLeadingVocative(text,[parent?.authorId,post?.authorId],!!parent,!!parent);
   }
   function commentMarkup(c,nested=false,allowReply=true){
     const parent=c.parentId&&visibleComments().find(p=>p.id===c.parentId&&p.postId===c.postId);
@@ -293,7 +337,7 @@
     html("list",'<table class="board-table board-mobile-two-line"><caption class="board-sr-only">사내 게시글 목록</caption><colgroup><col class="board-col-category"><col class="board-col-title"><col class="board-col-author"><col class="board-col-date"><col class="board-col-number"><col class="board-col-number"></colgroup><thead><tr>'+["탭(말머리)","제목","글쓴이","날짜","조회","추천"].map(label=>'<th scope="col">'+label+'</th>').join("")+'</tr></thead><tbody>'+
       (rows.slice(0,visible).map(raw=>{const p=postFields(raw),views=displayViews(p,now),likes=displayLikes(p,now);return '<tr class="board-row'+(p.pinned?' board-pinned':'')+(selected===p.id?' board-current':'')+'">'+
         '<td class="board-cell-category"><span class="board-category board-category-'+escape(String(p.category||"").toLowerCase())+'">'+(p.pinned?'공지':escape(p.category))+'</span></td>'+
-        '<td class="board-cell-title"><button type="button" class="board-title" data-board-open="'+escape(p.id)+'" aria-pressed="'+String(selected===p.id)+'"><span class="board-title-text">'+escape(publicText(p.title))+'</span>'+
+        '<td class="board-cell-title"><button type="button" class="board-title" data-board-open="'+escape(p.id)+'" aria-pressed="'+String(selected===p.id)+'"><span class="board-title-text">'+escape(displayText(p,p.title))+'</span>'+
         ((totals.get(p.id)||0)?' <strong class="board-comment-count">'+totals.get(p.id)+'</strong>':'')+
         (p.poll?'<span class="board-post-icon" title="투표" aria-label="투표">📊</span>':'')+(p.seriesId?'<span class="board-post-icon" title="연재" aria-label="연재">▤</span>':'')+newBadge(p)+'</button></td>'+
         '<td class="board-cell-author">'+authorCard(p.authorId)+'</td><td class="board-cell-date">'+stamp(p)+'</td>'+
@@ -305,7 +349,7 @@
     if(get("preview")?.open)paintPreview();
     get("replyContext").textContent=replyTo?author(comments().find(c=>c.id===replyTo)?.authorId)+"에게 답글":"";
     if(!post){html("article","");html("comments","");return}
-    html("article",'<span class="pill">'+escape(post.category)+'</span>'+(post.pinned?' <span class="board-notice">공지</span>':"")+'<h3 tabindex="-1" data-board-heading>'+escape(publicText(post.title))+'</h3><div class="board-detail-meta">'+authorCard(post.authorId,40)+'<span class="sub">'+stamp(post)+' · <span title="'+escape(countTitle(post,"views",now))+'">조회 '+displayViews(post,now)+'</span> · <span title="'+escape(countTitle(post,"likes",now))+'">추천 '+displayLikes(post,now)+'</span>'+'</span>'+newBadge(post)+'</div><p class="board-body">'+escape(publicText(post.body))+'</p>'+interactiveMarkup(post,writable)+'<button class="btn" type="button" data-board-like="'+escape(post.id)+'" aria-pressed="'+post.likedByOwner+'"'+(!writable?' disabled':'')+' title="'+escape(countTitle(post,"likes",now))+'">👍 추천 '+displayLikes(post,now)+'</button>'+actions(post,"post"));
+    html("article",'<span class="pill">'+escape(post.category)+'</span>'+(post.pinned?' <span class="board-notice">공지</span>':"")+'<h3 tabindex="-1" data-board-heading>'+escape(displayText(post,post.title))+'</h3><div class="board-detail-meta">'+authorCard(post.authorId,40)+'<span class="sub">'+stamp(post)+' · <span title="'+escape(countTitle(post,"views",now))+'">조회 '+displayViews(post,now)+'</span> · <span title="'+escape(countTitle(post,"likes",now))+'">추천 '+displayLikes(post,now)+'</span>'+'</span>'+newBadge(post)+'</div><p class="board-body">'+escape(displayText(post,post.body))+'</p>'+interactiveMarkup(post,writable)+'<button class="btn" type="button" data-board-like="'+escape(post.id)+'" aria-pressed="'+post.likedByOwner+'"'+(!writable?' disabled':'')+' title="'+escape(countTitle(post,"likes",now))+'">👍 추천 '+displayLikes(post,now)+'</button>'+actions(post,"post"));
     const thread=visibleComments().filter(c=>c.postId===post.id).map(commentFields).sort((a,b)=>String(a.createdAt).localeCompare(String(b.createdAt)));
     html("comments",orderedComments(thread).map(({comment,nested})=>commentMarkup(comment,nested,!comment.parentId)).join("")||'<p class="empty">첫 댓글을 남겨 주세요.</p>');
   }
@@ -385,18 +429,14 @@
   function staffAddress(fromId,toId,post,seed=0,history=comments()){
     if(toId===actor()){
       const formal=hash(seed)%100<ADDRESS_RULES.chairmanWeights[0]?ADDRESS_RULES.chairman[0]:ADDRESS_RULES.chairman[1];
-      const eligible=ADDRESS_RULES.casualCategories.includes(post.category)&&!post.pinned&&!/투자|주식|정산|공지|업무/.test(post.title+" "+post.body);
-      const previous=history.filter(c=>c.authorId===fromId&&c.toOwner);
-      const uses=previous.filter(c=>c.address==="오빠").length;
-      if(eligible&&ADDRESS_RULES.oppaAllowed.includes(fromId)&&personaMap()[fromId]?.callsChairmanOppa&&hash(seed)%1000<ADDRESS_RULES.oppaRate*1000&&uses+1<=Math.floor((previous.length+1)*ADDRESS_RULES.oppaMaxShare))return "오빠";
       return formal;
     }
-    const nickname=relationNickname(fromId,toId);if(nickname)return nickname;
+    const nickname=relationNickname(fromId,toId);if(nickname&&!kinship.test(nickname))return nickname;
     const from=person(fromId),to=person(toId);if(!to)return "동료님";
     // Unmapped specialist ranks stay formal. Never infer a made-up job title.
     const a=ADDRESS_RULES.seniorOrder.indexOf(from?.rank),b=ADDRESS_RULES.seniorOrder.indexOf(to.rank);
     const senior=b>=0&&a>=0&&b>=a;
-    return to.name+(from?.team===to.team&&senior?" "+(a===b?"씨":to.rank):" "+to.rank+"님");
+    return displayName(toId)+(from?.team===to.team&&senior?" "+(a===b?"씨":to.rank):" "+to.rank+"님");
   }
   const publicContext=post=>!ADDRESS_RULES.casualCategories.includes(post?.category)||!!post?.pinned||/공지/.test(post?.title+" "+post?.body);
   const personaMode=(id,post)=>{const p=personaMap()[id];return publicContext(post)?p?.publicMode:p?.privateMode};
@@ -454,7 +494,7 @@
     "이 정도면 웃음은 통과네요 ㅋㅋ.",
     "여기까지 해낸 것도 잘하셨어요.",
     "서두르지 않고 확인해도 괜찮아요.",
-    "확인된 부분부터 챙겨봐요."
+    "어떤 부분이 마음에 남으셨어요?"
   ],
   "jieun": [
     "저도 현실적인 선택 같아요.",
@@ -590,13 +630,13 @@
   }
   // Interim replies combine the actual comment intent with its post topic.
   const CHAIRMAN_REPLIES=Object.freeze({
-    fear:Object.freeze(["걱정될 만해요. 지금 확인된 것부터 같이 살펴봐요.","불안한 마음은 이해해요. 한꺼번에 결론 내리지 않아도 괜찮아요."]),
+    fear:Object.freeze(["걱정될 만해요. 제일 마음 쓰이는 부분부터 들려주세요.","불안한 마음은 이해해요. 한꺼번에 결론 내리지 않아도 괜찮아요."]),
     thanks:Object.freeze([
       "고마워요! 읽어주셔서 저도 힘나요 ㅎㅎ.","좋게 봐주셔서 뿌듯하네요!", "칭찬 들으니까 오늘 기분 좋네요 ㅎㅎ.","한마디 남겨주셔서 감사해요!",
       "알아봐 주시니까 괜히 더 신나네요.","따뜻한 말 덕분에 기운 났어요!", "이렇게 말해주시니 저도 웃게 되네요 ㅎㅎ.","응원 잘 받았어요! 다음에도 같이 이야기해요."
     ]),
     question:Object.freeze([
-      "어느 부분이 제일 궁금하세요? 거기부터 같이 봐요.","이건 바로 단정하긴 어렵네요. 조건을 조금 더 알려주세요.","좋은 질문이네요! 어떤 상황인지 더 들려주세요.","확인할 포인트가 있겠네요. 궁금한 부분부터 짚어봐요.",
+      "어느 부분이 제일 궁금하세요? 거기부터 같이 봐요.","어떤 상황인지 조금 더 들려주세요. 저도 같이 생각해볼게요.","좋은 질문이네요! 어떤 상황인지 더 들려주세요.","확인할 포인트가 있겠네요. 궁금한 부분부터 짚어봐요.",
       "저도 그 부분은 더 살펴봐야겠어요.","지금 말씀하신 경우를 조금만 더 풀어주실래요?", "답부터 찍기보단 근거를 같이 찾아봐요.","한 가지씩 나눠보면 답을 찾기 편할 것 같아요."
     ]),
     joke:Object.freeze([
@@ -615,43 +655,44 @@
   const CHAIRMAN_REPLY_FLAVOUR=Object.freeze({hani:"같이 챙길게요.",yuri:"확인할 건 차분히 볼게요.",jieun:"부담 없이 이어가요.",haru:"커피 한 잔 하며 들어볼게요.",seoyun:"빠뜨린 건 없는지 같이 챙겨요.",serin:"차분히 살펴볼게요."});
   const CHAIRMAN_TOPIC_REPLIES=Object.freeze({
     book:{
-      fear:["이 책을 읽고 걱정되셨군요. 책의 가능성이 곧 정해진 미래는 아니에요. 책갈피부터 숨 돌려요.","이 책의 무서운 대목이 마음에 남았네요. 주장과 근거를 나눠 보면 불안도 조금 정리될 거예요."],
-      thanks:["책 이야기 함께 나눠주셔서 저도 좋아요. 다음 책갈피도 같이 열어요 ㅎㅎ.","독서 이야기 좋게 읽어주셔서 감사해요. 마음에 남은 대목도 나눠봐요."],
-      question:["이 책에서 궁금하신 대목이군요. 해당 문장과 앞뒤 맥락을 같이 볼까요?","책의 주장과 근거부터 짚어봐요. 어느 대목이 질문으로 남으셨나요?"],
-      joke:["책 읽다가 댓글에서 웃음 터졌어요 ㅋㅋ. 이 드립은 책갈피에 끼워둘게요.","이 책 이야기가 이렇게 웃겨질 줄은 몰랐네요 ㅎㅎ. 다음 페이지도 기대돼요."],
-      agree:["이 책에서 그 부분에 공감하셨군요. 어떤 문장이 특히 와닿으셨나요?","책의 그 관점에 저도 고개가 끄덕여져요. 다른 해석도 함께 나눠봐요."],
-      other:["이 책을 읽고 남은 생각이군요. 가장 기억나는 대목도 들려주세요.","독서 후에 마음에 남은 느낌이 궁금해요. 편하게 이어서 이야기해요."]
+      fear:["이 책을 읽고 걱정되셨군요. 책의 가능성이 곧 정해진 미래는 아니에요. 책갈피부터 숨 돌려요.","이 책의 무서운 대목이 마음에 남았네요. 주장과 근거를 나눠 보면 불안도 조금 정리될 거예요.","책을 덮어도 그 장면이 맴도는 느낌일까요. 잠시 다른 얘기를 해도 좋아요."],
+      thanks:["책 이야기 함께 나눠주셔서 저도 좋아요. 다음 책갈피도 같이 열어요 ㅎㅎ.","독서 이야기 좋게 읽어주셔서 감사해요. 마음에 남은 대목도 나눠봐요.","함께 책 얘기할 사람이 있어서 반가워요. 좋아하는 문장도 들려주세요."],
+      question:["이 책에서 궁금하신 대목이군요. 해당 문장과 앞뒤 맥락을 같이 볼까요?","책의 주장과 근거부터 짚어봐요. 어느 대목이 질문으로 남으셨나요?","독서하다 멈칫한 부분이 있나 봐요. 그 페이지를 같이 펼쳐볼까요?"],
+      joke:["책 읽다가 댓글에서 웃음 터졌어요 ㅋㅋ. 이 드립은 책갈피에 끼워둘게요.","이 책 이야기가 이렇게 웃겨질 줄은 몰랐네요 ㅎㅎ. 다음 페이지도 기대돼요.","이러다 독서 모임이 웃음 모임 되겠어요 ㅎㅎ. 책보다 댓글을 먼저 읽게 되네요."],
+      agree:["이 책에서 그 부분에 공감하셨군요. 어떤 문장이 특히 와닿으셨나요?","책의 그 관점에 저도 고개가 끄덕여져요. 다른 해석도 함께 나눠봐요.","같은 책을 읽어도 마음에 남는 곳은 다르더라고요. 그 해석을 더 듣고 싶어요."],
+      other:["이 책을 읽고 남은 생각이군요. 가장 기억나는 대목도 들려주세요.","독서 후에 마음에 남은 느낌이 궁금해요. 편하게 이어서 이야기해요.","덮고 나서도 이어지는 책 이야기가 좋네요. 어떤 기분이 남았는지 궁금해요."]
     },
     ai:{
-      fear:["AI 이야기라 더 걱정되셨겠어요. 무서운 시나리오가 확정된 미래는 아니에요. 서두르지 않아도 괜찮아요.","AI에 대한 불안은 이해해요. 실제 확인된 변화와 예상부터 나눠서 살펴봐요."],
-      thanks:["AI 이야기 좋게 봐주셔서 감사해요. 확인한 근거도 같이 챙겨둘게요.","AI 얘기를 함께 나눠주셔서 힘나요. 다음 변화도 차분히 지켜봐요."],
-      question:["AI의 어떤 변화가 궁금하신가요? 확인된 근거와 예상부터 나눠볼게요.","AI 얘기는 조건에 따라 달라져요. 어떤 사례를 생각하셨는지 들려주세요."],
-      joke:["AI 얘기하다 댓글에서 인간 웃음 버튼이 눌렸네요 ㅋㅋ.","이 AI 드립은 저도 웃었어요 ㅎㅎ. 웃음까지 자동화하진 말아요."],
-      agree:["AI의 그 관점에 공감하셨군요. 실제 사례와도 맞는지 함께 봐요.","AI 변화에 대한 생각이 통했네요. 기대와 한계도 같이 챙겨봐요."],
-      other:["AI 변화 중 어떤 부분이 가장 마음에 남으셨어요?","AI 얘기 이어서 듣고 있어요. 실제 경험도 들려주세요."]
+      fear:["AI 이야기라 더 걱정되셨겠어요. 무서운 시나리오가 확정된 미래는 아니에요. 서두르지 않아도 괜찮아요.","AI에 대한 불안은 이해해요. 어느 장면이 제일 걱정되셨는지 천천히 들려주세요.","AI 얘기가 빠르게 바뀌어서 마음이 복잡할 수 있죠. 가장 불편했던 부분부터 들어볼게요."],
+      thanks:["AI 이야기 좋게 봐주셔서 감사해요. 확인한 근거도 같이 챙겨둘게요.","AI 얘기를 함께 나눠주셔서 힘나요. 다음 변화도 차분히 지켜봐요.","함께 AI 얘기를 하니 저도 재밌어요. 다음엔 어떤 이야기를 나눠볼까요?"],
+      question:["AI의 어떤 변화가 궁금하신가요? 궁금했던 장면부터 같이 이야기해요.","AI 얘기는 조건에 따라 달라져요. 어떤 사례를 생각하셨는지 들려주세요.","AI를 쓰다가 막힌 부분이 있으셨나요? 어떤 점이 궁금한지 듣고 싶어요."],
+      joke:["AI 얘기하다 댓글에서 인간 웃음 버튼이 눌렸네요 ㅋㅋ.","이 AI 드립은 저도 웃었어요 ㅎㅎ. 웃음까지 자동화하진 말아요.","AI 동료도 댓글 보고 웃고 갑니다 ㅋㅋ. 이쯤 되면 웃음 담당 뽑아야겠어요."],
+      agree:["AI의 그 관점에 공감하셨군요. 실제 사례와도 맞는지 함께 봐요.","AI 변화에 대한 생각이 통했네요. 기대와 한계도 같이 챙겨봐요.","AI를 보는 시선이 비슷했나 봐요. 특히 마음에 드는 쪽이 궁금해요."],
+      other:["AI 변화 중 어떤 부분이 가장 마음에 남으셨어요?","AI 얘기 이어서 듣고 있어요. 실제 경험도 들려주세요.","AI 이야기는 꺼낼 때마다 질문이 생기네요. 저는 다른 분들 생각도 듣고 싶어요."]
     },
     stock:{
-      fear:["주식 얘기에 걱정되셨군요. 급하게 결정하기보다 상황을 차분히 확인해요.","주가 변동은 마음도 흔들죠. 확실한 수익을 단정하지 않고 걱정되는 부분부터 볼게요."],
-      thanks:["주식 이야기 읽어주셔서 감사해요. 숫자와 근거도 꼼꼼히 챙길게요.","투자 얘기를 함께 나눠주셔서 좋아요. 각자 판단 기준도 들어봐요."],
-      question:["주식에서 어떤 지표나 상황이 궁금하세요? 확인할 근거부터 같이 봐요.","투자 질문은 기간과 조건에 따라 달라져요. 생각하신 상황을 들려주세요."],
-      joke:["주식 얘기하다 웃음 수익률은 올랐네요 ㅋㅋ. 실제 수익은 별개지만요.","주가보다 댓글이 더 출렁였네요 ㅎㅎ. 이 드립엔 웃음 한 표요."],
-      agree:["투자에서 그 기준에 공감하셨군요. 숫자와 가정도 같이 확인해요.","주식 이야기에 생각이 통했네요. 반대 근거도 함께 봐두면 좋겠어요."],
-      other:["주식 얘기 이어서 듣고 있어요. 어떤 변화가 가장 눈에 들어오셨어요?","투자에 대한 생각을 남겨주셨네요. 판단할 때 중요하게 본 점도 궁금해요."]
+      fear:["주식 얘기에 걱정되셨군요. 급하게 결정하기보다 상황을 차분히 확인해요.","주가 변동은 마음도 흔들죠. 걱정되는 대목부터 천천히 이야기해요.","주식 화면 보다가 마음이 무거워지셨나요. 잠깐 쉬면서 얘기해도 괜찮아요."],
+      thanks:["주식 이야기 읽어주셔서 감사해요. 숫자와 근거도 꼼꼼히 챙길게요.","투자 얘기를 함께 나눠주셔서 좋아요. 각자 판단 기준도 들어봐요.","투자 이야기를 같이 나눌 수 있어 반가워요. 저도 궁금했던 걸 물어볼게요."],
+      question:["주식에서 어떤 지표나 상황이 궁금하세요? 확인할 근거부터 같이 봐요.","투자 질문은 기간과 조건에 따라 달라져요. 생각하신 상황을 들려주세요.","투자할 때 가장 고민되는 지점이 어디예요? 생각하신 기간도 궁금해요."],
+      joke:["주식 얘기하다 웃음 수익률은 올랐네요 ㅋㅋ. 실제 수익은 별개지만요.","주가보다 댓글이 더 출렁였네요 ㅎㅎ. 이 드립엔 웃음 한 표요.","투자 얘기에 이런 드립이 나오네요 ㅋㅋ. 웃음 배당은 넉넉하게 받았어요."],
+      agree:["투자에서 그 기준에 공감하셨군요. 숫자와 가정도 같이 확인해요.","주식 이야기에 생각이 통했네요. 반대 근거도 함께 봐두면 좋겠어요.","주식 볼 때 챙기는 기준이 닮았나 봐요. 그렇게 생각하게 된 계기도 들려주세요."],
+      other:["주식 얘기 이어서 듣고 있어요. 어떤 변화가 가장 눈에 들어오셨어요?","투자에 대한 생각을 남겨주셨네요. 판단할 때 중요하게 본 점도 궁금해요.","투자 얘기는 같은 숫자를 보고도 생각이 갈리네요. 눈여겨보신 부분이 궁금해요."]
     },
     exercise:{
-      fear:["운동 얘기에 걱정되셨군요. 무리하지 말고 지금 몸 상태부터 살펴요.","운동 부담이 느껴지셨나 봐요. 오늘은 강도보다 편안한 페이스를 챙겨요."],
-      thanks:["운동 이야기 좋게 봐주셔서 감사해요. 응원도 한 세트 더 드릴게요 ㅎㅎ.","운동 얘기 함께 나눠주셔서 좋아요. 오늘 컨디션도 챙겨요."],
-      question:["운동의 어떤 동작이나 상황이 궁금하세요? 컨디션과 함께 알려주세요.","운동은 몸 상태에 따라 달라져요. 궁금한 동작부터 짚어봐요."],
-      joke:["운동 얘기하다 웃음으로 복근 한 세트 했네요 ㅋㅋ.","이 운동 드립엔 저도 웃었어요 ㅎㅎ. 웃고 나서 물 한 모금요."],
-      agree:["운동에서 그 페이스에 공감하셨군요. 꾸준히 갈 수 있는지도 같이 봐요.","운동 얘기에 생각이 통했네요. 회복까지 챙기는 방향이면 좋아요."],
-      other:["운동하고 나서 몸은 어떠셨어요? 오늘 느낌도 들려주세요.","운동 이야기 듣고 있어요. 가장 만족스러웠던 순간이 궁금해요."]
+      fear:["운동 얘기에 걱정되셨군요. 무리하지 말고 지금 몸 상태부터 살펴요.","운동 부담이 느껴지셨나 봐요. 오늘은 강도보다 편안한 페이스를 챙겨요.","운동 생각에 부담부터 드셨나 봐요. 쉬고 싶은 날도 있는 거죠."],
+      thanks:["운동 이야기 좋게 봐주셔서 감사해요. 응원도 한 세트 더 드릴게요 ㅎㅎ.","운동 얘기 함께 나눠주셔서 좋아요. 오늘 컨디션도 챙겨요.","함께 운동 얘기하니 저도 기운 나네요. 응원은 언제든 보태드릴게요."],
+      question:["운동의 어떤 동작이나 상황이 궁금하세요? 컨디션과 함께 알려주세요.","운동은 몸 상태에 따라 달라져요. 궁금한 동작부터 짚어봐요.","운동하면서 불편했던 부분이 있었어요? 어떤 때 그런지 들려주세요."],
+      joke:["운동 얘기하다 웃음으로 복근 한 세트 했네요 ㅋㅋ.","이 운동 드립엔 저도 웃었어요 ㅎㅎ. 웃고 나서 물 한 모금요.","운동복보다 웃을 준비부터 해야겠네요 ㅎㅎ. 댓글 읽다 준비운동 끝나겠어요."],
+      agree:["운동에서 그 페이스에 공감하셨군요. 꾸준히 갈 수 있는지도 같이 봐요.","운동 얘기에 생각이 통했네요. 회복까지 챙기는 방향이면 좋아요.","운동은 편하게 이어가는 맛도 있죠. 그 페이스가 잘 맞으셨으면 좋겠어요."],
+      other:["운동하고 나서 몸은 어떠셨어요? 오늘 느낌도 들려주세요.","운동 이야기 듣고 있어요. 가장 만족스러웠던 순간이 궁금해요.","운동 얘기 들으니 저도 산책하고 싶어지네요. 다음엔 어떤 걸 해보고 싶으세요?"]
     }
   });
   const CHAIRMAN_BOOK_AI_FEAR=Object.freeze([
     "이 책의 AI 디스토피아가 무섭게 느껴지셨군요. 책의 시나리오가 확정된 미래는 아니에요. 책갈피부터 숨 돌려요.",
-    "책 속 AI 미래 때문에 불안하셨겠어요. 작가의 가정과 확인된 사실을 나눠 보면 도움이 돼요. 오늘은 책갈피부터 숨 돌려요."
+    "책 속 AI 미래 때문에 불안하셨겠어요. 무서운 장면은 잠깐 덮어두고 좋아했던 대목부터 떠올려봐요. 오늘은 책갈피부터 숨 돌려요.",
+    "책의 AI 장면이 자꾸 떠오르셨나 봐요. 잠깐 책갈피를 끼워두고 쉬어도 괜찮아요. 그 마음은 같이 들어볼게요."
   ]);
-  const CHAIRMAN_TOPIC_FLAVOUR=Object.freeze({hani:"같이 차근차근 챙길게요.",yuri:"근거는 제가 꼼꼼히 볼게요.",jieun:"부담은 조금 내려놔요.",haru:"커피 한 잔 곁들여 들어볼게요.",seoyun:"놓친 맥락도 같이 챙겨요.",serin:"숫자와 사실은 차분히 볼게요.",hina:"빨간 펜은 잠깐 넣어둘게요 ㅎㅎ.",arin:"느낌도 편하게 들려주세요.",taeo:"무리하지 않는 쪽으로요.",yuna:"이야기 계속 듣고 있어요!",dohyun:"확인된 부분부터 짚어볼게요.",gaeun:"옆에서 함께 듣고 있을게요.",mir:"다른 관점도 한 조각 보태볼게요."});
+  const CHAIRMAN_TOPIC_FLAVOUR=Object.freeze({hani:"같이 차근차근 챙길게요.",yuri:"근거는 제가 꼼꼼히 볼게요.",jieun:"부담은 조금 내려놔요.",haru:"커피 한 잔 곁들여 들어볼게요.",seoyun:"놓친 맥락도 같이 챙겨요.",serin:"숫자와 사실은 차분히 볼게요.",hina:"빨간 펜은 잠깐 넣어둘게요 ㅎㅎ.",arin:"느낌도 편하게 들려주세요.",taeo:"무리하지 않는 쪽으로요.",yuna:"이야기 계속 듣고 있어요!",dohyun:"궁금했던 장면부터 이야기해요.",gaeun:"옆에서 함께 듣고 있을게요.",mir:"다른 관점도 한 조각 보태볼게요."});
   function chairmanReplyTopic(post,text=""){
     const topic=value=>/독서|도서|서재|작가|저자|(?:^|\s)책(?:$|[\s:：,.!?을은에이과도]|으로|후기|리뷰|추천)|\bbooks?\b|\breading\b/i.test(value)?"book":/주식|투자|증시|주가|stock|portfolio/i.test(value)?"stock":/운동|헬스|근력|달리기|(?:^|\s)러닝|exercise|workout/i.test(value)?"exercise":/\bAI\b|\bAGI\b|인공지능|머신러닝|딥러닝|디스토피아|챗봇/i.test(value)?"ai":"general";
     const comment=String(text||"").replace(/@[가-힣A-Za-z]+/g,""),current=topic(comment);
@@ -673,7 +714,7 @@
       .map(p=>({p,...candidateScore(p.id,post,source,history)})).filter(r=>r.affinity>0&&!r.avoid)
       .sort((a,b)=>b.affinity-a.affinity).map(r=>r.p);
     const chosen=candidates.slice(0,1+seed%3),previewHistory=[...history],openers=new Set();
-    return chosen.map((p,i)=>{
+    return naturalComments(post,chosen.map((p,i)=>{
       const address=staffAddress(p.id,actor(),post,seed+i,previewHistory);
       const aiFear=topic==="book"&&intent==="fear"&&/\bAI\b|\bAGI\b|인공지능|디스토피아/i.test([post.title,post.body,source.body].join(" "));
       const pool=aiFear?CHAIRMAN_BOOK_AI_FEAR:CHAIRMAN_TOPIC_REPLIES[topic]?.[intent]||CHAIRMAN_REPLIES[intent],start=hash(seed+":"+p.id+":"+i)%pool.length;
@@ -686,7 +727,7 @@
       if(echoesOriginal(body,source.body)||echoesOriginal(body,post.title))body=address+"!";
       const row={authorId:p.id,body,parentIndex:null,address,toOwner:true,intent,topic};
       previewHistory.push({...row,postId:post.id,generated:true});return row;
-    });
+    }),history,source);
   }
   const LOUNGE_LINES=Object.freeze({
     book:["저도 읽어보고 싶어요!","어떤 대목이 남으셨는지 궁금해요.","책 얘기는 언제 들어도 반가워요. 감상도 나눠주세요!","완독 소식에 박수요!"],
@@ -705,13 +746,13 @@
   const loungeOpener=body=>String(body).replace(/^(?:회장님|대표님|오빠)[,!]?\s*/,"").split(/[.!?。\n]/)[0].trim();
   function loungeReactions(post,round,source=post,history=comments()){
     const rows=ownerReactions(post,source,history,round);
-    if(post&&!lightConversation(post,source))return rows.map(row=>({...row,body:/ㅋㅋ|ㅎㅎ|드립|농담|\p{Extended_Pictographic}/u.test(row.body)?row.address+", 차분히 확인할게요. 필요한 내용부터 함께 살펴봐요.":row.body}));
+    if(post&&!lightConversation(post,source))return naturalComments(post,rows.map(row=>({...row,body:/ㅋㅋ|ㅎㅎ|드립|농담|\p{Extended_Pictographic}/u.test(row.body)?row.address+", 차분히 확인할게요. 필요한 내용부터 함께 살펴봐요.":row.body})),history);
     if(!post||source?.id!==post.id||mentionIds(source.body).length)return rows;
     const type=String(post.sourceEventId||"").split(":")[0],context=chairmanReplyTopic(post),topic=type==="achieved"?"goal":LOUNGE_LINES[type]?type:PEER_LINES[context]?context:"general";
     const used=new Set(),seed=hash((post.sourceEventId||post.id)+round);
-    return rows.map((row,i)=>{
+    return naturalComments(post,rows.map((row,i)=>{
       const peer=rows.length>=3&&i===rows.length-1;
-      const peerPool=row.intent==="fear"?["그 부분은 천천히 이야기해요. 확인된 것부터 같이 봐요.","불안할 땐 잠깐 숨 돌려도 괜찮아요."]:
+      const peerPool=row.intent==="fear"?["그 부분은 천천히 이야기해요. 저도 귀 기울여 듣고 있어요.","불안할 땐 잠깐 숨 돌려도 괜찮아요."]:
         row.intent==="question"?["그 부분은 저도 궁금해요. 근거부터 같이 찾아봐요.","어디부터 볼지 같이 이야기해요."]:PEER_LINES[topic];
       const pool=peer?peerPool:LOUNGE_LINES[topic],start=hash(seed+row.authorId)%pool.length;
       const line=pool.map((_,n)=>pool[(start+n)%pool.length]).find(s=>!used.has(loungeOpener(s)));
@@ -726,7 +767,7 @@
       used.add(loungeOpener(body));
       return {...row,body,parentIndex:peer?0:null,
         address:peer?staffAddress(row.authorId,rows[0].authorId,post,seed):row.address,toOwner:!peer};
-    });
+    }),history,source);
   }
   function boardSettings(rows=posts()){
     return rows.find(p=>p.boardMeta&&p.authorId===actor())||null;
@@ -815,16 +856,16 @@
     return out.sort((a,b)=>b.date.localeCompare(a.date)||a.sourceEventId.localeCompare(b.sourceEventId));
   }
   // All variants use the existing event identity. No new record fields or render-time randomness.
-  const POST_FLAVOUR=Object.freeze({hani:"이런 소식은 같이 나누고 싶어요.",yuri:"하나씩 확인해 가는 게 좋아요.",jieun:"작은 소식에도 괜히 힘이 나네요.",sua:"저도 응원 한 표 보태요!",naeun:"무리 없이 이어가셨으면 좋겠어요.",haru:"커피 한 잔 곁들여 이야기 듣고 싶어요.",sooyeon:"이런 얘기 나오면 저도 신나요!",minji:"나중에 다시 읽어보고 싶은 소식이에요.",hina:"이런 소식은 반갑네용 ㅎㅎ.",seoyun:"한 줄 남겨두니 함께 이야기하기 좋네요.",arin:"잠깐 들러서 같이 이야기해요.",yuna:"다음 이야기도 궁금해요!",dohyun:"궁금한 부분은 같이 짚어봐요.",serin:"확인된 만큼만 차분히 이야기해요.",mir:"다른 분들은 어떻게 느끼는지도 궁금해요.",taeo:"잠깐 쉬면서 이야기 나눠요.",gaeun:"옆에서 응원 보태고 싶어요."});
+  const POST_FLAVOUR=Object.freeze({hani:"이런 소식은 같이 나누고 싶어요.",yuri:"하나씩 확인해 가는 게 좋아요.",jieun:"작은 소식에도 괜히 힘이 나네요.",sua:"저도 응원 한 표 보태요!",naeun:"무리 없이 이어가셨으면 좋겠어요.",haru:"커피 한 잔 곁들여 이야기 듣고 싶어요.",sooyeon:"이런 얘기 나오면 저도 신나요!",minji:"나중에 다시 읽어보고 싶은 소식이에요.",hina:"이런 소식은 반갑네용 ㅎㅎ.",seoyun:"한 줄 남겨두니 함께 이야기하기 좋네요.",arin:"잠깐 들러서 같이 이야기해요.",yuna:"다음 이야기도 궁금해요!",dohyun:"궁금한 부분은 같이 짚어봐요.",serin:"이야기 들으니 저도 궁금해지네요.",mir:"다른 분들은 어떻게 느끼는지도 궁금해요.",taeo:"잠깐 쉬면서 이야기 나눠요.",gaeun:"옆에서 응원 보태고 싶어요."});
   function eventDraft(event,now){
     const owner=pageOwner(event.page);if(!person(owner))return null;
     const type=event.sourceEventId.split(":")[0],seed=hash(event.sourceEventId),detail=publicText(event.detail||"");
     const named=detail?"『"+detail+"』":"",book=named||"책 한 권",movie=named||"영화 한 편",goal=named||"목표 하나",task=named||"할 일 하나";
     const variants={
       book:[
-        ["회장님 "+book+" 완독하셨대요 📚",book+" 끝까지 읽으셨대요. 마음에 남은 대목이 궁금해요."],
+        ["회장님 "+book+" 완독하셨대요 📚","회장님이 "+book+" 끝까지 읽으셨대요. 마음에 남은 대목이 궁금해요."],
         [book+" 완독 소식, 같이 나눠요", "회장님이 "+book+" 다 읽으셨어요. 저도 읽어보고 싶어요!"],
-        ["회장님 책 이야기: "+book,"이번에 완독하신 책은 "+book+"! 읽으신 분들 감상도 궁금해요."],
+        ["회장님 책 이야기: "+book,"회장님이 이번에 완독하신 책은 "+book+"! 읽으신 분들 감상도 궁금해요."],
         [book+" 마지막 페이지까지!","회장님이 "+book+" 완독하셨대요. 어떤 느낌이셨는지 들어보고 싶어요."]
       ],
       movie:[
@@ -834,14 +875,14 @@
         [movie+", 감상이 궁금해요","회장님이 "+movie+" 시청을 마치셨어요. 가볍게 이야기 나눠요."]
       ],
       exercise:[
-        ["회장님 "+detail+" 걸으셨대요 👟","걸음 수가 "+detail+"예요. 저도 잠깐 몸을 움직이고 싶어지네요."],
+        ["회장님 "+detail+" 걸으셨대요 👟","회장님 걸음 수가 "+detail+"예요. 저도 잠깐 몸을 움직이고 싶어지네요."],
         [detail+" 걸음 소식, 응원 보태요","회장님 걸음 수는 "+detail+"예요. 쉬는 시간도 같이 챙기셨으면 좋겠어요."],
         ["회장님 걸음 이야기: "+detail,"회장님이 "+detail+" 걸으셨대요. 저도 응원 한 표요!"],
-        [detail+", 같이 박수 보내요","걸음 기록에 "+detail+"가 남았어요. 회장님께 수고하셨다고 전하고 싶어요."]
+        [detail+", 같이 박수 보내요","회장님 걸음 기록에 "+detail+"가 남았어요. 회장님께 수고하셨다고 전하고 싶어요."]
       ],
       body:[
         ["회장님 몸 상태 소식, "+detail,"회장님이 몸 상태를 남기셨어요. 확인한 체중은 "+detail+"예요."],
-        [detail+", 몸 상태 같이 챙겨요","이번 체중은 "+detail+"예요. 숫자만큼 컨디션도 궁금해요."],
+        [detail+", 몸 상태 같이 챙겨요","회장님 이번 체중은 "+detail+"예요. 숫자만큼 컨디션도 궁금해요."],
         ["몸 상태 챙기는 회장님 이야기","회장님 체중 기록은 "+detail+"예요. 편안한 페이스로 이어가셨으면 해요."],
         ["이번 몸 상태는 "+detail,"회장님이 체중 "+detail+"를 남기셨어요. 무리 없이 챙겨가요."]
       ],
@@ -849,23 +890,23 @@
         ["회장님 "+task+" 마무리하셨대요","회장님이 "+task+" 끝내셨어요. 수고하셨다고 전하고 싶어요."],
         [task+" 끝! 응원 보태요","회장님이 "+task+" 마무리하셨어요. 잠깐 숨 돌리셔도 좋겠어요."],
         ["할 일 마무리 소식: "+task,"회장님이 "+task+" 마무리하셨어요. 이런 소식 들으면 저도 힘나요."],
-        [task+", 같이 박수 보내요","할 일 목록에 완료된 "+task+" 소식이 있어요. 응원 한마디 보태요!"]
+        [task+", 같이 박수 보내요","회장님 할 일 목록에 완료된 "+task+" 소식이 있어요. 응원 한마디 보태요!"]
       ],
       achieved:[
         ["회장님 "+goal+" 달성하셨대요","회장님이 "+goal+" 달성하셨어요. 같이 축하하고 싶어요!"],
         [goal+" 달성 소식, 같이 축하해요","회장님이 "+goal+" 달성하셨어요. 잠깐 쉬면서 기뻐하셔도 좋겠어요."],
-        ["목표 달성! "+goal+" 이야기","목표 목록에 달성한 "+goal+" 소식이 있어요. 저도 응원 보태요."],
+        ["목표 달성! "+goal+" 이야기","회장님 목표 목록에 달성한 "+goal+" 소식이 있어요. 저도 응원 보태요."],
         [goal+", 축하 한마디 보태요","회장님이 "+goal+" 달성하셨대요. 박수 보내고 싶어요."]
       ],
       progress:[
-        ["목표 기준에 닿은 소식, 같이 봐요","기록된 범위에서는 목표 기준에 닿았대요 — "+detail],
-        ["목표 진행 이야기 나눠요","읽기 결과에서 목표 기준에 닿은 부분이 있어요 — "+detail],
-        ["목표 화면에서 반가운 소식","목표 기준에 닿은 읽기 결과를 같이 봐요 — "+detail],
-        ["지금까지의 목표 진행, 잠깐 같이 봐요","일부 기록에서 목표 기준에 닿았어요 — "+detail]
+        ["목표 기준에 닿은 소식, 같이 봐요","회장님 목표가 조금씩 가까워지고 있네요 — "+detail],
+        ["목표 진행 이야기 나눠요","회장님 목표 화면에 반가운 소식이 있어요 — "+detail],
+        ["목표 화면에서 반가운 소식","회장님 목표 진행 소식도 같이 나눠요 — "+detail],
+        ["지금까지의 목표 진행, 잠깐 같이 봐요","회장님 목표 이야기, 잠깐 같이 봐요 — "+detail]
       ],
       ledger:[
         [detail+" 정산 소식, 수고하셨어요","회장님이 "+detail+" 정산을 남기셨어요. 숫자 이야기 잠깐 나눠요."],
-        ["회장님 "+detail+" 정산 남기셨대요","저장된 월간 정산은 "+detail+"이에요. 차분히 같이 살펴봐요."],
+        ["회장님 "+detail+" 정산 남기셨대요","회장님이 남기신 월간 정산은 "+detail+"이에요. 차분히 같이 살펴봐요."],
         [detail+" 정산, 같이 살펴볼까요?","회장님이 "+detail+" 정산을 저장하셨어요. 궁금한 부분은 같이 봐요."],
         ["이번 정산 이야기는 "+detail,detail+" 월간 정산이 있어요. 회장님께 수고하셨다고 전하고 싶어요."]
       ],
@@ -882,9 +923,9 @@
         ["새 분기 목표, 잠깐 같이 볼까요?","새 분기가 시작됐네요. 한 가지씩 같이 살펴봐요."]
       ],
       dev:[
-        ["개발팀 소식: "+detail,detail+" 소식이 있어요. 상태는 원문에 적힌 그대로 같이 봐요."],
-        [detail+", 같이 읽어볼 분?","개발 기록에 "+detail+" 소식이 있어요. 궁금한 부분은 원문부터 같이 봐요."],
-        ["라운지에 전하는 개발 이야기: "+detail,detail+" 이야기를 가져왔어요. 확인된 내용부터 같이 읽어요."],
+        ["개발팀 소식: "+detail,detail+" 소식이 있어요. 어떤 부분이 눈에 들어오세요?"],
+        [detail+", 같이 읽어볼 분?","개발 기록에 "+detail+" 소식이 있어요. 어떤 이야기가 이어질지 궁금해요."],
+        ["라운지에 전하는 개발 이야기: "+detail,detail+" 이야기를 가져왔어요. 잠깐 들러서 이야기 나눠요."],
         ["개발 이야기 잠깐 나눠요 — "+detail,"이번 개발 소식은 "+detail+"예요. 각자 궁금한 점도 나눠봐요."]
       ]
     };
@@ -904,9 +945,9 @@
     ["naeun","running","퇴근 후 러닝 크루, 걷기 반도 환영 🏃","속도 경쟁 없이 편한 페이스로 가볍게 움직일 분 있나요? 저는 중간에 쉬어 가는 쪽도 좋아요."],
     ["yuna","running","운동복 꺼내기까지가 제일 긴 준비운동","퇴근 후 운동을 상상하다 운동복부터 고르고 있어요. 일단 가볍게 걷는 쪽으로 시작해볼까요 ㅎㅎ."],
     ["naeun","running","러닝 플레이리스트 첫 곡 뭐예요","저는 첫 곡 고르다가 산책으로 바뀌어도 괜찮아요. 신나는 곡이랑 편안한 곡 중 어느 쪽이 취향이에요?"],
-    ["minji","streaming","넷플릭스 고르다가 쉬는 시간 끝날 듯 📺","볼거리 고르는 것도 취미로 쳐주나요 ㅋㅋ. 작품 내용 말고 오늘 보고 싶은 분위기만 나눠봐요."],
-    ["minji","streaming","웹툰 얘기하실 분, 스포는 문 앞에 두고요","저는 그림체 취향 얘기만 해도 신나요. 줄거리 없이 좋아하는 분위기나 읽는 루틴만 알려주세요 ㅎㅎ."],
-    ["hina","streaming","드라마 정주행파 vs 천천히파 출석 체크","저는 다음 편 버튼 앞에서 자제력 시험 중이에요 ㅋㅋ. 내용 스포 없이 각자 보는 방식만 공유해요."],
+    ["minji","streaming","넷플릭스 고르다가 쉬는 시간 끝날 듯 📺","볼거리 고르는 것도 취미로 쳐주나요 ㅋㅋ. 오늘은 코미디랑 잔잔한 드라마 중에 고민이에요."],
+    ["minji","streaming","웹툰 얘기하실 분, 스포는 문 앞에 두고요","저는 그림체 취향 얘기만 해도 신나요. 저는 자기 전에 한 편씩 보는 게 좋아요 ㅎㅎ."],
+    ["hina","streaming","드라마 정주행파 vs 천천히파 출석 체크","저는 다음 편 버튼 앞에서 자제력 시험 중이에요 ㅋㅋ. 다음 날 졸릴 걸 알면서도 한 편 더 보고 싶어요."],
     ["haru","cafe","주말 카페는 커피파 vs 디저트파 ☕","저는 편한 자리랑 컵 취향부터 보게 돼요. 이번 주말에 가보고 싶은 카페 분위기 하나씩 적어봐요."],
     ["arin","cafe","맛집 지도 핀 색 고르다가 배고파짐","주말 탐방 후보를 정리한다면 지도 색부터 맞추고 싶어요 ㅎㅎ. 조용한 곳과 활기찬 곳 중 어떤 분위기가 좋아요?"],
     ["sua","cafe","맛집 탐방 준비물은 편한 신발 한 표","주말에 새 동네 구경을 가보고 싶어요. 동선은 짧게, 메뉴 고민은 즐겁게 잡아볼까요."],
@@ -919,30 +960,30 @@
     ["haru","coffee","아아파 vs 따아파, 컵 들고 입장 ☕","저는 그날 편하게 마시고 싶은 쪽을 골라요. 커피 취향에 정답은 없으니까 차 좋아하는 분도 같이 얘기해요."],
     ["jieun","coffee","커피 가성비 계산하다 향에 설득됨","커피 얘기만 나오면 계산기와 취향이 같이 켜져요. 오늘은 가격표 없이 좋아하는 향만 비교해요 ㅋㅋ."],
     ["arin","coffee","커피보다 컵 디자인에 먼저 반응한 사람","예쁜 컵도 좋지만 손에 편한 컵이면 더 반가워요. 각자 좋아하는 컵 색깔 알려주세요 ㅎㅎ."],
-    ["yuna","mbti","MBTI보다 점심 메뉴 앞의 제가 더 낯설어요","성격 유형은 가벼운 대화 소재로만 얘기해요 ㅎㅎ. 저는 메뉴판 앞에서만 결정 시간이 길어지는 편 같아요."],
-    ["hina","mbti","계획파 vs 즉흥파, 주말 준비물 검사","유형으로 사람을 단정하지 말고 취향만 놀아봐요. 저는 계획표에 빈칸도 남기는 답안이 좋아요 ㅋㅋ."],
-    ["minji","mbti","MBTI 밈 보고 내 얘긴가 싶었던 순간","밈은 밈으로만 가볍게 보는 쪽이에요. 성격 진단 대신 공감한 일상 상황만 나눠봐요 ㅎㅎ."],
+    ["yuna","mbti","MBTI보다 점심 메뉴 앞의 제가 더 낯설어요","계획은 빨리 세우는데 점심만 고르려면 오래 걸려요 ㅎㅎ. 저는 메뉴판 앞에서만 결정 시간이 길어지는 편 같아요."],
+    ["hina","mbti","계획파 vs 즉흥파, 주말 준비물 검사","주말 약속은 미리 잡는 편인가요? 저는 계획표에 빈칸도 남기는 답안이 좋아요 ㅋㅋ."],
+    ["minji","mbti","MBTI 밈 보고 내 얘긴가 싶었던 순간","계획표 쓰다가 꾸미는 데 더 오래 걸리는 짤에 웃었어요. 제 다이어리도 스티커 자리가 더 넓어요 ㅎㅎ."],
     ["yuna","travel","여행 가고 싶은 곳, 상상 지도 펼쳐요 🧳","바다랑 산 중 어디로 마음이 가나요? 아직 일정은 없지만 가보고 싶은 곳 얘기만으로도 설레요."],
     ["haru","travel","여행 짐에 텀블러 넣을까 말까 회의","가벼운 가방이랑 익숙한 컵 사이에서 고민 중이에요. 여행 가면 꼭 챙기고 싶은 물건 하나씩 알려주세요."],
     ["arin","travel","여행 사진에는 풍경파 vs 간판파","저는 예쁜 간판도 자꾸 찍고 싶어져요. 다음에 가보고 싶은 곳의 색감부터 상상해봐요 ㅎㅎ."],
-    ["jieun","money","연봉 짤 보고 계산기만 조용히 닫음 ㅋㅋ","연봉이나 재테크 짤은 웃고 넘기는 구경거리로만 봐요. 오늘은 투자 얘기 대신 충동구매 참은 썰을 듣고 싶어요."],
-    ["jieun","money","절약 짤 저장하다 저장함만 부자 됨","짤 수집과 실천 사이에 생각보다 긴 복도가 있네요 ㅋㅋ. 금액 비교 없이 소소한 절약 공감만 나눠봐요."],
-    ["sua","money","구독 정리 짤에 뜨끔한 사람 손","재테크 조언 말고 웃긴 생활 짤 얘기만 해요. 저는 안 쓰는 구독이 있는지 살펴보는 장면에 공감했어요 ㅎㅎ."],
-    ["minji","tickets","아이돌 콘서트 티켓팅 상상만 해도 손 긴장 🎤","보고 싶은 무대를 떠올리면 클릭 손부터 준비되네요 ㅋㅋ. 실제 예매 소식 없이 각자 공연 취향만 얘기해요."],
+    ["jieun","money","연봉 짤 보고 계산기만 조용히 닫음 ㅋㅋ","장바구니 합계 보는 순간 결제 손가락이 멈추는 짤 있잖아요. 충동구매 참은 썰도 듣고 싶어요."],
+    ["jieun","money","절약 짤 저장하다 저장함만 부자 됨","짤 수집과 실천 사이에 생각보다 긴 복도가 있네요 ㅋㅋ. 장바구니 비우고 나면 괜히 뿌듯하지 않나요?"],
+    ["sua","money","구독 정리 짤에 뜨끔한 사람 손","구독 해지 버튼 찾다가 숨은그림찾기 하는 기분이었어요. 저는 안 쓰는 구독이 있는지 살펴보는 장면에 공감했어요 ㅎㅎ."],
+    ["minji","tickets","아이돌 콘서트 티켓팅 상상만 해도 손 긴장 🎤","보고 싶은 무대를 떠올리면 클릭 손부터 준비되네요 ㅋㅋ. 신나는 무대라면 저도 응원봉 흔들고 싶어요."],
     ["yuna","tickets","콘서트 준비물 체크 담당, 제가요?!","좋아하는 음악을 함께 듣는 자리를 상상해봤어요. 공연에 간다면 챙기고 싶은 준비물을 알려주세요 ㅎㅎ."],
-    ["hina","tickets","티켓팅 연습에는 손가락 준비운동도 있나요","콘서트 가고 싶은 마음과 클릭 실력은 별도 과목 같아요 ㅋㅋ. 오늘은 예매 일정 말고 듣고 싶은 곡 분위기만 공유해요."],
+    ["hina","tickets","티켓팅 연습에는 손가락 준비운동도 있나요","콘서트 가고 싶은 마음과 클릭 실력은 별도 과목 같아요 ㅋㅋ. 앙코르곡은 신나는 쪽이면 좋겠어요."],
     ["naeun","pets","반려동물 사진 구경은 마음의 스트레칭 🐾","동물 사진을 보면 잠깐 표정이 풀려요. 자랑하고 싶은 귀여운 습관이 있다면 편하게 들려주세요."],
-    ["minji","pets","반려동물 영상 폴더 이름부터 귀여움","귀여운 표정 한 장에 제목 후보가 막 떠올라요 ㅎㅎ. 실제로 겪은 얘기나 좋아하는 동물 취향만 나눠봐요."],
+    ["minji","pets","반려동물 영상 폴더 이름부터 귀여움","귀여운 표정 한 장에 제목 후보가 막 떠올라요 ㅎㅎ. 강아지 고개 갸웃하는 표정은 몇 번을 봐도 귀여워요."],
     ["haru","pets","집사 책상에 털도 감성 소품인가요 ㅋㅋ","반려동물 얘기 들으면 생활용품 취향도 궁금해져요. 함께 편하게 지내기 위한 소소한 아이디어가 있나요?"],
     ["sua","cooking","자취 요리의 최종 보스는 설거지 🍳","간단한 요리를 생각하면 뒷정리부터 계산해요. 팬 하나로 끝나는 메뉴가 제 취향입니다 ㅎㅎ."],
     ["jieun","cooking","냉장고 재료로 요리하면 쇼핑 안 해도 되죠","남은 재료 이름으로 메뉴 짓기부터 해볼까요. 제 계산기는 오늘 장보기 대신 쉬는 쪽을 응원해요 ㅋㅋ."],
     ["yuna","cooking","간장계란밥도 플레이팅하면 기분이 달라질까요","제가 요리 사진 담당인가요?! 간단한 메뉴에 예쁜 접시를 꺼내보고 싶어요 ㅎㅎ."],
     ["hina","games","게임 튜토리얼부터 꼼꼼하게 보는 선생님","협동 게임에서는 서로 알려주는 시간이 좋아요. 실수해도 웃으며 다시 해보는 파티 모집합니다 ㅋㅋ."],
     ["yuna","games","협동 게임에서 길 잃는 담당, 제가요?!","아직 게임 취향을 탐색하는 중이에요. 천천히 배우는 신입도 환영하는 장르가 좋아요 ㅎㅎ."],
-    ["minji","games","게임 캐릭터 꾸미다가 시작 버튼을 잊음","캐릭터 취향 얘기도 게임의 재미로 쳐주세요 ㅋㅋ. 요즘 순위 말고 편하게 즐기고 싶은 장르만 공유해요."],
-    ["yuna","sports","야구 직관 가면 응원부터 배워도 되나요 ⚾","야구장에서 함께 응원하는 분위기가 궁금해요. 실제 점수 얘기 없이 직관 준비물부터 알려주세요 ㅎㅎ."],
-    ["sua","sports","축구 직관 가방에는 뭘 먼저 넣어요","경기 결과 말고 현장 구경 취향을 나눠봐요. 저는 편한 신발이랑 가벼운 가방부터 챙길 것 같아요."],
-    ["minji","sports","직관 사진은 경기장파 vs 응원도구파","야구든 축구든 현장 분위기를 찍어보고 싶어요. 실제 경기 소식 없이 사진 구도 취향만 얘기해요 ㅎㅎ."],
+    ["minji","games","게임 캐릭터 꾸미다가 시작 버튼을 잊음","캐릭터 취향 얘기도 게임의 재미로 쳐주세요 ㅋㅋ. 꾸미기 아이템 고르다 시간이 다 갈 것 같아요."],
+    ["yuna","sports","야구 직관 가면 응원부터 배워도 되나요 ⚾","야구장에서 함께 응원하는 분위기가 궁금해요. 가방에 응원도구부터 넣으면 간식 자리가 없을 것 같아요 ㅎㅎ."],
+    ["sua","sports","축구 직관 가방에는 뭘 먼저 넣어요","현장에서 응원가 같이 부르면 신날 것 같아요. 저는 편한 신발이랑 가벼운 가방부터 챙길 것 같아요."],
+    ["minji","sports","직관 사진은 경기장파 vs 응원도구파","야구든 축구든 현장 분위기를 찍어보고 싶어요. 저는 넓은 경기장이 한눈에 들어오는 구도가 좋아요 ㅎㅎ."],
     ["arin","desk","책상 소품은 예쁜데 마우스 자리가 없음","소품 배치를 상상하다 작업 공간도 같이 챙겨야겠더라고요. 오늘은 좋아하는 색 하나만 정해볼까요 ㅎㅎ."],
     ["haru","desk","텀블러 고르다가 차를 한 잔 더 우릴 듯","보기 좋은 것도 좋지만 씻기 편한 쪽에 마음이 가요. 오래 편하게 쓰는 물건 얘기는 언제든 환영이에요."],
     ["sua","desk","책상 정리 후 물건 찾기 퀴즈 시작","깔끔함과 손 닿는 자리를 같이 잡고 싶어요. 자주 쓰는 물건 하나부터 자리 정해볼까요 ㅎㅎ."],
@@ -951,10 +992,10 @@
     ["arin","season","봄 책상 색깔은 연두파 vs 분홍파","봄 기분으로 책상 포인트 색을 바꿔보고 싶어요. 작은 소품부터 상상해봐요 ㅎㅎ.",3],
     ["naeun","season","봄 산책 후보, 걷다가 쉬어도 환영","봄나들이를 계획한다면 쉬는 자리도 같이 찾아요. 꽃 구경은 각자 편한 속도로 즐기면 좋겠어요.",4],
     ["sua","season","피크닉 짐 줄이기 회의 열어요","피크닉을 간다면 가방은 가볍게 꾸리고 싶어요. 꼭 챙길 물건과 없어도 괜찮은 물건을 하나씩 골라봐요.",5],
-    ["haru","season","비 오는 날을 상상하면 어떤 음악이에요","우산 챙길 계절에는 차 한 잔과 음악이 떠올라요. 실제 날씨 말고 각자 좋아하는 분위기를 나눠요.",6],
+    ["haru","season","비 오는 날을 상상하면 어떤 음악이에요","우산 챙길 계절에는 차 한 잔과 음악이 떠올라요. 빗소리랑 피아노가 같이 들리면 좋겠어요.",6],
     ["yuna","season","여름 휴가 상상 지도, 바다 vs 숲","아직 계획이 없어도 쉬고 싶은 곳 얘기는 좋아요. 저는 여행 준비물 목록부터 신나게 적을 것 같아요 ㅎㅎ.",7],
     ["minji","season","여름 방학 기분으로 영화 고르기","시원한 공간에서 보고 싶은 작품 분위기가 궁금해요. 줄거리는 비밀로 하고 취향만 얘기해요 ㅋㅋ.",8],
-    ["jieun","season","가을 간식 취향에도 계산기는 쉬는 날","가을이면 떠오르는 간식 하나씩 골라봐요. 오늘은 가격 비교 대신 취향 비교만 합니다 ㅋㅋ.",9],
+    ["jieun","season","가을 간식 취향에도 계산기는 쉬는 날","가을이면 떠오르는 간식 하나씩 골라봐요. 저는 따끈한 간식 앞에서는 고르는 속도가 빨라져요 ㅋㅋ.",9],
     ["arin","season","단풍 색 팔레트 vs 할로윈 소품 🍁","시월에는 단풍색이랑 작은 할로윈 소품을 상상해봐요. 주말 사진에 담고 싶은 색 한 표씩 주세요 ㅎㅎ.",10],
     ["hina","season","늦가을 간식 퀴즈, 팥파 vs 슈크림파","쌀쌀한 계절에 떠오르는 간식 취향 시험입니다. 복수 정답 인정, 서로 취향 놀리기는 살짝만 ㅋㅋ.",11],
     ["haru","season","연말 플레이리스트와 따뜻한 컵 준비","한 해 끝에는 편안하게 듣고 싶은 곡이 궁금해져요. 쉬는 시간에 어울리는 분위기를 나눠봐요.",12]
@@ -991,7 +1032,7 @@
     return short?(peer?FUN_PEER_LINES[authorId]||voice[0]:voice[0]):voice[1].replace(/[.!?]+$/,"")+". "+(peer?"그 한 표에 저도 살짝 올라탑니다":FUN_TOPIC_LINES[topic])+".";
   }
   function dailyThread(thread,source,now){
-    if(!lightConversation(thread)||hash(source)%3!==0)return thread;
+    if(!lightConversation(thread)||hash(source)%3!==0)return naturalThread(thread);
     const month=new Date(now+9*3600000).getUTCMonth()+1;
     const eligible=LOUNGE_FUN_POOL.filter(t=>(!t.month||t.month===month)&&person(t.authorId)&&personaMap()[t.authorId]);
     const seasonal=hash(source+":season")%6===0;
@@ -1003,15 +1044,15 @@
       const authorId=members[(start+i)%members.length];
       return {authorId,body:funComment(authorId,entry.topic,source,i,i===2),replyTo:i===2?0:null,afterMin:ADDRESS_RULES.delays[i]};
     });
-    return {...thread,authorId:entry.authorId,category:"LOUNGE",title:entry.title,body:entry.body,topics:["잡담",entry.topic],comments};
+    return naturalThread({...thread,authorId:entry.authorId,category:"LOUNGE",title:entry.title,body:entry.body,topics:["잡담",entry.topic],comments});
   }
   function publicationThread(row){
     const original=libraryThreads().find(t=>t.id===row.libraryId);if(!original)return null;
     const projected=dailyThread(original,row.sourceEventId,Date.parse(row.scheduledAt||row.createdAt));
     // Older saved Library posts retain their original thread; only matching new projections use fun comments.
     const thread=projected.title===row.title&&projected.body===row.body&&projected.authorId===row.authorId?projected:original;
-    if(lightConversation(row))return thread;
-    return {...thread,comments:thread.comments.map((c,i)=>({...c,body:sensitiveConversation(row)?CHAIRMAN_REPLIES.fear[i%CHAIRMAN_REPLIES.fear.length]:/ㅋㅋ|ㅎㅎ|드립|농담|\p{Extended_Pictographic}/u.test(c.body)?"차분히 확인할게요. 필요한 내용부터 함께 살펴봐요.":c.body}))};
+    if(lightConversation(row))return naturalThread(thread);
+    return naturalThread({...thread,comments:thread.comments.map((c,i)=>({...c,body:sensitiveConversation(row)?CHAIRMAN_REPLIES.fear[i%CHAIRMAN_REPLIES.fear.length]:/ㅋㅋ|ㅎㅎ|드립|농담|\p{Extended_Pictographic}/u.test(c.body)?"차분히 확인할게요. 필요한 내용부터 함께 살펴봐요.":c.body}))});
   }
   const libraryThreads=()=>globalThis.HaniBoardLibrary?.threads||window.HaniBoardLibrary?.threads||[];
   const restrictions=value=>value===null||value===undefined||value===""?[]:Array.isArray(value)?value:[value];
@@ -1187,13 +1228,13 @@
     if(get("replyMode")){get("replyMode").value=replyMode();get("replyMode").disabled=!writable}
     const badge=posts().filter(published).map(p=>unreadCount(p)).reduce((a,b)=>a+b,0),waiting=comments().filter(c=>c.pending&&posts().some(p=>p.id===c.postId&&published(p))).length;
     if(get("trayCount"))get("trayCount").textContent="📬 새 글 "+drafts.length+"개 도착 · 답글 미리보기 "+replies.length+"개 · 새 댓글 "+badge+" · 예약 답글 "+waiting+"개";
-    html("tray",reviewing?([...drafts.map(p=>'<article class="board-draft">'+authorCard(p.authorId)+'<span class="pill">'+escape(p.category)+'</span><h4>'+escape(publicText(p.title))+'</h4><p class="board-body">'+escape(publicText(p.body))+'</p>'+interactiveMarkup(p,false)+draftButtons("post",p,disabled)+'</article>'),
-      ...replies.map(c=>'<article class="board-draft">'+authorCard(c.authorId)+'<p class="sub">'+escape(publicText(posts().find(p=>p.id===c.postId)?.title))+' · '+(c.parentId?"답글":"댓글")+'</p><p class="board-body">'+escape(publicText(c.body))+'</p>'+draftButtons("comment",c,disabled)+'</article>')].join("")||'<p class="empty">도착한 초안을 모두 확인했어요.</p>'):"");
-    html("unread",posts().filter(p=>published(p)&&unreadCount(p)).map(p=>'<button class="btn sm" type="button" data-board-open="'+escape(p.id)+'">'+escape(publicText(p.title))+' · 새 댓글 '+unreadCount(p)+'</button>').join(""));
+    html("tray",reviewing?([...drafts.map(p=>'<article class="board-draft">'+authorCard(p.authorId)+'<span class="pill">'+escape(p.category)+'</span><h4>'+escape(displayText(p,p.title))+'</h4><p class="board-body">'+escape(displayText(p,p.body))+'</p>'+interactiveMarkup(p,false)+draftButtons("post",p,disabled)+'</article>'),
+      ...replies.map(c=>'<article class="board-draft">'+authorCard(c.authorId)+'<p class="sub">'+escape(publicText(posts().find(p=>p.id===c.postId)?.title))+' · '+(c.parentId?"답글":"댓글")+'</p><p class="board-body">'+escape(displayText(c,c.body))+'</p>'+draftButtons("comment",c,disabled)+'</article>')].join("")||'<p class="empty">도착한 초안을 모두 확인했어요.</p>'):"");
+    html("unread",posts().filter(p=>published(p)&&unreadCount(p)).map(p=>'<button class="btn sm" type="button" data-board-open="'+escape(p.id)+'">'+escape(displayText(p,p.title))+' · 새 댓글 '+unreadCount(p)+'</button>').join(""));
     const archives=[...posts().filter(p=>p.disposition==="archived").map(p=>({...p,kind:"post"})),...comments().filter(c=>c.disposition==="archived").map(c=>({...c,kind:"comment"}))];
     html("archive",archives.map(p=>'<div class="board-draft">'+escape(publicText(p.title||p.body))+' <button class="btn sm" type="button" data-board-draft="restore" data-kind="'+p.kind+'" data-key="'+escape(p.id)+'"'+disabled+'>초안함으로</button></div>').join(""));
     html("activity",weeklyActivity().map(a=>'<span class="board-member'+(a.posts+a.comments?' is-active':'')+'" title="'+escape(author(a.id))+'">'+escape(person(a.id)?.name)+' · 글 '+a.posts+' / 댓글 '+a.comments+(a.posts+a.comments>=3?' ✨ 활발':a.posts+a.comments?' 🌱 참여':'')+'</span>').join(""));
-    html("best",weeklyBest(now).map((p,i)=>'<button class="btn" type="button" data-board-open="'+escape(p.id)+'">'+(i+1)+'. '+escape(publicText(p.title))+' · '+displayLikes(p,now)+'</button>').join("")||'<span class="sub">이번 주 첫 이야기를 기다려요.</span>');
+    html("best",weeklyBest(now).map((p,i)=>'<button class="btn" type="button" data-board-open="'+escape(p.id)+'">'+(i+1)+'. '+escape(displayText(p,p.title))+' · '+displayLikes(p,now)+'</button>').join("")||'<span class="sub">이번 주 첫 이야기를 기다려요.</span>');
     if(get("attendance")){const checked=!!boardSettings()?.attendance?.[dayKey(Date.now())];get("attendance").textContent=checked?"✅ 오늘 출석 완료":"📅 오늘 출석 도장";get("attendance").disabled=!writable||checked}
     if(get("arriveNow"))get("arriveNow").disabled=!writable||!waiting;
   }
@@ -1204,7 +1245,7 @@
     if(!root)return;
     get("previewLabel").textContent=busy?"직원 반응을 준비하고 있습니다…":preview?.label||previewError||"미리보기를 확인할 수 없습니다.";
     get("previewPost").disabled=busy||!preview||!canWrite();get("regenerate").disabled=busy||!canWrite();
-    html("previewComments",preview?preview.comments.map(c=>'<article class="board-comment">'+authorCard(c.authorId)+'<p class="board-body">'+escape(publicText(c.body))+'</p></article>').join(""):"");
+    html("previewComments",preview?preview.comments.map(c=>'<article class="board-comment">'+authorCard(c.authorId)+'<p class="board-body">'+escape(displayText(c,c.body))+'</p></article>').join(""):"");
   }
   async function previewThread(postId){
     const post=posts().find(p=>p.id===postId&&published(p));if(!canWrite(true)||!post||post.authorId!==actor()||busy)return false;

@@ -59,6 +59,24 @@
     return target;
   }
 
+  function projectFocusAreas(project = {}) {
+    const focus = project.focus_areas || project.focusAreas;
+    return Array.isArray(focus) ? focus.slice(0,12).map(x => String(x || '').trim()).filter(Boolean)
+      : String(project.goal || '').split(/[·,\/]/).map(x => x.trim()).filter(Boolean).slice(0,12);
+  }
+  function effectiveProjectCategory(project = {}) {
+    const category = String(project.category || '').trim().toLowerCase();
+    if (category && category !== 'other') return category;
+    const description = [project.name, project.goal, ...projectFocusAreas(project)].join(' ').normalize('NFKC');
+    return /경제|주식|금융|거시|시장해석|기업\s*뉴스|기업\s*소식|econom(?:y|ics)|stock|finance/i.test(description) ? 'economy' : category || 'other';
+  }
+  function hasNewsFocus(project = {}) {
+    return projectFocusAreas(project).some(value => /경제\s*뉴스|기업\s*뉴스|시사|주식\s*[·/ㆍ&-]?\s*기업|시장\s*해석|current\s*issue|company\s*news/i.test(value));
+  }
+  function usesBasicNewsBalance(project = {}) {
+    return isBasicEconomyProject(project) && !hasNewsFocus(project);
+  }
+
   function normalizeProject(raw = {}) {
     const ts = nowIso();
     const focusAreas = Array.isArray(raw.focusAreas)
@@ -70,7 +88,7 @@
     return {
       id: String(raw.id || makeId()),
       name: String(raw.name || '').trim(),
-      category: String(raw.category || 'other'),
+      category: effectiveProjectCategory(raw),
       goal: String(raw.goal || '').trim(),
       targetDate: examDate,
       examDate,
@@ -300,26 +318,27 @@
       const stamp = Date.parse(date);
       if (!Number.isFinite(stamp) || stamp > now || now - stamp > 21 * 86400000) return;
       const reference = references.find(s => {
-        try { return s?.verified !== false && s?.source_verified !== false && text(s.name, 80) && /^https?:$/.test(new URL(s.url).protocol); } catch (_) { return false; }
+        try { return s?.verified !== false && s?.source_verified !== false && text(s.name || s.title || s.source_name, 80) && /^https?:$/.test(new URL(s.url || s.source_url).protocol); } catch (_) { return false; }
       });
       const title = text(item.title, 180), summary = text(item.summary, 700);
       if (!reference || !title || !summary) return;
-      const key = `${title}|${reference.url}`;
+      const key = `${title}|${reference.url || reference.source_url}`;
       if (seen.has(key)) return;
       seen.add(key);
       const rows = buckets.get(kind) || [];
       rows.push({ title, summary, why_it_matters:text(item.why_it_matters || item.next_check, 420),
-        source_name:text(reference.name, 80), source_url:text(reference.url, 500), published_at:date, material:kind });
+        source_name:text(reference.name || reference.title || reference.source_name, 80), source_url:text(reference.url || reference.source_url, 500), published_at:date, material:kind });
       buckets.set(kind, rows);
     };
-    for (const post of list(posts).slice().sort((a,b) => String(b?.published_at || '').localeCompare(String(a?.published_at || ''))).slice(0, 60)) {
+    for (const post of list(posts).slice().sort((a,b) => String(b?.published_at || '').localeCompare(String(a?.published_at || '')))) {
       if (!post || post.source_verified === false) continue;
       const payload = obj(post.payload), followup = obj(payload.company_followup);
       if (followup.version === 1) {
         for (const [channel, issues] of Object.entries(obj(followup.channels))) {
-          for (const issue of list(issues)) add(obj(issue), post, channel, list(issue?.sources));
+          for (const issue of list(issues)) add(obj(issue), post, channel, [...list(issue?.sources), {name:issue?.source_name, url:issue?.source_url, source_verified:issue?.source_verified}]);
         }
-      } else {
+      }
+      {
         const weekly = obj(payload.weekly_brief);
         const macro = list(weekly.macro_flow).filter(x => typeof x === 'string').join(' · ');
         add({...post, summary:[post.summary || payload.market_brief, macro].filter(Boolean).join(' · ')}, post,
@@ -339,11 +358,14 @@
 
   async function loadQuizNewsSources() {
     // Read the canonical Archive directly; do not render Newsroom (which marks reads).
-    const {data, error} = await cloudClient.from('hani_newsroom_posts')
-      .select('post_type,title,summary,why_it_matters,source_name,source_url,source_verified,event_at,published_at,payload')
-      .eq('user_id', cloudUser.id).order('published_at', {ascending:false}).limit(60);
-    if (error) throw new Error('출제용 뉴스 조회에 실패했습니다. 기초문제로 조용히 대체하지 않습니다. 잠시 후 다시 시도해 주세요.');
-    return newsroomQuestionSources(data);
+    const select = 'post_type,title,summary,why_it_matters,source_name,source_url,source_verified,event_at,published_at,payload';
+    // Reserve weekly/FU coverage even when >60 recent interest articles precede it.
+    const results = await Promise.all([
+      cloudClient.from('hani_newsroom_posts').select(select).eq('user_id', cloudUser.id).order('published_at', {ascending:false}).limit(60),
+      cloudClient.from('hani_newsroom_posts').select(select).eq('user_id', cloudUser.id).eq('post_type', 'WEEKLY').order('published_at', {ascending:false}).limit(6),
+    ]);
+    if (results.some(result => result.error)) throw new Error('출제용 뉴스 조회에 실패했습니다. 기초문제로 조용히 대체하지 않습니다. 잠시 후 다시 시도해 주세요.');
+    return newsroomQuestionSources(results.flatMap(result => result.data || []));
   }
 
   function isBasicEconomyProject(project = {}) {
@@ -351,10 +373,10 @@
     const level = text(project.level, 60) || text(project.difficulty, 60);
     const focus = project.focus_areas || project.focusAreas || [];
     const description = level || [text(project.name,120), text(project.goal,800), ...(Array.isArray(focus) ? focus.slice(0,12).map(x => text(x,80)).filter(Boolean) : [])].join(' ');
-    return project.category === 'economy' && /기초|\bbasic\b|\bbeginner\b/i.test(description);
+    return effectiveProjectCategory(project) === 'economy' && /기초|\bbasic\b|\bbeginner\b/i.test(description);
   }
   function newsMaterialMinimum(size, sources, project = {}) {
-    return sources.length ? (isBasicEconomyProject(project) ? Math.floor(size / 4) : Math.ceil(size / 3)) : 0;
+    return sources.length ? (usesBasicNewsBalance(project) ? Math.floor(size / 4) : Math.ceil(size / 3)) : 0;
   }
   function hasNewsMaterial(question, sources) {
     return sources.some(s => String(question.prompt || '').includes(s.title)
@@ -363,7 +385,9 @@
       && String(question.prompt || '').includes(s.source_name)
       && (s.material!=='macro' || String(question.prompt || '').includes('[저장된 브리핑 요약]'))
       && String(question.explanation || '').includes(`[${s.source_id}]`)
-      && String(question.explanation || '').includes(s.source_url));
+      && String(question.explanation || '').includes(s.source_url)
+      && String(question.explanation || '').includes(s.source_name)
+      && String(question.explanation || '').includes(s.published_at.slice(0,10)));
   }
 
   const PROMPT_STOP_WORDS = new Set(['다음','가장','대한','관한','설명','것은','것으로','보기','옳은','옳지','적절한','적절하지','고르시오','무엇인가','해당하는','있는','없는','경우','문항','문제']);
@@ -593,12 +617,14 @@
     if (error) throw error;
     if (!session?.access_token) throw new Error('로그인 세션을 확인하지 못했습니다.');
     const quizSize = normalizeProject(project).quizSize;
-    const questionSources = project.category === 'economy' ? await loadQuizNewsSources() : [];
-    const basicLevel = isBasicEconomyProject(project);
+    const category = effectiveProjectCategory(project);
+    const questionSources = category === 'economy' ? await loadQuizNewsSources() : [];
+    if (category === 'economy' && !questionSources.length) throw new Error('최근 21일 내 출처가 확인된 뉴스가 없습니다. 뉴스룸을 갱신한 뒤 다시 생성해 주세요.');
+    const basicLevel = usesBasicNewsBalance(project);
     const newsMinimum = newsMaterialMinimum(quizSize, questionSources, project);
     const newsMaximum = basicLevel ? Math.floor(quizSize / 4) : quizSize;
     const targetLevel = Number((String(project.level || '').match(/N([1-5])/i) || [project.name,project.goal,...(project.focusAreas || [])].join(' ').match(/N([1-5])/i))?.[1] || 3);
-    const belowLevel = question => project.category === 'jlpt' && Number(String(question.jlptLevel || '').slice(1)) > targetLevel;
+    const belowLevel = question => category === 'jlpt' && Number(String(question.jlptLevel || '').slice(1)) > targetLevel;
     const previous=recentQuestions(project.id);
     const recentPrompts=previous.map(x=>questionFocus(x.prompt).slice(0,260)).filter(Boolean).slice(-40);
     const requestBody = {
@@ -606,26 +632,26 @@
         project: {
           id: project.id,
           name: project.name,
-          category: project.category,
+          category,
           level: project.level || (basicLevel ? 'basic' : undefined),
           difficulty: project.difficulty,
           goal: project.goal,
           target_date: project.examDate || project.targetDate,
           exam_date: project.examDate || project.targetDate,
-          focus_areas: Array.isArray(project.focusAreas) ? project.focusAreas : [],
+          focus_areas: projectFocusAreas(project),
           schedule_type: project.scheduleType || 'every_3_days',
           quiz_size: quizSize,
         },
         weaknesses: recentWeaknesses(project.id),
         question_sources: questionSources,
-        engine_contract: project.category === 'economy' ? {
+        engine_contract: category === 'economy' ? {
           version:'HANI Question Engine v2', objective:'경제·시장 사건을 개념과 시장 영향에 연결해 이해하는지 평가',
           rotation_pools:['경제 기초·금융 원리','금리·물가·환율·채권','주식·밸류에이션·실적','기업·산업·정책','포트폴리오·리스크','최근 경제·시장 이슈'],
           difficulty_mix:['easy','medium','medium','hard'],
           ...(basicLevel ? {news_material_maximum:newsMaximum,core_concept_minimum:Math.ceil(quizSize/3)} : {}),
           question_types:['Definition','Cause & Effect','Scenario','Data Interpretation','Current Issue','Portfolio / Investment Decision'],
           rules:['문제 수에 맞춰 rotation_pools와 question_types를 동적으로 순환','Current Issue는 제공된 Newsroom source로만 출제','source가 없으면 시사 사실을 꾸며내지 말고 검증 가능한 경제 원리·가상 시나리오로 대체','숫자 단순 암기 금지','오답은 다른 상황으로 변형','정답 하나와 해설 일치'],
-        } : project.category === 'jlpt' ? { version:'HANI Question Engine v2', domain:'JLPT', rotation_pools:['문자·어휘 읽기','문맥 어휘','유의어·용법','문법 형식','문장 배열','문맥 문법','단문 독해','중문 독해','정보 검색'], rules:['경제 문제 규칙을 혼합하지 않음','실제 기출문제를 복제하지 않고 기출 유형 기반 새 문제로 구성','프로젝트 목표와 집중영역을 우선','최근에 덜 나온 유형·주제·상황을 먼저 출제','같은 학습 포인트는 새 문장·상황·보기로 반복 가능'] }
+        } : category === 'jlpt' ? { version:'HANI Question Engine v2', domain:'JLPT', rotation_pools:['문자·어휘 읽기','문맥 어휘','유의어·용법','문법 형식','문장 배열','문맥 문법','단문 독해','중문 독해','정보 검색'], rules:['경제 문제 규칙을 혼합하지 않음','실제 기출문제를 복제하지 않고 기출 유형 기반 새 문제로 구성','프로젝트 목표와 집중영역을 우선','최근에 덜 나온 유형·주제·상황을 먼저 출제','같은 학습 포인트는 새 문장·상황·보기로 반복 가능'] }
           : { version:'HANI Question Engine v2', domain:'일반 학습', rules:['프로젝트 목표와 집중영역을 우선','최근에 덜 나온 유형·주제를 우선','같은 학습 포인트는 새 문장·상황·보기로 반복 가능'] },
       };
     const accepted=[];
@@ -662,6 +688,7 @@
         }),
       });
       const result = await res.json().catch(() => ({}));
+      if ((!res.ok || result?.ok === false) && result?.error === 'QUIZ_NEWS_MATERIAL_MISSING' && attempt < 8) continue;
       if (!res.ok || result?.ok === false) throw new Error(result?.message || result?.error || `퀴즈 생성 실패 (${res.status})`);
       const questions = Array.isArray(result?.quiz?.questions) ? result.quiz.questions.map(normalizeQuestion) : [];
       if (!questions.length) throw new Error('퀴즈 생성 결과에 유효한 문제가 없습니다.');
@@ -684,8 +711,6 @@
     validateQuestionSet(project,accepted,{allowNear:true});
     if (accepted.filter(x => hasNewsMaterial(x,questionSources)).length < newsMinimum) throw new Error('뉴스·기업 사례 문항이 필요한 만큼 포함되지 않아 저장하지 않았습니다. 기존 문제는 유지됩니다.');
     if (basicLevel && accepted.filter(x => hasNewsMaterial(x,questionSources)).length > newsMaximum) throw new Error('기초 과정의 뉴스 문항 상한을 초과해 저장하지 않았습니다. 기존 문제는 유지됩니다.');
-    // Cite in the existing explanation text, not a new stored question schema.
-    if (project.category === 'economy' && !questionSources.length) accepted[0].explanation += '\n[뉴스 소재 안내] 최근 21일 내 출처가 확인된 뉴스 자료가 없어 이번 세트는 원리·가상 상황 중심입니다.';
     return accepted;
   }
 
@@ -790,7 +815,7 @@
     box.innerHTML = projects.length ? projects.map(p => {
       const view = normalizeProject(p), s = projectProgress(p), pct = s.total ? Math.round(s.completed / s.total * 100) : 0;
       const statusLabel=view.status==='paused'?'일시중지':view.status==='completed'?'종료':'학습 중';
-      return `<button class="study-project-row ${p.id === activeProjectId ? 'is-active' : ''}" type="button" data-study-project="${safe(p.id)}"><b>${safe(p.name)}<span class="study-project-state ${safe(view.status)}">${statusLabel}</span></b><span>${safe(({jlpt:'JLPT',economy:'경제·금융·시장',certificate:'자격증',university:'대학교',ai:'AI/실무',other:'기타'}[p.category] || '기타'))}${view.examDate ? ` · 시험 ${safe(view.examDate)}` : ''} · ${safe(SCHEDULE_LABELS[view.scheduleType])} · ${view.quizSize}문제</span><div class="study-progress-line"><i style="--p:${pct}%"></i><span>${s.completed}/${s.total} · 평균 ${s.avg}점</span></div></button>`;
+      return `<button class="study-project-row ${p.id === activeProjectId ? 'is-active' : ''}" type="button" data-study-project="${safe(p.id)}"><b>${safe(p.name)}<span class="study-project-state ${safe(view.status)}">${statusLabel}</span></b><span>${safe(({jlpt:'JLPT',economy:'경제·금융·시장',certificate:'자격증',university:'대학교',ai:'AI/실무',other:'기타'}[view.category] || '기타'))}${view.examDate ? ` · 시험 ${safe(view.examDate)}` : ''} · ${safe(SCHEDULE_LABELS[view.scheduleType])} · ${view.quizSize}문제</span><div class="study-progress-line"><i style="--p:${pct}%"></i><span>${s.completed}/${s.total} · 평균 ${s.avg}점</span></div></button>`;
     }).join('') : `<div class="study-empty"><b>표시할 학습 프로젝트가 없습니다.</b><br>${activeStudyTab==='board'?'Learning Board에서 새 프로젝트를 추가해 주세요.':'프로젝트를 만들면 이곳에서 선택할 수 있어요.'}</div>`;
     const hint=q('#studyProjectListHint');
     if(hint)hint.textContent=activeStudyTab==='wrong'?'프로젝트를 선택하면 해당 프로젝트의 오답만 표시합니다.':activeStudyTab==='history'?'프로젝트를 선택하면 지금까지 출제된 문제세트를 표시합니다.':'접어도 프로젝트 선택 목록은 항상 유지됩니다.';
@@ -947,6 +972,19 @@
 
   function quizStatusLabel(quiz) { const total = Number(quiz.total || quiz.questions?.length || 0); return quiz.status === 'completed' ? quizScoreLabel(quiz) : `${quiz.answers.filter(x => Number.isInteger(x)).length}/${total} 풀이`; }
 
+  function questionTypeLabel(value) {
+    const labels = {multiple_choice:'객관식', general:'일반', Definition:'개념 확인', 'Cause & Effect':'원인과 결과', Scenario:'상황 적용', 'Data Interpretation':'자료 해석', 'Current Issue':'시사·기업 뉴스', 'Portfolio / Investment Decision':'투자 판단', vocabulary:'어휘', grammar:'문법', reading:'독해', listening:'청해', '文字・語彙':'문자·어휘', '語彙':'어휘', '文法':'문법', '読解':'독해', '聴解':'청해'};
+    return Object.prototype.hasOwnProperty.call(labels, value) ? labels[value] : '';
+  }
+  function questionDifficultyLabel(value) {
+    const labels = {easy:'쉬움', medium:'보통', hard:'어려움'};
+    return Object.prototype.hasOwnProperty.call(labels, value) ? labels[value] : '';
+  }
+  function questionChips(question) {
+    return [questionTypeLabel(question.type), questionDifficultyLabel(question.difficulty)]
+      .filter(Boolean).map(label => '<span>' + safe(label) + '</span>').join('');
+  }
+
   function renderQuizDetail(project, quiz, readOnly = false) {
     if (!quiz) return '';
     const graded = quiz.status === 'completed';
@@ -956,7 +994,7 @@
       ${graded ? `<div class="study-wrong-actions"><button class="btn sm" type="button" data-hina-set="${safe(quiz.id)}" ${hinaQuizItems(quiz, true).length ? '' : 'disabled'}>이번 세트 틀린 문제 전체 복사</button></div>` : ''}
       ${quiz.questions.map((question, qi) => {
         const selected = quiz.answers[qi], accepted = acceptedRegrade(quiz,qi);
-        return `<article class="study-question ${graded ? 'is-graded' : ''}" data-study-question="${qi}"><div class="study-question-head"><span>Q${qi + 1}</span><span>${safe(question.type || 'general')}</span><span>${safe(question.difficulty || 'medium')}</span></div><h4 style="white-space:pre-line">${safe(question.prompt)}</h4><div class="study-choices">${question.choices.map((choice, ci) => {
+        return `<article class="study-question ${graded ? 'is-graded' : ''}" data-study-question="${qi}"><div class="study-question-head"><span>Q${qi + 1}</span>${questionChips(question)}</div><h4 style="white-space:pre-line">${safe(question.prompt)}</h4><div class="study-choices">${question.choices.map((choice, ci) => {
           const correct = graded && (ci === question.answerIndex || (accepted && ci === selected)), wrong = graded && !accepted && ci === selected && ci !== question.answerIndex;
           return `<label class="study-choice ${correct ? 'is-correct' : wrong ? 'is-wrong' : ''}"><input type="radio" name="study-q-${safe(quiz.id)}-${qi}" value="${ci}" ${selected === ci ? 'checked' : ''} ${graded || readOnly ? 'disabled' : ''}><span>${ci + 1}. ${safe(choice)}</span></label>`;
         }).join('')}</div>${graded ? `<div class="study-explanation"><b>원정답 ${question.answerIndex + 1}번${accepted ? ' · 내 답도 정답 (재채점 수락)' : ''}</b> · ${safe(question.explanation)}</div>${renderQuestionDispute(quiz,qi)}<div class="study-wrong-actions"><button class="btn sm" type="button" data-hina-quiz="${safe(quiz.id)}" data-hina-question="${qi}">히나에게 첨삭 받기 (복사)</button></div>` : ''}</article>`;
@@ -986,7 +1024,7 @@
         <div class="study-card-v02984 study-today-card">
         <div class="study-today-top"><div class="study-today-title"><span>${safe(view.category.toUpperCase())} · ${safe(date)}</span><b>${safe(project.name)} Learning Board</b></div>${todayQuiz?.status === 'completed' ? `<div class="study-score">${safe(quizStatusLabel(todayQuiz))}</div>` : paused ? '<span class="study-status in_progress">학습 중지</span>' : `<button class="btn primary" id="studyGenerateQuiz" type="button" ${busy ? 'disabled' : ''}>${todayQuiz ? '오늘 세트 열기' : busy ? '생성 중…' : failed ? '다시 생성' : view.scheduleType === 'manual' ? '문제세트 생성' : scheduled ? '오늘 세트 생성' : '수동 생성'}</button>`}</div>
         <div class="study-project-summary"><span class="study-chip">${safe(SCHEDULE_LABELS[view.scheduleType])}</span><span class="study-chip">${view.quizSize}문제</span>${view.examDate ? `<span class="study-chip">시험 ${safe(view.examDate)}</span>` : ''}${view.focusAreas.map(x => `<span class="study-chip">${safe(x)}</span>`).join('')}</div>
-        ${view.category === 'economy' ? `<div class="note">새 세트는 최근 뉴스·기업·거시경제 사례와 개념 문제를 함께 구성합니다. ${isBasicEconomyProject(project) ? '기초 과정은 뉴스 소재를 약 1/4 이내, 핵심 개념 확인·단일 인과 문항을 약 1/3 이상으로 구성하며 난이도 설정은 유지합니다.' : '뉴스 자료가 있으면 약 1/3 이상을 실제 사례로 출제하며 난이도 설정은 유지합니다.'} 이미 생성된 세트는 다시 쓰지 않습니다.</div>` : ''}
+        ${view.category === 'economy' ? `<div class="note">새 세트는 최근 뉴스·기업·거시경제 사례와 개념 문제를 함께 구성합니다. ${usesBasicNewsBalance(project) ? '기초 과정은 뉴스 소재를 약 1/4 이내, 핵심 개념 확인·단일 인과 문항을 약 1/3 이상으로 구성하며 난이도 설정은 유지합니다.' : '뉴스 자료가 있으면 약 1/3 이상을 실제 사례로 출제하며 난이도 설정은 유지합니다.'} 이미 생성된 세트는 다시 쓰지 않습니다.</div>` : ''}
         <div class="note" style="margin-top:8px">${paused ? '일시중지 상태입니다. 기존 문제세트와 오답은 계속 볼 수 있으며 새 문제 생성은 차단됩니다.' : failed ? `자동 생성 실패 · ${safe(failed)} · 버튼으로 한 번씩 다시 시도할 수 있습니다.` : scheduled ? '오늘은 자동 생성 대상일입니다. 프로젝트 진입 시 세트가 없으면 한 번만 요청합니다.' : '오늘은 정기 생성일이 아닙니다. 필요하면 수동으로 생성할 수 있습니다.'}${pending.filter(x => quizDate(x) < date).length ? ` · 지난 미완료 ${pending.filter(x => quizDate(x) < date).length}개` : ''}</div>
         <div class="study-project-tools"><button class="btn sm" type="button" id="studyProjectEdit">설정 수정</button>${paused ? '<button class="btn sm primary" type="button" id="studyProjectResume">학습 재개</button>' : '<button class="btn sm" type="button" id="studyProjectPause">학습 중지</button>'}<button class="btn sm" type="button" id="studyProjectComplete">프로젝트 종료</button><button class="btn sm ghost" type="button" id="studyProjectDelete">프로젝트 삭제</button></div>
         </div>
@@ -1321,43 +1359,22 @@
     return true;
   }
 
-  function derivedLearningTasks() {
-    const date = localToday(), rows = [];
+  function derivedLearningTasks(date = localToday()) {
+    const rows = [];
     for (const project of activeProjects()) {
-      const quizzes = projectQuizzes(project.id), todayQuiz = quizzes.find(x => quizDate(x) === date);
-      if (!todayQuiz && isScheduledDate(project, date)) rows.push({ projectId:project.id, quizId:'', due:date, text:`${project.name} · 오늘 문제세트`, sub:'생성 대상', overdue:false });
-      else if (todayQuiz && todayQuiz.status !== 'completed') rows.push({ projectId:project.id, quizId:todayQuiz.id, due:date, text:`${project.name} · 오늘 문제세트`, sub:`${todayQuiz.answers.filter(x => Number.isInteger(x)).length}/${Number(todayQuiz.total || todayQuiz.questions.length)} 풀이`, overdue:false });
-      for (const quiz of quizzes.filter(x => x.status !== 'completed' && quizDate(x) < date).slice(0, 3)) rows.push({ projectId:project.id, quizId:quiz.id, due:quizDate(quiz), text:`${project.name} · 미완료 문제세트`, sub:`${quizDate(quiz)} · ${quiz.answers.filter(x => Number.isInteger(x)).length}/${Number(quiz.total || quiz.questions.length)}`, overdue:true });
+      const quizzes = projectQuizzes(project.id);
+      if (!quizzes.some(x => quizDate(x) === date) && isScheduledDate(project, date)) rows.push({projectId:project.id, quizId:'', due:date, text:project.name+' · 오늘 문제세트', sub:'생성 대상', overdue:false});
     }
-    return rows.sort((a,b) => String(a.due).localeCompare(String(b.due))).slice(0, 6);
+    for (const quiz of pendingLearningQuizzes()) rows.push({projectId:quiz.projectId, quizId:quiz.id, due:quizDate(quiz), text:projectById(quiz.projectId).name+' · 문제세트', sub:quiz.status === 'in_progress' ? '풀이 중' : '미완료', overdue:quizDate(quiz)<date});
+    return rows.sort((a,b) => String(a.due).localeCompare(String(b.due)));
   }
 
   function renderHomeDerived() {
     if (typeof renderHaniCareHome === 'function') renderHaniCareHome();
+    // Task list and Dashboard use the canonical read model; no second mini-list renderer.
+    if (typeof renderTasks === 'function') renderTasks();
+    if (typeof taskReadModel === 'function' && q('#homeTasks')) q('#homeTasks').textContent = taskReadModel().count + '개';
     window.HANI_CONTEXT_REMOTE_V1?.update();
-    const box = q('#homeTaskMini');
-    if (!box) return;
-    qa('.learning-derived', box).forEach(x => x.remove());
-    const rows = derivedLearningTasks().filter(row => !row.quizId); // Pending quizzes live in the persistent Remote task section.
-    if (!rows.length) return;
-    if (box.querySelector('.empty')) box.innerHTML = '';
-    const fragment = document.createDocumentFragment();
-    rows.forEach(row => {
-      const el = document.createElement('div');
-      el.className = 'home-task-mini-item learning-derived';
-      el.dataset.learningProject = row.projectId;
-      el.dataset.learningQuiz = row.quizId;
-      el.innerHTML = `<i></i><div><b>${safe(row.text)}</b><div class="sub">${safe(row.sub)}</div></div><span class="${row.overdue ? 'is-near' : ''}">${row.overdue ? '미완료' : 'TODAY'}</span>`;
-      el.onclick = () => { activeProjectId = row.projectId; activeQuizId = row.quizId || ''; if (typeof showView === 'function') showView('study'); renderLearning(); };
-      fragment.appendChild(el);
-    });
-    box.appendChild(fragment);
-    const count = q('#homeTasks');
-    if (count) {
-      const currentMonth = localToday().slice(0, 7);
-      const base = (state.tasks || []).filter(t => !t.done && String(t.due || '').startsWith(currentMonth)).length;
-      count.textContent = `${base + rows.length}개`;
-    }
   }
 
   function patchCoreHooks() {
@@ -1380,8 +1397,9 @@
   window.HANI_STUDY_V02984_TEST = {
     pendingLearningQuizzes, pendingQuizProjects, orphanLearningQuizzes, attachOrphanQuiz, renderOrphanArchive, openPendingQuiz, renderPendingQuizNav,
     ensureLearningState, normalizeProject, normalizeQuestion, normalizeQuiz, questionKey,
-    quizDate, isScheduledDate, shouldGenerateForDate, nextSequenceNo, derivedLearningTasks, activeProjects, boardProjects, visibleProjects, completedProjects, wrongRows, wrongGroups, renderWrongTab,
+    openTaskProject(id) { activeProjectId = id; activeQuizId = ""; renderLearning(); }, quizDate, isScheduledDate, shouldGenerateForDate, nextSequenceNo, derivedLearningTasks, activeProjects, boardProjects, visibleProjects, completedProjects, wrongRows, wrongGroups, renderWrongTab,
     normalizePromptText, promptFingerprint, promptSimilarity, duplicateLevel, validQuestion, recentQuestionRotation, collectQuizCandidates, useLeastSimilarFallback, replacementBatchSize, tooSimilarPrompt, validateQuestionSet, quizApi,
+    effectiveProjectCategory, projectFocusAreas, hasNewsFocus, usesBasicNewsBalance, questionTypeLabel, questionDifficultyLabel, questionChips,
     newsroomQuestionSources, loadQuizNewsSources, isBasicEconomyProject, newsMaterialMinimum, hasNewsMaterial, questionFocus,
     upsertWrongAnswer, persistNewProject, persistProjectUpdate, archiveProjectWithConfirmation,
     pauseProject, resumeProject, completeProjectWithConfirmation, confirmWrongAnswer, retryWrongAnswer, masterWrongAnswer,
