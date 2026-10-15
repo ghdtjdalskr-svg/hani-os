@@ -1524,7 +1524,7 @@ const pageMeta={
  tasks:["할 일","해야 할 일을 월간 흐름으로 정리합니다.","work"],
  calendar:["캘린더","Google Calendar를 HANI OS 안에서 확인합니다.","work"],
  work:["업무 보조","업무 진행상황과 후속조치를 기록합니다.","work"],
- drive:["Drive","Google Drive로 바로 이동합니다.","work"],
+ drive:["Drive","Google Drive 파일과 폴더를 확인합니다.","work"],
  dev:["개발센터","HANI OS 릴리스와 로드맵을 확인합니다.","work"],
  geminiReports:["개발 보고서","개발의 배경부터 결과와 남은 과제까지 읽기 쉽게 확인합니다.","work"],
  aiBudget:["AI 주간 예산","Codex 두 계정과 Claude·Gemini의 사용 한도와 회복 예정 시간을 확인합니다.","team"],
@@ -1876,7 +1876,8 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
   if(committee)window.HaniInvestmentCommittee?.select(committeeRoute[1]==="monthly"?"monthly":"research");
   if(id==="board")window.HaniBoard?.render();
   if(id==="geminiReports")window.HaniGeminiReports?.render();
-  if(['home','intake'].includes(id)&&typeof renderHaniCareHome==='function')renderHaniCareHome();
+  if(id==="drive"&&typeof googleDriveEnter==="function")googleDriveEnter();
+  if(['home','intake','tasks'].includes(id)&&typeof renderHaniCareHome==='function')renderHaniCareHome();
   if(id==="aiBudget")window.HaniAiBudget?.render();
   if(id==="investment")setTimeout(drawPortfolio,30);if(id==="newsroom")setTimeout(()=>investmentNewsMaybeRefresh(),40);if(id==="diet")setTimeout(drawBody,30);if(id==="ledger")setTimeout(drawLedgerTrend,30);if(id==="calendar")renderCalendar();if(id==="tasks")setTimeout(()=>googleCalendarRefreshStatus({silent:true}),0);if(id==="intake")setTimeout(()=>intakeRenderPreview(),0);if(id==="agentReview")setTimeout(()=>agentReviewInit(),0);if(id==="monthlyReport")setTimeout(()=>renderMonthlyReport(),0);if(id==="policy")setTimeout(()=>agentPolicyInit(),0);if(id==="deployment")setTimeout(()=>deployCenterRender(),0);
   // v2.9.2: mobile browsers can throttle background polling. Re-check Cloud when opening data-heavy views.
@@ -3932,6 +3933,93 @@ function taskScheduleLabel(t){if(t?.due)return `마감 ${esc(t.due)}`;const meta
 // HANI OS · Google Calendar Sync v0.1
 // One-way only: HANI task -> Google Calendar. OAuth/token storage stays server-side.
 // =========================================================
+// Google Drive FILE LIBRARY: memory-only state, one delegated event owner.
+const GOOGLE_DRIVE_VIEW='drive';
+let googleDriveEpoch=0,googleDrivePopup=null;
+function googleDriveFresh(){return {owner:cloudUser?.id||'',connected:false,busy:false,files:[],crumbs:[{id:'root',name:'내 드라이브'}],mode:'list',query:'',fullText:false,nextPageToken:'',accountHint:'',code:'',error:''}}
+let googleDriveRuntime=googleDriveFresh();
+function googleDriveRoot(){return document.getElementById(GOOGLE_DRIVE_VIEW)}
+function googleDriveEscape(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function googleDriveLink(value){try{const u=new URL(value);return u.protocol==='https:'&&['drive.google.com','docs.google.com'].includes(u.hostname)&&!u.username&&!u.password?u.href:''}catch{return ''}}
+function googleDriveSize(value){if(value===undefined||value===null||value==='')return '—';let n=Number(value);if(!Number.isFinite(n)||n<0)return '—';const units=['B','KB','MB','GB','TB'];let i=0;while(n>=1024&&i<units.length-1){n/=1024;i++}return `${new Intl.NumberFormat('ko-KR',{maximumFractionDigits:1}).format(n)} ${units[i]}`}
+function googleDriveDate(value){const d=new Date(value);return Number.isNaN(d.getTime())?'날짜 정보 없음':new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).format(d)+' KST'}
+function googleDriveIcon(mime){return mime==='application/vnd.google-apps.folder'?'📁':String(mime).includes('spreadsheet')?'📊':String(mime).includes('presentation')?'📽️':mime==='application/pdf'?'📕':String(mime).startsWith('image/')?'🖼️':'📄'}
+function googleDriveInvalidate(){googleDriveEpoch++;try{googleDrivePopup?.close()}catch{}googleDrivePopup=null;googleDriveRuntime=googleDriveFresh();const form=googleDriveRoot()?.querySelector('[data-gdrive-search]');form?.reset();googleDriveRender()}
+function googleDriveRender(){
+  const root=googleDriveRoot();if(!root)return;
+  if(googleDriveRuntime.owner!==(cloudUser?.id||'')){googleDriveEpoch++;googleDriveRuntime=googleDriveFresh();root.querySelector('[data-gdrive-search]')?.reset()}
+  const rt=googleDriveRuntime,logged=!!cloudUser,esc=googleDriveEscape;
+  root.querySelector('[data-gdrive-status]').textContent=rt.connected?'Google Drive 연결됨':logged?'Google Drive 읽기 권한을 연결해 주세요.':'Cloud 로그인이 필요해요.';
+  root.querySelector('[data-gdrive-account]').textContent=rt.connected?`Google 계정 · ${rt.accountHint||'연결 확인됨'}`:logged?'Calendar와 같은 Google 연결을 사용해요.':'HANI OS Cloud 로그인 후 파일을 확인할 수 있어요.';
+  root.querySelector('[data-gdrive-action="connect"]').textContent=rt.connected?'Google Drive 다시 연결':'Google Drive 연결';
+  root.querySelectorAll('button,input').forEach(el=>{el.disabled=rt.busy||!logged||(el.closest('[data-gdrive-search]')&&!rt.connected)});
+  root.querySelector('[data-gdrive-action="more"]').hidden=!rt.nextPageToken||rt.busy;
+  root.querySelector('[data-gdrive-breadcrumb]').innerHTML=rt.mode==='list'?rt.crumbs.map((c,i)=>`<button type="button" class="gdrive-crumb" data-gdrive-crumb="${i}" ${rt.busy?'disabled':''} ${i===rt.crumbs.length-1?'aria-current="location"':''}>${esc(c.name)}</button>`).join('<span aria-hidden="true"> / </span>'):esc(rt.mode==='recent'?'최근 파일 · 수정일순':`검색 결과 · ${rt.query}`);
+  const notice=rt.busy?'파일을 불러오고 있어요…':rt.error?rt.error:!logged?'Cloud에 로그인한 뒤 Google Drive를 연결해 주세요.':!rt.connected?'Google Drive 연결 버튼을 눌러 읽기 권한을 허용해 주세요.':rt.files.length?`${rt.files.length}개 파일 · 수정일은 한국 시간(KST)입니다.`:rt.mode==='search'?'검색한 파일이 없어요. 다른 이름으로 찾아보세요.':'아직 파일이 없어요. 다른 폴더나 최근 파일을 확인해 보세요.';
+  root.querySelector('[data-gdrive-notice]').textContent=notice;
+  root.querySelector('[data-gdrive-notice]').classList.toggle('gdrive-error',!!rt.error);
+  root.querySelector('[data-gdrive-files]').setAttribute('aria-busy',String(rt.busy));
+  root.querySelector('[data-gdrive-files]').innerHTML=rt.files.map((f,i)=>{
+    const folder=f.mimeType==='application/vnd.google-apps.folder',href=googleDriveLink(f.webViewLink);
+    return `<div class="gdrive-row"><span class="gdrive-icon" aria-hidden="true">${googleDriveIcon(f.mimeType)}</span><div class="gdrive-file">${folder?`<button class="gdrive-folder" type="button" data-gdrive-folder="${i}" ${rt.busy?'disabled':''}>${esc(f.name)}</button>`:`<strong>${esc(f.name)}</strong>`}<span class="gdrive-meta">${folder?'폴더':esc(f.mimeType||'파일')} · ${esc(googleDriveSize(f.size))}</span></div><time class="gdrive-modified">${esc(googleDriveDate(f.modifiedTime))}</time>${href?`<a class="gdrive-open" href="${esc(href)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(f.name)} Google Drive에서 열기 (새 탭)">Drive에서 열기 ↗</a>`:'<span class="gdrive-meta">링크 없음</span>'}</div>`;
+  }).join('');
+}
+async function googleDriveApi(action,payload={}){
+  const owner=cloudUser?.id;if(!cloudClient||!owner)throw Object.assign(new Error('먼저 HANI OS Cloud에 로그인해 주세요.'),{code:'AUTH_REQUIRED'});
+  const cfg=cloudConfig(),{data:{session},error}=await cloudClient.auth.getSession();
+  if(error||!session?.access_token||session.user?.id!==owner)throw Object.assign(new Error('Cloud 로그인 세션을 다시 확인해 주세요.'),{code:'AUTH_REQUIRED'});
+  const res=await fetch(`${cfg.url}/functions/v1/hani-google-drive`,{method:'POST',headers:{'Content-Type':'application/json','apikey':cfg.key,'Authorization':`Bearer ${session.access_token}`},body:JSON.stringify({action,...payload})});
+  const result=await res.json().catch(()=>({}));
+  if(!res.ok||!result?.ok){const code=res.status===401?'AUTH_REQUIRED':result?.code||'DRIVE_UNAVAILABLE';const messages={DRIVE_SCOPE_REQUIRED:'Google Drive 연결 버튼을 눌러 읽기 권한을 허용해 주세요.',AUTH_REQUIRED:'Cloud에 다시 로그인해 주세요.',OWNER_ACCESS_DENIED:'이 Drive 보관함은 소유 계정에서만 열 수 있어요.',OWNER_ACCESS_NOT_CONFIGURED:'소유 계정 설정을 확인해 주세요.',DRIVE_FORBIDDEN:'Drive 접근 권한 또는 Google Drive API 설정을 확인해 주세요.',DRIVE_RATE_LIMIT:'요청이 잠시 많아요. 잠시 후 다시 시도해 주세요.'};throw Object.assign(new Error(messages[code]||'파일을 불러오지 못했어요. 잠시 후 새로고침해 주세요.'),{code,authUrl:code==='DRIVE_SCOPE_REQUIRED'?result.authUrl:''})}
+  return result;
+}
+async function googleDriveLoad({append=false,status=false}={}){
+  googleDriveRender();const rt=googleDriveRuntime;if(!cloudUser||rt.busy)return;
+  const epoch=++googleDriveEpoch,owner=cloudUser.id,current=()=>epoch===googleDriveEpoch&&owner===cloudUser?.id&&rt===googleDriveRuntime;
+  rt.busy=true;rt.error='';if(!append){rt.files=[];rt.nextPageToken=''}googleDriveRender();
+  try{
+    if(status){const r=await googleDriveApi('status');if(!current())return;rt.accountHint=r.accountHint||'';rt.connected=true}
+    const payload={...(append?{pageToken:rt.nextPageToken}:{}),...(rt.mode==='list'?{folderId:rt.crumbs.at(-1).id}:rt.mode==='search'?{query:rt.query,fullText:rt.fullText}:{})};
+    const r=await googleDriveApi(rt.mode,payload);if(!current())return;
+    rt.connected=true;rt.code='';rt.files=append?[...rt.files,...r.files.filter(f=>!rt.files.some(old=>old.id===f.id))]:r.files;rt.nextPageToken=r.nextPageToken||'';
+  }catch(e){if(!current())return;rt.error=e.message;rt.code=e.code||'';if(['DRIVE_SCOPE_REQUIRED','AUTH_REQUIRED','OWNER_ACCESS_DENIED','OWNER_ACCESS_NOT_CONFIGURED'].includes(rt.code)){rt.connected=false;rt.files=[];rt.nextPageToken='';rt.accountHint=''}}
+  finally{if(current()){rt.busy=false;googleDriveRender()}}
+}
+function googleDriveEnter(){return googleDriveLoad({status:true})}
+async function googleDriveConnect(){
+  if(!cloudUser||googleDriveRuntime.busy)return;
+  const rt=googleDriveRuntime,epoch=++googleDriveEpoch,owner=cloudUser.id;
+  const popup=window.open('about:blank','haniGoogleDriveOAuth','popup=yes,width=560,height=720');
+  if(!popup){rt.error='연결 창이 차단되었어요. 이 사이트의 팝업을 허용한 뒤 다시 눌러 주세요.';googleDriveRender();return}
+  googleDrivePopup=popup;rt.busy=true;rt.error='';googleDriveRender();
+  try{await googleDriveApi('oauth_start');popup.close()}
+  catch(e){if(epoch!==googleDriveEpoch||owner!==cloudUser?.id){popup.close();return}try{const u=new URL(e.authUrl);if(e.code!=='DRIVE_SCOPE_REQUIRED'||u.origin!=='https://accounts.google.com'||u.pathname!=='/o/oauth2/v2/auth')throw Error();popup.location.href=u.href;rt.error='Google 연결 창에서 권한을 허용한 뒤 새로고침해 주세요.'}catch{popup.close();rt.error=e.message}}
+  finally{if(epoch===googleDriveEpoch&&owner===cloudUser?.id){rt.busy=false;googleDriveRender()}}
+}
+const googleDriveView=googleDriveRoot();
+if(googleDriveView){
+  googleDriveView.addEventListener('submit',e=>{if(!e.target.matches('[data-gdrive-search]'))return;e.preventDefault();const form=e.target,query=form.elements.query.value.trim();if(!query||googleDriveRuntime.busy)return;Object.assign(googleDriveRuntime,{mode:'search',query,fullText:form.elements.fullText.checked});googleDriveLoad()});
+  googleDriveView.addEventListener('click',e=>{
+    const target=e.target.closest('button');if(!target||target.disabled)return;const rt=googleDriveRuntime,action=target.dataset.gdriveAction;
+    if(action==='connect'){googleDriveConnect();return}if(!cloudUser||rt.busy)return;
+    if(target.dataset.gdriveFolder!==undefined){const f=rt.files[Number(target.dataset.gdriveFolder)];if(!f)return;if(rt.mode!=='list')rt.crumbs=[{id:f.id,name:f.name}];else rt.crumbs.push({id:f.id,name:f.name});rt.mode='list'}
+    else if(target.dataset.gdriveCrumb!==undefined){rt.crumbs=rt.crumbs.slice(0,Number(target.dataset.gdriveCrumb)+1);rt.mode='list'}
+    else if(action==='root'){rt.mode='list';rt.crumbs=[{id:'root',name:'내 드라이브'}]}
+    else if(action==='recent')rt.mode='recent';
+    else if(action==='refresh'){googleDriveLoad({status:true});return}
+    else if(action==='more'){googleDriveLoad({append:true});return}
+    else return;
+    googleDriveLoad();
+  });
+}
+window.addEventListener('message',e=>{
+  let origin='';try{origin=new URL(cloudConfig().url).origin}catch{return}
+  if(!googleDrivePopup||e.source!==googleDrivePopup||e.origin!==origin)return;
+  if(e.data?.type==='HANI_GOOGLE_CALENDAR_CONNECTED'){googleDrivePopup=null;googleDriveLoad({status:true})}
+  else if(e.data?.type==='HANI_GOOGLE_CALENDAR_ERROR'){googleDrivePopup=null;googleDriveRuntime.error='Google 연결이 완료되지 않았어요. 다시 연결해 주세요.';googleDriveRender()}
+});
+// End Google Drive FILE LIBRARY.
+
 const GOOGLE_CALENDAR_FUNCTION="hani-google-calendar";
 let googleCalendarRuntime={loaded:false,connected:false,busy:false,calendarId:"primary",connectedAt:"",error:""};
 function taskCalendarEligible(t){return !!(t&&!t.done&&/^\d{4}-\d{2}-\d{2}$/.test(String(t.due||""))&&t.dueKnown!==false)}
@@ -3982,7 +4070,25 @@ async function googleCalendarSyncOne(id){const t=state.tasks.find(x=>String(x.id
 async function googleCalendarDisconnect(){if(!googleCalendarRuntime.connected)return;const yes=confirm("Google Calendar 연결을 해제할까요? 이미 만든 Calendar 일정은 삭제하지 않습니다.");if(!yes)return;try{googleCalendarSetBusy(true);await googleCalendarApi("disconnect");googleCalendarRuntime={loaded:true,connected:false,busy:false,calendarId:"primary",connectedAt:"",error:""};toast("Google Calendar 연결을 해제했습니다. 기존 일정은 유지됩니다.")}catch(e){toast(e?.message||String(e))}finally{googleCalendarRuntime.busy=false;renderTaskCalendarHub()}}
 window.addEventListener("message",e=>{let allowed="";try{allowed=new URL(cloudConfig().url).origin}catch(_){}if(allowed&&e.origin!==allowed)return;if(e?.data?.type==="HANI_GOOGLE_CALENDAR_CONNECTED"){toast("Google Calendar 연결을 확인했습니다. 📅");googleCalendarRefreshStatus()}else if(e?.data?.type==="HANI_GOOGLE_CALENDAR_ERROR"){googleCalendarRuntime.error=String(e?.data?.message||"Google Calendar 연결을 확인해 주세요.");renderTaskCalendarHub();toast(googleCalendarRuntime.error)}});
 function taskCalendarActionHtml(t){const meta=taskCalendarMeta(t),st=taskCalendarSyncState(t);if(st==="ineligible")return meta.eventId?`<span class="task-calendar-badge retained">📅 Calendar 유지</span>`:"";if(st==="synced")return `<span class="task-calendar-badge synced">📅 동기화됨</span>`;if(st==="changed")return `<button class="btn sm task-calendar-sync changed" data-task-calendar-sync="${esc(t.id)}">↻ 다시 동기화</button>`;return `<button class="btn sm task-calendar-sync" data-task-calendar-sync="${esc(t.id)}">📅 동기화</button>`}
-function renderTasks(){const rows=[...state.tasks].sort((a,b)=>Number(a.done)-Number(b.done)||taskEffectiveDate(a).localeCompare(taskEffectiveDate(b)));$("taskCount").textContent=state.tasks.length+"개";$("taskList").innerHTML=rows.map(t=>`<div class="item task ${t.done?'done':''}"><input type="checkbox" data-task-check="${t.id}" ${t.done?'checked':''}><div><b>${taskDisplayText(t)}</b><div class="sub">${taskScheduleLabel(t)}</div></div><div class="task-actions">${taskCalendarActionHtml(t)}<button class="btn sm danger" data-task-delete="${t.id}">삭제</button></div></div>`).join("")||'<div class="empty">등록된 할 일이 없습니다.</div>';document.querySelectorAll("[data-task-check]").forEach(x=>x.onchange=()=>{const t=state.tasks.find(t=>t.id===x.dataset.taskCheck);const wasDone=!!t?.done,anchor=x.getBoundingClientRect();if(t)t.done=x.checked;const ok=commit("할 일 상태를 변경했습니다.",false);if(ok&&t)window.HaniMotion?.completion('task:'+t.id,wasDone,!!t.done,anchor,'tasks')});document.querySelectorAll("[data-task-calendar-sync]").forEach(b=>b.onclick=()=>googleCalendarSyncOne(b.dataset.taskCalendarSync));document.querySelectorAll("[data-task-delete]").forEach(b=>b.onclick=()=>{const t=state.tasks.find(t=>t.id===b.dataset.taskDelete);if(taskCalendarMeta(t).eventId&&!confirm("이 할 일은 Google Calendar에 동기화되어 있습니다. HANI에서 삭제해도 Calendar 일정은 자동 삭제되지 않습니다. 계속할까요?"))return;state.tasks=state.tasks.filter(t=>t.id!==b.dataset.taskDelete);commit("할 일을 삭제했습니다.")});renderTaskCalendarHub()}
+// tasks-qa-212: read model only. Stored tasks and every existing save handler stay intact.
+function taskIsDerived(t){return ['university','campus','learning','quiz','care','month-end','monthEnd','auto'].includes(t.sourceType)}
+function taskDueDay(t){const value=t.dueAt||t.due||'';const at=careDateAt(value);return Number.isFinite(at)?new Date(at+9*3600000).toISOString().slice(0,10):''}
+function taskReadModel(day=careKoreaPeriod().day){
+  const tasks=state.tasks||[],own=tasks.filter(t=>!taskIsDerived(t)),stored=tasks.filter(taskIsDerived);
+  const learning=window.HANI_STUDY_V02984_TEST?.derivedLearningTasks?.(day)||[];
+  const actionable=stored.filter(t=>!t.done&&taskDueDay(t)===day),todayLearning=learning.filter(t=>t.due===day);
+  return {own,stored,learning,actionable,todayLearning,count:own.filter(t=>!t.done).length+actionable.length+todayLearning.length,derivedCount:stored.filter(t=>!t.done).length+learning.length};
+}
+function taskRowMarkup(t){return `<div class="item task ${t.done?'done':''}"><input type="checkbox" aria-label="${esc(t.text)} 완료" data-task-check="${esc(t.id)}" ${t.done?'checked':''}><div><b>${taskDisplayText(t)}</b><div class="sub">${taskScheduleLabel(t)}</div></div><div class="task-actions">${taskCalendarActionHtml(t)}<button class="btn sm danger" data-task-delete="${esc(t.id)}">삭제</button></div></div>`}
+function renderTaskDerived(model){
+  const list=$("taskList");if(!list)return;let slot=list.parentNode.querySelector('[data-task-derived]');
+  if(!slot){slot=document.createElement('details');slot.dataset.taskDerived='';slot.className='task-derived';list.parentNode.appendChild(slot)}
+  const open=slot.open;
+  slot.innerHTML=`<summary>자동·학습 할 일 <span class="pill">${model.derivedCount}개</span></summary><p class="task-count-help">전체 자동 일정은 여기에 모았어요. 위 할 일 수에는 직접 등록한 미완료와 오늘 실행할 항목만 포함해요.</p><div class="list">${model.stored.map(taskRowMarkup).join('')}${model.learning.map(t=>`<div class="item task"><span aria-hidden="true">${t.due===careKoreaPeriod().day?'○':'◷'}</span><div><b>${esc(t.text)}</b><div class="sub">${esc(t.due)} · ${esc(t.sub)}</div></div><button class="btn sm" type="button" data-task-learning="${esc(t.projectId)}" data-task-quiz="${esc(t.quizId)}">${t.quizId?'풀기':'공부로'}</button></div>`).join('')||'<div class="empty">자동·학습 할 일이 없습니다.</div>'}</div>`;
+  slot.open=open;
+  slot.querySelectorAll('[data-task-learning]').forEach(b=>b.onclick=()=>{if(b.dataset.taskQuiz)window.HANI_STUDY_V02984_TEST?.openPendingQuiz(b.dataset.taskQuiz);else{showView('study');window.HANI_STUDY_V02984_TEST?.openTaskProject(b.dataset.taskLearning)}});
+}
+function renderTasks(){const model=taskReadModel(),rows=model.own.slice().sort((a,b)=>Number(a.done)-Number(b.done)||taskEffectiveDate(a).localeCompare(taskEffectiveDate(b)));$("taskCount").textContent=model.count+"개";$("taskCount").title="직접 등록한 미완료 + 오늘 실행할 자동 항목";$("taskList").innerHTML=rows.map(taskRowMarkup).join("")||'<div class="empty">직접 등록한 할 일이 없습니다.</div>';renderTaskDerived(model);document.querySelectorAll("[data-task-check]").forEach(x=>x.onchange=()=>{const t=state.tasks.find(t=>t.id===x.dataset.taskCheck);const wasDone=!!t?.done,anchor=x.getBoundingClientRect();if(t)t.done=x.checked;const ok=commit("할 일 상태를 변경했습니다.",false);if(ok&&t)window.HaniMotion?.completion('task:'+t.id,wasDone,!!t.done,anchor,'tasks')});document.querySelectorAll("[data-task-calendar-sync]").forEach(b=>b.onclick=()=>googleCalendarSyncOne(b.dataset.taskCalendarSync));document.querySelectorAll("[data-task-delete]").forEach(b=>b.onclick=()=>{const t=state.tasks.find(t=>t.id===b.dataset.taskDelete);if(taskCalendarMeta(t).eventId&&!confirm("이 할 일은 Google Calendar에 동기화되어 있습니다. HANI에서 삭제해도 Calendar 일정은 자동 삭제되지 않습니다. 계속할까요?"))return;state.tasks=state.tasks.filter(t=>t.id!==b.dataset.taskDelete);commit("할 일을 삭제했습니다.")});renderTaskCalendarHub();renderHaniCareHome()}
 $("addTask").onclick=()=>{const text=$("taskText").value.trim();if(!text)return alert("할 일을 입력하세요.");state.tasks.push({id:uid(),text,due:$("taskDue").value,done:false,createdAt:new Date().toISOString()});$("taskText").value="";commit("할 일을 추가했습니다.")};
 if($("taskCalendarConnect"))$("taskCalendarConnect").onclick=()=>googleCalendarRuntime.connected?googleCalendarRefreshStatus():googleCalendarConnect();
 if($("taskCalendarDisconnect"))$("taskCalendarDisconnect").onclick=()=>googleCalendarDisconnect();
@@ -4430,7 +4536,7 @@ function renderHomeDialogue(force=false){if(!$("homeDialogueText"))return;const 
 function homeTrendSvg(rows){if(!(rows||[]).length)return "";const values=rows.map(r=>n(r.value)),w=760,h=210,p=18,min=Math.min(...values),max=Math.max(...values),span=Math.max(1,max-min);const pts=values.map((v,i)=>{const x=values.length===1?w*.5:p+(w-p*2)*(i/(values.length-1));const y=values.length===1?h*.48:h-p-((v-min)/span)*(h-p*2);return [x,y]});const guides=[0,1,2,3].map(i=>{const y=p+((h-p*2)/3)*i;return `<line x1="${p}" y1="${y.toFixed(1)}" x2="${w-p}" y2="${y.toFixed(1)}" stroke="#e9edf8" stroke-width="1" />`}).join("");const last=pts.at(-1);if(values.length===1)return `<defs><radialGradient id="homePointGlow"><stop offset="0%" stop-color="#806cf8" stop-opacity=".22"/><stop offset="100%" stop-color="#806cf8" stop-opacity="0"/></radialGradient></defs>${guides}<circle cx="${last[0]}" cy="${last[1]}" r="46" fill="url(#homePointGlow)"/><circle cx="${last[0]}" cy="${last[1]}" r="7" fill="#fff" stroke="#7658f6" stroke-width="4"/><path d="M${last[0]} ${last[1]+10}V182" stroke="#7658f6" stroke-opacity=".24" stroke-width="2"/>`;const line=pts.map((pt,i)=>`${i?"L":"M"}${pt[0].toFixed(1)} ${pt[1].toFixed(1)}`).join(" "),area=`M${pts[0][0].toFixed(1)} ${(h-p).toFixed(1)} ${pts.map(pt=>`L${pt[0].toFixed(1)} ${pt[1].toFixed(1)}`).join(" ")} L${pts.at(-1)[0].toFixed(1)} ${(h-p).toFixed(1)} Z`;return `<defs><linearGradient id="homeTrendFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8b7cff" stop-opacity="0.28"/><stop offset="100%" stop-color="#8b7cff" stop-opacity="0.02"/></linearGradient><linearGradient id="homeTrendLine" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#7a5ff7"/><stop offset="100%" stop-color="#4a8cff"/></linearGradient></defs>${guides}<path d="${area}" fill="url(#homeTrendFill)"/><path d="${line}" fill="none" stroke="url(#homeTrendLine)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="6" fill="#fff" stroke="#7658f6" stroke-width="3.5"/>`}
 function homeCalendarHtml(baseDate=today()){const d=new Date(baseDate),y=d.getFullYear(),m=d.getMonth(),monthLabel=`${y}년 ${String(m+1).padStart(2,"0")}월`,first=new Date(y,m,1),last=new Date(y,m+1,0),start=first.getDay();const total=last.getDate(),todayKey=today(),taskDates=new Set((state.tasks||[]).filter(t=>!t.done&&String(t.due||"").startsWith(`${y}-${String(m+1).padStart(2,"0")}`)).map(t=>String(t.due)));const cells=[];for(let i=0;i<start;i++)cells.push('<div class="home-cal-day is-empty"></div>');for(let day=1;day<=total;day++){const key=`${y}-${String(m+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;const cls=['home-cal-day'];if(key===todayKey)cls.push('is-today');if(taskDates.has(key))cls.push('has-task');cells.push(`<div class="${cls.join(' ')}">${day}</div>`)}const week=['일','월','화','수','목','금','토'].map(x=>`<div class="home-cal-weekday">${x}</div>`).join('');return `<div class="home-cal-head"><b>${monthLabel}</b><span>오늘 ${todayKey}</span></div><div class="home-cal-grid">${week}${cells.join('')}</div>`}
 function homeKpiHtml(value,unit,decimals=0){const x=n(value),num=decimals?x.toLocaleString("ko-KR",{minimumFractionDigits:decimals,maximumFractionDigits:decimals}):Math.round(x).toLocaleString("ko-KR");return `${num}<span class="kpi-unit">${unit}</span>`}
-function haniCareMemory(){return haniCareMemory.session||(haniCareMemory.session={dismissed:false,homeNotice:null,storageNotice:null,checklist:null})}
+function haniCareMemory(){return haniCareMemory.session||(haniCareMemory.session={dismissed:false,homeNotice:null,storageNotice:null,checklist:null,checklistChip:null})}
 function haniCareNeedsInstall(){const ua=navigator.userAgent||"",ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);return ios&&/Safari\//.test(ua)&&/Version\//.test(ua)&&!/CriOS|FxiOS|EdgiOS|OPiOS|OPT\/|DuckDuckGo|GSA\//.test(ua)&&navigator.standalone!==true&&!(typeof window.matchMedia==="function"&&window.matchMedia("(display-mode: standalone)").matches)}
 function haniCareNotice(parent,before,key){if(!parent)return;const memory=haniCareMemory(),visible=!memory.dismissed&&haniCareNeedsInstall();if(!memory[key]&&visible){const slot=document.createElement("div");slot.className="note hani-care-notice";const markup='<p>아이폰 사파리는 7일 동안 열지 않으면 이 기기 기록을 지울 수 있어요. 공유 → \'홈 화면에 추가\'로 앱처럼 쓰면 안전해요.</p><button class="btn sm" type="button" aria-label="홈 화면 추가 안내 닫기">닫기</button>';slot.innerHTML=markup;slot.querySelector("button").onclick=()=>{memory.dismissed=true;[memory.homeNotice,memory.storageNotice].forEach(x=>{if(x)x.hidden=true})};parent.insertBefore(slot,before);memory[key]=slot}if(memory[key])memory[key].hidden=!visible}
 function haniCareChecklist(date=monthlyReportKoreaDate()){const day=Number(date.slice(8,10));if(day<15||day>20||!monthlyReportDate(date))return null;const month=date.slice(0,7),period=ledgerSettlementPeriod(month),start=new Date(date+"T00:00:00Z");start.setUTCDate(start.getUTCDate()-(start.getUTCDay()+6)%7);const weekStart=start.toISOString().slice(0,10),ledger=(state.ledgerMonths||[]).some(x=>x?.month===month&&(x.status==="confirmed"||x.confirmed===true||(!x.status&&x.confirmed!==false&&x.importVersion==="LEDGER_FINAL_V1"&&!!x.importedAt))),investment=(state.investmentBrokerSnapshots||[]).some(x=>x?.period===month&&x.mode==="actual"&&x.recordType!=="positions"&&x.status==="confirmed"),body=(state.body||[]).some(x=>{const d=monthlyReportDate(x?.date);return d&&d>=weekStart&&d<=date&&Number.isFinite(Number(x.weight))&&Number(x.weight)>0});return {month,period,weekStart,items:[{label:"① 가계부 이번 결산월 확정",done:ledger,view:"ledger"},{label:"② 이번 달 투자 계좌 스냅샷 확정",done:investment,view:"investment"},{label:"③ 체중 기록 이번 주",done:body,view:"diet"}]}}
@@ -4501,21 +4607,34 @@ function renderHaniCareCards(parent,before=null){
   slot.querySelectorAll('[data-hani-care-view]').forEach(b=>b.onclick=()=>showView(b.dataset.haniCareView));
   slot.querySelectorAll('[data-care-campus]').forEach(card=>{const group=groups[Number(card.dataset.careCampus)],form=card.querySelector('form');card.querySelector('[data-care-all]').onclick=()=>careCampusComplete(group.rows);card.querySelector('[data-care-dismiss]').onclick=()=>careCampusDismiss(group);card.querySelector('[data-care-part]').onclick=e=>{form.hidden=!form.hidden;e.currentTarget.setAttribute('aria-expanded',String(!form.hidden))};form.onsubmit=e=>{e.preventDefault();const selected=[...form.querySelectorAll('input:checked')].map(el=>group.rows[Number(el.value)]);if(selected.length)careCampusComplete(selected);else alert('다 들은 수업을 선택해 주세요.')};});
 }
-function renderHaniCareHome(){const home=$("home");if(!home)return;const memory=haniCareMemory();haniCareNotice(home,home.firstChild,"homeNotice");const data=haniCareChecklist();if(!memory.checklist&&data){const slot=document.createElement("section");slot.className="card full hani-care-checklist";slot.setAttribute("aria-label","월말 정산 도우미");home.insertBefore(slot,memory.homeNotice?memory.homeNotice.nextSibling:home.firstChild);memory.checklist=slot}renderHaniCareCards(home,memory.checklist?memory.checklist.nextSibling:memory.homeNotice?memory.homeNotice.nextSibling:home.firstChild);const desk=document.querySelector(".yuna-helpdesk");if(desk)renderHaniCareCards(desk,desk.querySelector(".yuna-desk"));const slot=memory.checklist;if(!slot)return;slot.hidden=!data;if(!data)return;slot.innerHTML=`<div class="sh"><h3>월말 정산 도우미</h3><span class="pill">${esc(data.month)} · 18일 결산</span></div><p class="sub">가계부 ${esc(data.period.periodStart)} ~ ${esc(data.period.periodEnd)} · 체중은 월요일부터 오늘까지 확인해요.</p><ul class="hani-care-list">${data.items.map(x=>`<li><span>${x.done?"✓":"○"} ${esc(x.label)} · ${x.done?"완료했어요":"아직이에요"}</span>${x.done?"":`<button class="btn sm" type="button" data-hani-care-view="${x.view}">확인하러 가요</button>`}</li>`).join("")}</ul>`;slot.querySelectorAll("[data-hani-care-view]").forEach(b=>b.onclick=()=>showView(b.dataset.haniCareView))}
+function renderHaniCareHome(){
+  const home=$("home");if(!home)return;const memory=haniCareMemory();haniCareNotice(home,home.firstChild,"homeNotice");
+  const data=haniCareChecklist(),hub=$("taskCalendarHub");
+  if(!memory.checklist&&data&&hub){const slot=document.createElement("section");slot.className="card full hani-care-checklist";slot.setAttribute("aria-label","월말 정산 도우미");hub.parentNode.insertBefore(slot,hub);memory.checklist=slot}
+  if(!memory.checklistChip&&data){const chip=document.createElement('button');chip.type='button';chip.className='hani-care-chip';chip.onclick=()=>showView('tasks');home.insertBefore(chip,memory.homeNotice?memory.homeNotice.nextSibling:home.firstChild);memory.checklistChip=chip}
+  const remaining=data?data.items.filter(x=>!x.done).length:0;
+  if(memory.checklistChip){memory.checklistChip.hidden=!remaining;memory.checklistChip.textContent='월말 정산 할 일 '+remaining+'개 남음 →'}
+  renderHaniCareCards(home,memory.checklistChip?memory.checklistChip.nextSibling:memory.homeNotice?memory.homeNotice.nextSibling:home.firstChild);
+  const desk=document.querySelector(".yuna-helpdesk");if(desk)renderHaniCareCards(desk,desk.querySelector(".yuna-desk"));
+  const slot=memory.checklist;if(!slot)return;slot.hidden=!data;if(!data)return;
+  const done=data.items.length-remaining,descriptions=['가계부 결산월을 확인하고 확정해요.','이번 달 실제 투자 계좌 기록을 확인해요.','이번 주 체중을 한 번 기록해요.'];
+  slot.innerHTML=`<div class="sh"><div><h3>월말 정산 도우미</h3><p class="task-count-help">${esc(data.month)} · 18일 결산</p></div><b class="pill">${done}/3 완료</b></div><progress max="3" value="${done}" aria-label="월말 정산 진행">${done}/3</progress><ol class="hani-care-steps">${data.items.map((x,i)=>`<li><span class="hani-care-status" aria-label="${x.done?'완료':'미완료'}">${x.done?'✓':i+1}</span><div><b>${esc(x.label.replace(/^[①②③] /,''))}</b><p>${descriptions[i]}</p></div><button class="btn sm" type="button" data-hani-care-view="${x.view}">${x.done?'다시 보기':'확인하기'}</button></li>`).join('')}</ol>`;
+  slot.querySelectorAll("[data-hani-care-view]").forEach(b=>b.onclick=()=>showView(b.dataset.haniCareView));
+}
 function renderHome(){renderHomeDialogue();const official=officialBrokerSorted(),latest=official.at(-1)||null,latestCalc=latest?brokerCalc(latest):null;
   renderHaniCareHome();
   // Canonical Data Hub owns the Dashboard analysis; account mix remains in Finance.
   const currentMonth=today().slice(0,7),todayKey=today(),
-    monthTasks=(state.tasks||[]).filter(t=>!t.done&&String(t.due||"").startsWith(currentMonth))
+    monthTasks=[...taskReadModel().own.filter(t=>!t.done),...taskReadModel().actionable]
       .sort((a,b)=>String(a.due||"9999-99-99").localeCompare(String(b.due||"9999-99-99"))||String(a.time||"").localeCompare(String(b.time||"")));
-  $("homeTasks").textContent=monthTasks.length+"개";
+  $("homeTasks").textContent=taskReadModel().count+"개";
   if($("homeCalendarMini"))$("homeCalendarMini").innerHTML=homeCalendarHtml();
   const taskRows=monthTasks.slice(0,8);
   if($("homeTaskMini"))$("homeTaskMini").innerHTML=taskRows.length?taskRows.map(t=>{
     const due=String(t.due||""),days=due?Math.round((new Date(due+"T00:00:00")-new Date(todayKey+"T00:00:00"))/86400000):null;
     const dday=days===null?"":days===0?"D-DAY":days>0?`D-${days}`:`D+${Math.abs(days)}`;
     return `<div class="home-task-mini-item"><i></i><div><b>${esc(t.text)}</b><div class="sub">${due?esc(due):"마감일 없음"}${t.time?` · ${esc(t.time)}`:""}</div></div><span class="${days!==null&&days<=3?"is-near":""}">${dday}</span></div>`;
-  }).join(''):'<div class="empty">이번 달 미완료 할 일이 없습니다. 🎉</div>';
+  }).join(''):'<div class="empty">미완료 할 일이 없습니다. 🎉</div>';
 
   const updatedThisMonth=x=>String(x?.importedAt||x?.updatedAt||x?.createdAt||"").slice(0,7)===currentMonth,
     assetMonthRecord=officialBrokerSorted().filter(x=>x.status==="confirmed"&&updatedThisMonth(x)).at(-1)||null,
@@ -4795,6 +4914,7 @@ function cloudBindAuthEvents(){
     cloudOwnerVerificationEpoch++;
     cloudOwnerVerification?.invalidate();
     dataHubInvalidate();
+    if(typeof googleDriveInvalidate==="function"&&(event==="SIGNED_OUT"||googleDriveRuntime.owner!==session?.user?.id))googleDriveInvalidate();
     if(event==="SIGNED_OUT"||(annualReportState.owner&&annualReportState.owner!==session?.user?.id))annualReportInvalidate();
     if($("cloudOwnerVerificationResult"))$("cloudOwnerVerificationResult").textContent="세션 변경: 소유권 검증을 다시 실행해 주세요.";
     if(event==="SIGNED_OUT"){
@@ -5671,6 +5791,7 @@ async function cloudVerifySourceOwner(){
   }
 }
 function renderCloudPanel(){
+  googleDriveRender();
   window.HANI_DRIVE_VAULT?.schedule();
   renderMediaPreview();
   renderCloudTransferUsage();
@@ -6564,7 +6685,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.211";
+const HANI_DISPLAY_VERSION="2.9.212";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];

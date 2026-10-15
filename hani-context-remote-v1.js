@@ -91,10 +91,10 @@
     const study=window.HANI_STUDY_V02984_TEST,day=typeof careKoreaPeriod==='function'?careKoreaPeriod().day:new Date(Date.now()+9*3600000).toISOString().slice(0,10);
     const quizzes=[...(study?.pendingLearningQuizzes?.()||[])].sort((a,b)=>String(study.quizDate(a)).localeCompare(String(study.quizDate(b))));
     const tasks=typeof state==='object'?(state.tasks||[]).filter(t=>!t.done&&t.due===day):[];
-    const due=quizzes.filter(q=>{const date=study.quizDate(q);return date&&date<=day}),total=tasks.length+due.length;
+    const total=typeof taskReadModel==='function'?taskReadModel(day).count:tasks.length+quizzes.filter(q=>study.quizDate(q)===day).length;
     const section=$('.hani-remote-today',rail),badge=$('[data-remote-today-count]',rail),box=$('[data-remote-quizzes]',rail);
     section.classList.toggle('is-today',total>0);badge.hidden=!total;badge.textContent=String(total);
-    $('[data-remote-today-summary]',rail).textContent=`오늘 할 일 ${tasks.length}개 · 미완료 퀴즈 ${quizzes.length}개`;
+    $('[data-remote-today-summary]',rail).textContent=`할 일 ${total}개 · 전체 미완료 퀴즈 ${quizzes.length}개`;
     const signature=JSON.stringify(quizzes.map(q=>[q.id,q.title,study.quizDate(q),q.status]));
     box.hidden=!quizzes.length;
     if(box.dataset.signature===signature)return;
