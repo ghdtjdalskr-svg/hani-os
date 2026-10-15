@@ -52,7 +52,7 @@ try {
     assert.equal(await tabs.getByRole('tab').count(), 2); assert.equal(await tabs.getByRole('tab',{name:'종목 리포트'}).getAttribute('aria-selected'), 'true');
     assert.equal(await page.locator('#sidebar .nav-floor-label').count(),0,'approved v204 sidebar has no floor headers');
     assert.deepEqual(await page.locator('#sidebar .group').evaluateAll(groups=>groups.map(group=>({group:group.dataset.color,views:[...group.querySelectorAll('.group-body .nav-btn')].map(button=>button.dataset.view)}))),[
-      {group:'office',views:['intake','agentReview','monthlyReport','organization','board']},
+      {group:'office',views:['intake','agentReview','monthlyReport','organization','ilbo','board']},
       {group:'finance',views:['investment','investmentCommittee','investmentIntake','asset','ledger','newsroom']},
       {group:'health',views:['diet','exercise']},{group:'growth',views:['reading','study','university','certificate']},
       {group:'life',views:['wishlist','travel','movie','game','diary']},{group:'work',views:['tasks','calendar','drive']},

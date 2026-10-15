@@ -63,7 +63,8 @@ async function usableAccessToken(admin: ReturnType<typeof createClient>, userId:
   if (error) throw new Error("CONNECTION_FAILED");
   return access;
 }
-async function scopeRequired(req: Request, admin: ReturnType<typeof createClient>, userId: string) {
+async function scopeRequired(req: Request, admin: ReturnType<typeof createClient>, userId: string, reason = "") {
+  if (reason) console.log(`hani-google-drive scope_required reason=${reason}`);
   const { clientId } = googleSecrets();
   const state = `${crypto.randomUUID()}${crypto.randomUUID().replaceAll("-", "")}`;
   const { error } = await admin.from("hani_google_calendar_oauth_states").insert({ state, user_id: userId, expires_at: new Date(Date.now() + 10 * 60 * 1000).toISOString() });
@@ -71,7 +72,7 @@ async function scopeRequired(req: Request, admin: ReturnType<typeof createClient
   // The unchanged Calendar callback already handles this exact state row and
   // stores the granted scopes. No purpose column or second callback is needed.
   const qs = new URLSearchParams({ client_id: clientId, redirect_uri: `${env("SUPABASE_URL").replace(/\/$/, "")}/functions/v1/hani-google-calendar/callback`, response_type: "code", scope: `${CALENDAR_SCOPE} ${DRIVE_SCOPE}`, include_granted_scopes: "true", access_type: "offline", prompt: "consent", state });
-  return json(req, { ok: false, code: "DRIVE_SCOPE_REQUIRED", authUrl: `https://accounts.google.com/o/oauth2/v2/auth?${qs}`, message: "Google Drive 읽기 권한을 연결해 주세요." }, 409);
+  return json(req, { ok: false, code: "DRIVE_SCOPE_REQUIRED", authUrl: `https://accounts.google.com/o/oauth2/v2/auth?${qs}`, reason, message: "Google Drive 읽기 권한을 연결해 주세요." + (reason ? ` (확인 코드: ${reason})` : "") }, 409);
 }
 function literal(value: string) { return value.replace(/\\/g, "\\\\").replace(/'/g, "\\'"); }
 
@@ -102,10 +103,14 @@ Deno.serve(async (req: Request) => {
     const admin = createClient(env("SUPABASE_URL"), secretKey(), { auth: { persistSession: false, autoRefreshToken: false } });
     const { data: connection, error } = await admin.from("hani_google_calendar_connections").select("*").eq("user_id", user.id).maybeSingle();
     if (error) throw new Error("CONNECTION_FAILED");
-    if (action === "oauth_start" || !connection?.refresh_token_enc || !Array.isArray(connection.scopes) || !connection.scopes.includes(DRIVE_SCOPE)) return await scopeRequired(req, admin, user.id);
+    // Diagnostic reason codes carry no token data; they tell 대표님/서윤 which step failed.
+    const scopeList = Array.isArray(connection?.scopes) ? connection.scopes : typeof connection?.scopes === "string" ? String(connection.scopes).split(/[\s,{}"\[\]]+/).filter(Boolean) : [];
+    if (action === "oauth_start") return await scopeRequired(req, admin, user.id, "START");
+    if (!connection?.refresh_token_enc) return await scopeRequired(req, admin, user.id, "NO_CONNECTION");
+    if (!scopeList.includes(DRIVE_SCOPE)) return await scopeRequired(req, admin, user.id, `NO_DRIVE_SCOPE_${typeof connection.scopes}_${scopeList.length}_${scopeList.some((s: string) => s.includes("calendar")) ? "CAL" : "NOCAL"}`);
     let access;
     try { access = await usableAccessToken(admin, user.id, connection); }
-    catch (e) { if (e instanceof Error && e.message === "RECONNECT") return await scopeRequired(req, admin, user.id); throw e; }
+    catch (e) { if (e instanceof Error && e.message === "RECONNECT") return await scopeRequired(req, admin, user.id, "TOKEN_REFRESH"); throw e; }
     const qs = new URLSearchParams();
     let path = "files";
     if (action === "status") { path = "about"; qs.set("fields", "user(displayName,emailAddress)"); }
@@ -120,7 +125,7 @@ Deno.serve(async (req: Request) => {
     }
     const res = await fetch(`https://www.googleapis.com/drive/v3/${path}?${qs}`, { headers: { Authorization: `Bearer ${access}` } });
     const data = await res.json().catch(() => ({}));
-    if (res.status === 401 || (res.status === 403 && data?.error?.errors?.some((e: any) => e.reason === "insufficientPermissions"))) return await scopeRequired(req, admin, user.id);
+    if (res.status === 401 || (res.status === 403 && data?.error?.errors?.some((e: any) => e.reason === "insufficientPermissions"))) return await scopeRequired(req, admin, user.id, `GOOGLE_${res.status}`);
     if (!res.ok) return json(req, { ok: false, code: res.status === 403 ? "DRIVE_FORBIDDEN" : res.status === 429 ? "DRIVE_RATE_LIMIT" : "DRIVE_REQUEST_FAILED" }, res.status === 429 ? 429 : 502);
     if (action === "status") return json(req, { ok: true, connected: true, accountHint: String(data.user?.emailAddress || data.user?.displayName || "Google 계정") });
     // Never forward upstream bodies wholesale, even on a successful response.

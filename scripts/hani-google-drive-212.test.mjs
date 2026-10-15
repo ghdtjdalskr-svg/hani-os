@@ -67,7 +67,7 @@ test('server: missing connection/scope and explicit reconnect use the unchanged 
 test('server: generated Drive state is accepted by the deployed Calendar callback; grants and refresh format remain compatible',async()=>{
   const s=await server({connection:{scopes:[calScope]}}),r=await s.request();const state=new URL(r.body.authUrl).searchParams.get('state');
   s.run(calendar.toString());const callback=await s.request({},null,'GET',s.env.SUPABASE_URL+'/functions/v1/hani-google-calendar/callback?state='+state+'&code=synthetic-code');
-  assert.equal(callback.status,200);assert.match(callback.body,/HANI_GOOGLE_CALENDAR_CONNECTED/);
+  assert.equal(callback.status,302);assert.equal(callback.body,'');assert.equal(callback.headers.get('location'),'https://ghdtjdalskr-svg.github.io/hani-os/?google=connected');
   const row=s.db.find(x=>x.operation==='upsert');assert.deepEqual(plain(row.payload.scopes),[calScope,scope]);assert.ok(row.payload.refresh_token_enc.includes('.'));assert.ok(row.payload.access_token_enc.includes('.'));assert.equal(row.payload.calendar_id,'primary');assert.ok(s.db.some(x=>x.table==='hani_google_calendar_oauth_states'&&x.operation==='delete'));
 });
 test('server: list root/folder/pageToken, name/fullText escaping, recent 20 and exact projection',async()=>{
@@ -130,11 +130,12 @@ test('client: popup opens synchronously, validates auth URL and requires the mat
   b.setMode('success');b.listeners.message({origin:'https://edge.example.test',source:popup,data:{type:'HANI_GOOGLE_CALENDAR_CONNECTED'}});await new Promise(done=>setTimeout(done,0));assert.equal(b.run('googleDriveRuntime.connected'),true);assert.equal(b.calls.length,before+2);
   b.context.window.open=()=>null;await b.run('googleDriveConnect()');assert.match(b.el('[data-gdrive-notice]').textContent,/차단/);assert.deepEqual(b.writes,[]);
 });
-test('safety: deployed Calendar bytes, unique DOM IDs, memory-only client and untouched data/version contract',()=>{
-  assert.equal(createHash('sha256').update(calendar).digest('hex'),'f9229ac0418708632058445cf6ef28ec88c4da467837a471a3de34f3d56b7d01');
+test('safety: Calendar core bytes, unique DOM IDs, memory-only client and untouched data/version contract',()=>{
+  const core=calendar.toString().replace(/function (?:escapeHtml|callbackRedirect)\([\s\S]*?(?=function b64\()/,'').replace(/^      return (?:html\(callbackHtml|callbackRedirect)\(.*\r?$/gm,'      return CALLBACK_RESPONSE;');
+  assert.equal(createHash('sha256').update(core).digest('hex'),'2a6fb8aec3afa3a876781e8af4a06e1065db6897d8e935622039099003aaaf84','Calendar auth, token encryption and database logic unchanged outside callback response');
   const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8'),ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);assert.equal(ids.length,new Set(ids).size);
   assert.doesNotMatch(client,/localStorage|sessionStorage|\.clear\s*\(|\bcommit\s*\(|\bsave\s*\(|id=["']/);assert.doesNotMatch(edge,/\.clear\s*\(|\.from\("(?!hani_google_calendar_)/);
-  assert.match(html,/hani-main\.js\?v=2\.9\.211/);assert.match(html,/hani-ui-v02992\.js\?v=2\.9\.211/);
+  assert.match(html,/hani-main\.js\?v=2\.9\.212/);assert.match(html,/hani-ui-v02992\.js\?v=2\.9\.212/);
 });
 test('client: the existing five theme tokens used for Drive metadata meet nominal AA on its panel/raised surfaces',()=>{
   const css=fs.readFileSync(new URL('../hani-design-system.css',import.meta.url),'utf8');
