@@ -20,7 +20,7 @@ for(const member of roster.people){
   assert.equal(h.personaMode(member.id,{category:"LOUNGE",pinned:true}),s.publicMode);
   assert.equal(h.personaMode(member.id,{category:"LIFE",title:"공지"}),s.publicMode);
 }
-assert.equal(h.staffAddress("hina","hani",{category:"LOUNGE"}),"하니 언니");
+assert.equal(h.staffAddress("hina","hani",{category:"LOUNGE"}),"하니 전무님");
 assert.equal(h.staffAddress("hani","hina",{category:"WORK"}),"히나");
 for(const category of ["WORK","LIFE","LOUNGE","MEMORY"]){
   assert.match(h.staffAddress("sua","seongmin",{category},1),/^(회장님|대표님)$/);
@@ -33,14 +33,13 @@ for(const member of roster.people){
   for(let i=0;i<500;i++){
     const casual={category:i%2?"LOUNGE":"LIFE",title:"쉬는 시간",body:"함께 이야기해요"};
     const address=h.staffAddress(member.id,"seongmin",casual,i,history);
-    if(address==="오빠")assert.ok(allowed.includes(member.id));
+    assert.match(address,/^(회장님|대표님)$/);
     history.push({authorId:member.id,toOwner:true,address});
     for(const post of [{category:"WORK"},{category:"MEMORY"},{category:"LIFE",pinned:true},{category:"LOUNGE",title:"투자 이야기"},{category:"LIFE",body:"공지"}])
       assert.notEqual(h.staffAddress(member.id,"seongmin",post,i,history),"오빠");
   }
   const count=history.filter(c=>c.address==="오빠").length;
-  assert.ok(count/history.length<=.15);
-  assert.equal(count>0,allowed.includes(member.id),member.id+" occasional casual address");
+  assert.equal(count,0,member.id+" never generates kinship terms");
 }
 const now=Date.parse("2026-10-10T01:00:00Z");
 const post={id:"seed-topic",authorId:"seongmin",category:"WORK",title:"회귀 테스트와 버그",body:"재현과 검증을 같이 해요",createdAt:new Date(now).toISOString()};
@@ -98,6 +97,6 @@ const root={querySelector:s=>slots.get(s.match(/data-board="([^"]+)"/)?.[1])||nu
 context.document.getElementById=id=>id==="board"?root:null;
 api.setState({...state,boardPosts:[{...post,authorId:"mir"}],boardComments:[]});
 vm.runInContext(fs.readFileSync(new URL("../hani-board.js",import.meta.url),"utf8"),context);
-assert.ok(slots.get("list").innerHTML.includes("MIR · AI ENTITY"),"MIR rendered title replaces rank");
+assert.ok(slots.get("list").innerHTML.includes("미르 · AI ENTITY"),"MIR rendered title replaces rank");
 assert.ok(!slots.get("list").innerHTML.includes("MIR · Native Intelligence"));
 console.log("PASS: seed personas/modes, relation nickname, chairman address, six-person/category oppa gate, scoring/avoid/relevance, callbacks, read-only preview, MIR rendered label");

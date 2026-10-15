@@ -155,7 +155,7 @@ reset();api.setState({...fresh(),boardPosts:[...fresh().boardPosts,...["seongmin
 api.recovery.active=true;vm.runInContext(board,context);const ui=context.window.HaniBoard;ui.openPost("hani");
 for(const slot of slots.values())assert.ok(!/\[사내 세계관 이야기\]|\[기록 기반 초안\]|에 관한 제 생각\s*:|#1\s*·|<script>|<img src=x/.test(slot.innerHTML));
 assert.ok(slots.get("article").innerHTML.includes("&lt;script&gt;"));assert.ok(slots.get("comments").innerHTML.includes("&lt;img"));
-for(const [id,label] of [["seongmin","성민 · 회장 · HANI GROUP"],["hani","하니 · 전무 · 전략기획실"],["mir","MIR · AI ENTITY · 전략기획실"]]){
+for(const [id,label] of [["seongmin","성민 · 회장 · HANI GROUP"],["hani","하니 · 전무 · 전략기획실"],["mir","미르 · AI ENTITY · 전략기획실"]]){
   assert.ok(slots.get("list").innerHTML.includes('title="'+label+'"'),id);ui.openPost(id);assert.ok(slots.get("article").innerHTML.includes('aria-label="'+label+' 소개"'),id);
   assert.ok(slots.get("article").innerHTML.includes('href="#organization/people/'+id+'"'),id+' author profile link');
 }

@@ -34,7 +34,7 @@ const server=http.createServer((req,res)=>{const pathname=decodeURIComponent(new
       window.mockMarketStorage={from:()=>({download:async path=>({data:new Blob([JSON.stringify(files[path])])})})};
     },cacheOhlc);
     if(!cacheMode)await page.evaluate(()=>document.querySelector('meta[name="hani-market-cache"]')?.remove());
-    await page.evaluate(()=>{unlockLoginGate();cloudClient={auth:{getSession:async()=>({data:{session:{access_token:'test-session',user:{id:'fixture'}}}})},storage:window.mockMarketStorage};showView('asset');});
+    await page.evaluate(()=>{unlockLoginGate();cloudClient={auth:{getSession:async()=>({data:{session:{access_token:'test-session',user:{id:'fixture'}}}})},storage:window.mockMarketStorage};cloudUser={id:'fixture'};activateInvestmentStocks();});
     await page.locator('#marketStatus').filter({hasText:cacheMode?'PC 마지막 수집':'응답 정상'}).waitFor();await page.locator('#marketChart svg').waitFor();
     if(cacheMode)assert.match(await page.locator('#marketStatus').innerText(),/실시간 아님/);
     assert.match(await page.locator('#marketSummary').innerText(),/288,000/);assert.match(await page.locator('#marketCoverage').innerText(),/2\/3/);
@@ -82,7 +82,7 @@ const server=http.createServer((req,res)=>{const pathname=decodeURIComponent(new
     assert.equal(await page.evaluate(()=>{
       const svg=document.querySelector('#marketChart svg'),rect=svg.querySelector('clipPath rect');
       const left=Number(rect.getAttribute('x')),top=Number(rect.getAttribute('y')),right=left+Number(rect.getAttribute('width')),bottom=top+Number(rect.getAttribute('height'));
-      for(const label of svg.querySelectorAll('.market-y-tick')){const b=label.getBBox();if(b.x<0||b.x+b.width>left-5)return false;}
+      for(const label of svg.querySelectorAll('.market-y-tick')){const b=label.getBBox();if(b.x<right+2||b.x+b.width>svg.viewBox.baseVal.width)return false;}
       for(const label of svg.querySelectorAll('.market-x-tick')){const b=label.getBBox();if(b.y<bottom+5)return false;}
       for(const path of svg.querySelectorAll('.market-price-line,.market-average')){const b=path.getBBox();if(b.x<left+3||b.x+b.width>right-3||b.y<top||b.y+b.height>bottom||!path.parentElement.hasAttribute('clip-path'))return false;}
       return true;

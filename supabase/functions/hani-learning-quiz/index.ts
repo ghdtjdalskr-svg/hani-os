@@ -175,6 +175,8 @@ function newsSourceChecks(question: any, source: any) {
     briefing_label: source.material !== 'macro' || containsNewsText(question?.prompt, '[저장된 브리핑 요약]'),
     source_id: containsNewsText(question?.explanation, `[${source.source_id}]`),
     source_url: String(question?.explanation || '').includes(source.source_url),
+    explanation_date: containsNewsText(question?.explanation, source.published_at.slice(0,10)),
+    explanation_source_name: containsNewsText(question?.explanation, source.source_name),
   };
 }
 function newsMaterialCount(questions: any[], sources: any[]) {
@@ -197,7 +199,9 @@ function canonicalNewsContext(question: any, sources: any[]) {
   const briefing = source.material === 'macro';
   const prefix = `[실제 뉴스 · 자료 기준일 ${source.published_at.slice(0,10)}]\n${source.title}\n출처: ${source.source_name}${briefing ? ' · 브리핑 대표 참고출처 · 단일 기사 요약 아님' : ''}\n${briefing ? '[저장된 브리핑 요약]' : '[뉴스 요약]'} ${source.summary.slice(0,260)}\n[질문] ${focus}`;
   if (prefix.length > 1200) return question;
-  return { ...question, prompt: prefix };
+  const citation = `${source.source_name} · 자료 기준일 ${source.published_at.slice(0,10)}`;
+  return { ...question, prompt: prefix, explanation: checks.explanation_date && checks.explanation_source_name
+    ? explanation : `${explanation}\n${citation}` };
 }
 
 // Return only validation flags, never credentials, source bodies or user records.
@@ -212,10 +216,28 @@ function newsMaterialDiagnostics(questions: any[], sources: any[]) {
   });
 }
 
+function projectFocusAreas(project: Record<string, unknown> = {}) {
+  const focus = project.focus_areas || project.focusAreas;
+  return Array.isArray(focus) ? focus.slice(0,12).map(x => String(x || '').trim()).filter(Boolean)
+    : String(project.goal || '').split(/[·,\/]/).map(x => x.trim()).filter(Boolean).slice(0,12);
+}
+function effectiveProjectCategory(project: Record<string, unknown> = {}) {
+  const category = String(project.category || '').trim().toLowerCase();
+  if (category && category !== 'other') return category;
+  const description = [project.name, project.goal, ...projectFocusAreas(project)].join(' ').normalize('NFKC');
+  return /경제|주식|금융|거시|시장해석|기업\s*뉴스|기업\s*소식|econom(?:y|ics)|stock|finance/i.test(description) ? 'economy' : category || 'other';
+}
+function hasNewsFocus(project: Record<string, unknown> = {}) {
+  return projectFocusAreas(project).some(value => /경제\s*뉴스|기업\s*뉴스|시사|주식\s*[·/ㆍ&-]?\s*기업|시장\s*해석|current\s*issue|company\s*news/i.test(value));
+}
+function usesBasicNewsBalance(project: Record<string, unknown> = {}) {
+  return isBasicEconomyProject(project) && !hasNewsFocus(project);
+}
+
 function isBasicEconomyProject(project: Record<string, unknown>) {
   const level = cleanText(project.level, 60) || cleanText(project.difficulty, 60);
   const description = level || [cleanText(project.name,120), cleanText(project.goal,800), ...cleanTextList(project.focus_areas,12,80)].join(' ');
-  return project.category === 'economy' && /기초|\bbasic\b|\bbeginner\b/i.test(description);
+  return effectiveProjectCategory(project) === 'economy' && /기초|\bbasic\b|\bbeginner\b/i.test(description);
 }
 function newsBalance(quizSize: number, sourceCount: number, category: string, requestedMinimum: unknown, basicLevel: boolean) {
   const maximum = basicLevel ? Math.floor(quizSize / 4) : quizSize;
@@ -300,10 +322,10 @@ Deno.serve(async (req) => {
   const body = asObject(await req.json().catch(() => ({}))); const project = asObject(body.project); const feedback = asObject(body.generation_feedback);
   const projectName = cleanText(project.name, 120);
   if (!projectName) return json({ ok:false, error:"PROJECT_REQUIRED", message:"학습 프로젝트 이름이 필요합니다." }, 400);
-  const category = cleanText(project.category, 60).toLowerCase();
-  const basicLevel = isBasicEconomyProject({ ...project, category });
+  const category = effectiveProjectCategory(project);
+  const basicLevel = usesBasicNewsBalance({ ...project, category });
   const targetLevel = jlptTargetLevel(project);
-  const focusAreas = cleanTextList(project.focus_areas, 12, 80);
+  const focusAreas = cleanTextList(projectFocusAreas(project), 12, 80);
   const quizSize = boundedInteger(project.quiz_size, 20, 1, 20);
   const attempt = boundedInteger(feedback.attempt, 1, 1, 12);
   const requestedCount = boundedInteger(feedback.requested_count, quizSize, 1, 20);
@@ -327,7 +349,12 @@ Deno.serve(async (req) => {
       && Number.isFinite(stamp) && stamp <= Date.now() && Date.now()-stamp <= 21*86400000; } catch (_) { return false; }
   }));
   const balance = newsBalance(quizSize, sources.length, category, asObject(body.engine_contract).news_material_minimum, basicLevel);
-  const newsMinimum = balance.minimum;
+  // Explicit news/company focus cannot disable the initial quota with a zero contract.
+  // Refill batches may request only the remaining deficit after accepted questions.
+  const newsMinimum = category === 'economy' && sources.length && hasNewsFocus(project) && !acceptedPrompts.length
+    ? Math.max(balance.minimum, Math.ceil(quizSize / 3)) : balance.minimum;
+  if (category === 'economy' && hasNewsFocus(project) && !sources.length)
+    return json({ok:false,error:'QUIZ_NEWS_SOURCES_UNAVAILABLE',message:'최근 21일 내 출처가 확인된 뉴스가 없습니다. 뉴스룸을 갱신한 뒤 다시 생성해 주세요.',db_write:false,hani_state_touched:false},422);
   const weaknessQuestionCount = Math.max(1, Math.min(8, Math.round(quizSize * 0.33)));
   const weaknesses = (Array.isArray(body.weaknesses) ? body.weaknesses : []).slice(0, 12).map((raw: any) => ({
     type: cleanText(raw?.type, 80), topic: cleanText(raw?.topic, 100), wrong_count: Math.max(1, Math.min(20, Number(raw?.wrong_count || 1))), question: cleanText(raw?.question, 260),

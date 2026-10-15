@@ -226,7 +226,11 @@ test('canonical final copy/import/render paths stay memory-only, then existing m
  dialog.querySelector('[data-ic-final]').value='```json\n'+finalText(h.state.investmentResearchCards)+'\n```';
  await h.click('parse-final');assert.equal(dialog.open,false);
  const html=h.host.querySelector('.ic-list').innerHTML;
- assert.equal([...html.matchAll(/class="ic-second-opinion ic-final-opinion"/g)].length,2);
+ assert.equal([...html.matchAll(/class="ic-final-opinion"/g)].length,2);
+ assert.equal([...html.matchAll(/class="ic-review-summary"/g)].length,2);
+ assert.equal([...html.matchAll(/class="ic-review-details"/g)].length,2);
+ assert.match(html,/ic-review-clamp/);
+ assert.match(html,/반영 1/);assert.match(html,/기각 1/);
  assert.match(html,/ic-final-rating">유지/);assert.match(html,/ic-final-rating">하향/);
  assert.equal([...html.matchAll(/class="ic-final-changed"/g)].length,1);
  assert.match(html,/하니 최종 의견 \(대표님 채팅에서 받은 답\)/);assert.match(html,/환율 &lt;반영>/);assert.match(html,/공시 근거 &lt;script>/);

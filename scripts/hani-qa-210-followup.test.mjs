@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import path from 'node:path';
+import {pathToFileURL} from 'node:url';
 import {api,handlers as h,context,roster,plain,inspection} from './hani-board.test.mjs';
 
 const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
@@ -121,7 +123,7 @@ test('book AI dystopia fear gets reassuring playful book replies and never gener
   for(let round=0;round<25;round++){
     const replies=h.ownerReactions(post,{id:'fear',authorId:roster.chairman.id,body:'AI 디스토피아가 너무 무서워 ㅋㅋ'},[],round);
     assert.ok(replies.length>=1);
-    for(const row of replies){assert.equal(row.intent,'fear');assert.equal(row.topic,'book');assert.match(row.body,/책/);assert.match(row.body,/확정된 미래는 아니|가정과 확인된 사실/);assert.match(row.body,/봉인|책갈피/);assert.doesNotMatch(row.body,/공부|학습|시험/);}
+    for(const row of replies){assert.equal(row.intent,'fear');assert.equal(row.topic,'book');assert.match(row.body,/책/);assert.match(row.body,/미래는 아니|좋아했던 대목|같이 들어볼게요/);assert.doesNotMatch(row.body,/확인된 사실|단정하지|지어내/);assert.match(row.body,/봉인|책갈피/);assert.doesNotMatch(row.body,/공부|학습|시험/);}
   }
 });
 test('chairman vocative is stripped only for its mention chip, stored text/middle address survive',()=>{
@@ -163,7 +165,7 @@ test('Yuna Vision preserves explicit human title order through saveData with con
 });
 
 test('versions, cache tags, protected writes, ids and retained mixed EOL match frozen HEAD export',()=>{
-  const dir=new URL('../.ai-budget-private/qa210/followup-base/',import.meta.url);
+  const dir=process.argv[2]?pathToFileURL(path.resolve(process.argv[2])+path.sep):new URL('../.ai-budget-private/qa210/followup-base/',import.meta.url);
   for(const file of ['hani-study-v02984.js','hani-board.js','hani-main.js','hani-yuna-helpdesk.js']){
     const old=fs.readFileSync(new URL(file,dir),'utf8'),now=read(file);
     for(const pattern of [/\b2\.9\.\d+(?:-[\w.-]+)?\b/g,/\?v=[^\s"'<>]+/g,/\b(?:commit|save|writeProtectedState|localStorage\.(?:setItem|removeItem|clear))\([^)]*\)/g,/\bid\s*=\s*["']([\w-]+)["']/g,/\.clear\(/g])assert.deepEqual(now.match(pattern),old.match(pattern),file+' invariant '+pattern);

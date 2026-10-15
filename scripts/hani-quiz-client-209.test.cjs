@@ -17,7 +17,7 @@ function fixture({newsCount=5, retry=false, noSources=false, nearNews=false}={})
     return {type:isNews?'Cause & Effect':'Definition',topic:prompt, difficulty:'easy',
       prompt:isNews?`[실제 뉴스 · 자료 기준일 ${s.published_at.slice(0,10)}]\n${s.title}\n출처: ${s.source_name}\n[뉴스 요약] ${s.summary.slice(0,260)}\n[질문] ${prompt}`:prompt,
       choices:['정확한 설명','반대 설명','무관한 설명','보장된 수익'],answer_index:0,
-      explanation:isNews?`동결은 기준금리가 유지된다는 뜻입니다. [${s.source_id}] ${s.source_url}`:'핵심 개념을 확인합니다. 다른 조건이 일정할 때 적용합니다.'};
+      explanation:isNews?`동결은 기준금리가 유지된다는 뜻입니다. [${s.source_id}] ${s.source_name} · ${s.published_at.slice(0,10)} · ${s.source_url}`:'핵심 개념을 확인합니다. 다른 조건이 일정할 때 적용합니다.'};
   });
   let handler, modelBody;
   const server=vm.createContext({URL,Request,Response,Date,console,
@@ -89,10 +89,12 @@ test('basic excess-news responses cannot fill the set, including fallback; state
   const f=fixture({nearNews:true});await assert.rejects(f.api.quizApi(basic),/유효한 문제|뉴스/);
   assert.equal(f.requests.length,8);assert.equal(JSON.stringify(f.state),f.before);
 });
-test('no sources and JLPT still work; rendered guide reflects basic versus other levels',async()=>{
+test('no sources warn before generation, JLPT still works; guide reflects basic versus other levels',async()=>{
   for(const project of [basic,{...basic,category:'jlpt'}]){
-    const f=fixture({noSources:true});assert.equal((await f.api.quizApi(project)).length,20);
-    assert.equal(f.requests[0].engine_contract.news_material_minimum,0);assert.equal(JSON.stringify(f.state),f.before);
+    const f=fixture({noSources:true});
+    if(project.category==='economy') {await assert.rejects(f.api.quizApi(project),/뉴스가 없습니다/);assert.equal(f.requests.length,0);}
+    else {assert.equal((await f.api.quizApi(project)).length,20);assert.equal(f.requests[0].engine_contract.news_material_minimum,0);}
+    assert.equal(JSON.stringify(f.state),f.before);
   }
   const f=fixture();
   f.state.learningProjects=[basic];f.render();assert.match(f.node.innerHTML,/약 1\/4 이내/);assert.match(f.node.innerHTML,/핵심 개념.*약 1\/3 이상/);
