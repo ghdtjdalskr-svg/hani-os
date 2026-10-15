@@ -1,0 +1,73 @@
+/* Paper, rules and typography inherit HANI surfaces while keeping readable ink. */
+.ilbo-paper,.ilbo-home-card,.ilbo-archive,.ilbo-toolbar { --ilbo-ink:var(--text,#202638); --ilbo-note:color-mix(in srgb,var(--text,#202638) 82%,var(--panel,#fff)); color:var(--ilbo-ink); }
+.ilbo-paper { background:var(--panel,#fff); border:1px solid var(--line,#e8ebf2); padding:clamp(18px,3vw,42px); max-width:1140px; margin:auto; overflow-wrap:anywhere; }
+.ilbo-paper *,.ilbo-home-card * { min-width:0; box-sizing:border-box; }
+.ilbo-paper [hidden],.ilbo-home-card[hidden] { display:none !important; }
+.ilbo-masthead { border-top:5px solid currentColor; border-bottom:3px double currentColor; text-align:center; padding:17px 0 12px; }
+.ilbo-eyebrow { letter-spacing:.12em; font-size:11px; font-weight:750; color:var(--ilbo-note); line-height:1.6; }
+.ilbo-masthead h2 { font-family:Georgia,'Noto Serif KR',Batang,serif; font-size:clamp(30px,4.4vw,64px); letter-spacing:-.035em; margin:5px 0 15px; line-height:1.2; }
+.ilbo-masthead h2 span { display:inline-block; }
+.ilbo-meta { display:flex; justify-content:space-between; gap:12px; font-size:12px; flex-wrap:wrap; }
+.ilbo-lead { padding:25px 0; border-bottom:1px solid currentColor; }
+.ilbo-lead h3 { font-family:Georgia,'Noto Serif KR',Batang,serif; font-size:clamp(27px,3.4vw,46px); line-height:1.4; letter-spacing:-.04em; margin:8px 0 16px; text-wrap:balance; }
+.ilbo-lead p,.ilbo-story p { line-height:1.85; margin:10px 0; }
+.ilbo-lead small,.ilbo-note,.ilbo-meta,.ilbo-footer,.ilbo-list small { color:var(--ilbo-note); }
+.ilbo-front { display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1fr); padding:25px 0; gap:26px; }
+.ilbo-comic h3,.ilbo-numbers h3 { font-family:Georgia,'Noto Serif KR',Batang,serif; font-size:22px; line-height:1.5; margin:0 0 10px; }
+.ilbo-comic figure { margin:18px 0 0; }
+.ilbo-art { background:var(--panel2,#fafbff); border:1px solid var(--line,#e8ebf2); }
+.ilbo-art img { display:block; width:100%; height:auto; }
+.ilbo-placeholder { padding:34px 22px; min-height:220px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:10px; }
+.ilbo-placeholder>span { font-size:38px; }
+.ilbo-placeholder p { color:var(--ilbo-note); line-height:1.7; font-size:13px; margin:0; }
+.ilbo-captions { counter-reset:ilbo-row; padding:0; list-style:none; margin:0; }
+.ilbo-captions li { counter-increment:ilbo-row; display:grid; grid-template-columns:25px minmax(0,1fr); padding:12px 0; border-bottom:1px solid var(--line,#e8ebf2); font-size:14px; line-height:1.8; white-space:pre-line; }
+.ilbo-captions li::before { content:counter(ilbo-row,decimal-leading-zero); font-family:Georgia,serif; color:var(--ilbo-note); }
+.ilbo-numbers { border-left:1px solid var(--line,#e8ebf2); padding-left:26px; }
+.ilbo-tile { border-bottom:1px solid var(--line,#e8ebf2); padding:18px 0; }
+.ilbo-tile>span { font-size:13px; font-weight:700; }
+.ilbo-tile strong { display:block; font-family:Georgia,serif; font-size:clamp(26px,3vw,38px); line-height:1.5; font-variant-numeric:tabular-nums; }
+.ilbo-tile strong small { font-size:14px; margin-left:5px; }
+.ilbo-tile p { color:var(--ilbo-note); font-size:12px; line-height:1.7; margin:5px 0 0; }
+.ilbo-fold { border-top:1px solid currentColor; }
+.ilbo-fold summary { padding:18px 0; cursor:pointer; font-family:Georgia,'Noto Serif KR',Batang,serif; font-weight:750; font-size:18px; line-height:1.6; }
+.ilbo-fold-body { padding:0 0 22px; line-height:1.85; }
+.ilbo-interview dt { font-weight:800; margin-top:24px; }
+.ilbo-interview dd { margin:10px 0 0; white-space:pre-line; }
+.ilbo-columns { columns:2; column-gap:32px; column-rule:1px solid var(--line,#e8ebf2); }
+.ilbo-story { break-inside:avoid; margin-bottom:25px; }
+.ilbo-story h4 { font-family:Georgia,'Noto Serif KR',Batang,serif; font-size:19px; margin:8px 0; }
+.ilbo-fiction { display:inline-block; padding:2px 8px; border:1px solid currentColor; color:var(--ilbo-note); font-size:11px; }
+.ilbo-list { padding-left:22px; }
+.ilbo-list li { padding:10px 0; }
+.ilbo-list small,.ilbo-list time { display:block; font-size:12px; }
+.ilbo-fold blockquote { margin:16px 0; padding:10px 22px; border-left:3px solid currentColor; font-family:Georgia,'Noto Serif KR',Batang,serif; font-size:20px; }
+.ilbo-footer { border-top:3px double currentColor; padding-top:18px; text-align:center; font-size:12px; }
+.ilbo-toolbar { display:flex; justify-content:space-between; align-items:center; gap:12px; margin:0 auto 16px; max-width:1140px; flex-wrap:wrap; }
+.ilbo-archive { max-width:1140px; margin:24px auto; }
+.ilbo-archive .btn { margin:0 8px 10px 0; white-space:normal; }
+.ilbo-home-card { display:flex; align-items:center; justify-content:space-between; gap:16px; border:1px solid var(--line,#e8ebf2); border-left:4px solid var(--text,#202638); padding:18px 22px; margin-bottom:18px; background:var(--panel,#fff); flex-wrap:wrap; }
+.ilbo-home-card h3 { font-family:Georgia,'Noto Serif KR',Batang,serif; margin:5px 0; font-size:20px; }
+.ilbo-home-card p { margin:5px 0; color:var(--ilbo-note); line-height:1.7; }
+.ilbo-home-card small { color:var(--ilbo-note); }
+.ilbo-paper button,.ilbo-toolbar button,.ilbo-archive button,.ilbo-home-card button { color:var(--ilbo-ink); background:var(--panel,#fff); border:1px solid currentColor; }
+.ilbo-paper :focus-visible,.ilbo-toolbar :focus-visible,.ilbo-archive :focus-visible,.ilbo-home-card :focus-visible { outline:3px solid currentColor; outline-offset:4px; }
+.ilbo-draft { padding:12px; border:1px dashed currentColor; font-size:13px; line-height:1.7; }
+@media(max-width:600px) {
+  .ilbo-front { grid-template-columns:minmax(0,1fr); gap:24px; }
+  .ilbo-numbers { border-left:0; border-top:1px solid currentColor; padding:20px 0 0; }
+  .ilbo-columns { columns:1; }
+  .ilbo-paper { padding:18px; }
+  .ilbo-home-card { padding:16px; }
+}
+@media print {
+  body[data-view="ilbo"] { background:#fff !important; color:#111 !important; }
+  body[data-view="ilbo"] .side,body[data-view="ilbo"] .top,body[data-view="ilbo"] .ilbo-toolbar,body[data-view="ilbo"] .ilbo-archive,body[data-view="ilbo"] .page-hero,body[data-view="ilbo"] [data-design-slot] { display:none !important; }
+  body[data-view="ilbo"] .app { display:block !important; }
+  body[data-view="ilbo"] .main { padding:0 !important; }
+  .ilbo-paper { --panel:#fff; --panel2:#fff; --text:#111; --line:#aaa; --ilbo-ink:#111; --ilbo-note:#333; border:0; max-width:none; padding:0; font-size:11pt; }
+  .ilbo-front { grid-template-columns:minmax(0,2fr) minmax(0,1fr); }
+  .ilbo-fold,.ilbo-story,.ilbo-tile { break-inside:avoid; }
+  .ilbo-fold summary { list-style:none; }
+  .ilbo-placeholder { min-height:100px; }
+}
