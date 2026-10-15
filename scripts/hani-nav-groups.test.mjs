@@ -12,7 +12,7 @@ assert.ok(aside,"canonical sidebar");
 const views=text=>Array.from(text.matchAll(/data-view="([^"]+)"/g),m=>m[1]);
 const groups=Array.from(aside.matchAll(/<div class="group[^"]*" data-color="([^"]+)">([\s\S]*?)<\/div>\s*<\/div>/g),m=>[m[1],views(m[2])]);
 assert.deepEqual(groups,[
-  ["office",["intake","agentReview","monthlyReport","organization","board"]],
+  ["office",["intake","agentReview","monthlyReport","organization","ilbo","board"]],
   ["finance",["investment","investmentCommittee","investmentIntake","asset","ledger","newsroom"]],
   ["health",["diet","exercise"]],
   ["growth",["reading","study","university","certificate"]],
@@ -26,7 +26,7 @@ assert.equal(navViews.at(-1),"settings");
 assert.equal(new Set(navViews).size,navViews.length,"unique nav views");
 assert.deepEqual(views(aside.match(/<div class="side-bottom">([\s\S]*?)<\/div>/)[1]),["aura","settings"]);
 const office=aside.match(/data-color="office">([\s\S]*?)<\/div>\s*<\/div>/)[1];
-assert.deepEqual(Array.from(office.matchAll(/<span class="txt">([^<]+)<\/span>/g),m=>m[1]),["인포데스크","대표실","컨퍼런스 룸","회사 소개","하니 라운지"]);
+assert.deepEqual(Array.from(office.matchAll(/<span class="txt">([^<]+)<\/span>/g),m=>m[1]),["인포데스크","대표실","컨퍼런스 룸","회사 소개","하니일보","하니 라운지"]);
 assert.doesNotMatch(aside,/nav-floor-|data-go=/,"v204 sidebar structure restored");
 assert.match(aside,/data-view="investmentCommittee"[\s\S]*?<span class="txt">하니 투자 리포트<\/span>/);
 const pageMetaSource=main.match(/const pageMeta=\{[\s\S]*?\n\};/)[0];

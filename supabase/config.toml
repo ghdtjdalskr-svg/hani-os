@@ -1,2 +1,5 @@
 [functions.hani-google-drive]
 verify_jwt = true
+
+[functions.hani-lounge-ai]
+verify_jwt = true

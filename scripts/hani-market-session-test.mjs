@@ -15,13 +15,14 @@ test('diagnostics expose only unresolved names/codes and reason, never account o
 test('domestic ETF alphanumeric codes remain collectable and canonicalized',()=>{const sample=structuredClone(state);sample.investmentBrokerSnapshots[0].accounts[0].holdings=['0038A0','0064K0','0046Y0','A0091C0'].map(ticker=>({ticker}));assert.deepEqual(trackedSymbols(sample),{codes:['0038A0','0046Y0','0064K0','0091C0'],unresolved:0,holdingCount:4});});
 test('latest holding codes canonicalize, deduplicate and keep unresolved separate without changing state',()=>{const before=JSON.stringify(state);assert.deepEqual(trackedSymbols(state),{codes:['005930'],unresolved:2,holdingCount:4});assert.equal(JSON.stringify(state),before);});
 test('portfolio projects investment fields only; provider gets codes, cache has no private holdings',async()=>{
-  let saved=null,reads=0;const fetcher=async(url,options)=>{const u=new URL(url);let value;
+  let saved=null,reads=0;const charts=new Map();const fetcher=async(url,options)=>{const u=new URL(url);let value;
     if(u.pathname==='/auth/v1/user')value={id:uid,is_anonymous:false};
     else if(u.pathname==='/rest/v1/hani_state'){reads++;assert.equal(options.method,undefined);assert.equal(u.searchParams.get('user_id'),'eq.'+uid);assert.doesNotMatch(u.searchParams.get('select'),/\*/);value=[state];}
     else if(u.pathname==='/oauth2/token')value={access_token:'toss-only',expires_in:3600};
+    else if(u.pathname==='/api/v1/candles')value={result:{candles:[{timestamp:new Date(now).toISOString(),closePrice:72000,currency:'KRW'}]}};
     else if(u.pathname.startsWith('/api/v1/')){assert.equal(u.searchParams.get('symbols'),'005930');assert.equal(options.method,undefined);value={result:u.pathname.endsWith('stocks')?[{symbol:'005930',name:'삼성전자',market:'KOSPI',currency:'KRW'}]:[{symbol:'005930',currency:'KRW',lastPrice:72000,timestamp:new Date(now).toISOString()}]};}
-    else if(u.pathname.includes('/object/authenticated/'))return new Response(saved||'{"code":"NoSuchKey"}',{status:saved?200:404});
-    else if(u.pathname.includes('/object/hani-market-cache/')){assert.equal(options.method,'POST');saved=options.body;value={};}
+    else if(u.pathname.includes('/object/authenticated/')){const body=u.pathname.endsWith('latest.json')?saved:charts.get(u.pathname.split(uid+'/')[1]);return new Response(body||'{"code":"NoSuchKey"}',{status:body?200:404});}
+    else if(u.pathname.includes('/object/hani-market-cache/')){assert.equal(options.method,'POST');if(u.pathname.endsWith('latest.json'))saved=options.body;else charts.set(u.pathname.split(uid+'/')[1],options.body);value={};}
     else assert.fail('Unexpected URL');return new Response(JSON.stringify(value));
   };
   const tick=createPortfolioCollector({session:{...session,expires_at:now/1000+3600},toss:{clientId:'test',clientSecret:'test'}},{fetcher,now:()=>now,persistSession:async()=>{assert.fail('Unneeded refresh');}});

@@ -46,22 +46,11 @@ function cors(req: Request) {
 function json(req: Request, body: Json, status = 200) {
   return new Response(JSON.stringify(body), { status, headers: { ...JSON_HEADERS, ...cors(req) } });
 }
-function escapeHtml(value: string) {
-  return value.replace(/[&<>'"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[ch] || ch));
-}
-function callbackHtml(ok: boolean, message: string) {
-  const origin = appOrigin();
-  const safe = escapeHtml(message);
-  const type = ok ? "HANI_GOOGLE_CALENDAR_CONNECTED" : "HANI_GOOGLE_CALENDAR_ERROR";
-  return `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HANI Google Calendar</title><style>body{font-family:system-ui,-apple-system,sans-serif;background:#f7f8fc;color:#20283a;display:grid;place-items:center;min-height:100vh;margin:0}.card{max-width:460px;margin:24px;padding:28px;border:1px solid #e4e7ef;border-radius:20px;background:#fff;box-shadow:0 18px 50px rgba(25,35,65,.09)}h1{font-size:20px;margin:0 0 10px}p{line-height:1.6;color:#667085}b{color:${ok ? "#29735a" : "#b14f45"}}</style></head><body><div class="card"><h1>${ok ? "📅 Google Calendar 연결 완료" : "⚠️ Google Calendar 연결 확인 필요"}</h1><p><b>${safe}</b></p><p>이 창은 자동으로 닫힙니다. HANI OS로 돌아가 주세요.</p></div><script>try{window.opener&&window.opener.postMessage({type:${JSON.stringify(type)},message:${JSON.stringify(message)}},${JSON.stringify(origin)});}catch(e){}setTimeout(()=>window.close(),900);</script></body></html>`;
-}
-function html(body: string, status = 200) {
-  const headers = new Headers();
-  headers.set("Content-Type", "text/html; charset=UTF-8");
-  headers.set("Content-Language", "ko-KR");
-  headers.set("Cache-Control", "no-store");
-  headers.set("X-Content-Type-Options", "nosniff");
-  return new Response(new TextEncoder().encode(body), { status, headers });
+function callbackRedirect(ok: boolean, reason = "callback_failed") {
+  const target = new URL("/hani-os/", appOrigin());
+  target.searchParams.set("google", ok ? "connected" : "error");
+  if (!ok) target.searchParams.set("reason", reason === "access_denied" ? "access_denied" : "callback_failed");
+  return new Response(null, { status: 302, headers: { "Location": target.href, "Cache-Control": "no-store" } });
 }
 function b64(bytes: Uint8Array) {
   let s = "";
@@ -217,9 +206,9 @@ Deno.serve(async (req: Request) => {
       };
       const { error: upsertError } = await admin.from("hani_google_calendar_connections").upsert(row, { onConflict: "user_id" });
       if (upsertError) throw upsertError;
-      return html(callbackHtml(true, "연결이 완료되었습니다. HANI OS에서 마감 일정 동기화를 실행할 수 있어요."));
+      return callbackRedirect(true);
     } catch (e) {
-      return html(callbackHtml(false, e instanceof Error ? e.message : String(e)), 400);
+      return callbackRedirect(false, oauthError === "access_denied" ? "access_denied" : "callback_failed");
     }
   }
 

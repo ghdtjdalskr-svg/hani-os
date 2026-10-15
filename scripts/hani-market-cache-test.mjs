@@ -7,7 +7,7 @@ const stocks=[{symbol:'005930',name:'삼성전자',currency:'KRW',market:'KOSPI'
 const quotes=[{symbol:'005930',lastPrice:72000,currency:'KRW',timestamp:new Date(time).toISOString(),quantity:99}];
 function fixture(){let clock=time,calls=0,fail=false;const files=new Map();
   const source={stocks:async()=>stocks,prices:async()=>quotes,chart:async(_c,p)=>({result:[{timestamp:new Date(time).toISOString(),closePrice:72000,currency:'KRW'}],period:p,adjusted:false,interval:'1d',complete:true})};
-  const storage={readLatest:async()=>JSON.parse(files.get(uid+'/latest.json')||'null'),upload:async(path,body)=>{if(fail)return {error:true};files.set(path,body);return {};}};
+  const storage={readChart:async ref=>JSON.parse(files.get(uid+'/'+ref)),readLatest:async()=>JSON.parse(files.get(uid+'/latest.json')||'null'),upload:async(path,body)=>{if(fail)return {error:true};files.set(path,body);return {};}};
   const publish=createPublisher({source,storage,userId:uid,now:()=>clock});
   const getSession=async()=>({user:{id:uid},access_token:'synthetic'});
   const download=async path=>{calls++;if(!files.has(path))throw Error('missing');return new Blob([files.get(path)]);};

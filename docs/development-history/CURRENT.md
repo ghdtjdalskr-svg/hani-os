@@ -1,3 +1,11 @@
+# 2026-10-16 · AI 라운지 댓글 213 (Codex)
+
+`hani/ai-lounge-213` / base·HEAD `44e76816` (시작 GitHub main 일치). 새 owner-only JWT ON 함수와 기존 board 저장·timed reveal에 AI 댓글/회장님 답글 연결. 기존 설정 KST cap·QA-212 필터·template fallback·baseline/stale 보호. **신규12그룹·board/lounge/boardroom18파일·후속14·Cloud40·기존 owner/second18 및 실제 Edge1440/390 PASS. 미커밋·미push·미배포**, v212/cache/보호 owner/schema 유지. 실제 OpenAI·운영 owner·gateway/열차/운영 read-back 미검증. Notion 시작 카드 read-back 성공, 최종 갱신은 자동 승인 never 거절로 대기. [인수인계](handoffs/2026-10-16-ai-lounge-213.md). 아래 다른 담당 기록 보존.
+
+# 2026-10-16 · 하니일보 213 (Codex)
+
+hani/ilbo-213 / base 44e76816 (GitHub main 일치), v2.9.212 유지. 정적 창간호·민지 기자·만화 자리/8캡션·읽기 전용 지표·지난 호·홈 카드·인쇄 구현. 신규 실행9묶음·기존 메뉴/Board·표시추천조회7·Cloud-first40 PASS, hani-board.js 원문/저장/혼합 EOL 보존. **브라우저 spawn EPERM/추가 Edge 환경 정책 거절로 AA·가로넘침·412/884/1440 캡처 미검증.** 손상된 요청 문구 편집 초안, 새 runtime/JSON seed PR 필요. 미커밋·미push·버전/배포 없음. Notion 계획 생성/read-back 완료, 결과 append는 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-10-16-ilbo-213.md), [가상 Preview](../../artifacts/ilbo-213/preview.html). 아래 다른 담당 기록 보존.
+
 # 2026-10-15 · 라운지 QA-212 (Codex)
 
 hani/lounge-qa-212 / base·HEAD 4dea5f68 (GitHub main 일치). 메타 문구·전체 문장 중복·대표님 기록 주체/직원 자기 댓글 대상·친족/고아 호칭·한국어 표시 이름 수정. **300일 5,710사례·저장0·요청19파일 중17파일/57그룹 VM PASS, Boardroom2는 native Node/Git EPERM 차단.** 저장 글·댓글 원문/기존 save·Cloud·버전211/cache·EOL 보존. 미커밋·미push·미배포, 실제 Preview·열차 gate·운영 read-back 미검증. Notion append 자동 승인 검토 never 거절로 갱신 대기. [인수인계](handoffs/2026-10-15-lounge-qa-212.md), [샘플12개](../../artifacts/lounge-qa-212/samples.md). 아래 다른 담당 기록 보존.
