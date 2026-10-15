@@ -197,7 +197,9 @@
       parentId:old?commentFields(old).parentId:parentId,createdAt:old?.createdAt||new Date().toISOString()};
     const next=id?comments().map(c=>c.id===id?row:c):[...comments(),row];
     const queued=id?[]:queueReplies(posts().find(p=>p.id===postId),row,next,Date.now());
-    return persist(posts(),[...next,...queued]);
+    const saved=persist(posts(),[...next,...queued]);
+    if(saved&&!id&&loungeTransport())void requestLoungeAI(posts().find(p=>p.id===postId),"reply",row);
+    return saved;
   }
   function deleteOwn(kind,id){
     if(!canWrite(true))return false;
@@ -783,6 +785,86 @@
     if(!canWrite(true)||!["auto","review"].includes(mode))return false;
     return persist(settingsRow({replyMode:mode}),comments());
   }
+  // AI supplements the existing pending queue; persist/materialize still own all writes/reveals.
+  const loungeRequests=[];
+  const releaseLoungeRequest=key=>{const index=loungeRequests.indexOf(key);if(index>=0)loungeRequests.splice(index,1)};
+  const loungeTransport=()=>typeof cloudClient!=="undefined"&&typeof cloudClient?.functions?.invoke==="function";
+  const loungeQuota=(now=Date.now())=>{const q=boardSettings()?.loungeAI;return q?.day===dayKey(now)&&q.owner===cloudUser.id?count(q.count):0};
+  const loungeAvailable=now=>canWrite()&&loungeTransport()&&loungeQuota(now)<30;
+  const loungeToken=(post,source)=>JSON.stringify([post.id,post.title,post.body,post.authorId,post.category,!!post.pinned,source.id,source.body,source.parentId||""]);
+  function auditAIComments(post,rows,history,source=post){
+    if(!Array.isArray(rows))return [];
+    const used=new Set([post.title,post.body,...history.filter(c=>c.postId===post.id).map(c=>c.body)].flatMap(sentences).map(sentenceKey));
+    const accepted=[],mapped=new Map();
+    rows.slice(0,source===post?6:2).forEach((row,i)=>{
+      if(!row||!person(row.authorId)||row.authorId===actor()||typeof row.body!=="string")return;
+      const body=row.body,parts=sentences(body),keys=parts.map(sentenceKey);
+      if(!body.trim()||body!==body.trim()||Array.from(body).length>160||!/[가-힣]/.test(body)||metaPhrase.test(body)||kinship.test(body)||/^\s*(?:님|씨|아|야)\s*[,，]/.test(body))return;
+      if(!keys.length||keys.some(k=>!k||used.has(k))||new Set(keys).size!==keys.length)return;
+      if(source.id===post.id&&post.authorId!==actor()&&!post.ownerTied&&/(?:회장님|대표님)\s*[,，!]/.test(body))return;
+      if(/(?:저는|제가|나는|내가|전|내)\s*[^.!?\n]{0,35}(?:완독했|다 읽었|걸었|몸무게|체중은|달성했|마무리했|끝냈|봤어요|시청했)/.test(body))return;
+      let parentIndex=null;
+      if(row.parentIndex!==null){
+        parentIndex=mapped.get(row.parentIndex);const parent=accepted[parentIndex];
+        if(!Number.isInteger(row.parentIndex)||row.parentIndex>=i||!parent||parent.parentIndex!==null||parent.authorId===row.authorId)return;
+      }
+      if(!Number.isFinite(row.delayMinutes))return;
+      keys.forEach(k=>used.add(k));mapped.set(i,accepted.length);
+      accepted.push({authorId:row.authorId,body,parentIndex,delayMinutes:row.delayMinutes});
+    });
+    if(accepted.length>=3&&!accepted.some(c=>c.parentIndex!==null)){
+      const child=accepted.at(-1),parent=accepted.findIndex(c=>c!==child&&c.parentIndex===null&&c.authorId!==child.authorId);
+      if(parent<0)return [];child.parentIndex=parent;
+    }
+    return accepted;
+  }
+  async function requestLoungeAI(post,mode="thread",source=post,now=Date.now()){
+    const requestKey=mode+":"+source.id;
+    if(!loungeAvailable(now)||!published(post)||loungeRequests.includes(requestKey)||mode==="thread"&&post.aiThreadRequested)return false;
+    const owner=cloudUser.id,token=loungeToken(post,source),threadId=mode==="thread"?"library:"+post.id:"reply:"+source.id;
+    const targets=comments().filter(c=>c.postId===post.id&&c.threadId===threadId);
+    // Never rewrite a visible comment or a parent already referenced outside this batch.
+    if(targets.some(c=>!c.pending)||comments().some(c=>!targets.includes(c)&&targets.some(t=>t.id===c.parentId)))return false;
+    const staff=(roster()?.people||[]).map(p=>({id:p.id,name:displayName(p.id),rank:p.rank,team:p.team,
+      voice:[...(personaMap()[p.id]?.voice||[]).slice(0,2),personaMap()[p.id]?.commentStyle||p.line].filter(Boolean).join(" / ").slice(0,700)||"정중한 존댓말"}));
+    if(!staff.length)return false;
+    loungeRequests.push(requestKey);
+    const marked=mode==="thread"?posts().map(p=>p.id===post.id?{...p,aiThreadRequested:true}:p):posts();
+    const quota={owner,day:dayKey(now),count:loungeQuota(now)+1};
+    if(!persist(settingsRow({loungeAI:quota},marked,now),comments())){releaseLoungeRequest(requestKey);return false}
+    const history=visibleComments().filter(c=>c.postId===post.id).slice(-60);
+    const body={mode,post:{id:post.id,title:post.title,body:post.body,authorId:post.authorId,category:post.category,createdAt:post.createdAt},
+      comments:history.map(c=>({id:c.id,authorId:c.authorId,body:c.body,parentId:c.parentId||""})),staff,limit:mode==="thread"?4:2,
+      ...(mode==="reply"?{chairmanComment:{id:source.id,authorId:source.authorId,body:source.body,parentId:source.parentId||""}}:{})};
+    let timeout;
+    try{
+      // A hung invoke cannot strand the queue or block the UI indefinitely.
+      const result=await Promise.race([cloudClient.functions.invoke("hani-lounge-ai",{body}),new Promise(resolve=>{timeout=setTimeout(()=>resolve(null),25000)})]);
+      const current=posts().find(p=>p.id===post.id),currentSource=mode==="thread"?current:comments().find(c=>c.id===source.id);
+      if(!canWrite()||cloudUser.id!==owner||!current||!published(current)||!currentSource||currentSource.disposition||loungeToken(current,currentSource)!==token)return false;
+      const batch=comments().filter(c=>c.postId===post.id&&c.threadId===threadId);
+      if(batch.some(c=>!c.pending)||batch.length!==targets.length||batch.some(c=>!targets.some(t=>t.id===c.id)))return false;
+      const keep=comments().filter(c=>!batch.includes(c));
+      const rows=!result?.error&&result?.data?.ok?auditAIComments(current,result.data.comments,keep,currentSource):[];
+      if(!rows.length)return false; // Existing templates remain the error/cap/QA fallback.
+      const ids=rows.map(()=>uid()),at=Date.now(),delays=[];
+      const queued=rows.map((c,i)=>{
+        let delay=Math.max(mode==="reply"?1:2,Math.min(mode==="reply"?3:180,c.delayMinutes));
+        if(c.parentIndex!==null)delay=Math.max(delay,delays[c.parentIndex]);delays.push(delay);
+        return {id:ids[i],postId:post.id,authorId:c.authorId,body:c.body,parentId:mode==="reply"?(source.parentId||source.id):c.parentIndex!==null?ids[c.parentIndex]:"",
+          createdAt:new Date(at).toISOString(),scheduledAt:new Date(at+delay*60000).toISOString(),generated:true,ai:true,pending:true,threadId,aiContextToken:token,
+          ...(mode==="thread"?{libraryId:post.libraryId}:{}),sourceCommentId:mode==="reply"?source.id:"",replySourceId:source.id,
+          sourceToken:hash(JSON.stringify([source.id,source.authorId,source.body,post.title,post.category,!!post.pinned]))};
+      });
+      return persist(posts(),[...keep,...queued]);
+    }catch{return false}finally{if(timeout!==undefined)clearTimeout(timeout);releaseLoungeRequest(requestKey)}
+  }
+  const loungeThreadReady=(p,history,now)=>p?.libraryId&&p.generated&&published(p)&&!p.aiThreadRequested&&dayKey(Date.parse(p.publishedAt||p.scheduledAt||p.createdAt))===dayKey(now)&&!history.some(c=>c.postId===p.id&&c.threadId==="library:"+p.id&&!c.pending);
+  function requestPublishedAI(rows,now){
+    if(!loungeAvailable(now))return;
+    rows.filter(p=>loungeThreadReady(p,comments(),now)).forEach(p=>{void requestLoungeAI(p,"thread",p,now)});
+  }
+
   const mentionIds=body=>(roster()?.people||[]).filter(p=>{
     const names=[p.name,...p.name.split(" · ")];
     return names.some(name=>new RegExp("@"+name.replace(/[.*+?^$()|[\]\\]/g,"\\$&")+"(?=$|[\\s,.!?님]|[가-힣]+님)").test(body));
@@ -794,7 +876,7 @@
     if(history.some(c=>c.threadId===threadId))return [];
     const rows=loungeReactions(post,0,source,history),ids=rows.map(()=>uid());
     return rows.map((row,i)=>({...row,id:ids[i],postId:post.id,
-      createdAt:new Date(now).toISOString(),scheduledAt:new Date(now+ADDRESS_RULES.delays[i]*60000).toISOString(),
+      createdAt:new Date(now).toISOString(),scheduledAt:new Date(now+(loungeTransport()&&source.id!==post.id?1+i%3:ADDRESS_RULES.delays[i])*60000).toISOString(),
       parentId:Number.isInteger(row.parentIndex)?ids[row.parentIndex]:source.id===post.id?"":source.id,generated:true,threadId,pending:true,
       sourceCommentId:source.id===post.id?"":source.id,replySourceId:source.id,
       sourceToken:hash(JSON.stringify([source.id,source.authorId,source.body,post.title,post.category,!!post.pinned]))}));
@@ -1096,13 +1178,15 @@
   function materialize(nextPosts,nextComments,now,force=false){
     let changed=false,processed=0;const mode=nextPosts.find(p=>p.boardMeta&&p.authorId===actor())?.replyMode==="review"?"review":"auto";
     const next=nextComments.map(c=>{
+      const waiting=nextPosts.find(p=>p.id===c.postId);
+      if(c.libraryId&&!c.ai&&waiting&&published(waiting)&&(loungeRequests.includes("thread:"+waiting.id)||loungeThreadReady(waiting,nextComments,now)&&loungeAvailable(now)))return c;
       const due=new Date(c.scheduledAt).getTime();
       if(!c.pending||!Number.isFinite(due)||(!force||c.libraryId)&&due>now||processed>=replySafetyBound)return c;
       processed++;
       const post=nextPosts.find(p=>p.id===c.postId&&!p.disposition);
       if(post&&!published(post))return c;
       const source=c.sourceCommentId?nextComments.find(p=>p.id===c.sourceCommentId&&!p.disposition):post;
-      if(!post||!source||c.sourceToken!==undefined&&c.sourceToken!==hash(JSON.stringify([source.id,source.authorId,source.body,post.title,post.category,!!post.pinned]))){
+      if(!post||!source||c.ai&&c.aiContextToken!==loungeToken(post,source)||c.sourceToken!==undefined&&c.sourceToken!==hash(JSON.stringify([source.id,source.authorId,source.body,post.title,post.category,!!post.pinned]))){
         changed=true;return {...c,pending:false,draft:true,disposition:"stale"}; // Preserve history, retire outdated replies.
       }
       changed=true;const date=new Date(force&&!c.libraryId?now:due).toISOString();
@@ -1125,9 +1209,10 @@
       queued=[...queued,...publicationReplies(post,next,queued,now)];
     const arrivals=materialize(next,queued,now,force);
     const viewedPosts=opening&&viewChange(opening,arrivals.posts,arrivals.comments,now);
-    if(!cleaned.changed&&next.length===posts().length&&!postArrived&&!arrivals.changed&&!viewedPosts)return false;
+    if(!cleaned.changed&&next.length===posts().length&&!postArrived&&!arrivals.changed&&!viewedPosts){requestPublishedAI(posts(),now);return false}
     const saved=persist(viewedPosts||arrivals.posts,arrivals.comments);
     if(saved&&viewedPosts)rememberView(opening);
+    if(saved)requestPublishedAI(posts(),now);
     return saved;
   }
   function renderBoard(){
@@ -1180,7 +1265,9 @@
     if(kind==="post"&&action==="publish")
       nextComments=[...nextComments,...publicationReplies(nextPosts.find(p=>p.id===id),nextPosts,nextComments,now)];
     nextPosts=applyStaffVotes(nextPosts,nextComments);
-    return persist(nextPosts,nextComments);
+    const saved=persist(nextPosts,nextComments);
+    if(saved&&kind==="post"&&action==="publish")requestPublishedAI(posts(),now);
+    return saved;
   }
   function votePoll(id,option){
     if(!canWrite(true))return false;
