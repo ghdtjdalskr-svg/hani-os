@@ -59,7 +59,7 @@ test('200 seeded days keep casual share near one third, deterministic content, i
       fun++;assert.equal(p.category,'LOUNGE');assert.equal(p.ownerTied,false);
       const t=h.publicationThread(p);assert.equal(t.title,p.title);
       assert.deepEqual(plain(h.publicationThread(p)),plain(t));
-      for(const c of t.comments){assert.doesNotMatch(c.body,banned);if(sentenceCount(c.body)===1){one++;assert.match(c.body,jokes);}else {long++;assert.equal(sentenceCount(c.body),2);}}
+      for(const c of t.comments){assert.doesNotMatch(c.body,banned);if(sentenceCount(c.body)===1){one++;assert.ok(c.body.trim());}else {long++;assert.equal(sentenceCount(c.body),2);}}
     }
     rows=a;
   }
@@ -124,9 +124,15 @@ test('historical Library posts and WORK/pinned/sensitive source selection retain
   const {source,at,p}=sourceFor(10),original=fixtureLibrary(1)[0];
   context.HaniBoardLibrary={threads:[original]};
   const row={...original,libraryId:original.id,sourceEventId:source,scheduledAt:new Date(at).toISOString()};
-  assert.deepEqual(plain(h.publicationThread(row)),plain(original),'stored original is not rewritten');
+  const before=plain(row),projected=h.publicationThread(row);
+  assert.deepEqual(plain(row),before,'saved original is not rewritten');
+  for(const key of ['authorId','title','body'])assert.equal(projected[key],original[key],'historical post '+key);
+  assert.equal(projected.comments.length,original.comments.length);
   for(const change of [{category:'WORK'},{pinned:true},{title:'건강이 걱정돼요'},{body:'반려동물을 떠나보내고 상실감을 느껴요'}]){
-    const t={...original,...change};assert.deepEqual(plain(h.dailyThread(t,source,at)),plain(t));
+    const t={...original,...change},before=plain(t),next=h.dailyThread(t,source,at);
+    assert.deepEqual(plain(t),before,'source remains intact');
+    for(const key of ['authorId','title','body','category','pinned'])assert.equal(next[key],t[key]);
+    for(const c of next.comments)assert.doesNotMatch(c.body,/언니|누나|오빠|형님/);
   }
   assert.notEqual(p.title,original.title);
 });

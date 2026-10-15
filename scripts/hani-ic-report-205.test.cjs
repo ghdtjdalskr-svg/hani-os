@@ -97,7 +97,8 @@ test('actual confirmed renderer hides missing/empty fields, preserves custom pro
   assert.match(board.innerHTML,/기록 평가액 ₩120,000 \(9\/20 기록\) · 보조 표시/);assert.match(board.innerHTML,/ISA 소계.*₩120,000/);
   assert.doesNotMatch(board.innerHTML,/시장 관점|입력 없음|해당 항목 없음|미입력|직전 Rating 없음|HANI RECOMMENDATION|추가 실행 계획/);
   assert.equal((board.innerHTML.match(/<span class="ic-first-record">/g)||[]).length,1);
-  assert.equal((board.innerHTML.match(/<tr><th scope="row">/g)||[]).length,1);
+  assert.equal((board.innerHTML.match(/<tr><th scope="row">/g)||[]).length,0);
+  assert.match(board.innerHTML,/포트폴리오 역할이 아직 지정되지 않았습니다/);
   s.marketView='직접 작성한 시장 의견';s.haniRecommendation='직접 작성한 제안';s.actionPlan.push('입금 예정일 확인');
   vm.runInContext('renderMonthly();',ctx);assert.match(board.innerHTML,/직접 작성한 시장 의견/);assert.match(board.innerHTML,/직접 작성한 제안/);assert.match(board.innerHTML,/입금 예정일 확인/);
   state.investmentCommitteeSnapshots.unshift(snapshot({id:'sep',reviewMonth:'2026-09'}));vm.runInContext('renderMonthly();',ctx);assert.match(board.innerHTML,/변화 없음/);

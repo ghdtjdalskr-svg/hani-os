@@ -1,3 +1,18 @@
+# 2026-10-15 · 라운지 QA-212 (Codex)
+
+hani/lounge-qa-212 / base·HEAD 4dea5f68 (GitHub main 일치). 메타 문구·전체 문장 중복·대표님 기록 주체/직원 자기 댓글 대상·친족/고아 호칭·한국어 표시 이름 수정. **300일 5,710사례·저장0·요청19파일 중17파일/57그룹 VM PASS, Boardroom2는 native Node/Git EPERM 차단.** 저장 글·댓글 원문/기존 save·Cloud·버전211/cache·EOL 보존. 미커밋·미push·미배포, 실제 Preview·열차 gate·운영 read-back 미검증. Notion append 자동 승인 검토 never 거절로 갱신 대기. [인수인계](handoffs/2026-10-15-lounge-qa-212.md), [샘플12개](../../artifacts/lounge-qa-212/samples.md). 아래 다른 담당 기록 보존.
+# 2026-10-15 · Tasks QA 212 (Codex)
+
+`hani/tasks-qa-212`, base `4dea5f6823549e9f13d1e15b6f716600951c4685` (GitHub main 조회 일치), v2.9.211/cache 유지. 월말 정산 single owner를 Tasks Calendar 위 stepper로 이동, Dashboard 잔여 N개 chip·직접 미완료 + 오늘 자동 항목 공통 count·별도 접힌 자동/학습 그룹 구현. 신규 fixture7·기존 remote/dashboard/fix208/proactive21 회귀·handler/보호 키/EOL/id 보존 PASS. **브라우저 spawn EPERM/직접 실행 IPC 접근 거부로 실제 UI·1440/884/412 캡처 미검증. 미커밋·미push·PR/main/배포 없음.** Notion append 자동 승인 검토 policy never 거절로 갱신 대기. 다음은 실제 UI 검증. [인수인계](handoffs/2026-10-15-tasks-qa-212.md). 아래 기존 기록 보존.
+# 2026-10-15 · quiz-qa-212 경제 분류·실제 뉴스 출제 (Codex)
+
+`hani/quiz-qa-212` / base `4dea5f6` (GitHub main 일치). OTHER가 뉴스 조회·서버 quota를 우회하는 원인을 runtime 분류로 수정. 실제6칩/20문항은 뉴스 최소7, 주간 F/U 보강 조회·무뉴스 안내/차단·0뉴스 재시도·해설 출처/날짜·한국어 칩 구현. **신규10·기존35·fix208 7 + standalone2 PASS**, 보호 write/auth/EOL 유지. **미커밋·미push·버전/cache 유지·운영 미반영. 서버 hani-learning-quiz 별도 배포 필요.** 실제 모델/운영 뉴스·브라우저는 미검증(Edge spawn EPERM). Notion 계획 카드 생성/읽기 성공, 결과 갱신은 자동 승인 never 거절로 대기. [인수인계](handoffs/2026-10-15-quiz-qa-212.md). 아래 기존 담당 기록 보존.
+
+# 2026-10-15 · Google Drive FILE LIBRARY v1 (Codex)
+
+`hani/gdrive-212` / base `4dea5f6823549e9f13d1e15b6f716600951c4685` (원격 main 일치, v2.9.211). 기존 Calendar OAuth state·암호화 연결을 재사용한 owner-only Drive 목록/검색/최근/폴더·KST·새 탭 UI 구현. Calendar 배포 원문은 신규 파일로 포함하고 byte 불변. Node11·기존 Cloud40/second-opinion18/owner2/보호contract19/Vault·원문과 mixed EOL 보존 PASS. **브라우저 EPERM/Windows 채널 접근 거부로 실제 UI·스크린샷·실제 OAuth/Drive 미검증, 기존 안전 통합 일부 subprocess 차단. 미커밋·미push·미배포**, 버전/cache/schema/storage/Vault 변경 없음. Git index 권한 차단으로 신규 파일은 untracked이며 검토 patch에 포함. Notion append는 자동 승인 검토 policy never 거절로 갱신 대기. [인수인계](handoffs/2026-10-15-gdrive-212.md), [검증/미검증 증거](../../artifacts/gdrive-212/README.md). 다음은 브라우저 가능한 환경 검사 → Preview/Console 설정 → 배포 열차 승인. 아래 기존 담당 기록 보존.
+
+
 # 2026-10-13 · 라운지 문구 자연화 211 (도연/Codex)
 
 `hani/lounge-natural-211` / base `bb40d840` (`hani/train-210`). 기록 소식 11종 × 4변형·짧은 댓글·기존 경로의 직원 간 답글·첫 문장 중복 회피, QA-210 주제/감정/호칭 표시 유지. 신규6·QA23·board8 PASS, Boardroom5 assertion PASS(2개는 Node spawn EPERM 때문에 shell 재구성 fixture bridge 사용). 저장/빈도/버전/cache·mixed EOL 보존. GitHub 최신 main `8833943`으로 진행됐지만 board 시작 원문 동일, merge/rebase 없음. **실화면·열차 gate·운영 read-back 미검증, 미커밋·미push·미배포.** 서버 board draft prompt 없음/서버 diff 없음. Notion append 자동 승인 검토 policy never 거절로 갱신 대기. [인수인계](handoffs/2026-10-13-lounge-natural-211.md). 아래 기존 담당 기록 보존.

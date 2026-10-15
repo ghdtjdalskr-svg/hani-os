@@ -221,7 +221,8 @@ try {
       if (layout.scrollWidth > layout.clientWidth + 1 || layout.documentWidth > layout.viewport + 1) await monthly.screenshot({path:path.join(evidence,`${width}-${finish}-monthly-${phase}-overflow.png`)});
       assert.ok(layout.scrollWidth <= layout.clientWidth + 1, "Monthly report must fit its container: " + diagnostics);
       assert.ok(layout.documentWidth <= layout.viewport + 1, "Monthly report must fit the viewport: " + diagnostics);
-      assert.ok(layout.tables.length > 0, "Portfolio role table is rendered: " + diagnostics);
+      if(phase === 'draft')assert.ok(layout.tables.length > 0, "Draft portfolio role table remains rendered: " + diagnostics);
+      else {assert.equal(layout.tables.length,0,"Unassigned confirmed roles collapse: " + diagnostics);assert.equal(await monthly.locator('.ic-report-roles-empty').count(),1); }
       assert.ok(layout.tables.every(table => table.minWidth === "0px" && table.width <= layout.clientWidth + 1), "Role tables must override the legacy table minimum width: " + diagnostics);
     }
     assert.equal(await tabs.getByRole('tab',{name:'월간 리포트'}).getAttribute('aria-selected'),'true');
@@ -306,11 +307,11 @@ try {
     await monthly.locator('[name=executiveSummary]').fill('10월 수정된 요약');
     assert.equal(await page.evaluate(()=>state.investmentCommitteeSnapshots.length),2);
     await monthly.getByRole('button',{name:'이번 달 리포트 확정',exact:true}).click();
-    assert.match(await monthly.innerText(),/수정본 2/);assert.match(await monthly.innerText(),/이전 수정본 1개/);
+    assert.match(await monthly.innerText(),/수정본 2/);assert.equal(await monthly.locator('.ic-report-revisions [data-monthly=revision]').count(),2);
     assert.equal(await page.evaluate(()=>state.investmentCommitteeSnapshots.length),3);
     assert.equal(await page.evaluate(()=>JSON.stringify(state.investmentCommitteeSnapshots[1])),original);
     assert.equal(await page.evaluate(()=>JSON.stringify(state.investmentCommitteeSnapshots[0])),await page.evaluate(()=>icSeptember));
-    await monthly.locator('details').filter({hasText:'이전 수정본 1개'}).locator('summary').click();await monthly.locator('[data-monthly=revision]').click();
+    await monthly.locator('.ic-report-revisions [data-monthly=revision]').first().click();
     assert.match(await monthly.innerText(),/10월 핵심 요약/);assert.doesNotMatch(await monthly.innerText(),/10월 수정된 요약/);
     await monthly.getByRole('button',{name:'최신 수정본 보기'}).click();
     assert.match(await monthly.innerText(),/10월 수정된 요약/);
@@ -443,8 +444,10 @@ try {
     assert.equal(await page.evaluate(()=>JSON.stringify(state.investmentResearchCards)),beforeRejectedConfirm.cards);
     assert.equal(await page.evaluate(()=>state.investmentResearchCards.length),3);
     // Confirmed report compactness and print presentation execute in real Edge.
-    assert.equal(await monthly.locator('.ic-conclusion p').count(),3);
-    assert.equal(await monthly.locator('.ic-role-table tbody tr').count(),2);
+    assert.equal(await monthly.locator('.ic-conclusion p').count(),2);
+    assert.match(await monthly.locator('.ic-report-cover-headline').innerText(),/전체적으로는/);
+    assert.equal(await monthly.locator('.ic-role-table tbody tr').count(),0);
+    assert.equal(await monthly.locator('.ic-report-roles-empty').count(),1);
     assert.equal(await monthly.locator('.ic-monthly-list').count(),0);
     assert.match(await monthly.locator('.ic-empty-changes').innerText(),/첫 리포트라/);
     assert.doesNotMatch(await monthly.innerText(),/입력 없음|해당 항목 없음|Fair Value 미입력|직전 Rating 없음/);
@@ -458,7 +461,7 @@ try {
     assert.equal(await monthly.locator('[data-monthly=revise]').isVisible(),false);
     assert.equal(await monthly.locator('.ic-conclusion').isVisible(),true);
     assert.equal(await monthly.locator('.ic-snapshot-security').first().evaluate(el=>getComputedStyle(el).breakInside),'avoid');
-    assert.match(await monthly.locator('.ic-executive').innerText(),/HANI GROUP · 투자 리포트 · 2026 OCTOBER/);
+    assert.match(await monthly.locator('.ic-report-cover').innerText(),/HANI MONTHLY INVESTMENT REPORT[\s\S]*2026\.10[\s\S]*10월 투자 보고서/);
     await monthly.screenshot({path:path.join(evidence,`${width}-${finish}-report-print.png`)});
     assert.deepEqual(await page.evaluate(()=>({state:JSON.stringify(state),stored:localStorage.getItem(STORAGE_KEY),writes:icWrites.length})),beforePrint);
     await page.emulateMedia({media:'screen'});

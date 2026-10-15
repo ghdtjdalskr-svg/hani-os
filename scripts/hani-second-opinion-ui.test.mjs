@@ -6,7 +6,7 @@ import http from 'node:http';
 import {pathToFileURL} from 'node:url';
 const {chromium}=await import(pathToFileURL(process.argv[2]).href);
 const root=path.resolve(import.meta.dirname,'..'),fixture=JSON.parse(fs.readFileSync(path.join(root,'scripts/fixtures/investment-research-mock.json'),'utf8'));
-const evidence=path.join(root,'artifacts/gemini-auto');fs.mkdirSync(evidence,{recursive:true});
+const evidence=path.join(root,'artifacts/review-compact-212');fs.mkdirSync(evidence,{recursive:true});
 const server=http.createServer((req,res)=>{
  const file=path.resolve(root,'.'+new URL(req.url,'http://local').pathname.replace(/^\/$/,'/index.html'));
  if(!file.startsWith(root+path.sep)||!fs.existsSync(file)||!fs.statSync(file).isFile()){res.writeHead(404);res.end();return;}
@@ -16,7 +16,7 @@ await new Promise(done=>server.listen(0,'127.0.0.1',done));
 const origin='http://127.0.0.1:'+server.address().port;let browser;
 try{
  browser=await chromium.launch({executablePath:process.argv[3],headless:true});
- for(const width of [1440,390])for(const finish of ['porcelain-cream','midnight-black']){
+ for(const width of [1440,884,412])for(const finish of ['porcelain-cream','midnight-black']){
   const context=await browser.newContext({viewport:{width,height:900},permissions:['clipboard-write','clipboard-read']});
   await context.route('**/*',route=>new URL(route.request().url()).origin===origin?route.continue():route.abort());
   const page=await context.newPage(),errors=[];page.on('pageerror',error=>errors.push(error.message));
@@ -52,7 +52,7 @@ try{
   await page.evaluate(()=>{autoMode='error';});await ask.click();await page.waitForFunction(()=>document.querySelector('.ic-notice').textContent.includes('서버에 Gemini 키가 아직 없어요'));
   assert.equal(await copy.isEnabled(),true);await copy.click();await page.locator('[data-ic="import-second"]').click();
   await page.locator('[data-ic-second]').fill(await page.evaluate(()=>JSON.stringify(state.investmentResearchCards.map(c=>({researchId:c.id,agreeWithRating:'yes',concerns:[],missingRisks:[],fairValueSanity:{verdict:'reasonable',reason:'수동 자료'},oneLine:'수동 검토 의견'})))));
-  await page.locator('[data-ic="parse-second"]').click();assert.match(await page.locator('.ic-second-opinion').first().innerText(),/수동 검토 의견/);
+  await page.locator('[data-ic="parse-second"]').click();assert.match(await page.locator('.ic-second-opinion').first().textContent(),/수동 검토 의견/);
   assert.equal(await page.evaluate(()=>autoSaves),0);
   // Final review uses the same web Hani manually; all actions before memo save are read-only.
   const finalCopy=page.locator('[data-ic="copy-final"]');assert.equal(await finalCopy.isVisible(),true);
@@ -71,12 +71,38 @@ try{
   const finals=page.locator('.ic-final-opinion');assert.equal(await finals.count(),3);
   assert.deepEqual(await page.locator('.ic-final-rating').allTextContents(),['유지','상향','하향']);
   assert.equal(await page.locator('.ic-final-changed').count(),2);
-  assert.match(await finals.first().innerText(),/하니 최종 의견 \(대표님 채팅에서 받은 답\)/);
-  assert.match(await finals.first().innerText(),/환율 위험 <반영>/);assert.equal(await finals.locator('script').count(),0);
+  assert.match(await finals.first().textContent(),/하니 최종 의견 \(대표님 채팅에서 받은 답\)/);
+  assert.match(await finals.first().textContent(),/환율 위험 <반영>/);assert.equal(await finals.locator('script').count(),0);
   assert.equal(await finals.locator('button,input,textarea,select').count(),0);
-  assert.equal(await page.evaluate(()=>[...document.querySelectorAll('.ic-final-opinion')].every(el=>el.previousElementSibling.matches('.ic-second-opinion'))),true);
+  assert.equal(await page.locator('.ic-review-summary').count(),3);
+  assert.equal(await page.locator('.ic-review-summary > .ic-review-row').count(),6);
+  assert.equal(await page.locator('.ic-review-summary .ic-review-details').count(),3);
+  assert.equal(await page.evaluate(()=>[...document.querySelectorAll('.ic-final-opinion')].every(el=>el.closest('.ic-review-details'))),true);
   assert.equal(await page.evaluate(()=>autoSaves),0);assert.equal(await page.evaluate(()=>JSON.stringify(state)===autoBefore),true);
-  await finals.first().screenshot({path:path.join(evidence,`final-${width}-${finish}.png`)});
+  const summary=page.locator('.ic-review-summary').first();
+  assert.equal(await page.locator('.ic-review-details[open]').count(),0);
+  assert.equal(await summary.locator('.ic-review-clamp').getAttribute('title'),finalRows[0].rationale[0]);
+  assert.equal(await summary.locator('[data-ic="save-second"]').isVisible(),true);
+  assert.match(await summary.locator('[data-ic="save-second"]').getAttribute('title'),/기존 가치평가 메모/);
+  for(let i=0;i<finalRows.length;i++){
+   const body=page.locator('.ic-review-details').nth(i),row=finalRows[i];
+   for(const value of [...row.accepted,...row.rejected.flatMap(r=>[r.point,r.reason]),...row.rationale,...row.next_checks,'수동 자료','수동 검토 의견'])assert.ok((await body.textContent()).includes(value));
+   const chips=await page.locator('.ic-review-summary').nth(i).locator('.ic-review-chip').allTextContents();
+   assert.deepEqual(chips,['투자의견 동의','적정가 합리적',row.final_rating,'반영 1','기각 1']);
+  }
+  const visual=await page.evaluate(()=>{
+   const sample=document.querySelector('.ic-review-summary');
+   const luminance=c=>{const v=c.match(/[\d.]+/g).slice(0,3).map(Number).map(n=>{n/=255;return n<=.04045?n/12.92:((n+.055)/1.055)**2.4;});return v[0]*.2126+v[1]*.7152+v[2]*.0722;};
+   const contrast=el=>{const s=getComputedStyle(el),a=luminance(s.color),b=luminance(s.backgroundColor);return (Math.max(a,b)+.05)/(Math.min(a,b)+.05);};
+   return {overflow:document.documentElement.scrollWidth>innerWidth,clamp:getComputedStyle(sample.querySelector('.ic-review-clamp')).webkitLineClamp,contrast:contrast(sample),chipContrast:contrast(sample.querySelector('.ic-review-chip')),buttonContrast:contrast(sample.querySelector('button'))};
+  });
+  assert.equal(visual.overflow,false);assert.equal(visual.clamp,width<=600?'2':'1');
+  for(const value of [visual.contrast,visual.chipContrast,visual.buttonContrast])assert.ok(value>=4.5,JSON.stringify(visual));
+  console.log('PASS compact DOM/content/clamp/AA/no overflow '+width+'/'+finish+' '+JSON.stringify(visual));
+  await page.locator('.ic-card').first().screenshot({path:path.join(evidence,`collapsed-${width}-${finish}.png`)});
+  await page.locator('.ic-review-details > summary').first().click();
+  await page.locator('.ic-card').first().screenshot({path:path.join(evidence,`expanded-${width}-${finish}.png`)});
+  await page.locator('.ic-review-details > summary').first().click();
   // Plain JSON follows the same path and does not add another panel.
   await page.locator('[data-ic="import-final"]').click();await finalInput.fill(JSON.stringify(finalRows));await finalParse.click();assert.equal(await finals.count(),3);
   page.once('dialog',dialog=>dialog.dismiss());await page.locator('[data-ic="save-second"]').first().click();assert.equal(await page.evaluate(()=>autoSaves),0);
@@ -88,11 +114,56 @@ try{
   const original=JSON.parse(await page.evaluate(()=>autoBefore)).investmentResearchCards[0];
   for(const field of ['rating','thesis','fairValue','fairValueLow','fairValueHigh','nextCheckpoints'])assert.deepEqual(saved[field],original[field]);
   assert.equal(await finals.count(),3);
+  // A revision starts from the existing frozen report; setup itself does not invoke storage.
+  await page.evaluate(()=>{
+   const C=HaniInvestmentResearchCore,month=C.monthNow();
+   const draft=C.committeeDraft(state,month);draft.executiveSummary='기존 월간 결론';
+   state.investmentCommitteeSnapshots=[C.prepareSnapshot(state,draft,{uid:()=> 'compact-frozen'})];
+   HaniInvestmentCommittee.render();window.revisionBefore=JSON.stringify(state);
+  });
+  await page.locator('[data-ic-section]').nth(1).click();
+  await page.locator('[data-monthly="revise"]').click();
+  const conclusion=page.locator('.ic-monthly-board [name="executiveSummary"]');
+  const prefilled=await conclusion.inputValue();
+  assert.ok(prefilled.startsWith('기존 월간 결론'));
+  for(const row of finalRows)assert.ok(prefilled.includes(row.name+' · 최종 '+row.final_rating+' · '+row.rationale[0]));
+  assert.equal(await page.evaluate(()=>autoSaves),1);assert.equal(await page.evaluate(()=>JSON.stringify(state)===revisionBefore),true);
+  const ratingButtons=page.locator('[data-monthly="review-rating"]');assert.equal(await ratingButtons.count(),2);
+  await ratingButtons.first().click();assert.equal(await page.locator('.ic-editor [name="rating"]').inputValue(),'BUY');
+  assert.equal(await page.evaluate(()=>autoSaves),1);assert.equal(await page.evaluate(()=>JSON.stringify(state)===revisionBefore),true);
+  await page.locator('.ic-editor [data-ic="close"]').first().click();
+  await conclusion.fill(prefilled+'\n대표님이 편집한 결론');
+  await page.locator('.ic-monthly-board').screenshot({path:path.join(evidence,`revision-session-${width}-${finish}.png`)});
+  await ratingButtons.first().click();
+  await page.locator('.ic-editor button[type="submit"]').click();
+  assert.equal(await page.evaluate(()=>autoSaves),2);
+  assert.equal(await page.evaluate(()=>state.investmentResearchCards[1].rating),'BUY');
+  assert.equal(await ratingButtons.count(),1);
+  assert.equal(await conclusion.inputValue(),prefilled+'\n대표님이 편집한 결론');
+  await page.locator('.ic-monthly-board button[type="submit"]').click();
+  assert.equal(await page.evaluate(()=>autoSaves),3,'own explicit card save keeps unchanged draft valid');
+  assert.equal(await page.evaluate(()=>state.investmentCommitteeSnapshots.length),2);
+  assert.equal(await page.evaluate(()=>state.investmentCommitteeSnapshots[0].executiveSummary),'기존 월간 결론');
+  await page.locator('[data-monthly="revise"]').click();
+  // Cancel keeps original data intact; persisted memo finals prefill after account-session opinions reset.
+  await page.locator('[data-monthly="cancel"]').click();assert.equal(await page.evaluate(()=>autoSaves),3);
+  await page.evaluate(()=>{cloudUser={id:'reset-session'};HaniInvestmentCommittee.render();});
+  await page.locator('[data-monthly="revise"]').click();
+  assert.ok((await conclusion.inputValue()).includes(finalRows[0].name+' · 최종 유지 · '+finalRows[0].rationale[0]));
+  assert.equal(await ratingButtons.count(),0);assert.equal(await page.evaluate(()=>autoSaves),3);
+  await conclusion.fill('대표님 수정본 결론');
+  await page.locator('.ic-monthly-board button[type="submit"]').click();
+  assert.equal(await page.evaluate(()=>autoSaves),4);
+  assert.equal(await page.evaluate(()=>state.investmentCommitteeSnapshots.length),3);
+  assert.equal(await page.evaluate(()=>state.investmentCommitteeSnapshots[0].executiveSummary),'기존 월간 결론');
+  assert.equal(await page.evaluate(()=>state.investmentCommitteeSnapshots[2].executiveSummary),'대표님 수정본 결론');
+  await page.locator('[data-ic-section]').first().click();
+  console.log('PASS session/memo revision prefill + editable draft + preselected editor + zero draft persistence until confirm '+width+'/'+finish);
   // Replacement critique invalidates final replies; account changes also close/empty paste dialogs.
   await ask.click();await page.waitForFunction(()=>!document.querySelector('[data-ic="ask-second"]').disabled);
   await page.locator('[data-ic="import-second"]').click();
   await page.locator('[data-ic-second]').fill(await page.evaluate(()=>JSON.stringify(state.investmentResearchCards.map(c=>({researchId:c.id,agreeWithRating:'no',concerns:['새 반론'],missingRisks:[],fairValueSanity:{verdict:'reasonable',reason:'새 검토'},oneLine:'새 검토 의견'})))));
-  await page.locator('[data-ic="parse-second"]').click();assert.equal(await finals.count(),0);assert.equal(await page.evaluate(()=>autoSaves),1);
+  await page.locator('[data-ic="parse-second"]').click();assert.equal(await finals.count(),0);assert.equal(await page.evaluate(()=>autoSaves),4);
   await page.locator('[data-ic="import-final"]').click();
   await page.evaluate(()=>{cloudUser=null;HaniInvestmentCommittee.render();});assert.equal(await ask.isDisabled(),true);assert.match(await ask.getAttribute('title'),/로그인/);
   assert.equal(await page.locator('.ic-final-import').evaluate(el=>el.open),false);assert.equal(await page.locator('.ic-final-import').innerHTML(),'');assert.equal(await finalCopy.isVisible(),false);
