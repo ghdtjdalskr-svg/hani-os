@@ -239,8 +239,8 @@ const SPORTS_LINES = Object.freeze({
 });
 
 const PAGE_CHARACTER_PROFILES=Object.freeze({
-  seoyun:Object.freeze({identity:"서윤 · 배포 팀장",image:"./assets/profiles/hani-staff-seoyun-v7.webp"}),
-  serin:Object.freeze({identity:"세린 · Gemini 연구원",image:"./assets/profiles/hani-staff-serin-v5.webp"})
+  seoyun:Object.freeze({identity:"서윤 · 배포 팀장",image:"./assets/profiles/hani-profile-seoyun.webp"}),
+  serin:Object.freeze({identity:"세린 · Gemini 연구원",image:"./assets/profiles/hani-profile-serin.webp"})
 });
 // Session-memory only: redraws stay stable; re-entering advances without repeats.
 function createTabQuoteSelector(random = Math.random) {

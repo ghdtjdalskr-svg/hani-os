@@ -1335,3 +1335,51 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 #app .gdrive-library [data-gdrive-action=more]{margin-top:18px}
 @media(max-width:1000px){#app .gdrive-row{grid-template-columns:30px minmax(0,1fr) auto;gap:10px}#app .gdrive-modified{grid-column:2;grid-row:2}#app .gdrive-open{grid-column:3;grid-row:1 / span 2}}
 @media(max-width:520px){#app .gdrive-connection{align-items:stretch;flex-direction:column;padding:12px}#app .gdrive-connection>.btn{align-self:flex-start}#app .gdrive-search>label:first-child{flex-basis:100%}#app .gdrive-row{grid-template-columns:27px minmax(0,1fr);gap:6px 9px}#app .gdrive-open{grid-column:2;grid-row:3;justify-self:start;padding:4px 0}#app .gdrive-library .btn{min-height:42px}#app .gdrive-toolbar{align-items:stretch}#app .gdrive-toolbar>div{gap:5px}}
+
+/* PWA-213: CSS-only Fold geometry; DOM, events and input nodes remain owned by existing renderers. */
+@media screen and (min-width:700px) and (max-width:900px){
+  #app.app{--sidebar:64px;grid-template-columns:64px minmax(0,1fr)}
+  #app.app #sidebar{position:sticky;top:0;left:auto;width:64px!important;height:100dvh;transform:none!important;padding:10px 6px!important;overflow-x:hidden!important;box-shadow:none!important}
+  #app.app .overlay,#app.app header.top.ui26-top .mobile-menu{display:none!important}
+  #app.app #sidebar :is(.brand-row,.brand,.office,.foot,.sidebar-team-mini,.sidebar-corporate-lockup,.life-mark,.group-head){display:none!important}
+  #app.app #sidebar .group{margin:8px 0!important;padding:0!important}
+  #app.app #sidebar .group-body{display:grid!important;gap:4px;margin:0!important;padding:0!important;border:0!important}
+  #app.app #sidebar .nav-btn{display:flex!important;justify-content:center!important;align-items:center!important;width:100%!important;min-height:44px!important;margin:0!important;padding:4px!important;gap:0!important}
+  #app.app #sidebar .nav-btn>:not(.ico):not([data-study-pending]){display:none!important}
+  #app.app #sidebar .nav-btn .ico{display:grid!important;place-items:center;width:32px!important;height:32px!important;flex:0 0 32px!important;margin:0!important}
+  #app.app #sidebar .nav-btn .ico svg{width:22px!important;height:22px!important}
+  #app.app #sidebar .nav-btn [data-study-pending]{position:absolute!important;right:2px!important;top:2px!important}
+  #app .main{min-width:0;padding-left:16px!important;padding-right:16px!important}
+  #app .view>.grid>:is(.half,.third,.wide,.sidec){grid-column:span 6}
+  #app .life-market-grid,#app #study .study-project-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media screen and (max-width:900px){
+  #app :is(.field,.sh>*,.task-input>*,.gdrive-search>*){min-width:0;max-width:100%}
+  #app.app :is(button,a[href],summary,[role="button"],input,select,textarea){min-height:40px!important}
+  #app.app :is(button,a[href],[role="button"]){min-width:40px!important}
+  #app a[href]{display:inline-flex;align-items:center}
+  #app :is(input[type="checkbox"],input[type="radio"]){width:40px!important;height:40px!important;flex-shrink:0}
+  #app .date-flex-control{grid-template-columns:minmax(0,1fr) minmax(40px,max-content)}
+  #app .task{grid-template-columns:40px minmax(0,1fr) auto}
+  #app .task-derived .task{grid-template-columns:40px minmax(0,1fr)}
+  #app .task-derived .task .task-actions{grid-column:2}
+  #app .task-actions{flex-wrap:wrap}
+  #app .life-ticker{height:40px}
+  #app .life-ticker-pause{width:40px;height:40px;flex-shrink:0}
+}
+@media screen and (max-width:768px){
+  #app .main>header.top.ui26-top{height:48px!important;min-height:48px!important}
+  #app header.top.ui26-top :is(.mobile-menu,.mobile-top-more,.quick-jump-icon,.header-search.quick-jump){width:40px!important;min-width:40px!important;height:40px!important;flex-basis:40px!important}
+}
+@media screen and (max-width:412px){
+  #app .view :is(input:not([type="checkbox"]):not([type="radio"]),select,textarea){max-width:100%;min-width:0}
+  #app .sh{flex-wrap:wrap}
+  #app .task:not(.task-derived .task){grid-template-columns:40px minmax(0,1fr)}
+  #app .task .task-actions{grid-column:2}
+}
+@media screen and (display-mode:standalone){
+  body{padding:env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left)}
+  #app .main{padding-bottom:calc(54px + env(safe-area-inset-bottom))!important}
+  #app .main>header.top.ui26-top,#app.app #sidebar{top:env(safe-area-inset-top)}
+  #app.app #sidebar{height:calc(100dvh - env(safe-area-inset-top));padding-bottom:calc(16px + env(safe-area-inset-bottom))!important}
+}

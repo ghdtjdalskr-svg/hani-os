@@ -719,6 +719,19 @@
     const el = document.createElement('style');
     el.id = STYLE_ID;
     el.textContent = `
+.study-popup-exam{--exam-paper:var(--surface-raised,var(--panel,#fffdf6));--exam-ink:var(--text-primary,var(--text,#222638));--exam-line:var(--text-primary,var(--text,#34384b));--exam-accent:var(--text-primary,var(--text,#34384b));--exam-stamp:#b42332;box-sizing:border-box;position:fixed;inset:0;width:100%;max-width:none;height:100%;height:100dvh;max-height:none;margin:0;padding:clamp(12px,3vw,36px);border:0;overflow:auto;color:var(--exam-ink);background:var(--surface-page,var(--bg,#e7e5df));font:inherit;overscroll-behavior:contain}
+.study-popup-exam::backdrop{background:#161a29cc}.study-popup-exam *{box-sizing:border-box;min-width:0}.study-popup-exam [hidden]{display:none!important}
+.study-popup-paper{max-width:1160px;margin:auto;padding:clamp(18px,4vw,48px);background-color:var(--exam-paper);background-image:repeating-linear-gradient(0deg,transparent,transparent 3px,#80735506 3px,#80735506 4px);border:1px solid var(--exam-line);box-shadow:0 16px 60px #14172618;border-radius:6px;overflow-wrap:anywhere}
+.study-popup-paper header{display:flex;align-items:start;justify-content:space-between;gap:16px;border-bottom:3px double var(--exam-line);padding-bottom:20px}.study-popup-paper h2{font-size:clamp(20px,2.6vw,30px);line-height:1.5;margin:6px 0}.study-popup-kicker{letter-spacing:.16em;font-size:12px}.study-popup-paper p{line-height:1.7;margin:8px 0}.study-popup-meta{display:flex;gap:16px;justify-content:space-between;margin-top:22px}.study-popup-meta strong{font-size:24px;font-variant-numeric:tabular-nums}.study-popup-help,.study-popup-paper aside p{font-size:13px}
+.study-popup-layout{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:32px;margin-top:24px}.study-popup-exam [data-exam-question]{white-space:pre-line;font-size:clamp(19px,2vw,25px);line-height:1.8;margin:0 0 24px}.study-popup-choices{display:grid;gap:12px}.study-popup-exam button{font:inherit;font-weight:700;line-height:1.6;cursor:pointer;min-height:44px;padding:9px 14px;border:1px solid var(--exam-line);border-radius:8px;background:var(--exam-paper);color:var(--exam-ink);white-space:normal;overflow-wrap:anywhere}
+.study-popup-exam button:focus-visible,.study-popup-exam [tabindex]:focus-visible{outline:3px solid var(--exam-accent);outline-offset:3px}.study-popup-choices button{display:flex;align-items:center;gap:16px;text-align:left;width:100%;padding:18px;min-height:76px}.study-popup-choices b{display:grid;place-items:center;flex:0 0 32px;height:32px;border:1px solid currentColor;border-radius:50%}.study-popup-choices button[aria-pressed=true]{outline:2px solid var(--exam-accent);outline-offset:-3px}.study-popup-choices button[aria-pressed=true] b{background:var(--exam-accent);color:var(--exam-paper)}
+.study-popup-paper aside{border-left:1px solid var(--exam-line);padding-left:24px}.study-popup-paper aside h3{margin:0}.study-popup-omr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:16px}.study-popup-omr button{font-size:12px;padding:8px 2px;font-variant-numeric:tabular-nums}.study-popup-omr button[data-answered=true]{font-weight:900;border-bottom:4px solid var(--exam-accent)}.study-popup-omr button[aria-current=step]{outline:2px solid var(--exam-accent);outline-offset:1px}
+.study-popup-paper footer{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px solid var(--exam-line);padding-top:20px}.study-popup-paper footer span{flex:1;font-size:12px}.study-popup-exam button:disabled{cursor:default;opacity:.55}.study-popup-exam [data-exam-message]{min-height:28px;font-size:14px}.study-popup-exam [data-exam-submit]{background:var(--exam-accent);color:var(--exam-paper)}
+.study-popup-exam [data-exam-stamp]{text-align:center;padding:64px 0}.study-popup-exam [data-exam-stamp] strong{display:inline-block;border:5px double currentColor;border-radius:10px;padding:12px 24px;font-size:clamp(28px,5vw,48px);color:var(--exam-stamp);background:#fff5f3;transform:rotate(-9deg);animation:hani-exam-stamp .45s ease-out}.study-popup-exam [data-exam-score]{font-size:32px;font-weight:900;margin:32px 0}
+@keyframes hani-exam-stamp{from{transform:scale(1.6) rotate(-16deg);opacity:0}to{transform:scale(1) rotate(-9deg);opacity:1}}
+@media(max-width:700px){.study-popup-layout{grid-template-columns:minmax(0,1fr);gap:28px}.study-popup-paper aside{border-left:0;border-top:1px solid var(--exam-line);padding:20px 0 0}.study-popup-omr{grid-template-columns:repeat(5,minmax(0,1fr))}.study-popup-paper footer span{flex-basis:100%;order:3}.study-popup-exam [data-exam-submit]{flex:1}.study-popup-paper header{gap:8px}.study-popup-paper header button{flex-shrink:0}}
+@media(prefers-reduced-motion:reduce){.study-popup-exam *{animation:none!important;scroll-behavior:auto!important}}
+
 #study.hani-study-v02984{--study:#6d5bd0;--study-soft:#f2efff;--study-line:#ded8ff}
 #study .study-engine-grid{display:grid;grid-template-columns:minmax(250px,.78fr) minmax(0,1.72fr);gap:16px;align-items:start}
 #study .study-hero-v02984{display:flex;align-items:center;justify-content:flex-end;gap:14px;margin-bottom:12px;padding:0;background:transparent}
@@ -968,7 +981,142 @@
       ${project?`<div class="study-history-meta"><span class="study-chip">시작 ${safe(String(project.createdAt||'').slice(0,10))}</span><span class="study-chip">출제 ${stats.total}세트</span><span class="study-chip">완료 ${stats.completed}세트</span><span class="study-chip">평균 ${stats.avg}점</span></div><div class="study-board-wrap"><table class="study-board"><thead><tr><th class="study-board-no">No</th><th>출제 문제세트</th><th>상태</th><th>점수</th><th>작성일</th></tr></thead><tbody>${quizzes.length?quizzes.map((quiz,index)=>{const total=Number(quiz.total||quiz.questions?.length||0),status=quiz.status==='completed'?'완료':quiz.status==='in_progress'?'풀이 중':'미완료';return `<tr><td class="study-board-no">${Number(quiz.sequenceNo||quizzes.length-index)}</td><td class="study-board-title">${safe(quiz.title||'문제세트')}</td><td><span class="study-status ${safe(quiz.status||'pending')}">${status}</span></td><td class="study-board-score">${quiz.status==='completed'?safe(quizScoreLabel(quiz)):'-'}</td><td>${safe(quizDate(quiz))}</td></tr>`}).join(''):'<tr><td colspan="5"><div class="study-empty">아직 출제된 문제세트가 없습니다.</div></td></tr>'}</tbody></table></div>`:'<div class="study-empty">위에서 프로젝트를 선택해 주세요.</div>'}</div>`;
   }
 
-  function selectQuiz(id) { activeQuizId = id; renderLearning(); requestAnimationFrame(() => q('#studyQuizDetail')?.scrollIntoView({behavior:'smooth', block:'start'})); }
+  function selectQuiz(id) {
+    activeQuizId = id; renderLearning(false);
+    const quiz = quizById(id);
+    if (quiz?.status !== 'completed') openExam(quiz);
+    else requestAnimationFrame(() => q('#studyQuizDetail')?.scrollIntoView({block:'start'}));
+  }
+
+  // Exam UI owns presentation only; answers and grading keep their canonical paths.
+  const examPositions = new Map();
+  let examDialog = null, examQuizId = '', examOpener = null, examResultTimer = null;
+  let examBodyOverflow = '';
+
+  function closeExam(showResult = false) {
+    if (!examDialog?.open) return;
+    clearTimeout(examResultTimer);
+    examDialog.close();
+    document.body.style.overflow = examBodyOverflow;
+    if (quizById(examQuizId)?.status !== 'completed') renderLearning(false);
+    const result = showResult ? q('#studyQuizDetail') : null;
+    const target = result || (examOpener?.isConnected ? examOpener : q('[data-study-exam-open]'));
+    if (result) { result.tabIndex = -1; result.scrollIntoView({block:'start'}); }
+    target?.focus({preventScroll:true});
+    examQuizId = '';
+  }
+
+  function examMove(index) {
+    const quiz = quizById(examQuizId);
+    if (!quiz || quiz.status === 'completed') return;
+    examPositions.set(quiz.id, Math.max(0, Math.min(quiz.questions.length - 1, index)));
+    updateExam();
+    q('[data-exam-question]', examDialog)?.focus({preventScroll:true});
+    q('[data-exam-question]', examDialog)?.scrollIntoView({block:'start'});
+  }
+
+  function examChoose(value) {
+    const quiz = quizById(examQuizId), index = examPositions.get(examQuizId) || 0;
+    if (!quiz || quiz.status === 'completed' || !Number.isInteger(value) || !quiz.questions[index]?.choices[value]) return;
+    const saved = persistQuizAnswer(quiz, index, value);
+    updateExam();
+    q('[data-exam-message]', examDialog).textContent = saved ? '답안을 저장했습니다.' : '답안을 저장하지 못했습니다. 다시 선택해 주세요.';
+    q('[data-exam-choice="'+value+'"]', examDialog)?.focus({preventScroll:true});
+  }
+
+  function submitExam() {
+    const quiz = quizById(examQuizId);
+    if (!quiz || quiz.status === 'completed' || !quiz.questions.every((item, i) => Number.isInteger(quiz.answers[i]))) return;
+    if (gradeQuiz(quiz) !== true) {
+      q('[data-exam-message]', examDialog).textContent = '채점 결과를 저장하지 못했습니다. 다시 제출해 주세요.';
+      return;
+    }
+    q('[data-exam-work]', examDialog).hidden = true;
+    const stamp = q('[data-exam-stamp]', examDialog);
+    stamp.hidden = false;
+    q('[data-exam-score]', stamp).textContent = quizScoreLabel(quiz);
+    q('button', stamp).focus();
+    examResultTimer = setTimeout(() => closeExam(true), 1600);
+  }
+
+  function updateExam() {
+    const quiz = quizById(examQuizId);
+    if (!quiz || !examDialog?.open) return;
+    const index = examPositions.get(quiz.id) || 0, question = quiz.questions[index];
+    const answered = quiz.questions.filter((item,i) => Number.isInteger(quiz.answers[i])).length;
+    q('[data-exam-progress]', examDialog).textContent = (index + 1)+' / '+quiz.questions.length;
+    q('[data-exam-count]', examDialog).textContent = '답안 '+answered+' / '+quiz.questions.length;
+    const page = q('[data-exam-page]', examDialog);
+    const pageKey = quiz.id+'|'+index;
+    if (page.dataset.examPageKey !== pageKey) {
+      page.innerHTML = '<h3 data-exam-question tabindex="-1">'+(index+1)+'. '+safe(question.prompt)+'</h3><div class="study-popup-choices" role="group" aria-label="답안 선택">'+question.choices.map((choice,i) => '<button type="button" data-exam-choice="'+i+'" aria-pressed="'+(quiz.answers[index]===i)+'"><b aria-hidden="true">'+(i+1)+'</b><span>'+safe(choice)+'</span></button>').join('')+'</div>';
+      page.dataset.examPageKey = pageKey;
+    }
+    qa('[data-exam-choice]',page).forEach((button,i) => button.setAttribute('aria-pressed', String(quiz.answers[index]===i)));
+    q('[data-exam-prev]', examDialog).disabled = index === 0;
+    q('[data-exam-next]', examDialog).disabled = index === quiz.questions.length - 1;
+    q('[data-exam-submit]', examDialog).disabled = answered !== quiz.questions.length;
+    qa('[data-exam-jump]', examDialog).forEach((button,i) => {
+      const answer = quiz.answers[i];
+      button.setAttribute('aria-current', i===index ? 'step' : 'false');
+      button.dataset.answered = String(Number.isInteger(answer));
+      button.setAttribute('aria-label', (i+1)+'번 문제 · '+(Number.isInteger(answer) ? (answer+1)+'번 선택' : '미응답'));
+      button.textContent = (i+1)+(Number.isInteger(answer) ? ' · '+(answer+1) : ' · —');
+    });
+  }
+
+  function openExam(quiz) {
+    if (!quiz || quiz.status === 'completed' || !quiz.questions.length) return;
+    if (examDialog?.open) return;
+    if (!examDialog) {
+      examDialog = document.createElement('dialog');
+      examDialog.className = 'study-popup-exam';
+      examDialog.setAttribute('aria-modal','true');
+      examDialog.setAttribute('aria-label','HANI 모의고사');
+      document.body.appendChild(examDialog);
+      examDialog.addEventListener('cancel', event => { event.preventDefault(); closeExam(); });
+      examDialog.addEventListener('click', event => {
+        const button = event.target.closest('button');
+        if (!button) return;
+        if (button.hasAttribute('data-exam-close')) closeExam();
+        else if (button.hasAttribute('data-exam-result')) closeExam(true);
+        else if (button.hasAttribute('data-exam-choice')) examChoose(Number(button.dataset.examChoice));
+        else if (button.hasAttribute('data-exam-jump')) examMove(Number(button.dataset.examJump));
+        else if (button.hasAttribute('data-exam-prev')) examMove((examPositions.get(examQuizId)||0)-1);
+        else if (button.hasAttribute('data-exam-next')) examMove((examPositions.get(examQuizId)||0)+1);
+        else if (button.hasAttribute('data-exam-submit')) submitExam();
+      });
+      examDialog.addEventListener('keydown', event => {
+        if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); closeExam(); return; }
+        if (event.key === 'Tab') {
+          const items = qa('button:not(:disabled)',examDialog).filter(node => node.getClientRects().length);
+          const first = items[0], last = items[items.length-1];
+          if (event.shiftKey && (document.activeElement === first || !items.includes(document.activeElement))) { event.preventDefault(); last?.focus(); }
+          else if (!event.shiftKey && (document.activeElement === last || !items.includes(document.activeElement))) { event.preventDefault(); first?.focus(); }
+          return;
+        }
+        if (event.altKey || event.ctrlKey || event.metaKey || event.target.closest('input,textarea,select,[contenteditable="true"]')) return;
+        const quiz = quizById(examQuizId);
+        if (!quiz || quiz.status === 'completed' || event.repeat) return;
+        if (/^[1-4]$/.test(event.key)) { event.preventDefault(); examChoose(Number(event.key)-1); }
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); examMove((examPositions.get(examQuizId)||0)+(event.key==='ArrowRight'?1:-1)); }
+      });
+    }
+    examOpener = document.activeElement;
+    examQuizId = quiz.id;
+    if (!examPositions.has(quiz.id)) {
+      const first = quiz.questions.findIndex((item,i) => !Number.isInteger(quiz.answers[i]));
+      examPositions.set(quiz.id, first < 0 ? 0 : first);
+    }
+    const project = projectById(quiz.projectId), seq = Number(quiz.sequenceNo || 1);
+    examDialog.innerHTML = '<div class="study-popup-paper"><header><div><p class="study-popup-kicker">매일 쌓이는 나의 실력</p><h2>HANI 모의고사 · '+safe(project?.name || '학습')+' #'+seq+'</h2><p>수험번호 '+safe(String(quizDate(quiz)||localToday()).replaceAll('-',''))+'-'+String(seq).padStart(3,'0')+'</p></div><button type="button" data-exam-close aria-label="모의고사 닫기">닫기</button></header><div data-exam-work><div class="study-popup-meta"><strong data-exam-progress aria-live="polite"></strong><span data-exam-count></span></div><p class="study-popup-help">답은 고르는 즉시 저장돼요. 닫았다가 이어서 풀 수 있어요.</p><div class="study-popup-layout"><section data-exam-page aria-label="현재 문제"></section><aside aria-label="답안지"><h3>나의 답안지</h3><p>번호를 눌러 이동 · 선택한 답 표시</p><nav class="study-popup-omr" aria-label="문제 바로가기">'+quiz.questions.map((item,i) => '<button type="button" data-exam-jump="'+i+'"></button>').join('')+'</nav></aside></div><p data-exam-message role="status"></p><footer><button type="button" data-exam-prev>이전</button><span>1–4 답 선택 · ← → 이동</span><button type="button" data-exam-next>다음</button><button type="button" data-exam-submit>제출하고 채점</button></footer></div><div data-exam-stamp role="status" hidden><strong>채점 완료</strong><p data-exam-score></p><button type="button" data-exam-result>해설과 히나 첨삭 보기</button></div></div>';
+    examBodyOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    examDialog.showModal();
+    updateExam();
+    requestAnimationFrame(() => { if (examDialog.open) q('[data-exam-question]',examDialog)?.focus(); });
+  }
+
 
   function quizStatusLabel(quiz) { const total = Number(quiz.total || quiz.questions?.length || 0); return quiz.status === 'completed' ? quizScoreLabel(quiz) : `${quiz.answers.filter(x => Number.isInteger(x)).length}/${total} 풀이`; }
 
@@ -988,6 +1136,7 @@
   function renderQuizDetail(project, quiz, readOnly = false) {
     if (!quiz) return '';
     const graded = quiz.status === 'completed';
+    if (!graded && !readOnly) return '<div class="study-card-v02984 study-exam-launch"><h3>'+safe(quiz.title || project.name+' 문제세트')+'</h3><p>'+safe(quizStatusLabel(quiz))+' · 답안을 저장하며 한 문제씩 풀어보세요.</p><button type="button" class="btn primary" data-study-exam-open="'+safe(quiz.id)+'">응시하기</button></div>';
     return `<div class="study-card-v02984 study-exam-sheet" ${readOnly ? '' : 'id="studyQuizDetail"'} style="margin-top:16px">
       <header class="study-exam-head"><div><span class="study-exam-kicker">HANI OS · MOCK EXAM</span><h3>${safe(quiz.title || `${project.name} 문제세트`)}</h3><p>${graded ? `채점 완료 · 점수 ${safe(quizStatusLabel(quiz))}` : readOnly ? '프로젝트에 연결하면 이어서 풀 수 있어요.' : '각 문항의 답을 하나씩 고른 뒤 마지막에 채점하세요.'}</p></div><div class="study-exam-stamp"><b>${safe(String(quizDate(quiz)).replaceAll('-','.'))}</b><span>${Number(quiz.total||quiz.questions.length)}문항</span><em class="study-status ${safe(quiz.status || 'pending')}">${safe(quizStatusLabel(quiz))}</em></div></header>
       <div class="study-exam-instructions">${graded?'해설과 오답 표시를 확인하세요. 틀린 문항은 오답노트에 자동 누적됩니다.':readOnly ? '보존된 문제와 답안을 보여드립니다.' : '답안은 선택 즉시 안전하게 임시 저장됩니다. 모든 문항을 선택하면 채점 버튼이 활성화됩니다.'}</div>
@@ -1051,15 +1200,7 @@
     qa('[data-study-quiz]', main).forEach(el => el.onclick = () => selectQuiz(el.dataset.studyQuiz || ''));
     bindQuestionDisputes(main);
     bindTutorReviewCopy(main);
-    if (activeQuiz && activeQuiz.status !== 'completed') {
-      qa('input[type="radio"]', q('#studyQuizDetail')).forEach(input => input.onchange = () => {
-        const article = input.closest('[data-study-question]'), qi = Number(article?.dataset.studyQuestion), value = Number(input.value);
-        if (!Number.isInteger(qi) || !Number.isInteger(value)) return;
-        persistQuizAnswer(activeQuiz, qi, value);
-        renderLearning();
-      });
-      q('#studyQuizSubmit')?.addEventListener('click', () => gradeQuiz(activeQuiz));
-    }
+    q('[data-study-exam-open]', main)?.addEventListener('click', () => openExam(activeQuiz));
     if (autoGenerate) maybeAutoGenerate(project);
   }
 
@@ -1122,7 +1263,7 @@
     if (!quiz) { showView('study'); return; }
     activeProjectId=quiz.projectId;activeQuizId=quiz.id;activeStudyTab='board';quizArchiveMonth='all';quizArchivePage=1;
     showView('study');renderLearning(false);
-    requestAnimationFrame(()=>q('#studyQuizDetail')?.scrollIntoView({block:'start'}));
+    openExam(quiz);
   }
   function renderPendingQuizNav() {
     const count=pendingLearningQuizzes().length;
