@@ -15,7 +15,7 @@
     "doorWidth": 44
   },
   "safety": {
-    "persistence": "메모리만 사용, 새로고침 시 초기화",
+    "persistence": "low-fi만 별도 sessionStorage 키, 접근 실패 시 메모리. runtime local-only 계획은 persistencePlan 참조",
     "runtimeIntegration": false,
     "aiCalls": false,
     "cloudCalls": false,
@@ -3562,7 +3562,7 @@
         "zone": "desk",
         "x": 35,
         "y": 27.34375,
-        "owner": "daon",
+        "owner": null,
         "layer": 4,
         "box": [
           33.6,
@@ -3570,7 +3570,8 @@
           36.4,
           27.34375
         ]
-      }
+      },
+      "runtimeAssignable": false
     },
     {
       "id": "approach_desk_daon",
@@ -3607,7 +3608,7 @@
         "zone": "desk",
         "x": 65,
         "y": 27.34375,
-        "owner": "yoonseul",
+        "owner": null,
         "layer": 4,
         "box": [
           63.6,
@@ -3615,7 +3616,8 @@
           66.4,
           27.34375
         ]
-      }
+      },
+      "runtimeAssignable": false
     },
     {
       "id": "approach_desk_yoonseul",
@@ -3863,7 +3865,7 @@
       "capacity": 1
     },
     {
-      "id": "finance_meeting",
+      "id": "shared_meeting_2f",
       "floor": "2f",
       "room": "team_meeting",
       "x": 650,
@@ -8472,7 +8474,7 @@
     },
     {
       "from": "junction_team_meeting",
-      "to": "finance_meeting",
+      "to": "shared_meeting_2f",
       "kind": "walk",
       "bidirectional": true
     },
@@ -8518,7 +8520,8 @@
         "exec_meeting",
         "release_room",
         "rooftop_event"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "yuna",
@@ -8532,7 +8535,8 @@
       "workAnchor": "desk_yuna",
       "meetingAnchor": "exec_meeting",
       "breakAnchor": "coffee_counter",
-      "optionalEventAnchor": []
+      "optionalEventAnchor": [],
+      "status": "active"
     },
     {
       "id": "jieun",
@@ -8544,11 +8548,12 @@
       "registration": "registered",
       "provider": null,
       "workAnchor": "finance-a",
-      "meetingAnchor": "finance_meeting",
+      "meetingAnchor": "shared_meeting_2f",
       "breakAnchor": "pantry_2f",
       "optionalEventAnchor": [
-        "finance_meeting"
-      ]
+        "shared_meeting_2f"
+      ],
+      "status": "active"
     },
     {
       "id": "haru",
@@ -8560,11 +8565,12 @@
       "registration": "registered",
       "provider": null,
       "workAnchor": "finance-b",
-      "meetingAnchor": "finance_meeting",
+      "meetingAnchor": "shared_meeting_2f",
       "breakAnchor": "pantry_2f",
       "optionalEventAnchor": [
-        "finance_meeting"
-      ]
+        "shared_meeting_2f"
+      ],
+      "status": "active"
     },
     {
       "id": "naeun",
@@ -8576,12 +8582,13 @@
       "registration": "registered",
       "provider": null,
       "workAnchor": "life-a",
-      "meetingAnchor": "finance_meeting",
+      "meetingAnchor": "shared_meeting_2f",
       "breakAnchor": "pantry_2f",
       "optionalEventAnchor": [
-        "finance_meeting",
+        "shared_meeting_2f",
         "rooftop_event"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "hina",
@@ -8593,11 +8600,12 @@
       "registration": "registered",
       "provider": null,
       "workAnchor": "life-b",
-      "meetingAnchor": "finance_meeting",
+      "meetingAnchor": "shared_meeting_2f",
       "breakAnchor": "pantry_2f",
       "optionalEventAnchor": [
-        "finance_meeting"
-      ]
+        "shared_meeting_2f"
+      ],
+      "status": "active"
     },
     {
       "id": "minji",
@@ -8609,12 +8617,13 @@
       "registration": "registered",
       "provider": null,
       "workAnchor": "life-c",
-      "meetingAnchor": "finance_meeting",
+      "meetingAnchor": "shared_meeting_2f",
       "breakAnchor": "pantry_2f",
       "optionalEventAnchor": [
         "coffee_counter",
         "rooftop_event"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "sooyeon",
@@ -8626,13 +8635,14 @@
       "registration": "registered",
       "provider": null,
       "workAnchor": "life-d",
-      "meetingAnchor": "finance_meeting",
+      "meetingAnchor": "shared_meeting_2f",
       "breakAnchor": "pantry_2f",
       "optionalEventAnchor": [
-        "finance_meeting",
+        "shared_meeting_2f",
         "coffee_counter",
         "rooftop_event"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "sua",
@@ -8646,7 +8656,8 @@
       "workAnchor": "business-west",
       "meetingAnchor": "client_booth",
       "breakAnchor": "rooftop_rest",
-      "optionalEventAnchor": []
+      "optionalEventAnchor": [],
+      "status": "active"
     },
     {
       "id": "seoyun",
@@ -8662,7 +8673,8 @@
       "breakAnchor": "rooftop_rest",
       "optionalEventAnchor": [
         "release_room"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "dohyun",
@@ -8678,7 +8690,8 @@
       "breakAnchor": "rooftop_rest",
       "optionalEventAnchor": [
         "release_room"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "serin",
@@ -8694,8 +8707,9 @@
       "breakAnchor": "rooftop_rest",
       "optionalEventAnchor": [
         "release_room",
-        "finance_meeting"
-      ]
+        "shared_meeting_2f"
+      ],
+      "status": "active"
     },
     {
       "id": "yuri",
@@ -8711,7 +8725,8 @@
       "breakAnchor": "rooftop_rest",
       "optionalEventAnchor": [
         "release_room"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "arin",
@@ -8727,7 +8742,8 @@
       "breakAnchor": "rooftop_rest",
       "optionalEventAnchor": [
         "release_room"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "gaeun",
@@ -8743,7 +8759,8 @@
       "breakAnchor": "coffee_counter",
       "optionalEventAnchor": [
         "exec_meeting"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "taeo",
@@ -8757,7 +8774,8 @@
       "workAnchor": "business-east",
       "meetingAnchor": "client_booth",
       "breakAnchor": "rooftop_rest",
-      "optionalEventAnchor": []
+      "optionalEventAnchor": [],
+      "status": "active"
     },
     {
       "id": "daon",
@@ -8769,12 +8787,13 @@
       "registration": "planned",
       "provider": "Gemini",
       "workAnchor": "desk_daon",
-      "meetingAnchor": "finance_meeting",
+      "meetingAnchor": "shared_meeting_2f",
       "breakAnchor": "pantry_2f",
       "optionalEventAnchor": [
-        "finance_meeting",
+        "shared_meeting_2f",
         "exec_meeting"
-      ]
+      ],
+      "status": "planned"
     },
     {
       "id": "yoonseul",
@@ -8786,11 +8805,12 @@
       "registration": "planned",
       "provider": "Gemini NotebookLM",
       "workAnchor": "desk_yoonseul",
-      "meetingAnchor": "finance_meeting",
+      "meetingAnchor": "shared_meeting_2f",
       "breakAnchor": "pantry_2f",
       "optionalEventAnchor": [
-        "finance_meeting"
-      ]
+        "shared_meeting_2f"
+      ],
+      "status": "planned"
     },
     {
       "id": "seongmin",
@@ -8806,7 +8826,8 @@
       "breakAnchor": "coffee_counter",
       "optionalEventAnchor": [
         "exec_meeting"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "mir",
@@ -8825,7 +8846,8 @@
         "exec_meeting",
         "release_room",
         "rooftop_event"
-      ]
+      ],
+      "status": "active"
     }
   ],
   "movement": {
@@ -9039,16 +9061,19 @@
     "boundary": "from 포함, 다음 from 미포함. 종료 시 현재 기본 일정 복귀. 상태 변경 시 Walk로 목적지까지 이동"
   },
   "eventPolicy": {
-    "clock": "KST 날짜·분, 같은 날짜/이벤트/입력 revision은 같은 결과",
+    "clock": "same day + same event = same draw. KST 날짜/이벤트별 하루 한 추첨값, 입력 revision·시각은 seed에 포함하지 않음",
     "random": "hash(day|eventId|variation)%10000 / 10000 < probability",
     "evaluation": "조건→freshness→시간창→cooldown→한도→결정적 확률→우선순위→예약",
     "globalDailyMax": 2,
     "maxConcurrent": 1,
     "participantLock": true,
-    "cooldownScope": "메모리 eventId→lastDay. 새로고침/다른 탭 간 cooldown 보장 불가, 영속화는 후속 승인·설계 필요",
+    "cooldownScope": "eventCooldown·dailyEventCount: low-fi 같은 탭 sessionStorage만 유지. runtime은 별도 local-only 키 설계, 구현/탭 간 보장 미완료.",
     "unknownInput": "없음·불명·오래된 입력은 skip. 미확정 배포·시험·시세를 추측하지 않음",
     "priority": "회장 부재·퇴근 > Market Shock > Release Eve > 나머지. 진행 이벤트 취소 시 예약·대사 해제 후 복귀",
-    "execution": "허용 연산자 eq/gte/lte/isTrue만 해석, eval/원격 요청 없음"
+    "execution": "허용 연산자 eq/gte/lte/isTrue만 해석, eval/원격 요청 없음",
+    "eligibility": "입력은 조건/신선도 적격성만 gate. 같은 날 조건 재충족·수치 변화로 재추첨하지 않음. 미선택은 그날 계속 미선택, 실행 후 cooldown/일일 cap으로 반복 차단.",
+    "frequency": "가끔 있는 작은 사건. 기존8종 유지, 조건 충족 시에도 8~35%/일, 이벤트별 하루1회·2~14일 cooldown, 전체 하루최대2건·동시1건. 두 건은 목표량이 아닌 상한, 조건 없는 날은 0건.",
+    "runtimeParticipants": "active이면서 실제 등록된 인물만; planned는 low-fi 수동 리허설에서만 참여"
   },
   "inputAdapters": [
     {
@@ -9170,7 +9195,7 @@
         "haru",
         "daon"
       ],
-      "target": "finance_meeting",
+      "target": "shared_meeting_2f",
       "conditions": [
         {
           "field": "monthEnd",
@@ -9196,7 +9221,7 @@
         "yoonseul",
         "serin"
       ],
-      "target": "finance_meeting",
+      "target": "shared_meeting_2f",
       "conditions": [
         {
           "field": "studyWeek",
@@ -9253,7 +9278,7 @@
         "naeun",
         "jieun"
       ],
-      "target": "finance_meeting",
+      "target": "shared_meeting_2f",
       "conditions": [
         {
           "field": "travelTomorrow",
@@ -9330,7 +9355,7 @@
     "homeAnchor": "ceo-reserved",
     "active": "최근 입력(pointer/keyboard/touch) 5분 미만이고 문서 visible이면 회장실 착석",
     "idle": "5분 이상 또는 hidden: 08:00~18:00 외근 중, 그 외 퇴근. 인물 숨김·회장실 불 off",
-    "firstVisit": "KST 첫 active 1회. 세션 메모리 Set(day), 새로고침/다른 탭 간 하루1회 보장은 미구현",
+    "firstVisit": "KST 첫 유효 active 입장 1회. 시작 시 lastChairmanArrivalDay 기록, 같은 날 오후 재방문도 연출/반응 없음. low-fi는 같은 탭 reload 유지, runtime 영속성은 후속 승인 후.",
     "arrival": {
       "durationMs": 2600,
       "steps": [
@@ -9361,7 +9386,12 @@
         }
       ],
       "route": "그래프 최단경로를 단계 시간에 압축. 1→2→3→4F 간선 모두 통과",
-      "reducedMotion": "즉시 착석과 입장 텍스트1회, 반복 애니메이션 없음"
+      "reducedMotion": "즉시 착석과 입장 텍스트1회, 반복 애니메이션 없음",
+      "naming": {
+        "morning": "출근",
+        "afternoon": "외근 복귀",
+        "evening": "야간 방문/야근"
+      }
     },
     "reactions": {
       "selection": "hash(KST day|chairman-reaction)%3; 하루 한 직원의 한 문장",
@@ -9376,14 +9406,14 @@
         "왔어?"
       ],
       "afternoon": [
-        "좋은 오후예요, 회장님.",
-        "회장님 오셨어요…!",
-        "왔어? 오후 일정 볼까?"
+        "외근 복귀하셨네요, 회장님.",
+        "회장님, 외근 잘 다녀오셨어요?",
+        "외근 다녀왔어? 오후 일정 볼까?"
       ],
       "evening": [
-        "늦은 시간이네요, 회장님.",
-        "회장님, 늦게까지 계시네요…!",
-        "왔어? 무리하지 마."
+        "야간 방문이시네요, 회장님.",
+        "회장님, 야근이세요? 따뜻한 차 드릴까요?",
+        "야근하러 왔어? 무리하지 마."
       ],
       "boundaries": {
         "morning": "05:00~11:59",
@@ -9561,12 +9591,12 @@
     "breakOptional": true
   },
   "rendererIntegration": {
-    "role": "DESIGN CANON for office-seats-215; no second production renderer",
+    "role": "HANI BUILDING V2 Design Canon (216). office-seats-215 is the ONLY runtime renderer path.",
     "sourceBranch": "hani/office-seats-215",
     "sourceCommit": "bb9c883ea4483378bc7a985dc04ceb2e79021e3f",
     "sourceBlob": "9c305712bd23d971a8a662cf4bd3d1be3b35ae4e",
     "sourceSha256": "d712f3f5a322f85516535036b0ec9061acbbd67b745c55ab2390b5b686b27eea",
-    "ownerPath": "hani-office-live.js: HaniBuildingScene.snapshot → assignSeats → updateBuilding → seatActor; homeAll/changeOne/walk share this path",
+    "ownerPath": "hani-office-live.js: HaniBuildingScene.snapshot → assignSeats(seatMaps) → updateBuilding → seatActor; homeAll/changeOne/walk share this path",
     "seatShape": [
       "id",
       "zone",
@@ -10762,11 +10792,12 @@
       "desk_arin": "dev-design",
       "ceo_desk": "ceo-reserved",
       "meeting_exec": "exec_meeting",
-      "meeting_2f": "finance_meeting",
+      "meeting_2f": "shared_meeting_2f",
       "server_room": "server-console",
       "sofa_4f": "lounge-armchair",
       "mir_display": "mir_core",
-      "exec_lounge": "mir_nook"
+      "exec_lounge": "mir_station",
+      "finance_meeting": "shared_meeting_2f"
     },
     "coordinates": "215: 1672×941 art percent. V2: 1000×640 schematic, export x/10,y/6.4. Source coordinates retained separately; never use V2 percent on v1 art.",
     "homeVsCurrent": "people.homeAnchor immutable; actor.anchor/current renderer seat changes with action; do not overwrite home with current seat",
@@ -11493,7 +11524,7 @@
           "zone": "desk",
           "x": 35,
           "y": 27.34375,
-          "owner": "daon",
+          "owner": null,
           "layer": 4,
           "box": [
             33.6,
@@ -11507,7 +11538,7 @@
           "zone": "desk",
           "x": 65,
           "y": 27.34375,
-          "owner": "yoonseul",
+          "owner": null,
           "layer": 4,
           "box": [
             63.6,
@@ -11856,6 +11887,34 @@
         }
       ]
     },
-    "groupPolicy": "semantic group→named slot anchor→same 215 seat shape; no runtime free offsets; all50 source seat IDs retained"
+    "groupPolicy": "semantic group→named slot anchor→same 215 seat shape; no runtime free offsets; all50 source seat IDs retained",
+    "floorBoundary": "215 runtime은 1F~4F의 4층. 5F Rooftop은 216 신규 설계이며 215에는 존재하지 않음. 같은 단일 renderer에서 후속 구현.",
+    "staffBoundary": "person.status === active AND 실제 명부 등록 확인 (성민은 기존 chairman 신원 매핑). planned의 홈/occupant는 디자인 예약이며 rendererSeat.owner는 null.",
+    "aliasPolicy": "모든 alias target은 실재 anchor ID. room ID로의 alias 금지, room ID와 anchor ID 충돌 금지."
+  },
+  "staffPolicy": {
+    "statusValues": [
+      "active",
+      "planned"
+    ],
+    "planned": "다온·윤슬은 미등록 planned. 공간 preview/low-fi 수동 이동에만 등장, 일일 일정·runtime actor·좌석 배정·runtime 이벤트 참여에서 제외. 실제 명부 등록 후에만 active로 전환.",
+    "runtimeEligibility": "person.status === active AND 실제 명부 등록 확인 (성민은 기존 chairman 신원 매핑). planned의 홈/occupant는 디자인 예약이며 rendererSeat.owner는 null.",
+    "dailySchedule": "planned → Away/offsite, 일일 일정 생성 제외"
+  },
+  "persistencePlan": {
+    "status": "설계만 확정; runtime 구현은 성민 대표님 별도 승인 후",
+    "key": "hani_living_office_ui_v1",
+    "scope": "기기 로컬 UI 전용. hani_os_life_v23 내부 저장 금지, Cloud 동기화 금지.",
+    "fields": {
+      "lastChairmanArrivalDay": "KST YYYY-MM-DD 또는 null. 첫 유효 입장 시작 시 소비, 같은 날 재방문/재조건 충족은 연출·반응 재실행 금지.",
+      "eventCooldown": "eventId → 마지막 실행 KST 날짜",
+      "dailyEventCount": "KST 날짜 → {total, events: {eventId: count}}"
+    },
+    "prototype": {
+      "storage": "sessionStorage",
+      "key": "hani_living_office_ui_lowfi_216_v1",
+      "scope": "같은 탭 새로고침만 유지. 다른 탭·브라우저 재시작 간 보장 없음. 접근 실패 시 메모리 fallback."
+    },
+    "runtimeFollowup": "별도 키 local-only 읽기/쓰기와 탭 간 중복 실행 방지·실패 복구 검증은 후속 승인 범위. 보호 키와 Cloud 경로에 연결하지 않음."
   }
 }
