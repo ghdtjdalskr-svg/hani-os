@@ -220,8 +220,7 @@ api.setState({...api.getState(),boardPosts:[roster.chairman,...roster.people].ma
 vm.runInContext(board,context);
 for(const p of [roster.chairman,...roster.people]){
   const expected=p.id===roster.chairman.id?"assets/team/hani-org-chair-v1.webp":
-    p.group==="M9"?"assets/profiles/thumb/hani-profile-"+p.id+"-128.webp":
-    "assets/profiles/hani-staff-"+p.id+(p.id==="seoyun"?"-v7.webp":"-v5.webp");
+    "assets/profiles/thumb/hani-profile-"+p.id+"-128.webp";
   assert.ok(slots.get("list").innerHTML.includes(expected),p.id+" uses its existing static portrait");
 }
 assert.equal((slots.get("list").innerHTML.match(/loading="lazy" decoding="async" width="28" height="28"/g)||[]).length,18);

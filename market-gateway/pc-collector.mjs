@@ -1,4 +1,5 @@
 // PC-only, no listener or inbound firewall rule. Caller supplies a securely held user session.
+import {createHash} from 'node:crypto';
 import {createGateway} from './server.mjs';
 import {createPublisher} from './cache-publisher.mjs';
 export function createPcCollector(config,{getAccessToken,fetcher=fetch,now=Date.now}={}){
@@ -18,6 +19,13 @@ export function createPcCollector(config,{getAccessToken,fetcher=fetch,now=Date.
       throw Object.assign(Error('Cannot verify last cache; publish stopped'),{httpStatus:r.status,failureStage:'cache-read'});
     }
     const body=await r.text();if(Buffer.byteLength(body)>65536)throw Error('Cache size limit');return JSON.parse(body);},
+    readChart:async ref=>{
+      if(!/^charts\/[a-f0-9]{64}\.json$/.test(ref))throw Error('Invalid chart reference');
+      const r=await storageFetch('authenticated/hani-market-cache/'+config.allowedUserId+'/'+ref);
+      if(!r.ok)throw Error('Cannot verify chart cache; publish stopped');
+      const body=await r.text();if(Buffer.byteLength(body)>262144)throw Error('Cache size limit');
+      if(createHash('sha256').update(body).digest('hex')!==ref.slice(7,-5))throw Error('Chart cache hash mismatch');
+      return JSON.parse(body);},
     upload:async(path,body)=>{const r=await storageFetch('hani-market-cache/'+path,{method:'POST',headers:{'Content-Type':'application/json','x-upsert':'true','cache-control':'0'},body});return {error:!r.ok};}};
   return createPublisher({source,storage,userId:config.allowedUserId,now});
 }

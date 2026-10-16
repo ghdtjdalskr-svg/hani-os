@@ -1,3 +1,11 @@
+# 2026-10-16 · train-214 일보 클릭 selector 수정 (도연/Codex)
+
+`hani/train-214` / HEAD `790c5569`, GitHub main `3aee8059` 일치. 기존 실패 보고서의 `.ilbo-fold:not([open]).nth(3)` 대기로 동적 목록 순번 소실 확인. 테스트의 전체 fold 기준 클릭으로 최소 수정하고 열림 assertion 추가, 앱 변경 없음. **요청 고유10개 실행: Board/Drive/Login/Proactive Node 4 PASS, 브라우저6개 EPERM 차단. 전체 PASS 아님.** 기존 assertion·수정 밖 바이트/EOL·syntax/diff PASS. 커밋·버전/배포 없음. Notion 시작 read-back 완료, 최종 결과 append는 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-10-16-train-214-ilbo-click.md), [결과](../../artifacts/train-214-ilbo-click/status.json). 다음은 브라우저 허용 환경에서 차단6개 재검증. 아래 과거 기록 보존.
+
+# 2026-10-16 · train-214 회귀 10개 수정 (도연/Codex)
+
+hani/train-214 / HEAD 7232e102 / GitHub main 3aee8059 일치. 초상화·v213·팝업/조직 탭·PWA48px 기대값 정정, meta 기본색·기존 LF 복원, Fold 날짜 열 최소40px 수정. **개별 및 최종 실제 Edge 인자 기준 9 PASS / market 1 FAIL**: 시세 테스트만 seed되고 구현3파일이 누락되어 Cloud 변경 금지 범위 결정 대기. 인자 유/무 총20호출 근거는 인수인계 참조. 보호 owner·Cloud byte-identical/버전·cache·EOL·무쓰기 assertion 보존. **미커밋·미push·버전/배포 없음.** Notion 시작 기록 read-back 완료, 후속 append는 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-10-16-train-214-regressions.md), [최종20호출](../../artifacts/train-214-regressions/final-status.json). 아래 타 담당 기록 보존.
+
 # 2026-10-16 · AI 라운지 댓글 213 (Codex)
 
 `hani/ai-lounge-213` / base·HEAD `44e76816` (시작 GitHub main 일치). 새 owner-only JWT ON 함수와 기존 board 저장·timed reveal에 AI 댓글/회장님 답글 연결. 기존 설정 KST cap·QA-212 필터·template fallback·baseline/stale 보호. **신규12그룹·board/lounge/boardroom18파일·후속14·Cloud40·기존 owner/second18 및 실제 Edge1440/390 PASS. 미커밋·미push·미배포**, v212/cache/보호 owner/schema 유지. 실제 OpenAI·운영 owner·gateway/열차/운영 read-back 미검증. Notion 시작 카드 read-back 성공, 최종 갱신은 자동 승인 never 거절로 대기. [인수인계](handoffs/2026-10-16-ai-lounge-213.md). 아래 다른 담당 기록 보존.
@@ -5,6 +13,11 @@
 # 2026-10-16 · 하니일보 213 (Codex)
 
 hani/ilbo-213 / base 44e76816 (GitHub main 일치), v2.9.212 유지. 정적 창간호·민지 기자·만화 자리/8캡션·읽기 전용 지표·지난 호·홈 카드·인쇄 구현. 신규 실행9묶음·기존 메뉴/Board·표시추천조회7·Cloud-first40 PASS, hani-board.js 원문/저장/혼합 EOL 보존. **브라우저 spawn EPERM/추가 Edge 환경 정책 거절로 AA·가로넘침·412/884/1440 캡처 미검증.** 손상된 요청 문구 편집 초안, 새 runtime/JSON seed PR 필요. 미커밋·미push·버전/배포 없음. Notion 계획 생성/read-back 완료, 결과 append는 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-10-16-ilbo-213.md), [가상 Preview](../../artifacts/ilbo-213/preview.html). 아래 다른 담당 기록 보존.
+
+# 2026-10-16 · 모의고사 팝업 214 (도연/Codex)
+
+`hani/exam-popup-214` / base·HEAD `d3f3721a` (GitHub main 조회 일치). 응시하기·Remote를 전체 화면 시험지로 연결, 한 문항·OMR·닫기/재개·키보드·채점 도장 후 기존 결과/첨삭/이의제기 구현. **신규7그룹·기존퀴즈33·Remote·syntax/저장채점 원문·ID/수정 밖 mixed EOL PASS.** Edge `spawn EPERM`으로 실제412/884/1440·overflow/native dialog/computed AA·스크린샷 미검증. 신규저장키·Cloud·버전/cache 변경 없음. 미커밋·미push·main/배포 없음. Notion 계획 생성/read-back 완료, 결과 추가는 자동 승인 검토 never 거절로 갱신 대기. [인수인계](handoffs/2026-10-16-exam-popup-214.md), [근거](../../artifacts/exam-popup-214/README.md). 다음은 브라우저 검사·Preview 후 배포 담당 인계. 아래 타 담당·과거 기록 보존.
+
 
 # 2026-10-15 · 라운지 QA-212 (Codex)
 

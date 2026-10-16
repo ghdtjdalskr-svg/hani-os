@@ -39,7 +39,7 @@ try{
  assert.equal(await page.locator('#ogh-teams img[src*="banner-preview"]').count(),0);
  assert.equal(await page.locator('.ogh-person:visible').count(),17);
  assert.equal(await page.locator('.ogh-person-image>img').count(),17);
- assert.match(await page.locator('[data-card-person="seoyun"] img').getAttribute('src'),/hani-staff-seoyun-v7\.webp$/);
+ assert.match(await page.locator('[data-card-person="seoyun"] img').getAttribute('src'),/hani-profile-seoyun\.webp$/);
  assert.equal(await page.locator('.ogh-person-image>.ogh-placeholder').count(),0);
  for(const id of ['mir','seoyun','dohyun','serin','yuri','arin','gaeun','taeo']){
    const badge=page.locator('.ogh-node-people [data-person="'+id+'"] .ogh-nameplate');
