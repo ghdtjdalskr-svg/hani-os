@@ -19,6 +19,11 @@ for(const source of [
 ])assert.equal(scan(source).storage_removes,1,`must detect protected removal: ${source}`);
 
 assert.equal(scan("const store=localStorage; store.clear()").storage_clears,1);
+assert.equal(scan("const store=localStorage\nstore.clear()").storage_clears,1,"automatic semicolon insertion preserves a real alias");
+assert.equal(scan("const raw=localStorage.getItem('key'); const cache=raw; cache.clear()").storage_clears,0,"a read result is not a storage alias");
+assert.equal(scan("const raw=window['localStorage']['getItem']('key'); raw.clear()").storage_clears,0,"bracket read results are not storage aliases");
+assert.equal(scan("const store=localStorage; const value=store.getItem('key'); value.clear()").storage_clears,0,"method results do not propagate aliases");
+assert.equal(scan("const raw=localStorage.getItem('key'); raw.setItem(STORAGE_KEY,payload)").storage_writes,0,"read result methods are not protected storage writes");
 assert.equal(scan("localStorage.setItem('unrelated_key', payload)").storage_writes,0,"unrelated keys are not protected writes");
 assert.equal(scan("// localStorage.setItem(STORAGE_KEY, payload)").storage_writes,0,"comments do not create a write surface");
 assert.equal(scan("client . from ( 'hani_state' )\n . upsert ( payload )").cloud_writes,1);

@@ -4,6 +4,15 @@ import path from "node:path";
 
 const TEXT_EXTENSIONS = new Set([".html", ".htm", ".js", ".mjs", ".cjs", ".css", ".json", ".svg", ".txt", ".webmanifest"]);
 const SCHEME = /^(?:[a-z][a-z0-9+.-]*:|\/\/|#|data:|blob:)/i;
+const FILE_EXTENSION = /\.(?:png|jpg|jpeg|webp|svg|gif|ico|json|js|mjs|cjs|css|html|htm|webmanifest|woff2?|ttf|otf|eot|mp3|mp4|wav|ogg|webm)$/i;
+
+function looksLikeLocalFile(value) {
+  if (!value || /\s/.test(value) || SCHEME.test(value) || value.startsWith("/")) return false;
+  if (/^(?:application|audio|font|image|message|model|multipart|text|video)\//i.test(value)) return false;
+  const file = normalizeReleasePath(value);
+  if (!file || file === "." || file === ".." || file.endsWith("/") || /^\d+x\d+$/i.test(file)) return false;
+  return FILE_EXTENSION.test(file) || /^(?:\.\.?\/|assets\/|data\/|js\/)/.test(value);
+}
 
 export function normalizeReleasePath(value = "") {
   return String(value).replace(/\\/g, "/").replace(/^\.\//, "").split(/[?#]/, 1)[0];
@@ -46,11 +55,15 @@ export function collectReferences(file, bytes) {
   if ([".json", ".webmanifest"].includes(ext)) {
     try {
       const walk = value => {
-        if (typeof value === "string") refs.push(value);
+        if (typeof value === "string") { if (looksLikeLocalFile(value)) refs.push(value); }
         else if (Array.isArray(value)) value.forEach(walk);
         else if (value && typeof value === "object") Object.values(value).forEach(walk);
       };
-      walk(JSON.parse(text));
+      const data = JSON.parse(text);
+      if (ext === ".webmanifest") {
+        if (Array.isArray(data?.icons)) data.icons.forEach(icon => walk(icon?.src));
+        if (typeof data?.start_url === "string" && FILE_EXTENSION.test(normalizeReleasePath(data.start_url))) walk(data.start_url);
+      } else walk(data);
     } catch { /* syntax validation belongs to the caller */ }
   }
   return [...new Set(refs.map(ref => localReference(file, ref)).filter(Boolean))].sort();

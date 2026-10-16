@@ -135,7 +135,7 @@ function normalizeReleasePath(value: unknown): string {
 function isAllowedReleasePath(value: unknown): boolean {
   const path = normalizeReleasePath(value);
   if (!path || path.startsWith("/") || path.includes("..") || path.startsWith(".")) return false;
-  if (path === TARGET_PATH) return true;
+  if (path === TARGET_PATH || path === "manifest.webmanifest") return true;
   if (/^hani-[A-Za-z0-9._-]+\.(?:js|css)$/i.test(path)) return true;
   if (/^(?:js|css)\/[A-Za-z0-9._/-]+\.(?:js|css)$/i.test(path)) return true;
   if (/^assets\/[A-Za-z0-9._/-]+\.(?:png|webp|svg|jpg|jpeg|gif|ico|json)$/i.test(path)) return true;
