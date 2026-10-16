@@ -135,7 +135,7 @@ test('safety: Calendar core bytes, unique DOM IDs, memory-only client and untouc
   assert.equal(createHash('sha256').update(core).digest('hex'),'2a6fb8aec3afa3a876781e8af4a06e1065db6897d8e935622039099003aaaf84','Calendar auth, token encryption and database logic unchanged outside callback response');
   const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8'),ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);assert.equal(ids.length,new Set(ids).size);
   assert.doesNotMatch(client,/localStorage|sessionStorage|\.clear\s*\(|\bcommit\s*\(|\bsave\s*\(|id=["']/);assert.doesNotMatch(edge,/\.clear\s*\(|\.from\("(?!hani_google_calendar_)/);
-  assert.match(html,/hani-main\.js\?v=2\.9\.212/);assert.match(html,/hani-ui-v02992\.js\?v=2\.9\.212/);
+  assert.match(html,/hani-main\.js\?v=2\.9\.213/);assert.match(html,/hani-ui-v02992\.js\?v=2\.9\.213/);
 });
 test('client: the existing five theme tokens used for Drive metadata meet nominal AA on its panel/raised surfaces',()=>{
   const css=fs.readFileSync(new URL('../hani-design-system.css',import.meta.url),'utf8');

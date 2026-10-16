@@ -104,9 +104,9 @@ test('study pending metric excludes missing, paused and archived projects withou
 });
 test('quiz reminder opens the pending quiz without automatic generation, including a closed project',()=>{
  const rows=[{id:'orphan',projectId:'missing',status:'pending'},{id:'quiz',projectId:'closed',status:'in_progress'}],project={id:'closed',status:'completed',name:'Closed project'};
- const box={innerHTML:''},views=[],renders=[],context=vm.createContext({state:{learningQuizzes:rows},projectById:id=>id==='closed'?project:null,quizById:id=>rows.find(q=>q.id===id),showView:id=>views.push(id),renderLearning:auto=>renders.push(auto),requestAnimationFrame:fn=>fn(),quizDate:q=>q.date||'2026-10-11',localToday:()=> '2026-10-12',q:s=>s==='#studyProjectList'?box:null,qa:()=>[],boardProjects:()=>[],visibleProjects:()=>[project]});
+ const box={innerHTML:''},views=[],renders=[],exams=[],context=vm.createContext({state:{learningQuizzes:rows},projectById:id=>id==='closed'?project:null,quizById:id=>rows.find(q=>q.id===id),showView:id=>views.push(id),renderLearning:auto=>renders.push(auto),openExam:quiz=>exams.push(quiz),requestAnimationFrame:fn=>fn(),quizDate:q=>q.date||'2026-10-11',localToday:()=> '2026-10-12',q:s=>s==='#studyProjectList'?box:null,qa:()=>[],boardProjects:()=>[],visibleProjects:()=>[project]});
  vm.runInContext("let activeProjectId='',activeQuizId='',activeStudyTab='',quizArchiveMonth='old',quizArchivePage=8;\n"+study.slice(study.indexOf('  function pendingLearningQuizzes()'),study.indexOf('  function renderPendingQuizNav()'))+'\n'+study.slice(study.indexOf('  function renderProjectList()'),study.indexOf('  function wrongRows()'))+'\n globalThis.readLink=()=>[activeProjectId,activeQuizId,activeStudyTab,quizArchiveMonth,quizArchivePage];',context);
- context.openPendingQuiz();context.renderProjectList();assert.deepEqual(plain(context.readLink()),['closed','quiz','board','all',1]);assert.deepEqual(views,['study']);assert.deepEqual(renders,[false]);
+ context.openPendingQuiz();context.renderProjectList();assert.deepEqual(plain(context.readLink()),['closed','quiz','board','all',1]);assert.deepEqual(views,['study']);assert.deepEqual(renders,[false]);assert.deepEqual(exams,[rows[1]],'approved exam popup receives the same pending quiz');
 });
 test('care card owner preserves priority and one slot; midnight and identical source replacement refresh',()=>{
  const f=fixture();f.state.tasks=[{text:'Essay',due:'2026-10-12',courseName:'Course a',sourceType:'university'}];f.state.certificates=[{name:'Exam',examDate:'2026-11-03'}];
@@ -154,9 +154,10 @@ test('actual report rendering separates comparison/guidance and reuses the singl
  allowed=false;context.renderReportProgress();assert.match(quarter.innerHTML,/원본 검증 대기/);assert.equal(guidance.textContent,'');assert.equal(summary.textContent,'원본 검증 대기');
 });
 test('unchanged lines preserve exact EOL and protected versions/keys; no added direct storage or Cloud operations',()=>{
+ // Merged HEAD contains EOL drift; origin/main retains the original byte baseline.
  const baseline=process.env.HANI_PROACTIVE_TEST_BASELINE;
  for(const file of ['hani-main.js','index.html']){
-  const old=baseline?fs.readFileSync(path.join(baseline,file),'utf8'):execFileSync('git',['show','HEAD:'+file],{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024}),current=fs.readFileSync(path.join(root,file),'utf8');
+  const old=baseline?fs.readFileSync(path.join(baseline,file),'utf8'):execFileSync('git',['show','origin/main:'+file],{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024}),current=fs.readFileSync(path.join(root,file),'utf8');
   const lines=s=>s.match(/[^\r\n]*(?:\r\n|\n|\r|$)/g).filter(Boolean);
   // Every untouched line keeps its original terminator, including unique mixed-EOL anchors.
   const a=lines(old),b=lines(current),byText=new Map();for(const l of a){const t=l.replace(/[\r\n]+$/,'');if(!byText.has(t))byText.set(t,new Set());byText.get(t).add(l.slice(t.length));}

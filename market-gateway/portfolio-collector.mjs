@@ -39,12 +39,13 @@ export function createPortfolioCollector(input,{fetcher=fetch,now=Date.now,persi
       if(diagnose)return {success:true,stage:'holding-codes',symbols:cached.codes.length,unresolved:cached.unresolved,holdingCount:cached.holdingCount,exceptions:cached.exceptions||[]};
       if(!cached.codes.length||cached.codes.length>200)return {success:false,stage:'holding-codes',reason:'no-supported-codes',unresolved:cached.unresolved};
       if(refreshCharts&&cached.codes.length>25)return {success:false,stage:'holding-codes',reason:'too-many-symbols-for-chart-refresh'};
-      const periods=refreshCharts?['1D','1W','1M','3M','6M','1Y']:seedCharts?['1M']:[];
-      stage='collect-publish';const result=await collect(cached.codes,refreshCharts?{chartPeriods:periods,requireOhlc:true}:seedCharts?{chartPeriods:periods,onlyMissingCharts:true}:{});if(result.skipped)return {success:true,skipped:true};
+      const periods=refreshCharts?['1D','1W','1M','3M','6M','1Y']:['1M'];
+      stage='collect-publish';const result=await collect(cached.codes,refreshCharts?{chartPeriods:periods,requireOhlc:true}:{chartPeriods:periods,onlyMissingCharts:true});if(result.skipped)return {success:true,skipped:true};
       stage='read-back';const saved=await read('/storage/v1/object/authenticated/hani-market-cache/'+uid+'/latest.json?verification='+result.digest,65536);
       if(createHash('sha256').update(saved.text).digest('hex')!==result.digest)throw Error('Read-back differs');
       let chartCount=0,chartBytes=0;
       if(periods.length){stage='chart-read-back';for(const code of cached.codes)for(const period of periods){const ref=saved.data.charts[code+'/'+period];
+        if(!ref&&!refreshCharts)continue;
         if(!/^charts\/[a-f0-9]{64}\.json$/.test(ref||''))throw Error('Missing chart reference');
         const chart=await read('/storage/v1/object/authenticated/hani-market-cache/'+uid+'/'+ref,262144);
         if(createHash('sha256').update(chart.text).digest('hex')!==ref.slice(7,-5)||chart.data.symbol!==code||chart.data.period!==period)throw Error('Chart mismatch');

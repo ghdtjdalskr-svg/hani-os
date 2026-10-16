@@ -109,7 +109,7 @@ try {
         assert.ok(geometry.bar.width>0&&geometry.bar.height>0,'persistent top bar retains its layout: '+JSON.stringify(diagnostics));
         if(phase==='visible bar'){
           assert.ok(b,'scroll up reveals the bar for overlap measurement: '+JSON.stringify(diagnostics));
-          if(width<=768)assert.equal(geometry.bar.height,44,'approved mobile status bar is one 44px row');
+          if(width<=768)assert.equal(geometry.bar.height,48,'PWA-213 mobile status bar is one 48px row with 40px touch targets');
         }
         const overlap=!!b&&Math.min(a.x+a.width,b.x+b.width)>Math.max(a.x,b.x)&&Math.min(a.y+a.height,b.y+b.height)>Math.max(a.y,b.y)+1;
         assert.equal(overlap,false,'visible top bar must not overlap IC header: '+JSON.stringify(diagnostics));
