@@ -6581,7 +6581,7 @@ async function deployBridgeApi(action,payload={}){
   return out;
 }
 function deployNormalizeReleasePath(value=""){return String(value||"").trim().replace(/\\/g,"/").replace(/^\.\//,"")}
-function deployPackagePathAllowed(path=""){const p=deployNormalizeReleasePath(path);if(!p||p.startsWith("/")||p.includes("..")||p.startsWith("."))return false;if(p==="index.html")return true;if(/^hani-[A-Za-z0-9._-]+\.(?:js|css)$/i.test(p))return true;if(/^assets\/[A-Za-z0-9._/-]+\.(?:png|webp|svg|jpg|jpeg|gif|ico|json)$/i.test(p))return true;if(/^(?:js|css)\/[A-Za-z0-9._/-]+\.(?:js|css)$/i.test(p))return true;return false}
+function deployPackagePathAllowed(path=""){const p=deployNormalizeReleasePath(path);if(!p||p.startsWith("/")||p.includes("..")||p.startsWith("."))return false;if(p==="index.html"||p==="manifest.webmanifest")return true;if(/^hani-[A-Za-z0-9._-]+\.(?:js|css)$/i.test(p))return true;if(/^assets\/[A-Za-z0-9._/-]+\.(?:png|webp|svg|jpg|jpeg|gif|ico|json)$/i.test(p))return true;if(/^(?:js|css)\/[A-Za-z0-9._/-]+\.(?:js|css)$/i.test(p))return true;return false}
 async function deploySha256Bytes(bytes){const digest=await crypto.subtle.digest("SHA-256",bytes);return [...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,"0")).join("")}
 async function deployPackageHash(files=[]){const enc=new TextEncoder(),entries=[];for(const f of [...files].sort((a,b)=>a.path.localeCompare(b.path))){const bytes=f.encoding==="base64"?Uint8Array.from(atob(String(f.content??"")),c=>c.charCodeAt(0)):enc.encode(String(f.content??""));entries.push({path:f.path,bytes:bytes.byteLength,sha256:await deploySha256Bytes(bytes)})}const canonical=entries.map(e=>`${e.path}\t${e.bytes}\t${e.sha256}`).join("\n");return {entries,package_sha256:await deploySha256Bytes(enc.encode(canonical)),total_bytes:entries.reduce((n,e)=>n+e.bytes,0)}}
 function deployPackageClear(){deployPackageCandidate=null;const f=$("deployPackageFile");if(f)f.value="";if($("deployPackageName"))$("deployPackageName").textContent="-";if($("deployPackageFiles"))$("deployPackageFiles").textContent="-";if($("deployPackageSha"))$("deployPackageSha").textContent="대기";if($("deployPackageBase"))$("deployPackageBase").textContent="-";if($("deployPackageResult")){ $("deployPackageResult").className="deploy-result";$("deployPackageResult").textContent="패키지를 선택하면 HANI OS가 내용·허용 경로·Package SHA·기준 main을 먼저 확인합니다."}deployCenterRender()}
@@ -6708,7 +6708,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.213";
+const HANI_DISPLAY_VERSION="2.9.214";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];

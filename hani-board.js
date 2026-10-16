@@ -91,8 +91,7 @@
   function avatar(id,size=28){
     const member=person(id),initial=escape(Array.from(member?.name||"?")[0]);
     const src=!member?"":id===actor()?"./assets/team/hani-org-chair-v1.webp":
-      member.group==="M9"?"./assets/profiles/thumb/hani-profile-"+member.id+"-128.webp":
-      "./assets/profiles/hani-staff-"+member.id+(member.id==="seoyun"?"-v7.webp":"-v5.webp");
+      "./assets/profiles/thumb/hani-profile-"+member.id+"-128.webp";
     return '<span class="board-avatar-frame'+(size===40?' board-avatar-large':'')+'" aria-hidden="true"><span class="board-avatar board-initial">'+initial+'</span>'+
       (src?'<img class="board-avatar" data-board-avatar src="'+escape(src)+'" alt="" loading="lazy" decoding="async" width="'+size+'" height="'+size+'">':'')+'</span>';
   }

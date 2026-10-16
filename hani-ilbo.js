@@ -47,14 +47,14 @@
     const previous = ledger.filter(x => inside(x.date,previousRange));
     const sum = list => list.reduce((s,x) => s + number(x.amount),0);
     const tiles = [];
-    if (steps.length) tiles.push({key:'steps',label:'이번 주 걸음',value:steps.reduce((s,x) => s+Number(x.steps),0),unit:'보',note:steps.length+'일 기록'});
+    if (steps.length) tiles.push({key:'steps',label:'이번 주 걸음',value:steps.reduce((s,x) => s+Number(x.steps),0),unit:'보',note:steps.length+'일 기록',series:steps.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(x=>Number(x.steps))});
     if (books.length) tiles.push({key:'books',label:'완독한 책',value:books.length,unit:'권',note:'완독일 기준'});
-    if (quizzes.length) tiles.push({key:'quiz',label:'퀴즈 평균',value:Math.round(quizzes.reduce((s,x)=>s+x.rate*x.total,0)/quizzes.reduce((s,x)=>s+x.total,0)),unit:'%',note:'문항 수 가중 평균'});
+    if (quizzes.length) tiles.push({key:'quiz',label:'퀴즈 평균',value:Math.round(quizzes.reduce((s,x)=>s+x.rate*x.total,0)/quizzes.reduce((s,x)=>s+x.total,0)),unit:'%',note:'문항 수 가중 평균',max:100});
     if (current.length && previous.length) {
       const value = sum(current), before = sum(previous), delta = value-before;
       tiles.push({key:'spend',label:'이번 주 지출',value,unit:'원',note:'전주 '+before.toLocaleString('ko-KR')+'원 대비 '+(delta>0?'+':'')+delta.toLocaleString('ko-KR')+'원 · 기록분'});
     }
-    if (workouts.length) tiles.push({key:'workouts',label:'근력운동',value:new Set(workouts.filter(x=>x.strength).map(x=>x.date)).size,unit:'일',note:'근력운동 여부 기록 기준'});
+    if (workouts.length) tiles.push({key:'workouts',label:'근력운동',value:new Set(workouts.filter(x=>x.strength).map(x=>x.date)).size,unit:'일',note:'근력운동 여부 기록 기준',max:7});
     const tasks = rows(source.tasks).filter(x => !x.done).map(x => ({text:x.text || x.title || '할 일',due:koreaDate(x.dueAt) || date(x.due)}))
       .filter(x => x.due && x.due >= issueDate && x.due < shift(issueDate,7)).sort((a,b)=>a.due.localeCompare(b.due));
     return {range,tiles,tasks};
@@ -70,6 +70,7 @@
   function parseIssue(value, entry) {
     if (!value || value.number !== entry.number || value.date !== entry.date || !value.comic || !Array.isArray(value.comic.captions) || !Array.isArray(value.interview) || !Array.isArray(value.news)) throw Error('기사 형식을 확인해 주세요.');
     if (typeof value.comic.title !== 'string' || value.comic.captions.some(x=>typeof x !== 'string') || value.interview.some(x=>typeof x?.q !== 'string' || typeof x?.a !== 'string') || value.news.some(x=>typeof x?.title !== 'string' || typeof x?.body !== 'string' || typeof x?.fictional !== 'boolean') || typeof value.praise !== 'string') throw Error('기사 문구와 가상 소식 표시를 확인해 주세요.');
+    if (value.news.some(x=>x.icon !== undefined && (typeof x.icon !== 'string' || Array.from(x.icon).length > 16)) || (value.interviewee !== undefined && typeof value.interviewee !== 'string') || (value.interviewQuote !== undefined && (typeof value.interviewQuote !== 'string' || !value.interview.some(x=>x.a.includes(value.interviewQuote))))) throw Error('기사 아이콘과 인터뷰 인용문을 확인해 주세요.');
     if (!/^assets\/hani-ilbo\/[\w-]+\.(webp|png|jpg)$/.test(value.comic.image)) throw Error('만화 이미지 경로를 확인해 주세요.');
     return value;
   }
@@ -77,8 +78,8 @@
     if (!board?.listPosts || !board.displayLikes || !board.displayViews) return [];
     const range = period(issueDate), cutoff = koreaDate(now);
     return board.listPosts('ALL','',now).filter(x => inside(koreaDate(x.createdAt),range) && koreaDate(x.createdAt) <= cutoff)
-      .map(x => ({title:x.title || '라운지 이야기',likes:board.displayLikes(x,now),views:board.displayViews(x,now)}))
-      .sort((a,b)=>b.likes-a.likes || b.views-a.views).slice(0,5);
+      .map(x => ({title:x.title || '라운지 이야기',authorId:x.authorId,likes:board.displayLikes(x,now),views:board.displayViews(x,now)}))
+      .sort((a,b)=>b.likes-a.likes || b.views-a.views).slice(0,3);
   }
   function newsroomPosts(posts, issueDate, now = Date.now()) {
     const range = period(issueDate), cutoff = koreaDate(now);
@@ -87,8 +88,36 @@
       .slice().sort((a,b)=>String(published(b)).localeCompare(String(published(a)))).slice(0,5)
       .map(x => ({title:x.title || x.headline || '뉴스룸 소식',body:x.summary || x.body || ''}));
   }
-  const fold = (title, body) => '<details class="ilbo-fold"><summary>'+esc(title)+'</summary><div class="ilbo-fold-body">'+body+'</div></details>';
+  const fold = (title, body, open = false) => '<details class="ilbo-fold"'+(open?' open':'')+'><summary>'+esc(title)+'</summary><div class="ilbo-fold-body">'+body+'</div></details>';
   const empty = text => '<p class="ilbo-note">'+esc(text)+'</p>';
+  // The roster owns identity; reuse the board's portrait convention (its helper is private).
+  function person(id) {
+    const roster = window.HaniOrganizationRoster;
+    return roster?.chairman && roster.chairman.id === id ? roster.chairman : roster?.people?.find(x=>x.id === id);
+  }
+  function avatar(id) {
+    const member = person(id), safeId = member && /^[a-z0-9-]+$/.test(member.id);
+    const src = !safeId ? '' : window.HaniOrganizationRoster?.chairman?.id === id ? './assets/team/hani-org-chair-v1.webp' :
+      './assets/profiles/'+(member.group === 'M9' ? 'thumb/hani-profile-'+member.id+'-128.webp' : 'hani-staff-'+member.id+(member.id === 'seoyun' ? '-v7.webp' : '-v5.webp'));
+    return '<span class="ilbo-avatar" aria-hidden="true"><span>'+esc(Array.from(member?.name || '?')[0])+'</span>'+(src?'<img data-ilbo-avatar src="'+esc(src)+'" alt="" width="80" height="80" loading="lazy" decoding="async">':'')+'</span>';
+  }
+  const identity = id => '<span class="ilbo-person">'+esc(person(id)?.name || '알 수 없는 작성자')+(person(id)?.rank?'<small class="ilbo-chip">'+esc(person(id).rank)+'</small>':'')+'</span>';
+  const iconFor = title => /커피|카페/.test(title)?'☕':/러닝|운동/.test(title)?'🏃':/사원|수상/.test(title)?'🏆':/배포|업데이트/.test(title)?'🚀':/drive|파일|드라이브/i.test(title)?'📁':'🗞️';
+  function tile(x) {
+    const icons = {steps:'👟',books:'📚',quiz:'🎯',spend:'💳',workouts:'💪'};
+    let chart = '';
+    if (x.series?.length > 1) {
+      const max = Math.max(...x.series,1), points = x.series.map((v,i)=>(4+i*112/(x.series.length-1)).toFixed(1)+','+(27-v/max*23).toFixed(1)).join(' ');
+      chart = '<svg class="ilbo-spark" viewBox="0 0 120 32" role="img" aria-label="'+esc(x.note+' · 기록일 순 걸음 추이')+'"><polyline points="'+points+'" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    } else if (x.max) chart = '<progress class="ilbo-progress" max="'+x.max+'" value="'+x.value+'" aria-label="'+esc(x.label+' · '+x.max+' 중 '+x.value)+'"></progress>';
+    return '<div class="ilbo-tile" data-ilbo-tile="'+x.key+'"><span class="ilbo-tile-label"><span aria-hidden="true">'+icons[x.key]+'</span>'+esc(x.label)+'</span><strong>'+x.value.toLocaleString('ko-KR')+'<small>'+x.unit+'</small></strong>'+chart+'<p>'+esc(x.note)+'</p></div>';
+  }
+  function interview(issue) {
+    const member = person(issue.interviewee) || window.HaniOrganizationRoster?.people?.find(x=>(issue.interviewTitle || '').includes(x.name));
+    const id = member?.id, quote = issue.interviewQuote || issue.interview[0]?.a || '';
+    return '<div class="ilbo-profile-card"><header>'+avatar(id)+'<div><p class="ilbo-eyebrow">PEOPLE OF HANI</p>'+identity(id)+'<p class="ilbo-note">'+esc(issue.interviewTitle || '')+' <span class="ilbo-chip ilbo-fiction">세계관</span></p></div></header><blockquote>'+esc(quote)+'</blockquote></div>'+
+      '<details class="ilbo-interview-full"><summary>인터뷰 전문 보기</summary><dl class="ilbo-interview">'+issue.interview.map(x=>'<div class="ilbo-qa"><dt>'+avatar('minji')+'<div class="ilbo-bubble"><small>Q · 민지 기자</small><p>'+esc(x.q)+'</p></div></dt><dd>'+avatar(id)+'<div class="ilbo-bubble"><small>A · '+esc(member?.name || '인터뷰이')+'</small><p>'+esc(x.a)+'</p></div></dd></div>').join('')+'</dl></details>';
+  }
   function markup(issue, source, board, newsroom, now = Date.now()) {
     const model = compute(source,issue.date,now), top = topPosts(board,issue.date,now), external = newsroomPosts(newsroom,issue.date,now);
     const headline = issue.headline || rows(issue.news).find(x=>x.fictional === false)?.title || '한 주의 기록이 모여, 우리의 이야기가 됩니다';
@@ -97,14 +126,14 @@
       (issue.date > koreaDate(now) ? empty('발행 예정호 · '+issue.date+' 발행 / 현재까지의 기록을 미리 보여드려요.') : '')+
       (issue.editorialDraft ? '<p class="ilbo-draft">편집 초안 · 만화와 사내 소식 문구는 최종 확인 중이에요.</p>' : '')+
       '<section class="ilbo-lead"><p class="ilbo-eyebrow">이 주의 헤드라인</p><h3>'+esc(headline)+'</h3><p>'+esc(issue.headlineBody || '')+'</p><small>'+model.range.start+' ~ '+model.range.end+' · 기록이 있는 항목만 싣습니다</small></section>'+
-      '<div class="ilbo-front"><section class="ilbo-comic"><h3>'+esc(issue.comic.title)+'</h3><p class="ilbo-note">'+esc(issue.comic.subtitle)+'</p><figure><div class="ilbo-art"><div class="ilbo-placeholder" data-ilbo-placeholder><span aria-hidden="true">✦</span><b>이번 주 만화, 곧 도착해요</b><p>그림을 기다리는 동안 아래 이야기부터 읽어보세요.</p></div><img data-ilbo-comic hidden src="'+esc(issue.comic.image)+'" alt="'+esc(issue.comic.title)+'" decoding="async"></div><figcaption><ol class="ilbo-captions">'+issue.comic.captions.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol></figcaption></figure></section>'+
-      '<aside class="ilbo-numbers"><p class="ilbo-eyebrow">숫자로 읽는 한 주</p><h3>작은 기록, 큰 한 걸음</h3>'+model.tiles.map(x=>'<div class="ilbo-tile" data-ilbo-tile="'+x.key+'"><span>'+x.label+'</span><strong>'+x.value.toLocaleString('ko-KR')+'<small>'+x.unit+'</small></strong><p>'+esc(x.note)+'</p></div>').join('')+(model.tiles.length?'':empty('한 주의 기록이 모이면 이곳에 함께 실을게요.'))+'</aside></div>'+
-      '<div class="ilbo-sections">'+fold('사람 & 이야기 · 이 주의 인터뷰', '<p class="ilbo-note">'+esc(issue.interviewTitle || '')+' · HANI GROUP 세계관</p><dl class="ilbo-interview">'+issue.interview.map(x=>'<dt>Q. '+esc(x.q)+'</dt><dd>'+esc(x.a)+'</dd>').join('')+'</dl>')+
-      fold('사내 소식', '<div class="ilbo-columns">'+issue.news.map(x=>'<section class="ilbo-story">'+(x.fictional?'<small class="ilbo-fiction">HANI GROUP 가상 소식</small>':'<small class="ilbo-note">실제 업데이트</small>')+'<h4>'+esc(x.title)+'</h4><p>'+esc(x.body)+'</p></section>').join('')+'</div>')+
-      fold('라운지 인기글 · 이 주의 이야기', top.length?'<ol class="ilbo-list">'+top.map(x=>'<li><b>'+esc(x.title)+'</b><small>추천 '+x.likes+' · 조회 '+x.views+'</small></li>').join('')+'</ol>':empty('이번 주 라운지 이야기를 기다려요.'))+
-      fold('뉴스룸에서 고른 소식', external.length?external.map(x=>'<section class="ilbo-story"><h4>'+esc(x.title)+'</h4><p>'+esc(x.body)+'</p></section>').join(''):empty('현재 불러온 뉴스룸 소식이 없어요.'))+
-      fold('다음 주 미리보기 · 할 일과 마감', '<p class="ilbo-note">'+issue.date+' ~ '+shift(issue.date,6)+' · 미완료 일정</p>'+(model.tasks.length?'<ul class="ilbo-list">'+model.tasks.map(x=>'<li><b>'+esc(x.text)+'</b><time datetime="'+x.due+'">'+x.due+'</time></li>').join('')+'</ul>':empty('등록된 마감이 없어요. 여유도 일정의 일부예요.')))+
-      fold('하니의 칭찬 한 줄', '<blockquote>'+esc(issue.praise)+'</blockquote>')+'</div><footer class="ilbo-footer">한 주의 작은 순간을 모읍니다 · '+esc(issue.reporter || '민지 대리')+'</footer></article>';
+      '<section class="ilbo-comic"><h3>'+esc(issue.comic.title)+'</h3><figure><div class="ilbo-art"><div class="ilbo-placeholder" data-ilbo-placeholder><span aria-hidden="true">✦</span><b>이번 주 만화, 곧 도착해요</b><p>그림을 기다리는 동안 이번 호를 둘러보세요.</p><p class="ilbo-sr-only">'+esc(issue.comic.captions.join(' · '))+'</p></div><img data-ilbo-comic hidden src="'+esc(issue.comic.image)+'" alt="'+esc([issue.comic.title,...issue.comic.captions].join(' · '))+'" decoding="async"></div></figure></section>'+
+      '<div class="ilbo-sections">'+fold('숫자로 보는 한 주', '<div class="ilbo-number-grid">'+model.tiles.map(tile).join('')+'</div>'+(model.tiles.length?'':empty('한 주의 기록이 모이면 이곳에 함께 실을게요.')),true)+
+      fold('이 주의 인터뷰', interview(issue),true)+
+      fold('사내 소식', '<div class="ilbo-news-grid">'+issue.news.map(x=>'<section class="ilbo-story ilbo-news-card"><div class="ilbo-icon-band" aria-hidden="true">'+esc(x.icon || iconFor(x.title))+'</div><div class="ilbo-card-copy"><small class="ilbo-chip '+(x.fictional?'ilbo-fiction':'ilbo-real')+'">'+(x.fictional?'세계관':'실제 소식')+'</small><h4>'+esc(x.title)+'</h4><p tabindex="0">'+esc(x.body)+'</p></div></section>').join('')+'</div>')+
+      fold('라운지 베스트', top.length?'<ol class="ilbo-lounge-grid">'+top.map((x,i)=>'<li class="ilbo-lounge-card"><span class="ilbo-place" aria-label="'+(i+1)+'위">0'+(i+1)+'</span><header>'+avatar(x.authorId)+identity(x.authorId)+'</header><h4>'+esc(x.title)+'</h4><div class="ilbo-chips"><small class="ilbo-chip">♥ 추천 '+esc(x.likes)+'</small><small class="ilbo-chip">◉ 조회 '+esc(x.views)+'</small></div></li>').join('')+'</ol>':empty('이번 주 라운지 이야기를 기다려요.'))+
+      fold('마켓 한 줄', external.length?'<ul class="ilbo-market">'+external.map(x=>'<li><span class="ilbo-row-icon" aria-hidden="true">'+iconFor(x.title)+'</span><div><b>'+esc(x.title)+'</b><p tabindex="0">'+esc(x.body)+'</p></div><small class="ilbo-chip">뉴스룸</small></li>').join('')+'</ul>':empty('현재 불러온 뉴스룸 소식이 없어요.'))+
+      fold('다음 주 예고', '<p class="ilbo-note">'+issue.date+' ~ '+shift(issue.date,6)+' · 미완료 일정</p>'+(model.tasks.length?'<ul class="ilbo-timeline">'+model.tasks.map(x=>'<li><span class="ilbo-row-icon" aria-hidden="true">📌</span><time datetime="'+x.due+'">'+x.due.slice(5).replace('-','.')+'</time><b>'+esc(x.text)+'</b></li>').join('')+'</ul>':empty('등록된 마감이 없어요. 여유도 일정의 일부예요.')))+
+      fold('하니의 칭찬', '<div class="ilbo-praise"><span class="ilbo-note-mark" aria-hidden="true">✦</span><p class="ilbo-eyebrow">A NOTE FOR YOU</p><blockquote>'+esc(issue.praise)+'</blockquote><footer>'+avatar('hani')+'<span class="ilbo-signature">하니 드림</span></footer></div>')+'</div><footer class="ilbo-footer">한 주의 작은 순간을 모읍니다 · '+esc(issue.reporter || '민지 대리')+'</footer></article>';
   }
   let entries = [], selected = null, generation = 0, loading = null, seenDate = '', ready = false;
   const cache = new Map();
@@ -124,6 +153,7 @@
     const button = card.querySelector('[data-ilbo-open]');if (button) button.onclick = () => { selected = null; if (typeof showView === 'function') showView(VIEW); };
   }
   function bindImage(host) {
+    host.querySelectorAll?.('[data-ilbo-avatar]').forEach(image=>{image.onerror=()=>{image.hidden=true;};if(image.complete && !image.naturalWidth)image.hidden=true;});
     const image = host.querySelector('[data-ilbo-comic]'), placeholder = host.querySelector('[data-ilbo-placeholder]');
     if (!image || !placeholder) return;
     const update = () => {const valid = image.complete && image.naturalWidth > 0;image.hidden = !valid;placeholder.hidden = valid;};

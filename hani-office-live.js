@@ -18,7 +18,7 @@
     if(onMeeting)for(const p of entries.filter(p=>["hani","seoyun","jieun"].includes(p.id))){p.floor="2f";p.activity="meeting"}
     return {day,minutes,onBreak,onMeeting,floors:floors.map(f=>{const residents=entries.filter(p=>p.floor===f.id);return {...f,people:residents,work:residents.filter(p=>p.activity!=="rest").length,rest:residents.filter(p=>p.activity==="rest").length,...projection(residents)}})};
   }
-  function profile(id){return `./assets/profiles/${["hani","jieun","naeun","hina","sua","haru","minji","sooyeon","yuna"].includes(id)?"thumb/hani-profile-"+id+"-256.webp":"hani-staff-"+id+(id==="seoyun"?"-v7.webp":"-v5.webp")}`}
+  function profile(id){return `./assets/profiles/thumb/hani-profile-${id}-256.webp`}
   globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile});
 })();
 /* Read-only Living Office. The Agent Case renderer remains the sole owner of requests, answers and decisions. */

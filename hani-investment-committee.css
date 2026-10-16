@@ -141,3 +141,8 @@ html[data-theme=dark] .ic-monthly-report,html[data-finish=midnight-black] .ic-mo
 .ic-monthly-report .ic-role-table :is(th,td){background:transparent;color:var(--report-ink)}
 .ic-monthly-report .ic-role-table thead th{background:color-mix(in srgb,var(--report-paper) 95%,var(--ic-cobalt))}
 @media print{body[data-view=investmentCommittee] .ic-report-kpis,body[data-view=investmentCommittee] .ic-monthly-report .ic-recommendation,body[data-view=investmentCommittee] .ic-monthly-report .ic-role-table th{background:#fff!important}}
+/* 2.9.214 · 하니의 한마디를 말풍선 카드로 크게 (대표님 피드백) */
+.ic-hani-quote{align-items:flex-start;gap:12px;padding:12px 14px;margin:10px 0;border-radius:16px;background:color-mix(in srgb,var(--ic-gold) 9%,var(--surface-panel,#fff));border:1px solid color-mix(in srgb,var(--ic-gold) 30%,transparent)}
+.ic-hani-quote img{width:44px;height:44px;box-shadow:0 0 0 2px color-mix(in srgb,var(--ic-gold) 45%,transparent)}
+.ic-hani-quote small{font-size:11px;font-weight:800}
+.ic-hani-quote q{font-size:15px;line-height:1.5;font-weight:650;color:var(--text-primary,#2b2840);white-space:normal;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}

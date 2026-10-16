@@ -121,3 +121,20 @@
 #app .hani-remote-today [hidden]{display:none!important}
 #app.hani-remote-mini .hani-remote-today{display:none}
 @media(max-width:850px){#app .hani-remote-today{grid-column:2}}
+
+/* PWA-213: reserve a real rail column on Fold inner; retain the existing <=850px sheet/event path. */
+@media screen and (min-width:851px) and (max-width:900px){
+  #app.app,#app.app.hani-remote-mini{grid-template-columns:64px minmax(0,1fr) 64px}
+  #app .hani-context-remote{min-width:0;width:64px;align-items:center;padding-left:8px;padding-right:8px}
+  #app .hani-context-remote :is(.hani-remote-brand,.hani-remote-copy,.hani-remote-count,.hani-remote-section,.hani-remote-group-label,.hani-remote-season-greeting,.hani-remote-scene figcaption,.hani-remote-collapse){display:none!important}
+  #app .hani-remote-scene,#app.hani-remote-mini .hani-remote-scene{width:46px;height:112px}
+  #app .hani-remote-head{display:none}
+  #app .hani-remote-nav,#app .hani-remote-utility{width:100%}
+  #app .hani-remote-item,#app.hani-remote-mini .hani-remote-item{grid-template-columns:1fr;place-items:center;min-height:44px;padding:5px}
+}
+@media screen and (display-mode:standalone){
+  #app .hani-context-remote{top:env(safe-area-inset-top);height:calc(100dvh - env(safe-area-inset-top));padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+}
+@media screen and (display-mode:standalone) and (max-width:850px){
+  #app .hani-context-remote{top:auto;height:auto;left:env(safe-area-inset-left);right:env(safe-area-inset-right);width:auto;padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+}
