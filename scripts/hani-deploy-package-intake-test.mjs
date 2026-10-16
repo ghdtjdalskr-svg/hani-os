@@ -60,10 +60,25 @@ assert.match(element('deployPackageResult').textContent,/単一|단일 파일/);
 const totalOverflow=structuredClone(pkg);
 totalOverflow.package_sha256="";
 const sizes=await vm.runInContext('deployPackageHash',context)(totalOverflow.files);
-const image=totalOverflow.files.find(f=>f.encoding==='base64');
-const grown=Buffer.from(image.content,'base64').length+contract.limits.max_total_bytes-sizes.total_bytes+1;
-assert.ok(grown<=contract.limits.max_single_file_bytes);
-image.content=Buffer.alloc(grown).toString('base64');
+let remaining=contract.limits.max_total_bytes-sizes.total_bytes+1;
+assert.ok(remaining>0,'accepted package is within the total limit');
+for(const image of totalOverflow.files.filter(f=>f.encoding==='base64')){
+  const bytes=Buffer.from(image.content,'base64');
+  const grow=Math.min(remaining,contract.limits.max_single_file_bytes-bytes.length);
+  if(grow>0){image.content=Buffer.concat([bytes,Buffer.alloc(grow)]).toString('base64');remaining-=grow;}
+  if(!remaining)break;
+}
+for(let i=0;remaining>0&&totalOverflow.files.length<contract.limits.max_files;i++){
+  const grow=Math.min(remaining,contract.limits.max_single_file_bytes);
+  const path=`assets/qa-total-overflow-${i}.png`;
+  assert.ok(!totalOverflow.files.some(file=>file.path===path));
+  totalOverflow.files.push({path,encoding:'base64',content:Buffer.alloc(grow).toString('base64')});
+  remaining-=grow;
+}
+assert.equal(remaining,0,'fixture reaches total overflow within file-count and single-file limits');
+const overflowSizes=await vm.runInContext('deployPackageHash',context)(totalOverflow.files);
+assert.equal(overflowSizes.total_bytes,contract.limits.max_total_bytes+1);
+assert.ok(overflowSizes.entries.every(file=>file.bytes<=contract.limits.max_single_file_bytes));
 await vm.runInContext('deployCenterReadPackage',context)({text:async()=>JSON.stringify(totalOverflow),name:'total-overflow.json'});
 assert.equal(vm.runInContext('deployPackageCandidate',context),null);
 assert.match(element('deployPackageResult').textContent,/총 크기/);

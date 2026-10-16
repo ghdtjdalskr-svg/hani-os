@@ -10,7 +10,10 @@ const root=new URL('../',import.meta.url),base=execFileSync('git',['rev-parse','
 const html=fs.readFileSync(new URL('index.html',root),'utf8');
 const paths=['index.html',...[...html.matchAll(/(?:src|href)=["']([^"']+\.(?:js|css)(?:\?[^"']*)?)["']/g)].map(m=>m[1]).filter(p=>!/^https?:|^\/\//.test(p)).map(p=>p.replace(/^\.\//,'').split('?')[0])];
 const map=new Map([...new Set(paths)].map(p=>[p,fs.readFileSync(new URL(p,root),'utf8')]));
-const baselineMap=new Map([...map.keys()].map(p=>[p,execFileSync('git',['show',`${base}:${p}`],{encoding:'utf8',maxBuffer:10*1024*1024})]));
+// The historical baseline has its own entrypoints; newly added candidate files did not exist there.
+const baselineHtml=execFileSync('git',['show',`${base}:index.html`],{encoding:'utf8',maxBuffer:10*1024*1024});
+const baselinePaths=['index.html',...[...baselineHtml.matchAll(/(?:src|href)=["']([^"']+\.(?:js|css)(?:\?[^"']*)?)["']/g)].map(m=>m[1]).filter(p=>!/^https?:|^\/\//.test(p)).map(p=>p.replace(/^\.\//,'').split('?')[0])];
+const baselineMap=new Map([...new Set(baselinePaths)].map(p=>[p,execFileSync('git',['show',`${base}:${p}`],{encoding:'utf8',maxBuffer:10*1024*1024})]));
 const runtime=modularRuntimeText(map),baselineRuntime=modularRuntimeText(baselineMap),files=[...map].map(([path,content])=>({path,content,encoding:'utf8'})),packageHash=canonicalPackageHash(files).package_sha256;
 const evidence={version:1,status:'PASS',base_sha:base,candidate_sha:candidate,runtime_sha256:sha256(runtime),baseline_runtime_sha256:sha256(baselineRuntime),package_sha256:packageHash,tests:Object.entries({protected_runtime:28,backup_runtime:11,access_ui:6,transaction_runtime:1,owner_handlers:2,storage_gate_negative:19}).map(([id,cases])=>({id,cases,status:'PASS',test_sha256:sha256('synthetic'),output_sha256:sha256('synthetic')}))};
 const evidenceText=JSON.stringify(evidence),policy={version:1,approval:'OWNER_REVIEWED',approval_id:'SYNTHETIC_NOT_AUTHORIZATION',base_sha:base,source_candidate_sha:candidate,runtime_sha256:sha256(runtime),baseline_runtime_sha256:sha256(baselineRuntime),package_sha256:packageHash,evidence_sha256:sha256(evidenceText),expires_at:'2099-01-01T00:00:00Z'};
@@ -30,7 +33,7 @@ result=await ctx.runHinaReleaseQa(runtime,'synthetic',base,{...options,qaProfile
 const pkg={files,base_main_sha:base,candidate_sha:candidate,package_sha256:packageHash};
 const baseFiles=[...baselineMap.values()].join('\n');
 let local=evaluatePackage({pkg,baseFiles,productionVersion:'2.9.178',contract});assert.equal(check(local,'protected_write_surface'),'BLOCKED');
-local=evaluatePackage({pkg,baseFiles,productionVersion:'2.9.178',contract,protectedApproval:{policy,evidenceText,baselineRuntimeText:baselineRuntime}});assert.equal(check(local,'protected_write_surface'),'PASS');
+local=evaluatePackage({pkg,baseFiles,productionVersion:'2.9.178',contract,protectedApproval:{policy,evidenceText,baselineRuntimeText:baselineRuntime}});assert.equal(check(local,'protected_write_surface'),'PASS',JSON.stringify(local.checks.filter(x=>x.id.includes('protected'))));
 local=evaluatePackage({pkg:{...pkg,candidate_sha:'c'.repeat(40)},baseFiles,productionVersion:'2.9.178',contract,protectedApproval:{policy,evidenceText,baselineRuntimeText:baselineRuntime}});assert.equal(check(local,'protected_write_surface'),'BLOCKED');
 assert.equal(sha256(modularRuntimeText(map)),sha256([html,...ctx.localStylePaths(html).map(p=>map.get(p)),...ctx.localScriptPaths(html).map(p=>map.get(p))].join('\n/* HANI MODULAR RUNTIME BOUNDARY */\n')),'Node/server runtime hash format identical');
 ctx.syntheticBaseline=baselineRuntime;vm.runInContext('githubRuntimeCombined=async()=>({runtimeText:syntheticBaseline});',ctx);
