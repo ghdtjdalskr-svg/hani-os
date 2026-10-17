@@ -1,0 +1,2371 @@
+{
+  "artVersion": "office-v1-215",
+  "contractVersion": "spatial-216-v1",
+  "width": 1672,
+  "height": 941,
+  "units": "percent, actor shoe pivot; visual only",
+  "floors": {
+    "5f": {
+      "background": "./assets/building/floor-5f-v1.webp",
+      "plates": [
+        {
+          "room": "garden",
+          "label": "루프톱 가든",
+          "x": 24.013157894736842,
+          "y": 13.921360255047821,
+          "fullLabel": "루프톱 가든",
+          "surface": [
+            249,
+            104,
+            554,
+            158
+          ],
+          "material": "wood",
+          "secondary": false,
+          "ink": "#382318",
+          "rotate": 0,
+          "skew": 0.3,
+          "width": 18.241626794258373
+        },
+        {
+          "room": "terrace",
+          "label": "테라스",
+          "x": 84.061004784689,
+          "y": 15.67481402763018,
+          "fullLabel": "테라스 · 점심·휴식",
+          "surface": [
+            1281,
+            133,
+            1530,
+            162
+          ],
+          "material": "wood",
+          "secondary": true,
+          "ink": "#382318",
+          "rotate": 2,
+          "skew": 0.3,
+          "width": 14.892344497607656
+        },
+        {
+          "room": "event_roof",
+          "label": "BBQ · 행사",
+          "x": 27.631578947368425,
+          "y": 58.39532412327312,
+          "fullLabel": "계절·BBQ·특별 행사",
+          "surface": [
+            400,
+            538,
+            524,
+            561
+          ],
+          "material": "wood",
+          "secondary": true,
+          "ink": "#382318",
+          "rotate": 0,
+          "skew": 0.3,
+          "width": 7.4162679425837315
+        },
+        {
+          "room": "quiet_roof",
+          "label": "조용한 쉼터",
+          "x": 79.72488038277513,
+          "y": 58.501594048884165,
+          "fullLabel": "조용한 쉼터",
+          "surface": [
+            1216,
+            535,
+            1450,
+            566
+          ],
+          "material": "wood",
+          "secondary": true,
+          "ink": "#382318",
+          "rotate": 0,
+          "skew": 0.3,
+          "width": 13.995215311004786
+        }
+      ],
+      "homeZones": {},
+      "backgroundSha256": "a748683771eb5403b0f007ced6159fd553b18abd101f27afc2cddd8ab391358f"
+    },
+    "4f": {
+      "background": "./assets/building/floor-4f-v1.webp",
+      "plates": [
+        {
+          "room": "ceo",
+          "label": "회장실",
+          "x": 39.53349282296651,
+          "y": 41.498405951115835,
+          "fullLabel": "회장실",
+          "surface": [
+            629,
+            378,
+            694,
+            402
+          ],
+          "material": "brass",
+          "secondary": true,
+          "ink": "#241b14",
+          "rotate": 0,
+          "skew": 0.3,
+          "width": 8
+        },
+        {
+          "room": "secretariat",
+          "label": "회장 비서실",
+          "x": 19.557416267942585,
+          "y": 52.01912858660999,
+          "fullLabel": "회장 비서실",
+          "surface": [
+            254,
+            476,
+            400,
+            503
+          ],
+          "material": "brass",
+          "secondary": true,
+          "ink": "#241b14",
+          "rotate": 0,
+          "skew": 0.3,
+          "width": 8.732057416267942
+        },
+        {
+          "room": "hani_office",
+          "label": "하니 전무실",
+          "x": 72.75717703349282,
+          "y": 2.975557917109458,
+          "fullLabel": "하니 전무실",
+          "surface": [
+            1148,
+            12,
+            1285,
+            44
+          ],
+          "material": "glass",
+          "secondary": true,
+          "ink": "#122b3b",
+          "rotate": 0,
+          "skew": 0.3,
+          "width": 8.19377990430622
+        },
+        {
+          "room": "exec",
+          "label": "임원회의실",
+          "x": 78.67822966507177,
+          "y": 57.38575982996812,
+          "fullLabel": "임원회의실",
+          "surface": [
+            1181,
+            526,
+            1450,
+            554
+          ],
+          "material": "glass",
+          "secondary": true,
+          "ink": "#122b3b",
+          "rotate": 0,
+          "skew": -0.6,
+          "width": 16.088516746411482
+        },
+        {
+          "room": "mir_nook",
+          "label": "MIR",
+          "x": 96.6208133971292,
+          "y": 4.5164718384697125,
+          "fullLabel": "MIR Station",
+          "surface": [
+            1579,
+            32,
+            1652,
+            53
+          ],
+          "material": "silver",
+          "secondary": true,
+          "ink": "#122b3b",
+          "rotate": 0,
+          "skew": 0.3,
+          "width": 4.366028708133971
+        }
+      ],
+      "homeZones": {
+        "ceo": [
+          10,
+          10,
+          36,
+          34
+        ],
+        "secretariat": [
+          5,
+          54,
+          40,
+          81
+        ],
+        "hani_office": [
+          58,
+          1,
+          84,
+          29
+        ],
+        "mir_nook": [
+          90.5,
+          26,
+          96,
+          46
+        ]
+      },
+      "homeFurniture": {
+        "ceo-reserved": {
+          "type": "desk-chair",
+          "row": "ceo-reserved",
+          "seatBounds": [
+            331,
+            173,
+            424,
+            268
+          ],
+          "deskBounds": [
+            178,
+            252,
+            570,
+            400
+          ]
+        },
+        "secretary_desk": {
+          "type": "desk-chair",
+          "row": "secretariat",
+          "seatBounds": [
+            149,
+            612,
+            241,
+            722
+          ],
+          "deskBounds": [
+            90,
+            536,
+            317,
+            689
+          ]
+        },
+        "desk_yuna": {
+          "type": "desk-chair",
+          "row": "secretariat",
+          "seatBounds": [
+            404,
+            612,
+            495,
+            722
+          ],
+          "deskBounds": [
+            337,
+            536,
+            567,
+            689
+          ]
+        },
+        "office_hani": {
+          "type": "desk-chair",
+          "row": "hani-executive",
+          "seatBounds": [
+            1165,
+            85,
+            1232,
+            174
+          ],
+          "deskBounds": [
+            1050,
+            124,
+            1333,
+            229
+          ]
+        },
+        "mir_station": {
+          "type": "console",
+          "row": "mir-pod",
+          "seatBounds": [
+            1510,
+            385,
+            1580,
+            425
+          ],
+          "deskBounds": [
+            1510,
+            300,
+            1608,
+            402
+          ]
+        }
+      },
+      "backgroundSha256": "3f792b4a4c935f3a741bf4e4573d9643480464498f59774809de3908931592a4",
+      "privateOffice": {
+        "bounds": [
+          58,
+          1,
+          84,
+          29
+        ],
+        "glassDoor": true,
+        "bookshelf": true,
+        "visitorChairs": 2,
+        "loungeBounds": [
+          62,
+          30,
+          91,
+          47
+        ]
+      }
+    },
+    "3f": {
+      "background": "./assets/building/floor-3f-v1.webp",
+      "plates": [
+        {
+          "room": "platform",
+          "label": "AI플랫폼개발실",
+          "x": 21.74043062200957,
+          "y": 33.4750265674814,
+          "fullLabel": "AI플랫폼개발실",
+          "surface": [
+            129,
+            286,
+            598,
+            344
+          ],
+          "material": "silver",
+          "secondary": false,
+          "ink": "#122b3b",
+          "rotate": 0,
+          "skew": 0.3,
+          "width": 28.05023923444976
+        },
+        {
+          "room": "server",
+          "label": "서버실",
+          "x": 78.02033492822966,
+          "y": 18.809776833156217,
+          "fullLabel": "서버실",
+          "surface": [
+            1174,
+            164,
+            1435,
+            190
+          ],
+          "material": "glass",
+          "secondary": true,
+          "ink": "#122b3b",
+          "rotate": 0,
+          "skew": -0.6,
+          "width": 15.610047846889952
+        },
+        {
+          "room": "standup",
+          "label": "스탠드업",
+          "x": 24.132775119617225,
+          "y": 11.689691817215728,
+          "fullLabel": "스탠드업 룸",
+          "surface": [
+            348,
+            101,
+            459,
+            119
+          ],
+          "material": "silver",
+          "secondary": true,
+          "ink": "#122b3b",
+          "rotate": 0,
+          "skew": 0.3,
+          "width": 6.638755980861244
+        },
+        {
+          "room": "release",
+          "label": "릴리스 · 워 룸",
+          "x": 79.06698564593302,
+          "y": 80.97768331562168,
+          "fullLabel": "릴리스 · 워 룸",
+          "surface": [
+            1117,
+            745,
+            1527,
+            779
+          ],
+          "material": "silver",
+          "secondary": true,
+          "ink": "#122b3b",
+          "rotate": 0,
+          "skew": 0.3,
+          "width": 24.52153110047847
+        }
+      ],
+      "homeZones": {
+        "platform": [
+          5,
+          40,
+          44,
+          87
+        ]
+      },
+      "homeFurniture": {
+        "dev-lead": {
+          "type": "desk-chair",
+          "row": "platform-north",
+          "seatBounds": [
+            150,
+            498,
+            237,
+            605
+          ],
+          "deskBounds": [
+            90,
+            432,
+            317,
+            583
+          ]
+        },
+        "dev-build": {
+          "type": "desk-chair",
+          "row": "platform-north",
+          "seatBounds": [
+            371,
+            498,
+            456,
+            605
+          ],
+          "deskBounds": [
+            311,
+            432,
+            536,
+            583
+          ]
+        },
+        "dev-research": {
+          "type": "desk-chair",
+          "row": "platform-north",
+          "seatBounds": [
+            588,
+            498,
+            676,
+            605
+          ],
+          "deskBounds": [
+            528,
+            432,
+            756,
+            583
+          ]
+        },
+        "dev-qa": {
+          "type": "desk-chair",
+          "row": "platform-south",
+          "seatBounds": [
+            136,
+            706,
+            230,
+            816
+          ],
+          "deskBounds": [
+            66,
+            648,
+            300,
+            794
+          ]
+        },
+        "dev-design": {
+          "type": "desk-chair",
+          "row": "platform-south",
+          "seatBounds": [
+            353,
+            706,
+            453,
+            816
+          ],
+          "deskBounds": [
+            283,
+            648,
+            523,
+            794
+          ]
+        }
+      },
+      "backgroundSha256": "3d08028d4c92590fa7077dc3083518864ec3c3a6118f9ce01376ad8e45b39b26"
+    },
+    "2f": {
+      "background": "./assets/building/floor-2f-v1.webp",
+      "plates": [
+        {
+          "room": "finance",
+          "label": "재무자산관리실",
+          "x": 24.342105263157894,
+          "y": 38.94792773645058,
+          "fullLabel": "재무자산관리실",
+          "surface": [
+            110,
+            339,
+            704,
+            394
+          ],
+          "material": "brass",
+          "secondary": false,
+          "ink": "#101b12",
+          "rotate": 0,
+          "skew": 0.3,
+          "width": 35.526315789473685
+        },
+        {
+          "room": "life",
+          "label": "라이프&엔터테인먼트",
+          "x": 24.013157894736842,
+          "y": 95.43039319872476,
+          "fullLabel": "라이프&엔터테인먼트",
+          "surface": [
+            122,
+            871,
+            681,
+            925
+          ],
+          "material": "brass",
+          "secondary": false,
+          "ink": "#41251d",
+          "rotate": 0,
+          "skew": 0.3,
+          "width": 33.433014354066984
+        },
+        {
+          "room": "pantry",
+          "label": "팬트리",
+          "x": 68.36124401913875,
+          "y": 4.994686503719448,
+          "fullLabel": "공용 팬트리",
+          "surface": [
+            1076,
+            34,
+            1210,
+            60
+          ],
+          "material": "brass",
+          "secondary": true,
+          "ink": "#241b14",
+          "rotate": 0,
+          "skew": 0.3,
+          "width": 8.014354066985646
+        },
+        {
+          "room": "team_meeting",
+          "label": "팀 협업실",
+          "x": 73.44497607655502,
+          "y": 48.51222104144527,
+          "fullLabel": "팀 협업실",
+          "surface": [
+            1016,
+            438,
+            1440,
+            475
+          ],
+          "material": "glass",
+          "secondary": true,
+          "ink": "#3b302a",
+          "rotate": 0,
+          "skew": -0.6,
+          "width": 25.358851674641148
+        },
+        {
+          "room": "finance",
+          "label": "실장실",
+          "fullLabel": "재무자산관리실장 · 지은",
+          "surface": [
+            610,
+            234,
+            659,
+            254
+          ],
+          "material": "brass",
+          "secondary": true,
+          "detail": true,
+          "ink": "#100b06",
+          "rotate": 0,
+          "skew": 0.3,
+          "x": 37.948564593301434,
+          "y": 25.823591923485655,
+          "width": 8,
+          "textScaleX": 0.66
+        },
+        {
+          "room": "life",
+          "label": "LIFE",
+          "fullLabel": "라이프&엔터테인먼트 · 윤슬 입사 예정 확장석",
+          "surface": [
+            598,
+            586,
+            750,
+            622
+          ],
+          "material": "brass",
+          "secondary": false,
+          "detail": true,
+          "ink": "#41251d",
+          "rotate": 0,
+          "skew": 0.3,
+          "x": 40.31,
+          "y": 64.19,
+          "width": 10,
+          "textScaleX": 1
+        }
+      ],
+      "homeZones": {
+        "finance": [
+          5,
+          8,
+          46,
+          66
+        ],
+        "life": [
+          5,
+          69,
+          46,
+          93
+        ]
+      },
+      "homeFurniture": {
+        "finance-a": {
+          "type": "desk-chair",
+          "row": "finance-director",
+          "seatBounds": [
+            293,
+            114,
+            380,
+            207
+          ],
+          "deskBounds": [
+            176,
+            178,
+            474,
+            290
+          ],
+          "occupantLabel": "재무자산관리실장 · 지은"
+        },
+        "finance-b": {
+          "type": "desk-chair",
+          "row": "finance",
+          "seatBounds": [
+            314,
+            498,
+            387,
+            605
+          ],
+          "deskBounds": [
+            269,
+            433,
+            437,
+            583
+          ]
+        },
+        "desk_daon": {
+          "type": "desk-chair",
+          "row": "finance",
+          "seatBounds": [
+            478,
+            498,
+            550,
+            605
+          ],
+          "deskBounds": [
+            433,
+            433,
+            600,
+            583
+          ],
+          "seatNote": "지은·하루 옆 예정 좌석"
+        },
+        "life-a": {
+          "type": "desk-chair",
+          "row": "life",
+          "seatBounds": [
+            122,
+            733,
+            196,
+            840
+          ],
+          "deskBounds": [
+            82,
+            672,
+            234,
+            818
+          ]
+        },
+        "life-b": {
+          "type": "desk-chair",
+          "row": "life",
+          "seatBounds": [
+            254,
+            733,
+            330,
+            840
+          ],
+          "deskBounds": [
+            214,
+            672,
+            368,
+            818
+          ]
+        },
+        "life-c": {
+          "type": "desk-chair",
+          "row": "life",
+          "seatBounds": [
+            390,
+            733,
+            465,
+            840
+          ],
+          "deskBounds": [
+            350,
+            672,
+            503,
+            818
+          ]
+        },
+        "life-d": {
+          "type": "desk-chair",
+          "row": "life",
+          "seatBounds": [
+            527,
+            733,
+            604,
+            840
+          ],
+          "deskBounds": [
+            487,
+            672,
+            642,
+            818
+          ]
+        },
+        "desk_yoonseul": {
+          "type": "desk-chair",
+          "row": "finance",
+          "team": "life",
+          "spillover": true,
+          "seatBounds": [
+            638,
+            498,
+            715,
+            605
+          ],
+          "deskBounds": [
+            598,
+            433,
+            752,
+            583
+          ],
+          "seatNote": "재무 줄 끝 · 라이프팀 확장 예정 좌석 (라이프 줄 옆)"
+        }
+      },
+      "backgroundSha256": "8dee5aedba2dc12abd1060b5b788279cf2cf3d432bac174c91985dd28c921e96",
+      "freeDesks": [
+        {
+          "id": "finance-row-spare",
+          "label": "여유석",
+          "seatBounds": [
+            140,
+            498,
+            213,
+            605
+          ],
+          "deskBounds": [
+            95,
+            433,
+            263,
+            583
+          ]
+        }
+      ],
+      "directorOffice": {
+        "bounds": [
+          5,
+          6,
+          34,
+          32
+        ],
+        "occupant": "jieun",
+        "label": "재무자산관리실장 · 지은",
+        "formerDesk": "finance-row-spare"
+      },
+      "homeZoneExtensions": {
+        "life": [
+          [
+            35.5,
+            52,
+            46,
+            67
+          ]
+        ]
+      },
+      "deskRows": {
+        "finance": {
+          "capacity": 4,
+          "seats": [
+            "finance-row-spare",
+            "finance-b",
+            "desk_daon",
+            "desk_yoonseul"
+          ]
+        },
+        "life": {
+          "capacity": 4,
+          "seats": [
+            "life-a",
+            "life-b",
+            "life-c",
+            "life-d"
+          ]
+        }
+      }
+    },
+    "1f": {
+      "background": "./assets/building/floor-1f-v1.webp",
+      "plates": [
+        {
+          "room": "business",
+          "label": "기업솔루션사업부",
+          "x": 15.311004784688995,
+          "y": 46.17428267800213,
+          "fullLabel": "기업솔루션사업부",
+          "surface": [
+            65,
+            405,
+            447,
+            465
+          ],
+          "material": "brass",
+          "secondary": false,
+          "ink": "#241b14",
+          "rotate": 0,
+          "skew": 0.3,
+          "width": 30,
+          "textScaleX": 0.9
+        },
+        {
+          "room": "consult",
+          "label": "고객 상담실",
+          "x": 15.370813397129188,
+          "y": 87.93836344314559,
+          "fullLabel": "고객 상담실",
+          "surface": [
+            143,
+            805,
+            371,
+            850
+          ],
+          "material": "brass",
+          "secondary": true,
+          "ink": "#241b14",
+          "rotate": 0,
+          "skew": 0.3,
+          "width": 13.636363636363635
+        },
+        {
+          "room": "lobby",
+          "label": "하니 본사",
+          "x": 49.9700956937799,
+          "y": 13.761955366631243,
+          "fullLabel": "HANI GROUP · 하니 본사",
+          "surface": [
+            701,
+            89,
+            970,
+            170
+          ],
+          "material": "brass",
+          "secondary": false,
+          "ink": "#3d2b21",
+          "rotate": 0,
+          "skew": 0.3,
+          "width": 16.088516746411482,
+          "logo": "./assets/brand/hani-group-ci-official.webp"
+        },
+        {
+          "room": "cafe",
+          "label": "HANI Coffee",
+          "x": 79.06698564593302,
+          "y": 53.028692879914985,
+          "fullLabel": "HANI Coffee",
+          "surface": [
+            1204,
+            485,
+            1440,
+            513
+          ],
+          "material": "brass",
+          "secondary": true,
+          "ink": "#fff4d6",
+          "rotate": 0,
+          "skew": 0.3,
+          "width": 14.114832535885165
+        }
+      ],
+      "homeZones": {
+        "business": [
+          5,
+          49,
+          24,
+          70
+        ],
+        "consult": [
+          3,
+          68,
+          27,
+          82
+        ]
+      },
+      "homeFurniture": {
+        "business-west": {
+          "type": "desk-chair",
+          "row": "business",
+          "seatBounds": [
+            141,
+            545,
+            213,
+            646
+          ],
+          "deskBounds": [
+            121,
+            488,
+            240,
+            610
+          ]
+        },
+        "business-east": {
+          "type": "desk-chair",
+          "row": "business",
+          "seatBounds": [
+            258,
+            545,
+            329,
+            646
+          ],
+          "deskBounds": [
+            242,
+            488,
+            355,
+            610
+          ]
+        }
+      },
+      "backgroundSha256": "ca0aeefc46151882a015ab5dc88df1f3ca664657393bbb0e4e27407ddf7d2042"
+    }
+  },
+  "anchors": {
+    "hall_5f": {
+      "x": 51,
+      "y": 50
+    },
+    "elevator_5f": {
+      "x": 51,
+      "y": 12
+    },
+    "stairs_5f": {
+      "x": 51,
+      "y": 50
+    },
+    "door_garden": {
+      "x": 22,
+      "y": 37
+    },
+    "junction_garden": {
+      "x": 22,
+      "y": 33.48
+    },
+    "hall_garden": {
+      "x": 51,
+      "y": 50
+    },
+    "door_terrace": {
+      "x": 74.5,
+      "y": 42
+    },
+    "junction_terrace": {
+      "x": 74.5,
+      "y": 38.04
+    },
+    "hall_terrace": {
+      "x": 51,
+      "y": 50
+    },
+    "door_event_roof": {
+      "x": 23,
+      "y": 64
+    },
+    "junction_event_roof": {
+      "x": 23,
+      "y": 68.125
+    },
+    "hall_event_roof": {
+      "x": 51,
+      "y": 50
+    },
+    "door_quiet_roof": {
+      "x": 76,
+      "y": 64
+    },
+    "junction_quiet_roof": {
+      "x": 76,
+      "y": 67.896
+    },
+    "hall_quiet_roof": {
+      "x": 51,
+      "y": 50
+    },
+    "rooftop_garden": {
+      "x": 19,
+      "y": 32,
+      "furniture": "standing interaction"
+    },
+    "approach_rooftop_garden": {
+      "x": 18.985,
+      "y": 33.48
+    },
+    "rooftop_table": {
+      "x": 74.5,
+      "y": 38.04
+    },
+    "rooftop_event": {
+      "x": 18,
+      "y": 79,
+      "furniture": "standing interaction"
+    },
+    "approach_rooftop_event": {
+      "x": 20.9,
+      "y": 68.125
+    },
+    "rooftop_rest": {
+      "x": 76,
+      "y": 67.896
+    },
+    "rooftop_table_slot_1": {
+      "x": 71.5,
+      "y": 28,
+      "furniture": "chair / sofa at table"
+    },
+    "rooftop_table_slot_2": {
+      "x": 77,
+      "y": 28,
+      "furniture": "chair / sofa at table"
+    },
+    "rooftop_table_slot_3": {
+      "x": 82,
+      "y": 28,
+      "furniture": "chair / sofa at table"
+    },
+    "rooftop_table_slot_4": {
+      "x": 73,
+      "y": 41,
+      "furniture": "chair / sofa at table"
+    },
+    "rooftop_table_slot_5": {
+      "x": 78,
+      "y": 41,
+      "furniture": "chair / sofa at table"
+    },
+    "rooftop_table_slot_6": {
+      "x": 83,
+      "y": 41,
+      "furniture": "chair / sofa at table"
+    },
+    "rooftop_rest_slot_1": {
+      "x": 74,
+      "y": 72,
+      "furniture": "chair / sofa at table"
+    },
+    "rooftop_rest_slot_2": {
+      "x": 80,
+      "y": 72,
+      "furniture": "chair / sofa at table"
+    },
+    "rooftop_rest_slot_3": {
+      "x": 68,
+      "y": 80,
+      "furniture": "chair / sofa at table"
+    },
+    "path_rooftop_table_slot_1_7": {
+      "x": 72.138,
+      "y": 38.04
+    },
+    "path_rooftop_table_slot_1_16": {
+      "x": 72.138,
+      "y": 34.8
+    },
+    "path_rooftop_table_slot_1_22": {
+      "x": 70.112,
+      "y": 34.8
+    },
+    "path_rooftop_table_slot_2_6": {
+      "x": 76.525,
+      "y": 38.04
+    },
+    "path_rooftop_table_slot_2_15": {
+      "x": 76.525,
+      "y": 34.8
+    },
+    "path_rooftop_table_slot_2_21": {
+      "x": 74.5,
+      "y": 34.8
+    },
+    "path_rooftop_table_slot_3_7": {
+      "x": 76.862,
+      "y": 38.04
+    },
+    "path_rooftop_table_slot_3_16": {
+      "x": 76.862,
+      "y": 34.8
+    },
+    "path_rooftop_table_slot_3_22": {
+      "x": 78.888,
+      "y": 34.8
+    },
+    "path_rooftop_table_slot_4_13": {
+      "x": 70.112,
+      "y": 38.04
+    },
+    "path_rooftop_table_slot_6_13": {
+      "x": 78.888,
+      "y": 38.04
+    },
+    "path_rooftop_rest_slot_1_7": {
+      "x": 73.148,
+      "y": 67.896
+    },
+    "path_rooftop_rest_slot_1_21": {
+      "x": 73.148,
+      "y": 72.854
+    },
+    "path_rooftop_rest_slot_1_27": {
+      "x": 70.704,
+      "y": 72.854
+    },
+    "path_rooftop_rest_slot_2_6": {
+      "x": 78.444,
+      "y": 67.896
+    },
+    "path_rooftop_rest_slot_2_20": {
+      "x": 78.444,
+      "y": 72.854
+    },
+    "path_rooftop_rest_slot_2_26": {
+      "x": 76,
+      "y": 72.854
+    },
+    "path_rooftop_rest_slot_3_7": {
+      "x": 78.852,
+      "y": 67.896
+    },
+    "path_rooftop_rest_slot_3_21": {
+      "x": 78.852,
+      "y": 72.854
+    },
+    "path_rooftop_rest_slot_3_27": {
+      "x": 81.296,
+      "y": 72.854
+    },
+    "hall_4f": {
+      "x": 51,
+      "y": 50
+    },
+    "elevator_4f": {
+      "x": 51,
+      "y": 12
+    },
+    "stairs_4f": {
+      "x": 51,
+      "y": 50
+    },
+    "door_ceo": {
+      "x": 21,
+      "y": 44
+    },
+    "junction_ceo": {
+      "x": 21,
+      "y": 40.04
+    },
+    "hall_ceo": {
+      "x": 51,
+      "y": 50
+    },
+    "door_secretariat": {
+      "x": 21,
+      "y": 47
+    },
+    "junction_secretariat": {
+      "x": 21,
+      "y": 45.02
+    },
+    "hall_secretariat": {
+      "x": 51,
+      "y": 50
+    },
+    "door_hani_office": {
+      "x": 59.7,
+      "y": 26
+    },
+    "junction_hani_office": {
+      "x": 60.5,
+      "y": 27
+    },
+    "hall_hani_office": {
+      "x": 51,
+      "y": 50
+    },
+    "door_exec": {
+      "x": 80,
+      "y": 63
+    },
+    "junction_exec": {
+      "x": 80,
+      "y": 68.042
+    },
+    "hall_exec": {
+      "x": 51,
+      "y": 50
+    },
+    "door_exec_lounge": {
+      "x": 60,
+      "y": 32
+    },
+    "junction_exec_lounge": {
+      "x": 67,
+      "y": 45.7
+    },
+    "hall_exec_lounge": {
+      "x": 51,
+      "y": 50
+    },
+    "office_hani": {
+      "x": 71.5,
+      "y": 17.9,
+      "furniture": "private glass executive office / executive desk high-back chair",
+      "zone": "desk"
+    },
+    "approach_desk_hani": {
+      "x": 61.5,
+      "y": 27,
+      "furniture": "executive desk approach",
+      "zone": "path"
+    },
+    "side_desk_hani": {
+      "x": 61.5,
+      "y": 14,
+      "furniture": "executive desk side",
+      "zone": "path"
+    },
+    "desk_yuna": {
+      "x": 27,
+      "y": 76,
+      "furniture": "secretary east desk / own monitor and rolling chair",
+      "zone": "desk"
+    },
+    "approach_desk_yuna": {
+      "x": 27,
+      "y": 80,
+      "furniture": "secretary desk approach",
+      "zone": "path"
+    },
+    "side_desk_yuna": {
+      "x": 30,
+      "y": 75,
+      "furniture": "secretary desk side",
+      "zone": "path"
+    },
+    "secretary_desk": {
+      "x": 11.6,
+      "y": 76,
+      "furniture": "secretary west desk / own monitor and rolling chair",
+      "zone": "desk"
+    },
+    "approach_secretary_desk": {
+      "x": 11.6,
+      "y": 80,
+      "furniture": "secretary desk approach",
+      "zone": "path"
+    },
+    "side_secretary_desk": {
+      "x": 8,
+      "y": 75,
+      "furniture": "secretary desk side",
+      "zone": "path"
+    },
+    "ceo-reserved": {
+      "x": 22.5,
+      "y": 28,
+      "furniture": "chair / sofa at table"
+    },
+    "approach_ceo_desk": {
+      "x": 17.85,
+      "y": 40.04
+    },
+    "side_ceo_desk": {
+      "x": 17.85,
+      "y": 35
+    },
+    "mir_core": {
+      "x": 78.444,
+      "y": 36.812
+    },
+    "exec_meeting": {
+      "x": 80,
+      "y": 68.042
+    },
+    "lounge-armchair": {
+      "x": 65.8,
+      "y": 47.5,
+      "furniture": "separate outside lounge armchair",
+      "zone": "lounge"
+    },
+    "mir_station": {
+      "x": 93,
+      "y": 43.5,
+      "furniture": "round pearl silver pale-cyan glowing console pod",
+      "zone": "desk"
+    },
+    "approach_mir_station": {
+      "x": 92,
+      "y": 45,
+      "furniture": "MIR pod approach",
+      "zone": "path"
+    },
+    "side_mir_station": {
+      "x": 95,
+      "y": 44,
+      "furniture": "MIR pod side",
+      "zone": "path"
+    },
+    "mir_meeting_pos": {
+      "x": 91.5,
+      "y": 77,
+      "furniture": "chair / sofa at table"
+    },
+    "secretary-side": {
+      "x": 71.2,
+      "y": 66,
+      "furniture": "chair / sofa at table"
+    },
+    "board-n": {
+      "x": 76,
+      "y": 66,
+      "furniture": "chair / sofa at table"
+    },
+    "board-ne": {
+      "x": 80.5,
+      "y": 66,
+      "furniture": "chair / sofa at table"
+    },
+    "board-sw": {
+      "x": 85,
+      "y": 66,
+      "furniture": "chair / sofa at table"
+    },
+    "board-s": {
+      "x": 76.5,
+      "y": 83.5,
+      "furniture": "chair / sofa at table"
+    },
+    "board-se": {
+      "x": 81.2,
+      "y": 83.5,
+      "furniture": "chair / sofa at table"
+    },
+    "board-e": {
+      "x": 86,
+      "y": 83.5,
+      "furniture": "chair / sofa at table"
+    },
+    "hani-side": {
+      "x": 80.8,
+      "y": 38.4,
+      "furniture": "separate outside lounge sofa / left cushion",
+      "zone": "lounge"
+    },
+    "lounge-center": {
+      "x": 84.6,
+      "y": 38.4,
+      "furniture": "separate outside lounge sofa / middle cushion",
+      "zone": "lounge"
+    },
+    "lounge-east": {
+      "x": 88,
+      "y": 38.4,
+      "furniture": "separate outside lounge sofa / right cushion",
+      "zone": "lounge"
+    },
+    "path_lounge-armchair_9": {
+      "x": 72.333,
+      "y": 32.438
+    },
+    "path_lounge-armchair_23": {
+      "x": 72.333,
+      "y": 36.812
+    },
+    "path_lounge-armchair_29": {
+      "x": 69.889,
+      "y": 36.812
+    },
+    "path_mir_meeting_pos_24": {
+      "x": 85.538,
+      "y": 68.042
+    },
+    "path_mir_meeting_pos_38": {
+      "x": 85.538,
+      "y": 74.458
+    },
+    "path_mir_meeting_pos_54": {
+      "x": 89.231,
+      "y": 74.458
+    },
+    "path_secretary-side_36": {
+      "x": 71.692,
+      "y": 68.042
+    },
+    "path_secretary-side_50": {
+      "x": 71.692,
+      "y": 74.458
+    },
+    "path_secretary-side_56": {
+      "x": 70.308,
+      "y": 74.458
+    },
+    "path_board-n_24": {
+      "x": 74.462,
+      "y": 68.042
+    },
+    "path_board-n_38": {
+      "x": 74.462,
+      "y": 74.458
+    },
+    "path_board-n_44": {
+      "x": 73.077,
+      "y": 74.458
+    },
+    "path_board-ne_12": {
+      "x": 77.231,
+      "y": 68.042
+    },
+    "path_board-ne_26": {
+      "x": 77.231,
+      "y": 74.458
+    },
+    "path_board-ne_32": {
+      "x": 75.846,
+      "y": 74.458
+    },
+    "path_board-sw_14": {
+      "x": 80,
+      "y": 74.458
+    },
+    "path_board-sw_20": {
+      "x": 78.615,
+      "y": 74.458
+    },
+    "path_board-s_14": {
+      "x": 80,
+      "y": 74.458
+    },
+    "path_board-s_20": {
+      "x": 81.385,
+      "y": 74.458
+    },
+    "path_board-se_12": {
+      "x": 82.769,
+      "y": 68.042
+    },
+    "path_board-se_26": {
+      "x": 82.769,
+      "y": 74.458
+    },
+    "path_board-se_32": {
+      "x": 84.154,
+      "y": 74.458
+    },
+    "path_board-e_24": {
+      "x": 85.538,
+      "y": 68.042
+    },
+    "path_board-e_38": {
+      "x": 85.538,
+      "y": 74.458
+    },
+    "path_board-e_44": {
+      "x": 86.923,
+      "y": 74.458
+    },
+    "path_hani-side_9": {
+      "x": 72.333,
+      "y": 32.438
+    },
+    "path_hani-side_11": {
+      "x": 72.333,
+      "y": 33.062
+    },
+    "path_hani-side_17": {
+      "x": 69.889,
+      "y": 33.062
+    },
+    "path_lounge-center_13": {
+      "x": 81.296,
+      "y": 32.438
+    },
+    "path_lounge-center_15": {
+      "x": 81.296,
+      "y": 33.062
+    },
+    "path_lounge-center_21": {
+      "x": 83.741,
+      "y": 33.062
+    },
+    "path_lounge-east_13": {
+      "x": 81.296,
+      "y": 32.438
+    },
+    "path_lounge-east_39": {
+      "x": 81.296,
+      "y": 40.562
+    },
+    "path_lounge-east_45": {
+      "x": 83.741,
+      "y": 40.562
+    },
+    "hall_3f": {
+      "x": 51,
+      "y": 50
+    },
+    "elevator_3f": {
+      "x": 51,
+      "y": 12
+    },
+    "stairs_3f": {
+      "x": 51,
+      "y": 50
+    },
+    "door_platform": {
+      "x": 25,
+      "y": 85
+    },
+    "junction_platform": {
+      "x": 25,
+      "y": 75.76
+    },
+    "hall_platform": {
+      "x": 51,
+      "y": 50
+    },
+    "door_server": {
+      "x": 80.5,
+      "y": 20
+    },
+    "junction_server": {
+      "x": 80.5,
+      "y": 23.438
+    },
+    "hall_server": {
+      "x": 51,
+      "y": 50
+    },
+    "door_standup": {
+      "x": 23,
+      "y": 17
+    },
+    "junction_standup": {
+      "x": 23,
+      "y": 19.979
+    },
+    "hall_standup": {
+      "x": 51,
+      "y": 50
+    },
+    "door_release": {
+      "x": 81,
+      "y": 56
+    },
+    "junction_release": {
+      "x": 81,
+      "y": 61.5
+    },
+    "hall_release": {
+      "x": 51,
+      "y": 50
+    },
+    "dev-lead": {
+      "x": 11.5,
+      "y": 61.5,
+      "furniture": "chair / sofa at table"
+    },
+    "approach_desk_seoyun": {
+      "x": 8.252,
+      "y": 75.76
+    },
+    "side_desk_seoyun": {
+      "x": 8.252,
+      "y": 64
+    },
+    "dev-build": {
+      "x": 24.5,
+      "y": 61.5,
+      "furniture": "chair / sofa at table"
+    },
+    "approach_desk_dohyun": {
+      "x": 15.758,
+      "y": 75.76
+    },
+    "side_desk_dohyun": {
+      "x": 15.758,
+      "y": 64
+    },
+    "dev-research": {
+      "x": 37.5,
+      "y": 61.5,
+      "furniture": "chair / sofa at table"
+    },
+    "approach_desk_serin": {
+      "x": 23.264,
+      "y": 75.76
+    },
+    "side_desk_serin": {
+      "x": 23.264,
+      "y": 64
+    },
+    "dev-qa": {
+      "x": 10.8,
+      "y": 83.5,
+      "furniture": "chair / sofa at table"
+    },
+    "approach_desk_yuri": {
+      "x": 30.77,
+      "y": 75.76
+    },
+    "side_desk_yuri": {
+      "x": 30.77,
+      "y": 64
+    },
+    "dev-design": {
+      "x": 24,
+      "y": 83.5,
+      "furniture": "chair / sofa at table"
+    },
+    "approach_desk_arin": {
+      "x": 38.277,
+      "y": 75.76
+    },
+    "side_desk_arin": {
+      "x": 38.277,
+      "y": 64
+    },
+    "server-console": {
+      "x": 88.8,
+      "y": 31,
+      "furniture": "standing interaction"
+    },
+    "approach_server_room": {
+      "x": 78.233,
+      "y": 23.438
+    },
+    "standup_room": {
+      "x": 29.5,
+      "y": 28,
+      "furniture": "standing interaction"
+    },
+    "approach_standup_room": {
+      "x": 21.133,
+      "y": 19.979
+    },
+    "release_room": {
+      "x": 81,
+      "y": 61.5
+    },
+    "dev-meeting-nw": {
+      "x": 73,
+      "y": 59.5,
+      "furniture": "chair / sofa at table"
+    },
+    "dev-meeting-n": {
+      "x": 80.5,
+      "y": 59.5,
+      "furniture": "chair / sofa at table"
+    },
+    "dev-meeting-ne": {
+      "x": 88,
+      "y": 59.5,
+      "furniture": "chair / sofa at table"
+    },
+    "dev-meeting-sw": {
+      "x": 74,
+      "y": 79,
+      "furniture": "chair / sofa at table"
+    },
+    "dev-meeting-s": {
+      "x": 81,
+      "y": 79,
+      "furniture": "chair / sofa at table"
+    },
+    "dev-meeting-se": {
+      "x": 88,
+      "y": 79,
+      "furniture": "chair / sofa at table"
+    },
+    "dev-spare": {
+      "x": 37.7,
+      "y": 83.5,
+      "furniture": "chair / sofa at table"
+    },
+    "dev-lounge-a": {
+      "x": 19,
+      "y": 21,
+      "furniture": "chair / sofa at table"
+    },
+    "dev-lounge-b": {
+      "x": 27,
+      "y": 21,
+      "furniture": "chair / sofa at table"
+    },
+    "path_dev-meeting-nw_13": {
+      "x": 76.517,
+      "y": 61.5
+    },
+    "path_dev-meeting-nw_19": {
+      "x": 76.517,
+      "y": 64.5
+    },
+    "path_dev-meeting-nw_25": {
+      "x": 74.448,
+      "y": 64.5
+    },
+    "path_dev-meeting-n_6": {
+      "x": 83.069,
+      "y": 61.5
+    },
+    "path_dev-meeting-n_12": {
+      "x": 83.069,
+      "y": 64.5
+    },
+    "path_dev-meeting-n_18": {
+      "x": 81,
+      "y": 64.5
+    },
+    "path_dev-meeting-ne_13": {
+      "x": 85.483,
+      "y": 61.5
+    },
+    "path_dev-meeting-ne_19": {
+      "x": 85.483,
+      "y": 64.5
+    },
+    "path_dev-meeting-ne_25": {
+      "x": 87.552,
+      "y": 64.5
+    },
+    "path_dev-meeting-sw_13": {
+      "x": 76.517,
+      "y": 61.5
+    },
+    "path_dev-meeting-sw_39": {
+      "x": 76.517,
+      "y": 74.5
+    },
+    "path_dev-meeting-sw_45": {
+      "x": 74.448,
+      "y": 74.5
+    },
+    "path_dev-meeting-s_6": {
+      "x": 83.069,
+      "y": 61.5
+    },
+    "path_dev-meeting-s_32": {
+      "x": 83.069,
+      "y": 74.5
+    },
+    "path_dev-meeting-s_38": {
+      "x": 81,
+      "y": 74.5
+    },
+    "path_dev-meeting-se_13": {
+      "x": 85.483,
+      "y": 61.5
+    },
+    "path_dev-meeting-se_39": {
+      "x": 85.483,
+      "y": 74.5
+    },
+    "path_dev-meeting-se_45": {
+      "x": 87.552,
+      "y": 74.5
+    },
+    "path_dev-lounge-a_71": {
+      "x": 8.346,
+      "y": 75.76
+    },
+    "path_dev-lounge-b_39": {
+      "x": 15.852,
+      "y": 75.76
+    },
+    "hall_2f": {
+      "x": 51,
+      "y": 50
+    },
+    "elevator_2f": {
+      "x": 51,
+      "y": 12
+    },
+    "stairs_2f": {
+      "x": 51,
+      "y": 50
+    },
+    "door_finance": {
+      "x": 25,
+      "y": 65
+    },
+    "junction_finance": {
+      "x": 25,
+      "y": 60.38
+    },
+    "hall_finance": {
+      "x": 51,
+      "y": 50
+    },
+    "door_life": {
+      "x": 25,
+      "y": 89
+    },
+    "junction_life": {
+      "x": 25,
+      "y": 84.6
+    },
+    "hall_life": {
+      "x": 51,
+      "y": 50
+    },
+    "door_pantry": {
+      "x": 77.5,
+      "y": 20
+    },
+    "junction_pantry": {
+      "x": 77.5,
+      "y": 23.896
+    },
+    "hall_pantry": {
+      "x": 51,
+      "y": 50
+    },
+    "door_team_meeting": {
+      "x": 82.5,
+      "y": 60
+    },
+    "junction_team_meeting": {
+      "x": 82.5,
+      "y": 65.5
+    },
+    "hall_team_meeting": {
+      "x": 51,
+      "y": 50
+    },
+    "finance-a": {
+      "x": 20.1,
+      "y": 20.4,
+      "furniture": "finance director private office / executive desk high-back chair",
+      "zone": "desk"
+    },
+    "approach_desk_jieun": {
+      "x": 38.4,
+      "y": 29.5
+    },
+    "side_desk_jieun": {
+      "x": 31,
+      "y": 22
+    },
+    "finance-b": {
+      "x": 20.9,
+      "y": 63.5,
+      "furniture": "finance row individual desk / front rolling chair",
+      "zone": "desk"
+    },
+    "approach_desk_haru": {
+      "x": 21.585,
+      "y": 60.38
+    },
+    "side_desk_haru": {
+      "x": 21.585,
+      "y": 54.5
+    },
+    "life-a": {
+      "x": 9.6,
+      "y": 88.5,
+      "furniture": "life row individual desk / front rolling chair",
+      "zone": "desk"
+    },
+    "approach_desk_naeun": {
+      "x": 8.62,
+      "y": 84.6
+    },
+    "side_desk_naeun": {
+      "x": 8.62,
+      "y": 79
+    },
+    "life-b": {
+      "x": 17.5,
+      "y": 88.5,
+      "furniture": "life row individual desk / front rolling chair",
+      "zone": "desk"
+    },
+    "approach_desk_hina": {
+      "x": 14.92,
+      "y": 84.6
+    },
+    "side_desk_hina": {
+      "x": 14.92,
+      "y": 79
+    },
+    "life-c": {
+      "x": 25.6,
+      "y": 88.5,
+      "furniture": "life row individual desk / front rolling chair",
+      "zone": "desk"
+    },
+    "approach_desk_minji": {
+      "x": 27.52,
+      "y": 84.6
+    },
+    "side_desk_minji": {
+      "x": 27.52,
+      "y": 79
+    },
+    "life-d": {
+      "x": 33.8,
+      "y": 88.5,
+      "furniture": "life row individual desk / front rolling chair",
+      "zone": "desk"
+    },
+    "approach_desk_sooyeon": {
+      "x": 33.82,
+      "y": 84.6
+    },
+    "side_desk_sooyeon": {
+      "x": 33.82,
+      "y": 79
+    },
+    "desk_daon": {
+      "x": 30.6,
+      "y": 63.5,
+      "furniture": "finance row individual desk / front rolling chair (planned, empty)",
+      "zone": "desk"
+    },
+    "approach_desk_daon": {
+      "x": 31.738,
+      "y": 60.38
+    },
+    "side_desk_daon": {
+      "x": 31.738,
+      "y": 54.5
+    },
+    "desk_yoonseul": {
+      "x": 40.4,
+      "y": 63.5,
+      "furniture": "finance row end desk / life team spill-over (planned, empty)",
+      "zone": "desk"
+    },
+    "approach_desk_yoonseul": {
+      "x": 40.4,
+      "y": 66.5
+    },
+    "side_desk_yoonseul": {
+      "x": 44.8,
+      "y": 59
+    },
+    "pantry_2f": {
+      "x": 83,
+      "y": 38,
+      "furniture": "standing interaction"
+    },
+    "approach_pantry_2f": {
+      "x": 75.669,
+      "y": 23.896
+    },
+    "shared_meeting_2f": {
+      "x": 82.5,
+      "y": 65.5
+    },
+    "meeting-nw": {
+      "x": 75,
+      "y": 64,
+      "furniture": "chair / sofa at table"
+    },
+    "meeting-ne": {
+      "x": 85.5,
+      "y": 64,
+      "furniture": "chair / sofa at table"
+    },
+    "meeting-sw": {
+      "x": 74.5,
+      "y": 83,
+      "furniture": "conference table chair"
+    },
+    "meeting-s": {
+      "x": 81,
+      "y": 83,
+      "furniture": "conference table chair"
+    },
+    "meeting-se": {
+      "x": 87,
+      "y": 83,
+      "furniture": "conference table chair"
+    },
+    "meeting-e": {
+      "x": 80.2,
+      "y": 64,
+      "furniture": "sixth conference chair behind table, separate from lounge",
+      "zone": "meeting"
+    },
+    "finance-lounge-a": {
+      "x": 71,
+      "y": 28,
+      "furniture": "chair / sofa at table"
+    },
+    "finance-lounge-b": {
+      "x": 78,
+      "y": 28,
+      "furniture": "chair / sofa at table"
+    },
+    "path_meeting-nw_4": {
+      "x": 81.35,
+      "y": 65.5
+    },
+    "path_meeting-nw_10": {
+      "x": 81.35,
+      "y": 68.5
+    },
+    "path_meeting-nw_16": {
+      "x": 79.625,
+      "y": 68.5
+    },
+    "path_meeting-ne_4": {
+      "x": 83.65,
+      "y": 65.5
+    },
+    "path_meeting-ne_10": {
+      "x": 83.65,
+      "y": 68.5
+    },
+    "path_meeting-ne_16": {
+      "x": 85.375,
+      "y": 68.5
+    },
+    "path_meeting-sw_24": {
+      "x": 89.4,
+      "y": 65.5
+    },
+    "path_meeting-sw_30": {
+      "x": 89.4,
+      "y": 68.5
+    },
+    "path_meeting-sw_36": {
+      "x": 91.125,
+      "y": 68.5
+    },
+    "path_meeting-s_4": {
+      "x": 81.35,
+      "y": 65.5
+    },
+    "path_meeting-s_30": {
+      "x": 81.35,
+      "y": 78.5
+    },
+    "path_meeting-s_36": {
+      "x": 79.625,
+      "y": 78.5
+    },
+    "path_meeting-se_4": {
+      "x": 83.65,
+      "y": 65.5
+    },
+    "path_meeting-se_30": {
+      "x": 83.65,
+      "y": 78.5
+    },
+    "path_meeting-se_36": {
+      "x": 85.375,
+      "y": 78.5
+    },
+    "path_meeting-e_24": {
+      "x": 89.4,
+      "y": 65.5
+    },
+    "path_meeting-e_50": {
+      "x": 89.4,
+      "y": 78.5
+    },
+    "path_meeting-e_56": {
+      "x": 91.125,
+      "y": 78.5
+    },
+    "path_finance-lounge-a_5": {
+      "x": 76.41,
+      "y": 23.896
+    },
+    "path_finance-lounge-a_19": {
+      "x": 76.41,
+      "y": 28.854
+    },
+    "path_finance-lounge-a_25": {
+      "x": 75.103,
+      "y": 28.854
+    },
+    "path_finance-lounge-b_5": {
+      "x": 78.59,
+      "y": 23.896
+    },
+    "path_finance-lounge-b_19": {
+      "x": 78.59,
+      "y": 28.854
+    },
+    "path_finance-lounge-b_25": {
+      "x": 79.897,
+      "y": 28.854
+    },
+    "hall_1f": {
+      "x": 35,
+      "y": 48
+    },
+    "elevator_1f": {
+      "x": 35,
+      "y": 29
+    },
+    "stairs_1f": {
+      "x": 35,
+      "y": 48
+    },
+    "door_business": {
+      "x": 14,
+      "y": 78
+    },
+    "junction_business": {
+      "x": 14,
+      "y": 72.28
+    },
+    "hall_business": {
+      "x": 35,
+      "y": 48
+    },
+    "door_consult": {
+      "x": 14,
+      "y": 78
+    },
+    "junction_consult": {
+      "x": 14,
+      "y": 72.28
+    },
+    "hall_consult": {
+      "x": 35,
+      "y": 48
+    },
+    "door_lobby": {
+      "x": 51,
+      "y": 28
+    },
+    "junction_lobby": {
+      "x": 51,
+      "y": 33.5
+    },
+    "hall_lobby": {
+      "x": 35,
+      "y": 48
+    },
+    "door_cafe": {
+      "x": 79.5,
+      "y": 32
+    },
+    "junction_cafe": {
+      "x": 79.5,
+      "y": 36.812
+    },
+    "hall_cafe": {
+      "x": 35,
+      "y": 48
+    },
+    "business-west": {
+      "x": 10.6,
+      "y": 67.7,
+      "furniture": "business workstation / monitor and rolling chair",
+      "zone": "desk"
+    },
+    "approach_desk_sua": {
+      "x": 8.138,
+      "y": 72.28
+    },
+    "side_desk_sua": {
+      "x": 8.138,
+      "y": 65
+    },
+    "business-east": {
+      "x": 17.7,
+      "y": 67.7,
+      "furniture": "business workstation / monitor and rolling chair",
+      "zone": "desk"
+    },
+    "approach_desk_taeo": {
+      "x": 15.523,
+      "y": 72.28
+    },
+    "side_desk_taeo": {
+      "x": 15.523,
+      "y": 65
+    },
+    "reception": {
+      "x": 50,
+      "y": 34,
+      "furniture": "standing interaction"
+    },
+    "approach_reception": {
+      "x": 41.855,
+      "y": 33.5
+    },
+    "ilbo_board": {
+      "x": 64,
+      "y": 50,
+      "furniture": "standing interaction"
+    },
+    "approach_ilbo_board": {
+      "x": 47.463,
+      "y": 33.5
+    },
+    "parcel_box": {
+      "x": 65,
+      "y": 55,
+      "furniture": "standing interaction"
+    },
+    "approach_parcel_box": {
+      "x": 53.286,
+      "y": 33.5
+    },
+    "arrival_gate": {
+      "x": 50,
+      "y": 90,
+      "furniture": "standing interaction"
+    },
+    "approach_arrival_gate": {
+      "x": 57.6,
+      "y": 33.5
+    },
+    "coffee_counter": {
+      "x": 77.8,
+      "y": 33,
+      "furniture": "standing interaction"
+    },
+    "approach_coffee_counter": {
+      "x": 77.1,
+      "y": 36.812
+    },
+    "client_booth": {
+      "x": 14,
+      "y": 72.28
+    },
+    "lobby-nw": {
+      "x": 72,
+      "y": 37,
+      "furniture": "chair / sofa at table"
+    },
+    "lobby-ne": {
+      "x": 86,
+      "y": 37,
+      "furniture": "chair / sofa at table"
+    },
+    "lobby-sw": {
+      "x": 72,
+      "y": 50,
+      "furniture": "chair / sofa at table"
+    },
+    "lobby-se": {
+      "x": 87,
+      "y": 50,
+      "furniture": "chair / sofa at table"
+    },
+    "client_booth_slot_1": {
+      "x": 6.5,
+      "y": 76,
+      "furniture": "chair / sofa at table"
+    },
+    "client_booth_slot_2": {
+      "x": 21,
+      "y": 76,
+      "furniture": "chair / sofa at table"
+    },
+    "client_booth_slot_3": {
+      "x": 14,
+      "y": 61,
+      "furniture": "chair / sofa at table"
+    },
+    "client_booth_slot_4": {
+      "x": 19,
+      "y": 61,
+      "furniture": "chair / sofa at table"
+    },
+    "path_lobby-nw_14": {
+      "x": 74.25,
+      "y": 36.812
+    },
+    "path_lobby-nw_18": {
+      "x": 74.25,
+      "y": 38.562
+    },
+    "path_lobby-nw_24": {
+      "x": 72,
+      "y": 38.562
+    },
+    "path_lobby-ne_12": {
+      "x": 84,
+      "y": 36.812
+    },
+    "path_lobby-ne_16": {
+      "x": 84,
+      "y": 38.562
+    },
+    "path_lobby-ne_22": {
+      "x": 86.25,
+      "y": 38.562
+    },
+    "path_lobby-sw_14": {
+      "x": 74.25,
+      "y": 36.812
+    },
+    "path_lobby-sw_40": {
+      "x": 74.25,
+      "y": 48.188
+    },
+    "path_lobby-sw_46": {
+      "x": 72,
+      "y": 48.188
+    },
+    "path_lobby-se_12": {
+      "x": 84,
+      "y": 36.812
+    },
+    "path_lobby-se_38": {
+      "x": 84,
+      "y": 48.188
+    },
+    "path_lobby-se_44": {
+      "x": 86.25,
+      "y": 48.188
+    },
+    "path_client_booth_slot_1_7": {
+      "x": 12.425,
+      "y": 72.28
+    },
+    "path_client_booth_slot_1_16": {
+      "x": 12.425,
+      "y": 67.6
+    },
+    "path_client_booth_slot_1_22": {
+      "x": 11.075,
+      "y": 67.6
+    },
+    "path_client_booth_slot_3_13": {
+      "x": 16.925,
+      "y": 72.28
+    },
+    "path_client_booth_slot_4_13": {
+      "x": 11.075,
+      "y": 72.28
+    }
+  }
+}

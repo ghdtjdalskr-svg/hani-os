@@ -1,0 +1,3265 @@
+{
+  "version": "art-sprites-217-front-v1",
+  "canon": "spatial-216-v1",
+  "base": "7978d7b91969db163f64b464bd416c3ecd78af98",
+  "generator": "built-in image_gen",
+  "layout": "Only row 0 columns 0..3 are populated: standing, sitting, walk-a, walk-b. Other cells are transparent reserved capacity. This is the user-requested front-only four-pose subset, not a completed four-direction animation set.",
+  "shadow": "Generated translucent floor shadow included per frame. Do not double-render; future split shadow pass requires mask/extraction work.",
+  "pivotMeaning": "Bottom center of included floor shadow; chair/desk masking must be validated by runtime owner.",
+  "spriteBytes": 189808,
+  "maxSpriteBytes": 1475000,
+  "reviewSheet": "_contact-sheet.png",
+  "reviewSheetBytes": 215147,
+  "entries": [
+    {
+      "id": "hani",
+      "name": "하니",
+      "kind": "human",
+      "planned": false,
+      "file": "hani.webp",
+      "sizeBytes": 8512,
+      "sha256": "632f5b94227aab6ed1e79bad01dd68c597860d8e27d45cfb65a64372e2b2e49f",
+      "sourceSha256": "d86868fc0fab45a592ebad0fcb36ae687e886309f94d76f273fc0c7d0126d073",
+      "sourceRowSplit": 621,
+      "sourceGapSamples": 0,
+      "identityReference": "assets/profiles/hani-profile-hani.webp",
+      "atlas": [
+        384,
+        512
+      ],
+      "cell": [
+        48,
+        64
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            2,
+            8,
+            43,
+            53
+          ],
+          "sourceRect": [
+            110,
+            23,
+            477,
+            582
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            48,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            3,
+            13,
+            42,
+            48
+          ],
+          "sourceRect": [
+            704,
+            78,
+            460,
+            527
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            96,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            2,
+            9,
+            44,
+            52
+          ],
+          "sourceRect": [
+            112,
+            623,
+            486,
+            572
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            144,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            2,
+            10,
+            43,
+            51
+          ],
+          "sourceRect": [
+            702,
+            632,
+            472,
+            566
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 190033,
+        "partial": 6196,
+        "opaque": 379
+      },
+      "maxBytes": 65000
+    },
+    {
+      "id": "gaeun",
+      "name": "가은/MUSE",
+      "kind": "human",
+      "planned": false,
+      "file": "gaeun.webp",
+      "sizeBytes": 8260,
+      "sha256": "e873643590266f0d5e5b87326731232fcef04edc109f5e613165257492ecbbde",
+      "sourceSha256": "f82a86cee167af7638d5ddcf53ee0c299af76768d292f0d30e9f683e6ae3155d",
+      "sourceRowSplit": 656,
+      "sourceGapSamples": 0,
+      "identityReference": "assets/profiles/hani-profile-gaeun.webp",
+      "atlas": [
+        384,
+        512
+      ],
+      "cell": [
+        48,
+        64
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            5,
+            33,
+            56
+          ],
+          "sourceRect": [
+            182,
+            26,
+            372,
+            628
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            48,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            10,
+            34,
+            51
+          ],
+          "sourceRect": [
+            727,
+            75,
+            377,
+            577
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            96,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            6,
+            9,
+            35,
+            52
+          ],
+          "sourceRect": [
+            187,
+            661,
+            378,
+            567
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            144,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            9,
+            34,
+            52
+          ],
+          "sourceRect": [
+            713,
+            662,
+            376,
+            568
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 191489,
+        "partial": 4738,
+        "opaque": 381
+      },
+      "maxBytes": 65000
+    },
+    {
+      "id": "yuna",
+      "name": "유나",
+      "kind": "human",
+      "planned": false,
+      "file": "yuna.webp",
+      "sizeBytes": 8500,
+      "sha256": "fbb2cf78ab4eadf8c96ddc39166e4f5b9b7a7109ccbcb42c53aaef181ffb1bd9",
+      "sourceSha256": "a1fa11b4d733d2ef5f6a41bae96155c4fe2f4cd39921eef5b8ab64668018fe68",
+      "sourceRowSplit": 644,
+      "sourceGapSamples": 0,
+      "identityReference": "assets/profiles/hani-profile-yuna.webp",
+      "atlas": [
+        384,
+        512
+      ],
+      "cell": [
+        48,
+        64
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            5,
+            34,
+            56
+          ],
+          "sourceRect": [
+            167,
+            25,
+            377,
+            616
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            48,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            11,
+            34,
+            50
+          ],
+          "sourceRect": [
+            760,
+            92,
+            377,
+            550
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            96,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            5,
+            9,
+            38,
+            52
+          ],
+          "sourceRect": [
+            173,
+            656,
+            410,
+            566
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            144,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            6,
+            9,
+            35,
+            52
+          ],
+          "sourceRect": [
+            745,
+            654,
+            386,
+            570
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 191319,
+        "partial": 4878,
+        "opaque": 411
+      },
+      "maxBytes": 65000
+    },
+    {
+      "id": "seoyun",
+      "name": "서윤",
+      "kind": "human",
+      "planned": false,
+      "file": "seoyun.webp",
+      "sizeBytes": 8216,
+      "sha256": "58f3cbd6884de89dc21575af133c27135ead1e7d4fb85bcbf414998193e3cdd2",
+      "sourceSha256": "3ca89b4df1f4a3bd9df5e997231b6706bc3f99ca37e9147703eaeb20ebb41883",
+      "sourceRowSplit": 647,
+      "sourceGapSamples": 0,
+      "identityReference": "assets/profiles/hani-profile-seoyun.webp",
+      "atlas": [
+        384,
+        512
+      ],
+      "cell": [
+        48,
+        64
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            3,
+            9,
+            41,
+            52
+          ],
+          "sourceRect": [
+            97,
+            20,
+            499,
+            625
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            48,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            4,
+            16,
+            39,
+            45
+          ],
+          "sourceRect": [
+            710,
+            99,
+            470,
+            543
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            96,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            2,
+            14,
+            44,
+            47
+          ],
+          "sourceRect": [
+            74,
+            660,
+            530,
+            567
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            144,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            2,
+            13,
+            44,
+            48
+          ],
+          "sourceRect": [
+            677,
+            662,
+            524,
+            567
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 190750,
+        "partial": 5500,
+        "opaque": 358
+      },
+      "maxBytes": 65000
+    },
+    {
+      "id": "dohyun",
+      "name": "도연",
+      "kind": "human",
+      "planned": false,
+      "file": "dohyun.webp",
+      "sizeBytes": 8386,
+      "sha256": "b520219ded8073dfc84627cb0c6fc2a56a3e4d57cc08013c1a2942a7a6fffa4b",
+      "sourceSha256": "1ac3be9de9c709775485ad05d9f3f37da6ebf0819939949d78982e2900d90297",
+      "sourceRowSplit": 646,
+      "sourceGapSamples": 0,
+      "identityReference": "assets/profiles/hani-profile-dohyun.webp",
+      "atlas": [
+        384,
+        512
+      ],
+      "cell": [
+        48,
+        64
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            5,
+            34,
+            56
+          ],
+          "sourceRect": [
+            165,
+            15,
+            386,
+            629
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            48,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            12,
+            34,
+            49
+          ],
+          "sourceRect": [
+            717,
+            95,
+            383,
+            549
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            96,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            6,
+            9,
+            35,
+            52
+          ],
+          "sourceRect": [
+            174,
+            659,
+            382,
+            560
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            144,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            6,
+            9,
+            35,
+            52
+          ],
+          "sourceRect": [
+            732,
+            658,
+            379,
+            562
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 191054,
+        "partial": 5200,
+        "opaque": 354
+      },
+      "maxBytes": 65000
+    },
+    {
+      "id": "serin",
+      "name": "세린",
+      "kind": "human",
+      "planned": false,
+      "file": "serin.webp",
+      "sizeBytes": 8898,
+      "sha256": "4f105ff88ff882ac922215541736de19ec2a401d197cfdbd84da91855cf4d83f",
+      "sourceSha256": "29fb1e3b222144a183de5d7d0692800b38f217e6c5ab52e18e5bff5eddaba5c1",
+      "sourceRowSplit": 650,
+      "sourceGapSamples": 0,
+      "identityReference": "assets/profiles/hani-profile-serin.webp",
+      "atlas": [
+        384,
+        512
+      ],
+      "cell": [
+        48,
+        64
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            6,
+            5,
+            36,
+            56
+          ],
+          "sourceRect": [
+            178,
+            19,
+            400,
+            629
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            48,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            14,
+            33,
+            47
+          ],
+          "sourceRect": [
+            762,
+            114,
+            369,
+            533
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            96,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            3,
+            9,
+            41,
+            52
+          ],
+          "sourceRect": [
+            141,
+            658,
+            452,
+            575
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            144,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            4,
+            9,
+            40,
+            52
+          ],
+          "sourceRect": [
+            720,
+            663,
+            441,
+            569
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 190714,
+        "partial": 5586,
+        "opaque": 308
+      },
+      "maxBytes": 65000
+    },
+    {
+      "id": "yuri",
+      "name": "유리",
+      "kind": "human",
+      "planned": false,
+      "file": "yuri.webp",
+      "sizeBytes": 7902,
+      "sha256": "9c1b131be2b3dbba0c07a00baa9c0479e24af991f6cc35eafd2362092374e7a0",
+      "sourceSha256": "baad1cc7113d82030ab9773084c5d2d977b0dda97ff3cb11265809754f0bfe17",
+      "sourceRowSplit": 690,
+      "sourceGapSamples": 0,
+      "identityReference": "assets/profiles/hani-profile-yuri.webp",
+      "atlas": [
+        384,
+        512
+      ],
+      "cell": [
+        48,
+        64
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            5,
+            33,
+            56
+          ],
+          "sourceRect": [
+            151,
+            24,
+            397,
+            664
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            48,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            8,
+            11,
+            32,
+            50
+          ],
+          "sourceRect": [
+            714,
+            98,
+            383,
+            591
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            96,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            5,
+            9,
+            38,
+            52
+          ],
+          "sourceRect": [
+            151,
+            699,
+            396,
+            535
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            144,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            5,
+            9,
+            38,
+            52
+          ],
+          "sourceRect": [
+            716,
+            702,
+            385,
+            533
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 191500,
+        "partial": 4782,
+        "opaque": 326
+      },
+      "maxBytes": 65000
+    },
+    {
+      "id": "arin",
+      "name": "아린",
+      "kind": "human",
+      "planned": false,
+      "file": "arin.webp",
+      "sizeBytes": 8688,
+      "sha256": "e90899425f98f18224ece4905bd86ab014c84ab301d49328e8e2ca1ffdbbc94d",
+      "sourceSha256": "46235d3a48080f3e9bb3c84a31057af8b54a73b9b0b976daef9c1b1d03d791ee",
+      "sourceRowSplit": 649,
+      "sourceGapSamples": 1,
+      "identityReference": "assets/profiles/hani-profile-arin.webp",
+      "atlas": [
+        384,
+        512
+      ],
+      "cell": [
+        48,
+        64
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            5,
+            34,
+            56
+          ],
+          "sourceRect": [
+            153,
+            16,
+            387,
+            633
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            48,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            12,
+            34,
+            49
+          ],
+          "sourceRect": [
+            718,
+            93,
+            380,
+            553
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            96,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            5,
+            9,
+            38,
+            52
+          ],
+          "sourceRect": [
+            144,
+            649,
+            422,
+            571
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            144,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            5,
+            9,
+            38,
+            52
+          ],
+          "sourceRect": [
+            704,
+            652,
+            415,
+            573
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 191124,
+        "partial": 5137,
+        "opaque": 347
+      },
+      "maxBytes": 65000
+    },
+    {
+      "id": "jieun",
+      "name": "지은",
+      "kind": "human",
+      "planned": false,
+      "file": "jieun.webp",
+      "sizeBytes": 8126,
+      "sha256": "dd0b5705eeb50cbc12172ccbda9f27ab4c6802e3312b8b772bba60d3f56017f1",
+      "sourceSha256": "f11f3e2e8e4ac69bc86af18abdbcdfb9c873bc17f7f473c892509fcfec321093",
+      "sourceRowSplit": 645,
+      "sourceGapSamples": 0,
+      "identityReference": "assets/profiles/hani-profile-jieun.webp",
+      "atlas": [
+        384,
+        512
+      ],
+      "cell": [
+        48,
+        64
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            5,
+            34,
+            56
+          ],
+          "sourceRect": [
+            177,
+            24,
+            375,
+            619
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            48,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            10,
+            34,
+            51
+          ],
+          "sourceRect": [
+            722,
+            82,
+            374,
+            560
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            96,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            9,
+            34,
+            52
+          ],
+          "sourceRect": [
+            170,
+            661,
+            376,
+            568
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            144,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            9,
+            34,
+            52
+          ],
+          "sourceRect": [
+            725,
+            661,
+            375,
+            568
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 191443,
+        "partial": 4801,
+        "opaque": 364
+      },
+      "maxBytes": 65000
+    },
+    {
+      "id": "haru",
+      "name": "하루",
+      "kind": "human",
+      "planned": false,
+      "file": "haru.webp",
+      "sizeBytes": 8778,
+      "sha256": "bdaf80779bb980e077524de20bc0649da28e235316dfb91be3e146d660e0cad1",
+      "sourceSha256": "55327d0b7558dabb2f189e1516717d2b293123c417edd7a01b334c117a24197f",
+      "sourceRowSplit": 637,
+      "sourceGapSamples": 0,
+      "identityReference": "assets/profiles/hani-profile-haru.webp",
+      "atlas": [
+        384,
+        512
+      ],
+      "cell": [
+        48,
+        64
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            3,
+            9,
+            42,
+            52
+          ],
+          "sourceRect": [
+            96,
+            23,
+            500,
+            612
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            48,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            3,
+            15,
+            42,
+            46
+          ],
+          "sourceRect": [
+            681,
+            90,
+            496,
+            546
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            96,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            2,
+            12,
+            44,
+            49
+          ],
+          "sourceRect": [
+            89,
+            644,
+            521,
+            580
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            144,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            3,
+            12,
+            42,
+            49
+          ],
+          "sourceRect": [
+            687,
+            646,
+            501,
+            579
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 190281,
+        "partial": 5967,
+        "opaque": 360
+      },
+      "maxBytes": 65000
+    },
+    {
+      "id": "naeun",
+      "name": "나은",
+      "kind": "human",
+      "planned": false,
+      "file": "naeun.webp",
+      "sizeBytes": 8372,
+      "sha256": "915b06261f89366a7358d5fc57a70e3e1d9ae95c7c418e946d54ce8438b69757",
+      "sourceSha256": "3cb7f12c21c7ef1b9362b2140bf96651eb2758d38cbe03dabab7312c4c9d66c7",
+      "sourceRowSplit": 643,
+      "sourceGapSamples": 0,
+      "identityReference": "assets/profiles/hani-profile-naeun.webp",
+      "atlas": [
+        384,
+        512
+      ],
+      "cell": [
+        48,
+        64
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            5,
+            34,
+            56
+          ],
+          "sourceRect": [
+            178,
+            27,
+            372,
+            614
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            48,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            10,
+            34,
+            51
+          ],
+          "sourceRect": [
+            745,
+            84,
+            376,
+            557
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            96,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            6,
+            9,
+            36,
+            52
+          ],
+          "sourceRect": [
+            172,
+            654,
+            388,
+            563
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            144,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            5,
+            9,
+            37,
+            52
+          ],
+          "sourceRect": [
+            730,
+            660,
+            396,
+            559
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 191472,
+        "partial": 4752,
+        "opaque": 384
+      },
+      "maxBytes": 65000
+    },
+    {
+      "id": "hina",
+      "name": "히나",
+      "kind": "human",
+      "planned": false,
+      "file": "hina.webp",
+      "sizeBytes": 7908,
+      "sha256": "d8eb5cea89a41ac962f1d132e696274d08130afd64c09d77e9641c13cc743b0f",
+      "sourceSha256": "1a9a79ddcdb2d69513634f30fe9ed50e78d5f26f878e7746d20786c1fb756d52",
+      "sourceRowSplit": 638,
+      "sourceGapSamples": 26,
+      "identityReference": "assets/profiles/hani-profile-hina.webp",
+      "atlas": [
+        384,
+        512
+      ],
+      "cell": [
+        48,
+        64
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            5,
+            33,
+            56
+          ],
+          "sourceRect": [
+            162,
+            15,
+            360,
+            617
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            48,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            9,
+            33,
+            52
+          ],
+          "sourceRect": [
+            754,
+            66,
+            364,
+            570
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            96,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            8,
+            34,
+            53
+          ],
+          "sourceRect": [
+            157,
+            639,
+            377,
+            584
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            144,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            8,
+            33,
+            53
+          ],
+          "sourceRect": [
+            734,
+            641,
+            366,
+            583
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 191653,
+        "partial": 4591,
+        "opaque": 364
+      },
+      "maxBytes": 65000
+    },
+    {
+      "id": "minji",
+      "name": "민지",
+      "kind": "human",
+      "planned": false,
+      "file": "minji.webp",
+      "sizeBytes": 8244,
+      "sha256": "02b006d01ff62d912d21c583cca098acda7f003852d938dedf1d21848f599bb3",
+      "sourceSha256": "94aba21ee988a4f62cb15d2d9cc985bf69eec3ce3b71de8ddd1531be56a94069",
+      "sourceRowSplit": 645,
+      "sourceGapSamples": 0,
+      "identityReference": "assets/profiles/hani-profile-minji.webp",
+      "atlas": [
+        384,
+        512
+      ],
+      "cell": [
+        48,
+        64
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            5,
+            34,
+            56
+          ],
+          "sourceRect": [
+            187,
+            19,
+            383,
+            624
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            48,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            11,
+            34,
+            50
+          ],
+          "sourceRect": [
+            738,
+            91,
+            382,
+            552
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            96,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            6,
+            9,
+            35,
+            52
+          ],
+          "sourceRect": [
+            187,
+            652,
+            381,
+            573
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            144,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            6,
+            9,
+            35,
+            52
+          ],
+          "sourceRect": [
+            738,
+            655,
+            391,
+            574
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 191385,
+        "partial": 4843,
+        "opaque": 380
+      },
+      "maxBytes": 65000
+    },
+    {
+      "id": "sooyeon",
+      "name": "수연",
+      "kind": "human",
+      "planned": false,
+      "file": "sooyeon.webp",
+      "sizeBytes": 9352,
+      "sha256": "bdb735c27daf03b783665e5b937013ebd7dae9870a4239be6a795c37cb5e247d",
+      "sourceSha256": "aa2aef8db207f70f2aaa7792db66b0dc36dd7e4aff4b8768aa2f35eaa398a211",
+      "sourceRowSplit": 636,
+      "sourceGapSamples": 0,
+      "identityReference": "assets/profiles/hani-profile-sooyeon.webp",
+      "atlas": [
+        384,
+        512
+      ],
+      "cell": [
+        48,
+        64
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            5,
+            5,
+            38,
+            56
+          ],
+          "sourceRect": [
+            158,
+            23,
+            411,
+            611
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            48,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            5,
+            12,
+            38,
+            49
+          ],
+          "sourceRect": [
+            704,
+            101,
+            413,
+            533
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            96,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            2,
+            8,
+            43,
+            53
+          ],
+          "sourceRect": [
+            133,
+            644,
+            468,
+            579
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            144,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            2,
+            8,
+            43,
+            53
+          ],
+          "sourceRect": [
+            685,
+            644,
+            465,
+            579
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 190793,
+        "partial": 5411,
+        "opaque": 404
+      },
+      "maxBytes": 65000
+    },
+    {
+      "id": "sua",
+      "name": "수아",
+      "kind": "human",
+      "planned": false,
+      "file": "sua.webp",
+      "sizeBytes": 7952,
+      "sha256": "7b9dd182ccad4df7036fa63f75c3a91429598364e753f02e4e007ba42bb266ba",
+      "sourceSha256": "c7fe2685fb35de72383c706875d526378385568633c552e598d2bcc746e44b6f",
+      "sourceRowSplit": 666,
+      "sourceGapSamples": 0,
+      "identityReference": "assets/profiles/hani-profile-sua.webp",
+      "atlas": [
+        384,
+        512
+      ],
+      "cell": [
+        48,
+        64
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            5,
+            34,
+            56
+          ],
+          "sourceRect": [
+            171,
+            25,
+            393,
+            640
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            48,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            11,
+            34,
+            50
+          ],
+          "sourceRect": [
+            728,
+            85,
+            393,
+            574
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            96,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            5,
+            9,
+            38,
+            52
+          ],
+          "sourceRect": [
+            159,
+            671,
+            417,
+            564
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            144,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            5,
+            9,
+            37,
+            52
+          ],
+          "sourceRect": [
+            725,
+            672,
+            406,
+            563
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 191259,
+        "partial": 4992,
+        "opaque": 357
+      },
+      "maxBytes": 65000
+    },
+    {
+      "id": "taeo",
+      "name": "채원",
+      "kind": "human",
+      "planned": false,
+      "file": "taeo.webp",
+      "sizeBytes": 8450,
+      "sha256": "40cd32235c35fc3a7e72704901ab6853584b60cb75fb7e221a264d2da8347a19",
+      "sourceSha256": "55badf4566f0e93bfe0eb22fdac0e5b9ecd180614e7b30e689e205c12d74142e",
+      "sourceRowSplit": 665,
+      "sourceGapSamples": 0,
+      "identityReference": "assets/profiles/hani-profile-taeo.webp",
+      "atlas": [
+        384,
+        512
+      ],
+      "cell": [
+        48,
+        64
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            6,
+            5,
+            36,
+            56
+          ],
+          "sourceRect": [
+            153,
+            13,
+            420,
+            650
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            48,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            6,
+            10,
+            36,
+            51
+          ],
+          "sourceRect": [
+            730,
+            65,
+            416,
+            595
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            96,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            4,
+            9,
+            39,
+            52
+          ],
+          "sourceRect": [
+            156,
+            670,
+            413,
+            557
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            144,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            4,
+            9,
+            39,
+            52
+          ],
+          "sourceRect": [
+            715,
+            671,
+            423,
+            558
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 191092,
+        "partial": 5149,
+        "opaque": 367
+      },
+      "maxBytes": 65000
+    },
+    {
+      "id": "mir",
+      "name": "미르/MIR",
+      "kind": "office_entity",
+      "planned": false,
+      "file": "mir.webp",
+      "sizeBytes": 8534,
+      "sha256": "3e9fcd9c6762288d27c7b851518cf22ce666ea01470d432288d4b53fb0f538b5",
+      "sourceSha256": "c6de622a141bfb3bce08aca3aeda4bef8dfd761a644dae4e2a7585ac7a25ca5e",
+      "sourceRowSplit": 642,
+      "sourceGapSamples": 68,
+      "identityReference": "assets/profiles/hani-staff-mir-v5.webp",
+      "atlas": [
+        384,
+        512
+      ],
+      "cell": [
+        48,
+        64
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            6,
+            5,
+            36,
+            56
+          ],
+          "sourceRect": [
+            160,
+            10,
+            408,
+            632
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            48,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            6,
+            11,
+            35,
+            50
+          ],
+          "sourceRect": [
+            731,
+            73,
+            398,
+            563
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            96,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            4,
+            9,
+            40,
+            52
+          ],
+          "sourceRect": [
+            128,
+            642,
+            438,
+            573
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            144,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            5,
+            9,
+            37,
+            52
+          ],
+          "sourceRect": [
+            735,
+            645,
+            412,
+            573
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 191061,
+        "partial": 5200,
+        "opaque": 347
+      },
+      "maxBytes": 65000
+    },
+    {
+      "id": "seongmin",
+      "name": "성민 회장",
+      "kind": "frog_ceo",
+      "planned": false,
+      "file": "seongmin.webp",
+      "sizeBytes": 7096,
+      "sha256": "5ff41b1425f9acbda1490ead975262d73fe1cd9573e0b27b9566813edd89f6ca",
+      "sourceSha256": "3bb3d6ae85c88f08d96eb9169d7dd9999367c058aa26e55f9abf3b4d0cc21a06",
+      "sourceRowSplit": 627,
+      "sourceGapSamples": 0,
+      "identityReference": "C:/Users/홍성민/Documents/HANI_OS_DEV_CLAUDE/comic/assets/comic-trial/ceo-frog-sheet-v1.png",
+      "atlas": [
+        384,
+        512
+      ],
+      "cell": [
+        48,
+        64
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            3,
+            5,
+            41,
+            56
+          ],
+          "sourceRect": [
+            141,
+            52,
+            414,
+            564
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            48,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            2,
+            10,
+            43,
+            51
+          ],
+          "sourceRect": [
+            724,
+            127,
+            414,
+            489
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            96,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            3,
+            7,
+            41,
+            54
+          ],
+          "sourceRect": [
+            139,
+            668,
+            408,
+            534
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            144,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            3,
+            7,
+            41,
+            54
+          ],
+          "sourceRect": [
+            717,
+            664,
+            412,
+            539
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 189279,
+        "partial": 6770,
+        "opaque": 559
+      },
+      "maxBytes": 7350
+    },
+    {
+      "id": "daon",
+      "name": "다온",
+      "kind": "human",
+      "planned": true,
+      "file": "daon.webp",
+      "sizeBytes": 7428,
+      "sha256": "0c3669ebf8102d1f5e3feaeabee5c9c5b14be9f1d04414d9d021f00c47087319",
+      "sourceSha256": "46cfab3ce5faffb3193f4b4c8d7a0ab7f782331523b71aa031d4a31c53fa0e48",
+      "sourceRowSplit": 630,
+      "sourceGapSamples": 0,
+      "identityReference": null,
+      "atlas": [
+        384,
+        512
+      ],
+      "cell": [
+        48,
+        64
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            5,
+            34,
+            56
+          ],
+          "sourceRect": [
+            160,
+            17,
+            368,
+            610
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            48,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            7,
+            12,
+            34,
+            49
+          ],
+          "sourceRect": [
+            741,
+            96,
+            367,
+            532
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            96,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            6,
+            8,
+            36,
+            53
+          ],
+          "sourceRect": [
+            166,
+            635,
+            390,
+            581
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            144,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            6,
+            8,
+            35,
+            53
+          ],
+          "sourceRect": [
+            728,
+            636,
+            376,
+            577
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 191526,
+        "partial": 4710,
+        "opaque": 372
+      },
+      "maxBytes": 65000
+    },
+    {
+      "id": "yoonseul",
+      "name": "윤슬",
+      "kind": "human",
+      "planned": true,
+      "file": "yoonseul.webp",
+      "sizeBytes": 8408,
+      "sha256": "c0f52b0aed224c78d4e8f98edeca541a12066c8d5a192c2bbfae4875544de9fd",
+      "sourceSha256": "42f34cd7133ef0de3727e9683a28be1da64e0183814fb187c8a0876856ee74e3",
+      "sourceRowSplit": 629,
+      "sourceGapSamples": 0,
+      "identityReference": null,
+      "atlas": [
+        384,
+        512
+      ],
+      "cell": [
+        48,
+        64
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            6,
+            5,
+            36,
+            56
+          ],
+          "sourceRect": [
+            160,
+            19,
+            395,
+            608
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            48,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            6,
+            12,
+            36,
+            49
+          ],
+          "sourceRect": [
+            738,
+            95,
+            387,
+            532
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            96,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            4,
+            8,
+            39,
+            53
+          ],
+          "sourceRect": [
+            138,
+            642,
+            426,
+            574
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            144,
+            0,
+            48,
+            64
+          ],
+          "pivot": [
+            24,
+            61
+          ],
+          "contentRect": [
+            4,
+            9,
+            39,
+            52
+          ],
+          "sourceRect": [
+            712,
+            644,
+            421,
+            569
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 191162,
+        "partial": 5080,
+        "opaque": 366
+      },
+      "maxBytes": 65000
+    },
+    {
+      "id": "visitor-client",
+      "name": "정장 고객",
+      "kind": "visitor",
+      "planned": false,
+      "file": "visitor-client.webp",
+      "sizeBytes": 4450,
+      "sha256": "9182afef98558c5d120c6d7e2d142c7b082d574cdb65225f736de75645602df4",
+      "sourceSha256": "f372e26b9fc7246dc867e0bcd34e41ed402a4d92713ca204bebc63fdac039715",
+      "sourceRowSplit": 630,
+      "sourceGapSamples": 0,
+      "identityReference": null,
+      "atlas": [
+        256,
+        256
+      ],
+      "cell": [
+        32,
+        48
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            32,
+            48
+          ],
+          "pivot": [
+            16,
+            45
+          ],
+          "contentRect": [
+            5,
+            5,
+            21,
+            40
+          ],
+          "sourceRect": [
+            181,
+            6,
+            323,
+            622
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            32,
+            0,
+            32,
+            48
+          ],
+          "pivot": [
+            16,
+            45
+          ],
+          "contentRect": [
+            5,
+            10,
+            21,
+            35
+          ],
+          "sourceRect": [
+            759,
+            90,
+            321,
+            537
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            64,
+            0,
+            32,
+            48
+          ],
+          "pivot": [
+            16,
+            45
+          ],
+          "contentRect": [
+            5,
+            8,
+            21,
+            37
+          ],
+          "sourceRect": [
+            202,
+            638,
+            333,
+            574
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            96,
+            0,
+            32,
+            48
+          ],
+          "pivot": [
+            16,
+            45
+          ],
+          "contentRect": [
+            4,
+            8,
+            23,
+            37
+          ],
+          "sourceRect": [
+            736,
+            639,
+            351,
+            572
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 63087,
+        "partial": 2179,
+        "opaque": 270
+      },
+      "maxBytes": 35000
+    },
+    {
+      "id": "visitor-courier",
+      "name": "택배 기사",
+      "kind": "visitor",
+      "planned": false,
+      "file": "visitor-courier.webp",
+      "sizeBytes": 4680,
+      "sha256": "949404a234869169528c08b1fdd96c05e110a1606902d974463570ce8fa3d179",
+      "sourceSha256": "4a71d098fc1badf815f9d1b6f244c252616af2d1be6980b51a5a8357608a62da",
+      "sourceRowSplit": 627,
+      "sourceGapSamples": 0,
+      "identityReference": null,
+      "atlas": [
+        256,
+        256
+      ],
+      "cell": [
+        32,
+        48
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            32,
+            48
+          ],
+          "pivot": [
+            16,
+            45
+          ],
+          "contentRect": [
+            4,
+            5,
+            23,
+            40
+          ],
+          "sourceRect": [
+            191,
+            40,
+            334,
+            577
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            32,
+            0,
+            32,
+            48
+          ],
+          "pivot": [
+            16,
+            45
+          ],
+          "contentRect": [
+            5,
+            10,
+            22,
+            35
+          ],
+          "sourceRect": [
+            749,
+            109,
+            323,
+            507
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            64,
+            0,
+            32,
+            48
+          ],
+          "pivot": [
+            16,
+            45
+          ],
+          "contentRect": [
+            4,
+            6,
+            23,
+            39
+          ],
+          "sourceRect": [
+            195,
+            638,
+            328,
+            559
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            96,
+            0,
+            32,
+            48
+          ],
+          "pivot": [
+            16,
+            45
+          ],
+          "contentRect": [
+            5,
+            6,
+            22,
+            39
+          ],
+          "sourceRect": [
+            761,
+            639,
+            322,
+            558
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 62949,
+        "partial": 2323,
+        "opaque": 264
+      },
+      "maxBytes": 35000
+    },
+    {
+      "id": "visitor-rider",
+      "name": "음식 배달원",
+      "kind": "visitor",
+      "planned": false,
+      "file": "visitor-rider.webp",
+      "sizeBytes": 5008,
+      "sha256": "6a163230c26c6529879056d342335aeeb1d9be2ea650abf34d313103119b2dde",
+      "sourceSha256": "94c611e0ff48253cc5414326b6660ce065cf5748a0e6e3e9d5a97311a66b3c62",
+      "sourceRowSplit": 627,
+      "sourceGapSamples": 0,
+      "identityReference": null,
+      "atlas": [
+        256,
+        256
+      ],
+      "cell": [
+        32,
+        48
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            32,
+            48
+          ],
+          "pivot": [
+            16,
+            45
+          ],
+          "contentRect": [
+            4,
+            5,
+            23,
+            40
+          ],
+          "sourceRect": [
+            213,
+            30,
+            329,
+            584
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            32,
+            0,
+            32,
+            48
+          ],
+          "pivot": [
+            16,
+            45
+          ],
+          "contentRect": [
+            5,
+            9,
+            22,
+            36
+          ],
+          "sourceRect": [
+            759,
+            90,
+            323,
+            524
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            64,
+            0,
+            32,
+            48
+          ],
+          "pivot": [
+            16,
+            45
+          ],
+          "contentRect": [
+            3,
+            6,
+            25,
+            39
+          ],
+          "sourceRect": [
+            198,
+            639,
+            361,
+            569
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            96,
+            0,
+            32,
+            48
+          ],
+          "pivot": [
+            16,
+            45
+          ],
+          "contentRect": [
+            4,
+            6,
+            24,
+            39
+          ],
+          "sourceRect": [
+            740,
+            638,
+            352,
+            570
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 62682,
+        "partial": 2560,
+        "opaque": 294
+      },
+      "maxBytes": 35000
+    },
+    {
+      "id": "visitor-candidate",
+      "name": "면접 지원자",
+      "kind": "visitor",
+      "planned": false,
+      "file": "visitor-candidate.webp",
+      "sizeBytes": 4922,
+      "sha256": "ced0c1d5ba7c2b3cb64107c08435b8788f126271ee5a31cf031f41a2a716cc40",
+      "sourceSha256": "f63bf4ce2590a38e4be88e4034a590b15358fbc310753966c16c4beb05b51a39",
+      "sourceRowSplit": 630,
+      "sourceGapSamples": 0,
+      "identityReference": null,
+      "atlas": [
+        256,
+        256
+      ],
+      "cell": [
+        32,
+        48
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            32,
+            48
+          ],
+          "pivot": [
+            16,
+            45
+          ],
+          "contentRect": [
+            3,
+            5,
+            26,
+            40
+          ],
+          "sourceRect": [
+            161,
+            20,
+            391,
+            608
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            32,
+            0,
+            32,
+            48
+          ],
+          "pivot": [
+            16,
+            45
+          ],
+          "contentRect": [
+            3,
+            9,
+            25,
+            36
+          ],
+          "sourceRect": [
+            735,
+            88,
+            385,
+            540
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            64,
+            0,
+            32,
+            48
+          ],
+          "pivot": [
+            16,
+            45
+          ],
+          "contentRect": [
+            3,
+            8,
+            26,
+            37
+          ],
+          "sourceRect": [
+            167,
+            642,
+            397,
+            565
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            96,
+            0,
+            32,
+            48
+          ],
+          "pivot": [
+            16,
+            45
+          ],
+          "contentRect": [
+            2,
+            8,
+            27,
+            37
+          ],
+          "sourceRect": [
+            718,
+            644,
+            409,
+            566
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 62678,
+        "partial": 2620,
+        "opaque": 238
+      },
+      "maxBytes": 35000
+    },
+    {
+      "id": "visitor-generic",
+      "name": "일반 방문객",
+      "kind": "visitor",
+      "planned": false,
+      "file": "visitor-generic.webp",
+      "sizeBytes": 4738,
+      "sha256": "533d0909f8c647978713103e99fb4410e4cda1cc80d95b13b319949dcc9b0b2c",
+      "sourceSha256": "6dbdcda6515733d6eee26988c0e1059d766dd667ee9709a6aa1046ebd336fcaa",
+      "sourceRowSplit": 627,
+      "sourceGapSamples": 0,
+      "identityReference": null,
+      "atlas": [
+        256,
+        256
+      ],
+      "cell": [
+        32,
+        48
+      ],
+      "direction": "front",
+      "frames": [
+        {
+          "name": "standing",
+          "rect": [
+            0,
+            0,
+            32,
+            48
+          ],
+          "pivot": [
+            16,
+            45
+          ],
+          "contentRect": [
+            4,
+            5,
+            23,
+            40
+          ],
+          "sourceRect": [
+            202,
+            24,
+            339,
+            590
+          ]
+        },
+        {
+          "name": "sitting",
+          "rect": [
+            32,
+            0,
+            32,
+            48
+          ],
+          "pivot": [
+            16,
+            45
+          ],
+          "contentRect": [
+            4,
+            10,
+            23,
+            35
+          ],
+          "sourceRect": [
+            742,
+            100,
+            338,
+            515
+          ]
+        },
+        {
+          "name": "walk-a",
+          "rect": [
+            64,
+            0,
+            32,
+            48
+          ],
+          "pivot": [
+            16,
+            45
+          ],
+          "contentRect": [
+            4,
+            7,
+            24,
+            38
+          ],
+          "sourceRect": [
+            174,
+            634,
+            350,
+            563
+          ]
+        },
+        {
+          "name": "walk-b",
+          "rect": [
+            96,
+            0,
+            32,
+            48
+          ],
+          "pivot": [
+            16,
+            45
+          ],
+          "contentRect": [
+            4,
+            7,
+            24,
+            38
+          ],
+          "sourceRect": [
+            721,
+            637,
+            351,
+            564
+          ]
+        }
+      ],
+      "alpha": {
+        "transparent": 62909,
+        "partial": 2380,
+        "opaque": 247
+      },
+      "maxBytes": 35000
+    }
+  ]
+}
