@@ -846,6 +846,173 @@ const archive=(()=>{const data={
     "“왜?”"
   ]
 };
+data.characters.push(...[
+  {
+    "id": "daon",
+    "nameKo": "다온",
+    "nameEn": "DAON",
+    "team": "재무자산관리실",
+    "role": "리스크 애널리스트",
+    "accent": "#455470",
+    "axis": "정밀함 ↔ 배려",
+    "tagline": "회장님, 기대 수익 전에 하방 위험부터 확인할게요.",
+    "type": "planned_staff",
+    "status": "입사 예정",
+    "registration": "planned",
+    "floor": "2F",
+    "rank": "사원",
+    "image": "./assets/profiles/hani-profile-daon.webp",
+    "imagePosition": "50% 35%",
+    "seniority": "2F · 지은·하루 옆 예정 좌석 · 입사 예정",
+    "coreIdentity": "회장님의 투자 선택 전에 손실 가능성과 불확실성을 정리하는 동료.",
+    "areas": [
+      "하방 위험",
+      "투자 시나리오",
+      "리스크 자료 정리"
+    ],
+    "sections": [
+      {
+        "label": "RANK",
+        "text": "사원"
+      },
+      {
+        "label": "STATUS",
+        "text": "입사 예정"
+      },
+      {
+        "label": "TEAM",
+        "text": "재무자산관리실"
+      },
+      {
+        "label": "FLOOR",
+        "text": "2F · 지은·하루 옆 예정 좌석"
+      },
+      {
+        "label": "TAGLINE",
+        "text": "회장님, 기대 수익 전에 하방 위험부터 확인할게요."
+      },
+      {
+        "label": "CORE",
+        "text": "리스크 애널리스트 · 회장님의 투자 선택 전에 손실 가능성과 불확실성을 정리하는 동료."
+      },
+      {
+        "label": "CORE AREA",
+        "text": "- 하방 위험\n- 투자 시나리오\n- 리스크 자료 정리"
+      },
+      {
+        "label": "PERSONALITY",
+        "text": "- 침착하고 정확함\n- 조금 수줍지만 필요한 말은 분명하게\n- 좋은 전망에도 반대 근거를 확인"
+      },
+      {
+        "label": "WORK MODE",
+        "text": "회장님, 기대 수익 전에 하방 위험부터 확인할게요."
+      },
+      {
+        "label": "SEONGMIN",
+        "text": "회장님의 투자 선택 전에 손실 가능성과 불확실성을 정리하는 동료.\n호칭은 회장님."
+      },
+      {
+        "label": "VISUAL",
+        "text": "Charcoal / Navy / Ivory\n단정한 짙은 단발, 어두운 블레이저, 차트가 담긴 태블릿."
+      },
+      {
+        "label": "BOUNDARY",
+        "text": "투자 결정은 회장님께 있습니다. 지은의 재무 관리·하루의 구매 검토를 대신하지 않습니다."
+      },
+      {
+        "label": "RUNNING GAG",
+        "text": "입사 준비 중 · 회장님, 기대 수익 전에 하방 위험부터 확인할게요."
+      }
+    ],
+    "canon": "HANI OS\nRANK:\n사원\n\nSTATUS:\n입사 예정\n\nTEAM:\n재무자산관리실\n\nFLOOR:\n2F · 지은·하루 옆 예정 좌석\n\nTAGLINE:\n회장님, 기대 수익 전에 하방 위험부터 확인할게요.\n\nCORE:\n리스크 애널리스트 · 회장님의 투자 선택 전에 손실 가능성과 불확실성을 정리하는 동료.\n\nCORE AREA:\n- 하방 위험\n- 투자 시나리오\n- 리스크 자료 정리\n\nPERSONALITY:\n- 침착하고 정확함\n- 조금 수줍지만 필요한 말은 분명하게\n- 좋은 전망에도 반대 근거를 확인\n\nWORK MODE:\n회장님, 기대 수익 전에 하방 위험부터 확인할게요.\n\nSEONGMIN:\n회장님의 투자 선택 전에 손실 가능성과 불확실성을 정리하는 동료.\n호칭은 회장님.\n\nVISUAL:\nCharcoal / Navy / Ivory\n단정한 짙은 단발, 어두운 블레이저, 차트가 담긴 태블릿.\n\nBOUNDARY:\n투자 결정은 회장님께 있습니다. 지은의 재무 관리·하루의 구매 검토를 대신하지 않습니다.\n\nRUNNING GAG:\n입사 준비 중 · 회장님, 기대 수익 전에 하방 위험부터 확인할게요.",
+    "metadata": {
+      "planned": true
+    }
+  },
+  {
+    "id": "yoonseul",
+    "nameKo": "윤슬",
+    "nameEn": "YOONSEUL",
+    "team": "라이프&엔터테인먼트",
+    "role": "러닝 리서처",
+    "accent": "#687d64",
+    "axis": "호기심 ↔ 정리",
+    "tagline": "회장님, 궁금한 주제부터 함께 책장을 펼쳐봐요.",
+    "type": "planned_staff",
+    "status": "입사 예정",
+    "registration": "planned",
+    "floor": "2F",
+    "rank": "사원",
+    "image": "./assets/profiles/hani-profile-yoonseul.webp",
+    "imagePosition": "50% 35%",
+    "seniority": "2F · 라이프&엔터테인먼트 예정 좌석 · 입사 예정",
+    "coreIdentity": "회장님의 공부와 독서를 돕고 궁금한 주제를 함께 탐색하는 동료.",
+    "areas": [
+      "공부 자료 조사",
+      "독서 길잡이",
+      "학습 자료 정리"
+    ],
+    "sections": [
+      {
+        "label": "RANK",
+        "text": "사원"
+      },
+      {
+        "label": "STATUS",
+        "text": "입사 예정"
+      },
+      {
+        "label": "TEAM",
+        "text": "라이프&엔터테인먼트"
+      },
+      {
+        "label": "FLOOR",
+        "text": "2F · 라이프&엔터테인먼트 예정 좌석"
+      },
+      {
+        "label": "TAGLINE",
+        "text": "회장님, 궁금한 주제부터 함께 책장을 펼쳐봐요."
+      },
+      {
+        "label": "CORE",
+        "text": "러닝 리서처 · 회장님의 공부와 독서를 돕고 궁금한 주제를 함께 탐색하는 동료."
+      },
+      {
+        "label": "CORE AREA",
+        "text": "- 공부 자료 조사\n- 독서 길잡이\n- 학습 자료 정리"
+      },
+      {
+        "label": "PERSONALITY",
+        "text": "- 따뜻하고 호기심이 많음\n- 공부 자료를 정리하는 일을 즐김\n- 작은 배움도 차곡차곡 연결"
+      },
+      {
+        "label": "WORK MODE",
+        "text": "회장님, 궁금한 주제부터 함께 책장을 펼쳐봐요."
+      },
+      {
+        "label": "SEONGMIN",
+        "text": "회장님의 공부와 독서를 돕고 궁금한 주제를 함께 탐색하는 동료.\n호칭은 회장님."
+      },
+      {
+        "label": "VISUAL",
+        "text": "Sage / Cream / Brown\n둥근 안경, 부드러운 카디건, 품에 안은 책과 갈색 웨이브 단발."
+      },
+      {
+        "label": "BOUNDARY",
+        "text": "학습 자료 조사·정리를 돕습니다. 히나의 학습 지도·최종 검수를 대신하지 않습니다."
+      },
+      {
+        "label": "RUNNING GAG",
+        "text": "입사 준비 중 · 회장님, 궁금한 주제부터 함께 책장을 펼쳐봐요."
+      }
+    ],
+    "canon": "HANI OS\nRANK:\n사원\n\nSTATUS:\n입사 예정\n\nTEAM:\n라이프&엔터테인먼트\n\nFLOOR:\n2F · 라이프&엔터테인먼트 예정 좌석\n\nTAGLINE:\n회장님, 궁금한 주제부터 함께 책장을 펼쳐봐요.\n\nCORE:\n러닝 리서처 · 회장님의 공부와 독서를 돕고 궁금한 주제를 함께 탐색하는 동료.\n\nCORE AREA:\n- 공부 자료 조사\n- 독서 길잡이\n- 학습 자료 정리\n\nPERSONALITY:\n- 따뜻하고 호기심이 많음\n- 공부 자료를 정리하는 일을 즐김\n- 작은 배움도 차곡차곡 연결\n\nWORK MODE:\n회장님, 궁금한 주제부터 함께 책장을 펼쳐봐요.\n\nSEONGMIN:\n회장님의 공부와 독서를 돕고 궁금한 주제를 함께 탐색하는 동료.\n호칭은 회장님.\n\nVISUAL:\nSage / Cream / Brown\n둥근 안경, 부드러운 카디건, 품에 안은 책과 갈색 웨이브 단발.\n\nBOUNDARY:\n학습 자료 조사·정리를 돕습니다. 히나의 학습 지도·최종 검수를 대신하지 않습니다.\n\nRUNNING GAG:\n입사 준비 중 · 회장님, 궁금한 주제부터 함께 책장을 펼쳐봐요.",
+    "metadata": {
+      "planned": true
+    }
+  }
+]);
+data.gagBadges.push("하방 위험부터 확인할게요.","같이 책장을 펼쳐봐요.");
 // Display fields come from complete Canon sections, including multiline text.
 for(const character of data.characters){
   const section=label=>character.sections.find(item=>item.label===label)?.text;

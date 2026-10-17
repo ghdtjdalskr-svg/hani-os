@@ -239,6 +239,8 @@ const SPORTS_LINES = Object.freeze({
 });
 
 const PAGE_CHARACTER_PROFILES=Object.freeze({
+  daon:Object.freeze({identity:"다온 · 리스크 애널리스트",rank:"사원",team:"재무자산관리실",floor:"2F",status:"planned",image:"./assets/profiles/hani-profile-daon.webp"}),
+  yoonseul:Object.freeze({identity:"윤슬 · 러닝 리서처",rank:"사원",team:"라이프&엔터테인먼트",floor:"2F",status:"planned",image:"./assets/profiles/hani-profile-yoonseul.webp"}),
   seoyun:Object.freeze({identity:"서윤 · 배포 팀장",image:"./assets/profiles/hani-profile-seoyun.webp"}),
   serin:Object.freeze({identity:"세린 · Gemini 연구원",image:"./assets/profiles/hani-profile-serin.webp"})
 });
@@ -465,8 +467,8 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
   speaker: "하니",
   role: "Chief of Staff",
   eyebrow: "OFFICE · HANI BOARDROOM",
-  title: "대표실 - HANI BOARDROOM",
-  description: "하니가 필요한 전문가를 불러 안건을 검토하고 대표 결정을 준비하는 대표실입니다.",
+  title: "하니 본사 - HANI BOARDROOM",
+  description: "하니가 필요한 전문가를 불러 안건을 검토하고 대표 결정을 준비하는 하니 본사입니다.",
   quote: "확인할 건 직원들이 확인하고, 결정할 건 대표가 결정합니다.",
   sceneImage: "./assets/banner-preview-v1/ai-approval-boardroom-v1.webp",
   scenePosition: "center center",

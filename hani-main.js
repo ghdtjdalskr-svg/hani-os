@@ -1531,7 +1531,7 @@ const pageMeta={
  aiBudget:["AI 주간 예산","Codex 두 계정과 Claude·Gemini의 사용 한도와 회복 예정 시간을 확인합니다.","team"],
  deployment:["배포센터","Preview 브랜치부터 대표 승인 배포까지 안전하게 관리합니다.","work"],
  intake:["성민 오피스","유나 인턴에게 말하거나 자료를 붙이면 담당 AI가 검토하고 Preview로 정리합니다.","team"],
- agentReview:["대표실","AI TEAM의 검토 안건과 대표 결정을 한곳에서 관리합니다.","team"],
+ agentReview:["하니 본사","AI TEAM의 검토 안건과 대표 결정을 한곳에서 관리합니다.","team"],
  monthlyReport:["컨퍼런스 룸","월간 기록을 돌아보고, 담당자들과 분기 성과를 발표하고 연간 보고서를 나누는 공간입니다.","team"],
  policy:["사내 규칙","AI TEAM이 공통으로 참고하는 운영 원칙과 학습 규정을 관리합니다.","team"],
  aiWork:["AI 업무 현황","AI 서비스 바로가기와 개발·보고 업무를 확인합니다.","development"],
@@ -1562,7 +1562,14 @@ const canonicalProfileImages=Object.freeze({
   haru:"./assets/profiles/hani-profile-haru.webp",
   sooyeon:"./assets/profiles/hani-profile-sooyeon.webp",
   minji:"./assets/profiles/hani-profile-minji.webp",
-  yuna:"./assets/profiles/hani-profile-yuna.webp"
+  yuna:"./assets/profiles/hani-profile-yuna.webp",
+  seoyun:"./assets/profiles/hani-profile-seoyun.webp",
+  dohyun:"./assets/profiles/hani-profile-dohyun.webp",
+  serin:"./assets/profiles/hani-profile-serin.webp",
+  yuri:"./assets/profiles/hani-profile-yuri.webp",
+  daon:"./assets/profiles/hani-profile-daon.webp",
+  yoonseul:"./assets/profiles/hani-profile-yoonseul.webp",
+  arin:"./assets/profiles/hani-profile-arin.webp"
 });
 const agentImages=Object.freeze({...canonicalProfileImages,nauen:canonicalProfileImages.naeun,suyeon:canonicalProfileImages.sooyeon});
 // Small avatars (30-150px) use pre-resized 256px thumbnails; the 720px originals look jagged when the browser shrinks them 10-20x.
@@ -1898,7 +1905,7 @@ const QUICK_JUMP_ITEMS=[
   ["diet","계체량 측정","다이어트 체중 건강"],["exercise","헬스클럽","운동 걸음 근력"],["reading","성민의 서재","독서 서재 책 완독"],["study","공부","일본어 AI 학습"],
   ["university","낭만 캠퍼스 라이프","대학교 대학 캠퍼스 과목 학사일정"],["certificate","자격증","시험 일정"],["wishlist","Wish-list","위시 희망 구매 경험"],["travel","여행","여행 기록 장소 숙소"],["movie","시청 아카이브","관람 감상 아카이브"],
   ["diary","일기","오늘 기록"],["game","스포츠","MLB KBO 해외축구 LCK 양키스 KIA 레알 마드리드 Dplus"],["tasks","할 일","태스크 월간"],["calendar","캘린더","일정"],
-  ["work","업무 보조","업무 후속조치"],["drive","Drive","구글 드라이브"],["deployment","배포센터","릴리스 GitHub 브랜치 PR 자동배포"],["intake","인포데스크","유나 인턴 데스크 자료 입력 자동 분류 Preview 승인"],["agentReview","대표실","HANI BOARDROOM AI 심의 결재 승인 보류 반려 수정"],["monthlyReport","컨퍼런스 룸","HANI MONTHLY REPORT 투자 소비 건강 활동 문화 읽기 전용"],["settings/policy","사내 규칙","Policy Registry 규정 학습 원칙 Evidence"],["aiTeam","AI 팀","캐릭터 파트너"],["aiWork","AI 업무 현황","개발 운영 보고"],["settings","설정·데이터","백업 복원 클라우드"]
+  ["work","업무 보조","업무 후속조치"],["drive","Drive","구글 드라이브"],["deployment","배포센터","릴리스 GitHub 브랜치 PR 자동배포"],["intake","인포데스크","유나 인턴 데스크 자료 입력 자동 분류 Preview 승인"],["agentReview","하니 본사","대표실 하니 본사 HANI BOARDROOM AI 심의 결재 승인 보류 반려 수정"],["monthlyReport","컨퍼런스 룸","HANI MONTHLY REPORT 투자 소비 건강 활동 문화 읽기 전용"],["settings/policy","사내 규칙","Policy Registry 규정 학습 원칙 Evidence"],["aiTeam","AI 팀","캐릭터 파트너"],["aiWork","AI 업무 현황","개발 운영 보고"],["settings","설정·데이터","백업 복원 클라우드"]
 ];
 function quickJumpMatches(query=""){
   const q=String(query||"").trim().toLocaleLowerCase("ko-KR");
@@ -2143,10 +2150,10 @@ function updateFinishScope(){
   document.body.setAttribute("data-finish-active","");
   const finish=document.documentElement.dataset.finish;
   const meta=document.querySelector('meta[name="theme-color"]');
-  if(meta)meta.setAttribute("content",{"midnight-black":"#0e0f12","titanium-graphite":"#242528","sakura-pink":"#eed7e0","alpine-blue":"#d6e6f3"}[finish]||"#eee5d5");
+  if(meta)meta.setAttribute("content",{"midnight-black":"#0e0f12","titanium-graphite":"#242528","sakura-pink":"#eed7e0","alpine-blue":"#d6e6f3","pure-white":"#f4f5f8"}[finish]||"#eee5d5");
 }
 function applySignatureFinish(value,saveChoice=false){
-  const names={"porcelain-cream":"Porcelain Cream","titanium-graphite":"Titanium Graphite","midnight-black":"Midnight Black","sakura-pink":"Sakura Pink","alpine-blue":"Alpine Blue"};
+  const names={"porcelain-cream":"Porcelain Cream","pure-white":"Pure White","titanium-graphite":"Titanium Graphite","midnight-black":"Midnight Black","sakura-pink":"Sakura Pink","alpine-blue":"Alpine Blue"};
   const finish=Object.prototype.hasOwnProperty.call(names,value)?value:"porcelain-cream";
   document.documentElement.dataset.finish=finish;
   updateFinishScope();
@@ -4131,7 +4138,9 @@ const team=[
 {key:"minji",emoji:"🎬",name:"민지",position:"사원",role:"Knowledge / Culture Archive Assistant",desc:"시청 아카이브·일기·문화 기록",go:"movie",tone:"orange"},
 {key:"yuna",emoji:"🗂️",name:"유나",position:"인턴",role:"AI Operations Intern",desc:"성민 오피스 접수·자료정리·담당 Agent 전달",go:"intake",tone:"violet"}
 ];
-// Static work catalog: handoffs 2026-10-10/11 and release commits v2.9.195–204; v205 is a candidate.
+// Planned staff are public profiles only; this does not enable an AI provider.
+team.push({key:"daon",emoji:"📊",name:"다온",position:"사원",role:"재무자산관리실 · 리스크 애널리스트 · 2F",desc:"하방 위험부터 차분히 확인 · 입사 예정",status:"planned",go:"asset",tone:"sand"},{key:"yoonseul",emoji:"📚",name:"윤슬",position:"사원",role:"라이프&엔터테인먼트 · 러닝 리서처 · 2F",desc:"회장님의 공부·독서 자료 정리 · 입사 예정",status:"planned",go:"study",tone:"mint"});
+// Identity and navigation stay local; work status is a read-only, separately maintained feed.
 const developmentTeam=[
   {
     "key": "seoyun",
@@ -4142,24 +4151,7 @@ const developmentTeam=[
     "role": "Claude · 설계·통합·최종 검수",
     "go": "dev",
     "tone": "blue",
-    "desc": "개발센터·업무 현황·주간예산·배포센터 담당",
-    "now": [
-      "v2.9.209 뉴스룸 댓글·Gemini 2차 의견·경제 퀴즈 후보 통합 준비",
-      "v2.9.209 라운지 첫 호칭 정리와 targeted 검증 근거 취합"
-    ],
-    "recent": [
-      "v2.9.200–201 게시판·커뮤니티 테이블 통합",
-      "v2.9.202 Cloud-first·로그인 B안·AI 예산 통합",
-      "v2.9.203 스포츠·뉴스·배너·투자 리포트 V1 반영",
-      "v2.9.204 투자 메뉴 분리·적립식 계좌·계절 로그인·proactive 카드 반영",
-      "v2.9.208 공부 집계·접힌 사이드바·미세 동작 통합 반영"
-    ],
-    "next": [
-      "HANI 빌딩 2단계: 대표실 빌딩 개요",
-      "HANI 빌딩 3단계: 직원 층·이동",
-      "10/15 Claude 주간 reset 후 Notion HQ 재설계"
-    ],
-    "updatedAt": "2026-10-11"
+    "desc": "개발센터·업무 현황·주간예산·배포센터 담당"
   },
   {
     "key": "doyeon",
@@ -4170,23 +4162,7 @@ const developmentTeam=[
     "go": "dev",
     "tone": "purple",
     "desc": "기능 구현·회귀 테스트·인수인계",
-    "now": [
-      "v2.9.209 뉴스룸 댓글·라운지 첫 호칭 정리 구현과 회귀 검증",
-      "v2.9.209 Gemini 2차 의견·기초 경제 퀴즈 정합성·AI 업무 현황 보완"
-    ],
-    "recent": [
-      "v2.9.200–201 커뮤니티 테이블·Relationship Seed 연결",
-      "v2.9.202 Cloud-first·입장 화면·Claude/Gemini/Antigravity 예산 구현",
-      "v2.9.203 스포츠·뉴스·배너·투자 리포트 V1 구현",
-      "v2.9.204 투자 메뉴 분리·적립식 계좌·계절 hero·공부 카드 구현",
-      "v2.9.208 공부 집계·접힌 사이드바·미세 동작 구현·회귀 반영"
-    ],
-    "next": [
-      "HANI 빌딩 2·3단계 승인 범위 구현과 테스트",
-      "게시판 실제 AI 답글·보관 정책 구현 준비",
-      "뉴스룸 댓글 톤 실제 생성 확인·주간 뉴스 4컷 만화 시험"
-    ],
-    "updatedAt": "2026-10-11"
+    "imageKey": "dohyun"
   },
   {
     "key": "gemini",
@@ -4197,23 +4173,7 @@ const developmentTeam=[
     "role": "Gemini / Antigravity · 리서치·초안·1차 검수",
     "go": "geminiReports",
     "tone": "blue",
-    "desc": "개발 보고서·리서치·문서 초안·1차 검수",
-    "now": [
-      "v2.9.209 경제 퀴즈 품질 리뷰·투자 Gemini 2차 의견 검증 경계 정리",
-      "v2.9.209 뉴스룸 댓글 톤·호칭과 리서치 초안 지원"
-    ],
-    "recent": [
-      "v2.9.200 개발 보고서 화면 반영",
-      "v2.9.202 Gemini·Antigravity AI 예산 조회 반영",
-      "v2.9.203 뉴스 출처·관심종목 안내 개선 반영",
-      "v2.9.208 공부 집계·접힌 사이드바·미세 동작 반영 범위 정리"
-    ],
-    "next": [
-      "뉴스룸 댓글 톤·경제 퀴즈 실제 응답 품질 검수",
-      "주간 뉴스 4컷 만화 시험 초안",
-      "10/15 이후 Notion HQ 재설계 문서 지원"
-    ],
-    "updatedAt": "2026-10-11"
+    "desc": "개발 보고서·리서치·문서 초안·1차 검수"
   },
   {
     "key": "work-hani",
@@ -4224,23 +4184,7 @@ const developmentTeam=[
     "role": "Web GPT · 기획·관계·콘텐츠",
     "go": "board",
     "tone": "purple",
-    "desc": "기획·Relationship Seed·게시판 콘텐츠 라이브러리",
-    "now": [
-      "v2.9.209 뉴스룸 댓글·라운지 첫 호칭·투자 2차 의견 방향 정리",
-      "v2.9.209 기초 경제 퀴즈와 기존 기능 보존 범위 정리"
-    ],
-    "recent": [
-      "v2.9.200 커뮤니티 게시판 콘텐츠 기반 반영",
-      "v2.9.201 Relationship Seed·커뮤니티 테이블 반영",
-      "v2.9.202 게시판 콘텐츠 라이브러리 반영",
-      "v2.9.208 공부 집계·접힌 사이드바·미세 동작 프로젝트 반영"
-    ],
-    "next": [
-      "게시판 실제 AI 답글 방향·보관 정책",
-      "HANI 빌딩 2단계 개요·3단계 직원 이동 기획",
-      "주간 뉴스 4컷 만화 시험 구성"
-    ],
-    "updatedAt": "2026-10-11"
+    "desc": "기획·Relationship Seed·게시판 콘텐츠 라이브러리"
   },
   {
     "key": "work-yuri",
@@ -4251,22 +4195,7 @@ const developmentTeam=[
     "go": "dev",
     "tone": "blue",
     "desc": "변경 범위와 UI owner·event layering 위험 검토",
-    "now": [
-      "v2.9.209 뉴스룸·투자 2차 의견·퀴즈 DOM/event owner 검토 대상 정리",
-      "v2.9.209 기존 저장 경로·서버 생성·무쓰기 특수 검사 경계 확인"
-    ],
-    "recent": [
-      "v2.9.202 Cloud-first·로그인 B안·예산 보호 경계 반영",
-      "v2.9.203 투자 리포트·뉴스·배너 owner 경로 반영",
-      "v2.9.204 메뉴 분리·적립식 분류 회귀 근거 반영",
-      "v2.9.208 공부 집계·접힌 사이드바·미세 동작 owner·회귀 근거 반영"
-    ],
-    "next": [
-      "HANI 빌딩 2·3단계 owner·event 경로 검토",
-      "게시판 실제 AI 답글·보관 정책의 위험 검토",
-      "독립 검토는 실제 수행 후 기록"
-    ],
-    "updatedAt": "2026-10-11"
+    "imageKey": "yuri"
   },
   {
     "key": "work-arin",
@@ -4277,22 +4206,7 @@ const developmentTeam=[
     "go": "aiWork",
     "tone": "peach",
     "desc": "변경 화면·가독성·모바일 Preview 검토",
-    "now": [
-      "v2.9.209 댓글 첫 호칭·Gemini 2차 의견·퀴즈 안내 Preview 검토 대기",
-      "v2.9.209 AI 업무 현황·모바일 화면 확인 대상 정리"
-    ],
-    "recent": [
-      "v2.9.202 메뉴 재그룹·로그인·AI 예산 화면 반영",
-      "v2.9.203 캐릭터 배너·리포트 UI 개선 반영",
-      "v2.9.204 계절 hero·공부 카드·투자 메뉴 화면 반영",
-      "v2.9.208 공부 집계·접힌 사이드바·미세 동작 화면 반영"
-    ],
-    "next": [
-      "HANI 빌딩 대표실 개요·직원 층/이동 UI 검토",
-      "Notion HQ 재설계·뉴스 4컷 시험 가독성 검토",
-      "실제 Edge·모바일 Preview 근거 확인"
-    ],
-    "updatedAt": "2026-10-11"
+    "imageKey": "arin"
   },
   {
     "key": "work-hina",
@@ -4303,28 +4217,36 @@ const developmentTeam=[
     "role": "최종 QA · Release Gate",
     "go": "deployment",
     "tone": "mint",
-    "desc": "동결 후보·패키지 identity와 최종 배포 경계 검증",
-    "now": [
-      "v2.9.209 서윤 통합·동결 이후 최종 Gate 대기",
-      "개발 테스트와 독립 HINA·운영 read-back 결과 구분"
-    ],
-    "recent": [
-      "v2.9.202 Cloud-first·로그인·예산 운영 반영 범위",
-      "v2.9.203 투자 리포트 V1·스포츠·뉴스 운영 반영 범위",
-      "v2.9.204 투자 메뉴·적립식·계절 hero 운영 반영 범위",
-      "v2.9.208 공부 집계·접힌 사이드바·미세 동작 운영 반영 범위"
-    ],
-    "next": [
-      "서윤 통합·동결 후 최종 Release Gate",
-      "대표님 승인 후 main·Pages·JS·기능 read-back 경계 확인",
-      "미검증 결과를 PASS로 바꾸지 않기"
-    ],
-    "updatedAt": "2026-10-11"
+    "desc": "동결 후보·패키지 identity와 최종 배포 경계 검증"
   }
 ];
+let aiTeamStatus=null,aiTeamStatusPromise=null;
+function developmentMemberStatus(member){return aiTeamStatus?.members.find(row=>row.id===member.imageKey)}
+function developmentMemberView(member){const status=developmentMemberStatus(member);return {...member,role:status?.role||member.role,desc:status?.now[0]||"현황을 불러오지 못했어요"}}
+function loadAiTeamStatus(){
+  if(aiTeamStatusPromise)return aiTeamStatusPromise;
+  aiTeamStatusPromise=(async()=>{
+    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),8000);
+    try{
+      const response=await fetch('./assets/data/ai-team-status.json',{cache:'no-store',signal:controller.signal});
+      if(!response.ok)throw new Error('AI team status unavailable');
+      const data=await response.json();
+      if(!data||typeof data.updatedAt!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(data.updatedAt)||!/^2\.9\.\d+$/.test(data.productionVersion)||!Array.isArray(data.members))throw new Error('Invalid AI team status');
+      for(const member of developmentTeam){const rows=data.members.filter(row=>row?.id===member.imageKey),row=rows[0];if(rows.length!==1||typeof row.role!=='string'||!row.role.trim()||!['now','recent','next'].every(key=>Array.isArray(row[key])&&row[key].length&&row[key].every(value=>typeof value==='string'&&value.trim())))throw new Error('Invalid AI team member');}
+      aiTeamStatus=data;
+    }catch(_){aiTeamStatus=null}finally{clearTimeout(timer)}
+    const summary=$('aiTeamStatusSummary');if(summary)summary.textContent=aiTeamStatus?aiTeamStatus.updatedAt+' 기준 · 운영 v'+aiTeamStatus.productionVersion+' · 팀별 지금 하는 일과 다음 할 일':'현황을 불러오지 못했어요';
+    renderTeam();
+  })();
+  return aiTeamStatusPromise;
+}
+function developmentPortrait(member,full=false){const src=(full?agentImages:sidebarAgentImages)[member.imageKey];return `<img data-development-portrait src="${esc(src)}" alt="${esc(member.name)} 프로필" decoding="async"><span data-development-portrait-fallback hidden>${esc(member.name)}</span>`}
+function bindDevelopmentPortraits(root){root?.querySelectorAll('[data-development-portrait]').forEach(image=>{const fallback=image.nextElementSibling;const update=()=>{const failed=!image.naturalWidth;image.hidden=failed;if(fallback)fallback.hidden=!failed};image.onload=update;image.onerror=update;if(image.complete)update()})}
 const TEAM_PROFILE_META={
+  daon:{"rank": "사원 · 입사 예정 · 2F", "headline": "회장님의 투자 선택 전에 손실 가능성과 불확실성을 정리하는 동료.", "focus": ["하방 위험", "투자 시나리오", "리스크 자료 정리"], "traits": ["침착하고 정확함", "조금 수줍지만 필요한 말은 분명하게", "좋은 전망에도 반대 근거를 확인"], "style": ["회장님으로 호칭", "회장님, 기대 수익 전에 하방 위험부터 확인할게요."], "strengths": ["하방 위험", "투자 시나리오", "리스크 자료 정리"], "quote": "회장님, 기대 수익 전에 하방 위험부터 확인할게요.", "signature": ["재무자산관리실", "2F", "입사 예정"], "note": "투자 결정은 회장님께 있습니다. 지은의 재무 관리·하루의 구매 검토를 대신하지 않습니다. 2F · 지은·하루 옆 예정 좌석"},
+  yoonseul:{"rank": "사원 · 입사 예정 · 2F", "headline": "회장님의 공부와 독서를 돕고 궁금한 주제를 함께 탐색하는 동료.", "focus": ["공부 자료 조사", "독서 길잡이", "학습 자료 정리"], "traits": ["따뜻하고 호기심이 많음", "공부 자료를 정리하는 일을 즐김", "작은 배움도 차곡차곡 연결"], "style": ["회장님으로 호칭", "회장님, 궁금한 주제부터 함께 책장을 펼쳐봐요."], "strengths": ["공부 자료 조사", "독서 길잡이", "학습 자료 정리"], "quote": "회장님, 궁금한 주제부터 함께 책장을 펼쳐봐요.", "signature": ["라이프&엔터테인먼트", "2F", "입사 예정"], "note": "학습 자료 조사·정리를 돕습니다. 히나의 학습 지도·최종 검수를 대신하지 않습니다. 2F · 라이프&엔터테인먼트 예정 좌석"},
   gemini:{rank:"개발 보고팀",headline:"개발의 배경부터 결과와 남은 과제까지 쉽게 전하는 보고서 담당",focus:["확정된 공식 개발 기록 요약","주간 개발 보고서 작성","주요 기능 완료 보고서 작성"],traits:["근거를 중심으로 정리","비개발자도 이해할 수 있게 설명","완료와 미검증 항목을 구분"],style:["성민 대표님께 결론부터 보고","표와 요약으로 변화 설명","배경·과정·결과·남은 과제 순서로 전달"],strengths:["여러 배포를 주간 단위로 요약","핵심 변화와 영향 정리","보고서 초안 작성"],quote:"대표님, 무엇을 왜 바꿨고 어디까지 확인했는지 정리해 드리겠습니다.",signature:["주간 요약","기능 완료","개발 보고"],note:"Gemini는 보고서 초안을 작성합니다. Codex가 공식 기록과 대조하고 성민 대표님이 공개를 승인합니다. 이 프로필에서 직접 Gemini를 호출하거나 개발·배포를 실행하지 않습니다."},
-  hani:{rank:"Executive Lead",headline:"오빠의 Life OS 전체 구조와 방향을 총괄하는 메인 파트너",focus:["대시보드 전체 흐름 관리","투자/설정/데이터 총괄","대표실 대표 종합"],traits:["친근하지만 판단은 냉정","데이터 보존과 안정성 최우선","전체 그림을 먼저 보는 PM형"],style:["오빠라고 부르며 친근하게 대화","팩트와 가설을 분리해서 설명","중요한 건 먼저 결론부터 말해줌"],strengths:["우선순위 정리","프로젝트 구조화","에이전트 의견 종합"],quote:"오빠, 전체 흐름은 내가 잡을게. 각 파트는 팀원들이 잘 굴러가게 만들면 돼.",signature:["총괄","투자","설정/데이터"],note:"핵심 역할: 대시보드, 투자, 설정/데이터, 대표실 대표 종합 판단"},
+  hani:{rank:"Executive Lead",headline:"오빠의 Life OS 전체 구조와 방향을 총괄하는 메인 파트너",focus:["대시보드 전체 흐름 관리","투자/설정/데이터 총괄","하니 본사 대표 종합"],traits:["친근하지만 판단은 냉정","데이터 보존과 안정성 최우선","전체 그림을 먼저 보는 PM형"],style:["오빠라고 부르며 친근하게 대화","팩트와 가설을 분리해서 설명","중요한 건 먼저 결론부터 말해줌"],strengths:["우선순위 정리","프로젝트 구조화","에이전트 의견 종합"],quote:"오빠, 전체 흐름은 내가 잡을게. 각 파트는 팀원들이 잘 굴러가게 만들면 돼.",signature:["총괄","투자","설정/데이터"],note:"핵심 역할: 대시보드, 투자, 설정/데이터, 하니 본사 대표 종합 판단"},
   jieun:{rank:"Finance Lead",headline:"돈의 흐름과 소비 습관을 숫자로 정리해 주는 자산 파트너",focus:["자산 현황 관리","가계부 / 월 결산","현금흐름과 예산 통제"],traits:["차분하고 현실적","감정보다 숫자 우선","새는 돈을 먼저 잡는 타입"],style:["고객님·오빠 톤을 오가며 말함","쓴 금액보다 이유를 먼저 봄","과소비에는 부드럽지만 단호하게 제동"],strengths:["예산 점검","소비 복기","저축 여력 찾기"],quote:"잔고보다 흐름이에요. 오빠 돈이 어디서 와서 어디로 가는지가 먼저예요.",signature:["자산","가계부","현금흐름"],note:"핵심 역할: 자산 탭, 가계부 탭, 카드/소비 기록과 월간 결산 정리"},
   nauen:{rank:"Health Coach",headline:"체중 감량과 생활 습관을 꾸준하게 밀어주는 건강 파트너",focus:["체중 추세 관리","식단 / 운동 기록","회복·생활습관 피드백"],traits:["밝고 애교 많음","필요할 때는 강하게 제동","지속 가능한 감량을 중시"],style:["오빠를 귀엽게 놀리면서도 관리","극단적 제한식은 말림","추세와 루틴을 함께 봄"],strengths:["다이어트 동기 부여","과식 후 리커버리","루틴 점검"],quote:"신발 내려놔. 무리한 운동 말고 오늘 할 수 있는 루틴부터 갑시다 오빠.",signature:["다이어트","운동","건강 습관"],note:"핵심 역할: 다이어트 탭, 운동 탭, 체중·식단·생활습관 코칭"},
   hina:{rank:"Study Guide",headline:"대학교와 자격증, 일본어 학습을 차분하게 이끄는 공부 파트너",focus:["공부 계획 관리","대학교 일정/과목 관리","JLPT·자격증 학습"],traits:["상냥하고 세심함","격려형 튜터","실수도 편하게 교정"],style:["차분한 선생님 톤","작은 진전도 크게 칭찬","학습 루틴과 마감 관리에 강함"],strengths:["학습 계획","복습 루틴","대학 일정 정리"],quote:"오빠, 완벽하게 하려 하지 말고 오늘 분량부터 끝내봐요. 그게 제일 빨라요.",signature:["공부","대학교","자격증"],note:"핵심 역할: 공부 탭, 대학 관리, 자격증/JLPT 진도 관리"},
@@ -4337,17 +4259,18 @@ const TEAM_PROFILE_META={
 let activeTeamProfileKey="hani";
 function teamMeta(key){
   const member=developmentTeam.find(x=>x.key===key);
-  if(member)return {rank:member.position,headline:member.desc,focus:member.now,traits:member.recent,style:member.next,strengths:["최종 업데이트 "+member.updatedAt],quote:"현재 상태와 다음 행동을 근거로 정리합니다.",signature:[member.position,"2026-10-11","v2.9.205 후보"],note:"최근 완료는 담당 영역의 프로젝트 반영 내역입니다. 개별 AI의 독립 검수 완료를 뜻하지 않습니다. v2.9.205는 진행 중 후보입니다."};
+  if(member){const status=developmentMemberStatus(member);return {rank:member.position,headline:status?.role||member.role,focus:status?.now||["현황을 불러오지 못했어요"],traits:status?.recent||[],style:status?.next||[],strengths:aiTeamStatus?["최종 업데이트 "+aiTeamStatus.updatedAt]:[],quote:"현재 상태와 다음 행동을 근거로 정리합니다.",signature:aiTeamStatus?[member.position,aiTeamStatus.updatedAt,"운영 v"+aiTeamStatus.productionVersion]:[member.position],note:aiTeamStatus?"업무 현황은 담당 범위를 안내합니다. 검증·승인·운영 반영 여부는 각 작업의 인수인계를 확인해 주세요.":"현황을 불러오지 못했어요"};}
   return TEAM_PROFILE_META[key]||TEAM_PROFILE_META.hani;
 }
 function teamByKey(key){return team.find(x=>x.key===key)||developmentTeam.find(x=>x.key===key)||team[0]}
-function teamCard(x){const img=sidebarAgentImages[x.imageKey||x.key];return `<button class="member ui26-member tone-${x.tone}" data-team-key="${x.key}" data-go="${x.go}" title="${x.name} 프로필 보기"><div class="member-visual ${img?'has-photo':''}" ${img?`style="background-image:url(${img})"`:''}>${img?'':`<span>${x.emoji}</span><small>${x.key==="gemini"?"개발 보고팀":"DESIGN<br>COMING SOON"}</small>`}</div><div class="member-copy"><span class="member-role">${x.role}</span><b>${x.name}</b><p>${x.desc}</p><span class="member-link"></span></div></button>`}
+function teamCard(x){const isDevelopment=developmentTeam.some(member=>member.key===x.key);if(isDevelopment)x=developmentMemberView(x);const img=sidebarAgentImages[x.imageKey||x.key];return `<button class="member ui26-member tone-${x.tone}${x.status==='planned'?' is-planned-member':''}" data-team-key="${x.key}" data-go="${x.go}" title="${x.name} 프로필 보기"><div class="member-visual ${img?'has-photo':''}" ${img&&!isDevelopment?`style="background-image:url(${img})"`:''}>${isDevelopment||x.status==="planned"?developmentPortrait({...x,imageKey:x.imageKey||x.key}):img?'':`<span>${x.emoji}</span>`}</div><div class="member-copy"><span class="member-role">${esc(x.role)}</span><b>${x.name}</b>${x.status==="planned"?'<span class="pill">입사 예정</span>':""}<p>${esc(x.desc)}</p><span class="member-link"></span></div></button>`}
 function teamListHtml(items){return `<ul>${items.map(v=>`<li>${esc(v)}</li>`).join("")}</ul>`}
 function updateTeamActiveState(key){document.querySelectorAll(".ui26-member[data-team-key]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.teamKey===key));document.querySelectorAll(".sidebar-team-face[data-team-key]").forEach(btn=>btn.classList.toggle("active",btn.dataset.teamKey===key));}
 function renderTeamProfile(key=activeTeamProfileKey){
-  const isDevelopment=developmentTeam.some(x=>x.key===key),panel=$(isDevelopment?"developmentTeamProfilePanel":"teamProfilePanel");if(!panel)return;const member=teamByKey(key),meta=teamMeta(key),img=agentImages[member.imageKey||key]||"";activeTeamProfileKey=member.key;
+  const isDevelopment=developmentTeam.some(x=>x.key===key),panel=$(isDevelopment?"developmentTeamProfilePanel":"teamProfilePanel");if(!panel)return;const source=teamByKey(key),member=isDevelopment?developmentMemberView(source):source,meta=teamMeta(key),img=agentImages[member.imageKey||key]||"";activeTeamProfileKey=member.key;
   const badge=$(isDevelopment?"developmentTeamProfileBadge":"teamProfileBadge");if(badge)badge.textContent=member.name;
-  panel.innerHTML=`<div class="ai-team-profile-visual tone-${member.tone}"><div class="ai-team-profile-avatar" style="${img?`background-image:url(${img})`:''}">${!img?`<span style="font-size:64px" aria-label="${esc(member.name)}">${esc(member.emoji)}</span>`:""}</div><div class="ai-team-profile-tag">${esc(meta.rank||member.role)}</div><div class="ai-team-profile-quote">“${esc(meta.quote||member.desc)}”</div></div><div class="ai-team-profile-body"><div class="ai-team-profile-head"><div><div class="ai-team-profile-role">${esc(member.role)}</div><h3>${esc(member.name)}</h3><div class="ai-team-profile-sub">${esc(meta.headline||member.desc)}</div></div><div class="ai-team-profile-actions"><button class="btn sm primary" type="button" id="${isDevelopment?"developmentTeamProfileGoMain":"teamProfileGoMain"}">담당 화면 열기</button></div></div><div class="ai-team-mood">${(meta.signature||[]).map(v=>`<span class="pill">${esc(v)}</span>`).join("")}</div><div class="ai-team-meta-grid"><div class="ai-team-meta-card"><b>${isDevelopment?"지금 하는 일":"담당 역할"}</b>${teamListHtml(meta.focus||[])}</div><div class="ai-team-meta-card"><b>${isDevelopment?"최근 완료 · 프로젝트 반영":"성향"}</b>${teamListHtml(meta.traits||[])}</div><div class="ai-team-meta-card"><b>${isDevelopment?"다음 할 일":"대화 스타일"}</b>${teamListHtml(meta.style||[])}</div><div class="ai-team-meta-card"><b>${isDevelopment?"최종 업데이트":"강점"}</b>${teamListHtml(meta.strengths||[])}</div></div><div class="ai-team-profile-note">${esc(meta.note||member.desc)}</div></div>`;
+  panel.innerHTML=`<div class="ai-team-profile-visual tone-${member.tone}"><div class="ai-team-profile-avatar" style="${img&&!isDevelopment?`background-image:url(${img})`:''}">${isDevelopment||member.status==="planned"?developmentPortrait({...member,imageKey:member.imageKey||member.key},true):!img?`<span style="font-size:64px" aria-label="${esc(member.name)}">${esc(member.emoji)}</span>`:""}</div><div class="ai-team-profile-tag">${esc(meta.rank||member.role)}</div><div class="ai-team-profile-quote">“${esc(meta.quote||member.desc)}”</div></div><div class="ai-team-profile-body"><div class="ai-team-profile-head"><div><div class="ai-team-profile-role">${esc(member.role)}</div><h3>${esc(member.name)}${member.status==="planned"?'<span class="pill">입사 예정</span>':""}</h3><div class="ai-team-profile-sub">${esc(meta.headline||member.desc)}</div></div><div class="ai-team-profile-actions"><button class="btn sm primary" type="button" id="${isDevelopment?"developmentTeamProfileGoMain":"teamProfileGoMain"}">담당 화면 열기</button></div></div><div class="ai-team-mood">${(meta.signature||[]).map(v=>`<span class="pill">${esc(v)}</span>`).join("")}</div><div class="ai-team-meta-grid"><div class="ai-team-meta-card"><b>${isDevelopment?"지금 하는 일":"담당 역할"}</b>${teamListHtml(meta.focus||[])}</div><div class="ai-team-meta-card"><b>${isDevelopment?"최근 완료 · 프로젝트 반영":"성향"}</b>${teamListHtml(meta.traits||[])}</div><div class="ai-team-meta-card"><b>${isDevelopment?"다음 할 일":"대화 스타일"}</b>${teamListHtml(meta.style||[])}</div><div class="ai-team-meta-card"><b>${isDevelopment?"최종 업데이트":"강점"}</b>${teamListHtml(meta.strengths||[])}</div></div><div class="ai-team-profile-note">${esc(meta.note||member.desc)}</div></div>`;
+  bindDevelopmentPortraits(panel);
   const goBtn=$(isDevelopment?"developmentTeamProfileGoMain":"teamProfileGoMain");if(goBtn)goBtn.onclick=()=>showView(member.go||"home");
   updateTeamActiveState(member.key);
 }
@@ -4362,11 +4285,11 @@ function openTeamProfile(key,{showTeam=true}={}){
 function renderSidebarTeamFaces(){
   const el=$("sidebarTeamFaces");if(!el)return;
   const picks=team.map(x=>x.key);
-  el.innerHTML=picks.map(key=>{const x=teamByKey(key),img=sidebarAgentImages[key]||agentImages[key]||"";return `<button class="sidebar-team-face agent-${esc(key)} tone-${x?.tone||"purple"}" data-team-key="${x?.key||key}" title="${esc(x?.name||key)} ${esc(x?.position||"")} · ${esc(x?.role||"")}"><span class="sidebar-team-photo ${img?"has-photo":"no-photo"}" style="${img?`--sidebar-photo:url(${img})`:""}">${img?"":esc(x?.emoji||"✦")}</span><span class="sidebar-team-label"><b>${esc(x?.name||key)}</b><em>${esc(x?.position||"")}</em></span></button>`;}).join("");
+  el.innerHTML=picks.map(key=>{const x=teamByKey(key),img=sidebarAgentImages[key]||agentImages[key]||"";return `<button class="sidebar-team-face agent-${esc(key)} tone-${x?.tone||"purple"}" data-team-key="${x?.key||key}" title="${esc(x?.name||key)} ${esc(x?.position||"")} · ${esc(x?.role||"")}"><span class="sidebar-team-photo ${img?"has-photo":"no-photo"}" style="${img?`--sidebar-photo:url(${img})`:""}">${img?"":esc(x?.emoji||"✦")}</span><span class="sidebar-team-label"><b>${esc(x?.name||key)}</b><em>${esc(x?.position||"")}${x?.status==="planned"?" · 입사 예정":""}</em></span></button>`;}).join("");
   el.querySelectorAll("[data-team-key]").forEach(b=>b.onclick=()=>openTeamProfile(b.dataset.teamKey,{showTeam:true}));
   updateTeamActiveState(activeTeamProfileKey||team[0]?.key||"hani");
 }
-function renderTeam(){const selectedKey=activeTeamProfileKey;const html=team.map(teamCard).join("");if($("teamList"))$("teamList").innerHTML=html;if($("homeTeamList"))$("homeTeamList").innerHTML=html;if($("developmentTeamList"))$("developmentTeamList").innerHTML=developmentTeam.map(teamCard).join("");renderSidebarTeamFaces();document.querySelectorAll(".ui26-member[data-team-key]").forEach(b=>b.onclick=()=>openTeamProfile(b.dataset.teamKey,{showTeam:true}));renderTeamProfile(developmentTeam.some(x=>x.key===activeTeamProfileKey)?"hani":activeTeamProfileKey||"hani");renderTeamProfile(developmentTeam.some(x=>x.key===selectedKey)?selectedKey:developmentTeam[0]?.key||"gemini");activeTeamProfileKey=selectedKey;updateTeamActiveState(selectedKey)}
+function renderTeam(){loadAiTeamStatus();const selectedKey=activeTeamProfileKey;const html=team.map(teamCard).join("");if($("teamList"))$("teamList").innerHTML=html;if($("homeTeamList"))$("homeTeamList").innerHTML=html;if($("developmentTeamList"))$("developmentTeamList").innerHTML=developmentTeam.map(teamCard).join("");bindDevelopmentPortraits($("developmentTeamList"));bindDevelopmentPortraits($("teamList"));bindDevelopmentPortraits($("homeTeamList"));renderSidebarTeamFaces();document.querySelectorAll(".ui26-member[data-team-key]").forEach(b=>b.onclick=()=>openTeamProfile(b.dataset.teamKey,{showTeam:true}));renderTeamProfile(developmentTeam.some(x=>x.key===activeTeamProfileKey)?"hani":activeTeamProfileKey||"hani");renderTeamProfile(developmentTeam.some(x=>x.key===selectedKey)?selectedKey:developmentTeam[0]?.key||"gemini");activeTeamProfileKey=selectedKey;updateTeamActiveState(selectedKey)}
 
 
 // ===== v2.9.0 Campus MVP =====
@@ -6512,7 +6435,7 @@ function intakeRowsFromVision(structuredItems=[],extractedTexts=[],userText="",t
   if(requested.includes("task")){for(const r of [...rows])if(r.target==="certificate"){const task=intakeCertificateTaskRow(r.data);if(task?.data)rows.push(task)}}
   return rows}
 const evidence=extractedTexts.join("\n\n").trim(),fused=[evidence,userText?`[사용자 지시]\n${userText}`:""].filter(Boolean).join("\n\n");if(target==="auto"&&requested.length){const built=[];for(const requestedTarget of requested.filter(x=>x!=="task"))built.push(...intakeBuildCandidates(fused,requestedTarget));if(requested.includes("task")){const certRows=built.filter(r=>r.target==="certificate");for(const r of certRows){const task=intakeCertificateTaskRow(r.data);if(task?.data)built.push(task)}if(!certRows.length)built.push(...intakeBuildCandidates(userText||fused,"task"))}if(built.length)return built}return intakeBuildCandidates(fused,target)}
-function intakeRenderPurchaseReviewDraft(draft){intakeHandoffDraft=draft;intakePreviewRows=[];intakeRenderRoute([]);const list=$("intakePreviewList"),summary=$("intakePreviewSummary"),pill=$("intakePreviewState"),btn=$("intakeCommitBtn"),raw=$("intakeRawPreview");if(list){list.innerHTML=`<article class="intake-preview-row is-ready intake-handoff-row"><div class="intake-preview-icon">→</div><div class="intake-preview-copy"><div class="intake-preview-head"><b>구매 검토 Draft</b><span>ROUTED</span><em class="intake-agent-chip">유나 접수 → AI 구매팀 → 하니 종합 → 대표 결재</em></div><h4>${esc(draft.title||"구매 여부 검토")}</h4><div class="intake-campus-note">Wish-list에는 저장하지 않았습니다. 이미지 증거와 오빠의 설명을 묶어 대표실 요청 Draft만 준비했습니다.</div><pre>${esc(draft.preview||draft.request)}</pre><div class="form-actions"><button class="btn primary" id="intakeHandoffReviewBtn" type="button">대표실에서 검토하기</button></div></div></article>`;const go=$("intakeHandoffReviewBtn");if(go)go.onclick=()=>{showView("agentReview");const input=$("agentRequestInput");if(input){input.value=draft.request;input.focus();input.scrollIntoView({behavior:"smooth",block:"center"})}toast("구매 검토 요청 Draft를 대표실로 옮겼습니다. 아직 Case를 생성하지 않았어요.")}}
+function intakeRenderPurchaseReviewDraft(draft){intakeHandoffDraft=draft;intakePreviewRows=[];intakeRenderRoute([]);const list=$("intakePreviewList"),summary=$("intakePreviewSummary"),pill=$("intakePreviewState"),btn=$("intakeCommitBtn"),raw=$("intakeRawPreview");if(list){list.innerHTML=`<article class="intake-preview-row is-ready intake-handoff-row"><div class="intake-preview-icon">→</div><div class="intake-preview-copy"><div class="intake-preview-head"><b>구매 검토 Draft</b><span>ROUTED</span><em class="intake-agent-chip">유나 접수 → AI 구매팀 → 하니 종합 → 대표 결재</em></div><h4>${esc(draft.title||"구매 여부 검토")}</h4><div class="intake-campus-note">Wish-list에는 저장하지 않았습니다. 이미지 증거와 오빠의 설명을 묶어 하니 본사 요청 Draft만 준비했습니다.</div><pre>${esc(draft.preview||draft.request)}</pre><div class="form-actions"><button class="btn primary" id="intakeHandoffReviewBtn" type="button">하니 본사에서 검토하기</button></div></div></article>`;const go=$("intakeHandoffReviewBtn");if(go)go.onclick=()=>{showView("agentReview");const input=$("agentRequestInput");if(input){input.value=draft.request;input.focus();input.scrollIntoView({behavior:"smooth",block:"center"})}toast("구매 검토 요청 Draft를 하니 본사로 옮겼습니다. 아직 Case를 생성하지 않았어요.")}}
 if(summary)summary.textContent="구매 검토 Draft 1건 · 사용자 지시 > 이미지 증거 순서로 반영 · Life OS 미저장";if(pill){pill.textContent="PURCHASE REVIEW DRAFT";pill.className="pill finance"}if(btn){btn.disabled=true;btn.textContent="Life OS 저장 대상 아님"}if(raw)raw.textContent=JSON.stringify({route:"PURCHASE_REVIEW",source_priority:["USER_INSTRUCTION","USER_TEXT","IMAGE_EVIDENCE","HANI_CONTEXT","AI_INFERENCE"],request:draft.request},null,2)}
 function intakeRenderPreview(){const list=$("intakePreviewList"),summary=$("intakePreviewSummary"),pill=$("intakePreviewState"),btn=$("intakeCommitBtn"),raw=$("intakeRawPreview");if(!list)return;const ready=intakePreviewRows.filter(x=>!x.duplicate&&!x.blocker),fresh=ready.filter(x=>x.selected!==false),dup=intakePreviewRows.filter(x=>x.duplicate),blocked=intakePreviewRows.filter(x=>x.blocker);intakeRenderRoute(intakePreviewRows);if(!intakePreviewRows.length){list.innerHTML='<div class="empty">유나에게 말하거나 자료를 붙인 뒤 ‘유나에게 맡기기’를 눌러 주세요.</div>';if(summary)summary.textContent="아직 접수한 자료가 없습니다.";if(pill){pill.textContent="WAITING";pill.className="pill"}if(btn){btn.disabled=true;btn.textContent="대표 승인 & 저장"}if(raw)raw.textContent="[]";return}list.innerHTML=intakePreviewRows.map((r,i)=>{const stateKey=r.blocker?"BLOCKED":r.duplicate?"DUPLICATE":r.selected===false?"EXCLUDED":"READY",note=intakeRowNote(r.target,r.data),canSelect=!r.blocker&&!r.duplicate;return `<article class="intake-preview-row ${r.blocker?'is-blocked':r.duplicate?'is-duplicate':r.selected===false?'is-excluded':'is-ready'}"><div class="intake-preview-icon">${r.blocker?'!':r.duplicate?'⚠️':r.selected===false?'−':'✓'}</div><div class="intake-preview-copy"><div class="intake-preview-head"><b>${esc(INTAKE_TARGET_LABELS[r.target]||r.target)}</b><span>${stateKey}</span><em class="intake-agent-chip">${esc(intakeRouteLabel(r.target))}</em>${canSelect?`<label class="intake-select-toggle"><input type="checkbox" data-intake-select="${i}" ${r.selected===false?'':'checked'}><span>저장 포함</span></label>`:''}</div><h4>${esc(intakePrimary(r.target,r.data))}</h4><pre>${esc(JSON.stringify(intakeSafeData(r.target,r.data),null,2))}</pre>${note?`<div class="intake-campus-note">${esc(note)}</div>`:''}${r.blocker?`<div class="intake-blocker-note">${esc(r.blocker)}</div>`:r.duplicate?`<div class="intake-duplicate-note">${esc(r.duplicate)}</div>`:''}</div></article>`}).join("");list.querySelectorAll("[data-intake-select]").forEach(el=>el.onchange=()=>{const i=Number(el.dataset.intakeSelect);if(intakePreviewRows[i])intakePreviewRows[i].selected=!!el.checked;intakeRenderPreview()});if(summary)summary.textContent=`분석 ${intakePreviewRows.length}건 · 저장 선택 ${fresh.length}건${ready.length!==fresh.length?` · 제외 ${ready.length-fresh.length}건`:""} · 중복 제외 ${dup.length}건${blocked.length?` · 확인 필요 ${blocked.length}건`:""}`;if(pill){pill.textContent=blocked.length?"CHECK NEEDED":fresh.length?"PREVIEW READY":"NO SELECTION";pill.className=`pill ${blocked.length||!fresh.length?'danger':''}`}if(btn){btn.disabled=!!blocked.length||!fresh.length;btn.textContent=blocked.length?"확인 필요 항목 있음":fresh.length?`선택 ${fresh.length}개 승인 & 저장`:"저장할 선택 항목 없음"}if(raw)raw.textContent=JSON.stringify(intakePreviewRows.map(r=>({target:r.target,agent:intakeAgentKey(r.target),selected:r.selected!==false,blocker:r.blocker||null,duplicate:r.duplicate||null,note:intakeRowNote(r.target,r.data)||null,data:intakeSafeData(r.target,r.data)})),null,2)}
 async function intakeAnalyze(){const userText=intakeText($("intakeSourceText")?.value),target=$("intakeTarget")?.value||"auto",imageFiles=intakeImageFiles.length?intakeImageFiles:(intakeImageFile?[intakeImageFile]:[]);if(!userText&&!imageFiles.length)return alert("유나에게 말하거나 원문·JSON 또는 스크린샷/이미지를 넣어 주세요.");try{intakeVisionMeta=null;intakeHandoffDraft=null;haniWorkShow({agent:"yuna",title:"유나가 새 자료를 접수하고 있어요!",step:"YUNA · IMAGE + TEXT FUSION",message:imageFiles.length?`${imageFiles.length}개 이미지와 오빠의 설명을 함께 읽을게요. 오빠가 직접 말한 내용이 이미지 추출보다 우선합니다.`:"오빠가 말한 의도를 먼저 판단하고 담당 Agent를 찾아볼게요."});let structuredItems=[],extractedTexts=[],confidences=[],warnings=[],hints=[];
@@ -6708,7 +6631,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.214";
+const HANI_DISPLAY_VERSION="2.9.215";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];

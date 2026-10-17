@@ -17,7 +17,7 @@
   const NAV_LABELS = {
     home: '대시보드',
     intake: '인포데스크',
-    agentReview: '대표실',
+    agentReview: '하니 본사',
     policy: '사내 규칙',
     deployment: '배포센터',
     investment: '투자',
@@ -75,6 +75,15 @@
     const style = document.createElement('style');
     style.id = STYLE_ID;
     style.textContent = `
+      /* Read-only development portraits share the staff profile assets. */
+      #developmentTeamList .ui26-member{display:block}
+      #developmentTeamList .member-visual{width:100%;height:160px}
+      #developmentTeamList .member-copy p{height:auto;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+      #aiWork .member-visual,#aiWork .ai-team-profile-avatar{position:relative;overflow:hidden}
+      #aiWork [data-development-portrait]{display:block;width:100%;height:100%;object-fit:cover;object-position:center 24%}
+      #aiWork [data-development-portrait][hidden],#aiWork [data-development-portrait-fallback][hidden]{display:none}
+      #aiWork [data-development-portrait-fallback]{display:grid;place-items:center;width:100%;height:100%;font-size:20px;font-weight:800;color:var(--text)}
+      #aiWork .ai-team-profile-avatar [data-development-portrait]{position:absolute;inset:0}
       /* v2.9.71 · clean product UI */
       .sidebar-team-mini.hani-team-collapsed-v02971 .sidebar-team-faces{display:none!important}
       .sidebar-team-mini.hani-team-collapsed-v02971{padding-bottom:8px!important}

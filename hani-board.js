@@ -395,7 +395,7 @@
     seedSource=relationshipSeed();
     personaSource=window.HANI_CHARACTER_ARCHIVE_DATA;editorialSource=window.HaniEditorialSources;rosterSource=roster();
     const lines=editorialSource?.lines||{},profiles=editorialSource?.profiles||{};
-    personaCache=Object.freeze(Object.fromEntries((roster()?.people||[]).map(member=>{
+    personaCache=Object.freeze(Object.fromEntries((roster()?.people||[]).filter(member=>member.status!=='planned').map(member=>{
       const c=personaSource?.characters?.find(c=>c.id===member.id),profile=profiles[member.id],approved=seedPerson(member.id);
       const field=(name,fallback)=>approved?.[name]??profile?.[name]??c?.[name]??fallback;
       const combined=[member.role,member.keywords,...(c?.areas||[])].join(" ");
@@ -466,7 +466,7 @@
   function recentAuthors(rows=posts(),replyRows=comments(),now=Date.now()){
     const cutoff=now-7*86400000;
     const all=[...rows.filter(p=>!p.boardMeta),...replyRows].filter(r=>new Date(r.createdAt).getTime()>=cutoff&&new Date(r.createdAt).getTime()<=now);
-    return (roster()?.people||[]).map(p=>({id:p.id,total:all.filter(r=>r.authorId===p.id).length,
+    return (roster()?.people||[]).filter(p=>p.status!=='planned').map(p=>({id:p.id,total:all.filter(r=>r.authorId===p.id).length,
       world:rows.filter(r=>r.generated&&!r.ownerTied&&!r.boardMeta&&r.authorId===p.id&&new Date(r.createdAt).getTime()>=cutoff).length,
       last:Math.max(0,...all.filter(r=>r.authorId===p.id).map(r=>new Date(r.createdAt).getTime()))}));
   }
