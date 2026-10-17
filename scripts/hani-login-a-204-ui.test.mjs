@@ -14,7 +14,7 @@ const server=http.createServer((req,res)=>{
   res.setHeader('Content-Type',file.endsWith('.js')?'text/javascript':file.endsWith('.css')?'text/css':file.endsWith('.html')?'text/html; charset=utf-8':file.endsWith('.webp')?'image/webp':'application/octet-stream');res.end(fs.readFileSync(file));
 });
 await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));const origin=`http://127.0.0.1:${server.address().port}`;
-const seasons=['spring','summer','autumn','winter'],finishes=['porcelain-cream','titanium-graphite','midnight-black','sakura-pink','alpine-blue'];
+const seasons=['spring','summer','autumn','winter'],finishes=['porcelain-cream','pure-white','titanium-graphite','midnight-black','sakura-pink','alpine-blue'];
 const ratio=(a,b)=>{
   const lum=rgb=>rgb.slice(0,3).map(v=>{const c=v/255;return c<=.04045?c/12.92:((c+.055)/1.055)**2.4}).reduce((sum,c,i)=>sum+c*[.2126,.7152,.0722][i],0);
   return (Math.max(lum(a),lum(b))+.05)/(Math.min(lum(a),lum(b))+.05);
@@ -38,7 +38,7 @@ try{
     for(const finish of finishes){
       await page.locator('input[name="loginFinish"][value="'+finish+'"]').check();
       const boxes=await page.locator('.login-design-choice').evaluateAll(items=>items.map(e=>{const b=e.getBoundingClientRect();return {top:b.top,left:b.left,width:b.width}}));
-      assert.equal(new Set(boxes.map(b=>Math.round(b.top))).size,width>820?1:2,'five options compact into desktop row/mobile 3+2');
+      assert.equal(new Set(boxes.map(b=>Math.round(b.top))).size,width>820?1:2,'six options compact into desktop row/mobile 3+3');
       for(const season of seasons){
         await page.locator('[data-login-theme="'+season+'"]').click();
         assert.equal(await page.locator('.login-season-artwork img.is-active').getAttribute('data-login-season-artwork'),season,'immediate image selection');
@@ -60,11 +60,11 @@ try{
       if(width>820)assert.equal(await page.locator('#loginGate').evaluate(e=>e.scrollHeight<=e.clientHeight),true,'normal form fits 900px without gate scrolling');
       if(width===390){const b=await page.locator('.login-character-panel').boundingBox();assert.ok(b.height>=195&&b.height<=215);const form=await page.locator('.login-card').boundingBox();assert.ok(form.y>=b.y+b.height-1)}
     }
-    await page.locator('input[name="loginFinish"][value="porcelain-cream"]').focus();await page.keyboard.press('ArrowRight');assert.equal(await page.locator('input[name="loginFinish"][value="titanium-graphite"]').isChecked(),true);
+    await page.locator('input[name="loginFinish"][value="porcelain-cream"]').focus();await page.keyboard.press('ArrowRight');assert.equal(await page.locator('input[name="loginFinish"][value="pure-white"]').isChecked(),true);
     await page.locator('[data-login-theme="spring"]').focus();await page.keyboard.press('Enter');assert.equal(await page.locator('.login-season-artwork img.is-active').getAttribute('data-login-season-artwork'),'spring');
     await page.emulateMedia({reducedMotion:'reduce'});assert.equal(await page.locator('.login-season-artwork img.is-active').evaluate(e=>getComputedStyle(e).transitionDuration),'0s');
     await page.screenshot({path:path.join(out,'login-'+width+'.png'),fullPage:true});
-    await page.reload();await page.waitForFunction(()=>loginGateInitialized);assert.equal(await page.evaluate(()=>document.documentElement.dataset.season),'spring');assert.equal(await page.evaluate(()=>document.documentElement.dataset.finish),'titanium-graphite');
+    await page.reload();await page.waitForFunction(()=>loginGateInitialized);assert.equal(await page.evaluate(()=>document.documentElement.dataset.season),'spring');assert.equal(await page.evaluate(()=>document.documentElement.dataset.finish),'pure-white');
     await page.evaluate(()=>{unlockLoginGate();showView('organization');renderNavNewBadges(Date.parse('2026-10-11T00:00:00Z'))});
     // showView mounts through rAF; wait for the actual owner surface, not a delay.
     await page.waitForFunction(()=>document.querySelector('#organization.view.active .ogh-overview'));
@@ -75,5 +75,5 @@ try{
     }
     assert.deepEqual(errors,[]);cases++;await context.close();
   }
-  console.log('PASS login-a-204 UI: '+cases+' widths, 5 finishes × 4 seasons, immediate selection, fit/overflow, keyboard, reduced motion, preference reload, AA parent/menu badges');
+  console.log('PASS login-a-204 UI: '+cases+' widths, 6 finishes × 4 seasons, immediate selection, fit/overflow, keyboard, reduced motion, preference reload, AA parent/menu badges');
 }finally{await browser?.close();await new Promise(resolve=>server.close(resolve))}

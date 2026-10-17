@@ -6,7 +6,7 @@ const runtime=process.argv[2]||process.env.HANI_PLAYWRIGHT_MODULE||'C:/Users/홍
 const {chromium}=await import(pathToFileURL(runtime).href);
 const browser=await chromium.launch({executablePath:process.argv[3]||process.env.HANI_CHROME||'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true});
 const base=process.env.HANI_PREVIEW_URL||'http://127.0.0.1:8791';
-const out=path.resolve('qa-evidence/organization-hub');fs.mkdirSync(out,{recursive:true});
+const out=path.resolve(process.env.HANI_QA_OUTPUT||'qa-evidence/organization-hub');fs.mkdirSync(out,{recursive:true});
 const results=[];
 try{
  const page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
@@ -16,7 +16,7 @@ try{
  await page.locator('.ogh-person').last().waitFor();
  assert.equal(await page.locator('.ogh-node').count(),5);
  assert.equal(await page.locator('.ogh-node .ogh-leader-badge').count(),5);
- for(const [team,count] of [['strategy',4],['platform',5],['finance',2],['life',4],['business',2],['all',17]]){
+ for(const [team,count] of [['strategy',4],['platform',5],['finance',3],['life',5],['business',2],['all',19]]){
    await page.locator('[data-filter-team="'+team+'"]').click();
    assert.equal(await page.locator('.ogh-person:visible').count(),count);
    assert.equal(await page.locator('#ogh-team-filter').inputValue(),team);
@@ -37,8 +37,8 @@ try{
  assert.equal(await page.locator('#ogh-panel-platform').isVisible(),true);
  await page.keyboard.press('Home');assert.equal(await page.locator('#ogh-panel-strategy').isVisible(),true);
  assert.equal(await page.locator('#ogh-teams img[src*="banner-preview"]').count(),0);
- assert.equal(await page.locator('.ogh-person:visible').count(),17);
- assert.equal(await page.locator('.ogh-person-image>img').count(),17);
+ assert.equal(await page.locator('.ogh-person:visible').count(),19);
+ assert.equal(await page.locator('.ogh-person-image>img').count(),19);
  assert.match(await page.locator('[data-card-person="seoyun"] img').getAttribute('src'),/hani-profile-seoyun\.webp$/);
  assert.equal(await page.locator('.ogh-person-image>.ogh-placeholder').count(),0);
  for(const id of ['mir','seoyun','dohyun','serin','yuri','arin','gaeun','taeo']){
@@ -49,19 +49,19 @@ try{
  const nodes=await page.locator('.ogh-node').evaluateAll(nodes=>nodes.map(n=>Math.round(n.getBoundingClientRect().top)));
  assert.equal(new Set(nodes).size,1,'Five teams share equal row');
  await page.locator('[data-group="M9"]').click();assert.equal(await page.locator('.ogh-person:visible').count(),9);
- await page.locator('[data-group="AI STAFF"]').click();assert.equal(await page.locator('.ogh-person:visible').count(),8);
+ await page.locator('[data-group="AI STAFF"]').click();assert.equal(await page.locator('.ogh-person:visible').count(),10);
  await page.evaluate(async()=>{for(const img of document.querySelectorAll('.ogh-person img')){img.loading='eager';await img.decode();}});
  await page.locator('#ogh-people').screenshot({path:path.join(out,'staff-nameplates.webp')});
  await page.locator('#ogh-team-filter').selectOption('strategy');assert.equal(await page.locator('.ogh-person:visible').count(),2);
  assert.equal(await page.locator('[data-filter-team="strategy"]').getAttribute('aria-pressed'),'true');
  await page.locator('#ogh-search').fill('<img src=x onerror=alert(1)>');assert.equal(await page.locator('.ogh-person:visible').count(),0);
- await page.locator('[data-reset]').click();assert.equal(await page.locator('.ogh-person:visible').count(),17);
+ await page.locator('[data-reset]').click();assert.equal(await page.locator('.ogh-person:visible').count(),19);
  await page.locator('#ogh-search').fill('Codex');assert.equal(await page.locator('.ogh-person:visible').count(),1);
  await page.locator('#ogh-search').fill('');
  const opener=page.locator('[data-card-person="hani"]');await opener.click();
  await page.locator('dialog[open]').waitFor();assert.match(await page.locator('#ogh-detail-title').innerText(),/하니/);
  await page.keyboard.press('Escape');assert.equal(await page.locator('dialog[open]').count(),0);assert.equal(await opener.evaluate(e=>e===document.activeElement),true);
- for(const [id,count] of [['strategy',4],['platform',5],['finance',2],['life',4],['business',2]]){
+ for(const [id,count] of [['strategy',4],['platform',5],['finance',3],['life',5],['business',2]]){
    await page.locator('.ogh-node-title[data-team="'+id+'"]').click();assert.equal(await page.locator('.ogh-detail-members .ogh-avatar').count(),count);
    await page.locator('.ogh-close').click();
  }
@@ -76,7 +76,7 @@ try{
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
  await page.locator('.ogh-mast').click();await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:path.join(out,'desktop.webp'),fullPage:true});
  await page.screenshot({path:path.join(out,'desktop-first-screen.webp')});
- results.push('Desktop 1440: five equal teams, 17 portraits including 8 female AI staff, name/job plates, all filters, empty/reset, 5 team dialogs, person dialog, Escape/focus return, no errors/overflow PASS');
+ results.push('Desktop 1440: five equal teams, 19 portraits including 2 planned hires, name/job plates, all filters, empty/reset, 5 team dialogs, person dialog, Escape/focus return, no errors/overflow PASS');
  await page.setViewportSize({width:390,height:844});
  await page.locator('#ogh-teams').screenshot({path:path.join(out,'team-banner-mobile.webp')});
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
@@ -99,10 +99,10 @@ try{
  await page.evaluate(()=>showView('aiTeam'));
  assert.equal(await page.locator('#organization.active').count(),1);
  assert.equal(await page.locator('[data-organization-tab="aiTeam"]').getAttribute('aria-selected'),'true');
- assert.equal(await page.locator('.ogh-person:not([hidden])').count(),8);
+ assert.equal(await page.locator('.ogh-person:not([hidden])').count(),10);
  await page.locator('.side [data-view="organization"]').evaluate(e=>e.click());
  assert.equal(await page.locator('#organization.active').count(),1);
- assert.equal(await page.locator('#haniOrganizationHub .ogh-person').count(),17);
+ assert.equal(await page.locator('#haniOrganizationHub .ogh-person').count(),19);
  for(const [route,tab] of [['characterArchive','archive'],['organization/people','people'],['organization','overview']]){
    await page.evaluate(route=>showView(route),route);
    assert.equal(await page.locator('[data-organization-tab="'+tab+'"]').getAttribute('aria-selected'),'true');

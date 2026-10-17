@@ -6,10 +6,11 @@ import {api,handlers as h,context,roster,plain,inspection} from "./hani-board.te
 
 vm.runInContext(fs.readFileSync(new URL("../hani-character-archive-data.js",import.meta.url),"utf8"),context);
 const beforeMap=h.personaMap();
+for(const member of roster.people.filter(p=>p.status==="planned"))assert.equal(beforeMap[member.id],undefined,"planned staff have no active persona");
 vm.runInContext(fs.readFileSync(new URL("../hani-relationship-seed.js",import.meta.url),"utf8"),context);
 const seed=context.HaniRelationshipSeed;
 assert.notEqual(h.personaMap(),beforeMap,"cache invalidates when seed loads");
-for(const member of roster.people){
+for(const member of roster.people.filter(p=>p.status!=="planned")){
   const p=h.personaMap()[member.id],s=seed.people.find(p=>p.id===member.id);
   assert.deepEqual(plain(p.voice),[s.voice]);
   for(const field of ["quirks","hobbies","characterAxis","publicMode","privateMode","commentStyle","reactionTriggers","avoidTopics"])
@@ -27,7 +28,7 @@ for(const category of ["WORK","LIFE","LOUNGE","MEMORY"]){
   assert.match(h.staffAddress("seoyun","seongmin",{category},1),/^(회장님|대표님)$/);
 }
 const allowed=["hani","jieun","haru","naeun","hina","seoyun"];
-for(const member of roster.people){
+for(const member of roster.people.filter(p=>p.status!=="planned")){
   assert.equal(h.personaMap()[member.id].callsChairmanOppa,allowed.includes(member.id));
   const history=[];
   for(let i=0;i<500;i++){

@@ -62,7 +62,7 @@ try{
     assert.equal(await page.locator('#developmentTeamList [data-team-key]').count(),7);
     for(const name of ['서윤','도연','세린','하니 전무','유리','아린','히나']){
       await page.locator('#developmentTeamList [data-team-key]').filter({hasText:name}).click();
-      const panel=page.locator('#developmentTeamProfilePanel');for(const label of ['지금 하는 일','최근 완료','다음 할 일','2026-10-11'])assert.ok((await panel.innerText()).includes(label));
+      const panel=page.locator('#developmentTeamProfilePanel');for(const label of ['지금 하는 일','최근 완료','다음 할 일',JSON.parse(fs.readFileSync(path.join(root,'assets/data/ai-team-status.json'),'utf8')).updatedAt])assert.ok((await panel.innerText()).includes(label));
     }
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);
     const persisted=await context.storageState();persisted.cookies=persisted.cookies.filter(c=>c.expires!==-1);

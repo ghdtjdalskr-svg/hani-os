@@ -16,7 +16,7 @@ try{
   const context=await browser.newContext({viewport:{width,height:1000},reducedMotion:'reduce'}),page=await context.newPage(),errors=[],missingArt=[];
   await context.addInitScript(()=>{const RealDate=Date;window.buildingClock=RealDate.parse('2026-10-11T09:00:00+09:00');window.Date=class extends RealDate{constructor(...args){super(...(args.length?args:[window.buildingClock]))}static now(){return window.buildingClock}}});
   await context.route('**/*',route=>new URL(route.request().url()).origin===origin?route.continue():route.fulfill({status:200,body:'',contentType:'text/plain'}));
-  page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()!=='error')return;const url=m.location().url;if(/\/assets\/building\/floor-[1-4]f-v1\.webp$/.test(url)&&m.text().includes('404'))missingArt.push(url);else errors.push(m.text())});page.on('dialog',d=>d.dismiss());
+  page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()!=='error')return;const url=m.location().url;if(/\/assets\/building\/floor-[1-4]f-215\.webp$/.test(url)&&m.text().includes('404'))missingArt.push(url);else errors.push(m.text())});page.on('dialog',d=>d.dismiss());
   await page.goto(origin);await page.waitForFunction(()=>typeof unlockLoginGate==='function'&&typeof showView==='function'&&!!window.HaniBuildingScene);
   await page.evaluate(()=>{unlockLoginGate();showView('agentReview')});
   await page.waitForFunction(()=>document.querySelector('#haniOfficeMap').dataset.floor==='4f'&&document.querySelector('#haniOfficeLive').dataset.paused==='false');

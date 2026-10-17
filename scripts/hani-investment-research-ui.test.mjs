@@ -61,7 +61,7 @@ try {
     assert.equal(await page.locator('#sidebar [data-go=investmentCommittee]').count(),0,'removed duplicate report shortcut stays absent');
     assert.equal(await page.locator('#sidebar [data-view=investmentCommittee]').count(),1,'one canonical report navigation entry');
     assert.equal(await page.locator('#sidebar [data-view=board] .txt').innerText(),'하니 라운지');
-    assert.equal(await page.locator('#sidebar [data-view=agentReview] .txt').innerText(),'대표실');
+    assert.equal(await page.locator('#sidebar [data-view=agentReview] .txt').innerText(),'하니 본사');
     assert.equal(await page.locator('#sidebar [data-view=investmentCommittee] .txt').innerText(),'하니 투자 리포트');
     const beforeNavigation=await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length}));
     await page.evaluate(()=>showView('investment'));
