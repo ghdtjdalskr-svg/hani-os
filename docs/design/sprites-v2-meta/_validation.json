@@ -1,0 +1,104 @@
+{
+  "status": "PASS",
+  "node": "v24.19.0",
+  "sharp": "0.35.5",
+  "characterCount": 25,
+  "frameCount": 100,
+  "spriteBytes": 189808,
+  "budget": 1475000,
+  "scope": "seongmin",
+  "checks": [
+    "decode all final WebP for contact sheet",
+    "24 other character SHA256 unchanged; their prior checks retained",
+    "seongmin expected atlas dimensions, alpha and transparent gutters",
+    "seongmin four distinct decoded frames and unused rows transparent",
+    "seongmin original pose heights and pivot retained",
+    "seongmin original 7350-byte cap and aggregate budget",
+    "final disk read-back: seongmin exact old pose heights 56/51/54/54, all pivots (24,61), opaque shoe baseline y60",
+    "final disk read-back: reserved columns and rows fully transparent; all 25 manifest hashes match"
+  ],
+  "notVerified": [
+    "runtime integration and actual desk/chair occlusion",
+    "four-direction animation not requested",
+    "Android and production",
+    "art approval"
+  ],
+  "seongmin": {
+    "sizeBytes": 7096,
+    "oldSizeBytes": 7350,
+    "webpQuality": 74,
+    "alphaQuality": 100,
+    "detachedAlphaCleanup": "remove disconnected <=3px alpha specks; retain actor and floor shadow alpha",
+    "poses": [
+      {
+        "pose": "standing",
+        "content": [
+          3,
+          5,
+          41,
+          56
+        ],
+        "pivot": [
+          24,
+          61
+        ],
+        "opaqueY": [
+          6,
+          60
+        ]
+      },
+      {
+        "pose": "sitting",
+        "content": [
+          2,
+          10,
+          43,
+          51
+        ],
+        "pivot": [
+          24,
+          61
+        ],
+        "opaqueY": [
+          11,
+          60
+        ]
+      },
+      {
+        "pose": "walk-a",
+        "content": [
+          3,
+          7,
+          41,
+          54
+        ],
+        "pivot": [
+          24,
+          61
+        ],
+        "opaqueY": [
+          8,
+          60
+        ]
+      },
+      {
+        "pose": "walk-b",
+        "content": [
+          3,
+          7,
+          41,
+          54
+        ],
+        "pivot": [
+          24,
+          61
+        ],
+        "opaqueY": [
+          8,
+          60
+        ]
+      }
+    ],
+    "sha256": "5ff41b1425f9acbda1490ead975262d73fe1cd9573e0b27b9566813edd89f6ca"
+  }
+}

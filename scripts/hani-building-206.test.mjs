@@ -2,14 +2,15 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import {assets} from './hani-office-v2-fixture.mjs';
 const read=file=>fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
-const source=read('hani-office-live.js'),context=vm.createContext({document:{getElementById:()=>null},window:{}});
+const source=read('hani-office-live.js'),context=vm.createContext({HaniOfficeV2Assets:assets,document:{getElementById:()=>null},window:{}});
 vm.runInContext(source,context);vm.runInContext(read('hani-organization-hub.js'),context);
 const api=context.HaniBuildingScene,plain=value=>JSON.parse(JSON.stringify(value));
 const at=time=>api.snapshot(new Date('2026-10-11T'+time+':00+09:00'));
 test('17 canonical staff, exact home floors and immutable config',()=>{
- assert.deepEqual(plain(api.floors.map(f=>f.residents)),[['hani','gaeun','mir'],['seoyun','dohyun','serin','yuri','arin'],['jieun','haru','naeun','hina','minji','sooyeon'],['yuna','sua','taeo']]);
- const ids=api.floors.flatMap(f=>f.residents),canonical=context.window.HaniOrganizationRoster.people.map(p=>p.id);
+ assert.deepEqual(plain(api.floors.map(f=>f.residents)),[[],['hani','yuna','gaeun','mir'],['seoyun','dohyun','serin','yuri','arin'],['jieun','haru','naeun','hina','minji','sooyeon'],['sua','taeo']]);
+ const ids=api.floors.flatMap(f=>f.residents),canonical=context.window.HaniOrganizationRoster.people.filter(p=>p.status!=="planned").map(p=>p.id);
  assert.equal(ids.length,17);assert.equal(new Set(ids).size,17);assert.deepEqual([...ids].sort(),[...canonical].sort());
  assert.ok(Object.isFrozen(api.floors));for(const f of api.floors)assert.ok(Object.isFrozen(f.residents));
 });
@@ -26,7 +27,7 @@ for(const [time,mode] of [['09:59','work'],['10:00','meeting'],['10:29','meeting
 }
 test('date/slot determinism, timezone independence and daily variation',()=>{
  assert.deepEqual(plain(at('12:00').floors),plain(at('12:59').floors));assert.deepEqual(plain(api.snapshot('2026-10-11T03:05:00Z')),plain(api.snapshot('2026-10-11T12:05:00+09:00')));
- const sets=new Set();for(let day=1;day<=20;day++){const s=api.snapshot(`2026-10-${String(day).padStart(2,'0')}T12:00:00+09:00`);sets.add(s.floors[0].people.filter(p=>p.activity==='rest').map(p=>p.id).join(','))}assert.ok(sets.size>1);
+ const sets=new Set();for(let day=1;day<=20;day++){const s=api.snapshot(`2026-10-${String(day).padStart(2,'0')}T12:00:00+09:00`);sets.add(s.floors.find(f=>f.id==='4f').people.filter(p=>p.activity==='rest').map(p=>p.id).join(','))}assert.ok(sets.size>1);
  assert.equal(api.snapshot('2026-10-11T15:01:00Z').day,'2026-10-12');
 });
 test('cap and overflow retain every entry and prioritize visitors/meeting leads',()=>{

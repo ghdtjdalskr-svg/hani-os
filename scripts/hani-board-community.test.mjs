@@ -223,8 +223,8 @@ for(const p of [roster.chairman,...roster.people]){
     "assets/profiles/thumb/hani-profile-"+p.id+"-128.webp";
   assert.ok(slots.get("list").innerHTML.includes(expected),p.id+" uses its existing static portrait");
 }
-assert.equal((slots.get("list").innerHTML.match(/loading="lazy" decoding="async" width="28" height="28"/g)||[]).length,18);
-console.log("PASS: all 18 roster portraits use static assets with bounded dimensions and lazy decoding");
+assert.equal((slots.get("list").innerHTML.match(/loading="lazy" decoding="async" width="28" height="28"/g)||[]).length,roster.people.length+1);
+console.log("PASS: all roster portraits use static assets with bounded dimensions and lazy decoding");
 
 
 

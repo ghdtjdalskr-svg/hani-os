@@ -48,7 +48,7 @@ test('28 art files exist, have the expected WebP dimensions and bounded sizes', 
     assert.ok(bytes.length>1000 && bytes.length<=limit, file+' reasonable bytes');
     assert.deepEqual(webpSize(bytes),[width,height],file);
   }
-  assert.equal(assets.reduce((n,a)=>n+fs.statSync(path.join(root,a.file)).size,0),1429684);
+  assert.ok(assets.reduce((n,a)=>n+fs.statSync(path.join(root,a.file)).size,0)<=1800000,'portrait + edited floor download budget');
 });
 
 test('existing organization, board, remote and office render paths resolve every staff portrait', () => {
@@ -95,14 +95,17 @@ test('runtime closure has no missing references; dynamic art also exists and fit
   // Dynamic art is seeded separately; this does not build or certify a release package.
 });
 
-test('actual office renderer applies all four available backgrounds and reuses actor slots', () => {
+test('actual office renderer applies all five v1 backgrounds without mismatched masks and reuses actor slots', async () => {
   const f=officeFixture('09:00',true,exists);
   const actors=[...f.ids.get('haniOfficeActors').children];
-  for(const floor of ['4f','3f','2f','1f','4f']) {
+  for(const floor of ['4f','3f','2f','1f','5f','4f']) {
     f.click(floor);
+    await new Promise(resolve=>setImmediate(resolve));
     const src=`./assets/building/floor-${floor}-v1.webp`;
     assert.equal(f.map.dataset.art,'floor');
-    for(const image of f.map.querySelectorAll('.hani-office-background,.hani-office-foreground')) assert.equal(image.src,src);
+    assert.equal(f.map.querySelector('.hani-office-background').src,src);
+    const patches=f.map.querySelectorAll('.hani-office-foreground').filter(image=>!image.hidden);
+    assert.equal(f.map.dataset.mask,floor==='5f'?'none':'interior');assert.equal(patches.length,floor==='5f'?0:1);if(patches.length)assert.equal(patches[0].src,`./assets/building/signs-${floor}-215.webp`);
     assert.deepEqual(f.ids.get('haniOfficeActors').children,actors);
     for(const actor of f.visible()) {
       const image=actor.querySelector('.hani-office-avatar');
@@ -111,7 +114,7 @@ test('actual office renderer applies all four available backgrounds and reuses a
   }
 });
 
-test('real browser: four loaded backgrounds, staff portraits and no overflow at 412/884/1440', async t => {
+test('real browser: five loaded v1 backgrounds, staff portraits and no overflow at 412/884/1440', async t => {
   const modulePath=process.argv[2]||process.env.HANI_PLAYWRIGHT_MODULE||path.join(os.homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs');
   const executablePath=process.argv[3]||process.env.HANI_CHROME||[
     'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
@@ -163,11 +166,11 @@ test('real browser: four loaded backgrounds, staff portraits and no overflow at 
       await page.evaluate(()=>showView('agentReview'));
       await page.waitForFunction(()=>document.querySelector('#haniOfficeMap').dataset.floor==='4f');
       const host=await page.locator('#haniOfficeMap').elementHandle();
-      for(const floor of ['4f','3f','2f','1f']) {
+      for(const floor of ['4f','3f','2f','1f','5f']) {
         await page.locator(`[data-building-floor="${floor}"]`).click();
-        await page.waitForFunction(f=>{const map=document.querySelector('#haniOfficeMap'),img=map.querySelector('.hani-office-background');return map.dataset.floor===f&&map.dataset.art==='floor'&&img.getAttribute('src')===`./assets/building/floor-${f}-v1.webp`&&img.complete&&img.naturalWidth===1672;},floor);
+        await page.waitForFunction(f=>{const map=document.querySelector('#haniOfficeMap'),img=map.querySelector('.hani-office-background');return map.dataset.floor===f&&map.dataset.art==='floor'&&['none','interior'].includes(map.dataset.mask)&&img.getAttribute('src')===`./assets/building/floor-${f}-v1.webp`&&img.complete&&img.naturalWidth===1672;},floor);
         assert.equal(await host.evaluate(node=>node===document.querySelector('#haniOfficeMap')),true,'persistent map slot');
-        await page.locator('#haniOfficeMap .hani-office-foreground').evaluateAll(images=>Promise.all(images.map(img=>img.decode())));
+        await page.locator('#haniOfficeMap .hani-office-foreground:visible').evaluateAll(images=>Promise.all(images.map(img=>img.decode())));
         await page.locator('#haniOfficeActors .hani-office-avatar:visible').evaluateAll(images=>Promise.all(images.map(img=>img.decode())));
         await noOverflow('#haniOfficeLive');await noOverflow('.hani-office-scroll');
         await page.screenshot({path:path.join(evidence,`${width}-${floor}.png`),fullPage:true});

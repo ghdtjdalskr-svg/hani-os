@@ -1,15 +1,19 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {execFileSync} from 'node:child_process';
 import vm from 'node:vm';
 import path from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {api,handlers as h,context,roster,plain,inspection} from './hani-board.test.mjs';
 
+const baselineArg=process.argv[2]&&path.basename(process.argv[2])!=='index.mjs'?process.argv[2]:process.env.HANI_QA_TEST_BASELINE;
+const readBaseline=file=>baselineArg?fs.readFileSync(path.resolve(baselineArg,file),'utf8'):execFileSync(process.env.HANI_GIT_PATH||'git',['show','HEAD:'+file],{cwd:path.resolve(import.meta.dirname,'..'),encoding:'utf8',maxBuffer:64*1024*1024});
+const readEolBaseline=file=>baselineArg?readBaseline(file):execFileSync(process.env.HANI_GIT_PATH||'git',['show','origin/main:'+file],{cwd:path.resolve(import.meta.dirname,'..'),encoding:'utf8',maxBuffer:64*1024*1024});
 const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
 vm.runInContext(read('hani-relationship-seed.js'),context);
 const study=read('hani-study-v02984.js'),main=read('hani-main.js');
-const state={learningProjects:[{id:'p',name:'경제학 <기초>'}],learningQuizzes:[],learningWrongAnswers:[]};
+const state={learningProjects:[{id:'p',name:'경제학 <기초>',category:'investment'}],learningQuizzes:[],learningWrongAnswers:[]};
 const toasts=[],copied=[],listeners=[];
 let navigator={clipboard:{writeText:async text=>copied.push(text)}};
 const engine={contains:()=>true,addEventListener:(type,handler)=>listeners.push(handler)};
@@ -31,7 +35,7 @@ function fn(name){const start=main.indexOf('function '+name+'(');assert.ok(start
 
 test('quiz prompt contains full Korean tutoring request and immutable answers/project/level',()=>{
   const items=learn.hinaQuizItems(quiz),prompt=learn.hinaTutorPrompt(items);
-  for(const part of ['히나 과장','장난기','정확하게','왜 매력적','왜 틀렸','정확히 3줄','연습문제 1개','맨 끝','<details>','금리가 오르면?','1. 비용 증가','내 답: 비용 감소','정답: 비용 증가','차입 비용이 증가한다.','프로젝트: 경제학 <기초>','수준: easy','수준: hard','내 답: 미응답'])assert.ok(prompt.includes(part),part);
+  for(const part of ['지은','따뜻하고 꼼꼼한 재무 담당자','정확하게','왜 매력적','왜 틀렸','정확히 3줄','연습문제 1개','맨 끝','<details>','금리가 오르면?','1. 비용 증가','내 답: 비용 감소','정답: 비용 증가','차입 비용이 증가한다.','프로젝트: 경제학 <기초>','수준: easy','수준: hard','내 답: 미응답'])assert.ok(prompt.includes(part),part);
   assert.equal(JSON.stringify(state),original);
 });
 test('set copy uses only wrong/unanswered questions from the selected completed quiz',()=>{
@@ -165,12 +169,12 @@ test('Yuna Vision preserves explicit human title order through saveData with con
 });
 
 test('versions, cache tags, protected writes, ids and retained mixed EOL match frozen HEAD export',()=>{
-  const dir=process.argv[2]?pathToFileURL(path.resolve(process.argv[2])+path.sep):new URL('../.ai-budget-private/qa210/followup-base/',import.meta.url);
+  // Compare preservation against the explicit fixture or this task's frozen HEAD.
   for(const file of ['hani-study-v02984.js','hani-board.js','hani-main.js','hani-yuna-helpdesk.js']){
-    const old=fs.readFileSync(new URL(file,dir),'utf8'),now=read(file);
+    const old=readBaseline(file),now=read(file);
     for(const pattern of [/\b2\.9\.\d+(?:-[\w.-]+)?\b/g,/\?v=[^\s"'<>]+/g,/\b(?:commit|save|writeProtectedState|localStorage\.(?:setItem|removeItem|clear))\([^)]*\)/g,/\bid\s*=\s*["']([\w-]+)["']/g,/\.clear\(/g])assert.deepEqual(now.match(pattern),old.match(pattern),file+' invariant '+pattern);
     const lines=s=>s.match(/[^\r\n]*(?:\r\n|\n|\r|$)/g).filter(Boolean),endings=new Map();
-    for(const line of lines(old)){const text=line.replace(/[\r\n]+$/,'');if(!endings.has(text))endings.set(text,new Set());endings.get(text).add(line.slice(text.length));}
+    for(const line of lines(readEolBaseline(file))){const text=line.replace(/[\r\n]+$/,'');if(!endings.has(text))endings.set(text,new Set());endings.get(text).add(line.slice(text.length));}
     for(const line of lines(now)){const text=line.replace(/[\r\n]+$/,'');if(endings.has(text))assert.ok(endings.get(text).has(line.slice(text.length)),file+' EOL '+text.slice(0,50));}
   }
 });

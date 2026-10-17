@@ -1,3 +1,11 @@
+# 2026-10-16 · 새 사무실 오픈 office-v2-215 (도연/Codex)
+
+hani/office-v2-215 / base f03677f + seats6889dab. frozen spatial-216-v1(326 anchors) 그대로 5층 v2 배경·전경/17명 4pose·canon 홈석/경로·planned 제외·CEO 빈 자리, category별 지은/히나 첨삭 문구 연결. 좌석/스케줄/tutor36, v2/engine/실제Edge11(중복 engine6 포함), 기존quiz17·news·회의UI2·raw safety PASS. Edge6너비×5층×light/dark60장, overflow/잘림/콘솔오류/사무실 Storage write0. v214/cache/보호 owner·Cloud·계약 보존. Git 메타데이터 index.lock 쓰기 권한 차단으로 미커밋(HEAD6889dab), push/main/배포 없음. 실제 Android·실로그인·열차 gate 미검증. Notion 계획 read-back 완료, 최종 append는 approval policy never 거절로 대기. [인수인계](handoffs/2026-10-16-office-v2-215.md). 다음: 서윤 2.9.215 통합/Preview·최종 승인. 아래 과거·타 담당 기록 보존.
+
+# 2026-10-16 · office-seats-215 좌석·구역 행동 (도연/Codex)
+
+hani/office-seats-215 / base·HEAD 822d0925 (시작 GitHub main 일치). named chair·서윤 개발석·CEO 비움/명패·하니 라운지·구역+역할 행동·8명 standing badge·중복 로고 제거. **좌석/엔진/실제Edge13 + 기존 스케줄21 및 raw safety PASS, 412/884/1440×층별/휴식15장.** 수정 밖 EOL·저장/Cloud·v214/cache 보존, 미커밋·미push·미배포. 실제 계정/Android/열차/운영 미검증. Notion 계획 read-back 완료, 결과 append는 approval policy never 거절로 대기. [인수인계](handoffs/2026-10-16-office-seats-215.md), [화면](../../artifacts/office-seats-215/README.md). 다음: 대표님 Preview 확인 후 배포 담당 인계. 아래 과거·다른 담당 기록 보존.
+
 # 2026-10-16 · train-214 일보 클릭 selector 수정 (도연/Codex)
 
 `hani/train-214` / HEAD `790c5569`, GitHub main `3aee8059` 일치. 기존 실패 보고서의 `.ilbo-fold:not([open]).nth(3)` 대기로 동적 목록 순번 소실 확인. 테스트의 전체 fold 기준 클릭으로 최소 수정하고 열림 assertion 추가, 앱 변경 없음. **요청 고유10개 실행: Board/Drive/Login/Proactive Node 4 PASS, 브라우저6개 EPERM 차단. 전체 PASS 아님.** 기존 assertion·수정 밖 바이트/EOL·syntax/diff PASS. 커밋·버전/배포 없음. Notion 시작 read-back 완료, 최종 결과 append는 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-10-16-train-214-ilbo-click.md), [결과](../../artifacts/train-214-ilbo-click/status.json). 다음은 브라우저 허용 환경에서 차단6개 재검증. 아래 과거 기록 보존.
