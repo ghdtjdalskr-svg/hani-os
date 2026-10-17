@@ -93,7 +93,7 @@
       "backgroundSha256": "a748683771eb5403b0f007ced6159fd553b18abd101f27afc2cddd8ab391358f"
     },
     "4f": {
-      "background": "./assets/building/floor-4f-v1.webp",
+      "background": "./assets/building/floor-4f-215.webp",
       "plates": [
         {
           "room": "ceo",
@@ -413,7 +413,7 @@
       }
     },
     "3f": {
-      "background": "./assets/building/floor-3f-v1.webp",
+      "background": "./assets/building/floor-3f-215.webp",
       "plates": [
         {
           "room": "platform",
@@ -629,7 +629,7 @@
       "signPatchBoxes": [[125, 290, 343, 348], [1294, 165, 1427, 219], [400, 15, 556, 69], [1317, 740, 1491, 795]]
     },
     "2f": {
-      "background": "./assets/building/floor-2f-v1.webp",
+      "background": "./assets/building/floor-2f-215.webp",
       "plates": [
         {
           "room": "finance",
@@ -993,7 +993,7 @@
       }
     },
     "1f": {
-      "background": "./assets/building/floor-1f-v1.webp",
+      "background": "./assets/building/floor-1f-215.webp",
       "plates": [
         {
           "room": "business",
