@@ -4,48 +4,122 @@
 .hani-office-live-head h3{margin:4px 0;font-size:22px}.hani-office-live-head p,.hani-office-meeting-title p{margin:0;color:#6f6b7b;font-size:13px}
 .hani-office-live-actions{flex-wrap:wrap;justify-content:flex-end}.hani-office-live-actions span{padding:7px 10px;border-radius:999px;background:#ede8f7;color:#59429b;font-size:11px;font-weight:800}
 .hani-office-scroll{width:100%;margin-top:14px;overflow-x:auto;overscroll-behavior-inline:contain;border-radius:18px}
-.hani-office-map{position:relative;width:100%;min-width:920px;aspect-ratio:1672/941;overflow:hidden;border:1px solid #d7d1df;border-radius:18px;background:#f8f6f2}
+.hani-office-map{position:relative;width:100%;min-width:0;aspect-ratio:1672/941;overflow:hidden;border:1px solid #d7d1df;border-radius:18px;background:#f8f6f2}
 .hani-office-background,.hani-office-foreground{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
-.hani-office-background{z-index:0}.hani-office-ci{position:absolute;z-index:2;left:59%;top:43%;width:14%;height:12%;object-fit:contain;mix-blend-mode:multiply;opacity:.88;pointer-events:none}
-.hani-office-foreground{z-index:8}.hani-office-foreground-leader{clip-path:polygon(10% 17.4%,32.5% 17.4%,32.5% 31%,10% 31%)}.hani-office-foreground-row1{clip-path:polygon(4.5% 51.5%,46% 51.5%,46% 66%,4.5% 66%)}.hani-office-foreground-row2{clip-path:polygon(4.5% 75.7%,46% 75.7%,46% 92.5%,4.5% 92.5%)}
-.hani-office-actor{position:absolute;width:96px;height:96px;margin:-96px 0 0 -48px;transition:left 1.35s ease-in-out,top 1.35s ease-in-out,opacity .3s;pointer-events:none}
-.hani-office-actor:after{content:"";position:absolute;left:50%;bottom:3px;width:33px;height:8px;translate:-50% 0;border-radius:50%;background:rgba(41,35,59,.24);filter:blur(2px)}
-.hani-office-sprite{position:relative;z-index:1;width:96px;height:96px;background-image:var(--sheet);background-repeat:no-repeat;background-size:600% 300%;filter:drop-shadow(0 3px 3px rgba(42,36,51,.2))}
+.hani-office-background{z-index:0}
+.hani-office-foreground{z-index:8}
+.hani-office-actor{--actor-size:max(18px,4.8cqw);position:absolute;width:var(--actor-size);height:max(24px,6.4cqw);margin:0;transform:translate(-50%,-100%);transition:opacity .3s;pointer-events:none}
+
+.hani-office-sprite{position:relative;z-index:1;width:100%;height:100%;background-image:var(--sheet);background-repeat:no-repeat;background-size:600% 300%;filter:drop-shadow(0 3px 3px rgba(42,36,51,.2))}
 .hani-office-sheet-a{--sheet:url("./assets/ai-approval-characters/v3-animation-approved-transparent-group-a.webp")}.hani-office-sheet-b{--sheet:url("./assets/ai-approval-characters/v3-animation-approved-transparent-group-b.webp")}.hani-office-sheet-c{--sheet:url("./assets/ai-approval-characters/v3-animation-approved-transparent-group-c.webp")}
 .hani-office-actor[data-called="true"] .hani-office-sprite{filter:drop-shadow(0 0 9px #7457d8)}
-.hani-office-status{position:absolute;z-index:12;left:50%;bottom:94px;min-width:130px;max-width:185px;translate:-50% 0;padding:7px 10px;border:1px solid #d7cbed;border-radius:12px;background:#fff;color:#352b47;box-shadow:0 8px 18px rgba(38,29,57,.17);font-size:11px;font-weight:900;text-align:center;line-height:1.25;white-space:normal}
+.hani-office-status{display:none}
 .hani-office-status:after{content:"";position:absolute;left:calc(50% - 5px);bottom:-6px;width:10px;height:10px;rotate:45deg;border-right:1px solid #d7cbed;border-bottom:1px solid #d7cbed;background:#fff}
-.hani-office-actor[data-spot="seat"] .hani-office-status{bottom:78px}.hani-office-actor[data-seat="02"][data-spot="seat"] .hani-office-status,.hani-office-actor[data-seat="04"][data-spot="seat"] .hani-office-status,.hani-office-actor[data-seat="06"][data-spot="seat"] .hani-office-status,.hani-office-actor[data-seat="08"][data-spot="seat"] .hani-office-status{bottom:100px}
+
 .hani-office-actor[data-mood="true"] .hani-office-status{border-color:#ebc770;background:#fff8df;color:#795919}.hani-office-actor[data-called="true"] .hani-office-status{border-color:#7354ca;background:#7354ca;color:#fff}.hani-office-actor[data-called="true"] .hani-office-status:after{border-color:#7354ca;background:#7354ca}
 .hani-office-map[data-state="meeting"] .hani-office-actor[data-called="true"] .hani-office-status{display:none}
 .hani-office-meeting{margin-top:14px;padding:16px;border:1px solid #d4cbed;border-radius:18px;background:#f9f7fe}.hani-office-meeting[hidden]{display:none}.hani-office-meeting-title{align-items:start}.hani-office-meeting-title h4{margin:3px 0;font-size:18px}
 .hani-office-conversation{display:grid;gap:10px;max-height:430px;margin-top:14px;overflow:auto}.hani-office-line{display:grid;grid-template-columns:38px minmax(0,1fr);gap:10px;max-width:780px}.hani-office-line img{width:38px;height:38px;border:2px solid #fff;border-radius:12px;object-fit:cover;box-shadow:0 3px 9px rgba(49,39,77,.14)}.hani-office-line-body{padding:10px 13px;border:1px solid #e5deef;border-radius:5px 15px 15px 15px;background:#fff}.hani-office-line-body b{display:block;color:#5e43a4;font-size:11px}.hani-office-line-body p{margin:4px 0 0;font-size:13px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}.hani-office-line-summary .hani-office-line-body{border-color:#bdb0e1;background:#f0ebfc}.hani-office-empty{padding:14px;border-radius:12px;background:#fff;color:#777080;font-size:13px}
 .hani-office-participants{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}.hani-office-participants[hidden]{display:none}.hani-office-participants span{padding:6px 9px;border:1px solid #ded5ed;border-radius:999px;background:#fff;color:#584586;font-size:11px;font-weight:800}
 .hani-office-questions{margin-top:14px}.hani-office-questions[hidden]{display:none}.hani-office-questions .agent-subsection{margin:0;padding:14px;border:1px solid #ded5ed;border-radius:14px;background:#fff}.hani-office-questions textarea{display:block;width:100%;min-height:76px;margin:9px 0 12px;padding:10px 12px;border:1px solid #cfc4e4;border-radius:10px;font:inherit;resize:vertical}
-@media(max-width:700px){.hani-office-live{padding:10px}.hani-office-live-head,.hani-office-meeting-title{align-items:stretch;flex-direction:column}.hani-office-live-actions{justify-content:flex-start}.hani-office-map{width:920px}.hani-office-actor,.hani-office-sprite{width:72px;height:72px}.hani-office-actor{margin:-72px 0 0 -36px}.hani-office-status{bottom:70px;min-width:110px;font-size:10px}.hani-office-actor[data-spot="seat"] .hani-office-status{bottom:60px}.hani-office-actor[data-seat="02"][data-spot="seat"] .hani-office-status,.hani-office-actor[data-seat="04"][data-spot="seat"] .hani-office-status,.hani-office-actor[data-seat="06"][data-spot="seat"] .hani-office-status,.hani-office-actor[data-seat="08"][data-spot="seat"] .hani-office-status{bottom:75px}}
+@media(max-width:700px){.hani-office-live{padding:10px}.hani-office-live-head,.hani-office-meeting-title{align-items:stretch;flex-direction:column}.hani-office-live-actions{justify-content:flex-start}.hani-office-map{width:100%}.hani-office-status{bottom:70px;min-width:110px;font-size:10px}}
 @media(max-width:700px){.hani-office-live:has(.hani-office-map[data-state="meeting"]) .hani-office-scroll{display:none}}
 @media(prefers-reduced-motion:reduce){.hani-office-actor{transition:none}}
-.hani-building-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:16px}
+.hani-building-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:16px}
 .hani-building-tabs button{min-width:0;min-height:58px;padding:10px 8px;border:1px solid #dcd5e8;border-radius:12px;background:#fff;color:#574666;text-align:left;cursor:pointer}
 .hani-building-tabs strong,.hani-building-tabs small{display:block;overflow-wrap:anywhere}.hani-building-tabs strong{font-size:12px}.hani-building-tabs small{margin-top:5px;font-size:11px;color:#71657e}
 .hani-building-tabs [aria-selected="true"]{border-color:#8363b8;background:#eee7f8;box-shadow:inset 0 -3px #8363b8}.hani-building-tabs button:focus-visible{outline:3px solid #8363b8;outline-offset:2px}
-.hani-office-scroll{overflow:visible}.hani-office-map{width:100%;min-width:0}
+.hani-office-scroll{overflow:visible}.hani-office-map{width:100%;min-width:0;container-type:inline-size}
 .hani-office-background,.hani-office-foreground{object-fit:fill}
-.hani-office-map:before{content:"";position:absolute;inset:0;z-index:1;background:var(--floor-tint);opacity:.13;pointer-events:none}
-.hani-building-floor-label,.hani-building-overflow{position:absolute;z-index:15;top:12px;padding:6px 10px;border:1px solid #ded5e8;border-radius:10px;background:#fffffff0;color:#51425e;font-size:12px;font-weight:800}
-.hani-building-floor-label{right:12px}.hani-building-overflow{right:12px;top:auto;bottom:12px}.hani-building-overflow[hidden],.hani-office-actor[hidden]{display:none}
-.hani-office-avatar{box-sizing:border-box;width:68px;height:68px;margin:14px auto;border:3px solid #fff;border-radius:50%;object-fit:cover;background:#eee7f8;background-image:none;box-shadow:0 3px 9px #3a274637}
-.hani-office-map[data-art="floor"] .hani-office-foreground{display:none}
+
+.hani-building-floor-label,.hani-building-overflow{position:relative;z-index:15;display:inline-block;padding:6px 10px;border:1px solid #ded5e8;border-radius:10px;background:#fffffff0;color:#51425e;font-size:12px;font-weight:800}
+.hani-building-floor-label{margin-top:8px}.hani-building-overflow{margin-left:8px}.hani-building-overflow[hidden],.hani-office-foreground[hidden],.hani-office-actor[hidden]{display:none}
+.hani-office-avatar{box-sizing:border-box;position:absolute;z-index:1;top:0;left:12%;width:76%;height:76%;margin:0;border:2px solid #fff;border-radius:50%;object-fit:cover;background:#eee7f8;background-image:none;box-shadow:0 3px 9px #3a274637}
+
 .hani-building-roster{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:12px 0 0;padding:0;list-style:none}
 .hani-building-roster li{min-width:0;padding:8px 10px;border-radius:10px;background:#ffffffb8;color:#61546c;font-size:11px;overflow-wrap:anywhere}.hani-building-roster li[hidden]{display:none}
 .hani-building-roster b{display:block;margin-bottom:3px;color:#493752;font-size:12px}
 .hani-office-live[data-paused="true"] .hani-office-actor{transition:none}.hani-office-live[data-paused="true"] *{animation-play-state:paused!important}
 @media(max-width:700px){
  .hani-building-tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.hani-building-tabs button{min-height:60px}
- .hani-office-map{width:100%;min-width:0;aspect-ratio:1.16}
- .hani-office-actor,.hani-office-sprite{width:40px;height:40px}.hani-office-actor{margin:-40px 0 0 -20px}.hani-office-avatar{width:38px;height:38px;margin:1px auto;border-width:2px}
- .hani-office-status{display:none}.hani-office-actor:before{content:attr(data-name);position:absolute;z-index:12;left:50%;bottom:40px;translate:-50% 0;padding:2px 4px;border-radius:6px;background:#fffffff2;color:#493752;font-size:9px;font-weight:800;white-space:nowrap}
+ .hani-office-map{width:100%;min-width:0;aspect-ratio:1672/941}
+ 
+ .hani-office-status{display:none}
  .hani-office-actor:after{width:22px;height:5px}.hani-building-floor-label{top:8px;right:8px;font-size:10px}.hani-building-overflow{bottom:8px;right:8px;font-size:10px}
  .hani-building-roster{grid-template-columns:repeat(2,minmax(0,1fr))}.hani-office-meeting-title h4,.hani-office-live-actions span{overflow-wrap:anywhere}
  .hani-office-live:has(.hani-office-map[data-state="meeting"]) .hani-office-scroll{display:block}
 }
+
+/* Standing badges share the chibi footprint until their sprite art exists. */
+
+.hani-office-name{position:absolute;z-index:12;left:50%;bottom:0;translate:-50% 0;max-width:130%;padding:1px 5px;border:1px solid #ded5e8;border-radius:5px;background:#fffffff2;color:#493752;font-size:clamp(7px,.85cqw,11px);font-weight:800;white-space:nowrap}
+
+.hani-office-ceo-nameplate{position:absolute;z-index:10;translate:-50% 0;padding:3px 7px;border:1px solid #b79b62;border-radius:4px;background:#fff5dd;color:#654b26;font-size:clamp(8px,1cqw,12px);font-weight:800;white-space:nowrap;box-shadow:0 2px 4px #45341f24}
+.hani-office-ceo-nameplate[hidden]{display:none}
+
+
+
+
+/* One persistent, responsive canon canvas. Atlas crop includes its original shadow. */
+.hani-office-sprite{filter:none}
+.hani-office-actor[data-avatar="v2"] .hani-office-sprite{background-repeat:no-repeat}
+.hani-office-actor[data-avatar="v2"] .hani-office-name{bottom:-7px;font-size:clamp(7px,.85cqw,12px)}
+.hani-office-actor[data-avatar="pending"] .hani-office-sprite{background-image:none}
+.hani-building-rooms{font-size:12px;line-height:1.6;color:#61546c;overflow-wrap:anywhere}
+.hani-building-rooms p{margin:8px 0 0}.hani-building-rooms [hidden]{display:none}
+.hani-office-live-head>div{min-width:0}.hani-office-live-actions button{min-height:44px;white-space:normal}
+.hani-office-live{scroll-margin-top:80px}
+.hani-office-map{overflow:hidden}.hani-office-scroll{overflow:visible}
+.hani-building-floor-caption{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+:root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-office-live{background:#201e2a;border-color:#51445e;color:#f4edf8}
+:root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-office-live-head p,:root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-building-rooms{color:#d7cbe3}
+:root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-building-tabs button{background:#302839;color:#f4edf8;border-color:#685477}
+:root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-building-tabs small{color:#d7cbe3}
+:root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-building-tabs [aria-selected="true"]{background:#5b4175;border-color:#c7a8e8}
+:root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-building-roster li{background:#302839;color:#ddd1e7}
+:root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-building-roster b{color:#f4edf8}
+@media(max-width:700px){.hani-building-floor-label,.hani-building-overflow{top:auto;right:auto;bottom:auto;font-size:12px}.hani-building-tabs button:last-child{grid-column:1/-1}}
+@media(max-width:1024px){.hani-office-live{padding-bottom:64px}}
+
+.hani-building-roster .hani-office-planned-badge{display:inline-block;font-size:11px;line-height:1.5;border:1px solid currentColor;border-radius:8px;padding:2px 6px;margin:0 5px 4px 0}
+
+/* Visual map coordinates use the original, unstretched v1 illustration. */
+.hani-office-actor{--actor-size:max(20px,5.1cqw);height:max(27px,6.8cqw)}
+/* Native painted plaques own their faces/mounts/shading. HTML supplies ink only. */
+.hani-office-foreground[data-interior="true"]{z-index:1;object-fit:fill}
+.hani-office-room-plate{position:absolute;z-index:3;translate:-50% -50%;box-sizing:border-box;padding:0;border:0;border-radius:0;background:none;font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif;font-size:calc(var(--letter-size,24) * 100cqw / 1672);font-weight:650;letter-spacing:-.035em;line-height:1;text-align:center;white-space:nowrap;box-shadow:none;text-shadow:none;transform-origin:center;pointer-events:none}
+.hani-office-room-plate b{display:block;font-size:inherit;font-weight:inherit}
+.hani-office-room-plate[data-material="silver"]{letter-spacing:0}
+.hani-office-room-plate[data-material="wood"]{font-weight:650;mix-blend-mode:multiply}
+.hani-office-room-plate[hidden]{display:none}
+.hani-office-brand{display:flex;align-items:center;justify-content:center;gap:4%;height:2.6cqw;mix-blend-mode:multiply}
+.hani-office-brand img{display:block;object-fit:contain}
+.hani-office-brand-mark{width:20%;height:100%;object-view-box:inset(10% 36% 35% 36%)}
+.hani-office-brand-word{width:76%;height:70%;object-view-box:inset(68% 18% 20% 18%)}
+.hani-office-room-plate[data-brand="true"] small{display:block;margin-top:.12cqw;font-size:clamp(7px,.8cqw,11px);line-height:1}
+/* The chairman's desk label is ink on the wooden desk, with no HTML face. */
+.hani-office-ceo-nameplate{padding:0;border:0;border-radius:0;background:none;color:#fff1cc;font-size:calc(24 * 100cqw / 1672);line-height:1;box-shadow:none;text-shadow:none;transform:skewX(-1deg)}
+@media(max-width:700px){.hani-office-ceo-nameplate{display:none}}
+@media(max-width:412px){.hani-office-room-plate[data-brand="true"] small{display:none}}
+/* Hide sub-9px ink at its natural scale; the room list remains readable. */
+@container(max-width:655px){.hani-office-room-plate[data-room="business"][data-mount]:not([data-brand="true"]){visibility:hidden}}
+@container(max-width:602px){.hani-office-room-plate[data-room="consult"][data-mount]:not([data-brand="true"]){visibility:hidden}}
+@container(max-width:655px){.hani-office-room-plate[data-room="cafe"][data-mount]:not([data-brand="true"]){visibility:hidden}}
+@container(max-width:615px){.hani-office-room-plate[data-room="finance"][data-mount]:not([data-brand="true"]){visibility:hidden}}
+@container(max-width:655px){.hani-office-room-plate[data-room="life"][data-mount]:not([data-brand="true"]){visibility:hidden}}
+@container(max-width:627px){.hani-office-room-plate[data-room="pantry"][data-mount]:not([data-brand="true"]){visibility:hidden}}
+@container(max-width:602px){.hani-office-room-plate[data-room="team_meeting"][data-mount]:not([data-brand="true"]){visibility:hidden}}
+@container(max-width:579px){.hani-office-room-plate[data-room="platform"][data-mount]:not([data-brand="true"]){visibility:hidden}}
+@container(max-width:627px){.hani-office-room-plate[data-room="server"][data-mount]:not([data-brand="true"]){visibility:hidden}}
+@container(max-width:627px){.hani-office-room-plate[data-room="standup"][data-mount]:not([data-brand="true"]){visibility:hidden}}
+@container(max-width:655px){.hani-office-room-plate[data-room="release"][data-mount]:not([data-brand="true"]){visibility:hidden}}
+@container(max-width:593px){.hani-office-room-plate[data-room="secretariat"][data-mount]:not([data-brand="true"]){visibility:hidden}}
+@container(max-width:627px){.hani-office-room-plate[data-room="hani_office"][data-mount]:not([data-brand="true"]){visibility:hidden}}
+@container(max-width:627px){.hani-office-room-plate[data-room="exec"][data-mount]:not([data-brand="true"]){visibility:hidden}}
+@container(max-width:684px){.hani-office-room-plate[data-room="mir_nook"][data-mount]:not([data-brand="true"]){visibility:hidden}}
+@container(max-width:579px){.hani-office-room-plate[data-room="garden"]:not([data-mount]):not([data-brand="true"]){visibility:hidden}}
+@container(max-width:579px){.hani-office-room-plate[data-room="terrace"]:not([data-mount]):not([data-brand="true"]){visibility:hidden}}
+@container(max-width:655px){.hani-office-room-plate[data-room="event_roof"]:not([data-mount]):not([data-brand="true"]){visibility:hidden}}
+@container(max-width:579px){.hani-office-room-plate[data-room="quiet_roof"]:not([data-mount]):not([data-brand="true"]){visibility:hidden}}
+@container(max-width:749px){.hani-office-room-plate[data-room="ceo"]:not([data-mount]):not([data-brand="true"]){visibility:hidden}}
+@container(max-width:1031px){.hani-office-room-plate[data-room="finance"]:not([data-mount]):not([data-brand="true"]){visibility:hidden}}
