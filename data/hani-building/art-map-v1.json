@@ -25,7 +25,8 @@
           "ink": "#382318",
           "rotate": 0,
           "skew": 0.3,
-          "width": 18.241626794258373
+          "width": 18.241626794258373,
+          "nativeFont": 26
         },
         {
           "room": "terrace",
@@ -44,7 +45,8 @@
           "ink": "#382318",
           "rotate": 2,
           "skew": 0.3,
-          "width": 14.892344497607656
+          "width": 14.892344497607656,
+          "nativeFont": 26
         },
         {
           "room": "event_roof",
@@ -63,7 +65,8 @@
           "ink": "#382318",
           "rotate": 0,
           "skew": 0.3,
-          "width": 7.4162679425837315
+          "width": 7.4162679425837315,
+          "nativeFont": 23
         },
         {
           "room": "quiet_roof",
@@ -82,7 +85,8 @@
           "ink": "#382318",
           "rotate": 0,
           "skew": 0.3,
-          "width": 13.995215311004786
+          "width": 13.995215311004786,
+          "nativeFont": 26
         }
       ],
       "homeZones": {},
@@ -94,8 +98,8 @@
         {
           "room": "ceo",
           "label": "회장실",
-          "x": 39.53349282296651,
-          "y": 41.498405951115835,
+          "x": 39.5633971291866,
+          "y": 41.445270988310305,
           "fullLabel": "회장실",
           "surface": [
             629,
@@ -108,96 +112,125 @@
           "ink": "#241b14",
           "rotate": 0,
           "skew": 0.3,
-          "width": 8
+          "width": 3.8875598086124405,
+          "nativeFont": 20.1
         },
         {
           "room": "secretariat",
           "label": "회장 비서실",
-          "x": 3.8,
-          "y": 53,
+          "x": 13.995215311004786,
+          "y": 49.840595111583426,
           "fullLabel": "회장 비서실",
           "material": "brass",
           "secondary": true,
-          "ink": "#26302d",
+          "ink": "#333b3a",
           "rotate": 0,
-          "skew": 0,
-          "width": 10,
-          "mount": "blade",
+          "skew": 0.3,
+          "width": 8.253588516746412,
+          "mount": "wall",
           "english": "Chairman's Secretariat",
           "accent": "#baa26b",
           "mountAnchor": {
             "kind": "partition",
-            "x": 3.8,
-            "y": 53,
+            "x": 9.868421052631579,
+            "y": 49.840595111583426,
             "clearOfWalkway": true
-          }
+          },
+          "surface": [
+            165,
+            457,
+            303,
+            481
+          ],
+          "nativeFont": 25.4
         },
         {
           "room": "hani_office",
           "label": "하니 전무실",
-          "x": 81,
-          "y": 8,
+          "x": 68.8098086124402,
+          "y": 45.05844845908607,
           "fullLabel": "하니 전무실",
           "material": "glass",
           "secondary": true,
-          "ink": "#26302d",
+          "ink": "#333b3a",
           "rotate": 0,
-          "skew": 0,
-          "width": 10,
+          "skew": 0.3,
+          "width": 9.389952153110048,
           "mount": "wall",
           "english": "Executive Office",
           "accent": "#baa26b",
           "mountAnchor": {
             "kind": "wall",
-            "x": 81,
-            "y": 8,
+            "x": 64.11483253588517,
+            "y": 45.05844845908607,
             "clearOfWalkway": true
-          }
+          },
+          "surface": [
+            1072,
+            413,
+            1229,
+            435
+          ],
+          "nativeFont": 24
         },
         {
           "room": "exec",
           "label": "임원회의실",
-          "x": 60.5,
-          "y": 56,
+          "x": 64.41387559808612,
+          "y": 50.58448459086079,
           "fullLabel": "임원회의실",
           "material": "glass",
           "secondary": true,
-          "ink": "#26302d",
+          "ink": "#333b3a",
           "rotate": 0,
-          "skew": 0,
-          "width": 10,
+          "skew": 0.3,
+          "width": 8.133971291866029,
           "mount": "wall",
           "english": "Executive Meeting",
           "accent": "#baa26b",
           "mountAnchor": {
             "kind": "partition",
-            "x": 60.5,
-            "y": 56,
+            "x": 60.34688995215311,
+            "y": 50.58448459086079,
             "clearOfWalkway": true
-          }
+          },
+          "surface": [
+            1009,
+            465,
+            1145,
+            487
+          ],
+          "nativeFont": 24
         },
         {
           "room": "mir_nook",
-          "label": "MIR",
-          "x": 97,
-          "y": 16,
+          "label": "미르",
+          "x": 97.75717703349282,
+          "y": 23.37938363443146,
           "fullLabel": "MIR Station",
           "material": "silver",
           "secondary": true,
-          "ink": "#26302d",
+          "ink": "#333b3a",
           "rotate": 0,
-          "skew": 0,
-          "width": 10,
-          "mount": "blade",
+          "skew": 0.3,
+          "width": 3.648325358851675,
+          "mount": "wall",
           "english": "MIR Station",
           "accent": "#9bbfc8",
           "direction": "left",
           "mountAnchor": {
             "kind": "wall",
-            "x": 97,
-            "y": 16,
+            "x": 95.93301435406698,
+            "y": 23.37938363443146,
             "clearOfWalkway": true
-          }
+          },
+          "surface": [
+            1604,
+            210,
+            1665,
+            230
+          ],
+          "nativeFont": 22
         }
       ],
       "homeZones": {
@@ -214,16 +247,16 @@
           81
         ],
         "hani_office": [
-          58,
+          58.2,
           1,
-          84,
-          29
+          90.8,
+          46.7
         ],
         "mir_nook": [
-          90.5,
-          26,
-          96,
-          46
+          91,
+          32,
+          98,
+          47
         ]
       },
       "homeFurniture": {
@@ -279,52 +312,104 @@
           "type": "desk-chair",
           "row": "hani-executive",
           "seatBounds": [
-            1165,
-            85,
-            1232,
-            174
+            1152,
+            117,
+            1238,
+            205
           ],
           "deskBounds": [
-            1050,
-            124,
-            1333,
-            229
+            1038,
+            163,
+            1338,
+            286
           ]
         },
         "mir_station": {
           "type": "console",
           "row": "mir-pod",
           "seatBounds": [
-            1510,
-            385,
-            1580,
-            425
+            1528,
+            390,
+            1606,
+            438
           ],
           "deskBounds": [
-            1510,
-            300,
-            1608,
-            402
+            1520,
+            332,
+            1612,
+            436
           ]
         }
       },
-      "backgroundSha256": "ff2f0a583ad72368406cd9f9cd4a8414d35dd46ac411bec192bf63fe9ba69cfe",
+      "backgroundSha256": "81fc929e28ce19ba76707a110b6d6ac94135f35c97befe6b93a934a397e84379",
+      "signPatch": "./assets/building/signs-4f-215.webp",
+      "signPatchSha256": "6d542ab3f4c301057df30402486757d8a756fe4d8a24350b284795559ccacb45",
+      "signPatchBoxes": [
+        [
+          147,
+          442,
+          321,
+          498
+        ],
+        [
+          1054,
+          398,
+          1247,
+          452
+        ],
+        [
+          991,
+          450,
+          1163,
+          504
+        ],
+        [
+          1586,
+          195,
+          1672,
+          247
+        ]
+      ],
       "privateOffice": {
         "bounds": [
-          58,
+          58.2,
           1,
-          84,
-          29
+          90.8,
+          46.7
         ],
         "glassDoor": true,
         "bookshelf": true,
         "visitorChairs": 2,
         "loungeBounds": [
-          62,
-          30,
+          10,
+          76,
+          35,
+          96
+        ],
+        "sofaBounds": [
+          81,
+          22,
+          90.6,
+          41.5
+        ],
+        "windowView": true,
+        "walnutDesk": true
+      },
+      "officeHierarchy": {
+        "chairmanBounds": [
+          0,
+          0,
+          43.8,
+          53
+        ],
+        "executiveBounds": [
+          58.2,
+          0,
           91,
-          47
-        ]
+          46.7
+        ],
+        "directorFloor": "2f",
+        "note": "Visual room footprint only; chair homeZones remain placement bounds."
       }
     },
     "3f": {
@@ -333,90 +418,119 @@
         {
           "room": "platform",
           "label": "AI플랫폼개발실",
-          "x": 7.5,
-          "y": 35,
+          "x": 13.995215311004786,
+          "y": 33.793836344314556,
           "fullLabel": "AI플랫폼개발실",
           "material": "silver",
           "secondary": false,
-          "ink": "#26302d",
+          "ink": "#333b3a",
           "rotate": 0,
-          "skew": 0,
-          "width": 10,
-          "mount": "blade",
+          "skew": 0.3,
+          "width": 10.885167464114833,
+          "mount": "wall",
           "english": "AI Platform Development",
           "accent": "#6e9db9",
           "mountAnchor": {
             "kind": "partition",
-            "x": 7.5,
-            "y": 35,
+            "x": 8.552631578947368,
+            "y": 33.793836344314556,
             "clearOfWalkway": true
-          }
+          },
+          "surface": [
+            143,
+            305,
+            325,
+            331
+          ],
+          "nativeFont": 26
         },
         {
           "room": "server",
           "label": "서버실",
-          "x": 74,
-          "y": 20,
+          "x": 81.36961722488039,
+          "y": 20.297555791710945,
           "fullLabel": "서버실",
           "material": "glass",
           "secondary": true,
-          "ink": "#26302d",
+          "ink": "#333b3a",
           "rotate": 0,
-          "skew": 0,
-          "width": 10,
+          "skew": 0.3,
+          "width": 5.801435406698564,
           "mount": "wall",
           "english": "Server Room",
           "accent": "#6e9db9",
           "mountAnchor": {
             "kind": "wall",
-            "x": 74,
-            "y": 20,
+            "x": 78.4688995215311,
+            "y": 20.297555791710945,
             "clearOfWalkway": true
-          }
+          },
+          "surface": [
+            1312,
+            180,
+            1409,
+            202
+          ],
+          "nativeFont": 24
         },
         {
           "room": "standup",
           "label": "스탠드업",
-          "x": 14,
-          "y": 17,
+          "x": 28.588516746411486,
+          "y": 4.357066950053135,
           "fullLabel": "스탠드업 룸",
           "material": "silver",
           "secondary": true,
-          "ink": "#26302d",
+          "ink": "#333b3a",
           "rotate": 0,
-          "skew": 0,
-          "width": 10,
-          "mount": "blade",
+          "skew": 0.3,
+          "width": 7.177033492822966,
+          "mount": "wall",
           "english": "Stand-up Lounge",
           "accent": "#6e9db9",
           "mountAnchor": {
             "kind": "wall",
-            "x": 14,
-            "y": 17,
+            "x": 25.0,
+            "y": 4.357066950053135,
             "clearOfWalkway": true
-          }
+          },
+          "surface": [
+            418,
+            30,
+            538,
+            52
+          ],
+          "nativeFont": 24
         },
         {
           "room": "release",
           "label": "릴리스 · 워 룸",
-          "x": 66,
-          "y": 75,
+          "x": 83.97129186602871,
+          "y": 81.45589798087141,
           "fullLabel": "릴리스 · 워 룸",
           "material": "silver",
           "secondary": true,
-          "ink": "#26302d",
+          "ink": "#333b3a",
           "rotate": 0,
-          "skew": 0,
-          "width": 10,
+          "skew": 0.3,
+          "width": 8.619997825141368,
           "mount": "wall",
           "english": "Release War Room",
           "accent": "#6e9db9",
           "mountAnchor": {
             "kind": "partition",
-            "x": 66,
-            "y": 75,
+            "x": 79.84449760765551,
+            "y": 81.45589798087141,
             "clearOfWalkway": true
-          }
+          },
+          "surface": [
+            1335,
+            755,
+            1473,
+            778
+          ],
+          "textScaleX": 0.9575,
+          "nativeFont": 23
         }
       ],
       "homeZones": {
@@ -509,7 +623,10 @@
           ]
         }
       },
-      "backgroundSha256": "0dca7fdfa3aa8793591f652c5f8c1f48cbfb642a1b4160ca8594a030efaddd93"
+      "backgroundSha256": "0dca7fdfa3aa8793591f652c5f8c1f48cbfb642a1b4160ca8594a030efaddd93",
+      "signPatch": "./assets/building/signs-3f-215.webp",
+      "signPatchSha256": "143947df320fd1ed4a6688f5d474f71545e116110daf45be9fc63c9cb28e1112",
+      "signPatchBoxes": [[125, 290, 343, 348], [1294, 165, 1427, 219], [400, 15, 556, 69], [1317, 740, 1491, 795]]
     },
     "2f": {
       "background": "./assets/building/floor-2f-v1.webp",
@@ -517,92 +634,121 @@
         {
           "room": "finance",
           "label": "재무자산관리실",
-          "x": 4,
-          "y": 40,
+          "x": 13.247607655502392,
+          "y": 34.431455897980875,
           "fullLabel": "재무자산관리실",
           "material": "brass",
           "secondary": false,
-          "ink": "#26302d",
+          "ink": "#333b3a",
           "rotate": 0,
-          "skew": 0,
-          "width": 10,
-          "mount": "blade",
+          "skew": 0.3,
+          "width": 10.34688995215311,
+          "mount": "wall",
           "english": "Finance & Asset Management",
           "accent": "#829c84",
           "mountAnchor": {
             "kind": "partition",
-            "x": 4,
-            "y": 40,
+            "x": 8.074162679425838,
+            "y": 34.431455897980875,
             "clearOfWalkway": true
-          }
+          },
+          "surface": [
+            135,
+            311,
+            308,
+            337
+          ],
+          "nativeFont": 24.5
         },
         {
           "room": "life",
           "label": "라이프&엔터테인먼트",
-          "x": 1.2,
-          "y": 72,
+          "x": 9.031100478468899,
+          "y": 67.58767268862911,
           "fullLabel": "라이프&엔터테인먼트",
           "material": "brass",
           "secondary": false,
-          "ink": "#26302d",
+          "ink": "#333b3a",
           "rotate": 0,
-          "skew": 0,
-          "width": 10,
+          "skew": 0.3,
+          "width": 13.448532963746782,
           "mount": "blade",
           "english": "Life & Entertainment",
           "accent": "#df927d",
           "mountAnchor": {
             "kind": "wall",
-            "x": 1.2,
-            "y": 72,
+            "x": 2.631578947368421,
+            "y": 67.58767268862911,
             "clearOfWalkway": true
           },
           "direction": "right",
-          "shortLabel": "라이프"
+          "shortLabel": "라이프",
+          "surface": [
+            44,
+            623,
+            258,
+            649
+          ],
+          "textScaleX": 0.9517,
+          "nativeFont": 23
         },
         {
           "room": "pantry",
           "label": "팬트리",
-          "x": 64,
-          "y": 8,
+          "x": 72.69736842105263,
+          "y": 5.844845908607864,
           "fullLabel": "공용 팬트리",
           "material": "brass",
           "secondary": true,
-          "ink": "#26302d",
+          "ink": "#333b3a",
           "rotate": 0,
-          "skew": 0,
-          "width": 10,
+          "skew": 0.3,
+          "width": 5.562200956937799,
           "mount": "wall",
           "english": "Pantry",
           "accent": "#df927d",
           "mountAnchor": {
             "kind": "wall",
-            "x": 64,
-            "y": 8,
+            "x": 69.91626794258373,
+            "y": 5.844845908607864,
             "clearOfWalkway": true
-          }
+          },
+          "surface": [
+            1169,
+            44,
+            1262,
+            66
+          ],
+          "nativeFont": 24
         },
         {
           "room": "team_meeting",
           "label": "팀 협업실",
-          "x": 61,
-          "y": 46,
+          "x": 65.07177033492823,
+          "y": 44.63336875664187,
           "fullLabel": "팀 협업실",
           "material": "glass",
           "secondary": true,
-          "ink": "#26302d",
+          "ink": "#333b3a",
           "rotate": 0,
-          "skew": 0,
-          "width": 10,
+          "skew": 0.3,
+          "width": 8.492822966507177,
           "mount": "wall",
           "english": "Team Collaboration",
           "accent": "#829c84",
           "mountAnchor": {
             "kind": "partition",
-            "x": 61,
-            "y": 46,
+            "x": 60.825358851674636,
+            "y": 44.58023379383634,
             "clearOfWalkway": true
-          }
+          },
+          "surface": [
+            1017,
+            408,
+            1159,
+            431
+          ],
+          "nativeFont": 22
         },
         {
           "room": "finance",
@@ -621,9 +767,10 @@
           "rotate": 0,
           "skew": 0.3,
           "x": 37.948564593301434,
-          "y": 25.823591923485655,
-          "width": 8,
-          "textScaleX": 0.66
+          "y": 25.929861849096707,
+          "width": 2.930622009569378,
+          "textScaleX": 0.66,
+          "nativeFont": 14.6
         }
       ],
       "homeZones": {
@@ -775,6 +922,9 @@
         }
       },
       "backgroundSha256": "ce5943cb8ffa5e641ddb70d87829aaafe4356dd4d8ef695d7c642016ee456564",
+      "signPatch": "./assets/building/signs-2f-215.webp",
+      "signPatchSha256": "9991edb51ac07f2eb6077f518707665f1b6aef2af7373dd67bd0b5e79752a58a",
+      "signPatchBoxes": [[117, 296, 326, 354], [26, 608, 276, 666], [1151, 29, 1280, 83], [999, 393, 1177, 448]],
       "freeDesks": [
         {
           "id": "finance-row-spare",
@@ -848,46 +998,61 @@
         {
           "room": "business",
           "label": "기업솔루션사업부",
-          "x": 4,
-          "y": 44,
+          "x": 6.519138755980861,
+          "y": 35.06907545164719,
           "fullLabel": "기업솔루션사업부",
           "material": "brass",
           "secondary": false,
-          "ink": "#26302d",
+          "ink": "#333b3a",
           "rotate": 0,
-          "skew": 0,
-          "width": 10,
-          "mount": "blade",
+          "skew": 0.3,
+          "width": 11.058047175866497,
+          "mount": "wall",
           "english": "Corporate Solutions",
           "accent": "#ad8b48",
           "mountAnchor": {
             "kind": "wall",
-            "x": 4,
-            "y": 44,
+            "x": 1.4354066985645932,
+            "y": 35.06907545164719,
             "clearOfWalkway": true
-          }
+          },
+          "surface": [
+            24,
+            318,
+            194,
+            342
+          ],
+          "textScaleX": 0.9195,
+          "nativeFont": 23
         },
         {
           "room": "consult",
           "label": "고객 상담실",
-          "x": 13,
-          "y": 87,
+          "x": 12.70933014354067,
+          "y": 87.93836344314559,
           "fullLabel": "고객 상담실",
           "material": "brass",
           "secondary": true,
-          "ink": "#26302d",
+          "ink": "#333b3a",
           "rotate": 0,
-          "skew": 0,
-          "width": 10,
+          "skew": 0.3,
+          "width": 8.19377990430622,
           "mount": "wall",
           "english": "Client Consultation",
           "accent": "#ad8b48",
           "mountAnchor": {
             "kind": "partition",
-            "x": 13,
-            "y": 87,
+            "x": 8.61244019138756,
+            "y": 87.93836344314559,
             "clearOfWalkway": true
-          }
+          },
+          "surface": [
+            144,
+            816,
+            281,
+            839
+          ],
+          "nativeFont": 25
         },
         {
           "room": "lobby",
@@ -911,26 +1076,34 @@
         },
         {
           "room": "cafe",
-          "label": "HANI Coffee",
-          "x": 89,
-          "y": 22,
+          "label": "하니 카페",
+          "x": 96.26196172248804,
+          "y": 51.85972369819341,
           "fullLabel": "HANI Coffee",
           "material": "brass",
           "secondary": true,
-          "ink": "#26302d",
+          "ink": "#333b3a",
           "rotate": 0,
-          "skew": 0,
-          "width": 10,
-          "mount": "blade",
+          "skew": 0.3,
+          "width": 6.193862398944068,
+          "mount": "wall",
           "english": "HANI Coffee",
           "accent": "#ad8b48",
           "direction": "left",
           "mountAnchor": {
             "kind": "wall",
-            "x": 89,
-            "y": 22,
+            "x": 93.48086124401914,
+            "y": 51.85972369819341,
             "clearOfWalkway": true
-          }
+          },
+          "surface": [
+            1563,
+            477,
+            1656,
+            499
+          ],
+          "textScaleX": 0.898,
+          "nativeFont": 23
         }
       ],
       "homeZones": {
@@ -981,7 +1154,10 @@
           ]
         }
       },
-      "backgroundSha256": "09e7509f0a3282571afda5cfafc9837acb18f083453e54ff57443766ff02f0e8"
+      "backgroundSha256": "09e7509f0a3282571afda5cfafc9837acb18f083453e54ff57443766ff02f0e8",
+      "signPatch": "./assets/building/signs-1f-215.webp",
+      "signPatchSha256": "e5859b4f31230eb9550d1c90963fc7c8c99e8469e9a326334d8ae6b7aa474274",
+      "signPatchBoxes": [[6, 303, 212, 359], [126, 801, 299, 856], [1545, 462, 1672, 516]]
     }
   },
   "anchors": {
@@ -1233,12 +1409,12 @@
       "y": 50
     },
     "door_hani_office": {
-      "x": 59.7,
-      "y": 26
+      "x": 59.6,
+      "y": 36
     },
     "junction_hani_office": {
-      "x": 60.5,
-      "y": 27
+      "x": 61,
+      "y": 35
     },
     "hall_hani_office": {
       "x": 51,
@@ -1257,32 +1433,32 @@
       "y": 50
     },
     "door_exec_lounge": {
-      "x": 60,
-      "y": 32
+      "x": 40,
+      "y": 82
     },
     "junction_exec_lounge": {
-      "x": 67,
-      "y": 45.7
+      "x": 38,
+      "y": 90
     },
     "hall_exec_lounge": {
       "x": 51,
       "y": 50
     },
     "office_hani": {
-      "x": 71.5,
-      "y": 17.9,
-      "furniture": "private glass executive office / executive desk high-back chair",
+      "x": 71.4,
+      "y": 20.8,
+      "furniture": "spacious glass executive office / large walnut desk high-back chair",
       "zone": "desk"
     },
     "approach_desk_hani": {
       "x": 61.5,
-      "y": 27,
+      "y": 30,
       "furniture": "executive desk approach",
       "zone": "path"
     },
     "side_desk_hani": {
       "x": 61.5,
-      "y": 14,
+      "y": 19,
       "furniture": "executive desk side",
       "zone": "path"
     },
@@ -1336,34 +1512,34 @@
       "y": 35
     },
     "mir_core": {
-      "x": 78.444,
-      "y": 36.812
+      "x": 95,
+      "y": 36
     },
     "exec_meeting": {
       "x": 80,
       "y": 68.042
     },
     "lounge-armchair": {
-      "x": 65.8,
-      "y": 47.5,
-      "furniture": "separate outside lounge armchair",
+      "x": 31.5,
+      "y": 90,
+      "furniture": "shared lower-left lounge armchair",
       "zone": "lounge"
     },
     "mir_station": {
-      "x": 93,
-      "y": 43.5,
+      "x": 93.7,
+      "y": 44.8,
       "furniture": "round pearl silver pale-cyan glowing console pod",
       "zone": "desk"
     },
     "approach_mir_station": {
-      "x": 92,
-      "y": 45,
+      "x": 96.5,
+      "y": 46.5,
       "furniture": "MIR pod approach",
       "zone": "path"
     },
     "side_mir_station": {
-      "x": 95,
-      "y": 44,
+      "x": 97,
+      "y": 40,
       "furniture": "MIR pod side",
       "zone": "path"
     },
@@ -1408,34 +1584,34 @@
       "furniture": "chair / sofa at table"
     },
     "hani-side": {
-      "x": 80.8,
-      "y": 38.4,
-      "furniture": "separate outside lounge sofa / left cushion",
+      "x": 14.8,
+      "y": 85.5,
+      "furniture": "shared lower-left lounge sofa / left cushion",
       "zone": "lounge"
     },
     "lounge-center": {
-      "x": 84.6,
-      "y": 38.4,
-      "furniture": "separate outside lounge sofa / middle cushion",
+      "x": 19.2,
+      "y": 85.5,
+      "furniture": "shared lower-left lounge sofa / middle cushion",
       "zone": "lounge"
     },
     "lounge-east": {
-      "x": 88,
-      "y": 38.4,
-      "furniture": "separate outside lounge sofa / right cushion",
+      "x": 23.5,
+      "y": 85.5,
+      "furniture": "shared lower-left lounge sofa / right cushion",
       "zone": "lounge"
     },
     "path_lounge-armchair_9": {
-      "x": 72.333,
-      "y": 32.438
+      "x": 40,
+      "y": 90
     },
     "path_lounge-armchair_23": {
-      "x": 72.333,
-      "y": 36.812
+      "x": 37,
+      "y": 90
     },
     "path_lounge-armchair_29": {
-      "x": 69.889,
-      "y": 36.812
+      "x": 34,
+      "y": 90
     },
     "path_mir_meeting_pos_24": {
       "x": 85.538,
@@ -1526,40 +1702,40 @@
       "y": 74.458
     },
     "path_hani-side_9": {
-      "x": 72.333,
-      "y": 32.438
+      "x": 40,
+      "y": 90
     },
     "path_hani-side_11": {
-      "x": 72.333,
-      "y": 33.062
+      "x": 37,
+      "y": 90
     },
     "path_hani-side_17": {
-      "x": 69.889,
-      "y": 33.062
+      "x": 34,
+      "y": 90
     },
     "path_lounge-center_13": {
-      "x": 81.296,
-      "y": 32.438
+      "x": 40,
+      "y": 90
     },
     "path_lounge-center_15": {
-      "x": 81.296,
-      "y": 33.062
+      "x": 37,
+      "y": 90
     },
     "path_lounge-center_21": {
-      "x": 83.741,
-      "y": 33.062
+      "x": 34,
+      "y": 90
     },
     "path_lounge-east_13": {
-      "x": 81.296,
-      "y": 32.438
+      "x": 40,
+      "y": 90
     },
     "path_lounge-east_39": {
-      "x": 81.296,
-      "y": 40.562
+      "x": 37,
+      "y": 90
     },
     "path_lounge-east_45": {
-      "x": 83.741,
-      "y": 40.562
+      "x": 34,
+      "y": 90
     },
     "hall_3f": {
       "x": 51,
