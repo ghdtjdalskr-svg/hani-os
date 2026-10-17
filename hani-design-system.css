@@ -499,6 +499,7 @@ body[data-finish-active] #app .tw tr:hover td{background:var(--surface-raised)}
 .galaxy-finishes legend{font-size:11px;letter-spacing:.08em;color:var(--text-secondary);margin-bottom:12px}
 .galaxy-choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
 .galaxy-choice{--poster-bg:#eeebe4;--poster-ink:#292822;--poster-muted:#625c51;--poster-glow:#fffdf8;position:relative;isolation:isolate;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;gap:24px;min-width:0;min-height:390px;box-sizing:border-box;padding:30px 24px 24px;border:2px solid transparent;border-radius:24px;background:radial-gradient(ellipse at 50% 24%,var(--poster-glow),transparent 65%),var(--poster-bg);color:var(--poster-ink);cursor:pointer;box-shadow:0 12px 26px #0000000c}
+.galaxy-choice:has(input[value="pure-white"]){--poster-bg:#f4f5f8;--poster-ink:#292d39;--poster-muted:#555d70;--poster-glow:#ffffff}
 .galaxy-choice:has(input[value="titanium-graphite"]){--poster-bg:#24262b;--poster-ink:#f7f6f2;--poster-muted:#c8c9ce;--poster-glow:#60646d}
 .galaxy-choice:has(input[value="midnight-black"]){--poster-bg:#090d16;--poster-ink:#f6f7fa;--poster-muted:#b9c4d8;--poster-glow:#303e5c}
 .galaxy-choice:has(input[value="sakura-pink"]){--poster-bg:#eedde3;--poster-ink:#4e303d;--poster-muted:#735460;--poster-glow:#fff9fc}
@@ -510,6 +511,7 @@ body[data-finish-active] #app .tw tr:hover td{background:var(--surface-raised)}
 .galaxy-swatch:before{content:"";position:absolute;z-index:-1;inset:9px -16px -9px 16px;border:1px solid #ffffff38;border-radius:26px;background:linear-gradient(145deg,#ffffff38,#ffffff08);transform:rotate(17deg);box-shadow:7px 12px 18px #00000018}
 .galaxy-swatch:after{content:"HANI";position:absolute;inset:15px;display:flex;align-items:flex-end;padding:0 0 12px 7px;border:1px solid #ffffff44;border-radius:17px;background:radial-gradient(ellipse at 30% 20%,#ffffff40,transparent 62%);color:var(--poster-ink);font:750 11px/1 var(--hani-galaxy-display-font);letter-spacing:.2em}
 .galaxy-swatch-cream{background:linear-gradient(125deg,#fff 0%,#f8f7f4 52%,#e8e5de 100%)}
+.galaxy-swatch-white{background:linear-gradient(125deg,#ffffff 0%,#f4f5f8 52%,#e4e6ef 100%)}
 .galaxy-swatch-graphite{background:linear-gradient(125deg,#53565c 0%,#36383d 40%,#242528 100%)}
 .galaxy-swatch-sakura{background:linear-gradient(125deg,#fff 0%,#faf6f7 52%,#e3d7dd 100%)}
 .galaxy-swatch-alpine{background:linear-gradient(125deg,#fff 0%,#f3f7fa 52%,#d6e0e9 100%)}
@@ -613,6 +615,8 @@ html body{background-image:radial-gradient(circle at 86% 3%,color-mix(in srgb,va
 #seasonCollectionStatus{font-size:14px;line-height:1.7;color:var(--text-secondary)}
 /* HANI AURA: one compact showroom; existing Finish/Season controls remain owners. */
 :root[data-finish="porcelain-cream"],.login-design-choice[data-design="porcelain-cream"]{--surface-canvas:#eee5d5;--surface-page:#f6efdf;--surface-panel:#fffaf0;--surface-raised:#fffdf8;--surface-glow:#d8c4a1;--border-subtle:#d6c8ae;--border-strong:#8b7856;--control-accent:#806337;--control-accent-secondary:#a38554;--control-soft:#eee3cd}
+/* The lavender control shade is deepened for AA white button text (4.66:1). */
+:root[data-finish="pure-white"],.login-design-choice[data-design="pure-white"]{--surface-canvas:#f4f5f8;--surface-page:#f8f9fb;--surface-panel:#ffffff;--surface-raised:#ffffff;--surface-glow:#e4e6ef;--text-primary:#292d39;--text-secondary:#555d70;--text-muted:#626a7a;--border-subtle:#dce0e8;--border-strong:#858d9e;--structure-accent:#7562d9;--structure-on-accent:#ffffff;--finish-scheme:light;--hani-galaxy-display-font:'Samsung Sharp Sans','Pretendard Variable',Pretendard,system-ui,sans-serif;--control-accent:#7562d9;--control-accent-secondary:#9d8ff0;--control-soft:#efedfc}
 :root[data-finish="sakura-pink"],.login-design-choice[data-design="sakura-pink"]{--surface-canvas:#eed7e0;--surface-page:#f5e5eb;--surface-panel:#fff5f8;--surface-raised:#fffafd;--surface-glow:#dca4bb;--border-subtle:#d9b6c6;--border-strong:#986077;--control-accent:#a84d75;--control-accent-secondary:#bb7090;--control-soft:#f3dbe6}
 :root[data-finish="alpine-blue"],.login-design-choice[data-design="alpine-blue"]{--surface-canvas:#d6e6f3;--surface-page:#e6f0f8;--surface-panel:#f5faff;--surface-raised:#fbfdff;--surface-glow:#9fc4df;--border-subtle:#aac7dd;--border-strong:#567e9d;--control-accent:#356e98;--control-accent-secondary:#598baa;--control-soft:#dcecf7}
 .nav-aura{margin:8px 0 16px;border:1px solid var(--border-subtle);border-radius:14px;background:linear-gradient(110deg,color-mix(in srgb,var(--collection-light) 28%,transparent),transparent),var(--surface-raised)}
@@ -671,10 +675,10 @@ body[data-finish-active] #app .view .btn.primary{background:var(--control-accent
 body[data-view="aura"] #aiBanner{display:none!important}
 #app #aura .galaxy-finishes,#app #aura .seasonal-collection{padding:0;margin:0;min-width:0;color:var(--text-primary);background:transparent!important;border:0!important;box-shadow:none}
 #aura .galaxy-heading{margin-bottom:10px}#aura .galaxy-heading h3{font-size:12px;color:var(--text-secondary)}
-#aura #signatureFinishChoices{display:grid;grid-template-columns:3fr 2fr;gap:12px}
+#aura #signatureFinishChoices{display:grid;grid-template-columns:2fr 1fr;gap:12px}
 #aura .galaxy-finishes fieldset{margin:10px 0;min-width:0}#aura .galaxy-finishes legend{color:var(--text-secondary);font-size:10px}
-#aura .galaxy-choices{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-#aura .galaxy-signature-choices{grid-template-columns:repeat(2,minmax(0,1fr))}
+#aura .galaxy-choices{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#aura .galaxy-signature-choices{grid-template-columns:repeat(1,minmax(0,1fr))}
 #aura .galaxy-choice{min-height:210px;padding:16px 14px 12px;gap:12px;border-radius:16px;box-shadow:0 8px 20px #0000000b}
 #aura .galaxy-swatch{width:48px;height:66px;flex-basis:66px;align-self:center;margin:2px 0 8px;border-radius:12px;transform:rotate(-12deg);box-shadow:inset 0 1px 2px #fff8,5px 8px 14px #0003}
 #aura .galaxy-swatch:before{inset:5px -8px -5px 8px;border-radius:12px}#aura .galaxy-swatch:after{inset:5px;border-radius:8px;font-size:6px;padding:0 0 7px 3px}
@@ -690,7 +694,7 @@ body[data-view="aura"] #aiBanner{display:none!important}
 #aura .season-choice>span{order:-1;gap:8px;padding:24px 14px 18px;text-align:center}#aura .season-choice b{font-size:10px;letter-spacing:.1em}#aura .season-choice strong{font-size:22px;line-height:1.2;letter-spacing:-.035em;word-break:keep-all}#aura .season-choice small{font-size:10px;color:var(--collection-muted);word-break:keep-all}#aura .season-choice em{font-size:10px;color:var(--collection-ink)}
 #aura .season-choice>input{width:18px;height:18px;top:10px;left:auto;right:10px;accent-color:var(--collection-ink)}
 #aura .galaxy-scope-note,#aura #seasonCollectionStatus{font-size:12px}
-@media(max-width:1000px){#aura .season-choices{grid-template-columns:repeat(2,minmax(0,1fr))}#aura #signatureFinishChoices{grid-template-columns:1fr}#aura .galaxy-choice{min-height:190px}}
+@media(max-width:1000px){#aura .season-choices{grid-template-columns:repeat(2,minmax(0,1fr))}#aura #signatureFinishChoices{grid-template-columns:1fr}#aura .galaxy-signature-choices{grid-template-columns:repeat(2,minmax(0,1fr))}#aura .galaxy-choice{min-height:190px}}
 @media(max-width:500px){.aura-preview figcaption{padding:22px 12px 18px}.aura-preview h3{font-size:28px;margin:12px 0}.aura-poster-signature{padding:18px}.aura-poster-signature .aura-wordmark>strong{font-size:38px}#aura .aura-controls .card{padding:0!important}#aura .galaxy-choice{min-height:190px;padding:14px 10px}#aura .galaxy-choice-copy b{font-size:13px}#aura .galaxy-choices{gap:8px}#aura .season-choices{gap:10px}#aura .season-choice:before{font-size:13px;padding:14px 10px;letter-spacing:.04em}#aura .season-choice>span{padding:24px 10px 14px}#aura .season-choice strong{font-size:19px}.aura-tabs .tab{min-height:44px}}
 #app .hani-remote-season-greeting{margin:0;padding:13px;border:1px solid var(--border-subtle);border-radius:13px;background:linear-gradient(130deg,color-mix(in srgb,var(--collection-light) 15%,transparent),transparent),var(--surface-panel);color:var(--text-primary);font-size:13px;line-height:1.65}
 #app .hani-remote-season-greeting b{display:block;margin-bottom:5px;font-size:12px}#app .hani-remote-season-greeting span{display:block}
@@ -1383,3 +1387,27 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
   #app .main>header.top.ui26-top,#app.app #sidebar{top:env(safe-area-inset-top)}
   #app.app #sidebar{height:calc(100dvh - env(safe-area-inset-top));padding-bottom:calc(16px + env(safe-area-inset-bottom))!important}
 }
+
+/* Pure White: neutral, AA text in the existing shared frame and login owners. */
+:root[data-finish="pure-white"] .login-gate :is(.login-card-kicker,#loginGateForgot){color:#6250bb}
+:root[data-finish="pure-white"] .login-gate :is(#loginGateSubtitle,.login-field>label,.login-card-foot){color:var(--text-secondary)}
+:root[data-finish="pure-white"] .login-gate .login-primary-btn{background:var(--control-accent);color:#fff}
+:root[data-finish="pure-white"] .login-gate #loginGateStatus[data-tone="error"]{color:#a52b48;background:#fff1f4}
+:root[data-finish="pure-white"] #app #sidebar :is(.dashboard-nav-copy>small,.dashboard-arrow,.arrow,.side-bottom .txt,.foot){color:var(--text-primary)!important;opacity:1}
+:root[data-finish="pure-white"] #app header.top.ui26-top .storage-strip{opacity:1;color:var(--text-primary)!important}
+:root[data-finish="pure-white"] #app .quick-jump input::placeholder{color:var(--text-muted);opacity:1}
+:root[data-finish="pure-white"] #app #aura .aura-tabs .tab{color:var(--text-secondary);background:var(--surface-raised)}
+:root[data-finish="pure-white"] #app #aura .aura-tabs .tab.active{color:#6250bb!important;background:var(--control-soft)}
+:root[data-finish="pure-white"] #aura .galaxy-choice:has(input[value="alpine-blue"]){--poster-muted:#4c6276}
+
+:root[data-finish="pure-white"] #app #home :is(.eyebrow,.home-kpi strong,.home-kpi .kpi-head span,.home-kpi .kpi-head em){color:var(--text-primary)!important;opacity:1}
+:root[data-finish="pure-white"] #app #home :is(.home-kpi small,.life-card-descriptor,.secondary-widget-value,.home-trend-empty,.home-update-item p,.member-role,.hani-history-row time,.hani-history-row code,.hani-history-row p,#homeTrendEmpty,.home-trend-footer>span,.home-character-today small,.home-cal-head span){color:var(--text-secondary)!important;opacity:1}
+:root[data-finish="pure-white"] #app #home :is(.home-update-icon,.home-update-status,.hani-history-status,.pill,.home-monthly-check-card select){color:var(--text-primary)!important;opacity:1}
+:root[data-finish="pure-white"] #app #home .home-cal-weekday{color:var(--text-secondary)}
+:root[data-finish="pure-white"] #app #home .home-cal-day.is-today{background:var(--control-accent);color:#fff}
+:root[data-finish="pure-white"] #app #home :is(.up,.up b){color:#ab2d43!important}
+
+:root[data-finish="pure-white"] #app #home :is(.ds-main-character-banner__description,#lifeMarketState,#lifeMarketCounts,#lifeMarketCounts b){color:var(--text-primary)!important}
+:root[data-finish="pure-white"] #app .footer{color:var(--text-primary);opacity:1}
+:root[data-finish="pure-white"] #app #home small{color:var(--text-secondary)!important}
+:root[data-finish="pure-white"] #app #home .life-ticker-item small{color:#ffffff!important}

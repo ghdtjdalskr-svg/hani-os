@@ -6,7 +6,19 @@
 .ilbo-masthead { border-top:5px solid currentColor; border-bottom:3px double currentColor; text-align:center; padding:17px 0 12px; }
 .ilbo-eyebrow { letter-spacing:.12em; font-size:11px; font-weight:750; color:var(--ilbo-note); line-height:1.6; }
 .ilbo-masthead h2 { font-family:Georgia,'Noto Serif KR',Batang,serif; font-size:clamp(30px,4.4vw,64px); letter-spacing:-.035em; margin:5px 0 15px; line-height:1.2; }
-.ilbo-masthead h2 span { display:inline-block; }
+.ilbo-nameplate { position:relative; isolation:isolate; }
+.ilbo-nameplate-illustrated { display:grid; place-items:center; min-height:clamp(140px,21vw,250px); margin-bottom:12px; background:#fffaf2; border-radius:4px; overflow:hidden; }
+.ilbo-nameplate img { position:absolute; inset:0; z-index:-1; width:100%; height:100%; object-fit:contain; object-position:center bottom; }
+.ilbo-nameplate-copy { max-width:100%; }
+.ilbo-nameplate-illustrated .ilbo-nameplate-copy { padding:8px 12px; max-width:min(94%,360px); background:#fffaf2; color:#302440; border-radius:4px; }
+.ilbo-nameplate-illustrated .ilbo-eyebrow { color:#514461; margin:0; font-size:10px; letter-spacing:.08em; text-wrap:balance; }
+.ilbo-nameplate-illustrated h2 { margin:5px 0 0; font-size:clamp(38px,5vw,64px); }
+html[data-theme="dark"] .ilbo-nameplate-illustrated .ilbo-nameplate-copy { background:#2e2939; color:#f5ecff; }
+html[data-theme="dark"] .ilbo-nameplate-illustrated .ilbo-eyebrow { color:#ded3e8; }
+@media(max-width:600px) {
+  .ilbo-nameplate-illustrated { min-height:140px; align-items:start; padding-top:7px; }
+  .ilbo-nameplate-illustrated .ilbo-nameplate-copy { padding:6px 10px; }
+}
 .ilbo-meta { display:flex; justify-content:space-between; gap:12px; font-size:12px; flex-wrap:wrap; }
 .ilbo-lead { padding:25px 0; border-bottom:1px solid currentColor; }
 .ilbo-lead h3 { font-family:Georgia,'Noto Serif KR',Batang,serif; font-size:clamp(27px,3.4vw,46px); line-height:1.4; letter-spacing:-.04em; margin:8px 0 16px; text-wrap:balance; }

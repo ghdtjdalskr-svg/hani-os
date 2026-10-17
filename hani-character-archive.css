@@ -249,3 +249,7 @@
 :root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #characterArchive{--ca-ink:#28374c;--ca-muted:#5b6880;--ca-paper:#fbf9fc;--ca-line:#e1dbe7;--ca-soft:#f4f0f7;color:var(--ca-ink);color-scheme:light;background:#f1edf4;border-radius:var(--ds-radius,20px);padding:clamp(12px,2vw,24px);filter:brightness(.9)}
 /* Shared portrait frame for the album grid. */
 #characterArchive .ca-portrait{border-radius:var(--ds-radius-photo,16px)}
+#characterArchive .ca-planned-badge{display:inline-block;font-size:12px;line-height:1.5;padding:3px 8px;border:1px solid #687d64;border-radius:20px;color:#304b35;background:#eef4e9}
+#characterArchive .ca-portrait-fallback{display:grid;place-items:center;min-height:100px;padding:16px;background:var(--ca-paper);color:var(--ca-ink)}
+#characterArchive .ca-portrait[hidden]{display:none}
+#characterArchive .album-photo h2 .ca-planned-badge{float:none;font-size:12px;vertical-align:middle;margin-left:8px;font-weight:500}
