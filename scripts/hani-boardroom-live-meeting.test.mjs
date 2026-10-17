@@ -5,7 +5,7 @@ import vm from "node:vm";
 const source=fs.readFileSync(new URL("../hani-main.js",import.meta.url),"utf8");
 const officeSource=fs.readFileSync(new URL("../hani-office-live.js",import.meta.url),"utf8");
 const personStart=officeSource.indexOf("function personKey(value){");
-const personEnd=officeSource.indexOf("const statusPools=",personStart);
+const personEnd=officeSource.indexOf("\n",personStart);
 assert.ok(personStart>0&&personEnd>personStart,"office identity boundary must exist");
 const personKey=vm.runInNewContext(`${officeSource.slice(personStart,personEnd)};personKey`);
 assert.equal(personKey("SUYEON"),"sooyeon");

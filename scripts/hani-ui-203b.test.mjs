@@ -63,7 +63,7 @@ ctx.renderOverview();assert.match(slot.innerHTML,/이번 달 게시판 활동이
 ctx.state={boardPosts:[post('live','hani',new Date().toISOString())],boardComments:[]};ctx.renderOverview();
 assert.match(slot.innerHTML,/게시글·댓글 1건/);assert.match(slot.innerHTML,/&lt;script&gt;배포&lt;\/script&gt;/);assert.doesNotMatch(slot.innerHTML,/<script>배포/);
 const css=read('hani-design-system.css');
-for(const design of ['porcelain-cream','titanium-graphite','midnight-black','sakura-pink','alpine-blue']){
+for(const design of ['porcelain-cream','pure-white','titanium-graphite','midnight-black','sakura-pink','alpine-blue']){
   const palette={};for(const rule of css.matchAll(/([^{}]+)\{([^{}]+)\}/g)){if(rule[1].includes('.login-design-choice[data-design="'+design+'"]'))for(const token of rule[2].matchAll(/(--[\w-]+):([^;]+)/g))palette[token[1]]=token[2]}
   for(const token of ['--surface-canvas','--surface-panel','--structure-accent','--text-primary'])assert.ok(palette[token],design+' owns '+token+' independently of the selected Finish');
 }

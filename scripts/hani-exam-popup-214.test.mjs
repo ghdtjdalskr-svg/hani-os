@@ -126,7 +126,7 @@ check('submit calls existing gradeQuiz once, shows stamp, then existing copy/dis
   assert.equal(f.counters.save,20);assert.equal(f.find('[data-exam-submit]').disabled,false);f.find('[data-exam-submit]').click();f.find('[data-exam-submit]').click();f.key('1');
   assert.equal(f.window.gradeCalls,1);assert.equal(f.counters.commit,1);assert.equal(f.data.learningQuizzes[0].correctCount,19);assert.equal(f.data.learningWrongAnswers.length,1);
   assert.equal(f.find('[data-exam-stamp]').hidden,false);assert.equal(f.find('[data-exam-work]').hidden,true);assert.match(f.find('[data-exam-stamp]').textContent,/채점 완료/);
-  assert.match(f.find('#studyQuizDetail').textContent,/히나 첨삭 복사/);assert.ok(f.document.querySelector('[data-dispute-submit]'));
+  assert.match(f.find('#studyQuizDetail').textContent,/지은 첨삭 복사/);assert.ok(f.document.querySelector('[data-dispute-submit]'));
   for(const fn of [...f.timers.values()])fn();assert.equal(f.dialog.open,false);assert.equal(f.document.activeElement,f.find('#studyQuizDetail'));assert.equal(f.timers.size,0);
 });
 check('grading failure keeps dialog/answers and supports one successful retry',()=>{

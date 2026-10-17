@@ -45,7 +45,7 @@ try{
     await page.route('**/rest/v1/hani_sports_cache*',route=>route.fulfill({status:200,contentType:'application/json',body:'[]',headers:{'content-range':'0-0/0'}}));
     page.on('pageerror',error=>errors.push(error.message));page.on('console',message=>{if(message.type()!=='error')return;const url=message.location().url;
       // Optional floor art is absent on this branch; require the real fallback below.
-      if(/^https?:/.test(url)){const parsed=new URL(url);if(parsed.origin===origin&&/^\/assets\/building\/floor-[1-4]f-v1\.webp$/.test(parsed.pathname)&&!existsSync(join(root,parsed.pathname.slice(1)))&&message.text().includes('404')){missingBuildingArt.add(parsed.pathname);return}}
+      if(/^https?:/.test(url)){const parsed=new URL(url);if(parsed.origin===origin&&/^\/assets\/building\/floor-[1-4]f-215\.webp$/.test(parsed.pathname)&&!existsSync(join(root,parsed.pathname.slice(1)))&&message.text().includes('404')){missingBuildingArt.add(parsed.pathname);return}}
       if(!(message.text().includes('ERR_BLOCKED_BY_CLIENT')&&blockedRequests.has(url)))errors.push(message.text());
     });page.on('response',response=>{if(response.status()>=400)console.log(`HTTP ${response.status()} ${new URL(response.url()).pathname}`)});
     await page.addInitScript(value=>{if(!sessionStorage.getItem('monthlySmokeSeeded')){localStorage.setItem('hani_os_life_v23',JSON.stringify(value));sessionStorage.setItem('monthlySmokeSeeded','1')}},seed);
@@ -61,7 +61,7 @@ try{
     await page.waitForTimeout(450);
     assert.equal(await page.locator('#loginGate').isVisible(),false,`${viewport.name}: entry screen stays dismissed after boot`);
     const labels=await page.locator('.office-group .group-body .nav-btn .txt').allTextContents();
-    assert.deepEqual(labels,['인포데스크','대표실','컨퍼런스 룸','회사 소개','하니일보','하니 라운지'],`${viewport.name}: approved v204 office order with v205 labels`);
+    assert.deepEqual(labels,['인포데스크','하니 본사','컨퍼런스 룸','회사 소개','하니일보','하니 라운지'],`${viewport.name}: approved v204 office order with v205 labels`);
     assert(await page.locator('#monthlyReport.view.active').count(),`${viewport.name}: monthly route active`);
     await page.locator('[data-report-board="quarterly"]').click();assert.equal(await page.locator('[data-earnings-ppt]').count(),0,'unverified source cannot expose presentation/export');assert.match(await page.locator('#earningsQuarterly').innerText(),/원본 검증 대기/);
     await page.evaluate(()=>{goalPeriodReadContext=()=>({source:structuredClone(state),asOf:'2026-10-01',evaluationAt:'2026-10-01T12:00:00Z',canonical:{brokerTotal:row=>brokerCalc(row).total,ledgerSpending:row=>ledgerCalc(row).jispiT}})});

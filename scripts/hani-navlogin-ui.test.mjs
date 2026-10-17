@@ -56,7 +56,7 @@ try{
     assert.equal(await page.locator('[data-organization-tab="people"]').getAttribute('aria-selected'),'true');
     assert.equal(await page.locator('#ogh-chart').isVisible(),true);
     await page.keyboard.press('End');assert.equal(await page.locator('[data-organization-tab="aiTeam"]').getAttribute('aria-selected'),'true');
-    assert.equal(await page.locator('.ogh-person:visible').count(),8);
+    assert.equal(await page.locator('.ogh-person:visible').count(),10);
     await page.keyboard.press('Home');assert.equal(await page.locator('[data-organization-tab="overview"]').getAttribute('aria-selected'),'true');
     assert.equal(await page.locator('#ogh-chart').isVisible(),false);
     await page.evaluate(()=>showView('organization/people/hani'));await page.locator('.ogh-dialog[open]').waitFor();await page.keyboard.press('Escape');

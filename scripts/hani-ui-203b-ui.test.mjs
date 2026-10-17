@@ -21,7 +21,7 @@ try{
     await context.route('**/*',r=>new URL(r.request().url()).origin===origin?r.continue():r.abort());page.on('pageerror',e=>errors.push(e.message));
     await page.goto(origin);await page.waitForFunction(()=>loginGateInitialized&&window.HaniOrganizationHub);
     const protectedBefore=await page.evaluate(()=>localStorage.getItem('hani_os_life_v23'));
-    const themes=['porcelain-cream','titanium-graphite','midnight-black','sakura-pink','alpine-blue'];
+    const themes=['porcelain-cream','pure-white','titanium-graphite','midnight-black','sakura-pink','alpine-blue'];
     for(const theme of themes){
       await page.locator('input[name="loginFinish"][value="'+theme+'"]').check();
       assert.equal(await page.evaluate(()=>document.documentElement.dataset.finish),theme);
@@ -37,7 +37,7 @@ try{
       assert.equal(await page.locator('#loginGate').evaluate(e=>e.scrollWidth<=e.clientWidth),true);
     }
     await page.locator('input[name="loginFinish"][value="porcelain-cream"]').focus();await page.keyboard.press('ArrowRight');
-    assert.equal(await page.locator('input[name="loginFinish"][value="titanium-graphite"]').isChecked(),true);
+    assert.equal(await page.locator('input[name="loginFinish"][value="pure-white"]').isChecked(),true);
     await page.locator('[data-login-theme="summer"]').focus();await page.keyboard.press('Enter');assert.equal(await page.evaluate(()=>document.documentElement.dataset.season),'summer');
     await page.screenshot({path:path.join(out,'login-'+width+'.png'),fullPage:true});
     await page.evaluate(()=>{state=freshState();unlockLoginGate();showView('organization')});

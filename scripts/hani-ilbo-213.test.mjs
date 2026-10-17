@@ -9,7 +9,7 @@ import vm from 'node:vm';
 import {pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
 
-const root = path.resolve(import.meta.dirname,'..'), out = path.join(os.tmpdir(),'hani-ilbo-visual-214');
+const root = path.resolve(import.meta.dirname,'..'), out = fs.mkdtempSync(path.join(os.tmpdir(),'hani-ilbo-visual-'));
 fs.mkdirSync(out,{recursive:true});
 const read = file => fs.readFileSync(path.join(root,file),'utf8');
 const code = read('hani-ilbo.js'), manifest = JSON.parse(read('data/hani-ilbo/issues.json')), issue = JSON.parse(read('data/hani-ilbo/001.json'));
@@ -60,7 +60,7 @@ try {
     const alt=comic.match(/<img data-ilbo-comic[^>]* alt="([^"]*)"/)[1];
     for(const caption of issue.comic.captions)assert.ok(alt.includes(caption));
     assert.match(comic,/class="ilbo-sr-only"/,'missing-image captions remain accessible');
-    assert.ok(html.includes('하니일보'));assert.ok(html.includes('2026.10.19(월)'));if(issue.editorialDraft)assert.ok(html.includes('편집 초안'));
+    assert.match(html,/<h2>하니일보<\/h2>/);assert.doesNotMatch(html,/HANI\s*(?:<[^>]+>\s*)*하니일보/);assert.ok(html.includes('2026.10.19(월)'));if(issue.editorialDraft)assert.ok(html.includes('편집 초안'));
   });
   check('profile and quote, nested full interview, chat avatars, only first two sections open',()=>{
     const html=api.markup(issue,fixture,null,[],now);
@@ -121,7 +121,7 @@ try {
     assert.doesNotMatch(code,/localStorage|sessionStorage|\.setItem\s*\(|\.removeItem\s*\(|\.clear\s*\(|\b(?:commit|save|upsert)\s*\(/);
     const html=read('index.html'),ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(x=>x[1]);assert.equal(new Set(ids).size,ids.length);
     assert.match(read('hani-main.js'),/if\(id==="ilbo"\)window\.HaniIlbo\?\.enter\(\)/);
-    assert.ok(html.includes('hani-main.js?v=2.9.213'));assert.ok(html.includes('hani-ilbo.js'));assert.ok(html.includes('data-ilbo-home'));
+    assert.match(html,/hani-main\.js\?v=\d+\.\d+\.\d+/);assert.ok(html.includes('hani-ilbo.js'));assert.ok(html.includes('data-ilbo-home'));
     assert.doesNotMatch(api.markup(issue,fixture,null,[],now),/\bid="/,'no new DOM id literals');
   });
 } catch(error) {report.unitError=error.stack;fs.writeFileSync(path.join(out,'results.json'),JSON.stringify(report,null,2));throw error;}
@@ -191,6 +191,9 @@ try {
     assert.equal(await page.evaluate(()=>JSON.stringify(state)===ilboBefore),true);
     await browserContext.unroute('**/assets/hani-ilbo/**');
     await page.evaluate(({fixture,loungeFixture,marketFixture})=>{Object.assign(state,fixture);window.HaniBoard=Object.freeze({listPosts:()=>loungeFixture,displayLikes:x=>x.likes,displayViews:x=>x.views,openPost:()=>{throw Error('Unexpected board open');},toggleLike:()=>{throw Error('Unexpected like');}});investmentNewsArchiveRuntime.posts=marketFixture;window.ilboFixtureBefore=JSON.stringify(state);}, {fixture,loungeFixture,marketFixture});await page.evaluate(()=>window.HaniIlbo.enter());
+    // Chromium may retain the failed response for the identical image URL. Explicitly request
+    // a fresh fixture after restoring the server, then exercise the same canonical load handler.
+    await view.locator('[data-ilbo-comic]').evaluate(image=>{image.src=new URL(image.src).href+'?qa=restored';});
     await view.locator('[data-ilbo-comic]').waitFor({state:'visible'});assert.equal(await view.locator('[data-ilbo-placeholder]').isVisible(),false);
     assert.equal(await view.locator('[data-ilbo-tile]').count(),5);
     assert.deepEqual(await view.locator('.ilbo-fold[open]>summary').allTextContents(),['숫자로 보는 한 주','이 주의 인터뷰']);

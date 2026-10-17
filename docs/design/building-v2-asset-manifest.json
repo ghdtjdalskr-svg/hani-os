@@ -1,0 +1,100 @@
+{
+  "status": "archived: v2 bitmaps removed 2026-10-17; runtime uses building v1 + art-map-v1",
+  "runtimeIntegration": false,
+  "contractVersion": "spatial-216-v1",
+  "contractSha256": "d02426b44c49db169efebd782e110226fd1d719d016bc5912516753f3df8841d",
+  "canvas": [
+    1600,
+    1024
+  ],
+  "totalBytes": 0,
+  "archivedTotalBytes": 800466,
+  "assets": [],
+  "archivedAssets": [
+    {
+      "floor": "5f",
+      "kind": "background",
+      "file": "floor-5f-v2.webp",
+      "bytes": 119944,
+      "sha256": "a16d241aba177d766ab34a75187ae167dddab09bda436bdebe6df84c03594eb9",
+      "quality": 80
+    },
+    {
+      "floor": "5f",
+      "kind": "foreground",
+      "file": "floor-5f-foreground-v2.webp",
+      "bytes": 66878,
+      "sha256": "31f5251c62795afcff9b04fac2dd6869f85668cf56f2d1051e1d4179a65bfbc1",
+      "lossless": true,
+      "alpha": true
+    },
+    {
+      "floor": "4f",
+      "kind": "background",
+      "file": "floor-4f-v2.webp",
+      "bytes": 117548,
+      "sha256": "694adc3a894aaf276f4e446784cb6889ee6d1948feef256785ed4fd3b99b3ce2",
+      "quality": 80
+    },
+    {
+      "floor": "4f",
+      "kind": "foreground",
+      "file": "floor-4f-foreground-v2.webp",
+      "bytes": 45588,
+      "sha256": "989a885de25237de90e1bb7a13c055e8ba9ddb5846d6d6d3155548570e5110f5",
+      "lossless": true,
+      "alpha": true
+    },
+    {
+      "floor": "3f",
+      "kind": "background",
+      "file": "floor-3f-v2.webp",
+      "bytes": 115880,
+      "sha256": "8b0f94f89fefb1971a6a45b0d3913c36aa0dbd9d93e46c376f124e9dbffdfd93",
+      "quality": 80
+    },
+    {
+      "floor": "3f",
+      "kind": "foreground",
+      "file": "floor-3f-foreground-v2.webp",
+      "bytes": 49536,
+      "sha256": "dfcde558537313d7bcec2085bfd4bf3a192f1c3c5980d229272014db600e58e3",
+      "lossless": true,
+      "alpha": true
+    },
+    {
+      "floor": "2f",
+      "kind": "background",
+      "file": "floor-2f-v2.webp",
+      "bytes": 108724,
+      "sha256": "ca98e6ad4d65c6df7f122908647e750902cc7f22da51ef0a174e6c1a6cf1f6ff",
+      "quality": 80
+    },
+    {
+      "floor": "2f",
+      "kind": "foreground",
+      "file": "floor-2f-foreground-v2.webp",
+      "bytes": 43440,
+      "sha256": "9e1c0d6307a9060f25e294c4f0f8ac179cc0ba2111d2c337181e936f0785500a",
+      "lossless": true,
+      "alpha": true
+    },
+    {
+      "floor": "1f",
+      "kind": "background",
+      "file": "floor-1f-v2.webp",
+      "bytes": 66894,
+      "sha256": "480d66c68c07601b48cdc9893636768da04b0ef6e4005a8dcc17364e10ac7279",
+      "quality": 80
+    },
+    {
+      "floor": "1f",
+      "kind": "foreground",
+      "file": "floor-1f-foreground-v2.webp",
+      "bytes": 66034,
+      "sha256": "d666dd6aade941e2e5065c02a795ba48924d0a3bcd4c2d5c66fb9fc13cfaa2ef",
+      "lossless": true,
+      "alpha": true
+    }
+  ]
+}

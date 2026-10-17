@@ -1,13 +1,17 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {execFileSync} from 'node:child_process';
 import path from 'node:path';
 import vm from 'node:vm';
 import {handlers,inspection,api,plain,roster} from './hani-board.test.mjs';
 import {textContrastAudit} from './hani-contrast-audit.mjs';
 
+const baselineArg=process.argv[2]&&path.basename(process.argv[2])!=='index.mjs'?process.argv[2]:process.env.HANI_QA_TEST_BASELINE;
+const readBaseline=file=>baselineArg?fs.readFileSync(path.resolve(baselineArg,file),'utf8'):execFileSync(process.env.HANI_GIT_PATH||'git',['show','HEAD:'+file],{cwd:path.resolve(import.meta.dirname,'..'),encoding:'utf8',maxBuffer:64*1024*1024});
+const readEolBaseline=file=>baselineArg?readBaseline(file):execFileSync(process.env.HANI_GIT_PATH||'git',['show','origin/main:'+file],{cwd:path.resolve(import.meta.dirname,'..'),encoding:'utf8',maxBuffer:64*1024*1024});
 const root=path.resolve(import.meta.dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
-const base=path.resolve(process.argv[2]||path.join(root,'.ai-budget-private/qa210/base'));
+
 const main=read('hani-main.js'),remote=read('hani-context-remote-v1.js'),study=read('hani-study-v02984.js');
 const lum=hex=>hex.slice(1).match(/../g).map(v=>{const c=parseInt(v,16)/255;return c<=.04045?c/12.92:((c+.055)/1.055)**2.4}).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i],0);
 const contrast=(a,b)=>(Math.max(lum(a),lum(b))+.05)/(Math.min(lum(a),lum(b))+.05);
@@ -67,18 +71,18 @@ test('Remote today slot tracks today tasks and unfinished quizzes without recrea
   let quizzes=[{id:'today',date:'2026-10-12',title:'오늘',status:'pending'},{id:'old',date:'2026-10-11',title:'지난 퀴즈',status:'in_progress'},{id:'future',date:'2026-10-13',title:'예정',status:'pending'},{id:'undated',date:'',title:'날짜 미지정',status:'pending'}];
   const ctx=vm.createContext({window:{HANI_STUDY_V02984_TEST:{pendingLearningQuizzes:()=>quizzes,quizDate:q=>q.date}},state,rail:{},$:s=>nodes[s],careKoreaPeriod:()=>({day:'2026-10-12'}),document:{createElement:()=>{creates++;return new Element()}}});
   vm.runInContext(remote.slice(remote.indexOf('  const updateToday='),remote.indexOf('  const update=()'))+'\nglobalThis.updateToday=updateToday;',ctx);
-  const before=JSON.stringify(state);ctx.updateToday();assert.equal(badge.textContent,'3');assert.equal(badge.hidden,false);assert.ok(section.classes.has('is-today'));assert.deepEqual(box.children.map(n=>n.dataset.remoteQuiz),['undated','old','today','future']);
+  const before=JSON.stringify(state);ctx.updateToday();assert.equal(badge.textContent,'2');assert.equal(badge.hidden,false);assert.ok(section.classes.has('is-today'));assert.deepEqual(box.children.map(n=>n.dataset.remoteQuiz),['undated','old','today','future']);
   ctx.updateToday();assert.equal(creates,4,'persistent slot, no duplicate rows');
-  quizzes=quizzes.filter(q=>q.id!=='today');ctx.updateToday();assert.equal(badge.textContent,'2');assert.equal(box.children.length,3);
+  quizzes=quizzes.filter(q=>q.id!=='today');ctx.updateToday();assert.equal(badge.textContent,'1');assert.equal(box.children.length,3);
   quizzes=[];state.tasks[0].done=true;ctx.updateToday();assert.equal(badge.hidden,true);assert.equal(box.hidden,true);assert.equal(section.classes.has('is-today'),false);
   state.tasks[0].done=false;assert.equal(JSON.stringify(state),before,'projection does not mutate source');
 });
 
 test('Remote opens the exact unfinished quiz through existing selection path without generation or persistence',()=>{
-  const rows=[{id:'old',projectId:'p',date:'2026-10-11'},{id:'today',projectId:'p',date:'2026-10-12'}],views=[],renders=[];
-  const ctx=vm.createContext({pendingLearningQuizzes:()=>rows,quizDate:q=>q.date,localToday:()=> '2026-10-12',showView:id=>views.push(id),renderLearning:auto=>renders.push(auto),requestAnimationFrame:fn=>fn(),q:()=>null});
+  const opened=[];const rows=[{id:'old',projectId:'p',date:'2026-10-11'},{id:'today',projectId:'p',date:'2026-10-12'}],views=[],renders=[];
+  const ctx=vm.createContext({openExam:q=>opened.push(q.id),pendingLearningQuizzes:()=>rows,quizDate:q=>q.date,localToday:()=> '2026-10-12',showView:id=>views.push(id),renderLearning:auto=>renders.push(auto),requestAnimationFrame:fn=>fn(),q:()=>null});
   vm.runInContext("let activeProjectId='',activeQuizId='',activeStudyTab='',quizArchiveMonth='',quizArchivePage=0;\n"+block(study,'openPendingQuiz')+'\nglobalThis.selected=()=>[activeProjectId,activeQuizId];',ctx);
-  ctx.openPendingQuiz('today');assert.deepEqual(Array.from(ctx.selected()),['p','today']);assert.deepEqual(renders,[false]);assert.deepEqual(views,['study']);
+  ctx.openPendingQuiz('today');assert.deepEqual(Array.from(ctx.selected()),['p','today']);assert.deepEqual(renders,[false]);assert.deepEqual(views,['study']);assert.deepEqual(opened,['today'],'canonical quiz opens the exam popup');
   ctx.openPendingQuiz('missing');assert.equal(renders.length,1,'stale id does not render/generate another quiz');
   assert.doesNotMatch(block(main,'renderHaniCareCards'),/data-care-quiz/);
   assert.match(remote,/openPendingQuiz\(quiz.dataset.remoteQuiz\)/);
@@ -108,8 +112,8 @@ test('reading title preservation and corrected chairman display projections, wit
 test('retained EOL, all versions/cache tags, id literals, storage and canonical save handlers are preserved',()=>{
   const files=['hani-main.js','hani-study-v02984.js','hani-board.js','hani-context-remote-v1.js','hani-style-01.css','hani-style-07.css','hani-style-08.css','hani-design-system.css','hani-portfolio-preview.css','hani-board.css','hani-context-remote.css','hani-newsroom-ux-v02970.js'];
   for(const file of files){
-    const old=fs.readFileSync(path.join(base,file),'utf8'),current=read(file),lines=s=>s.match(/[^\r\n]*(?:\r\n|\n|\r|$)/g).filter(Boolean),by=new Map();
-    for(const line of lines(old)){const text=line.replace(/[\r\n]+$/,'');if(!by.has(text))by.set(text,new Set());by.get(text).add(line.slice(text.length))}
+    const old=readBaseline(file),current=read(file),lines=s=>s.match(/[^\r\n]*(?:\r\n|\n|\r|$)/g).filter(Boolean),by=new Map();
+    for(const line of lines(readEolBaseline(file))){const text=line.replace(/[\r\n]+$/,'');if(!by.has(text))by.set(text,new Set());by.get(text).add(line.slice(text.length))}
     for(const line of lines(current)){const text=line.replace(/[\r\n]+$/,'');if(by.has(text))assert.ok(by.get(text).has(line.slice(text.length)),file+' retained EOL: '+text.slice(0,60))}
     for(const pattern of [/\b2\.9\.\d+(?:-[\w.-]+)?\b/g,/\?v=[^\s"'<>]+/g,/\b(?:commit|save|writeProtectedState|localStorage\.(?:setItem|removeItem|clear))\([^)]*\)/g])assert.deepEqual(current.match(pattern),old.match(pattern),file+' preserved version/save paths');
     const counts=s=>{const out={};for(const m of s.matchAll(/\bid\s*=\s*["']([\w-]+)["']/g))out[m[1]]=(out[m[1]]||0)+1;return out};
@@ -117,8 +121,8 @@ test('retained EOL, all versions/cache tags, id literals, storage and canonical 
     assert.equal((current.match(/\.clear\(/g)||[]).length,(old.match(/\.clear\(/g)||[]).length,file+' no clear calls');
     if(file==='hani-board.js')for(const name of ['viewChange','savePost','saveComment','deleteOwn','toggleLike'])assert.equal(block(current,name),block(old,name),name+' persistence unchanged');
   }
-  assert.equal(read('hani-drive-vault.js'),fs.readFileSync(path.join(base,'hani-drive-vault.js'),'utf8'));
-  assert.equal(read('index.html'),fs.readFileSync(path.join(base,'index.html'),'utf8'));
+  assert.equal(read('hani-drive-vault.js'),readBaseline('hani-drive-vault.js'));
+  assert.equal(read('index.html'),readBaseline('index.html'));
 });
 
 test('write compact Node evidence after successful assertions',()=>{

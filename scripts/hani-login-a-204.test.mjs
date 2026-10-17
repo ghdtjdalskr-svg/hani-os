@@ -36,7 +36,7 @@ const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);assert.equal(new Se
 for(const id of ['loginCharacterPhoto','loginCharacterName','loginCharacterRole','loginCharacterQuote'])assert.equal(ids.filter(x=>x===id).length,1);
 assert.match(css,/object-fit:cover/);assert.match(css,/\.login-season-artwork img\{[^}]*transition:opacity \.2s ease/);
 assert.match(css,/@media\(prefers-reduced-motion:reduce\)\{\.login-season-artwork img\{transition:none\}\}/);
-assert.match(css,/\.login-gate #loginGateFinish\{[^}]*repeat\(5,minmax\(0,1fr\)\)/);
+assert.match(css,/\.login-gate #loginGateFinish\{[^}]*repeat\(6,minmax\(0,1fr\)\)/);
 assert.match(css,/@media\(max-width:820px\)\{\.login-gate #loginGateFinish\{grid-template-columns:repeat\(3/);
 const lum=hex=>hex.slice(1).match(/../g).map(v=>{const c=parseInt(v,16)/255;return c<=.04045?c/12.92:((c+.055)/1.055)**2.4}).reduce((sum,c,i)=>sum+c*[.2126,.7152,.0722][i],0);
 const contrast=(a,b)=>(Math.max(lum(a),lum(b))+.05)/(Math.min(lum(a),lum(b))+.05);
@@ -92,7 +92,7 @@ for(const name of ['initLoginGate','loginGateEnterApp']){
   }
   assert.equal(extract(source,name),expected,name+' only approved session policy delta');
 }
-for(const name of ['loginGateSubmit','loginGateForgotPassword','loginGateSaveRecoveryPassword','randomizeLoginCharacter','syncLoginThemeButtons','applySeasonTheme','applySignatureFinish','save','commit','writeProtectedState','removeProtectedState'])assert.equal(extract(source,name),extract(baseMain.replace(/\r\n/g,'\n'),name),name+' unchanged');
+for(const name of ['loginGateSubmit','loginGateForgotPassword','loginGateSaveRecoveryPassword','randomizeLoginCharacter','syncLoginThemeButtons','applySeasonTheme','applySignatureFinish','save','commit','writeProtectedState','removeProtectedState']){let expected=extract(baseMain.replace(/\r\n/g,'\n'),name);if(name==='applySignatureFinish'&&!expected.includes('"pure-white"'))expected=expected.replace('"porcelain-cream":"Porcelain Cream",','"porcelain-cream":"Porcelain Cream","pure-white":"Pure White",');assert.equal(extract(source,name),expected,name+' unchanged except approved Pure White name');}
 for(const name of ['VERSION','STORAGE_KEY','HANI_DISPLAY_VERSION']){
   const declaration=text=>text.match(new RegExp('const '+name+'=[^;\\n]+;'))?.[0];
   assert.ok(declaration(main),name+' present');assert.equal(declaration(main),declaration(baseMain),name+' unchanged');
