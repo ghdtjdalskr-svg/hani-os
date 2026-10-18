@@ -220,7 +220,7 @@ api.setState({...api.getState(),boardPosts:[roster.chairman,...roster.people].ma
 vm.runInContext(board,context);
 for(const p of [roster.chairman,...roster.people]){
   const expected=p.id===roster.chairman.id?"assets/sprites-v2/seongmin.webp":
-    "assets/profiles/thumb/hani-profile-"+p.id+"-128.webp";
+    "assets/profiles/thumb/hani-profile-"+p.id+({sua:"-id",daon:"-v2",yoonseul:"-v2"}[p.id]||"")+"-128.webp";
   assert.ok(slots.get("list").innerHTML.includes(expected),p.id+" uses its official avatar asset");
 }
 assert.equal((slots.get("list").innerHTML.match(/loading="lazy" decoding="async" width="28" height="28"/g)||[]).length,roster.people.length+1);

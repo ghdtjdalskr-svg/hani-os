@@ -77,7 +77,7 @@ test('audited art has a physical workstation per person, planned desks stay empt
   }
 });
 test('architectural sign mounts or painted planes are explicit, and Hani office stays separate',()=>{
-  for(const floor of Object.values(assets.art.floors))for(const plate of floor.plates){assert.ok(plate.mountAnchor||plate.surface?.length===4);if(plate.mount){assert.ok(['blade','wall'].includes(plate.mount));assert.ok(plate.english);assert.equal(plate.mountAnchor.clearOfWalkway,true);assert.ok(['wall','partition','pillar'].includes(plate.mountAnchor.kind))}assert.ok(['brass','silver','glass','wood'].includes(plate.material));assert.ok(Number.isFinite(plate.rotate)&&Number.isFinite(plate.skew));assert.ok(/^#[a-f0-9]{6}$/i.test(plate.ink))}
+  for(const floor of Object.values(assets.art.floors))for(const plate of floor.plates){assert.ok(plate.mountAnchor||plate.surface?.length===4);if(plate.mount){assert.ok(['blade','wall'].includes(plate.mount));assert.ok(plate.english);assert.equal(plate.mountAnchor.clearOfWalkway,true);assert.ok(['wall','partition','pillar'].includes(plate.mountAnchor.kind))}assert.ok(['charcoal'].includes(plate.material));assert.ok(Number.isFinite(plate.rotate)&&Number.isFinite(plate.skew));assert.ok(/^#[a-f0-9]{6}$/i.test(plate.ink))}
   const f=assets.art.floors['4f'],office=f.privateOffice,home=api.homeSeat('hani');assert.ok(office.glassDoor&&office.bookshelf&&office.visitorChairs===2);
   const inside=(seat,b)=>seat.x>=b[0]&&seat.x<=b[2]&&seat.y>=b[1]&&seat.y<=b[3];assert.ok(inside(home,office.bounds));
   for(const person of api.assignSeats('4f',[{id:'hani',activity:'rest'},{id:'seoyun',activity:'rest'},{id:'jieun',activity:'rest'}])){assert.ok(person.seat);assert.equal(person.seat.zone,'lounge');assert.equal(inside(person.seat,office.bounds),false)}
@@ -91,7 +91,7 @@ test('final polish: director uses private furniture, row spare stays free, full 
   assert.ok(api.seatMaps['2f'].every(s=>s.x*1672/100<f.freeDesks[0].seatBounds[0]||s.x*1672/100>f.freeDesks[0].seatBounds[2]||s.y*941/100<f.freeDesks[0].seatBounds[1]||s.y*941/100>f.freeDesks[0].seatBounds[3]));
   for(const [floor,room,label] of [['1f','business','기업솔루션사업부'],['2f','life','라이프&엔터테인먼트'],['4f','ceo','회장실']])assert.equal(assets.art.floors[floor].plates.find(p=>p.room===room).label,label);
   assert.ok(f.plates.some(p=>p.detail&&p.label==='실장실'&&p.fullLabel==='재무자산관리실장 · 지은'));
-  assert.equal(assets.art.floors['1f'].plates.find(p=>p.room==='lobby').logo,'./assets/brand/hani-group-ci-official.webp');
+  assert.equal(assets.art.floors['1f'].plates.find(p=>p.room==='lobby').logo,'./assets/brand/hani-group-ci-lobby-217.webp');
   assert.ok(assets.art.floors['4f'].privateOffice.bounds[2]>80);
 });
 test('4F executive hierarchy: spacious private suite, separate shared lounge and MIR pod',()=>{
@@ -148,33 +148,54 @@ test('v2 sprite metadata is real, all art exists, no persistence/cloud calls add
   for(const floor of assets.canon.floors)assert.deepEqual(assets.art.floors[floor.id].plates.filter(p=>!p.detail).map(p=>p.room),floor.rooms.map(r=>r.id));
 });
 
-test('native sign art reuses one image slot; stale floor loads and decode failure never float letters',async()=>{
+test('HTML plates and desk props reuse persistent slots; no painted sign patches load',async()=>{
   const requests=[],f=fixture('09:00',true,src=>{requests.push(src);return true});
-  const slots=f.map.querySelectorAll('.hani-office-foreground'),actors=[...f.ids.get('haniOfficeActors').children];
+  const slots=f.map.querySelectorAll('.hani-office-foreground'),props=f.map.querySelectorAll('.hani-office-desk-props'),plates=f.map.querySelectorAll('.hani-office-room-plate');
   const settle=()=>new Promise(resolve=>setImmediate(resolve));await settle();
+  assert.equal(props.length,19);assert.equal(plates.length,23);
   for(const floor of ['3f','2f','1f','5f','4f']){
     f.click(floor);await settle();
-    assert.deepEqual(f.map.querySelectorAll('.hani-office-foreground'),slots);
-    assert.deepEqual(f.ids.get('haniOfficeActors').children,actors);
-    const visible=slots.filter(i=>!i.hidden);assert.equal(visible.length,floor==='5f'?0:1);
-    if(visible.length){assert.equal(visible[0],slots[0]);assert.equal(visible[0].src,assets.art.floors[floor].signPatch)}
+    assert.deepEqual(f.map.querySelectorAll('.hani-office-desk-props'),props);
+    assert.deepEqual(f.map.querySelectorAll('.hani-office-room-plate'),plates);
+    assert.ok(slots.every(i=>i.hidden));assert.equal(f.map.dataset.mask,'none');
+    assert.equal(props.filter(i=>!i.hidden).length,assets.art.floors[floor].deskProps.length);
+    for(const p of plates.filter(i=>!i.hidden&&!i.dataset.brand)){assert.equal(p.children[0].tagName,'b');assert.ok(p.children[0].textContent);assert.equal(p.children[1].tagName,'small');assert.ok(p.children[1].textContent)}
   }
-  f.click('3f');f.click('2f');await settle();assert.equal(slots[0].src,assets.art.floors['2f'].signPatch);
-  for(const floor of ['1f','2f','3f','4f']){
-    const spec=assets.art.floors[floor],bytes=fs.readFileSync(path.join(root,spec.signPatch));
-    assert.ok(bytes.length<=240000);assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),spec.signPatchSha256);
-    assert.equal(requests.filter(src=>src===spec.signPatch).length,1,'patch is decoded only once per floor');
-  }
-  const failed=fixture('09:00',true,src=>!src.includes('/signs-'));await settle();
-  assert.equal(failed.map.dataset.mask,'none');assert.ok(failed.map.querySelectorAll('.hani-office-foreground').every(i=>i.hidden));
-  assert.ok(failed.map.querySelectorAll('.hani-office-room-plate').filter(p=>p.dataset.mount).every(p=>p.hidden),'missing painted faces hide their text');
-  assert.ok(failed.root.querySelector('.hani-building-rooms').children.some(p=>!p.hidden&&p.textContent.includes('하니 전무실')),'room directory survives artwork failure');
+  f.click('3f');f.click('2f');await settle();assert.equal(f.map.dataset.floor,'2f');
+  assert.ok(!requests.some(src=>src.includes('/signs-')));
+  assert.equal(f.map.querySelector('.hani-office-ceo-nameplate'),null);
+  const failed=fixture('09:00',true,()=>false);await settle();
+  assert.ok(failed.map.querySelectorAll('.hani-office-desk-props').every(p=>p.hidden));
+  assert.ok(failed.root.querySelector('.hani-building-rooms').children.some(p=>!p.hidden&&p.textContent.includes('하니 전무실')));
+});
+
+test('217 prop assets match each active/planned home desk, with explicit URLs and small alpha WebPs',()=>{
+ const manifest=Object.values(assets.art.floors).flatMap(f=>f.deskProps||[]);
+ assert.equal(manifest.length,19);assert.equal(new Set(manifest.map(p=>p.id)).size,19);
+ for(const floor of api.floors)for(const prop of assets.art.floors[floor.id].deskProps||[]){
+  const person=api.canon.people.find(p=>p.id===prop.id),anchor=assets.art.anchors[prop.anchor];
+  assert.equal(prop.anchor,person.homeAnchor);assert.equal(prop.planned,person.status==='planned');
+  assert.equal(api.anchors.get(prop.anchor).floor,floor.id);assert.equal(api.deskPropArt[prop.id],prop.file);
+  assert.ok(source.includes(JSON.stringify(prop.file)),'literal asset URL for release closure');
+  const bytes=fs.readFileSync(path.join(root,prop.file));assert.ok(bytes.length<=12000);
+  assert.equal(bytes.toString('ascii',8,12),'WEBP');assert.equal(bytes.toString('ascii',12,16),'VP8X');assert.ok(bytes[20]&16,'transparent alpha feature');
+  const [left,top,right,bottom]=assets.art.floors[floor.id].homeFurniture[prop.anchor].deskBounds;
+  const x=anchor.x*16.72+prop.offset[0],y=anchor.y*9.41+prop.offset[1];
+  assert.ok(x>=left&&x+prop.width<=right&&y>=top&&y<bottom,`${prop.id}: on own desktop`);
+ }
+ const logo=fs.readFileSync(path.join(root,'assets/brand/hani-group-ci-lobby-217.webp'));
+ assert.ok(logo[20]&16,'brand alpha, no white backing');
 });
 
 
-test(`Edge: ${process.argv.includes('--final-polish')?'390/1440 light/dark':process.argv.includes('--seat-audit')?'360/390/412/1440 light/dark':'6 widths light/dark'} × ${process.argv.includes('--floor-4f')?'4F':'5 floors'}, lazy art, persistent DOM, zero office storage writes; failures and motion`, {skip:!process.argv.includes('--browser')},async()=>{
-  const arg=process.argv.indexOf('--browser'),evidence=path.join(root,'artifacts/office-v1art-215');fs.mkdirSync(evidence,{recursive:true});
-  const HaniPatchPath=floor=>assets.art.floors[floor].signPatch;
+test('Edge: office-217 all floors at 390/1440 light', {skip:!process.argv.includes('--browser')},async()=>{
+ const arg=process.argv.indexOf('--browser');
+ const {runOffice217Browser}=await import('./hani-office-217.browser.mjs');
+ await runOffice217Browser(process.argv[arg+1],process.argv[arg+2]);
+});
+
+test(`Edge: ${process.argv.includes('--final-polish')?'390/1440 light/dark':process.argv.includes('--seat-audit')?'360/390/412/1440 light/dark':'6 widths light/dark'} × ${process.argv.includes('--floor-4f')?'4F':'5 floors'}, lazy art, persistent DOM, zero office storage writes; failures and motion`, {skip:!process.argv.includes('--office-regression')},async()=>{
+  const arg=process.argv.indexOf('--browser'),evidence=path.join(root,'artifacts/office-217/regression');fs.mkdirSync(evidence,{recursive:true});
   const status={result:'running',scope:process.argv.includes('--floor-4f')?'4F executive suite: 390/1440 light/dark':process.argv.includes('--final-polish')?'final polish: 390/1440 light/dark':process.argv.includes('--seat-audit')?'furniture audit: 360/390/412/1440 light/dark':'full office UI',artSha256:crypto.createHash('sha256').update(read('data/hani-building/art-map-v1.json')).digest('hex'),patchSha256:Object.fromEntries(Object.entries(assets.art.floors).filter(([,f])=>f.signPatch).map(([id,f])=>[id,crypto.createHash('sha256').update(fs.readFileSync(path.join(root,f.signPatch))).digest('hex')])),backgroundSha256:Object.fromEntries(api.floors.map(f=>[f.id,crypto.createHash('sha256').update(fs.readFileSync(path.join(root,f.background))).digest('hex')])),screenshots:[],checks:[],errors:[],consoleErrors:[],writes:[],requests:[]};const save=()=>fs.writeFileSync(path.join(evidence,'browser-status.json'),JSON.stringify(status,null,2));
   let browser,server;
   try{
@@ -210,7 +231,7 @@ test(`Edge: ${process.argv.includes('--final-polish')?'390/1440 light/dark':proc
       const {page,context,requests}=await pageFor(width,theme);
       for(const floor of (process.argv.includes('--floor-4f')?['4f']:['4f','5f','3f','2f','1f'])){
         await page.locator(`[data-building-floor="${floor}"]`).click();
-        await page.waitForFunction(f=>{const map=document.querySelector('#haniOfficeMap'),bg=map.querySelector('.hani-office-background');return map.dataset.floor===f&&map.dataset.art==='floor'&&bg.getAttribute('src')===(f==='5f'?'./assets/building/floor-5f-v1.webp':`./assets/building/floor-${f}-215.webp`)&&bg.complete&&bg.naturalWidth===1672&&bg.naturalHeight===941&&map.dataset.mask===(f==='5f'?'none':'interior')&&[...map.querySelectorAll('.hani-office-foreground')].filter(i=>!i.hidden).every(i=>i.complete&&i.naturalWidth===1672)&&[...document.querySelectorAll('.hani-office-actor')].filter(a=>!a.hidden).every(a=>a.dataset.avatar==='v2')},floor);
+        await page.waitForFunction(f=>{const map=document.querySelector('#haniOfficeMap'),bg=map.querySelector('.hani-office-background');return map.dataset.floor===f&&map.dataset.art==='floor'&&bg.getAttribute('src')===HaniBuildingScene.floors.find(x=>x.id===f).background&&bg.complete&&bg.naturalWidth===1672&&bg.naturalHeight===941&&map.dataset.mask==='none'&&[...document.querySelectorAll('.hani-office-actor')].filter(a=>!a.hidden).every(a=>a.dataset.avatar==='v2')},floor);
         const geometry=await page.evaluate(()=>{
           const map=document.querySelector('#haniOfficeMap'),box=map.getBoundingClientRect(),actors=[...document.querySelectorAll('.hani-office-actor')].filter(a=>!a.hidden),buttons=[...document.querySelectorAll('[data-building-floor]')];
           const overlaps=(a,b)=>a.left<b.right&&a.right>b.left&&a.top<b.bottom&&a.bottom>b.top;
@@ -219,21 +240,9 @@ test(`Edge: ${process.argv.includes('--final-polish')?'390/1440 light/dark':proc
           const host=document.querySelector('#haniOfficeLive').getBoundingClientRect();
           return {mapClip:{x:box.left-host.left,y:box.top-host.top,width:box.width,height:box.height},overflow:[document.documentElement,document.querySelector('#haniOfficeLive'),map].filter(e=>e.scrollWidth>e.clientWidth+2).map(e=>e.id||e.tagName),
             plates:plates.map(p=>{
-              const r=p.getBoundingClientRect(),lettering=p.querySelector('.hani-office-brand')||p.querySelector('b')||p.querySelector('small')||p,s=getComputedStyle(lettering),range=document.createRange();range.selectNodeContents(lettering);const text=range.getBoundingClientRect();
-              const bgImage=map.querySelector('.hani-office-background'),canvas=document.createElement('canvas');canvas.width=1672;canvas.height=941;const c=canvas.getContext('2d');c.drawImage(bgImage,0,0,1672,941);for(const img of map.querySelectorAll('.hani-office-foreground'))if(!img.hidden)c.drawImage(img,0,0,1672,941);
-              c.font=s.fontWeight+' '+s.fontSize+' '+s.fontFamily;c.letterSpacing=s.letterSpacing;const metrics=c.measureText(lettering.textContent),plane=bgImage.getBoundingClientRect();
-              // DOM Range includes font leading; compare the actual glyph ink height with the painted face.
-              const baseline=text.top+(text.height-metrics.fontBoundingBoxAscent-metrics.fontBoundingBoxDescent)/2+metrics.fontBoundingBoxAscent;
-              const ink={left:text.left,right:text.right,top:baseline-metrics.actualBoundingBoxAscent,bottom:baseline+metrics.actualBoundingBoxDescent};
-              const px=Math.max(0,Math.floor((ink.left-plane.left)/plane.width*1672)),py=Math.max(0,Math.floor((ink.top-plane.top)/plane.height*941)),w=Math.max(1,Math.ceil((ink.right-ink.left)/plane.width*1672)),h=Math.max(1,Math.ceil((ink.bottom-ink.top)/plane.height*941));
-              const pixels=c.getImageData(px,py,Math.min(w,1672-px),Math.min(h,941-py)).data,fg=luminance(s.color),ratios=[];
-              for(let i=0;i<pixels.length;i+=16){const bg=luminance('rgb('+pixels[i]+','+pixels[i+1]+','+pixels[i+2]+')');ratios.push((Math.max(fg,bg)+.05)/(Math.min(fg,bg)+.05))}ratios.sort((a,b)=>a-b);
-              const spec=HaniBuildingScene.art.floors[map.dataset.floor].plates.find(q=>q.room===p.dataset.room&&q.label===(p.dataset.label||p.textContent)),surface=spec?.surface;
-              const mounted=Boolean(p.dataset.mount),panel=getComputedStyle(p),lines=[...p.querySelectorAll('b,small')].filter(l=>getComputedStyle(l).display!=='none');
-              // Contrast is sampled from the composed physical face, including the lossless art patch.
-              const panelContrast=null;
-              return {text:p.dataset.label||p.textContent,mounted,mount:p.dataset.mount,panelHeight:r.height,actorHeight:actors[0]?.getBoundingClientRect().height,englishVisible:mounted&&!!p.querySelector('small')&&getComputedStyle(p.querySelector('small')).display!=='none',linesFit:lines.every(l=>l.scrollWidth<=l.clientWidth+1),bracket:mounted?getComputedStyle(p,':before').content:null,brand:p.dataset.brand==='true',brandImages:[...p.querySelectorAll('img')].map(i=>({source:i.getAttribute('src'),decoded:i.complete&&i.naturalWidth>0,alt:i.alt})),fontMetrics:{ascent:metrics.actualBoundingBoxAscent,descent:metrics.actualBoundingBoxDescent,fontAscent:metrics.fontBoundingBoxAscent,fontDescent:metrics.fontBoundingBoxDescent,width:metrics.width},textBounds:[(text.left-box.left)/box.width*1672,(text.top-box.top)/box.height*941,(text.right-box.left)/box.width*1672,(text.bottom-box.top)/box.height*941],surface,font:parseFloat(s.fontSize),contrast:panelContrast??ratios[Math.floor(ratios.length*.1)],contrastMedian:ratios[Math.floor(ratios.length*.5)],transparent:panel.backgroundColor==='rgba(0, 0, 0, 0)'&&panel.borderTopWidth==='0px'&&panel.boxShadow==='none'&&panel.textShadow==='none',
-                onSurface:!surface||ink.left>=plane.left+surface[0]/1672*plane.width-1&&ink.right<=plane.left+surface[2]/1672*plane.width+1&&ink.top>=plane.top+surface[1]/941*plane.height-1&&ink.bottom<=plane.top+surface[3]/941*plane.height+1,
+              const r=p.getBoundingClientRect(),s=getComputedStyle(p),b=p.querySelector('b');
+              return {text:p.dataset.label,brand:p.dataset.brand==='true',font:parseFloat(getComputedStyle(b).fontSize),background:s.backgroundColor,border:s.borderTopWidth,shadow:s.boxShadow,
+                linesFit:[...p.querySelectorAll('b,small')].every(l=>l.scrollWidth<=l.clientWidth+1),brandImages:[...p.querySelectorAll('img')].map(i=>({source:i.getAttribute('src'),decoded:i.complete&&i.naturalWidth>0})),
                 inside:r.left>=box.left&&r.right<=box.right&&r.top>=box.top&&r.bottom<=box.bottom,actorOverlap:actors.filter(a=>overlaps(r,a.getBoundingClientRect())||overlaps(r,a.querySelector('.hani-office-name').getBoundingClientRect())).map(a=>a.dataset.person)};
             }),
             visibleArt:[...map.querySelectorAll('.hani-office-foreground')].filter(i=>!i.hidden).map(i=>({src:i.getAttribute('src'),zIndex:getComputedStyle(i).zIndex,width:i.naturalWidth,height:i.naturalHeight})),ratio:box.width/box.height,
@@ -244,11 +253,11 @@ test(`Edge: ${process.argv.includes('--final-polish')?'390/1440 light/dark':proc
         });
         status.lastGeometry={width,theme,floor,geometry};save();
         assert.deepEqual(geometry.overflow,[],`${width}/${theme}/${floor} overflow`);assert.equal(geometry.persistent,true);assert.equal(geometry.tabs,true);assert.equal(geometry.planned,0);assert.deepEqual(geometry.writes,[]);assert.equal(geometry.protectedSame,true);
-        assert.equal(geometry.visibleArt.length,floor==='5f'?0:1);for(const patch of geometry.visibleArt){assert.equal(patch.src,HaniPatchPath(floor));assert.equal(patch.zIndex,'1');assert.equal(patch.width,1672);assert.equal(patch.height,941)};assert.ok(Math.abs(geometry.ratio-1672/941)<.02);
+        assert.equal(geometry.visibleArt.length,0);assert.ok(Math.abs(geometry.ratio-1672/941)<.02);
         if(geometry.plates.some(p=>!p.inside||p.actorOverlap.length)){await page.locator('#haniOfficeLive').screenshot({path:path.join(evidence,'sign-collision.png')});console.log(JSON.stringify(await page.evaluate(()=>[...document.querySelectorAll('.hani-office-room-plate:not([hidden]),.hani-office-actor:not([hidden]),.hani-office-actor:not([hidden]) .hani-office-name')].map(p=>({label:p.dataset.label||p.dataset.person||p.textContent,rect:p.getBoundingClientRect().toJSON()})))))}
-        for(const p of geometry.plates){assert.ok(p.inside,`${width}/${floor}: clipped plate ${p.text}`);assert.equal(p.transparent,true,`${p.text}: letters only, without panel or shadow`);assert.equal(p.onSurface,true,`${width}/${floor}: lettering misses painted surface ${p.text}`);if(p.mounted){assert.equal(p.linesFit,true,`${p.text}: text clips`);assert.equal(p.englishVisible,false);assert.ok(['none','normal'].includes(p.bracket));if(width>700&&p.actorHeight)assert.ok(p.panelHeight<=p.actorHeight,`${p.text}: taller than a character`);}assert.ok(p.contrast>=4.5,`${p.text}: contrast ${p.contrast}`);if(p.text!=='회장님 자리'&&!p.brand)assert.ok(p.font>=9);if(p.brand){assert.equal(p.brandImages.length,2);assert.ok(p.brandImages.every(i=>i.decoded&&i.source==='./assets/brand/hani-group-ci-official.webp'));assert.ok(p.brandImages.some(i=>i.alt==='HANI GROUP'))}assert.deepEqual(p.actorOverlap,[],`${width}/${floor}: plate ${p.text} over actor`)}
+        for(const p of geometry.plates){assert.ok(p.inside,`${width}/${floor}: clipped ${p.text}`);assert.ok(p.linesFit);if(p.brand){assert.equal(p.brandImages.length,1);assert.ok(p.brandImages.every(i=>i.decoded&&i.source==='./assets/brand/hani-group-ci-lobby-217.webp'))}else{assert.equal(p.background,'rgb(63, 68, 74)');assert.equal(p.border,'0px');assert.equal(p.shadow,'none');assert.ok(p.font>=9&&p.font<=10)}assert.deepEqual(p.actorOverlap,[])}
         for(const a of geometry.actors){assert.ok(a.inside,`${width}/${floor}/${a.id} cut off`);assert.ok(a.dx<2&&a.dy<2,JSON.stringify(a));assert.equal(a.uiOverlap,false)}
-        assert.equal(await page.locator('.hani-office-ceo-nameplate').isVisible(),floor==='4f'&&width>700);
+        assert.equal(await page.locator('.hani-office-ceo-nameplate').count(),0);
         const homes=await page.evaluate(()=>[...document.querySelectorAll('#haniOfficeActors .hani-office-actor')].filter(a=>!a.hidden).map(a=>{
           const person=HaniBuildingScene.canon.people.find(p=>p.id===a.dataset.person),anchor=HaniBuildingScene.anchors.get(person.homeAnchor),map=document.querySelector('#haniOfficeMap'),box=map.getBoundingClientRect(),r=a.getBoundingClientRect(),x=(r.left+r.width*.5-box.left)/box.width*100,y=(r.top+r.height*61/64-box.top)/box.height*100,z=HaniBuildingScene.art.floors[anchor.floor].homeZones[anchor.room];
           const furniture=HaniBuildingScene.art.floors[anchor.floor].homeFurniture[anchor.id],bounds=furniture.seatBounds,px=x*1672/100,py=y*941/100;
@@ -262,7 +271,7 @@ test(`Edge: ${process.argv.includes('--final-polish')?'390/1440 light/dark':proc
           assert.match(await yoonseul.textContent(),/라이프 줄 다섯 번째 · 윤슬 입사 예정 빈 책상/);
           assert.equal(await page.locator('.hani-office-room-plate[title*="윤슬"]').count(),0);
         }
-        if(floor==='4f')assert.ok(requests.filter(r=>/building\/.*\.webp$/.test(r)).every(r=>r.includes('4f')),'only the visible initial floor is loaded');
+        if(floor==='4f')assert.ok(requests.filter(r=>/building\/floor-.*\.webp$/.test(r)).every(r=>r.includes('4f')),'only the visible initial floor is loaded');
         const png=`${width}-${theme}-${floor}.png`;await page.locator('#haniOfficeLive').screenshot({path:path.join(evidence,png)});status.screenshots.push(png);status.checks.push({width,theme,floor,geometry,homes});
       }
       for(const [time,floor,mode] of [['12:05','4f','rest'],['10:05','2f','meeting']]){
@@ -276,10 +285,9 @@ test(`Edge: ${process.argv.includes('--final-polish')?'390/1440 light/dark':proc
       assert.ok(requests.every(r=>!r.includes('building-v2')));status.requests.push({width,theme,requests});await context.close();save();
     }
     // Failure injection is fulfilled with corrupt bytes to exercise decode errors without noisy expected 404 logs.
-    for(const failure of ['floor-4f-215.webp','signs-4f-215.webp','sprites-v2/hani.webp','spatial-contract.json','art-map-v1.json']){
+    for(const failure of ['floor-4f-217.webp','sprites-v2/hani.webp','spatial-contract.json','art-map-v1.json']){
       const {page,context}=await pageFor(390,'light','reduce',failure);
       if(['spatial-contract.json','art-map-v1.json'].includes(failure))assert.equal(await page.locator('[data-building-floor]').count(),4);
-      else if(failure.startsWith('signs-')){await page.waitForFunction(()=>document.querySelector('#haniOfficeMap').dataset.mask==='none');assert.equal(await page.locator('.hani-office-room-plate[data-mount]:not([hidden])').count(),0)}
       else await page.waitForFunction(f=>f.includes('sprites-v2')?document.querySelector('[data-person="hani"]').dataset.avatar==='chibi':document.querySelector('#haniOfficeMap').dataset.art==='fallback',failure);
       assert.equal(await page.locator('.hani-office-background').evaluate(i=>i.complete&&i.naturalWidth>0),true);
       assert.deepEqual(await page.evaluate(()=>officeWrites),[]);await context.close();status.checks.push({failure,result:'passed'});

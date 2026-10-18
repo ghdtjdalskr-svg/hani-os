@@ -1,3 +1,7 @@
+# 2026-10-18 · office-217 본사 표지판·책상 소품·1F (도연/Codex)
+
+`hani/office-217` / base `f2b7c11`, 원격 main `eea49dbe`의 office JS/CSS/art-map base 일치 확인. 전 층 작은 차콜 영한 플레이트·금색 명판/회장님 자리 제거, 투명 소품19종·1F CI/업무 칸막이와 신규 배경4개 구현. **building21·v2 18·seats12·actions15·staff10 및 보호 owner/무쓰기/version/cache 검사 PASS**(공통 import 중복 포함). 캡처10장은 최종2F/4F 제거 전 근거로만 보존. 최종 browser spawn EPERM/숨김 Edge 정책 거절로 재검증 차단, 전체 browser PASS 아님. v216 유지·Storage/Cloud·main/배포 변경 없음. Git index.lock 쓰기 거절로 **미커밋·미push**, 신규24이미지 seed PR 선행 필요. Notion 결과 append는 approval policy never 거절로 갱신 대기. 상세 미검증은 [인수인계](handoffs/2026-10-18-office-217.md) 참조. 아래 과거·타 담당 기록 보존.
+
 # 2026-10-18 · office-v2-215 아트 경로 정합성 (도연/Codex)
 
 `hani/office-v2-215` / HEAD `f04079d`, GitHub 최신 main `1d212cf` 확인. 서윤 staged13파일 보존, engine의 옛 v1 성공 fixture와 browser URL 비교·optional-art 분류를 `-215`로 정정(5F v1 유지). **office 정적17·staff10·building21·seats12 PASS; 실제 Edge는 spawn EPERM으로 차단, 전체 browser PASS 아님.** v1 기존4개/5F main blob 일치, 해시·크기·용량/기존 검증·수정 밖 EOL 보존. 버전214/cache·Storage·Cloud·main/배포 변경 없음. `git add` index.lock 권한 거절로 **미커밋**, 기존 index 그대로·추가 수정 worktree 보존. 신규 -2154개 main seed 및 실제 Edge 재검사는 서윤 인계. Notion 계획 read-back 완료, 최종 append는 자동 승인 policy never 거절로 갱신 대기. [인수인계](handoffs/2026-10-18-office-art-paths-215.md). 아래 과거·타 담당 기록 보존.

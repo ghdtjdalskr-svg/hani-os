@@ -5,7 +5,9 @@ import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 const read=file=>fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
 const main=read('hani-main.js'),hub=read('hani-organization-hub.js');
-const baseDir=path.resolve(process.argv[2]||path.join(import.meta.dirname,'../.ai-budget-private/ui-203b/base'));
+// Shared runners pass Playwright/browser paths; preservation fixtures are separate.
+const firstArg=process.argv[2],browserHarness=firstArg&&path.basename(firstArg)==='index.mjs';
+const baseDir=path.resolve((!browserHarness&&firstArg)||process.env.HANI_UI203B_TEST_BASELINE||path.join(import.meta.dirname,'../.ai-budget-private/ui-203b/base'));
 const baselineFile=file=>fs.existsSync(path.join(baseDir,file))?fs.readFileSync(path.join(baseDir,file),'utf8'):execFileSync('git',['show','HEAD:'+file],{encoding:'utf8',maxBuffer:64*1024*1024});
 const nav=main.slice(main.indexOf('const NAV_NEW_DATES='),main.indexOf('function renderNavNewBadges'));
 const ctx=vm.createContext({});vm.runInContext(nav,ctx);
@@ -58,7 +60,7 @@ assert.equal(ctx.organizationOverviewData(null,runtimeHistory.window.HANI_DEVELO
 // Execute the real overview renderer and refresh with changing in-memory state.
 const slot={innerHTML:''};ctx.root={querySelector:()=>slot};ctx.window={HANI_DEVELOPMENT_HISTORY_V1:{entries:[{id:'v2.9.1',date:'2026-01-01',status:'released',title:'<script>배포</script>'}]},HaniOrganizationRoster:{people:[{id:'hani',name:'하니',rank:'전무',team:'strategy',group:'M9',role:'전략'}]}};
 ctx.teamOf=()=>({name:'전략기획실'});ctx.state={boardPosts:[],boardComments:[]};
-vm.runInContext(hub.match(/  const esc =[^\n]+/)[0]+'\n'+hub.match(/  const portrait =[^\n]+/)[0]+'\n'+hub.slice(hub.indexOf('  function renderOverview'),hub.indexOf('  function renderTeamPanels')),ctx);
+vm.runInContext(hub.match(/  const esc =[^\n]+/)[0]+'\n'+hub.slice(hub.indexOf('  const portraitFiles='),hub.indexOf('  const avatar ='))+'\n'+hub.slice(hub.indexOf('  function renderOverview'),hub.indexOf('  function renderTeamPanels')),ctx);
 ctx.renderOverview();assert.match(slot.innerHTML,/이번 달 게시판 활동이 쌓이면/);assert.match(slot.innerHTML,/HANI GROUP 연혁/);assert.match(slot.innerHTML,/숫자로 보는 HANI/);
 ctx.state={boardPosts:[post('live','hani',new Date().toISOString())],boardComments:[]};ctx.renderOverview();
 assert.match(slot.innerHTML,/게시글·댓글 1건/);assert.match(slot.innerHTML,/&lt;script&gt;배포&lt;\/script&gt;/);assert.doesNotMatch(slot.innerHTML,/<script>배포/);

@@ -25,7 +25,7 @@ for(let i=0;i<ids.length;i++){
  for(const label of ['PERSONALITY','CORE AREA','SEONGMIN','VISUAL','BOUNDARY'])assert.ok(c.sections.find(s=>s.label===label)?.text);
  for(const html of [album.page(),album.detail(c)]){assert.ok(html.includes(names[i]));assert.match(html,/입사 예정/);assert.doesNotMatch(html,/undefined/)}
  for(const n of [720,256,128]){
-  const file=`assets/profiles/${n===720?'':'thumb/'}hani-profile-${id}${n===720?'':'-'+n}.webp`,b=fs.readFileSync(path.join(root,file));
+  const file=`assets/profiles/${n===720?'':'thumb/'}hani-profile-${id}-v2${n===720?'':'-'+n}.webp`,b=fs.readFileSync(path.join(root,file));
   assert.equal(b.toString('ascii',0,4),'RIFF');assert.equal(b.toString('ascii',8,12),'WEBP');
   const base=path.join(root,n===720?'assets/profiles':'assets/profiles/thumb');
   const sizes=fs.readdirSync(base).filter(f=>/^hani-profile-/.test(f)&&!ids.some(id=>f.includes('-'+id))&&(n===720?/\.webp$/:new RegExp('-'+n+'\\.webp$')).test(f)).map(f=>fs.statSync(path.join(base,f)).size);
@@ -58,7 +58,7 @@ try{
   const ctx=await browser.newContext({viewport:{width,height:1000},reducedMotion:'reduce',serviceWorkers:'block'});
   ctx.setDefaultTimeout(15000);
   await ctx.route('**/*',r=>new URL(r.request().url()).origin===origin?r.continue():r.abort());
-  if(failed)await ctx.route(/hani-profile-(daon|yoonseul)(-\d+)?\.webp/,r=>r.fulfill({status:404,body:''}));
+  if(failed)await ctx.route(/hani-profile-(daon|yoonseul)-v2(-\d+)?\.webp/,r=>r.fulfill({status:404,body:''}));
   const page=await ctx.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(origin);await page.waitForFunction(()=>typeof unlockLoginGate==='function'&&window.HaniOrganizationRoster&&globalThis.HaniBuildingScene);
   await page.evaluate(()=>{unlockLoginGate();cloudStopAutoSync();document.documentElement.dataset.theme='light';document.documentElement.dataset.finish='pure-white';document.body.dataset.finishActive='true';window.newstaffBefore=JSON.stringify(state);window.newstaffWrites=[];for(const m of ['setItem','removeItem','clear']){const original=Storage.prototype[m];Storage.prototype[m]=function(...args){newstaffWrites.push({method:m,key:args[0]});if(m==='setItem'&&args[0]==='hani_os_navigation_v1')return original.apply(this,args);throw Error('Unexpected storage write '+m)}};save=commit=()=>{throw Error('Unexpected save')};showView('organization/people');});
