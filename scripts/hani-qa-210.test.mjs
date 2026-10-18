@@ -122,7 +122,8 @@ test('retained EOL, all versions/cache tags, id literals, storage and canonical 
     if(file==='hani-board.js')for(const name of ['viewChange','savePost','saveComment','deleteOwn','toggleLike'])assert.equal(block(current,name),block(old,name),name+' persistence unchanged');
   }
   assert.equal(read('hani-drive-vault.js'),readBaseline('hani-drive-vault.js'));
-  assert.equal(read('index.html'),readBaseline('index.html'));
+  // newface-217 changes only Sua's preload; retain exact-byte checking for everything else.
+  assert.equal(read('index.html'),readBaseline('index.html').replace('href="./assets/profiles/hani-profile-sua.webp"','href="./assets/profiles/hani-profile-sua-id.webp"'));
 });
 
 test('write compact Node evidence after successful assertions',()=>{

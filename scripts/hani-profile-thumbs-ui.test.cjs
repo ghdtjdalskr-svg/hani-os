@@ -29,13 +29,13 @@ const server=http.createServer((req,res)=>{
     return {
       thumbs,
       banner:banner?getComputedStyle(banner).backgroundImage:"",
-      originalsIntact:Object.values(canonicalProfileImages).every(v=>/^\.\/assets\/profiles\/hani-profile-[a-z]+\.webp$/.test(v)),
+      originalsIntact:Object.values(canonicalProfileImages).every(v=>/^\.\/assets\/profiles\/hani-profile-[a-z]+(?:-v2|-id)?\.webp$/.test(v)),
       loginPhoto:(document.querySelector(".login-character-photo")?.style.backgroundImage)||""
     };
   });
-  assert.ok(result.thumbs.length>=9&&result.thumbs.every(v=>/\/thumb\/hani-profile-[a-z]+-256\.webp$/.test(v)),"every small-avatar entry points at a 256px thumbnail");
-  assert.ok(result.originalsIntact,"canonical 720px originals unchanged");
-  if(result.banner&&result.banner!=="none")assert.match(result.banner,/thumb\/hani-profile-[a-z]+-256\.webp/,"AI banner avatar uses a thumbnail");
+  assert.ok(result.thumbs.length>=9&&result.thumbs.every(v=>/\/thumb\/hani-profile-[a-z]+(?:-v2|-id)?-256\.webp$/.test(v)),"every small-avatar entry points at a 256px thumbnail");
+  assert.ok(result.originalsIntact,"canonical portraits use 720px WebP assets");
+  if(result.banner&&result.banner!=="none")assert.match(result.banner,/thumb\/hani-profile-[a-z]+(?:-v2|-id)?-256\.webp/,"AI banner avatar uses a thumbnail");
   if(result.loginPhoto)assert.doesNotMatch(result.loginPhoto,/thumb\//,"large login photo keeps the original");
 
   const statuses=await page.evaluate(async list=>Promise.all(list.map(u=>fetch(u).then(r=>r.status))),[...new Set(result.thumbs)]);

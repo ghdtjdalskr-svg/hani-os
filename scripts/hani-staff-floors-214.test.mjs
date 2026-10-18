@@ -53,7 +53,7 @@ test('28 art files exist, have the expected WebP dimensions and bounded sizes', 
 
 test('existing organization, board, remote and office render paths resolve every staff portrait', () => {
   // Execute the unchanged owner helpers with canonical roster input, without mounting or saving.
-  const portraitLine=read('hani-organization-hub.js').split('\n').find(s=>s.includes('const portrait ='));
+  const portraitLine=read('hani-organization-hub.js').split('\n').filter(s=>s.includes('const portraitFiles=')||s.includes('const portrait =')).join('\n');
   const portrait=vm.runInNewContext(portraitLine+'; portrait;');
   const board=read('hani-board.js'), start=board.indexOf('  function avatar('), end=board.indexOf('  function authorCard(',start);
   const avatar=vm.runInNewContext(board.slice(start,end)+'; avatar;',{
@@ -63,14 +63,15 @@ test('existing organization, board, remote and office render paths resolve every
   const ui=read('hani-ui-v02992.js'), ps=ui.indexOf('const PAGE_CHARACTER_PROFILES='), pe=ui.indexOf('// Session-memory only:',ps);
   const pageProfiles=vm.runInNewContext(ui.slice(ps,pe)+'; PAGE_CHARACTER_PROFILES;');
   for(const p of roster.people) {
-    const full=`./assets/profiles/hani-profile-${p.id}.webp`;
+    const suffix=({daon:'-v2',yoonseul:'-v2',sua:'-id'})[p.id]||'';
+    const full=`./assets/profiles/hani-profile-${p.id}${suffix}.webp`;
     assert.deepEqual(refs(portrait(p)),[full]);
-    assert.deepEqual(refs(avatar(p.id)),[`./assets/profiles/thumb/hani-profile-${p.id}-128.webp`]);
-    assert.equal(building.profile(p.id),`./assets/profiles/thumb/hani-profile-${p.id}-256.webp`);
+    assert.deepEqual(refs(avatar(p.id)),[`./assets/profiles/thumb/hani-profile-${p.id}${suffix}-128.webp`]);
+    assert.equal(building.profile(p.id),`./assets/profiles/thumb/hani-profile-${p.id}${suffix}-256.webp`);
     for(const ref of [...refs(portrait(p)),...refs(avatar(p.id)),building.profile(p.id)]) assert.ok(exists(ref),ref);
   }
   for(const [id,p] of Object.entries(pageProfiles)) {
-    assert.equal(p.image,`./assets/profiles/hani-profile-${id}.webp`);
+    assert.equal(p.image,`./assets/profiles/hani-profile-${id}${['daon','yoonseul'].includes(id)?'-v2':''}.webp`);
     assert.ok(exists(p.image));
   }
   const archive=read('hani-character-archive.js');
@@ -96,17 +97,17 @@ test('runtime closure has no missing references; dynamic art also exists and fit
   // Dynamic art is seeded separately; this does not build or certify a release package.
 });
 
-test('actual office renderer applies 1F–4F 215 and 5F v1 backgrounds without mismatched masks and reuses actor slots', async () => {
+test('actual office renderer applies 217 plate-free backgrounds without mismatched masks and reuses actor slots', async () => {
   const f=officeFixture('09:00',true,exists);
   const actors=[...f.ids.get('haniOfficeActors').children];
   for(const floor of ['4f','3f','2f','1f','5f','4f']) {
     f.click(floor);
     await new Promise(resolve=>setImmediate(resolve));
-    const src=floor==='5f'?'./assets/building/floor-5f-v1.webp':`./assets/building/floor-${floor}-215.webp`;
+    const src=['1f','2f','4f','5f'].includes(floor)?`./assets/building/floor-${floor}-217.webp`:`./assets/building/floor-${floor}-215.webp`;
     assert.equal(f.map.dataset.art,'floor');
     assert.equal(f.map.querySelector('.hani-office-background').src,src);
     const patches=f.map.querySelectorAll('.hani-office-foreground').filter(image=>!image.hidden);
-    assert.equal(f.map.dataset.mask,floor==='5f'?'none':'interior');assert.equal(patches.length,floor==='5f'?0:1);if(patches.length)assert.equal(patches[0].src,`./assets/building/signs-${floor}-215.webp`);
+    assert.equal(f.map.dataset.mask,'none');assert.equal(patches.length,0);
     assert.deepEqual(f.ids.get('haniOfficeActors').children,actors);
     for(const actor of f.visible()) {
       const image=actor.querySelector('.hani-office-avatar');
@@ -115,7 +116,7 @@ test('actual office renderer applies 1F–4F 215 and 5F v1 backgrounds without m
   }
 });
 
-test('real browser: 1F–4F 215 and 5F v1 backgrounds, staff portraits and no overflow at 412/884/1440', async t => {
+test('real browser: 217 plate-free backgrounds, staff portraits and no overflow at 412/884/1440', async t => {
   const modulePath=process.argv[2]||process.env.HANI_PLAYWRIGHT_MODULE||path.join(os.homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs');
   const executablePath=process.argv[3]||process.env.HANI_CHROME||[
     'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
@@ -169,7 +170,7 @@ test('real browser: 1F–4F 215 and 5F v1 backgrounds, staff portraits and no ov
       const host=await page.locator('#haniOfficeMap').elementHandle();
       for(const floor of ['4f','3f','2f','1f','5f']) {
         await page.locator(`[data-building-floor="${floor}"]`).click();
-        await page.waitForFunction(f=>{const map=document.querySelector('#haniOfficeMap'),img=map.querySelector('.hani-office-background');return map.dataset.floor===f&&map.dataset.art==='floor'&&['none','interior'].includes(map.dataset.mask)&&img.getAttribute('src')===(f==='5f'?'./assets/building/floor-5f-v1.webp':`./assets/building/floor-${f}-215.webp`)&&img.complete&&img.naturalWidth===1672;},floor);
+        await page.waitForFunction(f=>{const map=document.querySelector('#haniOfficeMap'),img=map.querySelector('.hani-office-background');return map.dataset.floor===f&&map.dataset.art==='floor'&&['none','interior'].includes(map.dataset.mask)&&img.getAttribute('src')===(['1f','2f','4f','5f'].includes(f)?`./assets/building/floor-${f}-217.webp`:`./assets/building/floor-${f}-215.webp`)&&img.complete&&img.naturalWidth===1672;},floor);
         assert.equal(await host.evaluate(node=>node===document.querySelector('#haniOfficeMap')),true,'persistent map slot');
         await page.locator('#haniOfficeMap .hani-office-foreground:visible').evaluateAll(images=>Promise.all(images.map(img=>img.decode())));
         await page.locator('#haniOfficeActors .hani-office-avatar:visible').evaluateAll(images=>Promise.all(images.map(img=>img.decode())));

@@ -34,5 +34,5 @@ test('cap and overflow retain every entry and prioritize visitors/meeting leads'
 });
 test('existing assets resolve for all staff; per-floor art config has fallback',()=>{
  for(const id of api.floors.flatMap(f=>f.residents))assert.ok(fs.existsSync(new URL('../'+api.profile(id),import.meta.url)),id);
- for(const f of api.floors){assert.equal(f.background,(f.id==='5f'?'./assets/building/floor-5f-v1.webp':`./assets/building/floor-${f.id}-215.webp`));assert.ok(fs.existsSync(new URL('../'+f.fallback,import.meta.url)))}
+ for(const f of api.floors){assert.equal(f.background,(['1f','2f','4f','5f'].includes(f.id)?`./assets/building/floor-${f.id}-217.webp`:`./assets/building/floor-${f.id}-215.webp`));assert.ok(fs.existsSync(new URL('../'+f.fallback,import.meta.url)))}
 });

@@ -33,9 +33,8 @@ test('17 staff have unique named home chairs on their canonical floor; CEO reser
   assert.equal(api.homeSeat('yuna').id,'desk_yuna');
   assert.equal(api.homeSeat('chairman'),undefined);
   const f=fixture();
-  assert.equal(f.map.querySelector('.hani-office-ceo-nameplate').textContent,'회장님 자리');
-  assert.equal(f.map.querySelector('.hani-office-ceo-nameplate').hidden,false);
-  f.click('3f');assert.equal(f.map.querySelector('.hani-office-ceo-nameplate').hidden,true);
+  assert.equal(f.map.querySelector('.hani-office-ceo-nameplate'),null);
+  f.click('3f');assert.equal(f.map.querySelector('.hani-office-ceo-nameplate'),null);
 });
 
 test('every chair preserves canon ownership and uses its explicit v1 furniture footprint',()=>{
