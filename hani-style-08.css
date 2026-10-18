@@ -161,6 +161,19 @@
 .study-orphan-archive summary{cursor:pointer;font-size:13px;font-weight:800}
 .study-orphan-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0}
 .study-orphan-row label{display:flex;align-items:center;gap:6px;font-size:12px}.study-orphan-row select{max-width:240px}
+/* dash-217: Data Hub owns persistent month movement/status slots below the value. */
+#lifeMarketGrid .home-kpi[data-market-card="true"]{grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(7,auto)!important;align-content:start;row-gap:5px;height:auto;min-height:218px!important}
+#lifeMarketGrid .home-kpi[data-market-card="true"]>.kpi-head{grid-row:1;min-width:0;flex-wrap:wrap}
+#lifeMarketGrid .home-kpi[data-market-card="true"]>strong{grid-column:1/-1;grid-row:2;min-width:0;white-space:normal;overflow-wrap:anywhere;font-size:clamp(25px,2.3vw,35px)!important;line-height:1.15;margin:8px 0 0}
+#lifeMarketGrid .home-kpi[data-market-card="true"]>.life-card-move{grid-column:1/-1;grid-row:3;display:block!important;min-width:0;margin:0;font-size:15px!important;font-weight:850;line-height:1.45!important;white-space:normal;overflow-wrap:anywhere}
+#lifeMarketGrid .home-kpi[data-market-card="true"]>.life-card-market{grid-column:1/-1;grid-row:4;justify-self:start;max-width:100%;padding:3px 8px;border-radius:8px;background:color-mix(in srgb,currentColor 9%,transparent);font-size:11px;font-weight:800;line-height:1.5;white-space:normal;overflow-wrap:anywhere}
+#lifeMarketGrid .home-kpi[data-market-card="true"]>small{grid-column:1/-1;grid-row:5;min-width:0;font-size:11px!important;line-height:1.5!important;white-space:normal;overflow-wrap:anywhere;overflow:visible;text-overflow:clip}
+#lifeMarketGrid .home-kpi[data-market-card="true"]>.life-card-quality{grid-row:6;color:var(--muted,#687082)!important;font-size:10px!important;font-weight:500}
+#lifeMarketGrid .home-kpi[data-market-card="true"]>.life-card-quality[hidden]{display:none!important}
+#lifeMarketGrid .home-kpi[data-market-card="true"]>.home-mini-chart{grid-column:1/-1;grid-row:7;width:100%;height:28px;min-height:0;margin:0;position:static}
+#lifeMarketGrid .home-kpi[data-market-card="true"]>.up{color:#c13750!important}
+#lifeMarketGrid .home-kpi[data-market-card="true"]>.down{color:#2966b9!important}
+#lifeMarketGrid .home-kpi[data-market-card="true"]>.flat{color:var(--muted,#687082)!important}
 /* The final text reserves its original space throughout the count animation. */
 .hani-motion-number{position:relative}
 .hani-motion-number-final{opacity:0}.hani-motion-number-overlay{position:absolute;inset:0;white-space:nowrap;pointer-events:none;font-variant-numeric:tabular-nums}
@@ -172,3 +185,10 @@
 #app :is(button,.card[tabindex],[role="button"]):focus-visible{outline:2px solid var(--primary,#7569e8);outline-offset:3px}
 @media(prefers-reduced-motion:no-preference){#app :is(button:not(:disabled),a[href],summary,[role="button"],[data-go],.card[onclick],.archive-card[onclick]):active:not([aria-disabled="true"]){scale:.98}}
 @media(prefers-reduced-motion:reduce){.hani-motion-burst{display:none!important}#app :is(button,.card,.archive-card):active{scale:none!important}.hani-motion-burst i{animation:none!important}}
+
+/* dash-217: settlement has text + action, without the update card icon column. */
+#settlementQuickCheck .home-update-item{grid-template-columns:minmax(0,1fr) auto;gap:12px;margin-top:8px;min-width:0;color:var(--text-primary);background:var(--surface-panel)}
+#settlementQuickCheck .home-update-item>div{min-width:0;white-space:normal;word-break:keep-all;overflow-wrap:break-word}
+#settlementQuickCheck .home-update-item b{display:block;line-height:1.5}
+#settlementQuickCheck .home-update-item p{font-size:12px;color:var(--text-secondary,var(--muted));line-height:1.5}
+#settlementQuickCheck .home-update-item>span{white-space:nowrap;font-size:12px;color:var(--text-primary)}

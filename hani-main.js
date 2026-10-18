@@ -909,7 +909,9 @@ function createDashboardRuntime({verify, getBinding, getContext, getSource, cano
         const baseline = consumedRows.find(r => r.month === previousMonth(basisMonth) && r.metric_id === def.metric_id);
         const goal = resolveGoal(goals, def, {month: basisMonth, asOf, evaluationAt: now});
         return {key: DASHBOARD_SLOTS.find(s => s[1] === def.metric_id)[0], row, monthlyEntry,
-          comparison: compareMetric(row, baseline, def, goal), goal};
+          comparison: compareMetric(row, baseline, def, goal), goal,
+          // Display-only movement reuses the comparator; values and goals stay unchanged.
+          monthComparison: compareMetric(row, baseline, {...def, comparison: 'exact_previous_month'})};
       });
       active = {context, source: sourceRef, asOf, view: {status: 'VERIFIED', metrics, cache, month, asOf}};
       onChange(); return peek();
@@ -927,7 +929,7 @@ function dashboardText(metric) {
   const unit = {KRW: '원', kg: 'kg', book: '권', 'steps/day': '보', '%': '%'}[row.unit] || row.unit;
   const value = row.value === null ? '기록 없음' : number(row.value) + unit;
   const signed = value => (value > 0 ? '+' : '') + number(value);
-  let comparison = 'Target not set';
+  let comparison = '목표 미설정';
   if (c.comparison_type === 'exact_previous_month') comparison = c.baseline ?
     `전월 ${number(c.baseline.value)}${unit} · ${signed(c.delta_absolute)}${unit}` +
     (c.delta_percent === null ? ' · 비율 비교 불가' : ` (${signed(c.delta_percent)}%)`) : '전월 데이터 없음';
@@ -1558,7 +1560,7 @@ const aiMap={
 // One canonical portrait per person. Keep legacy runtime keys as aliases only.
 const canonicalProfileImages=Object.freeze({
   hani:"./assets/profiles/hani-profile-hani.webp",
-  sua:"./assets/profiles/hani-profile-sua.webp",
+  sua:"./assets/profiles/hani-profile-sua-id.webp",
   hina:"./assets/profiles/hani-profile-hina.webp",
   jieun:"./assets/profiles/hani-profile-jieun.webp",
   naeun:"./assets/profiles/hani-profile-naeun.webp",
@@ -1570,8 +1572,8 @@ const canonicalProfileImages=Object.freeze({
   dohyun:"./assets/profiles/hani-profile-dohyun.webp",
   serin:"./assets/profiles/hani-profile-serin.webp",
   yuri:"./assets/profiles/hani-profile-yuri.webp",
-  daon:"./assets/profiles/hani-profile-daon.webp",
-  yoonseul:"./assets/profiles/hani-profile-yoonseul.webp",
+  daon:"./assets/profiles/hani-profile-daon-v2.webp",
+  yoonseul:"./assets/profiles/hani-profile-yoonseul-v2.webp",
   arin:"./assets/profiles/hani-profile-arin.webp"
 });
 const agentImages=Object.freeze({...canonicalProfileImages,nauen:canonicalProfileImages.naeun,suyeon:canonicalProfileImages.sooyeon});
@@ -5760,6 +5762,33 @@ async function dataHubRefresh(){
   });
   await dataHubRuntime.refresh();dataHubRenderDashboard();
 }
+// Presentation only: never fill a missing comparison from legacy/unverified source rows.
+function dataHubLifeCardPresentation(metric){
+  if(!metric)return {change:"원본 검증 대기",tone:"flat",market:"⏳ 검증 대기",marketBasis:"원본 검증 후 표시합니다.",quality:""};
+  const {row,comparison}=metric,c=metric.monthComparison||(comparison.comparison_type==="exact_previous_month"?comparison:null);
+  const valid=row.value!==null&&Number.isFinite(row.value)&&["CONFIRMED","PARTIAL"].includes(row.status);
+  const comparable=valid&&c?.baseline&&Number.isFinite(c.delta_absolute);
+  const number=value=>Number(value).toLocaleString("ko-KR",{maximumFractionDigits:2});
+  const signed=value=>(value>0?"+":"")+number(value);
+  const unit={KRW:"원",kg:"kg",book:"권","steps/day":"보","%":"%p"}[row.unit]||row.unit;
+  const lowerBetter=["ne100","jispi"].includes(metric.key);
+  const direction=comparable?lifeDirection([{value:c.baseline.value},{value:row.value}],{lowerBetter}):0;
+  const change=!valid?(row.status==="STALE"?"기록을 확인해 주세요":"기록을 기다리고 있어요"):!comparable?"전월 기록이 없어요":
+    `전월 대비 ${c.delta_absolute>0?"▲":c.delta_absolute<0?"▼":"↔"} ${signed(c.delta_absolute)}${unit} (${c.delta_percent===null?"비율 비교 불가":signed(c.delta_percent)+"%"})`;
+  // Existing lifeDirection +1/0/-1 maps to 상승장/보합/하락장. No magnitude thresholds.
+  let market=!valid?"⏳ 기록 대기":!comparable?"⏳ 비교 대기":direction>0?"📈 상승장":direction<0?"📉 하락장":"↔ 보합";
+  let marketBasis="전월 대비 · 체중·소비는 감소가 좋은 흐름입니다.",marketDirection=direction;
+  // Only an approved positive period budget enables the existing JISPI thresholds.
+  // Without a budget, use the month-direction mapping above.
+  if(valid&&metric.key==="jispi"&&Number.isFinite(comparison.target)&&comparison.target>0){
+    market=ledgerJispiStatus(row.value,comparison.target);marketBasis="승인된 해당 기간 예산 대비 · 기존 JISPI 장세 기준";
+    marketDirection=/보합/.test(market)?0:lifeDirection([{value:comparison.target},{value:row.value}],{lowerBetter:true});
+  }
+  return {change,tone:direction>0?"up":direction<0?"down":"flat",market,marketBasis,
+    marketTone:marketDirection>0?"up":marketDirection<0?"down":"flat",
+    quality:valid&&(row.status==="PARTIAL"||c?.baseline?.status==="PARTIAL")?"기록 일부만 있어요":"",
+    qualityDetail:c?.baseline?.status==="PARTIAL"?`전월 ${c.baseline.month} 기록도 일부만 있어요.`:""};
+}
 function dataHubRenderDashboard(){
   window.HANI_GOAL_PROGRESS?.render();
   const api=window.HANI_DATA_HUB,view=dataHubRuntime?.peek()||{status:"OWNER_BINDING_BLOCKED",metrics:[],cache:"DISABLED"};
@@ -5767,6 +5796,7 @@ function dataHubRenderDashboard(){
     ["hinaJones","","homeBooks","homeContentMeta"],["harukei","","homeExerciseSteps","homeExerciseAvg"],
     ["jispi","","homeJispi","homeJispiMeta"],["hinkei","","homeHinkei","homeHinkeiMeta"]];
   const text=metric=>api?.dashboardText(metric)||{value:"—",comparison:"원본 검증 대기",status:"OWNER_BINDING_BLOCKED"};
+  const qualityText=display=>({OWNER_BINDING_BLOCKED:"로그인·원본 확인이 필요해요",CONFIRMED:"확인된 기록이에요",PARTIAL:"기록 일부만 있어요",NO_DATA:"해당 월 기록이 없어요",STALE:"원본을 다시 확인해 주세요"})[display.status]||"원본 확인이 필요해요";
   if($("home"))$("home").dataset.sourceVerified=String(view.status==="VERIFIED");
   const month=dataHubSelectedMonth||today().slice(0,7);
   if($("dataHubMonth")){
@@ -5790,12 +5820,28 @@ function dataHubRenderDashboard(){
     const metric=view.metrics.find(m=>m.key===key),display=text(metric);
     if($(valueId)){if(window.HaniMotion)window.HaniMotion.countUp($(valueId),display.value,valueId);else $(valueId).textContent=display.value;}
     if(metric?.goal?.status==="RESOLVED")window.HaniMotion?.trackGoal([metric.goal.goal_id,metric.goal.goal_revision,metric.row.month].join(":"),metric.comparison.achievement_rate,$(valueId)?.getBoundingClientRect(),"home");
-    if($(metaId))$(metaId).textContent=(display.basis?display.basis+" · ":"")+display.comparison+" · "+display.status+
-      (metric?.row.observed_days!==undefined?` · 관측 ${metric.row.observed_days}일`:"")+
-      (metric?.row.reasons.includes("ZERO_STEPS_AMBIGUITY")?" · 0보 입력 구분 불가":"");
+    const presentation=dataHubLifeCardPresentation(metric),detail=[display.detail||display.comparison,presentation.qualityDetail].filter(Boolean).join(" · ");
+    if($(metaId)){
+      $(metaId).textContent=[display.basis,metric&&metric.comparison.comparison_type!=="exact_previous_month"?display.comparison:""].filter(Boolean).join(" · ");
+      $(metaId).title=detail;
+      $(metaId).setAttribute("aria-label",detail);
+    }
     const card=document.querySelector(`#lifeMarketGrid [data-life-index="${key}"]`);
-    if(card){card.dataset.metricStatus=display.status;card.title=display.detail||display.comparison;
-      card.querySelectorAll('.life-card-spark,.life-card-move,.life-card-graph-empty').forEach(el=>{el.textContent=""});
+    if(card){card.dataset.metricStatus=display.status;card.dataset.marketCard="true";card.title=detail;
+      // Persistent slots owned by this renderer; selection/refresh updates in place.
+      let move=card.querySelector('.life-card-move');
+      if(!move){move=document.createElement('span');move.className='life-card-move';$(valueId)?.after(move)}
+      move.className='life-card-move '+presentation.tone;
+      move.textContent=presentation.change;
+      let badge=card.querySelector('.life-card-market');
+      if(!badge){badge=document.createElement('span');badge.className='life-card-market';move.after(badge)}
+      badge.className='life-card-market '+(presentation.marketTone||'flat');badge.textContent=presentation.market;badge.title=presentation.marketBasis;
+      badge.setAttribute('aria-label',presentation.market+' · '+presentation.marketBasis);
+      let quality=card.querySelector('.life-card-quality');
+      if(!quality){quality=document.createElement('small');quality.className='life-card-quality';card.append(quality)}
+      quality.textContent=presentation.quality;quality.hidden=!presentation.quality;quality.title=detail;
+      quality.setAttribute('aria-label',detail);
+      card.querySelectorAll('.life-card-spark,.life-card-graph-empty').forEach(el=>{el.textContent=""});
       const mini=card.querySelector('.home-mini-chart');
       if(mini){const values=metric?[...(metric.comparison.baseline?[metric.comparison.baseline.value]:[]),
         ...(metric.row.value!==null?[metric.row.value]:[])]:[];
@@ -5803,7 +5849,8 @@ function dataHubRenderDashboard(){
   }
   const status=$("dataHubStatus");if(status)status.textContent=view.status==="VERIFIED"?
     `원본 검증 완료 · ${view.month} · Data Hub · ${view.cache==="MEMORY_ONLY"?"메모리 계산 (캐시 사용 불가)":"검증된 파생 캐시"} · 원본 변경 없음`:
-    "원본 검증 대기 · Local·Cloud 불일치 시 캐시 비활성화"+(view.reason?` · 확인 코드: ${view.reason}`:"");
+    "로그인·원본 확인이 필요해요 · 지표 검증·갱신을 눌러 주세요";
+  if(status)status.title=[view.status,view.reason].filter(Boolean).join(" · ");
   const selected=view.metrics.find(m=>m.key===activeLifeIndex),display=text(selected);
   const slot=slots.find(s=>s[0]===activeLifeIndex)||slots[0];
   const labels={hasdaq:["HASDAQ · FINANCE","확인된 투자계좌 총액","investment"],ne100:["N&E 100 · HEALTH","당월 최근 체중","diet"],
@@ -5815,18 +5862,18 @@ function dataHubRenderDashboard(){
   if($("homeAnalysisDetail"))$("homeAnalysisDetail").dataset.go=label[2];
   if($("homeTrendTotal"))$("homeTrendTotal").textContent=display.value;
   if($("homeTrendChange"))$("homeTrendChange").textContent=display.comparison;
-  if($("homeTrendBadge")){$("homeTrendBadge").hidden=!selected;$("homeTrendBadge").textContent=display.status}
+  if($("homeTrendBadge")){$("homeTrendBadge").hidden=!selected;$("homeTrendBadge").textContent=qualityText(display);$("homeTrendBadge").title=display.status}
   const points=selected?[...(selected.comparison.baseline?[{label:selected.comparison.baseline.month,value:selected.comparison.baseline.value}]:[]),
     ...(selected.row.value!==null?[{label:selected.row.month,value:selected.row.value}]:[])]:[];
   if($("homeTrendSvg"))$("homeTrendSvg").innerHTML=homeTrendSvg(points);
   if($("homeTrendAxis"))$("homeTrendAxis").innerHTML=points.map(p=>`<span>${esc(p.label)}</span>`).join("");
   if($("homeTrendEmpty")){$("homeTrendEmpty").style.display=points.length?"none":"grid";$("homeTrendEmpty").textContent=selected?"해당 월 데이터 없음":"원본 검증 대기"}
-  if($("homeInvestGoal"))$("homeInvestGoal").textContent=selected?.comparison.target===null||!selected?"Target not set":String(selected.comparison.target);
+  if($("homeInvestGoal"))$("homeInvestGoal").textContent=selected?.comparison.target===null||!selected?"목표 미설정":String(selected.comparison.target);
   if($("homeLatestPeriod"))$("homeLatestPeriod").textContent=selected?.row.as_of||"—";
   if($("homeSecondaryKicker"))$("homeSecondaryKicker").textContent="MONTHLY METRIC";
   if($("homeSecondaryTitle"))$("homeSecondaryTitle").textContent=label[1]+" · 비교 기준";
   if($("homeMixDonut")){$("homeMixDonut").style.background="none";$("homeMixDonut").classList.add("secondary-widget-v02992");
-    const html=`<div class="secondary-widget-visual"><strong class="secondary-widget-value">${esc(display.value)}</strong></div><div class="secondary-widget-details"><div><small>비교</small><b>${esc(display.comparison)}</b></div><div><small>데이터 품질</small><b>${esc(display.detail||display.status)}</b></div></div>`;
+    const html=`<div class="secondary-widget-visual"><strong class="secondary-widget-value">${esc(display.value)}</strong></div><div class="secondary-widget-details"><div><small>비교</small><b>${esc(display.comparison)}</b></div><div><small>데이터 품질</small><b title="${esc([display.status,display.detail].filter(Boolean).join(" · "))}">${esc(qualityText(display))}</b></div></div>`;
     if($("homeMixDonut").dataset.hubHtml!==html){$("homeMixDonut").innerHTML=html;$("homeMixDonut").dataset.hubHtml=html}}
   if($("homeMixLegend"))$("homeMixLegend").textContent="";
 }
@@ -6780,7 +6827,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.216";
+const HANI_DISPLAY_VERSION="2.9.217";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];

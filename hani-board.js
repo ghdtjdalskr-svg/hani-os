@@ -91,7 +91,7 @@
   function avatar(id,size=28){
     const member=person(id),initial=escape(Array.from(member?.name||"?")[0]);
     const src=!member?"":id===actor()?"./assets/sprites-v2/seongmin.webp":
-      "./assets/profiles/thumb/hani-profile-"+member.id+"-128.webp";
+      ({daon:"./assets/profiles/thumb/hani-profile-daon-v2-128.webp",yoonseul:"./assets/profiles/thumb/hani-profile-yoonseul-v2-128.webp",sua:"./assets/profiles/thumb/hani-profile-sua-id-128.webp"})[member.id]||"./assets/profiles/thumb/hani-profile-"+member.id+"-128.webp";
     return '<span class="board-avatar-frame'+(size===40?' board-avatar-large':'')+(id===actor()?' board-avatar-chairman':'')+'" aria-hidden="true"><span class="board-avatar board-initial">'+initial+'</span>'+
       (src?'<img class="board-avatar" data-board-avatar src="'+escape(src)+'" alt="" loading="lazy" decoding="async" width="'+size+'" height="'+size+'">':'')+'</span>';
   }
