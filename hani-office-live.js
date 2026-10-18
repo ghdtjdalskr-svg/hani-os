@@ -16,7 +16,8 @@
   "use strict";
   const fallback="./assets/ai-approval-concepts/v3-office-background-empty-8-seats.webp";
   // Dynamic floor art is seeded on main separately from the runtime closure.
-  const FLOOR_ART=Object.freeze({"1f":"./assets/building/floor-1f-215.webp","2f":"./assets/building/floor-2f-215.webp","3f":"./assets/building/floor-3f-215.webp","4f":"./assets/building/floor-4f-215.webp","5f":"./assets/building/floor-5f-v1.webp"});
+  const FLOOR_ART=Object.freeze({"1f":"./assets/building/floor-1f-217.webp","2f":"./assets/building/floor-2f-217.webp","3f":"./assets/building/floor-3f-215.webp","4f":"./assets/building/floor-4f-217.webp","5f":"./assets/building/floor-5f-217.webp"});
+  const DESK_PROP_ART=Object.freeze({"hani":"./assets/building/props/hani-217.webp","yuna":"./assets/building/props/yuna-217.webp","jieun":"./assets/building/props/jieun-217.webp","haru":"./assets/building/props/haru-217.webp","naeun":"./assets/building/props/naeun-217.webp","hina":"./assets/building/props/hina-217.webp","minji":"./assets/building/props/minji-217.webp","sooyeon":"./assets/building/props/sooyeon-217.webp","sua":"./assets/building/props/sua-217.webp","seoyun":"./assets/building/props/seoyun-217.webp","dohyun":"./assets/building/props/dohyun-217.webp","serin":"./assets/building/props/serin-217.webp","yuri":"./assets/building/props/yuri-217.webp","arin":"./assets/building/props/arin-217.webp","gaeun":"./assets/building/props/gaeun-217.webp","taeo":"./assets/building/props/taeo-217.webp","daon":"./assets/building/props/daon-217.webp","yoonseul":"./assets/building/props/yoonseul-217.webp","mir":"./assets/building/props/mir-217.webp"});
   const legacyFloors=Object.freeze([
     {id:"4f",label:"4F 대표실·라운지",tint:"#b692df",residents:["hani","gaeun","mir"]},
     {id:"3f",label:"3F AI플랫폼개발실",tint:"#79aecf",residents:["seoyun","dohyun","serin","yuri","arin"]},
@@ -269,8 +270,10 @@
     return {day,minutes,...scheduled,onBreak:false,onMeeting:false,floors:floors.map(f=>{const people=entries.filter(p=>p.floor===f.id);return {...f,people,work:people.filter(p=>p.activity!=='rest').length,rest:people.filter(p=>p.activity==='rest').length,...projection(people)}})};
   }
 
-  function profile(id){return `./assets/profiles/thumb/hani-profile-${id}-256.webp`}
-  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,legacySeatMaps,legacySurfaces,scheduler,createScheduler});
+  function profile(id){return ({daon:"./assets/profiles/thumb/hani-profile-daon-v2-256.webp",yoonseul:"./assets/profiles/thumb/hani-profile-yoonseul-v2-256.webp",sua:"./assets/profiles/thumb/hani-profile-sua-id-256.webp"})[id]||`./assets/profiles/thumb/hani-profile-${id}-256.webp`}
+  // Same atlas/cell/pivot contract; live manifest stays untouched until the seed handoff.
+  function spriteSource(id,entry){return ({daon:"./assets/sprites-v2/daon-v2.webp",yoonseul:"./assets/sprites-v2/yoonseul-v2.webp"})[id]||'./assets/sprites-v2/'+entry.file}
+  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler});
 })();
 /* Read-only Living Office. The Agent Case renderer remains the sole owner of requests, answers and decisions. */
 (() => {
@@ -307,8 +310,8 @@
   }
   function loadSprite(actor){
     const id=spriteId(actor),entry=spriteEntries.get(id),sprite=actor.querySelector('.hani-office-sprite');if(!entry)return;
-    if(!spriteCache.has(id))spriteCache.set(id,new Promise(resolve=>{const img=new Image();img.onload=()=>resolve(true);img.onerror=()=>resolve(false);img.src='./assets/sprites-v2/'+entry.file}));
-    spriteCache.get(id).then(ok=>{if(!ok)return;actor.dataset.avatar='v2';sprite.className='hani-office-sprite';sprite.style.backgroundImage='url("./assets/sprites-v2/'+entry.file+'")';sprite.style.backgroundSize=(entry.atlas[0]/entry.cell[0]*100)+'% '+(entry.atlas[1]/entry.cell[1]*100)+'%';pose(actor,actor.dataset.pose||'sitting')});
+    if(!spriteCache.has(id))spriteCache.set(id,new Promise(resolve=>{const img=new Image();img.onload=()=>resolve(true);img.onerror=()=>resolve(false);img.src=HaniBuildingScene.spriteSource(id,entry)}));
+    spriteCache.get(id).then(ok=>{if(!ok)return;actor.dataset.avatar='v2';sprite.className='hani-office-sprite';sprite.style.backgroundImage='url("'+HaniBuildingScene.spriteSource(id,entry)+'")';sprite.style.backgroundSize=(entry.atlas[0]/entry.cell[0]*100)+'% '+(entry.atlas[1]/entry.cell[1]*100)+'%';pose(actor,actor.dataset.pose||'sitting')});
   }
   function finishTravel(actor){if(!actor.officeTravel)return;const {seat}=actor.officeTravel;actor.officeTravel=null;actor.officeAnchor=seat.anchor||seat.id;place(actor,[seat.x,seat.y]);pose(actor,seat.posture||'sitting')}
   function place(actor,position){actor.style.left=position[0]+"%";actor.style.top=position[1]+"%"}
@@ -349,30 +352,38 @@
   const plates=[];
   for(const floor of building.floors)for(const entry of building.art?.floors[floor.id].plates||[]){
     const plate=document.createElement('span');plate.className='hani-office-room-plate';plate.dataset.room=entry.room;
-    plate.dataset.material=entry.material;plate.dataset.secondary=String(Boolean(entry.secondary));plate.dataset.label=entry.label;plate.textContent=entry.label;plate.title=entry.fullLabel||entry.label;
-    if(entry.mount){
-      plate.dataset.mount=entry.mount;
-      const korean=document.createElement('b');korean.textContent=entry.label;plate.replaceChildren(korean);
-      plate.setAttribute('aria-label',entry.label+' · '+entry.english);
-    }
+    plate.dataset.material=entry.material;plate.dataset.label=entry.label;plate.title=entry.fullLabel||entry.label;
+    plate.dataset.mount=entry.mount||'wall';
+    const english=document.createElement('b'),korean=document.createElement('small');
+    english.textContent=entry.english;korean.textContent=entry.label;plate.append(english,korean);
+    plate.setAttribute('aria-label',entry.english+' · '+entry.label);
     if(entry.logo){
-      plate.dataset.brand='true';plate.textContent='';
+      plate.dataset.brand='true';plate.replaceChildren();
       const logo=document.createElement('span');logo.className='hani-office-brand';
-      for(const part of ['mark','word']){const image=document.createElement('img');image.className='hani-office-brand-'+part;image.src=entry.logo;image.alt=part==='word'?'HANI GROUP':'';logo.append(image)}
-      const subtitle=document.createElement('small');subtitle.textContent=entry.label;plate.append(logo,subtitle);
+      const image=document.createElement('img');image.className='hani-office-brand-mark';image.src=entry.logo;image.alt='';
+      const word=document.createElement('b');word.textContent='HANI GROUP';logo.append(image,word);plate.append(logo);
+      plate.setAttribute('aria-label','HANI GROUP');
     }
     plate.style.left=entry.x+'%';plate.style.top=entry.y+'%';plate.style.width=entry.width+'%';
-    plate.style.transform='rotate('+entry.rotate+'deg) skewX('+entry.skew+'deg) scaleX('+(entry.textScaleX||1)+')';plate.style.color=entry.ink;
-    plate.style.setProperty('--letter-size',String(entry.nativeFont||24));
-    map.append(plate);plates.push({plate,floor:floor.id,painted:Boolean(entry.mount)});
+    plate.style.transform='rotate('+entry.rotate+'deg) skewX('+entry.skew+'deg)';
+    map.append(plate);plates.push({plate,floor:floor.id});
+  }
+  // Each floor owns persistent decorative slots; positions are desk anchor + art offset.
+  const deskProps=[];
+  for(const floor of building.floors)for(const entry of building.art?.floors[floor.id].deskProps||[]){
+    const anchor=building.art.anchors[entry.anchor];if(!anchor)continue;
+    const prop=document.createElement('img');prop.className='hani-office-desk-props';prop.dataset.person=entry.id;
+    prop.dataset.planned=String(Boolean(entry.planned));prop.setAttribute('aria-hidden','true');prop.alt='';prop.hidden=true;
+    prop.style.left=(anchor.x+entry.offset[0]/building.art.width*100)+'%';
+    prop.style.top=(anchor.y+entry.offset[1]/building.art.height*100)+'%';
+    prop.style.width=entry.width/building.art.width*100+'%';
+    prop.onload=()=>{prop.dataset.loaded='true'};prop.onerror=()=>{prop.dataset.loaded='false'};
+    map.append(prop);deskProps.push({prop,floor:floor.id,src:building.deskPropArt[entry.id]});
   }
   let activeFloor="4f",floorSnapshot=null,layoutKey="",backgroundToken=0,returnFloor="4f",displayedFloor=null;
   floorLabel.className="hani-building-floor-label";overflowChip.className="hani-building-overflow";const caption=document.createElement('div');caption.className='hani-building-floor-caption';caption.append(floorLabel,overflowChip);root.querySelector('.hani-office-scroll').after(caption);
-  const nameplate=document.createElement("span");nameplate.className="hani-office-ceo-nameplate";nameplate.textContent="회장님 자리";map.append(nameplate);
   const foregrounds=[...map.querySelectorAll(".hani-office-foreground")];
   for(const img of foregrounds){img.className='hani-office-foreground';img.hidden=true}
-  // Reuse the first art slot for native lossless sign patches, below actors and text.
-  const signArt=foregrounds[0];if(signArt)signArt.dataset.interior='true';
   const rooms=document.createElement('div');rooms.className='hani-building-rooms';root.querySelector('.hani-office-scroll').after(rooms);
   const roomLabels=new Map();
   for(const floor of building.floors){const list=document.createElement('p');list.textContent=[...(building.canon?.floors.find(f=>f.id===floor.id)?.rooms||[]).map(r=>r.label),...(building.art?.floors[floor.id].plates||[]).filter(p=>p.detail).map(p=>p.fullLabel)].join(' · ');rooms.append(list);roomLabels.set(floor.id,list)}
@@ -405,17 +416,15 @@
     const token=++backgroundToken,bg=map.querySelector('.hani-office-background');
     if(!backgroundCache.has(floor.id))backgroundCache.set(floor.id,(async()=>{
       const background=await loadImage(floor.background)||await loadImage(floor.production||floor.fallback)||floor.fallback;
-      const patch=building.art?.floors[floor.id]?.signPatch;
-      const foreground=background===floor.background&&patch?await loadImage(patch):null;
-      return {background,foreground};
+      return {background};
     })());
-    backgroundCache.get(floor.id).then(({background,foreground})=>{
+    backgroundCache.get(floor.id).then(({background})=>{
       if(token!==backgroundToken||!sceneVisible())return;
       bg.src=background;bg.alt=floor.label+' · 하니 본사';map.dataset.art=background===floor.background?'floor':'fallback';
       foregrounds.forEach(img=>{img.hidden=true});
-      if(signArt&&foreground){signArt.src=foreground;signArt.hidden=false}
-      map.dataset.mask=foreground?'interior':'none';
-      for(const entry of plates)if(entry.floor===floor.id&&entry.painted)entry.plate.hidden=!foreground;
+      map.dataset.mask='none';
+      for(const entry of plates)entry.plate.hidden=entry.floor!==floor.id||background!==floor.background;
+      for(const entry of deskProps){entry.prop.hidden=entry.floor!==floor.id||background!==floor.background;if(!entry.prop.hidden&&!entry.prop.src)entry.prop.src=entry.src}
     });
   }
   function updateBuilding(force=false,animate=true){
@@ -433,10 +442,9 @@
     for(const [id,list] of roomLabels)list.hidden=id!==activeFloor;
     layoutKey=nextKey;map.dataset.floor=activeFloor;map.style.setProperty("--floor-tint",floor.tint);map.setAttribute("aria-labelledby",floorButtons.get(activeFloor).id);map.setAttribute("aria-label",floor.label);floorLabel.textContent=floor.label;
     const overflow=selected?0:floor.overflow;overflowChip.hidden=!overflow;overflowChip.textContent="+"+overflow;overflowChip.setAttribute("aria-label",`이 층의 다른 직원 ${overflow}명`);
-    for(const entry of plates)entry.plate.hidden=entry.floor!==activeFloor||entry.painted;
+    for(const entry of plates)entry.plate.hidden=entry.floor!==activeFloor;
+    if(!sameFloor)for(const entry of deskProps)entry.prop.hidden=true;
     if(!sameFloor)foregrounds.forEach(img=>{img.hidden=true});
-    nameplate.hidden=activeFloor!=="4f";
-    const ceo=building.seatMaps["4f"].find(s=>s.owner==="chairman");nameplate.style.left=ceo.x+"%";nameplate.style.top=(ceo.y+7)+"%";
     setBackground(floor);
     for(const entry of plannedRows)entry.row.hidden=entry.floor!==activeFloor;
     for(const actor of actors.values()){actor.hidden=true;actor.officeRow.hidden=true;actor.dataset.called="false"}
@@ -473,7 +481,7 @@
     if(!returning)updateBuilding(true,false);
     return true;
   }
-  function textLine(name,text,key,summary=false){const row=document.createElement("div");row.className="hani-office-line"+(summary?" hani-office-line-summary":"");const img=document.createElement("img");img.src=`./assets/profiles/hani-profile-${key||"hani"}.webp`;img.alt="";img.loading="lazy";const body=document.createElement("div");body.className="hani-office-line-body";const title=document.createElement("b");title.textContent=name;const para=document.createElement("p");para.textContent=text;body.append(title,para);row.append(img,body);conversation.append(row)}
+  function textLine(name,text,key,summary=false){const row=document.createElement("div");row.className="hani-office-line"+(summary?" hani-office-line-summary":"");const img=document.createElement("img");img.src=building.profile(personKey(key||"hani"));img.alt="";img.loading="lazy";const body=document.createElement("div");body.className="hani-office-line-body";const title=document.createElement("b");title.textContent=name;const para=document.createElement("p");para.textContent=text;body.append(title,para);row.append(img,body);conversation.append(row)}
   const stageLabels={INTAKE:"하니가 안건을 접수했습니다.",ROUTING:"담당 Agent를 배정하고 있습니다.",SUMMONING:"선택된 Agent가 회의실로 이동 중입니다.",MEETING_ROUND_1:"1차 검토 중 · 실제 의견을 기다리고 있습니다.",REVIEW_COMPLETE:"저장된 Agent 의견을 확인했습니다.",CROSS_REVIEW:"Agent들이 서로의 실제 의견을 검토하고 있습니다.",PREFLIGHT:"하니가 빠진 조건을 확인하고 있습니다.",NEED_USER_INFO:"대표님의 추가 답변을 기다리고 있습니다.",RESEARCH:"필요한 자료를 조사하고 있습니다.",MEETING_ROUND_2:"조사 결과를 반영해 2차 검토 중입니다.",SYNTHESIZING:"하니가 실제 검토 결과를 종합 중입니다.",READY:"결정 준비가 완료됐습니다.",HELD:"안건이 보류되었습니다. 같은 Case에서 이어갈 수 있습니다.",UNRESOLVED:"중요 이견이 남아 재검토가 필요합니다.",NEED_RESEARCH:"추가 자료 확인이 필요합니다.",ERROR:"진행 중 문제가 발생했습니다. 저장된 Case 상태를 확인해 주세요."};
   function stageText(){return stageLabels[liveStage]||"실제 검토 의견 보기"}
   function syncQuestions(freshDetail=false){

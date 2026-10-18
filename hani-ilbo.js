@@ -98,7 +98,7 @@
   function avatar(id) {
     const member = person(id), safeId = member && /^[a-z0-9-]+$/.test(member.id);
     const src = !safeId ? '' : window.HaniOrganizationRoster?.chairman?.id === id ? './assets/team/hani-org-chair-v1.webp' :
-      './assets/profiles/thumb/hani-profile-'+member.id+'-128.webp';
+      ({daon:'./assets/profiles/thumb/hani-profile-daon-v2-128.webp',yoonseul:'./assets/profiles/thumb/hani-profile-yoonseul-v2-128.webp',sua:'./assets/profiles/thumb/hani-profile-sua-id-128.webp'})[member.id]||'./assets/profiles/thumb/hani-profile-'+member.id+'-128.webp';
     return '<span class="ilbo-avatar" aria-hidden="true"><span>'+esc(Array.from(member?.name || '?')[0])+'</span>'+(src?'<img data-ilbo-avatar src="'+esc(src)+'" alt="" width="80" height="80" loading="lazy" decoding="async">':'')+'</span>';
   }
   const identity = id => '<span class="ilbo-person">'+esc(person(id)?.name || '알 수 없는 작성자')+(person(id)?.rank?'<small class="ilbo-chip">'+esc(person(id).rank)+'</small>':'')+'</span>';

@@ -15,7 +15,7 @@
     MIXED: ['⚖️ 혼재 · 줄다리기 중', '🌦️ 혼재 · 맑음 뒤 흐림', '🎢 혼재 · 롤러코스터'],
     NEUTRAL: ['👀 관망 · 숫자부터 보자', '🔎 관망 · 방향 확인 중', '🧭 관망 · 체크포인트 유지'],
   };
-  const PROFILE_FILES = { hani: 'hani', jieun: 'jieun', sua: 'sua', hina: 'hina', nauen: 'naeun', naeun: 'naeun', haru: 'haru', suyeon: 'sooyeon', sooyeon: 'sooyeon', minji: 'minji', yuna: 'yuna' };
+  const PROFILE_FILES = { hani: 'hani', jieun: 'jieun', sua: 'sua-id', hina: 'hina', nauen: 'naeun', naeun: 'naeun', haru: 'haru', suyeon: 'sooyeon', sooyeon: 'sooyeon', minji: 'minji', yuna: 'yuna' };
   const profile = key => PROFILE_FILES[String(key || '').toLowerCase()] || '';
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
   const arr = value => Array.isArray(value) ? value : [];

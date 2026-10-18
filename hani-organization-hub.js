@@ -48,7 +48,8 @@
   const members = id => people.filter(p=>p.team===id);
   const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   // Static portrait assets; labels remain real text for legibility and accessibility.
-  const portrait = (p,cls='') => `<img class="ogh-portrait ${cls}" src="./assets/profiles/hani-profile-${p.id}.webp" alt="${p.name} · ${p.role}" loading="lazy" width="720" height="720">`;
+  const portraitFiles=Object.freeze({daon:'./assets/profiles/hani-profile-daon-v2.webp',yoonseul:'./assets/profiles/hani-profile-yoonseul-v2.webp',sua:'./assets/profiles/hani-profile-sua-id.webp'});
+  const portrait = (p,cls='') => `<img class="ogh-portrait ${cls}" src="${portraitFiles[p.id]||`./assets/profiles/hani-profile-${p.id}.webp`}" alt="${p.name} · ${p.role}" loading="lazy" width="720" height="720">`;
   const avatar = p => `<button type="button" class="ogh-avatar" data-person="${p.id}" aria-label="${p.name} · ${p.role} 소개">${portrait(p)}<span class="ogh-nameplate"><strong>${p.name} ${leaderBadge(p)}${plannedBadge(p)}</strong><small>${p.role}</small></span></button>`;
   const tags = items => `<div class="ogh-tags">${items.map(s=>`<span>${esc(s)}</span>`).join('')}</div>`;
   const scenePaths = {
