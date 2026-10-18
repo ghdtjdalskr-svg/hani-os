@@ -54,6 +54,9 @@
 #board .board-avatar-frame{position:relative;display:inline-block;width:28px;height:28px;flex:0 0 28px}
 #board .board-avatar{width:28px;height:28px;object-fit:cover;border-radius:50%}
 #board .board-avatar-frame img{position:absolute;inset:0}
+/* First 48x48 head/torso crop of the official 384x512 frog sprite sheet. */
+#board .board-avatar-chairman{overflow:hidden;border-radius:50%;background:var(--surface-raised)}
+#board .board-avatar-chairman img.board-avatar{width:800%;height:auto;max-width:none;border-radius:0;object-fit:fill}
 #board .board-initial{display:inline-flex;align-items:center;justify-content:center;background:var(--surface-raised);border:1px solid var(--border-subtle);font-size:12px;box-sizing:border-box}
 #board .board-avatar-large,#board .board-avatar-large .board-avatar{width:40px;height:40px}
 #board .board-avatar-large{flex-basis:40px}

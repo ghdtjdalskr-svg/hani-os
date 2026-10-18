@@ -123,3 +123,12 @@
 @container(max-width:579px){.hani-office-room-plate[data-room="quiet_roof"]:not([data-mount]):not([data-brand="true"]){visibility:hidden}}
 @container(max-width:749px){.hani-office-room-plate[data-room="ceo"]:not([data-mount]):not([data-brand="true"]){visibility:hidden}}
 @container(max-width:1031px){.hani-office-room-plate[data-room="finance"]:not([data-mount]):not([data-brand="true"]){visibility:hidden}}
+
+/* Living Office Core uses the existing actor slots and an HTML speech panel. */
+.hani-office-actor[role="button"]{cursor:pointer;pointer-events:auto}
+.hani-office-actor:focus-visible{outline:2px solid #8363b8;outline-offset:3px;border-radius:8px}
+.hani-office-prop{position:absolute;right:-4px;top:25%;font-size:clamp(9px,1.4cqw,17px);line-height:1;pointer-events:none}
+.hani-office-character-bubble{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px 0;padding:10px 12px;border:1px solid #d8cce7;border-radius:12px;background:#fffaf0;color:#493752;font-size:13px}
+.hani-office-character-bubble[hidden]{display:none}.hani-office-character-bubble p{margin:0;overflow-wrap:anywhere}.hani-office-character-bubble a{flex:none;min-height:44px;display:flex;align-items:center;color:#67418b;font-weight:700}
+.hani-building-roster [role="button"]{cursor:pointer}.hani-building-roster [role="button"]:focus-visible{outline:2px solid #8363b8}
+@media(max-width:700px){.hani-office-character-bubble{font-size:12px}.hani-building-roster [role="button"]{min-height:44px}}

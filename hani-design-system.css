@@ -1411,3 +1411,89 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 :root[data-finish="pure-white"] #app .footer{color:var(--text-primary);opacity:1}
 :root[data-finish="pure-white"] #app #home small{color:var(--text-secondary)!important}
 :root[data-finish="pure-white"] #app #home .life-ticker-item small{color:#ffffff!important}
+
+/* a216-1: transient record approval and read-only mobile summaries. */
+.record-delete-dialog{width:min(560px,calc(100% - 24px));max-height:85dvh;padding:22px;border:1px solid var(--border,#d8d7e4);border-radius:18px;color:var(--text,#252237);background:var(--surface-panel,#fff);box-shadow:0 22px 80px #0004}
+.record-delete-dialog::backdrop{background:#16132999}
+.record-delete-dialog h3{margin:0 0 12px}
+.record-delete-dialog pre{max-height:48dvh;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;font-size:13px;line-height:1.7;padding:12px;border-radius:10px;background:var(--surface-soft,#f5f4fa)}
+.record-delete-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}
+.record-delete-actions .btn{min-width:84px;min-height:44px}
+.record-delete-actions .btn:focus-visible{outline:3px solid var(--accent,#7569e8);outline-offset:3px}
+.phone-only,.phone-table-toggle{display:none!important}
+.finance-role-caption{margin:0 0 12px;color:var(--muted,#696579);font-size:13px;line-height:1.6}
+.ledger-import-entry{margin-bottom:14px}
+@media(max-width:650px){
+  #app .phone-only{display:block!important}
+  #app .phone-table-toggle{display:inline-flex!important;min-height:44px;margin:4px 0 8px;align-items:center}
+  #app #home.active{display:flex!important;flex-direction:column;gap:10px}
+  #app #home>.home-today-title{order:-10;margin:0;font-size:20px}
+  #app #home>.home-source-controls{order:-9;margin:0;font-size:12px;line-height:1.6}
+  #app #home>#lifeMarketGrid{order:-6;margin:0;gap:8px!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #app #home #lifeMarketGrid>[data-life-index]{height:auto!important;min-height:116px!important;padding:10px!important;grid-template-columns:1fr!important;grid-template-rows:auto auto auto!important;gap:4px!important}
+  #app #home #lifeMarketGrid .home-mini-chart{display:none!important}
+  #app #home #lifeMarketGrid .kpi-head em{display:none}
+  #app #home #lifeMarketGrid strong{font-size:21px!important;line-height:1.25}
+  #app #home #lifeMarketGrid small{font-size:11px!important;line-height:1.45}
+  #app #home #lifeMarketFeatured,#app #home #lifeMarketBanner{display:none!important}
+  #app #home>.home-lower-grid{display:contents!important}
+  #app #home .home-planner-card{order:-5;margin:0!important;min-height:0!important}
+  #app #home .home-planner-card>.sh,#app #home #homeCalendarMini,#app #home .home-task-summary,#app #home #homeTaskMini{display:none!important}
+  #app #home .home-planner-inner{display:block!important}
+  #app #home .home-today-tasks h4{margin:0 0 8px}
+  #app #home .home-monthly-check-card{order:-4;min-height:0!important}
+  #app #home>.hani-care-chip{order:-3;align-self:flex-start}
+  #app #home>.hani-care-notice{order:-2}
+  #app #home>[data-hani-care-cards]{order:0}
+  #app #home>.home-dashboard-grid{order:2}
+  #app #home>.life-market-head{order:3}
+  #app #home>#lifeMarketBasis{order:4}
+  #app #home>#dataHubPeriodHelp,#app #home>#dataHubLatestRecord{order:-8;margin:0;font-size:12px}
+  #app #home>.life-ticker{order:5;margin:0}
+  #app #home>[data-ilbo-home]{order:6}
+  #app #home>.seasonal-life-banner{order:7;margin:0!important;height:54px!important;min-height:0!important}
+  #app #home>.seasonal-life-banner img{height:54px!important;object-fit:cover}
+  #app #home>.home-dialogue-shell{order:8;padding:10px!important}
+  #app #home .home-team-panel{order:9}
+  #app #home[data-source-verified="true"]>#dataHubPeriodHelp,#app #home[data-source-verified="true"]>#dataHubLatestRecord{display:none!important}
+  #app #home[data-source-verified="true"] .home-source-controls{display:flex;flex-wrap:wrap;align-items:center;gap:5px}
+  #app #home .home-desktop-label{display:none}
+  #app #home[data-source-verified="true"] .home-source-controls br{display:none}
+  #app #home[data-source-verified="true"] #dataHubPeriod{display:none}
+  #app #home[data-source-verified="true"] #dataHubStatus{display:inline-block;max-width:140px;vertical-align:middle;padding:2px 8px;border-radius:999px;background:var(--surface-soft,#f0eff8);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #app #home[data-source-verified="true"] #dataHubRefresh{min-height:32px;font-size:11px;padding:4px 8px}
+  #app #home[data-source-verified="true"] #dataHubMonth{max-width:140px;padding:4px;font-size:12px}
+  #app .phone-summary-table:not(.is-full-table) table{width:100%!important;min-width:0!important;table-layout:fixed}
+  #app .phone-summary-table:not(.is-full-table) :is(th,td){white-space:normal!important;overflow-wrap:anywhere;padding:8px 5px!important;font-size:12px}
+  #app .investment-summary-table:not(.is-full-table) tr>:not(:nth-child(1),:nth-child(3),:nth-child(7),:nth-child(9)),
+  #app .ledger-summary-table:not(.is-full-table) tr>:not(:nth-child(1),:nth-child(2),:nth-child(4),:nth-child(7)){display:none!important}
+  #app .phone-summary-table:not(.is-full-table) td[colspan]{display:table-cell!important}
+  #app .investment-summary-table:not(.is-full-table) tr>:first-child{width:34%}
+  #app .investment-summary-table:not(.is-full-table) .hani-investment-security{display:block}
+  #app .investment-summary-table:not(.is-full-table) :is(.hani-investment-logo,.security-badge){display:none!important}
+  #app .ledger-summary-table:not(.is-full-table) tr>:nth-child(2){width:34%}
+  #app .phone-summary-table.is-full-table table{table-layout:auto}
+  #app .phone-summary-table:not(.is-full-table) .security-name{font-size:12px!important}
+  #app #investment .table-scroll-hint:has(+.phone-summary-table:not(.is-full-table)){display:none!important}
+}
+
+/* a216-2: existing forms and read-only derived cards. */
+#app .activity-trend-card{overflow-wrap:anywhere}
+#app :is(#readingActivityTrend,#movieActivityTrend){order:0;grid-column:1/-1}
+#app .activity-trend-numbers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#app .activity-trend-numbers b,#app .activity-trend-numbers small{display:block;margin-top:6px}
+#app .activity-trend-numbers b{font-size:23px}
+#app .activity-trend-numbers small{font-size:12px;color:var(--muted)}
+#app .activity-reaction{padding:12px;border-radius:12px;background:var(--season-soft,#f5f4fa)}
+#app .ledger-practical{margin-bottom:16px;overflow-wrap:anywhere}
+#app .ledger-practical>details+details{margin-top:14px}
+#app .ledger-practical summary{cursor:pointer;font-weight:700;padding:8px 0}
+#app #settlementQuickCheck .home-update-item{width:100%;text-align:left;margin-top:8px}
+#app #studyQuickWrong{margin:12px 0}
+@media(max-width:650px){
+ #app #diet>.grid{display:flex;flex-direction:column}
+ #app #diet>.grid>.body-quick-input{order:-2;width:100%}
+ #app #diet>.grid>.body-chart-card{order:0;width:100%}
+ #app .activity-trend-numbers{grid-template-columns:1fr}
+ #app #settlementQuickCheck{order:-4!important}
+}

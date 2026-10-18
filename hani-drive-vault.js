@@ -89,6 +89,7 @@
   }
   function status(text){if($("driveVaultStatus"))$("driveVaultStatus").textContent=text}
   function paint(){
+    queueMicrotask(()=>root.renderSettlementCheck?.());
     const context=api.context(),owned=cachedOwner===context.owner;
     const row=owned?cached:null,prompt=!!row?.handle&&permission==="prompt";
     $("driveVaultChip").hidden=!prompt;
@@ -195,7 +196,8 @@
     if(timer!==null)return;
     timer=root.setTimeout(()=>{timer=null;void refresh()},150);
   }
-  root.HANI_DRIVE_VAULT=Object.freeze({schedule});
+  function readStatus(){const context=api.context();return Object.freeze({lastAt:context.owner&&cachedOwner===context.owner?cached?.last?.at||null:null})}
+  root.HANI_DRIVE_VAULT=Object.freeze({schedule,readStatus});
   if(!$("driveVaultStatus")||!api)return;
   $("driveVaultConnect").onclick=connect;
   $("driveVaultBackup").onclick=()=>backup(false);

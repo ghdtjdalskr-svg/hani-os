@@ -90,9 +90,9 @@
   const author=id=>Object.values(authorParts(id)).filter(Boolean).join(" · ");
   function avatar(id,size=28){
     const member=person(id),initial=escape(Array.from(member?.name||"?")[0]);
-    const src=!member?"":id===actor()?"./assets/team/hani-org-chair-v1.webp":
+    const src=!member?"":id===actor()?"./assets/sprites-v2/seongmin.webp":
       "./assets/profiles/thumb/hani-profile-"+member.id+"-128.webp";
-    return '<span class="board-avatar-frame'+(size===40?' board-avatar-large':'')+'" aria-hidden="true"><span class="board-avatar board-initial">'+initial+'</span>'+
+    return '<span class="board-avatar-frame'+(size===40?' board-avatar-large':'')+(id===actor()?' board-avatar-chairman':'')+'" aria-hidden="true"><span class="board-avatar board-initial">'+initial+'</span>'+
       (src?'<img class="board-avatar" data-board-avatar src="'+escape(src)+'" alt="" loading="lazy" decoding="async" width="'+size+'" height="'+size+'">':'')+'</span>';
   }
   function authorCard(id,size=28){
@@ -114,7 +114,7 @@
   const sentences=value=>String(value||"").match(/[^.!?。\n]+(?:[.!?。]+|$)/gu)?.map(s=>s.trim()).filter(Boolean)||[];
   const sentenceKey=value=>String(value).replace(/^(?:회장님|대표님)[,，!]?\s*/,"").replace(/[\s.!?。,，]+/g,"").toLowerCase();
   function generatedText(value){
-    let text=publicText(value);
+    let text=publicText(value).replace(/대표님/g,"회장님");
     text=text.replace(/[^.!?。\n]+(?:[.!?。]+|$)/gu,s=>metaPhrase.test(s)?"":s);
     // Match address terms without damaging ordinary words such as 형식/유형.
     text=text.replace(/\s*(?:언니|누나|오빠|형님)/g,"님").replace(/(^|[\s,，])형(?=$|[\s,，.!?])/g,"$1님");
@@ -124,7 +124,7 @@
     return text.replace(/\bMIR\b/g,displayName("mir")).replace(/^\s*(?:님|씨|아|야)(?:\s*[,，!]\s*|\s+)/,"").trim();
   }
   function displayText(row,value){
-    return row?.generated&&row.authorId!==actor()?generatedText(value):publicText(value);
+    return row?.authorId!==actor()?(row?.generated?generatedText(value):publicText(value).replace(/대표님/g,"회장님")):publicText(value);
   }
   // Only newly generated drafts enter this thread-wide sentence budget.
   function naturalComments(post,rows,history=[],source=post){
@@ -180,7 +180,9 @@
       category:input.category,title,body,createdAt:old?.createdAt||now,updatedAt:now,pinned:!!input.pinned};
     const queued=id?[]:queueReplies(row,row,comments(),Date.now());
     if(!persist(id?posts().map(p=>p.id===id?row:p):[...posts(),row],[...comments(),...queued]))return false;
-    selectPost(row.id);return true;
+    selectPost(row.id);
+    if(!id&&loungeTransport())void requestLoungeAI(row,"thread",row);
+    return true;
   }
   function saveComment(postId,body,id="",parentId=""){
     if(!canWrite(true)||!posts().some(p=>p.id===postId&&published(p)))return false;
@@ -364,7 +366,7 @@
   }
   // One policy for both the Phase 2 preview adapter and living drafts/replies.
   const ADDRESS_RULES=Object.freeze({
-    chairman:Object.freeze(["회장님","대표님"]),chairmanWeights:Object.freeze([75,25]),
+    chairman:Object.freeze(["회장님"]),chairmanWeights:Object.freeze([100]),
     casualCategories:Object.freeze(["LOUNGE","LIFE"]),oppaRate:.12,oppaMaxShare:.15,
     oppaAllowed:Object.freeze(["hani","jieun","haru","naeun","hina","seoyun"]),
     founding:/창립 초기|초기 핵심|최고참/,extraClose:Object.freeze(["seoyun"]),
@@ -429,8 +431,7 @@
   }
   function staffAddress(fromId,toId,post,seed=0,history=comments()){
     if(toId===actor()){
-      const formal=hash(seed)%100<ADDRESS_RULES.chairmanWeights[0]?ADDRESS_RULES.chairman[0]:ADDRESS_RULES.chairman[1];
-      return formal;
+      return ADDRESS_RULES.chairman[0];
     }
     const nickname=relationNickname(fromId,toId);if(nickname&&!kinship.test(nickname))return nickname;
     const from=person(fromId),to=person(toId);if(!to)return "동료님";
@@ -475,9 +476,9 @@
       Number(preferred.includes(b.id))-Number(preferred.includes(a.id))||a.last-b.last||hash(seed+a.id)-hash(seed+b.id)).slice(0,size).map(r=>person(r.id));
   }
   function themeFor(text){
-    return /투자|주식|포트폴리오/.test(text)?"finance":/운동|러닝|식단|체중|산책/.test(text)?"health":
+    return /투자|주식|포트폴리오/.test(text)?"finance":/건강|병원|수술|입원|진료|검사|운동|러닝|식단|체중|산책/.test(text)?"health":
       /KIA|T1|레알|여행|직관|야구|축구/.test(text)?"travel":/책|서재|독서|영화|음악|게임/.test(text)?"culture":
-      /개발|버그|테스트|코드/.test(text)?"development":/시안|디자인|색|화면/.test(text)?"design":/공부|학습|퀴즈/.test(text)?"learning":"strategy";
+      /개발|버그|테스트|코드/.test(text)?"development":/시안|디자인|색|화면/.test(text)?"design":/시험|수험|JLPT|공부|학습|퀴즈/.test(text)?"learning":"strategy";
   }
   // Six authored reactions per persona: agree, question, joke, cheer, care, info.
   const REACTIONS=Object.freeze({
@@ -688,6 +689,15 @@
       other:["운동하고 나서 몸은 어떠셨어요? 오늘 느낌도 들려주세요.","운동 이야기 듣고 있어요. 가장 만족스러웠던 순간이 궁금해요.","운동 얘기 들으니 저도 산책하고 싶어지네요. 다음엔 어떤 걸 해보고 싶으세요?"]
     }
   });
+  // Small topic pools also serve question/agree/other intents. No medical or trading advice.
+  const CHAIRMAN_LIFE_REPLIES=Object.freeze({
+    health:{fear:["병원 가는 날이 다가오면 떨리죠. 병원 가방은 챙기셨어요?","병원 일정 앞두고 무서우시죠. 여기서 같이 응원하고 있을게요.","건강 이야기 꺼내주셔서 고마워요. 병원 다녀오실 때까지 응원 보낼게요."],thanks:["건강 이야기 같이 나눠주셔서 저도 고마워요. 병원 다녀오신 뒤에도 소식 들려주세요.","병원 앞두고 응원이 닿았다니 다행이에요. 마음만큼은 옆에 있을게요."],other:["병원 가방에 챙길 물건은 정하셨어요?","병원 일정 이야기 듣고 있어요. 무사히 다녀오시길 바랄게요.","건강 챙기시는 회장님께 응원 한 표 보탭니다."]},
+    study:{fear:["시험 앞두고 떨리시죠. 제일 마음 쓰이는 과목이 뭐예요?","공부한 걸 시험장에서 보여주려니 긴장되죠. 여기서 응원할게요.","시험 생각이 자꾸 나시나 봐요. 어려웠던 공부 이야기부터 들어볼게요."],thanks:["공부 이야기 나눠주셔서 저도 힘나요. 다음 시험도 응원할게요.","시험 응원이 닿았네요! 공부하다 재미있던 대목도 들려주세요."],other:["시험 준비는 어느 과목부터 하고 계세요?","공부하다 막힌 문제가 있었나요? 함께 이야기해요.","시험 끝나고 하고 싶은 일도 궁금해요."]},
+    work:{fear:["야근이 이어지면 일 생각만 해도 버겁죠. 오늘 가장 힘든 업무는 뭐였어요?","일 때문에 마음이 무거우셨군요. 오늘 업무 이야기는 제가 들을게요.","업무 걱정이 퇴근 뒤에도 따라오나 봐요. 여기선 잠깐 쉬어가세요."],thanks:["업무 이야기 나눠주셔서 감사해요. 오늘도 수고 많으셨어요.","일 챙긴 걸 알아봐 주시니 힘나요. 퇴근길은 편안하셨으면 해요."],other:["오늘 업무에서 제일 오래 붙잡고 계신 건 뭐예요?","야근 끝나면 가장 먼저 하고 싶은 게 있으세요?","일 마무리하느라 수고하셨어요. 퇴근 소식도 기다릴게요."]},
+    travel:{fear:["여행 앞두고 신경 쓰이는 게 많죠. 짐은 어느 정도 챙기셨어요?","휴가 준비 중에 걱정되는 부분이 있나 봐요. 여행 이야기 같이 나눠요.","여행 일정 중 가장 마음 쓰이는 구간이 어디예요?"],thanks:["여행 이야기 같이 나눠주셔서 좋아요. 휴가 사진도 기다릴게요.","휴식 응원이 닿았다니 저도 기뻐요. 여행에서 즐거운 장면 많이 만나세요."],other:["여행 가방에 꼭 넣을 물건 하나만 고르면 뭐예요?","휴가 때는 느긋한 일정과 꽉 찬 일정 중 어느 쪽이세요?","여행에서 가장 기대되는 순간이 궁금해요."]},
+    celebration:{fear:["좋은 소식 뒤에도 긴장되실 수 있죠. 축하하는 마음부터 전할게요.","성과를 내고도 마음이 복잡하셨군요. 축하만큼은 함께 나누고 싶어요."],thanks:["축하 받아주셔서 저도 기뻐요. 기쁜 날 함께해서 좋아요!","이런 성과는 같이 축하해야죠. 소식 나눠주셔서 고마워요."],other:["축하드려요! 오늘의 기쁜 소식에 박수 보낼게요.","성과 소식 들으니 저도 기분 좋아요. 어떻게 축하하고 싶으세요?","이 좋은 소식은 그냥 못 지나치죠. 축하 한 표 보탭니다!"]}
+  });
+  const warmChairmanFlavour=(id,topic)=>({hani:topic==="health"?"회장님 응원단 대장은 제가 할게요 💜.":"회장님 편은 여기 있어요 💜.",naeun:topic==="health"?"병원 가방 챙기시면 여기에도 자랑해 주세요 💜.":"이야기 들으러 왔어요. 회장님 옆자리 찜 💜.",hina:topic==="health"?"오늘은 퀴즈 대신 응원 도장 꾹 💜.":"오늘 응원 도장도 꾹 찍고 갈게요 ㅎㅎ."}[id]||"");
   const CHAIRMAN_BOOK_AI_FEAR=Object.freeze([
     "이 책의 AI 디스토피아가 무섭게 느껴지셨군요. 책의 시나리오가 확정된 미래는 아니에요. 책갈피부터 숨 돌려요.",
     "책 속 AI 미래 때문에 불안하셨겠어요. 무서운 장면은 잠깐 덮어두고 좋아했던 대목부터 떠올려봐요. 오늘은 책갈피부터 숨 돌려요.",
@@ -695,7 +705,7 @@
   ]);
   const CHAIRMAN_TOPIC_FLAVOUR=Object.freeze({hani:"같이 차근차근 챙길게요.",yuri:"근거는 제가 꼼꼼히 볼게요.",jieun:"부담은 조금 내려놔요.",haru:"커피 한 잔 곁들여 들어볼게요.",seoyun:"놓친 맥락도 같이 챙겨요.",serin:"숫자와 사실은 차분히 볼게요.",hina:"빨간 펜은 잠깐 넣어둘게요 ㅎㅎ.",arin:"느낌도 편하게 들려주세요.",taeo:"무리하지 않는 쪽으로요.",yuna:"이야기 계속 듣고 있어요!",dohyun:"궁금했던 장면부터 이야기해요.",gaeun:"옆에서 함께 듣고 있을게요.",mir:"다른 관점도 한 조각 보태볼게요."});
   function chairmanReplyTopic(post,text=""){
-    const topic=value=>/독서|도서|서재|작가|저자|(?:^|\s)책(?:$|[\s:：,.!?을은에이과도]|으로|후기|리뷰|추천)|\bbooks?\b|\breading\b/i.test(value)?"book":/주식|투자|증시|주가|stock|portfolio/i.test(value)?"stock":/운동|헬스|근력|달리기|(?:^|\s)러닝|exercise|workout/i.test(value)?"exercise":/\bAI\b|\bAGI\b|인공지능|머신러닝|딥러닝|디스토피아|챗봇/i.test(value)?"ai":"general";
+    const topic=value=>/건강|병원|수술|입원|진료|치료|검진|몸살|감기/.test(value)?"health":/시험|공부|수험|학습|퀴즈|오답|JLPT/i.test(value)?"study":/야근|업무|출근|퇴근|프로젝트|회의|직장/.test(value)?"work":/여행|휴가|휴식|숙소|항공|비행기/.test(value)?"travel":/축하|합격|승진|생일|기념일|달성|수상/.test(value)?"celebration":/독서|도서|서재|작가|저자|(?:^|\s)책(?:$|[\s:：,.!?을은에이과도]|으로|후기|리뷰|추천)|\bbooks?\b|\breading\b/i.test(value)?"book":/주식|투자|증시|주가|stock|portfolio/i.test(value)?"stock":/운동|헬스|근력|달리기|(?:^|\s)러닝|exercise|workout/i.test(value)?"exercise":/\bAI\b|\bAGI\b|인공지능|머신러닝|딥러닝|디스토피아|챗봇/i.test(value)?"ai":"general";
     const comment=String(text||"").replace(/@[가-힣A-Za-z]+/g,""),current=topic(comment);
     const context=topic([post?.title,...(Array.isArray(post?.topics)?post.topics:[]),post?.topic,post?.category].filter(Boolean).join(" "));
     return context==="book"&&current==="ai"?"book":current!=="general"?current:context!=="general"?context:topic(String(post?.body||""));
@@ -718,10 +728,11 @@
     return naturalComments(post,chosen.map((p,i)=>{
       const address=staffAddress(p.id,actor(),post,seed+i,previewHistory);
       const aiFear=topic==="book"&&intent==="fear"&&/\bAI\b|\bAGI\b|인공지능|디스토피아/i.test([post.title,post.body,source.body].join(" "));
-      const pool=aiFear?CHAIRMAN_BOOK_AI_FEAR:CHAIRMAN_TOPIC_REPLIES[topic]?.[intent]||CHAIRMAN_REPLIES[intent],start=hash(seed+":"+p.id+":"+i)%pool.length;
+      const life=CHAIRMAN_LIFE_REPLIES[topic];
+      const pool=(life?[...new Set([...(life[intent]||[]),...life.other])]:null)||(aiFear?CHAIRMAN_BOOK_AI_FEAR:CHAIRMAN_TOPIC_REPLIES[topic]?.[intent]||CHAIRMAN_REPLIES[intent]),start=hash(seed+":"+p.id+":"+i)%pool.length;
       const options=pool.map((_,offset)=>pool[(start+offset)%pool.length]).filter(text=>!echoesOriginal(text,source.body)&&!echoesOriginal(text,post.title));
       const line=options.find(text=>!openers.has(loungeOpener(text)))||options[0];
-      const flavour=intent==="fear"?"편하게 이야기해요. 함께 듣고 있어요.":topic!=="general"?CHAIRMAN_TOPIC_FLAVOUR[p.id]:(intent==="agree"||intent==="joke")?REACTIONS[p.id]?.[intent==="agree"?0:2]:CHAIRMAN_REPLY_FLAVOUR[p.id];
+      const flavour=life?(warmChairmanFlavour(p.id,topic)||CHAIRMAN_TOPIC_FLAVOUR[p.id]):intent==="fear"?"편하게 이야기해요. 함께 듣고 있어요.":topic!=="general"?CHAIRMAN_TOPIC_FLAVOUR[p.id]:(intent==="agree"||intent==="joke")?REACTIONS[p.id]?.[intent==="agree"?0:2]:CHAIRMAN_REPLY_FLAVOUR[p.id];
       let text=line||"";if(text&&openers.has(loungeOpener(text)))text=(flavour||REACTIONS[p.id]?.[1]||"다른 생각도 궁금해요.")+" "+text;
       openers.add(loungeOpener(text));
       let body=address+(text?", "+text: "!")+(flavour&&!text.startsWith(flavour)?" "+flavour:"");
@@ -747,6 +758,7 @@
   const loungeOpener=body=>String(body).replace(/^(?:회장님|대표님|오빠)[,!]?\s*/,"").split(/[.!?。\n]/)[0].trim();
   function loungeReactions(post,round,source=post,history=comments()){
     const rows=ownerReactions(post,source,history,round);
+    if(CHAIRMAN_LIFE_REPLIES[chairmanReplyTopic(post,source?.body)]||chairmanReplyTopic(post,source?.body)==="stock")return publicContext(post)?rows.map(row=>({...row,body:row.body.replace(/ㅋㅋ|ㅎㅎ|\p{Extended_Pictographic}/gu,"").trim()})):rows;
     if(post&&!lightConversation(post,source))return naturalComments(post,rows.map(row=>({...row,body:/ㅋㅋ|ㅎㅎ|드립|농담|\p{Extended_Pictographic}/u.test(row.body)?row.address+", 차분히 확인할게요. 필요한 내용부터 함께 살펴봐요.":row.body})),history);
     if(!post||source?.id!==post.id||mentionIds(source.body).length)return rows;
     const type=String(post.sourceEventId||"").split(":")[0],context=chairmanReplyTopic(post),topic=type==="achieved"?"goal":LOUNGE_LINES[type]?type:PEER_LINES[context]?context:"general";
@@ -797,7 +809,7 @@
     const accepted=[],mapped=new Map();
     rows.slice(0,source===post?6:2).forEach((row,i)=>{
       if(!row||!person(row.authorId)||row.authorId===actor()||typeof row.body!=="string")return;
-      const body=row.body,parts=sentences(body),keys=parts.map(sentenceKey);
+      const body=row.body.replace(/대표님/g,"회장님"),parts=sentences(body),keys=parts.map(sentenceKey);
       if(!body.trim()||body!==body.trim()||Array.from(body).length>160||!/[가-힣]/.test(body)||metaPhrase.test(body)||kinship.test(body)||/^\s*(?:님|씨|아|야)\s*[,，]/.test(body))return;
       if(!keys.length||keys.some(k=>!k||used.has(k))||new Set(keys).size!==keys.length)return;
       if(source.id===post.id&&post.authorId!==actor()&&!post.ownerTied&&/(?:회장님|대표님)\s*[,，!]/.test(body))return;
@@ -820,12 +832,13 @@
   async function requestLoungeAI(post,mode="thread",source=post,now=Date.now()){
     const requestKey=mode+":"+source.id;
     if(!loungeAvailable(now)||!published(post)||loungeRequests.includes(requestKey)||mode==="thread"&&post.aiThreadRequested)return false;
-    const owner=cloudUser.id,token=loungeToken(post,source),threadId=mode==="thread"?"library:"+post.id:"reply:"+source.id;
+    const owner=cloudUser.id,token=loungeToken(post,source),ownerThread=mode==="thread"&&post.authorId===actor(),threadId=mode==="thread"&&!ownerThread?"library:"+post.id:"reply:"+source.id;
     const targets=comments().filter(c=>c.postId===post.id&&c.threadId===threadId);
     // Never rewrite a visible comment or a parent already referenced outside this batch.
     if(targets.some(c=>!c.pending)||comments().some(c=>!targets.includes(c)&&targets.some(t=>t.id===c.parentId)))return false;
-    const staff=(roster()?.people||[]).map(p=>({id:p.id,name:displayName(p.id),rank:p.rank,team:p.team,
-      voice:[...(personaMap()[p.id]?.voice||[]).slice(0,2),personaMap()[p.id]?.commentStyle||p.line].filter(Boolean).join(" / ").slice(0,700)||"정중한 존댓말"}));
+    const fitting=ownerThread?[...new Set([...commentCandidates(post,source,comments(),now,post.id).slice(0,3).map(p=>p.id),...["hani","naeun","hina"].filter(id=>person(id)),...selectAuthors(6,posts(),comments(),now,post.id).map(p=>p.id)])].slice(0,6):null;
+    const staff=(roster()?.people||[]).filter(p=>p.status!=="planned"&&(!fitting||fitting.includes(p.id))).map(p=>({id:p.id,name:displayName(p.id),rank:p.rank,team:p.team,
+      voice:[...(personaMap()[p.id]?.voice||[]).slice(0,1),personaMap()[p.id]?.commentStyle||p.line,"호칭은 회장님. "+(relation(p.id,actor())?.interactionTone||"정중한 존댓말"),["hani","naeun","hina"].includes(p.id)?"따뜻하고 장난스러운 응원. 무서운 이야기는 놀리지 않기.":"공손한 존댓말."].filter(Boolean).join(" / ").slice(0,700)||"정중한 존댓말"}));
     if(!staff.length)return false;
     loungeRequests.push(requestKey);
     const marked=mode==="thread"?posts().map(p=>p.id===post.id?{...p,aiThreadRequested:true}:p):posts();
@@ -845,10 +858,11 @@
       if(batch.some(c=>!c.pending)||batch.length!==targets.length||batch.some(c=>!targets.some(t=>t.id===c.id)))return false;
       const keep=comments().filter(c=>!batch.includes(c));
       const rows=!result?.error&&result?.data?.ok?auditAIComments(current,result.data.comments,keep,currentSource):[];
-      if(!rows.length)return false; // Existing templates remain the error/cap/QA fallback.
+      if(!rows.length||ownerThread&&(rows.length<3||rows.length>5))return false; // Existing templates remain the error/cap/QA fallback.
       const ids=rows.map(()=>uid()),at=Date.now(),delays=[];
       const queued=rows.map((c,i)=>{
         let delay=Math.max(mode==="reply"?1:2,Math.min(mode==="reply"?3:180,c.delayMinutes));
+        if(ownerThread)delay=Math.max(i?delays[i-1]+1:2,Math.min(180-(rows.length-1-i),delay));
         if(c.parentIndex!==null)delay=Math.max(delay,delays[c.parentIndex]);delays.push(delay);
         return {id:ids[i],postId:post.id,authorId:c.authorId,body:c.body,parentId:mode==="reply"?(source.parentId||source.id):c.parentIndex!==null?ids[c.parentIndex]:"",
           createdAt:new Date(at).toISOString(),scheduledAt:new Date(at+delay*60000).toISOString(),generated:true,ai:true,pending:true,threadId,aiContextToken:token,
@@ -1178,7 +1192,7 @@
     let changed=false,processed=0;const mode=nextPosts.find(p=>p.boardMeta&&p.authorId===actor())?.replyMode==="review"?"review":"auto";
     const next=nextComments.map(c=>{
       const waiting=nextPosts.find(p=>p.id===c.postId);
-      if(c.libraryId&&!c.ai&&waiting&&published(waiting)&&(loungeRequests.includes("thread:"+waiting.id)||loungeThreadReady(waiting,nextComments,now)&&loungeAvailable(now)))return c;
+      if(!c.ai&&waiting&&published(waiting)&&((c.libraryId||c.threadId==="reply:"+waiting.id)&&loungeRequests.includes("thread:"+waiting.id)||c.libraryId&&loungeThreadReady(waiting,nextComments,now)&&loungeAvailable(now)))return c;
       const due=new Date(c.scheduledAt).getTime();
       if(!c.pending||!Number.isFinite(due)||(!force||c.libraryId)&&due>now||processed>=replySafetyBound)return c;
       processed++;
