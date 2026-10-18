@@ -93,7 +93,7 @@ test('press effect targets actual controls; existing Drive contract cannot attac
   assert.doesNotMatch(press[1],/\.card\)|\.archive-card\)/);assert.match(press[1],/button:not\(:disabled\)/);assert.match(press[1],/a\[href\]/);
   const docless=vm.createContext({window:{}});vm.runInContext(read('hani-drive-vault.js'),docless);
   assert.deepEqual(Object.keys(docless.window.HANI_DRIVE_VAULT_CORE).sort(),['due','filename','weeklyDecision','writeBackup']);
-  assert.match(read('hani-drive-vault.js'),/HANI_DRIVE_VAULT=Object.freeze\(\{schedule\}\)/);
+  assert.match(read('hani-drive-vault.js'),/HANI_DRIVE_VAULT=Object.freeze\(\{schedule,readStatus\}\)/);
   assert.doesNotMatch(read('hani-board.js'),/type=["']file|uploadAttachment|attachFile/);
   results.notes.drive='BLOCKED BY CONTRACT: owner-bound PC backup directory only; no board attachment model/picker/upload API. No write changes.';
 });

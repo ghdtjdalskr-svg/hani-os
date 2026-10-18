@@ -130,7 +130,7 @@ test('server refill with accepted news can ask for zero more news while retainin
 
 test('empty/stale sources show newsroom refresh instruction in the actual failure UI before any model call or save',async()=>{
   for(const rows of [[],archive().map(row=>({...row,published_at:'2026-09-01',event_at:'2026-09-01'}))]){
-    const f=setup({rows});await f.generate();assert.equal(f.requests.length,0);assert.equal(f.modelCalls.length,0);assert.equal(f.writes,0);assert.equal(JSON.stringify(f.state),f.before);assert.match(f.node.innerHTML,/최근 21일.*뉴스가 없습니다.*뉴스룸을 갱신/);assert.match(f.alerts[0],/뉴스룸을 갱신/);
+    const f=setup({rows});await f.generate();assert.equal(f.requests.length,0);assert.equal(f.modelCalls.length,0);assert.equal(f.writes,0);assert.equal(JSON.stringify(f.state),f.before);assert.match(f.node.innerHTML,/최근 21일.*뉴스가 없습니다.*뉴스룸을 갱신/);assert.match(f.node.innerHTML,/수동 생성 실패/);assert.equal(f.alerts.length,0);
     const response=await f.run({project:{...fixture.project,quiz_size:20},question_sources:[]});assert.equal(response.status,422);assert.equal((await response.json()).error,'QUIZ_NEWS_SOURCES_UNAVAILABLE');assert.equal(f.modelCalls.length,0);
   }
   const f=setup({queryError:true});await assert.rejects(f.api.quizApi(f.state.learningProjects[0]),/뉴스 조회에 실패/);assert.equal(f.requests.length,0);

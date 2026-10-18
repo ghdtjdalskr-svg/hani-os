@@ -219,9 +219,9 @@ api.setState({...api.getState(),boardPosts:[roster.chairman,...roster.people].ma
 })),boardComments:[]});
 vm.runInContext(board,context);
 for(const p of [roster.chairman,...roster.people]){
-  const expected=p.id===roster.chairman.id?"assets/team/hani-org-chair-v1.webp":
+  const expected=p.id===roster.chairman.id?"assets/sprites-v2/seongmin.webp":
     "assets/profiles/thumb/hani-profile-"+p.id+"-128.webp";
-  assert.ok(slots.get("list").innerHTML.includes(expected),p.id+" uses its existing static portrait");
+  assert.ok(slots.get("list").innerHTML.includes(expected),p.id+" uses its official avatar asset");
 }
 assert.equal((slots.get("list").innerHTML.match(/loading="lazy" decoding="async" width="28" height="28"/g)||[]).length,roster.people.length+1);
 console.log("PASS: all roster portraits use static assets with bounded dimensions and lazy decoding");

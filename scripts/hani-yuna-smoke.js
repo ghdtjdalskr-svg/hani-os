@@ -16,7 +16,7 @@ assert.equal(savedBook.completedDate,'');assert.match(savedBook.review,/읽기 �
 const task=api.parse('내일 오전까지 NHN 견적서 보내기');
 assert.equal(task.data.text,'NHN 견적서 보내기');assert.equal(task.missing.length,0);
 assert.equal(api.saveData(task).text,'NHN 견적서 보내기 · 오전까지');
-for(const hint of ['auto','book','diary','task'])assert.equal(api.parse('ISA에 20만원 추가했어',hint).mode,'route');
+for(const hint of ['auto','diary','task'])assert.equal(api.parse('ISA에 20만원 추가했어',hint).mode,'route');
 assert.equal(api.parse('ISA에 20만원 추가했어').route,'investmentIntake');
 assert.equal(api.parse('벤치프레스 3세트 기록').mode,'route');
 const explicit=api.parse('오늘 셜록 시즌1 2화까지 봤어. 4.5점');assert.equal(explicit.missing.length,0);

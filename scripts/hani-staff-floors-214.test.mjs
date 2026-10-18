@@ -77,7 +77,8 @@ test('existing organization, board, remote and office render paths resolve every
   const archivePortrait=vm.runInNewContext(archive.slice(archive.indexOf('  function portrait('),archive.indexOf('  function ',archive.indexOf('  function portrait(')+3))+'; portrait;', {esc:String});
   assert.deepEqual(refs(archivePortrait({id:'mir'})),['./assets/profiles/hani-profile-mir.webp']);
   assert.deepEqual(refs(avatar('unknown-staff')),[],'unknown author retains initials fallback');
-  assert.deepEqual(refs(avatar(roster.chairman.id)),['./assets/team/hani-org-chair-v1.webp']);
+  assert.deepEqual(refs(avatar(roster.chairman.id)),['./assets/sprites-v2/seongmin.webp']);
+  assert.ok(exists(refs(avatar(roster.chairman.id))[0]),'chairman sprite exists');
   for(const floor of building.floors) assert.ok(exists(floor.background)&&exists(floor.fallback),floor.id);
 });
 

@@ -64,7 +64,7 @@ try {
   });
   check('profile and quote, nested full interview, chat avatars, only first two sections open',()=>{
     const html=api.markup(issue,fixture,null,[],now);
-    assert.match(html,/<div class="ilbo-profile-card"><header>[^]*?hani-staff-seoyun-v7.webp/);
+    assert.match(html,/<div class="ilbo-profile-card"><header>[^]*?thumb\/hani-profile-seoyun-128.webp/);
     assert.ok(html.includes(issue.interviewQuote));assert.ok(issue.interview.some(x=>x.a.includes(issue.interviewQuote)));
     assert.match(html,/<details class="ilbo-interview-full"><summary>인터뷰 전문 보기<\/summary>/);
     assert.equal((html.match(/class="ilbo-qa"/g)||[]).length,6);assert.equal((html.match(/Q · 민지 기자/g)||[]).length,6);
@@ -197,7 +197,7 @@ try {
     await view.locator('[data-ilbo-comic]').waitFor({state:'visible'});assert.equal(await view.locator('[data-ilbo-placeholder]').isVisible(),false);
     assert.equal(await view.locator('[data-ilbo-tile]').count(),5);
     assert.deepEqual(await view.locator('.ilbo-fold[open]>summary').allTextContents(),['숫자로 보는 한 주','이 주의 인터뷰']);
-    assert.equal(await view.locator('.ilbo-profile-card').isVisible(),true);assert.match(await view.locator('.ilbo-profile-card img').getAttribute('src'),/hani-staff-seoyun-v7.webp/);
+    assert.equal(await view.locator('.ilbo-profile-card').isVisible(),true);assert.match(await view.locator('.ilbo-profile-card img').getAttribute('src'),/thumb\/hani-profile-seoyun-128.webp/);
     const full=view.locator('.ilbo-interview-full');assert.equal(await full.getAttribute('open'),null);assert.equal(await full.locator('.ilbo-qa').first().isVisible(),false);
     await full.locator('summary').click();assert.equal(await full.locator('.ilbo-qa').count(),6);assert.equal(await full.locator('.ilbo-qa').first().isVisible(),true);
     assert.equal(await full.locator('dt img').count(),6);assert.match(await full.locator('dt img').first().getAttribute('src'),/hani-profile-minji-128.webp/);
