@@ -5,8 +5,8 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import {assets} from './hani-office-v2-fixture.mjs';
 const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
-export function fixture(time='09:00',reduced=false,loadArt=null){
- const ids=new Map(),timers=[],observers=[];let clock=new Date(`2026-10-11T${time}:00+09:00`).getTime();
+export function fixture(time='09:00',reduced=false,loadArt=null,actionTable=null){
+ const ids=new Map(),timers=[],observers=[],motionEvents={};let clock=new Date(`2026-10-11T${time}:00+09:00`).getTime();
  class Element{
   constructor(tag='div'){this.tagName=tag;this.children=[];this.dataset={};this.attributes={};this.events={};this.style={setProperty(k,v){this[k]=v}};this.hidden=false;this.className='';this.textContent='';this.classList={contains:c=>this.className.split(' ').includes(c),add:c=>{this.className+=' '+c}}}
   set id(v){this._id=v;ids.set(v,this)}get id(){return this._id}
@@ -14,7 +14,7 @@ export function fixture(time='09:00',reduced=false,loadArt=null){
   after(node){this.parentElement.append(node)}
   setAttribute(k,v){this.attributes[k]=String(v)}getAttribute(k){return this.attributes[k]??(k==='src'?this.src:null)}
   addEventListener(k,fn){this.events[k]=fn}contains(node){return this===node||this.children.some(c=>c.contains(node))}
-  closest(selector){if(selector==='.view')return view;if(selector==='[data-building-floor]'&&this.dataset.buildingFloor)return this;return this.parentElement?.closest(selector)||null}
+  closest(selector){if(selector==='.view')return view;if(selector==='[data-building-floor]'&&this.dataset.buildingFloor)return this;if(selector.startsWith('.')&&this.classList.contains(selector.slice(1)))return this;return this.parentElement?.closest(selector)||null}
   querySelectorAll(selector){const descendants=this.children.flatMap(c=>[c,...c.querySelectorAll('*')]);return selector==='*'?descendants:descendants.filter(c=>selector.split(',').some(s=>s.startsWith('.')?c.classList.contains(s.slice(1)):c.tagName===s))}
   querySelector(s){return this.querySelectorAll(s)[0]||null}replaceChildren(...nodes){this.children=[];this.append(...nodes)}
   focus(){document.activeElement=this}scrollIntoView(){}get firstElementChild(){return this.children[0]||null}
@@ -28,22 +28,22 @@ export function fixture(time='09:00',reduced=false,loadArt=null){
  class Clock extends Date{constructor(...args){super(...(args.length?args:[clock]))}static now(){return clock}}
  let availableArt=null;
  class Image{set src(v){if(v===availableArt||loadArt?.(v))this.onload();else this.onerror()}}
- const context=vm.createContext({HaniOfficeV2Assets:assets,document,window:{},Date:Clock,Image,matchMedia:()=>({matches:reduced}),getComputedStyle:()=>({display:'block'}),MutationObserver:class{constructor(cb){observers.push(cb)}observe(){}},setInterval:(fn,ms)=>{timers.push({fn,ms})},setTimeout,console});
+ const context=vm.createContext({HaniOfficeV2Assets:assets,HaniOfficeActions216:actionTable,document,window:{},Date:Clock,Image,matchMedia:()=>({matches:reduced,addEventListener:(name,fn)=>{motionEvents[name]=fn}}),getComputedStyle:()=>({display:'block'}),MutationObserver:class{constructor(cb){observers.push(cb)}observe(){}},setInterval:(fn,ms)=>{timers.push({fn,ms})},setTimeout,console});
  // Canonical roster publishes even when its own view is absent.
  vm.runInContext(read('hani-organization-hub.js'),context);vm.runInContext(read('hani-office-live.js'),context);
  const click=floor=>tabs.events.click({target:[...tabs.children].find(b=>b.dataset.buildingFloor===floor)});
  const visible=()=>ids.get('haniOfficeActors').children.filter(a=>!a.hidden);
- return {context,ids,root,map,tabs,click,visible,timers,document,setTime:t=>{clock=new Date(`2026-10-11T${t}:00+09:00`).getTime()},hide:()=>{view.className='view';observers[0]()},show:()=>{view.className='view active';observers[0]()},art:value=>{availableArt=value}};
+ return {context,ids,root,map,tabs,click,visible,timers,document,setTime:t=>{clock=new Date(`2026-10-11T${t}:00+09:00`).getTime()},setDateTime:t=>{clock=new Date(t).getTime()},setReduced:matches=>motionEvents.change({matches}),hide:()=>{view.className='view';observers[0]()},show:()=>{view.className='view active';observers[0]()},art:value=>{availableArt=value}};
 }
 test('actual owner reuses 17 actors and a single host across all floor clicks',async()=>{
  const f=fixture(),actors=[...f.ids.get('haniOfficeActors').children];assert.equal(actors.length,17);assert.equal(f.map.dataset.floor,'4f');
  for(const [floor,n] of [['5f',0],['3f',5],['2f',6],['1f',2],['4f',4]]){f.click(floor);assert.equal(f.map.dataset.floor,floor);assert.equal(f.visible().length,n);assert.deepEqual(f.ids.get('haniOfficeActors').children,actors);assert.equal(f.tabs.children.filter(b=>b.getAttribute('aria-selected')==='true').length,1);assert.ok(f.visible().every(a=>a.officeRow.hidden===false))}
  assert.ok(f.visible().every(a=>a.officeText.textContent));await new Promise(r=>setTimeout(r,0));assert.equal(f.map.dataset.art,'fallback');
 });
-test('actual owner places break visitors in lounge, meeting leads in conference, caps and counts overflow',()=>{
- const f=fixture('12:05');assert.ok(f.visible().filter(a=>a.dataset.activity==='rest').every(a=>a.dataset.zone==='lounge'&&f.context.HaniBuildingScene.seatMaps['4f'].some(s=>s.id===a.dataset.seat&&s.x===Number(a.style.left.slice(0,-1)))));
- f.setTime('10:05');f.click('2f');assert.equal(f.visible().length,6);assert.equal(f.root.querySelector('.hani-building-overflow').textContent,'+2');
- assert.deepEqual(f.visible().filter(a=>a.dataset.activity==='meeting').map(a=>a.dataset.person).sort(),['hani','jieun','seoyun']);assert.match(f.tabs.children.find(b=>b.dataset.buildingFloor==='2f').querySelector('small').textContent,/근무 8 · 휴식 0/);
+test('missing action table keeps base work instead of the retired fixed-time break/meeting schedule',()=>{
+ const f=fixture('12:05');assert.ok(f.visible().every(a=>a.dataset.action==='base-work'&&a.dataset.activity==='work'));
+ f.setTime('10:05');f.click('2f');assert.equal(f.visible().length,6);assert.equal(f.root.querySelector('.hani-building-overflow').hidden,true);
+ assert.deepEqual(f.visible().filter(a=>a.dataset.activity==='meeting'),[]);assert.match(f.tabs.children.find(b=>b.dataset.buildingFloor==='2f').querySelector('small').textContent,/근무 6 · 휴식 0/);
 });
 test('actual owner loads 215 art when present and caches production fallback when absent',async()=>{const f=fixture();f.art('./assets/building/floor-3f-215.webp');f.click('3f');await new Promise(r=>setTimeout(r,0));assert.equal(f.map.dataset.art,'floor');assert.equal(f.map.querySelector('.hani-office-background').src,'./assets/building/floor-3f-215.webp');f.click('1f');await new Promise(r=>setTimeout(r,0));assert.equal(f.map.dataset.art,'fallback')});
 test('hidden view and document pause sprite frames and behaviour; visible view resumes',()=>{

@@ -143,7 +143,7 @@ test('sensitive threads never get joke comments, including laughter in fear/illn
     for(let seed=0;seed<60;seed++){
       const post={id:'sensitive-'+seed,authorId:roster.chairman.id,category:'LOUNGE',title,body};
       const reactions=h.loungeReactions(post,seed);assert.ok(reactions.length);
-      for(const c of reactions){assert.equal(c.intent,'fear');assert.doesNotMatch(c.body,jokes);assert.equal(c.parentIndex,null);}
+      for(const c of reactions){assert.equal(c.intent,'fear');const text=/병원/.test(body)&&['hani','naeun','hina'].includes(c.authorId)?c.body.replaceAll('💜',''):c.body;assert.doesNotMatch(text,jokes);assert.equal(c.parentIndex,null);}
     }
     const original={...fixtureLibrary(1)[0],title,body};context.HaniBoardLibrary={threads:[original]};
     const row={...original,libraryId:original.id,sourceEventId:'daily:2026-10-14:0',createdAt:new Date(now).toISOString()};

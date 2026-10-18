@@ -65,20 +65,21 @@ function explanationAnswerIndices(question: any) {
   const explanation = String(question?.explanation || '').normalize('NFKC');
   const found = new Set<number>();
   // Read only affirmative answer assertions; mentions of distractors are not answers.
+  const isAffirmative = (match: RegExpMatchArray) => !/^\s*(?:(?:(?:이|가|은|는)\s*)?아(?:니|닙|닌|닐)|(?:では|じゃ)\s*(?:ありません|ない))/.test(explanation.slice((match.index || 0) + match[0].length));
   const labels = [
     /(?:정답|正解|答え|correct\s+answer|answer)\s*(?:은|는|이|가|は|[:：=]|is)?\s*[「『"']?\(?([1-4])(?![\d.%％])\)?(?:\s*번)?/gi,
     /\b(?:option|choice)\s*([1-4])\s+is\s+(?:the\s+)?correct\b/gi,
   ];
-  labels.forEach(pattern => { for (const match of explanation.matchAll(pattern)) found.add(Number(match[1])-1); });
+  labels.forEach(pattern => { for (const match of explanation.matchAll(pattern)) if (isAffirmative(match)) found.add(Number(match[1])-1); });
   const choices = Array.isArray(question?.choices) ? question.choices : [];
   choices.forEach((choice: unknown, index: number) => {
     const text = String(choice || '').normalize('NFKC').trim();
     if (!text) return;
     const escaped = text.replace(/[.*+?^\u0024{}()|[\]\\]/g, match => '\\' + match);
-    const assertion = new RegExp('(?:정답|正解|答え)\\s*(?:은|는|이|가|は|[:：=])?\\s*[「『"\\\']?' + escaped + '(?:[」』"\\\']|\\s|$)|[「『"\\\']?' + escaped + '[」』"\\\']?\\s*(?:이|가|は)\\s*(?:정답|正解)', 'g');
-    if (assertion.test(explanation)) found.add(index);
+    const assertion = new RegExp('(?:정답|正解|答え)\\s*(?:은|는|이|가|は|[:：=])?\\s*[「『"\\\']?' + escaped + '(?:[」』"\\\']|\\s|$)|[「『"\\\']?' + escaped + '[」』"\\\']?\\s*(?:이|가|は|が)\\s*(?:정답|正解)', 'g');
+    if ([...explanation.matchAll(assertion)].some(isAffirmative)) found.add(index);
     const slotAnswer = new RegExp('(?:두\\s*번째|2\\s*번째|2番目|별표|★)(?:\\s*(?:항목|문항|보기|위치|に入るもの))?\\s*(?:은|는|이|가|は|に入るのは|[:：=])?\\s*[「『"\\\']?' + escaped + '(?:[」』"\\\']|\\s|\\(|$)', 'g');
-    if (slotAnswer.test(explanation)) found.add(index);
+    if ([...explanation.matchAll(slotAnswer)].some(isAffirmative)) found.add(index);
   });
   return [...found];
 }

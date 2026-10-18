@@ -30,7 +30,7 @@ for(const [intent,texts] of Object.entries(examples)){
 for(const member of roster.people){
   const addresses=new Set();
   for(let seed=0;seed<100;seed++)addresses.add(h.staffAddress(member.id,'seongmin',post,seed,[]));
-  assert.deepEqual([...addresses].sort(),['대표님','회장님']);
+  assert.deepEqual([...addresses].sort(),['회장님']);
 }
 assert.deepEqual(plain(api.getState()),before);
 assert.equal(inspection().queues,writes,'reaction preview never writes');

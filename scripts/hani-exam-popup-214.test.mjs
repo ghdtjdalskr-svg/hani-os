@@ -1,5 +1,5 @@
 // node scripts/hani-exam-popup-214.test.mjs
-// Add --browser [playwright module directory] [browser executable] for actual layout QA.
+// Pass Playwright index.mjs + browser exe (or legacy --browser) for actual layout QA.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -39,6 +39,7 @@ function dom() {
     setAttribute(k,v){this.attrs[k]=String(v);if(k.startsWith('data-'))this.dataset[dataName(k)]=String(v);if(k==='hidden')this.hidden=true;if(k==='disabled')this.disabled=true;}
     getAttribute(k){return this.attrs[k]??null} hasAttribute(k){return k in this.attrs}
     append(...nodes){for(const node of nodes){node.parentElement=this;this.children.push(node)}} appendChild(n){this.append(n);return n}
+    prepend(node){if(node.parentElement)node.parentElement.children.splice(node.parentElement.children.indexOf(node),1);node.parentElement=this;this.children.unshift(node)}
     get isConnected(){return this===doc.body||Boolean(this.parentElement?.isConnected)}
     set innerHTML(html){for(const n of this.children)n.parentElement=null;this.children=[];this._html=html;const stack=[this];
       for(const match of html.matchAll(/<\/?[a-z][^>]*>|[^<]+/gi)){const t=match[0];if(t.startsWith('</')){if(stack.length>1)stack.pop();continue}if(!t.startsWith('<')){stack.at(-1)._text+=t;continue}
@@ -144,8 +145,8 @@ check('new UI has no ID literals/direct storage/Cloud writes; reduced-motion and
 });
 fs.writeFileSync(path.join(output,'node-results.json'),JSON.stringify({status:'PASS',checks,environment:'Node VM DOM adapter; actual owner renderers/handlers; no layout claims'},null,2)+'\n');
 
-if(process.argv.includes('--browser')) {
-  const arg=process.argv.indexOf('--browser'),require=createRequire(import.meta.url);
+if(process.argv.includes('--browser')||path.basename(process.argv[2]||'')==='index.mjs') {
+  const arg=process.argv.includes('--browser')?process.argv.indexOf('--browser'):1,require=createRequire(import.meta.url);
   const modulePath=process.argv[arg+1]||path.join(os.homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
   const {chromium}=require(modulePath);
   let browser;
@@ -155,7 +156,7 @@ if(process.argv.includes('--browser')) {
     for(const width of [412,884,1440])for(const dark of [false,true]){
       const context=await browser.newContext({viewport:{width,height:960},reducedMotion:'reduce',colorScheme:dark?'dark':'light'}),page=await context.newPage(),errors=[];
       page.on('pageerror',e=>errors.push(e.message));await page.route('**/*',route=>route.abort());
-      await page.setContent('<html><head><style>'+fs.readFileSync(path.join(root,'hani-style-01.css'),'utf8').replace(/^@import.*$/gm,'')+'</style></head><body>'+shell+'</body></html>');
+      await page.setContent('<html><head><style>'+fs.readFileSync(path.join(root,'hani-style-01.css'),'utf8').replace(/^@import.*$/gm,'')+'</style><style>'+fs.readFileSync(path.join(root,'hani-design-system.css'),'utf8')+'</style></head><body>'+shell+'</body></html>');
       await page.evaluate(({data,dark})=>{document.documentElement.dataset.theme=dark?'dark':'light';document.body.dataset.view='study';window.state=data;window.answerCalls=[];window.gradeCalls=0;window.writes={save:0,commit:0};window.today=()=> '2026-10-16';window.save=()=>{writes.save++;return {ok:true}};window.commit=()=>{writes.commit++;return true};window.showView=()=>{};window.alert=message=>{throw Error(message)};},{data:fixture(),dark});
       await page.addScriptTag({content:instrumented});await page.addScriptTag({content:remote});
       await page.getByRole('button',{name:'응시하기',exact:true}).click();
@@ -167,8 +168,9 @@ if(process.argv.includes('--browser')) {
       for(let i=0;i<20;i++){await dialog.locator('[data-exam-jump="'+i+'"]').click();await page.keyboard.press(i===2?'2':'1')}
       const metrics=await dialog.evaluate(n=>({dialog:n.scrollWidth<=n.clientWidth+1,page:document.documentElement.scrollWidth<=innerWidth+1,animation:getComputedStyle(n.querySelector('[data-exam-stamp] strong')).animationName,
         boxes:[...n.querySelectorAll('button')].filter(b=>b.getClientRects().length).every(b=>{const r=b.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth+1}),
+        overflow:[...document.querySelectorAll('body *')].filter(n=>n.getBoundingClientRect().right>innerWidth+1).slice(0,6).map(n=>({tag:n.tagName,id:n.id,cls:n.className,right:n.getBoundingClientRect().right})),
         duplicates:[...document.querySelectorAll('[id]')].map(n=>n.id).filter((id,i,a)=>a.indexOf(id)!==i)}));
-      assert.equal(metrics.dialog,true);assert.equal(metrics.page,true);assert.equal(metrics.boxes,true);assert.equal(metrics.animation,'none');assert.deepEqual(metrics.duplicates,[]);
+      assert.equal(metrics.dialog,true,JSON.stringify(metrics));assert.equal(metrics.page,true,JSON.stringify(metrics));assert.equal(metrics.boxes,true,JSON.stringify(metrics));assert.equal(metrics.animation,'none');assert.deepEqual(metrics.duplicates,[]);
       await dialog.screenshot({path:path.join(output,width+'-'+(dark?'dark':'light')+'.png')});
       await dialog.locator('[data-exam-submit]').click();assert.equal(await dialog.locator('[data-exam-stamp]').isVisible(),true);
       assert.equal(await page.evaluate(()=>gradeCalls),1);await dialog.locator('[data-exam-result]').click();

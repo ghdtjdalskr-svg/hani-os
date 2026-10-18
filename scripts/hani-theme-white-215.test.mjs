@@ -2,6 +2,7 @@
 // Only disposable browser storage is used; external requests are blocked.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {expected216Html,cacheRefs} from './hani-216-cache-expectations.mjs';
 import path from 'node:path';
 import http from 'node:http';
 import vm from 'node:vm';
@@ -40,7 +41,7 @@ assert.equal(extract(main,'applySignatureFinish'),extract(oldMain.replace('const
 const storageExpressions=s=>s.match(/\b(?:commit|save|writeProtectedState|localStorage\.(?:setItem|removeItem|clear))\([^)]*\)/g);
 assert.deepEqual(storageExpressions(main),storageExpressions(oldMain),'all storage/write expressions preserved across integrated features');
 for(const name of ['initLoginGate','loginGateEnterApp','loginGateResumeSession','commit','save'])assert.equal(extract(main,name),extract(oldMain,name),name+' canonical auth/storage owner preserved');
-assert.deepEqual(html.match(/\?v=[^"']+/g),base('index.html').match(/\?v=[^"']+/g),'cache tags unchanged');
+assert.deepEqual(cacheRefs(html),cacheRefs(expected216Html(execFileSync(git,['show','efe6bcca97d89568b8104c88a4c6fdfa0915b580:index.html'],{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024}))),'existing URL/cache pairs unchanged; only approved 216 tags added');
 console.log('PASS finish list, token completeness, actual apply/fallback/save, Porcelain and storage/version/cache preservation');
 if(!process.argv[2])process.exit(0);
 const {chromium}=await import(pathToFileURL(process.argv[2]).href);

@@ -32,10 +32,32 @@ try{
    await page.screenshot({path:path.join(evidence,`${width}-${floor}.png`),fullPage:true});
   }
   await page.locator('[data-building-floor="4f"]').focus();await page.keyboard.press('End');assert.equal(await page.locator('[data-building-floor="1f"]').getAttribute('aria-selected'),'true');await page.keyboard.press('Home');
-  await page.evaluate(()=>{buildingClock=Date.parse('2026-10-11T12:05:00+09:00')});await page.locator('[data-building-floor="4f"]').click();
-  assert.ok(await page.locator('#haniOfficeActors [data-activity="rest"]:visible').count()>=1);assert.ok(await page.locator('#haniOfficeActors .hani-office-actor:visible').count()<=6);
-  await page.evaluate(()=>{buildingClock=Date.parse('2026-10-11T10:05:00+09:00')});await page.locator('[data-building-floor="2f"]').click();assert.equal(await page.locator('.hani-building-overflow').innerText(),'+2');assert.equal(await page.locator('#haniOfficeActors .hani-office-actor:visible').count(),6);
-  await page.screenshot({path:path.join(evidence,`${width}-2f-conference.png`),fullPage:true});
+  // 216 uses deterministic action plans, including a quiet Sunday, rather than
+  // fixed lunchtime/rest and 10:05 conference slots. Compare the actual renderer
+  // against the canonical plan and exercise a scheduled rest action on a weekday.
+  await page.evaluate(()=>{buildingClock=Date.parse('2026-10-11T12:05:00+09:00')});
+  await page.locator('[data-building-floor="4f"]').click();
+  const assertPlan=async floor=>{
+   await page.locator('[data-building-floor="'+floor+'"]').click();
+   assert.equal(await page.evaluate(f=>{
+    const expected=HaniBuildingScene.snapshot(new Date(buildingClock)).floors.find(x=>x.id===f);
+    const actors=[...document.querySelectorAll('#haniOfficeActors .hani-office-actor')].filter(x=>!x.hidden);
+    return actors.length===expected.visible.length&&actors.every(a=>expected.visible.some(p=>p.id===a.dataset.person&&p.activity===a.dataset.activity));
+   },floor),true,'rendered actors and activity match canonical 216 schedule');
+   assert.ok(await page.locator('#haniOfficeActors .hani-office-actor:visible').count()<=6);
+  };
+  await assertPlan('4f');
+  const restFloor=await page.evaluate(()=>{
+   const day='2026-10-19',event=HaniBuildingScene.scheduler.plan(day).find(e=>e.personalNonWork);
+   if(!event)throw Error('weekday fixture must include a rest action');
+   buildingClock=Date.parse(day+'T00:00:00+09:00')+Math.floor((event.performStart+event.performEnd)/2)*1000;
+   return event.floors[0];
+  });
+  await assertPlan(restFloor);
+  assert.ok(await page.locator('#haniOfficeActors [data-activity="rest"]:visible').count()>=1);
+  await page.evaluate(()=>{buildingClock=Date.parse('2026-10-11T10:05:00+09:00')});await assertPlan('2f');
+  assert.equal(await page.locator('.hani-building-overflow').isHidden(),true,'six canonical residents fit without phantom conference overflow');
+  await page.screenshot({path:path.join(evidence,width+'-2f-schedule.png'),fullPage:true});
   await page.evaluate(()=>{buildingClock=Date.parse('2026-10-11T09:00:00+09:00')});await page.locator('[data-building-floor="4f"]').click();
   // Existing read-only meeting bridge: synthetic case, never writes/contacts Cloud.
   await page.evaluate(()=>haniOfficeLiveUpdate({case:{id:'building-synthetic',title:'합성 안건',hani_final:{executive_summary:'기존 결재 경로 보존'}},reviews:[{agent_key:'JIEUN',review_round:1,summary:'합성 검토'}]}));

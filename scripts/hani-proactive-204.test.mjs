@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {expected216Html,cacheRefs} from './hani-216-cache-expectations.mjs';
 import path from 'node:path';
 import vm from 'node:vm';
 import {execFileSync} from 'node:child_process';
@@ -162,8 +163,10 @@ test('unchanged lines preserve exact EOL and protected versions/keys; no added d
   // Every untouched line keeps its original terminator, including unique mixed-EOL anchors.
   const a=lines(old),b=lines(current),byText=new Map();for(const l of a){const t=l.replace(/[\r\n]+$/,'');if(!byText.has(t))byText.set(t,new Set());byText.get(t).add(l.slice(t.length));}
   for(const l of b){const t=l.replace(/[\r\n]+$/,'');if(byText.has(t))assert.ok(byText.get(t).has(l.slice(t.length)),file+' EOL '+t.slice(0,70));}
-  assert.deepEqual(current.match(/\b2\.9\.\d+(?:-[\w.-]+)?\b/g)||[],old.match(/\b2\.9\.\d+(?:-[\w.-]+)?\b/g)||[],file+' all existing version tokens unchanged');
-  assert.deepEqual(current.match(/\?v=[^\s"'<>]+/g)||[],old.match(/\?v=[^\s"'<>]+/g)||[],file+' cache tags unchanged');
+  const expected=file==='index.html'?expected216Html(old):old.replace('HANI_DISPLAY_VERSION:"2.9.59"','HANI_DISPLAY_VERSION:"?"');
+  assert.deepEqual((current.match(/\b2\.9\.\d+(?:-[\w.-]+)?\b/g)||[]).sort(),(expected.match(/\b2\.9\.\d+(?:-[\w.-]+)?\b/g)||[]).sort(),file+' versions preserved except approved cache additions and obsolete display fallback');
+  if(file==='index.html')assert.deepEqual(cacheRefs(current),cacheRefs(expected),'all URL/cache pairs preserved');
+  else {assert.deepEqual(current.match(/\?v=[^\s"'<>]+/g)||[],expected.match(/\?v=[^\s"'<>]+/g)||[],file+' cache tags unchanged');assert.match(current,/workerSrc="\.\/js\/hani-pdf-worker\.js\?v="\+encodeURIComponent\(HANI_DISPLAY_VERSION\)/,'PDF worker uses unchanged display version');}
  }
  const diff=baseline?fs.readFileSync(path.join(baseline,'runtime.diff'),'utf8'):execFileSync('git',['diff','--unified=0','--','hani-main.js','index.html','hani-study-v02984.js','hani-goal-progress.js','hani-yuna-helpdesk.js'],{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024});
  const additions=diff.split('\n').filter(l=>l.startsWith('+')&&!l.startsWith('+++')).join('\n');

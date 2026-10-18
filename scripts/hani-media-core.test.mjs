@@ -1,14 +1,17 @@
 // node scripts/hani-media-core.test.mjs [candidate-main.js] [baseline-main.js]
+// Also accepts the suite Playwright index.mjs + browser exe arguments (Node-only test).
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import path from "node:path";
 import vm from "node:vm";
 import {webcrypto} from "node:crypto";
 import {execFileSync} from "node:child_process";
 import {fileURLToPath} from "node:url";
 
 const repo=fileURLToPath(new URL("../",import.meta.url));
-const source=fs.readFileSync(process.argv[2]||new URL("../hani-main.js",import.meta.url),"utf8");
-const baseline=process.argv[3]?fs.readFileSync(process.argv[3],"utf8"):
+const browserArgs=process.argv[2] && path.basename(process.argv[2])==="index.mjs";
+const source=fs.readFileSync((!browserArgs && process.argv[2])||new URL("../hani-main.js",import.meta.url),"utf8");
+const baseline=!browserArgs && process.argv[3]?fs.readFileSync(process.argv[3],"utf8"):
   execFileSync("git",["show","6b18534a1e2a53e2ad7b5062355dbe8607229c0c:hani-main.js"],
     {cwd:repo,encoding:"utf8",maxBuffer:8*1024*1024});
 const core=fs.readFileSync(new URL("../hani-media-core.js",import.meta.url),"utf8");
@@ -134,7 +137,7 @@ function renderers(text){
   const ctx=vm.createContext({window:{HANI_MEDIA:media},TOPIC_COLORS:{"기타":"#000"},
     esc:v=>String(v??""),stars:v=>String(v??""),movieContentType:v=>v||"기타",
     ratingValue:v=>v==null?null:Number(v),movieViewingUnits:rows=>rows.length,movieReviewBody:v=>v});
-  const names=["bookCard","movieCard","movieWorkCard"];
+  const names=["validRenderRecordId","recordIdAttributes","bookCard","movieCard","movieWorkCard"];
   const fns=names.map(n=>text.split(/\r?\n/).find(line=>line.startsWith("function "+n+"(")));
   vm.runInContext('function mediaImage(item,field){return window.HANI_MEDIA.resolve(item,field)}\n'+
     fns.join("\n")+"\nthis.api={bookCard,movieCard,movieWorkCard};",ctx);return ctx.api;
