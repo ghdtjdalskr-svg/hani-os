@@ -35,6 +35,7 @@
   let orphanQuizId = '';
   let activeStudyTab = 'board';
   let activeWrongId = '';
+  let quickWrongIds = null;
   let quizArchivePage = 1;
   let quizArchiveMonth = 'all';
   let learningBoardOpen = true;
@@ -42,7 +43,10 @@
   let busy = false;
   let projectFormMode = 'create';
   const autoGenerationAttempts = new Set();
+  // Page-session only: reload persistence requires approval for a storage write path.
   const generationFailures = new Map();
+  const generationDay = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' });
+  const generationKey = project => `${project.id}|${generationDay()}`;
   const SCHEDULE_LABELS = {
     daily: '매일', mon_wed_fri: '월·수·금', every_2_days: '2일마다',
     every_3_days: '3일마다', weekly: '매주', monthly: '한 달마다', manual: '수동',
@@ -696,7 +700,7 @@
       });
       const result = await res.json().catch(() => ({}));
       if ((!res.ok || result?.ok === false) && result?.error === 'QUIZ_NEWS_MATERIAL_MISSING' && attempt < 8) continue;
-      if (!res.ok || result?.ok === false) throw new Error(result?.message || result?.error || `퀴즈 생성 실패 (${res.status})`);
+      if (!res.ok || result?.ok === false) throw new Error(quizFailureMessage(result, res.status));
       const questions = Array.isArray(result?.quiz?.questions) ? result.quiz.questions.map(normalizeQuestion) : [];
       if (!questions.length) throw new Error('퀴즈 생성 결과에 유효한 문제가 없습니다.');
       const ordered = questions.slice().sort((a,b) => Number(hasNewsMaterial(b,questionSources)) - Number(hasNewsMaterial(a,questionSources)));
@@ -839,7 +843,7 @@
     }).join('') : `<div class="study-empty"><b>표시할 학습 프로젝트가 없습니다.</b><br>${activeStudyTab==='board'?'Learning Board에서 새 프로젝트를 추가해 주세요.':'프로젝트를 만들면 이곳에서 선택할 수 있어요.'}</div>`;
     const hint=q('#studyProjectListHint');
     if(hint)hint.textContent=activeStudyTab==='wrong'?'프로젝트를 선택하면 해당 프로젝트의 오답만 표시합니다.':activeStudyTab==='history'?'프로젝트를 선택하면 지금까지 출제된 문제세트를 표시합니다.':'접어도 프로젝트 선택 목록은 항상 유지됩니다.';
-    qa('[data-study-project]', box).forEach(btn => btn.onclick = () => { activeProjectId = btn.dataset.studyProject || ''; activeQuizId = ''; renderLearning(); });
+    qa('[data-study-project]', box).forEach(btn => btn.onclick = () => { activeProjectId = btn.dataset.studyProject || ''; activeQuizId = ''; quickWrongIds = null; renderLearning(); });
   }
 
   function wrongRows() {
@@ -964,14 +968,33 @@
     return copyHinaPrompt(hinaQuizItems(quiz).filter(x => x.number === index + 1));
   }
 
+  // Entry selection only; answers still use the unchanged retryWrongAnswer owner.
+  function quickWrongRows() {
+    return wrongRows().filter(row => Number(row.wrongCount || 0) > 1 || !['reviewed','retry_completed'].includes(row.reviewStatus)).slice(0,3);
+  }
+  function openQuickWrong() {
+    quickWrongIds = quickWrongRows().map(row => row.id);
+    activeStudyTab = 'wrong'; activeWrongId = ''; activeQuizId = '';
+    renderLearning(false);
+  }
+  function renderQuickWrong() {
+    const engine=q('#studyEngineV02984');if(!engine)return;
+    let slot=q('#studyQuickWrong',engine);
+    if(!slot){slot=document.createElement('div');slot.id='studyQuickWrong';slot.className='study-card-v02984';engine.prepend(slot)}
+    const count=quickWrongRows().length;
+    slot.innerHTML='<b>오늘은 오답 3개만</b><p class="note">반복 오답·미복습 중 최대 3개를 기존 재도전으로 열어요. 문제의 최근 오답 날짜를 함께 확인해 주세요.</p><button class="btn sm" type="button" id="studyQuickWrongOpen"'+(count?'':' disabled')+'>'+(count?count+'개 가볍게 풀기':'지금 복습할 오답이 없어요')+'</button>';
+    q('#studyQuickWrongOpen',slot).onclick=openQuickWrong;
+  }
+
   function renderWrongTab() {
     const panel = q('#studyWrongPanel');
     if (!panel) return;
     const project=projectById(activeProjectId);
-    const rows=project?wrongRows().filter(x=>x.projectId===project.id):[];
-    const renderWrongRow = x => { const match = wrongQuizQuestion(x); const retrying = activeWrongId === x.id; const canMaster = ['reviewed','retry_completed'].includes(x.reviewStatus); return `<article class="study-wrong-row"><h4>${safe(x.question)}</h4><div class="study-wrong-answer"><div><strong>내 답</strong><br>${safe(x.userAnswer || '미응답')}</div><div><strong>정답</strong><br>${safe(x.correctAnswer || '')}</div></div><p><strong>해설</strong> ${safe(x.explanation || '')}</p>${match ? renderQuestionDispute(match.quiz,match.index) : '<p class="note">원본 퀴즈 문항을 찾지 못해 재채점할 수 없습니다.</p>'}<div class="study-wrong-meta"><span>${safe(projectLabel(projectById(x.projectId)))}</span><span>오답 ${Number(x.wrongCount || 1)}회</span><span>최근 오답 ${safe(x.lastWrongDate || x.firstWrongDate || '')}</span><span>${x.reviewStatus === 'retry_completed' ? '재도전 완료' : x.reviewStatus === 'reviewed' ? '확인 완료' : Number(x.retryCount || 0) ? '재도전 중' : '재도전 전'}</span></div><div class="study-wrong-actions"><button class="btn sm" type="button" data-hina-wrong="${safe(x.id)}">${tutorName(projectById(x.projectId))}에게 첨삭 받기 (복사)</button>${x.quizId ? `<button class="btn sm" type="button" data-hina-set="${safe(x.quizId)}">이번 세트 틀린 문제 전체 복사</button>` : ''}<button class="btn sm" type="button" data-wrong-retry="${safe(x.id)}">다시 풀기</button><button class="btn sm" type="button" data-wrong-confirm="${safe(x.id)}">확인 완료</button>${canMaster ? `<button class="btn sm ghost" type="button" data-wrong-master="${safe(x.id)}">오답노트에서 지우기</button>` : ''}</div>${retrying ? `<div class="study-retry"><div class="study-choices">${(x.choices || []).map((choice, i) => `<label class="study-choice"><input type="radio" name="wrong-retry-${safe(x.id)}" value="${i}"><span>${i + 1}. ${safe(choice)}</span></label>`).join('')}</div><div class="study-wrong-actions"><button class="btn sm primary" type="button" data-wrong-submit="${safe(x.id)}">재도전 제출</button></div></div>` : ''}</article>`; };
-    panel.innerHTML = `<div class="study-card-v02984 study-focused-panel"><div class="study-tab-toolbar"><div><span class="study-panel-kicker">WRONG ANSWERS</span><h3>${safe(projectLabel(project))} 오답노트</h3><div class="note">선택한 프로젝트에서 틀린 문제만 모았습니다. 다시 풀거나 확인 완료로 정리할 수 있어요.</div></div><span class="study-status ${rows.length?'in_progress':'completed'}">오답 ${rows.length}</span></div>
-      ${project?(rows.length?`<div class="study-wrong-list">${rows.map(renderWrongRow).join('')}</div>`:'<div class="study-empty">이 프로젝트에는 표시할 오답이 없습니다.</div>'):'<div class="study-empty">위에서 프로젝트를 선택해 주세요.</div>'}</div>`;
+    const rows=quickWrongIds?wrongRows().filter(x=>quickWrongIds.includes(x.id)):project?wrongRows().filter(x=>x.projectId===project.id):[];
+    const renderWrongRow = x => { const match = wrongQuizQuestion(x); const retrying = activeWrongId === x.id || !!quickWrongIds?.includes(x.id); const canMaster = ['reviewed','retry_completed'].includes(x.reviewStatus); return `<article class="study-wrong-row"><h4>${safe(x.question)}</h4><div class="study-wrong-answer"><div><strong>내 답</strong><br>${safe(x.userAnswer || '미응답')}</div><div><strong>정답</strong><br>${safe(x.correctAnswer || '')}</div></div><p><strong>해설</strong> ${safe(x.explanation || '')}</p>${match ? renderQuestionDispute(match.quiz,match.index) : '<p class="note">원본 퀴즈 문항을 찾지 못해 재채점할 수 없습니다.</p>'}<div class="study-wrong-meta"><span>${safe(projectLabel(projectById(x.projectId)))}</span><span>오답 ${Number(x.wrongCount || 1)}회</span><span>최근 오답 ${safe(x.lastWrongDate || x.firstWrongDate || '')}</span><span>${x.reviewStatus === 'retry_completed' ? '재도전 완료' : x.reviewStatus === 'reviewed' ? '확인 완료' : Number(x.retryCount || 0) ? '재도전 중' : '재도전 전'}</span></div><div class="study-wrong-actions"><button class="btn sm" type="button" data-hina-wrong="${safe(x.id)}">${tutorName(projectById(x.projectId))}에게 첨삭 받기 (복사)</button>${x.quizId ? `<button class="btn sm" type="button" data-hina-set="${safe(x.quizId)}">이번 세트 틀린 문제 전체 복사</button>` : ''}<button class="btn sm" type="button" data-wrong-retry="${safe(x.id)}">다시 풀기</button><button class="btn sm" type="button" data-wrong-confirm="${safe(x.id)}">확인 완료</button>${canMaster ? `<button class="btn sm ghost" type="button" data-wrong-master="${safe(x.id)}">오답노트에서 지우기</button>` : ''}</div>${retrying ? `<div class="study-retry"><div class="study-choices">${(x.choices || []).map((choice, i) => `<label class="study-choice"><input type="radio" name="wrong-retry-${safe(x.id)}" value="${i}"><span>${i + 1}. ${safe(choice)}</span></label>`).join('')}</div><div class="study-wrong-actions"><button class="btn sm primary" type="button" data-wrong-submit="${safe(x.id)}">재도전 제출</button></div></div>` : ''}</article>`; };
+    panel.innerHTML = `<div class="study-card-v02984 study-focused-panel"><div class="study-tab-toolbar"><div><span class="study-panel-kicker">WRONG ANSWERS</span><h3>${quickWrongIds?'오늘은 오답 3개만':safe(projectLabel(project))+' 오답노트'}</h3><div class="note">${quickWrongIds?'기존 오답 중 최대 3개예요. 최근 오답 날짜 기준의 당시 문제이며 최신 사실은 별도로 확인해 주세요.':'선택한 프로젝트에서 틀린 문제만 모았습니다. 다시 풀거나 확인 완료로 정리할 수 있어요.'}</div></div><span class="study-status ${rows.length?'in_progress':'completed'}">오답 ${rows.length}</span></div>
+      ${quickWrongIds?'<button class="btn sm" type="button" id="studyQuickWrongExit">전체 오답으로 돌아가기</button>':''}${project||quickWrongIds?(rows.length?`<div class="study-wrong-list">${rows.map(renderWrongRow).join('')}</div>`:'<div class="study-empty">이 프로젝트에는 표시할 오답이 없습니다.</div>'):'<div class="study-empty">위에서 프로젝트를 선택해 주세요.</div>'}</div>`;
+    const exit=q('#studyQuickWrongExit',panel);if(exit)exit.onclick=()=>{quickWrongIds=null;renderLearning(false)};
     bindQuestionDisputes(panel);
     qa('[data-wrong-retry]', panel).forEach(btn => btn.onclick = () => { activeWrongId = activeWrongId === btn.dataset.wrongRetry ? '' : btn.dataset.wrongRetry; renderWrongTab(); });
     qa('[data-wrong-confirm]', panel).forEach(btn => btn.onclick = () => { if (confirmWrongAnswer(btn.dataset.wrongConfirm)) renderLearning(); });
@@ -1171,7 +1194,7 @@
     const view = normalizeProject(project), date = localToday(), allQuizzes = projectQuizzes(project.id), todayQuiz = allQuizzes.find(x => quizDate(x) === date), pending = allQuizzes.filter(x => x.status !== 'completed'), completed = allQuizzes.filter(x => x.status === 'completed'), archiveMonths = [...new Set(allQuizzes.map(x => quizDate(x).slice(0,7)).filter(x => /^\d{4}-\d{2}$/.test(x)))].sort((a,b)=>b.localeCompare(a)), filteredQuizzes = quizArchiveMonth === 'all' ? allQuizzes : allQuizzes.filter(x => quizDate(x).startsWith(quizArchiveMonth)), archivePages = Math.max(1, Math.ceil(filteredQuizzes.length / QUIZ_ARCHIVE_PAGE_SIZE));
     quizArchivePage = Math.min(archivePages, Math.max(1, quizArchivePage));
     const quizzes = filteredQuizzes.slice((quizArchivePage - 1) * QUIZ_ARCHIVE_PAGE_SIZE, quizArchivePage * QUIZ_ARCHIVE_PAGE_SIZE);
-    const scheduled = isScheduledDate(project, date), failed = generationFailures.get(`${project.id}|${date}`) || '', paused = view.status === 'paused';
+    const scheduled = isScheduledDate(project, date), failed = generationFailures.get(generationKey(project)) || '', paused = view.status === 'paused';
     if (!activeQuizId || !quizById(activeQuizId) || quizById(activeQuizId)?.projectId !== project.id) activeQuizId = todayQuiz?.id || pending[0]?.id || allQuizzes[0]?.id || '';
     const activeQuiz = quizById(activeQuizId);
     main.innerHTML = `
@@ -1181,7 +1204,7 @@
         <div class="study-today-top"><div class="study-today-title"><span>${safe(view.category.toUpperCase())} · ${safe(date)}</span><b>${safe(project.name)} Learning Board</b></div>${todayQuiz?.status === 'completed' ? `<div class="study-score">${safe(quizStatusLabel(todayQuiz))}</div>` : paused ? '<span class="study-status in_progress">학습 중지</span>' : `<button class="btn primary" id="studyGenerateQuiz" type="button" ${busy ? 'disabled' : ''}>${todayQuiz ? '오늘 세트 열기' : busy ? '생성 중…' : failed ? '다시 생성' : view.scheduleType === 'manual' ? '문제세트 생성' : scheduled ? '오늘 세트 생성' : '수동 생성'}</button>`}</div>
         <div class="study-project-summary"><span class="study-chip">${safe(SCHEDULE_LABELS[view.scheduleType])}</span><span class="study-chip">${view.quizSize}문제</span>${view.examDate ? `<span class="study-chip">시험 ${safe(view.examDate)}</span>` : ''}${view.focusAreas.map(x => `<span class="study-chip">${safe(x)}</span>`).join('')}</div>
         ${view.category === 'economy' ? `<div class="note">새 세트는 최근 뉴스·기업·거시경제 사례와 개념 문제를 함께 구성합니다. ${usesBasicNewsBalance(project) ? '기초 과정은 뉴스 소재를 약 1/4 이내, 핵심 개념 확인·단일 인과 문항을 약 1/3 이상으로 구성하며 난이도 설정은 유지합니다.' : '뉴스 자료가 있으면 약 1/3 이상을 실제 사례로 출제하며 난이도 설정은 유지합니다.'} 이미 생성된 세트는 다시 쓰지 않습니다.</div>` : ''}
-        <div class="note" style="margin-top:8px">${paused ? '일시중지 상태입니다. 기존 문제세트와 오답은 계속 볼 수 있으며 새 문제 생성은 차단됩니다.' : failed ? `자동 생성 실패 · ${safe(failed)} · 버튼으로 한 번씩 다시 시도할 수 있습니다.` : scheduled ? '오늘은 자동 생성 대상일입니다. 프로젝트 진입 시 세트가 없으면 한 번만 요청합니다.' : '오늘은 정기 생성일이 아닙니다. 필요하면 수동으로 생성할 수 있습니다.'}${pending.filter(x => quizDate(x) < date).length ? ` · 지난 미완료 ${pending.filter(x => quizDate(x) < date).length}개` : ''}</div>
+        <div class="note" role="status" style="margin-top:8px">${paused ? '일시중지 상태입니다. 기존 문제세트와 오답은 계속 볼 수 있으며 새 문제 생성은 차단됩니다.' : failed ? `${safe(failed)} · 버튼으로 한 번씩 다시 시도할 수 있습니다.` : scheduled ? '오늘은 자동 생성 대상일입니다. 프로젝트 진입 시 세트가 없으면 한 번만 요청합니다.' : '오늘은 정기 생성일이 아닙니다. 필요하면 수동으로 생성할 수 있습니다.'}${pending.filter(x => quizDate(x) < date).length ? ` · 지난 미완료 ${pending.filter(x => quizDate(x) < date).length}개` : ''}</div>
         <div class="study-project-tools"><button class="btn sm" type="button" id="studyProjectEdit">설정 수정</button>${paused ? '<button class="btn sm primary" type="button" id="studyProjectResume">학습 재개</button>' : '<button class="btn sm" type="button" id="studyProjectPause">학습 중지</button>'}<button class="btn sm" type="button" id="studyProjectComplete">프로젝트 종료</button><button class="btn sm ghost" type="button" id="studyProjectDelete">프로젝트 삭제</button></div>
         </div>
       </details>
@@ -1298,6 +1321,7 @@
     if (q('#studyWrongPanel')) q('#studyWrongPanel').hidden = activeStudyTab !== 'wrong';
     if (q('#studyHistoryPanel')) q('#studyHistoryPanel').hidden = activeStudyTab !== 'history';
     renderProjectList();
+    renderQuickWrong();
     renderCounters();
     if (activeStudyTab === 'board') {
       renderMain(autoGenerate);
@@ -1358,7 +1382,7 @@
       if(copy&&engine.contains(copy)){handleHinaCopy(copy);return;}
       const btn=event.target.closest?.('[data-study-tab]');
       if(!btn||!engine.contains(btn))return;
-      activeStudyTab=btn.dataset.studyTab||'board';activeWrongId='';activeQuizId='';renderLearning();
+      activeStudyTab=btn.dataset.studyTab||'board';activeWrongId='';quickWrongIds=null;activeQuizId='';renderLearning();
     });
     q('#studyProjectNew')?.addEventListener('click', () => openProjectForm());
     q('#studyProjectCancel')?.addEventListener('click', () => { resetProjectForm(); toggleProjectForm(false); });
@@ -1398,9 +1422,21 @@
     });
   }
 
+  function quizFailureMessage(result, status) {
+    const labels = { invalid_structure:'문항 형식', explanation_key_disagreement:'해설·정답 불일치', verification_missing:'검증 결과 누락', not_single_answer:'복수정답·정답 불확실', blind_key_disagreement:'독립 정답 불일치', jlpt_language:'일본어 형식', jlpt_level_missing:'수준 판정 누락', jlpt_above_target:'목표 수준 초과', jlpt_below_level_quota:'기초 문항 비율 초과' };
+    const counts = new Map();
+    for (const row of Array.isArray(result?.validation?.rejected) ? result.validation.rejected : []) {
+      for (const reason of Array.isArray(row?.reasons) ? new Set(row.reasons) : []) {
+        if (Object.hasOwn(labels, reason)) counts.set(reason, (counts.get(reason) || 0) + 1);
+      }
+    }
+    const detail = Array.from(counts, ([reason, count]) => `${labels[reason]} ${count}문항`).join(' · ');
+    return `${result?.message || result?.error || `퀴즈 생성 실패 (${status})`}${detail ? ` (${detail})` : ''}`;
+  }
+
   function maybeAutoGenerate(project) {
-    const date = localToday(), key = `${project.id}|${date}`;
-    if (!shouldGenerateForDate(project, date) || autoGenerationAttempts.has(key) || busy) return false;
+    const date = localToday(), key = generationKey(project);
+    if (!shouldGenerateForDate(project, date) || generationFailures.has(key) || autoGenerationAttempts.has(key) || busy) return false;
     autoGenerationAttempts.add(key);
     Promise.resolve().then(() => generateTodayQuiz(project, { automatic: true }));
     return true;
@@ -1408,19 +1444,23 @@
 
   async function generateTodayQuiz(project, { automatic = false } = {}) {
     if (normalizeProject(project).status !== 'active') {
-      if (!automatic) alert('학습 중인 프로젝트만 새 문제를 생성할 수 있습니다.');
+      if (!automatic) {
+        generationFailures.set(generationKey(project), '수동 생성 실패 · 학습 중인 프로젝트만 새 문제를 생성할 수 있습니다.');
+        renderLearning(false);
+      }
       return false;
     }
-    const date = localToday(), key = `${project.id}|${date}`;
+    const date = localToday(), key = generationKey(project);
+    if (automatic && generationFailures.has(key)) return false;
     const existing = projectQuizzes(project.id).find(x => quizDate(x) === date);
     if (existing) return selectQuiz(existing.id);
     if (busy) return;
     if (!automatic) autoGenerationAttempts.add(key);
     busy = true;
-    renderLearning();
+    renderLearning(false);
     try {
       const quizSize = normalizeProject(project).quizSize;
-      if (typeof haniWorkShow === 'function') haniWorkShow({agent:'hina', title:`히나가 오늘의 ${quizSize}문제를 만들고 있어요!`, step:'HINA · DAILY QUIZ', message:'최근 오답과 프로젝트 목표를 보고 새 문제를 구성합니다.'});
+      if (!automatic && typeof haniWorkShow === 'function') haniWorkShow({agent:'hina', title:`히나가 오늘의 ${quizSize}문제를 만들고 있어요!`, step:'HINA · DAILY QUIZ', message:'최근 오답과 프로젝트 목표를 보고 새 문제를 구성합니다.'});
       const questions = await quizApi(project);
       const duplicate = projectQuizzes(project.id).find(x => quizDate(x) === date);
       if (duplicate) return selectQuiz(duplicate.id);
@@ -1428,16 +1468,15 @@
       const quiz = normalizeQuiz({ projectId: project.id, date, scheduledDate:date, sequenceNo, title:`${project.name} 문제세트 #${String(sequenceNo).padStart(3, '0')}`, status:'pending', questions, answers:Array(questions.length).fill(null), total:questions.length });
       if (!persistGeneratedQuiz(project, quiz)) throw new Error('퀴즈 저장 검증에 실패했습니다.');
       generationFailures.delete(key);
-      if (typeof haniWorkFinish === 'function') haniWorkFinish(true, `오늘의 ${questions.length}문제 준비 완료!`);
-      if (typeof haniWorkHide === 'function') haniWorkHide(700);
+      if (!automatic && typeof haniWorkFinish === 'function') haniWorkFinish(true, `오늘의 ${questions.length}문제 준비 완료!`);
+      if (!automatic && typeof haniWorkHide === 'function') haniWorkHide(700);
     } catch (e) {
-      generationFailures.set(key, e?.message || String(e));
-      if (typeof haniWorkFinish === 'function') haniWorkFinish(false, '퀴즈 생성 실패');
-      if (typeof haniWorkHide === 'function') haniWorkHide(900);
-      alert(e?.message || String(e));
+      generationFailures.set(key, `${automatic ? '자동' : '수동'} 생성 실패 · ${e?.message || String(e)}`);
+      if (!automatic && typeof haniWorkFinish === 'function') haniWorkFinish(false, `${project.name} · 퀴즈 생성 실패`);
+      if (!automatic && typeof haniWorkHide === 'function') haniWorkHide(900);
     } finally {
       busy = false;
-      renderLearning();
+      renderLearning(false);
     }
   }
 
@@ -1545,7 +1584,7 @@
   window.HANI_STUDY_V02984_TEST = {
     pendingLearningQuizzes, pendingQuizProjects, orphanLearningQuizzes, attachOrphanQuiz, renderOrphanArchive, openPendingQuiz, renderPendingQuizNav,
     ensureLearningState, normalizeProject, normalizeQuestion, normalizeQuiz, questionKey,
-    openTaskProject(id) { activeProjectId = id; activeQuizId = ""; renderLearning(); }, quizDate, isScheduledDate, shouldGenerateForDate, nextSequenceNo, derivedLearningTasks, activeProjects, boardProjects, visibleProjects, completedProjects, wrongRows, wrongGroups, renderWrongTab,
+    openTaskProject(id) { activeProjectId = id; activeQuizId = ""; quickWrongIds = null; renderLearning(); }, quizDate, isScheduledDate, shouldGenerateForDate, nextSequenceNo, derivedLearningTasks, activeProjects, boardProjects, visibleProjects, completedProjects, wrongRows, wrongGroups, renderWrongTab, quickWrongRows, openQuickWrong,
     normalizePromptText, promptFingerprint, promptSimilarity, duplicateLevel, validQuestion, recentQuestionRotation, collectQuizCandidates, useLeastSimilarFallback, replacementBatchSize, tooSimilarPrompt, validateQuestionSet, quizApi,
     effectiveProjectCategory, projectFocusAreas, hasNewsFocus, usesBasicNewsBalance, questionTypeLabel, questionDifficultyLabel, questionChips,
     newsroomQuestionSources, loadQuizNewsSources, isBasicEconomyProject, newsMaterialMinimum, hasNewsMaterial, questionFocus,
