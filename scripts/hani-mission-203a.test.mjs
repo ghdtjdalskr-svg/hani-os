@@ -70,7 +70,14 @@ assert.match(nodes.get('investmentNewsTargets').innerHTML,/72시간 내 기사 �
 
 const voices=vm.createContext({});
 vm.runInContext(section(ui,'// BEGIN CANONICAL TAB VOICE BUNDLE','// END CANONICAL TAB VOICE BUNDLE')+';this.select=createTabQuoteSelector(()=>0);this.pageProfiles=PAGE_CHARACTER_PROFILES;this.characterProfile=characterProfile;this.characterVoicePrompt=characterVoicePrompt;',voices);
-for(const tab of ['dev','work','aiWork','aiBudget','deployment','geminiReports']){const quote=voices.select(tab),owner=tab==='geminiReports'?'serin':'seoyun',name=owner==='serin'?'\uC138\uB9B0':'\uC11C\uC724';assert.equal(quote.agent,owner);assert.equal(quote.speaker,name);assert.equal(voices.characterProfile(owner),voices.pageProfiles[owner]);assert.equal(voices.characterProfile(owner).identity.split(' \u00b7 ')[0],name);assert.ok(fs.existsSync(new URL('../'+voices.characterProfile(owner).image,import.meta.url)));assert.equal(voices.characterVoicePrompt(owner),'','page-only metadata has no canonical voice prompt');}
+for(const tab of ['dev','work','aiWork','aiBudget','deployment','geminiReports']){
+ const quote=voices.select(tab),owner=({work:'sua',aiWork:'dohyun',geminiReports:'serin'})[tab]||'seoyun',name=({sua:'수아',dohyun:'도연',serin:'세린',seoyun:'서윤'})[owner],profile=voices.characterProfile(owner);
+ assert.equal(quote.agent,owner);assert.equal(quote.speaker,name);
+ if(owner!=='sua')assert.equal(profile,voices.pageProfiles[owner]);
+ assert.equal(profile.identity.split(' · ')[0],name);const image=owner==='sua'?'./assets/profiles/hani-profile-sua-id.webp':profile.image;assert.ok(fs.existsSync(new URL('../'+image,import.meta.url)));
+ if(owner==='sua')assert.ok(voices.characterVoicePrompt(owner).length>0,'canonical life-team voice retained');
+ else assert.equal(voices.characterVoicePrompt(owner),'','page-only metadata has no canonical voice prompt');
+}
 assert.equal(voices.select('geminiReports').speaker,'세린');
 assert.match(voices.select('geminiReports').role,/Gemini.*연구원/);
 for(const profile of Object.values(voices.pageProfiles))assert.ok(fs.existsSync(new URL('../'+profile.image,import.meta.url)));

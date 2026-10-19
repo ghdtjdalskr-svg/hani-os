@@ -1,3 +1,30 @@
+# 2026-10-18 · fix-218 보고서·대시보드 후속 (도연/Codex)
+
+`hani/fix-218` / 시작 HEAD `011bed9e`, main `e007a66` 원격 확인. 신규6개 포함 개발 보고서14개 최신순 번들·부제 parser, 390 표 내부 가로스크롤/최소열폭, 카드 증감 % 전용·전월0/누락 빈표시. 기존 작업·v217/cache·Storage/Cloud 보존. 회귀 **96개 중94 PASS·2 optional SKIP·0 FAIL**, 마지막 CSS 영향12 PASS, 실제390/1440 카드 전후·보고서12조건/PNG11장 PASS. [인수인계](handoffs/2026-10-18-fix-218.md) 최종 절·artifacts/fix-218/dash 참조. Notion 자동 승인 never 거절로 갱신 대기. Git 시도 결과 아래 인수인계 참조, PR/main/배포 없음. 이전 기록 보존.
+
+# 2026-10-18 · fix-218 추이 시각화·설명 배너 정리 (도연/Codex)
+
+`hani/fix-218` / 시작 HEAD `60507adb`. 독서·시청 최근6개월 비례 막대/평균선·연간 목표 링·민지/목표 버튼, 긴 설명 ⓘ로 축약. 전체35nav 감사, 개발 보고서/서재/시청/여행/자격증/예산/가계부/투자 역할 caption/개발센터/연간보고의 설명 전용 markup 정리. 기능·원본/동기화/승인 안내 보존. Node22·Gemini bundle·연간보고390/1440 및 실제70조회/탭44/차트8조건 PASS, 전후/샘플60장. v217/cache·Storage·Cloud 및 기존 작업 유지. [인수인계](handoffs/2026-10-18-fix-218.md) 마지막 절·[메뉴별 감사](../../artifacts/fix-218/simplify/nav-audit.md). Git add는 index.lock 권한 거절(exit128)로 미커밋·미push 보존, Notion append는 자동 승인 never 거절로 미반영. main/배포/운영 반영 없음. 아래 과거 기록 보존.
+
+# 2026-10-18 · fix-218 전체 hero 배역 canon 감사 (도연/Codex)
+
+`hani/fix-218` / 시작 HEAD `1f223da6`. 38메뉴 단일 담당표·원천 불일치22메뉴 기록, 대학=히나/영화=민지·수연/독서=하루·윤슬로 자체 -218 3장 재제작. Remote·대사·배너 owner·홈 보조그림6개 정합화. [배역 감사판](../../artifacts/fix-218/heroes/cast-audit.png)·[인수인계](handoffs/2026-10-18-fix-218-hero-style.md) 참조. **Node7·보존·실제390/1440 70조회/전환20/캡처28 PASS**, v217/cache·저장/Cloud·기존5커밋 보존. Git add가 index.lock 권한 거절(exit128)로 차단돼 미커밋·미push. main/배포/열차 gate 미진행, Notion append 자동 승인 never 거절로 대기. 아래 이전 작업·과거 증거 보존.
+
+# 2026-10-18 · fix-218 전체 hero CHARACTER 통일 (도연/Codex)
+
+`hani/fix-218` / 시작 HEAD `0d8a8e25`. 구형 무인물 실사12테마·지정 배역7메뉴를 built-in image_gen 신작19개로 연결. 기존 아트/승인3개·Storage/Cloud·v217/cache 보존. 새19개 동일크기/150KB 이하, targeted5·원문보존·실제35nav×390/1440=70조회·탭8·대표4화면 캡처8 PASS. [전체 비교](../../artifacts/fix-218/heroes/compare-all.png)와 [감사/새파일/seed PR 인수인계](handoffs/2026-10-18-fix-218-hero-style.md) 참조. Git index.lock 쓰기 거절로 미커밋·미push, seed PR·열차 gate·배포/운영은 미진행, Notion append는 자동 승인 never 거절로 대기. Git commit 시도 결과는 인수인계 마지막 참조. 아래 이전 작업 보존.
+
+# 2026-10-18 · fix-218 전용 히어로 일러스트 (도연/Codex)
+
+`hani/fix-218` / 시작 HEAD `685c168` 이전 작업 보존. 전체 nav35 실제 감사: 활성34 일러스트 있음, 퇴역 work는 N/A. 대표님 지정 일보·회사 소개·투자 리포트의 재사용 그림을 built-in image_gen 신작3개(720×720, 86–124KB)로 교체. 기존 canonical slot·fallback 유지, 모바일은 그림/문구 세로 배치. 390/1440 캡처6장·70조회/탭12 및 보존/메뉴/배너 targeted5·일보 light/dark6조건 PASS. Git index.lock 권한 거절로 **미커밋**, Notion append 자동 승인 never 거절로 갱신 대기. 최종 결과와 **신규 자산 seed PR 목록**은 [인수인계](handoffs/2026-10-18-fix-218.md) 마지막 절 참조. v217/cache·Storage·Cloud 유지, main/배포 없음.
+
+# 2026-10-18 · fix-218 후속: 야간 재실·HANI 명칭·히어로 정리 (도연/Codex)
+
+`hani/fix-218`, 기존 복구 `42aa394` 보존. 매일 01시까지17명·심야5명(개발실/MIR/라운지), 회사 기능 HANI 명칭과 구명칭 검색 별칭, 메뉴별 canonical hero 정리. 원본 행동 cap/시간창·저장·Cloud·route·v2.9.217 유지. 실제 5시간×2너비×5층50검사, 메뉴35×2너비70조회/내부탭26검사 및 관련 회귀 PASS. 캡처32장·전체 hero 감사표 기록. **기능 개발 검증 완료이며 commit 시도/Notion 후속 갱신 차단 결과는 [최신 인수인계](handoffs/2026-10-18-fix-218.md) 참조. PR/main/배포 없음.** 다음은 배포 담당 열차 인계이며 독립 아린/HINA·운영 검증은 미수행입니다. 아래 과거 시점 기록은 보존합니다.
+
+# 2026-10-18 · fix-218 본사 전 층 캐릭터 미표시 (도연/Codex)
+
+`hani/fix-218`, base `e007a66`(시작 원격 main 일치), v2.9.217/cache 유지. 평일 09–18시 밖 모든 기본 재실을 제거하던 scheduler가 원인(제보일 일요일). 매일 07–22시 17명·심야 서윤/도연/MIR 3명 및 퇴근 안내, scheduler 경로 캐릭터 공통 z-index=4 보완. **targeted 63개 중61 PASS/옵션2 SKIP, 실제 index 네 시각×390/1440×5층40 checks 및 캡처22장·raw safety PASS.** Storage/Cloud/schema·행동 cap/disabled·version/cache 변경 없음. Git index.lock 권한 거절로 미커밋·미push·미배포, Notion 최종 append는 자동 승인 never 거절로 대기. [인수인계](handoffs/2026-10-18-fix-218.md). 실제 계정/Android/최종 열차 gate는 미검증. 아래 다른 담당 기록 보존.
 # 2026-10-18 · office-217 본사 표지판·책상 소품·1F (도연/Codex)
 
 `hani/office-217` / base `f2b7c11`, 원격 main `eea49dbe`의 office JS/CSS/art-map base 일치 확인. 전 층 작은 차콜 영한 플레이트·금색 명판/회장님 자리 제거, 투명 소품19종·1F CI/업무 칸막이와 신규 배경4개 구현. **building21·v2 18·seats12·actions15·staff10 및 보호 owner/무쓰기/version/cache 검사 PASS**(공통 import 중복 포함). 캡처10장은 최종2F/4F 제거 전 근거로만 보존. 최종 browser spawn EPERM/숨김 Edge 정책 거절로 재검증 차단, 전체 browser PASS 아님. v216 유지·Storage/Cloud·main/배포 변경 없음. Git index.lock 쓰기 거절로 **미커밋·미push**, 신규24이미지 seed PR 선행 필요. Notion 결과 append는 approval policy never 거절로 갱신 대기. 상세 미검증은 [인수인계](handoffs/2026-10-18-office-217.md) 참조. 아래 과거·타 담당 기록 보존.

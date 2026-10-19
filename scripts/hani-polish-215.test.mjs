@@ -47,7 +47,7 @@ const image={naturalWidth:0,complete:true,nextElementSibling:{hidden:true}},imag
 report.unit.push('portrait load/error fallback lifecycle');
 // Execute the existing search function so legacy habits and saved destinations stay valid.
 const search=code.slice(code.indexOf('const QUICK_JUMP_ITEMS='),code.indexOf('function renderQuickJump'));
-for(const term of ['대표실','하니 본사'])assert.deepEqual(Array.from(vm.runInNewContext(search+`;quickJumpMatches('${term}').find(x=>x[0]==='agentReview')`)).slice(0,2),['agentReview','하니 본사']);
+for(const term of ['대표실','하니 본사','HANI 본사'])assert.deepEqual(Array.from(vm.runInNewContext(search+`;quickJumpMatches('${term}').find(x=>x[0]==='agentReview')`)).slice(0,2),['agentReview','HANI 본사']);
 report.unit.push('old/new command aliases reach unchanged agentReview route');
 if(process.argv.includes('--unit')){console.log('PASS polish-215 unit: '+report.unit.length+' groups');process.exit(0)}
 const args=process.argv.slice(2),pw=args[0]||path.join(os.homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'),exe=args[1]||'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
@@ -72,13 +72,13 @@ try{
    window.polishBefore=JSON.stringify(state);save=commit=()=>{throw Error('Unexpected save')};
    showView('agentReview');
   });
-  await page.locator('#agentReview').waitFor({state:'visible'});await page.waitForFunction(()=>document.querySelector('#title')?.textContent==='하니 본사');
-  assert.equal(await page.locator('.nav-btn[data-view="agentReview"] .txt').textContent(),'하니 본사');
-  assert.equal(await page.locator('#haniOfficeLive h3').textContent(),'하니 본사');assert.equal(await page.locator('#agentReview .card .sh h3').first().textContent(),'하니 본사');
-  assert.equal(await page.locator('#haniOfficeLive').getAttribute('aria-label'),'하니 본사');
+  await page.locator('#agentReview').waitFor({state:'visible'});await page.waitForFunction(()=>document.querySelector('#title')?.textContent==='HANI 본사');
+  assert.equal(await page.locator('.nav-btn[data-view="agentReview"] .txt').textContent(),'HANI 본사');
+  assert.equal(await page.locator('#haniOfficeLive h3').textContent(),'HANI 본사');assert.equal(await page.locator('#agentReview .card .sh h3').first().textContent(),'HANI 본사');
+  assert.equal(await page.locator('#haniOfficeLive').getAttribute('aria-label'),'HANI 본사');
   assert.match(await page.locator('#haniOfficeLive').textContent(),/4F 경영층/);
   assert.match(await page.locator('#haniOfficeLive').textContent(),/성민 회장실/,'canon room name unchanged');
-  for(const term of ['대표실','하니 본사'])assert.deepEqual(await page.evaluate(term=>quickJumpMatches(term).find(x=>x[0]==='agentReview').slice(0,2),term),['agentReview','하니 본사']);
+  for(const term of ['대표실','하니 본사','HANI 본사'])assert.deepEqual(await page.evaluate(term=>quickJumpMatches(term).find(x=>x[0]==='agentReview').slice(0,2),term),['agentReview','HANI 본사']);
   await page.screenshot({path:path.join(out,`${width}-hq.png`),fullPage:true});
   // Reveal the real sidebar at mobile width for the menu/heading evidence.
   if(width===390){await page.locator('.mobile-menu').click();await page.locator('.nav-btn[data-view="agentReview"]').scrollIntoViewIfNeeded()}

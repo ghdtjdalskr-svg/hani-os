@@ -60,7 +60,7 @@ try {
     const alt=comic.match(/<img data-ilbo-comic[^>]* alt="([^"]*)"/)[1];
     for(const caption of issue.comic.captions)assert.ok(alt.includes(caption));
     assert.match(comic,/class="ilbo-sr-only"/,'missing-image captions remain accessible');
-    assert.match(html,/<h2>하니일보<\/h2>/);assert.doesNotMatch(html,/HANI\s*(?:<[^>]+>\s*)*하니일보/);assert.ok(html.includes('2026.10.19(월)'));if(issue.editorialDraft)assert.ok(html.includes('편집 초안'));
+    assert.match(html,/<h2>HANI 일보<\/h2>/);assert.doesNotMatch(html,/HANI\s*(?:<[^>]+>\s*)*HANI 일보/);assert.ok(html.includes('2026.10.19(월)'));if(issue.editorialDraft)assert.ok(html.includes('편집 초안'));
   });
   check('profile and quote, nested full interview, chat avatars, only first two sections open',()=>{
     const html=api.markup(issue,fixture,null,[],now);
@@ -155,7 +155,7 @@ try {
 }
 // Reviewable offline preview, clearly separated from production and real records.
 const previewBoard={listPosts:()=>loungeFixture,displayLikes:x=>x.likes,displayViews:x=>x.views};
-fs.writeFileSync(path.join(out,'preview.html'),'<!doctype html><html lang="ko" data-theme="light"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base href="'+pathToFileURL(root+path.sep).href+'"><title>하니일보 · 가상 fixture Preview</title><link rel="stylesheet" href="hani-ilbo.css"><style>:root{--panel:#fff;--panel2:#fafbff;--text:#202638;--line:#e8ebf2}html[data-theme="dark"]{--panel:#1a2232;--panel2:#222b3e;--text:#f3f5ff;--line:#303a50}body{margin:0;padding:16px;background:var(--panel2);color:var(--text);font-family:system-ui,sans-serif}button{font:inherit;padding:10px;background:var(--panel);color:var(--text);border:1px solid currentColor}nav{max-width:1140px;margin:0 auto 16px}</style><nav>가상 fixture Preview · 운영 반영 전 <button type="button" onclick="document.documentElement.dataset.theme=document.documentElement.dataset.theme===\'light\'?\'dark\':\'light\'">밝게 / 어둡게</button></nav>'+api.markup(issue,fixture,previewBoard,marketFixture,now)+'<script src="hani-ilbo.js"></script><script>HaniIlbo.bindImage(document.querySelector(".ilbo-paper"))</script></html>');
+fs.writeFileSync(path.join(out,'preview.html'),'<!doctype html><html lang="ko" data-theme="light"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base href="'+pathToFileURL(root+path.sep).href+'"><title>HANI 일보 · 가상 fixture Preview</title><link rel="stylesheet" href="hani-ilbo.css"><style>:root{--panel:#fff;--panel2:#fafbff;--text:#202638;--line:#e8ebf2}html[data-theme="dark"]{--panel:#1a2232;--panel2:#222b3e;--text:#f3f5ff;--line:#303a50}body{margin:0;padding:16px;background:var(--panel2);color:var(--text);font-family:system-ui,sans-serif}button{font:inherit;padding:10px;background:var(--panel);color:var(--text);border:1px solid currentColor}nav{max-width:1140px;margin:0 auto 16px}</style><nav>가상 fixture Preview · 운영 반영 전 <button type="button" onclick="document.documentElement.dataset.theme=document.documentElement.dataset.theme===\'light\'?\'dark\':\'light\'">밝게 / 어둡게</button></nav>'+api.markup(issue,fixture,previewBoard,marketFixture,now)+'<script src="hani-ilbo.js"></script><script>HaniIlbo.bindImage(document.querySelector(".ilbo-paper"))</script></html>');
 if(process.argv.includes('--unit')) {fs.writeFileSync(path.join(out,'unit-results.json'),JSON.stringify(report,null,2)+'\n');process.exit(0);}
 
 const playwright=process.argv[2] || path.join(os.homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs');
@@ -222,7 +222,7 @@ try {
       const luminance=color=>{const [r,g,b]=rgb(color).map(x=>{x/=255;return x<=.04045?x/12.92:((x+.055)/1.055)**2.4;});return r*.2126+g*.7152+b*.0722;};
       return [...el.querySelectorAll('h2,h3,h4,p,small,summary,dt,dd,li,strong,blockquote,time,.ilbo-person,.ilbo-signature,.ilbo-tile-label')].filter(x=>x.getClientRects().length && !x.classList.contains('ilbo-sr-only')).map(x=>{let parent=x,bg;while(parent){bg=getComputedStyle(parent).backgroundColor;if(!['rgba(0, 0, 0, 0)','transparent'].includes(bg))break;parent=parent.parentElement;}const a=luminance(getComputedStyle(x).color),b=luminance(bg||'white');return {text:x.textContent.slice(0,35),ratio:(Math.max(a,b)+.05)/(Math.min(a,b)+.05)};});
     });
-    const failures=contrast.filter(x=>x.ratio<4.5);assert.deepEqual(failures,[],'AA 4.5:1 for all text including small labels');
+    const failures=contrast.filter(x=>x.ratio<4.5);assert.deepEqual(failures,[],'AA 4.5:1 for all text including small labels: '+JSON.stringify(failures));
     await full.locator('summary').focus();await page.keyboard.press('Enter');assert.equal(await full.getAttribute('open'),null,'keyboard collapses full interview');
     await view.screenshot({path:path.join(out,`${width}-${theme}.png`)});
     const persisted=await page.evaluate(()=>({writes:ilboWrites,unchanged:JSON.stringify(state)===ilboFixtureBefore}));assert.equal(persisted.writes,0);assert.equal(persisted.unchanged,true);assert.deepEqual(errors,[]);

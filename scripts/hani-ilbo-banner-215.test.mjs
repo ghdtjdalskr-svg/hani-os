@@ -37,12 +37,12 @@ try{
   const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(origin);await page.waitForFunction(()=>!!window.HaniIlbo&&typeof unlockLoginGate==='function');
   await page.evaluate(theme=>{unlockLoginGate();cloudStopAutoSync();document.documentElement.dataset.theme=theme;document.documentElement.dataset.finish=theme==='dark'?'midnight-black':'pure-white';document.body.dataset.finishActive='true';},theme);
-  const home=page.locator('[data-ilbo-home]');await home.waitFor({state:'visible'});assert.match(await home.textContent(),/하니일보 제 1호/);assert.doesNotMatch(await home.textContent(),/HANI\s*하니일보/);
+  const home=page.locator('[data-ilbo-home]');await home.waitFor({state:'visible'});assert.match(await home.textContent(),/HANI 일보 제 1호/);assert.doesNotMatch(await home.textContent(),/HANI\s*HANI 일보/);
   await page.evaluate(()=>{window.bannerWrites=[];for(const method of ['setItem','removeItem','clear'])Storage.prototype[method]=(...args)=>{bannerWrites.push({method,key:args[0]});throw Error('Unexpected storage write');};save=commit=()=>{throw Error('Unexpected save');};window.beforeBannerState=JSON.stringify(state);});
   await home.locator('button').click();const view=page.locator('section#ilbo');await view.waitFor({state:'visible'});
   const head=view.locator('.ilbo-masthead'),plate=head.locator('.ilbo-nameplate'),image=head.locator('[data-ilbo-banner]');
   await page.waitForFunction(()=>document.querySelector('.ilbo-nameplate-illustrated [data-ilbo-banner]')?.naturalWidth===1600);
-  assert.equal(await head.locator('h2').textContent(),'하니일보');assert.equal(await head.locator('.ilbo-eyebrow').textContent(),'HANI GROUP · THE WEEKLY CHRONICLE');
+  assert.equal(await head.locator('h2').textContent(),'HANI 일보');assert.equal(await head.locator('.ilbo-eyebrow').textContent(),'HANI GROUP · THE WEEKLY CHRONICLE');
   assert.match(await head.locator('.ilbo-meta').textContent(),/제 1호 · 민지 대리 취재.*2026\.10\.19/);
   assert.equal(await image.getAttribute('alt'),'');assert.equal(await image.evaluate(x=>x.naturalHeight),360);
   const measure=()=>head.evaluate(el=>{

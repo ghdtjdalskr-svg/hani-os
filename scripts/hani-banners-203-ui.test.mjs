@@ -8,7 +8,7 @@ const runtime=process.argv[2]||'C:/Users/홍성민/.cache/codex-runtimes/codex-p
 const {chromium}=await import(pathToFileURL(runtime).href);
 const root=path.resolve(fileURLToPath(new URL('../', import.meta.url))),out=path.join(root,'.ai-budget-private/integration-203-banners');
 fs.mkdirSync(out,{recursive:true});
-const mapping={investmentCommittee:'investment-market-room-v1.webp',board:'company-board-community-v1.webp',aiWork:'ai-work-status-v1.webp',geminiReports:'dev-reports-research-v1.webp',aiBudget:'ai-budget-control-v1.webp',monthlyReport:'conference-room-reports-v1.webp'};
+const mapping={investmentCommittee:'heroes/investmentCommittee-218.webp',board:'banner-preview-v1/company-board-community-v1.webp',aiWork:'heroes/aiWork-218.webp',geminiReports:'heroes/geminiReports-218.webp',aiBudget:'heroes/aiBudget-218.webp',monthlyReport:'banner-preview-v1/conference-room-reports-v1.webp'};
 const server=http.createServer((req,res)=>{
   const uri=decodeURIComponent(new URL(req.url,'http://test').pathname),file=path.resolve(root,'.'+(uri==='/'?'/index.html':uri));
   if(!file.startsWith(root+path.sep)||uri.split('/').some(x=>x.startsWith('.'))||!fs.existsSync(file)||!fs.statSync(file).isFile()){res.writeHead(404).end();return}
@@ -60,8 +60,8 @@ try{
         throw new Error(scope+' scene image must decode successfully',{cause:error});
       }
       const attributes={src:await img.getAttribute('src'),loading:await img.getAttribute('loading'),decoding:await img.getAttribute('decoding')};
-      console.log('DIAGNOSTICS image attributes',JSON.stringify({view,width,...attributes,expectedSrc:'./assets/banner-preview-v1/'+file}));
-      assert.equal(attributes.src,'./assets/banner-preview-v1/'+file,scope+' scene img src must match mapped asset');
+      console.log('DIAGNOSTICS image attributes',JSON.stringify({view,width,...attributes,expectedSrc:'./assets/'+file}));
+      assert.equal(attributes.src,'./assets/'+file,scope+' scene img src must match mapped asset');
       assert.equal(attributes.loading,'lazy',scope+' scene img loading must be lazy');
       assert.equal(attributes.decoding,'async',scope+' scene img decoding must be async');
       const layout=await banner.evaluate(e=>{
@@ -69,9 +69,19 @@ try{
         return {display:s.display,columns:s.gridTemplateColumns,sceneWidth:getComputedStyle(image).width,left:r.left,right:r.right,imageLeft:i.left,imageRight:i.right,width:innerWidth,documentWidth:document.documentElement.scrollWidth,decoded:image.naturalWidth,heroScroll:e.scrollWidth,heroWidth:e.clientWidth,first:e.parentElement.firstElementChild===e,children:[...e.parentElement.children].map(n=>({tag:n.tagName,id:n.id,className:n.className})),agent:e.querySelectorAll('#aiBanner').length};
       });
       console.log('DIAGNOSTICS banner layout',JSON.stringify({view,width,layout,reference}));
-      assert.equal(layout.display,reference.display,scope+' banner display must match intake');
-      assert.equal(layout.columns,reference.columns,scope+' banner grid columns must match intake');
-      assert.equal(layout.sceneWidth,reference.sceneWidth,scope+' scene image width must match intake');
+      if(file.startsWith('heroes/')){
+        const wide=view!=='investmentCommittee',art=await banner.evaluate(e=>{const scene=e.querySelector('figure'),img=scene.querySelector('img'),r=scene.getBoundingClientRect(),i=img.getBoundingClientRect(),s=getComputedStyle(img);return {variant:e.dataset.sceneVariant,width:r.width,height:r.height,imageWidth:i.width,imageHeight:i.height,fit:s.objectFit,mask:s.maskImage};});
+        assert.equal(art.variant,wide?'illustration-wide-218':'illustration-218',scope+' intended illustration layout');
+        assert.equal(layout.display,wide||width===390?'flex':'grid',scope+' responsive illustration display');
+        assert.equal(art.fit,'contain',scope+' full illustration retained');assert.equal(art.mask,'none',scope+' illustration has no fade mask');
+        assert.ok(art.width>0&&art.height>0,scope+' visible illustration slot');
+        assert.ok(Math.abs(art.imageWidth-art.width)<=1&&Math.abs(art.imageHeight-art.height)<=1,scope+' image fills its persistent illustration slot');
+        if(wide||width===390)assert.ok(Math.abs(art.width/art.height-(wide?3:1))<.02,scope+' wide 3:1 / mobile square illustration');
+      }else{
+        assert.equal(layout.display,reference.display,scope+' retained banner display must match intake');
+        assert.equal(layout.columns,reference.columns,scope+' retained banner grid columns must match intake');
+        assert.equal(layout.sceneWidth,reference.sceneWidth,scope+' retained scene image width must match intake');
+      }
       assert.ok(layout.first,scope+' banner must be first element in view: '+JSON.stringify(layout.children));
       assert(layout.agent<=1,scope+' at most one #aiBanner inside active banner');
       assert.ok(layout.decoded>0,scope+' decoded image naturalWidth must be positive');

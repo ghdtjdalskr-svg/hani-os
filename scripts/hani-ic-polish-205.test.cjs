@@ -105,8 +105,8 @@ test('existing proactive renderer displays reminder on home/desk slot and stays 
   const main=fs.readFileSync(require.resolve('../hani-main.js'),'utf8'),start=main.indexOf('function renderHaniCareCards('),end=main.indexOf('\nfunction renderHaniCareHome(',start);
   const slot={dataset:{},hidden:false,innerHTML:'',querySelectorAll:()=>[],querySelector:()=>null};const parent={querySelector:()=>slot};
   const s=blank(),context=vm.createContext({state:s,careCampusGroups:()=>[],campusAssignments:()=>[],certificateCareSorted:()=>[],certificateDays:()=>40,careKoreaPeriod:()=>({day:'2026-10-01'}),esc,window:{HaniInvestmentResearchCore:C}});
-  const before=JSON.stringify(s);vm.runInContext(main.slice(start,end),context);context.parent=parent;vm.runInContext('renderHaniCareCards(parent)',context);assert.equal(slot.hidden,false);assert.match(slot.innerHTML,/이번 달 하니 투자 리포트 리뷰/);assert.match(slot.innerHTML,/data-hani-care-view="investmentCommittee"/);assert.equal(JSON.stringify(s),before);
-  context.careKoreaPeriod=()=>({day:'2026-10-08'});vm.runInContext('renderHaniCareCards(parent)',context);assert.equal(slot.hidden,true);assert.doesNotMatch(slot.innerHTML,/이번 달 하니 투자 리포트 리뷰/);
+  const before=JSON.stringify(s);vm.runInContext(main.slice(start,end),context);context.parent=parent;vm.runInContext('renderHaniCareCards(parent)',context);assert.equal(slot.hidden,false);assert.match(slot.innerHTML,/이번 달 HANI 투자 리포트 리뷰/);assert.match(slot.innerHTML,/data-hani-care-view="investmentCommittee"/);assert.equal(JSON.stringify(s),before);
+  context.careKoreaPeriod=()=>({day:'2026-10-08'});vm.runInContext('renderHaniCareCards(parent)',context);assert.equal(slot.hidden,true);assert.doesNotMatch(slot.innerHTML,/이번 달 HANI 투자 리포트 리뷰/);
 });
 
 test('actual delegated import handler accepts a valuation-only follow-up and persists only on selected confirm', async () => {

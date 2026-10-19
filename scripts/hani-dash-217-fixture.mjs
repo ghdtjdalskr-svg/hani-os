@@ -29,12 +29,12 @@ export const goals=[{metric_id:'spending_jispi_krw',goal_id:'fixture-budget',rev
   value:100000,effective_from:'2026-07-01',created_at:'2026-07-01T00:00:00Z'}];
 // Exact rendered expectations shared by Node and browser; no real user records.
 export const expectedCards={
-  hasdaq:{value:'120,000,000원',change:'▲ +20,000,000원 (+20%)',tone:'up',market:'📈 상승장'},
-  ne100:{value:'98kg',change:'▼ -2kg (-2%)',tone:'up',market:'📈 상승장'},
-  hinaJones:{value:'2권',change:'▲ +1권 (+100%)',tone:'up',market:'📈 상승장'},
-  harukei:{value:'6,000보',change:'▲ +1,000보 (+20%)',tone:'up',market:'📈 상승장'},
-  jispi:{value:'130,000원',change:'▲ +30,000원 (+30%)',tone:'down',market:'🛑 지출 서킷브레이커'},
-  hinkei:{value:'80%',change:'▲ +20%p (+33.33%)',tone:'up',market:'📈 상승장'}
+  hasdaq:{value:'120,000,000원',change:'▲ 20%',tone:'up',market:'📈 상승장'},
+  ne100:{value:'98kg',change:'▼ 2%',tone:'up',market:'📈 상승장'},
+  hinaJones:{value:'2권',change:'▲ 100%',tone:'up',market:'📈 상승장'},
+  harukei:{value:'6,000보',change:'▲ 20%',tone:'up',market:'📈 상승장'},
+  jispi:{value:'130,000원',change:'▲ 30%',tone:'down',market:'🛑 지출 서킷브레이커'},
+  hinkei:{value:'80%',change:'▲ 33.33%',tone:'up',market:'📈 상승장'}
 };
 export function makeRuntime(api,{records=structuredClone(source),targets=goals,onChange=()=>{}}={}){
   const binding={userId:'fixture',sourceOwnerId:'fixture',sourceOwnerVerified:true,

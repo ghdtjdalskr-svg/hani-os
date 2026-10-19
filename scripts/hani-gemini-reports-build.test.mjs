@@ -90,6 +90,15 @@ try {
   assert.throws(() => validateCatalog({ ...multi, catalog_version: 0 }));
   assert.throws(() => validateCatalog({ ...multi, reports: [{ ...multi.reports[0], release_version: 'invalid' }] }));
   console.log('PASS actual view validation and newest-first selection (80 reports); search/filter; invalid catalogs rejected');
+
+  const monthlyFile='2026-10-18-v2.9.149-217-october-monthly-summary.md';
+  const monthlyBody='# HANI OS v2.9.149~v2.9.217 개발노트 — 2026년 10월 월간 개발 종합 보고서\n\n## 이번 업데이트 한줄 요약\n\n월간 요약입니다.\n';
+  writeFileSync(join(reportDir,monthlyFile),monthlyBody);
+  assert.equal(build(temp).exitCode,0);
+  const monthly=catalog(readFileSync(mainPath)).reports.find(r=>r.file===monthlyFile);
+  assert.equal(monthly.release_version,'v2.9.149~v2.9.217');assert.equal(monthly.title,'월간 요약입니다.');assert.equal(monthly.body,monthlyBody);
+  assert.equal(runCli(['--check'],temp).exitCode,0);
+  console.log('PASS report subtitle/monthly heading; release range excludes subtitle; exact Markdown preserved');
 } finally {
   rmSync(temp, { recursive: true, force: true });
 }

@@ -8,10 +8,10 @@ const records=structuredClone(source),before=JSON.stringify(records);
 const runtime=makeRuntime(api,{records});const view=await runtime.refresh();
 assert.equal(view.status,'VERIFIED');assert.equal(view.metrics.length,6);
 const metric=key=>view.metrics.find(m=>m.key===key);
-const expected={hasdaq:['▲ +20,000,000원 (+20%)','up','📈 상승장'],
-  ne100:['▼ -2kg (-2%)','up','📈 상승장'],hinaJones:['▲ +1권 (+100%)','up','📈 상승장'],
-  harukei:['▲ +1,000보 (+20%)','up','📈 상승장'],jispi:['▲ +30,000원 (+30%)','down','🛑 지출 서킷브레이커'],
-  hinkei:['▲ +20%p (+33.33%)','up','📈 상승장']};
+const expected={hasdaq:['▲ 20%','up','📈 상승장'],
+  ne100:['▼ 2%','up','📈 상승장'],hinaJones:['▲ 100%','up','📈 상승장'],
+  harukei:['▲ 20%','up','📈 상승장'],jispi:['▲ 30%','down','🛑 지출 서킷브레이커'],
+  hinkei:['▲ 33.33%','up','📈 상승장']};
 for(const [key,[change,tone,market]] of Object.entries(expected)){
   const p=present(metric(key));assert.equal(p.change,'전월 대비 '+change,key);
   assert.equal(p.tone,tone,key);assert.equal(p.market,market,key);
@@ -25,7 +25,7 @@ assert.equal(metric('harukei').comparison.comparison_type,'target');
 assert.equal(metric('hinkei').comparison.comparison_type,'target_pp');
 assert.equal(metric('hinkei').monthComparison.delta_absolute,20);
 assert.equal(JSON.stringify(records),before,'no input mutation');
-console.log('PASS real runtime: six unchanged values + exact month absolute/%; budget/target comparison retained.');
+console.log('PASS real runtime: six unchanged values + exact month percent only; budget/target comparison retained.');
 
 const altered=(key,value,previous,status='CONFIRMED')=>{
   const m=structuredClone(metric(key));m.row.value=value;m.row.status=status;
@@ -48,8 +48,8 @@ for(const [value,label] of [[70,'초강세'],[80,'강한 상승장'],[85,'📈 �
   assert.equal(present(m).market,canonical(value,100));
   if(![90,110].includes(value))assert(present(m).market.includes(label));
 }
-let m=altered('hasdaq',10,null);assert.equal(present(m).change,'전월 기록이 없어요');assert.equal(present(m).market,'⏳ 비교 대기');
-m=altered('hinaJones',1,0);assert(present(m).change.includes('▲ +1권 (비율 비교 불가)'));assert(!/Infinity|NaN/.test(present(m).change));
+let m=altered('hasdaq',10,null);assert.equal(present(m).change,'');assert.equal(present(m).market,'⏳ 비교 대기');
+m=altered('hinaJones',1,0);assert.equal(present(m).change,'');assert(!/Infinity|NaN/.test(present(m).change));
 m=altered('harukei',6000,5000,'PARTIAL');assert.equal(present(m).quality,'기록 일부만 있어요');
 m=altered('hasdaq',120,100);m.monthComparison.baseline.status='PARTIAL';assert(present(m).qualityDetail.includes('2026-08'));assert(present(m).quality);
 m=altered('hasdaq',120,100);assert.equal(present(m).quality,'');
