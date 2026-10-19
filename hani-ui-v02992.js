@@ -1181,6 +1181,8 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
     const seasonal=sidebarMenuKey==='home'&&typeof SEASON_COLLECTION_ARTWORK!=='undefined'&&SEASON_COLLECTION_ARTWORK[document.documentElement.dataset.season];
     return {...theme,...sidebarMenu,...(contentByView[resolvedView]||{}),...(seasonal?{sceneImage:seasonal.src,sceneAlt:seasonal.alt}:{}),internalView:resolvedView};
   }
+  // Read-only metadata shared with Remote; resolving a view never preloads artwork.
+  if(typeof window!=='undefined')window.HANI_MAIN_CHARACTER_BANNER=Object.freeze({get:mainCharacterBannerConfig});
   const mainCharacterInternalViewExists=(sidebarMenuKey,internalView)=>internalView==='home'||Boolean(mainCharacterInternalContent[sidebarMenuKey]?.[internalView]);
   function mainCharacterBanner(id,config){
     const root=q(`#${id}`);if(!root||!config)return null;
