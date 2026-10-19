@@ -16,3 +16,5 @@
 #aiBudget .budget-editor{margin-top:18px}#aiBudget [hidden]{display:none!important}#aiBudget .budget-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}#aiBudget input,#aiBudget select{width:100%;min-height:44px}#aiBudget label{font-size:13px;line-height:1.5}#aiBudget .budget-input-row{border-top:1px solid var(--line,#dce3f0);padding-top:12px;margin-top:12px}
 #aiBudget .budget-actions .btn,#aiBudget .budget-toolbar .btn{min-height:44px}#aiBudgetNotice{min-height:24px;line-height:1.6}
 @media(max-width:700px){#aiBudget .budget-grid{grid-template-columns:1fr}#aiBudget .budget-hero{align-items:flex-start;gap:12px}#aiBudget .budget-hero h2{font-size:23px}#aiBudget .budget-summary{min-width:65px}#aiBudget .budget-summary strong{font-size:27px}#aiBudget .budget-form-grid{grid-template-columns:1fr}#aiBudget .budget-window-head{align-items:flex-start;flex-wrap:wrap}}
+
+#aiBudget .budget-connection-status{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}

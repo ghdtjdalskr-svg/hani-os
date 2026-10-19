@@ -17,7 +17,7 @@
   const NAV_LABELS = {
     home: '대시보드',
     intake: '인포데스크',
-    agentReview: '하니 본사',
+    agentReview: 'HANI 본사',
     policy: '사내 규칙',
     deployment: '배포센터',
     investment: '투자',

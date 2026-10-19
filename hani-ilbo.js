@@ -122,7 +122,7 @@
     const model = compute(source,issue.date,now), top = topPosts(board,issue.date,now), external = newsroomPosts(newsroom,issue.date,now);
     const headline = issue.headline || rows(issue.news).find(x=>x.fictional === false)?.title || '한 주의 기록이 모여, 우리의 이야기가 됩니다';
     const weekday = ['일','월','화','수','목','금','토'][new Date(issue.date+'T00:00:00Z').getUTCDay()];
-    return '<article class="ilbo-paper"><header class="ilbo-masthead"><div class="ilbo-nameplate"><img data-ilbo-banner hidden src="assets/hani-ilbo/masthead-v1.webp" alt="" aria-hidden="true" width="1600" height="360" decoding="async"><div class="ilbo-nameplate-copy"><p class="ilbo-eyebrow">HANI GROUP · THE WEEKLY CHRONICLE</p><h2>하니일보</h2></div></div><div class="ilbo-meta"><span>제 '+issue.number+'호 · '+esc(issue.reporter || '민지 대리')+' 취재</span><time datetime="'+issue.date+'">'+issue.date.replaceAll('-','.')+'('+weekday+')</time></div></header>'+
+    return '<article class="ilbo-paper"><header class="ilbo-masthead"><div class="ilbo-nameplate"><img data-ilbo-banner hidden src="assets/hani-ilbo/masthead-v1.webp" alt="" aria-hidden="true" width="1600" height="360" decoding="async"><div class="ilbo-nameplate-copy"><p class="ilbo-eyebrow">HANI GROUP · THE WEEKLY CHRONICLE</p><h2>HANI 일보</h2></div></div><div class="ilbo-meta"><span>제 '+issue.number+'호 · '+esc(issue.reporter || '민지 대리')+' 취재</span><time datetime="'+issue.date+'">'+issue.date.replaceAll('-','.')+'('+weekday+')</time></div></header>'+
       (issue.date > koreaDate(now) ? empty('발행 예정호 · '+issue.date+' 발행 / 현재까지의 기록을 미리 보여드려요.') : '')+
       (issue.editorialDraft ? '<p class="ilbo-draft">편집 초안 · 만화와 사내 소식 문구는 최종 확인 중이에요.</p>' : '')+
       '<section class="ilbo-lead"><p class="ilbo-eyebrow">이 주의 헤드라인</p><h3>'+esc(headline)+'</h3><p>'+esc(issue.headlineBody || '')+'</p><small>'+model.range.start+' ~ '+model.range.end+' · 기록이 있는 항목만 싣습니다</small></section>'+
@@ -149,7 +149,7 @@
     const card = document.querySelector('[data-ilbo-home]');if (!card) return;
     const latest = entries.find(x=>x.date <= koreaDate(now));
     card.hidden = !latest || latest.date <= seenDate;
-    if (latest) card.innerHTML = '<div><small>민지 대리가 전하는 한 주</small><h3>하니일보 제 '+latest.number+'호가 도착했어요</h3><p>'+latest.date.replaceAll('-','.')+' · 이번 주 우리 이야기를 만나보세요.</p></div><button type="button" class="btn" data-ilbo-open>신문 읽기 →</button>';
+    if (latest) card.innerHTML = '<div><small>민지 대리가 전하는 한 주</small><h3>HANI 일보 제 '+latest.number+'호가 도착했어요</h3><p>'+latest.date.replaceAll('-','.')+' · 이번 주 우리 이야기를 만나보세요.</p></div><button type="button" class="btn" data-ilbo-open>신문 읽기 →</button>';
     const button = card.querySelector('[data-ilbo-open]');if (button) button.onclick = () => { selected = null; if (typeof showView === 'function') showView(VIEW); };
   }
   function bindImage(host) {
@@ -166,7 +166,7 @@
   }
   function archive(host, now) {
     const slot = host.querySelector('[data-ilbo-archive]');
-    slot.innerHTML = '<h3>지난 호 보관함</h3>'+entries.filter(x=>x.date<=koreaDate(now)).map(x=>'<button type="button" class="btn" data-ilbo-issue="'+x.number+'" aria-pressed="'+(x.number===selected?.number)+'">제 '+x.number+'호 · '+x.date+'</button>').join('');
+    slot.innerHTML = '<h3>HANI 일보 · 지난 호 보관함</h3>'+entries.filter(x=>x.date<=koreaDate(now)).map(x=>'<button type="button" class="btn" data-ilbo-issue="'+x.number+'" aria-pressed="'+(x.number===selected?.number)+'">제 '+x.number+'호 · '+x.date+'</button>').join('');
   }
   async function render() {
     const host = root();if (!host) return;

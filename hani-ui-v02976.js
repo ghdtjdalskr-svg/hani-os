@@ -554,7 +554,7 @@ header.top.ui26-top #cloudHeaderState{font-weight:780!important;color:#788499!im
         <div class="hasdaq-copy"><small class="hasdaq-eyebrow hani-master-eyebrow">HANI INVESTMENT DESK</small><b class="hani-master-title">HASDAQ BOARD</b><span class="hani-master-description">성민 대표님 투자자산 흐름 · 실제 월간 기록 기준</span></div>
       </div>
       <div class="hasdaq-move ${tone}"><strong>${esc(move)}</strong><small>${esc(pct === null ? sub : '전월 대비 자산 증감률 · ' + sub)}</small></div>
-      <div class="hani-master-scene"><img src="./assets/heroes/investment.png" alt=""></div>
+      <div class="hani-master-scene"><img src="./assets/heroes/investment-218.webp" alt=""></div>
     `;
 
     const title = q('#brokerAssetChart')?.closest('.card')?.querySelector('.sh h3');
