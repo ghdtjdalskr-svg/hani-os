@@ -1321,10 +1321,10 @@
         },
         {
           "room": "lobby",
-          "label": "하니 본사",
+          "label": "HANI 본사",
           "x": 50,
           "y": 13.6,
-          "fullLabel": "HANI GROUP · 하니 본사",
+          "fullLabel": "HANI GROUP · HANI 본사",
           "surface": [
             723.5,
             99.98,

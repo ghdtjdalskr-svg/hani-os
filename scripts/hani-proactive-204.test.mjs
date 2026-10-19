@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {expected216Html,cacheRefs} from './hani-216-cache-expectations.mjs';
+import {cacheRefs} from './hani-216-cache-expectations.mjs';
 import path from 'node:path';
 import vm from 'node:vm';
 import {execFileSync} from 'node:child_process';
@@ -163,8 +163,11 @@ test('unchanged lines preserve exact EOL and protected versions/keys; no added d
   // Every untouched line keeps its original terminator, including unique mixed-EOL anchors.
   const a=lines(old),b=lines(current),byText=new Map();for(const l of a){const t=l.replace(/[\r\n]+$/,'');if(!byText.has(t))byText.set(t,new Set());byText.get(t).add(l.slice(t.length));}
   for(const l of b){const t=l.replace(/[\r\n]+$/,'');if(byText.has(t))assert.ok(byText.get(t).has(l.slice(t.length)),file+' EOL '+t.slice(0,70));}
-  const expected=file==='index.html'?expected216Html(old):old.replace('HANI_DISPLAY_VERSION:"2.9.59"','HANI_DISPLAY_VERSION:"?"');
-  assert.deepEqual((current.match(/\b2\.9\.\d+(?:-[\w.-]+)?\b/g)||[]).sort(),(expected.match(/\b2\.9\.\d+(?:-[\w.-]+)?\b/g)||[]).sort(),file+' versions preserved except approved cache additions and obsolete display fallback');
+  // Report bodies contain historical version strings; audit executable runtime
+  // versions separately from the intentionally refreshed report catalog.
+  const runtime=s=>{if(file==='index.html')return s;assert.match(s,/\/\* HANI_GEMINI_REPORTS_BUNDLE_START \*\/[^]*?\/\* HANI_GEMINI_REPORTS_BUNDLE_END \*\//,'report bundle boundaries exist');return s.replace(/\/\* HANI_GEMINI_REPORTS_BUNDLE_START \*\/[^]*?\/\* HANI_GEMINI_REPORTS_BUNDLE_END \*\//,'');};
+  const expected=file==='index.html'?old:runtime(old.replace('HANI_DISPLAY_VERSION:"2.9.59"','HANI_DISPLAY_VERSION:"?"'));
+  assert.deepEqual((runtime(current).match(/\b2\.9\.\d+(?:-[\w.-]+)?\b/g)||[]).sort(),(expected.match(/\b2\.9\.\d+(?:-[\w.-]+)?\b/g)||[]).sort(),file+' versions preserved except approved cache additions and obsolete display fallback');
   if(file==='index.html')assert.deepEqual(cacheRefs(current),cacheRefs(expected),'all URL/cache pairs preserved');
   else {assert.deepEqual(current.match(/\?v=[^\s"'<>]+/g)||[],expected.match(/\?v=[^\s"'<>]+/g)||[],file+' cache tags unchanged');assert.match(current,/workerSrc="\.\/js\/hani-pdf-worker\.js\?v="\+encodeURIComponent\(HANI_DISPLAY_VERSION\)/,'PDF worker uses unchanged display version');}
  }

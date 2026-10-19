@@ -26,12 +26,12 @@ assert.equal(navViews.at(-1),"settings");
 assert.equal(new Set(navViews).size,navViews.length,"unique nav views");
 assert.deepEqual(views(aside.match(/<div class="side-bottom">([\s\S]*?)<\/div>/)[1]),["aura","settings"]);
 const office=aside.match(/data-color="office">([\s\S]*?)<\/div>\s*<\/div>/)[1];
-assert.deepEqual(Array.from(office.matchAll(/<span class="txt">([^<]+)<\/span>/g),m=>m[1]),["인포데스크","하니 본사","컨퍼런스 룸","회사 소개","하니일보","하니 라운지"]);
+assert.deepEqual(Array.from(office.matchAll(/<span class="txt">([^<]+)<\/span>/g),m=>m[1]),["인포데스크","HANI 본사","컨퍼런스 룸","회사 소개","HANI 일보","HANI 라운지"]);
 assert.doesNotMatch(aside,/nav-floor-|data-go=/,"v204 sidebar structure restored");
-assert.match(aside,/data-view="investmentCommittee"[\s\S]*?<span class="txt">하니 투자 리포트<\/span>/);
+assert.match(aside,/data-view="investmentCommittee"[\s\S]*?<span class="txt">HANI 투자 리포트<\/span>/);
 const pageMetaSource=main.match(/const pageMeta=\{[\s\S]*?\n\};/)[0];
 const titles=vm.runInNewContext(pageMetaSource+';pageMeta');
-assert.equal(titles.agentReview[0],'하니 본사','canonical page title');
+assert.equal(titles.agentReview[0],'HANI 본사','canonical page title');
 // Execute the loaded cleanup owner: it runs after markup and can overwrite approved labels.
 const cleanup=read('hani-ui-cleanup-v02971.js'),labels=new Map([...aside.matchAll(/data-view="([^"]+)"[^>]*>[\s\S]*?<span class="txt">([^<]+)<\/span>/g)].map(m=>[m[1],{textContent:m[2]}]));
 const cleanupContext=vm.createContext({qa:selector=>{const id=selector.match(/data-view="([^"]+)"/)[1];return labels.has(id)?[labels.get(id)]:[];}});
@@ -41,8 +41,8 @@ assert.equal(labels.get('deployment').textContent,'배포센터','cleanup retain
 const bannerStart=ui.indexOf('  const mainCharacterBannerVariants='),bannerEnd=ui.indexOf('  const mainCharacterInternalViewExists=',bannerStart);
 const bannerContext=vm.createContext({});
 vm.runInContext(ui.slice(bannerStart,bannerEnd)+';this.banner=mainCharacterBannerConfig("agentReview");',bannerContext);
-assert.equal(bannerContext.banner.title,'하니 본사 - HANI BOARDROOM');
-assert.match(bannerContext.banner.description,/하니 본사입니다/);
+assert.equal(bannerContext.banner.title,'HANI 본사');
+assert.match(bannerContext.banner.description,/HANI 본사입니다/);
 assert.equal(bannerContext.banner.owner,'hani','existing banner owner');
 assert.ok(aside.indexOf('data-view="investment"')<aside.indexOf('data-view="investmentCommittee"'),'canonical report link remains next to investment');
 assert.match(main,/querySelectorAll\("\[data-go\]"\)/,'shortcut uses existing delegated route');
@@ -112,8 +112,8 @@ for(const view of navViews){
   assert.notEqual(select(view).quote,first.quote,view+" re-entry rotates");
 }
 assert.equal(selector(()=>0)("__unknown__").speaker,"하니");
-for(const [view,owner] of Object.entries({diet:"naeun",exercise:"sooyeon",reading:"haru",movie:"minji",diary:"haru"})){
-  assert.equal(map[view].speakerId,owner,"reuse existing assignment");
+for(const [view,owner] of Object.entries({diet:"naeun",exercise:"naeun",reading:"haru",movie:"minji",diary:"haru",tasks:"yuna",calendar:"yuna",aiWork:"dohyun",dev:"seoyun",deployment:"seoyun",work:"sua"})){
+  assert.equal(map[view].speakerId,owner,"role canon assignment");
 }
 const sports=selector(()=>0);
 assert.notEqual(sports("game","yankees").quote,sports("game","kia").quote);

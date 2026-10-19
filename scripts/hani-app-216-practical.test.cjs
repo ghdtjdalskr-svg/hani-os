@@ -30,7 +30,7 @@ test('year boundary and current partial month excluded from pace, included in an
 });
 test('rendered trend uses resolved registry goal only; never legacy fallback, no guilt, escapes values',()=>{
  context.state.books=rows([...baseline,'2026-07-01']);context.state.goals={readingAnnual:999};
- let html=api.activityTrendHtml('reading');assert.match(html,/기록이 줄었어요/);assert.match(html,/실제로 안 읽으신/);assert.match(html,/목표 비교 보류/);assert.doesNotMatch(html,/999/);
+ let html=api.activityTrendHtml('reading');assert.match(html,/기록이 뜸해졌네요/);assert.match(html,/실제로 안 읽으신/);assert.match(html,/목표 비교 보류/);assert.match(html,/목표 없음/);assert.doesNotMatch(html,/999/);
  context.window.HANI_GOAL_PROGRESS={read:()=>[{definition:{metric_id:'books_completed_count'},goal:{status:'RESOLVED',target:24}}]};html=api.activityTrendHtml('reading');assert.match(html,/연간 목표 24권/);
  context.window.HANI_GOAL_PROGRESS.read=()=>[{definition:{metric_id:'books_completed_count'},goal:{status:'CONFLICT',target:999}}];assert.doesNotMatch(api.activityTrendHtml('reading'),/999/);
  context.state.movies=[{status:'watched',watchedDate:'2026-02-01'}];assert.match(api.activityTrendHtml('movie'),/시청 사용 추이/);

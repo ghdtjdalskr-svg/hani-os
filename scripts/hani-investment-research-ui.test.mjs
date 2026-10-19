@@ -60,14 +60,14 @@ try {
     ],'approved v204 groups and view order');
     assert.equal(await page.locator('#sidebar [data-go=investmentCommittee]').count(),0,'removed duplicate report shortcut stays absent');
     assert.equal(await page.locator('#sidebar [data-view=investmentCommittee]').count(),1,'one canonical report navigation entry');
-    assert.equal(await page.locator('#sidebar [data-view=board] .txt').innerText(),'하니 라운지');
-    assert.equal(await page.locator('#sidebar [data-view=agentReview] .txt').innerText(),'하니 본사');
-    assert.equal(await page.locator('#sidebar [data-view=investmentCommittee] .txt').innerText(),'하니 투자 리포트');
+    assert.equal(await page.locator('#sidebar [data-view=board] .txt').innerText(),'HANI 라운지');
+    assert.equal(await page.locator('#sidebar [data-view=agentReview] .txt').innerText(),'HANI 본사');
+    assert.equal(await page.locator('#sidebar [data-view=investmentCommittee] .txt').innerText(),'HANI 투자 리포트');
     const beforeNavigation=await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length}));
     await page.evaluate(()=>showView('investment'));
     await page.locator('#sidebar [data-view=investmentCommittee]').evaluate(button=>button.click());
     assert.equal(await page.evaluate(()=>document.body.dataset.view),'investmentCommittee');
-    assert.equal(await page.locator('#title').innerText(),'하니 투자 리포트');
+    assert.equal(await page.locator('#title').innerText(),'HANI 투자 리포트');
     assert.deepEqual(await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length})),beforeNavigation,'canonical report navigation never writes data');
     const legacyOverview = await page.locator('#investOverviewAll').innerHTML();
     // QA1: explicit creation, save, reopen and reload; no automatic card generation.

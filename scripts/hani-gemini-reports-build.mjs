@@ -35,7 +35,7 @@ function reportFromFile(directory, file) {
   const id = file.slice(0, -3);
   const date = /^\d{4}-\d{2}-\d{2}/.exec(file)?.[0];
   const body = readFileSync(join(directory, file), 'utf8').replace(/\r\n/g, '\n');
-  const heading = /^# HANI OS (.+?) 개발노트\s*$/m.exec(body);
+  const heading = /^# HANI OS (.+?) 개발노트(?:[^\S\n]+[—–-][^\n]*)?\s*$/m.exec(body);
   if (!date || !heading) throw new Error(`Missing report date or HANI OS heading: ${file}`);
   const summary = /^## 이번 업데이트 한줄 요약[^\S\n]*\n([\s\S]*?)(?=^#{1,6}\s|$(?![\s\S]))/m.exec(body)?.[1];
   const paragraph = summary?.trim().split(/\n\s*\n/)[0].replace(/\s+/g, ' ').trim();
