@@ -41,7 +41,7 @@ assert.equal(extract(main,'applySignatureFinish'),extract(oldMain.replace('const
 const storageExpressions=s=>s.match(/\b(?:commit|save|writeProtectedState|localStorage\.(?:setItem|removeItem|clear))\([^)]*\)/g);
 assert.deepEqual(storageExpressions(main),storageExpressions(oldMain),'all storage/write expressions preserved across integrated features');
 for(const name of ['initLoginGate','loginGateEnterApp','loginGateResumeSession','commit','save'])assert.equal(extract(main,name),extract(oldMain,name),name+' canonical auth/storage owner preserved');
-assert.deepEqual(cacheRefs(html),cacheRefs(execFileSync(git,['show','e007a66bc85f656c33e4da746a3ecf7d5cbc6de2:index.html'],{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024})),'fix-218 preserves every v217 URL/cache pair');
+assert.deepEqual(cacheRefs(html),cacheRefs(execFileSync(git,['show','974fa64df67a3c0060bdf0eda951aafeaf5a9b11:index.html'],{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024})),'remote-219 preserves every v218 URL/cache pair');
 console.log('PASS finish list, token completeness, actual apply/fallback/save, Porcelain and storage/version/cache preservation');
 if(!process.argv[2])process.exit(0);
 const {chromium}=await import(pathToFileURL(process.argv[2]).href);

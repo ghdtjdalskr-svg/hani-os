@@ -1,3 +1,17 @@
+# 2026-10-19 · REMOTE 219 후속 액션 전수 복구 (도연/Codex)
+
+`hani/remote-blur-219` / 시작 HEAD `04f37e3`의 remote219 보존. 담당은 218 hero owner의 조직도 프로필 deep-link, 투자·운동·홈·자산·건강·학습·대학교·스포츠·설정의 실제 타깃과 기존 탭/details를 원천 맵/해석에서 사용. 비가용 버튼은 양면 숨김, 새 handler 없음. **39경로×4액션×카드/목록=312 실제 클릭·숨김/복구4종·AA72/Fold12·Remote/White215·QA210 Node9/후속14 PASS**. 기존 백업·뉴스·navigation 컨트롤의 UI/meta 저장은 격리 브라우저에서 구분하고 생활 데이터/기타 키 보존·update25회 write0 확인. 버전/cache·저장 함수·Cloud·main/배포 유지. **Git add/commit 모두 index.lock 권한 거절(exit128)로 미커밋·미push**, HEAD04f37 보존. 전 경로 감사표와 결과는 [인수인계](handoffs/2026-10-19-remote-219.md) 후속 최종 절 참조. Notion append는 자동 승인 정책 never 거절로 갱신 대기. 아래 이전 시점·다른 작업 기록 보존.
+# 2026-10-19 · REMOTE media 219 (도연/Codex)
+
+`hani/remote-blur-219` / base `974fa64`(2.9.218). 대표님 D안 실제 구현: 현재 hero 설정 공유·항상 어두운 미디어 카드, 기존 단일 클릭 경로·persistent slot, observer 제거. 1440/390 캡처16장·Fold884 4장, AA72조건 최소6.4485:1·Fold12·action16쌍·storage/console 검사 PASS. Remote·QA210 Node9/followup14·exam214·White215 실제4조건 PASS. 기존 QA210 browser의 옛 quiz detail 검사는 기준선에서도 동일 실패, 기존 담당/투자·운동 target 누락도 동일 동작으로 보존. 버전/cache·보호 저장·Cloud·main/배포 변경 없음. **Git index.lock 권한 차단으로 미커밋·미push**, Notion 개발 게시판 보류 카드 생성/read-back 완료(기존 계획 page append는 자동 승인 거절). 상세는 [인수인계](handoffs/2026-10-19-remote-219.md), [전후 캡처](../../artifacts/remote-219/README.md). 아래 과거·다른 담당 기록 보존.
+# 2026-10-19 · office-219 모바일 이름표 통합 후속 (도연/Codex)
+
+`hani/office-219` / 시작 HEAD `f90a232`, 원격 main `974fa64` GitHub 조회 일치. 작은 canvas는 **이름표 1개 안 상태 점·활성216 아이콘**, 기존 탭 단일 말풍선3초, 큰 화면 pill/name 충돌 회피·우선순위 구현. 좌석/art-map/크기·v218/cache·Storage/Cloud 그대로. 신규 실제 owner/타이머/주어진 box/AA 검증 PASS, actions15·seats12·v2 18 PASS/옵션2 SKIP(공통engine 중복). **새 Edge spawn EPERM: 390/412/1440 수정 후 픽셀 검증 대기**. 서윤 기존217/218 비교는 동일 위치/크기 확인·자료 보존. Git add/commit 모두 index.lock 권한 거절로 **미커밋 보존**, Notion 후속 append 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-10-19-office-219.md) 후속 결과·[근거](../../artifacts/office-219/README.md). main/배포 없음. 아래 과거 기록 보존.
+
+# 2026-10-19 · office-219 본사 상태 pill 복구 (도연/Codex)
+
+`hani/office-219` / base `974fa64`(GitHub main 일치), 비교217 `60db7b5`. 상태 DOM·문구를 숨기던 전역/모바일 CSS(217에도 존재)를 복구하고 기존 status 슬롯에 compact pill·층 경계 보정. 좌석/atlas/pivot/크기 두 버전 동일, 218 야간 재실·아트·v218/cache·Storage/Cloud 유지. 기존 office 출력 합산88 PASS/옵션3 SKIP(공통engine 중복 포함), 신규 모델/renderer·newstaff unit3그룹·raw safety PASS. **Edge spawn EPERM으로 비교 PNG0장·실측0건, 캐릭터 어색함 원인/실제 화면은 미검증**. Git add·commit index.lock 권한 거절로 미커밋 보존, Notion 계획 read-back 완료/결과 갱신 자동 승인 never 거절. [인수인계](handoffs/2026-10-19-office-219.md)·[근거/실행 명령](../../artifacts/office-219/README.md). 다음: 브라우저 허용 환경에서16장 비교 및 경계/겹침/크기 검사. main/배포 없음. 아래 과거 기록 보존.
+
 # 2026-10-18 · fix-218 보고서·대시보드 후속 (도연/Codex)
 
 `hani/fix-218` / 시작 HEAD `011bed9e`, main `e007a66` 원격 확인. 신규6개 포함 개발 보고서14개 최신순 번들·부제 parser, 390 표 내부 가로스크롤/최소열폭, 카드 증감 % 전용·전월0/누락 빈표시. 기존 작업·v217/cache·Storage/Cloud 보존. 회귀 **96개 중94 PASS·2 optional SKIP·0 FAIL**, 마지막 CSS 영향12 PASS, 실제390/1440 카드 전후·보고서12조건/PNG11장 PASS. [인수인계](handoffs/2026-10-18-fix-218.md) 최종 절·artifacts/fix-218/dash 참조. Notion 자동 승인 never 거절로 갱신 대기. Git 시도 결과 아래 인수인계 참조, PR/main/배포 없음. 이전 기록 보존.

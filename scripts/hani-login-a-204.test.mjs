@@ -24,6 +24,9 @@ for(const key of [...seasons,'spring','winter','summer']){
   assert.equal(slots.find(s=>s.active).attrs.src,'./assets/seasonal-collection/'+key+'-v2.webp');
   for(const slot of slots)assert.equal(slot.writes,1,'persistent preloaded sources are not recreated/reloaded');
 }
+let remoteUpdates=0;ctx.window={HANI_CONTEXT_REMOTE_V1:{update(){remoteUpdates++}}};
+ctx.syncSeasonCollection();assert.equal(remoteUpdates,1,'canonical Season sync refreshes Remote once in browsers');
+delete ctx.window;
 ctx.applySeasonTheme('invalid',false);assert.equal(slots.find(s=>s.active).dataset.loginSeasonArtwork,'spring');
 assert.equal(storageCalls,0,'all read-only previews preserve existing persistence semantics');
 ctx.applySeasonTheme('winter',true);assert.equal(storageCalls,1,'only canonical saveChoice writes');
@@ -68,7 +71,7 @@ if(baseDir)assert.equal(main.replace(added,''),baseMain,'only canonical artwork 
 else {
   // An integrated baseline already owns these slots: compare the entire function.
   const integrated=baseMain.includes('// Persistent login artwork slots');
-  assert.equal(extract((integrated?main:main.replace(added,'')).replace(/\r\n/g,'\n'),'syncSeasonCollection'),extract(baseMain.replace(/\r\n/g,'\n'),'syncSeasonCollection'),'canonical artwork sync preserves baseline behavior alongside integrated features');
+  assert.equal(extract((integrated?main:main.replace(added,'')).replace(/\r\n/g,'\n'),'syncSeasonCollection').replace("  if(typeof window!=='undefined')window.HANI_CONTEXT_REMOTE_V1?.update();\n",''),extract(baseMain.replace(/\r\n/g,'\n'),'syncSeasonCollection'),'canonical artwork sync preserves baseline behavior alongside integrated features');
 }
 for(const file of ['hani-main.js','index.html']){
   const baseSource=baseline[file],lines=s=>s.match(/[^\n]*(?:\n|$)/g).filter(Boolean),old=new Map(),ambiguous=new Set();

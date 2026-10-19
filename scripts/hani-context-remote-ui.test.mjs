@@ -23,12 +23,12 @@ try{
   if(width<851)await page.locator('.hani-remote-mobile-trigger').click();
   const protectedBefore=await page.evaluate(()=>localStorage.getItem('hani_os_life_v23'));
   for(const file of fs.readdirSync(path.join(root,'assets/context-remote')).filter(f=>f.endsWith('.jpg'))){
-   const image=await rail.locator('.hani-remote-scene img').evaluate(async(img,file)=>{
+   const image=await rail.locator('.hani-remote-media img').evaluate(async(img,file)=>{
     img.src=`./assets/context-remote/${file}`;await img.decode();const a=img.getBoundingClientRect(),card=img.parentElement.getBoundingClientRect(),s=getComputedStyle(img),c=getComputedStyle(img.parentElement);
     return {file,width:a.width,height:a.height,gapLeft:a.left-card.left-parseFloat(c.borderLeftWidth),gapRight:card.right-a.right-parseFloat(c.borderRightWidth),fit:s.objectFit,padding:parseFloat(s.paddingLeft),position:s.objectPosition};
    },file);
    assert.equal(image.fit,'cover');assert.equal(image.padding,0);assert.ok(Math.abs(image.gapLeft)<=2&&Math.abs(image.gapRight)<=2,JSON.stringify(image));
-   if(width===1440)assert.ok(image.height>=260&&image.height<=320,JSON.stringify(image));metrics.push({width,finish,...image});
+   if(width===1440)assert.ok(image.height>=260&&image.height<=355,JSON.stringify(image));metrics.push({width,finish,...image});
   }
   for(const state of ['rest','hover','focus']){
    const items=rail.locator('.hani-remote-item:visible');
@@ -44,7 +44,7 @@ try{
   }
   assert.ok(await rail.evaluate(n=>n.scrollWidth<=n.clientWidth+1),'panel horizontal overflow');
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'page horizontal overflow');
-  await rail.locator('.hani-remote-scene img').evaluate(async img=>{img.src='./assets/context-remote/spring-2.jpg';await img.decode();});
+  await rail.locator('.hani-remote-media img').evaluate(async img=>{img.src='./assets/context-remote/spring-2.jpg';await img.decode();});
   await rail.evaluate(n=>{n.scrollTop=0;});
   await rail.screenshot({path:path.join(output,`${width}-${finish}.png`)});
   if(width===1440){await rail.locator('.hani-remote-collapse').click();assert.ok(await page.locator('#app').evaluate(n=>n.classList.contains('hani-remote-mini')));assert.ok(await rail.evaluate(n=>n.scrollWidth<=n.clientWidth+1));await rail.locator('.hani-remote-collapse').click();}
