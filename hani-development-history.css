@@ -1,7 +1,7 @@
 /* HANI OS v2.9.135 · Shared Development History · read-only UI */
 #app .hani-development-snapshot{grid-column:1/-1;margin-top:14px;padding:18px;border-color:color-mix(in srgb,var(--ds-season,#7550a5) 18%,var(--line));background:linear-gradient(145deg,#fff,color-mix(in srgb,var(--season-soft,#f6f1ff) 60%,#fff));box-shadow:var(--hani-frame-shadow,0 8px 24px #27324a0d)}
 #app .hani-history-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:14px}
-#app .hani-history-head span,#app .hani-dev-history-overview>div>span{color:var(--ds-season,#7550a5);font-size:10px;font-weight:950;letter-spacing:.14em}
+#app .hani-history-head span,#app .hani-dev-history-overview>div>span{color:color-mix(in srgb,var(--ds-season,#7550a5) 80%,var(--ds-ink,#273349));font-size:10px;font-weight:950;letter-spacing:.14em}
 #app .hani-history-head h3,#app .hani-dev-history-overview h3{margin:4px 0 3px;color:var(--ds-ink,#273349);font-size:20px;letter-spacing:-.035em}
 #app .hani-history-head p,#app .hani-dev-history-overview p{margin:0;color:var(--muted,#7d8798);font-size:11px;line-height:1.55}
 #app .hani-history-compact{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}

@@ -332,6 +332,24 @@ body[data-view=home] #aiBanner{display:none!important}
 #app #game.sports-hub{--sports-ink:#172033;--sports-muted:#68758a;display:none}
 #app #game.sports-hub.active{display:block}
 
+/* Dedicated square illustrations keep their full composition in the canonical slot. */
+#app .ds-main-character-banner[data-scene-variant="illustration-218"]{grid-template-columns:minmax(0,54%) minmax(0,46%)}
+#app .ds-main-character-banner[data-scene-variant="illustration-218"]:after{display:none}
+#app .ds-main-character-banner[data-scene-variant="illustration-218"] .ds-main-character-banner__scene{position:relative;grid-column:2;grid-row:1;inset:auto;height:320px;background:#eee8f5}
+#app .ds-main-character-banner[data-scene-variant="illustration-218"] .ds-main-character-banner__scene img{width:100%;height:100%;mask-image:none;-webkit-mask-image:none}
+#app .ds-main-character-banner[data-scene-variant="illustration-218"] .ds-main-character-banner__copy{grid-row:1}
+/* Character panoramas keep every staff member visible in the canonical slot. */
+#app .ds-main-character-banner[data-scene-variant="illustration-wide-218"]{display:flex;flex-direction:column}
+#app .ds-main-character-banner[data-scene-variant="illustration-wide-218"]:after{display:none}
+#app .ds-main-character-banner[data-scene-variant="illustration-wide-218"] .ds-main-character-banner__scene{position:relative;inset:auto;height:auto;aspect-ratio:3/1;width:100%}
+#app .ds-main-character-banner[data-scene-variant="illustration-wide-218"] .ds-main-character-banner__scene img{width:100%;height:100%;mask-image:none;-webkit-mask-image:none}
+#app .ds-main-character-banner[data-scene-variant="illustration-wide-218"] .ds-main-character-banner__copy{min-height:0}
+@media(max-width:700px){
+ #app .ds-main-character-banner[data-scene-variant="illustration-218"]{display:flex;flex-direction:column}
+ #app .ds-main-character-banner[data-scene-variant="illustration-218"] .ds-main-character-banner__scene{height:auto;aspect-ratio:1;width:100%}
+ #app .ds-main-character-banner[data-scene-variant="illustration-218"] .ds-main-character-banner__copy{min-height:0}
+}
+
 /* v2.9.113 · Main Character Banner shell. Scene ownership is per sidebar menu. */
 #app .ds-main-character-banner{--mcb-accent:#f0bd66;--mcb-ink:#fff;--mcb-muted:#d8e0ef;--mcb-bg:#0d1729;--mcb-border:#ffffff24;--mcb-overlay:linear-gradient(90deg,#081325 0%,#0a1625f5 37%,#0a1625a8 58%,transparent 86%);--mcb-overlay-mobile:linear-gradient(90deg,#081325f7 0%,#0a1625e8 56%,#0a16259c 100%);--mcb-status-bg:#07111da6;--mcb-status-line:#ffffff38;--mcb-scene-position:76% 48%;--mcb-scene-width:min(48%,760px);--mcb-scene-fit:cover;--mcb-scene-mask:linear-gradient(90deg,transparent 0%,#000 17%,#000 100%);position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,54%) minmax(0,46%);align-items:stretch;width:100%;height:auto;min-height:232px;box-sizing:border-box;margin:0 0 14px;border:1px solid var(--mcb-border);border-radius:22px;overflow:hidden;background:var(--mcb-bg);box-shadow:var(--ds-shadow)}
 #app .ds-main-character-banner:after{content:"";position:absolute;z-index:1;inset:0;background:var(--mcb-overlay);pointer-events:none}
@@ -1478,13 +1496,45 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 }
 
 /* a216-2: existing forms and read-only derived cards. */
-#app .activity-trend-card{overflow-wrap:anywhere}
+#app .activity-trend-card{overflow-wrap:anywhere;--activity-accent:var(--control-accent,var(--primary))}
 #app :is(#readingActivityTrend,#movieActivityTrend){order:0;grid-column:1/-1}
-#app .activity-trend-numbers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-#app .activity-trend-numbers b,#app .activity-trend-numbers small{display:block;margin-top:6px}
-#app .activity-trend-numbers b{font-size:23px}
-#app .activity-trend-numbers small{font-size:12px;color:var(--muted)}
-#app .activity-reaction{padding:12px;border-radius:12px;background:var(--season-soft,#f5f4fa)}
+#app .activity-trend-head{gap:12px;flex-wrap:wrap}
+#app .activity-trend-visual{display:grid;grid-template-columns:minmax(0,1fr) 170px;align-items:center;gap:24px;margin:12px 0}
+#app .activity-chart-figure{min-width:0;margin:0;max-width:640px}
+#app .activity-chart-figure figcaption{font-size:13px;font-weight:700}
+#app .activity-chart-figure figcaption span{font-weight:400;color:var(--muted);margin-left:8px}
+#app .activity-chart{display:block;width:100%;max-height:240px;overflow:visible}
+#app .activity-chart text{fill:var(--text);font:14px system-ui,sans-serif}
+#app .activity-chart-tick text{fill:var(--muted);font-size:13px}
+#app .activity-chart-tick line{stroke:var(--line);stroke-width:1}
+#app .activity-chart-month rect{fill:color-mix(in srgb,var(--activity-accent) 65%,var(--text))}
+#app .activity-chart-month.current rect{fill:var(--activity-accent)}
+#app .activity-chart-month.current text{font-weight:800}
+#app .activity-chart-value{font-weight:600}
+#app .activity-chart-average{fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:2 4;vector-effect:non-scaling-stroke}
+#app .activity-chart-average.recent{stroke:var(--activity-accent);stroke-dasharray:6 4}
+#app .activity-chart-legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:12px;color:var(--muted)}
+#app .activity-chart-legend span:before{content:"";display:inline-block;width:18px;margin-right:6px;vertical-align:middle;border-top:2px dotted var(--muted)}
+#app .activity-chart-legend .recent:before{border-top:2px dashed var(--activity-accent)}
+#app .activity-year{display:flex;flex-direction:column;gap:8px;min-width:0}
+#app .activity-year>strong{font-size:32px;line-height:1.2}
+#app .activity-year>strong>span{font-size:16px;margin-left:4px}
+#app .activity-year small{font-size:12px;color:var(--muted)}
+#app .activity-goal{display:flex;align-items:center;gap:8px}
+#app .activity-goal small{display:block}
+#app .activity-goal-ring{width:44px;height:44px;flex:0 0 44px;transform:rotate(-90deg)}
+#app .activity-goal-ring circle{fill:none;stroke-width:4}
+#app .activity-ring-track{stroke:var(--line)}
+#app .activity-ring-fill{stroke:var(--activity-accent);stroke-linecap:round}
+#app .activity-trend-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+#app .activity-reaction{display:flex;align-items:center;gap:8px;margin:0;font-size:13px;min-width:0}
+#app .activity-reaction img{width:32px;height:32px;flex:0 0 32px;border-radius:50%;object-fit:cover}
+#app .activity-reaction b{margin-right:5px}
+#app .activity-trend-info{margin-top:12px;color:var(--muted);font-size:12px}
+#app .activity-trend-info summary{cursor:pointer;width:fit-content;padding:6px 0}
+#app .activity-trend-info summary:focus-visible{outline:2px solid var(--activity-accent);outline-offset:3px}
+#app .activity-trend-info p{margin:6px 0;line-height:1.6}
+#app .gemini-reports-list-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
 #app .ledger-practical{margin-bottom:16px;overflow-wrap:anywhere}
 #app .ledger-practical>details+details{margin-top:14px}
 #app .ledger-practical summary{cursor:pointer;font-weight:700;padding:8px 0}
@@ -1494,6 +1544,16 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
  #app #diet>.grid{display:flex;flex-direction:column}
  #app #diet>.grid>.body-quick-input{order:-2;width:100%}
  #app #diet>.grid>.body-chart-card{order:0;width:100%}
- #app .activity-trend-numbers{grid-template-columns:1fr}
+ #app .activity-trend-visual{grid-template-columns:1fr;gap:16px}
+ #app .activity-year{display:grid;grid-template-columns:1fr auto;align-items:center;gap:6px 12px}
+ #app .activity-year>strong{grid-row:2;grid-column:1}
+ #app .activity-goal{grid-row:1/3;grid-column:2}
+ #app .activity-year>small:last-child{grid-column:1/-1}
  #app #settlementQuickCheck{order:-4!important}
 }
+
+/* Functional controls beneath the single canonical page hero. */
+#app .monthly-report-controls{display:flex;align-items:center;flex-wrap:wrap;gap:12px 24px;padding:16px 0}
+#app .monthly-report-controls p{margin:0}
+/* Match the opaque left edge of the new newspaper hero, including before art decode. */
+#app #ilbo>.ds-main-character-banner{background-color:#f4eeff}

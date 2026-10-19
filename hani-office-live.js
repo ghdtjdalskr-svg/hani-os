@@ -241,13 +241,18 @@
     }
     function snapshot(now,options={}){
       const kst=new Date(new Date(now).getTime()+32400000),day=kst.toISOString().slice(0,10),seconds=kst.getUTCHours()*3600+kst.getUTCMinutes()*60+kst.getUTCSeconds()+kst.getUTCMilliseconds()/1000;
-      const events=plan(day,options),cancelled=options.cancelled||new Set(),blocked=new Set(options.summoned||[]),weekday=![0,6].includes(kst.getUTCDay());
+      const events=plan(day,options),cancelled=options.cancelled||new Set(),blocked=new Set(options.summoned||[]);
+      // Presence is a base scene state on every day, independent of weekday action windows.
+      // Reuse base-work; do not enable disabled night actions or spend extra family budgets.
+      const late=seconds>=3600&&seconds<7*3600,evening=seconds>=18*3600||seconds<3600;
+      const lateWorkers=new Set(['seoyun','dohyun','mir','yuna','minji']);
+      const presenceNote=late?'심야에도 함께해요 · 개발실과 라운지에 직원들이 남아 있어요':'';
       const completedTeachers=events.filter(e=>e.performEnd<=seconds&&!cancelled.has(e.id)&&table.rules.hinaBalance.teacherActionIds.includes(e.actionId)).length;
       const selfiesBefore=events.filter(e=>e.start<seconds&&!cancelled.has(e.id)&&table.rules.hinaBalance.selfieActionIds.includes(e.actionId));
       const active=events.filter(e=>e.start<=seconds&&seconds<e.end&&!cancelled.has(e.id)&&!e.people.some(p=>blocked.has(p.id))&&(!table.rules.hinaBalance.selfieActionIds.includes(e.actionId)||completedTeachers>=selfiesBefore.length));
       const entries=persons.filter(p=>(p.id!=='seongmin'||options.chairmanPresent)&&(!options.presentIds||options.presentIds.includes(p.id))&&!blocked.has(p.id)).flatMap(p=>{
         const event=active.find(e=>e.people.some(t=>t.id===p.id)),t=event?.people.find(t=>t.id===p.id);
-        if(!event&&(!weekday||seconds<32400||seconds>=64800))return [];
+        if(late&&!lateWorkers.has(p.id)&&p.id!=='seongmin')return [];
         const action=actions.get(event?.actionId)||defaults;if(!action)return [];
         let seat=slot(p.home.anchorId,p.id==='mir'?'stand':'sit'),position=null,walking=false,floor=p.home.floor;
         if(t){
@@ -257,9 +262,22 @@
           if(leg){const a=anchors.get(leg.from),b=anchors.get(leg.to),progress=(seconds-leg.start)/(leg.end-leg.start),pa=visualPoint(a),pb=visualPoint(b);floor=a.floor;seat=slot(a.id,'stand');walking=true;position=a.floor===b.floor?[pa[0]+(pb[0]-pa[0])*progress,pa[1]+(pb[1]-pa[1])*progress]:pa;}
         }
         const performing=event&&(options.reducedMotion||seconds>=event.performStart&&seconds<event.performEnd);
-        return [{id:p.id,home:p.home.floor,floor,seat,position,walking,pose:walking?(Math.floor(seconds*5)%2?'walk-a':'walk-b'):seat.posture,activity:event?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):'work',actionId:performing?action.id:'base-work',eventId:event?.id,line:performing?speech(action,p.id,day):event?'이동 중':speech(defaults,p.id,day),emoji:performing?action.performance.emoji:'',personalNonWork:action.personalNonWork}];
+        const idleLine=p.id==='mir'||p.id==='seongmin'?speech(defaults,p.id,day):(late||evening&&lateWorkers.has(p.id))?'야근 중':evening?'퇴근 준비 중':speech(defaults,p.id,day);
+        return [{id:p.id,home:p.home.floor,floor,seat,position,walking,pose:walking?(Math.floor(seconds*5)%2?'walk-a':'walk-b'):seat.posture,activity:event?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):'work',actionId:performing?action.id:'base-work',eventId:event?.id,line:performing?speech(action,p.id,day):event?'이동 중':idleLine,emoji:performing?action.performance.emoji:'',personalNonWork:action.personalNonWork}];
       });
-      return {day,minutes:seconds/60,seconds,entries,events:active};
+      // Lounge residents are persistent presence, not newly scheduled actions.
+      // Existing events own their seats first; their frequency/cooldown budgets stay unchanged.
+      if(late||evening){
+        const occupied=new Set(entries.map(p=>p.seat.anchor));
+        for(const id of ['yuna','minji']){
+          const p=entries.find(p=>p.id===id);if(!p||p.eventId)continue;
+          const anchor=['lobby-nw','lobby-ne','lobby-sw','lobby-se'].find(a=>!occupied.has(a));
+          const seat=anchor&&slot(anchor);if(!seat)continue;
+          occupied.delete(p.seat.anchor);occupied.add(anchor);
+          Object.assign(p,{floor:anchors.get(anchor).floor,seat,pose:seat.posture,activity:'rest',line:late?'라운지에서 조용히 쉬는 중':'라운지에서 야근 이야기 중'});
+        }
+      }
+      return {day,minutes:seconds/60,seconds,entries,events:active,presenceNote};
     }
     return Object.freeze({plan,snapshot,seed,slot,actions,identity:table.identity});
   }
@@ -381,7 +399,7 @@
     map.append(prop);deskProps.push({prop,floor:floor.id,src:building.deskPropArt[entry.id]});
   }
   let activeFloor="4f",floorSnapshot=null,layoutKey="",backgroundToken=0,returnFloor="4f",displayedFloor=null;
-  floorLabel.className="hani-building-floor-label";overflowChip.className="hani-building-overflow";const caption=document.createElement('div');caption.className='hani-building-floor-caption';caption.append(floorLabel,overflowChip);root.querySelector('.hani-office-scroll').after(caption);
+  floorLabel.className="hani-building-floor-label";overflowChip.className="hani-building-overflow";const caption=document.createElement('div');caption.className='hani-building-floor-caption';const presenceNote=document.createElement('small');presenceNote.className='hani-building-presence-note';presenceNote.setAttribute('role','status');presenceNote.hidden=true;caption.append(floorLabel,overflowChip,presenceNote);root.querySelector('.hani-office-scroll').after(caption);
   const foregrounds=[...map.querySelectorAll(".hani-office-foreground")];
   for(const img of foregrounds){img.className='hani-office-foreground';img.hidden=true}
   const rooms=document.createElement('div');rooms.className='hani-building-rooms';root.querySelector('.hani-office-scroll').after(rooms);
@@ -420,7 +438,7 @@
     })());
     backgroundCache.get(floor.id).then(({background})=>{
       if(token!==backgroundToken||!sceneVisible())return;
-      bg.src=background;bg.alt=floor.label+' · 하니 본사';map.dataset.art=background===floor.background?'floor':'fallback';
+      bg.src=background;bg.alt=floor.label+' · HANI 본사';map.dataset.art=background===floor.background?'floor':'fallback';
       foregrounds.forEach(img=>{img.hidden=true});
       map.dataset.mask='none';
       for(const entry of plates)entry.plate.hidden=entry.floor!==floor.id||background!==floor.background;
@@ -433,6 +451,7 @@
     const presence={chairmanPresent:window.HaniOfficePresence?.chairman==='active'};
     cancelScheduledDuringMeeting(now);
     floorSnapshot=building.snapshot(now,{...presence,reducedMotion:reduced,cancelled,summoned:meeting?selectedAgents():[]});
+    presenceNote.textContent=floorSnapshot.presenceNote||'';presenceNote.hidden=!floorSnapshot.presenceNote;
     for(const floor of floorSnapshot.floors){const button=floorButtons.get(floor.id),selected=floor.id===activeFloor;button.setAttribute("aria-selected",String(selected));button.tabIndex=selected?0:-1;button.querySelector("small").textContent=`근무 ${floor.work} · 휴식 ${floor.rest}`}
     const floor=floorSnapshot.floors.find(f=>f.id===activeFloor),selected=meeting&&activeFloor==="2f"?selectedAgents():null;
     const entries=selected?building.assignSeats(activeFloor,selected.map(id=>({id,activity:"meeting"}))):meeting&&activeFloor==='4f'&&selectedAgents().includes('mir')?building.assignSeats(activeFloor,[...floor.visible.filter(p=>p.id!=='mir'),{id:'mir',activity:'meeting'}]):floor.visible;
