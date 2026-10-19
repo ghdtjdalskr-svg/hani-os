@@ -962,7 +962,7 @@ const INVESTMENT_BASELINE_RESET_KEY="hani_os_investment_baseline_reset_v250_rc23
 const INVESTMENT_NEWS_CACHE_KEY="hani_investment_news_cache_v3";
 const INVESTMENT_NEWS_SOCIAL_KEY="hani_investment_news_social_v2";
 const INVESTMENT_NEWS_ARCHIVE_FUNCTION="hani-newsroom-publisher";
-const INVESTMENT_NEWS_ARCHIVE_LIMIT=500;
+const INVESTMENT_NEWS_ARCHIVE_LIMIT=50;
 const INVESTMENT_NEWS_TTL_MS=3*60*60*1000;
 const INVESTMENT_NEWS_MAX_TARGETS=5;
 const THEME_KEY="h22th"; // legacy dark-mode key
@@ -1003,6 +1003,9 @@ let cloudVerifiedRemote=null;
 let cloudLifecycleBound=false;
 let cloudNetworkRetryPending=false;
 let cloudNetworkRetryAt=0;
+// Read/retry state only; no persisted data or sync-policy changes.
+let cloudOutage={active:false,attempt:0,until:0,timer:null,probe:null,probing:false,probeFailed:false};
+let cloudLifecycleCheck={at:0,owner:"",client:null};
 let cloudComparisonEpoch=0;
 let cloudSafetyBackupBusy=false;
 let cloudChoicePreview=null;
@@ -2308,15 +2311,26 @@ async function loginGateEnterApp(reason,attempt=loginGateAttempt,silent=false){
   if(!owner||cloudRecoveryMode)throw Error("로그인 상태를 다시 확인해 주세요.");
   if(!silent)loginGateStatus("Cloud 기록을 확인하고 있습니다. 기기의 기록은 안전하게 보관합니다.","loading");
   const current=()=>attempt===loginGateAttempt&&cloudUser?.id===owner&&cloudClient===client&&!cloudRecoveryMode;
-  await cloudFetchMeta({silent:true});
+  // A verified bfcache session rejoins the same lifecycle/coalescing path; initial login/reload keeps its existing checks.
+  const lifecycleResume=reason==="session-resume"&&cloudLifecycleBound;
+  if(!lifecycleResume)await cloudFetchMeta({silent:true});
   if(!current())return false;
-  await cloudSyncCycle(reason);
+  await cloudSyncCycle(lifecycleResume?"resume-pageshow":reason);
   if(!current())return false;
-  if(loadRecovery.active||importSyncHold||cloudChoicePreview||!cloudAutoSyncReady||cloudRuntime.sync!=="ON"){
+  let localEntry=false;
+  if((cloudOutage.active||cloudNetworkRetryPending)&&!loadRecovery.active&&!importSyncHold&&!cloudChoicePreview){
+    try{
+      assertCloudSourceReady();
+      const raw=localStorage.getItem(STORAGE_KEY),local=raw&&JSON.parse(raw);
+      localEntry=!!local&&typeof local==="object"&&!Array.isArray(local)&&cloudHasMeaningfulLocalData(local)&&cloudHasMeaningfulLocalData(state);
+    }catch(_){localEntry=false}
+  }
+  if(loadRecovery.active||importSyncHold||cloudChoicePreview||(!localEntry&&(!cloudAutoSyncReady||cloudRuntime.sync!=="ON"))){
     loginGateStatus(cloudRuntime.message||"Cloud 확인을 마치지 못했습니다. 연결을 확인하고 다시 시도해 주세요.","warn");
     loginGateShowCloudTools(true);
     return false;
   }
+  if(localEntry&&cloudOutage.active)cloudShowOutage();
   markLoginGateSession();cloudBindLifecycle();unlockLoginGate();renderAll();
   return true;
 }
@@ -2877,12 +2891,77 @@ function investmentNewsMarkRead(entity,item){if(item?._archive_post_id){investme
 function investmentNewsHaniView(entity,item){if(item?._archive_post_id)return String(item.hani_view||"").trim()||"HANI View 대기";const store=investmentNewsSocialRead(),saved=store[item._news_key||investmentNewsEventKey(entity,item)],view=String(saved?.hani_view||item.hani_view||"").trim();return view||"v0.3 서버 브리핑 적용 후 HANI View가 표시됩니다."}
 
 let investmentNewsArchiveRuntime={loading:false,loaded:false,error:"",loadedAt:0,posts:[],readSet:new Set(),weeklySelectedId:""};
-function investmentNewsArchivePosts(type=""){const rows=agentArray(investmentNewsArchiveRuntime.posts);return (type?rows.filter(x=>x.post_type===type&&!(type==="WEEKLY"&&agentObj(agentObj(x.payload).company_followup).version===1)):rows).sort((a,b)=>String(b.published_at||b.created_at||"").localeCompare(String(a.published_at||a.created_at||"")))}
-function investmentNewsArchiveInterestRows(){return investmentNewsArchivePosts("INTEREST").map(p=>{const meta=agentObj(p.payload),item={title:p.title||"",summary:p.summary||"",why_it_matters:p.why_it_matters||"",hani_view:p.hani_view||"",published_at:p.event_at||p.published_at||"",source_name:p.source_name||"",source_url:p.source_url||"",source_verified:p.source_verified===true,source_grade:p.source_grade||"MEDIA",sentiment:p.sentiment||"NEUTRAL",importance:n(p.importance)||1,event_type:meta.event_type||"NEWS",scope:meta.scope||"COMPANY_COMMON",comments:agentArray(p.comments),_archive_post_id:p.id,_archive_payload:meta},entity={name:p.entity_name||p.ticker||"종목",ticker:p.ticker||"",market:p.market||"OTHER",issuer_name:meta.issuer_name||p.entity_name||"",issuer_ticker:meta.issuer_ticker||p.ticker||"",security_type:meta.security_type||"OTHER",signal:meta.signal||p.sentiment||"NEUTRAL",summary:meta.entity_summary||p.summary||"",watch_point:meta.watch_point||""};return {entity,item,postId:p.id}})}
+function investmentNewsArchivePosts(type=""){const rows=agentArray(investmentNewsArchiveRuntime.posts).map(p=>investmentNewsArchiveRuntime.details?.get(p.id)||p);return (type?rows.filter(x=>x.post_type===type&&!(type==="WEEKLY"&&(Number(x.archive_kind)===1||agentObj(agentObj(x.payload).company_followup).version===1))):rows).sort((a,b)=>String(b.published_at||b.created_at||"").localeCompare(String(a.published_at||a.created_at||"")))}
+function investmentNewsArchiveInterestRows(){return investmentNewsArchivePosts("INTEREST").map(p=>{const meta=agentObj(p.payload),item={title:p.title||"",summary:p.summary||"",why_it_matters:p.why_it_matters||"",hani_view:p.hani_view||"",published_at:p.event_at||p.published_at||"",source_name:p.source_name||"",source_url:p.source_url||"",source_verified:p.source_verified===true,source_grade:p.source_grade||"MEDIA",sentiment:p.sentiment||"NEUTRAL",importance:n(p.importance)||1,event_type:meta.event_type||p.event_type||"NEWS",scope:meta.scope||p.scope||"COMPANY_COMMON",comments:agentArray(p.comments),_archive_post_id:p.id,_archive_payload:meta},entity={name:p.entity_name||p.ticker||"종목",ticker:p.ticker||"",market:p.market||"OTHER",issuer_name:meta.issuer_name||p.entity_name||"",issuer_ticker:meta.issuer_ticker||p.ticker||"",security_type:meta.security_type||p.security_type||"OTHER",signal:meta.signal||p.sentiment||"NEUTRAL",summary:meta.entity_summary||p.summary||"",watch_point:meta.watch_point||""};return {entity,item,postId:p.id}})}
 function investmentNewsArchiveEntities(rows=investmentNewsArchiveInterestRows()){const m=new Map();for(const r of rows){const key=r.entity.ticker||r.entity.name;if(!m.has(key))m.set(key,{...r.entity,signal:r.item.sentiment||r.entity.signal,summary:r.entity.summary||r.item.summary,news:[]});m.get(key).news.push(r.item)}return [...m.values()]}
 function investmentNewsArchiveIsRead(item){const id=item?._archive_post_id;return !!id&&investmentNewsArchiveRuntime.readSet instanceof Set&&investmentNewsArchiveRuntime.readSet.has(id)}
 async function investmentNewsArchiveMarkRead(item){const id=item?._archive_post_id;if(!id||!cloudClient||!cloudUser)return false;if(!(investmentNewsArchiveRuntime.readSet instanceof Set))investmentNewsArchiveRuntime.readSet=new Set();investmentNewsArchiveRuntime.readSet.add(id);try{const {error}=await cloudClient.from("hani_newsroom_reads").upsert({user_id:cloudUser.id,post_id:id,read_at:new Date().toISOString()},{onConflict:"user_id,post_id"});if(error)throw error;return true}catch(e){console.warn("Newsroom read state",e);return false}}
-async function investmentNewsArchiveLoad(force=false){if(!cloudClient||!cloudUser){investmentNewsArchiveRuntime={...investmentNewsArchiveRuntime,loaded:false,error:"Cloud 로그인 필요",posts:[],readSet:new Set()};return false}if(investmentNewsArchiveRuntime.loading)return false;if(!force&&investmentNewsArchiveRuntime.loaded&&Date.now()-n(investmentNewsArchiveRuntime.loadedAt)<60000)return true;investmentNewsArchiveRuntime.loading=true;try{const [postsRes,readsRes]=await Promise.all([cloudClient.from("hani_newsroom_posts").select("id,post_type,period_key,title,entity_name,ticker,market,sentiment,source_grade,importance,event_at,published_at,source_name,source_url,source_verified,summary,why_it_matters,hani_view,comments,payload,created_at,updated_at").eq("user_id",cloudUser.id).order("published_at",{ascending:false}).limit(INVESTMENT_NEWS_ARCHIVE_LIMIT),cloudClient.from("hani_newsroom_reads").select("post_id,read_at").eq("user_id",cloudUser.id)]);if(postsRes.error)throw postsRes.error;if(readsRes.error)throw readsRes.error;investmentNewsArchiveRuntime={...investmentNewsArchiveRuntime,loading:false,loaded:true,error:"",loadedAt:Date.now(),posts:agentArray(postsRes.data),readSet:new Set(agentArray(readsRes.data).map(x=>x.post_id).filter(Boolean))};renderInvestmentNews();return true}catch(e){investmentNewsArchiveRuntime={...investmentNewsArchiveRuntime,loading:false,loaded:false,error:e?.message||String(e)};console.warn("Newsroom archive load",e);renderInvestmentNews();return false}}
+function investmentNewsArchiveContext(){
+  const r=investmentNewsArchiveRuntime;
+  if(r.owner!==cloudUser?.id||r.client!==cloudClient){
+    investmentNewsArchiveRuntime={loading:false,loaded:false,error:"",loadedAt:0,posts:[],readSet:new Set(),weeklySelectedId:"",owner:cloudUser?.id||"",client:cloudClient,details:new Map(),detailPending:new Map(),detailRetry:new Map(),openIds:new Set(),hasMore:false,cursor:null,olderCursor:null};
+  }
+  return investmentNewsArchiveRuntime;
+}
+function investmentNewsArchiveCursor(row,key){
+  const date=String(row?.[key]||""),id=String(row?.id||"");
+  if(!/^\d{4}-\d\d-\d\dT[\d:.+Z-]+$/.test(date)||!/^[-\w]+$/.test(id))return null;
+  return {date,id};
+}
+async function investmentNewsArchiveLoad(force=false,{older=false}={}){
+  const runtime=investmentNewsArchiveContext(),client=cloudClient,owner=cloudUser?.id;
+  if(!client||!owner){runtime.error="Cloud 로그인 필요";return false}
+  if(cloudOutage.active||runtime.loading)return false;
+  if(!force&&!older&&runtime.loaded&&Date.now()-n(runtime.loadedAt)<60000)return true;
+  const initial=!runtime.loaded,cursor=older?runtime.olderCursor:runtime.cursor;
+  if(older&&(!runtime.hasMore||!cursor))return false;
+  runtime.loading=true;
+  try{
+    let query=client.from("hani_newsroom_posts").select("id,post_type,period_key,title,entity_name,ticker,market,sentiment,source_grade,importance,event_at,published_at,source_name,source_url,source_verified,summary,created_at,updated_at,archive_kind:payload->company_followup->>version,event_type:payload->>event_type,scope:payload->>scope,security_type:payload->>security_type").eq("user_id",owner);
+    if(cursor){const key=older?"published_at":"updated_at",op=older?"lt":"gt";query=query.or(key+"."+op+"."+cursor.date+",and("+key+".eq."+cursor.date+",id."+op+"."+cursor.id+")")}
+    query=query.order(older||initial?"published_at":"updated_at",{ascending:!older&&!initial}).order("id",{ascending:!older&&!initial}).limit(INVESTMENT_NEWS_ARCHIVE_LIMIT).retry(false);
+    const postsRes=await query;
+    if(postsRes.error){cloudNoteReadFailure(postsRes.error,postsRes.status);throw postsRes.error}
+    if(runtime!==investmentNewsArchiveRuntime||client!==cloudClient||owner!==cloudUser?.id)return false;
+    const rows=agentArray(postsRes.data),ids=rows.map(p=>p.id).filter(Boolean);
+    const readsRes=ids.length?await client.from("hani_newsroom_reads").select("post_id,read_at").eq("user_id",owner).in("post_id",ids).limit(INVESTMENT_NEWS_ARCHIVE_LIMIT).retry(false):{data:[]};
+    if(readsRes.error){cloudNoteReadFailure(readsRes.error,readsRes.status);throw readsRes.error}
+    if(runtime!==investmentNewsArchiveRuntime||client!==cloudClient||owner!==cloudUser?.id)return false;
+    const posts=new Map(runtime.posts.map(p=>[p.id,p]));
+    for(const row of rows){if(posts.get(row.id)?.updated_at!==row.updated_at){runtime.details.delete(row.id);runtime.detailRetry.delete(row.id)}posts.set(row.id,row)}
+    runtime.posts=[...posts.values()].sort((a,b)=>String(b.published_at||"").localeCompare(String(a.published_at||""))||String(b.id).localeCompare(String(a.id)));
+    for(const read of agentArray(readsRes.data))if(read.post_id)runtime.readSet.add(read.post_id);
+    if(initial||older){runtime.hasMore=rows.length===INVESTMENT_NEWS_ARCHIVE_LIMIT;runtime.olderCursor=investmentNewsArchiveCursor(rows.at(-1),"published_at")||runtime.olderCursor}
+    if(!older){const latest=[...rows].sort((a,b)=>String(b.updated_at).localeCompare(String(a.updated_at))||String(b.id).localeCompare(String(a.id)))[0];runtime.cursor=investmentNewsArchiveCursor(latest,"updated_at")||runtime.cursor}
+    runtime.loaded=true;runtime.error="";runtime.loadedAt=Date.now();runtime.loading=false;
+    renderInvestmentNews();return true;
+  }catch(e){
+    if(runtime===investmentNewsArchiveRuntime){runtime.error=e?.message||String(e);renderInvestmentNews()}
+    console.warn("Newsroom archive load",e);return false;
+  }finally{runtime.loading=false}
+}
+async function investmentNewsArchiveDetail(id){
+  const runtime=investmentNewsArchiveContext(),client=cloudClient,owner=cloudUser?.id;
+  if(!id||!client||!owner||cloudOutage.active)return null;
+  if(runtime.details.has(id))return runtime.details.get(id);
+  if(runtime.detailPending.has(id))return runtime.detailPending.get(id);
+  if((runtime.detailRetry.get(id)||0)>Date.now())return null;
+  const summary=runtime.posts.find(p=>p.id===id);if(!summary)return null;
+  const pending=(async()=>{
+    try{
+      const {data,error,status}=await client.from("hani_newsroom_posts").select("id,why_it_matters,hani_view,comments,payload,updated_at").eq("user_id",owner).eq("id",id).limit(1).retry(false);
+      if(error){cloudNoteReadFailure(error,status);throw error}
+      if(runtime!==investmentNewsArchiveRuntime||client!==cloudClient||owner!==cloudUser?.id||runtime.posts.find(p=>p.id===id)!==summary)return null;
+      const row=agentArray(data)[0];if(!row||row.id!==id)return null;
+      const detail={...summary,...row};runtime.details.set(id,detail);return detail;
+    }catch(e){runtime.detailRetry.set(id,Date.now()+60000);console.warn("Newsroom archive detail",e);return null}
+    finally{runtime.detailPending.delete(id)}
+  })();
+  runtime.detailPending.set(id,pending);return pending;
+}
+function investmentNewsArchiveOpenWeekly(id){
+  void investmentNewsArchiveDetail(id).then(detail=>{if(detail)renderInvestmentNews()});
+}
 async function investmentNewsArchiveErrorDetail(error){
   const parts=[];
   if(error?.message)parts.push(String(error.message));
@@ -2923,7 +3002,8 @@ function investmentNewsRenderWeeklyArchive(fallbackData,mode="interest"){
   const posts=investmentNewsArchivePosts("WEEKLY"),tabs=$("investmentNewsWeeklyArchiveTabs");
   if(!posts.length){if(tabs)tabs.innerHTML=investmentNewsArchiveRuntime.loading?'<span>Cloud Archive를 불러오는 중…</span>':investmentNewsArchiveRuntime.error?`<span>Cloud Archive 대기 · ${esc(investmentNewsArchiveRuntime.error)}</span>`:'<span>아직 저장된 주간 종합 시황이 없습니다.</span>';if($("investmentNewsWeeklyTitle"))$("investmentNewsWeeklyTitle").textContent="이번 주 시장 한눈에";investmentNewsRenderWeekly(fallbackData);return}
   const valid=new Set(posts.map(p=>p.id)),selected=valid.has(investmentNewsArchiveRuntime.weeklySelectedId)?investmentNewsArchiveRuntime.weeklySelectedId:posts[0].id;investmentNewsArchiveRuntime.weeklySelectedId=selected;
-  if(tabs){tabs.innerHTML=posts.map(p=>`<button type="button" class="newsroom-weekly-archive-btn ${p.id===selected?"active":""}" ${recordIdAttributes("data-weekly-archive",p.id)}><b>${esc(p.title)}</b>${investmentNewsArchiveRuntime.readSet.has(p.id)?"":"<span>NEW</span>"}</button>`).join("");tabs.querySelectorAll("[data-weekly-archive]").forEach(btn=>btn.onclick=()=>{investmentNewsArchiveRuntime.weeklySelectedId=btn.dataset.weeklyArchive||"";const p=posts.find(x=>x.id===investmentNewsArchiveRuntime.weeklySelectedId);if(p)investmentNewsArchiveMarkRead({_archive_post_id:p.id});renderInvestmentNews()})}
+  if(tabs){tabs.innerHTML=posts.map(p=>`<button type="button" class="newsroom-weekly-archive-btn ${p.id===selected?"active":""}" ${recordIdAttributes("data-weekly-archive",p.id)}><b>${esc(p.title)}</b>${investmentNewsArchiveRuntime.readSet.has(p.id)?"":"<span>NEW</span>"}</button>`).join("");tabs.querySelectorAll("[data-weekly-archive]").forEach(btn=>btn.onclick=()=>{investmentNewsArchiveRuntime.weeklySelectedId=btn.dataset.weeklyArchive||"";const p=posts.find(x=>x.id===investmentNewsArchiveRuntime.weeklySelectedId);if(p)investmentNewsArchiveOpenWeekly(p.id);if(p)investmentNewsArchiveMarkRead({_archive_post_id:p.id});renderInvestmentNews()})}
+  if(document.body.dataset.view==="newsroom"&&mode==="general"&&!investmentNewsArchiveRuntime.details?.has(selected)&&!investmentNewsArchiveRuntime.detailPending?.has(selected))investmentNewsArchiveOpenWeekly(selected);
   const post=posts.find(p=>p.id===selected)||posts[0],payload=agentObj(post.payload),w=agentObj(payload.weekly_brief);if($("investmentNewsWeeklyTitle"))$("investmentNewsWeeklyTitle").textContent=post.title||"주간 종합 시황";investmentNewsRenderWeekly({market_brief:payload.market_brief||post.summary||"",weekly_brief:{...w,hani_view:w.hani_view||post.hani_view||""}});if(mode==="general"&&!investmentNewsArchiveRuntime.readSet.has(post.id))investmentNewsArchiveMarkRead({_archive_post_id:post.id});
 }
 function investmentNewsRenderWeekly(data){
@@ -2949,9 +3029,10 @@ function investmentNewsFiveDayBrief(entity={}){
 }
 function renderInvestmentNews(){
   if(!$("investmentNewsFeed"))return;
-  window.HANI_COMPANY_FOLLOWUP_RENDER?.(investmentNewsArchiveRuntime.posts,investmentNewsArchiveRuntime.readSet,investmentNewsArchiveRuntime.loading,investmentNewsArchiveRuntime.error,id=>investmentNewsArchiveMarkRead({_archive_post_id:id}));
+  window.HANI_COMPANY_FOLLOWUP_RENDER?.(investmentNewsArchivePosts(),investmentNewsArchiveRuntime.readSet,investmentNewsArchiveRuntime.loading,investmentNewsArchiveRuntime.error,id=>investmentNewsArchiveMarkRead({_archive_post_id:id}));
   const targets=investmentNewsTargets(),cache=investmentNewsReadCache(),data=investmentNewsAttachStableSocial(agentObj(cache?.data)),fresh=investmentNewsCacheFresh(cache,targets),archiveRows=investmentNewsArchiveInterestRows(),archiveActive=investmentNewsArchiveRuntime.loaded&&archiveRows.length>0,entities=archiveActive?investmentNewsArchiveEntities(archiveRows):agentArray(data.entities),mode=state.ui.investmentNewsMode==="general"?"general":"interest";
   state.ui.investmentNewsMode=mode;
+  if(document.body?.dataset?.view==="newsroom"&&mode==="interest"){const followup=investmentNewsArchivePosts().find(p=>Number(p.archive_kind)===1);if(followup&&!investmentNewsArchiveRuntime.details?.has(followup.id)&&!investmentNewsArchiveRuntime.detailPending?.has(followup.id))investmentNewsArchiveOpenWeekly(followup.id)}
   document.querySelectorAll("[data-newsroom-mode]").forEach(btn=>{
     btn.classList.toggle("active",btn.dataset.newsroomMode===mode);
     btn.onclick=()=>{state.ui.investmentNewsMode=btn.dataset.newsroomMode;save();renderInvestmentNews()}
@@ -3031,6 +3112,7 @@ function renderInvestmentNews(){
     ?`<div class="investment-news-board newsroom-v03-board" role="table" aria-label="${esc(flowLabel)}">
         <div class="investment-news-board-head newsroom-v03-head" role="row"><span>종목</span><span>구분</span><span>뉴스</span></div>
         ${pageRows.map((r,i)=>{
+          const detailReady=!r.item._archive_post_id||investmentNewsArchiveRuntime.details?.has(r.item._archive_post_id),commentsLabel=detailReady?investmentNewsComments(r.entity,r.item).length:"…";
           const u=investmentNewsSafeUrl(r.item.source_url),verified=r.item.source_verified!==false&&!!u,comments=investmentNewsComments(r.entity,r.item),isRead=investmentNewsIsRead(r.entity,r.item),scope=r.entity.security_type==="PREFERRED"?investmentNewsScopeLabel(r.item.scope):"",importance=Math.max(1,Math.min(5,n(r.item.importance))),tone=investmentNewsTone(r.item.sentiment);
           return `<div class="investment-news-board-row newsroom-v03-row ${tone}" role="row">
             <button type="button" class="investment-news-row-main newsroom-v03-main" data-news-row-toggle="${i}" aria-expanded="false">
@@ -3039,15 +3121,15 @@ function renderInvestmentNews(){
                 <em class="news-sentiment ${tone}">${investmentNewsImpactLabel(r.item.sentiment)}</em>
                 <small><em class="news-grade ${String(r.item.source_grade||"").toLowerCase()}">${investmentNewsGradeLabel(r.item.source_grade)}</em><b>중요 ${importance}/5</b></small>
               </span>
-              <span class="news-col-title newsroom-v03-title"><b>${esc(r.item.title)}</b><small>${esc(r.item.event_type||"NEWS")}${scope?` · ${esc(scope)}`:""}${r.item.source_name?` · ${esc(r.item.source_name)}`:""} · 💬 ${comments.length}${comments.length&&!isRead?" · NEW":""}<i>⌄</i></small></span>
+              <span class="news-col-title newsroom-v03-title"><b>${esc(r.item.title)}</b><small>${esc(r.item.event_type||"NEWS")}${scope?` · ${esc(scope)}`:""}${r.item.source_name?` · ${esc(r.item.source_name)}`:""} · 💬 ${commentsLabel}${comments.length&&!isRead?" · NEW":""}<i>⌄</i></small></span>
             </button>
             <div class="investment-news-row-detail newsroom-v03-detail" data-news-row-detail="${i}">
               <div><b>요약</b><p>${esc(r.item.summary||"-")}</p></div>
               <div><b>왜 중요한가</b><p>${esc(r.item.why_it_matters||"-")}</p></div>
               <section class="news-hani-view"><b>💜 HANI View</b><p>${esc(investmentNewsHaniView(r.entity,r.item))}</p></section>
               <section class="news-agent-comments">
-                <div class="news-comments-head"><b>💬 AI TEAM 댓글 (${comments.length})</b>${comments.length&&!isRead?'<span>NEW</span>':""}</div>
-                ${comments.length?comments.map(c=>`<div class="news-agent-comment ${String(c.tone||"").toLowerCase()}"><div class="news-agent-comment-head"><strong>${esc(c.agent_name||c.agent_key||"AI TEAM")}</strong><em>${investmentNewsCommentToneLabel(c.tone)}</em></div><p>${esc(c.comment||"")}</p></div>`).join(""):'<p class="news-comments-pending">새 브리핑에서 관련 Agent 댓글을 생성합니다.</p>'}
+                <div class="news-comments-head"><b>💬 AI TEAM 댓글 (${commentsLabel})</b>${comments.length&&!isRead?'<span>NEW</span>':""}</div>
+                ${comments.length?comments.map(c=>`<div class="news-agent-comment ${String(c.tone||"").toLowerCase()}"><div class="news-agent-comment-head"><strong>${esc(c.agent_name||c.agent_key||"AI TEAM")}</strong><em>${investmentNewsCommentToneLabel(c.tone)}</em></div><p>${esc(c.comment||"")}</p></div>`).join(""):`<p class="news-comments-pending">${detailReady?'새 브리핑에서 관련 Agent 댓글을 생성합니다.':(investmentNewsArchiveRuntime.detailRetry?.has(r.item._archive_post_id)?'상세를 확인하지 못했습니다. 잠시 후 항목을 다시 열어 주세요.':'상세를 불러오는 중…')}</p>`}
               </section>
               <div class="investment-news-row-actions"><span>${verified?"원문 링크 확인됨":"원문 링크 미검증"}</span><div>${u?`<a class="btn sm" href="${esc(u)}" target="_blank" rel="noopener noreferrer">원문 ↗</a>`:""}<button class="btn sm" data-news-journal="${i}">투자일기에 연결</button></div></div>
             </div>
@@ -3057,12 +3139,22 @@ function renderInvestmentNews(){
     :`<div class="empty">${investmentNewsArchiveRuntime.loaded?"Cloud Archive에 현재 필터와 일치하는 누적 뉴스가 없습니다.":"최근 72시간 기준 현재 필터에 해당하는 의미 있는 신규 뉴스가 없습니다."}</div>`;
 
   uiMountPagination($("investmentNewsFeed"),'investmentNews',newsPage,renderInvestmentNews,'건');
-  $("investmentNewsFeed").querySelectorAll("[data-news-row-toggle]").forEach(btn=>btn.onclick=()=>{
+  const archiveNext=$("investmentNewsFeedPagination")?.querySelector('[data-page-move="1"]');
+  if(archiveNext&&newsPage.page===newsPage.pages&&investmentNewsArchiveRuntime.hasMore){archiveNext.disabled=false;archiveNext.onclick=async()=>{if(await investmentNewsArchiveLoad(true,{older:true})){uiDisplayPages.investmentNews=newsPage.page+1;renderInvestmentNews()}}}
+  $("investmentNewsFeed").querySelectorAll("[data-news-row-toggle]").forEach(btn=>btn.onclick=async()=>{
     const k=btn.dataset.newsRowToggle,detail=$("investmentNewsFeed").querySelector(`[data-news-row-detail="${k}"]`),row=btn.closest(".investment-news-board-row"),open=!row?.classList.contains("open");
     row?.classList.toggle("open",open);
     btn.setAttribute("aria-expanded",open?"true":"false");
     if(detail)detail.hidden=!open;
+    const rr=pageRows[Number(k)],postId=rr?.item?._archive_post_id;
+    if(postId){const ids=investmentNewsArchiveContext().openIds;if(open)ids.add(postId);else ids.delete(postId)}
     if(open){
+      if(postId&&!investmentNewsArchiveRuntime.details.has(postId)){
+        const loaded=await investmentNewsArchiveDetail(postId);
+        if(loaded&&investmentNewsArchiveRuntime.openIds.has(postId)&&agentArray(loaded.comments).length&&!investmentNewsArchiveRuntime.readSet.has(postId))investmentNewsArchiveMarkRead({_archive_post_id:postId});
+        renderInvestmentNews();
+        return;
+      }
       const rr=pageRows[Number(k)];
       if(rr&&investmentNewsComments(rr.entity,rr.item).length&&!investmentNewsIsRead(rr.entity,rr.item)){
         investmentNewsMarkRead(rr.entity,rr.item);
@@ -3070,7 +3162,7 @@ function renderInvestmentNews(){
       }
     }
   });
-  $("investmentNewsFeed").querySelectorAll("[data-news-row-detail]").forEach(x=>x.hidden=true);
+  $("investmentNewsFeed").querySelectorAll("[data-news-row-detail]").forEach(x=>{const rr=pageRows[Number(x.dataset.newsRowDetail)],id=rr?.item?._archive_post_id,open=!!id&&!!investmentNewsArchiveRuntime.openIds?.has(id);x.hidden=!open;const row=x.closest(".investment-news-board-row");row?.classList.toggle("open",open);row?.querySelector("[data-news-row-toggle]")?.setAttribute("aria-expanded",String(open))});
   $("investmentNewsFeed").querySelectorAll("[data-news-journal]").forEach(btn=>btn.onclick=e=>{
     e.stopPropagation();
     const row=pageRows[Number(btn.dataset.newsJournal)];
@@ -4947,7 +5039,8 @@ function cloudCreateClient(config){
   cloudAuthSubscription=null;
   // Reuse the existing Supabase auth key; the session cookie controls browser-session entry.
   cloudClient=window.supabase.createClient(config.url,config.key,{
-    auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:"implicit"}
+    auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:"implicit"},
+    global:{fetch:cloudReadFetch}
   });
   cloudBindAuthEvents();
   queueMicrotask(()=>sportsCacheLoad().catch(()=>{}));
@@ -5373,13 +5466,14 @@ function cloudSaveSyncMeta(remote,hash,extra={}){
 
 async function cloudReadRow(){
   if(!cloudClient||!cloudUser)throw new Error("Cloud 로그인이 필요합니다.");
+  if(cloudOutage.active)throw cloudOutageError();
   cloudSessionFullReads++;renderCloudTransferUsage();
-  const {data,error}=await cloudClient
+  const {data,error,status}=await cloudClient
     .from("hani_state")
     .select("state,revision,updated_at,device")
     .eq("user_id",cloudUser.id)
-    .limit(1);
-  if(error)throw error;
+    .limit(1).retry(false);
+  if(error){cloudNoteReadFailure(error,status);throw Object.assign(new Error(error.message),error,{status})}
   return data?.[0]||null;
 }
 function cloudStopAutoSync(message="",tone="warn"){
@@ -5533,7 +5627,7 @@ function cloudShouldFetchFullState(reason,remoteMeta,localMeta=cloudMeta()){
   if(!hasVerifiedBaseline||!remoteMeta||!Number.isFinite(remoteRevision))return true;
   return remoteRevision!==appliedRevision;
 }
-function cloudIsLifecycleCheck(reason){return ["poll","focus","visible"].includes(reason)||/^view-/.test(String(reason||""))}
+function cloudIsLifecycleCheck(reason){return ["poll","focus","visible","pageshow"].includes(reason)||/^(resume-|view-)/.test(String(reason||""))}
 function cloudCanUseVerifiedRemote(reason,remoteMeta,localMeta,cache,userId){
   // Local saves reuse the verified in-memory row only while Cloud still reports the same revision.
   if(!["local-save","queued"].includes(reason))return false;
@@ -5557,11 +5651,86 @@ function cloudRetryAfterNetwork(reason){
   cloudNetworkRetryPending=false;cloudNetworkRetryAt=Date.now();
   void cloudSyncCycle("network-"+reason);
 }
-async function cloudSyncCycle(reason="manual"){
+
+function cloudOutageError(){return Object.assign(new Error("Cloud 일시 중단 · 이 기기에 안전하게 저장 중"),{code:"HANI_CLOUD_PAUSED"})}
+function cloudShowOutage(){
+  cloudSetRuntime("Cloud 일시 중단","Cloud 일시 중단 · 이 기기에 안전하게 저장 중","warn",{sync:"PAUSED"});
+}
+function cloudScheduleOutageProbe(){
+  if(cloudOutage.timer)clearTimeout(cloudOutage.timer);
+  cloudOutage.timer=setTimeout(()=>{cloudOutage.timer=null;void cloudProbeOutage()},Math.max(15000,Math.min(2147483647,cloudOutage.until-Date.now())));
+}
+function cloudNoteReadFailure(error,status=error?.status,retryAfter=""){
+  const code=Number(status);
+  if(code!==402&&code!==429&&!(code>=500&&code<=599))return false;
+  const first=!cloudOutage.active||(cloudOutage.probing&&!cloudOutage.probeFailed);
+  if(first){
+    cloudOutage.attempt++;
+    cloudOutage.until=Date.now()+[1,2,5,15,60][Math.min(cloudOutage.attempt-1,4)]*60000;
+  }
+  const seconds=Number(retryAfter),date=Date.parse(retryAfter);
+  const retryAt=String(retryAfter).trim()!==""&&Number.isFinite(seconds)?Date.now()+Math.max(0,seconds)*1000:date;
+  if(Number.isFinite(retryAt))cloudOutage.until=Math.max(cloudOutage.until,retryAt);
+  cloudOutage.active=true;cloudOutage.probeFailed=true;
+  cloudStopAutoSync();cloudSyncPending=false;
+  if(cloudSyncTimer){clearTimeout(cloudSyncTimer);cloudSyncTimer=null}
+  cloudShowOutage();cloudScheduleOutageProbe();
+  return true;
+}
+async function cloudReadFetch(input,init){
+  // Pass write requests/responses through unchanged; observe REST outages and suppress subsequent automatic reads/sync.
+  const url=new URL(typeof input==="string"?input:input.url||String(input)),method=String(init?.method||input?.method||"GET").toUpperCase();
+  const rest=/\/rest\/v1\//.test(url.pathname),read=rest&&["GET","HEAD"].includes(method),client=cloudClient;
+  const probe=cloudOutage.probing&&url.pathname.endsWith("/hani_state")&&url.searchParams.get("select")==="revision,updated_at,device";
+  if(read&&cloudOutage.active&&!probe)return new Response(JSON.stringify({code:"HANI_CLOUD_PAUSED",message:cloudOutageError().message}),{status:429,headers:{"Content-Type":"application/json"}});
+  const response=await fetch(input,init);
+  if(rest&&client===cloudClient)cloudNoteReadFailure(null,response.status,response.headers.get("Retry-After")||"");
+  return response;
+}
+async function cloudProbeOutage(manual=false){
+  if(cloudOutage.probe)return cloudOutage.probe;
+  if(!cloudOutage.active)return true;
+  if(!manual&&Date.now()<cloudOutage.until){cloudScheduleOutageProbe();return false}
+  if(!cloudClient||!cloudUser||cloudRecoveryMode||loadRecovery.active||importSyncHold||readImportSyncHold()||cloudChoicePreview)return false;
+  if(cloudSyncBusy||navigator.onLine===false){cloudScheduleOutageProbe();return false}
+  const owner=cloudUser.id,client=cloudClient,epoch=cloudComparisonEpoch;
+  cloudOutage.probing=true;cloudOutage.probeFailed=false;
+  cloudOutage.probe=(async()=>{
+    try{
+      const meta=await cloudFetchMeta({probe:true});
+      assertCloudSourceReady();
+      if(cloudUser?.id!==owner||cloudClient!==client||cloudRecoveryMode||cloudComparisonEpoch!==epoch)return false;
+      if(!meta||!Number.isFinite(cloudRevisionNumber(meta.revision)))throw Error("Cloud metadata 확인 필요");
+      if(cloudOutage.timer)clearTimeout(cloudOutage.timer);
+      cloudOutage.active=false;cloudOutage.attempt=0;cloudOutage.until=0;cloudOutage.timer=null;
+      if(!manual)await cloudSyncCycle("poll",meta);
+      return true;
+    }catch(e){
+      if(cloudUser?.id===owner&&cloudClient===client){
+        if(!cloudNoteReadFailure(e)&&!cloudOutage.probeFailed)cloudNoteReadFailure(e,503);
+        cloudShowOutage();
+      }
+      return false;
+    }finally{cloudOutage.probing=false;cloudOutage.probe=null}
+  })();
+  return cloudOutage.probe;
+}
+
+async function cloudSyncCycle(reason="manual",checkedMeta=null){
   if(cloudRecoveryMode){cloudStopAutoSync("계정 복구 중에는 Cloud 자동 반영을 보류합니다.","warn");return}
   if(loadRecovery.active||importSyncHold){cloudStopAutoSync(loadRecovery.active?lastLoadError:"복원한 백업은 이 기기에만 보관 중입니다. Cloud 반영은 별도 확인이 필요합니다.","warn");return}
   if(!cloudClient||!cloudUser)return;
   if(cloudChoicePreview&&reason!=="manual")return;
+  if(cloudOutage.active){
+    if(reason!=="manual"){void cloudProbeOutage();return}
+    if(!await cloudProbeOutage(true))return;
+  }
+  if(cloudIsLifecycleCheck(reason)&&!checkedMeta){
+    const now=Date.now();
+    if(cloudLifecycleCheck.owner===cloudUser.id&&cloudLifecycleCheck.client===cloudClient&&now-cloudLifecycleCheck.at<3000)return;
+    cloudLifecycleCheck={at:now,owner:cloudUser.id,client:cloudClient};
+    if(cloudSyncBusy)return;
+  }
   if(cloudSyncBusy){cloudSyncPending=true;return}
   cloudChoicePreview=null;
   cloudSyncBusy=true;
@@ -5574,11 +5743,14 @@ async function cloudSyncCycle(reason="manual"){
   try{
     if(!cloudSyncSelfTest())throw new Error("Sync Core 자체 검증에 실패해 자동 동기화를 시작하지 않았습니다.");
     if(cloudIsLifecycleCheck(reason)){
-      const remoteMeta=await cloudFetchMeta(),meta=cloudMeta();
+      const remoteMeta=checkedMeta||await cloudFetchMeta(),meta=cloudMeta();
       verifyCycle();
-      const localClean=!/^view-/.test(reason)||(await cloudStateHash(cloudComparableState(state)))===String(meta.lastSyncedHash||"");
+      const localClean=(await cloudStateHash(cloudComparableState(state)))===String(meta.lastSyncedHash||"");
       verifyCycle();
-      if(localClean&&!cloudShouldFetchFullState(reason,remoteMeta,meta))return;
+      if(localClean&&!cloudShouldFetchFullState(reason,remoteMeta,meta)){
+        if(checkedMeta){cloudAutoSyncReady=true;cloudSetRuntime("동기화 정상","Cloud 연결을 다시 확인했습니다. 이 기기의 기록은 그대로 유지됩니다.","ok",{sync:"ON"});cloudStartPolling()}
+        return;
+      }
     }
     let remote=null;
     if(["local-save","queued"].includes(reason)){
@@ -5643,24 +5815,26 @@ async function cloudSyncCycle(reason="manual"){
     }
     cloudAutoSyncReady=false;cloudStopAutoSync(decision.reason||"자동 동기화를 안전하게 진행할 수 없어 중단했습니다.","warn");
   }catch(e){
+    if(cloudOutage.active||cloudNoteReadFailure(e)){cloudShowOutage();return}
     console.error("Cloud sync",reason,e);cloudAutoSyncReady=false;cloudStopAutoSync(e?.message||"Cloud 동기화 중 오류가 발생했습니다.","error");
     if(cloudIsNetworkFailure(e)){
       cloudNetworkRetryPending=true;
       cloudSetRuntime("연결 확인 필요","이 기기의 기록은 그대로 보관 중입니다. 연결이 돌아오면 원본과 Cloud 기준을 다시 확인합니다. 직접 다시 확인하려면 ‘지금 동기화’를 눌러 주세요.","warn",{sync:"OFFLINE"});
     }
   }finally{
-    cloudSyncBusy=false;renderCloudPanel();if(cloudSyncPending){cloudSyncPending=false;setTimeout(()=>cloudSyncCycle("queued"),120)}
+    cloudSyncBusy=false;renderCloudPanel();if(cloudSyncPending){cloudSyncPending=false;if(!cloudOutage.active)setTimeout(()=>cloudSyncCycle("queued"),120)}
   }
 }
 
 function cloudBindLifecycle(){
   if(cloudLifecycleBound)return;
   cloudLifecycleBound=true;
-  window.addEventListener("focus",()=>{if(cloudUser&&cloudAutoSyncReady)cloudSyncCycle("focus");else cloudRetryAfterNetwork("focus")});
-  document.addEventListener("visibilitychange",()=>{if(document.visibilityState!=="visible")return;if(cloudUser&&cloudAutoSyncReady)cloudSyncCycle("visible");else cloudRetryAfterNetwork("visible")});
-  window.addEventListener("online",()=>cloudRetryAfterNetwork("online"));
+  const resume=reason=>{if(cloudOutage.active){void cloudProbeOutage();return}if(cloudUser&&cloudAutoSyncReady)void cloudSyncCycle(reason);else cloudRetryAfterNetwork(reason)};
+  window.addEventListener("focus",()=>resume("focus"));
+  window.addEventListener("pageshow",()=>resume("pageshow"));
+  document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")resume("visible")});
+  window.addEventListener("online",()=>{if(cloudOutage.active)void cloudProbeOutage();else cloudRetryAfterNetwork("online")});
 }
-
 function cloudCreateOwnerBindingGate({getContext, getSource, verifyUser, readOwnedSource, comparable, onInvalidate = () => {}}) {
   const stable = value => {
     if (Array.isArray(value)) return '[' + value.map(stable).join(',') + ']';
@@ -5963,8 +6137,9 @@ function renderCloudPanel(){
     pill.classList.add(cloudRuntime.tone==="ok"?"cloud-ok":cloudRuntime.tone==="error"?"cloud-error":"cloud-warn");
     pill.textContent="CLOUD · "+cloudRuntime.status;
   }
-  if(head)head.textContent=cloudUser?(cloudAutoSyncReady?"CLOUD · SYNC":"CLOUD · LOGIN"):"CLOUD · READY";
+  if(head)head.textContent=cloudOutage.active?"CLOUD · 일시 중단":cloudUser?(cloudAutoSyncReady?"CLOUD · SYNC":"CLOUD · LOGIN"):"CLOUD · READY";
   if(msg)msg.textContent=cloudRuntime.message||"";
+  const syncNow=$("cloudSyncNow");if(syncNow)syncNow.textContent=cloudOutage.active?"다시 시도":"지금 동기화";
   const differencePanel=$("cloudDifferencePanel");
   if(differencePanel?.dataset.owner&&differencePanel.dataset.owner!==cloudUser?.id){
     cloudComparisonEpoch++;differencePanel.hidden=true;delete differencePanel.dataset.owner;
@@ -6002,11 +6177,15 @@ function renderCloudPanel(){
   if($("cloudVerifySourceOwner"))$("cloudVerifySourceOwner").disabled=!cloudUser||cloudOwnerVerificationBusy;
   renderCloudChoice();
 }
-async function cloudFetchMeta({silent=false}={}){
+async function cloudFetchMeta({silent=false,probe=false}={}){
   if(!cloudClient||!cloudUser)return null;
+  if(cloudOutage.active&&!probe){if(silent)return null;throw cloudOutageError()}
   cloudSessionMetaChecks++;renderCloudTransferUsage();
-  const {data,error}=await cloudClient.from("hani_state").select("revision,updated_at,device").eq("user_id",cloudUser.id).limit(1);
-  if(error){if(!silent)throw error;return null}
+  let result;
+  try{result=await cloudClient.from("hani_state").select("revision,updated_at,device").eq("user_id",cloudUser.id).limit(1).retry(false)}
+  catch(error){cloudNoteReadFailure(error);if(!silent)throw error;return null}
+  const {data,error,status}=result;
+  if(error){cloudNoteReadFailure(error,status);if(!silent)throw Object.assign(new Error(error.message),error,{status});return null}
   const row=data?.[0]||null;
   if(row){
     cloudRuntime={...cloudRuntime,revision:row.revision,updatedAt:row.updated_at,device:row.device||""};
@@ -6841,7 +7020,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.220";
+const HANI_DISPLAY_VERSION="2.9.221";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
