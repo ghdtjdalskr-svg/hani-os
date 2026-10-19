@@ -9,6 +9,8 @@ export function fixture(time='09:00',reduced=false,loadArt=null,actionTable=null
  const ids=new Map(),timers=[],observers=[],motionEvents={};let clock=new Date(`2026-10-11T${time}:00+09:00`).getTime();
  class Element{
   constructor(tag='div'){this.tagName=tag;this.children=[];this.dataset={};this.attributes={};this.events={};this.style={setProperty(k,v){this[k]=v}};this.hidden=false;this.className='';this.textContent='';this.classList={contains:c=>this.className.split(' ').includes(c),add:c=>{this.className+=' '+c}}}
+  get textContent(){return this._textContent+this.children.map(c=>c.textContent).join('')}
+  set textContent(value){this._textContent=String(value);this.children=[]}
   set id(v){this._id=v;ids.set(v,this)}get id(){return this._id}
   append(...nodes){for(const n of nodes){n.parentElement=this;this.children.push(n)}}
   after(node){this.parentElement.append(node)}

@@ -6,6 +6,8 @@ import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 const root=path.resolve(import.meta.dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const main=read('hani-main.js'),ui=read('hani-ui-v02992.js'),html=read('index.html');
+// Runtime/cache versions were advanced by the approved 218 release, after fix-218.
+const released=f=>execFileSync(process.env.HANI_GIT||'git',['show','974fa64:'+f],{cwd:root,encoding:'utf8',maxBuffer:32*1024*1024});
 const baseline=f=>process.env.HANI_FIX218_BASELINE?fs.readFileSync(path.join(process.env.HANI_FIX218_BASELINE,path.basename(f)),'utf8'):execFileSync(process.env.HANI_GIT||'git',['show','42aa394:'+f],{cwd:root,encoding:'utf8',maxBuffer:32*1024*1024});
 test('canonical company names and legacy search aliases resolve to unchanged routes',()=>{
   const ctx=vm.createContext({});
@@ -50,7 +52,8 @@ test('raw preservation of frequency table, storage writes, versions, route/data 
   const collect=(s,re)=>[...s.replace(/globalThis\.HaniGeminiReportCatalog=Object\.freeze\([^\r\n]+\);/,'<report catalog>').matchAll(re)].map(m=>m[0]);
   for(const f of files){
     const old=baseline(f),now=read(f);new vm.Script(f.endsWith('.js')?now:'');
-    for(const re of [/\b(?:localStorage|sessionStorage)\s*\.\s*(?:setItem|removeItem|clear)\s*\([^\n]*/g,/(?:v=|v)2\.9\.\d+/g,/\bhani_os_life_v23\b/g,/2\.9\.15-safe-baseline-bootstrap/g])assert.deepEqual(collect(now,re),collect(old,re),f+' protected tokens');
+    assert.deepEqual(collect(now,/(?:v=|v)2\.9\.\d+/g),collect(released(f),/(?:v=|v)2\.9\.\d+/g),f+' approved release versions');
+    for(const re of [/\b(?:localStorage|sessionStorage)\s*\.\s*(?:setItem|removeItem|clear)\s*\([^\n]*/g,/\bhani_os_life_v23\b/g,/2\.9\.15-safe-baseline-bootstrap/g])assert.deepEqual(collect(now,re),collect(old,re),f+' protected tokens');
     if(f==='index.html'){
       for(const re of [/\bdata-(?:view|go)="[^"]+"/g,/\bid="[^"]+"/g]){
         // Three seasonal caption ids were folded into the existing canonical home scene.
@@ -73,8 +76,12 @@ test('raw preservation of frequency table, storage writes, versions, route/data 
   }
   const protectedFunction=(source,name)=>{
     const start=source.search(new RegExp('^(?:async )?function '+name+'\\(','m'));assert.ok(start>=0,name);
-    const rest=source.slice(start),next=rest.slice(1).search(/^(?:async )?function /m);
-    return next<0?rest:rest.slice(0,next+1);
+    // Parse only the function body; following constants are separate owners.
+    let body='';
+    for(const line of source.slice(start).match(/[^\n]*(?:\n|$)/g).filter(Boolean)){
+      body+=line;try{new vm.Script('('+body+')');return body}catch(e){if(!(e instanceof SyntaxError))throw e}
+    }
+    assert.fail(name+' function boundary');
   };
   const oldMain=baseline('hani-main.js');
   for(const name of ['save','cloudSyncPolicy','cloudChangeSyncPolicy','deployLoadSession','deploySaveSession','deployConfirmApprovedCandidate','deployCenterInit'])assert.equal(protectedFunction(main,name),protectedFunction(oldMain,name),name+' original safety / approval path');
