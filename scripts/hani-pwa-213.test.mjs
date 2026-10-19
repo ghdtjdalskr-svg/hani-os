@@ -56,7 +56,8 @@ function png(file) {
 }
 
 check('manifest JSON and required members', () => {
-  for (const [key, value] of Object.entries({name:'HANI OS',short_name:'HANI OS',start_url:'./?source=pwa',scope:'./',display:'standalone',orientation:'any',lang:'ko',background_color:'#f8f7f4',theme_color:'#eee5d5'})) assert.equal(manifest[key], value, key);
+  for (const [key, value] of Object.entries({name:'HANI OS',short_name:'HANI OS',start_url:'./?source=pwa',scope:'./',display:'standalone',lang:'ko',background_color:'#f8f7f4',theme_color:'#eee5d5'})) assert.equal(manifest[key], value, key);
+  assert.equal(manifest.orientation, undefined, 'no orientation override: follow the phone rotation lock');
   const base = new URL('https://example.test/hani-os/manifest.webmanifest');
   assert.equal(new URL(manifest.scope,base).pathname, '/hani-os/');
   assert.equal(new URL(manifest.start_url,base).href, 'https://example.test/hani-os/?source=pwa');
