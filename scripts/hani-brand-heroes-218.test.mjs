@@ -4,6 +4,8 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
+import {withoutLaunchGreeting} from './hani-launch-greeting-221-preservation.mjs';
+import {withoutPhotoBackupUi} from './hani-photo-backup-222-preservation.mjs';
 const root=path.resolve(import.meta.dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const main=read('hani-main.js'),ui=read('hani-ui-v02992.js'),html=read('index.html');
 // Runtime/cache versions follow the integrated origin/main release.
@@ -52,6 +54,8 @@ test('raw preservation of frequency table, storage writes, versions, route/data 
   const collect=(s,re)=>[...s.replace(/globalThis\.HaniGeminiReportCatalog=Object\.freeze\([^\r\n]+\);/,'<report catalog>').matchAll(re)].map(m=>m[0]);
   for(const f of files){
     const old=baseline(f),now=read(f);new vm.Script(f.endsWith('.js')?now:'');
+    const preserved=f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(now)):now;
+    if(f==='index.html')assert.equal(preserved,released(f),'index bytes preserved except exact launch and photo UI connections');
     assert.deepEqual(collect(now,/(?:v=|v)2\.9\.\d+/g),collect(released(f),/(?:v=|v)2\.9\.\d+/g),f+' approved release versions');
     for(const re of [/\b(?:localStorage|sessionStorage)\s*\.\s*(?:setItem|removeItem|clear)\s*\([^\n]*/g,/\bhani_os_life_v23\b/g,/2\.9\.15-safe-baseline-bootstrap/g])assert.deepEqual(collect(now,re),collect(old,re),f+' protected tokens');
     if(f==='index.html'){
@@ -59,7 +63,7 @@ test('raw preservation of frequency table, storage writes, versions, route/data 
         // Three seasonal caption ids were folded into the existing canonical home scene.
         // fix-218 simplify removes only the inert Gemini staff explainer ID.
         const omit=x=>!/^id="(?:seasonalLife(?:Artwork|Caption|Label|Cast)|geminiStaffProfile)"$/.test(x);
-        assert.deepEqual(collect(now,re).filter(omit).sort(),collect(old,re).filter(omit).sort(),f+' route / control ids');
+        assert.deepEqual(collect(preserved,re).filter(omit).sort(),collect(old,re).filter(omit).sort(),f+' route / control ids');
       }
     }
     const lines=new Map(),ambiguous=new Set();for(const line of old.match(/[^\n]*(?:\n|$)/g).filter(Boolean)){const key=line.replace(/\r?\n$/,'');if(lines.has(key)&&lines.get(key)!==line)ambiguous.add(key);lines.set(key,line);}

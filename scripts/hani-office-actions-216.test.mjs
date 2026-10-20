@@ -124,7 +124,7 @@ test('actual renderer uses persistent actor/prop/bubble slots, tap/keyboard/prof
 test('literal runtime fetch executes and an offline table settles into safe base work',async()=>{
   for(const ok of [true,false]){
     const calls=[],c=vm.createContext({HaniOfficeV2Assets:assets,window:{},document:{getElementById:()=>null},fetch:async url=>{calls.push(url);if(!ok)throw Error('offline');return {ok:true,json:async()=>table}}});
-    await vm.runInContext(source,c);assert.deepEqual(calls,['./assets/data/office-actions-216.json']);
+    await vm.runInContext(source,c);assert.deepEqual(calls,['./assets/data/office-actions-221.json','./assets/data/office-actions-216.json']);
     assert.equal(Boolean(c.HaniBuildingScene.scheduler),ok);assert.ok(c.HaniBuildingScene.snapshot('2026-10-19T09:00:00+09:00').floors.flatMap(f=>f.people).every(p=>p.actionId==='base-work'));
   }
 });
