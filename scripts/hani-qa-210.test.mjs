@@ -6,6 +6,7 @@ import path from 'node:path';
 import vm from 'node:vm';
 import {handlers,inspection,api,plain,roster} from './hani-board.test.mjs';
 import {textContrastAudit} from './hani-contrast-audit.mjs';
+import {withoutLaunchGreeting} from './hani-launch-greeting-221-preservation.mjs';
 
 const baselineArg=process.argv[2]&&path.basename(process.argv[2])!=='index.mjs'?process.argv[2]:process.env.HANI_QA_TEST_BASELINE;
 const readBaseline=file=>baselineArg?fs.readFileSync(path.resolve(baselineArg,file),'utf8'):execFileSync(process.env.HANI_GIT_PATH||'git',['show','HEAD:'+file],{cwd:path.resolve(import.meta.dirname,'..'),encoding:'utf8',maxBuffer:64*1024*1024});
@@ -88,14 +89,14 @@ test('Remote opens the exact unfinished quiz through existing selection path wit
   assert.match(remote,/openPendingQuiz\(quiz.dataset.remoteQuiz\)/);
 });
 
-test('press effect targets actual controls; existing Drive contract cannot attach arbitrary files',()=>{
+test('press effect targets actual controls; Drive contract adds only approved photo backup exports',()=>{
   const css=read('hani-style-08.css'),press=css.match(/@media\(prefers-reduced-motion:no-preference\)\{#app ([^{}]+)\{scale:\.98\}\}/);assert.ok(press);
   assert.doesNotMatch(press[1],/\.card\)|\.archive-card\)/);assert.match(press[1],/button:not\(:disabled\)/);assert.match(press[1],/a\[href\]/);
   const docless=vm.createContext({window:{}});vm.runInContext(read('hani-drive-vault.js'),docless);
-  assert.deepEqual(Object.keys(docless.window.HANI_DRIVE_VAULT_CORE).sort(),['due','filename','weeklyDecision','writeBackup']);
+  assert.deepEqual(Object.keys(docless.window.HANI_DRIVE_VAULT_CORE).sort(),['due','filename','safeTitle','weeklyDecision','writeBackup','writePhotos']);
   assert.match(read('hani-drive-vault.js'),/HANI_DRIVE_VAULT=Object.freeze\(\{schedule,readStatus\}\)/);
   assert.doesNotMatch(read('hani-board.js'),/type=["']file|uploadAttachment|attachFile/);
-  results.notes.drive='BLOCKED BY CONTRACT: owner-bound PC backup directory only; no board attachment model/picker/upload API. No write changes.';
+  results.notes.drive='Owner-bound PC backup directory with approved photo exports safeTitle/writePhotos; no board attachment model/picker/upload API. Protected/Cloud writes unchanged.';
 });
 
 test('reading title preservation and corrected chairman display projections, without writes',()=>{
@@ -123,7 +124,10 @@ test('retained EOL, all versions/cache tags, id literals, storage and canonical 
   }
   assert.equal(read('hani-drive-vault.js'),readBaseline('hani-drive-vault.js'));
   // newface-217 changes only Sua's preload; retain exact-byte checking for everything else.
-  assert.equal(read('index.html'),readBaseline('index.html').replace('href="./assets/profiles/hani-profile-sua.webp"','href="./assets/profiles/hani-profile-sua-id.webp"'));
+  const baselineHtml=readBaseline('index.html');
+  // HEAD may already contain the four launch connections; older fixtures do not.
+  const preservedHtml=baselineHtml.includes('<script src="./hani-launch-greeting.js"></script>')?withoutLaunchGreeting(baselineHtml):baselineHtml;
+  assert.equal(withoutLaunchGreeting(read('index.html')),preservedHtml.replace('href="./assets/profiles/hani-profile-sua.webp"','href="./assets/profiles/hani-profile-sua-id.webp"'));
 });
 
 test('write compact Node evidence after successful assertions',()=>{

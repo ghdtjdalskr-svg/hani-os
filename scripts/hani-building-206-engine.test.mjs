@@ -30,7 +30,7 @@ export function fixture(time='09:00',reduced=false,loadArt=null,actionTable=null
  class Clock extends Date{constructor(...args){super(...(args.length?args:[clock]))}static now(){return clock}}
  let availableArt=null;
  class Image{set src(v){if(v===availableArt||loadArt?.(v))this.onload();else this.onerror()}}
- const context=vm.createContext({HaniOfficeV2Assets:assets,HaniOfficeActions216:actionTable,document,window:{},Date:Clock,Image,matchMedia:()=>({matches:reduced,addEventListener:(name,fn)=>{motionEvents[name]=fn}}),getComputedStyle:()=>({display:'block'}),MutationObserver:class{constructor(cb){observers.push(cb)}observe(){}},setInterval:(fn,ms)=>{timers.push({fn,ms})},setTimeout,console});
+ const context=vm.createContext({HaniOfficeV2Assets:assets,HaniOfficeActions216:actionTable,HaniOfficeActions221:actionTable?.schemaVersion==='office-actions-221-v1'?actionTable:null,document,window:{},Date:Clock,Image,matchMedia:()=>({matches:reduced,addEventListener:(name,fn)=>{motionEvents[name]=fn}}),getComputedStyle:()=>({display:'block'}),MutationObserver:class{constructor(cb){observers.push(cb)}observe(){}},setInterval:(fn,ms)=>{timers.push({fn,ms})},setTimeout,console});
  // Canonical roster publishes even when its own view is absent.
  vm.runInContext(read('hani-organization-hub.js'),context);vm.runInContext(read('hani-office-live.js'),context);
  const click=floor=>tabs.events.click({target:[...tabs.children].find(b=>b.dataset.buildingFloor===floor)});

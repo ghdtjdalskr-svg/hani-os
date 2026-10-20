@@ -6,6 +6,8 @@ import path from 'node:path';
 import vm from 'node:vm';
 import http from 'node:http';
 import {execFileSync} from 'node:child_process';
+import {withoutLaunchGreeting} from './hani-launch-greeting-221-preservation.mjs';
+import {withoutPhotoBackupUi} from './hani-photo-backup-222-preservation.mjs';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 
 const root=fileURLToPath(new URL('../',import.meta.url)),out=path.join(root,'artifacts/office-219');
@@ -65,7 +67,7 @@ for(const time of [...times,'02:00']){
  }
  report.static.push(`${time}: ${people.length} staff, unique seats, speech present; night presence retained`);
 }
-for(const f of ['index.html','data/hani-building/art-map-v1.json','data/hani-building/spatial-contract.json','assets/sprites-v2/manifest.json','assets/data/office-actions-216.json'])assert.equal(read(f),git('show',(f==='index.html'?'origin/main':base)+':'+f).toString('utf8'),f+' preserved');
+for(const f of ['index.html','data/hani-building/art-map-v1.json','data/hani-building/spatial-contract.json','assets/sprites-v2/manifest.json','assets/data/office-actions-216.json'])assert.equal(f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(read(f))):read(f),git('show',(f==='index.html'?'origin/main':base)+':'+f).toString('utf8'),f+' preserved');
 report.static.push('version/cache, office metadata and action budgets preserved; no office storage/Cloud APIs (art files checked separately with git diff)');
 // Execute the real renderer and floor events as well as the scene model. DOM doubles
 // verify persistent identity and speech updates, not visibility or pixel geometry.

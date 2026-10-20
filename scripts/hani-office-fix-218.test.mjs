@@ -22,11 +22,15 @@ export async function loadScene(time,day='2026-10-18'){
   const instant=Date.parse(`${day}T${time}:00+09:00`),requests=[];
   class Clock extends Date{constructor(...args){super(...(args.length?args:[instant]));}static now(){return instant;}}
   const context=vm.createContext({Date:Clock,window:{},document:{getElementById:()=>null},fetch:async url=>{
-    requests.push(url);const response=await fetch(new URL(url,origin));assert.equal(response.status,200,url);return response;
+    requests.push(url);
+    // Keep 218's base-presence contract under the real 216 fallback. The 221 suite
+    // separately exercises current night/weekend actions and occupied-floor cadence.
+    if(url.endsWith('office-actions-221.json'))return {ok:false};
+    const response=await fetch(new URL(url,origin));assert.equal(response.status,200,url);return response;
   }});
   // Await the production async bootstrap. No metadata, action, roster or event fixtures.
   await vm.runInContext(source,context);
-  assert.equal(requests.length,4);assert.ok(context.HaniBuildingScene.scheduler);
+  assert.equal(requests.length,5);assert.ok(context.HaniBuildingScene.scheduler);
   return {scene:context.HaniBuildingScene,snapshot:context.HaniBuildingScene.snapshot(),requests};
 }
 
