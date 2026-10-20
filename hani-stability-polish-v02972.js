@@ -141,45 +141,9 @@
     }
   }
 
-  let lastResumeAt = 0;
-  async function refreshAfterResume(reason) {
-    const now = Date.now();
-    if (now - lastResumeAt < 2500) return;
-    lastResumeAt = now;
-
-    try {
-      const signedIn = typeof cloudUser !== 'undefined' && !!cloudUser;
-      const recovering = typeof cloudRecoveryMode !== 'undefined' && !!cloudRecoveryMode;
-      if (signedIn && !recovering && typeof cloudSyncCycle === 'function') {
-        await cloudSyncCycle('resume-' + reason);
-      }
-    } catch (e) {
-      console.warn('[v2.9.72] resume cloud check', e);
-    }
-
-    try {
-      const signedIn = typeof cloudUser !== 'undefined' && !!cloudUser;
-      const view = document.body.dataset.view || q('.view.active')?.id || '';
-      if (signedIn && view === 'newsroom' && typeof investmentNewsArchiveLoad === 'function') {
-        await investmentNewsArchiveLoad(true);
-      }
-    } catch (e) {
-      console.warn('[v2.9.72] newsroom archive resume check', e);
-    }
-  }
-
-  function bindResumeChecks() {
-    window.addEventListener('pageshow', () => refreshAfterResume('pageshow'));
-    window.addEventListener('focus', () => refreshAfterResume('focus'));
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') refreshAfterResume('visible');
-    });
-  }
-
   function init() {
     injectStyle();
     redirectLegacyWorkLinks();
-    bindResumeChecks();
     console.info('[HANI OS] v2.9.72 Stability + Sidebar Polish ready');
   }
 
