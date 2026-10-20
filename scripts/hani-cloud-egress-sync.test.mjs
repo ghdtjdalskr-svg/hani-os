@@ -40,7 +40,7 @@ assert.equal(canUseCache("poll",{revision:7},baseline,cache,"u"),false,"poll pat
 const cycle=source.slice(source.indexOf("async function cloudSyncCycle"),source.indexOf("function cloudBindLifecycle"));
 assert.ok(cycle.indexOf("await cloudFetchMeta()")<cycle.indexOf("await cloudReadRow()"),"metadata gate precedes full-state read");
 assert.ok(cycle.includes("cloudIsLifecycleCheck(reason)"),"cycle uses the shared lifecycle gate");
-assert.match(cycle,/localClean=!\/\^view-\/\.test\(reason\)\|\|/,"view re-check still syncs when this device has unsynced changes");
+assert.match(cycle,/localClean=\(await cloudStateHash\(cloudComparableState\(state\)\)\)===String\(meta.lastSyncedHash\|\|""\)/,"all lifecycle checks still sync when this device has unsynced changes");
 assert.match(cycle,/cloudCanUseVerifiedRemote\(reason,remoteMeta,cloudMeta\(\),cache,cloudUser\?\.id\)/,"save path is gated by the verified-remote helper");
 const push=source.slice(source.indexOf("async function cloudPushLocalRow"),source.indexOf("function cloudSyncDecision"));
 const pushUpdate=push.match(/\.update\([^\n]*?\.select\("([^"]*)"\)/);

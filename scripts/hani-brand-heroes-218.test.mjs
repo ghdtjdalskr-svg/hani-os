@@ -6,8 +6,8 @@ import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 const root=path.resolve(import.meta.dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const main=read('hani-main.js'),ui=read('hani-ui-v02992.js'),html=read('index.html');
-// Runtime/cache versions were advanced by the approved 218 release, after fix-218.
-const released=f=>execFileSync(process.env.HANI_GIT||'git',['show','974fa64:'+f],{cwd:root,encoding:'utf8',maxBuffer:32*1024*1024});
+// Runtime/cache versions follow the integrated origin/main release.
+const released=f=>execFileSync(process.env.HANI_GIT||'git',['show','origin/main:'+f],{cwd:root,encoding:'utf8',maxBuffer:32*1024*1024});
 const baseline=f=>process.env.HANI_FIX218_BASELINE?fs.readFileSync(path.join(process.env.HANI_FIX218_BASELINE,path.basename(f)),'utf8'):execFileSync(process.env.HANI_GIT||'git',['show','42aa394:'+f],{cwd:root,encoding:'utf8',maxBuffer:32*1024*1024});
 test('canonical company names and legacy search aliases resolve to unchanged routes',()=>{
   const ctx=vm.createContext({});

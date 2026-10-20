@@ -1,6 +1,7 @@
 // node scripts/hani-theme-white-215.test.mjs [<playwright index.mjs> <browser exe>]
 // Only disposable browser storage is used; external requests are blocked.
 import assert from 'node:assert/strict';
+import {assertEgressGate} from './hani-egress-gate-expectations.mjs';
 import fs from 'node:fs';
 import {cacheRefs} from './hani-216-cache-expectations.mjs';
 import path from 'node:path';
@@ -32,16 +33,17 @@ assert.equal(writes.length,0);
 ctx.applySignatureFinish('pure-white',true);assert.deepEqual(writes,[['hani_os_signature_finish_v1','pure-white']]);assert.match(status.textContent,/Pure White/);
 ctx.applySignatureFinish('unknown',false);assert.equal(ctx.document.documentElement.dataset.finish,'porcelain-cream');
 const git=process.env.HANI_GIT_PATH||'git';
-const base=f=>execFileSync(git,['show','50cdb270ebf29f48daf9e3c1204f75efaae1adc5:'+f],{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024});
+const base=f=>execFileSync(git,['show','origin/main:'+f],{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024});
 const oldCss=base('hani-design-system.css');
 const cream=s=>[...s.matchAll(/([^{}]+)\{([^{}]+)\}/g)].filter(m=>m[1].includes('.login-design-choice[data-design="porcelain-cream"]')).map(m=>m[0].trim());
 assert.deepEqual(cream(css),cream(oldCss),'both original Porcelain palettes byte-identical');
 const oldMain=base('hani-main.js');
-assert.equal(extract(main,'applySignatureFinish'),extract(oldMain.replace('const names={"porcelain-cream":"Porcelain Cream",','const names={"porcelain-cream":"Porcelain Cream","pure-white":"Pure White",').replace('"alpine-blue":"#d6e6f3"}[finish]','"alpine-blue":"#d6e6f3","pure-white":"#f4f5f8"}[finish]'),'applySignatureFinish'),'canonical Finish owner preserves storage behavior');
+assert.equal(extract(main,'applySignatureFinish'),extract(oldMain,'applySignatureFinish'),'canonical Finish owner preserves storage behavior');
 const storageExpressions=s=>s.match(/\b(?:commit|save|writeProtectedState|localStorage\.(?:setItem|removeItem|clear))\([^)]*\)/g);
 assert.deepEqual(storageExpressions(main),storageExpressions(oldMain),'all storage/write expressions preserved across integrated features');
-for(const name of ['initLoginGate','loginGateEnterApp','loginGateResumeSession','commit','save'])assert.equal(extract(main,name),extract(oldMain,name),name+' canonical auth/storage owner preserved');
-assert.deepEqual(cacheRefs(html),cacheRefs(execFileSync(git,['show','974fa64df67a3c0060bdf0eda951aafeaf5a9b11:index.html'],{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024})),'remote-219 preserves every v218 URL/cache pair');
+assertEgressGate(extract(main,'loginGateEnterApp'),extract(oldMain,'loginGateEnterApp'));
+for(const name of ['initLoginGate','loginGateResumeSession','commit','save'])assert.equal(extract(main,name),extract(oldMain,name),name+' canonical auth/storage owner preserved');
+assert.deepEqual(cacheRefs(html),cacheRefs(execFileSync(git,['show','origin/main:index.html'],{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024})),'every URL/cache pair matches the integrated origin/main release');
 console.log('PASS finish list, token completeness, actual apply/fallback/save, Porcelain and storage/version/cache preservation');
 if(!process.argv[2])process.exit(0);
 const {chromium}=await import(pathToFileURL(process.argv[2]).href);
