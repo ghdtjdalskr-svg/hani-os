@@ -25,7 +25,7 @@ function fixture({local={books:[{id:"local",unknown:{kept:true}}]},remote={books
     state:clone(local),cloudClient:{},cloudUser:{id:"owner"},cloudChoicePreview:null,
     cloudRecoveryMode:false,loadRecovery:{active:false},importSyncHold:false,lastLoadError:"held",
     cloudComparisonEpoch:0,cloudSyncBusy:false,cloudSyncPending:false,cloudApplyingRemote:false,cloudAutoSyncReady:false,
-    cloudNetworkRetryPending:false,cloudVerifiedRemote:null,cloudRuntime:{},
+    cloudOutage:{active:false},cloudLifecycleCheck:{at:0,owner:'',client:null},cloudNoteReadFailure:()=>false,cloudNetworkRetryPending:false,cloudVerifiedRemote:null,cloudRuntime:{},
     STORAGE_KEY:"protected",CLOUD_META_KEY:"meta",CLOUD_SAFETY_KEY:"safety",CLOUD_SYNC_ENGINE:5,CLOUD_HASH_SCHEMA:4,
     cloudLoadJson:(key,fallback)=>storage.has(key)?JSON.parse(storage.get(key)):fallback,
     cloudSaveJson:(key,value)=>{if(ctx.metaFailure)return false;storage.set(key,JSON.stringify(value));return true},

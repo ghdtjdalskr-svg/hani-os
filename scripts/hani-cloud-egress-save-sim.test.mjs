@@ -29,7 +29,7 @@ const fns=[...names,...optional.filter(n=>source.includes(`function ${n}(`))].ma
 const hasCache=source.includes("let cloudVerifiedRemote=");
 
 const ls=new Map();
-const sandbox={console,structuredClone,TextEncoder,crypto:globalThis.crypto,Promise,Date,JSON,Map,Set,Number,String,Array,Object,Math,Error,Uint8Array,
+const sandbox={cloudLifecycleCheck:{at:0,owner:'',client:null},cloudOutage:{active:false},cloudNoteReadFailure:()=>false,console,structuredClone,TextEncoder,crypto:globalThis.crypto,Promise,Date,JSON,Map,Set,Number,String,Array,Object,Math,Error,Uint8Array,
   localStorage:{getItem:k=>ls.has(k)?ls.get(k):null,setItem:(k,v)=>ls.set(k,String(v)),removeItem:k=>ls.delete(k)},
   document:{visibilityState:"visible"},navigator:{platform:"Sim"},setInterval:()=>1,clearInterval:()=>{},setTimeout:()=>1,clearTimeout:()=>{}};
 vm.createContext(sandbox);
@@ -60,7 +60,7 @@ function makeDb(){
   const pick=(row,cols)=>Object.fromEntries(cols.split(",").map(c=>[c,structuredClone(row[c])]));
   db.client={from(){
     const q={filters:{},op:"select",cols:"",payload:null};
-    const b={select(cols){q.cols=cols;return b},eq(k,v){q.filters[k]=v;return b},limit(){return b},
+    const b={select(cols){q.cols=cols;return b},eq(k,v){q.filters[k]=v;return b},limit(){return b},retry(){return b},
       update(p){q.op="update";q.payload=p;return b},
       then(res,rej){return Promise.resolve().then(()=>{
         let rows=[];

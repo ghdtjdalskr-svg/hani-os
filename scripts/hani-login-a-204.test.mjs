@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {assertEgressGate} from './hani-egress-gate-expectations.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
@@ -71,7 +72,7 @@ if(baseDir)assert.equal(main.replace(added,''),baseMain,'only canonical artwork 
 else {
   // An integrated baseline already owns these slots: compare the entire function.
   const integrated=baseMain.includes('// Persistent login artwork slots');
-  assert.equal(extract((integrated?main:main.replace(added,'')).replace(/\r\n/g,'\n'),'syncSeasonCollection').replace("  if(typeof window!=='undefined')window.HANI_CONTEXT_REMOTE_V1?.update();\n",''),extract(baseMain.replace(/\r\n/g,'\n'),'syncSeasonCollection'),'canonical artwork sync preserves baseline behavior alongside integrated features');
+  assert.equal(extract((integrated?main:main.replace(added,'')).replace(/\r\n/g,'\n'),'syncSeasonCollection'),extract(baseMain.replace(/\r\n/g,'\n'),'syncSeasonCollection'),'canonical artwork sync preserves baseline behavior alongside integrated features');
 }
 for(const file of ['hani-main.js','index.html']){
   const baseSource=baseline[file],lines=s=>s.match(/[^\n]*(?:\n|$)/g).filter(Boolean),old=new Map(),ambiguous=new Set();
@@ -93,7 +94,8 @@ for(const name of ['initLoginGate','loginGateEnterApp']){
       .replace('window.addEventListener("pageshow",event=>{if(event.persisted)lockLoginGate("다시 이용하려면 로그인해 주세요.")});','window.addEventListener("pageshow",event=>{if(event.persisted){const attempt=loginGateAttempt;void loginGateResumeSession().then(resumed=>{if(!resumed&&attempt===loginGateAttempt){cloudStopAutoSync();cloudUser=null;lockLoginGate("다시 이용하려면 로그인해 주세요.")}})}});');
     else expected=expected.replace('attempt=loginGateAttempt){','attempt=loginGateAttempt,silent=false){').replace('  loginGateStatus("Cloud 기록을 확인하고 있습니다.','  if(!silent)loginGateStatus("Cloud 기록을 확인하고 있습니다.');
   }
-  assert.equal(extract(source,name),expected,name+' only approved session policy delta');
+  if(name==='loginGateEnterApp')assertEgressGate(extract(source,name),expected);
+  else assert.equal(extract(source,name),expected,name+' only approved session policy delta');
 }
 for(const name of ['loginGateSubmit','loginGateForgotPassword','loginGateSaveRecoveryPassword','randomizeLoginCharacter','syncLoginThemeButtons','applySeasonTheme','applySignatureFinish','save','commit','writeProtectedState','removeProtectedState']){let expected=extract(baseMain.replace(/\r\n/g,'\n'),name);if(name==='applySignatureFinish'&&!expected.includes('"pure-white"'))expected=expected.replace('"porcelain-cream":"Porcelain Cream",','"porcelain-cream":"Porcelain Cream","pure-white":"Pure White",');assert.equal(extract(source,name),expected,name+' unchanged except approved Pure White name');}
 for(const name of ['VERSION','STORAGE_KEY','HANI_DISPLAY_VERSION']){
