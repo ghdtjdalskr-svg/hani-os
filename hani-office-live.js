@@ -7,9 +7,13 @@
       if(canon.contractVersion==='spatial-216-v1'&&canon.anchors.length===326&&art.contractVersion===canon.contractVersion&&canon.anchors.every(a=>art.anchors[a.id]))assets={canon,sprites,art};
     }catch(_){/* Production art and seats remain available without metadata. */}
   }
-  let actionTable=globalThis.HaniOfficeActions216||null;
+  function validActions(table,version){
+    return table?.schemaVersion===version&&Array.isArray(table.actions)&&table.actions.length>=98&&table.actions.length<=300&&table.actions.some(a=>a.id==='base-work')&&Array.isArray(table.families)&&Array.isArray(table.people)&&table.rules?.hinaBalance&&table.actions.every(a=>Array.isArray(a.participants)&&Array.isArray(a.places)&&Array.isArray(a.conditions?.timeWindows)&&Array.isArray(a.conditions.triggerIds)&&a.performance);
+  }
+  let actionTable=validActions(globalThis.HaniOfficeActions221,'office-actions-221-v1')?globalThis.HaniOfficeActions221:validActions(globalThis.HaniOfficeActions216,'office-actions-216-v1')?globalThis.HaniOfficeActions216:null;
   if(!actionTable&&typeof fetch==='function'){
-    try{const response=await fetch('./assets/data/office-actions-216.json');if(response.ok){const table=await response.json();if(table.schemaVersion==='office-actions-216-v1'&&table.actions.length===98)actionTable=table}}catch(_){/* Read-only base-work fallback. */}
+    try{const response=await fetch('./assets/data/office-actions-221.json');if(response.ok){const table=await response.json();if(validActions(table,'office-actions-221-v1'))actionTable=table}}catch(_){/* Try the released catalog next. */}
+    if(!actionTable)try{const response=await fetch('./assets/data/office-actions-216.json');if(response.ok){const table=await response.json();if(validActions(table,'office-actions-216-v1'))actionTable=table}}catch(_){/* Read-only base-work fallback. */}
   }
 /* Scene-only model: KST clock and rosters, never persisted. */
 (() => {
@@ -135,7 +139,8 @@
   // One canonical scheduler. Daily plans are projections, never queues to replay.
   // All mutable state is disposable memory; no life records or data triggers enter here.
   function createScheduler(table){
-    const actions=new Map(table.actions.filter(a=>a.automaticReady&&a.releaseTarget==='216'&&!a.manualPreviewOnlyIn216&&!a.conditions.triggerIds.length).map(a=>[a.id,a]));
+    const nightCatalog=table.schemaVersion==='office-actions-221-v1';
+    const actions=new Map(table.actions.filter(a=>a.automaticReady&&(a.releaseTarget==='216'||nightCatalog&&a.releaseTarget==='221')&&!a.manualPreviewOnlyIn216&&!a.conditions.triggerIds.length).map(a=>[a.id,a]));
     const persons=table.people.filter(p=>p.registration==='registered'&&eligible.some(e=>e.id===p.id)||p.id==='seongmin');
     const defaults=actions.get('base-work'),cache=new Map(),paths=new Map();
     const minute=t=>Number(t.slice(0,2))*60+Number(t.slice(3));
@@ -147,7 +152,15 @@
       const a=anchors.get(id),p=art?.anchors[id];if(!a||!p||a.runtimeAssignable===false||a.type==='core')return null;
       return {...(a.rendererSeat||{id:a.id,zone:'lounge'}),...p,anchor:id,posture:pose==='sit'?'sitting':'standing'};
     }
-    function targets(action,subject,day){
+    const lateWorkers=new Set(['seoyun','dohyun','mir','yuna','minji']);
+    const isLate=seconds=>seconds>=3600&&seconds<7*3600;
+    const isEvening=seconds=>seconds>=18*3600||seconds<3600;
+    const presentAt=(id,seconds)=>!isLate(seconds)||lateWorkers.has(id)||id==='seongmin';
+    function homeAt(person,seconds){
+      if(nightCatalog&&(isLate(seconds)||isEvening(seconds))&&['yuna','minji'].includes(person.id))return {floor:'1f',anchorId:person.id==='yuna'?'lobby-nw':'lobby-ne'};
+      return person.home;
+    }
+    function targets(action,subject,day,seconds=9*3600){
       const ids=subject?[subject]:action.participants;
       return ids.map(id=>{
         const person=persons.find(p=>p.id===id);if(!person||!action.participants.includes(id))return null;
@@ -155,55 +168,108 @@
         let place=action.places.find(p=>p.personId===id);
         if(!place&&action.participantSelector!=='explicit'&&action.places.length===action.participants.length)place=action.places[action.participants.indexOf(id)];
         if(!place){let places=action.places.filter(p=>!p.personId);
-          if(action.id==='base-walk')places=places.filter(p=>p.floor===person.home.floor);
+          if(action.id==='base-walk')places=places.filter(p=>p.floor===homeAt(person,seconds).floor);
           place=places[seed(day+'|'+action.id+'|'+id+'|place')%places.length];
         }
+        const home=homeAt(person,seconds);
+        if(action.targetResolution==='presence_home'||nightCatalog&&home!==person.home&&place?.anchorId===person.home.anchorId)place={anchorId:home.anchorId};
         // MIR's generic props are virtual; generic human movement stays at Station.
         if(id==='mir'&&action.layer===1)place={anchorId:person.home.anchorId};
         const pose=id==='mir'?'stand':action.poseByPerson?.[id]||action.actorOverrides?.[id]?.pose||action.performance.pose;
         const seat=place&&slot(place.anchorId,pose),anchor=seat&&anchors.get(seat.anchor);
         const owner=anchor?.rendererSeat?.owner;
         if(!seat||owner&&owner!==(id==='seongmin'?'chairman':id)||anchor.occupant&&anchor.occupant!==id)return null;
-        const outbound=path(person.home.anchorId,seat.anchor),inbound=path(seat.anchor,person.home.anchorId);
+        const outbound=path(home.anchorId,seat.anchor),inbound=path(seat.anchor,home.anchorId);
         if(!outbound.length||!inbound.length)return null;
-        return {id,home:person.home,seat,outbound,inbound};
+        return {id,home,seat,outbound,inbound};
       });
     }
-    function windows(action,weekday){if(action.conditions.days==='평일'&&!weekday)return [];return action.conditions.timeWindows.map(([a,b])=>[minute(a)*60,minute(b)*60])}
-    function plan(day,{chairmanPresent=false,presentIds=null}={}){
-      const allowed=persons.filter(p=>(p.id!=='seongmin'||chairmanPresent)&&(!presentIds||presentIds.includes(p.id))),present=new Set(allowed.map(p=>p.id));
-      const key=day+'|'+[...present].sort().join(','),old=cache.get(key);if(old)return old;
-      const weekday=![0,6].includes(new Date(day+'T00:00:00Z').getUTCDay()),events=[],opportunities=[];
+    function windows(action,weekday){
+      const c=action.conditions;if(c.days==='평일'&&!weekday||c.days==='주말'&&weekday)return [];
+      // Wrapped ranges use the matching KST calendar day: [22,24) + [0,02).
+      const ranges=(!weekday&&c.weekendTimeWindows||c.timeWindows).flatMap(([a,b])=>{const start=minute(a)*60,end=minute(b)*60;return start<end?[[start,end]]:start>end?[[0,end],[start,86400]]:[]}).filter(([a,b])=>b>a).sort((a,b)=>a[0]-b[0]);
+      return ranges.reduce((merged,range)=>{const last=merged.at(-1);if(last&&range[0]<=last[1])last[1]=Math.max(last[1],range[1]);else merged.push([...range]);return merged},[]);
+    }
+    function opportunitiesFor(day,allowed,includeCadence=true){
+      const present=new Set(allowed.map(p=>p.id)),weekday=![0,6].includes(new Date(day+'T00:00:00Z').getUTCDay()),opportunities=[];
       for(const family of table.families){
         const parent=family.parent;if(parent.conditions.triggerIds.length||parent.manualPreviewOnlyIn216)continue;
         const group=family.limits.scope==='scene',subjects=group?[null]:parent.participants.filter(id=>present.has(id));
+        if(family.limits.cadenceSeconds){
+          if(!includeCadence)continue;
+          // Floor microexpressions share the canonical opportunity/reservation path.
+          // One opportunity per floor regardless of roster size; no render catch-up.
+          const cadence=weekday?family.limits.cadenceSeconds:family.limits.weekendCadenceSeconds,base=day+'|'+family.id;
+          let n=0;
+          for(const [a,b] of windows(parent,weekday))for(let tick=a;tick<b;tick+=cadence){
+            const index=n++,start=tick+unit(base+'|'+index)*3,candidates=[];
+            for(const id of family.memberActionIds){const action=actions.get(id);if(!action)continue;
+              for(const subject of action.participants){const person=allowed.find(p=>p.id===subject);if(person&&presentAt(subject,start)&&homeAt(person,start).floor===family.limits.floor)candidates.push({subject,action})}
+            }
+            if(candidates.length){const offset=seed(base+'|variant|'+index)%candidates.length;opportunities.push({family,parent,...candidates[offset],candidates:[...candidates.slice(offset),...candidates.slice(0,offset)],start,base,n:index,group:false,windowEnd:b})}
+          }
+          continue;
+        }
         for(const subject of subjects){
           const base=day+'|'+family.sourceActionId+(subject?'|'+subject:'');
           // One daily family gate, not one gate per variant or render tick.
-          if(unit(base)>=family.limits.probabilityPerDay)continue;
+          if(unit(base)>=family.limits.probabilityPerDay*(weekday?1:table.rules.weekendFrequencyScale??1))continue;
           const ranges=windows(parent,weekday);if(!ranges.length)continue;
           for(let n=0;n<family.limits.maxPerDay;n++){
             const timeSeed=family.limits.cooldownSeconds>=86400?family.id+'|'+subject:base;
-            const range=ranges[n%ranges.length],start=range[0]+Math.floor(unit(timeSeed+'|time|'+n)*(range[1]-range[0]));
+            let range=ranges[n%ranges.length];
+            if(nightCatalog){let pick=unit(base+'|window|'+n)*ranges.reduce((sum,[a,b])=>sum+b-a,0);range=ranges.find(([a,b])=>(pick-=b-a)<0)||ranges.at(-1)}
+            const start=range[0]+Math.floor(unit(timeSeed+'|time|'+n)*(range[1]-range[0]));
             const id=family.memberActionIds[seed(base+'|variant|'+n)%family.memberActionIds.length],action=actions.get(id);
             if(action)opportunities.push({family,parent,subject,action,start,base,n,group,windowEnd:range[1]});
           }
         }
       }
+      return opportunities;
+    }
+    function plan(day,{chairmanPresent=false,presentIds=null}={}){
+      const allowed=persons.filter(p=>(p.id!=='seongmin'||chairmanPresent)&&(!presentIds||presentIds.includes(p.id))),present=new Set(allowed.map(p=>p.id));
+      const key=day+'|'+[...present].sort().join(','),old=cache.get(key);if(old)return old;
+      const weekday=![0,6].includes(new Date(day+'T00:00:00Z').getUTCDay()),events=[],opportunities=opportunitiesFor(day,allowed);
       opportunities.sort((a,b)=>a.start-b.start||b.action.layer-a.action.layer||a.base.localeCompare(b.base));
       const lastNonWork=new Map(),lastMove=new Map(),counts=new Map(),lastFamily=new Map();let groups=0,teacherCompletedAt=[];
+      if(nightCatalog){
+        // Conservative previous-day envelope keeps cooldowns across midnight without
+        // replay, persistence, recursive plans, or dependence on which day was viewed.
+        // A rejected prior opportunity can only reduce early-day exposure, never add it.
+        const previousDay=new Date(Date.parse(day+'T00:00:00Z')-86400000).toISOString().slice(0,10);
+        for(const o of opportunitiesFor(previousDay,allowed,false)){
+          const chosen=targets(o.action,o.subject,previousDay,o.start);if(!chosen.length||chosen.some(t=>!t))continue;
+          const travel=chosen.reduce((sum,t)=>sum+[t.outbound,t.inbound].reduce((total,path)=>total+path.slice(1).reduce((seconds,to,i)=>{const from=path[i];return seconds+Math.max(.1,from.floor===to.floor?Math.hypot(to.x-from.x,to.y-from.y)/canon.movement.speedPxPerSecond:1.6)},0),0),0);
+          const end=o.start+o.family.durationCeilingSeconds+travel-86400,counter=o.family.id+'|'+(o.subject||'scene');
+          lastFamily.set(counter,Math.max(lastFamily.get(counter)??-Infinity,o.start-86400));
+          for(const t of chosen){
+            if(o.action.personalNonWork)lastNonWork.set(t.id,Math.max(lastNonWork.get(t.id)??-Infinity,end));
+            if(anchors.get(t.seat.anchor).floor!==t.home.floor)lastMove.set(t.id,Math.max(lastMove.get(t.id)??-Infinity,end));
+          }
+        }
+      }
       function available(targets,start,end,signature=false,group=false){
-        if(!targets.length||targets.some(t=>!t||!present.has(t.id)))return false;
+        if(!targets.length||targets.some(t=>!t||!present.has(t.id)||!presentAt(t.id,start)||!presentAt(t.id,end-.001)))return false;
+        if(nightCatalog){
+          // Reject excursions spanning a departure or a lounge/home switch.
+          if(targets.some(t=>homeAt(persons.find(p=>p.id===t.id),start).anchorId!==homeAt(persons.find(p=>p.id===t.id),end-.001).anchorId))return false;
+          if(targets.some(t=>persons.some(p=>present.has(p.id)&&presentAt(p.id,start)&&p.id!==t.id&&homeAt(p,start)!==p.home&&homeAt(p,start).anchorId===t.seat.anchor&&!targets.some(q=>q.id===p.id))))return false;
+        }
         const ids=new Set(targets.map(t=>t.id)),spots=targets.map(t=>t.seat.anchor);
         if(new Set(spots).size!==spots.length)return false;
         const resources=new Set(targets.flatMap(t=>[...t.outbound,...t.inbound].map(a=>a.id)));
         return !events.some(e=>overlap(e,{start,end})&&(e.people.some(t=>ids.has(t.id))||e.resources.some(id=>resources.has(id))||signature&&e.layer===2&&e.floors.some(f=>targets.some(t=>anchors.get(t.seat.anchor).floor===f))||group&&e.layer===3&&e.floors.some(f=>targets.some(t=>anchors.get(t.seat.anchor).floor===f))));
       }
       for(const o of opportunities){
-        const {family,parent,subject,action,start,group}=o,counter=family.id+'|'+(subject||'scene');
+        if(o.candidates){
+          const chosen=o.candidates.find(c=>available(targets(c.action,c.subject,day,o.start),o.start,o.start+o.family.durationCeilingSeconds));
+          if(!chosen)continue;Object.assign(o,chosen);
+        }
+        const {family,parent,subject,action,start,group}=o,counter=family.id+'|'+(family.limits.cadenceSeconds?'floor':subject||'scene');
         if((counts.get(counter)||0)>=family.limits.maxPerDay||start-(lastFamily.get(counter)??-Infinity)<family.limits.cooldownSeconds||group&&groups>=table.rules.groupGlobalDailyMax)continue;
         const actionWindow=windows(action,weekday).find(([a,b])=>start>=a&&start<b);if(!actionWindow)continue;
-        const parentTargets=targets(parent,subject,day),chosen=targets(action,subject,day);
+        const parentTargets=targets(parent,subject,day,start),chosen=targets(action,subject,day,start);
         if(!available(parentTargets,start,start+family.durationCeilingSeconds,parent.layer===2,group)||!chosen.length||chosen.some(t=>!t))continue;
         const changed=chosen.filter(t=>anchors.get(t.seat.anchor).floor!==t.home.floor);
         if(changed.some(t=>start-(lastMove.get(t.id)??-Infinity)<table.rules.floorChanging.initialMinIntervalSeconds))continue;
@@ -243,9 +309,8 @@
       const kst=new Date(new Date(now).getTime()+32400000),day=kst.toISOString().slice(0,10),seconds=kst.getUTCHours()*3600+kst.getUTCMinutes()*60+kst.getUTCSeconds()+kst.getUTCMilliseconds()/1000;
       const events=plan(day,options),cancelled=options.cancelled||new Set(),blocked=new Set(options.summoned||[]);
       // Presence is a base scene state on every day, independent of weekday action windows.
-      // Reuse base-work; do not enable disabled night actions or spend extra family budgets.
-      const late=seconds>=3600&&seconds<7*3600,evening=seconds>=18*3600||seconds<3600;
-      const lateWorkers=new Set(['seoyun','dohyun','mir','yuna','minji']);
+      // Reuse base-work when idle; disabled rows stay disabled.
+      const late=isLate(seconds),evening=isEvening(seconds);
       const presenceNote=late?'심야에도 함께해요 · 개발실과 라운지에 직원들이 남아 있어요':'';
       const completedTeachers=events.filter(e=>e.performEnd<=seconds&&!cancelled.has(e.id)&&table.rules.hinaBalance.teacherActionIds.includes(e.actionId)).length;
       const selfiesBefore=events.filter(e=>e.start<seconds&&!cancelled.has(e.id)&&table.rules.hinaBalance.selfieActionIds.includes(e.actionId));
@@ -254,7 +319,8 @@
         const event=active.find(e=>e.people.some(t=>t.id===p.id)),t=event?.people.find(t=>t.id===p.id);
         if(late&&!lateWorkers.has(p.id)&&p.id!=='seongmin')return [];
         const action=actions.get(event?.actionId)||defaults;if(!action)return [];
-        let seat=slot(p.home.anchorId,p.id==='mir'?'stand':'sit'),position=null,walking=false,floor=p.home.floor;
+        const home=homeAt(p,seconds);
+        let seat=slot(home.anchorId,p.id==='mir'?'stand':'sit'),position=null,walking=false,floor=home.floor;
         if(t){
           const leg=options.reducedMotion?null:[...t.out,...t.back].find(l=>l.start<=seconds&&seconds<l.end);
           const atTarget=options.reducedMotion||seconds>= (t.out.at(-1)?.end??event.start)&&seconds<(t.back[0]?.start??event.end);
@@ -263,7 +329,7 @@
         }
         const performing=event&&(options.reducedMotion||seconds>=event.performStart&&seconds<event.performEnd);
         const idleLine=p.id==='mir'||p.id==='seongmin'?speech(defaults,p.id,day):(late||evening&&lateWorkers.has(p.id))?'야근 중':evening?'퇴근 준비 중':speech(defaults,p.id,day);
-        return [{id:p.id,home:p.home.floor,floor,seat,position,walking,pose:walking?(Math.floor(seconds*5)%2?'walk-a':'walk-b'):seat.posture,activity:event?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):'work',actionId:performing?action.id:'base-work',eventId:event?.id,line:performing?speech(action,p.id,day):event?'이동 중':idleLine,emoji:performing?action.performance.emoji:'',personalNonWork:action.personalNonWork}];
+        return [{id:p.id,home:p.home.floor,floor,seat,position,walking,pose:walking?(Math.floor(seconds*5)%2?'walk-a':'walk-b'):seat.posture,activity:event?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):'work',actionId:performing?action.id:'base-work',eventId:event?.id,line:performing?speech(action,p.id,day):event?'이동 중':idleLine,emoji:performing?(action.actorOverrides?.[p.id]?.emoji||action.performance.emoji):'',personalNonWork:action.personalNonWork}];
       });
       // Lounge residents are persistent presence, not newly scheduled actions.
       // Existing events own their seats first; their frequency/cooldown budgets stay unchanged.
@@ -271,7 +337,8 @@
         const occupied=new Set(entries.map(p=>p.seat.anchor));
         for(const id of ['yuna','minji']){
           const p=entries.find(p=>p.id===id);if(!p||p.eventId)continue;
-          const anchor=['lobby-nw','lobby-ne','lobby-sw','lobby-se'].find(a=>!occupied.has(a));
+          const home=homeAt(persons.find(person=>person.id===id),seconds);
+          const anchor=nightCatalog?home.anchorId:['lobby-nw','lobby-ne','lobby-sw','lobby-se'].find(a=>!occupied.has(a));
           const seat=anchor&&slot(anchor);if(!seat)continue;
           occupied.delete(p.seat.anchor);occupied.add(anchor);
           Object.assign(p,{floor:anchors.get(anchor).floor,seat,pose:seat.posture,activity:'rest',line:late?'라운지에서 조용히 쉬는 중':'라운지에서 야근 이야기 중'});
@@ -279,7 +346,7 @@
       }
       return {day,minutes:seconds/60,seconds,entries,events:active,presenceNote};
     }
-    return Object.freeze({plan,snapshot,seed,slot,actions,identity:table.identity});
+    return Object.freeze({plan,snapshot,seed,slot,actions,windows,presentAt,identity:table.identity});
   }
   const scheduler=canon&&actionTable?createScheduler(actionTable):null;
   function snapshot(now=new Date(),options={}){

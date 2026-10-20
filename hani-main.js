@@ -7020,7 +7020,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.221";
+const HANI_DISPLAY_VERSION="2.9.222";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
@@ -7887,16 +7887,33 @@ function buildBackupPayload(value,exportedAt,mediaState=null){
 }
 function driveVaultContext(){
   return {owner:cloudUser?.id||"",epoch:cloudOwnerVerificationEpoch,
+    photoReady:!!(cloudUser?.id&&!loadRecovery.active&&!cloudRecoveryMode&&
+      !importSyncHold&&!cloudSyncBusy&&!cloudApplyingRemote),
     ready:!!(cloudUser?.id&&cloudAutoSyncReady&&!loadRecovery.active&&!cloudRecoveryMode&&
       !importSyncHold&&!cloudSyncBusy&&!cloudApplyingRemote)};
 }
 window.HANI_DRIVE_BACKUP=Object.freeze({
   context:driveVaultContext,
-  async build(ticket){
+  photos(ticket){
+    const original=state,before=JSON.stringify(state);
+    const guard=()=>{
+      const current=driveVaultContext();
+      if(!current.photoReady||current.owner!==ticket.owner||current.epoch!==ticket.epoch||
+        state!==original||JSON.stringify(state)!==before)throw Error("OWNER");
+    };
+    guard();return {state:JSON.parse(before),guard};
+  },
+  async build(ticket,{localOnly=false}={}){
     const original=state,before=JSON.stringify(state),context=driveVaultContext();
     if(!context.ready||context.owner!==ticket.owner||context.epoch!==ticket.epoch)throw Error("OWNER");
     const snapshot=JSON.parse(before);
-    const embedded=mediaHasRefs(snapshot)?await mediaBackupState(snapshot,{silent:true}):snapshot;
+    let embedded;
+    if(localOnly){
+      embedded=JSON.parse(before);
+      for(const [kind,field] of [["books","cover"],["movies","poster"]])for(const row of embedded[kind]||[]){
+        if(row?.[field+"Ref"]&&!row[field])row[field]=await window.HANI_MEDIA?.getLocal(row[field+"Ref"])||"";
+      }
+    }else embedded=mediaHasRefs(snapshot)?await mediaBackupState(snapshot,{silent:true}):snapshot;
     if(!embedded||mediaHasRefs(embedded))throw Error("INCOMPLETE");
     const after=driveVaultContext();
     if(state!==original||JSON.stringify(state)!==before||!after.ready||

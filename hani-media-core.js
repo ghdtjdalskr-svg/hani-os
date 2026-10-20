@@ -50,7 +50,7 @@
       }catch(_){finish(null)}
     });
   }
-  async function read(ref,owner){
+  async function read(ref,owner,notify=true){
     try{
       if(!owner||!isRef(ref))return null;
       const key=JSON.stringify([owner,ref]),record=await transaction("readonly",key);
@@ -58,8 +58,8 @@
          typeof record.dataUrl!=="string"||record.bytes!==bytes(record.dataUrl)||
          record.mime!==record.dataUrl.match(/^data:([^;,]+)/)?.[1]||
          await digest(record.dataUrl)!==ref)return null;
-      const changed=cache.get(key)!==record.dataUrl;cache.set(key,record.dataUrl);
-      if(changed&&account()===owner&&root.dispatchEvent&&root.Event&&notifyTimer===null){
+      const changed=cache.get(key)!==record.dataUrl;if(notify)cache.set(key,record.dataUrl);
+      if(notify&&changed&&account()===owner&&root.dispatchEvent&&root.Event&&notifyTimer===null){
         notifyTimer=setTimeout(()=>{notifyTimer=null;try{root.dispatchEvent(new root.Event("hani-media-ready"))}catch(_){}},0);
       }
       return record.dataUrl;
@@ -72,6 +72,11 @@
       if(!pending.has(key))pending.set(key,read(ref,owner).finally(()=>pending.delete(key)));
       const value=await pending.get(key);return account()===owner?value:null;
     }catch(_){return null}
+  }
+  // Backup-only read: no renderer notification (which could trigger Cloud hydration).
+  async function getLocal(ref){
+    const owner=account();if(!owner||!isRef(ref))return null;
+    const value=await read(ref,owner,false);return account()===owner?value:null;
   }
   async function put(ref,dataUrl){
     try{
@@ -311,6 +316,6 @@
       return {ok:true,changes,conflicts};
     }catch(error){return {ok:false,changes:[],conflicts:[],error:error?.message||"이미지 검증 실패"}}
   }
-  root.HANI_MEDIA=Object.freeze({digest,isRef,resolve,get,put,has,hasRefs,reembed,dryRunReport,setAccountProvider,
+  root.HANI_MEDIA=Object.freeze({digest,isRef,resolve,get,getLocal,put,has,hasRefs,reembed,dryRunReport,setAccountProvider,
     setCloudProvider,cloudList,cloudPut,cloudGet,prepareB,verifyRefs,prepareC});
 })(window);
