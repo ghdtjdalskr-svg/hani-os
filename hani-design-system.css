@@ -1377,8 +1377,8 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 }
 @media screen and (max-width:900px){
   #app :is(.field,.sh>*,.task-input>*,.gdrive-search>*){min-width:0;max-width:100%}
-  #app.app :is(button,a[href],summary,[role="button"],input,select,textarea){min-height:40px!important}
-  #app.app :is(button,a[href],[role="button"]){min-width:40px!important}
+  #app.app :is(button,a[href],summary,[role="button"],input,select,textarea):not(.hani-office-actor){min-height:40px!important}
+  #app.app :is(button,a[href],[role="button"]):not(.hani-office-actor){min-width:40px!important}
   #app a[href]{display:inline-flex;align-items:center}
   #app :is(input[type="checkbox"],input[type="radio"]){width:40px!important;height:40px!important;flex-shrink:0}
   #app .date-flex-control{grid-template-columns:minmax(0,1fr) minmax(40px,max-content)}

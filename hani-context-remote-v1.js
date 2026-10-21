@@ -110,12 +110,15 @@
   const countFrom=selector=>{const text=visibleTarget(selector)?.textContent||"";const match=text.replaceAll(",","").match(/\d+/);return match?Number(match[0]):0};
   const season=()=>["spring","summer","autumn","winter"].includes(document.documentElement.dataset.season)?document.documentElement.dataset.season:"spring";
   const greetings={spring:["히나 · 🌸","햇살 좋은 날엔, 새로운 한 페이지부터 시작해요."],summer:["나은 · 🧊","물 한 잔, 시원한 숨 한 번. 오늘도 무리하지 말아요."],autumn:["하루 · ☕","따뜻한 커피랑 책 한 페이지, 오늘은 천천히 즐겨봐."],winter:["하니 · 🧣","따뜻한 머그 옆에서, 오늘의 기록을 함께 마무리하자."]};
+  // Scene focal points from the approved bright-card mock; all sources stay cover.
+  const mediaFocal={reading:"57% 22%",investment:"51% 24%",exercise:"53% 32%",geminiReports:"63% 38%"};
   const updateBanner=(c,title)=>{
     const hero=window.HANI_MAIN_CHARACTER_BANNER?.get(viewId()),s=season();
     // Resolve only the current image. Reuse the banner's source, speaker and quote.
     const seasonal=window.HANI_MAIN_CHARACTER_BANNER?.get("home");
     const src=hero?.sceneImage||seasonal?.sceneImage||$("#sidebarSeasonArtwork")?.getAttribute("src"),img=$(".hani-remote-media-image",rail);
     if(src&&img.getAttribute("src")!==src)img.src=src;
+    img.style.objectPosition=mediaFocal[viewId()]||"50% 30%";
     img.alt=hero?.sceneAlt||seasonal?.sceneAlt||"HANI OS 계절 아트";
     $("[data-remote-media-title]",rail).textContent=title;
     $("[data-remote-media-staff]",rail).textContent=`담당 직원 · ${hero?.speaker||c.agent||"HANI"}`;
