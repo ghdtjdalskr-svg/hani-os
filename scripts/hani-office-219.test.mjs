@@ -69,7 +69,9 @@ for(const time of [...times,'02:00']){
  if(time==='02:00')assert.deepEqual(people.map(p=>p.id).sort(),['dohyun','minji','mir','seoyun','yuna']);
  if(['10:00','15:40'].includes(time)){
   const prev=baseline.snapshot(instant);
-  assert.deepEqual(plain(s.floors.map(f=>f.visible)),plain(prev.floors.map(f=>f.visible)));
+  // Scheduled events are byte-identical; idle staff may re-voice/stand/stroll on their own floor (lively layer).
+  const core=floors=>plain(floors.map(f=>f.people.map(p=>p.idle===false||p.eventId?{...p,idle:undefined,stroll:undefined}:{id:p.id,floor:p.floor,actionId:p.actionId,activity:p.activity})));
+  assert.deepEqual(core(s.floors),core(prev.floors));
  }
  report.static.push(`${time}: ${people.length} staff, unique seats, speech present; night presence retained`);
 }
