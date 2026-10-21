@@ -1014,6 +1014,8 @@ let cloudAuthSubscription=null;
 let loginGateUnlocked=false;
 let loginGateSession=false,loginGateBusy=false,loginGateAttempt=0;
 let loginGateInitialized=false;
+// Offline entry is a local capability, never a Supabase session. Proof lives in the existing Cloud metadata.
+let offlineEntry={active:false,owner:"",epoch:0,unreachable:false,probe:null,proofWrite:Promise.resolve()};
 const loginGateCloudSlots=[];
 let loginGateCharacterKey="";
 // Auth callback은 showView()가 hash를 정리하기 전에 반드시 보존한다.
@@ -2226,6 +2228,137 @@ function loginGateCookiePath(){return location.pathname.startsWith("/hani-os/")?
 function loginGateCookieOwner(){
   try{return decodeURIComponent(document.cookie.split(";").map(v=>v.trim()).find(v=>v.startsWith("hani_login_session="))?.slice("hani_login_session=".length)||"")}catch(_){return ""}
 }
+function offlineEntryProof(){
+  const meta=JSON.parse(localStorage.getItem(CLOUD_META_KEY)||"{}");
+  const proof=meta.offlineOwner;
+  if(!proof||proof.sourceOwnerVerified!==true||proof.sourceOwnerId!==proof.userId||
+    proof.projectRef!==new URL(cloudConfig().url).hostname||proof.datasetId!=="operational-life-state"||
+    typeof proof.userId!=="string"||!proof.userId||!/^[a-f0-9]{64}$/.test(proof.localHash)||!Number.isFinite(Date.parse(proof.verifiedAt)))return null;
+  return proof;
+}
+async function offlineEntryLocal(){
+  const epoch=offlineEntry.epoch,attempt=loginGateAttempt,owner=cloudUser?.id,client=cloudClient;
+  assertCloudSourceReady();
+  if(cloudRecoveryMode||cloudHasAuthCallback()||cloudChoicePreview||cloudApplyingRemote||cloudSyncBusy)return null;
+  const proof=offlineEntryProof();if(!proof)return null;
+  const cookie=loginGateCookieOwner();
+  if((cookie&&cookie!==proof.userId)||(cloudUser?.id&&cloudUser.id!==proof.userId))return null;
+  const cfg=cloudConfig(),authKey="sb-"+new URL(cfg.url).hostname.split(".")[0]+"-auth-token";
+  const authRaw=localStorage.getItem(authKey),auth=JSON.parse(authRaw||"null");
+  if(auth?.user?.id&&auth.user.id!==proof.userId)return null;
+  const raw=localStorage.getItem(STORAGE_KEY);if(!raw)return null;
+  const local=JSON.parse(raw);validateStoredRecords(local);
+  const normalized=normalizeState(local);
+  if(!cloudHasMeaningfulLocalData(local)||!cloudHasMeaningfulLocalData(state))return null;
+  const localHash=await cloudStateHash(normalized);
+  assertCloudSourceReady();
+  if(epoch!==offlineEntry.epoch||attempt!==loginGateAttempt||cloudUser?.id!==owner||cloudClient!==client||
+    cloudRecoveryMode||cloudChoicePreview||cloudApplyingRemote||cloudSyncBusy||loginGateCookieOwner()!==cookie||localStorage.getItem(authKey)!==authRaw||
+    localStorage.getItem(STORAGE_KEY)!==raw||!cloudSame(cloudSyncFingerprintState(normalized),cloudSyncFingerprintState(state))||localHash!==proof.localHash||
+    JSON.stringify(offlineEntryProof())!==JSON.stringify(proof))return null;
+  return {proof,raw,local};
+}
+function offlineEntrySaveProof(proof,pending){
+  const meta=JSON.parse(localStorage.getItem(CLOUD_META_KEY)||"{}");
+  const value={...meta,offlineOwner:proof,offlinePending:pending};
+  if(!cloudSaveJson(CLOUD_META_KEY,value)||localStorage.getItem(CLOUD_META_KEY)!==JSON.stringify(value))throw Error("이 기기 소유권 증거를 확인하지 못했습니다.");
+}
+async function offlineRememberOwner(){
+  // Reuse the canonical server-user + owned-row + source-equality verifier. Never infer an owner from email/cache.
+  const binding=dataHubBinding(),owner=cloudUser?.id,client=cloudClient,epoch=offlineEntry.epoch;
+  if(offlineEntry.active||!loginGateUnlocked||!binding||binding.userId!==owner||!cloudAutoSyncReady)return;
+  try{
+    assertCloudSourceReady();const raw=localStorage.getItem(STORAGE_KEY);if(!raw)return;
+    const local=JSON.parse(raw);validateStoredRecords(local);
+    if(!cloudHasMeaningfulLocalData(local))return;
+    const normalized=normalizeState(local),localHash=await cloudStateHash(normalized);
+    if(epoch!==offlineEntry.epoch||client!==cloudClient||owner!==cloudUser?.id||!cloudSame(binding,dataHubBinding())||
+      localStorage.getItem(STORAGE_KEY)!==raw||!cloudSame(cloudSyncFingerprintState(normalized),cloudSyncFingerprintState(state)))return;
+    assertCloudSourceReady();
+    offlineEntrySaveProof({...binding,verifiedAt:new Date().toISOString(),localHash},false);
+  }catch(_){/* No proof means no offline entry. Never affect the protected state or normal sync. */}
+}
+function offlineEntryQueueProof(){
+  if(!offlineEntry.active)return;
+  const epoch=offlineEntry.epoch,owner=offlineEntry.owner,raw=localStorage.getItem(STORAGE_KEY);
+  offlineEntry.proofWrite=offlineEntry.proofWrite.catch(()=>{}).then(async()=>{
+    assertCloudSourceReady();const proof=offlineEntryProof();
+    if(!proof||proof.userId!==owner||epoch!==offlineEntry.epoch||localStorage.getItem(STORAGE_KEY)!==raw)return;
+    const local=JSON.parse(raw);validateStoredRecords(local);
+    const normalized=normalizeState(local),localHash=await cloudStateHash(normalized);
+    if(epoch!==offlineEntry.epoch||localStorage.getItem(STORAGE_KEY)!==raw||!cloudSame(cloudSyncFingerprintState(normalized),cloudSyncFingerprintState(state)))return;
+    assertCloudSourceReady();offlineEntrySaveProof({...proof,localHash},true);
+  }).catch(()=>{loginGateStatus("로컬 저장은 유지됩니다. 다시 열기 전 소유권 확인이 필요합니다.","warn")});
+}
+function offlineEntryRender(){
+  const badge=$("offlineEntryBadge");if(badge)badge.hidden=!offlineEntry.active;
+  const button=$("loginGateOffline");if(button)button.hidden=true;
+}
+async function offlineEntryCheck(){
+  if($("loginGateOffline"))$("loginGateOffline").hidden=true;
+  if(offlineEntry.active||loginGateUnlocked||cloudRecoveryMode||cloudHasAuthCallback())return false;
+  if(offlineEntry.probe)return offlineEntry.probe;
+  const epoch=offlineEntry.epoch,attempt=loginGateAttempt;
+  offlineEntry.probe=(async()=>{
+    let candidate;try{candidate=await offlineEntryLocal()}catch(_){return false}
+    if(!candidate)return false;
+    const cfg=cloudConfig(),controller=new AbortController(),timer=setTimeout(()=>controller.abort(),4500);
+    let unreachable=false;
+    try{
+      // Auth settings is public, small, and does not require a valid session. 4xx auth errors are NOT outages.
+      const response=await cloudReadFetch(cfg.url+"/auth/v1/settings",{headers:{apikey:cfg.key},cache:"no-store",signal:controller.signal});
+      unreachable=response.status===402||response.status===429||(response.status>=500&&response.status<=599);
+    }catch(error){unreachable=controller.signal.aborted||cloudIsNetworkFailure(error)}finally{clearTimeout(timer)}
+    if(epoch!==offlineEntry.epoch||attempt!==loginGateAttempt||offlineEntry.active||loginGateUnlocked)return false;
+    offlineEntry.unreachable=unreachable;
+    try{candidate=await offlineEntryLocal()}catch(_){candidate=null}
+    const button=$("loginGateOffline");if(button)button.hidden=!(unreachable&&candidate);
+    return !!(unreachable&&candidate);
+  })().finally(()=>{
+    offlineEntry.probe=null;
+    if(attempt!==loginGateAttempt&&epoch===offlineEntry.epoch&&!offlineEntry.active&&!loginGateUnlocked)void offlineEntryCheck();
+  });
+  return offlineEntry.probe;
+}
+async function offlineEntryOpen(){
+  const button=$("loginGateOffline");if(button)button.disabled=true;
+  try{
+    if(loginGateBusy||offlineEntry.active||!await offlineEntryCheck())return;
+    const candidate=await offlineEntryLocal();if(!candidate)return;
+    // Persist the re-login/backup requirement before exposing editable Local. No protected-state write.
+    offlineEntrySaveProof(candidate.proof,true);
+    offlineEntry.active=true;offlineEntry.owner=candidate.proof.userId;offlineEntry.epoch++;
+    const client=cloudClient;cloudAuthSubscription?.unsubscribe?.();cloudAuthSubscription=null;
+    clearLoginGateSession();cloudComparisonEpoch++;cloudStopAutoSync();cloudUser=null;cloudClient=null;
+    try{void client?.auth.stopAutoRefresh?.()?.catch?.(()=>{})}catch(_){}
+    if(cloudSyncTimer)clearTimeout(cloudSyncTimer);cloudSyncTimer=null;cloudSyncPending=false;
+    if(cloudOutage.timer)clearTimeout(cloudOutage.timer);cloudOutage.timer=null;
+    dataHubInvalidate();cloudSetRuntime("오프라인","이 기기 기록으로 사용 중 · Cloud 복구 후 로그인","warn",{sync:"OFFLINE"});
+    unlockLoginGate();offlineEntryRender();renderAll();
+  }catch(_){loginGateStatus("이 기기의 원본·소유권을 확인하지 못해 입장을 중단했습니다.","warn")}
+  finally{if(button)button.disabled=false}
+}
+async function offlineEntryLogin(){
+  await offlineEntry.proofWrite;
+  offlineEntry.active=false;offlineEntry.owner="";offlineEntry.epoch++;
+  clearLoginGateSession();cloudStopAutoSync();cloudUser=null;cloudClient=null;
+  offlineEntryRender();lockLoginGate("Cloud 복구 후 정상 로그인해 주세요. 이 기기의 기록은 그대로 보관합니다.");
+  try{cloudCreateClient(cloudConfig());loginGateConnectionReady()}catch(_){loginGateStatus("로그인 연결 도구를 확인해 주세요. 이 기기의 기록은 보관 중입니다.","warn")}
+}
+async function offlineEntryBeforeLoginSync(attempt,owner,client){
+  await offlineEntry.proofWrite;
+  const meta=JSON.parse(localStorage.getItem(CLOUD_META_KEY)||"{}");if(!meta.offlinePending)return;
+  const candidate=await offlineEntryLocal();
+  if(!candidate||candidate.proof.userId!==owner){cloudUser=null;clearLoginGateSession();throw Error("오프라인 기록의 소유 계정으로 다시 로그인해 주세요.")}
+  const current=()=>attempt===loginGateAttempt&&cloudUser?.id===owner&&cloudClient===client&&!cloudRecoveryMode&&!offlineEntry.active;
+  if(!current())throw Error("로그인 상태가 변경되었습니다.");
+  if(!await cloudSaveSafetySnapshot("before_offline_relogin_sync",candidate.local))throw Error("로그인 전 안전 백업을 만들지 못해 Cloud 동기화를 중단했습니다.");
+  assertCloudSourceReady();
+  if(!current()||localStorage.getItem(STORAGE_KEY)!==candidate.raw)throw Error("백업 중 원본 또는 로그인 상태가 변경되었습니다.");
+  offlineEntrySaveProof(candidate.proof,false);
+  if(cloudOutage.timer)clearTimeout(cloudOutage.timer);
+  cloudOutage={active:false,attempt:0,until:0,timer:null,probe:null,probing:false,probeFailed:false};
+}
 function loginGateSessionActive(){return loginGateSession&&loginGateCookieOwner()===cloudUser?.id}
 function markLoginGateSession(){
   if(!cloudUser?.id)return;
@@ -2307,7 +2440,12 @@ function loginGateConfig(email=""){
   return next;
 }
 async function loginGateEnterApp(reason,attempt=loginGateAttempt,silent=false){
+  if(typeof offlineEntry!=="undefined"&&reason==="offline-local")return offlineEntryOpen();
   const owner=cloudUser?.id,client=cloudClient;
+  if(typeof offlineEntry!=="undefined"){
+    if(offlineEntry.active)return false;
+    await offlineEntryBeforeLoginSync(attempt,owner,client);
+  }
   if(!owner||cloudRecoveryMode)throw Error("로그인 상태를 다시 확인해 주세요.");
   if(!silent)loginGateStatus("Cloud 기록을 확인하고 있습니다. 기기의 기록은 안전하게 보관합니다.","loading");
   const current=()=>attempt===loginGateAttempt&&cloudUser?.id===owner&&cloudClient===client&&!cloudRecoveryMode;
@@ -2427,13 +2565,16 @@ function initLoginGate(){
     syncLoginThemeButtons();
   });
   if($("loginGateFinish"))$("loginGateFinish").onchange=e=>{applySignatureFinish(e.target.value,true);syncLoginThemeButtons()};
+  if($("loginGateOffline"))$("loginGateOffline").onclick=()=>loginGateEnterApp("offline-local");
+  if($("offlineEntryLogin"))$("offlineEntryLogin").onclick=offlineEntryLogin;
   if($("loginGateSubmit"))$("loginGateSubmit").onclick=loginGateSubmit;
   if($("loginGateForgot"))$("loginGateForgot").onclick=loginGateForgotPassword;
   if($("loginGateRecoverySave"))$("loginGateRecoverySave").onclick=loginGateSaveRecoveryPassword;
   if($("loginGatePassword"))$("loginGatePassword").addEventListener("keydown",e=>{if(e.key==="Enter")loginGateSubmit()});
   if($("loginGateNewPasswordConfirm"))$("loginGateNewPasswordConfirm").addEventListener("keydown",e=>{if(e.key==="Enter")loginGateSaveRecoveryPassword()});
   lockLoginGate("HANI Cloud 연결을 준비하고 있습니다.");
-  window.addEventListener("pageshow",event=>{if(event.persisted){const attempt=loginGateAttempt;void loginGateResumeSession().then(resumed=>{if(!resumed&&attempt===loginGateAttempt){cloudStopAutoSync();cloudUser=null;lockLoginGate("다시 이용하려면 로그인해 주세요.")}})}});
+  queueMicrotask(()=>offlineEntryCheck());
+  window.addEventListener("pageshow",event=>{if(event.persisted&&!offlineEntry.active){const attempt=loginGateAttempt;void loginGateResumeSession().then(resumed=>{if(!resumed&&attempt===loginGateAttempt){cloudStopAutoSync();cloudUser=null;lockLoginGate("다시 이용하려면 로그인해 주세요.")}})}});
 }
 function loginGateShowCloudTools(show){
   const host=$("loginGateCloudTools");if(!host)return;
@@ -2444,6 +2585,7 @@ function loginGateShowCloudTools(show){
   }
 }
 function loginGateConnectionReady(){
+  if(typeof offlineEntry!=="undefined"&&!offlineEntry.active)void offlineEntryCheck();
   loginGateInitialized=true;
   if($("loginGateSubmit"))$("loginGateSubmit").disabled=false;
   if(window.supabase?.createClient&&!loginGateBusy&&!loginGateUnlocked)loginGateStatus("이메일과 비밀번호로 로그인해 주세요.");
@@ -4224,7 +4366,7 @@ async function googleDriveApi(action,payload={}){
   const owner=cloudUser?.id;if(!cloudClient||!owner)throw Object.assign(new Error('먼저 HANI OS Cloud에 로그인해 주세요.'),{code:'AUTH_REQUIRED'});
   const cfg=cloudConfig(),{data:{session},error}=await cloudClient.auth.getSession();
   if(error||!session?.access_token||session.user?.id!==owner)throw Object.assign(new Error('Cloud 로그인 세션을 다시 확인해 주세요.'),{code:'AUTH_REQUIRED'});
-  const res=await fetch(`${cfg.url}/functions/v1/hani-google-drive`,{method:'POST',headers:{'Content-Type':'application/json','apikey':cfg.key,'Authorization':`Bearer ${session.access_token}`},body:JSON.stringify({action,...payload})});
+  const res=await cloudReadFetch(`${cfg.url}/functions/v1/hani-google-drive`,{method:'POST',headers:{'Content-Type':'application/json','apikey':cfg.key,'Authorization':`Bearer ${session.access_token}`},body:JSON.stringify({action,...payload})});
   const result=await res.json().catch(()=>({}));
   if(!res.ok||!result?.ok){const code=res.status===401?'AUTH_REQUIRED':result?.code||'DRIVE_UNAVAILABLE';const messages={DRIVE_SCOPE_REQUIRED:'Google Drive 연결 버튼을 눌러 읽기 권한을 허용해 주세요.',AUTH_REQUIRED:'Cloud에 다시 로그인해 주세요.',OWNER_ACCESS_DENIED:'이 Drive 보관함은 소유 계정에서만 열 수 있어요.',OWNER_ACCESS_NOT_CONFIGURED:'소유 계정 설정을 확인해 주세요.',DRIVE_FORBIDDEN:'Drive 접근 권한 또는 Google Drive API 설정을 확인해 주세요.',DRIVE_RATE_LIMIT:'요청이 잠시 많아요. 잠시 후 다시 시도해 주세요.'};throw Object.assign(new Error(messages[code]||'파일을 불러오지 못했어요. 잠시 후 새로고침해 주세요.'),{code,authUrl:code==='DRIVE_SCOPE_REQUIRED'?result.authUrl:''})}
   return result;
@@ -4308,7 +4450,7 @@ async function googleCalendarApi(action,payload={}){
   googleCalendarRequireCloud();
   const cfg=cloudConfig(),{data:{session},error}=await cloudClient.auth.getSession();
   if(error)throw error;if(!session?.access_token)throw new Error("Cloud 로그인 세션을 확인하지 못했습니다.");
-  const res=await fetch(`${cfg.url}/functions/v1/${GOOGLE_CALENDAR_FUNCTION}`,{method:"POST",headers:{"Content-Type":"application/json","apikey":cfg.key,"Authorization":`Bearer ${session.access_token}`},body:JSON.stringify({action,...payload})});
+  const res=await cloudReadFetch(`${cfg.url}/functions/v1/${GOOGLE_CALENDAR_FUNCTION}`,{method:"POST",headers:{"Content-Type":"application/json","apikey":cfg.key,"Authorization":`Bearer ${session.access_token}`},body:JSON.stringify({action,...payload})});
   const result=await res.json().catch(()=>({}));
   if(!res.ok||!result?.ok)throw new Error(result?.message||result?.error||`Google Calendar 요청 실패 (${res.status})`);
   return result;
@@ -5033,6 +5175,7 @@ async function sportsCacheLoad(force=false){
   try{const {data,error}=await cloudClient.from("hani_sports_cache").select("team_id,league,last_game,next_game,source,status,last_success_at,data_updated_at,updated_at").in("team_id",Object.keys(SPORTS_CACHE_UI));if(error)throw error;const rows=Array.isArray(data)?data:[],applied=rows.filter(sportsApplyCacheRow);if(!applied.length)throw new Error("검증 가능한 Sports Cache가 없습니다.");sportsCacheRuntime.loadedAt=Date.now();const latest=applied.map(row=>row.last_success_at||row.updated_at).filter(Boolean).sort().at(-1);const note=document.querySelector("#game .sports-source-note");if(note&&latest)note.textContent=`경기 정보는 서버에서 자동 확인됩니다. 마지막 정상 확인: ${sportsCacheDate(latest,{time:true})}. 실패 시 마지막 정상 데이터가 유지됩니다.`;return true}catch(e){console.warn("Sports cache load",e);return false}finally{sportsCacheRuntime.loading=false}
 }
 function cloudCreateClient(config){
+  if(typeof offlineEntry!=="undefined"&&offlineEntry.active)throw Error("오프라인 사용 중입니다. 다시 로그인해 주세요.");
   dataHubInvalidate(); // Client/project replacement cannot retain the prior consumer.
   if(!window.supabase?.createClient)throw new Error("로그인 연결 도구를 불러오지 못했습니다. 인터넷 연결을 확인하고 새로고침해 주세요. 기기의 기존 기록은 유지됩니다.");
   try{cloudAuthSubscription?.unsubscribe?.()}catch(e){}
@@ -5491,6 +5634,7 @@ function cloudStartPolling(){
   },15000);
 }
 function cloudQueueSync(delay=650){
+  if(typeof offlineEntry!=="undefined"&&offlineEntry.active){offlineEntryQueueProof();return}
   if(loadRecovery.active||importSyncHold)return;
   if(!cloudUser||!cloudAutoSyncReady||cloudApplyingRemote)return;
   if(cloudSyncTimer)clearTimeout(cloudSyncTimer);
@@ -5657,6 +5801,7 @@ function cloudShowOutage(){
   cloudSetRuntime("Cloud 일시 중단","Cloud 일시 중단 · 이 기기에 안전하게 저장 중","warn",{sync:"PAUSED"});
 }
 function cloudScheduleOutageProbe(){
+  if(typeof offlineEntry!=="undefined"&&offlineEntry.active)return;
   if(cloudOutage.timer)clearTimeout(cloudOutage.timer);
   cloudOutage.timer=setTimeout(()=>{cloudOutage.timer=null;void cloudProbeOutage()},Math.max(15000,Math.min(2147483647,cloudOutage.until-Date.now())));
 }
@@ -5683,11 +5828,20 @@ async function cloudReadFetch(input,init){
   const rest=/\/rest\/v1\//.test(url.pathname),read=rest&&["GET","HEAD"].includes(method),client=cloudClient;
   const probe=cloudOutage.probing&&url.pathname.endsWith("/hani_state")&&url.searchParams.get("select")==="revision,updated_at,device";
   if(read&&cloudOutage.active&&!probe)return new Response(JSON.stringify({code:"HANI_CLOUD_PAUSED",message:cloudOutageError().message}),{status:429,headers:{"Content-Type":"application/json"}});
-  const response=await fetch(input,init);
+  if(typeof offlineEntry!=="undefined"&&(offlineEntry.active||(!/\/auth\/v1\//.test(url.pathname)&&cloudMeta().offlinePending)))throw new TypeError("오프라인 사용 중 · Cloud 복구 후 로그인");
+  let response;
+  try{response=await fetch(input,init)}catch(error){
+    if(typeof offlineEntry!=="undefined"&&/\/auth\/v1\//.test(url.pathname)&&cloudIsNetworkFailure(error))offlineEntry.unreachable=true;
+    throw error;
+  }
+  if(typeof offlineEntry!=="undefined"&&/\/auth\/v1\//.test(url.pathname)){
+    offlineEntry.unreachable=response.status===402||response.status===429||(response.status>=500&&response.status<=599);
+  }
   if(rest&&client===cloudClient)cloudNoteReadFailure(null,response.status,response.headers.get("Retry-After")||"");
   return response;
 }
 async function cloudProbeOutage(manual=false){
+  if(typeof offlineEntry!=="undefined"&&offlineEntry.active)return false;
   if(cloudOutage.probe)return cloudOutage.probe;
   if(!cloudOutage.active)return true;
   if(!manual&&Date.now()<cloudOutage.until){cloudScheduleOutageProbe();return false}
@@ -5717,6 +5871,7 @@ async function cloudProbeOutage(manual=false){
 }
 
 async function cloudSyncCycle(reason="manual",checkedMeta=null){
+  if(typeof offlineEntry!=="undefined"&&(offlineEntry.active||cloudMeta().offlinePending))return;
   if(cloudRecoveryMode){cloudStopAutoSync("계정 복구 중에는 Cloud 자동 반영을 보류합니다.","warn");return}
   if(loadRecovery.active||importSyncHold){cloudStopAutoSync(loadRecovery.active?lastLoadError:"복원한 백업은 이 기기에만 보관 중입니다. Cloud 반영은 별도 확인이 필요합니다.","warn");return}
   if(!cloudClient||!cloudUser)return;
@@ -5950,6 +6105,7 @@ async function dataHubRefresh(){
     },onChange:dataHubRenderDashboard
   });
   await dataHubRuntime.refresh();dataHubRenderDashboard();
+  if(typeof offlineEntry!=="undefined")await offlineRememberOwner();
 }
 // Presentation only: never fill a missing comparison from legacy/unverified source rows.
 function dataHubLifeCardPresentation(metric){
@@ -6113,6 +6269,7 @@ async function cloudVerifySourceOwner(){
   }
 }
 function renderCloudPanel(){
+  if(typeof offlineEntry!=="undefined"&&offlineEntry.active)offlineEntryRender();
   googleDriveRender();
   window.HANI_DRIVE_VAULT?.schedule();
   renderMediaPreview();
@@ -6194,7 +6351,7 @@ async function cloudFetchMeta({silent=false,probe=false}={}){
   return row;
 }
 async function initCloudBridge(){
-  const cfg=cloudConfig();
+  const cfg=cloudConfig(),offlineEpoch=offlineEntry.epoch;
   if($("cloudProjectUrl"))$("cloudProjectUrl").value=cfg.url||"";
   if($("cloudPublishableKey"))$("cloudPublishableKey").value=cfg.key||"";
   if($("cloudEmail"))$("cloudEmail").value=cfg.email||"";
@@ -6217,7 +6374,10 @@ async function initCloudBridge(){
 
     // PKCE 형식(?code=...)의 callback이 들어오는 경우도 안전하게 지원한다.
     // 이미 detectSessionInUrl이 처리했으면 getSession()이 세션을 반환하므로 중복 교환하지 않는다.
-    let {data,error}=await cloudClient.auth.getSession();
+    const initClient=cloudClient;
+    const current=()=>cloudClient===initClient&&offlineEpoch===offlineEntry.epoch&&!offlineEntry.active;
+    let {data,error}=await initClient.auth.getSession();
+    if(!current())return;
     if(error)throw error;
 
     if(authInfo.code&&!data?.session){
@@ -6225,6 +6385,7 @@ async function initCloudBridge(){
         authInfo.code,
         authInfo.flowId?{flowId:authInfo.flowId}:undefined
       );
+      if(!current())return;
       if(exchange.error)throw exchange.error;
       data={session:exchange.data?.session||null};
     }
@@ -6233,6 +6394,7 @@ async function initCloudBridge(){
     if(cloudUrlLooksRecovery()&&!data?.session){
       await new Promise(resolve=>setTimeout(resolve,450));
       const retry=await cloudClient.auth.getSession();
+      if(!current())return;
       if(retry.error)throw retry.error;
       data=retry.data;
     }
@@ -6251,10 +6413,13 @@ async function initCloudBridge(){
     }
 
     if(await loginGateResumeSession())return;
+    if(!current())return;
     if(cloudUser)await cloudClient.auth.signOut({scope:"local"});
+    if(!current())return;
     cloudUser=null;clearLoginGateSession();
     cloudSetRuntime("로그인 필요","새 브라우저 세션에서는 로그인해 주세요. 기기의 기록은 그대로 보관합니다.","warn",{sync:"OFF"});
   }catch(e){
+    if(offlineEntry.active||offlineEpoch!==offlineEntry.epoch)return;
     console.error("Cloud init",e);
     cloudUser=null;
     if(cloudHasAuthCallback()){
@@ -6887,7 +7052,7 @@ async function deployBridgeApi(action,payload={}){
   if(!cloudClient||!cloudUser)throw new Error("먼저 HANI OS Cloud 로그인을 완료해 주세요.");
   const cfg=cloudConfig(),{data:{session},error}=await cloudClient.auth.getSession();
   if(error)throw error;if(!session?.access_token)throw new Error("로그인 세션을 확인하지 못했습니다.");
-  const res=await fetch(`${cfg.url}/functions/v1/${DEPLOY_BRIDGE_FUNCTION}`,{method:"POST",headers:{"Content-Type":"application/json","apikey":cfg.key,"Authorization":`Bearer ${session.access_token}`},body:JSON.stringify({action,...payload})});
+  const res=await cloudReadFetch(`${cfg.url}/functions/v1/${DEPLOY_BRIDGE_FUNCTION}`,{method:"POST",headers:{"Content-Type":"application/json","apikey":cfg.key,"Authorization":`Bearer ${session.access_token}`},body:JSON.stringify({action,...payload})});
   const out=await res.json().catch(()=>({}));
   if(!res.ok||!out?.ok){const err=new Error(out?.error||out?.message||`배포 브리지 요청 실패 (${res.status})`);err.payload=out;haniWorkFinish(false,"배포 검증을 멈추고 확인할게요.");throw err}
   return out;
@@ -7020,7 +7185,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.222";
+const HANI_DISPLAY_VERSION="2.9.223";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
@@ -7038,7 +7203,7 @@ async function agentApi(action,payload={}){
   if(!agentRequireCloud())throw new Error("Cloud 로그인이 필요합니다.");
   const cfg=cloudConfig(),{data:{session},error}=await cloudClient.auth.getSession();
   if(error)throw error;if(!session?.access_token)throw new Error("로그인 세션을 확인하지 못했습니다.");
-  const res=await fetch(`${cfg.url}/functions/v1/hani-agent-orchestrator`,{method:"POST",headers:{"Content-Type":"application/json","apikey":cfg.key,"Authorization":`Bearer ${session.access_token}`},body:JSON.stringify({action,...payload})});
+  const res=await cloudReadFetch(`${cfg.url}/functions/v1/hani-agent-orchestrator`,{method:"POST",headers:{"Content-Type":"application/json","apikey":cfg.key,"Authorization":`Bearer ${session.access_token}`},body:JSON.stringify({action,...payload})});
   const result=await res.json().catch(()=>({}));
   if(!res.ok||!result?.ok){
     const base=result?.message||result?.error||`Agent 요청 실패 (${res.status})`;

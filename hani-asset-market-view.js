@@ -34,7 +34,7 @@
       return client;
     }
     if(!baseUrl)return null;
-    client=M.createClient({baseUrl,getToken:async()=>{if(typeof cloudClient==='undefined'||!cloudClient)return null;const {data,error}=await cloudClient.auth.getSession();return error?null:data?.session?.access_token;}});return client;
+    client=M.createClient({baseUrl,fetcher:cloudReadFetch,getToken:async()=>{if(typeof cloudClient==='undefined'||!cloudClient)return null;const {data,error}=await cloudClient.auth.getSession();return error?null:data?.session?.access_token;}});return client;
   }
   function positions(){return M.positions(state,typeof calculate==='function'?calculate().holdings:[]).map(p=>overrides.has(p.key)?{...p,ticker:overrides.get(p.key),instrumentId:''}:p);}
   function rebuild(){
