@@ -1,3 +1,4 @@
+import {installCloudTransport} from './hani-cloud-transport-fixture.cjs';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {stripTypeScriptTypes} from 'node:module';
@@ -187,6 +188,7 @@ test('actual client refills dropped questions and enforces whole-set lower-level
       return {ok:true,json:async()=>({ok:true,quiz:{questions:requests.length===1?questions.slice(0,8):questions}})};
     },
   });
+  installCloudTransport(context,{endpoint:'hani-learning-quiz',token:'fixture-session'});
   vm.runInContext(client.replace(/\r?\n  boot\(\);/,'\n // no boot'),context);
   const questions=await context.window.HANI_STUDY_V02984_TEST.quizApi({id:'p',category:'jlpt',name:'JLPT N3',quizSize:20,scheduleType:'manual'});
   assert.equal(questions.length,20);assert.equal(questions.filter(q=>q.jlptLevel==='N4').length,4);assert.ok(requests.length>1);

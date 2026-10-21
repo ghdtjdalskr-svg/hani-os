@@ -95,7 +95,13 @@ for(const name of ['initLoginGate','loginGateEnterApp']){
     else expected=expected.replace('attempt=loginGateAttempt){','attempt=loginGateAttempt,silent=false){').replace('  loginGateStatus("Cloud 기록을 확인하고 있습니다.','  if(!silent)loginGateStatus("Cloud 기록을 확인하고 있습니다.');
   }
   if(name==='loginGateEnterApp')assertEgressGate(extract(source,name),expected);
-  else assert.equal(extract(source,name),expected,name+' only approved session policy delta');
+  else {
+    if(!expected.includes('loginGateOffline'))expected=expected
+      .replace('  if($("loginGateSubmit"))$("loginGateSubmit").onclick=loginGateSubmit;','  if($("loginGateOffline"))$("loginGateOffline").onclick=()=>loginGateEnterApp("offline-local");\n  if($("offlineEntryLogin"))$("offlineEntryLogin").onclick=offlineEntryLogin;\n  if($("loginGateSubmit"))$("loginGateSubmit").onclick=loginGateSubmit;')
+      .replace('  lockLoginGate("HANI Cloud 연결을 준비하고 있습니다.");','  lockLoginGate("HANI Cloud 연결을 준비하고 있습니다.");\n  queueMicrotask(()=>offlineEntryCheck());')
+      .replace('event=>{if(event.persisted){const attempt=loginGateAttempt;', 'event=>{if(event.persisted&&!offlineEntry.active){const attempt=loginGateAttempt;');
+    assert.equal(extract(source,name),expected,name+' only approved session and offline entry delta');
+  }
 }
 for(const name of ['loginGateSubmit','loginGateForgotPassword','loginGateSaveRecoveryPassword','randomizeLoginCharacter','syncLoginThemeButtons','applySeasonTheme','applySignatureFinish','save','commit','writeProtectedState','removeProtectedState']){let expected=extract(baseMain.replace(/\r\n/g,'\n'),name);if(name==='applySignatureFinish'&&!expected.includes('"pure-white"'))expected=expected.replace('"porcelain-cream":"Porcelain Cream",','"porcelain-cream":"Porcelain Cream","pure-white":"Pure White",');assert.equal(extract(source,name),expected,name+' unchanged except approved Pure White name');}
 for(const name of ['VERSION','STORAGE_KEY','HANI_DISPLAY_VERSION']){

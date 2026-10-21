@@ -1,3 +1,4 @@
+import {installCloudTransport} from './hani-cloud-transport-fixture.cjs';
 // Synthetic credentials are generated at runtime and never printed or saved.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -93,7 +94,8 @@ function browserModel(options={}){
   const root={querySelector:el,querySelectorAll:()=>[el('button')],addEventListener:(type,fn)=>events[type]=fn};
   const context=vm.createContext({URL,Intl,Date,Response,console,cloudUser:options.signedOut?null:{id:'owner'},cloudClient:{auth:{getSession:async()=>({data:{session:{access_token:sentinel,user:{id:options.sessionOwner||'owner'}}}})}},cloudConfig:()=>({url:'https://edge.example.test',key:'fixture-public'}),document:{getElementById:()=>root},window:{addEventListener:(type,fn)=>listeners[type]=fn,open:()=>null},localStorage:{setItem(){writes.push('storage')},removeItem(){writes.push('storage')}},commit:()=>writes.push('commit'),save:()=>writes.push('save'),
     fetch:async(url,init)=>{const body=JSON.parse(init.body);calls.push(body);assert.ok(init.headers.Authorization==='Bearer '+sentinel,'client session stays in request header');assert.ok(!init.body.includes(sentinel));if(mode==='pending')return new Promise(done=>pendingResolve=done);if(mode==='scope')return Response.json({ok:false,code:'DRIVE_SCOPE_REQUIRED',authUrl:'https://accounts.google.com/o/oauth2/v2/auth?state=synthetic'},{status:409});if(mode==='error')return Response.json({ok:false,message:sentinel},{status:503});return Response.json(body.action==='status'?{ok:true,connected:true,accountHint:'owner@example.test'}:{ok:true,files:mode==='empty'?[]:[{id:'f1',name:'<img src=x onerror=alert(1)>',mimeType:'application/pdf',size:'2048',modifiedTime:'2026-10-14T16:30:00Z',webViewLink:'https://drive.google.com/file/d/f1/view'},{id:'f2',name:'unsafe',webViewLink:'javascript:alert(1)'}],nextPageToken:''})}
-  });vm.runInContext(client,context);
+  });installCloudTransport(context,{endpoint:'hani-google-drive',token:sentinel});
+  vm.runInContext(client,context);
   const run=code=>vm.runInContext(code,context);
   return {els,el,calls,writes,run,context,events,listeners,setMode:v=>mode=v,resolve:()=>pendingResolve(Response.json({ok:true,files:[{id:'stale',name:'private stale'}]}))};
 }

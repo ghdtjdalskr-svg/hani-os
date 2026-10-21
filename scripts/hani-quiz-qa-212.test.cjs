@@ -1,3 +1,4 @@
+const {installCloudTransport}=require('./hani-cloud-transport-fixture.cjs');
 // Execute the real client and authenticated Edge handler, replacing only I/O/model.
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const test=require('node:test'),{stripTypeScriptTypes}=require('node:module');
@@ -47,6 +48,7 @@ function setup({rows=archive(),failFirst=false,alwaysTheory=false,queryError=fal
     cloudUser:{id:'owner-fixture'},cloudConfig:()=>({url:'https://example.test',key:'public-fixture'}),
     fetch:async(url,options)=>{requests.push(JSON.parse(options.body));const response=await handler(new Request(url,{method:'POST',headers:{Authorization:'Bearer session-fixture'},body:options.body}));responses.push(await response.clone().json());return response;}
   });
+  installCloudTransport(browser,{endpoint:'hani-learning-quiz',token:'session-fixture'});
   vm.runInContext(client.replace(/\n  boot\(\);\s*\n\}\)\(\);\s*$/, '\n window.renderFixture=()=>{activeProjectId=state.learningProjects[0].id;renderMain();};\n window.generateFixture=async()=>{renderLearning=window.renderFixture;activeProjectId=state.learningProjects[0].id;await generateTodayQuiz(state.learningProjects[0]);};\n})();'),browser);
   return {api:browser.window.HANI_STUDY_V02984_TEST,server:context.api,state,before,requests,responses,queries,modelCalls,node,alerts,render:browser.window.renderFixture,generate:browser.window.generateFixture,
     get writes(){return writes;},run:body=>handler(new Request('https://example.test/quiz',{method:'POST',headers:{Authorization:'Bearer session-fixture'},body:JSON.stringify(body)}))};

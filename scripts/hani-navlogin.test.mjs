@@ -24,6 +24,7 @@ function fixture(cookieJar=new Map()){
     cloudFetchMeta:async()=>events.push('meta'),cloudSyncCycle:async reason=>{events.push(reason);ctx.cloudAutoSyncReady=true;ctx.cloudRuntime.sync='ON'},
     cloudBindLifecycle:()=>events.push('lifecycle'),unlockLoginGate:()=>{events.push('unlock');ctx.loginGateUnlocked=true},lockLoginGate:()=>{events.push('lock');ctx.loginGateUnlocked=false},renderAll:()=>events.push('render'),toast:()=>{},
     cloudOwnerVerification:null,cloudStopAutoSync:()=>{ctx.cloudAutoSyncReady=false;events.push('stop')},dataHubInvalidate:()=>{},annualReportInvalidate:()=>{},cloudCleanAuthUrl:()=>{},renderCloudPanel:()=>{},
+    offlineEntry:{active:false,epoch:0},offlineEntryOpen(){},offlineEntryLogin(){},offlineEntryCheck:async()=>false,offlineEntryBeforeLoginSync:async()=>{},
     loginGateForgotPassword(){},loginGateSaveRecoveryPassword(){},loginGateShowCloudTools:show=>events.push(['tools',show]),loginGateCloudSlots:[],listeners:{},randomizeLoginCharacter(){},syncLoginThemeButtons(){},
     cloudSyncPending:false,cloudSyncTimer:22,setTimeout:()=>{},clearTimeout:()=>events.push('timer-stop'),queueMicrotask:()=>{},sportsCacheLoad:async()=>{},HANI_GATE_SESSION_KEY:'hani_os_gate_session_v2'});
   Object.defineProperty(ctx.document,'cookie',{get:()=>[...cookieJar].map(([k,v])=>k+'='+v).join('; '),set:value=>{events.push(['cookie',value]);const [pair,...flags]=value.split('; '),[key,val]=pair.split('=');if(flags.includes('Max-Age=0'))cookieJar.delete(key);else cookieJar.set(key,val);}});

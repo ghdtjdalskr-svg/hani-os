@@ -1,3 +1,4 @@
+import {installCloudTransport} from './hani-cloud-transport-fixture.cjs';
 // Synthetic fixtures only; execute directly with Node 24+ (no network/DB/storage writes).
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -140,6 +141,7 @@ function harness(options={}) {
     fetch:async(url,cfg)=>{calls.push({url,cfg});return options.fetch?options.fetch(url,cfg):new Response(JSON.stringify({ok:true,text:opinionText(state.investmentResearchCards),model:'fixture'}));},
   });
   const markup=client.split(/\r?\n/).find(line=>line.startsWith('  host.innerHTML ='));
+  installCloudTransport(context,{endpoint:'hani-second-opinion',token:'fixture-session'});
   vm.runInContext(markup+'\n'+
     section('  let secondOpinions =','  function renderCardSummary(')+'\n'+
     section('  function render() {','  async function refreshPrices(')+'\n'+

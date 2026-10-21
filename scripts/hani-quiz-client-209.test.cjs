@@ -1,3 +1,4 @@
+const {installCloudTransport}=require('./hani-cloud-transport-fixture.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
@@ -37,6 +38,7 @@ function fixture({newsCount=5, retry=false, noSources=false, nearNews=false}={})
       return handler(new Request(url,{method:'POST',headers:{Authorization:'Bearer test-session'},body:options.body}));
     }
   });
+  installCloudTransport(context,{endpoint:'hani-learning-quiz',token:'test-session'});
   vm.runInContext(client.replace(/\n  boot\(\);\s*\n\}\)\(\);\s*$/, '\n window.renderFixture=()=>{activeProjectId="p";renderMain();};\n})();'),context);
   return {api:context.window.HANI_STUDY_V02984_TEST,server:server.api,requests,state,node,render:context.window.renderFixture,before,get modelBody(){return modelBody}};
 }
