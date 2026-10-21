@@ -140,21 +140,28 @@
 }
 
 /* Remote media: one persistent current-view image, an invariant dark surface in every Finish. */
-#app .hani-remote-media{position:relative;isolation:isolate;flex:0 0 auto;min-width:0;height:354px;box-sizing:border-box;overflow:hidden;border:1px solid #45434d;border-radius:22px;background:#17141e;color:#fff;box-shadow:0 8px 18px #0a0a141f}
-#app .hani-remote-media-image{position:absolute;inset:0;z-index:-2;display:block;width:100%;height:100%;object-fit:cover;object-position:65% top;filter:none;background:#17141e}
-#app .hani-remote-media::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,#0a0a1433 0px,#0a0a1433 80px,#0a0a14b8 118px,#0a0a14d1 170px,#0a0a14eb 100%)}
+/* Recover the extra banner height from task-row padding, retaining >=48px targets. */
+@media(min-width:901px){
+ #app:not(.hani-remote-mini) .hani-context-remote{gap:9px}
+ #app:not(.hani-remote-mini) .hani-remote-nav{gap:5px}
+ #app:not(.hani-remote-mini) .hani-remote-nav .hani-remote-item{min-height:48px;padding:4px 8px}
+}
+#app .hani-remote-media{position:relative;isolation:isolate;flex:0 0 auto;min-width:0;height:410px;box-sizing:border-box;overflow:hidden;border:1px solid #45434d;border-radius:22px;background:#17141e;color:#fff;box-shadow:0 8px 18px #0a0a141f}
+#app .hani-remote-media-image{position:absolute;inset:0;z-index:-2;display:block;width:100%;height:100%;object-fit:cover;object-position:50% 30%;filter:none;background:#17141e}
+/* The upper 55% retains source brightness; only the lower 45% is scrimmed. */
+#app .hani-remote-media::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,transparent 55%,#0a0a14de 64%,#0a0a14f2 78%,#0a0a14fa 100%)}
 #app .hani-remote-media-chip{position:absolute;top:12px;left:12px;padding:6px 8px;border-radius:99px;background:#000b;color:#fff;font-size:10px;font-weight:800;line-height:1.4}
 #app .hani-remote-media-content{position:absolute;inset:auto 12px 15px}
-#app .hani-remote-media h2{margin:0 0 5px;color:#fff;font-size:19px;font-weight:850;line-height:1.35;letter-spacing:-.04em;overflow-wrap:anywhere}
+#app .hani-remote-media h2{display:table;max-width:100%;box-sizing:border-box;margin:0 0 5px -5px;padding:2px 5px;border-radius:5px;background:#0a0a14e6;color:#fff;font-size:19px;font-weight:850;line-height:1.35;letter-spacing:-.04em;overflow-wrap:anywhere}
 #app .hani-remote-media p{margin:0;color:#fff;line-height:1.6}
-#app .hani-remote-media-staff{font-size:12px;font-weight:700}
+#app .hani-remote-media-staff{display:table;max-width:100%;box-sizing:border-box;margin-left:-3px!important;padding:1px 3px;background:#0a0a14e6;font-size:12px;font-weight:700}
 #app .hani-remote-media-line{margin-top:7px!important;font-size:11px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 #app .hani-remote-media-actions{display:flex;justify-content:space-between;gap:3px;margin-top:13px}
 #app .hani-remote-media-actions>div{display:flex;align-items:center;flex-direction:column;gap:5px}
-#app .hani-remote-media-actions button{display:grid;place-items:center;width:36px;height:36px;min-height:36px;min-width:36px;box-sizing:border-box;margin:0;padding:0;border:1px solid #ffffff70;border-radius:50%;background:#ffffff24;color:#fff;box-shadow:none;font:800 20px/1 'Segoe UI Symbol','Malgun Gothic',sans-serif}
+#app .hani-remote-media-actions button{display:grid;place-items:center;width:36px;height:36px;min-height:36px;min-width:36px;box-sizing:border-box;margin:0;padding:0;border:1px solid #c4c8d1;border-radius:50%;background:#171b28;color:#fff;box-shadow:none;font:800 20px/1 'Segoe UI Symbol','Malgun Gothic',sans-serif}
 #app .hani-remote-media-actions span{color:#fff;font-size:10px;font-weight:700;line-height:1.4;white-space:nowrap}
 #app .hani-remote-media-actions button span{font-size:20px;font-variant-emoji:text}
-#app .hani-remote-media-actions button:is(:hover,:focus-visible){color:#fff;background:#ffffff24;outline:2px solid #fff;outline-offset:2px;box-shadow:none}
+#app .hani-remote-media-actions button:is(:hover,:focus-visible){color:#fff;background:#171b28;outline:2px solid #fff;outline-offset:2px;box-shadow:none}
 #app [data-remote-links] [hidden]{display:none}
 /* Keep the original task badge within its own row on the sheet. */
 #app .hani-remote-today .hani-remote-item{position:relative}
@@ -167,16 +174,16 @@
  #app .hani-remote-media :is(.hani-remote-media-chip,.hani-remote-media-content){display:none}
 }
 @media(max-width:850px){
- #app .hani-context-remote{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto auto auto auto;gap:4px}
- #app .hani-remote-media{grid-column:1/-1;grid-row:2;height:176px}
- #app .hani-remote-media::after{background:linear-gradient(90deg,#0a0a142e 0%,#0a0a14b8 26%,#0a0a14e0 50%,#0a0a14f0 100%)}
- #app .hani-remote-media-content{left:104px;right:12px;bottom:12px}
- #app .hani-remote-media h2{font-size:17px}
+ #app .hani-context-remote{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto auto auto auto;gap:3px}
+ #app .hani-remote-media{grid-column:1/-1;grid-row:2;height:204px}
+ #app .hani-remote-media-content{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;left:12px;right:12px;bottom:9px}
+ #app .hani-remote-media h2{justify-self:start;font-size:15px;line-height:1.4;margin-bottom:0}
+ #app .hani-remote-media-staff{justify-self:end;margin-left:0!important;padding:2px 5px;border-radius:4px;background:#0a0a14ed}
  #app .hani-remote-media-chip{top:8px;left:8px;font-size:9px}
- #app .hani-remote-media-line{-webkit-line-clamp:1}
- #app .hani-remote-media-image{object-position:50% 30%}
- #app .hani-remote-media-actions{justify-content:space-between;gap:4px;margin-top:8px}
- #app .hani-remote-nav{grid-column:1/-1;grid-row:3}
+ #app .hani-remote-media-line{grid-column:1/-1;justify-self:start;max-width:100%;margin-top:0!important;border-radius:3px;background:#0a0a14ed;font-size:10px;line-height:1.4;-webkit-line-clamp:1}
+ #app .hani-remote-media-actions{grid-column:1/-1;justify-content:space-between;gap:4px;margin-top:3px}
+ #app .hani-remote-nav{grid-column:1/-1;grid-row:3;gap:5px}
+ #app .hani-remote-nav .hani-remote-item{min-height:48px;padding:3px 7px}
  #app .hani-remote-today{grid-column:1/-1;grid-row:4}
  #app .hani-remote-section{grid-column:1/-1;grid-row:5}
  #app .hani-remote-utility{grid-column:1/-1;grid-row:6}
