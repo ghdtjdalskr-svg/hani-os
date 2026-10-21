@@ -6,6 +6,7 @@ import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {withoutLaunchGreeting} from './hani-launch-greeting-221-preservation.mjs';
 import {withoutPhotoBackupUi} from './hani-photo-backup-222-preservation.mjs';
+import {withoutOfflineEntryUi} from './hani-offline-entry-223-preservation.mjs';
 const root=path.resolve(import.meta.dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const main=read('hani-main.js'),ui=read('hani-ui-v02992.js'),html=read('index.html');
 // Runtime/cache versions follow the integrated origin/main release.
@@ -54,8 +55,8 @@ test('raw preservation of frequency table, storage writes, versions, route/data 
   const collect=(s,re)=>[...s.replace(/globalThis\.HaniGeminiReportCatalog=Object\.freeze\([^\r\n]+\);/,'<report catalog>').matchAll(re)].map(m=>m[0]);
   for(const f of files){
     const old=baseline(f),now=read(f);new vm.Script(f.endsWith('.js')?now:'');
-    const preserved=f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(now)):now;
-    if(f==='index.html')assert.equal(preserved,released(f),'index bytes preserved except exact launch and photo UI connections');
+    const preserved=f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(now))):now;
+    if(f==='index.html')assert.equal(preserved,withoutPhotoBackupUi(withoutLaunchGreeting(released(f))),'index bytes preserved except exact offline entry UI additions; existing launch/photo connections retained');
     assert.deepEqual(collect(now,/(?:v=|v)2\.9\.\d+/g),collect(released(f),/(?:v=|v)2\.9\.\d+/g),f+' approved release versions');
     for(const re of [/\b(?:localStorage|sessionStorage)\s*\.\s*(?:setItem|removeItem|clear)\s*\([^\n]*/g,/\bhani_os_life_v23\b/g,/2\.9\.15-safe-baseline-bootstrap/g])assert.deepEqual(collect(now,re),collect(old,re),f+' protected tokens');
     if(f==='index.html'){

@@ -62,6 +62,15 @@ assert.ok(!corrupt.dirs.get('HANI_OS_photos').files.has('manifest.json'),'failed
 let guards=0;await assert.rejects(core.writePhotos({...options,guard(){if(++guards>2)throw Error('OWNER')}}),/OWNER/);
 console.log('PASS Node: inline/ref, unique records, incremental, missing/conflict, MIME/size, collision preservation, read-back hash, guard');
 
+// Exercise the real unsupported initialization even when no browser is available.
+const nodes=Object.fromEntries(['driveVaultChip','driveVaultConnect','driveVaultBackup','driveVaultPhotos','driveVaultPhotoStatus','driveVaultStatus','driveVaultReminder','driveVaultLast'].map(id=>[id,{textContent:''}]));
+const unsupported={document:{getElementById:id=>nodes[id]},crypto:webcrypto,HANI_DRIVE_BACKUP:{context:()=>({owner:'fixture-owner',ready:true,photoReady:true})}};
+vm.runInNewContext(source,{window:unsupported,TextEncoder,TextDecoder,Uint8Array,Date,queueMicrotask});
+assert.equal(nodes.driveVaultStatus.textContent,'PC에서 백업할 수 있어요');assert.equal(nodes.driveVaultPhotoStatus.textContent,'');
+assert.equal(Object.values(nodes).filter(n=>n.textContent==='PC에서 백업할 수 있어요').length,1);
+for(const id of ['driveVaultConnect','driveVaultBackup','driveVaultPhotos'])assert.equal(nodes[id].disabled,true,id+' unsupported');
+console.log('PASS Node: unsupported Vault initializes with one general notice, empty photo status, disabled actions');
+
 if(process.argv[2]){
   const {chromium}=await import(pathToFileURL(process.argv[2]).href);
   const html=fs.readFileSync(new URL('index.html',root),'utf8');
@@ -136,7 +145,11 @@ if(process.argv[2]){
         snapshot=await page.evaluate(()=>({raw:localStorage.getItem('hani_os_life_v23'),lifeBefore,lifeWrites,cloudCalls,mediaEvents}));
         assert.equal(snapshot.raw,snapshot.lifeBefore);assert.equal(snapshot.lifeWrites,0);assert.equal(snapshot.cloudCalls,0);assert.equal(snapshot.mediaEvents,0);
       }else{
-        assert.match(await page.locator('#driveVaultPhotoStatus').innerText(),/PC에서 백업할 수 있어요/);
+        assert.equal(await page.locator('#driveVaultPhotoStatus').textContent(),'');
+        assert.equal(await page.locator('#driveVaultStatus').innerText(),'PC에서 백업할 수 있어요');
+        assert.equal((await page.locator('body').innerText()).split('PC에서 백업할 수 있어요').length-1,1,'one fallback notice');
+        const snapshot=await page.evaluate(()=>({raw:localStorage.getItem('hani_os_life_v23'),lifeBefore,lifeWrites,cloudCalls}));
+        assert.equal(snapshot.raw,snapshot.lifeBefore);assert.equal(snapshot.lifeWrites,0);assert.equal(snapshot.cloudCalls,0);
         assert.equal(await page.locator('#driveVaultPhotos').isDisabled(),true);
       }
       assert.deepEqual(requests,[]);assert.deepEqual(errors,[]);

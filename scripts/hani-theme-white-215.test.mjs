@@ -2,6 +2,7 @@
 // Only disposable browser storage is used; external requests are blocked.
 import assert from 'node:assert/strict';
 import {assertEgressGate} from './hani-egress-gate-expectations.mjs';
+import {assertOfflineGateInit,withoutOfflineEntryUi} from './hani-offline-entry-223-preservation.mjs';
 import fs from 'node:fs';
 import {cacheRefs} from './hani-216-cache-expectations.mjs';
 import path from 'node:path';
@@ -42,7 +43,9 @@ assert.equal(extract(main,'applySignatureFinish'),extract(oldMain,'applySignatur
 const storageExpressions=s=>s.match(/\b(?:commit|save|writeProtectedState|localStorage\.(?:setItem|removeItem|clear))\([^)]*\)/g);
 assert.deepEqual(storageExpressions(main),storageExpressions(oldMain),'all storage/write expressions preserved across integrated features');
 assertEgressGate(extract(main,'loginGateEnterApp'),extract(oldMain,'loginGateEnterApp'));
-for(const name of ['initLoginGate','loginGateResumeSession','commit','save'])assert.equal(extract(main,name),extract(oldMain,name),name+' canonical auth/storage owner preserved');
+assertOfflineGateInit(extract(main,'initLoginGate'),extract(oldMain,'initLoginGate'));
+assert.equal(withoutOfflineEntryUi(html),base('index.html'),'only exact offline entry markup changes');
+for(const name of ['loginGateResumeSession','commit','save'])assert.equal(extract(main,name),extract(oldMain,name),name+' canonical auth/storage owner preserved');
 assert.deepEqual(cacheRefs(html),cacheRefs(execFileSync(git,['show','origin/main:index.html'],{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024})),'every URL/cache pair matches the integrated origin/main release');
 console.log('PASS finish list, token completeness, actual apply/fallback/save, Porcelain and storage/version/cache preservation');
 if(!process.argv[2])process.exit(0);

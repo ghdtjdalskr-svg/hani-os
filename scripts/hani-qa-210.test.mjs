@@ -122,7 +122,12 @@ test('retained EOL, all versions/cache tags, id literals, storage and canonical 
     assert.equal((current.match(/\.clear\(/g)||[]).length,(old.match(/\.clear\(/g)||[]).length,file+' no clear calls');
     if(file==='hani-board.js')for(const name of ['viewChange','savePost','saveComment','deleteOwn','toggleLike'])assert.equal(block(current,name),block(old,name),name+' persistence unchanged');
   }
-  assert.equal(read('hani-drive-vault.js'),readBaseline('hani-drive-vault.js'));
+  const vault=read('hani-drive-vault.js'),baselineVault=readBaseline('hani-drive-vault.js');
+  const oldPhotoStatus="if($(\"driveVaultPhotoStatus\"))$(\"driveVaultPhotoStatus\").textContent=!supported?\"PC에서 백업할 수 있어요\":",newPhotoStatus="if($(\"driveVaultPhotoStatus\"))$(\"driveVaultPhotoStatus\").textContent=!supported?\"\":";
+  assert.equal(vault.split(newPhotoStatus).length-1,1,'one canonical empty unsupported photo status');
+  assert.equal(vault.split('status("PC에서 백업할 수 있어요")').length-1,1,'general fallback retained once');
+  // Permit exactly this cosmetic line; preserve every other byte, including mixed EOL.
+  assert.equal(vault,baselineVault.includes(oldPhotoStatus)?baselineVault.replace(oldPhotoStatus,newPhotoStatus):baselineVault);
   // newface-217 changes only Sua's preload; retain exact-byte checking for everything else.
   const baselineHtml=readBaseline('index.html');
   // HEAD may already contain the four launch connections; older fixtures do not.

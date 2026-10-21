@@ -1,3 +1,4 @@
+import {installCloudTransport} from './hani-cloud-transport-fixture.cjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
@@ -93,6 +94,7 @@ function clientFixture(){
     fetch:async()=>{calls++;return new Response(JSON.stringify({ok:false,error:'QUIZ_QUALITY_REJECTED',message:'정답 검증 실패 <unsafe>',validation:{rejected:[{question_index:0,reasons:['blind_key_disagreement']}]}}),{status:502})},
     Request,Response,
   });
+  installCloudTransport(context,{endpoint:'hani-learning-quiz',token:'fixture-session'});
   vm.runInContext(study.replace(/\r?\n  boot\(\);/,'\n this.fixture={generateTodayQuiz,maybeAutoGenerate,generationFailures,autoGenerationAttempts,generationDay,render:()=>{activeProjectId="p";renderMain(false);}};'),context);
   return {project,state,main,api:context.fixture,calls:()=>calls,overlays:()=>overlayCalls,advance:stamp=>{now=Date.parse(stamp)}};
 }

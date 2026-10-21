@@ -1,3 +1,11 @@
+# 2026-10-21 · offline-entry 회귀 9종 후속 (도연/Codex)
+
+`hani/offline-entry` / 시작 HEAD `519b468`, 원격 main/base `aa9c963c`(v2.9.222 일치). 정확한 offline UI 2줄·gate delta와 실제 shared transport를 기존 테스트에 반영. **소스 수정0·Node24명령 통과**, 비변경18,474줄 EOL·Tier A/Vault cosmetic/runtime hash 유지. 실제 Edge는 서윤 재실행 대기, 버전/Cloud write/storage/main/배포 변경 없음. Notion 자동 승인 never 거절로 갱신 대기. Git add 권한 거절·commit 미등록 pathspec 실패로 미커밋 보존. 상세 원인은 [인수인계](handoffs/2026-10-20-offline-entry.md)의 2026-10-21 회귀9종 후속 절 참조. 아래 기존/타 담당 기록 보존.
+
+# 2026-10-20 · offline-entry-223 (도연/Codex)
+
+`hani/offline-entry`, base `aa9c963c`(main v2.9.222 일치). PIN 없는 장애 시 로컬 진입을 기존 gate/검증/저장 경로에 연결. 신규 browser29·지정 로그인/Cloud/백업 및 관련 회귀 PASS, 보호 함수23 원문·버전/cache 유지. **중요 blocker: v222는 소유권 binding을 영속 저장하지 않아, 이미 증거가 사라진 현재 기기의 긴급 복구는 이 패치만으로 해결되지 않음.** 정상 인증·원본 검증 후 기존 Cloud 메타 키에 증거를 남기는 향후 진입 구현이며, 증거 없는 기기는 차단 유지. 새 키/primary write/schema/배포 없음. Git·미검증/다음 결정·Notion 자동 승인 거절 기록은 [인수인계](handoffs/2026-10-20-offline-entry.md) 참조. 아래 기존 담당 기록 보존.
+
 # 2026-10-20 · int-222 통합 회귀 6건 (도연/Codex)
 
 `hani/int-222` / HEAD `22d41802`, 원격 main `3919a257` GitHub 연결 도구로 일치 확인(v2.9.221). main 비의도 EOL4줄·index 인사 삽입행 EOL3줄 복원, QA210 사진 API 기대2개 추가, brand218/office219 승인 UI 변환 후 전체 index 바이트 비교. **지정 Node10종 모두 PASS**, main 비변경8,380줄·index 나머지 전체 바이트 일치·부정검증5종 PASS. 실제 Edge는 서윤 재실행 대기. 버전/cache·Cloud/storage·main/배포 의미 변경 없음. add는 index.lock 권한 거절, commit은 신규 pathspec 미등록으로 실패해 **미커밋 보존**. Notion append 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-10-20-int-222-regression.md). 아래 기존 기록 보존.
