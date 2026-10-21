@@ -8,7 +8,11 @@ const root=path.resolve(import.meta.dirname,'..');
 const closure=await resolveRuntimeClosure({exists:f=>fs.existsSync(path.join(root,f)),read:f=>fs.readFileSync(path.join(root,f))});
 assert.deepEqual(closure.missing,[]);assert.ok(closure.files.includes('hani-goal-progress.js'),'generated period engine included in release closure');
 const contract=JSON.parse(fs.readFileSync(path.join(root,'dev-center/one-pass-gate-contract.json'),'utf8'));assert.ok(contract.allowed_paths.some(pattern=>new RegExp(pattern).test('hani-goal-progress.js')),'existing release allowlist unchanged');
-if(process.argv.includes('--node-only')){console.log('PASS goal runtime closure/allowlist; NOT RUN: browser goal UI/overflow/storage');process.exit(0);}
+if(process.argv.includes('--static')){
+  await import('./hani-goal-period.test.mjs');
+  await import('./hani-settings-225-events.mjs').then(m=>m.verifyGoalBinding());
+  console.log('PASS Node goal engine/closure/binding; browser not run');
+}else{
 const {chromium}=await import(pathToFileURL(process.argv[2]).href);
 const server=http.createServer((req,res)=>{const uri=new URL(req.url,'http://local').pathname,file=path.resolve(root,'.'+(uri==='/'?'/index.html':decodeURIComponent(uri)));if(!file.startsWith(root+path.sep)||!fs.existsSync(file)||!fs.statSync(file).isFile()){res.writeHead(404);res.end();return;}res.setHeader('Content-Type',file.endsWith('.js')||file.endsWith('.mjs')?'text/javascript':file.endsWith('.css')?'text/css':'text/html; charset=utf-8');res.end(fs.readFileSync(file));});
 await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port;
@@ -19,6 +23,8 @@ try{
   const context=await browser.newContext({viewport:{width,height:900}});await context.route('**/*',r=>new URL(r.request().url()).origin===origin?r.continue():r.abort());
   const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto(origin);await page.waitForFunction(()=>!!window.HANI_GOAL_PROGRESS);
   await page.evaluate(finish=>{unlockLoginGate();showView('settings');document.documentElement.dataset.finish=finish;document.body.dataset.finishActive='true';},finish);
+  await page.locator('#group-records > summary').click();
+  assert.equal(await page.locator('#group-records').evaluate(e=>e.open),true);
   const panel=page.locator('#goalProgressPanel');assert.match(await panel.innerText(),/원본 검증 대기/);assert.equal(await panel.locator('article').count(),0);
   assert.equal(await page.evaluate(()=>window.HANI_GOAL_PROGRESS.read({type:'quarter',year:2026,quarter:1})),null);
   // Simulated verified context only in this disposable test browser. No login/Cloud claims.
@@ -40,3 +46,5 @@ try{
  }
  console.log(`PASS ${count} actual-app synthetic UI combinations, blocked→simulated verified→blocked, quarter/annual controls, mobile overflow, no state/localStorage writes; runtime module closure complete. Real login/Cloud unverified.`);
 }finally{await browser.close();await new Promise(r=>server.close(r));}
+
+}

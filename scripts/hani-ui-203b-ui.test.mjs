@@ -4,6 +4,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import http from 'node:http';
 import {fileURLToPath,pathToFileURL} from 'node:url';
+if(process.argv.includes('--static')){
+  await import('./hani-ui-203b.test.mjs');
+  console.log('PASS Node overview/history model; browser not run');
+}else{
 const runtime=process.argv[2]||'C:/Users/홍성민/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs';
 const {chromium}=await import(pathToFileURL(runtime).href);
 const root=path.resolve(fileURLToPath(new URL('../', import.meta.url))),out=path.join(root,'.ai-budget-private/ui-203b');fs.mkdirSync(out,{recursive:true});
@@ -42,7 +46,14 @@ try{
     await page.screenshot({path:path.join(out,'login-'+width+'.png'),fullPage:true});
     await page.evaluate(()=>{state=freshState();unlockLoginGate();showView('organization')});
     await page.locator('#organization .ogh-overview').waitFor({state:'visible'});
-    assert.equal(await page.locator('.ogh-overview').isVisible(),true);assert.equal(await page.locator('.ogh-timeline li').count(),8);assert.equal(await page.locator('.ogh-stats>div').count(),4);assert.match(await page.locator('.ogh-overview').innerText(),/이번 달 게시판 활동이 쌓이면/);
+    await page.waitForFunction(()=>document.querySelector('[data-history-release]'));
+    const releaseIds=JSON.parse(fs.readFileSync(path.join(root,'assets/data/hani-history-releases-v1.json'),'utf8')).entries.filter(r=>['released','pages'].includes(r.status)&&r.date<=new Date(Date.now()+9*3600000).toISOString().slice(0,10)).map(r=>r.id).sort();
+    assert.deepEqual((await page.locator('[data-history-release]').evaluateAll(es=>es.map(e=>e.dataset.historyRelease))).sort(),releaseIds);
+    assert.ok(await page.locator('[data-history-month]:visible').count()<=2);
+    const monthToggle=page.locator('[data-history-month-more]').first();
+    await monthToggle.click();assert.equal(await monthToggle.getAttribute('aria-expanded'),'true');
+    await monthToggle.click();assert.equal(await monthToggle.getAttribute('aria-expanded'),'false');
+    assert.equal(await page.locator('.ogh-overview').isVisible(),true);assert.equal(await page.locator('[data-history-release]').count(),releaseIds.length);assert.equal(await page.locator('.ogh-stats>div').count(),4);assert.match(await page.locator('.ogh-overview').innerText(),/이번 달 게시판 활동이 쌓이면/);
     await page.evaluate(()=>{const createdAt=new Date().toISOString();state.boardPosts=[{id:'synthetic',authorId:'hani',createdAt}];state.boardComments=[{postId:'synthetic',authorId:'hani',createdAt}];HaniOrganizationHub.selectTab('overview')});
     assert.match(await page.locator('.ogh-employee').innerText(),/하니[\s\S]*전무[\s\S]*전략기획실[\s\S]*2건/);
     await page.screenshot({path:path.join(out,'overview-'+width+'.png'),fullPage:true});
@@ -78,3 +89,5 @@ try{
   }
   console.log('PASS 203b UI 1440/390: five token palettes, four season previews, radio/season keyboard, NEW parent/idempotency/expiry, live overview/fallback, report accents and AA, protected data unchanged');
 }finally{await browser?.close();server.close()}
+
+}

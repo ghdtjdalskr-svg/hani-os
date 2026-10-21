@@ -1,5 +1,6 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),test=require('node:test');
 const read=f=>fs.readFileSync(f,'utf8'),source=read('hani-main.js');
+const {withoutSimplify225}=require('./hani-simplify-225-preservation.mjs');
 const baseline=process.env.HANI_SIMPLIFY_BASELINE||'artifacts/fix-218/simplify/baseline';
 const pick=(s,a,b)=>s.slice(s.indexOf(a),s.indexOf(b,s.indexOf(a)));
 function load(s){const ctx=vm.createContext({Date,Intl,Map,Number,Math,JSON,Array,String,Object,state:{books:[],movies:[]},window:{},today:()=> '2026-10-18',esc:x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))});vm.runInContext(pick(s,'function activityDate(','function ledgerFixedChanges(')+'this.api={activityTrend,readingTrendDate,activityTrendHtml};',ctx);return ctx;}
@@ -37,7 +38,7 @@ test('data calculation, write paths, approval flow, catalog, versions and functi
  // The subsequent authorized dashboard/report refresh has its own exact
  // pre-task preservation check in hani-dash-218.test.mjs.
  const followup=s=>s.replace(/function dataHubLifeCardPresentation\([\s\S]*?(?=function dataHubRenderDashboard\()/,'<dashboard presentation>').replace(/globalThis\.HaniGeminiReportCatalog=Object\.freeze\([^\r\n]+\);/,'<report catalog>');
- assert.equal(followup(annual(scrub(source))),followup(annual(scrub(old))),'every other runtime byte unchanged, including protected write/approval functions');
+ assert.equal(followup(annual(scrub(withoutSimplify225('hani-main.js',source)))),followup(annual(scrub(old))),'every other runtime byte unchanged, including protected write/approval functions');
  assert.match(source,/<summary>새 보고서 · 수정본 등록<\/summary><p class="sub">업로드는 AI 분석이나 기존 목표·생활 데이터 변경을 실행하지 않습니다\.<\/p>/,'annual data-protection notice preserved beside upload controls');
  const html=read('index.html'),oldHtml=read(baseline+'/index.html');
  for(const re of [/<(?:button|input|select|textarea|a)\b[^>]*\bid="[^"]+"[^>]*>/g,/\bdata-(?:view|go)="[^"]+"/g,/\bfor="[^"]+"/g,/(?:v=|v)2\.9\.\d+/g]){

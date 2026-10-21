@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {runInNewContext} from 'node:vm';
 import {main,presentationCode} from './hani-dash-217-fixture.mjs';
+import {withoutSimplify225} from './hani-simplify-225-preservation.mjs';
 const present=new Function('n',presentationCode+'\nreturn dataHubLifeCardPresentation;')(v=>Number(v)||0);
 const metric=(key,previous,current)=>({key,row:{value:current,status:'CONFIRMED',unit:'KRW'},comparison:{},monthComparison:{baseline:previous===null?null:{value:previous,status:'CONFIRMED'},delta_absolute:previous===null?null:current-previous,delta_percent:previous?(current-previous)/previous*100:null}});
 test('all six cards render unsigned percent magnitude and retain arrows and direction colors',()=>{
@@ -37,8 +38,8 @@ test('historical identities, renderers, protected owners, versions and unrelated
  // Original Markdown remains untouched; the preceding test checks every body exactly.
  for(const r of old.reports){const next=current.reports.find(x=>x.id===r.id);assert.ok(next);for(const field of ['id','file','date','review_status'])assert.equal(next[field],r[field]);}
  const mask=s=>s.replace(/globalThis\.HaniGeminiReportCatalog=Object\.freeze\([^\r\n]+\);/,'<catalog>').replace(/function dataHubLifeCardPresentation\([\s\S]*?(?=function dataHubRenderDashboard\()/,'<presentation>');
- assert.equal(mask(main),mask(previous),'runtime outside catalog/presentation byte exact');
+ assert.equal(mask(withoutSimplify225('hani-main.js',main)),mask(previous),'runtime outside catalog/presentation byte exact');
  const oldHtml=fs.readFileSync(new URL('index.html',baseline),'utf8'),html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
  const cssMask=s=>s.replace(/\.gemini-report-table-wrap\{[^\r\n]*/,'<table CSS>');
- assert.equal(cssMask(html),cssMask(oldHtml),'HTML except scoped table CSS byte exact');
+ assert.equal(cssMask(withoutSimplify225('index.html',html)),cssMask(oldHtml),'HTML except scoped table CSS byte exact');
 });

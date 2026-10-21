@@ -131,7 +131,7 @@ try{
     assert((await page.locator('#monthlyReportAnnualPanel').innerText()).includes('자동 생성한 실적이나 목표를 대신 넣지 않습니다'),`${viewport.name}: annual does not invent historical goals`);
     assert.equal(await page.locator('#earningsAnnual [data-earnings-context]').count(),0,`${viewport.name}: annual has no automatic AI or goal extraction`);
     assert.equal(await page.locator('#annualReportList .annual-story-stage section').count(),4,`${viewport.name}: annual empty design scenes`);
-    assert((await page.locator('#annualReportList').innerText()).includes('DESIGN PREVIEW'),`${viewport.name}: design example clearly labelled`);
+    assert((await page.locator('#annualReportList').innerText()).includes('구성 예시 · 실적 미입력'),`${viewport.name}: design example clearly labelled`);
     assert.equal(await page.locator('#annualReportList .annual-story-speakers article').count(),5,`${viewport.name}: annual presenter prompts`);
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`${viewport.name}: annual no page overflow`);
     for(const key of ['cover','overview','presenters','next'])await page.locator(`#annualReportList .annual-story-${key}`).screenshot({path:join(root,`artifacts/monthly-report/${viewport.name}-annual-${key}.png`)});

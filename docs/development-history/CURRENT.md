@@ -5,6 +5,26 @@
 # 2026-10-21 · 본사 탭 대사 (도연/Codex)
 
 `hani/tap-lines` / base `aa9c963c`(GitHub 최신 main 일치, v2.9.222 유지). 직원19명·개구리 회장님 반응5개 총281문장 JSON과 기존 단일 탭/말풍선 슬롯에 KST·교대 순환·friend·2초 triple·행동 종료 후 대사 구현. **신규 Node15·office219 source/model·actions221 20·fix218 6·seats215 12 PASS**(공통 owner 중복 포함). **실제 Edge spawn EPERM으로390/1440 실화면 미검증**, 좌표 fixture PASS와 구분. **git add index.lock 권한 거절·commit 신규 pathspec 실패로 미커밋·미push 보존**. 버전/cache·Storage/Cloud·main/배포 변경 없음. [인수인계](handoffs/2026-10-21-tap-lines.md), [Notion 작업 기록](https://app.notion.com/p/400c527570748180a5e1d1c5619bfaa5) 생성/read-back 완료. 다음: 실제 브라우저 검증 → JSON seed PR 선행 → 배포 담당 열차 통합. 아래 기존 기록 보존.
+# 2026-10-21 · int-225 서윤 결정 2건 후속 (도연/Codex)
+
+`hani/int-225` / 시작 HEAD `ad83ed38`, 로컬 base `331291eb`(원격 연결 실패로 최신성 미확인). resolver는 origin/main blob과 일치하도록 복원, 연혁 일보 집계를 기존 owner의 읽기 전용 getter/ready 알림 및 persistent chip으로 전환. owner 테스트는 details 조상을 열고 실제 card 박스 촬영. **history·일보·owner Node·settings Node·203b·변경 없는 One-Pass closure/음성 검사 PASS**. **실제 Edge·frozen package CLI는 subprocess EPERM으로 차단**, Git add/commit도 index.lock 권한 오류로 실패해 **미커밋·미push 보존**. 버전/cache·Storage·Cloud·보호 deploy bridge·main/배포 변경 없음. Notion 추가는 자동 승인 정책 never 거절로 갱신 대기. [인수인계 후속 절](handoffs/2026-10-21-history-226-compact.md). 아래 기존/타 담당 기록 보존.
+
+# 2026-10-21 · simplify-225 메뉴 문구 2차 정리 (도연/Codex)
+
+`hani/settings-tidy` / base `331291eb`(원격 main 시작 일치), source v2.9.223 유지. **34개 활성 메뉴·주요 내부 탭·REMOTE 문구 원천 간소화**, 드문 사용 관리 화면 상세는 기존 ⓘ로 접고 기능·실데이터·보호/승인 안내 보존. 설정 구조·기존 settings-225 제안·Storage/Cloud/schema 변경 없음. **Node 26명령 PASS**, 별도 공부 뉴스 fixture 오류는 작업 전에도 동일 재현. **실제 Edge spawn EPERM으로 전후 캡처0장·화면 미검증**, 열차 탑승 전 시각 검증 대기. Git index.lock 권한 거절로 미커밋·미push 보존. Notion 보류 카드 생성/read-back 완료, 최종 결과 append는 자동 승인 never 거절로 갱신 대기. 잔여 검증·다음 행동은 [인수인계](handoffs/2026-10-21-simplify-225.md), [감사표](../../artifacts/simplify-225/audit.md) 참조. main/배포 없음. 아래 기존/타 담당 기록 보존.
+
+# 2026-10-21 · history-226 월별 접기 후속 (도연/Codex)
+
+`hani/history-design` / 시작 HEAD `0fb0b85` (226·226b 보존). 월별 주요 순간 + 최신 일반 5건으로 기본 **10월 8건·9월 8건**, 나머지 **66건·13건** 제자리 펼침/접기. 기존 단일 renderer/click·persistent DOM·이전 달 더 보기 유지. Node 연혁/203b 회귀·syntax PASS, write 0. **1440 높이·390 넘침·키보드·스크린샷은 서윤 재검증 대기.** 버전/cache·Storage/Cloud·main/배포 변경 없음. 원격 main 조회는 네트워크 실패, Notion 추가는 자동 승인 정책 never 거절로 미반영. [검증 및 Git 시도 인수인계](handoffs/2026-10-21-history-226-compact.md). 아래 기존 기록은 보존.
+
+# 2026-10-21 · history-226 콘텐츠 후속 (도연/Codex)
+
+`hani/history-design` / 시작 HEAD `c21203aa`, 원격 main `331291eb` 일치. 신규 정적 배포 카탈로그로 **v223까지 근거95건**, 24자 이내 한국어 제목, 주요 순간 월3개 이내, 명시된 담당만 avatar 적용. 재직17명·발행1호(미래2호 제외). 신규 데이터/renderer Node·기존203b 회귀·95개 Git/date/credit 대조 PASS. 새 화면 촬영은 Edge spawn/CDP 제한 및 결합 실행 정책 거절로 BLOCKED; 기존 after PNG는 수정 전 증거. 버전/cache·Storage/Cloud·main/배포 변경 없음. 상세 결과·commit 시도·다음 담당은 [인수인계](handoffs/2026-10-21-history-226.md), [증거](../../artifacts/history-226/README.md). 아래 최초 디자인/타 담당 기록은 당시 사실로 보존.
+
+# 2026-10-21 · history-226 연혁 디자인 (도연/Codex)
+
+`hani/history-design` / base `331291eb`(원격 main 일치, v2.9.223). 실제 공개 연혁21건을 월별 세로 타임라인·주요 카드4개로 표시, 재직17명·일보1호 집계와 기존 직원 썸네일 연결. **Node 실행·기존203b 회귀·토큰24쌍 PASS**, browser spawn EPERM으로 실제390/1440·AA·PNG8장은 미검증. 버전/cache·원본 데이터·Storage/Cloud·main/배포 변경 없음. Git add의 index.lock 권한 오류·commit의 신규 pathspec 미등록으로 **미커밋·미push 보존**. Notion 자동 승인 never 거절과 인계 명령은 [인수인계](handoffs/2026-10-21-history-226.md), [증거](../../artifacts/history-226/README.md) 참조. 현재 브라우저 검증 대기이며 열차 탑승 완료 아님. 아래 기존/타 담당 기록 보존.
+
 # 2026-10-21 · offline-entry 회귀 9종 후속 (도연/Codex)
 
 `hani/offline-entry` / 시작 HEAD `519b468`, 원격 main/base `aa9c963c`(v2.9.222 일치). 정확한 offline UI 2줄·gate delta와 실제 shared transport를 기존 테스트에 반영. **소스 수정0·Node24명령 통과**, 비변경18,474줄 EOL·Tier A/Vault cosmetic/runtime hash 유지. 실제 Edge는 서윤 재실행 대기, 버전/Cloud write/storage/main/배포 변경 없음. Notion 자동 승인 never 거절로 갱신 대기. Git add 권한 거절·commit 미등록 pathspec 실패로 미커밋 보존. 상세 원인은 [인수인계](handoffs/2026-10-20-offline-entry.md)의 2026-10-21 회귀9종 후속 절 참조. 아래 기존/타 담당 기록 보존.

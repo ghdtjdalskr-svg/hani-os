@@ -117,6 +117,7 @@ test('actual office renderer applies 217 plate-free backgrounds without mismatch
 });
 
 test('real browser: 217 plate-free backgrounds, staff portraits and no overflow at 412/884/1440', async t => {
+  if(process.argv.includes('--static')){t.skip('Node-only run requested; real browser belongs to Seoyun');return;}
   const modulePath=process.argv[2]||process.env.HANI_PLAYWRIGHT_MODULE||path.join(os.homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs');
   const executablePath=process.argv[3]||process.env.HANI_CHROME||[
     'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',

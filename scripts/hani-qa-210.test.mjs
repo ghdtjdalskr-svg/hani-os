@@ -6,11 +6,13 @@ import path from 'node:path';
 import vm from 'node:vm';
 import {handlers,inspection,api,plain,roster} from './hani-board.test.mjs';
 import {textContrastAudit} from './hani-contrast-audit.mjs';
+import {withoutSettings225} from './hani-settings-225-preservation.mjs';
+import {withoutSimplify225} from './hani-simplify-225-preservation.mjs';
 import {withoutLaunchGreeting} from './hani-launch-greeting-221-preservation.mjs';
 
 const baselineArg=process.argv[2]&&path.basename(process.argv[2])!=='index.mjs'?process.argv[2]:process.env.HANI_QA_TEST_BASELINE;
 const readBaseline=file=>baselineArg?fs.readFileSync(path.resolve(baselineArg,file),'utf8'):execFileSync(process.env.HANI_GIT_PATH||'git',['show','HEAD:'+file],{cwd:path.resolve(import.meta.dirname,'..'),encoding:'utf8',maxBuffer:64*1024*1024});
-const readEolBaseline=file=>baselineArg?readBaseline(file):execFileSync(process.env.HANI_GIT_PATH||'git',['show','origin/main:'+file],{cwd:path.resolve(import.meta.dirname,'..'),encoding:'utf8',maxBuffer:64*1024*1024});
+const readEolBaseline=file=>process.env.HANI_QA_EOL_BASELINE?fs.readFileSync(path.resolve(process.env.HANI_QA_EOL_BASELINE,file),'utf8'):baselineArg?readBaseline(file):execFileSync(process.env.HANI_GIT_PATH||'git',['show','origin/main:'+file],{cwd:path.resolve(import.meta.dirname,'..'),encoding:'utf8',maxBuffer:64*1024*1024});
 const root=path.resolve(import.meta.dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
 
 const main=read('hani-main.js'),remote=read('hani-context-remote-v1.js'),study=read('hani-study-v02984.js');
@@ -122,17 +124,17 @@ test('retained EOL, all versions/cache tags, id literals, storage and canonical 
     assert.equal((current.match(/\.clear\(/g)||[]).length,(old.match(/\.clear\(/g)||[]).length,file+' no clear calls');
     if(file==='hani-board.js')for(const name of ['viewChange','savePost','saveComment','deleteOwn','toggleLike'])assert.equal(block(current,name),block(old,name),name+' persistence unchanged');
   }
-  const vault=read('hani-drive-vault.js'),baselineVault=readBaseline('hani-drive-vault.js');
+  const vault=withoutSettings225('hani-drive-vault.js',read('hani-drive-vault.js')),baselineVault=readEolBaseline('hani-drive-vault.js');
   const oldPhotoStatus="if($(\"driveVaultPhotoStatus\"))$(\"driveVaultPhotoStatus\").textContent=!supported?\"PC에서 백업할 수 있어요\":",newPhotoStatus="if($(\"driveVaultPhotoStatus\"))$(\"driveVaultPhotoStatus\").textContent=!supported?\"\":";
   assert.equal(vault.split(newPhotoStatus).length-1,1,'one canonical empty unsupported photo status');
   assert.equal(vault.split('status("PC에서 백업할 수 있어요")').length-1,1,'general fallback retained once');
   // Permit exactly this cosmetic line; preserve every other byte, including mixed EOL.
   assert.equal(vault,baselineVault.includes(oldPhotoStatus)?baselineVault.replace(oldPhotoStatus,newPhotoStatus):baselineVault);
   // newface-217 changes only Sua's preload; retain exact-byte checking for everything else.
-  const baselineHtml=readBaseline('index.html');
+  const baselineHtml=readEolBaseline('index.html');
   // HEAD may already contain the four launch connections; older fixtures do not.
   const preservedHtml=baselineHtml.includes('<script src="./hani-launch-greeting.js"></script>')?withoutLaunchGreeting(baselineHtml):baselineHtml;
-  assert.equal(withoutLaunchGreeting(read('index.html')),preservedHtml.replace('href="./assets/profiles/hani-profile-sua.webp"','href="./assets/profiles/hani-profile-sua-id.webp"'));
+  assert.equal(withoutLaunchGreeting(withoutSimplify225('index.html',read('index.html'))),preservedHtml.replace('href="./assets/profiles/hani-profile-sua.webp"','href="./assets/profiles/hani-profile-sua-id.webp"'));
 });
 
 test('write compact Node evidence after successful assertions',()=>{

@@ -9,7 +9,7 @@ import {api,handlers as h,context,roster,plain,inspection} from './hani-board.te
 
 const baselineArg=process.argv[2]&&path.basename(process.argv[2])!=='index.mjs'?process.argv[2]:process.env.HANI_QA_TEST_BASELINE;
 const readBaseline=file=>baselineArg?fs.readFileSync(path.resolve(baselineArg,file),'utf8'):execFileSync(process.env.HANI_GIT_PATH||'git',['show','HEAD:'+file],{cwd:path.resolve(import.meta.dirname,'..'),encoding:'utf8',maxBuffer:64*1024*1024});
-const readEolBaseline=file=>baselineArg?readBaseline(file):execFileSync(process.env.HANI_GIT_PATH||'git',['show','origin/main:'+file],{cwd:path.resolve(import.meta.dirname,'..'),encoding:'utf8',maxBuffer:64*1024*1024});
+const readEolBaseline=file=>process.env.HANI_QA_EOL_BASELINE?fs.readFileSync(path.resolve(process.env.HANI_QA_EOL_BASELINE,file),'utf8'):baselineArg?readBaseline(file):execFileSync(process.env.HANI_GIT_PATH||'git',['show','origin/main:'+file],{cwd:path.resolve(import.meta.dirname,'..'),encoding:'utf8',maxBuffer:64*1024*1024});
 const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
 vm.runInContext(read('hani-relationship-seed.js'),context);
 const study=read('hani-study-v02984.js'),main=read('hani-main.js');

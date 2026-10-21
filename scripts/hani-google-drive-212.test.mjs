@@ -101,7 +101,7 @@ function browserModel(options={}){
 }
 test('client: real renderer logged out, connected/list, KST, size, escaping, safe new tab, empty/error/scope states; zero writes',async()=>{
   const loggedOut=browserModel({signedOut:true});await loggedOut.run('googleDriveEnter()');assert.equal(loggedOut.calls.length,0);assert.match(loggedOut.el('[data-gdrive-status]').textContent,/Cloud 로그인/);
-  const b=browserModel();await b.run('googleDriveEnter()');assert.deepEqual(b.calls,[{action:'status'},{action:'list',folderId:'root'}]);assert.match(b.el('[data-gdrive-account]').textContent,/owner@example.test/);
+  const b=browserModel();await b.run('googleDriveEnter()');assert.deepEqual(b.calls,[{action:'status'},{action:'list',folderId:'root'}]);assert.match(b.el('[data-gdrive-status]').textContent,/owner@example.test/);
   const rows=b.el('[data-gdrive-files]').innerHTML;assert.match(rows,/&lt;img/);assert.doesNotMatch(rows,/<img|javascript:/);assert.match(rows,/target="_blank" rel="noopener noreferrer"/);assert.match(rows,/2026\. 10\. 15\..*01:30 KST/);assert.match(rows,/2 KB/);
   b.setMode('empty');await b.run('googleDriveLoad()');assert.match(b.el('[data-gdrive-notice]').textContent,/파일이 없어요/);
   b.setMode('error');await b.run('googleDriveLoad()');assert.match(b.el('[data-gdrive-notice]').textContent,/불러오지 못했어요/);
