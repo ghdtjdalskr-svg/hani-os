@@ -216,7 +216,13 @@
     $("driveVaultReminder").textContent=prompt?
       "폴더 권한을 다시 확인하려면 ‘백업 폴더 연결’을 눌러 주세요.":
       permission==="denied"?"폴더 접근이 거부됐습니다. ‘백업 폴더 연결’에서 다시 선택해 주세요.":"";
+    const photoStatus=$("settingsPhotoStatus");if(photoStatus)photoStatus.textContent=Number.isInteger(row?.photos?.missing)&&row.photos.missing>=0?row.photos.missing+"건":"확인 전";
     const last=row?.last;
+    const backupStatus=$("settingsBackupStatus");if(backupStatus){
+      const dates=[last?.at?new Date(last.at).getTime():NaN,Number(backupStatus.dataset.localBackupAt)||NaN].filter(Number.isFinite);
+      const at=dates.length?Math.max(...dates):null;backupStatus.dataset.backupAt=at===null?"":String(at);
+      backupStatus.textContent=at===null?"확인 전":new Date(at).toLocaleString("ko-KR",{timeZone:"Asia/Seoul"})+" KST";
+    }
     $("driveVaultLast").textContent=last?
       "마지막 검증 백업: "+new Date(last.at).toLocaleString("ko-KR",{timeZone:"Asia/Seoul"})+
       " KST · "+last.name+" · "+last.bytes+" bytes · SHA-256 "+last.sha256:"검증된 Vault 백업 기록 없음";

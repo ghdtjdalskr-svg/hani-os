@@ -783,9 +783,9 @@
         <div class="study-hero-v02984">
           <div class="study-hero-meta"><span class="study-chip" id="studyProjectCount">프로젝트 0</span><span class="study-chip" id="studyQuizCount">퀴즈 0</span><span class="study-chip" id="studyWrongCount">오답 0</span></div>
         </div>
-        <div class="study-subtabs" role="tablist" aria-label="공부 메뉴"><button class="study-subtab is-active" type="button" data-study-tab="board">Learning Board</button><button class="study-subtab" type="button" data-study-tab="wrong">오답노트</button><button class="study-subtab" type="button" data-study-tab="history">History</button></div>
+        <div class="study-subtabs" role="tablist" aria-label="공부 메뉴"><button class="study-subtab is-active" type="button" data-study-tab="board">학습</button><button class="study-subtab" type="button" data-study-tab="wrong">오답노트</button><button class="study-subtab" type="button" data-study-tab="history">학습 기록</button></div>
         <section class="study-project-switcher" aria-label="학습 프로젝트 선택">
-          <div class="study-project-switcher-head"><div><span>PROJECT SELECT</span><h3>학습 프로젝트</h3></div><small id="studyProjectListHint">프로젝트를 선택하면 러닝보드가 열립니다.</small></div>
+          <div class="study-project-switcher-head"><div><h3>학습 프로젝트</h3></div><small id="studyProjectListHint">프로젝트를 선택하세요.</small></div>
           <div class="study-project-list" id="studyProjectList"></div>
         </section>
         <div class="study-engine-grid">
@@ -840,9 +840,9 @@
       const view = normalizeProject(p), s = projectProgress(p), pct = s.total ? Math.round(s.completed / s.total * 100) : 0;
       const statusLabel=view.status==='paused'?'일시중지':view.status==='completed'?'종료':'학습 중';
       return `<button class="study-project-row ${p.id === activeProjectId ? 'is-active' : ''}" type="button" data-study-project="${safe(p.id)}"><b>${safe(p.name)}<span class="study-project-state ${safe(view.status)}">${statusLabel}</span></b><span>${safe(({jlpt:'JLPT',economy:'경제·금융·시장',certificate:'자격증',university:'대학교',ai:'AI/실무',other:'기타'}[view.category] || '기타'))}${view.examDate ? ` · 시험 ${safe(view.examDate)}` : ''} · ${safe(SCHEDULE_LABELS[view.scheduleType])} · ${view.quizSize}문제</span><div class="study-progress-line"><i style="--p:${pct}%"></i><span>${s.completed}/${s.total} · 평균 ${s.avg}점</span></div></button>`;
-    }).join('') : `<div class="study-empty"><b>표시할 학습 프로젝트가 없습니다.</b><br>${activeStudyTab==='board'?'Learning Board에서 새 프로젝트를 추가해 주세요.':'프로젝트를 만들면 이곳에서 선택할 수 있어요.'}</div>`;
+    }).join('') : `<div class="study-empty"><b>표시할 학습 프로젝트가 없습니다.</b><br>${activeStudyTab==='board'?'학습 탭에서 프로젝트를 추가하세요.':'프로젝트를 만들면 이곳에서 선택할 수 있어요.'}</div>`;
     const hint=q('#studyProjectListHint');
-    if(hint)hint.textContent=activeStudyTab==='wrong'?'프로젝트를 선택하면 해당 프로젝트의 오답만 표시합니다.':activeStudyTab==='history'?'프로젝트를 선택하면 지금까지 출제된 문제세트를 표시합니다.':'접어도 프로젝트 선택 목록은 항상 유지됩니다.';
+    if(hint)hint.textContent=activeStudyTab==='wrong'?'프로젝트별 오답':activeStudyTab==='history'?'프로젝트별 출제 기록':'';
     qa('[data-study-project]', box).forEach(btn => btn.onclick = () => { activeProjectId = btn.dataset.studyProject || ''; activeQuizId = ''; quickWrongIds = null; renderLearning(); });
   }
 
@@ -1199,7 +1199,7 @@
     const activeQuiz = quizById(activeQuizId);
     main.innerHTML = `
       <details class="study-learning-board-collapsible" ${learningBoardOpen?'open':''}>
-        <summary><span><b>${safe(project.name)} Learning Board</b><small>오늘의 문제 생성과 프로젝트 운영 현황</small></span><em>${learningBoardOpen?'접기':'열기'}</em></summary>
+        <summary><span><b>${safe(project.name)} Learning Board</b></span><em>${learningBoardOpen?'접기':'열기'}</em></summary>
         <div class="study-card-v02984 study-today-card">
         <div class="study-today-top"><div class="study-today-title"><span>${safe(view.category.toUpperCase())} · ${safe(date)}</span><b>${safe(project.name)} Learning Board</b></div>${todayQuiz?.status === 'completed' ? `<div class="study-score">${safe(quizStatusLabel(todayQuiz))}</div>` : paused ? '<span class="study-status in_progress">학습 중지</span>' : `<button class="btn primary" id="studyGenerateQuiz" type="button" ${busy ? 'disabled' : ''}>${todayQuiz ? '오늘 세트 열기' : busy ? '생성 중…' : failed ? '다시 생성' : view.scheduleType === 'manual' ? '문제세트 생성' : scheduled ? '오늘 세트 생성' : '수동 생성'}</button>`}</div>
         <div class="study-project-summary"><span class="study-chip">${safe(SCHEDULE_LABELS[view.scheduleType])}</span><span class="study-chip">${view.quizSize}문제</span>${view.examDate ? `<span class="study-chip">시험 ${safe(view.examDate)}</span>` : ''}${view.focusAreas.map(x => `<span class="study-chip">${safe(x)}</span>`).join('')}</div>
