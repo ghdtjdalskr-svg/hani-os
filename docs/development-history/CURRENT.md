@@ -1,3 +1,7 @@
+# 2026-10-21 · 하니 스트리트 저널 V1 (도연/Codex)
+
+`hani/street-journal-v1` / base `331291e` + 치비 HEAD `f9d1c73`: 승인 v3 디자인·기존 투자 리포트 세 번째 persistent 탭·브리핑 파서/미리보기·별도 `hani_street_journal_v1` 보관·PNG·정확히 한 Research 상세 연결 구현. Node34/34·실제 Edge390/1440·PNG 다운로드·콘솔오류0·보호키 무접근 spy/기존 owner 바이트 불변 PASS. closure128파일/15,387,186bytes·누락0·기존 한도 준수(추가 열차 파일 시 재확인). 버전/cache·기존 저장/Cloud 변경 없음. **미커밋·미push·PR/main/배포 없음, 서윤 검수 대기.** 원격 main 조회는 네트워크 실패, 사용자Cloud/Android/Safari/열차 gate 미검증. Notion 시작 기록 read-back 성공, 완료 기록은 자동 승인 policy never 거절로 갱신 대기. [인수인계](handoffs/2026-10-21-street-journal-v1.md). 아래 다른 담당·과거 기록 보존.
+
 # 2026-10-21 · offline-entry 회귀 9종 후속 (도연/Codex)
 
 `hani/offline-entry` / 시작 HEAD `519b468`, 원격 main/base `aa9c963c`(v2.9.222 일치). 정확한 offline UI 2줄·gate delta와 실제 shared transport를 기존 테스트에 반영. **소스 수정0·Node24명령 통과**, 비변경18,474줄 EOL·Tier A/Vault cosmetic/runtime hash 유지. 실제 Edge는 서윤 재실행 대기, 버전/Cloud write/storage/main/배포 변경 없음. Notion 자동 승인 never 거절로 갱신 대기. Git add 권한 거절·commit 미등록 pathspec 실패로 미커밋 보존. 상세 원인은 [인수인계](handoffs/2026-10-20-offline-entry.md)의 2026-10-21 회귀9종 후속 절 참조. 아래 기존/타 담당 기록 보존.
