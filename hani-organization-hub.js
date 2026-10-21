@@ -75,15 +75,74 @@
     const activity=[...publishedPosts,...(Array.isArray(data?.boardComments)?data.boardComments:[]).filter(r=>r&&!r.draft&&!r.pending&&!r.disposition&&postIds.has(r.postId))];
     for(const row of activity){const date=Date.parse(row.createdAt);if(!Number.isFinite(date)||date>now||new Date(date+9*3600000).toISOString().slice(0,7)!==month)continue;counts.set(row.authorId,(counts.get(row.authorId)||0)+1)}
     const staff=(roster?.people||[]).map(p=>({...p,count:counts.get(p.id)||0})).filter(p=>p.count>0).sort((a,b)=>b.count-a.count||a.id.localeCompare(b.id));
-    return {milestones:unique.slice(0,8),stats,employee:staff[0]||null};
+    return {releases:unique,milestones:unique.slice(0,8),stats,employee:staff[0]||null};
+  }
+  // Curated moments for 성민 대표님, in editorial priority order (at most 3 per month).
+  // October prioritizes the HQ opening, newspaper launch and chibi greeting. Other big
+  // changes stay in the complete timeline; title keywords never promote routine patches.
+  const historyMilestonePriority=['v2.9.215','v2.9.213','v2.9.222','v2.9.216','v2.9.218','v2.9.161','v2.9.164','v2.9.120','v2.9.132','v2.9.135'];
+  let historyReleases=null,historyReleasesRequested=false,historyReleasesFailed=false;
+  let historyExpanded=false,historyKey='',countsKey='',detailsKey='';
+  const historyExpandedMonths=new Set(),historyRegularLimit=5;
+  function loadHistoryReleases(){
+    if(historyReleasesRequested)return;
+    historyReleasesRequested=true;
+    fetch('./assets/data/hani-history-releases-v1.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('release catalog');return r.json()}).then(value=>{
+      if(value?.schema!==1||!Array.isArray(value.entries)||!value.entries.every(r=>/^v\d+\.\d+\.\d+$/.test(r?.id)&&typeof r.title==='string'&&/[가-힣]/.test(r.title)&&[...r.title].length<=24&&/^\d{4}-\d{2}-\d{2}$/.test(r.date)&&Number.isFinite(Date.parse(r.date+'T00:00:00Z'))&&new Date(r.date+'T00:00:00Z').toISOString().slice(0,10)===r.date&&['released','pages'].includes(r.status)&&Array.isArray(r.credits)))throw Error('release metadata');
+      historyReleases=value.entries;renderOverview();
+    }).catch(()=>{historyReleasesFailed=true;renderOverview()});
   }
   function renderOverview(){
-    const slot=root.querySelector(".ogh-overview");if(!slot)return;
-    const model=organizationOverviewData(typeof state==="undefined"?null:state,window.HANI_DEVELOPMENT_HISTORY_V1?.entries,window.HaniOrganizationRoster),employee=model.employee;
-    slot.innerHTML='<section class="ogh-section"><div class="ogh-section-head"><div><span class="ogh-kicker">HISTORY</span><h2>HANI GROUP 연혁</h2></div><p>운영 반영이 기록된 주요 업데이트 · 전체 배포 목록과는 다를 수 있습니다.</p></div><ol class="ogh-timeline">'+model.milestones.map(r=>'<li><div><strong>'+esc(r.id)+'</strong><time datetime="'+esc(r.date)+'">'+esc(r.date)+'</time></div><p>'+esc(r.title)+'</p></li>').join('')+'</ol>'+(model.milestones.length?'':'<p class="ogh-overview-empty">공개된 배포 기록이 아직 없습니다.</p>')+'</section>'+
-      '<section class="ogh-section"><div class="ogh-section-head"><div><span class="ogh-kicker">AT A GLANCE</span><h2>숫자로 보는 HANI</h2></div><p>현재 메모리에 있는 기록과 공개 카탈로그 기준</p></div><dl class="ogh-stats">'+model.stats.map(s=>'<div><dt>'+esc(s.label)+'</dt><dd><strong>'+s.value.toLocaleString('ko-KR')+'</strong><small>'+esc(s.unit)+'</small></dd></div>').join('')+'</dl>'+(model.stats.length?'':'<p class="ogh-overview-empty">기록을 불러오면 숫자를 보여드립니다.</p>')+'</section>'+
+    const slot=root.querySelector('.ogh-overview');if(!slot)return;
+    const model=organizationOverviewData(typeof state==='undefined'?null:state,historyReleases,window.HaniOrganizationRoster),employee=model.employee;
+    if(!slot.querySelector('.ogh-history'))slot.innerHTML='<section class="ogh-section ogh-history" aria-labelledby="ogh-history-title"><div class="ogh-history-head"><div><span class="ogh-kicker">HANI GROUP / CHRONICLE</span><h2 id="ogh-history-title">HANI GROUP 연혁</h2><p>함께 만든 변화, 기록으로 이어가다.</p></div><div class="ogh-history-counts" aria-label="HANI 기록 집계"></div></div><div class="ogh-history-months" id="ogh-history-months"></div><button type="button" class="ogh-history-more" data-history-more aria-controls="ogh-history-months" aria-expanded="false" hidden>더 보기</button></section><div class="ogh-overview-details"></div>';
+    const staff=window.HaniOrganizationRoster.people.filter(p=>p.status!=='planned'&&p.registration!=='planned');
+    const issueCount=window.HaniIlbo?.publishedCount?.()??null;
+    const key=JSON.stringify([model.releases,staff,historyReleases===null,historyReleasesFailed]);
+    const countsMarkup='<span title="배포 이력 카탈로그 전체 기록">릴리스 <strong>'+(historyReleases===null?'—':model.releases.length)+'</strong>회</span><span title="입사 예정 제외">직원 <strong>'+staff.length+'</strong>명</span><span data-history-ilbo title="일보 모듈의 발행 목록 기준">하니일보 <strong>—</strong>호</span>';
+    if(countsMarkup!==countsKey){slot.querySelector('.ogh-history-counts').innerHTML=countsMarkup;countsKey=countsMarkup;}
+    const issueSlot=slot.querySelector('[data-history-ilbo] strong'),issueText=String(issueCount??'—');
+    if(issueSlot.textContent!==issueText)issueSlot.textContent=issueText;
+    if(key!==historyKey){
+      historyKey=key;
+      const months=[...new Set(model.releases.map(r=>r.date.slice(0,7)))];
+      const milestoneIds=new Set(),monthlyMilestones=new Map();
+      for(const id of historyMilestonePriority){const record=model.releases.find(r=>r.id===id);if(!record)continue;const month=record.date.slice(0,7),count=monthlyMilestones.get(month)||0;if(count<3){milestoneIds.add(id);monthlyMilestones.set(month,count+1)}}
+      slot.querySelector('.ogh-history-months').innerHTML=months.map((month,index)=>{
+        const releases=model.releases.filter(r=>r.date.slice(0,7)===month);
+        const regular=releases.filter(r=>!milestoneIds.has(r.id)),overflowIds=new Set(regular.slice(historyRegularLimit).map(r=>r.id));
+        return '<section class="ogh-history-month" data-history-month="'+esc(month)+'" aria-labelledby="ogh-month-'+esc(month)+'"'+(index>1&&!historyExpanded?' hidden':'')+'><h3 id="ogh-month-'+esc(month)+'"><span>'+month.slice(0,4)+'</span><strong>'+month.slice(5)+'</strong><small>월 · '+releases.length+'회</small></h3><ol class="ogh-timeline" id="ogh-timeline-'+esc(month)+'">'+releases.map(r=>{
+          const milestone=milestoneIds.has(r.id);
+          // A feature/portrait/brand mention is not attribution. Only documented credits.
+          const text=[r.title,r.summary,r.ref].join(' ');
+          const credited=staff.filter(p=>r.credits?.includes(p.id));
+          // Only explicit completed chairman approval on a launch, never a pending gate.
+          const approved=/(?:회장님?|성민 대표님?)(?:의|이|께서)?\s*(?:최종\s*)?승인(?:\s*(?:완료|확정)|을\s*받아)/.test(text)&&/(?:출시|오픈|창간|합류|launch)/i.test(r.title)&&!/(?:미승인|승인\s*(?:대기|필요|예정|요청|취소)|승인되지|승인\s*(?:완료|확정)\s*아님)/.test(text);
+          const credits=credited.map(p=>{
+            const file=(portraitFiles[p.id]||'./assets/profiles/hani-profile-'+p.id+'.webp').replace('/profiles/','/profiles/thumb/').replace('.webp','-128.webp');
+            return '<span class="ogh-history-credit"><img src="'+file+'" alt="" loading="lazy" width="28" height="28"><span>'+esc(p.name)+'</span></span>';
+          }).join('');
+          return '<li class="ogh-history-entry'+(milestone?' is-milestone':'')+'" data-history-release="'+esc(r.id)+'"'+(overflowIds.has(r.id)?' data-history-overflow'+(!historyExpandedMonths.has(month)?' hidden':''):'')+'><div class="ogh-history-meta"><time datetime="'+esc(r.date)+'">'+esc(r.date.slice(5).replace('-','.'))+'</time><span>'+esc(r.id)+'</span>'+(milestone?'<span class="ogh-history-label">MILESTONE</span>':'')+'</div><h4>'+esc(r.title)+'</h4>'+(credits||approved?'<div class="ogh-history-credits">'+credits+(approved?'<span class="ogh-history-approved"><span aria-hidden="true">🐸</span> 회장님 승인</span>':'')+'</div>':'')+'</li>';
+        }).join('')+(overflowIds.size?'<li class="ogh-history-month-toggle"><button type="button" class="ogh-history-month-more" data-history-month-more="'+esc(month)+'" data-history-hidden-count="'+overflowIds.size+'" aria-controls="ogh-timeline-'+esc(month)+'" aria-expanded="false">이 달 '+overflowIds.size+'건 더 보기</button></li>':'')+'</ol></section>';
+      }).join('')||'<p class="ogh-overview-empty">'+(historyReleases===null?(historyReleasesFailed?'배포 기록을 불러오지 못했습니다. 새로고침해 주세요.':'배포 기록을 불러오는 중입니다.'):'공개된 배포 기록이 아직 없습니다.')+'</p>';
+    }
+    const monthNodes=slot.querySelectorAll('[data-history-month]');
+    monthNodes.forEach((node,index)=>{
+      node.hidden=index>1&&!historyExpanded;
+      const expanded=historyExpandedMonths.has(node.dataset.historyMonth);
+      node.querySelectorAll('[data-history-overflow]').forEach(row=>{row.hidden=!expanded});
+      const toggle=node.querySelector('[data-history-month-more]');
+      if(toggle){toggle.setAttribute('aria-expanded',String(expanded));toggle.textContent=expanded?'이 달 접기':'이 달 '+toggle.dataset.historyHiddenCount+'건 더 보기';}
+    });
+    const more=slot.querySelector('[data-history-more]');
+    more.hidden=monthNodes.length<=2;more.setAttribute('aria-expanded',String(historyExpanded));
+    more.textContent=historyExpanded?'접기':'더 보기 · 이전 '+Math.max(0,monthNodes.length-2)+'개월';
+    const detailsMarkup='<section class="ogh-section"><div class="ogh-section-head"><div><span class="ogh-kicker">AT A GLANCE</span><h2>숫자로 보는 HANI</h2></div><p>현재 메모리에 있는 기록과 공개 카탈로그 기준</p></div><dl class="ogh-stats">'+model.stats.map(s=>'<div><dt>'+esc(s.label)+'</dt><dd><strong>'+s.value.toLocaleString('ko-KR')+'</strong><small>'+esc(s.unit)+'</small></dd></div>').join('')+'</dl>'+(model.stats.length?'':'<p class="ogh-overview-empty">기록을 불러오면 숫자를 보여드립니다.</p>')+'</section>'+
       '<section class="ogh-section"><div class="ogh-section-head"><div><span class="ogh-kicker">PEOPLE OF THE MONTH</span><h2>이달의 직원</h2></div><p>한국 시간 이번 달의 게시글 + 공개 댓글 기준 · 동률은 직원 ID순</p></div>'+(employee?'<div class="ogh-employee">'+portrait(employee)+'<div><h3>'+esc(employee.name)+'</h3><p>'+esc(employee.rank)+' · '+esc(teamOf(employee.team)?.name||employee.team)+'</p><strong>게시글·댓글 '+employee.count.toLocaleString('ko-KR')+'건</strong></div></div>':'<p class="ogh-overview-empty">이번 달 게시판 활동이 쌓이면 이달의 직원을 소개합니다.</p>')+'</section>';
+    if(detailsMarkup!==detailsKey){slot.querySelector('.ogh-overview-details').innerHTML=detailsMarkup;detailsKey=detailsMarkup;}
+    loadHistoryReleases();
   }
+  window.addEventListener('hani-ilbo-ready',renderOverview);
   function renderTeamPanels(){
     return `<div class="ogh-team-tabs" role="tablist" aria-label="팀별 소개">${teams.map((t,i)=>`<button type="button" role="tab" id="ogh-tab-${t.id}" aria-controls="ogh-panel-${t.id}" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-team-tab="${t.id}"><span>0${i+1}</span>${t.name}</button>`).join('')}</div>
       <div class="ogh-team-panels">${teams.map((t,i)=>`<article class="ogh-team-panel" id="ogh-panel-${t.id}" role="tabpanel" aria-labelledby="ogh-tab-${t.id}" tabindex="0" ${i===0?'':'hidden'} style="--team:${t.color};--tint:${t.tint}">
@@ -167,7 +226,9 @@
   });
   root.addEventListener('click',e=>{
     const button=e.target.closest('button'); if(!button||!root.contains(button))return;
-    if(button.matches('.ogh-close'))dialog.close();
+    if(button.hasAttribute('data-history-more')){historyExpanded=!historyExpanded;renderOverview();}
+    else if(button.hasAttribute('data-history-month-more')){const month=button.dataset.historyMonthMore;if(historyExpandedMonths.has(month))historyExpandedMonths.delete(month);else historyExpandedMonths.add(month);renderOverview();}
+    else if(button.matches('.ogh-close'))dialog.close();
     else if(button.dataset.typography){
       root.dataset.typography=button.dataset.typography;
       typeControls.querySelectorAll('[data-typography]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));

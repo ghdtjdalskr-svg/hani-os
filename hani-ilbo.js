@@ -136,6 +136,7 @@
       fold('하니의 칭찬', '<div class="ilbo-praise"><span class="ilbo-note-mark" aria-hidden="true">✦</span><p class="ilbo-eyebrow">A NOTE FOR YOU</p><blockquote>'+esc(issue.praise)+'</blockquote><footer>'+avatar('hani')+'<span class="ilbo-signature">하니 드림</span></footer></div>')+'</div><footer class="ilbo-footer">한 주의 작은 순간을 모읍니다 · '+esc(issue.reporter || '민지 대리')+'</footer></article>';
   }
   let entries = [], selected = null, generation = 0, loading = null, seenDate = '', ready = false;
+  const publishedCount = (now = Date.now()) => ready ? new Set(entries.filter(x=>x.date <= koreaDate(now)).map(x=>x.number)).size : null;
   const cache = new Map();
   const root = () => document.getElementById(VIEW);
   const stateSource = () => typeof state !== 'undefined' ? state : {};
@@ -188,13 +189,13 @@
   async function boot() {
     if (loading) return loading;
     loading = (async () => {
-      try {entries = parseManifest(await json('data/hani-ilbo/issues.json'));ready = true;homeCard();await render();}
+      try {entries = parseManifest(await json('data/hani-ilbo/issues.json'));ready = true;window.dispatchEvent(new Event('hani-ilbo-ready'));homeCard();await render();}
       catch (error) {const host = root()?.querySelector('[data-ilbo-content]');if (host) host.innerHTML = empty(error.message)+'<button class="btn" type="button" data-ilbo-retry>다시 불러오기</button>';}
     })();
     try {await loading;} finally {loading = null;}
   }
   async function enter() {if (!ready) await boot();else await render();}
-  window.HaniIlbo = Object.freeze({enter,homeCard,compute,period,koreaDate,parseManifest,parseIssue,topPosts,newsroomPosts,markup,bindImage});
+  window.HaniIlbo = Object.freeze({enter,homeCard,publishedCount,compute,period,koreaDate,parseManifest,parseIssue,topPosts,newsroomPosts,markup,bindImage});
   if (typeof document === 'undefined') return;
   function start() {
     const host = root();if (!host) return;

@@ -1318,6 +1318,7 @@ function formatDateTime(value){if(!value)return "-";const d=new Date(value);retu
 function updateStorageStatus(result=lastSaveResult){
   cloudClearComparison();
   lastSaveResult=result||lastSaveResult;
+  const summary=$("settingsSaveStatus");if(summary)summary.textContent=loadRecovery.active?"원본 보호 중":lastSaveResult?.ok===false?"저장 실패":lastSaveResult?.ok===true?"저장 정상":"확인 전";
   const badge=$("saveStateBadge"),label=$("lastSavedLabel");
   if(badge){
     badge.classList.toggle("ok",!!result?.ok);
@@ -1800,7 +1801,7 @@ function setBanner(key,page="home"){
   const av=$("aiAvatar"),ak=quoteAgent||pageAgentImage[page],img=ak&&sidebarAgentImages[ak];
   av.className="ai-avatar"+(img?" has-photo":"")+(ak?` agent-${ak}`:"");
   av.style.backgroundImage=img?`url(${img})`:"";av.textContent=img?"":(p.emoji||a.emoji);
-  const km={home:"DASHBOARD",finance:"FINANCE",health:"HEALTH",growth:"GROWTH",life:"LIFE",sports:"SPORTS",game:"SPORTS",work:"WORK",team:"AI TEAM"};
+  const km={home:"대시보드",finance:"재무",health:"건강",growth:"성장",life:"생활",sports:"스포츠",game:"스포츠",work:"업무",team:"AI 팀"};
   if($("aiKicker"))$("aiKicker").textContent=km[key]||String(key||page).toUpperCase();
   $("aiName").textContent=meta[0]||page;$("aiMessage").textContent=meta[1]||p.message||a.message;$("aiRole").textContent=p.name||a.name;
   if($("aiQuote"))$("aiQuote").innerHTML=`<span>${esc(q[0])} 한마디</span><b>“${esc(q[1])}”</b>`;
@@ -1886,7 +1887,7 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
   document.querySelectorAll(".group").forEach(g=>g.classList.remove("is-current"));
   const activeNav=document.querySelector(`.group .nav-btn[data-view="${id}"]`);
   activeNav?.closest(".group")?.classList.add("is-current");
-  const m=pageMeta[id]||[id,"","home"];$("title").textContent=m[0];$("desc").textContent=m[1];document.body.dataset.view=id;document.body.dataset.canvasGroup=m[2]||"home";const km={home:"DASHBOARD",finance:"FINANCE",health:"HEALTH",growth:"GROWTH",life:"LIFE",sports:"SPORTS",game:"SPORTS",work:"WORK",team:"AI TEAM"};if($("pageKicker"))$("pageKicker").textContent=km[m[2]]||String(id).toUpperCase();setBanner(m[2],id);
+  const m=pageMeta[id]||[id,"","home"];$("title").textContent=m[0];document.body.dataset.view=id;document.body.dataset.canvasGroup=m[2]||"home";const km={home:"대시보드",finance:"재무",health:"건강",growth:"성장",life:"생활",sports:"스포츠",game:"스포츠",work:"업무",team:"AI 팀"};if($("pageKicker"))$("pageKicker").textContent=km[m[2]]||String(id).toUpperCase();setBanner(m[2],id);
   updateFinishScope();
   history.replaceState(null,"",id==="home"?location.href.split("#")[0]:("#"+(organization?"organization/"+organization.tab+(organization.person?"/"+organization.person:""):settings?"settings/"+settings:committee?committeeView+(committeeRoute[1]==="monthly"?"/monthly":""):boardHash||id)));$("app").classList.remove("mobile-open");window.scrollTo({top:0,left:0,behavior:"auto"});
   if(organization?.person&&loginGateUnlocked)window.HaniOrganizationHub?.openPerson(organization.person);
@@ -2008,7 +2009,7 @@ if(bstats)all.appendChild(bstats);const hc=document.createElement('div');hc.clas
 const topGrid=document.createElement('div');topGrid.className='grid';all.appendChild(topGrid);[assetCard,latestCard,holdingCard].filter(Boolean).forEach(x=>topGrid.appendChild(x));
 if(yearly){const yearCard=$("annualInvestmentStats")?.closest('.card'),annualAsset=$("annualAssetChart")?.closest('.card'),monthList=$("annualMonthList")?.closest('.card'),stockFlow=$("annualStockSelect")?.closest('.card'),stockDetail=$("annualStockHistoryRows")?.closest('.card'),stockAccounts=$("annualStockAccounts")?.closest('.card'),stockSummary=$("annualStockRows")?.closest('.card');const yf=$("annualInvestmentYear")?.closest('.field');if(yf)yf.classList.add('rc1-hidden');const ag=document.createElement('div');ag.className='grid';all.appendChild(ag);[yearCard,annualAsset,monthList].filter(Boolean).forEach(x=>ag.appendChild(x));const sg=document.createElement('div');sg.className='grid';stocks.appendChild(sg);[stockFlow,stockDetail,stockAccounts,stockSummary].filter(Boolean).forEach(x=>sg.appendChild(x));yearly.remove()}
 if(monthly){const editor=$("brokerEditorCard"),archive=$("brokerSnapshotRows")?.closest('.card'),oldGrid=editor?.parentElement;if(editor&&archive){const rg=document.createElement('div');rg.className='grid investment-record-grid';if(monthNote)monthNote.after(rg);else monthly.prepend(rg);rg.appendChild(editor);rg.appendChild(archive);if(oldGrid&&oldGrid.classList.contains('grid')&&!oldGrid.children.length)oldGrid.remove()}}
-if(manage){manage.innerHTML='<div class="instrument-manager-note"><b>종목 관리 = 투자 모듈의 종목 마스터</b><br>여기서 종목을 한 번 등록하면 월간 기록의 종목 선택지에 자동으로 나타납니다. 보유수량·평단·수익률은 여기서 수정하지 않고 월간 기록과 투자 현황에서 관리합니다.</div><div id="manageMasterSlot"></div><div class="manage-section" id="manageWatchSlot"></div>';if(inst){const g=inst.querySelector(':scope > .grid');if(g)$("manageMasterSlot").appendChild(g);inst.remove()}if(watch){while(watch.firstChild)$("manageWatchSlot").appendChild(watch.firstChild);watch.remove()}const price=$("instrumentPrice")?.closest('.field');if(price)price.classList.add('rc1-hidden');const fg=$("instrumentName")?.closest('.fg');if(fg&&!$("instrumentMarket")){const hidden=document.createElement('input');hidden.type='hidden';hidden.id='instrumentEditId';fg.parentElement.insertBefore(hidden,fg);const field=document.createElement('div');field.className='field';field.innerHTML='<label>시장</label><select id="instrumentMarket"><option value="">자동/미지정</option><option value="KR">한국</option><option value="US">미국</option><option value="OTHER">기타</option></select>';const tickerField=$("instrumentTicker")?.closest('.field');fg.insertBefore(field,tickerField)}const table=$("instrumentRows")?.closest('table');if(table)table.querySelector('thead').innerHTML='<tr><th>종목</th><th>분류</th><th>시장</th><th>코드 / 티커</th><th>보유계좌</th><th>관리</th></tr>';if($("addInstrument"))$("addInstrument").textContent='종목 저장'}
+if(manage){manage.innerHTML='<div class="instrument-manager-note">수량·평단 수정은 월간 기록에서 합니다.</div><div id="manageMasterSlot"></div><div class="manage-section" id="manageWatchSlot"></div>';if(inst){const g=inst.querySelector(':scope > .grid');if(g)$("manageMasterSlot").appendChild(g);inst.remove()}if(watch){while(watch.firstChild)$("manageWatchSlot").appendChild(watch.firstChild);watch.remove()}const price=$("instrumentPrice")?.closest('.field');if(price)price.classList.add('rc1-hidden');const fg=$("instrumentName")?.closest('.fg');if(fg&&!$("instrumentMarket")){const hidden=document.createElement('input');hidden.type='hidden';hidden.id='instrumentEditId';fg.parentElement.insertBefore(hidden,fg);const field=document.createElement('div');field.className='field';field.innerHTML='<label>시장</label><select id="instrumentMarket"><option value="">자동/미지정</option><option value="KR">한국</option><option value="US">미국</option><option value="OTHER">기타</option></select>';const tickerField=$("instrumentTicker")?.closest('.field');fg.insertBefore(field,tickerField)}const table=$("instrumentRows")?.closest('table');if(table)table.querySelector('thead').innerHTML='<tr><th>종목</th><th>분류</th><th>시장</th><th>코드 / 티커</th><th>보유계좌</th><th>관리</th></tr>';if($("addInstrument"))$("addInstrument").textContent='종목 저장'}
 [$("investAccounts"),$("investHoldings"),$("investTransactions"),$("investCashFlow")].filter(Boolean).forEach(x=>x.classList.add('rc1-hidden'));
 // Mount the same read-only market and portfolio instances in the stock pane.
 [$('assetMarket'),$('portfolioLivePreview')].filter(Boolean).forEach(node=>stocks.appendChild(node));
@@ -2580,8 +2581,14 @@ function loginGateShowCloudTools(show){
   const host=$("loginGateCloudTools");if(!host)return;
   host.hidden=!show;
   for(const {node,parent,next} of loginGateCloudSlots){
-    if(show)host.append(node);
-    else parent.insertBefore(node,next?.parentNode===parent?next:null);
+    const group=node.querySelector("#group-cloud");
+    if(show){
+      host.append(node);
+      if(group){if(group.dataset.gateOpen===undefined)group.dataset.gateOpen=String(group.open);group.open=true}
+    }else{
+      parent.insertBefore(node,next?.parentNode===parent?next:null);
+      if(group?.dataset.gateOpen!==undefined){group.open=group.dataset.gateOpen==="true";delete group.dataset.gateOpen}
+    }
   }
 }
 function loginGateConnectionReady(){
@@ -3726,7 +3733,7 @@ function renderQuarterKickoff(host,registry){
   });
 }
 function renderCloudTransferUsage(){
-  const stats=$('storageStats');if(!stats)return;let card=stats.parentElement.querySelector('[data-cloud-transfer]');if(!card){card=document.createElement('div');card.className='note';card.setAttribute('data-cloud-transfer','');stats.after(card)}
+  const stats=$('storageStats');if(!stats)return;let card=$('settingsCloudTransfer')||stats.parentElement.querySelector('[data-cloud-transfer]');if(!card){card=document.createElement('div');card.className='note';card.setAttribute('data-cloud-transfer','');stats.after(card)}
   // Reuse the size measured at the last save; stringify the whole state only if no save has run yet.
   let bytes=Number(lastSaveResult?.bytes);if(!Number.isFinite(bytes)||bytes<=0){try{bytes=serializedBytes(JSON.stringify(state))}catch(e){card.textContent='현재 기록의 용량을 계산하지 못했어요.';return}}
   const estimated=cloudSessionFullReads*bytes;
@@ -3936,7 +3943,7 @@ async function mediaRunB(){
       if(!saved)throw Error("기존 저장 경로에서 저장하지 못했습니다. 참조 추가를 중단했습니다.");
       try{renderAll()}catch(_){toast("참조는 저장됐습니다. 화면을 새로 확인해 주세요.")}
     }
-    mediaBStatus("e · "+result.count+"장 보관 확인 · 기록의 원본 이미지는 그대로 · 충돌 "+
+    mediaBStatus("완료 · "+result.count+"장 보관 확인 · 기록의 원본 이미지는 그대로 · 충돌 "+
       result.conflicts.length+"건"+(result.conflicts.length?" (기존 참조 보존)":""));
   }catch(error){mediaBStatus("중단 · "+(error?.message||"이중 보관 실패"))}
   finally{mediaBBusy=false;renderMediaPreview()}
@@ -4087,11 +4094,13 @@ function renderMediaPreview(){
   const button=$("mediaRunB");
   if(button){button.disabled=mediaBBusy||mediaCBusy||!mediaBCanRun();button.onclick=mediaRunB}
   const host=$("mediaSeparationStats");if(!host)return;
+  const status=$("settingsMediaStatus");if(status)status.textContent="확인 전";
   try{
     const report=window.HANI_MEDIA?.dryRunReport(state);if(!report)return;
+    if(status)status.textContent=report.inlineBytes===0?"완료됨":"내장 이미지 확인 · 고급에서 분리 미리보기";
     host.textContent="이미지 "+report.count+"장 · 내장 이미지 "+bytesLabel(report.inlineBytes)+
       " · 분리 후 예상 기록 "+bytesLabel(report.estimatedAfterBytes);
-  }catch(_){host.textContent="미리보기 계산을 하지 못했습니다. 원본 기록은 유지됩니다."}
+  }catch(_){host.textContent="미리보기 계산을 하지 못했습니다. 원본 기록은 유지됩니다.";if($("group-storage"))$("group-storage").open=true}
 }
 function bookCard(b){return `<article class="archive-card">${mediaImage(b,"cover")?`<img class="archive-cover" src="${esc(mediaImage(b,"cover"))}" alt="${esc(b.title)} 표지">`:'<div class="archive-cover placeholder">📚</div>'}<div><span class="topic-tag" style="--tag:${TOPIC_COLORS[b.topic]||TOPIC_COLORS["기타"]}">${esc(b.topic||"기타")}</span><h4>${esc(b.title)}</h4><div class="archive-meta">${esc(b.author||"저자 미입력")}${b.status==="read"?` · ${stars(b.rating)}`:""}${b.completedDate?`<br>완독 ${esc(b.completedDate)}`:""}</div>${b.review?`<div class="archive-review">${esc(b.review)}</div>`:""}</div><div class="archive-actions"><button class="btn sm" ${recordIdAttributes("data-book-toggle",b.id)}>${b.status==="read"?"읽기 목록으로":"서재로 이동"}</button><button class="btn sm" ${recordIdAttributes("data-book-edit",b.id)}>수정</button><button class="btn sm danger" ${recordIdAttributes("data-book-delete",b.id)}>삭제</button></div></article>`}
 function updateBookFormState(){const read=$("bookStatus").value==="read";$("bookRating").disabled=!read;$("bookDate").disabled=!read;$("bookRatingField")?.classList.toggle("is-disabled",!read);$("bookDateField")?.classList.toggle("is-disabled",!read);if($("bookReviewLabel"))$("bookReviewLabel").textContent=read?"완독 후기 / 메모":"읽고 싶은 이유 / 기대 메모";$("bookReview").placeholder=read?"완독 후 인상과 배운 점을 남겨요.":"이 책을 읽고 싶은 이유를 남겨요.";ratingPreview("bookRating","bookRatingPreview","완독 후 입력할 수 있어요.")}
@@ -4347,8 +4356,8 @@ function googleDriveRender(){
   const root=googleDriveRoot();if(!root)return;
   if(googleDriveRuntime.owner!==(cloudUser?.id||'')){googleDriveEpoch++;googleDriveRuntime=googleDriveFresh();root.querySelector('[data-gdrive-search]')?.reset()}
   const rt=googleDriveRuntime,logged=!!cloudUser,esc=googleDriveEscape;
-  root.querySelector('[data-gdrive-status]').textContent=rt.connected?'Google Drive 연결됨':logged?'Google Drive 읽기 권한을 연결해 주세요.':'Cloud 로그인이 필요해요.';
-  root.querySelector('[data-gdrive-account]').textContent=rt.connected?`Google 계정 · ${rt.accountHint||'연결 확인됨'}`:logged?'Calendar와 같은 Google 연결을 사용해요.':'HANI OS Cloud 로그인 후 파일을 확인할 수 있어요.';
+  root.querySelector('[data-gdrive-status]').textContent=rt.connected?`Google Drive 연결됨 · ${rt.accountHint||'계정 확인됨'}`:logged?'Google Drive 읽기 권한을 연결해 주세요.':'Cloud 로그인이 필요해요.';
+
   root.querySelector('[data-gdrive-action="connect"]').textContent=rt.connected?'Google Drive 다시 연결':'Google Drive 연결';
   root.querySelectorAll('button,input').forEach(el=>{el.disabled=rt.busy||!logged||(el.closest('[data-gdrive-search]')&&!rt.connected)});
   root.querySelector('[data-gdrive-action="more"]').hidden=!rt.nextPageToken||rt.busy;
@@ -4622,7 +4631,7 @@ function loadAiTeamStatus(){
       for(const member of developmentTeam){const rows=data.members.filter(row=>row?.id===member.imageKey),row=rows[0];if(rows.length!==1||typeof row.role!=='string'||!row.role.trim()||!['now','recent','next'].every(key=>Array.isArray(row[key])&&row[key].length&&row[key].every(value=>typeof value==='string'&&value.trim())))throw new Error('Invalid AI team member');}
       aiTeamStatus=data;
     }catch(_){aiTeamStatus=null}finally{clearTimeout(timer)}
-    const summary=$('aiTeamStatusSummary');if(summary)summary.textContent=aiTeamStatus?aiTeamStatus.updatedAt+' 기준 · 운영 v'+aiTeamStatus.productionVersion+' · 팀별 지금 하는 일과 다음 할 일':'현황을 불러오지 못했어요';
+    const summary=$('aiTeamStatusSummary');if(summary)summary.textContent=aiTeamStatus?aiTeamStatus.updatedAt+' 기준 · 운영 v'+aiTeamStatus.productionVersion:'현황을 불러오지 못했어요';
     renderTeam();
   })();
   return aiTeamStatusPromise;
@@ -5222,7 +5231,7 @@ function cloudHasAuthCallback(){return !!cloudAuthUrlInfo().hasAuthCallback}
 function cloudNavigateToRecovery(){
   try{
     showView("settings");
-    setTimeout(()=>$("cloudBridgeCard")?.scrollIntoView({behavior:"smooth",block:"start"}),80);
+    setTimeout(()=>($("group-cloud")||$("cloudBridgeCard"))?.scrollIntoView({behavior:"smooth",block:"start"}),80);
   }catch(e){console.warn("Recovery navigation failed",e)}
 }
 function cloudCleanAuthUrl({preserveRoute=false}={}){
@@ -5432,6 +5441,14 @@ async function renderSafetyArchive(){
   if(status)status.textContent=safetyArchiveStatus;
   try{
     const rows=(await safetyArchiveList()).filter(row=>row.verified===true).sort((a,b)=>b.id-a.id);
+    const summary=$("settingsBackupStatus"),at=rows.map(row=>Date.parse(row.payload?.savedAt)).filter(Number.isFinite);
+    if(summary){
+      summary.dataset.archiveAt=at.length?new Date(Math.max(...at)).toISOString():"";
+      const local=[Date.parse(state.meta?.lastBackupAt),...at].filter(Number.isFinite);
+      summary.dataset.localBackupAt=local.length?String(Math.max(...local)):"";
+      const dates=[...local,Date.parse(window.HANI_DRIVE_VAULT?.readStatus?.()?.lastAt)].filter(Number.isFinite);
+      const latest=dates.length?Math.max(...dates):null;summary.dataset.backupAt=latest===null?"":String(latest);summary.textContent=latest===null?"확인 전":formatDateTime(new Date(latest).toISOString());
+    }
     list.replaceChildren();for(const [index,row] of rows.entries()){const button=document.createElement("button");button.type="button";button.className="btn";button.textContent=(index===0?"최신":"이전 "+index)+" · "+formatDateTime(row.payload.savedAt)+" · 원본 전체 내려받기";button.onclick=async()=>{const data=mediaHasRefs(row.payload.state)?await mediaBackupState(row.payload.state):row.payload.state;if(data)downloadJson(JSON.stringify(data,null,2),"HANI_OS_safety_"+row.id+".json")};list.append(button)}
     if(!rows.length)list.textContent="보관된 안전 백업이 없습니다.";
   }catch(_){list.textContent="백업 보관소를 읽지 못했습니다. 기존 Local과 이전 안전 사본은 유지됩니다."}
@@ -6333,6 +6350,14 @@ function renderCloudPanel(){
   if($("cloudCompare"))$("cloudCompare").disabled=!cloudUser;
   if($("cloudVerifySourceOwner"))$("cloudVerifySourceOwner").disabled=!cloudUser||cloudOwnerVerificationBusy;
   renderCloudChoice();
+  const summary=$("settingsCloudStatus");if(summary)summary.textContent=cloudRuntime?.status||"확인 전";
+  const backup=$("settingsBackupStatus");if(backup){
+    const local=[state.meta?.lastBackupAt,backup.dataset.archiveAt].map(v=>v?new Date(v).getTime():NaN).filter(Number.isFinite);
+    backup.dataset.localBackupAt=local.length?String(Math.max(...local)):"";
+    const dates=[...local,Date.parse(window.HANI_DRIVE_VAULT?.readStatus?.()?.lastAt)].filter(Number.isFinite);
+    const at=dates.length?Math.max(...dates):null;backup.dataset.backupAt=at===null?"":String(at);backup.textContent=at===null?"확인 전":formatDateTime(new Date(at).toISOString());
+  }
+  if((cloudRecoveryMode||isConflict||cloudRuntime.tone==="error"||$("cloudChoicePanel")?.hidden===false)&&$("group-cloud"))$("group-cloud").open=true;
 }
 async function cloudFetchMeta({silent=false,probe=false}={}){
   if(!cloudClient||!cloudUser)return null;
@@ -6797,6 +6822,8 @@ function renderStoragePanel(){
   const pill=$("storageStatePill"),message=$("storageMessage");
   if(pill){pill.textContent=loadRecovery.active?"원본 보호 중":lastSaveResult?.ok===false?"ERROR":"LOCAL · OK";pill.classList.toggle("danger",lastSaveResult?.ok===false)}
   if(message)message.textContent=lastLoadError||(importSyncHold?"백업 복원 후 Cloud 자동 반영을 보류하고 있습니다.":"")||lastSaveResult?.message||"브라우저 저장 상태를 확인했습니다.";
+  const summary=$("settingsSaveStatus");if(summary)summary.textContent=loadRecovery.active?"원본 보호 중":lastSaveResult?.ok===false?"저장 실패":lastSaveResult?.ok===true?"저장 정상":"확인 전";
+  if((loadRecovery.active||lastSaveResult?.ok===false||lastLoadError||importSyncHold)&&$("settingsStorageInfo"))$("settingsStorageInfo").open=true;
   const badge=$("saveStateBadge"),label=$("lastSavedLabel");
   if(badge){badge.classList.toggle("ok",lastSaveResult?.ok!==false);badge.classList.toggle("error",lastSaveResult?.ok===false);badge.textContent=loadRecovery.active?"원본 보호 · 저장 중지":lastSaveResult?.ok===false?"저장 실패":"저장 정상"}
   if(label)label.textContent="마지막 저장 "+formatDateTime(state.meta?.lastSavedAt);
@@ -7185,7 +7212,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.224";
+const HANI_DISPLAY_VERSION="2.9.225";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
@@ -7810,10 +7837,10 @@ async function annualReportLoad(){
 function annualReportEmptyStage(year){
   const presenters=[['jieun','지은','재무','숫자 너머, 어떤 선택이 남았나요?'],['naeun','나은','신체·활동','올해의 나를, 내 기준으로 돌아봅니다.'],['hina','히나','학습','배운 것과 아직 궁금한 것. 둘 다 우리의 성장입니다.'],['haru','하루','독서','책장을 넘긴 뒤에도 남은 이야기.'],['minji','민지','문화','우리의 한 해에는 어떤 장면이 있었나요?']];
   return `<div class="annual-story-stage" aria-label="연간 발표 디자인 예시">
-    <section class="annual-story-cover"><img class="annual-story-team" src="./assets/team/hani-team-office.webp" alt="HANI GROUP 담당자 팀"><div class="annual-story-cover-copy"><span class="annual-story-example">DESIGN PREVIEW · 내용 작성 전</span><p class="annual-story-eyebrow">HANI GROUP · ${esc(year)} ANNUAL CONFERENCE</p><h3>한 해의 기록.<br>우리만의 이야기.</h3><p>숫자로 다 말할 수 없는 한 해를,<br>성민 대표님과 함께 완성합니다.</p><span class="annual-story-awaiting">한 해의 이야기를 기다리고 있어요</span></div></section>
-    <section class="annual-story-overview"><span class="annual-story-eyebrow">01 · THE YEAR IN FOCUS</span><h3>성과보다 먼저,<br>기억하고 싶은 한 해.</h3><p>아래는 발표 구성의 예시입니다. 아직 실적이나 목표가 채워진 보고서는 아닙니다.</p><div class="annual-story-prompts"><div><span>올해를 표현하는 한 문장</span><b>대표님의 이야기로</b></div><div><span>가장 의미 있었던 변화</span><b>대화로 함께 발견</b></div><div><span>남기고 싶은 주요 장면</span><b>직접 고르는 기록</b></div></div></section>
-    <section class="annual-story-presenters"><span class="annual-story-eyebrow">02 · OUR PEOPLE, OUR STORIES</span><h3>각자의 자리에서.<br>하나의 이야기로.</h3><div class="annual-story-speakers">${presenters.map(([id,name,role,line])=>`<article><img src="./assets/profiles/hani-profile-${id}.webp" alt="${name}"><div><span>${name} · ${role}</span><p>${line}</p><small>발표 내용은 GPT와 함께 작성</small></div></article>`).join('')}</div></section>
-    <section class="annual-story-next"><span class="annual-story-eyebrow">03 · WHAT COMES NEXT</span><h3>다음 해의 가능성.<br>아직 정해지지 않은 만큼.</h3><p>새 목표를 만들 수도, 지금의 방향을 이어갈 수도 있어요. 대표님의 상황을 이야기하며 결정합니다.</p><div class="annual-story-journey"><div><b>함께 이야기하기</b><span>GPT와 회고·새 목표·전망 작성</span></div><div><b>보고서 완성하기</b><span>PDF로 디자인, PPTX로 편집 원본 준비</span></div><div><b>이 무대에 올리기</b><span>아래에서 검사·미리보기 후 직접 등록</span></div></div><p class="annual-story-safety">자동 생성한 실적이나 목표를 대신 넣지 않습니다. 등록한 PDF는 자체 디자인 그대로 표시하며, 이 예시 구성으로 변환하지 않습니다.</p></section>
+    <section class="annual-story-cover"><img class="annual-story-team" src="./assets/team/hani-team-office.webp" alt="HANI GROUP 담당자 팀"><div class="annual-story-cover-copy"><span class="annual-story-example">구성 예시 · 실적 미입력</span><p class="annual-story-eyebrow">${esc(year)}년 연간 보고</p><h3>한 해의 기록.<br>우리만의 이야기.</h3></div></section>
+    <section class="annual-story-overview"><span class="annual-story-eyebrow">01 · 올해의 기록</span><h3>성과보다 먼저,<br>기억하고 싶은 한 해.</h3><p>아래는 발표 구성의 예시입니다. 아직 실적이나 목표가 채워진 보고서는 아닙니다.</p><div class="annual-story-prompts"><div><span>올해를 표현하는 한 문장</span><b>대표님의 이야기로</b></div><div><span>가장 의미 있었던 변화</span><b>대화로 함께 발견</b></div><div><span>남기고 싶은 주요 장면</span><b>직접 고르는 기록</b></div></div></section>
+    <section class="annual-story-presenters"><span class="annual-story-eyebrow">02 · 담당자</span><h3>각자의 자리에서.<br>하나의 이야기로.</h3><div class="annual-story-speakers">${presenters.map(([id,name,role,line])=>`<article><img src="./assets/profiles/hani-profile-${id}.webp" alt="${name}"><div><span>${name} · ${role}</span><p>${line}</p></div></article>`).join('')}</div></section>
+    <section class="annual-story-next"><span class="annual-story-eyebrow">03 · 다음 해</span><h3>다음 해의 가능성.<br>아직 정해지지 않은 만큼.</h3><div class="annual-story-journey"><div><b>함께 이야기하기</b><span>GPT와 회고·새 목표·전망 작성</span></div><div><b>보고서 완성하기</b><span>PDF로 디자인, PPTX로 편집 원본 준비</span></div><div><b>이 무대에 올리기</b><span>아래에서 검사·미리보기 후 직접 등록</span></div></div><p class="annual-story-safety">자동 생성한 실적이나 목표를 대신 넣지 않습니다. 등록한 PDF는 자체 디자인 그대로 표시하며, 이 예시 구성으로 변환하지 않습니다.</p></section>
   </div>`;
 }
 function annualReportRenderList(){
