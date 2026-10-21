@@ -34,6 +34,54 @@
 `hani/night-actions-221` / base `4a913303`(원격 main 일치, v2.9.220). 216 원본98행/disabled 보존 후 신규221에22개 추가, 기존 단일 scheduler의 야간·주말/자정·재실·cooldown/fallback 확장. 신규20·기존216/218/seats/v2/building targeted와 raw safety PASS(선택Edge2 SKIP, 공통engine 중복 포함). 01:40 3F DOM 실행에서2초 뒤 코딩 emoji 확인. **실제 Edge spawn EPERM·office219 Git subprocess EPERM으로 실화면/해당 검사 미검증.** add는 index.lock 권한 거절, commit은 신규 pathspec 미등록으로 실패해 미커밋·미push 보존. 버전/cache·Storage·Cloud·main/배포 없음. Notion 계획 append 자동 승인 never 거절로 갱신 대기. seed JSON 선행/Claude 열차 인계는 [인수인계](handoffs/2026-10-20-night-actions-221.md). 아래 타 담당·과거 기록 보존.
 
 # 2026-10-19 · REMOTE 219 후속 액션 전수 복구 (도연/Codex)
+# 2026-10-21 · 증권사 OCR 정확도224 (도연/Codex)
+
+`hani/kiwoom-code-fix` / 시작 HEAD `06519be`, base/원격 main `331291eb` 일치·기존 네 수정 보존. 6개 화면별 근거/가시성/라벨·신뢰도 계약, 원본 이미지 보존, 로컬 4식·계좌/구간 검산, 유일 후보 보정·노란 Preview·원문 펼침 구현. **합성22건330필드 92.42%→100%(실이미지 인식률 아님), 신규Node13·기존33+intake7·실제Edge1440/390/전체앱 PASS**, 승인 전 write0·저장12함수/write본문 exact. v223/cache·Cloud schema·main/배포 유지. **hani-agent-orchestrator prompt/응답계약·asset temperature0/출력14000 변경, 미배포·승인 후 서윤 동반 배포 필요.** 실제 모델/실계좌·대형 표·Android/최종gate 미검증. [보고서](../../artifacts/ocr-accuracy-224/report.md) · [인수인계](handoffs/2026-10-21-ocr-accuracy-224.md). Git add index.lock 권한·commit 신규 pathspec 실패로 미커밋·미push 보존. Notion 계획 생성/read-back 성공, 결과 추가는 자동 승인 never 거절로 대기. 상세 종료 결과는 인수인계 참조. 아래 기존/타 담당 기록 보존.
+# 2026-10-21 · 하나증권 OCR·공통 Preview 편집 (도연/Codex)
+
+`hani/kiwoom-code-fix` / HEAD `fce2fdc`의 kiwoomcode·kiwoomreset·tossprice 보존, 원격 main/base `331291eb` 일치. 하나증권 라벨 근접 매핑·계산값/미확인·실시간 소액 INFO와 모든 증권사 Preview 직접 수정/행 추가·제외/되돌리기/live 검산 구현. **신규 Node13·키움10·토스10·기존 targeted7 PASS**, 승인 전 보호원본/state/write0와 기존 저장/재확인/복구 본문 exact. 최종 Edge1440/390·전체 앱 browser는 `spawn EPERM`으로 미검증. v223/cache·Cloud write/DB schema·main/배포 유지. Asset Vision Edge 동반 배포 필요, 브라우저 재검증 후 열차 인계. Notion 갱신은 자동 승인 정책 never 거절로 대기. Git 시도 결과·상세는 [인수인계](handoffs/2026-10-21-kiwoom-code.md)의 하나증권 후속 절 참조. 아래 과거/타 담당 기록 보존.
+
+# 2026-10-21 · 토스 현재가·헤더 매핑 후속 (도연/Codex)
+
+`hani/kiwoom-code-fix` / 시작 HEAD `b86ca4a`의 kiwoomcode·kiwoomreset 보존, 원격 main/base `331291eb` 일치. 토스 헤더 매핑·소수 수량·국내/해외·원화 환산, Asset Vision currentPrice 응답 계약/추출 지시·Preview 2% 경고 수정. **신규10·기존Node10+intake7·실제Edge1440/390 신규/기존lifecycle·전체 앱 검사 PASS**, Preview 보호원본/write0·확정/저장 본문 exact. v223/cache·Cloud write/DB schema·main/배포 변경 없음. **이미지 수정은 열차에서 hani-agent-orchestrator Edge 동반 배포 필요**, 실제 AI/대표님 계좌·Android·release gate 미검증. Notion 자동 승인 never 거절로 갱신 대기. Git 시도/상세는 [인수인계](handoffs/2026-10-21-kiwoom-code.md)의 토스 후속 절 참조. 아래 기존 기록 보존.
+
+# 2026-10-21 · 자산 업데이트 계좌별 입력 초기화 후속 (도연/Codex)
+
+`hani/kiwoom-code-fix` / 시작 HEAD `16821c9`의 kiwoomcode 보존, 원격 main/base `331291eb` 확인. 확정 성공 후 첨부·URL·input·파싱 Preview 초기화, 페이지 내 버리기/돌아가기, 동일 파일 재선택·늦은 OCR 차단. **Node10·기존 intake7·1440/390 lifecycle·전체 앱 browser PASS**, 확정 외 보호키 write0·저장/재확인/rollback 경로 보존. 과거 baseline 누락 안전검사1개 미완료. v223/cache·Cloud/schema·새 키·main/배포 변경 없음. **add/commit 모두 index.lock 권한 거절로 미커밋 보존**. Notion 자동 승인 never 거절로 갱신 대기, 미검증·열차 인계는 [인수인계](handoffs/2026-10-21-kiwoom-code.md) 후속 절 참조. 아래 기존 기록 보존.
+
+# 2026-10-21 · 키움 코드·2행 TSV 수정 (도연/Codex)
+
+`hani/kiwoom-code-fix` / base `331291eb` (원격 main 일치, v2.9.223 유지). intake만 A-prefix 영숫자 KRX 정규화·2행 페어링·코드 우선 매칭·기존 이름/증권사 표기 Preview 구현. **신규10·기존 Node7·1440/390 Preview·전체 앱 자산 브라우저 회귀 PASS**, Preview 보호원본 byte-identical/write0·확정/저장 본문 보존. YUNA 안전검사1개는 과거 baseline 파일 누락으로 미완료. 버전/cache·storage 구조·Cloud/schema·main/배포 변경 없음. Notion 계획 추가는 자동 승인 never 거절로 갱신 대기. Git add index.lock 권한 거절·commit 신규 pathspec 미등록으로 미커밋·미push. 미검증·열차 인계는 [인수인계](handoffs/2026-10-21-kiwoom-code.md). 아래 타 담당 기록 보존.
+
+# 2026-10-21 · offline-entry 회귀 9종 후속 (도연/Codex)
+
+`hani/offline-entry` / 시작 HEAD `519b468`, 원격 main/base `aa9c963c`(v2.9.222 일치). 정확한 offline UI 2줄·gate delta와 실제 shared transport를 기존 테스트에 반영. **소스 수정0·Node24명령 통과**, 비변경18,474줄 EOL·Tier A/Vault cosmetic/runtime hash 유지. 실제 Edge는 서윤 재실행 대기, 버전/Cloud write/storage/main/배포 변경 없음. Notion 자동 승인 never 거절로 갱신 대기. Git add 권한 거절·commit 미등록 pathspec 실패로 미커밋 보존. 상세 원인은 [인수인계](handoffs/2026-10-20-offline-entry.md)의 2026-10-21 회귀9종 후속 절 참조. 아래 기존/타 담당 기록 보존.
+
+# 2026-10-20 · offline-entry-223 (도연/Codex)
+
+`hani/offline-entry`, base `aa9c963c`(main v2.9.222 일치). PIN 없는 장애 시 로컬 진입을 기존 gate/검증/저장 경로에 연결. 신규 browser29·지정 로그인/Cloud/백업 및 관련 회귀 PASS, 보호 함수23 원문·버전/cache 유지. **중요 blocker: v222는 소유권 binding을 영속 저장하지 않아, 이미 증거가 사라진 현재 기기의 긴급 복구는 이 패치만으로 해결되지 않음.** 정상 인증·원본 검증 후 기존 Cloud 메타 키에 증거를 남기는 향후 진입 구현이며, 증거 없는 기기는 차단 유지. 새 키/primary write/schema/배포 없음. Git·미검증/다음 결정·Notion 자동 승인 거절 기록은 [인수인계](handoffs/2026-10-20-offline-entry.md) 참조. 아래 기존 담당 기록 보존.
+
+# 2026-10-20 · int-222 통합 회귀 6건 (도연/Codex)
+
+`hani/int-222` / HEAD `22d41802`, 원격 main `3919a257` GitHub 연결 도구로 일치 확인(v2.9.221). main 비의도 EOL4줄·index 인사 삽입행 EOL3줄 복원, QA210 사진 API 기대2개 추가, brand218/office219 승인 UI 변환 후 전체 index 바이트 비교. **지정 Node10종 모두 PASS**, main 비변경8,380줄·index 나머지 전체 바이트 일치·부정검증5종 PASS. 실제 Edge는 서윤 재실행 대기. 버전/cache·Cloud/storage·main/배포 의미 변경 없음. add는 index.lock 권한 거절, commit은 신규 pathspec 미등록으로 실패해 **미커밋 보존**. Notion append 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-10-20-int-222-regression.md). 아래 기존 기록 보존.
+
+# 2026-10-20 · launch-221 전체 회귀 후속 (도연/Codex)
+
+`hani/night-actions-221` / 시작 HEAD `88808cc0`, 최신 원격 main `4a913303` 연결 도구로 일치 확인(v2.9.220). webdriver 자동 인사 억제·전용 boolean force, 정적 CSS/JS 감사와 brand/QA baseline 기대 교정. **Node134개 파일 시도:126 통과·환경 차단6·별도 입력2**, 인사36/감사7/brand3/QA9 PASS. **실제 Edge spawn EPERM으로 브라우저11+혼합3+launch 서윤 재검증 대기**. 버전/cache·Cloud·데이터·main/배포 변경 없음. Git add/commit 모두 index.lock 권한 거부로 **미커밋 보존**, Notion 계획/결과 추가 모두 자동 승인 never 거절로 갱신 대기. 재실행 목록·근거는 [인수인계](handoffs/2026-10-20-night-actions-221.md)의 전체 회귀 후속 절 참조. 아래 기존/타 담당 기록 보존.
+
+# 2026-10-20 · launch-221 저장소 실패 fallback 보완 (도연/Codex)
+
+`hani/night-actions-221` / HEAD `e734cf4f`, main 캐시 `4a913303`(이번 원격 조회 연결 실패). 서윤 focus·timing 변경 보존. localStorage 오류 시 sessionStorage로 탭 세션1회, 두 store 오류 시 페이지1회 보장 범위를 source/fixture에 명시. 실제 module Node 및 syntax PASS, 수정 후 browser는 서윤 재실행 대기(이전 12장 재사용 PASS 아님). 버전/cache·보호 데이터·Cloud·배포 변경 없음. Notion append 자동 승인 거절로 갱신 대기. Git 시도 및 상세는 [인수인계](handoffs/2026-10-20-launch-221-storage-fallback.md). 아래 기존 기록 보존.
+
+# 2026-10-20 · launch-221 치비 앱 시작 인사 (도연/Codex)
+
+`hani/night-actions-221` / 시작 HEAD `d78b61f`, main/base `4a913303` 확인. 기존 night-actions 보존, 승인된 치비 아트·별도 UI prefs 키로 로그인 해제 후 KST 하루1회 인사·테마 토글 구현. 신규VM23·기존로그인/테마/QA210·office targeted PASS, 제공6자산 decode PASS. **실제 Edge launch EPERM으로 화면/12장/console0 미검증, 열차 탑승 준비 대기.** v220/cache·보호데이터·Cloud·main/배포 유지. Notion append 자동 승인 정책never 거절로 갱신 대기. Git 시도 결과·다음 실행은 [작업 인수인계](handoffs/2026-10-20-night-actions-221.md)의launch221절 참조. 아래 이전/타담당 기록 보존.
+
+# 2026-10-20 · night-actions-221 본사 야간·주말 행동 (도연/Codex)
+
+`hani/night-actions-221` / base `4a913303`(원격 main 일치, v2.9.220). 216 원본98행/disabled 보존 후 신규221에22개 추가, 기존 단일 scheduler의 야간·주말/자정·재실·cooldown/fallback 확장. 신규20·기존216/218/seats/v2/building targeted와 raw safety PASS(선택Edge2 SKIP, 공통engine 중복 포함). 01:40 3F DOM 실행에서2초 뒤 코딩 emoji 확인. **실제 Edge spawn EPERM·office219 Git subprocess EPERM으로 실화면/해당 검사 미검증.** add는 index.lock 권한 거절, commit은 신규 pathspec 미등록으로 실패해 미커밋·미push 보존. 버전/cache·Storage·Cloud·main/배포 없음. Notion 계획 append 자동 승인 never 거절로 갱신 대기. seed JSON 선행/Claude 열차 인계는 [인수인계](handoffs/2026-10-20-night-actions-221.md). 아래 타 담당·과거 기록 보존.
+
+# 2026-10-19 · REMOTE 219 후속 액션 전수 복구 (도연/Codex)
 
 `hani/remote-blur-219` / 시작 HEAD `04f37e3`의 remote219 보존. 담당은 218 hero owner의 조직도 프로필 deep-link, 투자·운동·홈·자산·건강·학습·대학교·스포츠·설정의 실제 타깃과 기존 탭/details를 원천 맵/해석에서 사용. 비가용 버튼은 양면 숨김, 새 handler 없음. **39경로×4액션×카드/목록=312 실제 클릭·숨김/복구4종·AA72/Fold12·Remote/White215·QA210 Node9/후속14 PASS**. 기존 백업·뉴스·navigation 컨트롤의 UI/meta 저장은 격리 브라우저에서 구분하고 생활 데이터/기타 키 보존·update25회 write0 확인. 버전/cache·저장 함수·Cloud·main/배포 유지. **Git add/commit 모두 index.lock 권한 거절(exit128)로 미커밋·미push**, HEAD04f37 보존. 전 경로 감사표와 결과는 [인수인계](handoffs/2026-10-19-remote-219.md) 후속 최종 절 참조. Notion append는 자동 승인 정책 never 거절로 갱신 대기. 아래 이전 시점·다른 작업 기록 보존.
 # 2026-10-19 · REMOTE media 219 (도연/Codex)

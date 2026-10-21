@@ -40,7 +40,7 @@ assert.equal(sparsePreserved.length,2);assert.equal(sparsePreserved[0].id,'origi
 assert.equal(api.mergeHoldings([{name:'동명이종목',ticker:'111111',quantity:1},{name:'동명이종목',ticker:'222222',quantity:2}]).length,2);
 const stableIdentity=api.mergeWithExistingHoldings([{instrumentId:'canonical',name:'OCR 다른 이름',ticker:'A005930',quantity:3}],[{id:'saved',instrumentId:'canonical',name:'삼성전자',ticker:'005930',market:'KR',quantity:2}]);
 assert.equal(stableIdentity.length,1);assert.equal(stableIdentity[0].name,'삼성전자');assert.equal(stableIdentity[0].ticker,'005930');assert.equal(stableIdentity[0].market,'KR');assert.equal(stableIdentity[0].quantity,3);
-assert.equal(api.sameHolding({instrumentId:'one',ticker:'005930',name:'같은 이름'},{instrumentId:'two',ticker:'005930',name:'같은 이름'}),false);
+assert.equal(api.sameHolding({instrumentId:'one',ticker:'005930',name:'같은 이름'},{instrumentId:'two',ticker:'005930',name:'같은 이름'}),true,'normalized code takes priority over differing lookup IDs');
 assert.equal(api.sameHolding({ticker:'A005930',name:'이름 A'},{ticker:'005930',name:'이름 B'}),true);
 const optionalCostFields=api.missingReviewFields({positionsOnly:true,marketLinked:true,date:'2026-10-04',holdings:[{name:'AAPL',ticker:'AAPL',quantity:2,buyPrice:null}]},{type:'위탁'},null);
 assert.equal(optionalCostFields.length,0);

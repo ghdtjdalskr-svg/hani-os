@@ -3014,23 +3014,39 @@ const INTAKE_VISION_SCHEMA = {
 
 const nullableString = { type: ["string", "null"] };
 const nullableNumber = { type: ["number", "null"] };
+const ASSET_OCR_LAYOUTS = ["kiwoom_pc", "kiwoom_app", "toss_pc", "toss_app", "hana_account", "hana_stock", "unknown"];
+function assetFieldEvidence(fields: string[]) { return { type: "array", minItems: fields.length, maxItems: fields.length, items: {
+  type: "object", additionalProperties: false, properties: {
+    field: { type: "string", enum: fields }, visible: { type: "boolean" },
+    raw: nullableString, label: nullableString, confidence: { type: "number", minimum: 0, maximum: 1 },
+    alternatives: { type: "array", maxItems: 2, items: { type: "string" } },
+  }, required: ["field", "visible", "raw", "label", "confidence", "alternatives"],
+} }; }
 const ASSET_HOLDING_SCHEMA = {
   type: "object", additionalProperties: false,
   properties: {
+    evidence: assetFieldEvidence(["quantity", "buyPrice", "currentPrice", "purchaseAmount", "evaluationAmount", "pnl", "returnRate"]),
     name: nullableString, ticker: nullableString, quantity: nullableNumber,
-    averagePrice: nullableNumber, purchaseAmount: nullableNumber,
+    averagePrice: nullableNumber, currentPrice: nullableNumber, purchaseAmount: nullableNumber,
+    market: nullableString, marketSection: { type: ["string", "null"], enum: ["국내주식", "해외주식", null] },
+    buyCurrency: { type: ["string", "null"], enum: ["KRW", "USD", null] },
     valuationAmount: nullableNumber, profitLoss: nullableNumber, returnRate: nullableNumber,
   },
-  required: ["name", "ticker", "quantity", "averagePrice", "purchaseAmount", "valuationAmount", "profitLoss", "returnRate"],
+  required: ["evidence", "name", "ticker", "quantity", "averagePrice", "currentPrice", "purchaseAmount", "valuationAmount", "profitLoss", "returnRate", "market", "marketSection", "buyCurrency"],
 };
 const ASSET_VISION_SCHEMA = {
   type: "object", additionalProperties: false,
   properties: {
     target_hint: { type: "string", enum: ["asset"] },
+    layout: { type: "string", enum: ASSET_OCR_LAYOUTS },
+    section: { type: "string", enum: ["domestic", "overseas", "all", "unknown"] },
+    holdingsComplete: { type: "boolean" },
+    amountCurrency: { type: ["string", "null"], enum: ["KRW", "USD", null] },
+    accountEvidence: assetFieldEvidence(["currentAsset", "balance", "withdrawable", "purchase", "evaluation", "pnl", "returnRate"]),
     confidence: { type: "number", minimum: 0, maximum: 1 },
     extracted_text: { type: "string" },
     financialInstitution: nullableString, accountName: nullableString, accountType: nullableString,
-    currentAsset: nullableNumber, balance: nullableNumber, asOfDate: nullableString,
+    currentAsset: nullableNumber, balance: nullableNumber, withdrawable: nullableNumber, asOfDate: nullableString,
     purchaseAmount: nullableNumber, principal: nullableNumber, valuationAmount: nullableNumber,
     profitLoss: nullableNumber, returnRate: nullableNumber,
     holdings: { type: "array", maxItems: 80, items: ASSET_HOLDING_SCHEMA },
@@ -3038,7 +3054,7 @@ const ASSET_VISION_SCHEMA = {
     warnings: { type: "array", maxItems: 6, items: { type: "string" } },
     financial_detected: { type: "boolean" },
   },
-  required: ["target_hint", "confidence", "extracted_text", "financialInstitution", "accountName", "accountType", "currentAsset", "balance", "asOfDate", "purchaseAmount", "principal", "valuationAmount", "profitLoss", "returnRate", "holdings", "mismatch", "warnings", "financial_detected"],
+  required: ["amountCurrency", "layout", "section", "holdingsComplete", "accountEvidence", "target_hint", "confidence", "extracted_text", "financialInstitution", "accountName", "accountType", "currentAsset", "balance", "withdrawable", "asOfDate", "purchaseAmount", "principal", "valuationAmount", "profitLoss", "returnRate", "holdings", "mismatch", "warnings", "financial_detected"],
 };
 function validateAssetExtraction(parsed: any) {
   const purchase = Number.isFinite(parsed?.purchaseAmount) ? parsed.purchaseAmount : parsed?.principal;
@@ -3055,11 +3071,19 @@ function validateAssetExtraction(parsed: any) {
 async function extractIntakeImage(openaiKey: string, imageDataUrl: string, targetHint: string, fileName: string) {
   const assetMode = targetHint === "asset";
   const instructions = (assetMode ? [
+    "정확도 계약224: 먼저 layout을 kiwoom_pc(키움 HTS 잔고 2행 표), kiwoom_app(영웅문 앱 카드), toss_pc(헤더 보유종목 표), toss_app(앱 종목 카드), hana_account(계좌 잔고), hana_stock(주식잔고), unknown 중 판별하세요. broker/file_name은 힌트일 뿐이며 이미지 라벨로 검증하세요. amountCurrency는 계좌 합계에 실제로 표시된 통화 KRW/USD 또는 null이며 추측/환산 금지입니다. section은 현재가 등 개별 종목의 시장이 아니라 계좌 요약 합계의 범위 domestic/overseas/all/unknown이며, holdingsComplete는 해당 이미지에 전체 목록·합계까지 실제 보이고 잘린 행·스크롤·숨은 구간이 없을 때만 true입니다.",
+    "accountEvidence와 각 holding.evidence에는 정해진 모든 field를 정확히 한 번씩 넣으세요. 각 셀은 visible, raw(부호·쉼표·소수·단위를 원문 그대로), label(읽은 실제 열 제목/라벨), confidence(0~1), alternatives(흐려서 실제로 읽힐 수 있는 후보만 최대2개, 없으면 [])입니다. 보이지 않는 값은 visible=false/raw=null/label=null/confidence=0/alternatives=[]이며 기존 숫자 필드도 null입니다. 원문을 계산·정규화하지 마세요. 최종 숫자는 클라이언트가 raw에서 파싱합니다. 산식으로 숫자·누락 자리수를 만들어 후보에 넣지 마세요. confidence는 산식 일치가 아니라 시각적 판독 확실성입니다.",
+    "화면별 라벨 지도: 키움 PC는 코드행과 바로 다음 종목명행을 한 종목으로 묶고 A-prefix 코드 원문을 보존하세요. 매입가/매입금액은 코드행, 현재가/평가금액은 다음 행의 실제 헤더를 따릅니다. 키움 앱은 카드 경계와 보유수량/평균단가/현재가/평가금액 라벨을 따릅니다. 토스 PC는 1주 평균금액/현재가/보유 수량/원금/평가금/총 수익금/총 수익률 헤더로 매핑하고 일간 수익금은 제외합니다. 토스 앱은 펼친 카드의 실제 라벨을 따르며 접힌 항목은 invisible입니다. 하나 계좌잔고는 계좌 총액/currentAsset와 예수금/balance, 출금가능/withdrawable을 분리합니다. 계좌번호 아래 총액처럼 고정 위치로 판독한 셀은 label을 만들어내지 말고 계좌 총액이라고 화면에서 확인되지 않으면 낮은 confidence로 남기세요. 하나 주식잔고는 주식평가금액/evaluation과 총 손익/pnl, 각 종목 카드의 원문 라벨만 사용합니다. 라벨 없는 가격/수량은 추정하지 말고 낮은 confidence/null로 남기세요.",
     "당신은 PROJECT HANI의 Asset Vision Extractor입니다. 계좌·통장·투자자산의 현재 상태만 읽습니다.",
     "은행 입출금·저축·파킹·CMA·예금·적금·증권 위탁·ISA·연금저축·IRP·보유종목 요약 화면만 지원합니다.",
     "카드 결제내역·영수증·소비내역·가계부 입력은 지원하지 말고, 모든 자산 필드를 null로 두고 warnings에 지원 범위 밖이라고 적으세요.",
     "화면에 실제로 보이는 값만 반환하세요. 못 읽은 값은 null이며 이름·날짜·숫자를 추측하지 마세요.",
     "currentAsset와 balance 중 화면 의미에 맞는 필드를 사용하고, 투자 화면은 purchaseAmount/principal/valuationAmount/profitLoss/returnRate를 보이는 경우에만 채우세요.",
+    "하나증권 계좌 잔고: 계좌번호·종합매매 바로 아래 큰 숫자는 계좌 총액(currentAsset)입니다. 예수금(balance)은 반드시 예수금 라벨 바로 아래/옆 값만 읽고 0도 그대로 보존합니다. 라벨 없는 큰 숫자를 예수금으로 넣지 마세요. 출금가능은 withdrawable로 분리하며 예수금에 더하지 않습니다. 주식평가금액은 valuationAmount입니다. 잔고 > 주식잔고 > 국내 화면은 주식평가금액과 총 손익/수익률을 분리하세요. extracted_text에는 줄바꿈과 라벨·종목 카드 경계를 보존하세요.",
+    "종목의 접힌 카드에 없는 값은 null입니다. 수량·매입금액·평균단가·현재가는 각각 실제로 보이는 값만 추출하고 서로 대체하거나 추측하지 마세요. 평균단가=매입금액/수량, 현재가=평가금액/수량 계산은 클라이언트가 두 원본값을 확인한 뒤 계산값으로 표시합니다. 여러 화면은 따로 읽으며 실시간 가격 차이를 임의로 고치지 마세요.",
+    "토스증권 보유종목 표는 열 위치가 아니라 헤더 이름으로 각 행을 추출하세요: 종목명→name, 1주 평균금액→averagePrice, 현재가→currentPrice, 보유 수량→quantity, 평가금→valuationAmount, 원금→purchaseAmount, 총 수익률→returnRate, 총 수익금→profitLoss. 일간 수익률/일간 수익금과 총 수익률/총 수익금을 혼동하지 마세요. 현재가는 각 행에서 반드시 별도로 읽고, 보이지 않으면 null로 두며 평균가로 대체하지 마세요.",
+    "국내주식 …원/해외주식 …원은 합계 구간 제목이며 종목이 아닙니다. 각 행의 marketSection에 국내주식/해외주식을 보존하고 국내는 market=KR, 해외는 보이는 거래시장만 사용하세요. 해외라는 이유만으로 USD로 변환하지 마세요. 원 토글에서 가격에 원 또는 ₩가 보이면 해외 행도 buyCurrency=KRW(원화 환산)이며 달러 환산/추정은 금지합니다. 명시된 달러 가격만 USD, 미확인은 null입니다.",
+    "기존 숫자 필드에서는 원·%·주·쉼표 단위/표시를 제거하되 evidence.raw에는 그대로 보존하고, 부호와 소수 수량(예: 0.093771 주)을 보존하세요. -는 0이 아닌 null입니다. 수수료·세금 포함 배지는 열이나 종목이 아닙니다. 현재가 × 보유 수량과 평가금이 2% 넘게 다르면 warnings에 원본 확인 필요를 적고 원본 숫자는 바꾸지 마세요.",
     "화면 숫자를 산술적으로 고치지 마세요. 불일치는 원본값을 보존한 채 mismatch와 warnings로 알립니다.",
     "financial_detected는 true, target_hint는 asset으로 반환하세요. 저장이나 DB 쓰기는 하지 않습니다.",
   ] : [
@@ -3100,7 +3124,7 @@ async function extractIntakeImage(openaiKey: string, imageDataUrl: string, targe
           { type: "input_image", image_url: imageDataUrl, detail: "high" },
         ],
       }],
-      max_output_tokens: 2400,
+      max_output_tokens: assetMode ? 14000 : 2400,
       reasoning: { effort: "none" },
       text: { verbosity: "low", format: { type: "json_schema", name: assetMode ? "hani_asset_vision" : "hani_intake_vision", strict: true, schema: assetMode ? ASSET_VISION_SCHEMA : INTAKE_VISION_SCHEMA } },
       store: false,
@@ -3108,6 +3132,7 @@ async function extractIntakeImage(openaiKey: string, imageDataUrl: string, targe
   });
   const aiJson = await aiRes.json().catch(() => ({}));
   if (!aiRes.ok) throw new Error(`OpenAI ${aiRes.status}: ${aiJson?.error?.message ?? "Vision API 호출 실패"}`);
+  if (assetMode && aiJson?.status === "incomplete") throw new Error("이미지 판독 응답이 길이 제한으로 잘렸습니다. 화면을 나눠 다시 분석해 주세요.");
   const outputText = extractOpenAIOutputText(aiJson);
   if (!outputText) throw new Error("HANI Intake Vision 응답이 비어 있습니다.");
   let parsed: any;
