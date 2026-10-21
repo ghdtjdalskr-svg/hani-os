@@ -46,7 +46,7 @@ try{
   vm.runInContext(await fs.readFile(new URL('../hani-ai-budget.js',import.meta.url),'utf8'),ctx);
   await node('aiBudgetRefresh').handlers.click();
   const card=id=>node('aiBudgetCards').innerHTML.match(new RegExp('<article[^>]*data-budget-slot="'+id+'"[^]*?</article>'))[0];
-  for(const text of ['사용 추정','최근 5시간','최근 7일','1,200','300','1턴','마지막 활동'])assert.ok(card('claude-1').includes(text),text);
+  for(const text of ['사용 추정','최근 5시간','최근 7일','1,200','300','응답 1회','마지막 활동'])assert.ok(card('claude-1').includes(text),text);
   assert.doesNotMatch(card('claude-1'),/플랜 사용률 ·/);
   assert.match(card('gemini-pro'),/Gemini Pro \(Google AI Pro\)/);assert.match(card('antigravity-cg'),/Antigravity · Claude\/GPT/);
   for(const id of ['gemini-pro','antigravity-cg']){

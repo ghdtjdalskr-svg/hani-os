@@ -3,6 +3,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import http from 'node:http';
 import {pathToFileURL} from 'node:url';
+if(process.argv.includes('--static')){
+  const {verifyOwnerBinding}=await import('./hani-settings-225-events.mjs');
+  verifyOwnerBinding();
+  await import('./hani-owner-verification-diagnostic.test.mjs');
+  console.log('PASS Node owner binding/diagnostic; browser not run');
+}else{
 const {chromium}=await import(pathToFileURL(process.argv[2]).href);
 const root=path.resolve(import.meta.dirname,'..');
 const server=http.createServer((req,res)=>{
@@ -13,6 +19,13 @@ const server=http.createServer((req,res)=>{
 await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
 const origin=`http://127.0.0.1:${server.address().port}`;
 const browser=await chromium.launch({executablePath:process.argv[3],headless:true});
+// Settings and the diagnostic card are in separate, initially collapsed groups.
+// Open the target's actual details ancestors before interaction or screenshots.
+const revealDetails=locator=>locator.evaluate(node=>{
+  for(let parent=node.parentElement;parent;parent=parent.parentElement){
+    if(parent.tagName==='DETAILS')parent.open=true;
+  }
+});
 try{
   for(const width of [1440,390]){
     const context=await browser.newContext({viewport:{width,height:1000}});
@@ -28,6 +41,7 @@ try{
       document.querySelector('#app').setAttribute('aria-hidden','false');
       document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
       document.querySelector('#settings').classList.add('active');
+      document.querySelector('#group-advanced').open=true;
       document.querySelector('#cloudAdvanced').open=true;
       cloudUser={id:'synthetic-owner',email:'synthetic@example.invalid'};
       cloudClient={auth:{getUser:async()=>({data:{user:{id:'synthetic-owner'}},error:null})},from:()=>({select:()=>({eq:()=>({limit:async()=>({data:[{user_id:'synthetic-owner',state:structuredClone(state),revision:1}],error:null})})})})};
@@ -35,6 +49,7 @@ try{
     });
     const before=await page.evaluate(()=>localStorage.getItem(STORAGE_KEY));
     const errorsBefore=errors.length;
+    await revealDetails(page.locator('#cloudVerifySourceOwner'));
     await page.locator('#cloudVerifySourceOwner').click();
     await page.waitForFunction(()=>document.querySelector('#cloudOwnerVerificationResult').textContent.startsWith('VERIFIED'));
     assert.equal(await page.evaluate(()=>localStorage.getItem(STORAGE_KEY)),before);
@@ -43,13 +58,19 @@ try{
     assert.equal(errors.length,errorsBefore);
     for(const finish of ['porcelain-cream','midnight-black']){
       await page.evaluate(f=>applySignatureFinish(f,false),finish);
+      await revealDetails(page.locator('#cloudVerifySourceOwner'));
       assert.ok(await page.locator('#cloudVerifySourceOwner').isVisible());
       const bounding=await page.locator('#cloudVerifySourceOwner').boundingBox();
       assert.ok(bounding.width>0&&bounding.x+bounding.width<=width+1);
       const dir=path.join(root,'qa-evidence');fs.mkdirSync(dir,{recursive:true});
-      await page.locator('#cloudBridgeCard').screenshot({path:path.join(dir,`owner-runtime-${width}-${finish}.png`)});
+      const card=page.locator('#cloudVerifySourceOwner').locator('xpath=ancestor::div[contains(concat(" ",normalize-space(@class)," ")," card ")][1]');
+      await revealDetails(card);
+      assert.ok(await card.isVisible());
+      await card.screenshot({path:path.join(dir,`owner-runtime-${width}-${finish}.png`)});
     }
     console.log(`PASS actual runtime ${width}: synthetic same-owner verification, protected key unchanged, no cache/retained binding, both finishes; initial offline external errors=${errorsBefore}, new errors=0.`);
     await context.close();
   }
 }finally{await browser.close();await new Promise(resolve=>server.close(resolve));}
+
+}

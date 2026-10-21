@@ -3,12 +3,13 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
+import {createHistoryHarness} from './hani-history-226.test.mjs';
 const read=file=>fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
 const main=read('hani-main.js'),hub=read('hani-organization-hub.js');
 // Shared runners pass Playwright/browser paths; preservation fixtures are separate.
-const firstArg=process.argv[2],browserHarness=firstArg&&path.basename(firstArg)==='index.mjs';
+const firstArg=process.argv[2]?.startsWith('--')?null:process.argv[2],browserHarness=firstArg&&path.basename(firstArg)==='index.mjs';
 const baseDir=path.resolve((!browserHarness&&firstArg)||process.env.HANI_UI203B_TEST_BASELINE||path.join(import.meta.dirname,'../.ai-budget-private/ui-203b/base'));
-const baselineFile=file=>fs.existsSync(path.join(baseDir,file))?fs.readFileSync(path.join(baseDir,file),'utf8'):execFileSync('git',['show','HEAD:'+file],{encoding:'utf8',maxBuffer:64*1024*1024});
+const baselineFile=file=>fs.existsSync(path.join(baseDir,file))?fs.readFileSync(path.join(baseDir,file),'utf8'):execFileSync('git',['show','origin/main:'+file],{encoding:'utf8',maxBuffer:64*1024*1024});
 const nav=main.slice(main.indexOf('const NAV_NEW_DATES='),main.indexOf('function renderNavNewBadges'));
 const ctx=vm.createContext({});vm.runInContext(nav,ctx);
 for(const id of ['investmentCommittee','board','organization','aura','aiBudget']){
@@ -58,12 +59,11 @@ assert.equal(ctx.organizationOverviewData({boardPosts:null,boardComments:null},n
 const runtimeHistory={window:{},document:{querySelector:()=>null},setTimeout(){}};vm.runInNewContext(read('hani-development-history-v1.js'),runtimeHistory);
 assert.equal(ctx.organizationOverviewData(null,runtimeHistory.window.HANI_DEVELOPMENT_HISTORY_V1.entries,roster,now).milestones.length,8);
 // Execute the real overview renderer and refresh with changing in-memory state.
-const slot={innerHTML:''};ctx.root={querySelector:()=>slot};ctx.window={HANI_DEVELOPMENT_HISTORY_V1:{entries:[{id:'v2.9.1',date:'2026-01-01',status:'released',title:'<script>배포</script>'}]},HaniOrganizationRoster:{people:[{id:'hani',name:'하니',rank:'전무',team:'strategy',group:'M9',role:'전략'}]}};
-ctx.teamOf=()=>({name:'전략기획실'});ctx.state={boardPosts:[],boardComments:[]};
-vm.runInContext(hub.match(/  const esc =[^\n]+/)[0]+'\n'+hub.slice(hub.indexOf('  const portraitFiles='),hub.indexOf('  const avatar ='))+'\n'+hub.slice(hub.indexOf('  function renderOverview'),hub.indexOf('  function renderTeamPanels')),ctx);
-ctx.renderOverview();assert.match(slot.innerHTML,/이번 달 게시판 활동이 쌓이면/);assert.match(slot.innerHTML,/HANI GROUP 연혁/);assert.match(slot.innerHTML,/숫자로 보는 HANI/);
-ctx.state={boardPosts:[post('live','hani',new Date().toISOString())],boardComments:[]};ctx.renderOverview();
-assert.match(slot.innerHTML,/게시글·댓글 1건/);assert.match(slot.innerHTML,/&lt;script&gt;배포&lt;\/script&gt;/);assert.doesNotMatch(slot.innerHTML,/<script>배포/);
+// The overview now has persistent child slots; execute its actual renderer with those slots.
+const overview=createHistoryHarness({history:[{id:'v2.9.1',date:'2026-01-01',status:'released',title:'<script>배포</script>'}],now});
+overview.render();assert.match(overview.nodes['.ogh-overview-details'].markup,/이번 달 게시판 활동이 쌓이면/);assert.match(overview.slot.markup,/HANI GROUP 연혁/);assert.match(overview.nodes['.ogh-overview-details'].markup,/숫자로 보는 HANI/);
+overview.context.state={boardPosts:[post('live','hani',new Date(now).toISOString())],boardComments:[]};overview.render();
+assert.match(overview.nodes['.ogh-overview-details'].markup,/게시글·댓글 1건/);assert.match(overview.nodes['.ogh-history-months'].markup,/&lt;script&gt;배포&lt;\/script&gt;/);assert.doesNotMatch(overview.nodes['.ogh-history-months'].markup,/<script>배포/);
 const css=read('hani-design-system.css');
 for(const design of ['porcelain-cream','pure-white','titanium-graphite','midnight-black','sakura-pink','alpine-blue']){
   const palette={};for(const rule of css.matchAll(/([^{}]+)\{([^{}]+)\}/g)){if(rule[1].includes('.login-design-choice[data-design="'+design+'"]'))for(const token of rule[2].matchAll(/(--[\w-]+):([^;]+)/g))palette[token[1]]=token[2]}

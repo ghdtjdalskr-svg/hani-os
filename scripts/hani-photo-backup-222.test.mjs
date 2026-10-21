@@ -74,7 +74,8 @@ console.log('PASS Node: unsupported Vault initializes with one general notice, e
 if(process.argv[2]){
   const {chromium}=await import(pathToFileURL(process.argv[2]).href);
   const html=fs.readFileSync(new URL('index.html',root),'utf8');
-  const card=html.slice(html.lastIndexOf('<div class="card full">',html.indexOf('id="driveVaultChip"')),html.indexOf('<div class="card full"><div class="sh"><h3>표지·포스터'));
+  const cardStart=html.lastIndexOf('<div class="card full">',html.indexOf('id="driveVaultChip"'));
+  const card=html.slice(cardStart,html.indexOf('</div>',html.indexOf('id="driveVaultLast"'))+6)+'<dl><dd id="settingsPhotoStatus">확인 전</dd><dd id="settingsBackupStatus">확인 전</dd></dl>';
   const server=http.createServer((req,res)=>{res.setHeader('Content-Type','text/html; charset=utf-8');res.end('<!doctype html><html lang="ko"><body>'+card+'</body></html>')});
   await new Promise(r=>server.listen(0,'127.0.0.1',r));let browser;
   fs.mkdirSync(new URL('artifacts/photo-backup-222/',root),{recursive:true});
@@ -121,12 +122,14 @@ if(process.argv[2]){
       });
       await page.waitForTimeout(20);await page.evaluate(()=>{mediaEvents=0});
       await page.addScriptTag({content:source});
+      assert.equal(await page.locator('#settingsPhotoStatus').textContent(),'확인 전','missing manifest never projects zero');
       if(width===1440){
         await page.click('#driveVaultConnect');await page.waitForFunction(()=>!document.getElementById('driveVaultPhotos').disabled);
         await page.click('#driveVaultPhotos');await page.waitForFunction(()=>document.getElementById('driveVaultPhotoStatus').textContent.includes('누락 1건'));
         let snapshot=await page.evaluate(()=>({text:document.getElementById('driveVaultPhotoStatus').textContent,raw:localStorage.getItem('hani_os_life_v23'),lifeBefore,lifeWrites,cloudCalls,mediaEvents,
           manifest:JSON.parse(new TextDecoder().decode(fixtureDir.dirs.get('HANI_OS_photos').files.get('manifest.json')))}));
         assert.match(snapshot.text,/백업 2장 \/ 신규 2장 \/ 누락 1건/);assert.equal(snapshot.manifest.images.length,2);
+        assert.equal(await page.locator('#settingsPhotoStatus').textContent(),'1건','summary reads the existing manifest result');
         assert.equal(snapshot.raw,snapshot.lifeBefore);assert.equal(snapshot.lifeWrites,0);assert.equal(snapshot.cloudCalls,0);assert.equal(snapshot.mediaEvents,0);
         await page.click('#driveVaultPhotos');await page.waitForFunction(()=>document.getElementById('driveVaultPhotoStatus').textContent.includes('신규 0장'));
         // Exercise the real weekly lifecycle using the stored handle and an expired timestamp.
@@ -136,10 +139,12 @@ if(process.argv[2]){
         });
         await page.addScriptTag({content:source});
         await page.waitForFunction(()=>document.getElementById('driveVaultPhotoStatus').textContent.includes('누락 0건'));
+        assert.equal(await page.locator('#settingsPhotoStatus').textContent(),'0건','zero only after the existing manifest verifies it');
         // Both existing weekly JSON and photos run from the same scheduled backup.
         await page.evaluate(()=>{cloudAutoSyncReady=true;const row=vaultRecords.get(cloudUser.id);row.photos=null;row.last=null});
         await page.addScriptTag({content:source});
         await page.waitForFunction(()=>document.getElementById('driveVaultLast').textContent.includes('SHA-256'));
+        assert.notEqual(await page.locator('#settingsBackupStatus').textContent(),'확인 전','existing verified Vault record feeds summary');
         const full=await page.evaluate(()=>JSON.parse(new TextDecoder().decode([...fixtureDir.files.values()][0])));
         assert.equal(full.movies[0].poster,gif,'weekly full JSON recombines refs locally');
         snapshot=await page.evaluate(()=>({raw:localStorage.getItem('hani_os_life_v23'),lifeBefore,lifeWrites,cloudCalls,mediaEvents}));

@@ -90,7 +90,7 @@ root.querySelector=s=>s==='.ogh-mast nav'?mast:{scrollIntoView:()=>scrolled.push
 Object.assign(hubContext,{document:{querySelector:()=>true},matchMedia:()=>({matches:true}),showView:value=>{scrollRoutes.push(value);hubContext.selectHubTab('people')}});
 vm.runInContext(clickOwner,hubContext);
 for(const target of ['ogh-chart','ogh-teams','ogh-people']){
-  hubContext.selectHubTab('overview');const button={dataset:{scroll:target},matches:()=>false};onHubClick({target:{closest:()=>button}});
+  hubContext.selectHubTab('overview');const button={dataset:{scroll:target},matches:()=>false,hasAttribute:()=>false};onHubClick({target:{closest:()=>button}});
   assert.equal(scrollRoutes.at(-1),'organization/people');assert.equal(chart.every(n=>!n.hidden),true);assert.equal(scrolled.at(-1),'#'+target);
 }
 

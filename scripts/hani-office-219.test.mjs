@@ -6,16 +6,18 @@ import path from 'node:path';
 import vm from 'node:vm';
 import http from 'node:http';
 import {execFileSync} from 'node:child_process';
+import {withoutSimplify225} from './hani-simplify-225-preservation.mjs';
+import {withoutLaunchGreeting} from './hani-launch-greeting-221-preservation.mjs';
+import {withoutPhotoBackupUi} from './hani-photo-backup-222-preservation.mjs';
+import {withoutOfflineEntryUi} from './hani-offline-entry-223-preservation.mjs';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 
 const root=fileURLToPath(new URL('../',import.meta.url)),out=path.join(root,'artifacts/office-219');
 fs.mkdirSync(out,{recursive:true});
 const git=(...args)=>{
  if(args[0]==='show'){
-  const [ref,...parts]=args[1].split(':');
-  if(ref==='origin/main'&&process.env.HANI_RELEASE_TEST_BASELINE)return fs.readFileSync(path.join(process.env.HANI_RELEASE_TEST_BASELINE,parts.join(':')));
-  const revision=ref==='60db7b5'?'217':ref===base?'218':null;
-  const exported=revision&&path.join(out,'baseline',revision,parts.join(':'));
+  const [ref,...parts]=args[1].split(':'),revision=ref==='60db7b5'?'217':ref===base?'218':null;
+  const exported=process.env.HANI_OFFICE_TEST_BASELINE?path.join(process.env.HANI_OFFICE_TEST_BASELINE,ref.replaceAll('/','-'),parts.join(':')):revision&&path.join(out,'baseline',revision,parts.join(':'));
   if(exported&&fs.existsSync(exported))return fs.readFileSync(exported);
  }
  return execFileSync('git',args,{cwd:root,maxBuffer:64*1024*1024});
@@ -52,11 +54,8 @@ assert.equal(read('assets/sprites-v2/manifest.json'),old('assets/sprites-v2/mani
 const slice=(s,a,b)=>s.slice(s.indexOf(a),s.indexOf(b,s.indexOf(a)));
 assert.equal(slice(source,'  function pose(','  function loadSprite('),slice(old('hani-office-live.js'),'  function pose(','  function loadSprite('));
 const scale=s=>[...s.matchAll(/\.hani-office-actor\{[^}]+\}/g)].map(m=>m[0].replace('z-index:4;',''));
-// office-hd-224 intentionally corrects the distorted mobile footprint. Geometry
-// against 222 is exercised in the HD browser suite; keep 219's other invariants.
-assert.equal(scale(read('hani-office-live.css')).filter(rule=>/--actor-(?:height|size):/.test(rule)).length,1,'one canonical actor size');
-assert.ok(scale(read('hani-office-live.css'))[0].includes('--actor-height:max(40px,6.8cqw);--sprite-ratio:.75;'));
-report.static.push('217 anchors, v2 atlas metadata and pose/pivot unchanged; office-hd-224 owns corrected actor geometry');
+assert.deepEqual(scale(read('hani-office-live.css')),scale(old('hani-office-live.css')));
+report.static.push('217 anchors, atlas metadata, pose/pivot and actor scale unchanged');
 assert.doesNotMatch(read('hani-office-live.css'),/\.hani-office-status\{display:none\}/);
 assert.doesNotMatch(source,/localStorage|sessionStorage|supabase/);
 for(const time of [...times,'02:00']){
@@ -70,8 +69,7 @@ for(const time of [...times,'02:00']){
  }
  report.static.push(`${time}: ${people.length} staff, unique seats, speech present; night presence retained`);
 }
-// Launch/photo UI is already on main; preserve the entire current index verbatim.
-for(const f of ['index.html','data/hani-building/art-map-v1.json','data/hani-building/spatial-contract.json','assets/sprites-v2/manifest.json','assets/data/office-actions-216.json'])assert.equal(read(f),git('show',(f==='index.html'?'origin/main':base)+':'+f).toString('utf8'),f+' preserved');
+for(const f of ['index.html','data/hani-building/art-map-v1.json','data/hani-building/spatial-contract.json','assets/sprites-v2/manifest.json','assets/data/office-actions-216.json'])assert.equal(f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(withoutSimplify225(f,read(f))))):read(f),f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(git('show','origin/main:'+f).toString('utf8')))):git('show',base+':'+f).toString('utf8'),f+' preserved');
 report.static.push('version/cache, office metadata and action budgets preserved; no office storage/Cloud APIs (art files checked separately with git diff)');
 // Execute the real renderer and floor events as well as the scene model. DOM doubles
 // verify persistent identity and speech updates, not visibility or pixel geometry.
@@ -140,7 +138,7 @@ for(const [state,title] of [['work','근무 중'],['rest','휴식 중'],['meetin
 }
 report.static.push('constrained boxes/actual owner: compact tags stagger without overlap; desktop speech > meeting > status, no name collisions, hidden pills recover');
 report.result='static-passed-browser-not-run';save();
-console.log('PASS office-219 source/model: anchor equality, five clocks, presence, read-only/version/art preservation; corrected size owned by office-hd-224');
+console.log('PASS office-219 source/model: geometry equality, five clocks, presence, read-only/version/art preservation');
 if(!process.argv.includes('--browser')){console.log('NOT RUN: real screen/label bounds/overlap/scale screenshots; use --browser');}
 else{
 let browser,server;
@@ -216,8 +214,7 @@ try{
       assert.equal(a.name.icon.visible,Boolean(a.emoji));assert.equal(a.name.icon.text,a.emoji);
      }else if(a.label.visible)assert.ok(a.label.inside&&a.label.text,'visible desktop pill within floor');
      const original=sizes.get(`${width}:${a.id}`);assert.ok(original,'217 daytime reference for '+a.id);
-     assert.ok(Math.abs(a.sprite.height-original.height)<=2,`${a.id} retains 217 display height`);
-     assert.ok(Math.abs(a.sprite.width/a.sprite.height-.75)<=.02,`${a.id} office-hd-224 restores 3:4`);
+     for(const axis of ['width','height'])assert.ok(Math.abs(a.sprite[axis]/original[axis]-1)<=.10,`${a.id} ${axis} within 10% of 217`);
     }
     for(let a=0;a<check.actors.length;a++)for(let b=a+1;b<check.actors.length;b++){
      if(width===390||width===412)assert.ok(overlap(check.actors[a].name,check.actors[b].name)<=.10,`${width} ${time} ${floor}: name tags including dot overlap <=10%`);

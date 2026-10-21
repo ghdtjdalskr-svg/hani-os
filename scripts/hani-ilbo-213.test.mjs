@@ -128,7 +128,7 @@ try {
 
 // Execute the real async lifecycle and delegated events with DOM slots; no layout claims here.
 {
-  let active=false, failed=true, lifecycleWrites=0, prints=0;
+  let active=false, failed=true, lifecycleWrites=0, prints=0, catalogReady=0, fetches=0;
   const folds=[true,true,false,false].map(open=>({open,dataset:{}}));
   const content={innerHTML:'',setAttribute(){},querySelector:()=>null},archive={innerHTML:''},listeners={},printEvents={},button={};
   const home={hidden:true,innerHTML:'',querySelector:()=>button};
@@ -136,10 +136,12 @@ try {
   const old={...issue,number:2,date:'2026-10-12'},future={...issue,number:3,date:'2026-10-26'};
   const files={'data/hani-ilbo/issues.json':{issues:[{number:2,date:old.date,file:'data/hani-ilbo/002.json'},firstEntry,{number:3,date:future.date,file:'data/hani-ilbo/003.json'}]},'data/hani-ilbo/001.json':issue,'data/hani-ilbo/002.json':old,'data/hani-ilbo/003.json':future};
   const DateAt=class extends Date {constructor(...args){super(...(args.length?args:[now]));}static now(){return now;}};
-  const ctx=vm.createContext({Date:DateAt,Intl,console,state:fixture,document:{readyState:'complete',getElementById:()=>host,querySelector:()=>home,addEventListener(){}},window:{addEventListener:(type,fn)=>printEvents[type]=fn,print:()=>prints++},fetch:async file=>{if(failed){failed=false;return {ok:false};}return {ok:true,json:async()=>files[file]};},save:()=>lifecycleWrites++,commit:()=>lifecycleWrites++});
+  const ctx=vm.createContext({Date:DateAt,Event,Intl,console,state:fixture,document:{readyState:'complete',getElementById:()=>host,querySelector:()=>home,addEventListener(){}},window:{addEventListener:(type,fn)=>printEvents[type]=fn,dispatchEvent(event){assert.equal(event.type,'hani-ilbo-ready');catalogReady++;assert.equal(this.HaniIlbo.publishedCount(),2,'catalog ready before notification')},print:()=>prints++},fetch:async file=>{fetches++;if(failed){failed=false;return {ok:false};}return {ok:true,json:async()=>files[file]};},save:()=>lifecycleWrites++,commit:()=>lifecycleWrites++});
   vm.runInContext(code,ctx);const run=ctx.window.HaniIlbo;
-  await run.enter();assert.match(content.innerHTML,/다시 불러오기/);
+  assert.equal(run.publishedCount(),null,'not loaded is unknown');
+  await run.enter();assert.match(content.innerHTML,/다시 불러오기/);assert.equal(run.publishedCount(),null);assert.equal(catalogReady,0);
   await run.enter();assert.match(content.innerHTML,/제 1호/);assert.equal(home.hidden,false,'initial hidden render never marks read');
+  const loadedFetches=fetches;assert.equal(run.publishedCount(),2);assert.equal(run.publishedCount(Date.parse('2026-10-11T15:00:00Z')),1);assert.equal(run.publishedCount(Date.parse('2026-10-26T03:00:00Z')),3);assert.equal(fetches,loadedFetches,'getter never fetches');assert.equal(catalogReady,1);
   assert.ok(archive.innerHTML.indexOf('제 1호')<archive.innerHTML.indexOf('제 2호'));assert.ok(!archive.innerHTML.includes('제 3호'),'future excluded');
   run.homeCard(Date.parse('2026-10-11T03:00:00Z'));assert.equal(home.hidden,true,'no premature card');
   run.homeCard(now);active=true;await run.enter();assert.equal(home.hidden,true,'opening latest marks session read');

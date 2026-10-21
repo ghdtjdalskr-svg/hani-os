@@ -80,7 +80,8 @@ try{
   assert.equal(await page.locator('#cloudDifferencePanel').isVisible(),false);cases++;
   await page.evaluate(async()=>{cloudUser={id:'synthetic-owner',email:'synthetic@example.invalid'};cloudStopAutoSync('Local과 Cloud 내용이 달라 자동 반영을 멈췄습니다. 차이를 확인해 주세요.');await cloudCompare()});
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);cases++;
-  fs.mkdirSync(path.join(root,'qa-evidence'),{recursive:true});await page.locator('#cloudBridgeCard').screenshot({path:path.join(root,'qa-evidence',`cloud-stability-${width}.png`)});
+  // The unchanged Cloud class owner now uses display:contents across groups ②–④.
+  fs.mkdirSync(path.join(root,'qa-evidence'),{recursive:true});await page.locator('#group-cloud').screenshot({path:path.join(root,'qa-evidence',`cloud-stability-${width}.png`)});
   assert.deepEqual(errors,[]);await context.close();
  }
  console.log(`PASS ${cases} Cloud runtime cases at 390/1440: reconnect, conflict STOP, read-only compare, hold, invalid revision, auth rejection, new-device restore, backup denial and manual backup. All external requests blocked.`);
