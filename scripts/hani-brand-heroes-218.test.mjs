@@ -10,7 +10,7 @@ import {withoutOfflineEntryUi} from './hani-offline-entry-223-preservation.mjs';
 const root=path.resolve(import.meta.dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const main=read('hani-main.js'),ui=read('hani-ui-v02992.js'),html=read('index.html');
 // Runtime/cache versions follow the integrated origin/main release.
-const released=f=>execFileSync(process.env.HANI_GIT||'git',['show','origin/main:'+f],{cwd:root,encoding:'utf8',maxBuffer:32*1024*1024});
+const released=f=>process.env.HANI_RELEASE_TEST_BASELINE?fs.readFileSync(path.join(process.env.HANI_RELEASE_TEST_BASELINE,path.basename(f)),'utf8'):execFileSync(process.env.HANI_GIT||'git',['show','origin/main:'+f],{cwd:root,encoding:'utf8',maxBuffer:32*1024*1024});
 const baseline=f=>process.env.HANI_FIX218_BASELINE?fs.readFileSync(path.join(process.env.HANI_FIX218_BASELINE,path.basename(f)),'utf8'):execFileSync(process.env.HANI_GIT||'git',['show','42aa394:'+f],{cwd:root,encoding:'utf8',maxBuffer:32*1024*1024});
 test('canonical company names and legacy search aliases resolve to unchanged routes',()=>{
   const ctx=vm.createContext({});
@@ -56,7 +56,7 @@ test('raw preservation of frequency table, storage writes, versions, route/data 
   for(const f of files){
     const old=baseline(f),now=read(f);new vm.Script(f.endsWith('.js')?now:'');
     const preserved=f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(now))):now;
-    if(f==='index.html')assert.equal(preserved,withoutPhotoBackupUi(withoutLaunchGreeting(released(f))),'index bytes preserved except exact offline entry UI additions; existing launch/photo connections retained');
+    if(f==='index.html')assert.equal(preserved,withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(released(f)))),'index bytes preserved except exact offline entry UI additions; existing launch/photo connections retained');
     assert.deepEqual(collect(now,/(?:v=|v)2\.9\.\d+/g),collect(released(f),/(?:v=|v)2\.9\.\d+/g),f+' approved release versions');
     for(const re of [/\b(?:localStorage|sessionStorage)\s*\.\s*(?:setItem|removeItem|clear)\s*\([^\n]*/g,/\bhani_os_life_v23\b/g,/2\.9\.15-safe-baseline-bootstrap/g])assert.deepEqual(collect(now,re),collect(old,re),f+' protected tokens');
     if(f==='index.html'){

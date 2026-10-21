@@ -211,11 +211,12 @@ test(`Edge: ${process.argv.includes('--final-polish')?'390/1440 light/dark':proc
       await context.addInitScript(()=>{window.officeClock=Date.parse('2026-10-16T09:00:00+09:00');const D=Date;window.Date=class extends D{constructor(...args){super(...(args.length?args:[window.officeClock]))}static now(){return window.officeClock}}});
       await context.route('**/*',route=>{
         const url=route.request().url();if(new URL(url).origin!==origin)return route.fulfill({status:200,body:'',contentType:'text/plain'});
+        if(failure?.startsWith('sprites-v2/')&&url.endsWith('manifest-v3.json'))return route.fulfill({status:200,body:'{}',contentType:'application/json'});
         if(failure&&url.includes(failure))return route.fulfill({status:200,body:'invalid-image',contentType:'image/webp'});
         return route.continue();
       });
       const page=await context.newPage();page.on('pageerror',e=>status.errors.push(e.message));page.on('console',m=>{if(m.type()==='error')status.consoleErrors.push(m.text())});
-      const requests=[];page.on('request',r=>{if(/assets\/(building|sprites-v2)\//.test(r.url()))requests.push(new URL(r.url()).pathname)});
+      const requests=[];page.on('request',r=>{if(/assets\/(building|sprites-v[23])\//.test(r.url()))requests.push(new URL(r.url()).pathname)});
       await page.goto(origin);await page.waitForFunction(n=>typeof unlockLoginGate==='function'&&typeof showView==='function'&&!!window.HaniBuildingScene&&document.querySelectorAll('[data-building-floor]').length===n,['spatial-contract.json','art-map-v1.json'].includes(failure)?4:5);
       assert.equal(requests.filter(r=>r.endsWith('.webp')).length,0,'office hidden: zero floor/sprite image loads');
       await page.evaluate(theme=>{

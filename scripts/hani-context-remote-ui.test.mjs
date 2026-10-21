@@ -4,6 +4,7 @@ import path from 'node:path';
 import http from 'node:http';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 const root=path.resolve(fileURLToPath(new URL('../',import.meta.url)));
+if(process.argv.includes('--node-only')){await import('./hani-context-remote.test.mjs');console.log('NOT RUN: remote UI browser AA/geometry/controls at 390/1440');process.exit(0);}
 const {chromium}=await import(pathToFileURL(process.argv[2]).href);
 const types={'.js':'text/javascript','.css':'text/css','.html':'text/html; charset=utf-8','.jpg':'image/jpeg','.png':'image/png','.webp':'image/webp','.svg':'image/svg+xml'};
 const server=http.createServer((req,res)=>{const uri=new URL(req.url,'http://local').pathname,file=path.resolve(root,'.'+(uri==='/'?'/index.html':decodeURIComponent(uri)));if(!file.startsWith(root+path.sep)||!fs.existsSync(file)||!fs.statSync(file).isFile()){res.writeHead(404);res.end();return;}res.setHeader('Content-Type',types[path.extname(file)]||'application/octet-stream');res.end(fs.readFileSync(file));});
@@ -28,7 +29,7 @@ try{
     return {file,width:a.width,height:a.height,gapLeft:a.left-card.left-parseFloat(c.borderLeftWidth),gapRight:card.right-a.right-parseFloat(c.borderRightWidth),fit:s.objectFit,padding:parseFloat(s.paddingLeft),position:s.objectPosition};
    },file);
    assert.equal(image.fit,'cover');assert.equal(image.padding,0);assert.ok(Math.abs(image.gapLeft)<=2&&Math.abs(image.gapRight)<=2,JSON.stringify(image));
-   if(width===1440)assert.ok(image.height>=260&&image.height<=355,JSON.stringify(image));metrics.push({width,finish,...image});
+   assert.ok(Math.abs(image.height-(width===1440?408:202))<=1,JSON.stringify(image));metrics.push({width,finish,...image});
   }
   for(const state of ['rest','hover','focus']){
    const items=rail.locator('.hani-remote-item:visible');

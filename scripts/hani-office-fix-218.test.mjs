@@ -30,7 +30,7 @@ export async function loadScene(time,day='2026-10-18'){
   }});
   // Await the production async bootstrap. No metadata, action, roster or event fixtures.
   await vm.runInContext(source,context);
-  assert.equal(requests.length,5);assert.ok(context.HaniBuildingScene.scheduler);
+  assert.equal(requests.length,6);assert.equal(requests.filter(url=>url.endsWith('sprites-v3/manifest-v3.json')).length,1);assert.ok(context.HaniBuildingScene.scheduler);
   return {scene:context.HaniBuildingScene,snapshot:context.HaniBuildingScene.snapshot(),requests};
 }
 

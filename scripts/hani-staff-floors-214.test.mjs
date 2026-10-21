@@ -174,6 +174,16 @@ test('real browser: 217 plate-free backgrounds, staff portraits and no overflow 
         assert.equal(await host.evaluate(node=>node===document.querySelector('#haniOfficeMap')),true,'persistent map slot');
         await page.locator('#haniOfficeMap .hani-office-foreground:visible').evaluateAll(images=>Promise.all(images.map(img=>img.decode())));
         await page.locator('#haniOfficeActors .hani-office-avatar:visible').evaluateAll(images=>Promise.all(images.map(img=>img.decode())));
+        await page.waitForFunction(()=>[...document.querySelectorAll('#haniOfficeActors .hani-office-actor')].filter(a=>!a.hidden).every(a=>a.dataset.spriteScale==='3'));
+        const geometry=await page.locator('#haniOfficeActors .hani-office-actor:visible').evaluateAll(actors=>actors.map(actor=>{
+          const box=actor.getBoundingClientRect(),sprite=actor.querySelector('.hani-office-sprite').getBoundingClientRect(),hit=getComputedStyle(actor,'::before');
+          return {id:actor.dataset.person,width:box.width,height:box.height,spriteWidth:sprite.width,spriteHeight:sprite.height,hitWidth:parseFloat(hit.width),hitHeight:parseFloat(hit.height),pointer:hit.pointerEvents};
+        }));
+        for(const actor of geometry){
+          assert.ok(Math.abs(actor.width/actor.height-.75)<.005,JSON.stringify(actor)+' 3:4 sprite box');
+          assert.ok(Math.abs(actor.spriteWidth-actor.width)<=1&&Math.abs(actor.spriteHeight-actor.height)<=1,JSON.stringify(actor)+' sprite fills actor');
+          assert.ok(actor.hitWidth>=40&&actor.hitHeight>=40,JSON.stringify(actor)+' transparent hit target');assert.equal(actor.pointer,'auto');
+        }
         await noOverflow('#haniOfficeLive');await noOverflow('.hani-office-scroll');
         await page.screenshot({path:path.join(evidence,`${width}-${floor}.png`),fullPage:true});
       }

@@ -6,7 +6,7 @@ const root=path.resolve(fileURLToPath(new URL('../',import.meta.url)));
 const css=fs.readFileSync(path.join(root,'hani-context-remote.css'),'utf8');
 const js=fs.readFileSync(path.join(root,'hani-context-remote-v1.js'),'utf8');
 const image=css.match(/#app \.hani-remote-media-image\{([^}]+)\}/)[1];
-assert.match(image,/object-fit:cover;object-position:65% top;filter:none/);
+assert.match(image,/object-fit:cover;object-position:50% 30%;filter:none/);
 assert.match(image,/width:100%;height:100%/);
 assert.match(css,/#app \.hani-remote-copy small\{[^}]*font-size:12px/);
 assert.match(css,/:focus-visible\{outline:2px solid var\(--remote-focus\)/);

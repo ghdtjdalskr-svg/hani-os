@@ -1,0 +1,426 @@
+{
+  "people": [
+    {
+      "id": "hani",
+      "name": "하니",
+      "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1434c-4019-70d0-a10f-927a8d96f25d\\exec-5665059b-1f7a-47d5-ad31-4e1be4064608.png",
+      "identityReference": "assets/profiles/hani-profile-hani.webp"
+    },
+    {
+      "id": "gaeun",
+      "name": "가은/MUSE",
+      "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1434c-4019-70d0-a10f-927a8d96f25d\\exec-78620e71-e5b7-4769-89b1-404a90ac807f.png",
+      "identityReference": "assets/profiles/hani-profile-gaeun.webp"
+    },
+    {
+      "id": "yuna",
+      "name": "유나",
+      "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1434c-4019-70d0-a10f-927a8d96f25d\\exec-6f85908e-775b-4353-b58e-c1b11def3234.png",
+      "identityReference": "assets/profiles/hani-profile-yuna.webp"
+    },
+    {
+      "id": "seoyun",
+      "name": "서윤",
+      "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1434c-4019-70d0-a10f-927a8d96f25d\\exec-897fa625-f83a-4194-b55c-d3dc378a2b32.png",
+      "identityReference": "assets/profiles/hani-profile-seoyun.webp"
+    },
+    {
+      "id": "dohyun",
+      "name": "도연",
+      "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1434c-4019-70d0-a10f-927a8d96f25d\\exec-2144ee29-ed18-478f-a73e-4268889f9d91.png",
+      "identityReference": "assets/profiles/hani-profile-dohyun.webp"
+    },
+    {
+      "id": "serin",
+      "name": "세린",
+      "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1434c-4019-70d0-a10f-927a8d96f25d\\exec-b60da83d-8b7b-45bd-9204-648ac84ee73d.png",
+      "identityReference": "assets/profiles/hani-profile-serin.webp"
+    },
+    {
+      "id": "yuri",
+      "name": "유리",
+      "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1434c-4019-70d0-a10f-927a8d96f25d\\exec-1e1f4400-9169-4c42-bc26-d9f06a600170.png",
+      "identityReference": "assets/profiles/hani-profile-yuri.webp"
+    },
+    {
+      "id": "arin",
+      "name": "아린",
+      "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1434c-4019-70d0-a10f-927a8d96f25d\\exec-03ef0099-3163-47ec-9f09-c41412ea951a.png",
+      "identityReference": "assets/profiles/hani-profile-arin.webp"
+    },
+    {
+      "id": "jieun",
+      "name": "지은",
+      "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1434c-4019-70d0-a10f-927a8d96f25d\\exec-791a169d-29f6-4731-9453-64745bd8ed26.png",
+      "identityReference": "assets/profiles/hani-profile-jieun.webp"
+    },
+    {
+      "id": "haru",
+      "name": "하루",
+      "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1434c-4019-70d0-a10f-927a8d96f25d\\exec-0dc84d67-b4bf-409a-8791-218538cf61de.png",
+      "identityReference": "assets/profiles/hani-profile-haru.webp"
+    },
+    {
+      "id": "naeun",
+      "name": "나은",
+      "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1434c-4019-70d0-a10f-927a8d96f25d\\exec-774eeea2-2cd9-4d79-a8ae-31826e99e6f8.png",
+      "identityReference": "assets/profiles/hani-profile-naeun.webp"
+    },
+    {
+      "id": "hina",
+      "name": "히나",
+      "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1434c-4019-70d0-a10f-927a8d96f25d\\exec-f39c4024-5453-48dc-b155-a1bb623a9c7a.png",
+      "identityReference": "assets/profiles/hani-profile-hina.webp"
+    },
+    {
+      "id": "minji",
+      "name": "민지",
+      "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1434c-4019-70d0-a10f-927a8d96f25d\\exec-18f30ff0-3c35-4ad3-9499-7f5d87c0f0b9.png",
+      "identityReference": "assets/profiles/hani-profile-minji.webp"
+    },
+    {
+      "id": "sooyeon",
+      "name": "수연",
+      "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1434c-4019-70d0-a10f-927a8d96f25d\\exec-f442b034-596a-4efd-826d-34315cc2c9e1.png",
+      "identityReference": "assets/profiles/hani-profile-sooyeon.webp"
+    },
+    {
+      "id": "sua",
+      "name": "수아",
+      "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1434c-4019-70d0-a10f-927a8d96f25d\\exec-6855ebe6-1b6e-4921-ad05-69f0691ce516.png",
+      "identityReference": "assets/profiles/hani-profile-sua.webp"
+    },
+    {
+      "id": "taeo",
+      "name": "채원",
+      "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1434c-4019-70d0-a10f-927a8d96f25d\\exec-3a23c694-705f-4293-b6cf-67162263beb1.png",
+      "identityReference": "assets/profiles/hani-profile-taeo.webp"
+    },
+    {
+      "id": "mir",
+      "name": "미르/MIR",
+      "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1434c-4019-70d0-a10f-927a8d96f25d\\exec-33a157bb-fecd-4613-90e6-2e038120644b.png",
+      "identityReference": "assets/profiles/hani-staff-mir-v5.webp"
+    },
+    {
+      "id": "seongmin",
+      "name": "성민 회장",
+      "source": "C:/Users/홍성민/.codex/generated_images/01a143c8-2d3e-77d2-9faa-503e712793a6/exec-6d2fe626-1921-46bd-b752-4c988430ce15.png",
+      "identityReference": "C:/Users/홍성민/Documents/HANI_OS_DEV_CLAUDE/comic/assets/comic-trial/ceo-frog-sheet-v1.png",
+      "kind": "frog_ceo",
+      "frameHeights": [
+        56,
+        51,
+        54,
+        54
+      ],
+      "maxBytes": 7350,
+      "webpQuality": 74,
+      "cleanDetachedAlpha": true
+    },
+    {
+      "id": "daon",
+      "name": "다온",
+      "source": "C:/Users/홍성민/.codex-2/generated_images/01a14d6a-7c3a-7ab2-b6a6-c4eae71eda38/exec-26d2520e-dc2f-458a-8ae8-314bbc865703.png",
+      "identityReference": null,
+      "currentEntry": {
+        "id": "daon",
+        "name": "다온",
+        "kind": "human",
+        "planned": true,
+        "file": "daon-v2.webp",
+        "sizeBytes": 5612,
+        "sha256": "7f083c241a918dee77df8c696404674eac4095572f1ac90ba566ef840ca4cef8",
+        "sourceSha256": "91577da31635e3f13b8ea1f5c09b60abdd90f1a12fd400467c350043bdcea7c7",
+        "sourceRowSplit": 768,
+        "sourceGapSamples": 0,
+        "identityReference": "assets/profiles/hani-profile-daon-v2.webp",
+        "atlas": [
+          384,
+          512
+        ],
+        "cell": [
+          48,
+          64
+        ],
+        "direction": "front",
+        "frames": [
+          {
+            "name": "standing",
+            "rect": [
+              0,
+              0,
+              48,
+              64
+            ],
+            "pivot": [
+              24,
+              61
+            ],
+            "contentRect": [
+              9,
+              5,
+              30,
+              56
+            ],
+            "sourceRect": [
+              97,
+              52,
+              382,
+              705
+            ]
+          },
+          {
+            "name": "sitting",
+            "rect": [
+              48,
+              0,
+              48,
+              64
+            ],
+            "pivot": [
+              24,
+              61
+            ],
+            "contentRect": [
+              9,
+              12,
+              29,
+              49
+            ],
+            "sourceRect": [
+              563,
+              99,
+              386,
+              649
+            ]
+          },
+          {
+            "name": "walk-a",
+            "rect": [
+              96,
+              0,
+              48,
+              64
+            ],
+            "pivot": [
+              24,
+              61
+            ],
+            "contentRect": [
+              9,
+              8,
+              30,
+              53
+            ],
+            "sourceRect": [
+              89,
+              788,
+              396,
+              700
+            ]
+          },
+          {
+            "name": "walk-b",
+            "rect": [
+              144,
+              0,
+              48,
+              64
+            ],
+            "pivot": [
+              24,
+              61
+            ],
+            "contentRect": [
+              8,
+              8,
+              31,
+              53
+            ],
+            "sourceRect": [
+              554,
+              790,
+              405,
+              699
+            ]
+          }
+        ],
+        "alpha": {
+          "transparent": 192134,
+          "partial": 4101,
+          "opaque": 373
+        },
+        "maxBytes": 65000,
+        "generator": "built-in image_gen"
+      }
+    },
+    {
+      "id": "yoonseul",
+      "name": "윤슬",
+      "source": "C:/Users/홍성민/.codex-2/generated_images/01a14d6a-7c3a-7ab2-b6a6-c4eae71eda38/exec-259610d8-ab44-4c80-b870-7f823ea569eb.png",
+      "identityReference": null,
+      "currentEntry": {
+        "id": "yoonseul",
+        "name": "윤슬",
+        "kind": "human",
+        "planned": true,
+        "file": "yoonseul-v2.webp",
+        "sizeBytes": 6622,
+        "sha256": "8303b4be219a140b1448d9a64658e30ae71b9e8e789191511cceaaebf3efe823",
+        "sourceSha256": "5bd7a24686130baf23d7d91dcc2f5d53d21ec6fa12545cd51f1a2a0ecf52eef4",
+        "sourceRowSplit": 680,
+        "sourceGapSamples": 0,
+        "identityReference": "assets/profiles/hani-profile-yoonseul-v2.webp",
+        "atlas": [
+          384,
+          512
+        ],
+        "cell": [
+          48,
+          64
+        ],
+        "direction": "front",
+        "frames": [
+          {
+            "name": "standing",
+            "rect": [
+              0,
+              0,
+              48,
+              64
+            ],
+            "pivot": [
+              24,
+              61
+            ],
+            "contentRect": [
+              9,
+              5,
+              29,
+              56
+            ],
+            "sourceRect": [
+              159,
+              18,
+              339,
+              644
+            ]
+          },
+          {
+            "name": "sitting",
+            "rect": [
+              48,
+              0,
+              48,
+              64
+            ],
+            "pivot": [
+              24,
+              61
+            ],
+            "contentRect": [
+              11,
+              12,
+              25,
+              49
+            ],
+            "sourceRect": [
+              660,
+              26,
+              331,
+              639
+            ]
+          },
+          {
+            "name": "walk-a",
+            "rect": [
+              96,
+              0,
+              48,
+              64
+            ],
+            "pivot": [
+              24,
+              61
+            ],
+            "contentRect": [
+              9,
+              8,
+              29,
+              53
+            ],
+            "sourceRect": [
+              168,
+              682,
+              360,
+              652
+            ]
+          },
+          {
+            "name": "walk-b",
+            "rect": [
+              144,
+              0,
+              48,
+              64
+            ],
+            "pivot": [
+              24,
+              61
+            ],
+            "contentRect": [
+              9,
+              8,
+              30,
+              53
+            ],
+            "sourceRect": [
+              643,
+              689,
+              361,
+              647
+            ]
+          }
+        ],
+        "alpha": {
+          "transparent": 191960,
+          "partial": 4272,
+          "opaque": 376
+        },
+        "maxBytes": 65000,
+        "generator": "built-in image_gen"
+      }
+    },
+    {
+      "id": "visitor-client",
+      "name": "정장 고객",
+      "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1434c-4019-70d0-a10f-927a8d96f25d\\exec-c0de1105-85fc-4c00-99e1-938eb0d93b38.png",
+      "identityReference": null
+    },
+    {
+      "id": "visitor-courier",
+      "name": "택배 기사",
+      "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1434c-4019-70d0-a10f-927a8d96f25d\\exec-9163cc32-d79a-4bd6-9525-6ba7f4d72794.png",
+      "identityReference": null
+    },
+    {
+      "id": "visitor-rider",
+      "name": "음식 배달원",
+      "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1434c-4019-70d0-a10f-927a8d96f25d\\exec-b1c96c50-c1e3-4fe7-8bad-9f1e0dbd6e62.png",
+      "identityReference": null
+    },
+    {
+      "id": "visitor-candidate",
+      "name": "면접 지원자",
+      "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1434c-4019-70d0-a10f-927a8d96f25d\\exec-e2089414-be0d-4265-9fa2-ce6d19c24c6d.png",
+      "identityReference": null
+    },
+    {
+      "id": "visitor-generic",
+      "name": "일반 방문객",
+      "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1434c-4019-70d0-a10f-927a8d96f25d\\exec-7a2d9ef5-f9d8-4f44-aeac-6ec40e4e319f.png",
+      "identityReference": null
+    }
+  ]
+}

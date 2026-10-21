@@ -4,10 +4,12 @@ import path from 'node:path';
 import http from 'node:http';
 import {pathToFileURL} from 'node:url';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
-const {chromium}=await import(pathToFileURL(process.argv[2]).href),root=path.resolve(import.meta.dirname,'..');
+const root=path.resolve(import.meta.dirname,'..');
 const closure=await resolveRuntimeClosure({exists:f=>fs.existsSync(path.join(root,f)),read:f=>fs.readFileSync(path.join(root,f))});
 assert.deepEqual(closure.missing,[]);assert.ok(closure.files.includes('hani-goal-progress.js'),'generated period engine included in release closure');
 const contract=JSON.parse(fs.readFileSync(path.join(root,'dev-center/one-pass-gate-contract.json'),'utf8'));assert.ok(contract.allowed_paths.some(pattern=>new RegExp(pattern).test('hani-goal-progress.js')),'existing release allowlist unchanged');
+if(process.argv.includes('--node-only')){console.log('PASS goal runtime closure/allowlist; NOT RUN: browser goal UI/overflow/storage');process.exit(0);}
+const {chromium}=await import(pathToFileURL(process.argv[2]).href);
 const server=http.createServer((req,res)=>{const uri=new URL(req.url,'http://local').pathname,file=path.resolve(root,'.'+(uri==='/'?'/index.html':decodeURIComponent(uri)));if(!file.startsWith(root+path.sep)||!fs.existsSync(file)||!fs.statSync(file).isFile()){res.writeHead(404);res.end();return;}res.setHeader('Content-Type',file.endsWith('.js')||file.endsWith('.mjs')?'text/javascript':file.endsWith('.css')?'text/css':'text/html; charset=utf-8');res.end(fs.readFileSync(file));});
 await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port;
 const browser=await chromium.launch({executablePath:process.argv[3],headless:true}),evidence=path.join(root,'artifacts/goal-progress');fs.mkdirSync(evidence,{recursive:true});
