@@ -1,0 +1,1212 @@
+{
+  "schema": 1,
+  "asOf": "2026-10-21",
+  "base": "331291eb29ec73b2cd5ca3f07eb2d02436e9d1ea",
+  "scope": "기존 연혁 시작 v2.9.120 이후 main의 index.html 변경 커밋에 버전이 명시된 배포 기록. 날짜는 병합 커밋 KST. 숫자 사이의 빈 버전은 추정하지 않음.",
+  "excluded": [
+    {
+      "versions": [
+        "v2.9.176",
+        "v2.9.179",
+        "v2.9.182"
+      ],
+      "reason": "작업/후보 이력은 있지만 main의 버전별 index.html 배포 커밋 근거 없음. 후속 실제 배포에 통합된 내용을 별도 릴리스로 세지 않음."
+    }
+  ],
+  "entries": [
+    {
+      "id": "v2.9.223",
+      "date": "2026-10-21",
+      "status": "released",
+      "title": "장애 시 기기 기록 열기·사진 백업",
+      "category": "기록·보호",
+      "credits": [],
+      "source": {
+        "commit": "d6d04554d1d0f99b7ac16d05b634d0a1eb480960",
+        "subject": "release: v2.9.223 Cloud 장애 시 이 기기 기록으로 열기·사진 백업 문구 정리 (#308)"
+      }
+    },
+    {
+      "id": "v2.9.222",
+      "date": "2026-10-20",
+      "status": "released",
+      "title": "밤·주말 사무실·치비툰 인사",
+      "category": "하니 그룹",
+      "credits": [],
+      "source": {
+        "commit": "d91d7739c07360d3a517449d69f5d325f0b56a33",
+        "subject": "release: v2.9.222 밤·주말 사무실 행동·치비툰 시작 인사·사진 Drive 백업 (#306)"
+      }
+    },
+    {
+      "id": "v2.9.221",
+      "date": "2026-10-20",
+      "status": "released",
+      "title": "클라우드 절감·기기 기록 입장",
+      "category": "기록·보호",
+      "credits": [],
+      "source": {
+        "commit": "c905c9ee2808c0c03153f8f35c20a1227265fbe9",
+        "subject": "release: v2.9.221 Cloud 전송량 절감·Cloud 중단 시 기기 기록으로 입장 (#303)"
+      }
+    },
+    {
+      "id": "v2.9.220",
+      "date": "2026-10-19",
+      "status": "released",
+      "title": "휴대폰 화면 회전 잠금 따르기",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "4a913303afb3de11e948c899387b4760810684c1",
+        "subject": "release: v2.9.220 휴대폰 화면 회전 잠금 따르기 (#302)"
+      }
+    },
+    {
+      "id": "v2.9.219",
+      "date": "2026-10-19",
+      "status": "released",
+      "title": "리모컨 음악 카드·버튼 수리",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "9493eae8d1a21cc8bf6a5496aac19a783b3ad248",
+        "subject": "release: v2.9.219 리모컨 음악 카드·리모컨 버튼 수리·사무실 상태 점 (#298)"
+      }
+    },
+    {
+      "id": "v2.9.218",
+      "date": "2026-10-19",
+      "status": "released",
+      "title": "밤 사무실·이름 통일·새 배너",
+      "category": "하니 그룹",
+      "credits": [],
+      "source": {
+        "commit": "42da518f74d156940472e5cee9a1560ad2c33fd0",
+        "subject": "release: v2.9.218 밤 사무실·HANI 이름 통일·히어로 22종·독서 그래프·설명 배너 정리·대시보드 % (#296)"
+      }
+    },
+    {
+      "id": "v2.9.217",
+      "date": "2026-10-18",
+      "status": "released",
+      "title": "대시보드·새 얼굴·본사 소품",
+      "category": "대시보드 · 캐릭터 · 하니 본사",
+      "credits": [],
+      "source": {
+        "commit": "60db7b53ffe9e9e10d02054e3311887e064ab7f3",
+        "subject": "release: v2.9.217 대시보드 카드·다온/윤슬 새 얼굴·차콜 문패·로비 로고·책상 소품 (#293)",
+        "document": "docs/gemini-reports/2026-10-18-v2.9.217-dashboard-faces-interior.md"
+      }
+    },
+    {
+      "id": "v2.9.216",
+      "date": "2026-10-18",
+      "status": "released",
+      "title": "라운지 개편·사무실 놀이",
+      "category": "사용성 · 독서/가계부/공부 · 라운지 · 하니 본사",
+      "credits": [],
+      "source": {
+        "commit": "c335f9aed3911d953d97b8fc67488ec89e475022",
+        "subject": "release: v2.9.216 삭제 확인·폴드 첫 화면·독서 추이·실용 기능·라운지 개편·사무실 놀이 (#290)",
+        "document": "docs/gemini-reports/2026-10-18-v2.9.216-usability-lounge-office-play.md"
+      }
+    },
+    {
+      "id": "v2.9.215",
+      "date": "2026-10-18",
+      "status": "released",
+      "title": "하니 본사 오픈",
+      "category": "하니 본사 · 테마 · 일보 · 가계부 · 공부",
+      "credits": [],
+      "source": {
+        "commit": "763a19eed4cd321b4586412396932b3479c743ce",
+        "subject": "release: v2.9.215 새 하니 본사 오픈 (층별 컨셉·인테리어 문패·5F 옥상), Pure White, 하니일보 배너, AI팀 현황, 다온·윤슬 프로필, 지은 첨삭 (#287)",
+        "document": "docs/gemini-reports/2026-10-18-v2.9.215-hani-hq-open.md"
+      }
+    },
+    {
+      "id": "v2.9.214",
+      "date": "2026-10-16",
+      "status": "released",
+      "title": "직원 프로필·시험지·폴드 화면",
+      "category": "오피스 · 공부 · 모바일 PWA · 하니일보",
+      "credits": [],
+      "source": {
+        "commit": "6b4ea0cc51278c0f831653fc2f11f78da5f8f672",
+        "subject": "release: v2.9.214 new staff portraits + floor art, exam popup, Galaxy PWA + Fold layout, 하니 일보 visual cards (#278)",
+        "document": "docs/gemini-reports/2026-10-16-v2.9.210-214-ilbo-pwa-staff-profiles.md"
+      }
+    },
+    {
+      "id": "v2.9.213",
+      "date": "2026-10-16",
+      "status": "released",
+      "title": "하니일보 창간·실시간 댓글",
+      "category": "하니일보 · AI · 클라우드",
+      "credits": [],
+      "source": {
+        "commit": "0b3d3d23cec4965c7ba76a8bf83a566bc4c184d1",
+        "subject": "release: v2.9.213 AI live lounge comments, 하니 일보 issue 1, Google return + chart refresh (#273)",
+        "document": "docs/gemini-reports/2026-10-16-v2.9.210-214-ilbo-pwa-staff-profiles.md"
+      }
+    },
+    {
+      "id": "v2.9.212",
+      "date": "2026-10-16",
+      "status": "released",
+      "title": "라운지·할 일·차트·백업 정비",
+      "category": "커뮤니티 · 투자 · 클라우드",
+      "credits": [],
+      "source": {
+        "commit": "18bf0c1d9061258d50cae626c0a27f6183d94682",
+        "subject": "release: v2.9.212 QA batch: lounge cleanup, tasks/dashboard, economy quiz news, compact review + monthly report, Toss chart, Google Drive (#269)",
+        "document": "docs/gemini-reports/2026-10-16-v2.9.210-214-ilbo-pwa-staff-profiles.md"
+      }
+    },
+    {
+      "id": "v2.9.211",
+      "date": "2026-10-14",
+      "status": "released",
+      "title": "자연스러운 라운지·투자 의견",
+      "category": "커뮤니티 · 투자 AI",
+      "credits": [],
+      "source": {
+        "commit": "255bfbe4df5786c181885dca8f3a5686b05b4a40",
+        "subject": "release: v2.9.211 natural lounge, staff views/likes, centred cheer, Gemini auto second opinion, 하니 final review (#267)",
+        "document": "docs/gemini-reports/2026-10-16-v2.9.210-214-ilbo-pwa-staff-profiles.md"
+      }
+    },
+    {
+      "id": "v2.9.210",
+      "date": "2026-10-13",
+      "status": "released",
+      "title": "퀴즈 이의제기·채점 노트",
+      "category": "디자인 · 공부",
+      "credits": [],
+      "source": {
+        "commit": "8833943c62eedf251cb9266477a96cb7d7a29a74",
+        "subject": "release: v2.9.210 QA contrast, 히나 첨삭 copy, quiz dispute/regrade, remote today quizzes (#265)",
+        "document": "docs/gemini-reports/2026-10-16-v2.9.210-214-ilbo-pwa-staff-profiles.md"
+      }
+    },
+    {
+      "id": "v2.9.209",
+      "date": "2026-10-11",
+      "status": "released",
+      "title": "뉴스룸 말투·투자 2차 의견",
+      "category": "뉴스룸 · 투자 · 퀴즈 · 패키지",
+      "credits": [],
+      "source": {
+        "commit": "e4af5185ecaf5e6a300bbd17b1214c4485083e01",
+        "subject": "release: v2.9.209 newsroom tone, Gemini 2nd opinion, quiz rules, lounge vocatives (#263)",
+        "document": "docs/gemini-reports/2026-10-11-v2.9.201-209-lounge-investment-automation.md"
+      }
+    },
+    {
+      "id": "v2.9.208",
+      "date": "2026-10-11",
+      "status": "released",
+      "title": "공부 집계·사이드바 정돈",
+      "category": "공부 · UI · 모션",
+      "credits": [],
+      "source": {
+        "commit": "759ae689a2cd85507b6c82d9fdcf92816bc498cd",
+        "subject": "release: v2.9.208 study counts, collapsed sidebar, micro-interactions (#261)",
+        "document": "docs/gemini-reports/2026-10-11-v2.9.201-209-lounge-investment-automation.md"
+      }
+    },
+    {
+      "id": "v2.9.207",
+      "date": "2026-10-11",
+      "status": "released",
+      "title": "라운지 직원 말투 정비",
+      "category": "커뮤니티",
+      "credits": [],
+      "source": {
+        "commit": "eafccf3186f7c7b39674a3df21576812dbf2633a",
+        "subject": "release: v2.9.207 하니 라운지 tone refresh (#257)",
+        "document": "docs/gemini-reports/2026-10-11-v2.9.201-209-lounge-investment-automation.md"
+      }
+    },
+    {
+      "id": "v2.9.206",
+      "date": "2026-10-11",
+      "status": "released",
+      "title": "대표실 층별 이동·유나 접수",
+      "category": "오피스 · 인포데스크 · 모바일",
+      "credits": [],
+      "source": {
+        "commit": "124f16412289327f8079caaeef4533169ac322f2",
+        "subject": "release: v2.9.206 4-floor 대표실 scene, infodesk fixes, remote polish (#255)",
+        "document": "docs/gemini-reports/2026-10-11-v2.9.201-209-lounge-investment-automation.md"
+      }
+    },
+    {
+      "id": "v2.9.205",
+      "date": "2026-10-11",
+      "status": "released",
+      "title": "하니 라운지·투자 리포트",
+      "category": "네비게이션 · AI 운영",
+      "credits": [],
+      "source": {
+        "commit": "2563da9348a7c9c67a158397a778ef453a0bff7d",
+        "subject": "release: v2.9.205 report polish, HANI building floors, renames (#253)",
+        "document": "docs/gemini-reports/2026-10-11-v2.9.201-209-lounge-investment-automation.md"
+      }
+    },
+    {
+      "id": "v2.9.204",
+      "date": "2026-10-11",
+      "status": "released",
+      "title": "로그인 그림·공부 알림·투자",
+      "category": "로그인 · 공부 · 투자",
+      "credits": [],
+      "source": {
+        "commit": "5188d54cbc84b66a6ece5f495bebb74d5ec18bcc",
+        "subject": "release: v2.9.204 login hero, proactive cards, 투자/투자위원회 split, basis-labelled totals, 적립식 accounts (#251)",
+        "document": "docs/gemini-reports/2026-10-11-v2.9.201-209-lounge-investment-automation.md"
+      }
+    },
+    {
+      "id": "v2.9.203",
+      "date": "2026-10-11",
+      "status": "released",
+      "title": "투자위원회·로그인 화면 정돈",
+      "category": "투자 · UI · 뉴스룸",
+      "credits": [],
+      "source": {
+        "commit": "cdfc7e86b3da914fbc3a57e7cbda8cbcd019f5fa",
+        "subject": "release: v2.9.203 fixes, banners, login/NEW/report polish, Investment Committee (#249)",
+        "document": "docs/gemini-reports/2026-10-11-v2.9.201-209-lounge-investment-automation.md"
+      }
+    },
+    {
+      "id": "v2.9.202",
+      "date": "2026-10-11",
+      "status": "released",
+      "title": "게시판 글 모음·기기 동기화",
+      "category": "동기화 · 오피스",
+      "credits": [],
+      "source": {
+        "commit": "7fa167e3a17763de09c5514c1e69c4f19cdf1209",
+        "subject": "release: v2.9.202 board library + cloud-first sync + office menu + login entry + AI budget (#246)",
+        "document": "docs/gemini-reports/2026-10-11-v2.9.201-209-lounge-investment-automation.md"
+      }
+    },
+    {
+      "id": "v2.9.201",
+      "date": "2026-10-10",
+      "status": "released",
+      "title": "사내 게시판·직원 관계도",
+      "category": "오피스 · 커뮤니티",
+      "credits": [],
+      "source": {
+        "commit": "7b63fbf16cf173822e8f15b5146f6dd34ca74c36",
+        "subject": "release: v2.9.201 community table board + relationship seed (#242)",
+        "document": "docs/gemini-reports/2026-10-11-v2.9.201-209-lounge-investment-automation.md"
+      }
+    },
+    {
+      "id": "v2.9.200",
+      "date": "2026-10-10",
+      "status": "released",
+      "title": "사내 게시판 확장·개발 보고",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "17dd426edb37403b5aa2a4fdd7a387973ff2ca03",
+        "subject": "release: v2.9.200 community board phase 2-3, dev reports, media C button feedback, SUNGMIN labels (#240)"
+      }
+    },
+    {
+      "id": "v2.9.199",
+      "date": "2026-10-10",
+      "status": "released",
+      "title": "메뉴 정리·담당 직원 한마디",
+      "category": "화면·디자인",
+      "credits": [],
+      "source": {
+        "commit": "0e0615a7eacacbe954a5166a6fc762297c02452f",
+        "subject": "release: v2.9.199 nav regroup, character lines, banner, media C fix (#237)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.198",
+      "date": "2026-10-10",
+      "status": "released",
+      "title": "드라이브 백업·사내 게시판",
+      "category": "보호·안전",
+      "credits": [],
+      "source": {
+        "commit": "9e92deb42c824696556bfa8732aa7c246ef59412",
+        "subject": "release: v2.9.198 Drive vault, media stage C, conflict choice, board phase 1 (#235)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.197",
+      "date": "2026-10-10",
+      "status": "released",
+      "title": "이중 보관 버튼 대기 보정",
+      "category": "보호·안전",
+      "credits": [],
+      "source": {
+        "commit": "963f13372777704399f6441500f1be5e3b959c83",
+        "subject": "release: v2.9.197 stage B button waits for Cloud checks (#232)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.196",
+      "date": "2026-10-10",
+      "status": "released",
+      "title": "표지·포스터 이중 보관",
+      "category": "보호·안전",
+      "credits": [],
+      "source": {
+        "commit": "efd7eb10d17ebc3785787e30aa14e709e981b41b",
+        "subject": "release: v2.9.196 media separation stage B (owner-run dual storage) (#231)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.195",
+      "date": "2026-10-10",
+      "status": "released",
+      "title": "표지·포스터 분리 준비",
+      "category": "보호·안전",
+      "credits": [],
+      "source": {
+        "commit": "ecec88e68dc1bff318516ccc8f0eff53370039e5",
+        "subject": "release: v2.9.195 media separation stage A (compatibility reader) (#230)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.194",
+      "date": "2026-10-10",
+      "status": "released",
+      "title": "다이어트 페이스 계산 보정",
+      "category": "목표·데이터",
+      "credits": [],
+      "source": {
+        "commit": "85f47f548ca38ba7189148e7cf87fb2b30fe73ad",
+        "subject": "HANI OS v2.9.194 · 배포 열차 10호 (다이어트 페이스메이커 정확도) (#226)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.193",
+      "date": "2026-10-10",
+      "status": "released",
+      "title": "먼저 챙겨 주는 하니",
+      "category": "목표·데이터",
+      "credits": [
+        "dohyun",
+        "serin"
+      ],
+      "source": {
+        "commit": "f850b0cde9f83f4140ea3ba0322141df5701bdf0",
+        "subject": "release: HANI OS v2.9.193 release train 9 (proactive care) (#225)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      },
+      "creditEvidence": {
+        "document": "docs/gemini-reports/2026-10-10-trains-7-10.md",
+        "quote": "도연 구현·세린 검수 PASS"
+      }
+    },
+    {
+      "id": "v2.9.192",
+      "date": "2026-10-10",
+      "status": "released",
+      "title": "조직도·앨범·회의 보고서",
+      "category": "화면·디자인",
+      "credits": [],
+      "source": {
+        "commit": "d218f50714c939aba763521bb2cd7cf4a3952f02",
+        "subject": "HANI OS v2.9.192 · 배포 열차 8호 (디자인 정렬 + 조직도·AI 예산·컨퍼런스 룸) (#224)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.191",
+      "date": "2026-10-10",
+      "status": "released",
+      "title": "캐릭터 앨범·동기화 안정화",
+      "category": "목표·데이터",
+      "credits": [],
+      "source": {
+        "commit": "762eb36c562d31a042a7c3d4524f903103d53102",
+        "subject": "release: HANI OS v2.9.191 release train 7 (#221)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.190",
+      "date": "2026-10-06",
+      "status": "released",
+      "title": "대시보드 월별 입력 안내",
+      "category": "목표·데이터",
+      "credits": [],
+      "source": {
+        "commit": "c5e2dd0bc8c7d562f7f1d1c0f12e02d7b63f26c6",
+        "subject": "release: HANI OS v2.9.190 release train 6 (post-audit stabilization hotfix + dashboard monthly basis) (#215)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.189",
+      "date": "2026-10-06",
+      "status": "released",
+      "title": "분기·연간 목표 진행 조회",
+      "category": "목표·데이터",
+      "credits": [],
+      "source": {
+        "commit": "4a777fc64570be43f6fb1df5e97ead69baf25760",
+        "subject": "release: HANI OS v2.9.189 release train (goal quarter/annual progress view) (#214)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.188",
+      "date": "2026-10-06",
+      "status": "released",
+      "title": "목표 한 건 삭제 전 확인",
+      "category": "목표·데이터",
+      "credits": [],
+      "source": {
+        "commit": "0a12cae59922722532597e9828473b7d75226c9b",
+        "subject": "HANI OS v2.9.188 · 배포 열차 4호 (목표 한 건 삭제) (#210)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.187",
+      "date": "2026-10-06",
+      "status": "released",
+      "title": "유나 일정 입력 미리보기",
+      "category": "AI 팀·개발도구",
+      "credits": [],
+      "source": {
+        "commit": "e0e9da1b1ae9c7570eaca252cc78a55d22056fb7",
+        "subject": "HANI OS v2.9.187 · 배포 열차 3호 (YUNA 일정 입력 해석) (#209)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.186",
+      "date": "2026-10-06",
+      "status": "released",
+      "title": "실제 뉴스로 공부 퀴즈 출제",
+      "category": "뉴스·학습",
+      "credits": [],
+      "source": {
+        "commit": "ab5bbbf5361b3aaeabfaf45cff6b8e112cb2439c",
+        "subject": "release: HANI OS v2.9.186 release train (Study actual news material) (#207)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.185",
+      "date": "2026-10-06",
+      "status": "released",
+      "title": "목표 관리·기록 보관함 복구",
+      "category": "목표·데이터",
+      "credits": [],
+      "source": {
+        "commit": "57719dcac0b221392dbe0a5ee3f5c7fb6e58cc02",
+        "subject": "release: HANI OS v2.9.185 release train (restore settings Data Hub library and Goal Registry panels) (#206)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.184",
+      "date": "2026-10-05",
+      "status": "released",
+      "title": "승인한 배포 확인 창 개선",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "adb2e3bc34e6859a21bd092e1d5e149402358fdb",
+        "subject": "fix: deploy approved candidates through accessible confirmation v2.9.184 (#203)"
+      }
+    },
+    {
+      "id": "v2.9.183",
+      "date": "2026-10-05",
+      "status": "released",
+      "title": "체질량·체지방률 목표 등록",
+      "category": "목표·데이터",
+      "credits": [],
+      "source": {
+        "commit": "2940fa24cc65d205af1e9f997c6bc77002270842",
+        "subject": "HANI OS v2.9.183 · BMI·체지방률 목표 등록 (#198)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.181",
+      "date": "2026-10-05",
+      "status": "released",
+      "title": "대시보드 지표 이름 복원",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "a7bb9137083d83f8170ac103ad7603bc6d6ac603",
+        "subject": "fix: restore canonical dashboard index names v2.9.181 (#196)"
+      }
+    },
+    {
+      "id": "v2.9.180",
+      "date": "2026-10-05",
+      "status": "released",
+      "title": "데이터 보호·백업·품질 개선",
+      "category": "기록·보호",
+      "credits": [],
+      "source": {
+        "commit": "f516d5421f0b6aa28cbe595e280a3a499ce10d08",
+        "subject": "HANI OS v2.9.180 데이터 보호 및 품질 개선 (#192)"
+      }
+    },
+    {
+      "id": "v2.9.178",
+      "date": "2026-10-05",
+      "status": "released",
+      "title": "목표 등록·데이터 허브",
+      "category": "목표·데이터",
+      "credits": [],
+      "source": {
+        "commit": "90b7440bf3bb285cfbe1713ac6c7a870e502f5bc",
+        "subject": "feat: P2 Goal Registry and read-only Data Hub v2.9.178 (#180)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.177",
+      "date": "2026-10-05",
+      "status": "released",
+      "title": "뉴스룸 가독성·주차 안내",
+      "category": "뉴스·학습",
+      "credits": [],
+      "source": {
+        "commit": "2c2ce5778aa69cfa4748208a86b89a5d79089ec6",
+        "subject": "fix: newsroom readability and archive week context v2.9.177 (#178)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.175",
+      "date": "2026-10-05",
+      "status": "released",
+      "title": "모바일 조작·대시보드 기간",
+      "category": "화면·디자인",
+      "credits": [],
+      "source": {
+        "commit": "69ea05d8523b9f6b148f987692c213992f3ba34c",
+        "subject": "fix: mobile controls and dashboard period clarity v2.9.175 (#176)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.174",
+      "date": "2026-10-05",
+      "status": "released",
+      "title": "개발·보고팀 화면 분리",
+      "category": "AI 팀·개발도구",
+      "credits": [],
+      "source": {
+        "commit": "eec4955801402a3165527f1f2ba3ef65bcd20234",
+        "subject": "feat: release separate AI development reporting team v2.9.174 (#175)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.173",
+      "date": "2026-10-05",
+      "status": "released",
+      "title": "국내 주식 매입 원가 연결",
+      "category": "투자",
+      "credits": [],
+      "source": {
+        "commit": "fc1922eb6bba75eda54a8405062478792145be4d",
+        "subject": "fix: link legacy domestic portfolio cost v2.9.173 (#174)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.172",
+      "date": "2026-10-05",
+      "status": "released",
+      "title": "포트폴리오 최신 화면 갱신",
+      "category": "투자",
+      "credits": [],
+      "source": {
+        "commit": "e53542f05d7aed93b2a83260f97a707d6f44cad1",
+        "subject": "fix: refresh portfolio runtime cache tags v2.9.172 (#173)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.171",
+      "date": "2026-10-05",
+      "status": "released",
+      "title": "종목 지도·캔들 차트",
+      "category": "투자",
+      "credits": [],
+      "source": {
+        "commit": "eb22b47a9d96320ff9dd7b005c399936f920a56f",
+        "subject": "HANI OS release · Portfolio stock map and candle scale v2.9.171 (#172)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.170",
+      "date": "2026-10-05",
+      "status": "released",
+      "title": "와이드 포스터·계절 사이드바",
+      "category": "화면·디자인",
+      "credits": [],
+      "source": {
+        "commit": "b211be47a6b0dd71ef11407f9c15e168cea14113",
+        "subject": "feat: AURA wide posters and varied seasonal sidebar v2.9.170 (#170)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.169",
+      "date": "2026-10-04",
+      "status": "released",
+      "title": "세린 개발 보고서 메뉴",
+      "category": "AI 팀·개발도구",
+      "credits": [],
+      "source": {
+        "commit": "1cb3f71dae932575684c82e693b4836b80f3ecd9",
+        "subject": "release: Gemini 개발 보고서 별도 메뉴 v2.9.169 (#168)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.168",
+      "date": "2026-10-04",
+      "status": "released",
+      "title": "자산 입력·평균 매입가 선택",
+      "category": "투자",
+      "credits": [],
+      "source": {
+        "commit": "9099d894dbb1de99233552fb59730eda7e73c82f",
+        "subject": "HANI OS release · Asset Input canonical holding contract v2.9.168 (#165)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.167",
+      "date": "2026-10-04",
+      "status": "released",
+      "title": "계절 캠페인 포스터",
+      "category": "화면·디자인",
+      "credits": [],
+      "source": {
+        "commit": "d67f3beeaeae69fbf8b549b7976b23980a72db3d",
+        "subject": "HANI OS release · HANI AURA campaign posters v2.9.167 (#164)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.166",
+      "date": "2026-10-04",
+      "status": "released",
+      "title": "기록 보호·투자 화면 가독성",
+      "category": "보호·안전",
+      "credits": [],
+      "source": {
+        "commit": "3a7979d1782eefab539fc0ba441eec0b961ab8e3",
+        "subject": "HANI OS v2.9.166 · P1 Safety and Portfolio Contrast (#161)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.165",
+      "date": "2026-10-04",
+      "status": "released",
+      "title": "디자인·배포 메뉴 정리",
+      "category": "화면·디자인",
+      "credits": [],
+      "source": {
+        "commit": "b80c620ae817a469ee13d837656899654da25c74",
+        "subject": "fix: group AURA and deployment sidebar menus v2.9.165 (#159)",
+        "document": "docs/gemini-reports/_SOURCE-release-log.md"
+      }
+    },
+    {
+      "id": "v2.9.164",
+      "date": "2026-10-04",
+      "status": "released",
+      "title": "데이터 허브·생활 지표 연결",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "f5274cebc24b617ad13df70d354e31504470de70",
+        "subject": "HANI OS release · HANI Data Hub v2.9.164 (#156)",
+        "document": "docs/gemini-reports/2026-10-04-v2.9.164-data-hub.md"
+      }
+    },
+    {
+      "id": "v2.9.163",
+      "date": "2026-10-04",
+      "status": "released",
+      "title": "화면별 담당 직원 한마디",
+      "category": "하니 그룹",
+      "credits": [],
+      "source": {
+        "commit": "ad3a04103f32e4e5b1a75f8a0b7f01a275634f88",
+        "subject": "HANI OS release · v2.9.163 Canonical tab character quotes (#153)"
+      }
+    },
+    {
+      "id": "v2.9.162",
+      "date": "2026-10-04",
+      "status": "released",
+      "title": "실시간 포트폴리오",
+      "category": "투자",
+      "credits": [],
+      "source": {
+        "commit": "022b296b827abe8ccea7df43931ecf8422890b28",
+        "subject": "feat(portfolio): runtime-only live analytics v2.9.162 (#151)"
+      }
+    },
+    {
+      "id": "v2.9.161",
+      "date": "2026-10-03",
+      "status": "released",
+      "title": "테마 스튜디오·사계절 컬렉션",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "6d46ec9d6651f0ccc27f3044418d7e6732f659ca",
+        "subject": "feat(ui): HANI AURA compact showroom and seasonal collection v2.9.161 (#148)"
+      }
+    },
+    {
+      "id": "v2.9.160",
+      "date": "2026-10-03",
+      "status": "released",
+      "title": "계절 조명·컬렉션 카드",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "85c8110ee310c1d0cb4aa3cdbf3275a07e5593e6",
+        "subject": "feat(ui): HANI seasonal ambient light and collection cards v2.9.160 (#147)"
+      }
+    },
+    {
+      "id": "v2.9.159",
+      "date": "2026-10-03",
+      "status": "released",
+      "title": "원본 기록 소유자 확인",
+      "category": "기록·보호",
+      "credits": [],
+      "source": {
+        "commit": "d9109aa4850288c4c8b47dc79acb9cadd31ebfc7",
+        "subject": "HANI OS v2.9.159 · read-only source owner verification (#145)"
+      }
+    },
+    {
+      "id": "v2.9.158",
+      "date": "2026-10-03",
+      "status": "released",
+      "title": "캐릭터 테마·메인 배너",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "d6cfd623ad686374a73ccdaf08b26a588b299c90",
+        "subject": "feat(ui): HANI character finish showroom and responsive Hero v2.9.158 (#144)"
+      }
+    },
+    {
+      "id": "v2.9.157",
+      "date": "2026-10-03",
+      "status": "released",
+      "title": "테마 색상·리모컨 그림 정돈",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "fe07619e488cc00d7c009a4ce2e8bc8b07df7f1f",
+        "subject": "HANI OS v2.9.157 - Signature Finishes and Remote artwork fit"
+      }
+    },
+    {
+      "id": "v2.9.156",
+      "date": "2026-10-03",
+      "status": "released",
+      "title": "사계절 테마·갤럭시 호환",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "cb6f6d11aeeffaf236f726688be7f7e9460951bd",
+        "subject": "HANI OS v2.9.156 - Seasonal architecture and Galaxy compatibility (#141)"
+      }
+    },
+    {
+      "id": "v2.9.155",
+      "date": "2026-10-03",
+      "status": "released",
+      "title": "갤럭시 화면 개선",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "321acc064d9dafca2efc56375baab0f290ea0097",
+        "subject": "HANI OS release · HANI GALAXY Batch B Preview v2.9.155 (#140)"
+      }
+    },
+    {
+      "id": "v2.9.154",
+      "date": "2026-10-02",
+      "status": "released",
+      "title": "대시보드·다이어트 화면 정돈",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "ff8c9ea22ba990d0771b390972e7ccb39610d097",
+        "subject": "Neutral Dashboard and Diet surfaces v2.9.154 (#139)"
+      }
+    },
+    {
+      "id": "v2.9.153",
+      "date": "2026-10-02",
+      "status": "released",
+      "title": "대시보드 상단·지표 전광판",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "03b4c99f9e2689fc9f414a347f06bc38a09cf911",
+        "subject": "HANI OS v2.9.153 · Dashboard Topbar + LIFE MARKET Ticker (#138)"
+      }
+    },
+    {
+      "id": "v2.9.152",
+      "date": "2026-10-02",
+      "status": "released",
+      "title": "월간 보고서 화면 갱신",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "f895c490863592f5c9ff685f41799e3b3f30bf51",
+        "subject": "Invalidate cached Life Report presenter UI in v2.9.152 (#137)"
+      }
+    },
+    {
+      "id": "v2.9.151",
+      "date": "2026-10-02",
+      "status": "released",
+      "title": "월간 보고서·담당자 한줄평",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "09bdd1ac4a3117bf255b243507b33797434eb4d0",
+        "subject": "라이프 리포트 · 담당자 한줄평·수동 월별 보관·발표형 디자인 · v2.9.151 (#126)"
+      }
+    },
+    {
+      "id": "v2.9.150",
+      "date": "2026-10-02",
+      "status": "released",
+      "title": "직원 교차 검토·회의 복구",
+      "category": "하니 그룹",
+      "credits": [],
+      "source": {
+        "commit": "2c9e989f683934c86ab4d6d3ca6bf693234182fb",
+        "subject": "HANI BOARDROOM: 실제 Agent 교차 검토와 회의 복구 · v2.9.150 (#132)"
+      }
+    },
+    {
+      "id": "v2.9.149",
+      "date": "2026-10-01",
+      "status": "released",
+      "title": "배포 패키지·안전 검사",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "90b8508a3b1a1dda0cc2c941ada8cc98ec8e57e4",
+        "subject": "배포센터 One-Pass 패키지 수용·기존 PR 읽기 전용 HINA 검증 · v2.9.149 (#134)"
+      }
+    },
+    {
+      "id": "v2.9.148",
+      "date": "2026-10-01",
+      "status": "released",
+      "title": "시세 차트·보유종목 갱신",
+      "category": "투자",
+      "credits": [],
+      "source": {
+        "commit": "e4be98743e410015995c530109c937e6af435621",
+        "subject": "HANI OS v2.9.148 — market chart detail and holdings-only updates (#127)"
+      }
+    },
+    {
+      "id": "v2.9.147",
+      "date": "2026-10-01",
+      "status": "released",
+      "title": "팀 카드·리모컨 사진 정돈",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "9ea7f70c83531efc15e64057e0e7f30c80804d13",
+        "subject": "Fix sidebar team card and Remote photo fit · v2.9.147 (#125)"
+      }
+    },
+    {
+      "id": "v2.9.146",
+      "date": "2026-09-29",
+      "status": "released",
+      "title": "리모컨 배너 자동 전환",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "6fd975743c3ce407929ae2a45d190f773f1df105",
+        "subject": "HANI Remote rotating banners · v2.9.146 (#124)"
+      }
+    },
+    {
+      "id": "v2.9.145",
+      "date": "2026-09-29",
+      "status": "released",
+      "title": "토스 시세·종목 검색",
+      "category": "투자",
+      "credits": [],
+      "source": {
+        "commit": "eeccbef35badeaf06a27337f2bd9a03c54a4fbd8",
+        "subject": "Toss market data and instrument search · v2.9.145 (#123)"
+      }
+    },
+    {
+      "id": "v2.9.144",
+      "date": "2026-09-28",
+      "status": "released",
+      "title": "발표형 보고서 화면",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "edd73d7ab9fcf12b7bf26fa77a4b91d20395e30b",
+        "subject": "Executive Report Room · v2.9.144 (#122)"
+      }
+    },
+    {
+      "id": "v2.9.139",
+      "date": "2026-09-27",
+      "status": "released",
+      "title": "퀴즈 출제 다양화",
+      "category": "생활·공부",
+      "credits": [],
+      "source": {
+        "commit": "f8fc07a350311e3ffa6ce9c430d65a3ee3ec838c",
+        "subject": "HANI OS v2.9.139 · Learning Quiz Diversity (#119)"
+      }
+    },
+    {
+      "id": "v2.9.138",
+      "date": "2026-09-27",
+      "status": "released",
+      "title": "대시보드·아카이브 점검",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "8c0c545a4e075189f948599a4f8911fdeee61d27",
+        "subject": "HANI OS v2.9.138 · Dashboard and archive QA (#118)"
+      }
+    },
+    {
+      "id": "v2.9.137",
+      "date": "2026-09-27",
+      "status": "released",
+      "title": "뉴스룸 직원 말투 정리",
+      "category": "하니 그룹",
+      "credits": [],
+      "source": {
+        "commit": "27791a19ec4823d2c643141bc4d427ec644e3cff",
+        "subject": "HANI OS release · v2.9.137-newsroom-comment-persona (#116)"
+      }
+    },
+    {
+      "id": "v2.9.136",
+      "date": "2026-09-27",
+      "status": "released",
+      "title": "유나 독서 접수 수정",
+      "category": "생활·공부",
+      "credits": [],
+      "source": {
+        "commit": "849ec41c19f9cd84c52b5962f241070ed10b5bab",
+        "subject": "HANI OS v2.9.136 · YUNA Book Preview Correction (#115)"
+      }
+    },
+    {
+      "id": "v2.9.135",
+      "date": "2026-09-27",
+      "status": "released",
+      "title": "화면별 리모컨·개발 연혁",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "633516e2e7dee694528844cf90853391677484ce",
+        "subject": "HANI OS v2.9.135 · Context Remote + Development History (#113)"
+      }
+    },
+    {
+      "id": "v2.9.134",
+      "date": "2026-09-26",
+      "status": "released",
+      "title": "부족한 퀴즈만 다시 출제",
+      "category": "생활·공부",
+      "credits": [],
+      "source": {
+        "commit": "2152453e5827f83a2d5358945c55e9052ea9a9d0",
+        "subject": "HANI OS release · HANI OS v2.9.134 (#112)"
+      }
+    },
+    {
+      "id": "v2.9.133",
+      "date": "2026-09-21",
+      "status": "released",
+      "title": "매일 퀴즈 중복 방지",
+      "category": "생활·공부",
+      "credits": [],
+      "source": {
+        "commit": "6d1016a821de2dc750fb90303f24abbff3ee1e04",
+        "subject": "HANI OS v2.9.133 · Daily Quiz duplicate guard and partial regeneration (#110)"
+      }
+    },
+    {
+      "id": "v2.9.132",
+      "date": "2026-09-21",
+      "status": "released",
+      "title": "실제 안건으로 열리는 회의",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "61b5df31d50fdd386aa8b27608238e6d661812c7",
+        "subject": "HANI OS v2.9.132 · Living Office 실제 Case 회의 연결 (#109)"
+      }
+    },
+    {
+      "id": "v2.9.131",
+      "date": "2026-09-21",
+      "status": "released",
+      "title": "유나 접수·미리보기 수정",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "bf3ef764310e5d2681c80363828f741bad6f76f3",
+        "subject": "HANI OS release · v2.9.131 (#108)"
+      }
+    },
+    {
+      "id": "v2.9.129",
+      "date": "2026-09-20",
+      "status": "released",
+      "title": "자산 입력 전 계좌 확인",
+      "category": "투자",
+      "credits": [],
+      "source": {
+        "commit": "f19a6357a45ef53608079cf3833dfa29c3355e46",
+        "subject": "HANI OS release · v2.9.129 asset account-first review (#106)"
+      }
+    },
+    {
+      "id": "v2.9.128",
+      "date": "2026-09-20",
+      "status": "released",
+      "title": "기업·산업 주간 소식",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "020c59f31dae06247f408ba411552a79bb7bc29c",
+        "subject": "HANI OS release · v2.9.128-weekly-company-followup (#105)"
+      }
+    },
+    {
+      "id": "v2.9.127",
+      "date": "2026-09-20",
+      "status": "released",
+      "title": "시청 시즌·회차 구분",
+      "category": "생활·공부",
+      "credits": [],
+      "source": {
+        "commit": "121ec88b382e22cf4476b8aef524af0b82ba49ed",
+        "subject": "HANI OS release · v2.9.127-movie-episode-parser (#104)"
+      }
+    },
+    {
+      "id": "v2.9.126",
+      "date": "2026-09-20",
+      "status": "released",
+      "title": "회의 추가 질문·답변",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "8b7f364cf8f07c7c5444e1af7c8ac77bec54db50",
+        "subject": "HANI OS v2.9.126 · Meeting Engine v2 Batch 1 (#102)"
+      }
+    },
+    {
+      "id": "v2.9.125",
+      "date": "2026-09-20",
+      "status": "released",
+      "title": "계좌 캡처 안전하게 반영",
+      "category": "투자",
+      "credits": [],
+      "source": {
+        "commit": "01efcec4033bf351e3ab00f255cf58f7b9be3564",
+        "subject": "HANI OS v2.9.125 · Safe account screenshot update and cleanup (#101)"
+      }
+    },
+    {
+      "id": "v2.9.123",
+      "date": "2026-09-20",
+      "status": "released",
+      "title": "공부방·퀴즈 안정화",
+      "category": "생활·공부",
+      "credits": [],
+      "source": {
+        "commit": "4f011bea98fb10f01587b8d8248a76f92df55240",
+        "subject": "HANI OS v2.9.123 · Learning Board UX and quiz reliability (#100)"
+      }
+    },
+    {
+      "id": "v2.9.122",
+      "date": "2026-09-19",
+      "status": "released",
+      "title": "계좌 캡처 붙여넣기",
+      "category": "투자",
+      "credits": [],
+      "source": {
+        "commit": "3f028188885d58e57b97c114b01be4f343c54c64",
+        "subject": "HANI OS v2.9.122 · Screenshot-only account update and clipboard paste (#99)"
+      }
+    },
+    {
+      "id": "v2.9.121",
+      "date": "2026-09-19",
+      "status": "released",
+      "title": "스포츠 결과 자동 확인",
+      "category": "화면·기능",
+      "credits": [],
+      "source": {
+        "commit": "83c6368b0b81cd6b0160e40bd93a465cddf10b6d",
+        "subject": "HANI OS Sports background sync v2.9.121 (#98)"
+      }
+    },
+    {
+      "id": "v2.9.120",
+      "date": "2026-09-15",
+      "status": "released",
+      "title": "서재·시청 아카이브",
+      "category": "생활·공부",
+      "credits": [],
+      "source": {
+        "commit": "654af6b1e9e7473882d30320307db3576b369877",
+        "subject": "HANI OS release · v2.9.120-library-watch-archive (#97)"
+      }
+    }
+  ]
+}
