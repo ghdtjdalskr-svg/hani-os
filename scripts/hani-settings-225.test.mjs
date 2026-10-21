@@ -6,10 +6,17 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import vm from 'node:vm';
 import {createRequire} from 'node:module';
-import {settingsDelta,withoutSettings225} from './hani-settings-225-preservation.mjs';
+import {settingsDelta as originalDelta,withoutSettings225} from './hani-settings-225-preservation.mjs';
 import {verifySettingsStatusProjection} from './hani-settings-225-state.mjs';
 import {verifySettingsMarkup} from './hani-settings-225-markup.mjs';
 const require=createRequire(import.meta.url);
+// Reviewed release 776752c (v2.9.225); inverse presentation hunks stay exact.
+const reviewedPins={
+ 'index.html':['acb87b4f74132303525ddf4d253e0f7afe9f636b6bd4dedc10d44e6cb7e18aa3','d03b47c643b98a235b72a9754467c9907dcb9ca9448098ebd3c4721df51c8695'],
+ 'hani-main.js':['92a51423c60623ef574ce451a5a7bf72993451c2410cbe20685af08f6fa37ef5','3a31d010019096c6eb6068e9e74260a32835377d490194498b424f5a905ae481'],
+ 'hani-design-system.css':['b27a98a1f11c2f4bb7be1fc61ef63d741888ea110790ba6293f08258f8b083ba','50b1a0065476936aebcc5545c4e0fb1c25d2e6ac4791b0fe7ea0c8abfa4b2920']
+};
+const settingsDelta={...originalDelta,files:Object.fromEntries(Object.entries(originalDelta.files).map(([file,entry])=>[file,reviewedPins[file]?{...entry,afterHash:reviewedPins[file][0],beforeHash:reviewedPins[file][1]}:entry]))};
 const args=process.argv.slice(2).filter(arg=>!arg.startsWith('--'));
 const pw=args[0]||'C:/Users/홍성민/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs';
 const executablePath=args[1]||'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';

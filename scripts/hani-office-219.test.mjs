@@ -54,8 +54,12 @@ assert.equal(read('assets/sprites-v2/manifest.json'),old('assets/sprites-v2/mani
 const slice=(s,a,b)=>s.slice(s.indexOf(a),s.indexOf(b,s.indexOf(a)));
 assert.equal(slice(source,'  function pose(','  function loadSprite('),slice(old('hani-office-live.js'),'  function pose(','  function loadSprite('));
 const scale=s=>[...s.matchAll(/\.hani-office-actor\{[^}]+\}/g)].map(m=>m[0].replace('z-index:4;',''));
-assert.deepEqual(scale(read('hani-office-live.css')),scale(old('hani-office-live.css')));
-report.static.push('217 anchors, atlas metadata, pose/pivot and actor scale unchanged');
+assert.deepEqual(scale(css),[
+ '.hani-office-actor{--actor-height:max(40px,6.8cqw);--sprite-ratio:.75;position:absolute;width:calc(var(--actor-height)*var(--sprite-ratio));height:var(--actor-height);margin:0;transform:translate(-50%,-100%);transition:opacity .3s;pointer-events:none}',
+ '.hani-office-actor{transition:none}',
+ '.hani-office-actor{transition:none}'
+],'reviewed 224 HD actor proportions and reduced-motion/pause rules');
+report.static.push('217 anchors, atlas metadata and pose/pivot unchanged; exact reviewed 224 HD actor CSS');
 assert.doesNotMatch(read('hani-office-live.css'),/\.hani-office-status\{display:none\}/);
 assert.doesNotMatch(source,/localStorage|sessionStorage|supabase/);
 for(const time of [...times,'02:00']){
@@ -69,7 +73,7 @@ for(const time of [...times,'02:00']){
  }
  report.static.push(`${time}: ${people.length} staff, unique seats, speech present; night presence retained`);
 }
-for(const f of ['index.html','data/hani-building/art-map-v1.json','data/hani-building/spatial-contract.json','assets/sprites-v2/manifest.json','assets/data/office-actions-216.json'])assert.equal(f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(withoutSimplify225(f,read(f))))):read(f),f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(git('show','origin/main:'+f).toString('utf8')))):git('show',base+':'+f).toString('utf8'),f+' preserved');
+for(const f of ['index.html','data/hani-building/art-map-v1.json','data/hani-building/spatial-contract.json','assets/sprites-v2/manifest.json','assets/data/office-actions-216.json'])assert.equal(f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(withoutSimplify225(f,read(f))))):read(f),f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(withoutSimplify225(f,git('show','776752c971f2ce48edf376a707eb345ae57da98c:'+f).toString('utf8'))))):git('show',base+':'+f).toString('utf8'),f+' preserved');
 report.static.push('version/cache, office metadata and action budgets preserved; no office storage/Cloud APIs (art files checked separately with git diff)');
 // Execute the real renderer and floor events as well as the scene model. DOM doubles
 // verify persistent identity and speech updates, not visibility or pixel geometry.
@@ -214,7 +218,13 @@ try{
       assert.equal(a.name.icon.visible,Boolean(a.emoji));assert.equal(a.name.icon.text,a.emoji);
      }else if(a.label.visible)assert.ok(a.label.inside&&a.label.text,'visible desktop pill within floor');
      const original=sizes.get(`${width}:${a.id}`);assert.ok(original,'217 daytime reference for '+a.id);
-     for(const axis of ['width','height'])assert.ok(Math.abs(a.sprite[axis]/original[axis]-1)<=.10,`${a.id} ${axis} within 10% of 217`);
+     // 224 deliberately replaced 217's squashed scale with a 40px floor and
+     // 6.8cqw height. Keep a measured geometry guard against that reviewed rule.
+     const expectedHeight=Math.max(40,(check.box.width-2)*.068);
+     const entry=assets.sprites.entries.find(entry=>entry.id===a.id);
+     assert.ok(entry,'canonical sprite metadata for '+a.id);
+     assert.ok(Math.abs(a.sprite.height-expectedHeight)<=1,`${a.id} reviewed 224 responsive height`);
+     assert.ok(Math.abs(a.sprite.width/a.sprite.height-entry.cell[0]/entry.cell[1])<=.02,`${a.id} canonical unsquashed aspect ratio`);
     }
     for(let a=0;a<check.actors.length;a++)for(let b=a+1;b<check.actors.length;b++){
      if(width===390||width===412)assert.ok(overlap(check.actors[a].name,check.actors[b].name)<=.10,`${width} ${time} ${floor}: name tags including dot overlap <=10%`);

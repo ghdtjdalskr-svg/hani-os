@@ -3,8 +3,16 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import crypto from 'node:crypto';
-import {delta,withoutSimplify225} from './hani-simplify-225-preservation.mjs';
+import {delta as originalDelta,withoutSimplify225} from './hani-simplify-225-preservation.mjs';
 import {withoutSettings225} from './hani-settings-225-preservation.mjs';
+// Reviewed release 776752c (v2.9.225), after reversing only settings UI hunks.
+const reviewedPins={
+ 'index.html':['d03b47c643b98a235b72a9754467c9907dcb9ca9448098ebd3c4721df51c8695','2b75469765f336a962c0f3f0274b917d1f4d5852df48a460ce5c56021f028884'],
+ 'hani-main.js':['3a31d010019096c6eb6068e9e74260a32835377d490194498b424f5a905ae481','3355949822c85b39f10c90965d2d786cc997a3c05e8e64347f9ceb4fd75eebb4'],
+ 'hani-context-remote-v1.js':['8d4272130aa068672341739ea88d72b5f2833364e9e9cb95e0f0ebd111562c58','7ab51baa29d161e1f3bc14bb3db970820e4eb9397fcfb940eb8193ba94a04bd2'],
+ 'hani-design-system.css':['50b1a0065476936aebcc5545c4e0fb1c25d2e6ac4791b0fe7ea0c8abfa4b2920','e7e12bc3305f7b76d592e22d713902d0f946da51cdbce557cdb770cae6667748']
+};
+const delta={...originalDelta,files:Object.fromEntries(Object.entries(originalDelta.files).map(([file,entry])=>[file,reviewedPins[file]?{...entry,afterHash:reviewedPins[file][0],beforeHash:reviewedPins[file][1]}:entry]))};
 const read=f=>withoutSettings225(f,fs.readFileSync(new URL('../'+f,import.meta.url),'utf8'));
 const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
 const collect=(s,re)=>[...s.matchAll(re)].map(m=>m[0]).sort();
