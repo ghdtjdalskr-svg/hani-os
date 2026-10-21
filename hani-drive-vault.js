@@ -211,7 +211,7 @@
     $("driveVaultConnect").disabled=!supported||busy||!context.owner;
     $("driveVaultBackup").disabled=!supported||busy||!context.ready||!row?.handle||permission!=="granted";
     if($("driveVaultPhotos"))$("driveVaultPhotos").disabled=!supported||busy||!context.photoReady||!row?.handle||permission!=="granted";
-    if($("driveVaultPhotoStatus"))$("driveVaultPhotoStatus").textContent=!supported?"PC에서 백업할 수 있어요":
+    if($("driveVaultPhotoStatus"))$("driveVaultPhotoStatus").textContent=!supported?"":
       row?.photos?photoSummary(row.photos):"사진 백업 대기 · 백업 0장 / 신규 0장 / 누락 미확인";
     $("driveVaultReminder").textContent=prompt?
       "폴더 권한을 다시 확인하려면 ‘백업 폴더 연결’을 눌러 주세요.":

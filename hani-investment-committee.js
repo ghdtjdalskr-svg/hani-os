@@ -775,7 +775,7 @@
       const cfg = cloudConfig();
       const { data: { session }, error } = await cloudClient.auth.getSession();
       if (error || !session?.access_token || session.user?.id !== owner || owner !== accountIdentity() || epoch !== secondSessionEpoch) {failure=secondOpinionError('INVALID_SESSION');throw Error();}
-      const response = await fetch(cfg.url + '/functions/v1/hani-second-opinion', {
+      const response = await cloudReadFetch(cfg.url + '/functions/v1/hani-second-opinion', {
         method:'POST', headers:{'Content-Type':'application/json',apikey:cfg.key,Authorization:'Bearer '+session.access_token},
         body:JSON.stringify({prompt}),
       });

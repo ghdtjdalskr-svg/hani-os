@@ -674,7 +674,7 @@
       const batchSize=replacementBatchSize(remaining);
       const newsNeeded = Math.max(0, newsMinimum - accepted.filter(x => hasNewsMaterial(x, questionSources)).length);
       const retryGoal=attempt===1?requestBody.project.goal:[requestBody.project.goal,'추가 문제만 필요합니다. 이미 출제한 질문 문장을 반복하지 말고 같은 문법·어휘도 다른 상황과 보기로 물으세요.',...accepted.slice(-2).map(x=>`재사용 금지: ${questionFocus(x.prompt).slice(0,120)}`)].filter(Boolean).join(' ').slice(0,780);
-      const res = await fetch(`${cfg.url}/functions/v1/hani-learning-quiz`, {
+      const res = await cloudReadFetch(`${cfg.url}/functions/v1/hani-learning-quiz`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
