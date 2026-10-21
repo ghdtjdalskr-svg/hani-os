@@ -1,3 +1,10 @@
+# 2026-10-21 · 본사 고해상도·비율 (도연/Codex)
+
+`hani/office-hd` / base `f731727`(main aa9c963 + tap-lines 보존), v2.9.222 유지. 25명×4포즈 원화3× 재출력 총919.89KiB, 공통 min-size actor 예외·투명40px hit 영역·v3 우선/v2 fallback 구현. HD Node9·지정 office Node 회귀 PASS(공통 중복 포함). **Edge spawn EPERM으로 네 너비 실측·비교 PNG2장 미검증/미생성**, 실화면 완료 아님. Git add lock 권한 거절·commit pathspec 실패로 미커밋·미push. Notion 착수 생성/read-back 성공, 최종 append 자동 승인 never 거절로 갱신 대기. Storage/Cloud/main/배포 변경 없음. [인수인계](handoffs/2026-10-21-office-hd.md), [구현·검증 보고](../../artifacts/office-hd-224/report.md). 다음: 허용 환경 browser QA → 새26자산 seed → Claude 열차. 아래 기존 기록 보존.
+
+# 2026-10-21 · 본사 탭 대사 (도연/Codex)
+
+`hani/tap-lines` / base `aa9c963c`(GitHub 최신 main 일치, v2.9.222 유지). 직원19명·개구리 회장님 반응5개 총281문장 JSON과 기존 단일 탭/말풍선 슬롯에 KST·교대 순환·friend·2초 triple·행동 종료 후 대사 구현. **신규 Node15·office219 source/model·actions221 20·fix218 6·seats215 12 PASS**(공통 owner 중복 포함). **실제 Edge spawn EPERM으로390/1440 실화면 미검증**, 좌표 fixture PASS와 구분. **git add index.lock 권한 거절·commit 신규 pathspec 실패로 미커밋·미push 보존**. 버전/cache·Storage/Cloud·main/배포 변경 없음. [인수인계](handoffs/2026-10-21-tap-lines.md), [Notion 작업 기록](https://app.notion.com/p/400c527570748180a5e1d1c5619bfaa5) 생성/read-back 완료. 다음: 실제 브라우저 검증 → JSON seed PR 선행 → 배포 담당 열차 통합. 아래 기존 기록 보존.
 # 2026-10-21 · offline-entry 회귀 9종 후속 (도연/Codex)
 
 `hani/offline-entry` / 시작 HEAD `519b468`, 원격 main/base `aa9c963c`(v2.9.222 일치). 정확한 offline UI 2줄·gate delta와 실제 shared transport를 기존 테스트에 반영. **소스 수정0·Node24명령 통과**, 비변경18,474줄 EOL·Tier A/Vault cosmetic/runtime hash 유지. 실제 Edge는 서윤 재실행 대기, 버전/Cloud write/storage/main/배포 변경 없음. Notion 자동 승인 never 거절로 갱신 대기. Git add 권한 거절·commit 미등록 pathspec 실패로 미커밋 보존. 상세 원인은 [인수인계](handoffs/2026-10-20-offline-entry.md)의 2026-10-21 회귀9종 후속 절 참조. 아래 기존/타 담당 기록 보존.

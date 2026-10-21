@@ -51,16 +51,20 @@ const office=read('hani-office-live.js'),spriteFns=office.slice(office.indexOf('
 // Only select the contiguous spriteId/pose/loadSprite definitions, stopping before unrelated actor creation.
 const fnEnd=spriteFns.indexOf('\n  function ',spriteFns.indexOf('  function loadSprite(')+3);
 const spriteCode=fnEnd<0?spriteFns:spriteFns.slice(0,fnEnd);
+const hd=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));
+const flush=async()=>{for(let i=0;i<30;i++)await Promise.resolve()};
 for(const id of ['daon','yoonseul']){
- const entry=assets.sprites.entries.find(e=>e.id===id),sprite={style:{}},actor={dataset:{person:id,pose:'standing'},style:{},querySelector:()=>sprite},requested=[];
- const context=vm.createContext({HaniBuildingScene:building,visualIdentity:{},spriteEntries:new Map([[id,entry]]),spriteCache:new Map(),Image:class{set src(url){requested.push(url);this.onload();}}});
- vm.runInContext(spriteCode+';globalThis.load=loadSprite;globalThis.setPose=pose;',context);context.load(actor);await Promise.resolve();
- const file=`./assets/sprites-v2/${id}-v2.webp`;assert.deepEqual(requested,[file]);assert.equal(sprite.style.backgroundImage,`url("${file}")`);assert.equal(actor.dataset.avatar,'v2');assert.equal(sprite.style.backgroundSize,'800% 800%');
- for(const frame of entry.frames){context.setPose(actor,frame.name);assert.equal(actor.dataset.pose,frame.name);assert.equal(actor.style.transform,'translate(-50%,-95.3125%)');assert.ok(!sprite.style.backgroundPosition.includes('NaN'));}
- const failedSprite={style:{backgroundImage:'legacy-art'}},failedActor={dataset:{person:id,avatar:'chibi'},querySelector:()=>failedSprite};
- const failed=vm.createContext({HaniBuildingScene:building,visualIdentity:{},spriteEntries:new Map([[id,entry]]),spriteCache:new Map(),Image:class{set src(url){assert.equal(url,file);this.onerror();}}});
- vm.runInContext(spriteCode+';globalThis.load=loadSprite;',failed);failed.load(failedActor);await Promise.resolve();
- assert.equal(failedActor.dataset.avatar,'chibi');assert.equal(failedSprite.style.backgroundImage,'legacy-art','failed v2 load preserves existing fallback');
+ const entry=assets.sprites.entries.find(e=>e.id===id),hdEntry=hd.entries.find(e=>e.id===id),file=`./assets/sprites-v2/${id}-v2.webp`,hdFile=`./assets/sprites-v3/${id}.webp`;
+ for(const mode of ['hd','missing-hd','missing-manifest','both-fail']){
+  const sprite={style:{backgroundImage:'legacy-art'}},actor={dataset:{person:id,pose:'standing',avatar:'chibi'},style:{setProperty(k,v){this[k]=v}},querySelector:()=>sprite},requested=[];
+  const context=vm.createContext({HaniBuildingScene:building,visualIdentity:{},spriteEntries:new Map([[id,entry]]),hdEntries:new Map(mode==='missing-manifest'?[]:[[id,hdEntry]]),spriteCache:new Map(),Image:class{set src(url){requested.push(url);if(mode==='both-fail'||(mode==='missing-hd'&&url===hdFile))this.onerror();else this.onload();}}});
+  vm.runInContext(spriteCode+';globalThis.load=loadSprite;globalThis.setPose=pose;',context);context.load(actor);await flush();
+  assert.deepEqual(requested,mode==='hd'?[hdFile]:mode==='missing-manifest'?[file]:[hdFile,file],id+' '+mode+' request order');
+  if(mode==='both-fail'){assert.equal(actor.dataset.avatar,'chibi');assert.equal(sprite.style.backgroundImage,'legacy-art','failed HD/v2 preserve existing fallback');continue;}
+  const scale=mode==='hd'?3:1,loadedFile=scale===3?hdFile:file;
+  assert.equal(sprite.style.backgroundImage,`url("${loadedFile}")`);assert.equal(actor.dataset.avatar,'v2');assert.equal(actor.dataset.spriteScale,String(scale));assert.equal(actor.style['--sprite-ratio'],'0.75');assert.equal(sprite.style.backgroundSize,'800% 800%');
+  for(const frame of entry.frames){context.setPose(actor,frame.name);assert.equal(actor.dataset.pose,frame.name);assert.equal(actor.style.transform,'translate(-50%,-95.3125%)');assert.ok(!sprite.style.backgroundPosition.includes('NaN'));}
+ }
  const b=fs.readFileSync(path.join(root,file)),meta=await sharp(b).metadata();assert.deepEqual([meta.width,meta.height],[384,512]);assert.ok(meta.hasAlpha);assert.ok(b.length<65000);
  const raw=await sharp(b).ensureAlpha().raw().toBuffer(),frameHashes=[];
  for(let y=0;y<512;y++)for(let x=0;x<384;x++)if(y>=64||x>=192)assert.equal(raw[(y*384+x)*4+3],0,'reserved atlas cells stay transparent');
@@ -68,7 +72,7 @@ for(const id of ['daon','yoonseul']){
  assert.equal(new Set(frameHashes).size,4,'four distinct poses');report.files.push({file,bytes:b.length,width:384,height:512,sha256:hash(b),frameHashes});
 }
 assert.equal(building.spriteSource('jieun',assets.sprites.entries.find(e=>e.id==='jieun')),'./assets/sprites-v2/jieun.webp');
-report.groups.push('actual sprite loader success and all four pose transforms select new sheets with old manifest rect/pivot; 8 frames decoded, alpha/gutters/unused cells/budgets valid');
+report.groups.push('actual HD/v2/missing-manifest/both-fail loader outcomes and all four pose transforms retain normalized rect/pivot and 3:4 ratio; 8 v2 frames decoded, alpha/gutters/unused cells/budgets valid');
 const ui=read('hani-ui-v02992.js'),profiles=vm.runInNewContext(ui.slice(ui.indexOf('const PAGE_CHARACTER_PROFILES='),ui.indexOf('// Session-memory only:'))+';PAGE_CHARACTER_PROFILES;');
 for(const id of ['daon','yoonseul'])assert.equal(profiles[id].image,full(id));
 const runtime=['hani-main.js','hani-character-archive-data.js','hani-organization-hub.js','hani-office-live.js','hani-board.js','hani-ilbo.js','hani-ui-v02992.js'];
