@@ -148,9 +148,12 @@
     // Access storage lazily so a denied getter cannot disable paste/preview.
     const storage={getItem:key=>root.localStorage.getItem(key),setItem:(key,value)=>root.localStorage.setItem(key,value)};
     const saved=archive(storage, message=>root.confirm(message));
-    panel.innerHTML='<div class="hsj-tools"><label>아침 브리핑 붙여넣기<textarea rows="5" placeholder="브리핑 전체와 &lt;&lt;&lt;HSJ v1 데이터 블록을 붙여넣으세요" aria-label="아침 브리핑"></textarea></label><div class="hsj-actions"><button type="button" class="btn finance" data-hsj="read">브리핑 읽기</button><button type="button" class="btn" data-hsj="store" disabled>보관하기</button><button type="button" class="btn" data-hsj="png" disabled>이미지로 저장</button><button type="button" class="btn" data-hsj="delete" disabled>이 날짜 삭제</button></div><p>이 기기에만 보관 · Cloud 동기화 없음</p><p role="status" aria-live="polite" class="hsj-message"></p><label>날짜별 보관 <select aria-label="날짜별 보관"><option value="">보관 날짜 선택</option></select></label></div><div class="hsj-preview"></div>';
-    const message=panel.querySelector('.hsj-message'), list=panel.querySelector('select'), preview=panel.querySelector('.hsj-preview');
-    const tell=text=>{message.textContent=text;};
+    // Compact toolbar keeps the journal at the top; pasting happens in a dialog.
+    panel.innerHTML='<div class="hsj-tools"><div class="hsj-bar"><button type="button" class="btn finance" data-hsj="open">📋 브리핑 붙여넣기</button><select aria-label="날짜별 보관"><option value="">보관 날짜 선택</option></select></div><div class="hsj-actions"><button type="button" class="btn" data-hsj="store" disabled>보관하기</button><button type="button" class="btn" data-hsj="png" disabled>이미지로 저장</button><button type="button" class="btn" data-hsj="delete" disabled>이 날짜 삭제</button></div><p role="status" aria-live="polite" class="hsj-message"></p></div><div class="hsj-preview"></div><p class="hsj-note">이 기기에만 보관 · Cloud 동기화 없음</p><dialog class="hsj-dialog" aria-label="아침 브리핑 붙여넣기"><h3>아침 브리핑 붙여넣기</h3><textarea rows="10" placeholder="브리핑 전체와 &lt;&lt;&lt;HSJ v1 데이터 블록을 붙여넣으세요" aria-label="아침 브리핑"></textarea><p class="hsj-dialog-message" aria-live="polite"></p><div class="hsj-actions"><button type="button" class="btn finance" data-hsj="read">브리핑 읽기</button><button type="button" class="btn" data-hsj="close">닫기</button></div></dialog>';
+    const message=panel.querySelector('.hsj-message'), dialogMessage=panel.querySelector('.hsj-dialog-message'), list=panel.querySelector('select'), preview=panel.querySelector('.hsj-preview'), dialog=panel.querySelector('dialog');
+    const tell=text=>{message.textContent=text;dialogMessage.textContent=text;};
+    const openDialog=()=>{dialogMessage.textContent='';if(typeof dialog.showModal==='function'){if(!dialog.open)dialog.showModal();}else dialog.setAttribute('open','');panel.querySelector('textarea').focus();};
+    const closeDialog=()=>{if(typeof dialog.close==='function'){if(dialog.open)dialog.close();}else dialog.removeAttribute('open');};
     function refreshList() {
       try {const editions=saved.read().editions;list.innerHTML='<option value="">보관 날짜 선택</option>' + Object.keys(editions).sort().reverse().map(date=>'<option value="'+date+'">'+date+'</option>').join('');list.value=selected||'';}
       catch(error){tell(error.message);}
@@ -170,17 +173,22 @@
       const button=event.target.closest('button');if(!button||!panel.contains(button))return;
       try {
         if(button.dataset.hsjResearch!==undefined){const item=rows(current?.portfolio)[Number(button.dataset.hsjResearch)];if(!root.HaniInvestmentCommittee.openResearch(!missing(item.ticker)?String(item.ticker):item.name))tell('종목 리포트 없음');return;}
+        if(button.dataset.hsj==='open'){openDialog();return;}
+        if(button.dataset.hsj==='close'){closeDialog();return;}
         if(button.dataset.hsj==='read'){
           const input=panel.querySelector('textarea').value;
           // A failed new parse must never leave a stale edition available to save.
-          current=null;selected=null;display();current=parse(input);raw=input;list.value='';display();tell('미리보기예요. 보관하기를 눌러야 저장돼요.');
+          current=null;selected=null;display();current=parse(input);raw=input;list.value='';display();closeDialog();tell('미리보기예요. 보관하기를 눌러야 저장돼요.');
         }
         if(button.dataset.hsj==='store'&&current&&saved.store(raw,current)){selected=current.edition;refreshList();display();tell('이 기기에 보관했어요.');}
         if(button.dataset.hsj==='delete'&&selected&&saved.remove(selected)){selected=null;current=null;raw='';refreshList();display();tell('이 날짜를 삭제했어요.');}
         if(button.dataset.hsj==='png'&&current){const edition=current.edition;button.disabled=true;try{await downloadPNG(preview.querySelector('.hsj-sheet'),edition);tell('PNG를 저장했어요.');}finally{button.disabled=!current;}}
       } catch(error){tell(error.message);}
     });
-    refreshList();display();
+    refreshList();
+    // Read-only: open on the newest saved edition so the journal is the first thing shown.
+    try {const editions=saved.read().editions, latest=Object.keys(editions).sort().pop();if(latest){selected=latest;current=editions[latest].data;raw=editions[latest].raw;list.value=latest;}} catch(_) {}
+    display();
   }
   const api={KEY,parse,render,archive,missing,change,pose,closingPose,validDate,downloadPNG,mount};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;

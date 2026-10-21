@@ -1,4 +1,4 @@
-﻿/* Actual app + Edge, synthetic briefing/state only. Usage: node this.mjs <playwright/index.mjs> <browser.exe> */
+/* Actual app + Edge, synthetic briefing/state only. Usage: node this.mjs <playwright/index.mjs> <browser.exe> */
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -46,9 +46,11 @@ try{
     },{fixture});
     await page.locator('[data-ic-section="icStreetJournal"]').click();const panel=page.locator('#icStreetJournal');
     const input=panel.locator('textarea'),read=panel.locator('[data-hsj="read"]'),store=panel.locator('[data-hsj="store"]');
-    await input.fill('missing');await read.click();await assert.match(await panel.locator('[role=status]').innerText(),/데이터 블록을 찾지 못했어요/);
+    // Pasting happens in the dialog opened from the compact toolbar.
+    const paste=async text=>{if(!await panel.locator('dialog').evaluate(d=>d.open))await panel.locator('[data-hsj="open"]').click();await input.fill(text);await read.click();};
+    await paste('missing');await assert.match(await panel.locator('[role=status]').innerText(),/데이터 블록을 찾지 못했어요/);
     assert.equal(await page.evaluate(()=>journalAccess.filter(c=>c.method!=='getItem').length),0);
-    await input.fill(block(sample));await read.click();await page.locator('.hsj-sheet').waitFor();
+    await paste(block(sample));await page.locator('.hsj-sheet').waitFor();
     assert.equal(await page.evaluate(()=>journalAccess.filter(c=>c.method!=='getItem').length),0);
     assert.equal(await page.evaluate(()=>journalBefore===journalState()),true);
     assert.equal(await panel.locator('.hsj-p-hani-point').count(),1);assert.equal(await panel.locator('.hsj-p-hani-think').count(),1);
@@ -77,20 +79,20 @@ try{
     // Save, cancelled overwrite, confirmed overwrite, read back, date order, confirmed delete.
     await store.click();assert.match(await panel.locator('[role=status]').innerText(),/보관했어요/);
     const saved=await page.evaluate(()=>localStorage.getItem(HaniStreetJournal.KEY));await store.click();assert.equal(await page.evaluate(()=>localStorage.getItem(HaniStreetJournal.KEY)),saved);
-    dialogAllow=true;await store.click();await input.fill(block({...sample,edition:'2026-10-20'}));await read.click();await store.click();
+    dialogAllow=true;await store.click();await paste(block({...sample,edition:'2026-10-20'}));await store.click();
     assert.deepEqual(await panel.locator('select option').allTextContents(),['보관 날짜 선택','2026-10-21','2026-10-20']);
     await panel.locator('select').selectOption('2026-10-21');assert.match(await panel.locator('.hsj-mast .hsj-date').innerText(),/2026\.10\.21/);
     dialogAllow=false;await panel.locator('[data-hsj="delete"]').click();assert.equal(await panel.locator('.hsj-sheet').count(),1);
     dialogAllow=true;await panel.locator('[data-hsj="delete"]').click();assert.equal(await panel.locator('.hsj-sheet').count(),0);
     // Corrupt archive must stay byte-for-byte intact; valid paste still previews.
     await page.evaluate(()=>localStorage.setItem(HaniStreetJournal.KEY,'{damaged'));
-    await input.fill(block(sample));await read.click();await store.click();assert.match(await panel.locator('[role=status]').innerText(),/보관함을 읽지 못했어요/);assert.equal(await page.evaluate(()=>localStorage.getItem(HaniStreetJournal.KEY)),'{damaged');
+    await paste(block(sample));await store.click();assert.match(await panel.locator('[role=status]').innerText(),/보관함을 읽지 못했어요/);assert.equal(await page.evaluate(()=>localStorage.getItem(HaniStreetJournal.KEY)),'{damaged');
     // Empty/zero fields, XSS, long text: actual render remains usable and read-only.
-    await input.fill(block({edition:'2026-10-21',temperature:{score:0},kr:{items:[{name:'zero',value:0,chg:0},{name:'null',value:null,chg:null}],comment:'<img src=x onerror="window.xss=true">'+ '긴 문장 '.repeat(35)},portfolio:[{name:'x',status:'<script>'}],sources:[{name:'unsafe',url:'javascript:alert(1)'}]}));await read.click();
+    await paste(block({edition:'2026-10-21',temperature:{score:0},kr:{items:[{name:'zero',value:0,chg:0},{name:'null',value:null,chg:null}],comment:'<img src=x onerror="window.xss=true">'+ '긴 문장 '.repeat(35)},portfolio:[{name:'x',status:'<script>'}],sources:[{name:'unsafe',url:'javascript:alert(1)'}]}));
     assert.equal(await page.evaluate(()=>window.xss),undefined);assert.equal(await panel.locator('.hsj-sheet img,.hsj-sheet script,.hsj-sheet a[href^="javascript"]').count(),0);
     assert.match(await panel.locator('.hsj-grid').first().innerText(),/0%/);assert.equal(await panel.locator('.hsj-q').nth(1).locator('.hsj-up,.hsj-down').count(),0);
-    await input.fill(block({}));await read.click();assert.doesNotMatch(await panel.locator('.hsj-sheet').innerText(),/undefined|NaN/);
-    await input.fill('<<<HSJ v1\n{"bad":,}\nHSJ>>>');await read.click();assert.ok(await store.isDisabled());assert.equal(await panel.locator('.hsj-sheet').count(),0);
+    await paste(block({}));assert.doesNotMatch(await panel.locator('.hsj-sheet').innerText(),/undefined|NaN/);
+    await paste('<<<HSJ v1\n{"bad":,}\nHSJ>>>');assert.ok(await store.isDisabled());assert.equal(await panel.locator('.hsj-sheet').count(),0);assert.equal(await panel.locator('dialog').evaluate(d=>d.open),true);await panel.locator('[data-hsj="close"]').click();
     // Re-enter after damaged archive; mount remains singular and no writes on tab navigation.
     const countBefore=await page.evaluate(()=>journalAccess.filter(c=>c.method==='setItem').length);
     await page.locator('[data-ic-section="icMonthly"]').click();await page.locator('[data-ic-section="icStreetJournal"]').click();assert.equal(await panel.locator('textarea').count(),1);
