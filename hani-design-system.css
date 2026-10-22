@@ -1587,3 +1587,31 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 /* The existing login gate temporarily hosts Cloud tools; image/reset tools stay in settings. */
 #loginGateCloudTools #group-storage,#loginGateCloudTools .settings-reset-card{display:none}
 #loginGateCloudTools #group-cloud>summary{display:none}
+/* Newsroom weekly comic: a persistent, read-only slot. */
+#newsroom .newsroom-4cut{
+  box-sizing:border-box;min-width:0;margin:0 0 20px;padding:clamp(14px,2vw,24px);
+  border:1px solid var(--border-strong,#858d9e);border-radius:18px;
+  background:var(--surface-panel,#fff);color:var(--text-primary,#292d39);
+}
+#newsroom .newsroom-4cut[hidden],#newsroom .newsroom-4cut [hidden]{display:none!important}
+#newsroom .newsroom-4cut :is(h2,h3,p){overflow-wrap:anywhere}
+#newsroom .newsroom-4cut h2{margin:0 0 8px;font-size:clamp(18px,2vw,24px);line-height:1.5}
+#newsroom .newsroom-4cut h3{margin:8px 0 14px;font-size:18px;line-height:1.5}
+#newsroom .newsroom-4cut-meta,#newsroom .newsroom-4cut-footnote{color:var(--text-secondary,#555d70);font-size:14px;line-height:1.6;margin:10px 0}
+#newsroom .newsroom-4cut button,#newsroom .newsroom-4cut summary{
+  box-sizing:border-box;min-height:44px;font:inherit;font-size:14px;line-height:1.6;
+  color:inherit;cursor:pointer;overflow-wrap:anywhere;white-space:normal;
+}
+#newsroom .newsroom-4cut button{border:1px solid var(--border-strong,#858d9e);border-radius:10px;background:var(--surface-raised,#fff);padding:8px 12px;max-width:100%}
+#newsroom .newsroom-4cut .newsroom-4cut-open{display:block;width:min(100%,520px);padding:0;overflow:hidden}
+#newsroom .newsroom-4cut-open span{display:block;padding:10px;text-decoration:underline;text-underline-offset:3px}
+#newsroom .newsroom-4cut img{display:block;max-width:100%;width:100%;height:auto}
+#newsroom .newsroom-4cut summary{padding:10px 0}
+#newsroom .newsroom-4cut li{padding:4px 0;overflow-wrap:anywhere}
+#newsroom .newsroom-4cut :is(ul,ol){padding-left:22px;margin:0 0 12px}
+#newsroom .newsroom-4cut a{display:inline-block;min-height:44px;padding:10px 0;box-sizing:border-box;color:var(--text-primary,#292d39);text-decoration:underline;text-underline-offset:3px}
+#newsroom .newsroom-4cut :is(button,summary,a):focus-visible{outline:3px solid var(--text-primary,#292d39);outline-offset:3px}
+#newsroom .newsroom-4cut button[aria-pressed="true"]{border-width:2px;font-weight:700}
+#newsroom .newsroom-4cut dialog{box-sizing:border-box;width:min(calc(100% - 24px),1248px);max-width:calc(100% - 24px);max-height:90svh;padding:16px;border:1px solid var(--border-strong,#858d9e);border-radius:14px;background:var(--surface-panel,#fff);color:var(--text-primary,#292d39);overflow:auto}
+#newsroom .newsroom-4cut dialog::backdrop{background:rgba(0,0,0,.7)}
+#newsroom .newsroom-4cut dialog form{display:flex;justify-content:flex-end;position:sticky;top:0}
