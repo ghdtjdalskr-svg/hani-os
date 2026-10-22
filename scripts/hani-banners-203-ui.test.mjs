@@ -5,10 +5,11 @@ import path from 'node:path';
 import http from 'node:http';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 const runtime=process.argv[2]||'C:/Users/홍성민/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs';
+if(process.argv.includes('--node-only')){await import('./hani-banners-203.test.mjs');console.log('PASS banners203 Node config/assets; browser layout NOT RUN');process.exit(0)}
 const {chromium}=await import(pathToFileURL(runtime).href);
 const root=path.resolve(fileURLToPath(new URL('../', import.meta.url))),out=path.join(root,'.ai-budget-private/integration-203-banners');
 fs.mkdirSync(out,{recursive:true});
-const mapping={investmentCommittee:'heroes/investmentCommittee-218.webp',board:'banner-preview-v1/company-board-community-v1.webp',aiWork:'heroes/aiWork-218.webp',geminiReports:'heroes/geminiReports-218.webp',aiBudget:'heroes/aiBudget-218.webp',monthlyReport:'banner-preview-v1/conference-room-reports-v1.webp'};
+const mapping={investmentCommittee:'banner-preview-v1/investment-market-room-v1.webp',board:'banner-preview-v1/company-board-community-v1.webp',aiWork:'heroes/aiWork-218.webp',geminiReports:'heroes/geminiReports-218.webp',aiBudget:'heroes/aiBudget-218.webp',monthlyReport:'banner-preview-v1/conference-room-reports-v1.webp'};
 const server=http.createServer((req,res)=>{
   const uri=decodeURIComponent(new URL(req.url,'http://test').pathname),file=path.resolve(root,'.'+(uri==='/'?'/index.html':uri));
   if(!file.startsWith(root+path.sep)||uri.split('/').some(x=>x.startsWith('.'))||!fs.existsSync(file)||!fs.statSync(file).isFile()){res.writeHead(404).end();return}
@@ -69,25 +70,20 @@ try{
         return {display:s.display,columns:s.gridTemplateColumns,sceneWidth:getComputedStyle(image).width,left:r.left,right:r.right,imageLeft:i.left,imageRight:i.right,width:innerWidth,documentWidth:document.documentElement.scrollWidth,decoded:image.naturalWidth,heroScroll:e.scrollWidth,heroWidth:e.clientWidth,first:e.parentElement.firstElementChild===e,children:[...e.parentElement.children].map(n=>({tag:n.tagName,id:n.id,className:n.className})),agent:e.querySelectorAll('#aiBanner').length};
       });
       console.log('DIAGNOSTICS banner layout',JSON.stringify({view,width,layout,reference}));
-      if(file.startsWith('heroes/')){
-        const wide=view!=='investmentCommittee',art=await banner.evaluate(e=>{const scene=e.querySelector('figure'),img=scene.querySelector('img'),r=scene.getBoundingClientRect(),i=img.getBoundingClientRect(),s=getComputedStyle(img);return {variant:e.dataset.sceneVariant,width:r.width,height:r.height,imageWidth:i.width,imageHeight:i.height,fit:s.objectFit,mask:s.maskImage};});
-        assert.equal(art.variant,wide?'illustration-wide-218':'illustration-218',scope+' intended illustration layout');
-        assert.equal(layout.display,wide||width===390?'flex':'grid',scope+' responsive illustration display');
-        assert.equal(art.fit,'contain',scope+' full illustration retained');assert.equal(art.mask,'none',scope+' illustration has no fade mask');
-        assert.ok(art.width>0&&art.height>0,scope+' visible illustration slot');
-        assert.ok(Math.abs(art.imageWidth-art.width)<=1&&Math.abs(art.imageHeight-art.height)<=1,scope+' image fills its persistent illustration slot');
-        if(wide||width===390)assert.ok(Math.abs(art.width/art.height-(wide?3:1))<.02,scope+' wide 3:1 / mobile square illustration');
-      }else{
-        assert.equal(layout.display,reference.display,scope+' retained banner display must match intake');
-        assert.equal(layout.columns,reference.columns,scope+' retained banner grid columns must match intake');
-        assert.equal(layout.sceneWidth,reference.sceneWidth,scope+' retained scene image width must match intake');
-      }
+      const art=await banner.evaluate(e=>{const scene=e.querySelector('figure'),img=scene.querySelector('img'),r=scene.getBoundingClientRect(),i=img.getBoundingClientRect(),style=getComputedStyle(img);return {width:r.width,height:r.height,imageWidth:i.width,imageHeight:i.height,fit:style.objectFit,mask:style.maskImage,eyebrow:e.querySelector('.ds-main-character-banner__eyebrow')?.textContent,subtitle:e.querySelector('.ds-main-character-banner__description')?.textContent,naturalRatio:img.naturalWidth/img.naturalHeight};});
+      assert.equal(layout.display,reference.display,scope+' canonical wide banner display');
+      assert.equal(art.fit,'cover',scope+' restored full width cover');
+      assert.notEqual(art.mask,'none',scope+' restored soft fade');
+      assert.ok(art.eyebrow&&art.subtitle,scope+' eyebrow and short subtitle restored');
+      assert.ok(art.naturalRatio>2.8&&art.naturalRatio<3.2,scope+' original art is wide');
+      assert.ok(art.width>0&&art.height>0,scope+' persistent scene visible');
+      assert.ok(Math.abs(art.imageWidth-art.width)<=1&&Math.abs(art.imageHeight-art.height)<=1,scope+' scene fills persistent slot');
       assert.ok(layout.first,scope+' banner must be first element in view: '+JSON.stringify(layout.children));
       assert(layout.agent<=1,scope+' at most one #aiBanner inside active banner');
       assert.ok(layout.decoded>0,scope+' decoded image naturalWidth must be positive');
       assert.ok(layout.left>=0&&layout.right<=width+1,scope+' banner bounds must fit viewport');
       assert.ok(layout.imageRight<=layout.right+1,scope+' image right edge must fit banner');
-      if(width===1440)assert.ok(layout.imageLeft>layout.left,scope+' desktop scene must be to the right of banner left edge');
+      assert.ok(layout.imageLeft>=layout.left,scope+' wide scene fills the banner without a separate image box');
       assert.ok(layout.heroScroll<=layout.heroWidth+1,scope+' banner scrollWidth must not exceed clientWidth');
       const overflowingElements=await page.evaluate(()=>Array.from(document.querySelectorAll('body *')).flatMap(e=>{
         const r=e.getBoundingClientRect();

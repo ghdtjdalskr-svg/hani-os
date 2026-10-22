@@ -55,9 +55,9 @@ try{
       if(fresh.includes(view.id)){
         assert.equal(row.overflow,false);assert.equal(row.protectedSame,true);
         if(!before){
-          const scene=row.heroes[0].images[0];assert.equal(scene.src,`./assets/heroes/${view.id}-218.webp`);assert.equal(scene.width,720);assert.equal(scene.height,720);
-          assert.equal(scene.fit,'contain','full composition without crop');assert.equal(scene.mask,'none','illustration is not faded away');assert.equal(+scene.opacity,1);
-          if(width===390)assert.ok(Math.abs(scene.rect.width-scene.rect.height)<1,'square mobile image area');
+          const scene=row.heroes[0].images[0];assert.equal(scene.src,view.id==='investmentCommittee'?'./assets/banner-preview-v1/investment-market-room-v1.webp':`./assets/heroes/${view.id}-226w.webp`);assert.ok(scene.width/scene.height>2.8&&scene.width/scene.height<3.2);
+          assert.equal(scene.fit,'cover','wide image without letterbox');assert.notEqual(scene.mask,'none','soft left fade');assert.equal(+scene.opacity,1);
+          assert.ok(scene.rect.width>scene.rect.height,'wide mobile image area');
           const slot=await page.locator(`#${view.id} > .ds-main-character-banner`).elementHandle();
           await page.evaluate(()=>scrollTo(0,0));const name=`${view.id}-${width}.png`;
           await page.screenshot({path:path.join(out,name),animations:'disabled'});result.screenshots.push(name);

@@ -1,3 +1,4 @@
+import {readBranchBaseline} from './hani-regression-baseline.mjs';
 // node scripts/hani-theme-white-215.test.mjs [<playwright index.mjs> <browser exe>]
 // Only disposable browser storage is used; external requests are blocked.
 import assert from 'node:assert/strict';
@@ -35,7 +36,7 @@ assert.equal(writes.length,0);
 ctx.applySignatureFinish('pure-white',true);assert.deepEqual(writes,[['hani_os_signature_finish_v1','pure-white']]);assert.match(status.textContent,/Pure White/);
 ctx.applySignatureFinish('unknown',false);assert.equal(ctx.document.documentElement.dataset.finish,'porcelain-cream');
 const git=process.env.HANI_GIT_PATH||'git';
-const base=f=>process.env.HANI_RELEASED_BASELINE?fs.readFileSync(path.join(process.env.HANI_RELEASED_BASELINE,f),'utf8'):execFileSync(git,['show','origin/main:'+f],{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024});
+const base=f=>process.env.HANI_RELEASED_BASELINE?fs.readFileSync(path.join(process.env.HANI_RELEASED_BASELINE,f),'utf8'):readBranchBaseline(f);
 const oldCss=base('hani-design-system.css');
 const cream=s=>[...s.matchAll(/([^{}]+)\{([^{}]+)\}/g)].filter(m=>m[1].includes('.login-design-choice[data-design="porcelain-cream"]')).map(m=>m[0].trim());
 assert.deepEqual(cream(css),cream(oldCss),'both original Porcelain palettes byte-identical');
@@ -45,7 +46,7 @@ const storageExpressions=s=>s.match(/\b(?:commit|save|writeProtectedState|localS
 assert.deepEqual(storageExpressions(main),storageExpressions(oldMain),'all storage/write expressions preserved across integrated features');
 assertEgressGate(extract(main,'loginGateEnterApp'),extract(oldMain,'loginGateEnterApp'));
 assertOfflineGateInit(extract(main,'initLoginGate'),extract(oldMain,'initLoginGate'));
-assert.equal(withoutOfflineEntryUi(withoutSimplify225('index.html',html)),withoutOfflineEntryUi(base('index.html')),'only exact reviewed settings/simplify/offline entry markup changes');
+assert.equal(withoutOfflineEntryUi(withoutSimplify225('index.html',html)),withoutOfflineEntryUi(withoutSimplify225('index.html',base('index.html'))),'only exact reviewed settings/simplify/offline entry markup changes');
 for(const name of ['loginGateResumeSession','commit','save'])assert.equal(extract(main,name),extract(oldMain,name),name+' canonical auth/storage owner preserved');
 assert.deepEqual(cacheRefs(html),cacheRefs(base('index.html')),'every URL/cache pair matches the integrated origin/main release');
 console.log('PASS finish list, token completeness, actual apply/fallback/save, Porcelain and storage/version/cache preservation');

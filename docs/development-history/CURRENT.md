@@ -1,3 +1,15 @@
+# 2026-10-21 · hero-restore 회귀 후속 (도연/Codex)
+
+`hani/hero-restore` / HEAD `5bcacdf`, base `925d9e1`(v225), origin/main 캐시 `3908ff8`(v226, 원격 최신성 미확인). 지정 10종 Node + duplicate-id/hero/simplify/cast 추가 4종 **14개 명령 PASS**. 승인된 wide/fade/짧은 부제/context-remote 217 아트 기대값과 오래된 보존 기준 정리, remote 동일 내용 1행 CRLF 복원. index+참조 JS/CSS 62개에서 main 대비 신규 duplicate-id 0. **실제 Edge 회귀, 특히 remote224 상단 픽셀 비교 보정의 효과는 서윤 재실행 대기**. Git index.lock 권한 거절로 이번 수정 미커밋·미push, Notion append 자동 승인 never 거절로 미반영. 버전/Storage/Cloud/hani-deploy-bridge/main/배포 변경 없음. [분류표·검증·인수인계](handoffs/2026-10-21-hero-restore.md). 아래는 이전 시점 기록이다.
+
+# 2026-10-21 · REMOTE 세로 아트 정정 (도연/Codex)
+
+`hani/hero-restore` / 시작·유지 HEAD `274997a`, origin/main 캐시 `925d9e1`(원격 연결 실패로 최신성 미확인). 기존 wide hero/fade/eyebrow/subtitle 복원을 보존하고, 잘못 연결한 sidebar 가로 아트를 **217의 context-remote 원본12장·계절:화면별 선택/유지**로 정정했다. hero 이미지와 독립, 기존 단일 update·카드 문구/버튼·cover/focal/하단 scrim 유지. **hero4·simplify4·remote224 Node·banners203·cast218 PASS**, brand218 두 검사는 Git subprocess EPERM으로 차단. **실제 browser spawn EPERM으로 AA/얼굴 focal 미검증·요청 remote PNG0장**. 3그룹×4계절×2너비×2테마 browser 검사와 PNG6장 출력 준비. Git add index.lock 거절·commit 신규 pathspec 실패로 **미커밋·미push**, Notion append 자동 승인 never 거절로 반영 대기. 버전/cache·Storage/Cloud·hero renderer·main/배포 변경 없음. [정정 인수인계](handoffs/2026-10-21-hero-restore.md) / [검증 및 재실행](../../artifacts/hero-restore/remote-217-verification.md). 아래는 당시 기록 보존.
+
+# 2026-10-21 · 히어로 와이드 복원 (도연/Codex)
+
+`hani/hero-restore` / base·HEAD `925d9e1`(로컬 main v2.9.225, 원격 최신성은 네트워크 차단으로 미확인). 기존 canonical hero에 eyebrow·짧은 부제·soft fade/cover 복원, 218 배역 보존 wide11장(각150KB 이하), 시청은 대표님 지정217 팝콘/3D 안경 art 예외. Remote는 메뉴와 독립된 기존 계절 세로 art 사용. nav35+내부2 자산표·아트 비교4장·seed11개 목록 준비. **신규 Node4·simplify225 보존4·banners203·cast218·remote224 node PASS. 실제 Edge spawn EPERM으로390/1440 전후24장·실제AA 미검증, brand218 Git blob2검사 차단.** Git add index.lock 거절·commit 미등록 pathspec 실패로 **미커밋·미push·탑승 보류**. Notion 착수/결과 append 자동 승인 never 거절로 반영 대기. 버전/cache·Storage/Cloud·main/배포 변경 없음. [인수인계](handoffs/2026-10-21-hero-restore.md) / [검토 자료](../../artifacts/hero-restore/README.md). 다음: 허용 환경 실화면 QA→대표님 Preview→seed→Claude 열차. 아래 타 담당·과거 기록 보존.
+
 # 2026-10-21 · 본사 고해상도·비율 (도연/Codex)
 
 `hani/office-hd` / base `f731727`(main aa9c963 + tap-lines 보존), v2.9.222 유지. 25명×4포즈 원화3× 재출력 총919.89KiB, 공통 min-size actor 예외·투명40px hit 영역·v3 우선/v2 fallback 구현. HD Node9·지정 office Node 회귀 PASS(공통 중복 포함). **Edge spawn EPERM으로 네 너비 실측·비교 PNG2장 미검증/미생성**, 실화면 완료 아님. Git add lock 권한 거절·commit pathspec 실패로 미커밋·미push. Notion 착수 생성/read-back 성공, 최종 append 자동 승인 never 거절로 갱신 대기. Storage/Cloud/main/배포 변경 없음. [인수인계](handoffs/2026-10-21-office-hd.md), [구현·검증 보고](../../artifacts/office-hd-224/report.md). 다음: 허용 환경 browser QA → 새26자산 seed → Claude 열차. 아래 기존 기록 보존.

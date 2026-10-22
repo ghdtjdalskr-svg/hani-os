@@ -18,10 +18,10 @@ for(const [view,owner] of Object.entries(expected)){
  const banner=api.resolve(view);
  if(banner){assert.equal(banner.owner,owner,view+' banner owner');assert.equal(banner.profile,owner,view+' portrait');assert.equal(banner.speaker,selected.speaker,view+' banner name');}
 }
-assert.equal(api.resolve('university').sceneImage,'./assets/heroes/university-218.webp');
+assert.equal(api.resolve('university').sceneImage,'./assets/heroes/university-226w.webp');
 assert.match(api.resolve('university').sceneAlt,/히나/);assert.doesNotMatch(api.resolve('university').sceneAlt,/하루/);
 assert.match(api.resolve('reading').sceneAlt,/윤슬.*하루/);assert.doesNotMatch(api.resolve('reading').sceneAlt,/민지/);
-assert.match(api.resolve('movie').sceneAlt,/민지.*수연/);assert.doesNotMatch(api.resolve('movie').sceneAlt,/히나/);
+assert.equal(api.resolve('movie').sceneImage,'./assets/design-system-v1/hina-cinema-canonical.webp','대표님 승인: 217 팝콘/3D 안경 그림 예외');assert.equal(api.resolve('movie').owner,'minji','담당은 218 정정 유지');
 assert.ok(api.profile('dohyun').image.endsWith('hani-profile-dohyun.webp'));
 assert.match(api.profile('naeun').domain_authority,/건강·운동/);
 assert.match(api.profile('sooyeon').domain_authority,/건강·운동 루틴은 나은/);
