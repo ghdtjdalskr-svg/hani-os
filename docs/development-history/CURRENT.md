@@ -1,3 +1,7 @@
+# 2026-10-22 · 본사 사무실 활기 2차 v2.9.229 운영 반영 (서윤/Claude)
+
+`hani/office-lively-2-20261022` → release PR #328 → main `83391f0`(v2.9.229, 배포센터 대표님 승인). 기본 근무는 점만, 층마다 2.4초에 한 명씩 4.8초 딴짓·서기, 그중 1/6은 같은 층 산책·자리 비움(최대 15초), 같은 층 문구 중복 없음. 측정: 일정 7%+짧은 행동 34~37%+산책 12~14%, 보이는 층 변화 평균 1.5~2.2초. 검증: node office 12종·Edge 219(240 checks, index 기준 2.9.228로 갱신)·217·216 PASS, 중복 ID·package·One-Pass PASS. **Production read-back: Pages index 2.9.229 태그 59개·HANI_DISPLAY_VERSION 2.9.229·hani-office-live.js SHA-256이 main과 일치(85da816d…), 새로 연 화면에서 4F 직원이 바쁜 문구와 점 사이를 바꾸는 것 확인.** 폰 체감은 대표님 확인 대기. 기존 실패(main 동일): 206-safety·206-ui·actions-221.browser·fix-218.browser. [인수인계](handoffs/2026-10-22-office-lively-2.md). 아래 기존 기록 보존.
+
 # 2026-10-21 · hero-restore 회귀 후속 (도연/Codex)
 
 `hani/hero-restore` / HEAD `5bcacdf`, base `925d9e1`(v225), origin/main 캐시 `3908ff8`(v226, 원격 최신성 미확인). 지정 10종 Node + duplicate-id/hero/simplify/cast 추가 4종 **14개 명령 PASS**. 승인된 wide/fade/짧은 부제/context-remote 217 아트 기대값과 오래된 보존 기준 정리, remote 동일 내용 1행 CRLF 복원. index+참조 JS/CSS 62개에서 main 대비 신규 duplicate-id 0. **실제 Edge 회귀, 특히 remote224 상단 픽셀 비교 보정의 효과는 서윤 재실행 대기**. Git index.lock 권한 거절로 이번 수정 미커밋·미push, Notion append 자동 승인 never 거절로 미반영. 버전/Storage/Cloud/hani-deploy-bridge/main/배포 변경 없음. [분류표·검증·인수인계](handoffs/2026-10-21-hero-restore.md). 아래는 이전 시점 기록이다.
