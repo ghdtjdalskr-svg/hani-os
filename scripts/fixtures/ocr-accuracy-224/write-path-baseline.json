@@ -1,0 +1,22 @@
+{
+  "baselineHead": "06519be",
+  "protectedFunctions": {
+    "approvePositions": "dae62917c3f82abf83b2772194f1f8473009cb762ecd7070e3a9e084ec516646",
+    "approve": "c2ac5818d44f5fafabece06017d21f4506cbccbaf463c75f20540a6d8b0c90b3",
+    "readStoredState": "e8bba889b0c7dc4e244cdb9d3ff2fa4d635f561aea021c094304b7f5806a2aea",
+    "storedAccount": "7d39269a462315addf2c9b7e7d2ed86e7dc14b2ea56b2db46c9fc6de0da11223",
+    "executeAccountDelete": "8de6a3da54878ab275eeaff5adff9c00f418c9a11ddf4dc99adf11ad33b4f546",
+    "resetCaptureInput": "0d1e3da01706b2646edb14fc4a4940e54ed291917b23efcaf2fdf0f7da7e03c1",
+    "renderCaptureSwitchPrompt": "aaadc307c3b47f003d635434b045bebdd5f70dcef0368f4d1ea2b5564a681f43",
+    "holdingMatchIndex": "63f74560ce16646e200645e60c64fe42b47283c8ed3d9d957471ed2e9af7729d",
+    "mergeWithExistingHoldings": "583ec47e1e3178824c435dd88b6ea5033a6a7c975d01c0e5c937374ac1a408a4",
+    "normalizeIntakeCode": "a88e06fec347b6e262d583530c32c459773146dcc2b05a0593b8c319f618c64c",
+    "parseHoldingsTsv": "283153369b1448b9d3d84d46d3ce4cdfe54fb8a93a2ecf868ae153ac4e532fc6"
+  },
+  "writeCallsSha256": "41267e1eeda859ff4faad8dc14f194aa2ba866f92f0f1e458d393ba7c58dbfb9",
+  "files": {
+    "hani-main.js": "98349e08cd4259cdbabf52a4a83dd532863d5453db5c8a11e8ade2e3482bc396",
+    "index.html": "4ef0315b27ffe1d09d5cc0cedabd4160e2edc80a2c295f38ed83aa1bdaf772ce"
+  },
+  "edgeOutsideVisionSha256": "b38c1f745822f2cb20219c9846d1c89642b348ef4086f374cb9b4b5e30b6a238"
+}

@@ -1,0 +1,101 @@
+[
+  {
+    "id": "reading",
+    "file": "assets/heroes/reading-226w.webp",
+    "width": 2172,
+    "height": 724,
+    "bytes": 138084,
+    "quality": 76,
+    "sha256": "29f1b4f21b064c9fac9335129d9f63bc71be52d94d9896463475f7a0b02534b9"
+  },
+  {
+    "id": "university",
+    "file": "assets/heroes/university-226w.webp",
+    "width": 2170,
+    "height": 725,
+    "bytes": 136410,
+    "quality": 80,
+    "sha256": "205d31a525e6c84096b3774e4440648d0649417fa307143f95408c797dca8c24"
+  },
+  {
+    "id": "ilbo",
+    "file": "assets/heroes/ilbo-226w.webp",
+    "width": 2172,
+    "height": 724,
+    "bytes": 147794,
+    "quality": 72,
+    "sha256": "337180c21657b4dfca49d7db3070ea76663681df6552a5afd2384d1b2f4542af"
+  },
+  {
+    "id": "investment",
+    "file": "assets/heroes/investment-226w.webp",
+    "width": 2170,
+    "height": 725,
+    "bytes": 129204,
+    "quality": 76,
+    "sha256": "4c4d292d590951a2ffac1c9fa503c88629588363d8eac8a1685ae16efd875758"
+  },
+  {
+    "id": "investmentIntake",
+    "file": "assets/heroes/investmentIntake-226w.webp",
+    "width": 2172,
+    "height": 724,
+    "bytes": 142014,
+    "quality": 76,
+    "sha256": "63d8379606481069e4ee963da694878b7de38e510a772ea54e69b6cd43771732"
+  },
+  {
+    "id": "asset",
+    "file": "assets/heroes/asset-226w.webp",
+    "width": 2172,
+    "height": 724,
+    "bytes": 133230,
+    "quality": 80,
+    "sha256": "d277aae728c8f163e1085911f530f62ab314d2128f4185dd9dadf4bb60b2f947"
+  },
+  {
+    "id": "ledger",
+    "file": "assets/heroes/ledger-226w.webp",
+    "width": 2172,
+    "height": 724,
+    "bytes": 146052,
+    "quality": 80,
+    "sha256": "89047f708a1d636118aaa3d6c05d28b0fc7cbef1634587e738a7792c6c4971ae"
+  },
+  {
+    "id": "newsroom",
+    "file": "assets/heroes/newsroom-226w.webp",
+    "width": 2170,
+    "height": 725,
+    "bytes": 133286,
+    "quality": 76,
+    "sha256": "cd0492ec4ed04270420f76f7f274fb48d8fb781a6772a696fa49229d934e2bdc"
+  },
+  {
+    "id": "study",
+    "file": "assets/heroes/study-226w.webp",
+    "width": 2170,
+    "height": 725,
+    "bytes": 134944,
+    "quality": 80,
+    "sha256": "ab860479d2fd59009f03bb4cb05160819a104168ccc4f180517b1592f5996e41"
+  },
+  {
+    "id": "organization",
+    "file": "assets/heroes/organization-226w.webp",
+    "width": 2171,
+    "height": 724,
+    "bytes": 141392,
+    "quality": 72,
+    "sha256": "1f1408e199a631af34d467c2ab88250a51126eb0bcee256dc6c2083d1b170067"
+  },
+  {
+    "id": "exercise",
+    "file": "assets/heroes/exercise-226w.webp",
+    "width": 2172,
+    "height": 724,
+    "bytes": 141660,
+    "quality": 76,
+    "sha256": "86a2c20972fc0bbe68f983585851c1d747c923261265394c978f973abb101790"
+  }
+]

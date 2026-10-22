@@ -1,0 +1,3840 @@
+{
+  "description": "합성 라벨/JSON only. 실제 계좌/보유종목/이미지 없음. 동일 응답에 대한 로컬 mapper 비교이며 AI 시각 인식 정확도 아님.",
+  "baselineHead": "06519be",
+  "baselineSourceSha256": "48ad9b858fdc5e9cf6cd3574fcc59760439d2b12e88ad5b687d12710ea3d87b5",
+  "baselineParserSha256": "5dbd91e4fdc4eef4ee343bec239d39fa8026b3d7581a654acd48eceb43f6b15a",
+  "cases": [
+    {
+      "id": "kiwoom_pc-clear",
+      "layout": "kiwoom_pc",
+      "input": {
+        "target_hint": "asset",
+        "layout": "kiwoom_pc",
+        "section": "all",
+        "holdingsComplete": true,
+        "amountCurrency": "KRW",
+        "financialInstitution": "키움증권",
+        "asOfDate": "2026-10-21",
+        "currentAsset": 1150,
+        "balance": 50,
+        "withdrawable": 0,
+        "purchaseAmount": 1000,
+        "valuationAmount": 1100,
+        "profitLoss": 100,
+        "returnRate": 10,
+        "extracted_text": "키움증권\nHTS\t보유종목\n계좌 총액 1,150\n예수금 50\n출금가능 0\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10\n합성가람\n보유 수량 10\n평균단가 100\n현재가 110\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10",
+        "accountEvidence": [
+          {
+            "field": "currentAsset",
+            "label": "계좌 총액",
+            "raw": "1,150",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "balance",
+            "label": "예수금",
+            "raw": "50",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "withdrawable",
+            "label": "출금가능",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "purchase",
+            "label": "매입금액",
+            "raw": "1,000",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "evaluation",
+            "label": "평가금액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "pnl",
+            "label": "평가손익",
+            "raw": "100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "returnRate",
+            "label": "수익률",
+            "raw": "10",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          }
+        ],
+        "holdings": [
+          {
+            "name": "합성가람",
+            "ticker": "A0123F0",
+            "market": "KR",
+            "marketSection": "국내주식",
+            "buyCurrency": "KRW",
+            "quantity": 10,
+            "averagePrice": 100,
+            "currentPrice": 110,
+            "purchaseAmount": 1000,
+            "valuationAmount": 1100,
+            "profitLoss": 100,
+            "returnRate": 10,
+            "evidence": [
+              {
+                "field": "quantity",
+                "label": "보유 수량",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "buyPrice",
+                "label": "평균단가",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "currentPrice",
+                "label": "현재가",
+                "raw": "110",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "purchaseAmount",
+                "label": "매입금액",
+                "raw": "1,000",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "evaluationAmount",
+                "label": "평가금액",
+                "raw": "1,100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "pnl",
+                "label": "평가손익",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "returnRate",
+                "label": "수익률",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "account": {
+          "currentAsset": 1150,
+          "balance": 50,
+          "withdrawable": 0,
+          "purchase": 1000,
+          "evaluation": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        },
+        "holding": {
+          "ticker": "0123F0",
+          "quantity": 10,
+          "buyPrice": 100,
+          "currentPrice": 110,
+          "purchaseAmount": 1000,
+          "evaluationAmount": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        }
+      }
+    },
+    {
+      "id": "kiwoom_pc-numeric-json-wrong",
+      "layout": "kiwoom_pc",
+      "input": {
+        "target_hint": "asset",
+        "layout": "kiwoom_pc",
+        "section": "all",
+        "holdingsComplete": true,
+        "amountCurrency": "KRW",
+        "financialInstitution": "키움증권",
+        "asOfDate": "2026-10-21",
+        "currentAsset": 1150,
+        "balance": 1150,
+        "withdrawable": 0,
+        "purchaseAmount": 1000,
+        "valuationAmount": 1100,
+        "profitLoss": 100,
+        "returnRate": 10,
+        "extracted_text": "키움증권\nHTS\t보유종목\n계좌 총액 1,150\n예수금 50\n출금가능 0\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10\n합성가람\n보유 수량 10\n평균단가 100\n현재가 110\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10",
+        "accountEvidence": [
+          {
+            "field": "currentAsset",
+            "label": "계좌 총액",
+            "raw": "1,150",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "balance",
+            "label": "예수금",
+            "raw": "50",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "withdrawable",
+            "label": "출금가능",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "purchase",
+            "label": "매입금액",
+            "raw": "1,000",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "evaluation",
+            "label": "평가금액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "pnl",
+            "label": "평가손익",
+            "raw": "100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "returnRate",
+            "label": "수익률",
+            "raw": "10",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          }
+        ],
+        "holdings": [
+          {
+            "name": "합성가람",
+            "ticker": "A0123F0",
+            "market": "KR",
+            "marketSection": "국내주식",
+            "buyCurrency": "KRW",
+            "quantity": 10,
+            "averagePrice": 100,
+            "currentPrice": 100,
+            "purchaseAmount": 1000,
+            "valuationAmount": 1100,
+            "profitLoss": 100,
+            "returnRate": 10,
+            "evidence": [
+              {
+                "field": "quantity",
+                "label": "보유 수량",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "buyPrice",
+                "label": "평균단가",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "currentPrice",
+                "label": "현재가",
+                "raw": "110",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "purchaseAmount",
+                "label": "매입금액",
+                "raw": "1,000",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "evaluationAmount",
+                "label": "평가금액",
+                "raw": "1,100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "pnl",
+                "label": "평가손익",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "returnRate",
+                "label": "수익률",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "account": {
+          "currentAsset": 1150,
+          "balance": 50,
+          "withdrawable": 0,
+          "purchase": 1000,
+          "evaluation": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        },
+        "holding": {
+          "ticker": "0123F0",
+          "quantity": 10,
+          "buyPrice": 100,
+          "currentPrice": 110,
+          "purchaseAmount": 1000,
+          "evaluationAmount": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        }
+      }
+    },
+    {
+      "id": "kiwoom_app-clear",
+      "layout": "kiwoom_app",
+      "input": {
+        "target_hint": "asset",
+        "layout": "kiwoom_app",
+        "section": "all",
+        "holdingsComplete": true,
+        "amountCurrency": "KRW",
+        "financialInstitution": "키움증권",
+        "asOfDate": "2026-10-21",
+        "currentAsset": 1150,
+        "balance": 50,
+        "withdrawable": 0,
+        "purchaseAmount": 1000,
+        "valuationAmount": 1100,
+        "profitLoss": 100,
+        "returnRate": 10,
+        "extracted_text": "키움증권\n앱 보유종목\n계좌 총액 1,150\n예수금 50\n출금가능 0\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10\n합성가람\n보유 수량 10\n평균단가 100\n현재가 110\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10",
+        "accountEvidence": [
+          {
+            "field": "currentAsset",
+            "label": "계좌 총액",
+            "raw": "1,150",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "balance",
+            "label": "예수금",
+            "raw": "50",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "withdrawable",
+            "label": "출금가능",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "purchase",
+            "label": "매입금액",
+            "raw": "1,000",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "evaluation",
+            "label": "평가금액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "pnl",
+            "label": "평가손익",
+            "raw": "100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "returnRate",
+            "label": "수익률",
+            "raw": "10",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          }
+        ],
+        "holdings": [
+          {
+            "name": "합성가람",
+            "ticker": "A0123F0",
+            "market": "KR",
+            "marketSection": "국내주식",
+            "buyCurrency": "KRW",
+            "quantity": 10,
+            "averagePrice": 100,
+            "currentPrice": 110,
+            "purchaseAmount": 1000,
+            "valuationAmount": 1100,
+            "profitLoss": 100,
+            "returnRate": 10,
+            "evidence": [
+              {
+                "field": "quantity",
+                "label": "보유 수량",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "buyPrice",
+                "label": "평균단가",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "currentPrice",
+                "label": "현재가",
+                "raw": "110",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "purchaseAmount",
+                "label": "매입금액",
+                "raw": "1,000",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "evaluationAmount",
+                "label": "평가금액",
+                "raw": "1,100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "pnl",
+                "label": "평가손익",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "returnRate",
+                "label": "수익률",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "account": {
+          "currentAsset": 1150,
+          "balance": 50,
+          "withdrawable": 0,
+          "purchase": 1000,
+          "evaluation": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        },
+        "holding": {
+          "ticker": "0123F0",
+          "quantity": 10,
+          "buyPrice": 100,
+          "currentPrice": 110,
+          "purchaseAmount": 1000,
+          "evaluationAmount": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        }
+      }
+    },
+    {
+      "id": "kiwoom_app-numeric-json-wrong",
+      "layout": "kiwoom_app",
+      "input": {
+        "target_hint": "asset",
+        "layout": "kiwoom_app",
+        "section": "all",
+        "holdingsComplete": true,
+        "amountCurrency": "KRW",
+        "financialInstitution": "키움증권",
+        "asOfDate": "2026-10-21",
+        "currentAsset": 1150,
+        "balance": 1150,
+        "withdrawable": 0,
+        "purchaseAmount": 1000,
+        "valuationAmount": 1100,
+        "profitLoss": 100,
+        "returnRate": 10,
+        "extracted_text": "키움증권\n앱 보유종목\n계좌 총액 1,150\n예수금 50\n출금가능 0\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10\n합성가람\n보유 수량 10\n평균단가 100\n현재가 110\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10",
+        "accountEvidence": [
+          {
+            "field": "currentAsset",
+            "label": "계좌 총액",
+            "raw": "1,150",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "balance",
+            "label": "예수금",
+            "raw": "50",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "withdrawable",
+            "label": "출금가능",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "purchase",
+            "label": "매입금액",
+            "raw": "1,000",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "evaluation",
+            "label": "평가금액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "pnl",
+            "label": "평가손익",
+            "raw": "100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "returnRate",
+            "label": "수익률",
+            "raw": "10",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          }
+        ],
+        "holdings": [
+          {
+            "name": "합성가람",
+            "ticker": "A0123F0",
+            "market": "KR",
+            "marketSection": "국내주식",
+            "buyCurrency": "KRW",
+            "quantity": 10,
+            "averagePrice": 100,
+            "currentPrice": 100,
+            "purchaseAmount": 1000,
+            "valuationAmount": 1100,
+            "profitLoss": 100,
+            "returnRate": 10,
+            "evidence": [
+              {
+                "field": "quantity",
+                "label": "보유 수량",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "buyPrice",
+                "label": "평균단가",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "currentPrice",
+                "label": "현재가",
+                "raw": "110",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "purchaseAmount",
+                "label": "매입금액",
+                "raw": "1,000",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "evaluationAmount",
+                "label": "평가금액",
+                "raw": "1,100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "pnl",
+                "label": "평가손익",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "returnRate",
+                "label": "수익률",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "account": {
+          "currentAsset": 1150,
+          "balance": 50,
+          "withdrawable": 0,
+          "purchase": 1000,
+          "evaluation": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        },
+        "holding": {
+          "ticker": "0123F0",
+          "quantity": 10,
+          "buyPrice": 100,
+          "currentPrice": 110,
+          "purchaseAmount": 1000,
+          "evaluationAmount": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        }
+      }
+    },
+    {
+      "id": "toss_pc-clear",
+      "layout": "toss_pc",
+      "input": {
+        "target_hint": "asset",
+        "layout": "toss_pc",
+        "section": "all",
+        "holdingsComplete": true,
+        "amountCurrency": "KRW",
+        "financialInstitution": "토스증권",
+        "asOfDate": "2026-10-21",
+        "currentAsset": 1150,
+        "balance": 50,
+        "withdrawable": 0,
+        "purchaseAmount": 1000,
+        "valuationAmount": 1100,
+        "profitLoss": 100,
+        "returnRate": 10,
+        "extracted_text": "토스증권\nHTS\t보유종목\n계좌 총액 1,150\n예수금 50\n출금가능 0\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10\n합성가람\n보유 수량 10\n1주 평균금액 100\n현재가 110\n원금 1,000\n평가금 1,100\n총 수익금 100\n총 수익률 10",
+        "accountEvidence": [
+          {
+            "field": "currentAsset",
+            "label": "계좌 총액",
+            "raw": "1,150",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "balance",
+            "label": "예수금",
+            "raw": "50",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "withdrawable",
+            "label": "출금가능",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "purchase",
+            "label": "매입금액",
+            "raw": "1,000",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "evaluation",
+            "label": "평가금액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "pnl",
+            "label": "평가손익",
+            "raw": "100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "returnRate",
+            "label": "수익률",
+            "raw": "10",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          }
+        ],
+        "holdings": [
+          {
+            "name": "합성가람",
+            "ticker": "A0123F0",
+            "market": "KR",
+            "marketSection": "국내주식",
+            "buyCurrency": "KRW",
+            "quantity": 10,
+            "averagePrice": 100,
+            "currentPrice": 110,
+            "purchaseAmount": 1000,
+            "valuationAmount": 1100,
+            "profitLoss": 100,
+            "returnRate": 10,
+            "evidence": [
+              {
+                "field": "quantity",
+                "label": "보유 수량",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "buyPrice",
+                "label": "1주 평균금액",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "currentPrice",
+                "label": "현재가",
+                "raw": "110",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "purchaseAmount",
+                "label": "원금",
+                "raw": "1,000",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "evaluationAmount",
+                "label": "평가금",
+                "raw": "1,100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "pnl",
+                "label": "총 수익금",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "returnRate",
+                "label": "총 수익률",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "account": {
+          "currentAsset": 1150,
+          "balance": 50,
+          "withdrawable": 0,
+          "purchase": 1000,
+          "evaluation": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        },
+        "holding": {
+          "ticker": "0123F0",
+          "quantity": 10,
+          "buyPrice": 100,
+          "currentPrice": 110,
+          "purchaseAmount": 1000,
+          "evaluationAmount": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        }
+      }
+    },
+    {
+      "id": "toss_pc-numeric-json-wrong",
+      "layout": "toss_pc",
+      "input": {
+        "target_hint": "asset",
+        "layout": "toss_pc",
+        "section": "all",
+        "holdingsComplete": true,
+        "amountCurrency": "KRW",
+        "financialInstitution": "토스증권",
+        "asOfDate": "2026-10-21",
+        "currentAsset": 1150,
+        "balance": 1150,
+        "withdrawable": 0,
+        "purchaseAmount": 1000,
+        "valuationAmount": 1100,
+        "profitLoss": 100,
+        "returnRate": 10,
+        "extracted_text": "토스증권\nHTS\t보유종목\n계좌 총액 1,150\n예수금 50\n출금가능 0\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10\n합성가람\n보유 수량 10\n1주 평균금액 100\n현재가 110\n원금 1,000\n평가금 1,100\n총 수익금 100\n총 수익률 10",
+        "accountEvidence": [
+          {
+            "field": "currentAsset",
+            "label": "계좌 총액",
+            "raw": "1,150",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "balance",
+            "label": "예수금",
+            "raw": "50",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "withdrawable",
+            "label": "출금가능",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "purchase",
+            "label": "매입금액",
+            "raw": "1,000",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "evaluation",
+            "label": "평가금액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "pnl",
+            "label": "평가손익",
+            "raw": "100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "returnRate",
+            "label": "수익률",
+            "raw": "10",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          }
+        ],
+        "holdings": [
+          {
+            "name": "합성가람",
+            "ticker": "A0123F0",
+            "market": "KR",
+            "marketSection": "국내주식",
+            "buyCurrency": "KRW",
+            "quantity": 10,
+            "averagePrice": 100,
+            "currentPrice": 100,
+            "purchaseAmount": 1000,
+            "valuationAmount": 1100,
+            "profitLoss": 100,
+            "returnRate": 10,
+            "evidence": [
+              {
+                "field": "quantity",
+                "label": "보유 수량",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "buyPrice",
+                "label": "1주 평균금액",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "currentPrice",
+                "label": "현재가",
+                "raw": "110",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "purchaseAmount",
+                "label": "원금",
+                "raw": "1,000",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "evaluationAmount",
+                "label": "평가금",
+                "raw": "1,100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "pnl",
+                "label": "총 수익금",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "returnRate",
+                "label": "총 수익률",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "account": {
+          "currentAsset": 1150,
+          "balance": 50,
+          "withdrawable": 0,
+          "purchase": 1000,
+          "evaluation": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        },
+        "holding": {
+          "ticker": "0123F0",
+          "quantity": 10,
+          "buyPrice": 100,
+          "currentPrice": 110,
+          "purchaseAmount": 1000,
+          "evaluationAmount": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        }
+      }
+    },
+    {
+      "id": "toss_app-clear",
+      "layout": "toss_app",
+      "input": {
+        "target_hint": "asset",
+        "layout": "toss_app",
+        "section": "all",
+        "holdingsComplete": true,
+        "amountCurrency": "KRW",
+        "financialInstitution": "토스증권",
+        "asOfDate": "2026-10-21",
+        "currentAsset": 1150,
+        "balance": 50,
+        "withdrawable": 0,
+        "purchaseAmount": 1000,
+        "valuationAmount": 1100,
+        "profitLoss": 100,
+        "returnRate": 10,
+        "extracted_text": "토스증권\n앱 보유종목\n계좌 총액 1,150\n예수금 50\n출금가능 0\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10\n합성가람\n보유 수량 10\n1주 평균금액 100\n현재가 110\n원금 1,000\n평가금 1,100\n총 수익금 100\n총 수익률 10",
+        "accountEvidence": [
+          {
+            "field": "currentAsset",
+            "label": "계좌 총액",
+            "raw": "1,150",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "balance",
+            "label": "예수금",
+            "raw": "50",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "withdrawable",
+            "label": "출금가능",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "purchase",
+            "label": "매입금액",
+            "raw": "1,000",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "evaluation",
+            "label": "평가금액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "pnl",
+            "label": "평가손익",
+            "raw": "100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "returnRate",
+            "label": "수익률",
+            "raw": "10",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          }
+        ],
+        "holdings": [
+          {
+            "name": "합성가람",
+            "ticker": "A0123F0",
+            "market": "KR",
+            "marketSection": "국내주식",
+            "buyCurrency": "KRW",
+            "quantity": 10,
+            "averagePrice": 100,
+            "currentPrice": 110,
+            "purchaseAmount": 1000,
+            "valuationAmount": 1100,
+            "profitLoss": 100,
+            "returnRate": 10,
+            "evidence": [
+              {
+                "field": "quantity",
+                "label": "보유 수량",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "buyPrice",
+                "label": "1주 평균금액",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "currentPrice",
+                "label": "현재가",
+                "raw": "110",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "purchaseAmount",
+                "label": "원금",
+                "raw": "1,000",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "evaluationAmount",
+                "label": "평가금",
+                "raw": "1,100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "pnl",
+                "label": "총 수익금",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "returnRate",
+                "label": "총 수익률",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "account": {
+          "currentAsset": 1150,
+          "balance": 50,
+          "withdrawable": 0,
+          "purchase": 1000,
+          "evaluation": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        },
+        "holding": {
+          "ticker": "0123F0",
+          "quantity": 10,
+          "buyPrice": 100,
+          "currentPrice": 110,
+          "purchaseAmount": 1000,
+          "evaluationAmount": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        }
+      }
+    },
+    {
+      "id": "toss_app-numeric-json-wrong",
+      "layout": "toss_app",
+      "input": {
+        "target_hint": "asset",
+        "layout": "toss_app",
+        "section": "all",
+        "holdingsComplete": true,
+        "amountCurrency": "KRW",
+        "financialInstitution": "토스증권",
+        "asOfDate": "2026-10-21",
+        "currentAsset": 1150,
+        "balance": 1150,
+        "withdrawable": 0,
+        "purchaseAmount": 1000,
+        "valuationAmount": 1100,
+        "profitLoss": 100,
+        "returnRate": 10,
+        "extracted_text": "토스증권\n앱 보유종목\n계좌 총액 1,150\n예수금 50\n출금가능 0\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10\n합성가람\n보유 수량 10\n1주 평균금액 100\n현재가 110\n원금 1,000\n평가금 1,100\n총 수익금 100\n총 수익률 10",
+        "accountEvidence": [
+          {
+            "field": "currentAsset",
+            "label": "계좌 총액",
+            "raw": "1,150",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "balance",
+            "label": "예수금",
+            "raw": "50",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "withdrawable",
+            "label": "출금가능",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "purchase",
+            "label": "매입금액",
+            "raw": "1,000",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "evaluation",
+            "label": "평가금액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "pnl",
+            "label": "평가손익",
+            "raw": "100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "returnRate",
+            "label": "수익률",
+            "raw": "10",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          }
+        ],
+        "holdings": [
+          {
+            "name": "합성가람",
+            "ticker": "A0123F0",
+            "market": "KR",
+            "marketSection": "국내주식",
+            "buyCurrency": "KRW",
+            "quantity": 10,
+            "averagePrice": 100,
+            "currentPrice": 100,
+            "purchaseAmount": 1000,
+            "valuationAmount": 1100,
+            "profitLoss": 100,
+            "returnRate": 10,
+            "evidence": [
+              {
+                "field": "quantity",
+                "label": "보유 수량",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "buyPrice",
+                "label": "1주 평균금액",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "currentPrice",
+                "label": "현재가",
+                "raw": "110",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "purchaseAmount",
+                "label": "원금",
+                "raw": "1,000",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "evaluationAmount",
+                "label": "평가금",
+                "raw": "1,100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "pnl",
+                "label": "총 수익금",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "returnRate",
+                "label": "총 수익률",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "account": {
+          "currentAsset": 1150,
+          "balance": 50,
+          "withdrawable": 0,
+          "purchase": 1000,
+          "evaluation": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        },
+        "holding": {
+          "ticker": "0123F0",
+          "quantity": 10,
+          "buyPrice": 100,
+          "currentPrice": 110,
+          "purchaseAmount": 1000,
+          "evaluationAmount": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        }
+      }
+    },
+    {
+      "id": "hana_account-clear",
+      "layout": "hana_account",
+      "input": {
+        "target_hint": "asset",
+        "layout": "hana_account",
+        "section": "all",
+        "holdingsComplete": true,
+        "amountCurrency": "KRW",
+        "financialInstitution": "하나증권",
+        "asOfDate": "2026-10-21",
+        "currentAsset": 1150,
+        "balance": 50,
+        "withdrawable": 0,
+        "purchaseAmount": 1000,
+        "valuationAmount": 1100,
+        "profitLoss": 100,
+        "returnRate": 10,
+        "extracted_text": "하나증권\n계좌 잔고\n계좌 총액 1,150\n예수금 50\n출금가능 0\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10\n합성가람\n보유 수량 10\n평균단가 100\n현재가 110\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10",
+        "accountEvidence": [
+          {
+            "field": "currentAsset",
+            "label": "계좌 총액",
+            "raw": "1,150",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "balance",
+            "label": "예수금",
+            "raw": "50",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "withdrawable",
+            "label": "출금가능",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "purchase",
+            "label": "매입금액",
+            "raw": "1,000",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "evaluation",
+            "label": "평가금액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "pnl",
+            "label": "평가손익",
+            "raw": "100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "returnRate",
+            "label": "수익률",
+            "raw": "10",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          }
+        ],
+        "holdings": [
+          {
+            "name": "합성가람",
+            "ticker": "A0123F0",
+            "market": "KR",
+            "marketSection": "국내주식",
+            "buyCurrency": "KRW",
+            "quantity": 10,
+            "averagePrice": 100,
+            "currentPrice": 110,
+            "purchaseAmount": 1000,
+            "valuationAmount": 1100,
+            "profitLoss": 100,
+            "returnRate": 10,
+            "evidence": [
+              {
+                "field": "quantity",
+                "label": "보유 수량",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "buyPrice",
+                "label": "평균단가",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "currentPrice",
+                "label": "현재가",
+                "raw": "110",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "purchaseAmount",
+                "label": "매입금액",
+                "raw": "1,000",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "evaluationAmount",
+                "label": "평가금액",
+                "raw": "1,100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "pnl",
+                "label": "평가손익",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "returnRate",
+                "label": "수익률",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "account": {
+          "currentAsset": 1150,
+          "balance": 50,
+          "withdrawable": 0,
+          "purchase": 1000,
+          "evaluation": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        },
+        "holding": {
+          "ticker": "0123F0",
+          "quantity": 10,
+          "buyPrice": 100,
+          "currentPrice": 110,
+          "purchaseAmount": 1000,
+          "evaluationAmount": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        }
+      }
+    },
+    {
+      "id": "hana_account-numeric-json-wrong",
+      "layout": "hana_account",
+      "input": {
+        "target_hint": "asset",
+        "layout": "hana_account",
+        "section": "all",
+        "holdingsComplete": true,
+        "amountCurrency": "KRW",
+        "financialInstitution": "하나증권",
+        "asOfDate": "2026-10-21",
+        "currentAsset": 1150,
+        "balance": 1150,
+        "withdrawable": 0,
+        "purchaseAmount": 1000,
+        "valuationAmount": 1100,
+        "profitLoss": 100,
+        "returnRate": 10,
+        "extracted_text": "하나증권\n계좌 잔고\n계좌 총액 1,150\n예수금 50\n출금가능 0\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10\n합성가람\n보유 수량 10\n평균단가 100\n현재가 110\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10",
+        "accountEvidence": [
+          {
+            "field": "currentAsset",
+            "label": "계좌 총액",
+            "raw": "1,150",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "balance",
+            "label": "예수금",
+            "raw": "50",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "withdrawable",
+            "label": "출금가능",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "purchase",
+            "label": "매입금액",
+            "raw": "1,000",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "evaluation",
+            "label": "평가금액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "pnl",
+            "label": "평가손익",
+            "raw": "100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "returnRate",
+            "label": "수익률",
+            "raw": "10",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          }
+        ],
+        "holdings": [
+          {
+            "name": "합성가람",
+            "ticker": "A0123F0",
+            "market": "KR",
+            "marketSection": "국내주식",
+            "buyCurrency": "KRW",
+            "quantity": 10,
+            "averagePrice": 100,
+            "currentPrice": 100,
+            "purchaseAmount": 1000,
+            "valuationAmount": 1100,
+            "profitLoss": 100,
+            "returnRate": 10,
+            "evidence": [
+              {
+                "field": "quantity",
+                "label": "보유 수량",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "buyPrice",
+                "label": "평균단가",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "currentPrice",
+                "label": "현재가",
+                "raw": "110",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "purchaseAmount",
+                "label": "매입금액",
+                "raw": "1,000",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "evaluationAmount",
+                "label": "평가금액",
+                "raw": "1,100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "pnl",
+                "label": "평가손익",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "returnRate",
+                "label": "수익률",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "account": {
+          "currentAsset": 1150,
+          "balance": 50,
+          "withdrawable": 0,
+          "purchase": 1000,
+          "evaluation": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        },
+        "holding": {
+          "ticker": "0123F0",
+          "quantity": 10,
+          "buyPrice": 100,
+          "currentPrice": 110,
+          "purchaseAmount": 1000,
+          "evaluationAmount": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        }
+      }
+    },
+    {
+      "id": "hana_stock-clear",
+      "layout": "hana_stock",
+      "input": {
+        "target_hint": "asset",
+        "layout": "hana_stock",
+        "section": "all",
+        "holdingsComplete": true,
+        "amountCurrency": "KRW",
+        "financialInstitution": "하나증권",
+        "asOfDate": "2026-10-21",
+        "currentAsset": 1150,
+        "balance": 50,
+        "withdrawable": 0,
+        "purchaseAmount": 1000,
+        "valuationAmount": 1100,
+        "profitLoss": 100,
+        "returnRate": 10,
+        "extracted_text": "하나증권\n잔고 > 주식잔고 > 국내\n계좌 총액 1,150\n예수금 50\n출금가능 0\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10\n합성가람\n보유 수량 10\n평균단가 100\n현재가 110\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10",
+        "accountEvidence": [
+          {
+            "field": "currentAsset",
+            "label": "계좌 총액",
+            "raw": "1,150",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "balance",
+            "label": "예수금",
+            "raw": "50",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "withdrawable",
+            "label": "출금가능",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "purchase",
+            "label": "매입금액",
+            "raw": "1,000",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "evaluation",
+            "label": "평가금액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "pnl",
+            "label": "평가손익",
+            "raw": "100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "returnRate",
+            "label": "수익률",
+            "raw": "10",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          }
+        ],
+        "holdings": [
+          {
+            "name": "합성가람",
+            "ticker": "A0123F0",
+            "market": "KR",
+            "marketSection": "국내주식",
+            "buyCurrency": "KRW",
+            "quantity": 10,
+            "averagePrice": 100,
+            "currentPrice": 110,
+            "purchaseAmount": 1000,
+            "valuationAmount": 1100,
+            "profitLoss": 100,
+            "returnRate": 10,
+            "evidence": [
+              {
+                "field": "quantity",
+                "label": "보유 수량",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "buyPrice",
+                "label": "평균단가",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "currentPrice",
+                "label": "현재가",
+                "raw": "110",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "purchaseAmount",
+                "label": "매입금액",
+                "raw": "1,000",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "evaluationAmount",
+                "label": "평가금액",
+                "raw": "1,100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "pnl",
+                "label": "평가손익",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "returnRate",
+                "label": "수익률",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "account": {
+          "currentAsset": 1150,
+          "balance": 50,
+          "withdrawable": 0,
+          "purchase": 1000,
+          "evaluation": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        },
+        "holding": {
+          "ticker": "0123F0",
+          "quantity": 10,
+          "buyPrice": 100,
+          "currentPrice": 110,
+          "purchaseAmount": 1000,
+          "evaluationAmount": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        }
+      }
+    },
+    {
+      "id": "hana_stock-numeric-json-wrong",
+      "layout": "hana_stock",
+      "input": {
+        "target_hint": "asset",
+        "layout": "hana_stock",
+        "section": "all",
+        "holdingsComplete": true,
+        "amountCurrency": "KRW",
+        "financialInstitution": "하나증권",
+        "asOfDate": "2026-10-21",
+        "currentAsset": 1150,
+        "balance": 1150,
+        "withdrawable": 0,
+        "purchaseAmount": 1000,
+        "valuationAmount": 1100,
+        "profitLoss": 100,
+        "returnRate": 10,
+        "extracted_text": "하나증권\n잔고 > 주식잔고 > 국내\n계좌 총액 1,150\n예수금 50\n출금가능 0\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10\n합성가람\n보유 수량 10\n평균단가 100\n현재가 110\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10",
+        "accountEvidence": [
+          {
+            "field": "currentAsset",
+            "label": "계좌 총액",
+            "raw": "1,150",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "balance",
+            "label": "예수금",
+            "raw": "50",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "withdrawable",
+            "label": "출금가능",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "purchase",
+            "label": "매입금액",
+            "raw": "1,000",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "evaluation",
+            "label": "평가금액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "pnl",
+            "label": "평가손익",
+            "raw": "100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "returnRate",
+            "label": "수익률",
+            "raw": "10",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          }
+        ],
+        "holdings": [
+          {
+            "name": "합성가람",
+            "ticker": "A0123F0",
+            "market": "KR",
+            "marketSection": "국내주식",
+            "buyCurrency": "KRW",
+            "quantity": 10,
+            "averagePrice": 100,
+            "currentPrice": 100,
+            "purchaseAmount": 1000,
+            "valuationAmount": 1100,
+            "profitLoss": 100,
+            "returnRate": 10,
+            "evidence": [
+              {
+                "field": "quantity",
+                "label": "보유 수량",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "buyPrice",
+                "label": "평균단가",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "currentPrice",
+                "label": "현재가",
+                "raw": "110",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "purchaseAmount",
+                "label": "매입금액",
+                "raw": "1,000",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "evaluationAmount",
+                "label": "평가금액",
+                "raw": "1,100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "pnl",
+                "label": "평가손익",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "returnRate",
+                "label": "수익률",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "account": {
+          "currentAsset": 1150,
+          "balance": 50,
+          "withdrawable": 0,
+          "purchase": 1000,
+          "evaluation": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        },
+        "holding": {
+          "ticker": "0123F0",
+          "quantity": 10,
+          "buyPrice": 100,
+          "currentPrice": 110,
+          "purchaseAmount": 1000,
+          "evaluationAmount": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        }
+      }
+    },
+    {
+      "id": "kiwoom_app-collapsed",
+      "layout": "kiwoom_app",
+      "input": {
+        "target_hint": "asset",
+        "layout": "kiwoom_app",
+        "section": "all",
+        "holdingsComplete": true,
+        "amountCurrency": "KRW",
+        "financialInstitution": "키움증권",
+        "asOfDate": "2026-10-21",
+        "currentAsset": 1150,
+        "balance": 50,
+        "withdrawable": 0,
+        "purchaseAmount": 1000,
+        "valuationAmount": 1100,
+        "profitLoss": 100,
+        "returnRate": 10,
+        "extracted_text": "키움증권\n앱 보유종목\n계좌 총액 1,150\n예수금 50\n출금가능 0\n평가금액 1,100\n평가손익 100\n수익률 10\n합성가람\n평가금액 1,100\n평가손익 100\n수익률 10",
+        "accountEvidence": [
+          {
+            "field": "currentAsset",
+            "label": "계좌 총액",
+            "raw": "1,150",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "balance",
+            "label": "예수금",
+            "raw": "50",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "withdrawable",
+            "label": "출금가능",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "purchase",
+            "label": "매입금액",
+            "raw": "1,000",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "evaluation",
+            "label": "평가금액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "pnl",
+            "label": "평가손익",
+            "raw": "100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "returnRate",
+            "label": "수익률",
+            "raw": "10",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          }
+        ],
+        "holdings": [
+          {
+            "name": "합성가람",
+            "ticker": "A0123F0",
+            "market": "KR",
+            "marketSection": "국내주식",
+            "buyCurrency": "KRW",
+            "quantity": 10,
+            "averagePrice": 100,
+            "currentPrice": 110,
+            "purchaseAmount": 1000,
+            "valuationAmount": 1100,
+            "profitLoss": 100,
+            "returnRate": 10,
+            "evidence": [
+              {
+                "field": "quantity",
+                "label": null,
+                "raw": null,
+                "visible": false,
+                "confidence": 0,
+                "alternatives": []
+              },
+              {
+                "field": "buyPrice",
+                "label": null,
+                "raw": null,
+                "visible": false,
+                "confidence": 0,
+                "alternatives": []
+              },
+              {
+                "field": "currentPrice",
+                "label": null,
+                "raw": null,
+                "visible": false,
+                "confidence": 0,
+                "alternatives": []
+              },
+              {
+                "field": "purchaseAmount",
+                "label": null,
+                "raw": null,
+                "visible": false,
+                "confidence": 0,
+                "alternatives": []
+              },
+              {
+                "field": "evaluationAmount",
+                "label": "평가금액",
+                "raw": "1,100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "pnl",
+                "label": "평가손익",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "returnRate",
+                "label": "수익률",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "account": {
+          "currentAsset": 1150,
+          "balance": 50,
+          "withdrawable": 0,
+          "purchase": 1000,
+          "evaluation": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        },
+        "holding": {
+          "ticker": "0123F0",
+          "quantity": null,
+          "buyPrice": null,
+          "currentPrice": null,
+          "purchaseAmount": null,
+          "evaluationAmount": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        }
+      }
+    },
+    {
+      "id": "toss_app-collapsed",
+      "layout": "toss_app",
+      "input": {
+        "target_hint": "asset",
+        "layout": "toss_app",
+        "section": "all",
+        "holdingsComplete": true,
+        "amountCurrency": "KRW",
+        "financialInstitution": "토스증권",
+        "asOfDate": "2026-10-21",
+        "currentAsset": 1150,
+        "balance": 50,
+        "withdrawable": 0,
+        "purchaseAmount": 1000,
+        "valuationAmount": 1100,
+        "profitLoss": 100,
+        "returnRate": 10,
+        "extracted_text": "토스증권\n앱 보유종목\n계좌 총액 1,150\n예수금 50\n출금가능 0\n평가금액 1,100\n평가손익 100\n수익률 10\n합성가람\n평가금 1,100\n총 수익금 100\n총 수익률 10",
+        "accountEvidence": [
+          {
+            "field": "currentAsset",
+            "label": "계좌 총액",
+            "raw": "1,150",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "balance",
+            "label": "예수금",
+            "raw": "50",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "withdrawable",
+            "label": "출금가능",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "purchase",
+            "label": "매입금액",
+            "raw": "1,000",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "evaluation",
+            "label": "평가금액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "pnl",
+            "label": "평가손익",
+            "raw": "100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "returnRate",
+            "label": "수익률",
+            "raw": "10",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          }
+        ],
+        "holdings": [
+          {
+            "name": "합성가람",
+            "ticker": "A0123F0",
+            "market": "KR",
+            "marketSection": "국내주식",
+            "buyCurrency": "KRW",
+            "quantity": 10,
+            "averagePrice": 100,
+            "currentPrice": 110,
+            "purchaseAmount": 1000,
+            "valuationAmount": 1100,
+            "profitLoss": 100,
+            "returnRate": 10,
+            "evidence": [
+              {
+                "field": "quantity",
+                "label": null,
+                "raw": null,
+                "visible": false,
+                "confidence": 0,
+                "alternatives": []
+              },
+              {
+                "field": "buyPrice",
+                "label": null,
+                "raw": null,
+                "visible": false,
+                "confidence": 0,
+                "alternatives": []
+              },
+              {
+                "field": "currentPrice",
+                "label": null,
+                "raw": null,
+                "visible": false,
+                "confidence": 0,
+                "alternatives": []
+              },
+              {
+                "field": "purchaseAmount",
+                "label": null,
+                "raw": null,
+                "visible": false,
+                "confidence": 0,
+                "alternatives": []
+              },
+              {
+                "field": "evaluationAmount",
+                "label": "평가금",
+                "raw": "1,100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "pnl",
+                "label": "총 수익금",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "returnRate",
+                "label": "총 수익률",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "account": {
+          "currentAsset": 1150,
+          "balance": 50,
+          "withdrawable": 0,
+          "purchase": 1000,
+          "evaluation": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        },
+        "holding": {
+          "ticker": "0123F0",
+          "quantity": null,
+          "buyPrice": null,
+          "currentPrice": null,
+          "purchaseAmount": null,
+          "evaluationAmount": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        }
+      }
+    },
+    {
+      "id": "hana_account-collapsed",
+      "layout": "hana_account",
+      "input": {
+        "target_hint": "asset",
+        "layout": "hana_account",
+        "section": "all",
+        "holdingsComplete": true,
+        "amountCurrency": "KRW",
+        "financialInstitution": "하나증권",
+        "asOfDate": "2026-10-21",
+        "currentAsset": 1150,
+        "balance": 50,
+        "withdrawable": 0,
+        "purchaseAmount": 1000,
+        "valuationAmount": 1100,
+        "profitLoss": 100,
+        "returnRate": 10,
+        "extracted_text": "하나증권\n계좌 잔고\n계좌 총액 1,150\n예수금 50\n출금가능 0\n평가금액 1,100\n평가손익 100\n수익률 10\n합성가람\n평가금액 1,100\n평가손익 100\n수익률 10",
+        "accountEvidence": [
+          {
+            "field": "currentAsset",
+            "label": "계좌 총액",
+            "raw": "1,150",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "balance",
+            "label": "예수금",
+            "raw": "50",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "withdrawable",
+            "label": "출금가능",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "purchase",
+            "label": "매입금액",
+            "raw": "1,000",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "evaluation",
+            "label": "평가금액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "pnl",
+            "label": "평가손익",
+            "raw": "100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "returnRate",
+            "label": "수익률",
+            "raw": "10",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          }
+        ],
+        "holdings": [
+          {
+            "name": "합성가람",
+            "ticker": "A0123F0",
+            "market": "KR",
+            "marketSection": "국내주식",
+            "buyCurrency": "KRW",
+            "quantity": 10,
+            "averagePrice": 100,
+            "currentPrice": 110,
+            "purchaseAmount": 1000,
+            "valuationAmount": 1100,
+            "profitLoss": 100,
+            "returnRate": 10,
+            "evidence": [
+              {
+                "field": "quantity",
+                "label": null,
+                "raw": null,
+                "visible": false,
+                "confidence": 0,
+                "alternatives": []
+              },
+              {
+                "field": "buyPrice",
+                "label": null,
+                "raw": null,
+                "visible": false,
+                "confidence": 0,
+                "alternatives": []
+              },
+              {
+                "field": "currentPrice",
+                "label": null,
+                "raw": null,
+                "visible": false,
+                "confidence": 0,
+                "alternatives": []
+              },
+              {
+                "field": "purchaseAmount",
+                "label": null,
+                "raw": null,
+                "visible": false,
+                "confidence": 0,
+                "alternatives": []
+              },
+              {
+                "field": "evaluationAmount",
+                "label": "평가금액",
+                "raw": "1,100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "pnl",
+                "label": "평가손익",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "returnRate",
+                "label": "수익률",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "account": {
+          "currentAsset": 1150,
+          "balance": 50,
+          "withdrawable": 0,
+          "purchase": 1000,
+          "evaluation": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        },
+        "holding": {
+          "ticker": "0123F0",
+          "quantity": null,
+          "buyPrice": null,
+          "currentPrice": null,
+          "purchaseAmount": null,
+          "evaluationAmount": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        }
+      }
+    },
+    {
+      "id": "hana_stock-collapsed",
+      "layout": "hana_stock",
+      "input": {
+        "target_hint": "asset",
+        "layout": "hana_stock",
+        "section": "all",
+        "holdingsComplete": true,
+        "amountCurrency": "KRW",
+        "financialInstitution": "하나증권",
+        "asOfDate": "2026-10-21",
+        "currentAsset": 1150,
+        "balance": 50,
+        "withdrawable": 0,
+        "purchaseAmount": 1000,
+        "valuationAmount": 1100,
+        "profitLoss": 100,
+        "returnRate": 10,
+        "extracted_text": "하나증권\n잔고 > 주식잔고 > 국내\n계좌 총액 1,150\n예수금 50\n출금가능 0\n평가금액 1,100\n평가손익 100\n수익률 10\n합성가람\n평가금액 1,100\n평가손익 100\n수익률 10",
+        "accountEvidence": [
+          {
+            "field": "currentAsset",
+            "label": "계좌 총액",
+            "raw": "1,150",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "balance",
+            "label": "예수금",
+            "raw": "50",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "withdrawable",
+            "label": "출금가능",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "purchase",
+            "label": "매입금액",
+            "raw": "1,000",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "evaluation",
+            "label": "평가금액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "pnl",
+            "label": "평가손익",
+            "raw": "100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "returnRate",
+            "label": "수익률",
+            "raw": "10",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          }
+        ],
+        "holdings": [
+          {
+            "name": "합성가람",
+            "ticker": "A0123F0",
+            "market": "KR",
+            "marketSection": "국내주식",
+            "buyCurrency": "KRW",
+            "quantity": 10,
+            "averagePrice": 100,
+            "currentPrice": 110,
+            "purchaseAmount": 1000,
+            "valuationAmount": 1100,
+            "profitLoss": 100,
+            "returnRate": 10,
+            "evidence": [
+              {
+                "field": "quantity",
+                "label": null,
+                "raw": null,
+                "visible": false,
+                "confidence": 0,
+                "alternatives": []
+              },
+              {
+                "field": "buyPrice",
+                "label": null,
+                "raw": null,
+                "visible": false,
+                "confidence": 0,
+                "alternatives": []
+              },
+              {
+                "field": "currentPrice",
+                "label": null,
+                "raw": null,
+                "visible": false,
+                "confidence": 0,
+                "alternatives": []
+              },
+              {
+                "field": "purchaseAmount",
+                "label": null,
+                "raw": null,
+                "visible": false,
+                "confidence": 0,
+                "alternatives": []
+              },
+              {
+                "field": "evaluationAmount",
+                "label": "평가금액",
+                "raw": "1,100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "pnl",
+                "label": "평가손익",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "returnRate",
+                "label": "수익률",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "account": {
+          "currentAsset": 1150,
+          "balance": 50,
+          "withdrawable": 0,
+          "purchase": 1000,
+          "evaluation": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        },
+        "holding": {
+          "ticker": "0123F0",
+          "quantity": null,
+          "buyPrice": null,
+          "currentPrice": null,
+          "purchaseAmount": null,
+          "evaluationAmount": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        }
+      }
+    },
+    {
+      "id": "kiwoom_pc-missing-digit-candidate",
+      "layout": "kiwoom_pc",
+      "input": {
+        "target_hint": "asset",
+        "layout": "kiwoom_pc",
+        "section": "all",
+        "holdingsComplete": true,
+        "amountCurrency": "KRW",
+        "financialInstitution": "키움증권",
+        "asOfDate": "2026-10-21",
+        "currentAsset": 1150,
+        "balance": 50,
+        "withdrawable": 0,
+        "purchaseAmount": 1000,
+        "valuationAmount": 1100,
+        "profitLoss": 100,
+        "returnRate": 10,
+        "extracted_text": "키움증권\nHTS\t보유종목\n계좌 총액 1,150\n예수금 50\n출금가능 0\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10\n합성가람\n보유 수량 10\n평균단가 100\n현재가 110\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10",
+        "accountEvidence": [
+          {
+            "field": "currentAsset",
+            "label": "계좌 총액",
+            "raw": "1,150",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "balance",
+            "label": "예수금",
+            "raw": "50",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "withdrawable",
+            "label": "출금가능",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "purchase",
+            "label": "매입금액",
+            "raw": "1,000",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "evaluation",
+            "label": "평가금액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "pnl",
+            "label": "평가손익",
+            "raw": "100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "returnRate",
+            "label": "수익률",
+            "raw": "10",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          }
+        ],
+        "holdings": [
+          {
+            "name": "합성가람",
+            "ticker": "A0123F0",
+            "market": "KR",
+            "marketSection": "국내주식",
+            "buyCurrency": "KRW",
+            "quantity": 1,
+            "averagePrice": 100,
+            "currentPrice": 110,
+            "purchaseAmount": 1000,
+            "valuationAmount": 1100,
+            "profitLoss": 100,
+            "returnRate": 10,
+            "evidence": [
+              {
+                "field": "quantity",
+                "label": "보유 수량",
+                "raw": "1",
+                "visible": true,
+                "confidence": 0.55,
+                "alternatives": [
+                  "10"
+                ]
+              },
+              {
+                "field": "buyPrice",
+                "label": "평균단가",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "currentPrice",
+                "label": "현재가",
+                "raw": "110",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "purchaseAmount",
+                "label": "매입금액",
+                "raw": "1,000",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "evaluationAmount",
+                "label": "평가금액",
+                "raw": "1,100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "pnl",
+                "label": "평가손익",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "returnRate",
+                "label": "수익률",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "account": {
+          "currentAsset": 1150,
+          "balance": 50,
+          "withdrawable": 0,
+          "purchase": 1000,
+          "evaluation": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        },
+        "holding": {
+          "ticker": "0123F0",
+          "quantity": 10,
+          "buyPrice": 100,
+          "currentPrice": 110,
+          "purchaseAmount": 1000,
+          "evaluationAmount": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        }
+      },
+      "autoCorrect": "quantity"
+    },
+    {
+      "id": "toss_pc-swapped-prices",
+      "layout": "toss_pc",
+      "input": {
+        "target_hint": "asset",
+        "layout": "toss_pc",
+        "section": "all",
+        "holdingsComplete": true,
+        "amountCurrency": "KRW",
+        "financialInstitution": "토스증권",
+        "asOfDate": "2026-10-21",
+        "currentAsset": 1150,
+        "balance": 50,
+        "withdrawable": 0,
+        "purchaseAmount": 1000,
+        "valuationAmount": 1100,
+        "profitLoss": 100,
+        "returnRate": 10,
+        "extracted_text": "토스증권\nHTS\t보유종목\n계좌 총액 1,150\n예수금 50\n출금가능 0\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10\n합성가람\n보유 수량 10\n1주 평균금액 100\n현재가 110\n원금 1,000\n평가금 1,100\n총 수익금 100\n총 수익률 10",
+        "accountEvidence": [
+          {
+            "field": "currentAsset",
+            "label": "계좌 총액",
+            "raw": "1,150",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "balance",
+            "label": "예수금",
+            "raw": "50",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "withdrawable",
+            "label": "출금가능",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "purchase",
+            "label": "매입금액",
+            "raw": "1,000",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "evaluation",
+            "label": "평가금액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "pnl",
+            "label": "평가손익",
+            "raw": "100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "returnRate",
+            "label": "수익률",
+            "raw": "10",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          }
+        ],
+        "holdings": [
+          {
+            "name": "합성가람",
+            "ticker": "A0123F0",
+            "market": "KR",
+            "marketSection": "국내주식",
+            "buyCurrency": "KRW",
+            "quantity": 10,
+            "averagePrice": 110,
+            "currentPrice": 100,
+            "purchaseAmount": 1000,
+            "valuationAmount": 1100,
+            "profitLoss": 100,
+            "returnRate": 10,
+            "evidence": [
+              {
+                "field": "quantity",
+                "label": "보유 수량",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "buyPrice",
+                "label": "1주 평균금액",
+                "raw": "110",
+                "visible": true,
+                "confidence": 0.6,
+                "alternatives": []
+              },
+              {
+                "field": "currentPrice",
+                "label": "현재가",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.6,
+                "alternatives": []
+              },
+              {
+                "field": "purchaseAmount",
+                "label": "원금",
+                "raw": "1,000",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "evaluationAmount",
+                "label": "평가금",
+                "raw": "1,100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "pnl",
+                "label": "총 수익금",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "returnRate",
+                "label": "총 수익률",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "account": {
+          "currentAsset": 1150,
+          "balance": 50,
+          "withdrawable": 0,
+          "purchase": 1000,
+          "evaluation": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        },
+        "holding": {
+          "ticker": "0123F0",
+          "quantity": 10,
+          "buyPrice": 100,
+          "currentPrice": 110,
+          "purchaseAmount": 1000,
+          "evaluationAmount": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        }
+      },
+      "autoCorrect": "currentPrice"
+    },
+    {
+      "id": "toss_app-daily-profit-label",
+      "layout": "toss_app",
+      "input": {
+        "target_hint": "asset",
+        "layout": "toss_app",
+        "section": "all",
+        "holdingsComplete": true,
+        "amountCurrency": "KRW",
+        "financialInstitution": "토스증권",
+        "asOfDate": "2026-10-21",
+        "currentAsset": 1150,
+        "balance": 50,
+        "withdrawable": 0,
+        "purchaseAmount": 1000,
+        "valuationAmount": 1100,
+        "profitLoss": 100,
+        "returnRate": 10,
+        "extracted_text": "토스증권\n앱 보유종목\n계좌 총액 1,150\n예수금 50\n출금가능 0\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10\n합성가람\n보유 수량 10\n1주 평균금액 100\n현재가 110\n원금 1,000\n평가금 1,100\n총 수익금 100\n총 수익률 10",
+        "accountEvidence": [
+          {
+            "field": "currentAsset",
+            "label": "계좌 총액",
+            "raw": "1,150",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "balance",
+            "label": "예수금",
+            "raw": "50",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "withdrawable",
+            "label": "출금가능",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "purchase",
+            "label": "매입금액",
+            "raw": "1,000",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "evaluation",
+            "label": "평가금액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "pnl",
+            "label": "평가손익",
+            "raw": "100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "returnRate",
+            "label": "수익률",
+            "raw": "10",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          }
+        ],
+        "holdings": [
+          {
+            "name": "합성가람",
+            "ticker": "A0123F0",
+            "market": "KR",
+            "marketSection": "국내주식",
+            "buyCurrency": "KRW",
+            "quantity": 10,
+            "averagePrice": 100,
+            "currentPrice": 110,
+            "purchaseAmount": 1000,
+            "valuationAmount": 1100,
+            "profitLoss": 100,
+            "returnRate": 10,
+            "evidence": [
+              {
+                "field": "quantity",
+                "label": "보유 수량",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "buyPrice",
+                "label": "1주 평균금액",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "currentPrice",
+                "label": "현재가",
+                "raw": "110",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "purchaseAmount",
+                "label": "원금",
+                "raw": "1,000",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "evaluationAmount",
+                "label": "평가금",
+                "raw": "1,100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "pnl",
+                "label": "일간 수익금",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "returnRate",
+                "label": "총 수익률",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "account": {
+          "currentAsset": 1150,
+          "balance": 50,
+          "withdrawable": 0,
+          "purchase": 1000,
+          "evaluation": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        },
+        "holding": {
+          "ticker": "0123F0",
+          "quantity": 10,
+          "buyPrice": 100,
+          "currentPrice": 110,
+          "purchaseAmount": 1000,
+          "evaluationAmount": 1100,
+          "pnl": null,
+          "returnRate": 10
+        }
+      }
+    },
+    {
+      "id": "kiwoom_app-malformed-commas",
+      "layout": "kiwoom_app",
+      "input": {
+        "target_hint": "asset",
+        "layout": "kiwoom_app",
+        "section": "all",
+        "holdingsComplete": true,
+        "amountCurrency": "KRW",
+        "financialInstitution": "키움증권",
+        "asOfDate": "2026-10-21",
+        "currentAsset": 1150,
+        "balance": 50,
+        "withdrawable": 0,
+        "purchaseAmount": 1000,
+        "valuationAmount": 1100,
+        "profitLoss": 100,
+        "returnRate": 10,
+        "extracted_text": "키움증권\n앱 보유종목\n계좌 총액 1,150\n예수금 50\n출금가능 0\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10\n합성가람\n보유 수량 10\n평균단가 100\n현재가 110\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10",
+        "accountEvidence": [
+          {
+            "field": "currentAsset",
+            "label": "계좌 총액",
+            "raw": "1,150",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "balance",
+            "label": "예수금",
+            "raw": "50",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "withdrawable",
+            "label": "출금가능",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "purchase",
+            "label": "매입금액",
+            "raw": "1,000",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "evaluation",
+            "label": "평가금액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "pnl",
+            "label": "평가손익",
+            "raw": "100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "returnRate",
+            "label": "수익률",
+            "raw": "10",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          }
+        ],
+        "holdings": [
+          {
+            "name": "합성가람",
+            "ticker": "A0123F0",
+            "market": "KR",
+            "marketSection": "국내주식",
+            "buyCurrency": "KRW",
+            "quantity": 10,
+            "averagePrice": 100,
+            "currentPrice": 110,
+            "purchaseAmount": 1000,
+            "valuationAmount": 1100,
+            "profitLoss": 100,
+            "returnRate": 10,
+            "evidence": [
+              {
+                "field": "quantity",
+                "label": "보유 수량",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "buyPrice",
+                "label": "평균단가",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "currentPrice",
+                "label": "현재가",
+                "raw": "110",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "purchaseAmount",
+                "label": "매입금액",
+                "raw": "1,000",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "evaluationAmount",
+                "label": "평가금액",
+                "raw": "1,10,0",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "pnl",
+                "label": "평가손익",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "returnRate",
+                "label": "수익률",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "account": {
+          "currentAsset": 1150,
+          "balance": 50,
+          "withdrawable": 0,
+          "purchase": 1000,
+          "evaluation": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        },
+        "holding": {
+          "ticker": "0123F0",
+          "quantity": 10,
+          "buyPrice": 100,
+          "currentPrice": 110,
+          "purchaseAmount": 1000,
+          "evaluationAmount": null,
+          "pnl": 100,
+          "returnRate": 10
+        }
+      }
+    },
+    {
+      "id": "hana_account-zero-cash",
+      "layout": "hana_account",
+      "input": {
+        "target_hint": "asset",
+        "layout": "hana_account",
+        "section": "all",
+        "holdingsComplete": true,
+        "amountCurrency": "KRW",
+        "financialInstitution": "하나증권",
+        "asOfDate": "2026-10-21",
+        "currentAsset": 1100,
+        "balance": 1150,
+        "withdrawable": 0,
+        "purchaseAmount": 1000,
+        "valuationAmount": 1100,
+        "profitLoss": 100,
+        "returnRate": 10,
+        "extracted_text": "하나증권\n계좌 잔고\n계좌 총액 1,150\n예수금 50\n출금가능 0\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10\n합성가람\n보유 수량 10\n평균단가 100\n현재가 110\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10",
+        "accountEvidence": [
+          {
+            "field": "currentAsset",
+            "label": "계좌 총액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "balance",
+            "label": "예수금",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "withdrawable",
+            "label": "출금가능",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "purchase",
+            "label": "매입금액",
+            "raw": "1,000",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "evaluation",
+            "label": "평가금액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "pnl",
+            "label": "평가손익",
+            "raw": "100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "returnRate",
+            "label": "수익률",
+            "raw": "10",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          }
+        ],
+        "holdings": [
+          {
+            "name": "합성가람",
+            "ticker": "A0123F0",
+            "market": "KR",
+            "marketSection": "국내주식",
+            "buyCurrency": "KRW",
+            "quantity": 10,
+            "averagePrice": 100,
+            "currentPrice": 110,
+            "purchaseAmount": 1000,
+            "valuationAmount": 1100,
+            "profitLoss": 100,
+            "returnRate": 10,
+            "evidence": [
+              {
+                "field": "quantity",
+                "label": "보유 수량",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "buyPrice",
+                "label": "평균단가",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "currentPrice",
+                "label": "현재가",
+                "raw": "110",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "purchaseAmount",
+                "label": "매입금액",
+                "raw": "1,000",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "evaluationAmount",
+                "label": "평가금액",
+                "raw": "1,100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "pnl",
+                "label": "평가손익",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "returnRate",
+                "label": "수익률",
+                "raw": "10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "account": {
+          "currentAsset": 1100,
+          "balance": 0,
+          "withdrawable": 0,
+          "purchase": 1000,
+          "evaluation": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        },
+        "holding": {
+          "ticker": "0123F0",
+          "quantity": 10,
+          "buyPrice": 100,
+          "currentPrice": 110,
+          "purchaseAmount": 1000,
+          "evaluationAmount": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        }
+      }
+    },
+    {
+      "id": "toss_app-fractional-negative",
+      "layout": "toss_app",
+      "input": {
+        "target_hint": "asset",
+        "layout": "toss_app",
+        "section": "all",
+        "holdingsComplete": true,
+        "amountCurrency": "KRW",
+        "financialInstitution": "토스증권",
+        "asOfDate": "2026-10-21",
+        "currentAsset": 1150,
+        "balance": 50,
+        "withdrawable": 0,
+        "purchaseAmount": 1000,
+        "valuationAmount": 1100,
+        "profitLoss": 100,
+        "returnRate": 10,
+        "extracted_text": "토스증권\n앱 보유종목\n계좌 총액 1,150\n예수금 50\n출금가능 0\n매입금액 1,000\n평가금액 1,100\n평가손익 100\n수익률 10\n합성가람\n보유 수량 10\n1주 평균금액 100\n현재가 110\n원금 1,000\n평가금 1,100\n총 수익금 100\n총 수익률 10",
+        "accountEvidence": [
+          {
+            "field": "currentAsset",
+            "label": "계좌 총액",
+            "raw": "1,150",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "balance",
+            "label": "예수금",
+            "raw": "50",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "withdrawable",
+            "label": "출금가능",
+            "raw": "0",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "purchase",
+            "label": "매입금액",
+            "raw": "1,000",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "evaluation",
+            "label": "평가금액",
+            "raw": "1,100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "pnl",
+            "label": "평가손익",
+            "raw": "100",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          },
+          {
+            "field": "returnRate",
+            "label": "수익률",
+            "raw": "10",
+            "visible": true,
+            "confidence": 0.99,
+            "alternatives": []
+          }
+        ],
+        "holdings": [
+          {
+            "name": "합성가람",
+            "ticker": "A0123F0",
+            "market": "KR",
+            "marketSection": "국내주식",
+            "buyCurrency": "KRW",
+            "quantity": 0.5,
+            "averagePrice": 100,
+            "currentPrice": 90,
+            "purchaseAmount": 50,
+            "valuationAmount": 45,
+            "profitLoss": -5,
+            "returnRate": -10,
+            "evidence": [
+              {
+                "field": "quantity",
+                "label": "보유 수량",
+                "raw": "0.5",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "buyPrice",
+                "label": "1주 평균금액",
+                "raw": "100",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "currentPrice",
+                "label": "현재가",
+                "raw": "90",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "purchaseAmount",
+                "label": "원금",
+                "raw": "50",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "evaluationAmount",
+                "label": "평가금",
+                "raw": "45",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "pnl",
+                "label": "총 수익금",
+                "raw": "-5",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              },
+              {
+                "field": "returnRate",
+                "label": "총 수익률",
+                "raw": "-10",
+                "visible": true,
+                "confidence": 0.99,
+                "alternatives": []
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "account": {
+          "currentAsset": 1150,
+          "balance": 50,
+          "withdrawable": 0,
+          "purchase": 1000,
+          "evaluation": 1100,
+          "pnl": 100,
+          "returnRate": 10
+        },
+        "holding": {
+          "ticker": "0123F0",
+          "quantity": 0.5,
+          "buyPrice": 100,
+          "currentPrice": 90,
+          "purchaseAmount": 50,
+          "evaluationAmount": 45,
+          "pnl": -5,
+          "returnRate": -10
+        }
+      }
+    }
+  ]
+}

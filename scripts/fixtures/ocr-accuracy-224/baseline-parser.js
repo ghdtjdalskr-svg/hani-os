@@ -1,0 +1,39 @@
+// Frozen production parser functions from HEAD 06519be, before accuracy224. Synthetic benchmark only.
+(function(){
+const holdingPreviewMeta=new WeakMap(),screenPreviewMeta=new WeakMap();
+const text=v=>String(v??"").replace(/\s+/g," ").trim(),number=v=>{if(v===null||v===undefined||text(v)==="")return null;const m=text(v).replace(/[,₩원%\s]/g,"").match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):null},safe=v=>text(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
+function dateValue(v){const match=text(v).match(/^(\d{4})[.\/-](\d{1,2})[.\/-](\d{1,2})\.?$/);if(!match)return "";const y=Number(match[1]),m=Number(match[2]),d=Number(match[3]),date=new Date(Date.UTC(y,m-1,d));return date.getUTCFullYear()===y&&date.getUTCMonth()===m-1&&date.getUTCDate()===d?`${match[1]}-${String(m).padStart(2,"0")}-${String(d).padStart(2,"0")}`:""}
+function value(o,keys){for(const k of keys){if(o?.[k]!==undefined&&o[k]!==null&&text(o[k])!=="")return o[k]}return null}
+function normalize(raw={}){const x=raw.data&&typeof raw.data==="object"?raw.data:raw,extractedText=String(value(x,["extracted_text","extractedText"])||""),evaluation=number(value(x,["valuationAmount","total_evaluation","evaluation","totalEvaluation"])),currentAsset=number(value(x,["currentAsset","total_assets","current_assets","estimatedAssets"])),balance=number(value(x,["balance","cashBalance","cash_balance","예수금","현금잔고","현재잔액"])),accountNumber=text(value(x,["accountNumber","account_number","계좌번호"]))||((extractedText.match(/\b\d{6,}-\d{2,}\b/)||[])[0]||"");const normalized={broker:text(value(x,["financialInstitution","broker","financial_institution","institution","금융사"])),accountName:text(value(x,["accountName","account_name","productName","product_name","alias","name","계좌명","상품명","별칭"])),accountType:text(value(x,["accountType","account_type","type","계좌유형"])),accountNumber,currentAsset,balance,assets:currentAsset??evaluation??balance,purchase:number(value(x,["purchaseAmount","principal","total_purchase","totalPurchase","원금"])),evaluation,pnl:number(value(x,["profitLoss","total_pnl","profit_loss","totalPnl"])),returnRate:number(value(x,["returnRate","total_return","return_rate","totalReturn"])),date:dateValue(value(x,["asOfDate","as_of_date","snapshot_date","snapshotDate","date"])),holdings:Array.isArray(value(x,["holdings","positions","보유종목"]))?value(x,["holdings","positions","보유종목"]):[],extractedText,accountId:text(x.accountId),mode:text(x.mode||"image"),original:x.original||null};normalized.withdrawable=number(value(x,["withdrawable","withdrawableAmount","출금가능"]));return hanaEvidence(normalized)}
+// Label evidence and editor state are memory-only; no storage/schema fields are added.
+function labelledAmount(source,label){const escaped=label.replace(/[.*+?^$()|[\]\\]/g,"\\$&"),m=source.match(new RegExp(escaped+"\\s*[:：]?\\s*([-+]?\\d[\\d,]*(?:\\.\\d+)?)\\s*(?:원|%|주)?"));return m?number(m[1]):null}
+function hanaEvidence(d){
+  const source=d.extractedText||"",hana=/하나/.test(d.broker)||/하나증권/.test(source);if(!hana||!source.trim())return d;
+  const lines=source.replace(/\r/g,"").split("\n").map(x=>x.trim()).filter(Boolean),firstName=(d.holdings||[]).map(h=>text(h.name)).filter(Boolean),first=lines.findIndex(line=>firstName.some(name=>line===name||line.startsWith(name+" "))),head=lines.slice(0,first<0?lines.length:first).join("\n"),stockScreen=/주식평가금액/.test(head),ranks={};
+  const assign=(key,labels,rank)=>{for(const label of labels){const v=labelledAmount(head,label);if(v!==null){d[key]=v;ranks[key]=rank;return}}d[key]=null};
+  assign("balance",["예수금"],3);assign("withdrawable",["출금가능금액","출금가능"],3);
+  assign("currentAsset",["계좌 총액","계좌총액","총자산"],3);
+  if(d.currentAsset===null&&!/주식잔고/.test(head)){const accountLine=lines.findIndex(line=>/종합매매|위탁종합/.test(line));const next=lines[accountLine+1]||"";if(accountLine>=0&&/^\d[\d,]*(?:\.\d+)?\s*원?$/.test(next)){d.currentAsset=number(next);ranks.currentAsset=3}}
+  assign("evaluation",["주식평가금액","평가금액"],stockScreen?4:2);assign("purchase",["주식 매입금액","매입금액"],3);assign("pnl",["평가손익","총 손익","총손익","손익"],3);assign("returnRate",["수익률"],3);
+  if(stockScreen&&d.returnRate===null){const rate=head.match(/(?:총\s*손익|손익)[^\n]*\(\s*([-+\d.]+)\s*%/);if(rate){d.returnRate=number(rate[1]);ranks.returnRate=3}}
+  if(stockScreen&&d.pnl===null){const m=head.match(/주식평가금액\s*[-+\d,]+\s*원?\s*([-+]\d[\d,]*)\s*\(\s*([-+\d.]+)%/);if(m){d.pnl=number(m[1]);d.returnRate=number(m[2]);ranks.pnl=ranks.returnRate=3}}
+  d.holdings=(d.holdings||[]).map(raw=>{
+    const name=text(raw.name||raw['종목명']),start=lines.findIndex(line=>name&&(line===name||line.startsWith(name+" ")));
+    // If OCR text cannot locate the card, absent fields remain unconfirmed rather than AI guesses.
+    const following=lines.findIndex((line,i)=>i>start&&firstName.some(other=>other!==name&&(line===other||line.startsWith(other+" ")))),section=start<0?"":lines.slice(start,following<0?lines.length:following).join("\n"),qty=section.match(/(?:^|\s)(\d[\d,]*(?:\.\d+)?)\s*주(?:\s|$)/);
+    const h=makeHolding({name,ticker:raw.ticker||raw.symbol||"",instrumentId:raw.instrumentId||"",id:raw.id,quantity:labelledAmount(section,"보유수량")??labelledAmount(section,"수량")??(qty?number(qty[1]):null),buyPrice:labelledAmount(section,"평균단가")??labelledAmount(section,"평균매입가"),averagePrice:null,currentPrice:labelledAmount(section,"현재가"),purchaseAmount:labelledAmount(section,"매입금액"),evaluationAmount:labelledAmount(section,"평가금액"),valuationAmount:null,pnl:labelledAmount(section,"평가손익"),returnRate:labelledAmount(section,"수익률"),market:raw.market||"",buyCurrency:/원/.test(section)?"KRW":raw.buyCurrency});
+    if(stockScreen&&h.evaluationAmount===null){const m=section.match(/\d[\d,.]*\s*주\s*\n?\s*(\d[\d,]*)\s*원/);if(m)h.evaluationAmount=number(m[1])}
+    holdingPreviewMeta.set(h,{...holdingPreviewMeta.get(h),hana:true,derived:[],rank:stockScreen?4:3});return h;
+  });
+  d.assets=d.currentAsset??d.evaluation??d.balance;screenPreviewMeta.set(d,{hana:true,ranks,differences:[]});return d;
+}
+function normalizeIntakeCode(value){const code=String(value??"").trim().toUpperCase();return /^A[0-9][0-9A-Z]{5}$/.test(code)?code.slice(1):code}
+function makeHolding(h){
+  const prices={buyPrice:value(h,["buyPrice","averagePrice","average_price","avg_price","평균단가","1주 평균금액","1주평균금액"]),currentPrice:value(h,["currentPrice","current_price","현재가"]),purchaseAmount:value(h,["purchaseAmount","purchase_amount","매입금액","원금"]),evaluationAmount:value(h,["evaluationAmount","valuationAmount","evaluation_amount","평가금액","평가금"])};
+  const inherited=h&&holdingPreviewMeta.get(h),marketSection=text(value(h,["marketSection","section"]))||inherited?.marketSection||"",hasWon=Object.values(prices).some(v=>/[원₩]/.test(String(v??""))),currency=hasWon?"KRW":text(value(h,["buyCurrency","currency"])).toUpperCase(),krwConverted=marketSection==="해외주식"&&(hasWon||currency==="KRW")||inherited?.krwConverted===true;
+  const raw={buyCurrency:["KRW","USD"].includes(currency)?currency:undefined,id:h?.id,instrumentId:text(value(h,["instrumentId","instrument_id"])),name:text(value(h,["name","symbol_name","종목명"])),market:marketSection==="국내주식"?"KR":text(value(h,["market","시장"]))||(marketSection==="해외주식"?"US":""),ticker:normalizeIntakeCode(value(h,["ticker","symbol","종목코드"])),quantity:number(value(h,["quantity","qty","수량","보유 수량","보유수량"])),...Object.fromEntries(Object.entries(prices).map(([k,v])=>[k,number(v)])),pnl:number(value(h,["profitLoss","pnl","평가손익","총 수익금"])),returnRate:number(value(h,["returnRate","return_rate","수익률","총 수익률"])),weight:number(value(h,["weight","비중"])),fee:number(value(h,["fee","수수료"])),tax:number(value(h,["tax","세금"]))};
+  const normalized=typeof normalizeBrokerHolding==="function"?normalizeBrokerHolding(raw):raw;
+  holdingPreviewMeta.set(normalized,{...inherited,marketSection,krwConverted});return normalized;
+}
+window.HANI_OCR_BASELINE={normalize,makeHolding};
+})();

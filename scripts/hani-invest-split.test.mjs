@@ -28,20 +28,22 @@ const get=id=>nodes.find(n=>n.id===id),add=id=>{const n=new Node();n.id=id;retur
 const portfolio=add('investment'),committee=add('investmentCommittee');portfolio.className='view';committee.className='view';
 const overview=add('investOverview'),stocks=add('investOverviewStocks'),legacyTabs=new Node();portfolio.append(legacyTabs,overview);overview.append(stocks);
 const mountedBanner=new Node();mountedBanner.className='ds-main-character-banner';committee.append(mountedBanner);
-const body={dataset:{view:'investmentCommittee'}},routes=[],entries=[];
-const ctx=vm.createContext({root:{},document:{body,createElement:()=>new Node(),getElementById:get},location:{hash:'#investmentCommittee',href:'http://test/'},history:{replaceState(_a,_b,hash){routes.push(hash);}},render:()=>entries.push('research'),refreshPrices(){},renderMonthly:()=>entries.push('monthly')});
+const body={dataset:{view:'investmentCommittee'}},routes=[],entries=[],journalMounts=[];
+const ctx=vm.createContext({root:{HaniStreetJournal:{mount:node=>journalMounts.push(node)}},document:{body,createElement:()=>new Node(),getElementById:get},location:{hash:'#investmentCommittee',href:'http://test/'},history:{replaceState(_a,_b,hash){routes.push(hash);}},render:()=>entries.push('research'),refreshPrices(){},renderMonthly:()=>entries.push('monthly')});
 // Run the module's persistent layout owner directly, with data renderer calls observed.
 vm.runInContext(ic.slice(ic.indexOf('  const UI = '),ic.indexOf('  let framework =')).replaceAll('if (!viewSection) return;','').replaceAll('if (!host) return;',''),ctx);
 const ids=ctx.root.HaniInvestmentCommitteeIds,nav=get(ids.tabs);
 assert.deepEqual(portfolio.children,[legacyTabs,overview],'Committee does not reparent Portfolio');
 assert.equal(committee.children[0],mountedBanner,'pre-mounted banner remains first when IC module mounts later');assert.equal(committee.children[1].classList.contains('ic-steps'),true,'existing polish progress slot follows banner');assert.equal(committee.children[2],nav,'persistent tabs follow progress');
-assert.equal(nav.children.length,2);assert.equal(get('icPortfolio'),undefined);
+assert.deepEqual(nav.children.map(n=>[n.textContent,n.attrs['aria-controls']]),[['종목 리포트','icResearch'],['월간 리포트','icMonthly'],['스트리트 저널','icStreetJournal']]);assert.equal(get('icPortfolio'),undefined);
 ctx.selectSection('research');assert.equal(get(ids.research).hidden,false);assert.equal(get(ids.monthly).hidden,true);
 nav.listeners.keydown({target:nav.children[0],key:'ArrowRight',preventDefault(){}});
 assert.equal(get(ids.monthly).hidden,false);assert.equal(nav.children[1].attrs['aria-selected'],'true');assert.equal(routes.at(-1),'#investmentCommittee/monthly');
 nav.listeners.keydown({target:nav.children[1],key:'Home',preventDefault(){}});assert.equal(get(ids.research).hidden,false);
 nav.listeners.click({target:nav.children[1]});assert.equal(get(ids.monthly).hidden,false);
 assert.deepEqual(portfolio.children,[legacyTabs,overview]);
+nav.listeners.keydown({target:nav.children[0],key:'End',preventDefault(){}});assert.equal(get(ids.journal).hidden,false);assert.equal(get(ids.research).hidden,true);assert.equal(get(ids.monthly).hidden,true);assert.equal(routes.at(-1),'#investmentCommittee/journal');assert.deepEqual(journalMounts,[get(ids.journal)]);
+nav.listeners.keydown({target:nav.children[2],key:'ArrowRight',preventDefault(){}});assert.equal(get(ids.research).hidden,false);assert.equal(get(ids.journal).hidden,true);
 for(const id of ['title','desc','app','home'])add(id);
 Object.assign(ctx,{$:get,clearTimeout(){},setTimeout(){},navigationTimer:0,navigationBooted:false,loginGateUnlocked:false,NAVIGATION_VIEWS:new Set(),organizationRoute:()=>null,settingsRoute:()=>null,pageMeta:{},setBanner(){},updateFinishScope(){},drawPortfolio(){},cloudUser:null,cloudRecoveryMode:false,window:{scrollTo(){},HaniInvestmentCommittee:{select:ctx.selectSection}}});
 ctx.document.querySelectorAll=selector=>selector==='.view'?[portfolio,committee]:[];ctx.document.querySelector=()=>null;
@@ -86,4 +88,4 @@ assert.match(market,/class="portfolio-treemap"/);assert.match(main,/investment-o
 const idsInHtml=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);assert.equal(idsInHtml.length,new Set(idsInHtml).size);
 for(const id of ['investmentCommittee','assetMarket','marketChart','portfolioLivePreview'])assert.equal(idsInHtml.filter(x=>x===id).length,1);
 assert.match(main,/route\.split\("\/"\)\[0\]===INVESTMENT_COMMITTEE_VIEW/);
-console.log('PASS invest split: two persistent IC tabs/keyboard; deep links; four legacy paths; canonical stock route; same chart/map instances; visible stock activity; asset link; unique ids. No storage API supplied to these execution contexts.');
+console.log('PASS invest split: three persistent IC tabs/keyboard/journal mount; deep links; four legacy paths; canonical stock route; same chart/map instances; visible stock activity; asset link; unique ids. No storage API supplied to these execution contexts.');

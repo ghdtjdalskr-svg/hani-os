@@ -1,4 +1,4 @@
-import {readBranchBaseline} from './hani-regression-baseline.mjs';
+import {readReviewedReleaseBaseline as readBranchBaseline} from './hani-reviewed-release-baseline.mjs';
 import {withoutHeroRestore} from './hani-hero-restore-preservation.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -117,8 +117,8 @@ test('reading title preservation and corrected chairman display projections, wit
 test('retained EOL, all versions/cache tags, id literals, storage and canonical save handlers are preserved',()=>{
   const files=['hani-main.js','hani-study-v02984.js','hani-board.js','hani-context-remote-v1.js','hani-style-01.css','hani-style-07.css','hani-style-08.css','hani-design-system.css','hani-portfolio-preview.css','hani-board.css','hani-context-remote.css','hani-newsroom-ux-v02970.js'];
   for(const file of files){
-    const old=readBaseline(file),current=withoutHeroRestore(file,read(file)),lines=s=>s.match(/[^\r\n]*(?:\r\n|\n|\r|$)/g).filter(Boolean),by=new Map();
-    for(const line of lines(readEolBaseline(file))){const text=line.replace(/[\r\n]+$/,'');if(!by.has(text))by.set(text,new Set());by.get(text).add(line.slice(text.length))}
+    const old=withoutHeroRestore(file,readBaseline(file)),current=withoutHeroRestore(file,read(file)),lines=s=>s.match(/[^\r\n]*(?:\r\n|\n|\r|$)/g).filter(Boolean),by=new Map();
+    for(const line of lines(withoutHeroRestore(file,readEolBaseline(file)))){const text=line.replace(/[\r\n]+$/,'');if(!by.has(text))by.set(text,new Set());by.get(text).add(line.slice(text.length))}
     for(const line of lines(current)){const text=line.replace(/[\r\n]+$/,'');if(by.has(text))assert.ok(by.get(text).has(line.slice(text.length)),file+' retained EOL: '+text.slice(0,60))}
     for(const pattern of [/\b2\.9\.\d+(?:-[\w.-]+)?\b/g,/\?v=[^\s"'<>]+/g,/\b(?:commit|save|writeProtectedState|localStorage\.(?:setItem|removeItem|clear))\([^)]*\)/g])assert.deepEqual(current.match(pattern),old.match(pattern),file+' preserved version/save paths');
     const counts=s=>{const out={};for(const m of s.matchAll(/\bid\s*=\s*["']([\w-]+)["']/g))out[m[1]]=(out[m[1]]||0)+1;return out};
@@ -133,10 +133,10 @@ test('retained EOL, all versions/cache tags, id literals, storage and canonical 
   // Permit exactly this cosmetic line; preserve every other byte, including mixed EOL.
   assert.equal(vault,baselineVault.includes(oldPhotoStatus)?baselineVault.replace(oldPhotoStatus,newPhotoStatus):baselineVault);
   // newface-217 changes only Sua's preload; retain exact-byte checking for everything else.
-  const baselineHtml=withoutSimplify225('index.html',readEolBaseline('index.html'));
+  const baselineHtml=withoutSimplify225('index.html',withoutHeroRestore('index.html',readEolBaseline('index.html')));
   // HEAD may already contain the four launch connections; older fixtures do not.
   const preservedHtml=baselineHtml.includes('<script src="./hani-launch-greeting.js"></script>')?withoutLaunchGreeting(baselineHtml):baselineHtml;
-  assert.equal(withoutLaunchGreeting(withoutSimplify225('index.html',read('index.html'))),preservedHtml.replace('href="./assets/profiles/hani-profile-sua.webp"','href="./assets/profiles/hani-profile-sua-id.webp"'));
+  assert.equal(withoutLaunchGreeting(withoutSimplify225('index.html',withoutHeroRestore('index.html',read('index.html')))),preservedHtml.replace('href="./assets/profiles/hani-profile-sua.webp"','href="./assets/profiles/hani-profile-sua-id.webp"'));
 });
 
 test('write compact Node evidence after successful assertions',()=>{

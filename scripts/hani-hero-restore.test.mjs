@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import crypto from 'node:crypto';
 import vm from 'node:vm';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
@@ -23,7 +24,7 @@ test('all canonical page scenes decode as wide; all season heroes remain wide; 2
  assert.equal(ctx.resolve('university').owner,'hina');assert.match(ctx.resolve('university').sceneAlt,/히나/);
  assert.equal(ctx.resolve('reading').owner,'haru');assert.match(ctx.resolve('reading').sceneAlt,/윤슬.*하루/);
  assert.equal(ctx.resolve('movie').owner,'minji');assert.equal(ctx.resolve('movie').sceneImage,'./assets/design-system-v1/hina-cinema-canonical.webp','explicit 217 art exception');
- for(const file of JSON.parse(read('artifacts/hero-restore/new-art.json'))){assert.ok(file.bytes<=150000);assert.ok(file.file.endsWith('-226w.webp'));}
+ for(const file of JSON.parse(read('scripts/fixtures/hero-restore-new-art.json'))){const bytes=fs.readFileSync(new URL('../'+file.file,import.meta.url));assert.ok(bytes.length<=150000);assert.equal(bytes.length,file.bytes);assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),file.sha256,file.file+' released asset');assert.ok(file.file.endsWith('-226w.webp'));}
 });
 
 test('existing hero renderer updates a persistent slot, paints eyebrow/subtitle and keeps a wide fallback',()=>{

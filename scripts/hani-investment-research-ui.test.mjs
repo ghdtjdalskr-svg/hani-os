@@ -49,7 +49,7 @@ try {
     }, {finish, fixture});
     const tabs = page.locator('#investmentCommittee #icSections');
     await page.waitForFunction(() => !!document.querySelector('#investmentCommittee > .ds-main-character-banner'));
-    assert.equal(await tabs.getByRole('tab').count(), 2); assert.equal(await tabs.getByRole('tab',{name:'종목 리포트'}).getAttribute('aria-selected'), 'true');
+    assert.deepEqual(await tabs.getByRole('tab').evaluateAll(nodes=>nodes.map(n=>[n.textContent,n.getAttribute('aria-controls')])),[['종목 리포트','icResearch'],['월간 리포트','icMonthly'],['스트리트 저널','icStreetJournal']]); assert.equal(await tabs.getByRole('tab',{name:'종목 리포트'}).getAttribute('aria-selected'), 'true');
     assert.equal(await page.locator('#sidebar .nav-floor-label').count(),0,'approved v204 sidebar has no floor headers');
     assert.deepEqual(await page.locator('#sidebar .group').evaluateAll(groups=>groups.map(group=>({group:group.dataset.color,views:[...group.querySelectorAll('.group-body .nav-btn')].map(button=>button.dataset.view)}))),[
       {group:'office',views:['intake','agentReview','monthlyReport','organization','ilbo','board']},
