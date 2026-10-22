@@ -1,0 +1,459 @@
+{
+  "schemaVersion": "office-places-v1",
+  "places": [
+    {
+      "id": "coffee-1f",
+      "floor": "1f",
+      "room": "cafe",
+      "kind": "coffee",
+      "name": "카페 커피 카운터로",
+      "slots": [
+        "coffee_counter"
+      ],
+      "go": "카페 커피 카운터로 가는 중",
+      "at": [
+        "카페 커피 카운터에서 커피 주문 중",
+        "카페 커피 카운터에서 메뉴 고르는 중"
+      ],
+      "pose": "stand",
+      "stay": [
+        8,
+        14
+      ]
+    },
+    {
+      "id": "cafe-1f",
+      "floor": "1f",
+      "room": "cafe",
+      "kind": "coffee",
+      "name": "카페 좌석으로",
+      "slots": [
+        "lobby-nw",
+        "lobby-ne",
+        "lobby-sw",
+        "lobby-se"
+      ],
+      "go": "카페 좌석으로 가는 중",
+      "at": [
+        "카페 좌석에서 커피 마시는 중",
+        "카페 좌석에서 잠깐 쉬는 중"
+      ],
+      "pose": "sit",
+      "stay": [
+        8,
+        14
+      ]
+    },
+    {
+      "id": "pantry-2f",
+      "floor": "2f",
+      "room": "pantry",
+      "kind": "coffee",
+      "name": "팬트리로 커피 내리러",
+      "slots": [
+        "pantry_2f"
+      ],
+      "go": "팬트리로 커피 내리러 가는 중",
+      "at": [
+        "팬트리에서 커피 내리는 중",
+        "팬트리에서 간식 고르는 중"
+      ],
+      "pose": "stand",
+      "stay": [
+        8,
+        14
+      ]
+    },
+    {
+      "id": "pantry-seats-2f",
+      "floor": "2f",
+      "room": "pantry",
+      "kind": "coffee",
+      "name": "팬트리 라운지로",
+      "slots": [
+        "finance-lounge-a",
+        "finance-lounge-b"
+      ],
+      "go": "팬트리 라운지로 가는 중",
+      "at": [
+        "팬트리 라운지에서 커피 마시는 중"
+      ],
+      "pose": "sit",
+      "stay": [
+        8,
+        14
+      ]
+    },
+    {
+      "id": "sofa-3f",
+      "floor": "3f",
+      "room": "platform",
+      "kind": "sofa",
+      "name": "개발실 소파로",
+      "slots": [
+        "dev-lounge-a",
+        "dev-lounge-b"
+      ],
+      "go": "개발실 소파로 가는 중",
+      "at": [
+        "개발실 소파에서 쉬는 중",
+        "개발실 소파에서 수다 중"
+      ],
+      "pose": "sit",
+      "stay": [
+        8,
+        14
+      ]
+    },
+    {
+      "id": "sofa-4f",
+      "floor": "4f",
+      "room": "mir_nook",
+      "kind": "sofa",
+      "name": "임원 라운지 소파로",
+      "slots": [
+        "lounge-center",
+        "lounge-east",
+        "hani-side",
+        "lounge-armchair"
+      ],
+      "go": "임원 라운지 소파로 가는 중",
+      "at": [
+        "임원 라운지 소파에서 쉬는 중",
+        "임원 라운지 소파에서 생각 정리 중"
+      ],
+      "pose": "sit",
+      "stay": [
+        8,
+        14
+      ]
+    },
+    {
+      "id": "board-3f",
+      "floor": "3f",
+      "room": "standup",
+      "kind": "board",
+      "name": "개발실 화이트보드로",
+      "slots": [
+        "standup_room"
+      ],
+      "go": "개발실 화이트보드로 가는 중",
+      "at": [
+        "개발실 화이트보드에서 아이디어 정리 중"
+      ],
+      "pose": "stand",
+      "stay": [
+        8,
+        14
+      ]
+    },
+    {
+      "id": "server-3f",
+      "floor": "3f",
+      "room": "server",
+      "kind": "server",
+      "name": "서버 콘솔로",
+      "slots": [
+        "server-console"
+      ],
+      "go": "서버 콘솔로 가는 중",
+      "at": [
+        "서버 콘솔에서 실행 상태 살피는 중"
+      ],
+      "pose": "stand",
+      "stay": [
+        8,
+        14
+      ]
+    },
+    {
+      "id": "meeting-1f",
+      "floor": "1f",
+      "room": "consult",
+      "kind": "meeting",
+      "name": "상담실로",
+      "slots": [
+        "client_booth_slot_1",
+        "client_booth_slot_2",
+        "client_booth_slot_3",
+        "client_booth_slot_4"
+      ],
+      "go": "상담실로 가는 중",
+      "at": [
+        "상담실에서 메모 정리 중"
+      ],
+      "pose": "sit",
+      "stay": [
+        8,
+        14
+      ]
+    },
+    {
+      "id": "meeting-2f",
+      "floor": "2f",
+      "room": "team_meeting",
+      "kind": "meeting",
+      "name": "협업 회의실로",
+      "slots": [
+        "meeting-nw",
+        "meeting-ne",
+        "meeting-sw",
+        "meeting-s",
+        "meeting-se",
+        "meeting-e"
+      ],
+      "go": "협업 회의실로 가는 중",
+      "at": [
+        "협업 회의실에서 메모 정리 중"
+      ],
+      "pose": "sit",
+      "stay": [
+        8,
+        14
+      ]
+    },
+    {
+      "id": "meeting-3f",
+      "floor": "3f",
+      "room": "release",
+      "kind": "meeting",
+      "name": "릴리스 회의실로",
+      "slots": [
+        "dev-meeting-nw",
+        "dev-meeting-n",
+        "dev-meeting-ne",
+        "dev-meeting-sw",
+        "dev-meeting-s",
+        "dev-meeting-se"
+      ],
+      "go": "릴리스 회의실로 가는 중",
+      "at": [
+        "릴리스 회의실에서 메모 정리 중"
+      ],
+      "pose": "sit",
+      "stay": [
+        8,
+        14
+      ]
+    },
+    {
+      "id": "meeting-4f",
+      "floor": "4f",
+      "room": "exec",
+      "kind": "meeting",
+      "name": "임원 회의실로",
+      "slots": [
+        "board-n",
+        "board-ne",
+        "board-sw",
+        "board-s",
+        "board-se",
+        "board-e"
+      ],
+      "go": "임원 회의실로 가는 중",
+      "at": [
+        "임원 회의실에서 메모 정리 중"
+      ],
+      "pose": "sit",
+      "stay": [
+        8,
+        14
+      ]
+    },
+    {
+      "id": "lobby-board",
+      "floor": "1f",
+      "room": "lobby",
+      "kind": "lobby",
+      "name": "로비 게시판으로",
+      "slots": [
+        "ilbo_board"
+      ],
+      "go": "로비 게시판으로 가는 중",
+      "at": [
+        "로비 게시판에서 소식 읽는 중"
+      ],
+      "pose": "stand",
+      "stay": [
+        8,
+        14
+      ]
+    },
+    {
+      "id": "lobby-parcel",
+      "floor": "1f",
+      "room": "lobby",
+      "kind": "lobby",
+      "name": "로비 택배함으로",
+      "slots": [
+        "parcel_box"
+      ],
+      "go": "로비 택배함으로 가는 중",
+      "at": [
+        "로비 택배함에서 택배 확인 중"
+      ],
+      "pose": "stand",
+      "stay": [
+        8,
+        14
+      ]
+    },
+    {
+      "id": "lobby-reception",
+      "floor": "1f",
+      "room": "lobby",
+      "kind": "lobby",
+      "name": "로비 안내대로",
+      "slots": [
+        "reception"
+      ],
+      "go": "로비 안내대로 가는 중",
+      "at": [
+        "로비 안내대에서 방문 접수 중"
+      ],
+      "pose": "stand",
+      "stay": [
+        8,
+        14
+      ]
+    },
+    {
+      "id": "garden-5f",
+      "floor": "5f",
+      "room": "garden",
+      "kind": "garden",
+      "name": "옥상 정원으로",
+      "slots": [
+        "rooftop_garden"
+      ],
+      "go": "옥상 정원으로 가는 중",
+      "at": [
+        "옥상 정원에서 화분 살피는 중"
+      ],
+      "pose": "stand",
+      "stay": [
+        8,
+        14
+      ]
+    },
+    {
+      "id": "terrace-5f",
+      "floor": "5f",
+      "room": "terrace",
+      "kind": "meeting",
+      "name": "옥상 테라스로",
+      "slots": [
+        "rooftop_table_slot_1",
+        "rooftop_table_slot_2",
+        "rooftop_table_slot_3",
+        "rooftop_table_slot_4",
+        "rooftop_table_slot_5",
+        "rooftop_table_slot_6"
+      ],
+      "go": "옥상 테라스로 가는 중",
+      "at": [
+        "옥상 테라스에서 잠깐 쉬는 중"
+      ],
+      "pose": "sit",
+      "stay": [
+        8,
+        14
+      ]
+    },
+    {
+      "id": "window-1f",
+      "floor": "1f",
+      "room": "cafe",
+      "kind": "window",
+      "name": "카페 창가로",
+      "slots": [
+        "window_1f_1"
+      ],
+      "go": "카페 창가로 가는 중",
+      "at": [
+        "카페 창가에서 창밖 구경 중"
+      ],
+      "pose": "stand",
+      "stay": [
+        8,
+        14
+      ]
+    },
+    {
+      "id": "window-2f",
+      "floor": "2f",
+      "room": "pantry",
+      "kind": "window",
+      "name": "팬트리 창가로",
+      "slots": [
+        "window_2f_1"
+      ],
+      "go": "팬트리 창가로 가는 중",
+      "at": [
+        "팬트리 창가에서 창밖 구경 중"
+      ],
+      "pose": "stand",
+      "stay": [
+        8,
+        14
+      ]
+    },
+    {
+      "id": "window-3f",
+      "floor": "3f",
+      "room": "platform",
+      "kind": "window",
+      "name": "개발실 창가로",
+      "slots": [
+        "window_3f_1"
+      ],
+      "go": "개발실 창가로 가는 중",
+      "at": [
+        "개발실 창가에서 창밖 구경 중"
+      ],
+      "pose": "stand",
+      "stay": [
+        8,
+        14
+      ]
+    },
+    {
+      "id": "window-4f",
+      "floor": "4f",
+      "room": null,
+      "kind": "window",
+      "name": "복도 끝 창가로",
+      "slots": [
+        "window_4f_1"
+      ],
+      "go": "복도 끝 창가로 가는 중",
+      "at": [
+        "복도 끝 창가에서 창밖 구경 중"
+      ],
+      "pose": "stand",
+      "stay": [
+        8,
+        14
+      ]
+    },
+    {
+      "id": "window-5f",
+      "floor": "5f",
+      "room": null,
+      "kind": "window",
+      "name": "옥상 전망 난간으로",
+      "slots": [
+        "window_5f_1"
+      ],
+      "go": "옥상 전망 난간으로 가는 중",
+      "at": [
+        "옥상 전망 난간에서 풍경 보는 중"
+      ],
+      "pose": "stand",
+      "stay": [
+        8,
+        14
+      ]
+    }
+  ]
+}

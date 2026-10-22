@@ -12,9 +12,9 @@ import {fixture} from './hani-building-206-engine.test.mjs';
 const root=path.resolve(fileURLToPath(new URL('../',import.meta.url))),read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const source=read('hani-office-live.js');
 const ctx=vm.createContext({HaniOfficeV2Assets:assets,window:{},document:{getElementById:()=>null}});vm.runInContext(source,ctx);const api=ctx.HaniBuildingScene;
-test('frozen 326-anchor canon, active registered staff only, exact home floor/seat and posture',()=>{
-  assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(root,'data/hani-building/spatial-contract.json'))).digest('hex'),'d02426b44c49db169efebd782e110226fd1d719d016bc5912516753f3df8841d');
-  assert.equal(api.canon.anchors.length,326);assert.equal(api.floors.length,5);
+test('frozen 331-anchor canon, active registered staff only, exact home floor/seat and posture',()=>{
+  assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(root,'data/hani-building/spatial-contract.json'))).digest('hex'),'52425f36c23eb8291ce47363372308b9b8d2dbf7c553759b464958d200a4b0ea');
+  assert.equal(api.canon.anchors.length,331);assert.equal(api.floors.length,5);
   assert.deepEqual([...api.floors.flatMap(f=>f.residents)].sort(),assets.canon.people.filter(p=>p.status==='active'&&p.registration==='registered').map(p=>p.id).sort());
   for(const person of assets.canon.people.filter(p=>p.status==='active'&&p.registration==='registered')){
     const anchor=api.anchors.get(person.homeAnchor),seat=api.homeSeat(person.id);assert.equal(seat.anchor,anchor.id);assert.equal(seat.x,assets.art.anchors[anchor.id].x);assert.equal(seat.y,assets.art.anchors[anchor.id].y);assert.equal(seat.id,anchor.rendererSeat.id);assert.equal(seat.zone,assets.art.anchors[anchor.id].zone||anchor.rendererSeat.zone);
@@ -143,7 +143,7 @@ test('v2 sprite metadata is real, all art exists, no persistence/cloud calls add
   for(const f of api.floors)for(const p of [f.background,f.production,f.fallback])assert.ok(fs.existsSync(path.join(root,p)));
   assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|\.upsert\(|\.insert\(|Math\.random/);
   assert.doesNotMatch(source,/building-v2|foreground-v2/);
-  assert.equal(Object.keys(assets.art.anchors).length,326);
+  assert.equal(Object.keys(assets.art.anchors).length,331);
   for(const anchor of assets.canon.anchors){const p=assets.art.anchors[anchor.id];assert.ok(Number.isFinite(p.x)&&Number.isFinite(p.y)&&p.x>0&&p.x<100&&p.y>0&&p.y<100,anchor.id);if(anchor.rendererSeat)assert.ok(p.furniture)}
   for(const floor of assets.canon.floors)assert.deepEqual(assets.art.floors[floor.id].plates.filter(p=>!p.detail).map(p=>p.room),floor.rooms.map(r=>r.id));
 });

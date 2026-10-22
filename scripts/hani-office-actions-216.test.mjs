@@ -20,7 +20,7 @@ test('approved catalog projects exactly 98 core actions, 37 disabled, original f
   assert.equal(catalog.frequencyFamilies.length,77);
   for(const f of table.families){const original=catalog.frequencyFamilies.find(x=>x.id===f.id);assert.deepEqual(f.memberActionIds,original.memberActionIds);assert.deepEqual(f.limits,original.limits);}
   for(const a of table.actions)assert.ok(read('docs/design/office-actions-v1.3.md').includes('`'+a.id+'`'));
-  assert.equal(crypto.createHash('sha256').update(fs.readFileSync(new URL('../data/hani-building/spatial-contract.json',import.meta.url))).digest('hex'),'d02426b44c49db169efebd782e110226fd1d719d016bc5912516753f3df8841d');
+  assert.equal(crypto.createHash('sha256').update(fs.readFileSync(new URL('../data/hani-building/spatial-contract.json',import.meta.url))).digest('hex'),'52425f36c23eb8291ce47363372308b9b8d2dbf7c553759b464958d200a4b0ea');
   assert.match(source,/fetch\('\.\/assets\/data\/office-actions-216\.json'\)/);
   assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|Math\.random/);
 });
@@ -101,7 +101,10 @@ test('random access snapshots skip missed events; summoned and cancelled events 
   const summoned=scheduler.snapshot(mid,{summoned:[event.people[0].id]});assert.ok(summoned.events.every(e=>e.id!==event.id));assert.ok(summoned.entries.every(p=>p.id!==event.people[0].id));
   const cancelled=scheduler.snapshot(mid,{cancelled:new Set([event.id])});assert.ok(cancelled.events.every(e=>e.id!==event.id));
   const moving=at(day,event.people.find(p=>p.out.length).out[0].start+.01),staticA=scheduler.snapshot(moving,{reducedMotion:true}),staticB=scheduler.snapshot(at(day,event.performStart+1),{reducedMotion:true});
-  for(const p of event.people){const a=staticA.entries.find(e=>e.id===p.id),b=staticB.entries.find(e=>e.id===p.id);assert.equal(a.walking,false);assert.equal(a.position,null);assert.equal(a.seat.anchor,b.seat.anchor);assert.equal(a.line,b.line);assert.ok(!a.pose.startsWith('walk'));}
+  for(const p of event.people){const a=staticA.entries.find(e=>e.id===p.id),b=staticB.entries.find(e=>e.id===p.id);assert.equal(a.walking,false);assert.equal(a.position,null);assert.equal(b.seat.anchor,p.seat.anchor);assert.ok(!a.pose.startsWith('walk'));
+    if(p.out.length){assert.equal(a.seat.anchor,p.home.anchorId,'reduced motion stays home until the reserved arrival');assert.equal(a.state,'GOING');assert.match(a.line,/가는 중$/)}
+    else{assert.equal(a.seat.anchor,b.seat.anchor);assert.equal(a.line,b.line)}
+  }
 });
 
 test('actual renderer uses persistent actor/prop/bubble slots, tap/keyboard/profile, visible-only motion and case priority',async()=>{

@@ -91,7 +91,7 @@ test('actual metadata bootstrap tolerates missing/malformed v3 and keeps the v2 
    }
    const file=path.join(root,url);return {ok:fs.existsSync(file),json:async()=>JSON.parse(fs.readFileSync(file))};
   }});
-  await vm.runInContext(source,c);assert.ok(c.HaniBuildingScene);assert.equal(c.HaniBuildingScene.canon.anchors.length,326);
+  await vm.runInContext(source,c);assert.ok(c.HaniBuildingScene);assert.equal(c.HaniBuildingScene.canon.anchors.length,331);
   assert.equal(calls.filter(u=>u.endsWith('manifest-v3.json')).length,1);
  }
  assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|\.setItem\(|\.removeItem\(|\.clear\(/);

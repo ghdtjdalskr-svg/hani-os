@@ -10,7 +10,7 @@
         try{const response=await fetch(url);if(!response.ok)throw Error('office metadata');return await response.json()}
         catch(error){if(index===3)return null;throw error}
       }));
-      if(canon.contractVersion==='spatial-216-v1'&&canon.anchors.length===326&&art.contractVersion===canon.contractVersion&&canon.anchors.every(a=>art.anchors[a.id]))assets={canon,sprites,art,spritesV3:spritesV3?.scale===3&&Array.isArray(spritesV3.entries)?spritesV3:null};
+      if(canon.contractVersion==='spatial-216-v1'&&canon.anchors.length>=326&&art.contractVersion===canon.contractVersion&&canon.anchors.every(a=>art.anchors[a.id]))assets={canon,sprites,art,spritesV3:spritesV3?.scale===3&&Array.isArray(spritesV3.entries)?spritesV3:null};
     }catch(_){/* Production art and seats remain available without metadata. */}
   }
   function validActions(table,version){
@@ -21,6 +21,9 @@
     try{const response=await fetch('./assets/data/office-actions-221.json');if(response.ok){const table=await response.json();if(validActions(table,'office-actions-221-v1'))actionTable=table}}catch(_){/* Try the released catalog next. */}
     if(!actionTable)try{const response=await fetch('./assets/data/office-actions-216.json');if(response.ok){const table=await response.json();if(validActions(table,'office-actions-216-v1'))actionTable=table}}catch(_){/* Read-only base-work fallback. */}
   }
+  let placeTable=assets?.places||globalThis.HaniOfficePlaces||null;
+  if(!placeTable&&typeof fetch==='function')try{const r=await fetch('./data/hani-building/office-places.json');if(r.ok)placeTable=await r.json()}catch(_){/* No places means no optional excursions. */}
+  const places=Object.freeze(placeTable?.schemaVersion==='office-places-v1'?placeTable.places:[]);
   // Tap speech shares the scene clock (KST). Its catalog and cursors live in memory.
   function tapBucket(now=new Date()){
     const hour=new Date(now.getTime()+32400000).getUTCHours();
@@ -205,7 +208,7 @@
     const isEvening=seconds=>seconds>=18*3600||seconds<3600;
     const presentAt=(id,seconds)=>!isLate(seconds)||lateWorkers.has(id)||id==='seongmin';
     function homeAt(person,seconds){
-      if(nightCatalog&&(isLate(seconds)||isEvening(seconds))&&['yuna','minji'].includes(person.id))return {floor:'1f',anchorId:person.id==='yuna'?'lobby-nw':'lobby-ne'};
+      if((isLate(seconds)||isEvening(seconds))&&['yuna','minji'].includes(person.id))return {floor:'1f',anchorId:person.id==='yuna'?'lobby-nw':'lobby-ne'};
       return person.home;
     }
     function targets(action,subject,day,seconds=9*3600){
@@ -288,7 +291,7 @@
         const previousDay=new Date(Date.parse(day+'T00:00:00Z')-86400000).toISOString().slice(0,10);
         for(const o of opportunitiesFor(previousDay,allowed,false)){
           const chosen=targets(o.action,o.subject,previousDay,o.start);if(!chosen.length||chosen.some(t=>!t))continue;
-          const travel=chosen.reduce((sum,t)=>sum+[t.outbound,t.inbound].reduce((total,path)=>total+path.slice(1).reduce((seconds,to,i)=>{const from=path[i];return seconds+Math.max(.1,from.floor===to.floor?Math.hypot(to.x-from.x,to.y-from.y)/canon.movement.speedPxPerSecond:1.6)},0),0),0);
+          const travel=chosen.reduce((sum,t)=>sum+[t.outbound,t.inbound].reduce((total,path)=>total+path.slice(1).reduce((seconds,to,i)=>{const from=path[i];return seconds+travelSeconds(from,to)},0),0),0);
           const end=o.start+o.family.durationCeilingSeconds+travel-86400,counter=o.family.id+'|'+(o.subject||'scene');
           lastFamily.set(counter,Math.max(lastFamily.get(counter)??-Infinity,o.start-86400));
           for(const t of chosen){
@@ -328,7 +331,7 @@
         let cursor=start;const people=chosen.map(t=>({...t}));
         function travel(t,p,phase){
           const legs=[];for(let i=1;i<p.length;i++){
-            const from=p[i-1],to=p[i],seconds=Math.max(.1,from.floor===to.floor?Math.hypot(to.x-from.x,to.y-from.y)/canon.movement.speedPxPerSecond:1.6);
+            const from=p[i-1],to=p[i],seconds=travelSeconds(from,to);if(!seconds)continue;
             legs.push({from:from.id,to:to.id,start:cursor,end:cursor+seconds});cursor+=seconds;
           }t[phase]=legs;
         }
@@ -340,7 +343,8 @@
         const selfies=table.rules.hinaBalance.selfieActionIds.includes(action.id);
         if(selfies&&teacherCompletedAt.filter(t=>t<=start).length<=events.filter(e=>table.rules.hinaBalance.selfieActionIds.includes(e.actionId)).length)continue;
         const resources=[...new Set(people.flatMap(t=>[...t.outbound,...t.inbound].map(a=>a.id)))];
-        events.push({id:o.base+'|'+o.n,actionId:action.id,familyId:family.id,layer:action.layer,start,end,performStart,performEnd,duration,personalNonWork:action.personalNonWork,people,resources,floors:[...new Set(people.map(t=>anchors.get(t.seat.anchor).floor))]});
+        const event={id:o.base+'|'+o.n,actionId:action.id,familyId:family.id,layer:action.layer,start,end,performStart,performEnd,duration,personalNonWork:action.personalNonWork,people,resources,floors:[...new Set(people.map(t=>anchors.get(t.seat.anchor).floor))]};
+        if(!reserve(event,events,allowed))continue;
         counts.set(counter,(counts.get(counter)||0)+1);lastFamily.set(counter,start);
         if(group)groups++;
         if(table.rules.hinaBalance.teacherActionIds.includes(action.id))teacherCompletedAt.push(performEnd);
@@ -353,14 +357,13 @@
     // time-of-day line, sometimes standing, sometimes a stroll to another room through its door).
     // Each person gets at most one bit per cycle; everyone else is plain base work (dot only).
     // Pure function of the local clock; scheduled events always win.
-    const BEAT=2.4,ACTIVE_BEATS=4,MIN_CYCLE=12,STROLL_STAY=8,STROLL_MAX=30,STROLL_TYPES=new Set(['seat','interaction','group','object']);
+    const BEAT=2.4,ACTIVE_BEATS=4,MIN_CYCLE=11;
     const idlePools={
-      day:[['키보드 두드리는 중'],['보고서 다듬는 중'],['메일함 정리 중'],['몰래 인스타 순찰 중'],['간식 서랍 점검 중'],['고양이 영상 1분만…'],['기지개 켜는 중','stand'],['옆자리랑 수다 중'],['커피 리필 고민 중','stand'],['창밖 멍때리는 중'],['스트레칭 중','stand'],['화이트보드에 낙서 중','stand']],
+      day:[['키보드 두드리는 중'],['보고서 다듬는 중'],['메일함 정리 중'],['몰래 인스타 순찰 중'],['간식 서랍 점검 중'],['고양이 영상 1분만…'],['기지개 켜는 중','stand'],['옆자리랑 수다 중'],['커피 리필 고민 중','stand'],['생각 정리 중'],['스트레칭 중','stand'],['메모에 낙서 중']],
       evening:[['가방 챙기는 중','stand'],['오늘 할 일 체크 중'],['저녁 메뉴 검색 중'],['간식 서랍 점검 중'],['몰래 인스타 순찰 중'],['퇴근길 날씨 확인 중'],['옆자리랑 수다 중'],['고양이 영상 1분만…'],['기지개 켜는 중','stand'],['퇴근 시간 카운트다운 중'],['스트레칭 중','stand']],
-      late:[['야식 고민 중'],['커피 한 잔 더…','stand'],['졸음 참는 중'],['코드 한 줄만 더'],['몰래 인스타 순찰 중'],['기지개 켜는 중','stand'],['플레이리스트 고르는 중'],['간식 서랍 점검 중']],
+      late:[['야식 고민 중'],['한 줄만 더 고민 중','stand'],['졸음 참는 중'],['코드 한 줄만 더'],['몰래 인스타 순찰 중'],['기지개 켜는 중','stand'],['플레이리스트 고르는 중'],['간식 서랍 점검 중']],
       lounge:[['라운지에서 간식 나누는 중'],['소파에서 수다 중'],['라운지에서 몰래 인스타 순찰 중'],['야식 메뉴 투표 중'],['라운지에서 야근 이야기 중']],
-      loungeLate:[['라운지에서 야식 고민 중'],['소파에서 꾸벅꾸벅'],['라운지에서 조용히 수다 중'],['라운지에서 별 보는 중']],
-      stroll:['창밖 구경 중','화분 구경 중','동료 자리 기웃기웃','잠깐 바람 쐬는 중','간식 찾으러 왔다가 두리번','커피 내리러 왔어요']
+      loungeLate:[['라운지에서 야식 고민 중'],['소파에서 꾸벅꾸벅'],['라운지에서 조용히 수다 중'],['라운지에서 별 보는 중']]
     };
     function idleRoster(day,floor,seconds){return persons.filter(p=>p.id!=='mir'&&p.id!=='seongmin'&&presentAt(p.id,seconds)&&homeAt(p,seconds).floor===floor).map(p=>p.id).sort()}
     const pickCache=new Map();
@@ -370,7 +373,6 @@
       const order=[...roster].sort((a,b)=>seed(day+'|cycle|'+floor+'|'+a)-seed(day+'|cycle|'+floor+'|'+b)),len=Math.max(MIN_CYCLE,order.length),pos=((k%len)+len)%len;
       return order.find((_,i)=>Math.floor(i*len/order.length)===pos)??null;
     }
-    const strollStart=(day,floor,j)=>beatPick(day,floor,j)!==null&&seed(day+'|stroll|'+floor+'|'+j)%3===0;
     // Consecutive beats walk a per-floor shuffled pool, so concurrent bits never repeat a line.
     function poolLine(day,floor,kind,pool,j){const order=pool.map((_,i)=>i).sort((a,b)=>seed(day+floor+kind+a)-seed(day+floor+kind+b));return pool[order[((j%pool.length)+pool.length)%pool.length]]}
     function idleFlavour(day,id,floor,seconds,lounge,late,events=[]){
@@ -383,73 +385,139 @@
       }
       return null;
     }
-    const strollTargets=new Map();
-    function strollPlan(id,home){
-      const key=id+'|'+home.anchorId;if(strollTargets.has(key))return strollTargets.get(key);
-      const legs=p=>{const out=[];let at=0;for(let i=1;i<p.length;i++){const from=p[i-1],to=p[i],s=Math.hypot(to.x-from.x,to.y-from.y)/canon.movement.speedPxPerSecond;out.push({from:from.id,to:to.id,start:at,end:at+Math.max(.1,s)});at+=Math.max(.1,s)}return out};
-      const list=[];
-      for(const a of anchors.values()){
-        if(a.id===home.anchorId||a.floor!==home.floor||!STROLL_TYPES.has(a.type)||a.room===anchors.get(home.anchorId)?.room||!slot(a.id,'stand')||a.rendererSeat?.owner&&a.rendererSeat.owner!==id||a.occupant&&a.occupant!==id)continue;
-        const out=path(home.anchorId,a.id),back=path(a.id,home.anchorId);
-        // Strolls visit another room through its door, never a corridor point.
-        if(out.length<2||back.length<2||[...out,...back].some(n=>n.floor!==home.floor)||!out.some(n=>n.type==='door'))continue;
-        const o=legs(out),b=legs(back),total=o.at(-1).end+STROLL_STAY+b.at(-1).end;
-        if(total<=STROLL_MAX)list.push({target:a.id,out:o,back:b,total,resources:[...new Set([...out,...back].map(n=>n.id))]});
+    // All trajectories use the art's foot coordinates and a fixed screen speed.
+    const SCREEN_SPEED=180,BLOCK=600,blocks=new Map();
+    const pixels=p=>[p[0]*(art.width||1672)/100,p[1]*(art.height||941)/100];
+    function travelSeconds(a,b){if(a.floor!==b.floor)return 1.6;const p=pixels(visualPoint(a)),q=pixels(visualPoint(b));return Math.hypot(p[0]-q[0],p[1]-q[1])/SCREEN_SPEED}
+    function stateAt(event,t,seconds,reduced=false){
+      const home=slot(t.home.anchorId,t.id==='mir'?'stand':'sit');
+      const outEnd=t.out.at(-1)?.end??event.start,backStart=t.back[0]?.start??event.end;
+      const returned=t.back.length&&seconds>=t.back.at(-1).end;
+      const state=returned?'AT_HOME':seconds<outEnd?'GOING':seconds>=backStart?'RETURNING':t.seat.anchor===t.home.anchorId?'AT_HOME':'AT_PLACE';
+      const leg=[...t.out,...t.back].find(l=>l.start<=seconds&&seconds<l.end);
+      if(leg&&!reduced){
+        const a=anchors.get(leg.from),b=anchors.get(leg.to),pa=visualPoint(a),pb=visualPoint(b),ratio=(seconds-leg.start)/(leg.end-leg.start);
+        return {state,seat:slot(a.id,'stand'),floor:a.floor,walking:a.floor===b.floor,waiting:a.floor!==b.floor,position:a.floor===b.floor?[pa[0]+(pb[0]-pa[0])*ratio,pa[1]+(pb[1]-pa[1])*ratio]:pa};
       }
-      strollTargets.set(key,list);return list;
+      const at=seconds>=outEnd&&seconds<backStart,seat=at?t.seat:home;
+      return {state,seat,floor:anchors.get(seat.anchor).floor,walking:false,position:null};
     }
-    function idleStroll(day,id,floor,seconds,home,events){
-      const k=Math.floor(seconds/BEAT);
-      for(let j=k;j>=k-Math.ceil(STROLL_MAX/BEAT);j--){
-        if(beatPick(day,floor,j)!==id||!strollStart(day,floor,j))continue;
-        // One stroller per floor at a time, so doors and corridors never crowd.
-        let busy=false;for(let i=j-1;i>=j-Math.ceil(STROLL_MAX/BEAT);i--)if(strollStart(day,floor,i)){busy=true;break}if(busy)continue;
-        const options=strollPlan(id,home);if(!options.length)return null;
-        const t0=j*BEAT,s=options[seed(day+'|'+id+'|stroll|'+j)%options.length],local=seconds-t0;if(local>=s.total)continue;
-        if(events.some(e=>e.start<t0+s.total&&t0<e.end&&(e.people.some(t=>t.id===id)||e.resources.some(r=>s.resources.includes(r)))))return null;
-        const backStart=s.total-s.back.at(-1).end,leg=local<backStart?s.out.find(l=>l.start<=local&&local<l.end):s.back.map(l=>({...l,start:l.start+backStart,end:l.end+backStart})).find(l=>l.start<=local&&local<l.end);
-        const spotLine=poolLine(day,floor,'stroll',idlePools.stroll,j);
-        if(!leg)return {seat:slot(s.target,'stand'),walking:false,position:null,line:spotLine};
-        const a=anchors.get(leg.from),b=anchors.get(leg.to),progress=(local-leg.start)/(leg.end-leg.start),pa=visualPoint(a),pb=visualPoint(b);
-        return {seat:slot(a.id,'stand'),walking:true,position:[pa[0]+(pb[0]-pa[0])*progress,pa[1]+(pb[1]-pa[1])*progress],line:local<backStart?'잠깐 자리 비움 · '+spotLine:'자리로 돌아가는 중'};
+    function positionAt(id,seconds,ledger){
+      const e=ledger.find(e=>e.start<=seconds&&seconds<e.end&&e.people.some(t=>t.id===id));
+      if(e)return stateAt(e,e.people.find(t=>t.id===id),seconds);
+      const p=persons.find(p=>p.id===id);if(!p||!presentAt(id,seconds))return null;
+      const h=homeAt(p,seconds),seat=slot(h.anchorId,id==='mir'?'stand':'sit');return {seat,floor:h.floor,walking:false,position:null};
+    }
+    function gap(p,q){const a=pixels(p.position||[p.seat.x,p.seat.y]),b=pixels(q.position||[q.seat.x,q.seat.y]);return Math.hypot(a[0]-b[0],a[1]-b[1])}
+    function reserve(candidate,ledger,allowed){
+      const ids=new Set(candidate.people.map(t=>t.id));
+      if(ledger.some(e=>overlap(e,candidate)&&(e.people.some(t=>ids.has(t.id))||e.resources.some(r=>candidate.resources.includes(r)))))return false;
+      // Private homes remain owned even while empty; night lounge homes are also protected.
+      if(candidate.people.some(t=>persons.some(p=>p.id!==t.id&&(p.home.anchorId===t.seat.anchor||homeAt(p,candidate.start).anchorId===t.seat.anchor||homeAt(p,candidate.end-.001).anchorId===t.seat.anchor))))return false;
+      if(candidate.people.some(t=>!t.visitor&&(!presentAt(t.id,candidate.end-.001)||homeAt(persons.find(p=>p.id===t.id),candidate.end-.001).anchorId!==t.home.anchorId)))return false;
+      const homes=allowed.flatMap(other=>[...new Set([other.home.anchorId,homeAt(other,candidate.start).anchorId,homeAt(other,candidate.end-.001).anchorId])].map(id=>({owner:other.id,anchor:anchors.get(id),point:pixels(visualPoint(anchors.get(id)))})));
+      for(const t of candidate.people){const a=anchors.get(t.seat.anchor),p=pixels([t.seat.x,t.seat.y]);
+        if(homes.some(h=>h.owner!==t.id&&h.anchor.floor===a.floor&&Math.hypot(p[0]-h.point[0],p[1]-h.point[1])<20.01))return false;
       }
-      return null;
-    }
-    // Visitors: at most one guest, only in the public 1F lobby, café and consult room
-    // (spatial-216 access rule). Each 60s window deterministically has one guest or none,
-    // enters and leaves by the arrival gate, and yields to any scheduled event's route.
-    const VISIT_WINDOW=60,visitorKinds=[
-      {kind:'client',sprite:'visitor-client',name:'방문 고객',hours:[[10,17]],stops:[['reception',5,'방문 접수 중'],['client_booth_slot_4',28,'상담 받는 중','sitting']]},
-      {kind:'courier',sprite:'visitor-courier',name:'택배 기사',hours:[[9,18]],stops:[['parcel_box',6,'택배 두고 갈게요']]},
-      {kind:'rider',sprite:'visitor-rider',name:'배달 기사',hours:[[11.5,13.5],[17.5,20]],stops:[['reception',6,'배달 왔습니다!']]},
-      {kind:'candidate',sprite:'visitor-candidate',name:'면접 지원자',hours:[[10,16]],weekdayOnly:true,stops:[['reception',5,'면접 보러 왔어요'],['client_booth_slot_2',24,'면접 대기 중… 두근','sitting']]},
-      {kind:'generic',sprite:'visitor-generic',name:'방문객',hours:[[9,20]],stops:[['coffee_counter',7,'커피 주문 중'],['lobby-sw',16,'커피 마시는 중','sitting']]}
-    ],visitPlans=new Map();
-    function visitPlan(v){
-      if(visitPlans.has(v.kind))return visitPlans.get(v.kind);
-      const ids=['arrival_gate',...v.stops.map(s=>s[0]),'arrival_gate'],legs=[],resources=new Set();let at=0,ok=true;
-      for(let i=1;i<ids.length&&ok;i++){
-        const p=path(ids[i-1],ids[i]);if(p.length<2||p.some(n=>n.floor!=='1f')){ok=false;break}
-        const line=i===1?'HANI 본사 방문 중':i===ids.length-1?'안녕히 계세요~':'안내받아 이동 중';
-        for(let q=1;q<p.length;q++){const s=Math.max(.1,Math.hypot(p[q].x-p[q-1].x,p[q].y-p[q-1].y)/canon.movement.speedPxPerSecond);legs.push({from:p[q-1].id,to:p[q].id,start:at,end:at+s,line});at+=s;resources.add(p[q-1].id);resources.add(p[q].id)}
-        if(i<ids.length-1){const [anchor,stay,stopLine,pose]=v.stops[i-1];if(!slot(anchor,pose==='sitting'?'sit':'stand')){ok=false;break}legs.push({stop:anchor,start:at,end:at+stay,line:stopLine,pose:pose==='sitting'?'sit':'stand'});at+=stay}
+      // Protect even temporarily empty homes. Cancelling an event or reducing
+      // motion can show its owner at home instead of on the reserved trajectory.
+      for(const t of candidate.people)for(const l of [...t.out,...t.back]){
+        const a=anchors.get(l.from),b=anchors.get(l.to);if(a.floor!==b.floor)continue;
+        const pa=pixels(visualPoint(a)),pb=pixels(visualPoint(b)),dx=pb[0]-pa[0],dy=pb[1]-pa[1],length=dx*dx+dy*dy;
+        for(const h of homes){if(h.owner===t.id||h.anchor.floor!==a.floor)continue;const q=h.point;
+            const ratio=length?Math.max(0,Math.min(1,((q[0]-pa[0])*dx+(q[1]-pa[1])*dy)/length)):0;
+            if(Math.hypot(pa[0]+ratio*dx-q[0],pa[1]+ratio*dy-q[1])<24.01)return false;
+        }
       }
-      const result=ok?{kind:v.kind,sprite:v.sprite,name:v.name,legs,total:at,resources:[...resources]}:null;visitPlans.set(v.kind,result);return result;
+      const nearby=ledger.filter(e=>overlap(e,candidate));
+      // Most catalog rows are stationary desk microexpressions. With no moving
+      // reservation in this interval their pairwise distances are constant.
+      if(candidate.people.every(t=>!t.out.length&&!t.back.length)&&nearby.every(e=>e.people.every(t=>!t.out.length&&!t.back.length))){
+        for(const t of candidate.people){const p=stateAt(candidate,t,candidate.start);
+          for(const other of allowed){if(other.id===t.id)continue;const own=candidate.people.find(q=>q.id===other.id);
+            for(const seconds of [candidate.start,candidate.end-.001]){const q=own?stateAt(candidate,own,seconds):positionAt(other.id,seconds,nearby);
+              if(q&&p.floor===q.floor&&gap(p,q)<20.01)return false;
+            }
+          }
+        }
+        ledger.push(candidate);return true;
+      }
+      // Every 0.5s plus every trajectory boundary. Between boundaries relative
+      // motion is linear: swept checks catch contacts between the samples too.
+      const times=new Set([candidate.start,candidate.end-.00001]);
+      for(let s=candidate.start;s<candidate.end;s+=.5)times.add(s);
+      for(const e of [candidate,...nearby])for(const t of e.people)for(const l of [...t.out,...t.back])for(const s of [l.start,l.end])if(s>candidate.start&&s<candidate.end)times.add(s);
+      const ticks=[...times].sort((a,b)=>a-b);
+      // Static homes were checked continuously above (stronger than sampling).
+      // Sample all remaining people: those with a reserved trajectory or stay.
+      const others=[...new Set(nearby.flatMap(e=>e.people.filter(t=>!ids.has(t.id)&&(t.visitor||t.out.length||t.back.length||t.seat.anchor!==t.home.anchorId)).map(t=>t.id)))];
+      for(const t of candidate.people){
+        for(const id of others){
+          let prev=null;
+          for(const s of ticks){const p=stateAt(candidate,t,s),q=positionAt(id,s,nearby);
+            if(!q||q.floor!==p.floor){prev=null;continue}
+            const limit=p.walking||q.walking?24:20;
+            if(gap(p,q)<limit+.01)return false;
+            const pp=pixels(p.position||[p.seat.x,p.seat.y]),qp=pixels(q.position||[q.seat.x,q.seat.y]),r=[pp[0]-qp[0],pp[1]-qp[1]];
+            if(prev&&prev.floor===p.floor){const d=[r[0]-prev.r[0],r[1]-prev.r[1]],v=d[0]*d[0]+d[1]*d[1],u=v?Math.max(0,Math.min(1,-(prev.r[0]*d[0]+prev.r[1]*d[1])/v)):0;
+              if(Math.hypot(prev.r[0]+u*d[0],prev.r[1]+u*d[1])<Math.max(limit,prev.limit)+.01)return false}
+            prev={r,limit,floor:p.floor};
+          }
+        }
+        // Within a group too: FIFO travel does not waive physical spacing.
+        for(const q of candidate.people.filter(q=>q.id<t.id))for(const s of ticks){const p1=stateAt(candidate,t,s),p2=stateAt(candidate,q,s);if(p1.floor===p2.floor&&gap(p1,p2)<(p1.walking||p2.walking?24:20)+.01)return false}
+      }
+      ledger.push(candidate);return true;
     }
-    function visitorAt(day,seconds,weekday,events,reducedMotion){
-      const w=Math.floor(seconds/VISIT_WINDOW),base=day+'|visit|'+w;if(unit(base)>=(weekday?.55:.3))return null;
-      const hour=w*VISIT_WINDOW/3600,kinds=visitorKinds.filter(v=>(weekday||!v.weekdayOnly)&&v.hours.some(([a,b])=>hour>=a&&hour<b));if(!kinds.length)return null;
-      const plan=visitPlan(kinds[seed(base+'|kind')%kinds.length]);if(!plan||plan.total>VISIT_WINDOW-2)return null;
-      const start=w*VISIT_WINDOW+unit(base+'|offset')*(VISIT_WINDOW-2-plan.total),local=seconds-start;if(local<0||local>=plan.total)return null;
-      if(events.some(e=>e.start<start+plan.total&&start<e.end&&e.resources.some(r=>plan.resources.includes(r))))return null;
-      const leg=plan.legs.find(l=>l.start<=local&&local<l.end);if(!leg)return null;
-      const guest={id:'visitor',visitor:true,kind:plan.kind,sprite:plan.sprite,name:plan.name,home:'1f',floor:'1f',activity:'visit',actionId:'visitor',emoji:'',plain:false,idle:true,line:leg.line};
-      if(leg.stop){const seat=slot(leg.stop,leg.pose);return {...guest,seat,position:null,walking:false,pose:seat.posture}}
-      if(reducedMotion)return null;
-      const a=anchors.get(leg.from),b=anchors.get(leg.to),seat=slot(a.id,'stand');if(!seat)return null;
-      const progress=(local-leg.start)/(leg.end-leg.start),pa=visualPoint(a),pb=visualPoint(b);
-      return {...guest,seat,position:[pa[0]+(pb[0]-pa[0])*progress,pa[1]+(pb[1]-pa[1])*progress],walking:true,pose:Math.floor(seconds*5)%2?'walk-a':'walk-b'};
+    function excursion(id,home,card,target,start,stay,day,visitor=null){
+      const outbound=path(home.anchorId,target),inbound=path(target,home.anchorId),seat=slot(target,card.pose);
+      if(!seat||!outbound.length||!inbound.length||[...outbound,...inbound].some(n=>n.floor!==home.floor))return null;
+      let cursor=start;
+      const legs=nodes=>nodes.slice(1).flatMap((to,i)=>{const from=nodes[i],duration=travelSeconds(from,to);if(!duration)return [];const l={from:from.id,to:to.id,start:cursor,end:cursor+duration};cursor+=duration;return [l]});
+      const out=legs(outbound),performStart=cursor;cursor+=stay;const performEnd=cursor,back=legs(inbound);
+      return {id:day+'|outing|'+id+'|'+start,actionId:'base-work',start,end:cursor,performStart,performEnd,card,visitor,
+        people:[{id,home,seat,outbound,inbound,out,back,visitor:!!visitor}],resources:[...new Set([...outbound,...inbound].map(n=>n.id))],floors:[home.floor]};
     }
+    const visitorKinds=[
+      {kind:'client',sprite:'visitor-client',name:'방문 고객',hours:[[10,17]],target:'client_booth_slot_4',stay:24,go:'상담실로 안내받아 가는 중',at:'상담 받는 중'},
+      {kind:'courier',sprite:'visitor-courier',name:'택배 기사',hours:[[9,18]],target:'parcel_box',stay:8,go:'택배함으로 가는 중',at:'택배 두고 갈게요'},
+      {kind:'rider',sprite:'visitor-rider',name:'배달 기사',hours:[[11.5,13.5],[17.5,20]],target:'reception',stay:8,go:'안내대로 배달 가는 중',at:'배달 왔습니다!'},
+      {kind:'candidate',sprite:'visitor-candidate',name:'면접 지원자',hours:[[10,16]],weekdayOnly:true,target:'client_booth_slot_2',stay:24,go:'면접 보러 상담실 가는 중',at:'면접 대기 중… 두근'},
+      {kind:'generic',sprite:'visitor-generic',name:'방문객',hours:[[9,20]],target:'lobby-sw',stay:16,go:'HANI Coffee 가는 중',at:'커피 마시는 중'}
+    ];
+    function blockPlan(day,index,events,options={}){
+      const allowed=persons.filter(p=>(p.id!=='seongmin'||options.chairmanPresent)&&(!options.presentIds||options.presentIds.includes(p.id)));
+      const key=day+'|'+index+'|'+allowed.map(p=>p.id).join(',');if(blocks.has(key))return blocks.get(key);
+      const start=index*BLOCK,end=start+BLOCK,ledger=events.filter(e=>e.start<end&&start<e.end).slice(),result=[],candidates=[];
+      const weekday=![0,6].includes(new Date(day+'T00:00:00Z').getUTCDay());
+      for(let j=Math.ceil(start/BEAT);j*BEAT<end;j++)for(const floor of floors){
+        const id=beatPick(day,floor.id,j),person=allowed.find(p=>p.id===id),at=j*BEAT;
+        if(!person||unit(day+'|outing|'+floor.id+'|'+j)>.34)continue;
+        const home=homeAt(person,at);if(home!==person.home)continue;
+        candidates.push({start:at,id,home,j});
+      }
+      for(let at=start;at<end;at+=60){
+        const kinds=visitorKinds.filter(v=>(weekday||!v.weekdayOnly)&&v.hours.some(([a,b])=>at/3600>=a&&at/3600<b));
+        if(kinds.length&&unit(day+'|guest|'+at)<(weekday?.7:.4))candidates.push({start:at+1,id:'visitor',home:{anchorId:'arrival_gate',floor:'1f'},visitor:kinds[seed(day+'|kind|'+at)%kinds.length]});
+      }
+      candidates.sort((a,b)=>a.start-b.start||a.id.localeCompare(b.id));
+      for(const c of candidates){
+        if(result.some(e=>overlap(e,{start:c.start,end:c.start+.001})&&(c.visitor?e.visitor:!e.visitor&&e.floors.includes(c.home.floor))))continue;
+        let cards=places.filter(p=>p.floor===c.home.floor&&(!c.visitor||p.slots.includes(c.visitor.target)));
+        if(!c.visitor)cards=cards.filter(p=>p.room!==anchors.get(c.home.anchorId).room||p.kind==='window');
+        if(!cards.length)continue;
+        const offset=seed(day+'|'+c.id+'|'+c.start)%cards.length;cards=[...cards.slice(offset),...cards.slice(0,offset)];
+        for(const card of cards){
+          const slots=c.visitor?[c.visitor.target]:card.slots,offset=seed(day+'|slot|'+c.start)%slots.length;
+          const target=slots[offset],stay=c.visitor?.stay??card.stay[0]+seed(day+'|stay|'+c.start)%(card.stay[1]-card.stay[0]+1);
+          const event=excursion(c.id,c.home,card,target,c.start,stay,day,c.visitor);
+          if(!event||event.end>end||!c.visitor&&event.end-event.start>30)continue;
+          if(reserve(event,ledger,allowed)){result.push(event);break}
+        }
+      }
+      if(blocks.size>=32)blocks.delete(blocks.keys().next().value);blocks.set(key,result);return result;
+    }
+
     function speech(action,id,day){const override=action.actorOverrides?.[id],p=action.performance;
       const line=override?.speech||(Array.isArray(p.speech)?p.speech.find(s=>s.personId===id)?.line:p.speech)||action.title;
       return p.speechVariants?.length?p.speechVariants[seed(day+'|'+id+'|'+action.id+'|line')%p.speechVariants.length]:line;
@@ -457,62 +525,46 @@
     function snapshot(now,options={}){
       const kst=new Date(new Date(now).getTime()+32400000),day=kst.toISOString().slice(0,10),seconds=kst.getUTCHours()*3600+kst.getUTCMinutes()*60+kst.getUTCSeconds()+kst.getUTCMilliseconds()/1000;
       const events=plan(day,options),cancelled=options.cancelled||new Set(),blocked=new Set(options.summoned||[]);
-      // Presence is a base scene state on every day, independent of weekday action windows.
-      // Reuse base-work when idle; disabled rows stay disabled.
-      const late=isLate(seconds),evening=isEvening(seconds);
-      const presenceNote=late?'심야에도 함께해요 · 개발실과 라운지에 직원들이 남아 있어요':'';
+      const late=isLate(seconds),evening=isEvening(seconds),presenceNote=late?'심야에도 함께해요 · 개발실과 라운지에 직원들이 남아 있어요':'';
+      // Outings respect the complete frozen formal ledger, including suppressed events.
+      const outings=blockPlan(day,Math.floor(seconds/BLOCK),events,options);
       const completedTeachers=events.filter(e=>e.performEnd<=seconds&&!cancelled.has(e.id)&&table.rules.hinaBalance.teacherActionIds.includes(e.actionId)).length;
       const selfiesBefore=events.filter(e=>e.start<seconds&&!cancelled.has(e.id)&&table.rules.hinaBalance.selfieActionIds.includes(e.actionId));
-      const liveEvents=events.filter(e=>!cancelled.has(e.id));
       const active=events.filter(e=>e.start<=seconds&&seconds<e.end&&!cancelled.has(e.id)&&!e.people.some(p=>blocked.has(p.id))&&(!table.rules.hinaBalance.selfieActionIds.includes(e.actionId)||completedTeachers>=selfiesBefore.length));
-      const entries=persons.filter(p=>(p.id!=='seongmin'||options.chairmanPresent)&&(!options.presentIds||options.presentIds.includes(p.id))&&!blocked.has(p.id)).flatMap(p=>{
-        const event=active.find(e=>e.people.some(t=>t.id===p.id)),t=event?.people.find(t=>t.id===p.id);
-        if(late&&!lateWorkers.has(p.id)&&p.id!=='seongmin')return [];
-        const action=actions.get(event?.actionId)||defaults;if(!action)return [];
-        const home=homeAt(p,seconds);
-        let seat=slot(home.anchorId,p.id==='mir'?'stand':'sit'),position=null,walking=false,floor=home.floor,strolling=false;
-        if(t){
-          const leg=options.reducedMotion?null:[...t.out,...t.back].find(l=>l.start<=seconds&&seconds<l.end);
-          const atTarget=options.reducedMotion||seconds>= (t.out.at(-1)?.end??event.start)&&seconds<(t.back[0]?.start??event.end);
-          if(atTarget){seat=t.seat;floor=anchors.get(seat.anchor).floor}
-          if(leg){const a=anchors.get(leg.from),b=anchors.get(leg.to),progress=(seconds-leg.start)/(leg.end-leg.start),pa=visualPoint(a),pb=visualPoint(b);floor=a.floor;seat=slot(a.id,'stand');walking=true;position=a.floor===b.floor?[pa[0]+(pb[0]-pa[0])*progress,pa[1]+(pb[1]-pa[1])*progress]:pa;}
+      const render=(p,event)=>{
+        const t=event?.people.find(t=>t.id===p.id),action=actions.get(event?.actionId)||defaults,home=p.visitor?{floor:'1f',anchorId:'arrival_gate'}:homeAt(p,seconds);
+        const state=t?stateAt(event,t,seconds,options.reducedMotion):{state:'AT_HOME',seat:slot(home.anchorId,p.id==='mir'?'stand':'sit'),floor:home.floor,position:null,walking:false};
+        if(!state.seat)return null;
+        const performing=event&&seconds>=event.performStart&&seconds<event.performEnd,card=event?.card;
+        let plain=!event,line=p.id==='mir'||p.id==='seongmin'?speech(defaults,p.id,day):(late||evening&&lateWorkers.has(p.id))?'야근 중':evening?'퇴근 준비 중':speech(defaults,p.id,day);
+        const lounge=['lobby-nw','lobby-ne'].includes(home.anchorId)&&['yuna','minji'].includes(p.id);
+        if(!event&&!p.visitor&&p.id!=='mir'&&p.id!=='seongmin'){
+          const flavour=idleFlavour(day,p.id,home.floor,seconds,lounge,late||evening&&lateWorkers.has(p.id),events);
+          if(flavour){line=flavour.line;plain=false;if(flavour.pose&&!options.reducedMotion)state.seat=slot(home.anchorId,'stand')||state.seat}
+          else if(lounge)line=late?'라운지에서 조용히 쉬는 중':'라운지에서 야근 이야기 중';
         }
-        const performing=event&&(options.reducedMotion||seconds>=event.performStart&&seconds<event.performEnd);
-        let idleLine=p.id==='mir'||p.id==='seongmin'?speech(defaults,p.id,day):(late||evening&&lateWorkers.has(p.id))?'야근 중':evening?'퇴근 준비 중':speech(defaults,p.id,day),plain=!event;
-        if(!event&&p.id!=='mir'&&p.id!=='seongmin'){
-          const lounge=home!==p.home||(late||evening)&&['yuna','minji'].includes(p.id),stroll=!options.reducedMotion&&!lounge&&idleStroll(day,p.id,home.floor,seconds,home,liveEvents);
-          if(stroll){seat=stroll.seat;walking=stroll.walking;position=stroll.position;idleLine=stroll.line;strolling=true;plain=false}
-          else{const flavour=idleFlavour(day,p.id,home.floor,seconds,lounge,late||evening&&lateWorkers.has(p.id),liveEvents);
-            if(flavour){idleLine=flavour.line;plain=false;if(flavour.pose&&!options.reducedMotion&&p.id!=='mir')seat=slot(home.anchorId,'stand')||seat}}
+        if(event){
+          if(state.state==='GOING'){
+            const destination=anchors.get(t.seat.anchor),place=places.find(c=>c.slots.includes(t.seat.anchor));
+            const room=canon.floors.find(f=>f.id===destination.floor)?.rooms.find(r=>r.id===destination.room);
+            const name=place?.kind==='window'?place.name:(room?.label||destination.label||action.title).split(' · ')[0];
+            line=p.visitor?event.visitor.go:card?.go||destination.floor.toUpperCase()+' '+name+' 가는 중';
+          }
+          else if(state.state==='RETURNING')line=p.visitor?'안녕히 계세요~':'자리로 돌아가는 중';
+          else if(state.state==='AT_PLACE'||t.seat.anchor===home.anchorId)line=p.visitor?event.visitor.at:card?card.at[seed(day+'|'+p.id+'|'+event.start)%card.at.length]:speech(action,p.id,day);
         }
-        return [{id:p.id,idle:!event,plain,stroll:strolling,home:p.home.floor,floor,seat,position,walking,pose:walking?(Math.floor(seconds*5)%2?'walk-a':'walk-b'):seat.posture,activity:event?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):'work',actionId:performing?action.id:'base-work',eventId:event?.id,line:performing?speech(action,p.id,day):event?'이동 중':idleLine,emoji:performing?(action.actorOverrides?.[p.id]?.emoji||action.performance.emoji):'',personalNonWork:action.personalNonWork}];
-      });
-      // Lounge residents are persistent presence, not newly scheduled actions.
-      // Existing events own their seats first; their frequency/cooldown budgets stay unchanged.
-      if(late||evening){
-        const occupied=new Set(entries.map(p=>p.seat.anchor));
-        for(const id of ['yuna','minji']){
-          const p=entries.find(p=>p.id===id);if(!p||p.eventId)continue;
-          const home=homeAt(persons.find(person=>person.id===id),seconds);
-          const anchor=nightCatalog?home.anchorId:['lobby-nw','lobby-ne','lobby-sw','lobby-se'].find(a=>!occupied.has(a));
-          const seat=anchor&&slot(anchor);if(!seat)continue;
-          occupied.delete(p.seat.anchor);occupied.add(anchor);
-          const flavour=idleFlavour(day,id,home.floor,seconds,true,late,liveEvents);
-          Object.assign(p,{floor:anchors.get(anchor).floor,seat,pose:seat.posture,walking:false,position:null,stroll:false,plain:!flavour,activity:'rest',line:flavour?.line||(late?'라운지에서 조용히 쉬는 중':'라운지에서 야근 이야기 중')});
-        }
-      }
-      // A stroll never takes a spot someone else is shown on; the stroller simply stays home.
-      const spot=p=>p.floor+'|'+(p.position||[p.seat.x,p.seat.y]).map(x=>Math.round(x*1000)).join(',');
-      for(const p of entries)if(p.stroll&&entries.some(q=>q!==p&&(q.seat.anchor===p.seat.anchor||spot(q)===spot(p)))){
-        const seat=slot(homeAt(persons.find(person=>person.id===p.id),seconds).anchorId,'sit');
-        Object.assign(p,{seat,pose:seat.posture,walking:false,position:null,stroll:false,plain:true,line:late||evening&&lateWorkers.has(p.id)?'야근 중':evening?'퇴근 준비 중':speech(defaults,p.id,day)});
-      }
-      // Visitors stay outside entries/floor counts; the renderer shows them as one extra 1F slot.
-      const weekday=![0,6].includes(new Date(day+'T00:00:00Z').getUTCDay()),guest=visitorAt(day,seconds,weekday,liveEvents,options.reducedMotion);
-      const visitors=guest&&!entries.some(q=>q.seat.anchor===guest.seat.anchor||spot(q)===spot(guest))?[guest]:[];
+        return {id:p.id,...state,visitor:!!p.visitor,...(p.visitor?event.visitor:{}),idle:!event||!!card,plain,stroll:!!card&&!p.visitor&&!options.reducedMotion,home:p.home?.floor||'1f',
+          pose:state.walking?(Math.floor(seconds*5)%2?'walk-a':'walk-b'):state.seat.posture,activity:p.visitor?'visit':event&&!card?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):lounge?'rest':'work',
+          actionId:performing&&!card?action.id:'base-work',eventId:card?undefined:event?.id,outingId:card?event.id:undefined,placeId:card?.id,targetAnchor:t?.seat.anchor,line,
+          emoji:performing&&!card?(action.actorOverrides?.[p.id]?.emoji||action.performance.emoji):'',personalNonWork:action?.personalNonWork};
+      };
+      const entries=persons.filter(p=>(p.id!=='seongmin'||options.chairmanPresent)&&(!options.presentIds||options.presentIds.includes(p.id))&&!blocked.has(p.id)&&presentAt(p.id,seconds)).map(p=>render(p,
+        active.find(e=>e.people.some(t=>t.id===p.id))||outings.find(e=>!e.visitor&&e.start<=seconds&&seconds<e.end&&e.people[0].id===p.id))).filter(Boolean);
+      const guest=outings.find(e=>e.visitor&&e.start<=seconds&&seconds<e.end),visitors=guest?[render({id:'visitor',visitor:true},guest)].filter(p=>p&&(!options.reducedMotion||p.state==='AT_PLACE')):[];
       return {day,minutes:seconds/60,seconds,entries,visitors,events:active,presenceNote};
     }
-    return Object.freeze({plan,snapshot,seed,slot,actions,windows,presentAt,identity:table.identity});
+
+    return Object.freeze({plan,snapshot,seed,slot,actions,windows,presentAt,homeAt,blockPlan,stateAt,identity:table.identity});
   }
   const scheduler=canon&&actionTable?createScheduler(actionTable):null;
   function snapshot(now=new Date(),options={}){
@@ -524,7 +576,7 @@
   function profile(id){return ({daon:"./assets/profiles/thumb/hani-profile-daon-v2-256.webp",yoonseul:"./assets/profiles/thumb/hani-profile-yoonseul-v2-256.webp",sua:"./assets/profiles/thumb/hani-profile-sua-id-256.webp"})[id]||`./assets/profiles/thumb/hani-profile-${id}-256.webp`}
   // Both densities share proportional atlas/cell/pivot coordinates and one loader.
   function spriteSource(id,entry){return entry.scale===3?'./assets/sprites-v3/'+entry.file:({daon:"./assets/sprites-v2/daon-v2.webp",yoonseul:"./assets/sprites-v2/yoonseul-v2.webp"})[id]||'./assets/sprites-v2/'+entry.file}
-  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines})});
+  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,places,tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines})});
 })();
 /* Read-only Living Office. The Agent Case renderer remains the sole owner of requests, answers and decisions. */
 (() => {
@@ -778,6 +830,7 @@
       if(actor.dataset.avatar==='pending')legacySprite(actor);if(sceneVisible())loadSprite(actor,fitStatusLabels);
       if(building.scheduler&&!meeting){actor.officeTravel=null;actor.officeAnchor=p.seat.anchor;actor.dataset.seat=p.seat.id;actor.dataset.zone=p.seat.zone;actor.dataset.spot=p.seat.zone==='desk'?'seat':p.seat.zone;actor.dataset.home=[p.seat.x,p.seat.y].join(',');place(actor,p.position||[p.seat.x,p.seat.y]);pose(actor,reduced?(p.walking?'standing':p.pose):p.pose)}
       else seatActor(actor,p.seat,animate&&(sameFloor||meeting));
+      actor.dataset.behavior=p.state||'AT_HOME';actor.dataset.place=p.placeId||'';actor.dataset.slot=p.targetAnchor||'';
       actor.dataset.action=selected?'agent-case':p.actionId||'base-work';actor.dataset.event=p.eventId||'';actor.dataset.line=selected?'실제 안건 검토 중':p.line||'자료 확인 중';
       actor.dataset.emoji=selected||actor.dataset.action==='base-work'?'':p.emoji||'';actor.dataset.walking=String(Boolean(p.walking));
       actor.querySelector('.hani-office-prop').textContent=actor.dataset.emoji;
