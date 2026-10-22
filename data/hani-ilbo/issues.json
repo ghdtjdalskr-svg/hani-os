@@ -1,6 +1,7 @@
 {
   "issues": [
     {"number": 1, "date": "2026-10-19", "file": "data/hani-ilbo/001.json"},
-    {"number": 2, "date": "2026-10-26", "file": "data/hani-ilbo/002.json"}
+    {"number": 2, "date": "2026-10-26", "file": "data/hani-ilbo/002.json"},
+    {"number": 3, "date": "2026-11-02", "file": "data/hani-ilbo/003.json"}
   ]
 }
