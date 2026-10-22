@@ -32,3 +32,19 @@ test('lively-3: one bit per person per cycle, strolls go through a door, one str
   for(const [id,list]of starts)for(let i=1;i<list.length;i++)assert.ok(list[i]-list[i-1]>=14000,id+' bits too close: '+(list[i]-list[i-1])/1000+'s');
   assert.ok(strollSeconds>0&&doors>0,'strolls happen and pass through doors');
 });
+test('visitors: one guest at a time, public 1F rooms only, gate in/out, never on a staff spot, none at night',()=>{
+  const f=fixture('09:00',false,null,table),scene=f.context.HaniBuildingScene,s=scene.scheduler,rooms=new Set(['lobby','cafe','consult',null,undefined]),kinds=new Set();let seen=0;
+  for(let t=Date.parse('2026-10-21T09:00:00+09:00');t<Date.parse('2026-10-21T21:00:00+09:00');t+=2000){const snap=s.snapshot(new Date(t));assert.ok(snap.visitors.length<=1);
+    for(const v of snap.visitors){seen++;kinds.add(v.kind);const a=scene.anchors.get(v.seat.anchor);assert.equal(v.floor,'1f');assert.equal(a.floor,'1f');assert.ok(rooms.has(a.room??null),'public room only: '+a.id+' '+a.room);
+      assert.ok(!snap.entries.some(p=>p.seat.anchor===v.seat.anchor),'no shared seat with staff');assert.ok(!snap.entries.some(p=>p.id==='visitor'),'not counted as staff')}}
+  assert.ok(seen>500&&kinds.size>=4,'guests visit through the day: '+[...kinds]);
+  for(const time of ['23:30','02:00','07:30'])assert.equal(s.snapshot(new Date(`2026-10-21T${time}:00+09:00`)).visitors.length,0,'no guests at '+time);
+  for(let t=Date.parse('2026-10-21T10:00:00+09:00');t<Date.parse('2026-10-21T11:00:00+09:00');t+=1000){const v=s.snapshot(new Date(t),{reducedMotion:true}).visitors[0];if(v)assert.equal(v.walking,false)}
+});
+test('renderer shows the guest in one persistent 1F slot with its own name and sprite',()=>{
+  const f=fixture('09:00',false,()=>true,table),s=f.context.HaniBuildingScene.scheduler;let t=Date.parse('2026-10-21T10:00:00+09:00');
+  while(!s.snapshot(new Date(t)).visitors.length)t+=1000;
+  const v=s.snapshot(new Date(t)).visitors[0];f.setDateTime(t);f.click('1f');const actor=f.visible().find(a=>a.dataset.person==='visitor');
+  assert.ok(actor,'guest visible on 1F');assert.equal(actor.dataset.name,v.name);assert.equal(actor.dataset.sprite,v.sprite);assert.equal(actor.officeText.textContent,v.line);
+  f.click('2f');assert.ok(!f.visible().some(a=>a.dataset.person==='visitor'),'guest never leaves 1F');
+});
