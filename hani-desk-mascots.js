@@ -81,7 +81,8 @@
   new ResizeObserver(update).observe(map);
   void (async () => {
     try {
-      const response = await fetch(CATALOG);
+      // Literal URL keeps the catalog visible to the release closure.
+      const response = await fetch('./assets/data/desk-mascots-v1.json');
       if (!response.ok) return;
       const data = await response.json();
       if (data.schemaVersion !== 'desk-mascots-v1' || !data.staff) return;
