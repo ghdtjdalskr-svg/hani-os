@@ -75,7 +75,7 @@ for(const time of [...times,'02:00']){
  }
  report.static.push(`${time}: ${people.length} staff, unique seats, speech present; night presence retained`);
 }
-for(const f of ['index.html','data/hani-building/art-map-v1.json','data/hani-building/spatial-contract.json','assets/sprites-v2/manifest.json','assets/data/office-actions-216.json'])assert.equal(f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(withoutSimplify225(f,read(f))))):read(f),f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(withoutSimplify225(f,git('show','83391f0258629924bbbad7f1d793c56ab8284604:'+f).toString('utf8'))))):git('show',base+':'+f).toString('utf8'),f+' preserved');
+for(const f of ['index.html','data/hani-building/art-map-v1.json','data/hani-building/spatial-contract.json','assets/sprites-v2/manifest.json','assets/data/office-actions-216.json'])assert.equal(f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(withoutSimplify225(f,read(f))))):read(f),f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(withoutSimplify225(f,git('show','04fb2b377f28958aec1480ca09244f4567c3a339:'+f).toString('utf8'))))):git('show',base+':'+f).toString('utf8'),f+' preserved');
 report.static.push('version/cache, office metadata and action budgets preserved; no office storage/Cloud APIs (art files checked separately with git diff)');
 // Execute the real renderer and floor events as well as the scene model. DOM doubles
 // verify persistent identity and speech updates, not visibility or pixel geometry.
