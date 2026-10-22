@@ -110,16 +110,34 @@
   const countFrom=selector=>{const text=visibleTarget(selector)?.textContent||"";const match=text.replaceAll(",","").match(/\d+/);return match?Number(match[0]):0};
   const season=()=>["spring","summer","autumn","winter"].includes(document.documentElement.dataset.season)?document.documentElement.dataset.season:"spring";
   const greetings={spring:["히나 · 🌸","햇살 좋은 날엔, 새로운 한 페이지부터 시작해요."],summer:["나은 · 🧊","물 한 잔, 시원한 숨 한 번. 오늘도 무리하지 말아요."],autumn:["하루 · ☕","따뜻한 커피랑 책 한 페이지, 오늘은 천천히 즐겨봐."],winter:["하니 · 🧣","따뜻한 머그 옆에서, 오늘의 기록을 함께 마무리하자."]};
-  // Scene focal points from the approved bright-card mock; all sources stay cover.
-  const mediaFocal={reading:"57% 22%",investment:"51% 24%",exercise:"53% 32%",geminiReports:"63% 38%"};
+  // 2.9.217 remote-owned portraits: season + screen picks, independent of page heroes.
+  const sharedBanners=[
+    ["life-office-lounge-v1.jpg","HANI · JIEUN · SUA · YUNA"],
+    ["life-book-cafe-v1.jpg","MINJI · HARU · HINA"],
+    ["life-brunch-v1.jpg","NAEUN · SOOYEON · YUNA"],
+    ["life-media-night-v1.jpg","HANI · HARU · MINJI · SOOYEON"]
+  ];
+  const banners={
+    spring:[["spring-1.jpg","HINA · JIEUN · MINJI · SUA"],["spring-2.jpg","HANI · HARU · SOOYEON · YUNA"],...sharedBanners],
+    summer:[["summer-1.jpg","MINJI · NAEUN · SUA"],["summer-2.jpg","HANI · HINA · SOOYEON · YUNA"],...sharedBanners],
+    autumn:[["autumn-1.jpg","JIEUN · NAEUN · SUA"],["autumn-2.jpg","HANI · HARU · HINA · MINJI · YUNA"],...sharedBanners],
+    winter:[["winter-1.jpg","HINA · MINJI · NAEUN · SUA · YUNA"],["winter-2.jpg","HANI · HARU · JIEUN · SOOYEON"],...sharedBanners]
+  };
+  const bannerPicks=new Map();
+  const randomIndex=length=>{if(length<2)return 0;if(globalThis.crypto?.getRandomValues){const value=new Uint32Array(1);crypto.getRandomValues(value);return value[0]%length}return Math.floor(Math.random()*length)};
+  const variant=s=>{const key=`${s}:${viewId()}`;if(!bannerPicks.has(key))bannerPicks.set(key,randomIndex(banners[s].length));return bannerPicks.get(key)};
+  let lastBannerSeason=null;
   const updateBanner=(c,title)=>{
     const hero=window.HANI_MAIN_CHARACTER_BANNER?.get(viewId()),s=season();
-    // Resolve only the current image. Reuse the banner's source, speaker and quote.
-    const seasonal=window.HANI_MAIN_CHARACTER_BANNER?.get("home");
-    const src=hero?.sceneImage||seasonal?.sceneImage||$("#sidebarSeasonArtwork")?.getAttribute("src"),img=$(".hani-remote-media-image",rail);
-    if(src&&img.getAttribute("src")!==src)img.src=src;
-    img.style.objectPosition=mediaFocal[viewId()]||"50% 30%";
-    img.alt=hero?.sceneAlt||seasonal?.sceneAlt||"HANI OS 계절 아트";
+    // The old season observer rerolled the current screen from the two seasonal images.
+    // Reuse the canonical update called by syncSeasonCollection instead of adding an observer.
+    if(lastBannerSeason!==null&&lastBannerSeason!==s)bannerPicks.set(`${s}:${viewId()}`,randomIndex(2));
+    lastBannerSeason=s;
+    const [file,members]=banners[s][variant(s)]||banners[s][0];
+    const src=`./assets/context-remote/${file}`,img=$(".hani-remote-media-image",rail);
+    if(img.getAttribute("src")!==src)img.src=src;
+    img.style.objectPosition="50% 30%";
+    img.alt=`HANI OS 공식 프로필 ${s} 라이프 배너 · ${members}`;
     $("[data-remote-media-title]",rail).textContent=title;
     $("[data-remote-media-staff]",rail).textContent=`담당 직원 · ${hero?.speaker||c.agent||"HANI"}`;
     $("[data-remote-media-line]",rail).textContent=hero?.quote||greetings[s][1];

@@ -1,3 +1,4 @@
+import {withoutHeroRestore} from './hani-hero-restore-preservation.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -13,7 +14,7 @@ const reviewedPins={
  'hani-design-system.css':['50b1a0065476936aebcc5545c4e0fb1c25d2e6ac4791b0fe7ea0c8abfa4b2920','e7e12bc3305f7b76d592e22d713902d0f946da51cdbce557cdb770cae6667748']
 };
 const delta={...originalDelta,files:Object.fromEntries(Object.entries(originalDelta.files).map(([file,entry])=>[file,reviewedPins[file]?{...entry,afterHash:reviewedPins[file][0],beforeHash:reviewedPins[file][1]}:entry]))};
-const read=f=>withoutSettings225(f,fs.readFileSync(new URL('../'+f,import.meta.url),'utf8'));
+const read=f=>withoutSettings225(f,withoutHeroRestore(f,fs.readFileSync(new URL('../'+f,import.meta.url),'utf8')));
 const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
 const collect=(s,re)=>[...s.matchAll(re)].map(m=>m[0]).sort();
 test('approved presentation hunks preserve all other bytes and untouched mixed EOL in nine source owners',()=>{
@@ -46,7 +47,7 @@ test('delta cannot hide a changed control, write, protection notice, approval or
  let rejected=false;try{rejected=hash(withoutSimplify225('hani-main.js',changed))!==delta.files['hani-main.js'].beforeHash;}catch{rejected=true;}
  assert.ok(rejected,'write mutation is never masked');
 });
-test('all 34 live views resolve through the existing hero owner without explainer nodes; metadata, status, image, quote remain',()=>{
+test('historical simplify225 source retains its reviewed hero contract before the explicit hero restore delta',()=>{
  const ui=read('hani-ui-v02992.js'),html=read('index.html');
  const ids=[...html.matchAll(/<button class="nav-btn[^>]*data-view="([^"]+)"/g)].map(m=>m[1]);assert.equal(ids.length,35);
  const start=ui.indexOf('  const mainCharacterBannerVariants='),end=ui.indexOf('  const mainCharacterInternalViewExists=');

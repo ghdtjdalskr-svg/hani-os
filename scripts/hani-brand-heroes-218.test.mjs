@@ -1,18 +1,15 @@
+import {withoutHeroRestore} from './hani-hero-restore-preservation.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import path from 'node:path';
-import {execFileSync} from 'node:child_process';
-import {withoutLaunchGreeting} from './hani-launch-greeting-221-preservation.mjs';
-import {withoutPhotoBackupUi} from './hani-photo-backup-222-preservation.mjs';
-import {withoutOfflineEntryUi} from './hani-offline-entry-223-preservation.mjs';
-import {withoutSimplify225} from './hani-simplify-225-preservation.mjs';
-const root=path.resolve(import.meta.dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
+import {readBranchBaseline} from './hani-regression-baseline.mjs';
+const root=path.resolve(import.meta.dirname,'..'),read=f=>withoutHeroRestore(f,fs.readFileSync(path.join(root,f),'utf8'));
 const main=read('hani-main.js'),ui=read('hani-ui-v02992.js'),html=read('index.html');
-// Runtime/cache versions follow the integrated origin/main release.
-const released=f=>process.env.HANI_RELEASED_BASELINE?fs.readFileSync(path.join(process.env.HANI_RELEASED_BASELINE,f),'utf8'):execFileSync(process.env.HANI_GIT||'git',['show','origin/main:'+f],{cwd:root,encoding:'utf8',maxBuffer:32*1024*1024});
-const baseline=f=>process.env.HANI_FIX218_BASELINE?fs.readFileSync(path.join(process.env.HANI_FIX218_BASELINE,f),'utf8'):execFileSync(process.env.HANI_GIT||'git',['show','42aa394:'+f],{cwd:root,encoding:'utf8',maxBuffer:32*1024*1024});
+// The integrated branch base already owns approved settings, photo and launch UI.
+const baseline=readBranchBaseline;
+
 test('canonical company names and legacy search aliases resolve to unchanged routes',()=>{
   const ctx=vm.createContext({});
   vm.runInContext(main.slice(main.indexOf('const QUICK_JUMP_ITEMS='),main.indexOf('function renderQuickJump('))+';this.matches=quickJumpMatches;',ctx);
@@ -25,12 +22,7 @@ test('canonical company names and legacy search aliases resolve to unchanged rou
   assert.equal(ctx.matches('하니 일보')[0][0],'ilbo');
   const original=baseline('hani-ui-v02992.js');
   const voice=s=>s.slice(s.indexOf('// BEGIN CANONICAL TAB VOICE BUNDLE'),s.indexOf('// Session-memory only:'));
-  let expectedVoice=voice(original);
-  for(const [view,owner] of Object.entries({exercise:'naeun',tasks:'yuna',calendar:'yuna',aiWork:'dohyun',work:'sua'}))expectedVoice=expectedVoice.replace(new RegExp('(\\n  '+view+': entry\\(")\\w+'),(_,prefix)=>prefix+owner);
-  expectedVoice=expectedVoice.replace('건강·체중·식사 흐름. 의료 판단은 근거와 전문 자문을 우선한다.','건강·운동·체중·식사 흐름. 의료 판단은 근거와 전문 자문을 우선한다.')
-    .replace('수연 · Activity Coach','수연 · Travel & Sports')
-    .replace('운동·스포츠·여행의 페이스와 실제 실행 가능성.','스포츠·여행의 페이스와 실제 실행 가능성. 건강·운동 루틴은 나은에게 연결한다.')
-    .replace('  seoyun:Object.freeze({','  dohyun:Object.freeze({identity:"도연 · Codex 구현/테스트",image:"./assets/profiles/hani-profile-dohyun.webp"}),\r\n  seoyun:Object.freeze({');
+  const expectedVoice=voice(original);
   assert.equal(voice(ui),expectedVoice,'only approved role/owner data corrections; dialogue and remaining voice policy unchanged');
 });
 test('every live source nav view uses one owner; reused image paths exist',()=>{
@@ -47,59 +39,10 @@ test('every live source nav view uses one owner; reused image paths exist',()=>{
   assert.match(ui,/if\(!root\?\.classList\.contains\('view'\)\)return/,'nested policy does not own another page hero');
   assert.match(read('hani-ilbo.js'),/<h2>HANI 일보<\/h2>/);assert.match(read('hani-ilbo.js'),/HANI 일보 · 지난 호 보관함/);
 });
-test('raw preservation of frequency table, storage writes, versions, route/data IDs and unchanged-line EOL',()=>{
-  assert.equal(read('assets/data/office-actions-216.json'),baseline('assets/data/office-actions-216.json'),'all approved caps, cooldowns, windows, disabled actions unchanged');
-  assert.equal(read('data/hani-building/art-map-v1.json'),baseline('data/hani-building/art-map-v1.json').replaceAll('하니 본사','HANI 본사'),'plate tooltip brand only; spatial metadata unchanged');
-  const files=['index.html','hani-main.js','hani-ui-v02992.js','hani-ui-cleanup-v02971.js','hani-office-live.js','hani-investment-committee.js','hani-ilbo.js','hani-organization-hub.js','hani-design-system.css','hani-style-07.css','hani-ai-budget.css'];
-  // Report Markdown may mention protected APIs/versions as prose. Compare the
-  // actual runtime owners separately from the authorized regenerated catalog.
-  const collect=(s,re)=>[...s.replace(/globalThis\.HaniGeminiReportCatalog=Object\.freeze\([^\r\n]+\);/,'<report catalog>').matchAll(re)].map(m=>m[0]);
-  for(const f of files){
-    const old=baseline(f),now=read(f);new vm.Script(f.endsWith('.js')?now:'');
-    const preserved=f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(withoutSimplify225(f,now)))):now;
-    if(f==='index.html')assert.equal(preserved,withoutPhotoBackupUi(withoutLaunchGreeting(released(f).includes('id="loginGateOffline"')?withoutOfflineEntryUi(released(f)):released(f))),'index bytes preserved except exact offline entry UI additions; existing launch/photo connections retained');
-    // History's milestone IDs are catalog references, independently checked here.
-    // Retain every other version/cache assertion, including all script URLs.
-    let versionSource=now;
-    if(f==='hani-organization-hub.js'){
-      const priority=now.match(/const historyMilestonePriority=(\[[^\r\n]+\]);/);assert.ok(priority);
-      const ids=vm.runInNewContext(priority[1]);
-      assert.deepEqual(Array.from(ids),['v2.9.215','v2.9.213','v2.9.222','v2.9.216','v2.9.218','v2.9.161','v2.9.164','v2.9.120','v2.9.132','v2.9.135']);
-      const catalog=JSON.parse(read('assets/data/hani-history-releases-v1.json'));
-      for(const id of ids)assert.ok(catalog.entries.some(r=>r.id===id),id+' actual release');
-      versionSource=now.replace(priority[0],'');
-    }
-    assert.deepEqual(collect(versionSource,/(?:v=|v)2\.9\.\d+/g),collect(released(f),/(?:v=|v)2\.9\.\d+/g),f+' approved release versions');
-    for(const re of [/\b(?:localStorage|sessionStorage)\s*\.\s*(?:setItem|removeItem|clear)\s*\([^\n]*/g,/\bhani_os_life_v23\b/g,/2\.9\.15-safe-baseline-bootstrap/g])assert.deepEqual(collect(now,re),collect(old,re),f+' protected tokens');
-    if(f==='index.html'){
-      for(const re of [/\bdata-(?:view|go)="[^"]+"/g,/\bid="[^"]+"/g]){
-        // Three seasonal caption ids were folded into the existing canonical home scene.
-        // fix-218 simplify removes only the inert Gemini staff explainer ID.
-        const omit=x=>!/^id="(?:seasonalLife(?:Artwork|Caption|Label|Cast)|geminiStaffProfile)"$/.test(x);
-        assert.deepEqual(collect(preserved,re).filter(omit).sort(),collect(old,re).filter(omit).sort(),f+' route / control ids');
-      }
-    }
-    const lines=new Map(),ambiguous=new Set();for(const line of old.match(/[^\n]*(?:\n|$)/g).filter(Boolean)){const key=line.replace(/\r?\n$/,'');if(lines.has(key)&&lines.get(key)!==line)ambiguous.add(key);lines.set(key,line);}
-    for(const line of withoutSimplify225(f,now).match(/[^\n]*(?:\n|$)/g).filter(Boolean)){const key=line.replace(/\r?\n$/,'');if(lines.has(key)&&!ambiguous.has(key))assert.equal(line,lines.get(key),f+' retained EOL '+key.slice(0,60));}
+test('every non-hero byte, including controls, login, storage, versions and EOL, matches the integrated branch base',()=>{
+  const files=['index.html','hani-main.js','hani-ui-v02992.js','hani-context-remote-v1.js','hani-context-remote.css','hani-ui-cleanup-v02971.js','hani-office-live.js','hani-investment-committee.js','hani-ilbo.js','hani-organization-hub.js','hani-design-system.css','hani-style-07.css','hani-ai-budget.css','assets/data/office-actions-216.json','data/hani-building/art-map-v1.json'];
+  for(const file of files){
+    const current=read(file);if(file.endsWith('.js'))new vm.Script(current,{filename:file});
+    assert.equal(current,baseline(file),file+' only exact reviewed hero/remote delta allowed; all other bytes preserved');
   }
-  // The approved report bundle refresh synchronizes Markdown; preserve historical
-  // identities and verify canonical bodies instead of requiring a stale catalog.
-  const catalog=s=>JSON.parse(s.match(/globalThis\.HaniGeminiReportCatalog=Object\.freeze\(([^\r\n]+)\);/)[1]);
-  const currentCatalog=catalog(main);
-  for(const old of catalog(baseline('hani-main.js')).reports){
-    const current=currentCatalog.reports.find(r=>r.id===old.id);assert.ok(current);
-    for(const field of ['id','file','date','review_status'])assert.equal(current[field],old[field]);
-    assert.equal(current.body,read('docs/gemini-reports/'+current.file).replace(/\r\n/g,'\n'));
-  }
-  const protectedFunction=(source,name)=>{
-    const start=source.search(new RegExp('^(?:async )?function '+name+'\\(','m'));assert.ok(start>=0,name);
-    // Parse only the function body; following constants are separate owners.
-    let body='';
-    for(const line of source.slice(start).match(/[^\n]*(?:\n|$)/g).filter(Boolean)){
-      body+=line;try{new vm.Script('('+body+')');return body}catch(e){if(!(e instanceof SyntaxError))throw e}
-    }
-    assert.fail(name+' function boundary');
-  };
-  const oldMain=baseline('hani-main.js');
-  for(const name of ['save','cloudSyncPolicy','cloudChangeSyncPolicy','deployLoadSession','deploySaveSession','deployConfirmApprovedCandidate','deployCenterInit'])assert.equal(protectedFunction(main,name),protectedFunction(oldMain,name),name+' original safety / approval path');
 });

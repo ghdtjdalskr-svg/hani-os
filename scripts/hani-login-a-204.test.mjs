@@ -1,3 +1,4 @@
+import {readBranchBaseline} from './hani-regression-baseline.mjs';
 import assert from 'node:assert/strict';
 import {assertEgressGate} from './hani-egress-gate-expectations.mjs';
 import fs from 'node:fs';
@@ -60,7 +61,7 @@ const baseDir=firstArg&&!browserHarness?path.resolve(firstArg):null;
 const preservationDir=baseDir||process.env.HANI_LOGIN_TEST_BASELINE;
 let baseline;
 try{
-  baseline=Object.fromEntries(['hani-main.js','index.html'].map(file=>[file,preservationDir?fs.readFileSync(path.join(preservationDir,file),'utf8'):execFileSync('git',['show','origin/main:'+file],{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024})]));
+  baseline=Object.fromEntries(['hani-main.js','index.html'].map(file=>[file,preservationDir?fs.readFileSync(path.join(preservationDir,file),'utf8'):readBranchBaseline(file)]));
 }catch(error){
   if(preservationDir||!['ENOENT','EPERM','EACCES'].includes(error.code))throw error;
   console.warn('SKIP login preservation checks: git unavailable for execution ('+error.code+'); runtime/DOM/contrast checks passed.');
