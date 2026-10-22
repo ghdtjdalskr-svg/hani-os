@@ -15,7 +15,6 @@
   },
   "staff": {
     "hani": {
-      "file": "../desk-mascots/hani.webp",
       "floor": "4f",
       "anchor": "office_hani",
       "offset": [
@@ -24,7 +23,6 @@
       ]
     },
     "yuna": {
-      "file": "../desk-mascots/yuna.webp",
       "floor": "4f",
       "anchor": "desk_yuna",
       "offset": [
@@ -33,7 +31,6 @@
       ]
     },
     "jieun": {
-      "file": "../desk-mascots/jieun.webp",
       "floor": "2f",
       "anchor": "finance-a",
       "offset": [
@@ -42,7 +39,6 @@
       ]
     },
     "haru": {
-      "file": "../desk-mascots/haru.webp",
       "floor": "2f",
       "anchor": "finance-b",
       "offset": [
@@ -51,7 +47,6 @@
       ]
     },
     "naeun": {
-      "file": "../desk-mascots/naeun.webp",
       "floor": "2f",
       "anchor": "life-a",
       "offset": [
@@ -60,7 +55,6 @@
       ]
     },
     "hina": {
-      "file": "../desk-mascots/hina.webp",
       "floor": "2f",
       "anchor": "life-b",
       "offset": [
@@ -69,7 +63,6 @@
       ]
     },
     "minji": {
-      "file": "../desk-mascots/minji.webp",
       "floor": "2f",
       "anchor": "life-c",
       "offset": [
@@ -78,7 +71,6 @@
       ]
     },
     "sooyeon": {
-      "file": "../desk-mascots/sooyeon.webp",
       "floor": "2f",
       "anchor": "life-d",
       "offset": [
@@ -87,7 +79,6 @@
       ]
     },
     "sua": {
-      "file": "../desk-mascots/sua.webp",
       "floor": "1f",
       "anchor": "business-west",
       "offset": [
@@ -96,7 +87,6 @@
       ]
     },
     "seoyun": {
-      "file": "../desk-mascots/seoyun.webp",
       "floor": "3f",
       "anchor": "dev-lead",
       "offset": [
@@ -105,7 +95,6 @@
       ]
     },
     "dohyun": {
-      "file": "../desk-mascots/dohyun.webp",
       "floor": "3f",
       "anchor": "dev-build",
       "offset": [
@@ -114,7 +103,6 @@
       ]
     },
     "serin": {
-      "file": "../desk-mascots/serin.webp",
       "floor": "3f",
       "anchor": "dev-research",
       "offset": [
@@ -123,7 +111,6 @@
       ]
     },
     "yuri": {
-      "file": "../desk-mascots/yuri.webp",
       "floor": "3f",
       "anchor": "dev-qa",
       "offset": [
@@ -132,7 +119,6 @@
       ]
     },
     "arin": {
-      "file": "../desk-mascots/arin.webp",
       "floor": "3f",
       "anchor": "dev-design",
       "offset": [
@@ -141,7 +127,6 @@
       ]
     },
     "gaeun": {
-      "file": "../desk-mascots/gaeun.webp",
       "floor": "4f",
       "anchor": "secretary_desk",
       "offset": [
@@ -150,7 +135,6 @@
       ]
     },
     "taeo": {
-      "file": "../desk-mascots/taeo.webp",
       "floor": "1f",
       "anchor": "business-east",
       "offset": [
@@ -159,7 +143,6 @@
       ]
     },
     "daon": {
-      "file": "../desk-mascots/daon.webp",
       "floor": "2f",
       "anchor": "desk_daon",
       "offset": [
@@ -168,7 +151,6 @@
       ]
     },
     "yoonseul": {
-      "file": "../desk-mascots/yoonseul.webp",
       "floor": "2f",
       "anchor": "desk_yoonseul",
       "offset": [
@@ -177,7 +159,6 @@
       ]
     },
     "mir": {
-      "file": "../desk-mascots/mir.webp",
       "floor": "4f",
       "anchor": "mir_station",
       "offset": [
