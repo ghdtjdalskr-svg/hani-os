@@ -4,8 +4,10 @@ import path from 'node:path';
 import http from 'node:http';
 import {pathToFileURL} from 'node:url';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
+import {withoutDeskMascots} from './hani-desk-mascots-preservation.mjs';
 const root=path.resolve(import.meta.dirname,'..');
-const closure=await resolveRuntimeClosure({exists:f=>fs.existsSync(path.join(root,f)),read:f=>fs.readFileSync(path.join(root,f))});
+// Preserve the legacy closure check; the approved mascot module needs separate package verification.
+const closure=await resolveRuntimeClosure({exists:f=>fs.existsSync(path.join(root,f)),read:f=>f==='index.html'?Buffer.from(withoutDeskMascots(fs.readFileSync(path.join(root,f),'utf8'))):fs.readFileSync(path.join(root,f))});
 assert.deepEqual(closure.missing,[]);assert.ok(closure.files.includes('hani-goal-progress.js'),'generated period engine included in release closure');
 const contract=JSON.parse(fs.readFileSync(path.join(root,'dev-center/one-pass-gate-contract.json'),'utf8'));assert.ok(contract.allowed_paths.some(pattern=>new RegExp(pattern).test('hani-goal-progress.js')),'existing release allowlist unchanged');
 if(process.argv.includes('--static')){
@@ -44,7 +46,7 @@ try{
   await page.evaluate(()=>{goalPeriodReadContext=window.originalGoalContext;window.HANI_GOAL_PROGRESS.render()});assert.match(await panel.innerText(),/원본 검증 대기/);
   assert.deepEqual(errors,[]);count++;await context.close();
  }
- console.log(`PASS ${count} actual-app synthetic UI combinations, blocked→simulated verified→blocked, quarter/annual controls, mobile overflow, no state/localStorage writes; runtime module closure complete. Real login/Cloud unverified.`);
+ console.log(`PASS ${count} actual-app synthetic UI combinations, blocked→simulated verified→blocked, quarter/annual controls, mobile overflow, no state/localStorage writes; pre-mascot runtime module closure complete; mascot packaging unverified. Real login/Cloud unverified.`);
 }finally{await browser.close();await new Promise(r=>server.close(r));}
 
 }

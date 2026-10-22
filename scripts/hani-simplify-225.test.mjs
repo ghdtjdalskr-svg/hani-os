@@ -1,19 +1,18 @@
 import {withoutHeroRestore} from './hani-hero-restore-preservation.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import fs from 'node:fs';
 import vm from 'node:vm';
 import crypto from 'node:crypto';
 import {delta as originalDelta,withoutSimplify225} from './hani-simplify-225-preservation.mjs';
 import {withoutSettings225} from './hani-settings-225-preservation.mjs';
-import {readReviewedReleaseBaseline} from './hani-reviewed-release-baseline.mjs';
+import {readReviewedReleaseBaseline,readReviewedCurrentSource} from './hani-reviewed-release-baseline.mjs';
 // Oracle starts at release225; later changes are individually allow-listed.
 const delta={...originalDelta,files:Object.fromEntries(Object.entries(originalDelta.files).map(([file,entry])=>{
  const source=withoutSettings225(file,withoutHeroRestore(file,readReviewedReleaseBaseline(file)));
  const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
  return [file,{...entry,afterHash:hash(source),beforeHash:hash(withoutSimplify225(file,source))}];
 }))};
-const read=f=>withoutSettings225(f,withoutHeroRestore(f,fs.readFileSync(new URL('../'+f,import.meta.url),'utf8')));
+const read=f=>withoutSettings225(f,withoutHeroRestore(f,readReviewedCurrentSource(f)));
 const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
 const collect=(s,re)=>[...s.matchAll(re)].map(m=>m[0]).sort();
 test('approved presentation hunks preserve all other bytes and untouched mixed EOL in nine source owners',()=>{

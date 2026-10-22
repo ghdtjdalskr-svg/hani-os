@@ -1,4 +1,4 @@
-import {readReviewedReleaseBaseline as readBranchBaseline} from './hani-reviewed-release-baseline.mjs';
+import {readReviewedReleaseBaseline as readBranchBaseline,readReviewedCurrentSource} from './hani-reviewed-release-baseline.mjs';
 // Real index + existing renderers/handlers, isolated synthetic origin. No account or external IO.
 // node scripts/hani-settings-225.test.mjs [playwright/index.mjs] [Edge executable]
 import {withoutHeroRestore} from './hani-hero-restore-preservation.mjs';
@@ -21,7 +21,7 @@ const args=process.argv.slice(2).filter(arg=>!arg.startsWith('--'));
 const pw=args[0]||'C:/Users/홍성민/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs';
 const executablePath=args[1]||'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
 const root=path.resolve(import.meta.dirname,'..'),out=path.join(root,'artifacts/settings-225'),origin='http://hani-settings-225.local';
-const read=f=>fs.readFileSync(path.join(root,f),'utf8'),hash=s=>crypto.createHash('sha256').update(s).digest('hex');
+const read=readReviewedCurrentSource,hash=s=>crypto.createHash('sha256').update(s).digest('hex');
 const result={status:'RUNNING',base:settingsDelta.base,checks:[],handlers:[],mapping:[],screenshots:[],errors:[]};
 const check=(label)=>result.checks.push(label);
 fs.mkdirSync(out,{recursive:true});

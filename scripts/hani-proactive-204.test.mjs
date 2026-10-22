@@ -1,3 +1,4 @@
+import {readReviewedCurrentSource} from './hani-reviewed-release-baseline.mjs';
 import {readBranchBaseline} from './hani-regression-baseline.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -159,7 +160,7 @@ test('unchanged lines preserve exact EOL and protected versions/keys; no added d
  // Merged HEAD contains EOL drift; origin/main retains the original byte baseline.
  const baseline=process.env.HANI_PROACTIVE_TEST_BASELINE;
  for(const file of ['hani-main.js','index.html']){
-  const old=baseline?fs.readFileSync(path.join(baseline,file),'utf8'):readBranchBaseline(file),current=fs.readFileSync(path.join(root,file),'utf8');
+  const old=baseline?fs.readFileSync(path.join(baseline,file),'utf8'):readBranchBaseline(file),current=readReviewedCurrentSource(file);
   const lines=s=>s.match(/[^\r\n]*(?:\r\n|\n|\r|$)/g).filter(Boolean);
   // Every untouched line keeps its original terminator, including unique mixed-EOL anchors.
   const a=lines(old),b=lines(current),byText=new Map();for(const l of a){const t=l.replace(/[\r\n]+$/,'');if(!byText.has(t))byText.set(t,new Set());byText.get(t).add(l.slice(t.length));}

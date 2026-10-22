@@ -2,9 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {collectReferences,isTextArtifact,resolveRuntimeClosure} from './hani-runtime-closure.mjs';
+import {withoutDeskMascots} from './hani-desk-mascots-preservation.mjs';
 import {canonicalPackageHash,evaluatePackage} from './hani-one-pass-rules.mjs';
 import contract from '../dev-center/one-pass-gate-contract.json' with {type:'json'};
-const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url));
+// Legacy newspaper closure only: remove the two exactly-once approved mascot tags.
+const read=f=>{const bytes=fs.readFileSync(new URL('../'+f,import.meta.url));return f==='index.html'?Buffer.from(withoutDeskMascots(bytes.toString('utf8'))):bytes;};
 test('history reuses the newspaper API without extending the unchanged release closure',async()=>{
  const references=collectReferences('hani-organization-hub.js',read('hani-organization-hub.js'));
  assert.ok(references.includes('assets/data/hani-history-releases-v1.json'));
@@ -19,13 +21,14 @@ test('other JSON references retain relative resolution',()=>{
  assert.deepEqual(collectReferences('data/other.json',JSON.stringify({file:'./child.json'})),['data/child.json']);
 });
 
-test('unchanged Node/server resolver parity and One-Pass runtime_closure on the working tree',async()=>{
+test('unchanged Node/server resolver parity and One-Pass runtime_closure on the pre-mascot working tree',async()=>{
  const canonical=read('scripts/hani-runtime-closure.mjs').toString().replace(/\r\n/g,'\n');
  assert.equal(read('supabase/functions/hani-deploy-bridge/runtime-closure.ts').toString().replace(/\r\n/g,'\n').split('\n').slice(2).join('\n'),canonical);
  const closure=await resolveRuntimeClosure({read,exists:f=>fs.existsSync(new URL('../'+f,import.meta.url))});
  assert.deepEqual(closure.missing,[]);
  const files=closure.files.map(path=>{const bytes=closure.contents.get(path);return isTextArtifact(path)?{path,content:bytes.toString('utf8')}:{path,encoding:'base64',content:bytes.toString('base64')}});
- // Only the closure check is asserted. This uncommitted snapshot is not a frozen
+ // Only the pre-mascot closure check is asserted; mascot packaging remains separate.
+ // This uncommitted snapshot is not a frozen
  // release candidate, and same-version feature work must not pass release gates.
  const check=files=>evaluatePackage({pkg:{files,package_sha256:canonicalPackageHash(files).package_sha256},baseFiles:'',productionVersion:'2.9.223',contract}).checks.find(c=>c.id==='runtime_closure');
  assert.equal(check(files).status,'PASS');

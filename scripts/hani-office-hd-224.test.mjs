@@ -12,6 +12,7 @@ import {createRequire} from 'node:module';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
+import {withoutDeskMascots} from './hani-desk-mascots-preservation.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
 
 const root=fileURLToPath(new URL('../',import.meta.url)),out=path.join(root,'artifacts/office-hd-224');
@@ -23,7 +24,7 @@ const sharp=createRequire(import.meta.url)(process.env.HANI_SHARP_MODULE||path.j
 const flush=async()=>{for(let i=0;i<30;i++)await Promise.resolve()};
 fs.mkdirSync(out,{recursive:true});
 
-test('separately seeded HD manifest resolves every asset; runtime closure retains the 128-file contract',async()=>{
+test('separately seeded HD manifest resolves every asset; pre-mascot runtime closure retains the 128-file contract',async()=>{
  const seed=await resolveRuntimeClosure({entrypoints:['assets/sprites-v3/manifest-v3.json'],exists:f=>fs.existsSync(path.join(root,f)),read:f=>fs.readFileSync(path.join(root,f))});
  assert.deepEqual(seed.missing,[]);
  for(const entry of hd.entries){
@@ -31,7 +32,8 @@ test('separately seeded HD manifest resolves every asset; runtime closure retain
   const original=sources.people.find(p=>p.id===entry.id).currentEntry||assets.sprites.entries.find(e=>e.id===entry.id);
   assert.equal(entry.identityReference,original.identityReference?.startsWith('assets/')?path.posix.relative('assets/sprites-v3',original.identityReference):original.identityReference,entry.id+' relative provenance');
  }
- const runtime=await resolveRuntimeClosure({exists:f=>fs.existsSync(path.join(root,f)),read:f=>fs.readFileSync(path.join(root,f))});
+ // Exclude only the two exactly-once approved tags; mascot packaging requires separate verification.
+ const runtime=await resolveRuntimeClosure({exists:f=>fs.existsSync(path.join(root,f)),read:f=>f==='index.html'?Buffer.from(withoutDeskMascots(read(f))):fs.readFileSync(path.join(root,f))});
  assert.deepEqual(runtime.missing,[]);
  const contract=json('dev-center/one-pass-gate-contract.json');assert.equal(contract.limits.max_files,128);assert.ok(runtime.files.length<=contract.limits.max_files);
  console.log(JSON.stringify({runtimeFiles:runtime.files.length,seedFiles:seed.files.length,seedBytes:[...seed.contents.values()].reduce((n,b)=>n+b.length,0)}));

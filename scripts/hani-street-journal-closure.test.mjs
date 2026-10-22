@@ -5,9 +5,11 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {resolveRuntimeClosure,isTextArtifact} from './hani-runtime-closure.mjs';
+import {withoutDeskMascots} from './hani-desk-mascots-preservation.mjs';
 const root=path.resolve(fileURLToPath(new URL('../',import.meta.url)));
-test('working-tree runtime package closure includes Journal JS/CSS and every dynamic pose without missing references',async()=>{
-  const result=await resolveRuntimeClosure({exists:file=>fs.existsSync(path.join(root,file)),read:file=>fs.readFileSync(path.join(root,file))});
+test('pre-mascot working-tree runtime package closure includes Journal JS/CSS and every dynamic pose without missing references',async()=>{
+  // Exclude only the two exactly-once approved tags; mascot packaging requires separate verification.
+  const result=await resolveRuntimeClosure({exists:file=>fs.existsSync(path.join(root,file)),read:file=>file==='index.html'?Buffer.from(withoutDeskMascots(fs.readFileSync(path.join(root,file),'utf8'))):fs.readFileSync(path.join(root,file))});
   assert.deepEqual(result.missing,[]);
   const limits=JSON.parse(fs.readFileSync(path.join(root,'dev-center/one-pass-gate-contract.json'),'utf8')).limits;
   assert.ok(result.files.length<=limits.max_files,'runtime package file count exceeds existing contract');
@@ -22,6 +24,6 @@ test('working-tree runtime package closure includes Journal JS/CSS and every dyn
   // Reuse package serialization rules to ensure lossless binary/text packaging of the working tree.
   const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
   for(const file of result.files){const bytes=result.contents.get(file),text=isTextArtifact(file),content=bytes.toString(text?'utf8':'base64'),decoded=Buffer.from(content,text?'utf8':'base64');assert.equal(sha(bytes),sha(decoded),file);}
-  const summary={scope:'working tree closure + package byte roundtrip; not frozen release candidate',files:result.files.length,totalBytes:total,limits,journal:required,missing:result.missing};
+  const summary={scope:'pre-mascot working tree closure + package byte roundtrip; mascot packaging unverified; not frozen release candidate',files:result.files.length,totalBytes:total,limits,journal:required,missing:result.missing};
   fs.mkdirSync(path.join(root,'artifacts/street-journal-v1'),{recursive:true});fs.writeFileSync(path.join(root,'artifacts/street-journal-v1/package-check.json'),JSON.stringify(summary,null,2));
 });

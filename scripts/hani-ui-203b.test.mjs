@@ -1,3 +1,4 @@
+import {readReviewedCurrentSource} from './hani-reviewed-release-baseline.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
@@ -77,7 +78,7 @@ for(const match of css.matchAll(/--report-tab-accent:(#[0-9a-f]{6});--report-tab
 assert.equal(colorPairs,6,'three report accents in light and dark palettes');
 // Verify every retained mixed-EOL line byte-for-byte against the base, including changed line endings.
 for(const file of ['hani-main.js','index.html']){
-  const base=baselineFile(file),current=read(file),lines=s=>s.match(/[^\n]*(?:\n|$)/g).filter(Boolean);
+  const base=baselineFile(file),current=readReviewedCurrentSource(file),lines=s=>s.match(/[^\n]*(?:\n|$)/g).filter(Boolean);
   const oldLines=lines(base),newLines=lines(current),oldByText=new Map(),ambiguous=new Set();
   for(const line of oldLines){const text=line.replace(/\r?\n$/,'');if(oldByText.has(text)&&oldByText.get(text)!==line)ambiguous.add(text);oldByText.set(text,line)}
   for(const text of ambiguous)oldByText.delete(text);

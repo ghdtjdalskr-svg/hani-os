@@ -1,13 +1,13 @@
 // Synthetic text/JSON only. Measures local extraction mapping, not live vision quality.
 import assert from 'node:assert/strict';
-import {readReleaseSource,readReviewedReleaseBaseline} from './hani-reviewed-release-baseline.mjs';
+import {readReleaseSource,readReviewedReleaseBaseline,readReviewedCurrentSource} from './hani-reviewed-release-baseline.mjs';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import test from 'node:test';
 import crypto from 'node:crypto';
 import {stripTypeScriptTypes} from 'node:module';
 import {pathToFileURL,fileURLToPath} from 'node:url';
-const read=p=>fs.readFileSync(new URL('../'+p,import.meta.url),'utf8');
+const read=readReviewedCurrentSource;
 const source=read('hani-asset-update-v1.js'),main=read('hani-main.js'),edge=read('supabase/functions/hani-agent-orchestrator/index.ts'),corpus=JSON.parse(read('scripts/fixtures/ocr-accuracy-224/corpus.json')),baseline=read('scripts/fixtures/ocr-accuracy-224/baseline-parser.js');
 const sha=s=>crypto.createHash('sha256').update(s).digest('hex');
 function load(script,key='HANI_ASSET_UPDATE_V1'){const context={window:{},document:{getElementById:()=>null},structuredClone,console,uid:()=> 'synthetic',nullableNum:v=>v==null||v===''?null:Number(v),inferMarket:(t,m)=>m||'KR'};vm.createContext(context);vm.runInContext(main.split(/\r?\n/).find(l=>l.startsWith('function normalizeBrokerHolding(')),context);vm.runInContext(script,context);return context.window[key]}
