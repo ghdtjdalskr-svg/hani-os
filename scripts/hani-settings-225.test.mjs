@@ -1,4 +1,4 @@
-import {readBranchBaseline} from './hani-regression-baseline.mjs';
+import {readReviewedReleaseBaseline as readBranchBaseline} from './hani-reviewed-release-baseline.mjs';
 // Real index + existing renderers/handlers, isolated synthetic origin. No account or external IO.
 // node scripts/hani-settings-225.test.mjs [playwright/index.mjs] [Edge executable]
 import {withoutHeroRestore} from './hani-hero-restore-preservation.mjs';
@@ -14,7 +14,7 @@ import {verifySettingsMarkup} from './hani-settings-225-markup.mjs';
 const require=createRequire(import.meta.url);
 // Preserve all integrated bytes except the exact separately reviewed hero delta.
 const settingsDelta={...originalDelta,files:Object.fromEntries(Object.entries(originalDelta.files).map(([file,entry])=>{
- const source=readBranchBaseline(file),hash=s=>crypto.createHash('sha256').update(s).digest('hex');
+ const source=withoutHeroRestore(file,readBranchBaseline(file)),hash=s=>crypto.createHash('sha256').update(s).digest('hex');
  return [file,{...entry,afterHash:hash(source),beforeHash:hash(withoutSettings225(file,source))}];
 }))};
 const args=process.argv.slice(2).filter(arg=>!arg.startsWith('--'));

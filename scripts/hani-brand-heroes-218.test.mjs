@@ -4,11 +4,11 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import path from 'node:path';
-import {readBranchBaseline} from './hani-regression-baseline.mjs';
+import {readReviewedReleaseBaseline as readBranchBaseline} from './hani-reviewed-release-baseline.mjs';
 const root=path.resolve(import.meta.dirname,'..'),read=f=>withoutHeroRestore(f,fs.readFileSync(path.join(root,f),'utf8'));
 const main=read('hani-main.js'),ui=read('hani-ui-v02992.js'),html=read('index.html');
 // The integrated branch base already owns approved settings, photo and launch UI.
-const baseline=readBranchBaseline;
+const baseline=file=>withoutHeroRestore(file,readBranchBaseline(file));
 
 test('canonical company names and legacy search aliases resolve to unchanged routes',()=>{
   const ctx=vm.createContext({});

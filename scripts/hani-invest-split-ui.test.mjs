@@ -26,7 +26,7 @@ try{
     await page.waitForFunction(()=>!!window.HaniInvestmentCommittee&&!!document.querySelector('#investmentCommittee .ic-section-tabs'));
     await page.evaluate(()=>{unlockLoginGate();showView(location.hash.slice(1));});
     await page.waitForFunction(()=>document.querySelector('#investmentCommittee > .ds-main-character-banner')&&document.querySelector('#icMonthly:not([hidden])'));
-    assert.equal(await page.locator('#investmentCommittee [role=tab]').count(),2);
+    assert.deepEqual(await page.locator('#investmentCommittee [role=tab]').evaluateAll(nodes=>nodes.map(n=>[n.textContent,n.getAttribute('aria-controls')])),[['종목 리포트','icResearch'],['월간 리포트','icMonthly'],['스트리트 저널','icStreetJournal']]);
     assert.equal(await page.locator('#investmentCommittee > .ds-main-character-banner .ds-main-character-banner__scene img').count(),1);
     const finance=await page.locator('#sidebar [data-color=finance] .nav-btn').evaluateAll(nodes=>nodes.map(n=>n.dataset.view));
     assert.deepEqual(finance,['investment','investmentCommittee','investmentIntake','asset','ledger','newsroom']);
