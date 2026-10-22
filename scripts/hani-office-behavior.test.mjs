@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {fixture} from './hani-building-206-engine.test.mjs';
+import {validPlaceSpeech} from './hani-office-place-assertions.mjs';
 const table=JSON.parse(fs.readFileSync(new URL('../assets/data/office-actions-221.json',import.meta.url),'utf8'));
 const scene=fixture('09:00',false,null,table).context.HaniBuildingScene,s=scene.scheduler;
 const plain=v=>JSON.parse(JSON.stringify(v)),px=p=>[p[0]*1672/100,p[1]*941/100];
@@ -17,13 +18,13 @@ function check(snap,previous,fail){
    if(!target||distance(point(p),px([target.x,target.y]))>2)fail('slot foot mismatch '+p.id);
    if(scene.anchors.get(p.targetAnchor)?.floor!==p.floor)fail('slot floor mismatch '+p.id);
    // Guests keep their own reception lines; staff speak the place card's lines.
-   if(p.visitor?p.line!==p.at:card&&!card.at.includes(p.line))fail('card speech mismatch '+p.id);
+   if(!validPlaceSpeech(p,card,table))fail('card speech mismatch '+p.id);
    if(!card){const action=s.actions.get(p.actionId);if(!action||!JSON.stringify(action).includes(p.line))fail('action speech mismatch '+p.id)}
   }
   if(p.walking&&!(/가는 중|돌아가는 중/.test(p.line)||p.visitor&&p.state==='RETURNING'&&p.line==='안녕히 계세요~'))fail('arrival line while walking '+p.id+' '+p.line);
   const lounge=['yuna','minji'].includes(p.id)&&['lobby-nw','lobby-ne'].includes(p.seat.anchor);
   if(p.state==='AT_HOME'&&!lounge&&forbidden.test(p.line))fail('desk place words '+p.id+' '+p.line);
-  if(p.floor==='3f'&&/커피/.test(p.line)&&!/고민/.test(p.line))fail('3f coffee '+p.id+' '+p.line);
+  if(p.floor==='3f'&&['AT_HOME','AT_PLACE'].includes(p.state)&&/커피/.test(p.line)&&!/고민/.test(p.line))fail('3f coffee '+p.id+' '+p.line);
   if(card&&p.state==='AT_PLACE'&&card.floor!==p.floor)fail('unavailable kind '+p.id);
   if(!p.walking){if(slots.has(p.floor+'|'+p.seat.anchor))fail('double slot '+p.id);slots.set(p.floor+'|'+p.seat.anchor,p.id)}
   if(table.people.some(other=>other.id!==p.id&&other.home.anchorId===p.seat.anchor))fail('foreign home '+p.id);

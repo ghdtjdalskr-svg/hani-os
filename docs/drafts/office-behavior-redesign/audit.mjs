@@ -4,6 +4,7 @@ import {pathToFileURL} from 'node:url';
 const repo=process.argv[2];
 const {fixture}=await import(pathToFileURL(repo+'/scripts/hani-building-206-engine.test.mjs'));
 const table=JSON.parse(fs.readFileSync(repo+'/assets/data/office-actions-221.json','utf8'));
+const {validPlaceSpeech}=await import(pathToFileURL(repo+'/scripts/hani-office-place-assertions.mjs'));
 const scene=fixture('09:00',false,null,table).context.HaniBuildingScene,s=scene.scheduler,art=scene.art,W=art.width||1672,H=art.height||941;
 const px=p=>[p[0]*W/100,p[1]*H/100];
 // 1. canon edges whose ends share one screen point (walk time with no visible motion)
@@ -26,7 +27,7 @@ for(let t=Date.parse('2026-10-22T08:00:00+09:00');t<Date.parse('2026-10-22T23:00
       else if(p.state==='AT_HOME')wrong=!lounge&&/창밖|창가|화이트보드|소파|팬트리|커피 내리|화분|라운지/.test(p.line);
       else if(p.state==='AT_PLACE'){
         const target=scene.art.anchors[p.targetAnchor],pos=px(p.position||[p.seat.x,p.seat.y]);
-        wrong=!target||Math.hypot(pos[0]-target.x*W/100,pos[1]-target.y*H/100)>2||scene.anchors.get(p.targetAnchor).floor!==p.floor||(p.visitor?p.line!==p.at:!!card&&!card.at.includes(p.line));
+        wrong=!target||Math.hypot(pos[0]-target.x*W/100,pos[1]-target.y*H/100)>2||scene.anchors.get(p.targetAnchor).floor!==p.floor||!validPlaceSpeech(p,card,table);
       }
     }else wrong=placeWords.some(([word,keys])=>p.line?.includes(word)&&!/고민|가는 중/.test(p.line)&&!keys.some(k=>where.includes(k)));
     if(wrong){const k=p.line+' @ '+where.trim();if(!mismatch.has(k))mismatch.set(k,`${hh} ${p.id} ${p.walking?'(걷는 중)':''}`)}

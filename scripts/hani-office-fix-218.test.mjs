@@ -57,7 +57,7 @@ test.after(async()=>{
       const lounge=entries.filter(p=>p.activity==='rest');
       if(['19:31','23:00','02:00'].includes(time))assert.deepEqual(lounge.map(p=>p.id).sort(),['minji','yuna']);
       else assert.equal(lounge.length,0);
-      for(const p of entries){if(p.activity!=='rest'&&!p.stroll)assert.equal(p.seat.anchor,scene.homeSeat(p.id).anchor);else if(p.stroll)assert.equal(scene.anchors.get(p.seat.anchor).floor,p.home);else assert.match(p.seat.anchor,/lobby-/);assert.ok(scene.anchors.has(p.seat.anchor));assert.equal(p.actionId,'base-work');}
+      for(const p of entries){if(p.activity!=='rest'&&!p.stroll)assert.equal(p.seat.anchor,scene.homeSeat(p.id).anchor);else if(p.stroll){assert.equal(scene.anchors.get(p.seat.anchor).floor,p.floor);if(p.state==='AT_PLACE')assert.equal(scene.anchors.get(p.targetAnchor).floor,p.floor)}else assert.match(p.seat.anchor,/lobby-/);assert.ok(scene.anchors.has(p.seat.anchor));assert.equal(p.actionId,'base-work');}
       assert.equal(scene.scheduler.plan(s.day).length,0,'weekend presence never enables weekday actions');
     });
   }

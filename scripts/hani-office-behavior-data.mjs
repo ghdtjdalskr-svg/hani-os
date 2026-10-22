@@ -1,5 +1,6 @@
 // Reproducible, scene-only geometry and place seed. Does not touch app data.
 import fs from 'node:fs';
+import {enrichPlaces} from './hani-office-lively-data.mjs';
 const read=p=>JSON.parse(fs.readFileSync(new URL('../'+p,import.meta.url),'utf8'));
 const write=(p,v)=>{const url=new URL('../'+p,import.meta.url),eol=fs.existsSync(url)&&fs.readFileSync(url,'utf8').includes('\r\n')?'\r\n':'\n';fs.writeFileSync(url,(JSON.stringify(v,null,2)+'\n').replaceAll('\n',eol))};
 const c=read('data/hani-building/spatial-contract.json'),a=read('data/hani-building/art-map-v1.json');
@@ -76,5 +77,5 @@ card('terrace-5f','5f','terrace','meeting',Array.from({length:6},(_,i)=>'rooftop
 const windowNames={'1f':'카페 창가','2f':'팬트리 창가','3f':'개발실 창가','4f':'복도 끝 창가'};
 for(const [floor,room]of windows)card('window-'+floor,floor,room,'window',['window_'+floor+'_1'],floor==='5f'?'옥상 전망 난간으로':windowNames[floor]+'로',[floor==='5f'?'옥상 전망 난간에서 풍경 보는 중':windowNames[floor]+'에서 창밖 구경 중']);
 // The spatial contract itself is never rewritten here (it stays byte-identical to main).
-write('data/hani-building/art-map-v1.json',a);write('data/hani-building/office-places.json',{schemaVersion:'office-places-v1',anchors:extraAnchors,edges:extraEdges,art:extraArt,places});
+write('data/hani-building/art-map-v1.json',a);write('data/hani-building/office-places.json',enrichPlaces({schemaVersion:'office-places-v1',anchors:extraAnchors,edges:extraEdges,art:extraArt,places}));
 console.log({places:places.length,windows:windows.map(w=>'window_'+w[0]+'_1')});

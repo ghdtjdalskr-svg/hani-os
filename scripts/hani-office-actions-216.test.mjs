@@ -6,6 +6,7 @@ import crypto from 'node:crypto';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {runtimeTable} from './hani-office-actions-216-data.mjs';
+import {assertResources} from './hani-office-place-assertions.mjs';
 const read=p=>fs.readFileSync(new URL('../'+p,import.meta.url),'utf8');
 const table=JSON.parse(read('assets/data/office-actions-216.json')),catalog=JSON.parse(read('docs/design/office-actions-v1.3.json'));
 const source=read('hani-office-live.js'),plain=x=>JSON.parse(JSON.stringify(x));
@@ -50,7 +51,7 @@ test('120 deterministic simulated days enforce all shared caps, cooldowns, paren
       }
       for(const other of plan.slice(0,i))if(collision(e,other)){
         assert.ok(!other.people.some(p=>e.people.some(q=>q.id===p.id)),'actor double-booked');
-        assert.ok(!other.resources.some(id=>e.resources.includes(id)),'anchor/door/elevator double-booked');
+        assertResources(scheduler,e,other);
         if(e.layer===other.layer&&[2,3].includes(e.layer))assert.ok(!e.floors.some(f=>other.floors.includes(f)),'floor cap');
       }
       if(table.rules.hinaBalance.teacherActionIds.includes(a.id))teachers++;
@@ -77,7 +78,7 @@ test('KST seed, day boundaries, chairman identity/presence, MIR limits and indep
 
 test('every one of the 97 scheduled core rows is reachable; base-work remains the default 98th row',()=>{
   const seen=new Set();let days=0;
-  for(;days<730&&seen.size<97;days++){
+  for(;days<208&&seen.size<97;days++){
     const day=new Date(base+days*86400000+32400000).toISOString().slice(0,10);
     for(const event of scheduler.plan(day,{chairmanPresent:true}))seen.add(event.actionId);
   }

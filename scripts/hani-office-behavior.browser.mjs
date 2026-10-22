@@ -54,7 +54,11 @@ try{
       if(actor.dataset.behavior!==model.state||actor.dataset.line!==model.line)errors.push('DOM/model state/speech '+p.id);
       if(model.state==='AT_PLACE'&&(!target||Math.hypot(p.x-target.x*16.72,p.y-target.y*9.41)>2))errors.push('place foot '+p.id);
       // Guests keep their own reception lines; staff speak the place card's lines.
-      const card=scene.places.find(c=>c.id===model.placeId);if(model.state==='AT_PLACE'&&(model.visitor?actor.dataset.line!==model.at:card&&!card.at.includes(actor.dataset.line)))errors.push('place speech '+p.id);
+      const card=scene.places.find(c=>c.id===model.placeId);if(model.state==='AT_PLACE'){
+       const pool=card?[...card.at,...(card.atByPerson?.[p.id]||[])]:[];
+       const groupOk=model.groupIds?.length&&model.groupIds.filter(id=>id!==p.id).every(id=>actor.dataset.line.includes(scene.canon.people.find(p=>p.id===id)?.name||'__missing_person__'))&&actor.dataset.line.includes(card.at[0].split('에서')[0]+'에서');
+       if(model.visitor?actor.dataset.line!==model.at:card&&!(pool.includes(actor.dataset.line)||groupOk))errors.push('place speech '+p.id);
+      }
       if(p.walking&&!(/가는 중|돌아가는 중/.test(actor.dataset.line)||model.visitor&&model.state==='RETURNING'&&actor.dataset.line==='안녕히 계세요~'))errors.push('walking speech '+p.id);
      }
      for(let i=0;i<list.length;i++)for(let j=i+1;j<list.length;j++){const a=list[i],b=list[j];if(Math.hypot(a.x-b.x,a.y-b.y)<(a.walking||b.walking?24:20)-.01)errors.push('DOM proximity '+a.id+'/'+b.id)}
