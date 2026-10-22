@@ -2,7 +2,7 @@
 
 - 작성: Claude Code (본사 행동·이동 설계 담당 세션), 2026-10-23 KST
 - 브랜치: `hani/office-behavior-redesign` (기준 `origin/main` = `ad3c2f3`)
-- 상태: **설계 초안 · 성민 회장님 승인 대기**. 코드 변경 없음.
+- 상태: **승인됨(2026-10-23, 추천안: 창가 새 자리+아린 리뷰, 방문객 포함) → 구현 `ce6b657`, 탑승 대기**. 결과는 `docs/development-history/handoffs/2026-10-23-office-behavior-redesign.md`.
 - 2차 의견: GPT gpt-6-astra 독립 분석(서윤 팀장님 전달, 읽기 전용) — 결론이 이 문서와 같은 방향이라 함께 반영함.
 
 ## 0. 기준선 확인

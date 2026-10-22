@@ -16,10 +16,23 @@ for(let t=Date.parse('2026-10-22T08:00:00+09:00');t<Date.parse('2026-10-22T23:00
   const snap=s.snapshot(new Date(t)),hh=new Date(t+32400000).toISOString().slice(11,19);
   for(const p of [...snap.entries,...snap.visitors]){
     const a=scene.anchors.get(p.seat.anchor),where=(a?.id||'')+' '+(a?.room||'')+' '+(a?.type||'');
-    for(const [word,keys] of placeWords)if(p.line?.includes(word)&&!/고민|가는 중/.test(p.line)&&!keys.some(k=>where.includes(k))){const k=p.line+' @ '+where.trim();if(!mismatch.has(k))mismatch.set(k,`${hh} ${p.id} ${p.walking?'(걷는 중)':''}`)}
+    // New scheduler: validate semantic place identity, not English substrings in
+    // legacy anchor IDs (e.g. lobby-nw is a genuine café lounge chair).
+    let wrong=false;
+    if(p.state){
+      const card=scene.places.find(c=>c.id===p.placeId),lounge=['yuna','minji'].includes(p.id)&&['lobby-nw','lobby-ne'].includes(p.seat.anchor);
+      // Guests use their own reception lines (go/at, then a goodbye while leaving).
+      if(p.walking)wrong=!(/가는 중|돌아가는 중/.test(p.line)||p.visitor&&p.state==='RETURNING'&&p.line==='안녕히 계세요~');
+      else if(p.state==='AT_HOME')wrong=!lounge&&/창밖|창가|화이트보드|소파|팬트리|커피 내리|화분|라운지/.test(p.line);
+      else if(p.state==='AT_PLACE'){
+        const target=scene.art.anchors[p.targetAnchor],pos=px(p.position||[p.seat.x,p.seat.y]);
+        wrong=!target||Math.hypot(pos[0]-target.x*W/100,pos[1]-target.y*H/100)>2||scene.anchors.get(p.targetAnchor).floor!==p.floor||(p.visitor?p.line!==p.at:!!card&&!card.at.includes(p.line));
+      }
+    }else wrong=placeWords.some(([word,keys])=>p.line?.includes(word)&&!/고민|가는 중/.test(p.line)&&!keys.some(k=>where.includes(k)));
+    if(wrong){const k=p.line+' @ '+where.trim();if(!mismatch.has(k))mismatch.set(k,`${hh} ${p.id} ${p.walking?'(걷는 중)':''}`)}
     const pos=px(p.position||[p.seat.x,p.seat.y]),prev=last.get(p.id);
-    if(p.walking&&prev&&Math.hypot(prev[0]-pos[0],prev[1]-pos[1])<1){const k=p.id+' '+p.seat.anchor;stuck.set(k,(stuck.get(k)||0)+1)}
-    last.set(p.id,pos);
+    if(p.walking&&prev?.walking&&prev.floor===p.floor&&prev.state===p.state&&Math.hypot(prev.pos[0]-pos[0],prev.pos[1]-pos[1])<.5){const k=p.id+' '+p.seat.anchor;stuck.set(k,(stuck.get(k)||0)+1)}
+    last.set(p.id,{pos,walking:p.walking,floor:p.floor,state:p.state});
   }
   const all=[...snap.entries,...snap.visitors];
   for(let i=0;i<all.length;i++)for(let j=i+1;j<all.length;j++){const p=all[i],q=all[j];if(p.floor!==q.floor)continue;
@@ -31,3 +44,4 @@ console.log('\n[1] 화면상 제자리인 보행 구간',frozen.length);frozen.s
 console.log('\n[2] 장소 문구 vs 실제 위치 불일치',mismatch.size);[...mismatch].slice(0,25).forEach(([k,v])=>console.log(' ',v,'|',k));
 console.log('\n[3] 걷는 중인데 1초간 안 움직인 경우(사람+지점별 초)');[...stuck].sort((a,b)=>b[1]-a[1]).slice(0,10).forEach(([k,v])=>console.log(' ',k,v+'s'));
 console.log('\n[4] 같은 층 30px(1672 기준) 이내로 붙은 쌍',near.size);[...near].sort((a,b)=>a[1].d-b[1].d).slice(0,25).forEach(([k,v])=>console.log(' ',k,v.d+'px',v.hh,'|',v.spots,'|',v.lines));
+console.log('SUMMARY',JSON.stringify({snapshots:snaps,frozen:frozen.length,mismatch:mismatch.size,stuckSeconds:[...stuck.values()].reduce((a,b)=>a+b,0),near30:near.size,near24:[...near.values()].filter(p=>p.d<24).length}));
