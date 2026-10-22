@@ -1,0 +1,6 @@
+/* The floor map is the existing inline-size container. Bottom centre = desk anchor. */
+.hani-desk-mascots{position:absolute;inset:0;z-index:3;pointer-events:none}
+.hani-desk-mascots[hidden]{display:none}
+.hani-desk-mascot{position:absolute;width:max(16px,2.222222cqw);height:max(16px,2.222222cqw);max-width:none;transform:translate(-50%,-100%);object-fit:contain;image-rendering:auto;pointer-events:none;visibility:hidden;user-select:none}
+.hani-desk-mascot[data-ready="true"]{visibility:visible}
+.view:not(.active) .hani-desk-mascots{display:none}

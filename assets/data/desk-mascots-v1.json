@@ -1,0 +1,189 @@
+{
+  "schemaVersion": "desk-mascots-v1",
+  "coordinateSpace": "art-map percent; offset is from existing home anchor to figure bottom centre",
+  "referenceArt": {
+    "width": 1672,
+    "height": 941
+  },
+  "display": {
+    "source": [
+      72,
+      72
+    ],
+    "heightAt1440": 32,
+    "minHeight": 16
+  },
+  "staff": {
+    "hani": {
+      "file": "./assets/desk-mascots/hani.webp",
+      "floor": "4f",
+      "anchor": "office_hani",
+      "offset": [
+        5.57368421,
+        1.94176408
+      ]
+    },
+    "yuna": {
+      "file": "./assets/desk-mascots/yuna.webp",
+      "floor": "4f",
+      "anchor": "desk_yuna",
+      "offset": [
+        5.11722488,
+        -11.91923486
+      ]
+    },
+    "jieun": {
+      "file": "./assets/desk-mascots/jieun.webp",
+      "floor": "2f",
+      "anchor": "finance-a",
+      "offset": [
+        5.25885168,
+        4.04208289
+      ]
+    },
+    "haru": {
+      "file": "./assets/desk-mascots/haru.webp",
+      "floor": "2f",
+      "anchor": "finance-b",
+      "offset": [
+        2.78421053,
+        -9.40860786
+      ]
+    },
+    "naeun": {
+      "file": "./assets/desk-mascots/naeun.webp",
+      "floor": "2f",
+      "anchor": "life-a",
+      "offset": [
+        2.24210526,
+        -9.11636557
+      ]
+    },
+    "hina": {
+      "file": "./assets/desk-mascots/hina.webp",
+      "floor": "2f",
+      "anchor": "life-b",
+      "offset": [
+        2.29665072,
+        -9.11636557
+      ]
+    },
+    "minji": {
+      "file": "./assets/desk-mascots/minji.webp",
+      "floor": "2f",
+      "anchor": "life-c",
+      "offset": [
+        2.33062201,
+        -9.11636557
+      ]
+    },
+    "sooyeon": {
+      "file": "./assets/desk-mascots/sooyeon.webp",
+      "floor": "2f",
+      "anchor": "life-d",
+      "offset": [
+        2.38421053,
+        -9.11636557
+      ]
+    },
+    "sua": {
+      "file": "./assets/desk-mascots/sua.webp",
+      "floor": "1f",
+      "anchor": "business-west",
+      "offset": [
+        2.49808612,
+        -9.03900106
+      ]
+    },
+    "seoyun": {
+      "file": "./assets/desk-mascots/seoyun.webp",
+      "floor": "3f",
+      "anchor": "dev-lead",
+      "offset": [
+        5.60526316,
+        -6.55844846
+      ]
+    },
+    "dohyun": {
+      "file": "./assets/desk-mascots/dohyun.webp",
+      "floor": "3f",
+      "anchor": "dev-build",
+      "offset": [
+        5.70334928,
+        -6.55844846
+      ]
+    },
+    "serin": {
+      "file": "./assets/desk-mascots/serin.webp",
+      "floor": "3f",
+      "anchor": "dev-research",
+      "offset": [
+        5.80143541,
+        -6.55844846
+      ]
+    },
+    "yuri": {
+      "file": "./assets/desk-mascots/yuri.webp",
+      "floor": "3f",
+      "anchor": "dev-qa",
+      "offset": [
+        5.16889952,
+        -5.81668438
+      ]
+    },
+    "arin": {
+      "file": "./assets/desk-mascots/arin.webp",
+      "floor": "3f",
+      "anchor": "dev-design",
+      "offset": [
+        5.24641148,
+        -5.81668438
+      ]
+    },
+    "gaeun": {
+      "file": "./assets/desk-mascots/gaeun.webp",
+      "floor": "4f",
+      "anchor": "secretary_desk",
+      "offset": [
+        5.56507177,
+        -11.91923486
+      ]
+    },
+    "taeo": {
+      "file": "./assets/desk-mascots/taeo.webp",
+      "floor": "1f",
+      "anchor": "business-east",
+      "offset": [
+        2.33588517,
+        -9.03900106
+      ]
+    },
+    "daon": {
+      "file": "./assets/desk-mascots/daon.webp",
+      "floor": "2f",
+      "anchor": "desk_daon",
+      "offset": [
+        2.83301435,
+        -9.40860786
+      ]
+    },
+    "yoonseul": {
+      "file": "./assets/desk-mascots/yoonseul.webp",
+      "floor": "2f",
+      "anchor": "desk_yoonseul",
+      "offset": [
+        2.47799043,
+        -9.11636557
+      ]
+    },
+    "mir": {
+      "file": "./assets/desk-mascots/mir.webp",
+      "floor": "4f",
+      "anchor": "mir_station",
+      "offset": [
+        1.45550239,
+        -5.90520723
+      ]
+    }
+  }
+}
