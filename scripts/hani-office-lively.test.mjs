@@ -14,6 +14,11 @@ test('evening mixes playful statuses and short same-floor strolls; reduced motio
   for(let t=Date.parse('2026-10-21T19:00:00+09:00');t<Date.parse('2026-10-21T19:30:00+09:00');t+=1000)for(const p of s.snapshot(new Date(t)).entries){lines.add(p.line);if(p.stroll&&p.walking)strolls++}
   for(const playful of ['몰래 인스타 순찰 중','간식 서랍 점검 중','옆자리랑 수다 중'])assert.ok(lines.has(playful),playful);
   assert.ok(lines.has('퇴근 준비 중'),'time-of-day flavour kept');assert.ok(strolls>0,'strolls happen');
+  // About a third to half of a floor is busy at once; plain base work is dot-only and never repeats a busy line.
+  let busy=0,total=0,dups=0;
+  for(let t=Date.parse('2026-10-21T14:00:00+09:00');t<Date.parse('2026-10-21T14:20:00+09:00');t+=1000){const entries=s.snapshot(new Date(t)).entries.filter(p=>p.id!=='mir');total+=entries.length;busy+=entries.filter(p=>!p.plain).length;
+    for(const floor of ['1f','2f','3f','4f']){const shown=entries.filter(p=>p.floor===floor&&!p.plain).map(p=>p.line);if(new Set(shown).size!==shown.length)dups++}}
+  assert.ok(busy/total>=.3&&busy/total<=.65,'busy share '+busy/total);assert.ok(dups/(1200*4)<.02,'repeated busy lines '+dups);
   const at=new Date('2026-10-21T19:10:00+09:00'),calm=s.snapshot(at,{reducedMotion:true});
   assert.ok(calm.entries.every(p=>!p.stroll&&!p.walking));assert.deepEqual(s.snapshot(at).entries.map(p=>p.line),s.snapshot(at).entries.map(p=>p.line),'deterministic');
 });

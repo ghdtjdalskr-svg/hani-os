@@ -137,7 +137,8 @@ const shown=layoutActors.filter(a=>a.querySelector('.hani-office-status').style.
 assert.ok(shown.includes(layoutActors.at(-1))&&shown.includes(layoutActors[1]));assert.equal(shown.length,2);
 for(const a of shown)for(const b of layoutActors){const pill=a.querySelector('.hani-office-status').getBoundingClientRect();assert.equal(overlap(pill,b.querySelector('.hani-office-name').getBoundingClientRect()),0);if(a!==b&&shown.includes(b))assert.equal(overlap(pill,b.querySelector('.hani-office-status').getBoundingClientRect()),0)}
 canvas=box(0,0,900,400);layout.ids.get('haniOfficeActors').events.keydown({key:'Escape'});
-assert.ok(layoutActors.every(a=>a.querySelector('.hani-office-status').style.visibility!=='hidden'),'resize recovers hidden lower-priority pills');
+// Plain base work stays dot-only (lively-2); every busy pill comes back after resize.
+assert.ok(layoutActors.every(a=>(a.querySelector('.hani-office-status').style.visibility!=='hidden')===(a.dataset.plain!=='true'||a.dataset.activity==='meeting'||a.dataset.speaking==='true')),'resize recovers hidden lower-priority pills');
 for(const [state,title] of [['work','근무 중'],['rest','휴식 중'],['meeting','회의 중'],['moving','이동 중'],['night','야근 중']]){
  const actor=layoutActors[0];actor.officeTravel=null;actor.dataset.called='false';actor.dataset.activity=state;actor.dataset.walking=String(state==='moving');actor.querySelector('.hani-office-status').dataset.full=state==='night'?'야근 중':'자료 확인 중';
  layout.ids.get('haniOfficeActors').events.keydown({key:'Escape'});assert.equal(actor.dataset.status,state);assert.equal(actor.querySelector('.hani-office-status-dot').title,title);assert.equal(actor.querySelector('.hani-office-status-dot').getAttribute('aria-label'),title);
