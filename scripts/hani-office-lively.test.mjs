@@ -6,8 +6,8 @@ import {measure} from './hani-office-lively-measure.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
 const table=JSON.parse(fs.readFileSync(new URL('../assets/data/office-actions-221.json',import.meta.url),'utf8'));
 for(const [label,day,from,to] of [['weekday day','2026-10-21','14:00','14:20'],['weekday evening','2026-10-21','19:00','19:20'],['weekend evening','2026-10-24','20:00','20:20']])
-  test(`${label}: every occupied floor changes visibly every ~2-3s and never freezes over 15s`,()=>{
-    for(const [floor,r] of Object.entries(measure(day,from,to))){if(!r.people)continue;assert.ok(r.avgGapSec<=3,floor+' gap '+r.avgGapSec);assert.ok(r.longestStaticSec<=15,floor+' static '+r.longestStaticSec);assert.ok(r.distinctLines>=8,floor+' lines '+r.distinctLines)}
+  test(`${label}: every occupied floor keeps changing (avg <=5s, never frozen over 35s)`,()=>{
+    for(const [floor,r] of Object.entries(measure(day,from,to))){if(!r.people)continue;assert.ok(r.avgGapSec<=5,floor+' gap '+r.avgGapSec);assert.ok(r.longestStaticSec<=35,floor+' static '+r.longestStaticSec);assert.ok(r.distinctLines>=8,floor+' lines '+r.distinctLines)}
   });
 test('evening mixes playful statuses and short same-floor strolls; reduced motion keeps everyone seated',()=>{
   const s=fixture('09:00',false,null,table).context.HaniBuildingScene.scheduler,lines=new Set();let strolls=0;
@@ -18,7 +18,17 @@ test('evening mixes playful statuses and short same-floor strolls; reduced motio
   let busy=0,total=0,dups=0;
   for(let t=Date.parse('2026-10-21T14:00:00+09:00');t<Date.parse('2026-10-21T14:20:00+09:00');t+=1000){const entries=s.snapshot(new Date(t)).entries.filter(p=>p.id!=='mir');total+=entries.length;busy+=entries.filter(p=>!p.plain).length;
     for(const floor of ['1f','2f','3f','4f']){const shown=entries.filter(p=>p.floor===floor&&!p.plain).map(p=>p.line);if(new Set(shown).size!==shown.length)dups++}}
-  assert.ok(busy/total>=.3&&busy/total<=.65,'busy share '+busy/total);assert.ok(dups/(1200*4)<.02,'repeated busy lines '+dups);
+  assert.ok(busy/total>=.2&&busy/total<=.5,'busy share '+busy/total);assert.ok(dups/(1200*4)<.02,'repeated busy lines '+dups);
   const at=new Date('2026-10-21T19:10:00+09:00'),calm=s.snapshot(at,{reducedMotion:true});
   assert.ok(calm.entries.every(p=>!p.stroll&&!p.walking));assert.deepEqual(s.snapshot(at).entries.map(p=>p.line),s.snapshot(at).entries.map(p=>p.line),'deterministic');
+});
+test('lively-3: one bit per person per cycle, strolls go through a door, one stroller per floor',()=>{
+  const f=fixture('09:00',false,null,table),scene=f.context.HaniBuildingScene,s=scene.scheduler,starts=new Map(),last=new Map();let doors=0,strollSeconds=0;
+  for(let t=Date.parse('2026-10-21T14:00:00+09:00');t<Date.parse('2026-10-21T15:00:00+09:00');t+=1000){const per={};
+    for(const p of s.snapshot(new Date(t)).entries){if(p.id==='mir')continue;
+      const bit=!p.eventId&&!p.plain&&!p.stroll;if(bit&&!last.get(p.id))(starts.get(p.id)||starts.set(p.id,[]).get(p.id)).push(t);last.set(p.id,bit);
+      if(p.stroll){strollSeconds++;per[p.floor]=(per[p.floor]||0)+1;if(scene.anchors.get(p.seat.anchor)?.type==='door')doors++}}
+    assert.ok(Object.values(per).every(n=>n<=1),'one stroller per floor');}
+  for(const [id,list]of starts)for(let i=1;i<list.length;i++)assert.ok(list[i]-list[i-1]>=14000,id+' bits too close: '+(list[i]-list[i-1])/1000+'s');
+  assert.ok(strollSeconds>0&&doors>0,'strolls happen and pass through doors');
 });

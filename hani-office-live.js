@@ -349,11 +349,11 @@
       }
       if(cache.size>=4)cache.delete(cache.keys().next().value);cache.set(key,events);return events;
     }
-    // Idle liveliness: every BEAT one present person per floor starts a short visible bit
-    // (a playful/time-of-day line, sometimes standing, sometimes a same-floor stroll).
-    // About a third to half of a floor is busy at once; everyone else is plain base work
-    // (dot only). Pure function of the local clock; scheduled events always win.
-    const BEAT=2.4,ACTIVE_BEATS=2,STROLL_STAY=6,STROLL_MAX=15;
+    // Idle liveliness: each floor rotates its people through short visible bits (a playful or
+    // time-of-day line, sometimes standing, sometimes a stroll to another room through its door).
+    // Each person gets at most one bit per cycle; everyone else is plain base work (dot only).
+    // Pure function of the local clock; scheduled events always win.
+    const BEAT=2.4,ACTIVE_BEATS=4,MIN_CYCLE=12,STROLL_STAY=8,STROLL_MAX=30,STROLL_TYPES=new Set(['seat','interaction','group','object']);
     const idlePools={
       day:[['키보드 두드리는 중'],['보고서 다듬는 중'],['메일함 정리 중'],['몰래 인스타 순찰 중'],['간식 서랍 점검 중'],['고양이 영상 1분만…'],['기지개 켜는 중','stand'],['옆자리랑 수다 중'],['커피 리필 고민 중','stand'],['창밖 멍때리는 중'],['스트레칭 중','stand'],['화이트보드에 낙서 중','stand']],
       evening:[['가방 챙기는 중','stand'],['오늘 할 일 체크 중'],['저녁 메뉴 검색 중'],['간식 서랍 점검 중'],['몰래 인스타 순찰 중'],['퇴근길 날씨 확인 중'],['옆자리랑 수다 중'],['고양이 영상 1분만…'],['기지개 켜는 중','stand'],['퇴근 시간 카운트다운 중'],['스트레칭 중','stand']],
@@ -363,13 +363,22 @@
       stroll:['창밖 구경 중','화분 구경 중','동료 자리 기웃기웃','잠깐 바람 쐬는 중','간식 찾으러 왔다가 두리번','커피 내리러 왔어요']
     };
     function idleRoster(day,floor,seconds){return persons.filter(p=>p.id!=='mir'&&p.id!=='seongmin'&&presentAt(p.id,seconds)&&homeAt(p,seconds).floor===floor).map(p=>p.id).sort()}
-    function beatPick(day,floor,k){const roster=idleRoster(day,floor,k*BEAT);return roster.length?roster[seed(day+'|idle|'+floor+'|'+k)%roster.length]:null}
+    const pickCache=new Map();
+    function beatPick(day,floor,k){const key=day+'|'+floor+'|'+k;if(pickCache.has(key))return pickCache.get(key);if(pickCache.size>4000)pickCache.delete(pickCache.keys().next().value);const pick=rotationPick(day,floor,k);pickCache.set(key,pick);return pick}
+    function rotationPick(day,floor,k){const roster=idleRoster(day,floor,k*BEAT);if(!roster.length)return null;
+      // People sit evenly spaced in the cycle, so quiet gaps are short and nobody repeats early.
+      const order=[...roster].sort((a,b)=>seed(day+'|cycle|'+floor+'|'+a)-seed(day+'|cycle|'+floor+'|'+b)),len=Math.max(MIN_CYCLE,order.length),pos=((k%len)+len)%len;
+      return order.find((_,i)=>Math.floor(i*len/order.length)===pos)??null;
+    }
+    const strollStart=(day,floor,j)=>beatPick(day,floor,j)!==null&&seed(day+'|stroll|'+floor+'|'+j)%3===0;
     // Consecutive beats walk a per-floor shuffled pool, so concurrent bits never repeat a line.
     function poolLine(day,floor,kind,pool,j){const order=pool.map((_,i)=>i).sort((a,b)=>seed(day+floor+kind+a)-seed(day+floor+kind+b));return pool[order[((j%pool.length)+pool.length)%pool.length]]}
-    function idleFlavour(day,id,floor,seconds,lounge,late){
+    function idleFlavour(day,id,floor,seconds,lounge,late,events=[]){
       const k=Math.floor(seconds/BEAT);
       for(let j=k;j>k-ACTIVE_BEATS;j--)if(beatPick(day,floor,j)===id){
-        const kind=lounge?late?'loungeLate':'lounge':late?'late':isEvening(seconds)?'evening':'day',[line,pose]=poolLine(day,floor,kind,idlePools[kind],j);
+        // A bit never runs into, or straight out of, the person's scheduled action.
+        const from=j*BEAT,to=from+ACTIVE_BEATS*BEAT;if(events.some(e=>e.people.some(t=>t.id===id)&&e.start<to+2&&from<e.end+5))return null;
+        const kind=lounge?late?'loungeLate':'lounge':late?'late':isEvening(seconds)?'evening':'day',[line,pose]=poolLine(day,floor,kind,idlePools[kind],j+Math.floor(j/MIN_CYCLE)*5);
         return {beat:j,line,pose};
       }
       return null;
@@ -380,9 +389,10 @@
       const legs=p=>{const out=[];let at=0;for(let i=1;i<p.length;i++){const from=p[i-1],to=p[i],s=Math.hypot(to.x-from.x,to.y-from.y)/canon.movement.speedPxPerSecond;out.push({from:from.id,to:to.id,start:at,end:at+Math.max(.1,s)});at+=Math.max(.1,s)}return out};
       const list=[];
       for(const a of anchors.values()){
-        if(a.id===home.anchorId||a.floor!==home.floor||!slot(a.id,'stand')||a.rendererSeat?.owner&&a.rendererSeat.owner!==id||a.occupant&&a.occupant!==id)continue;
+        if(a.id===home.anchorId||a.floor!==home.floor||!STROLL_TYPES.has(a.type)||a.room===anchors.get(home.anchorId)?.room||!slot(a.id,'stand')||a.rendererSeat?.owner&&a.rendererSeat.owner!==id||a.occupant&&a.occupant!==id)continue;
         const out=path(home.anchorId,a.id),back=path(a.id,home.anchorId);
-        if(out.length<2||back.length<2||[...out,...back].some(n=>n.floor!==home.floor))continue;
+        // Strolls visit another room through its door, never a corridor point.
+        if(out.length<2||back.length<2||[...out,...back].some(n=>n.floor!==home.floor)||!out.some(n=>n.type==='door'))continue;
         const o=legs(out),b=legs(back),total=o.at(-1).end+STROLL_STAY+b.at(-1).end;
         if(total<=STROLL_MAX)list.push({target:a.id,out:o,back:b,total,resources:[...new Set([...out,...back].map(n=>n.id))]});
       }
@@ -391,7 +401,9 @@
     function idleStroll(day,id,floor,seconds,home,events){
       const k=Math.floor(seconds/BEAT);
       for(let j=k;j>=k-Math.ceil(STROLL_MAX/BEAT);j--){
-        if(beatPick(day,floor,j)!==id||seed(day+'|stroll|'+floor+'|'+j)%6)continue;
+        if(beatPick(day,floor,j)!==id||!strollStart(day,floor,j))continue;
+        // One stroller per floor at a time, so doors and corridors never crowd.
+        let busy=false;for(let i=j-1;i>=j-Math.ceil(STROLL_MAX/BEAT);i--)if(strollStart(day,floor,i)){busy=true;break}if(busy)continue;
         const options=strollPlan(id,home);if(!options.length)return null;
         const t0=j*BEAT,s=options[seed(day+'|'+id+'|stroll|'+j)%options.length],local=seconds-t0;if(local>=s.total)continue;
         if(events.some(e=>e.start<t0+s.total&&t0<e.end&&(e.people.some(t=>t.id===id)||e.resources.some(r=>s.resources.includes(r)))))return null;
@@ -435,7 +447,7 @@
         if(!event&&p.id!=='mir'&&p.id!=='seongmin'){
           const lounge=home!==p.home||(late||evening)&&['yuna','minji'].includes(p.id),stroll=!options.reducedMotion&&!lounge&&idleStroll(day,p.id,home.floor,seconds,home,liveEvents);
           if(stroll){seat=stroll.seat;walking=stroll.walking;position=stroll.position;idleLine=stroll.line;strolling=true;plain=false}
-          else{const flavour=idleFlavour(day,p.id,home.floor,seconds,lounge,late||evening&&lateWorkers.has(p.id));
+          else{const flavour=idleFlavour(day,p.id,home.floor,seconds,lounge,late||evening&&lateWorkers.has(p.id),liveEvents);
             if(flavour){idleLine=flavour.line;plain=false;if(flavour.pose&&!options.reducedMotion&&p.id!=='mir')seat=slot(home.anchorId,'stand')||seat}}
         }
         return [{id:p.id,idle:!event,plain,stroll:strolling,home:p.home.floor,floor,seat,position,walking,pose:walking?(Math.floor(seconds*5)%2?'walk-a':'walk-b'):seat.posture,activity:event?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):'work',actionId:performing?action.id:'base-work',eventId:event?.id,line:performing?speech(action,p.id,day):event?'이동 중':idleLine,emoji:performing?(action.actorOverrides?.[p.id]?.emoji||action.performance.emoji):'',personalNonWork:action.personalNonWork}];
@@ -450,7 +462,7 @@
           const anchor=nightCatalog?home.anchorId:['lobby-nw','lobby-ne','lobby-sw','lobby-se'].find(a=>!occupied.has(a));
           const seat=anchor&&slot(anchor);if(!seat)continue;
           occupied.delete(p.seat.anchor);occupied.add(anchor);
-          const flavour=idleFlavour(day,id,home.floor,seconds,true,late);
+          const flavour=idleFlavour(day,id,home.floor,seconds,true,late,liveEvents);
           Object.assign(p,{floor:anchors.get(anchor).floor,seat,pose:seat.posture,walking:false,position:null,stroll:false,plain:!flavour,activity:'rest',line:flavour?.line||(late?'라운지에서 조용히 쉬는 중':'라운지에서 야근 이야기 중')});
         }
       }
