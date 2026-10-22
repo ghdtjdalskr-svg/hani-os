@@ -2,6 +2,8 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import vm from "node:vm";
+import {assertNoNewDuplicateIds} from './hani-duplicate-id-guard.mjs';
+import {readMainBaseline} from './hani-regression-baseline.mjs';
 
 const read=name=>fs.readFileSync(new URL("../"+name,import.meta.url),"utf8");
 const html=read("index.html"),main=read("hani-main.js"),ui=read("hani-ui-v02992.js");
@@ -42,7 +44,7 @@ const bannerStart=ui.indexOf('  const mainCharacterBannerVariants='),bannerEnd=u
 const bannerContext=vm.createContext({});
 vm.runInContext(ui.slice(bannerStart,bannerEnd)+';this.banner=mainCharacterBannerConfig("agentReview");',bannerContext);
 assert.equal(bannerContext.banner.title,'HANI 본사');
-assert.match(bannerContext.banner.description,/HANI 본사입니다/);
+assert.equal(bannerContext.banner.description,'중요한 안건을 함께 검토해요','approved short hero subtitle');
 assert.equal(bannerContext.banner.owner,'hani','existing banner owner');
 assert.ok(aside.indexOf('data-view="investment"')<aside.indexOf('data-view="investmentCommittee"'),'canonical report link remains next to investment');
 assert.match(main,/querySelectorAll\("\[data-go\]"\)/,'shortcut uses existing delegated route');
@@ -54,6 +56,7 @@ assert.doesNotMatch(read('hani-development-history-v1.js'),/HANI AURA/);
 assert.match(main,/aura:\["테마 스튜디오"/);
 const ids=Array.from(html.matchAll(/\bid="([^"]+)"/g),m=>m[1]);
 assert.equal(new Set(ids).size,ids.length,"no duplicate markup ids");
+assertNoNewDuplicateIds(read,readMainBaseline);
 const loadedScripts=[...new Set([...html.matchAll(/src="\.\/([^"?]+\.js)(?:\?[^"']*)?"/g)].map(m=>m[1]))];
 const literalCounts=new Map();
 for(const match of (html+'\n'+loadedScripts.map(read).join('\n')).matchAll(/\bid=["']([^"']+)["']/g))literalCounts.set(match[1],(literalCounts.get(match[1])||0)+1);

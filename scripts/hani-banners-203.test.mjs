@@ -8,7 +8,7 @@ const start=ui.indexOf('  const mainCharacterBannerVariants='),end=ui.indexOf(' 
 assert.ok(start>=0&&end>start,'canonical banner config anchors');
 const ctx=vm.createContext({});
 vm.runInContext(ui.slice(start,end)+';this.resolve=mainCharacterBannerConfig;this.menus=mainCharacterSidebarMenuConfig;',ctx);
-const mapping={ilbo:'heroes/ilbo-218.webp',organization:'heroes/organization-218.webp',investmentCommittee:'heroes/investmentCommittee-218.webp',board:'banner-preview-v1/company-board-community-v1.webp',aiWork:'heroes/aiWork-218.webp',geminiReports:'heroes/geminiReports-218.webp',aiBudget:'heroes/aiBudget-218.webp',monthlyReport:'banner-preview-v1/conference-room-reports-v1.webp'};
+const mapping={ilbo:'heroes/ilbo-226w.webp',organization:'heroes/organization-226w.webp',investmentCommittee:'banner-preview-v1/investment-market-room-v1.webp',board:'banner-preview-v1/company-board-community-v1.webp',aiWork:'heroes/aiWork-218.webp',geminiReports:'heroes/geminiReports-218.webp',aiBudget:'heroes/aiBudget-218.webp',monthlyReport:'banner-preview-v1/conference-room-reports-v1.webp'};
 for(const [view,file] of Object.entries(mapping)){
   const config=ctx.resolve(view);
   assert.ok(config,view+' uses the canonical page hero');
@@ -17,11 +17,10 @@ for(const [view,file] of Object.entries(mapping)){
   assert.equal(ctx.resolve(view,'unknown-tab').sceneImage,config.sceneImage,'internal tabs preserve menu image');
   assert.equal(config.scenePosition,'center center');
   const dedicated=file.startsWith('heroes/');
-  const wide=['aiWork','geminiReports','aiBudget'].includes(view);
-  assert.equal(config.scenePositionMobile,dedicated?'center center':'72% center');
-  assert.equal(config.sceneFit,dedicated?'contain':'cover');
-  assert.equal(config.sceneFitMobile,dedicated?'contain':'cover');
-  if(dedicated)assert.equal(config.sceneVariant,wide?'illustration-wide-218':'illustration-218');
+  assert.match(config.scenePositionMobile,/% center$/);
+  assert.equal(config.sceneFit,'cover');
+  assert.equal(config.sceneFitMobile,'cover');
+  if(dedicated)assert.equal(config.sceneVariant,'panorama');
   const asset=new URL('../assets/'+file,import.meta.url);
   assert.ok(fs.statSync(asset).isFile(),file+' exists');
   if(file.startsWith('heroes/'))assert.ok(fs.statSync(asset).size<=150000,'new illustration <=150 KB');

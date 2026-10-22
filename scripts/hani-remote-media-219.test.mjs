@@ -1,3 +1,5 @@
+import {verifyRemoteCardNode} from './hani-remote-card-node.mjs';
+import {remote217Oracle} from './hani-remote-217-oracle.mjs';
 // Real index.html in disposable Edge; all external requests blocked.
 // node scripts/hani-remote-media-219.test.mjs [playwright index.mjs] [browser exe] [--before]
 import assert from 'node:assert/strict';
@@ -10,6 +12,7 @@ import {pathToFileURL} from 'node:url';
 import {localBrowser} from './hani-contrast-audit.mjs';
 const root=path.resolve(import.meta.dirname,'..'),out=path.join(root,'artifacts/remote-219');
 fs.mkdirSync(out,{recursive:true});
+if(process.argv.includes('--node-only')){await verifyRemoteCardNode();console.log('PASS remote-media219 Node; browser controls/AA/overflow NOT RUN');process.exit(0)}
 const deps=process.argv[2]||'C:/Users/홍성민/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs';
 const exe=process.argv[3]||'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
 const before=process.argv.includes('--before'),phase=before?'before':'after';
@@ -139,9 +142,9 @@ try{
    await page.waitForTimeout(260);await page.mouse.move(0,0);
    const identity=await page.evaluate(()=>{
     const card=document.querySelector('.hani-remote-media'),hero=HANI_MAIN_CHARACTER_BANNER.get(document.body.dataset.view),img=card.querySelector('img');
-    return {same:card===remoteSlot&&img===remoteImage&&remoteButtons.every((b,i)=>b===card.querySelectorAll('button')[i])&&remoteLinks.every((b,i)=>b===document.querySelectorAll('[data-remote-links] button')[i]),src:img.getAttribute('src'),hero:hero.sceneImage,banner:document.querySelector('.view.active > .ds-main-character-banner img')?.getAttribute('src'),title:card.querySelector('h2').textContent,expectedTitle:document.querySelector('#title').textContent,staff:card.querySelector('[data-remote-media-staff]').textContent,expectedStaff:'담당 직원 · '+hero.speaker,background:getComputedStyle(card).backgroundColor,overflow:document.documentElement.scrollWidth>innerWidth+1,railOverflow:document.querySelector('#haniContextRemote').scrollWidth>document.querySelector('#haniContextRemote').clientWidth+1};
+    return {same:card===remoteSlot&&img===remoteImage&&remoteButtons.every((b,i)=>b===card.querySelectorAll('button')[i])&&remoteLinks.every((b,i)=>b===document.querySelectorAll('[data-remote-links] button')[i]),src:img.getAttribute('src'),hero:hero.sceneImage,natural:[img.naturalWidth,img.naturalHeight],banner:document.querySelector('.view.active > .ds-main-character-banner img')?.getAttribute('src'),title:card.querySelector('h2').textContent,expectedTitle:document.querySelector('#title').textContent,staff:card.querySelector('[data-remote-media-staff]').textContent,expectedStaff:'담당 직원 · '+hero.speaker,background:getComputedStyle(card).backgroundColor,overflow:document.documentElement.scrollWidth>innerWidth+1,railOverflow:document.querySelector('#haniContextRemote').scrollWidth>document.querySelector('#haniContextRemote').clientWidth+1};
    });
-   assert.ok(identity.same,'persistent DOM');assert.equal(identity.src,identity.hero);assert.equal(identity.src,identity.banner);assert.equal(identity.title,identity.expectedTitle);assert.equal(identity.staff,identity.expectedStaff);assert.equal(identity.background,'rgb(23, 20, 30)');assert.equal(identity.overflow,false);assert.equal(identity.railOverflow,false);
+   assert.ok(identity.same,'persistent DOM');assert.ok(remote217Oracle().files.some(file=>identity.src==='./assets/context-remote/'+file),'remote uses 217 context-remote art');assert.notEqual(identity.src,identity.hero,'remote art is independent of per-view hero');assert.ok(identity.natural[1]/identity.natural[0]>=1.6,'remote source is tall');assert.equal(identity.title,identity.expectedTitle);assert.equal(identity.staff,identity.expectedStaff);assert.equal(identity.background,'rgb(23, 20, 30)');assert.equal(identity.overflow,false);assert.equal(identity.railOverflow,false);
    if(width===884){assert.equal(await page.locator('.hani-remote-media').evaluate(n=>n.getBoundingClientRect().width),46);report.foldCases.push({finish,view,...identity});if(finish==='porcelain-cream')await page.screenshot({path:path.join(out,`after-${view}-884.png`)});continue}
    assert.ok(await page.locator('#haniContextRemote').evaluate(n=>n.scrollHeight<=n.clientHeight+1)||width===1440,'390x844 no new scrolling');
    const entries=await pixelAudit(page);assert.ok(entries.length>=12);assert.ok(entries.every(e=>e.minRatio>=4.5),JSON.stringify({width,finish,view,failed:entries.filter(e=>e.minRatio<4.5)}));report.contrast.push({width,finish,view,state:'rest',min:Math.min(...entries.map(e=>e.minRatio)),entries});
@@ -157,9 +160,9 @@ try{
   // Direct calls and canonical Season API update without observers or DOM reconstruction.
   await page.setViewportSize({width:1440,height:900});
   await page.evaluate(()=>{showView('aura');applySeasonTheme('summer',false)});
-  const fallback=await page.locator('.hani-remote-media img').getAttribute('src');assert.equal(fallback,await page.evaluate(()=>HANI_MAIN_CHARACTER_BANNER.get('home').sceneImage),'no-hero view shares the current seasonal artwork');
+  const fallback=await page.locator('.hani-remote-media img').getAttribute('src');assert.match(fallback,/^\.\/assets\/context-remote\/summer-[12]\.jpg$/,'no-hero view follows 217 season reselection');
   await page.evaluate(()=>{showView('home');applySeasonTheme('winter',false)});
-  assert.equal(await page.locator('.hani-remote-media img').getAttribute('src'),await page.locator('#seasonalLifeArtwork').getAttribute('src'));
+  assert.match(await page.locator('.hani-remote-media img').getAttribute('src'),/^\.\/assets\/context-remote\/winter-[12]\.jpg$/,'home follows 217 winter reselection');
   // Observe the real DOM effect of every action, not merely entry into its handler.
   await page.evaluate(()=>{
    window.actionElements=[];

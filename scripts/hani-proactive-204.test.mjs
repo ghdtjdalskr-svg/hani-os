@@ -1,3 +1,4 @@
+import {readBranchBaseline} from './hani-regression-baseline.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -158,7 +159,7 @@ test('unchanged lines preserve exact EOL and protected versions/keys; no added d
  // Merged HEAD contains EOL drift; origin/main retains the original byte baseline.
  const baseline=process.env.HANI_PROACTIVE_TEST_BASELINE;
  for(const file of ['hani-main.js','index.html']){
-  const old=baseline?fs.readFileSync(path.join(baseline,file),'utf8'):execFileSync('git',['show','origin/main:'+file],{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024}),current=fs.readFileSync(path.join(root,file),'utf8');
+  const old=baseline?fs.readFileSync(path.join(baseline,file),'utf8'):readBranchBaseline(file),current=fs.readFileSync(path.join(root,file),'utf8');
   const lines=s=>s.match(/[^\r\n]*(?:\r\n|\n|\r|$)/g).filter(Boolean);
   // Every untouched line keeps its original terminator, including unique mixed-EOL anchors.
   const a=lines(old),b=lines(current),byText=new Map();for(const l of a){const t=l.replace(/[\r\n]+$/,'');if(!byText.has(t))byText.set(t,new Set());byText.get(t).add(l.slice(t.length));}
@@ -171,7 +172,7 @@ test('unchanged lines preserve exact EOL and protected versions/keys; no added d
   if(file==='index.html')assert.deepEqual(cacheRefs(current),cacheRefs(expected),'all URL/cache pairs preserved');
   else {assert.deepEqual(current.match(/\?v=[^\s"'<>]+/g)||[],expected.match(/\?v=[^\s"'<>]+/g)||[],file+' cache tags unchanged');assert.match(current,/workerSrc="\.\/js\/hani-pdf-worker\.js\?v="\+encodeURIComponent\(HANI_DISPLAY_VERSION\)/,'PDF worker uses unchanged display version');}
  }
- const diff=baseline?fs.readFileSync(path.join(baseline,'runtime.diff'),'utf8'):execFileSync('git',['diff','--unified=0','--','hani-main.js','index.html','hani-study-v02984.js','hani-goal-progress.js','hani-yuna-helpdesk.js'],{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024});
+ const diff=baseline?fs.readFileSync(path.join(baseline,'runtime.diff'),'utf8'):execFileSync('git',['diff','--unified=0',execFileSync('git',['merge-base','HEAD','origin/main'],{cwd:root,encoding:'utf8'}).trim(),'--','hani-main.js','index.html','hani-study-v02984.js','hani-goal-progress.js','hani-yuna-helpdesk.js'],{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024});
  const additions=diff.split('\n').filter(l=>l.startsWith('+')&&!l.startsWith('+++')).join('\n');
  assert.doesNotMatch(additions,/localStorage\.(?:setItem|removeItem|clear)|\.from\([^)]*\)\.(?:insert|update|delete|upsert)|\.clear\(/);
  assert.match(main,/VERSION\s*=\s*["']2\.9\.15-safe-baseline-bootstrap["']/);assert.ok(main.includes('hani_os_life_v23'));
@@ -179,7 +180,7 @@ test('unchanged lines preserve exact EOL and protected versions/keys; no added d
 test('static DOM id literals introduce no duplicates over the base',()=>{
  const counts=old=>{
   const result=new Map();for(const file of ['index.html','hani-main.js','hani-study-v02984.js','hani-goal-progress.js','hani-yuna-helpdesk.js']){
-   const baseline=process.env.HANI_PROACTIVE_TEST_BASELINE,text=old?(baseline?fs.readFileSync(path.join(baseline,file),'utf8'):execFileSync('git',['show','HEAD:'+file],{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024})):fs.readFileSync(path.join(root,file),'utf8');
+   const baseline=process.env.HANI_PROACTIVE_TEST_BASELINE,text=old?(baseline?fs.readFileSync(path.join(baseline,file),'utf8'):readBranchBaseline(file)):fs.readFileSync(path.join(root,file),'utf8');
    for(const match of text.matchAll(/\bid\s*=\s*["']([\w-]+)["']/g))result.set(match[1],(result.get(match[1])||0)+1);
   }return result;
  };
