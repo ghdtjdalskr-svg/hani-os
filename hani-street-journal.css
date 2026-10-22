@@ -1,0 +1,94 @@
+.hsj-sheet{--navy:#142640;--cobalt:#295bd5;--gold:#b18c44;--ink:#28374c;--muted:#718096;--line:#e3e7ef;--paper:#fff;--bg:#f4f6fa;--invest-up:#d93a50;--invest-down:#2f6fd8;--up:var(--invest-up);--down:var(--invest-down);--flat:#667085;color:var(--ink);font-family:Pretendard,"Malgun Gothic","Apple SD Gothic Neo",sans-serif;text-align:left;font-size:12px;line-height:1.5}
+.hsj-sheet,.hsj-sheet *{box-sizing:border-box;min-width:0;overflow-wrap:anywhere}
+.hsj-sheet{width:100%;max-width:430px;margin:0 auto;background:var(--paper);padding:0 0 18px}
+.hsj-sheet .hsj-chibi{background-repeat:no-repeat;flex:none;background-size:contain;background-position:center bottom}
+.hsj-sheet .hsj-c-lg{width:120px;height:120px}
+.hsj-sheet .hsj-c-sm{width:92px;height:92px}
+.hsj-sheet .hsj-who{font-size:9.5px;color:var(--muted);text-align:center;margin-top:4px;white-space:nowrap}
+.hsj-sheet .hsj-mast{background:var(--navy);color:#fff;padding:16px 16px 14px;display:flex;gap:10px;align-items:flex-end;position:relative;overflow:hidden}
+.hsj-sheet .hsj-mast:after{content:"";position:absolute;right:-30px;top:-30px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(41,91,213,.55),transparent 70%)}
+.hsj-sheet .hsj-mast h1{margin:0;font-size:25px;letter-spacing:-.5px;line-height:1.15}
+.hsj-sheet .hsj-mast h1 b{color:var(--gold)}
+.hsj-sheet .hsj-mast .hsj-sub{font-size:11px;opacity:.8;margin-top:4px;letter-spacing:.3px}
+.hsj-sheet .hsj-mast .hsj-date{display:inline-block;margin-top:8px;font-size:12px;background:rgba(255,255,255,.12);padding:3px 8px;border-radius:99px}
+.hsj-sheet .hsj-mast .hsj-chibi{position:relative;z-index:1;margin-bottom:-14px}
+.hsj-sheet .hsj-temp{margin:12px 14px 0;border:1px solid var(--line);border-radius:14px;padding:11px 13px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.hsj-sheet .hsj-temp .hsj-score{font-size:30px;font-weight:800;color:var(--down);line-height:1}
+.hsj-sheet .hsj-temp .hsj-score small{font-size:13px;color:var(--muted);font-weight:600}
+.hsj-sheet .hsj-gauge{flex:1 1 150px;min-width:150px}
+.hsj-sheet .hsj-gauge .hsj-bar{height:8px;border-radius:99px;background:linear-gradient(90deg,#2f6fd8,#9aa4b5 50%,#d93a50);position:relative}
+.hsj-sheet .hsj-gauge .hsj-pin{position:absolute;top:-4px;width:4px;height:16px;background:var(--navy);border-radius:2px}
+.hsj-sheet .hsj-gauge .hsj-lab{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:4px}
+.hsj-sheet .hsj-temp .hsj-word{flex:1 1 120px;font-size:12px;font-weight:700}
+.hsj-sheet .hsj-sec{margin:12px 14px 0;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.hsj-sheet .hsj-sec>h2{margin:0;font-size:14px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;background:#f7f8fb;border-bottom:1px solid var(--line)}
+.hsj-sheet .hsj-sec>h2 .hsj-asof{font-size:10px;font-weight:500;color:var(--muted)}
+.hsj-sheet .hsj-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;margin-left:6px}
+.hsj-sheet .hsj-t-down{background:#e8f0fd;color:var(--down)}
+.hsj-sheet .hsj-t-up{background:#fde9ec;color:var(--up)}
+.hsj-sheet .hsj-t-mix{background:#f6efe1;color:#8a6a2c}
+.hsj-sheet .hsj-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1px;background:var(--line)}
+.hsj-sheet .hsj-q{background:#fff;padding:9px 12px}
+.hsj-sheet .hsj-q .hsj-n{font-size:11px;color:var(--muted)}
+.hsj-sheet .hsj-q .hsj-v{font-size:18px;font-weight:800;letter-spacing:-.3px}
+.hsj-sheet .hsj-q .hsj-c{font-size:12px;font-weight:700}
+.hsj-sheet .hsj-up{color:var(--up)}
+.hsj-sheet .hsj-down{color:var(--down)}
+.hsj-sheet .hsj-flat{color:var(--flat)}
+.hsj-sheet .hsj-q.hsj-nodata .hsj-v{color:#b4bccb;font-size:15px}
+.hsj-sheet .hsj-q.hsj-nodata .hsj-c{color:#b4bccb;font-weight:500}
+.hsj-sheet .hsj-say{display:flex;gap:8px;align-items:center;padding:8px 12px;border-top:1px solid var(--line);font-size:12px}
+.hsj-sheet .hsj-say .hsj-chibi{margin:-6px 0 0}
+/* Character column never shrinks, so a long bubble cannot cover the chibi. */
+.hsj-sheet .hsj-say>div:first-child{flex:0 0 92px}
+.hsj-sheet .hsj-bubble{flex:1 1 auto;min-width:0;background:#f1f4fb;border-radius:12px;padding:7px 10px;position:relative;line-height:1.45}
+.hsj-sheet .hsj-flow{display:flex;gap:6px;padding:8px 12px 10px;border-top:1px solid var(--line);flex-wrap:wrap}
+.hsj-sheet .hsj-flow span{font-size:11px;background:#f7f8fb;border-radius:8px;padding:4px 8px}
+.hsj-sheet ol.hsj-why{margin:0;padding:8px 12px 10px;list-style:none;counter-reset:w}
+.hsj-sheet ol.hsj-why li{counter-increment:w;display:flex;gap:9px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:12.5px;line-height:1.45}
+.hsj-sheet ol.hsj-why li:last-child{border:0}
+.hsj-sheet ol.hsj-why li:before{content:counter(w);flex:none;width:20px;height:20px;border-radius:50%;background:var(--navy);color:#fff;font-size:11px;display:grid;place-items:center;font-weight:700}
+.hsj-sheet .hsj-fact{display:block;font-weight:700}
+.hsj-sheet .hsj-interp{display:block;color:var(--muted);font-size:11.5px}
+.hsj-sheet .hsj-imp{padding:10px 12px}
+.hsj-sheet .hsj-imp .hsj-row{display:flex;justify-content:space-between;align-items:center}
+.hsj-sheet .hsj-imp .hsj-nm{font-weight:800;font-size:14px}
+.hsj-sheet .hsj-badge{font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:6px;background:#fff4dc;color:#8a5a00;border:1px solid #f0d9a6}
+.hsj-sheet .hsj-imp p{margin:6px 0 0;font-size:12px;line-height:1.5}
+.hsj-sheet .hsj-imp .hsj-link{font-size:11px;color:var(--cobalt);margin-top:6px;display:block}
+.hsj-sheet table.hsj-cal{width:100%;border-collapse:collapse;font-size:12px}
+.hsj-sheet table.hsj-cal td{padding:6px 12px;border-top:1px solid var(--line)}
+.hsj-sheet table.hsj-cal td:first-child{color:var(--muted);white-space:nowrap;width:68px}
+.hsj-sheet .hsj-close{margin:12px 14px 0;background:var(--navy);color:#fff;border-radius:14px;padding:12px;display:flex;gap:10px;align-items:center}
+.hsj-sheet .hsj-close .hsj-chibi{flex:0 0 92px;margin:-8px 0 -12px}
+.hsj-sheet .hsj-close h3{margin:0 0 4px;font-size:12px;color:var(--gold);letter-spacing:.5px}
+.hsj-sheet .hsj-close p{margin:0;font-size:13px;line-height:1.5}
+.hsj-sheet .hsj-act{margin:8px 0 0;padding:0;list-style:none;font-size:12px}
+.hsj-sheet .hsj-act li{padding:2px 0}
+.hsj-sheet .hsj-act li:before{content:"✓ ";color:var(--gold);font-weight:800}
+.hsj-sheet .hsj-foot{margin:10px 14px 0;font-size:10px;color:var(--muted);line-height:1.5}
+.hsj-sheet .hsj-sample{font-size:9.5px;font-weight:700;color:#8a5a00;background:#fff4dc;padding:1px 5px;border-radius:4px}
+
+.hsj-sheet .hsj-nodata{color:#8b95a5;font-size:12px;font-weight:500}
+.hsj-sheet .hsj-mast-text{flex:1;position:relative;z-index:1}
+.hsj-sheet .hsj-previous{font-weight:500;color:var(--muted);font-size:10.5px}
+.hsj-sheet .hsj-price{font-weight:600;font-size:12px}
+.hsj-sheet .hsj-gauge{min-width:45px}
+.hsj-sheet .hsj-row{gap:6px;flex-wrap:wrap}
+.hsj-sheet button.hsj-link{background:none;border:0;padding:0;text-align:left;cursor:pointer;font-family:inherit}
+.hsj-sheet .hsj-act li::before{content:"✓ ";color:var(--gold)}
+.ic-street-journal[hidden]{display:none!important}.hsj-tools{max-width:430px;margin:0 auto 8px}.hsj-bar{display:flex;gap:6px;align-items:center}.hsj-bar select{flex:1;min-width:0;max-width:100%}.hsj-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.hsj-actions .btn{padding:5px 10px;font-size:12px}.hsj-message{min-height:0;margin:4px 0 0;font-size:12px}.hsj-message:empty{display:none}.hsj-preview{padding:0 0 12px}.hsj-note{max-width:430px;margin:0 auto 20px;font-size:11px;color:var(--ds-muted,#718096)}.hsj-dialog{width:min(560px,calc(100vw - 32px));max-height:calc(100vh - 48px);border:0;border-radius:16px;padding:16px;box-shadow:0 20px 60px rgba(20,38,64,.3)}.hsj-dialog::backdrop{background:rgba(20,38,64,.45)}.hsj-dialog h3{margin:0 0 8px;font-size:16px}.hsj-dialog textarea{display:block;width:100%;box-sizing:border-box;resize:vertical;min-height:180px}.hsj-dialog-message{font-size:12px;min-height:1.2em;margin:6px 0}
+.hsj-sheet .hsj-badge{flex:none}
+.hsj-sheet .hsj-temp .hsj-score:has(.hsj-nodata){font-size:12px}
+/* One 5x2 sheet keeps the release inside the 128-file package contract. */
+.hsj-sheet [class*="hsj-p-"]{background-image:url("./assets/street-journal/chibi-sheet-v1.webp");background-size:500% 200%}
+.hsj-sheet .hsj-p-hani-point{background-position:0% 0%}
+.hsj-sheet .hsj-p-hani-cheer{background-position:25% 0%}
+.hsj-sheet .hsj-p-hani-think{background-position:50% 0%}
+.hsj-sheet .hsj-p-jieun-worried{background-position:75% 0%}
+.hsj-sheet .hsj-p-jieun-cheer{background-position:100% 0%}
+.hsj-sheet .hsj-p-jieun-think{background-position:0% 100%}
+.hsj-sheet .hsj-p-minji-worried{background-position:25% 100%}
+.hsj-sheet .hsj-p-minji-cheer{background-position:50% 100%}
+.hsj-sheet .hsj-p-minji-think{background-position:75% 100%}
+.hsj-sheet .hsj-p-seoyun-point{background-position:100% 100%}
