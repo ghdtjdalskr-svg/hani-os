@@ -31,7 +31,8 @@ function metadataChecks() {
     assert.ok(Math.abs((anchor.y + entry.offset[1]) / 100 * 941 - p.foot[1]) < .001);
     assert.ok(p.foot[0] >= p.deskBounds[0] && p.foot[0] <= p.deskBounds[2] && p.foot[1] >= p.deskBounds[1] && p.foot[1] <= p.deskBounds[3]);
     // Actual compressed source headers, rather than a filename/manifest assertion.
-    const bytes = fs.readFileSync(path.join(root, 'assets/data', entry.file));
+    assert.equal(entry.file, undefined, 'catalog carries no image paths');
+    const bytes = fs.readFileSync(path.join(root, 'assets/desk-mascots', p.id + '.webp'));
     assert.equal(bytes.toString('ascii', 8, 12), 'WEBP');
     if (bytes.toString('ascii', 12, 16) === 'VP8L') {
       assert.equal(bytes[20], 0x2f);
