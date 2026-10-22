@@ -355,12 +355,25 @@
     // Pure function of the local clock; scheduled events always win.
     const BEAT=2.4,ACTIVE_BEATS=4,MIN_CYCLE=12,STROLL_STAY=8,STROLL_MAX=30,STROLL_TYPES=new Set(['seat','interaction','group','object']);
     const idlePools={
-      day:[['키보드 두드리는 중'],['보고서 다듬는 중'],['메일함 정리 중'],['몰래 인스타 순찰 중'],['간식 서랍 점검 중'],['고양이 영상 1분만…'],['기지개 켜는 중','stand'],['옆자리랑 수다 중'],['커피 리필 고민 중','stand'],['창밖 멍때리는 중'],['스트레칭 중','stand'],['화이트보드에 낙서 중','stand']],
+      day:[['키보드 두드리는 중'],['보고서 다듬는 중'],['메일함 정리 중'],['몰래 인스타 순찰 중'],['간식 서랍 점검 중'],['고양이 영상 1분만…'],['기지개 켜는 중','stand'],['옆자리랑 수다 중'],['커피 리필 고민 중','stand'],['스트레칭 중','stand'],['책상 정리 중'],['다이어리 쓰는 중']],
       evening:[['가방 챙기는 중','stand'],['오늘 할 일 체크 중'],['저녁 메뉴 검색 중'],['간식 서랍 점검 중'],['몰래 인스타 순찰 중'],['퇴근길 날씨 확인 중'],['옆자리랑 수다 중'],['고양이 영상 1분만…'],['기지개 켜는 중','stand'],['퇴근 시간 카운트다운 중'],['스트레칭 중','stand']],
       late:[['야식 고민 중'],['커피 한 잔 더…','stand'],['졸음 참는 중'],['코드 한 줄만 더'],['몰래 인스타 순찰 중'],['기지개 켜는 중','stand'],['플레이리스트 고르는 중'],['간식 서랍 점검 중']],
       lounge:[['라운지에서 간식 나누는 중'],['소파에서 수다 중'],['라운지에서 몰래 인스타 순찰 중'],['야식 메뉴 투표 중'],['라운지에서 야근 이야기 중']],
-      loungeLate:[['라운지에서 야식 고민 중'],['소파에서 꾸벅꾸벅'],['라운지에서 조용히 수다 중'],['라운지에서 별 보는 중']],
-      stroll:['창밖 구경 중','화분 구경 중','동료 자리 기웃기웃','잠깐 바람 쐬는 중','간식 찾으러 왔다가 두리번','커피 내리러 왔어요']
+      loungeLate:[['라운지에서 야식 고민 중'],['소파에서 꾸벅꾸벅'],['라운지에서 조용히 수다 중'],['라운지에서 음악 듣는 중']],
+    };
+    // Strolls only visit rooms that have a matching place; the line names that place, and the
+    // walk there says where they are going, so words and position always agree.
+    const strollRooms={
+      pantry:{go:'팬트리로 커피 내리러 가는 중',at:['팬트리에서 커피 내리는 중','팬트리에서 간식 고르는 중']},
+      cafe:{go:'HANI Coffee 가는 중',at:['HANI Coffee에서 커피 받는 중','카페 소파에서 잠깐 쉬는 중']},
+      team_meeting:{go:'협업실 잠깐 들르는 중',at:['협업실 화이트보드 구경 중','협업실 자료 챙기는 중']},
+      exec:{go:'임원회의실 잠깐 들르는 중',at:['회의 자료 미리 보는 중','회의실 의자 정리 중']},
+      release:{go:'워 룸 잠깐 들르는 중',at:['릴리스 보드 확인 중','워 룸 자료 챙기는 중']},
+      standup:{go:'스탠드업 룸 가는 중',at:['스탠드업 보드 확인 중']},
+      server:{go:'서버실 점검하러 가는 중',at:['서버 상태 확인 중']},
+      mir_nook:{go:'미르 스테이션 놀러 가는 중',at:['미르랑 잠깐 수다 중','미르 스테이션 구경 중']},
+      lobby:{go:'로비에 잠깐 들르는 중',at:['하니일보 훑어보는 중','택배 왔나 확인 중']},
+      platform:{go:'개발실 라운지 가는 중',at:['라운지 소파에서 잠깐 쉬는 중']}
     };
     function idleRoster(day,floor,seconds){return persons.filter(p=>p.id!=='mir'&&p.id!=='seongmin'&&presentAt(p.id,seconds)&&homeAt(p,seconds).floor===floor).map(p=>p.id).sort()}
     const pickCache=new Map();
@@ -394,7 +407,7 @@
         // Strolls visit another room through its door, never a corridor point.
         if(out.length<2||back.length<2||[...out,...back].some(n=>n.floor!==home.floor)||!out.some(n=>n.type==='door'))continue;
         const o=legs(out),b=legs(back),total=o.at(-1).end+STROLL_STAY+b.at(-1).end;
-        if(total<=STROLL_MAX)list.push({target:a.id,out:o,back:b,total,resources:[...new Set([...out,...back].map(n=>n.id))]});
+        if(total<=STROLL_MAX&&strollRooms[a.room])list.push({target:a.id,room:a.room,out:o,back:b,total,resources:[...new Set([...out,...back].map(n=>n.id))]});
       }
       strollTargets.set(key,list);return list;
     }
@@ -408,10 +421,10 @@
         const t0=j*BEAT,s=options[seed(day+'|'+id+'|stroll|'+j)%options.length],local=seconds-t0;if(local>=s.total)continue;
         if(events.some(e=>e.start<t0+s.total&&t0<e.end&&(e.people.some(t=>t.id===id)||e.resources.some(r=>s.resources.includes(r)))))return null;
         const backStart=s.total-s.back.at(-1).end,leg=local<backStart?s.out.find(l=>l.start<=local&&local<l.end):s.back.map(l=>({...l,start:l.start+backStart,end:l.end+backStart})).find(l=>l.start<=local&&local<l.end);
-        const spotLine=poolLine(day,floor,'stroll',idlePools.stroll,j);
+        const place=strollRooms[s.room],spotLine=place.at[seed(day+'|'+id+'|spot|'+j)%place.at.length];
         if(!leg)return {seat:slot(s.target,'stand'),walking:false,position:null,line:spotLine};
         const a=anchors.get(leg.from),b=anchors.get(leg.to),progress=(local-leg.start)/(leg.end-leg.start),pa=visualPoint(a),pb=visualPoint(b);
-        return {seat:slot(a.id,'stand'),walking:true,position:[pa[0]+(pb[0]-pa[0])*progress,pa[1]+(pb[1]-pa[1])*progress],line:local<backStart?'잠깐 자리 비움 · '+spotLine:'자리로 돌아가는 중'};
+        return {seat:slot(a.id,'stand'),walking:true,position:[pa[0]+(pb[0]-pa[0])*progress,pa[1]+(pb[1]-pa[1])*progress],line:local<backStart?place.go:'자리로 돌아가는 중'};
       }
       return null;
     }

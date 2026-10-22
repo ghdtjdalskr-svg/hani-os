@@ -48,3 +48,15 @@ test('renderer shows the guest in one persistent 1F slot with its own name and s
   assert.ok(actor,'guest visible on 1F');assert.equal(actor.dataset.name,v.name);assert.equal(actor.dataset.sprite,v.sprite);assert.equal(actor.officeText.textContent,v.line);
   f.click('2f');assert.ok(!f.visible().some(a=>a.dataset.person==='visitor'),'guest never leaves 1F');
 });
+test('lively-4: place words match position (no window lines, stroll lines name the room the person is in)',()=>{
+  const f=fixture('09:00',false,null,table),scene=f.context.HaniBuildingScene,s=scene.scheduler;
+  const places=[[/팬트리/,'pantry'],[/HANI Coffee|카페 소파/,'cafe'],[/협업실/,'team_meeting'],[/서버/,'server'],[/미르/,'mir_nook'],[/하니일보|택배 왔나/,'lobby'],[/워 룸|릴리스 보드/,'release'],[/스탠드업/,'standup'],[/회의 자료|회의실 의자/,'exec'],[/개발실 라운지|라운지 소파/,'platform']];
+  let checked=0;
+  for(const [day,from] of [['2026-10-21','10:00'],['2026-10-21','19:00']])for(let t=Date.parse(`${day}T${from}:00+09:00`),end=t+3600e3;t<end;t+=1000)for(const p of s.snapshot(new Date(t)).entries){
+    assert.ok(!/창밖|화이트보드에 낙서/.test(p.line),'no window/whiteboard line at a desk: '+p.line);
+    if(!p.stroll||p.walking)continue;
+    const hit=places.find(([rx])=>rx.test(p.line));assert.ok(hit,'stroll spot line names a place: '+p.line);
+    assert.equal(scene.anchors.get(p.seat.anchor).room,hit[1],p.id+' says "'+p.line+'" but stands in '+scene.anchors.get(p.seat.anchor).room);checked++;
+  }
+  assert.ok(checked>20,'stroll spots checked: '+checked);
+});
