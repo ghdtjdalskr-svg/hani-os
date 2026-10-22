@@ -11,6 +11,8 @@ export function measure(day,from,to,step=1){
     const snap=s.snapshot(new Date(t),{}),cur=new Map(snap.entries.map(e=>[e.id,e]));
     if(new Set(snap.entries.map(e=>e.seat.anchor)).size!==snap.entries.length)throw new Error('shared seat at '+new Date(t).toISOString());
     for(const e of snap.entries)if(e.stroll&&!e.walking)result.strollSeconds=(result.strollSeconds||0)+step;
+    const shown=snap.entries.filter(e=>e.id!=='mir');result.samples=(result.samples||0)+shown.length;result.busy=(result.busy||0)+shown.filter(e=>!e.plain).length;
+    for(const fl of floors){const lines=snap.entries.filter(e=>e.floor===fl&&!e.plain).map(e=>e.line);if(new Set(lines).size!==lines.length)result.dups=(result.dups||0)+1}
     for(const fl of floors){
       const r=result[fl],ids=[...cur.values()].filter(e=>e.floor===fl).map(e=>e.id).sort();
       r.people=Math.max(r.people,ids.length);for(const id of ids)r.lines.add(cur.get(id).line);
@@ -21,7 +23,7 @@ export function measure(day,from,to,step=1){
     prev=cur;
   }
   const span=(end-start)/1000;
-  console.log('stroll-at-spot seconds',result.strollSeconds||0);
+  console.log('stroll-at-spot seconds',result.strollSeconds||0,'busy share',+(result.busy/result.samples).toFixed(2),'dup-line samples',result.dups||0);
   return Object.fromEntries(floors.map(fl=>{const r=result[fl];r.longestStatic=Math.max(r.longestStatic,(end-r.lastChange)/1000);return [fl,{people:r.people,changesPerMin:+(r.changes/span*60).toFixed(2),avgGapSec:r.changes?+(span/r.changes).toFixed(1):span,longestStaticSec:r.longestStatic,distinctLines:r.lines.size}]}));
 }
 if(process.argv[1]?.endsWith('hani-office-lively-measure.mjs')){
