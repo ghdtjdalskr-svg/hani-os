@@ -38,7 +38,7 @@
   const pose = mood => mood === 'up' ? 'cheer' : mood === 'down' ? 'worried' : 'think';
   const closingPose = score => number(score) !== null && number(score) >= 5 ? 'cheer' : 'think';
   const chibi = (person, action, size = 'sm') => '<div class="chibi c-' + size + ' p-' + person + '-' + action + '" role="img" aria-label="' + ({hani:'하니',jieun:'지은',minji:'민지',seoyun:'서윤'}[person]) + '"></div>';
-  const heading = (title, asOf = '') => '<h2><span>' + title + '</span><span class="asof">' + show(asOf) + '</span></h2>';
+  const heading = (title, asOf = '') => '<h2><span>' + title + '</span><span class="asof">' + (asOf === '' ? '' : show(asOf)) + '</span></h2>';
   const quote = (person, action, who, comment) => '<div class="say"><div>' + chibi(person, action) + '<div class="who">' + who + '</div></div><div class="bubble">' + show(comment) + '</div></div>';
   const grid = items => '<div class="grid">' + (rows(items).map(i => '<div class="q' + (missing(i.value) ? ' nodata' : '') + '"><div class="n">' + show(i.name) + '</div><div class="v">' + show(i.value) + '</div><div class="c">' + change(i.chg, i.unit) + '</div></div>').join('') || '<div class="q nodata">' + noData + '</div>') + '</div>';
   function flowValue(value) {
@@ -56,15 +56,19 @@
     if (scalar(source)) return show(source);
     const list = Array.isArray(source) ? source : source ? [source] : [];
     return list.map(item => {
-      const s = object(item); let url;
+      // A bare URL string is accepted too; its host becomes the label.
+      const s = typeof item === 'string' ? {url:item} : object(item); let url;
+      try { if (typeof item === 'string' && !s.name) s.name = new URL(item).hostname.replace(/^www\./,''); } catch (_) { s.name = item; }
       try { url = new URL(s.url); } catch (_) { /* invalid URLs remain plain labels */ }
       return url && ['http:','https:'].includes(url.protocol) ? '<a href="' + esc(url.href) + '" target="_blank" rel="noopener noreferrer">' + show(s.name || s.url) + '</a>' : show(s.name);
-    }).join(' · ') || noData;
+    }).filter((label, i, all) => all.indexOf(label) === i).join(' · ') || noData;
   }
   const namespace = html => html.replace(/class="([^"]*)"/g, (_, classes) => 'class="' + classes.split(/\s+/).map(c => c.startsWith('hsj-') ? c : 'hsj-' + c).join(' ') + '"');
   function render(data) {
     const d = object(data), t = object(d.temperature), h = object(d.hani), score = number(t.score), prev = number(t.prev);
-    const publication = scalar(d.publishedAt) && String(d.publishedAt).startsWith(String(d.edition) + ' ') ? String(d.publishedAt).slice(11) : d.publishedAt;
+    // Same-day "YYYY-MM-DD HH:MM" or ISO "YYYY-MM-DDTHH:MM…" shows just the time.
+    const iso = scalar(d.publishedAt) ? /^(\d{4}-\d{2}-\d{2})[T ](\d{2}:\d{2})/.exec(String(d.publishedAt)) : null;
+    const publication = iso && iso[1] === String(d.edition) ? iso[2] : d.publishedAt;
     const edition = validDate(d.edition) ? d.edition.replaceAll('-','.') + ' (' + '일월화수목금토'[new Date(d.edition).getUTCDay()] + ')' : d.edition;
     const effect = {pos:['up','▲ 긍정'],neg:['down','▼ 부정'],mixed:['flat','◆ 혼재']};
     return namespace('<article class="hsj-sheet" aria-label="하니 스트리트 저널 미리보기"><header class="mast"><div class="hsj-mast-text"><div class="sub">HANI GROUP · DAILY MARKET BRIEF</div><h1>하니 스트리트<br><b>저널</b></h1><span class="date">' + show(edition) + ' ' + show(publication) + ' 발행</span></div>' + chibi('hani','point','lg') + '</header>'
