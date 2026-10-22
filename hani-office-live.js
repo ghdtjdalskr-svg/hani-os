@@ -349,25 +349,28 @@
       }
       if(cache.size>=4)cache.delete(cache.keys().next().value);cache.set(key,events);return events;
     }
-    // Idle liveliness: every BEAT one present person per floor gets a fresh time-of-day line
-    // (about half playful), now and then a short same-floor stroll. Pure function of the
-    // local clock; scheduled events always win and nothing is reserved or stored.
-    const BEAT=2.4,HOLD=12,STROLL_EVERY=5,STROLL_STAY=4;
+    // Idle liveliness: every BEAT one present person per floor starts a short visible bit
+    // (a playful/time-of-day line, sometimes standing, sometimes a same-floor stroll).
+    // About a third to half of a floor is busy at once; everyone else is plain base work
+    // (dot only). Pure function of the local clock; scheduled events always win.
+    const BEAT=2.4,ACTIVE_BEATS=2,STROLL_STAY=6,STROLL_MAX=15;
     const idlePools={
-      day:[['자료 확인 중'],['키보드 두드리는 중'],['보고서 다듬는 중'],['메일함 정리 중'],['몰래 인스타 순찰 중'],['간식 서랍 점검 중'],['고양이 영상 1분만…'],['기지개 켜는 중','stand'],['옆자리랑 수다 중'],['커피 리필 고민 중','stand'],['창밖 멍때리는 중']],
-      evening:[['퇴근 준비 중'],['가방 챙기는 중','stand'],['오늘 할 일 체크 중'],['저녁 메뉴 검색 중'],['간식 서랍 점검 중'],['몰래 인스타 순찰 중'],['퇴근길 날씨 확인 중'],['옆자리랑 수다 중'],['고양이 영상 1분만…'],['기지개 켜는 중','stand'],['퇴근 시간 카운트다운 중']],
-      late:[['야근 중'],['야식 고민 중'],['커피 한 잔 더…','stand'],['졸음 참는 중'],['코드 한 줄만 더'],['몰래 인스타 순찰 중'],['기지개 켜는 중','stand'],['야근 중 · 플레이리스트 고르는 중'],['간식 서랍 점검 중']],
-      lounge:[['라운지에서 야근 이야기 중'],['라운지에서 간식 나누는 중'],['소파에서 수다 중'],['라운지에서 몰래 인스타 순찰 중'],['야식 메뉴 투표 중']],
-      loungeLate:[['라운지에서 조용히 쉬는 중'],['라운지에서 야식 고민 중'],['소파에서 꾸벅꾸벅'],['라운지에서 조용히 수다 중']],
-      stroll:['창밖 구경 중','화분 구경 중','동료 자리 기웃기웃','잠깐 바람 쐬는 중','간식 찾으러 왔다가 두리번']
+      day:[['키보드 두드리는 중'],['보고서 다듬는 중'],['메일함 정리 중'],['몰래 인스타 순찰 중'],['간식 서랍 점검 중'],['고양이 영상 1분만…'],['기지개 켜는 중','stand'],['옆자리랑 수다 중'],['커피 리필 고민 중','stand'],['창밖 멍때리는 중'],['스트레칭 중','stand'],['화이트보드에 낙서 중','stand']],
+      evening:[['가방 챙기는 중','stand'],['오늘 할 일 체크 중'],['저녁 메뉴 검색 중'],['간식 서랍 점검 중'],['몰래 인스타 순찰 중'],['퇴근길 날씨 확인 중'],['옆자리랑 수다 중'],['고양이 영상 1분만…'],['기지개 켜는 중','stand'],['퇴근 시간 카운트다운 중'],['스트레칭 중','stand']],
+      late:[['야식 고민 중'],['커피 한 잔 더…','stand'],['졸음 참는 중'],['코드 한 줄만 더'],['몰래 인스타 순찰 중'],['기지개 켜는 중','stand'],['플레이리스트 고르는 중'],['간식 서랍 점검 중']],
+      lounge:[['라운지에서 간식 나누는 중'],['소파에서 수다 중'],['라운지에서 몰래 인스타 순찰 중'],['야식 메뉴 투표 중'],['라운지에서 야근 이야기 중']],
+      loungeLate:[['라운지에서 야식 고민 중'],['소파에서 꾸벅꾸벅'],['라운지에서 조용히 수다 중'],['라운지에서 별 보는 중']],
+      stroll:['창밖 구경 중','화분 구경 중','동료 자리 기웃기웃','잠깐 바람 쐬는 중','간식 찾으러 왔다가 두리번','커피 내리러 왔어요']
     };
     function idleRoster(day,floor,seconds){return persons.filter(p=>p.id!=='mir'&&p.id!=='seongmin'&&presentAt(p.id,seconds)&&homeAt(p,seconds).floor===floor).map(p=>p.id).sort()}
     function beatPick(day,floor,k){const roster=idleRoster(day,floor,k*BEAT);return roster.length?roster[seed(day+'|idle|'+floor+'|'+k)%roster.length]:null}
+    // Consecutive beats walk a per-floor shuffled pool, so concurrent bits never repeat a line.
+    function poolLine(day,floor,kind,pool,j){const order=pool.map((_,i)=>i).sort((a,b)=>seed(day+floor+kind+a)-seed(day+floor+kind+b));return pool[order[((j%pool.length)+pool.length)%pool.length]]}
     function idleFlavour(day,id,floor,seconds,lounge,late){
       const k=Math.floor(seconds/BEAT);
-      for(let j=k;j>k-HOLD;j--)if(beatPick(day,floor,j)===id){
-        const pool=lounge?late?idlePools.loungeLate:idlePools.lounge:late?idlePools.late:isEvening(seconds)?idlePools.evening:idlePools.day;
-        const [line,pose]=pool[(seed(day+'|'+id)+j*7)%pool.length];return {beat:j,line,pose};
+      for(let j=k;j>k-ACTIVE_BEATS;j--)if(beatPick(day,floor,j)===id){
+        const kind=lounge?late?'loungeLate':'lounge':late?'late':isEvening(seconds)?'evening':'day',[line,pose]=poolLine(day,floor,kind,idlePools[kind],j);
+        return {beat:j,line,pose};
       }
       return null;
     }
@@ -381,20 +384,24 @@
         const out=path(home.anchorId,a.id),back=path(a.id,home.anchorId);
         if(out.length<2||back.length<2||[...out,...back].some(n=>n.floor!==home.floor))continue;
         const o=legs(out),b=legs(back),total=o.at(-1).end+STROLL_STAY+b.at(-1).end;
-        if(total<=STROLL_EVERY*BEAT-.5)list.push({target:a.id,out:o,back:b,total,resources:[...new Set([...out,...back].map(n=>n.id))]});
+        if(total<=STROLL_MAX)list.push({target:a.id,out:o,back:b,total,resources:[...new Set([...out,...back].map(n=>n.id))]});
       }
       strollTargets.set(key,list);return list;
     }
     function idleStroll(day,id,floor,seconds,home,events){
-      const k=Math.floor(seconds/BEAT),j=k-(k%STROLL_EVERY),t0=j*BEAT;
-      if(beatPick(day,floor,j)!==id||seed(day+'|stroll|'+floor+'|'+j)%3)return null;
-      const options=strollPlan(id,home);if(!options.length)return null;
-      const s=options[seed(day+'|'+id+'|stroll|'+j)%options.length],local=seconds-t0;if(local>=s.total)return null;
-      if(events.some(e=>e.start<t0+s.total&&t0<e.end&&(e.people.some(t=>t.id===id)||e.resources.some(r=>s.resources.includes(r)))))return null;
-      const backStart=s.total-s.back.at(-1).end,leg=local<backStart?s.out.find(l=>l.start<=local&&local<l.end):s.back.map(l=>({...l,start:l.start+backStart,end:l.end+backStart})).find(l=>l.start<=local&&local<l.end);
-      if(!leg)return {seat:slot(s.target,'stand'),walking:false,position:null,line:idlePools.stroll[seed(day+'|'+id+'|'+j)%idlePools.stroll.length]};
-      const a=anchors.get(leg.from),b=anchors.get(leg.to),progress=(local-leg.start)/(leg.end-leg.start),pa=visualPoint(a),pb=visualPoint(b);
-      return {seat:slot(a.id,'stand'),walking:true,position:[pa[0]+(pb[0]-pa[0])*progress,pa[1]+(pb[1]-pa[1])*progress],line:local<backStart?'잠깐 산책 중':'자리로 돌아가는 중'};
+      const k=Math.floor(seconds/BEAT);
+      for(let j=k;j>=k-Math.ceil(STROLL_MAX/BEAT);j--){
+        if(beatPick(day,floor,j)!==id||seed(day+'|stroll|'+floor+'|'+j)%6)continue;
+        const options=strollPlan(id,home);if(!options.length)return null;
+        const t0=j*BEAT,s=options[seed(day+'|'+id+'|stroll|'+j)%options.length],local=seconds-t0;if(local>=s.total)continue;
+        if(events.some(e=>e.start<t0+s.total&&t0<e.end&&(e.people.some(t=>t.id===id)||e.resources.some(r=>s.resources.includes(r)))))return null;
+        const backStart=s.total-s.back.at(-1).end,leg=local<backStart?s.out.find(l=>l.start<=local&&local<l.end):s.back.map(l=>({...l,start:l.start+backStart,end:l.end+backStart})).find(l=>l.start<=local&&local<l.end);
+        const spotLine=poolLine(day,floor,'stroll',idlePools.stroll,j);
+        if(!leg)return {seat:slot(s.target,'stand'),walking:false,position:null,line:spotLine};
+        const a=anchors.get(leg.from),b=anchors.get(leg.to),progress=(local-leg.start)/(leg.end-leg.start),pa=visualPoint(a),pb=visualPoint(b);
+        return {seat:slot(a.id,'stand'),walking:true,position:[pa[0]+(pb[0]-pa[0])*progress,pa[1]+(pb[1]-pa[1])*progress],line:local<backStart?'잠깐 자리 비움 · '+spotLine:'자리로 돌아가는 중'};
+      }
+      return null;
     }
     function speech(action,id,day){const override=action.actorOverrides?.[id],p=action.performance;
       const line=override?.speech||(Array.isArray(p.speech)?p.speech.find(s=>s.personId===id)?.line:p.speech)||action.title;
@@ -424,14 +431,14 @@
           if(leg){const a=anchors.get(leg.from),b=anchors.get(leg.to),progress=(seconds-leg.start)/(leg.end-leg.start),pa=visualPoint(a),pb=visualPoint(b);floor=a.floor;seat=slot(a.id,'stand');walking=true;position=a.floor===b.floor?[pa[0]+(pb[0]-pa[0])*progress,pa[1]+(pb[1]-pa[1])*progress]:pa;}
         }
         const performing=event&&(options.reducedMotion||seconds>=event.performStart&&seconds<event.performEnd);
-        let idleLine=p.id==='mir'||p.id==='seongmin'?speech(defaults,p.id,day):(late||evening&&lateWorkers.has(p.id))?'야근 중':evening?'퇴근 준비 중':speech(defaults,p.id,day);
+        let idleLine=p.id==='mir'||p.id==='seongmin'?speech(defaults,p.id,day):(late||evening&&lateWorkers.has(p.id))?'야근 중':evening?'퇴근 준비 중':speech(defaults,p.id,day),plain=!event;
         if(!event&&p.id!=='mir'&&p.id!=='seongmin'){
           const lounge=home!==p.home||(late||evening)&&['yuna','minji'].includes(p.id),stroll=!options.reducedMotion&&!lounge&&idleStroll(day,p.id,home.floor,seconds,home,liveEvents);
-          if(stroll){seat=stroll.seat;walking=stroll.walking;position=stroll.position;idleLine=stroll.line;strolling=true}
+          if(stroll){seat=stroll.seat;walking=stroll.walking;position=stroll.position;idleLine=stroll.line;strolling=true;plain=false}
           else{const flavour=idleFlavour(day,p.id,home.floor,seconds,lounge,late||evening&&lateWorkers.has(p.id));
-            if(flavour){idleLine=flavour.line;if(flavour.pose&&!options.reducedMotion&&p.id!=='mir')seat=slot(home.anchorId,'stand')||seat}}
+            if(flavour){idleLine=flavour.line;plain=false;if(flavour.pose&&!options.reducedMotion&&p.id!=='mir')seat=slot(home.anchorId,'stand')||seat}}
         }
-        return [{id:p.id,idle:!event,stroll:strolling,home:p.home.floor,floor,seat,position,walking,pose:walking?(Math.floor(seconds*5)%2?'walk-a':'walk-b'):seat.posture,activity:event?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):'work',actionId:performing?action.id:'base-work',eventId:event?.id,line:performing?speech(action,p.id,day):event?'이동 중':idleLine,emoji:performing?(action.actorOverrides?.[p.id]?.emoji||action.performance.emoji):'',personalNonWork:action.personalNonWork}];
+        return [{id:p.id,idle:!event,plain,stroll:strolling,home:p.home.floor,floor,seat,position,walking,pose:walking?(Math.floor(seconds*5)%2?'walk-a':'walk-b'):seat.posture,activity:event?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):'work',actionId:performing?action.id:'base-work',eventId:event?.id,line:performing?speech(action,p.id,day):event?'이동 중':idleLine,emoji:performing?(action.actorOverrides?.[p.id]?.emoji||action.performance.emoji):'',personalNonWork:action.personalNonWork}];
       });
       // Lounge residents are persistent presence, not newly scheduled actions.
       // Existing events own their seats first; their frequency/cooldown budgets stay unchanged.
@@ -444,14 +451,14 @@
           const seat=anchor&&slot(anchor);if(!seat)continue;
           occupied.delete(p.seat.anchor);occupied.add(anchor);
           const flavour=idleFlavour(day,id,home.floor,seconds,true,late);
-          Object.assign(p,{floor:anchors.get(anchor).floor,seat,pose:seat.posture,walking:false,position:null,stroll:false,activity:'rest',line:flavour?.line||(late?'라운지에서 조용히 쉬는 중':'라운지에서 야근 이야기 중')});
+          Object.assign(p,{floor:anchors.get(anchor).floor,seat,pose:seat.posture,walking:false,position:null,stroll:false,plain:!flavour,activity:'rest',line:flavour?.line||(late?'라운지에서 조용히 쉬는 중':'라운지에서 야근 이야기 중')});
         }
       }
       // A stroll never takes a spot someone else is shown on; the stroller simply stays home.
       const spot=p=>p.floor+'|'+(p.position||[p.seat.x,p.seat.y]).map(x=>Math.round(x*1000)).join(',');
       for(const p of entries)if(p.stroll&&entries.some(q=>q!==p&&(q.seat.anchor===p.seat.anchor||spot(q)===spot(p)))){
         const seat=slot(homeAt(persons.find(person=>person.id===p.id),seconds).anchorId,'sit');
-        Object.assign(p,{seat,pose:seat.posture,walking:false,position:null,stroll:false,line:late||evening&&lateWorkers.has(p.id)?'야근 중':evening?'퇴근 준비 중':speech(defaults,p.id,day)});
+        Object.assign(p,{seat,pose:seat.posture,walking:false,position:null,stroll:false,plain:true,line:late||evening&&lateWorkers.has(p.id)?'야근 중':evening?'퇴근 준비 중':speech(defaults,p.id,day)});
       }
       return {day,minutes:seconds/60,seconds,entries,events:active,presenceNote};
     }
@@ -544,8 +551,9 @@
     for(const actor of visible){statusDot(actor);placeLabel(actor.querySelector('.hani-office-name'),'name')}
     const priority=a=>a.dataset.speaking==='true'?3:a.dataset.called==='true'||a.dataset.activity==='meeting'?2:1;
     for(const actor of visible.sort((a,b)=>priority(b)-priority(a))){
-      const status=actor.querySelector('.hani-office-status');status.hidden=compact;status.style.visibility='';
-      if(!compact&&!placeLabel(status,'status'))status.style.visibility='hidden';
+      // Plain base work is dot-only; phones keep the reviewed names-only layout (219).
+      const status=actor.querySelector('.hani-office-status');status.hidden=compact||actor.dataset.plain==='true'&&actor.dataset.speaking!=='true'&&actor.dataset.called!=='true'&&actor.dataset.activity!=='meeting';status.style.visibility=status.hidden&&!compact?'hidden':'';
+      if(!status.hidden&&!placeLabel(status,'status'))status.style.visibility='hidden';
     }
   }
   if(buildingChairmanSlot())people.push(['seongmin','회장님',null,0]);
@@ -713,7 +721,7 @@
     setBackground(floor);
     for(const entry of plannedRows)entry.row.hidden=entry.floor!==activeFloor;
     for(const actor of actors.values()){actor.hidden=true;actor.officeRow.hidden=true;actor.dataset.called="false"}
-    for(const p of entries){const actor=actors.get(p.id);if(!actor||!p.seat)continue;actor.hidden=false;actor.officeRow.hidden=false;actor.dataset.activity=p.activity;
+    for(const p of entries){const actor=actors.get(p.id);if(!actor||!p.seat)continue;actor.hidden=false;actor.officeRow.hidden=false;actor.dataset.activity=p.activity;actor.dataset.plain=String(Boolean(p.plain&&!selected&&!meeting));
       if(actor.dataset.avatar==='pending')legacySprite(actor);if(sceneVisible())loadSprite(actor,fitStatusLabels);
       if(building.scheduler&&!meeting){actor.officeTravel=null;actor.officeAnchor=p.seat.anchor;actor.dataset.seat=p.seat.id;actor.dataset.zone=p.seat.zone;actor.dataset.spot=p.seat.zone==='desk'?'seat':p.seat.zone;actor.dataset.home=[p.seat.x,p.seat.y].join(',');place(actor,p.position||[p.seat.x,p.seat.y]);pose(actor,reduced?(p.walking?'standing':p.pose):p.pose)}
       else seatActor(actor,p.seat,animate&&(sameFloor||meeting));
