@@ -6,6 +6,7 @@
   if (!map || !office || map.dataset.deskMascotsMounted) return;
   map.dataset.deskMascotsMounted = 'true';
 
+  const FIGURES = './assets/desk-mascots/';
   const view = office.closest('.view');
   const floors = new Map();
   let catalog = null;
@@ -53,7 +54,9 @@
           image.style.left = (anchor.x + entry.offset[0]) + '%';
           image.style.top = (anchor.y + entry.offset[1]) + '%';
           layer.append(image);
-          figures.push({ image, file: entry.file });
+          // Figures are named by staff id. They ship separately (seeded), so the catalog
+          // carries no file paths and does not pull 19 images into every release package.
+          figures.push({ image, file: FIGURES + id + '.webp' });
         }
         map.append(layer);
         floors.set(floor.id, { layer, figures });
@@ -79,6 +82,7 @@
   new ResizeObserver(update).observe(map);
   void (async () => {
     try {
+      // Literal URL keeps the catalog visible to the release closure.
       const response = await fetch('./assets/data/desk-mascots-v1.json');
       if (!response.ok) return;
       const data = await response.json();
