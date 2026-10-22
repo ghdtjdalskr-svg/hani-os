@@ -86,6 +86,22 @@
       "lastVerifiedSha": "b23829b268b19b44fb3de81058374866287a9741"
     },
     {
+      "feature": "street-journal",
+      "label": "하니 스트리트 저널 V1",
+      "risk": "NORMAL",
+      "owners": [
+        { "file": "hani-street-journal.js", "symbols": ["parse", "render", "archive", "mount", "downloadPNG", "pose", "closingPose"] },
+        { "file": "hani-investment-committee.js", "symbols": ["selectSection", "researchMatches", "openResearch", "openEditor"] },
+        { "file": "hani-street-journal.css", "symbols": [".hsj-sheet", ".hsj-tools"] }
+      ],
+      "dependencies": [{ "file": "index.html", "symbols": ["hani-street-journal.js", "hani-street-journal.css"] }],
+      "dom": ["#icStreetJournal", "#icSections", ".hsj-sheet", ".hsj-message"],
+      "events": ["[data-ic-section]", "[data-hsj]", "[data-hsj-research]", "#icStreetJournal select change"],
+      "targetedTests": ["node --test scripts/hani-street-journal.test.cjs scripts/hani-street-journal-closure.test.mjs scripts/hani-investment-research.test.cjs scripts/hani-investment-committee.test.cjs", "node scripts/hani-street-journal.browser.mjs <playwright/index.mjs> <browser.exe>"],
+      "notes": "2026-10-21 explicit independent localStorage hani_street_journal_v1 only. Preview/entry never writes; save/delete clicks only, confirm overwrite/delete, 400 edition ceiling, damaged archive preserved. No protected state/save/commit/Cloud calls. Canonical Committee third persistent panel; exact unique ticker/name opens existing Research editor. Native SVG/Canvas PNG with local chibi embedded; all 10 used pose URLs statically listed in CSS for runtime closure. Runtime version/cache unchanged. Evidence and limitations: docs/development-history/handoffs/2026-10-21-street-journal-v1.md",
+      "lastVerifiedSha": "f9d1c73add7b91ddf574e9de0ef169c195edbb39"
+    },
+    {
       "feature": "newsroom",
       "label": "Newsroom",
       "risk": "CRITICAL",

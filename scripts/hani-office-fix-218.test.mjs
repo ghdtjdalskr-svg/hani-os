@@ -47,16 +47,17 @@ test.after(async()=>{
       assert.equal(s.day,'2026-10-18');assert.ok(ids.includes('mir'),'MIR always present');
       if(time==='02:00'){
         assert.deepEqual(ids,['dohyun','minji','mir','seoyun','yuna']);assert.match(s.presenceNote,/심야.*라운지/);
-        assert.ok(s.floors.find(f=>f.id==='3f').people.every(p=>p.line==='야근 중'));
+        assert.ok(s.floors.find(f=>f.id==='3f').people.every(p=>p.line&&!['자료 확인 중','퇴근 준비 중'].includes(p.line)),'late-night vocabulary only');
       }else{
         assert.equal(ids.length,17);for(const id of ['1f','2f','3f','4f'])assert.ok(s.floors.find(f=>f.id===id).visible.length>0,id);
-        if(time==='19:31'||time==='23:00')assert.ok(entries.every(p=>/퇴근 준비 중|야근 중|자료 확인 중|라운지에서 야근 이야기 중/.test(p.line)));
+        // Idle lines keep cycling inside the evening vocabulary (lively); daytime desk lines never leak in.
+        if(time==='19:31'||time==='23:00')assert.ok(entries.every(p=>p.idle&&p.line&&(p.id==='mir'||p.line!=='자료 확인 중')));
       }
       assert.equal(new Set(entries.map(p=>p.seat.anchor)).size,entries.length,'no shared seats');
       const lounge=entries.filter(p=>p.activity==='rest');
       if(['19:31','23:00','02:00'].includes(time))assert.deepEqual(lounge.map(p=>p.id).sort(),['minji','yuna']);
       else assert.equal(lounge.length,0);
-      for(const p of entries){if(p.activity!=='rest')assert.equal(p.seat.anchor,scene.homeSeat(p.id).anchor);else assert.match(p.seat.anchor,/lobby-/);assert.ok(scene.anchors.has(p.seat.anchor));assert.equal(p.actionId,'base-work');}
+      for(const p of entries){if(p.activity!=='rest'&&!p.stroll)assert.equal(p.seat.anchor,scene.homeSeat(p.id).anchor);else if(p.stroll)assert.equal(scene.anchors.get(p.seat.anchor).floor,p.home);else assert.match(p.seat.anchor,/lobby-/);assert.ok(scene.anchors.has(p.seat.anchor));assert.equal(p.actionId,'base-work');}
       assert.equal(scene.scheduler.plan(s.day).length,0,'weekend presence never enables weekday actions');
     });
   }
@@ -65,8 +66,8 @@ test.after(async()=>{
     const at=t=>scene.scheduler.snapshot(`2026-10-19T${t}+09:00`);
     for(const time of ['01:00:00','02:00:00','06:59:59'])assert.deepEqual(Array.from(at(time).entries,p=>p.id).sort(),['dohyun','minji','mir','seoyun','yuna']);
     for(const time of ['00:00:00','00:59:59','07:00:00','09:00:00','17:59:59','18:00:00','22:00:00','23:59:59'])assert.equal(at(time).entries.length,17);
-    assert.ok(at('17:59:59').entries.filter(p=>!p.eventId).every(p=>p.line==='자료 확인 중'));
-    assert.ok(at('18:00:00').entries.some(p=>p.line==='퇴근 준비 중'));
+    assert.ok(at('17:59:59').entries.filter(p=>!p.eventId).every(p=>p.line!=='퇴근 준비 중'&&!/야근/.test(p.line)));
+    assert.ok(at('18:00:00').entries.filter(p=>!p.eventId&&p.id!=='mir').every(p=>p.line!=='자료 확인 중'));
     const now='2026-10-19T23:00:00+09:00';
     assert.equal(scene.scheduler.snapshot(now,{presentIds:[]}).entries.length,0);
     assert.equal(scene.scheduler.snapshot(now,{summoned:['mir','dohyun']}).entries.length,15);
