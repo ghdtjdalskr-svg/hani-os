@@ -52,6 +52,9 @@
 # 2026-10-21 · 키움 코드·2행 TSV 수정 (도연/Codex)
 
 `hani/kiwoom-code-fix` / base `331291eb` (원격 main 일치, v2.9.223 유지). intake만 A-prefix 영숫자 KRX 정규화·2행 페어링·코드 우선 매칭·기존 이름/증권사 표기 Preview 구현. **신규10·기존 Node7·1440/390 Preview·전체 앱 자산 브라우저 회귀 PASS**, Preview 보호원본 byte-identical/write0·확정/저장 본문 보존. YUNA 안전검사1개는 과거 baseline 파일 누락으로 미완료. 버전/cache·storage 구조·Cloud/schema·main/배포 변경 없음. Notion 계획 추가는 자동 승인 never 거절로 갱신 대기. Git add index.lock 권한 거절·commit 신규 pathspec 미등록으로 미커밋·미push. 미검증·열차 인계는 [인수인계](handoffs/2026-10-21-kiwoom-code.md). 아래 타 담당 기록 보존.
+# 2026-10-21 · 하니 스트리트 저널 V1 (도연/Codex)
+
+`hani/street-journal-v1` / base `331291e` + 치비 HEAD `f9d1c73`: 승인 v3 디자인·기존 투자 리포트 세 번째 persistent 탭·브리핑 파서/미리보기·별도 `hani_street_journal_v1` 보관·PNG·정확히 한 Research 상세 연결 구현. Node34/34·실제 Edge390/1440·PNG 다운로드·콘솔오류0·보호키 무접근 spy/기존 owner 바이트 불변 PASS. closure128파일/15,387,186bytes·누락0·기존 한도 준수(추가 열차 파일 시 재확인). 버전/cache·기존 저장/Cloud 변경 없음. **미커밋·미push·PR/main/배포 없음, 서윤 검수 대기.** 원격 main 조회는 네트워크 실패, 사용자Cloud/Android/Safari/열차 gate 미검증. Notion 시작 기록 read-back 성공, 완료 기록은 자동 승인 policy never 거절로 갱신 대기. [인수인계](handoffs/2026-10-21-street-journal-v1.md). 아래 다른 담당·과거 기록 보존.
 
 # 2026-10-21 · offline-entry 회귀 9종 후속 (도연/Codex)
 
