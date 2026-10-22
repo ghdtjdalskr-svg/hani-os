@@ -4,7 +4,7 @@
 .hsj-sheet .hsj-chibi{background-repeat:no-repeat;flex:none;background-size:contain;background-position:center bottom}
 .hsj-sheet .hsj-c-lg{width:120px;height:120px}
 .hsj-sheet .hsj-c-sm{width:92px;height:92px}
-.hsj-sheet .hsj-who{font-size:9.5px;color:var(--muted);text-align:center;margin-top:2px;white-space:nowrap}
+.hsj-sheet .hsj-who{font-size:9.5px;color:var(--muted);text-align:center;margin-top:4px;white-space:nowrap}
 .hsj-sheet .hsj-mast{background:var(--navy);color:#fff;padding:16px 16px 14px;display:flex;gap:10px;align-items:flex-end;position:relative;overflow:hidden}
 .hsj-sheet .hsj-mast:after{content:"";position:absolute;right:-30px;top:-30px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(41,91,213,.55),transparent 70%)}
 .hsj-sheet .hsj-mast h1{margin:0;font-size:25px;letter-spacing:-.5px;line-height:1.15}
@@ -38,8 +38,10 @@
 .hsj-sheet .hsj-q.hsj-nodata .hsj-v{color:#b4bccb;font-size:15px}
 .hsj-sheet .hsj-q.hsj-nodata .hsj-c{color:#b4bccb;font-weight:500}
 .hsj-sheet .hsj-say{display:flex;gap:8px;align-items:center;padding:8px 12px;border-top:1px solid var(--line);font-size:12px}
-.hsj-sheet .hsj-say .hsj-chibi{margin:-6px 0 -8px}
-.hsj-sheet .hsj-bubble{background:#f1f4fb;border-radius:12px;padding:7px 10px;position:relative;line-height:1.45}
+.hsj-sheet .hsj-say .hsj-chibi{margin:-6px 0 0}
+/* Character column never shrinks, so a long bubble cannot cover the chibi. */
+.hsj-sheet .hsj-say>div:first-child{flex:0 0 92px}
+.hsj-sheet .hsj-bubble{flex:1 1 auto;min-width:0;background:#f1f4fb;border-radius:12px;padding:7px 10px;position:relative;line-height:1.45}
 .hsj-sheet .hsj-flow{display:flex;gap:6px;padding:8px 12px 10px;border-top:1px solid var(--line);flex-wrap:wrap}
 .hsj-sheet .hsj-flow span{font-size:11px;background:#f7f8fb;border-radius:8px;padding:4px 8px}
 .hsj-sheet ol.hsj-why{margin:0;padding:8px 12px 10px;list-style:none;counter-reset:w}
@@ -58,7 +60,7 @@
 .hsj-sheet table.hsj-cal td{padding:6px 12px;border-top:1px solid var(--line)}
 .hsj-sheet table.hsj-cal td:first-child{color:var(--muted);white-space:nowrap;width:68px}
 .hsj-sheet .hsj-close{margin:12px 14px 0;background:var(--navy);color:#fff;border-radius:14px;padding:12px;display:flex;gap:10px;align-items:center}
-.hsj-sheet .hsj-close .hsj-chibi{margin:-8px 0 -12px}
+.hsj-sheet .hsj-close .hsj-chibi{flex:0 0 92px;margin:-8px 0 -12px}
 .hsj-sheet .hsj-close h3{margin:0 0 4px;font-size:12px;color:var(--gold);letter-spacing:.5px}
 .hsj-sheet .hsj-close p{margin:0;font-size:13px;line-height:1.5}
 .hsj-sheet .hsj-act{margin:8px 0 0;padding:0;list-style:none;font-size:12px}
