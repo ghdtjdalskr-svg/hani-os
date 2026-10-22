@@ -6,6 +6,7 @@
   if (!map || !office || map.dataset.deskMascotsMounted) return;
   map.dataset.deskMascotsMounted = 'true';
 
+  const CATALOG = './assets/data/desk-mascots-v1.json';
   const view = office.closest('.view');
   const floors = new Map();
   let catalog = null;
@@ -53,7 +54,8 @@
           image.style.left = (anchor.x + entry.offset[0]) + '%';
           image.style.top = (anchor.y + entry.offset[1]) + '%';
           layer.append(image);
-          figures.push({ image, file: entry.file });
+          // Figure paths are relative to the catalog file, like the release closure reads them.
+          figures.push({ image, file: new URL(entry.file, new URL(CATALOG, location.href)).href });
         }
         map.append(layer);
         floors.set(floor.id, { layer, figures });
@@ -79,7 +81,7 @@
   new ResizeObserver(update).observe(map);
   void (async () => {
     try {
-      const response = await fetch('./assets/data/desk-mascots-v1.json');
+      const response = await fetch(CATALOG);
       if (!response.ok) return;
       const data = await response.json();
       if (data.schemaVersion !== 'desk-mascots-v1' || !data.staff) return;

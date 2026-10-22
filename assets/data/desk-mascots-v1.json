@@ -15,7 +15,7 @@
   },
   "staff": {
     "hani": {
-      "file": "./assets/desk-mascots/hani.webp",
+      "file": "../desk-mascots/hani.webp",
       "floor": "4f",
       "anchor": "office_hani",
       "offset": [
@@ -24,7 +24,7 @@
       ]
     },
     "yuna": {
-      "file": "./assets/desk-mascots/yuna.webp",
+      "file": "../desk-mascots/yuna.webp",
       "floor": "4f",
       "anchor": "desk_yuna",
       "offset": [
@@ -33,7 +33,7 @@
       ]
     },
     "jieun": {
-      "file": "./assets/desk-mascots/jieun.webp",
+      "file": "../desk-mascots/jieun.webp",
       "floor": "2f",
       "anchor": "finance-a",
       "offset": [
@@ -42,7 +42,7 @@
       ]
     },
     "haru": {
-      "file": "./assets/desk-mascots/haru.webp",
+      "file": "../desk-mascots/haru.webp",
       "floor": "2f",
       "anchor": "finance-b",
       "offset": [
@@ -51,7 +51,7 @@
       ]
     },
     "naeun": {
-      "file": "./assets/desk-mascots/naeun.webp",
+      "file": "../desk-mascots/naeun.webp",
       "floor": "2f",
       "anchor": "life-a",
       "offset": [
@@ -60,7 +60,7 @@
       ]
     },
     "hina": {
-      "file": "./assets/desk-mascots/hina.webp",
+      "file": "../desk-mascots/hina.webp",
       "floor": "2f",
       "anchor": "life-b",
       "offset": [
@@ -69,7 +69,7 @@
       ]
     },
     "minji": {
-      "file": "./assets/desk-mascots/minji.webp",
+      "file": "../desk-mascots/minji.webp",
       "floor": "2f",
       "anchor": "life-c",
       "offset": [
@@ -78,7 +78,7 @@
       ]
     },
     "sooyeon": {
-      "file": "./assets/desk-mascots/sooyeon.webp",
+      "file": "../desk-mascots/sooyeon.webp",
       "floor": "2f",
       "anchor": "life-d",
       "offset": [
@@ -87,7 +87,7 @@
       ]
     },
     "sua": {
-      "file": "./assets/desk-mascots/sua.webp",
+      "file": "../desk-mascots/sua.webp",
       "floor": "1f",
       "anchor": "business-west",
       "offset": [
@@ -96,7 +96,7 @@
       ]
     },
     "seoyun": {
-      "file": "./assets/desk-mascots/seoyun.webp",
+      "file": "../desk-mascots/seoyun.webp",
       "floor": "3f",
       "anchor": "dev-lead",
       "offset": [
@@ -105,7 +105,7 @@
       ]
     },
     "dohyun": {
-      "file": "./assets/desk-mascots/dohyun.webp",
+      "file": "../desk-mascots/dohyun.webp",
       "floor": "3f",
       "anchor": "dev-build",
       "offset": [
@@ -114,7 +114,7 @@
       ]
     },
     "serin": {
-      "file": "./assets/desk-mascots/serin.webp",
+      "file": "../desk-mascots/serin.webp",
       "floor": "3f",
       "anchor": "dev-research",
       "offset": [
@@ -123,7 +123,7 @@
       ]
     },
     "yuri": {
-      "file": "./assets/desk-mascots/yuri.webp",
+      "file": "../desk-mascots/yuri.webp",
       "floor": "3f",
       "anchor": "dev-qa",
       "offset": [
@@ -132,7 +132,7 @@
       ]
     },
     "arin": {
-      "file": "./assets/desk-mascots/arin.webp",
+      "file": "../desk-mascots/arin.webp",
       "floor": "3f",
       "anchor": "dev-design",
       "offset": [
@@ -141,7 +141,7 @@
       ]
     },
     "gaeun": {
-      "file": "./assets/desk-mascots/gaeun.webp",
+      "file": "../desk-mascots/gaeun.webp",
       "floor": "4f",
       "anchor": "secretary_desk",
       "offset": [
@@ -150,7 +150,7 @@
       ]
     },
     "taeo": {
-      "file": "./assets/desk-mascots/taeo.webp",
+      "file": "../desk-mascots/taeo.webp",
       "floor": "1f",
       "anchor": "business-east",
       "offset": [
@@ -159,7 +159,7 @@
       ]
     },
     "daon": {
-      "file": "./assets/desk-mascots/daon.webp",
+      "file": "../desk-mascots/daon.webp",
       "floor": "2f",
       "anchor": "desk_daon",
       "offset": [
@@ -168,7 +168,7 @@
       ]
     },
     "yoonseul": {
-      "file": "./assets/desk-mascots/yoonseul.webp",
+      "file": "../desk-mascots/yoonseul.webp",
       "floor": "2f",
       "anchor": "desk_yoonseul",
       "offset": [
@@ -177,7 +177,7 @@
       ]
     },
     "mir": {
-      "file": "./assets/desk-mascots/mir.webp",
+      "file": "../desk-mascots/mir.webp",
       "floor": "4f",
       "anchor": "mir_station",
       "offset": [
