@@ -1,3 +1,4 @@
+import {readReviewedCurrentSource} from './hani-reviewed-release-baseline.mjs';
 import {readBranchBaseline} from './hani-regression-baseline.mjs';
 import assert from 'node:assert/strict';
 import {assertEgressGate} from './hani-egress-gate-expectations.mjs';
@@ -79,7 +80,7 @@ for(const file of ['hani-main.js','index.html']){
   const baseSource=baseline[file],lines=s=>s.match(/[^\n]*(?:\n|$)/g).filter(Boolean),old=new Map(),ambiguous=new Set();
   for(const line of lines(baseSource)){const text=line.replace(/\r?\n$/,'');if(old.has(text)&&old.get(text)!==line)ambiguous.add(text);old.set(text,line)}
   for(const text of ambiguous)old.delete(text);
-  for(const line of lines(read(file))){const text=line.replace(/\r?\n$/,'');if(old.has(text))assert.equal(line,old.get(text),file+' retained EOL '+text.slice(0,50))}
+  for(const line of lines(readReviewedCurrentSource(file))){const text=line.replace(/\r?\n$/,'');if(old.has(text))assert.equal(line,old.get(text),file+' retained EOL '+text.slice(0,50))}
 }
 const baseHtml=baseline['index.html'];
 for(const id of ['loginCharacterPhoto','loginCharacterName','loginCharacterRole','loginCharacterQuote']){

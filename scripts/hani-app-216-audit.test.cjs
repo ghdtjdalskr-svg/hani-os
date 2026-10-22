@@ -56,14 +56,17 @@ test('canonical merge handler preserves approval gating and does not claim site 
  assert.match(nodes.get('deployMergeResult').innerHTML,/main 병합 완료 · 사이트 반영 확인 중/);
  assert.doesNotMatch(nodes.get('deployMergeResult').innerHTML,/운영 반영 완료|운영 사이트 정상 반영/);
 });
-test('styles remain in cascade order, only pending launch files await train tags, worker is lazy, stale labels removed',()=>{
- const expectedStyles=["./hani-ai-budget.css","./hani-style-01.css","./hani-style-08.css","./hani-style-02.css","./hani-style-03.css","./hani-style-04.css","./hani-style-05.css","./hani-style-06.css","./hani-style-07.css","./hani-office-live.css","https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/variable/woff2/SUIT-Variable.css","https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css","./hani-yuna-helpdesk.css","./hani-design-system.css","./hani-asset-market.css","./hani-portfolio-preview.css","./hani-investment-committee.css","./hani-street-journal.css","./hani-context-remote.css","./hani-development-history.css","./hani-character-archive.css","./hani-organization-hub.css","./hani-board.css","./hani-ilbo.css"];
+test('styles remain in cascade order, only approved pending launch/mascot/newsroom files await train tags, worker is lazy, stale labels removed',async()=>{
+ const {normalizeReviewedCurrentSource}=await import('./hani-reviewed-release-baseline.mjs');
+ const {approvedNewsroomFiles}=await import('./hani-newsroom-4cut-preservation.mjs');
+ normalizeReviewedCurrentSource('index.html',index); // Exact pending connections, each once.
+ const expectedStyles=["./hani-ai-budget.css","./hani-style-01.css","./hani-style-08.css","./hani-style-02.css","./hani-style-03.css","./hani-style-04.css","./hani-style-05.css","./hani-style-06.css","./hani-style-07.css","./hani-office-live.css","./hani-desk-mascots.css","https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/variable/woff2/SUIT-Variable.css","https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css","./hani-yuna-helpdesk.css","./hani-design-system.css","./hani-asset-market.css","./hani-portfolio-preview.css","./hani-investment-committee.css","./hani-street-journal.css","./hani-context-remote.css","./hani-development-history.css","./hani-character-archive.css","./hani-organization-hub.css","./hani-board.css","./hani-ilbo.css"];
  expectedStyles.push('./hani-launch-greeting.css');
  const styles=s=>[...s.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*>/g)].map(m=>m[0].match(/href="([^"]+)"/)[1].split('?')[0]);
  assert.deepEqual(styles(index),expectedStyles);assert.doesNotMatch(index.slice(index.indexOf('<body')),/<link\b[^>]*rel="stylesheet"/);
- // Feature branches cannot advance cache tags; the release train tags these two.
- const pendingLaunchFiles=['./hani-launch-greeting.css','./hani-launch-greeting.js'];
- for(const m of index.matchAll(/<(?:script|link)\b[^>]*(?:src|href)="([^"]+)"/g))if(/\.css(?:\?|$)|\.js(?:\?|$)|@2\.117\.2/.test(m[1])&&!pendingLaunchFiles.includes(m[1]))assert.match(m[1],/\?v=/,m[1]);
+ // Feature branches cannot advance cache tags; the release train tags these approved pending files.
+ const pendingFiles=['./hani-launch-greeting.css','./hani-launch-greeting.js','./hani-desk-mascots.css','./hani-desk-mascots.js',...approvedNewsroomFiles.filter(f=>f.endsWith('.js')).map(f=>'./'+f)];
+ for(const m of index.matchAll(/<(?:script|link)\b[^>]*(?:src|href)="([^"]+)"/g))if(/\.css(?:\?|$)|\.js(?:\?|$)|@2\.117\.2/.test(m[1])&&!pendingFiles.includes(m[1]))assert.match(m[1],/\?v=/,m[1]);
  const scripts=[...index.matchAll(/<script\b[^>]*src="([^"]+)"/g)].map(m=>m[1].split('?')[0]);
  assert.equal(scripts.filter(src=>src==='./hani-launch-greeting.js').length,1);
  assert.equal(scripts.at(-1),'./hani-launch-greeting.js');

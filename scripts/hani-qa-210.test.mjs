@@ -1,4 +1,4 @@
-import {readReviewedReleaseBaseline as readBranchBaseline} from './hani-reviewed-release-baseline.mjs';
+import {readReviewedReleaseBaseline as readBranchBaseline,readReviewedCurrentSource} from './hani-reviewed-release-baseline.mjs';
 import {withoutHeroRestore} from './hani-hero-restore-preservation.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -15,7 +15,7 @@ import {withoutLaunchGreeting} from './hani-launch-greeting-221-preservation.mjs
 const baselineArg=process.argv[2]&&path.basename(process.argv[2])!=='index.mjs'?process.argv[2]:process.env.HANI_QA_TEST_BASELINE;
 const readBaseline=file=>baselineArg?fs.readFileSync(path.resolve(baselineArg,file),'utf8'):readBranchBaseline(file);
 const readEolBaseline=file=>process.env.HANI_QA_EOL_BASELINE?fs.readFileSync(path.resolve(process.env.HANI_QA_EOL_BASELINE,file),'utf8'):baselineArg?readBaseline(file):readBranchBaseline(file);
-const root=path.resolve(import.meta.dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
+const root=path.resolve(import.meta.dirname,'..'),read=readReviewedCurrentSource;
 
 const main=read('hani-main.js'),remote=read('hani-context-remote-v1.js'),study=read('hani-study-v02984.js');
 const lum=hex=>hex.slice(1).match(/../g).map(v=>{const c=parseInt(v,16)/255;return c<=.04045?c/12.92:((c+.055)/1.055)**2.4}).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i],0);

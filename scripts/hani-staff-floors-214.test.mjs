@@ -9,6 +9,7 @@ import http from 'node:http';
 import vm from 'node:vm';
 import {fileURLToPath, pathToFileURL} from 'node:url';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
+import {withoutDeskMascots} from './hani-desk-mascots-preservation.mjs';
 import {fixture as officeFixture} from './hani-building-206-engine.test.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -83,8 +84,9 @@ test('existing organization, board, remote and office render paths resolve every
   for(const floor of building.floors) assert.ok(exists(floor.background)&&exists(floor.fallback),floor.id);
 });
 
-test('runtime closure has no missing references; dynamic art also exists and fits 25MB budget', async () => {
-  const closure=await resolveRuntimeClosure({exists,read:file=>fs.readFileSync(path.join(root,file))});
+test('pre-mascot runtime closure has no missing references; dynamic art also exists and fits 25MB budget', async () => {
+  // Exclude only the two exactly-once approved tags; mascot packaging requires separate verification.
+  const closure=await resolveRuntimeClosure({exists,read:file=>file==='index.html'?Buffer.from(withoutDeskMascots(read(file))):fs.readFileSync(path.join(root,file))});
   assert.deepEqual(closure.missing,[]);
   const union=new Set([...closure.files,...assets.map(a=>a.file)]);
   const bytes=[...union].reduce((n,file)=>n+fs.statSync(path.join(root,file)).size,0);

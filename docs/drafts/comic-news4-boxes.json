@@ -1,0 +1,332 @@
+{
+  "schema_version": "1.0",
+  "image": "assets/comic-trial/newsroom-4cut-001-v1.png",
+  "image_sha256": "ec0abac68a22f42152742e33b4c4ffdaae8e97d568dab9de485e93aa1b9cd5e5",
+  "canvas": {
+    "width": 1200,
+    "height": 2000
+  },
+  "coordinate_system": {
+    "origin": "top-left",
+    "format": "[x1,y1,x2,y2]",
+    "upper_bounds": "exclusive",
+    "units": "pixels",
+    "box_definition": "Balloon and caption box is measured blank interior bounding box; balloon tails can be included. Use safe_text_box for rectangular text overlay. Title box is outer band including border."
+  },
+  "measurement": {
+    "method": "Final PNG connected components: min(R,G,B)>=235 and max(R,G,B)-min(R,G,B)<=20. Safe text boxes: maximal rectangle in same component, inset 8px. Caption inset x16/y8. Title border measured by lavender-pixel threshold.",
+    "source_size": [
+      971,
+      1619
+    ],
+    "final_size": [
+      1200,
+      2000
+    ],
+    "resampling": "Lanczos3, minimal aspect normalization from 971:1619 to 3:5. No content repainting or lettering."
+  },
+  "title_band": {
+    "box": [
+      13,
+      11,
+      1188,
+      78
+    ],
+    "safe_text_box": [
+      36,
+      26,
+      1164,
+      63
+    ]
+  },
+  "balloons": [
+    {
+      "id": "p1-b1",
+      "panel": 1,
+      "reading_order": 1,
+      "speaker": "하루",
+      "box": [
+        130,
+        99,
+        410,
+        221
+      ],
+      "safe_text_box": [
+        174,
+        119,
+        367,
+        173
+      ]
+    },
+    {
+      "id": "p1-b2",
+      "panel": 1,
+      "reading_order": 2,
+      "speaker": "민지",
+      "box": [
+        494,
+        99,
+        770,
+        211
+      ],
+      "safe_text_box": [
+        541,
+        119,
+        729,
+        178
+      ]
+    },
+    {
+      "id": "p1-b3",
+      "panel": 1,
+      "reading_order": 3,
+      "speaker": "하니 전무",
+      "box": [
+        851,
+        98,
+        1152,
+        211
+      ],
+      "safe_text_box": [
+        897,
+        119,
+        1111,
+        174
+      ]
+    },
+    {
+      "id": "p2-b1",
+      "panel": 2,
+      "reading_order": 4,
+      "speaker": "하루",
+      "box": [
+        80,
+        590,
+        383,
+        709
+      ],
+      "safe_text_box": [
+        134,
+        610,
+        334,
+        667
+      ]
+    },
+    {
+      "id": "p2-b2",
+      "panel": 2,
+      "reading_order": 5,
+      "speaker": "하니 전무",
+      "box": [
+        498,
+        590,
+        818,
+        707
+      ],
+      "safe_text_box": [
+        551,
+        610,
+        767,
+        668
+      ]
+    },
+    {
+      "id": "p2-b3",
+      "panel": 2,
+      "reading_order": 6,
+      "speaker": "민지",
+      "box": [
+        874,
+        590,
+        1165,
+        697
+      ],
+      "safe_text_box": [
+        930,
+        609,
+        1111,
+        672
+      ]
+    },
+    {
+      "id": "p3-b1",
+      "panel": 3,
+      "reading_order": 7,
+      "speaker": "하니 전무",
+      "box": [
+        96,
+        1047,
+        398,
+        1160
+      ],
+      "safe_text_box": [
+        152,
+        1066,
+        349,
+        1121
+      ]
+    },
+    {
+      "id": "p3-b2",
+      "panel": 3,
+      "reading_order": 8,
+      "speaker": "하루",
+      "box": [
+        528,
+        1046,
+        813,
+        1153
+      ],
+      "safe_text_box": [
+        570,
+        1066,
+        772,
+        1115
+      ]
+    },
+    {
+      "id": "p3-b3",
+      "panel": 3,
+      "reading_order": 9,
+      "speaker": "민지",
+      "box": [
+        860,
+        1045,
+        1162,
+        1146
+      ],
+      "safe_text_box": [
+        909,
+        1065,
+        1109,
+        1122
+      ]
+    },
+    {
+      "id": "p4-b1",
+      "panel": 4,
+      "reading_order": 10,
+      "speaker": "하루",
+      "box": [
+        96,
+        1514,
+        382,
+        1623
+      ],
+      "safe_text_box": [
+        146,
+        1532,
+        338,
+        1585
+      ]
+    },
+    {
+      "id": "p4-b2",
+      "panel": 4,
+      "reading_order": 11,
+      "speaker": "하니 전무",
+      "box": [
+        472,
+        1516,
+        754,
+        1613
+      ],
+      "safe_text_box": [
+        520,
+        1534,
+        713,
+        1587
+      ]
+    },
+    {
+      "id": "p4-b3",
+      "panel": 4,
+      "reading_order": 12,
+      "speaker": "민지",
+      "box": [
+        839,
+        1512,
+        1130,
+        1614
+      ],
+      "safe_text_box": [
+        884,
+        1531,
+        1083,
+        1588
+      ]
+    }
+  ],
+  "caption_bands": [
+    {
+      "id": "caption-1",
+      "panel": 1,
+      "box": [
+        19,
+        522,
+        1182,
+        564
+      ],
+      "safe_text_box": [
+        35,
+        530,
+        1166,
+        556
+      ]
+    },
+    {
+      "id": "caption-2",
+      "panel": 2,
+      "box": [
+        19,
+        981,
+        1182,
+        1022
+      ],
+      "safe_text_box": [
+        35,
+        989,
+        1166,
+        1014
+      ]
+    },
+    {
+      "id": "caption-3",
+      "panel": 3,
+      "box": [
+        19,
+        1447,
+        1182,
+        1488
+      ],
+      "safe_text_box": [
+        35,
+        1455,
+        1166,
+        1480
+      ]
+    },
+    {
+      "id": "caption-4",
+      "panel": 4,
+      "box": [
+        19,
+        1918,
+        1182,
+        1976
+      ],
+      "safe_text_box": [
+        35,
+        1926,
+        1166,
+        1968
+      ]
+    }
+  ],
+  "notes": [
+    "All 12 speech balloons are empty.",
+    "Chairman frog is a silent cameo in panel 4 and has no balloon.",
+    "Dialogue source preserved; Friday market facts must be finalized and verified before overlay.",
+    "No title/caption/dialogue text has been burned into this art plate."
+  ]
+}

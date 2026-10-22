@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {runInNewContext} from 'node:vm';
 import {main,presentationCode} from './hani-dash-217-fixture.mjs';
+import {approvedReportFiles} from './hani-newsroom-4cut-preservation.mjs';
 import {withoutSimplify225} from './hani-simplify-225-preservation.mjs';
 const present=new Function('n',presentationCode+'\nreturn dataHubLifeCardPresentation;')(v=>Number(v)||0);
 const metric=(key,previous,current)=>({key,row:{value:current,status:'CONFIRMED',unit:'KRW'},comparison:{},monthComparison:{baseline:previous===null?null:{value:previous,status:'CONFIRMED'},delta_absolute:previous===null?null:current-previous,delta_percent:previous?(current-previous)/previous*100:null}});
@@ -27,7 +28,9 @@ test('all report Markdown files round-trip unchanged and the actual renderer sel
  const ctx={module:{exports:{}}};runInNewContext(main.split('/* HANI_GEMINI_REPORTS_BUNDLE_START */')[1].split('/* HANI_GEMINI_REPORTS_BUNDLE_END */')[0],ctx);
  const selected=ctx.module.exports.selectReports(ctx.module.exports.validateCatalog(c));
  assert.deepEqual(Array.from(selected,r=>r.file),files.slice().reverse());
- assert.equal(selected.filter(r=>r.date>='2026-10-11').length,6);
+ const recent=selected.filter(r=>r.date>='2026-10-11').map(r=>r.file);
+ assert.deepEqual(recent.filter(f=>approvedReportFiles.includes(f)).sort(),[...approvedReportFiles].sort(),'only named approved report additions');
+ assert.equal(recent.filter(f=>!approvedReportFiles.includes(f)).length,6,'original six reports remain');
  assert.equal(c.reports.find(r=>r.id.includes('october-monthly')).release_version,'v2.9.149~v2.9.217');
 });
 test('historical identities, renderers, protected owners, versions and unrelated bytes are preserved',t=>{
