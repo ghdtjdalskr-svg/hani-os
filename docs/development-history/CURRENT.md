@@ -1,3 +1,7 @@
+# 2026-10-22 · 본사 사무실 3차 + 1층 방문객 v2.9.230 운영 반영 (서윤/Claude)
+
+`hani/office-lively-3-20261022` → release PR #331 → main `04fb2b3`(v2.9.230, 배포센터 대표님 승인). 층별 고정 순번(한 사람 약 29초에 한 번, 일정 앞뒤 5초 제외), 산책은 출입문을 지나 다른 방으로(층당 1명), 1층 방문객 5종(고객·택배·배달·면접·커피)이 정문으로 들고 남(평일 낮 약 26%, 밤 0). 방문객은 snapshot `visitors`로 분리해 직원 수에 포함하지 않고 persistent 슬롯 1개로 그림(actor 19). 검증: node office 12종·Edge 219(240)·217·216 PASS, 중복 ID·package·One-Pass PASS. **Production read-back: Pages index 2.9.230 태그 59개·HANI_DISPLAY_VERSION 2.9.230·hani-office-live.js SHA-256 main과 일치(73fc0165…), 운영 화면 actor 19·방문객 슬롯 존재, 운영 코드로 다음날 오전 방문객 5종 일정 확인.** 남은 점: 안내데스크 anchor가 데스크 안쪽(공간 canon), 폰 체감 미확인. [인수인계](handoffs/2026-10-22-office-lively-3.md). 아래 기존 기록 보존.
+
 # 2026-10-22 · 본사 사무실 활기 2차 v2.9.229 운영 반영 (서윤/Claude)
 
 `hani/office-lively-2-20261022` → release PR #328 → main `83391f0`(v2.9.229, 배포센터 대표님 승인). 기본 근무는 점만, 층마다 2.4초에 한 명씩 4.8초 딴짓·서기, 그중 1/6은 같은 층 산책·자리 비움(최대 15초), 같은 층 문구 중복 없음. 측정: 일정 7%+짧은 행동 34~37%+산책 12~14%, 보이는 층 변화 평균 1.5~2.2초. 검증: node office 12종·Edge 219(240 checks, index 기준 2.9.228로 갱신)·217·216 PASS, 중복 ID·package·One-Pass PASS. **Production read-back: Pages index 2.9.229 태그 59개·HANI_DISPLAY_VERSION 2.9.229·hani-office-live.js SHA-256이 main과 일치(85da816d…), 새로 연 화면에서 4F 직원이 바쁜 문구와 점 사이를 바꾸는 것 확인.** 폰 체감은 대표님 확인 대기. 기존 실패(main 동일): 206-safety·206-ui·actions-221.browser·fix-218.browser. [인수인계](handoffs/2026-10-22-office-lively-2.md). 아래 기존 기록 보존.

@@ -31,7 +31,7 @@ try{
     });
     await context.route('**/*',route=>new URL(route.request().url()).origin===origin?route.continue():route.abort());
     const page=await context.newPage();page.on('pageerror',e=>status.errors.push(e.message));
-    await page.goto(origin);await page.waitForFunction(()=>!!window.HaniBuildingScene?.scheduler&&document.querySelectorAll('.hani-office-actor').length===18);
+    await page.goto(origin);await page.waitForFunction(()=>!!window.HaniBuildingScene?.scheduler&&document.querySelectorAll('.hani-office-actor').length===19);
     await page.evaluate(()=>{window.originalOfficeNodes=[...document.querySelector('#haniOfficeActors').children]});
     for(const floor of ['1f','2f','3f','4f','5f']){
       const picked=await page.evaluate(floor=>{

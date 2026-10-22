@@ -106,7 +106,7 @@ test('random access snapshots skip missed events; summoned and cancelled events 
 
 test('actual renderer uses persistent actor/prop/bubble slots, tap/keyboard/profile, visible-only motion and case priority',async()=>{
   const f=fixture('09:00',false,()=>true,table),nodes=[...f.ids.get('haniOfficeActors').children],day='2026-10-19';
-  assert.equal(nodes.length,18);assert.equal(nodes.find(a=>a.dataset.person==='seongmin').hidden,true);
+  assert.equal(nodes.length,19);assert.equal(nodes.find(a=>a.dataset.person==='seongmin').hidden,true);assert.ok(nodes.some(a=>a.dataset.person==='visitor'),'one persistent 1F guest slot (lively-3)');
   const e=f.context.HaniBuildingScene.scheduler.plan(day).find(e=>e.layer===3),time=at(day,(e.performStart+e.performEnd)/2);
   f.setDateTime(time);f.click(e.floors[0]);const actor=f.visible().find(a=>a.dataset.action===e.actionId);assert.ok(actor);assert.ok(actor.querySelector('.hani-office-prop').textContent);
   f.ids.get('haniOfficeActors').events.click({target:actor});const bubble=f.root.querySelector('.hani-office-character-bubble');assert.equal(bubble.hidden,false);assert.ok(bubble.querySelector('p').textContent.includes(actor.dataset.line));assert.equal(bubble.querySelector('a').textContent,'프로필 ↗');
