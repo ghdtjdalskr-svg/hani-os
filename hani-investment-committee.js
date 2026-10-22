@@ -673,18 +673,22 @@
     const position = v => max === min ? 50 : Math.max(0,Math.min(100,(v-min)/(max-min)*100));
     return {low,mid,high,price:p.value,lowPosition:position(low),midPosition:position(mid),highPosition:position(high),pricePosition:position(p.value)};
   }
-  const core = {monthlyReportMetrics, fairValueRange, revisionReviewSummaries, FINAL_REVIEW_SCHEMA, buildFinalReviewPrompt, parseFinalReview, finalReviewTargets, finalReviewBasis, finalReviewNote, SECOND_OPINION_SCHEMA, buildSecondOpinionPrompt, parseSecondOpinion, secondOpinionBasis, secondOpinionNote, saveSecondOpinionNote, actionLabel, securitySummary, displaySummary, monthlyChanges, normalizeTheme, compactPortfolio, conclusionLines, recordedHoldingValue, holdingValue, accumulationDisplayValues, parseFairNumber, importFairValues, hasFairValue, missingFairItems, fairFollowupPrompt, cardSummary, committeeProgress, confirmedSummary, OUTPUT_EXAMPLE, accumulationAccountIds, saveAccumulationAccounts, accumulationInfo, accumulationSecurities, RATINGS, STATUSES, THESIS, RISKS, ACTIONS, FRAMEWORK, TRACKED, FIELDS, OUTPUT_SCHEMA, conviction, convictionTotal, normalizeCard, diff, match, candidates, parseReport, reviewReport, prepareBatch, applyBatch, previousRating, currentPrice, valuation, buildPrompt, kst, inputDate, monthNow, latestSnapshot, priorSnapshot, portfolioSummary, COMMITTEE_LISTS, committeeDraft, prepareSnapshot, confirmCommittee, ratingTimeline};
+  function researchMatches(cards, key) {
+    const value = typeof key === 'string' ? key.trim().toLocaleUpperCase('en-US') : '';
+    return value ? (cards || []).filter(card => card && [card.ticker, card.name].some(v => typeof v === 'string' && v.trim().toLocaleUpperCase('en-US') === value)) : [];
+  }
+  const core = {researchMatches,monthlyReportMetrics, fairValueRange, revisionReviewSummaries, FINAL_REVIEW_SCHEMA, buildFinalReviewPrompt, parseFinalReview, finalReviewTargets, finalReviewBasis, finalReviewNote, SECOND_OPINION_SCHEMA, buildSecondOpinionPrompt, parseSecondOpinion, secondOpinionBasis, secondOpinionNote, saveSecondOpinionNote, actionLabel, securitySummary, displaySummary, monthlyChanges, normalizeTheme, compactPortfolio, conclusionLines, recordedHoldingValue, holdingValue, accumulationDisplayValues, parseFairNumber, importFairValues, hasFairValue, missingFairItems, fairFollowupPrompt, cardSummary, committeeProgress, confirmedSummary, OUTPUT_EXAMPLE, accumulationAccountIds, saveAccumulationAccounts, accumulationInfo, accumulationSecurities, RATINGS, STATUSES, THESIS, RISKS, ACTIONS, FRAMEWORK, TRACKED, FIELDS, OUTPUT_SCHEMA, conviction, convictionTotal, normalizeCard, diff, match, candidates, parseReport, reviewReport, prepareBatch, applyBatch, previousRating, currentPrice, valuation, buildPrompt, kst, inputDate, monthNow, latestSnapshot, priorSnapshot, portfolioSummary, COMMITTEE_LISTS, committeeDraft, prepareSnapshot, confirmCommittee, ratingTimeline};
   if (typeof module !== 'undefined' && module.exports) module.exports = core;
   root.HaniInvestmentResearchCore = core;
   if (!root.document) return;
-  // This module owns the two persistent panels in the independent Committee view.
-  const UI = Object.freeze({view:'investmentCommittee',research:'icResearch',monthly:'icMonthly',tabs:'icSections'});
+  // This module owns the three persistent panels in the independent Committee view.
+  const UI = Object.freeze({view:'investmentCommittee',research:'icResearch',monthly:'icMonthly',journal:'icStreetJournal',tabs:'icSections'});
   root.HaniInvestmentCommitteeIds = UI;
   const viewSection = document.getElementById(UI.view);
   if (!viewSection) return;
   // Persistent slots belong only to this view; legacy Portfolio panels stay independent.
   const nav = document.createElement('div'); nav.id = UI.tabs; nav.className = 'ic-section-tabs'; nav.setAttribute('role','tablist'); nav.setAttribute('aria-label','HANI 투자 리포트');
-  const panels = [[UI.research,'종목 리포트','ic-research'],[UI.monthly,'월간 리포트','ic-monthly']];
+  const panels = [[UI.research,'종목 리포트','ic-research'],[UI.monthly,'월간 리포트','ic-monthly'],[UI.journal,'스트리트 저널','ic-street-journal']];
   for (const [key,label,className] of panels) {
     const button = document.createElement('button'); button.type = 'button'; button.textContent = label; button.dataset.icSection = key; button.setAttribute('role','tab'); button.setAttribute('aria-controls',key); nav.append(button);
     const panel = document.createElement('div'); panel.id = key; panel.className = className; panel.setAttribute('role','tabpanel'); panel.hidden = key !== UI.research; viewSection.append(panel);
@@ -694,11 +698,12 @@
   if (banner) banner.after(nav); else viewSection.prepend(nav);
   nav.before(progressSlot);
   function selectSection(value) {
-    const key = value === 'monthly' || value === UI.monthly ? UI.monthly : UI.research;
+    const key = value === 'journal' || value === UI.journal ? UI.journal : value === 'monthly' || value === UI.monthly ? UI.monthly : UI.research;
     for (const [id] of panels) {const panel = document.getElementById(id); panel.hidden = id !== key; panel.classList.toggle('active',id === key);}
     nav.querySelectorAll('[data-ic-section]').forEach(button => {const active = button.dataset.icSection === key; button.setAttribute('aria-selected',String(active)); button.tabIndex = active ? 0 : -1;});
-    if (document.body.dataset.view === UI.view) history.replaceState(null,'','#'+UI.view+(key === UI.monthly ? '/monthly' : ''));
-    if (key === UI.monthly) renderMonthly(); else {render(); if (document.body.dataset.view === UI.view) refreshPrices();}
+    if (document.body.dataset.view === UI.view) history.replaceState(null,'','#'+UI.view+(key === UI.monthly ? '/monthly' : key === UI.journal ? '/journal' : ''));
+    if (key === UI.journal) root.HaniStreetJournal.mount(document.getElementById(UI.journal));
+    else if (key === UI.monthly) renderMonthly(); else {render(); if (document.body.dataset.view === UI.view) refreshPrices();}
   }
   nav.addEventListener('click',event => {const button = event.target.closest('[data-ic-section]'); if (button) selectSection(button.dataset.icSection);});
   nav.addEventListener('keydown',event => {
@@ -880,6 +885,11 @@
   function timeline(card) {
     const rows = ratingTimeline(card, state);
     return '<h4>Rating History · 판단 변경 이력</h4><ol class="ic-timeline">' + (rows.map(h => '<li><time>' + esc(kst(h.date, 'datetime')) + ' KST</time>' + (h.kind === 'monthly' ? '<p>월간 리포트 ' + esc(h.reviewMonth.replace('-', '.')) + ' · 수정본 ' + h.revision + '</p><p>' + pill(h.rating) + ' · Fair Value ' + esc(money(h.fairValue, h.currency)) + ' · 확신도 ' + (h.convictionScore ?? '미확인') + '/100</p>' : '<ul>' + Object.entries(h.changes || {}).map(([k, v]) => '<li>' + esc(labels[k] || k) + ': ' + esc(labels[v.from] ?? v.from ?? '미입력') + ' → ' + esc(labels[v.to] ?? v.to ?? '미입력') + '</li>').join('') + '</ul><p>이유: ' + esc(h.reason || h.fairValueChangeReason || '입력 없음') + '</p>') + '</li>').join('') || '<li>아직 판단 변경 이력이 없습니다.</li>') + '</ol>';
+  }
+  function openResearch(key) {
+    const matches = researchMatches(state.investmentResearchCards, key);
+    if (matches.length !== 1) {notice('종목 리포트 없음'); return false;}
+    selectSection(UI.research); openEditor(matches[0]); return true;
   }
   function openEditor(card = null, candidate = null) {
     editorCard = card ? clone(card) : null; editorBaseline = fingerprint(); editor._revisionDraft = null;
@@ -1222,7 +1232,7 @@
   });
   host.querySelector('[data-ic-status]').addEventListener('change', render);
   root.addEventListener('hani:market-updated', () => {quoteSource = root.HaniAssetMarket?.analyticsSource?.() || {}; quoteOwner = accountIdentity(); render();});
-  root.HaniInvestmentCommittee = {select:selectSection,render, refreshPrices, renderMonthly, continueCommittee, setFramework(value) {conviction({}, value); framework = clone(value);}, enter() {render(); refreshPrices();}};
-  selectSection(location.hash.endsWith('/monthly') ? UI.monthly : UI.research);
+  root.HaniInvestmentCommittee = {openResearch,select:selectSection,render, refreshPrices, renderMonthly, continueCommittee, setFramework(value) {conviction({}, value); framework = clone(value);}, enter() {render(); refreshPrices();}};
+  selectSection(location.hash.endsWith('/journal') ? UI.journal : location.hash.endsWith('/monthly') ? UI.monthly : UI.research);
   if (typeof renderHaniCareHome === 'function') renderHaniCareHome();
 })(typeof window !== 'undefined' ? window : globalThis);
