@@ -6500,61 +6500,6 @@
       "type": "junction",
       "label": "고정 보행 꺾임",
       "capacity": 1
-    },
-    {
-      "id": "window_1f_1",
-      "floor": "1f",
-      "room": "cafe",
-      "x": 806,
-      "y": 551,
-      "type": "interaction",
-      "label": "바깥 유리창 앞",
-      "capacity": 1,
-      "walkTarget": true
-    },
-    {
-      "id": "window_2f_1",
-      "floor": "2f",
-      "room": "pantry",
-      "x": 320,
-      "y": 540,
-      "type": "interaction",
-      "label": "바깥 유리창 앞",
-      "capacity": 1,
-      "walkTarget": true
-    },
-    {
-      "id": "window_3f_1",
-      "floor": "3f",
-      "room": "platform",
-      "x": 90,
-      "y": 210,
-      "type": "interaction",
-      "label": "바깥 유리창 앞",
-      "capacity": 1,
-      "walkTarget": true
-    },
-    {
-      "id": "window_4f_1",
-      "floor": "4f",
-      "room": null,
-      "x": 925,
-      "y": 290,
-      "type": "interaction",
-      "label": "바깥 유리창 앞",
-      "capacity": 1,
-      "walkTarget": true
-    },
-    {
-      "id": "window_5f_1",
-      "floor": "5f",
-      "room": null,
-      "x": 900,
-      "y": 345,
-      "type": "interaction",
-      "label": "옥상 전망 난간",
-      "capacity": 1,
-      "walkTarget": true
     }
   ],
   "edges": [
@@ -8554,36 +8499,6 @@
     {
       "from": "junction_quiet_roof",
       "to": "rooftop_rest",
-      "kind": "walk",
-      "bidirectional": true
-    },
-    {
-      "from": "path_lobby-se_44",
-      "to": "window_1f_1",
-      "kind": "walk",
-      "bidirectional": true
-    },
-    {
-      "from": "path_finance-lounge-b_25",
-      "to": "window_2f_1",
-      "kind": "walk",
-      "bidirectional": true
-    },
-    {
-      "from": "path_dev-lounge-a_71",
-      "to": "window_3f_1",
-      "kind": "walk",
-      "bidirectional": true
-    },
-    {
-      "from": "hall_4f",
-      "to": "window_4f_1",
-      "kind": "walk",
-      "bidirectional": true
-    },
-    {
-      "from": "hall_5f",
-      "to": "window_5f_1",
       "kind": "walk",
       "bidirectional": true
     }

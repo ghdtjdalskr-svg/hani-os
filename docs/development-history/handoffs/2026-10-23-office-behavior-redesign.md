@@ -37,7 +37,11 @@
 
 ## 다음 담당에게 (배포 열차)
 
-- 함께 배포할 서버 Edge Function·설정: 없음. 새 정적 파일 `data/hani-building/office-places.json`이 같이 나가야 함(런타임이 fetch).
+- 함께 배포할 서버 Edge Function·설정: 없음.
+- **data/ 파일 순서(서윤 팀장님 안내: release package는 data/를 싣지 않음)**: `data/hani-building/office-places.json`(새 파일, 창가 5개 지점·연결·좌표 포함)과 `art-map-v1.json`(복도·경로 좌표만 수정)은 release PR 전에 **시드 PR**로 main에 먼저 넣는다. `spatial-contract.json`은 main과 byte 동일(326 지점, SHA `d02426b4…`)로 되돌렸다.
+  - 데이터가 먼저 들어가도 안전: 운영 2.9.230 코드의 지도 수락 조건(326개·모든 지점 art 좌표) 통과 확인. 운영에선 복도 제자리 멈춤만 먼저 좋아짐.
+  - 코드가 먼저 나가도 안전: office-places.json 404에서 화면 정상(장소 0, 지점 326, 직원 표시 정상), 외출만 쉼(Edge 확인).
+  - 런타임은 장소 파일의 창가 지점을 **복사본**에 합침(불러온 지도 객체 변경 없음).
 - 버전은 2.9.232 이후(2.9.231 = 서윤 책상 마스코트 예정). 열차 후보에서 버전·캐시 태그를 한 번에 올리고 기존 office browser 스크립트를 함께 실행.
 - office-219 index 기준선은 release SHA로 갱신 필요(이전 담당 메모).
 - blocker: 없음. 회장님 Preview 확인 후 열차 탑승.

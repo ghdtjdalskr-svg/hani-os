@@ -20,7 +20,7 @@ test('approved catalog projects exactly 98 core actions, 37 disabled, original f
   assert.equal(catalog.frequencyFamilies.length,77);
   for(const f of table.families){const original=catalog.frequencyFamilies.find(x=>x.id===f.id);assert.deepEqual(f.memberActionIds,original.memberActionIds);assert.deepEqual(f.limits,original.limits);}
   for(const a of table.actions)assert.ok(read('docs/design/office-actions-v1.3.md').includes('`'+a.id+'`'));
-  assert.equal(crypto.createHash('sha256').update(fs.readFileSync(new URL('../data/hani-building/spatial-contract.json',import.meta.url))).digest('hex'),'52425f36c23eb8291ce47363372308b9b8d2dbf7c553759b464958d200a4b0ea');
+  assert.equal(crypto.createHash('sha256').update(fs.readFileSync(new URL('../data/hani-building/spatial-contract.json',import.meta.url))).digest('hex'),'d02426b44c49db169efebd782e110226fd1d719d016bc5912516753f3df8841d');
   assert.match(source,/fetch\('\.\/assets\/data\/office-actions-216\.json'\)/);
   assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|Math\.random/);
 });

@@ -10,7 +10,7 @@
         try{const response=await fetch(url);if(!response.ok)throw Error('office metadata');return await response.json()}
         catch(error){if(index===3)return null;throw error}
       }));
-      if(canon.contractVersion==='spatial-216-v1'&&canon.anchors.length>=326&&art.contractVersion===canon.contractVersion&&canon.anchors.every(a=>art.anchors[a.id]))assets={canon,sprites,art,spritesV3:spritesV3?.scale===3&&Array.isArray(spritesV3.entries)?spritesV3:null};
+      if(canon.contractVersion==='spatial-216-v1'&&canon.anchors.length===326&&art.contractVersion===canon.contractVersion&&canon.anchors.every(a=>art.anchors[a.id]))assets={canon,sprites,art,spritesV3:spritesV3?.scale===3&&Array.isArray(spritesV3.entries)?spritesV3:null};
     }catch(_){/* Production art and seats remain available without metadata. */}
   }
   function validActions(table,version){
@@ -23,6 +23,16 @@
   }
   let placeTable=assets?.places||globalThis.HaniOfficePlaces||null;
   if(!placeTable&&typeof fetch==='function')try{const r=await fetch('./data/hani-building/office-places.json');if(r.ok)placeTable=await r.json()}catch(_){/* No places means no optional excursions. */}
+  // Place-only nodes (window spots) ship with the places file so the frozen spatial contract
+  // stays unchanged; merge them only when every attachment already exists.
+  if(assets&&placeTable?.schemaVersion==='office-places-v1'){
+    const ids=new Set(assets.canon.anchors.map(a=>a.id)),extra=(placeTable.anchors||[]).filter(a=>!ids.has(a.id)&&placeTable.art?.[a.id]);
+    const known=new Set([...ids,...extra.map(a=>a.id)]),edges=(placeTable.edges||[]).filter(e=>known.has(e.from)&&known.has(e.to)&&extra.some(a=>a.id===e.from||a.id===e.to));
+    // Copies only: the loaded contract objects are never mutated.
+    if(extra.length&&extra.every(a=>edges.some(e=>e.from===a.id||e.to===a.id)))assets={...assets,
+      canon:{...assets.canon,anchors:[...assets.canon.anchors,...extra],edges:[...assets.canon.edges,...edges]},
+      art:{...assets.art,anchors:{...assets.art.anchors,...Object.fromEntries(extra.map(a=>[a.id,placeTable.art[a.id]]))}}};
+  }
   const places=Object.freeze(placeTable?.schemaVersion==='office-places-v1'?placeTable.places:[]);
   // Tap speech shares the scene clock (KST). Its catalog and cursors live in memory.
   function tapBucket(now=new Date()){

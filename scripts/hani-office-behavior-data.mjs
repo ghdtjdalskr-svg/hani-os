@@ -29,13 +29,16 @@ const windows=[
 for(const [id,x,y]of [['junction_life',46,84.6],['junction_secretariat',43,81],['junction_platform',45,67.5],['approach_desk_seoyun',8.252,67.5],['approach_desk_dohyun',27.5,67.5],['side_desk_dohyun',27.5,64],['approach_desk_serin',40,67.5],['side_desk_serin',40,64],['approach_desk_yuri',45,89],['side_desk_yuri',7.5,85],['approach_desk_arin',45,89],['side_desk_arin',27,85],['path_dev-lounge-a_71',45,39],['path_dev-lounge-b_39',46,39]])point(id,x,y);
 // Entry/return paths must also clear a partner already seated at the destination.
 for(const [id,x,y]of [['junction_pantry',65,40],['approach_pantry_2f',85,43],['path_finance-lounge-a_5',68,40],['path_finance-lounge-a_19',68,32],['path_finance-lounge-a_25',69,30],['path_finance-lounge-b_5',82,40],['path_finance-lounge-b_19',82,32],['path_finance-lounge-b_25',81,30],['junction_exec',80,72],['junction_business',23,84],['junction_terrace',64,45],['path_rooftop_table_slot_3_7',64,34]])point(id,x,y);
-// Rebuild only this script's five new scene nodes so regenerating is idempotent.
+// Window nodes live in office-places.json, not the frozen 326-anchor spatial contract, so the
+// production runtime keeps loading the contract whichever of data or code reaches main first.
 const windowIds=new Set(windows.map(w=>'window_'+w[0]+'_1'));
 c.anchors=c.anchors.filter(n=>!windowIds.has(n.id));c.edges=c.edges.filter(e=>!windowIds.has(e.from)&&!windowIds.has(e.to));
+for(const id of windowIds)delete a.anchors[id];
+const extraAnchors=[],extraEdges=[],extraArt={};
 // Pick a logical, visible-room walkable attachment when a historical path id differs.
 for(const [floor,room,x,y,ax,ay]of windows){
  const id='window_'+floor+'_1';
- if(!c.anchors.some(n=>n.id===id)){
+ {
   const node={id,floor,room,x,y,type:'interaction',label:floor==='5f'?'옥상 전망 난간':'바깥 유리창 앞',capacity:1,walkTarget:true};
   const inside=(p,r)=>p.x>=r.x&&p.x<=r.x+r.w&&p.y>=r.y&&p.y<=r.y+r.h;
   const f=c.floors.find(f=>f.id===floor);
@@ -47,13 +50,13 @@ for(const [floor,room,x,y,ax,ay]of windows){
    const end={x:n.x+6,y:n.y+6};if(clear(n,end)){Object.assign(node,end);attach=n;break}
   }
   if(!attach)throw Error('No clear window branch: '+id+' (adjust logical slot)');
-  c.anchors.push(node);c.edges.push({from:attach.id,to:id,kind:'walk',bidirectional:true});
+  extraAnchors.push(node);extraEdges.push({from:attach.id,to:id,kind:'walk',bidirectional:true});
  }
- a.anchors[id]={x:ax,y:ay,zone:'lounge'};
+ extraArt[id]={x:ax,y:ay,zone:'lounge'};
 }
 const places=[];
 function card(id,floor,room,kind,slots,name,at,pose='stand'){
- const valid=slots.filter(id=>{const n=c.anchors.find(n=>n.id===id);return n&&!n.rendererSeat?.owner&&!n.occupant&&n.runtimeAssignable!==false&&!id.startsWith('mir_')});
+ const valid=slots.filter(id=>{const n=[...c.anchors,...extraAnchors].find(n=>n.id===id);return n&&!n.rendererSeat?.owner&&!n.occupant&&n.runtimeAssignable!==false&&!id.startsWith('mir_')});
  if(valid.length)places.push({id,floor,room,kind,name,slots:valid,go:name+' 가는 중',at,pose,stay:[8,14]});
 }
 card('coffee-1f','1f','cafe','coffee',['coffee_counter'],'카페 커피 카운터로',['카페 커피 카운터에서 커피 주문 중','카페 커피 카운터에서 메뉴 고르는 중']);
@@ -72,5 +75,6 @@ card('garden-5f','5f','garden','garden',['rooftop_garden'],'옥상 정원으로'
 card('terrace-5f','5f','terrace','meeting',Array.from({length:6},(_,i)=>'rooftop_table_slot_'+(i+1)),'옥상 테라스로',['옥상 테라스에서 잠깐 쉬는 중'],'sit');
 const windowNames={'1f':'카페 창가','2f':'팬트리 창가','3f':'개발실 창가','4f':'복도 끝 창가'};
 for(const [floor,room]of windows)card('window-'+floor,floor,room,'window',['window_'+floor+'_1'],floor==='5f'?'옥상 전망 난간으로':windowNames[floor]+'로',[floor==='5f'?'옥상 전망 난간에서 풍경 보는 중':windowNames[floor]+'에서 창밖 구경 중']);
-write('data/hani-building/spatial-contract.json',c);write('data/hani-building/art-map-v1.json',a);write('data/hani-building/office-places.json',{schemaVersion:'office-places-v1',places});
+// The spatial contract itself is never rewritten here (it stays byte-identical to main).
+write('data/hani-building/art-map-v1.json',a);write('data/hani-building/office-places.json',{schemaVersion:'office-places-v1',anchors:extraAnchors,edges:extraEdges,art:extraArt,places});
 console.log({places:places.length,windows:windows.map(w=>'window_'+w[0]+'_1')});
