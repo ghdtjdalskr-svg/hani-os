@@ -12,14 +12,14 @@ test('release225 plus only named later release changes reproduces current source
 });
 
 test('release projection advances cache/display only; internal and historical literals stay strict',()=>{
- const source='x.js?v=2.9.229 const HANI_DISPLAY_VERSION="2.9.229"; internal="2.9.15-safe-baseline-bootstrap"; old="2.9.225";';
- assert.equal(projectTrainVersion(source,'2.9.230'),'x.js?v=2.9.230 const HANI_DISPLAY_VERSION="2.9.230"; internal="2.9.15-safe-baseline-bootstrap"; old="2.9.225";');
- assert.throws(()=>projectTrainVersion(source,'2.9.228'));
- assert.throws(()=>projectTrainVersion(source,'2.9.230-invalid'));
- const html=readReviewedReleaseBaseline('index.html'),future=projectTrainVersion(html,'2.9.230');
- assert.doesNotMatch(future,/2\.9\.229/,'next train updates all existing visible labels and cache tags');
- assert.match(future,/<title>갓생살기 프로젝트 · HANI OS Life Edition v2\.9\.230<\/title>/);
- assert.equal(projectTrainVersion('unrelated v2.9.229','2.9.230'),'unrelated v2.9.229');
+ const source='x.js?v=2.9.230 const HANI_DISPLAY_VERSION="2.9.230"; internal="2.9.15-safe-baseline-bootstrap"; old="2.9.225";';
+ assert.equal(projectTrainVersion(source,'2.9.231'),'x.js?v=2.9.231 const HANI_DISPLAY_VERSION="2.9.231"; internal="2.9.15-safe-baseline-bootstrap"; old="2.9.225";');
+ assert.throws(()=>projectTrainVersion(source,'2.9.229'));
+ assert.throws(()=>projectTrainVersion(source,'2.9.231-invalid'));
+ const html=readReviewedReleaseBaseline('index.html'),future=projectTrainVersion(html,'2.9.231');
+ assert.doesNotMatch(future,/2\.9\.230/,'next train updates all existing visible labels and cache tags');
+ assert.match(future,/<title>갓생살기 프로젝트 · HANI OS Life Edition v2\.9\.231<\/title>/);
+ assert.equal(projectTrainVersion('unrelated v2.9.230','2.9.231'),'unrelated v2.9.230');
 });
 
 test('unlisted controls, storage, source and EOL edits remain detectable against Git oracle',()=>{
