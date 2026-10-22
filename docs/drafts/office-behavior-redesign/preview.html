@@ -151,11 +151,26 @@ footer{font-size:13px;color:var(--muted)}
   <p class="keep">그대로 지키는 것: 캐릭터 그림과 층 화면, 서윤 팀장님 책상 마스코트가 읽는 정보, 생활 기록 저장소(hani_os_life_v23)와 Cloud는 건드리지 않아요.</p>
 </section>
 
-<section class="sheet ask">
-  <h2>회장님께 여쭐 것</h2>
-  <div class="q"><h3>1. 이 방향으로 진행해도 될까요?</h3><p>상태 하나 + 장소 카드 + 예약 장부 하나. 무거운 구현은 도연 선임님께 맡기고 저는 감수와 화면 확인을 맡을게요.</p></div>
-  <div class="q"><h3>2. 창가 행동은 어떻게 할까요?</h3><p>(가) 그림의 실제 창 앞에 창가 자리를 새로 만들고 아린 님 리뷰를 받는다 (추천) · (나) 4층 라운지 안락의자에서만 창밖을 본다</p></div>
-  <div class="q"><h3>3. 방문객도 이번에 같이 정리할까요?</h3><p>같이 정리 (추천) · 직원만 먼저</p></div>
+<section class="sheet">
+  <div class="sheet-head"><h2>구현 결과 (10/23)</h2><span class="stamp ok">테스트 통과 · 탑승 대기</span></div>
+  <p>회장님 결정(추천안: 창가 자리 새로 + 아린 리뷰, 방문객 포함)대로 도연 선임님이 구현하고 제가 검토·수정했어요.</p>
+  <div class="tw"><table>
+    <tr><th>확인한 것</th><th>전</th><th>후</th></tr>
+    <tr><td>걸어도 화면에서 제자리인 구간</td><td class="num">26</td><td class="num">0</td></tr>
+    <tr><td>장소 문구와 실제 위치가 다른 경우 (하루 매초)</td><td class="num">268</td><td class="num">0</td></tr>
+    <tr><td>같은 층에서 30px 안으로 붙은 두 사람</td><td class="num">12</td><td class="num">0</td></tr>
+    <tr><td>본사 테스트 전체</td><td></td><td class="num">100 통과 · 0 실패</td></tr>
+    <tr><td>Edge 화면 테스트 (390·884·1440 폭 × 1–5층)</td><td></td><td class="num">1,110 장면 통과</td></tr>
+  </table></div>
+  <div class="cols">
+    <figure><img src="result-4f-window.jpg" alt="4층 지도: 주황 점이 가운데 복도 끝 유리창 앞에 새로 만든 창가 자리"><figcaption>새 창가 자리 예시 · 4층은 회장실이 아니라 <span class="k-place">공용 복도 끝 유리창 앞</span>. 다섯 층 모두 아린 님 리뷰 통과</figcaption></figure>
+    <figure><img src="result-390-1f.jpg" alt="휴대폰 폭 1층 화면: 직원들이 겹치지 않고 각자 자리에 있음"><figcaption>휴대폰 폭(390) 1층 · 겹침 없이 각자 자리</figcaption></figure>
+  </div>
+  <figure><img src="result-1440-3f.jpg" alt="넓은 화면 3층: 세린이 복도에서 '잠깐 걸을게요', 다른 직원은 자기 책상"><figcaption>넓은 화면(1440) 3층 · 세린 님은 복도에서 <span class="says">잠깐 걸을게요</span>, 나머지는 자기 책상</figcaption></figure>
+  <ul class="why">
+    <li>방문객은 예전 문구 그대로예요: "상담 받는 중", "택배 두고 갈게요", "배달 왔습니다!", 나갈 땐 "안녕히 계세요~".</li>
+    <li>버전은 올리지 않았어요. 배포 열차에 탑승해서 2.9.232 이후 한 번에 나가요. 생활 기록·Cloud는 그대로예요.</li>
+  </ul>
 </section>
 
 <footer>기준: main ad3c2f3 · 운영 표시 2.9.230 · hani-office-live.js?v=2.9.230. 운영 사진은 로그인 화면을 제 탭에서만 잠시 가리고 찍었어요(데이터 변경 없음). 2차 의견: GPT 독립 분석과 같은 결론.</footer>
