@@ -221,11 +221,28 @@
   // One canonical scheduler. Daily plans are projections, never queues to replay.
   // All mutable state is disposable memory; no life records or data triggers enter here.
   function createScheduler(table){
-    const Math=globalThis.Math,Set=globalThis.Set,Map=globalThis.Map,Object=globalThis.Object,Infinity=globalThis.Infinity;
+    const Math=globalThis.Math,Set=globalThis.Set,Map=globalThis.Map,Object=globalThis.Object,Infinity=globalThis.Infinity,Array=globalThis.Array,Date=globalThis.Date;
     const nightCatalog=table.schemaVersion==='office-actions-221-v1';
     const actions=new Map(table.actions.filter(a=>a.automaticReady&&(a.releaseTarget==='216'||nightCatalog&&a.releaseTarget==='221')&&!a.manualPreviewOnlyIn216&&!a.conditions.triggerIds.length).map(a=>[a.id,a]));
     const persons=table.people.filter(p=>p.registration==='registered'&&eligible.some(e=>e.id===p.id)||p.id==='seongmin');
     const personById=new Map(persons.map(p=>[p.id,p]));
+    // Short work visits reuse existing art/graph nodes, never a colleague's chair.
+    const errandPlaces=places.length?persons.filter(p=>!['mir','seongmin'].includes(p.id)).flatMap(p=>{
+      const h=art.anchors[p.home.anchorId];
+      const slots=[...new Set(['side_desk_'+p.id,'approach_desk_'+p.id,'side_'+p.home.anchorId,'approach_'+p.home.anchorId])].filter(id=>{
+        const a=anchors.get(id),v=art.anchors[id];
+        const distance=v&&Math.hypot((v.x-h.x)*(art.width||1672)/100,(v.y-h.y)*(art.height||941)/100);
+        return a?.type==='junction'&&a.room===p.home.room&&distance>=24.01&&distance<=200;
+      });
+      return slots.length?[{id:'errand-colleague-'+p.id,kind:'errand',errandKind:'colleague',targetPerson:p.id,floor:p.home.floor,room:p.home.room,slots,pose:'stand',stay:[8,25],
+        go:p.name+' 자리로 가는 중',at:[p.name+'에게 잠깐 물어보는 중',p.name+'랑 화면 같이 보는 중']}]:[];
+    }):[];
+    // Existing public noticeboard is drawn in 1F. No invented printers/cabinets.
+    if(places.length&&anchors.has('ilbo_board'))errandPlaces.push({id:'errand-notice',kind:'errand',errandKind:'notice',floor:'1f',room:'lobby',slots:['ilbo_board'],pose:'stand',stay:[8,25],go:'게시판으로 가는 중',at:['게시판 공지 확인 중']});
+    for(const a of anchors.values())if(places.length&&a.type==='door'&&['secretariat','hani_office','finance','life','platform','business'].includes(a.room)){
+      const room=canon.floors.find(f=>f.id===a.floor)?.rooms.find(r=>r.id===a.room),name=(room?.label||a.label).split(' · ')[0];
+      errandPlaces.push({id:'errand-deliver-'+a.room,kind:'errand',errandKind:'delivery',floor:a.floor,room:a.room,slots:[a.id],pose:'stand',stay:[8,25],go:name+' 가는 중',at:['서류 전달 중']});
+    }
     const defaults=actions.get('base-work'),cache=new Map(),paths=new Map(),targetCache=new Map(),slotCache=new Map();
     const minute=t=>Number(t.slice(0,2))*60+Number(t.slice(3));
     const imul=Math.imul;
@@ -602,10 +619,11 @@
       for(const [id,ranges]of x)if(y.has(id)&&ranges.some(p=>y.get(id).some(q=>overlap(p,q))))return true;
       return false;
     }
+    const affectedFloors=new WeakMap();
     function floorCapacity(candidate,nearby){
       const moving=e=>e.people.some(t=>t.seat.anchor!==t.home.anchorId);
       if(!moving(candidate))return true;
-      const group=e=>e.people.length>1,affected=e=>new Set(e.people.flatMap(t=>[t.home.floor,anchors.get(t.seat.anchor).floor]));
+      const group=e=>e.people.length>1,affected=e=>{let value=affectedFloors.get(e);if(!value){value=new Set(e.people.flatMap(t=>[t.home.floor,anchors.get(t.seat.anchor).floor]));affectedFloors.set(e,value)}return value};
       const reservations=[...nearby.filter(moving),candidate].map(e=>({e,floors:affected(e)}));
       const ticks=[candidate.start,candidate.end-.00001,3600,25200,41400,46800,...reservations.flatMap(r=>[r.e.start,r.e.end])].filter(s=>s>=candidate.start&&s<candidate.end);
       for(const floor of affected(candidate))for(const seconds of ticks){
@@ -616,12 +634,30 @@
       }
       return true;
     }
-    function reserve(candidate,ledger,allowed){
+    const transitIntervals=new WeakMap();
+    function reserve(candidate,ledger,allowed,nearby=ledgerOverlaps(ledger,candidate.start,candidate.end)){
       const ids=new Set(candidate.people.map(t=>t.id));
-      const nearby=ledgerOverlaps(ledger,candidate.start,candidate.end);
-      if(!floorCapacity(candidate,nearby))return false;
       if(nearby.some(e=>e.people.some(t=>ids.has(t.id))||resourceConflict(e,candidate)))return false;
-      const homeOnly=candidate.people.every(t=>!t.out.length&&!t.back.length&&t.seat.anchor===t.home.anchorId)&&nearby.every(e=>e.people.every(t=>!t.out.length&&!t.back.length&&t.seat.anchor===t.home.anchorId));
+      if(!floorCapacity(candidate,nearby))return false;
+      // Reserve a unit for travellers passing through this floor. Existing
+      // capacity still owns home/destination floors; transit uses actual times.
+      if(candidate.card?.kind==='errand'){
+        const floor=candidate.card.floor;
+        for(const e of nearby)if(!e.people.some(t=>t.home.floor===floor||anchors.get(t.seat.anchor).floor===floor)&&e.resources.some(id=>anchors.get(id).floor===floor)){
+          if(!transitIntervals.has(e)){
+            const intervals=[];for(const t of e.people)for(const legs of [t.out,t.back])for(let i=0;i<legs.length;i++){
+              const l=legs[i];intervals.push({floor:anchors.get(l.from).floor,start:l.start,end:l.end});
+              if(i&&legs[i-1].end<l.start)intervals.push({floor:anchors.get(legs[i-1].to).floor,start:legs[i-1].end,end:l.start});
+            }transitIntervals.set(e,intervals);
+          }
+          if(transitIntervals.get(e).some(r=>r.floor===floor&&overlap(r,candidate)))return false;
+        }
+      }
+      // Every accepted away trajectory continuously protects ALL other homes,
+      // including empty/cancelled ones. A stationary home expression therefore
+      // needs only the same actor/resource checks and cached home geometry, even
+      // while an unrelated colleague is walking elsewhere on this floor.
+      const homeOnly=candidate.people.every(t=>!t.out.length&&!t.back.length&&t.seat.anchor===t.home.anchorId);
       const staticKey=homeOnly?rosterKey(allowed)+'|'+candidate.people.map(t=>t.id+':'+t.home.anchorId).join(',')+'|'+(isLate(candidate.start)||isEvening(candidate.start))+'|'+(isLate(candidate.end-.001)||isEvening(candidate.end-.001)):null;
       if(homeOnly&&staticSafe.has(staticKey)){ledger.push(candidate);return true}
       // Private homes remain owned even while empty; night lounge homes are also protected.
@@ -728,7 +764,7 @@
       {kind:'courier',sprite:'visitor-courier',name:'택배 기사',hours:[[9,18]],target:'parcel_box',stay:[15,30],go:'택배함으로 가는 중',at:'택배 두고 갈게요'},
       {kind:'rider',sprite:'visitor-rider',name:'배달 기사',hours:[[11.5,13.5],[17.5,20]],target:'reception',stay:[15,30],go:'안내대로 배달 가는 중',at:'배달 왔습니다!'},
       {kind:'candidate',sprite:'visitor-candidate',name:'면접 지원자',hours:[[10,16]],weekdayOnly:true,target:'client_booth_slot_2',stay:[120,300],go:'면접 보러 상담실 가는 중',at:'면접 대기 중… 두근'},
-      {kind:'generic',sprite:'visitor-generic',name:'방문객',hours:[[9,20]],target:'lobby-sw',stay:[120,240],go:'HANI Coffee 가는 중',at:'커피 마시는 중'}
+      {kind:'generic',sprite:'visitor-generic',name:'테이크아웃 손님',hours:[[9,20]],target:'coffee_counter',stay:[20,40],go:'HANI Coffee 가는 중',at:'커피 받아 가는 중'}
     ];
     function blockPlan(day,index,events,options={}){
       const allowed=persons.filter(p=>(p.id!=='seongmin'||options.chairmanPresent)&&(!options.presentIds||options.presentIds.includes(p.id)));
@@ -862,8 +898,6 @@
             if(booked)break;
           }
         }
-        const kinds=visitorKinds.filter(v=>(weekday||!v.weekdayOnly)&&v.hours.some(([a,b])=>at/3600>=a&&at/3600<b));
-        if(kinds.length&&unit(day+'|guest|'+at)<(weekday?.7:.4))attempt([{id:'visitor'}],at+1,kinds[seed(day+'|kind|'+at)%kinds.length]);
       }
       // Repair only empty work-hour windows, using the same reserve() and ledger.
       // Check both preceding and following cooldowns because this pass inserts
@@ -876,6 +910,56 @@
           if((tripsByPerson.get(p.id)||[]).some(e=>at<e.end+rules.cooldownSeconds&&e.start<at+rules.cooldownSeconds+30))continue;
           if(attempt([p],at,null,true)){filled=true;break}
         }
+      }
+      // Leisure is frozen first. Errands fill only legal gaps in that same ledger.
+      const errandLast=new Map(),errandDue=new Map(),errandTrips=[];
+      const collaborative=new Set(['seoyun','yuri','gaeun','hani','yuna','sua']);
+      const choices=new Map();
+      for(const p of physical)choices.set(p.id,errandPlaces.filter(c=>c.floor===p.home.floor&&c.targetPerson!==p.id&&(c.errandKind!=='delivery'||c.room!==p.home.room)).map(c=>{
+        const target=personById.get(c.targetPerson),score=target?Math.max(0,...(placeTable.companions||[]).filter(r=>r.people.includes(p.id)&&r.people.includes(target.id)).map(r=>r.score)):0;
+        return {c,weight:c.errandKind==='colleague'?(target.home.room===p.home.room?4:2)*(1+score/25):1};
+      }));
+      for(let tick=32400;tick<75600;tick+=90){
+        for(const p of physical){
+          const at=tick+seed(day+'|errand-phase|'+p.id)%90;
+          if(at+60>75600)continue;
+          if(at<(errandDue.get(p.id)??(32400+seed(day+'|errand-first|'+p.id)%540)))continue;
+          const deadline=Math.min(at+60,nextCommitment(p.id,at));if(deadline-at<8)continue;
+          const near=ledgerOverlaps(ledger,at,at+1);
+          if(near.some(e=>e.people.some(t=>t.id===p.id)||e.card?.targetPerson===p.id))continue;
+          const home=homeAt(p,at),previous=errandLast.get(p.id);
+          const cards=choices.get(p.id).filter(({c})=>c.floor===home.floor&&c.id!==previous).map(({c,weight})=>{
+            return {c,rank:-Math.log(Math.max(.000001,unit(day+'|errand|'+p.id+'|'+at+'|'+c.id)))/weight};
+          }).sort((a,b)=>a.rank-b.rank);
+          let booked=false;
+          for(const {c}of cards){
+            if(c.targetPerson&&(!allowed.some(q=>q.id===c.targetPerson)||!presentAt(c.targetPerson,at)||homeAt(personById.get(c.targetPerson),at).anchorId!==personById.get(c.targetPerson).home.anchorId||near.some(e=>e.people.some(t=>t.id===c.targetPerson&&t.seat.anchor!==t.home.anchorId))))continue;
+            for(const target of c.slots){
+              const stay=8+seed(day+'|errand-stay|'+p.id+at+c.id)%18,e=excursion(p.id,home,c,target,at,stay,day,null,deadline);
+              if(!e)continue;
+              if(c.targetPerson&&homeAt(personById.get(c.targetPerson),e.end-.001).anchorId!==personById.get(c.targetPerson).home.anchorId)continue;
+              const occupied=ledgerOverlaps(ledger,e.start,e.end);
+              if(occupied.some(q=>q.card?.targetPerson===p.id||c.targetPerson&&q.people.some(t=>t.id===c.targetPerson&&t.seat.anchor!==t.home.anchorId)))continue;
+              const active=ledgerOverlaps(errandTrips,e.start,e.end);
+              if(active.filter(q=>q.card.floor===c.floor).length>=(c.floor==='2f'?3:2))continue;
+              if(!reserve(e,ledger,allowed,occupied))continue;
+              result.push(e);errandTrips.push(e);errandLast.set(p.id,c.id);
+              // Seeded cadence is shorter for collaborative personalities. Failed
+              // bookings retry without shortening either a rest or a work stay.
+              errandDue.set(p.id,at+360+seed(day+'|errand-due|'+p.id+at)%(collaborative.has(p.id)?241:541));
+              booked=true;break;
+            }
+            if(booked)break;
+          }
+        }
+      }
+      // One public guest slot, mostly short daytime errands; long appointments
+      // remain possible. All trips still pass the shared continuous sweep.
+      for(let at=32400;at<72000;at+=90){
+        const kinds=visitorKinds.filter(v=>(weekday||!v.weekdayOnly)&&v.hours.some(([a,b])=>at/3600>=a&&at/3600<b));
+        const short=kinds.filter(v=>['courier','rider','generic'].includes(v.kind));
+        const pool=unit(day+'|guest-short|'+at)<.92&&short.length?short:kinds;
+        if(pool.length&&unit(day+'|guest|'+at)<.9)attempt([{id:'visitor'}],at+1,pool[seed(day+'|kind|'+at)%pool.length]);
       }
       result.sort((a,b)=>a.start-b.start||a.id.localeCompare(b.id));
       if(blocks.size>=4)blocks.delete(blocks.keys().next().value);blocks.set(key,result);return result;
@@ -892,7 +976,7 @@
       // Outings respect the complete frozen formal ledger, including suppressed events.
       const outings=blockPlan(day,Math.floor(seconds/BLOCK),events,options);
       if(!idleLedgers.has(outings))idleLedgers.set(outings,[...events,...outings]);const idleLedger=idleLedgers.get(outings);
-      const visibleOutings=cancelled.size||blocked.size?outings.filter(e=>!cancelled.has(e.id)&&!e.people.some(t=>blocked.has(t.id))):outings;
+      const visibleOutings=cancelled.size||blocked.size?outings.filter(e=>!cancelled.has(e.id)&&!e.people.some(t=>blocked.has(t.id))&&!blocked.has(e.card?.targetPerson)):outings;
       const completedTeachers=events.filter(e=>e.performEnd<=seconds&&!cancelled.has(e.id)&&table.rules.hinaBalance.teacherActionIds.includes(e.actionId)).length;
       const selfiesBefore=events.filter(e=>e.start<seconds&&!cancelled.has(e.id)&&table.rules.hinaBalance.selfieActionIds.includes(e.actionId));
       const active=events.filter(e=>e.start<=seconds&&seconds<e.end&&!cancelled.has(e.id)&&!e.people.some(p=>blocked.has(p.id))&&(!table.rules.hinaBalance.selfieActionIds.includes(e.actionId)||completedTeachers>=selfiesBefore.length));
@@ -950,7 +1034,7 @@
       return {day,minutes:seconds/60,seconds,entries,visitors,events:active,presenceNote};
     }
 
-    return Object.freeze({plan,snapshot,seed,slot,actions,windows,presentAt,homeAt,blockPlan,stateAt,resourceIntervals,identity:table.identity});
+    return Object.freeze({plan,snapshot,seed,slot,actions,windows,presentAt,homeAt,blockPlan,stateAt,resourceIntervals,errandPlaces,identity:table.identity});
   }
   const scheduler=canon&&actionTable?createScheduler(actionTable):null;
   function snapshot(now=new Date(),options={}){
@@ -962,7 +1046,7 @@
   function profile(id){return ({daon:"./assets/profiles/thumb/hani-profile-daon-v2-256.webp",yoonseul:"./assets/profiles/thumb/hani-profile-yoonseul-v2-256.webp",sua:"./assets/profiles/thumb/hani-profile-sua-id-256.webp"})[id]||`./assets/profiles/thumb/hani-profile-${id}-256.webp`}
   // Both densities share proportional atlas/cell/pivot coordinates and one loader.
   function spriteSource(id,entry){return entry.scale===3?'./assets/sprites-v3/'+entry.file:({daon:"./assets/sprites-v2/daon-v2.webp",yoonseul:"./assets/sprites-v2/yoonseul-v2.webp"})[id]||'./assets/sprites-v2/'+entry.file}
-  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,places,tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines})});
+  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,places:Object.freeze([...places,...(scheduler?.errandPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines})});
 })();
 /* Read-only Living Office. The Agent Case renderer remains the sole owner of requests, answers and decisions. */
 (() => {

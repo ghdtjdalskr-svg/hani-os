@@ -5,7 +5,8 @@ import assert from 'node:assert/strict';
 const ranges={coffee:[60,180],window:[40,120],sofa:[120,300],board:[60,180],server:[45,120],garden:[90,240],terrace:[90,240],lobby:[30,90],meeting:[90,240]};
 const rooms={cafe:'coffee',pantry:'coffee',platform:'sofa',mir_nook:'sofa',exec_lounge:'sofa',standup:'board',server:'server',garden:'garden',terrace:'terrace',lobby:'lobby',consult:'meeting',team_meeting:'meeting',release:'meeting',exec:'meeting'};
 export function expectedRange(scene,target){
- const card=scene.places.find(c=>c.slots.includes(target.seat.anchor));
+ // Short work cards share existing nodes, but never own formal rest bounds.
+ const card=scene.places.find(c=>c.kind!=='errand'&&c.slots.includes(target.seat.anchor));
  const kind=card?.kind||(/window/.test(target.seat.anchor)?'window':rooms[scene.anchors.get(target.seat.anchor)?.room]);
  return ranges[kind]||[45,120];
 }

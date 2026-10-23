@@ -7,15 +7,15 @@ import {loadScene,at,root} from './hani-office-lively-fixture.mjs';
 import {assertResources,validPlaceSpeech} from './hani-office-place-assertions.mjs';
 const {scene,table}=loadScene(),s=scene.scheduler,day='2026-10-22';
 const firstPlanStart=performance.now();
-const formal=s.plan(day),all=s.blockPlan(day,0,formal),trips=all.filter(e=>!e.visitor);
+const formal=s.plan(day),all=s.blockPlan(day,0,formal),trips=all.filter(e=>!e.visitor&&e.card.kind!=='errand');
 const firstPlanMs=performance.now()-firstPlanStart;
 const overlaps=(a,b)=>a.start<b.end&&b.start<a.end;
-const range={coffee:[60,180],window:[40,120],sofa:[120,300],board:[60,180],server:[45,120],garden:[90,240],terrace:[90,240],lobby:[30,90],meeting:[90,240]};
+const range={coffee:[60,180],window:[40,120],sofa:[120,300],board:[60,180],server:[45,120],garden:[90,240],terrace:[90,240],lobby:[30,90],meeting:[90,240],errand:[8,25]};
 test('obr2: whole-day ledger keeps minimum stays across block boundaries, visitor timing and personal cooldowns',()=>{
  assert.strictEqual(all,s.blockPlan(day,143,formal));
  assert.ok(trips.some(e=>Math.floor(e.start/600)!==Math.floor(e.end/600)),'long visits cross a block');
  for(const e of all)for(const t of e.people){
-  const stay=t.back[0].start-t.out.at(-1).end,base=e.visitor?({client:[120,300],candidate:[120,300],courier:[15,30],rider:[15,30],generic:[120,240]})[e.visitor.kind]:range[e.card.kind];
+  const stay=t.back[0].start-t.out.at(-1).end,base=e.visitor?({client:[120,300],candidate:[120,300],courier:[15,30],rider:[15,30],generic:[20,40]})[e.visitor.kind]:range[e.card.kind];
   assert.ok(stay>=base[0]*(e.group?1.2:1)-1e-6,e.id+' stay '+stay);
   // FIFO arrival/return waiting can add time for the first arrival in a group.
   if(!e.group)assert.ok(stay<=base[1]+1e-6);
@@ -26,7 +26,7 @@ test('obr2: whole-day ledger keeps minimum stays across block boundaries, visito
 });
 test('obr2: floor outing units have quiet/lunch/normal caps and every populated work window has an outing',()=>{
  const max={normal:0,lunch:0,late:0};
- const budget=[...trips,...formal.filter(e=>e.people.some(t=>t.seat.anchor!==t.home.anchorId)).map(e=>({...e,floors:[...new Set(e.people.flatMap(t=>[t.home.floor,scene.anchors.get(t.seat.anchor).floor]))]}))];
+ const budget=[...all.filter(e=>!e.visitor),...formal.filter(e=>e.people.some(t=>t.seat.anchor!==t.home.anchorId)).map(e=>({...e,floors:[...new Set(e.people.flatMap(t=>[t.home.floor,scene.anchors.get(t.seat.anchor).floor]))]}))];
  for(let sec=0;sec<86400;sec++)for(const f of ['1f','2f','3f','4f','5f']){
   const active=budget.filter(e=>e.start<=sec&&sec<e.end&&e.floors.includes(f)),groups=active.filter(e=>e.people.length>1).length,solo=active.length-groups;
   const late=sec>=3600&&sec<25200,lunch=sec>=41400&&sec<46800;
@@ -83,7 +83,7 @@ test('obr2: deterministic query order, reduced motion and frozen spatial bytes',
  for(const options of [{summoned:[group.people[0].id]},{cancelled:new Set([group.id])}])assert.ok(s.snapshot(time,options).entries.every(p=>p.outingId!==group.id),'a group cancels atomically');
 });
 test('obr2: 10-minute personal cooldown survives midnight without a previous-day replay',()=>{
- const next='2026-10-23',following=s.blockPlan(next,0,s.plan(next)).filter(e=>!e.visitor);
+ const next='2026-10-23',following=s.blockPlan(next,0,s.plan(next)).filter(e=>!e.visitor&&e.card.kind!=='errand');
  for(const person of table.people){const prev=trips.filter(e=>e.people.some(p=>p.id===person.id)).at(-1),after=following.find(e=>e.people.some(p=>p.id===person.id));
   if(prev&&after)assert.ok(86400+after.start-prev.end>=600,person.id+' midnight cooldown');
  }

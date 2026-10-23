@@ -32,7 +32,7 @@ test('obr3: staff companionship fits 09:00–19:30, avoids consult/reception, an
  const {scene}=loadScene(),s=scene.scheduler;let groups=0,morning=0,evening=0;
  const week=[];
  for(const day of days){
-  const formal=s.plan(day),trips=s.blockPlan(day,0,formal).filter(e=>!e.visitor),daily=new Map();
+  const formal=s.plan(day),trips=s.blockPlan(day,0,formal).filter(e=>!e.visitor&&e.card.kind!=='errand'),daily=new Map();
   for(const e of trips){
    assert.notEqual(e.card.room,'consult');assert.ok(!e.card.slots.includes('reception'));
    if(e.start>=25200&&e.start<32400){morning++;assert.equal(e.card.kind,'coffee');}
