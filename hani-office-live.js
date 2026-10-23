@@ -482,6 +482,38 @@
       lounge:[['라운지에서 간식 나누는 중'],['소파에서 수다 중'],['라운지에서 몰래 인스타 순찰 중'],['야식 메뉴 투표 중'],['라운지에서 야근 이야기 중']],
       loungeLate:[['라운지에서 야식 고민 중'],['소파에서 꾸벅꾸벅'],['라운지에서 조용히 수다 중'],['라운지에서 별 보는 중']]
     };
+// Desk words never imply travel. Personal lines follow the seeded voice/quirks;
+    // all original playful words remain available in their original time buckets.
+    const deskVoice={
+      hani:['커진 아이디어 세 줄로 줄이는 중','다음 기획 이름 혼자 지어보는 중','칭찬받은 문장 다시 읽는 중','아이디어에 별표 하나 더 치는 중'],
+      yuna:['제가요?! 하고 다시 확인 중','메모를 담당자별로 나누는 중','새 요청 차근차근 읽는 중','놓친 메모 없는지 살피는 중'],
+      gaeun:['일정 사이 여유 한 칸 찾는 중','체크 표시 가지런히 맞추는 중','빠진 후속 메모 챙기는 중','다음 약속 준비물 적는 중'],
+      seoyun:['큰 문제를 작은 조각으로 나누는 중','설계 메모에 화살표 더하는 중','바꿀 범위 조용히 짚는 중','복잡한 흐름 한 줄로 잇는 중'],
+      dohyun:['일단 재현부터 해보는 중','작은 버그 하나 끝내는 중','테스트 결과 기다리는 중','고친 부분 다시 눌러보는 중'],
+      serin:['숫자 두 줄 나란히 비교 중','반복 작업 줄일 방법 찾는 중','패턴 하나 더 발견하는 중','실험 결과에 밑줄 긋는 중'],
+      yuri:['확인한 것만 체크하는 중','놓친 예외 하나 더 찾는 중','미검증 메모 따로 적는 중','통과 기준 다시 읽는 중'],
+      arin:['작은 화면으로 다시 보는 중','문장 한 줄 덜어내는 중','누르는 순서 따라가 보는 중','읽기 편한 간격 고민 중'],
+      jieun:['안 되는 이유 차근히 적는 중','이번 달 숫자 맞춰보는 중','지출 한 줄 다시 계산 중','작은 비용도 한 번 더 보는 중'],
+      haru:['장바구니 하나 빼는 중','예쁜데 꼭 필요한지 고민 중','가격표 두 개 비교 중','읽던 책 제목 메모 중'],
+      naeun:['밥 먹었는지 슬쩍 묻는 중','어깨 힘 빼라고 손짓 중','오늘 운동 횟수 세는 중','무리한 계획 줄여보는 중'],
+      hina:['일본어 단어 혼자 퀴즈 중','정답에 동그라미 치는 중','칭찬 한 줄 옆에 적는 중','헷갈린 한자 다시 보는 중'],
+      minji:['오늘 사건 제목 뽑는 중','명장면 하나 떠올리는 중','감동 포인트 메모 중','리뷰 첫 문장 고치는 중'],
+      sooyeon:['다음 여행 코스 그리는 중','경기 결과 다시 확인 중','자전거 탈 날씨 찾는 중','가보고 싶은 곳 별표 중'],
+      sua:['후속 조치 빠짐없이 챙기는 중','담당자 이름 밑줄 긋는 중','칭찬받고 헤헤 웃는 중','고객 메모 한 번 더 읽는 중'],
+      taeo:['요구사항 번호 붙이는 중','고객 표현 쉬운 말로 바꾸는 중','흩어진 요청 한데 묶는 중','빠진 조건 하나 찾는 중'],
+      daon:['좋은 전망의 반대 근거 찾는 중','하방 시나리오 조용히 적는 중','위험 신호 한 번 더 확인 중','작은 가정부터 다시 보는 중'],
+      yoonseul:['궁금한 주제 하나 더 적는 중','읽을 순서 차곡차곡 정리 중','작은 배움끼리 연결하는 중','독서 메모에 질문 더하는 중']
+    };
+    const extraIdle={
+      day:['물 한 모금 마시는 중','지운 문장 다시 쓰는 중','오늘 날짜 한 번 더 보는 중','노래 제목 떠올리는 중','단축키 하나 외우는 중','안 읽은 알림 세는 중','펜 뚜껑 찾는 중','손목 가볍게 푸는 중','점심 후보 두 개로 줄이는 중','사진첩 잠깐 넘기는 중','책갈피 문장 다시 읽는 중','모니터 밝기 조절 중','할 일 하나 지우는 중','가사 없이 흥얼거리는 중','책상 메모 순서 바꾸는 중','충전 케이블 정리 중','물병 얼마나 남았나 보는 중','집중 음악 바꿔보는 중','작은 오타 찾는 중','메모 색깔 고르는 중','알람 소리 줄이는 중','읽던 문장에 밑줄 긋는 중','타이머 남은 시간 보는 중'],
+      evening:['오늘 잘한 일 하나 적는 중','내일 첫 할 일 적는 중','이어폰 챙겼나 확인 중','휴대폰 배터리 확인 중','저녁 약속 시간 보는 중','오늘 찍은 사진 고르는 중','읽다 만 기사 마저 읽는 중','할 일 목록 접어두는 중','퇴근 음악 골라두는 중','메모 제목 날짜로 바꾸는 중','오늘의 작은 성공 체크 중','가방 속 충전기 찾는 중','집에 가서 볼 영화 고르는 중','내일 날씨 미리 보는 중','답장 한 줄 마무리 중','노트 마지막 장 넘기는 중','휴대폰 알림 정리 중','저녁 뭐 먹지 투표 중'],
+      late:['눈 비비고 다시 읽는 중','물 한 모금으로 잠 깨는 중','야식 후보 두 개로 줄이는 중','소리 줄이고 음악 듣는 중','오타 하나 조용히 고치는 중','시계 보고 살짝 놀라는 중','따뜻한 차 마실까 고민 중','마지막 할 일 표시 중','눈 감고 십 초 쉬는 중','내일의 나에게 메모 중','졸린 눈으로 문장 줄이는 중','오늘은 여기까지 고민 중','아침 알람 맞추는 중','손가락 가볍게 푸는 중','조용히 하품 삼키는 중'],
+      lounge:['라운지에서 오늘 이야기 듣는 중','라운지에서 내일 계획 묻는 중','소파에서 웃음 참는 중','라운지에서 노래 추천하는 중','소파에서 영화 제목 맞히는 중','라운지에서 간식 봉지 접는 중','라운지에서 사진 한 장 보여주는 중','소파에서 고개 끄덕이는 중'],
+      loungeLate:['라운지에서 작은 목소리로 웃는 중','소파에서 물 한 모금 마시는 중','라운지에서 마지막 버스 확인 중','소파에서 잠깐 눈 쉬는 중','라운지에서 야식 후보 고르는 중','소파에서 조용히 음악 듣는 중','라운지에서 오늘 고생했다고 말하는 중','소파에서 내일 할 일 적는 중']
+    };
+    const idlePosePools=Object.fromEntries(Object.entries(idlePools).map(([kind,pool])=>[kind,[...pool]]));
+    for(const [kind,lines]of Object.entries(extraIdle))idlePools[kind].push(...lines.map(line=>[line]));
+
     function idleRoster(day,floor,seconds){return persons.filter(p=>p.id!=='mir'&&p.id!=='seongmin'&&presentAt(p.id,seconds)&&homeAt(p,seconds).floor===floor).map(p=>p.id).sort()}
     const pickCache=new Map();
     function beatPick(day,floor,k){const key=day+'|'+floor+'|'+k;if(pickCache.has(key))return pickCache.get(key);if(pickCache.size>4000)pickCache.delete(pickCache.keys().next().value);const pick=rotationPick(day,floor,k);pickCache.set(key,pick);return pick}
@@ -491,14 +523,18 @@
       return order.find((_,i)=>Math.floor(i*len/order.length)===pos)??null;
     }
     // Consecutive beats walk a per-floor shuffled pool, so concurrent bits never repeat a line.
-    function poolLine(day,floor,kind,pool,j){const order=pool.map((_,i)=>i).sort((a,b)=>seed(day+floor+kind+a)-seed(day+floor+kind+b));return pool[order[((j%pool.length)+pool.length)%pool.length]]}
+    const idleOrders=new Map();
+    function poolLine(day,floor,kind,pool,j){const key=day+'|'+floor+'|'+kind+'|'+pool.length;let order=idleOrders.get(key);if(!order){order=pool.map((_,i)=>i).sort((a,b)=>seed(day+floor+kind+a)-seed(day+floor+kind+b));if(idleOrders.size>=80)idleOrders.delete(idleOrders.keys().next().value);idleOrders.set(key,order)}return pool[order[((j%pool.length)+pool.length)%pool.length]]}
     function idleFlavour(day,id,floor,seconds,lounge,late,events=[]){
       const k=Math.floor(seconds/BEAT);
       for(let j=k;j>k-ACTIVE_BEATS;j--)if(beatPick(day,floor,j)===id){
         // A bit never runs into, or straight out of, the person's scheduled action.
         const from=j*BEAT,to=from+ACTIVE_BEATS*BEAT;if(ledgerOverlaps(events,from-5,to+2).some(e=>e.people.some(t=>t.id===id)))return null;
         if(seconds>=to)continue;
-        const kind=lounge?late?'loungeLate':'lounge':late?'late':isEvening(seconds)?'evening':'day',[line,pose]=poolLine(day,floor,kind,idlePools[kind],j+Math.floor(j/MIN_CYCLE)*5);
+        const kind=lounge?late?'loungeLate':'lounge':late?'late':isEvening(seconds)?'evening':'day',cycle=Math.floor(j/MIN_CYCLE),voice=!lounge&&deskVoice[id];
+        let [line]=poolLine(day,floor,kind,idlePools[kind],j+cycle*5);
+        const [,pose]=poolLine(day,floor,kind,idlePosePools[kind],j+cycle*5);
+        if(voice&&cycle%3===seed(id)%3)line=voice[(Math.floor(cycle/3)+seed(day+'|'+id))%voice.length];
         // Text lasts 10.8s. One gentle posture change keeps a two-person floor
         // visually alive without cycling that person's words every few seconds.
         return {beat:j,line,pose:seconds-from>=5.4?(pose==='stand'?'sit':'stand'):pose};
@@ -699,12 +735,21 @@
       // Compatibility name/signature; the reservation horizon is now the whole day.
       // Adjacent blocks project the SAME ledger, including excursions crossing :00/:10.
       const key=day+'|'+allowed.map(p=>p.id).join(',');if(blocks.has(key))return blocks.get(key);
-      const ledger=events.slice(),result=[],last=new Map(),due=new Map(),visits=new Map(),slotOrders=new Map();
+      const ledger=events.slice(),result=[],last=new Map(),due=new Map(),visits=new Map(),slotOrders=new Map(),tripsByPerson=new Map();
       const weekday=![0,6].includes(new Date(day+'T00:00:00Z').getUTCDay());
       const rules=placeTable?.outingRules||{cooldownSeconds:600,intervalSeconds:[1500,3000],groupStayScale:1.2};
       // Staff leisure invitations never move the human chairman automatically.
       // Explicit catalog actions retain their existing presence/identity rules.
       const lastFloor=new Map(),physical=allowed.filter(p=>p.id!=='mir'&&p.id!=='seongmin');
+      // Presence/home changes only at 01/07/18h. Reuse the exact filtered order;
+      // hundreds of invitation ticks must not rebuild identical floor rosters.
+      const floorRosters=new Map();
+      function rosterAt(floor,at){
+        const phase=isLate(at)?'late':isEvening(at)?'evening':'day';
+        let byFloor=floorRosters.get(phase);if(!byFloor){byFloor=new Map();floorRosters.set(phase,byFloor)}
+        if(!byFloor.has(floor))byFloor.set(floor,physical.filter(p=>presentAt(p.id,at)&&homeAt(p,at).floor===floor));
+        return byFloor.get(floor);
+      }
       const floorTrips=new Map();
       for(const e of events.filter(e=>e.people.length>1))for(const t of e.people)if(anchors.get(t.seat.anchor).floor!==t.home.floor)floorTrips.set(t.id,(floorTrips.get(t.id)||0)+1);
       const commitments=new Map(allowed.map(p=>[p.id,events.filter(e=>e.people.some(t=>t.id===p.id))]));
@@ -735,7 +780,7 @@
         if(!visitor&&people.length>1&&(at<32400||at>=70200))return false;
         const deadline=visitor?86400:Math.min(people.length>1?70200:86400-rules.cooldownSeconds,...people.map(p=>nextCommitment(p.id,at)));
         if(deadline-at<(people.length>1?60*rules.groupStayScale:30))return false;
-        const neighbours=fill?result.filter(e=>!e.visitor&&e.people.some(t=>people.some(p=>p.id===t.id))).sort((a,b)=>a.start-b.start):[];
+        const neighbours=fill?(people.length===1?[...(tripsByPerson.get(people[0].id)||[])]:result.filter(e=>!e.visitor&&e.people.some(t=>people.some(p=>p.id===t.id)))).sort((a,b)=>a.start-b.start):[];
         let cards=places.filter(c=>visitor?c.slots.includes(visitor.target):
           c.stay[0]*(people.length>1?rules.groupStayScale:1)<=deadline-at&&
           c.room!=='consult'&&!c.slots.includes('reception')&&
@@ -777,9 +822,10 @@
               e.group=people.map(p=>p.id);e.companion=placeTable.companions.find(r=>r.people.every(id=>e.group.includes(id)));
             }
             if(e.end>deadline||!visitor&&!withinCap(e)||visitor&&result.some(q=>q.visitor&&overlap(q,e)))continue;
-            if(fill&&result.some(q=>!q.visitor&&q.people.some(t=>people.some(p=>p.id===t.id))&&e.start<q.end+rules.cooldownSeconds&&q.start<e.end+rules.cooldownSeconds))continue;
+            if(fill&&neighbours.some(q=>e.start<q.end+rules.cooldownSeconds&&q.start<e.end+rules.cooldownSeconds))continue;
             if(!reserve(e,ledger,allowed))continue;
             result.push(e);
+            if(!visitor)for(const p of people){if(!tripsByPerson.has(p.id))tripsByPerson.set(p.id,[]);tripsByPerson.get(p.id).push(e)}
             if(!visitor)for(const p of people){last.set(p.id,{end:e.end,card:card.id});if(!visits.has(p.id))visits.set(p.id,new Set());visits.get(p.id).add(card.id);
               if(people.length>1&&homeAt(p,at).floor!==card.floor)floorTrips.set(p.id,(floorTrips.get(p.id)||0)+1);
               const interval=rules.intervalByPerson?.[p.id]||rules.intervalSeconds;
@@ -794,7 +840,7 @@
       for(let at=0;at<86400;at+=180){
         const busy=new Set(ledgerOverlaps(events,at,at+30).flatMap(e=>e.people.map(t=>t.id)));
         for(const floor of floors){
-          const roster=physical.filter(p=>presentAt(p.id,at)&&homeAt(p,at).floor===floor.id);
+          const roster=rosterAt(floor.id,at);
           const needsFloorVisit=at>=32400&&at<64800&&roster.length>=3&&at-(lastFloor.get(floor.id)??-Infinity)>=BLOCK;
           const overdueSparse=p=>roster.length<3&&at>=32400&&at<64800&&at-(due.get(p.id)??at)>=600;
           const available=roster.filter(p=>(!busy.has(p.id)||overdueSparse(p))&&at-(last.get(p.id)?.end??-Infinity)>=rules.cooldownSeconds&&(at>=(due.get(p.id)??0)||needsFloorVisit));
@@ -823,11 +869,11 @@
       // Check both preceding and following cooldowns because this pass inserts
       // into a completed day. Never truncate a stay to satisfy the lower bound.
       for(let start=32400;start<64800;start+=BLOCK)for(const floor of floors){
-        const roster=physical.filter(p=>presentAt(p.id,start)&&homeAt(p,start).floor===floor.id);
+        const roster=rosterAt(floor.id,start);
         if(roster.length<3||result.some(e=>!e.visitor&&e.floors.includes(floor.id)&&e.start<start+BLOCK&&start<e.end))continue;
         let filled=false;
         for(let at=start;at<start+BLOCK&&!filled;at+=30)for(const p of roster){
-          if(result.some(e=>!e.visitor&&e.people.some(t=>t.id===p.id)&&at<e.end+rules.cooldownSeconds&&e.start<at+rules.cooldownSeconds+30))continue;
+          if((tripsByPerson.get(p.id)||[]).some(e=>at<e.end+rules.cooldownSeconds&&e.start<at+rules.cooldownSeconds+30))continue;
           if(attempt([p],at,null,true)){filled=true;break}
         }
       }
@@ -887,6 +933,19 @@
       };
       const entries=persons.filter(p=>(p.id!=='seongmin'||options.chairmanPresent)&&(!options.presentIds||options.presentIds.includes(p.id))&&!blocked.has(p.id)&&presentAt(p.id,seconds)).map(p=>render(p,
         active.find(e=>e.people.some(t=>t.id===p.id))||visibleOutings.find(e=>!e.visitor&&e.start<=seconds&&seconds<e.end&&e.people.some(t=>t.id===p.id)))).filter(Boolean);
+      const shownLines=new Map();
+      const claim=p=>{let lines=shownLines.get(p.floor);if(!lines){lines=new Set();shownLines.set(p.floor,lines)}if(!p.plain)lines.add(p.line);return lines};
+      for(const p of entries)if(p.eventId||p.outingId)claim(p);
+      for(const p of entries)if(!p.eventId&&!p.outingId&&!p.plain){
+        const lines=claim({...p,plain:true});
+        if(lines.has(p.line)){
+          const person=personById.get(p.id),home=homeAt(person,seconds),lounge=['lobby-nw','lobby-ne'].includes(home.anchorId),kind=lounge?late?'loungeLate':'lounge':late?'late':evening?'evening':'day';
+          const alternatives=lounge?idlePools[kind].map(v=>v[0]):[...(deskVoice[p.id]||[]),...idlePools[kind].map(v=>v[0])];
+          const offset=seed(day+'|'+p.id+'|'+Math.floor(seconds/(BEAT*MIN_CYCLE)))%alternatives.length;
+          for(let n=0;n<alternatives.length;n++){const line=alternatives[(offset+n)%alternatives.length];if(!lines.has(line)){p.line=line;break}}
+        }
+        lines.add(p.line);
+      }
       const guest=visibleOutings.find(e=>e.visitor&&e.start<=seconds&&seconds<e.end),visitors=guest?[render({id:'visitor',visitor:true},guest)].filter(p=>p&&(!options.reducedMotion||p.state==='AT_PLACE')):[];
       return {day,minutes:seconds/60,seconds,entries,visitors,events:active,presenceNote};
     }
