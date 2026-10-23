@@ -43,9 +43,9 @@ for(const id of Object.keys(variants)){
  assert.equal(images.canonicalProfileImages[id],full(id));assert.equal(images.sidebarAgentImages[id],thumb(id,256));
  const c=data.characters.find(c=>c.id===id);assert.equal(c.image,full(id));assert.ok(refs(album.detail(c)).includes(full(id)));assert.ok(refs(album.page()).includes(full(id)));
 }
-for(const id of ['daon','yoonseul']){assert.equal(roster.people.find(p=>p.id===id).status,'planned');assert.equal(building.homeSeat(id),undefined);assert.ok(!building.floors.flatMap(f=>f.residents).includes(id));}
+for(const id of ['daon','yoonseul']){assert.equal(roster.people.find(p=>p.id===id).status,'active');assert.equal(building.homeSeat(id),undefined);assert.ok(!building.floors.flatMap(f=>f.residents).includes(id));}
 assert.deepEqual(refs(boardAvatar('unknown-staff')),[]);assert.deepEqual(refs(ilboAvatar('unknown-staff')),[]);
-report.groups.push('executed registry/sidebar, 19 roster portraits, board/ilbo avatars, office badges and album detail/grid; planned hires stay inactive; unknown author fallback preserved');
+report.groups.push('executed registry/sidebar, 19 roster portraits, board/ilbo avatars, office badges and album detail/grid; joined staff retain planned office seats; unknown author fallback preserved');
 // Run the real image loading and pose paths with the unchanged live manifest.
 const office=read('hani-office-live.js'),spriteFns=office.slice(office.indexOf('  function spriteId('),office.indexOf('  function addActor('));
 // Only select the contiguous spriteId/pose/loadSprite definitions, stopping before unrelated actor creation.

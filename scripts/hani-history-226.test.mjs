@@ -23,6 +23,8 @@ const roster=fixture.window.HaniOrganizationRoster;
 const manifest=JSON.parse(read('data/hani-ilbo/issues.json'));
 const expected=historyFixture.filter(r=>/^v\d/.test(r.id)&&['released','pages'].includes(r.status)&&r.date<='2026-10-21').sort((a,b)=>b.date.localeCompare(a.date)||b.id.localeCompare(a.id,undefined,{numeric:true}));
 const milestoneIds=['v2.9.222','v2.9.215','v2.9.213','v2.9.135','v2.9.132','v2.9.120'];
+// Approved 2026-10-23 Daon/Yoonseul join: staff count advances from 17 to 19.
+const employeeCount=19;
 
 export function createHistoryHarness({history=historyFixture,now=clock,failManifest=false,failReleases=false,preload=true,people=roster.people}={}){
   const nodes={},writes=[],requests=[],listeners=new Map(),mutations={mount:0,months:0,counts:0,details:0};let click;
@@ -74,7 +76,7 @@ async function unit(){
   assert.deepEqual([...html.matchAll(/<h4>([^<]+)<\/h4>/g)].map(m=>m[1]),expected.map(r=>r.title));
   assert.doesNotMatch(html,/Mobile Controls|Canonical Holding Contract|Library · Watch/);
   assert.match(h.nodes['.ogh-history-counts'].markup,new RegExp('릴리스 <strong>'+expected.length));
-  assert.match(h.nodes['.ogh-history-counts'].markup,/직원 <strong>17<\/strong>명/);
+  assert.match(h.nodes['.ogh-history-counts'].markup,new RegExp('직원 <strong>'+employeeCount+'<\\/strong>명'));
   assert.match(h.nodes['.ogh-history-counts'].markup,/하니일보 <strong>1<\/strong>호/,'future issue excluded');
   assert.equal(h.mutations.months,1,'manifest count resolution retains timeline DOM');
   assert.equal(h.nodes['.ogh-history-months'].months[0],rowIdentity);
@@ -160,7 +162,7 @@ async function unit(){
     for(const paper of dark?[tokens['--surface-raised'],tokens['--surface-panel']]:['#ffffff','#f3f6fb'])for(const fg of [ink,muted]){const ratio=contrast(fg,paper);assert.ok(ratio>=4.5,finish+' token contrast '+ratio);palettes.push({finish,fg,paper,ratio});}
   }
   console.log('PASS history226 unit: real releases/months/milestones/counts, source unchanged, persistent slots, canonical click, boundary toggles/approval, escaping, unavailable catalog, no writes');
-  return {releases:expected.length,newest:expected[0].id,employees:17,issues:1,milestones:milestoneIds,monthCounts,storageWrites:0,tokenContrast:palettes};
+  return {releases:expected.length,newest:expected[0].id,employees:employeeCount,issues:1,milestones:milestoneIds,monthCounts,storageWrites:0,tokenContrast:palettes};
 }
 
 async function browserTest(before){
@@ -200,7 +202,7 @@ async function browserTest(before){
         assert.deepEqual(await page.locator('[data-history-month]').evaluateAll(ns=>ns.map(n=>n.dataset.historyMonth)),['2026-10','2026-09']);
         assert.deepEqual(await page.locator('[data-history-release]').evaluateAll(ns=>ns.map(n=>n.dataset.historyRelease)),expected.map(r=>r.id));
         assert.deepEqual(await page.locator('.is-milestone').evaluateAll(ns=>ns.map(n=>n.dataset.historyRelease)),milestoneIds);
-        assert.deepEqual(await page.locator('.ogh-history-counts strong').allTextContents(),[String(expected.length),'17','1']);
+        assert.deepEqual(await page.locator('.ogh-history-counts strong').allTextContents(),[String(expected.length),String(employeeCount),'1']);
         assert.deepEqual(await page.locator('.ogh-history-entry h4').allTextContents(),expected.map(r=>r.title));
         for(const month of ['2026-10','2026-09']){
           const section=page.locator('[data-history-month="'+month+'"]'),regular=expected.filter(r=>r.date.startsWith(month)&&!milestoneIds.includes(r.id));

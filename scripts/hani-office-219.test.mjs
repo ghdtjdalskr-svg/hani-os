@@ -8,6 +8,11 @@ import path from 'node:path';
 import vm from 'node:vm';
 import http from 'node:http';
 import {execFileSync} from 'node:child_process';
+import {withoutSimplify225} from './hani-simplify-225-preservation.mjs';
+import {withoutLaunchGreeting} from './hani-launch-greeting-221-preservation.mjs';
+import {readReviewedCurrentSource,readReviewedReleaseBaseline} from './hani-reviewed-release-baseline.mjs';
+import {withoutPhotoBackupUi} from './hani-photo-backup-222-preservation.mjs';
+import {withoutOfflineEntryUi} from './hani-offline-entry-223-preservation.mjs';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 
 const root=fileURLToPath(new URL('../',import.meta.url)),out=path.join(root,'artifacts/office-219');
@@ -81,7 +86,8 @@ for(const time of [...times,'02:00']){
  }
  report.static.push(`${time}: ${people.length} staff, unique seats, speech present; night presence retained`);
 }
-for(const f of ['index.html','assets/sprites-v2/manifest.json'])assert.equal(read(f),f==='index.html'?git('show','4ac6b6c:'+f).toString('utf8'):git('show',base+':'+f).toString('utf8'),f+' preserved');
+// index.html follows main's reviewed-release baseline (version/cache projection); the rest stays exact.
+for(const f of ['index.html','assets/sprites-v2/manifest.json'])assert.equal(f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(withoutSimplify225(f,readReviewedCurrentSource(f))))):read(f),f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(withoutSimplify225(f,readReviewedReleaseBaseline(f))))):git('show',base+':'+f).toString('utf8'),f+' preserved');
 const priorCanon=expectedOnboardedCanon(JSON.parse(git('show',base+':data/hani-building/spatial-contract.json')));
 assert.deepEqual(assets.canon.people,priorCanon.people);assert.deepEqual(assets.canon.floors,priorCanon.floors);
 for(const oldAnchor of priorCanon.anchors)assert.deepEqual(assets.canon.anchors.find(a=>a.id===oldAnchor.id),oldAnchor);

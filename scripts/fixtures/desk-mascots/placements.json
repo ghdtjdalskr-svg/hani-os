@@ -1,0 +1,265 @@
+{
+  "coordinateSpace": "native floor 1672x941; proposal art positions only, not runtime anchors",
+  "placements": [
+    {
+      "floor": "2f",
+      "id": "jieun",
+      "planned": false,
+      "deskBounds": [
+        176,
+        178,
+        474,
+        290
+      ],
+      "figureBox": [
+        410,
+        202,
+        28,
+        28
+      ],
+      "nativeSize": 28,
+      "at1440": 24.114832535885167,
+      "at390": 6.5311004784688995
+    },
+    {
+      "floor": "2f",
+      "id": "haru",
+      "planned": false,
+      "deskBounds": [
+        269,
+        433,
+        437,
+        583
+      ],
+      "figureBox": [
+        382,
+        481,
+        28,
+        28
+      ],
+      "nativeSize": 28,
+      "at1440": 24.114832535885167,
+      "at390": 6.5311004784688995
+    },
+    {
+      "floor": "2f",
+      "id": "naeun",
+      "planned": false,
+      "deskBounds": [
+        82,
+        672,
+        234,
+        818
+      ],
+      "figureBox": [
+        184,
+        719,
+        28,
+        28
+      ],
+      "nativeSize": 28,
+      "at1440": 24.114832535885167,
+      "at390": 6.5311004784688995
+    },
+    {
+      "floor": "2f",
+      "id": "hina",
+      "planned": false,
+      "deskBounds": [
+        214,
+        672,
+        368,
+        818
+      ],
+      "figureBox": [
+        317,
+        719,
+        28,
+        28
+      ],
+      "nativeSize": 28,
+      "at1440": 24.114832535885167,
+      "at390": 6.5311004784688995
+    },
+    {
+      "floor": "2f",
+      "id": "minji",
+      "planned": false,
+      "deskBounds": [
+        350,
+        672,
+        503,
+        818
+      ],
+      "figureBox": [
+        453,
+        719,
+        28,
+        28
+      ],
+      "nativeSize": 28,
+      "at1440": 24.114832535885167,
+      "at390": 6.5311004784688995
+    },
+    {
+      "floor": "2f",
+      "id": "sooyeon",
+      "planned": false,
+      "deskBounds": [
+        487,
+        672,
+        642,
+        818
+      ],
+      "figureBox": [
+        591,
+        719,
+        28,
+        28
+      ],
+      "nativeSize": 28,
+      "at1440": 24.114832535885167,
+      "at390": 6.5311004784688995
+    },
+    {
+      "floor": "2f",
+      "id": "daon",
+      "planned": true,
+      "deskBounds": [
+        433,
+        433,
+        600,
+        583
+      ],
+      "figureBox": [
+        545,
+        481,
+        28,
+        28
+      ],
+      "nativeSize": 28,
+      "at1440": 24.114832535885167,
+      "at390": 6.5311004784688995
+    },
+    {
+      "floor": "2f",
+      "id": "yoonseul",
+      "planned": true,
+      "deskBounds": [
+        633,
+        672,
+        775,
+        818
+      ],
+      "figureBox": [
+        728,
+        719,
+        28,
+        28
+      ],
+      "nativeSize": 28,
+      "at1440": 24.114832535885167,
+      "at390": 6.5311004784688995
+    },
+    {
+      "floor": "3f",
+      "id": "seoyun",
+      "planned": false,
+      "deskBounds": [
+        90,
+        432,
+        317,
+        583
+      ],
+      "figureBox": [
+        272,
+        489,
+        28,
+        28
+      ],
+      "nativeSize": 28,
+      "at1440": 24.114832535885167,
+      "at390": 6.5311004784688995
+    },
+    {
+      "floor": "3f",
+      "id": "dohyun",
+      "planned": false,
+      "deskBounds": [
+        311,
+        432,
+        536,
+        583
+      ],
+      "figureBox": [
+        491,
+        489,
+        28,
+        28
+      ],
+      "nativeSize": 28,
+      "at1440": 24.114832535885167,
+      "at390": 6.5311004784688995
+    },
+    {
+      "floor": "3f",
+      "id": "serin",
+      "planned": false,
+      "deskBounds": [
+        528,
+        432,
+        756,
+        583
+      ],
+      "figureBox": [
+        710,
+        489,
+        28,
+        28
+      ],
+      "nativeSize": 28,
+      "at1440": 24.114832535885167,
+      "at390": 6.5311004784688995
+    },
+    {
+      "floor": "3f",
+      "id": "yuri",
+      "planned": false,
+      "deskBounds": [
+        66,
+        648,
+        300,
+        794
+      ],
+      "figureBox": [
+        253,
+        703,
+        28,
+        28
+      ],
+      "nativeSize": 28,
+      "at1440": 24.114832535885167,
+      "at390": 6.5311004784688995
+    },
+    {
+      "floor": "3f",
+      "id": "arin",
+      "planned": false,
+      "deskBounds": [
+        283,
+        648,
+        523,
+        794
+      ],
+      "figureBox": [
+        475,
+        703,
+        28,
+        28
+      ],
+      "nativeSize": 28,
+      "at1440": 24.114832535885167,
+      "at390": 6.5311004784688995
+    }
+  ]
+}
