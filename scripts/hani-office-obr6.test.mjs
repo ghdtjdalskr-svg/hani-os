@@ -17,7 +17,9 @@ const wordDelta=JSON.parse(wordBytes);
 const obr8Bytes=gunzipSync(fs.readFileSync(new URL('scripts/fixtures/office-obr8-plans.json.gz',root)));
 assert.equal(crypto.createHash('sha256').update(obr8Bytes).digest('hex'),'b759894f164a271fa7273557fec41cee78b0db4dcb48de015435ffec313bed7f','reviewed obr8 full physical delta');
 const obr8=JSON.parse(obr8Bytes);
-assert.equal(crypto.createHash('sha256').update(fs.readFileSync(new URL('hani-office-live.js',root))).digest('hex'),obr8.sourceSha256);
+assert.equal(obr8.sourceSha256,'54fbf9a6f0301acf8c6e52d7ed3dc0ab8d05d684b763e84d2563f677981c6885','immutable obr8 source identity');
+// obr9 changes only computation; keep a separate exact source pin and every original byte assertion.
+assert.equal(crypto.createHash('sha256').update(fs.readFileSync(new URL('hani-office-live.js',root))).digest('hex'),'d66271019face3d4792a0f8f4fd20909e214f92ade3dafad2aacb40776d3038d','reviewed obr9 runtime identity');
 for(const expected of baseline.records)test('obr6/obr8: '+expected.label+' original formal bytes and reviewed optional-trip/snapshot bytes',()=>{
  const {scene,context}=loadScene(),s=scene.scheduler;let writes=0;
  const forbidden=()=>{writes++;throw Error('storage write forbidden')};
