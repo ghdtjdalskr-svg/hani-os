@@ -62,13 +62,15 @@ function editorFixture(linked=false){
 
 test('canonical Preview input and row callbacks recover errors, rederive/revert, and save only on approval',async()=>{
   const f=editorFixture(),before=f.stored();await f.start();
+  // A fresh quantity needs source evidence or an explicit answer.
+  assert.equal(f.node('assetPreviewApprove').disabled,true);f.edit('holding','quantity',1,'2');
   assert.equal(f.node('assetPreviewApprove').disabled,false);
   f.edit('account','balance',null,'300,100원');assert.equal(f.node('assetPreviewApprove').disabled,true);
   f.node('assetPreviewApprove').onclick();assert.equal(f.writes(),0);
   f.edit('account','balance',null,'0원');assert.equal(f.node('assetPreviewApprove').disabled,false);
   f.edit('holding','quantity',0,'20');assert.equal(f.node('asset-edit-holding-0-buyPrice').value,11000);
   f.edit('holding','quantity',0,'');assert.equal(f.node('asset-edit-holding-0-buyPrice').value,'');assert.equal(f.node('asset-edit-holding-0-currentPrice').value,'');
-  f.node('assetPreviewRevert').onclick();assert.equal(f.node('asset-edit-holding-0-quantity').value,'10');
+  f.node('assetPreviewRevert').onclick();assert.equal(f.node('asset-edit-holding-0-quantity').value,'10');f.edit('holding','quantity',1,'2');
   f.node('assetPreviewAddRow').onclick();assert.equal(f.node('assetPreviewApprove').disabled,true);
   const remove=f.node('assetCapturePreview').querySelectorAll('[data-exclude-row]').find(el=>el.dataset.excludeRow==='2');remove.onclick();assert.equal(f.node('assetPreviewApprove').disabled,false);
   assert.equal(f.stored(),before);assert.equal(JSON.stringify(f.state),before);assert.equal(f.writes(),0);
