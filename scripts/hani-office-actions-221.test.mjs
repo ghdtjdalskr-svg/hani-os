@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {assertResources} from './hani-office-place-assertions.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
@@ -69,7 +70,7 @@ test('all scheduled actors/parents remain present for the entire excursion, no a
         const previous=floorTicks.get(e.familyId);if(previous!==undefined)assert.ok(e.start-previous>=30);floorTicks.set(e.familyId,e.start);
       }
       for(let i=active.length-1;i>=0;i--)if(active[i].end<=e.start)active.splice(i,1);
-      for(const other of active){assert.ok(!other.people.some(p=>e.people.some(q=>p.id===q.id)));assert.ok(!other.resources.some(r=>e.resources.includes(r)))}active.push(e);
+      for(const other of active){assert.ok(!other.people.some(p=>e.people.some(q=>p.id===q.id)));assertResources(s,e,other)}active.push(e);
     }
     // Sample real projections at departures, lounge switches, midnight and late night.
     for(const t of [0,3599.9,3600,6000,7200,25199.9,25200,64799.9,64800,86399.9]){

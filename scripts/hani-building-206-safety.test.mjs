@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-const root=path.resolve(fileURLToPath(new URL('../',import.meta.url))),base=path.resolve(process.argv[2]);
+const root=path.resolve(fileURLToPath(new URL('../',import.meta.url))),base=path.resolve(process.env.HANI_BUILDING_SAFETY_BASELINE||process.argv[2]);
 const files=['index.html','hani-office-live.js','hani-office-live.css','hani-style-01.css','scripts/hani-nav-groups.test.mjs','hani-main.js','hani-ui-cleanup-v02971.js','hani-investment-committee.js'];
 const ids=s=>Array.from(s.matchAll(/\bid\s*=\s*["']([^"']+)["']/g),m=>m[1]);
 const before=[],after=[];

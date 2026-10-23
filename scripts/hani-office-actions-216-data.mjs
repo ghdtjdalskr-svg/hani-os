@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import {fileURLToPath} from 'node:url';
 export function runtimeTable(catalog){
   const fields=['id','layer','title','participants','participantSelector','places','conditions','durationSeconds','performance','actorOverrides','targetResolution','poseByPerson','routeByPerson','personalNonWork','frequencyFamilyId','releaseTarget','manualPreviewOnlyIn216'];
-  const project=a=>Object.fromEntries(fields.filter(k=>k in a).map(k=>[k,a[k]]));
+  const project=a=>({...Object.fromEntries(fields.filter(k=>k in a).map(k=>[k,a[k]])),...(a.id==='sig-seongmin-4'?{title:'회장님 모드 · 커피 한 모금'}:{})});
   return {
     schemaVersion:'office-actions-216-v1',sourceCommit:'8f08569',timezone:catalog.timezone,
     identity:{seongmin:{entity:'human_user',role:'chairman',officeVisual:'ceo_frog',spriteId:'seongmin',staffAddress:'회장님'}},
