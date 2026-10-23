@@ -7,6 +7,7 @@ import {assets} from './hani-office-v2-fixture.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {runtimeTable} from './hani-office-actions-216-data.mjs';
 import {assertResources} from './hani-office-place-assertions.mjs';
+import {assertFormalStay} from './hani-office-formal-stay-assertions.mjs';
 const read=p=>fs.readFileSync(new URL('../'+p,import.meta.url),'utf8');
 const table=JSON.parse(read('assets/data/office-actions-216.json')),catalog=JSON.parse(read('docs/design/office-actions-v1.3.json'));
 const source=read('hani-office-live.js'),plain=x=>JSON.parse(JSON.stringify(x));
@@ -36,7 +37,8 @@ test('120 deterministic simulated days enforce all shared caps, cooldowns, paren
     assert.ok(plan.filter(e=>e.layer===3).length<=3);groupTotal+=plan.filter(e=>e.layer===3).length;
     for(let i=0;i<plan.length;i++){
       const e=plan[i],a=table.actions.find(a=>a.id===e.actionId),f=table.families.find(f=>f.id===e.familyId),key=f.id+'|'+(f.limits.scope==='scene'?'scene':e.people[0].id);
-      seen.add(a.id);assert.ok(a.automaticReady);assert.ok(e.duration<=f.durationCeilingSeconds);assert.ok(e.end>e.start);
+      seen.add(a.id);assert.ok(a.automaticReady);assert.ok(e.duration<=e.runtimeDurationCeilingSeconds);if(e.people.every(t=>t.seat.anchor===t.home.anchorId))assert.ok(e.duration<=f.durationCeilingSeconds);assert.ok(e.end>e.start);
+      assertFormalStay(api,e,table);
       const seconds=t=>Number(t.slice(0,2))*3600+Number(t.slice(3))*60;
       assert.ok(a.conditions.timeWindows.some(([start,end])=>e.start>=seconds(start)&&e.end<=seconds(end)),'entire excursion must fit the selected action window');
       counts.set(key,(counts.get(key)||0)+1);assert.ok(counts.get(key)<=f.limits.maxPerDay);

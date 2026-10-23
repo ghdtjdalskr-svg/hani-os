@@ -278,6 +278,35 @@
       const ranges=(!weekday&&c.weekendTimeWindows||c.timeWindows).flatMap(([a,b])=>{const start=minute(a)*60,end=minute(b)*60;return start<end?[[start,end]]:start>end?[[0,end],[start,86400]]:[]}).filter(([a,b])=>b>a).sort((a,b)=>a[0]-b[0]);
       return ranges.reduce((merged,range)=>{const last=merged.at(-1);if(last&&range[0]<=last[1])last[1]=Math.max(last[1],range[1]);else merged.push([...range]);return merged},[]);
     }
+    // Runtime catalog objects are immutable; reuse their parsed windows across
+    // thousands of cadence opportunities. Public windows() still parses probes.
+    const actionWindowCache=new WeakMap();
+    function actionWindows(action,weekday){
+      if(!actionWindowCache.has(action))actionWindowCache.set(action,{});
+      const cached=actionWindowCache.get(action);return cached[weekday]??(cached[weekday]=windows(action,weekday));
+    }
+    // Catalog durations stay immutable. Only an actual trip away from the
+    // presence home acquires the destination's real-clock minimum/maximum.
+    const stayRanges={coffee:[60,180],window:[40,120],sofa:[120,300],board:[60,180],server:[45,120],garden:[90,240],terrace:[90,240],lobby:[30,90],meeting:[90,240]};
+    const stayBySlot=new Map();
+    function stayRange(target){
+      const id=target.seat.anchor;if(stayBySlot.has(id))return stayBySlot.get(id);
+      const card=places.find(c=>c.slots.includes(id)),room=anchors.get(id)?.room;
+      const kind=card?.kind||(/window/.test(id)?'window':({cafe:'coffee',pantry:'coffee',platform:'sofa',mir_nook:'sofa',exec_lounge:'sofa',standup:'board',server:'server',garden:'garden',terrace:'terrace',lobby:'lobby',consult:'meeting',team_meeting:'meeting',release:'meeting',exec:'meeting'})[room]);
+      const range=card?.stay||stayRanges[kind]||[45,120];stayBySlot.set(id,range);return range;
+    }
+    const formalStayBounds=new WeakMap();
+    function formalStay(action,chosen,seconds){
+      if(!formalStayBounds.has(chosen)){
+        const scale=action.id.startsWith('scene-')?placeTable?.outingRules?.groupStayScale||1.2:1;
+        let min=0,max=Infinity;
+        for(const t of chosen)if(t&&t.seat.anchor!==t.home.anchorId){const range=stayRange(t);min=Math.max(min,range[0]*scale);max=Math.min(max,range[1]*scale)}
+        formalStayBounds.set(chosen,{min,max,scale:min?scale:1});
+      }
+      const {min,max,scale}=formalStayBounds.get(chosen);
+      return Math.min(max,Math.max(seconds*scale,min));
+    }
+    const formalCeiling=(family,action,chosen)=>Math.max(family.durationCeilingSeconds,formalStay(action,chosen,action.durationSeconds[1]));
     function opportunitiesFor(day,allowed,includeCadence=true){
       const present=new Set(allowed.map(p=>p.id)),weekday=![0,6].includes(new Date(day+'T00:00:00Z').getUTCDay()),opportunities=[];
       for(const family of table.families){
@@ -290,7 +319,7 @@
           const cadence=weekday?family.limits.cadenceSeconds:family.limits.weekendCadenceSeconds,base=day+'|'+family.id;
           const candidatePools=new Map(),rotations=new Map();
           let n=0;
-          for(const [a,b] of windows(parent,weekday))for(let tick=a;tick<b;tick+=cadence){
+          for(const [a,b] of actionWindows(parent,weekday))for(let tick=a;tick<b;tick+=cadence){
             const index=n++,start=tick+unit(base+'|'+index)*3,period=isLate(start)?'late':isEvening(start)?'evening':'day';
             if(!candidatePools.has(period)){const pool=[];
               for(const id of family.memberActionIds){const action=actions.get(id);if(!action)continue;
@@ -309,7 +338,7 @@
           const base=day+'|'+family.sourceActionId+(subject?'|'+subject:'');
           // One daily family gate, not one gate per variant or render tick.
           if(unit(base)>=family.limits.probabilityPerDay*(weekday?1:table.rules.weekendFrequencyScale??1))continue;
-          const ranges=windows(parent,weekday);if(!ranges.length)continue;
+          const ranges=actionWindows(parent,weekday);if(!ranges.length)continue;
           for(let n=0;n<family.limits.maxPerDay;n++){
             const timeSeed=family.limits.cooldownSeconds>=86400?family.id+'|'+subject:base;
             let range=ranges[n%ranges.length];
@@ -337,7 +366,7 @@
           const chosen=targets(o.action,o.subject,previousDay,o.start);if(!chosen.length||chosen.some(t=>!t))continue;
           const travel=chosen.reduce((sum,t)=>sum+[t.outbound,t.inbound].reduce((total,path)=>total+path.slice(1).reduce((seconds,to,i)=>{const from=path[i];return seconds+travelSeconds(from,to)},0),0),0);
           const retryEnvelope=chosen.some(t=>places.some(p=>p.kind==='window'&&p.slots.includes(t.seat.anchor)))?60:0;
-          const end=o.start+retryEnvelope+o.family.durationCeilingSeconds+travel-86400,counter=o.family.id+'|'+(o.subject||'scene');
+          const end=o.start+retryEnvelope+formalCeiling(o.family,o.action,chosen)+travel-86400,counter=o.family.id+'|'+(o.subject||'scene');
           lastFamily.set(counter,Math.max(lastFamily.get(counter)??-Infinity,o.start+retryEnvelope-86400));
           for(const t of chosen){
             if(o.action.personalNonWork)lastNonWork.set(t.id,Math.max(lastNonWork.get(t.id)??-Infinity,end));
@@ -361,18 +390,19 @@
         const before=events.length;
         try{
         if(o.candidates){
-          const chosen=o.candidates.find(c=>available(targets(c.action,c.subject,day,o.start),o.start,o.start+o.family.durationCeilingSeconds));
+          const chosen=o.candidates.find(c=>{const people=targets(c.action,c.subject,day,o.start);return available(people,o.start,o.start+formalCeiling(o.family,c.action,people))});
           if(!chosen)continue;Object.assign(o,chosen);
         }
         const {family,parent,subject,action,start,group}=o,counter=family.id+'|'+(family.limits.cadenceSeconds?'floor':subject||'scene');
         if((counts.get(counter)||0)>=family.limits.maxPerDay||start-(lastFamily.get(counter)??-Infinity)<family.limits.cooldownSeconds||group&&groups>=table.rules.groupGlobalDailyMax)continue;
-        const actionWindow=windows(action,weekday).find(([a,b])=>start>=a&&start<b);if(!actionWindow)continue;
+        const actionWindow=actionWindows(action,weekday).find(([a,b])=>start>=a&&start<b);if(!actionWindow)continue;
         const parentTargets=targets(parent,subject,day,start),chosen=targets(action,subject,day,start);
-        if(!available(parentTargets,start,start+family.durationCeilingSeconds,parent.layer===2,group)||!chosen.length||chosen.some(t=>!t))continue;
+        if(!available(parentTargets,start,start+formalCeiling(family,parent,parentTargets),parent.layer===2,group)||!chosen.length||chosen.some(t=>!t))continue;
         const changed=chosen.filter(t=>anchors.get(t.seat.anchor).floor!==t.home.floor);
         if(changed.some(t=>start-(lastMove.get(t.id)??-Infinity)<table.rules.floorChanging.initialMinIntervalSeconds))continue;
         if(action.personalNonWork&&chosen.some(t=>start-(lastNonWork.get(t.id)??-Infinity)<table.rules.personalNonWork.initialMinIntervalSeconds))continue;
-        const duration=Math.min(family.durationCeilingSeconds,action.durationSeconds[0]+Math.floor(unit(o.base+'|duration|'+o.n)*(action.durationSeconds[1]-action.durationSeconds[0]+1)));
+        const catalogDuration=Math.min(family.durationCeilingSeconds,action.durationSeconds[0]+Math.floor(unit(o.base+'|duration|'+o.n)*(action.durationSeconds[1]-action.durationSeconds[0]+1)));
+        let duration=formalStay(action,chosen,catalogDuration);
         // One route at a time inside a group; reserve the whole excursion atomically.
         // This conservative FIFO also keeps shared doors/elevators below capacity.
         let cursor=start;const people=chosen.map(t=>({...t}));
@@ -383,6 +413,17 @@
           }t[phase]=legs;
         }
         for(const t of travelOrder(people,'outbound'))travel(t,t.outbound,'out');
+        // FIFO waiting counts as AT_PLACE too. Bound each away participant's
+        // total stay, including earlier arrival and later return departure.
+        const minimumStay=formalStay(action,chosen,0);
+        if(minimumStay){
+          let returnDelay=0;const scale=action.id.startsWith('scene-')?placeTable?.outingRules?.groupStayScale||1.2:1;
+          for(const t of travelOrder(people,'inbound')){
+            if(t.seat.anchor!==t.home.anchorId)duration=Math.min(duration,stayRange(t)[1]*scale-(cursor-(t.out.at(-1)?.end??cursor))-returnDelay);
+            returnDelay+=pathDuration(t.inbound);
+          }
+          if(duration<minimumStay)continue;
+        }
         const performStart=cursor,performEnd=cursor+duration;cursor=performEnd;
         for(const t of travelOrder(people,'inbound'))travel(t,t.inbound,'back');
         const end=cursor;
@@ -390,7 +431,7 @@
         const selfies=table.rules.hinaBalance.selfieActionIds.includes(action.id);
         if(selfies&&teacherCompletedAt.filter(t=>t<=start).length<=events.filter(e=>table.rules.hinaBalance.selfieActionIds.includes(e.actionId)).length)continue;
         const resources=[...new Set(people.flatMap(t=>[...t.outbound,...t.inbound].map(a=>a.id)))];
-        const event={id:o.base+'|'+o.n,actionId:action.id,familyId:family.id,layer:action.layer,start,end,performStart,performEnd,duration,personalNonWork:action.personalNonWork,people,resources,floors:[...new Set(people.map(t=>anchors.get(t.seat.anchor).floor))]};
+        const event={id:o.base+'|'+o.n,actionId:action.id,familyId:family.id,layer:action.layer,start,end,performStart,performEnd,duration,runtimeDurationCeilingSeconds:formalCeiling(family,action,chosen),personalNonWork:action.personalNonWork,people,resources,floors:[...new Set(people.map(t=>anchors.get(t.seat.anchor).floor))]};
         if(!reserve(event,events,allowed))continue;
         counts.set(counter,(counts.get(counter)||0)+1);lastFamily.set(counter,start);
         if(group)groups++;
@@ -401,8 +442,7 @@
           // Keep a gated catalog opportunity alive after a transient reservation
           // refusal. Reinsert chronologically; do not reroll the action or budget.
           const counter=o.family.id+'|'+(o.subject||'scene'),nextTime=o.start+30;
-          const windowVisit=targets(o.action,o.subject,day,o.start).some(t=>t&&places.some(p=>p.kind==='window'&&p.slots.includes(t.seat.anchor)));
-          if(events.length===before&&windowVisit&&!o.family.limits.cadenceSeconds&&o.family.limits.cooldownSeconds<86400&&(o.retry||0)<2&&nextTime<o.windowEnd&&(counts.get(counter)||0)<o.family.limits.maxPerDay&&!events.some(e=>e.actionId===o.action.id&&e.people.some(t=>t.id===o.subject))){
+          if(events.length===before&&!o.family.limits.cadenceSeconds&&o.family.limits.cooldownSeconds<86400&&(o.retry||0)<2&&nextTime<o.windowEnd&&(counts.get(counter)||0)<o.family.limits.maxPerDay&&targets(o.action,o.subject,day,o.start).some(t=>t&&places.some(p=>p.kind==='window'&&p.slots.includes(t.seat.anchor)))&&!events.some(e=>e.actionId===o.action.id&&e.people.some(t=>t.id===o.subject))){
             const next={...o,start:nextTime,retry:(o.retry||0)+1};let lo=opportunities.indexOf(o)+1,hi=opportunities.length;
             while(lo<hi){const mid=(lo+hi)>>>1;if(opportunities[mid].start<next.start)lo=mid+1;else hi=mid}
             opportunities.splice(lo,0,next);
@@ -638,7 +678,11 @@
       const ledger=events.slice(),result=[],last=new Map(),due=new Map(),visits=new Map();
       const weekday=![0,6].includes(new Date(day+'T00:00:00Z').getUTCDay());
       const rules=placeTable?.outingRules||{cooldownSeconds:600,intervalSeconds:[1500,3000],groupStayScale:1.2};
-      const lastFloor=new Map(),physical=allowed.filter(p=>p.id!=='mir');
+      // Staff leisure invitations never move the human chairman automatically.
+      // Explicit catalog actions retain their existing presence/identity rules.
+      const lastFloor=new Map(),physical=allowed.filter(p=>p.id!=='mir'&&p.id!=='seongmin');
+      const floorTrips=new Map();
+      for(const e of events.filter(e=>e.people.length>1))for(const t of e.people)if(anchors.get(t.seat.anchor).floor!==t.home.floor)floorTrips.set(t.id,(floorTrips.get(t.id)||0)+1);
       const commitments=new Map(allowed.map(p=>[p.id,events.filter(e=>e.people.some(t=>t.id===p.id))]));
       function nextCommitment(id,at){const list=commitments.get(id)||[];let lo=0,hi=list.length;
         while(lo<hi){const mid=(lo+hi)>>>1;if(list[mid].end<=at)lo=mid+1;else hi=mid}
@@ -656,18 +700,25 @@
       }
       function weight(card,people,at){
         let w=people.reduce((n,p)=>n*(card.affinity?.[p.id]||1),1)**(1/people.length);
-        w*=people.every(p=>homeAt(p,at).floor===card.floor)?5:1;
+        const sameFloor=people.every(p=>homeAt(p,at).floor===card.floor);
+        w*=sameFloor?(people.length>1?12:5):(people.length>1?.35:1);
         for(const rhythm of Object.values(placeTable?.rhythm||{}))if(at/3600>=rhythm.hours[0]&&at/3600<rhythm.hours[1])w*=rhythm.weights[card.kind]||1;
         // Novel places get a modest boost; preferences still shape each day's mix.
         w*=people.some(p=>!visits.get(p.id)?.has(card.id))?3:1;
         return w;
       }
       function attempt(people,at,visitor=null,fill=false){
-        const deadline=visitor?86400:Math.min(86400-rules.cooldownSeconds,...people.map(p=>nextCommitment(p.id,at)));
+        if(!visitor&&people.length>1&&(at<32400||at>=70200))return false;
+        const deadline=visitor?86400:Math.min(people.length>1?70200:86400-rules.cooldownSeconds,...people.map(p=>nextCommitment(p.id,at)));
         if(deadline-at<(people.length>1?60*rules.groupStayScale:30))return false;
         const neighbours=fill?result.filter(e=>!e.visitor&&e.people.some(t=>people.some(p=>p.id===t.id))).sort((a,b)=>a.start-b.start):[];
         let cards=places.filter(c=>visitor?c.slots.includes(visitor.target):
-          c.stay[0]*(people.length>1?rules.groupStayScale:1)<=deadline-at&&people.every(p=>fill?neighbours.filter(e=>e.people.some(t=>t.id===p.id)&&e.start<at).at(-1)?.card.id!==c.id&&neighbours.find(e=>e.people.some(t=>t.id===p.id)&&e.start>=at)?.card.id!==c.id:last.get(p.id)?.card!==c.id)&&(!isLate(at)||people.every(p=>homeAt(p,at).floor===c.floor))&&c.slots.length>=people.length);
+          c.stay[0]*(people.length>1?rules.groupStayScale:1)<=deadline-at&&
+          c.room!=='consult'&&!c.slots.includes('reception')&&
+          (!(at>=25200&&at<32400)||c.kind==='coffee')&&
+          (at<70200||['coffee','sofa'].includes(c.kind))&&
+          (people.length===1||people.every(p=>homeAt(p,at).floor===c.floor||(floorTrips.get(p.id)||0)<2))&&
+          people.every(p=>fill?neighbours.filter(e=>e.people.some(t=>t.id===p.id)&&e.start<at).at(-1)?.card.id!==c.id&&neighbours.find(e=>e.people.some(t=>t.id===p.id)&&e.start>=at)?.card.id!==c.id:last.get(p.id)?.card!==c.id)&&(!isLate(at)||people.every(p=>homeAt(p,at).floor===c.floor))&&c.slots.length>=people.length);
         const rankBase=day+'|card|'+people.map(p=>p.id).join()+'|'+at+'|';
         cards=cards.map(c=>({c,rank:visitor?seed(day+at+c.id):-Math.log(Math.max(.000001,unit(rankBase+c.id)))/weight(c,people,at)})).sort((a,b)=>a.rank-b.rank||a.c.id.localeCompare(b.c.id)).map(r=>r.c);
         if(!visitor&&!fill&&at-(lastFloor.get(homeAt(people[0],at).floor)??-Infinity)<BLOCK)cards=cards.slice(0,3);
@@ -704,6 +755,7 @@
             if(!reserve(e,ledger,allowed))continue;
             result.push(e);
             if(!visitor)for(const p of people){last.set(p.id,{end:e.end,card:card.id});if(!visits.has(p.id))visits.set(p.id,new Set());visits.get(p.id).add(card.id);
+              if(people.length>1&&homeAt(p,at).floor!==card.floor)floorTrips.set(p.id,(floorTrips.get(p.id)||0)+1);
               const interval=rules.intervalByPerson?.[p.id]||rules.intervalSeconds;
               due.set(p.id,at+interval[0]+seed(day+'|due|'+p.id+at)%(interval[1]-interval[0]+1));
               lastFloor.set(homeAt(p,at).floor,at);
@@ -722,11 +774,11 @@
           const available=roster.filter(p=>(!busy.has(p.id)||overdueSparse(p))&&at-(last.get(p.id)?.end??-Infinity)>=rules.cooldownSeconds&&(at>=(due.get(p.id)??0)||needsFloorVisit));
           available.sort((a,b)=>(last.get(a.id)?.end??-1)-(last.get(b.id)?.end??-1)||seed(day+at+a.id)-seed(day+at+b.id));
           if(!available.length)continue;
-          if(!isLate(at)&&unit(day+'|group|'+floor.id+at)<.55){
+          if(at>=32400&&at<70200&&unit(day+'|group|'+floor.id+at)<.55){
             const invitees=roster.filter(p=>!busy.has(p.id)&&at-(last.get(p.id)?.end??-Infinity)>=rules.cooldownSeconds);
             const pairs=(placeTable?.companions||[]).filter(r=>r.people.some(id=>available.some(p=>p.id===id))&&r.people.every(id=>invitees.some(p=>p.id===id)))
-              .map(r=>({r,rank:-Math.log(Math.max(.000001,unit(day+at+r.people.join())))/((r.score-70+1)**2)})).sort((a,b)=>a.rank-b.rank).map(p=>p.r);
-            if(pairs.slice(0,1).some(r=>attempt(r.people.map(id=>invitees.find(p=>p.id===id)),at)))continue;
+              .map(r=>({r,rank:-Math.log(Math.max(.000001,unit(day+at+r.people.join())))/((r.score-70+1)**2*(lunch(at)&&r.people.length===3?20:1))})).sort((a,b)=>a.rank-b.rank).map(p=>p.r);
+            if(pairs.slice(0,lunch(at)?3:1).some(r=>attempt(r.people.map(id=>invitees.find(p=>p.id===id)),at)))continue;
           }
           // A failed geometry/booking never teleports or partially books anyone.
           for(const p of available){

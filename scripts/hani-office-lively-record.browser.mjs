@@ -24,7 +24,8 @@ let browser,server;const status={label,floor,ref:ref||'worktree',start,minutes,s
 try{
  const runtime=args.get('playwright')||path.join(process.env.USERPROFILE,'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs');
  const {chromium}=await import(pathToFileURL(runtime).href);
- let sharp;try{sharp=(await import('sharp')).default}catch{sharp=(await import(pathToFileURL(path.join(path.dirname(runtime),'../sharp/lib/index.js')).href)).default}
+ // Newer sharp builds ship dist/index.cjs instead of lib/index.js next to playwright.
+ let sharp;try{sharp=(await import('sharp')).default}catch{for(const entry of ['../sharp/dist/index.cjs','../sharp/lib/index.js']){try{sharp=(await import(pathToFileURL(path.join(path.dirname(runtime),entry)).href)).default;break}catch{}}if(!sharp)throw Error('sharp not found next to playwright')}
  server=http.createServer((req,res)=>{
   const pathname=decodeURIComponent(new URL(req.url,'http://fixture').pathname);
   if(pathname==='/'){res.setHeader('Content-Type','text/html; charset=utf-8');res.end(document);return}
@@ -54,7 +55,8 @@ try{
  }
  const gif=path.join(out,`record-${label}-${floor}.gif`),delay=Math.round(5000/speed);
  await sharp(Buffer.concat(frames),{raw:{width,height:height*frames.length,channels:4,pageHeight:height},limitInputPixels:false}).gif({loop:0,delay:Array(frames.length).fill(delay)}).toFile(gif);
- const info=await sharp(gif,{animated:true}).metadata();if(info.width>720||info.pages!==frames.length)throw Error('GIF frame/width validation failed');
+ const info=await sharp(gif,{animated:true}).metadata();// The GIF encoder may merge identical consecutive frames, so pages can be fewer than frames.
+ if(info.width>720||!(info.pages>=1&&info.pages<=frames.length))throw Error('GIF frame/width validation failed');
  const writes=await page.evaluate(()=>officeRecordWrites);if(writes.length||status.errors.length)throw Error('Runtime error or forbidden storage write');
  status.result='pass';status.gif={file:path.basename(gif),width:info.width,pages:info.pages,delayMs:delay,playbackSpeed:5000/delay};
 }catch(error){status.result='fail';status.errors.push(error.stack);process.exitCode=1}
