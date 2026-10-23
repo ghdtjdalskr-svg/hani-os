@@ -35,6 +35,18 @@
 - 데이터·저장소·Cloud·schema 영향: 없음. `hani_os_life_v23`·Supabase 미접촉, 본사 코드 저장소 쓰기 0(브라우저 테스트 확인). 버전·`?v=` 미변경. `index.html`, `hani-desk-mascots.js` diff 0.
 - 책상 마스코트 계약: `HaniBuildingScene` 기존 export·`canon.people[].homeAnchor`·`art.anchors`·`anchors`·`floors`·`#haniOfficeMap` 속성 유지. canon anchor 수만 326→331(창가 5개 추가), 개인 home 좌표 불변.
 
+## 2차 요청 "살아 있는 사무실" (회장님, 서윤 채팅 경유, 232 탑승 전 필수)
+
+- 구현 `aa7cd35`(2차: 하루 단위 외출, 장소별 실제 시계 체류, 관계 seed 기반 선호·사람별 문구, 2인 동행, 시간대 리듬, 다양성 지표) + `4622b84`(3차: 자리를 떠나는 정식 행동에도 장소별 최소 체류, 동행 09:00–19:30·상담실/안내대 제외·타층 가중치↓). 도연(Codex) 구현, 서윤 결정·커밋.
+- 결과: 회귀 113 PASS/0 FAIL/3 SKIP, 감사 0/0/0/0, 216 97행 208일 도달 유지, 첫 계획 369ms·웜 snapshot 0.42ms. 대조표 `artifacts/office-behavior/character-actions.md`(사흘 합산 소실 0, 날짜별 5건은 수용). 3인 동행은 0건(선택 항목, 미달로 기록).
+- 실제 시계 6분 녹화(3F, 14:00 시작) 전(ad3c2f3)/후 비교: `docs/drafts/office-behavior-redesign/compare-3f.gif`, `compare-3f-sheet.jpg`. 아린 리뷰 PASS. 후속 미세조정 제안: 서버실·스탠드업 위쪽 말풍선과 방 이름표 겹침.
+
+## 열차 번호 변경 (서윤 팀장님 조율, 10/23)
+
+- 2.9.231 마스코트 배포 완료(main 13dedc6), tooling #335 머지 → main `af2fd6d`. 2.9.232 = 다온·윤슬 '입사 예정' 표시 제거(서윤, 본사 파일 미변경).
+- **이 작업은 2.9.233**. 233 범위에 다온·윤슬 본사 착석 추가: canon status active(입사일 2026-10-23), 216/221 people·base-work 추가, desk_daon/desk_yoonseul rendererSeat·runtimeAssignable, 예약 장부·근접 검사.
+- 브랜치는 아직 `ad3c2f3` 기준. 232 머지 후 최신 main을 합쳐(회장님 확인 후) 전체 재검증 필요.
+
 ## 다음 담당에게 (배포 열차)
 
 - 함께 배포할 서버 Edge Function·설정: 없음.
