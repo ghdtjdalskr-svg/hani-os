@@ -5,7 +5,9 @@ import {loadScene,at,readAt} from './hani-office-lively-fixture.mjs';
 // Fixed Git source, never current runtime as its own oracle.
 const before=readAt('hani-office-live.js','0b7bedd');
 assert.equal(crypto.createHash('sha256').update(before).digest('hex'),'54fbf9a6f0301acf8c6e52d7ed3dc0ab8d05d684b763e84d2563f677981c6885','fixed obr8 Git source bytes');
-const old=loadScene({transform:()=>before}),current=loadScene();
+// obr10 intentionally changes behavior. Keep this optimization proof on the
+// actual immutable obr8/obr9 source AND data, never today's expanded catalog.
+const old=loadScene({ref:'0b7bedd'}),current=loadScene({ref:'246f1c0'});
 let writes=0;
 for(const {context}of [old,current]){
  const deny=()=>{writes++;throw Error('storage forbidden')};

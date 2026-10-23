@@ -10,7 +10,7 @@ let writes=0;const fail=()=>{writes++;throw Error('storage forbidden')};
 context.localStorage=context.sessionStorage={setItem:fail,removeItem:fail,clear:fail};
 test('obr8: frozen formal plans stay identical to obr7; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words',()=>{
  const old=loadScene({transform:()=>readAt('hani-office-live.js','84cadbd')}).scene.scheduler;
- const counts={colleague:0,delivery:0,notice:0};
+ const counts={colleague:0,delivery:0,notice:0,task:0};
  for(const day of days){
   const options={chairmanPresent:true},formal=s.plan(day,options),all=s.blockPlan(day,0,formal,options),errands=all.filter(e=>e.card.kind==='errand');
   assert.deepEqual(plain(formal),plain(old.plan(day,options)),'all formal decisions unchanged');

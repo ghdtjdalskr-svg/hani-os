@@ -12,7 +12,11 @@ export function validPlaceSpeech(p,card,table){
    const target=table.people.find(q=>q.id===card.targetPerson),name=target?.name;
    return !!name&&p.line.includes(name)&&['side_desk_'+target.id,'approach_desk_'+target.id,'side_'+target.home.anchorId,'approach_'+target.home.anchorId].includes(p.seat.anchor);
   }
-  return card.errandKind==='delivery'?p.seat.anchor.startsWith('door_'):card.errandKind==='notice'&&p.seat.anchor==='ilbo_board';
+  return card.errandKind==='task'||(card.errandKind==='delivery'?p.seat.anchor.startsWith('door_'):card.errandKind==='notice'&&p.seat.anchor==='ilbo_board');
+ }
+ if(p.gatheringIds){
+  const names=p.gatheringIds.filter(id=>id!==p.id).map(id=>table.people.find(q=>q.id===id)?.name),location=card.at[0].split('에서')[0];
+  return p.state==='AT_PLACE'&&p.floor===card.floor&&card.slots.includes(p.seat.anchor)&&names.length>=1&&names.every(n=>n&&p.line.includes(n))&&(card.gatheringPhrases||['수다 중']).some(phrase=>p.line===location+'에서 '+names.join('·')+'이랑 '+phrase);
  }
  if(!p.groupIds)return [...card.at,...(card.atByPerson?.[p.id]||[])].includes(p.line);
  const names=p.groupIds.filter(id=>id!==p.id).map(id=>table.people.find(q=>q.id===id)?.name);

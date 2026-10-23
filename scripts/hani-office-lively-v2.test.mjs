@@ -18,7 +18,16 @@ test('obr2: whole-day ledger keeps minimum stays across block boundaries, visito
   const stay=t.back[0].start-t.out.at(-1).end,base=e.visitor?({client:[120,300],candidate:[120,300],courier:[15,30],rider:[15,30],generic:[20,40]})[e.visitor.kind]:range[e.card.kind];
   assert.ok(stay>=base[0]*(e.group?1.2:1)-1e-6,e.id+' stay '+stay);
   // FIFO arrival/return waiting can add time for the first arrival in a group.
-  if(!e.group)assert.ok(stay<=base[1]+1e-6);
+  // obr10 explicitly permits an atomically re-reserved social extension. The
+  // original unextended maximum and every existing minimum remain mandatory.
+  if(!e.group)assert.ok(stay-(e.gatheringExtension||0)<=base[1]+1e-6);
+  if(e.gatheringExtension){
+   assert.ok(e.gatheringChecks.length);for(const check of e.gatheringChecks){
+    const peers=trips.filter(q=>q.card.id===e.card.id).flatMap(q=>q.people.filter(t=>t.out.at(-1).end<=check.at&&check.at<t.back[0].start));
+    assert.ok(peers.length>=check.size&&check.size>=2);
+    assert.ok(check.until-e.performStart<=(check.size>=3?480:base[1]*1.5)+1e-6);
+   }
+  }
  }
  for(const p of table.people){const list=trips.filter(e=>e.people.some(t=>t.id===p.id));
   for(let i=1;i<list.length;i++){assert.ok(list[i].start-list[i-1].end>=600-1e-6,p.id+' cooldown');assert.notEqual(list[i].card.id,list[i-1].card.id,p.id+' consecutive card')}

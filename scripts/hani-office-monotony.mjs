@@ -21,7 +21,7 @@ export function simulate(label,day){
  let writes=0;const forbidden=()=>{writes++;throw Error('storage write forbidden')};context.localStorage=context.sessionStorage={setItem:forbidden,removeItem:forbidden,clear:forbidden};
  const people=new Map(table.people.map(p=>[p.id,p]));
  const records=Object.fromEntries(floors.map(f=>[f,Object.fromEntries(periods.map(([name])=>[name,make()]))]));
- const windows=[],current={},prevSign={},prev=new Map(),lastLines=new Map(),daily=Object.fromEntries(table.people.map(p=>[p.id,{id:p.id,name:p.name,home:p.home.floor,seconds:0,lines:new Set(),places:new Set(),actions:new Set(),episodes:0,repeatGaps:[]}])) ,minute={};
+ const windows=[],current={},prevSign={},prev=new Map(),lastLines=new Map(),daily=Object.fromEntries(table.people.map(p=>[p.id,{id:p.id,name:p.name,home:p.home.floor,seconds:0,lines:new Set(),places:new Set(),actions:new Set(),behaviorKinds:new Set(),episodes:0,repeatGaps:[]}])) ,minute={};
  for(const f of floors){current[f]=freshWindow(day,f,0);minute[f]={walk:false,change:false,people:false}}
  const formal=s.plan(day,options),outings=s.blockPlan?.(day,0,formal,options)||[];
  let guestPrev=null;
@@ -30,7 +30,7 @@ export function simulate(label,day){
   const buckets=Object.fromEntries(floors.map(f=>[f,entries.filter(p=>p.floor===f)]));
   const periodsNow=periods.filter(([,a,b])=>a*3600<=sec&&sec<b*3600).map(([name])=>name);
   const repeatEpisodes=new Map();
-  for(const p of entries){const d=daily[p.id];d.seconds++;if(!p.plain&&p.line){d.lines.add(p.line);const old=prev.get(p.id);if(!old||old.plain||old.line!==p.line){d.episodes++;const k=p.id+'\0'+p.line;if(lastLines.has(k)){const gap=sec-lastLines.get(k);d.repeatGaps.push(gap);repeatEpisodes.set(p.id,gap)}lastLines.set(k,sec)}}
+  for(const p of entries){const d=daily[p.id];d.seconds++;if(!p.plain&&p.line){d.lines.add(p.line);const c=scene.places.find(c=>c.id===p.placeId);d.behaviorKinds.add(p.behaviorKind||(p.actionId!=='base-work'?p.actionId:c?.kind==='errand'?c.id:p.stroll?'outing-'+p.placeId:'idle-'+p.line));const old=prev.get(p.id);if(!old||old.plain||old.line!==p.line){d.episodes++;const k=p.id+'\0'+p.line;if(lastLines.has(k)){const gap=sec-lastLines.get(k);d.repeatGaps.push(gap);repeatEpisodes.set(p.id,gap)}lastLines.set(k,sec)}}
    const home=s.homeAt(people.get(p.id),sec);if(!p.walking&&!p.waiting&&(p.stroll||p.eventId)&&p.seat.anchor!==home.anchorId)d.places.add(p.seat.anchor);
    if(p.actionId!=='base-work')d.actions.add(p.actionId);else if(p.stroll){const c=scene.places.find(c=>c.id===p.placeId);d.actions.add(c?.kind==='errand'?'errand-'+c.errandKind:'outing')}else if(!p.plain)d.actions.add(p.pose==='standing'?'idle-stand':'idle-sit');
   }
@@ -73,7 +73,7 @@ export function simulate(label,day){
   for(const [name,a,b]of periods){const r=records[f][name],ws=windows.filter(w=>w.floor===f&&w.start>=a*3600&&w.end<=b*3600);r.longestStatic=Math.max(r.longestStatic,b*3600-r.lastChange);r.lineRepeats=ws.reduce((n,w)=>n+w.lineRepeats,0);r.placeRepeats=ws.reduce((n,w)=>n+w.placeRepeats,0);records[f][name]={...finish(r),tenMinuteWindows:ws.length,lineRepeatsPer10m:mean(ws.map(w=>w.lineRepeats)),placeRepeatsPer10m:mean(ws.map(w=>w.placeRepeats))}}
  }
  assert.equal(writes,0);
- return {label,day,sourceSha256:hash(source),stepSeconds:1,options,roster:table.people.map(p=>p.id),formal:formal.length,outings:outings.length,storageWrites:writes,records,windows,daily:Object.values(daily).map(d=>({...d,lines:[...d.lines],places:[...d.places],actions:[...d.actions],repeatGaps:undefined,repeatGapMean:mean(d.repeatGaps),repeatGapMin:d.repeatGaps.length?Math.min(...d.repeatGaps):null}))};
+ return {label,day,sourceSha256:hash(source),placesSha256:is230?null:hash(readAt('data/hani-building/office-places.json')),stepSeconds:1,options,roster:table.people.map(p=>p.id),formal:formal.length,outings:outings.length,storageWrites:writes,records,windows,daily:Object.values(daily).map(d=>({...d,lines:[...d.lines],places:[...d.places],actions:[...d.actions],behaviorKinds:[...d.behaviorKinds],repeatGaps:undefined,repeatGapMean:mean(d.repeatGaps),repeatGapMin:d.repeatGaps.length?Math.min(...d.repeatGaps):null}))};
 }
 const args=process.argv.slice(2);
 if(args.includes('--run')){

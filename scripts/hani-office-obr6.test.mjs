@@ -18,8 +18,13 @@ const obr8Bytes=gunzipSync(fs.readFileSync(new URL('scripts/fixtures/office-obr8
 assert.equal(crypto.createHash('sha256').update(obr8Bytes).digest('hex'),'b759894f164a271fa7273557fec41cee78b0db4dcb48de015435ffec313bed7f','reviewed obr8 full physical delta');
 const obr8=JSON.parse(obr8Bytes);
 assert.equal(obr8.sourceSha256,'54fbf9a6f0301acf8c6e52d7ed3dc0ab8d05d684b763e84d2563f677981c6885','immutable obr8 source identity');
-// obr9 changes only computation; keep a separate exact source pin and every original byte assertion.
-assert.equal(crypto.createHash('sha256').update(fs.readFileSync(new URL('hani-office-live.js',root))).digest('hex'),'d66271019face3d4792a0f8f4fd20909e214f92ade3dafad2aacb40776d3038d','reviewed obr9 runtime identity');
+// Keep the obr8/obr9 byte proof historical. obr10 is an intentional reviewed
+// behavior delta with its own immutable oracle, authored outside test execution.
+const obr10Bytes=gunzipSync(fs.readFileSync(new URL('scripts/fixtures/office-obr10-plans-v5.json.gz',root)));
+assert.equal(crypto.createHash('sha256').update(obr10Bytes).digest('hex'),'d7c46b5789d725ee5e8d434d1d604b5f5f78db96beebe3a1cf9d5b6e1ac77eeb','reviewed obr10 behavior delta: unique task IDs, original generic actions, personal words, novel errands, individual dwell cap and 30px optional crossing buffer');
+const obr10=JSON.parse(obr10Bytes);
+assert.equal(crypto.createHash('sha256').update(fs.readFileSync(new URL('hani-office-live.js',root))).digest('hex'),obr10.sourceSha256,'reviewed final obr10 runtime identity');
+assert.equal(crypto.createHash('sha256').update(fs.readFileSync(new URL('data/hani-building/office-places.json',root))).digest('hex'),obr10.placesSha256,'reviewed obr10 data identity');
 for(const expected of baseline.records)test('obr6/obr8: '+expected.label+' original formal bytes and reviewed optional-trip/snapshot bytes',()=>{
  const {scene,context}=loadScene(),s=scene.scheduler;let writes=0;
  const forbidden=()=>{writes++;throw Error('storage write forbidden')};
@@ -28,12 +33,17 @@ for(const expected of baseline.records)test('obr6/obr8: '+expected.label+' origi
  const reviewedSnapshot=structuredClone(expected.snapshot),review=wordDelta.records.find(r=>r.day===expected.day&&r.seconds===expected.seconds);
  assert.ok(review);assert.deepEqual(review.options,expected.options);
  for(const change of review.changes){const person=reviewedSnapshot.entries.find(p=>p.id===change.id);assert.ok(person);assert.equal(person.line,change.before);person.line=change.after}
- const physicalReview=obr8.records.find(r=>r.day===expected.day&&r.seconds===expected.seconds);assert.ok(physicalReview);assert.deepEqual(physicalReview.options,expected.options);
+ const physicalReview=obr10.records.find(r=>r.day===expected.day&&r.seconds===expected.seconds);assert.ok(physicalReview);assert.deepEqual(physicalReview.options,expected.options);
  // Compare both JSON bytes (key/order/floats) and parsed structures across VM realms.
  for(const [label,actual]of Object.entries({formal,outings,snapshot:s.snapshot(at(expected.day,expected.seconds),expected.options)})){
   const oracle=label==='formal'?expected.formal:physicalReview[label];
   const text=JSON.stringify(actual);assert.equal(text,JSON.stringify(oracle),label+' bytes');assert.deepEqual(JSON.parse(text),oracle,label+' deepEqual');
  }
+ const historical=loadScene({ref:'246f1c0'}).scene.scheduler;
+ const original=obr8.records.find(r=>r.day===expected.day&&r.seconds===expected.seconds),oldFormal=historical.plan(expected.day,expected.options);
+ assert.equal(JSON.stringify(oldFormal),JSON.stringify(expected.formal),'historical formal bytes');
+ assert.equal(JSON.stringify(historical.blockPlan(expected.day,0,oldFormal,expected.options)),JSON.stringify(original.outings),'historical obr8/obr9 outing bytes');
+ assert.equal(JSON.stringify(historical.snapshot(at(expected.day,expected.seconds),expected.options)),JSON.stringify(original.snapshot),'historical obr8/obr9 snapshot bytes');
  assert.equal(writes,0);
 });
 test('obr6: all anchor pairs keep the pre-patch Dijkstra paths and equal-distance tie order',()=>{
