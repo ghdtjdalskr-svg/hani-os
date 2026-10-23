@@ -1,0 +1,61 @@
+{
+  "baseSha": "7a10595f2a0890e63cd04dbc95c057edbbd3d5b0",
+  "reason": "2026-10-23 approved Milestones v1 connection (nav, dashboard slot, view, assets, pageMeta/showView/quick jump, banner/voice)",
+  "changes": [
+    {
+      "file": "index.html",
+      "replacements": [
+        {
+          "before": "<link rel=\"stylesheet\" href=\"./hani-ilbo.css?v=2.9.232\">\n",
+          "after": "<link rel=\"stylesheet\" href=\"./hani-ilbo.css?v=2.9.232\">\n<link rel=\"stylesheet\" href=\"./hani-milestones.css?v=2.9.232\">\n"
+        },
+        {
+          "before": "    </div>\r\n    <nav class=\"nav-home\"><button class=\"nav-btn active dashboard-nav\" data-view=\"home\"><span class=\"ico\"><svg viewBox=\"0 0 24 24\"><path d=\"M3 11.5 12 4l9 7.5\"/><path d=\"M5.5 10.5V20h13v-9.5\"/><path d=\"M9.5 20v-6h5v6\"/></svg></span><span class=\"dashboard-nav-copy\"><span class=\"txt\">대시보드</span><small>오늘 기록과 핵심 현황</small></span><span class=\"dashboard-arrow\">›</span></button></nav>\n",
+          "after": "    </div>\r\n    <nav class=\"nav-home\"><button class=\"nav-btn active dashboard-nav\" data-view=\"home\"><span class=\"ico\"><svg viewBox=\"0 0 24 24\"><path d=\"M3 11.5 12 4l9 7.5\"/><path d=\"M5.5 10.5V20h13v-9.5\"/><path d=\"M9.5 20v-6h5v6\"/></svg></span><span class=\"dashboard-nav-copy\"><span class=\"txt\">대시보드</span><small>오늘 기록과 핵심 현황</small></span><span class=\"dashboard-arrow\">›</span></button><button class=\"nav-btn dashboard-nav milestones-nav\" data-view=\"milestones\" type=\"button\"><span class=\"ico\"><svg viewBox=\"0 0 24 24\"><path d=\"M6 21V4\"/><path d=\"M6 4h11l-2.5 4L17 12H6\"/></svg></span><span class=\"dashboard-nav-copy\"><span class=\"txt\">마일스톤</span><small>삶의 중요한 변화 기록</small></span><span class=\"dashboard-arrow\">›</span></button></nav>\n"
+        },
+        {
+          "before": "      <aside class=\"ilbo-home-card\" data-ilbo-home hidden aria-label=\"새 HANI 일보\"></aside>\n",
+          "after": "      <aside class=\"ilbo-home-card\" data-ilbo-home hidden aria-label=\"새 HANI 일보\"></aside>\n      <aside class=\"ms-home-card\" data-milestone-home hidden aria-label=\"라이프 마일스톤\"></aside>\n"
+        },
+        {
+          "before": "    </section>\r\n",
+          "after": "    </section>\r\n    <section id=\"milestones\" class=\"view\" aria-label=\"마일스톤\">\r\n      <div class=\"ms-shell\">\r\n        <div class=\"ms-archive\" data-ms-archive>\r\n          <p class=\"ms-motto\">더 완벽해지기 위해서가 아니라,<br>더 나은 삶을 살기 위해.</p>\r\n          <div class=\"ms-toolbar\">\r\n            <div class=\"ms-filters\" role=\"group\" aria-label=\"분야로 보기\" data-ms-filters></div>\r\n            <label class=\"ms-sort\">정렬<select data-ms-sort aria-label=\"마일스톤 정렬\"></select></label>\r\n            <button type=\"button\" class=\"btn\" data-ms-new>+ 새 마일스톤</button>\r\n          </div>\r\n          <p class=\"ms-session\" data-ms-session role=\"status\" hidden></p>\r\n          <ol class=\"ms-timeline\" data-ms-list aria-label=\"마일스톤 타임라인\"></ol>\r\n        </div>\r\n        <article class=\"ms-detail\" data-ms-detail aria-label=\"마일스톤 상세\" hidden></article>\r\n        <form class=\"ms-form\" data-ms-form aria-label=\"새 마일스톤 작성\" novalidate hidden></form>\r\n      </div>\r\n    </section>\r\n"
+        },
+        {
+          "before": "<script src=\"./hani-ilbo.js?v=2.9.232\"></script>\n",
+          "after": "<script src=\"./hani-ilbo.js?v=2.9.232\"></script>\n<script src=\"./hani-milestones.js?v=2.9.232\"></script>\n"
+        }
+      ]
+    },
+    {
+      "file": "hani-main.js",
+      "replacements": [
+        {
+          "before": " home:[\"대시보드\",\"오늘의 기록과 흐름을 한눈에 확인합니다.\",\"home\"],\r\n",
+          "after": " home:[\"대시보드\",\"오늘의 기록과 흐름을 한눈에 확인합니다.\",\"home\"],\r\n milestones:[\"마일스톤\",\"삶에 남은 의미 있는 변화를 오래 기억할 수 있게 기록합니다.\",\"milestones\"],\r\n"
+        },
+        {
+          "before": "  if(id===\"ilbo\")window.HaniIlbo?.enter();\n",
+          "after": "  if(id===\"ilbo\")window.HaniIlbo?.enter();\n  if(id===\"milestones\")window.HaniMilestones?.enter();\n"
+        },
+        {
+          "before": "  [\"organization\",\"회사 소개\",\"개요 조직도 구성원 HANI GROUP\"],\n  [\"home\",\"대시보드\",\"홈 오늘 요약\"],[\"investment\",\"투자\",\"주식 ETF 포트폴리오 월간 기록\"],[\"investmentCommittee\",\"HANI 투자 리포트\",\"하니 투자 리포트 종목 리포트 월간 리포트 Research\"],[\"newsroom\",\"뉴스룸\",\"주식 투자 뉴스 관심종목 3시간 흐름\"],[\"asset\",\"자산\",\"통합 자산 계좌\"],[\"ledger\",\"가계부\",\"소비 결산 리뷰\"],\r\n",
+          "after": "  [\"organization\",\"회사 소개\",\"개요 조직도 구성원 HANI GROUP\"],\n  [\"home\",\"대시보드\",\"홈 오늘 요약\"],[\"milestones\",\"마일스톤\",\"라이프 마일스톤 삶의 변화 기록 아카이브 히스토리 건강혁명\"],[\"investment\",\"투자\",\"주식 ETF 포트폴리오 월간 기록\"],[\"investmentCommittee\",\"HANI 투자 리포트\",\"하니 투자 리포트 종목 리포트 월간 리포트 Research\"],[\"newsroom\",\"뉴스룸\",\"주식 투자 뉴스 관심종목 3시간 흐름\"],[\"asset\",\"자산\",\"통합 자산 계좌\"],[\"ledger\",\"가계부\",\"소비 결산 리뷰\"],\r\n"
+        }
+      ]
+    },
+    {
+      "file": "hani-ui-v02992.js",
+      "replacements": [
+        {
+          "before": "  ilbo: entry(\"minji\", [\"이번 주 우리 이야기를 모아왔어요.\", \"작은 기록도 신문의 한 줄이 돼요.\", \"다음 주 이야기도 함께 기다려요.\"]),\r\n",
+          "after": "  ilbo: entry(\"minji\", [\"이번 주 우리 이야기를 모아왔어요.\", \"작은 기록도 신문의 한 줄이 돼요.\", \"다음 주 이야기도 함께 기다려요.\"]),\r\n  milestones: entry(\"hani\", [\"더 완벽해지기 위해서가 아니라, 더 나은 삶을 살기 위해.\", \"오래 기억하고 싶은 변화만 남겨요.\", \"숫자보다 그 변화의 의미를 함께 적어요.\", \"자주 쓰지 않아도 괜찮아요. 천천히 쌓여요.\"]),\r\n"
+        },
+        {
+          "before": "}),\r\n",
+          "after": "}),\r\n    \"milestones\":Object.freeze({\r\n      sidebarMenuKey:\"milestones\",category:\"independent\",owner:\"hani\",profile:\"hani\",speaker:\"하니\",role:\"Chief of Staff\",\r\n      eyebrow:\"MILESTONES · LIFE ARCHIVE\",title:\"삶에 남은 변화들\",description: \"더 나은 삶을 살기 위해\",\r\n      quote:\"더 완벽해지기 위해서가 아니라, 더 나은 삶을 살기 위해.\",sceneImage: \"./assets/heroes/organization-226w.webp\",\r\n      scenePosition: \"center center\",scenePositionMobile: \"83% center\",sceneFit:\"cover\",sceneFitMobile:\"cover\",sceneVariant: \"panorama\",\r\n      sceneAlt:\"로비 심벌 앞에 함께 선 HANI GROUP 동료들\",variant:\"group\",tone:\"company\"\r\n    }),\r\n"
+        }
+      ]
+    }
+  ]
+}

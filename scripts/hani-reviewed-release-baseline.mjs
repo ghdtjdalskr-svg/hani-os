@@ -25,9 +25,10 @@ export const trainBaseVersion='2.9.231';
 // Pending, approved feature connections: normalize CURRENT source only. Git
 // release bytes and the immutable release chain above remain the oracle.
 // Mascots/newsroom shipped in 231: their bytes now belong to the Git oracle.
-// Frozen exact fragments cover only the approved 2026-10-23 Daon/Yoonseul join.
-const join=JSON.parse(fs.readFileSync(new URL('./fixtures/join-daon-yoonseul.json',import.meta.url),'utf8'));
-export const pendingApprovedConnections=join.changes.map(({file,replacements})=>({
+// Frozen exact fragments cover only the approved 2026-10-23 Daon/Yoonseul join
+// and the approved 2026-10-23 Milestones v1 connection.
+const fixture=name=>JSON.parse(fs.readFileSync(new URL('./fixtures/'+name,import.meta.url),'utf8'));
+export const pendingApprovedConnections=['join-daon-yoonseul.json','milestones-v1.json'].flatMap(name=>fixture(name).changes).map(({file,replacements})=>({
  file,lines:replacements.map(change=>change.after),
  strip:source=>{
   for(const {before,after} of replacements)source=source.replace(after,before);

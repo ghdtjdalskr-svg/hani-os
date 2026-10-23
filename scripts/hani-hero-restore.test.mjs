@@ -7,6 +7,7 @@ import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {remote217Oracle} from './hani-remote-217-oracle.mjs';
 import {heroRestoreDelta,withoutHeroRestore} from './hani-hero-restore-preservation.mjs';
+import {readReviewedCurrentSource} from './hani-reviewed-release-baseline.mjs';
 const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
 const sharp=createRequire(process.env.HANI_PLAYWRIGHT||'C:/Users/홍성민/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs')('sharp');
 const ui=read('hani-ui-v02992.js'),remote=read('hani-context-remote-v1.js'),css=read('hani-design-system.css');
@@ -65,7 +66,7 @@ test('Remote matches the real 217 selection for every screen/season and RNG bran
 
 test('exact UI delta is reversible; no storage, Cloud, version or unrelated control path is hidden',()=>{
  for(const [file,hunks] of Object.entries(heroRestoreDelta.files)){
-  const source=read(file),old=withoutHeroRestore(file,source);new vm.Script(file.endsWith('.js')?source:'');
+  const source=readReviewedCurrentSource(file),old=withoutHeroRestore(file,source);new vm.Script(file.endsWith('.js')?source:'');
   const collect=(s,re)=>[...s.matchAll(re)].map(m=>m[0]);
   for(const re of [/\b(?:localStorage|sessionStorage)\s*\.\s*(?:setItem|removeItem|clear)\s*\([^\n]*/g,/\.\s*(?:insert|update|delete|upsert)\s*\([^\n]*/g,/hani_os_life_v23/g,/2\.9\.15-safe-baseline-bootstrap/g,/(?:v=|v)2\.9\.\d+/g,/data-(?:view|go|remote-action)="[^"]+"/g])assert.deepEqual(collect(source,re),collect(old,re),file+' protected path');
   for(const h of hunks){assert.doesNotMatch(h.new_str,/localStorage\.(?:setItem|clear|removeItem)|supabase/i);}
