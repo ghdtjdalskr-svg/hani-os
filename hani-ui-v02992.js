@@ -239,8 +239,8 @@ const SPORTS_LINES = Object.freeze({
 });
 
 const PAGE_CHARACTER_PROFILES=Object.freeze({
-  daon:Object.freeze({identity:"다온 · 리스크 애널리스트",rank:"사원",team:"재무자산관리실",floor:"2F",status:"planned",image:"./assets/profiles/hani-profile-daon-v2.webp"}),
-  yoonseul:Object.freeze({identity:"윤슬 · 러닝 리서처",rank:"사원",team:"라이프&엔터테인먼트",floor:"2F",status:"planned",image:"./assets/profiles/hani-profile-yoonseul-v2.webp"}),
+  daon:Object.freeze({identity:"다온 · 리스크 애널리스트",rank:"사원",team:"재무자산관리실",floor:"2F",status:"active",image:"./assets/profiles/hani-profile-daon-v2.webp"}),
+  yoonseul:Object.freeze({identity:"윤슬 · 러닝 리서처",rank:"사원",team:"라이프&엔터테인먼트",floor:"2F",status:"active",image:"./assets/profiles/hani-profile-yoonseul-v2.webp"}),
   dohyun:Object.freeze({identity:"도연 · Codex 구현/테스트",image:"./assets/profiles/hani-profile-dohyun.webp"}),
   seoyun:Object.freeze({identity:"서윤 · 배포 팀장",image:"./assets/profiles/hani-profile-seoyun.webp"}),
   serin:Object.freeze({identity:"세린 · Gemini 연구원",image:"./assets/profiles/hani-profile-serin.webp"})
