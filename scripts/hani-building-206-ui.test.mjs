@@ -4,6 +4,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import http from 'node:http';
 import {fileURLToPath,pathToFileURL} from 'node:url';
+import test from 'node:test';
+// Wildcard Node suites must not try to launch Edge or interpret another test
+// filename as Playwright. Explicit CLI arguments still run the full UI suite.
+if(!process.argv[2]||/\.test\.mjs$/.test(process.argv[2])||process.argv[2].startsWith('-')){
+ test('Edge building UI (explicit Playwright and Edge paths required)',{skip:'Browser execution delegated to Seoyun; run the documented CLI'},()=>{});
+}else{
 const {chromium}=await import(pathToFileURL(process.argv[2]).href);
 const root=path.resolve(fileURLToPath(new URL('../', import.meta.url))),evidence=path.join(root,'.ai-budget-private/building-206-ui');fs.mkdirSync(evidence,{recursive:true});
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.webp':'image/webp','.png':'image/png','.svg':'image/svg+xml'};
@@ -70,3 +76,4 @@ try{
   console.log(`PASS ${width}: 4 floors, persistent slots, no overflow, meeting bridge, hidden pause, protected data unchanged; expected missing art probes ${missingArt.length}`);await context.close();
  }
 }finally{await browser?.close();await new Promise(resolve=>server.close(resolve))}
+}

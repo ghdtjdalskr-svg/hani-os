@@ -1,3 +1,4 @@
+// Seed 233 activates two canon desks ahead of the unchanged 232 scheduler catalog.
 // node scripts/hani-office-hd-224.test.mjs [--browser [playwright/index.mjs] [browser.exe]]
 // Browser run captures real 222/current floors at native physical pixels; no mocks of layout.
 import assert from 'node:assert/strict';
@@ -73,6 +74,7 @@ test('real canonical loader prefers v3; per-atlas failure falls back once to v2 
   const nodes=[...f.ids.get('haniOfficeActors').children];
   for(const floor of ['1f','2f','3f','4f','5f']){f.click(floor);await flush()}
   for(const actor of nodes){
+   if(['daon','yoonseul'].includes(actor.dataset.person)){assert.equal(actor.hidden,true);assert.equal(actor.dataset.spriteScale,undefined);continue;}
    assert.equal(actor.dataset.spriteScale,mode==='hd'?'3':'1');
    assert.match(actor.querySelector('.hani-office-sprite').style.backgroundImage,mode==='hd'?/sprites-v3\//:/sprites-v2\//);
    assert.match(actor.style.transform,/translate\(-50%,-95\.3125%\)/,'normalized physical pivot');
