@@ -16,7 +16,7 @@ const fresh=(mode="auto")=>({...plain(api.freshState()),books:[{id:"baseline",ti
 const reset=(library=[],mode="auto")=>{api.setState(fresh(mode));context.HaniBoardLibrary={threads:library}};
 const single=action=>{const saves=inspection().queues;assert.equal(action(),true);assert.equal(inspection().queues,saves+1,"one existing save");};
 reset();const unchanged=rest(api.getState());
-assert.equal(Object.keys(h.personaMap()).length,17);
+assert.equal(Object.keys(h.personaMap()).length,19);
 for(const p of roster.people){if(p.status==='planned')assert.equal(h.personaMap()[p.id],undefined,'planned profiles are not active lounge personas');else assert.equal(h.personaMap()[p.id].source.member.id,p.id);}
 single(()=>h.refreshLiving(now));
 assert.equal(h.listPosts().length,0,"empty library has no template fallback");

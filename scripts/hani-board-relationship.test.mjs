@@ -12,6 +12,12 @@ const seed=context.HaniRelationshipSeed;
 assert.notEqual(h.personaMap(),beforeMap,"cache invalidates when seed loads");
 for(const member of roster.people.filter(p=>p.status!=="planned")){
   const p=h.personaMap()[member.id],s=seed.people.find(p=>p.id===member.id);
+  if(['daon','yoonseul'].includes(member.id)){
+    assert.equal(s,undefined,'newly joined staff use their existing profile voice');
+    assert.deepEqual(plain(p.voice),[member.line]);
+    assert.equal(p.source.member,member);assert.equal(p.source.archive.id,member.id);
+    continue;
+  }
   assert.deepEqual(plain(p.voice),[s.voice]);
   for(const field of ["quirks","hobbies","characterAxis","publicMode","privateMode","commentStyle","reactionTriggers","avoidTopics"])
     assert.deepEqual(plain(p[field]),plain(s[field]),member.id+" "+field);

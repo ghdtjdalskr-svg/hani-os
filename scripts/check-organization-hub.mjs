@@ -76,7 +76,7 @@ try{
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
  await page.locator('.ogh-mast').click();await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:path.join(out,'desktop.webp'),fullPage:true});
  await page.screenshot({path:path.join(out,'desktop-first-screen.webp')});
- results.push('Desktop 1440: five equal teams, 19 portraits including 2 planned hires, name/job plates, all filters, empty/reset, 5 team dialogs, person dialog, Escape/focus return, no errors/overflow PASS');
+ results.push('Desktop 1440: five equal teams, 19 portraits including 2 joined staff, name/job plates, all filters, empty/reset, 5 team dialogs, person dialog, Escape/focus return, no errors/overflow PASS');
  await page.setViewportSize({width:390,height:844});
  await page.locator('#ogh-teams').screenshot({path:path.join(out,'team-banner-mobile.webp')});
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);

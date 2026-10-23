@@ -1,0 +1,328 @@
+{
+  "coordinateSpace": "1672x941 floor art; figure bottom centre; independent QA oracle",
+  "placements": [
+    {
+      "id": "hani",
+      "floor": "4f",
+      "anchor": "office_hani",
+      "planned": false,
+      "foot": [
+        1287,
+        214
+      ],
+      "deskBounds": [
+        1038,
+        163,
+        1338,
+        286
+      ],
+      "source": "existing art-map homeFurniture deskBounds; added 1F/4F desk side"
+    },
+    {
+      "id": "yuna",
+      "floor": "4f",
+      "anchor": "desk_yuna",
+      "planned": false,
+      "foot": [
+        537,
+        603
+      ],
+      "deskBounds": [
+        337,
+        536,
+        567,
+        689
+      ],
+      "source": "existing art-map homeFurniture deskBounds; added 1F/4F desk side"
+    },
+    {
+      "id": "jieun",
+      "floor": "2f",
+      "anchor": "finance-a",
+      "planned": false,
+      "foot": [
+        424,
+        230
+      ],
+      "deskBounds": [
+        176,
+        178,
+        474,
+        290
+      ],
+      "source": "approved proposal placements.json"
+    },
+    {
+      "id": "haru",
+      "floor": "2f",
+      "anchor": "finance-b",
+      "planned": false,
+      "foot": [
+        396,
+        509
+      ],
+      "deskBounds": [
+        269,
+        433,
+        437,
+        583
+      ],
+      "source": "approved proposal placements.json"
+    },
+    {
+      "id": "naeun",
+      "floor": "2f",
+      "anchor": "life-a",
+      "planned": false,
+      "foot": [
+        198,
+        747
+      ],
+      "deskBounds": [
+        82,
+        672,
+        234,
+        818
+      ],
+      "source": "approved proposal placements.json"
+    },
+    {
+      "id": "hina",
+      "floor": "2f",
+      "anchor": "life-b",
+      "planned": false,
+      "foot": [
+        331,
+        747
+      ],
+      "deskBounds": [
+        214,
+        672,
+        368,
+        818
+      ],
+      "source": "approved proposal placements.json"
+    },
+    {
+      "id": "minji",
+      "floor": "2f",
+      "anchor": "life-c",
+      "planned": false,
+      "foot": [
+        467,
+        747
+      ],
+      "deskBounds": [
+        350,
+        672,
+        503,
+        818
+      ],
+      "source": "approved proposal placements.json"
+    },
+    {
+      "id": "sooyeon",
+      "floor": "2f",
+      "anchor": "life-d",
+      "planned": false,
+      "foot": [
+        605,
+        747
+      ],
+      "deskBounds": [
+        487,
+        672,
+        642,
+        818
+      ],
+      "source": "approved proposal placements.json"
+    },
+    {
+      "id": "sua",
+      "floor": "1f",
+      "anchor": "business-west",
+      "planned": false,
+      "foot": [
+        219,
+        552
+      ],
+      "deskBounds": [
+        121,
+        488,
+        240,
+        610
+      ],
+      "source": "existing art-map homeFurniture deskBounds; added 1F/4F desk side"
+    },
+    {
+      "id": "seoyun",
+      "floor": "3f",
+      "anchor": "dev-lead",
+      "planned": false,
+      "foot": [
+        286,
+        517
+      ],
+      "deskBounds": [
+        90,
+        432,
+        317,
+        583
+      ],
+      "source": "approved proposal placements.json"
+    },
+    {
+      "id": "dohyun",
+      "floor": "3f",
+      "anchor": "dev-build",
+      "planned": false,
+      "foot": [
+        505,
+        517
+      ],
+      "deskBounds": [
+        311,
+        432,
+        536,
+        583
+      ],
+      "source": "approved proposal placements.json"
+    },
+    {
+      "id": "serin",
+      "floor": "3f",
+      "anchor": "dev-research",
+      "planned": false,
+      "foot": [
+        724,
+        517
+      ],
+      "deskBounds": [
+        528,
+        432,
+        756,
+        583
+      ],
+      "source": "approved proposal placements.json"
+    },
+    {
+      "id": "yuri",
+      "floor": "3f",
+      "anchor": "dev-qa",
+      "planned": false,
+      "foot": [
+        267,
+        731
+      ],
+      "deskBounds": [
+        66,
+        648,
+        300,
+        794
+      ],
+      "source": "approved proposal placements.json"
+    },
+    {
+      "id": "arin",
+      "floor": "3f",
+      "anchor": "dev-design",
+      "planned": false,
+      "foot": [
+        489,
+        731
+      ],
+      "deskBounds": [
+        283,
+        648,
+        523,
+        794
+      ],
+      "source": "approved proposal placements.json"
+    },
+    {
+      "id": "gaeun",
+      "floor": "4f",
+      "anchor": "secretary_desk",
+      "planned": false,
+      "foot": [
+        287,
+        603
+      ],
+      "deskBounds": [
+        90,
+        536,
+        317,
+        689
+      ],
+      "source": "existing art-map homeFurniture deskBounds; added 1F/4F desk side"
+    },
+    {
+      "id": "taeo",
+      "floor": "1f",
+      "anchor": "business-east",
+      "planned": false,
+      "foot": [
+        335,
+        552
+      ],
+      "deskBounds": [
+        242,
+        488,
+        355,
+        610
+      ],
+      "source": "existing art-map homeFurniture deskBounds; added 1F/4F desk side"
+    },
+    {
+      "id": "daon",
+      "floor": "2f",
+      "anchor": "desk_daon",
+      "planned": true,
+      "foot": [
+        559,
+        509
+      ],
+      "deskBounds": [
+        433,
+        433,
+        600,
+        583
+      ],
+      "source": "approved proposal placements.json"
+    },
+    {
+      "id": "yoonseul",
+      "floor": "2f",
+      "anchor": "desk_yoonseul",
+      "planned": true,
+      "foot": [
+        742,
+        747
+      ],
+      "deskBounds": [
+        633,
+        672,
+        775,
+        818
+      ],
+      "source": "approved proposal placements.json"
+    },
+    {
+      "id": "mir",
+      "floor": "4f",
+      "anchor": "mir_station",
+      "planned": false,
+      "foot": [
+        1591,
+        366
+      ],
+      "deskBounds": [
+        1520,
+        332,
+        1612,
+        436
+      ],
+      "source": "existing art-map homeFurniture deskBounds; added 1F/4F desk side"
+    }
+  ]
+}

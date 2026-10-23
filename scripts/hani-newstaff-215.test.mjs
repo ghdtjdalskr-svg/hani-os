@@ -19,11 +19,11 @@ assert.equal(roster.people.length,19);assert.equal(data.characters.length,12);
 assert.equal(data.characters.filter(c=>c.type==='m9_member').length,9);
 for(let i=0;i<ids.length;i++){
  const id=ids[i],p=roster.people.find(p=>p.id===id),c=data.characters.find(c=>c.id===id);
- assert.equal(p.status,'planned');assert.equal(p.registration,'planned');assert.equal(p.rank,'사원');assert.equal(p.team,teams[i]);assert.equal(p.floor,'2F');
- assert.ok(Object.isFrozen(c.sections));assert.equal(c.registration,'planned');assert.equal(c.status,'입사 예정');assert.equal(c.rank,'사원');
+ assert.equal(p.status,'active');assert.equal(p.registration,'registered');assert.equal(p.rank,'사원');assert.equal(p.team,teams[i]);assert.equal(p.floor,'2F');
+ assert.ok(Object.isFrozen(c.sections));assert.equal(c.registration,'registered');assert.equal(c.status,'AI STAFF');assert.equal(c.rank,'사원');
  assert.match(c.tagline,/회장님/);assert.doesNotMatch(c.canon,/오빠|대표님|HANI\s*O\s+S/);
  for(const label of ['PERSONALITY','CORE AREA','SEONGMIN','VISUAL','BOUNDARY'])assert.ok(c.sections.find(s=>s.label===label)?.text);
- for(const html of [album.page(),album.detail(c)]){assert.ok(html.includes(names[i]));assert.match(html,/입사 예정/);assert.doesNotMatch(html,/undefined/)}
+ for(const html of [album.page(),album.detail(c)]){assert.ok(html.includes(names[i]));assert.doesNotMatch(html,/입사 예정|입사 준비 중|예정 좌석/);assert.doesNotMatch(html,/undefined/)}
  for(const n of [720,256,128]){
   const file=`assets/profiles/${n===720?'':'thumb/'}hani-profile-${id}-v2${n===720?'':'-'+n}.webp`,b=fs.readFileSync(path.join(root,file));
   assert.equal(b.toString('ascii',0,4),'RIFF');assert.equal(b.toString('ascii',8,12),'WEBP');
@@ -34,15 +34,15 @@ for(let i=0;i<ids.length;i++){
   let dims;for(let o=12;o+8<b.length;){const type=b.toString('ascii',o,o+4),s=o+8,l=b.readUInt32LE(o+4);if(type==='VP8 '){dims=[b.readUInt16LE(s+6)&16383,b.readUInt16LE(s+8)&16383];break}if(type==='VP8X'){dims=[b.readUIntLE(s+4,3)+1,b.readUIntLE(s+7,3)+1];break}o=s+l+l%2}assert.deepEqual(dims,[n,n]);
  }
 }
-report.unit.push('19 roster / 12 album; unchanged 9 M9; planned rank/team/floor/personality/chairman canon; six WebP dimensions and existing byte ranges');
-// Execute the existing author selection projection: public directory membership cannot activate hires.
+report.unit.push('19 roster / 12 album; unchanged 9 M9; joined rank/team/floor/personality/chairman canon; six WebP dimensions and existing byte ranges');
+// Execute the existing author selection projection for both officially joined staff.
 const board=read('hani-board.js'),start=board.indexOf('  function recentAuthors('),end=board.indexOf('  function themeFor(',start);
 const authors=vm.runInNewContext(board.slice(start,end)+';selectAuthors(99,[],[],Date.now(),"test")',{roster:()=>roster,posts:()=>[],comments:()=>[],person:id=>roster.people.find(p=>p.id===id),hash:()=>0});
-assert.equal(authors.length,17);assert.ok(authors.every(p=>!ids.includes(p.id)));report.unit.push('existing board author selection excludes both planned hires');
+assert.equal(authors.length,19);assert.ok(ids.every(id=>authors.some(p=>p.id===id)));report.unit.push('existing board author selection includes both joined staff');
 const main=read('hani-main.js'),images=main.slice(main.indexOf('const canonicalProfileImages='),main.indexOf('const pageAgentImage='));
 const cards=main.slice(main.indexOf('// Identity and navigation stay local;'),main.indexOf('// ===== v2.9.0 Campus MVP'));
-const context=vm.createContext({team:[],document:{querySelectorAll:()=>[]},$:()=>null,esc:String,AbortController,setTimeout,clearTimeout});vm.runInContext(images+cards,context);
-for(const id of ids){assert.match(vm.runInContext(`teamCard({key:'${id}',name:'test',role:'role',status:'planned'})`,context),/입사 예정/);assert.match(vm.runInContext(`JSON.stringify(teamMeta('${id}'))`,context),/회장님/)}
+const context=vm.createContext({team:[],document:{querySelectorAll:()=>[]},$:()=>null,esc:String,AbortController,setTimeout,clearTimeout});vm.runInContext(images+main.slice(main.indexOf('const team=['),main.indexOf('// Identity and navigation stay local;'))+cards,context);
+for(const id of ids){assert.doesNotMatch(vm.runInContext(`teamCard(team.find(p=>p.key==='${id}'))`,context),/입사 예정/);assert.match(vm.runInContext(`JSON.stringify(teamMeta('${id}'))`,context),/회장님/)}
 report.unit.push('existing main card renderer and full metadata render both hires');
 if(process.argv.includes('--unit')){console.log('PASS newstaff-215 unit: '+report.unit.length+' groups');process.exit(0)}
 const args=process.argv.slice(2),pw=args[0]||path.join(os.homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'),exe=args[1]||'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
@@ -66,11 +66,11 @@ try{
   const shotStyle='#haniContextRemote,.hani-remote-mobile-trigger{visibility:hidden}';
   for(let i=0;i<ids.length;i++){
    const id=ids[i],card=page.locator(`[data-card-person="${id}"]`);await card.scrollIntoViewIfNeeded();
-   assert.match(await card.innerText(),/입사 예정/);assert.match(await card.innerText(),/사원/);
+   assert.doesNotMatch(await card.innerText(),/입사 예정/);assert.match(await card.innerText(),/사원/);
    await page.waitForFunction(({id,failed})=>{const img=document.querySelector(`[data-card-person="${id}"] img`);return img.complete&&(failed?img.hidden&&!!img.nextElementSibling:img.naturalWidth===720)},{id,failed});
    if(!failed)await card.screenshot({path:path.join(out,`${width}-${id}-card.png`)});
    await card.click();const dialog=page.locator('#haniOrganizationHub dialog');await dialog.waitFor({state:'visible'});
-   assert.match(await dialog.innerText(),/입사 예정/);assert.match(await dialog.innerText(),/2F/);assert.match(await dialog.innerText(),/회장님/);
+   assert.doesNotMatch(await dialog.innerText(),/입사 예정|예정 좌석/);assert.match(await dialog.innerText(),/2F/);assert.match(await dialog.innerText(),/회장님/);
    if(!failed)await dialog.locator('.ogh-portrait').scrollIntoViewIfNeeded();
    await page.waitForFunction(failed=>{const img=document.querySelector('#haniOrganizationHub dialog img');return img?.complete&&(failed?img.hidden:img.naturalWidth===720)},failed);
    await dialog.screenshot({path:path.join(out,`${width}-${id}-${failed?'fallback':'profile'}.png`)});await page.locator('.ogh-close').click();
@@ -78,10 +78,10 @@ try{
   await page.evaluate(()=>showView('characterArchive'));assert.equal(await page.locator('#albumMembers [data-character-card]').count(),12);
   for(let i=0;i<ids.length;i++){
    const id=ids[i],card=page.locator(`[data-character-card="${id}"]`);await card.scrollIntoViewIfNeeded();
-   assert.match(await card.innerText(),/입사 예정/);await page.waitForFunction(({id,failed})=>{const img=document.querySelector(`[data-character-card="${id}"] img`);return img.complete&&(failed?img.hidden:img.naturalWidth===720)},{id,failed});
+   assert.doesNotMatch(await card.innerText(),/입사 예정/);await page.waitForFunction(({id,failed})=>{const img=document.querySelector(`[data-character-card="${id}"] img`);return img.complete&&(failed?img.hidden:img.naturalWidth===720)},{id,failed});
    if(!failed)await card.screenshot({path:path.join(out,`${width}-${id}-album-card.png`)});
    await card.locator('button').click();await page.waitForFunction(id=>document.querySelector('#caDetailTitle').textContent.includes(id),names[i]);
-   assert.match(await page.locator('#caDetail').innerText(),/입사 예정/);assert.match(await page.locator('#caDetail').innerText(),/2F/);
+   assert.doesNotMatch(await page.locator('#caDetail').innerText(),/입사 예정|입사 준비 중|예정 좌석/);assert.match(await page.locator('#caDetail').innerText(),/2F/);
    await page.waitForFunction(failed=>{const img=document.querySelector('#caDetail .album-photo img');return img.complete&&(failed?img.hidden:img.naturalWidth===720)},failed);
    await page.locator('#caDetail .album-spread').screenshot({path:path.join(out,`${width}-${id}-album-${failed?'fallback':'profile'}.png`),style:shotStyle});
   }

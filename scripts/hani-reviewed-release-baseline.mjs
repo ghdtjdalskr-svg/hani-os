@@ -4,34 +4,36 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
-import {withoutDeskMascots} from './hani-desk-mascots-preservation.mjs';
-import {withoutNewsroom4cut,newsroomBlock,newsroomScript,newsroomEntry,newsroomCss} from './hani-newsroom-4cut-preservation.mjs';
 const root=path.resolve(import.meta.dirname,'..');
 export const guardedRelease='776752c971f2ce48edf376a707eb345ae57da98c';
+// These two unreferenced seed files did not exist at release225. Pin their
+// reviewed introduction rather than inferring an origin from the current tree.
+const approvedSourceOrigins={
+ 'assets/data/desk-mascots-v1.json':'2784e4e9855211021766f9eb65d764b2aafac468',
+ 'hani-desk-mascots.js':'2784e4e9855211021766f9eb65d764b2aafac468'
+};
 export const approvedReleases=[
  {sha:'94ead73706157bda23b94c6f5673b65377106c6a',reason:'226 asset input / train tags',files:['hani-asset-update-v1.js','hani-main.js','hani-style-07.css','index.html']},
  {sha:'a306df16fd0685868f7e4ecdfd9d9b09a9c97d36',reason:'227 Street Journal third tab / office activity / train tags',files:['hani-investment-committee.js','hani-main.js','hani-office-live.js','index.html']},
  {sha:'902b5ab7235c10d08069d88b52c0e2d4ea51c18e',reason:'228 reviewed hero/remote restoration / train tags',files:['hani-context-remote-v1.js','hani-design-system.css','hani-main.js','hani-ui-v02992.js','index.html']},
  {sha:'83391f0258629924bbbad7f1d793c56ab8284604',reason:'229 office activity / train tags',files:['hani-main.js','hani-office-live.js','index.html']},
- {sha:'04fb2b377f28958aec1480ca09244f4567c3a339',reason:'230 office round 3 / train tags',files:['hani-main.js','hani-office-live.js','index.html']}
+ {sha:'04fb2b377f28958aec1480ca09244f4567c3a339',reason:'230 office round 3 / train tags',files:['hani-main.js','hani-office-live.js','index.html']},
+ {sha:'13dedc67be96310d472537c72b088050e847d49e',reason:'231 desk mascots / newsroom 4cut / reports / train tags',files:['assets/data/desk-mascots-v1.json','hani-design-system.css','hani-desk-mascots.js','hani-main.js','index.html']}
 ];
 // Display version of the last approved release above; advance together with the list.
-export const trainBaseVersion='2.9.230';
+export const trainBaseVersion='2.9.231';
 // Pending, approved feature connections: normalize CURRENT source only. Git
 // release bytes and the immutable release chain above remain the oracle.
-export const pendingApprovedConnections=[{
- file:'index.html',
- lines:[
-  '<link rel="stylesheet" href="./hani-desk-mascots.css">',
-  '<script src="./hani-desk-mascots.js" defer></script>'
- ],
- strip:withoutDeskMascots
-},...[
- {file:'index.html',lines:[newsroomBlock,newsroomScript]},
- {file:'hani-main.js',lines:[newsroomEntry]},
- {file:'hani-design-system.css',lines:[newsroomCss]}
-].map(connection=>({...connection,strip:source=>withoutNewsroom4cut(connection.file,source,
- connection.file==='hani-main.js'?readReleaseSource('04fb2b377f28958aec1480ca09244f4567c3a339','hani-main.js'):undefined)}))];
+// Mascots/newsroom shipped in 231: their bytes now belong to the Git oracle.
+// Frozen exact fragments cover only the approved 2026-10-23 Daon/Yoonseul join.
+const join=JSON.parse(fs.readFileSync(new URL('./fixtures/join-daon-yoonseul.json',import.meta.url),'utf8'));
+export const pendingApprovedConnections=join.changes.map(({file,replacements})=>({
+ file,lines:replacements.map(change=>change.after),
+ strip:source=>{
+  for(const {before,after} of replacements)source=source.replace(after,before);
+  return source;
+ }
+}));
 export function normalizeReviewedCurrentSource(file,source){
  for(const connection of pendingApprovedConnections)if(connection.file===file){
   for(const line of connection.lines)assert.equal(source.split(line).length-1,1,'one pending approved connection: '+line);
@@ -63,7 +65,7 @@ export function projectTrainVersion(source,version){
   .replaceAll('HANI OS · v'+base,'HANI OS · v'+version);
 }
 export function readReviewedReleaseBaseline(file){
- let expected=readReleaseSource(guardedRelease,file);
+ let expected=readReleaseSource(approvedSourceOrigins[file]||guardedRelease,file);
  for(const release of approvedReleases)if(release.files.includes(file)){
   assert.equal(expected,readReleaseSource(release.sha+'^',file),file+' unlisted change before '+release.sha);
   expected=readReleaseSource(release.sha,file);
