@@ -210,7 +210,7 @@
       <div class="sidebar-corporate-lockup"><span class="hani-brand-logo-frame" data-hani-brand-logo><img src="./assets/brand/hani-group-ci-official.webp" alt="HANI GROUP 공식 로고" width="1774" height="887"></span><span class="sidebar-corporate-copy"><b>AI TEAM</b><small>PERSONAL AI COMPANY · 9 AGENTS</small></span></div>
       <div class="sidebar-team-faces" id="sidebarTeamFaces" aria-label="HANI AI Team"></div>
     </div>
-    <nav class="nav-home"><button class="nav-btn active dashboard-nav" data-view="home"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h13v-9.5"/><path d="M9.5 20v-6h5v6"/></svg></span><span class="dashboard-nav-copy"><span class="txt">대시보드</span><small>오늘 기록과 핵심 현황</small></span><span class="dashboard-arrow">›</span></button></nav>
+    <nav class="nav-home"><button class="nav-btn active dashboard-nav" data-view="home"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h13v-9.5"/><path d="M9.5 20v-6h5v6"/></svg></span><span class="dashboard-nav-copy"><span class="txt">대시보드</span><small>오늘 기록과 핵심 현황</small></span><span class="dashboard-arrow">›</span></button><button class="nav-btn dashboard-nav milestones-nav" data-view="milestones" type="button"><span class="ico"><svg viewBox="0 0 24 24"><path d="M6 21V4"/><path d="M6 4h11l-2.5 4L17 12H6"/></svg></span><span class="dashboard-nav-copy"><span class="txt">마일스톤</span><small>삶의 중요한 변화 기록</small></span><span class="dashboard-arrow">›</span></button></nav>
     <div class="group office-group is-open" data-color="office">
       <button class="group-head office-main-nav"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 21V8l8-5 8 5v13"/><path d="M8 21v-5h8v5M8 10h2M14 10h2M8 13h2M14 13h2"/></svg></span><span class="dashboard-nav-copy"><span class="name txt">성민 오피스</span><small>접수 · 회의 · 회사 소개 · 게시판</small></span><span class="dashboard-arrow arrow">▾</span></button>
       <div class="group-body">
@@ -313,6 +313,7 @@
     <section id="home" class="view active ui26-home">
       <h2 class="home-today-title phone-only">오늘 볼 것</h2>
       <aside class="ilbo-home-card" data-ilbo-home hidden aria-label="새 HANI 일보"></aside>
+      <aside class="ms-home-card" data-milestone-home hidden aria-label="라이프 마일스톤"></aside>
       <div class="life-ticker" id="lifeTicker" role="region" aria-label="라이프 마켓 시세판">
 
         <button class="life-ticker-pause" id="lifeTickerPause" type="button" aria-label="시세판 일시정지" title="시세판 일시정지">Ⅱ</button>
@@ -1035,6 +1036,22 @@
       <div class="ilbo-toolbar"><button class="btn" type="button" data-ilbo-print>인쇄 / PDF</button></div>
       <div data-ilbo-content aria-live="polite"><p>신문을 준비하고 있어요.</p></div>
       <nav class="ilbo-archive" data-ilbo-archive aria-label="지난 호 보관함"></nav>
+    </section>
+    <section id="milestones" class="view" aria-label="마일스톤">
+      <div class="ms-shell">
+        <div class="ms-archive" data-ms-archive>
+          <p class="ms-motto">더 완벽해지기 위해서가 아니라,<br>더 나은 삶을 살기 위해.</p>
+          <div class="ms-toolbar">
+            <div class="ms-filters" role="group" aria-label="분야로 보기" data-ms-filters></div>
+            <label class="ms-sort">정렬<select data-ms-sort aria-label="마일스톤 정렬"></select></label>
+            <button type="button" class="btn" data-ms-new>+ 새 마일스톤</button>
+          </div>
+          <p class="ms-session" data-ms-session role="status" hidden></p>
+          <ol class="ms-timeline" data-ms-list aria-label="마일스톤 타임라인"></ol>
+        </div>
+        <article class="ms-detail" data-ms-detail aria-label="마일스톤 상세" hidden></article>
+        <form class="ms-form" data-ms-form aria-label="새 마일스톤 작성" novalidate hidden></form>
+      </div>
     </section>
 
     <section id="board" class="view" aria-label="HANI 라운지"><div class="grid">
@@ -1809,6 +1826,7 @@
 <script src="./hani-board-library.js?v=2.9.232"></script>
 <script src="./hani-board.js?v=2.9.232"></script>
 <script src="./hani-ilbo.js?v=2.9.232"></script>
+<script src="./hani-milestones.js?v=2.9.232"></script>
 <script src="./hani-ai-budget-core.js?v=2.9.232"></script>
 <script src="./hani-ai-budget.js?v=2.9.232"></script>
 <dialog id="recordDeleteDialog" class="record-delete-dialog" aria-labelledby="recordDeleteTitle" aria-describedby="recordDeleteNotice recordDeleteValues">

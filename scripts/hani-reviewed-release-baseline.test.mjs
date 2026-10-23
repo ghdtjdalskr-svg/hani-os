@@ -89,8 +89,8 @@ test('approved additions cannot move to another script, event or cascade positio
  }
 });
 
-test('pending office stays scoped to three runtime owners; released staff and moved fragments stay strict',()=>{
- assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),['assets/data/office-actions-216.json','assets/data/office-actions-221.json','hani-office-live.js']);
+test('pending 233 train stays scoped to office and milestones owners; released staff and moved fragments stay strict',()=>{
+ assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),['assets/data/office-actions-216.json','assets/data/office-actions-221.json','hani-design-system.css','hani-main.js','hani-office-live.js','hani-ui-v02992.js','index.html']);
  for(const {file,lines} of pendingApprovedConnections){
   const current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
   assertReviewedReleaseSource(file,current);

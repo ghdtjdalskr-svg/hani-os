@@ -1206,7 +1206,7 @@ function validateStoredRecords(raw){
   if(!raw||typeof raw!=="object"||Array.isArray(raw))throw new Error("Invalid saved state root");
   const lists=["accounts","instruments","transactions","snapshots","investmentMonthlySnapshots","investmentBrokerSnapshots","investmentCashFlows","investmentJournal","investmentWatchlist","ledgerMonths","spendReviews","body","exercise","cardio","strength","books","movies","diaries","tasks","campusSemesters","travelTrips","travelPlaces","travelWishlist","certificates","wishlistItems","learningProjects","learningQuizzes","learningWrongAnswers","monthlyReports","goalRegistry"];
   lists.push("investmentResearchCards","investmentResearchHistory","investmentCommitteeSnapshots");
-  lists.push("boardPosts","boardComments");
+  lists.push("boardPosts","boardComments","milestones");
   for(const key of lists){
     if(raw[key]===undefined)continue;
     if(!Array.isArray(raw[key])||raw[key].some(row=>!row||typeof row!=="object"||Array.isArray(row)))throw new Error("Invalid saved record list");
@@ -1515,6 +1515,7 @@ function closeModal(id){$(id).classList.remove("open")}
 const pageMeta={
  ilbo:["HANI 일보","민지 대리가 전하는 한 주의 우리 이야기","team"],
  home:["대시보드","오늘의 기록과 흐름을 한눈에 확인합니다.","home"],
+ milestones:["마일스톤","삶에 남은 의미 있는 변화를 오래 기억할 수 있게 기록합니다.","milestones"],
  investment:["투자","월간 스냅샷으로 계좌별 자산과 자금 흐름을 기록합니다.","finance"],
  investmentCommittee:["HANI 투자 리포트","종목 리포트와 월간 리포트에서 투자 판단의 근거를 살펴봅니다.","finance"],
  investmentIntake:["자산 업데이트","가계부 확정본과 투자 계좌 자료를 안전하게 업데이트합니다.","finance"],
@@ -1895,6 +1896,7 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
   if(committee)window.HaniInvestmentCommittee?.select(committeeRoute[1]==="monthly"?"monthly":"research");
   if(id==="board")window.HaniBoard?.render();
   if(id==="ilbo")window.HaniIlbo?.enter();
+  if(id==="milestones")window.HaniMilestones?.enter();
   if(id==="newsroom")window.HaniNewsroom4cut?.enter();
   if(id==="geminiReports")window.HaniGeminiReports?.render();
   if(id==="drive"&&typeof googleDriveEnter==="function")googleDriveEnter();
@@ -1915,7 +1917,7 @@ const QUICK_JUMP_ITEMS=[
   ["aiBudget","AI 주간 예산","Codex Claude Gemini 토큰 사용량 주간 세션 한도 회복 재충전"],
   ["aura","테마 스튜디오","화면 꾸미기 색상 계절 테마 appearance finish season"],
   ["organization","회사 소개","개요 조직도 구성원 HANI GROUP"],
-  ["home","대시보드","홈 오늘 요약"],["investment","투자","주식 ETF 포트폴리오 월간 기록"],["investmentCommittee","HANI 투자 리포트","하니 투자 리포트 종목 리포트 월간 리포트 Research"],["newsroom","뉴스룸","주식 투자 뉴스 관심종목 3시간 흐름"],["asset","자산","통합 자산 계좌"],["ledger","가계부","소비 결산 리뷰"],
+  ["home","대시보드","홈 오늘 요약"],["milestones","마일스톤","라이프 마일스톤 삶의 변화 기록 아카이브 히스토리 건강혁명"],["investment","투자","주식 ETF 포트폴리오 월간 기록"],["investmentCommittee","HANI 투자 리포트","하니 투자 리포트 종목 리포트 월간 리포트 Research"],["newsroom","뉴스룸","주식 투자 뉴스 관심종목 3시간 흐름"],["asset","자산","통합 자산 계좌"],["ledger","가계부","소비 결산 리뷰"],
   ["diet","계체량 측정","다이어트 체중 건강"],["exercise","헬스클럽","운동 걸음 근력"],["reading","성민의 서재","독서 서재 책 완독"],["study","공부","일본어 AI 학습"],
   ["university","낭만 캠퍼스 라이프","대학교 대학 캠퍼스 과목 학사일정"],["certificate","자격증","시험 일정"],["wishlist","Wish-list","위시 희망 구매 경험"],["travel","여행","여행 기록 장소 숙소"],["movie","시청 아카이브","관람 감상 아카이브"],
   ["diary","일기","오늘 기록"],["game","스포츠","MLB KBO 해외축구 LCK 양키스 KIA 레알 마드리드 Dplus"],["tasks","할 일","태스크 월간"],["calendar","캘린더","일정"],
@@ -2044,7 +2046,7 @@ function navMenuIsNew(viewId,now=Date.now()){
 }
 let navNewBadgeTimer;
 function renderNavNewBadges(now=Date.now()){
-  window.HaniIlbo?.homeCard(now);
+  window.HaniIlbo?.homeCard(now);window.HaniMilestones?.refresh();
   window.HANI_CONTEXT_REMOTE_V1?.update();
   const badge=(label,active)=>{
     if(!label)return;
@@ -8150,10 +8152,10 @@ function validateBackup(raw){
   const hasAccounts=Array.isArray(data.accounts),isCurrent=hasAccounts&&["instruments","transactions","books","movies","body","exercise"].some(k=>Array.isArray(data[k])),isV22=hasAccounts&&(Array.isArray(data.assets)||Array.isArray(data.trades)||Array.isArray(data.cash));
   if(!isCurrent&&!isV22)throw new Error("HANI OS 데이터 구조를 확인할 수 없습니다.");
   if(data.accounts.some(a=>!a||typeof a!=="object"))throw new Error("계좌 데이터가 손상되었습니다.");
-  validateStoredRecords({boardPosts:data.boardPosts,boardComments:data.boardComments});
+  validateStoredRecords({boardPosts:data.boardPosts,boardComments:data.boardComments,milestones:data.milestones});
   return {data,kind:isCurrent?"current":"v22"};
 }
-function backupSummary(d){return `계좌 ${d.accounts?.length||0}개 · 종목 ${(d.instruments||d.assets||[]).length}개 · 거래 ${(d.transactions||d.trades||[]).length}건 · 월간 스냅샷 ${(d.investmentMonthlySnapshots||[]).length+(d.investmentBrokerSnapshots||[]).length}건 · 보조 입출금 ${(d.investmentCashFlows||[]).length}건 · 투자일기 ${(d.investmentJournal||[]).length}건 · 관심종목 ${(d.investmentWatchlist||[]).length}개 · 소비결산 ${(d.ledgerMonths||[]).length}개월 · 소비리뷰 ${(d.spendReviews||[]).length}건 · 책 ${(d.books||[]).length}권 · 시청 ${(d.movies||[]).length}편 · 일기 ${(d.diaries||[]).length}개 · 학기 ${(d.campusSemesters||[]).length}개 · 여행 ${(d.travelTrips||[]).length}회 · 장소 ${(d.travelPlaces||[]).length}곳 · 여행 Wish ${(d.travelWishlist||[]).length}곳 · 자격증 ${(d.certificates||[]).length}개 · Wish ${(d.wishlistItems||[]).length}개 · 게시글 ${(d.boardPosts||[]).length}개 · 댓글 ${(d.boardComments||[]).length}개`}
+function backupSummary(d){return `계좌 ${d.accounts?.length||0}개 · 종목 ${(d.instruments||d.assets||[]).length}개 · 거래 ${(d.transactions||d.trades||[]).length}건 · 월간 스냅샷 ${(d.investmentMonthlySnapshots||[]).length+(d.investmentBrokerSnapshots||[]).length}건 · 보조 입출금 ${(d.investmentCashFlows||[]).length}건 · 투자일기 ${(d.investmentJournal||[]).length}건 · 관심종목 ${(d.investmentWatchlist||[]).length}개 · 소비결산 ${(d.ledgerMonths||[]).length}개월 · 소비리뷰 ${(d.spendReviews||[]).length}건 · 책 ${(d.books||[]).length}권 · 시청 ${(d.movies||[]).length}편 · 일기 ${(d.diaries||[]).length}개 · 학기 ${(d.campusSemesters||[]).length}개 · 여행 ${(d.travelTrips||[]).length}회 · 장소 ${(d.travelPlaces||[]).length}곳 · 여행 Wish ${(d.travelWishlist||[]).length}곳 · 자격증 ${(d.certificates||[]).length}개 · Wish ${(d.wishlistItems||[]).length}개 · 게시글 ${(d.boardPosts||[]).length}개 · 댓글 ${(d.boardComments||[]).length}개 · 마일스톤 ${(d.milestones||[]).length}개`}
 if($("loadRecoveryExport"))$("loadRecoveryExport").onclick=downloadRecoveryOriginal;
 if($("loadRecoveryImport"))$("loadRecoveryImport").onclick=()=>$("importFile").click();
 if($("safetyArchivePanel"))$("safetyArchivePanel").ontoggle=()=>{if($("safetyArchivePanel").open)void renderSafetyArchive()};

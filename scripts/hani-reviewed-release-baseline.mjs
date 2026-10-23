@@ -26,9 +26,10 @@ export const trainBaseVersion='2.9.232';
 // Pending, approved feature connections: normalize CURRENT source only. Git
 // release bytes and the immutable release chain above remain the oracle.
 // Join shipped in 232: its bytes now belong to the Git oracle.
-// Frozen exact fragments cover only the explicitly scoped 233 office runtime delta.
-const office=JSON.parse(fs.readFileSync(new URL('./fixtures/office-redesign-233.json',import.meta.url),'utf8'));
-export const pendingApprovedConnections=office.changes.map(({file,replacements})=>({
+// Frozen exact fragments cover only the 2.9.233 train: the scoped office runtime delta
+// and the approved 2026-10-23 Milestones v1 connection.
+const fixture=name=>JSON.parse(fs.readFileSync(new URL('./fixtures/'+name,import.meta.url),'utf8'));
+export const pendingApprovedConnections=['office-redesign-233.json','milestones-v1.json'].flatMap(name=>fixture(name).changes).map(({file,replacements})=>({
  file,lines:replacements.map(change=>change.after),
  strip:source=>{
   for(const {before,after} of replacements)source=source.replace(after,before);
