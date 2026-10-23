@@ -7,7 +7,8 @@
 - 담당 도구 / 검토 담당: Claude Code(서윤) / 배포 열차 담당
 - 상태: 탑승 대기 (배포 열차)
 - 저장소 / branch / worktree: hani-os / `hani/hero-crop-fix` / `.worktrees/hero-crop-fix`
-- base SHA / candidate SHA: `d19aa0b` (origin/main, 표시 v2.9.232) / `ba6f2c4` (CSS 수정 commit)
+- base SHA / candidate SHA: `d19aa0b` (origin/main, 표시 v2.9.232) / `ba6f2c4` (CSS 수정) + `43f6f2e` (ba6f2c4가 CSS 전체 줄바꿈을 바꿔 원래 혼합 EOL로 복구. 순 변경은 main 대비 5줄 추가·3줄 삭제)
+- 열차 합류 확인(2026-10-24): `origin/hani/release-train-20261023`(1147062, 마일스톤 포함)에 이 branch를 시험 병합 시 `hani-design-system.css`는 충돌 없이 자동 병합(8줄). 같은 시험에서 난 office 테스트·`office-places.json` 충돌은 열차에 main #339(seed 233)가 아직 안 들어가서 생긴 것으로 이 작업과 무관.
 - 목표 / 완료 조건: PC에서 인포데스크·HANI 본사·라이프 리포트 등 메뉴 배너 그림이 위아래 잘리지 않고 전체 장면이 보임. 모바일 배너 동작은 그대로.
 - 수정할 파일·범위 / 다른 담당과 겹치는 범위: `hani-design-system.css`의 Main Character Banner shell 3곳(336·340·343행 부근). 다른 열린 작업과 겹치는지 열차 출발 시 확인 필요.
 - 사용자 승인 근거 / 승인되지 않은 경계: 성민 대표님 2026-10-24 "push하고 배포 열차 탑승 대기로 올려줘". main merge·배포 승인은 아님.
