@@ -1,4 +1,4 @@
-/* Life Milestone Archive v1: seed records and in-memory session drafts only. No storage writes. */
+/* Life Milestone Archive v1: code seeds plus state.milestones, written only through the existing save() owner. */
 (() => {
   'use strict';
   const VIEW = 'milestones';
@@ -176,7 +176,6 @@
       (metrics.length ? '<ul class="ms-metric-list">' + metrics.map(x => '<li><span>' + esc(x.label) + '</span><b>' + esc(metricLine(x)) + '</b>' + (x.change ? '<small>' + esc(x.change) + '</small>' : '') + '</li>').join('') + '</ul>' : '') +
       '<blockquote class="ms-quote">“' + esc(m.summary) + '”</blockquote>' +
       '<footer>' + agentLine(m) + '<button type="button" class="btn" data-ms-open="' + esc(m.id) + '">상세 기록 보기</button></footer>' +
-      (m.source === 'manual' ? '<p class="ms-draft-note">미리보기 기록 · 아직 영구 저장되지 않았어요</p>' : '') +
       '</article></li>';
   }
   function list(items, {category = 'ALL', sort = 'newest'} = {}) {
@@ -200,9 +199,12 @@
       '<span class="ms-compare-cell ms-after"><small>AFTER</small><b>' + esc(x.after) + '</b>' + (x.change ? '<em>' + esc(x.change) + '</em>' : '') + '</span>' +
       '<span class="ms-sr">' + esc(x.label + ' ' + (x.before ? '이전 ' + x.before + ', ' : '') + '이후 ' + x.after + (x.change ? ', 변화 ' + x.change : '')) + '</span></div>').join('') + '</div>';
   }
-  function detail(m) {
+  // Seed records can be annotated (saved as an override) but never deleted.
+  function detail(m, {deletable = false} = {}) {
     const grade = find(GRADES, m.grade), importance = find(IMPORTANCE, m.importance);
-    return '<button type="button" class="btn ms-back" data-ms-back>← 마일스톤 목록</button>' +
+    const actions = '<div class="ms-detail-actions"><button type="button" class="btn" data-ms-edit="' + esc(m.id) + '">수정 · 코멘트 남기기</button>' +
+      (deletable ? '<button type="button" class="btn" data-ms-delete="' + esc(m.id) + '">삭제</button>' : '') + '</div>';
+    return '<div class="ms-detail-top"><button type="button" class="btn ms-back" data-ms-back>← 마일스톤 목록</button>' + actions + '</div>' +
       '<header class="ms-detail-head" data-importance="' + esc(m.importance) + '"><time datetime="' + esc(m.date) + '">' + esc(dateLabel(m.date)) + '</time>' + kicker(m) +
       '<h3 data-ms-detail-title tabindex="-1">' + esc(m.title) + '</h3><blockquote class="ms-quote ms-quote-lead">“' + esc(m.summary) + '”</blockquote>' +
       '<p class="ms-quiet">중요도 · ' + esc(importance.ko) + (grade ? ' / 난이도 등급 · ' + esc(grade.label + ' (' + grade.ko + ') — ' + grade.note) : '') + '</p></header>' +
@@ -217,7 +219,6 @@
       block('Agent Comment', m.agentComments.length ? m.agentComments.map(x => '<figure class="ms-comment">' + avatar(x.agent) + '<div><figcaption>' + esc(agentName(x.agent)) + (person(x.agent)?.rank ? ' <small>' + esc(person(x.agent).rank) + '</small>' : '') + '</figcaption><blockquote>' + paragraphs(x.text) + '</blockquote></div></figure>').join('') : quiet('남겨진 Agent 코멘트가 없어요.')) +
       block('회장 본인 Comment', text(m.chairmanComment) ? '<figure class="ms-comment">' + avatar('seongmin') + '<div><figcaption>성민 회장</figcaption><blockquote>' + paragraphs(m.chairmanComment) + '</blockquote></div></figure>' : quiet('회장님의 한마디는 아직 비어 있어요. 떠오를 때 남기셔도 괜찮아요.')) +
       block('Tag', m.tags.length ? '<p class="ms-tags">' + m.tags.map(x => '<span>#' + esc(x) + '</span>').join('') + '</p>' : quiet('태그가 없어요.')) +
-      (m.source === 'manual' ? '<p class="ms-draft-note">이 기록은 미리보기예요. 저장 방식이 승인되기 전까지는 새로고침하면 사라져요.</p>' : '') +
       '<button type="button" class="btn ms-back" data-ms-back>← 마일스톤 목록</button>';
   }
   function homeCardMarkup(m) {
@@ -228,8 +229,9 @@
 
   // ---- Form ----
   const option = (value, name, selected) => '<option value="' + esc(value) + '"' + (selected ? ' selected' : '') + '>' + esc(name) + '</option>';
+  // The metric id rides on the row so edits keep featuredMetrics links intact.
   function metricRow(index, x = {}) {
-    return '<fieldset class="ms-metric-row" data-ms-metric-row><legend>지표 ' + (index + 1) + '</legend>' +
+    return '<fieldset class="ms-metric-row" data-ms-metric-row data-ms-metric-id="' + esc(x.id || '') + '"><legend>지표 ' + (index + 1) + '</legend>' +
       '<label>이름<input data-ms-field="label" maxlength="40" value="' + esc(x.label || '') + '" placeholder="체중"></label>' +
       '<label>이전 값 <small>(없으면 비워 두세요)</small><input data-ms-field="before" maxlength="40" value="' + esc(x.before || '') + '" placeholder="122.8kg"></label>' +
       '<label>지금 값<input data-ms-field="after" maxlength="40" value="' + esc(x.after || '') + '" placeholder="95.62kg"></label>' +
@@ -243,71 +245,118 @@
       '<button type="button" class="btn sm" data-ms-comment-remove aria-label="Agent 코멘트 ' + (index + 1) + ' 삭제">삭제</button></fieldset>';
   }
   const roster = () => (window.HaniOrganizationRoster?.people || []).filter(x => x.status !== 'planned');
-  function formMarkup(today) {
-    const people = roster(), views = navViews();
-    return '<header class="ms-form-head"><p class="ms-eyebrow">NEW MILESTONE</p><h3 data-ms-form-title tabindex="-1">새 마일스톤</h3>' +
+  function formMarkup(today, m = null, blocked = '') {
+    const people = roster(), views = navViews(), v = m || {};
+    const textarea = (name, label, rows = 3) => '<label class="ms-wide">' + label + '<textarea name="' + name + '" rows="' + rows + '" maxlength="3000">' + esc(v[name] || '') + '</textarea></label>';
+    return '<header class="ms-form-head"><p class="ms-eyebrow">' + (m ? 'EDIT MILESTONE' : 'NEW MILESTONE') + '</p><h3 data-ms-form-title tabindex="-1">' + (m ? '마일스톤 수정' : '새 마일스톤') + '</h3>' +
       '<p>자주 기록할 필요는 없습니다. 오래 기억하고 싶은 변화만 남겨보세요.</p>' +
-      '<p class="ms-draft-note">지금은 미리보기 단계예요. 저장 방식이 승인되기 전까지 새로 만든 마일스톤은 이 화면에만 보이고, 새로고침하면 사라져요.</p></header>' +
+      '<p class="ms-draft-note" data-ms-form-block' + (blocked ? '' : ' hidden') + '>' + esc(blocked) + '</p></header>' +
       '<div class="ms-errors" data-ms-errors role="alert" hidden></div>' +
       '<div class="ms-form-grid">' +
-      '<label>날짜<input type="date" name="date" required value="' + esc(today) + '"></label>' +
-      '<label class="ms-wide">제목<input name="title" required maxlength="120" placeholder="예: 첫 하프 마라톤 완주"></label>' +
-      '<label>분야<select name="category">' + CATEGORIES.map(c => option(c.id, c.label, false)).join('') + '</select></label>' +
-      '<label>중요도<select name="importance">' + IMPORTANCE.map(x => option(x.id, x.label + ' · ' + x.ko, x.id === 'NORMAL')).join('') + '</select></label>' +
-      '<label>난이도 등급 <small>(선택)</small><select name="grade">' + option('', '없음', true) + GRADES.map(x => option(x.id, x.label + ' · ' + x.ko + ' — ' + x.note, false)).join('') + '</select></label>' +
-      '<label class="ms-wide">대표 문장<input name="summary" required maxlength="160" placeholder="이 날을 한 문장으로 남긴다면?"></label>' +
-      '<label class="ms-wide">성과 설명<textarea name="description" rows="3" maxlength="3000"></textarea></label>' +
-      '<label class="ms-wide">과정 / 배경<textarea name="background" rows="3" maxlength="3000"></textarea></label>' +
-      '<label class="ms-wide">이 변화의 의미<textarea name="meaning" rows="3" maxlength="3000"></textarea></label>' +
+      '<label>날짜<input type="date" name="date" required value="' + esc(v.date || today) + '"></label>' +
+      '<label class="ms-wide">제목<input name="title" required maxlength="120" value="' + esc(v.title || '') + '" placeholder="예: 첫 하프 마라톤 완주"></label>' +
+      '<label>분야<select name="category">' + CATEGORIES.map(c => option(c.id, c.label, c.id === v.category)).join('') + '</select></label>' +
+      '<label>중요도<select name="importance">' + IMPORTANCE.map(x => option(x.id, x.label + ' · ' + x.ko, x.id === (v.importance || 'NORMAL'))).join('') + '</select></label>' +
+      '<label>난이도 등급 <small>(선택)</small><select name="grade">' + option('', '없음', !v.grade) + GRADES.map(x => option(x.id, x.label + ' · ' + x.ko + ' — ' + x.note, x.id === v.grade)).join('') + '</select></label>' +
+      '<label class="ms-wide">대표 문장<input name="summary" required maxlength="160" value="' + esc(v.summary || '') + '" placeholder="이 날을 한 문장으로 남긴다면?"></label>' +
+      textarea('description', '성과 설명') + textarea('background', '과정 / 배경') + textarea('meaning', '이 변화의 의미') +
       '</div>' +
       '<section class="ms-form-section"><h4>핵심 지표</h4><p class="ms-quiet">적은 그대로 보관해요. 단위도 적은 대로만 보여드려요. 이전 값이 없는 지표도 괜찮아요.</p><div data-ms-metrics></div><button type="button" class="btn sm" data-ms-metric-add>+ 지표 추가</button></section>' +
-      '<section class="ms-form-section"><h4>함께한 Agent</h4><div class="ms-checks">' + people.map(p => '<label class="ms-check"><input type="checkbox" name="agents" value="' + esc(p.id) + '"> ' + esc(p.name) + '</label>').join('') + '</div>' +
+      '<section class="ms-form-section"><h4>함께한 Agent</h4><div class="ms-checks">' + people.map(p => '<label class="ms-check"><input type="checkbox" name="agents" value="' + esc(p.id) + '"' + ((v.agents || []).includes(p.id) ? ' checked' : '') + '> ' + esc(p.name) + '</label>').join('') + '</div>' +
       '<div data-ms-comments></div><button type="button" class="btn sm" data-ms-comment-add>+ Agent 코멘트 추가</button></section>' +
       '<div class="ms-form-grid">' +
-      '<label class="ms-wide">회장님 코멘트 <small>(선택)</small><textarea name="chairmanComment" rows="3" maxlength="2000"></textarea></label>' +
-      '<label class="ms-wide">다음 목표 <small>(한 줄에 하나씩)</small><textarea name="nextGoals" rows="3" maxlength="2000"></textarea></label>' +
-      '<label class="ms-wide">태그 <small>(쉼표로 구분)</small><input name="tags" maxlength="300" placeholder="건강, 마라톤"></label>' +
+      '<label class="ms-wide">회장님 코멘트 <small>(선택)</small><textarea name="chairmanComment" rows="3" maxlength="2000">' + esc(v.chairmanComment || '') + '</textarea></label>' +
+      '<label class="ms-wide">다음 목표 <small>(한 줄에 하나씩)</small><textarea name="nextGoals" rows="3" maxlength="2000">' + esc((v.nextGoals || []).join('\n')) + '</textarea></label>' +
+      '<label class="ms-wide">태그 <small>(쉼표로 구분)</small><input name="tags" maxlength="300" value="' + esc((v.tags || []).join(', ')) + '" placeholder="건강, 마라톤"></label>' +
       '</div>' +
-      '<section class="ms-form-section"><h4>관련 HANI OS 기능</h4><div class="ms-checks">' + views.map(v => '<label class="ms-check"><input type="checkbox" name="relatedTabs" value="' + esc(v.id) + '"> ' + esc(v.name) + '</label>').join('') + '</div></section>' +
+      '<section class="ms-form-section"><h4>관련 HANI OS 기능</h4><div class="ms-checks">' + views.map(x => '<label class="ms-check"><input type="checkbox" name="relatedTabs" value="' + esc(x.id) + '"' + ((v.relatedTabs || []).includes(x.id) ? ' checked' : '') + '> ' + esc(x.name) + '</label>').join('') + '</div></section>' +
       '<section class="ms-form-section"><h4>사진</h4><p class="ms-quiet">사진 첨부는 보관 방식이 정해진 뒤 열릴 예정이에요. 지금은 사진 없이 기록돼요.</p></section>' +
-      '<div class="ms-form-actions"><button type="submit" class="btn primary">미리보기로 남기기</button><button type="button" class="btn" data-ms-form-cancel>취소</button></div>';
+      '<div class="ms-form-actions"><button type="submit" class="btn primary">저장하기</button><button type="button" class="btn" data-ms-form-cancel>취소</button></div>';
   }
-  function readForm(form, ids) {
+  // base: the record being edited (keeps id, createdAt, images, source and unknown fields).
+  function readForm(form, ids, base = null, now = new Date().toISOString()) {
     const value = name => form.elements[name]?.value ?? '';
-    const metrics = [...form.querySelectorAll('[data-ms-metric-row]')].map((row, i) => {
+    const used = new Set();
+    const metrics = [...form.querySelectorAll('[data-ms-metric-row]')].map(row => {
       const field = key => row.querySelector('[data-ms-field="' + key + '"]').value.trim();
-      return {id:'metric-' + (i + 1), label:field('label'), before:field('before') || null, after:field('after'), change:field('change') || null, unit:null};
+      let id = row.dataset.msMetricId || '';
+      if (!id || used.has(id)) { let n = used.size + 1; while (used.has('metric-' + n)) n++; id = 'metric-' + n; }
+      used.add(id);
+      return {id, label:field('label'), before:field('before') || null, after:field('after'), change:field('change') || null, unit:null};
     });
     const agentComments = [...form.querySelectorAll('[data-ms-comment-row]')].map(row => ({agent:row.querySelector('[data-ms-field="agent"]').value, text:row.querySelector('[data-ms-field="text"]').value.trim()}));
     const checked = name => [...form.querySelectorAll('input[name="' + name + '"]:checked')].map(x => x.value);
-    const category = value('category'), date = value('date'), now = new Date().toISOString();
-    return {
-      id:nextId(category, date, ids), date, title:value('title').trim(), category, importance:value('importance'), grade:value('grade') || null,
+    const category = value('category'), date = value('date');
+    const record = {
+      ...(base || {}),
+      id:base?.id || nextId(category, date, ids), date, title:value('title').trim(), category, importance:value('importance'), grade:value('grade') || null,
       summary:value('summary').trim(), metrics, description:value('description').trim(), background:value('background').trim(), meaning:value('meaning').trim(),
       nextGoals:value('nextGoals').split('\n').map(x => x.trim()).filter(Boolean),
       agents:checked('agents'), agentComments, chairmanComment:value('chairmanComment').trim(),
       tags:value('tags').split(',').map(x => x.trim().replace(/^#/, '')).filter(Boolean),
-      relatedTabs:checked('relatedTabs'), images:[], source:'manual', createdAt:now, updatedAt:now
+      relatedTabs:checked('relatedTabs'), images:Array.isArray(base?.images) ? base.images : [], source:base?.source || 'manual',
+      createdAt:base?.createdAt || now, updatedAt:now
     };
+    const kept = Array.isArray(base?.featuredMetrics) ? base.featuredMetrics.filter(id => used.has(id)) : [];
+    if (kept.length) record.featuredMetrics = kept; else delete record.featuredMetrics;
+    return record;
+  }
+
+  // ---- Persistence: state.milestones through the existing save() owner ----
+  // The list is absent until the first save, so upgrading never changes stored bytes or the Cloud hash.
+  const appState = () => typeof state !== 'undefined' && state && typeof state === 'object' ? state : null;
+  const savedRows = () => Array.isArray(appState()?.milestones) ? appState().milestones : [];
+  const seedIds = SEED.map(x => x.id);
+  // Seed defaults stay in code; a saved row with a seed id is its annotated version.
+  function merged(rows = savedRows()) {
+    const visible = [], hidden = [];
+    for (const row of rows) {
+      const others = rows.filter(x => x !== row && x?.id).map(x => x.id);
+      (row && !validate(row, {ids:others}).length ? visible : hidden).push(row);
+    }
+    const byId = new Map(visible.map(x => [x.id, x]));
+    return {items:[...SEED.map(x => byId.get(x.id) || x), ...visible.filter(x => !seedIds.includes(x.id))], hidden:hidden.length};
+  }
+  // Same fail-closed conditions as the lounge board: write only while Cloud sync is verified ON.
+  function writeBlockReason() {
+    if (typeof cloudUser === 'undefined' || !cloudUser) return '로그인 후 Cloud 동기화가 연결되면 저장할 수 있어요.';
+    if (typeof loadRecovery === 'undefined' || loadRecovery.active) return '원본 보호 중에는 저장할 수 없어요.';
+    if (typeof importSyncHold === 'undefined' || importSyncHold) return '가져온 백업의 동기화를 확인한 뒤 저장할 수 있어요.';
+    if (typeof cloudRecoveryMode === 'undefined' || cloudRecoveryMode) return 'Cloud 복구를 마친 뒤 저장할 수 있어요.';
+    if (typeof cloudAutoSyncReady === 'undefined' || cloudAutoSyncReady !== true || typeof cloudRuntime === 'undefined' || cloudRuntime?.sync !== 'ON')
+      return 'Cloud 동기화가 연결됨 상태일 때 저장할 수 있어요.';
+    if (typeof cloudHasMeaningfulLocalData !== 'function' || !cloudHasMeaningfulLocalData(state)) return 'Local 기록의 기준을 확인한 뒤 저장할 수 있어요.';
+    if (typeof save !== 'function') return '저장 기능을 찾지 못했어요.';
+    return '';
+  }
+  // Replace only state.milestones; on any failure the previous state object is restored untouched.
+  function persist(nextRows) {
+    const reason = writeBlockReason();
+    if (reason) return {ok:false, message:reason};
+    const before = state;
+    state = {...state, milestones:nextRows, meta:{...(state.meta || {})}};
+    let result;
+    try { result = save(); } catch (error) { result = {ok:false, message:error?.message}; }
+    if (!result?.ok) { state = before; return {ok:false, message:result?.message || '저장하지 못했어요. 기존 기록은 그대로예요.'}; }
+    return {ok:true};
   }
 
   // ---- Runtime (persistent slots in #milestones; one delegated handler) ----
-  const drafts = [];
-  const ui = {category:'ALL', sort:'newest', detail:null, returnFocus:null};
-  const items = () => [...SEED, ...drafts];
+  const ui = {category:'ALL', sort:'newest', detail:null, editing:null, returnFocus:null};
+  const items = () => merged().items;
   const root = () => typeof document === 'undefined' ? null : document.getElementById(VIEW);
   const slot = name => root()?.querySelector('[data-ms-' + name + ']');
   function bindAvatars(host) { host?.querySelectorAll('[data-ms-avatar]').forEach(image => { image.onerror = () => { image.hidden = true; }; if (image.complete && !image.naturalWidth) image.hidden = true; }); }
+  function status(message) { const note = slot('session'); if (note) { note.hidden = !message; note.textContent = message || ''; } }
   function renderList() {
     const host = slot('list'), filters = slot('filters'), sort = slot('sort');
     if (!host) return;
     if (filters && !filters.childElementCount) filters.innerHTML = [{id:'ALL',label:'전체'}, ...CATEGORIES].map(c => '<button type="button" class="ms-chip" data-ms-filter="' + c.id + '">' + esc(c.label) + '</button>').join('');
     filters?.querySelectorAll('[data-ms-filter]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.msFilter === ui.category)));
     if (sort && !sort.options.length) sort.innerHTML = SORTS.map(s => option(s.id, s.label, s.id === ui.sort)).join('');
-    host.innerHTML = list(items(), ui);
+    const view = merged();
+    host.innerHTML = list(view.items, ui) + (view.hidden ? '<li class="ms-empty"><p>형식을 확인할 수 없는 마일스톤 ' + view.hidden + '개는 원본 그대로 보관하고 목록에서만 숨겼어요.</p></li>' : '');
     bindAvatars(host);
-    const note = slot('session');
-    if (note) { note.hidden = !drafts.length; note.textContent = drafts.length ? '미리보기 기록 ' + drafts.length + '개가 이 화면에만 있어요. 새로고침하면 사라져요.' : ''; }
   }
   function show(mode) {
     const archive = slot('archive'), detailSlot = slot('detail'), form = slot('form');
@@ -315,16 +364,18 @@
     if (detailSlot) detailSlot.hidden = mode !== 'detail';
     if (form) form.hidden = mode !== 'form';
   }
+  const isSaved = id => savedRows().some(x => x?.id === id);
   function openDetail(id, trigger) {
     const m = items().find(x => x.id === id), host = slot('detail');
     if (!m || !host) return;
-    ui.detail = id; ui.returnFocus = trigger?.dataset?.msOpen ? '[data-ms-open="' + id + '"]' : null;
-    host.innerHTML = detail(m); bindAvatars(host); show('detail');
+    ui.detail = id;
+    if (trigger?.dataset?.msOpen) ui.returnFocus = '[data-ms-open="' + id + '"]';
+    host.innerHTML = detail(m, {deletable:isSaved(id) && !seedIds.includes(id)}); bindAvatars(host); show('detail');
     window.scrollTo?.({top:0, left:0, behavior:'auto'});
     host.querySelector('[data-ms-detail-title]')?.focus({preventScroll:true});
   }
   function back() {
-    ui.detail = null; show('list'); renderList();
+    ui.detail = null; ui.editing = null; show('list'); renderList();
     const target = ui.returnFocus && root()?.querySelector(ui.returnFocus);
     (target || slot('new'))?.focus({preventScroll:false});
   }
@@ -334,25 +385,48 @@
       row.querySelector('[aria-label]')?.setAttribute('aria-label', legend + ' ' + (i + 1) + ' 삭제');
     });
   }
-  function openForm() {
+  function openForm(id = null) {
     const form = slot('form');
     if (!form) return;
+    const m = id ? items().find(x => x.id === id) : null;
+    ui.editing = m ? m.id : null;
     const today = new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10);
-    form.innerHTML = formMarkup(today);
-    form.querySelector('[data-ms-metrics]').insertAdjacentHTML('beforeend', metricRow(0));
+    form.innerHTML = formMarkup(today, m, writeBlockReason());
+    const metrics = form.querySelector('[data-ms-metrics]'), comments = form.querySelector('[data-ms-comments]');
+    metrics.innerHTML = (m ? m.metrics : [{}]).map((x, i) => metricRow(i, x)).join('');
+    if (m) comments.innerHTML = m.agentComments.map((x, i) => commentRow(i, roster(), x)).join('');
     show('form');
     form.querySelector('[data-ms-form-title]')?.focus({preventScroll:false});
   }
   function submit(form) {
-    const ids = items().map(x => x.id), record = readForm(form, ids);
-    const errors = validate(record, {ids, views:navViews().map(x => x.id), agents:agentIds()});
     const box = form.querySelector('[data-ms-errors]');
-    if (errors.length) {
+    const fail = errors => {
       box.hidden = false; box.innerHTML = '<p>확인이 필요해요</p><ul>' + [...new Set(errors)].map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>';
       box.setAttribute('tabindex', '-1'); box.focus();
       return false;
-    }
-    drafts.push(freeze(record)); renderList(); homeCard(); openDetail(record.id);
+    };
+    const rows = savedRows(), base = ui.editing ? items().find(x => x.id === ui.editing) : null;
+    const others = items().map(x => x.id).filter(id => id !== base?.id);
+    const record = readForm(form, others, base);
+    const errors = validate(record, {ids:others, views:navViews().map(x => x.id), agents:agentIds()});
+    if (errors.length) return fail(errors);
+    const at = rows.findIndex(x => x?.id === record.id);
+    const next = at >= 0 ? rows.map((x, i) => i === at ? record : x) : [...rows, record];
+    const result = persist(next);
+    if (!result.ok) return fail([result.message]);
+    ui.editing = null; renderList(); homeCard(); openDetail(record.id);
+    status(base ? '마일스톤을 수정해 저장했어요.' : '새 마일스톤을 저장했어요.');
+    return true;
+  }
+  async function remove(id) {
+    const row = savedRows().find(x => x?.id === id);
+    if (!row || seedIds.includes(id)) return false;
+    const reason = writeBlockReason();
+    if (reason) { status(reason); return false; }
+    if (typeof confirmRecordDelete !== 'function' || !await confirmRecordDelete(row, '마일스톤')) return false;
+    const result = persist(savedRows().filter(x => x !== row));
+    if (!result.ok) { status(result.message); return false; }
+    ui.returnFocus = null; back(); homeCard(); status('마일스톤을 삭제했어요.');
     return true;
   }
   function homeCard() {
@@ -362,16 +436,23 @@
     card.hidden = !m;
     if (m) { card.innerHTML = homeCardMarkup(m); card.dataset.importance = m.importance; }
   }
-  function enter() { if (!ui.detail) { show('list'); renderList(); } }
+  // Called from renderHome (every renderAll, including a Cloud pull) to keep projections current.
+  function refresh() {
+    homeCard();
+    if (!root()?.classList.contains('active')) return;
+    if (ui.detail && !slot('detail').hidden) { if (items().some(x => x.id === ui.detail)) openDetail(ui.detail); else back(); }
+    else if (slot('form').hidden) renderList();
+  }
+  function enter() { if (!ui.detail && !ui.editing) { show('list'); renderList(); } }
   const seedErrors = SEED.flatMap((m, i) => validate(m, {ids:SEED.slice(0, i).map(x => x.id)}).map(e => m.id + ': ' + e));
-  window.HaniMilestones = Object.freeze({enter, homeCard, validate, sorted, filtered, homePick, featured, compactMetric, nextId, list, card, detail, homeCardMarkup, readForm,
-    CATEGORIES, IMPORTANCE, GRADES, SORTS, SEED, seedErrors, drafts:() => drafts.slice()});
+  window.HaniMilestones = Object.freeze({enter, refresh, homeCard, validate, sorted, filtered, homePick, featured, compactMetric, nextId, list, card, detail, homeCardMarkup, readForm, merged, writeBlockReason, persist,
+    CATEGORIES, IMPORTANCE, GRADES, SORTS, SEED, seedErrors});
   if (typeof document === 'undefined') return;
   function start() {
     const host = root();
     homeCard();
     document.addEventListener('click', event => {
-      if (event.target.closest('[data-ms-home-open]') && typeof showView === 'function') { ui.detail = null; showView(VIEW); }
+      if (event.target.closest('[data-ms-home-open]') && typeof showView === 'function') { ui.detail = null; ui.editing = null; showView(VIEW); }
     });
     if (!host || host.dataset.msMounted) return;
     host.dataset.msMounted = 'true';
@@ -380,12 +461,16 @@
       const filter = t.closest('[data-ms-filter]');
       if (filter) { ui.category = filter.dataset.msFilter; renderList(); return; }
       const open = t.closest('[data-ms-open]');
-      if (open) { openDetail(open.dataset.msOpen, open); return; }
+      if (open) { status(''); openDetail(open.dataset.msOpen, open); return; }
       if (t.closest('[data-ms-back]')) { back(); return; }
       const go = t.closest('[data-ms-go]');
       if (go && typeof showView === 'function') { showView(go.dataset.msGo); return; }
       if (t.closest('[data-ms-new]')) { ui.returnFocus = '[data-ms-new]'; openForm(); return; }
-      if (t.closest('[data-ms-form-cancel]')) { back(); return; }
+      const edit = t.closest('[data-ms-edit]');
+      if (edit) { openForm(edit.dataset.msEdit); return; }
+      const del = t.closest('[data-ms-delete]');
+      if (del) { remove(del.dataset.msDelete); return; }
+      if (t.closest('[data-ms-form-cancel]')) { if (ui.editing) { const id = ui.editing; ui.editing = null; openDetail(id); } else back(); return; }
       const form = slot('form');
       if (t.closest('[data-ms-metric-add]')) { const box = form.querySelector('[data-ms-metrics]'); box.insertAdjacentHTML('beforeend', metricRow(box.childElementCount)); box.lastElementChild.querySelector('input').focus(); return; }
       const removeMetric = t.closest('[data-ms-metric-remove]');

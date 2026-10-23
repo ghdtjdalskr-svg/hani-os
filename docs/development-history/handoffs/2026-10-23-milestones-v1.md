@@ -78,9 +78,21 @@
 - 방법: `index.html`·`hani-main.js`·`hani-ui-v02992.js`·baseline helper·closure를 읽는 Node 테스트 117개를 이 branch와 base(`7a10595`, 별도 worktree)에서 각각 실행(브라우저 테스트 제외, 각 120초 제한)
 - 결과: **117개 모두 base와 같은 결과**(이 branch PASS 82 / base PASS 82, 나머지 35개는 base에서도 동일하게 실패·환경 의존). 1회차에서 `hani-remote-media-219`가 base 시간 초과·branch 실패로 달랐으나 단독 재실행 시 양쪽 모두 PASS(부하로 인한 일시 현상), `hani-staff-floors-214`(본사 방문객 sprite)는 base에서도 간헐 실패
 
+## 2026-10-23 후속 · A안 저장 연결 (회장님 승인)
+
+- 승인 원문(대화): "좋아, 이 계획대로 A안 저장 기능을 만들어줘. 추천한 대로 Cloud 연결됨 상태에서만 저장, 건강혁명 기록에도 코멘트 추가 가능하게." — 범위: `hani_os_life_v23` 안 선택 목록 `milestones` 추가, 추가·수정·삭제, Cloud ON일 때만 저장. **Cloud schema·서버·동기화 규칙·내부 baseline·저장 키 변경 없음**
+- 저장 구조: `state.milestones` (기록 그대로 보관). **처음 저장할 때만 생김** — freshState/normalizeState에 기본값을 넣지 않아 업그레이드만으로 저장 바이트·Cloud hash가 바뀌지 않음(기기 간 불필요한 업로드·충돌 방지). 기존 `normalizeState`의 `...(d||{})` 가 목록을 그대로 보존
+- `hani-main.js` 4줄: `validateStoredRecords` 목록과 백업 검증에 `milestones` 추가(망가지면 기존 규칙대로 원본 보호), 복원 미리보기 개수, `renderHome`에서 `HaniMilestones.refresh()`(Cloud 수신 후 화면 갱신)
+- 쓰기 경로: `hani-milestones.js` `persist()` 하나 → 기존 `save()`(read-back 검증·Cloud 큐). 실패 시 이전 state 객체로 되돌림. 저장 조건은 라운지 게시판과 같은 fail-closed(로그인·원본 보호·복원 보류·Cloud 복구·`cloudRuntime.sync==='ON'`·Local 기준)
+- 건강혁명(seed): 코드 기본값 유지, 수정·코멘트 시 같은 ID의 저장본(source `seed`)이 우선 표시. 삭제 불가. 지표 id·featuredMetrics 유지
+- 직접 쓴 마일스톤: 수정 시 id·createdAt·images·기존 필드 유지, 삭제는 공통 `confirmRecordDelete` 확인창
+- 형식이 맞지 않는 저장 행: 목록에서만 숨기고 원본은 지우지 않음(숨긴 개수 안내)
+- 검증(`node scripts/hani-milestones-v1.test.mjs <playwright> <msedge>`): Node 14 PASS(차단 7조건에서 save 호출 0·state 불변, 성공 시 milestones만 교체, 실패·예외 시 같은 객체로 복구, seed override/숨김 보존), 화면 8조건 PASS(실제 save로 저장, 다른 기록 불변, 쓰기는 save 경로의 `hani_os_life_v23`만, Cloud 큐 호출 확인), 저장 시나리오 7개 PASS: 업그레이드 무변경·hash 동일 / Cloud OFF 차단 / 저장→새로고침 read-back·수정 id 유지·seed 코멘트·삭제 / 저장공간 부족 시 복구 / 백업 생성·검증·복원·Cloud fingerprint 반영 / 망가진 목록 원본 보호 / 운영 2.9.232 normalizeState가 목록 보존
+- 미검증: 실제 Supabase 왕복(가짜 Cloud로만 확인), 회장님 실제 기록·폰. CRITICAL 등급이라 열차에서 One-Pass·HINA와 배포 후 회장님 폰 저장→다른 기기 read-back 필요
+
 ## 다음 담당에게
 
 - 먼저 읽을 파일: `hani-milestones.js`, 이 문서, `scripts/fixtures/milestones-v1.json`
 - 다음 한 가지 행동: 회장님 Preview 확인 → 열차 탑승 시 closure 128 한도 먼저 확인
-- 필요한 회장님 결정: 저장 방식(A/B), 전용 배너 그림 제작 여부
+- 필요한 회장님 결정: 전용 배너 그림 제작 여부 (저장 방식은 2026-10-23 A안 승인·구현 완료)
 - 열차 담당 참고: release 후 `hani-reviewed-release-baseline.mjs`의 pending 목록에서 `milestones-v1.json`을 approvedReleases로 옮기는 것은 기존 join fixture와 같은 절차

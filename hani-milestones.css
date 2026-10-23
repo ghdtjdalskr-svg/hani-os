@@ -92,6 +92,9 @@
 .ms-images { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; }
 .ms-images img { width:100%; height:auto; border-radius:10px; }
 .ms-back { margin:6px 0; }
+.ms-detail-top { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; }
+.ms-detail-actions { display:flex; flex-wrap:wrap; gap:8px; }
+.ms-detail-actions .btn { min-height:44px; }
 
 /* Form */
 .ms-form { background:var(--panel,#fff); border:1px solid var(--ms-rule); border-radius:16px; padding:clamp(18px,3vw,38px); }

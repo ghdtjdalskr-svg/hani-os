@@ -1206,7 +1206,7 @@ function validateStoredRecords(raw){
   if(!raw||typeof raw!=="object"||Array.isArray(raw))throw new Error("Invalid saved state root");
   const lists=["accounts","instruments","transactions","snapshots","investmentMonthlySnapshots","investmentBrokerSnapshots","investmentCashFlows","investmentJournal","investmentWatchlist","ledgerMonths","spendReviews","body","exercise","cardio","strength","books","movies","diaries","tasks","campusSemesters","travelTrips","travelPlaces","travelWishlist","certificates","wishlistItems","learningProjects","learningQuizzes","learningWrongAnswers","monthlyReports","goalRegistry"];
   lists.push("investmentResearchCards","investmentResearchHistory","investmentCommitteeSnapshots");
-  lists.push("boardPosts","boardComments");
+  lists.push("boardPosts","boardComments","milestones");
   for(const key of lists){
     if(raw[key]===undefined)continue;
     if(!Array.isArray(raw[key])||raw[key].some(row=>!row||typeof row!=="object"||Array.isArray(row)))throw new Error("Invalid saved record list");
@@ -2046,7 +2046,7 @@ function navMenuIsNew(viewId,now=Date.now()){
 }
 let navNewBadgeTimer;
 function renderNavNewBadges(now=Date.now()){
-  window.HaniIlbo?.homeCard(now);
+  window.HaniIlbo?.homeCard(now);window.HaniMilestones?.refresh();
   window.HANI_CONTEXT_REMOTE_V1?.update();
   const badge=(label,active)=>{
     if(!label)return;
@@ -8152,10 +8152,10 @@ function validateBackup(raw){
   const hasAccounts=Array.isArray(data.accounts),isCurrent=hasAccounts&&["instruments","transactions","books","movies","body","exercise"].some(k=>Array.isArray(data[k])),isV22=hasAccounts&&(Array.isArray(data.assets)||Array.isArray(data.trades)||Array.isArray(data.cash));
   if(!isCurrent&&!isV22)throw new Error("HANI OS 데이터 구조를 확인할 수 없습니다.");
   if(data.accounts.some(a=>!a||typeof a!=="object"))throw new Error("계좌 데이터가 손상되었습니다.");
-  validateStoredRecords({boardPosts:data.boardPosts,boardComments:data.boardComments});
+  validateStoredRecords({boardPosts:data.boardPosts,boardComments:data.boardComments,milestones:data.milestones});
   return {data,kind:isCurrent?"current":"v22"};
 }
-function backupSummary(d){return `계좌 ${d.accounts?.length||0}개 · 종목 ${(d.instruments||d.assets||[]).length}개 · 거래 ${(d.transactions||d.trades||[]).length}건 · 월간 스냅샷 ${(d.investmentMonthlySnapshots||[]).length+(d.investmentBrokerSnapshots||[]).length}건 · 보조 입출금 ${(d.investmentCashFlows||[]).length}건 · 투자일기 ${(d.investmentJournal||[]).length}건 · 관심종목 ${(d.investmentWatchlist||[]).length}개 · 소비결산 ${(d.ledgerMonths||[]).length}개월 · 소비리뷰 ${(d.spendReviews||[]).length}건 · 책 ${(d.books||[]).length}권 · 시청 ${(d.movies||[]).length}편 · 일기 ${(d.diaries||[]).length}개 · 학기 ${(d.campusSemesters||[]).length}개 · 여행 ${(d.travelTrips||[]).length}회 · 장소 ${(d.travelPlaces||[]).length}곳 · 여행 Wish ${(d.travelWishlist||[]).length}곳 · 자격증 ${(d.certificates||[]).length}개 · Wish ${(d.wishlistItems||[]).length}개 · 게시글 ${(d.boardPosts||[]).length}개 · 댓글 ${(d.boardComments||[]).length}개`}
+function backupSummary(d){return `계좌 ${d.accounts?.length||0}개 · 종목 ${(d.instruments||d.assets||[]).length}개 · 거래 ${(d.transactions||d.trades||[]).length}건 · 월간 스냅샷 ${(d.investmentMonthlySnapshots||[]).length+(d.investmentBrokerSnapshots||[]).length}건 · 보조 입출금 ${(d.investmentCashFlows||[]).length}건 · 투자일기 ${(d.investmentJournal||[]).length}건 · 관심종목 ${(d.investmentWatchlist||[]).length}개 · 소비결산 ${(d.ledgerMonths||[]).length}개월 · 소비리뷰 ${(d.spendReviews||[]).length}건 · 책 ${(d.books||[]).length}권 · 시청 ${(d.movies||[]).length}편 · 일기 ${(d.diaries||[]).length}개 · 학기 ${(d.campusSemesters||[]).length}개 · 여행 ${(d.travelTrips||[]).length}회 · 장소 ${(d.travelPlaces||[]).length}곳 · 여행 Wish ${(d.travelWishlist||[]).length}곳 · 자격증 ${(d.certificates||[]).length}개 · Wish ${(d.wishlistItems||[]).length}개 · 게시글 ${(d.boardPosts||[]).length}개 · 댓글 ${(d.boardComments||[]).length}개 · 마일스톤 ${(d.milestones||[]).length}개`}
 if($("loadRecoveryExport"))$("loadRecoveryExport").onclick=downloadRecoveryOriginal;
 if($("loadRecoveryImport"))$("loadRecoveryImport").onclick=()=>$("importFile").click();
 if($("safetyArchivePanel"))$("safetyArchivePanel").ontoggle=()=>{if($("safetyArchivePanel").open)void renderSafetyArchive()};

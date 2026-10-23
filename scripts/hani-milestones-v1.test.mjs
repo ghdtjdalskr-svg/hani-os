@@ -120,7 +120,15 @@ check('no storage, network or cloud path in the milestone owner', () => {
 check('protected baseline untouched and wiring stays minimal', () => {
   assert.ok(main.includes('hani_os_life_v23'));
   assert.ok(main.includes('2.9.15-safe-baseline-bootstrap'));
-  assert.equal((main.match(/window\.HaniMilestones/g) || []).length, 1, 'one showView hook');
+  assert.equal((main.match(/window\.HaniMilestones/g) || []).length, 2, 'one showView hook and one renderHome refresh');
+  // Optional list: validated like other record lists, never defaulted (no stored-byte or Cloud-hash churn on upgrade).
+  assert.match(main, /lists\.push\("boardPosts","boardComments","milestones"\);/);
+  assert.match(main, /validateStoredRecords\(\{boardPosts:data\.boardPosts,boardComments:data\.boardComments,milestones:data\.milestones\}\)/);
+  assert.doesNotMatch(main, /milestones:\[\]/, 'no default milestones list in freshState/normalizeState');
+  assert.match(main, /마일스톤 \$\{\(d\.milestones\|\|\[\]\)\.length\}개/, 'restore preview count');
+  // The only write path in the owner is the existing save() inside persist().
+  assert.equal((code.match(/=\s*save\(\)/g) || []).length, 1);
+  assert.equal((code.match(/\bstate\s*=\s*[^=]/g) || []).length, 2, 'state replaced only in persist (set + rollback)');
   assert.equal((html.match(/data-view="milestones"/g) || []).length, 1, 'one nav entry');
   assert.equal((html.match(/id="milestones"/g) || []).length, 1);
   const ui = read('hani-ui-v02992.js');
@@ -130,6 +138,51 @@ check('protected baseline untouched and wiring stays minimal', () => {
   assert.ok(/<script src="\.\/hani-milestones\.js\?v=[\d.]+"><\/script>/.test(html) && /href="\.\/hani-milestones\.css\?v=[\d.]+"/.test(html));
   const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map(m => m[1]);
   assert.equal(new Set(ids).size, ids.length, 'no duplicate static DOM id');
+});
+// ---- Persistence owner (synthetic globals, mocked save) ----
+function owner(globals) {
+  const c = vm.createContext({window:{}, console, Date, Intl, Map, Set, loadRecovery:{active:false}, importSyncHold:false, cloudRecoveryMode:false,
+    cloudAutoSyncReady:true, cloudRuntime:{sync:'ON'}, cloudUser:{id:'synthetic'}, cloudHasMeaningfulLocalData:() => true, ...globals});
+  vm.runInNewContext(read('hani-organization-hub.js'), {window:c.window, document:{getElementById:() => null}});
+  vm.runInContext(code, c);
+  return c;
+}
+const manual = valid({id:'milestone_life_20261101', title:'첫 하프 마라톤', category:'LIFE', importance:'MAJOR'});
+check('write is blocked unless Cloud sync is verified ON; blocked writes never call save', () => {
+  for (const [name, patch] of [['logged out', {cloudUser:null}], ['sync not ON', {cloudRuntime:{sync:'HOLD'}}], ['auto sync off', {cloudAutoSyncReady:false}],
+    ['recovery', {loadRecovery:{active:true}}], ['import hold', {importSyncHold:true}], ['cloud recovery', {cloudRecoveryMode:true}], ['empty local', {cloudHasMeaningfulLocalData:() => false}]]) {
+    let calls = 0;
+    const original = {books:[{id:'b1'}]};
+    const c = owner({state:original, save:() => { calls++; return {ok:true}; }, ...patch});
+    const result = c.window.HaniMilestones.persist([manual]);
+    assert.equal(result.ok, false, name); assert.ok(result.message, name);
+    assert.equal(calls, 0, name + ' no save'); assert.equal(c.state, original, name + ' state untouched');
+  }
+});
+check('successful save replaces only milestones; failed save restores the exact previous state', () => {
+  const original = {books:[{id:'b1'}], meta:{lastSavedAt:'x'}};
+  let seen = null;
+  const c = owner({state:original, save:() => { seen = c.state; return {ok:true}; }});
+  assert.equal(c.window.HaniMilestones.persist([manual]).ok, true);
+  assert.notEqual(seen, original); assert.deepEqual(plain(seen.milestones), [plain(manual)]);
+  assert.equal(seen.books, original.books, 'other lists keep identity'); assert.equal(original.milestones, undefined, 'previous object not mutated');
+  const before = {books:[{id:'b1'}]};
+  const failing = owner({state:before, save:() => ({ok:false, message:'quota'})});
+  assert.deepEqual(plain(failing.window.HaniMilestones.persist([manual])), {ok:false, message:'quota'});
+  assert.equal(failing.state, before, 'rolled back to the same object');
+  const throwing = owner({state:before, save:() => { throw Error('boom'); }});
+  assert.equal(throwing.window.HaniMilestones.persist([manual]).ok, false); assert.equal(throwing.state, before);
+});
+check('merge: seed override wins, invalid saved rows are hidden but kept, absent list is empty', () => {
+  const override = {...plain(seed), chairmanComment:'정말 기쁜 날', updatedAt:'2026-10-24T00:00:00Z'};
+  const broken = {id:'milestone_bad', title:''};
+  const c = owner({state:{milestones:[override, manual, broken]}});
+  const view = plain(c.window.HaniMilestones.merged());
+  assert.deepEqual(view.items.map(x => x.id), [seed.id, manual.id]);
+  assert.equal(view.items[0].chairmanComment, '정말 기쁜 날'); assert.equal(view.hidden, 1);
+  assert.equal(c.state.milestones.length, 3, 'nothing dropped from the source');
+  assert.deepEqual(plain(owner({state:{}}).window.HaniMilestones.merged().items).map(x => x.id), [seed.id]);
+  assert.deepEqual(plain(owner({state:{milestones:'bad'}}).window.HaniMilestones.merged().items).map(x => x.id), [seed.id]);
 });
 console.log('Node checks: ' + passed + ' PASS');
 
@@ -148,30 +201,47 @@ if (process.argv[2] && process.argv[3]) {
   const origin = 'http://127.0.0.1:' + server.address().port;
   const browser = await chromium.launch({executablePath:process.argv[3], headless:true});
   const results = [];
+  // Synthetic life record only (one fake book); the real chairman data is never used.
+  const KEY = 'hani_os_life_v23';
+  const syntheticRaw = JSON.stringify({version:'2.9.15-safe-baseline-bootstrap', accounts:[], books:[{id:'synthetic-book', title:'가상 책', author:'테스트', status:'read'}], meta:{}});
+  async function openApp(ctx, {theme = 'light', stored = syntheticRaw} = {}) {
+    const page = await ctx.newPage(), errors = [];
+    page.on('pageerror', e => errors.push(e.message));
+    await page.addInitScript(({KEY, stored}) => {
+      if (stored !== null && sessionStorage.getItem('__msSeeded') === null) { localStorage.setItem(KEY, stored); sessionStorage.setItem('__msSeeded', '1'); }
+      const set = Storage.prototype.setItem;
+      window.__msWrites = [];
+      Storage.prototype.setItem = function (key, value) { if (String(new Error().stack).includes('hani-milestones.js')) window.__msWrites.push(key); return set.call(this, key, value); };
+    }, {KEY, stored});
+    await page.goto(origin);
+    await page.waitForFunction(() => window.HaniMilestones && typeof showView === 'function');
+    await page.evaluate(theme => {
+      unlockLoginGate();
+      document.getElementById('loginGate').style.display = 'none';
+      const app = document.getElementById('app'); app.classList.remove('login-locked'); app.inert = false; app.removeAttribute('inert');
+      document.body.classList.remove('login-scroll-locked');
+      // The app's dark look is the Midnight Black finish; saveChoice=false keeps it in memory.
+      if (theme === 'dark') applySignatureFinish('midnight-black', false);
+      document.querySelectorAll('[class*=remote]').forEach(el => { if (getComputedStyle(el).position === 'fixed') el.style.display = 'none'; });
+    }, theme);
+    return {page, errors};
+  }
+  // Fake a verified Cloud ON session without any network: sync calls are counted, never sent.
+  const cloudOn = page => page.evaluate(() => {
+    cloudUser = {id:'synthetic-user'}; cloudAutoSyncReady = true; cloudRecoveryMode = false; importSyncHold = false;
+    cloudRuntime = {...cloudRuntime, sync:'ON'};
+    window.__queued = 0; cloudQueueSync = () => { window.__queued++; }; cloudSyncCycle = async () => {};
+  });
+  const stored = page => page.evaluate(KEY => localStorage.getItem(KEY), KEY);
+  const withoutMilestones = raw => { const x = JSON.parse(raw); delete x.milestones; delete x.meta; delete x.version; return x; };
   try {
     for (const width of [390, 412, 884, 1440]) {
       for (const theme of ['light', 'dark']) {
         const ctx = await browser.newContext({viewport:{width, height:900}, colorScheme:theme, reducedMotion:'reduce'});
         await ctx.route('**/*', r => new URL(r.request().url()).origin === origin ? r.continue() : r.abort());
-        const page = await ctx.newPage(), errors = [];
-        page.on('pageerror', e => errors.push(e.message));
-        await page.addInitScript(() => {
-          const set = Storage.prototype.setItem;
-          window.__msWrites = [];
-          Storage.prototype.setItem = function (key, value) { if (String(new Error().stack).includes('hani-milestones.js')) window.__msWrites.push(key); return set.call(this, key, value); };
-        });
-        await page.goto(origin);
-        await page.waitForFunction(() => window.HaniMilestones && typeof showView === 'function');
-        await page.evaluate(theme => {
-          unlockLoginGate();
-          document.getElementById('loginGate').style.display = 'none';
-          const app = document.getElementById('app'); app.classList.remove('login-locked'); app.inert = false; app.removeAttribute('inert');
-          document.body.classList.remove('login-scroll-locked');
-          // The app's dark look is the Midnight Black finish; saveChoice=false keeps it in memory.
-          if (theme === 'dark') applySignatureFinish('midnight-black', false);
-          document.querySelectorAll('[class*=remote]').forEach(el => { if (getComputedStyle(el).position === 'fixed') el.style.display = 'none'; });
-        }, theme);
-        const lifeBefore = await page.evaluate(() => localStorage.getItem('hani_os_life_v23'));
+        const {page, errors} = await openApp(ctx, {theme});
+        await cloudOn(page);
+        const lifeBefore = await page.evaluate(() => JSON.stringify(state));
         const shot = async name => { if (theme === 'light' || name === 'detail' || name === 'archive') await page.screenshot({path:path.join(out, name + '-' + width + (theme === 'dark' ? '-dark' : '') + '.png'), fullPage:name === 'detail'}); };
         const overflow = () => page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
         const tag = width + '/' + theme;
@@ -206,6 +276,7 @@ if (process.argv[2] && process.argv[3]) {
         assert.equal(await page.locator('[data-ms-detail]').isVisible(), true);
         assert.equal(await page.evaluate(() => document.activeElement?.matches('[data-ms-detail-title]')), true, tag + ' focus to detail title');
         assert.equal(await page.locator('.ms-compare-row').count(), 9);
+        assert.equal(await page.locator('[data-ms-delete]').count(), 0, tag + ' seed cannot be deleted');
         const clipped = await page.locator('.ms-compare-cell b, .ms-comment blockquote, .ms-tags span, .ms-detail-head h3').evaluateAll(els => els.filter(e => e.scrollWidth > e.clientWidth + 1 || e.getBoundingClientRect().right > document.documentElement.clientWidth).length);
         assert.equal(clipped, 0, tag + ' detail text clipped');
         assert.ok(await overflow() <= 0, tag + ' detail overflow');
@@ -221,7 +292,7 @@ if (process.argv[2] && process.argv[3]) {
         await page.evaluate(() => showView('milestones'));
         await page.locator('[data-ms-back]').first().click();
 
-        // Form validation, metric add/remove, preview-only save
+        // Form validation, metric add/remove, real save through save()
         await page.locator('[data-ms-new]').click();
         assert.equal(await page.evaluate(() => document.activeElement?.matches('[data-ms-form-title]')), true);
         assert.match(await page.locator('[data-ms-form]').innerText(), /자주 기록할 필요는 없습니다/);
@@ -238,22 +309,24 @@ if (process.argv[2] && process.argv[3]) {
         await page.locator('[data-ms-form] [name="grade"]').selectOption('EPIC');
         await page.locator('[data-ms-metric-row] [data-ms-field="label"]').fill('기록');
         await page.locator('[data-ms-metric-row] [data-ms-field="after"]').fill('2:05:11');
-        await page.locator('input[name="agents"][value="naeun"]').check();
+        await page.locator('[data-ms-form] input[name="agents"][value="naeun"]').check();
         await page.locator('[data-ms-form] [name="tags"]').fill('러닝, #도전');
         await page.locator('[data-ms-form] [name="nextGoals"]').fill('부상 없이 회복\n풀코스는 천천히');
         await shot('form');
         await page.locator('[data-ms-form] button[type="submit"]').click();
-        assert.equal(await page.locator('[data-ms-detail]').isVisible(), true);
-        assert.match(await page.locator('[data-ms-detail]').innerText(), /EPIC[\s\S]*2:05:11[\s\S]*#러닝[\s\S]*#도전[\s\S]*미리보기/);
+        assert.equal(await page.locator('[data-ms-detail]').isVisible(), true, tag + ' saved detail');
+        assert.match(await page.locator('[data-ms-detail]').innerText(), /EPIC[\s\S]*2:05:11[\s\S]*#러닝[\s\S]*#도전/);
         assert.ok(await overflow() <= 0, tag + ' long title overflow');
         await page.locator('[data-ms-back]').first().click();
         assert.equal(await page.locator('#milestones .ms-item').count(), 2);
-        assert.equal(await page.locator('[data-ms-session]').isVisible(), true);
+        assert.match(await page.locator('[data-ms-session]').innerText(), /저장했어요/);
 
-        // Safety: no milestone write, protected key unchanged, no duplicate id
-        // Route links call the existing showView owner, which keeps its own scroll/navigation UI key.
-        assert.deepEqual(await page.evaluate(() => window.__msWrites.filter(key => key !== 'hani_os_navigation_v1')), [], tag + ' milestone storage writes');
-        assert.equal(await page.evaluate(() => localStorage.getItem('hani_os_life_v23')), lifeBefore);
+        // Safety: the owner writes only via save(); other records are byte-identical
+        const after = await stored(page);
+        assert.deepEqual(withoutMilestones(after), withoutMilestones(lifeBefore), tag + ' other records unchanged');
+        assert.equal(JSON.parse(after).milestones.length, 1);
+        assert.deepEqual(await page.evaluate(() => [...new Set(window.__msWrites)].filter(key => key !== 'hani_os_navigation_v1')), [KEY], tag + ' writes only through save()');
+        assert.ok(await page.evaluate(() => window.__queued) >= 1, tag + ' Cloud sync queued after save');
         assert.equal(await page.evaluate(() => { const ids = [...document.querySelectorAll('[id]')].map(n => n.id); return ids.length - new Set(ids).size; }), 0, tag + ' duplicate DOM ids');
         const touch = await page.locator('#milestones .btn, #milestones .ms-chip, #milestones select').evaluateAll(els => els.filter(e => e.offsetParent && e.getBoundingClientRect().height < 36).map(e => e.textContent.trim()));
         assert.deepEqual(touch, [], tag + ' touch targets');
@@ -262,6 +335,138 @@ if (process.argv[2] && process.argv[3]) {
         await ctx.close();
       }
     }
-    console.log('Browser checks PASS: ' + results.join(', '));
+    console.log('Browser UI checks PASS: ' + results.join(', '));
+
+    // ---- Persistence scenarios (1440, synthetic data, fake Cloud) ----
+    const scenarios = [];
+    const scenario = async (name, run) => {
+      const ctx = await browser.newContext({viewport:{width:1440, height:900}});
+      await ctx.route('**/*', r => new URL(r.request().url()).origin === origin ? r.continue() : r.abort());
+      try { await run(ctx); scenarios.push(name); console.log('PASS persistence:', name); } finally { await ctx.close(); }
+    };
+    const fillNew = async (page, title) => {
+      await page.evaluate(() => showView('milestones'));
+      await page.locator('[data-ms-new]').click();
+      await page.locator('[data-ms-form] [name="title"]').fill(title);
+      await page.locator('[data-ms-form] [name="summary"]').fill('조용히 남기는 문장.');
+      await page.locator('[data-ms-metric-row] [data-ms-field="label"]').fill('거리');
+      await page.locator('[data-ms-metric-row] [data-ms-field="after"]').fill('21.1km');
+      await page.locator('[data-ms-form] button[type="submit"]').click();
+    };
+
+    await scenario('upgrade adds no milestones key and writes nothing', async ctx => {
+      const {page, errors} = await openApp(ctx);
+      await page.evaluate(() => showView('milestones'));
+      assert.equal(await stored(page), syntheticRaw, 'stored bytes untouched by opening the archive');
+      assert.equal(await page.evaluate(() => 'milestones' in state), false, 'absent list stays absent');
+      const hashes = await page.evaluate(async () => [await cloudStateHash(state), await cloudStateHash(normalizeState(JSON.parse(JSON.stringify(state))))]);
+      assert.equal(hashes[0], hashes[1], 'Cloud fingerprint stable across normalize');
+      assert.deepEqual(errors, []);
+    });
+
+    await scenario('blocked while Cloud is not ON: nothing saved, reason shown', async ctx => {
+      const {page} = await openApp(ctx);
+      await fillNew(page, 'Cloud 꺼짐 테스트');
+      assert.match(await page.locator('[data-ms-errors]').innerText(), /Cloud/);
+      assert.equal(await stored(page), syntheticRaw);
+      assert.equal(await page.evaluate(() => 'milestones' in state), false);
+    });
+
+    await scenario('save → reload → read-back; edit keeps id; seed comment; delete via existing dialog', async ctx => {
+      const {page} = await openApp(ctx);
+      await cloudOn(page);
+      const loaded = await page.evaluate(() => JSON.stringify(state));
+      await fillNew(page, '첫 하프 마라톤');
+      const first = JSON.parse(await stored(page)).milestones;
+      assert.equal(first.length, 1); assert.equal(first[0].title, '첫 하프 마라톤'); assert.equal(first[0].source, 'manual');
+      await page.reload();
+      await page.waitForFunction(() => window.HaniMilestones && typeof showView === 'function');
+      await page.evaluate(() => { unlockLoginGate(); document.getElementById('loginGate').style.display = 'none'; const app = document.getElementById('app'); app.classList.remove('login-locked'); app.inert = false; });
+      await cloudOn(page);
+      await page.evaluate(() => showView('milestones'));
+      assert.equal(await page.locator('#milestones .ms-item').count(), 2, 'saved milestone survives reload');
+      // Edit the saved one: same id, createdAt kept, updatedAt moves.
+      const id = first[0].id;
+      await page.locator('[data-ms-open="' + id + '"]').click();
+      await page.locator('[data-ms-edit="' + id + '"]').click();
+      await page.locator('[data-ms-form] [name="chairmanComment"]').fill('끝까지 달렸다.');
+      await page.locator('[data-ms-form] button[type="submit"]').click();
+      const edited = JSON.parse(await stored(page)).milestones;
+      assert.equal(edited.length, 1); assert.equal(edited[0].id, id); assert.equal(edited[0].createdAt, first[0].createdAt); assert.equal(edited[0].chairmanComment, '끝까지 달렸다.');
+      // Seed comment: saved as an override row with the seed id, values otherwise verbatim.
+      await page.locator('[data-ms-back]').first().click();
+      await page.locator('[data-ms-open="milestone_health_20261023"]').click();
+      await page.locator('[data-ms-edit="milestone_health_20261023"]').click();
+      await page.locator('[data-ms-form] [name="chairmanComment"]').fill('내 삶에 배포된 가장 중요한 업데이트.');
+      await page.locator('[data-ms-form] button[type="submit"]').click();
+      const rows = JSON.parse(await stored(page)).milestones, override = rows.find(x => x.id === 'milestone_health_20261023');
+      assert.equal(override.source, 'seed'); assert.equal(override.chairmanComment, '내 삶에 배포된 가장 중요한 업데이트.');
+      assert.deepEqual(override.metrics.map(x => [x.id, x.before, x.after, x.change]), seed.metrics.map(x => [x.id, x.before, x.after, x.change]));
+      assert.deepEqual(override.featuredMetrics, seed.featuredMetrics);
+      assert.match(await page.locator('[data-ms-detail]').innerText(), /내 삶에 배포된 가장 중요한 업데이트/);
+      assert.equal(await page.locator('[data-ms-delete]').count(), 0, 'seed override still not deletable');
+      // Delete the manual one through the shared record-delete dialog.
+      await page.locator('[data-ms-back]').first().click();
+      await page.locator('[data-ms-open="' + id + '"]').click();
+      await page.locator('[data-ms-delete="' + id + '"]').click();
+      await page.locator('#recordDeleteDialog button[value="approve"]').click();
+      await page.waitForFunction(id => !JSON.parse(localStorage.getItem('hani_os_life_v23')).milestones.some(x => x.id === id), id);
+      assert.deepEqual(JSON.parse(await stored(page)).milestones.map(x => x.id), ['milestone_health_20261023']);
+      assert.deepEqual(withoutMilestones(await stored(page)), withoutMilestones(loaded), 'other records unchanged after edit/delete');
+    });
+
+    await scenario('failed save (quota) restores state and keeps stored bytes', async ctx => {
+      const {page} = await openApp(ctx);
+      await cloudOn(page);
+      await page.evaluate(KEY => { const set = Storage.prototype.setItem; Storage.prototype.setItem = function (k, v) { if (k === KEY) { const e = new Error('full'); e.name = 'QuotaExceededError'; throw e; } return set.call(this, k, v); }; }, KEY);
+      const before = await page.evaluate(() => JSON.stringify(state));
+      await fillNew(page, '저장 공간 부족 테스트');
+      assert.match(await page.locator('[data-ms-errors]').innerText(), /저장 공간|저장/);
+      assert.equal(await page.evaluate(() => JSON.stringify(state)), before, 'in-memory state rolled back');
+      assert.equal(await stored(page), syntheticRaw, 'stored bytes untouched');
+    });
+
+    await scenario('backup export/validate/restore keeps milestones; Cloud fingerprint sees them', async ctx => {
+      const {page} = await openApp(ctx);
+      await cloudOn(page);
+      await fillNew(page, '백업 테스트');
+      const result = await page.evaluate(async () => {
+        const payload = buildBackupPayload(state, new Date().toISOString());
+        const {data} = validateBackup(JSON.parse(JSON.stringify(payload)));
+        const restored = normalizeState(data);
+        const without = structuredClone(state); delete without.milestones;
+        return {inPayload:payload.milestones.length, restored:restored.milestones.length, same:JSON.stringify(restored.milestones) === JSON.stringify(state.milestones),
+          summary:backupSummary(data), comparable:cloudComparableState(state).milestones.length,
+          hashDiffers:(await cloudStateHash(state)) !== (await cloudStateHash(without))};
+      });
+      assert.equal(result.inPayload, 1); assert.equal(result.restored, 1); assert.equal(result.same, true);
+      assert.match(result.summary, /마일스톤 1개/); assert.equal(result.comparable, 1); assert.equal(result.hashDiffers, true, 'a milestone change is a Cloud change');
+    });
+
+    await scenario('corrupt milestones list fails closed into original protection', async ctx => {
+      const bad = JSON.stringify({...JSON.parse(syntheticRaw), milestones:'not-a-list'});
+      const {page} = await openApp(ctx, {stored:bad});
+      assert.equal(await page.evaluate(() => loadRecovery.active), true);
+      assert.equal(await stored(page), bad, 'original bytes kept');
+      assert.ok(await page.evaluate(() => Object.keys(localStorage).some(k => k.startsWith('hani_os_load_quarantine_v1_'))), 'quarantine copy made');
+      assert.match(await page.evaluate(() => window.HaniMilestones.writeBlockReason()), /원본 보호|Cloud|로그인/);
+    });
+
+    // Released 2.9.232 normalizeState (origin/main) keeps a list it does not know, so older devices never drop milestones.
+    await scenario('older released normalizeState preserves milestones', async ctx => {
+      const {execFileSync} = await import('node:child_process');
+      const released = execFileSync(process.env.HANI_GIT_PATH || process.env.HANI_GIT || 'git', ['show', 'origin/main:hani-main.js'], {cwd:root, encoding:'utf8', maxBuffer:64 * 1024 * 1024});
+      const body = released.slice(released.indexOf('function normalizeState(d){'), released.indexOf('function isQuotaError('));
+      assert.ok(body.includes('...(d||{})') && !body.includes('milestones'), 'released source has the generic spread and no milestone handling');
+      const {page} = await openApp(ctx);
+      const kept = await page.evaluate(({body, seedRow}) => {
+        const oldNormalize = new Function('freshState', 'n', 'today', 'uid', 'VERSION', 'monthKeyNow', 'legacyExercise', 'normalizeMonthlySnapshot', 'normalizeBrokerSnapshot', 'normalizeCashFlow', 'normalizeInvestmentJournal', 'normalizeWatchlistItem', 'normalizeLedgerMonth', 'normalizeSpendPurchase', 'normalizeBodyRecord', 'normalizeCampusSemester', 'normalizeTravelTrip', 'normalizeTravelPlace', 'normalizeTravelWish', 'normalizeCertificate', 'normalizeWishItem',
+          body + ';return normalizeState;')(freshState, n, today, uid, VERSION, monthKeyNow, legacyExercise, normalizeMonthlySnapshot, normalizeBrokerSnapshot, normalizeCashFlow, normalizeInvestmentJournal, normalizeWatchlistItem, normalizeLedgerMonth, normalizeSpendPurchase, normalizeBodyRecord, normalizeCampusSemester, normalizeTravelTrip, normalizeTravelPlace, normalizeTravelWish, normalizeCertificate, normalizeWishItem);
+        const input = {...JSON.parse(JSON.stringify(state)), milestones:[seedRow]};
+        return JSON.stringify(JSON.parse(JSON.stringify(oldNormalize(input))).milestones) === JSON.stringify([seedRow]);
+      }, {body, seedRow:{...seed, chairmanComment:'old device'}});
+      assert.equal(kept, true);
+    });
+    console.log('Persistence scenarios PASS: ' + scenarios.length);
   } finally { await browser.close(); server.close(); }
 } else console.log('Browser checks: NOT RUN (no Playwright/browser argument)');
