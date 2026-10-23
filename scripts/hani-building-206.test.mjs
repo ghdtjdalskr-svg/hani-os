@@ -8,20 +8,20 @@ const source=read('hani-office-live.js'),context=vm.createContext({HaniOfficeV2A
 vm.runInContext(source,context);vm.runInContext(read('hani-organization-hub.js'),context);
 const api=context.HaniBuildingScene,plain=value=>JSON.parse(JSON.stringify(value));
 const at=time=>api.snapshot(new Date('2026-10-11T'+time+':00+09:00'));
-test('17 canonical staff, exact home floors and immutable config',()=>{
- assert.deepEqual(plain(api.floors.map(f=>f.residents)),[[],['hani','yuna','gaeun','mir'],['seoyun','dohyun','serin','yuri','arin'],['jieun','haru','naeun','hina','minji','sooyeon'],['sua','taeo']]);
+test('19 canonical staff, exact home floors and immutable config',()=>{
+ assert.deepEqual(plain(api.floors.map(f=>f.residents)),[[],['hani','yuna','gaeun','mir'],['seoyun','dohyun','serin','yuri','arin'],['jieun','haru','naeun','hina','minji','sooyeon','daon','yoonseul'],['sua','taeo']]);
  const ids=api.floors.flatMap(f=>f.residents),canonical=context.window.HaniOrganizationRoster.people.filter(p=>p.status!=="planned").map(p=>p.id);
- assert.equal(ids.length,17);assert.equal(new Set(ids).size,17);assert.deepEqual([...ids].sort(),[...canonical].sort());
+ assert.equal(ids.length,19);assert.equal(new Set(ids).size,19);assert.deepEqual([...ids].sort(),[...canonical].sort());
  assert.ok(Object.isFrozen(api.floors));for(const f of api.floors)assert.ok(Object.isFrozen(f.residents));
 });
 test('ordinary hours keep every staff member at their home floor',()=>{for(const f of at('09:00').floors){assert.equal(f.rest,0);assert.equal(f.work,f.residents.length);assert.ok(f.people.every(p=>p.floor===p.home&&p.activity==='work'))}});
 for(const time of ['09:59','10:00','10:29','10:30','11:59','12:00','12:59','13:00','14:59','15:00','15:19','15:20','15:59','16:00','16:29','16:30']){
  test('table unavailable at KST '+time+' keeps base work, no retired fixed-time scenes',()=>{
   const result=at(time),entries=result.floors.flatMap(f=>f.people),visitors=entries.filter(p=>p.activity==='rest'),leads=entries.filter(p=>p.activity==='meeting');
-  assert.equal(entries.length,17);assert.equal(new Set(entries.map(p=>p.id)).size,17);
+  assert.equal(entries.length,19);assert.equal(new Set(entries.map(p=>p.id)).size,19);
   assert.equal(visitors.length,0);assert.equal(leads.length,0);
   assert.ok(entries.filter(p=>p.activity==='work').every(p=>p.floor===p.home));
-  for(const f of result.floors){assert.ok(f.visible.length<=6);assert.equal(f.visible.length+f.overflow,f.people.length);assert.equal(f.work+f.rest,f.people.length)}
+  for(const f of result.floors){assert.ok(f.visible.length<=Math.max(6,f.residents.length));assert.equal(f.visible.length+f.overflow,f.people.length);assert.equal(f.work+f.rest,f.people.length)}
  });
 }
 test('fallback determinism and timezone independence; variation belongs to the 216 scheduler',()=>{

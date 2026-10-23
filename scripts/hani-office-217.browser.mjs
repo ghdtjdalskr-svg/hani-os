@@ -48,7 +48,7 @@ export async function runOffice217Browser(playwrightPath,executablePath){
     });
     status.checks.push({width,...check});
     assert.equal(check.overflow,false);assert.ok(check.slots&&check.actors&&check.protectedSame&&check.homeSeats);assert.deepEqual(check.writes,[]);assert.equal(check.foregrounds,0);assert.equal(check.ceoLabel,false);assert.equal(check.props.length,check.expectedProps);
-    for(const prop of check.props){assert.ok(prop.loaded&&prop.inside);assert.ok(prop.z<4);if(['daon','yoonseul'].includes(prop.id))assert.equal(+prop.alpha,.38)}
+    for(const prop of check.props){assert.ok(prop.loaded&&prop.inside);assert.ok(prop.z<4);if(['daon','yoonseul'].includes(prop.id))assert.equal(+prop.alpha,1)}
     if(width<=412)assert.ok(check.plates.every(p=>p.brand));
     for(const p of check.plates){assert.ok(p.inside);assert.deepEqual(p.overlap,[]);if(!p.brand){assert.equal(p.background,'rgb(63, 68, 74)');assert.equal(p.border,'0px');assert.equal(p.shadow,'none');assert.ok(p.english&&p.korean&&p.linesFit);assert.ok(p.font>=9&&p.font<=10)}}
     if(floor==='1f'){assert.equal(check.brandImages.length,1);assert.ok(check.brandImages[0].loaded);assert.equal(check.brandImages[0].src,'./assets/brand/hani-group-ci-lobby-217.webp')}

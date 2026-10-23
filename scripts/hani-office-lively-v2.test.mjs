@@ -1,7 +1,7 @@
+import {assertOnboardedCanon} from './hani-office-onboarding-232-assertions.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import crypto from 'node:crypto';
 import {performance} from 'node:perf_hooks';
 import {loadScene,at,root} from './hani-office-lively-fixture.mjs';
 import {assertResources,validPlaceSpeech} from './hani-office-place-assertions.mjs';
@@ -76,7 +76,7 @@ test('obr2: desk text survives ≥10 actual seconds despite posture changes and 
  assert.ok(durations.every(r=>r.seconds>=10-.21),JSON.stringify(durations.filter(r=>r.seconds<9.79).slice(0,8)));
 });
 test('obr2: deterministic query order, reduced motion and frozen spatial bytes',()=>{
- assert.equal(crypto.createHash('sha256').update(fs.readFileSync(new URL('data/hani-building/spatial-contract.json',root))).digest('hex'),'d02426b44c49db169efebd782e110226fd1d719d016bc5912516753f3df8841d');
+ assertOnboardedCanon();
  const date=at(day,14*3600+17),normal=JSON.stringify(s.snapshot(date));s.snapshot('2026-10-24T20:00:00+09:00');assert.equal(JSON.stringify(s.snapshot(date)),normal);
  assert.ok(s.snapshot(date,{reducedMotion:true}).entries.every(p=>!p.walking));
  const group=trips.find(e=>e.group),time=at(day,group.performStart+.01);

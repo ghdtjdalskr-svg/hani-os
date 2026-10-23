@@ -38,7 +38,7 @@ for(const [day,time] of [['2026-10-20','10:00'],['2026-10-20','21:00'],['2026-10
   test(`fake clock ${day} ${time} KST: every occupied floor has an eligible visible action within 90s`,()=>{
     const now=day+'T'+time+':00+09:00',model=scene(now),snapshot=model.snapshot(),seconds=snapshot.seconds;
     assert.equal(snapshot.day,day);assert.equal(snapshot.minutes,Number(time.slice(0,2))*60+Number(time.slice(3)));
-    const present=snapshot.entries.map(p=>p.id).sort();assert.equal(present.length,time==='02:00'?5:17);
+    const present=snapshot.entries.map(p=>p.id).sort();assert.equal(present.length,time==='02:00'?5:19);
     if(time==='02:00')assert.deepEqual(present,['dohyun','minji','mir','seoyun','yuna']);
     const checks=[];
     for(const floor of snapshot.floors.filter(f=>f.people.length)){

@@ -207,7 +207,8 @@
   }
 
   function hash(value){let n=0;for(const ch of value)n=(Math.imul(n,31)+ch.charCodeAt(0))>>>0;return n}
-  function projection(entries){const ordered=[...entries].sort((a,b)=>Number(b.activity!=="work")-Number(a.activity!=="work"));return {visible:ordered.slice(0,6),overflow:Math.max(0,entries.length-6)}}
+  // Keep every resident's physical desk visible when a floor grows beyond six.
+  function projection(entries,capacity=6){const ordered=[...entries].sort((a,b)=>Number(b.activity!=="work")-Number(a.activity!=="work"));return {visible:ordered.slice(0,capacity),overflow:Math.max(0,entries.length-capacity)}}
   // One canonical scheduler. Daily plans are projections, never queues to replay.
   // All mutable state is disposable memory; no life records or data triggers enter here.
   function createScheduler(table){
@@ -871,7 +872,7 @@
   function snapshot(now=new Date(),options={}){
     const scheduled=scheduler?.snapshot(now,options),date=new Date(new Date(now).getTime()+32400000),day=date.toISOString().slice(0,10),minutes=date.getUTCHours()*60+date.getUTCMinutes();
     const entries=scheduled?.entries||floors.flatMap(f=>f.residents.map(id=>({id,home:f.id,floor:f.id,activity:'work',seat:homeSeat(id),actionId:'base-work',line:'자료 확인 중'})));
-    return {day,minutes,...scheduled,onBreak:false,onMeeting:false,floors:floors.map(f=>{const people=entries.filter(p=>p.floor===f.id);return {...f,people,work:people.filter(p=>p.activity!=='rest').length,rest:people.filter(p=>p.activity==='rest').length,...projection(people)}})};
+    return {day,minutes,...scheduled,onBreak:false,onMeeting:false,floors:floors.map(f=>{const people=entries.filter(p=>p.floor===f.id);return {...f,people,work:people.filter(p=>p.activity!=='rest').length,rest:people.filter(p=>p.activity==='rest').length,...projection(people,Math.max(6,f.residents.length))}})};
   }
 
   function profile(id){return ({daon:"./assets/profiles/thumb/hani-profile-daon-v2-256.webp",yoonseul:"./assets/profiles/thumb/hani-profile-yoonseul-v2-256.webp",sua:"./assets/profiles/thumb/hani-profile-sua-id-256.webp"})[id]||`./assets/profiles/thumb/hani-profile-${id}-256.webp`}

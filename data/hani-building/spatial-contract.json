@@ -3562,7 +3562,7 @@
         "zone": "desk",
         "x": 35,
         "y": 27.34375,
-        "owner": null,
+        "owner": "daon",
         "layer": 4,
         "box": [
           33.6,
@@ -3570,8 +3570,7 @@
           36.4,
           27.34375
         ]
-      },
-      "runtimeAssignable": false
+      }
     },
     {
       "id": "approach_desk_daon",
@@ -3608,7 +3607,7 @@
         "zone": "desk",
         "x": 65,
         "y": 27.34375,
-        "owner": null,
+        "owner": "yoonseul",
         "layer": 4,
         "box": [
           63.6,
@@ -3616,8 +3615,7 @@
           66.4,
           27.34375
         ]
-      },
-      "runtimeAssignable": false
+      }
     },
     {
       "id": "approach_desk_yoonseul",
@@ -8784,7 +8782,7 @@
       "team": "finance",
       "homeAnchor": "desk_daon",
       "entity": "human_chibi",
-      "registration": "planned",
+      "registration": "registered",
       "provider": "Gemini",
       "workAnchor": "desk_daon",
       "meetingAnchor": "shared_meeting_2f",
@@ -8793,7 +8791,7 @@
         "shared_meeting_2f",
         "exec_meeting"
       ],
-      "status": "planned"
+      "status": "active"
     },
     {
       "id": "yoonseul",
@@ -8802,7 +8800,7 @@
       "team": "life",
       "homeAnchor": "desk_yoonseul",
       "entity": "human_chibi",
-      "registration": "planned",
+      "registration": "registered",
       "provider": "Gemini NotebookLM",
       "workAnchor": "desk_yoonseul",
       "meetingAnchor": "shared_meeting_2f",
@@ -8810,7 +8808,7 @@
       "optionalEventAnchor": [
         "shared_meeting_2f"
       ],
-      "status": "planned"
+      "status": "active"
     },
     {
       "id": "seongmin",
@@ -11897,7 +11895,7 @@
       "active",
       "planned"
     ],
-    "planned": "다온·윤슬은 미등록 planned. 공간 preview/low-fi 수동 이동에만 등장, 일일 일정·runtime actor·좌석 배정·runtime 이벤트 참여에서 제외. 실제 명부 등록 후에만 active로 전환.",
+    "planned": "미등록 planned 인물은 공간 preview/low-fi 수동 이동만 허용. 다온·윤슬은 2026-10-23 정식 등록되어 active로 참여.",
     "runtimeEligibility": "person.status === active AND 실제 명부 등록 확인 (성민은 기존 chairman 신원 매핑). planned의 홈/occupant는 디자인 예약이며 rendererSeat.owner는 null.",
     "dailySchedule": "planned → Away/offsite, 일일 일정 생성 제외"
   },

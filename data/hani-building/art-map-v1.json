@@ -991,7 +991,7 @@
             600,
             583
           ],
-          "seatNote": "재무 줄 · 하루 옆 예정 좌석"
+          "seatNote": "재무 줄 · 하루 옆 다온 좌석"
         },
         "life-a": {
           "type": "desk-chair",
@@ -1073,7 +1073,7 @@
             775,
             818
           ],
-          "seatNote": "라이프 줄 다섯 번째 · 윤슬 입사 예정 빈 책상"
+          "seatNote": "라이프 줄 다섯 번째 · 윤슬 책상"
         }
       },
       "backgroundSha256": "e829b0d2e7f72c47234d6b8ce9eb59e283d9f4ca20934aea4794157158faca65",
@@ -1245,7 +1245,7 @@
             -155.535
           ],
           "width": 40,
-          "planned": true
+          "planned": false
         },
         {
           "id": "yoonseul",
@@ -1256,7 +1256,7 @@
             -153.785
           ],
           "width": 40,
-          "planned": true
+          "planned": false
         }
       ]
     },
@@ -2367,7 +2367,7 @@
     },
     "junction_finance": {
       "x": 25,
-      "y": 60.38
+      "y": 57
     },
     "hall_finance": {
       "x": 51,
@@ -2496,7 +2496,7 @@
     "desk_daon": {
       "x": 30.6,
       "y": 63.5,
-      "furniture": "finance row individual desk / front rolling chair (planned, empty)",
+      "furniture": "finance row individual desk / front rolling chair",
       "zone": "desk"
     },
     "approach_desk_daon": {
@@ -2510,7 +2510,7 @@
     "desk_yoonseul": {
       "x": 41.9,
       "y": 88.5,
-      "furniture": "life row fifth individual desk / coral rolling chair (planned, empty)",
+      "furniture": "life row fifth individual desk / coral rolling chair",
       "zone": "desk"
     },
     "approach_desk_yoonseul": {

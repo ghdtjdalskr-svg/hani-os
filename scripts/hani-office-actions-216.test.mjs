@@ -1,8 +1,8 @@
+import {assertOnboardedCanon} from './hani-office-onboarding-232-assertions.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-import crypto from 'node:crypto';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {runtimeTable} from './hani-office-actions-216-data.mjs';
@@ -22,7 +22,7 @@ test('approved catalog projects exactly 98 core actions, 37 disabled, original f
   assert.equal(catalog.frequencyFamilies.length,77);
   for(const f of table.families){const original=catalog.frequencyFamilies.find(x=>x.id===f.id);assert.deepEqual(f.memberActionIds,original.memberActionIds);assert.deepEqual(f.limits,original.limits);}
   for(const a of table.actions)assert.ok(read('docs/design/office-actions-v1.3.md').includes('`'+a.id+'`'));
-  assert.equal(crypto.createHash('sha256').update(fs.readFileSync(new URL('../data/hani-building/spatial-contract.json',import.meta.url))).digest('hex'),'d02426b44c49db169efebd782e110226fd1d719d016bc5912516753f3df8841d');
+  assertOnboardedCanon();
   assert.match(source,/fetch\('\.\/assets\/data\/office-actions-216\.json'\)/);
   assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|Math\.random/);
 });
@@ -46,7 +46,7 @@ test('120 deterministic simulated days enforce all shared caps, cooldowns, paren
       const absolute=Date.parse(day)/1000+e.start;assert.ok(absolute-(lastAcrossDays.get(key)??-Infinity)>=f.limits.cooldownSeconds,key);lastAcrossDays.set(key,absolute);
       if(e.layer===3)assert.equal(f.limits.probabilityPerDay,.15);
       for(const p of e.people){
-        assert.ok(!['daon','yoonseul'].includes(p.id));
+        assert.equal(table.people.find(person=>person.id===p.id)?.registration,p.id==='seongmin'?'chairman':'registered');
         if(e.personalNonWork){assert.ok(e.start-(lastRest.get(p.id)??-Infinity)>=2700);lastRest.set(p.id,e.end);}
         if(api.anchors.get(p.seat.anchor).floor!==p.home.floor){assert.ok(e.start-(lastMove.get(p.id)??-Infinity)>=5400);lastMove.set(p.id,e.end);}
         for(const route of [p.outbound,p.inbound])for(let j=1;j<route.length;j++)assert.ok(assets.canon.edges.some(edge=>edge.kind!=='stairs'&&(edge.from===route[j-1].id&&edge.to===route[j].id||edge.bidirectional&&edge.to===route[j-1].id&&edge.from===route[j].id)));
@@ -112,7 +112,7 @@ test('random access snapshots skip missed events; summoned and cancelled events 
 
 test('actual renderer uses persistent actor/prop/bubble slots, tap/keyboard/profile, visible-only motion and case priority',async()=>{
   const f=fixture('09:00',false,()=>true,table),nodes=[...f.ids.get('haniOfficeActors').children],day='2026-10-19';
-  assert.equal(nodes.length,19);assert.equal(nodes.find(a=>a.dataset.person==='seongmin').hidden,true);assert.ok(nodes.some(a=>a.dataset.person==='visitor'),'one persistent 1F guest slot (lively-3)');
+  assert.equal(nodes.length,21);assert.equal(nodes.find(a=>a.dataset.person==='seongmin').hidden,true);assert.ok(nodes.some(a=>a.dataset.person==='visitor'),'one persistent 1F guest slot (lively-3)');
   const e=f.context.HaniBuildingScene.scheduler.plan(day).find(e=>e.layer===3),time=at(day,(e.performStart+e.performEnd)/2);
   f.setDateTime(time);f.click(e.floors[0]);const actor=f.visible().find(a=>a.dataset.action===e.actionId);assert.ok(actor);assert.ok(actor.querySelector('.hani-office-prop').textContent);
   f.ids.get('haniOfficeActors').events.click({target:actor});const bubble=f.root.querySelector('.hani-office-character-bubble');assert.equal(bubble.hidden,false);assert.ok(bubble.querySelector('p').textContent.includes(actor.dataset.line));assert.equal(bubble.querySelector('a').textContent,'프로필 ↗');
@@ -131,7 +131,12 @@ test('literal runtime fetch executes and an offline table settles into safe base
   for(const ok of [true,false]){
     const calls=[],c=vm.createContext({HaniOfficeV2Assets:assets,window:{},document:{getElementById:()=>null},fetch:async url=>{calls.push(url);if(!ok)throw Error('offline');return {ok:true,json:async()=>table}}});
     await vm.runInContext(source,c);assert.deepEqual(calls,['./assets/data/office-actions-221.json','./assets/data/office-actions-216.json']);
-    assert.equal(Boolean(c.HaniBuildingScene.scheduler),ok);assert.ok(c.HaniBuildingScene.snapshot('2026-10-19T09:00:00+09:00').floors.flatMap(f=>f.people).every(p=>p.actionId==='base-work'));
+    assert.equal(Boolean(c.HaniBuildingScene.scheduler),ok);
+    const snap=c.HaniBuildingScene.snapshot('2026-10-19T09:00:00+09:00');
+    for(const p of snap.floors.flatMap(f=>f.people)){
+      if(!ok)assert.equal(p.actionId,'base-work');
+      else if(p.actionId!=='base-work')assert.ok(c.HaniBuildingScene.scheduler.plan(snap.day).some(e=>e.actionId===p.actionId&&e.people.some(t=>t.id===p.id)&&e.start<=snap.seconds&&snap.seconds<e.end),'loaded table may schedule the new employee arrival at 09:00');
+    }
   }
 });
 

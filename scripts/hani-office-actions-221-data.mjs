@@ -35,7 +35,7 @@ export function nightTable(original){
       ['night-lobby-note','작은 메모 한 줄','📝','조용한 밤이라 메모가 잘 써지네요.'],
       ['night-lobby-story','오늘 이야기 한 줄','💬','오늘 웃겼던 장면, 하나만 얘기할까요?'],
       ['night-lobby-lights','오늘 장면 떠올리기','🌃','오늘 기억할 장면을 적어둘게요.']]],
-    ['2f',['jieun','haru','naeun','hina','minji','sooyeon'],[
+    ['2f',['jieun','haru','naeun','hina','minji','sooyeon','daon','yoonseul'],[
       ['night-life-bookmark','책갈피에 한 줄','📖','이 페이지에 책갈피를 꽂아둘게요.'],
       ['night-life-note','느긋하게 메모 정리','📝','급한 건 없으니 한 줄씩 정리해요.'],
       ['night-life-idea','주말 아이디어 스케치','💡','이건 다음에 같이 해봐도 좋겠어요.']]],

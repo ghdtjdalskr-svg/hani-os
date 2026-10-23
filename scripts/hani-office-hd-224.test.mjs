@@ -77,8 +77,8 @@ test('real canonical loader prefers v3; per-atlas failure falls back once to v2 
    assert.match(actor.querySelector('.hani-office-sprite').style.backgroundImage,mode==='hd'?/sprites-v3\//:/sprites-v2\//);
    assert.match(actor.style.transform,/translate\(-50%,-95\.3125%\)/,'normalized physical pivot');
   }
-  assert.equal(requests.filter(u=>/sprites-v3\//.test(u)).length,mode==='missing-manifest'?0:17);
-  assert.equal(requests.filter(u=>/sprites-v2\//.test(u)).length,mode==='hd'?0:17);
+  assert.equal(requests.filter(u=>/sprites-v3\//.test(u)).length,mode==='missing-manifest'?0:19);
+  assert.equal(requests.filter(u=>/sprites-v2\//.test(u)).length,mode==='hd'?0:19);
   assert.deepEqual(f.ids.get('haniOfficeActors').children,nodes);assert.deepEqual(writes,[]);
  }
 });

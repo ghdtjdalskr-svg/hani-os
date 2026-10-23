@@ -37,15 +37,15 @@ export function fixture(time='09:00',reduced=false,loadArt=null,actionTable=null
  const visible=()=>ids.get('haniOfficeActors').children.filter(a=>!a.hidden);
  return {context,ids,root,map,tabs,click,visible,timers,document,setTime:t=>{clock=new Date(`2026-10-11T${t}:00+09:00`).getTime()},setDateTime:t=>{clock=new Date(t).getTime()},setReduced:matches=>motionEvents.change({matches}),hide:()=>{view.className='view';observers[0]()},show:()=>{view.className='view active';observers[0]()},art:value=>{availableArt=value}};
 }
-test('actual owner reuses 17 actors and a single host across all floor clicks',async()=>{
- const f=fixture(),actors=[...f.ids.get('haniOfficeActors').children];assert.equal(actors.length,17);assert.equal(f.map.dataset.floor,'4f');
- for(const [floor,n] of [['5f',0],['3f',5],['2f',6],['1f',2],['4f',4]]){f.click(floor);assert.equal(f.map.dataset.floor,floor);assert.equal(f.visible().length,n);assert.deepEqual(f.ids.get('haniOfficeActors').children,actors);assert.equal(f.tabs.children.filter(b=>b.getAttribute('aria-selected')==='true').length,1);assert.ok(f.visible().every(a=>a.officeRow.hidden===false))}
+test('actual owner reuses 19 actors and a single host across all floor clicks',async()=>{
+ const f=fixture(),actors=[...f.ids.get('haniOfficeActors').children];assert.equal(actors.length,19);assert.equal(f.map.dataset.floor,'4f');
+ for(const [floor,n] of [['5f',0],['3f',5],['2f',8],['1f',2],['4f',4]]){f.click(floor);assert.equal(f.map.dataset.floor,floor);assert.equal(f.visible().length,n);assert.deepEqual(f.ids.get('haniOfficeActors').children,actors);assert.equal(f.tabs.children.filter(b=>b.getAttribute('aria-selected')==='true').length,1);assert.ok(f.visible().every(a=>a.officeRow.hidden===false))}
  assert.ok(f.visible().every(a=>a.officeText.textContent));await new Promise(r=>setTimeout(r,0));assert.equal(f.map.dataset.art,'fallback');
 });
 test('missing action table keeps base work instead of the retired fixed-time break/meeting schedule',()=>{
  const f=fixture('12:05');assert.ok(f.visible().every(a=>a.dataset.action==='base-work'&&a.dataset.activity==='work'));
- f.setTime('10:05');f.click('2f');assert.equal(f.visible().length,6);assert.equal(f.root.querySelector('.hani-building-overflow').hidden,true);
- assert.deepEqual(f.visible().filter(a=>a.dataset.activity==='meeting'),[]);assert.match(f.tabs.children.find(b=>b.dataset.buildingFloor==='2f').querySelector('small').textContent,/근무 6 · 휴식 0/);
+ f.setTime('10:05');f.click('2f');assert.equal(f.visible().length,8);assert.equal(f.root.querySelector('.hani-building-overflow').hidden,true);
+ assert.deepEqual(f.visible().filter(a=>a.dataset.activity==='meeting'),[]);assert.match(f.tabs.children.find(b=>b.dataset.buildingFloor==='2f').querySelector('small').textContent,/근무 8 · 휴식 0/);
 });
 test('actual owner loads 215 art when present and caches production fallback when absent',async()=>{const f=fixture();f.art('./assets/building/floor-3f-215.webp');f.click('3f');await new Promise(r=>setTimeout(r,0));assert.equal(f.map.dataset.art,'floor');assert.equal(f.map.querySelector('.hani-office-background').src,'./assets/building/floor-3f-215.webp');f.click('1f');await new Promise(r=>setTimeout(r,0));assert.equal(f.map.dataset.art,'fallback')});
 test('hidden view and document pause sprite frames and behaviour; visible view resumes',()=>{
