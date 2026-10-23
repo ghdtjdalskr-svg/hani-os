@@ -1,3 +1,5 @@
+import {assertSeedArt,assertSeedCanon} from './hani-office-seed-233-expectations.mjs';
+// Seed 233 activates two canon desks ahead of the unchanged 232 scheduler catalog.
 // node scripts/hani-office-219.test.mjs [--browser [playwright/index.mjs] [browser.exe] [--labels-only]]
 // Real production index/assets for all revisions; fake KST clock, external traffic blocked.
 import assert from 'node:assert/strict';
@@ -50,7 +52,8 @@ for(const selector of ['.hani-office-name','.hani-office-status','.hani-office-a
 report.static.push('actual stylesheet: name/status/mood/meeting/speech text contrast >=4.5:1');
 
 // Evidence rules out remapped chairs, atlas/pose/scale drift; no hypothetical visual PASS.
-assert.deepEqual(assets.art.anchors,baseline.art.anchors);
+assertSeedArt();assertSeedCanon();
+for(const person of assets.canon.people){const expected=structuredClone(baseline.art.anchors[person.homeAnchor]);if(['daon','yoonseul'].includes(person.id))expected.furniture=expected.furniture.replace(' (planned, empty)','');assert.deepEqual(assets.art.anchors[person.homeAnchor],expected,person.id+' frozen home pivot');}
 assert.equal(read('assets/sprites-v2/manifest.json'),old('assets/sprites-v2/manifest.json'));
 const slice=(s,a,b)=>s.slice(s.indexOf(a),s.indexOf(b,s.indexOf(a)));
 assert.equal(slice(source,'  function pose(','  function loadSprite('),slice(old('hani-office-live.js'),'  function pose(','  function loadSprite('));
@@ -76,8 +79,8 @@ for(const time of [...times,'02:00']){
  }
  report.static.push(`${time}: ${people.length} staff, unique seats, speech present; night presence retained`);
 }
-for(const f of ['index.html','data/hani-building/art-map-v1.json','data/hani-building/spatial-contract.json','assets/sprites-v2/manifest.json','assets/data/office-actions-216.json'])assert.equal(f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(withoutSimplify225(f,readReviewedCurrentSource(f))))):read(f),f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(withoutSimplify225(f,readReviewedReleaseBaseline(f))))):git('show',base+':'+f).toString('utf8'),f+' preserved');
-report.static.push('version/cache, office metadata and action budgets preserved; no office storage/Cloud APIs (art files checked separately with git diff)');
+for(const f of ['index.html','assets/sprites-v2/manifest.json','assets/data/office-actions-216.json'])assert.equal(f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(withoutSimplify225(f,readReviewedCurrentSource(f))))):read(f),f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(withoutSimplify225(f,readReviewedReleaseBaseline(f))))):git('show',base+':'+f).toString('utf8'),f+' preserved');
+report.static.push('version/cache and action budgets preserved; exact seed art hash and only the explicit canon onboarding delta; no office storage/Cloud APIs');
 // Execute the real renderer and floor events as well as the scene model. DOM doubles
 // verify persistent identity and speech updates, not visibility or pixel geometry.
 const {fixture}=await import('./hani-building-206-engine.test.mjs');

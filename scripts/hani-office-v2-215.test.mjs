@@ -1,3 +1,5 @@
+import {assertSeedCanon} from './hani-office-seed-233-expectations.mjs';
+// Seed 233 activates two canon desks ahead of the unchanged 232 scheduler catalog.
 // node scripts/hani-office-v2-215.test.mjs [--browser <playwright/index.mjs> <msedge.exe>]
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -13,13 +15,14 @@ const root=path.resolve(fileURLToPath(new URL('../',import.meta.url))),read=p=>f
 const source=read('hani-office-live.js');
 const ctx=vm.createContext({HaniOfficeV2Assets:assets,window:{},document:{getElementById:()=>null}});vm.runInContext(source,ctx);const api=ctx.HaniBuildingScene;
 test('frozen 326-anchor canon, active registered staff only, exact home floor/seat and posture',()=>{
-  assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(root,'data/hani-building/spatial-contract.json'))).digest('hex'),'d02426b44c49db169efebd782e110226fd1d719d016bc5912516753f3df8841d');
+  assertSeedCanon();
   assert.equal(api.canon.anchors.length,326);assert.equal(api.floors.length,5);
   assert.deepEqual([...api.floors.flatMap(f=>f.residents)].sort(),assets.canon.people.filter(p=>p.status==='active'&&p.registration==='registered').map(p=>p.id).sort());
   for(const person of assets.canon.people.filter(p=>p.status==='active'&&p.registration==='registered')){
     const anchor=api.anchors.get(person.homeAnchor),seat=api.homeSeat(person.id);assert.equal(seat.anchor,anchor.id);assert.equal(seat.x,assets.art.anchors[anchor.id].x);assert.equal(seat.y,assets.art.anchors[anchor.id].y);assert.equal(seat.id,anchor.rendererSeat.id);assert.equal(seat.zone,assets.art.anchors[anchor.id].zone||anchor.rendererSeat.zone);
   }
-  for(const id of ['daon','yoonseul','chairman','seongmin'])assert.equal(api.homeSeat(id),undefined);
+  for(const id of ['chairman','seongmin'])assert.equal(api.homeSeat(id),undefined);
+  for(const id of ['daon','yoonseul'])assert.equal(api.homeSeat(id).owner,id);
   assert.equal(api.homeSeat('mir').posture,'standing');assert.equal(api.homeSeat('hani').posture,'sitting');
   assert.equal(api.assignSeats('4f',[{id:'mir',activity:'meeting'}])[0].seat.anchor,'mir_meeting_pos');
   assert.equal(api.assignSeats('2f',[{id:'mir',activity:'meeting'}])[0].seat,undefined,'MIR does not take a human conference chair');
@@ -124,10 +127,10 @@ test('2F: five Life desks, two Finance spares, no LIFE sign or life spill-over, 
   assert.ok(f.deskRows.finance.seats.every(id=>!f.homeFurniture[id]||f.homeFurniture[id].row==='finance'),'no life member in Finance row');
   assert.equal(f.freeDesks.length,2);assert.ok(f.freeDesks.every(s=>s.label==='여유석'));
   for(const spare of f.freeDesks)for(const seat of api.seatMaps['2f']){const p=assets.art.anchors[seat.anchor],b=spare.seatBounds;assert.ok(p.x*1672/100<b[0]||p.x*1672/100>b[2]||p.y*941/100<b[1]||p.y*941/100>b[3],'spares stay unassigned')}
-  assert.equal(f.homeFurniture.desk_daon.seatNote,'재무 줄 · 하루 옆 예정 좌석');
-  assert.equal(f.homeFurniture.desk_yoonseul.seatNote,'라이프 줄 다섯 번째 · 윤슬 입사 예정 빈 책상');
+  assert.equal(f.homeFurniture.desk_daon.seatNote,'재무 줄 · 하루 옆 다온 좌석');
+  assert.equal(f.homeFurniture.desk_yoonseul.seatNote,'라이프 줄 다섯 번째 · 윤슬 책상');
   assert.ok(!f.plates.some(p=>p.label==='LIFE'||p.fullLabel?.includes('윤슬')),'removed small LIFE sign');
-  for(const id of ['daon','yoonseul']){assert.equal(api.homeSeat(id),undefined);assert.ok(!api.seatMaps['2f'].some(s=>s.anchor===assets.canon.people.find(p=>p.id===id).homeAnchor))}
+  for(const id of ['daon','yoonseul']){assert.equal(api.homeSeat(id).owner,id);assert.ok(api.seatMaps['2f'].some(s=>s.anchor===assets.canon.people.find(p=>p.id===id).homeAnchor))}
 });
 test('walking updates transforms and alternates A/B in existing slots, hidden pauses, reduced motion snaps',async()=>{
   const f=fixture('09:00',false,()=>true);f.click('2f');const nodes=[...f.ids.get('haniOfficeActors').children];

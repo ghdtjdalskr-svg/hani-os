@@ -1,3 +1,4 @@
+// Seed 233 activates two canon desks ahead of the unchanged 232 scheduler catalog.
 // node scripts/hani-office-seats-215.test.mjs [--browser <playwright index.mjs> <browser exe>]
 import assert from 'node:assert/strict';
 import test from 'node:test';
@@ -20,14 +21,14 @@ const overlaps=(a,b)=>a[0]<b[2]&&a[2]>b[0]&&a[1]<b[3]&&a[3]>b[1];
 const evidence=path.join(root,'artifacts/office-seats-215');
 fs.mkdirSync(evidence,{recursive:true});
 
-test('17 staff have unique named home chairs on their canonical floor; CEO reserved',()=>{
+test('19 staff have unique named home chairs on their canonical floor; CEO reserved',()=>{
   const all=[];
   for(const f of api.floors){
     assert.ok(Object.isFrozen(api.seatMaps[f.id]));
     assert.equal(new Set(api.seatMaps[f.id].map(s=>s.id)).size,api.seatMaps[f.id].length);
     for(const id of f.residents){const seat=api.homeSeat(id);assert.ok(seat,id);assert.ok(api.seatMaps[f.id].includes(seat),id);all.push(seat);}
   }
-  assert.equal(new Set(all).size,17);
+  assert.equal(new Set(all).size,19);
   assert.equal(api.homeSeat('seoyun').id,'dev-lead');
   assert.equal(api.homeSeat('hani').id,'office_hani');
   assert.equal(api.homeSeat('yuna').id,'desk_yuna');
@@ -100,7 +101,7 @@ test('actual renderer remains seated across timer updates, reloads and meeting r
 test('logo removed, one persistent actor owner, lazy sprite slots and no random render path',()=>{
   assert.doesNotMatch(html,/class="hani-office-ci"/);
   assert.doesNotMatch(source,/Math\.random|localStorage|sessionStorage|\.clear\(/);
-  const f=fixture();assert.equal(f.ids.get('haniOfficeActors').children.length,17);
-  assert.equal(f.ids.get('haniOfficeActors').children.filter(a=>a.dataset.avatar==='pending').length,13);
+  const f=fixture();assert.equal(f.ids.get('haniOfficeActors').children.length,19);
+  assert.equal(f.ids.get('haniOfficeActors').children.filter(a=>a.dataset.avatar==='pending').length,15);
   assert.equal(f.visible().length,4);
 });

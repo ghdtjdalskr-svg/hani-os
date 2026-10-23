@@ -1,3 +1,5 @@
+import {assertSeedCanon} from './hani-office-seed-233-expectations.mjs';
+// Seed 233 activates two canon desks ahead of the unchanged 232 scheduler catalog.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -20,7 +22,7 @@ test('approved catalog projects exactly 98 core actions, 37 disabled, original f
   assert.equal(catalog.frequencyFamilies.length,77);
   for(const f of table.families){const original=catalog.frequencyFamilies.find(x=>x.id===f.id);assert.deepEqual(f.memberActionIds,original.memberActionIds);assert.deepEqual(f.limits,original.limits);}
   for(const a of table.actions)assert.ok(read('docs/design/office-actions-v1.3.md').includes('`'+a.id+'`'));
-  assert.equal(crypto.createHash('sha256').update(fs.readFileSync(new URL('../data/hani-building/spatial-contract.json',import.meta.url))).digest('hex'),'d02426b44c49db169efebd782e110226fd1d719d016bc5912516753f3df8841d');
+  assertSeedCanon();
   assert.match(source,/fetch\('\.\/assets\/data\/office-actions-216\.json'\)/);
   assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|Math\.random/);
 });
@@ -106,7 +108,7 @@ test('random access snapshots skip missed events; summoned and cancelled events 
 
 test('actual renderer uses persistent actor/prop/bubble slots, tap/keyboard/profile, visible-only motion and case priority',async()=>{
   const f=fixture('09:00',false,()=>true,table),nodes=[...f.ids.get('haniOfficeActors').children],day='2026-10-19';
-  assert.equal(nodes.length,19);assert.equal(nodes.find(a=>a.dataset.person==='seongmin').hidden,true);assert.ok(nodes.some(a=>a.dataset.person==='visitor'),'one persistent 1F guest slot (lively-3)');
+  assert.equal(nodes.length,21);assert.equal(nodes.find(a=>a.dataset.person==='seongmin').hidden,true);assert.ok(nodes.some(a=>a.dataset.person==='visitor'),'one persistent 1F guest slot (lively-3)');
   const e=f.context.HaniBuildingScene.scheduler.plan(day).find(e=>e.layer===3),time=at(day,(e.performStart+e.performEnd)/2);
   f.setDateTime(time);f.click(e.floors[0]);const actor=f.visible().find(a=>a.dataset.action===e.actionId);assert.ok(actor);assert.ok(actor.querySelector('.hani-office-prop').textContent);
   f.ids.get('haniOfficeActors').events.click({target:actor});const bubble=f.root.querySelector('.hani-office-character-bubble');assert.equal(bubble.hidden,false);assert.ok(bubble.querySelector('p').textContent.includes(actor.dataset.line));assert.equal(bubble.querySelector('a').textContent,'프로필 ↗');
