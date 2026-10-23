@@ -90,6 +90,21 @@
 - 검증(`node scripts/hani-milestones-v1.test.mjs <playwright> <msedge>`): Node 14 PASS(차단 7조건에서 save 호출 0·state 불변, 성공 시 milestones만 교체, 실패·예외 시 같은 객체로 복구, seed override/숨김 보존), 화면 8조건 PASS(실제 save로 저장, 다른 기록 불변, 쓰기는 save 경로의 `hani_os_life_v23`만, Cloud 큐 호출 확인), 저장 시나리오 7개 PASS: 업그레이드 무변경·hash 동일 / Cloud OFF 차단 / 저장→새로고침 read-back·수정 id 유지·seed 코멘트·삭제 / 저장공간 부족 시 복구 / 백업 생성·검증·복원·Cloud fingerprint 반영 / 망가진 목록 원본 보호 / 운영 2.9.232 normalizeState가 목록 보존
 - 미검증: 실제 Supabase 왕복(가짜 Cloud로만 확인), 회장님 실제 기록·폰. CRITICAL 등급이라 열차에서 One-Pass·HINA와 배포 후 회장님 폰 저장→다른 기기 read-back 필요
 
+## 2026-10-24 · 배포 열차 탑승 (회장님 지시: "다음 배포 열차에 태워줘. 128 한도는 열차에서 먼저 확인")
+
+- 탑승 branch: `hani/milestones-v1` (base `7a10595` = v2.9.232 main, PR 없음·버전/캐시 태그 미변경, 새 태그는 `?v=2.9.232`)
+- 대상 열차: `origin/hani/release-train-20261023` (`d5642fc`, 2.9.233 본사 재설계). 확인 시점 origin/main `d19aa0b`(#339 seed, 본사 데이터·테스트만)
+- **배포 파일 수(runtime closure)**: 열차 단독 127 → 마일스톤(js+css 2개) 합치면 129로 **한도 초과**. 그래서 마일스톤 CSS를 `hani-design-system.css` 끝으로 옮겨 새 파일을 `hani-milestones.js` 1개로 줄임(`e1fce31`). **열차+마일스톤 = 128/128, 누락 0, 15,458,086 bytes** (임시 detached worktree에서 실제 merge 후 계산)
+- 여유 0: 이 열차에 새 runtime 파일이 하나라도 더 타면 BLOCK
+- merge 충돌(기능 코드 없음, 도구 2개만): `scripts/hani-reviewed-release-baseline.mjs`, `scripts/hani-reviewed-release-baseline.test.mjs`. 열차 쪽(ours)을 기준으로 아래 두 곳만 바꾸면 됨(임시 worktree에서 검증 완료)
+  - helper: `const milestones=JSON.parse(fs.readFileSync(new URL('./fixtures/milestones-v1.json',import.meta.url),'utf8'));` 추가 후 `pendingApprovedConnections=[...office.changes,...milestones.changes].map(`
+  - test: pending 파일 목록 기대값을 `['assets/data/office-actions-216.json','assets/data/office-actions-221.json','hani-design-system.css','hani-main.js','hani-office-live.js','hani-ui-v02992.js','index.html']`로
+  - 열차 release 후에는 `milestones-v1.json`을 approvedReleases(해당 release SHA)로 옮기는 기존 절차
+- 해결본에서 실행한 테스트: reviewed-release-baseline·theme-white-215·hero-restore·simplify-225·nav-groups·runtime-closure-ilbo·milestones-v1(Node 14 + 화면 8조건 + 저장 시나리오 7) PASS. `brand-heroes-218`은 `data/hani-building/art-map-v1.json` 차이로 FAIL이나 **열차 단독에서도 같은 FAIL**(본사 재설계 쪽, 마일스톤 무관)
+- 서버 Edge Function·설정 동반 배포: 없음. Cloud schema 변경 없음
+- 위험 등급: CRITICAL(`hani_os_life_v23`에 선택 목록 추가) → 열차 One-Pass·HINA 필수, 배포 후 회장님 폰에서 마일스톤 저장 → 다른 기기 read-back 필요
+- 승인 범위: Milestones v1 구현(10/23), A안 저장·Cloud ON 전용·건강혁명 코멘트(10/23), 열차 탑승(10/24). main merge·배포 실행은 열차 Preview 후 회장님 승인 필요
+
 ## 다음 담당에게
 
 - 먼저 읽을 파일: `hani-milestones.js`, 이 문서, `scripts/fixtures/milestones-v1.json`
