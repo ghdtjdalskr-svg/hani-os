@@ -2,10 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {newsroomScript,newsroomEntry,newsroomCss} from './hani-newsroom-4cut-preservation.mjs';
-import {readReleaseSource,readReviewedReleaseBaseline,assertReviewedReleaseSource,guardedRelease,approvedReleases,projectTrainVersion,pendingApprovedConnections,normalizeReviewedCurrentSource} from './hani-reviewed-release-baseline.mjs';
+import {readReleaseSource,readReviewedReleaseBaseline,assertReviewedReleaseSource,guardedRelease,approvedReleases,projectTrainVersion,pendingApprovedConnections,normalizeReviewedCurrentSource,trainBaseVersion} from './hani-reviewed-release-baseline.mjs';
 
 test('release225 plus only named later release changes reproduces current source bytes',()=>{
- for(const file of new Set(['hani-development-history-v1.js',...approvedReleases.flatMap(r=>r.files)])){
+ for(const file of new Set(['hani-development-history-v1.js',...approvedReleases.flatMap(r=>r.files),...pendingApprovedConnections.map(c=>c.file)])){
   assertReviewedReleaseSource(file,fs.readFileSync(new URL('../'+file,import.meta.url),'utf8'));
  }
  assert.ok(approvedReleases.every(r=>/^[0-9a-f]{40}$/.test(r.sha)));
@@ -13,14 +13,15 @@ test('release225 plus only named later release changes reproduces current source
 });
 
 test('release projection advances cache/display only; internal and historical literals stay strict',()=>{
- const source='x.js?v=2.9.230 const HANI_DISPLAY_VERSION="2.9.230"; internal="2.9.15-safe-baseline-bootstrap"; old="2.9.225";';
- assert.equal(projectTrainVersion(source,'2.9.231'),'x.js?v=2.9.231 const HANI_DISPLAY_VERSION="2.9.231"; internal="2.9.15-safe-baseline-bootstrap"; old="2.9.225";');
- assert.throws(()=>projectTrainVersion(source,'2.9.229'));
- assert.throws(()=>projectTrainVersion(source,'2.9.231-invalid'));
- const html=readReviewedReleaseBaseline('index.html'),future=projectTrainVersion(html,'2.9.231');
- assert.doesNotMatch(future,/2\.9\.230/,'next train updates all existing visible labels and cache tags');
- assert.match(future,/<title>갓생살기 프로젝트 · HANI OS Life Edition v2\.9\.231<\/title>/);
- assert.equal(projectTrainVersion('unrelated v2.9.230','2.9.231'),'unrelated v2.9.230');
+ const source='x.js?v=2.9.231 const HANI_DISPLAY_VERSION="2.9.231"; internal="2.9.15-safe-baseline-bootstrap"; old="2.9.225";';
+ assert.equal(trainBaseVersion,'2.9.231');
+ assert.equal(projectTrainVersion(source,'2.9.232'),'x.js?v=2.9.232 const HANI_DISPLAY_VERSION="2.9.232"; internal="2.9.15-safe-baseline-bootstrap"; old="2.9.225";');
+ assert.throws(()=>projectTrainVersion(source,'2.9.230'));
+ assert.throws(()=>projectTrainVersion(source,'2.9.232-invalid'));
+ const html=readReviewedReleaseBaseline('index.html'),future=projectTrainVersion(html,'2.9.232');
+ assert.doesNotMatch(future,/2\.9\.231/,'next train updates all existing visible labels and cache tags');
+ assert.match(future,/<title>갓생살기 프로젝트 · HANI OS Life Edition v2\.9\.232<\/title>/);
+ assert.equal(projectTrainVersion('unrelated v2.9.231','2.9.232'),'unrelated v2.9.231');
 });
 
 test('unlisted controls, storage, source and EOL edits remain detectable against Git oracle',()=>{
@@ -61,7 +62,7 @@ test('pending connections reject missing, duplicate or altered additions in ever
  assert.equal(normalizeReviewedCurrentSource('other.html',other),other);
 });
 
-test('newsroom normalization rejects unlisted edits inside and outside approved regions, including EOL and report data',()=>{
+test('released newsroom bytes reject unlisted edits, including EOL and report data',()=>{
  for(const [file,from,to] of [
   ['index.html','주간 시황 4컷','unlisted card'],
   ['index.html','./hani-newsroom-4cut.js','./unlisted-newsroom.js'],
@@ -84,6 +85,29 @@ test('approved additions cannot move to another script, event or cascade positio
  for(const [file,addition] of [['index.html',newsroomScript],['hani-main.js',newsroomEntry],['hani-design-system.css',newsroomCss]]){
   const current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
   const moved=addition+current.replace(addition,'');
-  assert.throws(()=>normalizeReviewedCurrentSource(file,moved),{code:'ERR_ASSERTION'},file+' canonical insertion order');
+  assert.throws(()=>assertReviewedReleaseSource(file,moved),{code:'ERR_ASSERTION'},file+' canonical insertion order');
+ }
+});
+
+test('pending join stays scoped to five owners; unlisted staff edits and moved fragments fail',()=>{
+ assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),['hani-character-archive-data.js','hani-character-archive.js','hani-main.js','hani-organization-hub.js','hani-ui-v02992.js']);
+ for(const {file,lines} of pendingApprovedConnections){
+  const current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
+  assertReviewedReleaseSource(file,current);
+  assert.throws(()=>assertReviewedReleaseSource(file,'// unlisted staff edit\n'+current),{code:'ERR_ASSERTION'},file+' outside fragment');
+  for(const fragment of lines){
+   assert.throws(()=>assertReviewedReleaseSource(file,fragment+current.replace(fragment,'')),{code:'ERR_ASSERTION'},file+' moved approved fragment');
+  }
+ }
+ for(const [file,from,to] of [
+  ['hani-main.js','사원 · 2F','부장 · 2F'],
+  ['hani-organization-hub.js',"['sua','수아','과장'","['sua','수아','사원'"],
+  ['hani-character-archive-data.js','2026-10-23 입사','2026-10-24 입사'],
+  ['hani-character-archive.js','다온 · 윤슬이 2026-10-23','다온 · 윤슬이 2026-10-24'],
+  ['hani-ui-v02992.js','identity:"다온 · 리스크 애널리스트",rank:"사원"','identity:"다온 · 리스크 애널리스트",rank:"부장"']
+ ]){
+  const current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
+  assert.ok(current.includes(from),file+' mutation anchor');
+  assert.throws(()=>assertReviewedReleaseSource(file,current.replace(from,to)),{code:'ERR_ASSERTION'},file+' unlisted rank/date/other staff');
  }
 });

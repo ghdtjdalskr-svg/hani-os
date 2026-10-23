@@ -10,8 +10,9 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const root = path.resolve(fileURLToPath(new URL('../', import.meta.url)));
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const out = path.join(root, 'artifacts/desk-mascots');
+fs.mkdirSync(out, { recursive: true });
 const catalog = JSON.parse(read('assets/data/desk-mascots-v1.json'));
-const plan = JSON.parse(read('artifacts/desk-mascots/runtime-plan.json')).placements;
+const plan = JSON.parse(read('scripts/fixtures/desk-mascots/runtime-plan.json')).placements;
 const art = JSON.parse(read('data/hani-building/art-map-v1.json'));
 const canon = JSON.parse(read('data/hani-building/spatial-contract.json'));
 const source = read('hani-desk-mascots.js');
@@ -47,7 +48,7 @@ function metadataChecks() {
       assert.ok(bytes[20] & 16, 'transparent source');
     }
   }
-  const measured = JSON.parse(read('artifacts/desk-mascots/placements.json')).placements;
+  const measured = JSON.parse(read('scripts/fixtures/desk-mascots/placements.json')).placements;
   for (const p of measured) assert.deepEqual(plan.find(item => item.id === p.id).foot, [p.figureBox[0] + 14, p.figureBox[1] + 28]);
   assert.doesNotMatch(source, /localStorage|sessionStorage|supabase|\.id\s*=(?!=)|setAttribute\(['"]id/);
   assert.ok(html.indexOf('src="./hani-desk-mascots.js"') > html.indexOf('src="./hani-office-live.js'));

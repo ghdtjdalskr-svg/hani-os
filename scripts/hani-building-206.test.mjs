@@ -3,9 +3,11 @@ import test from 'node:test';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import {assets} from './hani-office-v2-fixture.mjs';
+import {readReviewedCurrentSource} from './hani-reviewed-release-baseline.mjs';
 const read=file=>fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
 const source=read('hani-office-live.js'),context=vm.createContext({HaniOfficeV2Assets:assets,document:{getElementById:()=>null},window:{}});
-vm.runInContext(source,context);vm.runInContext(read('hani-organization-hub.js'),context);
+// The approved join excludes the office scene; preserve its 17-person oracle.
+vm.runInContext(source,context);vm.runInContext(readReviewedCurrentSource('hani-organization-hub.js'),context);
 const api=context.HaniBuildingScene,plain=value=>JSON.parse(JSON.stringify(value));
 const at=time=>api.snapshot(new Date('2026-10-11T'+time+':00+09:00'));
 test('17 canonical staff, exact home floors and immutable config',()=>{
