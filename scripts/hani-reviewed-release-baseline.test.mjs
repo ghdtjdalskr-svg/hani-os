@@ -90,7 +90,7 @@ test('approved additions cannot move to another script, event or cascade positio
 });
 
 test('pending join stays scoped to five owners; unlisted staff edits and moved fragments fail',()=>{
- assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),['hani-character-archive-data.js','hani-character-archive.js','hani-main.js','hani-main.js','hani-organization-hub.js','hani-ui-v02992.js','hani-ui-v02992.js','index.html']);
+ assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),['hani-character-archive-data.js','hani-character-archive.js','hani-design-system.css','hani-main.js','hani-main.js','hani-organization-hub.js','hani-ui-v02992.js','hani-ui-v02992.js','index.html']);
  for(const {file,lines} of pendingApprovedConnections){
   const current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
   assertReviewedReleaseSource(file,current);

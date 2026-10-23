@@ -135,7 +135,9 @@ check('protected baseline untouched and wiring stays minimal', () => {
   assert.match(ui, /milestones: entry\("hani"/, 'canonical tab voice');
   assert.match(ui, /"milestones":Object\.freeze\(\{[\s\S]*?title:"삶에 남은 변화들"[\s\S]*?sceneImage: "\.\/assets\/heroes\/organization-226w\.webp"/, 'canonical banner reuses an existing scene');
   assert.ok(html.indexOf('data-view="milestones"') > html.indexOf('data-view="home"') && html.indexOf('data-view="milestones"') < html.indexOf('office-main-nav'), 'directly below dashboard');
-  assert.ok(/<script src="\.\/hani-milestones\.js\?v=[\d.]+"><\/script>/.test(html) && /href="\.\/hani-milestones\.css\?v=[\d.]+"/.test(html));
+  // One new runtime file only (release closure limit 128): styles live at the end of the design system.
+  assert.ok(/<script src="\.\/hani-milestones\.js\?v=[\d.]+"><\/script>/.test(html) && !html.includes('hani-milestones.css'));
+  assert.match(read('hani-design-system.css'), /\/\* ===== Milestones \(Life Archive\)[\s\S]*\.ms-compare-row[\s\S]*body\[data-view|#app #home>\[data-milestone-home\]/);
   const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map(m => m[1]);
   assert.equal(new Set(ids).size, ids.length, 'no duplicate static DOM id');
 });
