@@ -13,15 +13,15 @@ test('release225 plus only named later release changes reproduces current source
 });
 
 test('release projection advances cache/display only; internal and historical literals stay strict',()=>{
- const source='x.js?v=2.9.231 const HANI_DISPLAY_VERSION="2.9.231"; internal="2.9.15-safe-baseline-bootstrap"; old="2.9.225";';
- assert.equal(trainBaseVersion,'2.9.231');
- assert.equal(projectTrainVersion(source,'2.9.232'),'x.js?v=2.9.232 const HANI_DISPLAY_VERSION="2.9.232"; internal="2.9.15-safe-baseline-bootstrap"; old="2.9.225";');
+ const source='x.js?v=2.9.232 const HANI_DISPLAY_VERSION="2.9.232"; internal="2.9.15-safe-baseline-bootstrap"; old="2.9.225";';
+ assert.equal(trainBaseVersion,'2.9.232');
+ assert.equal(projectTrainVersion(source,'2.9.233'),'x.js?v=2.9.233 const HANI_DISPLAY_VERSION="2.9.233"; internal="2.9.15-safe-baseline-bootstrap"; old="2.9.225";');
  assert.throws(()=>projectTrainVersion(source,'2.9.230'));
- assert.throws(()=>projectTrainVersion(source,'2.9.232-invalid'));
- const html=readReviewedReleaseBaseline('index.html'),future=projectTrainVersion(html,'2.9.232');
- assert.doesNotMatch(future,/2\.9\.231/,'next train updates all existing visible labels and cache tags');
- assert.match(future,/<title>갓생살기 프로젝트 · HANI OS Life Edition v2\.9\.232<\/title>/);
- assert.equal(projectTrainVersion('unrelated v2.9.231','2.9.232'),'unrelated v2.9.231');
+ assert.throws(()=>projectTrainVersion(source,'2.9.233-invalid'));
+ const html=readReviewedReleaseBaseline('index.html'),future=projectTrainVersion(html,'2.9.233');
+ assert.doesNotMatch(future,/2\.9\.232/,'next train updates all existing visible labels and cache tags');
+ assert.match(future,/<title>갓생살기 프로젝트 · HANI OS Life Edition v2\.9\.233<\/title>/);
+ assert.equal(projectTrainVersion('unrelated v2.9.232','2.9.233'),'unrelated v2.9.232');
 });
 
 test('unlisted controls, storage, source and EOL edits remain detectable against Git oracle',()=>{
@@ -89,14 +89,16 @@ test('approved additions cannot move to another script, event or cascade positio
  }
 });
 
-test('pending join stays scoped to five owners; unlisted staff edits and moved fragments fail',()=>{
- assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),['hani-character-archive-data.js','hani-character-archive.js','hani-main.js','hani-organization-hub.js','hani-ui-v02992.js']);
+test('pending office stays scoped to three runtime owners; released staff and moved fragments stay strict',()=>{
+ assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),['assets/data/office-actions-216.json','assets/data/office-actions-221.json','hani-office-live.js']);
  for(const {file,lines} of pendingApprovedConnections){
   const current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
   assertReviewedReleaseSource(file,current);
   assert.throws(()=>assertReviewedReleaseSource(file,'// unlisted staff edit\n'+current),{code:'ERR_ASSERTION'},file+' outside fragment');
   for(const fragment of lines){
-   assert.throws(()=>assertReviewedReleaseSource(file,fragment+current.replace(fragment,'')),{code:'ERR_ASSERTION'},file+' moved approved fragment');
+   // Full JSON is one frozen line; a leading JS hunk must move to the end.
+   const rest=current.replace(fragment,''),moved=rest?(current.startsWith(fragment)?rest+fragment:fragment+rest):fragment+'\n';
+   assert.throws(()=>assertReviewedReleaseSource(file,moved),{code:'ERR_ASSERTION'},file+' moved approved fragment');
   }
  }
  for(const [file,from,to] of [
