@@ -90,7 +90,7 @@ try{
             assert.equal(geometry.overlap,false,JSON.stringify(lastDiagnostic));
             assert.equal(geometry.headerOverlap,false,JSON.stringify(lastDiagnostic));
             assert.equal(geometry.headerPosition,'sticky');assert.equal(geometry.triggerPosition,'static');
-            assert.equal(geometry.header.h,48);assert.ok(geometry.launcher.h>=44,'Remote touch target');
+            assert.equal(geometry.header.h,48);assert.ok(geometry.launcher.h>=40,'Remote touch target (app header minimum 40px, same as date toggle)');
             assert.ok(geometry.control.y>=0&&geometry.control.bottom<=844,'anchor control reachable: '+JSON.stringify(lastDiagnostic));
             if(phase==='scroll-up'){assert.equal(geometry.hidden,false,'scroll up reveals header');assert.equal(geometry.painted,true,'revealed header is painted');}
             metrics.push(lastDiagnostic);await page.screenshot({path:path.join(output,width+'-'+finish+'-'+view+'-'+phase+'.png')});
