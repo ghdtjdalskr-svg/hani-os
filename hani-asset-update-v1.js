@@ -9,7 +9,7 @@ let selected=[],draft=null,selectedAccountId="",imageUrls=[],pendingAccountId=nu
 const holdingPreviewMeta=new WeakMap(),screenPreviewMeta=new WeakMap(),previewEditState=new WeakMap(),fieldProvenance=new WeakMap();
 function provenance(row,key,kind,extra={}){let fields=fieldProvenance.get(row);if(!fields){fields={};fieldProvenance.set(row,fields)}if(kind)fields[key]={kind,...extra};return fields[key]||{kind:row?.[key]==null||row?.[key]===""?"MISSING":"VISIBLE_SOURCE"}}
 function copyProvenance(from,to){fieldProvenance.set(to,{...fieldProvenance.get(from)});return to}
-const text=v=>String(v??"").replace(/\s+/g," ").trim(),number=v=>parseKoreanNumber(v),safe=v=>text(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
+const text=v=>String(v??"").replace(/\s+/g," ").trim(),number=v=>{if(v===null||v===undefined||String(v).trim()==="")return null;const k=parseKoreanNumber(v);if(k!==null)return k;const t=String(v);if(/[조억만천백십]/.test(t))return null;const m=t.replace(/[−–]/g,"-").replace(/[,₩원%\s]/g,"").match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):null},safe=v=>text(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
 // OCR evidence is transient: labels/raw/visibility/confidence never enter storage.
 const ocrAccountFields={currentAsset:["계좌총액","총자산","추정자산","총평가자산"],balance:["예수금","현금잔고"],withdrawable:["출금가능","출금가능금액"],purchase:["매입금액","총매입금액","원금","주식매입금액"],evaluation:["평가금액","총평가금액","평가금","주식평가금액"],pnl:["평가손익","총손익","총수익금"],returnRate:["수익률","총수익률"]};
 ocrAccountFields.currentAsset.push("추정예탁자산");ocrAccountFields.evaluation.push("내 투자");ocrAccountFields.pnl.push("총 수익","총평가손익금액");
