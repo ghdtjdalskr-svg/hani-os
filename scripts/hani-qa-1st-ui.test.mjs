@@ -14,8 +14,8 @@ const origin=`http://127.0.0.1:${server.address().port}`,metrics=[];
 let browser;
 try{
   browser=await chromium.launch({executablePath:process.argv[3],headless:true});
-  for(const width of [390,1440])for(const finish of ['porcelain-cream','midnight-black']){
-    const context=await browser.newContext({viewport:{width,height:width===390?844:900},reducedMotion:'reduce',serviceWorkers:'block'});
+  for(const width of [390,412,1440])for(const finish of ['porcelain-cream','midnight-black']){
+    const context=await browser.newContext({viewport:{width,height:width<=768?844:900},reducedMotion:'reduce',serviceWorkers:'block'});
     await context.route('**/*',route=>new URL(route.request().url()).origin===origin?route.continue():route.abort());
     const page=await context.newPage(),errors=[];page.on('pageerror',error=>errors.push(error.message));
     await page.goto(origin);await page.waitForFunction(()=>typeof unlockLoginGate==='function'&&!!window.HANI_CONTEXT_REMOTE_V1);
@@ -31,7 +31,7 @@ try{
         const section=document.getElementById(view),trigger=document.querySelector('.hani-remote-mobile-trigger'),r=rect(trigger);
         const fields=[...section.querySelectorAll('input:not([type="hidden"]),select,textarea,button')].filter(visible);
         const overlap=width<=768?fields.filter(node=>intersects(rect(node),r)).map(node=>node.id||node.textContent.trim()):[];
-        const dateWidths=[...section.querySelectorAll('input[data-date-kind="date"]')].filter(visible).map(node=>({id:node.id,width:node.clientWidth,scrollWidth:node.scrollWidth}));
+        const dateWidths=[...section.querySelectorAll('input[data-date-kind="date"]')].filter(visible).map(node=>{const style=getComputedStyle(node),wrap=node.closest('.date-flex-control'),grid=wrap&&getComputedStyle(wrap);return {id:node.id,width:node.clientWidth,scrollWidth:node.scrollWidth,borderBox:rect(node).w,borders:[style.borderLeftWidth,style.borderRightWidth],padding:[style.paddingLeft,style.paddingRight],wrapper:wrap&&rect(wrap).w,tracks:grid?.gridTemplateColumns,gap:grid?.columnGap,parentTracks:wrap&&getComputedStyle(wrap.parentElement).gridTemplateColumns}});
         const money=[...section.querySelectorAll('.stat .value:not(:has(.amount-unit)),.amount-unit,.ledger-breaker-line strong,.ledger-support-kpis b,.portfolio-summary strong')].filter(visible).map(node=>({text:node.textContent,nowrap:getComputedStyle(node).whiteSpace,width:node.clientWidth,scrollWidth:node.scrollWidth}));
         const luminance=rgb=>{const c=rgb.map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);return c[0]*.2126+c[1]*.7152+c[2]*.0722};
         const color=value=>(value.match(/[\d.]+/g)||[]).map(Number);
@@ -39,10 +39,11 @@ try{
         const contrast=[...section.querySelectorAll('.stat .label,.stat .value,.asset-dashboard-card h3,.task-calendar-hub h3,.task-calendar-hub .sub,.hani-dev-history-overview h3,.hani-dev-history-overview p,.asset-capture-intro p,.budget-plan,.ledger-jispi-head span,.ledger-support-kpis span,.ledger-support-kpis b,.earnings-controls label,.earnings-report>.sub')].filter(visible).map(node=>{const fg=luminance(color(getComputedStyle(node).color)),bg=luminance(background(node));return {text:node.textContent,ratio:(Math.max(fg,bg)+.05)/(Math.min(fg,bg)+.05)};});
         let homeOverlap=false;if(view==='home'){const quote=document.getElementById('homeDialogueText'),actions=document.querySelector('.home-welcome-actions');homeOverlap=intersects(rect(quote),rect(actions));}
         const clip=view==='settings'?[...section.querySelectorAll('#group-backup .feature p')].filter(visible).filter(node=>node.scrollHeight>node.clientHeight+1).map(node=>node.textContent):[];
-        return {view,overlap,dateWidths,money,contrast,homeOverlap,clip,pageWidth:document.documentElement.scrollWidth,viewport:innerWidth,triggerPosition:getComputedStyle(trigger).position};
+        return {view,overlap,dateWidths,money,contrast,homeOverlap,clip,viewWidth:section.clientWidth,viewScroll:section.scrollWidth,pageWidth:document.documentElement.scrollWidth,viewport:innerWidth,triggerPosition:getComputedStyle(trigger).position};
       },{view,width});
       assert.deepEqual(result.overlap,[],`${width}/${view}: Remote covers controls`);assert.equal(result.homeOverlap,false,'home sentence/button overlap');assert.deepEqual(result.clip,[],'backup explanation clipping');
       assert.ok(result.pageWidth<=result.viewport+1,`${width}/${view}: page overflow`);
+      if(width===412&&['home','tasks'].includes(view))assert.ok(result.viewScroll<=result.viewWidth+1,`${width}/${view}: view overflow`);
       if(width<=768)assert.equal(result.triggerPosition,'static');
       for(const date of result.dateWidths)assert.ok(date.width>=140&&date.scrollWidth<=date.width+1,`${width}/${view}: date ${JSON.stringify(date)}`);
       for(const value of result.money){assert.equal(value.nowrap,'nowrap',JSON.stringify(value));assert.ok(value.scrollWidth<=value.width+1,`${width}/${view}: amount overflow ${JSON.stringify(value)}`);}
@@ -57,6 +58,6 @@ try{
     }
     assert.equal(await page.evaluate(()=>localStorage.getItem('hani_os_life_v23')),before,'read-only UI test changed protected records');assert.deepEqual(errors,[],'runtime errors');await context.close();
   }
-  fs.writeFileSync(path.join(output,'ui-results.json'),JSON.stringify(metrics,null,2));console.log('PASS: Edge 390×844/1440 light/dark Remote, dates, contrast, home, amounts, backup text');
+  fs.writeFileSync(path.join(output,'ui-results.json'),JSON.stringify(metrics,null,2));console.log('PASS: Edge 390×844/412×844/1440 light/dark Remote, dates, contrast, home, amounts, backup text');
 }catch(error){fs.writeFileSync(path.join(output,'ui-results.json'),JSON.stringify({status:'NOT_PASS',error:error.message.split('\n')[0],completed:metrics},null,2));throw error;}
 finally{await browser?.close();await new Promise(resolve=>server.close(resolve));}

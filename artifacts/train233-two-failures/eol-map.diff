@@ -1,0 +1,14 @@
+diff --git a/hani-design-system.css b/hani-design-system.css
+index 554e210..6d8e993 100644
+--- a/hani-design-system.css
++++ b/hani-design-system.css
+@@ -1796,3 +1796,3 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
+-#app .date-flex-control{min-width:min(100%,186px);grid-template-columns:minmax(140px,1fr) 40px}
+-#app .date-flex-control>input{box-sizing:border-box;min-width:140px;padding-inline:8px;font-size:14px}
+-#app .task-input{grid-template-columns:minmax(0,1fr) minmax(186px,auto) auto}
++#app .date-flex-control{min-width:min(100%,190px);grid-template-columns:minmax(144px,1fr) 40px}
++#app .date-flex-control>input{box-sizing:border-box;min-width:144px;padding-inline:8px;font-size:14px}
++#app .task-input{grid-template-columns:minmax(0,1fr) minmax(190px,auto) auto}
+@@ -1801 +1801 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
+- #app :is(.fg,.form-grid):has(.date-flex-control){grid-template-columns:repeat(auto-fit,minmax(min(100%,186px),1fr))}
++ #app :is(.fg,.form-grid):has(.date-flex-control){grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr))}

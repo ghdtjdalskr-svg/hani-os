@@ -1,0 +1,6 @@
+﻿hani-qa-1st-ui.test.mjs rc=1
+hani-remote-media-219.test.mjs rc=0
+hani-settings-225.test.mjs rc=1
+hani-remote-card-224.test.mjs rc=0
+hani-context-remote-ui.test.mjs rc=0
+hani-pwa-213.test.mjs rc=0

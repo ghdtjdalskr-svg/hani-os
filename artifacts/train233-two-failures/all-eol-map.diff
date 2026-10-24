@@ -1,0 +1,123 @@
+diff --git a/hani-design-system.css b/hani-design-system.css
+index 554e210..6d8e993 100644
+--- a/hani-design-system.css
++++ b/hani-design-system.css
+@@ -1796,3 +1796,3 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
+-#app .date-flex-control{min-width:min(100%,186px);grid-template-columns:minmax(140px,1fr) 40px}
+-#app .date-flex-control>input{box-sizing:border-box;min-width:140px;padding-inline:8px;font-size:14px}
+-#app .task-input{grid-template-columns:minmax(0,1fr) minmax(186px,auto) auto}
++#app .date-flex-control{min-width:min(100%,190px);grid-template-columns:minmax(144px,1fr) 40px}
++#app .date-flex-control>input{box-sizing:border-box;min-width:144px;padding-inline:8px;font-size:14px}
++#app .task-input{grid-template-columns:minmax(0,1fr) minmax(190px,auto) auto}
+@@ -1801 +1801 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
+- #app :is(.fg,.form-grid):has(.date-flex-control){grid-template-columns:repeat(auto-fit,minmax(min(100%,186px),1fr))}
++ #app :is(.fg,.form-grid):has(.date-flex-control){grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr))}
+diff --git a/scripts/fixtures/train233-integrations.json b/scripts/fixtures/train233-integrations.json
+index 869e5df..4e92ee1 100644
+--- a/scripts/fixtures/train233-integrations.json
++++ b/scripts/fixtures/train233-integrations.json
+@@ -378,0 +379,29 @@
++  },
++  "browserResidual": {
++    "baseSha": "18916a02c82e1ff06e7598b8b2b94166b2010080",
++    "reason": "Date clientWidth excludes native input borders: reserve 144px border-box + 6px gap + 40px toggle. No assertion relaxation.",
++    "changes": [
++      {
++        "file": "hani-design-system.css",
++        "beforeHash": "bce2b2ac0991b69fb66831b2825a74050303d66e99b3ac1316812ebdee240948",
++        "afterHash": "8f3fc89d4a4138dce379f5ffd194505048aea85b8e395a0ada5c24246decb10b",
++        "replacements": [
++          {
++            "before": "#app .date-flex-control{min-width:min(100%,186px);grid-template-columns:minmax(140px,1fr) 40px}",
++            "after": "#app .date-flex-control{min-width:min(100%,190px);grid-template-columns:minmax(144px,1fr) 40px}"
++          },
++          {
++            "before": "#app .date-flex-control>input{box-sizing:border-box;min-width:140px;padding-inline:8px;font-size:14px}",
++            "after": "#app .date-flex-control>input{box-sizing:border-box;min-width:144px;padding-inline:8px;font-size:14px}"
++          },
++          {
++            "before": "#app .task-input{grid-template-columns:minmax(0,1fr) minmax(186px,auto) auto}",
++            "after": "#app .task-input{grid-template-columns:minmax(0,1fr) minmax(190px,auto) auto}"
++          },
++          {
++            "before": "#app :is(.fg,.form-grid):has(.date-flex-control){grid-template-columns:repeat(auto-fit,minmax(min(100%,186px),1fr))}",
++            "after": "#app :is(.fg,.form-grid):has(.date-flex-control){grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr))}"
++          }
++        ]
++      }
++    ]
+diff --git a/scripts/hani-qa-1st-ui.test.mjs b/scripts/hani-qa-1st-ui.test.mjs
+index a4f9298..7aa9add 100644
+--- a/scripts/hani-qa-1st-ui.test.mjs
++++ b/scripts/hani-qa-1st-ui.test.mjs
+@@ -17,2 +17,2 @@ try{
+-  for(const width of [390,1440])for(const finish of ['porcelain-cream','midnight-black']){
+-    const context=await browser.newContext({viewport:{width,height:width===390?844:900},reducedMotion:'reduce',serviceWorkers:'block'});
++  for(const width of [390,412,1440])for(const finish of ['porcelain-cream','midnight-black']){
++    const context=await browser.newContext({viewport:{width,height:width<=768?844:900},reducedMotion:'reduce',serviceWorkers:'block'});
+@@ -34 +34 @@ try{
+-        const dateWidths=[...section.querySelectorAll('input[data-date-kind="date"]')].filter(visible).map(node=>({id:node.id,width:node.clientWidth,scrollWidth:node.scrollWidth}));
++        const dateWidths=[...section.querySelectorAll('input[data-date-kind="date"]')].filter(visible).map(node=>{const style=getComputedStyle(node),wrap=node.closest('.date-flex-control'),grid=wrap&&getComputedStyle(wrap);return {id:node.id,width:node.clientWidth,scrollWidth:node.scrollWidth,borderBox:rect(node).w,borders:[style.borderLeftWidth,style.borderRightWidth],padding:[style.paddingLeft,style.paddingRight],wrapper:wrap&&rect(wrap).w,tracks:grid?.gridTemplateColumns,gap:grid?.columnGap,parentTracks:wrap&&getComputedStyle(wrap.parentElement).gridTemplateColumns}});
+@@ -42 +42 @@ try{
+-        return {view,overlap,dateWidths,money,contrast,homeOverlap,clip,pageWidth:document.documentElement.scrollWidth,viewport:innerWidth,triggerPosition:getComputedStyle(trigger).position};
++        return {view,overlap,dateWidths,money,contrast,homeOverlap,clip,viewWidth:section.clientWidth,viewScroll:section.scrollWidth,pageWidth:document.documentElement.scrollWidth,viewport:innerWidth,triggerPosition:getComputedStyle(trigger).position};
+@@ -45,0 +46 @@ try{
++      if(width===412&&['home','tasks'].includes(view))assert.ok(result.viewScroll<=result.viewWidth+1,`${width}/${view}: view overflow`);
+@@ -60 +61 @@ try{
+-  fs.writeFileSync(path.join(output,'ui-results.json'),JSON.stringify(metrics,null,2));console.log('PASS: Edge 390×844/1440 light/dark Remote, dates, contrast, home, amounts, backup text');
++  fs.writeFileSync(path.join(output,'ui-results.json'),JSON.stringify(metrics,null,2));console.log('PASS: Edge 390×844/412×844/1440 light/dark Remote, dates, contrast, home, amounts, backup text');
+diff --git a/scripts/hani-reviewed-release-baseline.mjs b/scripts/hani-reviewed-release-baseline.mjs
+index 96cdfc7..55e79bc 100644
+--- a/scripts/hani-reviewed-release-baseline.mjs
++++ b/scripts/hani-reviewed-release-baseline.mjs
+@@ -34,2 +34,3 @@ const browserFollowup=fixture('train233-integrations.json').browserFollowup;
+-// Undo newest CSS corrections and fixed f27be17 deltas before older overlapping hunks.
+-export const pendingApprovedConnections=[...browserFollowup.corrections,...browserFollowup.changes,...['train233-integrations.json','office-redesign-233.json','milestones-v1.json','hero-crop-fix.json'].flatMap(name=>fixture(name).changes)].map(({file,replacements})=>({
++const browserResidual=fixture('train233-integrations.json').browserResidual;
++// Undo newest date-border delta, then older CSS corrections and f27be17 hunks.
++export const pendingApprovedConnections=[...browserResidual.changes,...browserFollowup.corrections,...browserFollowup.changes,...['train233-integrations.json','office-redesign-233.json','milestones-v1.json','hero-crop-fix.json'].flatMap(name=>fixture(name).changes)].map(({file,replacements})=>({
+diff --git a/scripts/hani-reviewed-release-baseline.test.mjs b/scripts/hani-reviewed-release-baseline.test.mjs
+index f07f6ca..6aeced3 100644
+--- a/scripts/hani-reviewed-release-baseline.test.mjs
++++ b/scripts/hani-reviewed-release-baseline.test.mjs
+@@ -120 +120 @@ test('pending 233 train stays scoped to office, milestones, hero-crop, asset-int
+- assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),["hani-design-system.css","hani-context-remote.css","hani-context-remote.css","hani-design-system.css","hani-portfolio-preview.css",...["assets/data/office-actions-216.json","assets/data/office-actions-221.json","hani-asset-market-view.js","hani-asset-update-v1.js","hani-context-remote-v1.js","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-design-system.css","hani-investment-committee.js","hani-main.js","hani-main.js","hani-office-live.js","hani-organization-hub.css","hani-organization-hub.js","hani-study-v02984.js","hani-style-07.css","hani-ui-v02992.js","hani-yuna-helpdesk.js","index.html","index.html"]].sort());
++ assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),["hani-design-system.css","hani-design-system.css","hani-context-remote.css","hani-context-remote.css","hani-design-system.css","hani-portfolio-preview.css",...["assets/data/office-actions-216.json","assets/data/office-actions-221.json","hani-asset-market-view.js","hani-asset-update-v1.js","hani-context-remote-v1.js","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-design-system.css","hani-investment-committee.js","hani-main.js","hani-main.js","hani-office-live.js","hani-organization-hub.css","hani-organization-hub.js","hani-study-v02984.js","hani-style-07.css","hani-ui-v02992.js","hani-yuna-helpdesk.js","index.html","index.html"]].sort());
+@@ -192 +192,4 @@ test('fixed f27be17 CSS follow-up and named owner corrections retain exact bytes
+-  assert.equal(hash(expected),change.afterHash);assert.equal(fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8'),expected);
++  let current=fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8');
++  const {browserResidual}=JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8'));
++  for(const delta of browserResidual.changes.filter(c=>c.file===change.file))for(const h of delta.replacements){assert.equal(current.split(h.after).length-1,1);current=current.replace(h.after,()=>h.before)}
++  assert.equal(hash(expected),change.afterHash);assert.equal(current,expected);
+@@ -198,0 +202,15 @@ test('fixed f27be17 CSS follow-up and named owner corrections retain exact bytes
++
++test('date border correction is an exact delta from fixed 18916a0; old integration identities remain intact',()=>{
++ const {browserResidual:f}=JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8'));
++ assert.equal(f.baseSha,'18916a02c82e1ff06e7598b8b2b94166b2010080');
++ assert.deepEqual(f.changes.map(c=>[c.file,c.beforeHash,c.afterHash]),[['hani-design-system.css','bce2b2ac0991b69fb66831b2825a74050303d66e99b3ac1316812ebdee240948','8f3fc89d4a4138dce379f5ffd194505048aea85b8e395a0ada5c24246decb10b']]);
++ const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
++ for(const change of f.changes){
++  const before=readReleaseSource(f.baseSha,change.file),after=fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8');
++  assert.equal(hash(before),change.beforeHash);assert.equal(hash(after),change.afterHash);
++  let forward=before,reverse=after;
++  for(const h of change.replacements){assert.equal(forward.split(h.before).length-1,1);assert.equal(reverse.split(h.after).length-1,1);forward=forward.replace(h.before,()=>h.after);reverse=reverse.replace(h.after,()=>h.before)}
++  assert.equal(forward,after);assert.equal(reverse,before);assertReviewedReleaseSource(change.file,after);
++  for(const h of change.replacements)for(const mutation of [after.replace(h.after,''),after.replace(h.after,h.after+h.after),after.replace(h.after,h.after+'/* unlisted */')])assert.throws(()=>assertReviewedReleaseSource(change.file,mutation),{code:'ERR_ASSERTION'});
++ }
++});
+diff --git a/scripts/hani-settings-225.test.mjs b/scripts/hani-settings-225.test.mjs
+index 348c350..5fac7dd 100644
+--- a/scripts/hani-settings-225.test.mjs
++++ b/scripts/hani-settings-225.test.mjs
+@@ -13,0 +14 @@ import {verifySettingsMarkup} from './hani-settings-225-markup.mjs';
++import {verifySettingsQaGuard} from './hani-settings-225-qa-guard.mjs';
+@@ -44,0 +46 @@ check(verifySettingsMarkup(read('index.html'),withoutSettings225('index.html',re
++check(verifySettingsQaGuard(fs.readFileSync(path.join(root,'hani-main.js'),'utf8'),readBranchBaseline('hani-main.js'),fs.readFileSync(path.join(root,'index.html'),'utf8'),plan));
+@@ -57 +59,6 @@ async function create(before=false,width=1440){
+-  if(before&&settingsDelta.files[relative])body=Buffer.from(withoutSettings225(relative,withoutHeroRestore(relative,readReviewedCurrentSource(relative))));
++  // Keep main's reviewed QA integration on both pages. HTML/CSS still use the
++  // exact presentation oracle because other integrations overlap their hunks.
++  if(before&&settingsDelta.files[relative]){
++   const source=relative==='hani-main.js'?body.toString('utf8'):readReviewedCurrentSource(relative);
++   body=Buffer.from(withoutSettings225(relative,withoutHeroRestore(relative,source)));
++  }

@@ -1,0 +1,863 @@
+[
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "commit": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "file": "hani-development-history-v1.js",
+    "blob": "c11c1216b3cb90a9a1e1b6a733f6670bc7d5301e",
+    "sha256": "093835824dc7a9f3f626674fe40c92fe81ef1d11697e778f489891affc1e4b8a"
+  },
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "commit": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "file": "hani-asset-update-v1.js",
+    "blob": "d9a0374533966e541badfe8298900162f3c8abbd",
+    "sha256": "1be46c95de23087b061f01360e01843fd8e9708bc69e756b744978dde63c53d7"
+  },
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "commit": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "file": "hani-main.js",
+    "blob": "73bf596fb7503236b95f4efedce27d633f3f603b",
+    "sha256": "92a51423c60623ef574ce451a5a7bf72993451c2410cbe20685af08f6fa37ef5"
+  },
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "commit": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "file": "hani-style-07.css",
+    "blob": "d8cdc14a8ee5cbdeb18b7df25204ebf121afc41a",
+    "sha256": "5b9b4dafea881508aabcd5046443e674941c978b07b9c836d02ccfad54858e78"
+  },
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "commit": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "file": "index.html",
+    "blob": "3ac2d2fc6c226e32ffd5557573c026293ec92124",
+    "sha256": "acb87b4f74132303525ddf4d253e0f7afe9f636b6bd4dedc10d44e6cb7e18aa3"
+  },
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "commit": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "file": "hani-investment-committee.js",
+    "blob": "6414b93a845605f5512674db6080dededb369e4a",
+    "sha256": "e30950ab463c56387e7b93f7d4616fba17ecef217ffddbfb21a1717a7ecaaaec"
+  },
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "commit": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "file": "hani-office-live.js",
+    "blob": "3a066ad6e76ac3ba859c597f096c55d758f29485",
+    "sha256": "903c0ce03d351f41d108edde2b1ab01543cbe2acab8c5e89f179fc7c499bc89e"
+  },
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "commit": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "file": "hani-context-remote-v1.js",
+    "blob": "412f6fbaf7e565ee6eb705b0c374e1fdac167670",
+    "sha256": "8d4272130aa068672341739ea88d72b5f2833364e9e9cb95e0f0ebd111562c58"
+  },
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "commit": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "file": "hani-design-system.css",
+    "blob": "5d8e2615701faf4ef8fe5e34fa95c1dc02293db9",
+    "sha256": "b27a98a1f11c2f4bb7be1fc61ef63d741888ea110790ba6293f08258f8b083ba"
+  },
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "commit": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "file": "hani-ui-v02992.js",
+    "blob": "c174aad68a712d33b09f7e02bdb4e3399b989136",
+    "sha256": "92d1a7a4191196857b4564c65968650bf4a3b7dafe7194d6697d71ed9f148804"
+  },
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "commit": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "file": "hani-character-archive-data.js",
+    "blob": "8590ea3ae97a40a1d845cd4ee346b064b155c1f3",
+    "sha256": "eb004349df6de373b937613e7a041273e6408b21213cdea00febe23944d53f69"
+  },
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "commit": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "file": "hani-character-archive.js",
+    "blob": "73e494332b5af8fefd7660da47236caf4d67d54c",
+    "sha256": "3e2e169fa40fbdd304151eb9864b4eb376e5d366cd873f2fc2b6645aa89cef59"
+  },
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "commit": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "file": "hani-organization-hub.js",
+    "blob": "dfbf19fc98b511c08eb8f255434fbb00ea014b19",
+    "sha256": "fc54d5ec7d099b98f9660bfb437e6154d8a02a30c3b24637ed486c625963087f"
+  },
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "commit": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "file": "hani-context-remote.css",
+    "blob": "7dae086b2ba7da0aa67b7d158fc3b0bb91c694cc",
+    "sha256": "c3fd5c1f705dfb2b785912d79cd20538b23a3c48a96433e7c271af068408400a"
+  },
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "commit": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "file": "hani-portfolio-preview.css",
+    "blob": "939ff996c2e6c2448fd68f627952fcba62adb113",
+    "sha256": "f8a7eb055c0beeca24a21d990008d4f32ffa8267be3b26428c0daf1dfe716f05"
+  },
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "commit": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "file": "hani-asset-market-view.js",
+    "blob": "e73edf502587e850a8d0fd348139de33f9274a14",
+    "sha256": "69ccbfd6c8e13472d3a19b68e5c23a2ed767e2adbd4fb378ab1aa0f738e9406a"
+  },
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "commit": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "file": "hani-organization-hub.css",
+    "blob": "23a8c918995a8239f575735f3b71ec66e79da7fb",
+    "sha256": "ed3f3269c334ec55e49e4735ae49c6784023675b8354090a947ac59fdec5e877"
+  },
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "commit": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "file": "hani-study-v02984.js",
+    "blob": "6f479aa1f455814e3cd2f2c12aced478ce39ae88",
+    "sha256": "e181bff6f39e25f598bf54c933bf17a80dcb6f51e33471e59b4840a5fa30d9aa"
+  },
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "commit": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "file": "hani-yuna-helpdesk.js",
+    "blob": "8a3385ee6695c99dbcd94484604c1fd50010feaf",
+    "sha256": "21eda9d9160947e2ba2bebbe0af6c378d81e4d591e6be69be02d09fce9019b7e"
+  },
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "commit": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "file": "assets/data/office-actions-216.json",
+    "blob": "2391de0dc13018dff9f73290aa10fad75a45df87",
+    "sha256": "a39ef5a17dba03224f45a6700c50f0c4964c709bc42e356d259e76cbef5eb203"
+  },
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "commit": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "file": "assets/data/office-actions-221.json",
+    "blob": "bc0d02e16ef4ae1adc6438cf51e720f33d9d28e3",
+    "sha256": "3f99d6118e6fbdb4b23398df083066d4627e63f563869762bfd09e3b4357e94c"
+  },
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "commit": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "file": "hani-drive-vault.js",
+    "blob": "a22e38fd5bec87c9ca7e8ed2931db1c6b0aba8b5",
+    "sha256": "21b2e5b69714289dfc66ebd2367637db0a1c6ae72c63f8ea018f2af31a4cfdfc"
+  },
+  {
+    "ref": "94ead73706157bda23b94c6f5673b65377106c6a^",
+    "commit": "925d9e181564770594d2e1a98fa5bc1d59433914",
+    "file": "hani-asset-update-v1.js",
+    "blob": "d9a0374533966e541badfe8298900162f3c8abbd",
+    "sha256": "1be46c95de23087b061f01360e01843fd8e9708bc69e756b744978dde63c53d7"
+  },
+  {
+    "ref": "94ead73706157bda23b94c6f5673b65377106c6a^",
+    "commit": "925d9e181564770594d2e1a98fa5bc1d59433914",
+    "file": "hani-main.js",
+    "blob": "73bf596fb7503236b95f4efedce27d633f3f603b",
+    "sha256": "92a51423c60623ef574ce451a5a7bf72993451c2410cbe20685af08f6fa37ef5"
+  },
+  {
+    "ref": "94ead73706157bda23b94c6f5673b65377106c6a^",
+    "commit": "925d9e181564770594d2e1a98fa5bc1d59433914",
+    "file": "hani-style-07.css",
+    "blob": "d8cdc14a8ee5cbdeb18b7df25204ebf121afc41a",
+    "sha256": "5b9b4dafea881508aabcd5046443e674941c978b07b9c836d02ccfad54858e78"
+  },
+  {
+    "ref": "94ead73706157bda23b94c6f5673b65377106c6a^",
+    "commit": "925d9e181564770594d2e1a98fa5bc1d59433914",
+    "file": "index.html",
+    "blob": "3ac2d2fc6c226e32ffd5557573c026293ec92124",
+    "sha256": "acb87b4f74132303525ddf4d253e0f7afe9f636b6bd4dedc10d44e6cb7e18aa3"
+  },
+  {
+    "ref": "94ead73706157bda23b94c6f5673b65377106c6a",
+    "commit": "94ead73706157bda23b94c6f5673b65377106c6a",
+    "file": "hani-asset-update-v1.js",
+    "blob": "e5a41c352893c13b63508ef83f0ee290469ea5ee",
+    "sha256": "f2c9f5e8560493327215a40a241f468fa85f9d175f6f241296ec71eff61a10ad"
+  },
+  {
+    "ref": "94ead73706157bda23b94c6f5673b65377106c6a",
+    "commit": "94ead73706157bda23b94c6f5673b65377106c6a",
+    "file": "hani-main.js",
+    "blob": "26e7fc5e18a4a2fc604380d3d89d0cb2f4a761de",
+    "sha256": "6b89758abc1331de62a65eff1dff3c77939e488ebeddc75f831cf7b01456f835"
+  },
+  {
+    "ref": "94ead73706157bda23b94c6f5673b65377106c6a",
+    "commit": "94ead73706157bda23b94c6f5673b65377106c6a",
+    "file": "hani-style-07.css",
+    "blob": "6a4a1c8c49a2e5f183548ebafdf1fbf44ab86129",
+    "sha256": "6c19160ece196808e25ee8dda216c24f77204a1c6640919ee4cc33c30a08a86f"
+  },
+  {
+    "ref": "94ead73706157bda23b94c6f5673b65377106c6a",
+    "commit": "94ead73706157bda23b94c6f5673b65377106c6a",
+    "file": "index.html",
+    "blob": "06285aa69b3afdb456339b8452cbf84f277f044d",
+    "sha256": "9f8fc3ee00f765d70af119c7feba52be66c54103bff34744d3c59186f30a5fdf"
+  },
+  {
+    "ref": "a306df16fd0685868f7e4ecdfd9d9b09a9c97d36^",
+    "commit": "ba8b1d890be60d32d7ac693842a058ff98c934ec",
+    "file": "hani-main.js",
+    "blob": "26e7fc5e18a4a2fc604380d3d89d0cb2f4a761de",
+    "sha256": "6b89758abc1331de62a65eff1dff3c77939e488ebeddc75f831cf7b01456f835"
+  },
+  {
+    "ref": "a306df16fd0685868f7e4ecdfd9d9b09a9c97d36^",
+    "commit": "ba8b1d890be60d32d7ac693842a058ff98c934ec",
+    "file": "index.html",
+    "blob": "06285aa69b3afdb456339b8452cbf84f277f044d",
+    "sha256": "9f8fc3ee00f765d70af119c7feba52be66c54103bff34744d3c59186f30a5fdf"
+  },
+  {
+    "ref": "a306df16fd0685868f7e4ecdfd9d9b09a9c97d36^",
+    "commit": "ba8b1d890be60d32d7ac693842a058ff98c934ec",
+    "file": "hani-investment-committee.js",
+    "blob": "6414b93a845605f5512674db6080dededb369e4a",
+    "sha256": "e30950ab463c56387e7b93f7d4616fba17ecef217ffddbfb21a1717a7ecaaaec"
+  },
+  {
+    "ref": "a306df16fd0685868f7e4ecdfd9d9b09a9c97d36^",
+    "commit": "ba8b1d890be60d32d7ac693842a058ff98c934ec",
+    "file": "hani-office-live.js",
+    "blob": "3a066ad6e76ac3ba859c597f096c55d758f29485",
+    "sha256": "903c0ce03d351f41d108edde2b1ab01543cbe2acab8c5e89f179fc7c499bc89e"
+  },
+  {
+    "ref": "a306df16fd0685868f7e4ecdfd9d9b09a9c97d36",
+    "commit": "a306df16fd0685868f7e4ecdfd9d9b09a9c97d36",
+    "file": "hani-main.js",
+    "blob": "b4b349fff068b4d141f71f4c0e37819fa6a07eb0",
+    "sha256": "c683b97da429ded27d1605a79da157c534abd281d45c066e84f613ce3235839f"
+  },
+  {
+    "ref": "a306df16fd0685868f7e4ecdfd9d9b09a9c97d36",
+    "commit": "a306df16fd0685868f7e4ecdfd9d9b09a9c97d36",
+    "file": "index.html",
+    "blob": "5d3eb21255674a25bf5fbc7078660188fed53352",
+    "sha256": "c7506a76530363a1aae5b60989a676e6390d20048135a3b882b771da89f7d515"
+  },
+  {
+    "ref": "a306df16fd0685868f7e4ecdfd9d9b09a9c97d36",
+    "commit": "a306df16fd0685868f7e4ecdfd9d9b09a9c97d36",
+    "file": "hani-investment-committee.js",
+    "blob": "fd8b2178fffd4a54771713c9906464091e69f8f6",
+    "sha256": "2ebf41406310b1437ccd404825c3737274c6ee33c1e2832744e827ee60ff9597"
+  },
+  {
+    "ref": "a306df16fd0685868f7e4ecdfd9d9b09a9c97d36",
+    "commit": "a306df16fd0685868f7e4ecdfd9d9b09a9c97d36",
+    "file": "hani-office-live.js",
+    "blob": "411db1932f46067ca5a2d62598700b9ed0dfdd04",
+    "sha256": "922783ed62dcf3c4553c2bf957baec82149df0ee065c9091f36a8e02d313f69b"
+  },
+  {
+    "ref": "902b5ab7235c10d08069d88b52c0e2d4ea51c18e^",
+    "commit": "e1629f214b77978ab120ce80783447ff8ef2f6ea",
+    "file": "hani-main.js",
+    "blob": "b4b349fff068b4d141f71f4c0e37819fa6a07eb0",
+    "sha256": "c683b97da429ded27d1605a79da157c534abd281d45c066e84f613ce3235839f"
+  },
+  {
+    "ref": "902b5ab7235c10d08069d88b52c0e2d4ea51c18e^",
+    "commit": "e1629f214b77978ab120ce80783447ff8ef2f6ea",
+    "file": "index.html",
+    "blob": "5d3eb21255674a25bf5fbc7078660188fed53352",
+    "sha256": "c7506a76530363a1aae5b60989a676e6390d20048135a3b882b771da89f7d515"
+  },
+  {
+    "ref": "902b5ab7235c10d08069d88b52c0e2d4ea51c18e^",
+    "commit": "e1629f214b77978ab120ce80783447ff8ef2f6ea",
+    "file": "hani-context-remote-v1.js",
+    "blob": "412f6fbaf7e565ee6eb705b0c374e1fdac167670",
+    "sha256": "8d4272130aa068672341739ea88d72b5f2833364e9e9cb95e0f0ebd111562c58"
+  },
+  {
+    "ref": "902b5ab7235c10d08069d88b52c0e2d4ea51c18e^",
+    "commit": "e1629f214b77978ab120ce80783447ff8ef2f6ea",
+    "file": "hani-design-system.css",
+    "blob": "5d8e2615701faf4ef8fe5e34fa95c1dc02293db9",
+    "sha256": "b27a98a1f11c2f4bb7be1fc61ef63d741888ea110790ba6293f08258f8b083ba"
+  },
+  {
+    "ref": "902b5ab7235c10d08069d88b52c0e2d4ea51c18e^",
+    "commit": "e1629f214b77978ab120ce80783447ff8ef2f6ea",
+    "file": "hani-ui-v02992.js",
+    "blob": "c174aad68a712d33b09f7e02bdb4e3399b989136",
+    "sha256": "92d1a7a4191196857b4564c65968650bf4a3b7dafe7194d6697d71ed9f148804"
+  },
+  {
+    "ref": "902b5ab7235c10d08069d88b52c0e2d4ea51c18e",
+    "commit": "902b5ab7235c10d08069d88b52c0e2d4ea51c18e",
+    "file": "hani-main.js",
+    "blob": "28ae3b5275f4dc375c0b3c14d7d8bd8c80598e3c",
+    "sha256": "4d8892ca140f4a1de2a635155b6a27e82f8a952f1bf44358e4879ca4a405f516"
+  },
+  {
+    "ref": "902b5ab7235c10d08069d88b52c0e2d4ea51c18e",
+    "commit": "902b5ab7235c10d08069d88b52c0e2d4ea51c18e",
+    "file": "index.html",
+    "blob": "abd6daaa7a5a582e73f8ac90f2d516f8b432c5b8",
+    "sha256": "5ce732d620005ead0850e92a3627ceaca3a63d77d1c6480d177bf6efe8be0641"
+  },
+  {
+    "ref": "902b5ab7235c10d08069d88b52c0e2d4ea51c18e",
+    "commit": "902b5ab7235c10d08069d88b52c0e2d4ea51c18e",
+    "file": "hani-context-remote-v1.js",
+    "blob": "31d370c164cfce7d8c0b8b53897d055ed7162bc6",
+    "sha256": "8005ad3044aaf40f128b35dc9b4c775c01b60a9c8fe5db4dd5d6469ed6940acb"
+  },
+  {
+    "ref": "902b5ab7235c10d08069d88b52c0e2d4ea51c18e",
+    "commit": "902b5ab7235c10d08069d88b52c0e2d4ea51c18e",
+    "file": "hani-design-system.css",
+    "blob": "7feb95ed3247c4bf07247c8d9db82b9ce102652a",
+    "sha256": "1883ed37e6f3878824c6d7eedd3eb52112d9f05dc2bb7dbbe9e8070237768068"
+  },
+  {
+    "ref": "902b5ab7235c10d08069d88b52c0e2d4ea51c18e",
+    "commit": "902b5ab7235c10d08069d88b52c0e2d4ea51c18e",
+    "file": "hani-ui-v02992.js",
+    "blob": "d4a60fc55715199b278b1e9f56617617b9be364d",
+    "sha256": "f3863d2c385eb0b19e31aec3d209ab8376a19c0d6b36120a8d45de91eb3c204c"
+  },
+  {
+    "ref": "83391f0258629924bbbad7f1d793c56ab8284604^",
+    "commit": "4a6c44090240d7ab4ae1290ae90c663191a85ef8",
+    "file": "hani-main.js",
+    "blob": "28ae3b5275f4dc375c0b3c14d7d8bd8c80598e3c",
+    "sha256": "4d8892ca140f4a1de2a635155b6a27e82f8a952f1bf44358e4879ca4a405f516"
+  },
+  {
+    "ref": "83391f0258629924bbbad7f1d793c56ab8284604^",
+    "commit": "4a6c44090240d7ab4ae1290ae90c663191a85ef8",
+    "file": "index.html",
+    "blob": "abd6daaa7a5a582e73f8ac90f2d516f8b432c5b8",
+    "sha256": "5ce732d620005ead0850e92a3627ceaca3a63d77d1c6480d177bf6efe8be0641"
+  },
+  {
+    "ref": "83391f0258629924bbbad7f1d793c56ab8284604^",
+    "commit": "4a6c44090240d7ab4ae1290ae90c663191a85ef8",
+    "file": "hani-office-live.js",
+    "blob": "411db1932f46067ca5a2d62598700b9ed0dfdd04",
+    "sha256": "922783ed62dcf3c4553c2bf957baec82149df0ee065c9091f36a8e02d313f69b"
+  },
+  {
+    "ref": "83391f0258629924bbbad7f1d793c56ab8284604",
+    "commit": "83391f0258629924bbbad7f1d793c56ab8284604",
+    "file": "hani-main.js",
+    "blob": "3ac2af1f731ea2ff2116ca1c2bb64eeccdf2169e",
+    "sha256": "8e91fe38a4943bb56539ff9dbb4c0d6e9abd4c4b9a35b8e750f7ef92d75e875a"
+  },
+  {
+    "ref": "83391f0258629924bbbad7f1d793c56ab8284604",
+    "commit": "83391f0258629924bbbad7f1d793c56ab8284604",
+    "file": "index.html",
+    "blob": "baccd51e1b0a22204d0b5bf40eca4fc8eb7519ce",
+    "sha256": "0aa7aef37f1c4958afe9f57e0f9e817c0f7a54d546f0a2b7ab96a0d0b90fa1a5"
+  },
+  {
+    "ref": "83391f0258629924bbbad7f1d793c56ab8284604",
+    "commit": "83391f0258629924bbbad7f1d793c56ab8284604",
+    "file": "hani-office-live.js",
+    "blob": "cc155bcbbbb894b39b086164c0363a4a9715859d",
+    "sha256": "85da816daa44019b08563eb2be7d3110b01151099a2ce82a3bd75e1f6c0ff0e7"
+  },
+  {
+    "ref": "04fb2b377f28958aec1480ca09244f4567c3a339^",
+    "commit": "fec691838aec695b575708e3ad7dda7828ea96d0",
+    "file": "hani-main.js",
+    "blob": "3ac2af1f731ea2ff2116ca1c2bb64eeccdf2169e",
+    "sha256": "8e91fe38a4943bb56539ff9dbb4c0d6e9abd4c4b9a35b8e750f7ef92d75e875a"
+  },
+  {
+    "ref": "04fb2b377f28958aec1480ca09244f4567c3a339^",
+    "commit": "fec691838aec695b575708e3ad7dda7828ea96d0",
+    "file": "index.html",
+    "blob": "baccd51e1b0a22204d0b5bf40eca4fc8eb7519ce",
+    "sha256": "0aa7aef37f1c4958afe9f57e0f9e817c0f7a54d546f0a2b7ab96a0d0b90fa1a5"
+  },
+  {
+    "ref": "04fb2b377f28958aec1480ca09244f4567c3a339^",
+    "commit": "fec691838aec695b575708e3ad7dda7828ea96d0",
+    "file": "hani-office-live.js",
+    "blob": "cc155bcbbbb894b39b086164c0363a4a9715859d",
+    "sha256": "85da816daa44019b08563eb2be7d3110b01151099a2ce82a3bd75e1f6c0ff0e7"
+  },
+  {
+    "ref": "04fb2b377f28958aec1480ca09244f4567c3a339",
+    "commit": "04fb2b377f28958aec1480ca09244f4567c3a339",
+    "file": "hani-main.js",
+    "blob": "4ddc07faf79c3bfe30add085d678b310b053ca08",
+    "sha256": "181851203c5eafbc54baf574ff976903a6d448cb800b991711b975cb8f4d482b"
+  },
+  {
+    "ref": "04fb2b377f28958aec1480ca09244f4567c3a339",
+    "commit": "04fb2b377f28958aec1480ca09244f4567c3a339",
+    "file": "index.html",
+    "blob": "435237428d4d011e3f37b61ec07126daedc279a0",
+    "sha256": "c8b453e2a40296eca3551b2f53d0ae2e6ed4a0b455f5e031be75bb0029aec34d"
+  },
+  {
+    "ref": "04fb2b377f28958aec1480ca09244f4567c3a339",
+    "commit": "04fb2b377f28958aec1480ca09244f4567c3a339",
+    "file": "hani-office-live.js",
+    "blob": "7af291db32600109577063141f961bf9fa1de3c9",
+    "sha256": "73fc0165516b0c7e78cd4b3639a900dd3363cafc111d3dd537af7edab4c256b8"
+  },
+  {
+    "ref": "13dedc67be96310d472537c72b088050e847d49e^",
+    "commit": "2784e4e9855211021766f9eb65d764b2aafac468",
+    "file": "hani-main.js",
+    "blob": "4ddc07faf79c3bfe30add085d678b310b053ca08",
+    "sha256": "181851203c5eafbc54baf574ff976903a6d448cb800b991711b975cb8f4d482b"
+  },
+  {
+    "ref": "13dedc67be96310d472537c72b088050e847d49e^",
+    "commit": "2784e4e9855211021766f9eb65d764b2aafac468",
+    "file": "index.html",
+    "blob": "435237428d4d011e3f37b61ec07126daedc279a0",
+    "sha256": "c8b453e2a40296eca3551b2f53d0ae2e6ed4a0b455f5e031be75bb0029aec34d"
+  },
+  {
+    "ref": "13dedc67be96310d472537c72b088050e847d49e^",
+    "commit": "2784e4e9855211021766f9eb65d764b2aafac468",
+    "file": "hani-design-system.css",
+    "blob": "7feb95ed3247c4bf07247c8d9db82b9ce102652a",
+    "sha256": "1883ed37e6f3878824c6d7eedd3eb52112d9f05dc2bb7dbbe9e8070237768068"
+  },
+  {
+    "ref": "13dedc67be96310d472537c72b088050e847d49e^",
+    "commit": "2784e4e9855211021766f9eb65d764b2aafac468",
+    "file": "assets/data/desk-mascots-v1.json",
+    "blob": "79831e32c9f50575cdf59d4fbef9a39d39daf4db",
+    "sha256": "3798293affffd15837560cde17ed94dd0298d720f2a6735543c05c658d1108a5"
+  },
+  {
+    "ref": "13dedc67be96310d472537c72b088050e847d49e^",
+    "commit": "2784e4e9855211021766f9eb65d764b2aafac468",
+    "file": "hani-desk-mascots.js",
+    "blob": "291a54ee863b133951718ffec921b96509368f02",
+    "sha256": "9c7b505d2d3962f390da91dbeaca3fb3f9587f550605ba85dbe7179a18b7bbb7"
+  },
+  {
+    "ref": "13dedc67be96310d472537c72b088050e847d49e",
+    "commit": "13dedc67be96310d472537c72b088050e847d49e",
+    "file": "hani-main.js",
+    "blob": "72db42892e74d8173c07ea22e20bd1bfc16fff3e",
+    "sha256": "4c6027202a926d44e3a7fc5577102b337adb3fd3dac535e1029217abe9eae987"
+  },
+  {
+    "ref": "13dedc67be96310d472537c72b088050e847d49e",
+    "commit": "13dedc67be96310d472537c72b088050e847d49e",
+    "file": "index.html",
+    "blob": "1fca3c000dfaab6f619c13e37dbc3969ae579113",
+    "sha256": "5e07b70a8bfd32ecf9d8f47e625a98f7ceb863b9267a49075908729c5ae0a2d5"
+  },
+  {
+    "ref": "13dedc67be96310d472537c72b088050e847d49e",
+    "commit": "13dedc67be96310d472537c72b088050e847d49e",
+    "file": "hani-design-system.css",
+    "blob": "e315d582bb8a769093b952cffa5af192b65a06a5",
+    "sha256": "18dcf913e9fe22a98b38155ed1eacfa6f8a2f88259566f194cf624bd1ba41ce1"
+  },
+  {
+    "ref": "13dedc67be96310d472537c72b088050e847d49e",
+    "commit": "13dedc67be96310d472537c72b088050e847d49e",
+    "file": "assets/data/desk-mascots-v1.json",
+    "blob": "ca05d26f48ad6eb3efd0be7a8445d6e85caa3ca6",
+    "sha256": "23e03a5f87fec1de8c33f3db19580e2548010f0c19a6e938d5c12b5ab8828d94"
+  },
+  {
+    "ref": "13dedc67be96310d472537c72b088050e847d49e",
+    "commit": "13dedc67be96310d472537c72b088050e847d49e",
+    "file": "hani-desk-mascots.js",
+    "blob": "93969907c1982e3b68689b7c640fa19a986631a6",
+    "sha256": "eee5f4b868d7b50e06b69c80c983115fa62311a566a52a263f8f362a598503b5"
+  },
+  {
+    "ref": "4ac6b6c0119eeacc7332f1c53c3c760675657c11^",
+    "commit": "af2fd6d75aa30947987e45f1e6fd976d49464fe5",
+    "file": "hani-main.js",
+    "blob": "72db42892e74d8173c07ea22e20bd1bfc16fff3e",
+    "sha256": "4c6027202a926d44e3a7fc5577102b337adb3fd3dac535e1029217abe9eae987"
+  },
+  {
+    "ref": "4ac6b6c0119eeacc7332f1c53c3c760675657c11^",
+    "commit": "af2fd6d75aa30947987e45f1e6fd976d49464fe5",
+    "file": "index.html",
+    "blob": "1fca3c000dfaab6f619c13e37dbc3969ae579113",
+    "sha256": "5e07b70a8bfd32ecf9d8f47e625a98f7ceb863b9267a49075908729c5ae0a2d5"
+  },
+  {
+    "ref": "4ac6b6c0119eeacc7332f1c53c3c760675657c11^",
+    "commit": "af2fd6d75aa30947987e45f1e6fd976d49464fe5",
+    "file": "hani-ui-v02992.js",
+    "blob": "d4a60fc55715199b278b1e9f56617617b9be364d",
+    "sha256": "f3863d2c385eb0b19e31aec3d209ab8376a19c0d6b36120a8d45de91eb3c204c"
+  },
+  {
+    "ref": "4ac6b6c0119eeacc7332f1c53c3c760675657c11^",
+    "commit": "af2fd6d75aa30947987e45f1e6fd976d49464fe5",
+    "file": "hani-character-archive-data.js",
+    "blob": "8590ea3ae97a40a1d845cd4ee346b064b155c1f3",
+    "sha256": "eb004349df6de373b937613e7a041273e6408b21213cdea00febe23944d53f69"
+  },
+  {
+    "ref": "4ac6b6c0119eeacc7332f1c53c3c760675657c11^",
+    "commit": "af2fd6d75aa30947987e45f1e6fd976d49464fe5",
+    "file": "hani-character-archive.js",
+    "blob": "73e494332b5af8fefd7660da47236caf4d67d54c",
+    "sha256": "3e2e169fa40fbdd304151eb9864b4eb376e5d366cd873f2fc2b6645aa89cef59"
+  },
+  {
+    "ref": "4ac6b6c0119eeacc7332f1c53c3c760675657c11^",
+    "commit": "af2fd6d75aa30947987e45f1e6fd976d49464fe5",
+    "file": "hani-organization-hub.js",
+    "blob": "dfbf19fc98b511c08eb8f255434fbb00ea014b19",
+    "sha256": "fc54d5ec7d099b98f9660bfb437e6154d8a02a30c3b24637ed486c625963087f"
+  },
+  {
+    "ref": "4ac6b6c0119eeacc7332f1c53c3c760675657c11",
+    "commit": "4ac6b6c0119eeacc7332f1c53c3c760675657c11",
+    "file": "hani-main.js",
+    "blob": "0212ee8cdc23114d90f12d0823296fc40d53c267",
+    "sha256": "c0233b531af075667390047b19f7394d59a2bfecc3a5346863ba48bc117e24a9"
+  },
+  {
+    "ref": "4ac6b6c0119eeacc7332f1c53c3c760675657c11",
+    "commit": "4ac6b6c0119eeacc7332f1c53c3c760675657c11",
+    "file": "index.html",
+    "blob": "efb9cc2958d897c10ea9298ad1731cb15aa75a61",
+    "sha256": "005780384f2ae916f4fef6869fd77d1515a962c44c5d26196924381b3821b0c3"
+  },
+  {
+    "ref": "4ac6b6c0119eeacc7332f1c53c3c760675657c11",
+    "commit": "4ac6b6c0119eeacc7332f1c53c3c760675657c11",
+    "file": "hani-ui-v02992.js",
+    "blob": "f243caf65e1554cbe019451a3e31e66651ea623d",
+    "sha256": "3a299dc9cca115e55f8dcf648ca0cea96f55eca33e94d18273b98c119dadcd7f"
+  },
+  {
+    "ref": "4ac6b6c0119eeacc7332f1c53c3c760675657c11",
+    "commit": "4ac6b6c0119eeacc7332f1c53c3c760675657c11",
+    "file": "hani-character-archive-data.js",
+    "blob": "e46067d9e58e35c43d8d919a7b4d90b500b75f6a",
+    "sha256": "abac4a0ad7aab92e34d2872693b233f3dfe8155f18ead51d68994cb36e73dac8"
+  },
+  {
+    "ref": "4ac6b6c0119eeacc7332f1c53c3c760675657c11",
+    "commit": "4ac6b6c0119eeacc7332f1c53c3c760675657c11",
+    "file": "hani-character-archive.js",
+    "blob": "f5212da1bf0e8fd0e0d9d8a68ed40d120ca70a4f",
+    "sha256": "2be502120f48931ddd08dd6874b9bb23216c70a822f734a94af399fa69e5e4ed"
+  },
+  {
+    "ref": "4ac6b6c0119eeacc7332f1c53c3c760675657c11",
+    "commit": "4ac6b6c0119eeacc7332f1c53c3c760675657c11",
+    "file": "hani-organization-hub.js",
+    "blob": "4e2e10154b446a21621bf829fb012662c46c5a96",
+    "sha256": "35d088a048a1059a6d6884fb72c89b31016e931a5cd9bc9c3950e9ca1a7a478a"
+  },
+  {
+    "ref": "2784e4e9855211021766f9eb65d764b2aafac468",
+    "commit": "2784e4e9855211021766f9eb65d764b2aafac468",
+    "file": "assets/data/desk-mascots-v1.json",
+    "blob": "79831e32c9f50575cdf59d4fbef9a39d39daf4db",
+    "sha256": "3798293affffd15837560cde17ed94dd0298d720f2a6735543c05c658d1108a5"
+  },
+  {
+    "ref": "2784e4e9855211021766f9eb65d764b2aafac468",
+    "commit": "2784e4e9855211021766f9eb65d764b2aafac468",
+    "file": "hani-desk-mascots.js",
+    "blob": "291a54ee863b133951718ffec921b96509368f02",
+    "sha256": "9c7b505d2d3962f390da91dbeaca3fb3f9587f550605ba85dbe7179a18b7bbb7"
+  },
+  {
+    "ref": "b5a64e5",
+    "commit": "b5a64e529a18291ebbc22a1dd43b9cef87771093",
+    "file": "hani-asset-market-view.js",
+    "blob": "e73edf502587e850a8d0fd348139de33f9274a14",
+    "sha256": "69ccbfd6c8e13472d3a19b68e5c23a2ed767e2adbd4fb378ab1aa0f738e9406a"
+  },
+  {
+    "ref": "b5a64e5",
+    "commit": "b5a64e529a18291ebbc22a1dd43b9cef87771093",
+    "file": "hani-asset-update-v1.js",
+    "blob": "e5a41c352893c13b63508ef83f0ee290469ea5ee",
+    "sha256": "f2c9f5e8560493327215a40a241f468fa85f9d175f6f241296ec71eff61a10ad"
+  },
+  {
+    "ref": "b5a64e5",
+    "commit": "b5a64e529a18291ebbc22a1dd43b9cef87771093",
+    "file": "hani-context-remote-v1.js",
+    "blob": "31d370c164cfce7d8c0b8b53897d055ed7162bc6",
+    "sha256": "8005ad3044aaf40f128b35dc9b4c775c01b60a9c8fe5db4dd5d6469ed6940acb"
+  },
+  {
+    "ref": "b5a64e5",
+    "commit": "b5a64e529a18291ebbc22a1dd43b9cef87771093",
+    "file": "hani-context-remote.css",
+    "blob": "7dae086b2ba7da0aa67b7d158fc3b0bb91c694cc",
+    "sha256": "c3fd5c1f705dfb2b785912d79cd20538b23a3c48a96433e7c271af068408400a"
+  },
+  {
+    "ref": "b5a64e5",
+    "commit": "b5a64e529a18291ebbc22a1dd43b9cef87771093",
+    "file": "hani-design-system.css",
+    "blob": "dbf3c3ed6ea14b29ee7ff7f56cb9f3c54c458ba2",
+    "sha256": "3e1ef096794498a6a82d8d27643711e275578a82c8b77f5a0f64e6d5753c0c0f"
+  },
+  {
+    "ref": "b5a64e5",
+    "commit": "b5a64e529a18291ebbc22a1dd43b9cef87771093",
+    "file": "hani-investment-committee.js",
+    "blob": "fd8b2178fffd4a54771713c9906464091e69f8f6",
+    "sha256": "2ebf41406310b1437ccd404825c3737274c6ee33c1e2832744e827ee60ff9597"
+  },
+  {
+    "ref": "b5a64e5",
+    "commit": "b5a64e529a18291ebbc22a1dd43b9cef87771093",
+    "file": "hani-main.js",
+    "blob": "53f2af0f093f69db9864c6653b1962c8f820144c",
+    "sha256": "5add216f3c65baae30830d0cbcb866f0df3d043350485756e5142a2cd396f037"
+  },
+  {
+    "ref": "b5a64e5",
+    "commit": "b5a64e529a18291ebbc22a1dd43b9cef87771093",
+    "file": "hani-organization-hub.css",
+    "blob": "23a8c918995a8239f575735f3b71ec66e79da7fb",
+    "sha256": "ed3f3269c334ec55e49e4735ae49c6784023675b8354090a947ac59fdec5e877"
+  },
+  {
+    "ref": "b5a64e5",
+    "commit": "b5a64e529a18291ebbc22a1dd43b9cef87771093",
+    "file": "hani-organization-hub.js",
+    "blob": "4e2e10154b446a21621bf829fb012662c46c5a96",
+    "sha256": "35d088a048a1059a6d6884fb72c89b31016e931a5cd9bc9c3950e9ca1a7a478a"
+  },
+  {
+    "ref": "b5a64e5",
+    "commit": "b5a64e529a18291ebbc22a1dd43b9cef87771093",
+    "file": "hani-study-v02984.js",
+    "blob": "6f479aa1f455814e3cd2f2c12aced478ce39ae88",
+    "sha256": "e181bff6f39e25f598bf54c933bf17a80dcb6f51e33471e59b4840a5fa30d9aa"
+  },
+  {
+    "ref": "b5a64e5",
+    "commit": "b5a64e529a18291ebbc22a1dd43b9cef87771093",
+    "file": "hani-style-07.css",
+    "blob": "6a4a1c8c49a2e5f183548ebafdf1fbf44ab86129",
+    "sha256": "6c19160ece196808e25ee8dda216c24f77204a1c6640919ee4cc33c30a08a86f"
+  },
+  {
+    "ref": "b5a64e5",
+    "commit": "b5a64e529a18291ebbc22a1dd43b9cef87771093",
+    "file": "hani-yuna-helpdesk.js",
+    "blob": "8a3385ee6695c99dbcd94484604c1fd50010feaf",
+    "sha256": "21eda9d9160947e2ba2bebbe0af6c378d81e4d591e6be69be02d09fce9019b7e"
+  },
+  {
+    "ref": "b5a64e5",
+    "commit": "b5a64e529a18291ebbc22a1dd43b9cef87771093",
+    "file": "index.html",
+    "blob": "48a53b6a7c5a24ae06b14894dc3f1a92221bfa08",
+    "sha256": "d83c8ef30577314e566a51054f06e347992aba6ad424bd4a0ebfe1d449fe81af"
+  },
+  {
+    "ref": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "commit": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "file": "hani-asset-market-view.js",
+    "blob": "fd5def07039aa5560b50c6933bdd28dc90393814",
+    "sha256": "46bd76c3d4787d19ebb3f0f6b9027574c5d2e0fbf36b0922ece2743682c31af8"
+  },
+  {
+    "ref": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "commit": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "file": "hani-asset-update-v1.js",
+    "blob": "63075dd12e7c72a1cfdb4cb712cb25b83b96475f",
+    "sha256": "3af574258171199890e2796fbc76331ad6b3fdc7ce8a8f2006dae829a06f25ab"
+  },
+  {
+    "ref": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "commit": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "file": "hani-context-remote-v1.js",
+    "blob": "b046b8d6e942526fb75927d6d09b825b9dadeecb",
+    "sha256": "b7de3e0a0493087f7cee9b4b83e67fdbbbb8ab1988b6d00a7a3c015543e4903d"
+  },
+  {
+    "ref": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "commit": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "file": "hani-context-remote.css",
+    "blob": "88c3fc2513c1c22c2ac5e5ece508a7e949570f26",
+    "sha256": "b64b1f7e6e2379145175d7204499570c16a56a47da4c4ba79289040ccb790247"
+  },
+  {
+    "ref": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "commit": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "file": "hani-design-system.css",
+    "blob": "5a58969e82e59b6d7f6aee47ace3a50d275ae1d4",
+    "sha256": "f9d092fe54d118d123ee468b45d5f15c5c308b74109762ac4a1e456a00c465a7"
+  },
+  {
+    "ref": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "commit": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "file": "hani-investment-committee.js",
+    "blob": "dd779f0c8226dd42c3512ea57e28722ce0d0139a",
+    "sha256": "62c1f55ee109b2a593d6ec850dea6af263e24712bfcc3aab7c401c677ef828b0"
+  },
+  {
+    "ref": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "commit": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "file": "hani-main.js",
+    "blob": "b549e565c0e0808d491052ae38baa0f262ab0e00",
+    "sha256": "8c3b54dd532eecd11ead5e97f9abf3e8e5402c1d9d9b2cf271a42f2132bbda93"
+  },
+  {
+    "ref": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "commit": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "file": "hani-organization-hub.css",
+    "blob": "2bd559c7592b09f994119e627bc42bfa3a166a9c",
+    "sha256": "316a1a3555d1ef8c2bd35d7294b3618c939eee2ffeabd9d3421a86d7379a8a14"
+  },
+  {
+    "ref": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "commit": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "file": "hani-organization-hub.js",
+    "blob": "236e5188bfded89886cdf86e9467f8f10da752c1",
+    "sha256": "83acfff8686b3ab88d7e74cf6e93c0b719f2bd82dd814c850a898114c1c4956b"
+  },
+  {
+    "ref": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "commit": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "file": "hani-study-v02984.js",
+    "blob": "023d85485a57890f49dcc3f9155dcbf27261afda",
+    "sha256": "f90f884f35210b1773ee97122a6f13a6a2cac0cf17cac80a2f971910d5272d78"
+  },
+  {
+    "ref": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "commit": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "file": "hani-style-07.css",
+    "blob": "dad8f068cf0313da404b86899ed79ae1147e521f",
+    "sha256": "00de7ed2c0962d03781ea05cbd9178df463e667a087ce042ecf1171985775432"
+  },
+  {
+    "ref": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "commit": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "file": "hani-yuna-helpdesk.js",
+    "blob": "c8e225602c3497904033c4a1f52587ea7e904e55",
+    "sha256": "195c7711c825cb5276b7978bb88ee98d9b7bfa0714fbf69f41f86518942de229"
+  },
+  {
+    "ref": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "commit": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "file": "index.html",
+    "blob": "476c2dc7bc7b384326a0fb8e14c229a4f7605fe3",
+    "sha256": "a644f88a78f92eb12eaae282081ed52ba52cb84e48014bb3feb73ecd057941f4"
+  },
+  {
+    "ref": "f2df938314a19e02e334a0be1726a9a4a9d61245^",
+    "commit": "bbc1ff97b498876de752a5705f714cd00f2d7e64",
+    "file": "hani-asset-update-v1.js",
+    "blob": "29da54dd1091569997b14182431e105e9f9004c6",
+    "sha256": "b6a8b0a68cb98962bf858889006c85e0d893a2e665c06904e10334cf7228a36d"
+  },
+  {
+    "ref": "f2df938314a19e02e334a0be1726a9a4a9d61245",
+    "commit": "f2df938314a19e02e334a0be1726a9a4a9d61245",
+    "file": "hani-asset-update-v1.js",
+    "blob": "63075dd12e7c72a1cfdb4cb712cb25b83b96475f",
+    "sha256": "3af574258171199890e2796fbc76331ad6b3fdc7ce8a8f2006dae829a06f25ab"
+  },
+  {
+    "ref": "7471e5aabc0ba441ed826a108e04ecb2f3e196b6^",
+    "commit": "b1f7a48dba7531fac71d643eb1d0d8d713242c4c",
+    "file": "hani-main.js",
+    "blob": "2e12ba1f14659c726bc766b652580f0a94e01bde",
+    "sha256": "c2323ec295261567f1d7974c856fdb7528ffade4edc6b16ae8fcef83d64faaf7"
+  },
+  {
+    "ref": "7471e5aabc0ba441ed826a108e04ecb2f3e196b6",
+    "commit": "7471e5aabc0ba441ed826a108e04ecb2f3e196b6",
+    "file": "hani-main.js",
+    "blob": "b549e565c0e0808d491052ae38baa0f262ab0e00",
+    "sha256": "8c3b54dd532eecd11ead5e97f9abf3e8e5402c1d9d9b2cf271a42f2132bbda93"
+  },
+  {
+    "ref": "5a665a3",
+    "commit": "5a665a31637004a5feef3cb83b3711cab8a6449b",
+    "file": "hani-context-remote.css",
+    "blob": "88c3fc2513c1c22c2ac5e5ece508a7e949570f26",
+    "sha256": "b64b1f7e6e2379145175d7204499570c16a56a47da4c4ba79289040ccb790247"
+  },
+  {
+    "ref": "5a665a3",
+    "commit": "5a665a31637004a5feef3cb83b3711cab8a6449b",
+    "file": "hani-design-system.css",
+    "blob": "5a58969e82e59b6d7f6aee47ace3a50d275ae1d4",
+    "sha256": "f9d092fe54d118d123ee468b45d5f15c5c308b74109762ac4a1e456a00c465a7"
+  },
+  {
+    "ref": "5a665a3",
+    "commit": "5a665a31637004a5feef3cb83b3711cab8a6449b",
+    "file": "hani-portfolio-preview.css",
+    "blob": "939ff996c2e6c2448fd68f627952fcba62adb113",
+    "sha256": "f8a7eb055c0beeca24a21d990008d4f32ffa8267be3b26428c0daf1dfe716f05"
+  },
+  {
+    "ref": "f27be17c1b3ea989fec3b4886f36b3b32c4caa27",
+    "commit": "f27be17c1b3ea989fec3b4886f36b3b32c4caa27",
+    "file": "hani-context-remote.css",
+    "blob": "b2e28337eeef3aafa5dc6534fea136c33ef3e653",
+    "sha256": "8d2c34bead459aa5dc15edd1a0c56c28faf09d6bb6a0cce119d11fe9f0cf792d"
+  },
+  {
+    "ref": "f27be17c1b3ea989fec3b4886f36b3b32c4caa27",
+    "commit": "f27be17c1b3ea989fec3b4886f36b3b32c4caa27",
+    "file": "hani-design-system.css",
+    "blob": "de8d3b1a4ec7317fcaa2bd5df89088627e3c5343",
+    "sha256": "c7d7b82f535594ea6c57fc542c59d7bc0c4545d11175385682eeadbf98af2d3d"
+  },
+  {
+    "ref": "f27be17c1b3ea989fec3b4886f36b3b32c4caa27",
+    "commit": "f27be17c1b3ea989fec3b4886f36b3b32c4caa27",
+    "file": "hani-portfolio-preview.css",
+    "blob": "97ec3e6b78922cb82db41b101565ae40c347de80",
+    "sha256": "ba189604ad26772bab38e9c2ca4c5294a3511e323217a5227043561f9fde08ee"
+  },
+  {
+    "ref": "06519be",
+    "commit": "06519be10b6c260e76518ee0afb9dda95149da57",
+    "file": "hani-main.js",
+    "blob": "d5135e7785d2349f9c03b0b16c4aa5ebb5777464",
+    "sha256": "98349e08cd4259cdbabf52a4a83dd532863d5453db5c8a11e8ade2e3482bc396"
+  },
+  {
+    "ref": "06519be",
+    "commit": "06519be10b6c260e76518ee0afb9dda95149da57",
+    "file": "index.html",
+    "blob": "9909fb5bbd2a99f91067b9b64dd65f9e14c41f38",
+    "sha256": "4ef0315b27ffe1d09d5cc0cedabd4160e2edc80a2c295f38ed83aa1bdaf772ce"
+  },
+  {
+    "ref": "18916a02c82e1ff06e7598b8b2b94166b2010080",
+    "commit": "18916a02c82e1ff06e7598b8b2b94166b2010080",
+    "file": "hani-design-system.css",
+    "blob": "554e210c6b933b9fe7ce99323c58b68de51ac6c5",
+    "sha256": "bce2b2ac0991b69fb66831b2825a74050303d66e99b3ac1316812ebdee240948"
+  }
+]

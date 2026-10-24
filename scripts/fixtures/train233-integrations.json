@@ -376,5 +376,34 @@
         ]
       }
     ]
+  },
+  "browserResidual": {
+    "baseSha": "18916a02c82e1ff06e7598b8b2b94166b2010080",
+    "reason": "Date clientWidth excludes native input borders: reserve 144px border-box + 6px gap + 40px toggle. No assertion relaxation.",
+    "changes": [
+      {
+        "file": "hani-design-system.css",
+        "beforeHash": "bce2b2ac0991b69fb66831b2825a74050303d66e99b3ac1316812ebdee240948",
+        "afterHash": "8f3fc89d4a4138dce379f5ffd194505048aea85b8e395a0ada5c24246decb10b",
+        "replacements": [
+          {
+            "before": "#app .date-flex-control{min-width:min(100%,186px);grid-template-columns:minmax(140px,1fr) 40px}",
+            "after": "#app .date-flex-control{min-width:min(100%,190px);grid-template-columns:minmax(144px,1fr) 40px}"
+          },
+          {
+            "before": "#app .date-flex-control>input{box-sizing:border-box;min-width:140px;padding-inline:8px;font-size:14px}",
+            "after": "#app .date-flex-control>input{box-sizing:border-box;min-width:144px;padding-inline:8px;font-size:14px}"
+          },
+          {
+            "before": "#app .task-input{grid-template-columns:minmax(0,1fr) minmax(186px,auto) auto}",
+            "after": "#app .task-input{grid-template-columns:minmax(0,1fr) minmax(190px,auto) auto}"
+          },
+          {
+            "before": "#app :is(.fg,.form-grid):has(.date-flex-control){grid-template-columns:repeat(auto-fit,minmax(min(100%,186px),1fr))}",
+            "after": "#app :is(.fg,.form-grid):has(.date-flex-control){grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr))}"
+          }
+        ]
+      }
+    ]
   }
 }

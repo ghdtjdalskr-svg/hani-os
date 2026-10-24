@@ -117,7 +117,7 @@ test('approved additions cannot move to another script, event or cascade positio
 });
 
 test('pending 233 train stays scoped to office, milestones, hero-crop, asset-intake, QA and HANI-77 owners; released staff and moved fragments stay strict',()=>{
- assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),["hani-design-system.css","hani-context-remote.css","hani-context-remote.css","hani-design-system.css","hani-portfolio-preview.css",...["assets/data/office-actions-216.json","assets/data/office-actions-221.json","hani-asset-market-view.js","hani-asset-update-v1.js","hani-context-remote-v1.js","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-design-system.css","hani-investment-committee.js","hani-main.js","hani-main.js","hani-office-live.js","hani-organization-hub.css","hani-organization-hub.js","hani-study-v02984.js","hani-style-07.css","hani-ui-v02992.js","hani-yuna-helpdesk.js","index.html","index.html"]].sort());
+ assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),["hani-design-system.css","hani-design-system.css","hani-context-remote.css","hani-context-remote.css","hani-design-system.css","hani-portfolio-preview.css",...["assets/data/office-actions-216.json","assets/data/office-actions-221.json","hani-asset-market-view.js","hani-asset-update-v1.js","hani-context-remote-v1.js","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-design-system.css","hani-investment-committee.js","hani-main.js","hani-main.js","hani-office-live.js","hani-organization-hub.css","hani-organization-hub.js","hani-study-v02984.js","hani-style-07.css","hani-ui-v02992.js","hani-yuna-helpdesk.js","index.html","index.html"]].sort());
  const stages=new Map();
  for(const connection of pendingApprovedConnections){
   const {file,lines}=connection,current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
@@ -189,10 +189,28 @@ test('fixed f27be17 CSS follow-up and named owner corrections retain exact bytes
  for(const change of f.corrections){
   let expected=readReleaseSource(f.candidateSha,change.file);assert.equal(hash(expected),change.beforeHash);
   for(const h of change.replacements){assert.equal(expected.split(h.before).length-1,1);expected=expected.replace(h.before,()=>h.after)}
-  assert.equal(hash(expected),change.afterHash);assert.equal(fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8'),expected);
+  let current=fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8');
+  const {browserResidual}=JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8'));
+  for(const delta of browserResidual.changes.filter(c=>c.file===change.file))for(const h of delta.replacements){assert.equal(current.split(h.after).length-1,1);current=current.replace(h.after,()=>h.before)}
+  assert.equal(hash(expected),change.afterHash);assert.equal(current,expected);
  }
  for(const file of f.changes.map(c=>c.file)){
   const current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
   for(const changed of [current+'/* unlisted CSS */',current.replace(/\r\n/,'\n')]){assert.notEqual(changed,current);assert.throws(()=>assertReviewedReleaseSource(file,changed),{code:'ERR_ASSERTION'},file+' outside edits and EOL remain strict')}
+ }
+});
+
+test('date border correction is an exact delta from fixed 18916a0; old integration identities remain intact',()=>{
+ const {browserResidual:f}=JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8'));
+ assert.equal(f.baseSha,'18916a02c82e1ff06e7598b8b2b94166b2010080');
+ assert.deepEqual(f.changes.map(c=>[c.file,c.beforeHash,c.afterHash]),[['hani-design-system.css','bce2b2ac0991b69fb66831b2825a74050303d66e99b3ac1316812ebdee240948','8f3fc89d4a4138dce379f5ffd194505048aea85b8e395a0ada5c24246decb10b']]);
+ const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
+ for(const change of f.changes){
+  const before=readReleaseSource(f.baseSha,change.file),after=fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8');
+  assert.equal(hash(before),change.beforeHash);assert.equal(hash(after),change.afterHash);
+  let forward=before,reverse=after;
+  for(const h of change.replacements){assert.equal(forward.split(h.before).length-1,1);assert.equal(reverse.split(h.after).length-1,1);forward=forward.replace(h.before,()=>h.after);reverse=reverse.replace(h.after,()=>h.before)}
+  assert.equal(forward,after);assert.equal(reverse,before);assertReviewedReleaseSource(change.file,after);
+  for(const h of change.replacements)for(const mutation of [after.replace(h.after,''),after.replace(h.after,h.after+h.after),after.replace(h.after,h.after+'/* unlisted */')])assert.throws(()=>assertReviewedReleaseSource(change.file,mutation),{code:'ERR_ASSERTION'});
  }
 });

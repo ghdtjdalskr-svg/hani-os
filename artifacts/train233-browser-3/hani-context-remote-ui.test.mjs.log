@@ -1,0 +1,4 @@
+PASS 1440/porcelain-cream: 12 images edge-to-edge, AA titles/subtitles, hover/focus, overflow and controls
+PASS 1440/midnight-black: 12 images edge-to-edge, AA titles/subtitles, hover/focus, overflow and controls
+PASS 390/porcelain-cream: 12 images edge-to-edge, AA titles/subtitles, hover/focus, overflow and controls
+PASS 390/midnight-black: 12 images edge-to-edge, AA titles/subtitles, hover/focus, overflow and controls

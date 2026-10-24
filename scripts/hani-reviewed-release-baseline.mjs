@@ -31,8 +31,9 @@ export const trainBaseVersion='2.9.232';
 // including f2df938 decorated-number fallback and 7471e5a sign-only guard through 7d0fa05.
 const fixture=name=>JSON.parse(fs.readFileSync(new URL('./fixtures/'+name,import.meta.url),'utf8'));
 const browserFollowup=fixture('train233-integrations.json').browserFollowup;
-// Undo newest CSS corrections and fixed f27be17 deltas before older overlapping hunks.
-export const pendingApprovedConnections=[...browserFollowup.corrections,...browserFollowup.changes,...['train233-integrations.json','office-redesign-233.json','milestones-v1.json','hero-crop-fix.json'].flatMap(name=>fixture(name).changes)].map(({file,replacements})=>({
+const browserResidual=fixture('train233-integrations.json').browserResidual;
+// Undo newest date-border delta, then older CSS corrections and f27be17 hunks.
+export const pendingApprovedConnections=[...browserResidual.changes,...browserFollowup.corrections,...browserFollowup.changes,...['train233-integrations.json','office-redesign-233.json','milestones-v1.json','hero-crop-fix.json'].flatMap(name=>fixture(name).changes)].map(({file,replacements})=>({
  file,lines:replacements.map(change=>change.after),
  strip:source=>{
   for(const {before,after} of replacements)source=source.replace(after,()=>before);
