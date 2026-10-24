@@ -22,13 +22,13 @@ test('evening mixes playful statuses and short same-floor strolls; reduced motio
   const at=new Date('2026-10-21T19:10:00+09:00'),calm=s.snapshot(at,{reducedMotion:true});
   assert.ok(calm.entries.every(p=>!p.stroll&&!p.walking));assert.deepEqual(s.snapshot(at).entries.map(p=>p.line),s.snapshot(at).entries.map(p=>p.line),'deterministic');
 });
-test('lively-3: one bit per person per cycle, strolls go through a door, one stroller per floor',()=>{
+test('lively-3/obr2: one bit per person per cycle, door paths and two outing units per floor',()=>{
   const f=fixture('09:00',false,null,table),scene=f.context.HaniBuildingScene,s=scene.scheduler,starts=new Map(),last=new Map();let doors=0,strollSeconds=0;
   for(let t=Date.parse('2026-10-21T14:00:00+09:00');t<Date.parse('2026-10-21T15:00:00+09:00');t+=1000){const per={};
     for(const p of s.snapshot(new Date(t)).entries){if(p.id==='mir')continue;
       const bit=!p.eventId&&!p.plain&&!p.stroll;if(bit&&!last.get(p.id))(starts.get(p.id)||starts.set(p.id,[]).get(p.id)).push(t);last.set(p.id,bit);
-      if(p.stroll){strollSeconds++;per[p.floor]=(per[p.floor]||0)+1;if(scene.anchors.get(p.seat.anchor)?.type==='door')doors++}}
-    assert.ok(Object.values(per).every(n=>n<=1),'one stroller per floor');}
+      if(p.stroll){strollSeconds++;(per[p.floor]||=new Map()).set(p.outingId,p.groupIds?.length||1);if(scene.anchors.get(p.seat.anchor)?.type==='door')doors++}}
+    assert.ok(Object.values(per).every(units=>units.size<=2&&[...units.values()].filter(n=>n>1).length<=1),'at most two outing units, including at most one group');}
   for(const [id,list]of starts)for(let i=1;i<list.length;i++)assert.ok(list[i]-list[i-1]>=14000,id+' bits too close: '+(list[i]-list[i-1])/1000+'s');
   assert.ok(strollSeconds>0&&doors>0,'strolls happen and pass through doors');
 });

@@ -1,5 +1,4 @@
-import {assertSeedCanon} from './hani-office-seed-233-expectations.mjs';
-// Seed 233 activates two canon desks ahead of the unchanged 232 scheduler catalog.
+import {assertOnboardedCanon} from './hani-office-onboarding-232-assertions.mjs';
 // node scripts/hani-office-v2-215.test.mjs [--browser <playwright/index.mjs> <msedge.exe>]
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -14,15 +13,14 @@ import {fixture} from './hani-building-206-engine.test.mjs';
 const root=path.resolve(fileURLToPath(new URL('../',import.meta.url))),read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const source=read('hani-office-live.js');
 const ctx=vm.createContext({HaniOfficeV2Assets:assets,window:{},document:{getElementById:()=>null}});vm.runInContext(source,ctx);const api=ctx.HaniBuildingScene;
-test('frozen 326-anchor canon, active registered staff only, exact home floor/seat and posture',()=>{
-  assertSeedCanon();
-  assert.equal(api.canon.anchors.length,326);assert.equal(api.floors.length,5);
+test('frozen 326-anchor canon file (+5 place-file window spots at runtime), active registered staff only, exact home floor/seat and posture',()=>{
+  assertOnboardedCanon();
+  assert.equal(api.canon.anchors.length,331);assert.equal(api.floors.length,5);
   assert.deepEqual([...api.floors.flatMap(f=>f.residents)].sort(),assets.canon.people.filter(p=>p.status==='active'&&p.registration==='registered').map(p=>p.id).sort());
   for(const person of assets.canon.people.filter(p=>p.status==='active'&&p.registration==='registered')){
     const anchor=api.anchors.get(person.homeAnchor),seat=api.homeSeat(person.id);assert.equal(seat.anchor,anchor.id);assert.equal(seat.x,assets.art.anchors[anchor.id].x);assert.equal(seat.y,assets.art.anchors[anchor.id].y);assert.equal(seat.id,anchor.rendererSeat.id);assert.equal(seat.zone,assets.art.anchors[anchor.id].zone||anchor.rendererSeat.zone);
   }
   for(const id of ['chairman','seongmin'])assert.equal(api.homeSeat(id),undefined);
-  for(const id of ['daon','yoonseul'])assert.equal(api.homeSeat(id).owner,id);
   assert.equal(api.homeSeat('mir').posture,'standing');assert.equal(api.homeSeat('hani').posture,'sitting');
   assert.equal(api.assignSeats('4f',[{id:'mir',activity:'meeting'}])[0].seat.anchor,'mir_meeting_pos');
   assert.equal(api.assignSeats('2f',[{id:'mir',activity:'meeting'}])[0].seat,undefined,'MIR does not take a human conference chair');
@@ -52,7 +50,7 @@ test('every assignable slot has an explicit canon path from elevator without int
     for(let i=1;i<route.length;i++){const a=route[i-1],b=route[i];assert.ok(assets.canon.edges.some(e=>e.kind!=='stairs'&&(e.from===a.id&&e.to===b.id||e.bidirectional&&e.from===b.id&&e.to===a.id)));if(i<route.length-1)assert.equal(Boolean(b.rendererSeat),false)}
   }
 });
-test('audited art has a physical workstation per person, planned desks stay empty and lounge is rest-only',()=>{
+test('audited art has a physical workstation per person, registered desks have owners and lounge is rest-only',()=>{
   for(const f of api.floors)assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(root,f.background))).digest('hex'),assets.art.floors[f.id].backgroundSha256,`${f.id}: furniture audit must follow the actual art`);
   for(const person of assets.canon.people){
     const anchor=api.anchors.get(person.homeAnchor),floor=assets.art.floors[anchor.floor],furniture=floor.homeFurniture[anchor.id],point=assets.art.anchors[anchor.id];
@@ -112,7 +110,7 @@ test('4F executive hierarchy: spacious private suite, separate shared lounge and
   const bytes=fs.readFileSync(path.join(root,f.background));assert.ok(bytes.length<=240000);
   assert.equal(bytes.toString('ascii',8,12),'WEBP');assert.deepEqual([assets.art.width,assets.art.height],[1672,941]);
 });
-test('2F: five Life desks, two Finance spares, no LIFE sign or life spill-over, planned roster agree',()=>{
+test('2F: five Life desks, two Finance spares, no LIFE sign or life spill-over, registered roster agrees',()=>{
   const f=assets.art.floors['2f'],point=assets.art.anchors.desk_yoonseul;
   assert.deepEqual(f.deskRows.life,{capacity:5,seats:['life-a','life-b','life-c','life-d','desk_yoonseul']});
   assert.deepEqual(f.deskRows.finance,{capacity:4,seats:['finance-row-spare','finance-b','desk_daon','finance-row-spare-east']});
@@ -253,7 +251,7 @@ test(`Edge: ${process.argv.includes('--final-polish')?'390/1440 light/dark':proc
             actors:actors.map(a=>{const r=a.getBoundingClientRect(),seat=HaniBuildingScene.seatMaps[map.dataset.floor].find(s=>s.id===a.dataset.seat),pivot=[24,61];return {id:a.dataset.person,pose:a.dataset.pose,inside:r.left>=box.left-1&&r.right<=box.right+1&&r.top>=box.top-1&&r.bottom<=box.bottom+1,dx:Math.abs(r.left+r.width*pivot[0]/48-(box.left+box.width*seat.x/100)),dy:Math.abs(r.top+r.height*pivot[1]/64-(box.top+box.height*seat.y/100)),uiOverlap:buttons.some(b=>overlaps(r,b.getBoundingClientRect()))}}),
             persistent:officeNodes.every((a,i)=>a===document.querySelector('#haniOfficeActors').children[i])&&officeImages.every((a,i)=>a===document.querySelectorAll('#haniOfficeMap img')[i]),
             tabs:buttons.every(b=>b.getBoundingClientRect().height>=44&&b.getBoundingClientRect().width>=44),
-            writes:officeWrites,protectedSame:officeProtected===localStorage.getItem('hani_os_life_v23'),planned:document.querySelector('#haniOfficeActors').querySelectorAll('[data-person="daon"],[data-person="yoonseul"],[data-person="seongmin"]').length};
+            writes:officeWrites,protectedSame:officeProtected===localStorage.getItem('hani_os_life_v23'),planned:document.querySelectorAll('[data-planned-person]').length};
         });
         status.lastGeometry={width,theme,floor,geometry};save();
         assert.deepEqual(geometry.overflow,[],`${width}/${theme}/${floor} overflow`);assert.equal(geometry.persistent,true);assert.equal(geometry.tabs,true);assert.equal(geometry.planned,0);assert.deepEqual(geometry.writes,[]);assert.equal(geometry.protectedSame,true);
@@ -269,7 +267,7 @@ test(`Edge: ${process.argv.includes('--final-polish')?'390/1440 light/dark':proc
         }));
         for(const home of homes)assert.ok(home.correctFloor&&home.correctSeat&&home.inZone&&home.inFurniture&&home.zone==='desk'&&home.ownPlate,JSON.stringify(home));
         if(floor==='2f'){
-          const daon=page.locator('[data-planned-person="daon"]'),yoonseul=page.locator('[data-planned-person="yoonseul"]');
+          const daon=page.locator('.hani-office-actor[data-person="daon"]'),yoonseul=page.locator('.hani-office-actor[data-person="yoonseul"]');
           assert.equal(await daon.isVisible(),true);assert.equal(await yoonseul.isVisible(),true);
           assert.match(await daon.textContent(),/재무 줄 · 하루 옆 예정 좌석/);
           assert.match(await yoonseul.textContent(),/라이프 줄 다섯 번째 · 윤슬 입사 예정 빈 책상/);

@@ -32,10 +32,10 @@ export function nightTable(original){
   // Three variants share ONE floor budget; adding a character never multiplies it.
   const micro=[
     ['1f',['sua','taeo','yuna','minji'],[
-      ['night-lobby-note','로비에서 작은 메모','📝','조용한 밤이라 메모가 잘 써지네요.'],
-      ['night-lobby-story','라운지 이야기 한 줄','💬','오늘 웃겼던 장면, 하나만 얘기할까요?'],
-      ['night-lobby-lights','유리창에 비친 불빛','🌃','불빛이 유리창에 예쁘게 비치네요.']]],
-    ['2f',['jieun','haru','naeun','hina','minji','sooyeon'],[
+      ['night-lobby-note','작은 메모 한 줄','📝','조용한 밤이라 메모가 잘 써지네요.'],
+      ['night-lobby-story','오늘 이야기 한 줄','💬','오늘 웃겼던 장면, 하나만 얘기할까요?'],
+      ['night-lobby-lights','오늘 장면 떠올리기','🌃','오늘 기억할 장면을 적어둘게요.']]],
+    ['2f',['jieun','haru','naeun','hina','minji','sooyeon','daon','yoonseul'],[
       ['night-life-bookmark','책갈피에 한 줄','📖','이 페이지에 책갈피를 꽂아둘게요.'],
       ['night-life-note','느긋하게 메모 정리','📝','급한 건 없으니 한 줄씩 정리해요.'],
       ['night-life-idea','주말 아이디어 스케치','💡','이건 다음에 같이 해봐도 좋겠어요.']]],
@@ -65,13 +65,17 @@ export function nightTable(original){
     row('night-coffee-chat','커피 머신 앞 한마디',humans,'☕','머신 소리도 밤에는 크게 들리네요.',{rest:true,anchor:'coffee_counter'}),
     row('night-stretch-yawn','스트레칭하고 하품',humans,'🥱','기지개 한 번! 어깨도 풀어요.',{rest:true,home:true}),
     row('night-window-view','창밖 야경 보기',humans,'🌃','아직 켜진 창이 꽤 많네요.',{rest:true,home:true}),
-    row('night-sofa-nap','라운지 소파에서 짧은 쪽잠',['yuna','minji'],'💤','눈만 잠깐 붙일게요…',{rest:true,home:true}),
+    row('night-sofa-nap','잠깐 눈 붙이기',['yuna','minji'],'💤','눈만 잠깐 붙일게요…',{rest:true,home:true}),
     row('weekend-plant-water','주말 화분 물주기',['haru','naeun'],'🪴','흙부터 보고, 물은 조금만 줄게요.',{rest:true,anchor:'rooftop_garden',days:'주말',windows:[['00:00','24:00']]}),
     row('weekend-reading','주말 책 한 장',['hina','haru'],'📚','오늘은 마음에 드는 페이지부터 볼까요.',{rest:true,home:true,days:'주말',windows:[['00:00','24:00']]}),
     row('night-mir-stars','미르 별빛 데이터 정리',['mir'],'🌌','이 별과 저 별, 이어볼까?',{home:true}),
     row('weekend-route-doodle','수연의 주말 산책 지도',['sooyeon'],'🗺️','다음엔 이 길로 돌아가 봐요.',{rest:true,home:true,days:'주말',windows:[['00:00','24:00']]})
   ];
   for(const a of extras){
+    if(a.id==='night-window-view'){
+      a.targetResolution='explicit';a.performance.pose='stand';
+      a.places=a.participants.map(personId=>{const floor=byId.get(personId).home.floor;return {personId,floor,anchorId:'window_'+floor+'_1'}});
+    }
     table.actions.push(a);
     table.families.push({id:a.id,sourceActionId:a.id,memberActionIds:[a.id],durationCeilingSeconds:a.durationSeconds[1],
       limits:{scope:'person_action',maxPerDay:2,cooldownSeconds:14400,probabilityPerDay:.8,budget:'ambient'},parent:structuredClone(a)});
