@@ -510,6 +510,7 @@
   }
 
   function persistNewProject(row) {
+    const dateError=validateEntryDates(row);if(dateError){alert(dateError);return false;}
     const previousProjectId = activeProjectId, previousQuizId = activeQuizId;
     state.learningProjects.push(row);
     activeProjectId = row.id;
@@ -527,6 +528,7 @@
   }
 
   function persistProjectUpdate(project, changes) {
+    const dateError=validateEntryDates(changes);if(dateError){alert(dateError);return false;}
     const snapshot = cloneLearningValue(project);
     Object.assign(project, changes, { updatedAt: nowIso() });
     try {
@@ -982,7 +984,7 @@
     let slot=q('#studyQuickWrong',engine);
     if(!slot){slot=document.createElement('div');slot.id='studyQuickWrong';slot.className='study-card-v02984';engine.prepend(slot)}
     const count=quickWrongRows().length;
-    slot.innerHTML='<b>오늘은 오답 3개만</b><p class="note">반복 오답·미복습 중 최대 3개를 기존 재도전으로 열어요. 문제의 최근 오답 날짜를 함께 확인해 주세요.</p><button class="btn sm" type="button" id="studyQuickWrongOpen"'+(count?'':' disabled')+'>'+(count?count+'개 가볍게 풀기':'지금 복습할 오답이 없어요')+'</button>';
+    slot.innerHTML='<b>'+(count?'오늘은 오답 '+count+'개만':'복습할 오답 없음')+'</b><p class="note">'+(count?'반복 오답·미복습 중 최대 3개를 기존 재도전으로 열어요. 문제의 최근 오답 날짜를 함께 확인해 주세요.':'틀린 문제를 기록하면 이곳에서 다시 풀 수 있어요.')+'</p><button class="btn sm" type="button" id="studyQuickWrongOpen"'+(count?'':' disabled')+'>'+(count?count+'개 가볍게 풀기':'지금 복습할 오답이 없어요')+'</button>';
     q('#studyQuickWrongOpen',slot).onclick=openQuickWrong;
   }
 
