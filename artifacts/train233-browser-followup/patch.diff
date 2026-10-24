@@ -1,0 +1,100 @@
+diff --git a/hani-context-remote.css b/hani-context-remote.css
+index 88c3fc2..b2e2833 100644
+--- a/hani-context-remote.css
++++ b/hani-context-remote.css
+@@ -196,2 +196,2 @@
+- #app header.top{position:relative;top:auto;flex-wrap:wrap}
+- #app header.top .top-actions{flex-wrap:wrap}
++ #app .main>header.top.ui26-top:has(.hani-context-remote){position:relative!important;top:auto!important;height:auto!important;flex-wrap:wrap!important;transform:none!important;opacity:1;visibility:visible;pointer-events:auto}
++ #app header.top.ui26-top .top-actions{flex-wrap:wrap!important;max-width:100%}
+@@ -199 +199 @@
+- #app header.top .hani-context-remote{position:static;inset:auto;transform:none;transition:none;display:none;flex:0 0 100%;grid-column:1/-1;width:100%;max-height:70dvh;min-height:0;border-radius:14px;border:1px solid var(--remote-line);box-shadow:none;z-index:auto}
++ #app header.top .hani-context-remote{position:static;inset:auto;transform:none;transition:none;display:none;flex:0 0 100%;grid-column:1/-1;width:100%;max-height:none;min-height:0;overflow:visible;border-radius:14px;border:1px solid var(--remote-line);box-shadow:none;z-index:auto}
+diff --git a/hani-design-system.css b/hani-design-system.css
+index 5a58969..de8d3b1 100644
+--- a/hani-design-system.css
++++ b/hani-design-system.css
+@@ -1796 +1796 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
+-#app .date-flex-control{min-width:min(100%,185px);grid-template-columns:minmax(140px,1fr) 38px}
++#app .date-flex-control{min-width:min(100%,186px);grid-template-columns:minmax(140px,1fr) 40px}
+@@ -1798 +1798 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
+-#app .task-input{grid-template-columns:minmax(0,1fr) minmax(185px,auto) auto}
++#app .task-input{grid-template-columns:minmax(0,1fr) minmax(186px,auto) auto}
+@@ -1801 +1801 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
+- #app :is(.fg,.form-grid):has(.date-flex-control){grid-template-columns:repeat(auto-fit,minmax(min(100%,185px),1fr))}
++ #app :is(.fg,.form-grid):has(.date-flex-control){grid-template-columns:repeat(auto-fit,minmax(min(100%,186px),1fr))}
+diff --git a/hani-portfolio-preview.css b/hani-portfolio-preview.css
+index 939ff99..97ec3e6 100644
+--- a/hani-portfolio-preview.css
++++ b/hani-portfolio-preview.css
+@@ -66 +66 @@
+- .portfolio-summary{grid-template-columns:1fr 1fr;gap:10px}
++ .portfolio-summary{grid-template-columns:minmax(0,1fr);gap:10px}
+diff --git a/scripts/hani-banners-203-ui.test.mjs b/scripts/hani-banners-203-ui.test.mjs
+index ab4fbf0..8b2ac29 100644
+--- a/scripts/hani-banners-203-ui.test.mjs
++++ b/scripts/hani-banners-203-ui.test.mjs
+@@ -73 +73 @@ try{
+-      const art=await banner.evaluate(e=>{const scene=e.querySelector('figure'),img=scene.querySelector('img'),r=scene.getBoundingClientRect(),i=img.getBoundingClientRect(),style=getComputedStyle(img);return {width:r.width,height:r.height,imageWidth:i.width,imageHeight:i.height,fit:style.objectFit,mask:style.maskImage,eyebrow:e.querySelector('.ds-main-character-banner__eyebrow')?.textContent,subtitle:e.querySelector('.ds-main-character-banner__description')?.textContent,naturalRatio:img.naturalWidth/img.naturalHeight};});
++      const art=await banner.evaluate(e=>{const scene=e.querySelector('figure'),img=scene.querySelector('img'),r=scene.getBoundingClientRect(),i=img.getBoundingClientRect(),style=getComputedStyle(img);return {width:r.width,height:r.height,imageWidth:i.width,imageHeight:i.height,fit:style.objectFit,mask:style.maskImage,eyebrow:e.querySelector('.ds-main-character-banner__eyebrow')?.textContent,subtitle:e.querySelector('.ds-main-character-banner__description')?.textContent,naturalRatio:img.naturalWidth/img.naturalHeight,imageRight:i.right,sceneRight:r.right};});
+@@ -80 +80,3 @@ try{
+-      assert.ok(Math.abs(art.imageWidth-art.width)<=1&&Math.abs(art.imageHeight-art.height)<=1,scope+' scene fills persistent slot');
++      const expectedWidth=width<=700?art.width:Math.min(art.width,art.height*art.naturalRatio);
++      assert.ok(Math.abs(art.imageWidth-expectedWidth)<=1&&Math.abs(art.imageHeight-art.height)<=1,scope+' mobile cover / approved desktop uncropped scene');
++      assert.ok(Math.abs(art.imageRight-art.sceneRight)<=1,scope+' scene stays right aligned');
+diff --git a/scripts/hani-brand-heroes-218.browser.mjs b/scripts/hani-brand-heroes-218.browser.mjs
+index b731cfc..c9d7ca8 100644
+--- a/scripts/hani-brand-heroes-218.browser.mjs
++++ b/scripts/hani-brand-heroes-218.browser.mjs
+@@ -44 +44,8 @@ try{
+-        else assert.equal(row.visible,1,`${width}/${view.id}: ${JSON.stringify(row.heroes)}`);
++        else {
++          assert.equal(row.visible,view.id==='organization'?2:1,`${width}/${view.id}: ${JSON.stringify(row.heroes)}`);
++          if(view.id==='organization'){
++            assert.equal(await page.locator('#organization > .ds-main-character-banner:visible').count(),1);
++            assert.equal(await page.locator('.ogh-overview > .ogh-hero:visible').count(),1,'approved HANI-77 overview hero');
++            assert.equal(await page.locator('.ogh-overview > .ogh-hero img').getAttribute('src'),'./assets/team/hani-org-demo-day-v1.webp');
++          }
++        }
+@@ -71 +78 @@ try{
+-          result.tabs.push({width,id,tab:n,heroes:count});assert.equal(count,1,`${width}/${id} tab ${n}`);
++          result.tabs.push({width,id,tab:n,heroes:count});const overview=id==='organization'&&await buttons.nth(n).getAttribute('data-organization-tab')==='overview';assert.equal(count,overview?2:1,`${width}/${id} tab ${n}`);if(id==='organization')assert.equal(await page.locator('.ogh-overview > .ogh-hero:visible').count(),overview?1:0,'Demo Day is overview-only');
+diff --git a/scripts/hani-hero-illustrations-218.browser.mjs b/scripts/hani-hero-illustrations-218.browser.mjs
+index a0fa768..3e00a25 100644
+--- a/scripts/hani-hero-illustrations-218.browser.mjs
++++ b/scripts/hani-hero-illustrations-218.browser.mjs
+@@ -24 +24,3 @@ try{
+-  assert.equal(views.length,35);
++  assert.equal(views.length,36,'Milestones v1 adds one sidebar view');
++  assert.equal(views.filter(view=>view.id==='milestones').length,1);
++  assert.equal(new Set(views.map(view=>view.id)).size,36,'no duplicate nav view');
+@@ -53 +55,6 @@ try{
+-      assert.equal(row.heroes.length,1,view.id+' one canonical hero');
++      assert.equal(row.heroes.length,view.id==='organization'?2:1,view.id+' canonical banner and approved overview hero');
++      if(view.id==='organization'){
++        assert.equal(await page.locator('#organization > .ds-main-character-banner:visible').count(),1);
++        assert.equal(await page.locator('.ogh-overview > .ogh-hero:visible').count(),1);
++        assert.ok(row.heroes[1].images.some(i=>i.src==='./assets/team/hani-org-demo-day-v1.webp'&&i.decoded),'restored Demo Day image decodes');
++      }
+diff --git a/scripts/hani-market-browser-smoke.cjs b/scripts/hani-market-browser-smoke.cjs
+index bf5dea2..a2de85d 100644
+--- a/scripts/hani-market-browser-smoke.cjs
++++ b/scripts/hani-market-browser-smoke.cjs
+@@ -76 +76,2 @@ const server=http.createServer((req,res)=>{const pathname=decodeURIComponent(new
+-    await page.waitForFunction(()=>document.querySelector('#assetMarket .market-toolbar .hani-remote-mobile-trigger'));
++    await page.waitForFunction(()=>document.querySelector('header.top .top-actions .hani-remote-mobile-trigger'));
++    assert.equal(await page.locator('.hani-remote-mobile-trigger').count(),1,'one persistent Remote trigger in the approved mobile header slot');
+diff --git a/scripts/hani-navlogin-ui.test.mjs b/scripts/hani-navlogin-ui.test.mjs
+index 9e4f765..60411a7 100644
+--- a/scripts/hani-navlogin-ui.test.mjs
++++ b/scripts/hani-navlogin-ui.test.mjs
+@@ -53 +53 @@ try{
+-    assert.equal(await page.locator('.ogh-cta').count(),0,'duplicate overview hero removed');assert.equal(await page.locator('#organization > .ds-main-character-banner').count(),1,'canonical organization hero retained');await page.locator('[data-organization-tab="people"]').click();assert.equal(await page.locator('[data-organization-tab="people"]').getAttribute('aria-selected'),'true');
++    assert.equal(await page.locator('.ogh-overview > .ogh-hero .ogh-cta:visible').count(),1,'approved HANI-77 overview CTA restored');assert.equal(await page.locator('#organization > .ds-main-character-banner').count(),1,'canonical organization hero retained');await page.locator('[data-organization-tab="people"]').click();assert.equal(await page.locator('[data-organization-tab="people"]').getAttribute('aria-selected'),'true');
+diff --git a/scripts/hani-settings-225.test.mjs b/scripts/hani-settings-225.test.mjs
+index 3124934..348c350 100644
+--- a/scripts/hani-settings-225.test.mjs
++++ b/scripts/hani-settings-225.test.mjs
+@@ -57 +57 @@ async function create(before=false,width=1440){
+-  if(before&&settingsDelta.files[relative])body=Buffer.from(withoutSettings225(relative,body.toString('utf8')));
++  if(before&&settingsDelta.files[relative])body=Buffer.from(withoutSettings225(relative,withoutHeroRestore(relative,readReviewedCurrentSource(relative))));

@@ -70,14 +70,16 @@ try{
         return {display:s.display,columns:s.gridTemplateColumns,sceneWidth:getComputedStyle(image).width,left:r.left,right:r.right,imageLeft:i.left,imageRight:i.right,width:innerWidth,documentWidth:document.documentElement.scrollWidth,decoded:image.naturalWidth,heroScroll:e.scrollWidth,heroWidth:e.clientWidth,first:e.parentElement.firstElementChild===e,children:[...e.parentElement.children].map(n=>({tag:n.tagName,id:n.id,className:n.className})),agent:e.querySelectorAll('#aiBanner').length};
       });
       console.log('DIAGNOSTICS banner layout',JSON.stringify({view,width,layout,reference}));
-      const art=await banner.evaluate(e=>{const scene=e.querySelector('figure'),img=scene.querySelector('img'),r=scene.getBoundingClientRect(),i=img.getBoundingClientRect(),style=getComputedStyle(img);return {width:r.width,height:r.height,imageWidth:i.width,imageHeight:i.height,fit:style.objectFit,mask:style.maskImage,eyebrow:e.querySelector('.ds-main-character-banner__eyebrow')?.textContent,subtitle:e.querySelector('.ds-main-character-banner__description')?.textContent,naturalRatio:img.naturalWidth/img.naturalHeight};});
+      const art=await banner.evaluate(e=>{const scene=e.querySelector('figure'),img=scene.querySelector('img'),r=scene.getBoundingClientRect(),i=img.getBoundingClientRect(),style=getComputedStyle(img);return {width:r.width,height:r.height,imageWidth:i.width,imageHeight:i.height,fit:style.objectFit,mask:style.maskImage,eyebrow:e.querySelector('.ds-main-character-banner__eyebrow')?.textContent,subtitle:e.querySelector('.ds-main-character-banner__description')?.textContent,naturalRatio:img.naturalWidth/img.naturalHeight,imageRight:i.right,sceneRight:r.right};});
       assert.equal(layout.display,reference.display,scope+' canonical wide banner display');
       assert.equal(art.fit,'cover',scope+' restored full width cover');
       assert.notEqual(art.mask,'none',scope+' restored soft fade');
       assert.ok(art.eyebrow&&art.subtitle,scope+' eyebrow and short subtitle restored');
       assert.ok(art.naturalRatio>2.8&&art.naturalRatio<3.2,scope+' original art is wide');
       assert.ok(art.width>0&&art.height>0,scope+' persistent scene visible');
-      assert.ok(Math.abs(art.imageWidth-art.width)<=1&&Math.abs(art.imageHeight-art.height)<=1,scope+' scene fills persistent slot');
+      const expectedWidth=width<=700?art.width:Math.min(art.width,art.height*art.naturalRatio);
+      assert.ok(Math.abs(art.imageWidth-expectedWidth)<=1&&Math.abs(art.imageHeight-art.height)<=1,scope+' mobile cover / approved desktop uncropped scene');
+      assert.ok(Math.abs(art.imageRight-art.sceneRight)<=1,scope+' scene stays right aligned');
       assert.ok(layout.first,scope+' banner must be first element in view: '+JSON.stringify(layout.children));
       assert(layout.agent<=1,scope+' at most one #aiBanner inside active banner');
       assert.ok(layout.decoded>0,scope+' decoded image naturalWidth must be positive');

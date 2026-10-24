@@ -1,0 +1,4 @@
+PASS manifest JSON and required members
+PASS icons decode, dimensions, size budget and maskable safe zone
+PASS index links and existing finish theme owner agree
+PASS no service worker registration in repository runtime sources

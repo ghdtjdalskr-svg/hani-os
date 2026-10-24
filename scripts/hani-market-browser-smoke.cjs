@@ -73,7 +73,8 @@ const server=http.createServer((req,res)=>{const pathname=decodeURIComponent(new
     }
     await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1),true,'mobile overflow');
     await page.waitForFunction(()=>{const svg=document.querySelector('#marketChart svg');return svg&&svg.viewBox.baseVal.width<=400;});
-    await page.waitForFunction(()=>document.querySelector('#assetMarket .market-toolbar .hani-remote-mobile-trigger'));
+    await page.waitForFunction(()=>document.querySelector('header.top .top-actions .hani-remote-mobile-trigger'));
+    assert.equal(await page.locator('.hani-remote-mobile-trigger').count(),1,'one persistent Remote trigger in the approved mobile header slot');
     assert.equal(await page.locator('.hani-remote-mobile-trigger').evaluate(el=>getComputedStyle(el).position),'static');
     await page.locator('.hani-remote-mobile-trigger').click();assert.equal(await page.locator('.hani-remote-mobile-trigger').getAttribute('aria-expanded'),'true');
     await page.keyboard.press('Escape');assert.equal(await page.locator('.hani-remote-mobile-trigger').getAttribute('aria-expanded'),'false');

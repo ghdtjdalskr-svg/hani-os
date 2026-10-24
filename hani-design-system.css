@@ -1793,12 +1793,12 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 #app #monthlyReport .earnings-controls :is(label,p,span){color:inherit}
 #app #monthlyReport .earnings-controls button:disabled{opacity:1;color:#e0e5f5;background:#313d56;border-color:#8793ad}
 #app #settings #group-backup :is(.feature,.feature p,.settings-group-body){height:auto;max-height:none;overflow:visible;white-space:normal;overflow-wrap:anywhere}
-#app .date-flex-control{min-width:min(100%,185px);grid-template-columns:minmax(140px,1fr) 38px}
+#app .date-flex-control{min-width:min(100%,186px);grid-template-columns:minmax(140px,1fr) 40px}
 #app .date-flex-control>input{box-sizing:border-box;min-width:140px;padding-inline:8px;font-size:14px}
-#app .task-input{grid-template-columns:minmax(0,1fr) minmax(185px,auto) auto}
+#app .task-input{grid-template-columns:minmax(0,1fr) minmax(186px,auto) auto}
 #app input[type="date"]::-webkit-datetime-edit{padding:0}
 @media(max-width:768px){
- #app :is(.fg,.form-grid):has(.date-flex-control){grid-template-columns:repeat(auto-fit,minmax(min(100%,185px),1fr))}
+ #app :is(.fg,.form-grid):has(.date-flex-control){grid-template-columns:repeat(auto-fit,minmax(min(100%,186px),1fr))}
  #app :is(.fg,.form-grid)>.field:has(.date-flex-control){grid-column:1/-1}
  #app .task-input{grid-template-columns:minmax(0,1fr)}
  #app .main{padding-bottom:calc(32px + env(safe-area-inset-bottom));scroll-padding-bottom:calc(32px + env(safe-area-inset-bottom))}

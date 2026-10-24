@@ -1,0 +1,93 @@
+{
+  "status": "PASS",
+  "scope": "Static fixed-HEAD settings route reproduction and untouched-byte/EOL audit only; no browser geometry claim",
+  "head": "5a665a3",
+  "persistenceVersionCacheOwners": "hani-main.js and index.html byte-identical to HEAD",
+  "settingsRawRejected": true,
+  "settingsReviewedProjection": "PASS",
+  "controlMutationRejected": true,
+  "unchangedLines": 2781,
+  "files": [
+    {
+      "file": "hani-context-remote.css",
+      "beforeSha256": "b64b1f7e6e2379145175d7204499570c16a56a47da4c4ba79289040ccb790247",
+      "afterSha256": "8d2c34bead459aa5dc15edd1a0c56c28faf09d6bb6a0cce119d11fe9f0cf792d",
+      "beforeCRLF": 56,
+      "afterCRLF": 56,
+      "beforeLF": 145,
+      "afterLF": 145
+    },
+    {
+      "file": "hani-design-system.css",
+      "beforeSha256": "f9d092fe54d118d123ee468b45d5f15c5c308b74109762ac4a1e456a00c465a7",
+      "afterSha256": "c7d7b82f535594ea6c57fc542c59d7bc0c4545d11175385682eeadbf98af2d3d",
+      "beforeCRLF": 713,
+      "afterCRLF": 713,
+      "beforeLF": 1092,
+      "afterLF": 1092
+    },
+    {
+      "file": "hani-portfolio-preview.css",
+      "beforeSha256": "f8a7eb055c0beeca24a21d990008d4f32ffa8267be3b26428c0daf1dfe716f05",
+      "afterSha256": "ba189604ad26772bab38e9c2ca4c5294a3511e323217a5227043561f9fde08ee",
+      "beforeCRLF": 6,
+      "afterCRLF": 6,
+      "beforeLF": 84,
+      "afterLF": 84
+    },
+    {
+      "file": "scripts/hani-banners-203-ui.test.mjs",
+      "beforeSha256": "9907f1e5459b742f4ba001614618f1e6cbe0593726e47c1b1578c5aa8269393a",
+      "afterSha256": "37fb0440d448da343e9b7a7cd0eb3d0a559f438406b191cd599099e130bb25cc",
+      "beforeCRLF": 0,
+      "afterCRLF": 0,
+      "beforeLF": 117,
+      "afterLF": 119
+    },
+    {
+      "file": "scripts/hani-brand-heroes-218.browser.mjs",
+      "beforeSha256": "158fb0e07956b68c5a5418e908319fcf32a35643a7ea95b2b17ee3549812fe30",
+      "afterSha256": "94804bdaa59a3c552862dcb89ebe5fcf8b164b2b72e60c256a8d3a155e418c3a",
+      "beforeCRLF": 0,
+      "afterCRLF": 0,
+      "beforeLF": 85,
+      "afterLF": 92
+    },
+    {
+      "file": "scripts/hani-hero-illustrations-218.browser.mjs",
+      "beforeSha256": "93b35697102499a319441ad0fd5811d885be01851a580b6511b7fd97cf51f857",
+      "afterSha256": "3caf89c5676f2c1e10d94136b1137381811b65fc1af1387d8a20c1b2f248d1a0",
+      "beforeCRLF": 0,
+      "afterCRLF": 0,
+      "beforeLF": 79,
+      "afterLF": 86
+    },
+    {
+      "file": "scripts/hani-navlogin-ui.test.mjs",
+      "beforeSha256": "cfbe596969a67ffc022034ab0a3ee79fb31d058d82cc8b797b33e8f86e2f8f9b",
+      "afterSha256": "b453ca2e083d9f5d037ef95df74bacda765540a5c88275aa98849ff6fa9f1647",
+      "beforeCRLF": 0,
+      "afterCRLF": 0,
+      "beforeLF": 79,
+      "afterLF": 79
+    },
+    {
+      "file": "scripts/hani-market-browser-smoke.cjs",
+      "beforeSha256": "6c6ae3b49b3ffc5b41b3a9a174a36f421ef49699744b6edb8e9de474db4da8f5",
+      "afterSha256": "e8a1df566509611d32d114ae52b0fef757982e2d7790f4deb9c265771b063fc2",
+      "beforeCRLF": 0,
+      "afterCRLF": 0,
+      "beforeLF": 111,
+      "afterLF": 112
+    },
+    {
+      "file": "scripts/hani-settings-225.test.mjs",
+      "beforeSha256": "fcb606c4b281d722d2a4340bdf54d0819ab7c0c2d7abfb15fd1253620a08e6b6",
+      "afterSha256": "dd377ee2c9686406ef5cd6859cdbf2e761b173c313ce5241be184c3ade795f6a",
+      "beforeCRLF": 0,
+      "afterCRLF": 0,
+      "beforeLF": 221,
+      "afterLF": 221
+    }
+  ]
+}

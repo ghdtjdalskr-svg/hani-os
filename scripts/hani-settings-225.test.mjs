@@ -54,7 +54,7 @@ async function create(before=false,width=1440){
   const file=path.resolve(root,'.'+decodeURIComponent(url.pathname==='/'?'/index.html':url.pathname));
   if(!file.startsWith(root+path.sep)||!fs.existsSync(file)||!fs.statSync(file).isFile())return route.fulfill({status:404,body:''});
   let body=fs.readFileSync(file);const relative=path.relative(root,file).replaceAll('\\','/');
-  if(before&&settingsDelta.files[relative])body=Buffer.from(withoutSettings225(relative,body.toString('utf8')));
+  if(before&&settingsDelta.files[relative])body=Buffer.from(withoutSettings225(relative,withoutHeroRestore(relative,readReviewedCurrentSource(relative))));
   return route.fulfill({body,contentType:({'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css','.json':'application/json','.webp':'image/webp','.png':'image/png','.svg':'image/svg+xml'})[path.extname(file)]||'application/octet-stream'});
  });
  await context.addInitScript(()=>{
