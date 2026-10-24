@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 import {gunzipSync} from 'node:zlib';
-import {loadScene,root,at} from './hani-office-lively-fixture.mjs';
+import {loadScene,root,at,readAt} from './hani-office-lively-fixture.mjs';
 const bytes=gunzipSync(fs.readFileSync(new URL('scripts/fixtures/office-obr6-plans.json.gz',root)));
 assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),'6d9a5ba005b5607e5c856dc1b96e77d2be493a28e1bbbe831f86719e9543c794','immutable pre-obr6 oracle');
 const baseline=JSON.parse(bytes);
@@ -23,7 +23,8 @@ assert.equal(obr8.sourceSha256,'54fbf9a6f0301acf8c6e52d7ed3dc0ab8d05d684b763e84d
 const obr10Bytes=gunzipSync(fs.readFileSync(new URL('scripts/fixtures/office-obr10-plans-v5.json.gz',root)));
 assert.equal(crypto.createHash('sha256').update(obr10Bytes).digest('hex'),'d7c46b5789d725ee5e8d434d1d604b5f5f78db96beebe3a1cf9d5b6e1ac77eeb','reviewed obr10 behavior delta: unique task IDs, original generic actions, personal words, novel errands, individual dwell cap and 30px optional crossing buffer');
 const obr10=JSON.parse(obr10Bytes);
-assert.equal(crypto.createHash('sha256').update(fs.readFileSync(new URL('hani-office-live.js',root))).digest('hex'),obr10.sourceSha256,'reviewed final obr10 runtime identity');
+assert.equal(crypto.createHash('sha256').update(readAt('hani-office-live.js','0d47015')).digest('hex'),obr10.sourceSha256,'immutable pre-obr12 runtime identity');
+assert.equal(crypto.createHash('sha256').update(fs.readFileSync(new URL('hani-office-live.js',root))).digest('hex'),'6cd4b68f14aa435d3de6d00e4b535ca74ebf6baed225b0c818506e911e3d2b21','exact obr12 runtime identity; frozen behavior oracle unchanged');
 assert.equal(crypto.createHash('sha256').update(fs.readFileSync(new URL('data/hani-building/office-places.json',root))).digest('hex'),obr10.placesSha256,'reviewed obr10 data identity');
 for(const expected of baseline.records)test('obr6/obr8: '+expected.label+' original formal bytes and reviewed optional-trip/snapshot bytes',()=>{
  const {scene,context}=loadScene(),s=scene.scheduler;let writes=0;

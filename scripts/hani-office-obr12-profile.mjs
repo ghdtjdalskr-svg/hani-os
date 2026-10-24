@@ -1,0 +1,16 @@
+import fs from 'node:fs';
+import inspector from 'node:inspector';
+import {promisify} from 'node:util';
+import {performance} from 'node:perf_hooks';
+import {createHash} from 'node:crypto';
+import {loadScene,at} from './hani-office-lively-fixture.mjs';
+const target=process.argv[2]||'artifacts/office-behavior/obr12-profile-current';
+const source=fs.readFileSync('hani-office-live.js');
+const {scene}=loadScene(),s=scene.scheduler,session=new inspector.Session();
+session.connect();const post=promisify(session.post.bind(session));
+await post('Profiler.enable');await post('Profiler.setSamplingInterval',{interval:100});await post('Profiler.start');
+const start=performance.now(),formal=s.plan('2026-10-22'),middle=performance.now(),outings=s.blockPlan('2026-10-22',0,formal),end=performance.now();
+const {profile}=await post('Profiler.stop');session.disconnect();
+const begin=performance.now();for(let i=0;i<1000;i++)s.snapshot(at('2026-10-22',14*3600+i));
+const result={sourceSha256:createHash('sha256').update(source).digest('hex'),node:process.version,firstMs:end-start,formalMs:middle-start,outingsMs:end-middle,warmMs:(performance.now()-begin)/1000,formal:formal.length,outings:outings.length};
+fs.writeFileSync(target+'.cpuprofile',JSON.stringify(profile));fs.writeFileSync(target+'.js',source);fs.writeFileSync(target+'.json',JSON.stringify(result,null,2)+'\n');console.log(result);

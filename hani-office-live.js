@@ -153,6 +153,8 @@
   }
   // Edge geometry is immutable; reuse the identical weight in every source tree.
   const weightedAdjacent=new Map([...adjacent].map(([from,next])=>{const a=anchors.get(from);return [from,next.filter(id=>anchors.has(id)).map(id=>{const b=anchors.get(id);return {id,weight:a.floor===b.floor?Math.hypot(a.x-b.x,a.y-b.y):180}})]}));
+  const routeNodes=[...anchors.values()],routeIds=new Map(routeNodes.map((a,i)=>[a.id,i]));
+  const routeEdges=routeNodes.map(a=>(weightedAdjacent.get(a.id)||[]).map(e=>({id:routeIds.get(e.id),weight:e.weight})));
   // Equal-distance nodes keep the original Set's insertion order, including
   // distance decreases. Stale heap entries never change Dijkstra tie breaking.
   const routeBefore=(a,b)=>a.cost<b.cost||a.cost===b.cost&&a.order<b.order;
@@ -160,19 +162,21 @@
   function routePop(heap){const first=heap[0],last=heap.pop();if(heap.length){let i=0;while(i*2+1<heap.length){let c=i*2+1;if(c+1<heap.length&&routeBefore(heap[c+1],heap[c]))c++;if(!routeBefore(heap[c],last))break;heap[i]=heap[c];i=c}heap[i]=last}return first}
   function route(from,to){
     if(!canon||!anchors.has(from)||!anchors.has(to))return [];
+    const source=routeIds.get(from),destination=routeIds.get(to);
     if(!routeTrees.has(from)){
-      const distance=new Map([[from,0]]),previous=new Map(),open=new Map([[from,0]]),heap=[{id:from,cost:0,order:0}];let sequence=1;
-      while(heap.length){const entry=routePop(heap),current=entry.id;if(open.get(current)!==entry.order||distance.get(current)!==entry.cost)continue;
-        open.delete(current);const a=anchors.get(current);if(current!==from&&a.rendererSeat)continue;
-        for(const {id:next,weight} of weightedAdjacent.get(current)||[]){
-          const cost=distance.get(current)+weight;
-          if(cost<(distance.get(next)??Infinity)){distance.set(next,cost);previous.set(next,current);if(!open.has(next))open.set(next,sequence++);routePush(heap,{id:next,cost,order:open.get(next)})}
+      const distance=new Float64Array(routeNodes.length).fill(Infinity),previous=new Int32Array(routeNodes.length).fill(-1),open=new Int32Array(routeNodes.length).fill(-1),heap=[{id:source,cost:0,order:0}];let sequence=1;
+      distance[source]=0;open[source]=0;
+      while(heap.length){const entry=routePop(heap),current=entry.id;if(open[current]!==entry.order||distance[current]!==entry.cost)continue;
+        open[current]=-1;const a=routeNodes[current];if(current!==source&&a.rendererSeat)continue;
+        for(const {id:next,weight} of routeEdges[current]){
+          const cost=distance[current]+weight;
+          if(cost<distance[next]){distance[next]=cost;previous[next]=current;if(open[next]===-1)open[next]=sequence++;routePush(heap,{id:next,cost,order:open[next]})}
         }
       }
       routeTrees.set(from,{distance,previous});
     }
     const {distance,previous}=routeTrees.get(from);
-    if(!distance.has(to))return [];const path=[to];while(path[0]!==from)path.unshift(previous.get(path[0]));return path.map(id=>anchors.get(id));
+    if(distance[destination]===Infinity)return [];const path=[destination];while(path[0]!==source)path.unshift(previous[path[0]]);return path.map(id=>routeNodes[id]);
   }
   for(const rects of Object.values(deskSurfaces)){for(const rect of rects)Object.freeze(rect);Object.freeze(rects)}
   function homeSeat(id){return Object.values(seatMaps).flat().find(s=>s.owner===id&&s.owner!=="chairman")}
@@ -248,6 +252,7 @@
     const minute=t=>Number(t.slice(0,2))*60+Number(t.slice(3));
     const imul=Math.imul;
     const seed=value=>{let n=2166136261;for(let i=0;i<value.length;i++){n^=value.charCodeAt(i);n=imul(n,16777619)}return n>>>0};
+    const seedTail=(n,value)=>{for(let i=0;i<value.length;i++){n^=value.charCodeAt(i);n=imul(n,16777619)}return n>>>0};
     const unit=value=>seed(value)/4294967296;
     const overlap=(a,b)=>a.start<b.end&&b.start<a.end;
     const ledgerIndices=new WeakMap(),intervalCache=new WeakMap(),homeGeometry=new Map(),clearGeometry=new Map(),rosterKeys=new WeakMap(),staticSafe=new Set();
@@ -257,7 +262,9 @@
       for(;index.length<ledger.length;index.length++){const e=ledger[index.length];for(let k=Math.floor(e.start/60);k<=Math.floor(e.end/60);k++){
         if(!index.buckets.has(k))index.buckets.set(k,[]);index.buckets.get(k).push(e);
       }}
-      const result=new Set();for(let k=Math.floor(start/60);k<=Math.floor(end/60);k++)for(const e of index.buckets.get(k)||[])if(e.start<end&&start<e.end)result.add(e);
+      const first=Math.floor(start/60),last=Math.floor(end/60);
+      if(first===last)return (index.buckets.get(first)||[]).filter(e=>e.start<end&&start<e.end);
+      const result=new Set();for(let k=first;k<=last;k++)for(const e of index.buckets.get(k)||[])if(e.start<end&&start<e.end)result.add(e);
       return [...result];
     }
     function path(from,to){let targets=paths.get(from);if(!targets){targets=new Map();paths.set(from,targets)}if(!targets.has(to))targets.set(to,route(from,to));return targets.get(to)}
@@ -270,8 +277,9 @@
     const isLate=seconds=>seconds>=3600&&seconds<7*3600;
     const isEvening=seconds=>seconds>=18*3600||seconds<3600;
     const presentAt=(id,seconds)=>!isLate(seconds)||lateWorkers.has(id)||id==='seongmin';
+    const displacedHomesById=new Map(['yuna','minji'].map(id=>[id,{floor:'1f',anchorId:id==='yuna'?'lobby-nw':'lobby-ne'}]));
     function homeAt(person,seconds){
-      if((isLate(seconds)||isEvening(seconds))&&['yuna','minji'].includes(person.id))return {floor:'1f',anchorId:person.id==='yuna'?'lobby-nw':'lobby-ne'};
+      if((isLate(seconds)||isEvening(seconds))&&displacedHomesById.has(person.id))return displacedHomesById.get(person.id);
       return person.home;
     }
     let targetCount=0;
@@ -347,6 +355,7 @@
       return targetResources.get(chosen);
     }
     const formalCeiling=(family,action,chosen)=>Math.max(family.durationCeilingSeconds,formalStay(action,chosen,action.durationSeconds[1]));
+    const homeFormalPeople=new WeakMap(),formalFloors=new WeakMap(),formalHomeKeys=new WeakMap();
     function opportunitiesFor(day,allowed,includeCadence=true){
       const present=new Set(allowed.map(p=>p.id)),weekday=![0,6].includes(new Date(day+'T00:00:00Z').getUTCDay()),opportunities=[];
       for(const family of table.families){
@@ -458,7 +467,8 @@
         // One route at a time inside a group; reserve the whole excursion atomically.
         // This conservative FIFO also keeps shared doors/elevators below capacity.
         const atHome=chosen.every(t=>t.outbound.length===1&&t.inbound.length===1);
-        let cursor=start;const people=atHome?chosen.map(t=>({...t,out:[],back:[]})):chosen.map(t=>({...t}));
+        if(atHome&&!homeFormalPeople.has(chosen))homeFormalPeople.set(chosen,chosen.map(t=>({...t,out:[],back:[]})));
+        let cursor=start;const people=atHome?homeFormalPeople.get(chosen):chosen.map(t=>({...t}));
         function travel(t,p,phase){
           const legs=[];for(let i=1;i<p.length;i++){
             const from=p[i-1],to=p[i],seconds=travelSeconds(from,to);if(!seconds)continue;
@@ -483,12 +493,14 @@
         if(end>Math.min(o.windowEnd,actionWindow[1])||!available(people,start,end,action.layer===2,group))continue;
         const selfies=table.rules.hinaBalance.selfieActionIds.includes(action.id);
         if(selfies&&teacherCompletedAt.filter(t=>t<=start).length<=events.filter(e=>table.rules.hinaBalance.selfieActionIds.includes(e.actionId)).length)continue;
-        const resources=resourcesFor(chosen).slice();
-        const event={id:o.base+'|'+o.n,actionId:action.id,familyId:family.id,layer:action.layer,start,end,performStart,performEnd,duration,runtimeDurationCeilingSeconds:formalCeiling(family,action,chosen),personalNonWork:action.personalNonWork,people,resources,floors:[...new Set(people.map(t=>anchors.get(t.seat.anchor).floor))]};
+        const resources=resourcesFor(chosen);
+        if(!formalFloors.has(chosen))formalFloors.set(chosen,[...new Set(chosen.map(t=>anchors.get(t.seat.anchor).floor))]);
+        const event={id:o.base+'|'+o.n,actionId:action.id,familyId:family.id,layer:action.layer,start,end,performStart,performEnd,duration,runtimeDurationCeilingSeconds:formalCeiling(family,action,chosen),personalNonWork:action.personalNonWork,people,resources,floors:formalFloors.get(chosen)};
         // available() already proved actor/floor eligibility for this interval.
         // Accepted away routes continuously protect every allowed home, so a
         // cached home-only proof has no remaining resource or moving conflict.
-        const staticKey=atHome?rosterKey(allowed)+'|'+people.map(t=>t.id+':'+t.home.anchorId).join(',')+'|'+(isLate(start)||isEvening(start))+'|'+(isLate(end-.001)||isEvening(end-.001)):null;
+        if(atHome&&!formalHomeKeys.has(chosen))formalHomeKeys.set(chosen,people.map(t=>t.id+':'+t.home.anchorId).join(','));
+        const staticKey=atHome?rosterKey(allowed)+'|'+formalHomeKeys.get(chosen)+'|'+(isLate(start)||isEvening(start))+'|'+(isLate(end-.001)||isEvening(end-.001)):null;
         if(atHome&&staticSafe.has(staticKey))events.push(event);
         else if(!reserve(event,events,allowed))continue;
         latestAcceptedStart=Math.max(latestAcceptedStart,start);
@@ -651,16 +663,23 @@
       // Internal cache only; do not alter the public event shape or formal ledger.
       intervalCache.set(e,result);return result;
     }
+    const resourceSets=new WeakMap();
     function resourceConflict(a,b){
-      if(!a.resources.some(r=>b.resources.includes(r)))return false;
+      let ids=resourceSets.get(b.resources);if(!ids){ids=new Set(b.resources);resourceSets.set(b.resources,ids)}
+      const person=a.people[0];
+      if(a.resources.length===1&&a.people.length===1&&!person.out.length&&!person.back.length&&person.seat.anchor===a.resources[0]){
+        if(!ids.has(a.resources[0]))return false;
+        const ranges=resourceIntervals(b).get(a.resources[0]);return !!ranges&&ranges.some(p=>overlap(a,p));
+      }
+      if(!a.resources.some(r=>ids.has(r)))return false;
       const x=resourceIntervals(a),y=resourceIntervals(b);
       for(const [id,ranges]of x)if(y.has(id)&&ranges.some(p=>y.get(id).some(q=>overlap(p,q))))return true;
       return false;
     }
-    const eventMotion=new WeakMap();
+    const eventMotion=new WeakMap(),stationaryMotion={moving:false};
     function motion(e){
       let value=eventMotion.get(e);
-      if(!value){value={moving:e.people.some(t=>t.seat.anchor!==t.home.anchorId),floors:new Set(e.people.flatMap(t=>[t.home.floor,anchors.get(t.seat.anchor).floor]))};eventMotion.set(e,value)}
+      if(!value){value=e.people.some(t=>t.seat.anchor!==t.home.anchorId)?{moving:true,floors:new Set(e.people.flatMap(t=>[t.home.floor,anchors.get(t.seat.anchor).floor]))}:stationaryMotion;eventMotion.set(e,value)}
       return value;
     }
     function floorCapacity(candidate,nearby){
@@ -676,20 +695,30 @@
       }
       return true;
     }
+    const edgeHomeBlocks=new WeakMap(),seatHomeBlocks=new WeakMap();
+    function blockedByHome(homes,a,b,owner){
+      let edges=edgeHomeBlocks.get(homes);if(!edges){edges=new Map();edgeHomeBlocks.set(homes,edges)}
+      let targets=edges.get(a);if(!targets){targets=new Map();edges.set(a,targets)}
+      let blocked=targets.get(b);
+      if(!blocked){blocked=new Set();const pa=pixels(visualPoint(a)),pb=pixels(visualPoint(b)),dx=pb[0]-pa[0],dy=pb[1]-pa[1],length=dx*dx+dy*dy;
+        for(const h of homes){if(h.anchor.floor!==a.floor)continue;const q=h.point,ratio=length?Math.max(0,Math.min(1,((q[0]-pa[0])*dx+(q[1]-pa[1])*dy)/length)):0;
+          if(Math.hypot(pa[0]+ratio*dx-q[0],pa[1]+ratio*dy-q[1])<24.01)blocked.add(h.owner);
+        }targets.set(b,blocked);
+      }
+      for(const id of blocked)if(id!==owner)return true;return false;
+    }
     function clearHomeRoute(t,allowed,start,end){
       const geometryKey=rosterKey(allowed)+'|'+(isLate(start)||isEvening(start))+'|'+(isLate(end-.001)||isEvening(end-.001));
       if(!homeGeometry.has(geometryKey))homeGeometry.set(geometryKey,allowed.flatMap(other=>[...new Set([other.home.anchorId,homeAt(other,start).anchorId,homeAt(other,end-.001).anchorId])].map(id=>({owner:other.id,anchor:anchors.get(id),point:pixels(visualPoint(anchors.get(id)))}))));
       const homes=homeGeometry.get(geometryKey),key=geometryKey+'|'+t.id+':'+t.home.anchorId+':'+t.seat.anchor;
       if(clearGeometry.has(key))return clearGeometry.get(key);
-      const a=anchors.get(t.seat.anchor),p=pixels([t.seat.x,t.seat.y]);
-      if(homes.some(h=>h.owner!==t.id&&h.anchor.floor===a.floor&&Math.hypot(p[0]-h.point[0],p[1]-h.point[1])<20.01)){clearGeometry.set(key,false);return false}
+      const a=anchors.get(t.seat.anchor);
+      let seats=seatHomeBlocks.get(homes);if(!seats){seats=new Map();seatHomeBlocks.set(homes,seats)}
+      let blocked=seats.get(t.seat);if(!blocked){const p=pixels([t.seat.x,t.seat.y]);blocked=new Set(homes.filter(h=>h.anchor.floor===a.floor&&Math.hypot(p[0]-h.point[0],p[1]-h.point[1])<20.01).map(h=>h.owner));seats.set(t.seat,blocked)}
+      for(const id of blocked)if(id!==t.id){clearGeometry.set(key,false);return false}
       for(const nodes of [t.outbound,t.inbound])for(let i=1;i<nodes.length;i++){
         const a=nodes[i-1],b=nodes[i];if(a.floor!==b.floor||!travelSeconds(a,b))continue;
-        const pa=pixels(visualPoint(a)),pb=pixels(visualPoint(b)),dx=pb[0]-pa[0],dy=pb[1]-pa[1],length=dx*dx+dy*dy;
-        for(const h of homes){if(h.owner===t.id||h.anchor.floor!==a.floor)continue;const q=h.point;
-          const ratio=length?Math.max(0,Math.min(1,((q[0]-pa[0])*dx+(q[1]-pa[1])*dy)/length)):0;
-          if(Math.hypot(pa[0]+ratio*dx-q[0],pa[1]+ratio*dy-q[1])<24.01){clearGeometry.set(key,false);return false}
-        }
+        if(blockedByHome(homes,a,b,t.id)){clearGeometry.set(key,false);return false}
       }
       clearGeometry.set(key,true);return true;
     }
@@ -740,6 +769,7 @@
     function reserve(candidate,ledger,allowed,nearby=ledgerOverlaps(ledger,candidate.start,candidate.end)){
       const ids=new Set(candidate.people.map(t=>t.id));
       if(nearby.some(e=>e.people.some(t=>ids.has(t.id))||resourceConflict(e,candidate)))return false;
+      nearby=nearby.filter(e=>motion(e).moving);
       if(!floorCapacity(candidate,nearby))return false;
       if(candidate.card&&!candidate.visitor&&!transitCapacity(candidate,nearby))return false;
       // Reserve a unit for travellers passing through this floor. Existing
@@ -788,7 +818,7 @@
       // Desk microexpressions never change physical position. Their homes were
       // checked continuously above; only moving/away reservations add sweep knots.
       const sweptFloors=new Set(candidate.resources.map(id=>anchors.get(id).floor));
-      const movingNearby=nearby.filter(e=>e.resources.some(id=>sweptFloors.has(anchors.get(id).floor))&&e.people.some(t=>t.visitor||t.out.length||t.back.length||t.seat.anchor!==t.home.anchorId));
+      const movingNearby=nearby.filter(e=>e.people.some(t=>t.visitor||t.out.length||t.back.length||t.seat.anchor!==t.home.anchorId)&&e.resources.some(id=>sweptFloors.has(anchors.get(id).floor)));
       const others=[...new Set(movingNearby.flatMap(e=>e.people.filter(t=>!ids.has(t.id)&&(t.visitor||t.out.length||t.back.length||t.seat.anchor!==t.home.anchorId)).map(t=>t.id)))];
       if(candidate.people.length===1&&!others.length){ledger.push(candidate);return true}
       const times=new Set([candidate.start,candidate.end-.00001]);
@@ -836,15 +866,21 @@
       }
       ledger.push(candidate);return true;
     }
+    const excursionGeometry=new WeakMap(),legGeometry=new WeakMap();
+    function pathLegs(nodes){
+      if(!legGeometry.has(nodes))legGeometry.set(nodes,nodes.slice(1).map((to,i)=>({from:nodes[i].id,to:to.id,duration:travelSeconds(nodes[i],to)})).filter(l=>l.duration));
+      return legGeometry.get(nodes);
+    }
     function excursion(id,home,card,target,start,stay,day,visitor=null,deadline=86400){
       const outbound=path(home.anchorId,target),inbound=path(target,home.anchorId),seat=slot(target,card.pose);
       if(!seat||target===home.anchorId||!outbound.length||!inbound.length)return null;
       if(start+stay+pathDuration(outbound)+pathDuration(inbound)>deadline)return null;
       let cursor=start;
-      const legs=nodes=>{const result=[];for(let i=1;i<nodes.length;i++){const from=nodes[i-1],to=nodes[i],duration=travelSeconds(from,to);if(!duration)continue;result.push({from:from.id,to:to.id,start:cursor,end:cursor+duration});cursor+=duration}return result};
+      const legs=nodes=>{const result=[];for(const {from,to,duration}of pathLegs(nodes)){result.push({from,to,start:cursor,end:cursor+duration});cursor+=duration}return result};
       const out=legs(outbound),performStart=cursor;cursor+=stay;const performEnd=cursor,back=legs(inbound);
+      let geometry=excursionGeometry.get(outbound);if(!geometry){geometry={resources:[...new Set([...outbound,...inbound].map(n=>n.id))],floors:[...new Set([home.floor,card.floor])]};excursionGeometry.set(outbound,geometry)}
       return {id:day+'|outing|'+id+'|'+start,actionId:'base-work',start,end:cursor,performStart,performEnd,card,visitor,
-        people:[{id,home,seat,outbound,inbound,out,back,visitor:!!visitor}],resources:[...new Set([...outbound,...inbound].map(n=>n.id))],floors:[...new Set([home.floor,card.floor])]};
+        people:[{id,home,seat,outbound,inbound,out,back,visitor:!!visitor}],resources:geometry.resources,floors:geometry.floors};
     }
     const visitorKinds=[
       {kind:'client',sprite:'visitor-client',name:'방문 고객',hours:[[10,17]],target:'client_booth_slot_4',stay:[120,300],go:'상담실로 안내받아 가는 중',at:'상담 받는 중'},
@@ -892,17 +928,20 @@
       function withinCap(e){
         const near=ledgerOverlaps(result,e.start,e.end).filter(q=>!q.visitor);
         const ticks=[e.start,e.end-.00001,41400,46800,3600,25200,...near.flatMap(q=>[q.start,q.end])].filter(s=>s>=e.start&&s<e.end);
+        const reservations=[...near,e];
         return e.floors.every(f=>ticks.every(s=>{
-          const active=[...near,e].filter(q=>q.start<=s&&s<q.end&&q.floors.includes(f));
-          const groups=active.filter(q=>q.people.length>1).length,solo=active.length-groups;
-          return cap(s)===2?groups<=1&&solo+(groups?1:0)<=2:active.reduce((n,q)=>n+q.people.length,0)<=cap(s);
+          let groups=0,solo=0,people=0;
+          for(const q of reservations)if(q.start<=s&&s<q.end&&q.floors.includes(f)){if(q.people.length>1)groups++;else solo++;people+=q.people.length}
+          return cap(s)===2?groups<=1&&solo+(groups?1:0)<=2:people<=cap(s);
         }));
       }
+      const rhythms=Object.values(placeTable?.rhythm||{}),rhythmsAt=new Map();
       function weight(card,people,at){
         let w=people.reduce((n,p)=>n*(card.affinity?.[p.id]||1),1)**(1/people.length);
         const sameFloor=people.every(p=>homeAt(p,at).floor===card.floor);
         w*=sameFloor?(people.length>1?12:5):(people.length>1?.35:1);
-        for(const rhythm of Object.values(placeTable?.rhythm||{}))if(at/3600>=rhythm.hours[0]&&at/3600<rhythm.hours[1])w*=rhythm.weights[card.kind]||1;
+        let activeRhythms=rhythmsAt.get(at);if(!activeRhythms){activeRhythms=rhythms.filter(r=>at/3600>=r.hours[0]&&at/3600<r.hours[1]);rhythmsAt.set(at,activeRhythms)}
+        for(const rhythm of activeRhythms)w*=rhythm.weights[card.kind]||1;
         // Novel places get a modest boost; preferences still shape each day's mix.
         w*=people.some(p=>!visits.get(p.id)?.has(card.id))?3:1;
         if(gatheringPlace(card)){
@@ -933,8 +972,8 @@
         if(!updates.length)return;
         // Scratch reservations form one transaction. Never edit an indexed event
         // in place: resource/sweep caches and rejected proposals stay immutable.
-        const removed=new Set(updates.map(([old])=>old)),scratch=ledger.filter(e=>!removed.has(e));
-        for(const [,e]of updates)if(!reserve(e,scratch,allowed))return;
+        const removed=new Set(updates.map(([old])=>old)),scratch=[];
+        for(const [,e]of updates){const near=ledgerOverlaps(ledger,e.start,e.end).filter(q=>!removed.has(q));near.push(...scratch.filter(q=>overlap(q,e)));if(!reserve(e,scratch,allowed,near))return}
         for(const [old,e]of updates){
           ledger[ledger.indexOf(old)]=e;result[result.indexOf(old)]=e;
           for(const t of old.people){const trips=tripsByPerson.get(t.id);if(trips)trips[trips.indexOf(old)]=e;if(last.get(t.id)?.end===old.end)last.set(t.id,{end:e.end,card:e.card.id})}
@@ -973,11 +1012,12 @@
           (people.length===1||people.every(p=>homeAt(p,at).floor===c.floor||(floorTrips.get(p.id)||0)<2))&&
           people.every(p=>fill?neighbours.filter(e=>e.people.some(t=>t.id===p.id)&&e.start<at).at(-1)?.card.id!==c.id&&neighbours.find(e=>e.people.some(t=>t.id===p.id)&&e.start>=at)?.card.id!==c.id:last.get(p.id)?.card!==c.id)&&(!isLate(at)||people.every(p=>homeAt(p,at).floor===c.floor))&&c.slots.length>=people.length));
         const rankBase=day+'|card|'+people.map(p=>p.id).join()+'|'+at+'|';
-        cards=cards.map(c=>({c,rank:visitor?seed(day+at+c.id):-Math.log(Math.max(.000001,unit(rankBase+c.id)))/weight(c,people,at)})).sort((a,b)=>a.rank-b.rank||a.c.id.localeCompare(b.c.id)).map(r=>r.c);
+        const rankSeed=seed(rankBase),slotSeed=seed(day+'|slot|'+at);
+        cards=cards.map(c=>({c,rank:visitor?seed(day+at+c.id):-Math.log(Math.max(.000001,seedTail(rankSeed,c.id)/4294967296))/weight(c,people,at)})).sort((a,b)=>a.rank-b.rank||a.c.id.localeCompare(b.c.id)).map(r=>r.c);
         if(!visitor&&!fill&&at-(lastFloor.get(homeAt(people[0],at).floor)??-Infinity)<BLOCK)cards=cards.slice(0,3);
         for(const card of cards){
           const orderKey=card.id+'|'+at;
-          if(!visitor&&!slotOrders.has(orderKey))slotOrders.set(orderKey,card.slots.map(id=>({id,rank:seed(day+'|slot|'+at+id)})).sort((a,b)=>a.rank-b.rank).map(p=>p.id));
+          if(!visitor&&!slotOrders.has(orderKey))slotOrders.set(orderKey,card.slots.map(id=>({id,rank:seedTail(slotSeed,id)})).sort((a,b)=>a.rank-b.rank).map(p=>p.id));
           const slots=visitor?[visitor.target]:slotOrders.get(orderKey);
           for(let offset=0;offset<slots.length;offset++){
             const range=visitor?.stay||card.stay,scale=people.length>1?rules.groupStayScale:1;
@@ -996,7 +1036,7 @@
             if(![3600,25200,64800].some(s=>at<s&&s<deadline)&&people.some((p,i)=>!clearHomeRoute({id:p.id,home:homes[i],seat:slot(destinations[i],card.pose),outbound:path(homes[i].anchorId,destinations[i]),inbound:path(destinations[i],homes[i].anchorId)},allowed,at,deadline)))continue;
             const trips=people.map((p,i)=>excursion(p.id,visitor?{floor:'1f',anchorId:'arrival_gate'}:homeAt(p,at),card,slots[(offset+i)%slots.length],at+i*1.5,stay,day,visitor,deadline));
             if(trips.some(t=>!t))continue;
-            const e={...trips[0],people:trips.flatMap(t=>t.people),end:Math.max(...trips.map(t=>t.end)),performStart:Math.max(...trips.map(t=>t.performStart)),performEnd:Math.min(...trips.map(t=>t.performEnd)),
+            const e=trips.length===1?trips[0]:{...trips[0],people:trips.flatMap(t=>t.people),end:Math.max(...trips.map(t=>t.end)),performStart:Math.max(...trips.map(t=>t.performStart)),performEnd:Math.min(...trips.map(t=>t.performEnd)),
               resources:[...new Set(trips.flatMap(t=>t.resources))],floors:[...new Set(trips.flatMap(t=>t.floors))]};
             if(formalId)e.preMeetingId=formalId;
             // Everyone gets the full shared stay; FIFO returns follow the common end.
@@ -1005,7 +1045,7 @@
               // Waiting is a stationary state, never a timed zero-pixel walk.
               const used=[];
               for(const t of e.people){for(let i=0;i<t.out.length;i++){const leg=t.out[i],duration=leg.end-leg.start;let begin=leg.start,changed=true;
-                  while(changed){changed=false;for(const other of used)if([leg.from,leg.to].some(id=>id===other.from||id===other.to)&&begin<other.end+.2&&other.start<begin+duration){begin=other.end+.2;changed=true}}
+                  while(changed){changed=false;for(const other of used)if((leg.from===other.from||leg.from===other.to||leg.to===other.from||leg.to===other.to)&&begin<other.end+.2&&other.start<begin+duration){begin=other.end+.2;changed=true}}
                   const shift=begin-leg.start;if(shift)for(const l of t.out.slice(i)){l.start+=shift;l.end+=shift}used.push(leg);
                 }}
               e.performStart=Math.max(...e.people.map(t=>t.out.at(-1).end));const commonEnd=e.performStart+stay;e.performEnd=commonEnd;
@@ -1103,9 +1143,10 @@
         const target=personById.get(c.targetPerson),score=target?(relationshipScores.get(p.id+'|'+target.id)||0):0;
         return {c,weight:c.errandKind==='colleague'?(target.home.room===p.home.room?4:2)*(1+score/25):1};
       }));
+      const errandPhases=new Map(physical.map(p=>[p.id,seed(day+'|errand-phase|'+p.id)%90]));
       for(let tick=32400;tick<75600;tick+=90){
         for(const p of physical){
-          const at=tick+seed(day+'|errand-phase|'+p.id)%90;
+          const at=tick+errandPhases.get(p.id);
           if(at+60>75600)continue;
           if(at<(errandDue.get(p.id)??(32400+seed(day+'|errand-first|'+p.id)%540)))continue;
           // A future leisure booking is already frozen. Any errand extending
@@ -1114,8 +1155,9 @@
           const near=ledgerOverlaps(ledger,at,at+1);
           if(near.some(e=>e.people.some(t=>t.id===p.id)||e.card?.targetPerson===p.id))continue;
           const home=homeAt(p,at),previous=errandLast.get(p.id);
+          const errandSeed=seed(day+'|errand|'+p.id+'|'+at+'|');
           const cards=choices.get(p.id).filter(({c})=>c.floor===home.floor&&c.id!==previous).map(({c,weight})=>{
-            return {c,rank:-Math.log(Math.max(.000001,unit(day+'|errand|'+p.id+'|'+at+'|'+c.id)))/weight};
+            return {c,rank:-Math.log(Math.max(.000001,seedTail(errandSeed,c.id)/4294967296))/weight};
           }).sort((a,b)=>a.rank-b.rank);
           let booked=false;
           for(const {c}of cards){
