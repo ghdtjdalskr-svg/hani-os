@@ -1,0 +1,8 @@
+{
+  "valid": true,
+  "candidate_sha": "bbc1ff97b498876de752a5705f714cd00f2d7e64",
+  "base_main_sha": "2cbbe6ed0c14954008208f0db2316b5f09228c2a",
+  "package_sha256": "cf8ed68e983ed81ae17c06dc2509d02649ee6464fd34d86c7b81c1f3fa2cf46e",
+  "files": 127,
+  "total_bytes": 15398293
+}

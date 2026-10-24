@@ -3,9 +3,10 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import test from 'node:test';
+import qaSupport from './qa-1st-test-support.cjs';
 const source=fs.readFileSync(new URL('../hani-asset-update-v1.js',import.meta.url),'utf8');
 const main=fs.readFileSync(new URL('../hani-main.js',import.meta.url),'utf8');
-function fixture(){let writes=0;const ctx={window:{},document:{getElementById:()=>null},console,structuredClone,today:()=> '2026-10-24',uid:()=> 'synthetic',nullableNum:v=>v==null||v===''?null:Number(v),inferMarket:(t,m)=>m||'KR',localStorage:{setItem(){writes++},removeItem(){writes++},clear(){writes++}}};vm.createContext(ctx);vm.runInContext(main.split(/\r?\n/).find(l=>l.startsWith('function normalizeBrokerHolding(')),ctx);vm.runInContext(source,ctx);return {...ctx.window.HANI_ASSET_UPDATE_V1,writes:()=>writes};}
+function fixture(){let writes=0;const ctx={window:{},document:{getElementById:()=>null},console,structuredClone,today:()=> '2026-10-24',uid:()=> 'synthetic',nullableNum:v=>v==null||v===''?null:Number(v),inferMarket:(t,m)=>m||'KR',localStorage:{setItem(){writes++},removeItem(){writes++},clear(){writes++}}};vm.createContext(ctx);qaSupport.loadInputHelpers(ctx);vm.runInContext(main.split(/\r?\n/).find(l=>l.startsWith('function normalizeBrokerHolding(')),ctx);vm.runInContext(source,ctx);return {...ctx.window.HANI_ASSET_UPDATE_V1,writes:()=>writes};}
 const account={id:'synthetic',type:'위탁'},ev=(field,label,value,confidence=.99)=>({field,label,raw:String(value),visible:true,confidence,alternatives:[]});
 const row=extra=>({name:'합성펀드',ticker:'123456',market:'KR',buyCurrency:'KRW',...extra});
 const screen=(holdings,extra={})=>({financialInstitution:'하나증권',layout:'hana_stock',amountCurrency:'KRW',holdings,...extra});

@@ -12,6 +12,24 @@ test('release225 plus only named later release changes reproduces current source
  assert.match(guardedRelease,/^[0-9a-f]{40}$/);
 });
 
+test('pending integrations are exact deltas between the fixed reviewed merge identities',()=>{
+ const fixture=JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8'));
+ assert.equal(fixture.baseSha,'b5a64e5');
+ assert.equal(fixture.candidateSha,'bbc1ff97b498876de752a5705f714cd00f2d7e64');
+ assert.deepEqual(fixture.integrationMerges,['1cdf07f','91758b7','bbc1ff9']);
+ assert.deepEqual(fixture.changes.map(c=>c.file),['hani-asset-market-view.js','hani-asset-update-v1.js','hani-context-remote-v1.js','hani-context-remote.css','hani-design-system.css','hani-investment-committee.js','hani-main.js','hani-organization-hub.css','hani-organization-hub.js','hani-study-v02984.js','hani-style-07.css','hani-yuna-helpdesk.js','index.html']);
+ for(const {file,replacements}of fixture.changes){
+  const before=readReleaseSource('b5a64e5',file),after=readReleaseSource('bbc1ff97b498876de752a5705f714cd00f2d7e64',file);
+  let forward=before,reverse=after;
+  for(const hunk of replacements){
+   assert.equal(forward.split(hunk.before).length-1,1,file+' fixed before unique');
+   assert.equal(reverse.split(hunk.after).length-1,1,file+' fixed after unique');
+   forward=forward.replace(hunk.before,()=>hunk.after);reverse=reverse.replace(hunk.after,()=>hunk.before);
+  }
+  assert.equal(forward,after,file+' fixed forward bytes');assert.equal(reverse,before,file+' fixed reverse bytes');
+ }
+});
+
 test('release projection advances cache/display only; internal and historical literals stay strict',()=>{
  const source='x.js?v=2.9.232 const HANI_DISPLAY_VERSION="2.9.232"; internal="2.9.15-safe-baseline-bootstrap"; old="2.9.225";';
  assert.equal(trainBaseVersion,'2.9.232');
@@ -54,7 +72,7 @@ test('pending connections reject missing, duplicate or altered additions in ever
   const source=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
   assertReviewedReleaseSource(file,source);
   for(const line of lines)for(const replacement of ['',line+'\n'+line,line.slice(0,-1)+'!']){
-   assert.throws(()=>normalizeReviewedCurrentSource(file,source.replace(line,replacement)),{code:'ERR_ASSERTION'},file+' exact approved addition must occur once');
+   assert.throws(()=>normalizeReviewedCurrentSource(file,source.replace(line,()=>replacement)),{code:'ERR_ASSERTION'},file+' exact approved addition must occur once');
   }
   assert.throws(()=>normalizeReviewedCurrentSource(file,readReviewedReleaseBaseline(file)),{code:'ERR_ASSERTION'},'never normalize Git oracle bytes');
  }
@@ -89,8 +107,8 @@ test('approved additions cannot move to another script, event or cascade positio
  }
 });
 
-test('pending 233 train stays scoped to office, milestones and hero-crop owners; released staff and moved fragments stay strict',()=>{
- assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),['assets/data/office-actions-216.json','assets/data/office-actions-221.json','hani-design-system.css','hani-design-system.css','hani-main.js','hani-office-live.js','hani-ui-v02992.js','index.html']);
+test('pending 233 train stays scoped to office, milestones, hero-crop, asset-intake, QA and HANI-77 owners; released staff and moved fragments stay strict',()=>{
+ assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),["assets/data/office-actions-216.json","assets/data/office-actions-221.json","hani-asset-market-view.js","hani-asset-update-v1.js","hani-context-remote-v1.js","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-design-system.css","hani-investment-committee.js","hani-main.js","hani-main.js","hani-office-live.js","hani-organization-hub.css","hani-organization-hub.js","hani-study-v02984.js","hani-style-07.css","hani-ui-v02992.js","hani-yuna-helpdesk.js","index.html","index.html"]);
  for(const {file,lines} of pendingApprovedConnections){
   const current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
   assertReviewedReleaseSource(file,current);

@@ -75,7 +75,7 @@ test('styles remain in cascade order, only approved pending launch/mascot/newsro
  const archive=fs.readFileSync('hani-character-archive.js','utf8');assert.doesNotMatch(archive,/Maginificent9/);assert.match(archive,/Magnificent9/);
 });
 test('Yuna explicit book and reading context beat finance keywords, financial actions still route',()=>{
- const sandbox=vm.createContext({window:{},document:{getElementById:()=>null},console,Date,structuredClone});
+ const sandbox=vm.createContext({window:{},document:{getElementById:()=>null},console,Date,structuredClone});require("./qa-1st-test-support.cjs").loadInputHelpers(sandbox);
  vm.runInContext(fs.readFileSync('hani-yuna-helpdesk.js','utf8'),sandbox);const api=sandbox.window.HANI_YUNA_HELPDESK;
  for(const text of ['투자 책 완독','오늘 주식 투자 책 완독했어','자산 관리 책 읽기 시작했어'])assert.equal(api.parse(text).target,'book',text);
  assert.equal(api.parse('ISA 투자 이야기','book').target,'book');

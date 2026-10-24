@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-10-24T19:12 KST",
+  "source": "GitHub connector branches/main and compare API",
+  "localBase": "2cbbe6ed0c14954008208f0db2316b5f09228c2a",
+  "remoteMain": "a1e97d77d611a698e9dcd203510d54541b301a7c",
+  "aheadBy": 1,
+  "files": [
+    {
+      "file": "hani-milestones.js",
+      "status": "added",
+      "blob": "1673ed73771d2744d649c0290dec5fe66016d809"
+    }
+  ],
+  "candidateMilestonesBlob": "1673ed73771d2744d649c0290dec5fe66016d809",
+  "effect": "Unreferenced file, identical to candidate; no runtime closure change; original comparison base retained; no merge/rebase."
+}

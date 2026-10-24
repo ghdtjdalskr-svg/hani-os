@@ -1,0 +1,586 @@
+[
+  {
+    "file": "scripts/hani-app-216-audit.test.cjs",
+    "sha256": "c289809528c31bc05591d24b2ac5bc6908cd38bbaccc3dff2bd3cb00be9a0534"
+  },
+  {
+    "file": "scripts/hani-asset-intake-v2-AB.test.mjs",
+    "sha256": "91b94061c1c8af16393fc0dc3a7533bf6796e1dfa8c953dcc072f69ce5193fc3"
+  },
+  {
+    "file": "scripts/hani-asset-intake-v2-C.test.mjs",
+    "sha256": "11e2ca22b6404a1b2f7fb537088367c4940a44ad8428110b6514113ac561e004"
+  },
+  {
+    "file": "scripts/hani-asset-intake-v2-ease.test.mjs",
+    "sha256": "2ce0c0ab9aed4bf86801347523413fb286f1f1867d28a869955f64ff6b4dce3d"
+  },
+  {
+    "file": "scripts/hani-building-206-safety.test.mjs",
+    "sha256": "2c89b16b909dc4ec3f81c75fc0eaf63b8155f2c3ecb44fbcb4c3f62b9e1a33c0"
+  },
+  {
+    "file": "scripts/hani-hana-intake-224.test.mjs",
+    "sha256": "0dcb06244d8aef780e8eccc0b25f98993e2070fdd245f5d99917b62b87397c3f"
+  },
+  {
+    "file": "scripts/hani-intake-audit-206.test.cjs",
+    "sha256": "b4d154ab8d8b7a48fe20aa6cfe5f45c5fda30763bb772a0b1c4f01e4c1094dac"
+  },
+  {
+    "file": "scripts/hani-kiwoom-code-224.test.mjs",
+    "sha256": "ac69496eeefcd491cbb700d45e5a18bde6598ec29bafc403ffd72eb8d3b4dc36"
+  },
+  {
+    "file": "scripts/hani-mobile-intake-206.test.cjs",
+    "sha256": "e60c3d7952787e7b9070f4f4392aa6a37f5c7d77381f12d29282bf56ee75292c"
+  },
+  {
+    "file": "scripts/hani-nav-groups.test.mjs",
+    "sha256": "9b0cd2f5c9f725fac2c2e58114f88cfd6f055652fe691aa78924f689cb457a69"
+  },
+  {
+    "file": "scripts/hani-ocr-accuracy-224.test.mjs",
+    "sha256": "75c7bf1f9a31657e95b936334125f2f8ba5213ff16c5d29f23863ed0238632b8"
+  },
+  {
+    "file": "scripts/hani-positions-only-test.cjs",
+    "sha256": "9dd08f2a5bf999429fde3386d1cb74d8131c8899f7d144a8cad9ae6ee486c202"
+  },
+  {
+    "file": "scripts/hani-proactive-204.test.mjs",
+    "sha256": "b499026971e31bd5a290d2ad092fcb026e80bd6b31fae4713468e40be00aaeef"
+  },
+  {
+    "file": "scripts/hani-qa-210-followup.test.mjs",
+    "sha256": "19daaa526d8b8427770808faf5b1b4128ae1fd2f39bf0e797dcab429575aeadd"
+  },
+  {
+    "file": "scripts/hani-reviewed-release-baseline.mjs",
+    "sha256": "a8f746603a350815ecbb4362294aaad73a272c8a2e0e8b407b2818171baaace5"
+  },
+  {
+    "file": "scripts/hani-reviewed-release-baseline.test.mjs",
+    "sha256": "5834e024b870baf0fc9a553a88de9251c9261eff53ff71619880ea5065f75041"
+  },
+  {
+    "file": "scripts/hani-toss-intake-224.test.mjs",
+    "sha256": "89e7ddaa9beedd39404bd32953459af0490cd4f44ac8b69a8df746d003d5f19f"
+  },
+  {
+    "file": "scripts/hani-yuna-schedule.test.js",
+    "sha256": "b8ab09c5c29c47c7ca95d40577d59fdbf251779370bbb4e82370720a45f79c3f"
+  },
+  {
+    "file": "scripts/fixtures/train233-integrations.json",
+    "sha256": "2cd9165f2d6d9c4c5e15f2c3d76b657dffbd266a74ad2824de3dfb161fddd883"
+  },
+  {
+    "file": "assets/ai-approval-characters/v3-animation-approved-transparent-group-a.webp",
+    "sha256": "54e226759932b86eee7251856dbb51be78d06eeeac8af6c055f6048593f4242d"
+  },
+  {
+    "file": "assets/ai-approval-characters/v3-animation-approved-transparent-group-b.webp",
+    "sha256": "61c8ba5e666267b93ef2d5d375807b0e704ffb38dff4333559c4f23a0f789b5b"
+  },
+  {
+    "file": "assets/ai-approval-characters/v3-animation-approved-transparent-group-c.webp",
+    "sha256": "f51a0569a325fe8fd11116dbef2fb8c573aec65b0f3a75b70049222fdd2b1e21"
+  },
+  {
+    "file": "assets/ai-approval-concepts/v3-office-background-empty-8-seats.webp",
+    "sha256": "e36ec317deb5563faa0a002d9f8d0dc6f3b7c0b03aad28b295b39ccd47a4b640"
+  },
+  {
+    "file": "assets/brand/hani-group-ci-official.webp",
+    "sha256": "aa2532cde39f44c52a3d902efde60f40dbd83550ef0110a6fa4dc4ff93220f3c"
+  },
+  {
+    "file": "assets/data/ai-team-status.json",
+    "sha256": "631f749bca01d89f6ed087fe089a825c44e5e3cf6c97feeb80bedfa2c25ec434"
+  },
+  {
+    "file": "assets/data/desk-mascots-v1.json",
+    "sha256": "23e03a5f87fec1de8c33f3db19580e2548010f0c19a6e938d5c12b5ab8828d94"
+  },
+  {
+    "file": "assets/data/hani-history-releases-v1.json",
+    "sha256": "95c06c2b0c9d284deb660987b459605d69dbcd278d5d81e597bd4ed26f31c2d3"
+  },
+  {
+    "file": "assets/data/newsroom-4cut/issues.json",
+    "sha256": "8783ac5790c938aa7ea683df5f7b30e6f1faa364fd145dbe8ab26985d07a6bfc"
+  },
+  {
+    "file": "assets/data/office-actions-216.json",
+    "sha256": "987a3e8a4efc884deb3e4c77db4707b11a37f33395d773c98f8d98b9eedf9c3b"
+  },
+  {
+    "file": "assets/data/office-actions-221.json",
+    "sha256": "27479ebc6886740b80dfa444f6460216d9f903c3708bc2c611aafc585df2df5c"
+  },
+  {
+    "file": "assets/data/office-tap-lines-v1.json",
+    "sha256": "5973caed9c50e4766b605879f7ed89189eb6b6013b77f1784bd233d56a38d362"
+  },
+  {
+    "file": "assets/design-system-v1/hani-galaxy-characters-v2.png",
+    "sha256": "dc66bd6876573b5216114cd57d557bdd3e52b9f4480bf868b172f7ffd9c3e86d"
+  },
+  {
+    "file": "assets/design-system-v1/srx.webp",
+    "sha256": "c2c882de038718c66146fddef3d9d8b04ecfc0aaa7b83b7cad0edbfb3ecdf672"
+  },
+  {
+    "file": "assets/heroes/asset-218.webp",
+    "sha256": "44e077bf296184a4176d5ad92aeef06224524262ab85ea4cff1a489231ccfc84"
+  },
+  {
+    "file": "assets/heroes/diet-218.webp",
+    "sha256": "da6ebbe16e33b56704b5e80b8813dec7fc4dd32566195e0af7a3da6f43e64d5e"
+  },
+  {
+    "file": "assets/heroes/exercise-218.webp",
+    "sha256": "1c7ff83f17ff8d8a55c6cdb973f610db41fbbf6e456ed4989601753ee2af75c2"
+  },
+  {
+    "file": "assets/heroes/investment-218.webp",
+    "sha256": "eb4fd575a5fca43f91650de21edf92aff1f8a24f2c92e01eaadfdfe4ebf2e5ac"
+  },
+  {
+    "file": "assets/heroes/ledger-218.webp",
+    "sha256": "05b7dc3d6ce640609656d2089daf1331615231613a12009770c2f8e243e9347d"
+  },
+  {
+    "file": "assets/heroes/movie-218.webp",
+    "sha256": "c0f3b896722b2a781c91912460c4b7eb6670bc3021a1a501ecb5f848a46398c3"
+  },
+  {
+    "file": "assets/heroes/newsroom-218.webp",
+    "sha256": "573ec47627cbe0a545bcbeb072b70531a79b5a37a78bdf331584878450a63e3e"
+  },
+  {
+    "file": "assets/heroes/reading-218.webp",
+    "sha256": "660fe55ff7db496e0a94279d52b62f6bb74013b6ffe49c9e6f2363241ed63118"
+  },
+  {
+    "file": "assets/heroes/study-218.webp",
+    "sha256": "54d8e7513554b164cdfd44e70cd828372c233489fc4240ac6c383b0655bd199c"
+  },
+  {
+    "file": "assets/heroes/travel-218.webp",
+    "sha256": "139dc74c6b20c769fc611c212363a78f9a3c578d436a085e1e8d2304a1a045df"
+  },
+  {
+    "file": "assets/heroes/university-218.webp",
+    "sha256": "c7ce996ba8ca07711beda8d19a456bd1c2ec2a596251aa2441e74bdcf53a83ef"
+  },
+  {
+    "file": "assets/launch/chibi-launch-v1-day.webp",
+    "sha256": "23eef4ddb3994ed30f93e68b53abcd09412a4ff6965f956b799ec00be2ba3644"
+  },
+  {
+    "file": "assets/launch/chibi-launch-v1-night.webp",
+    "sha256": "f466228327d823dcaef2a03211f24a31ad55a59bebdbe1934d3ba5edcc94a221"
+  },
+  {
+    "file": "assets/life-market/HANI_LifeMarket_01_Original_Hani.webp",
+    "sha256": "7c4abc397919f8133a8efc4825f046206264f90db0644b579d7bc3111db2f7a7"
+  },
+  {
+    "file": "assets/profiles/hani-profile-hani.webp",
+    "sha256": "89884ad7f3d466dc139012aafb65ad5c0c88111cd3eeedcb32d83861f6a7b072"
+  },
+  {
+    "file": "assets/profiles/hani-profile-haru.webp",
+    "sha256": "e44fc13e5d94aff93dd5bff7d34f2b9e21156903b644897146db20f6c405b31e"
+  },
+  {
+    "file": "assets/profiles/hani-profile-hina.webp",
+    "sha256": "bdaea4aa34302246ba66a84b43b29f94931e7f95c83e205977cfb29cc5edf835"
+  },
+  {
+    "file": "assets/profiles/hani-profile-jieun.webp",
+    "sha256": "b1b5385d1d4e223ce11e821d30a11c3d70f3f06d3e7bc1818b84b4a35c9e278e"
+  },
+  {
+    "file": "assets/profiles/hani-profile-minji.webp",
+    "sha256": "03e0e53d19e6ba2a930c41265cbd9bdefff8590036dfe1736afa96941abf5bfe"
+  },
+  {
+    "file": "assets/profiles/hani-profile-naeun.webp",
+    "sha256": "ac7fb3e19740e1d8c9179aab7209db9610a90360b554f316d14074399a0c6bd5"
+  },
+  {
+    "file": "assets/profiles/hani-profile-sooyeon.webp",
+    "sha256": "b4b6231162718871bd2b5062822699ef3586cabe54a4348db564c5dc621600fc"
+  },
+  {
+    "file": "assets/profiles/hani-profile-sua-id.webp",
+    "sha256": "8bf91c0a32c20175bccb4a9ca7b9f0f733e5adfb5807c28a313337d831d8ade3"
+  },
+  {
+    "file": "assets/profiles/hani-profile-yuna.webp",
+    "sha256": "0a3f9c29cb2365f406f4214693bddcc28150030b31e604528a3c879176cb9cb2"
+  },
+  {
+    "file": "assets/pwa/icon-192.png",
+    "sha256": "569a61638f39acbdfeed49fbcd024f2aad93791abce81fc92d5012fc1ce83ddc"
+  },
+  {
+    "file": "assets/pwa/icon-512-maskable.png",
+    "sha256": "cae535ad8ae5e3ef8f32d502cb2c8b7e6b78858022960c2402ca57883f9a8855"
+  },
+  {
+    "file": "assets/pwa/icon-512.png",
+    "sha256": "8e58735c4bad71ba4f59a6a0deaf02c9ccfa3e9f798d04bc661c36cc0013c6fb"
+  },
+  {
+    "file": "assets/seasonal-collection/aura-season-campaign-v1.webp",
+    "sha256": "c63532804782de94216ba615f9a6919a2552096a579e1c79e68855a179669883"
+  },
+  {
+    "file": "assets/seasonal-collection/autumn-v2.webp",
+    "sha256": "3fdd75b3ae7dcd5bb4e9db8c9454773333b43b1e1484d438c54519381f85697a"
+  },
+  {
+    "file": "assets/seasonal-collection/sidebar-autumn-v2.webp",
+    "sha256": "4e3beba41b216af077ddd6c5743c8eaa5549a50f4b0e873c355319fabc1f83bb"
+  },
+  {
+    "file": "assets/seasonal-collection/sidebar-spring-v1.webp",
+    "sha256": "810a9a97d6c1945764e7f48c20c9e2a85574df2683dd219a54322241a969eed3"
+  },
+  {
+    "file": "assets/seasonal-collection/sidebar-summer-v2.webp",
+    "sha256": "7db388dba79bb7a9ddc3544b819c051d33f7c934f6b4b9ff5692c8351a25734b"
+  },
+  {
+    "file": "assets/seasonal-collection/sidebar-winter-v2.webp",
+    "sha256": "fef4b8cf46cda1e7152e4bad9efef7f8a26c1f664b815dfdca3fcb9c20ce0c3f"
+  },
+  {
+    "file": "assets/seasonal-collection/spring-v2.webp",
+    "sha256": "60630930c7316651894b9778cb1ffc300903c21094354c89a6f689a428314069"
+  },
+  {
+    "file": "assets/seasonal-collection/summer-v2.webp",
+    "sha256": "d365e562f53e9d896c8956e5d15a1641b9184ff803bf78e9620f36e6cbe741e9"
+  },
+  {
+    "file": "assets/seasonal-collection/winter-v2.webp",
+    "sha256": "79807c874d1cfdcd49777c1e0e5ec3d2b176af9ecb67e72109539da14ab9f050"
+  },
+  {
+    "file": "assets/sports/dplus-kia.svg",
+    "sha256": "4c59b0d681a558c53cdf6479722190a3393ab7683804011be3623d57e4c74a08"
+  },
+  {
+    "file": "assets/sports/inter-milan.webp",
+    "sha256": "4b38182e3485f3f876c9e975da0289d5dc7a9cd1d82c2d7b3d1017ffc5e42bd8"
+  },
+  {
+    "file": "assets/sports/kia-tigers-current.png",
+    "sha256": "0807ec4eebf4a21725b51d58b051c7b8bea2a443ca1d0f87f4aae169dc582adc"
+  },
+  {
+    "file": "assets/sports/new-york-yankees.svg",
+    "sha256": "2d254440a691933ee6226ad049b7b166ffea471233296cc73dc072a53ac95fb0"
+  },
+  {
+    "file": "assets/sports/real-madrid.svg",
+    "sha256": "8ace3aae37c9e0d37801d512a1dcf11ef2fdc034f51d13bec277518f7910d5a1"
+  },
+  {
+    "file": "assets/sports/t1-logo.png",
+    "sha256": "25312183dd7c134f4e33f40da6c6ccc70457eb66ff98cda827935a9be1e3b5d8"
+  },
+  {
+    "file": "assets/street-journal/chibi-sheet-v1.webp",
+    "sha256": "ba1cac623db561cbbcefe6c5aa783425d7ba3c2db2f08a0e42aac383e0f9786c"
+  },
+  {
+    "file": "assets/team/hani-team-office.webp",
+    "sha256": "8324e43d8d70eee6f1b28e31aefba79a76f19e5f4accfd2de7aba216ab425daa"
+  },
+  {
+    "file": "assets/team/hani-team-picnic.webp",
+    "sha256": "8ce6f02f0f391cb53d0bb17b4a824d9cbcd81866cbbec041fc4f74616d0dcb86"
+  },
+  {
+    "file": "hani-ai-budget-core.js",
+    "sha256": "c56cf98cb20f85dcec01cb41d5afde110b73e3116810e9a0e0a0b19efb5fe1af"
+  },
+  {
+    "file": "hani-ai-budget.css",
+    "sha256": "593b16d923fc45dee688d1e54311ff0a2875f9c9fbdf95f86a27f9b505d8f705"
+  },
+  {
+    "file": "hani-ai-budget.js",
+    "sha256": "ba67b44614c007fd129b36c21f57a28ec4f69912d626d61b82453910550a21d1"
+  },
+  {
+    "file": "hani-asset-market-view.js",
+    "sha256": "46bd76c3d4787d19ebb3f0f6b9027574c5d2e0fbf36b0922ece2743682c31af8"
+  },
+  {
+    "file": "hani-asset-market.css",
+    "sha256": "0a653215b9b5744d4ff61aaa8224d84f2dcded962655a38655a79b95967e2601"
+  },
+  {
+    "file": "hani-asset-update-v1.js",
+    "sha256": "b6a8b0a68cb98962bf858889006c85e0d893a2e665c06904e10334cf7228a36d"
+  },
+  {
+    "file": "hani-board-library.js",
+    "sha256": "248f11b6ec69eb943bb6ddaef819e85bb803a1202f9aaf41117bac5b5bc42927"
+  },
+  {
+    "file": "hani-board.css",
+    "sha256": "3e7d7c21e892563b050d7cb471b84c5d4f685b651f5ce4709400f72df442ea5d"
+  },
+  {
+    "file": "hani-board.js",
+    "sha256": "21da97293c5b24907d0839c372c784063cb48e99cd34608f9d296d9ee09a1358"
+  },
+  {
+    "file": "hani-character-archive-data.js",
+    "sha256": "abac4a0ad7aab92e34d2872693b233f3dfe8155f18ead51d68994cb36e73dac8"
+  },
+  {
+    "file": "hani-character-archive.css",
+    "sha256": "c2b9282afdabe46135378d48560fd8fb7a4ee1dba09bfa7d174a5fef2ccccd8a"
+  },
+  {
+    "file": "hani-character-archive.js",
+    "sha256": "2be502120f48931ddd08dd6874b9bb23216c70a822f734a94af399fa69e5e4ed"
+  },
+  {
+    "file": "hani-company-followup-preview.js",
+    "sha256": "34479bd9f5a23669228a142e2b5fa922747253162faf4e95fd416c12798993b8"
+  },
+  {
+    "file": "hani-context-remote-v1.js",
+    "sha256": "b7de3e0a0493087f7cee9b4b83e67fdbbbb8ab1988b6d00a7a3c015543e4903d"
+  },
+  {
+    "file": "hani-context-remote.css",
+    "sha256": "b64b1f7e6e2379145175d7204499570c16a56a47da4c4ba79289040ccb790247"
+  },
+  {
+    "file": "hani-design-system.css",
+    "sha256": "f9d092fe54d118d123ee468b45d5f15c5c308b74109762ac4a1e456a00c465a7"
+  },
+  {
+    "file": "hani-desk-mascots.css",
+    "sha256": "7d444063cf5e627b11637cb97fefb0cdcb871c1d0ccc1fa124576c37ba2063cf"
+  },
+  {
+    "file": "hani-desk-mascots.js",
+    "sha256": "eee5f4b868d7b50e06b69c80c983115fa62311a566a52a263f8f362a598503b5"
+  },
+  {
+    "file": "hani-development-history-v1.js",
+    "sha256": "093835824dc7a9f3f626674fe40c92fe81ef1d11697e778f489891affc1e4b8a"
+  },
+  {
+    "file": "hani-development-history.css",
+    "sha256": "7cea4a1f2754a50fb053d5038a989c6573622d8ddcc95c45dfe375e65f26eefd"
+  },
+  {
+    "file": "hani-drive-vault.js",
+    "sha256": "21b2e5b69714289dfc66ebd2367637db0a1c6ae72c63f8ea018f2af31a4cfdfc"
+  },
+  {
+    "file": "hani-goal-progress.js",
+    "sha256": "9621c361ab416576d7e8a0ebc7dc4698883bfdd2930d50a2581afedb312d8f9c"
+  },
+  {
+    "file": "hani-ilbo.css",
+    "sha256": "2bf487b9d092da0dcca7fb195a666242b05a0fad3dfb9bda1be6f254f83a57a2"
+  },
+  {
+    "file": "hani-ilbo.js",
+    "sha256": "04080c0912fd91f74a43cdc17f18ffd892927b3b79bb698bb2c71b1c21e78d60"
+  },
+  {
+    "file": "hani-investment-committee.css",
+    "sha256": "cdf4adc01239a23771af81be95bedc6eeca622e065bdeb734d45a29b8558cc15"
+  },
+  {
+    "file": "hani-investment-committee.js",
+    "sha256": "62c1f55ee109b2a593d6ec850dea6af263e24712bfcc3aab7c401c677ef828b0"
+  },
+  {
+    "file": "hani-launch-greeting.css",
+    "sha256": "16e7bbd6627b0378911cf3e7088e208bf5d20e6308c6cc2f5ae093b3508c5c75"
+  },
+  {
+    "file": "hani-launch-greeting.js",
+    "sha256": "4b30c68a199b20c062251f5f23e8399f8e9aa42dcaca9b8d8f96b4b899abdb9d"
+  },
+  {
+    "file": "hani-main.js",
+    "sha256": "c2323ec295261567f1d7974c856fdb7528ffade4edc6b16ae8fcef83d64faaf7"
+  },
+  {
+    "file": "hani-market-data.js",
+    "sha256": "dc946bc1bc40fd18dfdf3639035a14b5dc24e1a3687f74ad5e6ce895a33ffef3"
+  },
+  {
+    "file": "hani-media-core.js",
+    "sha256": "68865cb9fcf0e123e1cb86994a90741de7eaf9026bd6b1acb72e3c231259eb37"
+  },
+  {
+    "file": "hani-milestones.js",
+    "sha256": "4bb0ac9a3fdc7e2c56879104b157596a59aa79dd41a421250bf3a587b0f3ae5c"
+  },
+  {
+    "file": "hani-newsroom-4cut.js",
+    "sha256": "c02090b3cde58382887325ef54f896954faf0cd6e5ff2a80d94b7a08b49e6e77"
+  },
+  {
+    "file": "hani-newsroom-ux-v02970.js",
+    "sha256": "3559f0caf0193462c0bb59029235bd27ab33194d4c5dcbd27404326730f2fcac"
+  },
+  {
+    "file": "hani-office-live.css",
+    "sha256": "9c0757525585f5cbf58f4ee330084b3aa38f5f5f4e4dc916088ab8be0503a476"
+  },
+  {
+    "file": "hani-office-live.js",
+    "sha256": "6cd4b68f14aa435d3de6d00e4b535ca74ebf6baed225b0c818506e911e3d2b21"
+  },
+  {
+    "file": "hani-organization-hub.css",
+    "sha256": "316a1a3555d1ef8c2bd35d7294b3618c939eee2ffeabd9d3421a86d7379a8a14"
+  },
+  {
+    "file": "hani-organization-hub.js",
+    "sha256": "83acfff8686b3ab88d7e74cf6e93c0b719f2bd82dd814c850a898114c1c4956b"
+  },
+  {
+    "file": "hani-portfolio-preview.css",
+    "sha256": "f8a7eb055c0beeca24a21d990008d4f32ffa8267be3b26428c0daf1dfe716f05"
+  },
+  {
+    "file": "hani-relationship-seed.js",
+    "sha256": "8136d8e002247520532dec099b834c133c3e5a7f70718dc3b974d6ade5b84295"
+  },
+  {
+    "file": "hani-stability-polish-v02972.js",
+    "sha256": "c7bc4ea8708a4b8d4492d0dcfd550dbd560dd40f990cc53dd2d8afbf10262d44"
+  },
+  {
+    "file": "hani-street-journal.css",
+    "sha256": "7644bd0f1114824ee82668e8f40073277154d1fba6956cb92fbbd0f0ed2fc86a"
+  },
+  {
+    "file": "hani-street-journal.js",
+    "sha256": "9cead18ddae0e09807e884800d16aedfbcc66eefde90ea8c5a8c15b2ce80fea6"
+  },
+  {
+    "file": "hani-study-v02984.js",
+    "sha256": "f90f884f35210b1773ee97122a6f13a6a2cac0cf17cac80a2f971910d5272d78"
+  },
+  {
+    "file": "hani-style-01.css",
+    "sha256": "4943a672a55a52df87d3eb628276dff3c4242a898690c6b9014cdfb4f8d63589"
+  },
+  {
+    "file": "hani-style-02.css",
+    "sha256": "ad9e5c044031acae3b96f2d311159529863efa13a326bff6e9a3b57fc63a6505"
+  },
+  {
+    "file": "hani-style-03.css",
+    "sha256": "ddb9f8754223edb21b8225d251acd6f76e025348eef1ea50c94d93c549e48b33"
+  },
+  {
+    "file": "hani-style-04.css",
+    "sha256": "04ec5e0257b49d7f8d9f79e270a62c96b85b4f94a318f93714c4fe63085540f6"
+  },
+  {
+    "file": "hani-style-05.css",
+    "sha256": "84028ad2e021be805a5ff6f133d7b02eff21c04503d8258bc7604633701afb09"
+  },
+  {
+    "file": "hani-style-06.css",
+    "sha256": "e26d0cbda052626d78fcd03b49340b84298253d825b0fc576e7a7656e992b1a1"
+  },
+  {
+    "file": "hani-style-07.css",
+    "sha256": "00de7ed2c0962d03781ea05cbd9178df463e667a087ce042ecf1171985775432"
+  },
+  {
+    "file": "hani-style-08.css",
+    "sha256": "284716974621b42fba52fa067f32c0a12133ce3d62dee0a7fd94f81a90a63d9b"
+  },
+  {
+    "file": "hani-ui-cleanup-v02971.js",
+    "sha256": "aa951d144834c25a2491c82edfa19f5295f979336f135be8afc2fe88ad1ca67f"
+  },
+  {
+    "file": "hani-ui-v02973.js",
+    "sha256": "bbee83aac4cc501e87107098232fc5959493a9e223959a639d09b83c3fbf776e"
+  },
+  {
+    "file": "hani-ui-v02974.js",
+    "sha256": "c9c94d57b751128ed9859ee349f703d693171656b7905227f5d1aab8502dfbab"
+  },
+  {
+    "file": "hani-ui-v02975.js",
+    "sha256": "764974476122d47aeffff908c930501b13d25e8f887d03b01efc8dffe9e8447a"
+  },
+  {
+    "file": "hani-ui-v02976.js",
+    "sha256": "d1374f67ff6cfb05d510aab37b926eb7dba25412a1450b5419ff4d4ca5382908"
+  },
+  {
+    "file": "hani-ui-v02978.js",
+    "sha256": "f7ca15d159049d7769ac10ed2c5a340d93daac03a3d86f48056f4b2109e35e43"
+  },
+  {
+    "file": "hani-ui-v02979.js",
+    "sha256": "056ee811bdcdc704110125a9e61ed5db224df57083748b88e1a854230bbf32b3"
+  },
+  {
+    "file": "hani-ui-v02980.js",
+    "sha256": "0f74bdda836d0b5d9faefc4ee2038aafd2d0fdd4b55cb59b3cb83a69a749f11d"
+  },
+  {
+    "file": "hani-ui-v02981.js",
+    "sha256": "edea24056eb381f058100a6f3e69413c69f4b998fba74b08cbdc39e382ee49e8"
+  },
+  {
+    "file": "hani-ui-v02982.js",
+    "sha256": "7ae03ed6a26d9916fb6e704e09795218890f63a848e639d2a75d9c721badda7f"
+  },
+  {
+    "file": "hani-ui-v02983.js",
+    "sha256": "8c71d6ba791ade79cb3c50d51bac85d0fe205b8ad425b19771ac89d005891a2a"
+  },
+  {
+    "file": "hani-ui-v02992.js",
+    "sha256": "16a1e20606a32ce324cc99a27a0a90f8467f45a3ed406f47bd58f4a72d6cdbea"
+  },
+  {
+    "file": "hani-yuna-helpdesk.css",
+    "sha256": "400313f225ecc430e1ea3c541212a08c2dd7391ed5809ad4b9998e7b9515765a"
+  },
+  {
+    "file": "hani-yuna-helpdesk.js",
+    "sha256": "195c7711c825cb5276b7978bb88ee98d9b7bfa0714fbf69f41f86518942de229"
+  },
+  {
+    "file": "index.html",
+    "sha256": "a644f88a78f92eb12eaae282081ed52ba52cb84e48014bb3feb73ecd057941f4"
+  },
+  {
+    "file": "js/hani-pdf-core.js",
+    "sha256": "810c0a1f2f47c32ef01c68d74bf24d38ef4690cf5ead6cb4967266dea8a736b3"
+  },
+  {
+    "file": "manifest.webmanifest",
+    "sha256": "9cf3e50dae11a7c31e7eee927a4485b0685364838dd77b4bb4a25ab35c6e5429"
+  }
+]

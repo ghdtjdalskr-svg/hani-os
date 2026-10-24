@@ -90,7 +90,7 @@ const clickOwner=hubSource.match(/  root.addEventListener\('click',e=>\{[\s\S]*?
 let onHubClick;const scrollRoutes=[],scrolled=[];
 root.addEventListener=(_name,fn)=>{onHubClick=fn};root.contains=()=>true;
 root.querySelector=s=>s==='.ogh-mast nav'?mast:{scrollIntoView:()=>scrolled.push(s)};
-Object.assign(hubContext,{document:{querySelector:()=>true},matchMedia:()=>({matches:true}),showView:value=>{scrollRoutes.push(value);hubContext.selectHubTab('people')}});
+Object.assign(hubContext,{document:{querySelector:()=>({click:()=>{scrollRoutes.push('organization/people');hubContext.selectHubTab('people')}})},matchMedia:()=>({matches:true}),showView:value=>{scrollRoutes.push(value);hubContext.selectHubTab('people')}});
 vm.runInContext(clickOwner,hubContext);
 for(const target of ['ogh-chart','ogh-teams','ogh-people']){
   hubContext.selectHubTab('overview');const button={dataset:{scroll:target},matches:()=>false,hasAttribute:()=>false};onHubClick({target:{closest:()=>button}});
