@@ -1,3 +1,7 @@
+# 2026-10-24 · 개요 DEMO DAY 카드 복원 (도연/Codex)
+
+`hani/seoyun-org-demoday-card` / base·HEAD `d19aa0b`(로컬 origin/main 동일, 원격 조회 연결 실패). 성민 대표님 option B 승인에 따라 기존 개요 persistent 슬롯의 연혁 앞에 사진·캡션·도장만 복원. 원본 전체 비율·최대360px·모바일 너비·기존 dark palette 사용. **syntax·history226 unit·실제 renderer6회/mount1/write0 PASS. 신규 및 기존 조직 허브 browser 검사는 Edge spawn EPERM으로 차단, 1440/390 PNG0·실화면 미검증.** Notion 착수 추가는 자동 승인 never 거절로 미반영. commit/push/PR·버전/cache·Storage/Cloud·main/배포 변경 없음. 다음: 서윤 허용 환경 browser 재실행·Preview 확인. [인수인계](handoffs/2026-10-24-org-demoday-card.md). 아래 타 담당·과거 기록 보존.
+
 # 2026-10-22 · 본사 사무실 3차 + 1층 방문객 v2.9.230 운영 반영 (서윤/Claude)
 
 `hani/office-lively-3-20261022` → release PR #331 → main `04fb2b3`(v2.9.230, 배포센터 대표님 승인). 층별 고정 순번(한 사람 약 29초에 한 번, 일정 앞뒤 5초 제외), 산책은 출입문을 지나 다른 방으로(층당 1명), 1층 방문객 5종(고객·택배·배달·면접·커피)이 정문으로 들고 남(평일 낮 약 26%, 밤 0). 방문객은 snapshot `visitors`로 분리해 직원 수에 포함하지 않고 persistent 슬롯 1개로 그림(actor 19). 검증: node office 12종·Edge 219(240)·217·216 PASS, 중복 ID·package·One-Pass PASS. **Production read-back: Pages index 2.9.230 태그 59개·HANI_DISPLAY_VERSION 2.9.230·hani-office-live.js SHA-256 main과 일치(73fc0165…), 운영 화면 actor 19·방문객 슬롯 존재, 운영 코드로 다음날 오전 방문객 5종 일정 확인.** 남은 점: 안내데스크 anchor가 데스크 안쪽(공간 canon), 폰 체감 미확인. [인수인계](handoffs/2026-10-22-office-lively-3.md). 아래 기존 기록 보존.
