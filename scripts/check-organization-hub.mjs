@@ -120,8 +120,11 @@ try{
  assert.equal(await page.locator('#app').evaluate(e=>e.inert),true,'navigation never unlocks auth gate');
  assert.equal(await page.evaluate(()=>localStorage.getItem('hani_os_life_v23')),protectedBefore);
  results.push('Integrated organization aliases/tabs/person card PASS; auth gate remains inert and protected key unchanged. Signed-in visual QA NOT tested.');
- const module=fs.readFileSync('hani-organization-hub.js','utf8');assert.doesNotMatch(module,/localStorage|sessionStorage|\bfetch\s*\(|supabase|XMLHttpRequest/);
- results.push('New module has no storage/network/auth dependencies PASS');
+ const module=fs.readFileSync('hani-organization-hub.js','utf8');assert.doesNotMatch(module,/localStorage|sessionStorage|supabase|XMLHttpRequest/);
+ // The current overview already reads the public history catalog; permit only that existing GET.
+ assert.equal((module.match(/\bfetch\s*\(/g)||[]).length,1);
+ assert.match(module,/fetch\('\.\/assets\/data\/hani-history-releases-v1\.json',\{cache:'no-store'\}\)/);
+ results.push('Hub has no storage/auth dependencies; only the existing read-only history catalog fetch PASS');
  fs.writeFileSync(path.join(out,'results.json'),JSON.stringify({base:'c43ba2f1ce24c05e2cb16338e920fcf73731de0a',results},null,2));
  console.log(results.join('\n'));
 } finally {await browser.close();}

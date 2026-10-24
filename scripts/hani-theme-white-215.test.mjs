@@ -49,7 +49,7 @@ assertEgressGate(extract(main,'loginGateEnterApp'),extract(oldMain,'loginGateEnt
 assertOfflineGateInit(extract(main,'initLoginGate'),extract(oldMain,'initLoginGate'));
 assert.equal(withoutOfflineEntryUi(withoutSimplify225('index.html',readReviewedCurrentSource('index.html'))),withoutOfflineEntryUi(withoutSimplify225('index.html',readReviewedReleaseBaseline('index.html'))),'only exact reviewed settings/simplify/offline entry and released v231 markup changes');
 for(const name of ['loginGateResumeSession','commit','save'])assert.equal(extract(main,name),extract(oldMain,name),name+' canonical auth/storage owner preserved');
-assert.deepEqual(cacheRefs(html),cacheRefs(base('index.html')),'every URL/cache pair matches the integrated origin/main release');
+assert.deepEqual(cacheRefs(readReviewedCurrentSource('index.html')),cacheRefs(base('index.html')),'every URL/cache pair matches the integrated origin/main release');
 console.log('PASS finish list, token completeness, actual apply/fallback/save, Porcelain and storage/version/cache preservation');
 if(!process.argv[2])process.exit(0);
 const {chromium}=await import(pathToFileURL(process.argv[2]).href);

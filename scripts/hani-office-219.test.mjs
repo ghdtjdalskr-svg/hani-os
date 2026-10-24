@@ -1,5 +1,5 @@
-import {assertSeedArt,assertSeedCanon} from './hani-office-seed-233-expectations.mjs';
-// Seed 233 activates two canon desks ahead of the unchanged 232 scheduler catalog.
+import {expectedOnboardedCanon} from './hani-office-onboarding-232-assertions.mjs';
+import {onboard232} from './hani-office-onboarding-232.mjs';
 // node scripts/hani-office-219.test.mjs [--browser [playwright/index.mjs] [browser.exe] [--labels-only]]
 // Real production index/assets for all revisions; fake KST clock, external traffic blocked.
 import assert from 'node:assert/strict';
@@ -52,8 +52,11 @@ for(const selector of ['.hani-office-name','.hani-office-status','.hani-office-a
 report.static.push('actual stylesheet: name/status/mood/meeting/speech text contrast >=4.5:1');
 
 // Evidence rules out remapped chairs, atlas/pose/scale drift; no hypothetical visual PASS.
-assertSeedArt();assertSeedCanon();
-for(const person of assets.canon.people){const expected=structuredClone(baseline.art.anchors[person.homeAnchor]);if(['daon','yoonseul'].includes(person.id))expected.furniture=expected.furniture.replace(' (planned, empty)','');assert.deepEqual(assets.art.anchors[person.homeAnchor],expected,person.id+' frozen home pivot');}
+for(const person of assets.canon.people){
+ const expected=structuredClone(baseline.art.anchors[person.homeAnchor]);
+ if(['daon','yoonseul'].includes(person.id))expected.furniture=expected.furniture.replace(' (planned, empty)','');
+ assert.deepEqual(assets.art.anchors[person.homeAnchor],expected,person.id+' reviewed home foot pivot; only onboarding furniture caption may change');
+}
 assert.equal(read('assets/sprites-v2/manifest.json'),old('assets/sprites-v2/manifest.json'));
 const slice=(s,a,b)=>s.slice(s.indexOf(a),s.indexOf(b,s.indexOf(a)));
 assert.equal(slice(source,'  function pose(','  function loadSprite('),slice(old('hani-office-live.js'),'  function pose(','  function loadSprite('));
@@ -63,24 +66,35 @@ assert.deepEqual(scale(css),[
  '.hani-office-actor{transition:none}',
  '.hani-office-actor{transition:none}'
 ],'reviewed 224 HD actor proportions and reduced-motion/pause rules');
-report.static.push('217 anchors, atlas metadata and pose/pivot unchanged; exact reviewed 224 HD actor CSS');
+report.static.push('217 home foot pivots, atlas metadata and pose/pivot unchanged; exact reviewed 224 HD actor CSS');
 assert.doesNotMatch(read('hani-office-live.css'),/\.hani-office-status\{display:none\}/);
 assert.doesNotMatch(source,/localStorage|sessionStorage|supabase/);
 for(const time of [...times,'02:00']){
  const instant=`2026-10-19T${time}:00+09:00`,s=current.snapshot(instant),people=s.floors.flatMap(f=>f.visible);
- assert.equal(people.length,time==='02:00'?5:17);assert.ok(people.every(p=>p.line&&p.seat));
+ assert.equal(people.length,time==='02:00'?5:19);assert.ok(people.every(p=>p.line&&p.seat));
  assert.equal(new Set(people.map(p=>p.seat.anchor)).size,people.length);
  if(time==='02:00')assert.deepEqual(people.map(p=>p.id).sort(),['dohyun','minji','mir','seoyun','yuna']);
  if(['10:00','15:40'].includes(time)){
   const prev=baseline.snapshot(instant);
-  // Scheduled events are byte-identical; idle staff may re-voice/stand/stroll on their own floor (lively layer).
-  const core=floors=>plain(floors.map(f=>f.people.map(p=>p.idle===false||p.eventId?{...p,idle:undefined,stroll:undefined}:{id:p.id,floor:p.floor,actionId:p.actionId,activity:p.activity})));
-  assert.deepEqual(core(s.floors),core(prev.floors));
+  // Screen-distance travel and admission checks intentionally change event timing.
+  // Preserve the roster and validate each rendered scheduled slot against its plan.
+  assert.deepEqual(people.filter(p=>!['daon','yoonseul'].includes(p.id)).map(p=>p.id).sort(),prev.floors.flatMap(f=>f.visible).filter(p=>!['daon','yoonseul'].includes(p.id)).map(p=>p.id).sort());
+  for(const p of people.filter(p=>p.eventId&&p.state==='AT_PLACE')){
+   const event=s.events.find(e=>e.id===p.eventId),target=event?.people.find(t=>t.id===p.id);
+   assert.ok(target);assert.equal(p.seat.anchor,target.seat.anchor);assert.equal(p.floor,current.anchors.get(target.seat.anchor).floor);
+  }
  }
  report.static.push(`${time}: ${people.length} staff, unique seats, speech present; night presence retained`);
 }
-for(const f of ['index.html','assets/sprites-v2/manifest.json','assets/data/office-actions-216.json'])assert.equal(f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(withoutSimplify225(f,readReviewedCurrentSource(f))))):read(f),f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(withoutSimplify225(f,readReviewedReleaseBaseline(f))))):git('show',base+':'+f).toString('utf8'),f+' preserved');
-report.static.push('version/cache and action budgets preserved; exact seed art hash and only the explicit canon onboarding delta; no office storage/Cloud APIs');
+// index.html follows main's reviewed-release baseline (version/cache projection); the rest stays exact.
+for(const f of ['index.html','assets/sprites-v2/manifest.json'])assert.equal(f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(withoutSimplify225(f,readReviewedCurrentSource(f))))):read(f),f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(withoutSimplify225(f,readReviewedReleaseBaseline(f))))):git('show',base+':'+f).toString('utf8'),f+' preserved');
+const priorCanon=expectedOnboardedCanon(JSON.parse(git('show',base+':data/hani-building/spatial-contract.json')));
+assert.deepEqual(assets.canon.people,priorCanon.people);assert.deepEqual(assets.canon.floors,priorCanon.floors);
+for(const oldAnchor of priorCanon.anchors)assert.deepEqual(assets.canon.anchors.find(a=>a.id===oldAnchor.id),oldAnchor);
+for(const edge of priorCanon.edges)assert.ok(assets.canon.edges.some(e=>JSON.stringify(e)===JSON.stringify(edge)));
+const priorTable=JSON.parse(git('show',base+':assets/data/office-actions-216.json'));
+assert.deepEqual(table,onboard232({...priorTable,actions:priorTable.actions.map(a=>a.id==='sig-seongmin-4'?{...a,title:'회장님 모드 · 커피 한 모금'}:a)}));
+report.static.push('232 version/cache bytes, canon coordinates/floors and original people plus explicit onboarding delta, action budgets and disabled rows preserved; reviewed window nodes/routes and chairman title are explicit behavior changes; no office storage/Cloud APIs');
 // Execute the real renderer and floor events as well as the scene model. DOM doubles
 // verify persistent identity and speech updates, not visibility or pixel geometry.
 const {fixture}=await import('./hani-building-206-engine.test.mjs');
@@ -149,7 +163,7 @@ for(const [state,title] of [['work','근무 중'],['rest','휴식 중'],['meetin
 }
 report.static.push('constrained boxes/actual owner: compact tags stagger without overlap; desktop speech > meeting > status, no name collisions, hidden pills recover');
 report.result='static-passed-browser-not-run';save();
-console.log('PASS office-219 source/model: geometry equality, five clocks, presence, read-only/version/art preservation');
+console.log('PASS office-219 source/model: home pivots, five clocks, presence, planned-slot agreement, read-only/version/identity preservation');
 if(!process.argv.includes('--browser')){console.log('NOT RUN: real screen/label bounds/overlap/scale screenshots; use --browser');}
 else{
 let browser,server;

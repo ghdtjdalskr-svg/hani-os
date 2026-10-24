@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import {stripTypeScriptTypes} from 'node:module';
 import test from 'node:test';
+import qaSupport from './qa-1st-test-support.cjs';
 import {pathToFileURL} from 'node:url';
 const source=fs.readFileSync(new URL('../hani-asset-update-v1.js',import.meta.url),'utf8');
 const main=fs.readFileSync(new URL('../hani-main.js',import.meta.url),'utf8');
@@ -21,7 +22,7 @@ function fixture(ui=false){
     URL:{createObjectURL:()=> 'blob:synthetic',revokeObjectURL(){}},
     localStorage:{getItem:()=>before,setItem(){writes++;throw Error('No write')},removeItem(){writes++;throw Error('No remove')},clear(){writes++;throw Error('No clear')}},
     save(){writes++;throw Error('No save')},commit(){writes++;throw Error('No commit')},agentApi(){throw Error('No real network')},agentObj:x=>x,intakeImageToDataUrl:async()=> 'data:image/png;base64,synthetic'};
-  vm.createContext(sandbox);vm.runInContext(main.split(/\r?\n/).find(l=>l.startsWith('function normalizeBrokerHolding(')),sandbox);vm.runInContext(source,sandbox);
+  vm.createContext(sandbox);qaSupport.loadInputHelpers(sandbox);vm.runInContext(main.split(/\r?\n/).find(l=>l.startsWith('function normalizeBrokerHolding(')),sandbox);vm.runInContext(source,sandbox);
   return {api:sandbox.window.HANI_ASSET_UPDATE_V1,sandbox,node,before,writes:()=>writes};
 }
 const {api}=fixture();

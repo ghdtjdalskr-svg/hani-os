@@ -1,10 +1,11 @@
 // Reproducible, read-only runtime projection of the approved catalog.
 import fs from 'node:fs';
+import {onboard232} from './hani-office-onboarding-232.mjs';
 import {fileURLToPath} from 'node:url';
 export function runtimeTable(catalog){
   const fields=['id','layer','title','participants','participantSelector','places','conditions','durationSeconds','performance','actorOverrides','targetResolution','poseByPerson','routeByPerson','personalNonWork','frequencyFamilyId','releaseTarget','manualPreviewOnlyIn216'];
-  const project=a=>Object.fromEntries(fields.filter(k=>k in a).map(k=>[k,a[k]]));
-  return {
+  const project=a=>({...Object.fromEntries(fields.filter(k=>k in a).map(k=>[k,a[k]])),...(a.id==='sig-seongmin-4'?{title:'회장님 모드 · 커피 한 모금'}:{})});
+  return onboard232({
     schemaVersion:'office-actions-216-v1',sourceCommit:'8f08569',timezone:catalog.timezone,
     identity:{seongmin:{entity:'human_user',role:'chairman',officeVisual:'ceo_frog',spriteId:'seongmin',staffAddress:'회장님'}},
     rules:catalog.engineRules.ambientRules,
@@ -12,7 +13,7 @@ export function runtimeTable(catalog){
     actions:catalog.actions.filter(a=>a.releaseTarget==='216').map(a=>({...project(a),automaticReady:!a.manualPreviewOnlyIn216&&!a.conditions.triggerIds.length})),
     families:catalog.frequencyFamilies.filter(f=>f.memberActionIds.some(id=>catalog.releasePlan.release216.actionIds.includes(id))).map(f=>({id:f.id,sourceActionId:f.sourceActionId,limits:f.limits,memberActionIds:f.memberActionIds,durationCeilingSeconds:f.durationCeilingSeconds,parent:project(catalog.actions.find(a=>a.id===f.sourceActionId))})),
     disabled:catalog.actions.filter(a=>a.releaseTarget!=='216').map(a=>({id:a.id,automaticReady:false}))
-  };
+  });
 }
 if(process.argv[1]===fileURLToPath(import.meta.url)){
   const catalog=JSON.parse(fs.readFileSync(new URL('../docs/design/office-actions-v1.3.json',import.meta.url)));

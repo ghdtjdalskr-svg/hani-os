@@ -1,0 +1,20 @@
+// Explicit authoring only. Frozen behavior oracles and other approvals are never rewritten.
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+const sha=b=>createHash('sha256').update(b).digest('hex');
+const file='hani-office-live.js',target='scripts/fixtures/office-redesign-233.json';
+const approval=JSON.parse(fs.readFileSync(target,'utf8')),old=approval.changes.find(c=>c.file===file);
+assert.equal(approval.baseSha,'7a10595f2a0890e63cd04dbc95c057edbbd3d5b0');
+const previous=fs.readFileSync('artifacts/office-behavior/obr12-pinned-before.js','utf8');
+assert.equal(sha(previous),'5f9308771e5da0578367d9b541b79b2e7e4e32e37a835530c4bb23ccd571da98');
+assert.equal(old.afterSha256,sha(previous),'author once from the original approved runtime');
+let before=previous;for(const r of old.replacements){assert.equal(before.split(r.after).length-1,1);before=before.replace(r.after,r.before)}assert.equal(sha(before),old.beforeSha256);
+const after=fs.readFileSync(file,'utf8'),diff=fs.readFileSync('artifacts/office-behavior/obr12-runtime.diff','utf8');
+let a='',b='',active=false;const replacements=[];
+const flush=()=>{if(!active)return;assert.ok(a&&b);assert.equal(before.split(a).length-1,1,'unique fixed origin');assert.equal(after.split(b).length-1,1,'unique current fragment');replacements.push({before:a,after:b});a='';b=''};
+for(const line of diff.match(/[^\n]*\n|[^\n]+$/g)||[]){if(line.startsWith('@@')){flush();active=true;continue}if(!active||line.startsWith('\\'))continue;if(line[0]===' '||line[0]==='-')a+=line.slice(1);if(line[0]===' '||line[0]==='+')b+=line.slice(1)}flush();
+let reversed=after;for(const r of replacements)reversed=reversed.replace(r.after,r.before);assert.equal(reversed,before,'complete fixed-origin byte reversal');
+approval.changes=approval.changes.map(c=>c.file===file?{...c,afterSha256:sha(after),replacements}:c);
+approval.reason+='; obr12 computation optimization only, original frozen plan/snapshot bytes unchanged';
+fs.writeFileSync(target,JSON.stringify(approval,null,2)+'\n');console.log('office-only exact approval',sha(after),replacements.length);

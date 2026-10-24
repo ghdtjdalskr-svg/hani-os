@@ -41,7 +41,14 @@ try{
       result.views.push({width,...row});
       if(!before){
         if(row.retired)assert.equal(view.id,'work','only the pre-existing retired view has no hero');
-        else assert.equal(row.visible,1,`${width}/${view.id}: ${JSON.stringify(row.heroes)}`);
+        else {
+          assert.equal(row.visible,view.id==='organization'?2:1,`${width}/${view.id}: ${JSON.stringify(row.heroes)}`);
+          if(view.id==='organization'){
+            assert.equal(await page.locator('#organization > .ds-main-character-banner:visible').count(),1);
+            assert.equal(await page.locator('.ogh-overview > .ogh-hero:visible').count(),1,'approved HANI-77 overview hero');
+            assert.equal(await page.locator('.ogh-overview > .ogh-hero img').getAttribute('src'),'./assets/team/hani-org-demo-day-v1.webp');
+          }
+        }
         if(['ilbo','organization','investmentCommittee','agentReview','board'].includes(view.id))assert.equal(row.overflow,false,view.id+' no horizontal overflow');
         if(['ilbo','organization','investmentCommittee','agentReview'].includes(view.id)){
           await page.locator(`#${view.id} > .ds-main-character-banner img`).evaluate(i=>i.decode());
@@ -68,7 +75,7 @@ try{
         for(let n=0;n<await buttons.count();n++){
           await buttons.nth(n).click();await page.waitForTimeout(100);
           const count=await page.locator('#'+id).evaluate((root,selector)=>[...root.querySelectorAll(selector)].filter(h=>h.getBoundingClientRect().width&&h.getBoundingClientRect().height).length,heroSelector);
-          result.tabs.push({width,id,tab:n,heroes:count});assert.equal(count,1,`${width}/${id} tab ${n}`);
+          result.tabs.push({width,id,tab:n,heroes:count});const overview=id==='organization'&&await buttons.nth(n).getAttribute('data-organization-tab')==='overview';assert.equal(count,overview?2:1,`${width}/${id} tab ${n}`);if(id==='organization')assert.equal(await page.locator('.ogh-overview > .ogh-hero:visible').count(),overview?1:0,'Demo Day is overview-only');
         }
       }
       await page.evaluate(()=>showView('home'));

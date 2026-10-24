@@ -21,7 +21,9 @@ try{
   });
   await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port;
   const views=[...fs.readFileSync(path.join(root,'index.html'),'utf8').matchAll(/<button class="nav-btn[^>]*data-view="([^"]+)"[^>]*>[\s\S]*?<span class="txt">([^<]+)<\/span>/g)].map(m=>({id:m[1],label:m[2]}));
-  assert.equal(views.length,35);
+  assert.equal(views.length,36,'Milestones v1 adds one sidebar view');
+  assert.equal(views.filter(view=>view.id==='milestones').length,1);
+  assert.equal(new Set(views.map(view=>view.id)).size,36,'no duplicate nav view');
   for(const width of [390,1440]){
     const context=await browser.newContext({viewport:{width,height:1100},timezoneId:'Asia/Seoul',reducedMotion:'reduce'});
     await context.addInitScript(()=>{const D=Date;window.Date=class extends D{constructor(...a){super(...(a.length?a:['2026-10-18T19:31:00+09:00']));}static now(){return new D('2026-10-18T19:31:00+09:00').getTime();}};});
@@ -50,7 +52,12 @@ try{
       },{view,selector});
       result.views.push({width,...row});
       if(row.retired){assert.equal(view.id,'work');continue;}
-      assert.equal(row.heroes.length,1,view.id+' one canonical hero');
+      assert.equal(row.heroes.length,view.id==='organization'?2:1,view.id+' canonical banner and approved overview hero');
+      if(view.id==='organization'){
+        assert.equal(await page.locator('#organization > .ds-main-character-banner:visible').count(),1);
+        assert.equal(await page.locator('.ogh-overview > .ogh-hero:visible').count(),1);
+        assert.ok(row.heroes[1].images.some(i=>i.src==='./assets/team/hani-org-demo-day-v1.webp'&&i.decoded),'restored Demo Day image decodes');
+      }
       assert.ok(row.heroes[0].images.some(i=>i.decoded&&Number(i.opacity)>0),view.id+' visible decoded illustration');
       if(fresh.includes(view.id)){
         assert.equal(row.overflow,false);assert.equal(row.protectedSame,true);

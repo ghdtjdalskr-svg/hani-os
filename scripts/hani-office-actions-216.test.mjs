@@ -1,13 +1,13 @@
-import {assertSeedCanon} from './hani-office-seed-233-expectations.mjs';
-// Seed 233 activates two canon desks ahead of the unchanged 232 scheduler catalog.
+import {assertOnboardedCanon} from './hani-office-onboarding-232-assertions.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-import crypto from 'node:crypto';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {runtimeTable} from './hani-office-actions-216-data.mjs';
+import {assertResources} from './hani-office-place-assertions.mjs';
+import {assertFormalStay} from './hani-office-formal-stay-assertions.mjs';
 const read=p=>fs.readFileSync(new URL('../'+p,import.meta.url),'utf8');
 const table=JSON.parse(read('assets/data/office-actions-216.json')),catalog=JSON.parse(read('docs/design/office-actions-v1.3.json'));
 const source=read('hani-office-live.js'),plain=x=>JSON.parse(JSON.stringify(x));
@@ -22,7 +22,7 @@ test('approved catalog projects exactly 98 core actions, 37 disabled, original f
   assert.equal(catalog.frequencyFamilies.length,77);
   for(const f of table.families){const original=catalog.frequencyFamilies.find(x=>x.id===f.id);assert.deepEqual(f.memberActionIds,original.memberActionIds);assert.deepEqual(f.limits,original.limits);}
   for(const a of table.actions)assert.ok(read('docs/design/office-actions-v1.3.md').includes('`'+a.id+'`'));
-  assertSeedCanon();
+  assertOnboardedCanon();
   assert.match(source,/fetch\('\.\/assets\/data\/office-actions-216\.json'\)/);
   assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|Math\.random/);
 });
@@ -37,7 +37,8 @@ test('120 deterministic simulated days enforce all shared caps, cooldowns, paren
     assert.ok(plan.filter(e=>e.layer===3).length<=3);groupTotal+=plan.filter(e=>e.layer===3).length;
     for(let i=0;i<plan.length;i++){
       const e=plan[i],a=table.actions.find(a=>a.id===e.actionId),f=table.families.find(f=>f.id===e.familyId),key=f.id+'|'+(f.limits.scope==='scene'?'scene':e.people[0].id);
-      seen.add(a.id);assert.ok(a.automaticReady);assert.ok(e.duration<=f.durationCeilingSeconds);assert.ok(e.end>e.start);
+      seen.add(a.id);assert.ok(a.automaticReady);assert.ok(e.duration<=e.runtimeDurationCeilingSeconds);if(e.people.every(t=>t.seat.anchor===t.home.anchorId))assert.ok(e.duration<=f.durationCeilingSeconds);assert.ok(e.end>e.start);
+      assertFormalStay(api,e,table);
       const seconds=t=>Number(t.slice(0,2))*3600+Number(t.slice(3))*60;
       assert.ok(a.conditions.timeWindows.some(([start,end])=>e.start>=seconds(start)&&e.end<=seconds(end)),'entire excursion must fit the selected action window');
       counts.set(key,(counts.get(key)||0)+1);assert.ok(counts.get(key)<=f.limits.maxPerDay);
@@ -45,14 +46,14 @@ test('120 deterministic simulated days enforce all shared caps, cooldowns, paren
       const absolute=Date.parse(day)/1000+e.start;assert.ok(absolute-(lastAcrossDays.get(key)??-Infinity)>=f.limits.cooldownSeconds,key);lastAcrossDays.set(key,absolute);
       if(e.layer===3)assert.equal(f.limits.probabilityPerDay,.15);
       for(const p of e.people){
-        assert.ok(!['daon','yoonseul'].includes(p.id));
+        assert.equal(table.people.find(person=>person.id===p.id)?.registration,p.id==='seongmin'?'chairman':'registered');
         if(e.personalNonWork){assert.ok(e.start-(lastRest.get(p.id)??-Infinity)>=2700);lastRest.set(p.id,e.end);}
         if(api.anchors.get(p.seat.anchor).floor!==p.home.floor){assert.ok(e.start-(lastMove.get(p.id)??-Infinity)>=5400);lastMove.set(p.id,e.end);}
         for(const route of [p.outbound,p.inbound])for(let j=1;j<route.length;j++)assert.ok(assets.canon.edges.some(edge=>edge.kind!=='stairs'&&(edge.from===route[j-1].id&&edge.to===route[j].id||edge.bidirectional&&edge.to===route[j-1].id&&edge.from===route[j].id)));
       }
       for(const other of plan.slice(0,i))if(collision(e,other)){
         assert.ok(!other.people.some(p=>e.people.some(q=>q.id===p.id)),'actor double-booked');
-        assert.ok(!other.resources.some(id=>e.resources.includes(id)),'anchor/door/elevator double-booked');
+        assertResources(scheduler,e,other);
         if(e.layer===other.layer&&[2,3].includes(e.layer))assert.ok(!e.floors.some(f=>other.floors.includes(f)),'floor cap');
       }
       if(table.rules.hinaBalance.teacherActionIds.includes(a.id))teachers++;
@@ -79,7 +80,7 @@ test('KST seed, day boundaries, chairman identity/presence, MIR limits and indep
 
 test('every one of the 97 scheduled core rows is reachable; base-work remains the default 98th row',()=>{
   const seen=new Set();let days=0;
-  for(;days<730&&seen.size<97;days++){
+  for(;days<208&&seen.size<97;days++){
     const day=new Date(base+days*86400000+32400000).toISOString().slice(0,10);
     for(const event of scheduler.plan(day,{chairmanPresent:true}))seen.add(event.actionId);
   }
@@ -103,7 +104,10 @@ test('random access snapshots skip missed events; summoned and cancelled events 
   const summoned=scheduler.snapshot(mid,{summoned:[event.people[0].id]});assert.ok(summoned.events.every(e=>e.id!==event.id));assert.ok(summoned.entries.every(p=>p.id!==event.people[0].id));
   const cancelled=scheduler.snapshot(mid,{cancelled:new Set([event.id])});assert.ok(cancelled.events.every(e=>e.id!==event.id));
   const moving=at(day,event.people.find(p=>p.out.length).out[0].start+.01),staticA=scheduler.snapshot(moving,{reducedMotion:true}),staticB=scheduler.snapshot(at(day,event.performStart+1),{reducedMotion:true});
-  for(const p of event.people){const a=staticA.entries.find(e=>e.id===p.id),b=staticB.entries.find(e=>e.id===p.id);assert.equal(a.walking,false);assert.equal(a.position,null);assert.equal(a.seat.anchor,b.seat.anchor);assert.equal(a.line,b.line);assert.ok(!a.pose.startsWith('walk'));}
+  for(const p of event.people){const a=staticA.entries.find(e=>e.id===p.id),b=staticB.entries.find(e=>e.id===p.id);assert.equal(a.walking,false);assert.equal(a.position,null);assert.equal(b.seat.anchor,p.seat.anchor);assert.ok(!a.pose.startsWith('walk'));
+    if(p.out.length){assert.equal(a.seat.anchor,p.home.anchorId,'reduced motion stays home until the reserved arrival');assert.equal(a.state,'GOING');assert.match(a.line,/가는 중$/)}
+    else{assert.equal(a.seat.anchor,b.seat.anchor);assert.equal(a.line,b.line)}
+  }
 });
 
 test('actual renderer uses persistent actor/prop/bubble slots, tap/keyboard/profile, visible-only motion and case priority',async()=>{
@@ -127,7 +131,12 @@ test('literal runtime fetch executes and an offline table settles into safe base
   for(const ok of [true,false]){
     const calls=[],c=vm.createContext({HaniOfficeV2Assets:assets,window:{},document:{getElementById:()=>null},fetch:async url=>{calls.push(url);if(!ok)throw Error('offline');return {ok:true,json:async()=>table}}});
     await vm.runInContext(source,c);assert.deepEqual(calls,['./assets/data/office-actions-221.json','./assets/data/office-actions-216.json']);
-    assert.equal(Boolean(c.HaniBuildingScene.scheduler),ok);assert.ok(c.HaniBuildingScene.snapshot('2026-10-19T09:00:00+09:00').floors.flatMap(f=>f.people).every(p=>p.actionId==='base-work'));
+    assert.equal(Boolean(c.HaniBuildingScene.scheduler),ok);
+    const snap=c.HaniBuildingScene.snapshot('2026-10-19T09:00:00+09:00');
+    for(const p of snap.floors.flatMap(f=>f.people)){
+      if(!ok)assert.equal(p.actionId,'base-work');
+      else if(p.actionId!=='base-work')assert.ok(c.HaniBuildingScene.scheduler.plan(snap.day).some(e=>e.actionId===p.actionId&&e.people.some(t=>t.id===p.id)&&e.start<=snap.seconds&&snap.seconds<e.end),'loaded table may schedule the new employee arrival at 09:00');
+    }
   }
 });
 

@@ -1,4 +1,5 @@
 import test from 'node:test';
+import qaSupport from './qa-1st-test-support.cjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {execFileSync} from 'node:child_process';
@@ -143,6 +144,7 @@ test('chairman vocative is stripped only for its mention chip, stored text/middl
 });
 
 const intake=vm.createContext({Date,Intl,structuredClone,today:()=> '2026-10-12',normalizeDateFlexDate:x=>x,uid:()=> 'fixture',window:{},document:{getElementById:()=>null},console});
+qaSupport.loadInputHelpers(intake);
 for(const name of ['intakeText','intakeNormText','intakeDate','intakeNumber','intakeRating','intakeKv','intakePick','intakeFirstContentLine','intakeDayOffset','intakeDateFromWeekday','intakeNaturalRating','intakeNaturalReview','intakeNaturalAuthor','intakeNaturalDate','intakeNaturalMovie','intakeReadingToday','intakeNaturalBook','intakeBuildOne','intakeRequestedTargets','intakeTargetAlias','intakeInferTarget','intakeOverlayUserInstruction','intakeRowsFromVision'])vm.runInContext(fn(name),intake);
 vm.runInContext(read('hani-yuna-helpdesk.js'),intake);
 test('natural book parsing preserves both vs orders and the exact reported input',()=>{
