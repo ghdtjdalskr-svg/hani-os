@@ -1,0 +1,1096 @@
+[
+  {
+    "file": "scripts/hani-ai-work-status.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-ai-work-status.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-app-216-audit.test.cjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-app-216-audit.test.cjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-app-216-practical.test.cjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-app-216-practical.test.cjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-app-216.test.cjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-app-216.test.cjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-asset-intake-v2-AB.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "explicit request",
+    "dependency": [
+      "scripts/hani-asset-intake-v2-AB.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-asset-intake-v2-C.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "explicit request",
+    "dependency": [
+      "scripts/hani-asset-intake-v2-C.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-asset-intake-v2-ease.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "explicit request",
+    "dependency": [
+      "scripts/hani-asset-intake-v2-ease.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-asset-update-smoke.js",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "explicit request",
+    "dependency": [
+      "scripts/hani-asset-update-smoke.js"
+    ]
+  },
+  {
+    "file": "scripts/hani-board-203a.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-board-203a.test.mjs",
+      "scripts/hani-board.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-board-community.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-board-community.test.mjs",
+      "scripts/hani-board.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-board-guard.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-board-guard.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-board-living.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-board-living.test.mjs",
+      "scripts/hani-board.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-board-relationship.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-board-relationship.test.mjs",
+      "scripts/hani-board.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-board-views-211.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-board-views-211.test.mjs",
+      "scripts/hani-board.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-board-vocative.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-board-vocative.test.mjs",
+      "scripts/hani-board.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-board.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-board.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-boardroom-live-meeting.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-boardroom-live-meeting.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-boardroom-recovery.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-boardroom-recovery.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-brand-heroes-218.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-brand-heroes-218.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-building-206-safety.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-building-206-safety.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-building-206.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-building-206.test.mjs",
+      "scripts/hani-reviewed-release-baseline.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-character-archive.test.cjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-character-archive.test.cjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-cloud-conflict-choice.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-cloud-conflict-choice.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-cloud-egress-save-sim.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-cloud-egress-save-sim.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-cloud-egress-sync.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-cloud-egress-sync.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-cloud-first.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-cloud-first.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-dash-217.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": true,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-dash-217.test.mjs",
+      "scripts/hani-dash-217-fixture.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-dash-218.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-dash-218.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-dashboard-period.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-dashboard-period.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-drive-vault.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-drive-vault.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-duplicate-id-guard.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-duplicate-id-guard.test.mjs",
+      "scripts/hani-duplicate-id-guard.mjs",
+      "index.html → runtime graph"
+    ]
+  },
+  {
+    "file": "scripts/hani-egress-fix.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": true,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-egress-fix.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-existing-pr-qa-test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-existing-pr-qa-test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-fix-208.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-fix-208.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-fixes-213-oauth.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-fixes-213-oauth.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-gate-capacity-test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-gate-capacity-test.mjs",
+      "scripts/hani-one-pass-rules.mjs",
+      "scripts/hani-runtime-closure.mjs",
+      "index.html → runtime graph"
+    ]
+  },
+  {
+    "file": "scripts/hani-gemini-reports-build.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-gemini-reports-build.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-goal-media-budget.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-goal-media-budget.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-goal-period-view.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-goal-period-view.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-goal-period.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-goal-period.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-google-drive-212.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-google-drive-212.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-hana-intake-224.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": true,
+    "reason": "explicit request",
+    "dependency": [
+      "scripts/hani-hana-intake-224.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-hero-restore.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": true,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-hero-restore.test.mjs",
+      "scripts/hani-reviewed-release-baseline.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-ic-polish-205.test.cjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-ic-polish-205.test.cjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-ic-report-205.test.cjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-ic-report-205.test.cjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-intake-audit-206.test.cjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-intake-audit-206.test.cjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-invest-basis.test.cjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-invest-basis.test.cjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-invest-split.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-invest-split.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-investment-committee.test.cjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-investment-committee.test.cjs",
+      "scripts/qa-1st-test-support.cjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-investment-research.test.cjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-investment-research.test.cjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-kiwoom-code-224.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": true,
+    "reason": "explicit request",
+    "dependency": [
+      "scripts/hani-kiwoom-code-224.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-login-a-204.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-login-a-204.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-lounge-ai-213.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-lounge-ai-213.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-lounge-fun-211.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-lounge-fun-211.test.mjs",
+      "scripts/hani-board.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-lounge-natural-211.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-lounge-natural-211.test.mjs",
+      "scripts/hani-board.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-media-c-controls.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-media-c-controls.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-media-core.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-media-core.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-meeting-engine-v2-client.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-meeting-engine-v2-client.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-milestones-v1.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": true,
+    "reason": "explicit request",
+    "dependency": [
+      "scripts/hani-milestones-v1.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-mission-203a.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-mission-203a.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-mobile-intake-206.test.cjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-mobile-intake-206.test.cjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-monthly-report-aggregation-test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-monthly-report-aggregation-test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-nav-groups.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-nav-groups.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-navlogin.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-navlogin.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-ocr-accuracy-224.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": true,
+    "reason": "explicit request",
+    "dependency": [
+      "scripts/hani-ocr-accuracy-224.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-office-219.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": true,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-office-219.test.mjs",
+      "scripts/hani-reviewed-release-baseline.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-office-hd-224.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": true,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-office-hd-224.test.mjs",
+      "scripts/hani-runtime-closure.mjs",
+      "index.html → runtime graph"
+    ]
+  },
+  {
+    "file": "scripts/hani-offline-transport-223.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-offline-transport-223.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-one-pass-protected-surface.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-one-pass-protected-surface.test.mjs",
+      "scripts/hani-one-pass-rules.mjs",
+      "scripts/hani-runtime-closure.mjs",
+      "index.html → runtime graph"
+    ]
+  },
+  {
+    "file": "scripts/hani-owner-verification-diagnostic.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-owner-verification-diagnostic.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-photo-backup-222.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": true,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-photo-backup-222.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-positions-only-test.cjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-positions-only-test.cjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-post-audit-investment.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-post-audit-investment.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-proactive-204.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-proactive-204.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-pwa-release-paths.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-pwa-release-paths.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-qa-1st.test.cjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "explicit request",
+    "dependency": [
+      "scripts/hani-qa-1st.test.cjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-qa-210-followup.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-qa-210-followup.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-qa-210.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-qa-210.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-quiz-autogen-216.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-quiz-autogen-216.test.mjs",
+      "scripts/hani-cloud-transport-fixture.cjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-quiz-client-209.test.cjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-quiz-client-209.test.cjs",
+      "scripts/hani-cloud-transport-fixture.cjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-quiz-qa-212.test.cjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-quiz-qa-212.test.cjs",
+      "scripts/hani-cloud-transport-fixture.cjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-quiz-quality-210.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-quiz-quality-210.test.mjs",
+      "scripts/hani-cloud-transport-fixture.cjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-reviewed-release-baseline.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "explicit request",
+    "dependency": [
+      "scripts/hani-reviewed-release-baseline.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-runtime-closure-ilbo.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-runtime-closure-ilbo.test.mjs",
+      "scripts/hani-runtime-closure.mjs",
+      "index.html → runtime graph"
+    ]
+  },
+  {
+    "file": "scripts/hani-second-opinion.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-second-opinion.test.mjs",
+      "scripts/hani-cloud-transport-fixture.cjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-simplify-218.test.cjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-simplify-218.test.cjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-simplify-225.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-simplify-225.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-staff-floors-214.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [
+      "--static"
+    ],
+    "hasOptionalBrowser": true,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-staff-floors-214.test.mjs",
+      "scripts/hani-runtime-closure.mjs",
+      "index.html → runtime graph"
+    ]
+  },
+  {
+    "file": "scripts/hani-street-journal-closure.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-street-journal-closure.test.mjs",
+      "scripts/hani-runtime-closure.mjs",
+      "index.html → runtime graph"
+    ]
+  },
+  {
+    "file": "scripts/hani-tasks-qa-212.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": true,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-tasks-qa-212.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-theme-white-215.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": true,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-theme-white-215.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-toss-intake-224.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": true,
+    "reason": "explicit request",
+    "dependency": [
+      "scripts/hani-toss-intake-224.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-transaction-date.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-transaction-date.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-ui-203b.test.mjs",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-ui-203b.test.mjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-yuna-schedule.test.js",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-yuna-schedule.test.js",
+      "scripts/qa-1st-test-support.cjs"
+    ]
+  },
+  {
+    "file": "scripts/hani-yuna-smoke.js",
+    "browser": false,
+    "nodeOnly": true,
+    "args": [],
+    "hasOptionalBrowser": false,
+    "reason": "previous PASS owner dependency",
+    "dependency": [
+      "scripts/hani-yuna-smoke.js",
+      "scripts/qa-1st-test-support.cjs"
+    ]
+  }
+]

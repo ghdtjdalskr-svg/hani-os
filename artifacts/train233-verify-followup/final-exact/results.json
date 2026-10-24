@@ -1,0 +1,22 @@
+[
+    {
+        "log":  "final-exact/candidate-hani-ocr-accuracy-224.test.mjs.log",
+        "ms":  253,
+        "file":  "scripts/hani-ocr-accuracy-224.test.mjs",
+        "browserArgs":  false,
+        "status":  "PASS",
+        "target":  "candidate",
+        "exit":  0,
+        "exports":  0
+    },
+    {
+        "log":  "final-exact/candidate-hani-reviewed-release-baseline.test.mjs.log",
+        "ms":  3809,
+        "file":  "scripts/hani-reviewed-release-baseline.test.mjs",
+        "browserArgs":  false,
+        "status":  "PASS",
+        "target":  "candidate",
+        "exit":  0,
+        "exports":  0
+    }
+]

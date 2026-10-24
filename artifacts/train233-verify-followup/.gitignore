@@ -1,0 +1,7 @@
+git-cache/
+test-output/
+logs/
+exports/
+building-recheck/*.log
+final-exact/*.log
+final-static/*.log

@@ -15,11 +15,15 @@ test('release225 plus only named later release changes reproduces current source
 test('pending integrations are exact deltas between the fixed reviewed merge identities',()=>{
  const fixture=JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8'));
  assert.equal(fixture.baseSha,'b5a64e5');
- assert.equal(fixture.candidateSha,'bbc1ff97b498876de752a5705f714cd00f2d7e64');
- assert.deepEqual(fixture.integrationMerges,['1cdf07f','91758b7','bbc1ff9']);
+ assert.equal(fixture.candidateSha,'7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c');
+ assert.deepEqual(fixture.integrationMerges,['1cdf07f','91758b7','bbc1ff9','b1f7a48','7d0fa05']);
+ assert.deepEqual(fixture.approvedIntegrationFixes.map(({sha,file})=>({sha,file})),[
+  {sha:'f2df938314a19e02e334a0be1726a9a4a9d61245',file:'hani-asset-update-v1.js'},
+  {sha:'7471e5aabc0ba441ed826a108e04ecb2f3e196b6',file:'hani-main.js'}
+ ]);
  assert.deepEqual(fixture.changes.map(c=>c.file),['hani-asset-market-view.js','hani-asset-update-v1.js','hani-context-remote-v1.js','hani-context-remote.css','hani-design-system.css','hani-investment-committee.js','hani-main.js','hani-organization-hub.css','hani-organization-hub.js','hani-study-v02984.js','hani-style-07.css','hani-yuna-helpdesk.js','index.html']);
  for(const {file,replacements}of fixture.changes){
-  const before=readReleaseSource('b5a64e5',file),after=readReleaseSource('bbc1ff97b498876de752a5705f714cd00f2d7e64',file);
+  const before=readReleaseSource('b5a64e5',file),after=readReleaseSource('7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c',file);
   let forward=before,reverse=after;
   for(const hunk of replacements){
    assert.equal(forward.split(hunk.before).length-1,1,file+' fixed before unique');
@@ -129,5 +133,25 @@ test('pending 233 train stays scoped to office, milestones, hero-crop, asset-int
   const current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
   assert.ok(current.includes(from),file+' mutation anchor');
   assert.throws(()=>assertReviewedReleaseSource(file,current.replace(from,to)),{code:'ERR_ASSERTION'},file+' unlisted rank/date/other staff');
+ }
+});
+
+test('approved numeric integration fixes retain exact origin and reject removal, edits, duplication, moves and EOL changes',()=>{
+ const fixture=JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8'));
+ for(const {sha,file} of fixture.approvedIntegrationFixes){
+  const before=readReleaseSource(sha+'^',file),after=readReleaseSource(sha,file);
+  const lines=text=>text.match(/[^\r\n]*(?:\r\n|\n|$)/g)||[];
+  const oldLines=lines(before),newLines=lines(after);assert.equal(oldLines.length,newLines.length);
+  const changes=oldLines.flatMap((line,i)=>line===newLines[i]?[]:[{before:line,after:newLines[i]}]);
+  assert.equal(changes.length,1,file+' approved commit changes one line only');
+  const change=changes[0],current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
+  assert.equal(current.split(change.after).length-1,1,file+' exact approved current line');
+  assertReviewedReleaseSource(file,current);
+  const badEol=change.after.endsWith('\r\n')?change.after.replace(/\r\n$/,'\n'):change.after.replace(/\n$/,'\r\n');
+  for(const replacement of [change.before,'',change.after+change.after,change.after.replace('return null','return 0'),badEol]){
+   assert.notEqual(replacement,change.after);
+   assert.throws(()=>assertReviewedReleaseSource(file,current.replace(change.after,()=>replacement)),{code:'ERR_ASSERTION'},file+' invalid approved line');
+  }
+  assert.throws(()=>assertReviewedReleaseSource(file,change.after+current.replace(change.after,'')),{code:'ERR_ASSERTION'},file+' approved line cannot move');
  }
 });

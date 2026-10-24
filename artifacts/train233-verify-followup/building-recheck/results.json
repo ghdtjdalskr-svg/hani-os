@@ -1,0 +1,12 @@
+[
+    {
+        "log":  "building-recheck/candidate-hani-building-206-safety.test.mjs.log",
+        "ms":  175,
+        "file":  "scripts/hani-building-206-safety.test.mjs",
+        "browserArgs":  false,
+        "status":  "PASS",
+        "target":  "candidate",
+        "exit":  0,
+        "exports":  0
+    }
+]

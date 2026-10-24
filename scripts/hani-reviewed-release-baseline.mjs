@@ -27,7 +27,8 @@ export const trainBaseVersion='2.9.232';
 // release bytes and the immutable release chain above remain the oracle.
 // Join shipped in 232: its bytes now belong to the Git oracle.
 // Frozen exact fragments cover only the 2.9.233 train: the scoped office runtime delta,
-// the approved Milestones v1 / hero crop connections and the three fixed 10/24 integration merges.
+// the approved Milestones v1 / hero crop connections and fixed 10/24 integrations,
+// including f2df938 decorated-number fallback and 7471e5a sign-only guard through 7d0fa05.
 const fixture=name=>JSON.parse(fs.readFileSync(new URL('./fixtures/'+name,import.meta.url),'utf8'));
 export const pendingApprovedConnections=['train233-integrations.json','office-redesign-233.json','milestones-v1.json','hero-crop-fix.json'].flatMap(name=>fixture(name).changes).map(({file,replacements})=>({
  file,lines:replacements.map(change=>change.after),

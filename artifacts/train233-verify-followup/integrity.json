@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "candidate": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+  "runtime": [
+    {
+      "file": "hani-main.js",
+      "status": "UNCHANGED",
+      "sha256": "8c3b54dd532eecd11ead5e97f9abf3e8e5402c1d9d9b2cf271a42f2132bbda93"
+    },
+    {
+      "file": "hani-asset-update-v1.js",
+      "status": "UNCHANGED",
+      "sha256": "3af574258171199890e2796fbc76331ad6b3fdc7ce8a8f2006dae829a06f25ab"
+    }
+  ],
+  "runtimeDiff": "git diff --quiet HEAD -- hani-*.js hani-*.css index.html: exit 0",
+  "version": "2.9.232",
+  "lastScript": "./hani-launch-greeting.js",
+  "changedSourceSyntax": "3 node --check PASS",
+  "helperSyntax": [
+    "check-integrity.cjs",
+    "git-read-cache.cjs",
+    "select-tests.cjs",
+    "summarize.cjs"
+  ],
+  "powerShellSyntax": "2 Parser.ParseFile PASS",
+  "diffCheck": "git -c core.whitespace=cr-at-eol diff --check: exit 0",
+  "eol": [
+    {
+      "file": "scripts/fixtures/train233-integrations.json",
+      "status": "PASS",
+      "unchangedLinesWithExactEol": 289
+    },
+    {
+      "file": "scripts/hani-ocr-accuracy-224.test.mjs",
+      "status": "PASS",
+      "unchangedLinesWithExactEol": 46
+    },
+    {
+      "file": "scripts/hani-reviewed-release-baseline.mjs",
+      "status": "PASS",
+      "unchangedLinesWithExactEol": 82
+    },
+    {
+      "file": "scripts/hani-reviewed-release-baseline.test.mjs",
+      "status": "PASS",
+      "unchangedLinesWithExactEol": 131
+    }
+  ]
+}

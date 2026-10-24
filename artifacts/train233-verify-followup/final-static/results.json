@@ -1,0 +1,12 @@
+[
+    {
+        "log":  "final-static/candidate-hani-staff-floors-214.test.mjs.log",
+        "ms":  544,
+        "file":  "scripts/hani-staff-floors-214.test.mjs",
+        "browserArgs":  false,
+        "status":  "PASS",
+        "target":  "candidate",
+        "exit":  0,
+        "exports":  0
+    }
+]

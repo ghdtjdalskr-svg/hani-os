@@ -1,0 +1,396 @@
+{
+  "safetyFiles": [
+    "hani-main.js",
+    "hani-asset-update-v1.js",
+    "hani-context-remote-v1.js",
+    "hani-context-remote.css",
+    "hani-design-system.css",
+    "hani-study-v02984.js",
+    "hani-yuna-helpdesk.js",
+    "hani-investment-committee.js",
+    "hani-asset-market-view.js",
+    "index.html"
+  ],
+  "files": [
+    {
+      "file": "hani-ai-budget-core.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-ai-budget-core.js"
+    },
+    {
+      "file": "hani-ai-budget.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-ai-budget.css"
+    },
+    {
+      "file": "hani-ai-budget.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-ai-budget.js"
+    },
+    {
+      "file": "hani-asset-market-view.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-asset-market-view.js"
+    },
+    {
+      "file": "hani-asset-market.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-asset-market.css"
+    },
+    {
+      "file": "hani-asset-update-v1.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-asset-update-v1.js"
+    },
+    {
+      "file": "hani-board-library.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-board-library.js"
+    },
+    {
+      "file": "hani-board.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-board.css"
+    },
+    {
+      "file": "hani-board.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-board.js"
+    },
+    {
+      "file": "hani-character-archive-data.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-character-archive-data.js"
+    },
+    {
+      "file": "hani-character-archive.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-character-archive.css"
+    },
+    {
+      "file": "hani-character-archive.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-character-archive.js"
+    },
+    {
+      "file": "hani-company-followup-preview.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-company-followup-preview.js"
+    },
+    {
+      "file": "hani-context-remote-v1.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-context-remote-v1.js"
+    },
+    {
+      "file": "hani-context-remote.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-context-remote.css"
+    },
+    {
+      "file": "hani-design-system.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-design-system.css"
+    },
+    {
+      "file": "hani-desk-mascots.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-desk-mascots.css"
+    },
+    {
+      "file": "hani-desk-mascots.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-desk-mascots.js"
+    },
+    {
+      "file": "hani-development-history-v1.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-development-history-v1.js"
+    },
+    {
+      "file": "hani-development-history.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-development-history.css"
+    },
+    {
+      "file": "hani-drive-vault.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-drive-vault.js"
+    },
+    {
+      "file": "hani-goal-progress.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-goal-progress.js"
+    },
+    {
+      "file": "hani-ilbo.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-ilbo.css"
+    },
+    {
+      "file": "hani-ilbo.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-ilbo.js"
+    },
+    {
+      "file": "hani-investment-committee.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-investment-committee.css"
+    },
+    {
+      "file": "hani-investment-committee.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-investment-committee.js"
+    },
+    {
+      "file": "hani-launch-greeting.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-launch-greeting.css"
+    },
+    {
+      "file": "hani-launch-greeting.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-launch-greeting.js"
+    },
+    {
+      "file": "hani-main.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-main.js"
+    },
+    {
+      "file": "hani-market-data.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-market-data.js"
+    },
+    {
+      "file": "hani-media-core.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-media-core.js"
+    },
+    {
+      "file": "hani-milestones.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-milestones.js"
+    },
+    {
+      "file": "hani-newsroom-4cut.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-newsroom-4cut.js"
+    },
+    {
+      "file": "hani-newsroom-ux-v02970.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-newsroom-ux-v02970.js"
+    },
+    {
+      "file": "hani-office-live.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-office-live.css"
+    },
+    {
+      "file": "hani-office-live.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-office-live.js"
+    },
+    {
+      "file": "hani-organization-hub.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-organization-hub.css"
+    },
+    {
+      "file": "hani-organization-hub.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-organization-hub.js"
+    },
+    {
+      "file": "hani-portfolio-preview.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-portfolio-preview.css"
+    },
+    {
+      "file": "hani-relationship-seed.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-relationship-seed.js"
+    },
+    {
+      "file": "hani-stability-polish-v02972.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-stability-polish-v02972.js"
+    },
+    {
+      "file": "hani-street-journal.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-street-journal.css"
+    },
+    {
+      "file": "hani-street-journal.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-street-journal.js"
+    },
+    {
+      "file": "hani-study-v02984.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-study-v02984.js"
+    },
+    {
+      "file": "hani-style-01.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-style-01.css"
+    },
+    {
+      "file": "hani-style-02.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-style-02.css"
+    },
+    {
+      "file": "hani-style-03.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-style-03.css"
+    },
+    {
+      "file": "hani-style-04.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-style-04.css"
+    },
+    {
+      "file": "hani-style-05.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-style-05.css"
+    },
+    {
+      "file": "hani-style-06.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-style-06.css"
+    },
+    {
+      "file": "hani-style-07.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-style-07.css"
+    },
+    {
+      "file": "hani-style-08.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-style-08.css"
+    },
+    {
+      "file": "hani-ui-cleanup-v02971.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-ui-cleanup-v02971.js"
+    },
+    {
+      "file": "hani-ui-v02973.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-ui-v02973.js"
+    },
+    {
+      "file": "hani-ui-v02974.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-ui-v02974.js"
+    },
+    {
+      "file": "hani-ui-v02975.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-ui-v02975.js"
+    },
+    {
+      "file": "hani-ui-v02976.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-ui-v02976.js"
+    },
+    {
+      "file": "hani-ui-v02978.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-ui-v02978.js"
+    },
+    {
+      "file": "hani-ui-v02979.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-ui-v02979.js"
+    },
+    {
+      "file": "hani-ui-v02980.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-ui-v02980.js"
+    },
+    {
+      "file": "hani-ui-v02981.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-ui-v02981.js"
+    },
+    {
+      "file": "hani-ui-v02982.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-ui-v02982.js"
+    },
+    {
+      "file": "hani-ui-v02983.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-ui-v02983.js"
+    },
+    {
+      "file": "hani-ui-v02992.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-ui-v02992.js"
+    },
+    {
+      "file": "hani-yuna-helpdesk.css",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-yuna-helpdesk.css"
+    },
+    {
+      "file": "hani-yuna-helpdesk.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/hani-yuna-helpdesk.js"
+    },
+    {
+      "file": "index.html",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/index.html"
+    },
+    {
+      "file": "js/hani-pdf-core.js",
+      "ref": "1cdf07f",
+      "destination": "exports/pre-qa/js/hani-pdf-core.js"
+    },
+    {
+      "file": "index.html",
+      "ref": "4ac6b6c0119eeacc7332f1c53c3c760675657c11",
+      "destination": "exports/building-baseline/index.html"
+    },
+    {
+      "file": "hani-office-live.js",
+      "ref": "4ac6b6c0119eeacc7332f1c53c3c760675657c11",
+      "destination": "exports/building-baseline/hani-office-live.js"
+    },
+    {
+      "file": "hani-office-live.css",
+      "ref": "4ac6b6c0119eeacc7332f1c53c3c760675657c11",
+      "destination": "exports/building-baseline/hani-office-live.css"
+    },
+    {
+      "file": "hani-style-01.css",
+      "ref": "4ac6b6c0119eeacc7332f1c53c3c760675657c11",
+      "destination": "exports/building-baseline/hani-style-01.css"
+    },
+    {
+      "file": "scripts/hani-nav-groups.test.mjs",
+      "ref": "4ac6b6c0119eeacc7332f1c53c3c760675657c11",
+      "destination": "exports/building-baseline/scripts-hani-nav-groups.test.mjs"
+    },
+    {
+      "file": "hani-main.js",
+      "ref": "4ac6b6c0119eeacc7332f1c53c3c760675657c11",
+      "destination": "exports/building-baseline/hani-main.js"
+    },
+    {
+      "file": "hani-ui-cleanup-v02971.js",
+      "ref": "4ac6b6c0119eeacc7332f1c53c3c760675657c11",
+      "destination": "exports/building-baseline/hani-ui-cleanup-v02971.js"
+    },
+    {
+      "file": "hani-investment-committee.js",
+      "ref": "4ac6b6c0119eeacc7332f1c53c3c760675657c11",
+      "destination": "exports/building-baseline/hani-investment-committee.js"
+    }
+  ]
+}
