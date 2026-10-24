@@ -1,0 +1,355 @@
+(function(){
+"use strict";
+
+const DRAFT_KEY="hani_yuna_helpdesk_draft_v1";
+const DIRECT_TARGETS=new Set(["task","book","movie","travelWish","diary"]);
+const LABELS={task:"할 일",book:"책 · 독서",movie:"영화 · 드라마",travelWish:"장소",diary:"생활 기록"};
+const DESTINATIONS={task:"할 일",book:"성민의 서재",movie:"시청 아카이브",travelWish:"여행 Wish · 장소",diary:"일기 · 생활 기록"};
+const QUESTIONS={readingDate:"읽기 시작일이 아직 없어요. 오늘로 기록할까요?",watchedDate:"시청일은 오늘로 할까요?",season:"시즌을 정확히 확인하기 어려워요. 시즌 번호만 알려주세요.",episode:"몇 화까지 봤는지 회차만 알려주세요.",rating:"평점을 정확히 확인하기 어려워요. 평점만 알려주세요.",completedDate:"완독일이 아직 없어요. 오늘로 기록할까요?",due:"언제까지 할 일인지 알려주세요.",title:"제목만 알려주세요.",destination:"장소 이름만 알려주세요.",date:"기록 날짜가 아직 없어요. 오늘로 기록할까요?"};
+const todayIso=()=>new Intl.DateTimeFormat("sv-SE",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
+const offsetIso=days=>{const d=new Date();d.setDate(d.getDate()+days);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`};
+const clean=value=>String(value??"").replace(/\s+/g," ").trim();
+const escapeHtml=value=>clean(value).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[ch]);
+const firstMatch=(text,re,index=1)=>{const m=String(text).match(re);return m?clean(m[index]):""};
+const explicitDate=text=>{const s=clean(text);if(/오늘/.test(s))return todayIso();if(/내일/.test(s))return offsetIso(1);if(/어제/.test(s))return offsetIso(-1);const iso=s.match(/(20\d{2})[.\/-](\d{1,2})[.\/-](\d{1,2})/);if(iso)return `${iso[1]}-${iso[2].padStart(2,"0")}-${iso[3].padStart(2,"0")}`;const md=s.match(/(?:^|\s)(\d{1,2})월\s*(\d{1,2})일/);if(md)return `${new Date().getFullYear()}-${md[1].padStart(2,"0")}-${md[2].padStart(2,"0")}`;return ""};
+const ratingFrom=text=>{const m=String(text).match(/(?:별점|평점)\s*(\d(?:\.\d)?)(?:\s*점)?|(\d(?:\.\d)?)\s*점/);return m?Math.max(.1,Math.min(5,Math.round(Number(m[1]||m[2])*10)/10)):null};
+const placeNamePatch=text=>clean(text).replace(/^(?:장소\s*이름|장소이름|가게\s*이름|카페\s*이름|장소|이름)(?:은|는|이|가)?\s*[:：]?\s*/,"").replace(/(?:이야|야|입니다|이에요|예요)[.!]?$/g,"").trim();
+
+function routeIntent(text,hint="auto"){
+  // Explicit book selection and reading context take priority over title keywords.
+  if(hint==="book"||inferKind(text)==="book")return null;
+  const s=clean(text).toLowerCase();
+  if(/isa|irp|연금|증권|주식|투자|코인|펀드|계좌|자산|잔액|예수금/i.test(s))return {route:"investmentIntake",label:"자산 업데이트실",reason:"금융 기록은 YUNA가 직접 저장하지 않아요."};
+  if(/가계부|지출|영수증|결제|입금|출금/i.test(s))return {route:"ledger",label:"가계부",reason:"정교하거나 대량인 가계부 입력은 전문 탭에서 확인해야 해요."};
+  if(/운동|웨이트|러닝|세트|중량|심박|페이스|루틴/i.test(s))return {route:"exercise",label:"헬스클럽",reason:"정밀 운동 기록은 전문 탭에서 확인해야 해요."};
+  return null;
+}
+
+function inferKind(text,hint="auto"){
+  if(hint!=="auto")return hint;
+  const s=clean(text);
+  if(/읽었|읽는\s*중|책(?:을|\s)|다\s*읽었|완독(?:했|완료)?|이\s*책|책\s*(?:제목|표지)|제목(?:은|이)\s*.+(?:책|읽)|읽기\s*시작|읽고\s*있|도서|독서/.test(s))return "book";
+  if(/시즌\s*\d+|\d+\s*화|봤어|봤다|시청|드라마|영화|애니|다큐|예능/.test(s))return "movie";
+  if(/맛집|카페|식당|명소|장소|다녀왔|방문했|가보고/.test(s))return "travelWish";
+  if(/기록해|메모해|오늘은|기분/.test(s))return "diary";
+  return "task";
+}
+
+function parseMovie(text){
+  const s=clean(text),season=firstMatch(s,/시즌\s*(\d+)/),episode=firstMatch(s,/(\d+)\s*화(?:까지)?/),rating=ratingFrom(s),watchedDate=explicitDate(s);
+  let title=s.replace(/(?:오늘|어제)\s*/g,"").replace(/(?:별점|평점)\s*\d(?:\.\d)?(?:\s*점)?[.!]?|\d(?:\.\d)?\s*점[.!]?/g,"").replace(/시즌\s*\d+/g,"").replace(/\d+\s*화(?:까지)?/g,"").replace(/(?:영화|드라마|애니|시리즈)?\s*(?:을|를)?\s*(?:봤어|봤다|봤음|시청했어|시청했다).*$/g,"").replace(/[.!]+$/g,"").trim();
+  title=title.replace(/^(?:넷플릭스|티빙|왓챠|웨이브|디즈니\+?)\s*/i,"").trim();
+  const data={status:"watched",contentType:season||episode?"시리즈":/드라마/.test(s)?"드라마":"영화",origin:"",title,director:"",actors:"",rating,watchedDate,review:[season&&`시즌 ${season}`,episode&&`${episode}화까지`].filter(Boolean).join(" · ")};
+  return {target:"movie",data,entities:{season,episode},missing:[!title&&"title",!watchedDate&&"watchedDate"].filter(Boolean)};
+}
+
+function parseBook(text){
+  const s=clean(text),natural=typeof intakeNaturalBook==="function"?intakeNaturalBook(text):null,completed=natural?natural.status==="read":/완독|다\s*읽|읽었|봤어|봤다/.test(s),date=explicitDate(s)||natural?.completedDate||natural?.readingDate||"";
+  const named=firstMatch(s,/제목(?:은|이|을)?\s*[:：]?\s*(.+?)(?=\s*(?:이야|야|입니다|이에요|예요)?\s*(?:오늘|어제|완독|다\s*읽|읽기|$))/);
+  let title=natural?.title||named||s.replace(/(?:오늘|어제)\s*/g,"").replace(/^(?:이\s*책|책)\s*/g,"").replace(/(?:이라는|라는)?\s*(?:책|도서)?\s*(?:을|를)?\s*(?:읽기\s*시작했어|읽기\s*시작했다|읽기\s*시작|읽고\s*있어|완독했어|완독했다|다\s*읽었어|다\s*읽었다).*$/g,"").replace(/[.!]+$/g,"").trim();
+  title=title.replace(/(?:이야|야|입니다|이에요|예요)$/g,"").trim();
+  const data={status:completed?"read":"wish",title,author:natural?.author||"",topic:"교양",rating:ratingFrom(s)??natural?.rating??null,completedDate:completed?(date||natural?.completedDate||""):"",review:natural?.review||(completed?"":"읽기 시작")};
+  return {target:"book",data,entities:{readingDate:date},missing:[!title&&"title",!date&&(completed?"completedDate":"readingDate")].filter(Boolean)};
+}
+
+// Semantic schedule Preview only. No canonical event storage exists yet.
+function scheduleIntent(text,hint="auto"){
+  if(!["auto","task"].includes(hint))return false;
+  const s=clean(text);
+  const action=/(?:일정|스케줄|약속)(?:을|를)?\s*(?:등록|올려|잡아|추가)/.test(s);
+  if(action)return true;
+  if(/까지/.test(s)&&/제출|챙기|준비물|사기|구매|해야|완료/.test(s))return false;
+  return /일정|스케줄|약속|모임|회의|행사|송년회/.test(s)&&/(?:\d{1,2}월|20\d{2}[-/.]|오늘|내일|모레)/.test(s);
+}
+function scheduleDateRange(text){
+  const s=clean(text),year=new Date().getFullYear(),warnings=[];
+  const token=/(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})|(?:(20\d{2})년\s*)?(\d{1,2})월\s*(\d{1,2})일/g;
+  const hits=Array.from(s.matchAll(token));
+  const iso=(y,m,d)=>{const t=new Date(y,m-1,d);return t.getFullYear()===y&&t.getMonth()===m-1&&t.getDate()===d?`${y}-${String(m).padStart(2,"0")}-${String(d).padStart(2,"0")}`:""};
+  const from=hit=>iso(Number(hit[1]||hit[4]||year),Number(hit[2]||hit[5]),Number(hit[3]||hit[6]));
+  const first=hits[0];let startDate=first?from(first):explicitDate(s),endDate=startDate;
+  const tail=first?s.slice(first.index+first[0].length):"";
+  const range=/^\s*(?:[월화수목금토일]요일\s*)?(?:부터|[~〜～–-])/.test(tail);
+  let span=first?first[0]:"";
+  if(range){
+    const second=hits[1],short=tail.match(/^\s*(?:[월화수목금토일]요일\s*)?(?:부터|[~〜～–-])\s*(\d{1,2})일/);
+    if(second){endDate=from(second);span=s.slice(first.index,second.index+second[0].length)}
+    else if(short){endDate=iso(Number(first[1]||first[4]||year),Number(first[2]||first[5]),Number(short[1]));span=first[0]+short[0]}
+    else{endDate="";warnings.push("종료 날짜를 확인해 주세요.")}
+  }
+  if(!startDate||!endDate)warnings.push("날짜를 확인해 주세요.");
+  if(startDate&&endDate&&endDate<startDate)warnings.push("종료일이 시작일보다 빠릅니다. 연도를 포함해 다시 알려주세요.");
+  if(hits.length>1&&!range||hits.length>2)warnings.push("날짜가 여러 개입니다. 시작과 종료를 명시해 주세요.");
+  return {startDate,endDate,span,warnings};
+}
+function parseSchedule(text){
+  const s=clean(text),range=scheduleDateRange(s),quoted=firstMatch(s,/["“'‘]([^"”'’]+)["”'’]/);
+  let title=quoted||s.replace(range.span||/$^/," ")
+    .replace(/(?:[월화수목금토일]요일|오늘|내일|모레)/g," ")
+    .replace(/(?:까지야|까지|부터)(?:요)?/g," ")
+    .replace(/(?:일정|스케줄|약속)(?:을|를)?\s*(?:등록해\s*줘|올려\s*줘|잡아\s*줘|추가해\s*줘)/g," ")
+    .replace(/^(?:일정|스케줄|할\s*일|제목)(?:은|는|이|가)?\s*[:：]?\s*/,"")
+    .replace(/\s*(?:일정|스케줄)(?:으로|로)?\s*(?:등록해\s*줘)?\s*$/g,"").trim();
+  title=clean(title).replace(/^[,.:：\s]+|[,.:：\s]+$/g,"");
+  const timed=/(?:오전|오후|저녁|\d{1,2}\s*시|\d{1,2}:\d{2})/.test(s),warnings=[...range.warnings];
+  if(!title)warnings.push("일정 제목을 확인해 주세요.");
+  if(timed)warnings.push("시간이 포함된 일정입니다. 시간은 별도 확인이 필요합니다.");
+  return {mode:"schedule-preview",target:"schedule",source:s,data:{title,startDate:range.startDate,endDate:range.endDate,allDay:timed?null:true},missing:[],warnings};
+}
+
+const BOOK_PATCH_LABEL=/(^|[\r\n,]\s*)(책\s*제목|책이름|도서명|제목|지은이|저자|작가|내\s*평점|별점|평점|한\s*줄\s*평|한줄평|감상|후기|리뷰|읽기\s*시작한\s*날|시작일|다\s*읽은\s*날|읽은\s*날|완독일)\s*(?:은|는|이|가|을|를)?\s*[:：]?\s*|(\s+)(책\s*제목|책이름|도서명|제목|지은이|저자|작가|내\s*평점|별점|평점|한\s*줄\s*평|한줄평|감상|후기|리뷰|읽기\s*시작한\s*날|시작일|다\s*읽은\s*날|읽은\s*날|완독일)\s*(?:은|는|이|가|을|를)?\s*[:：]?\s*/g;
+const BOOK_TITLE_UNSAFE=/(?:^|[\s,;])(?:저자|지은이|작가|평점|별점|내\s*평점|한\s*줄\s*평|한줄평|감상|후기|리뷰)\s*(?:은|는|이|가|을|를)?\s*(?:[:：]|\S)/;
+const BOOK_COMPLETED_INTENT=/(?:오늘\s*)?(?:다\s*읽었(?:어|다)?|다\s*읽음|다\s*읽은\s*걸로(?:\s*(?:해\s*줘|진행))?|완독(?:했어|했다|함|완료)?|읽었어|읽기\s*완료|읽기\s*끝)/i;
+const BOOK_READING_INTENT=/읽기\s*시작|읽는\s*중|읽고\s*있어/i;
+const BOOK_START_DATE_IGNORED=/(?:시작일|읽기\s*시작(?:일|한\s*날)?)(?:은|는|이|가)?\s*(?:상관\s*없|필요\s*없|불필요|몰라도|기록하지\s*마|빼\s*줘)/i;
+function bookPatchField(label){const key=clean(label).replace(/\s/g,"");if(/^(?:책제목|책이름|도서명|제목)$/.test(key))return "title";if(/^(?:지은이|저자|작가)$/.test(key))return "author";if(/^(?:내평점|별점|평점)$/.test(key))return "rating";if(/^(?:한줄평|감상|후기|리뷰)$/.test(key))return "review";if(/^(?:읽기시작한날|시작일)$/.test(key))return "startDate";return "completedDate"}
+function bookCorrectionIntent(text){const s=String(text||"");BOOK_PATCH_LABEL.lastIndex=0;return BOOK_PATCH_LABEL.test(s)||BOOK_COMPLETED_INTENT.test(s)||BOOK_READING_INTENT.test(s)}
+function cleanBookPatchValue(value,field){
+  let next=String(value||"").replace(/^[\s,;]+|[\s,;]+$/g,"").trim();
+  next=next.replace(/\n\s*(?:오늘\s*)?(?:다\s*읽었(?:어|다)?|다\s*읽음|다\s*읽은\s*걸로(?:\s*(?:해\s*줘|진행))?|완독(?:했어|했다|함|완료)?|읽었어|읽기\s*완료|읽기\s*끝)[.!]?\s*$/i,"").trim();
+  next=next.replace(/\s*(?:로|으로)?\s*(?:바꿔\s*줘|수정해\s*줘|변경해\s*줘)\s*[.!]?$/i,"").trim();
+  if(field==="title"||field==="author")next=next.replace(/(?:이고|이야|야|입니다|이에요|예요)\s*[.!]?$/i,"").trim();
+  return next;
+}
+function parseBookCorrection(text){
+  const raw=String(text||"").replace(/\r\n?/g,"\n").trim(),matches=[];BOOK_PATCH_LABEL.lastIndex=0;let m;
+  while((m=BOOK_PATCH_LABEL.exec(raw))){const prefix=m[1]??m[3]??"",label=m[2]||m[4];matches.push({index:m.index+prefix.length,valueStart:BOOK_PATCH_LABEL.lastIndex,field:bookPatchField(label)})}
+  const patch={},invalid=[];
+  matches.forEach((hit,i)=>{const end=i+1<matches.length?matches[i+1].index:raw.length,value=cleanBookPatchValue(raw.slice(hit.valueStart,end),hit.field);if(!value)return;if(hit.field==="rating"){const n=Number((value.match(/\d(?:\.\d)?/)||[])[0]);if(Number.isFinite(n)&&n>=.1&&n<=5)patch.rating=Math.round(n*10)/10;return}if(hit.field==="startDate"||hit.field==="completedDate"){if(hit.field==="startDate"&&BOOK_START_DATE_IGNORED.test(raw))return;const date=explicitDate(value);if(date)patch[hit.field]=date;return}if(hit.field==="title"&&(value.length>160||BOOK_TITLE_UNSAFE.test(value))){invalid.push("title");return}patch[hit.field]=clean(value)});
+  if(BOOK_COMPLETED_INTENT.test(raw)){patch.status="read";patch.completedDate=explicitDate(raw)||todayIso()}
+  else if(BOOK_READING_INTENT.test(raw)){patch.status="wish";patch.completedDate=""}
+  return {patch,invalid};
+}
+function patchBookDraft(d,text){
+  const parsed=parseBookCorrection(text),before=structuredClone(d.data),beforeEntities=structuredClone(d.entities||{}),p=parsed.patch;
+  if(parsed.invalid.length)return {changed:false,invalid:parsed.invalid,diff:[]};
+  d.entities=d.entities||{};
+  for(const field of ["title","author","review","rating","status","completedDate"])if(Object.prototype.hasOwnProperty.call(p,field))d.data[field]=p[field];
+  if(Object.prototype.hasOwnProperty.call(p,"startDate"))d.entities.readingDate=p.startDate;
+  if(p.status==="read")d.missing=(d.missing||[]).filter(x=>x!=="readingDate"&&x!=="completedDate");
+  else if(p.status==="wish")d.missing=(d.missing||[]).filter(x=>x!=="completedDate");
+  if(p.title)d.missing=(d.missing||[]).filter(x=>x!=="title");
+  if(p.completedDate)d.missing=(d.missing||[]).filter(x=>x!=="completedDate");
+  if(p.startDate)d.missing=(d.missing||[]).filter(x=>x!=="readingDate");
+  const diff=[];for(const field of ["title","author","rating","review","status","completedDate"])if(before[field]!==d.data[field])diff.push(field);if(beforeEntities.readingDate!==d.entities.readingDate)diff.push("startDate");d.correctionDiff=diff;
+  return {changed:diff.length>0,invalid:[],diff};
+}
+
+function parseTask(text){
+  const s=clean(text),date=explicitDate(s),daypart=/오전/.test(s)?"오전":/오후/.test(s)?"오후":/저녁/.test(s)?"저녁":"";
+  const label=s.replace(/^(?:오늘|내일|모레)\s*(?:오전|오후|저녁)?\s*까지\s*/g,"").replace(/(?:까지|해야\s*해|해줘)[.!]?$/g,"").trim();
+  return {target:"task",data:{text:label,due:date,done:false},entities:{daypart},missing:[!label&&"title",!date&&"due"].filter(Boolean)};
+}
+
+function parsePlace(text){
+  const s=clean(text),date=explicitDate(s);
+  const type=/카페/.test(s)?"카페":/맛집|식당/.test(s)?"맛집":/명소/.test(s)?"명소":"장소";
+  const quoted=firstMatch(s,/["“']([^"”']{1,80})["”']/),named=firstMatch(s,/(?:^|\s)([^\s"“']{1,40}?)(?:이란|란|이라는|라는)\s*(?:카페|맛집|식당|명소|장소)/);
+  let location=firstMatch(s,/^(?:오늘|어제|내일)?\s*([^\s"“']{1,24}?)(?:에|에서)\s*(?=["“']|[^\s]+(?:이란|란|이라는|라는)\s*(?:카페|맛집|식당|명소|장소))/);
+  let destination=quoted||named;
+  if(!destination){
+    const direct=s.match(/^(?:와\s*)?(?:여기\s*)?(.+?)\s*(?:맛집|카페|식당|명소|장소)(?:에)?\s*(?:다녀왔어|다녀왔다|방문했어|방문했다|가보고\s*싶어|등록해줘|기록해줘)/);
+    destination=clean(direct?.[1]||"").replace(/^(?:오늘|어제|내일)\s*/,"");
+    if(/^(?:여기|거기|저기)|맛있|좋다|좋네|좋아|ㅋㅋ|ㅎㅎ/.test(destination))destination="";
+  }
+  if(!destination){
+    const after=s.match(/^(?:오늘|어제|내일)?\s*(?:(\S+)\s+)?(?:카페|맛집|식당|명소|장소)\s+(.+?)\s*(?:다녀왔어|다녀왔다|방문했어|방문했다|가보고\s*싶어|등록해줘|기록해줘)/);
+    if(after){destination=clean(after[2]);if(after[1])location=clean(after[1])}
+  }
+  const impression=firstMatch(s,/(분위기[^?!.]*(?:좋\w*|예쁘\w*|멋지\w*)|맛있\w*|또\s*가고\s*싶\w*)/);
+  const visited=/다녀왔|방문했|맛있/.test(s),reason=impression||(`${type} ${visited?"방문":"저장"}`);
+  return {target:"travelWish",data:{destination,reason,expectedDate:date,transport:"",places:[location,destination].filter(Boolean).join(" · "),foods:"",restaurants:/맛집|카페|식당/.test(s)?destination:"",lodging:"",note:impression,itinerary:[]},entities:{location,type,visited},missing:[!destination&&"destination"].filter(Boolean)};
+}
+
+function parseDiary(text){
+  const s=clean(text),date=explicitDate(s),title=s.length>28?s.slice(0,28)+"…":s;
+  return {target:"diary",data:{date,mood:"neutral",title,content:s},missing:[!s&&"title",!date&&"date"].filter(Boolean)};
+}
+
+function parse(text,hint="auto"){
+  const route=routeIntent(text,hint);if(route)return {mode:"route",...route,source:clean(text)};
+  if(scheduleIntent(text,hint))return parseSchedule(text);
+  const kind=inferKind(text,hint),draft=kind==="movie"?parseMovie(text):kind==="book"?parseBook(text):kind==="travelWish"?parsePlace(text):kind==="diary"?parseDiary(text):parseTask(text);
+  return {mode:"draft",source:clean(text),...draft};
+}
+
+function hydrateMissing(draft,answer){
+  if(!draft?.missing?.length)return draft;
+  const field=draft.missing[0],value=clean(answer),yes=/^(?:응|네|예|좋아|그래|오늘|오늘로)(?:요)?[.!]?$/.test(value);
+  if(field==="watchedDate")draft.data.watchedDate=yes?todayIso():explicitDate(value);
+  else if(field==="season"){const season=firstMatch(value,/(\d+)/);if(!season)return draft;draft.entities=draft.entities||{};draft.entities.season=season;draft.data.contentType="시리즈";draft.data.review=[`시즌 ${season}`,draft.entities.episode&&`${draft.entities.episode}화까지`].filter(Boolean).join(" · ");}
+  else if(field==="episode"){const episode=firstMatch(value,/(\d+)/);if(!episode)return draft;draft.entities=draft.entities||{};draft.entities.episode=episode;draft.data.contentType="시리즈";draft.data.review=[draft.entities.season&&`시즌 ${draft.entities.season}`,`${episode}화까지`].filter(Boolean).join(" · ");}
+  else if(field==="rating"){const rating=ratingFrom(value)||(/^\d(?:\.\d)?$/.test(value)?Number(value):null);if(!(rating>=.1&&rating<=5))return draft;draft.data.rating=Math.round(rating*10)/10;}
+  else if(field==="readingDate"){draft.entities=draft.entities||{};draft.entities.readingDate=yes?todayIso():explicitDate(value);if(!draft.entities.readingDate)return draft;}
+  else if(field==="completedDate")draft.data.completedDate=yes?todayIso():explicitDate(value);
+  else if(field==="date")draft.data.date=yes?todayIso():explicitDate(value);
+  else if(field==="due")draft.data.due=yes?todayIso():explicitDate(value);
+  else if(field==="title"){if(draft.target==="task")draft.data.text=value;else draft.data.title=value;}
+  else if(field==="destination"){
+    draft.data.destination=placeNamePatch(value)||value;
+    if(draft.data.restaurants!==undefined)draft.data.restaurants=draft.data.destination;
+  }
+  if((field==="watchedDate"&&!draft.data.watchedDate)||(field==="completedDate"&&!draft.data.completedDate)||(field==="date"&&!draft.data.date)||(field==="due"&&!draft.data.due))return draft;
+  draft.missing.shift();return draft;
+}
+
+let model={messages:[],draft:null,input:"",category:"auto",status:"대기 중",image:null,resume:null};
+let root=null;
+let operation=null,sequence=0,composing=false,queuedSend=false,sendTimer=null,compositionEndedAt=0;
+const ANALYSIS_TIMEOUT=15000;
+function adjustViewport(){const v=window.visualViewport;if(!v||!root)return;root.style.setProperty("--yuna-keyboard",Math.max(0,window.innerHeight-v.height-v.offsetTop)+"px");if(root.getClientRects().length)root.style.setProperty("--yuna-height",Math.max(0,v.height+v.offsetTop-Math.max(0,root.getBoundingClientRect().top))+"px");scrollLatest()}
+function chooseCategory(category){if(model.category!==category){model.draft=null;model.editing=false;model.retry=null}model.category=category;persist();render();scrollLatest()}
+function scrollLatest(){const box=root?.querySelector("#yunaConversation");if(!box)return;requestAnimationFrame(()=>{if(!box.isConnected)return;box.scrollTop=box.scrollHeight})}
+function bounded(work,ms=ANALYSIS_TIMEOUT){return new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(new Error("분석 응답 시간이 초과됐어요.")),ms);Promise.resolve().then(work).then(value=>{clearTimeout(timer);resolve(value)},error=>{clearTimeout(timer);reject(error)})})}
+function invalidateSend(){sequence++;operation=null;queuedSend=false;composing=false;if(sendTimer){clearTimeout(sendTimer);sendTimer=null}}
+function removeTyping(){model.messages=model.messages.filter(m=>!m.typing)}
+function failReply(retry){removeTyping();model.status="확인 필요";model.retry=retry;say("yuna",retry.kind==="save"?"저장을 마치지 못했어요. 기존 기록은 유지했어요. 내용을 확인하고 다시 시도해 주세요.":"확인을 마치지 못했어요. 사진은 로그인과 네트워크 연결을 확인해 주세요. 다시 시도하거나 사진을 지우고 텍스트로 알려주세요.");model.messages.at(-1).error=true}
+
+
+function serializable(){return {messages:model.messages.filter(m=>!m.typing),draft:model.draft,input:model.input,category:model.category,status:operation?"확인 필요":model.status,savedAt:new Date().toISOString()}}
+function persist(){if(model.resume)return;try{if(model.draft||model.input||model.messages.some(m=>m.role==="user"))sessionStorage.setItem(DRAFT_KEY,JSON.stringify(serializable()));else sessionStorage.removeItem(DRAFT_KEY)}catch(e){console.warn("YUNA draft persistence",e)}}
+function loadPersisted(){try{const raw=sessionStorage.getItem(DRAFT_KEY);if(!raw)return null;const data=JSON.parse(raw);return data?.draft||data?.input||data?.messages?.length?data:null}catch(e){return null}}
+function say(role,text){model.messages.push({role,text:clean(text),at:new Date().toISOString()});model.messages=model.messages.slice(-20)}
+
+function heroMarkup(){if(window.HANI_UI_V02992)return "";return `<div class="yuna-hero"><div class="yuna-hero-copy"><span class="yuna-eyebrow">YUNA HELPDESK</span><h2>유나 인포데스크</h2><p>말하거나 자료를 올리면 필요한 정보만 확인하고 저장 전 Preview를 준비합니다.</p></div><div class="yuna-hero-visual"><div class="yuna-avatar yuna-avatar-lg" aria-hidden="true"></div><span>말씀해 주세요.<br>저장 전 꼭 보여드릴게요.</span></div></div>`}
+function deskMarkup(){return `<div class="yuna-desk"><header class="yuna-mobile-head"><div class="yuna-avatar"></div><div><b>유나 인포데스크</b><span>${escapeHtml(model.status)}</span></div><button type="button" class="yuna-new" id="yunaMobileNew">새 접수</button></header><div class="yuna-workspace"><div class="yuna-workspace-head"><div><span>QUICK DESK</span><h3>유나에게 무엇을 맡길까요?</h3></div><span class="yuna-status">${escapeHtml(model.status)}</span></div><p class="sub" id="yunaTargetHelp">바로 저장(Preview 확인 후): 할 일·책·시청·장소·생활 기록 · 담당 메뉴로 안내: 자산·가계부·정밀 운동 · 미리보기만: 일정</p><div class="yuna-chips" aria-label="빠른 기록 유형">${[["task","할 일"],["book","책"],["movie","시청"],["travelWish","장소"],["diary","기록"]].map(([v,l])=>`<button type="button" data-yuna-kind="${v}" class="${model.category===v?"is-active":""}">${l}</button>`).join("")}</div><div class="yuna-conversation" id="yunaConversation" aria-live="polite"></div><div class="yuna-category-row"><label for="yunaCategory">분류</label><select id="yunaCategory"><option value="auto">유나가 자동 분류</option><option value="task">할 일</option><option value="book">책 · 독서</option><option value="movie">영화 · 드라마</option><option value="travelWish">장소</option><option value="diary">생활 기록</option></select><button type="button" class="yuna-new" id="yunaNew">새 접수</button></div></div><div class="yuna-composer"><button type="button" class="yuna-plus" id="yunaPlus" aria-label="첨부 메뉴">+</button><label class="yuna-photo" aria-label="사진 첨부">사진<input id="yunaFile" type="file" accept="image/png,image/jpeg,image/webp" hidden></label><textarea id="yunaInput" rows="1" placeholder="말하거나 입력" aria-label="유나에게 말하거나 입력" aria-describedby="yunaTargetHelp"></textarea><button type="button" class="yuna-voice" id="yunaVoice" aria-label="음성 입력" hidden>음성</button><button type="button" class="yuna-send" id="yunaSend"><span class="yuna-desktop-label">유나에게 맡기기</span><span class="yuna-mobile-label">전송</span></button></div></div>`}
+const YUNA_EDIT_BUTTON='<button type="button" id="yunaEdit">수정</button>';
+function schedulePreviewMarkup(draft){const d=draft.data;const rows=[["제목",d.title||"확인 필요"],["시작",d.startDate||"확인 필요"],["종료",d.endDate||"확인 필요"],["종일",d.allDay===true?"예":"시간 확인 필요"]];return `<article class="yuna-preview"><div class="yuna-preview-top"><span>YUNA PREVIEW</span><b>일정</b></div><div class="yuna-preview-fields">${rows.map(([k,v])=>`<div><span>${escapeHtml(k)}</span><b>${escapeHtml(v)}</b></div>`).join("")}</div><div class="yuna-preview-destination"><span>안내</span><b>입력 내용만 확인합니다. 일정 저장은 아직 지원하지 않습니다.${draft.warnings.length?" "+draft.warnings.map(escapeHtml).join(" "):""}</b></div><div class="yuna-preview-actions">${YUNA_EDIT_BUTTON}</div></article>`}
+function previewMarkup(draft){if(draft.mode==="schedule-preview")return schedulePreviewMarkup(draft);const d=draft.data,rows=draft.target==="movie"?[["제목",d.title],["진행",[d.review,d.rating!=null?`${d.rating}점`:""].filter(Boolean).join(" · ")],["시청일",d.watchedDate]]:draft.target==="book"?[["제목",d.title],["지은이",d.author],["상태",d.status==="read"?"완독":"읽는 중"],["내 평점",d.rating!=null?`${d.rating}점`:""],["한줄평",d.review],["시작일",draft.entities?.readingDate],["완독일",d.completedDate]]:draft.target==="task"?[["할 일",d.text],["기한",[d.due,draft.entities?.daypart].filter(Boolean).join(" · ")]]:draft.target==="travelWish"?[["장소",d.destination],["지역",draft.entities?.location],["유형",draft.entities?.type],["메모",d.reason],["평점",d.rating!=null?`${d.rating}점`:""],["방문일",d.expectedDate]]:[["제목",d.title],["날짜",d.date]];return `<article class="yuna-preview"><div class="yuna-preview-top"><span>YUNA PREVIEW</span><b>${escapeHtml(LABELS[draft.target])}</b></div><div class="yuna-preview-fields">${rows.filter(x=>x[1]!==null&&x[1]!==undefined&&x[1]!=="").map(([k,v])=>`<div><span>${escapeHtml(k)}</span><b>${escapeHtml(v)}</b></div>`).join("")}</div><div class="yuna-preview-destination"><span>저장 위치</span><b>${escapeHtml(DESTINATIONS[draft.target])}</b></div><div class="yuna-preview-actions">${YUNA_EDIT_BUTTON}<button type="button" class="is-primary" id="yunaSave">저장하기</button></div></article>`}
+function renderConversation(){const box=root?.querySelector("#yunaConversation");if(!box)return;const previousBottomGap=box.scrollHeight-box.scrollTop-box.clientHeight,followBottom=!box.dataset.rendered||previousBottomGap<72,previousTop=box.scrollTop;let html=model.resume?`<div class="yuna-resume"><b>아까 하던 기록이 있어요. 이어서 할까요?</b><div><button id="yunaResume">계속하기</button><button id="yunaRestart">새로 시작</button></div></div>`:"";html+=model.messages.map((m,i)=>`<div class="yuna-message ${m.role}${m.typing?" is-typing":""}${m.error?" is-error":""}">${m.role==="yuna"&&(i===0||model.messages[i-1]?.role!=="yuna")?'<div class="yuna-avatar"></div>':m.role==="yuna"?'<span class="yuna-avatar-spacer"></span>':""}<div class="yuna-bubble">${escapeHtml(m.text)}${m.error&&i===model.messages.length-1&&model.retry?'<button type="button" data-yuna-retry>다시 시도</button>':""}</div></div>`).join("");if(model.image)html+=`<div class="yuna-file-pill"><span>사진</span><b>${escapeHtml(model.image.name)}</b><button id="yunaRemoveImage" type="button">삭제</button></div>`;if(model.draft?.mode==="route")html+=`<article class="yuna-route"><span>전문 탭에서 이어가기</span><h4>${escapeHtml(model.draft.label)}</h4><p>${escapeHtml(model.draft.reason)}</p><button type="button" id="yunaRoute">${escapeHtml(model.draft.label)} 열기</button></article>`;else if(!operation&&!model.retry&&model.draft&&!model.draft.missing.length)html+=previewMarkup(model.draft);if(!html)html=`<div class="yuna-welcome"><div class="yuna-avatar"></div><div><b>안녕하세요, 유나예요.</b><p>할 일이나 본 작품, 읽은 책, 장소와 생활 기록을 편하게 말해 주세요. 필요한 것만 다시 여쭤볼게요.</p></div></div>`;box.innerHTML=html;box.dataset.rendered="1";requestAnimationFrame(()=>{box.scrollTop=followBottom||operation?box.scrollHeight:previousTop});bindDynamic();applyAvatar()}
+function render(){
+ if(!root)return;
+ if(!root.querySelector(".yuna-desk")){
+   const sharedHero=root.querySelector(":scope > .ds-page-hero"),care=root.querySelector(":scope > [data-hani-care-cards]");
+   root.innerHTML=heroMarkup()+deskMarkup();if(sharedHero)root.prepend(sharedHero);if(care)root.insertBefore(care,root.querySelector(".yuna-desk"));
+   if(typeof renderHaniCareCards==="function")renderHaniCareCards(root,root.querySelector(".yuna-desk"));bindStatic();
+ }
+ root.querySelectorAll(".yuna-status,.yuna-mobile-head span").forEach(el=>el.textContent=model.status);
+ root.querySelectorAll("[data-yuna-kind]").forEach(el=>{el.classList.toggle("is-active",el.dataset.yunaKind===model.category);el.disabled=!!operation});
+ root.querySelector("#yunaCategory").value=model.category;root.querySelector("#yunaCategory").disabled=!!operation;
+ const input=root.querySelector("#yunaInput");if(input.value!==(model.input||""))input.value=model.input||"";input.disabled=!!model.resume;
+ root.querySelector("#yunaSend").disabled=!!operation||!!model.resume;root.querySelector("#yunaFile").disabled=!!operation;
+ applyAvatar();renderConversation();requestAnimationFrame(adjustViewport);
+}
+function applyAvatar(){const image=typeof sidebarAgentImages!=="undefined"?sidebarAgentImages.yuna:"";root?.querySelectorAll(".yuna-avatar").forEach(el=>{if(image)el.style.backgroundImage=`url('${image}')`})}
+
+function askNext(){if(!model.draft?.missing?.length)return;const field=model.draft.missing[0];model.status="확인 필요";say("yuna",QUESTIONS[field]||"이 값만 알려주세요.")}
+function patchPlaceDraft(d,text){const rating=ratingFrom(text),date=explicitDate(text),m=clean(text).match(/^(장소(?:\s*이름)?|장소이름|가게\s*이름|카페\s*이름|이름|지역|유형|메모|평점|방문일)(?:은|는|이|가|을|를)?\s*[:：]?\s*(.+)$/);if(!m)return false;const field=m[1].replace(/\s/g,""),v=clean(m[2]);d.entities=d.entities||{};if(/^(장소|장소이름|가게이름|카페이름|이름)$/.test(field)){d.data.destination=placeNamePatch(text);d.data.restaurants=d.data.destination}else if(field==="지역"){d.entities.location=v;d.data.places=[v,d.data.destination].filter(Boolean).join(" · ")}else if(field==="유형")d.entities.type=v;else if(field==="메모"){d.data.reason=v;d.data.note=v}else if(field==="평점"&&rating!==null)d.data.rating=rating;else if(field==="방문일"&&date)d.data.expectedDate=date;else return false;return true}
+function editDraft(text){
+ if(model.draft?.mode==="schedule-preview"){
+   const old=model.draft,quoted=firstMatch(text,/["“'‘]([^"”'’]+)["”'’]/),named=firstMatch(text,/^(?:제목|할\s*일)(?:은|는|이|가)?\s*[:：]?\s*(.+)/);
+   const title=quoted||named||old.data.title,date=scheduleDateRange(text);
+   if(date.startDate){model.draft=parseSchedule(`${text} 제목은 "${title}"`)}
+   else if(quoted||named){old.data.title=title;old.warnings=old.warnings.filter(w=>!w.includes("제목"))}
+   else if(scheduleIntent(text)){model.draft=parseSchedule(text)}
+   else say("yuna","제목은 … 또는 날짜 범위를 알려주세요.");
+   say("yuna","일정 Preview를 확인해 주세요. 아직 저장하지 않습니다.");return;
+ }
+
+ const d=model.draft,isPlace=d.target==="travelWish",rating=ratingFrom(text),date=explicitDate(text),title=firstMatch(text,/제목(?:은|을)?\s*[:：]?\s*(.+)/);
+ const bookResult=d.target==="book"?patchBookDraft(d,text):null;
+ const placeChanged=isPlace&&patchPlaceDraft(d,text);
+ if(rating!==null&&d.target==="movie")d.data.rating=rating;
+ if(date&&!isPlace&&d.target!=="book"){if(d.target==="movie")d.data.watchedDate=date;else d.data[d.target==="task"?"due":"date"]=date;}
+ if(title&&d.target!=="travelWish"&&d.target!=="book"){d.data[d.target==="task"?"text":"title"]=title;}
+ const changed=d.target==="book"?bookResult.changed:isPlace?placeChanged:rating!==null||date||title,help=d.target==="travelWish"?"장소 이름·지역·유형·방문일·메모·평점 중 바꿀 부분을 알려주세요.":d.target==="book"?"책 제목·지은이·평점·한줄평·상태·날짜 중 바꿀 필드만 알려주세요.":d.target==="task"?"할 일이나 기한 중 바꿀 부분을 알려주세요.":d.target==="diary"?"제목·날짜·내용 중 바꿀 부분을 알려주세요.":"제목·날짜·평점 중 바꿀 부분을 알려주세요.";
+ say("yuna",bookResult?.invalid?.length?"제목에 다른 필드가 섞여 있어 반영하지 않았어요. 필드별로 다시 나눠 알려주세요.":changed?"바꾼 내용을 Preview에 반영했어요.":`수정할 필드를 확인하기 어려워요. ${help}`);
+}
+function submitText(retry=null){
+ if(operation)return;
+ const input=root.querySelector("#yunaInput");
+ if(model.resume){scrollLatest();return}
+ const rawText=retry?.rawText??String(input.value??"").trim(),text=clean(rawText);
+ if(!text&&!model.image){input.placeholder="먼저 내용을 입력해 주세요";input.classList.add("is-empty");input.focus();return}
+ const snapshot=retry?.snapshot||{draft:structuredClone(model.draft),editing:!!model.editing,category:model.category,image:model.image};
+ if(retry){model.draft=structuredClone(snapshot.draft);model.editing=snapshot.editing;model.category=snapshot.category;model.image=snapshot.image}
+ model.retry=null;
+ if(!retry){say("user",text||"사진을 접수해 주세요.");renderConversation();input.value="";input.style.height="auto";model.input=""}
+ const current={id:++sequence};operation=current;model.status="유나 분석 중";
+ say("yuna","확인 중…");model.messages.at(-1).typing=true;render();scrollLatest();persist();
+ // Let the immediate acknowledgement paint before parsing or starting an AI call.
+ setTimeout(async()=>{
+   try{
+     if(operation!==current)return;
+     if(model.image){const draft=await bounded(()=>analyzeImage(text,snapshot));if(operation!==current)return;removeTyping();model.image=null;model.draft=draft;
+       if(!draft){model.status="확인 필요";say("yuna","사진 내용을 정확히 확인하기 어려워요. 종류와 이름을 텍스트로 알려주세요.")}
+       else if(draft.mode==="route"){model.status="확인 필요";say("yuna",draft.reason||"전문 탭에서 안전하게 이어갈게요.")}
+       else if(draft.missing.length)askNext();else{model.status="Preview 준비 완료";say("yuna","사진에서 읽은 내용으로 Preview를 준비했어요. 확인 후 저장해 주세요.")}
+     }else{removeTyping();processText(rawText,text)}
+   }catch(e){if(operation!==current)return;model.draft=structuredClone(snapshot.draft);model.editing=snapshot.editing;model.image=snapshot.image;failReply({kind:"send",rawText,snapshot})}
+   finally{if(operation===current){operation=null;persist();render();scrollLatest()}}
+ },40);
+}
+function processText(rawText,text){
+ if(routeIntent(text,model.draft?.target==="book"?"book":model.category)){model.draft=parse(text,model.category);model.editing=false;model.status="확인 필요";say("yuna","전문 탭을 열어 확인할 수 있어요. 입력 내용은 이곳에 남겨둘게요.");return}
+ // Missing answers take priority over book correction keywords (e.g. a title).
+ if(model.draft?.mode==="draft"&&model.draft.missing.length&&!model.editing){hydrateMissing(model.draft,text);if(model.draft.missing.length)askNext();else{model.status="Preview 준비 완료";say("yuna","말씀해 주신 내용까지 반영했어요. 저장 전 Preview를 확인해 주세요.")}return}
+ if((model.editing||model.draft?.target==="book"&&bookCorrectionIntent(rawText))&&["draft","schedule-preview"].includes(model.draft?.mode)){editDraft(rawText);model.editing=false;model.status=model.draft.missing.length?"확인 필요":"Preview 준비 완료";if(model.draft.missing.length)askNext();return}
+ model.draft=parse(text,model.category);
+ if(model.draft.mode==="route"){model.status="확인 필요";say("yuna",`${model.draft.label}에서 안전하게 이어갈게요. 직접 저장하지 않았습니다.`)}
+ else if(model.draft.missing.length)askNext();else{model.status="Preview 준비 완료";say("yuna",model.draft.mode==="schedule-preview"?"일정으로 읽었어요. 제목과 날짜 범위를 확인해 주세요. 일정 저장은 아직 지원하지 않습니다.":model.draft.target==="book"?"기기에서 독서 기록으로 읽었어요. 제목·지은이·상태·날짜를 확인하고, 틀린 부분은 수정한 뒤 저장해 주세요.":"필요한 정보가 모두 있어요. 저장 전 Preview를 확인해 주세요.")}
+}
+
+function visionDraft(extraction,userText="",hint="auto",conversationContext=""){
+  const confidence=Number(extraction?.confidence),warnings=Array.isArray(extraction?.warnings)?extraction.warnings:[];
+  let items=[];try{const parsed=JSON.parse(clean(extraction?.structured_json)||"[]");items=Array.isArray(parsed)?parsed:[parsed]}catch(_){items=[]}
+  const item=items.find(Boolean),payload=item?.data&&typeof item.data==="object"?item.data:item;
+  const target=clean(item?.target||item?.type||extraction?.target_hint||hint),aliases={media:"movie",film:"movie",series:"movie",reading:"book",place:"travelWish"},combinedEvidence=clean([conversationContext,extraction?.extracted_text,userText].filter(Boolean).join(" ")),strongUserKind=inferKind(clean([conversationContext,userText].filter(Boolean).join(" ")),"auto"),kind=hint!=="auto"?hint:(strongUserKind!=="task"?strongUserKind:(aliases[target]||target));
+  if(extraction?.financial_detected&&kind!=="book")return {mode:"route",...(routeIntent(userText)||routeIntent(clean(extraction?.extracted_text))||routeIntent("자산 업데이트"))};
+  if(!payload||!Number.isFinite(confidence)||confidence<.65)return null;
+  if(kind==="movie"){
+    const title=clean(payload.title||payload.name),season=clean(payload.season||payload.season_number),episode=clean(payload.episode||payload.episode_number),ratingText=clean(payload.rating),rawRating=ratingText===""?NaN:Number(ratingText),rating=Number.isFinite(rawRating)?Math.max(.1,Math.min(5,Math.round(rawRating*10)/10)):ratingFrom(ratingText),watchedDate=explicitDate(clean(payload.watchedDate||payload.watched_date||payload.date));
+    if(!title)return null;
+    const warningText=warnings.map(clean).join(" ").toLowerCase(),uncertain=field=>warningText.includes(field)||({season:/시즌/,episode:/회차|에피소드|\d+화/,rating:/평점|별점/}[field]||/$^/).test(warningText);
+    return {mode:"draft",source:"VISION",target:"movie",data:{status:"watched",contentType:clean(payload.contentType||payload.content_type)||(season||episode?"시리즈":"영화"),origin:"",title,director:"",actors:"",rating,watchedDate,review:[season&&`시즌 ${season}`,episode&&`${episode}화까지`].filter(Boolean).join(" · ")},entities:{season,episode},missing:[uncertain("season")&&!season&&"season",uncertain("episode")&&!episode&&"episode",uncertain("rating")&&rating===null&&"rating",!watchedDate&&"watchedDate"].filter(Boolean),vision:{confidence,warnings}};
+  }
+  if(kind==="book"&&combinedEvidence){const userBook=/(?:책|도서|독서|읽)/.test(userText)&&typeof intakeNaturalBook==="function"?intakeNaturalBook(userText):null;const draft=parse(combinedEvidence,"book"),explicit=parseBookCorrection([conversationContext,userText].filter(Boolean).join("\n"));if(userBook?.title){draft.data.title=userBook.title;if(userBook.author)draft.data.author=userBook.author;draft.missing=draft.missing.filter(x=>x!=="title")}draft.data.rating=null;patchBookDraft(draft,[conversationContext,userText].filter(Boolean).join("\n"));if(!Object.prototype.hasOwnProperty.call(explicit.patch,"rating"))draft.data.rating=null;return draft}
+  return combinedEvidence?parse(combinedEvidence,kind||hint):null;
+}
+
+async function analyzeImage(userText,snapshot){
+  const file=snapshot.image,imageDataUrl=await intakeImageToDataUrl(file);
+  const result=await agentApi("extract_intake_image",{image_data_url:imageDataUrl,target_hint:snapshot.category,file_name:file.name}),extraction=agentObj(result.extraction);
+  const context=model.messages.filter(x=>x.role==="user").slice(-3).map(x=>x.text).join(" ");
+  return visionDraft(extraction,userText,snapshot.category,context);
+}
+
+function saveData(draft){
+  const data=structuredClone(draft.data);
+  if(draft.target==="book"&&data.status!=="read"){
+    data.completedDate="";
+    data.review=[draft.entities?.readingDate&&("읽기 시작일: "+draft.entities.readingDate),data.review].filter(Boolean).join("\n");
+  }
+  if(draft.target==="task"&&draft.entities?.daypart)data.text+=" · "+draft.entities.daypart+"까지";
+  return data;
+}
+function saveApproved(){
+ if(operation||model.editing||model.resume||!model.draft||model.draft.mode!=="draft"||model.draft.missing.length||!DIRECT_TARGETS.has(model.draft.target))return;
+ let previous=null;
+ try{
+   const row={target:model.draft.target,data:saveData(model.draft),selected:true};
+   row.blocker=intakeBlockerInfo(row.target,row.data);row.duplicate=intakeDuplicateInfo(row.target,row.data);
+   if(row.blocker||row.duplicate){model.retry=null;say("yuna",row.blocker||`이미 같은 기록이 있어요: ${row.duplicate}. 중복 저장하지 않았어요.`);render();scrollLatest();return}
+   previous=structuredClone(state);intakeApplyRow(row);
+   const ok=commit(`유나 인포데스크에서 ${LABELS[row.target]} 기록을 저장했습니다.`);if(!ok)throw new Error("저장 검증을 통과하지 못했습니다.");
+   model.draft=null;model.editing=false;model.retry=null;model.status="대기 중";model.image=null;
+   say("yuna",`${LABELS[row.target]} 기록을 저장했어요. 다음 기록도 편하게 말씀해 주세요.`);
+ }catch(e){if(previous){state=previous;try{renderAll()}catch(_){}}failReply({kind:"save"})}
+ persist();render();scrollLatest();
+}
+function openRoute(){const id=model.draft?.route;if(!id)return;showView(id)}
+function clearAll(){invalidateSend();root.querySelector("#yunaFile").value="";model={messages:[],draft:null,input:"",category:"auto",status:"대기 중",image:null,resume:null};persist();render()}
+
+function bindDynamic(){root.querySelector("[data-yuna-retry]")?.addEventListener("click",()=>{const retry=model.retry;if(!retry)return;if(retry.kind==="save"){model.retry=null;saveApproved()}else submitText(retry)});root.querySelector("#yunaSave")?.addEventListener("click",saveApproved);root.querySelector("#yunaEdit")?.addEventListener("click",()=>{model.editing=true;model.input="";model.status="수정 중";const help=model.draft?.target==="schedule"?"예: 제목은 송년회, 날짜는 12월 12일부터 13일까지":model.draft?.target==="travelWish"?"예: 장소 이름은 루프트리, 지역은 하남, 메모는 분위기 좋음":"예: 평점 4점, 날짜 어제, 제목 셜록";say("yuna",`바꿀 부분만 알려주세요. ${help}`);persist();render();root.querySelector("#yunaInput")?.focus()});root.querySelector("#yunaRoute")?.addEventListener("click",openRoute);root.querySelector("#yunaRemoveImage")?.addEventListener("click",()=>{if(operation)return;model.image=null;model.retry=null;persist();render();scrollLatest()});root.querySelector("#yunaResume")?.addEventListener("click",()=>{Object.assign(model,model.resume,{resume:null,status:"확인 필요"});model.editing=false;render();scrollLatest()});root.querySelector("#yunaRestart")?.addEventListener("click",clearAll)}
+function bindStatic(){const input=root.querySelector("#yunaInput");input.addEventListener("input",()=>{input.classList.remove("is-empty");model.input=input.value;input.style.height="auto";input.style.height=Math.min(112,input.scrollHeight)+"px";persist()});input.addEventListener("compositionstart",()=>{composing=true});
+ input.addEventListener("compositionend",()=>{composing=false;compositionEndedAt=Date.now();if(queuedSend){queuedSend=false;scheduleSend()}});
+ input.addEventListener("keydown",e=>{if(e.key!=="Enter"||e.shiftKey)return;if(e.isComposing||composing||e.keyCode===229||Date.now()-compositionEndedAt<100)return;e.preventDefault();scheduleSend()});
+ root.querySelector("#yunaSend").addEventListener("click",()=>{if(composing){queuedSend=true;input.blur();return}scheduleSend()});root.querySelector("#yunaNew").addEventListener("click",clearAll);root.querySelector("#yunaMobileNew").addEventListener("click",clearAll);root.querySelector("#yunaCategory").addEventListener("change",e=>{chooseCategory(e.target.value)});root.querySelectorAll("[data-yuna-kind]").forEach(btn=>btn.addEventListener("click",()=>{chooseCategory(btn.dataset.yunaKind);root.querySelector("#yunaInput")?.focus()}));root.querySelector("#yunaFile").addEventListener("change",e=>{const file=e.target.files?.[0];if(!file)return;if(!/^image\/(png|jpeg|webp)$/i.test(file.type)||file.size>12*1024*1024)return alert("PNG·JPG·WEBP, 12MB 이하 이미지만 올릴 수 있어요.");model.image=file;model.status="사진 준비됨";render()});root.querySelector("#yunaPlus").addEventListener("click",()=>root.querySelector("#yunaFile").click());if("webkitSpeechRecognition" in window||"SpeechRecognition" in window){const voice=root.querySelector("#yunaVoice");voice.hidden=false;voice.addEventListener("click",startVoice)}}
+function scheduleSend(){if(sendTimer||operation)return;sendTimer=setTimeout(()=>{sendTimer=null;submitText()},0)}
+function startVoice(){const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;if(!Recognition)return;const r=new Recognition();r.lang="ko-KR";r.interimResults=false;r.onresult=e=>{const input=root.querySelector("#yunaInput");input.value=clean(`${input.value} ${e.results[0][0].transcript}`);model.input=input.value;persist()};r.onerror=()=>{say("yuna","음성을 정확히 듣지 못했어요. 텍스트로 입력해 주세요.");render();scrollLatest()};r.start()}
+
+function init(){if(root)return;root=document.getElementById("intake");if(!root)return;root.classList.add("yuna-helpdesk");const nav=document.querySelector('[data-view="intake"] .txt');if(nav)nav.textContent="유나 인포데스크";const saved=loadPersisted();if(saved)model.resume=saved;render();if(window.visualViewport){window.visualViewport.addEventListener("resize",adjustViewport);window.visualViewport.addEventListener("scroll",adjustViewport);adjustViewport();}}
+
+window.HANI_YUNA_HELPDESK={parse,hydrateMissing,patchPlaceDraft,parseBookCorrection,patchBookDraft,bookCorrectionIntent,routeIntent,saveData,visionDraft,getDraftKey:()=>DRAFT_KEY,init};
+init();
+})();

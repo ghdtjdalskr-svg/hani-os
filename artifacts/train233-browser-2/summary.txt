@@ -1,0 +1,12 @@
+﻿hani-banners-203-ui.test.mjs rc=0
+hani-brand-heroes-218.browser.mjs rc=0
+hani-hero-illustrations-218.browser.mjs rc=0
+hani-navlogin-ui.test.mjs rc=0
+hani-remote-card-224.test.mjs rc=0
+hani-remote-media-219.test.mjs rc=1
+hani-pwa-213.test.mjs rc=0
+hani-settings-225.test.mjs rc=1
+hani-market-browser-smoke.cjs rc=0
+hani-qa-1st-ui.test.mjs rc=1
+hani-context-remote-ui.test.mjs rc=0
+hani-org-demoday-card.browser.mjs rc=0

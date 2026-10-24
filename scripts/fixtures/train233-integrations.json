@@ -303,5 +303,78 @@
       "file": "hani-main.js",
       "reason": "Approved parseKoreanNumber regression fix: sign-only token after unit/sign removal returns null."
     }
-  ]
+  ],
+  "browserFollowup": {
+    "baseSha": "5a665a3",
+    "candidateSha": "f27be17c1b3ea989fec3b4886f36b3b32c4caa27",
+    "reason": "Representative-requested exact registration of f27be17 mobile header/panel flow, 40px date track and 1-column portfolio; reverse these BEFORE the original integration and Milestones hunks. Fixed integration range and release Git oracle remain unchanged.",
+    "changes": [
+      {
+        "file": "hani-context-remote.css",
+        "beforeHash": "b64b1f7e6e2379145175d7204499570c16a56a47da4c4ba79289040ccb790247",
+        "afterHash": "8d2c34bead459aa5dc15edd1a0c56c28faf09d6bb6a0cce119d11fe9f0cf792d",
+        "replacements": [
+          {
+            "before": "/* Dedicated mobile header slot: neither the launcher nor the expanded panel floats over forms. */\n@media(max-width:768px){\n #app header.top{position:relative;top:auto;flex-wrap:wrap}\n #app header.top .top-actions{flex-wrap:wrap}\n #app .hani-remote-mobile-trigger,#app .hani-remote-mobile-trigger:is(.is-market-inline,.is-intake-inline){position:static;inset:auto;margin-left:auto;box-shadow:none;flex:0 0 auto;white-space:nowrap}\n #app header.top .hani-context-remote{position:static;inset:auto;transform:none;transition:none;display:none;flex:0 0 100%;grid-column:1/-1;width:100%;max-height:70dvh;min-height:0;border-radius:14px;border:1px solid var(--remote-line);box-shadow:none;z-index:auto}\n #app header.top .hani-context-remote[data-open=\"true\"]{display:grid;transform:none}\n}\n",
+            "after": "/* Dedicated mobile header slot: neither the launcher nor the expanded panel floats over forms. */\n@media(max-width:768px){\n #app .main>header.top.ui26-top:has(.hani-context-remote){position:relative!important;top:auto!important;height:auto!important;flex-wrap:wrap!important;transform:none!important;opacity:1;visibility:visible;pointer-events:auto}\n #app header.top.ui26-top .top-actions{flex-wrap:wrap!important;max-width:100%}\n #app .hani-remote-mobile-trigger,#app .hani-remote-mobile-trigger:is(.is-market-inline,.is-intake-inline){position:static;inset:auto;margin-left:auto;box-shadow:none;flex:0 0 auto;white-space:nowrap}\n #app header.top .hani-context-remote{position:static;inset:auto;transform:none;transition:none;display:none;flex:0 0 100%;grid-column:1/-1;width:100%;max-height:none;min-height:0;overflow:visible;border-radius:14px;border:1px solid var(--remote-line);box-shadow:none;z-index:auto}\n #app header.top .hani-context-remote[data-open=\"true\"]{display:grid;transform:none}\n}\n"
+          }
+        ]
+      },
+      {
+        "file": "hani-design-system.css",
+        "beforeHash": "f9d092fe54d118d123ee468b45d5f15c5c308b74109762ac4a1e456a00c465a7",
+        "afterHash": "c7d7b82f535594ea6c57fc542c59d7bc0c4545d11175385682eeadbf98af2d3d",
+        "replacements": [
+          {
+            "before": "#app #monthlyReport .earnings-controls button:disabled{opacity:1;color:#e0e5f5;background:#313d56;border-color:#8793ad}\n#app #settings #group-backup :is(.feature,.feature p,.settings-group-body){height:auto;max-height:none;overflow:visible;white-space:normal;overflow-wrap:anywhere}\n#app .date-flex-control{min-width:min(100%,185px);grid-template-columns:minmax(140px,1fr) 38px}\n#app .date-flex-control>input{box-sizing:border-box;min-width:140px;padding-inline:8px;font-size:14px}\n#app .task-input{grid-template-columns:minmax(0,1fr) minmax(185px,auto) auto}\n#app input[type=\"date\"]::-webkit-datetime-edit{padding:0}\n@media(max-width:768px){\n #app :is(.fg,.form-grid):has(.date-flex-control){grid-template-columns:repeat(auto-fit,minmax(min(100%,185px),1fr))}\n #app :is(.fg,.form-grid)>.field:has(.date-flex-control){grid-column:1/-1}\n #app .task-input{grid-template-columns:minmax(0,1fr)}\n",
+            "after": "#app #monthlyReport .earnings-controls button:disabled{opacity:1;color:#e0e5f5;background:#313d56;border-color:#8793ad}\n#app #settings #group-backup :is(.feature,.feature p,.settings-group-body){height:auto;max-height:none;overflow:visible;white-space:normal;overflow-wrap:anywhere}\n#app .date-flex-control{min-width:min(100%,186px);grid-template-columns:minmax(140px,1fr) 40px}\n#app .date-flex-control>input{box-sizing:border-box;min-width:140px;padding-inline:8px;font-size:14px}\n#app .task-input{grid-template-columns:minmax(0,1fr) minmax(186px,auto) auto}\n#app input[type=\"date\"]::-webkit-datetime-edit{padding:0}\n@media(max-width:768px){\n #app :is(.fg,.form-grid):has(.date-flex-control){grid-template-columns:repeat(auto-fit,minmax(min(100%,186px),1fr))}\n #app :is(.fg,.form-grid)>.field:has(.date-flex-control){grid-column:1/-1}\n #app .task-input{grid-template-columns:minmax(0,1fr)}\n"
+          }
+        ]
+      },
+      {
+        "file": "hani-portfolio-preview.css",
+        "beforeHash": "f8a7eb055c0beeca24a21d990008d4f32ffa8267be3b26428c0daf1dfe716f05",
+        "afterHash": "ba189604ad26772bab38e9c2ca4c5294a3511e323217a5227043561f9fde08ee",
+        "replacements": [
+          {
+            "before": " #portfolioLivePreview nav button{flex:1;padding:10px 8px}\n #portfolioLivePreview [data-p-coverage]{padding:10px 12px;font-size:11px;margin-bottom:16px}\n .portfolio-summary{grid-template-columns:1fr 1fr;gap:10px}\n .portfolio-summary>div{padding:16px 14px;border-radius:14px}\n .portfolio-summary>div:first-child{grid-column:1/-1;padding:20px}\n",
+            "after": " #portfolioLivePreview nav button{flex:1;padding:10px 8px}\n #portfolioLivePreview [data-p-coverage]{padding:10px 12px;font-size:11px;margin-bottom:16px}\n .portfolio-summary{grid-template-columns:minmax(0,1fr);gap:10px}\n .portfolio-summary>div{padding:16px 14px;border-radius:14px}\n .portfolio-summary>div:first-child{grid-column:1/-1;padding:20px}\n"
+          }
+        ]
+      }
+    ],
+    "correctionsReason": "CSS owner-only follow-up: ledger uses Finish ink on its Finish surfaces; Remote title suppresses inherited .top h2:after. Original browser assertions remain strict. These named corrections are bound to full before/after hashes; browser verification pending.",
+    "corrections": [
+      {
+        "file": "hani-design-system.css",
+        "beforeHash": "c7d7b82f535594ea6c57fc542c59d7bc0c4545d11175385682eeadbf98af2d3d",
+        "afterHash": "bce2b2ac0991b69fb66831b2825a74050303d66e99b3ac1316812ebdee240948",
+        "replacements": [
+          {
+            "before": "#app #ledger :is(.ledger-jispi-head,.ledger-jispi-head span,.ledger-breaker-line strong,.ledger-support-kpis span,.ledger-support-kpis b){color:#f5f7ff!important}",
+            "after": "#app #ledger :is(.ledger-jispi-head,.ledger-jispi-head span,.ledger-breaker-line strong,.ledger-support-kpis span,.ledger-support-kpis b){color:var(--appearance-ink,#273349)!important}"
+          },
+          {
+            "before": "#app #ledger .ledger-jispi-meta span{color:#e0e5f5!important}",
+            "after": "#app #ledger .ledger-jispi-meta span{color:var(--appearance-ink,#273349)!important}"
+          },
+          {
+            "before": "#app #ledger .ledger-market-board .sh h3{color:#f5f7ff!important}",
+            "after": "#app #ledger .ledger-market-board .sh h3{color:var(--appearance-ink,#273349)!important}"
+          }
+        ]
+      },
+      {
+        "file": "hani-context-remote.css",
+        "beforeHash": "8d2c34bead459aa5dc15edd1a0c56c28faf09d6bb6a0cce119d11fe9f0cf792d",
+        "afterHash": "6ec52443784833f7c09b5c16318342b038534b8f5819694fe8360989d8039e4c",
+        "replacements": [
+          {
+            "before": "#app .hani-remote-media p{margin:0;color:#fff;line-height:1.6}",
+            "after": "/* The mobile rail lives inside .top; its title does not own the header underline. */\n#app .hani-remote-media h2::after{content:none}\n#app .hani-remote-media p{margin:0;color:#fff;line-height:1.6}"
+          }
+        ]
+      }
+    ]
+  }
 }

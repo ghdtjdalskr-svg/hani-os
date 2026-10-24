@@ -1,0 +1,28 @@
+[
+  [
+    "hani-design-system.css",
+    [
+      [
+        "#app #ledger :is(.ledger-jispi-head,.ledger-jispi-head span,.ledger-breaker-line strong,.ledger-support-kpis span,.ledger-support-kpis b){color:#f5f7ff!important}",
+        "#app #ledger :is(.ledger-jispi-head,.ledger-jispi-head span,.ledger-breaker-line strong,.ledger-support-kpis span,.ledger-support-kpis b){color:var(--appearance-ink,#273349)!important}"
+      ],
+      [
+        "#app #ledger .ledger-jispi-meta span{color:#e0e5f5!important}",
+        "#app #ledger .ledger-jispi-meta span{color:var(--appearance-ink,#273349)!important}"
+      ],
+      [
+        "#app #ledger .ledger-market-board .sh h3{color:#f5f7ff!important}",
+        "#app #ledger .ledger-market-board .sh h3{color:var(--appearance-ink,#273349)!important}"
+      ]
+    ]
+  ],
+  [
+    "hani-context-remote.css",
+    [
+      [
+        "#app .hani-remote-media p{margin:0;color:#fff;line-height:1.6}",
+        "/* The mobile rail lives inside .top; its title does not own the header underline. */\n#app .hani-remote-media h2::after{content:none}\n#app .hani-remote-media p{margin:0;color:#fff;line-height:1.6}"
+      ]
+    ]
+  ]
+]

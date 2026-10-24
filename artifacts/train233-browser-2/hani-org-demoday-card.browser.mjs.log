@@ -1,0 +1,6 @@
+PASS DEMO DAY hero 1440/pure-white: headline visible, decoded, above history, no overflow, tab visibility, CTA chart, persistent DOM, protected key unchanged
+PASS DEMO DAY hero 1440/midnight-black: headline visible, decoded, above history, no overflow, tab visibility, CTA chart, persistent DOM, protected key unchanged
+PASS DEMO DAY hero 1440/titanium-graphite: headline visible, decoded, above history, no overflow, tab visibility, CTA chart, persistent DOM, protected key unchanged
+PASS DEMO DAY hero 390/pure-white: headline visible, decoded, above history, no overflow, tab visibility, CTA chart, persistent DOM, protected key unchanged
+PASS DEMO DAY hero 390/midnight-black: headline visible, decoded, above history, no overflow, tab visibility, CTA chart, persistent DOM, protected key unchanged
+PASS DEMO DAY hero 390/titanium-graphite: headline visible, decoded, above history, no overflow, tab visibility, CTA chart, persistent DOM, protected key unchanged

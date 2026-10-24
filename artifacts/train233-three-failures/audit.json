@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "base": "f27be17c1b3ea989fec3b4886f36b3b32c4caa27",
+  "scope": "Unchanged byte/EOL audit and exact runtime-owner equality only; no post-patch browser claim",
+  "untouchedLines": 2539,
+  "hashes": [
+    {
+      "file": "hani-context-remote.css",
+      "beforeHash": "8d2c34bead459aa5dc15edd1a0c56c28faf09d6bb6a0cce119d11fe9f0cf792d",
+      "afterHash": "6ec52443784833f7c09b5c16318342b038534b8f5819694fe8360989d8039e4c"
+    },
+    {
+      "file": "hani-design-system.css",
+      "beforeHash": "c7d7b82f535594ea6c57fc542c59d7bc0c4545d11175385682eeadbf98af2d3d",
+      "afterHash": "bce2b2ac0991b69fb66831b2825a74050303d66e99b3ac1316812ebdee240948"
+    },
+    {
+      "file": "scripts/fixtures/train233-integrations.json",
+      "beforeHash": "be0f7dd80027a9f53c695de504cd4143bf57af3370d38a81fee42cd6b6109cac",
+      "afterHash": "37d9888861aeb6d16fd65e2373040a73a545b94d7a7e5ae91609a34a9aa2f11d"
+    },
+    {
+      "file": "scripts/hani-reviewed-release-baseline.mjs",
+      "beforeHash": "f25dbd26aba28663941a2f35f59238c18de87de34673dc539a3f8f6ba11039fe",
+      "afterHash": "80132470391d357ba3c05bb9be278a0d08a0d5d370fa87f295e1815ed9f10393"
+    },
+    {
+      "file": "scripts/hani-reviewed-release-baseline.test.mjs",
+      "beforeHash": "1febec990292c0c2cd0afe79429648e24491345aca11bfb4d53ce7d7da76d242",
+      "afterHash": "acf4ab9336328ad1d8e0efa4e4297abdd782502628c0ab171a40f6e0df5c5768"
+    }
+  ]
+}

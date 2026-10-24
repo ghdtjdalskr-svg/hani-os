@@ -1,0 +1,193 @@
+diff --git a/hani-context-remote.css b/hani-context-remote.css
+index b2e2833..a13f367 100644
+--- a/hani-context-remote.css
++++ b/hani-context-remote.css
+@@ -155,0 +156,2 @@
++/* The mobile rail lives inside .top; its title does not own the header underline. */
++#app .hani-remote-media h2::after{content:none}
+diff --git a/hani-design-system.css b/hani-design-system.css
+index de8d3b1..554e210 100644
+--- a/hani-design-system.css
++++ b/hani-design-system.css
+@@ -1788,3 +1788,3 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
+-#app #ledger :is(.ledger-jispi-head,.ledger-jispi-head span,.ledger-breaker-line strong,.ledger-support-kpis span,.ledger-support-kpis b){color:#f5f7ff!important}
+-#app #ledger .ledger-jispi-meta span{color:#e0e5f5!important}
+-#app #ledger .ledger-market-board .sh h3{color:#f5f7ff!important}
++#app #ledger :is(.ledger-jispi-head,.ledger-jispi-head span,.ledger-breaker-line strong,.ledger-support-kpis span,.ledger-support-kpis b){color:var(--appearance-ink,#273349)!important}
++#app #ledger .ledger-jispi-meta span{color:var(--appearance-ink,#273349)!important}
++#app #ledger .ledger-market-board .sh h3{color:var(--appearance-ink,#273349)!important}
+diff --git a/scripts/fixtures/train233-integrations.json b/scripts/fixtures/train233-integrations.json
+index ef6a009..869e5df 100644
+--- a/scripts/fixtures/train233-integrations.json
++++ b/scripts/fixtures/train233-integrations.json
+@@ -306 +306,74 @@
+-  ]
++  ],
++  "browserFollowup": {
++    "baseSha": "5a665a3",
++    "candidateSha": "f27be17c1b3ea989fec3b4886f36b3b32c4caa27",
++    "reason": "Representative-requested exact registration of f27be17 mobile header/panel flow, 40px date track and 1-column portfolio; reverse these BEFORE the original integration and Milestones hunks. Fixed integration range and release Git oracle remain unchanged.",
++    "changes": [
++      {
++        "file": "hani-context-remote.css",
++        "beforeHash": "b64b1f7e6e2379145175d7204499570c16a56a47da4c4ba79289040ccb790247",
++        "afterHash": "8d2c34bead459aa5dc15edd1a0c56c28faf09d6bb6a0cce119d11fe9f0cf792d",
++        "replacements": [
++          {
++            "before": "/* Dedicated mobile header slot: neither the launcher nor the expanded panel floats over forms. */\n@media(max-width:768px){\n #app header.top{position:relative;top:auto;flex-wrap:wrap}\n #app header.top .top-actions{flex-wrap:wrap}\n #app .hani-remote-mobile-trigger,#app .hani-remote-mobile-trigger:is(.is-market-inline,.is-intake-inline){position:static;inset:auto;margin-left:auto;box-shadow:none;flex:0 0 auto;white-space:nowrap}\n #app header.top .hani-context-remote{position:static;inset:auto;transform:none;transition:none;display:none;flex:0 0 100%;grid-column:1/-1;width:100%;max-height:70dvh;min-height:0;border-radius:14px;border:1px solid var(--remote-line);box-shadow:none;z-index:auto}\n #app header.top .hani-context-remote[data-open=\"true\"]{display:grid;transform:none}\n}\n",
++            "after": "/* Dedicated mobile header slot: neither the launcher nor the expanded panel floats over forms. */\n@media(max-width:768px){\n #app .main>header.top.ui26-top:has(.hani-context-remote){position:relative!important;top:auto!important;height:auto!important;flex-wrap:wrap!important;transform:none!important;opacity:1;visibility:visible;pointer-events:auto}\n #app header.top.ui26-top .top-actions{flex-wrap:wrap!important;max-width:100%}\n #app .hani-remote-mobile-trigger,#app .hani-remote-mobile-trigger:is(.is-market-inline,.is-intake-inline){position:static;inset:auto;margin-left:auto;box-shadow:none;flex:0 0 auto;white-space:nowrap}\n #app header.top .hani-context-remote{position:static;inset:auto;transform:none;transition:none;display:none;flex:0 0 100%;grid-column:1/-1;width:100%;max-height:none;min-height:0;overflow:visible;border-radius:14px;border:1px solid var(--remote-line);box-shadow:none;z-index:auto}\n #app header.top .hani-context-remote[data-open=\"true\"]{display:grid;transform:none}\n}\n"
++          }
++        ]
++      },
++      {
++        "file": "hani-design-system.css",
++        "beforeHash": "f9d092fe54d118d123ee468b45d5f15c5c308b74109762ac4a1e456a00c465a7",
++        "afterHash": "c7d7b82f535594ea6c57fc542c59d7bc0c4545d11175385682eeadbf98af2d3d",
++        "replacements": [
++          {
++            "before": "#app #monthlyReport .earnings-controls button:disabled{opacity:1;color:#e0e5f5;background:#313d56;border-color:#8793ad}\n#app #settings #group-backup :is(.feature,.feature p,.settings-group-body){height:auto;max-height:none;overflow:visible;white-space:normal;overflow-wrap:anywhere}\n#app .date-flex-control{min-width:min(100%,185px);grid-template-columns:minmax(140px,1fr) 38px}\n#app .date-flex-control>input{box-sizing:border-box;min-width:140px;padding-inline:8px;font-size:14px}\n#app .task-input{grid-template-columns:minmax(0,1fr) minmax(185px,auto) auto}\n#app input[type=\"date\"]::-webkit-datetime-edit{padding:0}\n@media(max-width:768px){\n #app :is(.fg,.form-grid):has(.date-flex-control){grid-template-columns:repeat(auto-fit,minmax(min(100%,185px),1fr))}\n #app :is(.fg,.form-grid)>.field:has(.date-flex-control){grid-column:1/-1}\n #app .task-input{grid-template-columns:minmax(0,1fr)}\n",
++            "after": "#app #monthlyReport .earnings-controls button:disabled{opacity:1;color:#e0e5f5;background:#313d56;border-color:#8793ad}\n#app #settings #group-backup :is(.feature,.feature p,.settings-group-body){height:auto;max-height:none;overflow:visible;white-space:normal;overflow-wrap:anywhere}\n#app .date-flex-control{min-width:min(100%,186px);grid-template-columns:minmax(140px,1fr) 40px}\n#app .date-flex-control>input{box-sizing:border-box;min-width:140px;padding-inline:8px;font-size:14px}\n#app .task-input{grid-template-columns:minmax(0,1fr) minmax(186px,auto) auto}\n#app input[type=\"date\"]::-webkit-datetime-edit{padding:0}\n@media(max-width:768px){\n #app :is(.fg,.form-grid):has(.date-flex-control){grid-template-columns:repeat(auto-fit,minmax(min(100%,186px),1fr))}\n #app :is(.fg,.form-grid)>.field:has(.date-flex-control){grid-column:1/-1}\n #app .task-input{grid-template-columns:minmax(0,1fr)}\n"
++          }
++        ]
++      },
++      {
++        "file": "hani-portfolio-preview.css",
++        "beforeHash": "f8a7eb055c0beeca24a21d990008d4f32ffa8267be3b26428c0daf1dfe716f05",
++        "afterHash": "ba189604ad26772bab38e9c2ca4c5294a3511e323217a5227043561f9fde08ee",
++        "replacements": [
++          {
++            "before": " #portfolioLivePreview nav button{flex:1;padding:10px 8px}\n #portfolioLivePreview [data-p-coverage]{padding:10px 12px;font-size:11px;margin-bottom:16px}\n .portfolio-summary{grid-template-columns:1fr 1fr;gap:10px}\n .portfolio-summary>div{padding:16px 14px;border-radius:14px}\n .portfolio-summary>div:first-child{grid-column:1/-1;padding:20px}\n",
++            "after": " #portfolioLivePreview nav button{flex:1;padding:10px 8px}\n #portfolioLivePreview [data-p-coverage]{padding:10px 12px;font-size:11px;margin-bottom:16px}\n .portfolio-summary{grid-template-columns:minmax(0,1fr);gap:10px}\n .portfolio-summary>div{padding:16px 14px;border-radius:14px}\n .portfolio-summary>div:first-child{grid-column:1/-1;padding:20px}\n"
++          }
++        ]
++      }
++    ],
++    "correctionsReason": "CSS owner-only follow-up: ledger uses Finish ink on its Finish surfaces; Remote title suppresses inherited .top h2:after. Original browser assertions remain strict. These named corrections are bound to full before/after hashes; browser verification pending.",
++    "corrections": [
++      {
++        "file": "hani-design-system.css",
++        "beforeHash": "c7d7b82f535594ea6c57fc542c59d7bc0c4545d11175385682eeadbf98af2d3d",
++        "afterHash": "bce2b2ac0991b69fb66831b2825a74050303d66e99b3ac1316812ebdee240948",
++        "replacements": [
++          {
++            "before": "#app #ledger :is(.ledger-jispi-head,.ledger-jispi-head span,.ledger-breaker-line strong,.ledger-support-kpis span,.ledger-support-kpis b){color:#f5f7ff!important}",
++            "after": "#app #ledger :is(.ledger-jispi-head,.ledger-jispi-head span,.ledger-breaker-line strong,.ledger-support-kpis span,.ledger-support-kpis b){color:var(--appearance-ink,#273349)!important}"
++          },
++          {
++            "before": "#app #ledger .ledger-jispi-meta span{color:#e0e5f5!important}",
++            "after": "#app #ledger .ledger-jispi-meta span{color:var(--appearance-ink,#273349)!important}"
++          },
++          {
++            "before": "#app #ledger .ledger-market-board .sh h3{color:#f5f7ff!important}",
++            "after": "#app #ledger .ledger-market-board .sh h3{color:var(--appearance-ink,#273349)!important}"
++          }
++        ]
++      },
++      {
++        "file": "hani-context-remote.css",
++        "beforeHash": "8d2c34bead459aa5dc15edd1a0c56c28faf09d6bb6a0cce119d11fe9f0cf792d",
++        "afterHash": "6ec52443784833f7c09b5c16318342b038534b8f5819694fe8360989d8039e4c",
++        "replacements": [
++          {
++            "before": "#app .hani-remote-media p{margin:0;color:#fff;line-height:1.6}",
++            "after": "/* The mobile rail lives inside .top; its title does not own the header underline. */\n#app .hani-remote-media h2::after{content:none}\n#app .hani-remote-media p{margin:0;color:#fff;line-height:1.6}"
++          }
++        ]
++      }
++    ]
++  }
+diff --git a/scripts/hani-reviewed-release-baseline.mjs b/scripts/hani-reviewed-release-baseline.mjs
+index 39efc25..96cdfc7 100644
+--- a/scripts/hani-reviewed-release-baseline.mjs
++++ b/scripts/hani-reviewed-release-baseline.mjs
+@@ -33 +33,3 @@ const fixture=name=>JSON.parse(fs.readFileSync(new URL('./fixtures/'+name,import
+-export const pendingApprovedConnections=['train233-integrations.json','office-redesign-233.json','milestones-v1.json','hero-crop-fix.json'].flatMap(name=>fixture(name).changes).map(({file,replacements})=>({
++const browserFollowup=fixture('train233-integrations.json').browserFollowup;
++// Undo newest CSS corrections and fixed f27be17 deltas before older overlapping hunks.
++export const pendingApprovedConnections=[...browserFollowup.corrections,...browserFollowup.changes,...['train233-integrations.json','office-redesign-233.json','milestones-v1.json','hero-crop-fix.json'].flatMap(name=>fixture(name).changes)].map(({file,replacements})=>({
+@@ -39,0 +42,4 @@ export const pendingApprovedConnections=['train233-integrations.json','office-re
++export function normalizeReviewedConnection(connection,source){
++ for(const line of connection.lines)assert.equal(source.split(line).length-1,1,'one pending approved connection: '+line);
++ return connection.strip(source);
++}
+@@ -41,4 +47 @@ export function normalizeReviewedCurrentSource(file,source){
+- for(const connection of pendingApprovedConnections)if(connection.file===file){
+-  for(const line of connection.lines)assert.equal(source.split(line).length-1,1,'one pending approved connection: '+line);
+-  source=connection.strip(source);
+- }
++ for(const connection of pendingApprovedConnections)if(connection.file===file)source=normalizeReviewedConnection(connection,source);
+diff --git a/scripts/hani-reviewed-release-baseline.test.mjs b/scripts/hani-reviewed-release-baseline.test.mjs
+index 5523213..f07f6ca 100644
+--- a/scripts/hani-reviewed-release-baseline.test.mjs
++++ b/scripts/hani-reviewed-release-baseline.test.mjs
+@@ -3 +3,2 @@ import assert from 'node:assert/strict';
+-import fs from 'node:fs';
++import fs from 'node:fs';
++import crypto from 'node:crypto';
+@@ -5 +6 @@ import {newsroomScript,newsroomEntry,newsroomCss} from './hani-newsroom-4cut-pre
+-import {readReleaseSource,readReviewedReleaseBaseline,assertReviewedReleaseSource,guardedRelease,approvedReleases,projectTrainVersion,pendingApprovedConnections,normalizeReviewedCurrentSource,trainBaseVersion} from './hani-reviewed-release-baseline.mjs';
++import {readReleaseSource,readReviewedReleaseBaseline,assertReviewedReleaseSource,guardedRelease,approvedReleases,projectTrainVersion,pendingApprovedConnections,normalizeReviewedCurrentSource,normalizeReviewedConnection,trainBaseVersion} from './hani-reviewed-release-baseline.mjs';
+@@ -75,2 +76,3 @@ test('pending connections reject missing, duplicate or altered additions in ever
+- for(const {file,lines} of pendingApprovedConnections){
+-  const source=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
++ const stages=new Map();
++ for(const connection of pendingApprovedConnections){
++  const {file,lines}=connection,source=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
+@@ -77,0 +80 @@ test('pending connections reject missing, duplicate or altered additions in ever
++  const stage=stages.get(file)??source;
+@@ -79 +82,2 @@ test('pending connections reject missing, duplicate or altered additions in ever
+-   assert.throws(()=>normalizeReviewedCurrentSource(file,source.replace(line,()=>replacement)),{code:'ERR_ASSERTION'},file+' exact approved addition must occur once');
++   assert.equal(stage.split(line).length-1,1,file+' exact layer is present before mutation');
++   assert.throws(()=>normalizeReviewedConnection(connection,stage.replace(line,()=>replacement)),{code:'ERR_ASSERTION'},file+' exact approved addition must occur once at its normalization stage');
+@@ -80,0 +85 @@ test('pending connections reject missing, duplicate or altered additions in ever
++  stages.set(file,normalizeReviewedConnection(connection,stage));
+@@ -115,3 +120,5 @@ test('pending 233 train stays scoped to office, milestones, hero-crop, asset-int
+- assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),["assets/data/office-actions-216.json","assets/data/office-actions-221.json","hani-asset-market-view.js","hani-asset-update-v1.js","hani-context-remote-v1.js","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-design-system.css","hani-investment-committee.js","hani-main.js","hani-main.js","hani-office-live.js","hani-organization-hub.css","hani-organization-hub.js","hani-study-v02984.js","hani-style-07.css","hani-ui-v02992.js","hani-yuna-helpdesk.js","index.html","index.html"]);
+- for(const {file,lines} of pendingApprovedConnections){
+-  const current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
++ assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),["hani-design-system.css","hani-context-remote.css","hani-context-remote.css","hani-design-system.css","hani-portfolio-preview.css",...["assets/data/office-actions-216.json","assets/data/office-actions-221.json","hani-asset-market-view.js","hani-asset-update-v1.js","hani-context-remote-v1.js","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-design-system.css","hani-investment-committee.js","hani-main.js","hani-main.js","hani-office-live.js","hani-organization-hub.css","hani-organization-hub.js","hani-study-v02984.js","hani-style-07.css","hani-ui-v02992.js","hani-yuna-helpdesk.js","index.html","index.html"]].sort());
++ const stages=new Map();
++ for(const connection of pendingApprovedConnections){
++  const {file,lines}=connection,current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
++  const stage=stages.get(file)??current;
+@@ -122,2 +129,7 @@ test('pending 233 train stays scoped to office, milestones, hero-crop, asset-int
+-   const rest=current.replace(fragment,''),moved=rest?(current.startsWith(fragment)?rest+fragment:fragment+rest):fragment+'\n';
+-   assert.throws(()=>assertReviewedReleaseSource(file,moved),{code:'ERR_ASSERTION'},file+' moved approved fragment');
++   assert.equal(stage.split(fragment).length-1,1,file+' fragment exists at this exact stage');
++   const rest=stage.replace(fragment,''),moved=rest?(stage.startsWith(fragment)?rest+fragment:fragment+rest):fragment+'\n';
++   assert.notEqual(normalizeReviewedConnection(connection,moved),normalizeReviewedConnection(connection,stage),file+' moved fragment changes normalized bytes');
++   if(current.includes(fragment)){
++    const rest=current.replace(fragment,''),moved=rest?(current.startsWith(fragment)?rest+fragment:fragment+rest):fragment+'\n';
++    assert.throws(()=>assertReviewedReleaseSource(file,moved),{code:'ERR_ASSERTION'},file+' moved current fragment rejected');
++   }
+@@ -124,0 +137 @@ test('pending 233 train stays scoped to office, milestones, hero-crop, asset-int
++  stages.set(file,normalizeReviewedConnection(connection,stage));
+@@ -157,0 +171,28 @@ test('approved numeric integration fixes retain exact origin and reject removal,
++
++
++test('fixed f27be17 CSS follow-up and named owner corrections retain exact bytes and reject drift',()=>{
++ const {browserFollowup:f}=JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8'));
++ const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
++ assert.equal(f.baseSha,'5a665a3');assert.equal(f.candidateSha,'f27be17c1b3ea989fec3b4886f36b3b32c4caa27');
++ assert.deepEqual(f.changes.map(c=>c.file),['hani-context-remote.css','hani-design-system.css','hani-portfolio-preview.css']);
++ assert.deepEqual(f.corrections.map(c=>[c.file,c.afterHash]),[
++  ['hani-design-system.css','bce2b2ac0991b69fb66831b2825a74050303d66e99b3ac1316812ebdee240948'],
++  ['hani-context-remote.css','6ec52443784833f7c09b5c16318342b038534b8f5819694fe8360989d8039e4c']
++ ]);
++ for(const change of f.changes){
++  const before=readReleaseSource(f.baseSha,change.file),after=readReleaseSource(f.candidateSha,change.file);
++  assert.equal(hash(before),change.beforeHash);assert.equal(hash(after),change.afterHash);
++  let forward=before,reverse=after;
++  for(const h of change.replacements){assert.equal(forward.split(h.before).length-1,1);assert.equal(reverse.split(h.after).length-1,1);forward=forward.replace(h.before,()=>h.after);reverse=reverse.replace(h.after,()=>h.before)}
++  assert.equal(forward,after);assert.equal(reverse,before);
++ }
++ for(const change of f.corrections){
++  let expected=readReleaseSource(f.candidateSha,change.file);assert.equal(hash(expected),change.beforeHash);
++  for(const h of change.replacements){assert.equal(expected.split(h.before).length-1,1);expected=expected.replace(h.before,()=>h.after)}
++  assert.equal(hash(expected),change.afterHash);assert.equal(fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8'),expected);
++ }
++ for(const file of f.changes.map(c=>c.file)){
++  const current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
++  for(const changed of [current+'/* unlisted CSS */',current.replace(/\r\n/,'\n')]){assert.notEqual(changed,current);assert.throws(()=>assertReviewedReleaseSource(file,changed),{code:'ERR_ASSERTION'},file+' outside edits and EOL remain strict')}
++ }
++});

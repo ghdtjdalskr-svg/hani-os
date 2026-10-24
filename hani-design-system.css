@@ -1785,9 +1785,9 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 #app :is(#asset,#investment,#diet,#exercise) .stat .value{font-size:clamp(16px,2vw,28px)}
 #app .amount-unit,#app :is(#dietGoal1Label,#dietGoal2Label){display:inline-block;white-space:nowrap;word-break:normal;overflow-wrap:normal}
 #app #dietStats .stat:last-child .value{white-space:normal}
-#app #ledger :is(.ledger-jispi-head,.ledger-jispi-head span,.ledger-breaker-line strong,.ledger-support-kpis span,.ledger-support-kpis b){color:#f5f7ff!important}
-#app #ledger .ledger-jispi-meta span{color:#e0e5f5!important}
-#app #ledger .ledger-market-board .sh h3{color:#f5f7ff!important}
+#app #ledger :is(.ledger-jispi-head,.ledger-jispi-head span,.ledger-breaker-line strong,.ledger-support-kpis span,.ledger-support-kpis b){color:var(--appearance-ink,#273349)!important}
+#app #ledger .ledger-jispi-meta span{color:var(--appearance-ink,#273349)!important}
+#app #ledger .ledger-market-board .sh h3{color:var(--appearance-ink,#273349)!important}
 #app #ledger .ledger-breaker-line strong{font-size:clamp(19px,3vw,34px)}
 #app #monthlyReport .earnings-controls,#app #monthlyReport .earnings-report>.sub{color:#e0e5f5}
 #app #monthlyReport .earnings-controls :is(label,p,span){color:inherit}

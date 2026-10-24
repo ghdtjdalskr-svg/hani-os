@@ -1,0 +1,274 @@
+[
+  {
+    "ref": "776752c971f2ce48edf376a707eb345ae57da98c",
+    "dir": "snapshot-0",
+    "files": [
+      "hani-development-history-v1.js",
+      "hani-asset-update-v1.js",
+      "hani-main.js",
+      "hani-style-07.css",
+      "index.html",
+      "hani-investment-committee.js",
+      "hani-office-live.js",
+      "hani-context-remote-v1.js",
+      "hani-design-system.css",
+      "hani-ui-v02992.js",
+      "hani-character-archive-data.js",
+      "hani-character-archive.js",
+      "hani-organization-hub.js",
+      "hani-context-remote.css",
+      "hani-portfolio-preview.css",
+      "hani-asset-market-view.js",
+      "hani-organization-hub.css",
+      "hani-study-v02984.js",
+      "hani-yuna-helpdesk.js",
+      "assets/data/office-actions-216.json",
+      "assets/data/office-actions-221.json",
+      "hani-drive-vault.js"
+    ]
+  },
+  {
+    "ref": "94ead73706157bda23b94c6f5673b65377106c6a^",
+    "dir": "snapshot-1",
+    "files": [
+      "hani-asset-update-v1.js",
+      "hani-main.js",
+      "hani-style-07.css",
+      "index.html"
+    ]
+  },
+  {
+    "ref": "94ead73706157bda23b94c6f5673b65377106c6a",
+    "dir": "snapshot-2",
+    "files": [
+      "hani-asset-update-v1.js",
+      "hani-main.js",
+      "hani-style-07.css",
+      "index.html"
+    ]
+  },
+  {
+    "ref": "a306df16fd0685868f7e4ecdfd9d9b09a9c97d36^",
+    "dir": "snapshot-3",
+    "files": [
+      "hani-main.js",
+      "index.html",
+      "hani-investment-committee.js",
+      "hani-office-live.js"
+    ]
+  },
+  {
+    "ref": "a306df16fd0685868f7e4ecdfd9d9b09a9c97d36",
+    "dir": "snapshot-4",
+    "files": [
+      "hani-main.js",
+      "index.html",
+      "hani-investment-committee.js",
+      "hani-office-live.js"
+    ]
+  },
+  {
+    "ref": "902b5ab7235c10d08069d88b52c0e2d4ea51c18e^",
+    "dir": "snapshot-5",
+    "files": [
+      "hani-main.js",
+      "index.html",
+      "hani-context-remote-v1.js",
+      "hani-design-system.css",
+      "hani-ui-v02992.js"
+    ]
+  },
+  {
+    "ref": "902b5ab7235c10d08069d88b52c0e2d4ea51c18e",
+    "dir": "snapshot-6",
+    "files": [
+      "hani-main.js",
+      "index.html",
+      "hani-context-remote-v1.js",
+      "hani-design-system.css",
+      "hani-ui-v02992.js"
+    ]
+  },
+  {
+    "ref": "83391f0258629924bbbad7f1d793c56ab8284604^",
+    "dir": "snapshot-7",
+    "files": [
+      "hani-main.js",
+      "index.html",
+      "hani-office-live.js"
+    ]
+  },
+  {
+    "ref": "83391f0258629924bbbad7f1d793c56ab8284604",
+    "dir": "snapshot-8",
+    "files": [
+      "hani-main.js",
+      "index.html",
+      "hani-office-live.js"
+    ]
+  },
+  {
+    "ref": "04fb2b377f28958aec1480ca09244f4567c3a339^",
+    "dir": "snapshot-9",
+    "files": [
+      "hani-main.js",
+      "index.html",
+      "hani-office-live.js"
+    ]
+  },
+  {
+    "ref": "04fb2b377f28958aec1480ca09244f4567c3a339",
+    "dir": "snapshot-10",
+    "files": [
+      "hani-main.js",
+      "index.html",
+      "hani-office-live.js"
+    ]
+  },
+  {
+    "ref": "13dedc67be96310d472537c72b088050e847d49e^",
+    "dir": "snapshot-11",
+    "files": [
+      "hani-main.js",
+      "index.html",
+      "hani-design-system.css",
+      "assets/data/desk-mascots-v1.json",
+      "hani-desk-mascots.js"
+    ]
+  },
+  {
+    "ref": "13dedc67be96310d472537c72b088050e847d49e",
+    "dir": "snapshot-12",
+    "files": [
+      "hani-main.js",
+      "index.html",
+      "hani-design-system.css",
+      "assets/data/desk-mascots-v1.json",
+      "hani-desk-mascots.js"
+    ]
+  },
+  {
+    "ref": "4ac6b6c0119eeacc7332f1c53c3c760675657c11^",
+    "dir": "snapshot-13",
+    "files": [
+      "hani-main.js",
+      "index.html",
+      "hani-ui-v02992.js",
+      "hani-character-archive-data.js",
+      "hani-character-archive.js",
+      "hani-organization-hub.js"
+    ]
+  },
+  {
+    "ref": "4ac6b6c0119eeacc7332f1c53c3c760675657c11",
+    "dir": "snapshot-14",
+    "files": [
+      "hani-main.js",
+      "index.html",
+      "hani-ui-v02992.js",
+      "hani-character-archive-data.js",
+      "hani-character-archive.js",
+      "hani-organization-hub.js"
+    ]
+  },
+  {
+    "ref": "2784e4e9855211021766f9eb65d764b2aafac468",
+    "dir": "snapshot-15",
+    "files": [
+      "assets/data/desk-mascots-v1.json",
+      "hani-desk-mascots.js"
+    ]
+  },
+  {
+    "ref": "b5a64e5",
+    "dir": "snapshot-16",
+    "files": [
+      "hani-asset-market-view.js",
+      "hani-asset-update-v1.js",
+      "hani-context-remote-v1.js",
+      "hani-context-remote.css",
+      "hani-design-system.css",
+      "hani-investment-committee.js",
+      "hani-main.js",
+      "hani-organization-hub.css",
+      "hani-organization-hub.js",
+      "hani-study-v02984.js",
+      "hani-style-07.css",
+      "hani-yuna-helpdesk.js",
+      "index.html"
+    ]
+  },
+  {
+    "ref": "7d0fa05e873d09bb7b7eb070bea7c8271a6cfa5c",
+    "dir": "snapshot-17",
+    "files": [
+      "hani-asset-market-view.js",
+      "hani-asset-update-v1.js",
+      "hani-context-remote-v1.js",
+      "hani-context-remote.css",
+      "hani-design-system.css",
+      "hani-investment-committee.js",
+      "hani-main.js",
+      "hani-organization-hub.css",
+      "hani-organization-hub.js",
+      "hani-study-v02984.js",
+      "hani-style-07.css",
+      "hani-yuna-helpdesk.js",
+      "index.html"
+    ]
+  },
+  {
+    "ref": "f2df938314a19e02e334a0be1726a9a4a9d61245^",
+    "dir": "snapshot-18",
+    "files": [
+      "hani-asset-update-v1.js"
+    ]
+  },
+  {
+    "ref": "f2df938314a19e02e334a0be1726a9a4a9d61245",
+    "dir": "snapshot-19",
+    "files": [
+      "hani-asset-update-v1.js"
+    ]
+  },
+  {
+    "ref": "7471e5aabc0ba441ed826a108e04ecb2f3e196b6^",
+    "dir": "snapshot-20",
+    "files": [
+      "hani-main.js"
+    ]
+  },
+  {
+    "ref": "7471e5aabc0ba441ed826a108e04ecb2f3e196b6",
+    "dir": "snapshot-21",
+    "files": [
+      "hani-main.js"
+    ]
+  },
+  {
+    "ref": "5a665a3",
+    "dir": "snapshot-22",
+    "files": [
+      "hani-context-remote.css",
+      "hani-design-system.css",
+      "hani-portfolio-preview.css"
+    ]
+  },
+  {
+    "ref": "f27be17c1b3ea989fec3b4886f36b3b32c4caa27",
+    "dir": "snapshot-23",
+    "files": [
+      "hani-context-remote.css",
+      "hani-design-system.css",
+      "hani-portfolio-preview.css"
+    ]
+  },
+  {
+    "ref": "06519be",
+    "dir": "snapshot-24",
+    "files": [
+      "hani-main.js",
+      "index.html"
+    ]
+  }
+]

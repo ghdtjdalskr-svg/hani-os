@@ -30,18 +30,21 @@ export const trainBaseVersion='2.9.232';
 // the approved Milestones v1 / hero crop connections and fixed 10/24 integrations,
 // including f2df938 decorated-number fallback and 7471e5a sign-only guard through 7d0fa05.
 const fixture=name=>JSON.parse(fs.readFileSync(new URL('./fixtures/'+name,import.meta.url),'utf8'));
-export const pendingApprovedConnections=['train233-integrations.json','office-redesign-233.json','milestones-v1.json','hero-crop-fix.json'].flatMap(name=>fixture(name).changes).map(({file,replacements})=>({
+const browserFollowup=fixture('train233-integrations.json').browserFollowup;
+// Undo newest CSS corrections and fixed f27be17 deltas before older overlapping hunks.
+export const pendingApprovedConnections=[...browserFollowup.corrections,...browserFollowup.changes,...['train233-integrations.json','office-redesign-233.json','milestones-v1.json','hero-crop-fix.json'].flatMap(name=>fixture(name).changes)].map(({file,replacements})=>({
  file,lines:replacements.map(change=>change.after),
  strip:source=>{
   for(const {before,after} of replacements)source=source.replace(after,()=>before);
   return source;
  }
 }));
+export function normalizeReviewedConnection(connection,source){
+ for(const line of connection.lines)assert.equal(source.split(line).length-1,1,'one pending approved connection: '+line);
+ return connection.strip(source);
+}
 export function normalizeReviewedCurrentSource(file,source){
- for(const connection of pendingApprovedConnections)if(connection.file===file){
-  for(const line of connection.lines)assert.equal(source.split(line).length-1,1,'one pending approved connection: '+line);
-  source=connection.strip(source);
- }
+ for(const connection of pendingApprovedConnections)if(connection.file===file)source=normalizeReviewedConnection(connection,source);
  return source;
 }
 export function readReviewedCurrentSource(file){

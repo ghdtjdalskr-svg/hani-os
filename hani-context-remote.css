@@ -153,6 +153,8 @@
 #app .hani-remote-media-chip{position:absolute;top:12px;left:12px;padding:6px 8px;border-radius:99px;background:#000b;color:#fff;font-size:10px;font-weight:800;line-height:1.4}
 #app .hani-remote-media-content{position:absolute;inset:auto 12px 15px}
 #app .hani-remote-media h2{display:table;max-width:100%;box-sizing:border-box;margin:0 0 5px -5px;padding:2px 5px;border-radius:5px;background:#0a0a14e6;color:#fff;font-size:19px;font-weight:850;line-height:1.35;letter-spacing:-.04em;overflow-wrap:anywhere}
+/* The mobile rail lives inside .top; its title does not own the header underline. */
+#app .hani-remote-media h2::after{content:none}
 #app .hani-remote-media p{margin:0;color:#fff;line-height:1.6}
 #app .hani-remote-media-staff{display:table;max-width:100%;box-sizing:border-box;margin-left:-3px!important;padding:1px 3px;background:#0a0a14e6;font-size:12px;font-weight:700}
 #app .hani-remote-media-line{margin-top:7px!important;font-size:11px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}

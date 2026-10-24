@@ -1,0 +1,24 @@
+{
+  "method": "Existing f27be17 PNGs only; same 24px interior and <=1 tolerance as original test. No new browser or modified PNG.",
+  "dimensions": {
+    "format": "raw",
+    "width": 318,
+    "height": 204,
+    "channels": 4,
+    "depth": "uchar",
+    "premultiplied": false,
+    "hasAlpha": true,
+    "size": 259488
+  },
+  "interiorMax": 124,
+  "changedPixelsAboveTolerance": 124,
+  "bounds": {
+    "left": 24,
+    "top": 104,
+    "right": 54,
+    "bottom": 107
+  },
+  "diagnosis": "B: legacy .top h2:after (42x4px, background var(--primary), margin-top9px) now matches Remote h2 inside header. CSS owner suppresses this unrelated decoration; pixel assertion is unchanged.",
+  "originalFailure": "390/reading/midnight-black: theme pixel delta 124",
+  "postPatchBrowser": "NOT RUN"
+}

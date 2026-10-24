@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "syntax": "7 runtime JS",
+  "canonicalPersistence": "unchanged",
+  "storageCloudCalls": "unchanged",
+  "versionCache": "unchanged",
+  "duplicates": {
+    "files": 68,
+    "baseFiles": 68,
+    "existingDuplicates": 8
+  },
+  "unchangedLinesWithExactEol": 16892
+}

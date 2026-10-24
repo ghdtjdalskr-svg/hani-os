@@ -1,8 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import crypto from 'node:crypto';
 import {newsroomScript,newsroomEntry,newsroomCss} from './hani-newsroom-4cut-preservation.mjs';
-import {readReleaseSource,readReviewedReleaseBaseline,assertReviewedReleaseSource,guardedRelease,approvedReleases,projectTrainVersion,pendingApprovedConnections,normalizeReviewedCurrentSource,trainBaseVersion} from './hani-reviewed-release-baseline.mjs';
+import {readReleaseSource,readReviewedReleaseBaseline,assertReviewedReleaseSource,guardedRelease,approvedReleases,projectTrainVersion,pendingApprovedConnections,normalizeReviewedCurrentSource,normalizeReviewedConnection,trainBaseVersion} from './hani-reviewed-release-baseline.mjs';
 
 test('release225 plus only named later release changes reproduces current source bytes',()=>{
  for(const file of new Set(['hani-development-history-v1.js',...approvedReleases.flatMap(r=>r.files),...pendingApprovedConnections.map(c=>c.file)])){
@@ -72,12 +73,16 @@ test('pending approved connections strip CURRENT source only; an unlisted index 
 });
 
 test('pending connections reject missing, duplicate or altered additions in every current owner',()=>{
- for(const {file,lines} of pendingApprovedConnections){
-  const source=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
+ const stages=new Map();
+ for(const connection of pendingApprovedConnections){
+  const {file,lines}=connection,source=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
   assertReviewedReleaseSource(file,source);
+  const stage=stages.get(file)??source;
   for(const line of lines)for(const replacement of ['',line+'\n'+line,line.slice(0,-1)+'!']){
-   assert.throws(()=>normalizeReviewedCurrentSource(file,source.replace(line,()=>replacement)),{code:'ERR_ASSERTION'},file+' exact approved addition must occur once');
+   assert.equal(stage.split(line).length-1,1,file+' exact layer is present before mutation');
+   assert.throws(()=>normalizeReviewedConnection(connection,stage.replace(line,()=>replacement)),{code:'ERR_ASSERTION'},file+' exact approved addition must occur once at its normalization stage');
   }
+  stages.set(file,normalizeReviewedConnection(connection,stage));
   assert.throws(()=>normalizeReviewedCurrentSource(file,readReviewedReleaseBaseline(file)),{code:'ERR_ASSERTION'},'never normalize Git oracle bytes');
  }
  const other='unrelated\r\n'+pendingApprovedConnections[0].lines.join('\n');
@@ -112,16 +117,24 @@ test('approved additions cannot move to another script, event or cascade positio
 });
 
 test('pending 233 train stays scoped to office, milestones, hero-crop, asset-intake, QA and HANI-77 owners; released staff and moved fragments stay strict',()=>{
- assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),["assets/data/office-actions-216.json","assets/data/office-actions-221.json","hani-asset-market-view.js","hani-asset-update-v1.js","hani-context-remote-v1.js","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-design-system.css","hani-investment-committee.js","hani-main.js","hani-main.js","hani-office-live.js","hani-organization-hub.css","hani-organization-hub.js","hani-study-v02984.js","hani-style-07.css","hani-ui-v02992.js","hani-yuna-helpdesk.js","index.html","index.html"]);
- for(const {file,lines} of pendingApprovedConnections){
-  const current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
+ assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),["hani-design-system.css","hani-context-remote.css","hani-context-remote.css","hani-design-system.css","hani-portfolio-preview.css",...["assets/data/office-actions-216.json","assets/data/office-actions-221.json","hani-asset-market-view.js","hani-asset-update-v1.js","hani-context-remote-v1.js","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-design-system.css","hani-investment-committee.js","hani-main.js","hani-main.js","hani-office-live.js","hani-organization-hub.css","hani-organization-hub.js","hani-study-v02984.js","hani-style-07.css","hani-ui-v02992.js","hani-yuna-helpdesk.js","index.html","index.html"]].sort());
+ const stages=new Map();
+ for(const connection of pendingApprovedConnections){
+  const {file,lines}=connection,current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
+  const stage=stages.get(file)??current;
   assertReviewedReleaseSource(file,current);
   assert.throws(()=>assertReviewedReleaseSource(file,'// unlisted staff edit\n'+current),{code:'ERR_ASSERTION'},file+' outside fragment');
   for(const fragment of lines){
    // Full JSON is one frozen line; a leading JS hunk must move to the end.
-   const rest=current.replace(fragment,''),moved=rest?(current.startsWith(fragment)?rest+fragment:fragment+rest):fragment+'\n';
-   assert.throws(()=>assertReviewedReleaseSource(file,moved),{code:'ERR_ASSERTION'},file+' moved approved fragment');
+   assert.equal(stage.split(fragment).length-1,1,file+' fragment exists at this exact stage');
+   const rest=stage.replace(fragment,''),moved=rest?(stage.startsWith(fragment)?rest+fragment:fragment+rest):fragment+'\n';
+   assert.notEqual(normalizeReviewedConnection(connection,moved),normalizeReviewedConnection(connection,stage),file+' moved fragment changes normalized bytes');
+   if(current.includes(fragment)){
+    const rest=current.replace(fragment,''),moved=rest?(current.startsWith(fragment)?rest+fragment:fragment+rest):fragment+'\n';
+    assert.throws(()=>assertReviewedReleaseSource(file,moved),{code:'ERR_ASSERTION'},file+' moved current fragment rejected');
+   }
   }
+  stages.set(file,normalizeReviewedConnection(connection,stage));
  }
  for(const [file,from,to] of [
   ['hani-main.js','사원 · 2F','부장 · 2F'],
@@ -153,5 +166,33 @@ test('approved numeric integration fixes retain exact origin and reject removal,
    assert.throws(()=>assertReviewedReleaseSource(file,current.replace(change.after,()=>replacement)),{code:'ERR_ASSERTION'},file+' invalid approved line');
   }
   assert.throws(()=>assertReviewedReleaseSource(file,change.after+current.replace(change.after,'')),{code:'ERR_ASSERTION'},file+' approved line cannot move');
+ }
+});
+
+
+test('fixed f27be17 CSS follow-up and named owner corrections retain exact bytes and reject drift',()=>{
+ const {browserFollowup:f}=JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8'));
+ const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
+ assert.equal(f.baseSha,'5a665a3');assert.equal(f.candidateSha,'f27be17c1b3ea989fec3b4886f36b3b32c4caa27');
+ assert.deepEqual(f.changes.map(c=>c.file),['hani-context-remote.css','hani-design-system.css','hani-portfolio-preview.css']);
+ assert.deepEqual(f.corrections.map(c=>[c.file,c.afterHash]),[
+  ['hani-design-system.css','bce2b2ac0991b69fb66831b2825a74050303d66e99b3ac1316812ebdee240948'],
+  ['hani-context-remote.css','6ec52443784833f7c09b5c16318342b038534b8f5819694fe8360989d8039e4c']
+ ]);
+ for(const change of f.changes){
+  const before=readReleaseSource(f.baseSha,change.file),after=readReleaseSource(f.candidateSha,change.file);
+  assert.equal(hash(before),change.beforeHash);assert.equal(hash(after),change.afterHash);
+  let forward=before,reverse=after;
+  for(const h of change.replacements){assert.equal(forward.split(h.before).length-1,1);assert.equal(reverse.split(h.after).length-1,1);forward=forward.replace(h.before,()=>h.after);reverse=reverse.replace(h.after,()=>h.before)}
+  assert.equal(forward,after);assert.equal(reverse,before);
+ }
+ for(const change of f.corrections){
+  let expected=readReleaseSource(f.candidateSha,change.file);assert.equal(hash(expected),change.beforeHash);
+  for(const h of change.replacements){assert.equal(expected.split(h.before).length-1,1);expected=expected.replace(h.before,()=>h.after)}
+  assert.equal(hash(expected),change.afterHash);assert.equal(fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8'),expected);
+ }
+ for(const file of f.changes.map(c=>c.file)){
+  const current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
+  for(const changed of [current+'/* unlisted CSS */',current.replace(/\r\n/,'\n')]){assert.notEqual(changed,current);assert.throws(()=>assertReviewedReleaseSource(file,changed),{code:'ERR_ASSERTION'},file+' outside edits and EOL remain strict')}
  }
 });
