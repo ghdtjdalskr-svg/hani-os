@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "base": "c026b630a94802415c1c868fba2d5ea0dadf05b6",
+  "cssChange": "one selector; open state only",
+  "remoteCssHash": "b543f80d8301c5427f1c44d631b831b76e60e1b657f7ee076c6be290c9b36a68",
+  "fullBytePreserved": [
+    "hani-asset-market-view.js",
+    "hani-asset-update-v1.js",
+    "hani-context-remote-v1.js",
+    "hani-design-system.css",
+    "hani-investment-committee.js",
+    "hani-main.js",
+    "hani-study-v02984.js",
+    "hani-yuna-helpdesk.js",
+    "index.html"
+  ],
+  "priorFixtureFields": "unchanged",
+  "unchangedLinesWithExactEol": 1481,
+  "browser": "NOT RUN"
+}

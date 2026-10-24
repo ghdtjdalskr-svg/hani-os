@@ -1,0 +1,6 @@
+TEST INPUT ADAPTER: 124 Git blobs verified; original assertions run, browser NOT RUN.
+PASS (Node only): exact UI delta + syntax + storage/Cloud write and version surfaces unchanged
+PASS: save/error/protection/hold, media unknown/zero/failure, verified history/Vault dates, photo manifest unknown/zero/missing/account switch, login slot session restore; zero storage writes
+PASS: 127 unique source IDs / 109 planned static IDs, original controls/notices, native group order/defaults and anchors
+PASS: 36 settings property assignments: only goalRegistryApprove wrapped, original body/persistence owners exact; approval/invalid/stale/failure/cancel/re-entry/release executed with no IO
+Browser checks not run

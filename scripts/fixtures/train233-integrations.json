@@ -405,5 +405,22 @@
         ]
       }
     ]
+  },
+  "browserSticky": {
+    "baseSha": "c026b630a94802415c1c868fba2d5ea0dadf05b6",
+    "reason": "Preserve the canonical sticky/scroll-hide owner while Remote is closed; constrain relative positioning and visibility overrides to the open panel. Trigger placement and panel flow stay unchanged.",
+    "changes": [
+      {
+        "file": "hani-context-remote.css",
+        "beforeHash": "6ec52443784833f7c09b5c16318342b038534b8f5819694fe8360989d8039e4c",
+        "afterHash": "b543f80d8301c5427f1c44d631b831b76e60e1b657f7ee076c6be290c9b36a68",
+        "replacements": [
+          {
+            "before": " #app .main>header.top.ui26-top:has(.hani-context-remote){position:relative!important;top:auto!important;height:auto!important;flex-wrap:wrap!important;transform:none!important;opacity:1;visibility:visible;pointer-events:auto}",
+            "after": " #app .main>header.top.ui26-top:has(.hani-context-remote[data-open=\"true\"]){position:relative!important;top:auto!important;height:auto!important;flex-wrap:wrap!important;transform:none!important;opacity:1;visibility:visible;pointer-events:auto}"
+          }
+        ]
+      }
+    ]
   }
 }

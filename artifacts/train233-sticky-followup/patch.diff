@@ -1,0 +1,148 @@
+diff --git a/hani-context-remote.css b/hani-context-remote.css
+index a13f367..aae1fb1 100644
+--- a/hani-context-remote.css
++++ b/hani-context-remote.css
+@@ -195,7 +195,7 @@
+ 
+ /* Dedicated mobile header slot: neither the launcher nor the expanded panel floats over forms. */
+ @media(max-width:768px){
+- #app .main>header.top.ui26-top:has(.hani-context-remote){position:relative!important;top:auto!important;height:auto!important;flex-wrap:wrap!important;transform:none!important;opacity:1;visibility:visible;pointer-events:auto}
++ #app .main>header.top.ui26-top:has(.hani-context-remote[data-open="true"]){position:relative!important;top:auto!important;height:auto!important;flex-wrap:wrap!important;transform:none!important;opacity:1;visibility:visible;pointer-events:auto}
+  #app header.top.ui26-top .top-actions{flex-wrap:wrap!important;max-width:100%}
+  #app .hani-remote-mobile-trigger,#app .hani-remote-mobile-trigger:is(.is-market-inline,.is-intake-inline){position:static;inset:auto;margin-left:auto;box-shadow:none;flex:0 0 auto;white-space:nowrap}
+  #app header.top .hani-context-remote{position:static;inset:auto;transform:none;transition:none;display:none;flex:0 0 100%;grid-column:1/-1;width:100%;max-height:none;min-height:0;overflow:visible;border-radius:14px;border:1px solid var(--remote-line);box-shadow:none;z-index:auto}
+diff --git a/scripts/fixtures/train233-integrations.json b/scripts/fixtures/train233-integrations.json
+index 4e92ee1..3d54fb4 100644
+--- a/scripts/fixtures/train233-integrations.json
++++ b/scripts/fixtures/train233-integrations.json
+@@ -405,5 +405,22 @@
+         ]
+       }
+     ]
++  },
++  "browserSticky": {
++    "baseSha": "c026b630a94802415c1c868fba2d5ea0dadf05b6",
++    "reason": "Preserve the canonical sticky/scroll-hide owner while Remote is closed; constrain relative positioning and visibility overrides to the open panel. Trigger placement and panel flow stay unchanged.",
++    "changes": [
++      {
++        "file": "hani-context-remote.css",
++        "beforeHash": "6ec52443784833f7c09b5c16318342b038534b8f5819694fe8360989d8039e4c",
++        "afterHash": "b543f80d8301c5427f1c44d631b831b76e60e1b657f7ee076c6be290c9b36a68",
++        "replacements": [
++          {
++            "before": " #app .main>header.top.ui26-top:has(.hani-context-remote){position:relative!important;top:auto!important;height:auto!important;flex-wrap:wrap!important;transform:none!important;opacity:1;visibility:visible;pointer-events:auto}",
++            "after": " #app .main>header.top.ui26-top:has(.hani-context-remote[data-open=\"true\"]){position:relative!important;top:auto!important;height:auto!important;flex-wrap:wrap!important;transform:none!important;opacity:1;visibility:visible;pointer-events:auto}"
++          }
++        ]
++      }
++    ]
+   }
+ }
+diff --git a/scripts/hani-investment-research-ui.test.mjs b/scripts/hani-investment-research-ui.test.mjs
+index de68324..b81e606 100644
+--- a/scripts/hani-investment-research-ui.test.mjs
++++ b/scripts/hani-investment-research-ui.test.mjs
+@@ -101,12 +101,13 @@ try {
+           const el=document.querySelector('.ui26-top'),rect=el.getBoundingClientRect(),style=getComputedStyle(el);
+           const visible=el.checkVisibility({checkOpacity:true,checkVisibilityCSS:true});
+           const left=Math.max(0,rect.left),right=Math.min(innerWidth,rect.right),upper=Math.max(0,rect.top),bottom=Math.min(innerHeight,rect.bottom);
+-          return {bar:{x:rect.x,y:rect.y,width:rect.width,height:rect.height},visible,hidden:el.classList.contains('is-mobile-hidden'),visibleBar:visible&&right>left&&bottom>upper?{x:left,y:upper,width:right-left,height:bottom-upper}:null,opacity:style.opacity,scrollY};
++          return {bar:{x:rect.x,y:rect.y,width:rect.width,height:rect.height},visible,hidden:el.classList.contains('is-mobile-hidden'),position:style.position,visibleBar:visible&&right>left&&bottom>upper?{x:left,y:upper,width:right-left,height:bottom-upper}:null,opacity:style.opacity,scrollY};
+         });
+         const a=await header.boundingBox(),b=geometry.visibleBar,diagnostics={width,finish,phase,header:a,...geometry};
+         console.log('DIAGNOSTICS IC header bounds',JSON.stringify(diagnostics));
+         assert.ok(a&&await header.isVisible(),'IC header remains visible: '+JSON.stringify(diagnostics));
+         assert.ok(geometry.bar.width>0&&geometry.bar.height>0,'persistent top bar retains its layout: '+JSON.stringify(diagnostics));
++        if(width<=768)assert.equal(geometry.position,'sticky','closed Remote retains the canonical sticky bar: '+JSON.stringify(diagnostics));
+         if(phase==='visible bar'){
+           assert.ok(b,'scroll up reveals the bar for overlap measurement: '+JSON.stringify(diagnostics));
+           if(width<=768)assert.equal(geometry.bar.height,48,'PWA-213 mobile status bar is one 48px row with 40px touch targets');
+diff --git a/scripts/hani-qa-1st-ui.test.mjs b/scripts/hani-qa-1st-ui.test.mjs
+index 7aa9add..e6ad055 100644
+--- a/scripts/hani-qa-1st-ui.test.mjs
++++ b/scripts/hani-qa-1st-ui.test.mjs
+@@ -39,18 +39,19 @@ try{
+         const contrast=[...section.querySelectorAll('.stat .label,.stat .value,.asset-dashboard-card h3,.task-calendar-hub h3,.task-calendar-hub .sub,.hani-dev-history-overview h3,.hani-dev-history-overview p,.asset-capture-intro p,.budget-plan,.ledger-jispi-head span,.ledger-support-kpis span,.ledger-support-kpis b,.earnings-controls label,.earnings-report>.sub')].filter(visible).map(node=>{const fg=luminance(color(getComputedStyle(node).color)),bg=luminance(background(node));return {text:node.textContent,ratio:(Math.max(fg,bg)+.05)/(Math.min(fg,bg)+.05)};});
+         let homeOverlap=false;if(view==='home'){const quote=document.getElementById('homeDialogueText'),actions=document.querySelector('.home-welcome-actions');homeOverlap=intersects(rect(quote),rect(actions));}
+         const clip=view==='settings'?[...section.querySelectorAll('#group-backup .feature p')].filter(visible).filter(node=>node.scrollHeight>node.clientHeight+1).map(node=>node.textContent):[];
+-        return {view,overlap,dateWidths,money,contrast,homeOverlap,clip,viewWidth:section.clientWidth,viewScroll:section.scrollWidth,pageWidth:document.documentElement.scrollWidth,viewport:innerWidth,triggerPosition:getComputedStyle(trigger).position};
++        return {view,overlap,dateWidths,money,contrast,homeOverlap,clip,viewWidth:section.clientWidth,viewScroll:section.scrollWidth,pageWidth:document.documentElement.scrollWidth,viewport:innerWidth,triggerPosition:getComputedStyle(trigger).position,headerPosition:getComputedStyle(document.querySelector('header.top')).position};
+       },{view,width});
+       assert.deepEqual(result.overlap,[],`${width}/${view}: Remote covers controls`);assert.equal(result.homeOverlap,false,'home sentence/button overlap');assert.deepEqual(result.clip,[],'backup explanation clipping');
+       assert.ok(result.pageWidth<=result.viewport+1,`${width}/${view}: page overflow`);
+       if(width===412&&['home','tasks'].includes(view))assert.ok(result.viewScroll<=result.viewWidth+1,`${width}/${view}: view overflow`);
+-      if(width<=768)assert.equal(result.triggerPosition,'static');
++      if(width<=768){assert.equal(result.triggerPosition,'static');assert.equal(result.headerPosition,'sticky',`${width}/${view}: closed Remote retains sticky header`);}
+       for(const date of result.dateWidths)assert.ok(date.width>=140&&date.scrollWidth<=date.width+1,`${width}/${view}: date ${JSON.stringify(date)}`);
+       for(const value of result.money){assert.equal(value.nowrap,'nowrap',JSON.stringify(value));assert.ok(value.scrollWidth<=value.width+1,`${width}/${view}: amount overflow ${JSON.stringify(value)}`);}
+       for(const value of result.contrast)assert.ok(value.ratio>=4.5,`${width}/${finish}/${view}: contrast ${JSON.stringify(value)}`);
+       if(width<=768){
+         await page.locator('.hani-remote-mobile-trigger').click();
+-        const panel=await page.locator('#haniContextRemote').evaluate(node=>({position:getComputedStyle(node).position,display:getComputedStyle(node).display}));assert.equal(panel.position,'static');assert.equal(panel.display,'grid');await page.locator('.hani-remote-close').click();
++        const panel=await page.locator('#haniContextRemote').evaluate(node=>({position:getComputedStyle(node).position,display:getComputedStyle(node).display,headerPosition:getComputedStyle(node.parentElement).position,bottom:node.getBoundingClientRect().bottom,contentTop:document.querySelector('.view.active').getBoundingClientRect().top}));assert.equal(panel.position,'static');assert.equal(panel.display,'grid');assert.equal(panel.headerPosition,'relative','open Remote participates in header flow');assert.ok(panel.bottom<=panel.contentTop+1,`${width}/${view}: open Remote must precede form controls`);await page.locator('.hani-remote-close').click();
++        assert.equal(await page.locator('header.top').evaluate(node=>getComputedStyle(node).position),'sticky','closing Remote restores sticky owner');
+         // Last control can be scrolled fully into the viewport above bottom safe space.
+         const last=page.locator(`#${view} button:visible`).last();if(await last.count()){await last.scrollIntoViewIfNeeded();const box=await last.boundingBox();assert.ok(box.y+box.height<=844,`${view}: last button unreachable`);}
+       }
+diff --git a/scripts/hani-reviewed-release-baseline.mjs b/scripts/hani-reviewed-release-baseline.mjs
+index a7e7d85..9965b05 100644
+--- a/scripts/hani-reviewed-release-baseline.mjs
++++ b/scripts/hani-reviewed-release-baseline.mjs
+@@ -32,8 +32,9 @@ export const trainBaseVersion='2.9.232';
+ const fixture=name=>JSON.parse(fs.readFileSync(new URL('./fixtures/'+name,import.meta.url),'utf8'));
+ const browserFollowup=fixture('train233-integrations.json').browserFollowup;
+ const browserResidual=fixture('train233-integrations.json').browserResidual;
+-// Undo newest date-border delta, then older CSS corrections and f27be17 hunks.
+-export const pendingApprovedConnections=[...browserResidual.changes,...browserFollowup.corrections,...browserFollowup.changes,...['train233-integrations.json','office-redesign-233.json','milestones-v1.json','hero-crop-fix.json'].flatMap(name=>fixture(name).changes)].map(({file,replacements})=>({
++const browserSticky=fixture('train233-integrations.json').browserSticky;
++// Undo newest open-only Remote delta, then date borders, older corrections and f27be17.
++export const pendingApprovedConnections=[...browserSticky.changes,...browserResidual.changes,...browserFollowup.corrections,...browserFollowup.changes,...['train233-integrations.json','office-redesign-233.json','milestones-v1.json','hero-crop-fix.json'].flatMap(name=>fixture(name).changes)].map(({file,replacements})=>({
+  file,lines:replacements.map(change=>change.after),
+  strip:source=>{
+   for(const {before,after} of replacements)source=source.replace(after,()=>before);
+diff --git a/scripts/hani-reviewed-release-baseline.test.mjs b/scripts/hani-reviewed-release-baseline.test.mjs
+index 16efa60..854af83 100644
+--- a/scripts/hani-reviewed-release-baseline.test.mjs
++++ b/scripts/hani-reviewed-release-baseline.test.mjs
+@@ -117,7 +117,7 @@ test('approved additions cannot move to another script, event or cascade positio
+ });
+ 
+ test('pending 233 train stays scoped to office, milestones, hero-crop, asset-intake, QA and HANI-77 owners; released staff and moved fragments stay strict',()=>{
+- assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),["hani-design-system.css","hani-design-system.css","hani-context-remote.css","hani-context-remote.css","hani-design-system.css","hani-portfolio-preview.css",...["assets/data/office-actions-216.json","assets/data/office-actions-221.json","hani-asset-market-view.js","hani-asset-update-v1.js","hani-context-remote-v1.js","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-design-system.css","hani-investment-committee.js","hani-main.js","hani-main.js","hani-office-live.js","hani-organization-hub.css","hani-organization-hub.js","hani-study-v02984.js","hani-style-07.css","hani-ui-v02992.js","hani-yuna-helpdesk.js","index.html","index.html"]].sort());
++ assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),["hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-context-remote.css","hani-context-remote.css","hani-design-system.css","hani-portfolio-preview.css",...["assets/data/office-actions-216.json","assets/data/office-actions-221.json","hani-asset-market-view.js","hani-asset-update-v1.js","hani-context-remote-v1.js","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-design-system.css","hani-investment-committee.js","hani-main.js","hani-main.js","hani-office-live.js","hani-organization-hub.css","hani-organization-hub.js","hani-study-v02984.js","hani-style-07.css","hani-ui-v02992.js","hani-yuna-helpdesk.js","index.html","index.html"]].sort());
+  const stages=new Map();
+  for(const connection of pendingApprovedConnections){
+   const {file,lines}=connection,current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
+@@ -190,8 +190,8 @@ test('fixed f27be17 CSS follow-up and named owner corrections retain exact bytes
+   let expected=readReleaseSource(f.candidateSha,change.file);assert.equal(hash(expected),change.beforeHash);
+   for(const h of change.replacements){assert.equal(expected.split(h.before).length-1,1);expected=expected.replace(h.before,()=>h.after)}
+   let current=fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8');
+-  const {browserResidual}=JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8'));
+-  for(const delta of browserResidual.changes.filter(c=>c.file===change.file))for(const h of delta.replacements){assert.equal(current.split(h.after).length-1,1);current=current.replace(h.after,()=>h.before)}
++  const {browserSticky,browserResidual}=JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8'));
++  for(const delta of [...browserSticky.changes,...browserResidual.changes].filter(c=>c.file===change.file))for(const h of delta.replacements){assert.equal(current.split(h.after).length-1,1);current=current.replace(h.after,()=>h.before)}
+   assert.equal(hash(expected),change.afterHash);assert.equal(current,expected);
+  }
+  for(const file of f.changes.map(c=>c.file)){
+@@ -214,3 +214,21 @@ test('date border correction is an exact delta from fixed 18916a0; old integrati
+   for(const h of change.replacements)for(const mutation of [after.replace(h.after,''),after.replace(h.after,h.after+h.after),after.replace(h.after,h.after+'/* unlisted */')])assert.throws(()=>assertReviewedReleaseSource(change.file,mutation),{code:'ERR_ASSERTION'});
+  }
+ });
++
++
++test('open-only Remote CSS is an exact delta from fixed c026b63; sticky and all older identities remain strict',()=>{
++ const fixture=JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8')),f=fixture.browserSticky;
++ assert.equal(f.baseSha,'c026b630a94802415c1c868fba2d5ea0dadf05b6');
++ assert.deepEqual(f.changes.map(c=>[c.file,c.beforeHash,c.afterHash]),[['hani-context-remote.css','6ec52443784833f7c09b5c16318342b038534b8f5819694fe8360989d8039e4c','b543f80d8301c5427f1c44d631b831b76e60e1b657f7ee076c6be290c9b36a68']]);
++ const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
++ for(const change of f.changes){
++  const before=readReleaseSource(f.baseSha,change.file),after=fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8');
++  assert.equal(hash(before),change.beforeHash);assert.equal(hash(after),change.afterHash);
++  let forward=before,reverse=after;
++  for(const h of change.replacements){assert.equal(forward.split(h.before).length-1,1);assert.equal(reverse.split(h.after).length-1,1);forward=forward.replace(h.before,()=>h.after);reverse=reverse.replace(h.after,()=>h.before)}
++  assert.equal(forward,after);assert.equal(reverse,before);assertReviewedReleaseSource(change.file,after);
++  for(const h of change.replacements)for(const mutation of [after.replace(h.after,''),after.replace(h.after,h.after+h.after),after.replace(h.after,h.after.replace('[data-open="true"]','')),after.replace(h.after,h.after+'/* unlisted */')])assert.throws(()=>assertReviewedReleaseSource(change.file,mutation),{code:'ERR_ASSERTION'});
++  const connection=pendingApprovedConnections.find(c=>c.file===change.file);
++  assert.equal(normalizeReviewedConnection(connection,after),before,'only newest delta is reversed before older fixed hunks');
++ }
++});

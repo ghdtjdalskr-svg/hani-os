@@ -39,18 +39,19 @@ try{
         const contrast=[...section.querySelectorAll('.stat .label,.stat .value,.asset-dashboard-card h3,.task-calendar-hub h3,.task-calendar-hub .sub,.hani-dev-history-overview h3,.hani-dev-history-overview p,.asset-capture-intro p,.budget-plan,.ledger-jispi-head span,.ledger-support-kpis span,.ledger-support-kpis b,.earnings-controls label,.earnings-report>.sub')].filter(visible).map(node=>{const fg=luminance(color(getComputedStyle(node).color)),bg=luminance(background(node));return {text:node.textContent,ratio:(Math.max(fg,bg)+.05)/(Math.min(fg,bg)+.05)};});
         let homeOverlap=false;if(view==='home'){const quote=document.getElementById('homeDialogueText'),actions=document.querySelector('.home-welcome-actions');homeOverlap=intersects(rect(quote),rect(actions));}
         const clip=view==='settings'?[...section.querySelectorAll('#group-backup .feature p')].filter(visible).filter(node=>node.scrollHeight>node.clientHeight+1).map(node=>node.textContent):[];
-        return {view,overlap,dateWidths,money,contrast,homeOverlap,clip,viewWidth:section.clientWidth,viewScroll:section.scrollWidth,pageWidth:document.documentElement.scrollWidth,viewport:innerWidth,triggerPosition:getComputedStyle(trigger).position};
+        return {view,overlap,dateWidths,money,contrast,homeOverlap,clip,viewWidth:section.clientWidth,viewScroll:section.scrollWidth,pageWidth:document.documentElement.scrollWidth,viewport:innerWidth,triggerPosition:getComputedStyle(trigger).position,headerPosition:getComputedStyle(document.querySelector('header.top')).position};
       },{view,width});
       assert.deepEqual(result.overlap,[],`${width}/${view}: Remote covers controls`);assert.equal(result.homeOverlap,false,'home sentence/button overlap');assert.deepEqual(result.clip,[],'backup explanation clipping');
       assert.ok(result.pageWidth<=result.viewport+1,`${width}/${view}: page overflow`);
       if(width===412&&['home','tasks'].includes(view))assert.ok(result.viewScroll<=result.viewWidth+1,`${width}/${view}: view overflow`);
-      if(width<=768)assert.equal(result.triggerPosition,'static');
+      if(width<=768){assert.equal(result.triggerPosition,'static');assert.equal(result.headerPosition,'sticky',`${width}/${view}: closed Remote retains sticky header`);}
       for(const date of result.dateWidths)assert.ok(date.width>=140&&date.scrollWidth<=date.width+1,`${width}/${view}: date ${JSON.stringify(date)}`);
       for(const value of result.money){assert.equal(value.nowrap,'nowrap',JSON.stringify(value));assert.ok(value.scrollWidth<=value.width+1,`${width}/${view}: amount overflow ${JSON.stringify(value)}`);}
       for(const value of result.contrast)assert.ok(value.ratio>=4.5,`${width}/${finish}/${view}: contrast ${JSON.stringify(value)}`);
       if(width<=768){
         await page.locator('.hani-remote-mobile-trigger').click();
-        const panel=await page.locator('#haniContextRemote').evaluate(node=>({position:getComputedStyle(node).position,display:getComputedStyle(node).display}));assert.equal(panel.position,'static');assert.equal(panel.display,'grid');await page.locator('.hani-remote-close').click();
+        const panel=await page.locator('#haniContextRemote').evaluate(node=>({position:getComputedStyle(node).position,display:getComputedStyle(node).display,headerPosition:getComputedStyle(node.parentElement).position,bottom:node.getBoundingClientRect().bottom,contentTop:document.querySelector('.view.active').getBoundingClientRect().top}));assert.equal(panel.position,'static');assert.equal(panel.display,'grid');assert.equal(panel.headerPosition,'relative','open Remote participates in header flow');assert.ok(panel.bottom<=panel.contentTop+1,`${width}/${view}: open Remote must precede form controls`);await page.locator('.hani-remote-close').click();
+        assert.equal(await page.locator('header.top').evaluate(node=>getComputedStyle(node).position),'sticky','closing Remote restores sticky owner');
         // Last control can be scrolled fully into the viewport above bottom safe space.
         const last=page.locator(`#${view} button:visible`).last();if(await last.count()){await last.scrollIntoViewIfNeeded();const box=await last.boundingBox();assert.ok(box.y+box.height<=844,`${view}: last button unreachable`);}
       }

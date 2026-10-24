@@ -195,7 +195,7 @@
 
 /* Dedicated mobile header slot: neither the launcher nor the expanded panel floats over forms. */
 @media(max-width:768px){
- #app .main>header.top.ui26-top:has(.hani-context-remote){position:relative!important;top:auto!important;height:auto!important;flex-wrap:wrap!important;transform:none!important;opacity:1;visibility:visible;pointer-events:auto}
+ #app .main>header.top.ui26-top:has(.hani-context-remote[data-open="true"]){position:relative!important;top:auto!important;height:auto!important;flex-wrap:wrap!important;transform:none!important;opacity:1;visibility:visible;pointer-events:auto}
  #app header.top.ui26-top .top-actions{flex-wrap:wrap!important;max-width:100%}
  #app .hani-remote-mobile-trigger,#app .hani-remote-mobile-trigger:is(.is-market-inline,.is-intake-inline){position:static;inset:auto;margin-left:auto;box-shadow:none;flex:0 0 auto;white-space:nowrap}
  #app header.top .hani-context-remote{position:static;inset:auto;transform:none;transition:none;display:none;flex:0 0 100%;grid-column:1/-1;width:100%;max-height:none;min-height:0;overflow:visible;border-radius:14px;border:1px solid var(--remote-line);box-shadow:none;z-index:auto}

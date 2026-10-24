@@ -1,0 +1,22 @@
+TEST INPUT ADAPTER: 124 Git blobs verified; original assertions run, browser NOT RUN.
+✔ release225 plus only named later release changes reproduces current source bytes (196.6646ms)
+✔ pending integrations are exact deltas between the fixed reviewed merge identities (74.1266ms)
+✔ release projection advances cache/display only; internal and historical literals stay strict (11.4248ms)
+✔ unlisted controls, storage, source and EOL edits remain detectable against Git oracle (188.2215ms)
+✔ pending approved connections strip CURRENT source only; an unlisted index line is rejected (728.8007ms)
+✔ pending connections reject missing, duplicate or altered additions in every current owner (817.7288ms)
+✔ released newsroom bytes reject unlisted edits, including EOL and report data (214.0851ms)
+✔ approved additions cannot move to another script, event or cascade position (63.8835ms)
+✔ pending 233 train stays scoped to office, milestones, hero-crop, asset-intake, QA and HANI-77 owners; released staff and moved fragments stay strict (3346.3774ms)
+✔ approved numeric integration fixes retain exact origin and reject removal, edits, duplication, moves and EOL changes (65.5099ms)
+✔ fixed f27be17 CSS follow-up and named owner corrections retain exact bytes and reject drift (56.354ms)
+✔ date border correction is an exact delta from fixed 18916a0; old integration identities remain intact (25.142ms)
+✔ open-only Remote CSS is an exact delta from fixed c026b63; sticky and all older identities remain strict (8.0821ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5903.8359

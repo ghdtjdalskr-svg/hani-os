@@ -1,0 +1,26 @@
+TEST INPUT ADAPTER: 124 Git blobs verified; original assertions run, browser NOT RUN.
+FIELD ACCURACY 305/330 (92.42%) → 330/330 (100%), 22 fixtures / 6 layouts
+✔ frozen baseline and every synthetic layout: exact field accuracy before → after (18.9039ms)
+✔ strict number transcription preserves signs, zeros, fractional shares; rejects malformed readings (0.2702ms)
+✔ small screenshots preserve original pixels/format; oversized/unsupported images use existing validated encoder (1.8709ms)
+✔ invisible fields never derive from identities, duplicate evidence is unconfirmed, missing label rejected (2.2681ms)
+✔ correction requires unique visible alternatives and at least two matching identities (1.0936ms)
+✔ all four row identities are checked including signed pnl and percentage tolerance (0.247ms)
+✔ account totals and complete list sum; partial images are not treated as complete (16.4701ms)
+✔ multi-image sections deduplicate and merge only complementary observed fields; differences remain reviewable (2.8574ms)
+✔ legacy Edge response remains usable and explicitly reports missing field-level evidence (0.3168ms)
+✔ domestic and overseas complete sections merge once; currency/date/partial/conflicting repeats never auto-sum (3.5728ms)
+✔ account return rate disagreement is visible without replacing source values (0.3758ms)
+✔ protected write/delete/rollback paths, primary runtime and non-Vision Edge region retain baseline bytes (73.9234ms)
+✔ actual Edge request uses strict complete evidence, original model, image high detail, bounded output and no temperature param (32.9006ms)
+✔ approved integration number ingress keeps decorated values and Korean units; sign-only and malformed units remain null (0.861ms)
+(node:40524) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 290.9313

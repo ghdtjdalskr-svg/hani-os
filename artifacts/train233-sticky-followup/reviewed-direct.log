@@ -1,0 +1,364 @@
+✖ release225 plus only named later release changes reproduces current source bytes (2.7079ms)
+✖ pending integrations are exact deltas between the fixed reviewed merge identities (6.7031ms)
+✖ release projection advances cache/display only; internal and historical literals stay strict (1.7179ms)
+✖ unlisted controls, storage, source and EOL edits remain detectable against Git oracle (1.9748ms)
+✖ pending approved connections strip CURRENT source only; an unlisted index line is rejected (2.6239ms)
+✖ pending connections reject missing, duplicate or altered additions in every current owner (1.3488ms)
+✖ released newsroom bytes reject unlisted edits, including EOL and report data (6.3005ms)
+✖ approved additions cannot move to another script, event or cascade position (4.848ms)
+✖ pending 233 train stays scoped to office, milestones, hero-crop, asset-intake, QA and HANI-77 owners; released staff and moved fragments stay strict (6.8533ms)
+✖ approved numeric integration fixes retain exact origin and reject removal, edits, duplication, moves and EOL changes (5.3957ms)
+✖ fixed f27be17 CSS follow-up and named owner corrections retain exact bytes and reject drift (8.1785ms)
+✖ date border correction is an exact delta from fixed 18916a0; old integration identities remain intact (5.3542ms)
+✖ open-only Remote CSS is an exact delta from fixed c026b63; sticky and all older identities remain strict (4.9491ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 0
+ℹ fail 13
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 201.6029
+
+✖ failing tests:
+
+test at scripts\hani-reviewed-release-baseline.test.mjs:8:1
+✖ release225 plus only named later release changes reproduces current source bytes (2.7079ms)
+  <ref *1> Error: spawnSync git EPERM
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at readReleaseSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.mjs:59:17)
+      at readReviewedReleaseBaseline (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.mjs:76:15)
+      at assertReviewedReleaseSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.mjs:87:59)
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.test.mjs:10:3)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17) {
+    errno: -4048,
+    code: 'EPERM',
+    syscall: 'spawnSync git',
+    path: 'git',
+    spawnargs: [ 'show', '776752c971f2ce48edf376a707eb345ae57da98c:hani-development-history-v1.js' ],
+    error: [Circular *1],
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at scripts\hani-reviewed-release-baseline.test.mjs:16:1
+✖ pending integrations are exact deltas between the fixed reviewed merge identities (6.7031ms)
+  <ref *1> Error: spawnSync git EPERM
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at readReleaseSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.mjs:59:17)
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.test.mjs:27:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12) {
+    errno: -4048,
+    code: 'EPERM',
+    syscall: 'spawnSync git',
+    path: 'git',
+    spawnargs: [ 'show', 'b5a64e5:hani-asset-market-view.js' ],
+    error: [Circular *1],
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at scripts\hani-reviewed-release-baseline.test.mjs:38:1
+✖ release projection advances cache/display only; internal and historical literals stay strict (1.7179ms)
+  <ref *1> Error: spawnSync git EPERM
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at readReleaseSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.mjs:59:17)
+      at readReviewedReleaseBaseline (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.mjs:76:15)
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.test.mjs:44:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19) {
+    errno: -4048,
+    code: 'EPERM',
+    syscall: 'spawnSync git',
+    path: 'git',
+    spawnargs: [ 'show', '776752c971f2ce48edf376a707eb345ae57da98c:index.html' ],
+    error: [Circular *1],
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at scripts\hani-reviewed-release-baseline.test.mjs:50:1
+✖ unlisted controls, storage, source and EOL edits remain detectable against Git oracle (1.9748ms)
+  <ref *1> Error: spawnSync git EPERM
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at readReleaseSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.mjs:59:17)
+      at readReviewedReleaseBaseline (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.mjs:76:15)
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.test.mjs:58:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19) {
+    errno: -4048,
+    code: 'EPERM',
+    syscall: 'spawnSync git',
+    path: 'git',
+    spawnargs: [ 'show', '776752c971f2ce48edf376a707eb345ae57da98c:index.html' ],
+    error: [Circular *1],
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at scripts\hani-reviewed-release-baseline.test.mjs:65:1
+✖ pending approved connections strip CURRENT source only; an unlisted index line is rejected (2.6239ms)
+  <ref *1> Error: spawnSync git EPERM
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at readReleaseSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.mjs:59:17)
+      at readReviewedReleaseBaseline (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.mjs:76:15)
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.test.mjs:67:15)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19) {
+    errno: -4048,
+    code: 'EPERM',
+    syscall: 'spawnSync git',
+    path: 'git',
+    spawnargs: [ 'show', '776752c971f2ce48edf376a707eb345ae57da98c:index.html' ],
+    error: [Circular *1],
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at scripts\hani-reviewed-release-baseline.test.mjs:75:1
+✖ pending connections reject missing, duplicate or altered additions in every current owner (1.3488ms)
+  <ref *1> Error: spawnSync git EPERM
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at readReleaseSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.mjs:59:17)
+      at readReviewedReleaseBaseline (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.mjs:76:15)
+      at assertReviewedReleaseSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.mjs:87:59)
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.test.mjs:79:3)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18) {
+    errno: -4048,
+    code: 'EPERM',
+    syscall: 'spawnSync git',
+    path: 'git',
+    spawnargs: [ 'show', '776752c971f2ce48edf376a707eb345ae57da98c:hani-context-remote.css' ],
+    error: [Circular *1],
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at scripts\hani-reviewed-release-baseline.test.mjs:92:1
+✖ released newsroom bytes reject unlisted edits, including EOL and report data (6.3005ms)
+  AssertionError [ERR_ASSERTION]: index.html unlisted mutation rejected
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.test.mjs:107:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [Error],
+    expected: [Object],
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at scripts\hani-reviewed-release-baseline.test.mjs:111:1
+✖ approved additions cannot move to another script, event or cascade position (4.848ms)
+  AssertionError [ERR_ASSERTION]: index.html canonical insertion order
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.test.mjs:115:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [Error],
+    expected: [Object],
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at scripts\hani-reviewed-release-baseline.test.mjs:119:1
+✖ pending 233 train stays scoped to office, milestones, hero-crop, asset-intake, QA and HANI-77 owners; released staff and moved fragments stay strict (6.8533ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      'assets/data/office-actions-216.json',
+      'assets/data/office-actions-221.json',
+      'hani-asset-market-view.js',
+      'hani-asset-update-v1.js',
+  ...
+      'hani-context-remote.css',
+  +   'hani-context-remote.css',
+      'hani-design-system.css',
+      'hani-design-system.css',
+      'hani-design-system.css',
+      'hani-design-system.css',
+      'hani-design-system.css',
+  
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.test.mjs:120:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [Array],
+    expected: [Array],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts\hani-reviewed-release-baseline.test.mjs:152:1
+✖ approved numeric integration fixes retain exact origin and reject removal, edits, duplication, moves and EOL changes (5.3957ms)
+  <ref *1> Error: spawnSync git EPERM
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at readReleaseSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.mjs:59:17)
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.test.mjs:155:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12) {
+    errno: -4048,
+    code: 'EPERM',
+    syscall: 'spawnSync git',
+    path: 'git',
+    spawnargs: [ 'show', 'f2df938314a19e02e334a0be1726a9a4a9d61245^:hani-asset-update-v1.js' ],
+    error: [Circular *1],
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at scripts\hani-reviewed-release-baseline.test.mjs:173:1
+✖ fixed f27be17 CSS follow-up and named owner corrections retain exact bytes and reject drift (8.1785ms)
+  <ref *1> Error: spawnSync git EPERM
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at readReleaseSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.mjs:59:17)
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.test.mjs:183:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12) {
+    errno: -4048,
+    code: 'EPERM',
+    syscall: 'spawnSync git',
+    path: 'git',
+    spawnargs: [ 'show', '5a665a3:hani-context-remote.css' ],
+    error: [Circular *1],
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at scripts\hani-reviewed-release-baseline.test.mjs:203:1
+✖ date border correction is an exact delta from fixed 18916a0; old integration identities remain intact (5.3542ms)
+  <ref *1> Error: spawnSync git EPERM
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at readReleaseSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.mjs:59:17)
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.test.mjs:209:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12) {
+    errno: -4048,
+    code: 'EPERM',
+    syscall: 'spawnSync git',
+    path: 'git',
+    spawnargs: [ 'show', '18916a02c82e1ff06e7598b8b2b94166b2010080:hani-design-system.css' ],
+    error: [Circular *1],
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at scripts\hani-reviewed-release-baseline.test.mjs:219:1
+✖ open-only Remote CSS is an exact delta from fixed c026b63; sticky and all older identities remain strict (4.9491ms)
+  <ref *1> Error: spawnSync git EPERM
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at readReleaseSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.mjs:59:17)
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-reviewed-release-baseline.test.mjs:225:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12) {
+    errno: -4048,
+    code: 'EPERM',
+    syscall: 'spawnSync git',
+    path: 'git',
+    spawnargs: [ 'show', 'c026b630a94802415c1c868fba2d5ea0dadf05b6:hani-context-remote.css' ],
+    error: [Circular *1],
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }

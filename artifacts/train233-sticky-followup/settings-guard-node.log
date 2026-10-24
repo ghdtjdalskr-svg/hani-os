@@ -1,0 +1,12 @@
+TEST INPUT ADAPTER: 124 Git blobs verified; original assertions run, browser NOT RUN.
+✔ settings QA guard retains original handlers and executes memory-only approval and failure paths (3910.2648ms)
+✔ extra wrappers, changed original body, wrong button and removed guard remain rejected (1290.7435ms)
+✔ browser before fixture reverts settings presentation only and retains all integrated handlers (3842.5989ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9164.6835

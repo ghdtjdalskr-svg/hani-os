@@ -101,12 +101,13 @@ try {
           const el=document.querySelector('.ui26-top'),rect=el.getBoundingClientRect(),style=getComputedStyle(el);
           const visible=el.checkVisibility({checkOpacity:true,checkVisibilityCSS:true});
           const left=Math.max(0,rect.left),right=Math.min(innerWidth,rect.right),upper=Math.max(0,rect.top),bottom=Math.min(innerHeight,rect.bottom);
-          return {bar:{x:rect.x,y:rect.y,width:rect.width,height:rect.height},visible,hidden:el.classList.contains('is-mobile-hidden'),visibleBar:visible&&right>left&&bottom>upper?{x:left,y:upper,width:right-left,height:bottom-upper}:null,opacity:style.opacity,scrollY};
+          return {bar:{x:rect.x,y:rect.y,width:rect.width,height:rect.height},visible,hidden:el.classList.contains('is-mobile-hidden'),position:style.position,visibleBar:visible&&right>left&&bottom>upper?{x:left,y:upper,width:right-left,height:bottom-upper}:null,opacity:style.opacity,scrollY};
         });
         const a=await header.boundingBox(),b=geometry.visibleBar,diagnostics={width,finish,phase,header:a,...geometry};
         console.log('DIAGNOSTICS IC header bounds',JSON.stringify(diagnostics));
         assert.ok(a&&await header.isVisible(),'IC header remains visible: '+JSON.stringify(diagnostics));
         assert.ok(geometry.bar.width>0&&geometry.bar.height>0,'persistent top bar retains its layout: '+JSON.stringify(diagnostics));
+        if(width<=768)assert.equal(geometry.position,'sticky','closed Remote retains the canonical sticky bar: '+JSON.stringify(diagnostics));
         if(phase==='visible bar'){
           assert.ok(b,'scroll up reveals the bar for overlap measurement: '+JSON.stringify(diagnostics));
           if(width<=768)assert.equal(geometry.bar.height,48,'PWA-213 mobile status bar is one 48px row with 40px touch targets');

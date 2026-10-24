@@ -1,0 +1,15 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: scroll up reveals the bar for overlap measurement: {"width":390,"finish":"porcelain-cream","phase":"visible bar","header":{"x":16,"y":168.15625,"width":358,"height":186.09375},"bar":{"x":24,"y":-469,"width":342,"height":50},"visible":true,"hidden":false,"visibleBar":null,"opacity":"1","scrollY":488}
+    at file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-investment-research-ui.test.mjs:111:18 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: null,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.20.0

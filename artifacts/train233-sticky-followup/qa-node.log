@@ -1,0 +1,18 @@
+✔ C1 Korean units, strict entire token, no accidental partial numbers (6.296ms)
+✔ C1 rating retains full score and asks for scale, then previews explicit conversion (21.9723ms)
+✔ C2 shared date validator rejects impossible nested dates and reversed ranges (2.0349ms)
+✔ C2 every guarded main save owner blocks before its first mutation, including programmatic invocation (335.2589ms)
+✔ C3 same-day form shows existing fields, merges edits, keeps blanks, accepts explicit zero, rolls back failed save (2.0099ms)
+✔ C4 real book/movie asynchronous save ignores re-entry and releases after resolution (395.4448ms)
+✔ C4 rejected/failed async save releases lock and supports retry (1.365ms)
+✔ C4 replacing a pending button cannot bypass the guard (0.9311ms)
+✔ C2 study project/date editor and direct intake save reject dates before mutation (136.5136ms)
+✔ B actual asset and deployment renderers distinguish unknown/zero and none/awaiting approval (359.0564ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1300.4356
