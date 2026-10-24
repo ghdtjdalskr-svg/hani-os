@@ -63,7 +63,7 @@
  #portfolioLivePreview nav{display:flex;margin-top:20px}
  #portfolioLivePreview nav button{flex:1;padding:10px 8px}
  #portfolioLivePreview [data-p-coverage]{padding:10px 12px;font-size:11px;margin-bottom:16px}
- .portfolio-summary{grid-template-columns:1fr 1fr;gap:10px}
+ .portfolio-summary{grid-template-columns:minmax(0,1fr);gap:10px}
  .portfolio-summary>div{padding:16px 14px;border-radius:14px}
  .portfolio-summary>div:first-child{grid-column:1/-1;padding:20px}
  .portfolio-summary strong{font-size:22px;margin-top:10px}

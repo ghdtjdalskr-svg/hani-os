@@ -386,6 +386,7 @@
   function inputDate(value, oldValue) {
     if (!text(value)) return '';
     if (oldValue && value === kst(oldValue, 'datetime')) return oldValue;
+    const dateError=validateEntryDates({date:text(value)});if(dateError)throw Error(dateError);
     const date = dateValue(value);
     if (!date) throw Error('날짜는 2026.10.11 또는 2026.10.11 10:00 (KST)로 입력하세요.');
     return date.toISOString();

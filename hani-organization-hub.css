@@ -320,7 +320,6 @@
 #settings>.settings-panel[hidden]{display:none!important}
 @media(max-width:480px){.organization-tabs,.settings-tabs{gap:5px}:is(.organization-tabs,.settings-tabs) [role="tab"]{padding:10px 12px;font-size:13px}}
 
-/* Read-only overview uses the hub's existing light/dark palette. */
 #haniOrganizationHub .ogh-history{--history-accent:var(--structure-accent,#685486);--history-soft:var(--ogh-soft,#f6f7fa);--history-rule:var(--border-strong,#8590a3)}
 #haniOrganizationHub .ogh-history-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:38px}
 #haniOrganizationHub .ogh-history-head .ogh-kicker{color:var(--ogh-muted);margin-bottom:10px}

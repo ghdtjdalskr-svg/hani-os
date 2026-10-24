@@ -223,6 +223,7 @@ const TAB_CHARACTER_LINES = Object.freeze({
   aura: entry("hani", ["오늘 마음에 드는 색을 골라봐요.", "우리 계절에 어울리는 화면을 찾아요.", "편하게 오래 볼 분위기를 골라요."]),
   organization: entry("hani", ["각 팀의 역할부터 함께 둘러봐요.", "우리 동료들이 연결되는 길을 봐요.", "필요한 담당자를 여기서 찾아봐요."]),
   ilbo: entry("minji", ["이번 주 우리 이야기를 모아왔어요.", "작은 기록도 신문의 한 줄이 돼요.", "다음 주 이야기도 함께 기다려요."]),
+  milestones: entry("hani", ["더 완벽해지기 위해서가 아니라, 더 나은 삶을 살기 위해.", "오래 기억하고 싶은 변화만 남겨요.", "숫자보다 그 변화의 의미를 함께 적어요.", "자주 쓰지 않아도 괜찮아요. 천천히 쌓여요."]),
   board: entry("hani", ["팀에 남길 이야기를 한 줄 적어요.", "업무도 일상도 편하게 나누어 봐요.", "동료의 새 소식부터 함께 읽어요."]),
   characterArchive: entry("hani", ["우리 동료의 이야기를 만나봐요.", "좋아하는 멤버부터 펼쳐볼까요?", "각자의 성격과 관계를 둘러봐요."]),
   geminiReports: entry("serin", ["변화와 근거를 차분히 살펴볼게요.","관찰한 사실과 해석을 나누어 읽어요.","아직 검증하지 않은 부분도 함께 남겨요."]),
@@ -578,6 +579,13 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
   variant: "single-character",
   tone: "work"
 }),
+    "milestones":Object.freeze({
+      sidebarMenuKey:"milestones",category:"independent",owner:"hani",profile:"hani",speaker:"하니",role:"Chief of Staff",
+      eyebrow:"MILESTONES · LIFE ARCHIVE",title:"삶에 남은 변화들",description: "더 나은 삶을 살기 위해",
+      quote:"더 완벽해지기 위해서가 아니라, 더 나은 삶을 살기 위해.",sceneImage: "./assets/heroes/organization-226w.webp",
+      scenePosition: "center center",scenePositionMobile: "83% center",sceneFit:"cover",sceneFitMobile:"cover",sceneVariant: "panorama",
+      sceneAlt:"로비 심벌 앞에 함께 선 HANI GROUP 동료들",variant:"group",tone:"company"
+    }),
     "aiBudget":Object.freeze({
   sidebarMenuKey: "aiBudget",
   category: "work",
