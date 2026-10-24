@@ -1,4 +1,28 @@
-# 개요 DEMO DAY 사진 카드 복원
+# 개요 DEMO DAY 히어로 복원 — 후속 작업
+
+## 작업 식별
+
+- 갱신 시각(KST): 2026-10-24 / 담당: 도연(Codex), 배정·다음 담당: 서윤(Claude Code).
+- 상태: 진행 중. LIGHT UI 패치, 아래 사진 카드 기록을 대체하는 후속 요청.
+- branch / worktree: `hani/seoyun-org-demoday-card` / `org-demoday`.
+- 시작 HEAD: `86930825d1ab17cebed1ac73f9dec9d72b2b19a8`(사진 카드 포함), 공통 base `d19aa0b62b1657660cb3cc6bec6bee1524dbb2bf`.
+- origin/main 캐시: `2cbbe6ed0c14954008208f0db2316b5f09228c2a`. 원격 조회 연결 실패로 최신성 미확인. 캐시 main은 base보다 진행됨. 지정 branch에서 범위 내 패치만 하며 merge/rebase하지 않음. 로컬 main index cache v2.9.232, 마지막 script `hani-launch-greeting.js`; Production 실제 표시·로딩 미확인.
+- 목표·범위: 기존 overview persistent 슬롯의 연혁 위에 `60db7b5` 원본 hero 제목·설명·CTA·signature·그림·캡션·도장 복원. 기존 canonical 조직도 탭 클릭 후 chart scroll. JS/CSS·browser 검사·이 인수인계·CURRENT만 수정 예정.
+- 승인 근거: 성민 대표님 2026-10-24 “overview is the first page … bring back the title like before”, 서윤 dispatch. commit/push/PR·버전/cache·Storage/Cloud·main/배포 금지.
+- CODEMAP_MISS: organization owner 항목 없음. 실제 `renderOverview()`·root click handler·`selectHubTab()` 및 `hani-main.js`의 organizationTabs → showView → selectOrganizationTab 경로 확인.
+
+## 결과와 증거
+
+- 검사·최종 결과는 완료 시 갱신. 페이지 공통 banner는 수정하지 않음.
+- Notion 현황판 및 Markdown 명세 읽기 성공. 착수 현황 append는 자동 승인 검토가 `MCP tool call requires approval, but approval policy is never`로 거절. 갱신 미반영, 재시도·우회 없음. 완료 요약은 이 인수인계에 보존 후 서윤에게 전달.
+
+## 다음 담당에게
+
+- 최종 검증 결과 및 다음 행동은 아래 완료 시 갱신 예정. 과거 사진 카드 검증 PASS를 이번 hero PASS로 재사용하지 않음.
+
+---
+
+# 이전 작업: 개요 DEMO DAY 사진 카드 복원
 
 ## 작업 식별
 

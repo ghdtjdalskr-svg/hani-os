@@ -95,7 +95,7 @@
   function renderOverview(){
     const slot=root.querySelector('.ogh-overview');if(!slot)return;
     const model=organizationOverviewData(typeof state==='undefined'?null:state,historyReleases,window.HaniOrganizationRoster),employee=model.employee;
-    if(!slot.querySelector('.ogh-history'))slot.innerHTML='<figure class="ogh-hero-art ogh-demoday-card"><img src="./assets/team/hani-org-demo-day-v1.webp" alt="M9 아홉 멤버가 제품 시연 현장에서 발표·기록·검토하는 협업 장면" width="1439" height="810" loading="lazy" decoding="async"><figcaption><span>INSIDE HANI / DEMO DAY</span><span>M9 · IN ACTION</span></figcaption><span class="ogh-seal" aria-hidden="true">ONE<br>TEAM<br>✳</span></figure>'+
+    if(!slot.querySelector('.ogh-history'))slot.innerHTML='<section class="ogh-hero" aria-labelledby="ogh-title"><div class="ogh-hero-copy"><span class="ogh-kicker">HANI GROUP / PERSONAL AI COMPANY</span><h1 id="ogh-title">사람의 전문성.<br><em>AI의 실행력.</em></h1><p>전략, 기술, 재무, 라이프, 비즈니스.<br>다섯 전문 조직을 하나의 AI 운영 체계로 연결합니다.</p><button type="button" class="ogh-cta" data-scroll="ogh-chart">조직 구조 살펴보기 <span>↘</span></button><div class="ogh-signature">HANI GROUP <span>Expertise. Technology. Execution.</span></div></div><figure class="ogh-hero-art"><img src="./assets/team/hani-org-demo-day-v1.webp" alt="M9 아홉 멤버가 제품 시연 현장에서 발표·기록·검토하는 협업 장면" width="1439" height="810" loading="lazy" decoding="async"><figcaption><span>INSIDE HANI / DEMO DAY</span><span>M9 · IN ACTION</span></figcaption><span class="ogh-seal" aria-hidden="true">ONE<br>TEAM<br>✳</span></figure></section>'+
       '<section class="ogh-section ogh-history" aria-labelledby="ogh-history-title"><div class="ogh-history-head"><div><span class="ogh-kicker">HANI GROUP / CHRONICLE</span><h2 id="ogh-history-title">HANI GROUP 연혁</h2><p>함께 만든 변화, 기록으로 이어가다.</p></div><div class="ogh-history-counts" aria-label="HANI 기록 집계"></div></div><div class="ogh-history-months" id="ogh-history-months"></div><button type="button" class="ogh-history-more" data-history-more aria-controls="ogh-history-months" aria-expanded="false" hidden>더 보기</button></section><div class="ogh-overview-details"></div>';
     const staff=window.HaniOrganizationRoster.people.filter(p=>p.status!=='planned'&&p.registration!=='planned');
     const issueCount=window.HaniIlbo?.publishedCount?.()??null;
@@ -238,9 +238,9 @@
     else if(button.dataset.person)showDetail('person',button.dataset.person);
     else if(button.dataset.team)showDetail('team',button.dataset.team);
     else if(button.dataset.scroll){
-      if(document.querySelector('.organization-tabs')){
-        showView('organization/people');
-      }
+      const peopleTab=document.querySelector('[data-organization-tab="people"]');
+      if(peopleTab)peopleTab.click();
+      else selectHubTab('people');
       root.querySelector(`#${button.dataset.scroll}`).scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
     }
     else if(button.dataset.group){group=button.dataset.group;filterPeople();}
@@ -255,7 +255,8 @@
     const overview=root.querySelector('.ogh-overview');
     if(overview){overview.hidden=tab!=='overview';if(!overview.hidden)renderOverview()}
     root.dataset.hubTab=tab;
-    root.querySelectorAll('.ogh-hero,.ogh-strip').forEach(node=>{node.hidden=directoryMode});
+    root.querySelectorAll('.ogh-hero').forEach(node=>{node.hidden=tab!=='overview'});
+    root.querySelectorAll('.ogh-strip').forEach(node=>{node.hidden=directoryMode});
     root.querySelectorAll('#ogh-chart,#ogh-teams,.ogh-type-controls').forEach(node=>{node.hidden=tab!=='people'});
     root.querySelector('.ogh-mast nav').hidden=tab!=='people';
     directory.hidden=!directoryMode;

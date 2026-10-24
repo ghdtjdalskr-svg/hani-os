@@ -43,9 +43,9 @@ try {
       app.classList.remove('login-locked'); app.inert = false; app.removeAttribute('aria-hidden');
       showView('organization/overview');
     });
-    const card = page.locator('.ogh-overview > .ogh-demoday-card');
-    const photo = card.locator('img');
-    await card.waitFor({state:'visible'});
+    const hero = page.locator('.ogh-overview > .ogh-hero');
+    const photo = hero.locator('.ogh-hero-art > img');
+    await hero.waitFor({state:'visible'});
     await photo.scrollIntoViewIfNeeded();
     await photo.evaluate(img => img.decode());
     const ownerErrors = [];
@@ -55,54 +55,69 @@ try {
         document.documentElement.dataset.finish = finish;
         document.documentElement.dataset.theme = finish === 'pure-white' ? 'light' : 'dark';
       }, finish);
-      assert.equal(await card.count(), 1);
+      assert.equal(await hero.count(), 1);
+      assert.equal(await hero.locator('#ogh-title').isVisible(), true, 'overview headline visible');
+      assert.equal(await hero.locator('#ogh-title').innerText(), '사람의 전문성.\nAI의 실행력.');
+      assert.equal(await hero.locator('.ogh-kicker').innerText(), 'HANI GROUP / PERSONAL AI COMPANY');
+      assert.equal(await hero.locator('.ogh-hero-copy > p').innerText(), '전략, 기술, 재무, 라이프, 비즈니스.\n다섯 전문 조직을 하나의 AI 운영 체계로 연결합니다.');
+      assert.match(await hero.locator('.ogh-signature').innerText(), /HANI GROUP\s+Expertise\. Technology\. Execution\./);
       assert.equal(await photo.getAttribute('width'), '1439');
       assert.equal(await photo.getAttribute('height'), '810');
       assert.equal(await photo.getAttribute('loading'), 'lazy');
       assert.equal(await photo.getAttribute('decoding'), 'async');
       assert.equal(await photo.getAttribute('src'), './assets/team/hani-org-demo-day-v1.webp');
       assert.equal(await photo.getAttribute('alt'), 'M9 아홉 멤버가 제품 시연 현장에서 발표·기록·검토하는 협업 장면');
-      assert.deepEqual(await card.locator('figcaption span').allTextContents(), ['INSIDE HANI / DEMO DAY', 'M9 · IN ACTION']);
-      assert.equal(await card.locator('.ogh-seal').innerText(), 'ONE\nTEAM\n✳');
-      const metrics = await card.evaluate(el => {
+      assert.deepEqual(await hero.locator('figcaption span').allTextContents(), ['INSIDE HANI / DEMO DAY', 'M9 · IN ACTION']);
+      assert.equal(await hero.locator('.ogh-seal').innerText(), 'ONE\nTEAM\n✳');
+      const metrics = await hero.evaluate(el => {
         const img = el.querySelector('img'), history = el.nextElementSibling;
         const a = el.getBoundingClientRect(), b = history.getBoundingClientRect(), p = img.getBoundingClientRect();
-        const seal = el.querySelector('.ogh-seal').getBoundingClientRect();
         return {height:p.height, width:p.width, decoded:img.complete && img.naturalWidth > 0,
           historyNext:history.matches('.ogh-history'), above:a.bottom <= b.top,
           overflow:document.documentElement.scrollWidth > innerWidth,
-          sealInside:seal.left >= a.left && seal.right <= a.right && seal.top >= a.top && seal.bottom <= a.bottom,
-          cardWidth:a.width, slotWidth:el.parentElement.clientWidth,
-          imageColor:getComputedStyle(el).backgroundColor, captionColor:getComputedStyle(el.querySelector('figcaption')).color};
+          heroWidth:a.width, slotWidth:el.parentElement.clientWidth,
+          imageColor:getComputedStyle(img.parentElement).backgroundColor, captionColor:getComputedStyle(el.querySelector('figcaption')).color};
       });
       assert.equal(metrics.decoded, true);
-      assert.ok(metrics.height > 100 && metrics.height <= 361, JSON.stringify(metrics));
-      assert.equal(metrics.historyNext && metrics.above && metrics.sealInside, true, JSON.stringify(metrics));
+      assert.ok(metrics.height > 0 && Math.abs(metrics.width / metrics.height - 1439 / 810) < 0.01, 'whole Demo Day image ratio');
+      assert.equal(metrics.historyNext && metrics.above, true, JSON.stringify(metrics));
       assert.equal(metrics.overflow, false, `${width}/${finish}: horizontal overflow`);
-      if (width === 390) assert.ok(Math.abs(metrics.cardWidth - metrics.slotWidth) <= 1, 'mobile card fills slot');
-      assert.equal(await page.locator('.ogh-hero,.ogh-cta').count(), 0, 'no duplicated headline/CTA');
+      if (width === 390) assert.ok(Math.abs(metrics.heroWidth - metrics.slotWidth) <= 1, 'mobile hero fills slot');
+      assert.equal(await page.locator('#ogh-title').count(), 1, 'single headline id');
+      assert.equal(await page.locator('.ogh-cta').count(), 1, 'single CTA');
       // Save references inside the page; later checks compare actual node identity.
-      await card.evaluate(el => { window.__demodayNode = el; window.__demodayImage = el.querySelector('img'); });
+      await hero.evaluate(el => { window.__demodayNode = el; window.__demodayImage = el.querySelector('img'); window.__demodayTitle = el.querySelector('h1'); });
       for (const tab of ['people', 'aiTeam', 'archive', 'overview', 'people', 'overview']) {
         await page.locator(`[data-organization-tab="${tab}"]`).click();
-        assert.equal(await card.isVisible(), tab === 'overview', `${tab}: overview photo visibility`);
-        assert.equal(await card.evaluate(el => el === window.__demodayNode && el.querySelector('img') === window.__demodayImage), true, 'persistent figure/image');
+        assert.equal(await hero.isVisible(), tab === 'overview', `${tab}: overview hero visibility`);
+        assert.equal(await hero.evaluate(el => el.hidden), tab !== 'overview', `${tab}: explicit hero hidden state`);
+        assert.equal(await hero.evaluate(el => el === window.__demodayNode && el.querySelector('img') === window.__demodayImage && el.querySelector('h1') === window.__demodayTitle), true, 'persistent hero/image/headline');
       }
+      assert.equal(await page.locator('#ogh-chart').isVisible(), false, 'chart hidden on overview');
+      await hero.locator('.ogh-cta').click();
+      await page.waitForFunction(() => document.querySelector('[data-organization-tab="people"]').getAttribute('aria-selected') === 'true' && document.querySelector('#haniOrganizationHub').dataset.hubTab === 'people');
+      assert.equal(await page.locator('#ogh-chart').isVisible(), true, 'CTA opens organization chart');
+      assert.equal(await hero.isVisible(), false, 'CTA leaves overview');
+      await page.waitForFunction(() => {
+        const chart = document.querySelector('#ogh-chart').getBoundingClientRect();
+        return chart.top >= 0 && chart.top < innerHeight;
+      });
+      await page.locator('[data-organization-tab="overview"]').click();
       await page.evaluate(() => window.dispatchEvent(new Event('hani-ilbo-ready')));
-      assert.equal(await card.evaluate(el => el === window.__demodayNode), true, 'overview update preserves card');
-      assert.equal(await card.count(), 1);
+      assert.equal(await hero.evaluate(el => el === window.__demodayNode && el.querySelector('img') === window.__demodayImage && el.querySelector('h1') === window.__demodayTitle), true, 'CTA and overview update preserve hero');
+      assert.equal(await hero.count(), 1);
       const duplicateIds = await page.locator('#haniOrganizationHub [id]').evaluateAll(nodes => {
         const ids = nodes.map(el => el.id); return ids.filter((id, i) => ids.indexOf(id) !== i);
       });
       assert.deepEqual(duplicateIds, []);
       assert.equal(await page.evaluate(() => localStorage.getItem('hani_os_life_v23')), protectedBefore);
-      // Frame the photo and the start of the timeline, preserving the real page layout.
-      await card.evaluate(el => window.scrollBy(0, el.getBoundingClientRect().top - 100));
+      // Frame the restored headline and Demo Day image in the real page layout.
+      await hero.evaluate(el => window.scrollBy(0, el.getBoundingClientRect().top - 100));
       await page.screenshot({path:path.join(out, `${width}${finish === 'pure-white' ? '' : '-' + finish}.png`)});
       results.push({width, finish, ...metrics, status:'PASS'});
-      console.log(`PASS DEMO DAY ${width}/${finish}: decoded, above history, no overflow, tab visibility, persistent DOM, protected key unchanged`);
+      console.log(`PASS DEMO DAY hero ${width}/${finish}: headline visible, decoded, above history, no overflow, tab visibility, CTA chart, persistent DOM, protected key unchanged`);
     }
-    assert.deepEqual(ownerErrors, [], 'no JS errors during card/tab checks');
+    assert.deepEqual(ownerErrors, [], 'no JS errors during hero/tab/CTA checks');
     await context.close();
   }
   fs.writeFileSync(path.join(out, 'results.json'), JSON.stringify({status:'PASS', url:origin, results}, null, 2) + '\n');
