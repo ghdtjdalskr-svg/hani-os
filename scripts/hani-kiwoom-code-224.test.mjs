@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import test from 'node:test';
+import qaSupport from './qa-1st-test-support.cjs';
 import {pathToFileURL,fileURLToPath} from 'node:url';
 const source=fs.readFileSync(new URL('../hani-asset-update-v1.js',import.meta.url),'utf8');
 const main=fs.readFileSync(new URL('../hani-main.js',import.meta.url),'utf8');
@@ -20,7 +21,7 @@ function fixture(ui=false){
     inferMarket:(ticker,market)=>market||(/^[0-9][0-9A-Z]{5}$/.test(ticker)?'KR':'US'),today:()=> '2026-10-21',setTimeout,
     localStorage:{getItem:k=>k===key?raw:null,setItem(){writes++;throw Error('Preview must not write')},removeItem(){writes++;throw Error('Preview must not remove')},clear(){writes++;throw Error('Preview must not clear')}},
     save(){writes++;throw Error('Preview must not save')},commit(){writes++;throw Error('Preview must not commit')},agentApi(){throw Error('Text must not call lookup/Cloud')},exportData(){throw Error('Preview must not export')}};
-  vm.createContext(sandbox);
+  vm.createContext(sandbox);qaSupport.loadInputHelpers(sandbox);
   vm.runInContext(main.split(/\r?\n/).find(line=>line.startsWith('function normalizeBrokerHolding(')),sandbox);
   vm.runInContext(source,sandbox);
   return {api:sandbox.window.HANI_ASSET_UPDATE_V1,nodes,node,sandbox,raw,writes:()=>writes};

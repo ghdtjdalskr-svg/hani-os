@@ -1,0 +1,15 @@
+diff --git a/hani-main.js b/hani-main.js
+--- a/hani-main.js
++++ b/hani-main.js
+@@
+-  const sign=s[0]==='-'?-1:1;s=s.replace(/^[+-]/,'');
++  const sign=s[0]==='-'?-1:1;s=s.replace(/^[+-]/,'');if(!s)return null;
+
+diff --git a/scripts/hani-qa-1st.test.cjs b/scripts/hani-qa-1st.test.cjs
+--- a/scripts/hani-qa-1st.test.cjs
++++ b/scripts/hani-qa-1st.test.cjs
+@@
++test('C1 standalone signs remain missing; explicit zero remains zero',()=>{
++  const h=harness();for(const value of ['-','+','-%','+원'])assert.equal(h.context.parseKoreanNumber(value),null,value);
++  for(const value of ['0','0원','+0','-0'])assert.equal(Math.abs(h.context.parseKoreanNumber(value)),0,value);
++});

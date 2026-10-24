@@ -1,0 +1,2119 @@
+[
+  {
+    "file": "scripts/hani-access-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-ai-budget-antigravity.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-ai-budget-browser.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]).href),root=path.resolve(import.meta.dirname,'..')",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-ai-budget-plan.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-ai-budget.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-ai-work-status.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-annual-report-ui-test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]?await import(pathToFileURL(process.argv[2]).href):require('playwright')",
+      "process.argv[2]?createRequire(pathToFileURL(process.argv[2])):require",
+      "process.argv[3]||'C:/Program Files/Google/Chrome/Application/chrome.exe'})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-app-216-audit.test.cjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-app-216-practical.test.cjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-app-216.test.cjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-asset-intake-v2-AB.browser.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2])throw Error('Usage: node scripts/hani-asset-intake-v2-AB.browser.mjs <playwright/index.mjs> <browser.exe>')",
+      "process.argv[2]).href)",
+      "process.argv[3]})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-asset-intake-v2-AB.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-asset-intake-v2-C.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-asset-intake-v2-ease.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-asset-update-browser-smoke.js",
+    "browser": true,
+    "argv": [],
+    "env": [
+      "HANI_PREVIEW_URL",
+      "HANI_SCREENSHOT_DIR",
+      "HANI_CHROME_PATH"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-asset-update-smoke.js",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-backup-history-runtime.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-banners-203-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]||'C:/Users/홍성민/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'",
+      "process.argv.includes('--node-only')){await import('./hani-banners-203.test.mjs')",
+      "process.argv[3]||'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-banners-203.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-board-203a.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-board-community.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-board-guard.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-board-library.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-board-living.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-board-relationship.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-board-views-211.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-board-vocative.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-board.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-boardroom-cross-review.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-boardroom-live-meeting.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-boardroom-recovery.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-boardroom-routing.test.mjs",
+    "browser": false,
+    "argv": [
+      "process.argv[2]"
+    ],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-boardroom-voice-contract.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-brand-heroes-218.browser.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--before')",
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-brand-heroes-218.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-building-206-engine.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-building-206-safety.test.mjs",
+    "browser": false,
+    "argv": [
+      "process.argv[2])"
+    ],
+    "env": [
+      "HANI_BUILDING_SAFETY_BASELINE"
+    ],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-building-206-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]||/\\.test\\.mjs$/.test(process.argv[2])||process.argv[2].startsWith('-')){",
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-building-206.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-character-archive-integration.test.cjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]||'C:/Users/홍성민/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs').href)",
+      "process.argv[3]||'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-character-archive-ui.test.cjs",
+    "browser": true,
+    "argv": [],
+    "env": [
+      "HANI_QA_OUTPUT",
+      "HANI_QA_CHROME"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-character-archive.test.cjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-chart-toss-212.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]&&process.argv[3]){const {chromium}=await import(pathToFileURL(path.resolve(process.argv[2])).href)",
+      "process.argv[3]})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-cloud-conflict-choice.test.mjs",
+    "browser": false,
+    "argv": [
+      "process.argv[2]||new URL(\"../hani-main.js\",import.meta.url),\"utf8\")"
+    ],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-cloud-egress-save-sim.test.mjs",
+    "browser": false,
+    "argv": [
+      "process.argv[2]||new URL(\"../hani-main.js\",import.meta.url)"
+    ],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-cloud-egress-sync.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-cloud-first.test.mjs",
+    "browser": false,
+    "argv": [
+      "process.argv[2]||new URL(\"../hani-main.js\",import.meta.url),\"utf8\")"
+    ],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-cloud-stability-runtime.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-context-remote-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--node-only')){await import('./hani-context-remote.test.mjs')",
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-context-remote.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-dash-217.browser.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]||path.join(process.env.USERPROFILE,'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs')",
+      "process.argv[3]||process.env.HANI_CHROME_PATH||'C:\\\\Program Files (x86)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe'})"
+    ],
+    "env": [
+      "USERPROFILE",
+      "HANI_CHROME_PATH"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-dash-217.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]&&process.argv[2].replaceAll('\\\\','/').endsWith('/playwright/index.mjs')",
+      "process.argv[2]&&!browserHarness){",
+      "process.argv[2],'utf8'),oldWindow={}"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-dash-218.browser.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--before'),phase=before?'before':'after'",
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-dash-218.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-dashboard-period-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})",
+      "process.argv.includes('--startup'))await page.evaluate(()=>{dataHubRuntime=null"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-dashboard-period.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-deploy-existing-pr-ui-smoke.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]"
+    ],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-deploy-package-intake-test.mjs",
+    "browser": false,
+    "argv": [
+      "process.argv[2]"
+    ],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-desk-mascots.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--unit') ? 'DOM execution, no pixel claims' : 'real browser', checks: [], errors: [], screenshots: [] }",
+      "process.argv.includes('--unit') ? 'runtime-unit.json' : 'browser-results.json'), JSON.stringify(report, null, 2) + '\\n')",
+      "process.argv.includes('--unit')) await unitChecks()"
+    ],
+    "env": [
+      "HANI_PLAYWRIGHT_PATH",
+      "USERPROFILE",
+      "HANI_CHROME_PATH"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-drive-vault-precheck.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-drive-vault.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-duplicate-id-guard.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-earnings-report-ui-test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]?await import(pathToFileURL(process.argv[2]).href):require('playwright')",
+      "process.argv[3]||'C:\\\\Program Files\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe'})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-egress-fix.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]){",
+      "process.argv[2])).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [
+      "HANI_GIT"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-exam-popup-214.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--browser')||path.basename(process.argv[2]||'')==='index.mjs') {",
+      "process.argv.includes('--browser')?process.argv.indexOf('--browser'):1,require=createRequire(import.meta.url)",
+      "process.argv[arg+1]||path.join(os.homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright')"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-existing-pr-qa-test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-final-review.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-fix-208-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-fix-208.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-fixes-213-market.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-fixes-213-oauth.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-gate-capacity-test.mjs",
+    "browser": false,
+    "argv": [
+      "process.argv[2]?JSON.parse(fs.readFileSync(process.argv[2],'utf8')):{candidate_sha:'a'.repeat(40),base_main_sha:'b'.repeat(40),files:[{path:'index.html',content:'<title>HANI v2.9.167</title>'}"
+    ],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-gemini-reports-build.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-goal-delete-test.js",
+    "browser": true,
+    "argv": [
+      "process.argv[2]",
+      "process.argv[3]||['C:/Program Files/Google/Chrome/Application/chrome.exe','C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'].find(file=>fs.existsSync(file))"
+    ],
+    "env": [
+      "GOAL_QA_SCREENSHOTS"
+    ],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-goal-media-budget-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]).href),root=path.resolve(import.meta.dirname,'..')",
+      "process.argv[3],headless:true}),evidence=path.join(root,'artifacts/goal-media-budget')"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-goal-media-budget.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-goal-period-view.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-goal-period.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-goal-progress-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--static')){",
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true}),evidence=path.join(root,'artifacts/goal-progress')"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-google-drive-212-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]).href)",
+      "process.argv[3].startsWith('http')?await chromium.connectOverCDP(process.argv[3]):await chromium.launch({executablePath:process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-google-drive-212.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-green-209.test.cjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-hana-intake-224.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]){",
+      "process.argv[2]).href),browser=await chromium.launch({headless:true,executablePath:process.argv[3]})"
+    ],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-hero-cast-218.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-hero-illustrations-218.browser.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--before'),phase=before?'before':'after'",
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-hero-restore.browser.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--before'),phase=before?'before':'after'"
+    ],
+    "env": [
+      "HANI_PLAYWRIGHT",
+      "HANI_BROWSER"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-hero-restore.test.mjs",
+    "browser": true,
+    "argv": [],
+    "env": [
+      "HANI_PLAYWRIGHT"
+    ],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-history-226.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.slice(2).filter(s=>!s.startsWith('--'))",
+      "process.argv.find(s=>s.startsWith('--cdp='))?.slice(6)",
+      "process.argv[1]&&path.resolve(process.argv[1])===import.meta.filename){"
+    ],
+    "env": [
+      "USERPROFILE"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-holdings-map-label-test.cjs",
+    "browser": true,
+    "argv": [],
+    "env": [
+      "HANI_CHROME_PATH"
+    ],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-ic-accumulation.test.cjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-ic-polish-205.test.cjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-ic-report-205.test.cjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-ilbo-213.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--unit')) {fs.writeFileSync(path.join(out,'unit-results.json'),JSON.stringify(report,null,2)+'\\n')",
+      "process.argv[2] || path.join(os.homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs')",
+      "process.argv[3] || 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-ilbo-banner-215.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]||path.join(os.homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs')",
+      "process.argv[3]||'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-intake-audit-206.test.cjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-invest-basis.test.cjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-invest-split-safety.test.mjs",
+    "browser": false,
+    "argv": [
+      "process.argv[2]"
+    ],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-invest-split-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]||!process.argv[3])throw Error('Usage: node scripts/hani-invest-split-ui.test.mjs <playwright index.mjs> <browser exe>')",
+      "process.argv[2])).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-invest-split.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-investment-committee.test.cjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-investment-research-safety.test.cjs",
+    "browser": false,
+    "argv": [
+      "process.argv[2] || !process.argv[3]) throw Error('Usage: node scripts/hani-investment-research-safety.test.cjs <baseline hani-main.js> <baseline index.html>')",
+      "process.argv[2], 'utf8'), main = fs.readFileSync(path.join(root, 'hani-main.js'), 'utf8')",
+      "process.argv[3], 'utf8'), html = fs.readFileSync(path.join(root, 'index.html'), 'utf8')"
+    ],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-investment-research-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2] || !process.argv[3]) throw Error('Usage: node scripts/hani-investment-research-ui.test.mjs <playwright index.mjs> <browser exe>')",
+      "process.argv[2])).href)",
+      "process.argv[4] ? path.resolve(root, process.argv[4]) : path.join(root, 'artifacts/investment-research')"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-investment-research.test.cjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-kiwoom-code-224.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]){",
+      "process.argv[2]).href)",
+      "process.argv[3]})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-launch-greeting-221-unit.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-launch-greeting-221.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2] || path.join(process.env.USERPROFILE, '.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs')",
+      "process.argv[3] || 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'})"
+    ],
+    "env": [
+      "USERPROFILE",
+      "HANI_CDP_ENDPOINT"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-learning-quiz-quality.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-learning-quiz-v04.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-login-a-204-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]&&process.argv[3],'args: <playwright index.mjs> <browser exe>')",
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-login-a-204.test.mjs",
+    "browser": false,
+    "argv": [
+      "process.argv[2],browserHarness=firstArg&&path.basename(firstArg)==='index.mjs'&&fs.statSync(firstArg).isFile()",
+      "process.argv[3]&&fs.statSync(process.argv[3]).isFile(),'shared runner browser exists')",
+      "process.argv.length,4,'shared runner takes only Playwright and browser')"
+    ],
+    "env": [
+      "HANI_LOGIN_TEST_BASELINE"
+    ],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-login-session-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2])).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-lounge-216.browser.mjs",
+    "browser": true,
+    "argv": [],
+    "env": [
+      "USERPROFILE",
+      "HANI_CHROME_PATH"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-lounge-216.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-lounge-ai-213.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-lounge-fun-211.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-lounge-natural-211.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-lounge-qa-212.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-market-browser-smoke.cjs",
+    "browser": true,
+    "argv": [],
+    "env": [
+      "HANI_MARKET_CACHE_TEST",
+      "HANI_MARKET_CACHE_OHLC_TEST",
+      "HANI_CHROME_PATH",
+      "HANI_MARKET_SCREENSHOT"
+    ],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-market-cache-test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-market-catalog-test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-market-data-test.cjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-market-gateway-test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-market-live-runner-test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-market-pc-test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-market-sdk-contract-test.cjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-market-session-replace-test.ps1",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-market-session-test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-media-c-controls.test.mjs",
+    "browser": false,
+    "argv": [
+      "process.argv[2]||new URL(\"../hani-main.js\",import.meta.url),\"utf8\")"
+    ],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-media-core.test.mjs",
+    "browser": false,
+    "argv": [
+      "process.argv[2] && path.basename(process.argv[2])===\"index.mjs\"",
+      "process.argv[2])||new URL(\"../hani-main.js\",import.meta.url),\"utf8\")",
+      "process.argv[3]?fs.readFileSync(process.argv[3],\"utf8\"):"
+    ],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-meeting-character-voice.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-meeting-engine-v2-batch1.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-meeting-engine-v2-client.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-meeting-engine-v2-ui-smoke.mjs",
+    "browser": true,
+    "argv": [],
+    "env": [
+      "HANI_PREVIEW_URL",
+      "HANI_PREVIEW_OUTPUT_DIR",
+      "HANI_BROWSER_PATH"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-milestones-v1.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2] && process.argv[3]) {",
+      "process.argv[2]).href)",
+      "process.argv[3], headless:true})"
+    ],
+    "env": [
+      "HANI_GIT_PATH",
+      "HANI_GIT"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-mission-203a.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-mobile-intake-206.test.cjs",
+    "browser": false,
+    "argv": [
+      "process.argv.includes('--baseline')"
+    ],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-monthly-report-aggregation-test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-monthly-report-design-212.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]&&process.argv[3]){",
+      "process.argv[2])).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-monthly-report-smoke.mjs",
+    "browser": true,
+    "argv": [],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-nav-groups.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-navigation-state-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]).href),root=fileURLToPath(new URL('../',import.meta.url))",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-navlogin-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-navlogin.test.mjs",
+    "browser": false,
+    "argv": [
+      "process.argv[2]){",
+      "process.argv[2],'utf8').replace(/\\r\\n/g,'\\n')"
+    ],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-newface-217.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [
+      "HANI_SHARP_PATH"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-newsroom-4cut-230.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--node')",
+      "process.argv.includes('--browser')",
+      "process.argv.slice(2).filter(a=>!a.startsWith('--'))"
+    ],
+    "env": [
+      "HANI_PLAYWRIGHT",
+      "HANI_BROWSER_PATH"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-newsroom-followup-smoke.mjs",
+    "browser": true,
+    "argv": [],
+    "env": [
+      "HANI_PREVIEW_URL",
+      "HANI_PREVIEW_OUTPUT_DIR",
+      "HANI_BROWSER_PATH"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-newsroom-persona.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-newstaff-215.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--unit')){console.log('PASS newstaff-215 unit: '+report.unit.length+' groups')",
+      "process.argv.slice(2),pw=args[0]||path.join(os.homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'),exe=args[1]||'C:/Program Files (x86)"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-ocr-accuracy-224.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]){",
+      "process.argv[2]).href),browser=await chromium.launch({headless:true,executablePath:process.argv[3]})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-office-217.browser.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url))await runOffice217Browser(process.argv[2],process.argv[3])"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-office-219.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--browser')?'label-results.json':'label-unit-results.json'),JSON.stringify(report,null,2))",
+      "process.argv.includes('--browser')){console.log('NOT RUN: real screen/label bounds/overlap/scale screenshots",
+      "process.argv.indexOf('--browser')"
+    ],
+    "env": [
+      "HANI_OFFICE_TEST_BASELINE",
+      "USERPROFILE",
+      "OFFICE_SOFT"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-office-actions-216.browser.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]||path.join(process.env.USERPROFILE,'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs')"
+    ],
+    "env": [
+      "USERPROFILE",
+      "HANI_CHROME_PATH"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-office-actions-216.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-office-actions-221.browser.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]||path.join(process.env.USERPROFILE,'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs')"
+    ],
+    "env": [
+      "USERPROFILE",
+      "HANI_CHROME_PATH"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-office-actions-221.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-office-behavior.browser.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]||path.join(process.env.USERPROFILE,'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs')",
+      "process.argv[3]||process.env.HANI_CHROME_PATH||'C:\\\\Program Files (x86)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe'})"
+    ],
+    "env": [
+      "USERPROFILE",
+      "HANI_CHROME_PATH"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-office-behavior.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-office-fix-218.browser.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2])).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-office-fix-218.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-office-hd-224.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--browser'))await browserChecks()",
+      "process.argv.slice(process.argv.indexOf('--browser')+1),report={result:'running',checks:[],screenshots:[],errors:[],baseline:'aa9c963c39e51775e3077bfbd22b2ea32e4372a1',clock:'2026-10-19T10:00:"
+    ],
+    "env": [
+      "HANI_SHARP_MODULE"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-office-lively-record.browser.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--help')){console.log('Options: --floor 3f --minutes 6 --label after --ref <SHA> --start <ISO+09:00> --speed 15 --playwright <index.mjs> --chrome <browser.exe>')",
+      "process.argv.length",
+      "process.argv[i].startsWith('--')||!process.argv[i+1])throw Error('Expected --option value')"
+    ],
+    "env": [
+      "USERPROFILE",
+      "HANI_CHROME_PATH"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-office-lively-v2.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-office-lively.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-office-obr10.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-office-obr12.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-office-obr3.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-office-obr4.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-office-obr6.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-office-obr7.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-office-obr8.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-office-obr9.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-office-seats-215.test.mjs",
+    "browser": true,
+    "argv": [],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-office-tap-lines.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--browser'))test('real browser: sprite tap from bank, floor bounds, lifetime and zero writes at 390/1440',browserChecks)",
+      "process.argv.slice(process.argv.indexOf('--browser')+1)"
+    ],
+    "env": [
+      "USERPROFILE"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-office-v2-215.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--browser')},async()=>{",
+      "process.argv.indexOf('--browser')",
+      "process.argv[arg+1],process.argv[arg+2])"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-offline-entry-223.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2])).href)",
+      "process.argv[3]})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-offline-transport-223.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [
+      "HANI_GIT_PATH"
+    ],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-one-pass-protected-surface.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-org-demoday-card.browser.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.slice(2)"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-owner-verification-diagnostic.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-owner-verification-runtime.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--static')){",
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-owner-verification-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-photo-backup-222.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]){",
+      "process.argv[2]).href)",
+      "process.argv[3].startsWith('http')?await chromium.connectOverCDP(process.argv[3]):await chromium.launch({executablePath:process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-polish-205-safety.test.mjs",
+    "browser": false,
+    "argv": [
+      "process.argv[2]),root=path.resolve(import.meta.dirname,'..')"
+    ],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-polish-215.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--unit')){console.log('PASS polish-215 unit: '+report.unit.length+' groups')",
+      "process.argv.slice(2),pw=args[0]||path.join(os.homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'),exe=args[1]||'C:/Program Files (x86)"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-portfolio-completeness-test.js",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-portfolio-contrast-test.js",
+    "browser": true,
+    "argv": [],
+    "env": [
+      "HANI_PORTFOLIO_CONTRAST_URL"
+    ],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-positions-only-test.cjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-post-audit-investment.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-post-audit-mobile-overlap.test.cjs",
+    "browser": true,
+    "argv": [],
+    "env": [
+      "HANI_CHROME_PATH"
+    ],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-proactive-204-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.slice(2)"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-proactive-204.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [
+      "HANI_PROACTIVE_TEST_BASELINE"
+    ],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-proactive-care-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.slice(2)"
+    ],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-profile-thumbs-ui.test.cjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]||\"playwright\")",
+      "process.argv[3]})"
+    ],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-protected-gate-integration.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-protected-write-contract.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-pwa-213.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--static') ? 'static-status.json' : 'run-status.json'), JSON.stringify(report, null, 2) + '\\n')",
+      "process.argv.includes('--static')) {",
+      "process.argv[2] || process.env.PLAYWRIGHT_MODULE"
+    ],
+    "env": [
+      "PLAYWRIGHT_MODULE",
+      "PWA_BROWSER"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-pwa-release-paths.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-qa-1st-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]||!process.argv[3])throw Error('Usage: node scripts/hani-qa-1st-ui.test.mjs <playwright index.mjs> <browser exe>')",
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-qa-1st.test.cjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-qa-210-followup.test.mjs",
+    "browser": false,
+    "argv": [
+      "process.argv[2]&&path.basename(process.argv[2])!=='index.mjs'?process.argv[2]:process.env.HANI_QA_TEST_BASELINE"
+    ],
+    "env": [
+      "HANI_QA_TEST_BASELINE",
+      "HANI_GIT_PATH",
+      "HANI_QA_EOL_BASELINE"
+    ],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-qa-210.test.mjs",
+    "browser": false,
+    "argv": [
+      "process.argv[2]&&path.basename(process.argv[2])!=='index.mjs'?process.argv[2]:process.env.HANI_QA_TEST_BASELINE"
+    ],
+    "env": [
+      "HANI_QA_TEST_BASELINE",
+      "HANI_QA_EOL_BASELINE"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-quality-data-runtime.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-quiz-autogen-216.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-quiz-client-209.test.cjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-quiz-qa-212.test.cjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-quiz-quality-210.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-relationship-seed-build.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-remote-card-224.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--restore-217')",
+      "process.argv.includes('--node-only')){await verifyRemoteCardNode()",
+      "process.argv.includes('--geometry-only')"
+    ],
+    "env": [
+      "HANI_REMOTE_CARD_OUTPUT",
+      "HANI_PLAYWRIGHT",
+      "HANI_GIT_PATH",
+      "HANI_BROWSER"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-remote-media-219.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--node-only')){await verifyRemoteCardNode()",
+      "process.argv[2]||'C:/Users/홍성민/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'",
+      "process.argv[3]||'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'"
+    ],
+    "env": [
+      "HANI_GIT_PATH",
+      "HANI_GIT"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-report-common-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-report-common.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-review-compact-212.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-reviewed-release-baseline.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-runtime-closure-ilbo.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-second-opinion-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-second-opinion.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-server-owner-access.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-settings-225.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.slice(2).filter(arg=>!arg.startsWith('--'))",
+      "process.argv.includes('--static')){"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-simplify-218.browser.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--before'),phase=before?'before':'after'",
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-simplify-218.test.cjs",
+    "browser": false,
+    "argv": [],
+    "env": [
+      "HANI_SIMPLIFY_BASELINE"
+    ],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-simplify-225.browser.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--before')?'before':'after',origin='http://hani-simplify-225.local'",
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-simplify-225.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-sports-sync-contract.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-staff-floors-214.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--static')){t.skip('Node-only run requested",
+      "process.argv[2]||process.env.HANI_PLAYWRIGHT_MODULE||path.join(os.homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs')",
+      "process.argv[3]||process.env.HANI_CHROME||["
+    ],
+    "env": [
+      "HANI_PLAYWRIGHT_MODULE",
+      "HANI_CHROME"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-street-journal-closure.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-street-journal.browser.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-street-journal.test.cjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-study-news-material.test.js",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-study-tutor-215.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-tasks-qa-212.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.slice(2)"
+    ],
+    "env": [
+      "HANI_PROACTIVE_TEST_BASELINE",
+      "HANI_BROWSER_CDP"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-theme-white-215.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2])process.exit(0)",
+      "process.argv[2]).href)",
+      "process.argv[2]))('sharp')"
+    ],
+    "env": [
+      "HANI_GIT_PATH",
+      "HANI_RELEASED_BASELINE"
+    ],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-toss-intake-224.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]){",
+      "process.argv[2]).href),browser=await chromium.launch({headless:true,executablePath:process.argv[3]})"
+    ],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-transaction-date.test.mjs",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-transaction-runtime.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-travel-places-browser-smoke.js",
+    "browser": true,
+    "argv": [],
+    "env": [
+      "HANI_QA_URL",
+      "HANI_BROWSER_PATH"
+    ],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-ui-203b-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv.includes('--static')){",
+      "process.argv[2]||'C:/Users/홍성민/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'",
+      "process.argv[3]||'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-ui-203b.test.mjs",
+    "browser": false,
+    "argv": [
+      "process.argv[2]?.startsWith('--')?null:process.argv[2],browserHarness=firstArg&&path.basename(firstArg)==='index.mjs'"
+    ],
+    "env": [
+      "HANI_UI203B_TEST_BASELINE"
+    ],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-yuna-schedule-ui.test.mjs",
+    "browser": true,
+    "argv": [
+      "process.argv[2]).href)",
+      "process.argv[3],headless:true})"
+    ],
+    "env": [],
+    "writes": true
+  },
+  {
+    "file": "scripts/hani-yuna-schedule.test.js",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  },
+  {
+    "file": "scripts/hani-yuna-smoke.js",
+    "browser": false,
+    "argv": [],
+    "env": [],
+    "writes": false
+  }
+]

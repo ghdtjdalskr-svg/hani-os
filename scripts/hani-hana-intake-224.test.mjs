@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import test from 'node:test';
+import qaSupport from './qa-1st-test-support.cjs';
 import {pathToFileURL} from 'node:url';
 import {stripTypeScriptTypes} from 'node:module';
 const source=fs.readFileSync(new URL('../hani-asset-update-v1.js',import.meta.url),'utf8'),main=fs.readFileSync(new URL('../hani-main.js',import.meta.url),'utf8'),edge=fs.readFileSync(new URL('../supabase/functions/hani-agent-orchestrator/index.ts',import.meta.url),'utf8');
@@ -35,7 +36,7 @@ const imageB={financialInstitution:'하나증권',asOfDate:'2026-10-21',extracte
 합성펀드
 평가금액 100,050원`,holdings:[{name:'합성전자',ticker:'123456',quantity:10,valuationAmount:200150},{name:'합성펀드',ticker:'234567',valuationAmount:100050}]};
 const data=()=>({version:'2.9.15-safe-baseline-bootstrap',accounts:[{id:'hana',name:'합성 하나',broker:'하나증권',type:'위탁종합'},{id:'kiwoom',name:'합성 키움',broker:'키움증권',type:'ISA'},{id:'toss',name:'합성 토스',broker:'토스증권',type:'위탁'}],investmentBrokerSnapshots:[{id:'prior',mode:'actual',status:'confirmed',period:'2026-10',snapshotDate:'2026-10-20',accounts:[{id:'old',accountId:'hana',enabled:true,estimatedAssets:299000,totalEvaluation:299000,holdings:[{id:'one',name:'합성전자',ticker:'123456',market:'KR',quantity:10,buyPrice:22000,currentPrice:20000,purchaseAmount:220000,evaluationAmount:200000},{id:'two',name:'합성펀드',ticker:'234567',market:'KR',quantity:2,buyPrice:51000,currentPrice:50000,purchaseAmount:102000,evaluationAmount:100000}]}]}],ui:{series:[]},tasks:[{title:'그대로 보존'}]});
-function fixture(){const sandbox={window:{},document:{getElementById:()=>null},structuredClone,console,uid:()=> 'synthetic',nullableNum:v=>v==null||v===''?null:Number(v),inferMarket:(t,m)=>m||'KR'};vm.createContext(sandbox);vm.runInContext(main.split(/\r?\n/).find(l=>l.startsWith('function normalizeBrokerHolding(')),sandbox);vm.runInContext(source,sandbox);return sandbox.window.HANI_ASSET_UPDATE_V1}
+function fixture(){const sandbox={window:{},document:{getElementById:()=>null},structuredClone,console,today:()=> '2026-10-21',uid:()=> 'synthetic',nullableNum:v=>v==null||v===''?null:Number(v),inferMarket:(t,m)=>m||'KR'};vm.createContext(sandbox);qaSupport.loadInputHelpers(sandbox);vm.runInContext(main.split(/\r?\n/).find(l=>l.startsWith('function normalizeBrokerHolding(')),sandbox);vm.runInContext(source,sandbox);return sandbox.window.HANI_ASSET_UPDATE_V1}
 const api=fixture(),combined=()=>api.mergeScreens([api.normalize(structuredClone(imageA)),api.normalize(structuredClone(imageB))]);
 
 // Execute the real input/button callbacks with an isolated DOM/storage double.
@@ -48,15 +49,15 @@ function editorFixture(linked=false,inputs=[imageA,imageB]){
     return {id,value:attributes.value||'',textContent:'',style:{},dataset:Object.fromEntries(Object.entries(attributes).filter(([k])=>k.startsWith('data-')).map(([k,v])=>[k.slice(5).replace(/-([a-z])/g,(_,c)=>c.toUpperCase()),v])),disabled:false,
       get innerHTML(){return html},set innerHTML(v){html=v;children.length=0;for(const m of v.matchAll(/<(?:input|select|button|small|div)\b([^>]*)>/g)){const childId=m[1].match(/\bid="([^"]*)"/)?.[1]||'',child=element(childId,m[1]);children.push(child);if(childId)nodes.set(childId,child)}},
       querySelectorAll(selector){const key=selector.match(/^\[([\w-]+)\]$/)?.[1];return key?children.filter(c=>key.slice(5).replace(/-([a-z])/g,(_,x)=>x.toUpperCase()) in c.dataset):[]},
-      setAttribute(){},closest(){return null},scrollIntoView(){},focus(){},appendChild(){}
+      setAttribute(){},removeAttribute(){},closest(){return null},scrollIntoView(){},focus(){},appendChild(){}
     };
   }
   const node=id=>{if(!nodes.has(id))nodes.set(id,element(id));return nodes.get(id)},state=data();
-  const sandbox={window:{},document:{getElementById:node,createElement:()=>element()},URL:{createObjectURL:()=> 'blob:synthetic',revokeObjectURL(){}},console,structuredClone,state,uid:()=>Math.random().toString(36),nullableNum:v=>v==null||v===''?null:Number(v),inferMarket:(t,m)=>m||'KR',n:v=>Number(v)||0,today:()=> '2026-10-21',STORAGE_KEY:'hani_os_life_v23',
+  const sandbox={window:{},document:{getElementById:node,createElement:()=>element(),querySelectorAll:()=>[]},URL:{createObjectURL:()=> 'blob:synthetic',revokeObjectURL(){}},console,structuredClone,state,uid:()=>Math.random().toString(36),nullableNum:v=>v==null||v===''?null:Number(v),inferMarket:(t,m)=>m||'KR',n:v=>Number(v)||0,today:()=> '2026-10-21',STORAGE_KEY:'hani_os_life_v23',
     localStorage:{getItem:()=>stored,setItem(){throw Error('Unexpected direct storage path')}},save(){assert.equal(phase,true,'write only after explicit approval');writes++;stored=JSON.stringify(state);return {ok:true}},commit(){throw Error('Unexpected commit path')},exportData:()=>true,renderAll(){},toast(){},
     officialBrokerSorted:()=>state.investmentBrokerSnapshots.filter(s=>s.mode==='actual'),brokerBlank:()=>({id:'blank',mode:'actual',accounts:[]}),agentObj:x=>x,intakeImageToDataUrl:async()=> 'synthetic'};
   sandbox.window.HaniAssetMarket={resolveHoldings:async()=>linked};let queue=structuredClone(inputs);sandbox.agentApi=async()=>({extraction:{target_hint:'asset',...structuredClone(queue.shift())}});
-  vm.createContext(sandbox);for(const name of ['normalizeBrokerHolding','normalizeBrokerAccount','normalizeBrokerSnapshot'])vm.runInContext(main.split(/\r?\n/).find(l=>l.startsWith('function '+name+'(')),sandbox);vm.runInContext(source,sandbox);
+  vm.createContext(sandbox);qaSupport.loadInputHelpers(sandbox);for(const name of ['normalizeBrokerHolding','normalizeBrokerAccount','normalizeBrokerSnapshot'])vm.runInContext(main.split(/\r?\n/).find(l=>l.startsWith('function '+name+'(')),sandbox);vm.runInContext(source,sandbox);
   return {node,state,stored:()=>stored,writes:()=>writes,allowSave:()=>{phase=true},async start(){node('assetCaptureAccount').value='hana';node('assetCaptureAccount').onchange();node('assetCaptureFiles').files=inputs.map((_,i)=>({name:i+'.png'}));node('assetCaptureFiles').onchange();await node('assetCaptureAnalyze').onclick()},paste(broker){node('assetCaptureAccount').value=broker;node('assetCaptureAccount').onchange();node('assetCapturePasteZone').onpaste({preventDefault(){},clipboardData:{getData:()=> '종목명\t종목코드\t수량\t평균단가\t현재가\t평가금액\t매입금액\n합성 종목\t345678\t2\t100\t110\t220\t200'}})},edit(scope,key,row,v){const input=node('asset-edit-'+scope+'-'+(row??'total')+'-'+key);input.value=v;input.oninput()}};
 }
 

@@ -1,0 +1,14 @@
+{
+  "node": "v24.20.0",
+  "platform": "win32",
+  "architecture": "x64",
+  "base": "2cbbe6ed0c14954008208f0db2316b5f09228c2a",
+  "candidate": "bbc1ff97b498876de752a5705f714cd00f2d7e64",
+  "branch": "hani/train233-verify",
+  "gitFallback": "Native Git exact command/cwd exports, binary bytes plus exit status; no assertion replacement, no current source substituted for historical source",
+  "mainReadonly": "m233 unchanged; generated evidence redirected for both targets into this writable task tree",
+  "browser": "Four explicit requested probes failed at spawn EPERM; early full-suite default launch paths also reached EPERM before the quota interceptor was installed; later browser spawns blocked before OS launch. No browser process or screenshot obtained.",
+  "notion": "Read succeeded; insert rejected by automatic approval: approval policy is never",
+  "freeze": "Not frozen; diagnostic build only; One-Pass/HINA/merge/deploy/read-back not run",
+  "pendingRuntimeFix": "No user response received yet; sign-only numeric regression preserved. Proposed one-line patch passed 14 isolated VM cases."
+}

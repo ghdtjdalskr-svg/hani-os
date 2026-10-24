@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import test from 'node:test';
+import qaSupport from './qa-1st-test-support.cjs';
 import crypto from 'node:crypto';
 const source=fs.readFileSync(new URL('../hani-asset-update-v1.js',import.meta.url),'utf8');
 const main=fs.readFileSync(new URL('../hani-main.js',import.meta.url),'utf8');
@@ -18,7 +19,7 @@ function fixture(){
     localStorage:{getItem(){if(failure==='read')throw Error('read failed');return stored},setItem(){throw Error('direct write forbidden')},removeItem(){throw Error('remove forbidden')},clear(){throw Error('clear forbidden')}},
     save(){writes++;if(failure==='throw')throw Error('save threw');if(failure==='false')return {ok:false,message:'save refused'};stored=JSON.stringify(state);if(failure==='corrupt'){const bad=JSON.parse(stored);bad.investmentBrokerSnapshots.at(-1).accounts[0].totalEvaluation=999;stored=JSON.stringify(bad)}return {ok:true}},
     exportData(){backup++;return failure!=='backup'},renderAll(){if(refreshError)throw Error('refresh failed')},toast(){},officialBrokerSorted:()=>state.investmentBrokerSnapshots.filter(s=>s.mode==='actual'),brokerBlank:()=>({id:'new-month',mode:'actual',accounts:[]})};
-  vm.createContext(ctx);for(const name of ['inferMarket','normalizeBrokerHolding','normalizeBrokerAccount','normalizeBrokerSnapshot'])vm.runInContext(main.split(/\r?\n/).find(l=>l.startsWith('function '+name+'(')),ctx);
+  vm.createContext(ctx);qaSupport.loadInputHelpers(ctx);for(const name of ['inferMarket','normalizeBrokerHolding','normalizeBrokerAccount','normalizeBrokerSnapshot'])vm.runInContext(main.split(/\r?\n/).find(l=>l.startsWith('function '+name+'(')),ctx);
   // Expose lexical owners only in this VM. Production source has no test API.
   const instrumented=source.replace('if(!root)return;','window.testC={approve,approvePositions,render,set:d=>{draft=d;selected=[{name:"synthetic.png"}];},draft:()=>draft,selected:()=>selected};if(!root)return;');
   state.investmentBrokerSnapshots=state.investmentBrokerSnapshots.map(ctx.normalizeBrokerSnapshot);stored=JSON.stringify(state);vm.runInContext(instrumented,ctx);ctx.document.getElementById=node;

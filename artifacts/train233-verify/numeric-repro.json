@@ -1,0 +1,50 @@
+{
+  "candidate": "bbc1ff97b498876de752a5705f714cd00f2d7e64",
+  "function": "parseKoreanNumber",
+  "observations": [
+    {
+      "input": "-",
+      "value": 0,
+      "negativeZero": true,
+      "expected": null
+    },
+    {
+      "input": "+",
+      "value": 0,
+      "negativeZero": false,
+      "expected": null
+    },
+    {
+      "input": "-%",
+      "value": 0,
+      "negativeZero": true,
+      "expected": null
+    },
+    {
+      "input": "+원",
+      "value": 0,
+      "negativeZero": false,
+      "expected": null
+    },
+    {
+      "input": "0",
+      "value": 0,
+      "negativeZero": false,
+      "expected": 0
+    },
+    {
+      "input": "0원",
+      "value": 0,
+      "negativeZero": false,
+      "expected": 0
+    },
+    {
+      "input": "1만",
+      "value": 10000,
+      "negativeZero": false,
+      "expected": 10000
+    }
+  ],
+  "runtimeChanged": false,
+  "decision": "Runtime fix awaiting user response; storage/cloud untouched"
+}

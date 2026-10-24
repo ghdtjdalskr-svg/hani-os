@@ -1,0 +1,80 @@
+[
+  {
+    "file": "hani-asset-market-view.js",
+    "beforeSha256": "69ccbfd6c8e13472d3a19b68e5c23a2ed767e2adbd4fb378ab1aa0f738e9406a",
+    "afterSha256": "46bd76c3d4787d19ebb3f0f6b9027574c5d2e0fbf36b0922ece2743682c31af8",
+    "hunks": 2
+  },
+  {
+    "file": "hani-asset-update-v1.js",
+    "beforeSha256": "f2c9f5e8560493327215a40a241f468fa85f9d175f6f241296ec71eff61a10ad",
+    "afterSha256": "b6a8b0a68cb98962bf858889006c85e0d893a2e665c06904e10334cf7228a36d",
+    "hunks": 12
+  },
+  {
+    "file": "hani-context-remote-v1.js",
+    "beforeSha256": "8005ad3044aaf40f128b35dc9b4c775c01b60a9c8fe5db4dd5d6469ed6940acb",
+    "afterSha256": "b7de3e0a0493087f7cee9b4b83e67fdbbbb8ab1988b6d00a7a3c015543e4903d",
+    "hunks": 1
+  },
+  {
+    "file": "hani-context-remote.css",
+    "beforeSha256": "c3fd5c1f705dfb2b785912d79cd20538b23a3c48a96433e7c271af068408400a",
+    "afterSha256": "b64b1f7e6e2379145175d7204499570c16a56a47da4c4ba79289040ccb790247",
+    "hunks": 1
+  },
+  {
+    "file": "hani-design-system.css",
+    "beforeSha256": "3e1ef096794498a6a82d8d27643711e275578a82c8b77f5a0f64e6d5753c0c0f",
+    "afterSha256": "f9d092fe54d118d123ee468b45d5f15c5c308b74109762ac4a1e456a00c465a7",
+    "hunks": 1
+  },
+  {
+    "file": "hani-investment-committee.js",
+    "beforeSha256": "2ebf41406310b1437ccd404825c3737274c6ee33c1e2832744e827ee60ff9597",
+    "afterSha256": "62c1f55ee109b2a593d6ec850dea6af263e24712bfcc3aab7c401c677ef828b0",
+    "hunks": 1
+  },
+  {
+    "file": "hani-main.js",
+    "beforeSha256": "5add216f3c65baae30830d0cbcb866f0df3d043350485756e5142a2cd396f037",
+    "afterSha256": "c2323ec295261567f1d7974c856fdb7528ffade4edc6b16ae8fcef83d64faaf7",
+    "hunks": 20
+  },
+  {
+    "file": "hani-organization-hub.css",
+    "beforeSha256": "ed3f3269c334ec55e49e4735ae49c6784023675b8354090a947ac59fdec5e877",
+    "afterSha256": "316a1a3555d1ef8c2bd35d7294b3618c939eee2ffeabd9d3421a86d7379a8a14",
+    "hunks": 1
+  },
+  {
+    "file": "hani-organization-hub.js",
+    "beforeSha256": "35d088a048a1059a6d6884fb72c89b31016e931a5cd9bc9c3950e9ca1a7a478a",
+    "afterSha256": "83acfff8686b3ab88d7e74cf6e93c0b719f2bd82dd814c850a898114c1c4956b",
+    "hunks": 3
+  },
+  {
+    "file": "hani-study-v02984.js",
+    "beforeSha256": "e181bff6f39e25f598bf54c933bf17a80dcb6f51e33471e59b4840a5fa30d9aa",
+    "afterSha256": "f90f884f35210b1773ee97122a6f13a6a2cac0cf17cac80a2f971910d5272d78",
+    "hunks": 3
+  },
+  {
+    "file": "hani-style-07.css",
+    "beforeSha256": "6c19160ece196808e25ee8dda216c24f77204a1c6640919ee4cc33c30a08a86f",
+    "afterSha256": "00de7ed2c0962d03781ea05cbd9178df463e667a087ce042ecf1171985775432",
+    "hunks": 1
+  },
+  {
+    "file": "hani-yuna-helpdesk.js",
+    "beforeSha256": "21eda9d9160947e2ba2bebbe0af6c378d81e4d591e6be69be02d09fce9019b7e",
+    "afterSha256": "195c7711c825cb5276b7978bb88ee98d9b7bfa0714fbf69f41f86518942de229",
+    "hunks": 6
+  },
+  {
+    "file": "index.html",
+    "beforeSha256": "d83c8ef30577314e566a51054f06e347992aba6ad424bd4a0ebfe1d449fe81af",
+    "afterSha256": "a644f88a78f92eb12eaae282081ed52ba52cb84e48014bb3feb73ecd057941f4",
+    "hunks": 2
+  }
+]

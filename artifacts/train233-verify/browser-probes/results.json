@@ -1,0 +1,62 @@
+[
+    {
+        "log":  "browser-probes/candidate-hani-asset-intake-v2-AB.browser.mjs.log",
+        "ms":  349,
+        "file":  "scripts/hani-asset-intake-v2-AB.browser.mjs",
+        "browserArgs":  true,
+        "status":  "BLOCKED",
+        "target":  "candidate",
+        "exit":  1,
+        "exports":  0
+    },
+    {
+        "status":  "ABSENT",
+        "target":  "main",
+        "file":  "scripts/hani-asset-intake-v2-AB.browser.mjs"
+    },
+    {
+        "log":  "browser-probes/candidate-hani-milestones-v1.test.mjs.log",
+        "ms":  344,
+        "file":  "scripts/hani-milestones-v1.test.mjs",
+        "browserArgs":  true,
+        "status":  "BLOCKED",
+        "target":  "candidate",
+        "exit":  1,
+        "exports":  0
+    },
+    {
+        "status":  "ABSENT",
+        "target":  "main",
+        "file":  "scripts/hani-milestones-v1.test.mjs"
+    },
+    {
+        "log":  "browser-probes/candidate-hani-org-demoday-card.browser.mjs.log",
+        "ms":  356,
+        "file":  "scripts/hani-org-demoday-card.browser.mjs",
+        "browserArgs":  true,
+        "status":  "BLOCKED",
+        "target":  "candidate",
+        "exit":  1,
+        "exports":  0
+    },
+    {
+        "status":  "ABSENT",
+        "target":  "main",
+        "file":  "scripts/hani-org-demoday-card.browser.mjs"
+    },
+    {
+        "log":  "browser-probes/candidate-hani-qa-1st-ui.test.mjs.log",
+        "ms":  301,
+        "file":  "scripts/hani-qa-1st-ui.test.mjs",
+        "browserArgs":  true,
+        "status":  "BLOCKED",
+        "target":  "candidate",
+        "exit":  1,
+        "exports":  0
+    },
+    {
+        "status":  "ABSENT",
+        "target":  "main",
+        "file":  "scripts/hani-qa-1st-ui.test.mjs"
+    }
+]

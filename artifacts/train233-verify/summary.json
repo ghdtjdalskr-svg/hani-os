@@ -1,0 +1,41 @@
+{
+  "files": 240,
+  "candidate": {
+    "BLOCKED_BROWSER": 35,
+    "BLOCKED_ENVIRONMENT": 4,
+    "BLOCKED_FIXTURE": 44,
+    "BLOCKED_NODE_SUBPROCESS": 1,
+    "FAIL": 4,
+    "NOT_RUN": 1,
+    "PASS": 151
+  },
+  "main": {
+    "ABSENT": 20,
+    "BLOCKED_BROWSER": 33,
+    "BLOCKED_ENVIRONMENT": 5,
+    "BLOCKED_FIXTURE": 40,
+    "BLOCKED_NODE_SUBPROCESS": 1,
+    "FAIL": 4,
+    "NOT_RUN": 1,
+    "PASS": 136
+  },
+  "verdict": {
+    "BLOCKED_OR_PARTIAL": 84,
+    "BOTH_FAIL": 3,
+    "BOTH_PASS": 135,
+    "NEW_PASS": 15,
+    "OTHER": 2,
+    "REGRESSION": 1
+  },
+  "regressions": [
+    {
+      "file": "scripts/hani-toss-intake-224.test.mjs",
+      "candidate": "FAIL",
+      "main": "PASS",
+      "reason": "✖ Toss supplied sample: named headers map both securities and KRW overseas conversion (2.5505ms)"
+    }
+  ],
+  "notRun": [
+    "scripts/hani-market-session-replace-test.ps1"
+  ]
+}

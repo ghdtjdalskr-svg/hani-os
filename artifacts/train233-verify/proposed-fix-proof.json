@@ -1,0 +1,8 @@
+{
+  "status": "PROPOSAL_VM_PASS",
+  "cases": 14,
+  "runtimeFileWritten": false,
+  "mainSha256": "c2323ec295261567f1d7974c856fdb7528ffade4edc6b16ae8fcef83d64faaf7",
+  "proposedMainSha256": "8c3b54dd532eecd11ead5e97f9abf3e8e5402c1d9d9b2cf271a42f2132bbda93",
+  "scope": "Only sign-stripped empty-token guard; deployment/storage approval not inferred"
+}

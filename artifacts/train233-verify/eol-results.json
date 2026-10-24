@@ -1,0 +1,92 @@
+[
+  {
+    "file": "scripts/hani-app-216-audit.test.cjs",
+    "checkedUnchangedLines": 96,
+    "restoredUnrelatedEolLines": 0
+  },
+  {
+    "file": "scripts/hani-asset-intake-v2-AB.test.mjs",
+    "checkedUnchangedLines": 21,
+    "restoredUnrelatedEolLines": 0
+  },
+  {
+    "file": "scripts/hani-asset-intake-v2-C.test.mjs",
+    "checkedUnchangedLines": 94,
+    "restoredUnrelatedEolLines": 0
+  },
+  {
+    "file": "scripts/hani-asset-intake-v2-ease.test.mjs",
+    "checkedUnchangedLines": 36,
+    "restoredUnrelatedEolLines": 0
+  },
+  {
+    "file": "scripts/hani-building-206-safety.test.mjs",
+    "checkedUnchangedLines": 23,
+    "restoredUnrelatedEolLines": 0
+  },
+  {
+    "file": "scripts/hani-hana-intake-224.test.mjs",
+    "checkedUnchangedLines": 166,
+    "restoredUnrelatedEolLines": 0
+  },
+  {
+    "file": "scripts/hani-intake-audit-206.test.cjs",
+    "checkedUnchangedLines": 45,
+    "restoredUnrelatedEolLines": 0
+  },
+  {
+    "file": "scripts/hani-kiwoom-code-224.test.mjs",
+    "checkedUnchangedLines": 212,
+    "restoredUnrelatedEolLines": 0
+  },
+  {
+    "file": "scripts/hani-mobile-intake-206.test.cjs",
+    "checkedUnchangedLines": 32,
+    "restoredUnrelatedEolLines": 0
+  },
+  {
+    "file": "scripts/hani-nav-groups.test.mjs",
+    "checkedUnchangedLines": 165,
+    "restoredUnrelatedEolLines": 0
+  },
+  {
+    "file": "scripts/hani-ocr-accuracy-224.test.mjs",
+    "checkedUnchangedLines": 41,
+    "restoredUnrelatedEolLines": 0
+  },
+  {
+    "file": "scripts/hani-positions-only-test.cjs",
+    "checkedUnchangedLines": 19,
+    "restoredUnrelatedEolLines": 0
+  },
+  {
+    "file": "scripts/hani-proactive-204.test.mjs",
+    "checkedUnchangedLines": 190,
+    "restoredUnrelatedEolLines": 0
+  },
+  {
+    "file": "scripts/hani-qa-210-followup.test.mjs",
+    "checkedUnchangedLines": 181,
+    "restoredUnrelatedEolLines": 0
+  },
+  {
+    "file": "scripts/hani-reviewed-release-baseline.mjs",
+    "checkedUnchangedLines": 81,
+    "restoredUnrelatedEolLines": 0
+  },
+  {
+    "file": "scripts/hani-reviewed-release-baseline.test.mjs",
+    "checkedUnchangedLines": 113,
+    "restoredUnrelatedEolLines": 0
+  },
+  {
+    "file": "scripts/hani-toss-intake-224.test.mjs",
+    "checkedUnchangedLines": 114,
+    "restoredUnrelatedEolLines": 0
+  },
+  {
+    "file": "scripts/hani-yuna-schedule.test.js",
+    "checkedUnchangedLines": 22,
+    "restoredUnrelatedEolLines": 0
+  }
+]
