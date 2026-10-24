@@ -1,0 +1,198 @@
+<title>본사 직원 동선 재설계</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@500;700;800&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column like a floor-plan memo; each problem is a plan sheet with a stamp; diagrams sit full width */
+:root{
+  --paper:#f3f5f4; --sheet:#ffffff; --ink:#1d2a2e; --muted:#5b6a6e; --line:#d5dddb;
+  --place:#1f7a72; --words:#c2621b; --bad:#b4373a; --good:#2f7d4a; --grid:#e7ecea;
+  --display:"Gothic A1","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#131a1c;--sheet:#1b2427;--ink:#e3ebe9;--muted:#9fb0ad;--line:#33423f;--place:#4fbfb2;--words:#f0995a;--bad:#ef7a7c;--good:#6fc88d;--grid:#22302e;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#131a1c;--sheet:#1b2427;--ink:#e3ebe9;--muted:#9fb0ad;--line:#33423f;--place:#4fbfb2;--words:#f0995a;--bad:#ef7a7c;--good:#6fc88d;--grid:#22302e;color-scheme:dark}
+body{background:var(--paper);color:var(--ink);font:16px/1.7 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 64px}
+.wrap{max-width:860px;margin:0 auto;display:grid;gap:28px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.3}
+h1{font-size:clamp(28px,5vw,40px);font-weight:800;letter-spacing:-.01em}
+h2{font-size:22px;font-weight:800}
+h3{font-size:17px;font-weight:700}
+p{margin:0}
+.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+header{display:grid;gap:12px}
+.lede{font-size:18px;max-width:62ch}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:14px;color:var(--muted)}
+.legend b{font-weight:600}
+.k-place{color:var(--place)}.k-words{color:var(--words)}
+.sheet{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:24px;display:grid;gap:16px;min-width:0}
+.sheet-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap}
+.stamp{font:500 12px/1 var(--mono);border:1.5px solid currentColor;padding:6px 8px;border-radius:3px;color:var(--bad);white-space:nowrap}
+.stamp.ok{color:var(--good)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.cols>*{min-width:0}
+@media (max-width:640px){.cols{grid-template-columns:1fr}}
+figure{margin:0;display:grid;gap:8px}
+figure img{border:1px solid var(--line);border-radius:4px;width:100%}
+figcaption{font-size:14px;color:var(--muted)}
+.says{font-family:var(--mono);font-size:14px;background:var(--grid);padding:2px 6px;border-radius:3px;color:var(--words)}
+ul.why{margin:0;padding-left:20px;display:grid;gap:6px}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:500}
+.diagram{overflow-x:auto}
+.diagram svg{display:block;min-width:560px;width:100%;height:auto}
+svg text{font-family:var(--body);fill:var(--ink)}
+svg .muted{fill:var(--muted)}
+.states{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media (max-width:640px){.states{grid-template-columns:1fr 1fr}}
+.state{border:1px solid var(--line);border-radius:4px;padding:12px;display:grid;gap:6px;align-content:start}
+.state small{font:500 11px/1 var(--mono);color:var(--muted);letter-spacing:.06em}
+.state .where{color:var(--place);font-size:14px}
+.state .line{color:var(--words);font-size:14px}
+.ask{display:grid;gap:14px}
+.q{border-left:3px solid var(--words);padding:4px 0 4px 14px;display:grid;gap:4px}
+.q p{color:var(--muted);font-size:15px}
+.keep{font-size:15px;color:var(--muted)}
+table{border-collapse:collapse;width:100%;font-size:15px}
+td,th{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+th{font-family:var(--display);font-weight:700;font-size:14px;color:var(--muted)}
+.tw{overflow-x:auto}
+footer{font-size:13px;color:var(--muted)}
+</style>
+
+<div class="wrap">
+<header>
+  <span class="eyebrow">HANI 본사 · 운영 2.9.230 기준 · 설계 초안</span>
+  <h1>말과 자리가 늘 맞는 본사 직원 동선</h1>
+  <p class="lede">회장님이 보신 세 가지 어색함은 모두 한 뿌리에서 나왔어요. 지금은 직원이 <b class="k-words">무슨 말을 할지</b>와 <b class="k-place">어디에 서 있을지</b>를 따로따로 정하고 있거든요. 새 설계는 이 둘을 하나로 묶습니다.</p>
+  <div class="legend"><span><b class="k-words">주황</b> = 화면에 뜨는 문구</span><span><b class="k-place">청록</b> = 실제로 서 있는 곳</span></div>
+</header>
+
+<section class="sheet">
+  <div class="sheet-head"><h2>① 창밖 구경 중인데 사무실 한복판</h2><span class="stamp">운영 화면에서 재현함</span></div>
+  <div class="cols">
+    <figure><img src="evidence-1-hall-center.jpg" alt="3층 복도 한가운데에 도현이 서 있고 '잠깐 자리 비움 · 창밖 구경 중' 문구가 떠 있는 운영 화면"><figcaption>01:57:24 · 도현 님이 3층 <span class="k-place">복도 한가운데</span>에서 <span class="says">잠깐 자리 비움 · 창밖 구경 중</span></figcaption></figure>
+    <figure><img src="evidence-2-meeting-seat-window-line.jpg" alt="3층 릴리스 회의실 의자에 도현이 있고 '창밖 구경 중' 문구가 떠 있는 운영 화면"><figcaption>7초 뒤 · <span class="k-place">릴리스 회의실 의자</span>에서 <span class="says">창밖 구경 중</span></figcaption></figure>
+  </div>
+  <ul class="why">
+    <li>산책할 때 <b>목적지는 "다른 방 아무 곳"</b>, <b>문구는 목록에서 따로 뽑기</b>. 그래서 회의실에 가도 "창밖"이 붙어요.</li>
+    <li>자기 책상에 앉아 있을 때도 "창밖 멍때리는 중", "화이트보드에 낙서 중"이 나와요.</li>
+    <li>건물 지도에 <b>창가 자리 자체가 없어요.</b> 밤 행동 "창밖 야경 보기"도 자기 책상에서 해요.</li>
+    <li>하루를 1초 간격으로 돌려 보니 장소 문구와 실제 위치가 다른 경우가 <span class="num">268</span>가지였어요.</li>
+  </ul>
+</section>
+
+<section class="sheet">
+  <div class="sheet-head"><h2>② 커피 내리러 간다는데 복도 한가운데</h2><span class="stamp">지도 데이터에서 확인</span></div>
+  <p>각 층 복도에는 방마다 앞 지점이 있어야 하는데, 그림 위에서는 <b>모두 같은 한 점(가운데)</b>에 찍혀 있어요. 걷는 시간은 흐르는데 화면에선 그 자리에 몇 초씩 서 있게 돼요.</p>
+  <div class="diagram">
+  <svg viewBox="0 0 760 250" role="img" aria-label="왼쪽은 지금: 복도 지점 다섯 개가 한 점에 겹침. 오른쪽은 새 설계: 각 방 문 앞에 지점이 하나씩 떨어져 있음">
+    <rect x="0" y="0" width="760" height="250" fill="var(--sheet)"/>
+    <g>
+      <text x="20" y="26" font-size="14" font-weight="700">지금 (3층)</text>
+      <rect x="20" y="40" width="330" height="190" fill="none" stroke="var(--line)"/>
+      <rect x="30" y="50" width="120" height="70" fill="var(--grid)"/><text x="40" y="72" font-size="12" class="muted">스탠드업 룸</text>
+      <rect x="220" y="50" width="120" height="70" fill="var(--grid)"/><text x="230" y="72" font-size="12" class="muted">서버실</text>
+      <rect x="30" y="150" width="120" height="70" fill="var(--grid)"/><text x="40" y="172" font-size="12" class="muted">개발실</text>
+      <rect x="220" y="150" width="120" height="70" fill="var(--grid)"/><text x="230" y="172" font-size="12" class="muted">릴리스 룸</text>
+      <circle cx="185" cy="135" r="13" fill="none" stroke="var(--bad)" stroke-width="2"/>
+      <circle cx="185" cy="135" r="5" fill="var(--bad)"/>
+      <text x="205" y="139" font-size="12" fill="var(--bad)" style="fill:var(--bad)">복도 지점 5개가 한 점</text>
+    </g>
+    <g transform="translate(400,0)">
+      <text x="20" y="26" font-size="14" font-weight="700">새 설계</text>
+      <rect x="20" y="40" width="330" height="190" fill="none" stroke="var(--line)"/>
+      <rect x="30" y="50" width="120" height="70" fill="var(--grid)"/><text x="40" y="72" font-size="12" class="muted">스탠드업 룸</text>
+      <rect x="220" y="50" width="120" height="70" fill="var(--grid)"/><text x="230" y="72" font-size="12" class="muted">서버실</text>
+      <rect x="30" y="150" width="120" height="70" fill="var(--grid)"/><text x="40" y="172" font-size="12" class="muted">개발실</text>
+      <rect x="220" y="150" width="120" height="70" fill="var(--grid)"/><text x="230" y="172" font-size="12" class="muted">릴리스 룸</text>
+      <polyline points="120,128 185,135 250,128" fill="none" stroke="var(--place)" stroke-width="2" stroke-dasharray="4 4"/>
+      <polyline points="120,142 185,135 250,142" fill="none" stroke="var(--place)" stroke-width="2" stroke-dasharray="4 4"/>
+      <circle cx="120" cy="128" r="5" fill="var(--place)"/><circle cx="250" cy="128" r="5" fill="var(--place)"/>
+      <circle cx="120" cy="142" r="5" fill="var(--place)"/><circle cx="250" cy="142" r="5" fill="var(--place)"/>
+      <circle cx="185" cy="135" r="5" fill="var(--place)"/>
+      <text x="40" y="244" font-size="12" class="muted">방 문 앞마다 지점이 따로 있어서 걷는 만큼 화면에서도 움직여요</text>
+    </g>
+  </svg>
+  </div>
+  <ul class="why">
+    <li>이런 "걸어도 제자리" 구간이 5개 층 모두 합쳐 <span class="num">26</span>개예요.</li>
+    <li>걷기 시작하자마자 도착 후 문구(<span class="says">커피 내리러 왔어요</span>)를 붙여요.</li>
+    <li>커피 장소는 1층 카페와 2층 팬트리뿐인데, 3·4층에서도 커피 문구가 나와요.</li>
+  </ul>
+</section>
+
+<section class="sheet">
+  <div class="sheet-head"><h2>③ 자리로 돌아갈 때 남의 자리와 겹침</h2><span class="stamp">모델 좌표로 측정</span></div>
+  <ul class="why">
+    <li>산책과 방문객은 <b>정식 예약 장부를 거치지 않고</b> 따로 움직여요.</li>
+    <li>겹침 검사는 "완전히 같은 점"만 막아서, <b>바로 옆을 스치는 건 못 잡아요.</b> 태오 님이 돌아오는 길이 앉아 있는 수아 님과 그림 기준 <span class="num">8px</span>(휴대폰에선 2px 미만) 떨어진 곳을 지나가요.</li>
+    <li>걸리면 그 순간만 집으로 순간이동했다가 다음 순간 다시 나타날 수 있어요.</li>
+    <li>2.9.228–230에서 산책·방문객이 생기며 원래 숨어 있던 좌표 문제가 자주 보이게 됐어요. "예전엔 없던 문제"라는 말씀과 맞아요.</li>
+  </ul>
+</section>
+
+<section class="sheet">
+  <div class="sheet-head"><h2>새 설계: 직원 한 명 = 상태 하나</h2><span class="stamp ok">승인 후 구현</span></div>
+  <p>직원은 아래 네 단계로만 움직이고, 화면 문구는 <b>지금 단계에서만</b> 나와요. 따로 뽑지 않아요.</p>
+  <div class="states">
+    <div class="state"><small>1 · 자리</small><h3>내 자리에 있음</h3><span class="where">자기 책상</span><span class="line">"보고서 다듬는 중"</span></div>
+    <div class="state"><small>2 · 가는 중</small><h3>장소로 가는 중</h3><span class="where">예약한 길 위</span><span class="line">"팬트리로 커피 내리러 가는 중"</span></div>
+    <div class="state"><small>3 · 도착</small><h3>장소에서 하는 중</h3><span class="where">예약한 자리 정확히</span><span class="line">"팬트리에서 커피 내리는 중"</span></div>
+    <div class="state"><small>4 · 복귀</small><h3>자리로 돌아가는 중</h3><span class="where">반드시 내 책상으로</span><span class="line">"자리로 돌아가는 중"</span></div>
+  </div>
+  <div class="tw"><table>
+    <tr><th>규칙</th><th>효과</th></tr>
+    <tr><td><b>장소 카드</b>: 층마다 실제 있는 장소(커피·창가·소파·회의실…)만 등록</td><td>3층엔 커피 카드가 없으니 3층에선 커피 행동이 안 나와요</td></tr>
+    <tr><td><b>책상 문구엔 장소 단어 금지</b> (창밖·화이트보드·소파·팬트리)</td><td>앉아서 "창밖 멍때리는 중"이 사라져요</td></tr>
+    <tr><td><b>예약 장부 하나</b>: 정식 행동·산책·방문객 모두 같은 장부에 자리·길 예약</td><td>같은 시각 같은 자리에 두 명이 서는 일이 원천적으로 없어요</td></tr>
+    <tr><td><b>내 책상은 나만</b>: 비워도 남에게 안 빌려줌</td><td>복귀하면 언제나 자기 자리</td></tr>
+    <tr><td><b>복도 지점 분리 + 안전거리</b>: 길은 남의 자리에서 일정 거리 이상</td><td>복도 제자리 멈춤, 스치듯 겹침이 사라져요</td></tr>
+  </table></div>
+  <p class="keep">그대로 지키는 것: 캐릭터 그림과 층 화면, 서윤 팀장님 책상 마스코트가 읽는 정보, 생활 기록 저장소(hani_os_life_v23)와 Cloud는 건드리지 않아요.</p>
+</section>
+
+<section class="sheet">
+  <div class="sheet-head"><h2>구현 결과 (10/23)</h2><span class="stamp ok">테스트 통과 · 탑승 대기</span></div>
+  <p>회장님 결정(추천안: 창가 자리 새로 + 아린 리뷰, 방문객 포함)대로 도연 선임님이 구현하고 제가 검토·수정했어요.</p>
+  <div class="tw"><table>
+    <tr><th>확인한 것</th><th>전</th><th>후</th></tr>
+    <tr><td>걸어도 화면에서 제자리인 구간</td><td class="num">26</td><td class="num">0</td></tr>
+    <tr><td>장소 문구와 실제 위치가 다른 경우 (하루 매초)</td><td class="num">268</td><td class="num">0</td></tr>
+    <tr><td>같은 층에서 30px 안으로 붙은 두 사람</td><td class="num">12</td><td class="num">0</td></tr>
+    <tr><td>본사 테스트 전체</td><td></td><td class="num">100 통과 · 0 실패</td></tr>
+    <tr><td>Edge 화면 테스트 (390·884·1440 폭 × 1–5층)</td><td></td><td class="num">1,110 장면 통과</td></tr>
+  </table></div>
+  <div class="cols">
+    <figure><img src="result-4f-window.jpg" alt="4층 지도: 주황 점이 가운데 복도 끝 유리창 앞에 새로 만든 창가 자리"><figcaption>새 창가 자리 예시 · 4층은 회장실이 아니라 <span class="k-place">공용 복도 끝 유리창 앞</span>. 다섯 층 모두 아린 님 리뷰 통과</figcaption></figure>
+    <figure><img src="result-390-1f.jpg" alt="휴대폰 폭 1층 화면: 직원들이 겹치지 않고 각자 자리에 있음"><figcaption>휴대폰 폭(390) 1층 · 겹침 없이 각자 자리</figcaption></figure>
+  </div>
+  <figure><img src="result-1440-3f.jpg" alt="넓은 화면 3층: 세린이 복도에서 '잠깐 걸을게요', 다른 직원은 자기 책상"><figcaption>넓은 화면(1440) 3층 · 세린 님은 복도에서 <span class="says">잠깐 걸을게요</span>, 나머지는 자기 책상</figcaption></figure>
+  <ul class="why">
+    <li>방문객은 예전 문구 그대로예요: "상담 받는 중", "택배 두고 갈게요", "배달 왔습니다!", 나갈 땐 "안녕히 계세요~".</li>
+    <li>버전은 올리지 않았어요. 배포 열차에 탑승해서 2.9.232 이후 한 번에 나가요. 생활 기록·Cloud는 그대로예요.</li>
+  </ul>
+</section>
+
+<section class="sheet">
+  <div class="sheet-head"><h2>살아 있는 사무실 (2차 요청 반영)</h2><span class="stamp ok">아린 리뷰 PASS</span></div>
+  <p>"휴식 갔다가 몇 초 만에 복귀"와 "캐릭터 특성" 말씀을 반영했어요. 아래는 같은 3층을 같은 오후 2시부터 <b>실제 시계로 6분</b> 녹화해 15배속으로 줄인 영상이에요. 왼쪽이 지금 운영(2.9.230), 오른쪽이 바꾼 뒤예요.</p>
+  <figure><img src="compare-3f.gif" alt="왼쪽 운영 화면은 6분 내내 다섯 명이 자리에 앉아 있고, 오른쪽 바꾼 화면은 한두 명씩 서버실과 창가에 다녀오는 15배속 비교 영상"><figcaption>전(왼쪽) · 후(오른쪽) · 6분 → 약 24초</figcaption></figure>
+  <div class="tw"><table>
+    <tr><th>바뀐 것</th><th>전</th><th>후</th></tr>
+    <tr><td>장소에 머무는 시간 (예: 팬트리 컵 헹구기)</td><td class="num">12–20초</td><td class="num">1분</td></tr>
+    <tr><td>옥상 화분 물주기 · 라운지 창밖 보기</td><td class="num">12–20초</td><td class="num">1분 30초 · 2분</td></tr>
+    <tr><td>혼자 외출 체류 (커피 · 소파 · 창가)</td><td class="num">8–14초</td><td class="num">1–3분 · 2–5분 · 40초–2분</td></tr>
+    <tr><td>한 사람이 외출하는 간격</td><td></td><td class="num">평균 26–46분</td></tr>
+    <tr><td>친한 사이 같이 외출 (09:00–19:30)</td><td class="num">0</td><td class="num">하루 약 10번</td></tr>
+    <tr><td>사람마다 하루 다른 장소 · 다른 말</td><td></td><td class="num">5곳 이상 · 35가지 이상</td></tr>
+    <tr><td>예전 캐릭터 행동 중 사라진 것 (사흘 합산)</td><td></td><td class="num">0</td></tr>
+  </table></div>
+  <ul class="why">
+    <li>성격에 맞는 장소와 말: 도연 님은 서버실에서 "재현한 버그 재확인", 하루 님은 팬트리에서 "간식 가격 비교", 민지 님은 로비에서 "하니일보 1면 다시 읽기", 수연 님은 창가에서 "여행 코스 구상".</li>
+    <li>점심엔 카페·테라스, 오후 졸릴 땐 창가·커피, 저녁엔 라운지가 많아져요. 같은 장소를 연달아 가지 않고, 다녀오면 최소 10분은 자리에서 일해요.</li>
+    <li>셋이 같이 움직이는 장면은 아직이에요. 지금은 두 명까지 함께 다녀요.</li>
+  </ul>
+</section>
+
+<footer>기준: main ad3c2f3 · 운영 표시 2.9.230 · hani-office-live.js?v=2.9.230. 운영 사진은 로그인 화면을 제 탭에서만 잠시 가리고 찍었어요(데이터 변경 없음). 2차 의견: GPT 독립 분석과 같은 결론.</footer>
+</div>

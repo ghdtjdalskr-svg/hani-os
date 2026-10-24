@@ -1,4 +1,3 @@
-// Seed 233 activates two canon desks ahead of the unchanged 232 scheduler catalog.
 // node scripts/hani-office-seats-215.test.mjs [--browser <playwright index.mjs> <browser exe>]
 import assert from 'node:assert/strict';
 import test from 'node:test';

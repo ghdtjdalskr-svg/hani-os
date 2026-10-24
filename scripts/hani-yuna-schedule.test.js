@@ -3,7 +3,7 @@ let writes=0;
 class FixedDate extends Date {constructor(...args){super(...(args.length?args:[2026,9,6,12]));}}
 const synthetic={tasks:[{id:'existing',text:'preserve',due:'2026-10-10'}]},before=JSON.stringify(synthetic);
 const sandbox={window:{},document:{getElementById(){return null}},Date:FixedDate,console,structuredClone,state:synthetic,localStorage:{setItem(){writes++},removeItem(){writes++},clear(){writes++}},intakeApplyRow(){writes++}};
-vm.createContext(sandbox);vm.runInContext(fs.readFileSync(path.join(__dirname,'../hani-yuna-helpdesk.js'),'utf8'),sandbox);
+vm.createContext(sandbox);require('./qa-1st-test-support.cjs').loadInputHelpers(sandbox);vm.runInContext(fs.readFileSync(path.join(__dirname,'../hani-yuna-helpdesk.js'),'utf8'),sandbox);
 const parse=sandbox.window.HANI_YUNA_HELPDESK.parse;
 const original='12월 12일 토요일부터 12월 13일 일요일까지야\n할일은 "찐막채 송년회"로 일정 올려줘';
 for(const input of [original,'12월 12일부터 13일까지 찐막채 송년회 일정 등록해줘','12월 12일~12월 13일 찐막채 송년회 일정 등록해줘','12월 12일-12월 13일 찐막채 송년회 일정 등록해줘','2026-12-12 ~ 2026-12-13 찐막채 송년회 일정 등록해줘','2026년 12월 12일부터 2026년 12월 13일까지 찐막채 송년회 일정 등록해줘']){

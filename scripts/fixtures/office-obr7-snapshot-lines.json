@@ -1,0 +1,77 @@
+{
+  "base": "ecc138414f0b1a01ea1747a51a85d976580419c4",
+  "reason": "obr7 measured floor repetition: expanded desk/time pools and seeded personal voice, same geometry, ledgers, pose, presence and safety",
+  "records": [
+    {
+      "day": "2026-10-22",
+      "seconds": 32400,
+      "options": {},
+      "changes": [
+        {
+          "id": "hani",
+          "before": "고양이 영상 1분만…",
+          "after": "타이머 남은 시간 보는 중"
+        },
+        {
+          "id": "jieun",
+          "before": "메일함 정리 중",
+          "after": "노래 제목 떠올리는 중"
+        },
+        {
+          "id": "serin",
+          "before": "키보드 두드리는 중",
+          "after": "가사 없이 흥얼거리는 중"
+        },
+        {
+          "id": "daon",
+          "before": "메모에 낙서 중",
+          "after": "할 일 하나 지우는 중"
+        }
+      ]
+    },
+    {
+      "day": "2026-10-24",
+      "seconds": 45000,
+      "options": {},
+      "changes": [
+        {
+          "id": "minji",
+          "before": "기지개 켜는 중",
+          "after": "명장면 하나 떠올리는 중"
+        },
+        {
+          "id": "serin",
+          "before": "보고서 다듬는 중",
+          "after": "반복 작업 줄일 방법 찾는 중"
+        },
+        {
+          "id": "arin",
+          "before": "몰래 인스타 순찰 중",
+          "after": "작은 화면으로 다시 보는 중"
+        },
+        {
+          "id": "taeo",
+          "before": "몰래 인스타 순찰 중",
+          "after": "노래 제목 떠올리는 중"
+        }
+      ]
+    },
+    {
+      "day": "2026-10-23",
+      "seconds": 6000,
+      "options": {
+        "presentIds": [
+          "seoyun",
+          "dohyun",
+          "serin",
+          "yuri",
+          "arin",
+          "hina",
+          "yuna",
+          "minji"
+        ]
+      },
+      "changes": []
+    }
+  ]
+}

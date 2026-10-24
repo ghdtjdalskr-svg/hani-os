@@ -1,3 +1,11 @@
+# 2026-10-24 · 개요 DEMO DAY 카드 복원 (도연/Codex)
+
+`hani/seoyun-org-demoday-card` / base·HEAD `d19aa0b`(로컬 origin/main 동일, 원격 조회 연결 실패). 성민 대표님 option B 승인에 따라 기존 개요 persistent 슬롯의 연혁 앞에 사진·캡션·도장만 복원. 원본 전체 비율·최대360px·모바일 너비·기존 dark palette 사용. **syntax·history226 unit·실제 renderer6회/mount1/write0 PASS. 신규 및 기존 조직 허브 browser 검사는 Edge spawn EPERM으로 차단, 1440/390 PNG0·실화면 미검증.** Notion 착수 추가는 자동 승인 never 거절로 미반영. commit/push/PR·버전/cache·Storage/Cloud·main/배포 변경 없음. 다음: 서윤 허용 환경 browser 재실행·Preview 확인. [인수인계](handoffs/2026-10-24-org-demoday-card.md). 아래 타 담당·과거 기록 보존.
+
+# 2026-10-23 · Milestones v1 마일스톤 (서윤/Claude)
+
+`hani/milestones-v1` / base `7a10595`(origin/main v2.9.232). 대시보드 바로 아래 독립 메뉴 「마일스톤」: 공식 배너(하니 전무 · 삶에 남은 변화들 · "더 완벽해지기 위해서가 아니라, 더 나은 삶을 살기 위해.")·분야 필터/정렬 Timeline·상세(Before/After, 의미, 다음 목표, Agent/회장 코멘트, 관련 메뉴 이동)·새 마일스톤 폼(검증·지표 행 추가/삭제)·대시보드 카드 1장, 첫 공식 기록 「HANI OS 건강혁명 프로젝트」 seed(회장님 값 원문 보존). 회장님 추가 요청으로 선택 항목 난이도 등급 RARE/EPIC/LEGENDARY(글자 라벨만). **저장(A안, 회장님 승인)**: `hani_os_life_v23` 안 선택 목록 `milestones`(첫 저장 때만 생김, 업그레이드 시 저장 바이트·Cloud hash 불변), 기존 save() 경로만 사용, Cloud 연결됨일 때만 저장, 추가·수정·삭제와 건강혁명 코멘트. Cloud schema·서버·동기화 규칙·내부 baseline·버전/cache 변경 없음. 검증: 전용 Node 14 + 실제 Edge 8조건 + 저장 안전 시나리오 7개(업그레이드 무변경·Cloud OFF 차단·저장/새로고침 read-back·저장공간 부족 복구·백업 복원·망가진 목록 원본 보호·운영 버전 호환) PASS, 실제 Supabase 왕복은 미검증. **10/24 열차 탑승**(회장님 지시): 열차 `release-train-20261023`과 합치면 129개라 마일스톤 CSS를 design-system으로 합쳐 **128/128**로 맞춤(여유 0). 충돌은 baseline 도구 2개뿐이며 해결 방법·검증은 인수인계에. PR/main/배포 없음. [인수인계](handoffs/2026-10-23-milestones-v1.md). 아래 기존 기록 보존.
+
 # 2026-10-22 · 본사 사무실 3차 + 1층 방문객 v2.9.230 운영 반영 (서윤/Claude)
 
 `hani/office-lively-3-20261022` → release PR #331 → main `04fb2b3`(v2.9.230, 배포센터 대표님 승인). 층별 고정 순번(한 사람 약 29초에 한 번, 일정 앞뒤 5초 제외), 산책은 출입문을 지나 다른 방으로(층당 1명), 1층 방문객 5종(고객·택배·배달·면접·커피)이 정문으로 들고 남(평일 낮 약 26%, 밤 0). 방문객은 snapshot `visitors`로 분리해 직원 수에 포함하지 않고 persistent 슬롯 1개로 그림(actor 19). 검증: node office 12종·Edge 219(240)·217·216 PASS, 중복 ID·package·One-Pass PASS. **Production read-back: Pages index 2.9.230 태그 59개·HANI_DISPLAY_VERSION 2.9.230·hani-office-live.js SHA-256 main과 일치(73fc0165…), 운영 화면 actor 19·방문객 슬롯 존재, 운영 코드로 다음날 오전 방문객 5종 일정 확인.** 남은 점: 안내데스크 anchor가 데스크 안쪽(공간 canon), 폰 체감 미확인. [인수인계](handoffs/2026-10-22-office-lively-3.md). 아래 기존 기록 보존.
