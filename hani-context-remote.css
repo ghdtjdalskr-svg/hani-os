@@ -190,3 +190,12 @@
 }
 @media(prefers-reduced-motion:reduce){#app .hani-context-remote{transition:none}}
 #app .hani-remote-media-actions>div[hidden],#app .hani-remote-media-actions button[hidden]{display:none}
+
+/* Dedicated mobile header slot: neither the launcher nor the expanded panel floats over forms. */
+@media(max-width:768px){
+ #app header.top{position:relative;top:auto;flex-wrap:wrap}
+ #app header.top .top-actions{flex-wrap:wrap}
+ #app .hani-remote-mobile-trigger,#app .hani-remote-mobile-trigger:is(.is-market-inline,.is-intake-inline){position:static;inset:auto;margin-left:auto;box-shadow:none;flex:0 0 auto;white-space:nowrap}
+ #app header.top .hani-context-remote{position:static;inset:auto;transform:none;transition:none;display:none;flex:0 0 100%;grid-column:1/-1;width:100%;max-height:70dvh;min-height:0;border-radius:14px;border:1px solid var(--remote-line);box-shadow:none;z-index:auto}
+ #app header.top .hani-context-remote[data-open="true"]{display:grid;transform:none}
+}

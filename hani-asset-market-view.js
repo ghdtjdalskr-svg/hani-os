@@ -376,8 +376,9 @@
         reconciliation='확정 기록 이후 시세 변동 '+(delta<0?'−':delta>0?'+':'')+money(Math.abs(delta),currency);
       }else reconciliation='확정 기록과 보유종목·수량 또는 평가액 기준이 달라 시세 변동 비교 미확인';
     }
-    const estimated=live!==null&&cash!==null&&unpriced===0?live+cash:null;
-    return {live:'실시간 평가 '+money(live,currency)+' · '+quoteBasis+(unpriced?' · 가격 연결분 기준':''),recorded:'월별 확정 기록 '+money(recorded,currency)+' · '+(latest?recordDate(latest.snapshot):'기록 없음'),cash:money(cash,currency)+(cash!==null?' ('+cashBasis+')':''),unpriced:unpriced+'개 · '+quoteBasis,estimated:'현재 투자 자산(추정) '+money(estimated,currency)+(estimated!==null?' · '+quoteBasis+' + '+cashBasis+' 현금':' · 평가 또는 현금 미확인'),reconciliation,cashNote:recordedCash!==null&&b?.confirmed_cash==null?'기록 현금은 증권사 총자산−평가액 차액 기준이며, 실시간 현금 잔액은 미확인입니다.':''};
+    const displayLive=rows.some(h=>h.market_value!==null)||model.holdings.some(h=>h.currency===currency&&h.status==='EXPLICIT_ZERO')||recorded===0?live:null;
+    const estimated=displayLive!==null&&cash!==null&&unpriced===0?displayLive+cash:null;
+    return {live:'실시간 평가 '+money(displayLive,currency)+' · '+quoteBasis+(unpriced?' · 가격 연결분 기준':''),recorded:'월별 확정 기록 '+money(recorded,currency)+' · '+(latest?recordDate(latest.snapshot):'기록 없음'),cash:money(cash,currency)+(cash!==null?' ('+cashBasis+')':''),unpriced:unpriced+'개 · '+quoteBasis,estimated:'현재 투자 자산(추정) '+money(estimated,currency)+(estimated!==null?' · '+quoteBasis+' + '+cashBasis+' 현금':' · 평가 또는 현금 미확인'),reconciliation,cashNote:recordedCash!==null&&b?.confirmed_cash==null?'기록 현금은 증권사 총자산−평가액 차액 기준이며, 실시간 현금 잔액은 미확인입니다.':''};
   }
   const api={describe};if(typeof module==='object'&&module.exports)module.exports={...module.exports,...api};else root.HaniPortfolioDisplay=api;
 })(globalThis);

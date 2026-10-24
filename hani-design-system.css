@@ -1615,3 +1615,36 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 #newsroom .newsroom-4cut dialog{box-sizing:border-box;width:min(calc(100% - 24px),1248px);max-width:calc(100% - 24px);max-height:90svh;padding:16px;border:1px solid var(--border-strong,#858d9e);border-radius:14px;background:var(--surface-panel,#fff);color:var(--text-primary,#292d39);overflow:auto}
 #newsroom .newsroom-4cut dialog::backdrop{background:rgba(0,0,0,.7)}
 #newsroom .newsroom-4cut dialog form{display:flex;justify-content:flex-end;position:sticky;top:0}
+
+/* QA 1차: preserve layout ownership; pair text with its actual surface. */
+#app :is(.asset-dashboard-card,.task-calendar-hub,.hani-dev-history-overview,.asset-capture-intro),#app #aiBudget .budget-plan{background:var(--appearance-raised,#fff)!important;color:var(--appearance-ink,#273349)!important}
+#app :is(.asset-dashboard-card,.task-calendar-hub,.hani-dev-history-overview,.asset-capture-intro) :is(h3,p,.sub,.pill){color:var(--appearance-ink,#273349)!important}
+#app :is(.investment-live .live-stat,.yuna-hero){background:var(--appearance-raised,#fff)!important;color:var(--appearance-ink,#273349)!important}
+#app .investment-live .live-stat :is(small,strong),#app .yuna-hero :is(h2,p){color:var(--appearance-ink,#273349)!important}
+#app .investment-live .live-stat strong{white-space:nowrap;overflow-wrap:normal;font-size:clamp(16px,2vw,28px)}
+#app .home-welcome-actions{position:static;inset:auto;flex-basis:100%;margin-top:12px}
+#app #homeDialogueLabel{padding-right:0;min-height:0}
+#app :is(#asset,#investment,#tasks,#exercise,#diet,#dev,#aiBudget) .stat{background:var(--appearance-raised,#fff);color:var(--appearance-ink,#273349)}
+#app :is(#asset,#investment,#tasks,#exercise,#diet,#dev,#aiBudget) .stat :is(.label,.value){color:inherit!important}
+#app :is(#asset,#investment,#ledger,#diet,#exercise) :is(.stat .value,.portfolio-summary strong,.ledger-support-kpis b,.ledger-breaker-line strong,.kpi-unit){white-space:nowrap;word-break:normal;overflow-wrap:normal}
+#app :is(#asset,#investment,#diet,#exercise) .stat .value{font-size:clamp(16px,2vw,28px)}
+#app .amount-unit,#app :is(#dietGoal1Label,#dietGoal2Label){display:inline-block;white-space:nowrap;word-break:normal;overflow-wrap:normal}
+#app #dietStats .stat:last-child .value{white-space:normal}
+#app #ledger :is(.ledger-jispi-head,.ledger-jispi-head span,.ledger-breaker-line strong,.ledger-support-kpis span,.ledger-support-kpis b){color:#f5f7ff!important}
+#app #ledger .ledger-jispi-meta span{color:#e0e5f5!important}
+#app #ledger .ledger-market-board .sh h3{color:#f5f7ff!important}
+#app #ledger .ledger-breaker-line strong{font-size:clamp(19px,3vw,34px)}
+#app #monthlyReport .earnings-controls,#app #monthlyReport .earnings-report>.sub{color:#e0e5f5}
+#app #monthlyReport .earnings-controls :is(label,p,span){color:inherit}
+#app #monthlyReport .earnings-controls button:disabled{opacity:1;color:#e0e5f5;background:#313d56;border-color:#8793ad}
+#app #settings #group-backup :is(.feature,.feature p,.settings-group-body){height:auto;max-height:none;overflow:visible;white-space:normal;overflow-wrap:anywhere}
+#app .date-flex-control{min-width:min(100%,185px);grid-template-columns:minmax(140px,1fr) 38px}
+#app .date-flex-control>input{box-sizing:border-box;min-width:140px;padding-inline:8px;font-size:14px}
+#app .task-input{grid-template-columns:minmax(0,1fr) minmax(185px,auto) auto}
+#app input[type="date"]::-webkit-datetime-edit{padding:0}
+@media(max-width:768px){
+ #app :is(.fg,.form-grid):has(.date-flex-control){grid-template-columns:repeat(auto-fit,minmax(min(100%,185px),1fr))}
+ #app :is(.fg,.form-grid)>.field:has(.date-flex-control){grid-column:1/-1}
+ #app .task-input{grid-template-columns:minmax(0,1fr)}
+ #app .main{padding-bottom:calc(32px + env(safe-area-inset-bottom));scroll-padding-bottom:calc(32px + env(safe-area-inset-bottom))}
+}
