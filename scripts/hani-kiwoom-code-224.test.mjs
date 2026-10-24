@@ -37,13 +37,13 @@ test('two-row Kiwoom pairs preserve broker names and all source columns, with an
     assert.equal(rows[0].pnl,-500);assert.equal(rows[1].returnRate,-0.5);
   }
 });
-test('normalized code wins over conflicting name/ID; existing name stays, two holdings and no new card',()=>{
+test('normalized code preserves existing name, but a known instrument conflict cannot reuse stored identity',()=>{
   const rows=api.parseHoldingsTsv(paste),before=JSON.stringify(existing),merged=plain(api.mergeWithExistingHoldings(rows,existing));
   assert.equal(merged.length,2);assert.equal(merged[0].id,'robot');assert.equal(merged[0].name,existing[0].name);
   assert.equal(merged[0].quantity,5);assert.equal(merged[0].buyPrice,10100);assert.equal(merged[1].quantity,10);assert.equal(JSON.stringify(existing),before);
   const shadow=[{ticker:'999999',name:'KODEX 테스트로봇'},...existing];
   const matched=api.previewHolding({...rows[0],instrumentId:'wrong-guessed-master'},shadow);
-  assert.equal(matched.shown.id,'robot');assert.equal(matched.shown.name,existing[0].name);assert.equal(matched.brokerName,'KODEX 테스트로봇');assert.equal(matched.matched,true);
+  assert.notEqual(matched.shown.id,'robot');assert.equal(matched.shown.name,'KODEX 테스트로봇');assert.equal(matched.brokerName,'');assert.equal(matched.matched,false);const exact=api.previewHolding(rows[0],shadow);assert.equal(exact.shown.id,'robot');assert.equal(exact.matched,true);
   assert.equal(api.mergeWithExistingHoldings([rows[0]],shadow).length,3);
 });
 test('stored prefixed lower-case codes match, and duplicate intake codes collapse',()=>{
@@ -59,8 +59,8 @@ test('unmatched code becomes one candidate with the exact broker name; no fuzzy 
   assert.equal(api.previewHolding(rows[0],existing).matched,false);
   const merged=api.mergeWithExistingHoldings(rows,existing);assert.equal(merged.length,3);assert.equal(merged[2].name,'KODEX 테스트금');
 });
-test('only exact normalized name is the fallback when code lookup fails',()=>{
-  assert.equal(api.previewHolding({ticker:'999999',name:' kodex 미국휴머노이드로봇 ',quantity:2},existing).matched,true);
+test('exact normalized name requires a known matching market and cannot override a conflicting code',()=>{
+  assert.equal(api.previewHolding({ticker:'999999',name:' kodex 미국휴머노이드로봇 ',quantity:2},existing).matched,false);assert.equal(api.previewHolding({name:' kodex 미국휴머노이드로봇 ',market:'KR',quantity:2},existing.map(h=>({...h,market:'KR'}))).matched,true);
   assert.equal(api.previewHolding({ticker:'999999',name:'KODEX 미국휴머노이드',quantity:2},existing).matched,false);
 });
 test('single-row header/reordered/headerless formats and US tickers still parse',()=>{
