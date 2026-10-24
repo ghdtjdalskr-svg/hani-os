@@ -9,7 +9,7 @@ let selected=[],draft=null,selectedAccountId="",imageUrls=[],pendingAccountId=nu
 const holdingPreviewMeta=new WeakMap(),screenPreviewMeta=new WeakMap(),previewEditState=new WeakMap(),fieldProvenance=new WeakMap();
 function provenance(row,key,kind,extra={}){let fields=fieldProvenance.get(row);if(!fields){fields={};fieldProvenance.set(row,fields)}if(kind)fields[key]={kind,...extra};return fields[key]||{kind:row?.[key]==null||row?.[key]===""?"MISSING":"VISIBLE_SOURCE"}}
 function copyProvenance(from,to){fieldProvenance.set(to,{...fieldProvenance.get(from)});return to}
-const text=v=>String(v??"").replace(/\s+/g," ").trim(),number=v=>{if(v===null||v===undefined||text(v)==="")return null;const m=text(v).replace(/[,₩원%\s]/g,"").match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):null},safe=v=>text(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
+const text=v=>String(v??"").replace(/\s+/g," ").trim(),number=v=>parseKoreanNumber(v),safe=v=>text(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
 // OCR evidence is transient: labels/raw/visibility/confidence never enter storage.
 const ocrAccountFields={currentAsset:["계좌총액","총자산","추정자산","총평가자산"],balance:["예수금","현금잔고"],withdrawable:["출금가능","출금가능금액"],purchase:["매입금액","총매입금액","원금","주식매입금액"],evaluation:["평가금액","총평가금액","평가금","주식평가금액"],pnl:["평가손익","총손익","총수익금"],returnRate:["수익률","총수익률"]};
 ocrAccountFields.currentAsset.push("추정예탁자산");ocrAccountFields.evaluation.push("내 투자");ocrAccountFields.pnl.push("총 수익","총평가손익금액");
@@ -352,7 +352,7 @@ function render(){
   if(draft.positionsOnly&&draft.marketLinked){renderPositions();return}
   const resolution=draft.mode==="manual"?{kind:"matched",account:state.accounts.find(x=>x.id===draft.accountId)}:draft.mode==="new"?{kind:"new",account:null}:accountResolution(draft),match=resolution.account,old=draft.original||(match&&latestFor(match.id).account),imageMode=draft.mode==="image";
   preview.innerHTML='<article class="asset-capture-preview"><header><b>'+safe(match?.name||accountLabel(draft))+'</b><span>'+(match?'기존 '+safe(match.name)+' 계좌를 업데이트합니다.':imageMode?'기존 계좌를 선택해 주세요.':'새 계좌를 생성합니다.')+'</span></header><div class="asset-preview-grid"><div class="asset-preview-field"><span>금융사</span><b>'+safe(draft.broker)+'</b></div><div class="asset-preview-field"><span>OCR 계좌명·상품명</span><b>'+safe(draft.accountName)+'</b></div></div>'+(imageMode&&match?'<p class="asset-account-hint">선택 계좌 우선: '+safe(match.name)+' accountId에만 반영합니다.</p>':'')+(old?'<p class="asset-position-note" id="assetPreviewTotalChange">'+money(old.estimatedAssets)+' → '+money(draft.assets)+'</p>':'')+(imageMode&&old&&draft.purchase===null?'<p class="asset-position-note">이번 화면에 없는 매입금액은 기존 값을 유지합니다.</p>':'')+advancedPreview(old?.holdings||[])+PREVIEW_VALIDATION_SLOT+'<div class="asset-preview-actions"><button class="btn" id="assetPreviewCancel" type="button">취소</button><button class="btn finance" id="assetPreviewApprove" type="button" disabled>이대로 반영</button></div></article>';
-  document.getElementById("assetPreviewCancel").onclick=()=>{draft=null;render()};document.getElementById("assetPreviewApprove").onclick=approve;bindPreviewEditing();
+  document.getElementById("assetPreviewCancel").onclick=()=>{draft=null;render()};document.getElementById("assetPreviewApprove").onclick=saveEntry(document.getElementById("assetPreviewApprove"),approve);bindPreviewEditing();
 }
 function makeHolding(h){
   const prices={buyPrice:value(h,["buyPrice","averagePrice","average_price","avg_price","평균단가","1주 평균금액","1주평균금액"]),currentPrice:value(h,["currentPrice","current_price","현재가"]),purchaseAmount:value(h,["purchaseAmount","purchase_amount","매입금액","원금"]),evaluationAmount:value(h,["evaluationAmount","valuationAmount","evaluation_amount","평가금액","평가금"])};
@@ -403,6 +403,7 @@ function saveMessage(message,tone="info"){status.textContent=message;status.data
 function readStoredState(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||"null")}catch(_){return null}}
 function storedAccount(saved,snapshotId,accountId){const snapshot=(saved?.investmentBrokerSnapshots||[]).find(x=>x.id===snapshotId);return snapshot?.accounts?.find(x=>x.accountId===accountId)||null}
 function approve(){
+  const dateError=validateEntryDates(draft);if(dateError)return saveMessage(dateError,"error");
   if(!draft)return saveMessage("저장 실패: 승인할 Preview가 없습니다.","error");
   if(draft.positionsOnly&&draft.marketLinked){const checked=validation(draft);if(checked.blocking)return saveMessage(`저장 실패: ${checked.message}`,"error");return approvePositions();}
   const v=validation(draft),resolution=draft.mode==="manual"?{kind:"matched",account:state.accounts.find(x=>x.id===draft.accountId)}:draft.mode==="new"?{kind:"new",account:null}:accountResolution(draft);

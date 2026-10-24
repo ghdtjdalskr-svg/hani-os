@@ -1,6 +1,6 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),path=require('node:path');
 const sandbox={window:{},document:{getElementById(){return null;}},console,structuredClone};
-vm.createContext(sandbox);vm.runInContext(fs.readFileSync(path.join(__dirname,'../hani-asset-update-v1.js'),'utf8'),sandbox);
+vm.createContext(sandbox);require("./qa-1st-test-support.cjs").loadInputHelpers(sandbox);vm.runInContext(fs.readFileSync(path.join(__dirname,'../hani-asset-update-v1.js'),'utf8'),sandbox);
 const api=sandbox.window.HANI_ASSET_UPDATE_V1;
 const ok=api.validation({purchase:533749,pnl:6714,assets:540463,evaluation:null});
 assert.equal(ok.ok,true);assert.equal(ok.severity,'INFO');assert.match(ok.message,/검산 완료/);
