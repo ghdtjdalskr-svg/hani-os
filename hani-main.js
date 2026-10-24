@@ -1043,7 +1043,7 @@ function parseKoreanNumber(value){
   let s=String(value??'').trim().replace(/[,₩\s]/g,'').replace(/(?:원|보|걸음|km|kg|주|%)$/i,'');
   if(!s)return null;
   if(/^[+-]?\d+(?:\.\d+)?$/.test(s)){const number=Number(s);return Number.isFinite(number)&&Math.abs(number)<=Number.MAX_SAFE_INTEGER?number:null;}
-  const sign=s[0]==='-'?-1:1;s=s.replace(/^[+-]/,'');
+  const sign=s[0]==='-'?-1:1;s=s.replace(/^[+-]/,'');if(!s)return null;
   let sum=0,last=Infinity,matched='';
   for(const group of s.matchAll(/((?:\d+(?:\.\d+)?[천백십]?)+)(억|만)?/g)){
     const unit=({억:1e8,만:1e4})[group[2]]||1;if(unit>=last)return null;last=unit;
