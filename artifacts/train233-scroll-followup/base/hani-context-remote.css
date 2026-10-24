@@ -1,0 +1,203 @@
+/* HANI OS v2.9.135 · Context Remote
+ * Read-only presentation layer. Existing data, save, cloud and renderer paths stay untouched.
+ */
+@media (min-width:851px){
+  #app.app{grid-template-columns:var(--sidebar) minmax(0,1fr) 236px}
+  #app.app.hani-remote-mini{grid-template-columns:var(--sidebar) minmax(0,1fr) 64px}
+}
+#app .hani-context-remote{position:sticky;top:0;align-self:start;display:flex;flex-direction:column;gap:10px;height:100vh;box-sizing:border-box;padding:14px 11px 16px;border-left:1px solid var(--hani-frame-line,#e2e5ec);background:var(--appearance-page,var(--surface-page,#fbfaf7));color:var(--appearance-ink,var(--ds-ink,#273349));overflow-x:hidden;overflow-y:auto;z-index:42}
+#app .hani-context-remote::-webkit-scrollbar{width:4px}
+#app .hani-context-remote::-webkit-scrollbar-thumb{border-radius:999px;background:color-mix(in srgb,var(--control-accent,#7656b3) 22%,transparent)}
+#app .hani-remote-head{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:32px}
+#app .hani-remote-brand{font-size:11px;font-weight:950;letter-spacing:.09em;color:var(--appearance-ink,var(--ds-ink,#273349));white-space:nowrap}
+#app .hani-remote-collapse,#app .hani-remote-close{display:grid;place-items:center;width:32px;height:32px;min-width:32px;padding:0;border:1px solid var(--hani-frame-line,#e2e5ec);border-radius:9px;background:#fff;color:var(--control-accent,#7656b3);font-size:16px;font-weight:900}
+#app .hani-remote-close{display:none}
+#app .hani-remote-scene{position:relative;flex:0 0 auto;display:grid;grid-template-rows:minmax(0,1fr) auto;height:315px;margin:0;overflow:hidden;border:1px solid var(--border-subtle,#e8e8f1);border-radius:16px;background:var(--surface-raised,#fafbff);box-shadow:0 9px 24px color-mix(in srgb,var(--control-accent,#7656b3) 10%,transparent)}
+/* Reserve the caption row, and fill artwork to the rounded clipping edge.
+ * Avoid a 100% flex basis competing with the caption for frame height. */
+#app .hani-remote-scene img{display:block;box-sizing:border-box;min-width:0;min-height:0;width:100%;height:100%;padding:0;object-fit:cover;object-position:50% 35%;background:var(--appearance-raised,#fff)}
+#app .hani-remote-scene figcaption{position:static;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:7px;min-height:27px;padding:4px 9px;background:color-mix(in srgb,var(--control-accent,#7656b3) 80%,#222a3d);color:#fff}
+#app .hani-remote-scene figcaption span{font-size:9px;font-weight:900;letter-spacing:.08em}
+#app .hani-remote-scene figcaption b{font-size:9px;line-height:1.25;text-align:right}
+/* Panel-local palette; global theme tokens stay unchanged. */
+#app .hani-context-remote{--remote-ink:#263247;--remote-muted:#505b6c;--remote-row:#ffffff;--remote-line:#d4d9e2;--remote-current:#edf0fa;--remote-primary:#ffead5;--remote-primary-line:#a95b21;--remote-yuna:#fff4e5;--remote-alert:#fff0f3;--remote-focus:#5b4396}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app .hani-context-remote{--remote-ink:#f4f1eb;--remote-muted:#c2c8d2;--remote-row:#1b1e24;--remote-line:#48505f;--remote-current:#292b3f;--remote-primary:#49311e;--remote-primary-line:#eab375;--remote-yuna:#322a20;--remote-alert:#3c2530;--remote-focus:#c4b5fd}
+#app .hani-remote-item:focus-visible,#app .hani-remote-link:focus-visible,#app .hani-remote-collapse:focus-visible,#app .hani-remote-close:focus-visible{outline:2px solid var(--remote-focus);outline-offset:2px}
+#app .hani-remote-group-label{margin:2px 2px 0;padding:8px 0 0;border-top:1px solid var(--remote-line);color:var(--remote-muted);font-size:12px;font-weight:900;letter-spacing:.06em}
+#app.hani-remote-mini .hani-remote-group-label{display:none}
+#app [data-remote-action="current"]{--remote-chip:#4a548e}
+#app [data-remote-action="primary"]{--remote-chip:#995018}
+#app [data-remote-action="yuna"]{--remote-chip:#936418}
+#app [data-remote-action="agent"]{--remote-chip:#675098}
+#app [data-remote-action="recent"]{--remote-chip:#286b64}
+#app [data-remote-action="alert"]{--remote-chip:#a53d59}
+#app [data-remote-action="theme"]{--remote-chip:#80518b}
+#app [data-remote-action="top"]{--remote-chip:#40546c}
+#app .hani-remote-nav{display:grid;gap:6px}
+#app .hani-remote-item{display:grid;grid-template-columns:30px minmax(0,1fr) auto;align-items:center;gap:8px;width:100%;min-height:60px;padding:10px 8px;box-sizing:border-box;border:1px solid var(--remote-line);border-radius:11px;background:var(--remote-row);color:var(--remote-ink);text-align:left}
+#app .hani-remote-item:hover{border-color:var(--remote-focus);box-shadow:inset 0 0 0 1px var(--remote-focus)}
+#app .hani-remote-item.is-current{border-color:var(--remote-line);background:var(--remote-current);color:var(--remote-ink)}
+#app .hani-remote-item.is-primary{border-color:var(--remote-primary-line);background:var(--remote-primary);color:var(--remote-ink);box-shadow:inset 3px 0 var(--remote-primary-line)}
+#app .hani-remote-item.is-yuna{background:var(--remote-yuna);color:var(--remote-ink)}
+#app .hani-remote-item.is-alert{border-color:var(--remote-line);background:var(--remote-alert);color:var(--remote-ink)}
+#app .hani-remote-item[hidden]{display:none}
+#app .hani-remote-icon{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--remote-chip,#40546c);color:#fff;font-size:16px;font-weight:900}
+#app .hani-remote-copy{min-width:0}
+#app .hani-remote-copy b,#app .hani-remote-copy small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#app .hani-remote-copy b{font-size:13px;line-height:1.4;font-weight:850;color:inherit}
+#app .hani-remote-copy small{margin-top:2px;font-size:12px;line-height:1.4;color:var(--remote-muted)}
+#app .hani-remote-count{display:grid;place-items:center;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:var(--structure-accent);color:var(--structure-on-accent);font-size:9px;font-weight:950}
+#app .hani-remote-section{padding:8px;border:1px solid var(--hani-frame-line,#e2e5ec);border-radius:12px;background:var(--remote-row)}
+#app .hani-remote-section-label{display:block;margin:0 2px 6px;color:var(--remote-muted);font-size:12px;font-weight:900;letter-spacing:.08em}
+#app .hani-remote-links{display:flex;flex-wrap:wrap;gap:5px}
+#app .hani-remote-link{min-height:28px;padding:5px 7px;border:0;border-radius:8px;background:var(--remote-current);color:var(--remote-ink);font-size:12px;font-weight:850}
+#app .hani-remote-link:hover{box-shadow:inset 0 0 0 1px var(--remote-focus)}
+#app .hani-remote-utility{margin-top:auto;padding-top:7px;border-top:1px solid var(--hani-frame-line,#e2e5ec)}
+#app.hani-remote-mini .hani-context-remote{align-items:center;padding-left:8px;padding-right:8px}
+#app.hani-remote-mini .hani-remote-brand,#app.hani-remote-mini .hani-remote-copy,#app.hani-remote-mini .hani-remote-count,#app.hani-remote-mini .hani-remote-section,#app.hani-remote-mini .hani-remote-scene figcaption{display:none}
+#app.hani-remote-mini .hani-remote-head{justify-content:center;width:100%}
+#app.hani-remote-mini .hani-remote-scene{width:46px;height:112px;border-radius:12px}
+#app.hani-remote-mini .hani-remote-nav{width:100%}
+#app.hani-remote-mini .hani-remote-item{display:grid;grid-template-columns:1fr;place-items:center;min-height:42px;padding:5px}
+#app.hani-remote-mini .hani-remote-icon{width:30px;height:30px}
+#app.hani-remote-mini .hani-remote-utility{width:100%}
+@media(min-width:851px){#app.hani-remote-mini .hani-remote-season-greeting{display:none}}
+#app .hani-remote-mobile-trigger{display:none}
+@media (max-width:1180px) and (min-width:851px){
+  #app.app{grid-template-columns:var(--sidebar) minmax(0,1fr) 208px}
+  #app .hani-context-remote{padding-left:9px;padding-right:9px}
+  #app .hani-remote-scene{height:315px}
+}
+@media (max-height:820px) and (min-width:851px){
+  #app .hani-remote-scene{height:310px}
+  #app .hani-remote-item{min-height:60px;padding-top:10px;padding-bottom:10px}
+}
+@media (max-width:850px){
+  #app .hani-remote-group-label{display:none}
+  #app .hani-remote-icon{width:24px;height:24px}
+  #app .hani-remote-mobile-trigger.is-intake-inline{position:static;inset:auto;z-index:auto;box-shadow:none;flex-shrink:0;grid-column:1/-1;justify-self:end;width:auto;white-space:nowrap;margin-left:auto}
+  #app .hani-remote-mobile-trigger{position:fixed;right:16px;bottom:max(16px,env(safe-area-inset-bottom));z-index:87;display:flex;align-items:center;gap:7px;min-height:44px;padding:10px 14px;border:1px solid color-mix(in srgb,var(--control-accent,#7656b3) 25%,#fff);border-radius:999px;background:var(--control-accent,#7656b3);color:#fff;box-shadow:0 10px 28px rgba(39,44,69,.24);font-size:12px;font-weight:900}
+  #app .hani-context-remote{position:fixed;left:0;right:0;top:auto;bottom:0;z-index:90;display:grid;grid-template-columns:92px minmax(0,1fr);grid-template-rows:auto auto 1fr;gap:10px;width:100%;height:auto;max-height:min(82vh,720px);padding:10px 14px max(16px,env(safe-area-inset-bottom));border:1px solid var(--hani-frame-line,#e2e5ec);border-bottom:0;border-radius:22px 22px 0 0;background:var(--appearance-page,var(--surface-page,#fbfaf7));box-shadow:0 -18px 50px rgba(29,34,54,.22);transform:translateY(110%);transition:transform .24s ease;overflow-y:auto}
+  #app .hani-context-remote[data-open="true"]{transform:translateY(0)}
+  #app .hani-remote-head{grid-column:1/-1;grid-row:1}
+  #app .hani-remote-collapse{display:none}
+  #app .hani-remote-close{display:grid}
+  #app .hani-remote-scene{grid-column:1;grid-row:2;width:92px;height:118px;border-radius:13px}
+  #app .hani-remote-scene figcaption{display:none}
+  #app .hani-remote-nav{grid-column:2;grid-row:2;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  #app .hani-remote-item{grid-template-columns:24px minmax(0,1fr);min-height:52px;padding:7px}
+  #app .hani-remote-item .hani-remote-count{position:absolute;right:5px;top:5px}
+  #app .hani-remote-item.is-alert{position:relative}
+  #app .hani-remote-copy small{white-space:normal}
+  #app .hani-remote-section{grid-column:1/-1;grid-row:3}
+  #app .hani-remote-season-greeting{grid-column:1/-1;grid-row:3}
+  #app .hani-remote-section{grid-row:4}
+  #app .hani-remote-utility{grid-row:5}
+  #app .hani-remote-utility{grid-column:1/-1;margin-top:0}
+  #app.hani-remote-mini .hani-context-remote{align-items:stretch;padding:10px 14px max(16px,env(safe-area-inset-bottom))}
+  #app.hani-remote-mini .hani-remote-brand,#app.hani-remote-mini .hani-remote-copy,#app.hani-remote-mini .hani-remote-section{display:block}
+  #app.hani-remote-mini .hani-remote-head{justify-content:space-between}
+  #app.hani-remote-mini .hani-remote-scene{width:92px;height:118px}
+  #app.hani-remote-mini .hani-remote-nav{width:auto}
+  #app.hani-remote-mini .hani-remote-item{display:grid;grid-template-columns:24px minmax(0,1fr);place-items:initial;min-height:52px;padding:7px}
+  #app.hani-remote-mini .hani-remote-icon{width:24px;height:24px}
+  #app.hani-remote-mini .hani-remote-utility{width:auto}
+}
+@media (max-width:420px){
+  #app .hani-context-remote{grid-template-columns:76px minmax(0,1fr);padding-left:10px;padding-right:10px}
+  #app .hani-remote-scene{width:76px;height:112px}
+  #app .hani-remote-item{min-height:50px;gap:6px}
+  #app .hani-remote-copy b{font-size:10.5px}
+  #app .hani-remote-mobile-trigger{right:12px}
+}
+
+/* Persistent read-only task slot; the Finish owns accent and surface contrast. */
+#app .hani-remote-today{border-top:1px solid var(--remote-line);padding-top:8px}
+#app .hani-remote-today.is-today{border-color:var(--structure-accent)}
+#app .hani-remote-today.is-today [data-remote-action="tasks"]{border-color:var(--structure-accent);box-shadow:inset 3px 0 var(--structure-accent)}
+#app .hani-remote-today .hani-remote-count{background:var(--structure-accent);color:var(--structure-on-accent);border-color:var(--structure-accent)}
+#app .hani-remote-quizzes{display:grid;gap:6px;padding:6px 0}
+#app .hani-remote-quizzes .hani-remote-link{white-space:normal;text-align:left;line-height:1.5}
+#app .hani-remote-today [hidden]{display:none!important}
+#app.hani-remote-mini .hani-remote-today{display:none}
+@media(max-width:850px){#app .hani-remote-today{grid-column:2}}
+
+/* PWA-213: reserve a real rail column on Fold inner; retain the existing <=850px sheet/event path. */
+@media screen and (min-width:851px) and (max-width:900px){
+  #app.app,#app.app.hani-remote-mini{grid-template-columns:64px minmax(0,1fr) 64px}
+  #app .hani-context-remote{min-width:0;width:64px;align-items:center;padding-left:8px;padding-right:8px}
+  #app .hani-context-remote :is(.hani-remote-brand,.hani-remote-copy,.hani-remote-count,.hani-remote-section,.hani-remote-group-label,.hani-remote-season-greeting,.hani-remote-scene figcaption,.hani-remote-collapse){display:none!important}
+  #app .hani-remote-scene,#app.hani-remote-mini .hani-remote-scene{width:46px;height:112px}
+  #app .hani-remote-head{display:none}
+  #app .hani-remote-nav,#app .hani-remote-utility{width:100%}
+  #app .hani-remote-item,#app.hani-remote-mini .hani-remote-item{grid-template-columns:1fr;place-items:center;min-height:44px;padding:5px}
+}
+@media screen and (display-mode:standalone){
+  #app .hani-context-remote{top:env(safe-area-inset-top);height:calc(100dvh - env(safe-area-inset-top));padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+}
+@media screen and (display-mode:standalone) and (max-width:850px){
+  #app .hani-context-remote{top:auto;height:auto;left:env(safe-area-inset-left);right:env(safe-area-inset-right);width:auto;padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+}
+
+/* Remote media: one persistent current-view image, an invariant dark surface in every Finish. */
+/* Recover the extra banner height from task-row padding, retaining >=48px targets. */
+@media(min-width:901px){
+ #app:not(.hani-remote-mini) .hani-context-remote{gap:9px}
+ #app:not(.hani-remote-mini) .hani-remote-nav{gap:5px}
+ #app:not(.hani-remote-mini) .hani-remote-nav .hani-remote-item{min-height:48px;padding:4px 8px}
+}
+#app .hani-remote-media{position:relative;isolation:isolate;flex:0 0 auto;min-width:0;height:410px;box-sizing:border-box;overflow:hidden;border:1px solid #45434d;border-radius:22px;background:#17141e;color:#fff;box-shadow:0 8px 18px #0a0a141f}
+#app .hani-remote-media-image{position:absolute;inset:0;z-index:-2;display:block;width:100%;height:100%;object-fit:cover;object-position:50% 30%;filter:none;background:#17141e}
+/* The upper 55% retains source brightness; only the lower 45% is scrimmed. */
+#app .hani-remote-media::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,transparent 55%,#0a0a14de 64%,#0a0a14f2 78%,#0a0a14fa 100%)}
+#app .hani-remote-media-chip{position:absolute;top:12px;left:12px;padding:6px 8px;border-radius:99px;background:#000b;color:#fff;font-size:10px;font-weight:800;line-height:1.4}
+#app .hani-remote-media-content{position:absolute;inset:auto 12px 15px}
+#app .hani-remote-media h2{display:table;max-width:100%;box-sizing:border-box;margin:0 0 5px -5px;padding:2px 5px;border-radius:5px;background:#0a0a14e6;color:#fff;font-size:19px;font-weight:850;line-height:1.35;letter-spacing:-.04em;overflow-wrap:anywhere}
+/* The mobile rail lives inside .top; its title does not own the header underline. */
+#app .hani-remote-media h2::after{content:none}
+#app .hani-remote-media p{margin:0;color:#fff;line-height:1.6}
+#app .hani-remote-media-staff{display:table;max-width:100%;box-sizing:border-box;margin-left:-3px!important;padding:1px 3px;background:#0a0a14e6;font-size:12px;font-weight:700}
+#app .hani-remote-media-line{margin-top:7px!important;font-size:11px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#app .hani-remote-media-actions{display:flex;justify-content:space-between;gap:3px;margin-top:13px}
+#app .hani-remote-media-actions>div{display:flex;align-items:center;flex-direction:column;gap:5px}
+#app .hani-remote-media-actions button{display:grid;place-items:center;width:36px;height:36px;min-height:36px;min-width:36px;box-sizing:border-box;margin:0;padding:0;border:1px solid #c4c8d1;border-radius:50%;background:#171b28;color:#fff;box-shadow:none;font:800 20px/1 'Segoe UI Symbol','Malgun Gothic',sans-serif}
+#app .hani-remote-media-actions span{color:#fff;font-size:10px;font-weight:700;line-height:1.4;white-space:nowrap}
+#app .hani-remote-media-actions button span{font-size:20px;font-variant-emoji:text}
+#app .hani-remote-media-actions button:is(:hover,:focus-visible){color:#fff;background:#171b28;outline:2px solid #fff;outline-offset:2px;box-shadow:none}
+#app [data-remote-links] [hidden]{display:none}
+/* Keep the original task badge within its own row on the sheet. */
+#app .hani-remote-today .hani-remote-item{position:relative}
+@media(min-width:901px){
+ #app.hani-remote-mini .hani-remote-media{width:46px;height:112px;border-radius:12px}
+ #app.hani-remote-mini .hani-remote-media :is(.hani-remote-media-chip,.hani-remote-media-content){display:none}
+}
+@media(min-width:851px) and (max-width:900px){
+ #app .hani-remote-media{width:46px;height:112px;border-radius:12px}
+ #app .hani-remote-media :is(.hani-remote-media-chip,.hani-remote-media-content){display:none}
+}
+@media(max-width:850px){
+ #app .hani-context-remote{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto auto auto auto;gap:3px}
+ #app .hani-remote-media{grid-column:1/-1;grid-row:2;height:204px}
+ #app .hani-remote-media-content{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;left:12px;right:12px;bottom:9px}
+ #app .hani-remote-media h2{justify-self:start;font-size:15px;line-height:1.4;margin-bottom:0}
+ #app .hani-remote-media-staff{justify-self:end;margin-left:0!important;padding:2px 5px;border-radius:4px;background:#0a0a14ed}
+ #app .hani-remote-media-chip{top:8px;left:8px;font-size:9px}
+ #app .hani-remote-media-line{grid-column:1/-1;justify-self:start;max-width:100%;margin-top:0!important;border-radius:3px;background:#0a0a14ed;font-size:10px;line-height:1.4;-webkit-line-clamp:1}
+ #app .hani-remote-media-actions{grid-column:1/-1;justify-content:space-between;gap:4px;margin-top:3px}
+ #app .hani-remote-nav{grid-column:1/-1;grid-row:3;gap:5px}
+ #app .hani-remote-nav .hani-remote-item{min-height:48px;padding:3px 7px}
+ #app .hani-remote-today{grid-column:1/-1;grid-row:4}
+ #app .hani-remote-section{grid-column:1/-1;grid-row:5}
+ #app .hani-remote-utility{grid-column:1/-1;grid-row:6}
+}
+@media(prefers-reduced-motion:reduce){#app .hani-context-remote{transition:none}}
+#app .hani-remote-media-actions>div[hidden],#app .hani-remote-media-actions button[hidden]{display:none}
+
+/* Dedicated mobile header slot: neither the launcher nor the expanded panel floats over forms. */
+@media(max-width:768px){
+ #app .main>header.top.ui26-top:has(.hani-context-remote[data-open="true"]){position:relative!important;top:auto!important;height:auto!important;flex-wrap:wrap!important;transform:none!important;opacity:1;visibility:visible;pointer-events:auto}
+ #app header.top.ui26-top .top-actions{flex-wrap:wrap!important;max-width:100%}
+ #app .hani-remote-mobile-trigger,#app .hani-remote-mobile-trigger:is(.is-market-inline,.is-intake-inline){position:static;inset:auto;margin-left:auto;box-shadow:none;flex:0 0 auto;white-space:nowrap}
+ #app header.top .hani-context-remote{position:static;inset:auto;transform:none;transition:none;display:none;flex:0 0 100%;grid-column:1/-1;width:100%;max-height:none;min-height:0;overflow:visible;border-radius:14px;border:1px solid var(--remote-line);box-shadow:none;z-index:auto}
+ #app header.top .hani-context-remote[data-open="true"]{display:grid;transform:none}
+}

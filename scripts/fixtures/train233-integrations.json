@@ -422,5 +422,22 @@
         ]
       }
     ]
+  },
+  "browserScroll": {
+    "baseSha": "a29ff905be5a3458a0f6971c107c183d96c6b965",
+    "reason": "Mobile native anchor/focus scrolling reserves the canonical 48px sticky header plus gap and safe area. No header visibility, trigger placement, events, runtime JS or data path changes. Browser verification pending.",
+    "changes": [
+      {
+        "file": "hani-design-system.css",
+        "beforeHash": "8f3fc89d4a4138dce379f5ffd194505048aea85b8e395a0ada5c24246decb10b",
+        "afterHash": "f38f2b9a3cd7d55becadadea904a1fbe4d6b76090083b4edcba2c9ebcebbe002",
+        "replacements": [
+          {
+            "before": "@media screen and (max-width:768px){\n  #app .main>header.top.ui26-top{height:48px!important;min-height:48px!important}",
+            "after": "@media screen and (max-width:768px){\n  /* Native anchor/focus scrolling reserves the persistent 48px header and a gap. */\n  html{scroll-padding-top:calc(56px + env(safe-area-inset-top))}\n  #app .view :is(input,select,textarea,button,[tabindex]){scroll-margin-top:8px}\n  #app .main>header.top.ui26-top{height:48px!important;min-height:48px!important}"
+          }
+        ]
+      }
+    ]
   }
 }

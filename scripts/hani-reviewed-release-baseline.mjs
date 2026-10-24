@@ -33,8 +33,9 @@ const fixture=name=>JSON.parse(fs.readFileSync(new URL('./fixtures/'+name,import
 const browserFollowup=fixture('train233-integrations.json').browserFollowup;
 const browserResidual=fixture('train233-integrations.json').browserResidual;
 const browserSticky=fixture('train233-integrations.json').browserSticky;
-// Undo newest open-only Remote delta, then date borders, older corrections and f27be17.
-export const pendingApprovedConnections=[...browserSticky.changes,...browserResidual.changes,...browserFollowup.corrections,...browserFollowup.changes,...['train233-integrations.json','office-redesign-233.json','milestones-v1.json','hero-crop-fix.json'].flatMap(name=>fixture(name).changes)].map(({file,replacements})=>({
+const browserScroll=fixture('train233-integrations.json').browserScroll;
+// Undo newest mobile scroll spacing, open-only Remote, date borders and older fixed deltas.
+export const pendingApprovedConnections=[...browserScroll.changes,...browserSticky.changes,...browserResidual.changes,...browserFollowup.corrections,...browserFollowup.changes,...['train233-integrations.json','office-redesign-233.json','milestones-v1.json','hero-crop-fix.json'].flatMap(name=>fixture(name).changes)].map(({file,replacements})=>({
  file,lines:replacements.map(change=>change.after),
  strip:source=>{
   for(const {before,after} of replacements)source=source.replace(after,()=>before);

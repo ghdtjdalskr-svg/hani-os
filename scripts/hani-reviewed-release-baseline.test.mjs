@@ -117,7 +117,7 @@ test('approved additions cannot move to another script, event or cascade positio
 });
 
 test('pending 233 train stays scoped to office, milestones, hero-crop, asset-intake, QA and HANI-77 owners; released staff and moved fragments stay strict',()=>{
- assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),["hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-context-remote.css","hani-context-remote.css","hani-design-system.css","hani-portfolio-preview.css",...["assets/data/office-actions-216.json","assets/data/office-actions-221.json","hani-asset-market-view.js","hani-asset-update-v1.js","hani-context-remote-v1.js","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-design-system.css","hani-investment-committee.js","hani-main.js","hani-main.js","hani-office-live.js","hani-organization-hub.css","hani-organization-hub.js","hani-study-v02984.js","hani-style-07.css","hani-ui-v02992.js","hani-yuna-helpdesk.js","index.html","index.html"]].sort());
+ assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),["hani-design-system.css","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-context-remote.css","hani-context-remote.css","hani-design-system.css","hani-portfolio-preview.css",...["assets/data/office-actions-216.json","assets/data/office-actions-221.json","hani-asset-market-view.js","hani-asset-update-v1.js","hani-context-remote-v1.js","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-design-system.css","hani-investment-committee.js","hani-main.js","hani-main.js","hani-office-live.js","hani-organization-hub.css","hani-organization-hub.js","hani-study-v02984.js","hani-style-07.css","hani-ui-v02992.js","hani-yuna-helpdesk.js","index.html","index.html"]].sort());
  const stages=new Map();
  for(const connection of pendingApprovedConnections){
   const {file,lines}=connection,current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
@@ -190,8 +190,8 @@ test('fixed f27be17 CSS follow-up and named owner corrections retain exact bytes
   let expected=readReleaseSource(f.candidateSha,change.file);assert.equal(hash(expected),change.beforeHash);
   for(const h of change.replacements){assert.equal(expected.split(h.before).length-1,1);expected=expected.replace(h.before,()=>h.after)}
   let current=fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8');
-  const {browserSticky,browserResidual}=JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8'));
-  for(const delta of [...browserSticky.changes,...browserResidual.changes].filter(c=>c.file===change.file))for(const h of delta.replacements){assert.equal(current.split(h.after).length-1,1);current=current.replace(h.after,()=>h.before)}
+  const {browserScroll,browserSticky,browserResidual}=JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8'));
+  for(const delta of [...browserScroll.changes,...browserSticky.changes,...browserResidual.changes].filter(c=>c.file===change.file))for(const h of delta.replacements){assert.equal(current.split(h.after).length-1,1);current=current.replace(h.after,()=>h.before)}
   assert.equal(hash(expected),change.afterHash);assert.equal(current,expected);
  }
  for(const file of f.changes.map(c=>c.file)){
@@ -206,12 +206,15 @@ test('date border correction is an exact delta from fixed 18916a0; old integrati
  assert.deepEqual(f.changes.map(c=>[c.file,c.beforeHash,c.afterHash]),[['hani-design-system.css','bce2b2ac0991b69fb66831b2825a74050303d66e99b3ac1316812ebdee240948','8f3fc89d4a4138dce379f5ffd194505048aea85b8e395a0ada5c24246decb10b']]);
  const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
  for(const change of f.changes){
-  const before=readReleaseSource(f.baseSha,change.file),after=fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8');
+  const before=readReleaseSource(f.baseSha,change.file);
+  let after=fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8');
+  for(const delta of JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8')).browserScroll.changes.filter(c=>c.file===change.file))for(const h of delta.replacements){assert.equal(after.split(h.after).length-1,1);after=after.replace(h.after,()=>h.before)}
   assert.equal(hash(before),change.beforeHash);assert.equal(hash(after),change.afterHash);
   let forward=before,reverse=after;
   for(const h of change.replacements){assert.equal(forward.split(h.before).length-1,1);assert.equal(reverse.split(h.after).length-1,1);forward=forward.replace(h.before,()=>h.after);reverse=reverse.replace(h.after,()=>h.before)}
-  assert.equal(forward,after);assert.equal(reverse,before);assertReviewedReleaseSource(change.file,after);
-  for(const h of change.replacements)for(const mutation of [after.replace(h.after,''),after.replace(h.after,h.after+h.after),after.replace(h.after,h.after+'/* unlisted */')])assert.throws(()=>assertReviewedReleaseSource(change.file,mutation),{code:'ERR_ASSERTION'});
+  assert.equal(forward,after);assert.equal(reverse,before);assertReviewedReleaseSource(change.file,fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8'));
+  const current=fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8');
+  for(const h of change.replacements)for(const mutation of [current.replace(h.after,''),current.replace(h.after,h.after+h.after),current.replace(h.after,h.after+'/* unlisted */')])assert.throws(()=>assertReviewedReleaseSource(change.file,mutation),{code:'ERR_ASSERTION'});
  }
 });
 
@@ -230,5 +233,26 @@ test('open-only Remote CSS is an exact delta from fixed c026b63; sticky and all 
   for(const h of change.replacements)for(const mutation of [after.replace(h.after,''),after.replace(h.after,h.after+h.after),after.replace(h.after,h.after.replace('[data-open="true"]','')),after.replace(h.after,h.after+'/* unlisted */')])assert.throws(()=>assertReviewedReleaseSource(change.file,mutation),{code:'ERR_ASSERTION'});
   const connection=pendingApprovedConnections.find(c=>c.file===change.file);
   assert.equal(normalizeReviewedConnection(connection,after),before,'only newest delta is reversed before older fixed hunks');
+ }
+});
+
+test('mobile scroll spacing is an exact delta from a29ff90; all older fixture identities remain unchanged',()=>{
+ const fixture=JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8')),f=fixture.browserScroll;
+ assert.equal(f.baseSha,'a29ff905be5a3458a0f6971c107c183d96c6b965');
+ const {browserScroll,...older}=fixture;
+ assert.deepEqual(older,JSON.parse(readReleaseSource(f.baseSha,'scripts/fixtures/train233-integrations.json')));
+ assert.deepEqual(f.changes.map(c=>[c.file,c.beforeHash,c.afterHash]),[['hani-design-system.css','8f3fc89d4a4138dce379f5ffd194505048aea85b8e395a0ada5c24246decb10b','f38f2b9a3cd7d55becadadea904a1fbe4d6b76090083b4edcba2c9ebcebbe002']]);
+ const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
+ for(const change of f.changes){
+  const before=readReleaseSource(f.baseSha,change.file),after=fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8');
+  assert.equal(hash(before),change.beforeHash);assert.equal(hash(after),change.afterHash);assert.equal(change.replacements.length,1);
+  let forward=before,reverse=after;
+  for(const h of change.replacements){assert.equal(forward.split(h.before).length-1,1);assert.equal(reverse.split(h.after).length-1,1);forward=forward.replace(h.before,()=>h.after);reverse=reverse.replace(h.after,()=>h.before)}
+  assert.equal(forward,after);assert.equal(reverse,before);assertReviewedReleaseSource(change.file,after);
+  for(const h of change.replacements){
+   for(const mutated of [after.replace(h.after,''),after.replace(h.after,h.after+h.after),after.replace(h.after,h.after+'/* unlisted */'),after.replace('scroll-padding-top:calc(56px','scroll-padding-top:calc(0px'),after.replace('scroll-margin-top:8px','scroll-margin-top:0px'),after.replace('screen and (max-width:768px){\n  /* Native','screen and (max-width:850px){\n  /* Native'),after.replace(h.after,'')+'\n'+h.after,after.replace(h.after,h.after.replace(/\n/g,'\r\n'))])assert.throws(()=>assertReviewedReleaseSource(change.file,mutated),{code:'ERR_ASSERTION'});
+  }
+  const connection=pendingApprovedConnections.find(c=>c.file===change.file);
+  assert.equal(normalizeReviewedConnection(connection,after),before,'newest scroll delta reverses before historical date correction');
  }
 });

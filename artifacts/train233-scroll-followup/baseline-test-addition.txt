@@ -1,0 +1,21 @@
+
+test('mobile scroll spacing is an exact delta from a29ff90; all older fixture identities remain unchanged',()=>{
+ const fixture=JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8')),f=fixture.browserScroll;
+ assert.equal(f.baseSha,'a29ff905be5a3458a0f6971c107c183d96c6b965');
+ const {browserScroll,...older}=fixture;
+ assert.deepEqual(older,JSON.parse(readReleaseSource(f.baseSha,'scripts/fixtures/train233-integrations.json')));
+ assert.deepEqual(f.changes.map(c=>[c.file,c.beforeHash,c.afterHash]),[['hani-design-system.css','8f3fc89d4a4138dce379f5ffd194505048aea85b8e395a0ada5c24246decb10b','f38f2b9a3cd7d55becadadea904a1fbe4d6b76090083b4edcba2c9ebcebbe002']]);
+ const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
+ for(const change of f.changes){
+  const before=readReleaseSource(f.baseSha,change.file),after=fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8');
+  assert.equal(hash(before),change.beforeHash);assert.equal(hash(after),change.afterHash);assert.equal(change.replacements.length,1);
+  let forward=before,reverse=after;
+  for(const h of change.replacements){assert.equal(forward.split(h.before).length-1,1);assert.equal(reverse.split(h.after).length-1,1);forward=forward.replace(h.before,()=>h.after);reverse=reverse.replace(h.after,()=>h.before)}
+  assert.equal(forward,after);assert.equal(reverse,before);assertReviewedReleaseSource(change.file,after);
+  for(const h of change.replacements){
+   for(const mutated of [after.replace(h.after,''),after.replace(h.after,h.after+h.after),after.replace(h.after,h.after+'/* unlisted */'),after.replace('scroll-padding-top:calc(56px','scroll-padding-top:calc(0px'),after.replace('scroll-margin-top:8px','scroll-margin-top:0px'),after.replace('screen and (max-width:768px){\n  /* Native','screen and (max-width:850px){\n  /* Native'),after.replace(h.after,'')+'\n'+h.after,after.replace(h.after,h.after.replace(/\n/g,'\r\n'))])assert.throws(()=>assertReviewedReleaseSource(change.file,mutated),{code:'ERR_ASSERTION'});
+  }
+  const connection=pendingApprovedConnections.find(c=>c.file===change.file);
+  assert.equal(normalizeReviewedConnection(connection,after),before,'newest scroll delta reverses before historical date correction');
+ }
+});

@@ -1,0 +1,14 @@
+[
+  {
+    "ref": "a29ff905be5a3458a0f6971c107c183d96c6b965",
+    "file": "hani-design-system.css",
+    "blob": "6d8e993e94fe5702aa23d6a4ae8c11da35bdb2de",
+    "sha256": "8f3fc89d4a4138dce379f5ffd194505048aea85b8e395a0ada5c24246decb10b"
+  },
+  {
+    "ref": "a29ff905be5a3458a0f6971c107c183d96c6b965",
+    "file": "scripts/fixtures/train233-integrations.json",
+    "blob": "3d54fb4b0e70f54647f970ce328d068b56ea2e93",
+    "sha256": "bc1957d935191e8f77857dcd435937bfc12f5c04006cc7d7885dedaf03d3cd52"
+  }
+]

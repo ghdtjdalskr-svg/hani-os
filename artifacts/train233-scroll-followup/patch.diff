@@ -1,0 +1,223 @@
+diff --git a/hani-design-system.css b/hani-design-system.css
+index 6d8e993..8e623ee 100644
+--- a/hani-design-system.css
++++ b/hani-design-system.css
+@@ -1374,6 +1374,9 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
+   #app .life-ticker-pause{width:40px;height:40px;flex-shrink:0}
+ }
+ @media screen and (max-width:768px){
++  /* Native anchor/focus scrolling reserves the persistent 48px header and a gap. */
++  html{scroll-padding-top:calc(56px + env(safe-area-inset-top))}
++  #app .view :is(input,select,textarea,button,[tabindex]){scroll-margin-top:8px}
+   #app .main>header.top.ui26-top{height:48px!important;min-height:48px!important}
+   #app header.top.ui26-top :is(.mobile-menu,.mobile-top-more,.quick-jump-icon,.header-search.quick-jump){width:40px!important;min-width:40px!important;height:40px!important;flex-basis:40px!important}
+ }
+diff --git a/scripts/fixtures/train233-integrations.json b/scripts/fixtures/train233-integrations.json
+index 3d54fb4..26f56ad 100644
+--- a/scripts/fixtures/train233-integrations.json
++++ b/scripts/fixtures/train233-integrations.json
+@@ -422,5 +422,22 @@
+         ]
+       }
+     ]
++  },
++  "browserScroll": {
++    "baseSha": "a29ff905be5a3458a0f6971c107c183d96c6b965",
++    "reason": "Mobile native anchor/focus scrolling reserves the canonical 48px sticky header plus gap and safe area. No header visibility, trigger placement, events, runtime JS or data path changes. Browser verification pending.",
++    "changes": [
++      {
++        "file": "hani-design-system.css",
++        "beforeHash": "8f3fc89d4a4138dce379f5ffd194505048aea85b8e395a0ada5c24246decb10b",
++        "afterHash": "f38f2b9a3cd7d55becadadea904a1fbe4d6b76090083b4edcba2c9ebcebbe002",
++        "replacements": [
++          {
++            "before": "@media screen and (max-width:768px){\n  #app .main>header.top.ui26-top{height:48px!important;min-height:48px!important}",
++            "after": "@media screen and (max-width:768px){\n  /* Native anchor/focus scrolling reserves the persistent 48px header and a gap. */\n  html{scroll-padding-top:calc(56px + env(safe-area-inset-top))}\n  #app .view :is(input,select,textarea,button,[tabindex]){scroll-margin-top:8px}\n  #app .main>header.top.ui26-top{height:48px!important;min-height:48px!important}"
++          }
++        ]
++      }
++    ]
+   }
+ }
+diff --git a/scripts/hani-qa-1st-ui.test.mjs b/scripts/hani-qa-1st-ui.test.mjs
+index e6ad055..41de0e7 100644
+--- a/scripts/hani-qa-1st-ui.test.mjs
++++ b/scripts/hani-qa-1st-ui.test.mjs
+@@ -11,7 +11,27 @@ const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'t
+ const server=http.createServer((req,res)=>{const url=new URL(req.url,'http://localhost'),file=path.resolve(root,'.'+decodeURIComponent(url.pathname==='/'?'/index.html':url.pathname));if(!file.startsWith(root+path.sep)||!fs.existsSync(file)||!fs.statSync(file).isFile()){res.writeHead(404);res.end();return;}res.setHeader('Content-Type',mime[path.extname(file)]||'application/octet-stream');res.end(fs.readFileSync(file));});
+ await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+ const origin=`http://127.0.0.1:${server.address().port}`,metrics=[];
+-let browser;
++// Keep native smooth scrolling; a fixed 80ms delay can sample a previous view's scroll.
++async function settleScroll(page){
++  return page.evaluate(()=>new Promise((resolve,reject)=>{
++    let previous=scrollY,stable=0,frames=0;
++    const tick=()=>{const y=scrollY;stable=Math.abs(y-previous)<.25?stable+1:0;previous=y;
++      if(stable>=8)return resolve({scrollY:y,frames});
++      if(++frames>=180)return reject(Error('document scroll did not settle'));
++      requestAnimationFrame(tick);
++    };requestAnimationFrame(tick);
++  }));
++}
++async function controlGeometry(page,selector){
++  return page.evaluate(selector=>{
++    const rect=node=>{const r=node.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,right:r.right,bottom:r.bottom}};
++    const intersects=(a,b)=>a.x<b.right&&a.right>b.x&&a.y<b.bottom&&a.bottom>b.y;
++    const field=document.querySelector(selector),bar=document.querySelector('header.top'),trigger=document.querySelector('.hani-remote-mobile-trigger');
++    const control=rect(field),header=rect(bar),launcher=rect(trigger),painted=bar.checkVisibility({checkOpacity:true,checkVisibilityCSS:true});
++    return {scrollY,focus:document.activeElement?.id,control,header,launcher,painted,hidden:bar.classList.contains('is-mobile-hidden'),headerPosition:getComputedStyle(bar).position,triggerPosition:getComputedStyle(trigger).position,overlap:painted&&intersects(control,launcher),headerOverlap:painted&&intersects(control,header),scrollPadding:getComputedStyle(document.documentElement).scrollPaddingTop,scrollMargin:getComputedStyle(field).scrollMarginTop};
++  },selector);
++}
++let browser,lastDiagnostic;
+ try{
+   browser=await chromium.launch({executablePath:process.argv[3],headless:true});
+   for(const width of [390,412,1440])for(const finish of ['porcelain-cream','midnight-black']){
+@@ -24,6 +44,12 @@ try{
+     for(const view of ['home','tasks','certificate','investmentIntake','intake','asset','investment','ledger','diet','exercise','monthlyReport','dev','aiBudget','settings','university','study']){
+       await page.evaluate(view=>{showView(view);if(view==='settings'){document.querySelector('[data-settings-tab="data"]')?.click();document.getElementById('settingsData').hidden=false;document.getElementById('settingsData').classList.add('active');}window.scrollTo(0,0);},view);
+       await page.waitForTimeout(80);
++      const early=await page.evaluate(view=>{
++        const trigger=document.querySelector('.hani-remote-mobile-trigger').getBoundingClientRect();
++        const overlap=[...document.getElementById(view).querySelectorAll('input:not([type="hidden"]),select,textarea,button')].filter(node=>node.getClientRects().length&&getComputedStyle(node).visibility!=='hidden').filter(node=>{const r=node.getBoundingClientRect();return r.x<trigger.right&&r.right>trigger.x&&r.y<trigger.bottom&&r.bottom>trigger.y}).map(node=>node.id||node.textContent.trim());
++        return {scrollY,focus:document.activeElement?.id,overlap};
++      },view);
++      const settled=await settleScroll(page);
+       const result=await page.evaluate(({view,width})=>{
+         const rect=node=>{const r=node.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,right:r.right,bottom:r.bottom}};
+         const visible=node=>!!node.getClientRects().length&&getComputedStyle(node).visibility!=='hidden';
+@@ -39,8 +65,10 @@ try{
+         const contrast=[...section.querySelectorAll('.stat .label,.stat .value,.asset-dashboard-card h3,.task-calendar-hub h3,.task-calendar-hub .sub,.hani-dev-history-overview h3,.hani-dev-history-overview p,.asset-capture-intro p,.budget-plan,.ledger-jispi-head span,.ledger-support-kpis span,.ledger-support-kpis b,.earnings-controls label,.earnings-report>.sub')].filter(visible).map(node=>{const fg=luminance(color(getComputedStyle(node).color)),bg=luminance(background(node));return {text:node.textContent,ratio:(Math.max(fg,bg)+.05)/(Math.min(fg,bg)+.05)};});
+         let homeOverlap=false;if(view==='home'){const quote=document.getElementById('homeDialogueText'),actions=document.querySelector('.home-welcome-actions');homeOverlap=intersects(rect(quote),rect(actions));}
+         const clip=view==='settings'?[...section.querySelectorAll('#group-backup .feature p')].filter(visible).filter(node=>node.scrollHeight>node.clientHeight+1).map(node=>node.textContent):[];
+-        return {view,overlap,dateWidths,money,contrast,homeOverlap,clip,viewWidth:section.clientWidth,viewScroll:section.scrollWidth,pageWidth:document.documentElement.scrollWidth,viewport:innerWidth,triggerPosition:getComputedStyle(trigger).position,headerPosition:getComputedStyle(document.querySelector('header.top')).position};
++        return {view,overlap,dateWidths,money,contrast,homeOverlap,clip,scrollY,focus:document.activeElement?.id,triggerRect:r,headerRect:rect(document.querySelector('header.top')),viewWidth:section.clientWidth,viewScroll:section.scrollWidth,pageWidth:document.documentElement.scrollWidth,viewport:innerWidth,triggerPosition:getComputedStyle(trigger).position,headerPosition:getComputedStyle(document.querySelector('header.top')).position};
+       },{view,width});
++      lastDiagnostic={width,finish,phase:'initial',early,settled,...result};
++      if(width<=768&&['investmentIntake','intake'].includes(view))console.log('DIAGNOSTICS Remote controls',JSON.stringify(lastDiagnostic));
+       assert.deepEqual(result.overlap,[],`${width}/${view}: Remote covers controls`);assert.equal(result.homeOverlap,false,'home sentence/button overlap');assert.deepEqual(result.clip,[],'backup explanation clipping');
+       assert.ok(result.pageWidth<=result.viewport+1,`${width}/${view}: page overflow`);
+       if(width===412&&['home','tasks'].includes(view))assert.ok(result.viewScroll<=result.viewWidth+1,`${width}/${view}: view overflow`);
+@@ -48,17 +76,36 @@ try{
+       for(const date of result.dateWidths)assert.ok(date.width>=140&&date.scrollWidth<=date.width+1,`${width}/${view}: date ${JSON.stringify(date)}`);
+       for(const value of result.money){assert.equal(value.nowrap,'nowrap',JSON.stringify(value));assert.ok(value.scrollWidth<=value.width+1,`${width}/${view}: amount overflow ${JSON.stringify(value)}`);}
+       for(const value of result.contrast)assert.ok(value.ratio>=4.5,`${width}/${finish}/${view}: contrast ${JSON.stringify(value)}`);
++      await page.screenshot({path:path.join(output,`${width}-${finish}-${view}.png`)});
+       if(width<=768){
++        if(['investmentIntake','intake'].includes(view)){
++          const field=view==='investmentIntake'?page.locator('#assetCaptureAccount'):page.locator('#intake select:visible,#intake textarea:visible').first();
++          const selector='#'+await field.getAttribute('id');
++          for(const phase of ['anchor','scroll-up']){
++            if(phase==='anchor')await field.evaluate(node=>node.scrollIntoView({behavior:'smooth',block:'start'}));
++            else await page.evaluate(()=>window.scrollBy({top:-24,behavior:'smooth'}));
++            await settleScroll(page);
++            const geometry=await controlGeometry(page,selector);
++            lastDiagnostic={width,finish,view,phase,...geometry};console.log('DIAGNOSTICS Remote controls',JSON.stringify(lastDiagnostic));
++            assert.equal(geometry.overlap,false,JSON.stringify(lastDiagnostic));
++            assert.equal(geometry.headerOverlap,false,JSON.stringify(lastDiagnostic));
++            assert.equal(geometry.headerPosition,'sticky');assert.equal(geometry.triggerPosition,'static');
++            assert.equal(geometry.header.h,48);assert.ok(geometry.launcher.h>=44,'Remote touch target');
++            assert.ok(geometry.control.y>=0&&geometry.control.bottom<=844,'anchor control reachable: '+JSON.stringify(lastDiagnostic));
++            if(phase==='scroll-up'){assert.equal(geometry.hidden,false,'scroll up reveals header');assert.equal(geometry.painted,true,'revealed header is painted');}
++            metrics.push(lastDiagnostic);await page.screenshot({path:path.join(output,width+'-'+finish+'-'+view+'-'+phase+'.png')});
++          }
++        }
+         await page.locator('.hani-remote-mobile-trigger').click();
+         const panel=await page.locator('#haniContextRemote').evaluate(node=>({position:getComputedStyle(node).position,display:getComputedStyle(node).display,headerPosition:getComputedStyle(node.parentElement).position,bottom:node.getBoundingClientRect().bottom,contentTop:document.querySelector('.view.active').getBoundingClientRect().top}));assert.equal(panel.position,'static');assert.equal(panel.display,'grid');assert.equal(panel.headerPosition,'relative','open Remote participates in header flow');assert.ok(panel.bottom<=panel.contentTop+1,`${width}/${view}: open Remote must precede form controls`);await page.locator('.hani-remote-close').click();
+         assert.equal(await page.locator('header.top').evaluate(node=>getComputedStyle(node).position),'sticky','closing Remote restores sticky owner');
+         // Last control can be scrolled fully into the viewport above bottom safe space.
+-        const last=page.locator(`#${view} button:visible`).last();if(await last.count()){await last.scrollIntoViewIfNeeded();const box=await last.boundingBox();assert.ok(box.y+box.height<=844,`${view}: last button unreachable`);}
++        const last=page.locator(`#${view} button:visible`).last();if(await last.count()){await last.scrollIntoViewIfNeeded();await settleScroll(page);const box=await last.boundingBox();assert.ok(box.y+box.height<=844,`${view}: last button unreachable`);}
+       }
+-      metrics.push({width,finish,...result});await page.screenshot({path:path.join(output,`${width}-${finish}-${view}.png`)});
++      metrics.push({width,finish,early,settled,...result});
+     }
+     assert.equal(await page.evaluate(()=>localStorage.getItem('hani_os_life_v23')),before,'read-only UI test changed protected records');assert.deepEqual(errors,[],'runtime errors');await context.close();
+   }
+   fs.writeFileSync(path.join(output,'ui-results.json'),JSON.stringify(metrics,null,2));console.log('PASS: Edge 390×844/412×844/1440 light/dark Remote, dates, contrast, home, amounts, backup text');
+-}catch(error){fs.writeFileSync(path.join(output,'ui-results.json'),JSON.stringify({status:'NOT_PASS',error:error.message.split('\n')[0],completed:metrics},null,2));throw error;}
++}catch(error){fs.writeFileSync(path.join(output,'ui-results.json'),JSON.stringify({status:'NOT_PASS',error:error.message.split('\n')[0],lastDiagnostic,completed:metrics},null,2));throw error;}
+ finally{await browser?.close();await new Promise(resolve=>server.close(resolve));}
+diff --git a/scripts/hani-reviewed-release-baseline.mjs b/scripts/hani-reviewed-release-baseline.mjs
+index 9965b05..817bd8b 100644
+--- a/scripts/hani-reviewed-release-baseline.mjs
++++ b/scripts/hani-reviewed-release-baseline.mjs
+@@ -33,8 +33,9 @@ const fixture=name=>JSON.parse(fs.readFileSync(new URL('./fixtures/'+name,import
+ const browserFollowup=fixture('train233-integrations.json').browserFollowup;
+ const browserResidual=fixture('train233-integrations.json').browserResidual;
+ const browserSticky=fixture('train233-integrations.json').browserSticky;
+-// Undo newest open-only Remote delta, then date borders, older corrections and f27be17.
+-export const pendingApprovedConnections=[...browserSticky.changes,...browserResidual.changes,...browserFollowup.corrections,...browserFollowup.changes,...['train233-integrations.json','office-redesign-233.json','milestones-v1.json','hero-crop-fix.json'].flatMap(name=>fixture(name).changes)].map(({file,replacements})=>({
++const browserScroll=fixture('train233-integrations.json').browserScroll;
++// Undo newest mobile scroll spacing, open-only Remote, date borders and older fixed deltas.
++export const pendingApprovedConnections=[...browserScroll.changes,...browserSticky.changes,...browserResidual.changes,...browserFollowup.corrections,...browserFollowup.changes,...['train233-integrations.json','office-redesign-233.json','milestones-v1.json','hero-crop-fix.json'].flatMap(name=>fixture(name).changes)].map(({file,replacements})=>({
+  file,lines:replacements.map(change=>change.after),
+  strip:source=>{
+   for(const {before,after} of replacements)source=source.replace(after,()=>before);
+diff --git a/scripts/hani-reviewed-release-baseline.test.mjs b/scripts/hani-reviewed-release-baseline.test.mjs
+index 854af83..4a8df41 100644
+--- a/scripts/hani-reviewed-release-baseline.test.mjs
++++ b/scripts/hani-reviewed-release-baseline.test.mjs
+@@ -117,7 +117,7 @@ test('approved additions cannot move to another script, event or cascade positio
+ });
+ 
+ test('pending 233 train stays scoped to office, milestones, hero-crop, asset-intake, QA and HANI-77 owners; released staff and moved fragments stay strict',()=>{
+- assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),["hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-context-remote.css","hani-context-remote.css","hani-design-system.css","hani-portfolio-preview.css",...["assets/data/office-actions-216.json","assets/data/office-actions-221.json","hani-asset-market-view.js","hani-asset-update-v1.js","hani-context-remote-v1.js","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-design-system.css","hani-investment-committee.js","hani-main.js","hani-main.js","hani-office-live.js","hani-organization-hub.css","hani-organization-hub.js","hani-study-v02984.js","hani-style-07.css","hani-ui-v02992.js","hani-yuna-helpdesk.js","index.html","index.html"]].sort());
++ assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),["hani-design-system.css","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-context-remote.css","hani-context-remote.css","hani-design-system.css","hani-portfolio-preview.css",...["assets/data/office-actions-216.json","assets/data/office-actions-221.json","hani-asset-market-view.js","hani-asset-update-v1.js","hani-context-remote-v1.js","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-design-system.css","hani-investment-committee.js","hani-main.js","hani-main.js","hani-office-live.js","hani-organization-hub.css","hani-organization-hub.js","hani-study-v02984.js","hani-style-07.css","hani-ui-v02992.js","hani-yuna-helpdesk.js","index.html","index.html"]].sort());
+  const stages=new Map();
+  for(const connection of pendingApprovedConnections){
+   const {file,lines}=connection,current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
+@@ -190,8 +190,8 @@ test('fixed f27be17 CSS follow-up and named owner corrections retain exact bytes
+   let expected=readReleaseSource(f.candidateSha,change.file);assert.equal(hash(expected),change.beforeHash);
+   for(const h of change.replacements){assert.equal(expected.split(h.before).length-1,1);expected=expected.replace(h.before,()=>h.after)}
+   let current=fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8');
+-  const {browserSticky,browserResidual}=JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8'));
+-  for(const delta of [...browserSticky.changes,...browserResidual.changes].filter(c=>c.file===change.file))for(const h of delta.replacements){assert.equal(current.split(h.after).length-1,1);current=current.replace(h.after,()=>h.before)}
++  const {browserScroll,browserSticky,browserResidual}=JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8'));
++  for(const delta of [...browserScroll.changes,...browserSticky.changes,...browserResidual.changes].filter(c=>c.file===change.file))for(const h of delta.replacements){assert.equal(current.split(h.after).length-1,1);current=current.replace(h.after,()=>h.before)}
+   assert.equal(hash(expected),change.afterHash);assert.equal(current,expected);
+  }
+  for(const file of f.changes.map(c=>c.file)){
+@@ -206,12 +206,15 @@ test('date border correction is an exact delta from fixed 18916a0; old integrati
+  assert.deepEqual(f.changes.map(c=>[c.file,c.beforeHash,c.afterHash]),[['hani-design-system.css','bce2b2ac0991b69fb66831b2825a74050303d66e99b3ac1316812ebdee240948','8f3fc89d4a4138dce379f5ffd194505048aea85b8e395a0ada5c24246decb10b']]);
+  const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
+  for(const change of f.changes){
+-  const before=readReleaseSource(f.baseSha,change.file),after=fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8');
++  const before=readReleaseSource(f.baseSha,change.file);
++  let after=fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8');
++  for(const delta of JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8')).browserScroll.changes.filter(c=>c.file===change.file))for(const h of delta.replacements){assert.equal(after.split(h.after).length-1,1);after=after.replace(h.after,()=>h.before)}
+   assert.equal(hash(before),change.beforeHash);assert.equal(hash(after),change.afterHash);
+   let forward=before,reverse=after;
+   for(const h of change.replacements){assert.equal(forward.split(h.before).length-1,1);assert.equal(reverse.split(h.after).length-1,1);forward=forward.replace(h.before,()=>h.after);reverse=reverse.replace(h.after,()=>h.before)}
+-  assert.equal(forward,after);assert.equal(reverse,before);assertReviewedReleaseSource(change.file,after);
+-  for(const h of change.replacements)for(const mutation of [after.replace(h.after,''),after.replace(h.after,h.after+h.after),after.replace(h.after,h.after+'/* unlisted */')])assert.throws(()=>assertReviewedReleaseSource(change.file,mutation),{code:'ERR_ASSERTION'});
++  assert.equal(forward,after);assert.equal(reverse,before);assertReviewedReleaseSource(change.file,fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8'));
++  const current=fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8');
++  for(const h of change.replacements)for(const mutation of [current.replace(h.after,''),current.replace(h.after,h.after+h.after),current.replace(h.after,h.after+'/* unlisted */')])assert.throws(()=>assertReviewedReleaseSource(change.file,mutation),{code:'ERR_ASSERTION'});
+  }
+ });
+ 
+@@ -232,3 +235,24 @@ test('open-only Remote CSS is an exact delta from fixed c026b63; sticky and all
+   assert.equal(normalizeReviewedConnection(connection,after),before,'only newest delta is reversed before older fixed hunks');
+  }
+ });
++
++test('mobile scroll spacing is an exact delta from a29ff90; all older fixture identities remain unchanged',()=>{
++ const fixture=JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8')),f=fixture.browserScroll;
++ assert.equal(f.baseSha,'a29ff905be5a3458a0f6971c107c183d96c6b965');
++ const {browserScroll,...older}=fixture;
++ assert.deepEqual(older,JSON.parse(readReleaseSource(f.baseSha,'scripts/fixtures/train233-integrations.json')));
++ assert.deepEqual(f.changes.map(c=>[c.file,c.beforeHash,c.afterHash]),[['hani-design-system.css','8f3fc89d4a4138dce379f5ffd194505048aea85b8e395a0ada5c24246decb10b','f38f2b9a3cd7d55becadadea904a1fbe4d6b76090083b4edcba2c9ebcebbe002']]);
++ const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
++ for(const change of f.changes){
++  const before=readReleaseSource(f.baseSha,change.file),after=fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8');
++  assert.equal(hash(before),change.beforeHash);assert.equal(hash(after),change.afterHash);assert.equal(change.replacements.length,1);
++  let forward=before,reverse=after;
++  for(const h of change.replacements){assert.equal(forward.split(h.before).length-1,1);assert.equal(reverse.split(h.after).length-1,1);forward=forward.replace(h.before,()=>h.after);reverse=reverse.replace(h.after,()=>h.before)}
++  assert.equal(forward,after);assert.equal(reverse,before);assertReviewedReleaseSource(change.file,after);
++  for(const h of change.replacements){
++   for(const mutated of [after.replace(h.after,''),after.replace(h.after,h.after+h.after),after.replace(h.after,h.after+'/* unlisted */'),after.replace('scroll-padding-top:calc(56px','scroll-padding-top:calc(0px'),after.replace('scroll-margin-top:8px','scroll-margin-top:0px'),after.replace('screen and (max-width:768px){\n  /* Native','screen and (max-width:850px){\n  /* Native'),after.replace(h.after,'')+'\n'+h.after,after.replace(h.after,h.after.replace(/\n/g,'\r\n'))])assert.throws(()=>assertReviewedReleaseSource(change.file,mutated),{code:'ERR_ASSERTION'});
++  }
++  const connection=pendingApprovedConnections.find(c=>c.file===change.file);
++  assert.equal(normalizeReviewedConnection(connection,after),before,'newest scroll delta reverses before historical date correction');
++ }
++});

@@ -1,0 +1,22 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: 390/investmentIntake: Remote covers controls
++ actual - expected
+
++ [
++   'assetCaptureAccount'
++ ]
+- []
+
+    at file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/t233b/scripts/hani-qa-1st-ui.test.mjs:44:14 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: [ 'assetCaptureAccount' ],
+  expected: [],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.20.0

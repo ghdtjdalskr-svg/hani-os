@@ -1374,6 +1374,9 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
   #app .life-ticker-pause{width:40px;height:40px;flex-shrink:0}
 }
 @media screen and (max-width:768px){
+  /* Native anchor/focus scrolling reserves the persistent 48px header and a gap. */
+  html{scroll-padding-top:calc(56px + env(safe-area-inset-top))}
+  #app .view :is(input,select,textarea,button,[tabindex]){scroll-margin-top:8px}
   #app .main>header.top.ui26-top{height:48px!important;min-height:48px!important}
   #app header.top.ui26-top :is(.mobile-menu,.mobile-top-more,.quick-jump-icon,.header-search.quick-jump){width:40px!important;min-width:40px!important;height:40px!important;flex-basis:40px!important}
 }

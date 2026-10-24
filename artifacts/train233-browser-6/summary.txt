@@ -1,0 +1,8 @@
+﻿hani-investment-research-ui.test.mjs rc=0
+hani-qa-1st-ui.test.mjs rc=1
+hani-remote-card-224.test.mjs rc=0
+hani-remote-media-219.test.mjs rc=0
+hani-context-remote-ui.test.mjs rc=0
+hani-pwa-213.test.mjs rc=0
+hani-market-browser-smoke.cjs rc=0
+hani-banners-203-ui.test.mjs rc=0

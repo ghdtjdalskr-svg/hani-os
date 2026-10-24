@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "base": "a29ff905be5a3458a0f6971c107c183d96c6b965",
+  "cssChange": "3 inserted lines in existing mobile header block",
+  "beforeHash": "8f3fc89d4a4138dce379f5ffd194505048aea85b8e395a0ada5c24246decb10b",
+  "afterHash": "f38f2b9a3cd7d55becadadea904a1fbe4d6b76090083b4edcba2c9ebcebbe002",
+  "fullBytePreserved": [
+    "hani-main.js",
+    "hani-asset-update-v1.js",
+    "hani-context-remote-v1.js",
+    "hani-context-remote.css",
+    "hani-study-v02984.js",
+    "hani-yuna-helpdesk.js",
+    "hani-investment-committee.js",
+    "hani-asset-market-view.js",
+    "index.html"
+  ],
+  "priorFixtureFields": "unchanged",
+  "originalUiAssertionsRetained": 19,
+  "unchangedLinesWithExactEol": 2609,
+  "browser": "NOT RUN"
+}
