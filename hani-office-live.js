@@ -236,8 +236,8 @@
       const slots=[...new Set(['side_desk_'+p.id,'approach_desk_'+p.id,'side_'+p.home.anchorId,'approach_'+p.home.anchorId])].filter(id=>{
         const a=anchors.get(id),v=art.anchors[id];
         const distance=v&&Math.hypot((v.x-h.x)*(art.width||1672)/100,(v.y-h.y)*(art.height||941)/100);
-        return a?.type==='junction'&&a.room===p.home.room&&distance>=24.01&&distance<=200;
-      });
+        return a?.type==='junction'&&a.room===p.home.room&&distance>=32&&distance<=200;
+      }).sort((a,b)=>Math.abs(art.anchors[a].y-h.y)-Math.abs(art.anchors[b].y-h.y)||Math.abs(art.anchors[b].x-h.x)-Math.abs(art.anchors[a].x-h.x));
       return slots.length?[{id:'errand-colleague-'+p.id,kind:'errand',errandKind:'colleague',targetPerson:p.id,floor:p.home.floor,room:p.home.room,slots,pose:'stand',stay:[8,25],
         go:p.name+' 자리로 가는 중',at:[p.name+'에게 잠깐 물어보는 중',p.name+'랑 화면 같이 보는 중']}]:[];
     }):[];
@@ -361,6 +361,15 @@
       for(const family of table.families){
         const parent=family.parent;if(parent.conditions.triggerIds.length||parent.manualPreviewOnlyIn216)continue;
         const group=family.limits.scope==='scene',subjects=group?[null]:parent.participants.filter(id=>present.has(id));
+        if(nightCatalog&&family.id==='sig-seongmin-1'){
+          // One reserved opportunity for each existing chairman variant during
+          // work hours. Keep the original three-hour cooldown and safety path.
+          if(present.has('seongmin'))for(const [n,id] of family.memberActionIds.entries()){
+            const start=32700+[0,14400,25200][n]+seed(day+'|chairman-work')%60;
+            opportunities.push({family:{...family,limits:{...family.limits,maxPerDay:family.memberActionIds.length}},parent,subject:'seongmin',action:actions.get(id),start,base:day+'|'+family.id+'|seongmin',n,group:false,windowEnd:64800});
+          }
+          continue;
+        }
         if(family.limits.cadenceSeconds){
           if(!includeCadence)continue;
           // Floor microexpressions share the canonical opportunity/reservation path.
@@ -516,7 +525,7 @@
           // Keep a gated catalog opportunity alive after a transient reservation
           // refusal. Reinsert chronologically; do not reroll the action or budget.
           const counter=o.family.id+'|'+(o.subject||'scene'),nextTime=o.start+30;
-          if(events.length===before&&!o.family.limits.cadenceSeconds&&o.family.limits.cooldownSeconds<86400&&(o.retry||0)<2&&nextTime<o.windowEnd&&(counts.get(counter)||0)<o.family.limits.maxPerDay&&targets(o.action,o.subject,day,o.start).some(t=>t&&places.some(p=>p.kind==='window'&&p.slots.includes(t.seat.anchor)))&&!events.some(e=>e.actionId===o.action.id&&e.people.some(t=>t.id===o.subject))){
+          if(events.length===before&&!o.family.limits.cadenceSeconds&&o.family.limits.cooldownSeconds<86400&&(o.retry||0)<2&&nextTime<o.windowEnd&&(counts.get(counter)||0)<o.family.limits.maxPerDay&&(o.subject==='seongmin'||targets(o.action,o.subject,day,o.start).some(t=>t&&places.some(p=>p.kind==='window'&&p.slots.includes(t.seat.anchor))))&&!events.some(e=>e.actionId===o.action.id&&e.people.some(t=>t.id===o.subject))){
             const next={...o,start:nextTime,retry:(o.retry||0)+1};let lo=opportunities.indexOf(o)+1,hi=opportunities.length;
             while(lo<hi){const mid=(lo+hi)>>>1;if(opportunities[mid].start<next.start)lo=mid+1;else hi=mid}
             opportunities.splice(lo,0,next);
@@ -897,9 +906,9 @@
       const ledger=events.slice(),result=[],last=new Map(),due=new Map(),visits=new Map(),slotOrders=new Map(),tripsByPerson=new Map();
       const weekday=![0,6].includes(new Date(day+'T00:00:00Z').getUTCDay());
       const rules=placeTable?.outingRules||{cooldownSeconds:600,intervalSeconds:[1500,3000],groupStayScale:1.2};
-      // Staff leisure invitations never move the human chairman automatically.
-      // Explicit catalog actions retain their existing presence/identity rules.
-      const lastFloor=new Map(),physical=allowed.filter(p=>p.id!=='mir'&&p.id!=='seongmin');
+      // The present chairman uses the same affinity, reservations and proximity
+      // checks as staff. Presence still owns his arrival/departure.
+      const lastFloor=new Map(),physical=allowed.filter(p=>p.id!=='mir'&&(nightCatalog||p.id!=='seongmin'));
       // Presence/home changes only at 01/07/18h. Reuse the exact filtered order;
       // hundreds of invitation ticks must not rebuild identical floor rosters.
       const floorRosters=new Map();
@@ -1222,6 +1231,16 @@
       const line=override?.speech||(Array.isArray(p.speech)?p.speech.find(s=>s.personId===id)?.line:p.speech)||action.title;
       return p.speechVariants?.length?p.speechVariants[seed(day+'|'+id+'|'+action.id+'|line')%p.speechVariants.length]:line;
     }
+    function placeLine(card,id,day,event,t,seconds,firstLine){
+      const pool=card.atByPerson?.[id]||card.at,key=day+'|'+id+'|'+event.start;
+      const first=firstLine??pool[seed(key)%pool.length],arrival=t.out.at(-1).end,departure=t.back[0].start;
+      // One switch at a deterministic midpoint, measured from this actor's
+      // actual arrival (including FIFO waiting), without any timer/state.
+      const switched=departure-arrival>90&&seconds>=arrival+(departure-arrival)/2;
+      if(!switched)return first;
+      const next=[...new Set([...pool,...card.at])].filter(line=>line!==first);
+      return next.length?next[seed(key+'|next')%next.length]:first;
+    }
     function snapshot(now,options={}){
       const kst=new Date(new Date(now).getTime()+32400000),day=kst.toISOString().slice(0,10),seconds=kst.getUTCHours()*3600+kst.getUTCMinutes()*60+kst.getUTCSeconds()+kst.getUTCMilliseconds()/1000;
       const events=plan(day,options),cancelled=options.cancelled||new Set(),blocked=new Set(options.summoned||[]);
@@ -1258,8 +1277,7 @@
             line=p.visitor?'안녕히 계세요~':voice?.length?voice[Math.floor(event.start/90)%voice.length]:'자리로 돌아가는 중';
           }
           else if(state.state==='AT_PLACE'||t.seat.anchor===home.anchorId){
-            const pool=card?.atByPerson?.[p.id]||card?.at;
-            line=p.visitor?event.visitor.at:card?pool[seed(day+'|'+p.id+'|'+event.start)%pool.length]:speech(action,p.id,day);
+            line=p.visitor?event.visitor.at:card?placeLine(card,p.id,day,event,t,seconds):speech(action,p.id,day);
             if(event.group&&state.state==='AT_PLACE'){
               const partners=event.group.filter(id=>id!==p.id).map(id=>persons.find(p=>p.id===id).name).join('·'),location=card.at[0].split('에서')[0];
               line=seconds<event.performStart?location+'에서 '+partners+' 기다리는 중':seconds>=event.performEnd?location+'에서 '+partners+'와 나눈 이야기 정리 중':partners+'와 '+location+'에서 '+(event.companion?.topic||'잠깐 수다')+' 중';
@@ -1284,7 +1302,7 @@
         if(!p.outingId||p.state!=='AT_PLACE')continue;
         const e=visibleOutings.find(e=>e.id===p.outingId),card=e.card;
         const signatures=placeTable?.behavior?.signatures[p.id]?.filter(s=>s.place===card.id)||[];
-        if(!p.groupIds&&signatures.length){const signature=signatures[seed(day+'|signature|'+p.id+e.start)%signatures.length];p.line=card.at[0].split('에서')[0]+'에서 '+signature.task;p.behaviorKind=signature.id}
+        if(!p.groupIds&&signatures.length){const signature=signatures[seed(day+'|signature|'+p.id+e.start)%signatures.length],t=e.people.find(t=>t.id===p.id);p.line=placeLine(card,p.id,day,e,t,seconds,card.at[0].split('에서')[0]+'에서 '+signature.task);p.behaviorKind=signature.id}
         if(placeTable?.behavior?.gathering.kinds.includes(card.kind)&&card.slots.length>=2){
           const peers=entries.filter(q=>q.id!==p.id&&q.state==='AT_PLACE'&&q.placeId===card.id&&card.slots.includes(q.seat.anchor)).sort((a,b)=>a.id.localeCompare(b.id));
           if(peers.length){
@@ -1292,6 +1310,13 @@
             const phrase=card.gatheringPhrases?.[boundaries%card.gatheringPhrases.length]||'수다 중';
             p.gatheringIds=[p.id,...peers.map(q=>q.id)].sort();p.line=card.at[0].split('에서')[0]+'에서 '+peers.map(q=>personById.get(q.id).name).join('·')+'이랑 '+phrase;p.behaviorKind='gathering';
           }
+        }
+        // Social words retain the actual companions, but their place phrase
+        // also changes once during a long stay, using the same arrival clock.
+        const t=e.people.find(t=>t.id===p.id),arrival=t.out.at(-1).end,departure=t.back[0].start;
+        if((p.groupIds||p.gatheringIds)&&departure-arrival>90&&seconds>=(arrival+departure)/2&&seconds>=e.performStart&&seconds<e.performEnd){
+          const ids=(p.gatheringIds||p.groupIds).filter(id=>id!==p.id);
+          p.stayLine=placeLine(card,p.id,day,e,t,seconds);p.line=ids.map(id=>personById.get(id).name).join('·')+'와 '+p.stayLine;
         }
       }
       const shownLines=new Map();
@@ -1328,13 +1353,30 @@
   function profile(id){return ({daon:"./assets/profiles/thumb/hani-profile-daon-v2-256.webp",yoonseul:"./assets/profiles/thumb/hani-profile-yoonseul-v2-256.webp",sua:"./assets/profiles/thumb/hani-profile-sua-id-256.webp"})[id]||`./assets/profiles/thumb/hani-profile-${id}-256.webp`}
   // Both densities share proportional atlas/cell/pivot coordinates and one loader.
   function spriteSource(id,entry){return entry.scale===3?'./assets/sprites-v3/'+entry.file:({daon:"./assets/sprites-v2/daon-v2.webp",yoonseul:"./assets/sprites-v2/yoonseul-v2.webp"})[id]||'./assets/sprites-v2/'+entry.file}
-  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,places:Object.freeze([...places,...(scheduler?.errandPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines})});
+  // Read-only app signals; the caller installs one shared passive input callback
+  // and reuses the office update/visibility cycle. No persistence or timer.
+  function createPresence({now,locked,visible,override}){
+    const grace=600000;let lastInteraction=now(),hiddenSince=null,present=!locked()&&visible();
+    return {interact(){lastInteraction=now()},read(){
+      const time=now(),external=override(),shown=visible();
+      if(shown)hiddenSince=null;else if(hiddenSince===null)hiddenSince=time;
+      if(external!==undefined&&external!==null)return {chairmanPresent:external.chairman==='active'};
+      // A login lock is an immediate exclusion; inactivity/hidden use 10 minutes.
+      if(locked())present=false;
+      else if(shown)present=time-lastInteraction<grace;
+      else if(time-hiddenSince>=grace)present=false;
+      return {chairmanPresent:present};
+    }};
+  }
+  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,places:Object.freeze([...places,...(scheduler?.errandPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines})});
 })();
 /* Read-only Living Office. The Agent Case renderer remains the sole owner of requests, answers and decisions. */
 (() => {
   "use strict";
   const root=document.getElementById("haniOfficeLive"),map=document.getElementById("haniOfficeMap");
   if(!root||!map)return;
+  const officePresence=HaniBuildingScene.createPresence({now:()=>Date.now(),locked:()=>!document.getElementById('app')||document.getElementById('app').classList.contains('login-locked'),visible:()=>document.visibilityState==='visible',override:()=>window.HaniOfficePresence});
+  for(const type of ['pointerdown','keydown','wheel','touchstart'])document.addEventListener(type,officePresence.interact,{passive:true});
   const people=[
     ["hani","하니","a",0],
     ["jieun","지은","a",1],
@@ -1431,7 +1473,7 @@
   function cancelScheduledDuringMeeting(now=new Date()){
     if(!meeting||!building.scheduler)return;
     const day=new Date(now.getTime()+32400000).toISOString().slice(0,10),midnight=Date.parse(day+'T00:00:00+09:00');
-    const presence={chairmanPresent:window.HaniOfficePresence?.chairman==='active'};
+    const presence=officePresence.read();
     for(const event of building.scheduler.plan(day,presence))if(midnight+event.start*1000<=now.getTime()&&midnight+event.end*1000>=meetingStartedAt)cancelled.add(event.id);
   }
   function actionRunning(actor){return meeting||!!actor.officeTravel||actor.dataset.walking==='true'||!!actor.dataset.event||actor.dataset.action&&actor.dataset.action!=='base-work'}
@@ -1558,7 +1600,7 @@
     if(sceneVisible())void tapLines.load();
     const now=new Date(),day=new Date(now.getTime()+32400000).toISOString().slice(0,10);
     if(day!==cancelledDay){cancelled=new Set();cancelledDay=day}
-    const presence={chairmanPresent:window.HaniOfficePresence?.chairman==='active'};
+    const presence=officePresence.read();
     cancelScheduledDuringMeeting(now);
     floorSnapshot=building.snapshot(now,{...presence,reducedMotion:reduced,cancelled,summoned:meeting?selectedAgents():[]});
     presenceNote.textContent=floorSnapshot.presenceNote||'';presenceNote.hidden=!floorSnapshot.presenceNote;
@@ -1597,13 +1639,13 @@
   function selectFloor(id,animate=false){closeBubble();if(!floorButtons.has(id))return;for(const actor of actors.values())finishTravel(actor);activeFloor=id;updateBuilding(true,animate)}
   tabs.addEventListener("click",event=>{const button=event.target.closest("[data-building-floor]");if(button&&tabs.contains(button))selectFloor(button.dataset.buildingFloor)});
   tabs.addEventListener("keydown",event=>{const keys=[...floorButtons.keys()],index=keys.indexOf(activeFloor);let next;if(event.key==="ArrowRight")next=(index+1)%keys.length;else if(event.key==="ArrowLeft")next=(index+keys.length-1)%keys.length;else if(event.key==="Home")next=0;else if(event.key==="End")next=keys.length-1;else return;event.preventDefault();selectFloor(keys[next]);floorButtons.get(keys[next]).focus()});
-  function syncVisibility(){const visible=sceneVisible();root.dataset.paused=String(!visible);if(visible)updateBuilding(true,false);else closeBubble()}
+  function syncVisibility(){officePresence.read();const visible=sceneVisible();root.dataset.paused=String(!visible);if(visible)updateBuilding(true,false);else closeBubble()}
   document.addEventListener("visibilitychange",syncVisibility);
   new MutationObserver(syncVisibility).observe(root.closest(".view"),{attributes:true,attributeFilter:["class","hidden","style"]});
   if(typeof ResizeObserver==='function')new ResizeObserver(()=>{fitStatusLabels();fitBubble()}).observe(map);
   document.fonts?.ready.then(()=>{fitStatusLabels();fitBubble()});
   updateBuilding(true);syncVisibility();
-  function changeOne(){if(sceneVisible()&&!meeting)updateBuilding()}
+  function changeOne(){officePresence.read();if(sceneVisible()&&!meeting)updateBuilding()}
   function homeAll(){updateBuilding(true)}
   const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
   async function walk(selected,returning=false){
