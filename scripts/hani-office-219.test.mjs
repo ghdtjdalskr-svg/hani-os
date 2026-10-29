@@ -145,7 +145,7 @@ for(const [i,actor] of layoutActors.entries()){
  measured(actor.querySelector('.hani-office-status'),'status',()=>box(100,25,120,20));
 }
 layout.click('3f');
-for(const a of layoutActors){assert.equal(a.querySelector('.hani-office-status').hidden,true);for(const b of layoutActors.filter(b=>b!==a))assert.ok(overlap(a.querySelector('.hani-office-name').getBoundingClientRect(),b.querySelector('.hani-office-name').getBoundingClientRect())<=.10)}
+for(const a of layoutActors){assert.equal(a.querySelector('.hani-office-status').hidden,false);for(const b of layoutActors.filter(b=>b!==a))assert.ok(overlap(a.querySelector('.hani-office-name').getBoundingClientRect(),b.querySelector('.hani-office-name').getBoundingClientRect())<=.10)}
 canvas=box(0,0,900,80);layout.click('3f');
 // In this deliberately crowded floor only two pill rows fit. Speech must take
 // the first row, a meeting the next, and normal statuses must yield.
@@ -155,8 +155,8 @@ const shown=layoutActors.filter(a=>a.querySelector('.hani-office-status').style.
 assert.ok(shown.includes(layoutActors.at(-1))&&shown.includes(layoutActors[1]));assert.equal(shown.length,2);
 for(const a of shown)for(const b of layoutActors){const pill=a.querySelector('.hani-office-status').getBoundingClientRect();assert.equal(overlap(pill,b.querySelector('.hani-office-name').getBoundingClientRect()),0);if(a!==b&&shown.includes(b))assert.equal(overlap(pill,b.querySelector('.hani-office-status').getBoundingClientRect()),0)}
 canvas=box(0,0,900,400);layout.ids.get('haniOfficeActors').events.keydown({key:'Escape'});
-// Plain base work stays dot-only (lively-2); every busy pill comes back after resize.
-assert.ok(layoutActors.every(a=>(a.querySelector('.hani-office-status').style.visibility!=='hidden')===(a.dataset.plain!=='true'||a.dataset.activity==='meeting'||a.dataset.speaking==='true')),'resize recovers hidden lower-priority pills');
+// obr14 explicitly replaces 219 names-only / plain dot-only: all pills recover.
+assert.ok(layoutActors.every(a=>a.querySelector('.hani-office-status').style.visibility!=='hidden'),'resize recovers hidden lower-priority pills');
 for(const [state,title] of [['work','근무 중'],['rest','휴식 중'],['meeting','회의 중'],['moving','이동 중'],['night','야근 중']]){
  const actor=layoutActors[0];actor.officeTravel=null;actor.dataset.called='false';actor.dataset.activity=state;actor.dataset.walking=String(state==='moving');actor.querySelector('.hani-office-status').dataset.full=state==='night'?'야근 중':'자료 확인 중';
  layout.ids.get('haniOfficeActors').events.keydown({key:'Escape'});assert.equal(actor.dataset.status,state);assert.equal(actor.querySelector('.hani-office-status-dot').title,title);assert.equal(actor.querySelector('.hani-office-status-dot').getAttribute('aria-label'),title);
@@ -233,7 +233,7 @@ try{
      assert.ok(a.visible&&a.name.visible&&a.name.inside&&a.name.text,`${width} ${time} ${floor} ${a.id}: sprite/name visible and within floor`);
      assert.ok(contrast(a.name.foreground,a.name.background)>=4.5,'computed name text AA');if(a.label.visible)assert.ok(contrast(a.label.foreground,a.label.background)>=4.5,'computed pill text AA');
      if(check.box.width<=600){
-      assert.equal(a.label.visible,false,'no separate mobile text pill');assert.ok(a.name.dot.visible&&a.name.dot.title&&a.name.dot.aria===a.name.dot.title);
+      if(a.label.visible)assert.ok(a.label.inside&&[...a.label.text].length<=10,'obr14 meaningful mobile pill');assert.ok(a.name.dot.visible&&a.name.dot.title&&a.name.dot.aria===a.name.dot.title);
       assert.equal(a.name.dot.color,({work:'rgb(22, 128, 60)',rest:'rgb(168, 100, 8)',meeting:'rgb(37, 99, 235)',moving:'rgb(100, 116, 139)',night:'rgb(126, 34, 206)'})[a.status]);
       assert.ok(a.name.dot.left>=a.name.left&&a.name.dot.right<=a.name.right,'dot inside canonical name');
       assert.equal(a.name.icon.visible,Boolean(a.emoji));assert.equal(a.name.icon.text,a.emoji);
@@ -254,7 +254,7 @@ try{
      const ratio=intersection/Math.min(x.width*x.height,y.width*y.height),msg=`${width} ${time} ${floor}: ${check.actors[a].id}/${check.actors[b].id} overlap ${(ratio*100).toFixed(0)}% (limit 30%)`;
      if(process.env.OFFICE_SOFT){if(ratio>.30)(report.overlaps||(report.overlaps=[])).push(msg);}else assert.ok(ratio<=.30,msg);
     }
-    if(check.box.width>600)for(const a of check.actors.filter(a=>a.label.visible)){
+    for(const a of check.actors.filter(a=>a.label.visible)){
      for(const b of check.actors){assert.equal(overlap(a.label,b.name),0,`${width} ${time} ${floor}: pill never covers name ${b.id}`);if(a.id!==b.id&&b.label.visible)assert.equal(overlap(a.label,b.label),0,`${width} ${time} ${floor}: pills never overlap`)}
     }
    }

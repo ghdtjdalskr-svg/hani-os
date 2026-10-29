@@ -55,7 +55,8 @@
 .hani-office-name{position:absolute;z-index:12;left:50%;bottom:0;translate:calc(-50% + var(--name-x,0px)) var(--name-y,0px);max-width:130%;padding:1px 5px;border:1px solid #ded5e8;border-radius:5px;background:#fff;color:#493752;font-size:clamp(7px,.85cqw,12px);font-weight:800;white-space:nowrap}
 .hani-office-status-dot,.hani-office-activity-icon{display:none}
 @container(max-width:600px){
- .hani-office-status,.hani-office-prop{display:none}
+ .hani-office-prop{display:none}
+ .hani-office-status{display:block;max-width:none;font-size:9px;text-overflow:clip}
  .hani-office-name{display:flex;align-items:center;gap:2px;width:max-content;max-width:none;padding:1px 3px;line-height:1.25}
  .hani-office-actor[data-avatar="v2"] .hani-office-name{font-size:9px}
  .hani-office-status-dot{display:inline-block;flex:none;width:5px;height:5px;border-radius:50%;background:#16803c}
@@ -118,3 +119,12 @@
 .hani-office-character-bubble[hidden]{display:none}.hani-office-character-bubble p{margin:0;overflow-wrap:anywhere}.hani-office-character-bubble a{flex:none;min-height:44px;display:flex;align-items:center;color:#67418b;font-weight:700}
 .hani-building-roster [role="button"]{cursor:pointer}.hani-building-roster [role="button"]:focus-visible{outline:2px solid #8363b8}
 @media(max-width:700px){.hani-office-character-bubble{font-size:12px}.hani-building-roster [role="button"]{min-height:44px}}
+
+/* Idle motion belongs only to the sprite; actor coordinates/pivot stay fixed.
+   Scaling/rotation about the atlas foot keeps the foot itself stationary. */
+.hani-office-sprite{transform-origin:var(--idle-pivot-x,50%) var(--idle-pivot-y,95.3125%)}
+.hani-office-actor[data-pose="sitting"]:not([data-walking="true"]) .hani-office-sprite{animation:hani-office-breathe var(--idle-duration,4.8s) var(--idle-delay,0s) ease-in-out infinite}
+.hani-office-actor[data-pose="standing"]:not([data-walking="true"]) .hani-office-sprite{animation:hani-office-sway var(--idle-duration,4.8s) var(--idle-delay,0s) ease-in-out infinite}
+@keyframes hani-office-breathe{0%,100%{transform:scaleY(1) rotate(0deg)}45%{transform:scaleY(1.012) rotate(.35deg)}70%{transform:scaleY(1.004) rotate(-.2deg)}}
+@keyframes hani-office-sway{0%,100%{transform:rotate(0deg) scaleY(1)}35%{transform:rotate(.65deg) scaleY(1.006)}75%{transform:rotate(-.45deg) scaleY(1.01)}}
+@media(prefers-reduced-motion:reduce){.hani-office-sprite{animation:none!important;transform:none!important}}

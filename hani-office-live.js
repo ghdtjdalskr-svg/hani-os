@@ -536,7 +536,7 @@
     }
     // Idle liveliness: each floor rotates its people through short visible bits (a playful or
     // time-of-day line, sometimes standing, sometimes a stroll to another room through its door).
-    // Each person gets at most one bit per cycle; everyone else is plain base work (dot only).
+    // Each person gets at most one bit per cycle; everyone else keeps a personal base-work line.
     // Pure function of the local clock; scheduled events always win.
     const BEAT=2.4,ACTIVE_BEATS=4.5,MIN_CYCLE=12;
     const idlePools={
@@ -832,7 +832,7 @@
       if(candidate.people.length===1&&!others.length){ledger.push(candidate);return true}
       const times=new Set([candidate.start,candidate.end-.00001]);
       const boundary=(s,transfer=false)=>{for(const tick of transfer?[s-.000001,s,s+.000001]:[s])if(tick>candidate.start&&tick<candidate.end)times.add(tick)};
-      for(const e of [candidate,...movingNearby]){for(const s of [e.start,e.end])boundary(s);
+      for(const e of [candidate,...movingNearby]){for(const s of [e.start,e.end-.000001,e.end])boundary(s);
         for(const t of e.people)for(const l of [...t.out,...t.back]){
           for(const s of [l.start,l.end])boundary(s,anchors.get(l.from).floor!==anchors.get(l.to).floor);
         }
@@ -845,12 +845,12 @@
       for(const t of candidate.people){
         for(const id of others){
           const otherTrips=movingNearby.filter(e=>e.people.some(p=>p.id===id));
-          const optionalCrossing=candidate.card&&!candidate.visitor&&otherTrips.some(e=>e.card&&!e.visitor);
+          const optionalCrossing=candidate.card&&otherTrips.some(e=>e.card);
           let prev=null;
           for(let index=0;index<ticks.length;index++){const p=frames.get(t.id)[index],q=frames.get(id)[index];
             if(!q||q.floor!==p.floor){prev=null;continue}
-            // The original 20/24px gate remains mandatory. Two optional staff
-            // trips also keep the audit's 30px walking comfort buffer.
+            // The original 20/24px gate remains mandatory. Optional trips,
+            // including both public guests, keep the 30px crossing buffer.
             const limit=optionalCrossing&&p.walking&&q.walking?30:p.walking||q.walking?24:20;
             const pp=pixels(p.position||[p.seat.x,p.seat.y]),qp=pixels(q.position||[q.seat.x,q.seat.y]),r=[pp[0]-qp[0],pp[1]-qp[1]];
             if(Math.hypot(r[0],r[1])<limit+.01)return false;
@@ -891,6 +891,16 @@
       return {id:day+'|outing|'+id+'|'+start,actionId:'base-work',start,end:cursor,performStart,performEnd,card,visitor,
         people:[{id,home,seat,outbound,inbound,out,back,visitor:!!visitor}],resources:geometry.resources,floors:geometry.floors};
     }
+    // Pure vocabulary shared by snapshots and the existing persistent label slot.
+    const workLines={hani:'기획안 정리 중',yuna:'요청 분류 중',jieun:'일정 조율 중',haru:'기록 정리 중',gaeun:'일정 확인 중',seoyun:'설계 검토 중',dohyun:'코드 수정 중',serin:'수치 분석 중',yuri:'품질 점검 중',arin:'화면 검토 중',hina:'검증 기록 중',daon:'콘텐츠 구상 중',yoonseul:'문장 다듬는 중',sua:'접수 확인 중',taeo:'안내 준비 중',minji:'업무 메모 중',mir:'흐름 살피는 중',seongmin:'결재 검토 중',sooyeon:'자료 대조 중',naeun:'예산 점검 중'};
+    const shortWords=[[/고민/,'잠깐 고민 중'],[/퀴즈/,'퀴즈 푸는 중'],[/비용|예산/,'비용 살피는 중'],[/고생|인사/,'인사 나누는 중'],[/웃|미소/,'살짝 웃는 중'],[/도장|결재/,'결재 확인 중'],[/메일/,'메일 확인 중'],[/일정|약속/,'일정 확인 중'],[/노래|음악|플레이리스트/,'음악 고르는 중'],[/졸음|꾸벅/,'졸음 쫓는 중'],[/커피 주문/,'커피 주문 중'],[/메뉴 고르/,'메뉴 고르는 중'],[/커피/,'커피 한 모금'],[/택배/,'택배 확인 중'],[/배달/,'배달 확인 중'],[/게시판|소식/,'소식 읽는 중'],[/검증|테스트/,'결과 확인 중'],[/수다|이야기/,'이야기 나누는 중'],[/코드|버그/,'코드 살피는 중'],[/메모/,'메모 정리 중'],[/보고서/,'보고서 다듬는 중'],[/스트레칭|기지개/,'기지개 켜는 중'],[/고양이/,'고양이 영상 중'],[/인스타/,'인스타 보는 중'],[/간식/,'간식 살피는 중'],[/생각|아이디어/,'생각 정리 중'],[/창밖|풍경|별/,'풍경 보는 중'],[/쉬는|휴식|소파/,'잠깐 쉬는 중'],[/확인|체크/,'내용 확인 중'],[/정리/,'자료 정리 중'],[/읽|책|페이지/,'읽어 보는 중']];
+    function shortLine(line){
+      if([...line].length<=10)return line;
+      if(/돌아가는 중|안녕히 계세요/.test(line))return '복귀하는 중';
+      if(/가는 중/.test(line))return /커피|Coffee/.test(line)?'커피 사러 가는 중':/택배/.test(line)?'택배 찾으러 이동':'용무 보러 이동 중';
+      if(/기다리는 중|대기/.test(line))return '차례 기다리는 중';
+      return shortWords.find(([pattern])=>pattern.test(line))?.[1]||'업무 이어가는 중';
+    }
     const visitorKinds=[
       {kind:'client',sprite:'visitor-client',name:'방문 고객',hours:[[10,17]],target:'client_booth_slot_4',stay:[120,300],go:'상담실로 안내받아 가는 중',at:'상담 받는 중'},
       {kind:'courier',sprite:'visitor-courier',name:'택배 기사',hours:[[9,18]],target:'parcel_box',stay:[15,30],go:'택배함으로 가는 중',at:'택배 두고 갈게요'},
@@ -903,7 +913,7 @@
       // Compatibility name/signature; the reservation horizon is now the whole day.
       // Adjacent blocks project the SAME ledger, including excursions crossing :00/:10.
       const key=day+'|'+allowed.map(p=>p.id).join(',');if(blocks.has(key))return blocks.get(key);
-      const ledger=events.slice(),result=[],last=new Map(),due=new Map(),visits=new Map(),slotOrders=new Map(),tripsByPerson=new Map();
+      const ledger=events.slice(),result=[],last=new Map(),due=new Map(),visits=new Map(),slotOrders=new Map(),tripsByPerson=new Map(),visitorUntil=new Map();
       const weekday=![0,6].includes(new Date(day+'T00:00:00Z').getUTCDay());
       const rules=placeTable?.outingRules||{cooldownSeconds:600,intervalSeconds:[1500,3000],groupStayScale:1.2};
       // The present chairman uses the same affinity, reservations and proximity
@@ -1062,10 +1072,10 @@
               e.end=Math.max(...e.people.map(t=>t.back.at(-1).end));
               e.group=people.map(p=>p.id);e.companion=placeTable.companions.find(r=>r.people.every(id=>e.group.includes(id)));
             }
-            if(e.end>deadline||!visitor&&!withinCap(e)||visitor&&result.some(q=>q.visitor&&overlap(q,e)))continue;
+            if(e.end>deadline||!visitor&&!withinCap(e)||visitor&&ledgerOverlaps(result,e.start,e.end).filter(q=>q.visitor&&overlap(q,e)).length>=2)continue;
             if(fill&&neighbours.some(q=>e.start<q.end+rules.cooldownSeconds&&q.start<e.end+rules.cooldownSeconds))continue;
             if(!reserve(e,ledger,allowed))continue;
-            result.push(e);
+            result.push(e);if(visitor)visitorUntil.set(people[0].id,e.end);
             if(!visitor&&people.length>1)for(const key of pairKeys(people))pairCounts.set(key,(pairCounts.get(key)||0)+1);
             if(!visitor)for(const p of people){if(!tripsByPerson.has(p.id))tripsByPerson.set(p.id,[]);tripsByPerson.get(p.id).push(e)}
             if(!visitor)for(const p of people){last.set(p.id,{end:e.end,card:card.id});if(!visits.has(p.id))visits.set(p.id,new Set());visits.get(p.id).add(card.id);
@@ -1194,13 +1204,17 @@
           }
         }
       }
-      // One public guest slot, mostly short daytime errands; long appointments
-      // remain possible. All trips still pass the shared continuous sweep.
-      for(let at=32400;at<72000;at+=90){
+      // Two persistent public guests. Clock phases favour morning parcels,
+      // lunch deliveries/coffee and afternoon appointments; reserve() still owns
+      // capacities, target uniqueness, gate FIFO and every swept trajectory.
+      for(let at=32400;at<72000;at+=20){
         const kinds=visitorKinds.filter(v=>(weekday||!v.weekdayOnly)&&v.hours.some(([a,b])=>at/3600>=a&&at/3600<b));
-        const short=kinds.filter(v=>['courier','rider','generic'].includes(v.kind));
-        const pool=unit(day+'|guest-short|'+at)<.92&&short.length?short:kinds;
-        if(pool.length&&unit(day+'|guest|'+at)<.9)attempt([{id:'visitor'}],at+1,pool[seed(day+'|kind|'+at)%pool.length]);
+        const ranked=kinds.map(v=>({v,rank:-Math.log(Math.max(.000001,unit(day+'|guest-kind|'+at+v.kind)))/(v.kind==='courier'&&at<36000?4:v.kind==='rider'&&lunch(at)?5:['client','candidate'].includes(v.kind)&&at>=46800?3:1)})).sort((a,b)=>a.rank-b.rank);
+        for(const id of ['visitor','visitor-2']){
+          if((visitorUntil.get(id)||0)>at+1)continue;
+          for(const {v}of ranked)if(attempt([{id}],at+1,v))break;
+          break;
+        }
       }
       // A host visits a real free approach node while the guest is stationary.
       // Both trajectories remain in the same reservation ledger; no host teleport.
@@ -1258,6 +1272,7 @@
         if(!state.seat)return null;
         const performing=event&&seconds>=event.performStart&&seconds<event.performEnd,card=event?.card;
         let plain=!event,line=p.id==='mir'||p.id==='seongmin'?speech(defaults,p.id,day):(late||evening&&lateWorkers.has(p.id))?'야근 중':evening?'퇴근 준비 중':speech(defaults,p.id,day);
+        if(!event)line=workLines[p.id]||deskVoice[p.id]?.[0]||'자료 확인 중';
         const lounge=['lobby-nw','lobby-ne'].includes(home.anchorId)&&['yuna','minji'].includes(p.id);
         if(!event&&!p.visitor&&p.id!=='mir'&&p.id!=='seongmin'){
           const flavour=idleFlavour(day,p.id,home.floor,seconds,lounge,late||evening&&lateWorkers.has(p.id),idleLedger);
@@ -1320,10 +1335,10 @@
         }
       }
       const shownLines=new Map();
-      const claim=p=>{let lines=shownLines.get(p.floor);if(!lines){lines=new Set();shownLines.set(p.floor,lines)}if(!p.plain)lines.add(p.line);return lines};
+      const claim=p=>{let lines=shownLines.get(p.floor);if(!lines){lines=new Set();shownLines.set(p.floor,lines)}lines.add(p.line);return lines};
       for(const p of entries)if(p.eventId||p.outingId)claim(p);
-      for(const p of entries)if(!p.eventId&&!p.outingId&&!p.plain){
-        const lines=claim({...p,plain:true});
+      for(const p of entries)if(!p.eventId&&!p.outingId){
+        let lines=shownLines.get(p.floor);if(!lines){lines=new Set();shownLines.set(p.floor,lines)}
         if(lines.has(p.line)){
           const person=personById.get(p.id),home=homeAt(person,seconds),lounge=['lobby-nw','lobby-ne'].includes(home.anchorId),kind=lounge?late?'loungeLate':'lounge':late?'late':evening?'evening':'day';
           const alternatives=lounge?idlePools[kind].map(v=>v[0]):[...(deskVoice[p.id]||[]),...idlePools[kind].map(v=>v[0])];
@@ -1336,12 +1351,14 @@
         const personal=deskVoice[p.id]?.indexOf(p.line);
         p.behaviorKind=p.deskPartner?'desk-pair-'+[p.id,p.deskPartner].sort().join('-'):personal>=0?'desk-'+p.id+'-'+personal:'idle-'+p.line;
       }
-      const guest=visibleOutings.find(e=>e.visitor&&e.start<=seconds&&seconds<e.end),visitors=guest?[render({id:'visitor',visitor:true},guest)].filter(p=>p&&(!options.reducedMotion||p.state==='AT_PLACE')):[];
-      if(guest&&visitors[0]?.state==='AT_PLACE')for(const p of entries){const host=visibleOutings.find(e=>e.id===p.outingId&&e.guestId===guest.id);if(host&&p.state==='AT_PLACE'){p.visitorPartner=guest.id;visitors[0].hostId=p.id;visitors[0].line=visitors[0].at=placeTable.behavior.visitorReply}}
+      const guests=visibleOutings.filter(e=>e.visitor&&e.start<=seconds&&seconds<e.end);
+      const visitors=guests.map(guest=>render({id:guest.people[0].id,visitor:true},guest)).filter(p=>p&&(!options.reducedMotion||p.state==='AT_PLACE'));
+      for(const guest of guests){const visitor=visitors.find(v=>v.id===guest.people[0].id);if(visitor?.state==='AT_PLACE')for(const p of entries){const host=visibleOutings.find(e=>e.id===p.outingId&&e.guestId===guest.id);if(host&&p.state==='AT_PLACE'){p.visitorPartner=guest.id;visitor.hostId=p.id;visitor.line=visitor.at=placeTable.behavior.visitorReply}}}
+      for(const p of [...entries,...visitors])p.shortLine=shortLine(p.line);
       return {day,minutes:seconds/60,seconds,entries,visitors,events:active,presenceNote};
     }
 
-    return Object.freeze({plan,snapshot,seed,slot,actions,windows,presentAt,homeAt,blockPlan,stateAt,resourceIntervals,errandPlaces,identity:table.identity});
+    return Object.freeze({plan,snapshot,seed,slot,actions,windows,presentAt,homeAt,blockPlan,stateAt,resourceIntervals,errandPlaces,shortLine,identity:table.identity});
   }
   const scheduler=canon&&actionTable?createScheduler(actionTable):null;
   function snapshot(now=new Date(),options={}){
@@ -1415,7 +1432,7 @@
       }
       return null;
     })());
-    spriteCache.get(id).then(loaded=>{if(!loaded)return;spriteEntries.set(id,loaded);actor.dataset.avatar='v2';actor.dataset.spriteScale=String(loaded.scale||1);actor.style.setProperty('--sprite-ratio',String(loaded.cell[0]/loaded.cell[1]));sprite.className='hani-office-sprite';sprite.style.backgroundImage='url("'+HaniBuildingScene.spriteSource(id,loaded)+'")';sprite.style.backgroundSize=(loaded.atlas[0]/loaded.cell[0]*100)+'% '+(loaded.atlas[1]/loaded.cell[1]*100)+'%';pose(actor,actor.dataset.pose||'sitting');onLoad?.()});
+    spriteCache.get(id).then(loaded=>{if(!loaded)return;spriteEntries.set(id,loaded);actor.style.setProperty('--idle-pivot-x',(loaded.frames[0].pivot[0]/loaded.cell[0]*100)+'%');actor.style.setProperty('--idle-pivot-y',(loaded.frames[0].pivot[1]/loaded.cell[1]*100)+'%');actor.dataset.avatar='v2';actor.dataset.spriteScale=String(loaded.scale||1);actor.style.setProperty('--sprite-ratio',String(loaded.cell[0]/loaded.cell[1]));sprite.className='hani-office-sprite';sprite.style.backgroundImage='url("'+HaniBuildingScene.spriteSource(id,loaded)+'")';sprite.style.backgroundSize=(loaded.atlas[0]/loaded.cell[0]*100)+'% '+(loaded.atlas[1]/loaded.cell[1]*100)+'%';pose(actor,actor.dataset.pose||'sitting');onLoad?.()});
   }
   function finishTravel(actor){if(!actor.officeTravel)return;const {seat}=actor.officeTravel;actor.officeTravel=null;actor.officeAnchor=seat.anchor||seat.id;place(actor,[seat.x,seat.y]);pose(actor,seat.posture||'sitting')}
   function place(actor,position){actor.style.left=position[0]+"%";actor.style.top=position[1]+"%"}
@@ -1428,33 +1445,40 @@
     icon.textContent=actor.dataset.emoji||'';icon.hidden=!icon.textContent;icon.title=value;
     if(actor.officeText)actor.officeText.textContent=value;
   }
-  // One name slot per actor. Lay out tags first, then reserve their boxes before
-  // placing desktop pills in priority order. Only labels move, never seat anchors.
+  // Batch writes, then read every box once, solve in memory, then commit offsets.
+  // Labels never move the actor's foot pivot. Names precede priority status pills.
   function fitStatusLabels(){
     const floor=map.getBoundingClientRect?.();if(!floor?.width)return;
-    const visible=[...actors.values()].filter(a=>!a.hidden),reserved=[],compact=floor.width<=600;
+    const visible=[...actors.values()].filter(a=>!a.hidden),compact=floor.width<=600,reserved=[];
+    const priority=a=>a.dataset.speaking==='true'?4:a.dataset.called==='true'||a.dataset.activity==='meeting'?3:a.dataset.walking==='true'||a.dataset.plain!=='true'?2:1;
+    const nodes=[];
+    for(const actor of visible){
+      statusDot(actor);
+      for(const kind of ['name','status']){const node=actor.querySelector('.hani-office-'+kind);
+        node.style.setProperty('--'+kind+'-x','0px');node.style.setProperty('--'+kind+'-y','0px');node.style.visibility='';
+        if(kind==='status'){node.hidden=false;node.textContent=compact?(HaniBuildingScene.scheduler?.shortLine(node.dataset.full)||node.dataset.full):node.dataset.full}
+        nodes.push({node,kind,actor});
+      }
+    }
+    const rows=nodes.map(row=>({...row,base:row.node.getBoundingClientRect()}));
+    // The mascot owner is separate; reserve only its actual visible sprite boxes.
+    for(const node of root.querySelectorAll('.hani-desk-mascots:not([hidden]) .hani-desk-mascot[data-ready="true"]')){const r=node.getBoundingClientRect();if(r.width&&r.height)reserved.push(r)}
     const overlaps=(a,b)=>a.left<b.right+2&&a.right+2>b.left&&a.top<b.bottom+2&&a.bottom+2>b.top;
-    function placeLabel(node,kind){
-      node.style.setProperty('--'+kind+'-x','0px');node.style.setProperty('--'+kind+'-y','0px');
-      const base=node.getBoundingClientRect(),dx=Math.max(floor.left+2-base.left,Math.min(0,floor.right-2-base.right));
-      for(let step=0;step<=visible.length*2;step++){
+    rows.sort((a,b)=>(a.kind==='name'?0:1)-(b.kind==='name'?0:1)||priority(b.actor)-priority(a.actor));
+    for(const {node,kind,base}of rows){
+      const dx=Math.max(floor.left+2-base.left,Math.min(0,floor.right-2-base.right));let chosen=null;
+      for(let step=0;step<=visible.length*4;step++){
         const shift=step===0?0:Math.ceil(step/2)*(base.height+3)*(step%2?1:-1)*(kind==='status'?-1:1),dy=Math.max(floor.top+2-base.top,Math.min(shift,floor.bottom-2-base.bottom));
         const box={left:base.left+dx,right:base.right+dx,top:base.top+dy,bottom:base.bottom+dy};
-        if(!reserved.some(r=>overlaps(box,r))){node.style.setProperty('--'+kind+'-x',dx+'px');node.style.setProperty('--'+kind+'-y',dy+'px');reserved.push(box);return true}
+        if(box.left>=floor.left&&box.right<=floor.right&&box.top>=floor.top&&box.bottom<=floor.bottom&&!reserved.some(r=>overlaps(box,r))){chosen={dx,dy};reserved.push(box);break}
       }
-      return false;
+      node.officeLabelPlacement=chosen;
     }
-    for(const actor of visible){statusDot(actor);placeLabel(actor.querySelector('.hani-office-name'),'name')}
-    const priority=a=>a.dataset.speaking==='true'?3:a.dataset.called==='true'||a.dataset.activity==='meeting'?2:1;
-    for(const actor of visible.sort((a,b)=>priority(b)-priority(a))){
-      // Plain base work is dot-only; phones keep the reviewed names-only layout (219).
-      const status=actor.querySelector('.hani-office-status');status.hidden=compact||actor.dataset.plain==='true'&&actor.dataset.speaking!=='true'&&actor.dataset.called!=='true'&&actor.dataset.activity!=='meeting';status.style.visibility=status.hidden&&!compact?'hidden':'';
-      if(!status.hidden&&!placeLabel(status,'status'))status.style.visibility='hidden';
-    }
+    for(const {node,kind}of rows){const p=node.officeLabelPlacement;node.style.visibility=p?'':'hidden';if(p){node.style.setProperty('--'+kind+'-x',p.dx+'px');node.style.setProperty('--'+kind+'-y',p.dy+'px')}}
   }
   if(buildingChairmanSlot())people.push(['seongmin','회장님',null,0]);
-  // One persistent 1F guest slot; each visit only swaps its sprite and name.
-  if(HaniBuildingScene.scheduler)people.push(['visitor','방문객',null,0]);
+  // Two persistent 1F guest slots, never recreated during a visit.
+  if(HaniBuildingScene.scheduler)people.push(['visitor','방문객',null,0],['visitor-2','방문객',null,0]);
   function buildingChairmanSlot(){return HaniBuildingScene.scheduler?.slot('ceo-reserved')}
   for(const [key,name,group,row] of people){
     const actor=document.createElement("div");actor.className="hani-office-actor";actor.dataset.person=key;actor.dataset.name=name;actor.dataset.seat=(HaniBuildingScene.homeSeat(key)||buildingChairmanSlot()).id;actor.dataset.spot="seat";
@@ -1462,6 +1486,7 @@
     const status=document.createElement('span');status.className='hani-office-status';const tag=document.createElement('small');tag.className='hani-office-name';
     const dot=document.createElement('span'),icon=document.createElement('span'),tagName=document.createElement('span');dot.className='hani-office-status-dot';dot.setAttribute('role','img');icon.className='hani-office-activity-icon';icon.setAttribute('aria-hidden','true');icon.hidden=true;tagName.textContent=name.split(' · ').at(-1);tag.append(dot,icon,tagName);actor.officeName=tagName;
     const prop=document.createElement('span');prop.className='hani-office-prop';prop.setAttribute('aria-hidden','true');actor.append(sprite,tag,status,prop);actor.setAttribute('role','button');actor.tabIndex=0;actor.dataset.avatar='pending';actorLayer.append(actor);actors.set(key,actor);
+    const rhythm=HaniBuildingScene.scheduler?.seed('idle-motion|'+key)||row;actor.style.setProperty('--idle-duration',(3.6+rhythm%29/10)+'s');actor.style.setProperty('--idle-delay',(-rhythm%67/10)+'s');
   }
   // One scene host; actors remain mounted and only their floor/position changes.
   const building=HaniBuildingScene,tabs=root.querySelector(".hani-building-tabs"),floorLabel=document.createElement("span"),overflowChip=document.createElement("span"),floorButtons=new Map(),backgroundCache=new Map();
@@ -1478,7 +1503,7 @@
   }
   function actionRunning(actor){return meeting||!!actor.officeTravel||actor.dataset.walking==='true'||!!actor.dataset.event||actor.dataset.action&&actor.dataset.action!=='base-work'}
   function bubbleText(actor){
-    if(bubbleSelection&&!actionRunning(actor)){const speaker=actors.get(bubbleSelection.speaker);return (speaker?.dataset.name||actor.dataset.name)+' · '+bubbleSelection.line}
+    if(bubbleSelection&&!actionRunning(actor)){const speaker=actors.get(bubbleSelection.speaker);return (speaker?.dataset.name||actor.dataset.name)+' · '+actor.querySelector('.hani-office-status').dataset.full+' · '+bubbleSelection.line}
     return actor.dataset.name+' · '+statusNames[actor.dataset.status]+' · '+actor.querySelector('.hani-office-status').dataset.full;
   }
   function fitBubble(){
@@ -1490,7 +1515,7 @@
     actorBubble.style.left=left+'px';actorBubble.style.top=top+'px';
   }
   function closeBubble(clearPending=true){bubbleSerial++;bubblePerson=null;bubbleSelection=null;if(clearPending)pendingTap=null;actorBubble.hidden=true;for(const actor of actors.values())actor.dataset.speaking='false';fitStatusLabels()}
-  function showBubble(actor,selection){bubblePerson=actor.dataset.person;bubbleSelection=selection;actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=bubblePerson==='visitor';for(const a of actors.values())a.dataset.speaking=String(a===actor);fitStatusLabels();fitBubble();const serial=++bubbleSerial;setTimeout(()=>{if(serial===bubbleSerial)closeBubble(false)},3000)}
+  function showBubble(actor,selection){bubblePerson=actor.dataset.person;bubbleSelection=selection;actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);fitStatusLabels();fitBubble();const serial=++bubbleSerial;setTimeout(()=>{if(serial===bubbleSerial)closeBubble(false)},3000)}
   function openBubble(actor){
     if(actor.hidden)return;
     pendingTap=null;const now=new Date(),selection=tapLines.tap(actor.dataset.person,now);
@@ -1558,7 +1583,7 @@
   for(const floor of building.floors){const list=document.createElement('p');list.textContent=[...(building.canon?.floors.find(f=>f.id===floor.id)?.rooms||[]).map(r=>r.label),...(building.art?.floors[floor.id].plates||[]).filter(p=>p.detail).map(p=>p.fullLabel)].join(' · ');rooms.append(list);roomLabels.set(floor.id,list)}
   function legacySprite(actor){
     const sprite=actor.querySelector('.hani-office-sprite'),{group,row}=actor.officeLegacy;
-    if(actor.dataset.person==='seongmin'||actor.dataset.person==='visitor'){sprite.className='hani-office-sprite';sprite.style.backgroundImage='';actor.dataset.avatar='pending';return}
+    if(actor.dataset.person==='seongmin'||actor.dataset.person.startsWith('visitor')){sprite.className='hani-office-sprite';sprite.style.backgroundImage='';actor.dataset.avatar='pending';return}
     if(group){sprite.className='hani-office-sprite hani-office-sheet-'+group;sprite.style.backgroundImage='';sprite.style.backgroundSize='600% 300%';sprite.style.backgroundPosition='0% '+['0%','50%','100%'][row];actor.dataset.avatar='chibi'}
     else{sprite.className='hani-office-sprite hani-office-avatar';sprite.style.backgroundImage='url("'+building.profile(actor.dataset.person)+'")';sprite.style.backgroundSize='cover';sprite.style.backgroundPosition='center';actor.dataset.avatar='badge'}
   }

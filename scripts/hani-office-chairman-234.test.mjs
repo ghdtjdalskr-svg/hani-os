@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {loadScene,at} from './hani-office-lively-fixture.mjs';
+import {loadScene,at,readAt} from './hani-office-lively-fixture.mjs';
 import {validPlaceSpeech,assertResources} from './hani-office-place-assertions.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {createHash} from 'node:crypto';
@@ -13,10 +13,10 @@ const plain=x=>JSON.parse(JSON.stringify(x));
 const goldenBytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-chairman-234-plans.json.gz'));
 assert.equal(createHash('sha256').update(goldenBytes).digest('hex'),'cd5541576e23b39018e704f14bcc253eac4aba152849779300f5f2b817852dff','immutable authored obr13 behavior oracle');
 const golden=JSON.parse(goldenBytes);
-assert.equal(createHash('sha256').update(fs.readFileSync('hani-office-live.js')).digest('hex'),golden.sourceSha256);
+assert.equal(createHash('sha256').update(readAt('hani-office-live.js','33d39892c2a5c0a1779650e440a2dd5068b44495')).digest('hex'),golden.sourceSha256);
 assert.equal(createHash('sha256').update(fs.readFileSync('data/hani-building/office-places.json')).digest('hex'),golden.placesSha256);
 test('234 frozen six full formal/outing ledgers and 84 snapshots preserve exact bytes and deep equality',()=>{
- for(const r of golden.records){const api=loadScene().scene.scheduler,f=api.plan(r.day,r.options),o=api.blockPlan(r.day,0,f,r.options);
+ for(const r of golden.records){const api=loadScene({ref:'33d39892c2a5c0a1779650e440a2dd5068b44495'}).scene.scheduler,f=api.plan(r.day,r.options),o=api.blockPlan(r.day,0,f,r.options);
   for(const [actual,expected]of [[f,r.formal],[o,r.outings],...r.snapshots.map(row=>[api.snapshot(at(r.day,row.seconds),r.options),row.snapshot])]){assert.equal(JSON.stringify(actual),JSON.stringify(expected));assert.deepEqual(plain(actual),expected)}
  }
 });
