@@ -128,3 +128,8 @@
 @keyframes hani-office-breathe{0%,100%{transform:scaleY(1) rotate(0deg)}45%{transform:scaleY(1.012) rotate(.35deg)}70%{transform:scaleY(1.004) rotate(-.2deg)}}
 @keyframes hani-office-sway{0%,100%{transform:rotate(0deg) scaleY(1)}35%{transform:rotate(.65deg) scaleY(1.006)}75%{transform:rotate(-.45deg) scaleY(1.01)}}
 @media(prefers-reduced-motion:reduce){.hani-office-sprite{animation:none!important;transform:none!important}}
+/* Static reciprocal head/body turn uses the same persistent partner slots.
+   Individual rotate composes with idle transform about the existing foot pivot. */
+.hani-office-actor[data-facing="left"] .hani-office-sprite{rotate:-4deg}
+.hani-office-actor[data-facing="right"] .hani-office-sprite{rotate:4deg}
+@media(prefers-reduced-motion:reduce){.hani-office-sprite{rotate:none!important}}

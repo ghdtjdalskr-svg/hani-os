@@ -4,6 +4,7 @@ import {createHash} from 'node:crypto';
 const files=['hani-office-live.css','assets/data/desk-mascots-v1.json','hani-desk-mascots.js','hani-development-history-v1.js','hani-main.js','index.html','hani-design-system.css','hani-investment-committee.js','hani-context-remote-v1.js','hani-office-live.js','hani-style-07.css','hani-ui-v02992.js','hani-character-archive-data.js','hani-character-archive.js','hani-organization-hub.js'];
 const baseline=fs.readFileSync('scripts/hani-reviewed-release-baseline.mjs','utf8'),requests=new Set();
 const add=(ref,file)=>requests.add(ref+':'+file);
+for(const file of ['hani-office-live.js','hani-office-live.css','data/hani-building/spatial-contract.json','data/hani-building/art-map-v1.json','assets/sprites-v2/manifest.json','assets/data/office-actions-221.json','assets/data/office-actions-216.json','data/hani-building/office-places.json'])add('bebcf2c16b163df1f311fbcdc36caa42a4af7940',file);
 for(const row of baseline.matchAll(/\{sha:'([a-f0-9]{40})',reason:'[^']*',files:\[([^\]]+)\]/g))for(const [,file]of row[2].matchAll(/'([^']+)'/g)){add(row[1],file);add(row[1]+'^',file)}
 for(const file of files)add('776752c971f2ce48edf376a707eb345ae57da98c',file);
 for(const file of ['assets/data/desk-mascots-v1.json','hani-desk-mascots.js']){requests.delete('776752c971f2ce48edf376a707eb345ae57da98c:'+file);add('2784e4e9855211021766f9eb65d764b2aafac468',file)}

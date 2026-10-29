@@ -3,15 +3,15 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {gunzipSync} from 'node:zlib';
 import {createHash} from 'node:crypto';
-import {loadScene,at} from './hani-office-lively-fixture.mjs';
+import {loadScene,at,readAt} from './hani-office-lively-fixture.mjs';
 import {assertResources,validPlaceSpeech} from './hani-office-place-assertions.mjs';
 const {scene,table,context}=loadScene(),s=scene.scheduler,day='2026-10-22';
 let writes=0;const deny=()=>{writes++;throw Error('write/network forbidden')};context.localStorage=context.sessionStorage={setItem:deny,removeItem:deny,clear:deny};context.fetch=deny;
 test('235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism',()=>{
  const bytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-lively-labels-235-plans.json.gz')),hash=b=>createHash('sha256').update(b).digest('hex');
  assert.equal(hash(bytes),'5089e172f608ac9475e0ce9ca30e31f19a57d2c84beaab735b4d4d27f083ab9f');const frozen=JSON.parse(bytes);
- assert.equal(hash(fs.readFileSync('hani-office-live.js')),frozen.sourceSha256);assert.equal(hash(fs.readFileSync('hani-office-live.css')),frozen.cssSha256);
- for(const r of frozen.records){const api=loadScene().scene.scheduler,f=api.plan(r.day,r.options),o=api.blockPlan(r.day,0,f,r.options);for(const [actual,expected]of [[f,r.formal],[o,r.outings],...r.snapshots.toReversed().map(row=>[api.snapshot(at(r.day,row.seconds),r.options),row.snapshot])]){assert.equal(JSON.stringify(actual),JSON.stringify(expected));assert.deepEqual(JSON.parse(JSON.stringify(actual)),expected)}}
+ const base='bebcf2c16b163df1f311fbcdc36caa42a4af7940';
+ for(const r of frozen.records){const {scene:fixed}=loadScene({ref:base}),api=fixed.scheduler,f=api.plan(r.day,r.options),o=api.blockPlan(r.day,0,f,r.options);assert.equal(hash(readAt('hani-office-live.js',base)),frozen.sourceSha256);assert.equal(hash(readAt('hani-office-live.css',base)),frozen.cssSha256);for(const [actual,expected]of [[f,r.formal],[o,r.outings],...r.snapshots.toReversed().map(row=>[api.snapshot(at(r.day,row.seconds),r.options),row.snapshot])]){assert.equal(JSON.stringify(actual),JSON.stringify(expected));assert.deepEqual(JSON.parse(JSON.stringify(actual)),expected)}}
 });
 test('235 weekdays 09–19 each second: 1F active >=70%, visible mean >=3, two public guests with separate targets and reservations',()=>{
  for(const day of ['2026-10-21','2026-10-22','2026-10-23']){

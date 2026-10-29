@@ -92,6 +92,7 @@ test('234 colleague visits: >=32px from actual colleague and horizontal approach
 test('234 long solitary stays: exactly one deterministic switch within same place, no arrival speech while moving',()=>{
  const f=s.plan(day,options),b=s.blockPlan(day,0,f,options);let checked=0;
  for(const e of b.filter(e=>!e.visitor&&!e.group&&e.card.kind!=='errand'))for(const t of e.people){
+  if(t.seat.anchor===t.home.anchorId){assert.equal(t.id,'seongmin');assert.ok(e.report);assert.equal(t.out.length+t.back.length,0);continue;} // Reserved report listener remains at home, not a long place visit.
   const arrival=t.out.at(-1).end,departure=t.back[0].start;if(departure-arrival<=90)continue;
   const midpoint=(arrival+departure)/2,times=[arrival+.001,midpoint-.001,midpoint+.001,departure-.001];
   const snapshots=times.map(sec=>s.snapshot(at(day,sec),options)),people=snapshots.map(snap=>snap.entries.find(p=>p.id===t.id));
@@ -116,6 +117,7 @@ test('234 deterministic staff paths within each presence key, cache reuse across
 test('234 long social stays switch to another approved place phrase while retaining actual companion names',()=>{
  const f=s.plan(day,options),b=s.blockPlan(day,0,f,options);let count=0;
  for(const e of b.filter(e=>!e.visitor&&e.card.kind!=='errand'))for(const t of e.people){
+  if(t.seat.anchor===t.home.anchorId){assert.equal(t.id,'seongmin');assert.ok(e.report);assert.equal(t.out.length+t.back.length,0);continue;}
   const arrival=t.out.at(-1).end,departure=t.back[0].start;if(departure-arrival<=90)continue;
   const sec=Math.max(e.performStart+.001,(arrival+departure)/2+.002);if(sec>=e.performEnd)continue;
   const p=s.snapshot(at(day,sec),options).entries.find(p=>p.id===t.id);

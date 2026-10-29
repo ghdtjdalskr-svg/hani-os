@@ -249,6 +249,25 @@
     }
     for(const card of placeTable?.errands||[])if(card.slots.every(id=>anchors.get(id)?.floor===card.floor&&anchors.get(id)?.room===card.room))errandPlaces.push(card);
     const defaults=actions.get('base-work'),cache=new Map(),paths=new Map(),targetCache=new Map(),slotCache=new Map();
+    // Voice/role grounding: existing office-tap-lines toChairman and seeded jobs.
+    // No new place or chair: reports stand on the existing CEO approach junctions.
+    const chairmanVoice={
+      hani:{greet:'회장님, 오늘 안건 정리해 뒀어요',topic:'오늘 안건',reply:'네, 핵심부터 묶어 둘게요',short:'안건 보고 중'},
+      gaeun:{greet:'회장님, 다음 일정 챙겨 뒀어요',topic:'다음 일정',reply:'네, 이동 여유도 챙길게요',short:'일정 보고 중'},
+      yuna:{greet:'회장님 오셨어요! 메모 모아 뒀어요!',topic:'접수 메모',reply:'네! 담당별로 정리해 둘게요!',short:'접수 보고 중'},
+      jieun:{topic:'예산',reply:'네, 필요한 예산 길을 찾아볼게요',short:'예산 보고 중'},
+      seoyun:{topic:'배포 일정',reply:'네, 범위와 순서를 정리할게요',short:'배포 보고 중'},
+      dohyun:{topic:'구현 진행',reply:'네, 동작까지 확인해 둘게요',short:'구현 보고 중'},
+      yuri:{topic:'품질 점검',reply:'네, 확인한 근거를 묶어 둘게요',short:'품질 보고 중'},
+      arin:{topic:'화면 검토',reply:'네, 쓰기 편하게 다듬을게요',short:'화면 보고 중'},
+      hina:{topic:'검증 결과',reply:'네, 확인된 결과로 정리할게요',short:'검증 보고 중'},
+      naeun:{topic:'비용 점검',reply:'네, 비용부터 살펴둘게요',short:'비용 보고 중'}
+    };
+    const chairmanPoint=art.anchors['ceo-reserved'];
+    const reportSlots=chairmanPoint?[...anchors.values()].filter(a=>a.floor==='4f'&&a.room==='ceo'&&a.type==='junction'&&a.runtimeAssignable!==false&&(()=>{const q=art.anchors[a.id],d=q&&Math.hypot((q.x-chairmanPoint.x)*(art.width||1672)/100,(q.y-chairmanPoint.y)*(art.height||941)/100);return d>=32&&d<=160})()).map(a=>a.id):[];
+    const reportPlaces=reportSlots.length?Object.entries(chairmanVoice).map(([id,v])=>({id:'chairman-report-'+id,kind:'report',floor:'4f',room:'ceo',slots:reportSlots,pose:'stand',stay:[20,60],go:'회장님께 보고하러 가는 중',at:['회장님께 '+v.topic+' 보고 중',v.reply],atByPerson:{[id]:['회장님께 '+v.topic+' 보고 중',v.reply]}})):[];
+    const chairmanShort=new Map(Object.values(chairmanVoice).flatMap(v=>[[v.greet,'회장님께 인사 중'],['회장님께 '+v.topic+' 보고 중',v.short],[v.reply,'보고 답변 중']]));
+    const greetingCache=new WeakMap();
     const minute=t=>Number(t.slice(0,2))*60+Number(t.slice(3));
     const imul=Math.imul;
     const seed=value=>{let n=2166136261;for(let i=0;i<value.length;i++){n^=value.charCodeAt(i);n=imul(n,16777619)}return n>>>0};
@@ -895,6 +914,8 @@
     const workLines={hani:'기획안 정리 중',yuna:'요청 분류 중',jieun:'일정 조율 중',haru:'기록 정리 중',gaeun:'일정 확인 중',seoyun:'설계 검토 중',dohyun:'코드 수정 중',serin:'수치 분석 중',yuri:'품질 점검 중',arin:'화면 검토 중',hina:'검증 기록 중',daon:'콘텐츠 구상 중',yoonseul:'문장 다듬는 중',sua:'접수 확인 중',taeo:'안내 준비 중',minji:'업무 메모 중',mir:'흐름 살피는 중',seongmin:'결재 검토 중',sooyeon:'자료 대조 중',naeun:'예산 점검 중'};
     const shortWords=[[/고민/,'잠깐 고민 중'],[/퀴즈/,'퀴즈 푸는 중'],[/비용|예산/,'비용 살피는 중'],[/고생|인사/,'인사 나누는 중'],[/웃|미소/,'살짝 웃는 중'],[/도장|결재/,'결재 확인 중'],[/메일/,'메일 확인 중'],[/일정|약속/,'일정 확인 중'],[/노래|음악|플레이리스트/,'음악 고르는 중'],[/졸음|꾸벅/,'졸음 쫓는 중'],[/커피 주문/,'커피 주문 중'],[/메뉴 고르/,'메뉴 고르는 중'],[/커피/,'커피 한 모금'],[/택배/,'택배 확인 중'],[/배달/,'배달 확인 중'],[/게시판|소식/,'소식 읽는 중'],[/검증|테스트/,'결과 확인 중'],[/수다|이야기/,'이야기 나누는 중'],[/코드|버그/,'코드 살피는 중'],[/메모/,'메모 정리 중'],[/보고서/,'보고서 다듬는 중'],[/스트레칭|기지개/,'기지개 켜는 중'],[/고양이/,'고양이 영상 중'],[/인스타/,'인스타 보는 중'],[/간식/,'간식 살피는 중'],[/생각|아이디어/,'생각 정리 중'],[/창밖|풍경|별/,'풍경 보는 중'],[/쉬는|휴식|소파/,'잠깐 쉬는 중'],[/확인|체크/,'내용 확인 중'],[/정리/,'자료 정리 중'],[/읽|책|페이지/,'읽어 보는 중']];
     function shortLine(line){
+      if(chairmanShort.has(line))return chairmanShort.get(line);
+      if(line==='좋아요, 이대로 갑시다')return '좋아요, 갑시다';
       if([...line].length<=10)return line;
       if(/돌아가는 중|안녕히 계세요/.test(line))return '복귀하는 중';
       if(/가는 중/.test(line))return /커피|Coffee/.test(line)?'커피 사러 가는 중':/택배/.test(line)?'택배 찾으러 이동':'용무 보러 이동 중';
@@ -1090,6 +1111,36 @@
         }
         return false;
       }
+      // At most six fixed daily slots, one report per employee. Reserve the
+      // chairman at his own seat for the whole round trip, so later outings
+      // cannot leave a visitor reporting to an empty chair. Formal work wins.
+      if(nightCatalog&&allowed.some(p=>p.id==='seongmin')){
+        const reported=new Set(),chair=personById.get('seongmin');
+        const candidates=physical.filter(p=>chairmanVoice[p.id]&&reportPlaces.some(c=>c.id==='chairman-report-'+p.id));
+        for(let n=0;n<6;n++){
+          const begin=33600+n*4800+seed(day+'|report-phase|'+n)%120;
+          const ranked=candidates.filter(p=>!reported.has(p.id)).sort((a,b)=>seed(day+'|report-person|'+n+a.id)-seed(day+'|report-person|'+n+b.id));
+          let booked=false;
+          for(let at=begin;at<begin+1800&&!booked;at+=15)for(const p of ranked){
+            if(reported.has(p.id))continue;
+            const card=reportPlaces.find(c=>c.id==='chairman-report-'+p.id),home=homeAt(p,at);
+            const stay=20+seed(day+'|report-stay|'+p.id)%41;
+            const deadline=Math.min(64800,nextCommitment(p.id,at),nextCommitment('seongmin',at));
+            if(deadline-at<stay)continue;
+            for(const target of card.slots){
+              const e=excursion(p.id,home,card,target,at,stay,day,null,deadline);if(!e)continue;
+              const seat=slot(chair.home.anchorId,'sit'),nodes=path(chair.home.anchorId,chair.home.anchorId);
+              e.report=p.id;e.people.push({id:chair.id,home:chair.home,seat,outbound:nodes,inbound:nodes,out:[],back:[]});
+              e.resources=[...new Set([...e.resources,chair.home.anchorId])];
+              if(!withinCap(e)||!reserve(e,ledger,allowed))continue;
+              result.push(e);reported.add(p.id);
+              for(const t of e.people){if(!tripsByPerson.has(t.id))tripsByPerson.set(t.id,[]);tripsByPerson.get(t.id).push(e);}
+              booked=true;break;
+            }
+            if(booked)break;
+          }
+        }
+      }
       for(let at=0;at<86400;at+=180){
         if(at>=32400&&at<64800)for(const formal of preMeetingEvents){
           if(formal.layer!==3||preMeeting.has(formal.id)||formal.start-at<120||formal.start-at>300)continue;
@@ -1262,7 +1313,8 @@
       // Outings respect the complete frozen formal ledger, including suppressed events.
       const outings=blockPlan(day,Math.floor(seconds/BLOCK),events,options);
       if(!idleLedgers.has(outings))idleLedgers.set(outings,[...events,...outings]);const idleLedger=idleLedgers.get(outings);
-      const visibleOutings=cancelled.size||blocked.size?outings.filter(e=>!cancelled.has(e.id)&&!cancelled.has(e.guestId)&&!e.people.some(t=>blocked.has(t.id))&&!blocked.has(e.card?.targetPerson)):outings;
+      const since=options.chairmanSince==null?-Infinity:(options.chairmanSince-Date.parse(day+'T00:00:00+09:00'))/1000;
+      const visibleOutings=cancelled.size||blocked.size||since!==-Infinity?outings.filter(e=>!cancelled.has(e.id)&&!cancelled.has(e.guestId)&&!e.people.some(t=>blocked.has(t.id))&&!blocked.has(e.card?.targetPerson)&&(!e.report||e.start>=since)):outings;
       const completedTeachers=events.filter(e=>e.performEnd<=seconds&&!cancelled.has(e.id)&&table.rules.hinaBalance.teacherActionIds.includes(e.actionId)).length;
       const selfiesBefore=events.filter(e=>e.start<seconds&&!cancelled.has(e.id)&&table.rules.hinaBalance.selfieActionIds.includes(e.actionId));
       const active=events.filter(e=>e.start<=seconds&&seconds<e.end&&!cancelled.has(e.id)&&!e.people.some(p=>blocked.has(p.id))&&(!table.rules.hinaBalance.selfieActionIds.includes(e.actionId)||completedTeachers>=selfiesBefore.length));
@@ -1292,7 +1344,7 @@
             line=p.visitor?'안녕히 계세요~':voice?.length?voice[Math.floor(event.start/90)%voice.length]:'자리로 돌아가는 중';
           }
           else if(state.state==='AT_PLACE'||t.seat.anchor===home.anchorId){
-            line=p.visitor?event.visitor.at:card?placeLine(card,p.id,day,event,t,seconds):speech(action,p.id,day);
+            line=event.report?(p.id==='seongmin'?'보고 기다리는 중':card.at[0]):p.visitor?event.visitor.at:card?placeLine(card,p.id,day,event,t,seconds):speech(action,p.id,day);
             if(event.group&&state.state==='AT_PLACE'){
               const partners=event.group.filter(id=>id!==p.id).map(id=>persons.find(p=>p.id===id).name).join('·'),location=card.at[0].split('에서')[0];
               line=seconds<event.performStart?location+'에서 '+partners+' 기다리는 중':seconds>=event.performEnd?location+'에서 '+partners+'와 나눈 이야기 정리 중':partners+'와 '+location+'에서 '+(event.companion?.topic||'잠깐 수다')+' 중';
@@ -1312,6 +1364,29 @@
         const k=Math.floor(seconds/BEAT),j=Array.from({length:Math.ceil(ACTIVE_BEATS)},(_,i)=>k-i).find(j=>beatPick(day,peers[0].floor,j)===pair.people[0]&&Math.floor(j/MIN_CYCLE)%7===seed(pair.people.join())%7);
         if(j==null||seconds>=j*BEAT+ACTIVE_BEATS*BEAT||ledgerOverlaps(idleLedger,j*BEAT-5,j*BEAT+ACTIVE_BEATS*BEAT+2).some(e=>e.people.some(t=>pair.people.includes(t.id))))continue;
         peers.forEach((p,i)=>{p.line=pair.lines[i];p.plain=false;p.deskPartner=pair.people[1-i]});
+      }
+      // Reuse deskPartner for a two-line exchange, only at the actual approach
+      // and the chairman's real home. No dialogue during travel or waiting.
+      for(const e of visibleOutings)if(e.report&&e.performStart<=seconds&&seconds<e.performEnd){
+        const staff=entries.find(p=>p.id===e.report),chair=entries.find(p=>p.id==='seongmin');
+        if(!staff||!chair||staff.state!=='AT_PLACE'||chair.seat.anchor!=='ceo-reserved'||staff.outingId!==e.id||chair.outingId!==e.id)continue;
+        staff.reportTopic=chairmanVoice[staff.id].topic;staff.behaviorKind='chairman-report';
+        // First half names the report; second half is a short reply.
+        if(seconds>=(e.performStart+e.performEnd)/2)staff.line=chairmanVoice[staff.id].reply;
+        chair.line='좋아요, 이대로 갑시다';chair.plain=staff.plain=false;
+        chair.deskPartner=staff.id;staff.deskPartner=chair.id;
+      }
+      const arrival=options.chairmanArrivalAt,arrivalSeconds=(arrival-Date.parse(day+'T00:00:00+09:00'))/1000;
+      if(options.chairmanPresent&&entries.some(p=>p.id==='seongmin')&&Number.isFinite(arrivalSeconds)&&arrivalSeconds>=0&&arrivalSeconds<86400&&seconds>=arrivalSeconds&&seconds<arrivalSeconds+10){
+        let cached=greetingCache.get(outings);if(!cached){cached=new Map();greetingCache.set(outings,cached)}
+        const greetingKey=arrival+'|'+since;
+        if(!cached.has(greetingKey)){
+          const duration=5+seed(day+'|greeting|'+arrival)%6,atArrival=snapshot(new Date(arrival),{chairmanPresent:true,presentIds:options.presentIds,chairmanSince:options.chairmanSince}),chair=atArrival.entries.find(p=>p.id==='seongmin');
+          const people=chair?.floor==='4f'?atArrival.entries.filter(p=>p.id!=='seongmin'&&chairmanVoice[p.id]?.greet&&p.floor==='4f'&&p.state==='AT_HOME'&&!p.eventId&&!p.outingId&&gap(p,chair)<=650&&!ledgerOverlaps(idleLedger,arrivalSeconds,arrivalSeconds+duration).some(e=>e.people.some(t=>t.id===p.id))).sort((a,b)=>gap(a,chair)-gap(b,chair)||a.id.localeCompare(b.id)).slice(0,1+seed(day+'|greeters|'+arrival)%2).map(p=>p.id):[];
+          if(cached.size>=8)cached.delete(cached.keys().next().value);cached.set(greetingKey,{duration,people});
+        }
+        const greeting=cached.get(greetingKey);
+        if(seconds<arrivalSeconds+greeting.duration)for(const id of greeting.people){const p=entries.find(p=>p.id===id);if(!p||p.eventId||p.outingId||p.state!=='AT_HOME')continue;p.line=chairmanVoice[id].greet;p.pose='standing';p.seat=slot(p.seat.anchor,'stand');p.plain=false;p.behaviorKind='chairman-greeting';p.greetingUntil=arrival+greeting.duration*1000;delete p.deskPartner;}
       }
       for(const p of entries){
         if(!p.outingId||p.state!=='AT_PLACE')continue;
@@ -1347,18 +1422,18 @@
         }
         lines.add(p.line);
       }
-      for(const p of entries)if(!p.plain&&!p.eventId&&!p.outingId){
+      for(const p of entries)if(!p.plain&&!p.eventId&&!p.outingId&&p.behaviorKind!=='chairman-greeting'){
         const personal=deskVoice[p.id]?.indexOf(p.line);
         p.behaviorKind=p.deskPartner?'desk-pair-'+[p.id,p.deskPartner].sort().join('-'):personal>=0?'desk-'+p.id+'-'+personal:'idle-'+p.line;
       }
       const guests=visibleOutings.filter(e=>e.visitor&&e.start<=seconds&&seconds<e.end);
       const visitors=guests.map(guest=>render({id:guest.people[0].id,visitor:true},guest)).filter(p=>p&&(!options.reducedMotion||p.state==='AT_PLACE'));
       for(const guest of guests){const visitor=visitors.find(v=>v.id===guest.people[0].id);if(visitor?.state==='AT_PLACE')for(const p of entries){const host=visibleOutings.find(e=>e.id===p.outingId&&e.guestId===guest.id);if(host&&p.state==='AT_PLACE'){p.visitorPartner=guest.id;visitor.hostId=p.id;visitor.line=visitor.at=placeTable.behavior.visitorReply}}}
-      for(const p of [...entries,...visitors])p.shortLine=shortLine(p.line);
+      for(const p of [...entries,...visitors]){p.shortLine=shortLine(p.line);if(p.deskPartner&&(p.id==='seongmin'||p.deskPartner==='seongmin')){const peer=entries.find(q=>q.id===p.deskPartner);if(peer&&peer.floor===p.floor)p.facing=peer.seat.x<p.seat.x?'left':'right';}}
       return {day,minutes:seconds/60,seconds,entries,visitors,events:active,presenceNote};
     }
 
-    return Object.freeze({plan,snapshot,seed,slot,actions,windows,presentAt,homeAt,blockPlan,stateAt,resourceIntervals,errandPlaces,shortLine,identity:table.identity});
+    return Object.freeze({plan,snapshot,seed,slot,actions,windows,presentAt,homeAt,blockPlan,stateAt,resourceIntervals,errandPlaces,reportPlaces,shortLine,identity:table.identity});
   }
   const scheduler=canon&&actionTable?createScheduler(actionTable):null;
   function snapshot(now=new Date(),options={}){
@@ -1373,19 +1448,23 @@
   // Read-only app signals; the caller installs one shared passive input callback
   // and reuses the office update/visibility cycle. No persistence or timer.
   function createPresence({now,locked,visible,override}){
-    const grace=600000;let lastInteraction=now(),hiddenSince=null,present=!locked()&&visible();
+    const grace=600000;let lastInteraction=now(),hiddenSince=null,present=!locked()&&visible(),previous=false,absentSince=null,chairmanSince=null,chairmanArrivalAt=null,greetedDay='';
     return {interact(){lastInteraction=now()},read(){
       const time=now(),external=override(),shown=visible();
       if(shown)hiddenSince=null;else if(hiddenSince===null)hiddenSince=time;
-      if(external!==undefined&&external!==null)return {chairmanPresent:external.chairman==='active'};
+      if(external!==undefined&&external!==null)present=external.chairman==='active';
       // A login lock is an immediate exclusion; inactivity/hidden use 10 minutes.
-      if(locked())present=false;
+      else if(locked())present=false;
       else if(shown)present=time-lastInteraction<grace;
       else if(time-hiddenSince>=grace)present=false;
-      return {chairmanPresent:present};
+      const day=new Date(time+32400000).toISOString().slice(0,10);
+      if(present&&!previous){chairmanSince=time;if(greetedDay!==day||absentSince!==null&&time-absentSince>=grace){chairmanArrivalAt=time;greetedDay=day;}else chairmanArrivalAt=null;}
+      if(!present&&previous){absentSince=time;chairmanArrivalAt=null;}
+      previous=present;
+      return present?{chairmanPresent:true,chairmanSince,chairmanArrivalAt}:{chairmanPresent:false};
     }};
   }
-  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,places:Object.freeze([...places,...(scheduler?.errandPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines})});
+  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines})});
 })();
 /* Read-only Living Office. The Agent Case renderer remains the sole owner of requests, answers and decisions. */
 (() => {
@@ -1650,6 +1729,7 @@
       if(building.scheduler&&!meeting){actor.officeTravel=null;actor.officeAnchor=p.seat.anchor;actor.dataset.seat=p.seat.id;actor.dataset.zone=p.seat.zone;actor.dataset.spot=p.seat.zone==='desk'?'seat':p.seat.zone;actor.dataset.home=[p.seat.x,p.seat.y].join(',');place(actor,p.position||[p.seat.x,p.seat.y]);pose(actor,reduced?(p.walking?'standing':p.pose):p.pose)}
       else seatActor(actor,p.seat,animate&&(sameFloor||meeting));
       actor.dataset.behavior=p.state||'AT_HOME';actor.dataset.place=p.placeId||'';actor.dataset.slot=p.targetAnchor||'';
+      actor.dataset.partner=p.deskPartner||'';actor.dataset.facing=p.facing||'';
       actor.dataset.action=selected?'agent-case':p.actionId||'base-work';actor.dataset.event=p.eventId||'';actor.dataset.line=selected?'실제 안건 검토 중':p.line||'자료 확인 중';
       actor.dataset.emoji=selected||actor.dataset.action==='base-work'?'':p.emoji||'';actor.dataset.walking=String(Boolean(p.walking));
       actor.querySelector('.hani-office-prop').textContent=actor.dataset.emoji;
