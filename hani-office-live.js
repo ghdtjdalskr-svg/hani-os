@@ -1726,8 +1726,9 @@
       const joinGap=floor.width<=600?0:gap;
       for(const inline of (g.compact?[false]:[false,true])){
       const width=g.compact?g.name.width:inline?g.name.width+joinGap+g.status.width:Math.max(g.name.width,g.status.width),height=g.compact?g.name.height:inline?Math.max(g.name.height,g.status.height):g.name.height+joinGap+g.status.height;
-      // Dialogue keeps the same mandatory nearby head radius as every pill.
-      const head=g.sprite?.width?g.sprite:g.actor,headX=(head.left+head.right)/2,reach=27.5,step=Math.ceil(reach);
+      // Phone pills hug the head (20px) so they never read as a neighbour's label
+      // across a desk row; dialogue may use 28px, everyone else falls back to a dot.
+      const head=g.sprite?.width?g.sprite:g.actor,headX=(head.left+head.right)/2,reach=g.priority===3?27.5:19.5,step=Math.ceil(reach);
       const left=Math.max(floor.left+gap,Math.min(g.actor.left+g.actor.width/2-width/2,floor.right-gap-width));
       const top=g.actor.top-gap-height,candidates=[];
       const reachX=Math.max(g.actor.width*1.5,floor.width<=600?96:100),reachY=Math.max(g.actor.height*2,64);

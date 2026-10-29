@@ -143,9 +143,15 @@ let canvas=box(0,0,336,180);
 layout.map.getBoundingClientRect=()=>canvas;
 function measured(node,kind,base){node.getBoundingClientRect=()=>{const r=base(),x=parseFloat(node.style['--'+kind+'-x'])||0,y=parseFloat(node.style['--'+kind+'-y'])||0;return box(r.left+x,r.top+y,r.width,r.height)}}
 for(const [i,actor] of layoutActors.entries()){
+ // Label placement also measures each actor and sprite box (obr18+).
+ const body=()=>canvas.width<=600?box(70+i*21,136,20,40):box(70+i*140,70,26,40);
+ actor.getBoundingClientRect=body;const sprite=actor.querySelector('.hani-office-sprite');if(sprite)sprite.getBoundingClientRect=body;
  measured(actor.querySelector('.hani-office-name'),'name',()=>canvas.width<=600?box(70+i*21,120,40,16):box(70+i*140,55,26,14));
  measured(actor.querySelector('.hani-office-status'),'status',()=>box(100,25,120,20));
 }
+// These boxes model the desktop separate name/status slots; phone pills are
+// covered by the obr14/18 browser geometry instead.
+layout.context.matchMedia=()=>({matches:false,addEventListener(){}});
 layout.click('3f');
 for(const a of layoutActors){assert.equal(a.querySelector('.hani-office-status').hidden,false);for(const b of layoutActors.filter(b=>b!==a))assert.ok(overlap(a.querySelector('.hani-office-name').getBoundingClientRect(),b.querySelector('.hani-office-name').getBoundingClientRect())<=.10)}
 canvas=box(0,0,900,80);layout.click('3f');
@@ -154,7 +160,9 @@ canvas=box(0,0,900,80);layout.click('3f');
 layoutActors[1].dataset.activity='meeting';layout.context.setTimeout=()=>{};
 layout.ids.get('haniOfficeActors').events.click({target:layoutActors.at(-1)});
 const shown=layoutActors.filter(a=>a.querySelector('.hani-office-status').style.visibility!=='hidden');
-assert.ok(shown.includes(layoutActors.at(-1))&&shown.includes(layoutActors[1]));assert.equal(shown.length,2);
+// obr14+ searches horizontal lanes too, so more than two rows may fit; speech
+// and meeting still always win and nothing below may overlap.
+assert.ok(shown.includes(layoutActors.at(-1))&&shown.includes(layoutActors[1]));assert.ok(shown.length>=2);
 for(const a of shown)for(const b of layoutActors){const pill=a.querySelector('.hani-office-status').getBoundingClientRect();assert.equal(overlap(pill,b.querySelector('.hani-office-name').getBoundingClientRect()),0);if(a!==b&&shown.includes(b))assert.equal(overlap(pill,b.querySelector('.hani-office-status').getBoundingClientRect()),0)}
 canvas=box(0,0,900,400);layout.ids.get('haniOfficeActors').events.keydown({key:'Escape'});
 // obr14 explicitly replaces 219 names-only / plain dot-only: all pills recover.

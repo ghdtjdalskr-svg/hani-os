@@ -10,7 +10,7 @@ let writes=0;const deny=()=>{writes++;throw Error('forbidden persistence/network
 context.localStorage=context.sessionStorage={setItem:deny,removeItem:deny,clear:deny};context.fetch=deny;
 test('obr21 authored full absent/present plans and reverse snapshots match frozen delta',()=>{
  const bytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-obr21-plans.json.gz'));
- assert.equal(createHash('sha256').update(bytes).digest('hex'),'c4fb9bd7308ae9244c48d1f21cdefded76a09390cd3d4cb2dd6dbf848d0c6870');
+ assert.equal(createHash('sha256').update(bytes).digest('hex'),'96cc69c5af8240b3d1175430468f97a4a6abc7a54f8f24152e9c872bc54c820d');
  const frozen=JSON.parse(bytes);assert.equal(createHash('sha256').update(fs.readFileSync('hani-office-live.js')).digest('hex'),frozen.sourceSha256);
  for(const r of frozen.records){const api=loadScene().scene.scheduler,f=api.plan(r.day,r.options),o=api.blockPlan(r.day,0,f,r.options);
   assert.equal(JSON.stringify(f),JSON.stringify(r.formal),r.label+' formal');assert.equal(JSON.stringify(o),JSON.stringify(r.outings),r.label+' outings');
