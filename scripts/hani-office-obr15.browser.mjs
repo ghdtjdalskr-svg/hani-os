@@ -29,7 +29,7 @@ try{
   await context.route('**/*',r=>{const req=r.request();if(new URL(req.url()).origin!==origin||!['GET','HEAD'].includes(req.method())){result.network.push({url:req.url(),method:req.method()});return r.abort()}return r.continue()});
   const page=await context.newPage();page.on('pageerror',e=>result.errors.push(e.message));await page.goto(origin);
   await untilOffice(page,()=>window.HaniBuildingScene?.scheduler&&document.querySelectorAll('[data-building-floor]').length===5);
-  await page.evaluate(theme=>{document.documentElement.dataset.theme=theme;window.officeActorNodes=[...document.querySelector('#haniOfficeActors').children]},theme);
+  await page.evaluate(theme=>{document.documentElement.dataset.theme=theme;window.officeActorNodes=[...document.querySelector('#haniOfficeActors').children];window.officeLabelNodes=officeActorNodes.flatMap(a=>['name','status'].map(k=>a.querySelector('.hani-office-'+k)))},theme);
   const show=async(time,presence)=>{await page.evaluate(({time,presence})=>{officeClock=time;HaniOfficePresence={chairman:presence}}, {time,presence});await page.locator('[data-building-floor="4f"]').click();await waitForOfficeLabels(page,'4f')};
   const arrival=await page.evaluate(()=>{
    const s=HaniBuildingScene.scheduler,day='2026-10-22';
@@ -52,13 +52,15 @@ try{
   assert.equal(labels.length,2);assert.ok(labels.every(p=>p.shown),'both report lines visible');if(width===390)assert.ok(labels.every(p=>[...p.text].length<=8));const [a,b]=labels.map(p=>p.rect);assert.ok(a.right<=b.left||b.right<=a.left||a.bottom<=b.top||b.bottom<=a.top,'dialogue label overlap');
   const safety=await page.evaluate(()=>{
    const map=document.getElementById('haniOfficeMap'),floor=map.getBoundingClientRect(),visible=n=>getComputedStyle(n).visibility!=='hidden'&&getComputedStyle(n).display!=='none'&&!n.hidden,overlap=(a,b)=>a.left<b.right-.1&&a.right>b.left+.1&&a.top<b.bottom-.1&&a.bottom>b.top+.1;
-   const boxes=[...document.querySelectorAll('#haniOfficeActors .hani-office-actor')].filter(a=>!a.hidden).flatMap(a=>['name','status'].map(k=>a.querySelector('.hani-office-'+k)).filter(visible).map(n=>n.getBoundingClientRect())),mascots=[...map.querySelectorAll('.hani-desk-mascots:not([hidden]) .hani-desk-mascot[data-ready="true"]')].filter(visible).map(n=>n.getBoundingClientRect());
-   return {outside:boxes.filter(b=>b.left<floor.left||b.right>floor.right||b.top<floor.top||b.bottom>floor.bottom).length,overlap:boxes.flatMap((a,i)=>boxes.slice(i+1).filter(b=>overlap(a,b))).length,mascotOverlap:boxes.filter(a=>mascots.some(b=>overlap(a,b))).length};
-  });assert.deepEqual(safety,{outside:0,overlap:0,mascotOverlap:0});
+   const actors=[...document.querySelectorAll('#haniOfficeActors .hani-office-actor')].filter(a=>!a.hidden),boxes=actors.flatMap(a=>['name','status'].map(k=>a.querySelector('.hani-office-'+k)).filter(visible).map(n=>({id:a.dataset.person,left:n.getBoundingClientRect().left,right:n.getBoundingClientRect().right,top:n.getBoundingClientRect().top,bottom:n.getBoundingClientRect().bottom}))),mascots=[...map.querySelectorAll('.hani-desk-mascots:not([hidden]) .hani-desk-mascot[data-ready="true"]')].filter(visible).map(n=>n.getBoundingClientRect());
+   const sprites=actors.map(a=>({id:a.dataset.person,rect:a.querySelector('.hani-office-sprite').getBoundingClientRect()})),faces=actors.map(a=>{const r=a.getBoundingClientRect();return {id:a.dataset.person,rect:{left:r.left,top:r.top,right:r.right,bottom:r.top+r.height*.65}}});
+   return {outside:boxes.filter(b=>b.left<floor.left||b.right>floor.right||b.top<floor.top||b.bottom>floor.bottom).length,overlap:boxes.flatMap((a,i)=>boxes.slice(i+1).filter(b=>overlap(a,b))).length,mascotOverlap:boxes.filter(a=>mascots.some(b=>overlap(a,b))).length,spriteOverlap:boxes.filter(a=>sprites.some(b=>a.id!==b.id&&overlap(a,b.rect))).length,ownFaceOverlap:boxes.filter(a=>faces.some(b=>a.id===b.id&&overlap(a,b.rect))).length};
+  });assert.deepEqual(safety,{outside:0,overlap:0,mascotOverlap:0,spriteOverlap:0,ownFaceOverlap:0});
   shot=path.join(out,`${width}-${theme}-report.png`);await page.locator('#haniOfficeMap').screenshot({path:shot});result.screenshots.push(path.relative(root,shot));
   await show(report.end,'active');assert.notEqual(await chair.getAttribute('data-partner'),report.staff);
   await show(report.stamp,'absent');assert.equal(await chair.isVisible(),false);assert.notEqual(await staff.getAttribute('data-partner'),'seongmin');
   assert.ok(await page.evaluate(()=>officeActorNodes.every((a,i)=>a===document.querySelector('#haniOfficeActors').children[i])),'persistent actor identity');
+  assert.ok(await page.evaluate(()=>officeActorNodes.flatMap(a=>['name','status'].map(k=>a.querySelector('.hani-office-'+k))).every((n,i)=>n===officeLabelNodes[i])),'persistent name/status identity and parent');
   result.checks.push({width,theme,arrival,report,labels,safety});result.writes.push(...await page.evaluate(()=>officeWrites));await context.close();
  }
  assert.deepEqual(result.errors,[]);assert.deepEqual(result.writes,[]);assert.deepEqual(result.network,[]);result.status='PASS';

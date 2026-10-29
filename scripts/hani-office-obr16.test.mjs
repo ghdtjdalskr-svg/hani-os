@@ -12,7 +12,7 @@ function check(floor,groups,obstacles,placements){
  const boxes=[];
  for(const g of groups){const p=placements.get(g.id);if(!p)continue;
   for(const kind of ['name','status']){const b=rect(p[kind].left,p[kind].top,g[kind].width,g[kind].height);assert.ok(b.left>=floor.left&&b.right<=floor.right&&b.top>=floor.top&&b.bottom<=floor.bottom,g.id+' inside');assert.ok(!obstacles.some(o=>overlap(b,o)),g.id+' mascot');assert.ok(!boxes.some(o=>overlap(b,o)),g.id+' label');boxes.push(b)}
-  assert.ok(Math.abs(p.name.top-p.status.top-g.status.height-2)<1e-9,'one stacked name/status group (floating-point precision)');
+  assert.ok(Math.abs(p.name.top-p.status.top-g.status.height-(floor.width<=600?0:2))<1e-9||Math.abs(p.name.top-p.status.top)<1e-9&&Math.abs(p.status.left-p.name.left-g.name.width-(floor.width<=600?0:2))<1e-9,'one adjacent stacked or inline name/status group (floating-point precision)');
  }
 }
 test('obr16 conversations and greetings precede outings/movement, then ordinary work',()=>{
@@ -22,11 +22,11 @@ test('obr16 conversations and greetings precede outings/movement, then ordinary 
  for(const d of [{walking:'true'},{plain:'false'},{called:'true'},{activity:'meeting'}])assert.equal(priority(d),2);
  assert.equal(priority({plain:'true',activity:'work'}),1);
  // Capacity for exactly two groups: both report lines win over a walking and idle actor.
- const floor=rect(0,0,132,36),actor=rect(61,20,10,10),group=(id,data)=>({id,priority:priority(data),actor,name:rect(0,0,24,13),status:rect(0,0,60,13)});
+ const floor=rect(0,0,132,66),actor=rect(61,44,10,10),group=(id,data)=>({id,priority:priority(data),actor,name:rect(0,0,24,13),status:rect(0,0,60,13)});
  const groups=[group('idle',{plain:'true'}),group('walking',{walking:'true'}),group('staff',{partner:'seongmin'}),group('seongmin',{partner:'staff'})],p=place(floor,groups);
  assert.ok(p.get('staff')&&p.get('seongmin'));assert.equal(p.get('idle'),null);assert.equal(p.get('walking'),null);check(floor,groups,[],p);
 });
-test('obr16 side lanes rescue identical actor columns without separating names from speech',()=>{
+test('obr16 side lanes keep eight identical-column label groups within obr17 nearby limits',()=>{
  const floor=rect(0,0,300,84),actor=rect(140,35,20,30),groups=Array.from({length:8},(_,i)=>({id:String(i),priority:1,actor,name:rect(0,0,30,14),status:rect(0,0,66,16)})),p=place(floor,groups);
  assert.equal([...p.values()].filter(Boolean).length,8);assert.ok(new Set([...p.values()].map(p=>p.status.left)).size>=4);check(floor,groups,[],p);
  assert.deepEqual([...place(floor,groups.toReversed())],[...p],'deterministic order independent of input');
@@ -52,7 +52,7 @@ test('obr16 real snapshot coordinates + synthetic label metrics: all floors/time
   for(const sec of times){const snap=s.snapshot(at(day,sec),options);
    for(const f of scene.floors){
     const obstacles=Object.values(catalog.staff).filter(m=>m.floor===f.id).map(m=>{const a=scene.art.anchors[m.anchor],size=Math.max(16,width*32/1440);return rect((a.x+m.offset[0])*width/100-size/2,(a.y+m.offset[1])*floor.height/100-size,size,size)});
-    const people=[...snap.entries,...snap.visitors].filter(p=>p.floor===f.id),groups=people.map(p=>{const xy=p.position||[p.seat.x,p.seat.y],line=width<=600?s.shortLine(p.line,8):p.line;return {id:p.id,priority:priority({partner:p.deskPartner,greeting:String(p.behaviorKind==='chairman-greeting'||p.id==='seongmin'&&people.some(q=>q.behaviorKind==='chairman-greeting')),walking:String(p.walking),plain:String(!!p.plain)}),actor:rect(xy[0]*width/100-15,xy[1]*floor.height/100-40,30,40),name:rect(0,0,42,16.5),status:rect(0,0,Math.min(width<=600?Infinity:150,textWidth(line,width<=600?10:12)+8),17)}});
+    const people=[...snap.entries,...snap.visitors].filter(p=>p.floor===f.id),groups=people.map(p=>{const xy=p.position||[p.seat.x,p.seat.y],line=width<=600?s.shortLine(p.line,8):p.line;return {id:p.id,priority:priority({partner:p.deskPartner,greeting:String(p.behaviorKind==='chairman-greeting'||p.id==='seongmin'&&people.some(q=>q.behaviorKind==='chairman-greeting')),walking:String(p.walking),plain:String(!!p.plain)}),actor:rect(xy[0]*width/100-15,xy[1]*floor.height/100-40,30,40),name:rect(0,0,42,width<=600?11:16.5),status:rect(0,0,Math.min(width<=600?Infinity:150,textWidth(line,width<=600?10:12)+(width<=600?6:8)),width<=600?13:17)}});
     const before=performance.now(),p=place(floor,groups,obstacles);costs.push(performance.now()-before);check(floor,groups,obstacles,p);
     if(groups.length){const ratio=[...p.values()].filter(Boolean).length/groups.length;ratios.push(ratio);if(ratio<(width<=600?.7:.85))failures.push({sec,floor:f.id,ratio});}
     for(const g of groups.filter(g=>g.priority===3))assert.ok(p.get(g.id),width+' '+sec+' dialogue '+g.id);

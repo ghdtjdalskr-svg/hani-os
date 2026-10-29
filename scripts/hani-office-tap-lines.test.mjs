@@ -142,6 +142,7 @@ test('rapid first-view taps survive a slow catalog and keep floor bounds at 390 
   // placement also reads every actor box, including actors other than the tapped one.
   for(const a of f.visible()){
    if(a!==actor)a.getBoundingClientRect=()=>({left:80,top:60,right:112,bottom:100,width:32,height:40});
+   a.querySelector('.hani-office-sprite').getBoundingClientRect=()=>a.getBoundingClientRect();
    for(const cls of ['.hani-office-name','.hani-office-status'])a.querySelector(cls).getBoundingClientRect=()=>({left:80,top:60,right:100,bottom:76,width:20,height:16});
   }
   actor.officeRow.events.click();const box=panel.getBoundingClientRect();

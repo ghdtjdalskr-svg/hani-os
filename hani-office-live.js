@@ -1449,16 +1449,31 @@
   }
   function placeStatusLabels(floor,groups,obstacles=[]){
     const gap=2,ordered=groups.slice().sort((a,b)=>b.priority-a.priority||a.id.localeCompare(b.id));
-    const overlaps=(a,b)=>a.left<b.right+gap&&a.right+gap>b.left&&a.top<b.bottom+gap&&a.bottom+gap>b.top;
+    // Every sprite (including one's own face) is reserved before any label.
+    // Actual sprite bounds include the partner turn; reserve idle motion too.
+    const sprites=groups.map(g=>{const r=g.sprite?.width?g.sprite:g.actor,pad=Math.max(2,r.height*.02);return {left:r.left-pad,right:r.right+pad,top:r.top-pad,bottom:r.bottom+pad}});
+    // Floating-point edge arithmetic must not reject an exactly 2px gap.
+    const overlaps=(a,b)=>a.left<b.right+gap-1e-7&&a.right+gap>b.left+1e-7&&a.top<b.bottom+gap-1e-7&&a.bottom+gap>b.top+1e-7;
     let best=null,bestScore=null;
-    // Prefer nearby labels; only repack from an edge when local placement loses a line.
-    for(let mode=0;mode<5;mode++){
-    const reserved=obstacles.slice(),result=new Map(),score=[0,0,0,0];
-    for(const g of ordered){
-      const width=Math.max(g.name.width,g.status.width),height=g.name.height+gap+g.status.height;
+    const fixed=[...obstacles,...sprites],pools=new Map(ordered.map(g=>[g.id,new Map()]));
+    const compare=(a,b)=>{for(let i=0;i<4;i++)if(a[i]!==b[i])return b[i]-a[i];return 0};
+    const positions=(g,b)=>{const d=floor.width<=600?0:gap;return b.inline?{name:{left:b.left,top:b.top},status:{left:b.left+g.name.width+d,top:b.top}}:{name:{left:b.left+(b.width-g.name.width)/2,top:b.top+g.status.height+d},status:{left:b.left+(b.width-g.status.width)/2,top:b.top}}};
+    // Repacking may change priority order within nearby lanes, never send a
+    // person's labels to a distant desk just to raise the visible count.
+    for(let mode=0;mode<9;mode++){
+    const reserved=[...obstacles,...sprites],result=new Map(),score=[0,0,0,0];
+    const order=mode<5?ordered:ordered.slice().sort((a,b)=>b.priority-a.priority||(mode<7?(a.actor.left-b.actor.left)*(mode%2?1:-1):(a.actor.top-b.actor.top)*(mode%2?1:-1))||a.id.localeCompare(b.id));
+    for(const g of order){
+      let chosen=null,rank=Infinity;
+      const joinGap=floor.width<=600?0:gap;
+      for(const inline of [false,true]){
+      const width=inline?g.name.width+joinGap+g.status.width:Math.max(g.name.width,g.status.width),height=inline?Math.max(g.name.height,g.status.height):g.name.height+joinGap+g.status.height;
       const left=Math.max(floor.left+gap,Math.min(g.actor.left+g.actor.width/2-width/2,floor.right-gap-width));
       const top=g.actor.top-gap-height,candidates=[];
-      const add=(x,y)=>{x=Math.max(floor.left+gap,Math.min(x,floor.right-gap-width));y=Math.max(floor.top+gap,Math.min(y,floor.bottom-gap-height));candidates.push({left:x,right:x+width,top:y,bottom:y+height,cost:(x-left)**2+(y-top)**2})};
+      const reachX=Math.max(g.actor.width*1.5,floor.width<=600?96:100),reachY=Math.max(g.actor.height*2,64);
+      const add=(x,y)=>{x=Math.max(floor.left+gap,Math.min(x,floor.right-gap-width));y=Math.max(floor.top+gap,Math.min(y,floor.bottom-gap-height));
+        if(Math.abs(x+width/2-(g.actor.left+g.actor.width/2))>reachX||y+height<g.actor.top-reachY||y>g.actor.bottom+reachY)return;
+        const below=Math.max(0,y+height-g.actor.top);candidates.push({left:x,right:x+width,top:y,bottom:y+height,width,height,inline,cost:(x-left)**2+(y-top)**2+below*below*2+(inline?400:0)})};
       // Above/below and either side keep each person's two labels together.
       add(left,top);add(left,g.actor.bottom+gap);
       add(g.actor.left-gap-width,top);add(g.actor.right+gap,top);
@@ -1470,16 +1485,33 @@
       for(let y=floor.top+gap;y<=floor.bottom-gap-height;y+=height+gap)ys.push(y);
       // Fit around irregular mascot/label edges instead of wasting a whole grid cell.
       for(const r of reserved){xs.push(r.right+gap,r.left-gap-width);ys.push(r.bottom+gap,r.top-gap-height)}
-      for(const x of xs)for(const y of ys)add(x,y);
-      let chosen=null,rank=Infinity;
-      for(const b of candidates){const value=mode?(mode<=2?b.top:-b.bottom)*(floor.width+1)+(mode%2?b.left:-b.right):b.cost;
+      for(const x of new Set(xs))for(const y of new Set(ys))add(x,y);
+      for(const b of candidates){const value=mode&&mode<5?(mode<=2?b.top:-b.bottom)*(floor.width+1)+(mode%2?b.left:-b.right):b.cost;
+        if(b.left>=floor.left+gap&&b.right<=floor.right-gap&&b.top>=floor.top+gap&&b.bottom<=floor.bottom-gap&&!fixed.some(r=>overlaps(b,r)))pools.get(g.id).set([b.left,b.top,b.inline].join(','),b);
         if(value<rank&&b.left>=floor.left+gap&&b.right<=floor.right-gap&&b.top>=floor.top+gap&&b.bottom<=floor.bottom-gap&&!reserved.some(r=>overlaps(b,r))){chosen=b;rank=value}}
-      if(chosen){score[3-g.priority]++;score[3]-=chosen.cost;reserved.push(chosen);result.set(g.id,{name:{left:chosen.left+(width-g.name.width)/2,top:chosen.top+g.status.height+gap},status:{left:chosen.left+(width-g.status.width)/2,top:chosen.top}})}
+      }
+      if(chosen){score[3-g.priority]++;score[3]-=chosen.cost;reserved.push(chosen);result.set(g.id,positions(g,chosen))}
       else result.set(g.id,null);
     }
     const better=!bestScore||score.some((v,i)=>v!==bestScore[i]&&score.slice(0,i).every((q,j)=>q===bestScore[j])&&v>bestScore[i]);
     if(better){best=result;bestScore=score}
     if(score[0]+score[1]+score[2]===groups.length)break;
+    }
+    // A bounded search repairs greedy blocking on crowded floors, using only
+    // the same nearby, sprite-safe candidates. No global/remote fallback.
+    if(bestScore[0]<ordered.filter(g=>g.priority===3).length||bestScore[0]+bestScore[1]+bestScore[2]<Math.ceil(groups.length*(floor.width<=600?.7:.85))){
+      let beam=[{boxes:[],result:new Map(),score:[0,0,0,0]}];
+      for(const g of ordered){
+        const pool=[...pools.get(g.id).values()].sort((a,b)=>a.cost-b.cost),next=[];
+        for(const state of beam){
+          const legal=pool.filter(b=>!state.boxes.some(r=>overlaps(b,r)));
+          const options=new Set(legal.slice(0,8));
+          for(const axis of ['left','top']){const sorted=legal.slice().sort((a,b)=>a[axis]-b[axis]);for(const b of [...sorted.slice(0,2),...sorted.slice(-2)])options.add(b)}
+          for(const b of [null,...options]){const score=state.score.slice(),result=new Map(state.result);result.set(g.id,b?positions(g,b):null);if(b){score[3-g.priority]++;score[3]-=b.cost}next.push({boxes:b?[...state.boxes,b]:state.boxes,result,score})}
+        }
+        next.sort((a,b)=>compare(a.score,b.score));beam=next.slice(0,32);
+      }
+      if(beam.length&&compare(beam[0].score,bestScore)<0)best=beam[0].result;
     }
     return best;
   }
@@ -1548,7 +1580,7 @@
     if(actor.dataset.avatar!=='v2'||!entry)return;
     const f=entry.frames.find(f=>f.name===name)||entry.frames[0];
     sprite.style.backgroundPosition=(f.rect[0]/(entry.atlas[0]-entry.cell[0])*100)+'% '+(f.rect[1]/(entry.atlas[1]-entry.cell[1])*100)+'%';
-    actor.style.transform='translate(-'+(f.pivot[0]/entry.cell[0]*100)+'%,-'+(f.pivot[1]/entry.cell[1]*100)+'%)';
+    actor.style.setProperty('--actor-pivot-x',String(-f.pivot[0]/entry.cell[0]));actor.style.setProperty('--actor-pivot-y',String(-f.pivot[1]/entry.cell[1]));
   }
   function loadSprite(actor,onLoad){
     const id=spriteId(actor),entry=spriteEntries.get(id),sprite=actor.querySelector('.hani-office-sprite');if(!entry)return;
@@ -1583,7 +1615,7 @@
       for(const [kind,node]of [['name',name],['status',status]]){node.style.setProperty('--'+kind+'-x','0px');node.style.setProperty('--'+kind+'-y','0px');node.style.visibility='';node.hidden=false;}
       status.textContent=compact?(HaniBuildingScene.scheduler?.shortLine(status.dataset.full,8)||status.dataset.full):status.dataset.full;
     }
-    const groups=rows.map(({actor,name,status})=>({id:actor.dataset.person,priority:HaniBuildingScene.labels.priority(actor.dataset),actor:actor.getBoundingClientRect(),name:name.getBoundingClientRect(),status:status.getBoundingClientRect()}));
+    const groups=rows.map(({actor,name,status})=>({id:actor.dataset.person,priority:HaniBuildingScene.labels.priority(actor.dataset),actor:actor.getBoundingClientRect(),sprite:actor.querySelector('.hani-office-sprite').getBoundingClientRect(),name:name.getBoundingClientRect(),status:status.getBoundingClientRect()}));
     // Reserve the separate mascot owner's actual visible sprite boxes.
     const obstacles=[];
     for(const node of root.querySelectorAll('.hani-desk-mascots:not([hidden]) .hani-desk-mascot[data-ready="true"]')){const r=node.getBoundingClientRect();if(r.width&&r.height)obstacles.push(r)}
@@ -1711,7 +1743,7 @@
     const target=seat.anchor||seat.id,old=actor.officeAnchor;
     if(actor.officeTravel&&actor.officeTravel.seat.id===seat.id)return;
     actor.officeTravel=null;actor.dataset.seat=seat.id;actor.dataset.zone=seat.zone;actor.dataset.spot=seat.zone==='desk'?'seat':seat.zone;
-    actor.dataset.home=[seat.x,seat.y].join(',');actor.style.zIndex='4';
+    actor.dataset.home=[seat.x,seat.y].join(',');
     const path=animate&&!reduced&&building.canon?building.route(old&&building.anchors.get(old)?.floor===activeFloor?old:'elevator_'+activeFloor,target):[];
     if(animate&&!reduced&&building.canon&&!path.length){actor.dataset.route='blocked';label(actor,'이동 경로를 확인할 수 없어 출발 위치에서 대기 중');return}
     actor.dataset.route='ready';

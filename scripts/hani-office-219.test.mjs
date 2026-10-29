@@ -59,10 +59,12 @@ for(const person of assets.canon.people){
 }
 assert.equal(read('assets/sprites-v2/manifest.json'),old('assets/sprites-v2/manifest.json'));
 const slice=(s,a,b)=>s.slice(s.indexOf(a),s.indexOf(b,s.indexOf(a)));
-assert.equal(slice(source,'  function pose(','  function loadSprite('),slice(old('hani-office-live.js'),'  function pose(','  function loadSprite('));
+const legacyPivot="actor.style.transform='translate(-'+(f.pivot[0]/entry.cell[0]*100)+'%,-'+(f.pivot[1]/entry.cell[1]*100)+'%)';";
+const marginPivot="actor.style.setProperty('--actor-pivot-x',String(-f.pivot[0]/entry.cell[0]));actor.style.setProperty('--actor-pivot-y',String(-f.pivot[1]/entry.cell[1]));";
+assert.equal(slice(source,'  function pose(','  function loadSprite('),slice(old('hani-office-live.js'),'  function pose(','  function loadSprite(').replace(legacyPivot,marginPivot));
 const scale=s=>[...s.matchAll(/\.hani-office-actor\{[^}]+\}/g)].map(m=>m[0].replace('z-index:4;',''));
 assert.deepEqual(scale(css),[
- '.hani-office-actor{--actor-height:max(40px,6.8cqw);--sprite-ratio:.75;position:absolute;width:calc(var(--actor-height)*var(--sprite-ratio));height:var(--actor-height);margin:0;transform:translate(-50%,-100%);transition:opacity .3s;pointer-events:none}',
+ '.hani-office-actor{--actor-height:max(40px,6.8cqw);--sprite-ratio:.75;position:absolute;width:calc(var(--actor-height)*var(--sprite-ratio));height:var(--actor-height);margin:0;margin-left:calc(var(--actor-height)*var(--sprite-ratio)*var(--actor-pivot-x,-.5));margin-top:calc(var(--actor-height)*var(--actor-pivot-y,-1));transition:opacity .3s;pointer-events:none}',
  '.hani-office-actor{transition:none}',
  '.hani-office-actor{transition:none}'
 ],'reviewed 224 HD actor proportions and reduced-motion/pause rules');
