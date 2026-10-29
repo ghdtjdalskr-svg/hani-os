@@ -1808,3 +1808,73 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
  #app .task-input{grid-template-columns:minmax(0,1fr)}
  #app .main{padding-bottom:calc(32px + env(safe-area-inset-bottom));scroll-padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 }
+
+/* Milestones grade UI v3: scoped to the existing archive and canonical hero. */
+#milestones { --ms-ink:var(--text-primary,#292a2d); --ms-note:var(--text-secondary,#62646b); --ms-rule:var(--border-subtle,#dedcd6); --ms-paper:var(--surface-panel,#fffdf8); --ms-serif:Georgia,'Noto Serif KR',Batang,serif; }
+.ms-grade-legendary { --c:#a8823f; --c2:#d9bd7c; --soft:#fbf4e4; --ms-grade-ink:#775b29; --bn:linear-gradient(115deg,#8a6a2f 0%,#b8924a 38%,#e3c88a 62%,#a8823f 100%); }
+.ms-grade-epic { --c:#6a5596; --c2:#a996cf; --soft:#f4f0f9; --ms-grade-ink:#6a5596; --bn:linear-gradient(115deg,#4a3878 0%,#6a5596 50%,#9b86c4 100%); }
+.ms-grade-rare { --c:#3d6690; --c2:#93b1cf; --soft:#eef3f8; --ms-grade-ink:#3d6690; --bn:linear-gradient(115deg,#2c4f74 0%,#3d6690 50%,#7c9fc4 100%); }
+.ms-grade-record { --c:#8a8178; --c2:#c8c0b6; --soft:#f5f2ee; --ms-grade-ink:#6f675f; --bn:linear-gradient(115deg,#6f675f 0%,#8a8178 55%,#b3aaa0 100%); }
+#milestones .ms-tiers { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); margin:18px 0 14px; border:1px solid var(--ms-rule); border-radius:16px; overflow:hidden; }
+#milestones .ms-tier { position:relative; display:flex; align-items:center; gap:10px; padding:14px 16px; min-height:76px; border:0; border-right:1px solid var(--ms-rule); background:linear-gradient(115deg,var(--soft),var(--ms-paper)); color:var(--ms-grade-ink); text-align:left; cursor:pointer; }
+#milestones .ms-tier::before { content:''; position:absolute; inset:0 auto 0 0; width:4px; background:var(--bn); }
+#milestones .ms-tier::after { content:''; position:absolute; inset:auto 16px 0; height:3px; background:var(--ms-grade-ink); opacity:0; }
+#milestones .ms-tier[aria-pressed="true"]::after { opacity:1; }
+#milestones .ms-tier:focus-visible { outline:3px solid var(--ms-ink); outline-offset:-4px; }
+#milestones .ms-tier b { display:block; font:600 14px var(--ms-serif); letter-spacing:1px; }
+#milestones .ms-tier small { display:block; margin-top:4px; color:var(--ms-note); font-size:11px; line-height:1.5; }
+#milestones .ms-tier em { margin-left:auto; font:italic 600 22px var(--ms-serif); }
+#milestones .ms-timeline { padding-left:0; border-left:0; gap:16px; }
+#milestones .ms-year { display:flex; gap:12px; align-items:center; margin:6px 0 0; padding:0; font-style:italic; }
+#milestones .ms-year::after { content:''; flex:1; height:1px; background:var(--ms-rule); }
+#milestones .ms-year::before,#milestones .ms-item::before { display:none; }
+#milestones .ms-item .ms-card { position:relative; overflow:hidden; padding:0; border:1px solid var(--ms-rule); border-radius:18px; background:var(--ms-paper); box-shadow:none; }
+#milestones .ms-item .ms-card.ms-grade-legendary { border-color:var(--c2); background:radial-gradient(120% 80% at 100% 0%,color-mix(in srgb,var(--c2) 16%,transparent),transparent 55%),var(--ms-paper); box-shadow:0 14px 36px #a8823f24; }
+#milestones .ms-card.ms-grade-legendary::after { content:''; position:absolute; inset:6px; border:1px solid color-mix(in srgb,var(--c2) 35%,transparent); border-radius:13px; pointer-events:none; }
+#milestones .ms-grade-banner { display:flex; align-items:center; gap:12px; padding:14px 22px; color:#fff; background:linear-gradient(#0008,#0008),var(--bn); }
+#milestones .ms-grade-legendary .ms-grade-banner { background:linear-gradient(#0008,#0008),linear-gradient(105deg,transparent 30%,#ffffff28 45%,transparent 60%),var(--bn); }
+#milestones .ms-seal { width:30px; height:30px; flex:0 0 30px; color:#fff; }
+#milestones .ms-grade-caption b { display:block; font:600 13px var(--ms-serif); letter-spacing:3px; }
+#milestones .ms-grade-caption span { display:block; font-size:11.5px; margin-top:4px; line-height:1.5; }
+#milestones .ms-banner-date { flex:0 0 auto; margin-left:auto; text-align:right; }
+#milestones .ms-banner-date small { display:block; font-size:10px; letter-spacing:1.5px; margin-bottom:4px; }
+#milestones .ms-banner-date time { color:#fff; font:13px var(--ms-serif); white-space:nowrap; }
+#milestones .ms-card-body { padding:16px 22px 18px; }
+#milestones .ms-item .ms-card h3 { font:600 clamp(21px,2.2vw,25px)/1.35 var(--ms-serif); margin:0 0 5px; }
+#milestones .ms-category { margin:0 0 14px; font:13px var(--ms-serif); color:var(--ms-note); }
+#milestones .ms-highlight { display:flex; flex-wrap:wrap; gap:14px; align-items:flex-end; margin:14px 0 12px; padding:14px 0; border-block:1px solid var(--ms-rule); }
+#milestones .ms-highlight-label { display:block; font-size:12px; color:var(--ms-note); margin-bottom:6px; }
+#milestones .ms-values { font:600 clamp(26px,3vw,34px)/1.25 var(--ms-serif); overflow-wrap:anywhere; }
+#milestones .ms-values strong { font-weight:600; }
+#milestones .ms-old { font-size:.65em; font-weight:400; color:var(--ms-note); }
+#milestones .ms-delta { padding:5px 14px; border:1px solid var(--c2); border-radius:99px; background:var(--soft); color:var(--ms-grade-ink); font:italic 600 17px var(--ms-serif); overflow-wrap:anywhere; }
+#milestones .ms-metric-list { gap:0; grid-template-columns:repeat(auto-fit,minmax(min(150px,100%),1fr)); border:1px solid var(--ms-rule); border-radius:12px; overflow:hidden; }
+#milestones .ms-metric-list li { padding:10px 12px; border:0; box-shadow:1px 1px var(--ms-rule); }
+#milestones .ms-metric-list b { font:600 17px/1.5 var(--ms-serif); }
+#milestones .ms-metric-list small { color:var(--ms-grade-ink); }
+#milestones .ms-card .ms-quote { padding-left:12px; border-left:2px solid var(--c2); font-style:italic; }
+#milestones .ms-card footer .btn { color:var(--ms-grade-ink); background:transparent; border:0; border-bottom:1px solid var(--c2); border-radius:0; font-weight:700; }
+:root[data-finish="midnight-black"] #milestones :is(.ms-card,.ms-tier) { --soft:color-mix(in srgb,var(--c) 16%,#15171c); --ms-grade-ink:var(--c2); }
+#app #milestones > .ds-main-character-banner { --mcb-bg:#fbf6ee; --mcb-ink:#2b2630; --mcb-muted:#625968; --mcb-accent:#775b29; --mcb-overlay:linear-gradient(95deg,#fbf6ee 0%,#fbf6eef0 32%,#fbf6ee00 72%); --mcb-overlay-mobile:linear-gradient(90deg,#fbf6eefc 0%,#fbf6eef2 65%,#fbf6ee90); }
+:root[data-finish="midnight-black"] #app #milestones > .ds-main-character-banner { --mcb-bg:#15171c; --mcb-ink:#f5f2ed; --mcb-muted:#cbc6be; --mcb-accent:#d9bd7c; --mcb-overlay:linear-gradient(95deg,#15171c 0%,#15171cf5 38%,#15171c00 80%); --mcb-overlay-mobile:linear-gradient(90deg,#15171cfc 0%,#15171cf5 65%,#15171cb8); }
+@media(max-width:640px) {
+ #milestones .ms-tiers { grid-template-columns:repeat(2,minmax(0,1fr)); }
+ #milestones .ms-tier { padding:12px; border-bottom:1px solid var(--ms-rule); }
+ #milestones .ms-tier small { font-size:10px; }
+ #milestones .ms-grade-banner { padding:12px 16px; gap:8px; flex-wrap:wrap; }
+ #milestones .ms-grade-caption { flex:1 1 130px; }
+ #milestones .ms-grade-caption b { letter-spacing:2px; }
+ #milestones .ms-grade-caption span { font-size:10.5px; }
+ #milestones .ms-banner-date { margin-left:auto; }
+ #milestones .ms-card-body { padding:16px; }
+ #milestones .ms-card footer { flex-direction:row; align-items:center; }
+ #milestones .ms-card footer .btn { width:auto; margin-left:auto; }
+}
+/* Milestone grade banners (대표님 10/29): Legendary is bright champagne gold with dark ink; other grades stay deep enough for white text (AA) without a muddy black wash. */
+#milestones .ms-grade-banner { background:var(--bn); }
+#milestones .ms-grade-epic { --bn:linear-gradient(115deg,#3f2f6a 0%,#5a4687 55%,#6f5b9e 100%); }
+#milestones .ms-grade-rare { --bn:linear-gradient(115deg,#24456a 0%,#345c86 55%,#456e98 100%); }
+#milestones .ms-grade-record, #milestones .ms-grade-none { --bn:linear-gradient(115deg,#57504a 0%,#6a625a 55%,#776e65 100%); }
+#milestones .ms-grade-legendary .ms-grade-banner { color:#3a2a0e; background:linear-gradient(105deg,transparent 28%,#ffffff6b 44%,transparent 60%),linear-gradient(115deg,#d9bb74 0%,#f1dfae 42%,#fbf1d4 58%,#d6b466 100%); }
+#milestones .ms-grade-legendary .ms-grade-banner :is(b,strong,span,small,time,h4,p) { color:#3a2a0e !important; }
+#milestones .ms-grade-legendary .ms-grade-banner svg { color:#5a4216; }
