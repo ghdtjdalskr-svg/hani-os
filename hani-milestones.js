@@ -121,7 +121,16 @@
     if (sort === 'category') return rows.sort((a, b) => order(a) - order(b) || byNew(a, b));
     return rows.sort(byNew);
   }
-  const filtered = (list, category = 'ALL') => category === 'ALL' ? list : list.filter(m => m.category === category);
+  const gradeKey = m => has(GRADES, m.grade) ? m.grade : 'RECORD';
+  const gradeInfo = key => find(GRADES, key) || {id:'RECORD',label:'Record',note:'등급 없이 남긴 기록'};
+  const GRADE_ORDER = ['LEGENDARY','EPIC','RARE','RECORD'];
+  const filtered = (list, category = 'ALL', grade = 'ALL') => list.filter(m => (category === 'ALL' || m.category === category) && (grade === 'ALL' || gradeKey(m) === grade));
+  function gradeFilters(items, {category = 'ALL', grade = 'ALL'} = {}) {
+    return GRADE_ORDER.map(key => {
+      const info = gradeInfo(key), count = filtered(items, category, key).length;
+      return '<button type="button" class="ms-tier ms-grade-' + key.toLowerCase() + '" data-ms-grade="' + key + '" aria-pressed="' + (grade === key) + '"><span><b>' + esc(info.label) + '</b><small>' + esc(info.note) + '</small></span><em>' + count + '<span class="ms-sr">개</span></em></button>';
+    }).join('');
+  }
   // Dashboard projection: the newest HISTORIC record, else the newest MAJOR one.
   function homePick(list) {
     for (const level of ['HISTORIC','MAJOR']) {
@@ -168,20 +177,27 @@
       (grade ? '<span class="ms-grade" title="' + esc(grade.ko + ' · ' + grade.note) + '">' + esc(grade.label) + '</span>' : '') + '</p>';
   };
   const agentLine = m => m.agents.length ? '<p class="ms-agents">' + m.agents.map(id => avatar(id) + '<span>' + esc(agentName(id)) + '</span>').join('') + '</p>' : '';
+  // Exact motif bodies from the approved design, inline to avoid repeated symbol ids.
+  const SEALS = {"LEGENDARY":"<circle cx=\"24\" cy=\"24\" r=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1\"/><circle cx=\"24\" cy=\"24\" r=\"18.5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\".6\" stroke-dasharray=\"1.2 2\"/><path d=\"M24 12l2.6 7.2 7.6.3-6 4.7 2.1 7.3L24 27.3l-6.3 4.2 2.1-7.3-6-4.7 7.6-.3z\" fill=\"currentColor\" opacity=\".9\"/>","EPIC":"<circle cx=\"24\" cy=\"24\" r=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1\"/><path d=\"M24 13l9 11-9 11-9-11z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"/><path d=\"M24 17.5l5.3 6.5L24 30.5 18.7 24z\" fill=\"currentColor\" opacity=\".85\"/>","RARE":"<circle cx=\"24\" cy=\"24\" r=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1\"/><circle cx=\"24\" cy=\"24\" r=\"7\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"/><circle cx=\"24\" cy=\"24\" r=\"3\" fill=\"currentColor\"/>","RECORD":"<circle cx=\"24\" cy=\"24\" r=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1\"/><path d=\"M17 24h14\" stroke=\"currentColor\" stroke-width=\"1.4\"/>"};
+  const seal = key => '<svg class="ms-seal" data-ms-seal="' + key + '" viewBox="0 0 48 48" aria-hidden="true" focusable="false">' + SEALS[key] + '</svg>';
   function card(m) {
-    const metrics = featured(m);
-    return '<li class="ms-item" data-importance="' + esc(m.importance) + '" data-category="' + esc(m.category) + '"><article class="ms-card" aria-labelledby="ms-title-' + esc(m.id) + '">' +
-      '<time datetime="' + esc(m.date) + '">' + esc(dateLabel(m.date)) + '</time>' + kicker(m) +
-      '<h3 id="ms-title-' + esc(m.id) + '">' + esc(m.title) + '</h3>' +
-      (metrics.length ? '<ul class="ms-metric-list">' + metrics.map(x => '<li><span>' + esc(x.label) + '</span><b>' + esc(metricLine(x)) + '</b>' + (x.change ? '<small>' + esc(x.change) + '</small>' : '') + '</li>').join('') + '</ul>' : '') +
+    const key = gradeKey(m), grade = gradeInfo(key);
+    const metrics = Array.isArray(m.featuredMetrics) ? m.featuredMetrics.map(id => find(m.metrics, id)).filter(Boolean) : [];
+    const primary = metrics[0];
+    const highlight = primary ? '<div class="ms-highlight"><div><span class="ms-highlight-label">' + esc(primary.label) + '</span><div class="ms-values" aria-label="' + esc(primary.before && primary.change ? metricLine(primary) : primary.after) + '">' +
+      (primary.before && primary.change ? '<span class="ms-old">' + esc(primary.before) + ' → </span>' : '') + '<strong>' + esc(primary.after) + '</strong></div></div>' +
+      (primary.before && primary.change ? '<span class="ms-delta">' + esc(primary.change) + '</span>' : '') + '</div>' : '';
+    return '<li class="ms-item" data-importance="' + esc(m.importance) + '" data-category="' + esc(m.category) + '"><article class="ms-card ms-grade-' + key.toLowerCase() + '" aria-label="' + esc(m.title) + '">' +
+      '<header class="ms-grade-banner">' + seal(key) + '<div class="ms-grade-caption"><b>' + esc(grade.label) + '</b><span>' + esc(grade.note) + '</span></div><div class="ms-banner-date"><small>' + esc(label(IMPORTANCE, m.importance)) + '</small><time datetime="' + esc(m.date) + '">' + esc(dateLabel(m.date)) + '</time></div></header>' +
+      '<div class="ms-card-body"><h3>' + esc(m.title) + '</h3><p class="ms-category">' + esc(label(CATEGORIES, m.category)) + ' · ' + esc(m.category) + '</p>' + highlight +
+      (metrics.length > 1 ? '<ul class="ms-metric-list">' + metrics.slice(1).map(x => '<li><span>' + esc(x.label) + '</span><b>' + esc(metricLine(x)) + '</b>' + (x.change ? '<small>' + esc(x.change) + '</small>' : '') + '</li>').join('') + '</ul>' : '') +
       '<blockquote class="ms-quote">“' + esc(m.summary) + '”</blockquote>' +
-      '<footer>' + agentLine(m) + '<button type="button" class="btn" data-ms-open="' + esc(m.id) + '">상세 기록 보기</button></footer>' +
-      '</article></li>';
+      '<footer>' + agentLine(m) + '<button type="button" class="btn" data-ms-open="' + esc(m.id) + '">상세 기록 보기 →</button></footer></div></article></li>';
   }
-  function list(items, {category = 'ALL', sort = 'newest'} = {}) {
-    const rows = sorted(filtered(items, category), sort);
+  function list(items, {category = 'ALL', grade = 'ALL', sort = 'newest'} = {}) {
+    const rows = sorted(filtered(items, category, grade), sort);
     if (!items.length) return '<li class="ms-empty"><p>아직 남긴 마일스톤이 없어요.</p><p>오래 기억하고 싶은 변화가 생기면, 그때 천천히 남겨보세요.</p></li>';
-    if (!rows.length) return '<li class="ms-empty"><p>' + esc(label(CATEGORIES, category)) + ' 분야의 마일스톤은 아직 없어요.</p></li>';
+    if (!rows.length) return '<li class="ms-empty"><p>' + esc(category === 'ALL' ? '선택한 등급의' : label(CATEGORIES, category) + ' 분야의') + ' 마일스톤은 아직 없어요.</p></li>';
     const timeline = sort === 'newest' || sort === 'oldest';
     let year = '';
     return rows.map(m => {
@@ -342,7 +358,7 @@
   }
 
   // ---- Runtime (persistent slots in #milestones; one delegated handler) ----
-  const ui = {category:'ALL', sort:'newest', detail:null, editing:null, returnFocus:null};
+  const ui = {category:'ALL', grade:'ALL', sort:'newest', detail:null, editing:null, returnFocus:null};
   const items = () => merged().items;
   const root = () => typeof document === 'undefined' ? null : document.getElementById(VIEW);
   const slot = name => root()?.querySelector('[data-ms-' + name + ']');
@@ -355,6 +371,15 @@
     filters?.querySelectorAll('[data-ms-filter]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.msFilter === ui.category)));
     if (sort && !sort.options.length) sort.innerHTML = SORTS.map(s => option(s.id, s.label, s.id === ui.sort)).join('');
     const view = merged();
+    const grades = slot('grades');
+    if (grades) {
+      if (!grades.childElementCount) grades.innerHTML = gradeFilters(view.items, ui);
+      grades.querySelectorAll('[data-ms-grade]').forEach(button => {
+        const key = button.dataset.msGrade;
+        button.setAttribute('aria-pressed', String(key === ui.grade));
+        button.querySelector('em').innerHTML = filtered(view.items, ui.category, key).length + '<span class="ms-sr">개</span>';
+      });
+    }
     host.innerHTML = list(view.items, ui) + (view.hidden ? '<li class="ms-empty"><p>형식을 확인할 수 없는 마일스톤 ' + view.hidden + '개는 원본 그대로 보관하고 목록에서만 숨겼어요.</p></li>' : '');
     bindAvatars(host);
   }
@@ -445,7 +470,7 @@
   }
   function enter() { if (!ui.detail && !ui.editing) { show('list'); renderList(); } }
   const seedErrors = SEED.flatMap((m, i) => validate(m, {ids:SEED.slice(0, i).map(x => x.id)}).map(e => m.id + ': ' + e));
-  window.HaniMilestones = Object.freeze({enter, refresh, homeCard, validate, sorted, filtered, homePick, featured, compactMetric, nextId, list, card, detail, homeCardMarkup, readForm, merged, writeBlockReason, persist,
+  window.HaniMilestones = Object.freeze({enter, refresh, homeCard, validate, sorted, filtered, gradeFilters, homePick, featured, compactMetric, nextId, list, card, detail, homeCardMarkup, readForm, merged, writeBlockReason, persist,
     CATEGORIES, IMPORTANCE, GRADES, SORTS, SEED, seedErrors});
   if (typeof document === 'undefined') return;
   function start() {
@@ -458,6 +483,8 @@
     host.dataset.msMounted = 'true';
     host.addEventListener('click', event => {
       const t = event.target;
+      const grade = t.closest('[data-ms-grade]');
+      if (grade) { ui.grade = ui.grade === grade.dataset.msGrade ? 'ALL' : grade.dataset.msGrade; renderList(); return; }
       const filter = t.closest('[data-ms-filter]');
       if (filter) { ui.category = filter.dataset.msFilter; renderList(); return; }
       const open = t.closest('[data-ms-open]');

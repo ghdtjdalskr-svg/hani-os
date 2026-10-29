@@ -93,9 +93,10 @@ check('sorting, filtering and dashboard pick', () => {
   assert.equal(api.homePick([a, b]).id, 'milestone_a', 'falls back to MAJOR');
   assert.equal(api.homePick([b]), null, 'NORMAL alone does not take the dashboard');
 });
-check('card shows 2-4 featured metrics; detail shows all; HTML escaped', () => {
+check('card highlights first featured metric and lists the rest; detail shows all; HTML escaped', () => {
   const card = api.card(seed);
-  assert.equal((card.match(/<li><span>/g) || []).length, 4);
+  assert.equal((card.match(/<li><span>/g) || []).length, 3);
+  assert.match(card, /class="ms-highlight"[\s\S]*122\.8kg[\s\S]*95\.62kg/);
   assert.match(card, /122\.8kg → 95\.62kg/); assert.match(card, /HISTORIC/); assert.match(card, /LEGENDARY/);
   assert.doesNotMatch(card, /감마GTP/);
   const detail = api.detail(seed);
@@ -133,7 +134,8 @@ check('protected baseline untouched and wiring stays minimal', () => {
   assert.equal((html.match(/id="milestones"/g) || []).length, 1);
   const ui = read('hani-ui-v02992.js');
   assert.match(ui, /milestones: entry\("hani"/, 'canonical tab voice');
-  assert.match(ui, /"milestones":Object\.freeze\(\{[\s\S]*?title:"삶에 남은 변화들"[\s\S]*?sceneImage: "\.\/assets\/heroes\/organization-226w\.webp"/, 'canonical banner reuses an existing scene');
+  assert.match(ui, /"milestones":Object\.freeze\(\{[\s\S]*?title:"삶에 남은 변화들"[\s\S]*?sceneImage: MILESTONES_HERO_IMAGE/, 'canonical banner uses the milestone art constant');
+  assert.match(ui, /const MILESTONES_HERO_IMAGE = "\.\/assets\/heroes\/milestones-226w-a[23]?\.webp"/);
   assert.ok(html.indexOf('data-view="milestones"') > html.indexOf('data-view="home"') && html.indexOf('data-view="milestones"') < html.indexOf('office-main-nav'), 'directly below dashboard');
   // One new runtime file only (release closure limit 128): styles live at the end of the design system.
   assert.ok(/<script src="\.\/hani-milestones\.js\?v=[\d.]+"><\/script>/.test(html) && !html.includes('hani-milestones.css'));
