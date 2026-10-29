@@ -66,7 +66,8 @@ const scale=s=>[...s.matchAll(/\.hani-office-actor\{[^}]+\}/g)].map(m=>m[0].repl
 assert.deepEqual(scale(css),[
  '.hani-office-actor{--actor-height:max(40px,6.8cqw);--sprite-ratio:.75;position:absolute;width:calc(var(--actor-height)*var(--sprite-ratio));height:var(--actor-height);margin:0;margin-left:calc(var(--actor-height)*var(--sprite-ratio)*var(--actor-pivot-x,-.5));margin-top:calc(var(--actor-height)*var(--actor-pivot-y,-1));transition:opacity .3s;pointer-events:none}',
  '.hani-office-actor{transition:none}',
- '.hani-office-actor{transition:none}'
+ '.hani-office-actor{transition:none}',
+ '.hani-office-actor{--actor-height:20px}'
 ],'reviewed 224 HD actor proportions and reduced-motion/pause rules');
 report.static.push('217 home foot pivots, atlas metadata and pose/pivot unchanged; exact reviewed 224 HD actor CSS');
 assert.doesNotMatch(read('hani-office-live.css'),/\.hani-office-status\{display:none\}/);
@@ -243,7 +244,7 @@ try{
      const original=sizes.get(`${width}:${a.id}`);assert.ok(original,'217 daytime reference for '+a.id);
      // 224 deliberately replaced 217's squashed scale with a 40px floor and
      // 6.8cqw height. Keep a measured geometry guard against that reviewed rule.
-     const expectedHeight=Math.max(40,(check.box.width-2)*.068);
+     const expectedHeight=width<=600?20:Math.max(40,(check.box.width-2)*.068);
      const entry=assets.sprites.entries.find(entry=>entry.id===a.id);
      assert.ok(entry,'canonical sprite metadata for '+a.id);
      assert.ok(Math.abs(a.sprite.height-expectedHeight)<=1,`${a.id} reviewed 224 responsive height`);

@@ -1447,17 +1447,25 @@
     if(data.walking==='true'||data.plain==='false'||data.called==='true'||data.activity==='meeting')return 2;
     return 1;
   }
+  function phoneStatusLine(line){
+    const short=scheduler?.shortLine(line,8)||line;
+    if(/좋아요/.test(short))return '좋아요';
+    if(/보고/.test(short))return short.replace(/^회장님께 /,'').replace(/ 중$/,'').replace(/\s/g,'');
+    const words=[[/인사/,'인사'],[/이동|가는|복귀/,'이동'],[/커피/,'커피'],[/대기|차례/,'대기'],[/검증|테스트|결과/,'검증'],[/설계|검토/,'검토'],[/코드|버그|수정/,'수정'],[/문장|콘텐츠/,'집필'],[/수치|분석/,'분석'],[/조율|일정/,'조율'],[/정리|기록|자료|메모/,'정리'],[/대화|이야기|수다/,'대화'],[/휴식|쉬는|풍경/,'휴식'],[/확인|점검|흐름|예산|비용/,'확인']];
+    return words.find(([pattern])=>pattern.test(short))?.[1]||'업무';
+  }
   function placeStatusLabels(floor,groups,obstacles=[]){
-    const gap=2,ordered=groups.slice().sort((a,b)=>b.priority-a.priority||a.id.localeCompare(b.id));
+    const gap=groups.some(g=>g.compact)?.5:2,ordered=groups.slice().sort((a,b)=>b.priority-a.priority||a.id.localeCompare(b.id));
     // Every sprite (including one's own face) is reserved before any label.
     // Actual sprite bounds include the partner turn; reserve idle motion too.
-    const sprites=groups.map(g=>{const r=g.sprite?.width?g.sprite:g.actor,pad=Math.max(2,r.height*.02);return {left:r.left-pad,right:r.right+pad,top:r.top-pad,bottom:r.bottom+pad}});
+    const sprites=groups.map(g=>{const r=g.sprite?.width?g.sprite:g.actor,pad=Math.max(g.compact?1:2,r.height*.02);return {left:r.left-pad,right:r.right+pad,top:r.top-pad,bottom:r.bottom+pad}});
     // Floating-point edge arithmetic must not reject an exactly 2px gap.
     const overlaps=(a,b)=>a.left<b.right+gap-1e-7&&a.right+gap>b.left+1e-7&&a.top<b.bottom+gap-1e-7&&a.bottom+gap>b.top+1e-7;
     let best=null,bestScore=null;
     const fixed=[...obstacles,...sprites],pools=new Map(ordered.map(g=>[g.id,new Map()]));
-    const compare=(a,b)=>{for(let i=0;i<4;i++)if(a[i]!==b[i])return b[i]-a[i];return 0};
-    const positions=(g,b)=>{const d=floor.width<=600?0:gap;return b.inline?{name:{left:b.left,top:b.top},status:{left:b.left+g.name.width+d,top:b.top}}:{name:{left:b.left+(b.width-g.name.width)/2,top:b.top+g.status.height+d},status:{left:b.left+(b.width-g.status.width)/2,top:b.top}}};
+    const phone=groups.some(g=>g.compact),value=s=>phone?[s[0],s[0]+s[1]+s[2],s[1],s[3]]:s;
+    const compare=(a,b)=>{a=value(a);b=value(b);for(let i=0;i<4;i++)if(a[i]!==b[i])return b[i]-a[i];return 0};
+    const positions=(g,b)=>{if(g.compact)return {name:{left:b.left,top:b.top},status:null};const d=floor.width<=600?0:gap;return b.inline?{name:{left:b.left,top:b.top},status:{left:b.left+g.name.width+d,top:b.top}}:{name:{left:b.left+(b.width-g.name.width)/2,top:b.top+g.status.height+d},status:{left:b.left+(b.width-g.status.width)/2,top:b.top}}};
     // Repacking may change priority order within nearby lanes, never send a
     // person's labels to a distant desk just to raise the visible count.
     for(let mode=0;mode<9;mode++){
@@ -1466,12 +1474,14 @@
     for(const g of order){
       let chosen=null,rank=Infinity;
       const joinGap=floor.width<=600?0:gap;
-      for(const inline of [false,true]){
-      const width=inline?g.name.width+joinGap+g.status.width:Math.max(g.name.width,g.status.width),height=inline?Math.max(g.name.height,g.status.height):g.name.height+joinGap+g.status.height;
+      for(const inline of (g.compact?[false]:[false,true])){
+      const width=g.compact?g.name.width:inline?g.name.width+joinGap+g.status.width:Math.max(g.name.width,g.status.width),height=g.compact?g.name.height:inline?Math.max(g.name.height,g.status.height):g.name.height+joinGap+g.status.height;
+      const head=g.sprite?.width?g.sprite:g.actor,headX=(head.left+head.right)/2;
       const left=Math.max(floor.left+gap,Math.min(g.actor.left+g.actor.width/2-width/2,floor.right-gap-width));
       const top=g.actor.top-gap-height,candidates=[];
       const reachX=Math.max(g.actor.width*1.5,floor.width<=600?96:100),reachY=Math.max(g.actor.height*2,64);
       const add=(x,y)=>{x=Math.max(floor.left+gap,Math.min(x,floor.right-gap-width));y=Math.max(floor.top+gap,Math.min(y,floor.bottom-gap-height));
+        if(g.compact&&Math.hypot(x+width/2-headX,y+height/2-head.top)>27.5+1e-7)return;
         if(Math.abs(x+width/2-(g.actor.left+g.actor.width/2))>reachX||y+height<g.actor.top-reachY||y>g.actor.bottom+reachY)return;
         const below=Math.max(0,y+height-g.actor.top);candidates.push({left:x,right:x+width,top:y,bottom:y+height,width,height,inline,cost:(x-left)**2+(y-top)**2+below*below*2+(inline?400:0)})};
       // Above/below and either side keep each person's two labels together.
@@ -1481,8 +1491,9 @@
       // Crowded floors: search horizontal lanes as well as vertical lanes.
       // Boundaries are candidates too, so narrow maps lose no edge space.
       const xs=[floor.right-gap-width,left],ys=[floor.bottom-gap-height,Math.max(floor.top+gap,top)];
-      for(let x=floor.left+gap;x<=floor.right-gap-width;x+=width+gap)xs.push(x);
-      for(let y=floor.top+gap;y<=floor.bottom-gap-height;y+=height+gap)ys.push(y);
+      if(g.compact){for(let delta=-28;delta<=28;delta+=4){xs.push(headX-width/2+delta);ys.push(head.top-height/2+delta)}}
+      else{for(let x=floor.left+gap;x<=floor.right-gap-width;x+=width+gap)xs.push(x);
+      for(let y=floor.top+gap;y<=floor.bottom-gap-height;y+=height+gap)ys.push(y);}
       // Fit around irregular mascot/label edges instead of wasting a whole grid cell.
       for(const r of reserved){xs.push(r.right+gap,r.left-gap-width);ys.push(r.bottom+gap,r.top-gap-height)}
       for(const x of new Set(xs))for(const y of new Set(ys))add(x,y);
@@ -1493,7 +1504,7 @@
       if(chosen){score[3-g.priority]++;score[3]-=chosen.cost;reserved.push(chosen);result.set(g.id,positions(g,chosen))}
       else result.set(g.id,null);
     }
-    const better=!bestScore||score.some((v,i)=>v!==bestScore[i]&&score.slice(0,i).every((q,j)=>q===bestScore[j])&&v>bestScore[i]);
+    const better=!bestScore||compare(score,bestScore)<0;
     if(better){best=result;bestScore=score}
     if(score[0]+score[1]+score[2]===groups.length)break;
     }
@@ -1509,9 +1520,19 @@
           for(const axis of ['left','top']){const sorted=legal.slice().sort((a,b)=>a[axis]-b[axis]);for(const b of [...sorted.slice(0,2),...sorted.slice(-2)])options.add(b)}
           for(const b of [null,...options]){const score=state.score.slice(),result=new Map(state.result);result.set(g.id,b?positions(g,b):null);if(b){score[3-g.priority]++;score[3]-=b.cost}next.push({boxes:b?[...state.boxes,b]:state.boxes,result,score})}
         }
-        next.sort((a,b)=>compare(a.score,b.score));beam=next.slice(0,32);
+        next.sort((a,b)=>compare(a.score,b.score));beam=next.slice(0,phone?64:32);
       }
       if(beam.length&&compare(beam[0].score,bestScore)<0)best=beam[0].result;
+    }
+    // A suppressed phone pill keeps the existing name slot as a tiny status dot.
+    // Dots use the same head radius and never displace a conversation label.
+    const occupied=[...fixed];
+    for(const g of ordered){const p=best.get(g.id);if(!p)continue;if(g.compact)occupied.push({left:p.name.left,right:p.name.left+g.name.width,top:p.name.top,bottom:p.name.top+g.name.height})}
+    for(const g of ordered.filter(g=>g.compact&&!best.get(g.id))){
+      const head=g.sprite?.width?g.sprite:g.actor,x=(head.left+head.right)/2,candidates=[];
+      for(let dx=-27;dx<=27;dx+=3)for(let dy=-27;dy<=27;dy+=3){if(Math.hypot(dx,dy)>27.5)continue;const b={left:x+dx-2.5,right:x+dx+2.5,top:head.top+dy-2.5,bottom:head.top+dy+2.5,cost:dx*dx+dy*dy};if(b.left>=floor.left+gap&&b.right<=floor.right-gap&&b.top>=floor.top+gap&&b.bottom<=floor.bottom-gap&&!occupied.some(r=>overlaps(b,r)))candidates.push(b)}
+      candidates.sort((a,b)=>a.cost-b.cost||a.top-b.top||a.left-b.left);const dot=candidates[0];
+      if(dot){best.set(g.id,{name:{left:dot.left,top:dot.top},status:null,dot:true});occupied.push(dot)}
     }
     return best;
   }
@@ -1544,7 +1565,7 @@
       return present?{chairmanPresent:true,chairmanSince,chairmanArrivalAt}:{chairmanPresent:false};
     }};
   }
-  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,labels:Object.freeze({priority:statusLabelPriority,place:placeStatusLabels}),places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines})});
+  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,labels:Object.freeze({priority:statusLabelPriority,place:placeStatusLabels,short:phoneStatusLine}),places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines})});
 })();
 /* Read-only Living Office. The Agent Case renderer remains the sole owner of requests, answers and decisions. */
 (() => {
@@ -1608,20 +1629,24 @@
   // Name and status travel together; actor coordinates and foot pivots never move.
   function fitStatusLabels(){
     const floor=map.getBoundingClientRect?.();if(!floor?.width)return;
-    const visible=[...actors.values()].filter(a=>!a.hidden),compact=floor.width<=600;
+    const visible=[...actors.values()].filter(a=>!a.hidden),compact=matchMedia('(max-width:600px)').matches;
     const rows=visible.map(actor=>({actor,name:actor.querySelector('.hani-office-name'),status:actor.querySelector('.hani-office-status')}));
     for(const {actor,name,status}of rows){
       statusDot(actor);
+      actor.dataset.labelMode=compact?'pill':'separate';
+      actor.officeCompact.textContent=compact?'·'+HaniBuildingScene.labels.short(status.dataset.full):'';
+      name.title=actor.dataset.name+' · '+status.dataset.full;name.setAttribute('aria-label',name.title);
       for(const [kind,node]of [['name',name],['status',status]]){node.style.setProperty('--'+kind+'-x','0px');node.style.setProperty('--'+kind+'-y','0px');node.style.visibility='';node.hidden=false;}
-      status.textContent=compact?(HaniBuildingScene.scheduler?.shortLine(status.dataset.full,8)||status.dataset.full):status.dataset.full;
+      status.textContent=status.dataset.full;status.hidden=compact;
     }
-    const groups=rows.map(({actor,name,status})=>({id:actor.dataset.person,priority:HaniBuildingScene.labels.priority(actor.dataset),actor:actor.getBoundingClientRect(),sprite:actor.querySelector('.hani-office-sprite').getBoundingClientRect(),name:name.getBoundingClientRect(),status:status.getBoundingClientRect()}));
+    const groups=rows.map(({actor,name,status})=>({id:actor.dataset.person,compact,priority:HaniBuildingScene.labels.priority(actor.dataset),actor:actor.getBoundingClientRect(),sprite:actor.querySelector('.hani-office-sprite').getBoundingClientRect(),name:name.getBoundingClientRect(),status:status.getBoundingClientRect()}));
     // Reserve the separate mascot owner's actual visible sprite boxes.
     const obstacles=[];
     for(const node of root.querySelectorAll('.hani-desk-mascots:not([hidden]) .hani-desk-mascot[data-ready="true"]')){const r=node.getBoundingClientRect();if(r.width&&r.height)obstacles.push(r)}
     const placements=HaniBuildingScene.labels.place(floor,groups,obstacles);
+    for(const {actor}of rows)if(compact)actor.dataset.labelMode=placements.get(actor.dataset.person)?.dot?'dot':'pill';
     for(let i=0;i<rows.length;i++)for(const kind of ['name','status']){
-      const node=rows[i][kind],base=groups[i][kind],p=placements.get(groups[i].id)?.[kind];
+      const node=rows[i][kind],base=compact&&placements.get(groups[i].id)?.dot?node.getBoundingClientRect():groups[i][kind],p=placements.get(groups[i].id)?.[kind];
       node.officeLabelPlacement=p?{dx:p.left-base.left,dy:p.top-base.top}:null;node.style.visibility=p?'':'hidden';
       if(p){node.style.setProperty('--'+kind+'-x',(p.left-base.left)+'px');node.style.setProperty('--'+kind+'-y',(p.top-base.top)+'px')}
     }
@@ -1636,7 +1661,7 @@
     const actor=document.createElement("div");actor.className="hani-office-actor";actor.dataset.person=key;actor.dataset.name=name;actor.dataset.seat=(HaniBuildingScene.homeSeat(key)||buildingChairmanSlot()).id;actor.dataset.spot="seat";
     const sprite=document.createElement('div');sprite.className='hani-office-sprite';sprite.dataset.row=String(row);actor.officeLegacy={group,row};
     const status=document.createElement('span');status.className='hani-office-status';const tag=document.createElement('small');tag.className='hani-office-name';
-    const dot=document.createElement('span'),icon=document.createElement('span'),tagName=document.createElement('span');dot.className='hani-office-status-dot';dot.setAttribute('role','img');icon.className='hani-office-activity-icon';icon.setAttribute('aria-hidden','true');icon.hidden=true;tagName.textContent=name.split(' · ').at(-1);tag.append(dot,icon,tagName);actor.officeName=tagName;
+    const dot=document.createElement('span'),icon=document.createElement('span'),tagName=document.createElement('span'),compactLine=document.createElement('span');dot.className='hani-office-status-dot';dot.setAttribute('role','img');icon.className='hani-office-activity-icon';icon.setAttribute('aria-hidden','true');icon.hidden=true;compactLine.className='hani-office-compact-line';tagName.textContent=name.split(' · ').at(-1);tag.append(dot,icon,tagName,compactLine);actor.officeName=tagName;actor.officeCompact=compactLine;
     const prop=document.createElement('span');prop.className='hani-office-prop';prop.setAttribute('aria-hidden','true');actor.append(sprite,tag,status,prop);actor.setAttribute('role','button');actor.tabIndex=0;actor.dataset.avatar='pending';actorLayer.append(actor);actors.set(key,actor);
     const rhythm=HaniBuildingScene.scheduler?.seed('idle-motion|'+key)||row;actor.style.setProperty('--idle-duration',(3.6+rhythm%29/10)+'s');actor.style.setProperty('--idle-delay',(-rhythm%67/10)+'s');
   }
