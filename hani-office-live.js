@@ -1447,12 +1447,56 @@
     if(data.walking==='true'||data.plain==='false'||data.called==='true'||data.activity==='meeting')return 2;
     return 1;
   }
-  function phoneStatusLine(line){
-    const short=scheduler?.shortLine(line,8)||line;
-    if(/좋아요/.test(short))return '좋아요';
-    if(/보고/.test(short))return short.replace(/^회장님께 /,'').replace(/ 중$/,'').replace(/\s/g,'');
-    const words=[[/인사/,'인사'],[/이동|가는|복귀/,'이동'],[/커피/,'커피'],[/대기|차례/,'대기'],[/검증|테스트|결과/,'검증'],[/설계|검토/,'검토'],[/코드|버그|수정/,'수정'],[/문장|콘텐츠/,'집필'],[/수치|분석/,'분석'],[/조율|일정/,'조율'],[/정리|기록|자료|메모/,'정리'],[/대화|이야기|수다/,'대화'],[/휴식|쉬는|풍경/,'휴식'],[/확인|점검|흐름|예산|비용/,'확인']];
-    return words.find(([pattern])=>pattern.test(short))?.[1]||'업무';
+  // UI-only authored actions: match the full source, never the lossy shortLine.
+  // Lengths include spaces. Names (including the longest guest name) stay whole:
+  // name <=9 + " · " (3) + action <=6 = at most 18 Unicode characters.
+  const phoneActions=[
+    [/회장님께 .*보고/,'회장님보고|보고 드리기|안건 보고'],[/좋아요, 이대로/,'진행 승인|안건 승인|진행 허가'],
+    [/회장님.*인사|회장님.*오셨|회장님.*안녕/,'도착 인사|환영 인사|인사 건네기'],
+    [/돌아가는|복귀|안녕히 계세요/,'자리 복귀|자리로 복귀|복귀 걷기'],
+    [/커피 내리러/,'커피 내리러|커피준비 이동|커피준비하러'],[/커피.*(?:가[는기]|이동)/,'커피 사러감|커피점 이동|커피로 이동'],
+    [/가는 중|이동 중|안내받아 가/,'목적지 이동|걸어서 이동|목적지 걷기'],
+    [/커피.*내리/,'커피 내리기|커피 추출|커피 만들기'],[/커피.*주문/,'커피 주문|커피 고르기|커피 주문중'],
+    [/커피.*(?:마시|모금|한 잔)/,'커피 마시기|커피 한모금|커피 홀짝'],[/커피.*리필/,'리필 고민|커피 더고민|리필 고르기'],
+    [/택배.*(?:두고|왔|전달)/,'택배 전달|택배 놓기|택배 내려둠'],[/배달.*왔/,'음식 배달|배달 전달|음식 전달'],
+    [/면접.*대기/,'면접 대기|면접 기다림|면접 준비'],[/상담.*받/,'상담 받기|상담 듣기|상담 참여'],
+    [/보고.*기다/,'보고 기다림|보고 대기|보고 준비'],[/기다리|대기|기다리는/,'차례 기다림|순서 기다림|차례 대기'],
+    [/퀴즈/,'퀴즈 풀기|퀴즈 풀이|문제 풀기|퀴즈 도전|문제 풀이|정답 찾기|퀴즈 맞히기|퀴즈 연습'],
+    [/창밖|풍경|별빛|별 보는/,'창밖 구경|풍경 감상|창밖 바라봄|풍경 바라봄'],
+    [/보고서/,'보고서 작성|보고서 정리|보고서 쓰기'],[/예산|비용|지출|금액/,'예산 검산|비용 계산|예산 점검|지출 검산'],
+    [/기사.*구상|콘텐츠.*구상|콘텐츠.*제목/,'기사 구상|기사 밑그림|제목 구상'],[/기획.*정리|기획.*범위/,'기획안 정리|기획 정리|기획 다듬기'],
+    [/요청.*분류/,'요청 분류|요청 나누기|요청 구분'],[/일정.*조율/,'일정 조율|일정 맞추기|일정 조정'],
+    [/설계.*검토|설계.*영향/,'설계 검토|설계 살피기|설계 대조'],[/코드.*수정|버그.*끝내|오타.*고치/,'코드 수정|버그 수정|코드 고치기'],
+    [/수치.*분석/,'수치 분석|숫자 분석|수치 읽기'],[/품질.*점검|예외|엣지 케이스/,'품질 점검|예외 찾기|품질 검사'],
+    [/화면.*검토|작은 화면/,'화면 검토|화면 살피기|화면 점검'],[/검증.*기록/,'검증 기록|검증 적기|결과 기록'],
+    [/자료.*대조/,'자료 대조|자료 비교|자료 맞추기'],[/접수.*확인/,'접수 점검|접수 읽기|접수 살피기'],
+    [/안내.*준비/,'안내 준비|안내 채비|안내 챙기기'],[/결재|도장/,'결재 검토|결재 살피기|안건 검토'],
+    [/흐름.*살피|흐름.*연결/,'흐름 검토|흐름 살피기|흐름 점검'],[/일정.*확인|일정.*겹침/,'일정 점검|일정 살피기|일정 대조'],
+    [/문장.*다듬|문장.*줄이/,'문장 다듬기|문장 퇴고|문장 고치기'],[/메모.*순서|기록.*순서/,'메모 재배열|기록 재배열|메모 순서'],
+    [/기록.*정리/,'기록 정리|기록 묶기|기록 나누기'],[/업무 메모|메모 중|메모만/,'메모 쓰기|메모 작성|메모 적기|기록 남기기|메모 남기기|내용 적기|메모 옮기기|노트 적기'],
+    [/별.*그리|별표|동그라미|밑줄/,'메모 표시|별표 그리기|밑줄 긋기|표시 남기기'],[/아이디어|구상/,'구상 메모|아이디어 짜기|생각 적기'],
+    [/음악|노래|플레이리스트|흥얼/,'음악 감상|노래 듣기|음악 듣기|노래 흥얼'],[/인스타/,'인스타 보기|피드 둘러봄|인스타 순찰'],
+    [/영상|고양이/,'영상 보기|영상 감상|영상 시청'],[/간식.*가격|가격표|구독.*비교/,'가격 비교|가격 대조|가격 살피기'],
+    [/기지개|스트레칭|어깨|손목|발목|손가락/,'몸 풀기|기지개 켜기|관절 풀기|몸 늘이기'],
+    [/물.*모금|물.*마시|차.*모금/,'물 마시기|물 한모금|목 축이기'],[/수다|이야기 나누|이야기 중|질문 나누/,'수다 나누기|대화 나누기|말 주고받기|이야기 나눔'],
+    [/쉬는|휴식|눈.*쉬|눈 감고/,'눈 쉬기|잠깐 쉬기|눈 휴식|휴식 취하기'],[/졸|꾸벅|하품/,'졸음 쫓기|잠 깨기|졸음 참기'],
+    [/인사|손 흔드/,'인사 건네기|작별 인사|안부 나누기'],[/테스트|검증/,'테스트 점검|결과 살피기|검증하기'],
+    [/간식|야식|메뉴|식단/,'메뉴 고르기|먹거리 고름|식단 구상|간식 고르기'],[/그리|낙서|스케치/,'그림 그리기|낙서 하기|스케치 하기'],
+    [/읽|책갈피|페이지/,'문장 읽기|글 읽기|독서 하기|읽던글 보기'],[/웃|미소/,'미소 짓기|웃음 짓기|살짝 웃기'],
+    [/조언|설명.*듣/,'설명 듣기|조언 듣기|이야기 듣기'],[/공부|단어|외우|복습/,'단어 복습|공부 하기|단어 외우기']
+  ];
+  function phoneStatusLine(line,used=new Set()){
+    const report=line.match(/회장님께 (.+?) 보고/);
+    if(report){const topic=report[1].replace(/^(오늘|다음) /,'').split(' ')[0],short=[...topic].length<=4?topic+'보고':'회장보고';used.add(short);return short}
+    const known=scheduler?.shortLine(line),authored=known==='회장님께 인사 중'?'도착 인사|환영 인사|인사 건네기':known==='보고 답변 중'?'보고 답변|보고 응답|답변 전하기':phoneActions.find(([pattern])=>pattern.test(line))?.[1];
+    // Unknown future text retains a whole source word plus its action; speech
+    // without an action verb is an opinion being spoken, never invented work.
+    const source=line.replace(/(?:에서|으로|이랑|와) /g,' ').replace(/ 중[.!…]*$|[.!…♡?]/g,'').trim();
+    const words=source.split(/\s+/),verb=words.at(-1)?.replace(/는$/,'기');
+    const derived=words.slice(0,-1).reverse().map(w=>w+' '+verb).filter(w=>[...w].length>=2&&[...w].length<=6);
+    const options=authored?authored.split('|'):[...derived,'의견 나누기','의견 말하기','의견 건네기'];
+    const choices=[...options.map(w=>w.replace(/ /g,'')),...options].filter(w=>[...w].length>=2&&[...w].length<=6);
+    const result=choices.find(w=>!used.has(w))||choices[0];used.add(result);return result;
   }
   function placeStatusLabels(floor,groups,obstacles=[]){
     const gap=groups.some(g=>g.compact)?.5:2,ordered=groups.slice().sort((a,b)=>b.priority-a.priority||a.id.localeCompare(b.id));
@@ -1476,12 +1520,14 @@
       const joinGap=floor.width<=600?0:gap;
       for(const inline of (g.compact?[false]:[false,true])){
       const width=g.compact?g.name.width:inline?g.name.width+joinGap+g.status.width:Math.max(g.name.width,g.status.width),height=g.compact?g.name.height:inline?Math.max(g.name.height,g.status.height):g.name.height+joinGap+g.status.height;
-      const head=g.sprite?.width?g.sprite:g.actor,headX=(head.left+head.right)/2;
+      // Phone pills stay within 28px of the head; a dialogue pair (priority 3) may also sit
+      // just under its own feet (52px), since the partner usually fills the space above.
+      const head=g.sprite?.width?g.sprite:g.actor,headX=(head.left+head.right)/2,reach=g.priority===3?51.5:27.5,step=Math.ceil(reach);
       const left=Math.max(floor.left+gap,Math.min(g.actor.left+g.actor.width/2-width/2,floor.right-gap-width));
       const top=g.actor.top-gap-height,candidates=[];
       const reachX=Math.max(g.actor.width*1.5,floor.width<=600?96:100),reachY=Math.max(g.actor.height*2,64);
       const add=(x,y)=>{x=Math.max(floor.left+gap,Math.min(x,floor.right-gap-width));y=Math.max(floor.top+gap,Math.min(y,floor.bottom-gap-height));
-        if(g.compact&&Math.hypot(x+width/2-headX,y+height/2-head.top)>27.5+1e-7)return;
+        if(g.compact&&Math.hypot(x+width/2-headX,y+height/2-head.top)>reach+1e-7)return;
         if(Math.abs(x+width/2-(g.actor.left+g.actor.width/2))>reachX||y+height<g.actor.top-reachY||y>g.actor.bottom+reachY)return;
         const below=Math.max(0,y+height-g.actor.top);candidates.push({left:x,right:x+width,top:y,bottom:y+height,width,height,inline,cost:(x-left)**2+(y-top)**2+below*below*2+(inline?400:0)})};
       // Above/below and either side keep each person's two labels together.
@@ -1491,7 +1537,7 @@
       // Crowded floors: search horizontal lanes as well as vertical lanes.
       // Boundaries are candidates too, so narrow maps lose no edge space.
       const xs=[floor.right-gap-width,left],ys=[floor.bottom-gap-height,Math.max(floor.top+gap,top)];
-      if(g.compact){for(let delta=-28;delta<=28;delta+=4){xs.push(headX-width/2+delta);ys.push(head.top-height/2+delta)}}
+      if(g.compact){for(let delta=-step;delta<=step;delta+=4){xs.push(headX-width/2+delta);ys.push(head.top-height/2+delta)}}
       else{for(let x=floor.left+gap;x<=floor.right-gap-width;x+=width+gap)xs.push(x);
       for(let y=floor.top+gap;y<=floor.bottom-gap-height;y+=height+gap)ys.push(y);}
       // Fit around irregular mascot/label edges instead of wasting a whole grid cell.
@@ -1510,7 +1556,7 @@
     }
     // A bounded search repairs greedy blocking on crowded floors, using only
     // the same nearby, sprite-safe candidates. No global/remote fallback.
-    if(bestScore[0]<ordered.filter(g=>g.priority===3).length||bestScore[0]+bestScore[1]+bestScore[2]<Math.ceil(groups.length*(floor.width<=600?.7:.85))){
+    if(bestScore[0]<ordered.filter(g=>g.priority===3).length||bestScore[0]+bestScore[1]+bestScore[2]<(phone?groups.length:Math.ceil(groups.length*(floor.width<=600?.7:.85)))){
       let beam=[{boxes:[],result:new Map(),score:[0,0,0,0]}];
       for(const g of ordered){
         const pool=[...pools.get(g.id).values()].sort((a,b)=>a.cost-b.cost),next=[];
@@ -1530,7 +1576,11 @@
     for(const g of ordered){const p=best.get(g.id);if(!p)continue;if(g.compact)occupied.push({left:p.name.left,right:p.name.left+g.name.width,top:p.name.top,bottom:p.name.top+g.name.height})}
     for(const g of ordered.filter(g=>g.compact&&!best.get(g.id))){
       const head=g.sprite?.width?g.sprite:g.actor,x=(head.left+head.right)/2,candidates=[];
-      for(let dx=-27;dx<=27;dx+=3)for(let dy=-27;dy<=27;dy+=3){if(Math.hypot(dx,dy)>27.5)continue;const b={left:x+dx-2.5,right:x+dx+2.5,top:head.top+dy-2.5,bottom:head.top+dy+2.5,cost:dx*dx+dy*dy};if(b.left>=floor.left+gap&&b.right<=floor.right-gap&&b.top>=floor.top+gap&&b.bottom<=floor.bottom-gap&&!occupied.some(r=>overlaps(b,r)))candidates.push(b)}
+      // Obstacle edges include sub-3px lanes missed by the old fixed grid.
+      // The closest point of every free rectangular cell is an edge or the
+      // head projection, so this also finds tiny legal nearby dot slots.
+      const xs=[x,floor.left+gap+2.5,floor.right-gap-2.5,...occupied.flatMap(r=>[r.left-gap-2.5,r.right+gap+2.5])],ys=[head.top,floor.top+gap+2.5,floor.bottom-gap-2.5,...occupied.flatMap(r=>[r.top-gap-2.5,r.bottom+gap+2.5])];
+      for(const cx of new Set(xs))for(const cy of new Set(ys)){const dx=cx-x,dy=cy-head.top;if(Math.hypot(dx,dy)>27.5)continue;const b={left:cx-2.5,right:cx+2.5,top:cy-2.5,bottom:cy+2.5,cost:dx*dx+dy*dy};if(b.left>=floor.left+gap&&b.right<=floor.right-gap&&b.top>=floor.top+gap&&b.bottom<=floor.bottom-gap&&!occupied.some(r=>overlaps(b,r)))candidates.push(b)}
       candidates.sort((a,b)=>a.cost-b.cost||a.top-b.top||a.left-b.left);const dot=candidates[0];
       if(dot){best.set(g.id,{name:{left:dot.left,top:dot.top},status:null,dot:true});occupied.push(dot)}
     }
@@ -1631,10 +1681,11 @@
     const floor=map.getBoundingClientRect?.();if(!floor?.width)return;
     const visible=[...actors.values()].filter(a=>!a.hidden),compact=matchMedia('(max-width:600px)').matches;
     const rows=visible.map(actor=>({actor,name:actor.querySelector('.hani-office-name'),status:actor.querySelector('.hani-office-status')}));
+    const used=new Set();
     for(const {actor,name,status}of rows){
       statusDot(actor);
       actor.dataset.labelMode=compact?'pill':'separate';
-      actor.officeCompact.textContent=compact?'·'+HaniBuildingScene.labels.short(status.dataset.full):'';
+      actor.officeCompact.textContent=compact?' · '+HaniBuildingScene.labels.short(status.dataset.full,used):'';
       name.title=actor.dataset.name+' · '+status.dataset.full;name.setAttribute('aria-label',name.title);
       for(const [kind,node]of [['name',name],['status',status]]){node.style.setProperty('--'+kind+'-x','0px');node.style.setProperty('--'+kind+'-y','0px');node.style.visibility='';node.hidden=false;}
       status.textContent=status.dataset.full;status.hidden=compact;

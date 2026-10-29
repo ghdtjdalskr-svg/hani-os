@@ -58,7 +58,6 @@
 .hani-office-status-dot,.hani-office-activity-icon{display:none}
 .hani-office-compact-line{display:none}
 @media(max-width:600px){
- .hani-office-actor{--actor-height:20px}
  .hani-office-prop{display:none}
  .hani-office-status{display:block;max-width:none;font-size:10px;line-height:1.1;padding:0 2px;text-overflow:clip}
  .hani-office-name{display:flex;align-items:center;gap:1px;width:max-content;max-width:none;border-width:0;border-radius:999px;padding:0 2px;font-size:10px;line-height:1;pointer-events:auto}
