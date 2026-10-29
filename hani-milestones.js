@@ -122,7 +122,7 @@
     return rows.sort(byNew);
   }
   const gradeKey = m => has(GRADES, m.grade) ? m.grade : 'RECORD';
-  const gradeInfo = key => find(GRADES, key) || {id:'RECORD',label:'Record',note:'등급 없이 남긴 기록'};
+  const gradeInfo = key => find(GRADES, key) || {id:'RECORD',label:'MOMENT',note:'소중한 순간'};
   const GRADE_ORDER = ['LEGENDARY','EPIC','RARE','RECORD'];
   const filtered = (list, category = 'ALL', grade = 'ALL') => list.filter(m => (category === 'ALL' || m.category === category) && (grade === 'ALL' || gradeKey(m) === grade));
   function gradeFilters(items, {category = 'ALL', grade = 'ALL'} = {}) {
@@ -177,33 +177,48 @@
       (grade ? '<span class="ms-grade" title="' + esc(grade.ko + ' · ' + grade.note) + '">' + esc(grade.label) + '</span>' : '') + '</p>';
   };
   const agentLine = m => m.agents.length ? '<p class="ms-agents">' + m.agents.map(id => avatar(id) + '<span>' + esc(agentName(id)) + '</span>').join('') + '</p>' : '';
-  // Exact motif bodies from the approved design, inline to avoid repeated symbol ids.
-  const SEALS = {"LEGENDARY":"<circle cx=\"24\" cy=\"24\" r=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1\"/><circle cx=\"24\" cy=\"24\" r=\"18.5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\".6\" stroke-dasharray=\"1.2 2\"/><path d=\"M24 12l2.6 7.2 7.6.3-6 4.7 2.1 7.3L24 27.3l-6.3 4.2 2.1-7.3-6-4.7 7.6-.3z\" fill=\"currentColor\" opacity=\".9\"/>","EPIC":"<circle cx=\"24\" cy=\"24\" r=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1\"/><path d=\"M24 13l9 11-9 11-9-11z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"/><path d=\"M24 17.5l5.3 6.5L24 30.5 18.7 24z\" fill=\"currentColor\" opacity=\".85\"/>","RARE":"<circle cx=\"24\" cy=\"24\" r=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1\"/><circle cx=\"24\" cy=\"24\" r=\"7\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"/><circle cx=\"24\" cy=\"24\" r=\"3\" fill=\"currentColor\"/>","RECORD":"<circle cx=\"24\" cy=\"24\" r=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1\"/><path d=\"M17 24h14\" stroke=\"currentColor\" stroke-width=\"1.4\"/>"};
-  const seal = key => '<svg class="ms-seal" data-ms-seal="' + key + '" viewBox="0 0 48 48" aria-hidden="true" focusable="false">' + SEALS[key] + '</svg>';
-  function card(m) {
+  // One read-only atlas map: 4 columns x 3 rows, 512 x 734 per cell.
+  const ART = freeze({specialId:'milestone_health_20261023', sheet:'./assets/milestone-cards/milestone-card-sheet-v1.webp',
+    cells:['health-legendary','cat-health','cat-finance','cat-investment','cat-study','cat-career','cat-life','cat-travel','cat-relationship','cat-project','cat-other']});
+  function artKey(m) {
+    const key = 'cat-' + String(m.category || '').toLowerCase();
+    return m.id === ART.specialId ? ART.cells[0] : ART.cells.includes(key) ? key : 'cat-other';
+  }
+  function art(m) {
+    const key = artKey(m), cell = ART.cells.indexOf(key);
+    return '<span class="ms-art" data-ms-art="' + key + '" aria-hidden="true" style="background-position:' + (cell % 4 * 100 / 3) + '% ' + (Math.floor(cell / 4) * 50) + '%"></span>';
+  }
+  const starCount = key => ({LEGENDARY:5,EPIC:4,RARE:3,RECORD:2})[key] || 2;
+  function isNew(m, now = Date.now()) {
+    const created = Date.parse(m.createdAt);
+    return Number.isFinite(created) && now >= created && now - created < 14 * 86400000;
+  }
+  function face(m) {
     const key = gradeKey(m), grade = gradeInfo(key);
-    const metrics = Array.isArray(m.featuredMetrics) ? m.featuredMetrics.map(id => find(m.metrics, id)).filter(Boolean) : [];
-    const primary = metrics[0];
-    const highlight = primary ? '<div class="ms-highlight"><div><span class="ms-highlight-label">' + esc(primary.label) + '</span><div class="ms-values" aria-label="' + esc(primary.before && primary.change ? metricLine(primary) : primary.after) + '">' +
-      (primary.before && primary.change ? '<span class="ms-old">' + esc(primary.before) + ' → </span>' : '') + '<strong>' + esc(primary.after) + '</strong></div></div>' +
-      (primary.before && primary.change ? '<span class="ms-delta">' + esc(primary.change) + '</span>' : '') + '</div>' : '';
-    return '<li class="ms-item" data-importance="' + esc(m.importance) + '" data-category="' + esc(m.category) + '"><article class="ms-card ms-grade-' + key.toLowerCase() + '" aria-label="' + esc(m.title) + '">' +
-      '<header class="ms-grade-banner">' + seal(key) + '<div class="ms-grade-caption"><b>' + esc(grade.label) + '</b><span>' + esc(grade.note) + '</span></div><div class="ms-banner-date"><small>' + esc(label(IMPORTANCE, m.importance)) + '</small><time datetime="' + esc(m.date) + '">' + esc(dateLabel(m.date)) + '</time></div></header>' +
-      '<div class="ms-card-body"><h3>' + esc(m.title) + '</h3><p class="ms-category">' + esc(label(CATEGORIES, m.category)) + ' · ' + esc(m.category) + '</p>' + highlight +
-      (metrics.length > 1 ? '<ul class="ms-metric-list">' + metrics.slice(1).map(x => '<li><span>' + esc(x.label) + '</span><b>' + esc(metricLine(x)) + '</b>' + (x.change ? '<small>' + esc(x.change) + '</small>' : '') + '</li>').join('') + '</ul>' : '') +
-      '<blockquote class="ms-quote">“' + esc(m.summary) + '”</blockquote>' +
-      '<footer>' + agentLine(m) + '<button type="button" class="btn" data-ms-open="' + esc(m.id) + '">상세 기록 보기 →</button></footer></div></article></li>';
+    return art(m) + '<span class="ms-sheen" aria-hidden="true"></span><span class="ms-card-top"><span class="ms-stars" aria-label="' + starCount(key) + '성">' + '★'.repeat(starCount(key)) + '</span><span class="ms-rank-chip">' + esc(grade.label) + '</span></span>' +
+      (isNew(m) ? '<span class="ms-new">NEW</span>' : '') +
+      '<span class="ms-plate"><small>' + esc(label(CATEGORIES, m.category)) + (key === 'RECORD' ? ' · 소중한 순간' : '') + '</small><span class="ms-card-title">' + esc(m.title) + '</span><span class="ms-orn" aria-hidden="true"><i></i></span><time datetime="' + esc(m.date) + '">' + esc(dateLabel(m.date)) + '</time></span>';
+  }
+  function card(m) {
+    return '<li class="ms-item" data-importance="' + esc(m.importance) + '" data-category="' + esc(m.category) + '"><button type="button" class="ms-card ms-grade-' + gradeKey(m).toLowerCase() + '" data-ms-open="' + esc(m.id) + '" aria-haspopup="dialog" aria-label="' + esc(m.title + ' · ' + gradeInfo(gradeKey(m)).label + ' · 상세 기록 보기') + '">' + face(m) + '</button></li>';
+  }
+  function detailSheet(m, options) {
+    const metrics = featured(m), primary = metrics[0];
+    const highlight = primary ? '<section class="ms-highlight" aria-label="대표 지표"><div><span class="ms-highlight-label">' + esc(primary.label) + '</span><div class="ms-values">' +
+      (primary.before ? '<span class="ms-old">' + esc(primary.before) + ' → </span>' : '') + '<strong>' + esc(primary.after) + '</strong></div></div>' +
+      (primary.change ? '<span class="ms-delta">' + esc(primary.change) + '</span>' : '') + '</section>' : '';
+    return '<div class="ms-sheet"><aside class="ms-sheet-art"><div class="ms-card ms-grade-' + gradeKey(m).toLowerCase() + '">' + face(m) + '</div></aside><article class="ms-sheet-body">' +
+      '<p class="ms-sheet-rank">' + '★'.repeat(starCount(gradeKey(m))) + ' ' + esc(gradeInfo(gradeKey(m)).label + ' · ' + gradeInfo(gradeKey(m)).note) + '</p>' +
+      highlight + detail(m, options) + '</article></div>';
   }
   function list(items, {category = 'ALL', grade = 'ALL', sort = 'newest'} = {}) {
     const rows = sorted(filtered(items, category, grade), sort);
     if (!items.length) return '<li class="ms-empty"><p>아직 남긴 마일스톤이 없어요.</p><p>오래 기억하고 싶은 변화가 생기면, 그때 천천히 남겨보세요.</p></li>';
     if (!rows.length) return '<li class="ms-empty"><p>' + esc(category === 'ALL' ? '선택한 등급의' : label(CATEGORIES, category) + ' 분야의') + ' 마일스톤은 아직 없어요.</p></li>';
-    const timeline = sort === 'newest' || sort === 'oldest';
-    let year = '';
-    return rows.map(m => {
-      const marker = timeline && m.date.slice(0, 4) !== year ? '<li class="ms-year" aria-hidden="true">' + (year = m.date.slice(0, 4)) + '</li>' : '';
-      return marker + card(m);
-    }).join('');
+    // Keep each year's collection together, respecting the chosen order within it.
+    const years = new Map();
+    rows.forEach(m => { const year = m.date.slice(0,4); if (!years.has(year)) years.set(year, []); years.get(year).push(m); });
+    return [...years].map(([year, records]) => '<li class="ms-year">' + esc(year) + '</li>' + records.map(card).join('')).join('');
   }
   const block = (title, body, extra = '') => '<section class="ms-block' + extra + '"><h4>' + esc(title) + '</h4>' + body + '</section>';
   const quiet = value => '<p class="ms-quiet">' + esc(value) + '</p>';
@@ -385,8 +400,8 @@
   }
   function show(mode) {
     const archive = slot('archive'), detailSlot = slot('detail'), form = slot('form');
-    if (archive) archive.hidden = mode !== 'list';
-    if (detailSlot) detailSlot.hidden = mode !== 'detail';
+    if (archive) archive.hidden = mode === 'form';
+    if (detailSlot) { detailSlot.hidden = mode !== 'detail'; if (mode !== 'detail' && detailSlot.open) detailSlot.close(); }
     if (form) form.hidden = mode !== 'form';
   }
   const isSaved = id => savedRows().some(x => x?.id === id);
@@ -395,12 +410,13 @@
     if (!m || !host) return;
     ui.detail = id;
     if (trigger?.dataset?.msOpen) ui.returnFocus = '[data-ms-open="' + id + '"]';
-    host.innerHTML = detail(m, {deletable:isSaved(id) && !seedIds.includes(id)}); bindAvatars(host); show('detail');
-    window.scrollTo?.({top:0, left:0, behavior:'auto'});
+    host.innerHTML = detailSheet(m, {deletable:isSaved(id) && !seedIds.includes(id)}); bindAvatars(host); show('detail');
+    if (!host.open) host.showModal();
+    host.scrollTop = 0;
     host.querySelector('[data-ms-detail-title]')?.focus({preventScroll:true});
   }
   function back() {
-    ui.detail = null; ui.editing = null; show('list'); renderList();
+    ui.detail = null; ui.editing = null; show('list');
     const target = ui.returnFocus && root()?.querySelector(ui.returnFocus);
     (target || slot('new'))?.focus({preventScroll:false});
   }
@@ -451,7 +467,7 @@
     if (typeof confirmRecordDelete !== 'function' || !await confirmRecordDelete(row, '마일스톤')) return false;
     const result = persist(savedRows().filter(x => x !== row));
     if (!result.ok) { status(result.message); return false; }
-    ui.returnFocus = null; back(); homeCard(); status('마일스톤을 삭제했어요.');
+    ui.returnFocus = null; renderList(); back(); homeCard(); status('마일스톤을 삭제했어요.');
     return true;
   }
   function homeCard() {
@@ -471,7 +487,7 @@
   function enter() { if (!ui.detail && !ui.editing) { show('list'); renderList(); } }
   const seedErrors = SEED.flatMap((m, i) => validate(m, {ids:SEED.slice(0, i).map(x => x.id)}).map(e => m.id + ': ' + e));
   window.HaniMilestones = Object.freeze({enter, refresh, homeCard, validate, sorted, filtered, gradeFilters, homePick, featured, compactMetric, nextId, list, card, detail, homeCardMarkup, readForm, merged, writeBlockReason, persist,
-    CATEGORIES, IMPORTANCE, GRADES, SORTS, SEED, seedErrors});
+    CATEGORIES, IMPORTANCE, GRADES, SORTS, SEED, ART, artKey, starCount, isNew, detailSheet, seedErrors});
   if (typeof document === 'undefined') return;
   function start() {
     const host = root();
@@ -481,6 +497,16 @@
     });
     if (!host || host.dataset.msMounted) return;
     host.dataset.msMounted = 'true';
+    host.style.setProperty('--ms-sheet-url', 'url("' + ART.sheet + '")');
+    const dialog = slot('detail');
+    dialog?.addEventListener('cancel', event => { event.preventDefault(); back(); });
+    // Native dialog top layer, same backdrop-hit pattern as existing dialogs.
+    dialog?.addEventListener('click', event => {
+      if (event.target !== dialog) return;
+      const r = dialog.getBoundingClientRect();
+      if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) back();
+    });
+    dialog?.addEventListener('close', () => { if (ui.detail && !dialog.open) back(); });
     host.addEventListener('click', event => {
       const t = event.target;
       const grade = t.closest('[data-ms-grade]');
@@ -491,7 +517,7 @@
       if (open) { status(''); openDetail(open.dataset.msOpen, open); return; }
       if (t.closest('[data-ms-back]')) { back(); return; }
       const go = t.closest('[data-ms-go]');
-      if (go && typeof showView === 'function') { showView(go.dataset.msGo); return; }
+      if (go && typeof showView === 'function') { back(); showView(go.dataset.msGo); return; }
       if (t.closest('[data-ms-new]')) { ui.returnFocus = '[data-ms-new]'; openForm(); return; }
       const edit = t.closest('[data-ms-edit]');
       if (edit) { openForm(edit.dataset.msEdit); return; }

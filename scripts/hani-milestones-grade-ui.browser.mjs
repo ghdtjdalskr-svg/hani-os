@@ -41,7 +41,7 @@ try {
     await page.waitForSelector('#milestones .ms-card');
     const tag=width+'-'+finish;
     assert.equal(await page.locator('#milestones > .ds-main-character-banner').count(),1,tag+' canonical hero');
-    assert.match(await page.locator('#milestones > .ds-main-character-banner .ds-main-character-banner__scene img').getAttribute('src'),/milestones-226w-a[23]?\.webp/);
+    assert.match(await page.locator('#milestones > .ds-main-character-banner .ds-main-character-banner__scene img').getAttribute('src'),/milestones-226w-a3\.webp/);
     assert.equal(await page.locator('[data-ms-grade]').count(),4);
     assert.equal(await page.locator('.ms-item').count(),8);
     for (const category of ['ALL','HEALTH','LIFE','TRAVEL']) {
@@ -59,62 +59,78 @@ try {
     }
     await page.locator('[data-ms-filter="ALL"]').click();
     await page.locator('[data-ms-sort]').selectOption('newest');
-    // Exercise computed visual states, not merely selector/string presence.
-    const styles = locator => locator.evaluate(e => { const s=getComputedStyle(e); return {background:s.backgroundColor,border:s.borderColor,shadow:s.boxShadow,transform:s.transform,transition:s.transitionDuration,color:s.color,outline:s.outlineStyle,decoration:s.textDecorationLine}; });
-    const tier=page.locator('[data-ms-grade="EPIC"]');
-    await page.mouse.move(0,0); const idle=await styles(tier);
-    assert.ok(idle.transition.split(',').every(t=>Number.parseFloat(t)>=.15&&Number.parseFloat(t)<=.22),tag+' 150–220ms');
-    await tier.hover(); await page.waitForTimeout(240);
-    assert.notEqual((await styles(tier)).background,idle.background,tag+' tier hover');
-    await tier.click(); await page.mouse.move(0,0); await page.waitForTimeout(240);
-    assert.equal(await tier.getAttribute('aria-pressed'),'true');
-    const active=await styles(tier);
-    assert.notEqual(active.background,idle.background,tag+' selected background');
-    assert.notEqual(active.shadow,idle.shadow,tag+' selected border');
-    await tier.click(); await page.mouse.move(0,0); await page.waitForTimeout(240);
-    assert.equal((await styles(tier)).background,idle.background,tag+' deselected');
-    const card=page.locator('.ms-card.ms-grade-epic').first();
-    const rest=await styles(card); await card.hover(); await page.waitForTimeout(240);
-    assert.notEqual((await styles(card)).border,rest.border,tag+' card hover border');
-    assert.notEqual((await styles(card)).transform,rest.transform,tag+' subtle elevation');
-    const cta=card.locator('[data-ms-open]'); await cta.hover(); await page.waitForTimeout(240);
-    assert.ok((await styles(cta)).decoration.includes('underline'),tag+' CTA hover');
-    await page.mouse.move(0,0); await page.keyboard.press('Tab'); await cta.focus();
-    assert.equal(await cta.evaluate(e=>e.matches(':focus-visible')),true,tag+' keyboard focus');
-    assert.equal((await styles(cta)).outline,'solid',tag+' focus outline');
-    await page.emulateMedia({reducedMotion:'reduce'}); await card.hover();
-    assert.equal((await styles(card)).transform,'none',tag+' reduced motion transform');
-    assert.ok((await styles(card)).transition.split(',').every(t=>Number.parseFloat(t)===0),tag+' reduced motion transition');
-    await page.mouse.move(0,0);
-    // Check actual theme-resolved neutral and grade inks against their surfaces.
-    const contrasts=await page.evaluate(()=>{
-      const canvas=document.createElement('canvas'), paint=canvas.getContext('2d',{willReadFrequently:true});
-      const rgb=c=>{paint.fillStyle=c;paint.fillRect(0,0,1,1);return [...paint.getImageData(0,0,1,1).data].slice(0,3);};
-      const lum=c=>rgb(c).map(x=>{x/=255;return x<=.04045?x/12.92:((x+.055)/1.055)**2.4;}).reduce((a,v,i)=>a+v*[.2126,.7152,.0722][i],0);
+    const cards=page.locator('.ms-item > [data-ms-open]'), first=cards.first();
+    for (const [grade,stars] of [['legendary',5],['epic',4],['rare',3],['record',2]]) {
+      assert.equal(await page.locator('.ms-item > .ms-grade-'+grade+' .ms-stars').first().innerText(),'★'.repeat(stars));
+    }
+    assert.match(await page.locator('[data-ms-grade="RECORD"]').innerText(),/MOMENT[\s\S]*소중한 순간/);
+    assert.equal(await first.getAttribute('aria-haspopup'),'dialog');
+    assert.equal(await page.locator('[data-ms-open="milestone_health_20261023"] [data-ms-art="health-legendary"]').count(),1);
+    const transform=()=>first.evaluate(e=>getComputedStyle(e).transform);
+    await page.mouse.move(0,0); const idle=await transform();
+    await first.hover(); await page.waitForTimeout(220);
+    assert.notEqual(await transform(),idle,tag+' card hover');
+    await page.screenshot({path:path.join(out,tag+'.png'),fullPage:true});
+    const checkLayout=async()=>{
+      const layout=await page.evaluate(()=>{
+        const dialog=document.querySelector('[data-ms-detail]');
+        const ids=[...document.querySelectorAll('[id]')].map(e=>e.id);
+        const nodes=[...document.querySelectorAll('.ms-plate,.ms-card-top,.ms-sheet-body,.ms-compare-cell b,.ms-comment blockquote')].filter(e=>e.getClientRects().length);
+        return {overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth,
+          dialogOverflow:dialog.open && dialog.scrollWidth>dialog.clientWidth+2,
+          clipped:nodes.filter(e=>e.scrollWidth>e.clientWidth+2).map(e=>e.className),
+          duplicate:ids.length-new Set(ids).size};
+      });
+      assert.equal(layout.overflow,false,tag+' viewport overflow');
+      assert.equal(layout.dialogOverflow,false,tag+' dialog overflow');
+      assert.deepEqual(layout.clipped,[],tag+' clipped fields'); assert.equal(layout.duplicate,0);
+    };
+    await checkLayout();
+    const dialog=page.locator('dialog[data-ms-detail]');
+    await first.click(); await page.waitForTimeout(250);
+    assert.equal(await dialog.evaluate(e=>e.open),true,tag+' click opens native dialog');
+    assert.equal(await page.locator('[data-ms-archive]').isVisible(),true);
+    for(const field of ['체중','혈당','HbA1c','중성지방','총콜레스테롤','LDL','AST','ALT','감마GTP','성과 설명','과정 / 배경','이 변화의 의미','다음 목표','담당 Agent','Agent Comment','회장 본인 Comment','Tag','관련 이미지','관련 HANI OS 기능']) {
+      assert.ok((await dialog.innerText()).includes(field),tag+'/'+field);
+    }
+    await checkLayout();
+    assert.match(await dialog.evaluate(e=>getComputedStyle(e).animationName),/ms-unfold/);
+    // Contrast uses actual resolved inks; translucent plate is tested over worst-case black art.
+    const contrastFailures=await page.evaluate(()=>{
+      const cv=document.createElement('canvas'),cx=cv.getContext('2d',{willReadFrequently:true});
+      const rgb=c=>{cx.clearRect(0,0,1,1);cx.fillStyle=c;cx.fillRect(0,0,1,1);return [...cx.getImageData(0,0,1,1).data].slice(0,3);};
+      const lum=v=>v.map(c=>{c/=255;return c<=.04045?c/12.92:((c+.055)/1.055)**2.4;}).reduce((s,c,i)=>s+c*[.2126,.7152,.0722][i],0);
       const ratio=(a,b)=>(Math.max(lum(a),lum(b))+.05)/(Math.min(lum(a),lum(b))+.05);
-      const probe=document.createElement('span'); document.body.append(probe);
-      const resolve=(e,v)=>{probe.style.color=getComputedStyle(e).getPropertyValue(v);return getComputedStyle(probe).color;};
-      const result=[];
-      for(const e of document.querySelectorAll('#milestones .ms-tier,#milestones .ms-card')) {
-        for(const ink of ['--ms-grade-ink','--ms-note','--ms-ink']) for(const bg of ['--ms-paper','--soft']) result.push({class:e.className,ink,bg,ratio:ratio(resolve(e,ink),resolve(e,bg))});
-      }
-      probe.remove();return result;
+      const results=[];
+      const probe=(e,bg)=>{if(!e)return;const r=ratio(rgb(getComputedStyle(e).color),bg);if(r<4.5)results.push({class:e.className,ratio:r});};
+      document.querySelectorAll('.ms-tier').forEach(e=>{const bg=rgb(getComputedStyle(e).backgroundColor);for(const child of e.querySelectorAll('b,small,em'))probe(child,bg);});
+      document.querySelectorAll('.ms-card').forEach(e=>{
+        const pl=getComputedStyle(e).getPropertyValue('--pl').split(',').map(Number).map(c=>c*.94);
+        e.querySelectorAll('.ms-card-title,.ms-plate small,time').forEach(x=>probe(x,pl));
+        e.querySelectorAll('.ms-rank-chip,.ms-stars,.ms-new').forEach(x=>probe(x,rgb(getComputedStyle(x).backgroundColor)));
+      });
+      const paper=rgb(getComputedStyle(document.querySelector('[data-ms-detail]')).backgroundColor);
+      document.querySelectorAll('.ms-sheet-body h3,.ms-sheet-body h4,.ms-sheet-body .ms-quiet,.ms-sheet-rank,.ms-compare-label,.ms-compare-cell small,.ms-compare-cell b').forEach(e=>probe(e,paper));
+      return results;
     });
-    assert.deepEqual(contrasts.filter(c=>c.ratio<4.5),[],tag+' theme AA text');
-    const layout=await page.evaluate(()=>{
-      const nodes=[...document.querySelectorAll('#milestones .ms-card *,#milestones .ms-tier')].filter(e=>e.getClientRects().length&&!e.closest('svg')&&!e.classList.contains('ms-sr'));
-      return {overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth,clipped:nodes.filter(e=>e.scrollWidth>e.clientWidth+2).map(e=>e.className),ids:[...document.querySelectorAll('[id]')].map(e=>e.id)};
-    });
-    assert.equal(layout.overflow,false,tag+' horizontal overflow'); assert.deepEqual(layout.clipped,[],tag+' clipped text');
-    assert.equal(new Set(layout.ids).size,layout.ids.length,tag+' duplicate ids');
-    assert.equal(await page.locator('.ms-grade-record .ms-old,.ms-grade-record .ms-delta').count(),0);
+    assert.deepEqual(contrastFailures,[],tag+' AA text contrast');
+    await page.screenshot({path:path.join(out,tag+'-detail.png'),fullPage:true});
+    await page.keyboard.press('Escape');
+    assert.equal(await dialog.evaluate(e=>e.open),false);
+    assert.equal(await first.evaluate(e=>e===document.activeElement),true,tag+' original card focus');
+    await page.keyboard.press('Enter'); assert.equal(await dialog.evaluate(e=>e.open),true,tag+' Enter opens');
+    await page.keyboard.press('Escape');
+    await page.keyboard.press('Space'); assert.equal(await dialog.evaluate(e=>e.open),true,tag+' Space opens');
+    await page.waitForTimeout(250);
+    await page.mouse.click(2,2); assert.equal(await dialog.evaluate(e=>e.open),false,tag+' backdrop closes');
+    assert.equal(await first.evaluate(e=>e===document.activeElement),true);
+    await page.emulateMedia({reducedMotion:'reduce'});
+    await first.click(); assert.equal(await dialog.evaluate(e=>getComputedStyle(e).animationName),'none',tag+' reduced motion dialog');
+    await page.keyboard.press('Escape'); await first.hover();
+    assert.equal(await transform(),'none',tag+' reduced motion hover');
     assert.equal(await page.evaluate(()=>window.__msWriteCount),0,tag+' zero writes');
     assert.equal(await page.evaluate(()=>JSON.stringify(state)===window.__msState),true,tag+' immutable records');
     assert.deepEqual(errors,[],tag+' page errors');
-    await page.screenshot({path:path.join(out,tag+'.png'),fullPage:true});
-    // Real delegated detail/back path must still work after all filter rerenders.
-    await page.locator('[data-ms-open]').first().click(); assert.equal(await page.locator('[data-ms-detail]').isVisible(),true);
-    await page.keyboard.press('Escape'); assert.equal(await page.locator('[data-ms-archive]').isVisible(),true);
     console.log('PASS',tag); await ctx.close();
   }
 } finally { if(browser) await browser.close(); await new Promise(r=>server.close(r)); }

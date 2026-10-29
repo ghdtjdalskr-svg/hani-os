@@ -1807,7 +1807,6 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
  #app .main{padding-bottom:calc(32px + env(safe-area-inset-bottom));scroll-padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 }
 
-/* Milestones grade UI v3: scoped to the existing archive and canonical hero. */
 #milestones { --ms-ink:var(--text-primary,#292a2d); --ms-note:var(--text-secondary,#62646b); --ms-rule:var(--border-subtle,#dedcd6); --ms-paper:var(--surface-panel,#fffdf8); --ms-serif:Georgia,'Noto Serif KR',Batang,serif; }
 .ms-grade-legendary { --c:#a8823f; --c2:#d9bd7c; --soft:#fbf4e4; --ms-grade-ink:#775b29; --bn:linear-gradient(115deg,#8a6a2f 0%,#b8924a 38%,#e3c88a 62%,#a8823f 100%); }
 .ms-grade-epic { --c:#6a5596; --c2:#a996cf; --soft:#f4f0f9; --ms-grade-ink:#6a5596; --bn:linear-gradient(115deg,#4a3878 0%,#6a5596 50%,#9b86c4 100%); }
@@ -1823,72 +1822,87 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 #milestones .ms-tier b { display:block; font:600 14px/1.4 var(--ms-serif); letter-spacing:.5px; }
 #milestones .ms-tier small { display:block; margin-top:4px; color:var(--ms-note); font-size:11px; line-height:1.5; }
 #milestones .ms-tier em { margin-left:auto; font:600 24px/1.2 var(--ms-serif); font-variant-numeric:tabular-nums; flex-shrink:0; }
-#milestones .ms-timeline { padding-left:0; border-left:0; gap:16px; }
-#milestones .ms-year { display:flex; gap:12px; align-items:center; margin:6px 0 0; padding:0; font-style:italic; }
-#milestones .ms-year::after { content:''; flex:1; height:1px; background:var(--ms-rule); }
-#milestones .ms-year::before,#milestones .ms-item::before { display:none; }
-#milestones .ms-item .ms-card { position:relative; overflow:hidden; padding:0; border:1px solid var(--ms-rule); border-radius:18px; background:var(--ms-paper); box-shadow:none; transition:border-color 180ms ease,transform 180ms ease; }
-#milestones .ms-item .ms-card.ms-grade-legendary { border-color:var(--c2); background:radial-gradient(120% 80% at 100% 0%,color-mix(in srgb,var(--c2) 16%,transparent),transparent 55%),var(--ms-paper); box-shadow:0 14px 36px #a8823f24; }
-#milestones .ms-card.ms-grade-legendary::after { content:''; position:absolute; inset:6px; border:1px solid color-mix(in srgb,var(--c2) 35%,transparent); border-radius:13px; pointer-events:none; }
-#milestones .ms-grade-banner { display:flex; align-items:center; gap:12px; padding:14px 22px; color:#fff; background:linear-gradient(#0008,#0008),var(--bn); }
-#milestones .ms-grade-legendary .ms-grade-banner { background:linear-gradient(#0008,#0008),linear-gradient(105deg,transparent 30%,#ffffff28 45%,transparent 60%),var(--bn); }
-#milestones .ms-seal { width:30px; height:30px; flex:0 0 30px; color:#fff; }
-#milestones .ms-grade-caption b { display:block; font:600 13px var(--ms-serif); letter-spacing:3px; }
-#milestones .ms-grade-caption span { display:block; font-size:11.5px; margin-top:4px; line-height:1.5; }
-#milestones .ms-banner-date { flex:0 0 auto; margin-left:auto; text-align:right; }
-#milestones .ms-banner-date small { display:block; font-size:10px; letter-spacing:1.5px; margin-bottom:4px; }
-#milestones .ms-banner-date time { color:#fff; font:13px var(--ms-serif); white-space:nowrap; }
-#milestones .ms-card-body { padding:24px; }
-#milestones .ms-item .ms-card h3 { font:600 clamp(21px,2.2vw,25px)/1.35 var(--ms-serif); margin:0 0 8px; }
-#milestones .ms-category { margin:0 0 14px; font:13px var(--ms-serif); color:var(--ms-note); }
-#milestones .ms-highlight { display:flex; flex-wrap:wrap; gap:12px 20px; align-items:baseline; margin:16px 0; padding:16px 0; border-block:1px solid var(--ms-rule); }
-#milestones .ms-highlight-label { display:block; font-size:12px; color:var(--ms-note); margin-bottom:6px; }
-#milestones .ms-values { font:600 clamp(26px,3vw,34px)/1.35 var(--ms-serif); font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
-#milestones .ms-values strong { font-weight:600; }
-#milestones .ms-old { font-size:.65em; font-weight:400; color:var(--ms-note); }
-#milestones .ms-delta { padding:6px 12px; border:1px solid var(--c2); border-radius:99px; background:var(--soft); color:var(--ms-grade-ink); font:italic 600 17px var(--ms-serif); overflow-wrap:anywhere; }
-#milestones .ms-metric-list { gap:0; grid-template-columns:repeat(auto-fit,minmax(min(150px,100%),1fr)); border:1px solid var(--ms-rule); border-radius:12px; overflow:hidden; }
-#milestones .ms-metric-list li { display:grid; grid-template-rows:auto 1fr auto; align-items:baseline; gap:6px; padding:12px 16px; border:0; box-shadow:1px 1px var(--ms-rule); }
-#milestones .ms-metric-list b { font:600 17px/1.6 var(--ms-serif); overflow-wrap:anywhere; }
-#milestones .ms-metric-list small { color:var(--ms-grade-ink); }
-#milestones .ms-card .ms-quote { margin:20px 0; padding-left:16px; border-left:2px solid var(--c2); font-style:italic; line-height:1.8; }
-#milestones .ms-card footer .btn { color:var(--ms-grade-ink); background:transparent; border:0; border-radius:0; padding:8px 0; font-size:13px; font-weight:600; text-underline-offset:5px; transition:color 180ms ease; }
 #milestones .ms-tier:last-child { border-right:0; }
 #milestones .ms-toolbar { gap:12px; margin-bottom:20px; }
 #milestones :is(.ms-chip,.ms-sort select,[data-ms-new]) { min-height:40px; border:1px solid var(--ms-rule); border-radius:10px; padding:8px 12px; background:var(--ms-paper); color:var(--ms-ink); font-size:13px; line-height:1.5; transition:background-color 180ms ease,border-color 180ms ease; }
 #milestones .ms-chip[aria-pressed="true"] { background:color-mix(in srgb,var(--ms-ink) 9%,var(--ms-paper)); border-color:var(--ms-note); font-weight:600; }
-#milestones .ms-card footer { border-top:1px solid var(--ms-rule); padding-top:12px; gap:12px 20px; }
-#milestones .ms-card footer .btn:focus-visible { outline:2px solid var(--ms-grade-ink); outline-offset:4px; text-decoration:underline; }
-@media (hover:hover) {
- #milestones .ms-tier:hover { background:var(--soft); }
- #milestones .ms-item .ms-card:hover { border-color:var(--c); transform:translateY(-1px); }
- #milestones :is(.ms-chip,.ms-sort select,[data-ms-new]):hover { border-color:var(--ms-note); background:color-mix(in srgb,var(--ms-ink) 5%,var(--ms-paper)); }
- #milestones .ms-card footer .btn:hover { color:var(--ms-ink); text-decoration:underline; background:transparent; transform:none; box-shadow:none; }
-}
-@media (prefers-reduced-motion:reduce) { #milestones .ms-item .ms-card:hover { transform:none; } }
-:root[data-finish="midnight-black"] #milestones :is(.ms-card,.ms-tier) { --soft:color-mix(in srgb,var(--c) 16%,#15171c); --ms-grade-ink:var(--c2); }
 #app #milestones > .ds-main-character-banner { --mcb-bg:#fbf6ee; --mcb-ink:#2b2630; --mcb-muted:#625968; --mcb-accent:#775b29; --mcb-overlay:linear-gradient(95deg,#fbf6ee 0%,#fbf6eef0 32%,#fbf6ee00 72%); --mcb-overlay-mobile:linear-gradient(90deg,#fbf6eefc 0%,#fbf6eef2 65%,#fbf6ee90); }
 :root[data-finish="midnight-black"] #app #milestones > .ds-main-character-banner { --mcb-bg:#15171c; --mcb-ink:#f5f2ed; --mcb-muted:#cbc6be; --mcb-accent:#d9bd7c; --mcb-overlay:linear-gradient(95deg,#15171c 0%,#15171cf5 38%,#15171c00 80%); --mcb-overlay-mobile:linear-gradient(90deg,#15171cfc 0%,#15171cf5 65%,#15171cb8); }
-@media(max-width:640px) {
+/* Milestone collection: B2 glass nameplate and native editorial detail sheet. */
+#milestones .ms-timeline { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:22px; padding:0 5px 20px; border:0; }
+#milestones .ms-year,#milestones .ms-empty { grid-column:1/-1; }
+#milestones .ms-year { display:flex; gap:12px; align-items:center; margin:6px 0 0; padding:0; font-style:italic; }
+#milestones .ms-year::after { content:''; flex:1; height:1px; background:var(--ms-rule); }
+#milestones .ms-year::before,#milestones .ms-item::before { display:none; }
+#milestones .ms-card { --m2:#b58a3a; --deep:#7a5518; --pl:255,249,236; --glow:246,205,120; position:relative; display:block; width:100%; aspect-ratio:512/734; padding:0; border:0; border-radius:18px; overflow:hidden; background:linear-gradient(145deg,#faf1d4,#e0c17b 55%,#f7e6b9); box-shadow:0 10px 24px #28190a29,0 0 0 3px #fff,0 0 0 4.5px var(--m2); transition:transform 180ms ease,box-shadow 180ms ease; text-align:center; }
+#milestones button.ms-card { cursor:pointer; font:inherit; }
+#milestones .ms-card.ms-grade-epic { --m2:#7a5fc0; --deep:#4a3388; --pl:247,243,255; --glow:180,150,255; background:linear-gradient(145deg,#f3edff,#b6a0e2,#e3d7ff); }
+#milestones .ms-card.ms-grade-rare { --m2:#4c7fb3; --deep:#244e7c; --pl:241,247,255; --glow:130,190,255; background:linear-gradient(145deg,#edf7ff,#95bce0,#d9ecff); }
+#milestones .ms-card.ms-grade-record { --m2:#9c9186; --deep:#52473d; --pl:250,247,241; --glow:200,190,175; background:linear-gradient(145deg,#faf7f1,#cec1b0,#f1ebe4); }
+#milestones .ms-card::before { content:''; position:absolute; inset:7px; border-radius:13px; border:1px solid #ffffffbf; box-shadow:inset 0 0 0 1px rgba(var(--glow),.35); z-index:2; pointer-events:none; }
+#milestones .ms-card::after { display:none; }
+#milestones .ms-art { position:absolute; inset:0; background-image:var(--ms-sheet-url); background-size:400% 300%; background-repeat:no-repeat; }
+#milestones .ms-sheen { position:absolute; inset:0; background:linear-gradient(115deg,transparent 35%,#ffffff59 47%,transparent 58%); transform:translateX(-110%); transition:transform 180ms ease; pointer-events:none; }
+#milestones .ms-card-top { position:absolute; top:14px; left:8px; right:8px; display:flex; flex-direction:column; align-items:center; gap:4px; }
+#milestones .ms-stars { font-size:15px; letter-spacing:2px; line-height:1.4; color:#ffdc77; background:#3a2a0ee6; border-radius:99px; padding:1px 7px; }
+#milestones .ms-rank-chip { color:#fff; background:#332840e8; backdrop-filter:blur(4px); border:1px solid #ffffffcc; border-radius:99px; font:700 9px var(--ms-serif); letter-spacing:3px; padding:4px 10px; }
+#milestones .ms-new { position:absolute; top:13px; right:13px; font:800 9px/1.5 sans-serif; color:#fff; background:#a42250; border:1.5px solid #fff; border-radius:99px; padding:2px 6px; box-shadow:0 2px 6px #a4225055; }
+#milestones .ms-plate { position:absolute; left:16px; right:16px; bottom:16px; z-index:3; padding:12px 12px 10px; border-radius:12px; background:linear-gradient(180deg,rgba(var(--pl),.94),rgba(var(--pl),.98)); backdrop-filter:blur(10px) saturate(1.1); border:1px solid #fffffff2; box-shadow:0 8px 22px #1e140a29,inset 0 1px 0 #fff; }
+#milestones .ms-plate::before,#milestones .ms-plate::after { content:''; position:absolute; left:10px; right:10px; height:1px; background:linear-gradient(90deg,transparent,var(--m2),transparent); opacity:.55; }
+#milestones .ms-plate::before { top:5px; } #milestones .ms-plate::after { bottom:5px; }
+#milestones .ms-plate small { display:block; font:700 10px/1.5 sans-serif; letter-spacing:1px; color:var(--deep); margin:2px 0 4px; }
+#milestones .ms-card-title { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; overflow:hidden; font:600 16.5px/1.28 var(--ms-serif); color:var(--deep); letter-spacing:-.2px; overflow-wrap:anywhere; }
+#milestones .ms-orn { display:flex; align-items:center; justify-content:center; gap:6px; margin:6px 0 4px; color:var(--m2); }
+#milestones .ms-orn::before,#milestones .ms-orn::after { content:''; width:22px; height:1px; background:currentColor; opacity:.6; }
+#milestones .ms-orn i { width:5px; height:5px; transform:rotate(45deg); background:currentColor; }
+#milestones .ms-card time { font:italic 11px/1.5 var(--ms-serif); color:#62574e; letter-spacing:.5px; }
+#milestones button.ms-card:focus-visible { outline:3px solid var(--ms-ink); outline-offset:7px; }
+#milestones dialog.ms-detail { width:min(1040px,calc(100vw - 32px)); max-width:none; max-height:calc(100dvh - 32px); margin:auto; padding:0; border:1px solid #ece2d2; border-radius:22px; background:#fffdf8; color:#2b2630; box-shadow:0 24px 60px #28190a29; overflow:auto; --ms-ink:#2b2630; --ms-note:#625968; --ms-rule:#e5dac8; --ms-accent:#775b29; --panel:#fffdf8; --ms-grade-ink:#775b29; }
+#milestones dialog.ms-detail[open] { animation:ms-unfold 220ms ease-out; }
+#milestones dialog.ms-detail::backdrop { background:#17121e99; }
+#milestones .ms-sheet { display:grid; grid-template-columns:300px minmax(0,1fr); }
+#milestones .ms-sheet-art { padding:20px; background:linear-gradient(180deg,#faf3e3,#f3e7cd); }
+#milestones .ms-sheet-body { padding:26px 28px; }
+#milestones .ms-sheet-rank { color:#775b29; font-size:12px; line-height:1.7; letter-spacing:1px; margin:0 0 14px; }
+#milestones .ms-detail-head h3 { font-size:28px; }
+#milestones .ms-detail-head { border-top:0; margin-top:0; }
+#milestones .ms-highlight { display:flex; flex-wrap:wrap; align-items:flex-end; gap:14px; margin:18px 0 14px; }
+#milestones .ms-highlight-label { color:var(--ms-note); font-size:12px; }
+#milestones .ms-values { font:600 32px/1.4 var(--ms-serif); }
+#milestones .ms-old { color:var(--ms-note); font-size:20px; }
+#milestones .ms-delta { font:italic 600 16px var(--ms-serif); color:#775b29; background:#fbf4e4; border:1px solid #e6d3a6; border-radius:99px; padding:4px 12px; }
+#milestones .ms-sheet .ms-comment blockquote { background:#f7f2ea; border:0; border-radius:12px; padding:10px 12px; }
+#milestones .ms-sheet .btn { color:#2b2630; background:#fffdf8; border:1px solid #b8ac99; }
+#milestones .ms-sheet .btn:focus-visible { outline-color:#775b29; }
+@keyframes ms-unfold { from { opacity:0; transform:perspective(1200px) rotateY(-8deg) scale(.92); } to { opacity:1; transform:perspective(1200px) rotateY(0) scale(1); } }
+@media (hover:hover) {
+ #milestones .ms-tier:hover { background:var(--soft); }
+ #milestones .ms-item button.ms-card:hover { transform:translateY(-4px); box-shadow:0 18px 34px #28190a42,0 0 0 3px #fff,0 0 0 4.5px var(--m2); }
+ #milestones button.ms-card:hover .ms-sheen { transform:translateX(110%); }
+}
+:root[data-finish="midnight-black"] #milestones .ms-tier { --soft:color-mix(in srgb,var(--c) 16%,#15171c); --ms-grade-ink:var(--c2); }
+@media(max-width:700px) {
+ #milestones .ms-timeline { grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
  #milestones .ms-tiers { grid-template-columns:repeat(2,minmax(0,1fr)); }
- #milestones .ms-tier { padding:12px; border-bottom:1px solid var(--ms-rule); }
- #milestones .ms-tier small { font-size:11px; }
+ #milestones .ms-tier { padding:12px; min-height:82px; border-bottom:1px solid var(--ms-rule); }
  #milestones .ms-tier:nth-child(2n) { border-right:0; }
  #milestones .ms-tier:nth-last-child(-n+2) { border-bottom:0; }
- #milestones .ms-grade-banner { padding:12px 16px; gap:8px; flex-wrap:wrap; }
- #milestones .ms-grade-caption { flex:1 1 130px; }
- #milestones .ms-grade-caption b { letter-spacing:2px; }
- #milestones .ms-grade-caption span { font-size:10.5px; }
- #milestones .ms-banner-date { margin-left:auto; }
- #milestones .ms-card-body { padding:16px; }
- #milestones .ms-card footer { flex-direction:row; align-items:center; }
- #milestones .ms-card footer .btn { width:auto; margin-left:auto; }
+ #milestones .ms-sheet { grid-template-columns:1fr; }
+ #milestones .ms-sheet-art { padding:20px 20px 0; background:none; }
+ #milestones .ms-sheet-art .ms-card { max-width:220px; margin:0 auto; }
+ #milestones .ms-sheet-body { padding:22px 18px; }
+ #milestones .ms-plate { left:10px; right:10px; bottom:10px; padding:10px 7px 8px; }
+ #milestones .ms-card-title { font-size:13px; -webkit-line-clamp:2; }
+ #milestones .ms-new { top:9px; right:8px; font-size:8px; }
+ #milestones .ms-card-top { top:36px; }
 }
-/* Milestone grade banners (대표님 10/29): Legendary is bright champagne gold with dark ink; other grades stay deep enough for white text (AA) without a muddy black wash. */
-#milestones .ms-grade-banner { background:var(--bn); }
-#milestones .ms-grade-epic { --bn:linear-gradient(115deg,#3f2f6a 0%,#5a4687 55%,#6f5b9e 100%); }
-#milestones .ms-grade-rare { --bn:linear-gradient(115deg,#24456a 0%,#345c86 55%,#456e98 100%); }
-#milestones .ms-grade-record, #milestones .ms-grade-none { --bn:linear-gradient(115deg,#57504a 0%,#6a625a 55%,#776e65 100%); }
-#milestones .ms-grade-legendary .ms-grade-banner { color:#3a2a0e; background:linear-gradient(105deg,transparent 28%,#ffffff6b 44%,transparent 60%),linear-gradient(115deg,#d9bb74 0%,#f1dfae 42%,#fbf1d4 58%,#d6b466 100%); }
-#milestones .ms-grade-legendary .ms-grade-banner :is(b,strong,span,small,time,h4,p) { color:#3a2a0e !important; }
-#milestones .ms-grade-legendary .ms-grade-banner svg { color:#5a4216; }
+@media(prefers-reduced-motion:reduce) {
+ #milestones .ms-item button.ms-card:hover { transform:none; }
+ #milestones dialog.ms-detail[open],#milestones .ms-sheen { animation:none; transition:none; }
+}
+/* Collection card plate (서윤 검수 10/30): keep the chibi art visible; title max 2 lines. */
+#milestones .ms-card .ms-plate { left:14px; right:14px; bottom:14px; padding:9px 10px 7px; }
+#milestones .ms-card .ms-plate small { font-size:8.5px; letter-spacing:2px; margin:1px 0 2px; }
+#milestones .ms-card .ms-plate .ms-card-title { font-size:clamp(13px,1.15vw,15.5px); line-height:1.28; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+#milestones .ms-card .ms-plate .ms-orn { margin:4px 0 2px; }
+@media (max-width:640px){ #milestones .ms-card .ms-plate { left:9px; right:9px; bottom:9px; padding:7px 7px 6px; } #milestones .ms-card .ms-plate .ms-card-title { font-size:12.5px; } }
