@@ -8,7 +8,7 @@ import {pathToFileURL} from 'node:url';
 const root = path.resolve(import.meta.dirname,'..');
 if (!process.argv[2] || !process.argv[3]) throw Error('Usage: node scripts/hani-milestones-grade-ui.browser.mjs <playwright index.mjs> <msedge.exe>');
 const {chromium} = await import(pathToFileURL(path.resolve(process.argv[2])).href);
-const out = path.join(root,'artifacts','milestones-grade-ui'); fs.mkdirSync(out,{recursive:true});
+const out = path.join(root,'artifacts','milestones-polish'); fs.mkdirSync(out,{recursive:true});
 const mime = {'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.json':'application/json','.webp':'image/webp','.svg':'image/svg+xml'};
 const server = http.createServer((req,res) => {
   const file = path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://test').pathname === '/' ? '/index.html' : new URL(req.url,'http://test').pathname));
@@ -21,7 +21,7 @@ let browser;
 try {
   browser = await chromium.launch({executablePath:process.argv[3],headless:true});
   for (const width of [390,1440]) for (const finish of ['porcelain-cream','midnight-black']) {
-    const ctx = await browser.newContext({viewport:{width,height:1000},reducedMotion:'reduce'});
+    const ctx = await browser.newContext({viewport:{width,height:1000},reducedMotion:'no-preference'});
     await ctx.route('**/*',r=>new URL(r.request().url()).origin === origin ? r.continue() : r.abort());
     const page = await ctx.newPage(), errors=[];
     page.on('pageerror',e=>errors.push(e.message));
@@ -59,6 +59,48 @@ try {
     }
     await page.locator('[data-ms-filter="ALL"]').click();
     await page.locator('[data-ms-sort]').selectOption('newest');
+    // Exercise computed visual states, not merely selector/string presence.
+    const styles = locator => locator.evaluate(e => { const s=getComputedStyle(e); return {background:s.backgroundColor,border:s.borderColor,shadow:s.boxShadow,transform:s.transform,transition:s.transitionDuration,color:s.color,outline:s.outlineStyle,decoration:s.textDecorationLine}; });
+    const tier=page.locator('[data-ms-grade="EPIC"]');
+    await page.mouse.move(0,0); const idle=await styles(tier);
+    assert.ok(idle.transition.split(',').every(t=>Number.parseFloat(t)>=.15&&Number.parseFloat(t)<=.22),tag+' 150–220ms');
+    await tier.hover(); await page.waitForTimeout(240);
+    assert.notEqual((await styles(tier)).background,idle.background,tag+' tier hover');
+    await tier.click(); await page.mouse.move(0,0); await page.waitForTimeout(240);
+    assert.equal(await tier.getAttribute('aria-pressed'),'true');
+    const active=await styles(tier);
+    assert.notEqual(active.background,idle.background,tag+' selected background');
+    assert.notEqual(active.shadow,idle.shadow,tag+' selected border');
+    await tier.click(); await page.mouse.move(0,0); await page.waitForTimeout(240);
+    assert.equal((await styles(tier)).background,idle.background,tag+' deselected');
+    const card=page.locator('.ms-card.ms-grade-epic').first();
+    const rest=await styles(card); await card.hover(); await page.waitForTimeout(240);
+    assert.notEqual((await styles(card)).border,rest.border,tag+' card hover border');
+    assert.notEqual((await styles(card)).transform,rest.transform,tag+' subtle elevation');
+    const cta=card.locator('[data-ms-open]'); await cta.hover(); await page.waitForTimeout(240);
+    assert.ok((await styles(cta)).decoration.includes('underline'),tag+' CTA hover');
+    await page.mouse.move(0,0); await page.keyboard.press('Tab'); await cta.focus();
+    assert.equal(await cta.evaluate(e=>e.matches(':focus-visible')),true,tag+' keyboard focus');
+    assert.equal((await styles(cta)).outline,'solid',tag+' focus outline');
+    await page.emulateMedia({reducedMotion:'reduce'}); await card.hover();
+    assert.equal((await styles(card)).transform,'none',tag+' reduced motion transform');
+    assert.ok((await styles(card)).transition.split(',').every(t=>Number.parseFloat(t)===0),tag+' reduced motion transition');
+    await page.mouse.move(0,0);
+    // Check actual theme-resolved neutral and grade inks against their surfaces.
+    const contrasts=await page.evaluate(()=>{
+      const canvas=document.createElement('canvas'), paint=canvas.getContext('2d',{willReadFrequently:true});
+      const rgb=c=>{paint.fillStyle=c;paint.fillRect(0,0,1,1);return [...paint.getImageData(0,0,1,1).data].slice(0,3);};
+      const lum=c=>rgb(c).map(x=>{x/=255;return x<=.04045?x/12.92:((x+.055)/1.055)**2.4;}).reduce((a,v,i)=>a+v*[.2126,.7152,.0722][i],0);
+      const ratio=(a,b)=>(Math.max(lum(a),lum(b))+.05)/(Math.min(lum(a),lum(b))+.05);
+      const probe=document.createElement('span'); document.body.append(probe);
+      const resolve=(e,v)=>{probe.style.color=getComputedStyle(e).getPropertyValue(v);return getComputedStyle(probe).color;};
+      const result=[];
+      for(const e of document.querySelectorAll('#milestones .ms-tier,#milestones .ms-card')) {
+        for(const ink of ['--ms-grade-ink','--ms-note','--ms-ink']) for(const bg of ['--ms-paper','--soft']) result.push({class:e.className,ink,bg,ratio:ratio(resolve(e,ink),resolve(e,bg))});
+      }
+      probe.remove();return result;
+    });
+    assert.deepEqual(contrasts.filter(c=>c.ratio<4.5),[],tag+' theme AA text');
     const layout=await page.evaluate(()=>{
       const nodes=[...document.querySelectorAll('#milestones .ms-card *,#milestones .ms-tier')].filter(e=>e.getClientRects().length&&!e.closest('svg')&&!e.classList.contains('ms-sr'));
       return {overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth,clipped:nodes.filter(e=>e.scrollWidth>e.clientWidth+2).map(e=>e.className),ids:[...document.querySelectorAll('[id]')].map(e=>e.id)};
