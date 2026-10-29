@@ -50,7 +50,7 @@ try{
     assert.equal(await page.locator('#settings #cloudBridgeCard').count(),1);
     if(width===390){await page.evaluate(()=>document.querySelector('#app').classList.add('mobile-open'));await page.locator('.side [data-view="organization"]').click();assert.equal(await page.locator('#app').evaluate(e=>e.classList.contains('mobile-open')),false)}
     else await page.locator('.side [data-view="organization"]').click();
-    assert.equal(await page.locator('.ogh-cta').count(),0,'duplicate overview hero removed');assert.equal(await page.locator('#organization > .ds-main-character-banner').count(),1,'canonical organization hero retained');await page.locator('[data-organization-tab="people"]').click();assert.equal(await page.locator('[data-organization-tab="people"]').getAttribute('aria-selected'),'true');
+    assert.equal(await page.locator('.ogh-overview > .ogh-hero .ogh-cta:visible').count(),1,'approved HANI-77 overview CTA restored');assert.equal(await page.locator('#organization > .ds-main-character-banner').count(),1,'canonical organization hero retained');await page.locator('[data-organization-tab="people"]').click();assert.equal(await page.locator('[data-organization-tab="people"]').getAttribute('aria-selected'),'true');
     await page.locator('[data-organization-tab="overview"]').click();
     await page.locator('[data-organization-tab="overview"]').focus();await page.keyboard.press('ArrowRight');
     assert.equal(await page.locator('[data-organization-tab="people"]').getAttribute('aria-selected'),'true');

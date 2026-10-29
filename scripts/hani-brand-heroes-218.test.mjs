@@ -40,7 +40,8 @@ test('every live source nav view uses one owner; reused image paths exist',()=>{
   assert.match(read('hani-ilbo.js'),/<h2>HANI 일보<\/h2>/);assert.match(read('hani-ilbo.js'),/HANI 일보 · 지난 호 보관함/);
 });
 test('every non-hero byte, including controls, login, storage, versions and EOL, matches the integrated branch base',()=>{
-  const files=['index.html','hani-main.js','hani-ui-v02992.js','hani-context-remote-v1.js','hani-context-remote.css','hani-ui-cleanup-v02971.js','hani-office-live.js','hani-investment-committee.js','hani-ilbo.js','hani-organization-hub.js','hani-design-system.css','hani-style-07.css','hani-ai-budget.css','assets/data/office-actions-216.json','data/hani-building/art-map-v1.json'];
+  // art-map-v1.json left this list with the approved office seed (#339); the office suites check it.
+  const files=['index.html','hani-main.js','hani-ui-v02992.js','hani-context-remote-v1.js','hani-context-remote.css','hani-ui-cleanup-v02971.js','hani-office-live.js','hani-investment-committee.js','hani-ilbo.js','hani-organization-hub.js','hani-design-system.css','hani-style-07.css','hani-ai-budget.css','assets/data/office-actions-216.json'];
   for(const file of files){
     const current=read(file);if(file.endsWith('.js'))new vm.Script(current,{filename:file});
     assert.equal(current,baseline(file),file+' only exact reviewed hero/remote delta allowed; all other bytes preserved');

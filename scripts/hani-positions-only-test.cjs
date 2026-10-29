@@ -1,7 +1,7 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const main=fs.readFileSync(require('node:path').join(__dirname,'../hani-main.js'),'utf8');
 const context={window:{},document:{getElementById:()=>null},console,structuredClone,uid:()=> 'test-id',nullableNum:v=>v==null?null:Number(v),inferMarket:()=> 'US',monthKeyNow:()=> '2026-09',lastDayOfMonth:()=> '2026-09-30',n:v=>Number(v)||0};
-vm.createContext(context);
+vm.createContext(context);require('./qa-1st-test-support.cjs').loadInputHelpers(context);
 for(const name of ['normalizeBrokerHolding','normalizeBrokerAccount','normalizeBrokerSnapshot','brokerSorted'])vm.runInContext(main.split(/\r?\n/).find(l=>l.startsWith('function '+name+'(')),context);
 vm.runInContext(fs.readFileSync(require('node:path').join(__dirname,'../hani-asset-update-v1.js'),'utf8'),context);
 const api=context.window.HANI_ASSET_UPDATE_V1,d={positionsOnly:true,marketLinked:true,date:'2026-09-30',holdings:[{name:'Apple',ticker:'AAPL',quantity:2,buyPrice:100,buyCurrency:'USD'}]};

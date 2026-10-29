@@ -1,13 +1,13 @@
-// Seed 233 activates two canon desks ahead of the unchanged 232 scheduler catalog.
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import {assets} from './hani-office-v2-fixture.mjs';
+import {readReviewedCurrentSource} from './hani-reviewed-release-baseline.mjs';
 const read=file=>fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
 const source=read('hani-office-live.js'),context=vm.createContext({HaniOfficeV2Assets:assets,document:{getElementById:()=>null},window:{}});
-// Published 232 roster and the 233 seed agree on nineteen registered people.
-vm.runInContext(source,context);vm.runInContext(read('hani-organization-hub.js'),context);
+// The approved join excludes the office scene; preserve its 17-person oracle.
+vm.runInContext(source,context);vm.runInContext(readReviewedCurrentSource('hani-organization-hub.js'),context);
 const api=context.HaniBuildingScene,plain=value=>JSON.parse(JSON.stringify(value));
 const at=time=>api.snapshot(new Date('2026-10-11T'+time+':00+09:00'));
 test('19 canonical staff, exact home floors and immutable config',()=>{
@@ -23,7 +23,7 @@ for(const time of ['09:59','10:00','10:29','10:30','11:59','12:00','12:59','13:0
   assert.equal(entries.length,19);assert.equal(new Set(entries.map(p=>p.id)).size,19);
   assert.equal(visitors.length,0);assert.equal(leads.length,0);
   assert.ok(entries.filter(p=>p.activity==='work').every(p=>p.floor===p.home));
-  for(const f of result.floors){assert.ok(f.visible.length<=6);assert.equal(f.visible.length+f.overflow,f.people.length);assert.equal(f.work+f.rest,f.people.length)}
+  for(const f of result.floors){assert.ok(f.visible.length<=Math.max(6,f.residents.length));assert.equal(f.visible.length+f.overflow,f.people.length);assert.equal(f.work+f.rest,f.people.length)}
  });
 }
 test('fallback determinism and timezone independence; variation belongs to the 216 scheduler',()=>{

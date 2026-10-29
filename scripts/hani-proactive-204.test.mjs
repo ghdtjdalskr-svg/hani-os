@@ -1,6 +1,7 @@
 import {readReviewedCurrentSource} from './hani-reviewed-release-baseline.mjs';
 import {readBranchBaseline} from './hani-regression-baseline.mjs';
 import test from 'node:test';
+import qaSupport from './qa-1st-test-support.cjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {cacheRefs} from './hani-216-cache-expectations.mjs';
@@ -20,6 +21,7 @@ function fixture(){
  let calls=0,result=true;
  const FakeDate=class extends Date{constructor(...a){super(...(a.length?a:['2026-10-11T03:00:00Z']))}static now(){return new FakeDate().getTime()}};
  const c=vm.createContext({state,Date:FakeDate,Intl,console,structuredClone,alert:()=>{},uid:()=> 'task-'+calls,commit:()=>{calls++;return result},renderCampus:()=>{},renderHaniCareHome:()=>{}});
+ qaSupport.loadInputHelpers(c);
  vm.runInContext(single('careKoreaPeriod')+'\n'+single('campusSemestersSorted')+'\n'+section+'\n'+['intakeCampusTaskRows','intakeText','intakeDate','intakeCampusAssessmentType','intakeNormText'].map(single).join('\n'),c);
  // Run the real intakeApplyRow implementation; its task branch requires no normalization.
  vm.runInContext(single('intakeApplyRow'),c);

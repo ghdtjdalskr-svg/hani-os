@@ -6,7 +6,7 @@ const functions=['intakeText','intakeNormText','intakeDate','intakeNumber','inta
 class KstBoundaryDate extends Date{constructor(...args){super(...(args.length?args:['2026-10-11T16:49:00Z']))}}
 let writes=0;
 const ctx={Date:KstBoundaryDate,Intl,structuredClone,console,window:{},document:{getElementById(){return null}},today:()=>new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul'}).format(new KstBoundaryDate()),normalizeDateFlexDate:x=>x,uid:()=> 'test-id',intakeApplyRow(){writes++},agentApi(){throw Error('Local text must never call Cloud/AI')}};
-vm.createContext(ctx);
+vm.createContext(ctx);if(!baseline)require('./qa-1st-test-support.cjs').loadInputHelpers(ctx);
 for(const name of functions){const start=source.indexOf(`function ${name}(`);if(start<0){assert.ok(baseline&&name==='intakeReadingToday',name);continue}const rest=source.slice(start),next=rest.search(/\r?\nfunction /);vm.runInContext(next<0?rest:rest.slice(0,next),ctx)}
 vm.runInContext(read('hani-yuna-helpdesk.js'),ctx);
 const api=ctx.window.HANI_YUNA_HELPDESK,cases=[
@@ -22,11 +22,11 @@ const api=ctx.window.HANI_YUNA_HELPDESK,cases=[
 let failures=0;
 for(const [text,title,author,status,rating] of cases){
  try{
-  const natural=ctx.intakeNaturalBook(text);assert.ok(natural);assert.equal(natural.title,title);assert.equal(natural.author,author);assert.equal(natural.status,status);assert.equal(natural.rating,rating);
-  const draft=api.parse(text,'book');assert.equal(draft.mode,'draft');assert.equal(draft.target,'book');assert.equal(draft.data.title,title);assert.equal(draft.data.author,author);assert.equal(draft.data.status,status);assert.equal(draft.data.rating,rating);assert.equal(draft.missing.length,0);
+  const natural=ctx.intakeNaturalBook(text);assert.ok(natural);assert.equal(natural.title,title);assert.equal(natural.author,author);assert.equal(natural.status,status);assert.equal(natural.rating,null,'raw score without a scale stays unconfirmed');
+  const draft=api.parse(text,'book');assert.equal(draft.mode,'draft');assert.equal(draft.target,'book');assert.equal(draft.data.title,title);assert.equal(draft.data.author,author);assert.equal(draft.data.status,status);if(rating!==null){assert.equal(draft.data.rating,null);assert.deepEqual(Array.from(draft.missing),['rating']);assert.equal(draft.entities.ratingInput.value,rating);api.hydrateMissing(draft,'5점 만점');}assert.equal(draft.data.rating,rating);assert.equal(draft.missing.length,0);
   assert.equal(status==='read'?draft.data.completedDate:draft.entities.readingDate,'2026-10-12','KST day crosses UTC midnight');
   const data=api.saveData(draft);assert.equal(data.title,title);assert.equal(status==='read'?data.completedDate:data.review.includes('읽기 시작일: 2026-10-12'),status==='read'?'2026-10-12':true);
-  const intake=ctx.intakeBuildOne('book',{},text);assert.equal(intake.title,title);assert.equal(intake.author,author);assert.equal(intake.status,status);assert.equal(intake.rating,rating);if(status==='read')assert.equal(intake.completedDate,'2026-10-12');else assert.match(intake.review,/읽기 시작일: 2026-10-12/);
+  const intake=ctx.intakeBuildOne('book',{},text);assert.equal(intake.title,title);assert.equal(intake.author,author);assert.equal(intake.status,status);assert.equal(intake.rating,null,'intake raw score without a scale stays unconfirmed');if(status==='read')assert.equal(intake.completedDate,'2026-10-12');else assert.match(intake.review,/읽기 시작일: 2026-10-12/);
   api.patchBookDraft(draft,'제목은 새도서\n저자는 김작가\n평점은 4.5');assert.equal(draft.data.title,'새도서');assert.equal(draft.data.author,'김작가');assert.equal(draft.data.rating,4.5);
  }catch(e){if(!baseline)throw e;failures++;console.log('BASELINE FAIL:',text,'—',e.message.split('\n')[0])}
 }

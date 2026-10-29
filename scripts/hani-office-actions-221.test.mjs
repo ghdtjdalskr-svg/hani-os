@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {assertResources} from './hani-office-place-assertions.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
@@ -37,7 +38,7 @@ for(const [day,time] of [['2026-10-20','10:00'],['2026-10-20','21:00'],['2026-10
   test(`fake clock ${day} ${time} KST: every occupied floor has an eligible visible action within 90s`,()=>{
     const now=day+'T'+time+':00+09:00',model=scene(now),snapshot=model.snapshot(),seconds=snapshot.seconds;
     assert.equal(snapshot.day,day);assert.equal(snapshot.minutes,Number(time.slice(0,2))*60+Number(time.slice(3)));
-    const present=snapshot.entries.map(p=>p.id).sort();assert.equal(present.length,time==='02:00'?5:17);
+    const present=snapshot.entries.map(p=>p.id).sort();assert.equal(present.length,time==='02:00'?5:19);
     if(time==='02:00')assert.deepEqual(present,['dohyun','minji','mir','seoyun','yuna']);
     const checks=[];
     for(const floor of snapshot.floors.filter(f=>f.people.length)){
@@ -69,7 +70,7 @@ test('all scheduled actors/parents remain present for the entire excursion, no a
         const previous=floorTicks.get(e.familyId);if(previous!==undefined)assert.ok(e.start-previous>=30);floorTicks.set(e.familyId,e.start);
       }
       for(let i=active.length-1;i>=0;i--)if(active[i].end<=e.start)active.splice(i,1);
-      for(const other of active){assert.ok(!other.people.some(p=>e.people.some(q=>p.id===q.id)));assert.ok(!other.resources.some(r=>e.resources.includes(r)))}active.push(e);
+      for(const other of active){assert.ok(!other.people.some(p=>e.people.some(q=>p.id===q.id)));assertResources(s,e,other)}active.push(e);
     }
     // Sample real projections at departures, lounge switches, midnight and late night.
     for(const t of [0,3599.9,3600,6000,7200,25199.9,25200,64799.9,64800,86399.9]){

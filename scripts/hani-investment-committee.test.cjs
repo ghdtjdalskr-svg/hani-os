@@ -1,6 +1,7 @@
 /* Synthetic data; direct node execution avoids node --test subprocess restrictions. */
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const inputContext=require('node:vm').createContext({Date});require('./qa-1st-test-support.cjs').loadInputHelpers(inputContext);global.validateEntryDates=inputContext.validateEntryDates;
 const C = require('../hani-investment-committee.js');
 const fixture = require('./fixtures/investment-research-mock.json');
 const state = () => ({investmentResearchCards: fixture.cards.map((c,i) => ({...C.normalizeCard(c),id:'r'+i})),investmentResearchHistory:[],investmentCommitteeSnapshots:[]});

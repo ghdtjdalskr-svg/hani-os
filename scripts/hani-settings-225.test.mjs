@@ -11,6 +11,7 @@ import {createRequire} from 'node:module';
 import {settingsDelta as originalDelta,withoutSettings225} from './hani-settings-225-preservation.mjs';
 import {verifySettingsStatusProjection} from './hani-settings-225-state.mjs';
 import {verifySettingsMarkup} from './hani-settings-225-markup.mjs';
+import {verifySettingsQaGuard} from './hani-settings-225-qa-guard.mjs';
 const require=createRequire(import.meta.url);
 // Preserve all integrated bytes except the exact separately reviewed hero delta.
 const settingsDelta={...originalDelta,files:Object.fromEntries(Object.entries(originalDelta.files).map(([file,entry])=>{
@@ -42,6 +43,7 @@ for(const [a,b]of [['id="resetBtn"','id="lostReset"'],['Local / Cloud 원본 보
 }
 check(await verifySettingsStatusProjection(read('hani-main.js'),read('hani-drive-vault.js')));
 check(verifySettingsMarkup(read('index.html'),withoutSettings225('index.html',read('index.html')),plan));
+check(verifySettingsQaGuard(fs.readFileSync(path.join(root,'hani-main.js'),'utf8'),readBranchBaseline('hani-main.js'),fs.readFileSync(path.join(root,'index.html'),'utf8'),plan));
 if(process.argv.includes('--static')){
  console.log('PASS (Node only): '+result.checks.join('\nPASS: ')+'\nBrowser checks not run');
  process.exit(0);
@@ -54,7 +56,12 @@ async function create(before=false,width=1440){
   const file=path.resolve(root,'.'+decodeURIComponent(url.pathname==='/'?'/index.html':url.pathname));
   if(!file.startsWith(root+path.sep)||!fs.existsSync(file)||!fs.statSync(file).isFile())return route.fulfill({status:404,body:''});
   let body=fs.readFileSync(file);const relative=path.relative(root,file).replaceAll('\\','/');
-  if(before&&settingsDelta.files[relative])body=Buffer.from(withoutSettings225(relative,body.toString('utf8')));
+  // Keep main's reviewed QA integration on both pages. HTML/CSS still use the
+  // exact presentation oracle because other integrations overlap their hunks.
+  if(before&&settingsDelta.files[relative]){
+   const source=relative==='hani-main.js'?body.toString('utf8'):readReviewedCurrentSource(relative);
+   body=Buffer.from(withoutSettings225(relative,withoutHeroRestore(relative,source)));
+  }
   return route.fulfill({body,contentType:({'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css','.json':'application/json','.webp':'image/webp','.png':'image/png','.svg':'image/svg+xml'})[path.extname(file)]||'application/octet-stream'});
  });
  await context.addInitScript(()=>{

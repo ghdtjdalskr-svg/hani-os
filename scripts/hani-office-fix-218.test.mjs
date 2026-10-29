@@ -30,7 +30,7 @@ export async function loadScene(time,day='2026-10-18'){
   }});
   // Await the production async bootstrap. No metadata, action, roster or event fixtures.
   await vm.runInContext(source,context);
-  assert.equal(requests.length,6);assert.equal(requests.filter(url=>url.endsWith('sprites-v3/manifest-v3.json')).length,1);assert.ok(context.HaniBuildingScene.scheduler);
+  assert.equal(requests.length,7);assert.equal(requests.filter(url=>url.endsWith('office-places.json')).length,1);assert.equal(requests.filter(url=>url.endsWith('sprites-v3/manifest-v3.json')).length,1);assert.ok(context.HaniBuildingScene.scheduler);
   return {scene:context.HaniBuildingScene,snapshot:context.HaniBuildingScene.snapshot(),requests};
 }
 
@@ -49,7 +49,7 @@ test.after(async()=>{
         assert.deepEqual(ids,['dohyun','minji','mir','seoyun','yuna']);assert.match(s.presenceNote,/심야.*라운지/);
         assert.ok(s.floors.find(f=>f.id==='3f').people.every(p=>p.line&&!['자료 확인 중','퇴근 준비 중'].includes(p.line)),'late-night vocabulary only');
       }else{
-        assert.equal(ids.length,17);for(const id of ['1f','2f','3f','4f'])assert.ok(s.floors.find(f=>f.id===id).visible.length>0,id);
+        assert.equal(ids.length,19);for(const id of ['1f','2f','3f','4f'])assert.ok(s.floors.find(f=>f.id===id).visible.length>0,id);
         // Idle lines keep cycling inside the evening vocabulary (lively); daytime desk lines never leak in.
         if(time==='19:31'||time==='23:00')assert.ok(entries.every(p=>p.idle&&p.line&&(p.id==='mir'||p.line!=='자료 확인 중')));
       }
@@ -57,7 +57,7 @@ test.after(async()=>{
       const lounge=entries.filter(p=>p.activity==='rest');
       if(['19:31','23:00','02:00'].includes(time))assert.deepEqual(lounge.map(p=>p.id).sort(),['minji','yuna']);
       else assert.equal(lounge.length,0);
-      for(const p of entries){if(p.activity!=='rest'&&!p.stroll)assert.equal(p.seat.anchor,scene.homeSeat(p.id).anchor);else if(p.stroll)assert.equal(scene.anchors.get(p.seat.anchor).floor,p.home);else assert.match(p.seat.anchor,/lobby-/);assert.ok(scene.anchors.has(p.seat.anchor));assert.equal(p.actionId,'base-work');}
+      for(const p of entries){if(p.activity!=='rest'&&!p.stroll)assert.equal(p.seat.anchor,scene.homeSeat(p.id).anchor);else if(p.stroll){assert.equal(scene.anchors.get(p.seat.anchor).floor,p.floor);if(p.state==='AT_PLACE')assert.equal(scene.anchors.get(p.targetAnchor).floor,p.floor)}else assert.match(p.seat.anchor,/lobby-/);assert.ok(scene.anchors.has(p.seat.anchor));assert.equal(p.actionId,'base-work');}
       assert.equal(scene.scheduler.plan(s.day).length,0,'weekend presence never enables weekday actions');
     });
   }
@@ -65,12 +65,12 @@ test.after(async()=>{
     const {scene}=await loadScene('12:30','2026-10-19');
     const at=t=>scene.scheduler.snapshot(`2026-10-19T${t}+09:00`);
     for(const time of ['01:00:00','02:00:00','06:59:59'])assert.deepEqual(Array.from(at(time).entries,p=>p.id).sort(),['dohyun','minji','mir','seoyun','yuna']);
-    for(const time of ['00:00:00','00:59:59','07:00:00','09:00:00','17:59:59','18:00:00','22:00:00','23:59:59'])assert.equal(at(time).entries.length,17);
+    for(const time of ['00:00:00','00:59:59','07:00:00','09:00:00','17:59:59','18:00:00','22:00:00','23:59:59'])assert.equal(at(time).entries.length,19);
     assert.ok(at('17:59:59').entries.filter(p=>!p.eventId).every(p=>p.line!=='퇴근 준비 중'&&!/야근/.test(p.line)));
     assert.ok(at('18:00:00').entries.filter(p=>!p.eventId&&p.id!=='mir').every(p=>p.line!=='자료 확인 중'));
     const now='2026-10-19T23:00:00+09:00';
     assert.equal(scene.scheduler.snapshot(now,{presentIds:[]}).entries.length,0);
-    assert.equal(scene.scheduler.snapshot(now,{summoned:['mir','dohyun']}).entries.length,15);
+    assert.equal(scene.scheduler.snapshot(now,{summoned:['mir','dohyun']}).entries.length,17);
     assert.ok(scene.scheduler.snapshot(now,{chairmanPresent:true}).entries.some(p=>p.id==='seongmin'&&p.seat.anchor==='ceo-reserved'));
     assert.ok(scene.scheduler.plan('2026-10-19').length>0,'weekday scheduler still runs');
   });
