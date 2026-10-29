@@ -248,9 +248,13 @@
       errandPlaces.push({id:'errand-deliver-'+a.room,kind:'errand',errandKind:'delivery',floor:a.floor,room:a.room,slots:[a.id],pose:'stand',stay:[8,25],go:name+' 가는 중',at:['서류 전달 중']});
     }
     for(const card of placeTable?.errands||[])if(card.slots.every(id=>anchors.get(id)?.floor===card.floor&&anchors.get(id)?.room===card.room))errandPlaces.push(card);
+    // The existing reception counter restores a short public work stop when
+    // business desk approaches cannot fit phone sprites. Same reservation gates.
+    if(places.length&&anchors.has('reception'))errandPlaces.push({id:'task-reception-1f',kind:'errand',errandKind:'task',floor:'1f',room:'lobby',slots:['reception'],pose:'stand',stay:[8,25],go:'접수대로 가는 중',at:['접수대에서 전달 사항 확인 중','접수대에서 방문 일정 확인 중']});
     const defaults=actions.get('base-work'),cache=new Map(),paths=new Map(),targetCache=new Map(),slotCache=new Map();
     // Voice/role grounding: existing office-tap-lines toChairman and seeded jobs.
-    // No new place or chair: reports stand on the existing CEO approach junctions.
+    // No new place or chair: the existing CEO entrance is real floor, reachable
+    // through the same canon edges. Near-desk junctions overlap 40px phone sprites.
     const chairmanVoice={
       hani:{greet:'회장님, 오늘 안건 정리해 뒀어요',topic:'오늘 안건',reply:'네, 핵심부터 묶어 둘게요',short:'안건 보고 중'},
       gaeun:{greet:'회장님, 다음 일정 챙겨 뒀어요',topic:'다음 일정',reply:'네, 이동 여유도 챙길게요',short:'일정 보고 중'},
@@ -264,7 +268,7 @@
       naeun:{topic:'비용 점검',reply:'네, 비용부터 살펴둘게요',short:'비용 보고 중'}
     };
     const chairmanPoint=art.anchors['ceo-reserved'];
-    const reportSlots=chairmanPoint?[...anchors.values()].filter(a=>a.floor==='4f'&&a.room==='ceo'&&a.type==='junction'&&a.runtimeAssignable!==false&&(()=>{const q=art.anchors[a.id],d=q&&Math.hypot((q.x-chairmanPoint.x)*(art.width||1672)/100,(q.y-chairmanPoint.y)*(art.height||941)/100);return d>=32&&d<=160})()).map(a=>a.id):[];
+    const reportSlots=chairmanPoint?[...anchors.values()].filter(a=>a.floor==='4f'&&a.room==='ceo'&&['junction','door'].includes(a.type)&&a.runtimeAssignable!==false&&(()=>{const q=art.anchors[a.id],d=q&&Math.hypot((q.x-chairmanPoint.x)*(art.width||1672)/100,(q.y-chairmanPoint.y)*(art.height||941)/100);return d>=170})()).map(a=>a.id):[];
     const reportPlaces=reportSlots.length?Object.entries(chairmanVoice).map(([id,v])=>({id:'chairman-report-'+id,kind:'report',floor:'4f',room:'ceo',slots:reportSlots,pose:'stand',stay:[20,60],go:'회장님께 보고하러 가는 중',at:['회장님께 '+v.topic+' 보고 중',v.reply],atByPerson:{[id]:['회장님께 '+v.topic+' 보고 중',v.reply]}})):[];
     const chairmanShort=new Map(Object.values(chairmanVoice).flatMap(v=>[[v.greet,'회장님께 인사 중'],['회장님께 '+v.topic+' 보고 중',v.short],[v.reply,'보고 답변 중']]));
     const greetingCache=new WeakMap();
@@ -285,6 +289,19 @@
       if(first===last)return (index.buckets.get(first)||[]).filter(e=>e.start<end&&start<e.end);
       const result=new Set();for(let k=first;k<=last;k++)for(const e of index.buckets.get(k)||[])if(e.start<end&&start<e.end)result.add(e);
       return [...result];
+    }
+    function replaceLedgerIndex(ledger,old,event){
+      const index=ledgerIndices.get(ledger);if(!index)return;
+      const position=ledger.indexOf(event);if(position>=index.length)return;
+      // A gathering extension only grows the end time. Replace its indexed
+      // entries and insert new minutes in ledger order; retain the other 8k
+      // formal entries and their already built buckets.
+      for(let k=Math.floor(old.start/60);k<=Math.floor(event.end/60);k++){
+        let bucket=index.buckets.get(k);if(!bucket){bucket=[];index.buckets.set(k,bucket)}
+        const found=bucket.indexOf(old);
+        if(found>=0)bucket[found]=event;
+        else{const at=bucket.findIndex(e=>ledger.indexOf(e)>position);bucket.splice(at<0?bucket.length:at,0,event)}
+      }
     }
     function path(from,to){let targets=paths.get(from);if(!targets){targets=new Map();paths.set(from,targets)}if(!targets.has(to))targets.set(to,route(from,to));return targets.get(to)}
     function slot(id,pose='sit'){
@@ -683,10 +700,17 @@
     function gap(p,q){const a=pixels(p.position||[p.seat.x,p.seat.y]),b=pixels(q.position||[q.seat.x,q.seat.y]);return Math.hypot(a[0]-b[0],a[1]-b[1])}
     function resourceIntervals(e){
       if(intervalCache.has(e))return intervalCache.get(e);
-      const result=new Map(),add=(id,start,end)=>{if(!result.has(id))result.set(id,[]);result.get(id).push({start,end})};
+      const result=new Map(),add=(id,start,end)=>{
+        let ranges=result.get(id);if(!ranges){ranges=[];result.set(id,ranges)}
+        const last=ranges[ranges.length-1];
+        // Adjacent legs and the stay reserve one continuous node interval.
+        // Preserve the exact union while avoiding duplicate tiny range objects.
+        if(last&&last.end===start)last.end=end;else ranges.push({start,end});
+      };
       for(const t of e.people){
-        for(const l of [...t.out,...t.back]){add(l.from,l.start,l.end);add(l.to,l.start,l.end)}
+        for(const l of t.out){add(l.from,l.start,l.end);add(l.to,l.start,l.end)}
         add(t.seat.anchor,t.out.at(-1)?.end??e.start,t.back[0]?.start??e.end);
+        for(const l of t.back){add(l.from,l.start,l.end);add(l.to,l.start,l.end)}
       }
       // Internal cache only; do not alter the public event shape or formal ledger.
       intervalCache.set(e,result);return result;
@@ -699,12 +723,25 @@
         if(!ids.has(a.resources[0]))return false;
         const ranges=resourceIntervals(b).get(a.resources[0]);return !!ranges&&ranges.some(p=>overlap(a,p));
       }
-      if(!a.resources.some(r=>ids.has(r)))return false;
-      const x=resourceIntervals(a),y=resourceIntervals(b);
-      for(const [id,ranges]of x)if(y.has(id)&&ranges.some(p=>y.get(id).some(q=>overlap(p,q))))return true;
+      // Most nearby formal expressions share no route node. Build interval
+      // maps lazily and inspect only shared resources, without nested callbacks.
+      let x,y;
+      for(const id of a.resources){
+        if(!ids.has(id))continue;
+        if(!x){x=resourceIntervals(a);y=resourceIntervals(b)}
+        const left=x.get(id),right=y.get(id);if(!left||!right)continue;
+        for(const p of left)for(const q of right)if(overlap(p,q))return true;
+      }
       return false;
     }
     const eventMotion=new WeakMap(),stationaryMotion={moving:false};
+    const resourceFloorCache=new WeakMap(),intermediateFloorCache=new WeakMap();
+    function resourceFloors(e){
+      let floors=resourceFloorCache.get(e.resources);
+      if(!floors){floors=new Set(e.resources.map(id=>anchors.get(id).floor));resourceFloorCache.set(e.resources,floors)}
+      return floors;
+    }
+    function sharesResourceFloor(e,floors){for(const floor of resourceFloors(e))if(floors.has(floor))return true;return false}
     function motion(e){
       let value=eventMotion.get(e);
       if(!value){value=e.people.some(t=>t.seat.anchor!==t.home.anchorId)?{moving:true,floors:new Set(e.people.flatMap(t=>[t.home.floor,anchors.get(t.seat.anchor).floor]))}:stationaryMotion;eventMotion.set(e,value)}
@@ -712,14 +749,20 @@
     }
     function floorCapacity(candidate,nearby){
       const own=motion(candidate);if(!own.moving)return true;
+      // A single actor with no moving neighbour fits every existing time cap.
+      if(!nearby.length&&candidate.people.length===1)return true;
       const reservations=nearby.filter(e=>motion(e).moving);reservations.push(candidate);
-      const ticks=[candidate.start,candidate.end-.00001,3600,25200,41400,46800,...reservations.flatMap(e=>[e.start,e.end])].filter(s=>s>=candidate.start&&s<candidate.end);
-      for(const floor of own.floors)for(const seconds of ticks){
+      const ticks=new Set([candidate.start,candidate.end-.00001,3600,25200,41400,46800,...reservations.flatMap(e=>[e.start,e.end])].filter(s=>s>=candidate.start&&s<candidate.end));
+      for(const floor of own.floors){
+       const relevant=reservations.filter(e=>motion(e).floors.has(floor));
+       if(relevant.length===1&&candidate.people.length===1)continue;
+       for(const seconds of ticks){
         let count=0,groups=0,people=0;
-        for(const e of reservations)if(motion(e).floors.has(floor)&&e.start<=seconds&&seconds<e.end){count++;people+=e.people.length;if(e.people.length>1)groups++}
+        for(const e of relevant)if(e.start<=seconds&&seconds<e.end){count++;people+=e.people.length;if(e.people.length>1)groups++}
         if(isLate(seconds)){if(people>1)return false}
         else if(seconds>=41400&&seconds<46800){if(people>4)return false}
         else if(count>2||groups>1)return false;
+      }
       }
       return true;
     }
@@ -776,13 +819,17 @@
       physicalFloorIntervals.set(e,intervals);return intervals;
     }
     function transitCapacity(candidate,nearby){
+      if(!nearby.length)return true;
       const all=[candidate,...nearby].filter(e=>!e.visitor&&motion(e).moving);
-      if(!all.some(e=>motion(e).floors.size>1))return true;
       // Endpoint floors already have stronger full-excursion reservations.
       // Only an intermediate floor can introduce an uncounted transit unit.
-      const extra=new Set();for(const e of all)if(motion(e).floors.size>1)for(const id of e.resources){const floor=anchors.get(id).floor;if(!motion(e).floors.has(floor))extra.add(floor)}
+      const extra=new Set();for(const e of all){
+        let floors=intermediateFloorCache.get(e.resources);
+        if(!floors){const endpoints=motion(e).floors;floors=endpoints.size>1?[...resourceFloors(e)].filter(f=>!endpoints.has(f)):[];intermediateFloorCache.set(e.resources,floors)}
+        for(const floor of floors)extra.add(floor);
+      }
       if(!extra.size)return true;
-      const relevant=all.filter(e=>e.resources.some(id=>extra.has(anchors.get(id).floor)));
+      const relevant=all.filter(e=>sharesResourceFloor(e,extra));
       if(relevant.length<=1)return true;
       const rows=relevant.map(e=>({e,intervals:physicalFloors(e).filter(i=>extra.has(i.floor))}));
       const times=[...new Set(rows.flatMap(r=>r.intervals.flatMap(i=>[i.start,i.end])))].filter(s=>candidate.start<=s&&s<candidate.end);
@@ -791,6 +838,84 @@
           for(const [floor,ids]of people){const c=counts.get(floor)||{units:0,groups:0,people:0};c.units++;c.groups+=e.people.length>1;c.people+=ids.size;counts.set(floor,c)}
         }
         for(const c of counts.values())if(isLate(seconds)?c.people>1:seconds>=41400&&seconds<46800?c.people>4:c.units>2||c.groups>1)return false;
+      }
+      return true;
+    }
+    // Screen reservations supplement (never replace) the art-space 20/24px sweep.
+    // At map width342 the existing 40px humans are 30px wide. Foot envelopes
+    // (human +/-19px, visitor +/-14px, height44) include idle and partner turns.
+    // Only new card-based excursions own this extra phone rule. The reviewed
+    // 216/221 catalog retains its existing art-space proximity checks.
+    // Include every excursion stop, including FIFO/door/elevator waiting.
+    const screenStops=new WeakMap(),screenPoints=new Map(),screenHomes=new WeakMap(),screenHomeBlocks=new WeakMap(),screenFloors=new WeakMap(),screenPairs=new WeakMap();
+    function screenFloor(e){
+      let floor=screenFloors.get(e.resources);
+      if(floor===undefined){floor=e.resources.some(id=>anchors.get(id).floor==='1f');screenFloors.set(e.resources,floor)}
+      return floor;
+    }
+    function screenPoint(seat){
+      let point=screenPoints.get(seat.anchor);
+      if(!point){point=[seat.x*342/100,seat.y*(342*941/1672)/100];screenPoints.set(seat.anchor,point)}
+      return point;
+    }
+    function screenOverlap(a,b,visitorA=false,visitorB=false){const p=screenPoint(a),q=screenPoint(b);return Math.abs(p[0]-q[0])<(visitorA?14:19)+(visitorB?14:19)&&Math.abs(p[1]-q[1])<44}
+    function screenStopConflict(a,b){return a.id!==b.id&&overlap(a,b)&&!(a.seat.anchor===a.home&&b.seat.anchor===b.home)&&screenOverlap(a.seat,b.seat,a.id.startsWith('visitor'),b.id.startsWith('visitor'))}
+    function deskPairScreenClear(peers,entries,events){
+      let pairs=screenPairs.get(events);if(!pairs){pairs=new Map();screenPairs.set(events,pairs)}
+      const stationary=entries.filter(p=>p.floor===peers[0].floor&&!p.walking);
+      const key=peers.map(p=>p.id).join('|')+'|'+stationary.map(p=>p.id+':'+p.seat.anchor).join('|');
+      if(!pairs.has(key)){
+        if(pairs.size>=256)pairs.delete(pairs.keys().next().value);
+        pairs.set(key,peers.every(p=>stationary.every(other=>other.id===p.id||!screenOverlap(p.seat,other.seat))));
+      }
+      return pairs.get(key);
+    }
+    function screenHomeClear(id,home,seat,allowed,start,end){
+      if(seat.anchor===home||anchors.get(seat.anchor).floor!=='1f')return true;
+      const phase=(isLate(start)||isEvening(start)?1:0)|(isLate(end-.001)||isEvening(end-.001)?2:0);
+      if(!screenHomes.has(allowed))screenHomes.set(allowed,[]);
+      const phases=screenHomes.get(allowed);
+      if(!phases[phase])phases[phase]=allowed.flatMap(p=>[...new Set([homeAt(p,start).anchorId,homeAt(p,end-.001).anchorId])].filter(id=>anchors.get(id).floor==='1f').map(id=>({id:p.id,seat:slot(id,'sit')})));
+      const homes=phases[phase],visitor=id.startsWith('visitor');
+      if(!screenHomeBlocks.has(homes))screenHomeBlocks.set(homes,new Map());
+      const blocks=screenHomeBlocks.get(homes),pointKey=seat.anchor+'|'+visitor;
+      if(!blocks.has(pointKey))blocks.set(pointKey,homes.filter(p=>screenOverlap(seat,p.seat,visitor)).map(p=>p.id));
+      return blocks.get(pointKey).every(owner=>owner===id);
+    }
+    function stationaryStops(e){
+      if(screenStops.has(e))return screenStops.get(e);
+      const stops=[];
+      if(!e.card||!screenFloor(e)){screenStops.set(e,stops);return stops}
+      for(const t of e.people){
+        const add=(seat,start,end)=>{if(end>start&&anchors.get(seat.anchor).floor==='1f')stops.push({id:t.id,home:t.home.anchorId,seat,start,end})};
+        let cursor=e.start,seat=slot(t.home.anchorId,'sit');
+        for(const legs of [t.out,t.back]){
+          for(const l of legs){
+            add(seat,cursor,l.start);
+            // Same-floor legs walk; only floor transfers are stationary.
+            if(anchors.get(l.from).floor!==anchors.get(l.to).floor)add(slot(l.from,'stand'),l.start,l.end);
+            cursor=l.end;seat=slot(l.to,'stand');
+          }
+          if(legs===t.out)seat=t.seat;
+        }
+        add(seat,cursor,e.end);
+      }
+      screenStops.set(e,stops);return stops;
+    }
+    function screenReservations(candidate,nearby,allowed){
+      if(!candidate.card||!screenFloor(candidate))return true;
+      if(!nearby.length&&candidate.people.every(t=>!t.out.length&&!t.back.length&&t.seat.anchor===t.home.anchorId))return true;
+      const own=stationaryStops(candidate);
+      if(!own.length)return true;
+      // Reject cached home geometry before collecting overlapping trip stops.
+      for(const a of own)if(!screenHomeClear(a.id,a.home,a.seat,allowed,candidate.start,candidate.end))return false;
+      const other=nearby.flatMap(e=>stationaryStops(e));
+      for(let i=0;i<own.length;i++){
+        const a=own[i];
+        // As with the existing art-space home guard, protect private homes
+        // even while empty. This also makes later returns/cancellations safe.
+        for(let j=i+1;j<own.length;j++)if(screenStopConflict(a,own[j]))return false;
+        for(const b of other)if(screenStopConflict(a,b))return false;
       }
       return true;
     }
@@ -804,7 +929,7 @@
       // capacity still owns home/destination floors; transit uses actual times.
       if(candidate.card?.kind==='errand'){
         const floor=candidate.card.floor;
-        for(const e of nearby)if(!e.people.some(t=>t.home.floor===floor||anchors.get(t.seat.anchor).floor===floor)&&e.resources.some(id=>anchors.get(id).floor===floor)){
+        for(const e of nearby)if(!e.people.some(t=>t.home.floor===floor||anchors.get(t.seat.anchor).floor===floor)&&resourceFloors(e).has(floor)){
           if(!transitIntervals.has(e)){
             const intervals=[];for(const t of e.people)for(const legs of [t.out,t.back])for(let i=0;i<legs.length;i++){
               const l=legs[i];intervals.push({floor:anchors.get(l.from).floor,start:l.start,end:l.end});
@@ -819,12 +944,15 @@
       // needs only the same actor/resource checks and cached home geometry, even
       // while an unrelated colleague is walking elsewhere on this floor.
       const homeOnly=candidate.people.every(t=>!t.out.length&&!t.back.length&&t.seat.anchor===t.home.anchorId);
+      // Accepted away stops protect all home footprints, including empty homes;
+      // home-only expressions inherit that proof and the fixed-home exemption.
       const staticKey=homeOnly?rosterKey(allowed)+'|'+candidate.people.map(t=>t.id+':'+t.home.anchorId).join(',')+'|'+(isLate(candidate.start)||isEvening(candidate.start))+'|'+(isLate(candidate.end-.001)||isEvening(candidate.end-.001)):null;
       if(homeOnly&&staticSafe.has(staticKey)){ledger.push(candidate);return true}
       // Private homes remain owned even while empty; night lounge homes are also protected.
       if(candidate.people.some(t=>otherHomeOwner(t,candidate.start,candidate.end)))return false;
       if(candidate.people.some(t=>!t.visitor&&(!presentAt(t.id,candidate.end-.001)||homeAt(personById.get(t.id),candidate.end-.001).anchorId!==t.home.anchorId)))return false;
       if(candidate.people.some(t=>!clearHomeRoute(t,allowed,candidate.start,candidate.end)))return false;
+      if(!homeOnly&&!screenReservations(candidate,nearby,allowed))return false;
       // Desk-only microexpressions share the already checked static home geometry.
       // No sampled state objects are needed when every overlapping actor is home.
       if(homeOnly){staticSafe.add(staticKey);ledger.push(candidate);return true}
@@ -845,8 +973,8 @@
       // the former 0.5s samples; 20/24px limits are unchanged.
       // Desk microexpressions never change physical position. Their homes were
       // checked continuously above; only moving/away reservations add sweep knots.
-      const sweptFloors=new Set(candidate.resources.map(id=>anchors.get(id).floor));
-      const movingNearby=nearby.filter(e=>e.people.some(t=>t.visitor||t.out.length||t.back.length||t.seat.anchor!==t.home.anchorId)&&e.resources.some(id=>sweptFloors.has(anchors.get(id).floor)));
+      const sweptFloors=resourceFloors(candidate);
+      const movingNearby=nearby.filter(e=>e.people.some(t=>t.visitor||t.out.length||t.back.length||t.seat.anchor!==t.home.anchorId)&&sharesResourceFloor(e,sweptFloors));
       const others=[...new Set(movingNearby.flatMap(e=>e.people.filter(t=>!ids.has(t.id)&&(t.visitor||t.out.length||t.back.length||t.seat.anchor!==t.home.anchorId)).map(t=>t.id)))];
       if(candidate.people.length===1&&!others.length){ledger.push(candidate);return true}
       const times=new Set([candidate.start,candidate.end-.00001]);
@@ -982,6 +1110,7 @@
         }));
       }
       const rhythms=Object.values(placeTable?.rhythm||{}),rhythmsAt=new Map();
+      let gatheringWindow=null;
       function weight(card,people,at){
         let w=people.reduce((n,p)=>n*(card.affinity?.[p.id]||1),1)**(1/people.length);
         const sameFloor=people.every(p=>homeAt(p,at).floor===card.floor);
@@ -991,7 +1120,12 @@
         // Novel places get a modest boost; preferences still shape each day's mix.
         w*=people.some(p=>!visits.get(p.id)?.has(card.id))?3:1;
         if(gatheringPlace(card)){
-          const staying=ledgerOverlaps(result,at,at+.001).filter(e=>!e.visitor&&e.card.id===card.id&&e.performStart<=at&&at<e.performEnd);
+          if(!gatheringWindow||gatheringWindow.at!==at||gatheringWindow.length!==result.length){
+            const byCard=new Map();
+            for(const e of ledgerOverlaps(result,at,at+.001))if(!e.visitor&&e.performStart<=at&&at<e.performEnd){if(!byCard.has(e.card.id))byCard.set(e.card.id,[]);byCard.get(e.card.id).push(e)}
+            gatheringWindow={at,length:result.length,byCard};
+          }
+          const staying=gatheringWindow.byCard.get(card.id)||[];
           if(staying.length){
             const friends=staying.some(e=>companions.some(r=>r.people.some(id=>people.some(p=>p.id===id))&&r.people.some(id=>e.people.some(t=>t.id===id))));
             w*=gathering.joinWeight*(friends?2:1)*(sameFloor?gathering.sameFloorWeight:1);
@@ -1022,26 +1156,48 @@
         for(const [,e]of updates){const near=ledgerOverlaps(ledger,e.start,e.end).filter(q=>!removed.has(q));near.push(...scratch.filter(q=>overlap(q,e)));if(!reserve(e,scratch,allowed,near))return}
         for(const [old,e]of updates){
           ledger[ledger.indexOf(old)]=e;result[result.indexOf(old)]=e;
+          replaceLedgerIndex(ledger,old,e);replaceLedgerIndex(result,old,e);
           for(const t of old.people){const trips=tripsByPerson.get(t.id);if(trips)trips[trips.indexOf(old)]=e;if(last.get(t.id)?.end===old.end)last.set(t.id,{end:e.end,card:e.card.id})}
         }
-        ledgerIndices.delete(ledger);ledgerIndices.delete(result);
       }
       function blockedGeometry(person,home,target,at,end){
         const geometryKey=rosterKey(allowed)+'|'+(isLate(at)||isEvening(at))+'|'+(isLate(end-.001)||isEvening(end-.001));
         return clearGeometry.get(geometryKey+'|'+person.id+':'+home.anchorId+':'+target)===false;
       }
+      const visitorCards=new Map(),visitorTargets=new Map();let visitorOpportunity=null;
+      function visitorWindow(at){
+        if(!visitorOpportunity||visitorOpportunity.at!==at||visitorOpportunity.length!==ledger.length){
+          const active=ledgerOverlaps(ledger,at,at+.000001).filter(e=>e.start<=at&&at<e.end);
+          visitorOpportunity={at,length:ledger.length,active,floor1:active.filter(e=>e.people.some(t=>t.seat.anchor!==t.home.anchorId)&&e.people.some(t=>t.home.floor==='1f'||anchors.get(t.seat.anchor).floor==='1f'))};
+        }
+        return visitorOpportunity;
+      }
+      const cadenceCache=new Map();
       function attempt(people,at,visitor=null,fill=false,joiningCard=null,formalId=null){
         if(!visitor&&people.length>1&&(at<32400||at>=70200))return false;
+        // Invitations and floor repair must share the configured workday
+        // cadence too. Keep the mean start interval above its existing minimum,
+        // including insertion before an already reserved outing.
+        if(!visitor&&at>=32400&&at<64800&&people.some(p=>{
+          const trips=tripsByPerson.get(p.id)||[];
+          let cadence=cadenceCache.get(p.id);
+          if(!cadence||cadence.length!==trips.length){
+            cadence={length:trips.length,count:0,first:Infinity,last:-Infinity};
+            for(const e of trips)if(e.start>=32400&&e.start<64800){cadence.count++;cadence.first=Math.min(cadence.first,e.start);cadence.last=Math.max(cadence.last,e.start)}
+            cadenceCache.set(p.id,cadence);
+          }
+          return cadence.count&&Math.max(at,cadence.last)-Math.min(at,cadence.first)<cadence.count*(rules.intervalByPerson?.[p.id]||rules.intervalSeconds)[0];
+        }))return false;
         if(people.length>1&&pairKeys(people).some(key=>(pairCounts.get(key)||0)>=(placeTable?.behavior?.pairDailyMax||2)))return false;
         // Every candidate reserves all its actors from at. An existing actor
         // reservation covering that instant cannot be repaired by any card/FIFO.
-        const activeAt=ledgerOverlaps(ledger,at,at+.000001).filter(e=>e.start<=at&&at<e.end);
+        const activeAt=visitor?visitorWindow(at).active:ledgerOverlaps(ledger,at,at+.000001).filter(e=>e.start<=at&&at<e.end);
         if(activeAt.some(e=>e.people.some(t=>people.some(p=>p.id===t.id))))return false;
         // Every excursion also reserves its home floor from at. Check this
         // necessary capacity condition before card ranking or trajectory creation.
         const homeFloors=new Set(people.map(p=>visitor?'1f':homeAt(p,at).floor));
         for(const floor of homeFloors){
-          const active=activeAt.filter(e=>e.people.some(t=>t.seat.anchor!==t.home.anchorId)&&e.people.some(t=>t.home.floor===floor||anchors.get(t.seat.anchor).floor===floor));
+          const active=visitor?visitorOpportunity.floor1:activeAt.filter(e=>e.people.some(t=>t.seat.anchor!==t.home.anchorId)&&e.people.some(t=>t.home.floor===floor||anchors.get(t.seat.anchor).floor===floor));
           if(isLate(at)){if(active.reduce((n,e)=>n+e.people.length,people.length)>1)return false}
           else if(at>=41400&&at<46800){if(active.reduce((n,e)=>n+e.people.length,people.length)>4)return false}
           else if(active.length>=2||people.length>1&&active.some(e=>e.people.length>1))return false;
@@ -1050,16 +1206,17 @@
         const deadline=visitor?86400:Math.min(people.length>1?70200:86400-rules.cooldownSeconds,...people.map(p=>nextCommitment(p.id,at)));
         if(deadline-at<(people.length>1?60*rules.groupStayScale:30))return false;
         const neighbours=fill?(people.length===1?[...(tripsByPerson.get(people[0].id)||[])]:result.filter(e=>!e.visitor&&e.people.some(t=>people.some(p=>p.id===t.id)))).sort((a,b)=>a.start-b.start):[];
-        let cards=places.filter(c=>(!joiningCard||c.id===joiningCard.id)&&(visitor?c.slots.includes(visitor.target):
+        if(visitor&&!visitorCards.has(visitor.target))visitorCards.set(visitor.target,places.filter(c=>c.slots.includes(visitor.target)));
+        let cards=visitor?visitorCards.get(visitor.target):places.filter(c=>(!joiningCard||c.id===joiningCard.id)&&(
           c.stay[0]*(people.length>1?rules.groupStayScale:1)<=deadline-at&&
           c.room!=='consult'&&!c.slots.includes('reception')&&
           (!(at>=25200&&at<32400)||c.kind==='coffee')&&
           (at<70200||['coffee','sofa'].includes(c.kind))&&
           (people.length===1||people.every(p=>homeAt(p,at).floor===c.floor||(floorTrips.get(p.id)||0)<2))&&
           people.every(p=>fill?neighbours.filter(e=>e.people.some(t=>t.id===p.id)&&e.start<at).at(-1)?.card.id!==c.id&&neighbours.find(e=>e.people.some(t=>t.id===p.id)&&e.start>=at)?.card.id!==c.id:last.get(p.id)?.card!==c.id)&&(!isLate(at)||people.every(p=>homeAt(p,at).floor===c.floor))&&c.slots.length>=people.length));
-        const rankBase=day+'|card|'+people.map(p=>p.id).join()+'|'+at+'|';
-        const rankSeed=seed(rankBase),slotSeed=seed(day+'|slot|'+at);
-        cards=cards.map(c=>({c,rank:visitor?seed(day+at+c.id):-Math.log(Math.max(.000001,seedTail(rankSeed,c.id)/4294967296))/weight(c,people,at)})).sort((a,b)=>a.rank-b.rank||a.c.id.localeCompare(b.c.id)).map(r=>r.c);
+        const rankBase=visitor?'':day+'|card|'+people.map(p=>p.id).join()+'|'+at+'|';
+        const rankSeed=visitor?0:seed(rankBase),slotSeed=visitor?0:seed(day+'|slot|'+at);
+        if(!visitor||cards.length>1)cards=cards.map(c=>({c,rank:visitor?seed(day+at+c.id):-Math.log(Math.max(.000001,seedTail(rankSeed,c.id)/4294967296))/weight(c,people,at)})).sort((a,b)=>a.rank-b.rank||a.c.id.localeCompare(b.c.id)).map(r=>r.c);
         if(!visitor&&!fill&&at-(lastFloor.get(homeAt(people[0],at).floor)??-Infinity)<BLOCK)cards=cards.slice(0,3);
         for(const card of cards){
           const orderKey=card.id+'|'+at;
@@ -1069,6 +1226,13 @@
             const range=visitor?.stay||card.stay,scale=people.length>1?rules.groupStayScale:1;
             const homes=people.map(p=>visitor?{floor:'1f',anchorId:'arrival_gate'}:homeAt(p,at));
             const destinations=people.map((p,i)=>slots[(offset+i)%slots.length]);
+            // Group stays are simultaneous. Impossible 1F destination pairs
+            // cannot be repaired by FIFO, so reject before constructing routes.
+            if(people.some((p,i)=>anchors.get(destinations[i]).floor==='1f'&&people.some((q,j)=>j<i&&destinations[i]!==homes[i].anchorId&&destinations[j]!==homes[j].anchorId&&screenOverlap(slot(destinations[i],card.pose),slot(destinations[j],card.pose)))))continue;
+            const sameHomePhase=![3600,25200,64800].some(s=>at<s&&s<deadline);
+            // A constant home phase gives the same answer for every possible
+            // stay in this window, before travel or leg allocation.
+            if(sameHomePhase&&people.some((p,i)=>!screenHomeClear(p.id,homes[i].anchorId,slot(destinations[i],card.pose),allowed,at,deadline)))continue;
             if(!visitor&&![3600,25200,64800].some(s=>at<s&&s<deadline)&&people.some((p,i)=>blockedGeometry(p,homes[i],destinations[i],at,deadline)))continue;
             const travel=people.map((p,i)=>{const home=visitor?{anchorId:'arrival_gate'}:homeAt(p,at),target=slots[(offset+i)%slots.length];return pathDuration(path(home.anchorId,target))+pathDuration(path(target,home.anchorId))+i*1.5});
             // Choose a legal stay within the available formal-calendar gap. Its
@@ -1076,6 +1240,10 @@
             const ceiling=Math.min(range[1],Math.floor((deadline-at-Math.max(...travel))/scale));
             if(ceiling<range[0])continue;
             const stay=(range[0]+seed(day+'|stay|'+at+card.id)%(ceiling-range[0]+1))*scale;
+            // The proposal's travel/stay horizon owns this cache key. A later
+            // deadline must not reserve evening lounge homes during daytime.
+            // FIFO extensions still pass reserve() with their complete interval.
+            if(!sameHomePhase&&people.some((p,i)=>!screenHomeClear(p.id,homes[i].anchorId,slot(destinations[i],card.pose),allowed,at,Math.min(deadline,at+Math.max(...travel)+stay))))continue;
             // Resolve static home/path geometry before allocating legs or FIFO.
             // No phase boundary may lie in the possible interval. Positive proofs
             // never bypass temporal, resource, capacity or continuous sweep checks.
@@ -1090,8 +1258,8 @@
               // Depart 1.5s apart, then queue at actual shared door/path resources.
               // Waiting is a stationary state, never a timed zero-pixel walk.
               const used=[];
-              for(const t of e.people){for(let i=0;i<t.out.length;i++){const leg=t.out[i],duration=leg.end-leg.start;let begin=leg.start,changed=true;
-                  while(changed){changed=false;for(const other of used)if((leg.from===other.from||leg.from===other.to||leg.to===other.from||leg.to===other.to)&&begin<other.end+.2&&other.start<begin+duration){begin=other.end+.2;changed=true}}
+              for(const t of e.people){for(let i=0;i<t.out.length;i++){const leg=t.out[i],duration=leg.end-leg.start,conflicts=used.filter(other=>leg.from===other.from||leg.from===other.to||leg.to===other.from||leg.to===other.to);let begin=leg.start,changed=true;
+                  while(changed){changed=false;for(const other of conflicts)if(begin<other.end+.2&&other.start<begin+duration){begin=other.end+.2;changed=true}}
                   const shift=begin-leg.start;if(shift)for(const l of t.out.slice(i)){l.start+=shift;l.end+=shift}used.push(leg);
                 }}
               e.performStart=Math.max(...e.people.map(t=>t.out.at(-1).end));const commonEnd=e.performStart+stay;e.performEnd=commonEnd;
@@ -1220,9 +1388,12 @@
         return {c,weight:c.errandKind==='colleague'?(target.home.room===p.home.room?4:2)*(1+score/25):1};
       }));
       const errandPhases=new Map(physical.map(p=>[p.id,seed(day+'|errand-phase|'+p.id)%90]));
+      const screenErrandChoices=new Map();
       for(let tick=32400;tick<75600;tick+=90){
         for(const p of physical){
-          const at=tick+errandPhases.get(p.id);
+         // Retry scarce phone-safe 1F stops inside the existing clock window.
+         for(const delay of p.home.floor==='1f'?[0,30,60]:[0]){
+          const at=tick+errandPhases.get(p.id)+delay;
           if(at+60>75600)continue;
           if(at<(errandDue.get(p.id)??(32400+seed(day+'|errand-first|'+p.id)%540)))continue;
           // A future leisure booking is already frozen. Any errand extending
@@ -1231,14 +1402,18 @@
           const near=ledgerOverlaps(ledger,at,at+1);
           if(near.some(e=>e.people.some(t=>t.id===p.id)||e.card?.targetPerson===p.id))continue;
           const home=homeAt(p,at),previous=errandLast.get(p.id);
+          const sameHomePhase=![3600,25200,64800].some(s=>at<s&&s<deadline);
+          const screenKey=p.id+'|'+home.anchorId+'|'+(isLate(at)||isEvening(at));
+          if(sameHomePhase&&!screenErrandChoices.has(screenKey))screenErrandChoices.set(screenKey,choices.get(p.id).filter(({c})=>c.slots.some(target=>screenHomeClear(p.id,home.anchorId,slot(target,c.pose),allowed,at,deadline))));
           const errandSeed=seed(day+'|errand|'+p.id+'|'+at+'|');
-          const cards=choices.get(p.id).filter(({c})=>c.floor===home.floor&&c.id!==previous).map(({c,weight})=>{
+          const cards=(sameHomePhase?screenErrandChoices.get(screenKey):choices.get(p.id)).filter(({c})=>c.floor===home.floor&&c.id!==previous).map(({c,weight})=>{
             return {c,rank:-Math.log(Math.max(.000001,seedTail(errandSeed,c.id)/4294967296))/weight};
           }).sort((a,b)=>a.rank-b.rank);
           let booked=false;
           for(const {c}of cards){
             if(c.targetPerson&&(!allowed.some(q=>q.id===c.targetPerson)||!presentAt(c.targetPerson,at)||homeAt(personById.get(c.targetPerson),at).anchorId!==personById.get(c.targetPerson).home.anchorId||near.some(e=>e.people.some(t=>t.id===c.targetPerson&&t.seat.anchor!==t.home.anchorId))))continue;
             for(const target of c.slots){
+              if(![3600,25200,64800].some(s=>at<s&&s<deadline)&&!screenHomeClear(p.id,home.anchorId,slot(target,c.pose),allowed,at,deadline))continue;
               const stay=8+seed(day+'|errand-stay|'+p.id+at+c.id)%18;
               if(arrivalKeys.has(arrivalKey(target,at+pathDuration(path(home.anchorId,target)))))continue;
               if(![3600,25200,64800].some(s=>at<s&&s<deadline)&&blockedGeometry(p,home,target,at,deadline))continue;
@@ -1259,17 +1434,39 @@
             }
             if(booked)break;
           }
+          if(booked)break;
+         }
         }
       }
       // Two persistent public guests. Clock phases favour morning parcels,
       // lunch deliveries/coffee and afternoon appointments; reserve() still owns
       // capacities, target uniqueness, gate FIFO and every swept trajectory.
       for(let at=32400;at<72000;at+=20){
+        // This is the same necessary floor-capacity condition as attempt().
+        // Reject a full window once, before ranking every kind and waiting seat.
+        const active=visitorWindow(at+1).floor1;
+        if(at+1>=41400&&at+1<46800?active.reduce((n,e)=>n+e.people.length,1)>4:active.length>=2)continue;
         const kinds=visitorKinds.filter(v=>(weekday||!v.weekdayOnly)&&v.hours.some(([a,b])=>at/3600>=a&&at/3600<b));
         const ranked=kinds.map(v=>({v,rank:-Math.log(Math.max(.000001,unit(day+'|guest-kind|'+at+v.kind)))/(v.kind==='courier'&&at<36000?4:v.kind==='rider'&&lunch(at)?5:['client','candidate'].includes(v.kind)&&at>=46800?3:1)})).sort((a,b)=>a.rank-b.rank);
         for(const id of ['visitor','visitor-2']){
           if((visitorUntil.get(id)||0)>at+1)continue;
-          for(const {v}of ranked)if(attempt([{id}],at+1,v))break;
+          let booked=false;
+          for(const {v}of ranked){
+            // Consultation chairs share the phone footprint of fixed business
+            // homes. If occupied, wait in an EXISTING cafe lounge chair instead;
+            // keep visit kinds/stays, describe waiting honestly, and re-reserve
+            // the full canon round trip through the same capacity/sweep gates.
+            const target=anchors.get(v.target);
+            if(!visitorTargets.has(v.target))visitorTargets.set(v.target,target.room==='consult'?[v.target,...[...anchors.values()].filter(a=>a.floor==='1f'&&['consult','cafe'].includes(a.room)&&a.type==='seat'&&a.runtimeAssignable!==false&&a.id!==v.target).map(a=>a.id)]:[v.target]);
+            const targets=visitorTargets.get(v.target);
+            for(const destination of targets){
+              if(!screenHomeClear(id,'arrival_gate',slot(destination,'stand'),allowed,at,at+1))continue;
+              const waiting=anchors.get(destination).room==='cafe'&&target.room==='consult';
+              const visit=destination===v.target?v:{...v,target:destination,...(waiting?{go:v.kind==='client'?'상담 대기석으로 가는 중':'면접 대기석으로 가는 중',at:v.kind==='client'?'상담 대기 중':'면접 대기 중… 두근'}:{})};
+              if(attempt([{id}],at+1,visit)){booked=true;break}
+            }
+            if(booked)break;
+          }
           break;
         }
       }
@@ -1280,14 +1477,20 @@
       for(const guest of result.filter(e=>e.visitor)){
         const destination=guest.people[0].seat,point=pixels([destination.x,destination.y]);
         const hosts=(placeTable?.behavior?.visitorHosts||[]).map(id=>personById.get(id)).filter(p=>p&&allowed.includes(p)&&homeAt(p,guest.performStart).floor==='1f');
-        if(!hostSlots.has(destination.anchor))hostSlots.set(destination.anchor,[...anchors.values()].filter(a=>a.floor==='1f'&&a.room===anchors.get(destination.anchor).room&&a.type==='junction'&&(()=>{const q=pixels(visualPoint(a)),d=Math.hypot(q[0]-point[0],q[1]-point[1]);return d>=40&&d<=160})()));
+        // Existing host approach cards stay in the same room, but the old
+        // 160-art-pixel radius was smaller than one phone sprite footprint.
+        if(!hostSlots.has(destination.anchor))hostSlots.set(destination.anchor,[...anchors.values()].filter(a=>a.floor==='1f'&&a.room===anchors.get(destination.anchor).room&&a.type==='junction'&&(()=>{const q=pixels(visualPoint(a)),d=Math.hypot(q[0]-point[0],q[1]-point[1]);return d>=170&&d<=400})()));
         const slots=hostSlots.get(destination.anchor);
         let booked=false;
-        for(const p of hosts){for(const target of slots){
-          const at=guest.performStart,home=homeAt(p,at),duration=pathDuration(path(home.anchorId,target.id)),stay=Math.min(15,guest.performEnd-at-duration);
+        // The guest stays available after arrival too. Retry the same full
+        // reservation within that stay; host cooldowns and all gates still own it.
+        for(let at=guest.performStart;at<guest.performEnd-8&&!booked;at+=15)for(const p of hosts){
+         const errands=hostErrands.get(p.id);
+         if(errands.some(q=>Math.abs(q.start-at)<360))continue;
+         for(const target of slots){
+          const home=homeAt(p,at),duration=pathDuration(path(home.anchorId,target.id)),stay=Math.min(15,guest.performEnd-at-duration);
           if(stay<8)continue;
           const c=errandPlaces.find(c=>c.hostOnly&&c.slots[0]===target.id),e=c&&excursion(p.id,home,c,target.id,at,stay,day,null,Math.min(guest.performEnd,nextCommitment(p.id,at),at+60));
-          const errands=hostErrands.get(p.id);
           if(!e||errands.some(q=>Math.abs(q.start-e.start)<360)||errands.filter(q=>q.start<e.start).at(-1)?.card.id===c.id||errands.find(q=>q.start>e.start)?.card.id===c.id)continue;
           if(arrivalKeys.has(arrivalKey(target.id,e.performStart)))continue;
           if(!e||!reserve(e,ledger,allowed))continue;
@@ -1369,6 +1572,9 @@
         if(peers.some(p=>!p||p.eventId||p.outingId||p.state!=='AT_HOME')||peers[0].floor!==peers[1].floor||gap(peers[0],peers[1])>350)continue;
         const k=Math.floor(seconds/BEAT),j=Array.from({length:Math.ceil(ACTIVE_BEATS)},(_,i)=>k-i).find(j=>beatPick(day,peers[0].floor,j)===pair.people[0]&&Math.floor(j/MIN_CYCLE)%7===seed(pair.people.join())%7);
         if(j==null||seconds>=j*BEAT+ACTIVE_BEATS*BEAT||ledgerOverlaps(idleLedger,j*BEAT-5,j*BEAT+ACTIVE_BEATS*BEAT+2).some(e=>e.people.some(t=>pair.people.includes(t.id))))continue;
+        // Homes remain untouched, including their documented overlaps. Only
+        // start a NEW turning/talking gesture if its phone envelope is clear.
+        if(!deskPairScreenClear(peers,entries,events))continue;
         peers.forEach((p,i)=>{p.line=pair.lines[i];p.plain=false;p.deskPartner=pair.people[1-i]});
       }
       // Reuse deskPartner for a two-line exchange, only at the actual approach
@@ -1520,9 +1726,8 @@
       const joinGap=floor.width<=600?0:gap;
       for(const inline of (g.compact?[false]:[false,true])){
       const width=g.compact?g.name.width:inline?g.name.width+joinGap+g.status.width:Math.max(g.name.width,g.status.width),height=g.compact?g.name.height:inline?Math.max(g.name.height,g.status.height):g.name.height+joinGap+g.status.height;
-      // Phone pills stay within 28px of the head; a dialogue pair (priority 3) may also sit
-      // just under its own feet (52px), since the partner usually fills the space above.
-      const head=g.sprite?.width?g.sprite:g.actor,headX=(head.left+head.right)/2,reach=g.priority===3?51.5:27.5,step=Math.ceil(reach);
+      // Dialogue keeps the same mandatory nearby head radius as every pill.
+      const head=g.sprite?.width?g.sprite:g.actor,headX=(head.left+head.right)/2,reach=27.5,step=Math.ceil(reach);
       const left=Math.max(floor.left+gap,Math.min(g.actor.left+g.actor.width/2-width/2,floor.right-gap-width));
       const top=g.actor.top-gap-height,candidates=[];
       const reachX=Math.max(g.actor.width*1.5,floor.width<=600?96:100),reachY=Math.max(g.actor.height*2,64);

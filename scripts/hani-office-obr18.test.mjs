@@ -45,7 +45,7 @@ test('obr19 original >=40px atlas / phone dimensions: measured ratios, mandatory
   }
   summary.push({width,metrics:'Node synthetic font/animation geometry, not browser pixels',samples:costs.length,scenes,minimumRatio:Math.min(...ratios),meanMs:costs.reduce((a,b)=>a+b,0)/costs.length,maxMs:Math.max(...costs),counts,failures,missingDots,spritePairs});
  }
- fs.writeFileSync('artifacts/office-behavior/obr19-layout-node.json',JSON.stringify(summary,null,2)+'\n');console.log(summary.map(({scenes,spritePairs,...r})=>({...r,spritePairs:spritePairs.length})));
+ fs.writeFileSync('artifacts/office-behavior/'+(process.env.HANI_OFFICE_TEST_TAG||'obr19')+'-layout-node.json',JSON.stringify(summary,null,2)+'\n');console.log(summary.map(({scenes,spritePairs,...r})=>({...r,spritePairs:spritePairs.length})));
  // obr19: phone coverage is measured. Geometry, both dialogue lines and dots
  // remain mandatory, including when the original >=40px sprites cannot fit.
  for(const row of summary.filter(row=>row.width!==300)){assert.deepEqual(row.counts,{sprite:0,face:0,label:0,mascot:0,outside:0,distant:0,dialogue:0});assert.deepEqual(row.failures,[],String(row.width));assert.deepEqual(row.missingDots,[],'suppressed actors retain dots');}

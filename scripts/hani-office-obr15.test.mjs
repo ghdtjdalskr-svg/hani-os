@@ -11,14 +11,18 @@ const {scene,table,context}=loadScene(),s=scene.scheduler;
 let writes=0;const deny=()=>{writes++;throw Error('forbidden storage/network')};
 context.localStorage=context.sessionStorage={setItem:deny,removeItem:deny,clear:deny};context.fetch=deny;
 const serialize=JSON.stringify,hash=x=>createHash('sha256').update(x).digest('hex');
-test('obr15 absent exact obr14 source identity, full plans and reverse snapshots; no persistence',()=>{
+test('obr15 historical absent source identity retained; authorized obr21 absent delta is frozen separately',()=>{
  const frozen=JSON.parse(gunzipSync(fs.readFileSync('scripts/fixtures/office-lively-labels-235-plans.json.gz')));
  assert.equal(hash(readAt('hani-office-live.js',base)),frozen.sourceSha256);
  assert.equal(hash(readAt('hani-office-live.css',base)),frozen.cssSha256);
  for(const [day,o]of [['2026-10-22',{}],['2026-10-23',{chairmanPresent:false}],['2026-10-24',{}],['2026-11-01',{presentIds:['seoyun','dohyun','yuna','minji']}],['2026-11-02',{presentIds:['hani','yuri','serin','arin','hina','daon','yoonseul']}]] ){
-  const fixed=loadScene({ref:base}).scene.scheduler,actual=loadScene().scene.scheduler;
-  const f=fixed.plan(day,o),a=actual.plan(day,o);assert.equal(serialize(a),serialize(f));assert.equal(serialize(actual.blockPlan(day,0,a,o)),serialize(fixed.blockPlan(day,0,f,o)));
-  for(let sec=86399;sec>=0;sec-=137)assert.equal(serialize(actual.snapshot(at(day,sec),{...o,chairmanArrivalAt:at(day,32400).getTime()})),serialize(fixed.snapshot(at(day,sec),o)),day+' '+sec);
+  const actual=loadScene().scene.scheduler;
+  // 1F screen reservations intentionally change absent outings as well. Full
+  // formal/outing/snapshot equality is owned by the authored obr21 oracle test.
+  const reviewed=JSON.parse(gunzipSync(fs.readFileSync('scripts/fixtures/office-obr21-plans.json.gz'))).records.find(r=>r.label==='obr15 absent '+day);
+  assert.ok(reviewed);assert.equal(serialize(o),serialize(reviewed.options));
+  const a=actual.plan(day,o),out=actual.blockPlan(day,0,a,o);assert.equal(hash(serialize(a)),hash(serialize(reviewed.formal)));assert.equal(hash(serialize(out)),hash(serialize(reviewed.outings)));
+  for(let sec=86399;sec>=0;sec-=137)assert.equal(serialize(actual.snapshot(at(day,sec),{...o,chairmanArrivalAt:at(day,32400).getTime()})),serialize(actual.snapshot(at(day,sec),o)),day+' '+sec);
  }
  assert.equal(writes,0);
 });
@@ -66,9 +70,9 @@ test('obr15 reports: 4–8/day, one/person, 20–60 seconds, private chair unuse
   assert.ok(reports.length>=4&&reports.length<=8,d+' '+reports.length);assert.equal(new Set(reports.map(e=>e.report)).size,reports.length);
   for(const e of reports){
    const staff=e.people.find(t=>t.id===e.report),chair=e.people.find(t=>t.id==='seongmin');assert.ok(chair);assert.equal(chair.seat.anchor,'ceo-reserved');assert.equal(chair.out.length+chair.back.length,0);
-   assert.notEqual(staff.seat.anchor,'ceo-reserved');assert.equal(scene.anchors.get(staff.seat.anchor).type,'junction');assert.equal(scene.anchors.get(staff.seat.anchor).room,'ceo');
+   assert.notEqual(staff.seat.anchor,'ceo-reserved');assert.ok(['junction','door'].includes(scene.anchors.get(staff.seat.anchor).type));assert.equal(scene.anchors.get(staff.seat.anchor).room,'ceo');
    assert.ok(e.performEnd-e.performStart>=20&&e.performEnd-e.performStart<=60);assert.equal(staff.out[0].from,staff.home.anchorId);assert.equal(staff.back.at(-1).to,staff.home.anchorId);
-   const dist=Math.hypot((staff.seat.x-chair.seat.x)*16.72,(staff.seat.y-chair.seat.y)*9.41);assert.ok(dist>=32);
+   const dist=Math.hypot((staff.seat.x-chair.seat.x)*16.72,(staff.seat.y-chair.seat.y)*9.41);assert.ok(dist>=170);
    if(staff.home.floor!=='4f'){cross++;for(const legs of [staff.out,staff.back]){const transfers=legs.filter(l=>scene.anchors.get(l.from).floor!==scene.anchors.get(l.to).floor);assert.ok(transfers.length);for(const l of transfers){assert.match(l.from,/elevator/);assert.match(l.to,/elevator/);assert.equal(s.stateAt(e,staff,(l.start+l.end)/2).walking,false)}}}
    for(const q of [...f,...out])if(q!==e&&q.start<e.end&&e.start<q.end){assert.equal(q.people.some(t=>e.people.some(p=>p.id===t.id)),false);assertResources(s,e,q)}
    for(const t of [e.start+.001,e.performStart+.001,e.performEnd-.001,e.end-.001]){const snap=s.snapshot(at(d,t),options);for(const p of snap.entries.filter(p=>p.outingId===e.id)){assert.ok([...p.shortLine].length<=10);assert.equal(snap.entries.filter(q=>q.floor===p.floor&&q.line===p.line).length,1);if(p.walking)assert.match(p.line,/가는 중|돌아가는 중/);if(p.state==='AT_PLACE')assert.ok(validPlaceSpeech(p,e.card,table));}}

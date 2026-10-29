@@ -6,12 +6,13 @@ import http from 'node:http';
 import assert from 'node:assert/strict';
 import {untilOffice,waitForOfficeLabels} from './hani-office-label-browser-ready.mjs';
 import {readPhoneLabels,assertPhoneLabels} from './hani-office-obr18-browser-geometry.mjs';
+import {readStationarySprites} from './hani-office-obr21-geometry.mjs';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 const root=fileURLToPath(new URL('../',import.meta.url)),out=path.join(root,'artifacts/office-behavior/'+(process.env.HANI_OFFICE_BROWSER_TAG?process.env.HANI_OFFICE_BROWSER_TAG+'-shots':'obr15-shots'));
 fs.mkdirSync(out,{recursive:true});
 const html=fs.readFileSync(path.join(root,'index.html'),'utf8'),start=html.indexOf('<section class="hani-office-live"'),end=html.indexOf('</section>',start)+10;assert.ok(start>0&&end>start);
 const document=`<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><link rel="stylesheet" href="/hani-office-live.css"><link rel="stylesheet" href="/hani-design-system.css"><link rel="stylesheet" href="/hani-desk-mascots.css"><style>body{margin:0;padding:12px;font-family:'Malgun Gothic',sans-serif}.view{max-width:1350px;margin:auto}[hidden]{display:none!important}</style><div id="app"><div class="view active">${html.slice(start,end)}</div></div><script src="/hani-organization-hub.js"></script><script src="/hani-office-live.js"></script><script src="/hani-desk-mascots.js"></script></html>`;
-const result={status:'running',checks:[],screenshots:[],errors:[],writes:[],network:[]};let browser,server;
+const result={status:'running',checks:[],reportSprites:[],loungeChecks:[],screenshots:[],errors:[],writes:[],network:[]};let browser,server;
 try{
  const runtime=process.argv[2]||path.join(process.env.USERPROFILE,'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs');
  const {chromium}=await import(pathToFileURL(runtime).href);browser=await chromium.launch({headless:true,executablePath:process.argv[3]||process.env.HANI_CHROME_PATH||'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'});result.browser=await browser.version();
@@ -67,9 +68,29 @@ try{
   });assert.deepEqual(safety,{outside:0,overlap:0,mascotOverlap:0,spriteOverlap:0,ownFaceOverlap:0});
   const reportLabels=await page.evaluate(readPhoneLabels);assertPhoneLabels(reportLabels);
   if(width===390)assert.deepEqual(reportLabels.spritePairs.filter(pair=>pair.includes('seongmin')&&pair.includes(report.staff)),[],'chairman/reporter sprites do not overlap');
+  if(width===390){
+   const reports=await page.evaluate(()=>{const s=HaniBuildingScene.scheduler,d='2026-10-22',o={chairmanPresent:true};return s.blockPlan(d,0,s.plan(d,o),o).filter(e=>e.report).flatMap(e=>[e.performStart+.001,e.performEnd-.001].map(sec=>({staff:e.report,stamp:Date.parse(d+'T00:00:00+09:00')+sec*1000})))});
+   for(const r of reports){await show(r.stamp,'active');const geometry=await page.evaluate(readPhoneLabels);assert.deepEqual(geometry.spritePairs.filter(pair=>pair.includes('seongmin')&&pair.includes(r.staff)),[],'every report endpoint: chairman/reporter sprites do not overlap');result.reportSprites.push({width,theme,...r,spritePairs:geometry.spritePairs})}
+   await show(report.stamp,'active');
+  }
   shot=path.join(out,`${width}-${theme}-report.png`);await page.locator('#haniOfficeMap').screenshot({path:shot});result.screenshots.push(path.relative(root,shot));
   await show(report.end,'active');assert.notEqual(await chair.getAttribute('data-partner'),report.staff);
   await show(report.stamp,'absent');assert.equal(await chair.isVisible(),false);assert.notEqual(await staff.getAttribute('data-partner'),'seongmin');
+  if(width===390)for(const presence of ['absent','active']){
+   // Cover each distinct stationary seat pair, plus old dense-scene times.
+   // Model selection cannot PASS the check: actual rendered sprite rects must.
+   const stamps=await page.evaluate(presence=>{
+    const s=HaniBuildingScene.scheduler,d='2026-10-22',o={chairmanPresent:presence==='active'},base=Date.parse(d+'T00:00:00+09:00'),f=s.plan(d,o),out=s.blockPlan(d,0,f,o),times=new Set([32895,33678,34360,36012,33300,43800,56400]);
+    for(const e of [...f,...out])for(const t of e.people)for(const sec of [e.start,e.end,...[...t.out,...t.back].flatMap(l=>[l.start,l.end])])if(sec>=32400&&sec<68400)times.add(sec);
+    const ticks=[...times].sort((a,b)=>a-b),seen=new Set(),chosen=new Set([32895,33678,34360,36012,33300,43800,56400]);
+    for(let i=1;i<ticks.length;i++){const sec=(ticks[i-1]+ticks[i])/2,snap=s.snapshot(new Date(base+sec*1000),o),people=[...snap.entries,...snap.visitors].filter(p=>p.floor==='1f'&&!p.walking);
+     for(let j=0;j<people.length;j++)for(const q of people.slice(j+1)){const p=people[j];if(p.state==='AT_HOME'&&q.state==='AT_HOME'&&!p.visitor&&!q.visitor)continue;const key=[p.id,p.seat.anchor,q.id,q.seat.anchor].join('|');if(!seen.has(key)){seen.add(key);chosen.add(sec)}}
+    }return [...chosen].map(sec=>base+sec*1000);
+   },presence);
+   for(const stamp of stamps){await show(stamp,presence,'1f');const geometry=await page.evaluate(readStationarySprites);result.loungeChecks.push({width,theme,presence,stamp,...geometry});assert.deepEqual(geometry.collisions,[],'1F new behavior stationary phone sprites do not overlap (216/221 catalog and fixed homes excluded; catalogExclusions reported) '+JSON.stringify({presence,stamp,geometry}))}
+   await show(Date.parse('2026-10-22T12:10:00+09:00'),presence,'1f');
+   shot=path.join(out,`${width}-${theme}-1f-${presence}.png`);await page.locator('#haniOfficeMap').screenshot({path:shot});result.screenshots.push(path.relative(root,shot));
+  }
   assert.ok(await page.evaluate(()=>officeActorNodes.every((a,i)=>a===document.querySelector('#haniOfficeActors').children[i])),'persistent actor identity');
   assert.ok(await page.evaluate(()=>officeActorNodes.flatMap(a=>['name','status'].map(k=>a.querySelector('.hani-office-'+k))).every((n,i)=>n===officeLabelNodes[i])),'persistent name/status identity and parent');
   result.checks.push({width,theme,pair,pairLabels,pairVisibility,arrival,report,labels,safety,arrivalLabels,reportLabels});result.writes.push(...await page.evaluate(()=>officeWrites));await context.close();
