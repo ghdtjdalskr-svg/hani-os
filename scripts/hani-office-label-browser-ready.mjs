@@ -5,7 +5,12 @@ import {performance} from 'node:perf_hooks';
 export async function untilOffice(page,predicate,arg,timeout=30000){
  const deadline=performance.now()+timeout;
  while(performance.now()<deadline){if(await page.evaluate(predicate,arg))return;await delay(75)}
- throw Error('office readiness timeout: '+predicate);
+ // Report the page state too, so a timeout says which readiness condition stayed false.
+ const state=await page.evaluate(()=>{const map=document.getElementById('haniOfficeMap'),bg=map?.querySelector('.hani-office-background'),layer=map?.querySelector(`.hani-desk-mascots[data-floor="${map?.dataset.floor}"]`);
+  return {floor:map?.dataset.floor,art:map?.dataset.art,bg:!!(bg?.complete&&bg.naturalWidth),labelsReady:map?.dataset.labelsReady,labelsAt:map?.dataset.labelsAt,clock:String(window.officeClock),
+   mascots:layer?[...layer.querySelectorAll('.hani-desk-mascot')].map(n=>n.dataset.person+':'+n.dataset.ready):null,
+   actors:[...document.querySelectorAll('#haniOfficeActors .hani-office-actor')].filter(a=>!a.hidden).map(a=>a.dataset.person+':'+a.dataset.avatar+':'+(a.querySelector('.hani-office-status').dataset.full===a.dataset.line)+':'+['name','status'].every(k=>a.querySelector('.hani-office-'+k).officeLabelPlacement!==undefined))}}).catch(e=>({error:e.message}));
+ throw Error('office readiness timeout: '+JSON.stringify(state)+' :: '+String(predicate).slice(0,120));
 }
 export async function waitForOfficeLabels(page,floor){
  await page.evaluate(()=>document.fonts.ready);
@@ -14,7 +19,8 @@ export async function waitForOfficeLabels(page,floor){
   const actors=[...document.querySelectorAll('#haniOfficeActors .hani-office-actor')].filter(a=>!a.hidden);
   return map?.dataset.floor===f&&map.dataset.art==='floor'&&bg?.complete&&bg.naturalWidth>0&&mascots&&!mascots.hidden&&
    [...mascots.querySelectorAll('.hani-desk-mascot')].every(n=>n.dataset.ready==='true')&&
-   actors.every(a=>a.dataset.avatar==='v2'&&a.querySelector('.hani-office-status').dataset.full===a.dataset.line);
+   // The label prefixes the action emoji ("📑 line"), so the full text ends with the actor line.
+   actors.every(a=>{const full=a.querySelector('.hani-office-status').dataset.full||'',line=a.dataset.line||'';return a.dataset.avatar==='v2'&&(full===line||full===(a.dataset.emoji?a.dataset.emoji+' ':'')+line)});
  },floor);
  // Use the canonical floor event after fonts/sprites/mascots have finished loading.
  await page.locator(`[data-building-floor="${floor}"]`).click();
