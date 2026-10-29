@@ -137,9 +137,13 @@ test('rapid first-view taps survive a slow catalog and keep floor bounds at 390 
   const floor={left:15,top:20,width:width-30,height:(width-30)*941/1672};floor.right=floor.left+floor.width;floor.bottom=floor.top+floor.height;
   f.map.getBoundingClientRect=()=>floor;
   panel.getBoundingClientRect=()=>({left:floor.left+(parseFloat(panel.style.left)||0),top:floor.top+(parseFloat(panel.style.top)||0),width:Math.min(285,floor.width-8),height:68});
-  actor.getBoundingClientRect=()=>({left:floor.right-16,top:floor.top+8,width:32,height:40});
-  // Labels are deliberately unmeasured: supplied geometry exercises only fitBubble.
-  f.map.getBoundingClientRect=()=>floor;for(const a of f.visible())for(const cls of ['.hani-office-name','.hani-office-status'])a.querySelector(cls).getBoundingClientRect=()=>({left:80,top:60,right:100,bottom:76,width:20,height:16});
+  actor.getBoundingClientRect=()=>({left:floor.right-16,right:floor.right+16,top:floor.top+8,bottom:floor.top+48,width:32,height:40});
+  // Synthetic labels remain incidental to the bubble bounds assertion. Grouped
+  // placement also reads every actor box, including actors other than the tapped one.
+  for(const a of f.visible()){
+   if(a!==actor)a.getBoundingClientRect=()=>({left:80,top:60,right:112,bottom:100,width:32,height:40});
+   for(const cls of ['.hani-office-name','.hani-office-status'])a.querySelector(cls).getBoundingClientRect=()=>({left:80,top:60,right:100,bottom:76,width:20,height:16});
+  }
   actor.officeRow.events.click();const box=panel.getBoundingClientRect();
   assert.ok(box.left>=floor.left&&box.top>=floor.top&&box.left+box.width<=floor.right&&box.top+box.height<=floor.bottom);
  }

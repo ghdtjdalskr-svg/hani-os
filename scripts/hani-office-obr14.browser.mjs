@@ -4,10 +4,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import http from 'node:http';
 import assert from 'node:assert/strict';
+import {untilOffice,waitForOfficeLabels} from './hani-office-label-browser-ready.mjs';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 const root=fileURLToPath(new URL('../',import.meta.url)),out=path.join(root,'artifacts/office-behavior/obr14-shots');fs.mkdirSync(out,{recursive:true});
 const html=fs.readFileSync(path.join(root,'index.html'),'utf8'),start=html.indexOf('<section class="hani-office-live"'),end=html.indexOf('</section>',start)+10;assert.ok(start>0&&end>start);
-const document=`<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><link rel="stylesheet" href="/hani-office-live.css"><link rel="stylesheet" href="/hani-design-system.css"><style>body{margin:0;padding:12px;font-family:'Malgun Gothic',sans-serif}.view{max-width:1350px;margin:auto}[hidden]{display:none!important}</style><div id="app"><div class="view active">${html.slice(start,end)}</div></div><script src="/hani-organization-hub.js"></script><script src="/hani-office-live.js"></script><script src="/hani-desk-mascots.js"></script></html>`;
+const document=`<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><link rel="stylesheet" href="/hani-office-live.css"><link rel="stylesheet" href="/hani-design-system.css"><link rel="stylesheet" href="/hani-desk-mascots.css"><style>body{margin:0;padding:12px;font-family:'Malgun Gothic',sans-serif}.view{max-width:1350px;margin:auto}[hidden]{display:none!important}</style><div id="app"><div class="view active">${html.slice(start,end)}</div></div><script src="/hani-organization-hub.js"></script><script src="/hani-office-live.js"></script><script src="/hani-desk-mascots.js"></script></html>`;
 const result={status:'running',browser:null,checks:[],screenshots:[],layout:[],frames:[],errors:[],writes:[],unavailable:[]};let browser,server;
 try{
  const runtime=process.argv[2]||path.join(process.env.USERPROFILE,'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs');
@@ -26,25 +27,25 @@ try{
    for(const method of ['setItem','removeItem','clear'])Storage.prototype[method]=function(){officeWrites.push(method);throw Error('forbidden storage write')};
   });await context.route('**/*',r=>new URL(r.request().url()).origin===origin?r.continue():r.abort());
   const page=await context.newPage();page.on('pageerror',e=>result.errors.push(e.message));page.on('response',r=>{if(r.status()===404)result.unavailable.push(r.url())});await page.goto(origin);
-  await page.waitForFunction(()=>window.HaniBuildingScene?.scheduler&&document.querySelectorAll('[data-building-floor]').length===5);await page.evaluate(theme=>document.documentElement.dataset.theme=theme,theme);
+  await untilOffice(page,()=>window.HaniBuildingScene?.scheduler&&document.querySelectorAll('[data-building-floor]').length===5);await page.evaluate(theme=>document.documentElement.dataset.theme=theme,theme);
   const read=()=>page.evaluate(()=>{
    const map=document.getElementById('haniOfficeMap'),floor=map.getBoundingClientRect(),rect=n=>{const r=n.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom}},visible=n=>{const c=getComputedStyle(n);return !n.hidden&&c.display!=='none'&&c.visibility!=='hidden'&&n.getBoundingClientRect().width>0};
    const actors=[...document.querySelectorAll('#haniOfficeActors .hani-office-actor')].filter(a=>!a.hidden),boxes=[],staff=[];
-   for(const a of actors)for(const kind of ['name','status']){const n=a.querySelector('.hani-office-'+kind);if(visible(n))boxes.push({id:a.dataset.person,kind,...rect(n)});if(kind==='status'&&a.dataset.visitor!=='true')staff.push({id:a.dataset.person,shown:visible(n),text:n.textContent,full:n.dataset.full})}
+   for(const a of actors)for(const kind of ['name','status']){const n=a.querySelector('.hani-office-'+kind);if(visible(n))boxes.push({id:a.dataset.person,kind,...rect(n)});if(kind==='status'&&a.dataset.visitor!=='true')staff.push({id:a.dataset.person,shown:visible(n),text:n.textContent,full:n.dataset.full,fontSize:parseFloat(getComputedStyle(n).fontSize)})}
    const mascots=[...map.querySelectorAll('.hani-desk-mascots:not([hidden]) .hani-desk-mascot[data-ready="true"]')].filter(visible).map(rect);
    const overlap=(a,b)=>a.left<b.right-.1&&a.right>b.left+.1&&a.top<b.bottom-.1&&a.bottom>b.top+.1;
    return {floor:map.dataset.floor,staff,ratio:staff.length?staff.filter(p=>p.shown).length/staff.length:null,boxes,outside:boxes.filter(b=>b.left<floor.left||b.right>floor.right||b.top<floor.top||b.bottom>floor.bottom),overlap:boxes.flatMap((a,i)=>boxes.slice(i+1).filter(b=>overlap(a,b)).map(b=>[a.id,a.kind,b.id,b.kind])),mascotOverlap:boxes.filter(a=>mascots.some(b=>overlap(a,b))),writes:officeWrites};
   });
   for(const time of ['09:15:00','12:10:00','15:40:00'])for(const floor of ['1f','2f','3f','4f','5f']){
-   await page.evaluate(time=>officeClock=Date.parse('2026-10-22T'+time+'+09:00'),time);await page.locator(`[data-building-floor="${floor}"]`).click();
-   await page.waitForFunction(()=>[...document.querySelectorAll('#haniOfficeActors .hani-office-actor')].filter(a=>!a.hidden).every(a=>a.dataset.avatar==='v2'));
-   await page.evaluate(()=>document.fonts.ready);await page.evaluate(()=>document.querySelector('[data-building-floor][aria-selected="true"]').click());const r=await read();result.checks.push({width,theme,time,...r});
-   if(r.ratio!==null)assert.ok(r.ratio>=(width===390?.7:.85),`${width} ${theme} ${floor} ${time} visible ratio ${r.ratio}`);assert.equal(r.overlap.length,0);assert.equal(r.outside.length,0);assert.equal(r.mascotOverlap.length,0);assert.deepEqual(r.writes,[]);
-   if(width===390)for(const p of r.staff.filter(p=>p.shown)){assert.ok([...p.text].length<=10);assert.doesNotMatch(p.text,/…|\.\.\./)}
+   await page.evaluate(time=>{officeClock=Date.parse('2026-10-22T'+time+'+09:00');officeLayoutCosts=[]},time);await page.locator(`[data-building-floor="${floor}"]`).click();
+   await waitForOfficeLabels(page,floor);const r=await read();result.checks.push({width,theme,time,...r});
+   const layout=await page.evaluate(()=>officeLayoutCosts.slice());assert.ok(layout.length>0);result.layout.push({width,theme,time,floor,unit:'ms/update (includes DOM)',samples:layout,mean:layout.reduce((a,b)=>a+b,0)/layout.length,max:Math.max(...layout)});
+   if(r.ratio!==null){assert.ok(r.ratio>=(width===390?.7:.85),`${width} ${theme} ${floor} ${time} visible ratio ${r.ratio}`);if(width===1440)assert.equal(r.ratio,1,'desktop keeps 100%');}assert.equal(r.overlap.length,0);assert.equal(r.outside.length,0);assert.equal(r.mascotOverlap.length,0);assert.deepEqual(r.writes,[]);
+   if(width===390)for(const p of r.staff.filter(p=>p.shown)){assert.ok([...p.text].length<=8);assert.ok(p.fontSize>=10);assert.doesNotMatch(p.text,/…|\.\.\./)}
    if(time==='12:10:00'){const shot=path.join(out,`${width}-${theme}-${floor}.png`);await page.locator('#haniOfficeMap').screenshot({path:shot});result.screenshots.push(path.relative(root,shot))}
   }
   // Full panel keeps the original line; keyboard activation uses the same path.
-  await page.locator('[data-building-floor="3f"]').click();const idleId=await page.evaluate(()=>[...document.querySelectorAll('#haniOfficeActors .hani-office-actor')].find(a=>!a.hidden&&a.dataset.action==='base-work'&&!a.dataset.event&&a.dataset.walking!=='true')?.dataset.person);assert.ok(idleId,'idle actor for full-line tap');const target=page.locator('#haniOfficeActors [data-person="'+idleId+'"]');await target.press('Enter');const panel=page.locator('.hani-office-character-bubble');await panel.waitFor({state:'visible'});assert.ok((await panel.textContent()).includes(await target.getAttribute('data-line')));
+  await page.locator('[data-building-floor="3f"]').click();await waitForOfficeLabels(page,'3f');const idleId=await page.evaluate(()=>[...document.querySelectorAll('#haniOfficeActors .hani-office-actor')].find(a=>!a.hidden&&a.dataset.action==='base-work'&&!a.dataset.event&&a.dataset.walking!=='true')?.dataset.person);assert.ok(idleId,'idle actor for full-line tap');const target=page.locator('#haniOfficeActors [data-person="'+idleId+'"]');await target.press('Enter');const panel=page.locator('.hani-office-character-bubble');await panel.waitFor({state:'visible'});assert.ok((await panel.textContent()).includes(await target.getAttribute('data-line')));
   if(theme==='light'&&[390,1440].includes(width)){
    const costs=await page.evaluate(()=>{officeLayoutCosts=[];for(let i=0;i<30;i++)document.querySelector('[data-building-floor="3f"]').click();return officeLayoutCosts});result.layout.push({width,unit:'ms',samples:costs,mean:costs.reduce((a,b)=>a+b,0)/costs.length,max:Math.max(...costs)});
    const frames=await page.evaluate(async()=>{
@@ -62,4 +63,4 @@ try{
   result.writes.push(...await page.evaluate(()=>officeWrites));await context.close();
  }
  assert.deepEqual(result.errors,[]);assert.deepEqual(result.writes,[]);assert.deepEqual(result.unavailable,[]);result.status='PASS';
-}catch(e){result.status='FAIL';result.failure=e.stack;process.exitCode=1}finally{await browser?.close();await new Promise(r=>server?server.close(r):r());fs.writeFileSync(path.join(out,'../obr14-browser.json'),JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify({status:result.status,checks:result.checks.length,screenshots:result.screenshots.length,failure:result.failure}))}
+}catch(e){result.status='FAIL';result.failure=e.stack;process.exitCode=1}finally{await browser?.close();await new Promise(r=>server?server.close(r):r());fs.writeFileSync(path.join(out,'../'+(process.env.HANI_OFFICE_BROWSER_TAG||'obr14')+'-browser.json'),JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify({status:result.status,checks:result.checks.length,screenshots:result.screenshots.length,failure:result.failure}))}

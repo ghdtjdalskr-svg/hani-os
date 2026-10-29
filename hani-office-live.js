@@ -913,7 +913,7 @@
     // Pure vocabulary shared by snapshots and the existing persistent label slot.
     const workLines={hani:'기획안 정리 중',yuna:'요청 분류 중',jieun:'일정 조율 중',haru:'기록 정리 중',gaeun:'일정 확인 중',seoyun:'설계 검토 중',dohyun:'코드 수정 중',serin:'수치 분석 중',yuri:'품질 점검 중',arin:'화면 검토 중',hina:'검증 기록 중',daon:'콘텐츠 구상 중',yoonseul:'문장 다듬는 중',sua:'접수 확인 중',taeo:'안내 준비 중',minji:'업무 메모 중',mir:'흐름 살피는 중',seongmin:'결재 검토 중',sooyeon:'자료 대조 중',naeun:'예산 점검 중'};
     const shortWords=[[/고민/,'잠깐 고민 중'],[/퀴즈/,'퀴즈 푸는 중'],[/비용|예산/,'비용 살피는 중'],[/고생|인사/,'인사 나누는 중'],[/웃|미소/,'살짝 웃는 중'],[/도장|결재/,'결재 확인 중'],[/메일/,'메일 확인 중'],[/일정|약속/,'일정 확인 중'],[/노래|음악|플레이리스트/,'음악 고르는 중'],[/졸음|꾸벅/,'졸음 쫓는 중'],[/커피 주문/,'커피 주문 중'],[/메뉴 고르/,'메뉴 고르는 중'],[/커피/,'커피 한 모금'],[/택배/,'택배 확인 중'],[/배달/,'배달 확인 중'],[/게시판|소식/,'소식 읽는 중'],[/검증|테스트/,'결과 확인 중'],[/수다|이야기/,'이야기 나누는 중'],[/코드|버그/,'코드 살피는 중'],[/메모/,'메모 정리 중'],[/보고서/,'보고서 다듬는 중'],[/스트레칭|기지개/,'기지개 켜는 중'],[/고양이/,'고양이 영상 중'],[/인스타/,'인스타 보는 중'],[/간식/,'간식 살피는 중'],[/생각|아이디어/,'생각 정리 중'],[/창밖|풍경|별/,'풍경 보는 중'],[/쉬는|휴식|소파/,'잠깐 쉬는 중'],[/확인|체크/,'내용 확인 중'],[/정리/,'자료 정리 중'],[/읽|책|페이지/,'읽어 보는 중']];
-    function shortLine(line){
+    function fullShortLine(line){
       if(chairmanShort.has(line))return chairmanShort.get(line);
       if(line==='좋아요, 이대로 갑시다')return '좋아요, 갑시다';
       if([...line].length<=10)return line;
@@ -921,6 +921,12 @@
       if(/가는 중/.test(line))return /커피|Coffee/.test(line)?'커피 사러 가는 중':/택배/.test(line)?'택배 찾으러 이동':'용무 보러 이동 중';
       if(/기다리는 중|대기/.test(line))return '차례 기다리는 중';
       return shortWords.find(([pattern])=>pattern.test(line))?.[1]||'업무 이어가는 중';
+    }
+    function shortLine(line,limit=10){
+      const short=fullShortLine(line);if(limit>=10||[...short].length<=limit)return short;
+      // Authored reductions, never clipping a word or hiding an ellipsis.
+      const compact=short.replace('회장님께 인사 중','회장님께 인사').replace('좋아요, 갑시다','좋아요, 진행해요').replace('사러 가는 중','사러 이동').replace('찾으러 이동','찾기 이동').replace('용무 보러 이동 중','용무 보러 이동').replace('차례 기다리는 중','차례 대기 중').replace('이야기 나누는 중','대화 나누는 중').replace('업무 이어가는 중','업무 진행 중').replace('살피는 중','확인 중').replace('고르는 중','선택 중').replace('다듬는 중','수정 중');
+      return [...compact].length<=limit?compact:'업무 진행 중';
     }
     const visitorKinds=[
       {kind:'client',sprite:'visitor-client',name:'방문 고객',hours:[[10,17]],target:'client_booth_slot_4',stay:[120,300],go:'상담실로 안내받아 가는 중',at:'상담 받는 중'},
@@ -1435,6 +1441,48 @@
 
     return Object.freeze({plan,snapshot,seed,slot,actions,windows,presentAt,homeAt,blockPlan,stateAt,resourceIntervals,errandPlaces,reportPlaces,shortLine,identity:table.identity});
   }
+  // Read-only label geometry, shared by the persistent renderer and Node tests.
+  function statusLabelPriority(data){
+    if(data.partner||data.greeting==='true'||data.speaking==='true')return 3;
+    if(data.walking==='true'||data.plain==='false'||data.called==='true'||data.activity==='meeting')return 2;
+    return 1;
+  }
+  function placeStatusLabels(floor,groups,obstacles=[]){
+    const gap=2,ordered=groups.slice().sort((a,b)=>b.priority-a.priority||a.id.localeCompare(b.id));
+    const overlaps=(a,b)=>a.left<b.right+gap&&a.right+gap>b.left&&a.top<b.bottom+gap&&a.bottom+gap>b.top;
+    let best=null,bestScore=null;
+    // Prefer nearby labels; only repack from an edge when local placement loses a line.
+    for(let mode=0;mode<5;mode++){
+    const reserved=obstacles.slice(),result=new Map(),score=[0,0,0,0];
+    for(const g of ordered){
+      const width=Math.max(g.name.width,g.status.width),height=g.name.height+gap+g.status.height;
+      const left=Math.max(floor.left+gap,Math.min(g.actor.left+g.actor.width/2-width/2,floor.right-gap-width));
+      const top=g.actor.top-gap-height,candidates=[];
+      const add=(x,y)=>{x=Math.max(floor.left+gap,Math.min(x,floor.right-gap-width));y=Math.max(floor.top+gap,Math.min(y,floor.bottom-gap-height));candidates.push({left:x,right:x+width,top:y,bottom:y+height,cost:(x-left)**2+(y-top)**2})};
+      // Above/below and either side keep each person's two labels together.
+      add(left,top);add(left,g.actor.bottom+gap);
+      add(g.actor.left-gap-width,top);add(g.actor.right+gap,top);
+      add(g.actor.left-gap-width,g.actor.top);add(g.actor.right+gap,g.actor.top);
+      // Crowded floors: search horizontal lanes as well as vertical lanes.
+      // Boundaries are candidates too, so narrow maps lose no edge space.
+      const xs=[floor.right-gap-width,left],ys=[floor.bottom-gap-height,Math.max(floor.top+gap,top)];
+      for(let x=floor.left+gap;x<=floor.right-gap-width;x+=width+gap)xs.push(x);
+      for(let y=floor.top+gap;y<=floor.bottom-gap-height;y+=height+gap)ys.push(y);
+      // Fit around irregular mascot/label edges instead of wasting a whole grid cell.
+      for(const r of reserved){xs.push(r.right+gap,r.left-gap-width);ys.push(r.bottom+gap,r.top-gap-height)}
+      for(const x of xs)for(const y of ys)add(x,y);
+      let chosen=null,rank=Infinity;
+      for(const b of candidates){const value=mode?(mode<=2?b.top:-b.bottom)*(floor.width+1)+(mode%2?b.left:-b.right):b.cost;
+        if(value<rank&&b.left>=floor.left+gap&&b.right<=floor.right-gap&&b.top>=floor.top+gap&&b.bottom<=floor.bottom-gap&&!reserved.some(r=>overlaps(b,r))){chosen=b;rank=value}}
+      if(chosen){score[3-g.priority]++;score[3]-=chosen.cost;reserved.push(chosen);result.set(g.id,{name:{left:chosen.left+(width-g.name.width)/2,top:chosen.top+g.status.height+gap},status:{left:chosen.left+(width-g.status.width)/2,top:chosen.top}})}
+      else result.set(g.id,null);
+    }
+    const better=!bestScore||score.some((v,i)=>v!==bestScore[i]&&score.slice(0,i).every((q,j)=>q===bestScore[j])&&v>bestScore[i]);
+    if(better){best=result;bestScore=score}
+    if(score[0]+score[1]+score[2]===groups.length)break;
+    }
+    return best;
+  }
   const scheduler=canon&&actionTable?createScheduler(actionTable):null;
   function snapshot(now=new Date(),options={}){
     const scheduled=scheduler?.snapshot(now,options),date=new Date(new Date(now).getTime()+32400000),day=date.toISOString().slice(0,10),minutes=date.getUTCHours()*60+date.getUTCMinutes();
@@ -1464,7 +1512,7 @@
       return present?{chairmanPresent:true,chairmanSince,chairmanArrivalAt}:{chairmanPresent:false};
     }};
   }
-  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines})});
+  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,labels:Object.freeze({priority:statusLabelPriority,place:placeStatusLabels}),places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines})});
 })();
 /* Read-only Living Office. The Agent Case renderer remains the sole owner of requests, answers and decisions. */
 (() => {
@@ -1524,36 +1572,29 @@
     icon.textContent=actor.dataset.emoji||'';icon.hidden=!icon.textContent;icon.title=value;
     if(actor.officeText)actor.officeText.textContent=value;
   }
-  // Batch writes, then read every box once, solve in memory, then commit offsets.
-  // Labels never move the actor's foot pivot. Names precede priority status pills.
+  // Batch reset -> one geometry read per node -> pure packing -> batch commit.
+  // Name and status travel together; actor coordinates and foot pivots never move.
   function fitStatusLabels(){
     const floor=map.getBoundingClientRect?.();if(!floor?.width)return;
-    const visible=[...actors.values()].filter(a=>!a.hidden),compact=floor.width<=600,reserved=[];
-    const priority=a=>a.dataset.speaking==='true'?4:a.dataset.called==='true'||a.dataset.activity==='meeting'?3:a.dataset.walking==='true'||a.dataset.plain!=='true'?2:1;
-    const nodes=[];
-    for(const actor of visible){
+    const visible=[...actors.values()].filter(a=>!a.hidden),compact=floor.width<=600;
+    const rows=visible.map(actor=>({actor,name:actor.querySelector('.hani-office-name'),status:actor.querySelector('.hani-office-status')}));
+    for(const {actor,name,status}of rows){
       statusDot(actor);
-      for(const kind of ['name','status']){const node=actor.querySelector('.hani-office-'+kind);
-        node.style.setProperty('--'+kind+'-x','0px');node.style.setProperty('--'+kind+'-y','0px');node.style.visibility='';
-        if(kind==='status'){node.hidden=false;node.textContent=compact?(HaniBuildingScene.scheduler?.shortLine(node.dataset.full)||node.dataset.full):node.dataset.full}
-        nodes.push({node,kind,actor});
-      }
+      for(const [kind,node]of [['name',name],['status',status]]){node.style.setProperty('--'+kind+'-x','0px');node.style.setProperty('--'+kind+'-y','0px');node.style.visibility='';node.hidden=false;}
+      status.textContent=compact?(HaniBuildingScene.scheduler?.shortLine(status.dataset.full,8)||status.dataset.full):status.dataset.full;
     }
-    const rows=nodes.map(row=>({...row,base:row.node.getBoundingClientRect()}));
-    // The mascot owner is separate; reserve only its actual visible sprite boxes.
-    for(const node of root.querySelectorAll('.hani-desk-mascots:not([hidden]) .hani-desk-mascot[data-ready="true"]')){const r=node.getBoundingClientRect();if(r.width&&r.height)reserved.push(r)}
-    const overlaps=(a,b)=>a.left<b.right+2&&a.right+2>b.left&&a.top<b.bottom+2&&a.bottom+2>b.top;
-    rows.sort((a,b)=>(a.kind==='name'?0:1)-(b.kind==='name'?0:1)||priority(b.actor)-priority(a.actor));
-    for(const {node,kind,base}of rows){
-      const dx=Math.max(floor.left+2-base.left,Math.min(0,floor.right-2-base.right));let chosen=null;
-      for(let step=0;step<=visible.length*4;step++){
-        const shift=step===0?0:Math.ceil(step/2)*(base.height+3)*(step%2?1:-1)*(kind==='status'?-1:1),dy=Math.max(floor.top+2-base.top,Math.min(shift,floor.bottom-2-base.bottom));
-        const box={left:base.left+dx,right:base.right+dx,top:base.top+dy,bottom:base.bottom+dy};
-        if(box.left>=floor.left&&box.right<=floor.right&&box.top>=floor.top&&box.bottom<=floor.bottom&&!reserved.some(r=>overlaps(box,r))){chosen={dx,dy};reserved.push(box);break}
-      }
-      node.officeLabelPlacement=chosen;
+    const groups=rows.map(({actor,name,status})=>({id:actor.dataset.person,priority:HaniBuildingScene.labels.priority(actor.dataset),actor:actor.getBoundingClientRect(),name:name.getBoundingClientRect(),status:status.getBoundingClientRect()}));
+    // Reserve the separate mascot owner's actual visible sprite boxes.
+    const obstacles=[];
+    for(const node of root.querySelectorAll('.hani-desk-mascots:not([hidden]) .hani-desk-mascot[data-ready="true"]')){const r=node.getBoundingClientRect();if(r.width&&r.height)obstacles.push(r)}
+    const placements=HaniBuildingScene.labels.place(floor,groups,obstacles);
+    for(let i=0;i<rows.length;i++)for(const kind of ['name','status']){
+      const node=rows[i][kind],base=groups[i][kind],p=placements.get(groups[i].id)?.[kind];
+      node.officeLabelPlacement=p?{dx:p.left-base.left,dy:p.top-base.top}:null;node.style.visibility=p?'':'hidden';
+      if(p){node.style.setProperty('--'+kind+'-x',(p.left-base.left)+'px');node.style.setProperty('--'+kind+'-y',(p.top-base.top)+'px')}
     }
-    for(const {node,kind}of rows){const p=node.officeLabelPlacement;node.style.visibility=p?'':'hidden';if(p){node.style.setProperty('--'+kind+'-x',p.dx+'px');node.style.setProperty('--'+kind+'-y',p.dy+'px')}}
+    // Readiness is committed only after every label's offset and visibility.
+    map.dataset.labelsReady=map.dataset.floor;map.dataset.labelsAt=String(Date.now());
   }
   if(buildingChairmanSlot())people.push(['seongmin','회장님',null,0]);
   // Two persistent 1F guest slots, never recreated during a visit.
@@ -1729,7 +1770,7 @@
       if(building.scheduler&&!meeting){actor.officeTravel=null;actor.officeAnchor=p.seat.anchor;actor.dataset.seat=p.seat.id;actor.dataset.zone=p.seat.zone;actor.dataset.spot=p.seat.zone==='desk'?'seat':p.seat.zone;actor.dataset.home=[p.seat.x,p.seat.y].join(',');place(actor,p.position||[p.seat.x,p.seat.y]);pose(actor,reduced?(p.walking?'standing':p.pose):p.pose)}
       else seatActor(actor,p.seat,animate&&(sameFloor||meeting));
       actor.dataset.behavior=p.state||'AT_HOME';actor.dataset.place=p.placeId||'';actor.dataset.slot=p.targetAnchor||'';
-      actor.dataset.partner=p.deskPartner||'';actor.dataset.facing=p.facing||'';
+      actor.dataset.partner=p.deskPartner||'';actor.dataset.greeting=String(p.behaviorKind==='chairman-greeting'||p.id==='seongmin'&&entries.some(q=>q.behaviorKind==='chairman-greeting'));actor.dataset.facing=p.facing||'';
       actor.dataset.action=selected?'agent-case':p.actionId||'base-work';actor.dataset.event=p.eventId||'';actor.dataset.line=selected?'실제 안건 검토 중':p.line||'자료 확인 중';
       actor.dataset.emoji=selected||actor.dataset.action==='base-work'?'':p.emoji||'';actor.dataset.walking=String(Boolean(p.walking));
       actor.querySelector('.hani-office-prop').textContent=actor.dataset.emoji;
