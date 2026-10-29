@@ -2,18 +2,26 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {loadScene,at,readAt} from './hani-office-lively-fixture.mjs';
 import {assertResources,validPlaceSpeech} from './hani-office-place-assertions.mjs';
+import fs from 'node:fs';
+import {gunzipSync} from 'node:zlib';
+import {createHash} from 'node:crypto';
+const obr13Bytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-chairman-234-plans.json.gz'));
+assert.equal(createHash('sha256').update(obr13Bytes).digest('hex'),'cd5541576e23b39018e704f14bcc253eac4aba152849779300f5f2b817852dff');
+const obr13=JSON.parse(obr13Bytes);
 const overlap=(a,b)=>a.start<b.end&&b.start<a.end;
 const plain=v=>JSON.parse(JSON.stringify(v));
 const days=['2026-10-22','2026-10-23','2026-10-24'];
 const {scene,table,context}=loadScene(),s=scene.scheduler;
 let writes=0;const fail=()=>{writes++;throw Error('storage forbidden')};
 context.localStorage=context.sessionStorage={setItem:fail,removeItem:fail,clear:fail};
-test('obr8: frozen formal plans stay identical to obr7; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words',()=>{
+test('obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words',()=>{
  const old=loadScene({transform:()=>readAt('hani-office-live.js','84cadbd')}).scene.scheduler;
  const counts={colleague:0,delivery:0,notice:0,task:0};
  for(const day of days){
   const options={chairmanPresent:true},formal=s.plan(day,options),all=s.blockPlan(day,0,formal,options),errands=all.filter(e=>e.card.kind==='errand');
-  assert.deepEqual(plain(formal),plain(old.plan(day,options)),'all formal decisions unchanged');
+  const reviewed=obr13.records.find(r=>r.day===day&&r.options.chairmanPresent===true);
+  if(reviewed)assert.deepEqual(plain(formal),reviewed.formal,'all formal decisions match exact reviewed chairman delta');
+  else assert.deepEqual(plain(formal),plain(old.plan(day,options)),'all formal decisions unchanged');
   assert.ok(errands.length>600,day+' actual accepted errands');
   const previous=new Map();
   for(const e of errands){

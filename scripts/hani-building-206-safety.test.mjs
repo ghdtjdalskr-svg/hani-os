@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {readReviewedCurrentSource} from './hani-reviewed-release-baseline.mjs';
+import {readReviewedCurrentSource,readReviewedReleaseBaseline} from './hani-reviewed-release-baseline.mjs';
 const root=path.resolve(fileURLToPath(new URL('../',import.meta.url))),base=path.resolve(process.env.HANI_BUILDING_SAFETY_BASELINE||process.argv[2]);
 const files=['index.html','hani-office-live.js','hani-office-live.css','hani-style-01.css','scripts/hani-nav-groups.test.mjs','hani-main.js','hani-ui-cleanup-v02971.js','hani-investment-committee.js'];
 const ids=s=>Array.from(s.matchAll(/\bid\s*=\s*["']([^"']+)["']/g),m=>m[1]);
@@ -11,7 +11,8 @@ const before=[],after=[];
 for(const file of files){
  // Remove only the exact, separately validated approved train connection fragments.
  // All other bytes, storage calls, version tags and EOL retain the original assertions.
- const old=fs.readFileSync(path.join(base,file.replaceAll('/','-')),'utf8'),now=['index.html','hani-main.js','hani-investment-committee.js'].includes(file)?readReviewedCurrentSource(file):fs.readFileSync(path.join(root,file),'utf8');before.push(...ids(old));after.push(...ids(now));
+ const reviewed=['index.html','hani-main.js','hani-investment-committee.js'].includes(file);
+ const old=reviewed?readReviewedReleaseBaseline(file):fs.readFileSync(path.join(base,file.replaceAll('/','-')),'utf8'),now=reviewed?readReviewedCurrentSource(file):fs.readFileSync(path.join(root,file),'utf8');before.push(...ids(old));after.push(...ids(now));
  const writes=s=>Array.from(s.matchAll(/\b(?:localStorage|sessionStorage)\s*\.\s*(?:setItem|removeItem|clear)\s*\([^\n]*/g),m=>m[0]);assert.deepEqual(writes(now),writes(old),file+' unchanged storage writes');
  for(const token of ['hani_os_life_v23','2.9.15-safe-baseline-bootstrap','.clear('])assert.equal(now.split(token).length,old.split(token).length,file+' preserved '+token);
  const lines=new Map(),ambiguous=new Set();for(const line of old.match(/[^\n]*(?:\n|$)/g).filter(Boolean)){const key=line.replace(/\r?\n$/,'');if(lines.has(key)&&lines.get(key)!==line)ambiguous.add(key);lines.set(key,line)}
