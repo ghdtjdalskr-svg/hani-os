@@ -5,7 +5,9 @@ import path from 'node:path';
 import http from 'node:http';
 import assert from 'node:assert/strict';
 import {fileURLToPath,pathToFileURL} from 'node:url';
+import {validPlaceSpeech} from './hani-office-place-assertions.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url)),out=path.join(root,'artifacts/office-behavior');fs.mkdirSync(out,{recursive:true});
+const actionTable=JSON.parse(fs.readFileSync(path.join(root,'assets/data/office-actions-221.json'),'utf8'));
 const status={result:'running',checks:[],screenshots:[],errors:[],writes:[]};
 const html=fs.readFileSync(path.join(root,'index.html'),'utf8'),start=html.indexOf('<section class="hani-office-live"'),end=html.indexOf('</section>',start)+10;
 assert.ok(start>0&&end>start);
@@ -45,7 +47,7 @@ try{
     await page.evaluate(time=>{window.officeClock=time},time);await page.locator(`[data-building-floor="${floor}"]`).click();
     await until(f=>document.querySelector('#haniOfficeMap').dataset.floor===f&&document.querySelector('#haniOfficeMap').dataset.art==='floor',floor);
     const result=await page.evaluate(({floor,reduced})=>{
-     const scene=HaniBuildingScene,snap=scene.scheduler.snapshot(new Date(),{reducedMotion:reduced}),errors=[];
+     const scene=HaniBuildingScene,snap=scene.scheduler.snapshot(new Date(),{reducedMotion:reduced}),errors=[],atPlace=[];
      const actors=[...document.querySelectorAll('.hani-office-actor')].filter(a=>!a.hidden),map=document.querySelector('#haniOfficeMap'),rect=map.getBoundingClientRect();
      const list=actors.map(a=>({id:a.dataset.person,x:parseFloat(a.style.left)*1672/100,y:parseFloat(a.style.top)*941/100,walking:a.dataset.walking==='true'}));
      for(const p of list){const model=[...snap.entries,...snap.visitors].find(m=>m.id===p.id),actor=actors.find(a=>a.dataset.person===p.id),target=scene.art.anchors[model.targetAnchor];
@@ -53,18 +55,16 @@ try{
       const position=model.position||[model.seat.x,model.seat.y];if(Math.hypot(p.x-position[0]*16.72,p.y-position[1]*9.41)>2)errors.push('DOM/model foot '+p.id);
       if(actor.dataset.behavior!==model.state||actor.dataset.line!==model.line)errors.push('DOM/model state/speech '+p.id);
       if(model.state==='AT_PLACE'&&(!target||Math.hypot(p.x-target.x*16.72,p.y-target.y*9.41)>2))errors.push('place foot '+p.id);
-      // Guests keep their own reception lines; staff speak the place card's lines.
-      const card=scene.places.find(c=>c.id===model.placeId);if(model.state==='AT_PLACE'){
-       const pool=card?[...card.at,...(card.atByPerson?.[p.id]||[])]:[];
-       const groupOk=model.groupIds?.length&&model.groupIds.filter(id=>id!==p.id).every(id=>actor.dataset.line.includes(scene.canon.people.find(p=>p.id===id)?.name||'__missing_person__'))&&actor.dataset.line.includes(card.at[0].split('에서')[0]+'에서');
-       if(model.visitor?actor.dataset.line!==model.at:card&&!(pool.includes(actor.dataset.line)||groupOk))errors.push('place speech '+p.id);
-      }
+      // Place speech is judged in Node by the same validPlaceSpeech the model tests use
+      // (DOM line already equals the model line above).
+      if(model.state==='AT_PLACE')atPlace.push({model:JSON.parse(JSON.stringify(model)),card:scene.places.find(c=>c.id===model.placeId)||null});
       if(p.walking&&!(/가는 중|돌아가는 중/.test(actor.dataset.line)||model.visitor&&model.state==='RETURNING'&&actor.dataset.line==='안녕히 계세요~'))errors.push('walking speech '+p.id);
      }
      for(let i=0;i<list.length;i++)for(let j=i+1;j<list.length;j++){const a=list[i],b=list[j];if(Math.hypot(a.x-b.x,a.y-b.y)<(a.walking||b.walking?24:20)-.01)errors.push('DOM proximity '+a.id+'/'+b.id)}
      if(!originalOfficeNodes.every((n,i)=>document.querySelector('#haniOfficeActors').children[i]===n))errors.push('actor identity changed');
-     return {errors,actors:list.length,map:{width:rect.width,height:rect.height},writes:officeWrites};
+     return {errors,atPlace,actors:list.length,map:{width:rect.width,height:rect.height},writes:officeWrites};
     },{floor,reduced:reducedMotion==='reduce'});
+    for(const {model,card} of result.atPlace)if(!validPlaceSpeech(model,card,actionTable))result.errors.push('place speech '+model.id+' '+model.line);
     assert.deepEqual(result.errors,[],JSON.stringify({width,reducedMotion,floor,time}));assert.deepEqual(result.writes,[]);status.checks.push({width,reducedMotion,floor,time,actors:result.actors});
    }
    const screenshot=`behavior-${width}-${floor}-${reducedMotion}.png`;await page.locator('#haniOfficeLive').screenshot({path:path.join(out,screenshot)});status.screenshots.push(screenshot);

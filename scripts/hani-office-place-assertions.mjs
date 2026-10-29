@@ -6,6 +6,10 @@ export function assertResources(s,a,b){
 export function validPlaceSpeech(p,card,table){
  if(p.visitor)return p.line===p.at;
  if(!card)return true;
+ if(p.stayLine){
+  const ids=p.gatheringIds||p.groupIds,names=ids?.filter(id=>id!==p.id).map(id=>table.people.find(q=>q.id===id)?.name);
+  return p.state==='AT_PLACE'&&p.floor===card.floor&&card.slots.includes(p.seat.anchor)&&names?.length>=1&&names.every(Boolean)&&[...card.at,...(card.atByPerson?.[p.id]||[])].includes(p.stayLine)&&p.line===names.join('·')+'와 '+p.stayLine;
+ }
  if(card.kind==='errand'){
   if(p.state!=='AT_PLACE'||p.floor!==card.floor||!card.slots.includes(p.seat.anchor)||p.targetAnchor!==p.seat.anchor||!card.at.includes(p.line)||/커피|쉬는|휴식|창밖|간식|소파|산책|테라스|라운지/.test(p.line))return false;
   if(card.errandKind==='colleague'){

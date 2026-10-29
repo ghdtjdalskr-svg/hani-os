@@ -87,7 +87,7 @@ for(const time of [...times,'02:00']){
  report.static.push(`${time}: ${people.length} staff, unique seats, speech present; night presence retained`);
 }
 // index.html follows main's reviewed-release baseline (version/cache projection); the rest stays exact.
-for(const f of ['index.html','assets/sprites-v2/manifest.json'])assert.equal(f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(withoutSimplify225(f,readReviewedCurrentSource(f))))):read(f),f==='index.html'?withoutPhotoBackupUi(withoutLaunchGreeting(withoutOfflineEntryUi(withoutSimplify225(f,readReviewedReleaseBaseline(f))))):git('show',base+':'+f).toString('utf8'),f+' preserved');
+for(const f of ['index.html','assets/sprites-v2/manifest.json'])assert.equal(f==='index.html'?readReviewedCurrentSource(f):read(f),f==='index.html'?readReviewedReleaseBaseline(f):git('show',base+':'+f).toString('utf8'),f+' preserved against fixed released bytes');
 const priorCanon=expectedOnboardedCanon(JSON.parse(git('show',base+':data/hani-building/spatial-contract.json')));
 assert.deepEqual(assets.canon.people,priorCanon.people);assert.deepEqual(assets.canon.floors,priorCanon.floors);
 for(const oldAnchor of priorCanon.anchors)assert.deepEqual(assets.canon.anchors.find(a=>a.id===oldAnchor.id),oldAnchor);
