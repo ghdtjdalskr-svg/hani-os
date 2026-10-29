@@ -3,10 +3,10 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 import {newsroomScript,newsroomEntry,newsroomCss} from './hani-newsroom-4cut-preservation.mjs';
-import {readReleaseSource,readReviewedReleaseBaseline,assertReviewedReleaseSource,guardedRelease,approvedReleases,projectTrainVersion,pendingApprovedConnections,normalizeReviewedCurrentSource,normalizeReviewedConnection,trainBaseVersion} from './hani-reviewed-release-baseline.mjs';
+import {readReleaseSource,readReviewedReleaseBaseline,assertReviewedReleaseSource,guardedRelease,approvedReleases,projectTrainVersion,pendingApprovedConnections,released233Connections,released233Sha,normalizeReviewedCurrentSource,normalizeReviewedConnection,trainBaseVersion} from './hani-reviewed-release-baseline.mjs';
 
 test('release225 plus only named later release changes reproduces current source bytes',()=>{
- for(const file of new Set(['hani-development-history-v1.js',...approvedReleases.flatMap(r=>r.files),...pendingApprovedConnections.map(c=>c.file)])){
+ for(const file of new Set(['hani-development-history-v1.js',...approvedReleases.flatMap(r=>r.files),...released233Connections.map(c=>c.file),...pendingApprovedConnections.map(c=>c.file)])){
   assertReviewedReleaseSource(file,fs.readFileSync(new URL('../'+file,import.meta.url),'utf8'));
  }
  assert.ok(approvedReleases.every(r=>/^[0-9a-f]{40}$/.test(r.sha)));
@@ -36,15 +36,15 @@ test('pending integrations are exact deltas between the fixed reviewed merge ide
 });
 
 test('release projection advances cache/display only; internal and historical literals stay strict',()=>{
- const source='x.js?v=2.9.232 const HANI_DISPLAY_VERSION="2.9.232"; internal="2.9.15-safe-baseline-bootstrap"; old="2.9.225";';
- assert.equal(trainBaseVersion,'2.9.232');
- assert.equal(projectTrainVersion(source,'2.9.233'),'x.js?v=2.9.233 const HANI_DISPLAY_VERSION="2.9.233"; internal="2.9.15-safe-baseline-bootstrap"; old="2.9.225";');
+ const source='x.js?v=2.9.233 const HANI_DISPLAY_VERSION="2.9.233"; internal="2.9.15-safe-baseline-bootstrap"; old="2.9.225";';
+ assert.equal(trainBaseVersion,'2.9.233');
+ assert.equal(projectTrainVersion(source,'2.9.234'),'x.js?v=2.9.234 const HANI_DISPLAY_VERSION="2.9.234"; internal="2.9.15-safe-baseline-bootstrap"; old="2.9.225";');
  assert.throws(()=>projectTrainVersion(source,'2.9.230'));
  assert.throws(()=>projectTrainVersion(source,'2.9.233-invalid'));
- const html=readReviewedReleaseBaseline('index.html'),future=projectTrainVersion(html,'2.9.233');
- assert.doesNotMatch(future,/2\.9\.232/,'next train updates all existing visible labels and cache tags');
- assert.match(future,/<title>갓생살기 프로젝트 · HANI OS Life Edition v2\.9\.233<\/title>/);
- assert.equal(projectTrainVersion('unrelated v2.9.232','2.9.233'),'unrelated v2.9.232');
+ const html=readReviewedReleaseBaseline('index.html'),future=projectTrainVersion(html,'2.9.234');
+ assert.doesNotMatch(future,/2\.9\.233/,'next train updates all existing visible labels and cache tags');
+ assert.match(future,/<title>갓생살기 프로젝트 · HANI OS Life Edition v2\.9\.234<\/title>/);
+ assert.equal(projectTrainVersion('unrelated v2.9.233','2.9.234'),'unrelated v2.9.233');
 });
 
 test('unlisted controls, storage, source and EOL edits remain detectable against Git oracle',()=>{
@@ -116,8 +116,10 @@ test('approved additions cannot move to another script, event or cascade positio
  }
 });
 
-test('pending 233 train stays scoped to office, milestones, hero-crop, asset-intake, QA and HANI-77 owners; released staff and moved fragments stay strict',()=>{
- assert.deepEqual(pendingApprovedConnections.map(c=>c.file).sort(),["hani-design-system.css","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-context-remote.css","hani-context-remote.css","hani-design-system.css","hani-portfolio-preview.css",...["assets/data/office-actions-216.json","assets/data/office-actions-221.json","hani-asset-market-view.js","hani-asset-update-v1.js","hani-context-remote-v1.js","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-design-system.css","hani-investment-committee.js","hani-main.js","hani-main.js","hani-office-live.js","hani-organization-hub.css","hani-organization-hub.js","hani-study-v02984.js","hani-style-07.css","hani-ui-v02992.js","hani-yuna-helpdesk.js","index.html","index.html"]].sort());
+test('released 233 keeps all prior scoped proofs; pending 234 allows only exact office bytes; released staff and moved fragments stay strict',()=>{
+ assert.deepEqual(pendingApprovedConnections.map(c=>c.file),['hani-office-live.js']);
+ assert.equal(released233Sha,'beffc3850ea890ec84ce623579b26b4b5a3cd35c');
+ assert.deepEqual(released233Connections.map(c=>c.file).sort(),["hani-design-system.css","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-context-remote.css","hani-context-remote.css","hani-design-system.css","hani-portfolio-preview.css",...["assets/data/office-actions-216.json","assets/data/office-actions-221.json","hani-asset-market-view.js","hani-asset-update-v1.js","hani-context-remote-v1.js","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-design-system.css","hani-investment-committee.js","hani-main.js","hani-main.js","hani-office-live.js","hani-organization-hub.css","hani-organization-hub.js","hani-study-v02984.js","hani-style-07.css","hani-ui-v02992.js","hani-yuna-helpdesk.js","index.html","index.html"]].sort());
  const stages=new Map();
  for(const connection of pendingApprovedConnections){
   const {file,lines}=connection,current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
@@ -231,7 +233,7 @@ test('open-only Remote CSS is an exact delta from fixed c026b63; sticky and all 
   for(const h of change.replacements){assert.equal(forward.split(h.before).length-1,1);assert.equal(reverse.split(h.after).length-1,1);forward=forward.replace(h.before,()=>h.after);reverse=reverse.replace(h.after,()=>h.before)}
   assert.equal(forward,after);assert.equal(reverse,before);assertReviewedReleaseSource(change.file,after);
   for(const h of change.replacements)for(const mutation of [after.replace(h.after,''),after.replace(h.after,h.after+h.after),after.replace(h.after,h.after.replace('[data-open="true"]','')),after.replace(h.after,h.after+'/* unlisted */')])assert.throws(()=>assertReviewedReleaseSource(change.file,mutation),{code:'ERR_ASSERTION'});
-  const connection=pendingApprovedConnections.find(c=>c.file===change.file);
+  const connection=released233Connections.find(c=>c.file===change.file);
   assert.equal(normalizeReviewedConnection(connection,after),before,'only newest delta is reversed before older fixed hunks');
  }
 });
@@ -252,7 +254,7 @@ test('mobile scroll spacing is an exact delta from a29ff90; all older fixture id
   for(const h of change.replacements){
    for(const mutated of [after.replace(h.after,''),after.replace(h.after,h.after+h.after),after.replace(h.after,h.after+'/* unlisted */'),after.replace('scroll-padding-top:calc(56px','scroll-padding-top:calc(0px'),after.replace('scroll-margin-top:8px','scroll-margin-top:0px'),after.replace('screen and (max-width:768px){\n  /* Native','screen and (max-width:850px){\n  /* Native'),after.replace(h.after,'')+'\n'+h.after,after.replace(h.after,h.after.replace(/\n/g,'\r\n'))])assert.throws(()=>assertReviewedReleaseSource(change.file,mutated),{code:'ERR_ASSERTION'});
   }
-  const connection=pendingApprovedConnections.find(c=>c.file===change.file);
+  const connection=released233Connections.find(c=>c.file===change.file);
   assert.equal(normalizeReviewedConnection(connection,after),before,'newest scroll delta reverses before historical date correction');
  }
 });

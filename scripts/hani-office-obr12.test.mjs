@@ -4,10 +4,14 @@ import {createHash} from 'node:crypto';
 import {loadScene,readAt,at} from './hani-office-lively-fixture.mjs';
 const before=readAt('hani-office-live.js','0d47015');
 assert.equal(createHash('sha256').update(before).digest('hex'),'5f9308771e5da0578367d9b541b79b2e7e4e32e37a835530c4bb23ccd571da98');
+// obr13 intentionally changes behavior. Preserve the full obr12 optimization
+// proof against the immutable shipped 233 source, never the changed worktree.
+const optimized=readAt('hani-office-live.js','beffc38');
+assert.equal(createHash('sha256').update(optimized).digest('hex'),'6cd4b68f14aa435d3de6d00e4b535ca74ebf6baed225b0c818506e911e3d2b21');
 const plain=x=>JSON.parse(JSON.stringify(x));
 for(const [day,options]of [['2026-10-22',{}],['2026-10-23',{chairmanPresent:true}],['2026-10-24',{}],['2026-11-01',{presentIds:['seoyun','dohyun','yuna','minji']}],['2026-11-02',{presentIds:['hani','yuri','serin','arin','hina','daon','yoonseul']}]] ){
  test('obr12: '+day+' full formal/outing bytes, phase boundaries, query order and zero writes',()=>{
-  const old=loadScene({transform:()=>before}),current=loadScene();let writes=0;
+  const old=loadScene({transform:()=>before}),current=loadScene({transform:()=>optimized});let writes=0;
   const deny=()=>{writes++;throw Error('storage forbidden')};for(const {context}of [old,current])context.localStorage=context.sessionStorage={setItem:deny,removeItem:deny,clear:deny};
   const a=old.scene.scheduler,b=current.scene.scheduler;
   const compare=(label,x,y)=>{assert.equal(JSON.stringify(x),JSON.stringify(y),label+' bytes');assert.deepEqual(plain(x),plain(y),label+' deepEqual')};

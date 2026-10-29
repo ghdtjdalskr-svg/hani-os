@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import {pathToFileURL} from 'node:url';
 const repo=process.argv[2];
+const options={chairmanPresent:process.argv.includes('--chairman')};
 const {fixture}=await import(pathToFileURL(repo+'/scripts/hani-building-206-engine.test.mjs'));
 const table=JSON.parse(fs.readFileSync(repo+'/assets/data/office-actions-221.json','utf8'));
 const {validPlaceSpeech}=await import(pathToFileURL(repo+'/scripts/hani-office-place-assertions.mjs'));
@@ -14,7 +15,7 @@ const frozen=[];for(const e of scene.canon.edges){const a=scene.anchors.get(e.fr
 const placeWords=[['창밖',['window','lounge-armchair']],['커피',['coffee','pantry','cafe']],['화분',['plant']],['화이트보드',['whiteboard','board']],['소파',['sofa','lounge']]];
 const mismatch=new Map(),near=new Map(),stuck=new Map();let snaps=0;const last=new Map();
 for(let t=Date.parse('2026-10-22T08:00:00+09:00');t<Date.parse('2026-10-22T23:00:00+09:00');t+=1000){snaps++;
-  const snap=s.snapshot(new Date(t)),hh=new Date(t+32400000).toISOString().slice(11,19);
+  const snap=s.snapshot(new Date(t),options),hh=new Date(t+32400000).toISOString().slice(11,19);
   for(const p of [...snap.entries,...snap.visitors]){
     const a=scene.anchors.get(p.seat.anchor),where=(a?.id||'')+' '+(a?.room||'')+' '+(a?.type||'');
     // New scheduler: validate semantic place identity, not English substrings in
