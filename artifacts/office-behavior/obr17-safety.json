@@ -1,0 +1,14 @@
+{
+  "base": "64a8ae40a79710c73001c0509e497f92825f676a",
+  "runtimeSha256": "c8d80301715eedd0c06a637ed17d8ce5a6b8d8443abf26ce92a928ca944cee8d",
+  "schedulerBytesUnchanged": true,
+  "schedulerSha256": "3e39b97ab259dd6e18aa3b8f03e2cd57ea15f3767508221aaf2b253a0ce95a76",
+  "schedulerBytes": 136858,
+  "timers": 2,
+  "cssSha256": "73bea672bff15ff2aa4963ae29e8f9ed752284cc808ceefcada4cd4475468c9d",
+  "runtimeEOL": {
+    "crlf": 0,
+    "lf": 1868
+  },
+  "pendingBeforeUnchanged": true
+}

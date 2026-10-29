@@ -1,0 +1,100 @@
+{
+  "node": "v24.20.0",
+  "runtimeSha256": "c8d80301715eedd0c06a637ed17d8ce5a6b8d8443abf26ce92a928ca944cee8d",
+  "day": "2026-10-22",
+  "performance": [
+    {
+      "chairmanPresent": false,
+      "cold": [
+        389.0214,
+        454.9628,
+        387.8998
+      ],
+      "warm": [
+        1.1750448999999998,
+        1.1624217,
+        1.0848368
+      ],
+      "best": 387.8998,
+      "maxWarm": 1.1750448999999998
+    },
+    {
+      "chairmanPresent": true,
+      "cold": [
+        437.51709999999997,
+        447.3562,
+        449.053
+      ],
+      "warm": [
+        1.9009886999999999,
+        1.9506634999999999,
+        1.8597213000000001
+      ],
+      "best": 437.51709999999997,
+      "maxWarm": 1.9506634999999999
+    }
+  ],
+  "reports": [
+    {
+      "id": "seoyun",
+      "start": 33674,
+      "performStart": 33690.113507497634,
+      "performEnd": 33732.113507497634,
+      "end": 33748.22701499527,
+      "home": "3f",
+      "target": "junction_ceo",
+      "topic": "배포 일정"
+    },
+    {
+      "id": "hani",
+      "start": 38413,
+      "performStart": 38419.23879633997,
+      "performEnd": 38469.23879633997,
+      "end": 38475.477592679934,
+      "home": "4f",
+      "target": "junction_ceo",
+      "topic": "오늘 안건"
+    },
+    {
+      "id": "yuna",
+      "start": 43276,
+      "performStart": 43283.29141972923,
+      "performEnd": 43333.29141972923,
+      "end": 43340.58283945845,
+      "home": "4f",
+      "target": "junction_ceo",
+      "topic": "접수 메모"
+    },
+    {
+      "id": "dohyun",
+      "start": 48015,
+      "performStart": 48029.30458007149,
+      "performEnd": 48078.30458007149,
+      "end": 48092.60916014298,
+      "home": "3f",
+      "target": "junction_ceo",
+      "topic": "구현 진행"
+    },
+    {
+      "id": "gaeun",
+      "start": 52893,
+      "performStart": 52901.81875727585,
+      "performEnd": 52926.81875727585,
+      "end": 52935.637514551694,
+      "home": "4f",
+      "target": "junction_ceo",
+      "topic": "다음 일정"
+    },
+    {
+      "id": "jieun",
+      "start": 57617,
+      "performStart": 57634.109670249054,
+      "performEnd": 57685.109670249054,
+      "end": 57702.21934049811,
+      "home": "2f",
+      "target": "junction_ceo",
+      "topic": "예산"
+    }
+  ],
+  "method": "six independent fresh Node processes; 3 cold plans/presence; 1000 warm snapshots/process; actual since/arrival options"
+}

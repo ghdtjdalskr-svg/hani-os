@@ -1,0 +1,81 @@
+{
+  "method": "base then patched interleaved; fresh Node process per sample; same assets and present options; diagnostic only",
+  "rows": [
+    {
+      "node": "v24.20.0",
+      "mode": "base",
+      "run": 1,
+      "sourceSha256": "93de8a35d876293575def125067951c05dc0a9948748d4b7b62c1aa886986514",
+      "cold": 371.85179999999997,
+      "warm": 1.7261837999999998,
+      "reports": 6
+    },
+    {
+      "node": "v24.20.0",
+      "mode": "base",
+      "run": 2,
+      "sourceSha256": "93de8a35d876293575def125067951c05dc0a9948748d4b7b62c1aa886986514",
+      "cold": 384.4561,
+      "warm": 1.7968421,
+      "reports": 6
+    },
+    {
+      "node": "v24.20.0",
+      "mode": "base",
+      "run": 3,
+      "sourceSha256": "93de8a35d876293575def125067951c05dc0a9948748d4b7b62c1aa886986514",
+      "cold": 347.8138,
+      "warm": 1.5838912,
+      "reports": 6
+    },
+    {
+      "node": "v24.20.0",
+      "mode": "patched",
+      "run": 1,
+      "sourceSha256": "c8d80301715eedd0c06a637ed17d8ce5a6b8d8443abf26ce92a928ca944cee8d",
+      "cold": 361.5314,
+      "warm": 1.5358404,
+      "reports": 6
+    },
+    {
+      "node": "v24.20.0",
+      "mode": "patched",
+      "run": 2,
+      "sourceSha256": "c8d80301715eedd0c06a637ed17d8ce5a6b8d8443abf26ce92a928ca944cee8d",
+      "cold": 354.1739,
+      "warm": 1.5574644,
+      "reports": 6
+    },
+    {
+      "node": "v24.20.0",
+      "mode": "patched",
+      "run": 3,
+      "sourceSha256": "c8d80301715eedd0c06a637ed17d8ce5a6b8d8443abf26ce92a928ca944cee8d",
+      "cold": 353.4562,
+      "warm": 1.5477291,
+      "reports": 6
+    }
+  ],
+  "summary": [
+    {
+      "mode": "base",
+      "cold": [
+        371.85179999999997,
+        384.4561,
+        347.8138
+      ],
+      "best": 347.8138,
+      "maxWarm": 1.7968421
+    },
+    {
+      "mode": "patched",
+      "cold": [
+        361.5314,
+        354.1739,
+        353.4562
+      ],
+      "best": 353.4562,
+      "maxWarm": 1.5574644
+    }
+  ]
+}

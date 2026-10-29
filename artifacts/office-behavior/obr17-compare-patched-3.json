@@ -1,0 +1,9 @@
+{
+  "node": "v24.20.0",
+  "mode": "patched",
+  "run": 3,
+  "sourceSha256": "c8d80301715eedd0c06a637ed17d8ce5a6b8d8443abf26ce92a928ca944cee8d",
+  "cold": 353.4562,
+  "warm": 1.5477291,
+  "reports": 6
+}

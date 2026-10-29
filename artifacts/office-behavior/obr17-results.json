@@ -1,0 +1,207 @@
+{
+  "runtimeSha256": "c8d80301715eedd0c06a637ed17d8ce5a6b8d8443abf26ce92a928ca944cee8d",
+  "sourceBase": "64a8ae40a79710c73001c0509e497f92825f676a",
+  "fileCount": 28,
+  "tests": 253,
+  "pass": 250,
+  "fail": 0,
+  "skipped": 3,
+  "files": [
+    {
+      "file": "hani-building-206.test.mjs",
+      "tests": 21,
+      "pass": 21,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-building-206-engine.test.mjs",
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-building-206-safety.test.mjs",
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-building-206-ui.test.mjs",
+      "tests": 1,
+      "pass": 0,
+      "fail": 0,
+      "skipped": 1
+    },
+    {
+      "file": "hani-office-219.test.mjs",
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-actions-216.test.mjs",
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-actions-221.test.mjs",
+      "tests": 20,
+      "pass": 20,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-behavior.test.mjs",
+      "tests": 10,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-chairman-234.test.mjs",
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-fix-218.test.mjs",
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-hd-224.test.mjs",
+      "tests": 10,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-lively.test.mjs",
+      "tests": 13,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-lively-v2.test.mjs",
+      "tests": 8,
+      "pass": 8,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-obr10.test.mjs",
+      "tests": 4,
+      "pass": 4,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-obr12.test.mjs",
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-obr14.test.mjs",
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-obr15.test.mjs",
+      "tests": 14,
+      "pass": 14,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-obr16.test.mjs",
+      "tests": 12,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-obr17.test.mjs",
+      "tests": 9,
+      "pass": 9,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-obr3.test.mjs",
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-obr4.test.mjs",
+      "tests": 10,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-obr6.test.mjs",
+      "tests": 4,
+      "pass": 4,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-obr7.test.mjs",
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-obr8.test.mjs",
+      "tests": 3,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-obr9.test.mjs",
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-seats-215.test.mjs",
+      "tests": 12,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-tap-lines.test.mjs",
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "file": "hani-office-v2-215.test.mjs",
+      "tests": 20,
+      "pass": 18,
+      "fail": 0,
+      "skipped": 2
+    }
+  ]
+}

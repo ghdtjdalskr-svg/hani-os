@@ -14,7 +14,7 @@ export async function waitForOfficeLabels(page,floor){
   const actors=[...document.querySelectorAll('#haniOfficeActors .hani-office-actor')].filter(a=>!a.hidden);
   return map?.dataset.floor===f&&map.dataset.art==='floor'&&bg?.complete&&bg.naturalWidth>0&&mascots&&!mascots.hidden&&
    [...mascots.querySelectorAll('.hani-desk-mascot')].every(n=>n.dataset.ready==='true')&&
-   actors.every(a=>a.dataset.avatar==='v2'&&a.querySelector('.hani-office-status').dataset.full===a.dataset.line);
+   actors.every(a=>a.dataset.avatar==='v2'&&a.querySelector('.hani-office-status')?.dataset.full===(a.dataset.emoji?a.dataset.emoji+' ':'')+a.dataset.line);
  },floor);
  // Use the canonical floor event after fonts/sprites/mascots have finished loading.
  await page.locator(`[data-building-floor="${floor}"]`).click();
