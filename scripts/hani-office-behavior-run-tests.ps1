@@ -40,6 +40,11 @@ try {
     }
     $env:HANI_OFFICE_TEST_BASELINE = $gitRoot
     $env:OFFICE_SOFT = '1'
-    node --test --test-isolation=none 'scripts/hani-office-*.test.mjs' 'scripts/hani-building-*.test.mjs'
-    if ($LASTEXITCODE -ne 0) { throw "Node suite failed: $LASTEXITCODE" }
+    $failedTests = @()
+    foreach ($testFile in (Get-ChildItem -LiteralPath $PSScriptRoot -File | Where-Object { $_.Name -like 'hani-office-*.test.mjs' -or $_.Name -like 'hani-building-*.test.mjs' } | Sort-Object Name)) {
+        Write-Output ("FILE " + $testFile.Name)
+        node --test --test-isolation=none $testFile.FullName
+        if ($LASTEXITCODE -ne 0) { $failedTests += $testFile.Name }
+    }
+    if ($failedTests.Count) { throw ("Node suite failed: " + ($failedTests -join ', ')) }
 } finally { Pop-Location }
