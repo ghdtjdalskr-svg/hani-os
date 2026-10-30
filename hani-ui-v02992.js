@@ -417,6 +417,8 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
     tone: "sports"
   }
 });
+  // Dedicated milestone hero; only this path changes when the art is replaced.
+  const MILESTONES_HERO_IMAGE = "./assets/heroes/milestones-226w-a3.webp";
   const mainCharacterSidebarMenuConfig=Object.freeze({
     "ilbo":Object.freeze({
       sidebarMenuKey:"ilbo",category:"office",owner:"minji",profile:"minji",speaker:"민지",role:"Company Reporter",
@@ -582,9 +584,9 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
     "milestones":Object.freeze({
       sidebarMenuKey:"milestones",category:"independent",owner:"hani",profile:"hani",speaker:"하니",role:"Chief of Staff",
       eyebrow:"MILESTONES · LIFE ARCHIVE",title:"삶에 남은 변화들",description: "더 나은 삶을 살기 위해",
-      quote:"더 완벽해지기 위해서가 아니라, 더 나은 삶을 살기 위해.",sceneImage: "./assets/heroes/organization-226w.webp",
+      quote:"더 완벽해지기 위해서가 아니라, 더 나은 삶을 살기 위해.",sceneImage: MILESTONES_HERO_IMAGE,
       scenePosition: "center center",scenePositionMobile: "83% center",sceneFit:"cover",sceneFitMobile:"cover",sceneVariant: "panorama",
-      sceneAlt:"로비 심벌 앞에 함께 선 HANI GROUP 동료들",variant:"group",tone:"company"
+      sceneAlt:"마일스톤 전시실에서 삶의 변화를 함께 기념하는 HANI 동료들",variant:"group",tone:"company"
     }),
     "aiBudget":Object.freeze({
   sidebarMenuKey: "aiBudget",
