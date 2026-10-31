@@ -2,6 +2,7 @@
 // Source JSON is owned by the content team. Empty input is a quiet board.
 import fs from "node:fs/promises";
 import path from "node:path";
+import vm from "node:vm";
 import {fileURLToPath} from "node:url";
 
 export const repositoryRoot=fileURLToPath(new URL("../",import.meta.url));
@@ -33,7 +34,7 @@ export function dropChairmanComments(thread){
 }
 export function validateLibrary(threads,seed){
   if(!Array.isArray(threads))fail("input","expected threads array");
-  const authors=new Set(seed.people.map(p=>p.id).filter(id=>id!=="seongmin")),ids=new Set();
+  const authors=new Set(seed.people.filter(p=>p.status!=="planned").map(p=>p.id).filter(id=>id!=="seongmin")),ids=new Set();
   return threads.map(source=>{
     // 회장님 words must only come from 회장님: drop library comments written as seongmin and re-link replies to them.
     const thread=dropChairmanComments(source);
@@ -72,7 +73,10 @@ export async function buildLibrary({root=repositoryRoot,check=false}={}){
   const files=(await fs.readdir(folder).catch(error=>{if(error.code==="ENOENT")return [];throw error})).filter(f=>f.endsWith(".json")).sort();
   const threads=[];
   for(const file of files){const value=JSON.parse(await fs.readFile(path.join(folder,file),"utf8"));const rows=Array.isArray(value)?value:value.threads;if(!Array.isArray(rows))fail(file,"expected array or {threads}");threads.push(...rows)}
-  const seed=JSON.parse(await fs.readFile(path.join(root,"data/hani-relationship-seed-v1.json"),"utf8"));
+  // Membership follows the same active roster as the lounge; relationship voices can lag new staff.
+  const context=vm.createContext({window:{},document:{getElementById:()=>null}});
+  vm.runInContext(await fs.readFile(path.join(root,"hani-organization-hub.js"),"utf8"),context);
+  const seed=context.window.HaniOrganizationRoster;
   const result=validateLibrary(threads,seed),output=renderLibrary(result),target=path.join(root,"hani-board-library.js");
   if(check){if(await fs.readFile(target,"utf8").catch(()=>"")!==output)fail("runtime","stale hani-board-library.js; run builder")}
   else await fs.writeFile(target,output,"utf8");

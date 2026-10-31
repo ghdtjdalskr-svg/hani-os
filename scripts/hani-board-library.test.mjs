@@ -22,7 +22,7 @@ assert.ok(Object.isFrozen(ctx.HaniBoardLibrary)&&Object.isFrozen(ctx.HaniBoardLi
 const root=await fs.mkdtemp(path.join(os.tmpdir(),"hani-board-library-test-"));
 try{
   await fs.mkdir(path.join(root,"data/board-library"),{recursive:true});
-  await fs.writeFile(path.join(root,"data/hani-relationship-seed-v1.json"),JSON.stringify(seed));
+  await fs.copyFile(new URL("../hani-organization-hub.js",import.meta.url),path.join(root,"hani-organization-hub.js"));
   assert.equal((await buildLibrary({root})).threads,0);await buildLibrary({root,check:true});
   await fs.writeFile(path.join(root,"data/board-library/part-b.json"),JSON.stringify({threads:fixture.slice(1)}));
   await fs.writeFile(path.join(root,"data/board-library/part-a.json"),JSON.stringify(fixture.slice(0,1)));
@@ -30,6 +30,11 @@ try{
   const runtime=await fs.readFile(path.join(root,"hani-board-library.js"),"utf8");
   const combined=vm.createContext({});vm.runInContext(runtime,combined);
   assert.equal(combined.HaniBoardLibrary.threads[0].id,fixture[0].id,"sorted merge");
+  const joined=["daon","yoonseul"].map((authorId,i)=>({...structuredClone(fixture[0]),id:"joined-"+i,authorId,
+    comments:[{authorId:i?"daon":"yoonseul",body:"함께 정리해요.",replyTo:null,afterMin:3}]}));
+  await fs.writeFile(path.join(root,"data/board-library/part-c.json"),JSON.stringify(joined));
+  assert.equal((await buildLibrary({root})).threads,5,"active new staff build without changing relationship seed");
+  assert.throws(()=>validateLibrary(joined,{people:joined.map(t=>({id:t.authorId,status:"planned"}))}),/authorId/);
   await fs.writeFile(path.join(root,"hani-board-library.js"),"stale");
   await assert.rejects(buildLibrary({root,check:true}),/stale/);
 }finally{
