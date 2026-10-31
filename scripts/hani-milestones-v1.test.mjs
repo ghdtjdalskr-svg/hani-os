@@ -255,7 +255,17 @@ if (process.argv[2] && process.argv[3]) {
         assert.match(await home.innerText(), /LIFE MILESTONE[\s\S]*건강혁명 프로젝트[\s\S]*체중 -27\.18kg[\s\S]*HbA1c 5\.3%/);
         assert.equal(await page.locator('[data-milestone-home] .ms-home-metrics li').count(), 3);
         await home.scrollIntoViewIfNeeded(); await shot('dashboard');
+        const homeArt = await page.locator('[data-milestone-home] .ms-home-face .ms-art').evaluate(el => {
+          const box = el.getBoundingClientRect(), css = getComputedStyle(el);
+          return {width:box.width, height:box.height, image:css.backgroundImage, title:getComputedStyle(document.querySelector('[data-milestone-home] h3')).fontFamily};
+        });
+        assert.ok(homeArt.width > 100 && homeArt.height > 150, tag + ' dashboard card art size');
+        assert.match(homeArt.image, /milestone-card-sheet-v2\.webp/);
+        assert.doesNotMatch(homeArt.title, /Georgia/);
         await page.locator('[data-ms-home-open]').click();
+        assert.equal(await page.evaluate(() => document.body.dataset.view), 'milestones');
+        await page.evaluate(() => showView('home'));
+        await page.locator('[data-milestone-home] .ms-home-face').click();
         assert.equal(await page.evaluate(() => document.body.dataset.view), 'milestones');
 
         // Archive + filter (the page hero is the canonical banner owner, not a second hero)
