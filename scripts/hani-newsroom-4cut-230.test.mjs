@@ -18,7 +18,7 @@ const out = path.join(root, 'artifacts/newsroom-4cut-230');
 const nodeOnly = process.argv.includes('--node');
 const browserOnly = process.argv.includes('--browser');
 const first = {number:1, publishDate:'2026-10-25', week:'2026-10-19~10-23',
- image:'assets/newsroom-4cut/fixture-001.webp', alt:'합성 테스트 4컷', title: '금리와 실적 사이, 시장의 한 주', sources: [
+ image:'fixture-001', alt:'합성 테스트 4컷', title: '금리와 실적 사이, 시장의 한 주', sources: [
   {label: '공식 발표 · 테스트 출처', url: 'https://example.com/official'},
   {label: '<unsafe>', url: 'javascript:alert(1)'}
 ]};
@@ -54,9 +54,14 @@ function runtime(data = publishedFixture, time = '2026-10-25T00:00:00+09:00', fe
 }
 
 if (!browserOnly) {
-  test('real empty catalog stays hidden after release without image assignments, errors or writes', async () => {
-    assert.deepEqual(catalog,{issues:[]},'issue 1 awaits finished art');
-    const r=runtime(catalog,'2026-11-01T00:00:00+09:00');r.document.body.dataset.view='newsroom';
+  test('real catalog issues pass the renderer filter and every image exists', () => {
+    const {api}=runtime();
+    assert.equal(api.published(catalog,new Date('2099-01-01T00:00:00Z')).length,catalog.issues.length);
+    for(const issue of catalog.issues)assert.ok(fs.existsSync(path.join(root,`assets/newsroom-4cut/${issue.image}.webp`)),issue.image);
+    assert.equal(api.published(catalog,new Date('2026-10-31T14:59:59Z')).length,0,'issue 1 waits for Nov 1 KST');
+  });
+  test('empty catalog stays hidden after release without image assignments, errors or writes', async () => {
+    const r=runtime({issues:[]},'2026-11-01T00:00:00+09:00');r.document.body.dataset.view='newsroom';
     await assert.doesNotReject(()=>r.api.enter());await assert.doesNotReject(()=>r.api.enter());
     assert.equal(r.slot.hidden,true);assert.equal(r.nodes.size,0,'no image/source DOM accessed');
     assert.equal(r.calls.length,1);assert.deepEqual(r.writes,[]);
@@ -87,7 +92,7 @@ if (!browserOnly) {
     assert.deepEqual(buttons.map(b=>b.textContent.match(/^제(\d+)호/)[1]), ['10','9','8','7','6','5','4','3']);
     buttons[1].onclick(); assert.equal(q('.newsroom-4cut-title').textContent, '시장 소식 9');
     q('.newsroom-4cut-open').onclick(); assert.equal(q('dialog').open, true);
-    assert.equal(q('.newsroom-4cut-full').src, first.image);
+    assert.equal(q('.newsroom-4cut-full').src, `assets/newsroom-4cut/${first.image}.webp`);
     q('.newsroom-4cut-latest').onclick(); assert.equal(q('.newsroom-4cut-title').textContent, '시장 소식 11');
     const image=q('.newsroom-4cut-image'); await r.api.enter(); assert.equal(q('.newsroom-4cut-image'),image);
     assert.equal(r.calls.length,1); assert.deepEqual(r.writes,[]);
@@ -102,6 +107,7 @@ if (!browserOnly) {
   });
   test('release closure literal, static lazy dimensions, canonical route and no new duplicate id literals', () => {
     assert.deepEqual(collectReferences('hani-newsroom-4cut.js',source),['assets/data/newsroom-4cut/issues.json']);
+    assert.deepEqual(collectReferences('assets/data/newsroom-4cut/issues.json',JSON.stringify(publishedFixture)),[],'catalog image ids must not become closure paths');
     assert.doesNotMatch(source,/localStorage|sessionStorage|\.addEventListener|MutationObserver|\.innerHTML|\.insert\(|\.upsert\(/);
     const html=read('index.html');
     assert.match(html,/class="newsroom-4cut-image" loading="lazy" width="1200" height="1600"/);
@@ -172,7 +178,7 @@ if (!nodeOnly) test('actual browser: route lazy loading, dates, archive, modal, 
     await hidden.page.evaluate(()=>{showView('reading');showView('newsroom');});
     assert.equal(await hidden.page.locator('.newsroom-4cut').isVisible(),true,'cached issue becomes visible at KST midnight');
     assert.equal(hidden.fetches,1); await hidden.context.close();
-    const empty=await pageAt('2026-11-01T00:00:00+09:00',catalog);
+    const empty=await pageAt('2026-11-01T00:00:00+09:00',{issues:[]});
     assert.equal(await empty.page.locator('.newsroom-4cut').isVisible(),false);
     assert.equal(empty.images,0,'unpublished catalog requests no image');
     assert.equal(await empty.page.locator('.newsroom-4cut img[src]').count(),0);
