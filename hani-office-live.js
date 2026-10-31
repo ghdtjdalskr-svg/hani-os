@@ -248,7 +248,30 @@
       errandPlaces.push({id:'errand-deliver-'+a.room,kind:'errand',errandKind:'delivery',floor:a.floor,room:a.room,slots:[a.id],pose:'stand',stay:[8,25],go:name+' 가는 중',at:['서류 전달 중']});
     }
     for(const card of placeTable?.errands||[])if(card.slots.every(id=>anchors.get(id)?.floor===card.floor&&anchors.get(id)?.room===card.room))errandPlaces.push(card);
+    // The existing reception counter restores a short public work stop when
+    // business desk approaches cannot fit phone sprites. Same reservation gates.
+    if(places.length&&anchors.has('reception'))errandPlaces.push({id:'task-reception-1f',kind:'errand',errandKind:'task',floor:'1f',room:'lobby',slots:['reception'],pose:'stand',stay:[8,25],go:'접수대로 가는 중',at:['접수대에서 전달 사항 확인 중','접수대에서 방문 일정 확인 중']});
     const defaults=actions.get('base-work'),cache=new Map(),paths=new Map(),targetCache=new Map(),slotCache=new Map();
+    // Voice/role grounding: existing office-tap-lines toChairman and seeded jobs.
+    // No new place or chair: the existing CEO entrance is real floor, reachable
+    // through the same canon edges. Near-desk junctions overlap 40px phone sprites.
+    const chairmanVoice={
+      hani:{greet:'회장님, 오늘 안건 정리해 뒀어요',topic:'오늘 안건',reply:'네, 핵심부터 묶어 둘게요',short:'안건 보고 중'},
+      gaeun:{greet:'회장님, 다음 일정 챙겨 뒀어요',topic:'다음 일정',reply:'네, 이동 여유도 챙길게요',short:'일정 보고 중'},
+      yuna:{greet:'회장님 오셨어요! 메모 모아 뒀어요!',topic:'접수 메모',reply:'네! 담당별로 정리해 둘게요!',short:'접수 보고 중'},
+      jieun:{topic:'예산',reply:'네, 필요한 예산 길을 찾아볼게요',short:'예산 보고 중'},
+      seoyun:{topic:'배포 일정',reply:'네, 범위와 순서를 정리할게요',short:'배포 보고 중'},
+      dohyun:{topic:'구현 진행',reply:'네, 동작까지 확인해 둘게요',short:'구현 보고 중'},
+      yuri:{topic:'품질 점검',reply:'네, 확인한 근거를 묶어 둘게요',short:'품질 보고 중'},
+      arin:{topic:'화면 검토',reply:'네, 쓰기 편하게 다듬을게요',short:'화면 보고 중'},
+      hina:{topic:'검증 결과',reply:'네, 확인된 결과로 정리할게요',short:'검증 보고 중'},
+      naeun:{topic:'비용 점검',reply:'네, 비용부터 살펴둘게요',short:'비용 보고 중'}
+    };
+    const chairmanPoint=art.anchors['ceo-reserved'];
+    const reportSlots=chairmanPoint?[...anchors.values()].filter(a=>a.floor==='4f'&&a.room==='ceo'&&['junction','door'].includes(a.type)&&a.runtimeAssignable!==false&&(()=>{const q=art.anchors[a.id],d=q&&Math.hypot((q.x-chairmanPoint.x)*(art.width||1672)/100,(q.y-chairmanPoint.y)*(art.height||941)/100);return d>=170})()).map(a=>a.id):[];
+    const reportPlaces=reportSlots.length?Object.entries(chairmanVoice).map(([id,v])=>({id:'chairman-report-'+id,kind:'report',floor:'4f',room:'ceo',slots:reportSlots,pose:'stand',stay:[20,60],go:'회장님께 보고하러 가는 중',at:['회장님께 '+v.topic+' 보고 중',v.reply],atByPerson:{[id]:['회장님께 '+v.topic+' 보고 중',v.reply]}})):[];
+    const chairmanShort=new Map(Object.values(chairmanVoice).flatMap(v=>[[v.greet,'회장님께 인사 중'],['회장님께 '+v.topic+' 보고 중',v.short],[v.reply,'보고 답변 중']]));
+    const greetingCache=new WeakMap();
     const minute=t=>Number(t.slice(0,2))*60+Number(t.slice(3));
     const imul=Math.imul;
     const seed=value=>{let n=2166136261;for(let i=0;i<value.length;i++){n^=value.charCodeAt(i);n=imul(n,16777619)}return n>>>0};
@@ -266,6 +289,19 @@
       if(first===last)return (index.buckets.get(first)||[]).filter(e=>e.start<end&&start<e.end);
       const result=new Set();for(let k=first;k<=last;k++)for(const e of index.buckets.get(k)||[])if(e.start<end&&start<e.end)result.add(e);
       return [...result];
+    }
+    function replaceLedgerIndex(ledger,old,event){
+      const index=ledgerIndices.get(ledger);if(!index)return;
+      const position=ledger.indexOf(event);if(position>=index.length)return;
+      // A gathering extension only grows the end time. Replace its indexed
+      // entries and insert new minutes in ledger order; retain the other 8k
+      // formal entries and their already built buckets.
+      for(let k=Math.floor(old.start/60);k<=Math.floor(event.end/60);k++){
+        let bucket=index.buckets.get(k);if(!bucket){bucket=[];index.buckets.set(k,bucket)}
+        const found=bucket.indexOf(old);
+        if(found>=0)bucket[found]=event;
+        else{const at=bucket.findIndex(e=>ledger.indexOf(e)>position);bucket.splice(at<0?bucket.length:at,0,event)}
+      }
     }
     function path(from,to){let targets=paths.get(from);if(!targets){targets=new Map();paths.set(from,targets)}if(!targets.has(to))targets.set(to,route(from,to));return targets.get(to)}
     function slot(id,pose='sit'){
@@ -536,7 +572,7 @@
     }
     // Idle liveliness: each floor rotates its people through short visible bits (a playful or
     // time-of-day line, sometimes standing, sometimes a stroll to another room through its door).
-    // Each person gets at most one bit per cycle; everyone else is plain base work (dot only).
+    // Each person gets at most one bit per cycle; everyone else keeps a personal base-work line.
     // Pure function of the local clock; scheduled events always win.
     const BEAT=2.4,ACTIVE_BEATS=4.5,MIN_CYCLE=12;
     const idlePools={
@@ -664,10 +700,17 @@
     function gap(p,q){const a=pixels(p.position||[p.seat.x,p.seat.y]),b=pixels(q.position||[q.seat.x,q.seat.y]);return Math.hypot(a[0]-b[0],a[1]-b[1])}
     function resourceIntervals(e){
       if(intervalCache.has(e))return intervalCache.get(e);
-      const result=new Map(),add=(id,start,end)=>{if(!result.has(id))result.set(id,[]);result.get(id).push({start,end})};
+      const result=new Map(),add=(id,start,end)=>{
+        let ranges=result.get(id);if(!ranges){ranges=[];result.set(id,ranges)}
+        const last=ranges[ranges.length-1];
+        // Adjacent legs and the stay reserve one continuous node interval.
+        // Preserve the exact union while avoiding duplicate tiny range objects.
+        if(last&&last.end===start)last.end=end;else ranges.push({start,end});
+      };
       for(const t of e.people){
-        for(const l of [...t.out,...t.back]){add(l.from,l.start,l.end);add(l.to,l.start,l.end)}
+        for(const l of t.out){add(l.from,l.start,l.end);add(l.to,l.start,l.end)}
         add(t.seat.anchor,t.out.at(-1)?.end??e.start,t.back[0]?.start??e.end);
+        for(const l of t.back){add(l.from,l.start,l.end);add(l.to,l.start,l.end)}
       }
       // Internal cache only; do not alter the public event shape or formal ledger.
       intervalCache.set(e,result);return result;
@@ -680,12 +723,25 @@
         if(!ids.has(a.resources[0]))return false;
         const ranges=resourceIntervals(b).get(a.resources[0]);return !!ranges&&ranges.some(p=>overlap(a,p));
       }
-      if(!a.resources.some(r=>ids.has(r)))return false;
-      const x=resourceIntervals(a),y=resourceIntervals(b);
-      for(const [id,ranges]of x)if(y.has(id)&&ranges.some(p=>y.get(id).some(q=>overlap(p,q))))return true;
+      // Most nearby formal expressions share no route node. Build interval
+      // maps lazily and inspect only shared resources, without nested callbacks.
+      let x,y;
+      for(const id of a.resources){
+        if(!ids.has(id))continue;
+        if(!x){x=resourceIntervals(a);y=resourceIntervals(b)}
+        const left=x.get(id),right=y.get(id);if(!left||!right)continue;
+        for(const p of left)for(const q of right)if(overlap(p,q))return true;
+      }
       return false;
     }
     const eventMotion=new WeakMap(),stationaryMotion={moving:false};
+    const resourceFloorCache=new WeakMap(),intermediateFloorCache=new WeakMap();
+    function resourceFloors(e){
+      let floors=resourceFloorCache.get(e.resources);
+      if(!floors){floors=new Set(e.resources.map(id=>anchors.get(id).floor));resourceFloorCache.set(e.resources,floors)}
+      return floors;
+    }
+    function sharesResourceFloor(e,floors){for(const floor of resourceFloors(e))if(floors.has(floor))return true;return false}
     function motion(e){
       let value=eventMotion.get(e);
       if(!value){value=e.people.some(t=>t.seat.anchor!==t.home.anchorId)?{moving:true,floors:new Set(e.people.flatMap(t=>[t.home.floor,anchors.get(t.seat.anchor).floor]))}:stationaryMotion;eventMotion.set(e,value)}
@@ -693,14 +749,20 @@
     }
     function floorCapacity(candidate,nearby){
       const own=motion(candidate);if(!own.moving)return true;
+      // A single actor with no moving neighbour fits every existing time cap.
+      if(!nearby.length&&candidate.people.length===1)return true;
       const reservations=nearby.filter(e=>motion(e).moving);reservations.push(candidate);
-      const ticks=[candidate.start,candidate.end-.00001,3600,25200,41400,46800,...reservations.flatMap(e=>[e.start,e.end])].filter(s=>s>=candidate.start&&s<candidate.end);
-      for(const floor of own.floors)for(const seconds of ticks){
+      const ticks=new Set([candidate.start,candidate.end-.00001,3600,25200,41400,46800,...reservations.flatMap(e=>[e.start,e.end])].filter(s=>s>=candidate.start&&s<candidate.end));
+      for(const floor of own.floors){
+       const relevant=reservations.filter(e=>motion(e).floors.has(floor));
+       if(relevant.length===1&&candidate.people.length===1)continue;
+       for(const seconds of ticks){
         let count=0,groups=0,people=0;
-        for(const e of reservations)if(motion(e).floors.has(floor)&&e.start<=seconds&&seconds<e.end){count++;people+=e.people.length;if(e.people.length>1)groups++}
+        for(const e of relevant)if(e.start<=seconds&&seconds<e.end){count++;people+=e.people.length;if(e.people.length>1)groups++}
         if(isLate(seconds)){if(people>1)return false}
         else if(seconds>=41400&&seconds<46800){if(people>4)return false}
         else if(count>2||groups>1)return false;
+      }
       }
       return true;
     }
@@ -757,13 +819,17 @@
       physicalFloorIntervals.set(e,intervals);return intervals;
     }
     function transitCapacity(candidate,nearby){
+      if(!nearby.length)return true;
       const all=[candidate,...nearby].filter(e=>!e.visitor&&motion(e).moving);
-      if(!all.some(e=>motion(e).floors.size>1))return true;
       // Endpoint floors already have stronger full-excursion reservations.
       // Only an intermediate floor can introduce an uncounted transit unit.
-      const extra=new Set();for(const e of all)if(motion(e).floors.size>1)for(const id of e.resources){const floor=anchors.get(id).floor;if(!motion(e).floors.has(floor))extra.add(floor)}
+      const extra=new Set();for(const e of all){
+        let floors=intermediateFloorCache.get(e.resources);
+        if(!floors){const endpoints=motion(e).floors;floors=endpoints.size>1?[...resourceFloors(e)].filter(f=>!endpoints.has(f)):[];intermediateFloorCache.set(e.resources,floors)}
+        for(const floor of floors)extra.add(floor);
+      }
       if(!extra.size)return true;
-      const relevant=all.filter(e=>e.resources.some(id=>extra.has(anchors.get(id).floor)));
+      const relevant=all.filter(e=>sharesResourceFloor(e,extra));
       if(relevant.length<=1)return true;
       const rows=relevant.map(e=>({e,intervals:physicalFloors(e).filter(i=>extra.has(i.floor))}));
       const times=[...new Set(rows.flatMap(r=>r.intervals.flatMap(i=>[i.start,i.end])))].filter(s=>candidate.start<=s&&s<candidate.end);
@@ -772,6 +838,84 @@
           for(const [floor,ids]of people){const c=counts.get(floor)||{units:0,groups:0,people:0};c.units++;c.groups+=e.people.length>1;c.people+=ids.size;counts.set(floor,c)}
         }
         for(const c of counts.values())if(isLate(seconds)?c.people>1:seconds>=41400&&seconds<46800?c.people>4:c.units>2||c.groups>1)return false;
+      }
+      return true;
+    }
+    // Screen reservations supplement (never replace) the art-space 20/24px sweep.
+    // At map width342 the existing 40px humans are 30px wide. Foot envelopes
+    // (human +/-19px, visitor +/-14px, height44) include idle and partner turns.
+    // Only new card-based excursions own this extra phone rule. The reviewed
+    // 216/221 catalog retains its existing art-space proximity checks.
+    // Include every excursion stop, including FIFO/door/elevator waiting.
+    const screenStops=new WeakMap(),screenPoints=new Map(),screenHomes=new WeakMap(),screenHomeBlocks=new WeakMap(),screenFloors=new WeakMap(),screenPairs=new WeakMap();
+    function screenFloor(e){
+      let floor=screenFloors.get(e.resources);
+      if(floor===undefined){floor=e.resources.some(id=>anchors.get(id).floor==='1f');screenFloors.set(e.resources,floor)}
+      return floor;
+    }
+    function screenPoint(seat){
+      let point=screenPoints.get(seat.anchor);
+      if(!point){point=[seat.x*342/100,seat.y*(342*941/1672)/100];screenPoints.set(seat.anchor,point)}
+      return point;
+    }
+    function screenOverlap(a,b,visitorA=false,visitorB=false){const p=screenPoint(a),q=screenPoint(b);return Math.abs(p[0]-q[0])<(visitorA?14:19)+(visitorB?14:19)&&Math.abs(p[1]-q[1])<44}
+    function screenStopConflict(a,b){return a.id!==b.id&&overlap(a,b)&&!(a.seat.anchor===a.home&&b.seat.anchor===b.home)&&screenOverlap(a.seat,b.seat,a.id.startsWith('visitor'),b.id.startsWith('visitor'))}
+    function deskPairScreenClear(peers,entries,events){
+      let pairs=screenPairs.get(events);if(!pairs){pairs=new Map();screenPairs.set(events,pairs)}
+      const stationary=entries.filter(p=>p.floor===peers[0].floor&&!p.walking);
+      const key=peers.map(p=>p.id).join('|')+'|'+stationary.map(p=>p.id+':'+p.seat.anchor).join('|');
+      if(!pairs.has(key)){
+        if(pairs.size>=256)pairs.delete(pairs.keys().next().value);
+        pairs.set(key,peers.every(p=>stationary.every(other=>other.id===p.id||!screenOverlap(p.seat,other.seat))));
+      }
+      return pairs.get(key);
+    }
+    function screenHomeClear(id,home,seat,allowed,start,end){
+      if(seat.anchor===home||anchors.get(seat.anchor).floor!=='1f')return true;
+      const phase=(isLate(start)||isEvening(start)?1:0)|(isLate(end-.001)||isEvening(end-.001)?2:0);
+      if(!screenHomes.has(allowed))screenHomes.set(allowed,[]);
+      const phases=screenHomes.get(allowed);
+      if(!phases[phase])phases[phase]=allowed.flatMap(p=>[...new Set([homeAt(p,start).anchorId,homeAt(p,end-.001).anchorId])].filter(id=>anchors.get(id).floor==='1f').map(id=>({id:p.id,seat:slot(id,'sit')})));
+      const homes=phases[phase],visitor=id.startsWith('visitor');
+      if(!screenHomeBlocks.has(homes))screenHomeBlocks.set(homes,new Map());
+      const blocks=screenHomeBlocks.get(homes),pointKey=seat.anchor+'|'+visitor;
+      if(!blocks.has(pointKey))blocks.set(pointKey,homes.filter(p=>screenOverlap(seat,p.seat,visitor)).map(p=>p.id));
+      return blocks.get(pointKey).every(owner=>owner===id);
+    }
+    function stationaryStops(e){
+      if(screenStops.has(e))return screenStops.get(e);
+      const stops=[];
+      if(!e.card||!screenFloor(e)){screenStops.set(e,stops);return stops}
+      for(const t of e.people){
+        const add=(seat,start,end)=>{if(end>start&&anchors.get(seat.anchor).floor==='1f')stops.push({id:t.id,home:t.home.anchorId,seat,start,end})};
+        let cursor=e.start,seat=slot(t.home.anchorId,'sit');
+        for(const legs of [t.out,t.back]){
+          for(const l of legs){
+            add(seat,cursor,l.start);
+            // Same-floor legs walk; only floor transfers are stationary.
+            if(anchors.get(l.from).floor!==anchors.get(l.to).floor)add(slot(l.from,'stand'),l.start,l.end);
+            cursor=l.end;seat=slot(l.to,'stand');
+          }
+          if(legs===t.out)seat=t.seat;
+        }
+        add(seat,cursor,e.end);
+      }
+      screenStops.set(e,stops);return stops;
+    }
+    function screenReservations(candidate,nearby,allowed){
+      if(!candidate.card||!screenFloor(candidate))return true;
+      if(!nearby.length&&candidate.people.every(t=>!t.out.length&&!t.back.length&&t.seat.anchor===t.home.anchorId))return true;
+      const own=stationaryStops(candidate);
+      if(!own.length)return true;
+      // Reject cached home geometry before collecting overlapping trip stops.
+      for(const a of own)if(!screenHomeClear(a.id,a.home,a.seat,allowed,candidate.start,candidate.end))return false;
+      const other=nearby.flatMap(e=>stationaryStops(e));
+      for(let i=0;i<own.length;i++){
+        const a=own[i];
+        // As with the existing art-space home guard, protect private homes
+        // even while empty. This also makes later returns/cancellations safe.
+        for(let j=i+1;j<own.length;j++)if(screenStopConflict(a,own[j]))return false;
+        for(const b of other)if(screenStopConflict(a,b))return false;
       }
       return true;
     }
@@ -785,7 +929,7 @@
       // capacity still owns home/destination floors; transit uses actual times.
       if(candidate.card?.kind==='errand'){
         const floor=candidate.card.floor;
-        for(const e of nearby)if(!e.people.some(t=>t.home.floor===floor||anchors.get(t.seat.anchor).floor===floor)&&e.resources.some(id=>anchors.get(id).floor===floor)){
+        for(const e of nearby)if(!e.people.some(t=>t.home.floor===floor||anchors.get(t.seat.anchor).floor===floor)&&resourceFloors(e).has(floor)){
           if(!transitIntervals.has(e)){
             const intervals=[];for(const t of e.people)for(const legs of [t.out,t.back])for(let i=0;i<legs.length;i++){
               const l=legs[i];intervals.push({floor:anchors.get(l.from).floor,start:l.start,end:l.end});
@@ -800,12 +944,15 @@
       // needs only the same actor/resource checks and cached home geometry, even
       // while an unrelated colleague is walking elsewhere on this floor.
       const homeOnly=candidate.people.every(t=>!t.out.length&&!t.back.length&&t.seat.anchor===t.home.anchorId);
+      // Accepted away stops protect all home footprints, including empty homes;
+      // home-only expressions inherit that proof and the fixed-home exemption.
       const staticKey=homeOnly?rosterKey(allowed)+'|'+candidate.people.map(t=>t.id+':'+t.home.anchorId).join(',')+'|'+(isLate(candidate.start)||isEvening(candidate.start))+'|'+(isLate(candidate.end-.001)||isEvening(candidate.end-.001)):null;
       if(homeOnly&&staticSafe.has(staticKey)){ledger.push(candidate);return true}
       // Private homes remain owned even while empty; night lounge homes are also protected.
       if(candidate.people.some(t=>otherHomeOwner(t,candidate.start,candidate.end)))return false;
       if(candidate.people.some(t=>!t.visitor&&(!presentAt(t.id,candidate.end-.001)||homeAt(personById.get(t.id),candidate.end-.001).anchorId!==t.home.anchorId)))return false;
       if(candidate.people.some(t=>!clearHomeRoute(t,allowed,candidate.start,candidate.end)))return false;
+      if(!homeOnly&&!screenReservations(candidate,nearby,allowed))return false;
       // Desk-only microexpressions share the already checked static home geometry.
       // No sampled state objects are needed when every overlapping actor is home.
       if(homeOnly){staticSafe.add(staticKey);ledger.push(candidate);return true}
@@ -826,13 +973,13 @@
       // the former 0.5s samples; 20/24px limits are unchanged.
       // Desk microexpressions never change physical position. Their homes were
       // checked continuously above; only moving/away reservations add sweep knots.
-      const sweptFloors=new Set(candidate.resources.map(id=>anchors.get(id).floor));
-      const movingNearby=nearby.filter(e=>e.people.some(t=>t.visitor||t.out.length||t.back.length||t.seat.anchor!==t.home.anchorId)&&e.resources.some(id=>sweptFloors.has(anchors.get(id).floor)));
+      const sweptFloors=resourceFloors(candidate);
+      const movingNearby=nearby.filter(e=>e.people.some(t=>t.visitor||t.out.length||t.back.length||t.seat.anchor!==t.home.anchorId)&&sharesResourceFloor(e,sweptFloors));
       const others=[...new Set(movingNearby.flatMap(e=>e.people.filter(t=>!ids.has(t.id)&&(t.visitor||t.out.length||t.back.length||t.seat.anchor!==t.home.anchorId)).map(t=>t.id)))];
       if(candidate.people.length===1&&!others.length){ledger.push(candidate);return true}
       const times=new Set([candidate.start,candidate.end-.00001]);
       const boundary=(s,transfer=false)=>{for(const tick of transfer?[s-.000001,s,s+.000001]:[s])if(tick>candidate.start&&tick<candidate.end)times.add(tick)};
-      for(const e of [candidate,...movingNearby]){for(const s of [e.start,e.end])boundary(s);
+      for(const e of [candidate,...movingNearby]){for(const s of [e.start,e.end-.000001,e.end])boundary(s);
         for(const t of e.people)for(const l of [...t.out,...t.back]){
           for(const s of [l.start,l.end])boundary(s,anchors.get(l.from).floor!==anchors.get(l.to).floor);
         }
@@ -845,12 +992,12 @@
       for(const t of candidate.people){
         for(const id of others){
           const otherTrips=movingNearby.filter(e=>e.people.some(p=>p.id===id));
-          const optionalCrossing=candidate.card&&!candidate.visitor&&otherTrips.some(e=>e.card&&!e.visitor);
+          const optionalCrossing=candidate.card&&otherTrips.some(e=>e.card);
           let prev=null;
           for(let index=0;index<ticks.length;index++){const p=frames.get(t.id)[index],q=frames.get(id)[index];
             if(!q||q.floor!==p.floor){prev=null;continue}
-            // The original 20/24px gate remains mandatory. Two optional staff
-            // trips also keep the audit's 30px walking comfort buffer.
+            // The original 20/24px gate remains mandatory. Optional trips,
+            // including both public guests, keep the 30px crossing buffer.
             const limit=optionalCrossing&&p.walking&&q.walking?30:p.walking||q.walking?24:20;
             const pp=pixels(p.position||[p.seat.x,p.seat.y]),qp=pixels(q.position||[q.seat.x,q.seat.y]),r=[pp[0]-qp[0],pp[1]-qp[1]];
             if(Math.hypot(r[0],r[1])<limit+.01)return false;
@@ -891,6 +1038,24 @@
       return {id:day+'|outing|'+id+'|'+start,actionId:'base-work',start,end:cursor,performStart,performEnd,card,visitor,
         people:[{id,home,seat,outbound,inbound,out,back,visitor:!!visitor}],resources:geometry.resources,floors:geometry.floors};
     }
+    // Pure vocabulary shared by snapshots and the existing persistent label slot.
+    const workLines={hani:'기획안 정리 중',yuna:'요청 분류 중',jieun:'일정 조율 중',haru:'기록 정리 중',gaeun:'일정 확인 중',seoyun:'설계 검토 중',dohyun:'코드 수정 중',serin:'수치 분석 중',yuri:'품질 점검 중',arin:'화면 검토 중',hina:'검증 기록 중',daon:'콘텐츠 구상 중',yoonseul:'문장 다듬는 중',sua:'접수 확인 중',taeo:'안내 준비 중',minji:'업무 메모 중',mir:'흐름 살피는 중',seongmin:'결재 검토 중',sooyeon:'자료 대조 중',naeun:'예산 점검 중'};
+    const shortWords=[[/고민/,'잠깐 고민 중'],[/퀴즈/,'퀴즈 푸는 중'],[/비용|예산/,'비용 살피는 중'],[/고생|인사/,'인사 나누는 중'],[/웃|미소/,'살짝 웃는 중'],[/도장|결재/,'결재 확인 중'],[/메일/,'메일 확인 중'],[/일정|약속/,'일정 확인 중'],[/노래|음악|플레이리스트/,'음악 고르는 중'],[/졸음|꾸벅/,'졸음 쫓는 중'],[/커피 주문/,'커피 주문 중'],[/메뉴 고르/,'메뉴 고르는 중'],[/커피/,'커피 한 모금'],[/택배/,'택배 확인 중'],[/배달/,'배달 확인 중'],[/게시판|소식/,'소식 읽는 중'],[/검증|테스트/,'결과 확인 중'],[/수다|이야기/,'이야기 나누는 중'],[/코드|버그/,'코드 살피는 중'],[/메모/,'메모 정리 중'],[/보고서/,'보고서 다듬는 중'],[/스트레칭|기지개/,'기지개 켜는 중'],[/고양이/,'고양이 영상 중'],[/인스타/,'인스타 보는 중'],[/간식/,'간식 살피는 중'],[/생각|아이디어/,'생각 정리 중'],[/창밖|풍경|별/,'풍경 보는 중'],[/쉬는|휴식|소파/,'잠깐 쉬는 중'],[/확인|체크/,'내용 확인 중'],[/정리/,'자료 정리 중'],[/읽|책|페이지/,'읽어 보는 중']];
+    function fullShortLine(line){
+      if(chairmanShort.has(line))return chairmanShort.get(line);
+      if(line==='좋아요, 이대로 갑시다')return '좋아요, 갑시다';
+      if([...line].length<=10)return line;
+      if(/돌아가는 중|안녕히 계세요/.test(line))return '복귀하는 중';
+      if(/가는 중/.test(line))return /커피|Coffee/.test(line)?'커피 사러 가는 중':/택배/.test(line)?'택배 찾으러 이동':'용무 보러 이동 중';
+      if(/기다리는 중|대기/.test(line))return '차례 기다리는 중';
+      return shortWords.find(([pattern])=>pattern.test(line))?.[1]||'업무 이어가는 중';
+    }
+    function shortLine(line,limit=10){
+      const short=fullShortLine(line);if(limit>=10||[...short].length<=limit)return short;
+      // Authored reductions, never clipping a word or hiding an ellipsis.
+      const compact=short.replace('회장님께 인사 중','회장님께 인사').replace('좋아요, 갑시다','좋아요, 진행해요').replace('사러 가는 중','사러 이동').replace('찾으러 이동','찾기 이동').replace('용무 보러 이동 중','용무 보러 이동').replace('차례 기다리는 중','차례 대기 중').replace('이야기 나누는 중','대화 나누는 중').replace('업무 이어가는 중','업무 진행 중').replace('살피는 중','확인 중').replace('고르는 중','선택 중').replace('다듬는 중','수정 중');
+      return [...compact].length<=limit?compact:'업무 진행 중';
+    }
     const visitorKinds=[
       {kind:'client',sprite:'visitor-client',name:'방문 고객',hours:[[10,17]],target:'client_booth_slot_4',stay:[120,300],go:'상담실로 안내받아 가는 중',at:'상담 받는 중'},
       {kind:'courier',sprite:'visitor-courier',name:'택배 기사',hours:[[9,18]],target:'parcel_box',stay:[15,30],go:'택배함으로 가는 중',at:'택배 두고 갈게요'},
@@ -903,7 +1068,7 @@
       // Compatibility name/signature; the reservation horizon is now the whole day.
       // Adjacent blocks project the SAME ledger, including excursions crossing :00/:10.
       const key=day+'|'+allowed.map(p=>p.id).join(',');if(blocks.has(key))return blocks.get(key);
-      const ledger=events.slice(),result=[],last=new Map(),due=new Map(),visits=new Map(),slotOrders=new Map(),tripsByPerson=new Map();
+      const ledger=events.slice(),result=[],last=new Map(),due=new Map(),visits=new Map(),slotOrders=new Map(),tripsByPerson=new Map(),visitorUntil=new Map();
       const weekday=![0,6].includes(new Date(day+'T00:00:00Z').getUTCDay());
       const rules=placeTable?.outingRules||{cooldownSeconds:600,intervalSeconds:[1500,3000],groupStayScale:1.2};
       // The present chairman uses the same affinity, reservations and proximity
@@ -945,6 +1110,7 @@
         }));
       }
       const rhythms=Object.values(placeTable?.rhythm||{}),rhythmsAt=new Map();
+      let gatheringWindow=null;
       function weight(card,people,at){
         let w=people.reduce((n,p)=>n*(card.affinity?.[p.id]||1),1)**(1/people.length);
         const sameFloor=people.every(p=>homeAt(p,at).floor===card.floor);
@@ -954,7 +1120,12 @@
         // Novel places get a modest boost; preferences still shape each day's mix.
         w*=people.some(p=>!visits.get(p.id)?.has(card.id))?3:1;
         if(gatheringPlace(card)){
-          const staying=ledgerOverlaps(result,at,at+.001).filter(e=>!e.visitor&&e.card.id===card.id&&e.performStart<=at&&at<e.performEnd);
+          if(!gatheringWindow||gatheringWindow.at!==at||gatheringWindow.length!==result.length){
+            const byCard=new Map();
+            for(const e of ledgerOverlaps(result,at,at+.001))if(!e.visitor&&e.performStart<=at&&at<e.performEnd){if(!byCard.has(e.card.id))byCard.set(e.card.id,[]);byCard.get(e.card.id).push(e)}
+            gatheringWindow={at,length:result.length,byCard};
+          }
+          const staying=gatheringWindow.byCard.get(card.id)||[];
           if(staying.length){
             const friends=staying.some(e=>companions.some(r=>r.people.some(id=>people.some(p=>p.id===id))&&r.people.some(id=>e.people.some(t=>t.id===id))));
             w*=gathering.joinWeight*(friends?2:1)*(sameFloor?gathering.sameFloorWeight:1);
@@ -985,26 +1156,48 @@
         for(const [,e]of updates){const near=ledgerOverlaps(ledger,e.start,e.end).filter(q=>!removed.has(q));near.push(...scratch.filter(q=>overlap(q,e)));if(!reserve(e,scratch,allowed,near))return}
         for(const [old,e]of updates){
           ledger[ledger.indexOf(old)]=e;result[result.indexOf(old)]=e;
+          replaceLedgerIndex(ledger,old,e);replaceLedgerIndex(result,old,e);
           for(const t of old.people){const trips=tripsByPerson.get(t.id);if(trips)trips[trips.indexOf(old)]=e;if(last.get(t.id)?.end===old.end)last.set(t.id,{end:e.end,card:e.card.id})}
         }
-        ledgerIndices.delete(ledger);ledgerIndices.delete(result);
       }
       function blockedGeometry(person,home,target,at,end){
         const geometryKey=rosterKey(allowed)+'|'+(isLate(at)||isEvening(at))+'|'+(isLate(end-.001)||isEvening(end-.001));
         return clearGeometry.get(geometryKey+'|'+person.id+':'+home.anchorId+':'+target)===false;
       }
+      const visitorCards=new Map(),visitorTargets=new Map();let visitorOpportunity=null;
+      function visitorWindow(at){
+        if(!visitorOpportunity||visitorOpportunity.at!==at||visitorOpportunity.length!==ledger.length){
+          const active=ledgerOverlaps(ledger,at,at+.000001).filter(e=>e.start<=at&&at<e.end);
+          visitorOpportunity={at,length:ledger.length,active,floor1:active.filter(e=>e.people.some(t=>t.seat.anchor!==t.home.anchorId)&&e.people.some(t=>t.home.floor==='1f'||anchors.get(t.seat.anchor).floor==='1f'))};
+        }
+        return visitorOpportunity;
+      }
+      const cadenceCache=new Map();
       function attempt(people,at,visitor=null,fill=false,joiningCard=null,formalId=null){
         if(!visitor&&people.length>1&&(at<32400||at>=70200))return false;
+        // Invitations and floor repair must share the configured workday
+        // cadence too. Keep the mean start interval above its existing minimum,
+        // including insertion before an already reserved outing.
+        if(!visitor&&at>=32400&&at<64800&&people.some(p=>{
+          const trips=tripsByPerson.get(p.id)||[];
+          let cadence=cadenceCache.get(p.id);
+          if(!cadence||cadence.length!==trips.length){
+            cadence={length:trips.length,count:0,first:Infinity,last:-Infinity};
+            for(const e of trips)if(e.start>=32400&&e.start<64800){cadence.count++;cadence.first=Math.min(cadence.first,e.start);cadence.last=Math.max(cadence.last,e.start)}
+            cadenceCache.set(p.id,cadence);
+          }
+          return cadence.count&&Math.max(at,cadence.last)-Math.min(at,cadence.first)<cadence.count*(rules.intervalByPerson?.[p.id]||rules.intervalSeconds)[0];
+        }))return false;
         if(people.length>1&&pairKeys(people).some(key=>(pairCounts.get(key)||0)>=(placeTable?.behavior?.pairDailyMax||2)))return false;
         // Every candidate reserves all its actors from at. An existing actor
         // reservation covering that instant cannot be repaired by any card/FIFO.
-        const activeAt=ledgerOverlaps(ledger,at,at+.000001).filter(e=>e.start<=at&&at<e.end);
+        const activeAt=visitor?visitorWindow(at).active:ledgerOverlaps(ledger,at,at+.000001).filter(e=>e.start<=at&&at<e.end);
         if(activeAt.some(e=>e.people.some(t=>people.some(p=>p.id===t.id))))return false;
         // Every excursion also reserves its home floor from at. Check this
         // necessary capacity condition before card ranking or trajectory creation.
         const homeFloors=new Set(people.map(p=>visitor?'1f':homeAt(p,at).floor));
         for(const floor of homeFloors){
-          const active=activeAt.filter(e=>e.people.some(t=>t.seat.anchor!==t.home.anchorId)&&e.people.some(t=>t.home.floor===floor||anchors.get(t.seat.anchor).floor===floor));
+          const active=visitor?visitorOpportunity.floor1:activeAt.filter(e=>e.people.some(t=>t.seat.anchor!==t.home.anchorId)&&e.people.some(t=>t.home.floor===floor||anchors.get(t.seat.anchor).floor===floor));
           if(isLate(at)){if(active.reduce((n,e)=>n+e.people.length,people.length)>1)return false}
           else if(at>=41400&&at<46800){if(active.reduce((n,e)=>n+e.people.length,people.length)>4)return false}
           else if(active.length>=2||people.length>1&&active.some(e=>e.people.length>1))return false;
@@ -1013,16 +1206,17 @@
         const deadline=visitor?86400:Math.min(people.length>1?70200:86400-rules.cooldownSeconds,...people.map(p=>nextCommitment(p.id,at)));
         if(deadline-at<(people.length>1?60*rules.groupStayScale:30))return false;
         const neighbours=fill?(people.length===1?[...(tripsByPerson.get(people[0].id)||[])]:result.filter(e=>!e.visitor&&e.people.some(t=>people.some(p=>p.id===t.id)))).sort((a,b)=>a.start-b.start):[];
-        let cards=places.filter(c=>(!joiningCard||c.id===joiningCard.id)&&(visitor?c.slots.includes(visitor.target):
+        if(visitor&&!visitorCards.has(visitor.target))visitorCards.set(visitor.target,places.filter(c=>c.slots.includes(visitor.target)));
+        let cards=visitor?visitorCards.get(visitor.target):places.filter(c=>(!joiningCard||c.id===joiningCard.id)&&(
           c.stay[0]*(people.length>1?rules.groupStayScale:1)<=deadline-at&&
           c.room!=='consult'&&!c.slots.includes('reception')&&
           (!(at>=25200&&at<32400)||c.kind==='coffee')&&
           (at<70200||['coffee','sofa'].includes(c.kind))&&
           (people.length===1||people.every(p=>homeAt(p,at).floor===c.floor||(floorTrips.get(p.id)||0)<2))&&
           people.every(p=>fill?neighbours.filter(e=>e.people.some(t=>t.id===p.id)&&e.start<at).at(-1)?.card.id!==c.id&&neighbours.find(e=>e.people.some(t=>t.id===p.id)&&e.start>=at)?.card.id!==c.id:last.get(p.id)?.card!==c.id)&&(!isLate(at)||people.every(p=>homeAt(p,at).floor===c.floor))&&c.slots.length>=people.length));
-        const rankBase=day+'|card|'+people.map(p=>p.id).join()+'|'+at+'|';
-        const rankSeed=seed(rankBase),slotSeed=seed(day+'|slot|'+at);
-        cards=cards.map(c=>({c,rank:visitor?seed(day+at+c.id):-Math.log(Math.max(.000001,seedTail(rankSeed,c.id)/4294967296))/weight(c,people,at)})).sort((a,b)=>a.rank-b.rank||a.c.id.localeCompare(b.c.id)).map(r=>r.c);
+        const rankBase=visitor?'':day+'|card|'+people.map(p=>p.id).join()+'|'+at+'|';
+        const rankSeed=visitor?0:seed(rankBase),slotSeed=visitor?0:seed(day+'|slot|'+at);
+        if(!visitor||cards.length>1)cards=cards.map(c=>({c,rank:visitor?seed(day+at+c.id):-Math.log(Math.max(.000001,seedTail(rankSeed,c.id)/4294967296))/weight(c,people,at)})).sort((a,b)=>a.rank-b.rank||a.c.id.localeCompare(b.c.id)).map(r=>r.c);
         if(!visitor&&!fill&&at-(lastFloor.get(homeAt(people[0],at).floor)??-Infinity)<BLOCK)cards=cards.slice(0,3);
         for(const card of cards){
           const orderKey=card.id+'|'+at;
@@ -1032,6 +1226,13 @@
             const range=visitor?.stay||card.stay,scale=people.length>1?rules.groupStayScale:1;
             const homes=people.map(p=>visitor?{floor:'1f',anchorId:'arrival_gate'}:homeAt(p,at));
             const destinations=people.map((p,i)=>slots[(offset+i)%slots.length]);
+            // Group stays are simultaneous. Impossible 1F destination pairs
+            // cannot be repaired by FIFO, so reject before constructing routes.
+            if(people.some((p,i)=>anchors.get(destinations[i]).floor==='1f'&&people.some((q,j)=>j<i&&destinations[i]!==homes[i].anchorId&&destinations[j]!==homes[j].anchorId&&screenOverlap(slot(destinations[i],card.pose),slot(destinations[j],card.pose)))))continue;
+            const sameHomePhase=![3600,25200,64800].some(s=>at<s&&s<deadline);
+            // A constant home phase gives the same answer for every possible
+            // stay in this window, before travel or leg allocation.
+            if(sameHomePhase&&people.some((p,i)=>!screenHomeClear(p.id,homes[i].anchorId,slot(destinations[i],card.pose),allowed,at,deadline)))continue;
             if(!visitor&&![3600,25200,64800].some(s=>at<s&&s<deadline)&&people.some((p,i)=>blockedGeometry(p,homes[i],destinations[i],at,deadline)))continue;
             const travel=people.map((p,i)=>{const home=visitor?{anchorId:'arrival_gate'}:homeAt(p,at),target=slots[(offset+i)%slots.length];return pathDuration(path(home.anchorId,target))+pathDuration(path(target,home.anchorId))+i*1.5});
             // Choose a legal stay within the available formal-calendar gap. Its
@@ -1039,6 +1240,10 @@
             const ceiling=Math.min(range[1],Math.floor((deadline-at-Math.max(...travel))/scale));
             if(ceiling<range[0])continue;
             const stay=(range[0]+seed(day+'|stay|'+at+card.id)%(ceiling-range[0]+1))*scale;
+            // The proposal's travel/stay horizon owns this cache key. A later
+            // deadline must not reserve evening lounge homes during daytime.
+            // FIFO extensions still pass reserve() with their complete interval.
+            if(!sameHomePhase&&people.some((p,i)=>!screenHomeClear(p.id,homes[i].anchorId,slot(destinations[i],card.pose),allowed,at,Math.min(deadline,at+Math.max(...travel)+stay))))continue;
             // Resolve static home/path geometry before allocating legs or FIFO.
             // No phase boundary may lie in the possible interval. Positive proofs
             // never bypass temporal, resource, capacity or continuous sweep checks.
@@ -1053,8 +1258,8 @@
               // Depart 1.5s apart, then queue at actual shared door/path resources.
               // Waiting is a stationary state, never a timed zero-pixel walk.
               const used=[];
-              for(const t of e.people){for(let i=0;i<t.out.length;i++){const leg=t.out[i],duration=leg.end-leg.start;let begin=leg.start,changed=true;
-                  while(changed){changed=false;for(const other of used)if((leg.from===other.from||leg.from===other.to||leg.to===other.from||leg.to===other.to)&&begin<other.end+.2&&other.start<begin+duration){begin=other.end+.2;changed=true}}
+              for(const t of e.people){for(let i=0;i<t.out.length;i++){const leg=t.out[i],duration=leg.end-leg.start,conflicts=used.filter(other=>leg.from===other.from||leg.from===other.to||leg.to===other.from||leg.to===other.to);let begin=leg.start,changed=true;
+                  while(changed){changed=false;for(const other of conflicts)if(begin<other.end+.2&&other.start<begin+duration){begin=other.end+.2;changed=true}}
                   const shift=begin-leg.start;if(shift)for(const l of t.out.slice(i)){l.start+=shift;l.end+=shift}used.push(leg);
                 }}
               e.performStart=Math.max(...e.people.map(t=>t.out.at(-1).end));const commonEnd=e.performStart+stay;e.performEnd=commonEnd;
@@ -1062,10 +1267,10 @@
               e.end=Math.max(...e.people.map(t=>t.back.at(-1).end));
               e.group=people.map(p=>p.id);e.companion=placeTable.companions.find(r=>r.people.every(id=>e.group.includes(id)));
             }
-            if(e.end>deadline||!visitor&&!withinCap(e)||visitor&&result.some(q=>q.visitor&&overlap(q,e)))continue;
+            if(e.end>deadline||!visitor&&!withinCap(e)||visitor&&ledgerOverlaps(result,e.start,e.end).filter(q=>q.visitor&&overlap(q,e)).length>=2)continue;
             if(fill&&neighbours.some(q=>e.start<q.end+rules.cooldownSeconds&&q.start<e.end+rules.cooldownSeconds))continue;
             if(!reserve(e,ledger,allowed))continue;
-            result.push(e);
+            result.push(e);if(visitor)visitorUntil.set(people[0].id,e.end);
             if(!visitor&&people.length>1)for(const key of pairKeys(people))pairCounts.set(key,(pairCounts.get(key)||0)+1);
             if(!visitor)for(const p of people){if(!tripsByPerson.has(p.id))tripsByPerson.set(p.id,[]);tripsByPerson.get(p.id).push(e)}
             if(!visitor)for(const p of people){last.set(p.id,{end:e.end,card:card.id});if(!visits.has(p.id))visits.set(p.id,new Set());visits.get(p.id).add(card.id);
@@ -1079,6 +1284,36 @@
           }
         }
         return false;
+      }
+      // At most six fixed daily slots, one report per employee. Reserve the
+      // chairman at his own seat for the whole round trip, so later outings
+      // cannot leave a visitor reporting to an empty chair. Formal work wins.
+      if(nightCatalog&&allowed.some(p=>p.id==='seongmin')){
+        const reported=new Set(),chair=personById.get('seongmin');
+        const candidates=physical.filter(p=>chairmanVoice[p.id]&&reportPlaces.some(c=>c.id==='chairman-report-'+p.id));
+        for(let n=0;n<6;n++){
+          const begin=33600+n*4800+seed(day+'|report-phase|'+n)%120;
+          const ranked=candidates.filter(p=>!reported.has(p.id)).sort((a,b)=>seed(day+'|report-person|'+n+a.id)-seed(day+'|report-person|'+n+b.id));
+          let booked=false;
+          for(let at=begin;at<begin+1800&&!booked;at+=15)for(const p of ranked){
+            if(reported.has(p.id))continue;
+            const card=reportPlaces.find(c=>c.id==='chairman-report-'+p.id),home=homeAt(p,at);
+            const stay=20+seed(day+'|report-stay|'+p.id)%41;
+            const deadline=Math.min(64800,nextCommitment(p.id,at),nextCommitment('seongmin',at));
+            if(deadline-at<stay)continue;
+            for(const target of card.slots){
+              const e=excursion(p.id,home,card,target,at,stay,day,null,deadline);if(!e)continue;
+              const seat=slot(chair.home.anchorId,'sit'),nodes=path(chair.home.anchorId,chair.home.anchorId);
+              e.report=p.id;e.people.push({id:chair.id,home:chair.home,seat,outbound:nodes,inbound:nodes,out:[],back:[]});
+              e.resources=[...new Set([...e.resources,chair.home.anchorId])];
+              if(!withinCap(e)||!reserve(e,ledger,allowed))continue;
+              result.push(e);reported.add(p.id);
+              for(const t of e.people){if(!tripsByPerson.has(t.id))tripsByPerson.set(t.id,[]);tripsByPerson.get(t.id).push(e);}
+              booked=true;break;
+            }
+            if(booked)break;
+          }
+        }
       }
       for(let at=0;at<86400;at+=180){
         if(at>=32400&&at<64800)for(const formal of preMeetingEvents){
@@ -1153,9 +1388,12 @@
         return {c,weight:c.errandKind==='colleague'?(target.home.room===p.home.room?4:2)*(1+score/25):1};
       }));
       const errandPhases=new Map(physical.map(p=>[p.id,seed(day+'|errand-phase|'+p.id)%90]));
+      const screenErrandChoices=new Map();
       for(let tick=32400;tick<75600;tick+=90){
         for(const p of physical){
-          const at=tick+errandPhases.get(p.id);
+         // Retry scarce phone-safe 1F stops inside the existing clock window.
+         for(const delay of p.home.floor==='1f'?[0,30,60]:[0]){
+          const at=tick+errandPhases.get(p.id)+delay;
           if(at+60>75600)continue;
           if(at<(errandDue.get(p.id)??(32400+seed(day+'|errand-first|'+p.id)%540)))continue;
           // A future leisure booking is already frozen. Any errand extending
@@ -1164,14 +1402,18 @@
           const near=ledgerOverlaps(ledger,at,at+1);
           if(near.some(e=>e.people.some(t=>t.id===p.id)||e.card?.targetPerson===p.id))continue;
           const home=homeAt(p,at),previous=errandLast.get(p.id);
+          const sameHomePhase=![3600,25200,64800].some(s=>at<s&&s<deadline);
+          const screenKey=p.id+'|'+home.anchorId+'|'+(isLate(at)||isEvening(at));
+          if(sameHomePhase&&!screenErrandChoices.has(screenKey))screenErrandChoices.set(screenKey,choices.get(p.id).filter(({c})=>c.slots.some(target=>screenHomeClear(p.id,home.anchorId,slot(target,c.pose),allowed,at,deadline))));
           const errandSeed=seed(day+'|errand|'+p.id+'|'+at+'|');
-          const cards=choices.get(p.id).filter(({c})=>c.floor===home.floor&&c.id!==previous).map(({c,weight})=>{
+          const cards=(sameHomePhase?screenErrandChoices.get(screenKey):choices.get(p.id)).filter(({c})=>c.floor===home.floor&&c.id!==previous).map(({c,weight})=>{
             return {c,rank:-Math.log(Math.max(.000001,seedTail(errandSeed,c.id)/4294967296))/weight};
           }).sort((a,b)=>a.rank-b.rank);
           let booked=false;
           for(const {c}of cards){
             if(c.targetPerson&&(!allowed.some(q=>q.id===c.targetPerson)||!presentAt(c.targetPerson,at)||homeAt(personById.get(c.targetPerson),at).anchorId!==personById.get(c.targetPerson).home.anchorId||near.some(e=>e.people.some(t=>t.id===c.targetPerson&&t.seat.anchor!==t.home.anchorId))))continue;
             for(const target of c.slots){
+              if(![3600,25200,64800].some(s=>at<s&&s<deadline)&&!screenHomeClear(p.id,home.anchorId,slot(target,c.pose),allowed,at,deadline))continue;
               const stay=8+seed(day+'|errand-stay|'+p.id+at+c.id)%18;
               if(arrivalKeys.has(arrivalKey(target,at+pathDuration(path(home.anchorId,target)))))continue;
               if(![3600,25200,64800].some(s=>at<s&&s<deadline)&&blockedGeometry(p,home,target,at,deadline))continue;
@@ -1192,15 +1434,41 @@
             }
             if(booked)break;
           }
+          if(booked)break;
+         }
         }
       }
-      // One public guest slot, mostly short daytime errands; long appointments
-      // remain possible. All trips still pass the shared continuous sweep.
-      for(let at=32400;at<72000;at+=90){
+      // Two persistent public guests. Clock phases favour morning parcels,
+      // lunch deliveries/coffee and afternoon appointments; reserve() still owns
+      // capacities, target uniqueness, gate FIFO and every swept trajectory.
+      for(let at=32400;at<72000;at+=20){
+        // This is the same necessary floor-capacity condition as attempt().
+        // Reject a full window once, before ranking every kind and waiting seat.
+        const active=visitorWindow(at+1).floor1;
+        if(at+1>=41400&&at+1<46800?active.reduce((n,e)=>n+e.people.length,1)>4:active.length>=2)continue;
         const kinds=visitorKinds.filter(v=>(weekday||!v.weekdayOnly)&&v.hours.some(([a,b])=>at/3600>=a&&at/3600<b));
-        const short=kinds.filter(v=>['courier','rider','generic'].includes(v.kind));
-        const pool=unit(day+'|guest-short|'+at)<.92&&short.length?short:kinds;
-        if(pool.length&&unit(day+'|guest|'+at)<.9)attempt([{id:'visitor'}],at+1,pool[seed(day+'|kind|'+at)%pool.length]);
+        const ranked=kinds.map(v=>({v,rank:-Math.log(Math.max(.000001,unit(day+'|guest-kind|'+at+v.kind)))/(v.kind==='courier'&&at<36000?4:v.kind==='rider'&&lunch(at)?5:['client','candidate'].includes(v.kind)&&at>=46800?3:1)})).sort((a,b)=>a.rank-b.rank);
+        for(const id of ['visitor','visitor-2']){
+          if((visitorUntil.get(id)||0)>at+1)continue;
+          let booked=false;
+          for(const {v}of ranked){
+            // Consultation chairs share the phone footprint of fixed business
+            // homes. If occupied, wait in an EXISTING cafe lounge chair instead;
+            // keep visit kinds/stays, describe waiting honestly, and re-reserve
+            // the full canon round trip through the same capacity/sweep gates.
+            const target=anchors.get(v.target);
+            if(!visitorTargets.has(v.target))visitorTargets.set(v.target,target.room==='consult'?[v.target,...[...anchors.values()].filter(a=>a.floor==='1f'&&['consult','cafe'].includes(a.room)&&a.type==='seat'&&a.runtimeAssignable!==false&&a.id!==v.target).map(a=>a.id)]:[v.target]);
+            const targets=visitorTargets.get(v.target);
+            for(const destination of targets){
+              if(!screenHomeClear(id,'arrival_gate',slot(destination,'stand'),allowed,at,at+1))continue;
+              const waiting=anchors.get(destination).room==='cafe'&&target.room==='consult';
+              const visit=destination===v.target?v:{...v,target:destination,...(waiting?{go:v.kind==='client'?'상담 대기석으로 가는 중':'면접 대기석으로 가는 중',at:v.kind==='client'?'상담 대기 중':'면접 대기 중… 두근'}:{})};
+              if(attempt([{id}],at+1,visit)){booked=true;break}
+            }
+            if(booked)break;
+          }
+          break;
+        }
       }
       // A host visits a real free approach node while the guest is stationary.
       // Both trajectories remain in the same reservation ledger; no host teleport.
@@ -1209,14 +1477,20 @@
       for(const guest of result.filter(e=>e.visitor)){
         const destination=guest.people[0].seat,point=pixels([destination.x,destination.y]);
         const hosts=(placeTable?.behavior?.visitorHosts||[]).map(id=>personById.get(id)).filter(p=>p&&allowed.includes(p)&&homeAt(p,guest.performStart).floor==='1f');
-        if(!hostSlots.has(destination.anchor))hostSlots.set(destination.anchor,[...anchors.values()].filter(a=>a.floor==='1f'&&a.room===anchors.get(destination.anchor).room&&a.type==='junction'&&(()=>{const q=pixels(visualPoint(a)),d=Math.hypot(q[0]-point[0],q[1]-point[1]);return d>=40&&d<=160})()));
+        // Existing host approach cards stay in the same room, but the old
+        // 160-art-pixel radius was smaller than one phone sprite footprint.
+        if(!hostSlots.has(destination.anchor))hostSlots.set(destination.anchor,[...anchors.values()].filter(a=>a.floor==='1f'&&a.room===anchors.get(destination.anchor).room&&a.type==='junction'&&(()=>{const q=pixels(visualPoint(a)),d=Math.hypot(q[0]-point[0],q[1]-point[1]);return d>=170&&d<=400})()));
         const slots=hostSlots.get(destination.anchor);
         let booked=false;
-        for(const p of hosts){for(const target of slots){
-          const at=guest.performStart,home=homeAt(p,at),duration=pathDuration(path(home.anchorId,target.id)),stay=Math.min(15,guest.performEnd-at-duration);
+        // The guest stays available after arrival too. Retry the same full
+        // reservation within that stay; host cooldowns and all gates still own it.
+        for(let at=guest.performStart;at<guest.performEnd-8&&!booked;at+=15)for(const p of hosts){
+         const errands=hostErrands.get(p.id);
+         if(errands.some(q=>Math.abs(q.start-at)<360))continue;
+         for(const target of slots){
+          const home=homeAt(p,at),duration=pathDuration(path(home.anchorId,target.id)),stay=Math.min(15,guest.performEnd-at-duration);
           if(stay<8)continue;
           const c=errandPlaces.find(c=>c.hostOnly&&c.slots[0]===target.id),e=c&&excursion(p.id,home,c,target.id,at,stay,day,null,Math.min(guest.performEnd,nextCommitment(p.id,at),at+60));
-          const errands=hostErrands.get(p.id);
           if(!e||errands.some(q=>Math.abs(q.start-e.start)<360)||errands.filter(q=>q.start<e.start).at(-1)?.card.id===c.id||errands.find(q=>q.start>e.start)?.card.id===c.id)continue;
           if(arrivalKeys.has(arrivalKey(target.id,e.performStart)))continue;
           if(!e||!reserve(e,ledger,allowed))continue;
@@ -1248,7 +1522,8 @@
       // Outings respect the complete frozen formal ledger, including suppressed events.
       const outings=blockPlan(day,Math.floor(seconds/BLOCK),events,options);
       if(!idleLedgers.has(outings))idleLedgers.set(outings,[...events,...outings]);const idleLedger=idleLedgers.get(outings);
-      const visibleOutings=cancelled.size||blocked.size?outings.filter(e=>!cancelled.has(e.id)&&!cancelled.has(e.guestId)&&!e.people.some(t=>blocked.has(t.id))&&!blocked.has(e.card?.targetPerson)):outings;
+      const since=options.chairmanSince==null?-Infinity:(options.chairmanSince-Date.parse(day+'T00:00:00+09:00'))/1000;
+      const visibleOutings=cancelled.size||blocked.size||since!==-Infinity?outings.filter(e=>!cancelled.has(e.id)&&!cancelled.has(e.guestId)&&!e.people.some(t=>blocked.has(t.id))&&!blocked.has(e.card?.targetPerson)&&(!e.report||e.start>=since)):outings;
       const completedTeachers=events.filter(e=>e.performEnd<=seconds&&!cancelled.has(e.id)&&table.rules.hinaBalance.teacherActionIds.includes(e.actionId)).length;
       const selfiesBefore=events.filter(e=>e.start<seconds&&!cancelled.has(e.id)&&table.rules.hinaBalance.selfieActionIds.includes(e.actionId));
       const active=events.filter(e=>e.start<=seconds&&seconds<e.end&&!cancelled.has(e.id)&&!e.people.some(p=>blocked.has(p.id))&&(!table.rules.hinaBalance.selfieActionIds.includes(e.actionId)||completedTeachers>=selfiesBefore.length));
@@ -1258,6 +1533,7 @@
         if(!state.seat)return null;
         const performing=event&&seconds>=event.performStart&&seconds<event.performEnd,card=event?.card;
         let plain=!event,line=p.id==='mir'||p.id==='seongmin'?speech(defaults,p.id,day):(late||evening&&lateWorkers.has(p.id))?'야근 중':evening?'퇴근 준비 중':speech(defaults,p.id,day);
+        if(!event)line=workLines[p.id]||deskVoice[p.id]?.[0]||'자료 확인 중';
         const lounge=['lobby-nw','lobby-ne'].includes(home.anchorId)&&['yuna','minji'].includes(p.id);
         if(!event&&!p.visitor&&p.id!=='mir'&&p.id!=='seongmin'){
           const flavour=idleFlavour(day,p.id,home.floor,seconds,lounge,late||evening&&lateWorkers.has(p.id),idleLedger);
@@ -1277,7 +1553,7 @@
             line=p.visitor?'안녕히 계세요~':voice?.length?voice[Math.floor(event.start/90)%voice.length]:'자리로 돌아가는 중';
           }
           else if(state.state==='AT_PLACE'||t.seat.anchor===home.anchorId){
-            line=p.visitor?event.visitor.at:card?placeLine(card,p.id,day,event,t,seconds):speech(action,p.id,day);
+            line=event.report?(p.id==='seongmin'?'보고 기다리는 중':card.at[0]):p.visitor?event.visitor.at:card?placeLine(card,p.id,day,event,t,seconds):speech(action,p.id,day);
             if(event.group&&state.state==='AT_PLACE'){
               const partners=event.group.filter(id=>id!==p.id).map(id=>persons.find(p=>p.id===id).name).join('·'),location=card.at[0].split('에서')[0];
               line=seconds<event.performStart?location+'에서 '+partners+' 기다리는 중':seconds>=event.performEnd?location+'에서 '+partners+'와 나눈 이야기 정리 중':partners+'와 '+location+'에서 '+(event.companion?.topic||'잠깐 수다')+' 중';
@@ -1296,7 +1572,33 @@
         if(peers.some(p=>!p||p.eventId||p.outingId||p.state!=='AT_HOME')||peers[0].floor!==peers[1].floor||gap(peers[0],peers[1])>350)continue;
         const k=Math.floor(seconds/BEAT),j=Array.from({length:Math.ceil(ACTIVE_BEATS)},(_,i)=>k-i).find(j=>beatPick(day,peers[0].floor,j)===pair.people[0]&&Math.floor(j/MIN_CYCLE)%7===seed(pair.people.join())%7);
         if(j==null||seconds>=j*BEAT+ACTIVE_BEATS*BEAT||ledgerOverlaps(idleLedger,j*BEAT-5,j*BEAT+ACTIVE_BEATS*BEAT+2).some(e=>e.people.some(t=>pair.people.includes(t.id))))continue;
+        // Homes remain untouched, including their documented overlaps. Only
+        // start a NEW turning/talking gesture if its phone envelope is clear.
+        if(!deskPairScreenClear(peers,entries,events))continue;
         peers.forEach((p,i)=>{p.line=pair.lines[i];p.plain=false;p.deskPartner=pair.people[1-i]});
+      }
+      // Reuse deskPartner for a two-line exchange, only at the actual approach
+      // and the chairman's real home. No dialogue during travel or waiting.
+      for(const e of visibleOutings)if(e.report&&e.performStart<=seconds&&seconds<e.performEnd){
+        const staff=entries.find(p=>p.id===e.report),chair=entries.find(p=>p.id==='seongmin');
+        if(!staff||!chair||staff.state!=='AT_PLACE'||chair.seat.anchor!=='ceo-reserved'||staff.outingId!==e.id||chair.outingId!==e.id)continue;
+        staff.reportTopic=chairmanVoice[staff.id].topic;staff.behaviorKind='chairman-report';
+        // First half names the report; second half is a short reply.
+        if(seconds>=(e.performStart+e.performEnd)/2)staff.line=chairmanVoice[staff.id].reply;
+        chair.line='좋아요, 이대로 갑시다';chair.plain=staff.plain=false;
+        chair.deskPartner=staff.id;staff.deskPartner=chair.id;
+      }
+      const arrival=options.chairmanArrivalAt,arrivalSeconds=(arrival-Date.parse(day+'T00:00:00+09:00'))/1000;
+      if(options.chairmanPresent&&entries.some(p=>p.id==='seongmin')&&Number.isFinite(arrivalSeconds)&&arrivalSeconds>=0&&arrivalSeconds<86400&&seconds>=arrivalSeconds&&seconds<arrivalSeconds+10){
+        let cached=greetingCache.get(outings);if(!cached){cached=new Map();greetingCache.set(outings,cached)}
+        const greetingKey=arrival+'|'+since;
+        if(!cached.has(greetingKey)){
+          const duration=5+seed(day+'|greeting|'+arrival)%6,atArrival=snapshot(new Date(arrival),{chairmanPresent:true,presentIds:options.presentIds,chairmanSince:options.chairmanSince}),chair=atArrival.entries.find(p=>p.id==='seongmin');
+          const people=chair?.floor==='4f'?atArrival.entries.filter(p=>p.id!=='seongmin'&&chairmanVoice[p.id]?.greet&&p.floor==='4f'&&p.state==='AT_HOME'&&!p.eventId&&!p.outingId&&gap(p,chair)<=650&&!ledgerOverlaps(idleLedger,arrivalSeconds,arrivalSeconds+duration).some(e=>e.people.some(t=>t.id===p.id))).sort((a,b)=>gap(a,chair)-gap(b,chair)||a.id.localeCompare(b.id)).slice(0,1+seed(day+'|greeters|'+arrival)%2).map(p=>p.id):[];
+          if(cached.size>=8)cached.delete(cached.keys().next().value);cached.set(greetingKey,{duration,people});
+        }
+        const greeting=cached.get(greetingKey);
+        if(seconds<arrivalSeconds+greeting.duration)for(const id of greeting.people){const p=entries.find(p=>p.id===id);if(!p||p.eventId||p.outingId||p.state!=='AT_HOME')continue;p.line=chairmanVoice[id].greet;p.pose='standing';p.seat=slot(p.seat.anchor,'stand');p.plain=false;p.behaviorKind='chairman-greeting';p.greetingUntil=arrival+greeting.duration*1000;delete p.deskPartner;}
       }
       for(const p of entries){
         if(!p.outingId||p.state!=='AT_PLACE')continue;
@@ -1320,10 +1622,10 @@
         }
       }
       const shownLines=new Map();
-      const claim=p=>{let lines=shownLines.get(p.floor);if(!lines){lines=new Set();shownLines.set(p.floor,lines)}if(!p.plain)lines.add(p.line);return lines};
+      const claim=p=>{let lines=shownLines.get(p.floor);if(!lines){lines=new Set();shownLines.set(p.floor,lines)}lines.add(p.line);return lines};
       for(const p of entries)if(p.eventId||p.outingId)claim(p);
-      for(const p of entries)if(!p.eventId&&!p.outingId&&!p.plain){
-        const lines=claim({...p,plain:true});
+      for(const p of entries)if(!p.eventId&&!p.outingId){
+        let lines=shownLines.get(p.floor);if(!lines){lines=new Set();shownLines.set(p.floor,lines)}
         if(lines.has(p.line)){
           const person=personById.get(p.id),home=homeAt(person,seconds),lounge=['lobby-nw','lobby-ne'].includes(home.anchorId),kind=lounge?late?'loungeLate':'lounge':late?'late':evening?'evening':'day';
           const alternatives=lounge?idlePools[kind].map(v=>v[0]):[...(deskVoice[p.id]||[]),...idlePools[kind].map(v=>v[0])];
@@ -1332,16 +1634,163 @@
         }
         lines.add(p.line);
       }
-      for(const p of entries)if(!p.plain&&!p.eventId&&!p.outingId){
+      for(const p of entries)if(!p.plain&&!p.eventId&&!p.outingId&&p.behaviorKind!=='chairman-greeting'){
         const personal=deskVoice[p.id]?.indexOf(p.line);
         p.behaviorKind=p.deskPartner?'desk-pair-'+[p.id,p.deskPartner].sort().join('-'):personal>=0?'desk-'+p.id+'-'+personal:'idle-'+p.line;
       }
-      const guest=visibleOutings.find(e=>e.visitor&&e.start<=seconds&&seconds<e.end),visitors=guest?[render({id:'visitor',visitor:true},guest)].filter(p=>p&&(!options.reducedMotion||p.state==='AT_PLACE')):[];
-      if(guest&&visitors[0]?.state==='AT_PLACE')for(const p of entries){const host=visibleOutings.find(e=>e.id===p.outingId&&e.guestId===guest.id);if(host&&p.state==='AT_PLACE'){p.visitorPartner=guest.id;visitors[0].hostId=p.id;visitors[0].line=visitors[0].at=placeTable.behavior.visitorReply}}
+      const guests=visibleOutings.filter(e=>e.visitor&&e.start<=seconds&&seconds<e.end);
+      const visitors=guests.map(guest=>render({id:guest.people[0].id,visitor:true},guest)).filter(p=>p&&(!options.reducedMotion||p.state==='AT_PLACE'));
+      for(const guest of guests){const visitor=visitors.find(v=>v.id===guest.people[0].id);if(visitor?.state==='AT_PLACE')for(const p of entries){const host=visibleOutings.find(e=>e.id===p.outingId&&e.guestId===guest.id);if(host&&p.state==='AT_PLACE'){p.visitorPartner=guest.id;visitor.hostId=p.id;visitor.line=visitor.at=placeTable.behavior.visitorReply}}}
+      for(const p of [...entries,...visitors]){p.shortLine=shortLine(p.line);if(p.deskPartner&&(p.id==='seongmin'||p.deskPartner==='seongmin')){const peer=entries.find(q=>q.id===p.deskPartner);if(peer&&peer.floor===p.floor)p.facing=peer.seat.x<p.seat.x?'left':'right';}}
       return {day,minutes:seconds/60,seconds,entries,visitors,events:active,presenceNote};
     }
 
-    return Object.freeze({plan,snapshot,seed,slot,actions,windows,presentAt,homeAt,blockPlan,stateAt,resourceIntervals,errandPlaces,identity:table.identity});
+    return Object.freeze({plan,snapshot,seed,slot,actions,windows,presentAt,homeAt,blockPlan,stateAt,resourceIntervals,errandPlaces,reportPlaces,shortLine,identity:table.identity});
+  }
+  // Read-only label geometry, shared by the persistent renderer and Node tests.
+  function statusLabelPriority(data){
+    if(data.partner||data.greeting==='true'||data.speaking==='true')return 3;
+    if(data.walking==='true'||data.plain==='false'||data.called==='true'||data.activity==='meeting')return 2;
+    return 1;
+  }
+  // UI-only authored actions: match the full source, never the lossy shortLine.
+  // Lengths include spaces. Names (including the longest guest name) stay whole:
+  // name <=9 + " · " (3) + action <=6 = at most 18 Unicode characters.
+  const phoneActions=[
+    [/회장님께 .*보고/,'회장님보고|보고 드리기|안건 보고'],[/좋아요, 이대로/,'진행 승인|안건 승인|진행 허가'],
+    [/회장님.*인사|회장님.*오셨|회장님.*안녕/,'도착 인사|환영 인사|인사 건네기'],
+    [/돌아가는|복귀|안녕히 계세요/,'자리 복귀|자리로 복귀|복귀 걷기'],
+    [/커피 내리러/,'커피 내리러|커피준비 이동|커피준비하러'],[/커피.*(?:가[는기]|이동)/,'커피 사러감|커피점 이동|커피로 이동'],
+    [/가는 중|이동 중|안내받아 가/,'목적지 이동|걸어서 이동|목적지 걷기'],
+    [/커피.*내리/,'커피 내리기|커피 추출|커피 만들기'],[/커피.*주문/,'커피 주문|커피 고르기|커피 주문중'],
+    [/커피.*(?:마시|모금|한 잔)/,'커피 마시기|커피 한모금|커피 홀짝'],[/커피.*리필/,'리필 고민|커피 더고민|리필 고르기'],
+    [/택배.*(?:두고|왔|전달)/,'택배 전달|택배 놓기|택배 내려둠'],[/배달.*왔/,'음식 배달|배달 전달|음식 전달'],
+    [/면접.*대기/,'면접 대기|면접 기다림|면접 준비'],[/상담.*받/,'상담 받기|상담 듣기|상담 참여'],
+    [/보고.*기다/,'보고 기다림|보고 대기|보고 준비'],[/기다리|대기|기다리는/,'차례 기다림|순서 기다림|차례 대기'],
+    [/퀴즈/,'퀴즈 풀기|퀴즈 풀이|문제 풀기|퀴즈 도전|문제 풀이|정답 찾기|퀴즈 맞히기|퀴즈 연습'],
+    [/창밖|풍경|별빛|별 보는/,'창밖 구경|풍경 감상|창밖 바라봄|풍경 바라봄'],
+    [/보고서/,'보고서 작성|보고서 정리|보고서 쓰기'],[/예산|비용|지출|금액/,'예산 검산|비용 계산|예산 점검|지출 검산'],
+    [/기사.*구상|콘텐츠.*구상|콘텐츠.*제목/,'기사 구상|기사 밑그림|제목 구상'],[/기획.*정리|기획.*범위/,'기획안 정리|기획 정리|기획 다듬기'],
+    [/요청.*분류/,'요청 분류|요청 나누기|요청 구분'],[/일정.*조율/,'일정 조율|일정 맞추기|일정 조정'],
+    [/설계.*검토|설계.*영향/,'설계 검토|설계 살피기|설계 대조'],[/코드.*수정|버그.*끝내|오타.*고치/,'코드 수정|버그 수정|코드 고치기'],
+    [/수치.*분석/,'수치 분석|숫자 분석|수치 읽기'],[/품질.*점검|예외|엣지 케이스/,'품질 점검|예외 찾기|품질 검사'],
+    [/화면.*검토|작은 화면/,'화면 검토|화면 살피기|화면 점검'],[/검증.*기록/,'검증 기록|검증 적기|결과 기록'],
+    [/자료.*대조/,'자료 대조|자료 비교|자료 맞추기'],[/접수.*확인/,'접수 점검|접수 읽기|접수 살피기'],
+    [/안내.*준비/,'안내 준비|안내 채비|안내 챙기기'],[/결재|도장/,'결재 검토|결재 살피기|안건 검토'],
+    [/흐름.*살피|흐름.*연결/,'흐름 검토|흐름 살피기|흐름 점검'],[/일정.*확인|일정.*겹침/,'일정 점검|일정 살피기|일정 대조'],
+    [/문장.*다듬|문장.*줄이/,'문장 다듬기|문장 퇴고|문장 고치기'],[/메모.*순서|기록.*순서/,'메모 재배열|기록 재배열|메모 순서'],
+    [/기록.*정리/,'기록 정리|기록 묶기|기록 나누기'],[/업무 메모|메모 중|메모만/,'메모 쓰기|메모 작성|메모 적기|기록 남기기|메모 남기기|내용 적기|메모 옮기기|노트 적기'],
+    [/별.*그리|별표|동그라미|밑줄/,'메모 표시|별표 그리기|밑줄 긋기|표시 남기기'],[/아이디어|구상/,'구상 메모|아이디어 짜기|생각 적기'],
+    [/음악|노래|플레이리스트|흥얼/,'음악 감상|노래 듣기|음악 듣기|노래 흥얼'],[/인스타/,'인스타 보기|피드 둘러봄|인스타 순찰'],
+    [/영상|고양이/,'영상 보기|영상 감상|영상 시청'],[/간식.*가격|가격표|구독.*비교/,'가격 비교|가격 대조|가격 살피기'],
+    [/기지개|스트레칭|어깨|손목|발목|손가락/,'몸 풀기|기지개 켜기|관절 풀기|몸 늘이기'],
+    [/물.*모금|물.*마시|차.*모금/,'물 마시기|물 한모금|목 축이기'],[/수다|이야기 나누|이야기 중|질문 나누/,'수다 나누기|대화 나누기|말 주고받기|이야기 나눔'],
+    [/쉬는|휴식|눈.*쉬|눈 감고/,'눈 쉬기|잠깐 쉬기|눈 휴식|휴식 취하기'],[/졸|꾸벅|하품/,'졸음 쫓기|잠 깨기|졸음 참기'],
+    [/인사|손 흔드/,'인사 건네기|작별 인사|안부 나누기'],[/테스트|검증/,'테스트 점검|결과 살피기|검증하기'],
+    [/간식|야식|메뉴|식단/,'메뉴 고르기|먹거리 고름|식단 구상|간식 고르기'],[/그리|낙서|스케치/,'그림 그리기|낙서 하기|스케치 하기'],
+    [/읽|책갈피|페이지/,'문장 읽기|글 읽기|독서 하기|읽던글 보기'],[/웃|미소/,'미소 짓기|웃음 짓기|살짝 웃기'],
+    [/조언|설명.*듣/,'설명 듣기|조언 듣기|이야기 듣기'],[/공부|단어|외우|복습/,'단어 복습|공부 하기|단어 외우기']
+  ];
+  function phoneStatusLine(line,used=new Set()){
+    const report=line.match(/회장님께 (.+?) 보고/);
+    if(report){const topic=report[1].replace(/^(오늘|다음) /,'').split(' ')[0],short=[...topic].length<=4?topic+'보고':'회장보고';used.add(short);return short}
+    const known=scheduler?.shortLine(line),authored=known==='회장님께 인사 중'?'도착 인사|환영 인사|인사 건네기':known==='보고 답변 중'?'보고 답변|보고 응답|답변 전하기':phoneActions.find(([pattern])=>pattern.test(line))?.[1];
+    // Unknown future text retains a whole source word plus its action; speech
+    // without an action verb is an opinion being spoken, never invented work.
+    const source=line.replace(/(?:에서|으로|이랑|와) /g,' ').replace(/ 중[.!…]*$|[.!…♡?]/g,'').trim();
+    const words=source.split(/\s+/),verb=words.at(-1)?.replace(/는$/,'기');
+    const derived=words.slice(0,-1).reverse().map(w=>w+' '+verb).filter(w=>[...w].length>=2&&[...w].length<=6);
+    const options=authored?authored.split('|'):[...derived,'의견 나누기','의견 말하기','의견 건네기'];
+    const choices=[...options.map(w=>w.replace(/ /g,'')),...options].filter(w=>[...w].length>=2&&[...w].length<=6);
+    const result=choices.find(w=>!used.has(w))||choices[0];used.add(result);return result;
+  }
+  function placeStatusLabels(floor,groups,obstacles=[]){
+    const gap=groups.some(g=>g.compact)?.5:2,ordered=groups.slice().sort((a,b)=>b.priority-a.priority||a.id.localeCompare(b.id));
+    // Every sprite (including one's own face) is reserved before any label.
+    // Actual sprite bounds include the partner turn; reserve idle motion too.
+    const sprites=groups.map(g=>{const r=g.sprite?.width?g.sprite:g.actor,pad=Math.max(g.compact?1:2,r.height*.02);return {left:r.left-pad,right:r.right+pad,top:r.top-pad,bottom:r.bottom+pad}});
+    // Floating-point edge arithmetic must not reject an exactly 2px gap.
+    const overlaps=(a,b)=>a.left<b.right+gap-1e-7&&a.right+gap>b.left+1e-7&&a.top<b.bottom+gap-1e-7&&a.bottom+gap>b.top+1e-7;
+    let best=null,bestScore=null;
+    const fixed=[...obstacles,...sprites],pools=new Map(ordered.map(g=>[g.id,new Map()]));
+    const phone=groups.some(g=>g.compact),value=s=>phone?[s[0],s[0]+s[1]+s[2],s[1],s[3]]:s;
+    const compare=(a,b)=>{a=value(a);b=value(b);for(let i=0;i<4;i++)if(a[i]!==b[i])return b[i]-a[i];return 0};
+    const positions=(g,b)=>{if(g.compact)return {name:{left:b.left,top:b.top},status:null};const d=floor.width<=600?0:gap;return b.inline?{name:{left:b.left,top:b.top},status:{left:b.left+g.name.width+d,top:b.top}}:{name:{left:b.left+(b.width-g.name.width)/2,top:b.top+g.status.height+d},status:{left:b.left+(b.width-g.status.width)/2,top:b.top}}};
+    // Repacking may change priority order within nearby lanes, never send a
+    // person's labels to a distant desk just to raise the visible count.
+    for(let mode=0;mode<9;mode++){
+    const reserved=[...obstacles,...sprites],result=new Map(),score=[0,0,0,0];
+    const order=mode<5?ordered:ordered.slice().sort((a,b)=>b.priority-a.priority||(mode<7?(a.actor.left-b.actor.left)*(mode%2?1:-1):(a.actor.top-b.actor.top)*(mode%2?1:-1))||a.id.localeCompare(b.id));
+    for(const g of order){
+      let chosen=null,rank=Infinity;
+      const joinGap=floor.width<=600?0:gap;
+      for(const inline of (g.compact?[false]:[false,true])){
+      const width=g.compact?g.name.width:inline?g.name.width+joinGap+g.status.width:Math.max(g.name.width,g.status.width),height=g.compact?g.name.height:inline?Math.max(g.name.height,g.status.height):g.name.height+joinGap+g.status.height;
+      // Phone pills hug the head (20px) so they never read as a neighbour's label
+      // across a desk row; dialogue may use 28px, everyone else falls back to a dot.
+      const head=g.sprite?.width?g.sprite:g.actor,headX=(head.left+head.right)/2,reach=g.priority===3?27.5:19.5,step=Math.ceil(reach);
+      const left=Math.max(floor.left+gap,Math.min(g.actor.left+g.actor.width/2-width/2,floor.right-gap-width));
+      const top=g.actor.top-gap-height,candidates=[];
+      const reachX=Math.max(g.actor.width*1.5,floor.width<=600?96:100),reachY=Math.max(g.actor.height*2,64);
+      const add=(x,y)=>{x=Math.max(floor.left+gap,Math.min(x,floor.right-gap-width));y=Math.max(floor.top+gap,Math.min(y,floor.bottom-gap-height));
+        if(g.compact&&Math.hypot(x+width/2-headX,y+height/2-head.top)>reach+1e-7)return;
+        if(Math.abs(x+width/2-(g.actor.left+g.actor.width/2))>reachX||y+height<g.actor.top-reachY||y>g.actor.bottom+reachY)return;
+        const below=Math.max(0,y+height-g.actor.top);candidates.push({left:x,right:x+width,top:y,bottom:y+height,width,height,inline,cost:(x-left)**2+(y-top)**2+below*below*2+(inline?400:0)})};
+      // Above/below and either side keep each person's two labels together.
+      add(left,top);add(left,g.actor.bottom+gap);
+      add(g.actor.left-gap-width,top);add(g.actor.right+gap,top);
+      add(g.actor.left-gap-width,g.actor.top);add(g.actor.right+gap,g.actor.top);
+      // Crowded floors: search horizontal lanes as well as vertical lanes.
+      // Boundaries are candidates too, so narrow maps lose no edge space.
+      const xs=[floor.right-gap-width,left],ys=[floor.bottom-gap-height,Math.max(floor.top+gap,top)];
+      if(g.compact){for(let delta=-step;delta<=step;delta+=4){xs.push(headX-width/2+delta);ys.push(head.top-height/2+delta)}}
+      else{for(let x=floor.left+gap;x<=floor.right-gap-width;x+=width+gap)xs.push(x);
+      for(let y=floor.top+gap;y<=floor.bottom-gap-height;y+=height+gap)ys.push(y);}
+      // Fit around irregular mascot/label edges instead of wasting a whole grid cell.
+      for(const r of reserved){xs.push(r.right+gap,r.left-gap-width);ys.push(r.bottom+gap,r.top-gap-height)}
+      for(const x of new Set(xs))for(const y of new Set(ys))add(x,y);
+      for(const b of candidates){const value=mode&&mode<5?(mode<=2?b.top:-b.bottom)*(floor.width+1)+(mode%2?b.left:-b.right):b.cost;
+        if(b.left>=floor.left+gap&&b.right<=floor.right-gap&&b.top>=floor.top+gap&&b.bottom<=floor.bottom-gap&&!fixed.some(r=>overlaps(b,r)))pools.get(g.id).set([b.left,b.top,b.inline].join(','),b);
+        if(value<rank&&b.left>=floor.left+gap&&b.right<=floor.right-gap&&b.top>=floor.top+gap&&b.bottom<=floor.bottom-gap&&!reserved.some(r=>overlaps(b,r))){chosen=b;rank=value}}
+      }
+      if(chosen){score[3-g.priority]++;score[3]-=chosen.cost;reserved.push(chosen);result.set(g.id,positions(g,chosen))}
+      else result.set(g.id,null);
+    }
+    const better=!bestScore||compare(score,bestScore)<0;
+    if(better){best=result;bestScore=score}
+    if(score[0]+score[1]+score[2]===groups.length)break;
+    }
+    // A bounded search repairs greedy blocking on crowded floors, using only
+    // the same nearby, sprite-safe candidates. No global/remote fallback.
+    if(bestScore[0]<ordered.filter(g=>g.priority===3).length||bestScore[0]+bestScore[1]+bestScore[2]<(phone?groups.length:Math.ceil(groups.length*(floor.width<=600?.7:.85)))){
+      let beam=[{boxes:[],result:new Map(),score:[0,0,0,0]}];
+      for(const g of ordered){
+        const pool=[...pools.get(g.id).values()].sort((a,b)=>a.cost-b.cost),next=[];
+        for(const state of beam){
+          const legal=pool.filter(b=>!state.boxes.some(r=>overlaps(b,r)));
+          const options=new Set(legal.slice(0,8));
+          for(const axis of ['left','top']){const sorted=legal.slice().sort((a,b)=>a[axis]-b[axis]);for(const b of [...sorted.slice(0,2),...sorted.slice(-2)])options.add(b)}
+          for(const b of [null,...options]){const score=state.score.slice(),result=new Map(state.result);result.set(g.id,b?positions(g,b):null);if(b){score[3-g.priority]++;score[3]-=b.cost}next.push({boxes:b?[...state.boxes,b]:state.boxes,result,score})}
+        }
+        next.sort((a,b)=>compare(a.score,b.score));beam=next.slice(0,phone?64:32);
+      }
+      if(beam.length&&compare(beam[0].score,bestScore)<0)best=beam[0].result;
+    }
+    // A suppressed phone pill keeps the existing name slot as a tiny status dot.
+    // Dots use the same head radius and never displace a conversation label.
+    const occupied=[...fixed];
+    for(const g of ordered){const p=best.get(g.id);if(!p)continue;if(g.compact)occupied.push({left:p.name.left,right:p.name.left+g.name.width,top:p.name.top,bottom:p.name.top+g.name.height})}
+    for(const g of ordered.filter(g=>g.compact&&!best.get(g.id))){
+      const head=g.sprite?.width?g.sprite:g.actor,x=(head.left+head.right)/2,candidates=[];
+      // Obstacle edges include sub-3px lanes missed by the old fixed grid.
+      // The closest point of every free rectangular cell is an edge or the
+      // head projection, so this also finds tiny legal nearby dot slots.
+      const xs=[x,floor.left+gap+2.5,floor.right-gap-2.5,...occupied.flatMap(r=>[r.left-gap-2.5,r.right+gap+2.5])],ys=[head.top,floor.top+gap+2.5,floor.bottom-gap-2.5,...occupied.flatMap(r=>[r.top-gap-2.5,r.bottom+gap+2.5])];
+      for(const cx of new Set(xs))for(const cy of new Set(ys)){const dx=cx-x,dy=cy-head.top;if(Math.hypot(dx,dy)>27.5)continue;const b={left:cx-2.5,right:cx+2.5,top:cy-2.5,bottom:cy+2.5,cost:dx*dx+dy*dy};if(b.left>=floor.left+gap&&b.right<=floor.right-gap&&b.top>=floor.top+gap&&b.bottom<=floor.bottom-gap&&!occupied.some(r=>overlaps(b,r)))candidates.push(b)}
+      candidates.sort((a,b)=>a.cost-b.cost||a.top-b.top||a.left-b.left);const dot=candidates[0];
+      if(dot){best.set(g.id,{name:{left:dot.left,top:dot.top},status:null,dot:true});occupied.push(dot)}
+    }
+    return best;
   }
   const scheduler=canon&&actionTable?createScheduler(actionTable):null;
   function snapshot(now=new Date(),options={}){
@@ -1356,19 +1805,23 @@
   // Read-only app signals; the caller installs one shared passive input callback
   // and reuses the office update/visibility cycle. No persistence or timer.
   function createPresence({now,locked,visible,override}){
-    const grace=600000;let lastInteraction=now(),hiddenSince=null,present=!locked()&&visible();
+    const grace=600000;let lastInteraction=now(),hiddenSince=null,present=!locked()&&visible(),previous=false,absentSince=null,chairmanSince=null,chairmanArrivalAt=null,greetedDay='';
     return {interact(){lastInteraction=now()},read(){
       const time=now(),external=override(),shown=visible();
       if(shown)hiddenSince=null;else if(hiddenSince===null)hiddenSince=time;
-      if(external!==undefined&&external!==null)return {chairmanPresent:external.chairman==='active'};
+      if(external!==undefined&&external!==null)present=external.chairman==='active';
       // A login lock is an immediate exclusion; inactivity/hidden use 10 minutes.
-      if(locked())present=false;
+      else if(locked())present=false;
       else if(shown)present=time-lastInteraction<grace;
       else if(time-hiddenSince>=grace)present=false;
-      return {chairmanPresent:present};
+      const day=new Date(time+32400000).toISOString().slice(0,10);
+      if(present&&!previous){chairmanSince=time;if(greetedDay!==day||absentSince!==null&&time-absentSince>=grace){chairmanArrivalAt=time;greetedDay=day;}else chairmanArrivalAt=null;}
+      if(!present&&previous){absentSince=time;chairmanArrivalAt=null;}
+      previous=present;
+      return present?{chairmanPresent:true,chairmanSince,chairmanArrivalAt}:{chairmanPresent:false};
     }};
   }
-  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,places:Object.freeze([...places,...(scheduler?.errandPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines})});
+  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,labels:Object.freeze({priority:statusLabelPriority,place:placeStatusLabels,short:phoneStatusLine}),places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines})});
 })();
 /* Read-only Living Office. The Agent Case renderer remains the sole owner of requests, answers and decisions. */
 (() => {
@@ -1404,7 +1857,7 @@
     if(actor.dataset.avatar!=='v2'||!entry)return;
     const f=entry.frames.find(f=>f.name===name)||entry.frames[0];
     sprite.style.backgroundPosition=(f.rect[0]/(entry.atlas[0]-entry.cell[0])*100)+'% '+(f.rect[1]/(entry.atlas[1]-entry.cell[1])*100)+'%';
-    actor.style.transform='translate(-'+(f.pivot[0]/entry.cell[0]*100)+'%,-'+(f.pivot[1]/entry.cell[1]*100)+'%)';
+    actor.style.setProperty('--actor-pivot-x',String(-f.pivot[0]/entry.cell[0]));actor.style.setProperty('--actor-pivot-y',String(-f.pivot[1]/entry.cell[1]));
   }
   function loadSprite(actor,onLoad){
     const id=spriteId(actor),entry=spriteEntries.get(id),sprite=actor.querySelector('.hani-office-sprite');if(!entry)return;
@@ -1415,7 +1868,7 @@
       }
       return null;
     })());
-    spriteCache.get(id).then(loaded=>{if(!loaded)return;spriteEntries.set(id,loaded);actor.dataset.avatar='v2';actor.dataset.spriteScale=String(loaded.scale||1);actor.style.setProperty('--sprite-ratio',String(loaded.cell[0]/loaded.cell[1]));sprite.className='hani-office-sprite';sprite.style.backgroundImage='url("'+HaniBuildingScene.spriteSource(id,loaded)+'")';sprite.style.backgroundSize=(loaded.atlas[0]/loaded.cell[0]*100)+'% '+(loaded.atlas[1]/loaded.cell[1]*100)+'%';pose(actor,actor.dataset.pose||'sitting');onLoad?.()});
+    spriteCache.get(id).then(loaded=>{if(!loaded)return;spriteEntries.set(id,loaded);actor.style.setProperty('--idle-pivot-x',(loaded.frames[0].pivot[0]/loaded.cell[0]*100)+'%');actor.style.setProperty('--idle-pivot-y',(loaded.frames[0].pivot[1]/loaded.cell[1]*100)+'%');actor.dataset.avatar='v2';actor.dataset.spriteScale=String(loaded.scale||1);actor.style.setProperty('--sprite-ratio',String(loaded.cell[0]/loaded.cell[1]));sprite.className='hani-office-sprite';sprite.style.backgroundImage='url("'+HaniBuildingScene.spriteSource(id,loaded)+'")';sprite.style.backgroundSize=(loaded.atlas[0]/loaded.cell[0]*100)+'% '+(loaded.atlas[1]/loaded.cell[1]*100)+'%';pose(actor,actor.dataset.pose||'sitting');onLoad?.()});
   }
   function finishTravel(actor){if(!actor.officeTravel)return;const {seat}=actor.officeTravel;actor.officeTravel=null;actor.officeAnchor=seat.anchor||seat.id;place(actor,[seat.x,seat.y]);pose(actor,seat.posture||'sitting')}
   function place(actor,position){actor.style.left=position[0]+"%";actor.style.top=position[1]+"%"}
@@ -1428,40 +1881,46 @@
     icon.textContent=actor.dataset.emoji||'';icon.hidden=!icon.textContent;icon.title=value;
     if(actor.officeText)actor.officeText.textContent=value;
   }
-  // One name slot per actor. Lay out tags first, then reserve their boxes before
-  // placing desktop pills in priority order. Only labels move, never seat anchors.
+  // Batch reset -> one geometry read per node -> pure packing -> batch commit.
+  // Name and status travel together; actor coordinates and foot pivots never move.
   function fitStatusLabels(){
     const floor=map.getBoundingClientRect?.();if(!floor?.width)return;
-    const visible=[...actors.values()].filter(a=>!a.hidden),reserved=[],compact=floor.width<=600;
-    const overlaps=(a,b)=>a.left<b.right+2&&a.right+2>b.left&&a.top<b.bottom+2&&a.bottom+2>b.top;
-    function placeLabel(node,kind){
-      node.style.setProperty('--'+kind+'-x','0px');node.style.setProperty('--'+kind+'-y','0px');
-      const base=node.getBoundingClientRect(),dx=Math.max(floor.left+2-base.left,Math.min(0,floor.right-2-base.right));
-      for(let step=0;step<=visible.length*2;step++){
-        const shift=step===0?0:Math.ceil(step/2)*(base.height+3)*(step%2?1:-1)*(kind==='status'?-1:1),dy=Math.max(floor.top+2-base.top,Math.min(shift,floor.bottom-2-base.bottom));
-        const box={left:base.left+dx,right:base.right+dx,top:base.top+dy,bottom:base.bottom+dy};
-        if(!reserved.some(r=>overlaps(box,r))){node.style.setProperty('--'+kind+'-x',dx+'px');node.style.setProperty('--'+kind+'-y',dy+'px');reserved.push(box);return true}
-      }
-      return false;
+    const visible=[...actors.values()].filter(a=>!a.hidden),compact=matchMedia('(max-width:600px)').matches;
+    const rows=visible.map(actor=>({actor,name:actor.querySelector('.hani-office-name'),status:actor.querySelector('.hani-office-status')}));
+    const used=new Set();
+    for(const {actor,name,status}of rows){
+      statusDot(actor);
+      actor.dataset.labelMode=compact?'pill':'separate';
+      actor.officeCompact.textContent=compact?' · '+HaniBuildingScene.labels.short(status.dataset.full,used):'';
+      name.title=actor.dataset.name+' · '+status.dataset.full;name.setAttribute('aria-label',name.title);
+      for(const [kind,node]of [['name',name],['status',status]]){node.style.setProperty('--'+kind+'-x','0px');node.style.setProperty('--'+kind+'-y','0px');node.style.visibility='';node.hidden=false;}
+      status.textContent=status.dataset.full;status.hidden=compact;
     }
-    for(const actor of visible){statusDot(actor);placeLabel(actor.querySelector('.hani-office-name'),'name')}
-    const priority=a=>a.dataset.speaking==='true'?3:a.dataset.called==='true'||a.dataset.activity==='meeting'?2:1;
-    for(const actor of visible.sort((a,b)=>priority(b)-priority(a))){
-      // Plain base work is dot-only; phones keep the reviewed names-only layout (219).
-      const status=actor.querySelector('.hani-office-status');status.hidden=compact||actor.dataset.plain==='true'&&actor.dataset.speaking!=='true'&&actor.dataset.called!=='true'&&actor.dataset.activity!=='meeting';status.style.visibility=status.hidden&&!compact?'hidden':'';
-      if(!status.hidden&&!placeLabel(status,'status'))status.style.visibility='hidden';
+    const groups=rows.map(({actor,name,status})=>({id:actor.dataset.person,compact,priority:HaniBuildingScene.labels.priority(actor.dataset),actor:actor.getBoundingClientRect(),sprite:actor.querySelector('.hani-office-sprite').getBoundingClientRect(),name:name.getBoundingClientRect(),status:status.getBoundingClientRect()}));
+    // Reserve the separate mascot owner's actual visible sprite boxes.
+    const obstacles=[];
+    for(const node of root.querySelectorAll('.hani-desk-mascots:not([hidden]) .hani-desk-mascot[data-ready="true"]')){const r=node.getBoundingClientRect();if(r.width&&r.height)obstacles.push(r)}
+    const placements=HaniBuildingScene.labels.place(floor,groups,obstacles);
+    for(const {actor}of rows)if(compact)actor.dataset.labelMode=placements.get(actor.dataset.person)?.dot?'dot':'pill';
+    for(let i=0;i<rows.length;i++)for(const kind of ['name','status']){
+      const node=rows[i][kind],base=compact&&placements.get(groups[i].id)?.dot?node.getBoundingClientRect():groups[i][kind],p=placements.get(groups[i].id)?.[kind];
+      node.officeLabelPlacement=p?{dx:p.left-base.left,dy:p.top-base.top}:null;node.style.visibility=p?'':'hidden';
+      if(p){node.style.setProperty('--'+kind+'-x',(p.left-base.left)+'px');node.style.setProperty('--'+kind+'-y',(p.top-base.top)+'px')}
     }
+    // Readiness is committed only after every label's offset and visibility.
+    map.dataset.labelsReady=map.dataset.floor;map.dataset.labelsAt=String(Date.now());
   }
   if(buildingChairmanSlot())people.push(['seongmin','회장님',null,0]);
-  // One persistent 1F guest slot; each visit only swaps its sprite and name.
-  if(HaniBuildingScene.scheduler)people.push(['visitor','방문객',null,0]);
+  // Two persistent 1F guest slots, never recreated during a visit.
+  if(HaniBuildingScene.scheduler)people.push(['visitor','방문객',null,0],['visitor-2','방문객',null,0]);
   function buildingChairmanSlot(){return HaniBuildingScene.scheduler?.slot('ceo-reserved')}
   for(const [key,name,group,row] of people){
     const actor=document.createElement("div");actor.className="hani-office-actor";actor.dataset.person=key;actor.dataset.name=name;actor.dataset.seat=(HaniBuildingScene.homeSeat(key)||buildingChairmanSlot()).id;actor.dataset.spot="seat";
     const sprite=document.createElement('div');sprite.className='hani-office-sprite';sprite.dataset.row=String(row);actor.officeLegacy={group,row};
     const status=document.createElement('span');status.className='hani-office-status';const tag=document.createElement('small');tag.className='hani-office-name';
-    const dot=document.createElement('span'),icon=document.createElement('span'),tagName=document.createElement('span');dot.className='hani-office-status-dot';dot.setAttribute('role','img');icon.className='hani-office-activity-icon';icon.setAttribute('aria-hidden','true');icon.hidden=true;tagName.textContent=name.split(' · ').at(-1);tag.append(dot,icon,tagName);actor.officeName=tagName;
+    const dot=document.createElement('span'),icon=document.createElement('span'),tagName=document.createElement('span'),compactLine=document.createElement('span');dot.className='hani-office-status-dot';dot.setAttribute('role','img');icon.className='hani-office-activity-icon';icon.setAttribute('aria-hidden','true');icon.hidden=true;compactLine.className='hani-office-compact-line';tagName.textContent=name.split(' · ').at(-1);tag.append(dot,icon,tagName,compactLine);actor.officeName=tagName;actor.officeCompact=compactLine;
     const prop=document.createElement('span');prop.className='hani-office-prop';prop.setAttribute('aria-hidden','true');actor.append(sprite,tag,status,prop);actor.setAttribute('role','button');actor.tabIndex=0;actor.dataset.avatar='pending';actorLayer.append(actor);actors.set(key,actor);
+    const rhythm=HaniBuildingScene.scheduler?.seed('idle-motion|'+key)||row;actor.style.setProperty('--idle-duration',(3.6+rhythm%29/10)+'s');actor.style.setProperty('--idle-delay',(-rhythm%67/10)+'s');
   }
   // One scene host; actors remain mounted and only their floor/position changes.
   const building=HaniBuildingScene,tabs=root.querySelector(".hani-building-tabs"),floorLabel=document.createElement("span"),overflowChip=document.createElement("span"),floorButtons=new Map(),backgroundCache=new Map();
@@ -1478,7 +1937,7 @@
   }
   function actionRunning(actor){return meeting||!!actor.officeTravel||actor.dataset.walking==='true'||!!actor.dataset.event||actor.dataset.action&&actor.dataset.action!=='base-work'}
   function bubbleText(actor){
-    if(bubbleSelection&&!actionRunning(actor)){const speaker=actors.get(bubbleSelection.speaker);return (speaker?.dataset.name||actor.dataset.name)+' · '+bubbleSelection.line}
+    if(bubbleSelection&&!actionRunning(actor)){const speaker=actors.get(bubbleSelection.speaker);return (speaker?.dataset.name||actor.dataset.name)+' · '+actor.querySelector('.hani-office-status').dataset.full+' · '+bubbleSelection.line}
     return actor.dataset.name+' · '+statusNames[actor.dataset.status]+' · '+actor.querySelector('.hani-office-status').dataset.full;
   }
   function fitBubble(){
@@ -1490,7 +1949,7 @@
     actorBubble.style.left=left+'px';actorBubble.style.top=top+'px';
   }
   function closeBubble(clearPending=true){bubbleSerial++;bubblePerson=null;bubbleSelection=null;if(clearPending)pendingTap=null;actorBubble.hidden=true;for(const actor of actors.values())actor.dataset.speaking='false';fitStatusLabels()}
-  function showBubble(actor,selection){bubblePerson=actor.dataset.person;bubbleSelection=selection;actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=bubblePerson==='visitor';for(const a of actors.values())a.dataset.speaking=String(a===actor);fitStatusLabels();fitBubble();const serial=++bubbleSerial;setTimeout(()=>{if(serial===bubbleSerial)closeBubble(false)},3000)}
+  function showBubble(actor,selection){bubblePerson=actor.dataset.person;bubbleSelection=selection;actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);fitStatusLabels();fitBubble();const serial=++bubbleSerial;setTimeout(()=>{if(serial===bubbleSerial)closeBubble(false)},3000)}
   function openBubble(actor){
     if(actor.hidden)return;
     pendingTap=null;const now=new Date(),selection=tapLines.tap(actor.dataset.person,now);
@@ -1558,7 +2017,7 @@
   for(const floor of building.floors){const list=document.createElement('p');list.textContent=[...(building.canon?.floors.find(f=>f.id===floor.id)?.rooms||[]).map(r=>r.label),...(building.art?.floors[floor.id].plates||[]).filter(p=>p.detail).map(p=>p.fullLabel)].join(' · ');rooms.append(list);roomLabels.set(floor.id,list)}
   function legacySprite(actor){
     const sprite=actor.querySelector('.hani-office-sprite'),{group,row}=actor.officeLegacy;
-    if(actor.dataset.person==='seongmin'||actor.dataset.person==='visitor'){sprite.className='hani-office-sprite';sprite.style.backgroundImage='';actor.dataset.avatar='pending';return}
+    if(actor.dataset.person==='seongmin'||actor.dataset.person.startsWith('visitor')){sprite.className='hani-office-sprite';sprite.style.backgroundImage='';actor.dataset.avatar='pending';return}
     if(group){sprite.className='hani-office-sprite hani-office-sheet-'+group;sprite.style.backgroundImage='';sprite.style.backgroundSize='600% 300%';sprite.style.backgroundPosition='0% '+['0%','50%','100%'][row];actor.dataset.avatar='chibi'}
     else{sprite.className='hani-office-sprite hani-office-avatar';sprite.style.backgroundImage='url("'+building.profile(actor.dataset.person)+'")';sprite.style.backgroundSize='cover';sprite.style.backgroundPosition='center';actor.dataset.avatar='badge'}
   }
@@ -1566,7 +2025,7 @@
     const target=seat.anchor||seat.id,old=actor.officeAnchor;
     if(actor.officeTravel&&actor.officeTravel.seat.id===seat.id)return;
     actor.officeTravel=null;actor.dataset.seat=seat.id;actor.dataset.zone=seat.zone;actor.dataset.spot=seat.zone==='desk'?'seat':seat.zone;
-    actor.dataset.home=[seat.x,seat.y].join(',');actor.style.zIndex='4';
+    actor.dataset.home=[seat.x,seat.y].join(',');
     const path=animate&&!reduced&&building.canon?building.route(old&&building.anchors.get(old)?.floor===activeFloor?old:'elevator_'+activeFloor,target):[];
     if(animate&&!reduced&&building.canon&&!path.length){actor.dataset.route='blocked';label(actor,'이동 경로를 확인할 수 없어 출발 위치에서 대기 중');return}
     actor.dataset.route='ready';
@@ -1618,13 +2077,15 @@
     if(!sameFloor)foregrounds.forEach(img=>{img.hidden=true});
     setBackground(floor);
     for(const entry of plannedRows)entry.row.hidden=entry.floor!==activeFloor;
-    for(const actor of actors.values()){actor.hidden=true;actor.officeRow.hidden=true;actor.dataset.called="false"}
+    // Hidden actors keep no stale dialogue partner from an earlier frame.
+    for(const actor of actors.values()){actor.hidden=true;actor.officeRow.hidden=true;actor.dataset.called="false";actor.dataset.partner=""}
     for(const p of entries){const actor=actors.get(p.id);if(!actor||!p.seat)continue;actor.hidden=false;actor.officeRow.hidden=false;actor.dataset.activity=p.activity;actor.dataset.plain=String(Boolean(p.plain&&!selected&&!meeting));
       if(p.visitor){actor.dataset.visitor='true';actor.dataset.name=p.name;actor.officeName.textContent=p.name;actor.officeRowName.textContent=p.name;if(actor.dataset.sprite!==p.sprite){actor.dataset.sprite=p.sprite;actor.dataset.avatar='pending'}}
       if(actor.dataset.avatar==='pending')legacySprite(actor);if(sceneVisible())loadSprite(actor,fitStatusLabels);
       if(building.scheduler&&!meeting){actor.officeTravel=null;actor.officeAnchor=p.seat.anchor;actor.dataset.seat=p.seat.id;actor.dataset.zone=p.seat.zone;actor.dataset.spot=p.seat.zone==='desk'?'seat':p.seat.zone;actor.dataset.home=[p.seat.x,p.seat.y].join(',');place(actor,p.position||[p.seat.x,p.seat.y]);pose(actor,reduced?(p.walking?'standing':p.pose):p.pose)}
       else seatActor(actor,p.seat,animate&&(sameFloor||meeting));
       actor.dataset.behavior=p.state||'AT_HOME';actor.dataset.place=p.placeId||'';actor.dataset.slot=p.targetAnchor||'';
+      actor.dataset.partner=p.deskPartner||'';actor.dataset.greeting=String(p.behaviorKind==='chairman-greeting'||p.id==='seongmin'&&entries.some(q=>q.behaviorKind==='chairman-greeting'));actor.dataset.facing=p.facing||'';
       actor.dataset.action=selected?'agent-case':p.actionId||'base-work';actor.dataset.event=p.eventId||'';actor.dataset.line=selected?'실제 안건 검토 중':p.line||'자료 확인 중';
       actor.dataset.emoji=selected||actor.dataset.action==='base-work'?'':p.emoji||'';actor.dataset.walking=String(Boolean(p.walking));
       actor.querySelector('.hani-office-prop').textContent=actor.dataset.emoji;
