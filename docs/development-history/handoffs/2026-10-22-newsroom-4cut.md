@@ -110,3 +110,11 @@ $env:HANI_GIT_PATH='C:/Users/홍성민/.cache/codex-runtimes/codex-primary-runti
 - 지정 12경로(테스트/helper11+이 인수인계)만 `git add -- ...` 시도했으나 worktree metadata `C:/Users/홍성민/Documents/HANI_OS_DEV/.git/worktrees/train231/index.lock` 생성 Permission denied. 이어 같은 경로로 `git commit --only -m "test: preserve approved newsroom additions in train 231" -- ...` 시도는 신규 helper가 stage에 등록되지 않아 pathspec 미등록 오류. **미커밋·미push**, HEAD `3c48f33a21fa3e3aa6d60305d2612b06d14d93e2` 유지. stage 비어 있음. 외부 Git metadata 권한을 우회하거나 타 worktree를 수정하지 않음.
 - 서윤: 허용된 Git 환경에서 위 12경로만 stage/commit. 기존 dirty artifact·untracked 원화 제외. 그 뒤 browser5종을 재실행하고 실제 결과로 열차 인수 여부 판단.
 - Notion은 읽기만 확인됐으며 이번 후속 계획/결과 쓰기는 자동 승인 검토의 approval policy never 거절로 미반영. 위 결과와 blocker를 현황판에 반영할 내용으로 보존.
+
+## 2026-10-31 제1호 발행 준비 · 서윤(Claude)
+
+- 대상 주: 2026-10-26~10-30 (10/19~23 초안은 지난 내용이라 폐기). publishDate 2026-11-01. 원화는 빈 말풍선 판을 재사용하고 대사·자막만 교체.
+- 사실 확인: 세린 연구원님 수집값을 기사·공식 일정과 재대조. Vertex 임시 URL은 앱에 넣지 않고 실제 기사 주소로 교체.
+- blocker 2 해결: catalog의 image는 경로가 아닌 id("001"), hani-newsroom-4cut.js가 assets/newsroom-4cut/<id>.webp로 조합. 경로를 JSON에 넣으면 closure가 JSON 기준으로 해석해 missing이 되어 이후 release가 막힘.
+- 배포 결과: 001.webp seed PR #355 → 런타임 release v2.9.238(PR #357, 2026-10-31 merge). issues.json과 renderer는 release에 포함했고, 운영 Pages에서 2.9.238 표시·최신 JS 로딩·카드 렌더링을 확인했다.
+- 2026-10-31 추가: 회장님 피드백(토론 장면만 반복)으로 원화를 v2로 다시 그림. 강풍 현장·시소·항구 전망대·라운지. 대사·숫자 동일. 원본 판과 좌표는 hani/newsroom-4cut-001 worktree의 assets/comic-trial, docs/drafts/comic-news4-v2-boxes.json (runtime 비포함).
