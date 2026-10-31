@@ -47,11 +47,14 @@ const connections=changes=>changes.map(({file,replacements})=>({
 // train tags before validating fixed release bytes against the prior chain.
 export const released233Connections=connections([...browserScroll.changes,...browserSticky.changes,...browserResidual.changes,...browserFollowup.corrections,...browserFollowup.changes,...['train233-integrations.json','office-redesign-233.json','milestones-v1.json','hero-crop-fix.json'].flatMap(name=>fixture(name).changes)].map(c=>({...c,replacements:c.replacements.map(r=>({before:projectVersion(r.before,'2.9.232','2.9.233'),after:projectVersion(r.after,'2.9.232','2.9.233')}))})));
 export const pendingApprovedConnections=connections(fixture('office-chairman-234.json').changes);
+// Authorized ui237 UI deltas reverse to the pinned 2.9.235 source, before legacy release proofs.
+const ui237ReadabilityConnections=connections(fixture('ui237-readability.json').changes);
 export function normalizeReviewedConnection(connection,source){
  for(const line of connection.lines)assert.equal(source.split(line).length-1,1,'one pending approved connection: '+line);
  return connection.strip(source);
 }
 export function normalizeReviewedCurrentSource(file,source){
+ for(const connection of ui237ReadabilityConnections)if(connection.file===file)source=normalizeReviewedConnection(connection,source);
  for(const connection of pendingApprovedConnections)if(connection.file===file)source=normalizeReviewedConnection(connection,source);
  return source;
 }

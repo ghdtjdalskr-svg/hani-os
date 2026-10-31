@@ -1979,7 +1979,7 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
   if(['home','intake','tasks'].includes(id)&&typeof renderHaniCareHome==='function')renderHaniCareHome();
   if(id==="aiBudget")window.HaniAiBudget?.render();
   if(typeof window!=='undefined')window.HANI_CONTEXT_REMOTE_V1?.update();
-  if(id==="investment")setTimeout(drawPortfolio,30);if(id==="newsroom")setTimeout(()=>investmentNewsMaybeRefresh(),40);if(id==="diet")setTimeout(drawBody,30);if(id==="ledger")setTimeout(drawLedgerTrend,30);if(id==="calendar")renderCalendar();if(id==="tasks")setTimeout(()=>googleCalendarRefreshStatus({silent:true}),0);if(id==="intake")setTimeout(()=>intakeRenderPreview(),0);if(id==="agentReview")setTimeout(()=>agentReviewInit(),0);if(id==="monthlyReport")setTimeout(()=>renderMonthlyReport(),0);if(id==="policy")setTimeout(()=>agentPolicyInit(),0);if(id==="deployment")setTimeout(()=>deployCenterRender(),0);
+  if(id==="exercise")drawExercise();if(id==="investment")setTimeout(drawPortfolio,30);if(id==="newsroom")setTimeout(()=>investmentNewsMaybeRefresh(),40);if(id==="diet")setTimeout(drawBody,30);if(id==="ledger")setTimeout(drawLedgerTrend,30);if(id==="calendar")renderCalendar();if(id==="tasks")setTimeout(()=>googleCalendarRefreshStatus({silent:true}),0);if(id==="intake")setTimeout(()=>intakeRenderPreview(),0);if(id==="agentReview")setTimeout(()=>agentReviewInit(),0);if(id==="monthlyReport")setTimeout(()=>renderMonthlyReport(),0);if(id==="policy")setTimeout(()=>agentPolicyInit(),0);if(id==="deployment")setTimeout(()=>deployCenterRender(),0);
   // v2.9.2: mobile browsers can throttle background polling. Re-check Cloud when opening data-heavy views.
   if(["home","investment","asset"].includes(id)&&cloudUser&&!cloudRecoveryMode){
     setTimeout(()=>cloudSyncCycle("view-"+id),120);
@@ -3504,7 +3504,7 @@ $("editInvestGoal").onclick=()=>{$("goalInput").value=state.goals.investment;ope
 
 function canvasSetup(canvas){const r=canvas.getBoundingClientRect(),d=window.devicePixelRatio||1;canvas.width=Math.max(1,r.width*d);canvas.height=Math.max(1,r.height*d);const ctx=canvas.getContext("2d");ctx.setTransform(d,0,0,d,0,0);return{ctx,w:r.width,h:r.height}}
 function drawLines(canvas,labels,series,message,{targets=[]}={}){
-  if(!canvas||canvas.offsetParent===null)return;const {ctx,w,h}=canvasSetup(canvas),css=getComputedStyle(document.documentElement),line=css.getPropertyValue("--line"),muted=css.getPropertyValue("--muted"),text=css.getPropertyValue("--text");ctx.clearRect(0,0,w,h);if(!labels.length||!series.length){ctx.fillStyle=muted;ctx.textAlign="center";ctx.font="13px sans-serif";ctx.fillText(message,w/2,h/2);return}
+  if(!canvas||canvas.offsetParent===null)return;const {ctx,w,h}=canvasSetup(canvas),css=getComputedStyle(canvas),line=css.getPropertyValue("--line"),muted=css.getPropertyValue("--muted"),text=css.getPropertyValue("--text");ctx.clearRect(0,0,w,h);if(!labels.length||!series.length){ctx.fillStyle=muted;ctx.textAlign="center";ctx.font="13px sans-serif";ctx.fillText(message,w/2,h/2);return}
   const colors=["#7569e8","#4285f4","#2faa77","#ef9d3c","#58bce8","#8b63dc","#dc6279"];const values=[...series.flatMap(s=>s.data.filter(Number.isFinite)),...targets.map(t=>t.value)].filter(Number.isFinite);if(!values.length){ctx.fillStyle=muted;ctx.textAlign="center";ctx.font="13px sans-serif";ctx.fillText(message,w/2,h/2);return}let min=Math.min(...values),max=Math.max(...values);if(min===max){min-=1;max+=1}const pad=(max-min)*.12;min-=pad;max+=pad;const P={l:58,r:18,t:30,b:38};const X=i=>P.l+(labels.length===1?(w-P.l-P.r)/2:i*(w-P.l-P.r)/(labels.length-1));const Y=v=>P.t+(max-v)*(h-P.t-P.b)/(max-min);
   ctx.font="11px sans-serif";ctx.strokeStyle=line;ctx.fillStyle=muted;ctx.textAlign="right";for(let i=0;i<5;i++){const y=P.t+i*(h-P.t-P.b)/4;ctx.beginPath();ctx.moveTo(P.l,y);ctx.lineTo(w-P.r,y);ctx.stroke();const val=max-i*(max-min)/4;const span=max-min,axisLabel=Math.abs(val)>=1000000?(val/1000000).toFixed(1)+"M":span<1?val.toFixed(2):span<10?val.toFixed(1):Math.round(val).toLocaleString();ctx.fillText(axisLabel,P.l-7,y+4)}
   targets.forEach((t,j)=>{ctx.save();ctx.strokeStyle=t.color||colors[(series.length+j)%colors.length];ctx.setLineDash([6,5]);ctx.beginPath();ctx.moveTo(P.l,Y(t.value));ctx.lineTo(w-P.r,Y(t.value));ctx.stroke();ctx.fillStyle=ctx.strokeStyle;ctx.textAlign="left";ctx.fillText(t.name,P.l+5,Y(t.value)-5);ctx.restore()});
@@ -3923,7 +3923,7 @@ function renderExercise(){
 }
 function drawExercise(){
   const rows=exercisePeriodRows(state.exercise||[]);
-  drawLines($("exerciseChart"),rows.map(r=>r.date),[{name:"걸음 수",color:"#2faa77",data:rows.map(r=>n(r.steps))}],"선택한 기간에 운동 기록이 있으면 걸음 수 추이가 표시됩니다.");
+  drawLines($("exerciseChart"),rows.map(r=>r.date),[{name:"걸음 수",color:"#2faa77",data:rows.map(r=>n(r.steps))}],"선택한 기간에 걸음 수 기록이 없습니다.");
 }
 const exerciseChanged=new Set();
 function loadExerciseDate(){
