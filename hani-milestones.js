@@ -342,7 +342,7 @@
       '<button type="button" class="btn ms-back" data-ms-back>← 마일스톤 목록</button>';
   }
   function homeCardMarkup(m) {
-    return '<div class="ms-home-copy"><p class="ms-eyebrow">LIFE MILESTONE</p><time datetime="' + esc(m.date) + '">' + esc(dateLabel(m.date)) + '</time><h3>' + esc(m.title) + '</h3>' +
+    return '<div class="ms-card ms-home-face ms-grade-' + gradeKey(m).toLowerCase() + '" aria-hidden="true">' + face(m) + '</div><div class="ms-home-copy"><p class="ms-eyebrow">LIFE MILESTONE</p><time datetime="' + esc(m.date) + '">' + esc(dateLabel(m.date)) + '</time><h3>' + esc(m.title) + '</h3>' +
       '<ul class="ms-home-metrics">' + featured(m, 3).map(x => '<li>' + esc(compactMetric(x)) + '</li>').join('') + '</ul>' +
       '<blockquote class="ms-quote">“' + esc(m.summary) + '”</blockquote></div><button type="button" class="btn" data-ms-home-open>전체 마일스톤 보기 →</button>';
   }
@@ -564,6 +564,7 @@
     if (!card) return;
     const m = homePick(items().filter(x => !isPending(x)));
     card.hidden = !m;
+    card.style.setProperty('--ms-sheet-url', 'url("' + ART.sheet + '")');
     if (m) { card.innerHTML = homeCardMarkup(m); card.dataset.importance = m.importance; }
   }
   // Called from renderHome (every renderAll, including a Cloud pull) to keep projections current.
@@ -582,7 +583,7 @@
     const host = root();
     homeCard();
     document.addEventListener('click', event => {
-      if (event.target.closest('[data-ms-home-open]') && typeof showView === 'function') { ui.detail = null; ui.editing = null; showView(VIEW); }
+      if (event.target.closest('[data-ms-home-open],.ms-home-face') && typeof showView === 'function') { ui.detail = null; ui.editing = null; showView(VIEW); }
     });
     if (!host || host.dataset.msMounted) return;
     host.dataset.msMounted = 'true';

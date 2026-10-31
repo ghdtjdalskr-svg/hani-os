@@ -1859,29 +1859,42 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 #milestones .ms-year { display:flex; gap:12px; align-items:center; margin:6px 0 0; padding:0; font-style:italic; }
 #milestones .ms-year::after { content:''; flex:1; height:1px; background:var(--ms-rule); }
 #milestones .ms-year::before,#milestones .ms-item::before { display:none; }
-#milestones .ms-card { --m2:#b58a3a; --deep:#7a5518; --pl:255,249,236; --glow:246,205,120; position:relative; display:block; width:100%; aspect-ratio:512/734; padding:0; border:0; border-radius:18px; overflow:hidden; background:linear-gradient(145deg,#faf1d4,#e0c17b 55%,#f7e6b9); box-shadow:0 10px 24px #28190a29,0 0 0 3px #fff,0 0 0 4.5px var(--m2); transition:transform 180ms ease,box-shadow 180ms ease; text-align:center; }
-#milestones button.ms-card { cursor:pointer; font:inherit; }
-#milestones .ms-card.ms-grade-epic { --m2:#7a5fc0; --deep:#4a3388; --pl:247,243,255; --glow:180,150,255; background:linear-gradient(145deg,#f3edff,#b6a0e2,#e3d7ff); }
-#milestones .ms-card.ms-grade-rare { --m2:#4c7fb3; --deep:#244e7c; --pl:241,247,255; --glow:130,190,255; background:linear-gradient(145deg,#edf7ff,#95bce0,#d9ecff); }
-#milestones .ms-card.ms-grade-record { --m2:#9c9186; --deep:#52473d; --pl:250,247,241; --glow:200,190,175; background:linear-gradient(145deg,#faf7f1,#cec1b0,#f1ebe4); }
-#milestones .ms-card::before { content:''; position:absolute; inset:7px; border-radius:13px; border:1px solid #ffffffbf; box-shadow:inset 0 0 0 1px rgba(var(--glow),.35); z-index:2; pointer-events:none; }
-#milestones .ms-card::after { display:none; }
-#milestones .ms-art { position:absolute; inset:0; background-image:var(--ms-sheet-url); background-size:400% 300%; background-repeat:no-repeat; }
-#milestones .ms-sheen { position:absolute; inset:0; background:linear-gradient(115deg,transparent 35%,#ffffff59 47%,transparent 58%); transform:translateX(-110%); transition:transform 180ms ease; pointer-events:none; }
-#milestones .ms-card-top { position:absolute; top:14px; left:8px; right:8px; display:flex; flex-direction:column; align-items:center; gap:4px; }
-#milestones .ms-stars { font-size:15px; letter-spacing:2px; line-height:1.4; color:#ffdc77; background:#3a2a0ee6; border-radius:99px; padding:1px 7px; }
-#milestones .ms-rank-chip { color:#fff; background:#332840e8; backdrop-filter:blur(4px); border:1px solid #ffffffcc; border-radius:99px; font:700 9px var(--ms-serif); letter-spacing:3px; padding:4px 10px; }
-#milestones .ms-new { position:absolute; top:13px; right:13px; font:800 9px/1.5 sans-serif; color:#fff; background:#a42250; border:1.5px solid #fff; border-radius:99px; padding:2px 6px; box-shadow:0 2px 6px #a4225055; }
-#milestones .ms-plate { position:absolute; left:16px; right:16px; bottom:16px; z-index:3; padding:12px 12px 10px; border-radius:12px; background:linear-gradient(180deg,rgba(var(--pl),.94),rgba(var(--pl),.98)); backdrop-filter:blur(10px) saturate(1.1); border:1px solid #fffffff2; box-shadow:0 8px 22px #1e140a29,inset 0 1px 0 #fff; }
-#milestones .ms-plate::before,#milestones .ms-plate::after { content:''; position:absolute; left:10px; right:10px; height:1px; background:linear-gradient(90deg,transparent,var(--m2),transparent); opacity:.55; }
-#milestones .ms-plate::before { top:5px; } #milestones .ms-plate::after { bottom:5px; }
-#milestones .ms-plate small { display:block; font:700 10px/1.5 sans-serif; letter-spacing:1px; color:var(--deep); margin:2px 0 4px; }
-#milestones .ms-card-title { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; overflow:hidden; font:600 16.5px/1.28 var(--ms-serif); color:var(--deep); letter-spacing:-.2px; overflow-wrap:anywhere; }
-#milestones .ms-orn { display:flex; align-items:center; justify-content:center; gap:6px; margin:6px 0 4px; color:var(--m2); }
-#milestones .ms-orn::before,#milestones .ms-orn::after { content:''; width:22px; height:1px; background:currentColor; opacity:.6; }
-#milestones .ms-orn i { width:5px; height:5px; transform:rotate(45deg); background:currentColor; }
-#milestones .ms-card time { font:italic 11px/1.5 var(--ms-serif); color:#62574e; letter-spacing:.5px; }
-#milestones button.ms-card:focus-visible { outline:3px solid var(--ms-ink); outline-offset:7px; }
+:is(#milestones,.ms-home-card) .ms-card { --m2:#b58a3a; --deep:#7a5518; --pl:255,249,236; --glow:246,205,120; position:relative; display:block; width:100%; aspect-ratio:512/734; padding:0; border:0; border-radius:18px; overflow:hidden; background:linear-gradient(145deg,#faf1d4,#e0c17b 55%,#f7e6b9); box-shadow:0 10px 24px #28190a29,0 0 0 3px #fff,0 0 0 4.5px var(--m2); transition:transform 180ms ease,box-shadow 180ms ease; text-align:center; }
+:is(#milestones,.ms-home-card) button.ms-card { cursor:pointer; font:inherit; }
+:is(#milestones,.ms-home-card) .ms-card.ms-grade-epic { --m2:#7a5fc0; --deep:#4a3388; --pl:247,243,255; --glow:180,150,255; background:linear-gradient(145deg,#f3edff,#b6a0e2,#e3d7ff); }
+:is(#milestones,.ms-home-card) .ms-card.ms-grade-rare { --m2:#4c7fb3; --deep:#244e7c; --pl:241,247,255; --glow:130,190,255; background:linear-gradient(145deg,#edf7ff,#95bce0,#d9ecff); }
+:is(#milestones,.ms-home-card) .ms-card.ms-grade-record { --m2:#9c9186; --deep:#52473d; --pl:250,247,241; --glow:200,190,175; background:linear-gradient(145deg,#faf7f1,#cec1b0,#f1ebe4); }
+:is(#milestones,.ms-home-card) .ms-card::before { content:''; position:absolute; inset:7px; border-radius:13px; border:1px solid #ffffffbf; box-shadow:inset 0 0 0 1px rgba(var(--glow),.35); z-index:2; pointer-events:none; }
+:is(#milestones,.ms-home-card) .ms-card::after { display:none; }
+:is(#milestones,.ms-home-card) .ms-art { position:absolute; inset:0; background-image:var(--ms-sheet-url); background-size:400% 300%; background-repeat:no-repeat; }
+:is(#milestones,.ms-home-card) .ms-sheen { position:absolute; inset:0; background:linear-gradient(115deg,transparent 35%,#ffffff59 47%,transparent 58%); transform:translateX(-110%); transition:transform 180ms ease; pointer-events:none; }
+:is(#milestones,.ms-home-card) .ms-card-top { position:absolute; top:14px; left:8px; right:8px; display:flex; flex-direction:column; align-items:center; gap:4px; }
+:is(#milestones,.ms-home-card) .ms-stars { font-size:15px; letter-spacing:2px; line-height:1.4; color:#ffdc77; background:#3a2a0ee6; border-radius:99px; padding:1px 7px; }
+:is(#milestones,.ms-home-card) .ms-rank-chip { color:#fff; background:#332840e8; backdrop-filter:blur(4px); border:1px solid #ffffffcc; border-radius:99px; font:700 9px var(--ms-serif); letter-spacing:3px; padding:4px 10px; }
+:is(#milestones,.ms-home-card) .ms-new { position:absolute; top:13px; right:13px; font:800 9px/1.5 sans-serif; color:#fff; background:#a42250; border:1.5px solid #fff; border-radius:99px; padding:2px 6px; box-shadow:0 2px 6px #a4225055; }
+:is(#milestones,.ms-home-card) .ms-plate { position:absolute; left:16px; right:16px; bottom:16px; z-index:3; padding:12px 12px 10px; border-radius:12px; background:linear-gradient(180deg,rgba(var(--pl),.94),rgba(var(--pl),.98)); backdrop-filter:blur(10px) saturate(1.1); border:1px solid #fffffff2; box-shadow:0 8px 22px #1e140a29,inset 0 1px 0 #fff; }
+:is(#milestones,.ms-home-card) .ms-plate::before,:is(#milestones,.ms-home-card) .ms-plate::after { content:''; position:absolute; left:10px; right:10px; height:1px; background:linear-gradient(90deg,transparent,var(--m2),transparent); opacity:.55; }
+:is(#milestones,.ms-home-card) .ms-plate::before { top:5px; } :is(#milestones,.ms-home-card) .ms-plate::after { bottom:5px; }
+:is(#milestones,.ms-home-card) .ms-plate small { display:block; font:700 10px/1.5 sans-serif; letter-spacing:1px; color:var(--deep); margin:2px 0 4px; }
+:is(#milestones,.ms-home-card) .ms-card-title { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; overflow:hidden; font:600 16.5px/1.28 var(--ms-serif); color:var(--deep); letter-spacing:-.2px; overflow-wrap:anywhere; }
+:is(#milestones,.ms-home-card) .ms-orn { display:flex; align-items:center; justify-content:center; gap:6px; margin:6px 0 4px; color:var(--m2); }
+:is(#milestones,.ms-home-card) .ms-orn::before,:is(#milestones,.ms-home-card) .ms-orn::after { content:''; width:22px; height:1px; background:currentColor; opacity:.6; }
+:is(#milestones,.ms-home-card) .ms-orn i { width:5px; height:5px; transform:rotate(45deg); background:currentColor; }
+:is(#milestones,.ms-home-card) .ms-card time { font:italic 11px/1.5 var(--ms-serif); color:#62574e; letter-spacing:.5px; }
+:is(#milestones,.ms-home-card) button.ms-card:focus-visible { outline:3px solid var(--ms-ink); outline-offset:7px; }
+.ms-home-card { --ms-serif:Georgia,'Noto Serif KR',Batang,serif; align-items:center; }
+.ms-home-card h3,.ms-home-card .ms-home-copy time,.ms-home-card .ms-quote { font-family:inherit; }
+:is(#milestones,.ms-home-card) .ms-home-face { flex:0 0 156px; width:156px; margin:4px; cursor:pointer; box-shadow:0 6px 14px #28190a29,0 0 0 2px #fff,0 0 0 3px var(--m2); }
+:is(#milestones,.ms-home-card) .ms-home-face .ms-card-top { top:11px; }
+:is(#milestones,.ms-home-card) .ms-home-face .ms-stars { font-size:11px; letter-spacing:1px; }
+:is(#milestones,.ms-home-card) .ms-home-face .ms-rank-chip { font-size:8px; letter-spacing:2px; padding:3px 8px; }
+:is(#milestones,.ms-home-card) .ms-home-face .ms-new { top:9px; right:8px; font-size:8px; }
+:is(#milestones,.ms-home-card) .ms-home-face .ms-plate { left:10px; right:10px; bottom:10px; padding:9px 7px 7px; }
+:is(#milestones,.ms-home-card) .ms-home-face .ms-plate small { font-size:9px; margin:1px 0 2px; }
+:is(#milestones,.ms-home-card) .ms-home-face .ms-card-title { font-size:12.5px; -webkit-line-clamp:2; }
+:is(#milestones,.ms-home-card) .ms-home-face .ms-orn { margin:3px 0 2px; }
+:is(#milestones,.ms-home-card) .ms-home-face time { font-size:10px; }
+@media (max-width:640px) { :is(#milestones,.ms-home-card) .ms-home-face { margin:4px auto; } }
 #milestones dialog.ms-detail { width:min(1040px,calc(100vw - 32px)); max-width:none; max-height:calc(100dvh - 32px); margin:auto; padding:0; border:1px solid #ece2d2; border-radius:22px; background:#fffdf8; color:#2b2630; box-shadow:0 24px 60px #28190a29; overflow:auto; --ms-ink:#2b2630; --ms-note:#625968; --ms-rule:#e5dac8; --ms-accent:#775b29; --panel:#fffdf8; --ms-grade-ink:#775b29; }
 #milestones dialog.ms-detail[open] { animation:ms-unfold 220ms ease-out; }
 #milestones dialog.ms-detail::backdrop { background:#17121e99; }
@@ -1916,9 +1929,9 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
  #milestones .ms-sheet-art { padding:20px 20px 0; background:none; }
  #milestones .ms-sheet-art .ms-card { max-width:220px; margin:0 auto; }
  #milestones .ms-sheet-body { padding:22px 18px; }
- #milestones .ms-plate { left:10px; right:10px; bottom:10px; padding:10px 7px 8px; }
- #milestones .ms-card-title { font-size:13px; -webkit-line-clamp:2; }
- #milestones .ms-new { top:9px; right:8px; font-size:8px; }
+ :is(#milestones,.ms-home-card) .ms-plate { left:10px; right:10px; bottom:10px; padding:10px 7px 8px; }
+ :is(#milestones,.ms-home-card) .ms-card-title { font-size:13px; -webkit-line-clamp:2; }
+ :is(#milestones,.ms-home-card) .ms-new { top:9px; right:8px; font-size:8px; }
  #milestones .ms-card-top { top:36px; }
 }
 @media(prefers-reduced-motion:reduce) {
