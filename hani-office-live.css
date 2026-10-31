@@ -64,6 +64,7 @@
  .hani-office-actor[data-avatar="v2"] .hani-office-name{font-size:10px}
  .hani-office-status-dot{display:inline-block;flex:none;width:5px;height:5px;border-radius:50%;background:#16803c}
  .hani-office-compact-line{display:inline}
+ .hani-office-actor[data-label-mode="name"] .hani-office-compact-line{display:none}
  .hani-office-actor[data-label-mode="dot"] .hani-office-name{width:5px;height:5px;padding:0;background:transparent;gap:0}
  .hani-office-actor[data-label-mode="dot"] .hani-office-name>span:not(.hani-office-status-dot){display:none}
  .hani-office-actor[data-status="rest"] .hani-office-status-dot{background:#a86408}
