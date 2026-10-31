@@ -1711,6 +1711,7 @@
     const sprites=groups.map(g=>{const r=g.sprite?.width?g.sprite:g.actor,pad=Math.max(g.compact?1:2,r.height*.02);return {left:r.left-pad,right:r.right+pad,top:r.top-pad,bottom:r.bottom+pad}});
     // Floating-point edge arithmetic must not reject an exactly 2px gap.
     const overlaps=(a,b)=>a.left<b.right+gap-1e-7&&a.right+gap>b.left+1e-7&&a.top<b.bottom+gap-1e-7&&a.bottom+gap>b.top+1e-7;
+    const boxGap=(a,b)=>Math.hypot(Math.max(a.left-b.right,b.left-a.right,0),Math.max(a.top-b.bottom,b.top-a.bottom,0));
     let best=null,bestScore=null;
     const fixed=[...obstacles,...sprites],pools=new Map(ordered.map(g=>[g.id,new Map()]));
     const phone=groups.some(g=>g.compact),value=s=>phone?[s[0],s[0]+s[1]+s[2],s[1],s[3]]:s;
@@ -1726,15 +1727,23 @@
       const joinGap=floor.width<=600?0:gap;
       for(const inline of (g.compact?[false]:[false,true])){
       const width=g.compact?g.name.width:inline?g.name.width+joinGap+g.status.width:Math.max(g.name.width,g.status.width),height=g.compact?g.name.height:inline?Math.max(g.name.height,g.status.height):g.name.height+joinGap+g.status.height;
-      // Phone pills hug the head (20px) so they never read as a neighbour's label
-      // across a desk row; dialogue may use 28px, everyone else falls back to a dot.
+      // Keep the head radius except where the floor top leaves no pill lane.
+      // Only there may a pill hug the side/bottom of its uniquely nearest sprite.
       const head=g.sprite?.width?g.sprite:g.actor,headX=(head.left+head.right)/2,reach=g.priority===3?27.5:19.5,step=Math.ceil(reach);
+      const topBlocked=g.compact&&head.top-floor.top<height+Math.max(1,head.height*.02)+2*gap;
       const left=Math.max(floor.left+gap,Math.min(g.actor.left+g.actor.width/2-width/2,floor.right-gap-width));
       const top=g.actor.top-gap-height,candidates=[];
       const reachX=Math.max(g.actor.width*1.5,floor.width<=600?96:100),reachY=Math.max(g.actor.height*2,64);
       const add=(x,y)=>{x=Math.max(floor.left+gap,Math.min(x,floor.right-gap-width));y=Math.max(floor.top+gap,Math.min(y,floor.bottom-gap-height));
-        if(g.compact&&Math.hypot(x+width/2-headX,y+height/2-head.top)>reach+1e-7)return;
-        if(Math.abs(x+width/2-(g.actor.left+g.actor.width/2))>reachX||y+height<g.actor.top-reachY||y>g.actor.bottom+reachY)return;
+        let edgeNear=false;
+        if(g.compact&&Math.hypot(x+width/2-headX,y+height/2-head.top)>reach+1e-7){
+          if(!topBlocked)return;
+          const b={left:x,right:x+width,top:y,bottom:y+height},own=boxGap(b,head);
+          const beside=(b.right<=head.left||b.left>=head.right)&&b.top<head.bottom&&b.bottom>head.top,below=b.top>=head.bottom&&b.left<head.right&&b.right>head.left;
+          if(!(beside||below)||own>19.5+1e-7||groups.some(q=>q!==g&&boxGap(b,q.sprite?.width?q.sprite:q.actor)<=own+1e-7))return;
+          edgeNear=true;
+        }
+        if(!edgeNear&&(Math.abs(x+width/2-(g.actor.left+g.actor.width/2))>reachX||y+height<g.actor.top-reachY||y>g.actor.bottom+reachY))return;
         const below=Math.max(0,y+height-g.actor.top);candidates.push({left:x,right:x+width,top:y,bottom:y+height,width,height,inline,cost:(x-left)**2+(y-top)**2+below*below*2+(inline?400:0)})};
       // Above/below and either side keep each person's two labels together.
       add(left,top);add(left,g.actor.bottom+gap);
