@@ -11,6 +11,50 @@
   const floors = new Map();
   let catalog = null;
   let mounted = false;
+  let motionFloor = '', beat = null;
+  const ownerStates = new Map();
+
+  // Called only by the office's existing clock. No independent timer, input
+  // handler, renderer, or saved decoration state.
+  map.officeMascotMotion = ({ now, reduced, visible, actors }) => {
+    const motion = window.HaniBuildingScene?.motion;
+    if (!motion || !mounted) return;
+    const floor = floors.get(map.dataset.floor);
+    const changedFloor = motionFloor !== map.dataset.floor;
+    if (!visible || reduced || changedFloor) {
+      for (const { figures } of floors.values()) for (const figure of figures) {
+        figure.reaction?.reset();
+        delete figure.image.dataset.motion;
+      }
+      ownerStates.clear();beat = Math.floor(now / 18000);motionFloor = map.dataset.floor;
+      if (!visible || reduced) return;
+    }
+    if (!floor || floor.layer.hidden) return;
+    let busy = false;
+    for (const figure of floor.figures) {
+      const effect = figure.reaction?.tick(now);
+      if (effect) { figure.image.dataset.motion = effect.kind;busy = true; }
+      else delete figure.image.dataset.motion;
+    }
+    const currentBeat = Math.floor(now / 18000), due = beat !== null && currentBeat !== beat;
+    beat = currentBeat;
+    let chosen = null;
+    const ready = floor.figures.filter(f => f.image.dataset.ready === 'true');
+    for (const figure of ready) {
+      const id = figure.image.dataset.person, actor = actors.get(id);
+      const atHome = actor && !actor.hidden && actor.dataset.behavior === 'AT_HOME' &&
+        actor.dataset.walking !== 'true' && !actor.officeTravel && actor.officeAnchor === figure.image.dataset.anchor;
+      // No arrival reaction on mount, floor switch, or after a hidden interval.
+      if (!busy && !chosen && atHome && ownerStates.get(id) === false) chosen = figure;
+      ownerStates.set(id, Boolean(atHome));
+    }
+    if (!busy && !chosen && due && ready.length) chosen = ready[currentBeat % ready.length];
+    if (chosen) {
+      chosen.reaction ||= motion.createReactions();
+      chosen.reaction.request(due && currentBeat % 2 ? 'wiggle' : 'hop', now);
+      chosen.image.dataset.motion = chosen.reaction.tick(now).kind;
+    }
+  };
 
   function loadFigure(image, file) {
     if (image.hasAttribute('src')) return;
@@ -63,7 +107,7 @@
       }
       mounted = true;
     }
-    const visible = !document.hidden && !office.hidden && (!view || view.classList.contains('active')) &&
+    const visible = office.dataset.paused !== 'true' && !document.hidden && !office.hidden && (!view || view.classList.contains('active')) &&
       map.clientWidth > 0 && getComputedStyle(office).display !== 'none' && map.dataset.art === 'floor';
     for (const [id, { layer, figures }] of floors) {
       const hidden = !visible || id !== map.dataset.floor;
@@ -76,7 +120,7 @@
   // add another tab/click handler. Slots survive floor switches and scene ticks.
   const observer = new MutationObserver(update);
   observer.observe(map, { attributes: true, attributeFilter: ['data-floor', 'data-art', 'data-state', 'hidden', 'class', 'style'] });
-  observer.observe(office, { attributes: true, attributeFilter: ['hidden', 'class', 'style'] });
+  observer.observe(office, { attributes: true, attributeFilter: ['hidden', 'class', 'style', 'data-paused'] });
   if (view) observer.observe(view, { attributes: true, attributeFilter: ['hidden', 'class', 'style'] });
   document.addEventListener('visibilitychange', update);
   new ResizeObserver(update).observe(map);
