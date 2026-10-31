@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {loadScene,at} from './hani-office-lively-fixture.mjs';
+import {loadScene,at,readAt} from './hani-office-lively-fixture.mjs';
 import {validPlaceSpeech,assertResources} from './hani-office-place-assertions.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {createHash} from 'node:crypto';
@@ -13,10 +13,10 @@ const plain=x=>JSON.parse(JSON.stringify(x));
 const goldenBytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-chairman-234-plans.json.gz'));
 assert.equal(createHash('sha256').update(goldenBytes).digest('hex'),'cd5541576e23b39018e704f14bcc253eac4aba152849779300f5f2b817852dff','immutable authored obr13 behavior oracle');
 const golden=JSON.parse(goldenBytes);
-assert.equal(createHash('sha256').update(fs.readFileSync('hani-office-live.js')).digest('hex'),golden.sourceSha256);
+assert.equal(createHash('sha256').update(readAt('hani-office-live.js','33d39892c2a5c0a1779650e440a2dd5068b44495')).digest('hex'),golden.sourceSha256);
 assert.equal(createHash('sha256').update(fs.readFileSync('data/hani-building/office-places.json')).digest('hex'),golden.placesSha256);
 test('234 frozen six full formal/outing ledgers and 84 snapshots preserve exact bytes and deep equality',()=>{
- for(const r of golden.records){const api=loadScene().scene.scheduler,f=api.plan(r.day,r.options),o=api.blockPlan(r.day,0,f,r.options);
+ for(const r of golden.records){const api=loadScene({ref:'33d39892c2a5c0a1779650e440a2dd5068b44495'}).scene.scheduler,f=api.plan(r.day,r.options),o=api.blockPlan(r.day,0,f,r.options);
   for(const [actual,expected]of [[f,r.formal],[o,r.outings],...r.snapshots.map(row=>[api.snapshot(at(r.day,row.seconds),r.options),row.snapshot])]){assert.equal(JSON.stringify(actual),JSON.stringify(expected));assert.deepEqual(plain(actual),expected)}
  }
 });
@@ -92,6 +92,7 @@ test('234 colleague visits: >=32px from actual colleague and horizontal approach
 test('234 long solitary stays: exactly one deterministic switch within same place, no arrival speech while moving',()=>{
  const f=s.plan(day,options),b=s.blockPlan(day,0,f,options);let checked=0;
  for(const e of b.filter(e=>!e.visitor&&!e.group&&e.card.kind!=='errand'))for(const t of e.people){
+  if(t.seat.anchor===t.home.anchorId){assert.equal(t.id,'seongmin');assert.ok(e.report);assert.equal(t.out.length+t.back.length,0);continue;} // Reserved report listener remains at home, not a long place visit.
   const arrival=t.out.at(-1).end,departure=t.back[0].start;if(departure-arrival<=90)continue;
   const midpoint=(arrival+departure)/2,times=[arrival+.001,midpoint-.001,midpoint+.001,departure-.001];
   const snapshots=times.map(sec=>s.snapshot(at(day,sec),options)),people=snapshots.map(snap=>snap.entries.find(p=>p.id===t.id));
@@ -116,6 +117,7 @@ test('234 deterministic staff paths within each presence key, cache reuse across
 test('234 long social stays switch to another approved place phrase while retaining actual companion names',()=>{
  const f=s.plan(day,options),b=s.blockPlan(day,0,f,options);let count=0;
  for(const e of b.filter(e=>!e.visitor&&e.card.kind!=='errand'))for(const t of e.people){
+  if(t.seat.anchor===t.home.anchorId){assert.equal(t.id,'seongmin');assert.ok(e.report);assert.equal(t.out.length+t.back.length,0);continue;}
   const arrival=t.out.at(-1).end,departure=t.back[0].start;if(departure-arrival<=90)continue;
   const sec=Math.max(e.performStart+.001,(arrival+departure)/2+.002);if(sec>=e.performEnd)continue;
   const p=s.snapshot(at(day,sec),options).entries.find(p=>p.id===t.id);

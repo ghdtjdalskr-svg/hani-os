@@ -46,7 +46,7 @@ const connections=changes=>changes.map(({file,replacements})=>({
 // 233 is shipped: retain every historical scoped proof, projecting only its
 // train tags before validating fixed release bytes against the prior chain.
 export const released233Connections=connections([...browserScroll.changes,...browserSticky.changes,...browserResidual.changes,...browserFollowup.corrections,...browserFollowup.changes,...['train233-integrations.json','office-redesign-233.json','milestones-v1.json','hero-crop-fix.json'].flatMap(name=>fixture(name).changes)].map(c=>({...c,replacements:c.replacements.map(r=>({before:projectVersion(r.before,'2.9.232','2.9.233'),after:projectVersion(r.after,'2.9.232','2.9.233')}))})));
-export const pendingApprovedConnections=connections(fixture('office-chairman-234.json').changes);
+export const pendingApprovedConnections=connections([...fixture('office-lively-labels-235.json').changes,...fixture('office-chairman-234.json').changes]);
 export function normalizeReviewedConnection(connection,source){
  for(const line of connection.lines)assert.equal(source.split(line).length-1,1,'one pending approved connection: '+line);
  return connection.strip(source);

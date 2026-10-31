@@ -69,16 +69,18 @@ test('obr8: 9.41px approach is refused, absent/summoned target excluded, cancell
  const snap=plain(s.snapshot(time));s.snapshot(at(days[2],50000));assert.deepEqual(plain(s.snapshot(time)),snap);
  assert.ok(s.snapshot(time,{reducedMotion:true}).entries.every(p=>!p.walking));assert.equal(writes,0);
 });
-test('obr8: daytime visitors use one public slot with 20–40s takeout; staff errands do not shorten rest stays',()=>{
+test('obr8/obr14: daytime visitors use two public slots with 20–40s takeout; staff errands do not shorten rest stays',()=>{
  const formal=s.plan(days[0]),all=s.blockPlan(days[0],0,formal),guests=all.filter(e=>e.visitor);
  assert.ok(guests.length>200);
  assert.ok(guests.filter(e=>['courier','rider','generic'].includes(e.visitor.kind)).length/guests.length>.8);
  for(let i=0;i<guests.length;i++){
-  const e=guests[i],t=e.people[0];assert.equal(e.people.length,1);assert.equal(e.floors[0],'1f');if(i)assert.ok(guests[i-1].end<=e.start);
+  const e=guests[i],t=e.people[0];assert.equal(e.people.length,1);assert.equal(e.floors[0],'1f');
+  const active=guests.filter(q=>q.start<=e.start&&e.start<q.end);assert.ok(active.length<=2);assert.equal(new Set(active.map(q=>q.people[0].id)).size,active.length);assert.equal(new Set(active.map(q=>q.people[0].seat.anchor)).size,active.length);
+  for(const other of guests)if(other!==e&&overlap(e,other))assertResources(s,e,other);
   assert.ok(['lobby','cafe','consult'].includes(scene.anchors.get(t.seat.anchor).room));
   if(e.visitor.kind==='generic'){
    assert.equal(t.seat.anchor,'coffee_counter');assert.ok(e.performEnd-e.performStart>=20&&e.performEnd-e.performStart<=40);
-   const snap=s.snapshot(at(days[0],e.performStart+.01));assert.equal(snap.visitors[0].line,'커피 받아 가는 중');
+   const snap=s.snapshot(at(days[0],e.performStart+.01));assert.equal(snap.visitors.find(p=>p.id===t.id).line,'커피 받아 가는 중');
   }
  }
  assert.equal(writes,0);

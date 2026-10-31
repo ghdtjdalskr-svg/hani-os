@@ -27,7 +27,7 @@ const valid = (patch = {}) => ({...plain(seed), id:'milestone_test_20261024', so
 
 // ---- Catalog / data ----
 check('exactly one seed milestone, verbatim chairman values', () => {
-  assert.equal(api.SEED.length, 1);
+  assert.equal(api.SEED.length, 4);
   assert.deepEqual(plain(api.seedErrors), []);
   assert.equal(seed.id, 'milestone_health_20261023');
   assert.equal(seed.date, '2026-10-23');
@@ -180,11 +180,11 @@ check('merge: seed override wins, invalid saved rows are hidden but kept, absent
   const broken = {id:'milestone_bad', title:''};
   const c = owner({state:{milestones:[override, manual, broken]}});
   const view = plain(c.window.HaniMilestones.merged());
-  assert.deepEqual(view.items.map(x => x.id), [seed.id, manual.id]);
+  assert.deepEqual(view.items.map(x => x.id), [...plain(api.SEED).map(x => x.id), manual.id]);
   assert.equal(view.items[0].chairmanComment, '정말 기쁜 날'); assert.equal(view.hidden, 1);
   assert.equal(c.state.milestones.length, 3, 'nothing dropped from the source');
-  assert.deepEqual(plain(owner({state:{}}).window.HaniMilestones.merged().items).map(x => x.id), [seed.id]);
-  assert.deepEqual(plain(owner({state:{milestones:'bad'}}).window.HaniMilestones.merged().items).map(x => x.id), [seed.id]);
+  assert.deepEqual(plain(owner({state:{}}).window.HaniMilestones.merged().items).map(x => x.id), plain(api.SEED).map(x => x.id));
+  assert.deepEqual(plain(owner({state:{milestones:'bad'}}).window.HaniMilestones.merged().items).map(x => x.id), plain(api.SEED).map(x => x.id));
 });
 console.log('Node checks: ' + passed + ' PASS');
 
