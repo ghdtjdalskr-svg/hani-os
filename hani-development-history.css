@@ -18,6 +18,7 @@
 #app .hani-history-status.is-process{background:#fff2e4;color:#b66a26}
 #app .hani-history-meta time{color:#9aa1af;font-size:9px;font-weight:750}
 #app .hani-history-row h4{margin:6px 0 3px;color:#2d3446;font-size:13px;line-height:1.35}
+#app .hani-history-row .activity-trend-info{color:var(--text-secondary,#526176)}
 #app .hani-history-row p{margin:0;color:#747d8e;font-size:10.5px;line-height:1.55}
 #app .hani-history-row code{align-self:start;padding:3px 5px;border-radius:6px;background:#f4f5f8;color:#8b93a2;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:8px}
 #app .hani-dev-history-shell{display:grid;gap:12px}
