@@ -1717,22 +1717,18 @@
     const phone=groups.some(g=>g.compact),value=s=>phone?[s[0],s[0]+s[1]+s[2],s[1],s[3]]:s;
     const compare=(a,b)=>{a=value(a);b=value(b);for(let i=0;i<4;i++)if(a[i]!==b[i])return b[i]-a[i];return 0};
     const positions=(g,b)=>{if(g.compact)return {name:{left:b.left,top:b.top},status:null};const d=floor.width<=600?0:gap;return b.inline?{name:{left:b.left,top:b.top},status:{left:b.left+g.name.width+d,top:b.top}}:{name:{left:b.left+(b.width-g.name.width)/2,top:b.top+g.status.height+d},status:{left:b.left+(b.width-g.status.width)/2,top:b.top}}};
-    // Repacking may change priority order within nearby lanes, never send a
-    // person's labels to a distant desk just to raise the visible count.
-    for(let mode=0;mode<9;mode++){
-    const reserved=[...obstacles,...sprites],result=new Map(),score=[0,0,0,0];
-    const order=mode<5?ordered:ordered.slice().sort((a,b)=>b.priority-a.priority||(mode<7?(a.actor.left-b.actor.left)*(mode%2?1:-1):(a.actor.top-b.actor.top)*(mode%2?1:-1))||a.id.localeCompare(b.id));
-    for(const g of order){
-      let chosen=null,rank=Infinity;
-      const joinGap=floor.width<=600?0:gap;
+    // One candidate path for full and name-only pills; sprites, floor bounds,
+    // head reach and the top-edge exception are shared by both sizes.
+    const candidatesFor=(g,reserved,nameOnly=false)=>{
+      const labelName=nameOnly?g.nameOnly:g.name,candidates=[],joinGap=floor.width<=600?0:gap;
       for(const inline of (g.compact?[false]:[false,true])){
-      const width=g.compact?g.name.width:inline?g.name.width+joinGap+g.status.width:Math.max(g.name.width,g.status.width),height=g.compact?g.name.height:inline?Math.max(g.name.height,g.status.height):g.name.height+joinGap+g.status.height;
+      const width=g.compact?labelName.width:inline?labelName.width+joinGap+g.status.width:Math.max(labelName.width,g.status.width),height=g.compact?labelName.height:inline?Math.max(labelName.height,g.status.height):labelName.height+joinGap+g.status.height;
       // Keep the head radius except where the floor top leaves no pill lane.
       // Only there may a pill hug the side/bottom of its uniquely nearest sprite.
       const head=g.sprite?.width?g.sprite:g.actor,headX=(head.left+head.right)/2,reach=g.priority===3?27.5:19.5,step=Math.ceil(reach);
       const topBlocked=g.compact&&head.top-floor.top<height+Math.max(1,head.height*.02)+2*gap;
       const left=Math.max(floor.left+gap,Math.min(g.actor.left+g.actor.width/2-width/2,floor.right-gap-width));
-      const top=g.actor.top-gap-height,candidates=[];
+      const top=g.actor.top-gap-height;
       const reachX=Math.max(g.actor.width*1.5,floor.width<=600?96:100),reachY=Math.max(g.actor.height*2,64);
       const add=(x,y)=>{x=Math.max(floor.left+gap,Math.min(x,floor.right-gap-width));y=Math.max(floor.top+gap,Math.min(y,floor.bottom-gap-height));
         let edgeNear=false;
@@ -1743,6 +1739,8 @@
           if(!(beside||below)||own>19.5+1e-7||groups.some(q=>q!==g&&boxGap(b,q.sprite?.width?q.sprite:q.actor)<=own+1e-7))return;
           edgeNear=true;
         }
+        // Touching sprites tie on box distance, so the nearer head decides.
+        if(nameOnly){const b={left:x,right:x+width,top:y,bottom:y+height},own=boxGap(b,head),toHead=s=>Math.hypot(x+width/2-(s.left+s.right)/2,y+height/2-s.top);if(groups.some(q=>{if(q===g)return false;const s=q.sprite?.width?q.sprite:q.actor,other=boxGap(b,s);return other<own-1e-7||other<=own+1e-7&&toHead(s)<=toHead(head)+1e-7}))return;}
         if(!edgeNear&&(Math.abs(x+width/2-(g.actor.left+g.actor.width/2))>reachX||y+height<g.actor.top-reachY||y>g.actor.bottom+reachY))return;
         const below=Math.max(0,y+height-g.actor.top);candidates.push({left:x,right:x+width,top:y,bottom:y+height,width,height,inline,cost:(x-left)**2+(y-top)**2+below*below*2+(inline?400:0)})};
       // Above/below and either side keep each person's two labels together.
@@ -1758,10 +1756,19 @@
       // Fit around irregular mascot/label edges instead of wasting a whole grid cell.
       for(const r of reserved){xs.push(r.right+gap,r.left-gap-width);ys.push(r.bottom+gap,r.top-gap-height)}
       for(const x of new Set(xs))for(const y of new Set(ys))add(x,y);
-      for(const b of candidates){const value=mode&&mode<5?(mode<=2?b.top:-b.bottom)*(floor.width+1)+(mode%2?b.left:-b.right):b.cost;
+      }
+      return candidates;
+    };
+    // Repacking may change priority order within nearby lanes, never send a
+    // person's labels to a distant desk just to raise the visible count.
+    for(let mode=0;mode<9;mode++){
+    const reserved=[...obstacles,...sprites],result=new Map(),score=[0,0,0,0];
+    const order=mode<5?ordered:ordered.slice().sort((a,b)=>b.priority-a.priority||(mode<7?(a.actor.left-b.actor.left)*(mode%2?1:-1):(a.actor.top-b.actor.top)*(mode%2?1:-1))||a.id.localeCompare(b.id));
+    for(const g of order){
+      let chosen=null,rank=Infinity;
+      for(const b of candidatesFor(g,reserved)){const value=mode&&mode<5?(mode<=2?b.top:-b.bottom)*(floor.width+1)+(mode%2?b.left:-b.right):b.cost;
         if(b.left>=floor.left+gap&&b.right<=floor.right-gap&&b.top>=floor.top+gap&&b.bottom<=floor.bottom-gap&&!fixed.some(r=>overlaps(b,r)))pools.get(g.id).set([b.left,b.top,b.inline].join(','),b);
         if(value<rank&&b.left>=floor.left+gap&&b.right<=floor.right-gap&&b.top>=floor.top+gap&&b.bottom<=floor.bottom-gap&&!reserved.some(r=>overlaps(b,r))){chosen=b;rank=value}}
-      }
       if(chosen){score[3-g.priority]++;score[3]-=chosen.cost;reserved.push(chosen);result.set(g.id,positions(g,chosen))}
       else result.set(g.id,null);
     }
@@ -1785,10 +1792,27 @@
       }
       if(beam.length&&compare(beam[0].score,bestScore)<0)best=beam[0].result;
     }
-    // A suppressed phone pill keeps the existing name slot as a tiny status dot.
+    // Reserve every full pill before name-only pills and last-resort dots.
     // Dots use the same head radius and never displace a conversation label.
     const occupied=[...fixed];
     for(const g of ordered){const p=best.get(g.id);if(!p)continue;if(g.compact)occupied.push({left:p.name.left,right:p.name.left+g.name.width,top:p.name.top,bottom:p.name.top+g.name.height})}
+    // Full pills are frozen before trying names. A smaller label can never
+    // evict a dialogue/full pill, and all names are reserved before any dots.
+    for(const g of ordered.filter(g=>g.compact&&g.nameOnly?.width&&!best.get(g.id))){
+      const b=candidatesFor(g,occupied,true).filter(b=>b.left>=floor.left+gap&&b.right<=floor.right-gap&&b.top>=floor.top+gap&&b.bottom<=floor.bottom-gap&&!occupied.some(r=>overlaps(b,r))).sort((a,b)=>a.cost-b.cost||a.top-b.top||a.left-b.left)[0];
+      if(b){best.set(g.id,{name:{left:b.left,top:b.top},status:null,mode:'name'});occupied.push(b)}
+    }
+    // Last text option: wear the same name slot on one's own lower body.
+    // Keep the top 60% clear and exempt only this actor's sprite reservation.
+    // Centre on the actual sprite; a wide tag cannot slide onto a neighbour.
+    for(const g of ordered.filter(g=>g.compact&&g.nameOnly?.width&&!best.get(g.id))){
+      const head=g.sprite?.width?g.sprite:g.actor,{width,height}=g.nameOnly,faceBottom=head.top+head.height*.6;
+      const left=(head.left+head.right-width)/2,top=Math.max(floor.top+gap,faceBottom+gap,Math.min(head.top+head.height*.8-height/2,head.bottom-height,floor.bottom-gap-height));
+      const b={left,right:left+width,top,bottom:top+height},own=sprites[groups.indexOf(g)];
+      if(b.left>=floor.left+gap&&b.right<=floor.right-gap&&b.top>faceBottom&&b.bottom<=Math.min(head.bottom,floor.bottom-gap)&&!occupied.some(r=>r!==own&&overlaps(b,r))){
+        best.set(g.id,{name:{left,top},status:null,mode:'name',ownBody:true});occupied.push(b);
+      }
+    }
     for(const g of ordered.filter(g=>g.compact&&!best.get(g.id))){
       const head=g.sprite?.width?g.sprite:g.actor,x=(head.left+head.right)/2,candidates=[];
       // Obstacle edges include sub-3px lanes missed by the old fixed grid.
@@ -1906,13 +1930,19 @@
       status.textContent=status.dataset.full;status.hidden=compact;
     }
     const groups=rows.map(({actor,name,status})=>({id:actor.dataset.person,compact,priority:HaniBuildingScene.labels.priority(actor.dataset),actor:actor.getBoundingClientRect(),sprite:actor.querySelector('.hani-office-sprite').getBoundingClientRect(),name:name.getBoundingClientRect(),status:status.getBoundingClientRect()}));
+    // Measure the same persistent slot without activity text, in one batch.
+    // Keep full text in the slot/title/aria; CSS only hides the short activity.
+    if(compact){
+      for(const {actor}of rows)actor.dataset.labelMode='name';
+      for(let i=0;i<rows.length;i++)groups[i].nameOnly=rows[i].name.getBoundingClientRect();
+    }
     // Reserve the separate mascot owner's actual visible sprite boxes.
     const obstacles=[];
     for(const node of root.querySelectorAll('.hani-desk-mascots:not([hidden]) .hani-desk-mascot[data-ready="true"]')){const r=node.getBoundingClientRect();if(r.width&&r.height)obstacles.push(r)}
     const placements=HaniBuildingScene.labels.place(floor,groups,obstacles);
-    for(const {actor}of rows)if(compact)actor.dataset.labelMode=placements.get(actor.dataset.person)?.dot?'dot':'pill';
+    for(const {actor}of rows)if(compact)actor.dataset.labelMode=placements.get(actor.dataset.person)?.dot?'dot':placements.get(actor.dataset.person)?.mode||'pill';
     for(let i=0;i<rows.length;i++)for(const kind of ['name','status']){
-      const node=rows[i][kind],base=compact&&placements.get(groups[i].id)?.dot?node.getBoundingClientRect():groups[i][kind],p=placements.get(groups[i].id)?.[kind];
+      const node=rows[i][kind],base=compact&&placements.get(groups[i].id)?.dot?node.getBoundingClientRect():compact&&placements.get(groups[i].id)?.mode==='name'&&kind==='name'?groups[i].nameOnly:groups[i][kind],p=placements.get(groups[i].id)?.[kind];
       node.officeLabelPlacement=p?{dx:p.left-base.left,dy:p.top-base.top}:null;node.style.visibility=p?'':'hidden';
       if(p){node.style.setProperty('--'+kind+'-x',(p.left-base.left)+'px');node.style.setProperty('--'+kind+'-y',(p.top-base.top)+'px')}
     }
