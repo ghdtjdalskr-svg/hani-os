@@ -1,3 +1,7 @@
+# 2026-10-31 · 휴대폰 본사 상단 배우 라벨 (Codex)
+
+`hani/office-top-labels` / base·로컬 origin/main `b0a9ad0`(원격 조회 연결 실패). 단일 `placeStatusLabels`에서 상단 공간 부족 배우만 자기 sprite 옆·아래/19.5px 이내/모든 이웃보다 가까운 pill 허용. 기존 슬롯·충돌·경계·우선순위·dot 유지, CSS/데이터/버전 변경 없음. **전체 Node 28파일 통과14·실패14(전부 원문 main에도 동일 Git EPERM), 최종 라벨12/12·신규7/7 PASS. 실제 Edge는 spawn EPERM으로 360/390/416px 전 층 점 전후·overflow 미측정/PNG0.** 미커밋 검토 대기, commit/push/PR/main/배포 없음. Notion 추가는 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-10-31-office-top-labels.md). 아래 타 담당·과거 기록 보존.
+
 # 2026-10-30 · 마일스톤 수집 카드 (Codex)
 
 hani/milestones-grade-ui / HEAD 1eb90ae, 원격 main d6a88bc 확인. B2 글라스 수집 카드·별5/4/3/2·MOMENT·연도 그리드·NEW·단일 atlas 매핑·기존 전체 상세의 native dialog 구현. 보호 저장 owner byte 동일·index 정적 id 중복0·원본 혼합 EOL 보존 확인. **Node 접근 거부·Chrome headless GPU 오류로 실행 테스트/실화면/AA 미검증·PNG0**, 서윤 390/1440×cream/black 목록+상세 검사 대기. 시트와 다른 이미지 작업 폴더 미수정. 버전/cache·push·PR·main/배포 없음, Git 접근 제한으로 파일만 보존. Notion append 자동 승인 never 거절로 미반영. [인수인계](handoffs/2026-10-30-milestones-collection.md). 아래 타 담당·과거 기록 보존.
