@@ -59,10 +59,12 @@ for(const person of assets.canon.people){
 }
 assert.equal(read('assets/sprites-v2/manifest.json'),old('assets/sprites-v2/manifest.json'));
 const slice=(s,a,b)=>s.slice(s.indexOf(a),s.indexOf(b,s.indexOf(a)));
-assert.equal(slice(source,'  function pose(','  function loadSprite('),slice(old('hani-office-live.js'),'  function pose(','  function loadSprite('));
+const legacyPivot="actor.style.transform='translate(-'+(f.pivot[0]/entry.cell[0]*100)+'%,-'+(f.pivot[1]/entry.cell[1]*100)+'%)';";
+const marginPivot="actor.style.setProperty('--actor-pivot-x',String(-f.pivot[0]/entry.cell[0]));actor.style.setProperty('--actor-pivot-y',String(-f.pivot[1]/entry.cell[1]));";
+assert.equal(slice(source,'  function pose(','  function loadSprite('),slice(old('hani-office-live.js'),'  function pose(','  function loadSprite(').replace(legacyPivot,marginPivot));
 const scale=s=>[...s.matchAll(/\.hani-office-actor\{[^}]+\}/g)].map(m=>m[0].replace('z-index:4;',''));
 assert.deepEqual(scale(css),[
- '.hani-office-actor{--actor-height:max(40px,6.8cqw);--sprite-ratio:.75;position:absolute;width:calc(var(--actor-height)*var(--sprite-ratio));height:var(--actor-height);margin:0;transform:translate(-50%,-100%);transition:opacity .3s;pointer-events:none}',
+ '.hani-office-actor{--actor-height:max(40px,6.8cqw);--sprite-ratio:.75;position:absolute;width:calc(var(--actor-height)*var(--sprite-ratio));height:var(--actor-height);margin:0;margin-left:calc(var(--actor-height)*var(--sprite-ratio)*var(--actor-pivot-x,-.5));margin-top:calc(var(--actor-height)*var(--actor-pivot-y,-1));transition:opacity .3s;pointer-events:none}',
  '.hani-office-actor{transition:none}',
  '.hani-office-actor{transition:none}'
 ],'reviewed 224 HD actor proportions and reduced-motion/pause rules');
@@ -141,22 +143,30 @@ let canvas=box(0,0,336,180);
 layout.map.getBoundingClientRect=()=>canvas;
 function measured(node,kind,base){node.getBoundingClientRect=()=>{const r=base(),x=parseFloat(node.style['--'+kind+'-x'])||0,y=parseFloat(node.style['--'+kind+'-y'])||0;return box(r.left+x,r.top+y,r.width,r.height)}}
 for(const [i,actor] of layoutActors.entries()){
+ // Label placement also measures each actor and sprite box (obr18+).
+ const body=()=>canvas.width<=600?box(70+i*21,136,20,40):box(70+i*140,70,26,40);
+ actor.getBoundingClientRect=body;const sprite=actor.querySelector('.hani-office-sprite');if(sprite)sprite.getBoundingClientRect=body;
  measured(actor.querySelector('.hani-office-name'),'name',()=>canvas.width<=600?box(70+i*21,120,40,16):box(70+i*140,55,26,14));
  measured(actor.querySelector('.hani-office-status'),'status',()=>box(100,25,120,20));
 }
+// These boxes model the desktop separate name/status slots; phone pills are
+// covered by the obr14/18 browser geometry instead.
+layout.context.matchMedia=()=>({matches:false,addEventListener(){}});
 layout.click('3f');
-for(const a of layoutActors){assert.equal(a.querySelector('.hani-office-status').hidden,true);for(const b of layoutActors.filter(b=>b!==a))assert.ok(overlap(a.querySelector('.hani-office-name').getBoundingClientRect(),b.querySelector('.hani-office-name').getBoundingClientRect())<=.10)}
+for(const a of layoutActors){assert.equal(a.querySelector('.hani-office-status').hidden,false);for(const b of layoutActors.filter(b=>b!==a))assert.ok(overlap(a.querySelector('.hani-office-name').getBoundingClientRect(),b.querySelector('.hani-office-name').getBoundingClientRect())<=.10)}
 canvas=box(0,0,900,80);layout.click('3f');
 // In this deliberately crowded floor only two pill rows fit. Speech must take
 // the first row, a meeting the next, and normal statuses must yield.
 layoutActors[1].dataset.activity='meeting';layout.context.setTimeout=()=>{};
 layout.ids.get('haniOfficeActors').events.click({target:layoutActors.at(-1)});
 const shown=layoutActors.filter(a=>a.querySelector('.hani-office-status').style.visibility!=='hidden');
-assert.ok(shown.includes(layoutActors.at(-1))&&shown.includes(layoutActors[1]));assert.equal(shown.length,2);
+// obr14+ searches horizontal lanes too, so more than two rows may fit; speech
+// and meeting still always win and nothing below may overlap.
+assert.ok(shown.includes(layoutActors.at(-1))&&shown.includes(layoutActors[1]));assert.ok(shown.length>=2);
 for(const a of shown)for(const b of layoutActors){const pill=a.querySelector('.hani-office-status').getBoundingClientRect();assert.equal(overlap(pill,b.querySelector('.hani-office-name').getBoundingClientRect()),0);if(a!==b&&shown.includes(b))assert.equal(overlap(pill,b.querySelector('.hani-office-status').getBoundingClientRect()),0)}
 canvas=box(0,0,900,400);layout.ids.get('haniOfficeActors').events.keydown({key:'Escape'});
-// Plain base work stays dot-only (lively-2); every busy pill comes back after resize.
-assert.ok(layoutActors.every(a=>(a.querySelector('.hani-office-status').style.visibility!=='hidden')===(a.dataset.plain!=='true'||a.dataset.activity==='meeting'||a.dataset.speaking==='true')),'resize recovers hidden lower-priority pills');
+// obr14 explicitly replaces 219 names-only / plain dot-only: all pills recover.
+assert.ok(layoutActors.every(a=>a.querySelector('.hani-office-status').style.visibility!=='hidden'),'resize recovers hidden lower-priority pills');
 for(const [state,title] of [['work','근무 중'],['rest','휴식 중'],['meeting','회의 중'],['moving','이동 중'],['night','야근 중']]){
  const actor=layoutActors[0];actor.officeTravel=null;actor.dataset.called='false';actor.dataset.activity=state;actor.dataset.walking=String(state==='moving');actor.querySelector('.hani-office-status').dataset.full=state==='night'?'야근 중':'자료 확인 중';
  layout.ids.get('haniOfficeActors').events.keydown({key:'Escape'});assert.equal(actor.dataset.status,state);assert.equal(actor.querySelector('.hani-office-status-dot').title,title);assert.equal(actor.querySelector('.hani-office-status-dot').getAttribute('aria-label'),title);
@@ -233,7 +243,7 @@ try{
      assert.ok(a.visible&&a.name.visible&&a.name.inside&&a.name.text,`${width} ${time} ${floor} ${a.id}: sprite/name visible and within floor`);
      assert.ok(contrast(a.name.foreground,a.name.background)>=4.5,'computed name text AA');if(a.label.visible)assert.ok(contrast(a.label.foreground,a.label.background)>=4.5,'computed pill text AA');
      if(check.box.width<=600){
-      assert.equal(a.label.visible,false,'no separate mobile text pill');assert.ok(a.name.dot.visible&&a.name.dot.title&&a.name.dot.aria===a.name.dot.title);
+      if(a.label.visible)assert.ok(a.label.inside&&[...a.label.text].length<=10,'obr14 meaningful mobile pill');assert.ok(a.name.dot.visible&&a.name.dot.title&&a.name.dot.aria===a.name.dot.title);
       assert.equal(a.name.dot.color,({work:'rgb(22, 128, 60)',rest:'rgb(168, 100, 8)',meeting:'rgb(37, 99, 235)',moving:'rgb(100, 116, 139)',night:'rgb(126, 34, 206)'})[a.status]);
       assert.ok(a.name.dot.left>=a.name.left&&a.name.dot.right<=a.name.right,'dot inside canonical name');
       assert.equal(a.name.icon.visible,Boolean(a.emoji));assert.equal(a.name.icon.text,a.emoji);
@@ -254,7 +264,7 @@ try{
      const ratio=intersection/Math.min(x.width*x.height,y.width*y.height),msg=`${width} ${time} ${floor}: ${check.actors[a].id}/${check.actors[b].id} overlap ${(ratio*100).toFixed(0)}% (limit 30%)`;
      if(process.env.OFFICE_SOFT){if(ratio>.30)(report.overlaps||(report.overlaps=[])).push(msg);}else assert.ok(ratio<=.30,msg);
     }
-    if(check.box.width>600)for(const a of check.actors.filter(a=>a.label.visible)){
+    for(const a of check.actors.filter(a=>a.label.visible)){
      for(const b of check.actors){assert.equal(overlap(a.label,b.name),0,`${width} ${time} ${floor}: pill never covers name ${b.id}`);if(a.id!==b.id&&b.label.visible)assert.equal(overlap(a.label,b.label),0,`${width} ${time} ${floor}: pills never overlap`)}
     }
    }

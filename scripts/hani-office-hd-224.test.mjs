@@ -75,7 +75,7 @@ test('real canonical loader prefers v3; per-atlas failure falls back once to v2 
   for(const actor of nodes){
    assert.equal(actor.dataset.spriteScale,mode==='hd'?'3':'1');
    assert.match(actor.querySelector('.hani-office-sprite').style.backgroundImage,mode==='hd'?/sprites-v3\//:/sprites-v2\//);
-   assert.match(actor.style.transform,/translate\(-50%,-95\.3125%\)/,'normalized physical pivot');
+   assert.equal(actor.style['--actor-pivot-x'],'-0.5','normalized physical x pivot');assert.equal(actor.style['--actor-pivot-y'],'-0.953125','normalized physical y pivot');assert.equal(actor.style.transform,undefined,'no actor stacking context');
   }
   assert.equal(requests.filter(u=>/sprites-v3\//.test(u)).length,mode==='missing-manifest'?0:19);
   assert.equal(requests.filter(u=>/sprites-v2\//.test(u)).length,mode==='hd'?0:19);

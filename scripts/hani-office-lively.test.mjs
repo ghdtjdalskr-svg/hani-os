@@ -13,8 +13,8 @@ test('evening mixes playful statuses and short same-floor strolls; reduced motio
   const s=fixture('09:00',false,null,table).context.HaniBuildingScene.scheduler,lines=new Set();let strolls=0;
   for(let t=Date.parse('2026-10-21T19:00:00+09:00');t<Date.parse('2026-10-21T19:30:00+09:00');t+=1000)for(const p of s.snapshot(new Date(t)).entries){lines.add(p.line);if(p.stroll&&p.walking)strolls++}
   for(const playful of ['몰래 인스타 순찰 중','간식 서랍 점검 중','옆자리랑 수다 중'])assert.ok(lines.has(playful),playful);
-  assert.ok(lines.has('퇴근 준비 중'),'time-of-day flavour kept');assert.ok(strolls>0,'strolls happen');
-  // About a third to half of a floor is busy at once; plain base work is dot-only and never repeats a busy line.
+  assert.ok(lines.has('가방 챙기는 중'),'time-of-day flavour kept with personal obr14 base-work lines');assert.ok(strolls>0,'strolls happen');
+  // About a third to half of a floor has a special bit; personal base-work lines remain visible.
   let busy=0,total=0,dups=0;
   for(let t=Date.parse('2026-10-21T14:00:00+09:00');t<Date.parse('2026-10-21T14:20:00+09:00');t+=1000){const entries=s.snapshot(new Date(t)).entries.filter(p=>p.id!=='mir');total+=entries.length;busy+=entries.filter(p=>!p.plain).length;
     for(const floor of ['1f','2f','3f','4f']){const shown=entries.filter(p=>p.floor===floor&&!p.plain).map(p=>p.line);if(new Set(shown).size!==shown.length)dups++}}
@@ -32,19 +32,19 @@ test('lively-3/obr2: one bit per person per cycle, door paths and two outing uni
   for(const [id,list]of starts)for(let i=1;i<list.length;i++)assert.ok(list[i]-list[i-1]>=14000,id+' bits too close: '+(list[i]-list[i-1])/1000+'s');
   assert.ok(strollSeconds>0&&doors>0,'strolls happen and pass through doors');
 });
-test('visitors: one guest at a time, public 1F rooms only, gate in/out, never on a staff spot, none at night',()=>{
+test('visitors: up to two guests at a time (obr14), public 1F rooms only, gate in/out, never on a staff spot, none at night',()=>{
   const f=fixture('09:00',false,null,table),scene=f.context.HaniBuildingScene,s=scene.scheduler,rooms=new Set(['lobby','cafe','consult',null,undefined]),kinds=new Set();let seen=0;
-  for(let t=Date.parse('2026-10-21T09:00:00+09:00');t<Date.parse('2026-10-21T21:00:00+09:00');t+=2000){const snap=s.snapshot(new Date(t));assert.ok(snap.visitors.length<=1);
+  for(let t=Date.parse('2026-10-21T09:00:00+09:00');t<Date.parse('2026-10-21T21:00:00+09:00');t+=2000){const snap=s.snapshot(new Date(t));assert.ok(snap.visitors.length<=2);
     for(const v of snap.visitors){seen++;kinds.add(v.kind);const a=scene.anchors.get(v.seat.anchor);assert.equal(v.floor,'1f');assert.equal(a.floor,'1f');assert.ok(rooms.has(a.room??null),'public room only: '+a.id+' '+a.room);
       assert.ok(!snap.entries.some(p=>p.seat.anchor===v.seat.anchor),'no shared seat with staff');assert.ok(!snap.entries.some(p=>p.id==='visitor'),'not counted as staff')}}
   assert.ok(seen>500&&kinds.size>=4,'guests visit through the day: '+[...kinds]);
   for(const time of ['23:30','02:00','07:30'])assert.equal(s.snapshot(new Date(`2026-10-21T${time}:00+09:00`)).visitors.length,0,'no guests at '+time);
   for(let t=Date.parse('2026-10-21T10:00:00+09:00');t<Date.parse('2026-10-21T11:00:00+09:00');t+=1000){const v=s.snapshot(new Date(t),{reducedMotion:true}).visitors[0];if(v)assert.equal(v.walking,false)}
 });
-test('renderer shows the guest in one persistent 1F slot with its own name and sprite',()=>{
-  const f=fixture('09:00',false,()=>true,table),s=f.context.HaniBuildingScene.scheduler;let t=Date.parse('2026-10-21T10:00:00+09:00');
+test('renderer shows either guest in its own persistent 1F slot with its own name and sprite',()=>{
+  const f=fixture('09:00',false,()=>true,table),s=f.context.HaniBuildingScene.scheduler,nodes=[...f.ids.get('haniOfficeActors').children];let t=Date.parse('2026-10-21T10:00:00+09:00');
   while(!s.snapshot(new Date(t)).visitors.length)t+=1000;
-  const v=s.snapshot(new Date(t)).visitors[0];f.setDateTime(t);f.click('1f');const actor=f.visible().find(a=>a.dataset.person==='visitor');
+  const v=s.snapshot(new Date(t)).visitors[0];f.setDateTime(t);f.click('1f');const actor=f.visible().find(a=>a.dataset.person===v.id);
   assert.ok(actor,'guest visible on 1F');assert.equal(actor.dataset.name,v.name);assert.equal(actor.dataset.sprite,v.sprite);assert.equal(actor.officeText.textContent,v.line);
-  f.click('2f');assert.ok(!f.visible().some(a=>a.dataset.person==='visitor'),'guest never leaves 1F');
+  f.click('2f');assert.ok(!f.visible().some(a=>a.dataset.person.startsWith('visitor')),'guests never leave 1F');assert.deepEqual(f.ids.get('haniOfficeActors').children,nodes,'both guest slots stay mounted');
 });

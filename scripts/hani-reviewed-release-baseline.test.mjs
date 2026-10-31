@@ -116,8 +116,8 @@ test('approved additions cannot move to another script, event or cascade positio
  }
 });
 
-test('released 233 keeps all prior scoped proofs; pending 234 allows only exact office bytes; released staff and moved fragments stay strict',()=>{
- assert.deepEqual(pendingApprovedConnections.map(c=>c.file),['hani-office-live.js']);
+test('released 233 keeps all prior scoped proofs; pending 235/234 allows only exact JS/CSS office bytes; released staff and moved fragments stay strict',()=>{
+ assert.deepEqual(pendingApprovedConnections.map(c=>c.file),['hani-office-live.js','hani-office-live.css','hani-office-live.js']);
  assert.equal(released233Sha,'beffc3850ea890ec84ce623579b26b4b5a3cd35c');
  assert.deepEqual(released233Connections.map(c=>c.file).sort(),["hani-design-system.css","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-context-remote.css","hani-context-remote.css","hani-design-system.css","hani-portfolio-preview.css",...["assets/data/office-actions-216.json","assets/data/office-actions-221.json","hani-asset-market-view.js","hani-asset-update-v1.js","hani-context-remote-v1.js","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-design-system.css","hani-investment-committee.js","hani-main.js","hani-main.js","hani-office-live.js","hani-organization-hub.css","hani-organization-hub.js","hani-study-v02984.js","hani-style-07.css","hani-ui-v02992.js","hani-yuna-helpdesk.js","index.html","index.html"]].sort());
  const stages=new Map();
