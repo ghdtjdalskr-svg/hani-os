@@ -91,7 +91,7 @@
     updatedAt:'2026-10-31T00:00:00+09:00'
   },{
     id:'milestone_health_30kg',
-    date:'2026-10-31',
+    date:'2026-10-29',
     title:'체중 30kg 감량 달성',
     category:'HEALTH',
     importance:'MAJOR',
