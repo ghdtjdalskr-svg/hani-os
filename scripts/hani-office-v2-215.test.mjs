@@ -130,13 +130,17 @@ test('2F: five Life desks, two Finance spares, no LIFE sign or life spill-over, 
   assert.ok(!f.plates.some(p=>p.label==='LIFE'||p.fullLabel?.includes('윤슬')),'removed small LIFE sign');
   for(const id of ['daon','yoonseul']){assert.equal(api.homeSeat(id).owner,id);assert.ok(api.seatMaps['2f'].some(s=>s.anchor===assets.canon.people.find(p=>p.id===id).homeAnchor))}
 });
-test('walking updates transforms and alternates A/B in existing slots, hidden pauses, reduced motion snaps',async()=>{
+test('walking updates canonical coordinates and both distance frames in existing slots, hidden pauses, reduced motion snaps',async()=>{
   const f=fixture('09:00',false,()=>true);f.click('2f');const nodes=[...f.ids.get('haniOfficeActors').children];
   f.context.window.haniOfficeLiveUpdate({case:{id:'walk',title:'이동 검사'},reviews:[{agent_key:'JIEUN',review_round:1,summary:'검사'}]});
   const opening=f.ids.get('haniOfficeMeetingOpen').events.click();const tick=f.timers.find(t=>t.ms===100),actor=f.visible()[0];
-  assert.ok(actor.officeTravel);const position=[actor.style.left,actor.style.top];tick.fn();assert.equal(actor.dataset.pose,'walk-a');tick.fn();assert.equal(actor.dataset.pose,'walk-b');assert.notDeepEqual([actor.style.left,actor.style.top],position);
-  f.hide();const paused=actor.style.left;for(let n=0;n<5;n++)tick.fn();assert.equal(actor.style.left,paused);f.show();
-  for(let n=0;n<180;n++)tick.fn();await opening;assert.equal(actor.dataset.pose,'sitting');assert.equal(actor.officeTravel,null);assert.deepEqual(f.ids.get('haniOfficeActors').children,nodes);
+  // The owner samples wall time and changes frames by travelled distance. Each
+  // manual callback must advance fixture time just as a real interval does.
+  let now=Date.parse('2026-10-11T09:00:00+09:00');const poses=new Set();
+  const advance=()=>{f.setDateTime(now+=100);tick.fn();if(actor.officeTravel)poses.add(actor.dataset.pose)};
+  assert.ok(actor.officeTravel);const position=[actor.style.left,actor.style.top];advance();assert.match(actor.dataset.pose,/^walk-[ab]$/);assert.notDeepEqual([actor.style.left,actor.style.top],position);
+  f.hide();const paused=actor.style.left;for(let n=0;n<5;n++)advance();assert.equal(actor.style.left,paused);f.show();
+  for(let n=0;n<180;n++)advance();await opening;assert.ok(poses.has('walk-a')&&poses.has('walk-b'),'reserved travel visibly uses both distance frames');assert.equal(actor.dataset.pose,'sitting');assert.equal(actor.officeTravel,null);assert.deepEqual(f.ids.get('haniOfficeActors').children,nodes);
   const reduced=fixture('09:00',true,()=>true);reduced.context.window.haniOfficeLiveUpdate({case:{id:'reduced',title:'모션 감소'},reviews:[]});await reduced.ids.get('haniOfficeMeetingOpen').events.click();assert.ok(reduced.visible().every(a=>!a.officeTravel&&a.dataset.pose==='sitting'));
 });
 test('v2 sprite metadata is real, all art exists, no persistence/cloud calls added',()=>{
