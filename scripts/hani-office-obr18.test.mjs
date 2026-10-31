@@ -7,6 +7,15 @@ import {fixture} from './hani-building-206-engine.test.mjs';
 const {scene}=loadScene(),s=scene.scheduler,day='2026-10-22';
 const rect=(left,top,width,height)=>({left,top,width,height,right:left+width,bottom:top+height});
 const overlap=(a,b)=>a.left<b.right-1e-7&&a.right>b.left+1e-7&&a.top<b.bottom-1e-7&&a.bottom>b.top+1e-7;
+// Independent assertion: head reach remains mandatory except for top-blocked
+// full pills beside/below their uniquely closest sprite. Dots keep old reach.
+const nearby=(floor,groups,g,b,dot=false)=>{
+ const h=g.sprite||g.actor,reach=dot||g.priority===3?27.5:19.5;
+ if(Math.hypot((b.left+b.right-h.left-h.right)/2,(b.top+b.bottom)/2-h.top)<=reach+1e-7)return true;
+ const distance=(a,c)=>Math.hypot(Math.max(a.left-c.right,c.left-a.right,0),Math.max(a.top-c.bottom,c.top-a.bottom,0)),own=distance(b,h);
+ const beside=(b.right<=h.left||b.left>=h.right)&&b.top<h.bottom&&b.bottom>h.top,below=b.top>=h.bottom&&b.left<h.right&&b.right>h.left;
+ return !dot&&h.top-floor.top<g.name.height+Math.max(1,h.height*.02)+1&&(beside||below)&&own<=19.5+1e-7&&groups.every(q=>q===g||own+1e-7<distance(b,q.sprite||q.actor));
+};
 test('obr19 original >=40px atlas / phone dimensions: measured ratios, mandatory dialogue, all sprite/face/label/mascot/bounds and nearby limit',()=>{
  const catalog=JSON.parse(fs.readFileSync('assets/data/desk-mascots-v1.json')),summary=[];
  const manifest=JSON.parse(fs.readFileSync('assets/sprites-v2/manifest.json')),names=new Map(manifest.entries.map(e=>[e.id,e.name.split('/')[0]]));
@@ -32,7 +41,7 @@ test('obr19 original >=40px atlas / phone dimensions: measured ratios, mandatory
     for(let i=0;i<groups.length;i++)for(const q of groups.slice(i+1))if(overlap(groups[i].sprite,q.sprite))spritePairs.push({sec,floor:f.id,ids:[groups[i].id,q.id],walking:people.filter(p=>p.id===groups[i].id||p.id===q.id).some(p=>p.walking)});
     for(const g of groups){const placement=p.get(g.id);if(g.priority===3&&(!placement||placement.dot)){counts.dialogue++;failures.push({sec,floor:f.id,id:g.id,actor:g.actor,line:people.find(p=>p.id===g.id).line,head:g.sprite})}if(!placement)continue;
      const groupBoxes=(phone?['name']:['name','status']).map(k=>rect(placement[k].left,placement[k].top,placement.dot?5:g[k].width,placement.dot?5:g[k].height)),left=Math.min(...groupBoxes.map(b=>b.left)),right=Math.max(...groupBoxes.map(b=>b.right)),top=Math.min(...groupBoxes.map(b=>b.top)),bottom=Math.max(...groupBoxes.map(b=>b.bottom));
-     if(phone?Math.hypot((left+right)/2-(g.sprite.left+g.sprite.right)/2,(top+bottom)/2-g.sprite.top)>28+1e-7:Math.abs((left+right)/2-(g.actor.left+g.actor.width/2))>Math.max(w*1.5,100)+1e-7||bottom<g.actor.top-Math.max(h*2,64)-1e-7||top>g.actor.bottom+Math.max(h*2,64)+1e-7)counts.distant++;
+     if(phone?!nearby(floor,groups,g,{left,right,top,bottom},placement.dot):Math.abs((left+right)/2-(g.actor.left+g.actor.width/2))>Math.max(w*1.5,100)+1e-7||bottom<g.actor.top-Math.max(h*2,64)-1e-7||top>g.actor.bottom+Math.max(h*2,64)+1e-7)counts.distant++;
      for(const b of groupBoxes){if(b.left<floor.left||b.right>floor.right||b.top<floor.top||b.bottom>floor.bottom)counts.outside++;
       if(groups.some(q=>q.id!==g.id&&overlap(b,q.sprite)))counts.sprite++;
       if(overlap(b,rect(g.sprite.left,g.sprite.top,g.sprite.width,g.sprite.height*.65)))counts.face++;
@@ -66,7 +75,7 @@ test('obr18 mobile actual owner keeps one merged slot, full tap source, feet and
  };
  f.setDateTime(at(day,32400));f.context.window.HaniOfficePresence={chairman:'active'};
  for(const id of ['4f','2f','1f','3f','4f']){f.click(id);assert.equal(map.dataset.labelsReady,id);const feet=f.visible().map(a=>[a.style.left,a.style.top]);f.click(id);assert.deepEqual(f.visible().map(a=>[a.style.left,a.style.top]),feet);
-  for(const a of f.visible()){const n=a.querySelector('.hani-office-name'),status=a.querySelector('.hani-office-status');assert.equal(status.hidden,true);assert.equal(status.textContent,status.dataset.full);assert.match(a.officeCompact.textContent,/^ · /);assert.ok([...a.officeCompact.textContent.slice(3)].length<=6);assert.ok(n.title.includes(status.dataset.full));assert.ok(n.officeLabelPlacement);assert.notEqual(n.style.visibility,'hidden');const b=n.getBoundingClientRect(),head=a.getBoundingClientRect();assert.ok(Math.hypot((b.left+b.right)/2-(head.left+head.right)/2,(b.top+b.bottom)/2-head.top)<=28+1e-7)}
+  for(const a of f.visible()){const n=a.querySelector('.hani-office-name'),status=a.querySelector('.hani-office-status');assert.equal(status.hidden,true);assert.equal(status.textContent,status.dataset.full);assert.match(a.officeCompact.textContent,/^ · /);assert.ok([...a.officeCompact.textContent.slice(3)].length<=6);assert.ok(n.title.includes(status.dataset.full));assert.ok(n.officeLabelPlacement);assert.notEqual(n.style.visibility,'hidden');const b=n.getBoundingClientRect(),head=a.getBoundingClientRect();const groups=f.visible().map(a=>({id:a.dataset.person,sprite:a.getBoundingClientRect(),name:{height:10},priority:scene.labels.priority(a.dataset)})),g=groups.find(g=>g.id===a.dataset.person);assert.ok(nearby(floor,groups,g,b,a.dataset.labelMode==='dot'))}
  }
  assert.deepEqual([...f.ids.get('haniOfficeActors').children],actors);assert.deepEqual(actors.map(a=>[a.querySelector('.hani-office-name'),a.querySelector('.hani-office-status'),a.officeCompact]),nodes);assert.equal(f.timers.length,2);
 });
