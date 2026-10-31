@@ -56,7 +56,7 @@ try{
     await page.locator(`[data-building-floor="${floor}"]`).click();await waitForOfficeLabels(page,floor);
     const r=await page.evaluate(readPhoneLabels);
     const viewport=await page.evaluate(()=>({overflow:document.documentElement.scrollWidth-innerWidth,innerWidth,clientWidth:document.documentElement.clientWidth,visualScale:visualViewport.scale,floorTop:document.getElementById('haniOfficeMap').getBoundingClientRect().top}));
-    const row={stage,width,presence,sec,floor,...viewport,people:r.rows.length,dots:r.rows.filter(p=>p.mode==='dot').map(p=>p.id),heads:r.rows.map(p=>({id:p.id,mode:p.mode,head:p.head,box:p.box,topSpace:p.head.top-viewport.floorTop,distance:p.distance})),geometry:Object.fromEntries(['missing','distant','overlap','spriteOverlap','mascotOverlap','outside'].map(k=>[k,r[k]]))};
+    const row={stage,width,presence,sec,floor,...viewport,people:r.rows.length,names:r.rows.filter(p=>p.mode==='name').map(p=>p.id),dots:r.rows.filter(p=>p.mode==='dot').map(p=>p.id),heads:r.rows.map(p=>({id:p.id,mode:p.mode,head:p.head,box:p.box,topSpace:p.head.top-viewport.floorTop,distance:p.distance})),geometry:Object.fromEntries(['missing','ambiguous','distant','overlap','spriteOverlap','mascotOverlap','outside'].map(k=>[k,r[k]]))};
     result.checks.push(row);assertPhoneLabels(r);
     if(sec===19*3600+14*60&&['2f','4f'].includes(floor))await page.screenshot({path:path.join(out,`${stage}-${width}-${presence}-${floor}-1914.png`),fullPage:true});
    }
@@ -66,7 +66,7 @@ try{
  }
  for(const stage of ['before','after'])for(const width of [360,390,416])for(const floor of ['1f','2f','3f','4f','5f']){
   const rows=result.checks.filter(r=>r.stage===stage&&r.width===width&&r.floor===floor);if(!rows.length)continue;
-  result.summary.push({stage,width,floor,samples:rows.length,actorObservations:rows.reduce((n,r)=>n+r.people,0),dotObservations:rows.reduce((n,r)=>n+r.dots.length,0),maxDots:Math.max(...rows.map(r=>r.dots.length)),overflowMin:Math.min(...rows.map(r=>r.overflow)),overflowMax:Math.max(...rows.map(r=>r.overflow))});
+  result.summary.push({stage,width,floor,samples:rows.length,actorObservations:rows.reduce((n,r)=>n+r.people,0),nameObservations:rows.reduce((n,r)=>n+r.names.length,0),dotObservations:rows.reduce((n,r)=>n+r.dots.length,0),maxDots:Math.max(...rows.map(r=>r.dots.length)),overflowMin:Math.min(...rows.map(r=>r.overflow)),overflowMax:Math.max(...rows.map(r=>r.overflow))});
  }
  assert.deepEqual(result.errors,[]);assert.deepEqual(result.writes,[]);assert.deepEqual(result.network,[]);result.status='PASS';
 }catch(e){result.status='FAIL';result.failure=e.stack;process.exitCode=1}finally{

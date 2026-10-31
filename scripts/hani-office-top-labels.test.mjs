@@ -60,7 +60,9 @@ test('browser distant check accepts only the top-edge nearest-sprite exception, 
    const name=node(b,{title:'label'}),status=node(rect(0,0,0,0),{dataset:{full:'업무 메모 중'}}),dot=node(rect(0,0,5,5)),sprite=node(head),line=node(b,{textContent:' · 메모쓰기'});
    return {...node(head),dataset:{person:id,labelMode:mode},officeName:{textContent:id},officeCompact:line,querySelector:s=>({'.hani-office-name':name,'.hani-office-status':status,'.hani-office-status-dot':dot,'.hani-office-sprite':sprite,'.hani-office-compact-line':line})[s]};
   };
-  const actors=[make('own',rect(165,top,30,40),mode==='dot'?rect(202,top+.5,5,5):rect(196.5,top+.5,100,10),mode)];
+  // Dots have always used a 27.5px head radius. Test beyond that radius,
+  // while still within the 19.5px box-gap exception allowed only to text pills.
+  const actors=[make('own',rect(165,top,30,40),mode==='dot'?rect(206.5,top+.5,5,5):rect(196.5,top+.5,100,10),mode)];
   if(neighbourLeft!==null)actors.push(make('neighbour',rect(neighbourLeft,top,30,40),rect(0,100,5,5),'dot'));
   const map={dataset:{floor:'2f'},getBoundingClientRect:()=>floor,querySelectorAll:()=>[]};
   return vm.runInNewContext('('+readPhoneLabels.toString()+')()',{
@@ -68,6 +70,7 @@ test('browser distant check accepts only the top-edge nearest-sprite exception, 
   });
  };
  assert.equal(read(0).distant.length,0,'top actor can use adjacent pill');
+ assert.equal(read(0,'name').distant.length,0,'name pill shares the top-edge allowance');
  assert.ok(read(20).distant.some(r=>r[0]==='own'),'ordinary actor keeps head radius');
  assert.ok(read(0,'pill',198).distant.some(r=>r[0]==='own'),'closer neighbour rejects allowance');
  assert.ok(read(0,'dot').distant.some(r=>r[0]==='own'),'dots get no wider allowance');

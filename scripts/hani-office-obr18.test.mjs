@@ -8,9 +8,10 @@ const {scene}=loadScene(),s=scene.scheduler,day='2026-10-22';
 const rect=(left,top,width,height)=>({left,top,width,height,right:left+width,bottom:top+height});
 const overlap=(a,b)=>a.left<b.right-1e-7&&a.right>b.left+1e-7&&a.top<b.bottom-1e-7&&a.bottom>b.top+1e-7;
 // Independent assertion: head reach remains mandatory except for top-blocked
-// full pills beside/below their uniquely closest sprite. Dots keep old reach.
-const nearby=(floor,groups,g,b,dot=false)=>{
+// text pills beside/below their uniquely closest sprite. Dots keep old reach.
+const nearby=(floor,groups,g,b,dot=false,ownBody=false)=>{
  const h=g.sprite||g.actor,reach=dot||g.priority===3?27.5:19.5;
+ if(ownBody)return !dot&&b.top>h.top+h.height*.6&&b.bottom<=h.bottom&&Math.abs(b.left+b.right-h.left-h.right)<1e-7&&groups.every(q=>q===g||!overlap(b,q.sprite||q.actor));
  if(Math.hypot((b.left+b.right-h.left-h.right)/2,(b.top+b.bottom)/2-h.top)<=reach+1e-7)return true;
  const distance=(a,c)=>Math.hypot(Math.max(a.left-c.right,c.left-a.right,0),Math.max(a.top-c.bottom,c.top-a.bottom,0)),own=distance(b,h);
  const beside=(b.right<=h.left||b.left>=h.right)&&b.top<h.bottom&&b.bottom>h.top,below=b.top>=h.bottom&&b.left<h.right&&b.right>h.left;
@@ -33,22 +34,22 @@ test('obr19 original >=40px atlas / phone dimensions: measured ratios, mandatory
      // This is a synthetic box, not proof of animated browser pixels.
      const angle=(p.deskPartner?4:0)*Math.PI/180,c=Math.cos(angle),sn=Math.sin(angle),sw=w*c+h*sn,sh=h*c+w*sn;
      const sprite=rect(actor.left-(sw-w)/2,actor.top-(sh-h),sw,sh);
-     return {id:p.id,compact:phone,priority:scene.labels.priority({partner:p.deskPartner,greeting:String(p.behaviorKind==='chairman-greeting'||p.id==='seongmin'&&people.some(q=>q.behaviorKind==='chairman-greeting')),walking:String(p.walking),plain:String(!!p.plain)}),actor,sprite,name:rect(0,0,phone?measure(p.name||names.get(p.id)||'방문객',10)+measure('·'+line,10)+11:Math.min(w*1.3,measure(p.name||names.get(p.id)||'방문객',Math.min(12,width*.0085))+12),phone?10:17),status:rect(0,0,Math.min(phone?Infinity:150,measure(line,phone?10:Math.min(12,width*.009))+ (phone?6:12)),phone?13:22)};
+     return {id:p.id,compact:phone,priority:scene.labels.priority({partner:p.deskPartner,greeting:String(p.behaviorKind==='chairman-greeting'||p.id==='seongmin'&&people.some(q=>q.behaviorKind==='chairman-greeting')),walking:String(p.walking),plain:String(!!p.plain)}),actor,sprite,nameOnly:rect(0,0,measure(p.name||names.get(p.id)||'방문객',10)+10,10),name:rect(0,0,phone?measure(p.name||names.get(p.id)||'방문객',10)+measure('·'+line,10)+11:Math.min(w*1.3,measure(p.name||names.get(p.id)||'방문객',Math.min(12,width*.0085))+12),phone?10:17),status:rect(0,0,Math.min(phone?Infinity:150,measure(line,phone?10:Math.min(12,width*.009))+ (phone?6:12)),phone?13:22)};
     });
     const obstacles=Object.values(catalog.staff).filter(m=>m.floor===f.id).map(m=>{const a=scene.art.anchors[m.anchor],size=Math.max(16,width*32/1440);return rect((a.x+m.offset[0])*width/100-size/2,(a.y+m.offset[1])*floor.height/100-size,size,size)});
     const begin=performance.now(),p=scene.labels.place(floor,groups,obstacles);costs.push(performance.now()-begin);const boxes=[];
     for(const g of groups)if(phone&&!p.get(g.id))missingDots.push({sec,floor:f.id,id:g.id});
     for(let i=0;i<groups.length;i++)for(const q of groups.slice(i+1))if(overlap(groups[i].sprite,q.sprite))spritePairs.push({sec,floor:f.id,ids:[groups[i].id,q.id],walking:people.filter(p=>p.id===groups[i].id||p.id===q.id).some(p=>p.walking)});
-    for(const g of groups){const placement=p.get(g.id);if(g.priority===3&&(!placement||placement.dot)){counts.dialogue++;failures.push({sec,floor:f.id,id:g.id,actor:g.actor,line:people.find(p=>p.id===g.id).line,head:g.sprite})}if(!placement)continue;
-     const groupBoxes=(phone?['name']:['name','status']).map(k=>rect(placement[k].left,placement[k].top,placement.dot?5:g[k].width,placement.dot?5:g[k].height)),left=Math.min(...groupBoxes.map(b=>b.left)),right=Math.max(...groupBoxes.map(b=>b.right)),top=Math.min(...groupBoxes.map(b=>b.top)),bottom=Math.max(...groupBoxes.map(b=>b.bottom));
-     if(phone?!nearby(floor,groups,g,{left,right,top,bottom},placement.dot):Math.abs((left+right)/2-(g.actor.left+g.actor.width/2))>Math.max(w*1.5,100)+1e-7||bottom<g.actor.top-Math.max(h*2,64)-1e-7||top>g.actor.bottom+Math.max(h*2,64)+1e-7)counts.distant++;
+    for(const g of groups){const placement=p.get(g.id);if(g.priority===3&&(!placement||placement.dot||placement.mode==='name')){counts.dialogue++;failures.push({sec,floor:f.id,id:g.id,actor:g.actor,line:people.find(p=>p.id===g.id).line,head:g.sprite})}if(!placement)continue;
+     const groupBoxes=(phone?['name']:['name','status']).map(k=>rect(placement[k].left,placement[k].top,placement.dot?5:placement.mode==='name'?g.nameOnly.width:g[k].width,placement.dot?5:placement.mode==='name'?g.nameOnly.height:g[k].height)),left=Math.min(...groupBoxes.map(b=>b.left)),right=Math.max(...groupBoxes.map(b=>b.right)),top=Math.min(...groupBoxes.map(b=>b.top)),bottom=Math.max(...groupBoxes.map(b=>b.bottom));
+     if(phone?!nearby(floor,groups,g,{left,right,top,bottom},placement.dot,placement.ownBody):Math.abs((left+right)/2-(g.actor.left+g.actor.width/2))>Math.max(w*1.5,100)+1e-7||bottom<g.actor.top-Math.max(h*2,64)-1e-7||top>g.actor.bottom+Math.max(h*2,64)+1e-7)counts.distant++;
      for(const b of groupBoxes){if(b.left<floor.left||b.right>floor.right||b.top<floor.top||b.bottom>floor.bottom)counts.outside++;
       if(groups.some(q=>q.id!==g.id&&overlap(b,q.sprite)))counts.sprite++;
-      if(overlap(b,rect(g.sprite.left,g.sprite.top,g.sprite.width,g.sprite.height*.65)))counts.face++;
+      if(overlap(b,rect(g.sprite.left,g.sprite.top,g.sprite.width,g.sprite.height*(placement.ownBody ? .6 : .65))))counts.face++;
       if(obstacles.some(r=>overlap(b,r)))counts.mascot++;if(boxes.some(r=>overlap(b,r)))counts.label++;boxes.push(b);
      }
     }
-    if(groups.length){const ratio=[...p.values()].filter(p=>p&&!p.dot).length/groups.length;ratios.push(ratio);scenes.push({sec,floor:f.id,people:groups.length,pills:[...p.values()].filter(p=>p&&!p.dot).length,dots:[...p.values()].filter(p=>p?.dot).length,missing:groups.filter(g=>!p.get(g.id)).map(g=>g.id),ratio});if(!phone&&ratio<.85)failures.push({sec,floor:f.id,ratio,hidden:groups.filter(g=>!p.get(g.id)||p.get(g.id).dot).map(g=>g.id)})}
+    if(groups.length){const ratio=[...p.values()].filter(p=>p&&!p.dot&&p.mode!=='name').length/groups.length;ratios.push(ratio);scenes.push({sec,floor:f.id,people:groups.length,pills:[...p.values()].filter(p=>p&&!p.dot&&p.mode!=='name').length,names:[...p.values()].filter(p=>p?.mode==='name').length,dots:[...p.values()].filter(p=>p?.dot).length,missing:groups.filter(g=>!p.get(g.id)).map(g=>g.id),ratio});if(!phone&&ratio<.85)failures.push({sec,floor:f.id,ratio,hidden:groups.filter(g=>!p.get(g.id)||p.get(g.id).dot).map(g=>g.id)})}
     else scenes.push({sec,floor:f.id,people:0,pills:0,dots:0,missing:[],ratio:null});
    }
   }
@@ -70,12 +71,12 @@ test('obr18 mobile actual owner keeps one merged slot, full tap source, feet and
   if(this===map)return floor;
   if(this.className==='hani-office-actor')return rect(parseFloat(this.style.left)*floor.width/100-15,parseFloat(this.style.top)*floor.height/100-40*.953125,30,40);
   if(this.className==='hani-office-sprite')return this.parentElement.getBoundingClientRect();
-  if(this.className==='hani-office-name'){const a=this.parentElement,head=a.getBoundingClientRect(),dot=a.dataset.labelMode==='dot',width=dot?5:[...a.officeName.textContent+a.officeCompact.textContent].reduce((w,c)=>w+(c==='·'?3.5:10),11),height=dot?5:10;return rect(head.left+head.width/2-width/2+parseFloat(this.style['--name-x']||0),head.bottom-height+parseFloat(this.style['--name-y']||0),width,height)}
+  if(this.className==='hani-office-name'){const a=this.parentElement,head=a.getBoundingClientRect(),dot=a.dataset.labelMode==='dot',width=dot?5:[...a.officeName.textContent+(a.dataset.labelMode==='name'?'':a.officeCompact.textContent)].reduce((w,c)=>w+(c==='·'?3.5:10),11),height=dot?5:10;return rect(head.left+head.width/2-width/2+parseFloat(this.style['--name-x']||0),head.bottom-height+parseFloat(this.style['--name-y']||0),width,height)}
   return rect(0,0,0,0);
  };
  f.setDateTime(at(day,32400));f.context.window.HaniOfficePresence={chairman:'active'};
  for(const id of ['4f','2f','1f','3f','4f']){f.click(id);assert.equal(map.dataset.labelsReady,id);const feet=f.visible().map(a=>[a.style.left,a.style.top]);f.click(id);assert.deepEqual(f.visible().map(a=>[a.style.left,a.style.top]),feet);
-  for(const a of f.visible()){const n=a.querySelector('.hani-office-name'),status=a.querySelector('.hani-office-status');assert.equal(status.hidden,true);assert.equal(status.textContent,status.dataset.full);assert.match(a.officeCompact.textContent,/^ · /);assert.ok([...a.officeCompact.textContent.slice(3)].length<=6);assert.ok(n.title.includes(status.dataset.full));assert.ok(n.officeLabelPlacement);assert.notEqual(n.style.visibility,'hidden');const b=n.getBoundingClientRect(),head=a.getBoundingClientRect();const groups=f.visible().map(a=>({id:a.dataset.person,sprite:a.getBoundingClientRect(),name:{height:10},priority:scene.labels.priority(a.dataset)})),g=groups.find(g=>g.id===a.dataset.person);assert.ok(nearby(floor,groups,g,b,a.dataset.labelMode==='dot'))}
+  for(const a of f.visible()){const n=a.querySelector('.hani-office-name'),status=a.querySelector('.hani-office-status');assert.equal(status.hidden,true);assert.equal(status.textContent,status.dataset.full);assert.match(a.officeCompact.textContent,/^ · /);assert.ok([...a.officeCompact.textContent.slice(3)].length<=6);assert.ok(n.title.includes(status.dataset.full));assert.ok(n.officeLabelPlacement);assert.notEqual(n.style.visibility,'hidden');const b=n.getBoundingClientRect(),head=a.getBoundingClientRect();const groups=f.visible().map(a=>({id:a.dataset.person,sprite:a.getBoundingClientRect(),name:{height:10},priority:scene.labels.priority(a.dataset)})),g=groups.find(g=>g.id===a.dataset.person);assert.ok(nearby(floor,groups,g,b,a.dataset.labelMode==='dot',a.dataset.labelMode==='name'&&overlap(b,head)))}
  }
  assert.deepEqual([...f.ids.get('haniOfficeActors').children],actors);assert.deepEqual(actors.map(a=>[a.querySelector('.hani-office-name'),a.querySelector('.hani-office-status'),a.officeCompact]),nodes);assert.equal(f.timers.length,2);
 });
