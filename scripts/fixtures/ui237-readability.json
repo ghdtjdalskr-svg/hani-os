@@ -1,5 +1,5 @@
 {
-  "baseSha": "cefa62554e520c42acdc8310dd8f00f4dac0148a",
+  "baseSha": "1fd11d9d6f47e01625943a6f06c64d80abfb26b3",
   "reason": "2026-10-31 ui237 authorized read-only UI: fixed pale surfaces/ink, compact table tracks, portrait bounds, existing exercise redraw and canvas style owner; version/storage/Cloud unchanged",
   "changes": [
     {
@@ -30,8 +30,8 @@
           "after": "#app #ledger .ledger-market-board :is(.sh h3,.eyebrow){color:#fff!important}\r\n#app #ledger .ledger-breaker-line strong{font-size:clamp(19px,3vw,34px)}\n#app #monthlyReport .earnings-controls,#app #monthlyReport .earnings-report>.sub,#app #monthlyReport .monthly-report-controls>.sub{color:#e0e5f5}\n#app #monthlyReport .earnings-controls :is(label,p,span){color:inherit}\n#app #monthlyReport .earnings-controls button:disabled{opacity:1;color:#e0e5f5;background:#313d56;border-color:#8793ad}\n"
         }
       ],
-      "beforeHash": "747904e31d71989beab2019b226eabbd73efe002e7809780ff8999a7ddca22f4",
-      "afterHash": "bd18da58ed8af545e6676c2b822d1b5242c84a4d2682ff7bc3b8b5431839e2c6"
+      "beforeHash": "132e97877fb18ff217d5e46db3e6d0ffd38ebf8a4dbf10d3bb4b602bdecc77e1",
+      "afterHash": "e81d0afd7576dab03526fe491de1ecd6d27f206f8493c0b14c5e0598b82ab464"
     },
     {
       "file": "hani-development-history.css",
@@ -60,8 +60,8 @@
           "after": "function drawExercise(){\r\n  const rows=exercisePeriodRows(state.exercise||[]);\r\n  drawLines($(\"exerciseChart\"),rows.map(r=>r.date),[{name:\"걸음 수\",color:\"#2faa77\",data:rows.map(r=>n(r.steps))}],\"선택한 기간에 걸음 수 기록이 없습니다.\");\r\n}\r\nconst exerciseChanged=new Set();\r\n"
         }
       ],
-      "beforeHash": "035ad8fcb7b5caaa5c1bcc19dd7efdbfdc4d446dffa2fce155104718320f257b",
-      "afterHash": "62b33aa8647b5c6eb3ba999427c3105466951f7339f0c975a5b9710a0efa0e5e"
+      "beforeHash": "92946f2216a3061dbab41c8e28a5197d880e96503ce06864563b91db7b90d454",
+      "afterHash": "52c9aee87a2ec6d2c9605e8fe29ee69720ac645c96719c63dc7fc8d7030b7c99"
     },
     {
       "file": "hani-organization-hub.css",

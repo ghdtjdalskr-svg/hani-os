@@ -5,7 +5,7 @@ const read=f=>fs.readFileSync(path.join(root,f),'utf8'),hash=s=>crypto.createHas
 
 test('ui237 exact authorized deltas reverse to pinned Git source; edits, missing/duplicate/moved hunks and EOL drift fail',async()=>{
   const {normalizeReviewedCurrentSource,readReleaseSource}=await import('./hani-reviewed-release-baseline.mjs');
-  assert.equal(fixture.baseSha,'cefa62554e520c42acdc8310dd8f00f4dac0148a');
+  assert.equal(fixture.baseSha,'1fd11d9d6f47e01625943a6f06c64d80abfb26b3');
   assert.deepEqual(fixture.changes.map(c=>c.file),['hani-design-system.css','hani-development-history.css','hani-main.js','hani-organization-hub.css']);
   for(const c of fixture.changes){
     const before=readReleaseSource(fixture.baseSha,c.file),after=read(c.file);
