@@ -1,0 +1,73 @@
+{
+  "baseSha": "cefa62554e520c42acdc8310dd8f00f4dac0148a",
+  "branch": "hani/ui-fix-after-236",
+  "runtimeOwners": [
+    {
+      "file": "hani-design-system.css",
+      "beforeHash": "747904e31d71989beab2019b226eabbd73efe002e7809780ff8999a7ddca22f4",
+      "afterHash": "bd18da58ed8af545e6676c2b822d1b5242c84a4d2682ff7bc3b8b5431839e2c6"
+    },
+    {
+      "file": "hani-development-history.css",
+      "beforeHash": "7cea4a1f2754a50fb053d5038a989c6573622d8ddcc95c45dfe375e65f26eefd",
+      "afterHash": "d17b6bf45a3d5c1fff9b7b95440137c1a7c759d59656ad9735bb26c3951c6937"
+    },
+    {
+      "file": "hani-main.js",
+      "beforeHash": "035ad8fcb7b5caaa5c1bcc19dd7efdbfdc4d446dffa2fce155104718320f257b",
+      "afterHash": "62b33aa8647b5c6eb3ba999427c3105466951f7339f0c975a5b9710a0efa0e5e"
+    },
+    {
+      "file": "hani-organization-hub.css",
+      "beforeHash": "316a1a3555d1ef8c2bd35d7294b3618c939eee2ffeabd9d3421a86d7379a8a14",
+      "afterHash": "4eca2593819894df0bfe41e8f7900ba1a50f0952d6ca6bc0ef02c4aed87c92fd"
+    }
+  ],
+  "node": {
+    "qa1st": {
+      "pass": 10,
+      "fail": 0
+    },
+    "ui237": {
+      "pass": 4,
+      "fail": 0
+    },
+    "reviewedBaseline": {
+      "before": {
+        "pass": 7,
+        "fail": 7
+      },
+      "after": {
+        "pass": 7,
+        "fail": 7
+      },
+      "sameFailureNames": true,
+      "failures": [
+        "release225 plus only named later release changes reproduces current source bytes",
+        "release projection advances cache/display only; internal and historical literals stay strict",
+        "unlisted controls, storage, source and EOL edits remain detectable against Git oracle",
+        "pending approved connections strip CURRENT source only; an unlisted index line is rejected",
+        "fixed f27be17 CSS follow-up and named owner corrections retain exact bytes and reject drift",
+        "date border correction is an exact delta from fixed 18916a0; old integration identities remain intact",
+        "mobile scroll spacing is an exact delta from a29ff90; all older fixture identities remain unchanged"
+      ]
+    },
+    "safety": {
+      "status": "PASS",
+      "syntax": "7 runtime JS",
+      "canonicalPersistence": "unchanged",
+      "storageCloudCalls": "unchanged",
+      "versionCache": "unchanged",
+      "duplicates": {
+        "files": 68,
+        "baseFiles": 68,
+        "existingDuplicates": 8
+      },
+      "unchangedLinesWithExactEol": 16955
+    },
+    "designSystemQa": "PASS",
+    "syntax": "PASS"
+  },
+  "browser": "Not run per instruction; Edge recapture pending",
+  "numericPaletteMinimum": 5.67
+}

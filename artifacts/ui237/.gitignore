@@ -1,0 +1,6 @@
+git-blobs.json
+base/
+hani-*.js
+hani-*.css
+*.log
+patch.diff
