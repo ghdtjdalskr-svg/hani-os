@@ -1,3 +1,7 @@
+# 2026-10-30 · 마일스톤 수집 카드 (Codex)
+
+hani/milestones-grade-ui / HEAD 1eb90ae, 원격 main d6a88bc 확인. B2 글라스 수집 카드·별5/4/3/2·MOMENT·연도 그리드·NEW·단일 atlas 매핑·기존 전체 상세의 native dialog 구현. 보호 저장 owner byte 동일·index 정적 id 중복0·원본 혼합 EOL 보존 확인. **Node 접근 거부·Chrome headless GPU 오류로 실행 테스트/실화면/AA 미검증·PNG0**, 서윤 390/1440×cream/black 목록+상세 검사 대기. 시트와 다른 이미지 작업 폴더 미수정. 버전/cache·push·PR·main/배포 없음, Git 접근 제한으로 파일만 보존. Notion append 자동 승인 never 거절로 미반영. [인수인계](handoffs/2026-10-30-milestones-collection.md). 아래 타 담당·과거 기록 보존.
+
 # 2026-10-24 · 개요 DEMO DAY 카드 복원 (도연/Codex)
 
 `hani/seoyun-org-demoday-card` / base·HEAD `d19aa0b`(로컬 origin/main 동일, 원격 조회 연결 실패). 성민 대표님 option B 승인에 따라 기존 개요 persistent 슬롯의 연혁 앞에 사진·캡션·도장만 복원. 원본 전체 비율·최대360px·모바일 너비·기존 dark palette 사용. **syntax·history226 unit·실제 renderer6회/mount1/write0 PASS. 신규 및 기존 조직 허브 browser 검사는 Edge spawn EPERM으로 차단, 1440/390 PNG0·실화면 미검증.** Notion 착수 추가는 자동 승인 never 거절로 미반영. commit/push/PR·버전/cache·Storage/Cloud·main/배포 변경 없음. 다음: 서윤 허용 환경 browser 재실행·Preview 확인. [인수인계](handoffs/2026-10-24-org-demoday-card.md). 아래 타 담당·과거 기록 보존.
