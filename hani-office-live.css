@@ -139,3 +139,29 @@
 .hani-office-actor[data-facing="left"] .hani-office-sprite{rotate:-4deg}
 .hani-office-actor[data-facing="right"] .hani-office-sprite{rotate:4deg}
 @media(prefers-reduced-motion:reduce){.hani-office-sprite{rotate:none!important}}
+
+/* Route coordinates belong to actor left/top. Sprite-only visual effects never
+   enter the stable layout box used for label ownership and placement. */
+.hani-office-actor[data-walking="true"] .hani-office-sprite{animation:none;transform:translateY(var(--step-bounce,0px)) rotate(var(--step-lean,0deg));rotate:none}
+.hani-office-actor[data-motion="stand"]:not([data-walking="true"]) .hani-office-sprite{animation:hani-office-stand .48s ease-in-out both}
+.hani-office-actor[data-motion="sit"]:not([data-walking="true"]) .hani-office-sprite{animation:hani-office-sit .52s ease-in-out both}
+.hani-office-actor[data-motion="nod"]:not([data-walking="true"]) .hani-office-sprite{animation:hani-office-nod .46s ease-in-out both}
+.hani-office-actor[data-motion="lean"]:not([data-walking="true"]) .hani-office-sprite{animation:hani-office-lean .62s ease-in-out both}
+.hani-office-actor[data-motion="tap"]:not([data-walking="true"]) .hani-office-sprite{animation:hani-office-hop .44s ease-in-out both}
+@keyframes hani-office-stand{0%,100%{transform:scaleY(1)}40%{transform:scaleY(.96)}68%{transform:scaleY(1.008)}}
+@keyframes hani-office-sit{0%,100%{transform:scaleY(1)}38%{transform:scaleY(.98)}65%{transform:scaleY(.955)}84%{transform:scaleY(1.006)}}
+@keyframes hani-office-nod{0%,100%{transform:scaleY(1)}45%{transform:scaleY(.97)}70%{transform:scaleY(1.004)}}
+@keyframes hani-office-lean{0%,100%{transform:rotate(0deg)}45%,65%{transform:rotate(var(--response-lean,1deg))}}
+@keyframes hani-office-hop{0%,100%{transform:translateY(0) scaleY(1)}25%{transform:scaleY(.97)}52%{transform:translateY(-1.2px) scaleY(1.005)}78%{transform:scaleY(.985)}}
+
+/* The existing image translation and bottom anchor remain in every keyframe.
+   One mascot at a time; displacement stays inside the label packing gap. */
+.hani-desk-mascot{transform-origin:50% 100%}
+.hani-desk-mascot[data-motion="wiggle"]{animation:hani-mascot-wiggle .72s ease-in-out both}
+.hani-desk-mascot[data-motion="hop"]{animation:hani-mascot-hop .48s ease-in-out both}
+@keyframes hani-mascot-wiggle{0%,100%{transform:translate(-50%,-100%) rotate(0deg)}30%{transform:translate(-50%,-100%) rotate(-2deg) scaleY(.98)}65%{transform:translate(-50%,-100%) rotate(2deg) scaleY(.98)}}
+@keyframes hani-mascot-hop{0%,100%{transform:translate(-50%,-100%) scaleY(1)}25%{transform:translate(-50%,-100%) scaleY(.96)}52%{transform:translate(-50%,calc(-100% - 1px))}78%{transform:translate(-50%,-100%) scaleY(.98)}}
+@media(prefers-reduced-motion:reduce){
+  .hani-office-sprite{animation:none!important;transform:none!important;rotate:none!important}
+  .hani-desk-mascot{animation:none!important;transform:translate(-50%,-100%)!important}
+}
