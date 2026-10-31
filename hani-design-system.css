@@ -1908,3 +1908,4 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 #milestones .ms-card .ms-plate .ms-card-title { font-size:clamp(13px,1.15vw,15.5px); line-height:1.28; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
 #milestones .ms-card .ms-plate .ms-orn { margin:4px 0 2px; }
 @media (max-width:640px){ #milestones .ms-card .ms-plate { left:9px; right:9px; bottom:9px; padding:7px 7px 6px; } #milestones .ms-card .ms-plate .ms-card-title { font-size:12.5px; } }
+#milestones .ms-card.ms-pending .ms-art { filter:grayscale(.75) brightness(1.04); }

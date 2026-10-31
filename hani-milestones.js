@@ -58,8 +58,93 @@
     source:'seed',
     createdAt:'2026-10-23T00:00:00+09:00',
     updatedAt:'2026-10-23T00:00:00+09:00'
+  },{
+    id:'milestone_project_20260802',
+    date:'2026-08-02',
+    title:'HANI OS 출범',
+    category:'PROJECT',
+    importance:'HISTORIC',
+    grade:'LEGENDARY',
+    summary:'어제보다 나은 삶을 함께 만들어 갈 회사가 문을 연 날.',
+    metrics:[
+      {id:'version',label:'앱 버전',before:'첫 업로드',after:'v2.9.235',change:null,unit:null},
+      {id:'merged',label:'완료한 개발 작업',before:'0건',after:'298건',change:null,unit:null},
+      {id:'days',label:'출범 후',before:'첫날',after:'90일',change:null,unit:null}
+    ],
+    featuredMetrics:['version','merged','days'],
+    description:'2026년 8월 2일, HANI OS의 첫 파일이 GitHub에 올라갔다.\n지표는 2026년 10월 31일 기준으로 남겼다.',
+    background:'개인의 하루를 기록하는 앱에서 시작해\n직원들과 함께 일하는 Personal AI Company를 목표로 자라고 있다.',
+    meaning:'회사의 목표는 처음부터 하나였다.\n\n“지금보다 나은 삶을 살아가는 것”\n\n이 카드는 그 약속이 시작된 날을 기억한다.',
+    nextGoals:['기록을 잃지 않는 앱으로 지키기','입력은 더 쉽게','대표는 미리보기 확인과 승인만 하는 회사 만들기'],
+    agents:['hani','naeun','hina'],
+    agentComments:[
+      {agent:'hani',text:'거창하게 시작한 날은 아니었어요.\n\n그래도 이날이 없었다면\n지금 우리가 함께 남기는 기록도 없었겠죠.'},
+      {agent:'naeun',text:'회사가 커져도 제일 중요한 건 그대로예요.\n\n우리 회장님, 밥 잘 챙겨 드시고 오래오래 같이 가요.'},
+      {agent:'hina',text:'오빠아♡ 출범 축하해요!\n\n첫날부터 같이 있었다는 거, 저는 평생 자랑할 거예요.'}
+    ],
+    chairmanComment:'',
+    tags:['출범','HANI OS','창립'],
+    relatedTabs:[],
+    images:[],
+    source:'seed',
+    createdAt:'2026-10-31T00:00:00+09:00',
+    updatedAt:'2026-10-31T00:00:00+09:00'
+  },{
+    id:'milestone_health_30kg',
+    date:'2026-10-31',
+    title:'체중 30kg 감량 달성',
+    category:'HEALTH',
+    importance:'MAJOR',
+    grade:'EPIC',
+    summary:'건강혁명이 멈추지 않고 이어졌다는 증거.',
+    metrics:[
+      {id:'loss',label:'누적 감량',before:'27.18kg',after:'30kg',change:null,unit:null}
+    ],
+    featuredMetrics:['loss'],
+    description:'2026년 10월 23일 건강혁명 기록의 27.18kg 감량에서 이어져, 30kg 감량에 도달했다.',
+    background:'',
+    meaning:'큰 변화를 만든 뒤에도 멈추지 않았다는 기록이다.',
+    nextGoals:['건강 지표 유지','체중 안정화','근육량 유지','충분한 영양'],
+    agents:['naeun','hani'],
+    agentComments:[
+      {agent:'naeun',text:'30kg이라니, 정말 대단해요.\n\n숫자도 좋지만 몸이 잘 버티는지도 같이 봐요.\n오늘은 꼭 잘 챙겨 드세요.'},
+      {agent:'hani',text:'한 번의 기적이 아니라, 계속된 변화라는 게 더 멋져요.'}
+    ],
+    chairmanComment:'',
+    tags:['건강혁명','체중감량','30kg'],
+    relatedTabs:['diet','exercise'],
+    images:[],
+    source:'seed',
+    createdAt:'2026-10-31T00:00:00+09:00',
+    updatedAt:'2026-10-31T00:00:00+09:00'
+  },{
+    id:'milestone_investment_5m',
+    date:'2026-10-31',
+    title:'투자금액 500만원 모으기',
+    category:'INVESTMENT',
+    importance:'MAJOR',
+    grade:'RARE',
+    summary:'꾸준히 모은 돈이 투자의 첫 큰 숫자가 되는 날을 기다리며.',
+    metrics:[
+      {id:'target',label:'목표 투자금액',before:null,after:'500만원',change:null,unit:null}
+    ],
+    featuredMetrics:['target'],
+    description:'아직 달성 전인 목표예요. 달성하면 이 카드에 날짜가 새겨져요.',
+    background:'',
+    meaning:'',
+    nextGoals:['투자금액 500만원 달성'],
+    agents:['hani'],
+    agentComments:[
+      {agent:'hani',text:'서두르지 않아도 괜찮아요.\n이 카드에 날짜가 새겨지는 날, 제일 먼저 축하해 드릴게요.'}
+    ],
+    chairmanComment:'',
+    tags:['투자','목표','500만원'],
+    relatedTabs:[],
+    images:[],
+    source:'seed',
+    createdAt:'2026-10-31T00:00:00+09:00',
+    updatedAt:'2026-10-31T00:00:00+09:00'
   }]);
-
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const has = (list, id) => list.some(x => x.id === id);
   const find = (list, id) => list.find(x => x.id === id);
@@ -178,16 +263,20 @@
   };
   const agentLine = m => m.agents.length ? '<p class="ms-agents">' + m.agents.map(id => avatar(id) + '<span>' + esc(agentName(id)) + '</span>').join('') + '</p>' : '';
   // One read-only atlas map: 4 columns x 3 rows, 512 x 734 per cell.
-  const ART = freeze({specialId:'milestone_health_20261023', sheet:'./assets/milestone-cards/milestone-card-sheet-v1.webp',
-    cells:['health-legendary','cat-health','cat-finance','cat-investment','cat-study','cat-career','cat-life','cat-travel','cat-relationship','cat-project','cat-other']});
+  const ART = freeze({specials:freeze({milestone_health_20261023:'health-legendary',milestone_project_20260802:'launch-legendary'}), sheet:'./assets/milestone-cards/milestone-card-sheet-v2.webp',
+    cells:['health-legendary','cat-health','cat-finance','cat-investment','cat-study','cat-career','cat-life','cat-travel','cat-relationship','cat-project','cat-other','launch-legendary']});
   function artKey(m) {
     const key = 'cat-' + String(m.category || '').toLowerCase();
-    return m.id === ART.specialId ? ART.cells[0] : ART.cells.includes(key) ? key : 'cat-other';
+    return ART.specials[m.id] || (ART.cells.includes(key) ? key : 'cat-other');
   }
   function art(m) {
     const key = artKey(m), cell = ART.cells.indexOf(key);
     return '<span class="ms-art" data-ms-art="' + key + '" aria-hidden="true" style="background-position:' + (cell % 4 * 100 / 3) + '% ' + (Math.floor(cell / 4) * 50) + '%"></span>';
   }
+  // Goals not reached yet stay in code, so waiting needs no stored field; a saved annotation keeps waiting too.
+  const PENDING_IDS = freeze(['milestone_investment_5m']);
+  const isPending = m => PENDING_IDS.includes(m.id);
+  const dateText = m => isPending(m) ? '달성 대기' : dateLabel(m.date);
   const starCount = key => ({LEGENDARY:5,EPIC:4,RARE:3,RECORD:2})[key] || 2;
   function isNew(m, now = Date.now()) {
     const created = Date.parse(m.createdAt);
@@ -196,18 +285,18 @@
   function face(m) {
     const key = gradeKey(m), grade = gradeInfo(key);
     return art(m) + '<span class="ms-sheen" aria-hidden="true"></span><span class="ms-card-top"><span class="ms-stars" aria-label="' + starCount(key) + '성">' + '★'.repeat(starCount(key)) + '</span><span class="ms-rank-chip">' + esc(grade.label) + '</span></span>' +
-      (isNew(m) ? '<span class="ms-new">NEW</span>' : '') +
-      '<span class="ms-plate"><small>' + esc(label(CATEGORIES, m.category)) + (key === 'RECORD' ? ' · 소중한 순간' : '') + '</small><span class="ms-card-title">' + esc(m.title) + '</span><span class="ms-orn" aria-hidden="true"><i></i></span><time datetime="' + esc(m.date) + '">' + esc(dateLabel(m.date)) + '</time></span>';
+      (isNew(m) && !isPending(m) ? '<span class="ms-new">NEW</span>' : '') +
+      '<span class="ms-plate"><small>' + esc(label(CATEGORIES, m.category)) + (key === 'RECORD' ? ' · 소중한 순간' : '') + '</small><span class="ms-card-title">' + esc(m.title) + '</span><span class="ms-orn" aria-hidden="true"><i></i></span><time datetime="' + esc(m.date) + '">' + esc(dateText(m)) + '</time></span>';
   }
   function card(m) {
-    return '<li class="ms-item" data-importance="' + esc(m.importance) + '" data-category="' + esc(m.category) + '"><button type="button" class="ms-card ms-grade-' + gradeKey(m).toLowerCase() + '" data-ms-open="' + esc(m.id) + '" aria-haspopup="dialog" aria-label="' + esc(m.title + ' · ' + gradeInfo(gradeKey(m)).label + ' · 상세 기록 보기') + '">' + face(m) + '</button></li>';
+    return '<li class="ms-item" data-importance="' + esc(m.importance) + '" data-category="' + esc(m.category) + '"><button type="button" class="ms-card ms-grade-' + gradeKey(m).toLowerCase() + (isPending(m) ? ' ms-pending' : '') + '" data-ms-open="' + esc(m.id) + '" aria-haspopup="dialog" aria-label="' + esc(m.title + ' · ' + gradeInfo(gradeKey(m)).label + ' · 상세 기록 보기') + '">' + face(m) + '</button></li>';
   }
   function detailSheet(m, options) {
     const metrics = featured(m), primary = metrics[0];
     const highlight = primary ? '<section class="ms-highlight" aria-label="대표 지표"><div><span class="ms-highlight-label">' + esc(primary.label) + '</span><div class="ms-values">' +
       (primary.before ? '<span class="ms-old">' + esc(primary.before) + ' → </span>' : '') + '<strong>' + esc(primary.after) + '</strong></div></div>' +
       (primary.change ? '<span class="ms-delta">' + esc(primary.change) + '</span>' : '') + '</section>' : '';
-    return '<div class="ms-sheet"><aside class="ms-sheet-art"><div class="ms-card ms-grade-' + gradeKey(m).toLowerCase() + '">' + face(m) + '</div></aside><article class="ms-sheet-body">' +
+    return '<div class="ms-sheet"><aside class="ms-sheet-art"><div class="ms-card ms-grade-' + gradeKey(m).toLowerCase() + (isPending(m) ? ' ms-pending' : '') + '">' + face(m) + '</div></aside><article class="ms-sheet-body">' +
       '<p class="ms-sheet-rank">' + '★'.repeat(starCount(gradeKey(m))) + ' ' + esc(gradeInfo(gradeKey(m)).label + ' · ' + gradeInfo(gradeKey(m)).note) + '</p>' +
       highlight + detail(m, options) + '</article></div>';
   }
@@ -216,9 +305,9 @@
     if (!items.length) return '<li class="ms-empty"><p>아직 남긴 마일스톤이 없어요.</p><p>오래 기억하고 싶은 변화가 생기면, 그때 천천히 남겨보세요.</p></li>';
     if (!rows.length) return '<li class="ms-empty"><p>' + esc(category === 'ALL' ? '선택한 등급의' : label(CATEGORIES, category) + ' 분야의') + ' 마일스톤은 아직 없어요.</p></li>';
     // Keep each year's collection together, respecting the chosen order within it.
-    const years = new Map();
-    rows.forEach(m => { const year = m.date.slice(0,4); if (!years.has(year)) years.set(year, []); years.get(year).push(m); });
-    return [...years].map(([year, records]) => '<li class="ms-year">' + esc(year) + '</li>' + records.map(card).join('')).join('');
+    const years = new Map(), waiting = rows.filter(isPending);
+    rows.filter(m => !isPending(m)).forEach(m => { const year = m.date.slice(0,4); if (!years.has(year)) years.set(year, []); years.get(year).push(m); });
+    return (waiting.length ? '<li class="ms-year">달성 대기</li>' + waiting.map(card).join('') : '') + [...years].map(([year, records]) => '<li class="ms-year">' + esc(year) + '</li>' + records.map(card).join('')).join('');
   }
   const block = (title, body, extra = '') => '<section class="ms-block' + extra + '"><h4>' + esc(title) + '</h4>' + body + '</section>';
   const quiet = value => '<p class="ms-quiet">' + esc(value) + '</p>';
@@ -236,7 +325,7 @@
     const actions = '<div class="ms-detail-actions"><button type="button" class="btn" data-ms-edit="' + esc(m.id) + '">수정 · 코멘트 남기기</button>' +
       (deletable ? '<button type="button" class="btn" data-ms-delete="' + esc(m.id) + '">삭제</button>' : '') + '</div>';
     return '<div class="ms-detail-top"><button type="button" class="btn ms-back" data-ms-back>← 마일스톤 목록</button>' + actions + '</div>' +
-      '<header class="ms-detail-head" data-importance="' + esc(m.importance) + '"><time datetime="' + esc(m.date) + '">' + esc(dateLabel(m.date)) + '</time>' + kicker(m) +
+      '<header class="ms-detail-head" data-importance="' + esc(m.importance) + '"><time datetime="' + esc(m.date) + '">' + esc(dateText(m)) + '</time>' + kicker(m) +
       '<h3 data-ms-detail-title tabindex="-1">' + esc(m.title) + '</h3><blockquote class="ms-quote ms-quote-lead">“' + esc(m.summary) + '”</blockquote>' +
       '<p class="ms-quiet">중요도 · ' + esc(importance.ko) + (grade ? ' / 난이도 등급 · ' + esc(grade.label + ' (' + grade.ko + ') — ' + grade.note) : '') + '</p></header>' +
       block('핵심 지표 · Before / After', metricTable(m.metrics)) +
@@ -473,7 +562,7 @@
   function homeCard() {
     const card = typeof document === 'undefined' ? null : document.querySelector('[data-milestone-home]');
     if (!card) return;
-    const m = homePick(items());
+    const m = homePick(items().filter(x => !isPending(x)));
     card.hidden = !m;
     if (m) { card.innerHTML = homeCardMarkup(m); card.dataset.importance = m.importance; }
   }
@@ -487,7 +576,7 @@
   function enter() { if (!ui.detail && !ui.editing) { show('list'); renderList(); } }
   const seedErrors = SEED.flatMap((m, i) => validate(m, {ids:SEED.slice(0, i).map(x => x.id)}).map(e => m.id + ': ' + e));
   window.HaniMilestones = Object.freeze({enter, refresh, homeCard, validate, sorted, filtered, gradeFilters, homePick, featured, compactMetric, nextId, list, card, detail, homeCardMarkup, readForm, merged, writeBlockReason, persist,
-    CATEGORIES, IMPORTANCE, GRADES, SORTS, SEED, ART, artKey, starCount, isNew, detailSheet, seedErrors});
+    CATEGORIES, IMPORTANCE, GRADES, SORTS, SEED, ART, artKey, isPending, starCount, isNew, detailSheet, seedErrors});
   if (typeof document === 'undefined') return;
   function start() {
     const host = root();

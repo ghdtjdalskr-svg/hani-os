@@ -43,11 +43,16 @@ try {
     assert.equal(await page.locator('#milestones > .ds-main-character-banner').count(),1,tag+' canonical hero');
     assert.match(await page.locator('#milestones > .ds-main-character-banner .ds-main-character-banner__scene img').getAttribute('src'),/milestones-226w-a3\.webp/);
     assert.equal(await page.locator('[data-ms-grade]').count(),4);
-    assert.equal(await page.locator('.ms-item').count(),8);
+    assert.equal(await page.locator('.ms-item').count(),11);
+    assert.equal(await page.locator('.ms-pending').count(),1,tag+' one waiting card');
+    assert.match(await page.locator('.ms-pending').innerText(),/달성 대기/);
+    assert.equal(await page.locator('[data-ms-open="milestone_project_20260802"] [data-ms-art="launch-legendary"]').count(),1);
     for (const category of ['ALL','HEALTH','LIFE','TRAVEL']) {
       await page.locator('[data-ms-filter="'+category+'"]').click();
-      const expected=category==='ALL'?2:category==='TRAVEL'?0:1;
+      const base=category==='ALL'?2:category==='TRAVEL'?0:1;
+      const seeds={LEGENDARY:{ALL:1},EPIC:{ALL:1,HEALTH:1},RARE:{ALL:1},RECORD:{}};
       for (const grade of ['LEGENDARY','EPIC','RARE','RECORD']) {
+        const expected=base+(seeds[grade][category]||0);
         const button=page.locator('[data-ms-grade="'+grade+'"]'); await button.click();
         assert.equal(await button.getAttribute('aria-pressed'),'true');
         assert.equal(await page.locator('.ms-item').count(),expected,tag+'/'+category+'/'+grade);
@@ -59,7 +64,7 @@ try {
     }
     await page.locator('[data-ms-filter="ALL"]').click();
     await page.locator('[data-ms-sort]').selectOption('newest');
-    const cards=page.locator('.ms-item > [data-ms-open]'), first=cards.first();
+    const first=page.locator('.ms-item > [data-ms-open="milestone_health_20261023"]');
     for (const [grade,stars] of [['legendary',5],['epic',4],['rare',3],['record',2]]) {
       assert.equal(await page.locator('.ms-item > .ms-grade-'+grade+' .ms-stars').first().innerText(),'★'.repeat(stars));
     }
