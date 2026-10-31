@@ -4,8 +4,21 @@ export function readPhoneLabels(){
  const map=document.getElementById('haniOfficeMap'),floor=map.getBoundingClientRect(),phone=matchMedia('(max-width:600px)').matches;
  const visible=n=>!n.hidden&&getComputedStyle(n).display!=='none'&&getComputedStyle(n).visibility!=='hidden';
  const rect=n=>{const r=n.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height}};
+ // Independently measure the unanimated layout box, then apply only the static
+ // facing turn. Animated getBoundingClientRect includes breathe/dip/hop and can
+ // change nearest-owner ties even while the scheduler and label remain still.
+ // Use measured CSS dimensions/pivot/rotate, never the runtime placement result.
+ const stableHead=(a,sprite)=>{
+  if(!Number.isFinite(sprite.offsetWidth))return rect(sprite); // DOM-only fixtures
+  const body=rect(a),style=getComputedStyle(sprite),width=body.width,height=body.height;
+  const left=body.left+sprite.offsetLeft,top=body.top+sprite.offsetTop;
+  const pivot=[parseFloat(style.getPropertyValue('--idle-pivot-x'))/100*width,parseFloat(style.getPropertyValue('--idle-pivot-y'))/100*height],angle=(parseFloat(style.rotate)||0)*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle);
+  const x=left+pivot[0],y=top+pivot[1],points=[[left,top],[left+width,top],[left+width,top+height],[left,top+height]].map(([a,b])=>[x+(a-x)*c-(b-y)*s,y+(a-x)*s+(b-y)*c]);
+  const xs=points.map(p=>p[0]),ys=points.map(p=>p[1]),l=Math.min(...xs),r=Math.max(...xs),t=Math.min(...ys),b=Math.max(...ys);
+  return {left:l,right:r,top:t,bottom:b,width:r-l,height:b-t};
+ };
  const actors=[...document.querySelectorAll('#haniOfficeActors .hani-office-actor')].filter(a=>!a.hidden);
- const used=new Set(),rows=actors.map(a=>{const name=a.querySelector('.hani-office-name'),status=a.querySelector('.hani-office-status'),dot=a.querySelector('.hani-office-status-dot'),sprite=a.querySelector('.hani-office-sprite'),head=rect(sprite),box=rect(name),shown=visible(name);return {id:a.dataset.person,mode:a.dataset.labelMode,partner:a.dataset.partner||null,greeting:a.dataset.greeting==='true',speaking:a.dataset.speaking==='true',visitor:a.dataset.visitor==='true',nameShown:shown,statusShown:visible(status),dotShown:visible(dot),text:a.officeName.textContent+a.officeCompact.textContent,short:a.querySelector('.hani-office-compact-line').textContent,expected:' · '+HaniBuildingScene.labels.short(status.dataset.full,used),actorHeight:a.getBoundingClientRect().height,full:status.dataset.full,title:name.title,name:a.officeName.textContent,box,head,font:parseFloat(getComputedStyle(name).fontSize),distance:Math.hypot((box.left+box.right)/2-(head.left+head.right)/2,(box.top+box.bottom)/2-head.top)}});
+ const used=new Set(),rows=actors.map(a=>{const name=a.querySelector('.hani-office-name'),status=a.querySelector('.hani-office-status'),dot=a.querySelector('.hani-office-status-dot'),sprite=a.querySelector('.hani-office-sprite'),head=stableHead(a,sprite),box=rect(name),shown=visible(name);return {id:a.dataset.person,mode:a.dataset.labelMode,partner:a.dataset.partner||null,greeting:a.dataset.greeting==='true',speaking:a.dataset.speaking==='true',visitor:a.dataset.visitor==='true',nameShown:shown,statusShown:visible(status),dotShown:visible(dot),text:a.officeName.textContent+a.officeCompact.textContent,short:a.querySelector('.hani-office-compact-line').textContent,expected:' · '+HaniBuildingScene.labels.short(status.dataset.full,used),actorHeight:a.getBoundingClientRect().height,full:status.dataset.full,title:name.title,name:a.officeName.textContent,box,head,font:parseFloat(getComputedStyle(name).fontSize),distance:Math.hypot((box.left+box.right)/2-(head.left+head.right)/2,(box.top+box.bottom)/2-head.top)}});
  for(const [i,a]of actors.entries())Object.assign(rows[i],{nameTextShown:visible(a.officeName),shortShown:visible(a.officeCompact),nameAria:a.querySelector('.hani-office-name').getAttribute?.('aria-label'),actorAria:a.getAttribute?.('aria-label'),statusTitle:a.querySelector('.hani-office-status').title});
  // Independent browser geometry: only a text pill with insufficient top space
  // may leave the head radius, beside/below its uniquely nearest sprite.
