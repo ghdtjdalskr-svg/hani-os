@@ -106,7 +106,7 @@ html[data-theme="dark"] .ilbo-nameplate-illustrated .ilbo-eyebrow { color:#ded3e
 .ilbo-archive { max-width:1140px; margin:24px auto; }
 .ilbo-archive .btn { margin:0 8px 10px 0; white-space:normal; }
 .ilbo-home-card { display:flex; align-items:center; justify-content:space-between; gap:16px; border:1px solid var(--line,#e8ebf2); border-left:4px solid var(--text,#202638); padding:18px 22px; margin-bottom:18px; background:var(--panel,#fff); flex-wrap:wrap; }
-.ilbo-home-card h3 { font-family:Georgia,'Noto Serif KR',Batang,serif; margin:5px 0; font-size:20px; }
+.ilbo-home-card h3 { font-family:inherit; margin:5px 0; font-size:20px; }
 .ilbo-home-card p { margin:5px 0; color:var(--ilbo-note); line-height:1.7; }
 .ilbo-home-card small { color:var(--ilbo-note); }
 .ilbo-paper button,.ilbo-toolbar button,.ilbo-archive button,.ilbo-home-card button { color:var(--ilbo-ink); background:var(--panel,#fff); border:1px solid currentColor; }
