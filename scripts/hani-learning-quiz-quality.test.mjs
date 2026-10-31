@@ -135,6 +135,33 @@ test('canonical context tolerates formatting, preserves question focus and never
   assert.equal(api.canonicalNewsContext(ambiguous,[source,{...source,source_id:'N2'}]),ambiguous);
 });
 
+test('canonical context keeps the news summary to a full sentence and stays inside the prompt limit', () => {
+  const sentence=i=>`${i}번째 문장에서 코스피는 3.25% 올랐고 외국인 수급이 시장을 이끌었다는 내용이 이어진다. `;
+  const long=Array.from({length:40},(_,i)=>sentence(i+1)).join('').slice(0,700);
+  const withSummary=summary=>({...source,summary});
+  const summaryOf=prompt=>prompt.slice(prompt.indexOf('[뉴스 요약] ')+'[뉴스 요약] '.length,prompt.indexOf('\n[질문]'));
+
+  const longSource=withSummary(long), out=api.canonicalNewsContext(news(longSource),[longSource]);
+  const shown=summaryOf(out.prompt);
+  assert.ok(shown.length>260&&shown.length<=700);
+  assert.ok(shown.endsWith('이어진다.'),shown.slice(-30));
+  assert.ok(long.startsWith(shown));
+  assert.ok(out.prompt.includes(long.slice(0,260)),'client hasNewsMaterial still matches');
+  assert.equal(api.newsMaterialCount([out],[longSource]),1);
+
+  const focus='금리 변화가 시장에 미친 영향은 무엇인가요? '.repeat(14);
+  const crowded=news(longSource); crowded.prompt=crowded.prompt.replace(/\[질문\][^]*$/,`[질문] ${focus}`);
+  const tight=api.canonicalNewsContext(crowded,[longSource]);
+  assert.ok(tight.prompt.length<=1200);
+  assert.ok(tight.prompt.includes(long.slice(0,260)));
+  assert.ok(summaryOf(tight.prompt).endsWith('.'));
+
+  const unbroken=withSummary('가'.repeat(700)), cut=api.canonicalNewsContext(news(unbroken),[unbroken]);
+  assert.ok(summaryOf(cut.prompt).endsWith('…'));
+  const natural=withSummary('코스피는 3.25% 올랐고 '.repeat(30).slice(0,420)+' 마감');
+  assert.equal(summaryOf(api.canonicalNewsContext(news(natural),[natural]).prompt),natural.summary);
+});
+
 test('actual server accepts five formatted news questions for basic twenty-question set instead of returning 502', async () => {
   const questions=[...Array.from({length:5},()=>{const q=news(); q.prompt=q.prompt.replace(/ /g,'\r\n'); return q;}),...Array.from({length:15},concept)];
   const fixture=server(questions);
