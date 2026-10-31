@@ -1,3 +1,20 @@
 {
-  "issues": []
+  "issues": [
+    {
+      "number": 1,
+      "publishDate": "2026-11-01",
+      "week": "2026-10-26~10-30",
+      "image": "001",
+      "title": "금리 동결과 빅테크 실적에 출렁인 한 주",
+      "alt": "10월 5주차 주간 시황 4컷. 미 금리 동결과 한국 3분기 GDP 1.0% 성장 속 코스피는 한 주 3.25% 오른 5,730.74, 코스닥은 3.63% 내린 724.38에 마감했다. S&P500은 0.57%, 나스닥은 2.00% 내렸고 원/달러 환율은 1,334.3원을 기록했다.",
+      "sources": [
+        {"label": "아시아경제 · 코스피, 외국인 1.6조 순매도에 하락…5730선 마감", "url": "https://view.asiae.co.kr/article/2026103016084854064"},
+        {"label": "서울파이낸스 · 원·달러 환율 1334.3원 마감", "url": "https://www.seoulfn.com/news/articleView.html?idxno=641491"},
+        {"label": "Reuters · Wall Street closes sharply lower as AI cash burn fears spark tech selloff", "url": "https://finance.yahoo.com/markets/stocks/articles/nasdaq-futures-sink-amazon-intel-114737736.html"},
+        {"label": "CNBC · Fed holds rates steady", "url": "https://www.cnbc.com/2026/10/28/fed-interest-rate-decision-october-2026.html"},
+        {"label": "한국일보 · 3분기 GDP 1.0% '깜짝 성장'", "url": "https://www.hankookilbo.com/news/article/A2026102707580003481"},
+        {"label": "미국 노동통계국 · 고용보고서 발표 일정", "url": "https://www.bls.gov/schedule/news_release/empsit.htm"}
+      ]
+    }
+  ]
 }
