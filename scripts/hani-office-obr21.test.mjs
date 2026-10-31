@@ -8,17 +8,37 @@ import {spriteBox,boxesOverlap} from './hani-office-obr21-geometry.mjs';
 const {scene,context,table}=loadScene(),s=scene.scheduler;
 let writes=0;const deny=()=>{writes++;throw Error('forbidden persistence/network')};
 context.localStorage=context.sessionStorage={setItem:deny,removeItem:deny,clear:deny};context.fetch=deny;
+// Exact reviewed line replacements, not additional excluded functions/ranges.
+// Restore only those lines, then retain the original non-placement SHA check.
+const motionDeltaBytes=fs.readFileSync('scripts/fixtures/office-motion-1-source-delta.json');
+assert.equal(createHash('sha256').update(motionDeltaBytes).digest('hex'),'9584a771eeaed23ab1ae60e9d79ad3f67d8971b962fbde1b648b229d4891dd23');
+const motionDelta=JSON.parse(motionDeltaBytes);
+function restoreMotionDelta(source){
+ const lines=source.match(/[^\n]*\n|[^\n]+$/g);
+ for(const change of motionDelta.changes.toReversed()){
+  assert.deepEqual(lines.slice(change.afterLine,change.afterLine+change.after.length),change.after,'only exact reviewed movement lines are allowed at '+change.afterLine);
+  lines.splice(change.afterLine,change.after.length,...change.before);
+ }
+ return lines.join('');
+}
 test('obr21 authored full absent/present plans and reverse snapshots match frozen delta',()=>{
  const bytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-obr21-plans.json.gz'));
  assert.equal(createHash('sha256').update(bytes).digest('hex'),'96cc69c5af8240b3d1175430468f97a4a6abc7a54f8f24152e9c872bc54c820d');
  const frozen=JSON.parse(bytes),source=fs.readFileSync('hani-office-live.js','utf8');
  // Phone placement/slot measurements are covered by geometry + owner tests.
- // Keep every byte outside those two UI functions frozen (scheduler included).
+ // Outside those two UI functions, allow only the pinned movement line list.
+ // Every other byte (including the scheduler) retains its original hash.
  const begin=source.indexOf('  function placeStatusLabels('),end=source.indexOf('  const scheduler=',begin);
  const fit=source.indexOf('  function fitStatusLabels('),fitEnd=source.indexOf('  if(buildingChairmanSlot())people.push',fit);
  assert.ok(begin>0&&end>begin);assert.equal(frozen.sourceSha256,'0a62148d8e9b130c6bb8a8d6ece1af0383e1fea7c978194481eca447efbc38b5');
  assert.ok(fit>end&&fitEnd>fit);
- assert.equal(createHash('sha256').update(source.slice(0,begin)+source.slice(end,fit)+source.slice(fitEnd)).digest('hex'),'45a476de1e7ae5d1ac9a72a5828c188643e5267a3ee4cccc58bd6bc10483d5d4','all non-placement/measurement source bytes stay frozen');
+ const checked=source.slice(0,begin)+source.slice(end,fit)+source.slice(fitEnd);
+ assert.equal(motionDelta.beforeSha256,'45a476de1e7ae5d1ac9a72a5828c188643e5267a3ee4cccc58bd6bc10483d5d4');
+ assert.equal(createHash('sha256').update(restoreMotionDelta(checked)).digest('hex'),motionDelta.beforeSha256,'all non-placement/measurement source bytes stay frozen except exact reviewed movement lines');
+ // Both edits to authorized lines and edits elsewhere must still be rejected.
+ const first=motionDelta.changes.find(c=>c.after.length&&c.after[0].trim());
+ assert.throws(()=>restoreMotionDelta(checked.replace(first.after[0],first.after[0].replace(/\S/,'!'))));
+ assert.notEqual(createHash('sha256').update(restoreMotionDelta(checked.replace('/* V2 metadata','/* tampered V2 metadata'))).digest('hex'),motionDelta.beforeSha256);
  for(const r of frozen.records){const api=loadScene().scene.scheduler,f=api.plan(r.day,r.options),o=api.blockPlan(r.day,0,f,r.options);
   assert.equal(JSON.stringify(f),JSON.stringify(r.formal),r.label+' formal');assert.equal(JSON.stringify(o),JSON.stringify(r.outings),r.label+' outings');
   for(const row of r.snapshots.toReversed())assert.equal(JSON.stringify(api.snapshot(at(r.day,row.seconds),r.options)),JSON.stringify(row.snapshot),r.label+' '+row.seconds);
