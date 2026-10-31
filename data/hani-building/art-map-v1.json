@@ -7,6 +7,7 @@
   "floors": {
     "5f": {
       "background": "./assets/building/floor-5f-217.webp",
+      "nightBackground": "./assets/building/floor-5f-night-243.webp",
       "plates": [
         {
           "room": "garden",
