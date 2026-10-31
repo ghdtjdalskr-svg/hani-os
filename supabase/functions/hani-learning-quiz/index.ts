@@ -184,6 +184,15 @@ function newsMaterialCount(questions: any[], sources: any[]) {
   return questions.filter(q => sources.some(s => Object.values(newsSourceChecks(q, s)).every(Boolean))).length;
 }
 
+// End on a whole sentence. The first 260 characters stay intact: the client's hasNewsMaterial and newsSourceChecks match them.
+function newsSummaryForPrompt(summary: string, room: number) {
+  const limit = Math.max(260, Math.min(room, 700));
+  if (summary.length < 700 && summary.length <= limit) return summary;
+  const head = summary.slice(0, limit);
+  const ends = [...head.matchAll(/[.!?…。]["'”’)\]]?(?=\s|$)/g)].map(match => match.index + match[0].length).filter(end => end >= 260);
+  return ends.length ? head.slice(0, ends[ends.length - 1]) : `${head}…`;
+}
+
 // Assemble source display from the supplied archive, not a model's rephrasing.
 // Never promote an unstructured/basic question or invent a source association.
 function canonicalNewsContext(question: any, sources: any[]) {
@@ -198,7 +207,9 @@ function canonicalNewsContext(question: any, sources: any[]) {
   const checks = newsSourceChecks(question, source);
   if (!checks.title || !checks.source_name || !checks.date || !checks.source_url) return question;
   const briefing = source.material === 'macro';
-  const prefix = `[실제 뉴스 · 자료 기준일 ${source.published_at.slice(0,10)}]\n${source.title}\n출처: ${source.source_name}${briefing ? ' · 브리핑 대표 참고출처 · 단일 기사 요약 아님' : ''}\n${briefing ? '[저장된 브리핑 요약]' : '[뉴스 요약]'} ${source.summary.slice(0,260)}\n[질문] ${focus}`;
+  const head = `[실제 뉴스 · 자료 기준일 ${source.published_at.slice(0,10)}]\n${source.title}\n출처: ${source.source_name}${briefing ? ' · 브리핑 대표 참고출처 · 단일 기사 요약 아님' : ''}\n${briefing ? '[저장된 브리핑 요약]' : '[뉴스 요약]'} `;
+  const tail = `\n[질문] ${focus}`;
+  const prefix = `${head}${newsSummaryForPrompt(source.summary, 1200 - head.length - tail.length)}${tail}`;
   if (prefix.length > 1200) return question;
   const citation = `${source.source_name} · 자료 기준일 ${source.published_at.slice(0,10)}`;
   return { ...question, prompt: prefix, explanation: checks.explanation_date && checks.explanation_source_name
