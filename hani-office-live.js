@@ -38,9 +38,27 @@
   }
   const places=Object.freeze(placeTable?.schemaVersion==='office-places-v1'?placeTable.places:[]);
   // Tap speech shares the scene clock (KST). Its catalog and cursors live in memory.
+  function koreaTime(now=new Date()){return new Date(new Date(now).getTime()+32400000)}
   function tapBucket(now=new Date()){
-    const hour=new Date(now.getTime()+32400000).getUTCHours();
+    const hour=koreaTime(now).getUTCHours();
     return hour<7?'night':hour<11?'morning':hour<18?'day':'evening';
+  }
+  // Three fixed washes crossfade using only opacity on the shared scene clock.
+  // Light has its own day: evening is the short sunset, and night starts with
+  // the rooftop night art. Each change eases from the previous wash for ten minutes.
+  const lightSchedule=Object.freeze([['morning',6*60],['day',11*60],['evening',17*60],['night',18*60+30]]);
+  const lightTints=Object.freeze({night:.2,morning:.12,day:0,evening:.2});
+  function officeLight(now=new Date(),reduced=false){
+    const kst=koreaTime(now),minute=kst.getUTCHours()*60+kst.getUTCMinutes()+kst.getUTCSeconds()/60+kst.getUTCMilliseconds()/60000;
+    let index=lightSchedule.length-1;for(let i=0;i<lightSchedule.length;i++)if(minute>=lightSchedule[i][1])index=i;
+    const [phase,start]=lightSchedule[index],t=Math.min(1,((minute-start+1440)%1440)/10),blend=reduced?1:t*t*(3-2*t);
+    const previous=lightSchedule[(index+3)%4][0],tint={morning:0,evening:0,night:0};
+    if(previous!=='day')tint[previous]=lightTints[previous]*(1-blend);
+    if(phase!=='day')tint[phase]=lightTints[phase]*blend;
+    return {phase,tint,rooftopNight:phase==='night'};
+  }
+  function officeBackground(floor,now=new Date()){
+    return floor.id==='5f'&&floor.nightBackground&&officeLight(now).rooftopNight?floor.nightBackground:floor.background;
   }
   function validTapBank(bank,roster){
     if(bank?.schemaVersion!=='office-tap-lines-v1'||!bank.staff||bank.chairman?.id!=='seongmin')return false;
@@ -141,9 +159,33 @@
   });
   const canon=assets?.canon, art=assets?.art, anchors=new Map((canon?.anchors||[]).map(a=>[a.id,a]));
   const eligible=(canon?.people||[]).filter(p=>p.status==='active'&&p.registration==='registered'&&(!window.HaniOrganizationRoster||window.HaniOrganizationRoster.people.some(r=>r.id===p.id)));
-  const floors=canon?Object.freeze(canon.floors.map(f=>Object.freeze({id:f.id,label:f.label,tint:legacyFloors.find(l=>l.id===f.id)?.tint||'#9cbd9a',residents:Object.freeze(eligible.filter(p=>anchors.get(p.homeAnchor)?.floor===f.id).map(p=>p.id)),background:art.floors[f.id].background,production:legacyFloors.find(l=>l.id===f.id)?.background||fallback,fallback}))):legacyFloors;
+  const floors=canon?Object.freeze(canon.floors.map(f=>Object.freeze({id:f.id,label:f.label,tint:legacyFloors.find(l=>l.id===f.id)?.tint||'#9cbd9a',residents:Object.freeze(eligible.filter(p=>anchors.get(p.homeAnchor)?.floor===f.id).map(p=>p.id)),background:art.floors[f.id].background,nightBackground:art.floors[f.id].nightBackground,production:legacyFloors.find(l=>l.id===f.id)?.background||fallback,fallback}))):legacyFloors;
   const seatMaps=canon?Object.freeze(Object.fromEntries(floors.map(f=>[f.id,Object.freeze(canon.anchors.filter(a=>a.floor===f.id&&a.rendererSeat&&a.runtimeAssignable!==false).map(a=>Object.freeze({...a.rendererSeat,...art.anchors[a.id],anchor:a.id,posture:a.posture||(a.type==='seat'||a.type==='desk'?'sitting':'standing'),box:Object.freeze([art.anchors[a.id].x-1.4,art.anchors[a.id].y-1.4,art.anchors[a.id].x+1.4,art.anchors[a.id].y])})))]))):legacySeatMaps;
   const deskSurfaces=canon?Object.fromEntries(canon.floors.map(f=>[f.id,[]])):legacySurfaces;
+  // Monitor centres are absent from the art map. Fractions within the EXISTING
+  // homeFurniture deskBounds, followed by screen size in source pixels. Only
+  // desks with a visible monitor are listed (no rooftop, MIR pod or spare chair).
+  const monitorScreens=Object.freeze({
+    'business-west':[.50,.14,62,44],'business-east':[.50,.14,62,44],
+    'finance-a':[.38,.16,78,50],'finance-b':[.50,.19,96,58],'desk_daon':[.50,.19,96,58],
+    'life-a':[.50,.18,88,54],'life-b':[.50,.18,88,54],'life-c':[.50,.18,88,54],'life-d':[.50,.18,88,54],'desk_yoonseul':[.50,.18,88,54],
+    'dev-lead':[.43,.18,152,58],'dev-build':[.43,.18,152,58],'dev-research':[.43,.18,152,58],
+    'dev-qa':[.50,.16,152,58],'dev-design':[.50,.16,152,58],
+    'ceo-reserved':[.34,.18,80,48],'office_hani':[.40,.18,72,44],
+    'secretary_desk':[.50,.16,82,52],'desk_yuna':[.50,.16,82,52]
+  });
+  function workingMonitors(floorId,entries){
+    const furniture=art?.floors[floorId]?.homeFurniture;if(!furniture)return [];
+    return entries.flatMap(p=>{
+      const seat=p.seat,anchor=seat?.anchor,screen=monitorScreens[anchor],rect=furniture[anchor]?.deskBounds;
+      const owner=anchors.get(anchor)?.rendererSeat?.owner;
+      if(!screen||!rect||p.id!==(owner==='chairman'?'seongmin':owner)||p.activity!=='work'||p.walking||p.travel||p.called||p.pose!=='sitting'||p.deskPartner||p.behaviorKind==='chairman-greeting')return [];
+      if(p.state&&p.state!=='AT_HOME'&&p.state!=='AT_PLACE')return [];
+      const [u,v,width,height]=screen;
+      return [{id:p.id,anchor,x:(rect[0]+(rect[2]-rect[0])*u)/art.width*100,y:(rect[1]+(rect[3]-rect[1])*v)/art.height*100,width:width/art.width*100,height:height/art.height*100}];
+    });
+  }
+  function monitorOpacity(now,reduced=false,visible=true){return (!visible||reduced) ? .42 : .42+.08*Math.sin(Number(now)*Math.PI/6000)}
   function visualPoint(anchor){const point=art?.anchors[anchor.id];return point?[point.x,point.y]:[anchor.x/10,anchor.y/6.4]}
   // Dijkstra over explicit canon edges. Intermediate chairs and stairs are forbidden.
   const routeTrees=new Map(),adjacent=new Map();
@@ -1912,7 +1954,7 @@
     const left=floor.left+(parent?.clientLeft||0)+node.offsetLeft-width/2,top=floor.top+(parent?.clientTop||0)+node.offsetTop-height;
     return {left,right:left+width,top,bottom:top+height,width,height};
   }
-  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,motion:Object.freeze({gait:distanceGait,sample:sampleMotion,createReactions,stableActorBox,stableSpriteBox,stableMascotBox,effectDurations}),labels:Object.freeze({priority:statusLabelPriority,place:placeStatusLabels,short:phoneStatusLine}),places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines})});
+  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,motion:Object.freeze({gait:distanceGait,sample:sampleMotion,createReactions,stableActorBox,stableSpriteBox,stableMascotBox,effectDurations}),atmosphere:Object.freeze({light:officeLight,background:officeBackground,monitors:workingMonitors,opacity:monitorOpacity}),labels:Object.freeze({priority:statusLabelPriority,place:placeStatusLabels,short:phoneStatusLine}),places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines})});
 })();
 /* Read-only Living Office. The Agent Case renderer remains the sole owner of requests, answers and decisions. */
 (() => {
@@ -2128,6 +2170,26 @@
   floorLabel.className="hani-building-floor-label";overflowChip.className="hani-building-overflow";const caption=document.createElement('div');caption.className='hani-building-floor-caption';const presenceNote=document.createElement('small');presenceNote.className='hani-building-presence-note';presenceNote.setAttribute('role','status');presenceNote.hidden=true;caption.append(floorLabel,overflowChip,presenceNote);root.querySelector('.hani-office-scroll').after(caption);
   const foregrounds=[...map.querySelectorAll(".hani-office-foreground")];
   for(const img of foregrounds){img.className='hani-office-foreground';img.hidden=true}
+  // One persistent, non-interactive layer; monitor gradients share one pulse.
+  const atmosphere=document.createElement('div'),washes=new Map(),monitorGlow=document.createElement('div');
+  atmosphere.className='hani-office-atmosphere';atmosphere.setAttribute('aria-hidden','true');
+  for(const phase of ['morning','evening','night']){const wash=document.createElement('div');wash.className='hani-office-wash hani-office-wash-'+phase;atmosphere.append(wash);washes.set(phase,wash)}
+  monitorGlow.className='hani-office-monitor-glow';atmosphere.append(monitorGlow);map.append(atmosphere);
+  let backgroundRequest='',monitorKey='';
+  function updateAtmosphere(now,visible=sceneActive){
+    const light=building.atmosphere.light(now,reduced);atmosphere.dataset.phase=light.phase;
+    for(const [phase,wash] of washes){const opacity=light.tint[phase].toFixed(5);if(wash.style.opacity!==opacity)wash.style.opacity=opacity}
+    const floor=building.floors.find(f=>f.id===activeFloor);
+    if(visible&&backgroundRequest!==floor.id+'|'+building.atmosphere.background(floor,now))setBackground(floor);
+    const monitors=map.dataset.art==='floor'?building.atmosphere.monitors(activeFloor,[...actors.values()].filter(a=>!a.hidden).map(a=>({
+      id:a.dataset.person,seat:building.seatMaps[activeFloor]?.find(s=>s.id===a.dataset.seat),activity:a.dataset.activity,
+      pose:a.dataset.pose,walking:a.dataset.walking==='true',travel:!!a.officeTravel,called:a.dataset.called==='true',
+      state:a.dataset.behavior,deskPartner:a.dataset.partner,behaviorKind:a.dataset.greeting==='true'?'chairman-greeting':''
+    }))):[];
+    const key=activeFloor+'|'+monitors.map(p=>p.anchor).join(',');
+    if(key!==monitorKey){monitorKey=key;monitorGlow.hidden=!monitors.length;monitorGlow.style.backgroundImage=monitors.map(p=>`radial-gradient(ellipse ${p.width*.65}% ${p.height*.8}% at ${p.x}% ${p.y}%, #b8e7ff 0%, #86cfff88 45%, #86cfff00 100%)`).join(',')||'none'}
+    const opacity=building.atmosphere.opacity(now,reduced,visible).toFixed(4);if(monitorGlow.style.opacity!==opacity)monitorGlow.style.opacity=opacity;
+  }
   const rooms=document.createElement('div');rooms.className='hani-building-rooms';root.querySelector('.hani-office-scroll').after(rooms);
   const roomLabels=new Map();
   for(const floor of building.floors){const list=document.createElement('p');list.textContent=[...(building.canon?.floors.find(f=>f.id===floor.id)?.rooms||[]).map(r=>r.label),...(building.art?.floors[floor.id].plates||[]).filter(p=>p.detail).map(p=>p.fullLabel)].join(' · ');rooms.append(list);roomLabels.set(floor.id,list)}
@@ -2160,18 +2222,28 @@
     // Floor selection must load/commit art even when only the tabs are in view.
     // Offscreen motion remains paused by sceneVisible in the shared clock.
     if(!viewVisible())return;
-    const token=++backgroundToken,bg=map.querySelector('.hani-office-background');
-    if(!backgroundCache.has(floor.id))backgroundCache.set(floor.id,(async()=>{
+    const token=++backgroundToken,bg=map.querySelector('.hani-office-background'),source=building.atmosphere.background(floor);
+    const request=floor.id+'|'+source;
+    // Never leave a previous floor/variant showing while its replacement loads.
+    if(backgroundRequest!==request){backgroundRequest=request;bg.hidden=true;map.dataset.art='loading';monitorGlow.hidden=true;for(const entry of plates)entry.plate.hidden=true;for(const entry of deskProps)entry.prop.hidden=true}
+    if(!backgroundCache.has(floor.id))backgroundCache.set(floor.id,new Map());
+    const variants=backgroundCache.get(floor.id);
+    const day=()=>{if(!variants.has(floor.background))variants.set(floor.background,(async()=>{
       const background=await loadImage(floor.background)||await loadImage(floor.production||floor.fallback)||floor.fallback;
-      return {background};
+      return {background,isFloor:background===floor.background};
+    })());return variants.get(floor.background)};
+    if(source===floor.background)day();
+    else if(!variants.has(source))variants.set(source,(async()=>{
+      const background=await loadImage(source);return background?{background,isFloor:true}:day();
     })());
-    backgroundCache.get(floor.id).then(({background})=>{
-      if(token!==backgroundToken||!viewVisible())return;
-      bg.src=background;bg.alt=floor.label+' · HANI 본사';map.dataset.art=background===floor.background?'floor':'fallback';
+    variants.get(source).then(({background,isFloor})=>{
+      if(token!==backgroundToken||floor.id!==activeFloor||source!==building.atmosphere.background(floor)||!viewVisible())return;
+      bg.src=background;bg.hidden=false;bg.alt=floor.label+' · HANI 본사';map.dataset.art=isFloor?'floor':'fallback';
       foregrounds.forEach(img=>{img.hidden=true});
       map.dataset.mask='none';
-      for(const entry of plates)entry.plate.hidden=entry.floor!==floor.id||background!==floor.background;
-      for(const entry of deskProps){entry.prop.hidden=entry.floor!==floor.id||background!==floor.background;if(!entry.prop.hidden&&!entry.prop.src)entry.prop.src=entry.src}
+      for(const entry of plates)entry.plate.hidden=entry.floor!==floor.id||!isFloor;
+      for(const entry of deskProps){entry.prop.hidden=entry.floor!==floor.id||!isFloor;if(!entry.prop.hidden&&!entry.prop.src)entry.prop.src=entry.src}
+      updateAtmosphere(Date.now());
     });
   }
   function updateBuilding(force=false,animate=true){
@@ -2191,7 +2263,7 @@
     for(const [id,list] of roomLabels)list.hidden=id!==activeFloor;
     layoutKey=nextKey;map.dataset.floor=activeFloor;map.style.setProperty("--floor-tint",floor.tint);map.setAttribute("aria-labelledby",floorButtons.get(activeFloor).id);map.setAttribute("aria-label",floor.label);floorLabel.textContent=floor.label;
     const overflow=selected?0:floor.overflow;overflowChip.hidden=!overflow;overflowChip.textContent="+"+overflow;overflowChip.setAttribute("aria-label",`이 층의 다른 직원 ${overflow}명`);
-    for(const entry of plates)entry.plate.hidden=entry.floor!==activeFloor;
+    for(const entry of plates)entry.plate.hidden=entry.floor!==activeFloor||map.dataset.art!=='floor';
     if(!sameFloor)for(const entry of deskProps)entry.prop.hidden=true;
     if(!sameFloor)foregrounds.forEach(img=>{img.hidden=true});
     setBackground(floor);
@@ -2231,6 +2303,7 @@
     for(const actor of actors.values())if(actor.hidden){clearMotion(actor);actor.officeSchedule=null;actor.dataset.partner='';actor.dataset.greeting='false'}
     if(pendingTap){const {actor,selection,floor}=pendingTap;if(floor!==activeFloor||actor.hidden)pendingTap=null;else if(!actionRunning(actor)&&sceneVisible()){pendingTap=null;showBubble(actor,selection)}}
     if(bubblePerson&&actors.get(bubblePerson)?.hidden)closeBubble();
+    updateAtmosphere(now);
     fitStatusLabels();fitBubble();
   }
   function selectFloor(id,animate=false){closeBubble();if(!floorButtons.has(id))return;for(const actor of actors.values())finishTravel(actor);activeFloor=id;updateBuilding(true,animate)}
@@ -2327,6 +2400,7 @@
       const effect=actor.officeReactions.tick(now,reduced,actor.dataset.walking==='true'||!!actor.officeTravel);
       if(effect){if(actor.dataset.motion!==effect.kind)actor.dataset.motion=effect.kind}else delete actor.dataset.motion;
     }
+    updateAtmosphere(now,true);
     map.officeMascotMotion?.({now,reduced,visible:true,actors});
   },100);
   setInterval(changeOne,4200);

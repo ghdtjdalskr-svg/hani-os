@@ -7,6 +7,13 @@
 .hani-office-map{position:relative;width:100%;min-width:0;aspect-ratio:1672/941;overflow:hidden;border:1px solid #d7d1df;border-radius:18px;background:#f8f6f2}
 .hani-office-background,.hani-office-foreground{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
 .hani-office-background{z-index:0}
+.hani-office-background[hidden]{display:none}
+.hani-office-atmosphere{position:absolute;inset:0;z-index:1;pointer-events:none}
+.hani-office-wash,.hani-office-monitor-glow{position:absolute;inset:0;pointer-events:none}
+.hani-office-wash-morning{background:linear-gradient(125deg,#ffe7ae,#fff3d8 65%,transparent)}
+.hani-office-wash-evening{background:linear-gradient(125deg,#ef9b54,#f8bb87 65%,transparent)}
+.hani-office-wash-night{background:#244c87}
+.hani-office-monitor-glow[hidden]{display:none}
 .hani-office-foreground{z-index:8}
 /* No actor stacking context: persistent child labels share the map's layer.
    Margin offsets preserve the atlas foot pivot without transform/translate. */
