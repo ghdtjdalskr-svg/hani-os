@@ -86,11 +86,11 @@ test('chairman remains the official frog: five reactions from actual staff, no i
 
 test('lazy catalog is loaded only once; missing, invalid and network failures retain status speech',async()=>{
  for(const fetch of [async()=>({ok:false}),async()=>{throw Error('missing')},async()=>({ok:true,json:async()=>({schemaVersion:'bad'})})]){
-  let count=0;const instance=model(async(...args)=>{count++;return fetch(...args)}).tapLines.create(roster);
+  let count=0;const instance=model(async(...args)=>{if(args[0].endsWith('/office-tap-lines-v1.json'))count++;return fetch(...args)}).tapLines.create(roster);
   assert.equal(count,0);assert.equal(instance.tap('hani',at('12:00:00')),'');
   await Promise.all([instance.load(),instance.load()]);await instance.load();assert.equal(count,1);assert.equal(instance.tap('hani',at('12:00:00')),'');
  }
- let count=0;const f=fixture('10:00',true,null,actions,{fetch:async()=>{count++;return {ok:false}},setTimeout:()=>{}});await flush();
+ let count=0;const f=fixture('10:00',true,null,actions,{fetch:async url=>{if(url.endsWith('/office-tap-lines-v1.json'))count++;return {ok:false}},setTimeout:()=>{}});await flush();
  f.click('3f');f.show();await flush();assert.equal(count,1);
  const actor=f.visible()[0],dot=actor.querySelector('.hani-office-status-dot');
  f.ids.get('haniOfficeActors').events.click({target:actor});
@@ -129,7 +129,7 @@ test('216/221 action and travel speech take priority; latest queued line shows o
 });
 
 test('rapid first-view taps survive a slow catalog and keep floor bounds at 390 and 1440 (supplied geometry)',async()=>{
- let deliver;const f=fixture('10:00',true,null,actions,{fetch:()=>new Promise(resolve=>{deliver=resolve}),setTimeout:()=>{}});f.click('3f');
+ let deliver;const f=fixture('10:00',true,null,actions,{fetch:url=>url.endsWith('/office-tap-lines-v1.json')?new Promise(resolve=>{deliver=resolve}):Promise.resolve({ok:false}),setTimeout:()=>{}});f.click('3f');
  const actor=f.visible().find(a=>!a.dataset.event),panel=f.root.querySelector('.hani-office-character-bubble');
  for(let i=0;i<3;i++)f.ids.get('haniOfficeActors').events.click({target:actor});
  deliver(await success());await flush();assert.ok(panel.querySelector('p').textContent.includes(bank.staff[actor.dataset.person].tripleTap));

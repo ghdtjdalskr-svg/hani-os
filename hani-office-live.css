@@ -95,6 +95,8 @@
 .hani-office-live{scroll-margin-top:80px}
 .hani-office-map{overflow:hidden}.hani-office-scroll{overflow:visible}
 .hani-building-floor-caption{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.hani-building-drama-caption{flex:1 1 100%;font-size:12px;line-height:17px;color:inherit;overflow-wrap:anywhere}
+.hani-building-drama-caption[hidden]{display:none}
 :root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-office-live{background:#201e2a;border-color:#51445e;color:#f4edf8}
 :root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-office-live-head p,:root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-building-rooms{color:#d7cbe3}
 :root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-building-tabs button{background:#302839;color:#f4edf8;border-color:#685477}

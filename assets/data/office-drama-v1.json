@@ -1,0 +1,749 @@
+{
+  "schemaVersion": "office-drama-v1",
+  "weeks": [
+    {
+      "week": 1,
+      "title": "금요일 네 시, 초록 잎 카드의 비밀",
+      "days": [
+        {
+          "day": 1,
+          "summary": "월요일 아침, 4층 안내 데스크에 담당자 이름 없는 ‘금요일 네 시, 옥상’ 초록 잎 카드가 놓이며 작은 소동이 시작됩니다.",
+          "lines": [
+            {
+              "staffId": "yuna",
+              "floor": "4f",
+              "line": "오늘 아침 데스크에 놓인 초록 잎 카드… 이건 어디로 분류하죠?",
+              "hidden": false
+            },
+            {
+              "staffId": "hani",
+              "floor": "4f",
+              "line": "목적 없는 안건은 이번 범위 밖인데… 이건 잠깐 보류해 둘까♡",
+              "hidden": false
+            },
+            {
+              "staffId": "sua",
+              "floor": "4f",
+              "line": "담당자 빈칸은 못 넘기죠. 금요일 네 시 전까지 꼭 찾아낼게요.",
+              "hidden": false
+            },
+            {
+              "staffId": "minji",
+              "floor": "4f",
+              "line": "하니 전무님 방금 웃으셨죠? 수상한 미소, 첫 장면에 담아 둘게.",
+              "hidden": false
+            },
+            {
+              "staffId": "haru",
+              "floor": "5f",
+              "line": "햇살 각도랑 의자 높이까지 봤어. 금요일에 앉기 딱 좋겠네.",
+              "hidden": true
+            }
+          ]
+        },
+        {
+          "day": 2,
+          "summary": "어제 발견된 초록 잎 카드의 흔적을 따라가던 중, 2층 팬트리와 라운지에서 수상한 다과 준비 정황이 포착됩니다.",
+          "lines": [
+            {
+              "staffId": "jieun",
+              "floor": "2f",
+              "line": "어제 그 초록 잎 카드 건이군요. 다과 예산은 이미 계산 끝났어요.",
+              "hidden": false
+            },
+            {
+              "staffId": "naeun",
+              "floor": "2f",
+              "line": "카페인 없는 따뜻한 차로 골랐어. 쉬실 땐 속이 편해야 하니까.",
+              "hidden": false
+            },
+            {
+              "staffId": "hina",
+              "floor": "2f",
+              "line": "초대장 글씨는 제가 예쁘게 쓸게용♡ 어라, 봉투를 어디 뒀지?",
+              "hidden": false
+            },
+            {
+              "staffId": "yoonseul",
+              "floor": "2f",
+              "line": "찻자리 옆에 둘 작은 시집도 골라 뒀어요. 포스트잇만 뗄게요.",
+              "hidden": false
+            },
+            {
+              "staffId": "taeo",
+              "floor": "1f",
+              "line": "초록 잎 표시가 붙은 다기 상자는 제가 받아서 숨겨 두겠습니다.",
+              "hidden": true
+            }
+          ]
+        },
+        {
+          "day": 3,
+          "summary": "초록 잎 카드와 다기 상자에 이어, 3층 화이트보드에 ‘옥상 3분 산책 동선’ 작전 지도가 등장합니다.",
+          "lines": [
+            {
+              "staffId": "sooyeon",
+              "floor": "3f",
+              "line": "초록 잎 초대장에 다과까지 준비됐으니, 이제 옥상 동선만 남았죠!",
+              "hidden": false
+            },
+            {
+              "staffId": "arin",
+              "floor": "3f",
+              "line": "안내 카드 글자 간격을 조금 넓힐게요. 한눈에 읽기 편해야죠.",
+              "hidden": false
+            },
+            {
+              "staffId": "sua",
+              "floor": "3f",
+              "line": "금요일 네 시 정각 안내 담당까지 적었어요. 이제 빈칸은 없네요.",
+              "hidden": false
+            },
+            {
+              "staffId": "minji",
+              "floor": "3f",
+              "line": "산책 한 번에 작전 지도가 세 장째야. 이 진지함, 놓칠 수 없지.",
+              "hidden": false
+            },
+            {
+              "staffId": "hani",
+              "floor": "4f",
+              "line": "갑자기 생각난 게 있는데, 금요일 네 시 일정은 내가 비워 둘게♡",
+              "hidden": true
+            }
+          ]
+        },
+        {
+          "day": 4,
+          "summary": "금요일 오후 네 시를 하루 앞두고, 비밀 작전이 사실은 회장님을 위한 깜짝 휴식 선물이었다는 전모가 드러납니다.",
+          "lines": [
+            {
+              "staffId": "yuna",
+              "floor": "2f",
+              "line": "초록 잎 카드가 회장님 깜짝 찻자리였군요! 어쩐지 다들 수상했어요.",
+              "hidden": false
+            },
+            {
+              "staffId": "haru",
+              "floor": "2f",
+              "line": "무릎담요랑 찻잔 보온성까지 다 챙겼어. 내일 바로 쓰시면 돼.",
+              "hidden": false
+            },
+            {
+              "staffId": "naeun",
+              "floor": "2f",
+              "line": "달지 않은 다과로 조금만 담았어. 기분 좋게 쉬실 수 있을 거야.",
+              "hidden": false
+            },
+            {
+              "staffId": "hina",
+              "floor": "2f",
+              "line": "내일 카드 드릴 때 떨지 말고 인사해야지! 연습 한 번 더 해볼게용♡",
+              "hidden": false
+            },
+            {
+              "staffId": "seongmin",
+              "floor": "4f",
+              "line": "금요일 네 시엔 밀린 서류나 마저 볼까요. 조용해서 좋겠네요.",
+              "hidden": true
+            }
+          ]
+        },
+        {
+          "day": 5,
+          "summary": "마침내 금요일 오후 네 시, 5층 옥상 정원에서 회장님을 위한 작은 감사 찻자리가 열리며 일주일의 미스터리가 따뜻하게 마무리됩니다.",
+          "lines": [
+            {
+              "staffId": "hani",
+              "floor": "5f",
+              "line": "회장님, 일주일간 준비한 초록 잎 찻자리예요. 범위는 딱 한 시간♡",
+              "hidden": false
+            },
+            {
+              "staffId": "naeun",
+              "floor": "5f",
+              "line": "회장님, 따뜻한 차 먼저 드세요. 오늘만큼은 어깨 힘 쭉 빼시고요.",
+              "hidden": false
+            },
+            {
+              "staffId": "sua",
+              "floor": "5f",
+              "line": "다 같이 적은 감사 카드예요… 칭찬해 주시면 방어력 떨어지는데 헤헤.",
+              "hidden": false
+            },
+            {
+              "staffId": "seongmin",
+              "floor": "5f",
+              "line": "이걸 다 준비했어요? 정말 몰랐네요. 가장 따뜻한 금요일이에요.",
+              "hidden": false
+            },
+            {
+              "staffId": "minji",
+              "floor": "1f",
+              "line": "옥상에서 다 같이 웃는 한 컷, 로비 보드에 걸어 둘게. 완벽한 컷.",
+              "hidden": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "week": 2,
+      "title": "바뀐 택배 상자와 번호 붙은 책갈피",
+      "days": [
+        {
+          "day": 1,
+          "summary": "월요일 아침, 1층 로비에서 수령한 상자 안에 서류 봉투 대신 번호가 적힌 민트색 책갈피 묶음이 들어 있어 작은 소동이 시작됩니다.",
+          "lines": [
+            {
+              "staffId": "taeo",
+              "floor": "1f",
+              "line": "오늘 아침 로비에 온 상자를 열었더니, 웬 책갈피만 가득합니다.",
+              "hidden": false
+            },
+            {
+              "staffId": "sua",
+              "floor": "1f",
+              "line": "채원 솔루션 매니저님, 상자가 바뀌었네요! 주인부터 찾아볼게요.",
+              "hidden": false
+            },
+            {
+              "staffId": "yuna",
+              "floor": "1f",
+              "line": "방금 팬트리로 올라간 상자가 하나 더 있어요. 확인해 볼게요!",
+              "hidden": false
+            },
+            {
+              "staffId": "daon",
+              "floor": "1f",
+              "line": "다행히 구겨진 곳은 없네요. 번호표 순서부터 먼저 확인할게요.",
+              "hidden": false
+            },
+            {
+              "staffId": "yoonseul",
+              "floor": "2f",
+              "line": "어라, 책갈피 상자에 왜 서류 봉투가 있죠? 상자가 바뀌었나 봐요.",
+              "hidden": true
+            }
+          ]
+        },
+        {
+          "day": 2,
+          "summary": "어제 뒤바뀐 상자를 맞교환하러 간 2층에서, 책갈피마다 일련번호와 짧은 독서 질문이 적혀 있다는 사실이 드러납니다.",
+          "lines": [
+            {
+              "staffId": "yoonseul",
+              "floor": "2f",
+              "line": "어제 바뀐 상자 찾아 주셔서 감사해요, 채원 솔루션 매니저님!",
+              "hidden": false
+            },
+            {
+              "staffId": "taeo",
+              "floor": "2f",
+              "line": "윤슬 사원님 덕분에 봉투를 찾았습니다. 그런데 이 번호표는 뭔가요?",
+              "hidden": false
+            },
+            {
+              "staffId": "jieun",
+              "floor": "2f",
+              "line": "책갈피 스무 장, 수량 맞네요. 오래 돌려 볼 목록도 다 준비했어요.",
+              "hidden": false
+            },
+            {
+              "staffId": "haru",
+              "floor": "2f",
+              "line": "손 닿기 편한 높이에 나무 꽂이를 둘 거야. 오가며 고르기 좋게.",
+              "hidden": false
+            },
+            {
+              "staffId": "arin",
+              "floor": "3f",
+              "line": "책갈피 속 한 줄 질문, 글자 간격을 넓히니 훨씬 읽기 편하네요.",
+              "hidden": true
+            }
+          ]
+        },
+        {
+          "day": 3,
+          "summary": "상자 소동 끝에 제자리를 찾은 번호 책갈피가 3층에도 전달되며, 직원들이 아끼는 책의 한 구절을 적는 카드였음이 밝혀집니다.",
+          "lines": [
+            {
+              "staffId": "seoyun",
+              "floor": "3f",
+              "line": "월요일 상자 소동의 번호 책갈피군요. 추천 순서부터 맞춰 보죠.",
+              "hidden": false
+            },
+            {
+              "staffId": "arin",
+              "floor": "3f",
+              "line": "서윤 개발 리드님, 표지 색깔별로 나란히 두면 고르기 쉬울 거예요.",
+              "hidden": false
+            },
+            {
+              "staffId": "serin",
+              "floor": "3f",
+              "line": "비슷한 주제의 책 두 권은 나란히 둘게요. 비교해 보기 좋게요.",
+              "hidden": false
+            },
+            {
+              "staffId": "yuri",
+              "floor": "3f",
+              "line": "일 번부터 스무 번까지 빈 번호는 없네요. 확인 표시 남겨 둘게요.",
+              "hidden": false
+            },
+            {
+              "staffId": "sooyeon",
+              "floor": "5f",
+              "line": "점심 먹고 바람 쐬며 한 장씩 읽기엔 옥상 정원이 역시 최고죠!",
+              "hidden": true
+            }
+          ]
+        },
+        {
+          "day": 4,
+          "summary": "층마다 모인 스무 장의 번호 책갈피와 추천 도서가 4층으로 집결하며, 금요일에 열릴 ‘한 구절 도서 교환 책장’ 준비가 마무리됩니다.",
+          "lines": [
+            {
+              "staffId": "yuna",
+              "floor": "4f",
+              "line": "번호 책갈피 스무 장에 추천 문장까지 다 모였어요! 바로 묶을게요.",
+              "hidden": false
+            },
+            {
+              "staffId": "hani",
+              "floor": "4f",
+              "line": "유나 사원님, 정리 빠르네! 교환 책장 범위는 딱 스무 권만 잡자♡",
+              "hidden": false
+            },
+            {
+              "staffId": "hina",
+              "floor": "4f",
+              "line": "책장 안내문은 제가 예쁘게 적었어용♡ 한눈에 이해하기 쉽겠죠?",
+              "hidden": false
+            },
+            {
+              "staffId": "daon",
+              "floor": "4f",
+              "line": "옥상에 둘 책은 바람에 넘어가지 않게 고정 집게부터 챙길게요.",
+              "hidden": false
+            },
+            {
+              "staffId": "jieun",
+              "floor": "2f",
+              "line": "누가 어떤 책을 골라 가도 헷갈리지 않게 대여 칸까지 맞춰 뒀어요.",
+              "hidden": true
+            }
+          ]
+        },
+        {
+          "day": 5,
+          "summary": "금요일 점심시간, 5층 옥상 정원에 ‘한 구절 도서 교환 책장’이 열리며 상자 착오로 시작된 일주일이 따뜻하게 마무리됩니다.",
+          "lines": [
+            {
+              "staffId": "yoonseul",
+              "floor": "5f",
+              "line": "월요일 상자 소동으로 들통났지만, 드디어 한 구절 책장을 열었어요!",
+              "hidden": false
+            },
+            {
+              "staffId": "taeo",
+              "floor": "5f",
+              "line": "윤슬 사원님이 적으신 첫 번째 책갈피, 제가 먼저 읽어 보겠습니다.",
+              "hidden": false
+            },
+            {
+              "staffId": "haru",
+              "floor": "5f",
+              "line": "다온 사원님이 챙긴 집게 덕분에 바람 불어도 책장이 끄떡없겠어.",
+              "hidden": false
+            },
+            {
+              "staffId": "seongmin",
+              "floor": "5f",
+              "line": "책갈피마다 적은 마음이 참 따뜻하네요. 저도 한 권 빌려 갈게요.",
+              "hidden": false
+            },
+            {
+              "staffId": "jieun",
+              "floor": "2f",
+              "line": "남은 책갈피도 팬트리 옆에 뒀어요. 쉬는 시간에 편히 골라 보세요.",
+              "hidden": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "week": 3,
+      "title": "사라진 나침반 스탬프의 행방",
+      "days": [
+        {
+          "day": 1,
+          "summary": "월요일 오전, 3층 회의실 도구함에 있던 황동 나침반 스탬프가 사라지고 화이트보드 구석에 작은 도장 자국 하나만 남습니다.",
+          "lines": [
+            {
+              "staffId": "yuri",
+              "floor": "3f",
+              "line": "아침에 회의실 도구를 정리하는데, 황동 나침반 스탬프가 안 보여요.",
+              "hidden": false
+            },
+            {
+              "staffId": "seoyun",
+              "floor": "3f",
+              "line": "유리 QA 책임님, 보드 구석에 방금 찍은 듯한 나침반 자국이 있네요.",
+              "hidden": false
+            },
+            {
+              "staffId": "dohyun",
+              "floor": "3f",
+              "line": "스탬프 잉크가 아직 선명해요. 이동 순서를 차근차근 따라가 볼게요.",
+              "hidden": false
+            },
+            {
+              "staffId": "serin",
+              "floor": "3f",
+              "line": "도장 옆에 적힌 ‘창가 세 걸음’ 메모… 아래층 라운지 쪽 같은데요.",
+              "hidden": false
+            },
+            {
+              "staffId": "sooyeon",
+              "floor": "2f",
+              "line": "회의실에서 빌려 온 나침반 스탬프, 첫 번째 쉼표 자리에 꾹 찍었죠!",
+              "hidden": true
+            }
+          ]
+        },
+        {
+          "day": 2,
+          "summary": "어제 3층에서 사라진 나침반 스탬프의 자국이 2층 팬트리 창가에서 발견되지만, 스탬프는 이미 다음 층으로 이동한 뒤입니다.",
+          "lines": [
+            {
+              "staffId": "dohyun",
+              "floor": "2f",
+              "line": "어제 사라진 나침반 스탬프, 팬트리 창가 테이블에도 자국이 있네요.",
+              "hidden": false
+            },
+            {
+              "staffId": "naeun",
+              "floor": "2f",
+              "line": "수연 주임님이 물 마시며 쉬기 좋은 창가라며 도장을 찍고 갔어.",
+              "hidden": false
+            },
+            {
+              "staffId": "haru",
+              "floor": "2f",
+              "line": "도장 찍힌 창가 의자에 푹신한 방석도 뒀어. 잠깐 앉아 쉬기 좋거든.",
+              "hidden": false
+            },
+            {
+              "staffId": "daon",
+              "floor": "2f",
+              "line": "나은 차장님 말씀대로면 분실이 아니네요. 스탬프는 로비로 내려갔어요.",
+              "hidden": false
+            },
+            {
+              "staffId": "taeo",
+              "floor": "1f",
+              "line": "로비 커피 머신 옆 쉼터도 표시 완료했습니다. 다음 층으로 넘길게요.",
+              "hidden": true
+            }
+          ]
+        },
+        {
+          "day": 3,
+          "summary": "3층과 2층을 거친 나침반 스탬프가 1층 로비에서도 목격되며, 층별 숨은 휴식 명소를 잇는 릴레이 지도를 만드는 중임이 밝혀집니다.",
+          "lines": [
+            {
+              "staffId": "serin",
+              "floor": "1f",
+              "line": "위층부터 내려온 나침반 스탬프가 로비 안내판 지도에도 찍혀 있군요!",
+              "hidden": false
+            },
+            {
+              "staffId": "taeo",
+              "floor": "1f",
+              "line": "세린 연구원님, 수연 주임님이 시작한 층별 쉼터 지도 릴레이입니다.",
+              "hidden": false
+            },
+            {
+              "staffId": "sua",
+              "floor": "1f",
+              "line": "분실물이 아니라 다행이네요! 다음 층 전달 담당과 기한도 적어 뒀어요.",
+              "hidden": false
+            },
+            {
+              "staffId": "yuri",
+              "floor": "1f",
+              "line": "회의실 스탬프가 좋은 일에 쓰였네요. 끝나면 제자리로만 돌려주세요.",
+              "hidden": false
+            },
+            {
+              "staffId": "yuna",
+              "floor": "4f",
+              "line": "복도 끝 햇살 잘 드는 창가도 지도에 꾹! 이제 옥상 정원만 남았네요.",
+              "hidden": true
+            }
+          ]
+        },
+        {
+          "day": 4,
+          "summary": "1층부터 4층까지 나침반 도장이 채워진 산책 지도가 4층에 모이고, 스탬프는 마침내 3층 회의실 제자리로 돌아옵니다.",
+          "lines": [
+            {
+              "staffId": "sooyeon",
+              "floor": "4f",
+              "line": "월요일부터 돌던 나침반 스탬프 덕분에 전 층 쉼터 지도가 완성됐어요!",
+              "hidden": false
+            },
+            {
+              "staffId": "yuna",
+              "floor": "4f",
+              "line": "수연 주임님, 처음엔 분실 소동인 줄 알고 놀랐지만 동선이 참 예뻐요.",
+              "hidden": false
+            },
+            {
+              "staffId": "hani",
+              "floor": "4f",
+              "line": "무계획은 낭만이 아니라더니, 쉬는 동선까지 완벽하네. 내일 공개하자♡",
+              "hidden": false
+            },
+            {
+              "staffId": "seongmin",
+              "floor": "4f",
+              "line": "층마다 숨은 쉼터가 이렇게 많았군요. 내일 산책이 기대되네요.",
+              "hidden": false
+            },
+            {
+              "staffId": "arin",
+              "floor": "3f",
+              "line": "돌아온 스탬프는 제자리에 뒀고, 지도 여백만 읽기 편하게 다듬을게요.",
+              "hidden": true
+            }
+          ]
+        },
+        {
+          "day": 5,
+          "summary": "금요일 오후, 나침반 스탬프 지도의 마지막 종착지인 5층 옥상 정원에 직원들이 모여 짧은 산책과 휴식을 나눕니다.",
+          "lines": [
+            {
+              "staffId": "seoyun",
+              "floor": "5f",
+              "line": "월요일 스탬프 실종 사건이 이렇게 멋진 본사 산책 지도로 이어졌네요.",
+              "hidden": false
+            },
+            {
+              "staffId": "sooyeon",
+              "floor": "5f",
+              "line": "서윤 개발 리드님, 마지막 다섯 번째 나침반 도장은 바로 이 옥상이에요!",
+              "hidden": false
+            },
+            {
+              "staffId": "naeun",
+              "floor": "5f",
+              "line": "지도 따라 걸어 올라왔으니, 다 같이 기지개 한 번 쭉 켜고 쉬자.",
+              "hidden": false
+            },
+            {
+              "staffId": "minji",
+              "floor": "5f",
+              "line": "나침반 스탬프 들고 웃는 수연 주임님, 오늘의 베스트 컷으로 남길게.",
+              "hidden": false
+            },
+            {
+              "staffId": "dohyun",
+              "floor": "3f",
+              "line": "회의실 보드 옆에 산책 지도 사본을 붙여 뒀어요. 언제든 보고 걸으세요.",
+              "hidden": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "week": 4,
+      "title": "별표 스티커와 정돈왕의 오해",
+      "days": [
+        {
+          "day": 1,
+          "summary": "월요일 아침, 2층 팬트리 선반과 창가 테이블 모서리에 정체불명의 노란 별표 스티커가 붙어 있어 정돈 채점표라는 오해가 시작됩니다.",
+          "lines": [
+            {
+              "staffId": "haru",
+              "floor": "2f",
+              "line": "오늘 아침 팬트리 선반에 노란 별표 스티커가 붙었어. 정돈 점수인가?",
+              "hidden": false
+            },
+            {
+              "staffId": "jieun",
+              "floor": "2f",
+              "line": "하루 대리님 자리 옆에도 별표가 두 개네요. 팀별 평가라면 질 수 없죠.",
+              "hidden": false
+            },
+            {
+              "staffId": "daon",
+              "floor": "2f",
+              "line": "지은 부장님, 감점 위험을 줄이려면 서류철 각도부터 반듯하게 맞출게요.",
+              "hidden": false
+            },
+            {
+              "staffId": "yoonseul",
+              "floor": "2f",
+              "line": "정돈 시합인가 봐요! 저도 책상 위 참고 도서들을 높이순으로 쌓을게요.",
+              "hidden": false
+            },
+            {
+              "staffId": "hina",
+              "floor": "3f",
+              "line": "라운지 창가 자리도 빛이 참 예쁘네용♡ 여기에도 별표 하나 붙일게요!",
+              "hidden": true
+            }
+          ]
+        },
+        {
+          "day": 2,
+          "summary": "어제 2층에 나타난 별표 스티커가 3층 라운지에서도 발견되자, 층간 친선 정돈 대결이라는 귀여운 오해가 본사 전체로 번집니다.",
+          "lines": [
+            {
+              "staffId": "dohyun",
+              "floor": "3f",
+              "line": "어제 팬트리에서 시작된 별표 스티커 대결이 우리 층까지 올라왔네요.",
+              "hidden": false
+            },
+            {
+              "staffId": "yuri",
+              "floor": "3f",
+              "line": "도연 개발 선임님, 우리도 보드 지우개와 마커부터 반듯하게 줄 세우죠.",
+              "hidden": false
+            },
+            {
+              "staffId": "serin",
+              "floor": "3f",
+              "line": "별표 스티커가 붙은 곳을 비교해 보니, 전부 햇살이 잘 드는 자리예요.",
+              "hidden": false
+            },
+            {
+              "staffId": "arin",
+              "floor": "3f",
+              "line": "세린 연구원님 말씀이 맞네요. 의자 간격까지 맞춰 두면 더 보기 좋겠죠.",
+              "hidden": false
+            },
+            {
+              "staffId": "minji",
+              "floor": "1f",
+              "line": "히나 과장님이 별표 붙여 둔 자리들, 오후 세 시 햇살에 찍으면 완벽해.",
+              "hidden": true
+            }
+          ]
+        },
+        {
+          "day": 3,
+          "summary": "2층과 3층의 정돈 열기가 1층 로비까지 이어지던 중, 별표 스티커를 붙인 주인공이 히나 과장과 민지 대리라는 단서가 포착됩니다.",
+          "lines": [
+            {
+              "staffId": "taeo",
+              "floor": "1f",
+              "line": "층별 별표 스티커 정돈 시합 소식을 듣고 로비 안내 책자도 맞췄습니다.",
+              "hidden": false
+            },
+            {
+              "staffId": "sua",
+              "floor": "1f",
+              "line": "채원 솔루션 매니저님, 우산꽂이 줄도 맞췄어요! 별표 다섯 개는 받겠죠?",
+              "hidden": false
+            },
+            {
+              "staffId": "hina",
+              "floor": "1f",
+              "line": "어라? 왜 다들 줄자를 들고 계세용? 별표는 정돈 점수가 아닌데용♡",
+              "hidden": false
+            },
+            {
+              "staffId": "minji",
+              "floor": "1f",
+              "line": "히나 과장님, 잠깐만! 다들 저렇게 진지한데 진실은 금요일에 공개하자.",
+              "hidden": false
+            },
+            {
+              "staffId": "yuna",
+              "floor": "4f",
+              "line": "작은 나무 액자 스무 개가 도착했어요. 금요일 옥상에 걸릴 사진들이래요!",
+              "hidden": true
+            }
+          ]
+        },
+        {
+          "day": 4,
+          "summary": "별표 스티커가 사실은 정돈 채점표가 아니라 ‘본사 일상 사진전’의 촬영 명소 표시였다는 전모가 밝혀지며 유쾌한 웃음이 번집니다.",
+          "lines": [
+            {
+              "staffId": "yuna",
+              "floor": "4f",
+              "line": "정돈 시합인 줄 알았던 별표 스티커가 사실은 사진전 촬영 자리였군요!",
+              "hidden": false
+            },
+            {
+              "staffId": "hina",
+              "floor": "4f",
+              "line": "맞아용! 다들 책상을 반짝 치워 주셔서 사진이 두 배로 예쁘게 나왔어용♡",
+              "hidden": false
+            },
+            {
+              "staffId": "hani",
+              "floor": "4f",
+              "line": "오해 덕분에 본사 전체가 깨끗해졌네! 히나 과장님, 내일 옥상에서 열자♡",
+              "hidden": false
+            },
+            {
+              "staffId": "jieun",
+              "floor": "4f",
+              "line": "정돈 시합은 아니었지만, 깔끔해진 책상에서 일하니 마음까지 여유롭네요.",
+              "hidden": false
+            },
+            {
+              "staffId": "sooyeon",
+              "floor": "5f",
+              "line": "옥상 정원 난간에 사진 걸 마끈을 팽팽하게 묶었죠! 내일 구경 오세요.",
+              "hidden": true
+            }
+          ]
+        },
+        {
+          "day": 5,
+          "summary": "금요일 오후, 5층 옥상 정원에서 일주일간의 유쾌한 정돈 오해와 따뜻한 일상을 담은 작은 사진전이 열립니다.",
+          "lines": [
+            {
+              "staffId": "minji",
+              "floor": "5f",
+              "line": "별표 스티커 소동 끝에 완성된 일상 사진전, 지금부터 공개할게. 컷!",
+              "hidden": false
+            },
+            {
+              "staffId": "serin",
+              "floor": "5f",
+              "line": "민지 대리님이 찍으신 사진, 마커 줄 맞추던 순간이라 더 정겹네요.",
+              "hidden": false
+            },
+            {
+              "staffId": "naeun",
+              "floor": "5f",
+              "line": "다들 사진 보며 한바탕 웃었으니, 따뜻한 차 마시면서 여유롭게 구경해.",
+              "hidden": false
+            },
+            {
+              "staffId": "seongmin",
+              "floor": "5f",
+              "line": "반듯한 책상보다 다들 함께 웃는 얼굴이 제일 보기 좋네요. 고마워요.",
+              "hidden": false
+            },
+            {
+              "staffId": "yoonseul",
+              "floor": "2f",
+              "line": "전시가 끝나면 사진들을 한 권의 화보집으로 묶어 라운지 책장에 둘게요!",
+              "hidden": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

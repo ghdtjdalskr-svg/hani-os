@@ -70,17 +70,51 @@
       (night.has(id)?list(row.night,2):row.night===undefined)&&line(row.tripleTap)&&line(row.friend))&&
       Array.isArray(bank.chairman.staffReactions)&&bank.chairman.staffReactions.length===5&&bank.chairman.staffReactions.every(r=>r&&ids.has(r.staffId)&&r.staffId!=='seongmin'&&line(r.line));
   }
+  function dramaDate(now=new Date()){
+    const kst=koreaTime(now),date=kst.toISOString().slice(0,10),day=kst.getUTCDay();
+    if(day===0||day===6)return null;
+    const monday=Date.UTC(kst.getUTCFullYear(),kst.getUTCMonth(),kst.getUTCDate()-day+1);
+    const weeks=Math.floor((monday-Date.UTC(2026,10,2))/604800000);
+    return {date,day,week:((weeks%4)+4)%4+1};
+  }
+  function validDramaBank(bank,roster){
+    const text=(s,max)=>typeof s==='string'&&s.trim().length>0&&!/[\r\n]/.test(s)&&Array.from(s).length<=max;
+    if(bank?.schemaVersion!=='office-drama-v1'||!Array.isArray(bank.weeks)||bank.weeks.length!==4)return false;
+    const ids=new Set(roster.map(p=>p.id));
+    return bank.weeks.every((week,i)=>week?.week===i+1&&text(week.title,100)&&Array.isArray(week.days)&&week.days.length===5&&
+      week.days.every((day,j)=>day?.day===j+1&&text(day.summary,200)&&Array.isArray(day.lines)&&day.lines.length===5&&
+        new Set(day.lines.map(row=>row?.staffId)).size===day.lines.length&&day.lines.every(row=>row&&ids.has(row.staffId)&&
+          typeof row.floor==='string'&&/^[1-5]f$/.test(row.floor)&&typeof row.hidden==='boolean'&&text(row.line,40))));
+  }
   function createTapLines(roster){
-    let bank=null,request=null;const cursors=new Map();
+    let bank=null,drama=null,request=null,ready=false,seenDay='',seen=new Set();const cursors=new Map();
     function load(){
-      if(!request)request=(async()=>{try{
+      if(!request)request=Promise.all([(async()=>{try{
         if(typeof fetch!=='function')return;
         const response=await fetch('./assets/data/office-tap-lines-v1.json');
         if(response.ok){const data=await response.json();if(validTapBank(data,roster))bank=data}
-      }catch(_){/* Keep the current status speech when the optional seed is absent. */}})();
+      }catch(_){/* Keep the current status speech when the optional seed is absent. */}})(),(async()=>{try{
+        if(typeof fetch!=='function')return;
+        const response=await fetch('./assets/data/office-drama-v1.json');
+        if(response.ok){const data=await response.json();if(validDramaBank(data,roster))drama=data}
+      }catch(_){/* An absent or invalid drama never changes ordinary office speech. */}})()]).then(()=>{ready=true});
       return request;
     }
-    function tap(id,now=new Date()){
+    function episode(now=new Date()){
+      const selected=drama&&dramaDate(now);if(!selected)return null;
+      const week=drama.weeks[selected.week-1];return {...selected,title:week.title,...week.days[selected.day-1]};
+    }
+    function tap(id,now=new Date(),options={}){
+      // Wait for both optional reads on the UI path so a slow drama cannot lose its first tap.
+      if(options.floor&&!ready)return '';
+      const today=episode(now);
+      if(today){
+        if(seenDay!==today.date){seenDay=today.date;seen=new Set()}
+        const row=today.lines.find(row=>row.staffId===id&&row.floor===options.floor);
+        if(row&&!seen.has(id)&&(id!=='seongmin'||options.chairmanPresent===true)){
+          seen.add(id);return {line:row.line,speaker:id,drama:true,day:today.date,floor:row.floor};
+        }
+      }
       if(!bank)return '';
       const bucket=tapBucket(now),time=now.getTime(),row=bank.staff[id];
       if(id!=='seongmin'&&!row?.[bucket])return '';
@@ -95,7 +129,7 @@
       const turn=cursor.turn++;
       return {line:turn%2?row.toChairman[Math.floor(turn/2)%3]:row[bucket][Math.floor(turn/2)%row[bucket].length],speaker:id};
     }
-    return Object.freeze({load,tap});
+    return Object.freeze({load,tap,episode});
   }
 /* Scene-only model: KST clock and rosters, never persisted. */
 (() => {
@@ -1954,7 +1988,7 @@
     const left=floor.left+(parent?.clientLeft||0)+node.offsetLeft-width/2,top=floor.top+(parent?.clientTop||0)+node.offsetTop-height;
     return {left,right:left+width,top,bottom:top+height,width,height};
   }
-  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,motion:Object.freeze({gait:distanceGait,sample:sampleMotion,createReactions,stableActorBox,stableSpriteBox,stableMascotBox,effectDurations}),atmosphere:Object.freeze({light:officeLight,background:officeBackground,monitors:workingMonitors,opacity:monitorOpacity}),labels:Object.freeze({priority:statusLabelPriority,place:placeStatusLabels,short:phoneStatusLine}),places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines})});
+  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,motion:Object.freeze({gait:distanceGait,sample:sampleMotion,createReactions,stableActorBox,stableSpriteBox,stableMascotBox,effectDurations}),atmosphere:Object.freeze({light:officeLight,background:officeBackground,monitors:workingMonitors,opacity:monitorOpacity}),labels:Object.freeze({priority:statusLabelPriority,place:placeStatusLabels,short:phoneStatusLine}),places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines,dramaDate,validateDrama:validDramaBank})});
 })();
 /* Read-only Living Office. The Agent Case renderer remains the sole owner of requests, answers and decisions. */
 (() => {
@@ -2094,7 +2128,7 @@
   }
   function actionRunning(actor){return meeting||!!actor.officeTravel||actor.dataset.walking==='true'||!!actor.dataset.event||actor.dataset.action&&actor.dataset.action!=='base-work'}
   function bubbleText(actor){
-    if(bubbleSelection&&!actionRunning(actor)){const speaker=actors.get(bubbleSelection.speaker);return (speaker?.dataset.name||actor.dataset.name)+' · '+actor.querySelector('.hani-office-status').dataset.full+' · '+bubbleSelection.line}
+    if(bubbleSelection&&(bubbleSelection.drama||!actionRunning(actor))){const speaker=actors.get(bubbleSelection.speaker);return (speaker?.dataset.name||actor.dataset.name)+' · '+actor.querySelector('.hani-office-status').dataset.full+' · '+bubbleSelection.line}
     return actor.dataset.name+' · '+statusNames[actor.dataset.status]+' · '+actor.querySelector('.hani-office-status').dataset.full;
   }
   function fitBubble(){
@@ -2110,15 +2144,16 @@
   function openBubble(actor){
     if(actor.hidden)return;
     if(!reduced)actor.officeReactions.request('tap',Date.now());
-    pendingTap=null;const now=new Date(),selection=tapLines.tap(actor.dataset.person,now);
-    if(selection&&actionRunning(actor))pendingTap={actor,selection,floor:activeFloor};
+    pendingTap=null;const now=new Date(),floor=activeFloor,options={floor,chairmanPresent:officePresence.read().chairmanPresent},selection=tapLines.tap(actor.dataset.person,now,options);
+    if(selection&&!selection.drama&&actionRunning(actor))pendingTap={actor,selection,floor:activeFloor};
     showBubble(actor,selection||null);
     const serial=bubbleSerial;
     void tapLines.load().then(()=>{
       // Replay taps in order even if the first view is still fetching the seed.
-      const loaded=selection?null:tapLines.tap(actor.dataset.person,now);
+      if(floor!==activeFloor||actor.hidden||!sceneVisible()||building.tapLines.dramaDate(now)?.date!==building.tapLines.dramaDate(new Date())?.date)return;
+      const loaded=selection?null:tapLines.tap(actor.dataset.person,now,{floor,chairmanPresent:officePresence.read().chairmanPresent});
       if(serial!==bubbleSerial||!loaded||actor.hidden||!sceneVisible())return;
-      bubbleSelection=loaded;if(actionRunning(actor))pendingTap={actor,selection:loaded,floor:activeFloor};
+      bubbleSelection=loaded;if(!loaded.drama&&actionRunning(actor))pendingTap={actor,selection:loaded,floor:activeFloor};
       bubbleLine.textContent=bubbleText(actor);fitBubble();
     });
   }
@@ -2168,6 +2203,7 @@
   }
   let activeFloor="4f",floorSnapshot=null,layoutKey="",backgroundToken=0,returnFloor="4f",displayedFloor=null;
   floorLabel.className="hani-building-floor-label";overflowChip.className="hani-building-overflow";const caption=document.createElement('div');caption.className='hani-building-floor-caption';const presenceNote=document.createElement('small');presenceNote.className='hani-building-presence-note';presenceNote.setAttribute('role','status');presenceNote.hidden=true;caption.append(floorLabel,overflowChip,presenceNote);root.querySelector('.hani-office-scroll').after(caption);
+  const dramaCaption=document.createElement('small'),dramaTitle=document.createElement('b'),dramaSummary=document.createElement('span');dramaCaption.className='hani-building-drama-caption';dramaCaption.hidden=true;dramaCaption.append(dramaTitle,dramaSummary);caption.append(dramaCaption);let tapCatalogStarted=false;
   const foregrounds=[...map.querySelectorAll(".hani-office-foreground")];
   for(const img of foregrounds){img.className='hani-office-foreground';img.hidden=true}
   // One persistent, non-interactive layer; monitor gradients share one pulse.
@@ -2247,8 +2283,11 @@
     });
   }
   function updateBuilding(force=false,animate=true){
-    if(sceneVisible())void tapLines.load();
+    if(sceneVisible()&&!tapCatalogStarted){tapCatalogStarted=true;void tapLines.load().then(()=>{if(sceneVisible())updateBuilding(true,false)})}
     const now=new Date(),day=new Date(now.getTime()+32400000).toISOString().slice(0,10);
+    const episode=tapLines.episode(now),dramaText=episode?episode.title+' · '+episode.summary:'';
+    if(dramaCaption.title!==dramaText){dramaTitle.textContent=episode?episode.title+' · ':'';dramaSummary.textContent=episode?.summary||'';dramaCaption.title=dramaText}dramaCaption.hidden=!episode;
+    if(bubbleSelection?.drama&&bubbleSelection.day!==day)closeBubble();
     if(day!==cancelledDay){cancelled=new Set();cancelledDay=day}
     const presence=officePresence.read();
     cancelScheduledDuringMeeting(now);
