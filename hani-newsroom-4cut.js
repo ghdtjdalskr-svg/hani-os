@@ -13,11 +13,15 @@
           !/^\d{4}-\d{2}-\d{2}$/.test(issue.publishDate) || issue.publishDate > today ||
           !Number.isFinite(Date.parse(issue.publishDate)) ||
           new Date(issue.publishDate).toISOString().slice(0, 10) !== issue.publishDate ||
-          !/^assets\/newsroom-4cut\/[\w-]+\.webp$/.test(issue.image) ||
+          !/^[\w-]+$/.test(issue.image) ||
           !issue.title || !issue.week || !issue.alt) return false;
       seen.add(issue.number);
       return true;
     }).sort((a, b) => b.publishDate.localeCompare(a.publishDate) || b.number - a.number);
+  }
+  // The catalog stores an id, not a path: release closure resolves JSON paths relative to the JSON file.
+  function imageFile(issue) {
+    return `assets/newsroom-4cut/${issue.image}.webp`;
   }
   function sourceUrl(value) {
     try { const u = new URL(value); return /^https?:$/.test(u.protocol) ? u.href : ''; }
@@ -36,7 +40,7 @@
     q('.newsroom-4cut-title').textContent = issue.title;
     q('.newsroom-4cut-meta').textContent = `제${issue.number}호 · ${issue.week}`;
     const image = q('.newsroom-4cut-image');
-    image.src = issue.image;
+    image.src = imageFile(issue);
     image.alt = issue.alt;
     q('.newsroom-4cut-open').setAttribute('aria-label', `${issue.title} 원본 크기로 보기`);
     q('.newsroom-4cut-sources').open = false;
@@ -63,7 +67,7 @@
     q('.newsroom-4cut-latest').onclick = () => { selected = list[0].number; render(); };
     q('.newsroom-4cut-open').onclick = () => {
       const dialog = q('dialog'), full = q('.newsroom-4cut-full');
-      full.src = issue.image; full.alt = issue.alt;
+      full.src = imageFile(issue); full.alt = issue.alt;
       q('.newsroom-4cut-dialog-title').textContent = issue.title;
       dialog.showModal();
     };
