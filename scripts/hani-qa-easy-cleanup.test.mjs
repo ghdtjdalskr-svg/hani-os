@@ -152,7 +152,7 @@ test('QA-8: all six Finish KPI colours meet AA 4.5:1 on their actual token surfa
   for(const finish of finishes){
     const tokens={};for(const [,selector,body] of rules)if(selector.includes(`:root[data-finish="${finish}"]`)||selector.trim()===':root,.login-design-choice[data-design="porcelain-cream"]')for(const [,k,v] of body.matchAll(/(--[\w-]+):([^;]+)/g))tokens[k]=v;
     const dark=/black|graphite/.test(finish),colours=['--text-primary','--text-secondary','--structure-accent'].map(k=>tokens[k]);
-    const scoped=css.match(/#app #assetStats\{--invest-up:([^;]+);--invest-down:([^}]+)\}/g)[dark?1:0];
+    const scoped=css.match(/#app #asset #assetStats\{--invest-up:([^;]+);--invest-down:([^}]+)\}/g)[dark?1:0];
     colours.push(scoped.match(/--invest-up:([^;]+)/)[1],scoped.match(/--invest-down:([^}]+)/)[1]);
     for(const colour of colours)assert.ok(ratio(colour,tokens['--surface-raised'])>=4.5,`${finish}: ${colour} / ${tokens['--surface-raised']} = ${ratio(colour,tokens['--surface-raised'])}`);
   }
