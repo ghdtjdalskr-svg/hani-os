@@ -7,6 +7,18 @@
 #board .board-promo>a[data-board-queen-season="winter"]:after{background:linear-gradient(110deg,#14283fed,#293c65c7,#20132fe6)}
 #board .board-promo>a[data-board-queen-season="spring"]:after{background:linear-gradient(110deg,#422238ed,#603c58c7,#233a2fe6)}
 #board .board-promo>a[data-board-queen-season="summer"]:after{background:linear-gradient(110deg,#133438ed,#215064c7,#182b45e6)}
+/* Queen art and portrait fallbacks always show the entire source, at every width. */
+#board .board-promo>a[data-board-queen-image] img{object-fit:contain;object-position:right center}
+#board .board-promo>a[data-board-queen-image=""] img{object-fit:cover;object-position:center 35%}
+#board .board-promo>a[data-board-queen-image="portrait"] img{left:56%;width:44%}
+#board .board-promo>a[data-board-queen-image="portrait"]:after,#board .board-promo>a[data-board-queen-image="solo"]:after{background:linear-gradient(90deg,#171018ed 0%,#171018b8 52%,#17101814 72%)}
+#board .board-promo>a[data-board-queen-image="solo"],#board .board-promo>a[data-board-queen-image="portrait"]{background:linear-gradient(110deg,#422015,#75401c,#181020)}
+#board .board-promo>a[data-board-queen-season="winter"]{background:linear-gradient(110deg,#14283f,#293c65,#20132f)}
+#board .board-promo>a[data-board-queen-season="spring"]{background:linear-gradient(110deg,#422238,#603c58,#233a2f)}
+#board .board-promo>a[data-board-queen-season="summer"]{background:linear-gradient(110deg,#133438,#215064,#182b45)}
+#board .board-promo>a[data-board-queen-image="portrait"]>span{box-sizing:border-box;width:60%}
+#board .board-queen-standing{display:grid;grid-template-columns:minmax(140px,1fr) minmax(60px,2fr);gap:10px;align-items:center;margin:6px 0}
+#board .board-queen-standing progress{width:100%;accent-color:var(--text-primary)}
 #board .board-poll-result{display:inline-block;padding:8px 12px}
 #board .board-promo a>span{position:relative;z-index:1;display:grid;gap:6px;min-width:0;width:100%;padding:18px 24px 52px}
 #board .board-promo small{color:#fff;font-size:12px;line-height:1.5}
