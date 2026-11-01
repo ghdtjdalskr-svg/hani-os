@@ -140,7 +140,7 @@
 .hani-office-actor[data-walking="true"] .hani-office-prop:not(:empty),.hani-office-actor[data-pose="walk-a"] .hani-office-prop:not(:empty),.hani-office-actor[data-pose="walk-b"] .hani-office-prop:not(:empty),.hani-office-actor[data-behavior="GOING"] .hani-office-prop:not(:empty),.hani-office-actor[data-behavior="RETURNING"] .hani-office-prop:not(:empty){display:none}
 @media(max-width:600px){.hani-office-prop{font-size:14px}}
 .hani-office-character-bubble{position:absolute;z-index:10;box-sizing:border-box;left:4px;top:4px;max-width:calc(100% - 8px);display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0;padding:4px 8px;border:1px solid #d8cce7;border-radius:12px;background:#fffaf0;color:#493752;font-size:13px}
-.hani-office-character-bubble[hidden]{display:none}.hani-office-character-bubble p{margin:0;overflow-wrap:anywhere}.hani-office-character-bubble a{flex:none;min-height:44px;display:flex;align-items:center;color:#67418b;font-weight:700}
+.hani-office-character-bubble[hidden],.hani-office-character-bubble [hidden]{display:none}.hani-office-character-bubble p{margin:0;overflow-wrap:anywhere}.hani-office-character-bubble a{flex:none;min-height:44px;display:flex;align-items:center;color:#67418b;font-weight:700}
 .hani-building-roster [role="button"]{cursor:pointer}.hani-building-roster [role="button"]:focus-visible{outline:2px solid #8363b8}
 @media(max-width:700px){.hani-office-character-bubble{font-size:12px}.hani-building-roster [role="button"]{min-height:44px}}
 
@@ -183,3 +183,19 @@
   .hani-office-sprite{animation:none!important;transform:none!important;rotate:none!important}
   .hani-desk-mascot{animation:none!important;transform:translate(-50%,-100%)!important}
 }
+
+/* Resident art uses the existing sheet loader; literal URLs ship only these seven atlases. */
+.hani-office-actor[data-sprite="pet-cat"]{--sheet:url("./assets/sprites-v3/pet-cat.webp")}
+.hani-office-actor[data-sprite="pet-dog"]{--sheet:url("./assets/sprites-v3/pet-dog.webp")}
+.hani-office-actor[data-sprite="npc-cleaner"]{--sheet:url("./assets/sprites-v3/npc-cleaner.webp")}
+.hani-office-actor[data-sprite="npc-gardener"]{--sheet:url("./assets/sprites-v3/npc-gardener.webp")}
+.hani-office-actor[data-sprite="npc-temp-a"]{--sheet:url("./assets/sprites-v3/npc-temp-a.webp")}
+.hani-office-actor[data-sprite="npc-temp-b"]{--sheet:url("./assets/sprites-v3/npc-temp-b.webp")}
+.hani-office-actor[data-sprite="npc-temp-c"]{--sheet:url("./assets/sprites-v3/npc-temp-c.webp")}
+.hani-office-character-bubble a[hidden]{display:none!important}
+.hani-office-actor[data-resident] .hani-office-name{--office-team:#94a3b8;--office-team-tint:#f8fafc;color:#334155}
+.hani-office-actor[data-resident][data-avatar="v2"] .hani-office-name{bottom:calc(100% - var(--actor-height)*var(--resident-top,0) + 3px)}
+.hani-office-actor[data-resident] .hani-office-status,.hani-office-actor[data-resident] .hani-office-status-dot,.hani-office-actor[data-resident] .hani-office-activity-icon,.hani-office-actor[data-resident] .hani-office-compact-line{display:none}
+.hani-office-actor[data-resident="pet"] .hani-office-name{background:transparent;border:0;padding:0}
+.hani-office-actor[data-resident] .hani-office-sprite{rotate:0deg;filter:none}
+.hani-office-actor[data-resident="pet"][data-motion="hop"] .hani-office-sprite{animation:hani-office-hop .48s ease-in-out both}
