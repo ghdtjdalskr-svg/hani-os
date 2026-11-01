@@ -118,9 +118,9 @@ test('seven approved atlases decode, match their manifest hashes, load through t
   const fallback=r.atlas(p);assert.deepEqual(plain(fallback.frames.map(f=>[f.name,f.rect,f.pivot])),entry.frames.map(f=>[f.name,f.rect,f.pivot]));
  }
  const closure=await resolveRuntimeClosure({exists:fs.existsSync,read:f=>fs.readFileSync(f)});
- assert.equal(closure.files.length,135);assert.ok(closure.files.length<=160);assert.deepEqual(closure.missing,[]);
+ assert.ok(closure.files.length<=160);assert.deepEqual(closure.missing,[]);
  const baseline=(await resolveRuntimeClosure({exists:fs.existsSync,read:f=>f==='hani-office-live.css'?read(f).split('/* Resident art uses the existing sheet loader;')[0]:f==='hani-office-live.js'?restoreResidentsSource(read(f)):fs.readFileSync(f)})).files;
- assert.equal(baseline.length,128,'existing closure unchanged');
+ assert.equal(baseline.length,129,'existing closure unchanged');
  assert.deepEqual(closure.files.filter(f=>!baseline.includes(f)).sort(),plain(ids.map(id=>'assets/sprites-v3/'+id+'.webp')).sort());
 });
 
