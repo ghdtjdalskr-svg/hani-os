@@ -207,7 +207,7 @@
     </div>
     <div class="sidebar-team-mini">
       <img id="sidebarSeasonArtwork" class="sidebar-team-official-photo" src="./assets/team/hani-team-office.webp" alt="성민 AI TEAM 정장 단체사진 · 9명 전원" width="1672" height="941" decoding="async">
-      <div class="sidebar-corporate-lockup"><span class="hani-brand-logo-frame" data-hani-brand-logo><img src="./assets/brand/hani-group-ci-official.webp" alt="HANI GROUP 공식 로고" width="1774" height="887"></span><span class="sidebar-corporate-copy"><b>AI TEAM</b><small>PERSONAL AI COMPANY · 9 AGENTS</small></span></div>
+      <div class="sidebar-corporate-lockup"><span class="hani-brand-logo-frame" data-hani-brand-logo><img src="./assets/brand/hani-group-ci-official.webp" alt="HANI GROUP 공식 로고" width="1774" height="887"></span><span class="sidebar-corporate-copy"><b>AI TEAM</b><small>PERSONAL AI COMPANY</small></span></div>
       <div class="sidebar-team-faces" id="sidebarTeamFaces" aria-label="HANI AI Team"></div>
     </div>
     <nav class="nav-home"><button class="nav-btn active dashboard-nav" data-view="home"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h13v-9.5"/><path d="M9.5 20v-6h5v6"/></svg></span><span class="dashboard-nav-copy"><span class="txt">대시보드</span><small>오늘 기록과 핵심 현황</small></span><span class="dashboard-arrow">›</span></button><button class="nav-btn dashboard-nav milestones-nav" data-view="milestones" type="button"><span class="ico"><svg viewBox="0 0 24 24"><path d="M6 21V4"/><path d="M6 4h11l-2.5 4L17 12H6"/></svg></span><span class="dashboard-nav-copy"><span class="txt">마일스톤</span><small>삶의 중요한 변화 기록</small></span><span class="dashboard-arrow">›</span></button></nav>
@@ -215,7 +215,7 @@
       <button class="group-head office-main-nav"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 21V8l8-5 8 5v13"/><path d="M8 21v-5h8v5M8 10h2M14 10h2M8 13h2M14 13h2"/></svg></span><span class="dashboard-nav-copy"><span class="name txt">성민 오피스</span><small>접수 · 회의 · 회사 소개 · 게시판</small></span><span class="dashboard-arrow arrow">▾</span></button>
       <div class="group-body">
         <button class="nav-btn" data-view="intake"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/><path d="M15 16.5h3M16.5 15v3"/></svg></span><span class="txt">인포데스크</span></button>
-        <button class="nav-btn" data-view="agentReview"><span class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h12v18H6z"/><path d="M9 7h6M9 11h6"/><path d="m9 16 2 2 4-4"/></svg></span><span class="txt">HANI 본사</span></button>
+        <button class="nav-btn" data-view="agentReview"><span class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h12v18H6z"/><path d="M9 7h6M9 11h6"/><path d="m9 16 2 2 4-4"/></svg></span><span class="txt">HANI GROUP</span></button>
         <button class="nav-btn" data-view="monthlyReport"><span class="ico"><svg viewBox="0 0 24 24"><path d="M5 3h14v18H5z"/><path d="M8 16v-4M12 16V8M16 16v-6"/><path d="M8 6h8"/></svg></span><span class="txt">컨퍼런스 룸</span></button>
         <button class="nav-btn" data-view="organization" type="button"><span class="ico" aria-hidden="true">🏢</span><span class="txt">회사 소개</span></button>
         <button class="nav-btn" data-view="ilbo" type="button"><span class="ico" aria-hidden="true">📰</span><span class="txt">HANI 일보</span></button>
@@ -679,7 +679,7 @@
       <div class="panel active" id="assetOverviewPanel"><div class="grid">
       <div class="card full asset-dashboard-card"><div class="sh"><h3>통합 자산 대시보드 · 저장 기록</h3></div><div class="stats" id="assetStats"></div></div>
       <div class="card full"><div data-portfolio-summary aria-live="polite"></div><p>종목 가격 그래프·보유 맵은 투자 › 종목별에서 볼 수 있어요</p><button type="button" class="btn sm" data-asset-market-link>투자 › 종목별 보기</button></div>
-      <div class="card wide"><div class="sh"><h3>계좌별 자산 · 저장 기록</h3></div><div class="account-grid" id="assetAccounts"></div></div><div class="card sidec"><div class="sh"><h3>구성 · 저장 기록</h3></div><div class="list" id="assetComposition"></div></div></div></div>
+      <div class="card wide"><div class="sh"><h3>계좌별 자산</h3></div><div class="account-grid" id="assetAccounts"></div></div><div class="card sidec"><div class="sh"><h3>자산 구성</h3></div><div class="list" id="assetComposition"></div></div></div></div>
     </section>
     <section id="investmentIntake" class="view">
 
@@ -890,9 +890,9 @@
 
     <section id="agentReview" class="view">
       <div class="agent-shell">
-        <section class="hani-office-live" id="haniOfficeLive" aria-label="HANI 본사">
-          <div class="hani-office-live-head"><div><small>HANI GROUP · LIVING OFFICE</small><h3>HANI 본사</h3><p>층을 선택해 팀의 근무와 휴식을 둘러보세요. 안건의 실제 검토 의견은 회의실에서 확인합니다.</p></div><div class="hani-office-live-actions"><span id="haniOfficeCaseState">평상시 근무 중</span><button class="btn" id="haniOfficeMeetingOpen" type="button" disabled>회의실 보기</button><button class="btn" id="haniOfficeReturn" type="button" hidden>사무실로 돌아가기</button></div></div>
-          <div class="hani-building-tabs" role="tablist" aria-label="HANI 본사 층"></div>
+        <section class="hani-office-live" id="haniOfficeLive" aria-label="HANI GROUP">
+          <div class="hani-office-live-head"><div><small>HANI GROUP · LIVING OFFICE</small><h3>HANI GROUP</h3><p>층을 선택해 팀의 근무와 휴식을 둘러보세요. 안건의 실제 검토 의견은 회의실에서 확인합니다.</p></div><div class="hani-office-live-actions"><span id="haniOfficeCaseState">평상시 근무 중</span><button class="btn" id="haniOfficeMeetingOpen" type="button" disabled>회의실 보기</button><button class="btn" id="haniOfficeReturn" type="button" hidden>사무실로 돌아가기</button></div></div>
+          <div class="hani-building-tabs" role="tablist" aria-label="HANI GROUP 층"></div>
           <div class="hani-office-scroll"><div class="hani-office-map" id="haniOfficeMap" data-state="idle" role="tabpanel" aria-label="4F 대표실·라운지"><img class="hani-office-background" src="./assets/ai-approval-concepts/v3-office-background-empty-8-seats.webp" alt="화이트 오피스: 하니 전용실, 직원 좌석 8개, 복도, 휴게실, 회의실"><img class="hani-office-foreground hani-office-foreground-leader" src="./assets/ai-approval-concepts/v3-office-background-empty-8-seats.webp" alt="" aria-hidden="true"><img class="hani-office-foreground hani-office-foreground-row1" src="./assets/ai-approval-concepts/v3-office-background-empty-8-seats.webp" alt="" aria-hidden="true"><img class="hani-office-foreground hani-office-foreground-row2" src="./assets/ai-approval-concepts/v3-office-background-empty-8-seats.webp" alt="" aria-hidden="true"><div id="haniOfficeActors"></div></div></div>
           <div class="hani-office-meeting" id="haniOfficeMeeting" hidden><div class="hani-office-meeting-title"><div><small>ACTUAL CASE REVIEW</small><h4 id="haniOfficeMeetingTitle">회의실</h4><p id="haniOfficeMeetingMeta"></p></div><button class="btn" id="haniOfficeReportLink" type="button">전체 검토서 보기 ↓</button></div><div class="hani-office-participants" id="haniOfficeParticipants" aria-live="polite" hidden></div><div class="hani-office-conversation" id="haniOfficeConversation"></div><div class="hani-office-questions" id="haniOfficeQuestions" hidden></div></div>
         </section>
@@ -900,7 +900,7 @@
           <div class="sh">
             <div>
 
-              <h3>HANI 본사</h3>
+              <h3>HANI GROUP</h3>
               <div class="sub">중요한 결정은 대표님이 직접 승인합니다.</div>
             </div>
             <div class="sh-actions">
@@ -1080,7 +1080,10 @@
         <p class="sub" data-board="author"></p>
         <p class="sub" data-board="syncNotice" hidden>Cloud 동기화가 준비되면 새 글과 답글이 도착해요.</p>
 
-        <div data-board="unread" class="acts"></div>
+        <aside data-board="unread" class="board-promo" aria-label="라운지 소식">
+          <a data-board-banner-link href="#ilbo"><img data-board-banner-image src="./assets/heroes/newsroom-218.webp" alt="" width="96" height="96"><span><small data-board-banner-kicker>HANI 일보</small><b data-board-banner-title>오늘의 사내 소식</b><span data-board-banner-copy>팀의 이야기와 새 소식을 HANI 일보에서 만나보세요.</span></span></a>
+          <div class="board-promo-controls"><button class="btn sm" type="button" data-board-banner-pause aria-pressed="false">자동 전환 멈춤</button><button class="btn sm" type="button" data-board-banner-next>다음 소식</button></div>
+        </aside>
         <details class="board-tray" data-board="trayPanel" open hidden><summary data-board="trayCount">📬 새 글 도착</summary>
           <div data-board="tray"></div>
           <details><summary>나중에 올릴 초안</summary><div data-board="archive"></div></details>

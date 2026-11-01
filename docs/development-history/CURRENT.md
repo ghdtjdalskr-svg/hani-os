@@ -1,3 +1,7 @@
+# 2026-11-01 · QA easy cleanup QA-1·2·3·7·8·9·13·16 (Codex)
+
+`hani/qa-easy-cleanup` / ref 기준 `930e0db` / qa-b2. Sidebar 실인원·회장님 task·HANI GROUP 이름·라운지 persistent 배너·현금·기타/KPI·가계부 설명/특수 badge·AI portrait/detail·Theme hero 표시 수정. **신규 Node12/12·이전 보고서10/10·관련 unit/board 회귀 통과, syntax15/15.** 6 Finish 토큰 AA≥4.5, runtime closure128/missing0·수정 전후 목록 동일. 저장/계산/Cloud/schema/버전/cache 및 혼합 개행 불변, 새 runtime 파일·Git/browser 실행·commit/push/merge 없음. 이달의 여신 실제 결과 없음으로 제외. 구형 hero 보존 테스트는 수정 전에도 같은 fixture drift로 시작 실패; Git baseline/nav·실화면 미검증. 서윤 미커밋 검토·360/390px 브라우저 확인 대기. Notion 쓰기는 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-11-01-qa-easy-cleanup.md). 아래 타 담당·과거 기록 보존.
+
 # 2026-11-01 · Conference Room QA-4·QA-17 (Codex)
 
 `hani/qa-report-fixes` / 사용자 지정 base·로컬 ref `c7b2c20`, 운영 기준 2.9.245 유지. 생성 재검증·지속 실패 안내, 지표별 담당자 말투, KPI 영역색, 월간 독서 추이 제거, 기간/목표 입력 persistent slot, 분기 발표 우선·닫힌 목표 비교 구현. **신규 Node10/10·집계/디자인 Node 묶음·실용12/12 통과. proactive19/21(수정 전에도 Git EPERM 2건 동일), browser 두 명령은 인자 부족으로 시작 실패. 실제 browser/smoke/운영 검증 미실행.** 보호 저장·공통 계산·버전/cache 불변, 미커밋·push/merge/배포 없음. 서윤 검토·실화면 검증 대기. Notion append는 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-11-01-qa-report-fixes.md). 아래 타 담당·과거 기록 보존.
