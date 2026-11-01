@@ -31,6 +31,7 @@ function setup(changes={}){
     cloudUser:{id:"owner"},cloudAutoSyncReady:true,cloudRuntime:{sync:"ON"},loadRecovery:{active:false},
     importSyncHold:false,cloudRecoveryMode:false,loginGateUnlocked:true,
     sessionStorage:{getItem:()=>null,setItem(){}},uid:()=>"living-"+(++ids),
+    setTimeout:()=>1,clearTimeout(){},
     save:()=>{saves++;return {ok:true}},...changes};
   // The with scope is fixture-only: global lexical bindings remain live across renders.
   const api=new Function("env","with(env){"+helpers+"\nstate={...freshState(),...state};\n"+hub+"\n"+

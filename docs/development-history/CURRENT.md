@@ -1,3 +1,7 @@
+# 2026-11-01 · 라운지 이미지 전광판 QA-20 (Codex)
+
+hani/lounge-billboard / qa-b4 / 커밋된 전광판 ee88f6a 위 후속 미커밋 / 표시 2.9.246 유지. 정적 library poll/voteChoice 전달·11월3일 사내 인기상 투표·직원19표 고정 seed/canon·자기투표 금지·화면 전용 월말 마감·다음 달 수상자와 진행 투표 슬라이드 구현. **실제 votePoll/persist/save/보호 writer/loadState로 직원19표+회장님1표 저장·재로드 확인. 게시판10+전광판+QA 총12명령 PASS(집계형37/37), syntax7/7·library check PASS·closure128/missing0·목록 동일·기존220글 보존.** 저장·투표·AI/Cloud 원문과 main/index·버전/cache·office 유지. commit/push/merge/배포 없음. 화면 마감은 저장 함수의 시간 제한/결과 스냅샷을 추가하지 않음. 브라우저·실제 Cloud/AI·원격 최신성·운영·최종 release gate 미검증. Notion append 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-11-01-lounge-billboard.md). 아래 타 담당·과거 기록 보존.
+
 # 2026-11-01 · QA 연혁 단일 원장 QA-5·13·14 (Codex)
 
 `hani/qa-history-unify` / base ref `1ff9c93` (`qa-easy-cleanup`과 동일) / qa-b3. 공통 카탈로그 v224~245 **22건 추가(전체117건)**, 기존 빈 버전6개 제외 사유 명시(기존3개와 총9개). 회사 연혁의 literal fetch 한 곳을 개발센터·AI 업무가 공유, 과거 HISTORY·개인별 업무·작성 보고서 보존. 업무 요약은 최신 v245/11월1일, 업무 내용은 원래10월16일 기준 표시. **지정·신규7명령 PASS(신규14/14·기존 QA22/22), syntax8/8, runtime closure128/missing0·변경 전후 목록 동일.** 추가21명령은11통과·9실패(Git 차단5, 변경 전에도 동일 fixture 실패4)·본문 PASS 후 timer 미종료1. Node guard는 fake v246을 실제 exit1로 차단. 보호 workflow 미수정, 연결할 정확한 YAML은 인수인계에 기록. 미커밋·commit/push/merge/배포·버전/cache·저장/Cloud 변경 없음. browser·원격 최신성·운영 미검증, 서윤 검토 대기. Notion append는 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-11-01-qa-history-unify.md). 아래 타 담당·과거 기록 보존.
