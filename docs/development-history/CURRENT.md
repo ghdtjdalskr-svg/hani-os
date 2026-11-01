@@ -1,3 +1,7 @@
+# 2026-11-02 · 치즈·크림 조직도 / 퀸 포스터 (Codex / qa-b11)
+
+`hani/mascots-poster` / base·로컬 HEAD·origin/main 캐시 `1f03c98` / 2.9.257 유지 / 미커밋. 조직도에 직원과 분리된 「사내 마스코트」 카드2개, 초상화720·썸네일256/128 6개·직원3명 비교판, 10월 퀸 서윤 포스터720×1080·60×90 로비 배치 비교 아트 제작. **신규7/7·전광판27/27·cleanup12/12·인원1/1·연혁14/14, syntax6/6·보존11/11 PASS. 테스트10명령8성공·2실패: 기존 office fixture·portraitSource 추출·gate 버전 기대값3결함은 변경 전 원문에서도 동일 재현.** closure136→142/160·누락0. 직원19명·roster/투표/집계·저장/Cloud·office-live·index·버전/cache 원문 보존. Git·브라우저 금지로 원격 최신성·실화면·운영 미검증. commit/push/merge/배포 없음. Notion 착수 저장·읽기 확인, 최종 갱신은 자동 승인 never 거절로 대기. [인수인계·이미지 경로/크기·검사 근거](handoffs/2026-11-02-mascots-poster.md). 아래 타 담당·기존 기록 보존.
+
 # 2026-11-02 · 라운지 11월 시즌 스레드 후속 (Codex / qa-b9b)
 
 `hani/lounge-queen-v2` / 현재 commit `4cd4bb10` 유지 / 미커밋. 세린 초안8편을 득표·순위 단정/신체·외모 표현 없이 수정해 날짜별 library에 추가, 다음 달1일부터 계산된 당선자가 소감·왕관 인수인계를 전하는 읽기 전용 패턴1개 추가. 라이브러리230글(기존221 불변), 새 write 없음. **전용27/27·테스트14명령 성공/0실패(집계형51/51)·syntax5/5·build check·보존8/8 PASS**, closure136/160·누락0. Git 의존 boardroom3개·브라우저/원격 최신성/운영은 미검증. 초안 삭제, office-live·저장/Cloud·버전/cache 유지, commit/push/merge/배포 없음. Notion 자동 승인 never 거절로 갱신 대기. [인수인계·문구 수정표·검사 근거](handoffs/2026-11-02-lounge-season-threads.md). 아래 이전·타 담당 기록 보존.

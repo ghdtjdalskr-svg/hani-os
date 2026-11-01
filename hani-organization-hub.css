@@ -388,3 +388,16 @@
 #haniOrganizationHub .ogh-hero-art>img{width:100%;height:100%;aspect-ratio:auto;object-fit:contain;border-radius:0}
 #haniOrganizationHub .ogh-hero-art figcaption{display:none}
 @media(max-width:600px){#haniOrganizationHub .ogh-hero{padding-top:34vw}#haniOrganizationHub .ogh-hero-copy{width:100%}#haniOrganizationHub .ogh-hero-art>img{object-position:center top}#haniOrganizationHub .ogh-hero-copy .ogh-kicker{letter-spacing:1px}}
+
+/* Companions are presentation only, outside every employee card/count/filter. */
+#haniOrganizationHub .ogh-mascots{margin-top:32px;padding-top:24px;border-top:1px solid var(--ogh-line)}
+#haniOrganizationHub .ogh-mascots-heading h3{margin:6px 0;font-size:20px}
+#haniOrganizationHub .ogh-mascots-heading p,#haniOrganizationHub .ogh-mascot p{color:var(--ogh-muted);font-size:13px}
+#haniOrganizationHub .ogh-mascot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px;margin-top:18px}
+#haniOrganizationHub .ogh-mascot{display:flex;align-items:center;gap:18px;min-width:0;padding:16px;border:1px solid var(--ogh-line);border-radius:12px}
+#haniOrganizationHub .ogh-mascot>div:last-child{min-width:0;overflow-wrap:anywhere}
+#haniOrganizationHub .ogh-mascot h4{margin:0 0 4px;font-size:18px}
+#haniOrganizationHub .ogh-mascot span{display:block;margin-bottom:8px;color:var(--ogh-muted);font-size:12px}
+#haniOrganizationHub .ogh-mascot-portrait{width:128px;max-width:36%;aspect-ratio:1;flex-shrink:0;background-size:cover;background-position:center;background-color:var(--ogh-line);border-radius:10px}
+#haniOrganizationHub .ogh-mascot-cheese{background-image:url('./assets/profiles/thumb/hani-profile-cheese-256.webp');background-image:image-set(url('./assets/profiles/thumb/hani-profile-cheese-128.webp') 1x,url('./assets/profiles/thumb/hani-profile-cheese-256.webp') 2x,url('./assets/profiles/hani-profile-cheese.webp') 3x)}
+#haniOrganizationHub .ogh-mascot-cream{background-image:url('./assets/profiles/thumb/hani-profile-cream-256.webp');background-image:image-set(url('./assets/profiles/thumb/hani-profile-cream-128.webp') 1x,url('./assets/profiles/thumb/hani-profile-cream-256.webp') 2x,url('./assets/profiles/hani-profile-cream.webp') 3x)}
