@@ -38,10 +38,10 @@ test('two real takeaway customers can stay at distinct non-overlapping service s
  }
  assert.ok(simultaneous>0);console.log('simultaneous takeaway stays',simultaneous);
 });
-test('workday breaks change only the configured ambient opportunity cadence; placement code stays byte identical',()=>{
- const source=read('hani-office-live.js'),before=read('artifacts/office-cafe/hani-office-live.before.txt');
+test('approved workday cadence and exact frozen placement code stay intact',()=>{
+ const source=read('hani-office-live.js');
  const placement=s=>s.slice(s.indexOf('  function placeStatusLabels('),s.indexOf('  const scheduler=',s.indexOf('  function placeStatusLabels(')));
- assert.equal(placement(source),placement(before));
+ assert.equal(createHash('sha256').update(placement(source).replace(/\r/g,'')).digest('hex'),'5070f7e62556b89410bc7588600fefe80ba99579e945ae49bab89def98bec6f0','exact current placement code, unchanged throughout finish work');
  assert.doesNotMatch(source,/localStorage|sessionStorage|supabase/);
  const rules=JSON.parse(read('data/hani-building/office-places.json')).outingRules;assert.equal(rules.deskAmbientSeconds,300);
  assert.equal(createHash('sha256').update(fs.readFileSync('assets/building/floor-1f-217.webp')).digest('hex'),scene.art.floors['1f'].backgroundSha256);

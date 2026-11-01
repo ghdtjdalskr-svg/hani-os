@@ -772,9 +772,9 @@
       const at=seconds>=outEnd&&seconds<backStart,seat=at?t.seat:slot(t.home.anchorId,t.id==='mir'?'stand':'sit');
       return {state,seat,floor:anchors.get(seat.anchor).floor,walking:false,position:null};
     }
-    function positionAt(id,seconds,ledger){
+    function positionAt(id,seconds,ledger,reduced=false){
       const e=ledger.find(e=>e.start<=seconds&&seconds<e.end&&e.people.some(t=>t.id===id));
-      if(e)return stateAt(e,e.people.find(t=>t.id===id),seconds);
+      if(e)return stateAt(e,e.people.find(t=>t.id===id),seconds,reduced);
       const p=personById.get(id);if(!p||!presentAt(id,seconds))return null;
       const h=homeAt(p,seconds),seat=slot(h.anchorId,id==='mir'?'stand':'sit');return {seat,floor:h.floor,walking:false,position:null};
     }
@@ -941,11 +941,21 @@
     }
     function screenOverlap(a,b,visitorA=false,visitorB=false){const p=screenPoint(a),q=screenPoint(b);return Math.abs(p[0]-q[0])<(visitorA?14:19)+(visitorB?14:19)&&Math.abs(p[1]-q[1])<44}
     function screenStopConflict(a,b){return a.id!==b.id&&overlap(a,b)&&!(a.seat.anchor===a.home&&b.seat.anchor===b.home)&&screenOverlap(a.seat,b.seat,a.id.startsWith('visitor'),b.id.startsWith('visitor'))}
-    function deskPairScreenClear(peers,entries,events){
+    function deskPairScreenClear(peers,entries,events,from,to,reduced=false){
       let pairs=screenPairs.get(events);if(!pairs){pairs=new Map();screenPairs.set(events,pairs)}
-      const stationary=entries.filter(p=>p.floor===peers[0].floor&&!p.walking);
-      const key=peers.map(p=>p.id).join('|')+'|'+stationary.map(p=>p.id+':'+p.seat.anchor).join('|');
+      // Decide for the entire text beat. A neighbour arriving or leaving halfway
+      // through must not start or clip a ten-second desk conversation.
+      const key=peers.map(p=>p.id).join('|')+'|'+from+'|'+reduced+'|'+entries.map(p=>p.id).join();
       if(!pairs.has(key)){
+        const near=ledgerOverlaps(events,from,to),times=new Set([from,to-.000001]);
+        const boundary=s=>{for(const tick of [s-.000001,s,s+.000001])if(from<=tick&&tick<to)times.add(tick)};
+        // Stationary positions change only at these exact event/leg boundaries.
+        // Empty homes stay empty for the beat; arrivals and FIFO waits count.
+        for(const event of near){boundary(event.start);boundary(event.end);
+          for(const t of event.people)for(const l of [...t.out,...t.back]){boundary(l.start);boundary(l.end)}
+        }
+        const stationary=[];
+        for(const other of entries)for(const seconds of times){const state=positionAt(other.id,seconds,near,reduced);if(state&&!state.walking&&state.floor===peers[0].floor)stationary.push({id:other.id,seat:state.seat})}
         if(pairs.size>=256)pairs.delete(pairs.keys().next().value);
         pairs.set(key,peers.every(p=>stationary.every(other=>other.id===p.id||!screenOverlap(p.seat,other.seat))));
       }
@@ -1196,8 +1206,15 @@
         let w=people.reduce((n,p)=>n*(card.affinity?.[p.id]||1),1)**(1/people.length);
         const sameFloor=people.every(p=>homeAt(p,at).floor===card.floor);
         w*=sameFloor?(people.length>1?12:5):(people.length>1?.35:1);
+        // Reuse the existing gathering window for every card ranked at this
+        // instant; querying the same ledger once per card adds cold-plan work.
+        if(!gatheringWindow||gatheringWindow.at!==at||gatheringWindow.length!==result.length){
+          const active=ledgerOverlaps(result,at,at+.001).filter(e=>!e.visitor),byCard=new Map();
+          for(const e of active)if(e.performStart<=at&&at<e.performEnd){if(!byCard.has(e.card.id))byCard.set(e.card.id,[]);byCard.get(e.card.id).push(e)}
+          gatheringWindow={at,length:result.length,active,byCard};
+        }
         if(at>=32400&&at<64800&&(card.id==='cafe-1f'||card.floor==='5f')){
-          const occupied=ledgerOverlaps(result,at,at+.001).filter(e=>!e.visitor&&(card.floor==='5f'?e.card.floor==='5f':e.card.id===card.id)).reduce((n,e)=>n+e.people.length,0);
+          const occupied=gatheringWindow.active.filter(e=>card.floor==='5f'?e.card.floor==='5f':e.card.id===card.id).reduce((n,e)=>n+e.people.length,0);
           w*=card.id==='cafe-1f'?(occupied<2?1000:.01):occupied?1:3;
         }
         let activeRhythms=rhythmsAt.get(at);if(!activeRhythms){activeRhythms=rhythms.filter(r=>at/3600>=r.hours[0]&&at/3600<r.hours[1]);rhythmsAt.set(at,activeRhythms)}
@@ -1205,11 +1222,6 @@
         // Novel places get a modest boost; preferences still shape each day's mix.
         w*=people.some(p=>!visits.get(p.id)?.has(card.id))?3:1;
         if(gatheringPlace(card)){
-          if(!gatheringWindow||gatheringWindow.at!==at||gatheringWindow.length!==result.length){
-            const byCard=new Map();
-            for(const e of ledgerOverlaps(result,at,at+.001))if(!e.visitor&&e.performStart<=at&&at<e.performEnd){if(!byCard.has(e.card.id))byCard.set(e.card.id,[]);byCard.get(e.card.id).push(e)}
-            gatheringWindow={at,length:result.length,byCard};
-          }
           const staying=gatheringWindow.byCard.get(card.id)||[];
           if(staying.length){
             const friends=staying.some(e=>companions.some(r=>r.people.some(id=>people.some(p=>p.id===id))&&r.people.some(id=>e.people.some(t=>t.id===id))));
@@ -1305,9 +1317,12 @@
         const rankSeed=visitor?0:seed(rankBase),slotSeed=visitor?0:seed(day+'|slot|'+at);
         if(!visitor||cards.length>1)cards=cards.map(c=>({c,rank:visitor?seed(day+at+c.id):-Math.log(Math.max(.000001,seedTail(rankSeed,c.id)/4294967296))/weight(c,people,at)})).sort((a,b)=>a.rank-b.rank||a.c.id.localeCompare(b.c.id)).map(r=>r.c);
         if(!visitor&&!fill&&at-(lastFloor.get(homeAt(people[0],at).floor)??-Infinity)<BLOCK)cards=cards.slice(0,3);
-        // Try the two strongest invitations at this clock opportunity. A
+        // Try the strongest invitation (two at lunch) at this clock opportunity. A
         // failed trip can retry at the next tick; do not exhaust every room.
-        for(const card of cards.slice(0,2)){
+        for(const card of cards.slice(0,lunch(at)?2:1)){
+          // Even without travel/FIFO the complete minimum stay consumes these
+          // floor units. Reject impossible windows before building any routes.
+          if(!visitor&&!withinCap({start:at,end:at+card.stay[0]*(people.length>1?rules.groupStayScale:1),people,floors:[...new Set([...homeFloors,card.floor])]}))continue;
           const orderKey=card.id+'|'+at;
           if(!visitor&&!slotOrders.has(orderKey))slotOrders.set(orderKey,card.slots.map(id=>({id,rank:seedTail(slotSeed,id)})).sort((a,b)=>a.rank-b.rank).map(p=>p.id));
           const slots=visitor?[visitor.target]:slotOrders.get(orderKey);
@@ -1414,7 +1429,9 @@
           }
         }
       }
-      for(let at=0;at<86400;at+=180){
+      // Lunch has four-person capacity. Offer the existing reservation path
+      // twice as often in that window, retaining all cadence/cooldown gates.
+      for(let at=0;at<86400;at+=lunch(at)?90:180){
         if(at>=32400&&at<64800)for(const formal of preMeetingEvents){
           if(formal.layer!==3||preMeeting.has(formal.id)||formal.start-at<120||formal.start-at>300)continue;
           preMeeting.add(formal.id);
@@ -1515,7 +1532,9 @@
             return {c,rank:-Math.log(Math.max(.000001,seedTail(errandSeed,c.id)/4294967296))/weight};
           }).sort((a,b)=>a.rank-b.rank);
           let booked=false;
-          for(const {c}of cards){
+          // Retry on the existing next tick instead of exhausting every errand
+          // destination. Rest stays and their reservation budget remain intact.
+          for(const {c}of cards.slice(0,2)){
             if(c.targetPerson&&(!allowed.some(q=>q.id===c.targetPerson)||!presentAt(c.targetPerson,at)||homeAt(personById.get(c.targetPerson),at).anchorId!==personById.get(c.targetPerson).home.anchorId||near.some(e=>e.people.some(t=>t.id===c.targetPerson&&t.seat.anchor!==t.home.anchorId))))continue;
             for(const target of c.slots){
               if(![3600,25200,64800].some(s=>at<s&&s<deadline)&&!screenHomeClear(p.id,home.anchorId,slot(target,c.pose),allowed,at,deadline))continue;
@@ -1613,9 +1632,6 @@
     function placeLine(card,id,day,event,t,seconds,firstLine){
       const pool=card.atByPerson?.[id]||card.at,key=day+'|'+id+'|'+event.start;
       const first=firstLine??pool[seed(key)%pool.length],arrival=t.out.at(-1).end,departure=t.back[0].start;
-      // Long seated lobby rests still speak through the existing clock/slot.
-      // Keep each authored line for 30s; no timer or extra renderer is needed.
-      if(card.id==='cafe-1f'&&departure-arrival>90)return pool[(seed(key)+Math.floor((seconds-arrival)/30))%pool.length];
       // One switch at a deterministic midpoint, measured from this actor's
       // actual arrival (including FIFO waiting), without any timer/state.
       const switched=departure-arrival>90&&seconds>=arrival+(departure-arrival)/2;
@@ -1668,6 +1684,9 @@
             }
           }
         }
+        // A brief stretch uses the existing pose slot at the same reserved
+        // chair. Keep the long-rest words and reduced-motion seated pose intact.
+        if(card?.id==='cafe-1f'&&performing&&!options.reducedMotion&&Math.floor(seconds+seed(p.id)%30)%30===0)state.seat=slot(t.seat.anchor,'stand');
         return {id:p.id,...state,visitor:!!p.visitor,...(p.visitor?event.visitor:{}),idle:!event||!!card,plain,stroll:!!card&&!p.visitor&&!options.reducedMotion,home:p.home?.floor||'1f',
           pose:state.walking?(Math.floor(seconds*5)%2?'walk-a':'walk-b'):state.seat.posture,activity:p.visitor?'visit':event&&!card?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):lounge||card?.id==='cafe-1f'&&state.state==='AT_PLACE'?'rest':'work',
           actionId:event&&!card&&(performing||state.state==='AT_PLACE')?action.id:'base-work',eventId:card?undefined:event?.id,outingId:card?event.id:undefined,groupIds:event?.group,placeId:card?.id,targetAnchor:t?.seat.anchor,line,
@@ -1682,7 +1701,7 @@
         if(j==null||seconds>=j*BEAT+ACTIVE_BEATS*BEAT||ledgerOverlaps(idleLedger,j*BEAT-5,j*BEAT+ACTIVE_BEATS*BEAT+2).some(e=>e.people.some(t=>pair.people.includes(t.id))))continue;
         // Homes remain untouched, including their documented overlaps. Only
         // start a NEW turning/talking gesture if its phone envelope is clear.
-        if(!deskPairScreenClear(peers,entries,events))continue;
+        if(!deskPairScreenClear(peers,entries,idleLedger,j*BEAT,j*BEAT+ACTIVE_BEATS*BEAT,options.reducedMotion))continue;
         peers.forEach((p,i)=>{p.line=pair.lines[i];p.plain=false;p.deskPartner=pair.people[1-i]});
       }
       // Reuse deskPartner for a two-line exchange, only at the actual approach
@@ -1711,6 +1730,8 @@
       for(const p of entries){
         if(!p.outingId||p.state!=='AT_PLACE')continue;
         const e=visibleOutings.find(e=>e.id===p.outingId),card=e.card;
+        // Arrival/return FIFO waits own their words until every partner is ready.
+        if(seconds<e.performStart||seconds>=e.performEnd)continue;
         const signatures=placeTable?.behavior?.signatures[p.id]?.filter(s=>s.place===card.id)||[];
         if(!p.groupIds&&signatures.length){const signature=signatures[seed(day+'|signature|'+p.id+e.start)%signatures.length],t=e.people.find(t=>t.id===p.id);p.line=placeLine(card,p.id,day,e,t,seconds,card.at[0].split('에서')[0]+'에서 '+signature.task);p.behaviorKind=signature.id}
         if(placeTable?.behavior?.gathering.kinds.includes(card.kind)&&card.slots.length>=2){
@@ -1724,7 +1745,7 @@
         // Social words retain the actual companions, but their place phrase
         // also changes once during a long stay, using the same arrival clock.
         const t=e.people.find(t=>t.id===p.id),arrival=t.out.at(-1).end,departure=t.back[0].start;
-        if((p.groupIds||p.gatheringIds)&&departure-arrival>90&&(card.id==='cafe-1f'||seconds>=(arrival+departure)/2)&&seconds>=e.performStart&&seconds<e.performEnd){
+        if((p.groupIds||p.gatheringIds)&&departure-arrival>90&&seconds>=(arrival+departure)/2&&seconds>=e.performStart&&seconds<e.performEnd){
           const ids=(p.gatheringIds||p.groupIds).filter(id=>id!==p.id);
           p.stayLine=placeLine(card,p.id,day,e,t,seconds);p.line=ids.map(id=>personById.get(id).name).join('·')+'와 '+p.stayLine;
         }
