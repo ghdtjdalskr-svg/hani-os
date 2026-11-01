@@ -172,14 +172,14 @@ try {
     assert.match(await page.locator('.ic-steps').innerText(),/① 리서치 받기 ✓/);
     assert.match(await page.locator('.ic-steps').innerText(),/③ 다음 점검/);
     // GPT export → prose/fenced import → diffs → exclusion → explicit confirmation.
-    await host.getByRole('button',{name:'GPT용 자료 복사'}).click();
+    await host.locator('.ic-header').getByRole('button',{name:'GPT용 자료 복사',exact:true}).click();
     const copied = await page.evaluate(() => navigator.clipboard.readText()); assert.match(copied,/OUTPUT/); assert.match(copied,/changeReason/);
     await page.evaluate(()=>{window.icBeforeCopyWrites=icWrites.length;window.icOriginalExec=document.execCommand;Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async()=>{throw Error('denied for fallback test');}}});document.execCommand=command=>{window.icFallbackPrompt=document.querySelector('.ic-clipboard')?.value;return command==='copy';};});
-    await host.getByRole('button',{name:'GPT용 자료 복사'}).click();
+    await host.locator('.ic-header').getByRole('button',{name:'GPT용 자료 복사',exact:true}).click();
     assert.match(await page.evaluate(()=>icFallbackPrompt),/OUTPUT/);assert.equal(await host.locator('.ic-clipboard').count(),0);assert.equal(await page.evaluate(()=>icWrites.length),await page.evaluate(()=>icBeforeCopyWrites));
     await page.evaluate(()=>{delete navigator.clipboard;document.execCommand=icOriginalExec;});
     const report = [{...fixture.cards[0],rating:'REDUCE',changeReason:'가치평가 재검토'},fixture.cards[4],fixture.cards[5]];
-    await host.getByRole('button',{name:'리포트 붙여넣기'}).click(); const importer=page.locator('.ic-import');
+    await host.locator('.ic-header').getByRole('button',{name:'리포트 붙여넣기',exact:true}).click(); const importer=page.locator('.ic-import');
     const beforeImport = await page.evaluate(() => ({state:JSON.stringify(state),writes:icWrites.length}));
     await importer.locator('[data-ic-report]').fill('분석 결과:\n```json\n'+JSON.stringify(report)+'\n```\n참고하세요');
     await importer.getByRole('button',{name:'변경 검토',exact:true}).click(); assert.equal(await importer.locator('.ic-review-item').count(),3);
@@ -205,11 +205,13 @@ try {
     await importer.getByRole('button',{name:'변경 검토',exact:true}).click();
     await importer.locator('[data-ic-include="2"]').uncheck(); await importer.getByRole('button',{name:'선택 반영',exact:true}).click(); await importer.waitFor({state:'hidden'});
     assert.deepEqual(await page.evaluate(() => state.investmentResearchCards.map(c=>c.name)),['삼성전자우','NVIDIA','Amazon']);
-    // GPT continuation opens a prefilled memory-only draft and cancellation leaves state untouched.
+    // New guidance offers Gemini first; the existing monthly tab still opens a memory-only draft.
     const afterGpt=await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length}));
     assert.equal(await host.locator('.ic-next-step').isVisible(),true);
-    assert.match(await host.locator('.ic-continue').getAttribute('class'),/primary/);
-    await host.getByRole('button',{name:'다음 단계: 이번 달 리포트 확정하기 →',exact:true}).click();
+    assert.equal(await host.locator('.ic-continue').isVisible(),false);
+    assert.match(await host.locator('.ic-next-step').innerText(),/2단계 · Gemini 2차 의견을 받아 주세요/);
+    await page.locator('[data-ic-section="icMonthly"]').click();
+    await page.locator('.ic-monthly [data-monthly="start"]').click();
     const monthly=page.locator('.ic-monthly');
     async function assertMonthlyFits(phase) {
       const layout = await monthly.evaluate(el => {
@@ -234,7 +236,7 @@ try {
     await monthly.getByRole('button',{name:'초안 취소',exact:true}).click();
     await tabs.getByRole('tab',{name:'종목 리포트'}).click();
     // Stale import cannot silently overwrite changes; no report parsing save.
-    await host.getByRole('button',{name:'리포트 붙여넣기'}).click(); await importer.locator('[data-ic-report]').fill(JSON.stringify([fixture.cards[0]])); await importer.getByRole('button',{name:'변경 검토',exact:true}).click();
+    await host.locator('.ic-header').getByRole('button',{name:'리포트 붙여넣기',exact:true}).click(); await importer.locator('[data-ic-report]').fill(JSON.stringify([fixture.cards[0]])); await importer.getByRole('button',{name:'변경 검토',exact:true}).click();
     await page.evaluate(() => {state.investmentResearchCards[0].executiveComment='동시 변경';});
     const staleBefore=await page.evaluate(() => JSON.stringify(state)); await importer.getByRole('button',{name:'선택 반영',exact:true}).click();
     assert.match(await importer.locator('.ic-error').innerText(),/원본이 변경/); assert.equal(await page.evaluate(() => JSON.stringify(state)),staleBefore); await importer.getByRole('button',{name:'닫기',exact:true}).click();
@@ -367,7 +369,7 @@ try {
     assert.deepEqual(await page.evaluate(()=>({state:JSON.stringify(state),writes:icWrites.length})),accumulationBefore);
     assert.match(await host.locator('.ic-card').first().innerText(),/적립식 계좌 종목 · 의견 선택 사항/);
     assert.match(await host.locator('.ic-card').nth(1).innerText(),/일부 적립식/);
-    await host.getByRole('button',{name:'GPT용 자료 복사',exact:true}).click();
+    await host.locator('.ic-header').getByRole('button',{name:'GPT용 자료 복사',exact:true}).click();
     const accumulationPrompt=await page.evaluate(()=>navigator.clipboard.readText());
     assert.doesNotMatch(accumulationPrompt,/키움전용 적립 ETF|키움전용 무카드 ETF/);
     assert.match(accumulationPrompt,/혼합 보유 종목|하나 일반 종목/);
@@ -378,7 +380,7 @@ try {
     await optional.getByRole('button',{name:'그래도 작성',exact:true}).last().click();
     assert.equal(await editor.locator('[name=name]').inputValue(),'키움전용 무카드 ETF');
     await editor.getByRole('button',{name:'닫기',exact:true}).click();
-    await host.getByRole('button',{name:'리포트 붙여넣기',exact:true}).click();
+    await host.locator('.ic-header').getByRole('button',{name:'리포트 붙여넣기',exact:true}).click();
     await importer.locator('[data-ic-report]').fill(await page.evaluate(()=>JSON.stringify(icAccumulationReport)));
     await importer.getByRole('button',{name:'변경 검토',exact:true}).click();
     assert.match(await importer.locator('.ic-review-item').first().innerText(),/적립식 종목 · 반영 제외/);
@@ -393,7 +395,7 @@ try {
     assert.deepEqual(await page.evaluate(()=>JSON.parse(localStorage.getItem(STORAGE_KEY)).ui.icAccumulationAccountIds),['ic-k']);
     await settings.locator('[data-ic-account="ic-k"]').uncheck();await settings.getByRole('button',{name:'계좌 설정 저장',exact:true}).click();
     assert.deepEqual(await page.evaluate(()=>state.ui.icAccumulationAccountIds),[]);
-    await host.getByRole('button',{name:'GPT용 자료 복사',exact:true}).click();
+    await host.locator('.ic-header').getByRole('button',{name:'GPT용 자료 복사',exact:true}).click();
     assert.match(await page.evaluate(()=>navigator.clipboard.readText()),/키움전용 적립 ETF/);
     await settings.locator('[data-ic-account="ic-k"]').check();await settings.getByRole('button',{name:'계좌 설정 저장',exact:true}).click();
     await tabs.getByRole('tab',{name:'월간 리포트'}).click();
