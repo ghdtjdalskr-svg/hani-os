@@ -11,7 +11,7 @@ context.localStorage=context.sessionStorage={setItem:deny,removeItem:deny,clear:
 // Exact reviewed line replacements, not additional excluded functions/ranges.
 // Restore only those lines, then retain the original non-placement SHA check.
 const motionDeltaBytes=fs.readFileSync('scripts/fixtures/office-motion-1-source-delta.json');
-assert.equal(createHash('sha256').update(motionDeltaBytes).digest('hex'),'98191257579e74d9bf2297cad404b6b64ef18efafdf8aea605fb23e791130525');
+assert.equal(createHash('sha256').update(motionDeltaBytes).digest('hex'),'51f5d30325e3d74011094fa5be2e982d3e70bf8d8afa0e48c4c173b5cb481bbb');
 const motionDelta=JSON.parse(motionDeltaBytes);
 function restoreMotionDelta(source){
  const lines=source.match(/[^\n]*\n|[^\n]+$/g);
@@ -23,7 +23,7 @@ function restoreMotionDelta(source){
 }
 test('obr21 authored full absent/present plans and reverse snapshots match frozen delta',()=>{
  const bytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-obr21-plans.json.gz'));
- assert.equal(createHash('sha256').update(bytes).digest('hex'),'96cc69c5af8240b3d1175430468f97a4a6abc7a54f8f24152e9c872bc54c820d');
+ assert.equal(createHash('sha256').update(bytes).digest('hex'),'0745c217af8ef869f0761abe62e13406f684af6c5a408152ccdbdaaad5edb54e');
  const frozen=JSON.parse(bytes),source=fs.readFileSync('hani-office-live.js','utf8');
  // Phone placement/slot measurements are covered by geometry + owner tests.
  // Outside those two UI functions, allow only the pinned movement line list.

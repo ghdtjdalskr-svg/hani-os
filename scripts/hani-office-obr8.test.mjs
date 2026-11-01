@@ -57,7 +57,7 @@ test('obr8/obr13: frozen formal plans include approved chairman delta; errands h
   for(const person of table.people.filter(p=>!['mir','seongmin'].includes(p.id))){
    const list=errands.filter(e=>e.people[0].id===person.id),gaps=list.slice(1).map((e,i)=>(e.start-list[i].start)/60);
    assert.ok(gaps.every(g=>g>=6));const mean=gaps.reduce((a,b)=>a+b,0)/gaps.length;
-   assert.ok(mean>=6&&mean<=15,day+' '+person.id+' actual mean '+mean);
+   assert.ok(mean>=6&&mean<=30,day+' '+person.id+' actual mean '+mean);
   }
  }
  assert.ok(Object.values(counts).every(n=>n>0));assert.equal(writes,0);console.log('obr8 errand kinds',counts);

@@ -1,6 +1,6 @@
 {
  "baseSha": "b80b8d5406b3c1c5520d579618a71462d6164d2a",
- "reason": "Office movement pass 1 and second-round runtime fixes: exact authorized non-placement line replacements only. Stage 2 light and monitor glow, and the weekly drama: exact reviewed lines.",
+ "reason": "Office movement pass 1 and second-round runtime fixes: exact authorized non-placement line replacements only. Stage 2 light and monitor glow, and the weekly drama: exact reviewed lines. Cafe counter and approved break schedule: exact reviewed lines.",
  "beforeSha256": "45a476de1e7ae5d1ac9a72a5828c188643e5267a3ee4cccc58bd6bc10483d5d4",
  "changes": [
   {
@@ -178,8 +178,346 @@
    ]
   },
   {
+   "beforeLine": 374,
+   "afterLine": 450,
+   "before": [
+    "      const range=card?.stay||stayRanges[kind]||[45,120];stayBySlot.set(id,range);return range;\n"
+   ],
+   "after": [
+    "      // Formal catalog bounds stay fixed; the place data owns outing stays.\n",
+    "      const range=stayRanges[kind]||card?.stay||[45,120];stayBySlot.set(id,range);return range;\n"
+   ]
+  },
+  {
+   "beforeLine": 417,
+   "afterLine": 494,
+   "before": [],
+   "after": [
+    "            // Leave real calendar gaps for the configured workday breaks.\n",
+    "            // Keep night cadence, authored signatures and group scenes intact.\n",
+    "            const deskCadence=placeTable?.outingRules?.deskAmbientSeconds;\n",
+    "            if(deskCadence&&tick>=32400&&tick<64800&&tick%deskCadence>=cadence)continue;\n"
+   ]
+  },
+  {
+   "beforeLine": 693,
+   "afterLine": 774,
+   "before": [
+    "    function positionAt(id,seconds,ledger){\n"
+   ],
+   "after": [
+    "    function positionAt(id,seconds,ledger,reduced=false){\n"
+   ]
+  },
+  {
+   "beforeLine": 695,
+   "afterLine": 776,
+   "before": [
+    "      if(e)return stateAt(e,e.people.find(t=>t.id===id),seconds);\n"
+   ],
+   "after": [
+    "      if(e)return stateAt(e,e.people.find(t=>t.id===id),seconds,reduced);\n"
+   ]
+  },
+  {
+   "beforeLine": 862,
+   "afterLine": 943,
+   "before": [
+    "    function deskPairScreenClear(peers,entries,events){\n"
+   ],
+   "after": [
+    "    function deskPairScreenClear(peers,entries,events,from,to,reduced=false){\n"
+   ]
+  },
+  {
+   "beforeLine": 864,
+   "afterLine": 945,
+   "before": [
+    "      const stationary=entries.filter(p=>p.floor===peers[0].floor&&!p.walking);\n",
+    "      const key=peers.map(p=>p.id).join('|')+'|'+stationary.map(p=>p.id+':'+p.seat.anchor).join('|');\n"
+   ],
+   "after": [
+    "      // Decide for the entire text beat. A neighbour arriving or leaving halfway\n",
+    "      // through must not start or clip a ten-second desk conversation.\n",
+    "      const key=peers.map(p=>p.id).join('|')+'|'+from+'|'+reduced+'|'+entries.map(p=>p.id).join();\n"
+   ]
+  },
+  {
+   "beforeLine": 867,
+   "afterLine": 949,
+   "before": [],
+   "after": [
+    "        const near=ledgerOverlaps(events,from,to),times=new Set([from,to-.000001]);\n",
+    "        const boundary=s=>{for(const tick of [s-.000001,s,s+.000001])if(from<=tick&&tick<to)times.add(tick)};\n",
+    "        // Stationary positions change only at these exact event/leg boundaries.\n",
+    "        // Empty homes stay empty for the beat; arrivals and FIFO waits count.\n",
+    "        for(const event of near){boundary(event.start);boundary(event.end);\n",
+    "          for(const t of event.people)for(const l of [...t.out,...t.back]){boundary(l.start);boundary(l.end)}\n",
+    "        }\n",
+    "        const stationary=[];\n",
+    "        for(const other of entries)for(const seconds of times){const state=positionAt(other.id,seconds,near,reduced);if(state&&!state.walking&&state.floor===peers[0].floor)stationary.push({id:other.id,seat:state.seat})}\n"
+   ]
+  },
+  {
+   "beforeLine": 1117,
+   "afterLine": 1208,
+   "before": [],
+   "after": [
+    "        // Reuse the existing gathering window for every card ranked at this\n",
+    "        // instant; querying the same ledger once per card adds cold-plan work.\n",
+    "        if(!gatheringWindow||gatheringWindow.at!==at||gatheringWindow.length!==result.length){\n",
+    "          const active=ledgerOverlaps(result,at,at+.001).filter(e=>!e.visitor),byCard=new Map();\n",
+    "          for(const e of active)if(e.performStart<=at&&at<e.performEnd){if(!byCard.has(e.card.id))byCard.set(e.card.id,[]);byCard.get(e.card.id).push(e)}\n",
+    "          gatheringWindow={at,length:result.length,active,byCard};\n",
+    "        }\n",
+    "        if(at>=32400&&at<64800&&(card.id==='cafe-1f'||card.floor==='5f')){\n",
+    "          const occupied=gatheringWindow.active.filter(e=>card.floor==='5f'?e.card.floor==='5f':e.card.id===card.id).reduce((n,e)=>n+e.people.length,0);\n",
+    "          w*=card.id==='cafe-1f'?(occupied<2?1000:.01):occupied?1:3;\n",
+    "        }\n"
+   ]
+  },
+  {
+   "beforeLine": 1122,
+   "afterLine": 1224,
+   "before": [
+    "          if(!gatheringWindow||gatheringWindow.at!==at||gatheringWindow.length!==result.length){\n",
+    "            const byCard=new Map();\n",
+    "            for(const e of ledgerOverlaps(result,at,at+.001))if(!e.visitor&&e.performStart<=at&&at<e.performEnd){if(!byCard.has(e.card.id))byCard.set(e.card.id,[]);byCard.get(e.card.id).push(e)}\n",
+    "            gatheringWindow={at,length:result.length,byCard};\n",
+    "          }\n"
+   ],
+   "after": []
+  },
+  {
+   "beforeLine": 1141,
+   "afterLine": 1238,
+   "before": [
+    "          const max=size>=3?gathering.trioMaxSeconds:old.card.stay[1]*gathering.maxScale;\n"
+   ],
+   "after": [
+    "          // Long authored rests may exceed the social extension ceiling by\n",
+    "          // themselves. They must not acquire an even longer gathering tail.\n",
+    "          const max=size>=3?gathering.trioMaxSeconds:Math.min(gathering.trioMaxSeconds,old.card.stay[1]*gathering.maxScale);\n"
+   ]
+  },
+  {
+   "beforeLine": 1198,
+   "afterLine": 1297,
+   "before": [
+    "        for(const floor of homeFloors){\n"
+   ],
+   "after": [
+    "        function floorHasRoom(floor){\n"
+   ]
+  },
+  {
+   "beforeLine": 1200,
+   "afterLine": 1299,
+   "before": [
+    "          if(isLate(at)){if(active.reduce((n,e)=>n+e.people.length,people.length)>1)return false}\n",
+    "          else if(at>=41400&&at<46800){if(active.reduce((n,e)=>n+e.people.length,people.length)>4)return false}\n",
+    "          else if(active.length>=2||people.length>1&&active.some(e=>e.people.length>1))return false;\n"
+   ],
+   "after": [
+    "          return isLate(at)?active.reduce((n,e)=>n+e.people.length,people.length)<=1:lunch(at)?active.reduce((n,e)=>n+e.people.length,people.length)<=4:active.length<2&&(people.length===1||!active.some(e=>e.people.length>1));\n"
+   ]
+  },
+  {
+   "beforeLine": 1204,
+   "afterLine": 1301,
+   "before": [],
+   "after": [
+    "        if([...homeFloors].some(floor=>!floorHasRoom(floor)))return false;\n",
+    "        const freeFloors=visitor?null:new Set(floors.filter(f=>homeFloors.has(f.id)||floorHasRoom(f.id)).map(f=>f.id));\n"
+   ]
+  },
+  {
+   "beforeLine": 1209,
+   "afterLine": 1308,
+   "before": [
+    "        let cards=visitor?visitorCards.get(visitor.target):places.filter(c=>(!joiningCard||c.id===joiningCard.id)&&(\n"
+   ],
+   "after": [
+    "        let cards=visitor?visitorCards.get(visitor.target):places.filter(c=>(!joiningCard||c.id===joiningCard.id)&&freeFloors.has(c.floor)&&(\n"
+   ]
+  },
+  {
+   "beforeLine": 1220,
+   "afterLine": 1319,
+   "before": [
+    "        for(const card of cards){\n"
+   ],
+   "after": [
+    "        // Try the strongest invitation (two at lunch) at this clock opportunity. A\n",
+    "        // failed trip can retry at the next tick; do not exhaust every room.\n",
+    "        for(const card of cards.slice(0,lunch(at)?2:1)){\n",
+    "          // Even without travel/FIFO the complete minimum stay consumes these\n",
+    "          // floor units. Reject impossible windows before building any routes.\n",
+    "          if(!visitor&&!withinCap({start:at,end:at+card.stay[0]*(people.length>1?rules.groupStayScale:1),people,floors:[...new Set([...homeFloors,card.floor])]}))continue;\n"
+   ]
+  },
+  {
+   "beforeLine": 1224,
+   "afterLine": 1328,
+   "before": [
+    "          for(let offset=0;offset<slots.length;offset++){\n"
+   ],
+   "after": [
+    "          let proposals=0;\n",
+    "          for(let offset=0;offset<slots.length&&proposals<1;offset++){\n"
+   ]
+  },
+  {
+   "beforeLine": 1242,
+   "afterLine": 1347,
+   "before": [],
+   "after": [
+    "            // The minimum destination stay is unavoidable even if FIFO adds\n",
+    "            // waits. Reject occupied phone slots before allocating trajectories.\n",
+    "            if(card.floor==='1f'&&people.some((p,i)=>{\n",
+    "              const start=at+i*1.5+pathDuration(path(homes[i].anchorId,destinations[i])),end=start+stay;\n",
+    "              const stop={id:p.id,home:homes[i].anchorId,seat:slot(destinations[i],card.pose),start,end};\n",
+    "              return ledgerOverlaps(ledger,start,end).some(e=>stationaryStops(e).some(q=>screenStopConflict(stop,q)));\n",
+    "            }))continue;\n"
+   ]
+  },
+  {
+   "beforeLine": 1250,
+   "afterLine": 1362,
+   "before": [],
+   "after": [
+    "            proposals++;\n"
+   ]
+  },
+  {
+   "beforeLine": 1299,
+   "afterLine": 1412,
+   "before": [],
+   "after": [
+    "            if(ledgerOverlaps(ledger,at,at+.001).some(e=>e.people.some(t=>t.id===p.id||t.id==='seongmin')))continue;\n"
+   ]
+  },
+  {
+   "beforeLine": 1317,
+   "afterLine": 1431,
+   "before": [
+    "      for(let at=0;at<86400;at+=180){\n"
+   ],
+   "after": [
+    "      // Lunch has four-person capacity. Offer the existing reservation path\n",
+    "      // twice as often in that window, retaining all cadence/cooldown gates.\n",
+    "      for(let at=0;at<86400;at+=lunch(at)?90:180){\n"
+   ]
+  },
+  {
+   "beforeLine": 1342,
+   "afterLine": 1458,
+   "before": [
+    "          for(const p of available){\n"
+   ],
+   "after": [
+    "          const candidates=available.slice(0,2),overdue=available.slice(2).find(p=>at-(due.get(p.id)??at)>=600);\n",
+    "          if(overdue)candidates.push(overdue);\n",
+    "          for(const p of candidates){\n"
+   ]
+  },
+  {
+   "beforeLine": 1347,
+   "afterLine": 1465,
+   "before": [
+    "            if(!booked&&overdueSparse(p))for(const delay of [0,15,30,45])if(attempt([p],at+delay,null,true)){booked=true;break}\n"
+   ],
+   "after": [
+    "            if(!booked&&overdueSparse(p))for(const delay of [15,30,45])if(attempt([p],at+delay,null,true)){booked=true;break}\n"
+   ]
+  },
+  {
+   "beforeLine": 1361,
+   "afterLine": 1479,
+   "before": [
+    "            for(const p of peers.slice(0,3))if(attempt([p],time,null,false,stay.card))break;\n"
+   ],
+   "after": [
+    "            for(const p of peers.slice(0,1))if(attempt([p],time,null,false,stay.card))break;\n"
+   ]
+  },
+  {
+   "beforeLine": 1404,
+   "afterLine": 1522,
+   "before": [],
+   "after": [
+    "          // Every same-floor errand consumes a full excursion unit immediately.\n",
+    "          // A full floor cannot accept any card or target at this tick.\n",
+    "          const moving=near.filter(e=>motion(e).moving&&e.people.some(t=>t.home.floor===home.floor||anchors.get(t.seat.anchor).floor===home.floor));\n",
+    "          if(lunch(at)?moving.reduce((n,e)=>n+e.people.length,1)>4:moving.length>=2)continue;\n"
+   ]
+  },
+  {
+   "beforeLine": 1412,
+   "afterLine": 1534,
+   "before": [
+    "          for(const {c}of cards){\n"
+   ],
+   "after": [
+    "          // Retry on the existing next tick instead of exhausting every errand\n",
+    "          // destination. Rest stays and their reservation budget remain intact.\n",
+    "          for(const {c}of cards.slice(0,2)){\n"
+   ]
+  },
+  {
+   "beforeLine": 1459,
+   "afterLine": 1583,
+   "before": [
+    "            if(!visitorTargets.has(v.target))visitorTargets.set(v.target,target.room==='consult'?[v.target,...[...anchors.values()].filter(a=>a.floor==='1f'&&['consult','cafe'].includes(a.room)&&a.type==='seat'&&a.runtimeAssignable!==false&&a.id!==v.target).map(a=>a.id)]:[v.target]);\n"
+   ],
+   "after": [
+    "            if(!visitorTargets.has(v.target))visitorTargets.set(v.target,v.target==='coffee_counter'?places.find(c=>c.id==='coffee-1f').slots:target.room==='consult'?[v.target,...[...anchors.values()].filter(a=>a.floor==='1f'&&['consult','cafe'].includes(a.room)&&a.type==='seat'&&a.runtimeAssignable!==false&&a.id!==v.target).map(a=>a.id)]:[v.target]);\n"
+   ]
+  },
+  {
+   "beforeLine": 1562,
+   "afterLine": 1686,
+   "before": [],
+   "after": [
+    "        // A brief stretch uses the existing pose slot at the same reserved\n",
+    "        // chair. Keep the long-rest words and reduced-motion seated pose intact.\n",
+    "        if(card?.id==='cafe-1f'&&performing&&!options.reducedMotion&&Math.floor(seconds+seed(p.id)%30)%30===0)state.seat=slot(t.seat.anchor,'stand');\n"
+   ]
+  },
+  {
+   "beforeLine": 1563,
+   "afterLine": 1690,
+   "before": [
+    "          pose:state.walking?(Math.floor(seconds*5)%2?'walk-a':'walk-b'):state.seat.posture,activity:p.visitor?'visit':event&&!card?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):lounge?'rest':'work',\n",
+    "          actionId:performing&&!card?action.id:'base-work',eventId:card?undefined:event?.id,outingId:card?event.id:undefined,groupIds:event?.group,placeId:card?.id,targetAnchor:t?.seat.anchor,line,\n"
+   ],
+   "after": [
+    "          pose:state.walking?(Math.floor(seconds*5)%2?'walk-a':'walk-b'):state.seat.posture,activity:p.visitor?'visit':event&&!card?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):lounge||card?.id==='cafe-1f'&&state.state==='AT_PLACE'?'rest':'work',\n",
+    "          actionId:event&&!card&&(performing||state.state==='AT_PLACE')?action.id:'base-work',eventId:card?undefined:event?.id,outingId:card?event.id:undefined,groupIds:event?.group,placeId:card?.id,targetAnchor:t?.seat.anchor,line,\n"
+   ]
+  },
+  {
+   "beforeLine": 1576,
+   "afterLine": 1703,
+   "before": [
+    "        if(!deskPairScreenClear(peers,entries,events))continue;\n"
+   ],
+   "after": [
+    "        if(!deskPairScreenClear(peers,entries,idleLedger,j*BEAT,j*BEAT+ACTIVE_BEATS*BEAT,options.reducedMotion))continue;\n"
+   ]
+  },
+  {
+   "beforeLine": 1605,
+   "afterLine": 1732,
+   "before": [],
+   "after": [
+    "        // Arrival/return FIFO waits own their words until every partner is ready.\n",
+    "        if(seconds<e.performStart||seconds>=e.performEnd)continue;\n"
+   ]
+  },
+  {
    "beforeLine": 1735,
-   "afterLine": 1811,
+   "afterLine": 1864,
    "before": [
     "  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,labels:Object.freeze({priority:statusLabelPriority,place:placeStatusLabels,short:phoneStatusLine}),places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines})});\n"
    ],
@@ -247,7 +585,7 @@
   },
   {
    "beforeLine": 1758,
-   "afterLine": 1892,
+   "afterLine": 1945,
    "before": [
     "  const actors=new Map();let frame=0,caseData=null,meeting=false,travelId=0,liveStage=\"\",liveAgents=null,liveCross=null;\n"
    ],
@@ -258,7 +596,7 @@
   },
   {
    "beforeLine": 1760,
-   "afterLine": 1895,
+   "afterLine": 1948,
    "before": [
     "  motion.addEventListener?.('change',event=>{reduced=event.matches;if(reduced)for(const actor of actors.values())finishTravel(actor);if(sceneVisible())updateBuilding(true,false)});\n"
    ],
@@ -268,7 +606,7 @@
   },
   {
    "beforeLine": 1766,
-   "afterLine": 1901,
+   "afterLine": 1954,
    "before": [],
    "after": [
     "    const previous=actor.dataset.pose;\n",
@@ -284,7 +622,7 @@
   },
   {
    "beforeLine": 1770,
-   "afterLine": 1914,
+   "afterLine": 1967,
    "before": [],
    "after": [
     "    actor.officePivot=[f.pivot[0]/entry.cell[0],f.pivot[1]/entry.cell[1]];\n"
@@ -292,7 +630,7 @@
   },
   {
    "beforeLine": 1772,
-   "afterLine": 1917,
+   "afterLine": 1970,
    "before": [],
    "after": [
     "    actor.style.setProperty('--idle-pivot-x',(f.pivot[0]/entry.cell[0]*100)+'%');actor.style.setProperty('--idle-pivot-y',(f.pivot[1]/entry.cell[1]*100)+'%');\n"
@@ -300,7 +638,7 @@
   },
   {
    "beforeLine": 1775,
-   "afterLine": 1921,
+   "afterLine": 1974,
    "before": [],
    "after": [
     "    if(actor.officeSpriteRequest===id)return;actor.officeSpriteRequest=id;\n"
@@ -308,7 +646,7 @@
   },
   {
    "beforeLine": 1785,
-   "afterLine": 1932,
+   "afterLine": 1985,
    "before": [
     "  function place(actor,position){actor.style.left=position[0]+\"%\";actor.style.top=position[1]+\"%\"}\n"
    ],
@@ -323,7 +661,7 @@
   },
   {
    "beforeLine": 1802,
-   "afterLine": 1954,
+   "afterLine": 2007,
    "before": [
     "    const actor=document.createElement(\"div\");actor.className=\"hani-office-actor\";actor.dataset.person=key;actor.dataset.name=name;actor.dataset.seat=(HaniBuildingScene.homeSeat(key)||buildingChairmanSlot()).id;actor.dataset.spot=\"seat\";\n"
    ],
@@ -333,7 +671,7 @@
   },
   {
    "beforeLine": 1824,
-   "afterLine": 1976,
+   "afterLine": 2029,
    "before": [
     "    if(bubbleSelection&&!actionRunning(actor)){const speaker=actors.get(bubbleSelection.speaker);return (speaker?.dataset.name||actor.dataset.name)+' · '+actor.querySelector('.hani-office-status').dataset.full+' · '+bubbleSelection.line}\n"
    ],
@@ -343,7 +681,7 @@
   },
   {
    "beforeLine": 1829,
-   "afterLine": 1981,
+   "afterLine": 2034,
    "before": [
     "    const floor=map.getBoundingClientRect?.(),bubble=actorBubble.getBoundingClientRect?.(),actor=actors.get(bubblePerson)?.getBoundingClientRect?.();\n"
    ],
@@ -353,7 +691,7 @@
   },
   {
    "beforeLine": 1839,
-   "afterLine": 1991,
+   "afterLine": 2044,
    "before": [
     "    pendingTap=null;const now=new Date(),selection=tapLines.tap(actor.dataset.person,now);\n",
     "    if(selection&&actionRunning(actor))pendingTap={actor,selection,floor:activeFloor};\n"
@@ -366,7 +704,7 @@
   },
   {
    "beforeLine": 1845,
-   "afterLine": 1998,
+   "afterLine": 2051,
    "before": [
     "      const loaded=selection?null:tapLines.tap(actor.dataset.person,now);\n"
    ],
@@ -377,7 +715,7 @@
   },
   {
    "beforeLine": 1847,
-   "afterLine": 2001,
+   "afterLine": 2054,
    "before": [
     "      bubbleSelection=loaded;if(actionRunning(actor))pendingTap={actor,selection:loaded,floor:activeFloor};\n"
    ],
@@ -387,7 +725,7 @@
   },
   {
    "beforeLine": 1897,
-   "afterLine": 2051,
+   "afterLine": 2104,
    "before": [],
    "after": [
     "  const dramaCaption=document.createElement('small'),dramaTitle=document.createElement('b'),dramaSummary=document.createElement('span');dramaCaption.className='hani-building-drama-caption';dramaCaption.hidden=true;dramaCaption.append(dramaTitle,dramaSummary);caption.append(dramaCaption);let tapCatalogStarted=false;\n"
@@ -395,7 +733,7 @@
   },
   {
    "beforeLine": 1899,
-   "afterLine": 2054,
+   "afterLine": 2107,
    "before": [],
    "after": [
     "  // One persistent, non-interactive layer; monitor gradients share one pulse.\n",
@@ -422,7 +760,7 @@
   },
   {
    "beforeLine": 1916,
-   "afterLine": 2091,
+   "afterLine": 2144,
    "before": [
     "    if(path.length>1){actor.officeTravel={path,index:0,elapsed:0,seat};pose(actor,'walk-a');place(actor,building.visualPoint(path[0]))}\n"
    ],
@@ -432,7 +770,7 @@
   },
   {
    "beforeLine": 1924,
-   "afterLine": 2099,
+   "afterLine": 2152,
    "before": [
     "  function sceneVisible(){return !document.hidden&&!!root.closest(\".view\")?.classList.contains(\"active\")&&!root.hidden&&getComputedStyle(root).display!==\"none\"}\n"
    ],
@@ -443,7 +781,7 @@
   },
   {
    "beforeLine": 1927,
-   "afterLine": 2103,
+   "afterLine": 2156,
    "before": [
     "    if(!sceneVisible())return;\n",
     "    const token=++backgroundToken,bg=map.querySelector('.hani-office-background');\n",
@@ -464,7 +802,7 @@
   },
   {
    "beforeLine": 1931,
-   "afterLine": 2114,
+   "afterLine": 2167,
    "before": [
     "      return {background};\n"
    ],
@@ -478,7 +816,7 @@
   },
   {
    "beforeLine": 1933,
-   "afterLine": 2120,
+   "afterLine": 2173,
    "before": [
     "    backgroundCache.get(floor.id).then(({background})=>{\n",
     "      if(token!==backgroundToken||!sceneVisible())return;\n",
@@ -492,7 +830,7 @@
   },
   {
    "beforeLine": 1938,
-   "afterLine": 2125,
+   "afterLine": 2178,
    "before": [
     "      for(const entry of plates)entry.plate.hidden=entry.floor!==floor.id||background!==floor.background;\n",
     "      for(const entry of deskProps){entry.prop.hidden=entry.floor!==floor.id||background!==floor.background;if(!entry.prop.hidden&&!entry.prop.src)entry.prop.src=entry.src}\n"
@@ -505,7 +843,7 @@
   },
   {
    "beforeLine": 1943,
-   "afterLine": 2131,
+   "afterLine": 2184,
    "before": [
     "    if(sceneVisible())void tapLines.load();\n"
    ],
@@ -515,7 +853,7 @@
   },
   {
    "beforeLine": 1945,
-   "afterLine": 2133,
+   "afterLine": 2186,
    "before": [],
    "after": [
     "    const episode=tapLines.episode(now),dramaText=episode?episode.title+' · '+episode.summary:'';\n",
@@ -525,7 +863,7 @@
   },
   {
    "beforeLine": 1953,
-   "afterLine": 2144,
+   "afterLine": 2197,
    "before": [
     "    const nextKey=floorSnapshot.day+\":\"+activeFloor+\":\"+entries.map(p=>p.id+\"/\"+p.activity+\"/\"+p.seat?.id+\"/\"+p.actionId+\"/\"+p.eventId+\"/\"+p.line+\"/\"+(p.walking?Math.floor(floorSnapshot.seconds*10):p.pose)).join(\",\")+\":\"+Boolean(selected)+\":\"+Math.floor(floorSnapshot.minutes/5);\n"
    ],
@@ -535,7 +873,7 @@
   },
   {
    "beforeLine": 1959,
-   "afterLine": 2150,
+   "afterLine": 2203,
    "before": [
     "    for(const entry of plates)entry.plate.hidden=entry.floor!==activeFloor;\n"
    ],
@@ -545,7 +883,7 @@
   },
   {
    "beforeLine": 1964,
-   "afterLine": 2155,
+   "afterLine": 2208,
    "before": [
     "    // Hidden actors keep no stale dialogue partner from an earlier frame.\n",
     "    for(const actor of actors.values()){actor.hidden=true;actor.officeRow.hidden=true;actor.dataset.called=\"false\";actor.dataset.partner=\"\"}\n"
@@ -560,7 +898,7 @@
   },
   {
    "beforeLine": 1969,
-   "afterLine": 2163,
+   "afterLine": 2216,
    "before": [
     "      if(building.scheduler&&!meeting){actor.officeTravel=null;actor.officeAnchor=p.seat.anchor;actor.dataset.seat=p.seat.id;actor.dataset.zone=p.seat.zone;actor.dataset.spot=p.seat.zone==='desk'?'seat':p.seat.zone;actor.dataset.home=[p.seat.x,p.seat.y].join(',');place(actor,p.position||[p.seat.x,p.seat.y]);pose(actor,reduced?(p.walking?'standing':p.pose):p.pose)}\n"
    ],
@@ -581,7 +919,7 @@
   },
   {
    "beforeLine": 1973,
-   "afterLine": 2178,
+   "afterLine": 2231,
    "before": [],
    "after": [
     "      const peer=entries.find(q=>q.id===p.deskPartner);actor.style.setProperty('--response-lean',peer&&peer.seat.x<p.seat.x?'-1deg':'1deg');\n"
@@ -589,7 +927,7 @@
   },
   {
    "beforeLine": 1974,
-   "afterLine": 2180,
+   "afterLine": 2233,
    "before": [
     "      actor.dataset.emoji=selected||actor.dataset.action==='base-work'?'':p.emoji||'';actor.dataset.walking=String(Boolean(p.walking));\n"
    ],
@@ -600,7 +938,7 @@
   },
   {
    "beforeLine": 1980,
-   "afterLine": 2187,
+   "afterLine": 2240,
    "before": [],
    "after": [
     "    for(const actor of actors.values())if(actor.hidden){clearMotion(actor);actor.officeSchedule=null;actor.dataset.partner='';actor.dataset.greeting='false'}\n"
@@ -608,7 +946,7 @@
   },
   {
    "beforeLine": 1982,
-   "afterLine": 2190,
+   "afterLine": 2243,
    "before": [],
    "after": [
     "    updateAtmosphere(now);\n"
@@ -616,7 +954,7 @@
   },
   {
    "beforeLine": 1987,
-   "afterLine": 2196,
+   "afterLine": 2249,
    "before": [
     "  function syncVisibility(){officePresence.read();const visible=sceneVisible();root.dataset.paused=String(!visible);if(visible)updateBuilding(true,false);else closeBubble()}\n"
    ],
@@ -626,7 +964,7 @@
   },
   {
    "beforeLine": 1990,
-   "afterLine": 2199,
+   "afterLine": 2252,
    "before": [],
    "after": [
     "  if(typeof IntersectionObserver==='function')new IntersectionObserver(entries=>{mapOnScreen=entries[0].isIntersecting;syncVisibility()}).observe(map);\n"
@@ -634,7 +972,7 @@
   },
   {
    "beforeLine": 2047,
-   "afterLine": 2257,
+   "afterLine": 2310,
    "before": [
     "  // Only moving actors advance. Nodes and art probes are never recreated on a tick.\n",
     "  setInterval(()=>{if(reduced||!sceneVisible())return;frame++;\n",
@@ -649,7 +987,7 @@
   },
   {
    "beforeLine": 2051,
-   "afterLine": 2262,
+   "afterLine": 2315,
    "before": [
     "      const travel=actor.officeTravel;if(actor.hidden||!travel)continue;\n",
     "      travel.elapsed+=100;\n",
@@ -671,7 +1009,7 @@
   },
   {
    "beforeLine": 2058,
-   "afterLine": 2271,
+   "afterLine": 2324,
    "before": [
     "      if(travel.index===travel.path.length-1)finishTravel(actor);\n"
    ],
@@ -695,7 +1033,7 @@
   },
   {
    "beforeLine": 2060,
-   "afterLine": 2287,
+   "afterLine": 2340,
    "before": [
     "    fitStatusLabels();\n"
    ],
