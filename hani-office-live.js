@@ -1877,6 +1877,7 @@
     [/급하게 인스타 끄는 중/,'인스타 끄기',true],[/급하게 창 닫는 중/,'창 닫기',true],
     [/회장님 질문 듣는 중/,'질문 듣기',true],[/회장님께 화면 설명 중/,'화면 설명',true],
     [/상담 중/,'상담 중',true],[/면접 진행 중/,'면접 진행',true],[/면접 보는 중/,'면접 보기',true],
+    [/^상담 대기 중$/,'상담 대기',true],[/^면접 대기 중… 두근$/,'면접 대기',true],
     [/^알람 이름 짧게 바꾸는 중$/,'알람 이름|알람 정리|이름 바꾸기'],
     [/조용한 밤이라 메모가 잘 써지네요\.$/,'메모 쓰기|메모 작성|밤 메모'],[/오늘 기억할 장면을 적어둘게요\.$/,'장면 기록|장면 적기|장면 메모'],
     [/라운지에서 오늘 고생했다고 말하는 중$/,'수고 인사|격려 인사|수고 전하기'],[/소파에서 내일 할 일 적는 중$/,'내일 할일|할일 적기|내일 메모'],
@@ -2301,14 +2302,15 @@
   }
   function clearMotion(actor){actor.officeReactions.reset();delete actor.dataset.motion;actor.style.setProperty('--step-bounce','0px');actor.style.setProperty('--step-lean','0deg')}
   function activityStatus(actor,full){
+    if(actor.dataset.visitor==='true'&&!actor.officeTravel&&actor.dataset.walking!=='true'&&!['GOING','RETURNING'].includes(actor.dataset.behavior)&&/^(?:상담 대기 중|면접 대기 중… 두근)$/.test(full))return 'waiting';
     const leisure=/물 한 모금|쉬|휴식|수다|간식|커피|야식|메뉴|투표|저녁 뭐|인스타|음악|영화|산책|졸|약속|휴대폰|고양이 영상|기지개|스트레칭|하품|노래|플레이리스트|흥얼|사진첩|(?:오늘 찍은|여행) 사진|날씨|퇴근 시간|알람|물병|점심 후보|단백질 식단|잠깐 몸 풀기/;
     const workPhrase=/(?:고객 표현 쉬운 말로 바꾸는 중|어려운 용어 쉬운 말 퀴즈 중|다음 약속 준비물 적는 중|졸린 눈으로 문장 줄이는 중)$/;
     const deskNote=/^(?:영화 메모에 작은 별 그리는 중|알람 이름 짧게 바꾸는 중)$/.test(full);
     const everydayScene=/^scene-(?:meme|coffee-menu|snack-budget|watch-pick|travel-talk|roof-selfie)$/.test(actor.dataset.action||'');
     return actor.officeTravel||actor.dataset.walking==='true'||['GOING','RETURNING'].includes(actor.dataset.behavior)||full==='이동 중'?'moving':actor.dataset.called==='true'||actor.dataset.activity==='meeting'&&!everydayScene||/(?:상담(?: 받는)?|면접 (?:진행|보는)) 중$/.test(full)?'meeting':/^(?:visitor-host|report)-/.test(actor.dataset.place||'')||actor.dataset.activity==='visit'&&/택배|배달/.test(full)||/(?:급하게 (?:인스타 끄는|창 닫는)|회장님 질문 듣는|회장님께 화면 설명) 중$/.test(full)?'work':everydayScene||['rest','play'].includes(actor.dataset.activity)||/^(?:coffee|cafe|pantry|sofa|garden|terrace|window)-/.test(actor.dataset.place||'')||actor.dataset.zone==='lounge'&&!/^(?:task|errand)-/.test(actor.dataset.place||'')||!workPhrase.test(full)&&!deskNote&&leisure.test(full)?'rest':/야근/.test(full)?'night':'work';
   }
-  const statusNames={work:'근무 중',rest:'휴식 중',meeting:'회의 중',moving:'이동 중',night:'야근 중'};
-  const statusIcons={work:'💻',rest:'☕',meeting:'💬',moving:'🚶',night:'🌙'};
+  const statusNames={work:'근무 중',rest:'휴식 중',waiting:'대기 중',meeting:'회의 중',moving:'이동 중',night:'야근 중'};
+  const statusIcons={work:'💻',rest:'☕',waiting:'💬',meeting:'💬',moving:'🚶',night:'🌙'};
   function statusDot(actor){if(actor.dataset.resident){actor.dataset.status='resident';actor.setAttribute('aria-label',actor.dataset.name);return}const dot=actor.querySelector('.hani-office-status-dot'),full=actor.querySelector('.hani-office-status').dataset.full||'';actor.dataset.status=activityStatus(actor,full);dot.title=statusNames[actor.dataset.status];dot.setAttribute('aria-label',dot.title);actor.setAttribute('aria-label',`${actor.dataset.name}: ${dot.title} · ${full}`)}
   function label(actor,value,mood=false){
     const status=actor.querySelector('.hani-office-status'),icon=actor.querySelector('.hani-office-activity-icon'),compact=matchMedia('(max-width:600px)').matches;
@@ -2390,8 +2392,8 @@
   // One scene host; actors remain mounted and only their floor/position changes.
   const building=HaniBuildingScene,tabs=root.querySelector(".hani-building-tabs"),floorLabel=document.createElement("span"),overflowChip=document.createElement("span"),floorButtons=new Map(),backgroundCache=new Map();
   const roster=document.createElement("ul");roster.className="hani-building-roster";roster.setAttribute("aria-label","현재 층 직원과 활동");root.querySelector(".hani-office-scroll").after(roster);for(const actor of actors.values()){const row=document.createElement("li"),name=document.createElement("b"),text=document.createElement("span");name.textContent=actor.dataset.name;row.append(name,text);if(!actor.dataset.resident)roster.append(row);actor.officeRow=row;actor.officeRowName=name;actor.officeText=text}
-  const actorBubble=document.createElement('div'),bubbleLine=document.createElement('p'),profileLink=document.createElement('a');
-  actorBubble.className='hani-office-character-bubble';actorBubble.hidden=true;actorBubble.setAttribute('aria-live','polite');actorBubble.setAttribute('aria-atomic','true');profileLink.textContent='프로필 ↗';profileLink.href='#organization/people';actorBubble.append(bubbleLine,profileLink);map.append(actorBubble);
+  const actorBubble=document.createElement('div'),bubbleLine=document.createElement('p'),profileLink=document.createElement('a'),bubbleSprite=document.createElement('div');
+  actorBubble.className='hani-office-character-bubble';actorBubble.hidden=true;actorBubble.setAttribute('aria-live','polite');actorBubble.setAttribute('aria-atomic','false');bubbleLine.setAttribute('aria-atomic','true');profileLink.setAttribute('aria-live','off');profileLink.textContent='프로필 ↗';profileLink.href='#organization/people';bubbleSprite.className='hani-office-bubble-sprite';bubbleSprite.hidden=true;bubbleSprite.setAttribute('aria-hidden','true');actorBubble.append(bubbleLine,profileLink,bubbleSprite);map.append(actorBubble);
   const tapLines=building.tapLines.create(building.canon?.people||window.HaniOrganizationRoster?.people||[]);
   let bubblePerson=null,bubbleSerial=0,bubbleSelection=null,pendingTap=null,cancelled=new Set(),cancelledDay='',meetingStartedAt=0;
   let bubbleTimer=null,lastBubbleTap=-Infinity,autoBubbleEntry=true;
@@ -2437,7 +2439,9 @@
       if(actorBubble.style.left!==left+'px')actorBubble.style.left=left+'px';if(actorBubble.style.top!==top+'px')actorBubble.style.top=top+'px';return;
     }
     if(actorBubble.hidden)return;
-    const person=actors.get(bubblePerson),floor=map.getBoundingClientRect?.(),bubble=actorBubble.getBoundingClientRect?.(),actor=person?.getBoundingClientRect?building.motion.stableActorBox(person):null;
+    const person=actors.get(bubblePerson),floor=map.getBoundingClientRect?.();
+    if(actorBubble.dataset.zoom==='true'&&floor?.height)actorBubble.style.setProperty('--bubble-max-height',Math.max(0,floor.height-8)+'px');
+    const bubble=actorBubble.getBoundingClientRect?.(),actor=person?.getBoundingClientRect?building.motion.stableActorBox(person):null;
     if(!floor?.width||!bubble?.width||!actor)return;
     const left=Math.max(4,Math.min(floor.width-bubble.width-4,actor.left-floor.left+actor.width/2-bubble.width/2));
     const top=Math.max(4,Math.min(floor.height-bubble.height-4,actor.top-floor.top-bubble.height-6));
@@ -2445,15 +2449,25 @@
     actorBubble.style.left=left+'px';actorBubble.style.top=top+'px';
   }
   function closeBubble(clearPending=true){clearBubbleTimer();bubbleSerial++;bubblePerson=null;bubbleSelection=null;if(clearPending)pendingTap=null;actorBubble.hidden=true;for(const actor of actors.values())actor.dataset.speaking='false';fitStatusLabels()}
-  function showBubble(actor,selection,duration=3000){bubblePerson=actor.dataset.person;bubbleSelection=selection;actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=!!actor.dataset.resident||actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);fitStatusLabels();fitBubble();const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble(false)}},duration)}
+  function updateBubbleSprite(actor,automatic){
+    const sprite=actor.querySelector('.hani-office-sprite'),entry=spriteEntries.get(spriteId(actor));
+    const ready=!automatic&&actor.dataset.avatar==='v2'&&entry&&sprite?.style.backgroundImage&&sprite.style.backgroundImage!=='none';
+    bubbleSprite.hidden=!ready;actorBubble.dataset.zoom=String(!!ready);
+    if(!ready)return;
+    // Copy the loaded atlas and its current frame; never load or advance a sprite here.
+    for(const property of ['backgroundImage','backgroundSize','backgroundPosition'])bubbleSprite.style[property]=sprite.style[property];
+    bubbleSprite.style.setProperty('--bubble-sprite-ratio',String(entry.cell[0]/entry.cell[1]));
+    bubbleSprite.dataset.pose=actor.dataset.pose;
+  }
+  function showBubble(actor,selection,duration=3000,automatic=false){bubblePerson=actor.dataset.person;bubbleSelection=selection;updateBubbleSprite(actor,automatic);actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=!!actor.dataset.resident||actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);fitStatusLabels();fitBubble();const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble(false)}},duration)}
   function openBubble(actor,automatic=false){
     if(!automatic){lastBubbleTap=Date.now();autoBubbleEntry=false;clearBubbleTimer()}
     if(actor.hidden)return;
-    if(actor.dataset.resident){const person=residentSlots.find(p=>p.id===actor.dataset.person),index=actor.officeResidentTap||0;actor.officeResidentTap=index+1;pendingTap=null;if(!reduced)actor.officeReactions.request(person.pet?'hop':'tap',Date.now(),true);showBubble(actor,{speaker:person.id,line:person.lines[index%person.lines.length],resident:true});return}
+    if(actor.dataset.resident){const person=residentSlots.find(p=>p.id===actor.dataset.person),index=actor.officeResidentTap||0;actor.officeResidentTap=index+1;pendingTap=null;if(!reduced)actor.officeReactions.request(person.pet?'hop':'tap',Date.now(),true);showBubble(actor,{speaker:person.id,line:person.lines[index%person.lines.length],resident:true},3000,automatic);return}
     if(!reduced)actor.officeReactions.request('tap',Date.now());
     pendingTap=null;const now=new Date(),floor=activeFloor,options={floor,chairmanPresent:officePresence.read().chairmanPresent},selection=tapLines.tap(actor.dataset.person,now,options);
     if(!automatic&&selection&&!selection.drama&&actionRunning(actor))pendingTap={actor,selection,floor:activeFloor};
-    showBubble(actor,selection||null,automatic?4000:3000);
+    showBubble(actor,selection||null,automatic?4000:3000,automatic);
     const serial=bubbleSerial;
     void tapLines.load().then(()=>{
       // Replay taps in order even if the first view is still fetching the seed.
