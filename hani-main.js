@@ -3801,34 +3801,51 @@ function dietPaceMarkup(period=careKoreaPeriod()){
 // Read-only projections. Goal approval and all existing input/save owners stay unchanged.
 function healthRecordDay(value){return /^\d{4}-\d{2}-\d{2}$/.test(value)&&Number.isFinite(Date.parse(value+'T00:00:00Z'))&&new Date(value+'T00:00:00Z').toISOString().slice(0,10)===value}
 function weightJourneyData(body,registry,heightCm,period=careKoreaPeriod()){
-  const rows=(Array.isArray(body)?body:[]).filter(r=>r&&healthRecordDay(r.date)&&r.date<=period.day&&String(r.weight??'').trim()!==''&&Number.isFinite(Number(r.weight))&&Number(r.weight)>0).slice().sort((a,b)=>a.date.localeCompare(b.date));
+  const rows=monthlyReportDaily((Array.isArray(body)?body:[]).filter(r=>r&&healthRecordDay(r.date)&&r.date<=period.day&&String(r.weight??'').trim()!==''&&Number.isFinite(Number(r.weight))&&Number(r.weight)>0));
   const goal=careApprovedGoals(registry,period).filter(g=>['body_bmi','body_weight_kg','body_weight'].includes(g.metric_id)&&g.effective_from<=period.day&&g.effective_to>=period.day).sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at)||(Number(b.revision)||0)-(Number(a.revision)||0))[0];
   if(!rows.length)return null;
   const current=rows.at(-1),start=goal?(rows.filter(r=>r.date<=goal.effective_from).at(-1)||rows[0]):rows[0],height=Number(heightCm)/100;
   const target=goal&&(goal.metric_id!=='body_bmi'||Number.isFinite(height)&&height>0)?Number(goal.value)*(goal.metric_id==='body_bmi'?height*height:1):null;
-  const delta=Number(current.weight)-Number(start.weight),distance=target===null?null:target-Number(start.weight),reached=target!==null&&current.date>=goal.effective_from&&(distance===0?Number(current.weight)===target:distance>0?Number(current.weight)>=target:Number(current.weight)<=target);
-  const raw=distance===null?null:distance===0?(reached?100:0):delta/distance*100;
-  return {start:Number(start.weight),current:Number(current.weight),startDate:start.date,date:current.date,target,delta,percent:raw===null?null:Math.max(0,Math.min(100,raw)),reached,away:distance!==null&&(distance===0?!reached:raw<0)};
+  const delta=Number(current.weight)-Number(start.weight),distance=target===null?null:target-Number(start.weight);
+  let direction=0;
+  if(target!==null){
+    // Only approved, earlier revisions of this metric can establish goal intent.
+    const previous=(Array.isArray(registry)?registry:[]).filter(g=>g&&['active','superseded'].includes(g.status)&&g.metric_id===goal.metric_id&&g.effective_from<goal.effective_from&&Date.parse(g.created_at)<=Date.parse(goal.created_at)&&Number.isFinite(Number(g.value))&&Number(g.value)>0&&Number(g.value)!==Number(goal.value)).sort((a,b)=>b.effective_from.localeCompare(a.effective_from)||Date.parse(b.created_at)-Date.parse(a.created_at))[0];
+    if(previous)direction=Math.sign(Number(goal.value)-Number(previous.value));
+    // Earlier measurements retain the direction even when the effective-day
+    // baseline has already crossed the target, or is exactly on it.
+    const reference=rows.find(r=>r.date<=goal.effective_from&&Number(r.weight)!==target);
+    if(!direction&&reference&&(reference.date<start.date||start.date===goal.effective_from))direction=Math.sign(target-Number(reference.weight));
+    // With no approval-day baseline/history, movement toward the target is
+    // evidence; movement away alone cannot distinguish loss from gain intent.
+    if(!direction&&distance!==0&&delta*distance>0)direction=Math.sign(distance);
+  }
+  const active=target!==null&&current.date>=goal.effective_from;
+  const reached=active&&(direction?(Number(current.weight)-target)*direction>=0:Number(current.weight)===target);
+  const away=active&&!!direction&&!reached&&delta*direction<0;
+  const span=distance===null?0:distance*direction;
+  const percent=!active||!direction?null:away?0:reached?100:span>0?Math.max(0,Math.min(100,delta*direction/span*100)):0;
+  return {start:Number(start.weight),current:Number(current.weight),startDate:start.date,date:current.date,target,delta,direction,percent,reached,away};
 }
 function weightJourneyMarkup(model){
   if(!model)return '<h4>체중 여정</h4><p>체중 기록을 남기면 시작과 현재를 함께 보여 드려요.</p>';
   const kg=x=>x.toFixed(2)+'kg';
-  return '<h4>체중 여정'+(model.reached?' <span class="journey-achievement">🏅 승인 목표 달성</span>':'')+'</h4><dl class="journey-values"><div class="journey-weight"><dt>시작 · '+esc(model.startDate)+'</dt><dd>'+kg(model.start)+'</dd></div><div class="journey-weight"><dt>현재 · '+esc(model.date)+'</dt><dd>'+kg(model.current)+'</dd></div><div class="journey-target"><dt>승인 목표</dt><dd>'+(model.target===null?'미설정':kg(model.target))+'</dd></div><div class="journey-change"><dt>시작 대비 변화</dt><dd>'+(model.delta>0?'+':'')+kg(model.delta)+'</dd></div></dl>'+(model.percent===null?'<p>현재 기간에 적용되는 승인 목표가 없거나 BMI 계산에 필요한 키가 없어요.</p>':'<label>목표까지 '+model.percent.toFixed(1)+'%<progress max="100" value="'+model.percent+'" aria-label="체중 목표 도달률">'+model.percent.toFixed(1)+'%</progress></label><p>'+(model.away?'시작보다 목표에서 멀어져 있어요. 도달률은 0%로 표시해요.':model.reached?'기록으로 확인한 목표 도착을 기념해요.':'시작 기록에서 승인 목표까지의 변화를 보여 드려요.')+'</p>');
+  return '<h4>체중 여정'+(model.reached?' <span class="journey-achievement">🏅 승인 목표 달성</span>':'')+'</h4><dl class="journey-values"><div class="journey-weight"><dt>시작 · '+esc(model.startDate)+'</dt><dd>'+kg(model.start)+'</dd></div><div class="journey-weight"><dt>현재 · '+esc(model.date)+'</dt><dd>'+kg(model.current)+'</dd></div><div class="journey-target"><dt>승인 목표</dt><dd>'+(model.target===null?'미설정':kg(model.target))+'</dd></div><div class="journey-change"><dt>시작 대비 변화</dt><dd>'+(model.delta>0?'+':'')+kg(model.delta)+'</dd></div></dl>'+(model.percent===null?'<p>'+(model.target===null?'현재 기간에 적용되는 승인 목표가 없거나 BMI 계산에 필요한 키가 없어요.':'목표 적용 후 기록이나 목표 방향을 확인할 근거가 부족해 값만 보여 드려요.')+'</p>':'<label>목표까지 '+model.percent.toFixed(1)+'%<progress max="100" value="'+model.percent+'" aria-label="체중 목표 도달률">'+model.percent.toFixed(1)+'%</progress></label><p>'+(model.away?'시작보다 목표에서 멀어져 있어요. 도달률은 0%로 표시해요.':model.reached?'기록으로 확인한 목표 도착을 기념해요.':'시작 기록에서 승인 목표까지의 변화를 보여 드려요.')+'</p>');
 }
-function stepCalendarData(records,mode,asOf=today()){
+function stepCalendarData(records,mode,asOf=careKoreaPeriod().day){
   if(!healthRecordDay(asOf))return [];
   const daily=new Map();
-  for(const r of Array.isArray(records)?records:[]){
+  for(const r of monthlyReportDaily((Array.isArray(records)?records:[]).filter(r=>r&&healthRecordDay(r.date)))){
     if(!r||!healthRecordDay(r.date)||r.date>asOf||String(r.steps??'').trim()===''||!Number.isFinite(Number(r.steps))||Number(r.steps)<0)continue;
     if(mode==='month'&&!r.date.startsWith(asOf.slice(0,7))||mode==='year'&&!r.date.startsWith(asOf.slice(0,4)))continue;
-    // The existing exercise owner keeps one record per day; the latest duplicate wins.
+    // Share the monthly report owner: latest updatedAt/createdAt, last row on ties.
     daily.set(r.date,Number(r.steps));
   }
   const months=mode==='month'?[asOf.slice(0,7)]:mode==='year'?Array.from({length:12},(_,i)=>asOf.slice(0,4)+'-'+String(i+1).padStart(2,'0')):[...new Set([...daily.keys()].sort().map(d=>d.slice(0,7)))];
   return months.map(month=>{const [y,m]=month.split('-').map(Number),length=new Date(Date.UTC(y,m,0)).getUTCDate();return {month,offset:new Date(Date.UTC(y,m-1,1)).getUTCDay(),days:Array.from({length},(_,i)=>{const date=month+'-'+String(i+1).padStart(2,'0'),steps=daily.has(date)?daily.get(date):null;return {date,steps,level:steps===null?'empty':steps===0?'zero':steps<5000?'low':steps<10000?'mid':'high'}})}});
 }
 function stepCalendarMarkup(months){
-  if(!months.length)return '<h4>걸음 달력</h4><p>표시할 걸음 기록이 없어요. 빈 날은 0보로 계산하지 않아요.</p>';
+  if(!months.some(month=>month.days.some(day=>day.steps!==null)))return '<h4>걸음 달력</h4><p>표시할 걸음 기록이 없어요. 빈 날은 0보로 계산하지 않아요.</p>';
   return '<h4>걸음 달력</h4><p class="step-legend"><span data-step-level="empty">빈칸: 미기록</span><span data-step-level="zero">0보 기록</span><span data-step-level="low">1~4,999보</span><span data-step-level="mid">5,000~9,999보</span><span data-step-level="high">10,000보 이상</span></p><div class="step-months">'+months.map(m=>'<section><h5>'+esc(m.month)+'</h5><div class="step-weekdays" aria-hidden="true">'+['일','월','화','수','목','금','토'].map(d=>'<span>'+d+'</span>').join('')+'</div><ol class="step-days" aria-label="'+esc(m.month)+' 날짜별 걸음">'+m.days.map((d,i)=>'<li data-step-level="'+d.level+'"'+(i===0?' style="grid-column-start:'+(m.offset+1)+'"':'')+' aria-label="'+d.date+' · '+(d.steps===null?'미기록':d.steps.toLocaleString()+'보')+'" title="'+d.date+' · '+(d.steps===null?'미기록':d.steps.toLocaleString()+'보')+'">'+Number(d.date.slice(8))+'</li>').join('')+'</ol><details class="step-text"><summary>날짜별 걸음 텍스트로 보기</summary><ul>'+m.days.map(d=>'<li>'+d.date+' · '+(d.steps===null?'미기록':d.steps.toLocaleString()+'보')+'</li>').join('')+'</ul></details></section>').join('')+'</div>';
 }
 function renderDietPace(){const grid=$('diet')?.querySelector('.grid');if(!grid)return;let card=grid.querySelector('[data-diet-pace]');if(!card){card=document.createElement('div');card.className='card full';card.setAttribute('data-diet-pace','');grid.prepend(card)}card.innerHTML='<div class="sh"><h3>다이어트 페이스메이커</h3></div>'+dietPaceMarkup()}
@@ -5113,17 +5130,18 @@ function renderHaniCareCards(parent,before=null){
 }
 function updateHomeNewsCount(){
   const host=$('homeNewsItems'),count=$('homeNewsCount');if(!host||!count)return;
-  const visible=[...host.children].filter(node=>!node.hidden),total=visible.reduce((sum,node)=>sum+(node.hasAttribute('data-hani-care-cards')?[...node.children].filter(child=>!child.hidden).length:1),0);
+  const total=[...host.children].filter(node=>!node.hidden).length;
   count.textContent=total+'건';const empty=$('homeNewsEmpty');if(empty)empty.hidden=total>0;
 }
 function renderHaniCareHome(){
-  const home=$("home");if(!home)return;const news=$("homeNewsItems")||home,memory=haniCareMemory();haniCareNotice(news,news.firstChild,"homeNotice");
+  const home=$("home");if(!home)return;const actions=$("homeActions");if(!actions)return;const memory=haniCareMemory();haniCareNotice(actions,actions.firstChild,"homeNotice");
   const data=haniCareChecklist(),hub=$("taskCalendarHub");
   if(!memory.checklist&&data&&hub){const slot=document.createElement("section");slot.className="card full hani-care-checklist";slot.setAttribute("aria-label","월말 정산 도우미");hub.parentNode.insertBefore(slot,hub);memory.checklist=slot}
-  if(!memory.checklistChip&&data){const chip=document.createElement('button');chip.type='button';chip.className='hani-care-chip';chip.onclick=()=>showView('tasks');news.insertBefore(chip,memory.homeNotice?memory.homeNotice.nextSibling:news.firstChild);memory.checklistChip=chip}
+  if(!memory.checklistChip&&data){const chip=document.createElement('button');chip.type='button';chip.className='hani-care-chip';chip.onclick=()=>showView('tasks');actions.insertBefore(chip,memory.homeNotice?memory.homeNotice.nextSibling:actions.firstChild);memory.checklistChip=chip}
   const remaining=data?data.items.filter(x=>!x.done).length:0;
   if(memory.checklistChip){memory.checklistChip.hidden=!remaining;memory.checklistChip.textContent='월말 정산 할 일 '+remaining+'개 남음 →'}
-  renderHaniCareCards(news,memory.checklistChip?memory.checklistChip.nextSibling:memory.homeNotice?memory.homeNotice.nextSibling:news.firstChild);
+  renderHaniCareCards(actions,memory.checklistChip?memory.checklistChip.nextSibling:memory.homeNotice?memory.homeNotice.nextSibling:actions.firstChild);
+  renderSettlementCheck();
   updateHomeNewsCount();
   const desk=document.querySelector(".yuna-helpdesk");if(desk)renderHaniCareCards(desk,desk.querySelector(".yuna-desk"));
   const slot=memory.checklist;if(!slot)return;slot.hidden=!data;if(!data)return;
@@ -5132,7 +5150,7 @@ function renderHaniCareHome(){
   slot.querySelectorAll("[data-hani-care-view]").forEach(b=>b.onclick=()=>showView(b.dataset.haniCareView));
 }
 function renderHome(){
-  renderSettlementCheck();renderHomeDialogue();const official=officialBrokerSorted(),latest=official.at(-1)||null,latestCalc=latest?brokerCalc(latest):null;
+  renderHomeDialogue();const official=officialBrokerSorted(),latest=official.at(-1)||null,latestCalc=latest?brokerCalc(latest):null;
   renderHaniCareHome();
   // Canonical Data Hub owns the Dashboard analysis; account mix remains in Finance.
   const currentMonth=today().slice(0,7),todayKey=today(),
@@ -8230,7 +8248,7 @@ async function monthlyReportGenerate(month){
     const code=error?.message,reason=code==='BLOCKED'?'원본 검증을 완료하지 못했습니다. Cloud 연결을 확인한 후 다시 눌러 주세요.':code==='PERIOD_CHANGED'?'보고 월이 바뀌었습니다. 선택한 월에서 다시 눌러 주세요.':code==='NO_RECORDS'?'완료된 달의 기록이 있어야 보고서를 생성할 수 있습니다.':`${stage} 중 오류가 발생했습니다. Cloud 연결과 원본 검증 상태를 확인한 후 다시 눌러 주세요.`;
     monthlyReportGenerationFailure={month,reason};
   }finally{
-    monthlyReportGeneration=null;renderMonthlyReport();
+    monthlyReportGeneration=null;renderMonthlyReport();renderHaniCareHome();
   }
 }
 function renderMonthlyReport(){
@@ -8490,7 +8508,7 @@ $("campusAddCourse").onclick=()=>openCampusCourseModal();
 $("campusCourseSave").onclick=saveEntry($("campusCourseSave"),()=>{const s=campusActiveSemester(),id=$("campusCourseEditId").value,name=$("campusCourseName").value.trim();if(!s||!name)return alert("학기와 과목명을 확인해 주세요.");const old=s.courses.find(x=>x.id===id),c=normalizeCampusCourse({id:id||uid(),name,type:$("campusCourseType").value,credits:$("campusCourseCredits").value,professor:$("campusCourseProfessor").value,method:$("campusCourseMethod").value,description:$("campusCourseDescription").value,materials:$("campusCourseMaterials").value,goal:$("campusCourseGoal").value,grade:old?.grade||"",gradePoint:old?.gradePoint??null,earnedCredits:old?.earnedCredits??null,curriculum:old?.curriculum||[],createdAt:old?.createdAt,updatedAt:new Date().toISOString()});const idx=s.courses.findIndex(x=>x.id===c.id);if(idx>=0)s.courses[idx]=c;else s.courses.push(c);s.updatedAt=new Date().toISOString();closeModal("campusCourseModal");commit(old?"과목 정보를 수정했습니다.":"과목을 등록했습니다.")});
 $("campusAddEvent").onclick=()=>openCampusEventModal();
 $("campusEventSave").onclick=saveEntry($("campusEventSave"),()=>{const s=campusActiveSemester(),id=$("campusEventEditId").value,title=$("campusEventTitle").value.trim(),date=$("campusEventDate").value;if(!s||!title||!date)return alert("일정명과 날짜를 입력해 주세요.");const old=s.events.find(x=>x.id===id),e=normalizeCampusEvent({id:id||uid(),title,type:$("campusEventType").value,date,scope:"school",courseId:"",note:$("campusEventNote").value,done:$("campusEventDone").value==="1",createdAt:old?.createdAt,updatedAt:new Date().toISOString()});const idx=s.events.findIndex(x=>x.id===e.id);if(idx>=0)s.events[idx]=e;else s.events.push(e);s.updatedAt=new Date().toISOString();closeModal("campusEventModal");commit(old?"학사 일정을 수정했습니다.":"학사 일정을 등록했습니다.")});
-$("campusCurriculumImport").onclick=saveEntry($("campusCurriculumImport"),()=>{const s=campusActiveSemester(),c=s?.courses?.find(x=>x.id===$("campusDetailCourseId").value),rows=parseBulkRows($("campusCurriculumBulk").value,4);if(!c)return;if(!rows.length)return alert("붙여넣은 강의계획을 확인해 주세요.");let count=0;rows.forEach(r=>{const week=String(parseInt(r[0],10)||r[0]).trim();if(!week)return;const data={week,topic:r[1],content:String(r[2]||"").split("/").map(x=>x.trim()).filter(Boolean).join("\n"),evaluation:r[3]};let old=(c.curriculum||[]).find(x=>String(parseInt(x.week,10)||x.week)===week);if(old)Object.assign(old,data);else c.curriculum.push(normalizeCampusCurriculum(data));count++});c.updatedAt=new Date().toISOString();s.updatedAt=c.updatedAt;$("campusCurriculumBulk").value="";commit(`주차 계획 ${count}개를 반영했습니다.`,false);openCampusCourseDetail(c.id)});
+$("campusCurriculumImport").onclick=saveEntry($("campusCurriculumImport"),()=>{const s=campusActiveSemester(),c=s?.courses?.find(x=>x.id===$("campusDetailCourseId").value),rows=parseBulkRows($("campusCurriculumBulk").value,4);if(!c)return;if(!rows.length)return alert("붙여넣은 강의계획을 확인해 주세요.");let count=0;rows.forEach(r=>{const week=String(parseInt(r[0],10)||r[0]).trim();if(!week)return;const data={week,topic:r[1],content:String(r[2]||"").split("/").map(x=>x.trim()).filter(Boolean).join("\n"),evaluation:r[3]};let old=(c.curriculum||[]).find(x=>String(parseInt(x.week,10)||x.week)===week);if(old)Object.assign(old,data);else c.curriculum.push(normalizeCampusCurriculum(data));count++});c.updatedAt=new Date().toISOString();s.updatedAt=c.updatedAt;$("campusCurriculumBulk").value="";commit(`주차 계획 ${count}개를 반영했습니다.`,false);openCampusCourseDetail(c.id);renderHaniCareHome()});
 $("campusDetailEditCourse").onclick=()=>{const s=campusActiveSemester(),c=s?.courses?.find(x=>x.id===$("campusDetailCourseId").value);if(c){closeModal("campusCourseDetailModal");openCampusCourseModal(c)}};
 $("campusDetailDeleteCourse").onclick=async()=>{const s=campusActiveSemester(),id=$("campusDetailCourseId").value,c=s?.courses?.find(x=>x.id===id);if(!c||!await confirmRecordDelete(c,'과목','연결된 과목 일정도 함께 삭제됩니다. 삭제 전 자동 백업을 생성합니다.'))return;const mediaBackup=exportData({suffix:"before_delete_campus_course",silent:true});if(mediaBackup!==true&&!await mediaBackup)return;s.courses=s.courses.filter(x=>x.id!==id);s.events=s.events.filter(x=>x.courseId!==id);s.updatedAt=new Date().toISOString();closeModal("campusCourseDetailModal");commit("과목과 연결 일정을 삭제했습니다.")};
 $("campusQuickNoteSave").onclick=saveEntry($("campusQuickNoteSave"),()=>{state.pageNotes.university=$("campusQuickNote").value;commit("학기 메모를 저장했습니다.")});

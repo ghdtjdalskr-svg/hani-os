@@ -325,12 +325,14 @@
         </div>
         <div class="home-welcome-actions"><span class="home-welcome-badge">LOCAL FIRST</span><button class="btn sm" id="homeDialogueNext" type="button">↻ 다른 한마디</button><button class="btn sm" data-go="tasks">오늘 할 일 →</button></div>
       </div>
+      <div id="homeActions" aria-label="확인할 일">
+          <div class="card full" id="settlementQuickCheck" hidden></div>
+      </div>
       <details class="home-news" id="homeNews">
         <summary>오늘의 소식 <small id="homeNewsCount" aria-live="polite">0건</small><span class="home-news-toggle" aria-hidden="true"></span></summary>
         <div id="homeNewsItems">
           <aside class="ilbo-home-card" data-ilbo-home hidden aria-label="새 HANI 일보"></aside>
           <aside class="ms-home-card" data-milestone-home hidden aria-label="라이프 마일스톤"></aside>
-          <div class="card full" id="settlementQuickCheck" hidden></div>
         </div>
         <p id="homeNewsEmpty" class="sub">새로운 소식이 아직 없어요.</p>
       </details>
