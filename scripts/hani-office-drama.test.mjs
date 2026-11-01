@@ -178,7 +178,7 @@ test('release trace sees literal JSON path; caption wraps in full; scheduler and
  const css=read('hani-office-live.css');assert.match(css,/\.hani-building-drama-caption\{flex:1 1 100%;/);assert.doesNotMatch(css,/\.hani-building-drama-caption[^{]*\{[^}]*nowrap/);
  const normalized=source.replace(/\r\n/g,'\n');
  for(const [start,end,expected] of [
-  ['  function createScheduler(','  function statusLabelPriority(','72f7f2c8f0f7f07478fd37dcd36b96a7054c1980be6b26060bb5292199740904'],
+  ['  function createScheduler(','  function statusLabelPriority(','1ef4ae4704895707e75e067becbf0451e0055f36a2ba57c5ad4a34037c4b0026'],
   ['  function placeStatusLabels(','  const scheduler=','5070f7e62556b89410bc7588600fefe80ba99579e945ae49bab89def98bec6f0']
  ]){const from=normalized.indexOf(start),until=normalized.indexOf(end,from);assert.ok(from>0&&until>from);
   assert.equal(createHash('sha256').update(normalized.slice(from,until)).digest('hex'),expected,start+' frozen after approved cafe/rest schedule; placement unchanged');

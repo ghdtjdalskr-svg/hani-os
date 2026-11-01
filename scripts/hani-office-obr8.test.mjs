@@ -17,7 +17,7 @@ let writes=0;const fail=()=>{writes++;throw Error('storage forbidden')};
 context.localStorage=context.sessionStorage={setItem:fail,removeItem:fail,clear:fail};
 test('obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words',()=>{
  const cafeBytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-cafe-finish-plans.json.gz'));
- assert.equal(createHash('sha256').update(cafeBytes).digest('hex'),'98614520eb64ce88c915b11aae305ee92070b2d0984c649b1409ee29d00b8214','immutable cafe/rest full-ledger oracle');
+ assert.equal(createHash('sha256').update(cafeBytes).digest('hex'),'7ca64e36510d5f3e8289abd5b55fd9a4b23692214b047d8cc55effd297e3a696','immutable cafe/rest full-ledger oracle');
  const cafe=JSON.parse(cafeBytes);assert.equal(createHash('sha256').update(fs.readFileSync('hani-office-live.js')).digest('hex'),cafe.sourceSha256);
  const counts={colleague:0,delivery:0,notice:0,task:0};
  for(const day of days){

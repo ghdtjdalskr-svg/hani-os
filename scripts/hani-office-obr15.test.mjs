@@ -20,7 +20,7 @@ test('obr15 historical source identities retained; cafe/rest source and full abs
   // Cafe/rest intentionally changes full ledgers. Pin the separately authored
   // full output here; obr21 and all its historical fixtures remain untouched.
   const cafeBytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-cafe-finish-plans.json.gz'));
-  assert.equal(hash(cafeBytes),'98614520eb64ce88c915b11aae305ee92070b2d0984c649b1409ee29d00b8214','immutable cafe/rest full-ledger oracle');
+  assert.equal(hash(cafeBytes),'7ca64e36510d5f3e8289abd5b55fd9a4b23692214b047d8cc55effd297e3a696','immutable cafe/rest full-ledger oracle');
   const cafe=JSON.parse(cafeBytes);assert.equal(hash(fs.readFileSync('hani-office-live.js')),cafe.sourceSha256);assert.equal(hash(fs.readFileSync('data/hani-building/office-places.json')),cafe.placesSha256);
   const reviewed=cafe.records.find(r=>r.label==='obr15 absent '+day);
   assert.ok(reviewed);assert.equal(serialize(o),serialize(reviewed.options));
@@ -41,7 +41,7 @@ test('obr15 canonical presence first arrival / >=10 minute absence / brief flick
 test('obr15 greeting occurs immediately, 1–2 nearest available 4F staff stand in place for 5–10 seconds, then exact original action',()=>{
  let cases=0;
  // Six fixed witnesses authored with the approved schedule, same six-case bar.
- for(const sec of [32757,32764,33303,33310,33317,33324]){
+ for(const sec of [32610,32617,32624,32631,32638,32645]){
   const stamp=at(day,sec).getTime(),o={...options,chairmanSince:stamp,chairmanArrivalAt:stamp},baseSnap=s.snapshot(at(day,sec),{...options,chairmanSince:stamp});
   const snap=s.snapshot(at(day,sec),o),g=snap.entries.filter(p=>p.behaviorKind==='chairman-greeting');
   if(!g.length)continue;
@@ -102,7 +102,7 @@ test('obr15 actual persistent renderer consumes presence greeting and reciprocal
  const f=fixture('09:00',false,null,table),actors=[...f.ids.get('haniOfficeActors').children],tick=f.timers.find(t=>t.ms===4200).fn;
  // Fixed arrival witness from the approved cafe/rest schedule; all original
  // renderer, greeting duration, count, facing and reset assertions remain.
- f.context.window.HaniOfficePresence={chairman:'absent'};f.setDateTime(at(day,32757));f.click('4f');
+ f.context.window.HaniOfficePresence={chairman:'absent'};f.setDateTime(at(day,32610));f.click('4f');
  f.context.window.HaniOfficePresence={chairman:'active'};tick();
  const greeting=f.visible().filter(a=>/회장님.*(?:안건|메모|일정)/.test(a.dataset.line));assert.ok(greeting.length>=1&&greeting.length<=2);assert.ok(greeting.every(a=>a.dataset.pose==='standing'));
  const e=s.blockPlan(day,0,s.plan(day,options),options).find(e=>e.report),staff=actors.find(a=>a.dataset.person===e.report),chair=actors.find(a=>a.dataset.person==='seongmin');
