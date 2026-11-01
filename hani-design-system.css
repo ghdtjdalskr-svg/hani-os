@@ -1971,10 +1971,12 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 #home .home-news-toggle:after{content:'펼치기';float:right;font-size:12px}
 #home .home-news[open] .home-news-toggle:after{content:'접기'}
 #home #homeNewsItems,#home #homeNewsEmpty{padding:0 14px 14px}
-#home #homeNewsItems>*{max-width:100%;box-sizing:border-box;min-width:0}
-#home .home-news [hidden]{display:none!important}
-#home #homeNewsItems .hani-care-cards{margin:0;display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
-#home #homeNewsItems :is(p,h3,button){overflow-wrap:anywhere;white-space:normal}
+#home #homeActions>*,#home #homeNewsItems>*{max-width:100%;box-sizing:border-box;min-width:0}
+#home .home-news [hidden],#home #homeActions [hidden]{display:none!important}
+#home #homeActions:not(:has(> :not([hidden]))){display:none}
+#home #homeActions{min-width:0;margin:0;padding:0}
+#home #homeActions .hani-care-cards{margin:0;display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+#home #homeActions :is(p,h3,button),#home #homeNewsItems :is(p,h3,button){overflow-wrap:anywhere;white-space:normal}
 #home .home-news summary:focus-visible{outline:3px solid var(--text-primary);outline-offset:3px}
 #diet,#exercise{--journey-weight:#244fa4;--journey-target:#6d378c;--journey-change:#176247;--step-low:#edf5ef;--step-mid:#b8dfc6;--step-high:#256447;--step-ink:#17271f}
 :root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) :is(#diet,#exercise){--journey-weight:#a8c5ff;--journey-target:#e1b5ff;--journey-change:#8fe0b6}
