@@ -1874,6 +1874,14 @@
   // Lengths include spaces. Names (including the longest guest name) stay whole:
   // name <=9 + " · " (3) + action <=6 = at most 18 Unicode characters.
   const phoneActions=[
+    [/급하게 인스타 끄는 중/,'인스타 끄기',true],[/급하게 창 닫는 중/,'창 닫기',true],
+    [/회장님 질문 듣는 중/,'질문 듣기',true],[/회장님께 화면 설명 중/,'화면 설명',true],
+    [/상담 중/,'상담 중',true],[/면접 진행 중/,'면접 진행',true],[/면접 보는 중/,'면접 보기',true],
+    [/조용한 밤이라 메모가 잘 써지네요\.$/,'메모 쓰기|메모 작성|밤 메모'],[/오늘 기억할 장면을 적어둘게요\.$/,'장면 기록|장면 적기|장면 메모'],
+    [/라운지에서 오늘 고생했다고 말하는 중$/,'수고 인사|격려 인사|수고 전하기'],[/소파에서 내일 할 일 적는 중$/,'내일 할일|할일 적기|내일 메모'],
+    [/라운지에서 마지막 버스 확인 중$/,'막차 확인|버스 확인|막차 점검'],[/옥상 정원에서 화분 살피는 중$/,'화분 살피기|화분 관찰|화분 보기'],
+    [/임원 라운지 소파에서 AI 오케스트레이션 메모 펼쳐 보는 중$/,'AI 메모|메모 펼치기|메모 살피기'],[/바뀐 범위부터 다시 확인할게요\.$/,'범위 확인|범위 점검|범위 살피기'],
+    [/다음 장도 천천히 볼까요\.$/,'다음장 보기|다음장 읽기|다음장 확인'],[/자료 탭을 하나씩 맞춰볼게요\.$/,'자료 맞추기|자료 점검|자료 맞대기'],
     [/회장님께 .*보고/,'회장님보고|보고 드리기|안건 보고'],[/좋아요, 이대로/,'진행 승인|안건 승인|진행 허가'],
     [/회장님.*인사|회장님.*오셨|회장님.*안녕/,'도착 인사|환영 인사|인사 건네기'],
     [/돌아가는|복귀|안녕히 계세요/,'자리 복귀|자리로 복귀|복귀 걷기'],
@@ -1882,7 +1890,7 @@
     [/커피.*내리/,'커피 내리기|커피 추출|커피 만들기'],[/커피.*주문/,'커피 주문|커피 고르기|커피 주문중'],
     [/커피.*(?:마시|모금|한 잔)/,'커피 마시기|커피 한모금|커피 홀짝'],[/커피.*리필/,'리필 고민|커피 더고민|리필 고르기'],
     [/택배.*(?:두고|왔|전달)/,'택배 전달|택배 놓기|택배 내려둠'],[/배달.*왔/,'음식 배달|배달 전달|음식 전달'],
-    [/면접.*대기/,'면접 대기|면접 기다림|면접 준비'],[/상담.*받/,'상담 받기|상담 듣기|상담 참여'],
+    [/면접.*대기/,'면접 대기|면접 기다림|면접 준비'],[/상담.*받/,'상담 받기',true],
     [/보고.*기다/,'보고 기다림|보고 대기|보고 준비'],[/기다리|대기|기다리는/,'차례 기다림|순서 기다림|차례 대기'],
     [/퀴즈/,'퀴즈 풀기|퀴즈 풀이|문제 풀기|퀴즈 도전|문제 풀이|정답 찾기|퀴즈 맞히기|퀴즈 연습'],
     [/창밖|풍경|별빛|별 보는/,'창밖 구경|풍경 감상|창밖 바라봄|풍경 바라봄'],
@@ -1911,7 +1919,9 @@
   function phoneStatusLine(line,used=new Set(),state='work',compact=true){
     const report=line.match(/회장님께 (.+?) 보고/);
     if(report){const topic=report[1].replace(/^(오늘|다음) /,'').split(' ')[0],short=/^[가-힣A-Za-z0-9]{1,4}$/.test(topic)?topic+(compact?'':' ')+'보고':compact?'회장보고':'회장 보고';used.add(short);return short}
-    const known=scheduler?.shortLine(line),authored=known==='회장님께 인사 중'?'도착 인사|환영 인사|인사 건네기':known==='보고 답변 중'?'보고 답변|보고 응답|답변 전하기':phoneActions.find(([pattern])=>pattern.test(line))?.[1];
+    const known=scheduler?.shortLine(line),action=phoneActions.find(([pattern])=>pattern.test(line)),authored=known==='회장님께 인사 중'?'도착 인사|환영 인사|인사 건네기':known==='보고 답변 중'?'보고 답변|보고 응답|답변 전하기':action?.[1];
+    // Exact consultation/reply words stay exact even when another actor used them.
+    if(action?.[2]){const result=compact?authored.replace(/ /g,''):authored;used.add(result);return result}
     // Future sentences use whole, state-based phrases; never slice source words.
     const fallback={work:'근무 중|일하는 중|업무 진행|근무 계속|근무 이어감|업무 이어감|업무 진행중|업무 보는중',rest:'휴식 중|쉬는 중|잠깐 휴식|휴식 취하기|잠시 쉬기|쉬어 가기|휴식 이어감|잠깐 쉬기',meeting:'회의 중|회의 참여|회의 진행|회의 참석|회의 함께|회의 나눔|회의 이어감|회의 진행중',moving:'이동 중|걸어가는 중|목적지 이동|걷는 중|이동 계속|이동 이어감|걸어서 이동|목적지 걷기',night:'야근 중|야간 근무|야근 진행|야근 계속|야근 이어감|야간 작업|밤 근무중|야근 진행중'};
     const options=(authored||fallback[state]||fallback.work).split('|');
@@ -2196,9 +2206,9 @@
   }
   function clearMotion(actor){actor.officeReactions.reset();delete actor.dataset.motion;actor.style.setProperty('--step-bounce','0px');actor.style.setProperty('--step-lean','0deg')}
   function activityStatus(actor,full){
-    const leisure=/물 한 모금|쉬|휴식|수다|간식|커피|야식|메뉴|투표|저녁 뭐|인스타|음악|영화|산책|졸|약속|휴대폰|고양이 영상|기지개|스트레칭|하품|노래|플레이리스트|흥얼/;
+    const leisure=/물 한 모금|쉬|휴식|수다|간식|커피|야식|메뉴|투표|저녁 뭐|인스타|음악|영화|산책|졸|약속|휴대폰|고양이 영상|기지개|스트레칭|하품|노래|플레이리스트|흥얼|사진첩|(?:오늘 찍은|여행) 사진|날씨|퇴근 시간|알람|물병|점심 후보|단백질 식단|잠깐 몸 풀기/;
     const workPhrase=/(?:고객 표현 쉬운 말로 바꾸는 중|어려운 용어 쉬운 말 퀴즈 중|다음 약속 준비물 적는 중|졸린 눈으로 문장 줄이는 중)$/;
-    return actor.officeTravel||actor.dataset.walking==='true'||full==='이동 중'?'moving':actor.dataset.called==='true'||actor.dataset.activity==='meeting'?'meeting':['rest','play'].includes(actor.dataset.activity)||actor.dataset.zone==='lounge'&&!/^(?:task|errand)-/.test(actor.dataset.place||'')||!workPhrase.test(full)&&leisure.test(full)?'rest':/야근/.test(full)?'night':'work';
+    return actor.officeTravel||actor.dataset.walking==='true'||['GOING','RETURNING'].includes(actor.dataset.behavior)||full==='이동 중'?'moving':actor.dataset.called==='true'||actor.dataset.activity==='meeting'||/(?:상담(?: 받는)?|면접 (?:진행|보는)) 중$/.test(full)?'meeting':/^(?:visitor-host|report)-/.test(actor.dataset.place||'')||actor.dataset.activity==='visit'&&/택배|배달/.test(full)||/(?:급하게 (?:인스타 끄는|창 닫는)|회장님 질문 듣는|회장님께 화면 설명) 중$/.test(full)?'work':['rest','play'].includes(actor.dataset.activity)||/^(?:coffee|cafe|pantry|sofa|garden|terrace|window)-/.test(actor.dataset.place||'')||actor.dataset.zone==='lounge'&&!/^(?:task|errand)-/.test(actor.dataset.place||'')||!workPhrase.test(full)&&leisure.test(full)?'rest':/야근/.test(full)?'night':'work';
   }
   const statusNames={work:'근무 중',rest:'휴식 중',meeting:'회의 중',moving:'이동 중',night:'야근 중'};
   const statusIcons={work:'💻',rest:'☕',meeting:'💬',moving:'🚶',night:'🌙'};
@@ -2209,6 +2219,20 @@
     icon.textContent=actor.dataset.emoji||statusIcons[actor.dataset.status];icon.hidden=false;icon.title=value;
     status.textContent=icon.textContent+' '+HaniBuildingScene.labels.short(value,new Set(),actor.dataset.status,compact);
     if(actor.officeText)actor.officeText.textContent=value;
+  }
+  function headIcon(actor){
+    const data=actor.dataset,line=data.line||'';
+    if(actor.officeTravel||data.walking==='true'||['GOING','RETURNING'].includes(data.behavior))return '';
+    if(data.emoji)return data.emoji;
+    if(/(?:상담(?: 받는)? 중|상담 대기|면접)/.test(line))return '💬';
+    if(/급하게 창 닫는 중|인스타/.test(line))return '📱';
+    if(/커피|카페|Coffee/i.test(line))return '☕';
+    if(/점심|식사|도시락|밥 먹|아침 먹|저녁 먹/.test(line))return '🍱';
+    if(/옥상|정원|테라스/.test(line))return '🌿';
+    if(/소파/.test(line))return '🛋️';
+    if(data.called==='true'||data.activity==='meeting'||/^meeting-/.test(data.place||'')||/회의(?:실| 중|하는| 참여| 진행)/.test(line))return '📋';
+    if(/택배|배달/.test(line))return '📦';
+    return '';
   }
   // Batch reset -> one geometry read per node -> pure packing -> batch commit.
   // Name and status travel together; actor coordinates and foot pivots never move.
@@ -2483,7 +2507,7 @@
       actor.dataset.action=selected?'agent-case':p.actionId||'base-work';actor.dataset.event=p.eventId||'';actor.dataset.line=selected?'실제 안건 검토 중':p.line||'자료 확인 중';
       actor.dataset.emoji=selected||actor.dataset.action==='base-work'?'':p.emoji||'';actor.dataset.walking=String(Boolean(p.walking||actor.officeTravel));
       actor.officeReactions.observe(actor.dataset,now.getTime());
-      actor.querySelector('.hani-office-prop').textContent=actor.dataset.emoji;
+      const prop=actor.querySelector('.hani-office-prop'),emoji=headIcon(actor);if(prop.textContent!==emoji)prop.textContent=emoji;
       if(selected)actor.dataset.called='true';
       label(actor,(actor.dataset.emoji?actor.dataset.emoji+' ':'')+actor.dataset.line);
       if(bubblePerson===p.id)bubbleLine.textContent=bubbleText(actor);
