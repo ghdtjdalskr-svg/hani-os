@@ -1324,18 +1324,57 @@
   // Read-only lounge promotion. Persistent nodes; a single visibility-owned timer.
   let bannerTimer=null,bannerIndex=0,bannerPaused=false;
   const bannerMotion=window.matchMedia?.('(prefers-reduced-motion: reduce)');
+  // These portraits are already in the release closure. Other staff use the office scene.
+  function bannerPortrait(id){
+    if(id==='sua')return './assets/profiles/hani-profile-sua-id.webp';
+    return ['hani','haru','hina','jieun','minji','naeun','sooyeon','yuna'].includes(id)?
+      './assets/profiles/hani-profile-'+id+'.webp':'./assets/team/hani-team-office.webp';
+  }
+  const loungeAds=Object.freeze([
+    {title:'☕ 하니 카페 멤버십',copy:'회장님 방문 시 아메리카노 사이즈업. 도장은 마음으로 찍어 드려요.',href:'#agentReview'},
+    {title:'🛗 5층 루프탑 오픈',copy:'오늘의 노을 맛집은 5층입니다. 예약은 없고 눈치만 있습니다.',href:'#agentReview'},
+    {title:'🚀 서윤의 배포 특가',copy:'오늘 배포하면 내일이 편해요. 환불은 롤백으로만 가능합니다.',href:'#dev'},
+    {title:'🍜 미르 야식 안내',copy:'3층 야근단 모집 중. 라면 물 조절은 관찰 데이터로 보장합니다.',href:'#agentReview'},
+    {title:'📈 하니 투자 리포트',copy:'감으로 사지 말고 리포트 보고 사세요 ㅋㅋ',href:'#investmentCommittee'},
+    {title:'🎭 주간 연속극',copy:'평일마다 새 이야기. 회장님 몰래 보는 건 금지입니다.',href:'#agentReview'}
+  ]);
+  function dailyLoungeAds(now=Date.now()){
+    const day=dayKey(now),first=Math.floor(Date.parse(day)/86400000)%loungeAds.length;
+    const second=(first+1+hash(day)%5)%loungeAds.length;
+    return [first,second].map(i=>({...loungeAds[i],kind:'ad',kicker:'HANI 사내 소식',ad:true,
+      image:i===4?'./assets/heroes/investment-218.webp':'./assets/team/hani-team-office.webp'}));
+  }
   function loungeBannerItems(now=Date.now()){
     const employee=window.HaniOrganizationHub?.overviewData?.(state,null,roster(),now)?.employee;
-    return [...(employee?[{kicker:'이달의 직원',title:employee.name,copy:'이번 달 게시글·공개 댓글 '+employee.count+'건 · 조직 소개에서 만나보세요.',image:window.HaniOrganizationHub.portraitSource(employee.id),href:'#organization/people/'+employee.id}]:[]),
-      {kicker:'HANI 일보',title:'오늘의 사내 소식',copy:'팀의 이야기와 새 소식을 HANI 일보에서 만나보세요.',image:'./assets/heroes/newsroom-218.webp',href:'#ilbo'}];
+    const bulletins=(globalThis.HaniBoardLibrary||window.HaniBoardLibrary)?.bulletins||{};
+    const latest=rows=>(rows||[]).filter(r=>/^\d{4}-\d{2}-\d{2}$/.test(r.date)&&r.date<=dayKey(now)&&r.title&&!r.draft)
+      .slice().sort((a,b)=>b.date.localeCompare(a.date)||b.number-a.number)[0];
+    const ilbo=latest(bulletins.ilbo),market=latest(bulletins.market),best=weeklyBest(now)[0];
+    return [...(employee?[{kind:'employee',kicker:'이달의 직원',title:employee.name,copy:'이번 달 게시글·공개 댓글 '+employee.count+'건 · 조직 소개에서 만나보세요.',image:bannerPortrait(employee.id),href:'#organization/people/'+employee.id}]:[]),
+      ...(ilbo?[{kind:'ilbo',kicker:'HANI 일보 · 제 '+ilbo.number+'호',title:'신문은 역시 HANI 일보!',copy:ilbo.title,image:'./assets/heroes/newsroom-218.webp',href:'#ilbo'}]:[]),
+      ...(best?[{kind:'best',kicker:'이번 주 라운지 베스트',title:displayText(best,best.title),copy:'이번 주 가장 많은 공감을 모은 이야기 · 라운지에서 이어 읽어요.',image:'./assets/team/hani-team-office.webp',href:'#board/post/'+encodeURIComponent(best.id),postId:best.id}]:[]),
+      ...(market?[{kind:'market',kicker:'이번 주 시장 4컷',title:market.title,copy:'제 '+market.number+'호 · '+market.date+' 발행 · 뉴스룸에서 함께 읽어요.',image:'./assets/heroes/newsroom-218.webp',href:'#newsroom'}]:[]),
+      ...dailyLoungeAds(now)];
   }
   function paintLoungeBanner(now=Date.now()){
     const slot=get('unread');if(!slot)return;
-    const items=loungeBannerItems(now),item=items[bannerIndex%items.length],link=slot.querySelector('[data-board-banner-link]'),image=slot.querySelector('[data-board-banner-image]');
+    const items=loungeBannerItems(now);bannerIndex=((bannerIndex%items.length)+items.length)%items.length;
+    const item=items[bannerIndex],link=slot.querySelector('[data-board-banner-link]'),image=slot.querySelector('[data-board-banner-image]');
     if(!link||!image)return;
     link.setAttribute('href',item.href);image.setAttribute('src',item.image);
+    link.dataset.boardBannerPost=item.postId||'';
     for(const key of ['kicker','title','copy'])slot.querySelector('[data-board-banner-'+key+']').textContent=item[key];
-    const pause=slot.querySelector('[data-board-banner-pause]');pause.textContent=bannerPaused?'자동 전환 재개':'자동 전환 멈춤';pause.setAttribute('aria-pressed',String(bannerPaused));pause.hidden=!!bannerMotion?.matches;
+    const chip=slot.querySelector('[data-board-banner-ad]');if(chip)chip.hidden=!item.ad;
+    const dots=slot.querySelector('[data-board-banner-dots]');
+    if(dots){
+      // Reconcile only the count. Focused controls and the billboard slot survive paints.
+      while(dots.children.length>items.length)dots.lastElementChild.remove();
+      while(dots.children.length<items.length){const dot=document.createElement('button');dot.type='button';dot.dataset.boardBannerDot=String(dots.children.length);dots.appendChild(dot)}
+      Array.from(dots.children).forEach((dot,i)=>{dot.setAttribute('aria-label',(i+1)+' / '+items.length+' · '+items[i].title);dot.setAttribute('aria-pressed',String(i===bannerIndex))});
+    }
+    const pause=slot.querySelector('[data-board-banner-pause]');pause.textContent=bannerPaused?'▶':'Ⅱ';
+    pause.setAttribute('aria-label',bannerPaused?'자동 전환 재개':'자동 전환 멈춤');pause.setAttribute('aria-pressed',String(bannerPaused));
+    pause.disabled=!!bannerMotion?.matches;
   }
   function syncBanner(){
     if(bannerTimer!==null){clearTimeout(bannerTimer);bannerTimer=null}
@@ -1435,9 +1474,15 @@
     get("search").addEventListener("input",event=>{query=event.target.value;visible=pageSize;render()});
     root.addEventListener("click",event=>{
       const bannerLink=event.target.closest('[data-board-banner-link]');
-      if(bannerLink){event.preventDefault();showView(bannerLink.getAttribute('href').slice(1));return}
+      if(bannerLink){
+        event.preventDefault();
+        if(bannerLink.dataset.boardBannerPost){resetEditor();openPost(bannerLink.dataset.boardBannerPost);get('detail')?.scrollIntoView?.({block:'start'});get('article')?.querySelector('[data-board-heading]')?.focus({preventScroll:true})}
+        else showView(bannerLink.getAttribute('href').slice(1));
+        return;
+      }
       if(event.target.closest('[data-board-banner-pause]')){bannerPaused=!bannerPaused;paintLoungeBanner();syncBanner();return}
-      if(event.target.closest('[data-board-banner-next]')){bannerIndex++;paintLoungeBanner();syncBanner();return}
+      const bannerDot=event.target.closest('[data-board-banner-dot]');
+      if(bannerDot){const index=Number(bannerDot.dataset.boardBannerDot);if(Number.isInteger(index)&&index>=0&&index<loungeBannerItems().length){bannerIndex=index;paintLoungeBanner();syncBanner()}return}
       const profile=event.target.closest("[data-board-person]");
       if(profile?.dataset.boardPerson&&root.contains(profile)){
         event.preventDefault();showView("organization/people/"+profile.dataset.boardPerson);return;
