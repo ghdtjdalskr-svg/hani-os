@@ -35,7 +35,7 @@ test('separately seeded HD manifest resolves every asset; pre-mascot runtime clo
  // Exclude only the two exactly-once approved tags; mascot packaging requires separate verification.
  const runtime=await resolveRuntimeClosure({exists:f=>fs.existsSync(path.join(root,f)),read:f=>f==='index.html'?Buffer.from(withoutDeskMascots(read(f))):fs.readFileSync(path.join(root,f))});
  assert.deepEqual(runtime.missing,[]);
- const contract=json('dev-center/one-pass-gate-contract.json');assert.equal(contract.limits.max_files,128);assert.ok(runtime.files.length<=contract.limits.max_files);
+ const contract=json('dev-center/one-pass-gate-contract.json');assert.equal(contract.limits.max_files,160);assert.ok(runtime.files.length<=contract.limits.max_files);
  console.log(JSON.stringify({runtimeFiles:runtime.files.length,seedFiles:seed.files.length,seedBytes:[...seed.contents.values()].reduce((n,b)=>n+b.length,0)}));
 });
 

@@ -8,7 +8,7 @@ import {contractHash,evaluatePackage,canonicalPackageHash} from './hani-one-pass
 const source=fs.readFileSync(new URL('../supabase/functions/hani-deploy-bridge/index.ts',import.meta.url),'utf8');
 const old=JSON.parse(execFileSync('git',['show','92c47086e1aa528436e4a626da82e6d99fae0eec:dev-center/one-pass-gate-contract.json'],{encoding:'utf8'}));
 assert.deepEqual({...contract,contract_version:old.contract_version,limits:old.limits},old,'only version and capacity may change');
-assert.equal(contract.limits.max_files,128);assert.equal(contract.limits.max_total_bytes,25000000);
+assert.equal(contract.limits.max_files,160);assert.equal(contract.limits.max_total_bytes,25000000);
 assert.equal(contract.limits.max_single_file_bytes,old.limits.max_single_file_bytes);
 const maxFiles=Number(source.match(/const MAX_RELEASE_FILES = (\d+);/)[1]);
 const maxTotal=Number(source.match(/const MAX_RELEASE_TOTAL_BYTES = ([\d_]+);/)[1].replaceAll('_',''));
@@ -23,8 +23,8 @@ const snapshot=new AsyncFunction('normalizeReleasePath','MAX_RELEASE_FILES','isA
 let sizes=[];
 const server=await snapshot(x=>x,maxFiles,()=>true,async(_t,p)=>({byteLength:sizes[Number(p.split('.')[0])]}),maxSingle,maxTotal,async()=> 'a'.repeat(64),async()=> 'b'.repeat(64));
 const paths=n=>Array.from({length:n},(_,i)=>`${i}.png`);
-sizes=Array(128).fill(1);assert.equal((await server('fixture','fixture',paths(128))).entries.length,128);
-await assert.rejects(()=>server('fixture','fixture',paths(129)),/파일 수/);
+sizes=Array(160).fill(1);assert.equal((await server('fixture','fixture',paths(160))).entries.length,160);
+await assert.rejects(()=>server('fixture','fixture',paths(161)),/파일 수/);
 sizes=[5000000,5000000,5000000,5000000,5000000];assert.equal((await server('fixture','fixture',paths(5))).total_bytes,25000000);
 sizes=[5000000,5000000,5000000,5000000,5000000,1];await assert.rejects(()=>server('fixture','fixture',paths(6)),/총 크기/);
 sizes=[5000001];await assert.rejects(()=>server('fixture','fixture',paths(1)),/단일 파일/);
@@ -36,4 +36,4 @@ assert.equal(evaluate(pkg).find(c=>c.id==='release_paths').status,'PASS');assert
 const extra=structuredClone(pkg);while(extra.files.length<=contract.limits.max_files)extra.files.push({path:'assets/capacity-test-'+extra.files.length+'.png',encoding:'base64',content:'AA=='});assert.equal(evaluate(extra).find(c=>c.id==='release_paths').status,'BLOCKED');
 const overflow=structuredClone(pkg);const image=overflow.files.find(f=>f.path==='assets/seasonal-collection/aura-season-campaign-v1.webp');const total=canonicalPackageHash(overflow.files).total_bytes;
 let remaining=contract.limits.max_total_bytes-total;for(const file of overflow.files.filter(f=>f.encoding==='base64')){const bytes=Buffer.from(file.content,'base64'),grow=Math.min(remaining,contract.limits.max_single_file_bytes-bytes.length);if(grow>0){file.content=Buffer.concat([bytes,Buffer.alloc(grow)]).toString('base64');remaining-=grow;}if(!remaining)break;}for(let i=0;remaining>0&&overflow.files.length<contract.limits.max_files;i++){const grow=Math.min(remaining,contract.limits.max_single_file_bytes-1);overflow.files.push({path:'assets/capacity-fill-'+i+'.png',encoding:'base64',content:Buffer.alloc(grow).toString('base64')});remaining-=grow;}assert.equal(remaining,0,'fixture can reach total limit without exceeding single-file limit');assert.equal(evaluate(overflow).find(c=>c.id==='package_size').status,'PASS');const room=overflow.files.find(f=>f.encoding==='base64'&&Buffer.from(f.content,'base64').length<contract.limits.max_single_file_bytes);assert.ok(room);room.content=Buffer.concat([Buffer.from(room.content,'base64'),Buffer.alloc(1)]).toString('base64');assert.equal(evaluate(overflow).find(c=>c.id==='package_size').status,'BLOCKED');
-console.log(JSON.stringify({pass:true,contract:contract.contract_version,contractHash:contractHash(contract),checks:['minimal contract change','client/server parity','authentication retained','128 accepted / 129 rejected','25000000 accepted / 25000001 rejected','single-file 5000001 rejected','actual AURA closure accepted']}));
+console.log(JSON.stringify({pass:true,contract:contract.contract_version,contractHash:contractHash(contract),checks:['minimal contract change','client/server parity','authentication retained','160 accepted / 161 rejected','25000000 accepted / 25000001 rejected','single-file 5000001 rejected','actual AURA closure accepted']}));
