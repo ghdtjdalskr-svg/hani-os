@@ -54,7 +54,7 @@ test('reduced motion jumps to the stop and keeps coordinates fixed throughout ev
 
 test('resident occupancy stays separate for multiple days and moving as well as resting residents',()=>{
  const collision=loadScene({transform:source=>source.replace("['resident_dog_lobby','resident_dog_front']","['resident_cat_lobby','resident_cat_front']")}).scene.residents;
- const crowded=collision.snapshot(at('2026-11-02',22*3600));assert.equal(crowded.length,1,'shared stops cannot fit both bodies: later resident waits offscreen');assert.equal(crowded[0].id,'pet-cat');
+ const crowded=collision.snapshot(at('2026-11-02',20*3600));assert.equal(crowded.length,1,'shared stops cannot fit both bodies: later resident waits offscreen');assert.equal(crowded[0].id,'pet-cat');
  for(let day=1;day<=7;day++)for(let second=0;second<86400;second+=900)for(const offset of [.1,.5,2,5,120]){
   const states=r.snapshot(at('2026-11-'+String(day).padStart(2,'0'),second+offset));
   for(let i=0;i<states.length;i++)for(let j=i+1;j<states.length;j++)if(states[i].floor===states[j].floor)assert.ok(Math.hypot((states[i].position[0]-states[j].position[0])*1672/100,(states[i].position[1]-states[j].position[1])*941/100)>=96);
@@ -175,14 +175,120 @@ test('every stop and whole walking segment clears painted furniture, counters, c
  for(const floor of Object.keys(r.furniture))for(const box of r.furniture[floor])assert.equal(r.safe(floor,[500,330],[(box[0]+box[2])/2/1672*100,(box[1]+box[3])/2/941*100]),false,'every painted exclusion rejects residents');
 });
 
-test('sleeping pets keep separate stable spots beside their own daytime area, including occupied-spot fallback',()=>{
- for(const day of ['2026-11-02','2026-11-03'])for(const hour of [0,1,6,21,22,23]){
+test('02:00 to 07:00 sleeping pets keep separate stable spots, including occupied-spot fallback',()=>{
+ for(const day of ['2026-11-02','2026-11-03'])for(const hour of [2,3,4,5,6]){
   const pets=r.snapshot(at(day,hour*3600+30));assert.equal(pets.length,2);assert.ok(pets.every(p=>p.pose==='sleep'&&!p.walking&&p.floor==='1f'));
   const [cat,dog]=pets;assert.ok(Math.hypot((cat.position[0]-dog.position[0])*1672/100,(cat.position[1]-dog.position[1])*941/100)>180);
   for(const p of pets){const usual=people.find(q=>q.id===p.id).places['1f'][0];assert.equal(p.anchor,usual);assert.deepEqual(plain(p.position),plain(r.spot(usual).visual));}
   const blocked={floors:[{people:[{floor:'1f',seat:{x:cat.position[0],y:cat.position[1]}}]}]},fallback=r.snapshot(at(day,hour*3600+30),blocked);
   assert.equal(fallback.length,2);assert.equal(fallback[0].pose,'sleep');assert.notEqual(fallback[0].anchor,cat.anchor);assert.notDeepEqual(plain(fallback[0].position),plain(fallback[1].position));
  }
+});
+
+test('pets stay awake at 23:59 and 01:30, walk after midnight, and sleep only from 02:00 to 07:00 KST',()=>{
+ for(const seconds of [7*3600,21*3600,22*3600,23*3600+59*60,86400+90*60]){
+  const states=r.snapshot(at('2026-11-02',seconds));assert.equal(states.filter(p=>p.pet).length,2);
+  assert.ok(states.filter(p=>p.pet).every(p=>p.pose!=='sleep'));
+ }
+ for(const seconds of [23*3600+45*60+.1,86400+90*60+.1])assert.ok(r.snapshot(at('2026-11-02',seconds)).every(p=>p.pet&&p.walking),'both pets still walk their safe quarter-hour routes');
+ for(const seconds of [2*3600,3*3600,7*3600-.01])assert.ok(r.snapshot(at('2026-11-02',seconds)).every(p=>p.pose==='sleep'&&!p.walking));
+ for(const person of people.filter(p=>p.pet))assert.ok(person.hours.some(([start,end,floor])=>start===22&&end===26&&floor==='1f'),'explicit cross-midnight 1F window');
+ for(const seconds of [22*3600+.1,23*3600+120,86400+90*60+.1])for(const pet of r.snapshot(at('2026-11-02',seconds))){
+  assert.ok(pet.anchor.includes('_night_'),'dedicated lounge-side night stops');assert.ok(r.safe(pet.floor,pet.point,pet.position));
+  assert.ok(Math.hypot(pet.position[0]*16.72-1105,pet.position[1]*9.41-525)<230,'both pets remain within 230 native pixels of the lounge corner');
+ }
+ // Even a chairman on a different floor cannot take either pet away at night.
+ for(const seconds of [22*3600+120,23*3600+59*60,86400+90*60]){
+  const now=at('2026-11-02',seconds),staff=scene.snapshot(now,{chairmanPresent:true});
+  const pets=r.snapshot(now,staff).filter(p=>p.pet);assert.equal(pets.length,2);assert.ok(pets.every(p=>p.floor==='1f'&&p.pose!=='sleep'));
+ }
+});
+
+test('pet daily seeds and positions remain continuous over midnight and roll over at 07:00',()=>{
+ const before=at('2026-11-02',86400-.001),after=at('2026-11-03',.001),a=r.clock(before),b=r.clock(after);
+ assert.equal(a.day,b.day);assert.equal(a.day,'2026-11-02');assert.equal(a.night,true);assert.equal(b.night,true);
+ assert.ok(Math.abs(b.seconds-a.seconds-.002)<1e-6);assert.equal(Math.floor(b.seconds/900)-Math.floor(a.seconds/900),1);
+ for(const person of people.filter(p=>p.pet))assert.equal(r.seed('office-residents|'+a.day+'|'+person.id),r.seed('office-residents|'+b.day+'|'+person.id));
+ const first=r.snapshot(before),next=r.snapshot(after);for(const pet of first){const q=next.find(p=>p.id===pet.id);assert.equal(pet.floor,q.floor);assert.ok(Math.hypot((pet.position[0]-q.position[0])*16.72,(pet.position[1]-q.position[1])*9.41)<1,'quarter-hour walking starts where the last beat ended')}
+ assert.equal(r.clock(at('2026-11-03',7*3600-.01)).day,'2026-11-02');assert.equal(r.clock(at('2026-11-03',7*3600)).day,'2026-11-03');
+});
+
+const restingPeer=(id='taeo',floor='1f')=>({id,floor,seat:plain(scene.homeSeat(id)),activity:'rest',pose:'sitting',state:'AT_HOME',walking:false});
+const staffWith=(...people)=>({floors:[{people}]});
+const petGap=(pet,peer)=>{const v=peer.position||[peer.seat.x,peer.seat.y];return Math.hypot((pet.position[0]-v[0])*16.72,(pet.position[1]-v[1])*9.41)};
+
+test('stable quarter-hour visits use only resting staff on the same floor and never visitors or travellers',()=>{
+ const now=at('2026-11-02',10*3600+120),peer=restingPeer(),staff=staffWith(peer),bytes=JSON.stringify(staff);
+ const cat=r.snapshot(now,staff).find(p=>p.id==='pet-cat');assert.equal(cat.scene.partnerId,peer.id);assert.equal(cat.scene.kind,'rest');assert.equal(cat.floor,peer.floor);assert.ok(petGap(cat,peer)>=100&&petGap(cat,peer)<=320);
+ assert.equal(r.snapshot(at('2026-11-02',10*3600+300),staff).find(p=>p.id===cat.id).scene.key,cat.scene.key);
+ assert.equal(JSON.stringify(staff),bytes);
+ for(const edit of [{activity:'work'},{floor:'2f'},{walking:true},{state:'GOING'},{state:'RETURNING'},{visitor:true}]){
+  const states=r.snapshot(now,staffWith({...peer,...edit}));assert.ok(states.every(p=>!p.scene),JSON.stringify(edit));
+ }
+ assert.ok(r.snapshot(now,staff,true,false,false).every(p=>!p.scene));
+ const peers=staffWith(peer,{...peer,id:'sua'}),reverse=staffWith(...peers.floors[0].people.toReversed());
+ assert.equal(JSON.stringify(r.snapshot(now,peers)),JSON.stringify(r.snapshot(now,reverse)),'selection is independent of snapshot ordering');
+});
+
+test('thirty short voiced lines include every canonical staff member and monitor-side cat reactions stay on clear floor',()=>{
+ assert.deepEqual(Object.keys(r.voice.staff).sort(),table.people.map(p=>p.id).sort());
+ const lines=[...r.voice.cat,...r.voice.dog,...Object.values(r.voice.staff)];assert.equal(lines.length,30);assert.equal(new Set(lines).size,30);
+ for(const line of lines){assert.ok(Array.from(line).length<=22,line);assert.doesNotMatch(line,/뚱|못생|살쪘|개구리|왕눈|초록 회장/)}
+ const peer=restingPeer(),now=at('2026-11-02',9*3600+47*60),cat=r.snapshot(now,staffWith(peer)).find(p=>p.id==='pet-cat');
+ assert.equal(cat.scene.kind,'monitor');assert.equal(cat.scene.partnerId,peer.id);assert.equal(cat.pose,'sitting');assert.equal(cat.scene.petLine,r.voice.cat[2]);assert.equal(cat.scene.staffLine,r.voice.staff[peer.id]);
+ assert.ok(r.safe(cat.floor,cat.point,cat.position));
+ const [x,y]=[cat.position[0]*16.72,cat.position[1]*9.41],box=scene.art.floors['1f'].homeFurniture[peer.seat.anchor].deskBounds;
+ assert.ok(x<box[0]||x>box[2]||y<box[1]||y>box[3],'feet never land on a monitor or desk surface');
+ assert.ok(!r.snapshot(now,staffWith({...peer,activity:'work'})).some(p=>p.scene),'monitor scene also waits for a break');
+});
+
+test('cream follows seated or walking chairman to his floor, dwells beside clear positions, and yields when blocked',()=>{
+ const now=at('2026-11-02',10*3600+120);
+ for(const floor of ['2f','3f','4f','5f'])for(const walking of [false,true]){
+  const chair={id:'seongmin',floor,seat:{x:51,y:40,posture:'sitting'},position:walking?[51,40]:null,walking,pose:walking?'walk-a':'sitting',activity:'work'},staff=staffWith(chair),bytes=JSON.stringify(staff);
+  const dog=r.snapshot(now,staff).find(p=>p.id==='pet-dog');assert.ok(dog);assert.equal(dog.floor,floor);assert.equal(dog.scene.kind,'chairman');assert.equal(dog.scene.partnerName,'회장님');assert.ok(petGap(dog,chair)>=100&&petGap(dog,chair)<=320);assert.ok(r.safe(floor,dog.point,dog.position));
+  for(const offset of [180,300,600])assert.deepEqual(plain(r.snapshot(at('2026-11-02',10*3600+offset),staff).find(p=>p.id===dog.id).position),plain(dog.position),'stays beside the present chairman within the quarter hour');
+  assert.equal(JSON.stringify(staff),bytes);
+  const blockers={...chair,id:'visitor-test',visitor:true,walking:true,position:dog.position};
+  const yielded=r.snapshot(now,staffWith(chair,blockers)).find(p=>p.id===dog.id);if(yielded)assert.ok(petGap(yielded,blockers)>=100,'moving staff/visitor route gets priority');
+ }
+ const present=scene.snapshot(now,{chairmanPresent:true}),dog=r.snapshot(now,present).find(p=>p.id==='pet-dog');assert.equal(dog.floor,'4f');assert.equal(dog.scene,null,'default ceo chair has no furniture-clear adjacent bay; keep the safe corridor fallback');
+ assert.equal(r.snapshot(now,scene.snapshot(now,{chairmanPresent:false})).find(p=>p.id==='pet-dog').floor,'2f');
+});
+
+test('interaction routes and dwell spots clear full furniture envelopes and staff snapshots/plans remain byte-identical on and off',()=>{
+ const original=loadScene({transform:()=>restoreResidentsSource(read('hani-office-live.js'))}).scene;
+ let scenes=0,moving=0;
+ for(const day of ['2026-11-02','2026-11-03'])for(const chairmanPresent of [false,true]){
+  const options={chairmanPresent},plan=scene.scheduler.plan(day,options);assert.equal(JSON.stringify(plan),JSON.stringify(original.scheduler.plan(day,options)));
+  for(const seconds of [1,3*3600,9*3600+47*60,10*3600+120,23*3600+120]){
+   assert.equal(JSON.stringify(scene.scheduler.blockPlan(day,Math.floor(seconds/600),plan,options)),JSON.stringify(original.scheduler.blockPlan(day,Math.floor(seconds/600),original.scheduler.plan(day,options),options)));
+   const now=at(day,seconds),staff=scene.snapshot(now,options),bytes=JSON.stringify(staff);
+   r.snapshot(now,staff,true,false,true);r.snapshot(now,staff,true,false,false);r.snapshot(now,staff,false);
+   assert.equal(JSON.stringify(staff),bytes);assert.equal(bytes,JSON.stringify(original.snapshot(now,options)));
+  }
+ }
+ for(const seconds of [9*3600+45*60,10*3600,23*3600])for(const offset of [.001,.1,.5,1,2,3,5,10,20,60,120]){
+  const now=at('2026-11-02',seconds+offset),staff=seconds===23*3600?scene.snapshot(now,{chairmanPresent:true}):staffWith(restingPeer());
+  for(const pet of r.snapshot(now,staff).filter(p=>p.pet)){
+   assert.ok(r.safe(pet.floor,pet.point,pet.position));if(pet.walking)moving++;if(pet.scene){scenes++;const peer=staff.floors.flatMap(f=>f.people).find(p=>p.id===pet.scene.partnerId);assert.ok(peer);assert.equal(peer.floor,pet.floor);assert.equal(peer.activity,'rest')}
+   const x=pet.position[0]*16.72,y=pet.position[1]*9.41,items=scene.art.floors[pet.floor],boxes=[...r.furniture[pet.floor],...Object.values(items.homeFurniture||{}).flatMap(i=>[i.seatBounds,i.deskBounds]),...(items.freeDesks||[]).flatMap(i=>[i.seatBounds,i.deskBounds])].filter(Boolean);
+   for(const box of boxes)assert.ok(x+46<box[0]-8||x-46>box[2]+8||y+8<box[1]||y-88>box[3]+8,'whole pet body clears furniture throughout the social approach');
+  }
+ }
+ assert.ok(scenes>0);assert.ok(moving>0);
+});
+
+test('actual delegated pet taps show both speakers, automatic scene uses existing bubble, and all persistence/AI paths remain unused',async()=>{
+ const f=mount();await settled();f.setDateTime('2026-11-02T23:02:00+09:00');f.click('1f');await settled();
+ const dog=f.residents().find(a=>a.dataset.person==='pet-dog'),scene=dog.officeResidentState.scene;assert.ok(scene);assert.equal(scene.partnerId,'yuna');
+ const bubble=f.map.querySelector('.hani-office-character-bubble'),line=bubble.querySelector('p');assert.equal(bubble.hidden,false);assert.equal(line.textContent,'크림 · '+scene.line);
+ f.ids.get('haniOfficeActors').events.click({target:dog});assert.equal(line.textContent,'크림 · '+scene.line);assert.equal(bubble.querySelector('a').hidden,true);
+ assert.ok(line.textContent.includes(scene.petLine));assert.ok(line.textContent.includes(scene.staffLine));assert.equal(f.writes.length,0);
+ f.setDateTime('2026-11-03T03:00:00+09:00');f.tick();assert.ok(!line.textContent.includes(scene.staffLine),'a departed partner cannot leave a stale pair line');
+ const patch=read('hani-office-live.js'),before=restoreResidentsSource(patch);
+ assert.deepEqual(patch.match(/\b(?:fetch|setInterval|setTimeout|addEventListener)\s*\(/g),before.match(/\b(?:fetch|setInterval|setTimeout|addEventListener)\s*\(/g),'no additional network, timer or event paths');
+ assert.doesNotMatch(patch,/localStorage|sessionStorage|\bsave\s*\(|supabase/);
 });
 
 test('all decoded pose tops drive the existing label flow at phone and desktop widths without frame layout reads',async()=>{
