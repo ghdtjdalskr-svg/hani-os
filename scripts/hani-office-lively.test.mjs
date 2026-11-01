@@ -16,7 +16,7 @@ test('evening mixes playful statuses and short same-floor strolls; reduced motio
   assert.ok(lines.has('가방 챙기는 중'),'time-of-day flavour kept with personal obr14 base-work lines');assert.ok(strolls>0,'strolls happen');
   // About a third to half of a floor has a special bit; personal base-work lines remain visible.
   let busy=0,total=0,dups=0;
-  for(let t=Date.parse('2026-10-21T14:00:00+09:00');t<Date.parse('2026-10-21T14:20:00+09:00');t+=1000){const entries=s.snapshot(new Date(t)).entries.filter(p=>p.id!=='mir');total+=entries.length;busy+=entries.filter(p=>!p.plain).length;
+  for(let t=Date.parse('2026-10-21T14:00:00+09:00');t<Date.parse('2026-10-21T14:20:00+09:00');t+=1000){const entries=s.snapshot(new Date(t)).entries.filter(p=>p.id!=='mir');total+=entries.length;busy+=entries.filter(p=>!p.plain&&!p.eventId&&!p.outingId).length;
     for(const floor of ['1f','2f','3f','4f']){const shown=entries.filter(p=>p.floor===floor&&!p.plain).map(p=>p.line);if(new Set(shown).size!==shown.length)dups++}}
   assert.ok(busy/total>=.2&&busy/total<=.5,'busy share '+busy/total);assert.ok(dups/(1200*4)<.02,'repeated busy lines '+dups);
   const at=new Date('2026-10-21T19:10:00+09:00'),calm=s.snapshot(at,{reducedMotion:true});

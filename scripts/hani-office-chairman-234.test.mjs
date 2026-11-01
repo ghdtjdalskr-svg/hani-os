@@ -14,7 +14,7 @@ const goldenBytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-chairman-2
 assert.equal(createHash('sha256').update(goldenBytes).digest('hex'),'cd5541576e23b39018e704f14bcc253eac4aba152849779300f5f2b817852dff','immutable authored obr13 behavior oracle');
 const golden=JSON.parse(goldenBytes);
 assert.equal(createHash('sha256').update(readAt('hani-office-live.js','33d39892c2a5c0a1779650e440a2dd5068b44495')).digest('hex'),golden.sourceSha256);
-assert.equal(createHash('sha256').update(fs.readFileSync('data/hani-building/office-places.json')).digest('hex'),golden.placesSha256);
+assert.equal(createHash('sha256').update(fs.readFileSync('data/hani-building/office-places.json')).digest('hex'),'6ca0c67f03fa040123b44c7de6a489dd456f285f01fea591640c1192d81cbe66','approved cafe/rest data identity; historical oracle stays immutable');
 test('234 frozen six full formal/outing ledgers and 84 snapshots preserve exact bytes and deep equality',()=>{
  for(const r of golden.records){const api=loadScene({ref:'33d39892c2a5c0a1779650e440a2dd5068b44495'}).scene.scheduler,f=api.plan(r.day,r.options),o=api.blockPlan(r.day,0,f,r.options);
   for(const [actual,expected]of [[f,r.formal],[o,r.outings],...r.snapshots.map(row=>[api.snapshot(at(r.day,row.seconds),r.options),row.snapshot])]){assert.equal(JSON.stringify(actual),JSON.stringify(expected));assert.deepEqual(plain(actual),expected)}
@@ -28,7 +28,10 @@ test('234 actual owner renders and hides persistent chairman actor through the s
  for(const type of ['keydown','wheel','touchstart'])assert.strictEqual(f.document.events[type],f.document.events.pointerdown);
  const tick=f.timers.find(t=>t.ms===4200).fn;
  f.setDateTime('2026-10-22T09:10:00+09:00');tick();assert.equal(actor.hidden,true);
- f.document.events.wheel();tick();assert.equal(actor.hidden,false);
+ f.document.events.wheel();tick();
+ // Approved rest outings can move the chairman away from 4F at 09:10.
+ const chairman=s.snapshot(at(day,33000),options).entries.find(p=>p.id==='seongmin');assert.ok(chairman);
+ assert.equal(actor.hidden,chairman.floor!=='4f');f.click(chairman.floor);tick();assert.equal(actor.hidden,false);
  app.className='login-locked';tick();assert.equal(actor.hidden,true);app.className='';f.document.events.touchstart();tick();assert.equal(actor.hidden,false);
  f.context.window.HaniOfficePresence={chairman:'absent'};tick();assert.equal(actor.hidden,true);
  assert.deepEqual(f.ids.get('haniOfficeActors').children,nodes);assert.equal(f.timers.length,2);
