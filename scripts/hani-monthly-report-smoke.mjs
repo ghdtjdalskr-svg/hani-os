@@ -104,6 +104,8 @@ try{
     mkdirSync(join(root,'artifacts/monthly-report'),{recursive:true});
     await page.locator('[data-report-board="quarterly"]').click();
     assert(await page.locator('#monthlyReportQuarterlyPanel').isVisible(),`${viewport.name}: quarterly preview board`);
+    assert.equal(await page.locator('details:has(#quarterGoalReport)').getAttribute('open'),null,`${viewport.name}: goal comparison starts collapsed`);
+    await page.locator('[data-quarter-report-summary]').click();
     assert.equal(await page.locator('#quarterGoalReport article').count(),9,`${viewport.name}: quarterly common facts visible`);
     await page.locator('#monthlyReport').screenshot({path:join(root,`artifacts/monthly-report/${viewport.name}-quarterly.png`)});
     await page.locator('[data-report-board="annual"]').click();

@@ -13,7 +13,7 @@ const baseline=file=>withoutHeroRestore(file,readBranchBaseline(file));
 test('canonical company names and legacy search aliases resolve to unchanged routes',()=>{
   const ctx=vm.createContext({});
   vm.runInContext(main.slice(main.indexOf('const QUICK_JUMP_ITEMS='),main.indexOf('function renderQuickJump('))+';this.matches=quickJumpMatches;',ctx);
-  for(const [id,name,old] of [['agentReview','HANI 본사','하니 본사'],['board','HANI 라운지','하니 라운지'],['ilbo','HANI 일보','하니일보'],['investmentCommittee','HANI 투자 리포트','하니 투자 리포트']]){
+  for(const [id,name,old] of [['agentReview','HANI GROUP','하니 본사'],['board','HANI 라운지','하니 라운지'],['ilbo','HANI 일보','하니일보'],['investmentCommittee','HANI 투자 리포트','하니 투자 리포트']]){
     for(const query of [name,old]){
       const result=ctx.matches(query);assert.equal(result.length,1,query);assert.equal(result[0][0],id);assert.equal(result[0][1],name);
     }

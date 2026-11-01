@@ -24,7 +24,7 @@ function fixture(fetch){
 }
 let calls=0;const good=fixture(async(url,options)=>{calls++;assert.equal(url,'./assets/data/ai-team-status.json');assert.equal(options.cache,'no-store');return {ok:true,json:async()=>structuredClone(data)}});
 await good.run('loadAiTeamStatus()');await good.run('loadAiTeamStatus()');assert.equal(calls,1);
-assert.equal(data.productionVersion,'2.9.214');assert.match(good.summary.textContent,/2026-10-16.*운영 v2.9.214/);
+assert.equal(data.productionVersion,'2.9.214');assert.match(good.summary.textContent,/릴리스 기록을 불러오지 못했어요.*업무 내용은 2026-10-16 기준/);assert.doesNotMatch(good.summary.textContent,/운영 v2\.9\.214/);
 for(let i=0;i<keys.length;i++){
  const member=good.run(`developmentTeam[${i}]`);assert.equal(member.key,keys[i]);assert.equal(member.imageKey,ids[i]);
  const row=data.members.find(x=>x.id===ids[i]),meta=good.run(`teamMeta('${keys[i]}')`);
@@ -47,7 +47,7 @@ const image={naturalWidth:0,complete:true,nextElementSibling:{hidden:true}},imag
 report.unit.push('portrait load/error fallback lifecycle');
 // Execute the existing search function so legacy habits and saved destinations stay valid.
 const search=code.slice(code.indexOf('const QUICK_JUMP_ITEMS='),code.indexOf('function renderQuickJump'));
-for(const term of ['대표실','하니 본사','HANI 본사'])assert.deepEqual(Array.from(vm.runInNewContext(search+`;quickJumpMatches('${term}').find(x=>x[0]==='agentReview')`)).slice(0,2),['agentReview','HANI 본사']);
+for(const term of ['대표실','하니 본사','HANI 본사'])assert.deepEqual(Array.from(vm.runInNewContext(search+`;quickJumpMatches('${term}').find(x=>x[0]==='agentReview')`)).slice(0,2),['agentReview','HANI GROUP']);
 report.unit.push('old/new command aliases reach unchanged agentReview route');
 if(process.argv.includes('--unit')){console.log('PASS polish-215 unit: '+report.unit.length+' groups');process.exit(0)}
 const args=process.argv.slice(2),pw=args[0]||path.join(os.homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'),exe=args[1]||'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
@@ -72,13 +72,13 @@ try{
    window.polishBefore=JSON.stringify(state);save=commit=()=>{throw Error('Unexpected save')};
    showView('agentReview');
   });
-  await page.locator('#agentReview').waitFor({state:'visible'});await page.waitForFunction(()=>document.querySelector('#title')?.textContent==='HANI 본사');
-  assert.equal(await page.locator('.nav-btn[data-view="agentReview"] .txt').textContent(),'HANI 본사');
-  assert.equal(await page.locator('#haniOfficeLive h3').textContent(),'HANI 본사');assert.equal(await page.locator('#agentReview .card .sh h3').first().textContent(),'HANI 본사');
-  assert.equal(await page.locator('#haniOfficeLive').getAttribute('aria-label'),'HANI 본사');
+  await page.locator('#agentReview').waitFor({state:'visible'});await page.waitForFunction(()=>document.querySelector('#title')?.textContent==='HANI GROUP');
+  assert.equal(await page.locator('.nav-btn[data-view="agentReview"] .txt').textContent(),'HANI GROUP');
+  assert.equal(await page.locator('#haniOfficeLive h3').textContent(),'HANI GROUP');assert.equal(await page.locator('#agentReview .card .sh h3').first().textContent(),'HANI GROUP');
+  assert.equal(await page.locator('#haniOfficeLive').getAttribute('aria-label'),'HANI GROUP');
   assert.match(await page.locator('#haniOfficeLive').textContent(),/4F 경영층/);
   assert.match(await page.locator('#haniOfficeLive').textContent(),/성민 회장실/,'canon room name unchanged');
-  for(const term of ['대표실','하니 본사','HANI 본사'])assert.deepEqual(await page.evaluate(term=>quickJumpMatches(term).find(x=>x[0]==='agentReview').slice(0,2),term),['agentReview','HANI 본사']);
+  for(const term of ['대표실','하니 본사','HANI 본사'])assert.deepEqual(await page.evaluate(term=>quickJumpMatches(term).find(x=>x[0]==='agentReview').slice(0,2),term),['agentReview','HANI GROUP']);
   await page.screenshot({path:path.join(out,`${width}-hq.png`),fullPage:true});
   // Reveal the real sidebar at mobile width for the menu/heading evidence.
   if(width===390){await page.locator('.mobile-menu').click();await page.locator('.nav-btn[data-view="agentReview"]').scrollIntoViewIfNeeded()}

@@ -129,6 +129,12 @@ test('actual report rendering separates comparison/guidance and reuses the singl
  const source=fs.readFileSync(path.join(root,'hani-goal-progress.js'),'utf8');
  class Node {
   constructor(){this.children=[];this.innerHTML='';this.hidden=false;this.attributes={};this.classList={toggle:()=>{}};}
+  set innerHTML(value){this._html=value;this._slots=value.includes('data-period-controls')?Object.fromEntries(['controls','content','guidance'].map(key=>[key,new Node()])):null;}
+  get innerHTML(){return this._html+Object.values(this._slots||{}).map(node=>node.innerHTML).join('');}
+  get textContent(){return this.innerHTML.replace(/<[^>]*>/g,'');}
+  set textContent(value){this.innerHTML=value;}
+  contains(){return false;}
+  click(){this.onclick?.();}
   get previousSibling(){return this.parentNode?.children[this.parentNode.children.indexOf(this)-1]||null;}
   detach(){if(this.parentNode)this.parentNode.children.splice(this.parentNode.children.indexOf(this),1);}
   appendChild(node){node.detach();this.children.push(node);node.parentNode=this;}
@@ -137,7 +143,7 @@ test('actual report rendering separates comparison/guidance and reuses the singl
   setAttribute(k,v){this.attributes[k]=v;}
   addEventListener(k,v){this[k]=v;}
   querySelectorAll(){return [];}
-  querySelector(s){return s==='[data-quarter-goals-link]'&&this.innerHTML.includes('data-quarter-goals-link')?link:null;}
+  querySelector(s){const slot=/^\[data-period-(controls|content|guidance)\]$/.exec(s);return slot?this._slots?.[slot[1]]||null:s==='[data-quarter-goals-link]'&&this.innerHTML.includes('data-quarter-goals-link')?link:null;}
  }
  const settings=new Node(),editor=new Node(),destination=new Node(),quarter=new Node(),annual=new Node(),summary=new Node(),guidance=new Node(),link=new Node();settings.appendChild(editor);
  const tabs=['actual','goals'].map(tab=>Object.assign(new Node(),{dataset:{quarterTab:tab}})),panels=['actual','goals'].map(tab=>Object.assign(new Node(),{dataset:{quarterPanel:tab}}));
@@ -148,7 +154,7 @@ test('actual report rendering separates comparison/guidance and reuses the singl
  let allowed=true,edits=0;
  const facts=[{definition:{metric_id:'weight',unit:'kg'},actual:{value:80,period_start:'2026-10-01',period_end:'2026-12-31',months_missing:[]},progress:{target:75}}];
  const context=vm.createContext({document,window:{},monthlyReportBoard:'quarterly',reportRendering:false,reportPeriods:{quarter:{type:'quarter',year:2026,quarter:4},annual:{type:'annual',year:2026}},reportNames:{weight:'체중'},reportUnits:{kg:'kg'},reportRead:()=>allowed?facts:null,guidancePreview:()=>[{metric_id:'weight',unit:'kg',value:75,action:'USE',reason:'review',period:{type:'quarter',year:2027,quarter:1}}],escape:String,number:x=>x??'—',comparison:()=> '비교',renderGoalRegistry:()=>{edits++},showView:view=>{body.dataset.view=view;context.syncGoalEditor(view)},toast:()=>{},Event:class{}});
- const start=source.indexOf('function reportCards(');vm.runInContext(source.slice(start,source.indexOf('window.HANI_GOAL_PROGRESS=Object.freeze(',start)),context);
+ const start=source.indexOf('function reportCards(');vm.runInContext(source.slice(source.indexOf('function periodSlots('),source.indexOf('function render(){'))+source.slice(start,source.indexOf('window.HANI_GOAL_PROGRESS=Object.freeze(',start)),context);
  context.renderReportProgress();assert.match(quarter.innerHTML,/실적/);assert.match(quarter.innerHTML,/목표 수정은 목표 탭에서/);assert.doesNotMatch(quarter.innerHTML,/data-guidance-value|data-guidance-use/);assert.match(guidance.innerHTML,/data-guidance-value/);assert.match(annual.innerHTML,/data-guidance-value/);assert.equal(editor.parentNode,settings);
  link.click();assert.equal(editor.parentNode,destination);assert.equal(panels[0].hidden,true);assert.equal(panels[1].hidden,false);
  context.selectQuarterReportTab('goals');context.selectQuarterReportTab('goals');assert.equal(destination.children.length,1);
