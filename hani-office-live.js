@@ -1904,21 +1904,18 @@
     [/물.*모금|물.*마시|차.*모금/,'물 마시기|물 한모금|목 축이기'],[/수다|이야기 나누|이야기 중|질문 나누/,'수다 나누기|대화 나누기|말 주고받기|이야기 나눔'],
     [/쉬는|휴식|눈.*쉬|눈 감고/,'눈 쉬기|잠깐 쉬기|눈 휴식|휴식 취하기'],[/졸|꾸벅|하품/,'졸음 쫓기|잠 깨기|졸음 참기'],
     [/인사|손 흔드/,'인사 건네기|작별 인사|안부 나누기'],[/테스트|검증/,'테스트 점검|결과 살피기|검증하기'],
-    [/간식|야식|메뉴|식단/,'메뉴 고르기|먹거리 고름|식단 구상|간식 고르기'],[/그리|낙서|스케치/,'그림 그리기|낙서 하기|스케치 하기'],
+    [/간식|야식|메뉴|식단|투표|저녁 뭐/,'메뉴 고르기|먹거리 고름|식단 구상|간식 고르기'],[/그리|낙서|스케치/,'그림 그리기|낙서 하기|스케치 하기'],
     [/읽|책갈피|페이지/,'문장 읽기|글 읽기|독서 하기|읽던글 보기'],[/웃|미소/,'미소 짓기|웃음 짓기|살짝 웃기'],
     [/조언|설명.*듣/,'설명 듣기|조언 듣기|이야기 듣기'],[/공부|단어|외우|복습/,'단어 복습|공부 하기|단어 외우기']
   ];
-  function phoneStatusLine(line,used=new Set()){
+  function phoneStatusLine(line,used=new Set(),state='work',compact=true){
     const report=line.match(/회장님께 (.+?) 보고/);
-    if(report){const topic=report[1].replace(/^(오늘|다음) /,'').split(' ')[0],short=[...topic].length<=4?topic+'보고':'회장보고';used.add(short);return short}
+    if(report){const topic=report[1].replace(/^(오늘|다음) /,'').split(' ')[0],short=/^[가-힣A-Za-z0-9]{1,4}$/.test(topic)?topic+(compact?'':' ')+'보고':compact?'회장보고':'회장 보고';used.add(short);return short}
     const known=scheduler?.shortLine(line),authored=known==='회장님께 인사 중'?'도착 인사|환영 인사|인사 건네기':known==='보고 답변 중'?'보고 답변|보고 응답|답변 전하기':phoneActions.find(([pattern])=>pattern.test(line))?.[1];
-    // Unknown future text retains a whole source word plus its action; speech
-    // without an action verb is an opinion being spoken, never invented work.
-    const source=line.replace(/(?:에서|으로|이랑|와) /g,' ').replace(/ 중[.!…]*$|[.!…♡?]/g,'').trim();
-    const words=source.split(/\s+/),verb=words.at(-1)?.replace(/는$/,'기');
-    const derived=words.slice(0,-1).reverse().map(w=>w+' '+verb).filter(w=>[...w].length>=2&&[...w].length<=6);
-    const options=authored?authored.split('|'):[...derived,'의견 나누기','의견 말하기','의견 건네기'];
-    const choices=[...options.map(w=>w.replace(/ /g,'')),...options].filter(w=>[...w].length>=2&&[...w].length<=6);
+    // Future sentences use whole, state-based phrases; never slice source words.
+    const fallback={work:'근무 중|일하는 중|업무 진행|근무 계속|근무 이어감|업무 이어감|업무 진행중|업무 보는중',rest:'휴식 중|쉬는 중|잠깐 휴식|휴식 취하기|잠시 쉬기|쉬어 가기|휴식 이어감|잠깐 쉬기',meeting:'회의 중|회의 참여|회의 진행|회의 참석|회의 함께|회의 나눔|회의 이어감|회의 진행중',moving:'이동 중|걸어가는 중|목적지 이동|걷는 중|이동 계속|이동 이어감|걸어서 이동|목적지 걷기',night:'야근 중|야간 근무|야근 진행|야근 계속|야근 이어감|야간 작업|밤 근무중|야근 진행중'};
+    const options=(authored||fallback[state]||fallback.work).split('|');
+    const choices=(compact?[...options.map(w=>w.replace(/ /g,'')),...options]:options).filter(w=>[...w].length>=2&&[...w].length<=(compact?6:8));
     const result=choices.find(w=>!used.has(w))||choices[0];used.add(result);return result;
   }
   function placeStatusLabels(floor,groups,obstacles=[]){
@@ -2198,13 +2195,19 @@
     actor.style.left=position[0]+'%';actor.style.top=position[1]+'%';
   }
   function clearMotion(actor){actor.officeReactions.reset();delete actor.dataset.motion;actor.style.setProperty('--step-bounce','0px');actor.style.setProperty('--step-lean','0deg')}
-  function activityStatus(actor,full){return actor.officeTravel||actor.dataset.walking==='true'||full==='이동 중'?'moving':actor.dataset.called==='true'||actor.dataset.activity==='meeting'?'meeting':actor.dataset.activity==='rest'?'rest':/야근/.test(full)?'night':'work'}
+  function activityStatus(actor,full){
+    const leisure=/물 한 모금|쉬|휴식|수다|간식|커피|야식|메뉴|투표|저녁 뭐|인스타|음악|영화|산책|졸|약속|휴대폰|고양이 영상|기지개|스트레칭|하품|노래|플레이리스트|흥얼/;
+    const workPhrase=/(?:고객 표현 쉬운 말로 바꾸는 중|어려운 용어 쉬운 말 퀴즈 중|다음 약속 준비물 적는 중|졸린 눈으로 문장 줄이는 중)$/;
+    return actor.officeTravel||actor.dataset.walking==='true'||full==='이동 중'?'moving':actor.dataset.called==='true'||actor.dataset.activity==='meeting'?'meeting':['rest','play'].includes(actor.dataset.activity)||actor.dataset.zone==='lounge'&&!/^(?:task|errand)-/.test(actor.dataset.place||'')||!workPhrase.test(full)&&leisure.test(full)?'rest':/야근/.test(full)?'night':'work';
+  }
   const statusNames={work:'근무 중',rest:'휴식 중',meeting:'회의 중',moving:'이동 중',night:'야근 중'};
+  const statusIcons={work:'💻',rest:'☕',meeting:'💬',moving:'🚶',night:'🌙'};
   function statusDot(actor){const dot=actor.querySelector('.hani-office-status-dot'),full=actor.querySelector('.hani-office-status').dataset.full||'';actor.dataset.status=activityStatus(actor,full);dot.title=statusNames[actor.dataset.status];dot.setAttribute('aria-label',dot.title);actor.setAttribute('aria-label',`${actor.dataset.name}: ${dot.title} · ${full}`)}
   function label(actor,value,mood=false){
-    const status=actor.querySelector('.hani-office-status'),icon=actor.querySelector('.hani-office-activity-icon');
-    status.textContent=value;status.dataset.full=value;status.title=value;actor.dataset.mood=String(mood);statusDot(actor);
-    icon.textContent=actor.dataset.emoji||'';icon.hidden=!icon.textContent;icon.title=value;
+    const status=actor.querySelector('.hani-office-status'),icon=actor.querySelector('.hani-office-activity-icon'),compact=matchMedia('(max-width:600px)').matches;
+    status.dataset.full=value;status.title=value;status.setAttribute('aria-label',value);actor.dataset.mood=String(mood);statusDot(actor);
+    icon.textContent=actor.dataset.emoji||statusIcons[actor.dataset.status];icon.hidden=false;icon.title=value;
+    status.textContent=icon.textContent+' '+HaniBuildingScene.labels.short(value,new Set(),actor.dataset.status,compact);
     if(actor.officeText)actor.officeText.textContent=value;
   }
   // Batch reset -> one geometry read per node -> pure packing -> batch commit.
@@ -2217,10 +2220,11 @@
     for(const {actor,name,status}of rows){
       statusDot(actor);
       actor.dataset.labelMode=compact?'pill':'separate';
-      actor.officeCompact.textContent=compact?' · '+HaniBuildingScene.labels.short(status.dataset.full,used):'';
+      status.textContent=actor.querySelector('.hani-office-activity-icon').textContent+' '+HaniBuildingScene.labels.short(status.dataset.full,used,actor.dataset.status,compact);
+      actor.officeCompact.textContent=compact?' · '+status.textContent:'';
       name.title=actor.dataset.name+' · '+status.dataset.full;name.setAttribute('aria-label',name.title);
       for(const [kind,node]of [['name',name],['status',status]]){node.style.setProperty('--'+kind+'-x','0px');node.style.setProperty('--'+kind+'-y','0px');node.style.visibility='';node.hidden=false;}
-      status.textContent=status.dataset.full;status.hidden=compact;
+      status.hidden=compact;
     }
     const groups=rows.map(({actor,name,status})=>{const box=HaniBuildingScene.motion.stableActorBox(actor);return {id:actor.dataset.person,compact,priority:HaniBuildingScene.labels.priority(actor.dataset),actor:box,sprite:HaniBuildingScene.motion.stableSpriteBox(actor,box,reduced),name:name.getBoundingClientRect(),status:status.getBoundingClientRect()}});
     // Measure the same persistent slot without activity text, in one batch.
@@ -2251,6 +2255,10 @@
     const sprite=document.createElement('div');sprite.className='hani-office-sprite';sprite.dataset.row=String(row);actor.officeLegacy={group,row};
     const status=document.createElement('span');status.className='hani-office-status';const tag=document.createElement('small');tag.className='hani-office-name';
     const dot=document.createElement('span'),icon=document.createElement('span'),tagName=document.createElement('span'),compactLine=document.createElement('span');dot.className='hani-office-status-dot';dot.setAttribute('role','img');icon.className='hani-office-activity-icon';icon.setAttribute('aria-hidden','true');icon.hidden=true;compactLine.className='hani-office-compact-line';tagName.textContent=name.split(' · ').at(-1);tag.append(dot,icon,tagName,compactLine);actor.officeName=tagName;actor.officeCompact=compactLine;
+    const member=key==='seongmin'?window.HaniOrganizationRoster?.chairman:window.HaniOrganizationRoster?.people.find(p=>p.id===key),team=window.HaniOrganizationRoster?.teams.find(t=>t.id===member?.team);
+    actor.dataset.team=member?.team||'';
+    if(team){tag.style.setProperty('--office-team',team.color);tag.style.setProperty('--office-team-tint',team.tint)}
+    const rank=document.createElement('span');rank.className='hani-office-rank';rank.textContent=key==='seongmin'?'':member?.rank?' '+member.rank:'';tagName.after(rank);
     const prop=document.createElement('span');prop.className='hani-office-prop';prop.setAttribute('aria-hidden','true');actor.append(sprite,tag,status,prop);actor.setAttribute('role','button');actor.tabIndex=0;actor.dataset.avatar='pending';actorLayer.append(actor);actors.set(key,actor);
     const rhythm=HaniBuildingScene.scheduler?.seed('idle-motion|'+key)||row;actor.style.setProperty('--idle-duration',(3.6+rhythm%29/10)+'s');actor.style.setProperty('--idle-delay',(-rhythm%67/10)+'s');
   }
@@ -2415,7 +2423,7 @@
     })());
     variants.get(source).then(({background,isFloor})=>{
       if(token!==backgroundToken||floor.id!==activeFloor||source!==building.atmosphere.background(floor)||!viewVisible())return;
-      bg.src=background;bg.hidden=false;bg.alt=floor.label+' · HANI 본사';map.dataset.art=isFloor?'floor':'fallback';
+      bg.src=background;bg.hidden=false;bg.alt=floor.label+' · HANI GROUP';map.dataset.art=isFloor?'floor':'fallback';
       foregrounds.forEach(img=>{img.hidden=true});
       map.dataset.mask='none';
       for(const entry of plates)entry.plate.hidden=entry.floor!==floor.id||!isFloor;

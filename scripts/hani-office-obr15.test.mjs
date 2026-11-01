@@ -11,6 +11,19 @@ const {scene,table,context}=loadScene(),s=scene.scheduler;
 let writes=0;const deny=()=>{writes++;throw Error('forbidden storage/network')};
 context.localStorage=context.sessionStorage={setItem:deny,removeItem:deny,clear:deny};context.fetch=deny;
 const serialize=JSON.stringify,hash=x=>createHash('sha256').update(x).digest('hex');
+// Exact QA-3/18/19 display edits are restored before the unchanged behavior guard.
+const labelDeltaBytes=fs.readFileSync('scripts/fixtures/office-labels-qa-source-delta.json');
+assert.equal(hash(labelDeltaBytes),'2fdb235f380d215067343a9bf461239a2d1019284add9cd18fc981f07ae02c8f');
+const labelDelta=JSON.parse(labelDeltaBytes);
+assert.equal(labelDelta.beforeSha256,'406937ae1d69c0379bb735e961734b517ae9440a02c93a0d41771dc0c694d246');
+function restoreOfficeLabelsSource(source){
+ const lines=source.match(/[^\n]*\n|[^\n]+$/g);
+ for(const change of labelDelta.changes.toReversed()){
+  assert.deepEqual(lines.slice(change.afterLine,change.afterLine+change.after.length),change.after,'only exact reviewed display lines at '+change.afterLine);
+  lines.splice(change.afterLine,change.after.length,...change.before);
+ }
+ const restored=lines.join('');assert.equal(hash(restored),labelDelta.beforeSha256,'every other source byte including scheduler stays frozen');return restored;
+}
 test('obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately',()=>{
  const frozen=JSON.parse(gunzipSync(fs.readFileSync('scripts/fixtures/office-lively-labels-235-plans.json.gz')));
  assert.equal(hash(readAt('hani-office-live.js',base)),frozen.sourceSha256);
@@ -24,7 +37,7 @@ test('obr15 historical source identities retained; cafe/rest source and full abs
   const cafe=JSON.parse(cafeBytes);assert.equal(hash(readAt('hani-office-live.js','b653a173079323217bcd5e338e82c50d40d578e1')),cafe.sourceSha256);assert.equal(hash(readAt('data/hani-building/office-places.json','b653a173079323217bcd5e338e82c50d40d578e1')),cafe.placesSha256);
   const consultBytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-consult-v7-plans.json.gz'));
   assert.equal(hash(consultBytes),'1a0acf4ae695ccb93b315b59bea9804273ca7cee4eb024dcd84bab90bd4579db','approved consultation full-output SHA-256 oracle');
-  const consult=JSON.parse(consultBytes);assert.equal(hash(fs.readFileSync('hani-office-live.js')),consult.sourceSha256);assert.equal(hash(fs.readFileSync('data/hani-building/office-places.json')),consult.placesSha256);
+  const consult=JSON.parse(consultBytes);assert.equal(hash(restoreOfficeLabelsSource(fs.readFileSync('hani-office-live.js','utf8'))),consult.sourceSha256);assert.equal(hash(fs.readFileSync('data/hani-building/office-places.json')),consult.placesSha256);
   const reviewed=consult.records.find(r=>r.label==='obr15 absent '+day);
   assert.ok(reviewed);assert.equal(serialize(o),serialize(reviewed.options));
   const a=actual.plan(day,o),out=actual.blockPlan(day,0,a,o);assert.equal(hash(serialize(a)),reviewed.formalSha256);assert.equal(hash(serialize(out)),reviewed.outingsSha256);

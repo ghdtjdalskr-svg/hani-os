@@ -22,13 +22,13 @@ const reset=threads=>{
 const generated=now=>h.generateDaily(now).filter(p=>p.libraryId);
 const midnight=date=>Date.parse(date+'T00:00:00+09:00');
 
-test('builder appends 40 stable IDs after all 180 existing entries and includes active new staff',async()=>{
+test('builder preserves 40 stable IDs after 180 entries with the monthly poll appended',async()=>{
   await buildLibrary({check:true});
   const existing=['part-a','part-b'].flatMap(part=>JSON.parse(read('data/board-library/'+part+'.json')).threads);
   assert.deepEqual(library.slice(0,180),plain(validateLibrary(existing,roster)));
-  assert.equal(library.length,220);
+  assert.equal(library.length,221);
   assert.deepEqual(authored.map(t=>t.id),Array.from({length:40},(_,i)=>'part-c-'+String(i+1).padStart(3,'0')));
-  assert.deepEqual(library.slice(180),plain(validateLibrary(authored,roster)));
+  assert.deepEqual(library.slice(180,220),plain(validateLibrary(authored,roster)));
   assert.equal(new Set(authored.map(t=>t.authorId)).size,19);
 });
 
