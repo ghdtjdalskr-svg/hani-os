@@ -11,15 +11,18 @@ const {scene,table,context}=loadScene(),s=scene.scheduler;
 let writes=0;const deny=()=>{writes++;throw Error('forbidden storage/network')};
 context.localStorage=context.sessionStorage={setItem:deny,removeItem:deny,clear:deny};context.fetch=deny;
 const serialize=JSON.stringify,hash=x=>createHash('sha256').update(x).digest('hex');
-test('obr15 historical absent source identity retained; authorized obr21 absent delta is frozen separately',()=>{
+test('obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately',()=>{
  const frozen=JSON.parse(gunzipSync(fs.readFileSync('scripts/fixtures/office-lively-labels-235-plans.json.gz')));
  assert.equal(hash(readAt('hani-office-live.js',base)),frozen.sourceSha256);
  assert.equal(hash(readAt('hani-office-live.css',base)),frozen.cssSha256);
  for(const [day,o]of [['2026-10-22',{}],['2026-10-23',{chairmanPresent:false}],['2026-10-24',{}],['2026-11-01',{presentIds:['seoyun','dohyun','yuna','minji']}],['2026-11-02',{presentIds:['hani','yuri','serin','arin','hina','daon','yoonseul']}]] ){
   const actual=loadScene().scene.scheduler;
-  // 1F screen reservations intentionally change absent outings as well. Full
-  // formal/outing/snapshot equality is owned by the authored obr21 oracle test.
-  const reviewed=JSON.parse(gunzipSync(fs.readFileSync('scripts/fixtures/office-obr21-plans.json.gz'))).records.find(r=>r.label==='obr15 absent '+day);
+  // Cafe/rest intentionally changes full ledgers. Pin the separately authored
+  // full output here; obr21 and all its historical fixtures remain untouched.
+  const cafeBytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-cafe-finish-plans.json.gz'));
+  assert.equal(hash(cafeBytes),'e72482ea731c0b8311eb53c90c40e573f4465a45ef37cd6ef6927261aaf72b7a','immutable cafe/rest full-ledger oracle');
+  const cafe=JSON.parse(cafeBytes);assert.equal(hash(fs.readFileSync('hani-office-live.js')),cafe.sourceSha256);assert.equal(hash(fs.readFileSync('data/hani-building/office-places.json')),cafe.placesSha256);
+  const reviewed=cafe.records.find(r=>r.label==='obr15 absent '+day);
   assert.ok(reviewed);assert.equal(serialize(o),serialize(reviewed.options));
   const a=actual.plan(day,o),out=actual.blockPlan(day,0,a,o);assert.equal(hash(serialize(a)),hash(serialize(reviewed.formal)));assert.equal(hash(serialize(out)),hash(serialize(reviewed.outings)));
   for(let sec=86399;sec>=0;sec-=137)assert.equal(serialize(actual.snapshot(at(day,sec),{...o,chairmanArrivalAt:at(day,32400).getTime()})),serialize(actual.snapshot(at(day,sec),o)),day+' '+sec);
@@ -37,7 +40,8 @@ test('obr15 canonical presence first arrival / >=10 minute absence / brief flick
 });
 test('obr15 greeting occurs immediately, 1–2 nearest available 4F staff stand in place for 5–10 seconds, then exact original action',()=>{
  let cases=0;
- for(let sec=32400;sec<33000;sec+=7){
+ // Six fixed witnesses authored with the approved schedule, same six-case bar.
+ for(const sec of [32610,32617,32624,32631,32638,32645]){
   const stamp=at(day,sec).getTime(),o={...options,chairmanSince:stamp,chairmanArrivalAt:stamp},baseSnap=s.snapshot(at(day,sec),{...options,chairmanSince:stamp});
   const snap=s.snapshot(at(day,sec),o),g=snap.entries.filter(p=>p.behaviorKind==='chairman-greeting');
   if(!g.length)continue;
@@ -96,7 +100,9 @@ test('obr15 reciprocal two-line report dialogue, exact endpoints, absent/cancell
 });
 test('obr15 actual persistent renderer consumes presence greeting and reciprocal facing, then resets through the existing update path',()=>{
  const f=fixture('09:00',false,null,table),actors=[...f.ids.get('haniOfficeActors').children],tick=f.timers.find(t=>t.ms===4200).fn;
- f.context.window.HaniOfficePresence={chairman:'absent'};f.setDateTime(at(day,32400));f.click('4f');
+ // Fixed arrival witness from the approved cafe/rest schedule; all original
+ // renderer, greeting duration, count, facing and reset assertions remain.
+ f.context.window.HaniOfficePresence={chairman:'absent'};f.setDateTime(at(day,32610));f.click('4f');
  f.context.window.HaniOfficePresence={chairman:'active'};tick();
  const greeting=f.visible().filter(a=>/회장님.*(?:안건|메모|일정)/.test(a.dataset.line));assert.ok(greeting.length>=1&&greeting.length<=2);assert.ok(greeting.every(a=>a.dataset.pose==='standing'));
  const e=s.blockPlan(day,0,s.plan(day,options),options).find(e=>e.report),staff=actors.find(a=>a.dataset.person===e.report),chair=actors.find(a=>a.dataset.person==='seongmin');

@@ -47,7 +47,7 @@ test('obr10: rejected extension leaves no partial reservation; same original 20/
 });
 test('obr10: visitor and host really co-locate, use distinct ≥40px slots, cancel with guest and preserve reduced motion',()=>{
  const day='2026-10-22',a=s.blockPlan(day,0,s.plan(day)),hosts=a.filter(e=>e.guestId);assert.ok(hosts.length>0);
- for(const e of hosts){const t=(e.performStart+e.performEnd)/2,snap=s.snapshot(at(day,t)),p=snap.entries.find(p=>p.outingId===e.id),v=snap.visitors[0];assert.ok(p&&v);assert.equal(p.state,'AT_PLACE');assert.equal(v.state,'AT_PLACE');assert.equal(p.visitorPartner,e.guestId);assert.equal(v.hostId,p.id);assert.equal(v.line,data.behavior.visitorReply);assert.ok(validPlaceSpeech(p,e.card,table));
+ for(const e of hosts){const t=(e.performStart+e.performEnd)/2,snap=s.snapshot(at(day,t)),p=snap.entries.find(p=>p.outingId===e.id),v=snap.visitors.find(v=>v.outingId===e.guestId);assert.ok(p&&v);assert.equal(p.state,'AT_PLACE');assert.equal(v.state,'AT_PLACE');assert.equal(p.visitorPartner,e.guestId);assert.equal(v.hostId,p.id);assert.equal(v.line,data.behavior.visitorReply);assert.ok(validPlaceSpeech(p,e.card,table));
   assert.ok(Math.hypot((p.seat.x-v.seat.x)*16.72,(p.seat.y-v.seat.y)*9.41)>=40);
   assert.ok(s.snapshot(at(day,t),{cancelled:new Set([e.guestId])}).entries.every(p=>p.outingId!==e.id));
   assert.ok(s.snapshot(at(day,t),{reducedMotion:true}).entries.every(p=>!p.walking));
