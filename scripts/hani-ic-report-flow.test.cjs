@@ -45,7 +45,7 @@ test('without-card holdings split by identity; accumulation and existing cards s
 test('instruction bytes match the frozen baseline when no ready holdings exist', () => {
   const rows = [{name: '코드 없음', quantity: 1}];
   const prefix = C.buildPrompt(blank(), rows).split('자료(JSON):')[0];
-  assert.equal(createHash('sha256').update(prefix).digest('hex'), '8a304ae1d2b4005a8b0599b2de95662aee35191db1789f39fd66c53258c4ac34');
+  assert.equal(createHash('sha256').update(prefix).digest('hex'), 'a499606748082570a1a2af7d293a6de77bc39e6305826cd94e141ae3f097e31b');
   assert.equal(C.buildPrompt(blank(), rows), C.buildPrompt(blank()));
 });
 
@@ -166,4 +166,11 @@ test('existing Gemini button updater synchronizes header and guidance buttons du
   for (const b of [header, next]) {assert.equal(b.disabled, true); assert.equal(b['aria-busy'], 'true');}
   ctx.secondRunning = false; ctx.accountIdentity = () => null; vm.runInContext('updateSecondButton();', ctx);
   for (const b of [header, next]) {assert.equal(b.disabled, true); assert.match(b.title, /로그인/);}
+});
+
+test('both GPT prompts ask for web research first and keep the no-invention rule', () => {
+  const rule = /답변 전에 웹 검색으로 종목별 최신 공식 실적, IR 자료, 컨센서스, 밸류에이션 자료를 먼저 찾으세요/;
+  assert.match(C.buildPrompt(blank()), rule);
+  assert.match(C.buildPrompt(blank()), /임의로 만들지 마세요/);
+  assert.match(C.fairFollowupPrompt([{missingFairValue: true, card: {name: '삼성증권', ticker: '016360', market: 'KR', currency: 'KRW', thesis: []}}]), rule);
 });
