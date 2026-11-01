@@ -244,7 +244,7 @@
     else if(id)render();
   }
   function openPost(id,updateHash=true){
-    const post=posts().find(p=>p.id===id&&published(p));if(!post)return false;selectPost(id,updateHash);
+    const post=displayPosts().find(p=>p.id===id&&published(p));if(!post)return false;selectPost(id,updateHash);
     const changed=canWrite()&&viewChange(id,posts(),comments(),Date.now());
     if(changed){
       if(persist(changed,comments()))rememberView(id);
@@ -270,7 +270,7 @@
   }
   function listPosts(tab=filter,search=query,now=Date.now()){
     const needle=String(search).trim().toLocaleLowerCase("ko-KR");
-    return posts().filter(p=>published(p)&&(tab==="ALL"||tab==="POPULAR"||p.category===tab)&&
+    return displayPosts(now).filter(p=>published(p)&&(tab==="ALL"||tab==="POPULAR"||p.category===tab)&&
       (!needle||[p.title,p.body,author(p.authorId)].some(v=>String(v||"").toLocaleLowerCase("ko-KR").includes(needle))))
       .slice().sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned)||
         (tab==="POPULAR"?popularity(a,b,now):0)||
@@ -332,7 +332,7 @@
     if(notice){if(writable&&!notice.hidden)status("");notice.hidden=writable}
     if(!writable)status(writeBlockReason());
     if(get("replyMode"))get("replyMode").disabled=!writable;
-    get("counts").textContent="글 "+posts().filter(published).length+" · 댓글 "+visibleComments().length;
+    get("counts").textContent="글 "+displayPosts(now).filter(published).length+" · 댓글 "+visibleComments().length;
     paintLiving(writable,now);
     get("author").textContent=author(actor());
     get("postSubmit").disabled=!writable;get("commentSubmit").disabled=!writable;
@@ -348,12 +348,13 @@
         '<td class="board-cell-views" title="'+escape(countTitle(p,"views",now))+'"><span class="board-mobile-label">조회 </span>'+views+'</td><td class="board-cell-likes'+(likes>0?' board-has-likes':'')+'" title="'+escape(countTitle(p,"likes",now))+'"><span class="board-mobile-label">추천 </span>'+likes+'</td></tr>'}).join("")||
         '<tr><td colspan="6" class="empty">'+(query?'검색 결과가 없습니다.':'아직 게시글이 없습니다.')+'</td></tr>')+'</tbody></table>');
     get("more").hidden=visible>=rows.length;get("listCount").textContent=rows.length+"개 글 · "+Math.min(visible,rows.length)+"개 표시";
-    const raw=posts().find(p=>p.id===selected&&published(p)),post=raw&&postFields(raw);
+    const raw=displayPosts(now).find(p=>p.id===selected&&published(p)),post=raw&&postFields(raw);
+    get("commentSubmit").disabled=!writable||!!post?.queenResult;
     get("detail").hidden=!post;get("react").disabled=!post||post.authorId!==actor()||!writable||busy;
     if(get("preview")?.open)paintPreview();
     get("replyContext").textContent=replyTo?author(comments().find(c=>c.id===replyTo)?.authorId)+"에게 답글":"";
     if(!post){html("article","");html("comments","");return}
-    html("article",'<span class="pill">'+escape(post.category)+'</span>'+(post.pinned?' <span class="board-notice">공지</span>':"")+'<h3 tabindex="-1" data-board-heading>'+escape(displayText(post,post.title))+'</h3><div class="board-detail-meta">'+authorCard(post.authorId,40)+'<span class="sub">'+stamp(post)+' · <span title="'+escape(countTitle(post,"views",now))+'">조회 '+displayViews(post,now)+'</span> · <span title="'+escape(countTitle(post,"likes",now))+'">추천 '+displayLikes(post,now)+'</span>'+'</span>'+newBadge(post)+'</div><p class="board-body">'+escape(displayText(post,post.body))+'</p>'+interactiveMarkup(post,writable)+'<button class="btn" type="button" data-board-like="'+escape(post.id)+'" aria-pressed="'+post.likedByOwner+'"'+(!writable?' disabled':'')+' title="'+escape(countTitle(post,"likes",now))+'">👍 추천 '+displayLikes(post,now)+'</button>'+actions(post,"post"));
+    html("article",'<span class="pill">'+escape(post.category)+'</span>'+(post.pinned?' <span class="board-notice">공지</span>':"")+'<h3 tabindex="-1" data-board-heading>'+escape(displayText(post,post.title))+'</h3><div class="board-detail-meta">'+authorCard(post.authorId,40)+'<span class="sub">'+stamp(post)+' · <span title="'+escape(countTitle(post,"views",now))+'">조회 '+displayViews(post,now)+'</span> · <span title="'+escape(countTitle(post,"likes",now))+'">추천 '+displayLikes(post,now)+'</span>'+'</span>'+newBadge(post)+'</div><p class="board-body">'+escape(displayText(post,post.body))+'</p>'+interactiveMarkup(post,writable&&!post.queenResult)+'<button class="btn" type="button" data-board-like="'+escape(post.id)+'" aria-pressed="'+post.likedByOwner+'"'+(!writable||post.queenResult?' disabled':'')+' title="'+escape(countTitle(post,"likes",now))+'">👍 추천 '+displayLikes(post,now)+'</button>'+actions(post,"post"));
     const thread=visibleComments().filter(c=>c.postId===post.id).map(commentFields).sort((a,b)=>String(a.createdAt).localeCompare(String(b.createdAt)));
     html("comments",orderedComments(thread).map(({comment,nested})=>commentMarkup(comment,nested,!comment.parentId)).join("")||'<p class="empty">첫 댓글을 남겨 주세요.</p>');
   }
@@ -1128,6 +1129,7 @@
     return short?(peer?FUN_PEER_LINES[authorId]||voice[0]:voice[0]):voice[1].replace(/[.!?]+$/,"")+". "+(peer?"그 한 표에 저도 살짝 올라탑니다":FUN_TOPIC_LINES[topic])+".";
   }
   function dailyThread(thread,source,now){
+    if(/^queen-/.test(thread.id))return thread;
     if(thread.poll||!lightConversation(thread)||hash(source)%3!==0)return naturalThread(thread);
     const month=new Date(now+9*3600000).getUTCMonth()+1;
     const eligible=LOUNGE_FUN_POOL.filter(t=>(!t.month||t.month===month)&&person(t.authorId)&&personaMap()[t.authorId]);
@@ -1144,6 +1146,7 @@
   }
   function publicationThread(row){
     const original=libraryThreads().find(t=>t.id===row.libraryId);if(!original)return null;
+    if(/^queen-\d{4}-\d{2}-s\d+$/.test(original.id))return original;
     const projected=dailyThread(original,row.sourceEventId,Date.parse(row.scheduledAt||row.createdAt));
     // Older saved Library posts retain their original thread; only matching new projections use fun comments.
     const thread=projected.title===row.title&&projected.body===row.body&&projected.authorId===row.authorId?projected:original;
@@ -1153,13 +1156,15 @@
   const libraryThreads=()=>globalThis.HaniBoardLibrary?.threads||window.HaniBoardLibrary?.threads||[];
   const restrictions=value=>value===null||value===undefined||value===""?[]:Array.isArray(value)?value:[value];
   function libraryEligible(thread,now){
+    // Winner patterns are display-only; they never enter the daily save queue.
+    if(/^queen-\d{4}-\d{2}-winner$/.test(thread.id))return false;
     const seasons=restrictions(thread.season),days=restrictions(thread.weekday),date=thread.date==null?"":safeRecordDate(thread.date);
     return (!/^queen-/.test(thread.id)||date.slice(0,7)===dayKey(now).slice(0,7))&&
       (thread.date==null||!!date&&date<=dayKey(now))&&(!seasons.length||seasons.includes(seasonFor(now)))&&(!days.length||days.includes(new Date(now+9*3600000).getUTCDay()));
   }
   function generateDaily(now=Date.now(),rows=posts()){
     if(!canWrite()||!sourcesReady())return rows;
-    const next=[...rows],day=dayKey(now),library=libraryThreads(),mode=boardSettings(rows)?.replyMode||"auto";
+    const next=[...rows],day=dayKey(now),library=libraryThreads().filter(t=>!/^queen-\d{4}-\d{2}-winner$/.test(t.id)),mode=boardSettings(rows)?.replyMode||"auto";
     const limit=2+hash(day)%3,start=Date.parse(day+"T00:00:00Z")-9*3600000;
     const today=next.filter(p=>p.libraryId&&Number.isFinite(Date.parse(p.createdAt))&&dayKey(Date.parse(p.createdAt))===day);
     const occupied=new Set(today.map(p=>p.sourceEventId));
@@ -1399,6 +1404,22 @@
     choices.sort((a,b)=>b.count-a.count||Number(b.index===owner)-Number(a.index===owner)||members.indexOf(a.member)-members.indexOf(b.member));
     return choices[0]||null;
   }
+  function queenResultThreads(now=Date.now()){
+    return libraryThreads().flatMap(thread=>{
+      const month=/^queen-(\d{4}-\d{2})-winner$/.exec(thread.id)?.[1];if(!month)return [];
+      const end=Date.UTC(Number(month.slice(0,4)),Number(month.slice(5)),1)-9*3600000;
+      const date=dayKey(end);
+      if(thread.date!==date||now<end)return [];
+      const source=posts().find(p=>published(p)&&queenMonth(p)===month&&Date.parse(p.createdAt)<end);
+      if(!source||!queenStandings(source,end-1).total)return [];
+      const winner=queenTally(source,end-1)?.member;if(!winner)return [];
+      const fill=value=>value.replaceAll('{winner}',displayName(winner.id));
+      return [{...thread,id:'result:'+thread.id,authorId:winner.id,title:fill(thread.title),body:fill(thread.body),
+        createdAt:new Date(end).toISOString(),queenResult:true}];
+    });
+  }
+  // Only list/detail reads include these results. Persistence owners still read posts().
+  const displayPosts=(now=Date.now())=>[...posts(),...queenResultThreads(now)];
   const fixedQueenResults=Object.freeze({'2026-10':'seoyun'});
   const queenImages=Object.freeze({'2026-10':'./assets/queen/2026-10.webp'});
   function queenSlides(now=Date.now()){
