@@ -1,12 +1,27 @@
 /* Shared design tokens also follow midnight-black / titanium-graphite finishes. */
-#board .board-promo{box-sizing:border-box;display:grid;grid-template-rows:1fr auto;gap:8px;height:188px;min-width:0;padding:12px;border:1px solid var(--border-subtle);border-radius:14px;background:var(--surface-raised);color:var(--text-primary);margin:12px 0}
-#board .board-promo>a{display:grid;grid-template-columns:80px minmax(0,1fr);gap:12px;align-items:center;min-width:0;color:inherit;text-decoration:none}
-#board .board-promo img{width:80px;height:80px;border-radius:10px;object-fit:cover;object-position:center top}
-#board .board-promo a>span{display:grid;gap:4px;min-width:0;overflow-wrap:anywhere}
-#board .board-promo small,#board .board-promo [data-board-banner-copy]{color:var(--text-secondary);font-size:12px;line-height:1.5}
-#board .board-promo b{font-size:16px;line-height:1.4}
-#board .board-promo-controls{display:flex;justify-content:flex-end;gap:8px}
-#board .board-promo :is(a,button):focus-visible{outline:3px solid var(--text-primary);outline-offset:2px}
+#board .board-promo{box-sizing:border-box;position:relative;isolation:isolate;overflow:hidden;width:100%;height:200px;min-width:0;border:1px solid var(--border-subtle);border-radius:16px;background:#111827;color:#fff;margin:12px 0}
+#board .board-promo>a{position:absolute;inset:0;display:flex;align-items:center;min-width:0;color:#fff;text-decoration:none}
+#board .board-promo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%}
+#board .board-promo>a:after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(0,0,0,.86),rgba(0,0,0,.72));pointer-events:none}
+#board .board-promo>a[data-board-queen-season="autumn"]:after{background:linear-gradient(110deg,#422015ed,#75401cc7,#181020e6)}
+#board .board-promo>a[data-board-queen-season="winter"]:after{background:linear-gradient(110deg,#14283fed,#293c65c7,#20132fe6)}
+#board .board-promo>a[data-board-queen-season="spring"]:after{background:linear-gradient(110deg,#422238ed,#603c58c7,#233a2fe6)}
+#board .board-promo>a[data-board-queen-season="summer"]:after{background:linear-gradient(110deg,#133438ed,#215064c7,#182b45e6)}
+#board .board-poll-result{display:inline-block;padding:8px 12px}
+#board .board-promo a>span{position:relative;z-index:1;display:grid;gap:6px;min-width:0;width:100%;padding:18px 24px 52px}
+#board .board-promo small{color:#fff;font-size:12px;line-height:1.5}
+#board .board-promo b{color:#fff;font-size:clamp(22px,3.2vw,32px);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#board .board-promo [data-board-banner-copy]{color:#fff;font-size:13px;line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#board .board-promo [data-board-banner-ad]{position:absolute;right:12px;top:10px;z-index:2;font-size:10px;padding:2px 7px;border:1px solid #fff9;border-radius:99px;background:#111827}
+#board .board-promo-controls{position:absolute;bottom:0;left:0;right:0;z-index:2;display:flex;justify-content:center;align-items:center;padding:0 8px;background:rgba(0,0,0,.3)}
+#board [data-board-banner-dots]{display:flex;justify-content:center;min-width:0}
+#board .board-promo-controls button{display:grid;place-items:center;flex:none;width:44px;height:44px;min-height:44px;padding:0;border:0;background:transparent;color:#fff;cursor:pointer;border-radius:8px}
+#board [data-board-banner-dot]:after{content:"";width:6px;height:6px;border-radius:50%;background:#fff8}
+#board [data-board-banner-dot][aria-pressed="true"]:after{width:8px;height:8px;background:#fff;box-shadow:0 0 0 2px #0009}
+#board [data-board-banner-pause]{font-size:17px}
+#board [data-board-banner-pause]:disabled{opacity:.6;cursor:default}
+#board .board-promo :is(a,button):focus-visible{outline:3px solid #fff;outline-offset:-4px}
+@media(max-width:480px){#board .board-promo{height:168px}#board .board-promo a>span{padding:16px 14px 50px;gap:4px}#board .board-promo b{font-size:22px}#board .board-promo [data-board-banner-copy]{display:-webkit-box;font-size:12px;white-space:normal;-webkit-box-orient:vertical;-webkit-line-clamp:2}#board .board-promo-controls{padding:0}#board .board-promo-controls button{width:44px}}
 #board .board-body{white-space:pre-wrap;overflow-wrap:anywhere;color:var(--text-primary)}
 #board .item{align-items:flex-start}
 #board .item>div{min-width:0;width:100%}
