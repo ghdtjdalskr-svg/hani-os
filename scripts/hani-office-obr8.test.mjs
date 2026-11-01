@@ -18,7 +18,10 @@ context.localStorage=context.sessionStorage={setItem:fail,removeItem:fail,clear:
 test('obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words',()=>{
  const cafeBytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-cafe-finish-plans.json.gz'));
  assert.equal(createHash('sha256').update(cafeBytes).digest('hex'),'e72482ea731c0b8311eb53c90c40e573f4465a45ef37cd6ef6927261aaf72b7a','immutable cafe/rest full-ledger oracle');
- const cafe=JSON.parse(cafeBytes);assert.equal(createHash('sha256').update(fs.readFileSync('hani-office-live.js')).digest('hex'),cafe.sourceSha256);
+ const cafe=JSON.parse(cafeBytes);assert.equal(createHash('sha256').update(readAt('hani-office-live.js','b653a173079323217bcd5e338e82c50d40d578e1')).digest('hex'),cafe.sourceSha256,'historical cafe source stays frozen');
+ const consultBytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-consult-v7-plans.json.gz'));
+ assert.equal(createHash('sha256').update(consultBytes).digest('hex'),'1a0acf4ae695ccb93b315b59bea9804273ca7cee4eb024dcd84bab90bd4579db','approved consultation full-output SHA-256 oracle');
+ assert.equal(createHash('sha256').update(fs.readFileSync('hani-office-live.js')).digest('hex'),JSON.parse(consultBytes).sourceSha256);
  const counts={colleague:0,delivery:0,notice:0,task:0};
  for(const day of days){
   const options={chairmanPresent:true},formal=s.plan(day,options),all=s.blockPlan(day,0,formal,options),errands=all.filter(e=>e.card.kind==='errand');

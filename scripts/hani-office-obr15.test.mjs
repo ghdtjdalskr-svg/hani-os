@@ -21,10 +21,13 @@ test('obr15 historical source identities retained; cafe/rest source and full abs
   // full output here; obr21 and all its historical fixtures remain untouched.
   const cafeBytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-cafe-finish-plans.json.gz'));
   assert.equal(hash(cafeBytes),'e72482ea731c0b8311eb53c90c40e573f4465a45ef37cd6ef6927261aaf72b7a','immutable cafe/rest full-ledger oracle');
-  const cafe=JSON.parse(cafeBytes);assert.equal(hash(fs.readFileSync('hani-office-live.js')),cafe.sourceSha256);assert.equal(hash(fs.readFileSync('data/hani-building/office-places.json')),cafe.placesSha256);
-  const reviewed=cafe.records.find(r=>r.label==='obr15 absent '+day);
+  const cafe=JSON.parse(cafeBytes);assert.equal(hash(readAt('hani-office-live.js','b653a173079323217bcd5e338e82c50d40d578e1')),cafe.sourceSha256);assert.equal(hash(readAt('data/hani-building/office-places.json','b653a173079323217bcd5e338e82c50d40d578e1')),cafe.placesSha256);
+  const consultBytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-consult-v7-plans.json.gz'));
+  assert.equal(hash(consultBytes),'1a0acf4ae695ccb93b315b59bea9804273ca7cee4eb024dcd84bab90bd4579db','approved consultation full-output SHA-256 oracle');
+  const consult=JSON.parse(consultBytes);assert.equal(hash(fs.readFileSync('hani-office-live.js')),consult.sourceSha256);assert.equal(hash(fs.readFileSync('data/hani-building/office-places.json')),consult.placesSha256);
+  const reviewed=consult.records.find(r=>r.label==='obr15 absent '+day);
   assert.ok(reviewed);assert.equal(serialize(o),serialize(reviewed.options));
-  const a=actual.plan(day,o),out=actual.blockPlan(day,0,a,o);assert.equal(hash(serialize(a)),hash(serialize(reviewed.formal)));assert.equal(hash(serialize(out)),hash(serialize(reviewed.outings)));
+  const a=actual.plan(day,o),out=actual.blockPlan(day,0,a,o);assert.equal(hash(serialize(a)),reviewed.formalSha256);assert.equal(hash(serialize(out)),reviewed.outingsSha256);
   for(let sec=86399;sec>=0;sec-=137)assert.equal(serialize(actual.snapshot(at(day,sec),{...o,chairmanArrivalAt:at(day,32400).getTime()})),serialize(actual.snapshot(at(day,sec),o)),day+' '+sec);
  }
  assert.equal(writes,0);
