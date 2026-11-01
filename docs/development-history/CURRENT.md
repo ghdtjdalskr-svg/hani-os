@@ -1,3 +1,15 @@
+# 2026-11-01 · QA 연혁 단일 원장 QA-5·13·14 (Codex)
+
+`hani/qa-history-unify` / base ref `1ff9c93` (`qa-easy-cleanup`과 동일) / qa-b3. 공통 카탈로그 v224~245 **22건 추가(전체117건)**, 기존 빈 버전6개 제외 사유 명시(기존3개와 총9개). 회사 연혁의 literal fetch 한 곳을 개발센터·AI 업무가 공유, 과거 HISTORY·개인별 업무·작성 보고서 보존. 업무 요약은 최신 v245/11월1일, 업무 내용은 원래10월16일 기준 표시. **지정·신규7명령 PASS(신규14/14·기존 QA22/22), syntax8/8, runtime closure128/missing0·변경 전후 목록 동일.** 추가21명령은11통과·9실패(Git 차단5, 변경 전에도 동일 fixture 실패4)·본문 PASS 후 timer 미종료1. Node guard는 fake v246을 실제 exit1로 차단. 보호 workflow 미수정, 연결할 정확한 YAML은 인수인계에 기록. 미커밋·commit/push/merge/배포·버전/cache·저장/Cloud 변경 없음. browser·원격 최신성·운영 미검증, 서윤 검토 대기. Notion append는 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-11-01-qa-history-unify.md). 아래 타 담당·과거 기록 보존.
+
+# 2026-11-01 · QA easy cleanup QA-1·2·3·7·8·9·13·16 (Codex)
+
+`hani/qa-easy-cleanup` / ref 기준 `930e0db` / qa-b2. Sidebar 실인원·회장님 task·HANI GROUP 이름·라운지 persistent 배너·현금·기타/KPI·가계부 설명/특수 badge·AI portrait/detail·Theme hero 표시 수정. **신규 Node12/12·이전 보고서10/10·관련 unit/board 회귀 통과, syntax15/15.** 6 Finish 토큰 AA≥4.5, runtime closure128/missing0·수정 전후 목록 동일. 저장/계산/Cloud/schema/버전/cache 및 혼합 개행 불변, 새 runtime 파일·Git/browser 실행·commit/push/merge 없음. 이달의 여신 실제 결과 없음으로 제외. 구형 hero 보존 테스트는 수정 전에도 같은 fixture drift로 시작 실패; Git baseline/nav·실화면 미검증. 서윤 미커밋 검토·360/390px 브라우저 확인 대기. Notion 쓰기는 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-11-01-qa-easy-cleanup.md). 아래 타 담당·과거 기록 보존.
+
+# 2026-11-01 · Conference Room QA-4·QA-17 (Codex)
+
+`hani/qa-report-fixes` / 사용자 지정 base·로컬 ref `c7b2c20`, 운영 기준 2.9.245 유지. 생성 재검증·지속 실패 안내, 지표별 담당자 말투, KPI 영역색, 월간 독서 추이 제거, 기간/목표 입력 persistent slot, 분기 발표 우선·닫힌 목표 비교 구현. **신규 Node10/10·집계/디자인 Node 묶음·실용12/12 통과. proactive19/21(수정 전에도 Git EPERM 2건 동일), browser 두 명령은 인자 부족으로 시작 실패. 실제 browser/smoke/운영 검증 미실행.** 보호 저장·공통 계산·버전/cache 불변, 미커밋·push/merge/배포 없음. 서윤 검토·실화면 검증 대기. Notion append는 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-11-01-qa-report-fixes.md). 아래 타 담당·과거 기록 보존.
+
 # 2026-10-31 · 휴대폰 본사 상단 배우 라벨 (Codex)
 
 `hani/office-top-labels` / base·로컬 origin/main `b0a9ad0`(원격 조회 연결 실패). 단일 `placeStatusLabels`에서 상단 공간 부족 배우만 자기 sprite 옆·아래/19.5px 이내/모든 이웃보다 가까운 pill 허용. 기존 슬롯·충돌·경계·우선순위·dot 유지, CSS/데이터/버전 변경 없음. **전체 Node 28파일 통과14·실패14(전부 원문 main에도 동일 Git EPERM), 최종 라벨12/12·신규7/7 PASS. 실제 Edge는 spawn EPERM으로 360/390/416px 전 층 점 전후·overflow 미측정/PNG0.** 미커밋 검토 대기, commit/push/PR/main/배포 없음. Notion 추가는 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-10-31-office-top-labels.md). 아래 타 담당·과거 기록 보존.

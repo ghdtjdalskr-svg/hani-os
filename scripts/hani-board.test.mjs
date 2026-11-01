@@ -35,6 +35,7 @@ let fail=false,serial="",queues=0,sequence=0;
 const files=[];
 const context=vm.createContext({
   window:{HaniOrganizationRoster:roster},document:{getElementById:()=>null},
+  setTimeout:()=>1,clearTimeout(){},
   VERSION:"2.9.15-safe-baseline-bootstrap",STORAGE_KEY:"hani_os_life_v23",
   seedAccounts:[{id:"account-a",openingCash:0}],structuredClone,TextEncoder,Uint8Array,
   crypto:webcrypto,console:{...console,error(){}},

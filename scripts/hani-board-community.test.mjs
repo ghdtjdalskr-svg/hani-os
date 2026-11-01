@@ -141,7 +141,7 @@ let restoredScroll=null;context.window.scrollTo=options=>{restoredScroll=options
 context.document.getElementById=id=>id==="board"?root:null;
 const sessionRecords=new Map();context.sessionStorage={getItem:key=>sessionRecords.get(key)||null,setItem:(key,value)=>sessionRecords.set(key,value)};
 vm.runInContext(board,context);let ui=context.window.HaniBoard;
-const click=dataset=>root.listeners.click({preventDefault(){},target:{closest:()=>({dataset,hasAttribute:()=>false})}});
+const click=dataset=>root.listeners.click({preventDefault(){},target:{closest:selector=>selector==='[data-board-person]'?(dataset.boardPerson?{dataset}:null):selector==='button'?{dataset,hasAttribute:()=>false}:null}});
 const profileRoutes=[];context.showView=route=>profileRoutes.push(route);
 const beforeProfile=inspection().saves;click({boardPerson:'hani'});
 assert.equal(profileRoutes.at(-1),'organization/people/hani');assert.equal(inspection().saves,beforeProfile,'author navigation is read-only');

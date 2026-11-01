@@ -59,8 +59,8 @@ export function createHistoryHarness({history=historyFixture,now=clock,failManif
 
 async function unit(){
   const h=createHistoryHarness(),source=JSON.stringify(historyFixture);h.render();
-  assert.equal(expected.length,95);assert.equal(expected[0].id,'v2.9.223');
-  for(const r of historyFixture){assert.match(r.title,/[가-힣]/);assert.ok([...r.title].length<=24,r.title);assert.match(r.source.commit,/^[a-f0-9]{40}$/);assert.ok(r.category);for(const id of r.credits)assert.ok(roster.people.some(p=>p.id===id));}
+  assert.equal(expected.length,98);assert.equal(expected[0].id,'v2.9.226');
+  for(const r of historyFixture){assert.match(r.title,/[가-힣]/);assert.ok([...r.title].length<=24,r.title);if(r!==historyFixture[0]||r.source.commit)assert.match(r.source.commit,/^[a-f0-9]{40}$/);assert.ok(r.category);for(const id of r.credits)assert.ok(roster.people.some(p=>p.id===id));}
   for(let n=185;n<=223;n++)assert.ok(expected.some(r=>r.id==='v2.9.'+n),'missing documented release '+n);
   for(const n of [177,178,180,181,183,184])assert.ok(expected.some(r=>r.id==='v2.9.'+n));
   assert.deepEqual(catalog.excluded[0].versions,['v2.9.176','v2.9.179','v2.9.182'],'no candidate-only releases invented');
@@ -95,12 +95,12 @@ async function unit(){
     assert.equal(month.toggle.textContent,'이 달 '+hiddenCount+'건 더 보기');assert.equal(month.toggle.attributes['aria-expanded'],'false');
     monthCounts.push({month:month.dataset.historyMonth,total:month.entries.length,visible:visible.length,collapsed:hiddenCount});
   }
-  assert.deepEqual(monthCounts,[{month:'2026-10',total:74,visible:8,collapsed:66},{month:'2026-09',total:21,visible:8,collapsed:13}]);
+  assert.deepEqual(monthCounts,[{month:'2026-10',total:77,visible:8,collapsed:69},{month:'2026-09',total:21,visible:8,collapsed:13}]);
   const [october,september]=h.nodes['.ogh-history-months'].months,firstEntry=october.entries[0],octoberButton=october.toggle;
   for(let i=0;i<2;i++){
-    h.toggle('2026-10');assert.equal(october.entries.filter(r=>!r.hidden).length,74);assert.equal(octoberButton.attributes['aria-expanded'],'true');assert.equal(octoberButton.textContent,'이 달 접기');
+    h.toggle('2026-10');assert.equal(october.entries.filter(r=>!r.hidden).length,77);assert.equal(octoberButton.attributes['aria-expanded'],'true');assert.equal(octoberButton.textContent,'이 달 접기');
     assert.equal(september.entries.filter(r=>!r.hidden).length,8,'months expand independently');h.render();
-    h.toggle('2026-10');assert.equal(october.entries.filter(r=>!r.hidden).length,8);assert.equal(octoberButton.attributes['aria-expanded'],'false');assert.equal(octoberButton.textContent,'이 달 66건 더 보기');
+    h.toggle('2026-10');assert.equal(october.entries.filter(r=>!r.hidden).length,8);assert.equal(octoberButton.attributes['aria-expanded'],'false');assert.equal(octoberButton.textContent,'이 달 69건 더 보기');
   }
   assert.equal(october.entries[0],firstEntry);assert.equal(october.toggle,octoberButton);assert.equal(h.mutations.months,1,'toggle retains month, entry and button slots');
   assert.doesNotMatch(html,/ogh-history-approved/,'real catalog has no completed chairman launch approval');
@@ -122,7 +122,7 @@ async function unit(){
   assert.equal(early.nodes['[data-history-ilbo] strong'],earlyChip);assert.equal(early.mutations.counts,1);
   const empty=createHistoryHarness({history:[]});empty.render();assert.match(empty.nodes['.ogh-history-months'].markup,/아직 없습니다/);
   const asyncCatalog=createHistoryHarness({preload:false});asyncCatalog.render();assert.match(asyncCatalog.nodes['.ogh-history-counts'].markup,/릴리스 <strong>—/);await new Promise(setImmediate);
-  assert.match(asyncCatalog.nodes['.ogh-history-counts'].markup,/릴리스 <strong>95/);assert.match(asyncCatalog.nodes['.ogh-history-months'].markup,/v2.9.223/);
+  assert.match(asyncCatalog.nodes['.ogh-history-counts'].markup,/릴리스 <strong>98/);assert.match(asyncCatalog.nodes['.ogh-history-months'].markup,/v2.9.226/);
   const unavailable=createHistoryHarness({preload:false,failReleases:true});unavailable.render();await new Promise(setImmediate);
   assert.match(unavailable.nodes['.ogh-history-counts'].markup,/릴리스 <strong>—/);assert.match(unavailable.nodes['.ogh-history-months'].markup,/불러오지 못했습니다/);
   const invalid=createHistoryHarness({preload:false,history:[{...expected[0],date:'2026-02-30'}]});invalid.render();await new Promise(setImmediate);assert.match(invalid.nodes['.ogh-history-months'].markup,/불러오지 못했습니다/);
@@ -218,9 +218,9 @@ async function browserTest(before){
         const october=page.locator('[data-history-month="2026-10"]'),monthly=october.locator('[data-history-month-more]');
         await page.evaluate(()=>{window.__entries=[...document.querySelectorAll('[data-history-release]')];window.__monthly=document.querySelector('[data-history-month-more]')});
         await monthly.focus();await page.keyboard.press('Enter');assert.equal(await monthly.getAttribute('aria-expanded'),'true');assert.equal(await monthly.textContent(),'이 달 접기');
-        assert.equal(await october.locator('.ogh-history-entry:visible').count(),74);assert.equal(await page.locator('[data-history-month="2026-09"] .ogh-history-entry:visible').count(),8);
+        assert.equal(await october.locator('.ogh-history-entry:visible').count(),77);assert.equal(await page.locator('[data-history-month="2026-09"] .ogh-history-entry:visible').count(),8);
         assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,'expanded month has no horizontal overflow');
-        await page.keyboard.press('Space');assert.equal(await monthly.getAttribute('aria-expanded'),'false');assert.equal(await monthly.textContent(),'이 달 66건 더 보기');assert.equal(await october.locator('.ogh-history-entry:visible').count(),8);
+        await page.keyboard.press('Space');assert.equal(await monthly.getAttribute('aria-expanded'),'false');assert.equal(await monthly.textContent(),'이 달 69건 더 보기');assert.equal(await october.locator('.ogh-history-entry:visible').count(),8);
         assert.equal(await monthly.evaluate(n=>n===document.activeElement),true,'monthly keyboard focus survives collapse');
         assert.equal(await page.evaluate(()=>__entries.every((n,i)=>n===document.querySelectorAll('[data-history-release]')[i])&&__monthly===document.querySelector('[data-history-month-more]')),true,'monthly toggles preserve entries and button');
         assert.equal(await page.locator('[data-history-release="v2.9.217"] .ogh-history-credit').count(),0,'named portrait subjects are not credited contributors');

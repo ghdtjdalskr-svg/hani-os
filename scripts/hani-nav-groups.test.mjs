@@ -28,12 +28,12 @@ assert.equal(navViews.at(-1),"settings");
 assert.equal(new Set(navViews).size,navViews.length,"unique nav views");
 assert.deepEqual(views(aside.match(/<div class="side-bottom">([\s\S]*?)<\/div>/)[1]),["aura","settings"]);
 const office=aside.match(/data-color="office">([\s\S]*?)<\/div>\s*<\/div>/)[1];
-assert.deepEqual(Array.from(office.matchAll(/<span class="txt">([^<]+)<\/span>/g),m=>m[1]),["인포데스크","HANI 본사","컨퍼런스 룸","회사 소개","HANI 일보","HANI 라운지"]);
+assert.deepEqual(Array.from(office.matchAll(/<span class="txt">([^<]+)<\/span>/g),m=>m[1]),["인포데스크","HANI GROUP","컨퍼런스 룸","회사 소개","HANI 일보","HANI 라운지"]);
 assert.doesNotMatch(aside,/nav-floor-|data-go=/,"v204 sidebar structure restored");
 assert.match(aside,/data-view="investmentCommittee"[\s\S]*?<span class="txt">HANI 투자 리포트<\/span>/);
 const pageMetaSource=main.match(/const pageMeta=\{[\s\S]*?\n\};/)[0];
 const titles=vm.runInNewContext(pageMetaSource+';pageMeta');
-assert.equal(titles.agentReview[0],'HANI 본사','canonical page title');
+assert.equal(titles.agentReview[0],'HANI GROUP','canonical page title');
 // Execute the loaded cleanup owner: it runs after markup and can overwrite approved labels.
 const cleanup=read('hani-ui-cleanup-v02971.js'),labels=new Map([...aside.matchAll(/data-view="([^"]+)"[^>]*>[\s\S]*?<span class="txt">([^<]+)<\/span>/g)].map(m=>[m[1],{textContent:m[2]}]));
 const cleanupContext=vm.createContext({qa:selector=>{const id=selector.match(/data-view="([^"]+)"/)[1];return labels.has(id)?[labels.get(id)]:[];}});
@@ -43,7 +43,7 @@ assert.equal(labels.get('deployment').textContent,'배포센터','cleanup retain
 const bannerStart=ui.indexOf('  const mainCharacterBannerVariants='),bannerEnd=ui.indexOf('  const mainCharacterInternalViewExists=',bannerStart);
 const bannerContext=vm.createContext({});
 vm.runInContext(ui.slice(bannerStart,bannerEnd)+';this.banner=mainCharacterBannerConfig("agentReview");',bannerContext);
-assert.equal(bannerContext.banner.title,'HANI 본사');
+assert.equal(bannerContext.banner.title,'HANI GROUP');
 assert.equal(bannerContext.banner.description,'중요한 안건을 함께 검토해요','approved short hero subtitle');
 assert.equal(bannerContext.banner.owner,'hani','existing banner owner');
 assert.ok(aside.indexOf('data-view="investment"')<aside.indexOf('data-view="investmentCommittee"'),'canonical report link remains next to investment');
