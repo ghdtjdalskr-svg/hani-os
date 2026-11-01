@@ -1877,11 +1877,13 @@
     [/급하게 인스타 끄는 중/,'인스타 끄기',true],[/급하게 창 닫는 중/,'창 닫기',true],
     [/회장님 질문 듣는 중/,'질문 듣기',true],[/회장님께 화면 설명 중/,'화면 설명',true],
     [/상담 중/,'상담 중',true],[/면접 진행 중/,'면접 진행',true],[/면접 보는 중/,'면접 보기',true],
+    [/^알람 이름 짧게 바꾸는 중$/,'알람 이름|알람 정리|이름 바꾸기'],
     [/조용한 밤이라 메모가 잘 써지네요\.$/,'메모 쓰기|메모 작성|밤 메모'],[/오늘 기억할 장면을 적어둘게요\.$/,'장면 기록|장면 적기|장면 메모'],
     [/라운지에서 오늘 고생했다고 말하는 중$/,'수고 인사|격려 인사|수고 전하기'],[/소파에서 내일 할 일 적는 중$/,'내일 할일|할일 적기|내일 메모'],
     [/라운지에서 마지막 버스 확인 중$/,'막차 확인|버스 확인|막차 점검'],[/옥상 정원에서 화분 살피는 중$/,'화분 살피기|화분 관찰|화분 보기'],
     [/임원 라운지 소파에서 AI 오케스트레이션 메모 펼쳐 보는 중$/,'AI 메모|메모 펼치기|메모 살피기'],[/바뀐 범위부터 다시 확인할게요\.$/,'범위 확인|범위 점검|범위 살피기'],
     [/다음 장도 천천히 볼까요\.$/,'다음장 보기|다음장 읽기|다음장 확인'],[/자료 탭을 하나씩 맞춰볼게요\.$/,'자료 맞추기|자료 점검|자료 맞대기'],
+    [/^회장님께 보고하러 가는 중$/,'보고하러 이동|보고하러 걷기|보고 이동'],
     [/회장님께 .*보고/,'회장님보고|보고 드리기|안건 보고'],[/좋아요, 이대로/,'진행 승인|안건 승인|진행 허가'],
     [/회장님.*인사|회장님.*오셨|회장님.*안녕/,'도착 인사|환영 인사|인사 건네기'],
     [/돌아가는|복귀|안녕히 계세요/,'자리 복귀|자리로 복귀|복귀 걷기'],
@@ -1901,7 +1903,7 @@
     [/수치.*분석/,'수치 분석|숫자 분석|수치 읽기'],[/품질.*점검|예외|엣지 케이스/,'품질 점검|예외 찾기|품질 검사'],
     [/화면.*검토|작은 화면/,'화면 검토|화면 살피기|화면 점검'],[/검증.*기록/,'검증 기록|검증 적기|결과 기록'],
     [/자료.*대조/,'자료 대조|자료 비교|자료 맞추기'],[/접수.*확인/,'접수 점검|접수 읽기|접수 살피기'],
-    [/안내.*준비/,'안내 준비|안내 채비|안내 챙기기'],[/결재|도장/,'결재 검토|결재 살피기|안건 검토'],
+    [/안내.*준비/,'안내 준비|안내 채비|안내 챙기기'],[/결재|도장(?! 모양 낙서 중$)/,'결재 검토|결재 살피기|안건 검토'],
     [/흐름.*살피|흐름.*연결/,'흐름 검토|흐름 살피기|흐름 점검'],[/일정.*확인|일정.*겹침/,'일정 점검|일정 살피기|일정 대조'],
     [/문장.*다듬|문장.*줄이/,'문장 다듬기|문장 퇴고|문장 고치기'],[/메모.*순서|기록.*순서/,'메모 재배열|기록 재배열|메모 순서'],
     [/기록.*정리/,'기록 정리|기록 묶기|기록 나누기'],[/업무 메모|메모 중|메모만/,'메모 쓰기|메모 작성|메모 적기|기록 남기기|메모 남기기|내용 적기|메모 옮기기|노트 적기'],
@@ -2208,7 +2210,9 @@
   function activityStatus(actor,full){
     const leisure=/물 한 모금|쉬|휴식|수다|간식|커피|야식|메뉴|투표|저녁 뭐|인스타|음악|영화|산책|졸|약속|휴대폰|고양이 영상|기지개|스트레칭|하품|노래|플레이리스트|흥얼|사진첩|(?:오늘 찍은|여행) 사진|날씨|퇴근 시간|알람|물병|점심 후보|단백질 식단|잠깐 몸 풀기/;
     const workPhrase=/(?:고객 표현 쉬운 말로 바꾸는 중|어려운 용어 쉬운 말 퀴즈 중|다음 약속 준비물 적는 중|졸린 눈으로 문장 줄이는 중)$/;
-    return actor.officeTravel||actor.dataset.walking==='true'||['GOING','RETURNING'].includes(actor.dataset.behavior)||full==='이동 중'?'moving':actor.dataset.called==='true'||actor.dataset.activity==='meeting'||/(?:상담(?: 받는)?|면접 (?:진행|보는)) 중$/.test(full)?'meeting':/^(?:visitor-host|report)-/.test(actor.dataset.place||'')||actor.dataset.activity==='visit'&&/택배|배달/.test(full)||/(?:급하게 (?:인스타 끄는|창 닫는)|회장님 질문 듣는|회장님께 화면 설명) 중$/.test(full)?'work':['rest','play'].includes(actor.dataset.activity)||/^(?:coffee|cafe|pantry|sofa|garden|terrace|window)-/.test(actor.dataset.place||'')||actor.dataset.zone==='lounge'&&!/^(?:task|errand)-/.test(actor.dataset.place||'')||!workPhrase.test(full)&&leisure.test(full)?'rest':/야근/.test(full)?'night':'work';
+    const deskNote=/^(?:영화 메모에 작은 별 그리는 중|알람 이름 짧게 바꾸는 중)$/.test(full);
+    const everydayScene=/^scene-(?:meme|coffee-menu|snack-budget|watch-pick|travel-talk|roof-selfie)$/.test(actor.dataset.action||'');
+    return actor.officeTravel||actor.dataset.walking==='true'||['GOING','RETURNING'].includes(actor.dataset.behavior)||full==='이동 중'?'moving':actor.dataset.called==='true'||actor.dataset.activity==='meeting'&&!everydayScene||/(?:상담(?: 받는)?|면접 (?:진행|보는)) 중$/.test(full)?'meeting':/^(?:visitor-host|report)-/.test(actor.dataset.place||'')||actor.dataset.activity==='visit'&&/택배|배달/.test(full)||/(?:급하게 (?:인스타 끄는|창 닫는)|회장님 질문 듣는|회장님께 화면 설명) 중$/.test(full)?'work':everydayScene||['rest','play'].includes(actor.dataset.activity)||/^(?:coffee|cafe|pantry|sofa|garden|terrace|window)-/.test(actor.dataset.place||'')||actor.dataset.zone==='lounge'&&!/^(?:task|errand)-/.test(actor.dataset.place||'')||!workPhrase.test(full)&&!deskNote&&leisure.test(full)?'rest':/야근/.test(full)?'night':'work';
   }
   const statusNames={work:'근무 중',rest:'휴식 중',meeting:'회의 중',moving:'이동 중',night:'야근 중'};
   const statusIcons={work:'💻',rest:'☕',meeting:'💬',moving:'🚶',night:'🌙'};
@@ -2230,7 +2234,7 @@
     if(/점심|식사|도시락|밥 먹|아침 먹|저녁 먹/.test(line))return '🍱';
     if(/옥상|정원|테라스/.test(line))return '🌿';
     if(/소파/.test(line))return '🛋️';
-    if(data.called==='true'||data.activity==='meeting'||/^meeting-/.test(data.place||'')||/회의(?:실| 중|하는| 참여| 진행)/.test(line))return '📋';
+    if(data.called==='true'||data.activity==='meeting'&&activityStatus(actor,line)==='meeting'||/^meeting-/.test(data.place||'')||/회의(?:실| 중|하는| 참여| 진행)/.test(line))return '📋';
     if(/택배|배달/.test(line))return '📦';
     return '';
   }
