@@ -18,6 +18,8 @@ import {fixture} from './hani-building-206-engine.test.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url)),out=path.join(root,'artifacts/office-hd-224');
 const read=f=>fs.readFileSync(path.join(root,f),'utf8'),json=f=>JSON.parse(read(f));
 const hd=json('assets/sprites-v3/manifest-v3.json'),sources=json('docs/design/sprites-v3-meta/_sources.json');
+const residentIds=['pet-cat','pet-dog','npc-cleaner','npc-gardener','npc-temp-a','npc-temp-b','npc-temp-c'];
+const staffHD=hd.entries.filter(e=>!residentIds.includes(e.id));
 const source=read('hani-office-live.js'),hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 const runtime=path.join(os.homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules');
 const sharp=createRequire(import.meta.url)(process.env.HANI_SHARP_MODULE||path.join(runtime,'sharp'));
@@ -27,7 +29,7 @@ fs.mkdirSync(out,{recursive:true});
 test('separately seeded HD manifest resolves every asset; pre-mascot runtime closure retains the 128-file contract',async()=>{
  const seed=await resolveRuntimeClosure({entrypoints:['assets/sprites-v3/manifest-v3.json'],exists:f=>fs.existsSync(path.join(root,f)),read:f=>fs.readFileSync(path.join(root,f))});
  assert.deepEqual(seed.missing,[]);
- for(const entry of hd.entries){
+ for(const entry of staffHD){
   assert.ok(seed.files.includes('assets/sprites-v3/'+entry.file),entry.id+' seeded atlas');
   const original=sources.people.find(p=>p.id===entry.id).currentEntry||assets.sprites.entries.find(e=>e.id===entry.id);
   assert.equal(entry.identityReference,original.identityReference?.startsWith('assets/')?path.posix.relative('assets/sprites-v3',original.identityReference):original.identityReference,entry.id+' relative provenance');
@@ -40,9 +42,10 @@ test('separately seeded HD manifest resolves every asset; pre-mascot runtime clo
 });
 
 test('25 original artworks / 100 physical 3x frames retain exact crop, footprint and pivot ratios',async()=>{
- assert.equal(hd.scale,3);assert.equal(hd.entries.length,25);let bytes=0;
- assert.equal(new Set(hd.entries.map(e=>e.id)).size,25);
- for(const entry of hd.entries){
+ assert.equal(hd.scale,3);assert.equal(staffHD.length,25);assert.equal(hd.entries.length,32);let bytes=0;
+ assert.deepEqual(hd.entries.filter(e=>residentIds.includes(e.id)).map(e=>e.id).sort(),residentIds.slice().sort());
+ assert.equal(new Set(staffHD.map(e=>e.id)).size,25);
+ for(const entry of staffHD){
   const person=sources.people.find(p=>p.id===entry.id),old=person.currentEntry||assets.sprites.entries.find(e=>e.id===entry.id);
   const encoded=fs.readFileSync(path.join(root,'assets/sprites-v3',entry.file));bytes+=encoded.length;
   assert.equal(hash(encoded),entry.sha256);assert.equal(encoded.length,entry.sizeBytes);
@@ -62,7 +65,7 @@ test('25 original artworks / 100 physical 3x frames retain exact crop, footprint
   }
   assert.equal(new Set(poses).size,4);
  }
- assert.equal(bytes,hd.spriteBytes);assert.ok(bytes<1475000);
+ assert.equal(bytes+hd.entries.filter(e=>residentIds.includes(e.id)).reduce((n,e)=>n+e.sizeBytes,0),hd.spriteBytes);assert.ok(bytes<1475000);
 });
 
 test('real canonical loader prefers v3; per-atlas failure falls back once to v2 without new actors or storage writes',async()=>{
@@ -70,16 +73,17 @@ test('real canonical loader prefers v3; per-atlas failure falls back once to v2 
   const requests=[],writes=[],metadata={...assets,spritesV3:mode==='missing-manifest'?null:hd};
   const store={setItem(...v){writes.push(v)},removeItem(...v){writes.push(v)},clear(){writes.push('clear')}};
   const f=fixture('10:00',true,url=>{requests.push(url);return mode==='hd'?/sprites-v[23]\//.test(url):/sprites-v2\//.test(url)},null,{HaniOfficeV2Assets:metadata,localStorage:store,sessionStorage:store});
-  const nodes=[...f.ids.get('haniOfficeActors').children];
+  const allNodes=[...f.ids.get('haniOfficeActors').children],nodes=allNodes.filter(a=>!a.dataset.resident);
+  assert.equal(nodes.length,19);assert.equal(allNodes.length,mode==='missing-manifest'?19:26);
   for(const floor of ['1f','2f','3f','4f','5f']){f.click(floor);await flush()}
   for(const actor of nodes){
    assert.equal(actor.dataset.spriteScale,mode==='hd'?'3':'1');
    assert.match(actor.querySelector('.hani-office-sprite').style.backgroundImage,mode==='hd'?/sprites-v3\//:/sprites-v2\//);
    assert.equal(actor.style['--actor-pivot-x'],'-0.5','normalized physical x pivot');assert.equal(actor.style['--actor-pivot-y'],'-0.953125','normalized physical y pivot');assert.equal(actor.style.transform,undefined,'no actor stacking context');
   }
-  assert.equal(requests.filter(u=>/sprites-v3\//.test(u)).length,mode==='missing-manifest'?0:19);
+  assert.equal(requests.filter(u=>/sprites-v3\//.test(u)&&!residentIds.some(id=>u.endsWith('/'+id+'.webp'))).length,mode==='missing-manifest'?0:19);
   assert.equal(requests.filter(u=>/sprites-v2\//.test(u)).length,mode==='hd'?0:19);
-  assert.deepEqual(f.ids.get('haniOfficeActors').children,nodes);assert.deepEqual(writes,[]);
+  assert.deepEqual(f.ids.get('haniOfficeActors').children,allNodes);assert.deepEqual(writes,[]);
  }
 });
 

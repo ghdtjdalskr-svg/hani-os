@@ -1,7 +1,7 @@
 {
   "scope": "QA-3/18/19 + QA-b5b exact display-only source delta; no scheduler, placement, click or frame changes; rebased on the approved consultation source; phone action labels and head icons",
   "beforeSha256": "406937ae1d69c0379bb735e961734b517ae9440a02c93a0d41771dc0c694d246",
-  "afterSha256": "4f03c015fe3996d546afe1710a41c19a44d3a4d63c621ef132fb8ac255e06c6f",
+  "afterSha256": "d2f5be9b6e35e58da597985f43e94a8541542eafa191be35aa0d90838af7d8a8",
   "changes": [
     {
       "beforeLine": 1876,
@@ -11,16 +11,18 @@
         "    [/급하게 인스타 끄는 중/,'인스타 끄기',true],[/급하게 창 닫는 중/,'창 닫기',true],\n",
         "    [/회장님 질문 듣는 중/,'질문 듣기',true],[/회장님께 화면 설명 중/,'화면 설명',true],\n",
         "    [/상담 중/,'상담 중',true],[/면접 진행 중/,'면접 진행',true],[/면접 보는 중/,'면접 보기',true],\n",
+        "    [/^알람 이름 짧게 바꾸는 중$/,'알람 이름|알람 정리|이름 바꾸기'],\n",
         "    [/조용한 밤이라 메모가 잘 써지네요\\.$/,'메모 쓰기|메모 작성|밤 메모'],[/오늘 기억할 장면을 적어둘게요\\.$/,'장면 기록|장면 적기|장면 메모'],\n",
         "    [/라운지에서 오늘 고생했다고 말하는 중$/,'수고 인사|격려 인사|수고 전하기'],[/소파에서 내일 할 일 적는 중$/,'내일 할일|할일 적기|내일 메모'],\n",
         "    [/라운지에서 마지막 버스 확인 중$/,'막차 확인|버스 확인|막차 점검'],[/옥상 정원에서 화분 살피는 중$/,'화분 살피기|화분 관찰|화분 보기'],\n",
         "    [/임원 라운지 소파에서 AI 오케스트레이션 메모 펼쳐 보는 중$/,'AI 메모|메모 펼치기|메모 살피기'],[/바뀐 범위부터 다시 확인할게요\\.$/,'범위 확인|범위 점검|범위 살피기'],\n",
-        "    [/다음 장도 천천히 볼까요\\.$/,'다음장 보기|다음장 읽기|다음장 확인'],[/자료 탭을 하나씩 맞춰볼게요\\.$/,'자료 맞추기|자료 점검|자료 맞대기'],\n"
+        "    [/다음 장도 천천히 볼까요\\.$/,'다음장 보기|다음장 읽기|다음장 확인'],[/자료 탭을 하나씩 맞춰볼게요\\.$/,'자료 맞추기|자료 점검|자료 맞대기'],\n",
+        "    [/^회장님께 보고하러 가는 중$/,'보고하러 이동|보고하러 걷기|보고 이동'],\n"
       ]
     },
     {
       "beforeLine": 1884,
-      "afterLine": 1892,
+      "afterLine": 1894,
       "before": [
         "    [/면접.*대기/,'면접 대기|면접 기다림|면접 준비'],[/상담.*받/,'상담 받기|상담 듣기|상담 참여'],\n"
       ],
@@ -29,8 +31,18 @@
       ]
     },
     {
+      "beforeLine": 1895,
+      "afterLine": 1905,
+      "before": [
+        "    [/안내.*준비/,'안내 준비|안내 채비|안내 챙기기'],[/결재|도장/,'결재 검토|결재 살피기|안건 검토'],\n"
+      ],
+      "after": [
+        "    [/안내.*준비/,'안내 준비|안내 채비|안내 챙기기'],[/결재|도장(?! 모양 낙서 중$)/,'결재 검토|결재 살피기|안건 검토'],\n"
+      ]
+    },
+    {
       "beforeLine": 1906,
-      "afterLine": 1914,
+      "afterLine": 1916,
       "before": [
         "    [/간식|야식|메뉴|식단/,'메뉴 고르기|먹거리 고름|식단 구상|간식 고르기'],[/그리|낙서|스케치/,'그림 그리기|낙서 하기|스케치 하기'],\n"
       ],
@@ -40,7 +52,7 @@
     },
     {
       "beforeLine": 1910,
-      "afterLine": 1918,
+      "afterLine": 1920,
       "before": [
         "  function phoneStatusLine(line,used=new Set()){\n"
       ],
@@ -50,7 +62,7 @@
     },
     {
       "beforeLine": 1912,
-      "afterLine": 1920,
+      "afterLine": 1922,
       "before": [
         "    if(report){const topic=report[1].replace(/^(오늘|다음) /,'').split(' ')[0],short=[...topic].length<=4?topic+'보고':'회장보고';used.add(short);return short}\n",
         "    const known=scheduler?.shortLine(line),authored=known==='회장님께 인사 중'?'도착 인사|환영 인사|인사 건네기':known==='보고 답변 중'?'보고 답변|보고 응답|답변 전하기':phoneActions.find(([pattern])=>pattern.test(line))?.[1];\n",
@@ -75,7 +87,7 @@
     },
     {
       "beforeLine": 2200,
-      "afterLine": 2207,
+      "afterLine": 2209,
       "before": [
         "  function activityStatus(actor,full){return actor.officeTravel||actor.dataset.walking==='true'||full==='이동 중'?'moving':actor.dataset.called==='true'||actor.dataset.activity==='meeting'?'meeting':actor.dataset.activity==='rest'?'rest':/야근/.test(full)?'night':'work'}\n"
       ],
@@ -83,13 +95,15 @@
         "  function activityStatus(actor,full){\n",
         "    const leisure=/물 한 모금|쉬|휴식|수다|간식|커피|야식|메뉴|투표|저녁 뭐|인스타|음악|영화|산책|졸|약속|휴대폰|고양이 영상|기지개|스트레칭|하품|노래|플레이리스트|흥얼|사진첩|(?:오늘 찍은|여행) 사진|날씨|퇴근 시간|알람|물병|점심 후보|단백질 식단|잠깐 몸 풀기/;\n",
         "    const workPhrase=/(?:고객 표현 쉬운 말로 바꾸는 중|어려운 용어 쉬운 말 퀴즈 중|다음 약속 준비물 적는 중|졸린 눈으로 문장 줄이는 중)$/;\n",
-        "    return actor.officeTravel||actor.dataset.walking==='true'||['GOING','RETURNING'].includes(actor.dataset.behavior)||full==='이동 중'?'moving':actor.dataset.called==='true'||actor.dataset.activity==='meeting'||/(?:상담(?: 받는)?|면접 (?:진행|보는)) 중$/.test(full)?'meeting':/^(?:visitor-host|report)-/.test(actor.dataset.place||'')||actor.dataset.activity==='visit'&&/택배|배달/.test(full)||/(?:급하게 (?:인스타 끄는|창 닫는)|회장님 질문 듣는|회장님께 화면 설명) 중$/.test(full)?'work':['rest','play'].includes(actor.dataset.activity)||/^(?:coffee|cafe|pantry|sofa|garden|terrace|window)-/.test(actor.dataset.place||'')||actor.dataset.zone==='lounge'&&!/^(?:task|errand)-/.test(actor.dataset.place||'')||!workPhrase.test(full)&&leisure.test(full)?'rest':/야근/.test(full)?'night':'work';\n",
+        "    const deskNote=/^(?:영화 메모에 작은 별 그리는 중|알람 이름 짧게 바꾸는 중)$/.test(full);\n",
+        "    const everydayScene=/^scene-(?:meme|coffee-menu|snack-budget|watch-pick|travel-talk|roof-selfie)$/.test(actor.dataset.action||'');\n",
+        "    return actor.officeTravel||actor.dataset.walking==='true'||['GOING','RETURNING'].includes(actor.dataset.behavior)||full==='이동 중'?'moving':actor.dataset.called==='true'||actor.dataset.activity==='meeting'&&!everydayScene||/(?:상담(?: 받는)?|면접 (?:진행|보는)) 중$/.test(full)?'meeting':/^(?:visitor-host|report)-/.test(actor.dataset.place||'')||actor.dataset.activity==='visit'&&/택배|배달/.test(full)||/(?:급하게 (?:인스타 끄는|창 닫는)|회장님 질문 듣는|회장님께 화면 설명) 중$/.test(full)?'work':everydayScene||['rest','play'].includes(actor.dataset.activity)||/^(?:coffee|cafe|pantry|sofa|garden|terrace|window)-/.test(actor.dataset.place||'')||actor.dataset.zone==='lounge'&&!/^(?:task|errand)-/.test(actor.dataset.place||'')||!workPhrase.test(full)&&!deskNote&&leisure.test(full)?'rest':/야근/.test(full)?'night':'work';\n",
         "  }\n"
       ]
     },
     {
       "beforeLine": 2202,
-      "afterLine": 2213,
+      "afterLine": 2217,
       "before": [],
       "after": [
         "  const statusIcons={work:'💻',rest:'☕',meeting:'💬',moving:'🚶',night:'🌙'};\n"
@@ -97,7 +111,7 @@
     },
     {
       "beforeLine": 2204,
-      "afterLine": 2216,
+      "afterLine": 2220,
       "before": [
         "    const status=actor.querySelector('.hani-office-status'),icon=actor.querySelector('.hani-office-activity-icon');\n",
         "    status.textContent=value;status.dataset.full=value;status.title=value;actor.dataset.mood=String(mood);statusDot(actor);\n",
@@ -112,7 +126,7 @@
     },
     {
       "beforeLine": 2209,
-      "afterLine": 2222,
+      "afterLine": 2226,
       "before": [],
       "after": [
         "  function headIcon(actor){\n",
@@ -125,7 +139,7 @@
         "    if(/점심|식사|도시락|밥 먹|아침 먹|저녁 먹/.test(line))return '🍱';\n",
         "    if(/옥상|정원|테라스/.test(line))return '🌿';\n",
         "    if(/소파/.test(line))return '🛋️';\n",
-        "    if(data.called==='true'||data.activity==='meeting'||/^meeting-/.test(data.place||'')||/회의(?:실| 중|하는| 참여| 진행)/.test(line))return '📋';\n",
+        "    if(data.called==='true'||data.activity==='meeting'&&activityStatus(actor,line)==='meeting'||/^meeting-/.test(data.place||'')||/회의(?:실| 중|하는| 참여| 진행)/.test(line))return '📋';\n",
         "    if(/택배|배달/.test(line))return '📦';\n",
         "    return '';\n",
         "  }\n"
@@ -133,7 +147,7 @@
     },
     {
       "beforeLine": 2219,
-      "afterLine": 2246,
+      "afterLine": 2250,
       "before": [
         "      actor.officeCompact.textContent=compact?' · '+HaniBuildingScene.labels.short(status.dataset.full,used):'';\n"
       ],
@@ -144,7 +158,7 @@
     },
     {
       "beforeLine": 2222,
-      "afterLine": 2250,
+      "afterLine": 2254,
       "before": [
         "      status.textContent=status.dataset.full;status.hidden=compact;\n"
       ],
@@ -154,7 +168,7 @@
     },
     {
       "beforeLine": 2253,
-      "afterLine": 2281,
+      "afterLine": 2285,
       "before": [],
       "after": [
         "    const member=key==='seongmin'?window.HaniOrganizationRoster?.chairman:window.HaniOrganizationRoster?.people.find(p=>p.id===key),team=window.HaniOrganizationRoster?.teams.find(t=>t.id===member?.team);\n",
@@ -164,8 +178,75 @@
       ]
     },
     {
+      "beforeLine": 2263,
+      "afterLine": 2299,
+      "before": [],
+      "after": [
+        "  let bubbleTimer=null,lastBubbleTap=-Infinity,autoBubbleEntry=true;\n",
+        "  const autoBubbleFloors=new Map();\n",
+        "  function clearBubbleTimer(){if(bubbleTimer!==null)globalThis.clearTimeout?.(bubbleTimer);bubbleTimer=null}\n",
+        "  function queueBubbleTimer(fn,ms){clearBubbleTimer();bubbleTimer=setTimeout(fn,ms)}\n",
+        "  function autoBubbleQuiet(){return reduced||document.hidden||!sceneVisible()||!actorBubble.hidden||Date.now()-lastBubbleTap<5000||!document.getElementById('app')||document.getElementById('app').classList.contains('login-locked')}\n",
+        "  function scheduleFloorBubble(){\n",
+        "    if(!autoBubbleEntry||map.dataset.art==='loading'||!sceneVisible())return;\n",
+        "    autoBubbleEntry=false;\n",
+        "    if(autoBubbleQuiet()||Date.now()-(autoBubbleFloors.get(activeFloor)??-Infinity)<60000)return;\n",
+        "    const floor=activeFloor,serial=bubbleSerial;\n",
+        "    queueBubbleTimer(()=>{\n",
+        "      if(serial!==bubbleSerial||floor!==activeFloor)return;\n",
+        "      bubbleTimer=null;\n",
+        "      if(autoBubbleQuiet()||Date.now()-(autoBubbleFloors.get(floor)??-Infinity)<60000)return;\n",
+        "      const eligible=[...actors.values()].filter(actor=>!actor.hidden&&!actor.officeTravel&&actor.dataset.walking!=='true'&&!actor.dataset.pose?.startsWith('walk')&&actor.querySelector('.hani-office-prop').textContent.trim());\n",
+        "      const preferred=eligible.filter(actor=>['💬','📱'].includes(actor.querySelector('.hani-office-prop').textContent.trim()));\n",
+        "      const pool=(preferred.length?preferred:eligible).sort((a,b)=>a.dataset.person.localeCompare(b.dataset.person));\n",
+        "      if(!pool.length)return;\n",
+        "      const day=new Date(Date.now()+32400000).toISOString().slice(0,10);\n",
+        "      let seed=0;for(const char of day+'|'+floor)seed=(seed*31+char.charCodeAt(0))>>>0;\n",
+        "      autoBubbleFloors.set(floor,Date.now());openBubble(pool[seed%pool.length],true);\n",
+        "    },450);\n",
+        "  }\n"
+      ]
+    },
+    {
+      "beforeLine": 2282,
+      "afterLine": 2341,
+      "before": [
+        "  function closeBubble(clearPending=true){bubbleSerial++;bubblePerson=null;bubbleSelection=null;if(clearPending)pendingTap=null;actorBubble.hidden=true;for(const actor of actors.values())actor.dataset.speaking='false';fitStatusLabels()}\n",
+        "  function showBubble(actor,selection){bubblePerson=actor.dataset.person;bubbleSelection=selection;actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);fitStatusLabels();fitBubble();const serial=++bubbleSerial;setTimeout(()=>{if(serial===bubbleSerial)closeBubble(false)},3000)}\n",
+        "  function openBubble(actor){\n"
+      ],
+      "after": [
+        "  function closeBubble(clearPending=true){clearBubbleTimer();bubbleSerial++;bubblePerson=null;bubbleSelection=null;if(clearPending)pendingTap=null;actorBubble.hidden=true;for(const actor of actors.values())actor.dataset.speaking='false';fitStatusLabels()}\n",
+        "  function showBubble(actor,selection,duration=3000){bubblePerson=actor.dataset.person;bubbleSelection=selection;actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);fitStatusLabels();fitBubble();const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble(false)}},duration)}\n",
+        "  function openBubble(actor,automatic=false){\n",
+        "    if(!automatic){lastBubbleTap=Date.now();autoBubbleEntry=false;clearBubbleTimer()}\n"
+      ]
+    },
+    {
+      "beforeLine": 2288,
+      "afterLine": 2348,
+      "before": [
+        "    if(selection&&!selection.drama&&actionRunning(actor))pendingTap={actor,selection,floor:activeFloor};\n",
+        "    showBubble(actor,selection||null);\n"
+      ],
+      "after": [
+        "    if(!automatic&&selection&&!selection.drama&&actionRunning(actor))pendingTap={actor,selection,floor:activeFloor};\n",
+        "    showBubble(actor,selection||null,automatic?4000:3000);\n"
+      ]
+    },
+    {
+      "beforeLine": 2296,
+      "afterLine": 2356,
+      "before": [
+        "      bubbleSelection=loaded;if(!loaded.drama&&actionRunning(actor))pendingTap={actor,selection:loaded,floor:activeFloor};\n"
+      ],
+      "after": [
+        "      bubbleSelection=loaded;if(!automatic&&!loaded.drama&&actionRunning(actor))pendingTap={actor,selection:loaded,floor:activeFloor};\n"
+      ]
+    },
+    {
       "beforeLine": 2417,
-      "afterLine": 2449,
+      "afterLine": 2477,
       "before": [
         "      bg.src=background;bg.hidden=false;bg.alt=floor.label+' · HANI 본사';map.dataset.art=isFloor?'floor':'fallback';\n"
       ],
@@ -174,13 +255,49 @@
       ]
     },
     {
+      "beforeLine": 2423,
+      "afterLine": 2483,
+      "before": [],
+      "after": [
+        "      scheduleFloorBubble();\n"
+      ]
+    },
+    {
       "beforeLine": 2477,
-      "afterLine": 2509,
+      "afterLine": 2538,
       "before": [
         "      actor.querySelector('.hani-office-prop').textContent=actor.dataset.emoji;\n"
       ],
       "after": [
         "      const prop=actor.querySelector('.hani-office-prop'),emoji=headIcon(actor);if(prop.textContent!==emoji)prop.textContent=emoji;\n"
+      ]
+    },
+    {
+      "beforeLine": 2487,
+      "afterLine": 2548,
+      "before": [],
+      "after": [
+        "    scheduleFloorBubble();\n"
+      ]
+    },
+    {
+      "beforeLine": 2488,
+      "afterLine": 2550,
+      "before": [
+        "  function selectFloor(id,animate=false){closeBubble();if(!floorButtons.has(id))return;for(const actor of actors.values())finishTravel(actor);activeFloor=id;updateBuilding(true,animate)}\n"
+      ],
+      "after": [
+        "  function selectFloor(id,animate=false){closeBubble();if(!floorButtons.has(id))return;autoBubbleEntry=true;for(const actor of actors.values())finishTravel(actor);activeFloor=id;updateBuilding(true,animate)}\n"
+      ]
+    },
+    {
+      "beforeLine": 2491,
+      "afterLine": 2553,
+      "before": [
+        "  function syncVisibility(){officePresence.read();const visible=sceneVisible();sceneActive=visible;root.dataset.paused=String(!visible);if(visible)updateBuilding(true,false);else{for(const actor of actors.values())clearMotion(actor);closeBubble()}map.officeMascotMotion?.({now:Date.now(),reduced,visible,actors})}\n"
+      ],
+      "after": [
+        "  function syncVisibility(){officePresence.read();const visible=sceneVisible();if(visible&&!sceneActive)autoBubbleEntry=true;sceneActive=visible;root.dataset.paused=String(!visible);if(visible)updateBuilding(true,false);else{autoBubbleEntry=false;for(const actor of actors.values())clearMotion(actor);closeBubble()}map.officeMascotMotion?.({now:Date.now(),reduced,visible,actors})}\n"
       ]
     }
   ]

@@ -1,3 +1,4 @@
+import {restoreResidentsSource} from './hani-office-residents-source.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -13,10 +14,11 @@ context.localStorage=context.sessionStorage={setItem:deny,removeItem:deny,clear:
 const serialize=JSON.stringify,hash=x=>createHash('sha256').update(x).digest('hex');
 // Exact QA-3/18/19 display edits are restored before the unchanged behavior guard.
 const labelDeltaBytes=fs.readFileSync('scripts/fixtures/office-labels-qa-source-delta.json');
-assert.equal(hash(labelDeltaBytes),'cbb8eca29989ebb093286de9f5fe728caf872d59abb22d9b5b157869a1e746e3');
+assert.equal(hash(labelDeltaBytes),'316a3cbc77168e51952319d34755c27ec7a26d65dc55bb5c58b77a25a53dea8b');
 const labelDelta=JSON.parse(labelDeltaBytes);
 assert.equal(labelDelta.beforeSha256,'406937ae1d69c0379bb735e961734b517ae9440a02c93a0d41771dc0c694d246');
 function restoreOfficeLabelsSource(source){
+ source=restoreResidentsSource(source);
  const lines=source.match(/[^\n]*\n|[^\n]+$/g);
  for(const change of labelDelta.changes.toReversed()){
   assert.deepEqual(lines.slice(change.afterLine,change.afterLine+change.after.length),change.after,'only exact reviewed display lines at '+change.afterLine);
