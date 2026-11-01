@@ -1152,8 +1152,8 @@
   const libraryThreads=()=>globalThis.HaniBoardLibrary?.threads||window.HaniBoardLibrary?.threads||[];
   const restrictions=value=>value===null||value===undefined||value===""?[]:Array.isArray(value)?value:[value];
   function libraryEligible(thread,now){
-    const seasons=restrictions(thread.season),days=restrictions(thread.weekday);
-    return (!seasons.length||seasons.includes(seasonFor(now)))&&(!days.length||days.includes(new Date(now+9*3600000).getUTCDay()));
+    const seasons=restrictions(thread.season),days=restrictions(thread.weekday),date=thread.date==null?"":safeRecordDate(thread.date);
+    return (thread.date==null||!!date&&date<=dayKey(now))&&(!seasons.length||seasons.includes(seasonFor(now)))&&(!days.length||days.includes(new Date(now+9*3600000).getUTCDay()));
   }
   function generateDaily(now=Date.now(),rows=posts()){
     if(!canWrite()||!sourcesReady())return rows;
