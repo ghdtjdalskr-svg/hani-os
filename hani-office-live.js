@@ -1877,11 +1877,13 @@
     [/급하게 인스타 끄는 중/,'인스타 끄기',true],[/급하게 창 닫는 중/,'창 닫기',true],
     [/회장님 질문 듣는 중/,'질문 듣기',true],[/회장님께 화면 설명 중/,'화면 설명',true],
     [/상담 중/,'상담 중',true],[/면접 진행 중/,'면접 진행',true],[/면접 보는 중/,'면접 보기',true],
+    [/^알람 이름 짧게 바꾸는 중$/,'알람 이름|알람 정리|이름 바꾸기'],
     [/조용한 밤이라 메모가 잘 써지네요\.$/,'메모 쓰기|메모 작성|밤 메모'],[/오늘 기억할 장면을 적어둘게요\.$/,'장면 기록|장면 적기|장면 메모'],
     [/라운지에서 오늘 고생했다고 말하는 중$/,'수고 인사|격려 인사|수고 전하기'],[/소파에서 내일 할 일 적는 중$/,'내일 할일|할일 적기|내일 메모'],
     [/라운지에서 마지막 버스 확인 중$/,'막차 확인|버스 확인|막차 점검'],[/옥상 정원에서 화분 살피는 중$/,'화분 살피기|화분 관찰|화분 보기'],
     [/임원 라운지 소파에서 AI 오케스트레이션 메모 펼쳐 보는 중$/,'AI 메모|메모 펼치기|메모 살피기'],[/바뀐 범위부터 다시 확인할게요\.$/,'범위 확인|범위 점검|범위 살피기'],
     [/다음 장도 천천히 볼까요\.$/,'다음장 보기|다음장 읽기|다음장 확인'],[/자료 탭을 하나씩 맞춰볼게요\.$/,'자료 맞추기|자료 점검|자료 맞대기'],
+    [/^회장님께 보고하러 가는 중$/,'보고하러 이동|보고하러 걷기|보고 이동'],
     [/회장님께 .*보고/,'회장님보고|보고 드리기|안건 보고'],[/좋아요, 이대로/,'진행 승인|안건 승인|진행 허가'],
     [/회장님.*인사|회장님.*오셨|회장님.*안녕/,'도착 인사|환영 인사|인사 건네기'],
     [/돌아가는|복귀|안녕히 계세요/,'자리 복귀|자리로 복귀|복귀 걷기'],
@@ -1901,7 +1903,7 @@
     [/수치.*분석/,'수치 분석|숫자 분석|수치 읽기'],[/품질.*점검|예외|엣지 케이스/,'품질 점검|예외 찾기|품질 검사'],
     [/화면.*검토|작은 화면/,'화면 검토|화면 살피기|화면 점검'],[/검증.*기록/,'검증 기록|검증 적기|결과 기록'],
     [/자료.*대조/,'자료 대조|자료 비교|자료 맞추기'],[/접수.*확인/,'접수 점검|접수 읽기|접수 살피기'],
-    [/안내.*준비/,'안내 준비|안내 채비|안내 챙기기'],[/결재|도장/,'결재 검토|결재 살피기|안건 검토'],
+    [/안내.*준비/,'안내 준비|안내 채비|안내 챙기기'],[/결재|도장(?! 모양 낙서 중$)/,'결재 검토|결재 살피기|안건 검토'],
     [/흐름.*살피|흐름.*연결/,'흐름 검토|흐름 살피기|흐름 점검'],[/일정.*확인|일정.*겹침/,'일정 점검|일정 살피기|일정 대조'],
     [/문장.*다듬|문장.*줄이/,'문장 다듬기|문장 퇴고|문장 고치기'],[/메모.*순서|기록.*순서/,'메모 재배열|기록 재배열|메모 순서'],
     [/기록.*정리/,'기록 정리|기록 묶기|기록 나누기'],[/업무 메모|메모 중|메모만/,'메모 쓰기|메모 작성|메모 적기|기록 남기기|메모 남기기|내용 적기|메모 옮기기|노트 적기'],
@@ -2356,7 +2358,9 @@
   function activityStatus(actor,full){
     const leisure=/물 한 모금|쉬|휴식|수다|간식|커피|야식|메뉴|투표|저녁 뭐|인스타|음악|영화|산책|졸|약속|휴대폰|고양이 영상|기지개|스트레칭|하품|노래|플레이리스트|흥얼|사진첩|(?:오늘 찍은|여행) 사진|날씨|퇴근 시간|알람|물병|점심 후보|단백질 식단|잠깐 몸 풀기/;
     const workPhrase=/(?:고객 표현 쉬운 말로 바꾸는 중|어려운 용어 쉬운 말 퀴즈 중|다음 약속 준비물 적는 중|졸린 눈으로 문장 줄이는 중)$/;
-    return actor.officeTravel||actor.dataset.walking==='true'||['GOING','RETURNING'].includes(actor.dataset.behavior)||full==='이동 중'?'moving':actor.dataset.called==='true'||actor.dataset.activity==='meeting'||/(?:상담(?: 받는)?|면접 (?:진행|보는)) 중$/.test(full)?'meeting':/^(?:visitor-host|report)-/.test(actor.dataset.place||'')||actor.dataset.activity==='visit'&&/택배|배달/.test(full)||/(?:급하게 (?:인스타 끄는|창 닫는)|회장님 질문 듣는|회장님께 화면 설명) 중$/.test(full)?'work':['rest','play'].includes(actor.dataset.activity)||/^(?:coffee|cafe|pantry|sofa|garden|terrace|window)-/.test(actor.dataset.place||'')||actor.dataset.zone==='lounge'&&!/^(?:task|errand)-/.test(actor.dataset.place||'')||!workPhrase.test(full)&&leisure.test(full)?'rest':/야근/.test(full)?'night':'work';
+    const deskNote=/^(?:영화 메모에 작은 별 그리는 중|알람 이름 짧게 바꾸는 중)$/.test(full);
+    const everydayScene=/^scene-(?:meme|coffee-menu|snack-budget|watch-pick|travel-talk|roof-selfie)$/.test(actor.dataset.action||'');
+    return actor.officeTravel||actor.dataset.walking==='true'||['GOING','RETURNING'].includes(actor.dataset.behavior)||full==='이동 중'?'moving':actor.dataset.called==='true'||actor.dataset.activity==='meeting'&&!everydayScene||/(?:상담(?: 받는)?|면접 (?:진행|보는)) 중$/.test(full)?'meeting':/^(?:visitor-host|report)-/.test(actor.dataset.place||'')||actor.dataset.activity==='visit'&&/택배|배달/.test(full)||/(?:급하게 (?:인스타 끄는|창 닫는)|회장님 질문 듣는|회장님께 화면 설명) 중$/.test(full)?'work':everydayScene||['rest','play'].includes(actor.dataset.activity)||/^(?:coffee|cafe|pantry|sofa|garden|terrace|window)-/.test(actor.dataset.place||'')||actor.dataset.zone==='lounge'&&!/^(?:task|errand)-/.test(actor.dataset.place||'')||!workPhrase.test(full)&&!deskNote&&leisure.test(full)?'rest':/야근/.test(full)?'night':'work';
   }
   const statusNames={work:'근무 중',rest:'휴식 중',meeting:'회의 중',moving:'이동 중',night:'야근 중'};
   const statusIcons={work:'💻',rest:'☕',meeting:'💬',moving:'🚶',night:'🌙'};
@@ -2378,7 +2382,7 @@
     if(/점심|식사|도시락|밥 먹|아침 먹|저녁 먹/.test(line))return '🍱';
     if(/옥상|정원|테라스/.test(line))return '🌿';
     if(/소파/.test(line))return '🛋️';
-    if(data.called==='true'||data.activity==='meeting'||/^meeting-/.test(data.place||'')||/회의(?:실| 중|하는| 참여| 진행)/.test(line))return '📋';
+    if(data.called==='true'||data.activity==='meeting'&&activityStatus(actor,line)==='meeting'||/^meeting-/.test(data.place||'')||/회의(?:실| 중|하는| 참여| 진행)/.test(line))return '📋';
     if(/택배|배달/.test(line))return '📦';
     return '';
   }
@@ -2445,6 +2449,29 @@
   actorBubble.className='hani-office-character-bubble';actorBubble.hidden=true;actorBubble.setAttribute('aria-live','polite');actorBubble.setAttribute('aria-atomic','true');profileLink.textContent='프로필 ↗';profileLink.href='#organization/people';actorBubble.append(bubbleLine,profileLink);map.append(actorBubble);
   const tapLines=building.tapLines.create(building.canon?.people||window.HaniOrganizationRoster?.people||[]);
   let bubblePerson=null,bubbleSerial=0,bubbleSelection=null,pendingTap=null,cancelled=new Set(),cancelledDay='',meetingStartedAt=0;
+  let bubbleTimer=null,lastBubbleTap=-Infinity,autoBubbleEntry=true;
+  const autoBubbleFloors=new Map();
+  function clearBubbleTimer(){if(bubbleTimer!==null)globalThis.clearTimeout?.(bubbleTimer);bubbleTimer=null}
+  function queueBubbleTimer(fn,ms){clearBubbleTimer();bubbleTimer=setTimeout(fn,ms)}
+  function autoBubbleQuiet(){return reduced||document.hidden||!sceneVisible()||!actorBubble.hidden||Date.now()-lastBubbleTap<5000||!document.getElementById('app')||document.getElementById('app').classList.contains('login-locked')}
+  function scheduleFloorBubble(){
+    if(!autoBubbleEntry||map.dataset.art==='loading'||!sceneVisible())return;
+    autoBubbleEntry=false;
+    if(autoBubbleQuiet()||Date.now()-(autoBubbleFloors.get(activeFloor)??-Infinity)<60000)return;
+    const floor=activeFloor,serial=bubbleSerial;
+    queueBubbleTimer(()=>{
+      if(serial!==bubbleSerial||floor!==activeFloor)return;
+      bubbleTimer=null;
+      if(autoBubbleQuiet()||Date.now()-(autoBubbleFloors.get(floor)??-Infinity)<60000)return;
+      const eligible=[...actors.values()].filter(actor=>!actor.hidden&&!actor.officeTravel&&actor.dataset.walking!=='true'&&!actor.dataset.pose?.startsWith('walk')&&actor.querySelector('.hani-office-prop').textContent.trim());
+      const preferred=eligible.filter(actor=>['💬','📱'].includes(actor.querySelector('.hani-office-prop').textContent.trim()));
+      const pool=(preferred.length?preferred:eligible).sort((a,b)=>a.dataset.person.localeCompare(b.dataset.person));
+      if(!pool.length)return;
+      const day=new Date(Date.now()+32400000).toISOString().slice(0,10);
+      let seed=0;for(const char of day+'|'+floor)seed=(seed*31+char.charCodeAt(0))>>>0;
+      autoBubbleFloors.set(floor,Date.now());openBubble(pool[seed%pool.length],true);
+    },450);
+  }
   function cancelScheduledDuringMeeting(now=new Date()){
     if(!meeting||!building.scheduler)return;
     const day=new Date(now.getTime()+32400000).toISOString().slice(0,10),midnight=Date.parse(day+'T00:00:00+09:00');
@@ -2472,22 +2499,23 @@
     actorBubble.officeFollow={person:bubblePerson,position:person.officePosition?.slice()||[0,0],left:actor.left-floor.left+actor.width/2-bubble.width/2,top:actor.top-floor.top-bubble.height-6,width:floor.width,height:floor.height,bw:bubble.width,bh:bubble.height};
     actorBubble.style.left=left+'px';actorBubble.style.top=top+'px';
   }
-  function closeBubble(clearPending=true){bubbleSerial++;bubblePerson=null;bubbleSelection=null;if(clearPending)pendingTap=null;actorBubble.hidden=true;for(const actor of actors.values())actor.dataset.speaking='false';fitStatusLabels()}
-  function showBubble(actor,selection){bubblePerson=actor.dataset.person;bubbleSelection=selection;actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=!!actor.dataset.resident||actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);fitStatusLabels();fitBubble();const serial=++bubbleSerial;setTimeout(()=>{if(serial===bubbleSerial)closeBubble(false)},3000)}
-  function openBubble(actor){
+  function closeBubble(clearPending=true){clearBubbleTimer();bubbleSerial++;bubblePerson=null;bubbleSelection=null;if(clearPending)pendingTap=null;actorBubble.hidden=true;for(const actor of actors.values())actor.dataset.speaking='false';fitStatusLabels()}
+  function showBubble(actor,selection,duration=3000){bubblePerson=actor.dataset.person;bubbleSelection=selection;actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=!!actor.dataset.resident||actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);fitStatusLabels();fitBubble();const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble(false)}},duration)}
+  function openBubble(actor,automatic=false){
+    if(!automatic){lastBubbleTap=Date.now();autoBubbleEntry=false;clearBubbleTimer()}
     if(actor.hidden)return;
     if(actor.dataset.resident){const person=residentSlots.find(p=>p.id===actor.dataset.person),index=actor.officeResidentTap||0;actor.officeResidentTap=index+1;pendingTap=null;if(!reduced)actor.officeReactions.request(person.pet?'hop':'tap',Date.now(),true);showBubble(actor,{speaker:person.id,line:actor.officeResidentState?.scene?.line||person.lines[index%person.lines.length],resident:true});return}
     if(!reduced)actor.officeReactions.request('tap',Date.now());
     pendingTap=null;const now=new Date(),floor=activeFloor,options={floor,chairmanPresent:officePresence.read().chairmanPresent},selection=tapLines.tap(actor.dataset.person,now,options);
-    if(selection&&!selection.drama&&actionRunning(actor))pendingTap={actor,selection,floor:activeFloor};
-    showBubble(actor,selection||null);
+    if(!automatic&&selection&&!selection.drama&&actionRunning(actor))pendingTap={actor,selection,floor:activeFloor};
+    showBubble(actor,selection||null,automatic?4000:3000);
     const serial=bubbleSerial;
     void tapLines.load().then(()=>{
       // Replay taps in order even if the first view is still fetching the seed.
       if(floor!==activeFloor||actor.hidden||!sceneVisible()||building.tapLines.dramaDate(now)?.date!==building.tapLines.dramaDate(new Date())?.date)return;
       const loaded=selection?null:tapLines.tap(actor.dataset.person,now,{floor,chairmanPresent:officePresence.read().chairmanPresent});
       if(serial!==bubbleSerial||!loaded||actor.hidden||!sceneVisible())return;
-      bubbleSelection=loaded;if(!loaded.drama&&actionRunning(actor))pendingTap={actor,selection:loaded,floor:activeFloor};
+      bubbleSelection=loaded;if(!automatic&&!loaded.drama&&actionRunning(actor))pendingTap={actor,selection:loaded,floor:activeFloor};
       bubbleLine.textContent=bubbleText(actor);fitBubble();
     });
   }
@@ -2614,6 +2642,7 @@
       for(const entry of plates)entry.plate.hidden=entry.floor!==floor.id||!isFloor;
       for(const entry of deskProps){entry.prop.hidden=entry.floor!==floor.id||!isFloor;if(!entry.prop.hidden&&!entry.prop.src)entry.prop.src=entry.src}
       updateAtmosphere(Date.now());
+      scheduleFloorBubble();
     });
   }
   function updateBuilding(force=false,animate=true){
@@ -2679,6 +2708,7 @@
     if(bubblePerson&&actors.get(bubblePerson)?.hidden)closeBubble();
     updateAtmosphere(now);
     fitStatusLabels();fitBubble();
+    scheduleFloorBubble();
   }
   function updateResidents(now){
     if(!residentSlots.length)return;
@@ -2704,10 +2734,10 @@
     }
     if(changed)fitStatusLabels();
   }
-  function selectFloor(id,animate=false){closeBubble();if(!floorButtons.has(id))return;for(const actor of actors.values())finishTravel(actor);activeFloor=id;updateBuilding(true,animate)}
+  function selectFloor(id,animate=false){closeBubble();if(!floorButtons.has(id))return;autoBubbleEntry=true;for(const actor of actors.values())finishTravel(actor);activeFloor=id;updateBuilding(true,animate)}
   tabs.addEventListener("click",event=>{const button=event.target.closest("[data-building-floor]");if(button&&tabs.contains(button))selectFloor(button.dataset.buildingFloor)});
   tabs.addEventListener("keydown",event=>{const keys=[...floorButtons.keys()],index=keys.indexOf(activeFloor);let next;if(event.key==="ArrowRight")next=(index+1)%keys.length;else if(event.key==="ArrowLeft")next=(index+keys.length-1)%keys.length;else if(event.key==="Home")next=0;else if(event.key==="End")next=keys.length-1;else return;event.preventDefault();selectFloor(keys[next]);floorButtons.get(keys[next]).focus()});
-  function syncVisibility(){officePresence.read();const visible=sceneVisible();sceneActive=visible;root.dataset.paused=String(!visible);if(visible)updateBuilding(true,false);else{for(const actor of actors.values())clearMotion(actor);closeBubble()}map.officeMascotMotion?.({now:Date.now(),reduced,visible,actors})}
+  function syncVisibility(){officePresence.read();const visible=sceneVisible();if(visible&&!sceneActive)autoBubbleEntry=true;sceneActive=visible;root.dataset.paused=String(!visible);if(visible)updateBuilding(true,false);else{autoBubbleEntry=false;for(const actor of actors.values())clearMotion(actor);closeBubble()}map.officeMascotMotion?.({now:Date.now(),reduced,visible,actors})}
   document.addEventListener("visibilitychange",syncVisibility);
   new MutationObserver(syncVisibility).observe(root.closest(".view"),{attributes:true,attributeFilter:["class","hidden","style"]});
   if(typeof IntersectionObserver==='function')new IntersectionObserver(entries=>{mapOnScreen=entries[0].isIntersecting;syncVisibility()}).observe(map);

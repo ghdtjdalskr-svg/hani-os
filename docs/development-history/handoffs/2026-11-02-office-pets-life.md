@@ -92,3 +92,26 @@
 ## Notion 최종 갱신 대기 원문
 
 2026-11-02 KST / Codex / 본사 치즈·크림 야간 생활 qa-b10 / hani/office-pets-life / base b30b988. qa-b10-task.md UTF-8 실행 승인. 02~07시 수면·22~02시 두 동물1F 라운지 전용4지점·07시 일일seed·자정 연속성, snapshot 휴식/동층 동행·모니터 옆 치즈·대사30개·기존 bubble/tap 쌍 대사·크림 회장님 층 동행 구현. 기본4F 회장 고정 의자는 가구 clearance 때문에 바로 옆 동행 미충족이며 안전통로 대기, 가구/직원 위치 변경 없음. 주민30/0·지정10묶음131통과7실패(기존동일Git EPERM7·새실패0), syntax6/0, exact-line 전체 역변환·직원/방문객 plans 보존·tracked1,354중 승인4개만 변경·closure135/추가runtime0·저장/AI/timer/event추가0. JS682d9ea4. 브라우저/운영 미검증·미커밋·버전2.9.255/cache·push/merge/배포 없음. 다음 floor-entry bubble hook 통합·Preview. 원문 docs/development-history/handoffs/2026-11-02-office-pets-life.md 및 artifacts/office-pets-life/tests.json·preservation.json·patch-lines.json. Notion append는 자동 승인 검토의 approval policy is never 거절로 저장/read-back 미완료.
+
+## qa-b10b 병합 충돌 정리 · 2026-11-02 KST
+
+### 작업 식별
+
+- 담당 Codex 단독 / hani/office-pets-life / qa-b10. 사용자 qa-b10b-task.md 전체 UTF-8 확인 및 실행 승인. 원본 지시 파일의 문자 손상 없음.
+- main 병합 기준 `e2cd3fd322f3575f882b10c23ced336599761e6e`. Git subprocess 직접 실행 금지로 fetch·stage·commit·push 미수행. Git 객체 읽기 전용 조회로 기준 확인.
+- 범위: residents exact-line fixture와 source helper 충돌 및 의존 pin. codemap 주민 세부 anchor CODEMAP_MISS, 기존 freeze/helper·소비 테스트로 좁혀 조사.
+
+### 결과와 증거
+
+- 파일 충돌 해결 완료, Git stage/merge commit은 금지에 따라 미수행. main source helper를 기준으로 fixture SHA pin만 갱신했으며 branch 전용 helper 로직은 불필요했다. 기존 before pin/가드/소비 테스트/labels fixture 보존.
+- exact-line LCS fixture: before `d2f5be9b6e35e58da597985f43e94a8541542eafa191be35aa0d90838af7d8a8`, after/runtime `8b52b3c715b931e36f2a5c77d65767b9002ff727a2955bcb8336eb0f269200a0`, fixture `4b040108da43c910ca87c1988ec361fdc6f4e8e5046c7bb924c494c87920807d`. runtime JS 수정0·충돌 표시0·guard 완화0·전체 역변환/변조 거부 확인. main의 labels 중간 source 및 원래 consultation source identity까지 검증.
+- 지정10묶음 **134통과·7실패**. 실패7개는 모두 예상된 `spawnSync git EPERM`: icons2, obr8 1, obr15 1, obr21 2, consult1. 그 외 실패0. 명령5성공·5실패이며 실패를 PASS로 표시하지 않음.
+- 먼저 실행한 runtime syntax 1/0, 추가 helper syntax 1/0, floor-bubble 추가 회귀18/0. Node v24.20.0. Node 내부 child spawn 차단 후 PowerShell 직접 실행으로 모든 지정 검사 완료.
+- 증거: [병합 보고서](../../../artifacts/office-pets-life-merge/REPORT.md), [테스트 집계](../../../artifacts/office-pets-life-merge/tests.json), [바이트 보존](../../../artifacts/office-pets-life-merge/preservation.json), 각 suite 로그. 기존 작업 증거를 덮어쓰지 않고 별도 폴더에 보존.
+- 표시버전2.9.256·마지막 script hani-launch-greeting.js는 로컬 기준. 원격 최신성·브라우저·Production은 미검증. Storage/Cloud/schema·버전/cache 변경0, 운영 배포 없음. CURRENT/DECISIONS 및 다른 담당 파일 미수정.
+- 기록 추가 중 PowerShell→Node 파이프가 새 한국어 문단을 물음표로 변환해 직접 UTF-8 패치로 교정했다. 기존 한국어 원문 및 사용자 지시 파일은 정상 보존.
+
+### 다음 담당에게
+
+- 다음 한 가지 행동: 허용된 환경에서 해결한 두 파일 stage 후 진행 중인 병합 commit 완료. 현재 Git 금지로 이 단계 미수행, 추가 사용자 결정 없음.
+- Notion 현황판 읽기는 성공했으나 착수 append는 자동 승인 검토가 `MCP tool call requires approval, but approval policy is never`로 거절하여 저장/read-back 미완료. 위 결과를 미반영 원문으로 보존한다.
