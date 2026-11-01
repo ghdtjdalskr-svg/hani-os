@@ -325,10 +325,13 @@
       }
       const existing = match(input, source.investmentResearchCards || []), candidate = !existing ? held : null;
       const imported = importFairValues(input, existing?.currency || candidate?.currency || input.currency || (marketKey(input.market) === 'US' ? 'USD' : marketKey(input.market) === 'KR' ? 'KRW' : ''));
+      const fairKeys = ['fairValue', 'fairValueLow', 'fairValueHigh'];
+      const preservedFairValue = !!existing && fairKeys.every(k => imported[k] == null || imported[k] === '') && fairKeys.some(k => existing[k] != null && existing[k] !== '');
+      if (preservedFairValue) for (const key of fairKeys) imported[key] = existing[key];
       const card = normalizeCard({...imported, instrumentId: existing?.instrumentId || candidate?.instrumentId || input.instrumentId || null, status: existing ? input.status ?? existing.status : candidate?.status === 'OWNED' ? 'OWNED' : 'WATCH'}, existing, framework);
       if (match(card, seen)) throw Error('리포트에 동일 종목이 중복되어 있습니다. 한 종목당 하나만 남기세요.');
       seen.push(card);
-      return {existingId: existing?.id || null, card, excluded: false, include: true, missingFairValue: !hasFairValue(imported), reason: string(input.changeReason, 'changeReason'), ...diff(existing, card)};
+      return {existingId: existing?.id || null, card, excluded: false, include: true, preservedFairValue, missingFairValue: !preservedFairValue && !hasFairValue(imported), reason: string(input.changeReason, 'changeReason'), ...diff(existing, card)};
     });
   }
   function prepareBatch(source, items, {uid, now = new Date().toISOString(), framework = FRAMEWORK} = {}) {
@@ -519,11 +522,28 @@
       }}
   };
   const OUTPUT_EXAMPLE = {...normalizeCard({name: '예시 종목', ticker: 'EXAMPLE', market: 'US', currency: 'USD', status: 'WATCH', rating: 'BUY', fairValue: 150, fairValueLow: 120, fairValueHigh: 180, valuationMethod: '이익 배수', valuationNote: '예시 숫자이며 실제 종목 추정에 사용하지 않음', thesis: ['경쟁 우위', '이익 성장', '재무 안정'], action: 'HOLD', lastReviewedAt: '2026-10-11'}), changeReason: '실적 가정 검토'};
+  function unresolvedHoldings(source, holdings = []) {
+    const withoutCards = candidates(source, holdings).filter(c => c.status === 'OWNED' && accumulationInfo(c, source, holdings).kind !== 'accumulation' && !match(c, source.investmentResearchCards || []));
+    return {ready: withoutCards.filter(c => text(c.ticker) || text(c.instrumentId)), unresolved: withoutCards.filter(c => !text(c.ticker) && !text(c.instrumentId))};
+  }
+  // Read-only guidance; callers supply only opinions currently displayed on screen.
+  function reportNextStep({progress, ready = [], cards = [], secondOpinions = [], finalOpinions = [], loggedIn = false}) {
+    const memoSaved = c => text(c.valuationNote).includes('[' + progress.month + ' · 세린 연구원 2차 의견');
+    if (progress.committeeDone) return null;
+    const pasteHint = 'GPT 답변을 받으면 리포트 붙여넣기로 넣어 주세요.';
+    if (!progress.researchDone) return {step: 1, title: '1단계 · GPT용 자료를 복사해 주세요.', action: 'copy', label: 'GPT용 자료 복사', secondary: 'import', secondaryLabel: '리포트 붙여넣기', detail: pasteHint};
+    if (ready.length) return {step: 2, title: '아직 종목 카드가 없는 보유종목이 ' + ready.length + '개 있어요 (' + ready.map(c => c.name).join(', ') + ').', action: 'copy', label: 'GPT용 자료 복사', secondary: 'import', secondaryLabel: '리포트 붙여넣기', detail: pasteHint};
+    if (!secondOpinions.length && !cards.some(memoSaved)) return {step: 3, title: '2단계 · Gemini 2차 의견을 받아 주세요.', action: loggedIn ? 'ask-second' : 'copy-second', label: loggedIn ? '✨ Gemini에게 바로 묻기' : 'Gemini 2차 의견 요청 복사'};
+    const remaining = cards.filter(c => secondOpinions.some(o => o.researchId === c.id) && !memoSaved(c)).length;
+    if (remaining && !finalOpinions.length) return {step: 4, title: '3단계 · 하니에게 최종 검토를 요청해 주세요.', action: 'copy-final', label: '📤 하니에게 최종 검토 요청 복사', secondary: 'import-final', secondaryLabel: '📥 하니 최종 의견 붙여넣기'};
+    if (remaining) return {step: 5, title: '4단계 · 종목별로 메모를 저장해 주세요.', detail: remaining + '종목 남았어요. 각 종목의 이번 달 리포트에 메모로 저장을 눌러 주세요.'};
+    return {step: 6, title: '5단계 · 이번 달 리포트를 확정해 주세요.', action: 'monthly', label: '다음 단계: 이번 달 리포트 확정하기 →', detail: '이번 달 판단과 실행 계획을 초안으로 정리해 주세요.'};
+  }
   function buildPrompt(source, holdings = [], priceSource = {}, framework = FRAMEWORK) {
     const cards = opinionCards(source, holdings);
-    const withoutCards = candidates(source, holdings).filter(c => c.status === 'OWNED' && accumulationInfo(c, source, holdings).kind !== 'accumulation' && !match(c, source.investmentResearchCards || []));
+    const {ready: withoutCards} = unresolvedHoldings(source, holdings);
     const data = {cards: cards.map(c => ({...Object.fromEntries(['id', ...FIELDS].map(k => [k, c[k] ?? null])), previousRating: previousRating(c, source.investmentResearchHistory || []), convictionScore: convictionTotal(c.conviction), currentPrice: currentPrice(c, priceSource)})), holdingsWithoutCards: withoutCards};
-    return '성민 대표님의 Personal Investment Research OS를 검토하세요. 한국어로 판단 근거를 작성하세요.\n주가가 올랐다는 이유만으로 Fair Value를 변경하지 않는다. 모르는 가격·가치는 null로 두고 임의로 만들지 마세요. 현재가의 통화·기준일을 보존하세요. fairValue/fairValueLow/fairValueHigh는 모든 종목에 절대 생략하지 마세요. 거래 통화(KRW는 원, USD는 달러)의 단위 없는 양수 숫자만 쓰고 Low ≤ Mid ≤ High를 지키세요. 통화기호·쉼표·문자열 금지. 정말 산정 불가능할 때만 null로 쓰고 valuationNote에 이유를 명시하세요. 기존 판단과 변경 이유(changeReason)를 함께 제시하세요.\n매매 실행이나 자동 저장은 없습니다. 대표님이 diff를 확인하고 선택 반영합니다. instrumentId·시장·티커를 그대로 유지하세요. WHY WE OWN IT은 3~5개, Conviction은 각 항목 0~max, max 합계 100입니다. lastReviewedAt은 검토일 ISO 날짜로 쓰세요.\n자료(JSON):\n' + JSON.stringify(data) + '\nConviction framework(JSON):\n' + JSON.stringify(framework) + '\nOUTPUT: 설명 없이 다음 정확한 JSON Schema에 맞는 카드 배열만 반환하세요.\n' + JSON.stringify(OUTPUT_SCHEMA) + '\n완성된 카드 예시 (예시 숫자를 실제 종목에 복사하지 마세요):\n' + JSON.stringify([OUTPUT_EXAMPLE]);
+    return '성민 대표님의 Personal Investment Research OS를 검토하세요. 한국어로 판단 근거를 작성하세요.\n주가가 올랐다는 이유만으로 Fair Value를 변경하지 않는다. 모르는 가격·가치는 null로 두고 임의로 만들지 마세요. 현재가의 통화·기준일을 보존하세요. fairValue/fairValueLow/fairValueHigh는 모든 종목에 절대 생략하지 마세요. 거래 통화(KRW는 원, USD는 달러)의 단위 없는 양수 숫자만 쓰고 Low ≤ Mid ≤ High를 지키세요. 통화기호·쉼표·문자열 금지. 정말 산정 불가능할 때만 null로 쓰고 valuationNote에 이유를 명시하세요. 기존 판단과 변경 이유(changeReason)를 함께 제시하세요.\n매매 실행이나 자동 저장은 없습니다. 대표님이 diff를 확인하고 선택 반영합니다. instrumentId·시장·티커를 그대로 유지하세요. WHY WE OWN IT은 3~5개, Conviction은 각 항목 0~max, max 합계 100입니다. lastReviewedAt은 검토일 ISO 날짜로 쓰세요.\n' + (withoutCards.length ? 'holdingsWithoutCards의 모든 종목도 cards와 같은 형식의 새 카드로 작성해 출력 배열에 함께 넣으세요. 출력 카드 수는 cards와 holdingsWithoutCards를 합친 ' + (cards.length + withoutCards.length) + '개와 정확히 같아야 합니다. 정보가 부족해도 종목을 빼지 말고, 모르는 가격·가치는 null로 두세요. status는 OWNED, instrumentId와 ticker는 주어진 값을 유지하고, market·currency가 비어 있으면 티커로 판단해 채우세요.\n' : '') + '자료(JSON):\n' + JSON.stringify(data) + '\nConviction framework(JSON):\n' + JSON.stringify(framework) + '\nOUTPUT: 설명 없이 다음 정확한 JSON Schema에 맞는 카드 배열만 반환하세요.\n' + JSON.stringify(OUTPUT_SCHEMA) + '\n완성된 카드 예시 (예시 숫자를 실제 종목에 복사하지 마세요):\n' + JSON.stringify([OUTPUT_EXAMPLE]);
   }
   const SECOND_OPINION_SCHEMA = {type:'array', minItems:1, maxItems:200, items:{type:'object', additionalProperties:false,
     required:['researchId','agreeWithRating','concerns','missingRisks','fairValueSanity','oneLine'], properties:{
@@ -678,7 +698,7 @@
     const value = typeof key === 'string' ? key.trim().toLocaleUpperCase('en-US') : '';
     return value ? (cards || []).filter(card => card && [card.ticker, card.name].some(v => typeof v === 'string' && v.trim().toLocaleUpperCase('en-US') === value)) : [];
   }
-  const core = {researchMatches,monthlyReportMetrics, fairValueRange, revisionReviewSummaries, FINAL_REVIEW_SCHEMA, buildFinalReviewPrompt, parseFinalReview, finalReviewTargets, finalReviewBasis, finalReviewNote, SECOND_OPINION_SCHEMA, buildSecondOpinionPrompt, parseSecondOpinion, secondOpinionBasis, secondOpinionNote, saveSecondOpinionNote, actionLabel, securitySummary, displaySummary, monthlyChanges, normalizeTheme, compactPortfolio, conclusionLines, recordedHoldingValue, holdingValue, accumulationDisplayValues, parseFairNumber, importFairValues, hasFairValue, missingFairItems, fairFollowupPrompt, cardSummary, committeeProgress, confirmedSummary, OUTPUT_EXAMPLE, accumulationAccountIds, saveAccumulationAccounts, accumulationInfo, accumulationSecurities, RATINGS, STATUSES, THESIS, RISKS, ACTIONS, FRAMEWORK, TRACKED, FIELDS, OUTPUT_SCHEMA, conviction, convictionTotal, normalizeCard, diff, match, candidates, parseReport, reviewReport, prepareBatch, applyBatch, previousRating, currentPrice, valuation, buildPrompt, kst, inputDate, monthNow, latestSnapshot, priorSnapshot, portfolioSummary, COMMITTEE_LISTS, committeeDraft, prepareSnapshot, confirmCommittee, ratingTimeline};
+  const core = {unresolvedHoldings, reportNextStep, researchMatches,monthlyReportMetrics, fairValueRange, revisionReviewSummaries, FINAL_REVIEW_SCHEMA, buildFinalReviewPrompt, parseFinalReview, finalReviewTargets, finalReviewBasis, finalReviewNote, SECOND_OPINION_SCHEMA, buildSecondOpinionPrompt, parseSecondOpinion, secondOpinionBasis, secondOpinionNote, saveSecondOpinionNote, actionLabel, securitySummary, displaySummary, monthlyChanges, normalizeTheme, compactPortfolio, conclusionLines, recordedHoldingValue, holdingValue, accumulationDisplayValues, parseFairNumber, importFairValues, hasFairValue, missingFairItems, fairFollowupPrompt, cardSummary, committeeProgress, confirmedSummary, OUTPUT_EXAMPLE, accumulationAccountIds, saveAccumulationAccounts, accumulationInfo, accumulationSecurities, RATINGS, STATUSES, THESIS, RISKS, ACTIONS, FRAMEWORK, TRACKED, FIELDS, OUTPUT_SCHEMA, conviction, convictionTotal, normalizeCard, diff, match, candidates, parseReport, reviewReport, prepareBatch, applyBatch, previousRating, currentPrice, valuation, buildPrompt, kst, inputDate, monthNow, latestSnapshot, priorSnapshot, portfolioSummary, COMMITTEE_LISTS, committeeDraft, prepareSnapshot, confirmCommittee, ratingTimeline};
   if (typeof module !== 'undefined' && module.exports) module.exports = core;
   root.HaniInvestmentResearchCore = core;
   if (!root.document) return;
@@ -731,7 +751,7 @@
     if (compact) return '<div class="ic-value ic-card-value"><span><small>Fair Value</small><b>' + esc(money(card.fairValue, card.currency)) + '</b>' + (card.fairValueLow != null && card.fairValueHigh != null ? '<small>' + esc(money(card.fairValueLow, card.currency)) + ' ~ ' + esc(money(card.fairValueHigh, card.currency)) + '</small>' : '') + '</span>' + (values.upside !== null ? '<span class="ic-upside ' + (values.upside >= 0 ? 'is-positive' : 'is-negative') + '"><small>Upside</small><b>' + percent(values.upside).replace('-', '−') + '</b></span>' : '') + '</div>' + current;
     return '<p class="ic-price">현재가 ' + (price ? esc(money(price.value, price.currency)) + ' · 기준 ' + esc(kst(price.asOf, 'price')) + ' · ' + esc(price.source) : '미확인 · 상세에서 수동 가격 입력') + '</p><div class="ic-value"><span><small>Fair Value</small><b>' + esc(money(card.fairValue, card.currency)) + '</b><small>' + esc(money(card.fairValueLow, card.currency)) + ' ~ ' + esc(money(card.fairValueHigh, card.currency)) + '</small></span><span><small>현재가 대비 적정가 / 하단</small><b>' + percent(values.upside) + ' / ' + percent(values.downside) + '</b><small>상승 / 하락 여력 (하단)</small></span></div>';
   }
-  host.innerHTML = '<div class="ic-header"><div><h2>종목 리포트</h2></div><div class="ic-tools"><button type="button" class="btn finance" data-ic="new">+ Research 작성</button><button type="button" class="btn" data-ic="copy">GPT용 자료 복사</button><button type="button" class="btn" data-ic="copy-second">Gemini 2차 의견 요청 복사</button><button type="button" class="btn" data-ic="ask-second" disabled title="Cloud 로그인 후 사용할 수 있어요.">✨ Gemini에게 바로 묻기</button><button type="button" class="btn" data-ic="import-second">2차 의견 붙여넣기</button><button type="button" class="btn" data-ic="import">리포트 붙여넣기</button></div></div><p class="ic-notice" role="status" aria-live="polite"></p><details class="ic-section ic-accumulation-settings"><summary>적립식 계좌 설정</summary><div class="ic-section-content"><p>장기 적립식 계좌만 보유한 종목은 투자의견 없이 관리합니다. 기본값은 키움증권 계좌입니다.</p><div class="ic-accumulation-accounts"></div><button type="button" class="btn" data-ic="save-accumulation">계좌 설정 저장</button></div></details><label class="ic-filter">카드 상태 <select data-ic-status><option value="ACTIVE">보유 + 관심</option><option value="OWNED">보유</option><option value="WATCH">관심</option><option value="ARCHIVED">보관</option><option value="ALL">전체</option></select></label><button type="button" class="btn finance primary ic-continue" data-ic="monthly" hidden>이번 달 리포트로 이어서</button><aside class="ic-next-step" hidden></aside><section class="ic-summary-strip" aria-label="리서치 카드 요약"></section><div class="ic-list"></div><dialog class="ic-dialog ic-editor" aria-label="Research Card 상세"></dialog><dialog class="ic-dialog ic-import" aria-label="리포트 붙여넣기 및 검토"></dialog><dialog class="ic-dialog ic-second-import" aria-label="2차 의견 붙여넣기"></dialog><div class="ic-final-tools" hidden><div class="ic-tools"><button type="button" class="btn" data-ic="copy-final">📤 하니에게 최종 검토 요청 복사</button><button type="button" class="btn" data-ic="import-final">📥 하니 최종 의견 붙여넣기</button></div></div><dialog class="ic-dialog ic-final-import" aria-label="하니 최종 의견 붙여넣기"></dialog>';
+  host.innerHTML = '<div class="ic-header"><div><h2>종목 리포트</h2></div><div class="ic-tools"><button type="button" class="btn finance" data-ic="new">+ Research 작성</button><button type="button" class="btn" data-ic="copy">GPT용 자료 복사</button><button type="button" class="btn" data-ic="copy-second">Gemini 2차 의견 요청 복사</button><button type="button" class="btn" data-ic="ask-second" disabled title="Cloud 로그인 후 사용할 수 있어요.">✨ Gemini에게 바로 묻기</button><button type="button" class="btn" data-ic="import-second">2차 의견 붙여넣기</button><button type="button" class="btn" data-ic="import">리포트 붙여넣기</button></div></div><p class="ic-notice" role="status" aria-live="polite"></p><aside class="ic-unresolved" role="status" hidden></aside><details class="ic-section ic-accumulation-settings"><summary>적립식 계좌 설정</summary><div class="ic-section-content"><p>장기 적립식 계좌만 보유한 종목은 투자의견 없이 관리합니다. 기본값은 키움증권 계좌입니다.</p><div class="ic-accumulation-accounts"></div><button type="button" class="btn" data-ic="save-accumulation">계좌 설정 저장</button></div></details><label class="ic-filter">카드 상태 <select data-ic-status><option value="ACTIVE">보유 + 관심</option><option value="OWNED">보유</option><option value="WATCH">관심</option><option value="ARCHIVED">보관</option><option value="ALL">전체</option></select></label><button type="button" class="btn finance primary ic-continue" data-ic="monthly" hidden>이번 달 리포트로 이어서</button><aside class="ic-next-step" hidden></aside><section class="ic-summary-strip" aria-label="리서치 카드 요약"></section><div class="ic-list"></div><dialog class="ic-dialog ic-editor" aria-label="Research Card 상세"></dialog><dialog class="ic-dialog ic-import" aria-label="리포트 붙여넣기 및 검토"></dialog><dialog class="ic-dialog ic-second-import" aria-label="2차 의견 붙여넣기"></dialog><div class="ic-final-tools" hidden><div class="ic-tools"><button type="button" class="btn" data-ic="copy-final">📤 하니에게 최종 검토 요청 복사</button><button type="button" class="btn" data-ic="import-final">📥 하니 최종 의견 붙여넣기</button></div></div><dialog class="ic-dialog ic-final-import" aria-label="하니 최종 의견 붙여넣기"></dialog>';
   const editor = host.querySelector('.ic-editor'), importDialog = host.querySelector('.ic-import');
   const notice = message => {host.querySelector('.ic-notice').textContent = message;};
   let settingsBaseline = '';
@@ -756,11 +776,12 @@
   host.querySelector('.ic-list').before(finalTools);
   let secondRunning = false, secondSessionEpoch = 0;
   function updateSecondButton() {
-    const button = host.querySelector('[data-ic="ask-second"]');
-    button.disabled = secondRunning || !accountIdentity() || typeof cloudClient === 'undefined' || !cloudClient;
-    button.textContent = secondRunning ? '세린 연구원이 Gemini에게 물어보는 중…' : '✨ Gemini에게 바로 묻기';
-    button.title = !accountIdentity() ? 'Cloud 로그인 후 사용할 수 있어요.' : secondRunning ? 'Gemini 응답을 기다리고 있어요.' : '현재 종목을 Gemini에게 읽기 전용으로 검토 요청합니다.';
-    button.setAttribute('aria-busy', String(secondRunning));
+    for (const button of [host.querySelector('[data-ic="ask-second"]'), host.querySelector('.ic-next-step').querySelector('[data-ic="ask-second"]')].filter(Boolean)) {
+      button.disabled = secondRunning || !accountIdentity() || typeof cloudClient === 'undefined' || !cloudClient;
+      button.textContent = secondRunning ? '세린 연구원이 Gemini에게 물어보는 중…' : '✨ Gemini에게 바로 묻기';
+      button.title = !accountIdentity() ? 'Cloud 로그인 후 사용할 수 있어요.' : secondRunning ? 'Gemini 응답을 기다리고 있어요.' : '현재 종목을 Gemini에게 읽기 전용으로 검토 요청합니다.';
+      button.setAttribute('aria-busy', String(secondRunning));
+    }
   }
   function secondOpinionError(code) {
     const messages = {
@@ -861,9 +882,16 @@
     const filter = host.querySelector('[data-ic-status]').value, all = state.investmentResearchCards || [];
     const cards = all.filter(c => filter === 'ALL' || (filter === 'ACTIVE' ? ['OWNED', 'WATCH'].includes(c.status) : c.status === filter));
     const next = host.querySelector('.ic-next-step');
-    const ready = committeeProgress(state, new Date(), holdings());
-    next.hidden = (!ready.researchDone && next.dataset.appliedOwner !== (accountIdentity() || 'local')) || ready.committeeDone; host.querySelector('.ic-continue').hidden = next.hidden;
-    if (!next.hidden) next.innerHTML = '<button type="button" class="btn finance primary" data-ic="monthly">다음 단계: 이번 달 리포트 확정하기 →</button><p>이번 달 판단과 실행 계획을 초안으로 정리해 주세요.</p>';
+    const holdingRows = holdings(), {ready, unresolved} = unresolvedHoldings(state, holdingRows);
+    const unresolvedSlot = host.querySelector('.ic-unresolved');
+    unresolvedSlot.hidden = !unresolved.length;
+    unresolvedSlot.innerHTML = unresolved.length ? '<b>종목 확인 필요</b><p>' + unresolved.map(c => esc(c.name)).join(', ') + ' 기록에 종목코드가 없어 리포트 자료에서 뺐어요. 자산 금액에는 영향이 없어요.</p>' : '';
+    const displayedSecond = cards.flatMap(c => {const o = secondOpinions.get(c.id); return o?.basis === secondOpinionBasis(c) ? [o] : [];});
+    const displayedFinal = cards.flatMap(c => {const o = secondOpinions.get(c.id), f = finalOpinions.get(c.id); return o?.basis === secondOpinionBasis(c) && f?.basis === finalReviewBasis(c, o) ? [f] : [];});
+    const step = reportNextStep({progress: committeeProgress(state, new Date(), holdingRows), ready, cards: all, secondOpinions: displayedSecond, finalOpinions: displayedFinal, loggedIn: !!accountIdentity()});
+    next.hidden = !step; host.querySelector('.ic-continue').hidden = true;
+    const nextButton = (action, label, primary = false) => '<button type="button" class="btn' + (primary ? ' finance primary' : '') + '" data-ic="' + esc(action) + '"' + (action === 'ask-second' && (secondRunning || typeof cloudClient === 'undefined' || !cloudClient) ? ' disabled' : '') + '>' + esc(label) + '</button>';
+    next.innerHTML = step ? '<b>' + esc(step.title) + '</b>' + (step.action ? '<div class="ic-tools">' + nextButton(step.action, step.label, true) + (step.secondary ? nextButton(step.secondary, step.secondaryLabel) : '') + '</div>' : '') + (step.detail ? '<p>' + esc(step.detail) + '</p>' : '') : '';
     renderCardSummary(cards);
     host.querySelector('.ic-list').innerHTML = cards.length ? cards.map(c => {
       const score = convictionTotal(c.conviction), band = score >= 80 ? 'high' : score >= 60 ? 'mid' : 'low';
@@ -957,7 +985,7 @@
   const valueText = v => v === null || v === undefined ? '미입력' : typeof v === 'object' ? JSON.stringify(displayValue(v)) : String(displayValue(v));
   function renderReview() {
     const missing = missingFairItems(importReview);
-    importDialog.querySelector('.ic-review').innerHTML = (missing.length ? '<div class="ic-fair-warning" role="status"><b>적정가 누락 ' + missing.length + '종목</b><button type="button" class="btn" data-ic="copy-missing">누락 종목만 GPT 재요청 복사</button></div>' : '') + '<h4>선택할 종목과 변경 이유를 확인하세요.</h4>' + importReview.map((item, i) => '<article class="ic-review-item"><label><input type="checkbox" data-ic-include="' + i + '"' + (item.excluded ? ' disabled' : item.include ? ' checked' : '') + '> ' + esc(item.card.name) + ' · ' + (item.excluded ? '적립식 종목 · 반영 제외' : item.existingId ? '기존 카드' : '새 카드 · ' + esc(labels[item.card.status] || item.card.status)) + '</label>' + (item.missingFairValue ? '<p class="ic-fair-warning">적정가 누락 – GPT에 다시 요청하거나 직접 입력</p>' : '') + '<div class="ic-diffs">' + (Object.entries(item.tracked).map(([k, d]) => '<p><b>' + esc(labels[k] || k) + '</b> ' + esc(valueText(d.from)) + ' → ' + esc(valueText(d.to)) + '</p>').join('') || '<p>추적 판단 변경 없음 · History 추가 없음</p>') + '</div><p>이유: ' + esc(item.reason || '입력 없음 (선택 사항)') + '</p><details class="ic-section"><summary>새 내용 / 변경된 텍스트와 기타 필드 ' + Object.keys(item.fields).length + '개</summary><div class="ic-section-content">' + Object.entries(item.fields).map(([k, d]) => '<p><b>' + esc(labels[k] || k) + '</b><br>' + esc(valueText(d.from)) + ' → ' + esc(valueText(d.to)) + '</p>').join('') + '</div></details></article>').join('') + '<button type="button" class="btn finance" data-ic="apply">선택 반영</button>';
+    importDialog.querySelector('.ic-review').innerHTML = (missing.length ? '<div class="ic-fair-warning" role="status"><b>적정가 누락 ' + missing.length + '종목</b><button type="button" class="btn" data-ic="copy-missing">누락 종목만 GPT 재요청 복사</button></div>' : '') + '<h4>선택할 종목과 변경 이유를 확인하세요.</h4>' + importReview.map((item, i) => '<article class="ic-review-item"><label><input type="checkbox" data-ic-include="' + i + '"' + (item.excluded ? ' disabled' : item.include ? ' checked' : '') + '> ' + esc(item.card.name) + ' · ' + (item.excluded ? '적립식 종목 · 반영 제외' : item.existingId ? '기존 카드' : '새 카드 · ' + esc(labels[item.card.status] || item.card.status)) + '</label>' + (item.preservedFairValue ? '<p class="ic-muted">GPT가 적정가를 주지 않아 기존 적정가를 유지해요</p>' : '') + (item.missingFairValue ? '<p class="ic-fair-warning">적정가 누락 – GPT에 다시 요청하거나 직접 입력</p>' : '') + '<div class="ic-diffs">' + (Object.entries(item.tracked).map(([k, d]) => '<p><b>' + esc(labels[k] || k) + '</b> ' + esc(valueText(d.from)) + ' → ' + esc(valueText(d.to)) + '</p>').join('') || '<p>추적 판단 변경 없음 · History 추가 없음</p>') + '</div><p>이유: ' + esc(item.reason || '입력 없음 (선택 사항)') + '</p><details class="ic-section"><summary>새 내용 / 변경된 텍스트와 기타 필드 ' + Object.keys(item.fields).length + '개</summary><div class="ic-section-content">' + Object.entries(item.fields).map(([k, d]) => '<p><b>' + esc(labels[k] || k) + '</b><br>' + esc(valueText(d.from)) + ' → ' + esc(valueText(d.to)) + '</p>').join('') + '</div></details></article>').join('') + '<button type="button" class="btn finance" data-ic="apply">선택 반영</button>';
   }
   const monthlyHost = document.getElementById(UI.monthly);
   let revisionReviews = [];
@@ -1226,7 +1254,7 @@
           const selected = [...importDialog.querySelectorAll('[data-ic-include]:checked')].map(el => importReview[Number(el.dataset.icInclude)]).filter(item => !item.excluded);
           if (!selected.length) throw Error('반영할 종목을 하나 이상 선택하세요.');
           applyBatch(state, selected, () => commit('선택한 Research ' + selected.length + '개를 반영했습니다.'), {uid, framework});
-          importDialog.close(); importReview = []; host.querySelector('.ic-next-step').dataset.appliedOwner = accountIdentity() || 'local'; render(); refreshPrices(); break;
+          importDialog.close(); importReview = []; render(); refreshPrices(); break;
         }
       }
     } catch (e) {const dialog = button.closest('dialog'); if (dialog?.querySelector('.ic-error')) dialog.querySelector('.ic-error').textContent = e.message; else notice(e.message); render();}
