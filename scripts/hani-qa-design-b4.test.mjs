@@ -19,31 +19,37 @@ const rosterContext={window:{},document:{getElementById:()=>null,querySelectorAl
 vm.runInNewContext(read('hani-organization-hub.js'),rosterContext);
 const roster=rosterContext.window.HaniOrganizationRoster;
 const alias=k=>({nauen:'naeun',suyeon:'sooyeon',doyeon:'dohyun'})[k]||k;
-const health=vm.createContext({...guard,esc,today:()=> '2026-11-01'});
+class HealthDate extends Date{constructor(...args){super(...(args.length?args:['2026-11-01T03:00:00Z']));}}
+const health=vm.createContext({...guard,esc,Date:HealthDate,today:()=> '2026-11-01'});
+const dailyOwner=cut(main,'function monthlyReportDaily(', 'function monthlyReportPrevMonth(');
+vm.runInContext(dailyOwner,health);
 vm.runInContext(cut(main,'function careKoreaPeriod(', 'function dietPaceMarkup(')+cut(main,'function healthRecordDay(', 'function renderDietPace('),health);
 const period=health.careKoreaPeriod(new Date('2026-11-01T03:00:00Z'));
 const goal=(value=80,extra={})=>({metric_id:'body_weight_kg',value,status:'active',year:2026,quarter:4,goal_type:'quarter',effective_from:'2026-10-01',effective_to:'2026-12-31',created_at:'2026-09-30T03:00:00Z',revision:1,...extra});
 const journey=(weights,goals=[goal()],height=180)=>health.weightJourneyData(freeze(weights.map((weight,i)=>({weight,date:['2026-10-01','2026-10-20','2026-11-01'][i]}))),freeze(goals),height,period);
 
-test('QA-2: native details encloses each original slot once; ticker and quote precede it',()=>{
+test('QA-2: persistent actions precede closed news; only ilbo and milestones stay inside',()=>{
   const block=cut(html,'      <details class="home-news"','      <button class="home-yuna-quick"');
   assert.match(block,/<summary>오늘의 소식/);assert.doesNotMatch(block,/<details[^>]+\bopen\b/);
-  for(const token of ['data-ilbo-home','data-milestone-home','id="settlementQuickCheck"']){assert.equal(html.split(token).length-1,1);assert.ok(block.includes(token));}
-  assert.ok(html.indexOf('id="lifeTicker"')<html.indexOf('id="homeNews"'));
+  for(const token of ['data-ilbo-home','data-milestone-home']){assert.equal(html.split(token).length-1,1);assert.ok(block.includes(token));}
+  const actions=cut(html,'      <div id="homeActions"','      <details class="home-news"');
+  assert.match(actions,/id="settlementQuickCheck"/);assert.doesNotMatch(block,/settlementQuickCheck|homeActions/);
+  assert.equal(html.split('id="settlementQuickCheck"').length-1,1);
+  assert.ok(html.indexOf('id="lifeTicker"')<html.indexOf('id="homeActions"'));
   assert.ok(html.indexOf('id="homeDialogueText"')<html.indexOf('id="homeNews"'));
 });
 
 test('QA-2: real count and alert owner preserve live buttons on repeated renders and collapse',()=>{
   const link={dataset:{haniCareView:'investmentCommittee'}},slot={dataset:{},children:[{hidden:false}],querySelectorAll:s=>s==='[data-hani-care-view]'?[link]:[],hasAttribute:k=>k==='data-hani-care-cards'};
-  const ilbo={hidden:false,hasAttribute:()=>false},milestone={hidden:false,hasAttribute:()=>false},host={children:[ilbo,milestone,slot],querySelector:()=>slot},count={},empty={};
+  const ilbo={hidden:false,hasAttribute:()=>false},milestone={hidden:false,hasAttribute:()=>false},host={children:[ilbo,milestone],querySelector:()=>slot},count={},empty={};
   const nodes={homeNewsItems:host,homeNewsCount:count,homeNewsEmpty:empty};let route;
   const c=vm.createContext({...guard,$:id=>nodes[id],window:{HaniInvestmentResearchCore:{committeeProgress:()=>({reminder:true,researchDone:false})}},state:freeze({}),careKoreaPeriod:()=>period,careCampusGroups:()=>[],campusAssignments:()=>[],certificateCareSorted:()=>[],showView:v=>route=v});
   vm.runInContext(cut(main,'function renderHaniCareCards(', 'function renderHaniCareHome('),c);
   c.renderHaniCareCards(host);const markup=slot.innerHTML,click=link.onclick;
-  c.updateHomeNewsCount();assert.equal(count.textContent,'3건');assert.equal(empty.hidden,true);
+  c.updateHomeNewsCount();assert.equal(count.textContent,'2건');assert.equal(empty.hidden,true);
   const details={open:false};for(const open of [true,false,true]){details.open=open;c.renderHaniCareCards(host);c.updateHomeNewsCount();assert.equal(slot.innerHTML,markup);assert.equal(link.onclick,click);link.onclick();assert.equal(route,'investmentCommittee');}
   for(const node of host.children)node.hidden=true;c.updateHomeNewsCount();assert.equal(count.textContent,'0건');assert.equal(empty.hidden,false);
-  assert.match(cut(main,'function renderHaniCareHome(', 'function renderHome('),/renderHaniCareCards\(news,/);
+  assert.match(cut(main,'function renderHaniCareHome(', 'function renderHome('),/renderHaniCareCards\(actions,/);
 });
 
 test('QA-2: actual ilbo home button, milestone navigation and asynchronous count hook remain reachable',()=>{
@@ -128,7 +134,7 @@ test('QA-11: down/up goals, exact arrival, overshoot, wrong direction and start=
   assert.equal(journey([100,90]).percent,50);assert.equal(journey([100,80]).reached,true);assert.equal(journey([100,75]).percent,100);
   const away=journey([100,105]);assert.equal(away.percent,0);assert.equal(away.away,true);assert.equal(away.reached,false);assert.match(health.weightJourneyMarkup(away),/멀어져/);
   assert.equal(journey([70,75],[goal(80)]).percent,50);assert.equal(journey([70,81],[goal(80)]).reached,true);
-  assert.equal(journey([80,80]).percent,100);assert.equal(journey([80,81]).percent,0);assert.equal(journey([80,81]).reached,false);
+  assert.equal(journey([80,80]).reached,true);assert.equal(journey([80,80]).percent,null);assert.equal(journey([80,81]).percent,null);assert.equal(journey([80,81]).reached,false);
   assert.match(health.weightJourneyMarkup(journey([100,80])),/🏅 승인 목표 달성/);assert.doesNotMatch(health.weightJourneyMarkup(away),/🏅/);
 });
 test('QA-11: missing/invalid data, no approved target, BMI conversion, effective dates',()=>{
@@ -145,7 +151,7 @@ test('QA-11: calendar retains empty vs explicit zero; real threshold bins, leap 
   assert.deepEqual(plain(m[0].days.slice(0,7).map(d=>[d.steps,d.level])),[[0,'zero'],[null,'empty'],[4999,'low'],[5000,'mid'],[10000,'high'],[null,'empty'],[null,'empty']]);
   const markup=health.stepCalendarMarkup(m);assert.match(markup,/2026-11-01 · 0보/);assert.match(markup,/2026-11-02 · 미기록/);assert.match(markup,/<summary>날짜별 걸음 텍스트로 보기/);assert.match(markup,/10,000보 이상/);assert.equal(JSON.stringify(rows),before);
   assert.equal(health.stepCalendarData([],'month','2024-02-29')[0].days.length,29);assert.equal(health.stepCalendarData([],'year').length,12);assert.equal(health.stepCalendarData([],'all').length,0);
-  assert.match(health.stepCalendarMarkup([]),/표시할 걸음 기록이 없어요/);assert.equal(health.stepCalendarData([{date:'2026-11-02',steps:100}],'month')[0].days[1].steps,null);
+  for(const mode of ['month','year','all'])assert.match(health.stepCalendarMarkup(health.stepCalendarData([],mode,'2026-11-01')),/표시할 걸음 기록이 없어요/);assert.equal(health.stepCalendarData([{date:'2026-11-02',steps:100}],'month')[0].days[1].steps,null);
 });
 
 test('QA-11: actual body and exercise owners update the same slots without state or storage writes',()=>{
@@ -153,7 +159,7 @@ test('QA-11: actual body and exercise owners update the same slots without state
   const state=freeze({body:[{id:'a',date:'2026-10-01',weight:100},{id:'b',date:'2026-11-01',weight:80}],goalRegistry:[goal()],profile:{heightCm:180},goals:{weight1:90,weight2:80},ui:{exercisePeriod:'month'},exercise:[{id:'s',date:'2026-11-01',steps:5000,distance:3}]});
   const before=JSON.stringify(state),noop=()=>{};
   const c=vm.createContext({...guard,state,$:get,esc,n:x=>Number(x)||0,num:String,window:{},document:{querySelectorAll:()=>[]},today:()=> '2026-11-01',careKoreaPeriod:()=>period,careApprovedGoals:health.careApprovedGoals,renderDietPace:noop,bodyPeriodRows:a=>a,exercisePeriodRows:a=>a,lifePeriodLabel:()=> 'fixture',lifePeriodBasis:()=> 'fixture',uiPageSlice:(k,rows)=>({rows}),uiPageSize:()=>8,uiMountPagination:noop,BODY_METRICS:{},recordIdAttributes:()=>'',bodyMetric:String,renderBodyMetricStats:noop,drawBody:noop,dataHubRenderDashboard:noop,exerciseChanged:new Set(['fixture']),drawExercise:noop});
-  vm.runInContext(cut(main,'function healthRecordDay(', 'function renderDietPace(')+cut(main,'function renderBody(){','function renderBodyMetricStats(')+cut(main,'function renderExercise(){','function drawExercise('),c);
+  vm.runInContext(dailyOwner+cut(main,'function healthRecordDay(', 'function renderDietPace(')+cut(main,'function renderBody(){','function renderBodyMetricStats(')+cut(main,'function renderExercise(){','function drawExercise('),c);
   c.renderBody();c.renderExercise();const weightSlot=get('bodyJourney'),stepSlot=get('exerciseStepCalendar');
   assert.match(weightSlot.innerHTML,/🏅 승인 목표 달성/);assert.match(get('dietStats').innerHTML,/journey-target/);assert.match(get('dietStats').innerHTML,/journey-change/);
   assert.match(stepSlot.innerHTML,/2026-11-01 · 5,000보/);assert.match(stepSlot.innerHTML,/2026-11-02 · 미기록/);
@@ -187,4 +193,134 @@ test('release closure still exactly 128, no missing files or newly packaged imag
   // so the static closure walker cannot see it. Keep its original catalog id.
   assert.equal(JSON.parse(read('assets/data/newsroom-4cut/issues.json')).issues[0].image,'001');
   assert.ok(fs.existsSync(new URL('../assets/newsroom-4cut/001.webp',import.meta.url)));
+});
+
+// qa-b8: exercise the existing owners with synthetic DOM/state, no new runtime layer.
+class HomeElement{
+  constructor(tag='div'){this.tagName=tag;this.children=[];this.dataset={};this.hidden=false;this.attrs={};this.style={};this.classList={add(){},remove(){},toggle(){}};this._markup='';}
+  get firstChild(){return this.children[0]||null;}
+  get nextSibling(){return this.parentNode?.children[this.parentNode.children.indexOf(this)+1]||null;}
+  insertBefore(node,before){if(node.parentNode){const siblings=node.parentNode.children;siblings.splice(siblings.indexOf(node),1);}const i=before?this.children.indexOf(before):this.children.length;assert.ok(i>=0,'valid insertion anchor');this.children.splice(i,0,node);node.parentNode=this;return node;}
+  setAttribute(k,v){this.attrs[k]=v;}
+  hasAttribute(k){return Object.hasOwn(this.attrs,k)||k==='data-hani-care-cards'&&Object.hasOwn(this.dataset,'haniCareCards');}
+  set innerHTML(value){this._markup=value;this._buttons=null;}
+  get innerHTML(){return this._markup;}
+  querySelector(selector){if(selector===':scope > [data-hani-care-cards]')return this.children.find(x=>x.hasAttribute('data-hani-care-cards'))||null;if(selector==='button')return (this._close??=new HomeElement('button'));return null;}
+  querySelectorAll(selector){
+    const key=({'[data-hani-care-view]':'haniCareView','[data-check-go]':'checkGo'})[selector];if(!key)return [];
+    const attr=key==='haniCareView'?'data-hani-care-view':'data-check-go';this._buttons??={};
+    return this._buttons[key]??=(Array.from(this.innerHTML.matchAll(new RegExp(attr+'="([^"]+)"','g')),m=>{const el=new HomeElement('button');el.dataset[key]=m[1];return el;}));
+  }
+}
+function homeOwners(){
+  const nodes=Object.fromEntries(['home','homeActions','homeNews','homeNewsItems','homeNewsCount','homeNewsEmpty','settlementQuickCheck'].map(id=>[id,new HomeElement()]));
+  nodes.home.insertBefore(nodes.homeActions,null);nodes.home.insertBefore(nodes.homeNews,null);nodes.homeNews.open=false;
+  nodes.homeNews.insertBefore(nodes.homeNewsItems,null);nodes.homeActions.insertBefore(nodes.settlementQuickCheck,null);
+  const ilbo=new HomeElement('aside'),milestone=new HomeElement('aside');ilbo.hidden=milestone.hidden=true;
+  nodes.homeNewsItems.insertBefore(ilbo,null);nodes.homeNewsItems.insertBefore(milestone,null);
+  const routes=[],model={checklist:null,install:true,settlement:false};
+  const c=vm.createContext({...guard,esc,window:{},state:{},$:id=>nodes[id]||null,today:()=> '2026-11-18',careKoreaPeriod:()=>period,careCampusGroups:()=>[],campusAssignments:()=>[],certificateCareSorted:()=>[],haniCareNeedsInstall:()=>model.install,haniCareChecklist:()=>model.checklist,settlementCheckModel:source=>({visible:model.settlement,month:'2026-11',items:[{label:'월간보고서',detail:source.monthlyReports?.length?'반영 기록 있음':'기록 확인 필요',go:'monthlyReport'}]}),showView:id=>routes.push(id),document:{createElement:tag=>new HomeElement(tag),querySelector:()=>null,querySelectorAll:()=>[],body:{dataset:{}}}});
+  vm.runInContext(cut(main,'function haniCareMemory(', 'function haniCareNeedsInstall(')+main.split('\n').find(l=>l.startsWith('function haniCareNotice('))+cut(main,'function renderHaniCareCards(', 'function renderHome(')+cut(main,'function renderSettlementCheck(', 'function renderReading('),c);
+  return {c,nodes,ilbo,milestone,model,routes};
+}
+
+test('qa-b8 HIGH: storage warning stays visible above closed news; persistent actions and empty slot collapse',()=>{
+  const f=homeOwners(),{c,nodes,model}=f;model.checklist={items:[{done:false}]};model.settlement=true;
+  c.renderHaniCareHome();const memory=c.haniCareMemory(),notice=memory.homeNotice,chip=memory.checklistChip,care=nodes.homeActions.querySelector(':scope > [data-hani-care-cards]');
+  assert.equal(nodes.homeNews.open,false);assert.equal(notice.parentNode,nodes.homeActions);assert.equal(notice.hidden,false);
+  assert.equal(chip.parentNode,nodes.homeActions);chip.onclick();assert.deepEqual(f.routes,['tasks']);
+  assert.equal(nodes.settlementQuickCheck.hidden,false);nodes.settlementQuickCheck.querySelectorAll('[data-check-go]')[0].onclick();assert.equal(f.routes.at(-1),'monthlyReport');
+  assert.equal(nodes.homeNewsItems.children.length,2);assert.equal(nodes.homeNewsCount.textContent,'0건');assert.equal(nodes.homeNewsEmpty.hidden,false);
+  f.ilbo.hidden=f.milestone.hidden=false;c.renderHaniCareHome();assert.equal(nodes.homeNewsCount.textContent,'2건');
+  assert.equal(c.haniCareMemory().homeNotice,notice);assert.equal(nodes.homeActions.querySelector(':scope > [data-hani-care-cards]'),care);
+  const close=notice.querySelector('button').onclick;close();assert.equal(notice.hidden,true);assert.equal(nodes.homeNewsCount.textContent,'2건');
+  model.settlement=false;model.checklist=null;c.renderHaniCareHome();assert.ok(nodes.homeActions.children.every(x=>x.hidden));
+  assert.match(css,/#home #homeActions:not\(:has\(> :not\(\[hidden\]\)\)\)\{display:none}/);assert.match(css,/#home #homeActions\{[^}]*margin:0;padding:0/);
+  assert.doesNotMatch(cut(main,'function renderHaniCareHome(', 'function renderHome('),/createElement\(['"]details|addEventListener/);
+});
+
+test('qa-b8 HIGH: exact-start, all-before-effective and unknowable directions never contradict progress',()=>{
+  const from=rows=>health.weightJourneyData(freeze(rows),freeze([goal(70)]),180,period);
+  const same=from([{date:'2026-10-01',weight:70},{date:'2026-10-15',weight:69}]);
+  assert.equal(same.percent,null);assert.equal(same.reached,false);assert.equal(same.away,false);assert.doesNotMatch(health.weightJourneyMarkup(same),/<progress|🏅|멀어져/);
+  const before=from([{date:'2026-09-10',weight:80},{date:'2026-09-25',weight:70}]);
+  assert.equal(before.percent,null);assert.equal(before.reached,false);assert.equal(before.away,false);assert.equal(before.target,70);
+  const unknown=from([{date:'2026-09-25',weight:68},{date:'2026-10-15',weight:67}]);
+  assert.equal(unknown.direction,0);assert.equal(unknown.percent,null);assert.equal(unknown.away,false);
+  const markup=health.weightJourneyMarkup(unknown);assert.match(markup,/68\.00kg/);assert.match(markup,/67\.00kg/);assert.match(markup,/70\.00kg/);assert.doesNotMatch(markup,/<progress|🏅/);
+});
+
+test('qa-b8 HIGH: approved metric history and measurements keep loss/gain direction after crossing',()=>{
+  const history=[goal(80,{effective_from:'2026-09-01',effective_to:'2026-09-30',created_at:'2026-08-30T03:00:00Z',quarter:3,status:'superseded'}),goal(70)];
+  const rows=freeze([{date:'2026-09-25',weight:68},{date:'2026-10-15',weight:67}]);
+  const loss=health.weightJourneyData(rows,freeze(history),180,period);assert.equal(loss.direction,-1);assert.equal(loss.reached,true);assert.equal(loss.percent,100);assert.equal(loss.away,false);
+  const down=health.weightJourneyData(freeze([{date:'2026-09-25',weight:80},{date:'2026-10-01',weight:70},{date:'2026-10-15',weight:69}]),freeze([goal(70)]),180,period);
+  assert.equal(down.percent,100);assert.equal(down.reached,true);assert.equal(down.away,false);
+  const up=health.weightJourneyData(freeze([{date:'2026-09-25',weight:60},{date:'2026-10-01',weight:70},{date:'2026-10-15',weight:71}]),freeze([goal(70)]),180,period);
+  assert.equal(up.direction,1);assert.equal(up.percent,100);assert.equal(up.away,false);
+  const crossed=health.weightJourneyData(freeze([{date:'2026-09-20',weight:80},...rows]),freeze([goal(70)]),180,period);
+  assert.equal(crossed.direction,-1);assert.equal(crossed.reached,true);assert.equal(crossed.away,false);
+  // Broad invariant across exact/crossed/unknown baselines, both directions and stale records.
+  for(const initial of [60,70,80])for(const baseline of [60,70,80])for(const current of [50,60,70,80,90]){
+    const model=health.weightJourneyData(freeze([{date:'2026-09-20',weight:initial},{date:'2026-10-01',weight:baseline},{date:'2026-10-15',weight:current}]),freeze([goal(70)]),180,period);
+    assert.ok(!(model.percent>0&&model.away));assert.ok(!(model.reached&&model.away));if(model.away)assert.equal(model.percent,0);
+  }
+  const draft=health.weightJourneyData(rows,freeze([goal(80,{status:'draft',effective_from:'2026-09-01'}),goal(70)]),180,period);assert.equal(draft.percent,null);
+});
+
+test('qa-b8 MEDIUM: calendar empty states work in month/year/all, period filtering, zero and leap dates',()=>{
+  for(const mode of ['month','year','all'])for(const rows of [[],[{date:'invalid',steps:1}],[{date:'2026-11-02',steps:100}]])assert.match(health.stepCalendarMarkup(health.stepCalendarData(freeze(rows),mode,'2026-11-01')),/표시할 걸음 기록이 없어요/);
+  for(const mode of ['month','year'])assert.match(health.stepCalendarMarkup(health.stepCalendarData([{date:'2025-11-01',steps:100}],mode,'2026-11-01')),/표시할 걸음 기록이 없어요/);
+  const zero=health.stepCalendarData([{date:'2024-02-29',steps:0}],'month','2024-02-29');assert.equal(zero[0].days.length,29);assert.match(health.stepCalendarMarkup(zero),/2024-02-29 · 0보/);assert.doesNotMatch(health.stepCalendarMarkup(zero),/표시할 걸음 기록이 없어요/);
+});
+
+test('qa-b8 MEDIUM: calendar defaults to KST across UTC midnight boundary without today()',()=>{
+  class BoundaryDate extends Date{constructor(...a){super(...(a.length?a:['2026-11-01T15:30:00Z']));}}
+  const c=vm.createContext({...guard,Date:BoundaryDate,esc,today:()=>{throw Error('local today() must not be used');}});
+  vm.runInContext(dailyOwner+cut(main,'function careKoreaPeriod(', 'function dietPaceMarkup(')+cut(main,'function healthRecordDay(', 'function renderDietPace('),c);
+  const model=c.stepCalendarData(freeze([{date:'2026-11-02',steps:2345},{date:'2026-11-03',steps:9999}]),'month');assert.equal(model[0].days[1].steps,2345);assert.equal(model[0].days[2].steps,null);
+});
+
+test('qa-b8 MEDIUM/LOW: step and weight duplicate dates use the actual monthly owner latest timestamp rule',()=>{
+  const latest={date:'2026-10-01',weight:100,steps:5000,updatedAt:'2026-10-02T03:00:00Z',id:'a'},old={date:'2026-10-01',weight:60,steps:1,updatedAt:'2026-10-01T03:00:00Z',id:'z'},current={date:'2026-10-15',weight:90,steps:10000,createdAt:'2026-10-15T03:00:00Z'};
+  const dataHub=vm.createContext({koreaDate:value=>Number.isFinite(Date.parse(value)),stable:JSON.stringify});vm.runInContext(cut(main,'function stamp(row)', 'function events('),dataHub);
+  for(const rows of [[latest,old,current],[old,current,latest]]){
+    freeze(rows);const before=JSON.stringify(rows),expected=health.monthlyReportDaily(rows),w=health.weightJourneyData(rows,freeze([goal(80)]),180,period),m=health.stepCalendarData(rows,'month','2026-10-31');
+    assert.equal(w.start,expected[0].weight);assert.equal(w.current,90);assert.equal(w.percent,50);assert.equal(m[0].days[0].steps,expected[0].steps);assert.equal(m[0].days[14].steps,10000);assert.deepEqual(plain(dataHub.daily(rows,[])),plain(expected));assert.equal(JSON.stringify(rows),before);
+  }
+  for(const rows of [[{date:'2026-10-01',weight:100,steps:5,createdAt:'2026-10-02T03:00:00Z'},old], [{date:'2026-10-01',weight:100,steps:5},{date:'2026-10-01',weight:90,steps:0}]]){
+    freeze(rows);const expected=health.monthlyReportDaily(rows)[0];assert.equal(health.weightJourneyData(rows,[],180,period).current,expected.weight);assert.equal(health.stepCalendarData(rows,'month','2026-10-31')[0].days[0].steps,expected.steps);
+  }
+});
+
+test('qa-b8 MEDIUM: curriculum import refreshes existing home action owner with one existing commit',()=>{
+  const f=homeOwners(),{c,nodes}=f,course={id:'c',name:'과목',curriculum:[]},sem={courses:[course]};let commits=0;
+  nodes.campusCurriculumImport=new HomeElement('button');nodes.campusDetailCourseId={value:'c'};nodes.campusCurriculumBulk={value:'1\t수업\t내용\t과제'};
+  Object.assign(c,{saveEntry:(button,fn)=>fn,campusActiveSemester:()=>sem,parseBulkRows:()=>[['1','수업','내용','과제']],normalizeCampusCurriculum:row=>row,commit:()=>{commits++;return true;},openCampusCourseDetail:()=>{},careCampusGroups:()=>course.curriculum.length?[{key:'last-week',week:'1',rows:[{sem,course,item:course.curriculum[0]}]}]:[]});
+  c.renderHaniCareHome();const care=nodes.homeActions.querySelector(':scope > [data-hani-care-cards]');assert.equal(care.hidden,true);
+  vm.runInContext(main.split('\n').find(line=>line.startsWith('$("campusCurriculumImport").onclick=')),c);nodes.campusCurriculumImport.onclick();
+  assert.equal(commits,1);assert.equal(course.curriculum.length,1);assert.equal(nodes.campusCurriculumBulk.value,'');assert.equal(care.hidden,false);assert.match(care.innerHTML,/지난주 1주차/);assert.equal(nodes.homeNewsCount.textContent,'0건');
+});
+
+test('qa-b8 MEDIUM: monthly generation success/failure/cancel refresh existing action owner without extra saves',async()=>{
+  for(const result of ['success','save-failure','blocked','cancel']){
+    const f=homeOwners(),{c,nodes,model}=f;let saves=0;const previous={month:'2026-10',view:'old'};c.state.monthlyReports=result==='cancel'?[previous]:[];
+    Object.assign(c,{monthlyReportGeneration:null,monthlyReportGenerationFailure:null,monthlyReportMonth:'2026-10',renderMonthlyReport:()=>{},dataHubRefresh:async()=>{},monthlyReportKoreaDate:()=> '2026-11-18',monthlyReportSnapshot:()=>({recordCount:1}),monthlyReportStored:()=>result==='cancel'?previous:null,monthlyReportDate:x=>x,monthlyReportBuildCurrent:()=>true,monthlyReportCaptureView:()=> 'new report',confirm:()=>false,save:()=>{saves++;return {ok:result!=='save-failure'};},toast:()=>{}});
+    c.window.HANI_GOAL_PROGRESS={read:()=>result==='blocked'?null:{}};
+    // A changed day/visible reader and the report-derived settlement card must be refreshed together.
+    c.renderHaniCareHome();f.ilbo.hidden=false;model.settlement=true;
+    vm.runInContext(cut(main,'async function monthlyReportGenerate(', 'function renderMonthlyReport('),c);await c.monthlyReportGenerate('2026-10');
+    assert.equal(nodes.homeNewsCount.textContent,'1건');assert.equal(nodes.settlementQuickCheck.hidden,false);assert.equal(saves,['success','save-failure'].includes(result)?1:0);
+    assert.match(nodes.settlementQuickCheck.innerHTML,result==='success'||result==='cancel'?/반영 기록 있음/:/기록 확인 필요/);assert.equal(c.state.monthlyReports.length,result==='success'||result==='cancel'?1:0);assert.equal(c.monthlyReportGeneration,null);
+  }
+});
+
+test('qa-b8 MEDIUM: actual showView(home) already refreshes care; shared owner now also refreshes settlement/count',()=>{
+  const f=homeOwners(),{c,nodes,model}=f;for(const id of ['title','app'])nodes[id]=new HomeElement();
+  Object.assign(c,{organizationRoute:()=>null,settingsRoute:()=>null,location:{hash:'',href:'https://fixture.invalid/'},history:{replaceState(){}},clearTimeout(){},navigationTimer:0,navigationCurrent:'',navigationBooted:false,loginGateUnlocked:false,NAVIGATION_VIEWS:new Set(['home']),pageMeta:{home:['대시보드','','home']},setBanner(){},updateFinishScope(){},cloudUser:null});c.window.scrollTo=()=>{};
+  vm.runInContext(cut(main,'function showView(', 'const QUICK_JUMP_ITEMS='),c);
+  c.showView('home');const notice=c.haniCareMemory().homeNotice,chipCount=nodes.homeActions.children.length;assert.equal(nodes.settlementQuickCheck.hidden,true);
+  model.settlement=true;f.milestone.hidden=false;c.showView('home');assert.equal(nodes.settlementQuickCheck.hidden,false);assert.equal(nodes.homeNewsCount.textContent,'1건');assert.equal(nodes.homeNews.open,false);
+  assert.equal(c.haniCareMemory().homeNotice,notice);assert.equal(nodes.homeActions.children.length,chipCount);
+  model.settlement=false;f.milestone.hidden=true;c.showView('home');assert.equal(nodes.settlementQuickCheck.hidden,true);assert.equal(nodes.homeNewsCount.textContent,'0건');
 });
