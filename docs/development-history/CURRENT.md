@@ -1,6 +1,6 @@
 # 2026-11-01 · 라운지 이미지 전광판 QA-20 (Codex)
 
-hani/lounge-billboard / qa-b4 / base·로컬 ref 583cc97 / 표시 2.9.246 유지. 기존 슬롯에 200px/모바일168px 이미지 전광판·점44px·작은 pause, 직원/발행 일보/weeklyBest/시장4컷/날짜별 가상광고2개 연결. 발행 원본의 제목·날짜만 기존 library 빌드에 투영, 새 runtime/fetch/AI 호출 없음. **지정 Node8명령 모두 통과(신규9/9·views7/7·기존QA12/12), syntax5/5·library check PASS, closure128/missing0·목록 동일·원본220글 보존.** 퀸은 library poll/voteChoice 전달 및 월말 확정 경계 부재로 사용자 중단 조건 적용, 투표/수상자 발표 미구현. 기존 votePoll·저장·Cloud·버전/cache 불변. 미커밋·commit/push/merge/배포 없음. 브라우저·원격 최신성·운영 미검증, 검토 담당 확인 대기. Notion append 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-11-01-lounge-billboard.md). 아래 타 담당·과거 기록 보존.
+hani/lounge-billboard / qa-b4 / 커밋된 전광판 ee88f6a 위 후속 미커밋 / 표시 2.9.246 유지. 정적 library poll/voteChoice 전달·11월3일 사내 인기상 투표·직원19표 고정 seed/canon·자기투표 금지·화면 전용 월말 마감·다음 달 수상자와 진행 투표 슬라이드 구현. **실제 votePoll/persist/save/보호 writer/loadState로 직원19표+회장님1표 저장·재로드 확인. 게시판10+전광판+QA 총12명령 PASS(집계형37/37), syntax7/7·library check PASS·closure128/missing0·목록 동일·기존220글 보존.** 저장·투표·AI/Cloud 원문과 main/index·버전/cache·office 유지. commit/push/merge/배포 없음. 화면 마감은 저장 함수의 시간 제한/결과 스냅샷을 추가하지 않음. 브라우저·실제 Cloud/AI·원격 최신성·운영·최종 release gate 미검증. Notion append 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-11-01-lounge-billboard.md). 아래 타 담당·과거 기록 보존.
 
 # 2026-11-01 · QA 연혁 단일 원장 QA-5·13·14 (Codex)
 

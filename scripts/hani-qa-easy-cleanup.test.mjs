@@ -47,13 +47,14 @@ test('QA-3: actual quick jump retains legacy keywords and unchanged route id',()
 
 test('QA-7: shared employee result, persistent banner nodes, actual rotation/pause/links; zero writes',()=>{
   const f=bannerFixture(),get=k=>f.fields.get(`[data-board-banner-${k}]`),before=JSON.stringify(f.c.state);
-  f.run('paintLoungeBanner();syncBanner();');assert.equal(get('kicker').textContent,'이달의 직원');assert.equal(get('title').textContent,'하니');assert.match(get('copy').textContent,/1건/);
+  f.run('paintLoungeBanner();syncBanner();');assert.equal(get('kicker').textContent,'👑 10월의 퀸');
+  f.press('[data-board-banner-dot]',1);assert.equal(get('kicker').textContent,'이달의 직원');assert.equal(get('title').textContent,'하니');assert.match(get('copy').textContent,/1건/);
   const link=get('link');f.press('[data-board-banner-link]');assert.equal(f.c.route,'organization/people/hani');
   f.tick();assert.equal(get('kicker').textContent,'HANI 일보 · 제 2호');assert.equal(get('link'),link);assert.equal(link.attrs.href,'#ilbo');assert.ok(fs.existsSync(new URL('../'+get('image').attrs.src,import.meta.url)));
   f.press('[data-board-banner-link]');assert.equal(f.c.route,'ilbo');
   f.c.document.activeElement=link;f.tick();assert.equal(get('kicker').textContent,'HANI 일보 · 제 2호','focused banner does not rotate');f.c.document.activeElement=null;
   f.press('[data-board-banner-pause]');assert.equal(f.timers.size,0);assert.equal(get('pause').attrs['aria-pressed'],'true');
-  f.press('[data-board-banner-dot]',0);assert.equal(get('kicker').textContent,'이달의 직원');assert.equal(f.timers.size,0);
+  f.press('[data-board-banner-dot]',1);assert.equal(get('kicker').textContent,'이달의 직원');assert.equal(f.timers.size,0);
   f.press('[data-board-banner-pause]');assert.equal(f.timers.size,1);f.run('syncBanner();syncBanner()');assert.equal(f.timers.size,1);
   assert.equal(JSON.stringify(f.c.state),before);
   assert.doesNotMatch(slice(board,'  // Read-only lounge promotion.', '  function paintLiving('),/\b(save|commit|persist|setItem|removeItem|insert|upsert)\s*\(/);
@@ -70,7 +71,7 @@ test('QA-7: navigation, hidden page, pagehide and reduced motion stop the one ti
   f.media.matches=true;f.events.media();assert.equal(f.timers.size,0);assert.equal(f.fields.get('[data-board-banner-pause]').disabled,true);
   f.press('[data-board-banner-dot]',0);assert.equal(f.timers.size,0);
   f.media.matches=false;f.events.media();assert.equal(f.timers.size,1);
-  f.c.state=freeze({boardPosts:[],boardComments:[]});f.run('paintLoungeBanner()');assert.equal(f.fields.get('[data-board-banner-kicker]').textContent,'HANI 일보 · 제 2호','no fabricated employee without a real result');
+  f.c.state=freeze({boardPosts:[],boardComments:[]});f.run('paintLoungeBanner()');assert.equal(f.fields.get('[data-board-banner-kicker]').textContent,'👑 10월의 퀸','fixed result remains without a fabricated employee');
 });
 
 test('QA-7: real unread badge/read tracking stays while paintLiving emits no unread post buttons',()=>{

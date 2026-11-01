@@ -3,6 +3,11 @@
 #board .board-promo>a{position:absolute;inset:0;display:flex;align-items:center;min-width:0;color:#fff;text-decoration:none}
 #board .board-promo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%}
 #board .board-promo>a:after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(0,0,0,.86),rgba(0,0,0,.72));pointer-events:none}
+#board .board-promo>a[data-board-queen-season="autumn"]:after{background:linear-gradient(110deg,#422015ed,#75401cc7,#181020e6)}
+#board .board-promo>a[data-board-queen-season="winter"]:after{background:linear-gradient(110deg,#14283fed,#293c65c7,#20132fe6)}
+#board .board-promo>a[data-board-queen-season="spring"]:after{background:linear-gradient(110deg,#422238ed,#603c58c7,#233a2fe6)}
+#board .board-promo>a[data-board-queen-season="summer"]:after{background:linear-gradient(110deg,#133438ed,#215064c7,#182b45e6)}
+#board .board-poll-result{display:inline-block;padding:8px 12px}
 #board .board-promo a>span{position:relative;z-index:1;display:grid;gap:6px;min-width:0;width:100%;padding:18px 24px 52px}
 #board .board-promo small{color:#fff;font-size:12px;line-height:1.5}
 #board .board-promo b{color:#fff;font-size:clamp(22px,3.2vw,32px);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

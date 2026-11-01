@@ -1127,7 +1127,7 @@
     return short?(peer?FUN_PEER_LINES[authorId]||voice[0]:voice[0]):voice[1].replace(/[.!?]+$/,"")+". "+(peer?"그 한 표에 저도 살짝 올라탑니다":FUN_TOPIC_LINES[topic])+".";
   }
   function dailyThread(thread,source,now){
-    if(!lightConversation(thread)||hash(source)%3!==0)return naturalThread(thread);
+    if(thread.poll||!lightConversation(thread)||hash(source)%3!==0)return naturalThread(thread);
     const month=new Date(now+9*3600000).getUTCMonth()+1;
     const eligible=LOUNGE_FUN_POOL.filter(t=>(!t.month||t.month===month)&&person(t.authorId)&&personaMap()[t.authorId]);
     const seasonal=hash(source+":season")%6===0;
@@ -1153,7 +1153,8 @@
   const restrictions=value=>value===null||value===undefined||value===""?[]:Array.isArray(value)?value:[value];
   function libraryEligible(thread,now){
     const seasons=restrictions(thread.season),days=restrictions(thread.weekday),date=thread.date==null?"":safeRecordDate(thread.date);
-    return (thread.date==null||!!date&&date<=dayKey(now))&&(!seasons.length||seasons.includes(seasonFor(now)))&&(!days.length||days.includes(new Date(now+9*3600000).getUTCDay()));
+    return (!/^queen-/.test(thread.id)||date.slice(0,7)===dayKey(now).slice(0,7))&&
+      (thread.date==null||!!date&&date<=dayKey(now))&&(!seasons.length||seasons.includes(seasonFor(now)))&&(!days.length||days.includes(new Date(now+9*3600000).getUTCDay()));
   }
   function generateDaily(now=Date.now(),rows=posts()){
     if(!canWrite()||!sourcesReady())return rows;
@@ -1168,9 +1169,11 @@
         (!next.some(p=>p.libraryId===t.id)||exhausted&&next.filter(p=>p.libraryId===t.id).every(p=>Date.parse(p.createdAt)<=now-90*86400000)))
         .sort((a,b)=>hash(day+a.id)-hash(day+b.id));
       if(!available.length)break;
-      const picked=hash(source)%3===0?available.find(t=>lightConversation(t))||available[0]:available[0];
-      const thread=dailyThread(picked,source,now),at=start+(8+12*slot/(limit-1))*3600000+hash(source)%40*60000;
+      const picked=available.find(t=>t.poll&&t.date===day)||available.find(t=>t.poll&&/^queen-/.test(t.id))||
+        (hash(source)%3===0?available.find(t=>lightConversation(t))||available[0]:available[0]);
+      const thread=dailyThread(picked,source,now),at=(/^queen-/.test(thread.id)?Date.parse(thread.date+"T00:00:00+09:00"):start)+(8+12*slot/(limit-1))*3600000+hash(source)%40*60000;
       const row={id:uid(),authorId:thread.authorId,category:thread.category,title:thread.title,body:thread.body,
+        ...(thread.poll?{poll:{options:[...thread.poll.options],votes:{...thread.poll.votes}}}:{}),
         topics:[...thread.topics],createdAt:new Date(at).toISOString(),scheduledAt:new Date(at).toISOString(),
         generated:true,libraryId:thread.id,pending:at>now,draft:mode==="review",ownerTied:false,sourceEventId:source};
       next.push(row);today.push(row);
@@ -1256,6 +1259,7 @@
     return thread.comments.map((c,i)=>({id:ids[i],postId:row.id,authorId:c.authorId,body:c.body,
       createdAt:new Date(at).toISOString(),scheduledAt:new Date(at+c.afterMin*60000).toISOString(),
       parentId:Number.isInteger(c.replyTo)?ids[c.replyTo]:"",libraryId:row.libraryId,
+      ...(Number.isInteger(c.voteChoice)?{voteChoice:c.voteChoice}:{}),
       generated:true,pending:true,threadId:"library:"+row.id}));
   }
   function draftAction(kind,id,action,now=Date.now()){
@@ -1317,18 +1321,40 @@
     let text='<div class="acts board-reactions" aria-label="이모지 반응">'+ADDRESS_RULES.reactions.map(e=>'<button class="btn sm" type="button" data-board-reaction="'+e+'" data-key="'+escape(post.id)+'" aria-pressed="'+String(post.reactions?.[e]?.owner===true)+'"'+disabled+'>'+e+' '+count(post.reactions?.[e]?.count)+'</button>').join("")+'</div>';
     if(post.poll&&Array.isArray(post.poll.options)){
       const votes=Object.values(post.poll.votes||{}),total=votes.filter(v=>Number.isInteger(v)&&v>=0&&v<post.poll.options.length).length;
-      text+='<fieldset class="board-poll"><legend>사내 투표 · '+total+'표</legend>'+post.poll.options.map((option,i)=>'<button class="btn" type="button" data-board-vote="'+i+'" data-key="'+escape(post.id)+'" aria-pressed="'+String(post.poll.votes?.[actor()]===i)+'"'+disabled+'>'+escape(publicText(option))+' · '+votes.filter(v=>v===i).length+'표</button>').join("")+'</fieldset>';
+      const closed=queenMonth(post)&&!queenPollOpen(post);
+      text+='<fieldset class="board-poll"><legend>사내 투표 · '+total+'표'+(closed?' · 마감':'')+'</legend>'+post.poll.options.map((option,i)=>closed?
+        '<span class="board-poll-result">'+escape(publicText(option))+' · '+votes.filter(v=>v===i).length+'표</span>':
+        '<button class="btn" type="button" data-board-vote="'+i+'" data-key="'+escape(post.id)+'" aria-pressed="'+String(post.poll.votes?.[actor()]===i)+'"'+disabled+'>'+escape(publicText(option))+' · '+votes.filter(v=>v===i).length+'표</button>').join("")+'</fieldset>';
     }
     return text;
+  }
+  const queenMonth=post=>/^queen-(\d{4}-\d{2})$/.exec(post?.libraryId||'')?.[1]||'';
+  const queenPollOpen=(post,now=Date.now())=>queenMonth(post)===dayKey(now).slice(0,7)&&Date.parse(post.createdAt)<=now;
+  function queenTally(post){
+    if(!post?.poll?.options?.length)return null;
+    const members=roster()?.people||[],votes=Object.values(post.poll.votes||{}),owner=post.poll.votes?.[actor()];
+    const choices=post.poll.options.map((name,index)=>({index,member:members.find(p=>p.name===name),count:votes.filter(v=>v===index).length})).filter(c=>c.member);
+    choices.sort((a,b)=>b.count-a.count||Number(b.index===owner)-Number(a.index===owner)||members.indexOf(a.member)-members.indexOf(b.member));
+    return choices[0]||null;
+  }
+  const fixedQueenResults=Object.freeze({'2026-10':'seoyun'});
+  function queenSlides(now=Date.now()){
+    const month=dayKey(now).slice(0,7),previous=new Date(Date.UTC(Number(month.slice(0,4)),Number(month.slice(5))-2,1)).toISOString().slice(0,7);
+    const source=posts().filter(published).find(p=>queenMonth(p)===previous&&Date.parse(p.createdAt)<=now);
+    const winner=person(fixedQueenResults[previous])||queenTally(source)?.member;
+    const poll=posts().filter(published).find(p=>queenMonth(p)===month&&queenPollOpen(p,now));
+    const season=value=>['winter','winter','spring','spring','spring','summer','summer','summer','autumn','autumn','autumn','winter'][Number(value.slice(5))-1];
+    return [...(winner?[{kind:'queen-winner',kicker:'👑 '+Number(previous.slice(5))+'월의 퀸',title:displayName(winner.id)+' · '+winner.rank,
+      copy:'왕관은 출근 완료! 오늘의 간식 회의도 기대할게요 ㅋㅋ',image:bannerPortrait(winner.id),queenSeason:season(previous),href:'#organization/people/'+winner.id}]:[]),
+      ...(poll?[{kind:'queen-vote',kicker:'HANI 사내 인기상',title:'👑 '+Number(month.slice(5))+'월의 퀸 투표 중',
+      copy:'함께 일해서 고마운 동료에게 한 표! 이달 말까지 참여해요.',image:'./assets/team/hani-team-office.webp',queenSeason:season(month),href:'#board/post/'+encodeURIComponent(poll.id),postId:poll.id}]:[])];
   }
   // Read-only lounge promotion. Persistent nodes; a single visibility-owned timer.
   let bannerTimer=null,bannerIndex=0,bannerPaused=false;
   const bannerMotion=window.matchMedia?.('(prefers-reduced-motion: reduce)');
-  // These portraits are already in the release closure. Other staff use the office scene.
+  // Roster owns portraits; the office scene is only a fallback before the hub loads.
   function bannerPortrait(id){
-    if(id==='sua')return './assets/profiles/hani-profile-sua-id.webp';
-    return ['hani','haru','hina','jieun','minji','naeun','sooyeon','yuna'].includes(id)?
-      './assets/profiles/hani-profile-'+id+'.webp':'./assets/team/hani-team-office.webp';
+    return window.HaniOrganizationHub?.portraitSource?.(id)||'./assets/team/hani-team-office.webp';
   }
   const loungeAds=Object.freeze([
     {title:'☕ 하니 카페 멤버십',copy:'회장님 방문 시 아메리카노 사이즈업. 도장은 마음으로 찍어 드려요.',href:'#agentReview'},
@@ -1350,7 +1376,7 @@
     const latest=rows=>(rows||[]).filter(r=>/^\d{4}-\d{2}-\d{2}$/.test(r.date)&&r.date<=dayKey(now)&&r.title&&!r.draft)
       .slice().sort((a,b)=>b.date.localeCompare(a.date)||b.number-a.number)[0];
     const ilbo=latest(bulletins.ilbo),market=latest(bulletins.market),best=weeklyBest(now)[0];
-    return [...(employee?[{kind:'employee',kicker:'이달의 직원',title:employee.name,copy:'이번 달 게시글·공개 댓글 '+employee.count+'건 · 조직 소개에서 만나보세요.',image:bannerPortrait(employee.id),href:'#organization/people/'+employee.id}]:[]),
+    return [...queenSlides(now),...(employee?[{kind:'employee',kicker:'이달의 직원',title:employee.name,copy:'이번 달 게시글·공개 댓글 '+employee.count+'건 · 조직 소개에서 만나보세요.',image:bannerPortrait(employee.id),href:'#organization/people/'+employee.id}]:[]),
       ...(ilbo?[{kind:'ilbo',kicker:'HANI 일보 · 제 '+ilbo.number+'호',title:'신문은 역시 HANI 일보!',copy:ilbo.title,image:'./assets/heroes/newsroom-218.webp',href:'#ilbo'}]:[]),
       ...(best?[{kind:'best',kicker:'이번 주 라운지 베스트',title:displayText(best,best.title),copy:'이번 주 가장 많은 공감을 모은 이야기 · 라운지에서 이어 읽어요.',image:'./assets/team/hani-team-office.webp',href:'#board/post/'+encodeURIComponent(best.id),postId:best.id}]:[]),
       ...(market?[{kind:'market',kicker:'이번 주 시장 4컷',title:market.title,copy:'제 '+market.number+'호 · '+market.date+' 발행 · 뉴스룸에서 함께 읽어요.',image:'./assets/heroes/newsroom-218.webp',href:'#newsroom'}]:[]),
@@ -1362,6 +1388,7 @@
     const item=items[bannerIndex],link=slot.querySelector('[data-board-banner-link]'),image=slot.querySelector('[data-board-banner-image]');
     if(!link||!image)return;
     link.setAttribute('href',item.href);image.setAttribute('src',item.image);
+    link.setAttribute('data-board-queen-season',item.queenSeason||'');
     link.dataset.boardBannerPost=item.postId||'';
     for(const key of ['kicker','title','copy'])slot.querySelector('[data-board-banner-'+key+']').textContent=item[key];
     const chip=slot.querySelector('[data-board-banner-ad]');if(chip)chip.hidden=!item.ad;
