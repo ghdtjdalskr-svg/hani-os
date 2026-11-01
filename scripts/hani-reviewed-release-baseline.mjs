@@ -1,9 +1,10 @@
-// Preservation oracle: release 225 plus an explicit, immutable list of later
-// intended changes. Never use HEAD/merge-base as the expected source itself.
+// Preservation oracle: fixed release225 through 233 proofs, then contiguous merged
+// release PRs from origin/main. Worktree/HEAD can never authorize source bytes.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
+import {discoverMergedReleaseChain,advanceMergedReleaseFile} from './hani-merged-release-chain.mjs';
 const root=path.resolve(import.meta.dirname,'..');
 export const guardedRelease='776752c971f2ce48edf376a707eb345ae57da98c';
 // These two unreferenced seed files did not exist at release225. Pin their
@@ -21,11 +22,11 @@ export const approvedReleases=[
  {sha:'13dedc67be96310d472537c72b088050e847d49e',reason:'231 desk mascots / newsroom 4cut / reports / train tags',files:['assets/data/desk-mascots-v1.json','hani-design-system.css','hani-desk-mascots.js','hani-main.js','index.html']},
  {sha:'4ac6b6c0119eeacc7332f1c53c3c760675657c11',reason:'232 Daon/Yoonseul join / train tags',files:['hani-character-archive-data.js','hani-character-archive.js','hani-main.js','hani-organization-hub.js','hani-ui-v02992.js','index.html']}
 ];
-// Display version of the last approved release above; advance together with the list.
+// Fixed historical projection base. Merged releases use their own display version.
 export const trainBaseVersion='2.9.233';
 export const released233Sha='beffc3850ea890ec84ce623579b26b4b5a3cd35c';
-// Pending, approved feature connections: normalize CURRENT source only. Git
-// release bytes and the immutable release chain above remain the oracle.
+// Historical feature proofs: normalize only fixed Git snapshots after shipment.
+// Current source bytes are compared directly with the merged release oracle.
 // Join shipped in 232: its bytes now belong to the Git oracle.
 // Frozen exact fragments cover only the 2.9.233 train: the scoped office runtime delta,
 // the approved Milestones v1 / hero crop connections and fixed 10/24 integrations,
@@ -46,9 +47,28 @@ const connections=changes=>changes.map(({file,replacements})=>({
 // 233 is shipped: retain every historical scoped proof, projecting only its
 // train tags before validating fixed release bytes against the prior chain.
 export const released233Connections=connections([...browserScroll.changes,...browserSticky.changes,...browserResidual.changes,...browserFollowup.corrections,...browserFollowup.changes,...['train233-integrations.json','office-redesign-233.json','milestones-v1.json','hero-crop-fix.json'].flatMap(name=>fixture(name).changes)].map(c=>({...c,replacements:c.replacements.map(r=>({before:projectVersion(r.before,'2.9.232','2.9.233'),after:projectVersion(r.after,'2.9.232','2.9.233')}))})));
-export const pendingApprovedConnections=connections([...fixture('office-lively-labels-235.json').changes,...fixture('office-chairman-234.json').changes]);
+export const releasedOfficeConnections=[
+ {sha:'ead7eff653bcbf3055003088bd5764149ee484e3',previous:released233Sha,connections:connections(fixture('office-chairman-234.json').changes)},
+ {sha:'4eafeb7d87cf8b6d827f49b5ab34a01a1ddd404d',previous:'ead7eff653bcbf3055003088bd5764149ee484e3',connections:connections(fixture('office-lively-labels-235.json').changes)}
+];
+export const pendingApprovedConnections=[];
+let mergedReleases,mergedReleaseBase;
+export function readMergedReleaseChain(){
+ if(!mergedReleases){
+  const git=args=>execFileSync(process.env.HANI_GIT_PATH||process.env.HANI_GIT||'git',args,{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024});
+  // The shared base selects a prefix of main's releases; it never supplies expected bytes.
+  mergedReleaseBase=git(['merge-base','HEAD','origin/main']).trim();
+  assert.match(mergedReleaseBase,/^[0-9a-f]{40}$/,'full shared main base identity');
+  mergedReleases=discoverMergedReleaseChain(git,mergedReleaseBase);
+ }
+ return mergedReleases;
+}
+const historicalFiles=new Set([...approvedReleases.flatMap(r=>r.files),...released233Connections.map(c=>c.file),'hani-development-history-v1.js']);
+export function reviewedReleaseFiles(){
+ return [...new Set([...historicalFiles,...readMergedReleaseChain().flatMap(r=>r.files)])];
+}
 export function normalizeReviewedConnection(connection,source){
- for(const line of connection.lines)assert.equal(source.split(line).length-1,1,'one pending approved connection: '+line);
+ for(const line of connection.lines)assert.equal(source.split(line).length-1,1,'one exact approved connection for '+connection.file);
  return connection.strip(source);
 }
 export function normalizeReviewedCurrentSource(file,source){
@@ -81,23 +101,36 @@ function projectVersion(source,base,version){
   .replaceAll('HANI OS · Life Edition v'+base,'HANI OS · Life Edition v'+version)
   .replaceAll('HANI OS · v'+base,'HANI OS · v'+version);
 }
-export function readReviewedReleaseBaseline(file){
+export function readReviewedRelease233Baseline(file){
  let expected=readReleaseSource(approvedSourceOrigins[file]||guardedRelease,file);
  for(const release of approvedReleases)if(release.files.includes(file)){
   assert.equal(expected,readReleaseSource(release.sha+'^',file),file+' unlisted change before '+release.sha);
   expected=readReleaseSource(release.sha,file);
  }
- const releasedFiles=new Set([...approvedReleases.flatMap(r=>r.files),...released233Connections.map(c=>c.file),'hani-development-history-v1.js']);
- if(releasedFiles.has(file)){
+ if(historicalFiles.has(file)){
   const released=readReleaseSource(released233Sha,file);let historical=released;
   for(const c of released233Connections)if(c.file===file)historical=normalizeReviewedConnection(c,historical);
   assert.equal(historical,projectVersion(expected,'2.9.232','2.9.233'),file+' fixed release233 retains all scoped prior evidence');
   expected=released;
  }
+ return expected;
+}
+export function readReviewedReleaseBaseline(file){
+ const releases=readMergedReleaseChain();
+ // Previously unguarded runtime owners start at the fixed approved 233 tree.
+ // Missing origins fail closed; new source origins require explicit review.
+ let expected=historicalFiles.has(file)?readReviewedRelease233Baseline(file):readReleaseSource(released233Sha,file);
+ for(const release of releasedOfficeConnections){
+  if(!release.connections.some(c=>c.file===file))continue;
+  let historical=readReleaseSource(release.sha,file);
+  for(const c of release.connections)if(c.file===file)historical=normalizeReviewedConnection(c,historical);
+  assert.equal(historical,readReleaseSource(release.previous,file),file+' released office fixture retains exact prior bytes');
+ }
+ expected=advanceMergedReleaseFile(file,expected,releases,readReleaseSource,mergedReleaseBase);
  const main=fs.readFileSync(path.join(root,'hani-main.js'),'utf8');
  const version=main.match(/const HANI_DISPLAY_VERSION="(2\.9\.\d+)";/)?.[1];
  assert.ok(version,'canonical display version');
- return projectTrainVersion(expected,version);
+ return projectVersion(expected,releases.at(-1)?.version||trainBaseVersion,version);
 }
 export function assertReviewedReleaseSource(file,source){
  assert.equal(normalizeReviewedCurrentSource(file,source),readReviewedReleaseBaseline(file),file+' release225 plus explicit approved later changes');
