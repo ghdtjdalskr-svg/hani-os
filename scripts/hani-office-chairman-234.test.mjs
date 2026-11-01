@@ -14,7 +14,8 @@ const goldenBytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-chairman-2
 assert.equal(createHash('sha256').update(goldenBytes).digest('hex'),'cd5541576e23b39018e704f14bcc253eac4aba152849779300f5f2b817852dff','immutable authored obr13 behavior oracle');
 const golden=JSON.parse(goldenBytes);
 assert.equal(createHash('sha256').update(readAt('hani-office-live.js','33d39892c2a5c0a1779650e440a2dd5068b44495')).digest('hex'),golden.sourceSha256);
-assert.equal(createHash('sha256').update(fs.readFileSync('data/hani-building/office-places.json')).digest('hex'),'6ca0c67f03fa040123b44c7de6a489dd456f285f01fea591640c1192d81cbe66','approved cafe/rest data identity; historical oracle stays immutable');
+assert.equal(createHash('sha256').update(readAt('data/hani-building/office-places.json','b653a173079323217bcd5e338e82c50d40d578e1')).digest('hex'),'6ca0c67f03fa040123b44c7de6a489dd456f285f01fea591640c1192d81cbe66','historical cafe/rest data identity');
+assert.equal(createHash('sha256').update(fs.readFileSync('data/hani-building/office-places.json')).digest('hex'),'f6cbc09dfd89cf7b6747c30928128daf667b2990570f1e4a88b32aeb636bc70d','approved lounge words and sofa host roster; historical oracle stays immutable');
 test('234 frozen six full formal/outing ledgers and 84 snapshots preserve exact bytes and deep equality',()=>{
  for(const r of golden.records){const api=loadScene({ref:'33d39892c2a5c0a1779650e440a2dd5068b44495'}).scene.scheduler,f=api.plan(r.day,r.options),o=api.blockPlan(r.day,0,f,r.options);
   for(const [actual,expected]of [[f,r.formal],[o,r.outings],...r.snapshots.map(row=>[api.snapshot(at(r.day,row.seconds),r.options),row.snapshot])]){assert.equal(JSON.stringify(actual),JSON.stringify(expected));assert.deepEqual(plain(actual),expected)}
