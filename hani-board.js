@@ -1127,7 +1127,7 @@
     return short?(peer?FUN_PEER_LINES[authorId]||voice[0]:voice[0]):voice[1].replace(/[.!?]+$/,"")+". "+(peer?"그 한 표에 저도 살짝 올라탑니다":FUN_TOPIC_LINES[topic])+".";
   }
   function dailyThread(thread,source,now){
-    if(!lightConversation(thread)||hash(source)%3!==0)return naturalThread(thread);
+    if(thread.poll||!lightConversation(thread)||hash(source)%3!==0)return naturalThread(thread);
     const month=new Date(now+9*3600000).getUTCMonth()+1;
     const eligible=LOUNGE_FUN_POOL.filter(t=>(!t.month||t.month===month)&&person(t.authorId)&&personaMap()[t.authorId]);
     const seasonal=hash(source+":season")%6===0;
@@ -1153,7 +1153,8 @@
   const restrictions=value=>value===null||value===undefined||value===""?[]:Array.isArray(value)?value:[value];
   function libraryEligible(thread,now){
     const seasons=restrictions(thread.season),days=restrictions(thread.weekday),date=thread.date==null?"":safeRecordDate(thread.date);
-    return (thread.date==null||!!date&&date<=dayKey(now))&&(!seasons.length||seasons.includes(seasonFor(now)))&&(!days.length||days.includes(new Date(now+9*3600000).getUTCDay()));
+    return (!/^queen-/.test(thread.id)||date.slice(0,7)===dayKey(now).slice(0,7))&&
+      (thread.date==null||!!date&&date<=dayKey(now))&&(!seasons.length||seasons.includes(seasonFor(now)))&&(!days.length||days.includes(new Date(now+9*3600000).getUTCDay()));
   }
   function generateDaily(now=Date.now(),rows=posts()){
     if(!canWrite()||!sourcesReady())return rows;
@@ -1168,9 +1169,11 @@
         (!next.some(p=>p.libraryId===t.id)||exhausted&&next.filter(p=>p.libraryId===t.id).every(p=>Date.parse(p.createdAt)<=now-90*86400000)))
         .sort((a,b)=>hash(day+a.id)-hash(day+b.id));
       if(!available.length)break;
-      const picked=hash(source)%3===0?available.find(t=>lightConversation(t))||available[0]:available[0];
-      const thread=dailyThread(picked,source,now),at=start+(8+12*slot/(limit-1))*3600000+hash(source)%40*60000;
+      const picked=available.find(t=>t.poll&&t.date===day)||available.find(t=>t.poll&&/^queen-/.test(t.id))||
+        (hash(source)%3===0?available.find(t=>lightConversation(t))||available[0]:available[0]);
+      const thread=dailyThread(picked,source,now),at=(/^queen-/.test(thread.id)?Date.parse(thread.date+"T00:00:00+09:00"):start)+(8+12*slot/(limit-1))*3600000+hash(source)%40*60000;
       const row={id:uid(),authorId:thread.authorId,category:thread.category,title:thread.title,body:thread.body,
+        ...(thread.poll?{poll:{options:[...thread.poll.options],votes:{...thread.poll.votes}}}:{}),
         topics:[...thread.topics],createdAt:new Date(at).toISOString(),scheduledAt:new Date(at).toISOString(),
         generated:true,libraryId:thread.id,pending:at>now,draft:mode==="review",ownerTied:false,sourceEventId:source};
       next.push(row);today.push(row);
@@ -1256,6 +1259,7 @@
     return thread.comments.map((c,i)=>({id:ids[i],postId:row.id,authorId:c.authorId,body:c.body,
       createdAt:new Date(at).toISOString(),scheduledAt:new Date(at+c.afterMin*60000).toISOString(),
       parentId:Number.isInteger(c.replyTo)?ids[c.replyTo]:"",libraryId:row.libraryId,
+      ...(Number.isInteger(c.voteChoice)?{voteChoice:c.voteChoice}:{}),
       generated:true,pending:true,threadId:"library:"+row.id}));
   }
   function draftAction(kind,id,action,now=Date.now()){
@@ -1317,25 +1321,87 @@
     let text='<div class="acts board-reactions" aria-label="이모지 반응">'+ADDRESS_RULES.reactions.map(e=>'<button class="btn sm" type="button" data-board-reaction="'+e+'" data-key="'+escape(post.id)+'" aria-pressed="'+String(post.reactions?.[e]?.owner===true)+'"'+disabled+'>'+e+' '+count(post.reactions?.[e]?.count)+'</button>').join("")+'</div>';
     if(post.poll&&Array.isArray(post.poll.options)){
       const votes=Object.values(post.poll.votes||{}),total=votes.filter(v=>Number.isInteger(v)&&v>=0&&v<post.poll.options.length).length;
-      text+='<fieldset class="board-poll"><legend>사내 투표 · '+total+'표</legend>'+post.poll.options.map((option,i)=>'<button class="btn" type="button" data-board-vote="'+i+'" data-key="'+escape(post.id)+'" aria-pressed="'+String(post.poll.votes?.[actor()]===i)+'"'+disabled+'>'+escape(publicText(option))+' · '+votes.filter(v=>v===i).length+'표</button>').join("")+'</fieldset>';
+      const closed=queenMonth(post)&&!queenPollOpen(post);
+      text+='<fieldset class="board-poll"><legend>사내 투표 · '+total+'표'+(closed?' · 마감':'')+'</legend>'+post.poll.options.map((option,i)=>closed?
+        '<span class="board-poll-result">'+escape(publicText(option))+' · '+votes.filter(v=>v===i).length+'표</span>':
+        '<button class="btn" type="button" data-board-vote="'+i+'" data-key="'+escape(post.id)+'" aria-pressed="'+String(post.poll.votes?.[actor()]===i)+'"'+disabled+'>'+escape(publicText(option))+' · '+votes.filter(v=>v===i).length+'표</button>').join("")+'</fieldset>';
     }
     return text;
+  }
+  const queenMonth=post=>/^queen-(\d{4}-\d{2})$/.exec(post?.libraryId||'')?.[1]||'';
+  const queenPollOpen=(post,now=Date.now())=>queenMonth(post)===dayKey(now).slice(0,7)&&Date.parse(post.createdAt)<=now;
+  function queenTally(post){
+    if(!post?.poll?.options?.length)return null;
+    const members=roster()?.people||[],votes=Object.values(post.poll.votes||{}),owner=post.poll.votes?.[actor()];
+    const choices=post.poll.options.map((name,index)=>({index,member:members.find(p=>p.name===name),count:votes.filter(v=>v===index).length})).filter(c=>c.member);
+    choices.sort((a,b)=>b.count-a.count||Number(b.index===owner)-Number(a.index===owner)||members.indexOf(a.member)-members.indexOf(b.member));
+    return choices[0]||null;
+  }
+  const fixedQueenResults=Object.freeze({'2026-10':'seoyun'});
+  function queenSlides(now=Date.now()){
+    const month=dayKey(now).slice(0,7),previous=new Date(Date.UTC(Number(month.slice(0,4)),Number(month.slice(5))-2,1)).toISOString().slice(0,7);
+    const source=posts().filter(published).find(p=>queenMonth(p)===previous&&Date.parse(p.createdAt)<=now);
+    const winner=person(fixedQueenResults[previous])||queenTally(source)?.member;
+    const poll=posts().filter(published).find(p=>queenMonth(p)===month&&queenPollOpen(p,now));
+    const season=value=>['winter','winter','spring','spring','spring','summer','summer','summer','autumn','autumn','autumn','winter'][Number(value.slice(5))-1];
+    return [...(winner?[{kind:'queen-winner',kicker:'👑 '+Number(previous.slice(5))+'월의 퀸',title:displayName(winner.id)+' · '+winner.rank,
+      copy:'왕관은 출근 완료! 오늘의 간식 회의도 기대할게요 ㅋㅋ',image:bannerPortrait(winner.id),queenSeason:season(previous),href:'#organization/people/'+winner.id}]:[]),
+      ...(poll?[{kind:'queen-vote',kicker:'HANI 사내 인기상',title:'👑 '+Number(month.slice(5))+'월의 퀸 투표 중',
+      copy:'함께 일해서 고마운 동료에게 한 표! 이달 말까지 참여해요.',image:'./assets/team/hani-team-office.webp',queenSeason:season(month),href:'#board/post/'+encodeURIComponent(poll.id),postId:poll.id}]:[])];
   }
   // Read-only lounge promotion. Persistent nodes; a single visibility-owned timer.
   let bannerTimer=null,bannerIndex=0,bannerPaused=false;
   const bannerMotion=window.matchMedia?.('(prefers-reduced-motion: reduce)');
+  // Roster owns portraits; the office scene is only a fallback before the hub loads.
+  function bannerPortrait(id){
+    return window.HaniOrganizationHub?.portraitSource?.(id)||'./assets/team/hani-team-office.webp';
+  }
+  const loungeAds=Object.freeze([
+    {title:'☕ 하니 카페 멤버십',copy:'회장님 방문 시 아메리카노 사이즈업. 도장은 마음으로 찍어 드려요.',href:'#agentReview'},
+    {title:'🛗 5층 루프탑 오픈',copy:'오늘의 노을 맛집은 5층입니다. 예약은 없고 눈치만 있습니다.',href:'#agentReview'},
+    {title:'🚀 서윤의 배포 특가',copy:'오늘 배포하면 내일이 편해요. 환불은 롤백으로만 가능합니다.',href:'#dev'},
+    {title:'🍜 미르 야식 안내',copy:'3층 야근단 모집 중. 라면 물 조절은 관찰 데이터로 보장합니다.',href:'#agentReview'},
+    {title:'📈 하니 투자 리포트',copy:'감으로 사지 말고 리포트 보고 사세요 ㅋㅋ',href:'#investmentCommittee'},
+    {title:'🎭 주간 연속극',copy:'평일마다 새 이야기. 회장님 몰래 보는 건 금지입니다.',href:'#agentReview'}
+  ]);
+  function dailyLoungeAds(now=Date.now()){
+    const day=dayKey(now),first=Math.floor(Date.parse(day)/86400000)%loungeAds.length;
+    const second=(first+1+hash(day)%5)%loungeAds.length;
+    return [first,second].map(i=>({...loungeAds[i],kind:'ad',kicker:'HANI 사내 소식',ad:true,
+      image:i===4?'./assets/heroes/investment-218.webp':'./assets/team/hani-team-office.webp'}));
+  }
   function loungeBannerItems(now=Date.now()){
     const employee=window.HaniOrganizationHub?.overviewData?.(state,null,roster(),now)?.employee;
-    return [...(employee?[{kicker:'이달의 직원',title:employee.name,copy:'이번 달 게시글·공개 댓글 '+employee.count+'건 · 조직 소개에서 만나보세요.',image:window.HaniOrganizationHub.portraitSource(employee.id),href:'#organization/people/'+employee.id}]:[]),
-      {kicker:'HANI 일보',title:'오늘의 사내 소식',copy:'팀의 이야기와 새 소식을 HANI 일보에서 만나보세요.',image:'./assets/heroes/newsroom-218.webp',href:'#ilbo'}];
+    const bulletins=(globalThis.HaniBoardLibrary||window.HaniBoardLibrary)?.bulletins||{};
+    const latest=rows=>(rows||[]).filter(r=>/^\d{4}-\d{2}-\d{2}$/.test(r.date)&&r.date<=dayKey(now)&&r.title&&!r.draft)
+      .slice().sort((a,b)=>b.date.localeCompare(a.date)||b.number-a.number)[0];
+    const ilbo=latest(bulletins.ilbo),market=latest(bulletins.market),best=weeklyBest(now)[0];
+    return [...queenSlides(now),...(employee?[{kind:'employee',kicker:'이달의 직원',title:employee.name,copy:'이번 달 게시글·공개 댓글 '+employee.count+'건 · 조직 소개에서 만나보세요.',image:bannerPortrait(employee.id),href:'#organization/people/'+employee.id}]:[]),
+      ...(ilbo?[{kind:'ilbo',kicker:'HANI 일보 · 제 '+ilbo.number+'호',title:'신문은 역시 HANI 일보!',copy:ilbo.title,image:'./assets/heroes/newsroom-218.webp',href:'#ilbo'}]:[]),
+      ...(best?[{kind:'best',kicker:'이번 주 라운지 베스트',title:displayText(best,best.title),copy:'이번 주 가장 많은 공감을 모은 이야기 · 라운지에서 이어 읽어요.',image:'./assets/team/hani-team-office.webp',href:'#board/post/'+encodeURIComponent(best.id),postId:best.id}]:[]),
+      ...(market?[{kind:'market',kicker:'이번 주 시장 4컷',title:market.title,copy:'제 '+market.number+'호 · '+market.date+' 발행 · 뉴스룸에서 함께 읽어요.',image:'./assets/heroes/newsroom-218.webp',href:'#newsroom'}]:[]),
+      ...dailyLoungeAds(now)];
   }
   function paintLoungeBanner(now=Date.now()){
     const slot=get('unread');if(!slot)return;
-    const items=loungeBannerItems(now),item=items[bannerIndex%items.length],link=slot.querySelector('[data-board-banner-link]'),image=slot.querySelector('[data-board-banner-image]');
+    const items=loungeBannerItems(now);bannerIndex=((bannerIndex%items.length)+items.length)%items.length;
+    const item=items[bannerIndex],link=slot.querySelector('[data-board-banner-link]'),image=slot.querySelector('[data-board-banner-image]');
     if(!link||!image)return;
     link.setAttribute('href',item.href);image.setAttribute('src',item.image);
+    link.setAttribute('data-board-queen-season',item.queenSeason||'');
+    link.dataset.boardBannerPost=item.postId||'';
     for(const key of ['kicker','title','copy'])slot.querySelector('[data-board-banner-'+key+']').textContent=item[key];
-    const pause=slot.querySelector('[data-board-banner-pause]');pause.textContent=bannerPaused?'자동 전환 재개':'자동 전환 멈춤';pause.setAttribute('aria-pressed',String(bannerPaused));pause.hidden=!!bannerMotion?.matches;
+    const chip=slot.querySelector('[data-board-banner-ad]');if(chip)chip.hidden=!item.ad;
+    const dots=slot.querySelector('[data-board-banner-dots]');
+    if(dots){
+      // Reconcile only the count. Focused controls and the billboard slot survive paints.
+      while(dots.children.length>items.length)dots.lastElementChild.remove();
+      while(dots.children.length<items.length){const dot=document.createElement('button');dot.type='button';dot.dataset.boardBannerDot=String(dots.children.length);dots.appendChild(dot)}
+      Array.from(dots.children).forEach((dot,i)=>{dot.setAttribute('aria-label',(i+1)+' / '+items.length+' · '+items[i].title);dot.setAttribute('aria-pressed',String(i===bannerIndex))});
+    }
+    const pause=slot.querySelector('[data-board-banner-pause]');pause.textContent=bannerPaused?'▶':'Ⅱ';
+    pause.setAttribute('aria-label',bannerPaused?'자동 전환 재개':'자동 전환 멈춤');pause.setAttribute('aria-pressed',String(bannerPaused));
+    pause.disabled=!!bannerMotion?.matches;
   }
   function syncBanner(){
     if(bannerTimer!==null){clearTimeout(bannerTimer);bannerTimer=null}
@@ -1435,9 +1501,15 @@
     get("search").addEventListener("input",event=>{query=event.target.value;visible=pageSize;render()});
     root.addEventListener("click",event=>{
       const bannerLink=event.target.closest('[data-board-banner-link]');
-      if(bannerLink){event.preventDefault();showView(bannerLink.getAttribute('href').slice(1));return}
+      if(bannerLink){
+        event.preventDefault();
+        if(bannerLink.dataset.boardBannerPost){resetEditor();openPost(bannerLink.dataset.boardBannerPost);get('detail')?.scrollIntoView?.({block:'start'});get('article')?.querySelector('[data-board-heading]')?.focus({preventScroll:true})}
+        else showView(bannerLink.getAttribute('href').slice(1));
+        return;
+      }
       if(event.target.closest('[data-board-banner-pause]')){bannerPaused=!bannerPaused;paintLoungeBanner();syncBanner();return}
-      if(event.target.closest('[data-board-banner-next]')){bannerIndex++;paintLoungeBanner();syncBanner();return}
+      const bannerDot=event.target.closest('[data-board-banner-dot]');
+      if(bannerDot){const index=Number(bannerDot.dataset.boardBannerDot);if(Number.isInteger(index)&&index>=0&&index<loungeBannerItems().length){bannerIndex=index;paintLoungeBanner();syncBanner()}return}
       const profile=event.target.closest("[data-board-person]");
       if(profile?.dataset.boardPerson&&root.contains(profile)){
         event.preventDefault();showView("organization/people/"+profile.dataset.boardPerson);return;
