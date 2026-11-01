@@ -21,7 +21,7 @@
 #board [data-board-banner-pause]{font-size:17px}
 #board [data-board-banner-pause]:disabled{opacity:.6;cursor:default}
 #board .board-promo :is(a,button):focus-visible{outline:3px solid #fff;outline-offset:-4px}
-@media(max-width:480px){#board .board-promo{height:168px}#board .board-promo a>span{padding:16px 14px 50px;gap:4px}#board .board-promo b{font-size:22px}#board .board-promo [data-board-banner-copy]{font-size:12px}#board .board-promo-controls{padding:0}#board .board-promo-controls button{width:44px}}
+@media(max-width:480px){#board .board-promo{height:168px}#board .board-promo a>span{padding:16px 14px 50px;gap:4px}#board .board-promo b{font-size:22px}#board .board-promo [data-board-banner-copy]{display:-webkit-box;font-size:12px;white-space:normal;-webkit-box-orient:vertical;-webkit-line-clamp:2}#board .board-promo-controls{padding:0}#board .board-promo-controls button{width:44px}}
 #board .board-body{white-space:pre-wrap;overflow-wrap:anywhere;color:var(--text-primary)}
 #board .item{align-items:flex-start}
 #board .item>div{min-width:0;width:100%}

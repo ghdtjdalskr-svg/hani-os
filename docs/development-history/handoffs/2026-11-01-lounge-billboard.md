@@ -160,3 +160,5 @@ closure 내 초상이 있는 직원만 해당 초상 사용, 다른 직원은 of
 - 승인: 정적 poll/voteChoice 전달·실제 저장/로드 검증·표시 전용 마감·11월 투표·다음 달 발표. votePoll/persist/save/state shape/Cloud·office·버전/cache 유지. commit/push/merge 없음.
 - 범위: 기존 builder/library/board JS·CSS·전광판 테스트·정적 콘텐츠·작업 기록. CODEMAP에 board owner 항목이 없어 실제 함수 anchor로 fallback.
 - Notion 착수 append: 자동 승인 검토가 policy never로 거절. 갱신 대기.
+
+- 2026-11-01 서윤: main b653a17(2.9.247)을 합침. 360px 실화면 확인: 높이 168px, 점·멈춤 44px, 가로 넘침 0, 이미지 5종 로딩, 긴 일보 제목은 두 줄로 조정. 로그인 후 화면, 실제 Cloud 저장, 11/3 글 표시는 미검증.
