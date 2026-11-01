@@ -132,3 +132,53 @@ test('QA18: label fitting keeps batched reads; existing steady frames do not add
  const frame=source.slice(source.indexOf('  setInterval(()=>{const now=Date.now()'),source.indexOf('  setInterval(changeOne'));
  assert.doesNotMatch(frame,/getBoundingClientRect|offsetWidth|scrollWidth|clientWidth/);
 });
+
+test('label review: real weekly desk notes and stamp doodle keep their literal meaning',()=>{
+ const phoneLabels=vm.runInNewContext(statusSource+';({label})',{HaniBuildingScene:scene,matchMedia:()=>({matches:true})});
+ for(const [seconds,id,line,phone]of [[33330,'minji','영화 메모에 작은 별 그리는 중','메모표시'],[960,'gaeun','알람 이름 짧게 바꾸는 중','알람이름'],[25740,'yuri','확인 도장 모양 낙서 중','그림그리기']]){
+  const p=scene.scheduler.snapshot(at('2026-11-02',seconds),{chairmanPresent:false}).entries.find(p=>p.id===id);
+  assert.equal(p.line,line);assert.equal(p.seat.zone,'desk');
+  const {actor,status}=actorStub(p.activity,{zone:p.seat.zone,walking:String(p.walking),behavior:p.state,place:p.placeId||'',action:p.actionId});
+  phoneLabels.label(actor,p.line);assert.equal(actor.dataset.status,'work',line);assert.equal(status.textContent,'💻 '+phone);assert.equal(status.title,line);
+ }
+ for(const line of ['집에 가서 볼 영화 고르는 중','알람 소리 줄이는 중','아침 알람 맞추는 중'])assert.equal(labels.activityStatus(actorStub('work',{zone:'desk'}).actor,line),'rest',line);
+ assert.equal(short('결재 도장 확인 중'),'결재검토');
+});
+
+test('label review: consultation schedule is work and travel precedes destination rules',()=>{
+ const phoneLabels=vm.runInNewContext(statusSource+';({label})',{HaniBuildingScene:scene,matchMedia:()=>({matches:true})});
+ const full='1층 안내 보드 앞에서 상담 일정 확인 중',{actor,status}=actorStub('work',{zone:'desk'});
+ phoneLabels.label(actor,full);assert.equal(actor.dataset.status,'work');assert.equal(status.textContent,'💻 일정점검');
+ const day='2026-11-02',options={chairmanPresent:false},s=scene.scheduler,formal=s.plan(day,options),out=s.blockPlan(day,0,formal,options);
+ const trip=out.find(e=>e.visitor?.go==='상담 대기석으로 가는 중');assert.ok(trip);
+ const p=s.snapshot(at(day,trip.start+.1),options).visitors.find(p=>p.outingId===trip.id);assert.ok(p);assert.equal(p.state,'GOING');assert.equal(p.line,'상담 대기석으로 가는 중');
+ const moving=actorStub(p.activity,{walking:String(p.walking),behavior:p.state,place:p.placeId||'',zone:p.seat.zone,action:p.actionId});
+ phoneLabels.label(moving.actor,p.line);assert.equal(moving.actor.dataset.status,'moving');assert.equal(short(p.line,'moving'),'목적지이동');
+ for(const line of ['협업 회의실로 가는 중','옥상 정원으로 가는 중','택배함으로 가는 중'])assert.equal(short(line,'moving'),'목적지이동',line);
+ assert.equal(short('커피 사러 가는 중','moving'),'커피사러감');
+ const report=s.snapshot(at(day,33667.1),{chairmanPresent:true}).entries.find(p=>p.id==='yuna');
+ assert.equal(report.line,'회장님께 보고하러 가는 중');assert.equal(report.state,'GOING');
+ const reporting=actorStub(report.activity,{walking:String(report.walking),behavior:report.state,place:report.placeId||'',action:report.actionId});
+ phoneLabels.label(reporting.actor,report.line);assert.equal(reporting.actor.dataset.status,'moving');assert.equal(reporting.status.textContent,'🚶 보고하러이동');
+});
+
+test('label review: actual everyday scenes use rest labels while scheduler meeting and real meetings stay intact',()=>{
+ const found=new Set();
+ for(let d=2;d<=8;d++){
+  const day='2026-11-0'+d,options={chairmanPresent:false},s=scene.scheduler;
+  for(const e of s.plan(day,options).filter(e=>['scene-meme','scene-coffee-menu'].includes(e.actionId))){
+   const snap=s.snapshot(at(day,(e.performStart+e.performEnd)/2),options);
+   for(const p of snap.entries.filter(p=>p.eventId===e.id)){
+    assert.equal(p.activity,'meeting','scheduler contract stays unchanged');found.add(p.actionId);
+    const {actor,status}=actorStub(p.activity,{action:p.actionId,zone:p.seat.zone,behavior:p.state,walking:String(p.walking),emoji:p.emoji||''});
+    labels.label(actor,p.line);assert.equal(actor.dataset.status,'rest',p.line);assert.doesNotMatch(status.textContent,/회의/);assert.equal(status.title,p.line);
+    actor.dataset.called='true';assert.equal(labels.activityStatus(actor,p.line),'meeting','actual call wins');
+   }
+  }
+ }
+ assert.deepEqual([...found].sort(),['scene-coffee-menu','scene-meme']);
+ for(const action of ['scene-routing-brief','scene-priority','scene-client-questions'])assert.equal(labels.activityStatus(actorStub('meeting',{action}).actor,'검토 중'),'meeting');
+ // This authored selfie has no exposure in the requested week; cover the label path explicitly.
+ for(const full of ['이 각도 어때용?','좋아. 한 장 찍고 내려놓자.'])assert.equal(labels.activityStatus(actorStub('meeting',{action:'scene-roof-selfie'}).actor,full),'rest');
+ assert.equal(labels.activityStatus(actorStub('meeting',{action:'scene-roof-selfie',walking:'true'}).actor,'옥상으로 가는 중'),'moving');
+});
