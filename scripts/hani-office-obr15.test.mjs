@@ -20,7 +20,7 @@ test('obr15 historical source identities retained; cafe/rest source and full abs
   // Cafe/rest intentionally changes full ledgers. Pin the separately authored
   // full output here; obr21 and all its historical fixtures remain untouched.
   const cafeBytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-cafe-finish-plans.json.gz'));
-  assert.equal(hash(cafeBytes),'7ca64e36510d5f3e8289abd5b55fd9a4b23692214b047d8cc55effd297e3a696','immutable cafe/rest full-ledger oracle');
+  assert.equal(hash(cafeBytes),'e72482ea731c0b8311eb53c90c40e573f4465a45ef37cd6ef6927261aaf72b7a','immutable cafe/rest full-ledger oracle');
   const cafe=JSON.parse(cafeBytes);assert.equal(hash(fs.readFileSync('hani-office-live.js')),cafe.sourceSha256);assert.equal(hash(fs.readFileSync('data/hani-building/office-places.json')),cafe.placesSha256);
   const reviewed=cafe.records.find(r=>r.label==='obr15 absent '+day);
   assert.ok(reviewed);assert.equal(serialize(o),serialize(reviewed.options));

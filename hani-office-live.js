@@ -327,6 +327,9 @@
     // The existing reception counter restores a short public work stop when
     // business desk approaches cannot fit phone sprites. Same reservation gates.
     if(places.length&&anchors.has('reception'))errandPlaces.push({id:'task-reception-1f',kind:'errand',errandKind:'task',floor:'1f',room:'lobby',slots:['reception'],pose:'stand',stay:[8,25],go:'접수대로 가는 중',at:['접수대에서 전달 사항 확인 중','접수대에서 방문 일정 확인 중']});
+    // The business-floor desk approaches overlap fixed homes on phones. Use
+    // the existing, clear entrance nodes for short work checks; no new graph.
+    for(const [target,name]of [['hall_business','사업부'],['hall_consult','상담실']])if(places.length&&anchors.has(target))errandPlaces.push({id:'task-'+target,kind:'errand',errandKind:'task',floor:'1f',room:anchors.get(target).room,slots:[target],pose:'stand',stay:[8,25],go:name+' 앞 전달 사항 확인하러 가는 중',at:[name+' 앞에서 전달 일정 확인 중']});
     const defaults=actions.get('base-work'),cache=new Map(),paths=new Map(),targetCache=new Map(),slotCache=new Map();
     // Voice/role grounding: existing office-tap-lines toChairman and seeded jobs.
     // No new place or chair: the existing CEO entrance is real floor, reachable
@@ -760,7 +763,7 @@
       const outEnd=t.out.at(-1)?.end??event.start,backStart=t.back[0]?.start??event.end;
       const returned=t.back.length&&seconds>=t.back.at(-1).end;
       const state=returned?'AT_HOME':seconds<outEnd?'GOING':seconds>=backStart?'RETURNING':t.seat.anchor===t.home.anchorId?'AT_HOME':'AT_PLACE';
-      const leg=(seconds<outEnd?t.out:t.back).find(l=>l.start<=seconds&&seconds<l.end);
+      const leg=(seconds<outEnd||seconds>=backStart)?(seconds<outEnd?t.out:t.back).find(l=>l.start<=seconds&&seconds<l.end):null;
       if(leg&&!reduced){
         const a=anchors.get(leg.from),b=anchors.get(leg.to),pa=visualPoint(a),pb=visualPoint(b),ratio=(seconds-leg.start)/(leg.end-leg.start);
         return {state,seat:slot(a.id,'stand'),floor:a.floor,walking:a.floor===b.floor,waiting:a.floor!==b.floor,position:a.floor===b.floor?[pa[0]+(pb[0]-pa[0])*ratio,pa[1]+(pb[1]-pa[1])*ratio]:pa};
@@ -1018,6 +1021,16 @@
       }
       return true;
     }
+    const sweepKnots=new WeakMap();
+    function eventKnots(e){
+      if(sweepKnots.has(e))return sweepKnots.get(e);
+      const times=new Set([e.start,e.end-.000001,e.end]);
+      for(const t of e.people)for(const legs of [t.out,t.back])for(const l of legs){
+        const transfer=anchors.get(l.from).floor!==anchors.get(l.to).floor;
+        for(const s of [l.start,l.end]){times.add(s);if(transfer){times.add(s-.000001);times.add(s+.000001)}}
+      }
+      const ticks=[...times].sort((a,b)=>a-b);sweepKnots.set(e,ticks);return ticks;
+    }
     function reserve(candidate,ledger,allowed,nearby=ledgerOverlaps(ledger,candidate.start,candidate.end)){
       const ids=new Set(candidate.people.map(t=>t.id));
       if(nearby.some(e=>e.people.some(t=>ids.has(t.id))))return false;
@@ -1082,11 +1095,10 @@
       const others=[...new Set(movingNearby.flatMap(e=>e.people.filter(t=>!ids.has(t.id)&&(t.visitor||t.out.length||t.back.length||t.seat.anchor!==t.home.anchorId)).map(t=>t.id)))];
       if(candidate.people.length===1&&!others.length){ledger.push(candidate);return true}
       const times=new Set([candidate.start,candidate.end-.00001]);
-      const boundary=(s,transfer=false)=>{for(const tick of transfer?[s-.000001,s,s+.000001]:[s])if(tick>candidate.start&&tick<candidate.end)times.add(tick)};
-      for(const e of [candidate,...movingNearby]){for(const s of [e.start,e.end-.000001,e.end])boundary(s);
-        for(const t of e.people)for(const l of [...t.out,...t.back]){
-          for(const s of [l.start,l.end])boundary(s,anchors.get(l.from).floor!==anchors.get(l.to).floor);
-        }
+      for(const e of [candidate,...movingNearby]){
+        const knots=eventKnots(e);let lo=0,hi=knots.length;
+        while(lo<hi){const mid=(lo+hi)>>>1;if(knots[mid]<=candidate.start)lo=mid+1;else hi=mid}
+        for(let i=lo;i<knots.length&&knots[i]<candidate.end;i++)times.add(knots[i]);
       }
       const ticks=[...times].sort((a,b)=>a-b);
       // Static homes were checked continuously above (stronger than sampling).

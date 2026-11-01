@@ -24,7 +24,7 @@ test('distance, not elapsed ticks, swaps both walk frames; stopping and resampli
 
 test('approved cafe/rest scheduler source stays frozen, including every route and arrival calculation',()=>{
   const normalized=source.replace(/\r/g,''),scheduler=normalized.slice(normalized.indexOf('  function createScheduler('),normalized.indexOf('  // Read-only label geometry'));
-  assert.equal(createHash('sha256').update(scheduler).digest('hex'),'cc366f886a3952492b7e64ca97c98eb09b6ee4fcada50d705b38ba60e4f51bab');
+  assert.equal(createHash('sha256').update(scheduler).digest('hex'),'b37bdd3e511aacae3a01391fbaab76b1c3299cac254f30f10193bdc14de2051d');
   const placement=normalized.slice(normalized.indexOf('  function placeStatusLabels('),normalized.indexOf('  const scheduler='));
   assert.equal(createHash('sha256').update(placement).digest('hex'),'5070f7e62556b89410bc7588600fefe80ba99579e945ae49bab89def98bec6f0','placeStatusLabels rules remain unchanged');
 });

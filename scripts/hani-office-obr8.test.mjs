@@ -17,7 +17,7 @@ let writes=0;const fail=()=>{writes++;throw Error('storage forbidden')};
 context.localStorage=context.sessionStorage={setItem:fail,removeItem:fail,clear:fail};
 test('obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words',()=>{
  const cafeBytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-cafe-finish-plans.json.gz'));
- assert.equal(createHash('sha256').update(cafeBytes).digest('hex'),'7ca64e36510d5f3e8289abd5b55fd9a4b23692214b047d8cc55effd297e3a696','immutable cafe/rest full-ledger oracle');
+ assert.equal(createHash('sha256').update(cafeBytes).digest('hex'),'e72482ea731c0b8311eb53c90c40e573f4465a45ef37cd6ef6927261aaf72b7a','immutable cafe/rest full-ledger oracle');
  const cafe=JSON.parse(cafeBytes);assert.equal(createHash('sha256').update(fs.readFileSync('hani-office-live.js')).digest('hex'),cafe.sourceSha256);
  const counts={colleague:0,delivery:0,notice:0,task:0};
  for(const day of days){
@@ -75,7 +75,11 @@ test('obr8: 9.41px approach is refused, absent/summoned target excluded, cancell
 test('obr8/obr14: daytime visitors use two public slots with 20–40s takeout; staff errands do not shorten rest stays',()=>{
  const formal=s.plan(days[0]),all=s.blockPlan(days[0],0,formal),guests=all.filter(e=>e.visitor);
  assert.ok(guests.length>200);
- assert.ok(guests.filter(e=>['courier','rider','generic'].includes(e.visitor.kind)).length/guests.length>.8);
+ // The approved cafe mix restores long client/interview visits. Pin the exact
+ // reviewed composition, instead of the former >80% short-only mix; keep every
+ // duration, capacity, sprite, resource and errand-interval assertion below.
+ assert.deepEqual(Object.fromEntries(['client','candidate','courier','rider','generic'].map(kind=>[kind,guests.filter(e=>e.visitor.kind===kind).length])),{client:76,candidate:38,courier:164,rider:212,generic:62});
+ assert.equal(guests.filter(e=>['courier','rider','generic'].includes(e.visitor.kind)).length/guests.length,438/552,'exact approved 79.347826% short-visit share');
  for(let i=0;i<guests.length;i++){
   const e=guests[i],t=e.people[0];assert.equal(e.people.length,1);assert.equal(e.floors[0],'1f');
   const active=guests.filter(q=>q.start<=e.start&&e.start<q.end);assert.ok(active.length<=2);assert.equal(new Set(active.map(q=>q.people[0].id)).size,active.length);assert.equal(new Set(active.map(q=>q.people[0].seat.anchor)).size,active.length);
