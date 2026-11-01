@@ -55,6 +55,27 @@
       "label": "옥상 전망 난간",
       "capacity": 1,
       "walkTarget": true
+    },
+    {
+      "id": "approach_coffee_pickup",
+      "floor": "1f",
+      "room": "cafe",
+      "x": 678,
+      "y": 540,
+      "type": "junction",
+      "label": "커피 픽업 접근",
+      "capacity": 1
+    },
+    {
+      "id": "coffee_pickup",
+      "floor": "1f",
+      "room": "cafe",
+      "x": 760,
+      "y": 540,
+      "type": "interaction",
+      "label": "HANI Coffee 픽업",
+      "capacity": 1,
+      "walkTarget": true
     }
   ],
   "edges": [
@@ -87,6 +108,18 @@
       "to": "window_5f_1",
       "kind": "walk",
       "bidirectional": true
+    },
+    {
+      "from": "approach_coffee_counter",
+      "to": "approach_coffee_pickup",
+      "kind": "walk",
+      "bidirectional": true
+    },
+    {
+      "from": "approach_coffee_pickup",
+      "to": "coffee_pickup",
+      "kind": "walk",
+      "bidirectional": true
     }
   ],
   "art": {
@@ -114,6 +147,15 @@
       "x": 50,
       "y": 89,
       "zone": "lounge"
+    },
+    "approach_coffee_pickup": {
+      "x": 77,
+      "y": 83
+    },
+    "coffee_pickup": {
+      "x": 83,
+      "y": 83,
+      "zone": "lounge"
     }
   },
   "places": [
@@ -124,7 +166,8 @@
       "kind": "coffee",
       "name": "카페 커피 카운터로",
       "slots": [
-        "coffee_counter"
+        "coffee_counter",
+        "coffee_pickup"
       ],
       "go": "카페 커피 카운터로 가는 중",
       "at": [
@@ -134,7 +177,7 @@
       ],
       "pose": "stand",
       "stay": [
-        60,
+        90,
         180
       ],
       "affinity": {
@@ -284,8 +327,8 @@
       ],
       "pose": "sit",
       "stay": [
-        60,
-        180
+        600,
+        1500
       ],
       "affinity": {
         "seongmin": 1,
@@ -434,8 +477,8 @@
       ],
       "pose": "stand",
       "stay": [
-        60,
-        180
+        300,
+        540
       ],
       "affinity": {
         "seongmin": 1,
@@ -587,8 +630,8 @@
       ],
       "pose": "sit",
       "stay": [
-        60,
-        180
+        300,
+        540
       ],
       "affinity": {
         "seongmin": 1,
@@ -737,8 +780,8 @@
       ],
       "pose": "sit",
       "stay": [
-        120,
-        300
+        300,
+        540
       ],
       "affinity": {
         "seongmin": 3,
@@ -874,8 +917,8 @@
       ],
       "pose": "sit",
       "stay": [
-        120,
-        300
+        300,
+        540
       ],
       "affinity": {
         "seongmin": 3,
@@ -2149,8 +2192,8 @@
       ],
       "pose": "stand",
       "stay": [
-        90,
-        240
+        300,
+        540
       ],
       "affinity": {
         "seongmin": 1,
@@ -2277,8 +2320,8 @@
       ],
       "pose": "sit",
       "stay": [
-        90,
-        240
+        300,
+        540
       ],
       "affinity": {
         "seongmin": 1,
@@ -2406,8 +2449,8 @@
       ],
       "pose": "stand",
       "stay": [
-        40,
-        120
+        300,
+        540
       ],
       "affinity": {
         "seongmin": 2,
@@ -2572,8 +2615,8 @@
       ],
       "pose": "stand",
       "stay": [
-        40,
-        120
+        300,
+        540
       ],
       "affinity": {
         "seongmin": 2,
@@ -2744,8 +2787,8 @@
       ],
       "pose": "stand",
       "stay": [
-        40,
-        120
+        300,
+        540
       ],
       "affinity": {
         "seongmin": 2,
@@ -2913,8 +2956,8 @@
       ],
       "pose": "stand",
       "stay": [
-        40,
-        120
+        300,
+        540
       ],
       "affinity": {
         "seongmin": 2,
@@ -3083,8 +3126,8 @@
       ],
       "pose": "stand",
       "stay": [
-        40,
-        120
+        300,
+        540
       ],
       "affinity": {
         "seongmin": 2,
@@ -3520,8 +3563,9 @@
       ],
       "weights": {
         "coffee": 9,
-        "terrace": 15,
-        "garden": 3
+        "terrace": 24,
+        "garden": 8,
+        "sofa": 4
       }
     },
     "sleepy": {
@@ -3542,29 +3586,43 @@
       "weights": {
         "sofa": 6
       }
+    },
+    "daytime": {
+      "hours": [
+        9,
+        18
+      ],
+      "weights": {
+        "terrace": 12,
+        "garden": 8,
+        "sofa": 2,
+        "coffee": 2,
+        "window": 1
+      }
     }
   },
   "outingRules": {
-    "cooldownSeconds": 600,
+    "cooldownSeconds": 240,
     "intervalSeconds": [
-      1500,
-      3000
+      720,
+      1200
     ],
     "intervalByPerson": {
       "sua": [
-        1200,
-        2100
+        720,
+        1080
       ],
       "taeo": [
-        1200,
-        2100
+        720,
+        1080
       ]
     },
     "groupStayScale": 1.2,
     "workHours": [
       9,
       18
-    ]
+    ],
+    "deskAmbientSeconds": 300
   },
   "companions": [
     {
