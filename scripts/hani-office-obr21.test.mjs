@@ -11,7 +11,7 @@ context.localStorage=context.sessionStorage={setItem:deny,removeItem:deny,clear:
 // Exact reviewed line replacements, not additional excluded functions/ranges.
 // Restore only those lines, then retain the original non-placement SHA check.
 const motionDeltaBytes=fs.readFileSync('scripts/fixtures/office-motion-1-source-delta.json');
-assert.equal(createHash('sha256').update(motionDeltaBytes).digest('hex'),'d58fec125f777afa2d960f67ae34a2e48438d54ee4cb64fc307ccda669c779d5');
+assert.equal(createHash('sha256').update(motionDeltaBytes).digest('hex'),'620a84f45fe05984e7a941aae1db208a88a9c3cee7a36650258d10283ad3e34e');
 const motionDelta=JSON.parse(motionDeltaBytes);
 function restoreMotionDelta(source){
  const lines=source.match(/[^\n]*\n|[^\n]+$/g);
@@ -23,9 +23,9 @@ function restoreMotionDelta(source){
 }
 // Exact QA-3/18/19 display edits are restored before the unchanged behavior guard.
 const labelDeltaBytes=fs.readFileSync('scripts/fixtures/office-labels-qa-source-delta.json');
-assert.equal(createHash('sha256').update(labelDeltaBytes).digest('hex'),'d582a76cd5243359692fa73b64f6761c69f255750dc0b071cb63fb5361da749f');
+assert.equal(createHash('sha256').update(labelDeltaBytes).digest('hex'),'2fdb235f380d215067343a9bf461239a2d1019284add9cd18fc981f07ae02c8f');
 const labelDelta=JSON.parse(labelDeltaBytes);
-assert.equal(labelDelta.beforeSha256,'5254d8bed4e2927f2eea70cbc40cd24113627b9bf4a6f4f67d6e04b02dcab7fc');
+assert.equal(labelDelta.beforeSha256,'406937ae1d69c0379bb735e961734b517ae9440a02c93a0d41771dc0c694d246');
 function restoreOfficeLabelsSource(source){
  const lines=source.match(/[^\n]*\n|[^\n]+$/g);
  for(const change of labelDelta.changes.toReversed()){
@@ -36,7 +36,7 @@ function restoreOfficeLabelsSource(source){
 }
 test('obr21 authored full absent/present plans and reverse snapshots match frozen delta',()=>{
  const bytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-obr21-plans.json.gz'));
- assert.equal(createHash('sha256').update(bytes).digest('hex'),'49b7d4b696ca035486a45678cdc4c8181fe620e302b77978a53c873246f7547a');
+ assert.equal(createHash('sha256').update(bytes).digest('hex'),'1942680012eb088a02b9aae35df41f7286a6f281bde1c4628a4fa8b998921a1d');
  const frozen=JSON.parse(bytes),current=fs.readFileSync('hani-office-live.js','utf8'),source=restoreOfficeLabelsSource(current);
  const displayChange=labelDelta.changes.find(c=>c.after.some(l=>l.trim())),displayLine=displayChange.after.find(l=>l.trim());
  assert.throws(()=>restoreOfficeLabelsSource(current.replace(displayLine,displayLine.replace(/\S/,'!'))));

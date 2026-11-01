@@ -26,7 +26,8 @@ const obr10=JSON.parse(obr10Bytes);
 assert.equal(crypto.createHash('sha256').update(readAt('hani-office-live.js','0d47015')).digest('hex'),obr10.sourceSha256,'immutable pre-obr12 runtime identity');
 const released233=readAt('hani-office-live.js','beffc38');
 assert.equal(crypto.createHash('sha256').update(released233).digest('hex'),'6cd4b68f14aa435d3de6d00e4b535ca74ebf6baed225b0c818506e911e3d2b21','exact shipped obr12 runtime identity; historical frozen behavior oracle unchanged');
-assert.equal(crypto.createHash('sha256').update(fs.readFileSync(new URL('data/hani-building/office-places.json',root))).digest('hex'),'6ca0c67f03fa040123b44c7de6a489dd456f285f01fea591640c1192d81cbe66','approved cafe/rest data identity; historical obr10 oracle unchanged');
+assert.equal(crypto.createHash('sha256').update(readAt('data/hani-building/office-places.json','b653a173079323217bcd5e338e82c50d40d578e1')).digest('hex'),'6ca0c67f03fa040123b44c7de6a489dd456f285f01fea591640c1192d81cbe66','historical cafe/rest data identity');
+assert.equal(crypto.createHash('sha256').update(fs.readFileSync(new URL('data/hani-building/office-places.json',root))).digest('hex'),'f6cbc09dfd89cf7b6747c30928128daf667b2990570f1e4a88b32aeb636bc70d','approved lounge words and sofa host roster; historical obr10 oracle unchanged');
 for(const expected of baseline.records)test('obr6/obr8: '+expected.label+' original formal bytes and reviewed optional-trip/snapshot bytes',()=>{
  const {scene,context}=loadScene({ref:'beffc38'}),s=scene.scheduler;let writes=0;
  const forbidden=()=>{writes++;throw Error('storage write forbidden')};

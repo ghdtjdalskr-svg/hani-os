@@ -3,14 +3,14 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
 import {performance} from 'node:perf_hooks';
-import {loadScene,at} from './hani-office-lively-fixture.mjs';
+import {loadScene,at,readAt} from './hani-office-lively-fixture.mjs';
 import {spriteBox,boxesOverlap} from './hani-office-obr21-geometry.mjs';
 const {scene,context}=loadScene(),s=scene.scheduler;
 const read=f=>fs.readFileSync(f,'utf8');
 test('cafe route uses clear lower-right floor, retains the lounge and sign mounting surface',()=>{
  assert.deepEqual(JSON.parse(JSON.stringify(scene.art.anchors.coffee_counter)),{x:83,y:60,furniture:'standing interaction'});
  assert.deepEqual(JSON.parse(JSON.stringify(scene.art.anchors.approach_coffee_counter)),{x:77,y:58});
- const baseline=JSON.parse(read('artifacts/office-cafe/art-map.before.json'));
+ const baseline=JSON.parse(readAt('data/hani-building/art-map-v1.json','b653a173079323217bcd5e338e82c50d40d578e1'));
  for(const id of ['lobby-nw','lobby-ne','lobby-sw','lobby-se','door_cafe','junction_cafe'])assert.deepEqual(JSON.parse(JSON.stringify(scene.art.anchors[id])),baseline.anchors[id]);
  assert.deepEqual(JSON.parse(JSON.stringify(scene.art.floors['1f'].plates)),baseline.floors['1f'].plates);
  // Native-art furniture footprints, including the new counter and the old sofa lounge.
