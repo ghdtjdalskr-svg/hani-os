@@ -38,6 +38,7 @@
     teams:Object.freeze(teams.map(({id,name})=>Object.freeze({id,name}))),
     people:Object.freeze(people.map(({id,name,rank,team,group,role,line,keywords,status,registration,floor})=>Object.freeze({id,name,rank,team,group,role,line,keywords,status,registration,floor})))
   });
+  (document.querySelectorAll?.('.sidebar-corporate-lockup small')||[]).forEach(label=>{label.textContent='PERSONAL AI COMPANY · '+window.HaniOrganizationRoster.people.length+' AGENTS'});
   if (!root || root.dataset.mounted) return;
   root.dataset.mounted = 'true';
   root.addEventListener('error',event=>{const image=event.target;if(image.matches?.('.ogh-portrait')){image.hidden=true;const fallback=document.createElement('span');fallback.className='ogh-portrait-fallback';fallback.textContent=image.alt;image.after(fallback)}},true);
@@ -49,7 +50,8 @@
   const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   // Static portrait assets; labels remain real text for legibility and accessibility.
   const portraitFiles=Object.freeze({daon:'./assets/profiles/hani-profile-daon-v2.webp',yoonseul:'./assets/profiles/hani-profile-yoonseul-v2.webp',sua:'./assets/profiles/hani-profile-sua-id.webp'});
-  const portrait = (p,cls='') => `<img class="ogh-portrait ${cls}" src="${portraitFiles[p.id]||`./assets/profiles/hani-profile-${p.id}.webp`}" alt="${p.name} · ${p.role}" loading="lazy" width="720" height="720">`;
+  const portraitSource=id=>portraitFiles[id]||`./assets/profiles/hani-profile-${id}.webp`;
+  const portrait = (p,cls='') => `<img class="ogh-portrait ${cls}" src="${portraitSource(p.id)}" alt="${p.name} · ${p.role}" loading="lazy" width="720" height="720">`;
   const avatar = p => `<button type="button" class="ogh-avatar" data-person="${p.id}" aria-label="${p.name} · ${p.role} 소개">${portrait(p)}<span class="ogh-nameplate"><strong>${p.name} ${leaderBadge(p)}${plannedBadge(p)}</strong><small>${p.role}</small></span></button>`;
   const tags = items => `<div class="ogh-tags">${items.map(s=>`<span>${esc(s)}</span>`).join('')}</div>`;
   const scenePaths = {
@@ -81,17 +83,20 @@
   // October prioritizes the HQ opening, newspaper launch and chibi greeting. Other big
   // changes stay in the complete timeline; title keywords never promote routine patches.
   const historyMilestonePriority=['v2.9.215','v2.9.213','v2.9.222','v2.9.216','v2.9.218','v2.9.161','v2.9.164','v2.9.120','v2.9.132','v2.9.135'];
-  let historyReleases=null,historyReleasesRequested=false,historyReleasesFailed=false;
+  let historyReleases=null,historyReleasesRequested=false,historyReleasesFailed=false,historyReleasesPromise=null;
   let historyExpanded=false,historyKey='',countsKey='',detailsKey='';
   const historyExpandedMonths=new Set(),historyRegularLimit=5;
   function loadHistoryReleases(){
-    if(historyReleasesRequested)return;
+    if(historyReleasesRequested)return historyReleasesPromise;
     historyReleasesRequested=true;
-    fetch('./assets/data/hani-history-releases-v1.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('release catalog');return r.json()}).then(value=>{
+    return historyReleasesPromise=fetch('./assets/data/hani-history-releases-v1.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('release catalog');return r.json()}).then(value=>{
       if(value?.schema!==1||!Array.isArray(value.entries)||!value.entries.every(r=>/^v\d+\.\d+\.\d+$/.test(r?.id)&&typeof r.title==='string'&&/[가-힣]/.test(r.title)&&[...r.title].length<=24&&/^\d{4}-\d{2}-\d{2}$/.test(r.date)&&Number.isFinite(Date.parse(r.date+'T00:00:00Z'))&&new Date(r.date+'T00:00:00Z').toISOString().slice(0,10)===r.date&&['released','pages'].includes(r.status)&&Array.isArray(r.credits)))throw Error('release metadata');
-      historyReleases=value.entries;renderOverview();
-    }).catch(()=>{historyReleasesFailed=true;renderOverview()});
+      historyReleases=value.entries;renderOverview();return historyReleases;
+    }).catch(()=>{historyReleasesFailed=true;renderOverview();return null});
   }
+  // The literal catalog fetch above is the only release loader (also traced by closure).
+  window.HaniReleaseCatalog=Object.freeze({load:loadHistoryReleases});
+  window.dispatchEvent?.(new Event('hani-release-catalog-ready'));
   function renderOverview(){
     const slot=root.querySelector('.ogh-overview');if(!slot)return;
     const model=organizationOverviewData(typeof state==='undefined'?null:state,historyReleases,window.HaniOrganizationRoster),employee=model.employee;
@@ -267,7 +272,7 @@
     const card=root.querySelector('[data-card-person="'+id+'"]');
     card?.focus({preventScroll:true});showDetail('person',id);return true;
   }
-  window.HaniOrganizationHub=Object.freeze({selectTab:selectHubTab,openPerson});
+  window.HaniOrganizationHub=Object.freeze({selectTab:selectHubTab,openPerson,portraitSource,overviewData:organizationOverviewData});
   if(document.querySelector('.organization-tabs')){
     selectHubTab(root.dataset.hubTab||'overview');
   }else renderOverview();

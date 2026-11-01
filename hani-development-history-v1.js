@@ -30,24 +30,42 @@
     {id:"v2.9.121",date:"2026-09-19",status:"released",title:"Sports Background Sync",summary:"스포츠 결과를 서버 기반으로 점검하고 공식 출처와 최신 완료 경기 상태를 화면에 안전하게 동기화했습니다.",ref:"83c6368"},
     {id:"v2.9.120",date:"2026-09-15",status:"released",title:"Library · Watch Archive",summary:"독서와 시청 기록을 아카이브 중심으로 재구성하고 목록 탐색과 상세 기록 가독성을 개선했습니다.",ref:"654af6b"}
   ]);
+  function mergeEntries(legacy,releases){
+    const byId=new Map(legacy.map(entry=>[entry.id,entry]));
+    for(const entry of releases||[])byId.set(entry.id,{...entry,summary:entry.source?.subject||"",ref:entry.source?.commit||""});
+    return [...byId.values()].sort((a,b)=>b.date.localeCompare(a.date)||b.id.localeCompare(a.id,undefined,{numeric:true}));
+  }
+  let entries=mergeEntries(HISTORY,[]),historyNotice="배포 기록을 불러오는 중입니다.",activeFilter="all";
+  async function refreshCatalog(){
+    if(!window.HaniReleaseCatalog)return;
+    let releases=null;try{releases=await window.HaniReleaseCatalog.load()}catch(_){}
+    entries=mergeEntries(HISTORY,releases);
+    historyNotice=releases?"":"배포 기록을 불러오지 못해 기존 기록을 표시합니다.";
+    mount();
+  }
   const esc=value=>String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[char]);
   const statusLabel={preview:"미리보기",released:"운영 반영",pages:"Pages 확인",process:"개발 절차"};
   const row=entry=>`<article class="hani-history-row" data-history-status="${esc(entry.status)}"><div class="hani-history-marker" aria-hidden="true"></div><div class="hani-history-copy"><div class="hani-history-meta"><span class="hani-history-version">${esc(entry.id)}</span><span class="hani-history-status is-${esc(entry.status)}">${esc(statusLabel[entry.status]||entry.status)}</span><time datetime="${esc(entry.date)}">${esc(entry.date.replaceAll("-","."))}</time></div><h4>${esc(entry.title)}</h4><details class="activity-trend-info"><summary>ⓘ 변경 내용</summary><details class="activity-trend-info"><summary>ⓘ 변경 내용</summary><p>${esc(entry.summary)}</p></details></details></div><code>${esc(entry.ref)}</code></article>`;
   const openDev=()=>{const nav=document.querySelector('.nav-btn[data-view="dev"]');if(nav)nav.click();else if(typeof showView==="function")showView("dev");setTimeout(()=>document.querySelector("#haniDevelopmentHistory")?.scrollIntoView({behavior:"smooth",block:"start"}),80)};
   function mountHome(){
-    const home=document.querySelector("#home"),lower=home?.querySelector(".home-lower-grid");if(!home||!lower||document.querySelector("#haniDevelopmentSnapshot"))return;
-    const slot=document.createElement("section");slot.id="haniDevelopmentSnapshot";slot.className="hani-development-snapshot card";slot.innerHTML=`<div class="hani-history-head"><div><h3>최근 개발 업데이트</h3></div><button type="button" class="btn sm" data-history-open>개발센터 전체보기 ›</button></div><div class="hani-history-compact">${HISTORY.slice(0,4).map(row).join("")}</div>`;
+    const home=document.querySelector("#home"),lower=home?.querySelector(".home-lower-grid");if(!home||!lower)return;
+    const existing=document.querySelector("#haniDevelopmentSnapshot");if(existing){existing.querySelector(".hani-history-compact").innerHTML=entries.slice(0,4).map(row).join("");existing.querySelector("[data-history-notice]").textContent=historyNotice;return;}
+    const slot=document.createElement("section");slot.id="haniDevelopmentSnapshot";slot.className="hani-development-snapshot card";slot.innerHTML=`<div class="hani-history-head"><div><h3>최근 개발 업데이트</h3></div><button type="button" class="btn sm" data-history-open>개발센터 전체보기 ›</button></div><div class="hani-history-compact">${entries.slice(0,4).map(row).join("")}</div><small data-history-notice role="status">${esc(historyNotice)}</small>`;
     lower.after(slot);slot.querySelector("[data-history-open]")?.addEventListener("click",openDev);
   }
   function mountDev(){
-    const dev=document.querySelector("#dev");if(!dev||document.querySelector("#haniDevelopmentHistory"))return;
+    const dev=document.querySelector("#dev");if(!dev)return;
+    const existing=document.querySelector("#haniDevelopmentHistory");if(existing){existing.querySelector(".hani-history-kpis").innerHTML=kpis();existing.querySelector(".hani-history-list").innerHTML=entries.map(row).join("");existing.querySelector("[data-history-notice]").textContent=historyNotice;applyFilter(existing);return;}
     [...dev.children].filter(child=>!child.classList.contains("ds-main-character-banner")).forEach(child=>child.remove());
     const shell=document.createElement("section");shell.id="haniDevelopmentHistory";shell.className="hani-dev-history-shell";
-    const released=HISTORY.filter(item=>item.status==="released").length,preview=HISTORY.filter(item=>item.status==="preview").length;
-    shell.innerHTML=`<div class="hani-dev-history-overview"><div><h3>Codex 개발 히스토리</h3><p>미리보기는 승인 전 후보입니다.</p></div><div class="hani-history-kpis"><div><b>${HISTORY.length}</b><small>기록</small></div><div><b>${released}</b><small>운영 반영</small></div><div><b>${preview}</b><small>미리보기</small></div></div></div><div class="hani-history-toolbar" role="group" aria-label="개발 히스토리 필터"><button type="button" class="is-active" data-history-filter="all">전체</button><button type="button" data-history-filter="released">운영 반영</button><button type="button" data-history-filter="preview">미리보기</button><button type="button" data-history-filter="process">개발 절차</button></div><div class="hani-history-list">${HISTORY.map(row).join("")}</div>`;
+    shell.innerHTML=`<div class="hani-dev-history-overview"><div><h3>Codex 개발 히스토리</h3><p>미리보기는 승인 전 후보입니다.</p></div><div class="hani-history-kpis">${kpis()}</div></div><div class="hani-history-toolbar" role="group" aria-label="개발 히스토리 필터"><button type="button" class="is-active" data-history-filter="all">전체</button><button type="button" data-history-filter="released">운영 반영</button><button type="button" data-history-filter="preview">미리보기</button><button type="button" data-history-filter="process">개발 절차</button></div><small data-history-notice role="status">${esc(historyNotice)}</small><div class="hani-history-list">${entries.map(row).join("")}</div>`;
     dev.append(shell);
-    shell.querySelectorAll("[data-history-filter]").forEach(button=>button.addEventListener("click",()=>{const filter=button.dataset.historyFilter;shell.querySelectorAll("[data-history-filter]").forEach(item=>item.classList.toggle("is-active",item===button));shell.querySelectorAll(".hani-history-row").forEach(item=>item.hidden=filter!=="all"&&item.dataset.historyStatus!==filter)}));
+    shell.querySelectorAll("[data-history-filter]").forEach(button=>button.addEventListener("click",()=>{activeFilter=button.dataset.historyFilter;applyFilter(shell)}));
   }
+  const kpis=()=>'<div><b>'+entries.length+'</b><small>기록</small></div><div><b>'+entries.filter(item=>item.status==="released").length+'</b><small>운영 반영</small></div><div><b>'+entries.filter(item=>item.status==="preview").length+'</b><small>미리보기</small></div>';
+  function applyFilter(shell){shell.querySelectorAll("[data-history-filter]").forEach(item=>item.classList.toggle("is-active",item.dataset.historyFilter===activeFilter));shell.querySelectorAll(".hani-history-row").forEach(item=>item.hidden=activeFilter!=="all"&&item.dataset.historyStatus!==activeFilter)}
   const mount=()=>{mountHome();mountDev()};mount();setTimeout(mount,180);
-  window.HANI_DEVELOPMENT_HISTORY_V1=Object.freeze({entries:HISTORY,mount,openDev});
+  window.HANI_DEVELOPMENT_HISTORY_V1=Object.freeze({get entries(){return entries},mergeEntries,mount,openDev});
+  window.addEventListener?.('hani-release-catalog-ready',refreshCatalog);
+  refreshCatalog();
 })();
