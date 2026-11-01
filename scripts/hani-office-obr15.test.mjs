@@ -1,3 +1,4 @@
+import {restoreResidentsSource} from './hani-office-residents-source.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -17,6 +18,7 @@ assert.equal(hash(labelDeltaBytes),'cbb8eca29989ebb093286de9f5fe728caf872d59abb2
 const labelDelta=JSON.parse(labelDeltaBytes);
 assert.equal(labelDelta.beforeSha256,'406937ae1d69c0379bb735e961734b517ae9440a02c93a0d41771dc0c694d246');
 function restoreOfficeLabelsSource(source){
+ source=restoreResidentsSource(source);
  const lines=source.match(/[^\n]*\n|[^\n]+$/g);
  for(const change of labelDelta.changes.toReversed()){
   assert.deepEqual(lines.slice(change.afterLine,change.afterLine+change.after.length),change.after,'only exact reviewed display lines at '+change.afterLine);

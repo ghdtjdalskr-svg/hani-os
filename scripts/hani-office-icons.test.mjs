@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import {loadScene,at,readAt} from './hani-office-lively-fixture.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
+import {restoreResidentsSource} from './hani-office-residents-source.mjs';
 
 const source=fs.readFileSync('hani-office-live.js','utf8'),css=fs.readFileSync('hani-office-live.css','utf8');
 const {scene,table}=loadScene(),s=scene.scheduler;
@@ -106,8 +107,10 @@ test('icons: actual repeated phone/desktop/reduced renderer updates reuse nodes 
 });
 
 test('icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc',()=>{
+ // Restore only the frozen, exact reviewed resident lines before the existing byte pins.
+ const restored=restoreResidentsSource(source);
  const original=readAt('hani-office-live.js','15747bc');
- for(const [a,b]of [['  function createScheduler(','  // Read-only label geometry'],['  function snapshot(now=new Date()','  function profile('],['    function screenHomeClear(','    function stationaryStops('],['  function placeStatusLabels(','  const scheduler='],['  function fitStatusLabels(','  if(buildingChairmanSlot())people.push']])assert.equal(section(source,a,b),section(original,a,b),a);
+ for(const [a,b]of [['  function createScheduler(','  // Read-only label geometry'],['  function snapshot(now=new Date()','  function profile('],['    function screenHomeClear(','    function stationaryStops('],['  function placeStatusLabels(','  const scheduler='],['  function fitStatusLabels(','  if(buildingChairmanSlot())people.push']])assert.equal(section(restored,a,b),section(original,a,b),a);
  for(const token of ['setInterval(','setTimeout(','document.createElement(','fetch('])assert.equal(source.split(token).length,original.split(token).length,token);
  assert.doesNotMatch(source,/localStorage|sessionStorage|supabase/);
 });
