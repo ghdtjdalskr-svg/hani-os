@@ -1422,13 +1422,17 @@
   const displayPosts=(now=Date.now())=>[...posts(),...queenResultThreads(now)];
   const fixedQueenResults=Object.freeze({'2026-10':'seoyun'});
   const queenImages=Object.freeze({'2026-10':'./assets/queen/2026-10.webp'});
-  function queenSlides(now=Date.now()){
+  function queenWinner(now=Date.now()){
     const month=dayKey(now).slice(0,7),previous=new Date(Date.UTC(Number(month.slice(0,4)),Number(month.slice(5))-2,1)).toISOString().slice(0,7);
     const source=posts().filter(published).find(p=>queenMonth(p)===previous&&Date.parse(p.createdAt)<=now);
     const winner=person(fixedQueenResults[previous])||queenTally(source,now)?.member;
+    return winner?{month:previous,id:winner.id,name:displayName(winner.id),rank:winner.rank}:null;
+  }
+  function queenSlides(now=Date.now()){
+    const month=dayKey(now).slice(0,7),winner=queenWinner(now),previous=winner?.month;
     const poll=posts().filter(published).find(p=>queenMonth(p)===month&&queenPollOpen(p,now));
     const season=value=>['winter','winter','spring','spring','spring','summer','summer','summer','autumn','autumn','autumn','winter'][Number(value.slice(5))-1];
-    return [...(winner?[{kind:'queen-winner',kicker:'👑 '+Number(previous.slice(5))+'월의 퀸',title:displayName(winner.id)+' · '+winner.rank,
+    return [...(winner?[{kind:'queen-winner',kicker:'👑 '+Number(previous.slice(5))+'월의 퀸',title:winner.name+' · '+winner.rank,
       copy:'왕관은 출근 완료! 오늘의 간식 회의도 기대할게요 ㅋㅋ',image:queenImages[previous]||bannerPortrait(winner.id),queenImage:queenImages[previous]?'solo':'portrait',queenSeason:season(previous),href:'#organization/people/'+winner.id}]:[]),
       ...(poll?[{kind:'queen-vote',kicker:'HANI 사내 인기상',title:'👑 '+Number(month.slice(5))+'월의 퀸 투표 중',
       copy:queenParticipation(poll,queenStandings(poll,now)),image:'./assets/team/hani-team-office.webp',queenSeason:season(month),href:'#board/post/'+encodeURIComponent(poll.id),postId:poll.id}]:[])];
@@ -1656,6 +1660,6 @@
     postFields,displayViews,staffReads,displayLikes,boardReaders,commentFields,relativeTime,boardDate,closePost,previewThread,postPreview,cancelPreview,ownerReactions,replyIntent,chairmanReplyIntent,chairmanReplyTopic,CHAIRMAN_TOPIC_REPLIES,CHAIRMAN_REPLIES,orderedComments,commentMarkup,stripLeadingVocative,
     ADDRESS_RULES,personaMap,personaMode,staffAddress,candidateScore,commentCandidates,selectAuthors,queueReplies,generateDaily,realEvents,refreshLiving,
     setReplyMode,replyMode,draftAction,postDrafts,replyDrafts,votePoll,toggleReaction,weeklyBest,weeklyActivity,
-    attendance,unreadCount,mentionIds,dayKey,replySafetyBound});
+    attendance,unreadCount,mentionIds,dayKey,replySafetyBound,queenWinner});
   init();
 })();
