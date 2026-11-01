@@ -21,12 +21,27 @@ function restoreMotionDelta(source){
  }
  return lines.join('');
 }
+// Exact QA-3/18/19 display edits are restored before the unchanged behavior guard.
+const labelDeltaBytes=fs.readFileSync('scripts/fixtures/office-labels-qa-source-delta.json');
+assert.equal(createHash('sha256').update(labelDeltaBytes).digest('hex'),'d582a76cd5243359692fa73b64f6761c69f255750dc0b071cb63fb5361da749f');
+const labelDelta=JSON.parse(labelDeltaBytes);
+assert.equal(labelDelta.beforeSha256,'5254d8bed4e2927f2eea70cbc40cd24113627b9bf4a6f4f67d6e04b02dcab7fc');
+function restoreOfficeLabelsSource(source){
+ const lines=source.match(/[^\n]*\n|[^\n]+$/g);
+ for(const change of labelDelta.changes.toReversed()){
+  assert.deepEqual(lines.slice(change.afterLine,change.afterLine+change.after.length),change.after,'only exact reviewed display lines at '+change.afterLine);
+  lines.splice(change.afterLine,change.after.length,...change.before);
+ }
+ const restored=lines.join('');assert.equal(createHash('sha256').update(restored).digest('hex'),labelDelta.beforeSha256,'every other source byte including scheduler stays frozen');return restored;
+}
 test('obr21 authored full absent/present plans and reverse snapshots match frozen delta',()=>{
  const bytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-obr21-plans.json.gz'));
  assert.equal(createHash('sha256').update(bytes).digest('hex'),'49b7d4b696ca035486a45678cdc4c8181fe620e302b77978a53c873246f7547a');
- const frozen=JSON.parse(bytes),source=fs.readFileSync('hani-office-live.js','utf8');
+ const frozen=JSON.parse(bytes),current=fs.readFileSync('hani-office-live.js','utf8'),source=restoreOfficeLabelsSource(current);
+ const displayChange=labelDelta.changes.find(c=>c.after.some(l=>l.trim())),displayLine=displayChange.after.find(l=>l.trim());
+ assert.throws(()=>restoreOfficeLabelsSource(current.replace(displayLine,displayLine.replace(/\S/,'!'))));
  // Phone placement/slot measurements are covered by geometry + owner tests.
- // Outside those two UI functions, allow only the pinned movement line list.
+ // Restore the pinned display delta first; outside those two UI functions, allow only the pinned movement line list.
  // Every other byte (including the scheduler) retains its original hash.
  const begin=source.indexOf('  function placeStatusLabels('),end=source.indexOf('  const scheduler=',begin);
  const fit=source.indexOf('  function fitStatusLabels('),fitEnd=source.indexOf('  if(buildingChairmanSlot())people.push',fit);

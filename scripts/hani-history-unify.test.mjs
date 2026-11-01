@@ -100,7 +100,7 @@ test('development screen and home use the shared catalog and keep their existing
   assert.equal(entries[0].id,catalog.entries[0].id);assert.equal(new Set(entries.map(row=>row.id)).size,entries.length);
   for(const id of ['P0','Meeting Preview','Design System P1','Workflow','Travel Places'])assert.ok(entries.some(row=>row.id===id),id);
   assert.equal(entries.find(row=>row.id==='Meeting Preview').status,'preview');
-  assert.match(shell.querySelector('.hani-history-list').innerHTML,/v2\.9\.245/);assert.match(home.querySelector('.hani-history-compact').innerHTML,/v2\.9\.245/);
+  assert.ok(shell.querySelector('.hani-history-list').innerHTML.includes(catalog.entries[0].id));assert.ok((home.querySelector('.hani-history-compact').innerHTML).includes(catalog.entries[0].id));
   assert.equal(f.dev(),shell);assert.equal(f.home(),home);assert.equal(f.mounts,2);assert.equal(button.active,true);
   assert.ok(shell.querySelector('.hani-history-list').rows.filter(row=>row.dataset.historyStatus!=='preview').every(row=>row.hidden));
   assert.deepEqual(f.requests,['./assets/data/hani-history-releases-v1.json']);assert.deepEqual(f.writes,[]);

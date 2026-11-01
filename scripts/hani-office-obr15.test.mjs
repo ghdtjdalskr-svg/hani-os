@@ -11,6 +11,19 @@ const {scene,table,context}=loadScene(),s=scene.scheduler;
 let writes=0;const deny=()=>{writes++;throw Error('forbidden storage/network')};
 context.localStorage=context.sessionStorage={setItem:deny,removeItem:deny,clear:deny};context.fetch=deny;
 const serialize=JSON.stringify,hash=x=>createHash('sha256').update(x).digest('hex');
+// Exact QA-3/18/19 display edits are restored before the unchanged behavior guard.
+const labelDeltaBytes=fs.readFileSync('scripts/fixtures/office-labels-qa-source-delta.json');
+assert.equal(hash(labelDeltaBytes),'d582a76cd5243359692fa73b64f6761c69f255750dc0b071cb63fb5361da749f');
+const labelDelta=JSON.parse(labelDeltaBytes);
+assert.equal(labelDelta.beforeSha256,'5254d8bed4e2927f2eea70cbc40cd24113627b9bf4a6f4f67d6e04b02dcab7fc');
+function restoreOfficeLabelsSource(source){
+ const lines=source.match(/[^\n]*\n|[^\n]+$/g);
+ for(const change of labelDelta.changes.toReversed()){
+  assert.deepEqual(lines.slice(change.afterLine,change.afterLine+change.after.length),change.after,'only exact reviewed display lines at '+change.afterLine);
+  lines.splice(change.afterLine,change.after.length,...change.before);
+ }
+ const restored=lines.join('');assert.equal(hash(restored),labelDelta.beforeSha256,'every other source byte including scheduler stays frozen');return restored;
+}
 test('obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately',()=>{
  const frozen=JSON.parse(gunzipSync(fs.readFileSync('scripts/fixtures/office-lively-labels-235-plans.json.gz')));
  assert.equal(hash(readAt('hani-office-live.js',base)),frozen.sourceSha256);
@@ -21,7 +34,7 @@ test('obr15 historical source identities retained; cafe/rest source and full abs
   // full output here; obr21 and all its historical fixtures remain untouched.
   const cafeBytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-cafe-finish-plans.json.gz'));
   assert.equal(hash(cafeBytes),'e72482ea731c0b8311eb53c90c40e573f4465a45ef37cd6ef6927261aaf72b7a','immutable cafe/rest full-ledger oracle');
-  const cafe=JSON.parse(cafeBytes);assert.equal(hash(fs.readFileSync('hani-office-live.js')),cafe.sourceSha256);assert.equal(hash(fs.readFileSync('data/hani-building/office-places.json')),cafe.placesSha256);
+  const cafe=JSON.parse(cafeBytes);assert.equal(hash(restoreOfficeLabelsSource(fs.readFileSync('hani-office-live.js','utf8'))),cafe.sourceSha256);assert.equal(hash(fs.readFileSync('data/hani-building/office-places.json')),cafe.placesSha256);
   const reviewed=cafe.records.find(r=>r.label==='obr15 absent '+day);
   assert.ok(reviewed);assert.equal(serialize(o),serialize(reviewed.options));
   const a=actual.plan(day,o),out=actual.blockPlan(day,0,a,o);assert.equal(hash(serialize(a)),hash(serialize(reviewed.formal)));assert.equal(hash(serialize(out)),hash(serialize(reviewed.outings)));

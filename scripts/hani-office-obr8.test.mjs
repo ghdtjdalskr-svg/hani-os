@@ -15,10 +15,23 @@ const days=['2026-10-22','2026-10-23','2026-10-24'];
 const {scene,table,context}=loadScene(),s=scene.scheduler;
 let writes=0;const fail=()=>{writes++;throw Error('storage forbidden')};
 context.localStorage=context.sessionStorage={setItem:fail,removeItem:fail,clear:fail};
+// Exact QA-3/18/19 display edits are restored before the unchanged behavior guard.
+const labelDeltaBytes=fs.readFileSync('scripts/fixtures/office-labels-qa-source-delta.json');
+assert.equal(createHash('sha256').update(labelDeltaBytes).digest('hex'),'d582a76cd5243359692fa73b64f6761c69f255750dc0b071cb63fb5361da749f');
+const labelDelta=JSON.parse(labelDeltaBytes);
+assert.equal(labelDelta.beforeSha256,'5254d8bed4e2927f2eea70cbc40cd24113627b9bf4a6f4f67d6e04b02dcab7fc');
+function restoreOfficeLabelsSource(source){
+ const lines=source.match(/[^\n]*\n|[^\n]+$/g);
+ for(const change of labelDelta.changes.toReversed()){
+  assert.deepEqual(lines.slice(change.afterLine,change.afterLine+change.after.length),change.after,'only exact reviewed display lines at '+change.afterLine);
+  lines.splice(change.afterLine,change.after.length,...change.before);
+ }
+ const restored=lines.join('');assert.equal(createHash('sha256').update(restored).digest('hex'),labelDelta.beforeSha256,'every other source byte including scheduler stays frozen');return restored;
+}
 test('obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words',()=>{
  const cafeBytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-cafe-finish-plans.json.gz'));
  assert.equal(createHash('sha256').update(cafeBytes).digest('hex'),'e72482ea731c0b8311eb53c90c40e573f4465a45ef37cd6ef6927261aaf72b7a','immutable cafe/rest full-ledger oracle');
- const cafe=JSON.parse(cafeBytes);assert.equal(createHash('sha256').update(fs.readFileSync('hani-office-live.js')).digest('hex'),cafe.sourceSha256);
+ const cafe=JSON.parse(cafeBytes);assert.equal(createHash('sha256').update(restoreOfficeLabelsSource(fs.readFileSync('hani-office-live.js','utf8'))).digest('hex'),cafe.sourceSha256);
  const counts={colleague:0,delivery:0,notice:0,task:0};
  for(const day of days){
   const options={chairmanPresent:true},formal=s.plan(day,options),all=s.blockPlan(day,0,formal,options),errands=all.filter(e=>e.card.kind==='errand');
