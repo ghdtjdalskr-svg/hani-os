@@ -1,0 +1,135 @@
+{
+  "scope": "QA-3/18/19 + QA-b5b exact display-only source delta; no scheduler, placement, click or frame changes",
+  "beforeSha256": "5254d8bed4e2927f2eea70cbc40cd24113627b9bf4a6f4f67d6e04b02dcab7fc",
+  "afterSha256": "b79bc13dc3a125ee83127fb72fd7cb3002c8e6d2464f744ffb5be94c8189d42c",
+  "changes": [
+    {
+      "beforeLine": 1858,
+      "afterLine": 1858,
+      "before": [
+        "    [/간식|야식|메뉴|식단/,'메뉴 고르기|먹거리 고름|식단 구상|간식 고르기'],[/그리|낙서|스케치/,'그림 그리기|낙서 하기|스케치 하기'],\n"
+      ],
+      "after": [
+        "    [/간식|야식|메뉴|식단|투표|저녁 뭐/,'메뉴 고르기|먹거리 고름|식단 구상|간식 고르기'],[/그리|낙서|스케치/,'그림 그리기|낙서 하기|스케치 하기'],\n"
+      ]
+    },
+    {
+      "beforeLine": 1862,
+      "afterLine": 1862,
+      "before": [
+        "  function phoneStatusLine(line,used=new Set()){\n"
+      ],
+      "after": [
+        "  function phoneStatusLine(line,used=new Set(),state='work',compact=true){\n"
+      ]
+    },
+    {
+      "beforeLine": 1864,
+      "afterLine": 1864,
+      "before": [
+        "    if(report){const topic=report[1].replace(/^(오늘|다음) /,'').split(' ')[0],short=[...topic].length<=4?topic+'보고':'회장보고';used.add(short);return short}\n"
+      ],
+      "after": [
+        "    if(report){const topic=report[1].replace(/^(오늘|다음) /,'').split(' ')[0],short=/^[가-힣A-Za-z0-9]{1,4}$/.test(topic)?topic+(compact?'':' ')+'보고':compact?'회장보고':'회장 보고';used.add(short);return short}\n"
+      ]
+    },
+    {
+      "beforeLine": 1866,
+      "afterLine": 1866,
+      "before": [
+        "    // Unknown future text retains a whole source word plus its action; speech\n",
+        "    // without an action verb is an opinion being spoken, never invented work.\n",
+        "    const source=line.replace(/(?:에서|으로|이랑|와) /g,' ').replace(/ 중[.!…]*$|[.!…♡?]/g,'').trim();\n",
+        "    const words=source.split(/\\s+/),verb=words.at(-1)?.replace(/는$/,'기');\n",
+        "    const derived=words.slice(0,-1).reverse().map(w=>w+' '+verb).filter(w=>[...w].length>=2&&[...w].length<=6);\n",
+        "    const options=authored?authored.split('|'):[...derived,'의견 나누기','의견 말하기','의견 건네기'];\n",
+        "    const choices=[...options.map(w=>w.replace(/ /g,'')),...options].filter(w=>[...w].length>=2&&[...w].length<=6);\n"
+      ],
+      "after": [
+        "    // Future sentences use whole, state-based phrases; never slice source words.\n",
+        "    const fallback={work:'근무 중|일하는 중|업무 진행|근무 계속|근무 이어감|업무 이어감|업무 진행중|업무 보는중',rest:'휴식 중|쉬는 중|잠깐 휴식|휴식 취하기|잠시 쉬기|쉬어 가기|휴식 이어감|잠깐 쉬기',meeting:'회의 중|회의 참여|회의 진행|회의 참석|회의 함께|회의 나눔|회의 이어감|회의 진행중',moving:'이동 중|걸어가는 중|목적지 이동|걷는 중|이동 계속|이동 이어감|걸어서 이동|목적지 걷기',night:'야근 중|야간 근무|야근 진행|야근 계속|야근 이어감|야간 작업|밤 근무중|야근 진행중'};\n",
+        "    const options=(authored||fallback[state]||fallback.work).split('|');\n",
+        "    const choices=(compact?[...options.map(w=>w.replace(/ /g,'')),...options]:options).filter(w=>[...w].length>=2&&[...w].length<=(compact?6:8));\n"
+      ]
+    },
+    {
+      "beforeLine": 2152,
+      "afterLine": 2149,
+      "before": [
+        "  function activityStatus(actor,full){return actor.officeTravel||actor.dataset.walking==='true'||full==='이동 중'?'moving':actor.dataset.called==='true'||actor.dataset.activity==='meeting'?'meeting':actor.dataset.activity==='rest'?'rest':/야근/.test(full)?'night':'work'}\n"
+      ],
+      "after": [
+        "  function activityStatus(actor,full){\n",
+        "    const leisure=/물 한 모금|쉬|휴식|수다|간식|커피|야식|메뉴|투표|저녁 뭐|인스타|음악|영화|산책|졸|약속|휴대폰|고양이 영상|기지개|스트레칭|하품|노래|플레이리스트|흥얼/;\n",
+        "    const workPhrase=/(?:고객 표현 쉬운 말로 바꾸는 중|어려운 용어 쉬운 말 퀴즈 중|다음 약속 준비물 적는 중|졸린 눈으로 문장 줄이는 중)$/;\n",
+        "    return actor.officeTravel||actor.dataset.walking==='true'||full==='이동 중'?'moving':actor.dataset.called==='true'||actor.dataset.activity==='meeting'?'meeting':['rest','play'].includes(actor.dataset.activity)||actor.dataset.zone==='lounge'&&!/^(?:task|errand)-/.test(actor.dataset.place||'')||!workPhrase.test(full)&&leisure.test(full)?'rest':/야근/.test(full)?'night':'work';\n",
+        "  }\n"
+      ]
+    },
+    {
+      "beforeLine": 2154,
+      "afterLine": 2155,
+      "before": [],
+      "after": [
+        "  const statusIcons={work:'💻',rest:'☕',meeting:'💬',moving:'🚶',night:'🌙'};\n"
+      ]
+    },
+    {
+      "beforeLine": 2156,
+      "afterLine": 2158,
+      "before": [
+        "    const status=actor.querySelector('.hani-office-status'),icon=actor.querySelector('.hani-office-activity-icon');\n",
+        "    status.textContent=value;status.dataset.full=value;status.title=value;actor.dataset.mood=String(mood);statusDot(actor);\n",
+        "    icon.textContent=actor.dataset.emoji||'';icon.hidden=!icon.textContent;icon.title=value;\n"
+      ],
+      "after": [
+        "    const status=actor.querySelector('.hani-office-status'),icon=actor.querySelector('.hani-office-activity-icon'),compact=matchMedia('(max-width:600px)').matches;\n",
+        "    status.dataset.full=value;status.title=value;status.setAttribute('aria-label',value);actor.dataset.mood=String(mood);statusDot(actor);\n",
+        "    icon.textContent=actor.dataset.emoji||statusIcons[actor.dataset.status];icon.hidden=false;icon.title=value;\n",
+        "    status.textContent=icon.textContent+' '+HaniBuildingScene.labels.short(value,new Set(),actor.dataset.status,compact);\n"
+      ]
+    },
+    {
+      "beforeLine": 2171,
+      "afterLine": 2174,
+      "before": [
+        "      actor.officeCompact.textContent=compact?' · '+HaniBuildingScene.labels.short(status.dataset.full,used):'';\n"
+      ],
+      "after": [
+        "      status.textContent=actor.querySelector('.hani-office-activity-icon').textContent+' '+HaniBuildingScene.labels.short(status.dataset.full,used,actor.dataset.status,compact);\n",
+        "      actor.officeCompact.textContent=compact?' · '+status.textContent:'';\n"
+      ]
+    },
+    {
+      "beforeLine": 2174,
+      "afterLine": 2178,
+      "before": [
+        "      status.textContent=status.dataset.full;status.hidden=compact;\n"
+      ],
+      "after": [
+        "      status.hidden=compact;\n"
+      ]
+    },
+    {
+      "beforeLine": 2205,
+      "afterLine": 2209,
+      "before": [],
+      "after": [
+        "    const member=key==='seongmin'?window.HaniOrganizationRoster?.chairman:window.HaniOrganizationRoster?.people.find(p=>p.id===key),team=window.HaniOrganizationRoster?.teams.find(t=>t.id===member?.team);\n",
+        "    actor.dataset.team=member?.team||'';\n",
+        "    if(team){tag.style.setProperty('--office-team',team.color);tag.style.setProperty('--office-team-tint',team.tint)}\n",
+        "    const rank=document.createElement('span');rank.className='hani-office-rank';rank.textContent=key==='seongmin'?'':member?.rank?' '+member.rank:'';tagName.after(rank);\n"
+      ]
+    },
+    {
+      "beforeLine": 2369,
+      "afterLine": 2377,
+      "before": [
+        "      bg.src=background;bg.hidden=false;bg.alt=floor.label+' · HANI 본사';map.dataset.art=isFloor?'floor':'fallback';\n"
+      ],
+      "after": [
+        "      bg.src=background;bg.hidden=false;bg.alt=floor.label+' · HANI GROUP';map.dataset.art=isFloor?'floor':'fallback';\n"
+      ]
+    }
+  ]
+}
