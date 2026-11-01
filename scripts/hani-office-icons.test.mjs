@@ -99,7 +99,7 @@ test('icons: actual repeated phone/desktop/reduced renderer updates reuse nodes 
   assert.equal(writes,0,'same icon never rewrites textContent');assert.equal(creates,0,'no DOM node per update');assert.deepEqual(layer.children,slots);assert.deepEqual(f.root.querySelectorAll('*'),all);
   f.setDateTime(at(day,host.end+1).toISOString());f.click('1f');assert.notEqual(prop.textContent,'💬','the persistent icon clears after consultation');
  }
- assert.match(css,/\.hani-office-prop\{[^}]*z-index:4;[^}]*bottom:calc\(100% \+ 2px\)[^}]*border-radius:50%;background:#fff;[^}]*font-size:18px;[^}]*pointer-events:none;animation:none;transition:none/);
+ assert.match(css,/\.hani-office-prop\{[^}]*z-index:4;left:100%;top:2px;[^}]*border-radius:50%;background:#fff;[^}]*font-size:18px;[^}]*pointer-events:none;animation:none;transition:none/);
  assert.match(css,/@media\(max-width:600px\)\{\.hani-office-prop\{font-size:14px\}\}/);
  assert.match(css,/\.hani-office-actor \.hani-office-prop:not\(:empty\)\{display:block\}/);
  for(const pose of ['walk-a','walk-b'])assert.ok(css.includes('.hani-office-actor[data-pose="'+pose+'"] .hani-office-prop:not(:empty)'),'case-meeting travel is hidden immediately at its existing walking pose');

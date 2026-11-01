@@ -23,7 +23,7 @@ function restoreMotionDelta(source){
 }
 // Exact QA-3/18/19 display edits are restored before the unchanged behavior guard.
 const labelDeltaBytes=fs.readFileSync('scripts/fixtures/office-labels-qa-source-delta.json');
-assert.equal(createHash('sha256').update(labelDeltaBytes).digest('hex'),'2fdb235f380d215067343a9bf461239a2d1019284add9cd18fc981f07ae02c8f');
+assert.equal(createHash('sha256').update(labelDeltaBytes).digest('hex'),'cbb8eca29989ebb093286de9f5fe728caf872d59abb22d9b5b157869a1e746e3');
 const labelDelta=JSON.parse(labelDeltaBytes);
 assert.equal(labelDelta.beforeSha256,'406937ae1d69c0379bb735e961734b517ae9440a02c93a0d41771dc0c694d246');
 function restoreOfficeLabelsSource(source){
