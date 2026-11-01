@@ -1,3 +1,7 @@
+# 2026-11-01 · Conference Room QA-4·QA-17 (Codex)
+
+`hani/qa-report-fixes` / 사용자 지정 base·로컬 ref `c7b2c20`, 운영 기준 2.9.245 유지. 생성 재검증·지속 실패 안내, 지표별 담당자 말투, KPI 영역색, 월간 독서 추이 제거, 기간/목표 입력 persistent slot, 분기 발표 우선·닫힌 목표 비교 구현. **신규 Node10/10·집계/디자인 Node 묶음·실용12/12 통과. proactive19/21(수정 전에도 Git EPERM 2건 동일), browser 두 명령은 인자 부족으로 시작 실패. 실제 browser/smoke/운영 검증 미실행.** 보호 저장·공통 계산·버전/cache 불변, 미커밋·push/merge/배포 없음. 서윤 검토·실화면 검증 대기. Notion append는 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-11-01-qa-report-fixes.md). 아래 타 담당·과거 기록 보존.
+
 # 2026-10-31 · 휴대폰 본사 상단 배우 라벨 (Codex)
 
 `hani/office-top-labels` / base·로컬 origin/main `b0a9ad0`(원격 조회 연결 실패). 단일 `placeStatusLabels`에서 상단 공간 부족 배우만 자기 sprite 옆·아래/19.5px 이내/모든 이웃보다 가까운 pill 허용. 기존 슬롯·충돌·경계·우선순위·dot 유지, CSS/데이터/버전 변경 없음. **전체 Node 28파일 통과14·실패14(전부 원문 main에도 동일 Git EPERM), 최종 라벨12/12·신규7/7 PASS. 실제 Edge는 spawn EPERM으로 360/390/416px 전 층 점 전후·overflow 미측정/PNG0.** 미커밋 검토 대기, commit/push/PR/main/배포 없음. Notion 추가는 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-10-31-office-top-labels.md). 아래 타 담당·과거 기록 보존.

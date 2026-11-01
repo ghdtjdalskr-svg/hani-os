@@ -8087,7 +8087,7 @@ function monthlyReportBuildCurrent(){
     ["신체 기록",report.body.length?`${num(report.lastBody.weight)}kg`:"기록 없음",report.body.length>1?`첫 측정 대비 ${bodyDelta>0?"+":""}${bodyDelta.toFixed(2)}kg`:`${report.body.length}일 기록`],
     ["활동 일수",report.exercise.length?`${report.exercise.length}일`:"기록 없음",report.stepDays.length?`걸음 기록일 평균 ${stepAverage}`:"걸음 기록 없음"],
     ["문화 기록",cultureCount?`${cultureCount}건`:"기록 없음",cultureCount?`완독 ${report.books.length}권 · 시청 기록 ${report.movies.length}건`:"완료 기록 기준"]
-  ].map(([label,value,meta])=>`<div class="card monthly-report-kpi"><span>${esc(label)}</span><strong>${esc(value)}</strong><small>${esc(meta)}</small></div>`).join("");
+  ].map(([label,value,meta])=>`<div class="card monthly-report-kpi tone-${monthlyReportKpiTone(label)}"><span>${esc(label)}</span><strong>${esc(value)}</strong><small>${esc(meta)}</small></div>`).join("");
   const highlights=[];if(report.investmentCalc&&report.previousInvestmentCalc)highlights.push(investmentTotal===report.previousInvestmentCalc.total?"투자 자산은 전월과 같아요.":`투자 자산은 전월보다 ${won(Math.abs(investmentTotal-report.previousInvestmentCalc.total))} ${investmentTotal>report.previousInvestmentCalc.total?"늘었어요":"줄었어요"}.`);if(report.ledgerSummary&&report.previousLedgerSummary)highlights.push(spend===report.previousLedgerSummary.jispiT?"생활 지출은 이전 결산과 같아요.":`생활 지출은 이전 결산보다 ${won(Math.abs(spend-report.previousLedgerSummary.jispiT))} ${spend<report.previousLedgerSummary.jispiT?"적어요":"많아요"}.`);if(report.quizTotal)highlights.push(`학습은 ${report.quizTotal}문항 중 ${report.quizCorrect}문항을 맞혔어요.`);if(report.stepDays.length)highlights.push(`걸음을 기록한 날의 평균은 ${stepAverage}예요.`);
   $("monthlyReportInsightTitle").textContent=report.recordCount?`${ledgerMonthLabel(report.month)} · 이번 달 무엇이 달라졌을까요?`:`${ledgerMonthLabel(report.month)}은 아직 기록을 기다리는 달입니다.`;
   $("monthlyReportInsight").textContent=highlights.length?highlights.slice(0,3).join(" "):report.recordCount?"영역별 담당자의 한줄평을 보며 이번 달 결과와 다음에 확인할 점을 살펴보세요.":"이 달에는 요약할 기록이 없습니다.";
@@ -8121,25 +8121,47 @@ function monthlyReportCaptureView(){
     }))
   };
 }
+function monthlyReportKpiTone(label){
+  return ({"투자 자산":"finance","투자자산":"finance","생활 지출":"money","월 지출 예산":"money","신체 기록":"health","체중":"health","BMI":"health","체지방률":"health","활동 일수":"activity","일평균 걸음":"activity","문화 기록":"culture","완독":"culture","시청 작품 수":"culture","퀴즈 정답률":"learning"})[label]||"finance";
+}
 function monthlyReportPresentStored(row){
   const view=row.view,tones=["finance","money","health","activity","culture","learning"];
-  $("monthlyReportKpis").innerHTML=view.kpis.filter(metric=>Array.isArray(metric)).map(([label,value,meta])=>`<div class="card monthly-report-kpi"><span>${esc(label)}</span><strong>${esc(value)}</strong><small>${esc(meta)}</small></div>`).join("");
+  $("monthlyReportKpis").innerHTML=view.kpis.filter(metric=>Array.isArray(metric)).map(([label,value,meta])=>`<div class="card monthly-report-kpi tone-${monthlyReportKpiTone(label)}"><span>${esc(label)}</span><strong>${esc(value)}</strong><small>${esc(meta)}</small></div>`).join("");
   $("monthlyReportInsightTitle").textContent=String(view.insightTitle||"");
   $("monthlyReportInsight").textContent=String(view.insight||"");
   $("monthlyReportDomains").innerHTML=view.domains.filter(domain=>domain&&Array.isArray(domain.metrics)).map(domain=>monthlyReportDomainCard({...domain,tone:tones.includes(domain.tone)?domain.tone:"finance",metrics:domain.metrics.filter(metric=>Array.isArray(metric))})).join("");
   for(const id of ["monthlyReportKpis","monthlyReportInsightCard","monthlyReportDomains"])$(id).hidden=false;
 }
-function monthlyReportGenerate(month){
-  if(typeof window!=='undefined'&&window.HANI_GOAL_PROGRESS&&!window.HANI_GOAL_PROGRESS.read({type:'month',year:Number(month.slice(0,4)),month:Number(month.slice(5,7))})){toast('원본 검증을 먼저 확인해 주세요.');return;}
+let monthlyReportGeneration=null,monthlyReportGenerationFailure=null;
+async function monthlyReportGenerate(month){
+  if(monthlyReportGeneration)return;
+  monthlyReportGeneration=month;monthlyReportGenerationFailure=null;
+  let before,replacing=false,stage='원본 검증';
+  try{
+  renderMonthlyReport();
+  const read=()=>window.HANI_GOAL_PROGRESS?.read({type:'month',year:Number(month.slice(0,4)),month:Number(month.slice(5,7))});
+  let facts=read();
+  if(!facts){await dataHubRefresh();facts=read();}
+  if(!facts)throw Error('BLOCKED');
+  if(monthlyReportMonth!==month)throw Error('PERIOD_CHANGED');
+  stage='보고서 생성';
   const current=monthlyReportKoreaDate().slice(0,7),report=monthlyReportSnapshot(month),previous=monthlyReportStored(month);
-  if(!monthlyReportDate(`${month}-01`)||month>=current||!report.recordCount)return;
+  if(!monthlyReportDate(`${month}-01`)||month>=current||!report.recordCount)throw Error('NO_RECORDS');
   if(previous&&!confirm(`${month} 보고서를 다시 생성할까요?\n기존 보고서 내용은 새 보고서로 교체됩니다. 원본 기록은 변경하지 않습니다.`))return;
-  if(monthlyReportBuildCurrent()===false)return;
-  const row={month,generatedAt:new Date().toISOString(),format:1,view:monthlyReportCaptureView()},before=state.monthlyReports;
+  if(monthlyReportBuildCurrent()===false)throw Error('BLOCKED');
+  const row={month,generatedAt:new Date().toISOString(),format:1,view:monthlyReportCaptureView()};
+  stage='보고서 저장';before=state.monthlyReports;replacing=true;
   state.monthlyReports=[...(Array.isArray(before)?before:[]).filter(item=>item?.month!==month),row];
   const result=save();
-  if(!result.ok){state.monthlyReports=before;alert("보고서 저장에 실패했습니다. 기존 보고서는 유지됩니다.");renderMonthlyReport();return}
-  renderMonthlyReport();toast(previous?"월간보고를 다시 생성했습니다.":"월간보고를 생성했습니다.");
+  if(!result.ok)throw Error('SAVE_FAILED');
+  replacing=false;toast(previous?"월간보고를 다시 생성했습니다.":"월간보고를 생성했습니다.");
+  }catch(error){
+    if(replacing)state.monthlyReports=before;
+    const code=error?.message,reason=code==='BLOCKED'?'원본 검증을 완료하지 못했습니다. Cloud 연결을 확인한 후 다시 눌러 주세요.':code==='PERIOD_CHANGED'?'보고 월이 바뀌었습니다. 선택한 월에서 다시 눌러 주세요.':code==='NO_RECORDS'?'완료된 달의 기록이 있어야 보고서를 생성할 수 있습니다.':`${stage} 중 오류가 발생했습니다. Cloud 연결과 원본 검증 상태를 확인한 후 다시 눌러 주세요.`;
+    monthlyReportGenerationFailure={month,reason};
+  }finally{
+    monthlyReportGeneration=null;renderMonthlyReport();
+  }
 }
 function renderMonthlyReport(){
   const input=$("monthlyReportMonth"),archive=$("monthlyReportArchive"),pending=$("monthlyReportPending");
@@ -8149,7 +8171,6 @@ function renderMonthlyReport(){
   const rows=(state.monthlyReports||[]).filter(row=>typeof row?.month==="string"&&row?.view&&monthlyReportDate(`${row.month}-01`)).sort((a,b)=>b.month.localeCompare(a.month));
   if(!monthlyReportDate(`${monthlyReportMonth}-01`))monthlyReportMonth=rows[0]?.month||closedMonths.at(-1)||monthlyReportPrevMonth(current);
   input.value=monthlyReportMonth;input.max=monthlyReportPrevMonth(current);
-  renderActivityTrend("monthlyReadingActivityTrend","reading");
   input.onchange=()=>{monthlyReportMonth=input.value||monthlyReportPrevMonth(current);renderMonthlyReport()};
   archive.innerHTML=`<b>보관된 보고서</b>${rows.length?rows.map(row=>`<button type="button" data-monthly-archive="${esc(row.month)}" class="${row.month===monthlyReportMonth?"active":""}" aria-label="${esc(row.month)} 월간보고 열기">${esc(row.month)}</button>`).join(""):'<span>아직 생성된 보고서가 없습니다.</span>'}`;
   archive.querySelectorAll("[data-monthly-archive]").forEach(button=>button.onclick=()=>{monthlyReportMonth=button.dataset.monthlyArchive;renderMonthlyReport()});
@@ -8162,7 +8183,8 @@ function renderMonthlyReport(){
   const heading=stored?`${stored.month} 보고서 · 생성 완료`:`${monthlyReportMonth} 월간보고가 없습니다.`;
   const description=stored?`생성 시각 ${formatDateTime(stored.generatedAt)}. 원본 기록이 바뀌어도 이 보고서는 자동으로 바뀌지 않습니다.`:closed?(hasRecords?"해당 월의 기록을 확인한 뒤 보고서를 생성할 수 있습니다.":"이 달에는 보고서로 만들 완료 기록이 없습니다."):"해당 월이 끝난 뒤에만 보고서를 생성할 수 있습니다.";
   pending.hidden=false;
-  pending.innerHTML=`<h4>${esc(heading)}</h4><p>${esc(description)}</p><button type="button" id="monthlyReportGenerateBtn" ${hasRecords?"":"disabled"}>${stored?"보고서 다시 생성":"보고서 생성"}</button>`;
+  const failure=monthlyReportGenerationFailure?.month===monthlyReportMonth?monthlyReportGenerationFailure.reason:"";
+  pending.innerHTML=`<h4>${esc(heading)}</h4><p>${esc(description)}</p><p role="status" data-monthly-generation-status>${esc(failure|| (monthlyReportGeneration?"원본 연결을 확인하고 보고서를 준비하고 있습니다. 잠시 기다려 주세요.":""))}</p><button type="button" id="monthlyReportGenerateBtn" ${hasRecords&&!monthlyReportGeneration?"":"disabled"}>${monthlyReportGeneration?"확인 중…":stored?"보고서 다시 생성":"보고서 생성"}</button>`;
   $("monthlyReportGenerateBtn").onclick=()=>monthlyReportGenerate(monthlyReportMonth);
 }
 

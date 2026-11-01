@@ -952,15 +952,15 @@
             <div class="monthly-report-insight-avatar"><img src="./assets/profiles/hani-profile-hani.webp" alt="하니"></div>
             <div><span>HANI · CHIEF OF STAFF</span><h3 id="monthlyReportInsightTitle">기록을 확인하고 있습니다.</h3><p id="monthlyReportInsight">선택한 달의 기록만 사용해 요약합니다.</p></div>
           </div>
-          <div class="card activity-trend-card" id="monthlyReadingActivityTrend" aria-label="현재 독서 추이 · 저장 보고서와 별도"></div>
           <div class="monthly-report-domains" id="monthlyReportDomains" hidden></div>
         </div>
 
         <div class="monthly-report-board-panel" id="monthlyReportQuarterlyPanel" data-report-panel="quarterly" hidden>
           <div class="acts" role="tablist" aria-label="분기보고 내용"><button class="btn sm" type="button" role="tab" data-quarter-tab="actual" aria-selected="true">실적</button><button class="btn sm" type="button" role="tab" data-quarter-tab="goals" aria-selected="false">목표</button></div>
-          <div data-quarter-panel="actual"><div class="card full"><h3>분기 실적 · 목표 비교</h3><div id="quarterGoalReport" aria-live="polite">원본 검증 대기</div></div>
+          <div data-quarter-panel="actual">
           <div class="monthly-report-future-head"><span>HANI GROUP QUARTERLY KEYNOTE</span><h3>HANI GROUP 분기 성과발표</h3><p>우리의 일상에서 시작한 성과. 담당자들과 다음 분기를 이야기합니다.</p></div>
-          <div id="earningsQuarterly" class="earnings-report"></div></div>
+          <div id="earningsQuarterly" class="earnings-report"></div>
+          <details class="card full"><summary data-quarter-report-summary>분기 실적 · 목표 비교 · 원본 검증 대기</summary><div id="quarterGoalReport" aria-live="polite">원본 검증 대기</div></details></div>
           <div data-quarter-panel="goals" hidden><div class="card full"><h3>분기 목표</h3><p class="sub">기존 목표 관리에서 변경 Preview와 승인을 거쳐 저장합니다.</p><div data-quarter-goal-summary></div><div data-quarter-goal-guidance></div></div><div data-quarter-goal-editor></div></div>
         </div>
 
