@@ -2293,6 +2293,29 @@
   actorBubble.className='hani-office-character-bubble';actorBubble.hidden=true;actorBubble.setAttribute('aria-live','polite');actorBubble.setAttribute('aria-atomic','true');profileLink.textContent='프로필 ↗';profileLink.href='#organization/people';actorBubble.append(bubbleLine,profileLink);map.append(actorBubble);
   const tapLines=building.tapLines.create(building.canon?.people||window.HaniOrganizationRoster?.people||[]);
   let bubblePerson=null,bubbleSerial=0,bubbleSelection=null,pendingTap=null,cancelled=new Set(),cancelledDay='',meetingStartedAt=0;
+  let bubbleTimer=null,lastBubbleTap=-Infinity,autoBubbleEntry=true;
+  const autoBubbleFloors=new Map();
+  function clearBubbleTimer(){if(bubbleTimer!==null)globalThis.clearTimeout?.(bubbleTimer);bubbleTimer=null}
+  function queueBubbleTimer(fn,ms){clearBubbleTimer();bubbleTimer=setTimeout(fn,ms)}
+  function autoBubbleQuiet(){return reduced||document.hidden||!sceneVisible()||!actorBubble.hidden||Date.now()-lastBubbleTap<5000||!document.getElementById('app')||document.getElementById('app').classList.contains('login-locked')}
+  function scheduleFloorBubble(){
+    if(!autoBubbleEntry||map.dataset.art==='loading'||!sceneVisible())return;
+    autoBubbleEntry=false;
+    if(autoBubbleQuiet()||Date.now()-(autoBubbleFloors.get(activeFloor)??-Infinity)<60000)return;
+    const floor=activeFloor,serial=bubbleSerial;
+    queueBubbleTimer(()=>{
+      if(serial!==bubbleSerial||floor!==activeFloor)return;
+      bubbleTimer=null;
+      if(autoBubbleQuiet()||Date.now()-(autoBubbleFloors.get(floor)??-Infinity)<60000)return;
+      const eligible=[...actors.values()].filter(actor=>!actor.hidden&&!actor.officeTravel&&actor.dataset.walking!=='true'&&!actor.dataset.pose?.startsWith('walk')&&actor.querySelector('.hani-office-prop').textContent.trim());
+      const preferred=eligible.filter(actor=>['💬','📱'].includes(actor.querySelector('.hani-office-prop').textContent.trim()));
+      const pool=(preferred.length?preferred:eligible).sort((a,b)=>a.dataset.person.localeCompare(b.dataset.person));
+      if(!pool.length)return;
+      const day=new Date(Date.now()+32400000).toISOString().slice(0,10);
+      let seed=0;for(const char of day+'|'+floor)seed=(seed*31+char.charCodeAt(0))>>>0;
+      autoBubbleFloors.set(floor,Date.now());openBubble(pool[seed%pool.length],true);
+    },450);
+  }
   function cancelScheduledDuringMeeting(now=new Date()){
     if(!meeting||!building.scheduler)return;
     const day=new Date(now.getTime()+32400000).toISOString().slice(0,10),midnight=Date.parse(day+'T00:00:00+09:00');
@@ -2312,21 +2335,22 @@
     const top=Math.max(4,Math.min(floor.height-bubble.height-4,actor.top-floor.top-bubble.height-6));
     actorBubble.style.left=left+'px';actorBubble.style.top=top+'px';
   }
-  function closeBubble(clearPending=true){bubbleSerial++;bubblePerson=null;bubbleSelection=null;if(clearPending)pendingTap=null;actorBubble.hidden=true;for(const actor of actors.values())actor.dataset.speaking='false';fitStatusLabels()}
-  function showBubble(actor,selection){bubblePerson=actor.dataset.person;bubbleSelection=selection;actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);fitStatusLabels();fitBubble();const serial=++bubbleSerial;setTimeout(()=>{if(serial===bubbleSerial)closeBubble(false)},3000)}
-  function openBubble(actor){
+  function closeBubble(clearPending=true){clearBubbleTimer();bubbleSerial++;bubblePerson=null;bubbleSelection=null;if(clearPending)pendingTap=null;actorBubble.hidden=true;for(const actor of actors.values())actor.dataset.speaking='false';fitStatusLabels()}
+  function showBubble(actor,selection,duration=3000){bubblePerson=actor.dataset.person;bubbleSelection=selection;actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);fitStatusLabels();fitBubble();const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble(false)}},duration)}
+  function openBubble(actor,automatic=false){
+    if(!automatic){lastBubbleTap=Date.now();autoBubbleEntry=false;clearBubbleTimer()}
     if(actor.hidden)return;
     if(!reduced)actor.officeReactions.request('tap',Date.now());
     pendingTap=null;const now=new Date(),floor=activeFloor,options={floor,chairmanPresent:officePresence.read().chairmanPresent},selection=tapLines.tap(actor.dataset.person,now,options);
-    if(selection&&!selection.drama&&actionRunning(actor))pendingTap={actor,selection,floor:activeFloor};
-    showBubble(actor,selection||null);
+    if(!automatic&&selection&&!selection.drama&&actionRunning(actor))pendingTap={actor,selection,floor:activeFloor};
+    showBubble(actor,selection||null,automatic?4000:3000);
     const serial=bubbleSerial;
     void tapLines.load().then(()=>{
       // Replay taps in order even if the first view is still fetching the seed.
       if(floor!==activeFloor||actor.hidden||!sceneVisible()||building.tapLines.dramaDate(now)?.date!==building.tapLines.dramaDate(new Date())?.date)return;
       const loaded=selection?null:tapLines.tap(actor.dataset.person,now,{floor,chairmanPresent:officePresence.read().chairmanPresent});
       if(serial!==bubbleSerial||!loaded||actor.hidden||!sceneVisible())return;
-      bubbleSelection=loaded;if(!loaded.drama&&actionRunning(actor))pendingTap={actor,selection:loaded,floor:activeFloor};
+      bubbleSelection=loaded;if(!automatic&&!loaded.drama&&actionRunning(actor))pendingTap={actor,selection:loaded,floor:activeFloor};
       bubbleLine.textContent=bubbleText(actor);fitBubble();
     });
   }
@@ -2453,6 +2477,7 @@
       for(const entry of plates)entry.plate.hidden=entry.floor!==floor.id||!isFloor;
       for(const entry of deskProps){entry.prop.hidden=entry.floor!==floor.id||!isFloor;if(!entry.prop.hidden&&!entry.prop.src)entry.prop.src=entry.src}
       updateAtmosphere(Date.now());
+      scheduleFloorBubble();
     });
   }
   function updateBuilding(force=false,animate=true){
@@ -2517,11 +2542,12 @@
     if(bubblePerson&&actors.get(bubblePerson)?.hidden)closeBubble();
     updateAtmosphere(now);
     fitStatusLabels();fitBubble();
+    scheduleFloorBubble();
   }
-  function selectFloor(id,animate=false){closeBubble();if(!floorButtons.has(id))return;for(const actor of actors.values())finishTravel(actor);activeFloor=id;updateBuilding(true,animate)}
+  function selectFloor(id,animate=false){closeBubble();if(!floorButtons.has(id))return;autoBubbleEntry=true;for(const actor of actors.values())finishTravel(actor);activeFloor=id;updateBuilding(true,animate)}
   tabs.addEventListener("click",event=>{const button=event.target.closest("[data-building-floor]");if(button&&tabs.contains(button))selectFloor(button.dataset.buildingFloor)});
   tabs.addEventListener("keydown",event=>{const keys=[...floorButtons.keys()],index=keys.indexOf(activeFloor);let next;if(event.key==="ArrowRight")next=(index+1)%keys.length;else if(event.key==="ArrowLeft")next=(index+keys.length-1)%keys.length;else if(event.key==="Home")next=0;else if(event.key==="End")next=keys.length-1;else return;event.preventDefault();selectFloor(keys[next]);floorButtons.get(keys[next]).focus()});
-  function syncVisibility(){officePresence.read();const visible=sceneVisible();sceneActive=visible;root.dataset.paused=String(!visible);if(visible)updateBuilding(true,false);else{for(const actor of actors.values())clearMotion(actor);closeBubble()}map.officeMascotMotion?.({now:Date.now(),reduced,visible,actors})}
+  function syncVisibility(){officePresence.read();const visible=sceneVisible();if(visible&&!sceneActive)autoBubbleEntry=true;sceneActive=visible;root.dataset.paused=String(!visible);if(visible)updateBuilding(true,false);else{autoBubbleEntry=false;for(const actor of actors.values())clearMotion(actor);closeBubble()}map.officeMascotMotion?.({now:Date.now(),reduced,visible,actors})}
   document.addEventListener("visibilitychange",syncVisibility);
   new MutationObserver(syncVisibility).observe(root.closest(".view"),{attributes:true,attributeFilter:["class","hidden","style"]});
   if(typeof IntersectionObserver==='function')new IntersectionObserver(entries=>{mapOnScreen=entries[0].isIntersecting;syncVisibility()}).observe(map);
