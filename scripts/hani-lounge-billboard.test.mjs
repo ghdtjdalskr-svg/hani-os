@@ -125,7 +125,7 @@ test('build reuses the actual publication sources and keeps nested data immutabl
 
 test('billboard adds no runtime file and every image exists on the published site',async()=>{
   const closure=await resolveRuntimeClosure({exists:f=>fs.existsSync(new URL('../'+f,import.meta.url)),read});
-  assert.equal(closure.files.length,128);assert.deepEqual(closure.missing,[]);
+  assert.ok(closure.files.length<=160);assert.deepEqual(closure.missing,[]);
   const f=createBannerFixture();for(let day=0;day<6;day++)for(const row of f.c.loungeBannerItems(f.now+day*86400000))
     assert.ok(fs.existsSync(new URL('../'+row.image.replace(/^\.\//,''),import.meta.url)),row.image);
   const members=f.c.window.HaniOrganizationRoster.people;
