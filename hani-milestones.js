@@ -566,6 +566,7 @@
     card.hidden = !m;
     card.style.setProperty('--ms-sheet-url', 'url("' + ART.sheet + '")');
     if (m) { card.innerHTML = homeCardMarkup(m); card.dataset.importance = m.importance; }
+    if (typeof updateHomeNewsCount === 'function') updateHomeNewsCount();
   }
   // Called from renderHome (every renderAll, including a Cloud pull) to keep projections current.
   function refresh() {

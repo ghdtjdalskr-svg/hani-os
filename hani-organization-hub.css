@@ -372,3 +372,19 @@
 .member-visual [data-development-portrait][hidden],#teamProfilePanel [data-development-portrait][hidden]{display:none}
 #teamProfilePanel [data-development-portrait]{width:100%;height:100%;object-fit:cover}
 .is-planned-member [data-development-portrait-fallback],#teamProfilePanel [data-development-portrait-fallback]{padding:12px;font-size:18px}
+
+/* First banner: the packaged M9 photo; real total staff stays roster-driven. */
+#haniOrganizationHub .ogh-hero{position:relative;display:grid;grid-template-columns:minmax(0,1fr);padding:clamp(16px,3vw,32px);margin-top:24px;gap:0;border-radius:16px;overflow:hidden;isolation:isolate}
+#haniOrganizationHub .ogh-hero-copy{position:relative;z-index:1;width:min(100%,430px);background:rgba(255,255,255,.94);color:#111c32;padding:clamp(16px,3vw,28px);border:1px solid #c2c9d4;border-radius:12px}
+#haniOrganizationHub .ogh-hero-copy .ogh-kicker{color:#33415a}
+#haniOrganizationHub .ogh-hero-copy h1{font-size:clamp(28px,3.5vw,48px);letter-spacing:-1px;margin:14px 0;color:#111c32}
+:root #haniOrganizationHub .ogh-hero .ogh-hero-copy h1 em{color:#334fa7}
+#haniOrganizationHub .ogh-hero-copy h1 em:after{background:#334fa7}
+#haniOrganizationHub .ogh-hero-copy p,#haniOrganizationHub .ogh-hero-copy .ogh-signature span{color:#33415a}
+#haniOrganizationHub .ogh-hero-copy .ogh-staff-count{margin-top:10px;font-weight:700}
+#haniOrganizationHub .ogh-hero-copy .ogh-cta{background:#111c32;color:#fff;margin:18px 0}
+#haniOrganizationHub .ogh-hero-copy .ogh-signature{flex-wrap:wrap;gap:8px;color:#111c32}
+#haniOrganizationHub .ogh-hero-art{position:absolute;inset:0;margin:0;padding:0;z-index:-1;background:#e9eef4;border-radius:0}
+#haniOrganizationHub .ogh-hero-art>img{width:100%;height:100%;aspect-ratio:auto;object-fit:contain;border-radius:0}
+#haniOrganizationHub .ogh-hero-art figcaption{display:none}
+@media(max-width:600px){#haniOrganizationHub .ogh-hero{padding-top:34vw}#haniOrganizationHub .ogh-hero-copy{width:100%}#haniOrganizationHub .ogh-hero-art>img{object-position:center top}#haniOrganizationHub .ogh-hero-copy .ogh-kicker{letter-spacing:1px}}
