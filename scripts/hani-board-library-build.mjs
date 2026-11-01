@@ -56,7 +56,7 @@ export function validateLibrary(threads,seed){
     const comments=thread.comments.map((comment,i)=>{
       if(!authors.has(comment?.authorId))fail(id,"unknown comment authorId at "+i);
       text(comment.body,id,"comment body",5000);
-      if(!Number.isFinite(comment.afterMin)||comment.afterMin<0||comment.afterMin>10080)fail(id,"invalid afterMin at "+i);
+      if(!Number.isFinite(comment.afterMin)||comment.afterMin<0||comment.afterMin>(/^queen-\d{4}-\d{2}$/.test(id)?31*1440:10080))fail(id,"invalid afterMin at "+i);
       if(comment.voteChoice!==undefined&&(!thread.poll||!Number.isInteger(comment.voteChoice)||comment.voteChoice<0||comment.voteChoice>=thread.poll.options.length))fail(id,"invalid voteChoice at "+i);
       if(comment.id!==undefined){if(typeof comment.id!=="string"||!comment.id||commentIds.has(comment.id))fail(id,"invalid comment id");commentIds.add(comment.id)}
       const parent=replyIndex(comment.replyTo,thread.comments,i,id);
@@ -122,6 +122,9 @@ export function monthlyQueenThread(template,roster,canon){
     daon:"하방 위험부터 보던 저도 오늘은 응원부터 적을게요. 든든한 동료라 골랐어요.",
     yoonseul:"같이 궁금한 걸 찾아보고 책장도 넘길 수 있어서 좋아요. 한 표 놓고 갑니다."
   };
+  const start=Date.parse(template.date+"T00:00:00+09:00"),month=template.date.slice(0,7);
+  const end=Date.UTC(Number(month.slice(0,4)),Number(month.slice(5)),1)-9*3600000;
+  const days=Math.round((end-start)/86400000);
   const comments=members.map((member,i)=>{
     const voice=canon.people.find(p=>p.id===member.id)||member;
     const choices=members.filter(p=>p.id!==member.id).map(candidate=>{
@@ -134,7 +137,8 @@ export function monthlyQueenThread(template,roster,canon){
     const pick=choices[0].candidate;
     if(!lines[member.id])fail(template.id,"missing staff vote voice "+member.id);
     return {authorId:member.id,body:pick.name+" "+pick.rank+"에게 한 표! "+lines[member.id],
-      voteChoice:members.indexOf(pick),replyTo:null,afterMin:3+i*7};
+      voteChoice:members.indexOf(pick),replyTo:null,
+      afterMin:hash(template.id+":"+member.id+":day")%days*1440+21*60+hash(template.id+":"+member.id+":minute")%120};
   });
   return {...template,poll:{options:members.map(p=>p.name),votes:{}},comments};
 }
@@ -148,9 +152,9 @@ export async function buildLibrary({root=repositoryRoot,check=false}={}){
   const context=vm.createContext({window:{},document:{getElementById:()=>null}});
   vm.runInContext(await fs.readFile(path.join(root,"hani-organization-hub.js"),"utf8"),context);
   const seed=context.window.HaniOrganizationRoster;
-  const hasQueen=threads.some(t=>t.id==="queen-2026-11");
+  const hasQueen=threads.some(t=>/^queen-\d{4}-\d{2}$/.test(t.id));
   const canon=hasQueen?JSON.parse(await fs.readFile(path.join(root,"data/hani-relationship-seed-v1.json"),"utf8")):null;
-  const authored=threads.map(t=>t.id==="queen-2026-11"?monthlyQueenThread(t,seed,canon):t);
+  const authored=threads.map(t=>/^queen-\d{4}-\d{2}$/.test(t.id)?monthlyQueenThread(t,seed,canon):t);
   const result=validateLibrary(authored,seed),output=renderLibrary(result,await publicationBulletins(root)),target=path.join(root,"hani-board-library.js");
   if(check){if(await fs.readFile(target,"utf8").catch(()=>"")!==output)fail("runtime","stale hani-board-library.js; run builder")}
   else await fs.writeFile(target,output,"utf8");

@@ -22,11 +22,14 @@ const reset=threads=>{
 const generated=now=>h.generateDaily(now).filter(p=>p.libraryId);
 const midnight=date=>Date.parse(date+'T00:00:00+09:00');
 
-test('builder preserves 40 stable IDs after 180 entries with the monthly poll appended',async()=>{
+test('builder preserves 40 stable IDs after 180 entries with monthly poll and season content appended',async()=>{
   await buildLibrary({check:true});
   const existing=['part-a','part-b'].flatMap(part=>JSON.parse(read('data/board-library/'+part+'.json')).threads);
   assert.deepEqual(library.slice(0,180),plain(validateLibrary(existing,roster)));
-  assert.equal(library.length,221);
+  const season=JSON.parse(read('data/board-library/part-e.json')).threads;
+  assert.equal(season.length,9);
+  assert.equal(library.length,221+season.length);
+  assert.deepEqual(library.slice(221),plain(validateLibrary(season,roster)));
   assert.deepEqual(authored.map(t=>t.id),Array.from({length:40},(_,i)=>'part-c-'+String(i+1).padStart(3,'0')));
   assert.deepEqual(library.slice(180,220),plain(validateLibrary(authored,roster)));
   assert.equal(new Set(authored.map(t=>t.authorId)).size,19);
@@ -66,7 +69,7 @@ test('November dates cover 30 days at one or two posts per day and match Friday/
 
 test('each new post is excluded before its KST date and scheduled no earlier than that date',()=>{
   const queues=inspection().queues;
-  for(const thread of library.slice(180)){
+  for(const thread of library.slice(180).filter(t=>!/-winner$/.test(t.id))){
     const start=midnight(thread.date);
     reset([thread]);
     assert.equal(generated(start-1).length,0,thread.id+' before midnight');
