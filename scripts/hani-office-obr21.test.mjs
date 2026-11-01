@@ -11,7 +11,7 @@ context.localStorage=context.sessionStorage={setItem:deny,removeItem:deny,clear:
 // Exact reviewed line replacements, not additional excluded functions/ranges.
 // Restore only those lines, then retain the original non-placement SHA check.
 const motionDeltaBytes=fs.readFileSync('scripts/fixtures/office-motion-1-source-delta.json');
-assert.equal(createHash('sha256').update(motionDeltaBytes).digest('hex'),'9584a771eeaed23ab1ae60e9d79ad3f67d8971b962fbde1b648b229d4891dd23');
+assert.equal(createHash('sha256').update(motionDeltaBytes).digest('hex'),'98191257579e74d9bf2297cad404b6b64ef18efafdf8aea605fb23e791130525');
 const motionDelta=JSON.parse(motionDeltaBytes);
 function restoreMotionDelta(source){
  const lines=source.match(/[^\n]*\n|[^\n]+$/g);
