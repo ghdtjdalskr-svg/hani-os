@@ -141,6 +141,11 @@
 @media(max-width:600px){.hani-office-prop{font-size:14px}}
 .hani-office-character-bubble{position:absolute;z-index:10;box-sizing:border-box;left:4px;top:4px;max-width:calc(100% - 8px);display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0;padding:4px 8px;border:1px solid #d8cce7;border-radius:12px;background:#fffaf0;color:#493752;font-size:13px}
 .hani-office-character-bubble[hidden],.hani-office-character-bubble [hidden]{display:none}.hani-office-character-bubble p{margin:0;overflow-wrap:anywhere}.hani-office-character-bubble a{flex:none;min-height:44px;display:flex;align-items:center;color:#67418b;font-weight:700}
+.hani-office-character-bubble[data-zoom="true"]{display:grid;grid-template-columns:max-content minmax(0,1fr);row-gap:0;width:max-content;max-height:var(--bubble-max-height,none);overflow:auto}
+.hani-office-character-bubble[data-zoom="true"] p{grid-column:2;min-width:0;max-height:max(1em,calc(var(--bubble-max-height,174px) - 54px));overflow:auto}
+.hani-office-character-bubble[data-zoom="true"] a{grid-column:2}
+.hani-office-bubble-sprite{grid-column:1;grid-row:1 / span 2;align-self:center;height:120px;aspect-ratio:var(--bubble-sprite-ratio,.75);background-repeat:no-repeat;image-rendering:pixelated;pointer-events:none}
+@media(max-width:700px){.hani-office-bubble-sprite{height:96px}}
 .hani-building-roster [role="button"]{cursor:pointer}.hani-building-roster [role="button"]:focus-visible{outline:2px solid #8363b8}
 @media(max-width:700px){.hani-office-character-bubble{font-size:12px}.hani-building-roster [role="button"]{min-height:44px}}
 
