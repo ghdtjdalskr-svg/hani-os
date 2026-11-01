@@ -40,7 +40,7 @@ try{
    Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async value=>autoCopies.push(value)}});
    HaniInvestmentCommittee.render();window.autoBefore=JSON.stringify(state);
   },{fixture,finish});
-  const ask=page.locator('[data-ic="ask-second"]'),copy=page.locator('[data-ic="copy-second"]');
+  const ask=page.locator('.ic-header [data-ic="ask-second"]'),copy=page.locator('.ic-header [data-ic="copy-second"]');
   await copy.click();await ask.click();await page.waitForFunction(()=>document.querySelector('[data-ic="ask-second"]').disabled);
   assert.match(await ask.innerText(),/세린 연구원이 Gemini에게 물어보는 중/);
   await page.waitForFunction(()=>!document.querySelector('[data-ic="ask-second"]').disabled);
@@ -55,13 +55,13 @@ try{
   await page.locator('[data-ic="parse-second"]').click();assert.match(await page.locator('.ic-second-opinion').first().textContent(),/수동 검토 의견/);
   assert.equal(await page.evaluate(()=>autoSaves),0);
   // Final review uses the same web Hani manually; all actions before memo save are read-only.
-  const finalCopy=page.locator('[data-ic="copy-final"]');assert.equal(await finalCopy.isVisible(),true);
+  const finalCopy=page.locator('.ic-final-tools [data-ic="copy-final"]');assert.equal(await finalCopy.isVisible(),true);
   await finalCopy.click();
   const finalPrompt=await page.evaluate(()=>autoCopies.at(-1));
   assert.match(finalPrompt,/하니의 원문 리포트/);assert.match(finalPrompt,/수동 검토 의견/);assert.match(finalPrompt,/"rating"/);assert.match(finalPrompt,/"thesis"/);assert.match(finalPrompt,/"final_rating"/);
   const finalBox=await finalCopy.boundingBox();assert.ok(finalBox&&finalBox.x>=0&&finalBox.x+finalBox.width<=width+1);
   const finalRows=await page.evaluate(()=>state.investmentResearchCards.map((c,i)=>({ticker:c.ticker,name:c.name,final_rating:['유지','상향','하향'][i],changed:i!==0,accepted:['환율 위험 <반영>: 수익 민감도'],rejected:[{point:'과도한 우려 <script>',reason:'공시에서 확인'}],rationale:['경쟁력 확인','성장 가정 점검','변동성 반영'],next_checks:['다음 실적 발표']})));
-  await page.locator('[data-ic="import-final"]').click();
+  await page.locator('.ic-final-tools [data-ic="import-final"]').click();
   const finalInput=page.locator('[data-ic-final]'),finalParse=page.locator('[data-ic="parse-final"]');
   await finalInput.fill('[잘못된 JSON');await finalParse.click();
   assert.match(await page.locator('.ic-final-import .ic-error').innerText(),/JSON 배열.*붙여넣으세요/);
@@ -104,7 +104,7 @@ try{
   await page.locator('.ic-card').first().screenshot({path:path.join(evidence,`expanded-${width}-${finish}.png`)});
   await page.locator('.ic-review-details > summary').first().click();
   // Plain JSON follows the same path and does not add another panel.
-  await page.locator('[data-ic="import-final"]').click();await finalInput.fill(JSON.stringify(finalRows));await finalParse.click();assert.equal(await finals.count(),3);
+  await page.locator('.ic-final-tools [data-ic="import-final"]').click();await finalInput.fill(JSON.stringify(finalRows));await finalParse.click();assert.equal(await finals.count(),3);
   page.once('dialog',dialog=>dialog.dismiss());await page.locator('[data-ic="save-second"]').first().click();assert.equal(await page.evaluate(()=>autoSaves),0);
   page.once('dialog',dialog=>{assert.match(dialog.message(),/하니 최종 의견/);return dialog.accept();});
   await page.locator('[data-ic="save-second"]').first().click();
@@ -164,7 +164,7 @@ try{
   await page.locator('[data-ic="import-second"]').click();
   await page.locator('[data-ic-second]').fill(await page.evaluate(()=>JSON.stringify(state.investmentResearchCards.map(c=>({researchId:c.id,agreeWithRating:'no',concerns:['새 반론'],missingRisks:[],fairValueSanity:{verdict:'reasonable',reason:'새 검토'},oneLine:'새 검토 의견'})))));
   await page.locator('[data-ic="parse-second"]').click();assert.equal(await finals.count(),0);assert.equal(await page.evaluate(()=>autoSaves),4);
-  await page.locator('[data-ic="import-final"]').click();
+  await page.locator('.ic-final-tools [data-ic="import-final"]').click();
   await page.evaluate(()=>{cloudUser=null;HaniInvestmentCommittee.render();});assert.equal(await ask.isDisabled(),true);assert.match(await ask.getAttribute('title'),/로그인/);
   assert.equal(await page.locator('.ic-final-import').evaluate(el=>el.open),false);assert.equal(await page.locator('.ic-final-import').innerHTML(),'');assert.equal(await finalCopy.isVisible(),false);
   assert.deepEqual(errors,[]);console.log(`PASS auto + manual + final copy/plain/fenced/error/render + memo-only save + signed-out UI ${width}/${finish}`);
