@@ -60,6 +60,7 @@ Other stages do not independently repeat this complete set. Targeted development
 
 `Candidate Freeze → Build → One-Pass Preflight → HINA → Preview / Arin → representative approval → identity recheck → Merge → Production read-back`
 
+- Release checklist: 릴리스 커밋에서 `assets/data/hani-history-releases-v1.json`에 해당 버전의 배포 기록을 작성하고 `assets/data/ai-team-status.json`과 `data/ai-team-status.json`의 업무 현황도 근거에 맞게 갱신한다. `node scripts/hani-history-coverage.test.mjs`로 표시 버전의 기록 누락을 확인한다.
 - Build walks local references recursively from `index.html`; external URLs are excluded.
 - Any missing reference, invalid/duplicate path, size violation, syntax failure, invariant drift, new duplicate DOM ID, secret pattern, baseline drift, version mismatch, or package hash mismatch blocks before READY.
 - Package PASS is immutable. A changed file produces a new candidate and Package SHA.

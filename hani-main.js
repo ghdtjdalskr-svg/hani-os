@@ -4715,9 +4715,18 @@ const developmentTeam=[
     "desc": "동결 후보·패키지 identity와 최종 배포 경계 검증"
   }
 ];
-let aiTeamStatus=null,aiTeamStatusPromise=null;
+let aiTeamStatus=null,aiTeamStatusPromise=null,aiTeamRelease=null;
+function aiTeamReleaseSummary(){return aiTeamRelease?aiTeamRelease.date+' 기준 · 운영 '+aiTeamRelease.id:'릴리스 기록을 불러오지 못했어요'}
+function renderAiTeamStatusSummary(){const summary=$('aiTeamStatusSummary');if(summary)summary.textContent=aiTeamStatus?aiTeamReleaseSummary()+' · 업무 내용은 '+aiTeamStatus.updatedAt+' 기준':'현황을 불러오지 못했어요'}
+async function loadAiTeamRelease(){
+  if(!globalThis.HaniReleaseCatalog)return;
+  let releases=null;try{releases=await globalThis.HaniReleaseCatalog.load()}catch(_){}
+  aiTeamRelease=(releases||[]).filter(row=>row.status==='released').slice().sort((a,b)=>b.date.localeCompare(a.date)||b.id.localeCompare(a.id,undefined,{numeric:true}))[0]||null;
+  renderAiTeamStatusSummary();if(aiTeamStatus)renderTeam();
+}
+globalThis.addEventListener?.('hani-release-catalog-ready',loadAiTeamRelease);
 function developmentMemberStatus(member){return aiTeamStatus?.members.find(row=>row.id===member.imageKey)}
-function developmentMemberView(member){const status=developmentMemberStatus(member);return {...member,role:status?.role||member.role,desc:status?.now[0]||"현황을 불러오지 못했어요"}}
+function developmentMemberView(member){const status=developmentMemberStatus(member);return {...member,role:status?.role||member.role,desc:status?status.now[0]+" · 업무 내용은 "+aiTeamStatus.updatedAt+" 기준":"현황을 불러오지 못했어요"}}
 function loadAiTeamStatus(){
   if(aiTeamStatusPromise)return aiTeamStatusPromise;
   aiTeamStatusPromise=(async()=>{
@@ -4730,7 +4739,7 @@ function loadAiTeamStatus(){
       for(const member of developmentTeam){const rows=data.members.filter(row=>row?.id===member.imageKey),row=rows[0];if(rows.length!==1||typeof row.role!=='string'||!row.role.trim()||!['now','recent','next'].every(key=>Array.isArray(row[key])&&row[key].length&&row[key].every(value=>typeof value==='string'&&value.trim())))throw new Error('Invalid AI team member');}
       aiTeamStatus=data;
     }catch(_){aiTeamStatus=null}finally{clearTimeout(timer)}
-    const summary=$('aiTeamStatusSummary');if(summary)summary.textContent=aiTeamStatus?aiTeamStatus.updatedAt+' 기준 · 운영 v'+aiTeamStatus.productionVersion:'현황을 불러오지 못했어요';
+    await loadAiTeamRelease();renderAiTeamStatusSummary();
     renderTeam();
   })();
   return aiTeamStatusPromise;
@@ -4754,7 +4763,7 @@ const TEAM_PROFILE_META={
 let activeTeamProfileKey="hani";
 function teamMeta(key){
   const member=developmentTeam.find(x=>x.key===key);
-  if(member){const status=developmentMemberStatus(member);return {rank:member.position,headline:status?.role||member.role,focus:status?.now||["현황을 불러오지 못했어요"],traits:status?.recent||[],style:status?.next||[],strengths:aiTeamStatus?["최종 업데이트 "+aiTeamStatus.updatedAt]:[],quote:"현재 상태와 다음 행동을 근거로 정리합니다.",signature:aiTeamStatus?[member.position,aiTeamStatus.updatedAt,"운영 v"+aiTeamStatus.productionVersion]:[member.position],note:aiTeamStatus?"업무 현황은 담당 범위를 안내합니다. 검증·승인·운영 반영 여부는 각 작업의 인수인계를 확인해 주세요.":"현황을 불러오지 못했어요"};}
+  if(member){const status=developmentMemberStatus(member);return {rank:member.position,headline:status?.role||member.role,focus:status?.now||["현황을 불러오지 못했어요"],traits:status?.recent||[],style:status?.next||[],strengths:aiTeamStatus?["업무 내용은 "+aiTeamStatus.updatedAt+" 기준"]:[],quote:"현재 상태와 다음 행동을 근거로 정리합니다.",signature:aiTeamStatus?[member.position,"업무 내용은 "+aiTeamStatus.updatedAt+" 기준",aiTeamReleaseSummary()]:[member.position],note:aiTeamStatus?"업무 현황은 담당 범위를 안내합니다. 검증·승인·운영 반영 여부는 각 작업의 인수인계를 확인해 주세요.":"현황을 불러오지 못했어요"};}
   return TEAM_PROFILE_META[key]||TEAM_PROFILE_META.hani;
 }
 function teamByKey(key){return team.find(x=>x.key===key)||developmentTeam.find(x=>x.key===key)||team[0]}

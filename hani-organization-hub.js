@@ -83,17 +83,20 @@
   // October prioritizes the HQ opening, newspaper launch and chibi greeting. Other big
   // changes stay in the complete timeline; title keywords never promote routine patches.
   const historyMilestonePriority=['v2.9.215','v2.9.213','v2.9.222','v2.9.216','v2.9.218','v2.9.161','v2.9.164','v2.9.120','v2.9.132','v2.9.135'];
-  let historyReleases=null,historyReleasesRequested=false,historyReleasesFailed=false;
+  let historyReleases=null,historyReleasesRequested=false,historyReleasesFailed=false,historyReleasesPromise=null;
   let historyExpanded=false,historyKey='',countsKey='',detailsKey='';
   const historyExpandedMonths=new Set(),historyRegularLimit=5;
   function loadHistoryReleases(){
-    if(historyReleasesRequested)return;
+    if(historyReleasesRequested)return historyReleasesPromise;
     historyReleasesRequested=true;
-    fetch('./assets/data/hani-history-releases-v1.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('release catalog');return r.json()}).then(value=>{
+    return historyReleasesPromise=fetch('./assets/data/hani-history-releases-v1.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('release catalog');return r.json()}).then(value=>{
       if(value?.schema!==1||!Array.isArray(value.entries)||!value.entries.every(r=>/^v\d+\.\d+\.\d+$/.test(r?.id)&&typeof r.title==='string'&&/[가-힣]/.test(r.title)&&[...r.title].length<=24&&/^\d{4}-\d{2}-\d{2}$/.test(r.date)&&Number.isFinite(Date.parse(r.date+'T00:00:00Z'))&&new Date(r.date+'T00:00:00Z').toISOString().slice(0,10)===r.date&&['released','pages'].includes(r.status)&&Array.isArray(r.credits)))throw Error('release metadata');
-      historyReleases=value.entries;renderOverview();
-    }).catch(()=>{historyReleasesFailed=true;renderOverview()});
+      historyReleases=value.entries;renderOverview();return historyReleases;
+    }).catch(()=>{historyReleasesFailed=true;renderOverview();return null});
   }
+  // The literal catalog fetch above is the only release loader (also traced by closure).
+  window.HaniReleaseCatalog=Object.freeze({load:loadHistoryReleases});
+  window.dispatchEvent?.(new Event('hani-release-catalog-ready'));
   function renderOverview(){
     const slot=root.querySelector('.ogh-overview');if(!slot)return;
     const model=organizationOverviewData(typeof state==='undefined'?null:state,historyReleases,window.HaniOrganizationRoster),employee=model.employee;

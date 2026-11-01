@@ -1,3 +1,7 @@
+# 2026-11-01 · QA 연혁 단일 원장 QA-5·13·14 (Codex)
+
+`hani/qa-history-unify` / base ref `1ff9c93` (`qa-easy-cleanup`과 동일) / qa-b3. 공통 카탈로그 v224~245 **22건 추가(전체117건)**, 기존 빈 버전6개 제외 사유 명시(기존3개와 총9개). 회사 연혁의 literal fetch 한 곳을 개발센터·AI 업무가 공유, 과거 HISTORY·개인별 업무·작성 보고서 보존. 업무 요약은 최신 v245/11월1일, 업무 내용은 원래10월16일 기준 표시. **지정·신규7명령 PASS(신규14/14·기존 QA22/22), syntax8/8, runtime closure128/missing0·변경 전후 목록 동일.** 추가21명령은11통과·9실패(Git 차단5, 변경 전에도 동일 fixture 실패4)·본문 PASS 후 timer 미종료1. Node guard는 fake v246을 실제 exit1로 차단. 보호 workflow 미수정, 연결할 정확한 YAML은 인수인계에 기록. 미커밋·commit/push/merge/배포·버전/cache·저장/Cloud 변경 없음. browser·원격 최신성·운영 미검증, 서윤 검토 대기. Notion append는 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-11-01-qa-history-unify.md). 아래 타 담당·과거 기록 보존.
+
 # 2026-11-01 · QA easy cleanup QA-1·2·3·7·8·9·13·16 (Codex)
 
 `hani/qa-easy-cleanup` / ref 기준 `930e0db` / qa-b2. Sidebar 실인원·회장님 task·HANI GROUP 이름·라운지 persistent 배너·현금·기타/KPI·가계부 설명/특수 badge·AI portrait/detail·Theme hero 표시 수정. **신규 Node12/12·이전 보고서10/10·관련 unit/board 회귀 통과, syntax15/15.** 6 Finish 토큰 AA≥4.5, runtime closure128/missing0·수정 전후 목록 동일. 저장/계산/Cloud/schema/버전/cache 및 혼합 개행 불변, 새 runtime 파일·Git/browser 실행·commit/push/merge 없음. 이달의 여신 실제 결과 없음으로 제외. 구형 hero 보존 테스트는 수정 전에도 같은 fixture drift로 시작 실패; Git baseline/nav·실화면 미검증. 서윤 미커밋 검토·360/390px 브라우저 확인 대기. Notion 쓰기는 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-11-01-qa-easy-cleanup.md). 아래 타 담당·과거 기록 보존.

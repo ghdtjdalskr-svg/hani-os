@@ -24,7 +24,7 @@ function fixture(fetch){
 }
 let calls=0;const good=fixture(async(url,options)=>{calls++;assert.equal(url,'./assets/data/ai-team-status.json');assert.equal(options.cache,'no-store');return {ok:true,json:async()=>structuredClone(data)}});
 await good.run('loadAiTeamStatus()');await good.run('loadAiTeamStatus()');assert.equal(calls,1);
-assert.equal(data.productionVersion,'2.9.214');assert.match(good.summary.textContent,/2026-10-16.*운영 v2.9.214/);
+assert.equal(data.productionVersion,'2.9.214');assert.match(good.summary.textContent,/릴리스 기록을 불러오지 못했어요.*업무 내용은 2026-10-16 기준/);assert.doesNotMatch(good.summary.textContent,/운영 v2\.9\.214/);
 for(let i=0;i<keys.length;i++){
  const member=good.run(`developmentTeam[${i}]`);assert.equal(member.key,keys[i]);assert.equal(member.imageKey,ids[i]);
  const row=data.members.find(x=>x.id===ids[i]),meta=good.run(`teamMeta('${keys[i]}')`);
