@@ -27,6 +27,27 @@
     try { const u = new URL(value); return /^https?:$/.test(u.protocol) ? u.href : ''; }
     catch { return ''; }
   }
+  // Only project explicit facts in the selected, published issue. Never borrow live news.
+  function issuePanels(issue) {
+    const text=typeof issue?.alt==='string'?issue.alt:'', indices=[];
+    const kr=/(코스피|코스닥)(?:는|은)\s*(?:한 주\s*)?(\d+(?:\.\d+)?)%\s*(오른|내린)\s*([\d,]+(?:\.\d+)?)/g;
+    for(const m of text.matchAll(kr))indices.push({name:m[1],close:m[4],change:m[2]+'% '+(m[3]==='오른'?'상승':'하락')});
+    const us=text.match(/S&P500은\s*(\d+(?:\.\d+)?)%,\s*나스닥은\s*(\d+(?:\.\d+)?)%\s*(내렸|올랐)/);
+    if(us){const direction=us[3]==='내렸'?'하락':'상승';indices.push({name:'S&P500',close:null,change:us[1]+'% '+direction},{name:'나스닥',close:null,change:us[2]+'% '+direction});}
+    // No dated next-week schedule exists in the issue catalog today.
+    return {summary:typeof issue?.title==='string'?issue.title.trim():'',indices};
+  }
+  function renderIssuePanels(host,issue) {
+    if(!host)return;
+    const model=issuePanels(issue);host.replaceChildren();host.hidden=!model.summary&&!model.indices.length;
+    const node=(tag,text)=>{const el=document.createElement(tag);if(text!==undefined)el.textContent=text;return el;};
+    if(model.summary){const panel=node('section');panel.append(node('h3','이번 주 한 줄'),node('p',model.summary));host.append(panel);}
+    if(model.indices.length){
+      const panel=node('section'),table=node('table'),caption=node('caption','이 호에 실린 주요 지수'),head=node('thead'),tr=node('tr');
+      for(const label of ['지수','종가','주간 변화']){const th=node('th',label);th.setAttribute('scope','col');tr.append(th);}head.append(tr);table.append(caption,head);
+      const body=node('tbody');for(const row of model.indices){const line=node('tr'),th=node('th',row.name);th.setAttribute('scope','row');line.append(th,node('td',row.close??'미수록'),node('td',row.change));body.append(line);}table.append(body);panel.append(table,node('p','발행 주간 '+issue.week+' · 이 호에 실린 값만 표시합니다.'));host.append(panel);
+    }
+  }
   function render() {
     const list = published({issues});
     if (latest !== list[0]?.number) { selected = null; latest = list[0]?.number; }
@@ -42,6 +63,8 @@
     const image = q('.newsroom-4cut-image');
     image.src = imageFile(issue);
     image.alt = issue.alt;
+    renderIssuePanels(q('.newsroom-4cut-context'),issue);
+    q('.newsroom-4cut-layout').classList?.toggle('has-context',!!(issuePanels(issue).summary||issuePanels(issue).indices.length));
     q('.newsroom-4cut-open').setAttribute('aria-label', `${issue.title} 원본 크기로 보기`);
     q('.newsroom-4cut-sources').open = false;
     q('.newsroom-4cut-source-list').replaceChildren();
@@ -87,5 +110,5 @@
     }
     render();
   }
-  window.HaniNewsroom4cut = {enter, kstDay, published};
+  window.HaniNewsroom4cut = {enter, kstDay, published, issuePanels};
 })();

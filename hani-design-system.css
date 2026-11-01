@@ -1963,3 +1963,57 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 #milestones .ms-card .ms-plate .ms-orn { margin:4px 0 2px; }
 @media (max-width:640px){ #milestones .ms-card .ms-plate { left:9px; right:9px; bottom:9px; padding:7px 7px 6px; } #milestones .ms-card .ms-plate .ms-card-title { font-size:12.5px; } }
 #milestones .ms-card.ms-pending .ms-art { filter:grayscale(.75) brightness(1.04); }
+
+/* QA design b4: existing slots, read-only detail and health projections. */
+#home .home-news{min-width:0;margin:12px 0 18px;border:1px solid var(--border-strong);border-radius:14px;background:var(--surface-panel);color:var(--text-primary)}
+#home .home-news>summary{cursor:pointer;padding:14px;font-weight:800;min-height:44px;box-sizing:border-box;overflow-wrap:anywhere}
+#home .home-news>summary small{margin-left:8px;font-size:12px;color:var(--text-secondary)}
+#home .home-news-toggle:after{content:'펼치기';float:right;font-size:12px}
+#home .home-news[open] .home-news-toggle:after{content:'접기'}
+#home #homeNewsItems,#home #homeNewsEmpty{padding:0 14px 14px}
+#home #homeNewsItems>*{max-width:100%;box-sizing:border-box;min-width:0}
+#home .home-news [hidden]{display:none!important}
+#home #homeNewsItems .hani-care-cards{margin:0;display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+#home #homeNewsItems :is(p,h3,button){overflow-wrap:anywhere;white-space:normal}
+#home .home-news summary:focus-visible{outline:3px solid var(--text-primary);outline-offset:3px}
+#diet,#exercise{--journey-weight:#244fa4;--journey-target:#6d378c;--journey-change:#176247;--step-low:#edf5ef;--step-mid:#b8dfc6;--step-high:#256447;--step-ink:#17271f}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) :is(#diet,#exercise){--journey-weight:#a8c5ff;--journey-target:#e1b5ff;--journey-change:#8fe0b6}
+#app #diet .journey-weight .value,#app #diet .journey-weight dd{color:var(--journey-weight)!important}
+#app #diet .journey-target .value,#app #diet .journey-target dd{color:var(--journey-target)!important}
+#app #diet .journey-change .value,#app #diet .journey-change dd{color:var(--journey-change)!important}
+#diet .weight-journey{border-top:1px solid var(--border-strong);margin-top:16px;padding-top:12px;color:var(--text-primary)}
+#diet .journey-values{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}
+#diet .journey-values div{min-width:0;overflow-wrap:anywhere}
+#diet .journey-values dt{font-size:12px;color:var(--text-secondary)}
+#diet .journey-values dd{margin:4px 0;font-size:19px;font-weight:800}
+#diet .weight-journey progress{display:block;width:100%;margin:8px 0;accent-color:var(--journey-change)}
+#diet .journey-achievement{display:inline-block;font-size:14px;color:var(--journey-change)}
+#exercise .step-calendar{border-top:1px solid var(--border-strong);margin-top:16px;padding-top:12px;color:var(--text-primary)}
+#exercise .step-legend{display:flex;gap:8px;flex-wrap:wrap;font-size:12px}
+#exercise .step-legend span{padding:5px 8px;border:1px solid var(--border-strong);border-radius:6px}
+#exercise .step-months{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:20px}
+#exercise .step-months>section{min-width:0}
+#exercise .step-months h5{font-size:15px;margin:12px 0}
+#exercise :is(.step-days,.step-weekdays){display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;padding:0;list-style:none;text-align:center;margin:8px 0}
+#exercise .step-days li{border:1px solid var(--border-strong);border-radius:6px;padding:6px 0;font-size:12px;font-weight:700;min-width:0}
+#exercise [data-step-level=empty]{background:var(--surface-panel);color:var(--text-secondary)}
+#exercise [data-step-level=zero]{background:var(--surface-panel);color:var(--text-primary);border-style:dashed!important}
+#exercise [data-step-level=low]{background:var(--step-low);color:var(--step-ink)}
+#exercise [data-step-level=mid]{background:var(--step-mid);color:var(--step-ink)}
+#exercise [data-step-level=high]{background:var(--step-high);color:#fff}
+#exercise .step-weekdays{font-size:12px;color:var(--text-secondary)}
+#exercise .step-text summary{cursor:pointer;min-height:44px;padding:10px 0;box-sizing:border-box}
+#exercise .step-text ul{padding-left:18px;font-size:13px;overflow-wrap:anywhere}
+#newsroom .newsroom-4cut-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;align-items:start}
+#newsroom .newsroom-4cut-layout>*,#newsroom .newsroom-4cut-context section{min-width:0}
+#newsroom .newsroom-4cut-context{display:grid;gap:20px;overflow-wrap:anywhere}
+#newsroom .newsroom-4cut-context section{border:1px solid var(--border-strong);border-radius:12px;padding:16px}
+#newsroom .newsroom-4cut-context table{width:100%;min-width:0;table-layout:fixed;border-collapse:collapse;font-size:14px}
+#newsroom .newsroom-4cut-context caption{text-align:left;font-size:18px;font-weight:800;margin-bottom:12px}
+#newsroom .newsroom-4cut-context :is(th,td){padding:10px 4px;border-bottom:1px solid var(--border-strong);text-align:left;white-space:normal;overflow-wrap:anywhere}
+#newsroom .newsroom-4cut-context p{line-height:1.8}
+#newsroom .newsroom-4cut-layout.has-context{display:flex;flex-wrap:wrap}
+#newsroom .newsroom-4cut-layout.has-context>:first-child{flex:1 1 340px;max-width:520px}
+#newsroom .newsroom-4cut-layout.has-context>.newsroom-4cut-context{flex:1 1 260px}
+
+#app #diet #dietStats .stat{background:var(--surface-raised)!important;color:var(--text-primary)!important}

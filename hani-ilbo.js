@@ -151,7 +151,8 @@
     const latest = entries.find(x=>x.date <= koreaDate(now));
     card.hidden = !latest || latest.date <= seenDate;
     if (latest) card.innerHTML = '<div><small>민지 대리가 전하는 한 주</small><h3>HANI 일보 제 '+latest.number+'호가 도착했어요</h3><p>'+latest.date.replaceAll('-','.')+' · 이번 주 우리 이야기를 만나보세요.</p></div><button type="button" class="btn" data-ilbo-open>신문 읽기 →</button>';
-    const button = card.querySelector('[data-ilbo-open]');if (button) button.onclick = () => { selected = null; if (typeof showView === 'function') showView(VIEW); };
+    const button = card.querySelector('[data-ilbo-open]');
+    if (typeof updateHomeNewsCount === 'function') updateHomeNewsCount();if (button) button.onclick = () => { selected = null; if (typeof showView === 'function') showView(VIEW); };
   }
   function bindImage(host) {
     const banner = host.querySelector('[data-ilbo-banner]'), nameplate = banner?.closest?.('.ilbo-nameplate');
