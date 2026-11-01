@@ -312,8 +312,6 @@
 
     <section id="home" class="view active ui26-home">
       <h2 class="home-today-title phone-only">오늘 볼 것</h2>
-      <aside class="ilbo-home-card" data-ilbo-home hidden aria-label="새 HANI 일보"></aside>
-      <aside class="ms-home-card" data-milestone-home hidden aria-label="라이프 마일스톤"></aside>
       <div class="life-ticker" id="lifeTicker" role="region" aria-label="라이프 마켓 시세판">
 
         <button class="life-ticker-pause" id="lifeTickerPause" type="button" aria-label="시세판 일시정지" title="시세판 일시정지">Ⅱ</button>
@@ -323,10 +321,19 @@
       <div class="home-welcome-compact home-dialogue-shell">
         <div class="home-dialogue-main">
           <div class="home-dialogue-avatar" id="homeDialogueAvatar" aria-hidden="true"></div>
-          <div class="home-dialogue-copy"><div class="home-dialogue-speaker" id="homeDialogueSpeaker">하니</div><h3 id="homeDialogueText">오늘의 한마디를 준비하고 있어요.</h3><div class="home-dialogue-chat" id="homeDialogueChat"><div class="home-dialogue-line"><b>AI TEAM</b><span>명언 뒤에 직원들 잡담도 붙여드릴게요 ㅋㅋ</span></div></div></div>
+          <div class="home-dialogue-copy"><div class="home-dialogue-speaker" id="homeDialogueSpeaker">하니 전무</div><h3 id="homeDialogueText">오늘의 한마디를 준비하고 있어요.</h3><div class="home-dialogue-chat" id="homeDialogueChat"><div class="home-dialogue-line"><b>AI TEAM</b><span>명언 뒤에 직원들 잡담도 붙여드릴게요 ㅋㅋ</span></div></div></div>
         </div>
         <div class="home-welcome-actions"><span class="home-welcome-badge">LOCAL FIRST</span><button class="btn sm" id="homeDialogueNext" type="button">↻ 다른 한마디</button><button class="btn sm" data-go="tasks">오늘 할 일 →</button></div>
       </div>
+      <details class="home-news" id="homeNews">
+        <summary>오늘의 소식 <small id="homeNewsCount" aria-live="polite">0건</small><span class="home-news-toggle" aria-hidden="true"></span></summary>
+        <div id="homeNewsItems">
+          <aside class="ilbo-home-card" data-ilbo-home hidden aria-label="새 HANI 일보"></aside>
+          <aside class="ms-home-card" data-milestone-home hidden aria-label="라이프 마일스톤"></aside>
+          <div class="card full" id="settlementQuickCheck" hidden></div>
+        </div>
+        <p id="homeNewsEmpty" class="sub">새로운 소식이 아직 없어요.</p>
+      </details>
       <button class="home-yuna-quick" id="homeYunaQuick" type="button" aria-label="유나에게 새 기록 입력">✦ 유나에게 입력</button>
       <div class="life-market-head"><div><h3>성민 라이프 마켓</h3></div><span>카드를 선택하면 아래 분석이 함께 바뀝니다.</span></div>
       <p class="sub home-source-controls"><label for="dataHubMonth">지표 조회 월 </label><input id="dataHubMonth" type="month" aria-describedby="dataHubPeriodHelp"><br><b id="dataHubPeriod">조회 월 · 아래 6개 카드 기준</b><br><span id="dataHubStatus" role="status" aria-live="polite">원본 검증 대기</span> <button class="btn sm" id="dataHubRefresh" type="button">지표 검증·갱신</button></p>
@@ -356,7 +363,6 @@
         </div>
       </div>
       <div class="home-lower-grid">
-        <div class="card full" id="settlementQuickCheck" hidden></div>
         <div class="card home-planner-card">
           <div class="sh"><div><h3>이번 달 할 일</h3></div><button class="btn sm" data-go="tasks">전체 할 일 ›</button></div>
           <div class="home-planner-inner"><div class="home-calendar-mini" id="homeCalendarMini"></div><div class="home-planner-tasks"><div class="home-task-summary"><span>미완료 · 오늘 자동 포함</span><b id="homeTasks">0개</b><button class="btn sm" data-go="calendar">캘린더</button></div><div class="home-task-mini" id="homeTaskMini"></div><div class="home-today-tasks phone-only"><div class="sh"><h4>오늘 할 일</h4><button class="btn sm" data-go="tasks" type="button">전체 할 일</button></div><div class="home-task-mini" id="homeTodayTaskMini"></div></div></div></div>
@@ -657,12 +663,17 @@
         <h2 class="newsroom-4cut-heading"></h2>
         <p class="newsroom-4cut-meta"></p>
         <h3 class="newsroom-4cut-title"></h3>
+        <div class="newsroom-4cut-layout">
+        <div class="newsroom-4cut-comic">
         <button type="button" class="newsroom-4cut-open" aria-haspopup="dialog">
           <img class="newsroom-4cut-image" loading="lazy" width="1200" height="1600" alt="">
           <span>원본 크기로 보기</span>
         </button>
         <p class="newsroom-4cut-footnote">※ 정보 정리용이며 투자 권유가 아닙니다.</p>
         <details class="newsroom-4cut-sources"><summary>출처 보기</summary><ul class="newsroom-4cut-source-list"></ul></details>
+        </div>
+        <aside class="newsroom-4cut-context" hidden aria-label="이 호의 시장 요약"></aside>
+        </div>
         <button type="button" class="newsroom-4cut-latest" hidden>이번 주 4컷으로 돌아가기</button>
         <details class="newsroom-4cut-archive"><summary>지난 4컷</summary><ol class="newsroom-4cut-past"></ol></details>
         <dialog aria-label="주간 시황 4컷 원본">
@@ -802,7 +813,7 @@
 
     <section id="diet" class="view">
       <div class="grid">
-        <div class="card full"><div class="sh"><div><h3>다이어트 요약</h3><div class="sub" id="dietSummaryPeriod">올해 기준</div></div><button class="btn sm" id="editWeightGoals">신체 설정</button></div><div class="stats" id="dietStats"></div><div class="helper">키 <b id="heightLabel">188cm</b> · 1차 목표 <b id="dietGoal1Label">110kg</b> · 2차 목표 <b id="dietGoal2Label">100kg</b>. 과거 기록은 삭제되지 않고 집계 기준만 바뀝니다.</div></div>
+        <div class="card full"><div class="sh"><div><h3>다이어트 요약</h3><div class="sub" id="dietSummaryPeriod">올해 기준</div></div><button class="btn sm" id="editWeightGoals">신체 설정</button></div><div class="stats" id="dietStats"></div><section id="bodyJourney" class="weight-journey" aria-label="체중 여정"></section><div class="helper">키 <b id="heightLabel">188cm</b> · 1차 목표 <b id="dietGoal1Label">110kg</b> · 2차 목표 <b id="dietGoal2Label">100kg</b>. 과거 기록은 삭제되지 않고 집계 기준만 바뀝니다.</div></div>
         <div class="card wide body-chart-card"><div class="sh"><h3>신체 지표 추이</h3></div>
 <div class="body-toolbar"><div class="tabs" id="bodyMetricTabs"></div><div class="period-control-wrap"><div class="field body-period"><label>집계 기준</label><select id="bodyPeriod"><option value="year">올해</option><option value="month">이번 달</option><option value="all">전체</option></select></div><div class="period-basis" id="bodyPeriodBasis"></div></div></div>
 <div class="stats metric-stats" id="bodyMetricStats"></div>
@@ -822,7 +833,7 @@
 
     <section id="exercise" class="view">
       <div class="grid">
-        <div class="card full"><div class="sh"><div><h3>운동 요약</h3><div class="sub" id="exerciseSummaryPeriod">올해 기준</div></div><div class="exercise-period-control"><label>집계 기준</label><select id="exercisePeriod"><option value="year">올해</option><option value="month">이번 달</option><option value="all">전체</option></select></div></div><div class="stats" id="exerciseStats"></div><div class="period-basis exercise-basis" id="exercisePeriodBasis"></div></div>
+        <div class="card full"><div class="sh"><div><h3>운동 요약</h3><div class="sub" id="exerciseSummaryPeriod">올해 기준</div></div><div class="exercise-period-control"><label>집계 기준</label><select id="exercisePeriod"><option value="year">올해</option><option value="month">이번 달</option><option value="all">전체</option></select></div></div><div class="stats" id="exerciseStats"></div><section id="exerciseStepCalendar" class="step-calendar" aria-label="걸음 달력"></section><div class="period-basis exercise-basis" id="exercisePeriodBasis"></div></div>
         <div class="card wide"><div class="sh"><h3>걸음 수 추이</h3></div><div class="chart"><canvas id="exerciseChart"></canvas></div></div>
         <div class="card sidec"><div class="sh"><h3>오늘의 운동 기록</h3></div><div class="fg">
           <div class="field span2"><label>날짜</label><input id="exerciseDate" type="date"></div>
