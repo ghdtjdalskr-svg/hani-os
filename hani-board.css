@@ -1,4 +1,12 @@
 /* Shared design tokens also follow midnight-black / titanium-graphite finishes. */
+#board .board-promo{box-sizing:border-box;display:grid;grid-template-rows:1fr auto;gap:8px;height:188px;min-width:0;padding:12px;border:1px solid var(--border-subtle);border-radius:14px;background:var(--surface-raised);color:var(--text-primary);margin:12px 0}
+#board .board-promo>a{display:grid;grid-template-columns:80px minmax(0,1fr);gap:12px;align-items:center;min-width:0;color:inherit;text-decoration:none}
+#board .board-promo img{width:80px;height:80px;border-radius:10px;object-fit:cover;object-position:center top}
+#board .board-promo a>span{display:grid;gap:4px;min-width:0;overflow-wrap:anywhere}
+#board .board-promo small,#board .board-promo [data-board-banner-copy]{color:var(--text-secondary);font-size:12px;line-height:1.5}
+#board .board-promo b{font-size:16px;line-height:1.4}
+#board .board-promo-controls{display:flex;justify-content:flex-end;gap:8px}
+#board .board-promo :is(a,button):focus-visible{outline:3px solid var(--text-primary);outline-offset:2px}
 #board .board-body{white-space:pre-wrap;overflow-wrap:anywhere;color:var(--text-primary)}
 #board .item{align-items:flex-start}
 #board .item>div{min-width:0;width:100%}
