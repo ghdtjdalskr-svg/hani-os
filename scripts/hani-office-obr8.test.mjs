@@ -17,9 +17,9 @@ let writes=0;const fail=()=>{writes++;throw Error('storage forbidden')};
 context.localStorage=context.sessionStorage={setItem:fail,removeItem:fail,clear:fail};
 // Exact QA-3/18/19 display edits are restored before the unchanged behavior guard.
 const labelDeltaBytes=fs.readFileSync('scripts/fixtures/office-labels-qa-source-delta.json');
-assert.equal(createHash('sha256').update(labelDeltaBytes).digest('hex'),'d582a76cd5243359692fa73b64f6761c69f255750dc0b071cb63fb5361da749f');
+assert.equal(createHash('sha256').update(labelDeltaBytes).digest('hex'),'2fdb235f380d215067343a9bf461239a2d1019284add9cd18fc981f07ae02c8f');
 const labelDelta=JSON.parse(labelDeltaBytes);
-assert.equal(labelDelta.beforeSha256,'5254d8bed4e2927f2eea70cbc40cd24113627b9bf4a6f4f67d6e04b02dcab7fc');
+assert.equal(labelDelta.beforeSha256,'406937ae1d69c0379bb735e961734b517ae9440a02c93a0d41771dc0c694d246');
 function restoreOfficeLabelsSource(source){
  const lines=source.match(/[^\n]*\n|[^\n]+$/g);
  for(const change of labelDelta.changes.toReversed()){
@@ -31,7 +31,10 @@ function restoreOfficeLabelsSource(source){
 test('obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words',()=>{
  const cafeBytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-cafe-finish-plans.json.gz'));
  assert.equal(createHash('sha256').update(cafeBytes).digest('hex'),'e72482ea731c0b8311eb53c90c40e573f4465a45ef37cd6ef6927261aaf72b7a','immutable cafe/rest full-ledger oracle');
- const cafe=JSON.parse(cafeBytes);assert.equal(createHash('sha256').update(restoreOfficeLabelsSource(fs.readFileSync('hani-office-live.js','utf8'))).digest('hex'),cafe.sourceSha256);
+ const cafe=JSON.parse(cafeBytes);assert.equal(createHash('sha256').update(readAt('hani-office-live.js','b653a173079323217bcd5e338e82c50d40d578e1')).digest('hex'),cafe.sourceSha256,'historical cafe source stays frozen');
+ const consultBytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-consult-v7-plans.json.gz'));
+ assert.equal(createHash('sha256').update(consultBytes).digest('hex'),'1a0acf4ae695ccb93b315b59bea9804273ca7cee4eb024dcd84bab90bd4579db','approved consultation full-output SHA-256 oracle');
+ assert.equal(createHash('sha256').update(restoreOfficeLabelsSource(fs.readFileSync('hani-office-live.js','utf8'))).digest('hex'),JSON.parse(consultBytes).sourceSha256);
  const counts={colleague:0,delivery:0,notice:0,task:0};
  for(const day of days){
   const options={chairmanPresent:true},formal=s.plan(day,options),all=s.blockPlan(day,0,formal,options),errands=all.filter(e=>e.card.kind==='errand');

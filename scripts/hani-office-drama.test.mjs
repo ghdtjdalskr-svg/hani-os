@@ -178,15 +178,15 @@ test('release trace sees literal JSON path; caption wraps in full; scheduler and
  const css=read('hani-office-live.css');assert.match(css,/\.hani-building-drama-caption\{flex:1 1 100%;/);assert.doesNotMatch(css,/\.hani-building-drama-caption[^{]*\{[^}]*nowrap/);
  const normalized=source.replace(/\r\n/g,'\n');
  for(const [start,end,expected] of [
-  ['  function createScheduler(','  function statusLabelPriority(','bd3bbe62411fd5b8f4120a5f3a60b9a35e4abc72ce8088d43a130314a2d4d908'],
+  ['  function createScheduler(','  function statusLabelPriority(','8fd98dc3573c2dac531cfd835722d22c57dced5cd3d4dacfbea22825f59d9bf3'],
   ['  function placeStatusLabels(','  const scheduler=','5070f7e62556b89410bc7588600fefe80ba99579e945ae49bab89def98bec6f0']
  ]){const from=normalized.indexOf(start),until=normalized.indexOf(end,from);assert.ok(from>0&&until>from);
-  assert.equal(createHash('sha256').update(normalized.slice(from,until)).digest('hex'),expected,start+' frozen after approved cafe/rest schedule; placement unchanged');
+  assert.equal(createHash('sha256').update(normalized.slice(from,until)).digest('hex'),expected,start+' frozen after approved consultations; placement unchanged');
  }
 });
 
 test('09:00–18:00 reachability uses scheduler event/leg intervals and actual snapshot witnesses, floor by floor',()=>{
- const report={window:'09:00 <= KST < 18:00',anchor:'2026-11-02',method:'Each actor event/leg boundary and interval midpoint; verify reachable candidates through scheduler.snapshot. No timetable modification. Counts include clues and transit floors.',days:[]};
+ const report={sourceSha256:createHash('sha256').update(source).digest('hex'),placesSha256:createHash('sha256').update(fs.readFileSync('data/hani-building/office-places.json')).digest('hex'),window:'09:00 <= KST < 18:00',anchor:'2026-11-02',method:'Each actor event/leg boundary and interval midpoint; verify reachable candidates through scheduler.snapshot. No timetable modification. Counts include clues and transit floors.',days:[]};
  for(let offset=0;offset<28;offset++){
   const date=new Date(Date.UTC(2026,10,2+offset)).toISOString().slice(0,10),selected=api.dramaDate(atTime(date));if(!selected)continue;
   const episode=data.weeks[selected.week-1].days[selected.day-1],row={date,week:selected.week,day:selected.day,presence:{}};
@@ -218,4 +218,5 @@ test('09:00–18:00 reachability uses scheduler event/leg intervals and actual s
  assert.equal(report.days.length,20);assert.equal(report.days.flatMap(d=>d.presence.present.lines).length,100);
  fs.mkdirSync(new URL('../artifacts/office-drama/',import.meta.url),{recursive:true});
  fs.writeFileSync(new URL('../artifacts/office-drama/reachability.json',import.meta.url),JSON.stringify(report,null,2)+'\n');
+ for(const [presence,minimum]of [['present',93],['absent',88]]){const reachable=report.days.flatMap(d=>d.presence[presence].lines).filter(l=>l.reachable).length;assert.ok(reachable>=minimum,presence+' exact workday drama reachability '+reachable+'/100 >= '+minimum);}
 });

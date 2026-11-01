@@ -1,11 +1,11 @@
 {
-  "scope": "QA-3/18/19 + QA-b5b exact display-only source delta; no scheduler, placement, click or frame changes",
-  "beforeSha256": "5254d8bed4e2927f2eea70cbc40cd24113627b9bf4a6f4f67d6e04b02dcab7fc",
-  "afterSha256": "b79bc13dc3a125ee83127fb72fd7cb3002c8e6d2464f744ffb5be94c8189d42c",
+  "scope": "QA-3/18/19 + QA-b5b exact display-only source delta; no scheduler, placement, click or frame changes; rebased on the approved consultation source",
+  "beforeSha256": "406937ae1d69c0379bb735e961734b517ae9440a02c93a0d41771dc0c694d246",
+  "afterSha256": "c3c7630107456c073db25db8cea69f2055904d259841025d5c57d56c4677e2fd",
   "changes": [
     {
-      "beforeLine": 1858,
-      "afterLine": 1858,
+      "beforeLine": 1906,
+      "afterLine": 1906,
       "before": [
         "    [/간식|야식|메뉴|식단/,'메뉴 고르기|먹거리 고름|식단 구상|간식 고르기'],[/그리|낙서|스케치/,'그림 그리기|낙서 하기|스케치 하기'],\n"
       ],
@@ -14,8 +14,8 @@
       ]
     },
     {
-      "beforeLine": 1862,
-      "afterLine": 1862,
+      "beforeLine": 1910,
+      "afterLine": 1910,
       "before": [
         "  function phoneStatusLine(line,used=new Set()){\n"
       ],
@@ -24,8 +24,8 @@
       ]
     },
     {
-      "beforeLine": 1864,
-      "afterLine": 1864,
+      "beforeLine": 1912,
+      "afterLine": 1912,
       "before": [
         "    if(report){const topic=report[1].replace(/^(오늘|다음) /,'').split(' ')[0],short=[...topic].length<=4?topic+'보고':'회장보고';used.add(short);return short}\n"
       ],
@@ -34,8 +34,8 @@
       ]
     },
     {
-      "beforeLine": 1866,
-      "afterLine": 1866,
+      "beforeLine": 1914,
+      "afterLine": 1914,
       "before": [
         "    // Unknown future text retains a whole source word plus its action; speech\n",
         "    // without an action verb is an opinion being spoken, never invented work.\n",
@@ -53,8 +53,8 @@
       ]
     },
     {
-      "beforeLine": 2152,
-      "afterLine": 2149,
+      "beforeLine": 2200,
+      "afterLine": 2197,
       "before": [
         "  function activityStatus(actor,full){return actor.officeTravel||actor.dataset.walking==='true'||full==='이동 중'?'moving':actor.dataset.called==='true'||actor.dataset.activity==='meeting'?'meeting':actor.dataset.activity==='rest'?'rest':/야근/.test(full)?'night':'work'}\n"
       ],
@@ -67,16 +67,16 @@
       ]
     },
     {
-      "beforeLine": 2154,
-      "afterLine": 2155,
+      "beforeLine": 2202,
+      "afterLine": 2203,
       "before": [],
       "after": [
         "  const statusIcons={work:'💻',rest:'☕',meeting:'💬',moving:'🚶',night:'🌙'};\n"
       ]
     },
     {
-      "beforeLine": 2156,
-      "afterLine": 2158,
+      "beforeLine": 2204,
+      "afterLine": 2206,
       "before": [
         "    const status=actor.querySelector('.hani-office-status'),icon=actor.querySelector('.hani-office-activity-icon');\n",
         "    status.textContent=value;status.dataset.full=value;status.title=value;actor.dataset.mood=String(mood);statusDot(actor);\n",
@@ -90,8 +90,8 @@
       ]
     },
     {
-      "beforeLine": 2171,
-      "afterLine": 2174,
+      "beforeLine": 2219,
+      "afterLine": 2222,
       "before": [
         "      actor.officeCompact.textContent=compact?' · '+HaniBuildingScene.labels.short(status.dataset.full,used):'';\n"
       ],
@@ -101,8 +101,8 @@
       ]
     },
     {
-      "beforeLine": 2174,
-      "afterLine": 2178,
+      "beforeLine": 2222,
+      "afterLine": 2226,
       "before": [
         "      status.textContent=status.dataset.full;status.hidden=compact;\n"
       ],
@@ -111,8 +111,8 @@
       ]
     },
     {
-      "beforeLine": 2205,
-      "afterLine": 2209,
+      "beforeLine": 2253,
+      "afterLine": 2257,
       "before": [],
       "after": [
         "    const member=key==='seongmin'?window.HaniOrganizationRoster?.chairman:window.HaniOrganizationRoster?.people.find(p=>p.id===key),team=window.HaniOrganizationRoster?.teams.find(t=>t.id===member?.team);\n",
@@ -122,8 +122,8 @@
       ]
     },
     {
-      "beforeLine": 2369,
-      "afterLine": 2377,
+      "beforeLine": 2417,
+      "afterLine": 2425,
       "before": [
         "      bg.src=background;bg.hidden=false;bg.alt=floor.label+' · HANI 본사';map.dataset.art=isFloor?'floor':'fallback';\n"
       ],
