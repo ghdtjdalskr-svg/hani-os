@@ -1454,7 +1454,7 @@
           ]
         }
       },
-      "backgroundSha256": "28ccb17e70447a4260068b8013ddec9932bdcf6083d70905e005bcd79144656e",
+      "backgroundSha256": "ff6ba707df6e6daa14670e8cded983b3d7660d5949ae2fa5f10c2a1f64e23338",
       "signPatchBoxes": [
         [
           6,
@@ -2793,17 +2793,17 @@
       "furniture": "standing interaction"
     },
     "approach_arrival_gate": {
-      "x": 57.6,
-      "y": 33.5
+      "x": 50,
+      "y": 57
     },
     "coffee_counter": {
-      "x": 77.8,
-      "y": 33,
+      "x": 83,
+      "y": 60,
       "furniture": "standing interaction"
     },
     "approach_coffee_counter": {
-      "x": 77.1,
-      "y": 36.812
+      "x": 77,
+      "y": 58
     },
     "client_booth": {
       "x": 22,

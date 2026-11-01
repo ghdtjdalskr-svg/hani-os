@@ -448,7 +448,8 @@
       const id=target.seat.anchor;if(stayBySlot.has(id))return stayBySlot.get(id);
       const card=places.find(c=>c.slots.includes(id)),room=anchors.get(id)?.room;
       const kind=card?.kind||(/window/.test(id)?'window':({cafe:'coffee',pantry:'coffee',platform:'sofa',mir_nook:'sofa',exec_lounge:'sofa',standup:'board',server:'server',garden:'garden',terrace:'terrace',lobby:'lobby',consult:'meeting',team_meeting:'meeting',release:'meeting',exec:'meeting'})[room]);
-      const range=card?.stay||stayRanges[kind]||[45,120];stayBySlot.set(id,range);return range;
+      // Formal catalog bounds stay fixed; the place data owns outing stays.
+      const range=stayRanges[kind]||card?.stay||[45,120];stayBySlot.set(id,range);return range;
     }
     const formalStayBounds=new WeakMap();
     function formalStay(action,chosen,seconds){
@@ -491,6 +492,10 @@
           let n=0;
           for(const [a,b] of actionWindows(parent,weekday))for(let tick=a;tick<b;tick+=cadence){
             const index=n++,start=tick+unit(base+'|'+index)*3,period=isLate(start)?'late':isEvening(start)?'evening':'day';
+            // Leave real calendar gaps for the configured workday breaks.
+            // Keep night cadence, authored signatures and group scenes intact.
+            const deskCadence=placeTable?.outingRules?.deskAmbientSeconds;
+            if(deskCadence&&tick>=32400&&tick<64800&&tick%deskCadence>=cadence)continue;
             if(!candidatePools.has(period)){const pool=[];
               for(const id of family.memberActionIds){const action=actions.get(id);if(!action)continue;
                 for(const subject of action.participants){const person=allowed.find(p=>p.id===subject);if(person&&presentAt(subject,start)&&homeAt(person,start).floor===family.limits.floor)pool.push({subject,action})}
@@ -1533,7 +1538,7 @@
             // keep visit kinds/stays, describe waiting honestly, and re-reserve
             // the full canon round trip through the same capacity/sweep gates.
             const target=anchors.get(v.target);
-            if(!visitorTargets.has(v.target))visitorTargets.set(v.target,target.room==='consult'?[v.target,...[...anchors.values()].filter(a=>a.floor==='1f'&&['consult','cafe'].includes(a.room)&&a.type==='seat'&&a.runtimeAssignable!==false&&a.id!==v.target).map(a=>a.id)]:[v.target]);
+            if(!visitorTargets.has(v.target))visitorTargets.set(v.target,v.target==='coffee_counter'?places.find(c=>c.id==='coffee-1f').slots:target.room==='consult'?[v.target,...[...anchors.values()].filter(a=>a.floor==='1f'&&['consult','cafe'].includes(a.room)&&a.type==='seat'&&a.runtimeAssignable!==false&&a.id!==v.target).map(a=>a.id)]:[v.target]);
             const targets=visitorTargets.get(v.target);
             for(const destination of targets){
               if(!screenHomeClear(id,'arrival_gate',slot(destination,'stand'),allowed,at,at+1))continue;
