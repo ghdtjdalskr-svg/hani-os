@@ -54,7 +54,11 @@ test.after(async()=>{
         if(time==='19:31'||time==='23:00')assert.ok(entries.every(p=>p.idle&&p.line&&(p.id==='mir'||p.line!=='자료 확인 중')));
       }
       assert.equal(new Set(entries.map(p=>p.seat.anchor)).size,entries.length,'no shared seats');
-      const lounge=entries.filter(p=>p.activity==='rest');
+      const homeLounge=p=>['yuna','minji'].includes(p.id)&&['19:31','23:00','02:00'].includes(time);
+      const lounge=entries.filter(p=>p.activity==='rest'&&(!p.outingId||homeLounge(p)));
+      for(const p of entries.filter(p=>p.activity==='rest'&&p.outingId&&!homeLounge(p))){
+        assert.equal(p.placeId,'cafe-1f');assert.equal(p.state,'AT_PLACE');assert.equal(p.pose,'sitting');assert.match(p.seat.anchor,/^lobby-(?:nw|ne|sw|se)$/);
+      }
       if(['19:31','23:00','02:00'].includes(time))assert.deepEqual(lounge.map(p=>p.id).sort(),['minji','yuna']);
       else assert.equal(lounge.length,0);
       for(const p of entries){if(p.activity!=='rest'&&!p.stroll)assert.equal(p.seat.anchor,scene.homeSeat(p.id).anchor);else if(p.stroll){assert.equal(scene.anchors.get(p.seat.anchor).floor,p.floor);if(p.state==='AT_PLACE')assert.equal(scene.anchors.get(p.targetAnchor).floor,p.floor)}else assert.match(p.seat.anchor,/lobby-/);assert.ok(scene.anchors.has(p.seat.anchor));assert.equal(p.actionId,'base-work');}

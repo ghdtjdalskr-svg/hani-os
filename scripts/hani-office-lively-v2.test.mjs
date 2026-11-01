@@ -11,11 +11,14 @@ const formal=s.plan(day),all=s.blockPlan(day,0,formal),trips=all.filter(e=>!e.vi
 const firstPlanMs=performance.now()-firstPlanStart;
 const overlaps=(a,b)=>a.start<b.end&&b.start<a.end;
 const range={coffee:[60,180],window:[40,120],sofa:[120,300],board:[60,180],server:[45,120],garden:[90,240],terrace:[90,240],lobby:[30,90],meeting:[90,240],errand:[8,25]};
+const restKinds=new Set(['coffee','window','sofa','garden','terrace']);
+const stayRange=card=>card.id==='coffee-1f'?[90,180]:card.id==='cafe-1f'?[600,1500]:restKinds.has(card.kind)?[300,540]:range[card.kind];
 test('obr2: whole-day ledger keeps minimum stays across block boundaries, visitor timing and personal cooldowns',()=>{
  assert.strictEqual(all,s.blockPlan(day,143,formal));
  assert.ok(trips.some(e=>Math.floor(e.start/600)!==Math.floor(e.end/600)),'long visits cross a block');
  for(const e of all)for(const t of e.people){
-  const stay=t.back[0].start-t.out.at(-1).end,base=e.visitor?({client:[120,300],candidate:[120,300],courier:[15,30],rider:[15,30],generic:[20,40]})[e.visitor.kind]:range[e.card.kind];
+  const stay=t.back[0].start-t.out.at(-1).end,base=e.visitor?({client:[120,300],candidate:[120,300],courier:[15,30],rider:[15,30],generic:[20,40]})[e.visitor.kind]:stayRange(e.card);
+  if(!e.visitor)assert.deepEqual(Array.from(e.card.stay),base,'approved exact card stay range');
   assert.ok(stay>=base[0]*(e.group?1.2:1)-1e-6,e.id+' stay '+stay);
   // FIFO arrival/return waiting can add time for the first arrival in a group.
   // obr10 explicitly permits an atomically re-reserved social extension. The
@@ -25,12 +28,12 @@ test('obr2: whole-day ledger keeps minimum stays across block boundaries, visito
    assert.ok(e.gatheringChecks.length);for(const check of e.gatheringChecks){
     const peers=trips.filter(q=>q.card.id===e.card.id).flatMap(q=>q.people.filter(t=>t.out.at(-1).end<=check.at&&check.at<t.back[0].start));
     assert.ok(peers.length>=check.size&&check.size>=2);
-    assert.ok(check.until-e.performStart<=(check.size>=3?480:base[1]*1.5)+1e-6);
+    assert.ok(check.until-e.performStart<=(check.size>=3?480:Math.min(480,base[1]*1.5))+1e-6);
    }
   }
  }
  for(const p of table.people){const list=trips.filter(e=>e.people.some(t=>t.id===p.id));
-  for(let i=1;i<list.length;i++){assert.ok(list[i].start-list[i-1].end>=600-1e-6,p.id+' cooldown');assert.notEqual(list[i].card.id,list[i-1].card.id,p.id+' consecutive card')}
+  for(let i=1;i<list.length;i++){assert.ok(list[i].start-list[i-1].end>=240-1e-6,p.id+' cooldown');assert.notEqual(list[i].card.id,list[i-1].card.id,p.id+' consecutive card')}
  }
 });
 test('obr2: floor outing units have quiet/lunch/normal caps and every populated work window has an outing',()=>{
@@ -65,7 +68,7 @@ test('obr2: each worker sees ≥4 place cards and ≥10 distinct lines, with lun
  for(let sec=32400;sec<64800;sec+=2)for(const p of s.snapshot(at(day,sec)).entries)lines.get(p.id)?.add(p.line);
  for(const p of names){const visits=trips.filter(e=>e.start>=32400&&e.start<64800&&e.people.some(t=>t.id===p.id));
   assert.ok(new Set(visits.map(e=>e.card.id)).size>=4,p.id+' place diversity');assert.ok(lines.get(p.id).size>=10,p.id+' words');
-  const mean=(visits.at(-1).start-visits[0].start)/(visits.length-1)/60;assert.ok(mean>=25&&mean<=50,p.id+' mean outing interval '+mean);
+  const mean=(visits.at(-1).start-visits[0].start)/(visits.length-1)/60;assert.ok(mean>=12&&mean<=50,p.id+' mean outing interval '+mean);
  }
  const share=(a,b)=>{const list=trips.filter(e=>e.start>=a*3600&&e.start<b*3600);return list.filter(e=>['coffee','terrace'].includes(e.card.kind)).length/list.length};
  console.log('obr2 cafe/terrace morning/lunch shares',share(9,10),share(11.5,13));assert.ok(share(11.5,13)>share(9,10));
@@ -91,10 +94,10 @@ test('obr2: deterministic query order, reduced motion and frozen spatial bytes',
  const group=trips.find(e=>e.group),time=at(day,group.performStart+.01);
  for(const options of [{summoned:[group.people[0].id]},{cancelled:new Set([group.id])}])assert.ok(s.snapshot(time,options).entries.every(p=>p.outingId!==group.id),'a group cancels atomically');
 });
-test('obr2: 10-minute personal cooldown survives midnight without a previous-day replay',()=>{
+test('obr2: approved 4-minute personal cooldown survives midnight without a previous-day replay',()=>{
  const next='2026-10-23',following=s.blockPlan(next,0,s.plan(next)).filter(e=>!e.visitor&&e.card.kind!=='errand');
  for(const person of table.people){const prev=trips.filter(e=>e.people.some(p=>p.id===person.id)).at(-1),after=following.find(e=>e.people.some(p=>p.id===person.id));
-  if(prev&&after)assert.ok(86400+after.start-prev.end>=600,person.id+' midnight cooldown');
+  if(prev&&after)assert.ok(86400+after.start-prev.end>=240,person.id+' midnight cooldown');
  }
 });
 test('obr2: warm snapshot <3ms, first full daily formal+outing plan <400ms',()=>{

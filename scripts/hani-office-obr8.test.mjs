@@ -5,6 +5,7 @@ import {assertResources,validPlaceSpeech} from './hani-office-place-assertions.m
 import fs from 'node:fs';
 import {gunzipSync} from 'node:zlib';
 import {createHash} from 'node:crypto';
+import {isDeepStrictEqual} from 'node:util';
 const obr13Bytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-chairman-234-plans.json.gz'));
 assert.equal(createHash('sha256').update(obr13Bytes).digest('hex'),'cd5541576e23b39018e704f14bcc253eac4aba152849779300f5f2b817852dff');
 const obr13=JSON.parse(obr13Bytes);
@@ -20,8 +21,8 @@ test('obr8/obr13: frozen formal plans include approved chairman delta; errands h
  for(const day of days){
   const options={chairmanPresent:true},formal=s.plan(day,options),all=s.blockPlan(day,0,formal,options),errands=all.filter(e=>e.card.kind==='errand');
   const reviewed=obr13.records.find(r=>r.day===day&&r.options.chairmanPresent===true);
-  if(reviewed)assert.deepEqual(plain(formal),reviewed.formal,'all formal decisions match exact reviewed chairman delta');
-  else assert.deepEqual(plain(formal),plain(old.plan(day,options)),'all formal decisions unchanged');
+  if(reviewed)assert.ok(isDeepStrictEqual(plain(formal),reviewed.formal),'all formal decisions match exact reviewed chairman delta');
+  else assert.ok(isDeepStrictEqual(plain(formal),plain(old.plan(day,options))),'all formal decisions unchanged');
   assert.ok(errands.length>600,day+' actual accepted errands');
   const previous=new Map();
   for(const e of errands){
@@ -79,7 +80,7 @@ test('obr8/obr14: daytime visitors use two public slots with 20–40s takeout; s
   for(const other of guests)if(other!==e&&overlap(e,other))assertResources(s,e,other);
   assert.ok(['lobby','cafe','consult'].includes(scene.anchors.get(t.seat.anchor).room));
   if(e.visitor.kind==='generic'){
-   assert.equal(t.seat.anchor,'coffee_counter');assert.ok(e.performEnd-e.performStart>=20&&e.performEnd-e.performStart<=40);
+   assert.ok(['coffee_counter','coffee_pickup'].includes(t.seat.anchor));assert.ok(e.performEnd-e.performStart>=20&&e.performEnd-e.performStart<=40);
    const snap=s.snapshot(at(days[0],e.performStart+.01));assert.equal(snap.visitors.find(p=>p.id===t.id).line,'커피 받아 가는 중');
   }
  }

@@ -96,7 +96,9 @@ test('obr15 reciprocal two-line report dialogue, exact endpoints, absent/cancell
 });
 test('obr15 actual persistent renderer consumes presence greeting and reciprocal facing, then resets through the existing update path',()=>{
  const f=fixture('09:00',false,null,table),actors=[...f.ids.get('haniOfficeActors').children],tick=f.timers.find(t=>t.ms===4200).fn;
- f.context.window.HaniOfficePresence={chairman:'absent'};f.setDateTime(at(day,32400));f.click('4f');
+ // Approved outings change the 09:00 availability. At 09:04:45 Yuna is
+ // independently eligible on 4F; keep the same real arrival/renderer assertions.
+ f.context.window.HaniOfficePresence={chairman:'absent'};f.setDateTime(at(day,32685));f.click('4f');
  f.context.window.HaniOfficePresence={chairman:'active'};tick();
  const greeting=f.visible().filter(a=>/회장님.*(?:안건|메모|일정)/.test(a.dataset.line));assert.ok(greeting.length>=1&&greeting.length<=2);assert.ok(greeting.every(a=>a.dataset.pose==='standing'));
  const e=s.blockPlan(day,0,s.plan(day,options),options).find(e=>e.report),staff=actors.find(a=>a.dataset.person===e.report),chair=actors.find(a=>a.dataset.person==='seongmin');

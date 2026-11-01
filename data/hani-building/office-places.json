@@ -327,8 +327,8 @@
       ],
       "pose": "sit",
       "stay": [
-        300,
-        540
+        600,
+        1500
       ],
       "affinity": {
         "seongmin": 1,

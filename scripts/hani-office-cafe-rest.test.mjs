@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
+import {performance} from 'node:perf_hooks';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
 import {spriteBox,boxesOverlap} from './hani-office-obr21-geometry.mjs';
 const {scene,context}=loadScene(),s=scene.scheduler;
@@ -44,4 +45,12 @@ test('workday breaks change only the configured ambient opportunity cadence; pla
  assert.doesNotMatch(source,/localStorage|sessionStorage|supabase/);
  const rules=JSON.parse(read('data/hani-building/office-places.json')).outingRules;assert.equal(rules.deskAmbientSeconds,300);
  assert.equal(createHash('sha256').update(fs.readFileSync('assets/building/floor-1f-217.webp')).digest('hex'),scene.art.floors['1f'].backgroundSha256);
+});
+
+test('first full daily plan stays below the unchanged 400ms limit, chairman absent and present',()=>{
+ for(const chairmanPresent of [false,true]){
+  const samples=[];
+  for(let i=0;i<3;i++){const api=loadScene().scene.scheduler,t=performance.now();api.blockPlan('2026-11-02',0,api.plan('2026-11-02',{chairmanPresent}),{chairmanPresent});samples.push(performance.now()-t)}
+  console.log('cafe cold plan',{chairmanPresent,samples});assert.ok(Math.min(...samples)<400,JSON.stringify({chairmanPresent,samples}));
+ }
 });

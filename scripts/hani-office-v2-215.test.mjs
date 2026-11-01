@@ -13,9 +13,9 @@ import {fixture} from './hani-building-206-engine.test.mjs';
 const root=path.resolve(fileURLToPath(new URL('../',import.meta.url))),read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const source=read('hani-office-live.js');
 const ctx=vm.createContext({HaniOfficeV2Assets:assets,window:{},document:{getElementById:()=>null}});vm.runInContext(source,ctx);const api=ctx.HaniBuildingScene;
-test('frozen 326-anchor canon file (+5 place-file window spots at runtime), active registered staff only, exact home floor/seat and posture',()=>{
+test('frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture',()=>{
   assertOnboardedCanon();
-  assert.equal(api.canon.anchors.length,331);assert.equal(api.floors.length,5);
+  assert.equal(api.canon.anchors.length,333);assert.equal(api.floors.length,5);
   assert.deepEqual([...api.floors.flatMap(f=>f.residents)].sort(),assets.canon.people.filter(p=>p.status==='active'&&p.registration==='registered').map(p=>p.id).sort());
   for(const person of assets.canon.people.filter(p=>p.status==='active'&&p.registration==='registered')){
     const anchor=api.anchors.get(person.homeAnchor),seat=api.homeSeat(person.id);assert.equal(seat.anchor,anchor.id);assert.equal(seat.x,assets.art.anchors[anchor.id].x);assert.equal(seat.y,assets.art.anchors[anchor.id].y);assert.equal(seat.id,anchor.rendererSeat.id);assert.equal(seat.zone,assets.art.anchors[anchor.id].zone||anchor.rendererSeat.zone);

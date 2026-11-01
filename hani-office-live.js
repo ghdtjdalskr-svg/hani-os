@@ -1196,6 +1196,10 @@
         let w=people.reduce((n,p)=>n*(card.affinity?.[p.id]||1),1)**(1/people.length);
         const sameFloor=people.every(p=>homeAt(p,at).floor===card.floor);
         w*=sameFloor?(people.length>1?12:5):(people.length>1?.35:1);
+        if(at>=32400&&at<64800&&(card.id==='cafe-1f'||card.floor==='5f')){
+          const occupied=ledgerOverlaps(result,at,at+.001).filter(e=>!e.visitor&&(card.floor==='5f'?e.card.floor==='5f':e.card.id===card.id)).reduce((n,e)=>n+e.people.length,0);
+          w*=card.id==='cafe-1f'?(occupied<2?1000:.01):occupied?1:3;
+        }
         let activeRhythms=rhythmsAt.get(at);if(!activeRhythms){activeRhythms=rhythms.filter(r=>at/3600>=r.hours[0]&&at/3600<r.hours[1]);rhythmsAt.set(at,activeRhythms)}
         for(const rhythm of activeRhythms)w*=rhythm.weights[card.kind]||1;
         // Novel places get a modest boost; preferences still shape each day's mix.
@@ -1220,7 +1224,9 @@
         if(!elders.length)return;
         const size=joining.people.length+elders.reduce((n,e)=>n+e.people.length,0),updates=[];
         for(const old of elders){
-          const max=size>=3?gathering.trioMaxSeconds:old.card.stay[1]*gathering.maxScale;
+          // Long authored rests may exceed the social extension ceiling by
+          // themselves. They must not acquire an even longer gathering tail.
+          const max=size>=3?gathering.trioMaxSeconds:Math.min(gathering.trioMaxSeconds,old.card.stay[1]*gathering.maxScale);
           const shared=Math.min(old.performEnd,joining.performEnd)-joining.performStart;
           const end=Math.min(old.performEnd+shared,old.performStart+max),shift=end-old.performEnd;
           if(shift<=0)continue;
@@ -1277,18 +1283,18 @@
         // Every excursion also reserves its home floor from at. Check this
         // necessary capacity condition before card ranking or trajectory creation.
         const homeFloors=new Set(people.map(p=>visitor?'1f':homeAt(p,at).floor));
-        for(const floor of homeFloors){
+        function floorHasRoom(floor){
           const active=visitor?visitorOpportunity.floor1:activeAt.filter(e=>e.people.some(t=>t.seat.anchor!==t.home.anchorId)&&e.people.some(t=>t.home.floor===floor||anchors.get(t.seat.anchor).floor===floor));
-          if(isLate(at)){if(active.reduce((n,e)=>n+e.people.length,people.length)>1)return false}
-          else if(at>=41400&&at<46800){if(active.reduce((n,e)=>n+e.people.length,people.length)>4)return false}
-          else if(active.length>=2||people.length>1&&active.some(e=>e.people.length>1))return false;
+          return isLate(at)?active.reduce((n,e)=>n+e.people.length,people.length)<=1:lunch(at)?active.reduce((n,e)=>n+e.people.length,people.length)<=4:active.length<2&&(people.length===1||!active.some(e=>e.people.length>1));
         }
+        if([...homeFloors].some(floor=>!floorHasRoom(floor)))return false;
+        const freeFloors=visitor?null:new Set(floors.filter(f=>homeFloors.has(f.id)||floorHasRoom(f.id)).map(f=>f.id));
 
         const deadline=visitor?86400:Math.min(people.length>1?70200:86400-rules.cooldownSeconds,...people.map(p=>nextCommitment(p.id,at)));
         if(deadline-at<(people.length>1?60*rules.groupStayScale:30))return false;
         const neighbours=fill?(people.length===1?[...(tripsByPerson.get(people[0].id)||[])]:result.filter(e=>!e.visitor&&e.people.some(t=>people.some(p=>p.id===t.id)))).sort((a,b)=>a.start-b.start):[];
         if(visitor&&!visitorCards.has(visitor.target))visitorCards.set(visitor.target,places.filter(c=>c.slots.includes(visitor.target)));
-        let cards=visitor?visitorCards.get(visitor.target):places.filter(c=>(!joiningCard||c.id===joiningCard.id)&&(
+        let cards=visitor?visitorCards.get(visitor.target):places.filter(c=>(!joiningCard||c.id===joiningCard.id)&&freeFloors.has(c.floor)&&(
           c.stay[0]*(people.length>1?rules.groupStayScale:1)<=deadline-at&&
           c.room!=='consult'&&!c.slots.includes('reception')&&
           (!(at>=25200&&at<32400)||c.kind==='coffee')&&
@@ -1299,11 +1305,14 @@
         const rankSeed=visitor?0:seed(rankBase),slotSeed=visitor?0:seed(day+'|slot|'+at);
         if(!visitor||cards.length>1)cards=cards.map(c=>({c,rank:visitor?seed(day+at+c.id):-Math.log(Math.max(.000001,seedTail(rankSeed,c.id)/4294967296))/weight(c,people,at)})).sort((a,b)=>a.rank-b.rank||a.c.id.localeCompare(b.c.id)).map(r=>r.c);
         if(!visitor&&!fill&&at-(lastFloor.get(homeAt(people[0],at).floor)??-Infinity)<BLOCK)cards=cards.slice(0,3);
-        for(const card of cards){
+        // Try the two strongest invitations at this clock opportunity. A
+        // failed trip can retry at the next tick; do not exhaust every room.
+        for(const card of cards.slice(0,2)){
           const orderKey=card.id+'|'+at;
           if(!visitor&&!slotOrders.has(orderKey))slotOrders.set(orderKey,card.slots.map(id=>({id,rank:seedTail(slotSeed,id)})).sort((a,b)=>a.rank-b.rank).map(p=>p.id));
           const slots=visitor?[visitor.target]:slotOrders.get(orderKey);
-          for(let offset=0;offset<slots.length;offset++){
+          let proposals=0;
+          for(let offset=0;offset<slots.length&&proposals<1;offset++){
             const range=visitor?.stay||card.stay,scale=people.length>1?rules.groupStayScale:1;
             const homes=people.map(p=>visitor?{floor:'1f',anchorId:'arrival_gate'}:homeAt(p,at));
             const destinations=people.map((p,i)=>slots[(offset+i)%slots.length]);
@@ -1321,6 +1330,13 @@
             const ceiling=Math.min(range[1],Math.floor((deadline-at-Math.max(...travel))/scale));
             if(ceiling<range[0])continue;
             const stay=(range[0]+seed(day+'|stay|'+at+card.id)%(ceiling-range[0]+1))*scale;
+            // The minimum destination stay is unavoidable even if FIFO adds
+            // waits. Reject occupied phone slots before allocating trajectories.
+            if(card.floor==='1f'&&people.some((p,i)=>{
+              const start=at+i*1.5+pathDuration(path(homes[i].anchorId,destinations[i])),end=start+stay;
+              const stop={id:p.id,home:homes[i].anchorId,seat:slot(destinations[i],card.pose),start,end};
+              return ledgerOverlaps(ledger,start,end).some(e=>stationaryStops(e).some(q=>screenStopConflict(stop,q)));
+            }))continue;
             // The proposal's travel/stay horizon owns this cache key. A later
             // deadline must not reserve evening lounge homes during daytime.
             // FIFO extensions still pass reserve() with their complete interval.
@@ -1329,6 +1345,7 @@
             // No phase boundary may lie in the possible interval. Positive proofs
             // never bypass temporal, resource, capacity or continuous sweep checks.
             if(![3600,25200,64800].some(s=>at<s&&s<deadline)&&people.some((p,i)=>!clearHomeRoute({id:p.id,home:homes[i],seat:slot(destinations[i],card.pose),outbound:path(homes[i].anchorId,destinations[i]),inbound:path(destinations[i],homes[i].anchorId)},allowed,at,deadline)))continue;
+            proposals++;
             const trips=people.map((p,i)=>excursion(p.id,visitor?{floor:'1f',anchorId:'arrival_gate'}:homeAt(p,at),card,slots[(offset+i)%slots.length],at+i*1.5,stay,day,visitor,deadline));
             if(trips.some(t=>!t))continue;
             const e=trips.length===1?trips[0]:{...trips[0],people:trips.flatMap(t=>t.people),end:Math.max(...trips.map(t=>t.end)),performStart:Math.max(...trips.map(t=>t.performStart)),performEnd:Math.min(...trips.map(t=>t.performEnd)),
@@ -1378,6 +1395,7 @@
           let booked=false;
           for(let at=begin;at<begin+1800&&!booked;at+=15)for(const p of ranked){
             if(reported.has(p.id))continue;
+            if(ledgerOverlaps(ledger,at,at+.001).some(e=>e.people.some(t=>t.id===p.id||t.id==='seongmin')))continue;
             const card=reportPlaces.find(c=>c.id==='chairman-report-'+p.id),home=homeAt(p,at);
             const stay=20+seed(day+'|report-stay|'+p.id)%41;
             const deadline=Math.min(64800,nextCommitment(p.id,at),nextCommitment('seongmin',at));
@@ -1421,12 +1439,14 @@
             if(pairs.slice(0,lunch(at)?3:1).some(r=>attempt(r.people.map(id=>invitees.find(p=>p.id===id)),at)))continue;
           }
           // A failed geometry/booking never teleports or partially books anyone.
-          for(const p of available){
+          const candidates=available.slice(0,2),overdue=available.slice(2).find(p=>at-(due.get(p.id)??at)>=600);
+          if(overdue)candidates.push(overdue);
+          for(const p of candidates){
             let booked=attempt([p],at);
             // Sparse floors have fewer free calendar gaps. Once overdue, try
             // nearby clock phases instead of synchronizing forever with the
             // 40-second formal microexpression cadence.
-            if(!booked&&overdueSparse(p))for(const delay of [0,15,30,45])if(attempt([p],at+delay,null,true)){booked=true;break}
+            if(!booked&&overdueSparse(p))for(const delay of [15,30,45])if(attempt([p],at+delay,null,true)){booked=true;break}
             if(booked)break;
           }
         }
@@ -1440,7 +1460,7 @@
               const score=p=>(homeAt(p,time).floor===stay.card.floor?100:0)+Math.max(0,...stay.people.map(t=>relationshipScores.get(p.id+'|'+t.id)||0));
               return score(b)-score(a)||seed(day+time+a.id)-seed(day+time+b.id);
             });
-            for(const p of peers.slice(0,3))if(attempt([p],time,null,false,stay.card))break;
+            for(const p of peers.slice(0,1))if(attempt([p],time,null,false,stay.card))break;
           }
         }
       }
@@ -1483,6 +1503,10 @@
           const near=ledgerOverlaps(ledger,at,at+1);
           if(near.some(e=>e.people.some(t=>t.id===p.id)||e.card?.targetPerson===p.id))continue;
           const home=homeAt(p,at),previous=errandLast.get(p.id);
+          // Every same-floor errand consumes a full excursion unit immediately.
+          // A full floor cannot accept any card or target at this tick.
+          const moving=near.filter(e=>motion(e).moving&&e.people.some(t=>t.home.floor===home.floor||anchors.get(t.seat.anchor).floor===home.floor));
+          if(lunch(at)?moving.reduce((n,e)=>n+e.people.length,1)>4:moving.length>=2)continue;
           const sameHomePhase=![3600,25200,64800].some(s=>at<s&&s<deadline);
           const screenKey=p.id+'|'+home.anchorId+'|'+(isLate(at)||isEvening(at));
           if(sameHomePhase&&!screenErrandChoices.has(screenKey))screenErrandChoices.set(screenKey,choices.get(p.id).filter(({c})=>c.slots.some(target=>screenHomeClear(p.id,home.anchorId,slot(target,c.pose),allowed,at,deadline))));
@@ -1589,6 +1613,9 @@
     function placeLine(card,id,day,event,t,seconds,firstLine){
       const pool=card.atByPerson?.[id]||card.at,key=day+'|'+id+'|'+event.start;
       const first=firstLine??pool[seed(key)%pool.length],arrival=t.out.at(-1).end,departure=t.back[0].start;
+      // Long seated lobby rests still speak through the existing clock/slot.
+      // Keep each authored line for 30s; no timer or extra renderer is needed.
+      if(card.id==='cafe-1f'&&departure-arrival>90)return pool[(seed(key)+Math.floor((seconds-arrival)/30))%pool.length];
       // One switch at a deterministic midpoint, measured from this actor's
       // actual arrival (including FIFO waiting), without any timer/state.
       const switched=departure-arrival>90&&seconds>=arrival+(departure-arrival)/2;
@@ -1642,8 +1669,8 @@
           }
         }
         return {id:p.id,...state,visitor:!!p.visitor,...(p.visitor?event.visitor:{}),idle:!event||!!card,plain,stroll:!!card&&!p.visitor&&!options.reducedMotion,home:p.home?.floor||'1f',
-          pose:state.walking?(Math.floor(seconds*5)%2?'walk-a':'walk-b'):state.seat.posture,activity:p.visitor?'visit':event&&!card?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):lounge?'rest':'work',
-          actionId:performing&&!card?action.id:'base-work',eventId:card?undefined:event?.id,outingId:card?event.id:undefined,groupIds:event?.group,placeId:card?.id,targetAnchor:t?.seat.anchor,line,
+          pose:state.walking?(Math.floor(seconds*5)%2?'walk-a':'walk-b'):state.seat.posture,activity:p.visitor?'visit':event&&!card?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):lounge||card?.id==='cafe-1f'&&state.state==='AT_PLACE'?'rest':'work',
+          actionId:event&&!card&&(performing||state.state==='AT_PLACE')?action.id:'base-work',eventId:card?undefined:event?.id,outingId:card?event.id:undefined,groupIds:event?.group,placeId:card?.id,targetAnchor:t?.seat.anchor,line,
           emoji:performing&&!card?(action.actorOverrides?.[p.id]?.emoji||action.performance.emoji):'',personalNonWork:action?.personalNonWork};
       };
       const entries=persons.filter(p=>(p.id!=='seongmin'||options.chairmanPresent)&&(!options.presentIds||options.presentIds.includes(p.id))&&!blocked.has(p.id)&&presentAt(p.id,seconds)).map(p=>render(p,
@@ -1697,7 +1724,7 @@
         // Social words retain the actual companions, but their place phrase
         // also changes once during a long stay, using the same arrival clock.
         const t=e.people.find(t=>t.id===p.id),arrival=t.out.at(-1).end,departure=t.back[0].start;
-        if((p.groupIds||p.gatheringIds)&&departure-arrival>90&&seconds>=(arrival+departure)/2&&seconds>=e.performStart&&seconds<e.performEnd){
+        if((p.groupIds||p.gatheringIds)&&departure-arrival>90&&(card.id==='cafe-1f'||seconds>=(arrival+departure)/2)&&seconds>=e.performStart&&seconds<e.performEnd){
           const ids=(p.gatheringIds||p.groupIds).filter(id=>id!==p.id);
           p.stayLine=placeLine(card,p.id,day,e,t,seconds);p.line=ids.map(id=>personById.get(id).name).join('·')+'와 '+p.stayLine;
         }

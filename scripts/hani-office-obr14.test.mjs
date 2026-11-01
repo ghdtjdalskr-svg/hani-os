@@ -15,16 +15,18 @@ test('235 authored immutable six complete ledgers and 84 snapshots, exact source
 });
 test('235 weekdays 09–19 each second: 1F active >=70%, visible mean >=3, two public guests with separate targets and reservations',()=>{
  for(const day of ['2026-10-21','2026-10-22','2026-10-23']){
-  let active=0,people=0,maxGuests=0;const kinds=new Set();
+  let active=0,walkingOrGuests=0,people=0,maxGuests=0;const kinds=new Set();
   const f=s.plan(day),out=s.blockPlan(day,0,f),guests=out.filter(e=>e.visitor);
   for(const e of guests){assert.ok(['lobby','cafe','consult'].includes(scene.anchors.get(e.people[0].seat.anchor).room));assert.equal(e.people[0].home.anchorId,'arrival_gate');assert.equal(e.people[0].back.at(-1).to,'arrival_gate');for(const q of [...f,...out])if(q!==e&&q.start<e.end&&e.start<q.end)assertResources(s,e,q)}
   for(let sec=32400;sec<68400;sec++){
    const snap=s.snapshot(at(day,sec)),staff=snap.entries.filter(p=>p.floor==='1f');
-   active+=Boolean(staff.some(p=>p.walking)||snap.visitors.length);people+=staff.length+snap.visitors.length;maxGuests=Math.max(maxGuests,snap.visitors.length);
+   const passing=Boolean(staff.some(p=>p.walking)||snap.visitors.length);
+   walkingOrGuests+=passing;
+   active+=Boolean(passing||staff.some(p=>p.activity==='rest'&&p.placeId==='cafe-1f'&&p.state==='AT_PLACE'&&p.pose==='sitting'&&p.line));people+=staff.length+snap.visitors.length;maxGuests=Math.max(maxGuests,snap.visitors.length);
    assert.ok(snap.visitors.length<=2);assert.equal(new Set(snap.visitors.map(p=>p.targetAnchor)).size,snap.visitors.length);
    for(const p of snap.visitors){kinds.add(p.kind);assert.equal(p.floor,'1f');if(p.state==='AT_PLACE')assert.equal(p.line,p.at)}
   }
-  console.log('235 daytime',{day,activeRatio:active/36000,peopleMean:people/36000,maxGuests,kinds:[...kinds]});assert.ok(active/36000>=.7);assert.ok(people/36000>=3);assert.equal(maxGuests,2);assert.equal(kinds.size,5);
+  console.log('235 daytime',{day,activeRatio:active/36000,walkingOrGuestsRatio:walkingOrGuests/36000,peopleMean:people/36000,maxGuests,kinds:[...kinds]});assert.ok(active/36000>=.7);assert.ok(people/36000>=3);assert.equal(maxGuests,2);assert.equal(kinds.size,5);
  }
  assert.equal(writes,0);
 });

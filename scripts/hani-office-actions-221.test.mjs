@@ -42,11 +42,16 @@ for(const [day,time] of [['2026-10-20','10:00'],['2026-10-20','21:00'],['2026-10
     if(time==='02:00')assert.deepEqual(present,['dohyun','minji','mir','seoyun','yuna']);
     const checks=[];
     for(const floor of snapshot.floors.filter(f=>f.people.length)){
-      const event=model.scheduler.plan(day).find(e=>e.floors.includes(floor.id)&&e.performEnd>seconds&&e.performStart<=seconds+90);
-      assert.ok(event,`${floor.id}: no visible event within 90 seconds`);
-      const when=Math.max(seconds,event.performStart+.01),visible=model.snapshot(at(day,when)).floors.find(f=>f.id===floor.id).visible;
-      assert.ok(visible.some(p=>p.actionId===event.actionId&&p.emoji&&p.line));
-      checks.push({floor:floor.id,action:event.actionId,delaySeconds:Math.max(0,event.performStart-seconds)});
+      // Regular rooftop/cafe use also occupies floors with no resident catalog
+      // family. Check actual visible formal OR outing actions on the same clock.
+      let found;
+      for(let delay=0;delay<=90&&!found;delay++){
+        const visible=model.snapshot(at(day,seconds+delay)).floors.find(f=>f.id===floor.id).visible;
+        const person=visible.find(p=>p.line&&!p.plain&&(p.eventId&&p.actionId!=='base-work'&&p.emoji||p.outingId&&p.placeId&&(p.walking||p.state==='AT_PLACE')));
+        if(person)found={floor:floor.id,action:person.eventId?person.actionId:person.placeId,delaySeconds:delay};
+      }
+      assert.ok(found,`${floor.id}: no visible event within 90 seconds`);
+      checks.push(found);
     }
     evidence.push({day,time,present,checks});
   });
