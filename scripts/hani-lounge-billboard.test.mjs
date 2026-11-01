@@ -38,14 +38,21 @@ export function createBannerFixture(now=Date.parse('2026-11-01T03:00:00Z')){
     .replace('resetEditor();openPost(','globalThis.openBillboardPost(');
   c.openBillboardPost=id=>c.opened=id;
   const source=board.replace('    if(!get("syncNotice")){','    return;\n    if(!get("syncNotice")){')
-    .replace('  init();','  Object.assign(globalThis,{paintLoungeBanner,syncBanner,loungeBannerItems,dailyLoungeAds,publicationReplies,applyStaffVotes,interactiveMarkup,queenTally,queenSlides});\n globalThis.click=event=>{'+click+'};\n init();');
+    .replace('  init();','  Object.assign(globalThis,{paintLoungeBanner,syncBanner,loungeBannerItems,dailyLoungeAds,publicationReplies,applyStaffVotes,interactiveMarkup,queenTally,queenSlides,queenStandings,queenStaffBallots,visibleComments});\n globalThis.click=event=>{'+click+'};\n init();');
   vm.runInContext(source,c);
   assert.ok(lifecycle.includes('visibilitychange'));
   // The event branch retains the module's lexical timer and selection state.
   const press=(selector,index=0)=>c.click({preventDefault(){},target:{closest:s=>s!==selector?null:selector==='[data-board-banner-link]'?fields.get(s):selector==='[data-board-banner-dot]'?dots.children[index]:node()}});
   const run=code=>vm.runInContext(code,c);
   const tick=()=>{assert.equal(timers.size,1);const [id,fn]=[...timers][0];timers.delete(id);fn()};
-  return {c,fields,dots,timers,events,media,slot,run,tick,press,now,setActive:v=>active=v};
+  return {c,fields,dots,timers,events,media,slot,run,tick,press,now,setActive:v=>active=v,setNow:v=>now=v};
+}
+
+const at=date=>Date.parse(date+'T23:59:59.999+09:00');
+function monthlyPost(f){
+  const thread=f.c.HaniBoardLibrary.threads.find(t=>t.id==='queen-2026-11');
+  return {id:'queen-post',libraryId:thread.id,authorId:thread.authorId,title:thread.title,body:thread.body,
+    generated:true,createdAt:'2026-11-03T08:00:00+09:00',poll:{options:plain(thread.poll.options),votes:{}}};
 }
 
 if(process.argv[1]===fileURLToPath(import.meta.url)){
@@ -56,7 +63,8 @@ test('slide order uses published module sources, actual employee and weeklyBest'
   assert.equal(rows[2].copy,issue.headline);assert.equal(rows[2].href,'#ilbo');
   assert.equal(rows[3].postId,'p');assert.equal(rows[4].href,'#newsroom');
   assert.equal(rows[1].title,'하니');assert.equal(rows[1].image,'./assets/profiles/hani-profile-hani.webp');
-  assert.equal(rows[0].kicker,'👑 10월의 퀸');assert.match(rows[0].image,/^\.\/assets\/profiles\//);
+  assert.equal(rows[0].kicker,'👑 10월의 퀸');assert.equal(rows[0].image,'./assets/queen/2026-10.webp');
+  assert.equal(rows[0].queenImage,'solo');
 });
 
 test('missing, future and draft data are skipped without fabricated news',()=>{
@@ -123,9 +131,11 @@ test('build reuses the actual publication sources and keeps nested data immutabl
   assert.ok(Object.isFrozen(f.c.HaniBoardLibrary.bulletins.ilbo[0]));
 });
 
-test('billboard adds no runtime file and every image exists on the published site',async()=>{
+test('solo artwork is traced in runtime closure and all fallback portraits exist',async()=>{
   const closure=await resolveRuntimeClosure({exists:f=>fs.existsSync(new URL('../'+f,import.meta.url)),read});
   assert.ok(closure.files.length<=160);assert.deepEqual(closure.missing,[]);
+  assert.ok(closure.files.includes('assets/queen/2026-10.webp'));
+  assert.ok(fs.statSync(new URL('../assets/queen/2026-10.webp',import.meta.url)).size<200000);
   const f=createBannerFixture();for(let day=0;day<6;day++)for(const row of f.c.loungeBannerItems(f.now+day*86400000))
     assert.ok(fs.existsSync(new URL('../'+row.image.replace(/^\.\//,''),import.meta.url)),row.image);
   const members=f.c.window.HaniOrganizationRoster.people;
@@ -180,13 +190,24 @@ test('library poll survives builder, real owner vote/save, protected read-back a
   assert.equal(h.refreshLiving(Date.parse('2026-11-03T12:00:00Z')),true);
   const monthly=api.getState().boardPosts.find(p=>p.libraryId==='queen-2026-11');
   assert.ok(monthly.poll);
-  assert.equal(Object.keys(monthly.poll.votes).length,roster.people.length,'real materialize/applyStaffVotes collects every generated ballot');
+  assert.equal(Object.keys(monthly.poll.votes).length,0,'future staff ballots do not materialize on publication day');
+  h.refreshLiving(Date.parse('2026-11-03T12:00:00Z'),true);
+  assert.equal(Object.keys(api.getState().boardPosts.find(p=>p.id===monthly.id).poll.votes).length,0,'force refresh cannot publish future library ballots');
+  const projection=createBannerFixture(),before=projection.c.queenStandings(monthly,at('2026-11-03'));
   assert.equal(h.votePoll(monthly.id,0),true);
+  const after=projection.c.queenStandings(api.getState().boardPosts.find(p=>p.id===monthly.id),at('2026-11-03'));
+  assert.equal(after.total,before.total+1,'real votePoll changes the display tally');
+  assert.equal(after.counts[0],before.counts[0]+1);
   api.setState(vm.runInContext('loadState()',c));
   const reloaded=api.getState().boardPosts.find(p=>p.id===monthly.id);
   assert.equal(reloaded.poll.votes[roster.chairman.id],0);
-  assert.equal(Object.keys(reloaded.poll.votes).length,roster.people.length+1);
+  assert.equal(Object.keys(reloaded.poll.votes).length,1);
   assert.equal(h.generateDaily(Date.parse('2026-11-03T12:00:00Z')).find(p=>p.id===monthly.id).poll.votes[roster.chairman.id],0,'generation never recreates an existing poll');
+  assert.equal(h.refreshLiving(at('2026-11-30')),true);
+  const final=api.getState().boardPosts.find(p=>p.id===monthly.id);
+  assert.equal(Object.keys(final.poll.votes).length,roster.people.length+1,'real dated reply mechanism eventually materializes all named votes');
+  assert.equal(projection.c.queenStandings(final,at('2026-11-30')).total,roster.people.length+41);
+  assert.equal(api.getState().boardComments.filter(c=>c.postId===final.id&&c.generated&&!c.pending).length,roster.people.length,'anonymous votes create no comments');
 });
 
 test('monthly static ballots use canon and stable seed, roster options and no self vote',()=>{
@@ -203,7 +224,7 @@ test('monthly static ballots use canon and stable seed, roster options and no se
   for(const c of built.comments){
     assert.notEqual(built.poll.options[c.voteChoice],roster.people.find(p=>p.id===c.authorId).name);
     assert.ok(c.body.includes(built.poll.options[c.voteChoice]));
-    assert.ok(c.afterMin>=0&&c.afterMin<1440);
+    assert.ok(c.afterMin>=0&&c.afterMin<28*1440);
     assert.doesNotMatch(c.body,/외모|몸매|섹시|얼굴|미모|예쁘/);
   }
   assert.throws(()=>validateLibrary([{...authored,comments:[{...authored.comments[0],voteChoice:999}]}],roster),/voteChoice/);
@@ -230,7 +251,7 @@ test('KST month end removes vote buttons without changing saved ballots or writi
     const before=JSON.stringify(f.c.state),html=f.c.interactiveMarkup(post,true);
     const poll=html.slice(html.indexOf('<fieldset'));
     if(f===open)assert.match(poll,/data-board-vote/);
-    else {assert.doesNotMatch(poll,/<button|data-board-vote/);assert.match(poll,/마감/);assert.match(poll,/2표/)}
+    else {assert.doesNotMatch(poll,/<button|data-board-vote/);assert.match(poll,/마감/);assert.ok(poll.includes(f.c.queenStandings(post).total+'표'))}
     f.c.paintLoungeBanner();f.c.queenTally(post);
     assert.equal(JSON.stringify(f.c.state),before);
   }
@@ -250,7 +271,8 @@ test('winner appears only in following month, with vote second and employee thir
   assert.equal(rows[1].title,'👑 11월의 퀸 투표 중');assert.equal(rows[1].postId,post.id);
   const december=f.c.queenSlides(at('2026-12-01'));
   assert.equal(december.length,1);assert.equal(december[0].kicker,'👑 11월의 퀸');
-  assert.ok(december[0].title.includes(members[1].name));assert.ok(december[0].title.includes(members[1].rank));
+  const expected=f.c.queenTally(post,at('2026-11-30')).member;
+  assert.ok(december[0].title.includes(expected.name));assert.ok(december[0].title.includes(expected.rank));
   assert.equal(f.c.queenSlides(at('2027-01-01')).length,0);
   assert.equal(rows[0].queenSeason,'autumn');
   f.c.paintLoungeBanner();assert.equal(f.fields.get('[data-board-banner-link]').attrs['data-board-queen-season'],'autumn');
@@ -260,5 +282,113 @@ test('winner appears only in following month, with vote second and employee thir
     assert.equal(f.c.queenSlides(at('2026-11-03')).filter(s=>s.kind==='queen-vote').length,0);
     assert.equal(f.c.queenSlides(at('2026-12-01')).length,0);
   }
+});
+
+test('named ballots never count before their seeded date, including legacy saved early votes',()=>{
+  const f=createBannerFixture(),post=monthlyPost(f),ballots=f.c.queenStaffBallots(post);
+  for(const b of ballots)post.poll.votes[b.authorId]=b.choice;
+  freeze(post);f.c.state=freeze({boardPosts:[post],boardComments:[]});
+  const before=JSON.stringify(f.c.state),start=Date.parse(post.createdAt),end=at('2026-11-30');
+  assert.ok(new Set(ballots.map(b=>Math.floor(b.at/86400000))).size>10);
+  for(const b of ballots){
+    assert.ok(b.at>=start&&b.at<=end);
+    assert.equal(f.c.queenStandings(post,b.at-1).named,ballots.filter(x=>x.at<b.at).length);
+    assert.equal(f.c.queenStandings(post,b.at).named,ballots.filter(x=>x.at<=b.at).length);
+  }
+  assert.equal(f.c.queenStandings(post,start-1).total,0);
+  assert.equal(f.c.queenStandings(post,end).named,19);
+  assert.equal(JSON.stringify(f.c.state),before);
+});
+
+test('live standings grow through the month, repeat exactly and permit a changing leader',()=>{
+  const f=createBannerFixture(),other=createBannerFixture(),post=freeze(monthlyPost(f));
+  let previous=0;const leaders=new Set();
+  for(let day=3;day<=30;day++){
+    const now=at('2026-11-'+String(day).padStart(2,'0')),a=plain(f.c.queenStandings(post,now));
+    assert.deepEqual(a,plain(f.c.queenStandings(post,now)));
+    assert.deepEqual(a,plain(other.c.queenStandings(post,now)));
+    assert.ok(a.total>=previous);previous=a.total;
+    assert.equal(a.counts.reduce((x,y)=>x+y,0),a.total);
+    assert.equal(a.total,a.named+a.anonymous);
+    if(a.total)leaders.add(f.c.queenTally(post,now).member.id);
+  }
+  assert.ok(f.c.queenStandings(post,at('2026-11-03')).total<10);
+  assert.equal(previous,59);assert.ok(leaders.size>1);
+});
+
+test('dated comments use the same ballot dates and legacy comments project without rewriting',()=>{
+  const f=createBannerFixture(),post=freeze(monthlyPost(f));let id=0;f.c.uid=()=> 'queued-'+(++id);
+  const queued=f.c.publicationReplies(post,[post],[]),ballots=f.c.queenStaffBallots(post);
+  queued.forEach(c=>assert.equal(Date.parse(c.scheduledAt),ballots.find(b=>b.authorId===c.authorId).at));
+  // Already-published legacy comments keep their saved bytes, but display on the new dates.
+  const legacy=queued.map(c=>({...c,pending:false,createdAt:post.createdAt}));
+  f.c.state=freeze({boardPosts:[post],boardComments:legacy});const before=JSON.stringify(f.c.state);
+  for(const ballot of ballots){
+    f.setNow(ballot.at-1);
+    assert.ok(!f.c.visibleComments().some(c=>c.authorId===ballot.authorId));
+    f.setNow(ballot.at);
+    const visible=f.c.visibleComments().find(c=>c.authorId===ballot.authorId);
+    assert.ok(visible);assert.equal(Date.parse(visible.createdAt),ballot.at);
+  }
+  assert.equal(JSON.stringify(f.c.state),before);
+});
+
+test('anonymous staff stay read-only and their monthly leaning is stable but varies by month',()=>{
+  const f=createBannerFixture(),post=freeze(monthlyPost(f));
+  f.c.state=freeze({boardPosts:[post],boardComments:[]});const before=JSON.stringify(f.c.state),lib=JSON.stringify(f.c.HaniBoardLibrary);
+  const november=plain(f.c.queenStandings(post,at('2026-11-30')));
+  assert.equal(november.anonymous,40);assert.equal(november.named,19);
+  const december={...post,libraryId:'queen-2026-12',createdAt:'2026-12-01T08:00:00+09:00'};
+  const next=plain(f.c.queenStandings(december,at('2026-12-31')));
+  assert.equal(next.anonymous,40);assert.notDeepEqual(november.counts,next.counts);
+  f.setNow(at('2026-11-15'));const markup=f.c.interactiveMarkup(post,true);
+  assert.match(markup,/익명 직원 \d+명 포함/);assert.match(markup,/<progress/);
+  assert.equal(JSON.stringify(f.c.state),before);assert.equal(JSON.stringify(f.c.HaniBoardLibrary),lib);
+});
+
+test('final day standings, closed poll and next-month award share the exact tally',()=>{
+  const f=createBannerFixture(),post=monthlyPost(f);post.poll.votes.seongmin=0;freeze(post);
+  f.c.state=freeze({boardPosts:[post],boardComments:[]});
+  const last=at('2026-11-30'),final=plain(f.c.queenStandings(post,last)),winner=plain(f.c.queenTally(post,last));
+  assert.equal(final.total,60);assert.equal(winner.count,final.counts[winner.index]);
+  for(const now of [last+1,at('2026-12-01'),at('2026-12-31')]){
+    assert.deepEqual(plain(f.c.queenStandings(post,now)),final);
+    assert.deepEqual(plain(f.c.queenTally(post,now)),winner);
+  }
+  const award=f.c.queenSlides(at('2026-12-01'))[0];assert.ok(award.title.includes(winner.member.name));
+  f.setNow(last+1);assert.match(f.c.interactiveMarkup(post,false),new RegExp('지금까지 '+final.total+'명 참여'));
+});
+
+test('vote billboard and poll both report the live participant count for the date',()=>{
+  const f=createBannerFixture(),post=freeze(monthlyPost(f));f.c.state=freeze({boardPosts:[post],boardComments:[]});
+  for(const day of ['2026-11-03','2026-11-15','2026-11-30']){
+    const now=at(day);f.setNow(now);const total=f.c.queenStandings(post,now).total;
+    const expected='지금까지 '+total+'명 참여 · 11월 30일 마감';
+    assert.equal(f.c.queenSlides(now).find(s=>s.kind==='queen-vote').copy,expected);
+    assert.ok(f.c.interactiveMarkup(post,true).includes(expected));
+  }
+});
+
+test('October uses solo art, later months contain whole fallback portraits at all widths',()=>{
+  const f=createBannerFixture(),post=freeze(monthlyPost(f));f.c.state=freeze({boardPosts:[post],boardComments:[]});
+  f.c.paintLoungeBanner();assert.equal(f.fields.get('[data-board-banner-image]').attrs.src,'./assets/queen/2026-10.webp');
+  assert.equal(f.fields.get('[data-board-banner-link]').attrs['data-board-queen-image'],'solo');
+  f.setNow(at('2026-12-01'));f.c.paintLoungeBanner();
+  assert.equal(f.fields.get('[data-board-banner-link]').attrs['data-board-queen-image'],'portrait');
+  const css=read('hani-board.css');
+  // Resolve actual matching fit declarations in cascade order, including mobile rules.
+  const fit=mode=>{
+    let result;
+    for(const match of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)){
+      const [,,rules]=match,selector=match[1];
+      if(!selector.includes('.board-promo')||!selector.includes('img'))continue;
+      const attr=/\[data-board-queen-image(?:="([^"]*)")?\]/.exec(selector);
+      if(attr&&attr[1]!==undefined&&attr[1]!==mode)continue;
+      const value=/object-fit:([^;}]*)/.exec(rules);if(value)result=value[1];
+    }
+    return result;
+  };
+  assert.equal(fit('solo'),'contain');assert.equal(fit('portrait'),'contain');assert.equal(fit(''),'cover');
+  assert.match(css,/data-board-queen-image="portrait"\] img\{left:56%;width:44%/);
 });
 }

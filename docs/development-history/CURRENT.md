@@ -1,3 +1,7 @@
+# 2026-11-02 · 이달의 퀸 v2 (Codex / qa-b9)
+
+`hani/lounge-queen-v2` / base·로컬 ref·origin/main 캐시 `a5bc2e3` / 2.9.255 유지 / 미커밋. 직원별 월간 seed 날짜·댓글 예약, 표시 전용 익명 직원40명·실시간 막대/인원·동일 월말 집계의 다음 달 발표, 10월 단독 이미지1600×400/88,808B·비교 PNG·이미지 없는 월 contain fallback. **전용20/20·테스트14명령 성공/0실패(집계형44/44), syntax4/4·보존13/13·library check PASS. closure135→136/160·누락0.** save/votePoll/persist·state·Cloud/schema·office-live·연혁 JSON·버전/cache·혼합개행 보존, index는 closure용 preload1줄만 추가. Git 의존 boardroom3검사·브라우저/운영·원격 최신성 미검증. Notion 쓰기 자동 승인 never 거절로 갱신 대기. commit/push/merge/배포 없음. [인수인계·다음 달 절차](handoffs/2026-11-02-lounge-queen-v2.md). 아래 다른 담당·과거 기록 보존.
+
 # 2026-11-01 · qa-b8 홈 조치·건강 결함 후속 수정 (Codex)
 
 hani/qa-home-fixes / qa-b8 / base·로컬 HEAD·origin/main 캐시 2c0064f / 미커밋. 홈 고정 조치 슬롯으로 storage 경고·월말 chip·정산·care 카드 상시 노출, 소식은 일보·마일스톤만 건수 계산. 체중 방향 근거/활성일·중복, 걸음 빈 상태/KST·중복 보완. import·보고서 생성·홈 진입의 기존 owner로 갱신. **전용24/24, 지정 포함 테스트10명령 성공/0실패, syntax2/2·보존10/10·closure128 불변.** showView는 원래 care 호출이 있어 바이트 보존. Data Hub와 월간보고 동률 중복 정책은 기존 차이가 있어 보고서 helper를 재사용하고 차이를 명시. 저장/Cloud·버전/cache·금지 파일·혼합개행 보존, commit/push/merge/배포 없음. 브라우저·원격 최신성·운영 미검증. Notion 쓰기 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-11-01-qa-design-b4.md). 아래 이전 작업·다른 담당 근거 보존.
