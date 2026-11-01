@@ -1,7 +1,7 @@
 {
-  "scope": "QA-3/18/19 + QA-b5b exact display-only source delta; no scheduler, placement, click or frame changes; rebased on the approved consultation source; phone action labels and head icons",
+  "scope": "QA-3/18/19 + QA-b5b exact display-only source delta; no scheduler, placement, click or frame changes; rebased on the approved consultation source; phone action labels and head icons; approved qa-b11c persistent 1F poster UI only",
   "beforeSha256": "406937ae1d69c0379bb735e961734b517ae9440a02c93a0d41771dc0c694d246",
-  "afterSha256": "d2f5be9b6e35e58da597985f43e94a8541542eafa191be35aa0d90838af7d8a8",
+  "afterSha256": "992a9a89ea355458a395ebca2417f307e5f213cba5c29087ab3b82ca9bfdd0be",
   "changes": [
     {
       "beforeLine": 1876,
@@ -245,8 +245,36 @@
       ]
     },
     {
+      "beforeLine": 2332,
+      "afterLine": 2392,
+      "before": [],
+      "after": [
+        "  // Award month -> CSS image token. The canonical board owns month/winner data.\n",
+        "  const queenPosters=Object.freeze({'2026-10':'var(--queen-poster-2026-10)'});\n",
+        "  const queenPoster=document.createElement('button');queenPoster.type='button';queenPoster.className='hani-office-queen-poster';queenPoster.hidden=true;\n",
+        "  queenPoster.style.left='41%';queenPoster.style.top='19%';queenPoster.style.width=(60/(building.art?.width||1672)*100)+'%';queenPoster.style.height=(90/(building.art?.height||941)*100)+'%';\n",
+        "  map.append(queenPoster);\n",
+        "  function updateQueenPoster(now=Date.now()){\n",
+        "    const award=activeFloor==='1f'&&map.dataset.art==='floor'?window.HaniBoard?.queenWinner?.(now):null;\n",
+        "    const image=award&&queenPosters[award.month];\n",
+        "    const hidden=!image;if(queenPoster.hidden!==hidden)queenPoster.hidden=hidden;if(hidden)return;\n",
+        "    const title='👑 '+Number(award.month.slice(5))+'월의 퀸 · '+award.name;\n",
+        "    if(queenPoster.dataset.month!==award.month){queenPoster.dataset.month=award.month;queenPoster.style.backgroundImage=image}\n",
+        "    if(queenPoster.title!==title){queenPoster.title=title;queenPoster.setAttribute('aria-label',title)}\n",
+        "  }\n",
+        "  queenPoster.onclick=()=>{\n",
+        "    updateQueenPoster();if(queenPoster.hidden)return;\n",
+        "    closeBubble();lastBubbleTap=Date.now();autoBubbleEntry=false;\n",
+        "    bubbleSprite.hidden=true;actorBubble.dataset.zoom='false';actorBubble.officeFollow=null;\n",
+        "    bubbleLine.textContent=queenPoster.title;profileLink.hidden=true;actorBubble.style.left='4px';actorBubble.style.top='4px';actorBubble.hidden=false;\n",
+        "    const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble(false)}},3000);\n",
+        "  };\n",
+        "  queenPoster.onkeydown=event=>{if(event.key==='Escape')closeBubble()};\n"
+      ]
+    },
+    {
       "beforeLine": 2417,
-      "afterLine": 2477,
+      "afterLine": 2498,
       "before": [
         "      bg.src=background;bg.hidden=false;bg.alt=floor.label+' · HANI 본사';map.dataset.art=isFloor?'floor':'fallback';\n"
       ],
@@ -255,16 +283,42 @@
       ]
     },
     {
+      "beforeLine": 2422,
+      "afterLine": 2503,
+      "before": [],
+      "after": [
+        "      updateQueenPoster();\n"
+      ]
+    },
+    {
       "beforeLine": 2423,
-      "afterLine": 2483,
+      "afterLine": 2505,
       "before": [],
       "after": [
         "      scheduleFloorBubble();\n"
       ]
     },
     {
+      "beforeLine": 2440,
+      "afterLine": 2523,
+      "before": [],
+      "after": [
+        "    updateQueenPoster(now.getTime());\n"
+      ]
+    },
+    {
+      "beforeLine": 2448,
+      "afterLine": 2532,
+      "before": [
+        "    setBackground(floor);\n"
+      ],
+      "after": [
+        "    setBackground(floor);updateQueenPoster(now.getTime());\n"
+      ]
+    },
+    {
       "beforeLine": 2477,
-      "afterLine": 2538,
+      "afterLine": 2561,
       "before": [
         "      actor.querySelector('.hani-office-prop').textContent=actor.dataset.emoji;\n"
       ],
@@ -274,7 +328,7 @@
     },
     {
       "beforeLine": 2487,
-      "afterLine": 2548,
+      "afterLine": 2571,
       "before": [],
       "after": [
         "    scheduleFloorBubble();\n"
@@ -282,7 +336,7 @@
     },
     {
       "beforeLine": 2488,
-      "afterLine": 2550,
+      "afterLine": 2573,
       "before": [
         "  function selectFloor(id,animate=false){closeBubble();if(!floorButtons.has(id))return;for(const actor of actors.values())finishTravel(actor);activeFloor=id;updateBuilding(true,animate)}\n"
       ],
@@ -292,7 +346,7 @@
     },
     {
       "beforeLine": 2491,
-      "afterLine": 2553,
+      "afterLine": 2576,
       "before": [
         "  function syncVisibility(){officePresence.read();const visible=sceneVisible();sceneActive=visible;root.dataset.paused=String(!visible);if(visible)updateBuilding(true,false);else{for(const actor of actors.values())clearMotion(actor);closeBubble()}map.officeMascotMotion?.({now:Date.now(),reduced,visible,actors})}\n"
       ],

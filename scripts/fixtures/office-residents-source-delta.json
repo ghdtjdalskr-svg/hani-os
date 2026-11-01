@@ -1,7 +1,7 @@
 {
-  "scope": "Approved seven residents only; exact changed lines. Reverse before historical label/motion guards. All other bytes, scheduler, staff/visitor plans and previous fixtures remain frozen.",
-  "beforeSha256": "d2f5be9b6e35e58da597985f43e94a8541542eafa191be35aa0d90838af7d8a8",
-  "afterSha256": "f25b22b5f75d2b6f373b38df3b9308bb1cee7b24ab6bb05218e4c91f5add22ef",
+  "scope": "Approved seven residents only; exact changed lines. Reverse before historical label/motion guards. All other bytes, scheduler, staff/visitor plans and previous fixtures remain frozen.; approved Mochi resident and trio display only",
+  "beforeSha256": "992a9a89ea355458a395ebca2417f307e5f213cba5c29087ab3b82ca9bfdd0be",
+  "afterSha256": "9d163016ff9b5d301f0b9088fbaadc5d7af21c4fa77ae62fe465c6253e42fe43",
   "changes": [
     {
       "beforeLine": 1879,
@@ -17,10 +17,11 @@
       "before": [],
       "after": [
         "  // Residents own no staff seats, reservations, scheduler seeds or saved state.\n",
-        "  const residentNames=Object.freeze({cat:'치즈',dog:'크림',cleaner:'청소 담당',gardener:'옥상 정원사',temp:'임시직'});\n",
+        "  const residentNames=Object.freeze({cat:'치즈',dog:'크림',rabbit:'모찌',cleaner:'청소 담당',gardener:'옥상 정원사',temp:'임시직'});\n",
         "  const residentPeople=Object.freeze([\n",
-        "    {id:'pet-cat',name:residentNames.cat,sprite:'pet-cat',pet:true,hours:[[7,12,'1f'],[12,17,'5f'],[17,22,'1f'],[22,26,'1f'],[26,31,'1f']],places:{'1f':['resident_cat_lobby','resident_cat_front'],'5f':['resident_cat_roof','resident_cat_roof_front']},lines:[\"출근 도장은 발자국으로요.\",\"낮잠도 일정에 넣어 주세요.\",\"회장님, 햇볕 자리는 예약했어요.\",\"서두를 일은 없어요.\",\"관심은 없지만 곁에 있을게요.\",\"키보드 위가 제 지정석인데요.\",\"야옹 한 번이면 안건 통과죠.\",\"택배 상자 검수는 제 소관이에요.\",\"마우스 커서 잡기가 오늘 목표!\",\"골골송은 유료 복지 서비스예요.\",\"회의 길어지면 식빵 굽고 있을게요.\",\"츄르 없이는 면담 신청 안 받아요.\",\"복도 순찰 완료, 이상 무다옹.\"]},\n",
+        "    {id:'pet-cat',name:residentNames.cat,sprite:'pet-cat',pet:true,hours:[[7,12,'1f'],[12,17,'5f'],[17,22,'1f'],[22,26,'1f'],[26,31,'1f']],places:{'1f':['resident_cat_lobby','resident_cat_front'],'5f':['resident_cat_roof','resident_cat_roof_front']},lines:[\"출근 도장은 발자국으로요.\",\"낮잠도 일정에 넣어 주세요.\",\"회장님, 햇볕 자리는 예약했어요.\",\"서두를 일은 없어요.\",\"관심은 없지만 곁에 있을게요.\",\"키보드 위가 제 지정석인데요.\",\"야옹 한 번이면 안건 통과죠.\",\"택배 상자 검수는 제 소관이에요.\",\"마우스 커서 잡기가 오늘 목표!\",\"골골송은 유료 복지 서비스예요.\",\"회의 길어지면 식빵 굽고 있을게요.\",\"츄르 없이는 면담 신청 안 받아요.\",\"복도 순찰 완료, 이상 무다옹.\",\"쟤는 말이 없어서 괜찮네요.\"]},\n",
         "    {id:'pet-dog',name:residentNames.dog,sprite:'pet-dog',pet:true,hours:[[7,9,'1f'],[9,16,'2f'],[16,22,'1f'],[22,26,'1f'],[26,31,'1f']],places:{'1f':['resident_dog_lobby','resident_dog_front'],'2f':['resident_dog_hall','resident_dog_hall_front']},lines:[\"회의는 산책하면서 할까요?\",\"간식 결재는 언제 나나요?\",\"오늘도 모두 무사 출근!\",\"오셨어요? 같이 가요!\",\"모두 만나니 기분이 좋아요!\",\"문소리 나면 반기는 게 제 업무!\",\"공 던져 주시면 바로 야근 가능!\",\"칭찬 한 마디면 사기 충전 완료!\",\"점심시간 알림은 제가 일등이에요!\",\"엘리베이터 앞 마중 대기 중이에요.\",\"발도장으로 협조전 꾹 찍었어요!\",\"분위기 메이커 수당은 개껌으로요!\",\"퇴근길 에스코트 예약 받습니다!\"]},\n",
+        "    {id:'pet-rabbit',name:residentNames.rabbit,sprite:'pet-rabbit',pet:true,hours:[[7,12,'3f'],[12,17,'4f'],[17,22,'1f'],[22,26,'1f'],[26,31,'1f']],places:{'3f':['resident_rabbit_quiet_a','resident_rabbit_quiet_b'],'4f':['resident_rabbit_lounge_a','resident_rabbit_lounge_b'],'1f':['resident_rabbit_lobby_a','resident_rabbit_lobby_b']},lines:[\"조용한 자리가 있으면 알려주세요.\",\"간식보다 평온이 좋아요.\",\"작은 소리도 잘 들려요.\",\"오늘은 여기서 지켜볼게요.\",\"천천히 다가와 주실래요.\",\"햇살이 머무는 자리네요.\",\"히나 곁이면 마음이 놓여요.\",\"잠깐 눈을 감아도 될까요.\",\"발소리가 다정해서 알아봤어요.\",\"말없이 함께 있어도 좋아요.\"]},\n",
         "    {id:'npc-cleaner',name:residentNames.cleaner,sprite:'npc-cleaner',hours:[[7,9,'1f'],[9,11,'2f'],[11,13,'3f'],[13,15,'4f'],[15,18,'5f']],places:{'1f':['resident_cleaner_1f'],'2f':['resident_cleaner_2f'],'3f':['resident_cleaner_3f'],'4f':['resident_cleaner_4f'],'5f':['resident_cleaner_5f']},lines:[\"먼지는 퇴근시켰습니다.\",\"오늘도 바닥부터 차근차근.\",\"커피 자국은 제가 맡을게요.\",\"유리창 닦아 두니 햇살이 환하네.\",\"바빠도 따뜻한 차 한 잔씩 해요.\",\"회의실 의자도 반듯하게 맞춰 뒀어요.\",\"탕비실 싱크대 반짝반짝해졌어요.\",\"비 온 뒤엔 입구 매트부터 챙겨요.\",\"파지함 비우면 마음까지 개운해요.\",\"분리수거 잘해 줘서 늘 고마워요.\",\"깨끗한 책상에서 좋은 생각 나지요.\"]},\n",
         "    {id:'npc-gardener',name:residentNames.gardener,sprite:'npc-gardener',hours:[[8,18,'5f']],places:{'5f':['resident_gardener']},lines:[\"새싹은 결재 없이도 자라네요.\",\"오늘 정원 회의는 맑음입니다.\",\"물 주고 잠깐 바람 쐬는 중이에요.\",\"허브 향이 좋으니 잠시 쉬어 가세요.\",\"화분 흙을 갈아 주니 숨이 트이네요.\",\"꽃망울도 자기 시간표대로 피더군요.\",\"옥상 벤치에 내려앉은 낙엽 치웠어요.\",\"햇살 좋은 날엔 잎사귀도 반짝입니다.\",\"가지치기하듯 생각도 가끔 비워 봐요.\",\"나무는 서두르지 않아도 그늘을 주죠.\",\"비 예보가 있어 배수로를 살펴봤어요.\"]},\n",
         "    {id:'npc-temp-a',name:residentNames.temp,sprite:'npc-temp-a',hours:[[9,13,'2f'],[13,18,'3f']],places:{'2f':['resident_temp_2f'],'3f':['resident_temp_a_3f']},lines:[\"복사기는 벌써 저를 알아봐요.\",\"메모는 작아도 할 일은 확실히!\",\"스테이플러 심 리필 완료했습니다!\",\"라벨지 각 맞추는 데 진심인 편이에요.\",\"회의 자료는 색깔 클립별로 묶었어요.\",\"오늘 배운 단축키, 수첩에 적었어요!\",\"우편물 분류는 가나다순으로 끝냈어요.\",\"파쇄기 종이 걸림도 이제 혼자 풀어요.\",\"비품 창고 재고 표, 새로 붙였습니다!\",\"급한 심부름 있으면 바로 말씀하세요!\"]},\n",
@@ -30,10 +31,11 @@
         "  function residentSeed(value){let n=2166136261;for(const ch of value)n=Math.imul(n^ch.charCodeAt(0),16777619);return n>>>0}\n",
         "  // The pets' day starts at 07:00. 22:00..26:00 is one continuous 1F window.\n",
         "  function residentClock(now){const time=koreaTime(now),seconds=time.getUTCHours()*3600+time.getUTCMinutes()*60+time.getUTCSeconds()+time.getUTCMilliseconds()/1000;return {day:new Date(time.getTime()-7*3600000).toISOString().slice(0,10),seconds:seconds+(seconds<7*3600?86400:0),hour:seconds/3600,sleeping:seconds>=2*3600&&seconds<7*3600,night:seconds>=22*3600||seconds<2*3600}}\n",
-        "  const residentNightSpots=Object.freeze({'pet-cat':['resident_cat_night_a','resident_cat_night_b'],'pet-dog':['resident_dog_night_a','resident_dog_night_b']});\n",
+        "  const residentNightSpots=Object.freeze({'pet-cat':['resident_cat_night_a','resident_cat_night_b'],'pet-dog':['resident_dog_night_a','resident_dog_night_b'],'pet-rabbit':['resident_rabbit_night_a','resident_rabbit_night_b']});\n",
         "  const residentVoice=Object.freeze({\n",
         "    cat:Object.freeze(['쉬는 김에 옆에 있을게요.','따라온 건 아니에요.','모니터보다 여기가 좋네요.','관심은 없어요. 조금만 앉죠.','먼저 가세요. 전 좀 더요.']),\n",
         "    dog:Object.freeze(['같이 쉬니까 더 좋아요!','옆자리 비었죠? 왔어요!','회장님, 같이 걸어요!','여기서 기다리고 있을게요!','오늘도 만나서 반가워요!']),\n",
+        "    rabbit:Object.freeze(['히나 곁에서 조용히 쉴래요.','여기선 귀도 쉬어 가네요.','조용히 기다리고 있었어요.']),\n",
         "    staff:Object.freeze({hani:'잠깐 함께 쉬고 다시 정리하죠.',taeo:'오늘 반가운 소식이 왔네!',yuri:'발밑 여유 공간 확인했어요.',naeun:'오늘 마음도 포근해지네요.',seoyun:'잠깐 쉬고 오류 다시 볼게.',dohyun:'이 조합, 꽤 좋은데요?',hina:'쉬는 시간도 점검 완료예요.',arin:'옆에 앉으니 분위기 좋다.',gaeun:'쉬는 시간, 일정에 남겨 둘게요.',yuna:'왔어? 여기는 늘 네 자리야.',minji:'간식 소식은 내가 알려 줄게!',jieun:'같이 쉬면 마음이 정돈돼요.',sua:'조용히 곁에 있어 줘서 고마워.',haru:'간식 예산도 확인해 볼게.',sooyeon:'같이 쉬니 하루가 든든하네요.',serin:'잠깐 충전하고 다시 시작하자.',mir:'동행 감지. 경계 유지할게요.',daon:'작은 발걸음도 반가운 변화죠.',yoonseul:'햇살처럼 살며시 왔네요.',seongmin:'크림, 잠깐 같이 쉬자.'})\n",
         "  });\n",
         "  // Native-pixel visual exclusions, checked against each art-map background.\n",
@@ -58,9 +60,14 @@
         "    ['resident_cleaner_5f','5f',51,70],['resident_gardener','5f',51,96],\n",
         "    // Clear strip beside the 1F lounge; separate walking ranges for 22:00..02:00.\n",
         "    ['resident_cat_night_a','1f',54,55,true],['resident_cat_night_b','1f',55.5,55,true],\n",
-        "    ['resident_dog_night_a','1f',61.5,55,true],['resident_dog_night_b','1f',62.5,55,true]\n",
-        "  ].map(([id,floor,vx,vy,pet],i)=>[id,Object.freeze({id,floor,x:100+i*40,y:330,visual:[vx,vy],pet:!!pet})]));\n",
-        "  function residentBounds(id,pose){const pet=id.startsWith('pet-'),top=pet?(pose==='sleep'?102:({sitting: id==='pet-cat'?81:76,standing:id==='pet-cat'?83:75,'walk-a':id==='pet-cat'?87:82,'walk-b':id==='pet-cat'?90:83})[pose]):({standing:15,sitting:30,'walk-a':24,'walk-b':24})[pose];return [pet?13:9,top??15,pet?82:87,135]}\n",
+        "    ['resident_dog_night_a','1f',61.5,55,true],['resident_dog_night_b','1f',62.5,55,true],\n",
+        "    ['resident_rabbit_quiet_a','3f',52,38.5,true],['resident_rabbit_quiet_b','3f',52,40.5,true],\n",
+        "    ['resident_rabbit_lounge_a','4f',51,66,true],['resident_rabbit_lounge_b','4f',51,70,true],\n",
+        "    ['resident_rabbit_lobby_a','1f',34,55,true],['resident_rabbit_lobby_b','1f',35,55,true],\n",
+        "    ['resident_rabbit_night_a','1f',47,55,true],['resident_rabbit_night_b','1f',47.5,55,true],\n",
+        "    ['resident_rabbit_sleep_spare','1f',50,55,true]\n",
+        "  ].map(([id,floor,vx,vy,pet],i)=>[id,Object.freeze({id,floor,x:id.startsWith('resident_rabbit_')?500:100+i*40,y:330,visual:[vx,vy],pet:!!pet})]));\n",
+        "  function residentBounds(id,pose){const pet=id.startsWith('pet-');if(id==='pet-rabbit')return [11,({sitting:61,standing:63,'hop-a':74,'hop-b':70,sleep:100})[pose]??61,85,135];const top=pet?(pose==='sleep'?102:({sitting: id==='pet-cat'?81:76,standing:id==='pet-cat'?83:75,'walk-a':id==='pet-cat'?87:82,'walk-b':id==='pet-cat'?90:83})[pose]):({standing:15,sitting:30,'walk-a':24,'walk-b':24})[pose];return [pet?13:9,top??15,pet?82:87,135]}\n",
         "  const residentPaths=new Map();\n",
         "  function residentSafe(floorId,point,visual,pet=true){\n",
         "    const floor=canon?.floors.find(f=>f.id===floorId);if(!floor||!point||!visual)return false;\n",
@@ -91,7 +98,7 @@
         "  function residentVisit(person,floor,staff,seed,beat,free){\n",
         "    const chairman=person.id==='pet-dog'&&staff.find(p=>p.id==='seongmin'&&p.floor===floor&&(p.walking||p.pose==='sitting'||p.seat?.posture==='sitting'));\n",
         "    const peers=chairman?[chairman]:staff.filter(p=>p.floor===floor&&!p.visitor&&p.id!=='seongmin'&&residentVoice.staff[p.id]&&p.activity==='rest'&&!p.walking&&(!p.state||p.state==='AT_HOME'||p.state==='AT_PLACE'));\n",
-        "    peers.sort((a,b)=>residentSeed(seed+'|'+beat+'|'+a.id)-residentSeed(seed+'|'+beat+'|'+b.id));\n",
+        "    peers.sort((a,b)=>(person.id==='pet-rabbit'?(a.id==='hina'?-1:b.id==='hina'?1:0):0)||residentSeed(seed+'|'+beat+'|'+a.id)-residentSeed(seed+'|'+beat+'|'+b.id));\n",
         "    for(const peer of peers){\n",
         "      const center=peer.position||[peer.seat?.x,peer.seat?.y];if(!center.every(Number.isFinite))continue;\n",
         "      const monitor=person.id==='pet-cat'&&beat%3===0&&monitorScreens[peer.seat?.anchor]&&art.floors[floor]?.homeFurniture?.[peer.seat.anchor];\n",
@@ -99,7 +106,7 @@
         "      if(!choices){\n",
         "        choices=[];\n",
         "        // Only clear floor beside the actor: no shared anchors, seats or desk surfaces.\n",
-        "        const columns=new Set([-280,-220,-160,-100,0,100,160,220,280,...[...residentStops.values()].filter(a=>a.floor===floor).map(a=>(a.visual[0]-center[0])*art.width/100)]);\n",
+        "        const columns=new Set([-280,-220,-160,-100,0,100,160,220,280,...[...residentStops.values()].filter(a=>a.floor===floor&&(person.id==='pet-rabbit'||!a.id.startsWith('resident_rabbit_'))).map(a=>(a.visual[0]-center[0])*art.width/100)]);\n",
         "        for(const dx of columns)for(const dy of [0,100,-100,180,-180,260,-260]){\n",
         "          if(Math.hypot(dx,dy)<100||Math.hypot(dx,dy)>320)continue;\n",
         "          const visual=[center[0]+dx/art.width*100,center[1]+dy/art.height*100],point=[500,330];\n",
@@ -111,8 +118,8 @@
         "        if(residentVisits.size>=64)residentVisits.delete(residentVisits.keys().next().value);residentVisits.set(key,choices);\n",
         "      }\n",
         "      const anchor=choices.find(a=>free(a.visual));if(!anchor)continue;\n",
-        "      const name=peer.id==='seongmin'?'회장님':actionTable?.people.find(p=>p.id===peer.id)?.name||peer.id,bank=person.id==='pet-cat'?residentVoice.cat:residentVoice.dog;\n",
-        "      const petLine=monitor?residentVoice.cat[2]:bank[(seed+beat)%bank.length],staffLine=residentVoice.staff[peer.id];\n",
+        "      const name=peer.id==='seongmin'?'회장님':actionTable?.people.find(p=>p.id===peer.id)?.name||peer.id,bank=person.id==='pet-cat'?residentVoice.cat:person.id==='pet-rabbit'?residentVoice.rabbit:residentVoice.dog;\n",
+        "      const petLine=monitor?residentVoice.cat[2]:bank[(seed+beat)%bank.length],staffLine=person.id==='pet-rabbit'&&peer.id==='hina'?'모찌, 편히 쉬어. 내가 지킬게.':residentVoice.staff[peer.id];\n",
         "      return {anchor,scene:{key:seed+'|'+beat+'|'+peer.id,partnerId:peer.id,partnerName:name,kind:chairman?'chairman':monitor?'monitor':'rest',petLine,staffLine,line:petLine+' · '+name+' · '+staffLine}};\n",
         "    }\n",
         "    return null;\n",
@@ -123,33 +130,51 @@
         "    for(let i=0;i<=steps;i++){const t=i/steps,point=[a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t],visual=[a.visual[0]+(b.visual[0]-a.visual[0])*t,a.visual[1]+(b.visual[1]-a.visual[1])*t];if(!residentSafe(a.floor,point,visual)||!free(visual))return []}\n",
         "    return [a,b];\n",
         "  }\n",
+        "  // In-memory, display-only quarter-hour scene; no scheduler or saved state.\n",
+        "  let residentTrioHold=null;\n",
+        "  const residentTrioLines=Object.freeze([{id:'pet-dog',line:'같이 놀자!!'},{id:'pet-cat',line:'싫어요.'},{id:'pet-rabbit',line:'……조용히 놀면요.'}].map(Object.freeze));\n",
+        "  function residentTrioKey(now){const c=residentClock(now);return c.day+'|'+Math.floor(c.seconds/900)}\n",
+        "  function residentTrio(now,states,staff){\n",
+        "    const pets=residentTrioLines.map(p=>states.find(s=>s.id===p.id));\n",
+        "    if(pets.some(p=>!p||p.pose==='sleep')||pets.some(p=>p.floor!==pets[0].floor))return null;\n",
+        "    const floor=pets[0].floor,key=residentTrioKey(now),occupied=staff?.floors?.flatMap(f=>f.people||[])||[];\n",
+        "    // All three share 1F in the evening/night; these stops keep full body clearance.\n",
+        "    const spots=['resident_dog_night_a','resident_cat_night_a','resident_rabbit_night_a'].map(residentSpot);\n",
+        "    if(spots.some(a=>!a||a.floor!==floor||occupied.some(p=>{const v=p.position||(p.seat&&[p.seat.x,p.seat.y]);return p.floor===floor&&v&&Math.hypot((a.visual[0]-v[0])*art.width/100,(a.visual[1]-v[1])*art.height/100)<100})))return null;\n",
+        "    if(!residentTrioHold||residentTrioHold.key!==key)residentTrioHold={key,floor,spots:Object.fromEntries(residentTrioLines.map((p,i)=>[p.id,spots[i]]))};\n",
+        "    return {key,lines:residentTrioLines};\n",
+        "  }\n",
         "  function residentSnapshot(now=new Date(),staff=null,enabled=true,reduced=false,interactions=true){\n",
         "    if(!enabled||!canon||!art)return [];\n",
         "    const time=koreaTime(now),clock=residentClock(now),hour=clock.hour;\n",
         "    const occupied=staff?.floors?.flatMap(f=>f.people||[])||[];\n",
-        "    return residentPeople.flatMap(person=>{\n",
+        "    if(residentTrioHold?.key!==residentTrioKey(now))residentTrioHold=null;\n",
+        "    return [...residentPeople.filter(p=>p.id!=='pet-rabbit'),...residentPeople.filter(p=>p.id==='pet-rabbit')].flatMap(person=>{\n",
         "      const scheduleHour=person.pet?clock.seconds/3600:hour,window=person.hours.find(([start,end])=>scheduleHour>=start&&scheduleHour<end);if(!window)return [];\n",
         "      const seconds=person.pet?clock.seconds:clock.seconds%86400,day=person.pet?clock.day:time.toISOString().slice(0,10),sleeping=person.pet&&clock.sleeping;\n",
         "      const chairman=interactions&&person.id==='pet-dog'&&!sleeping&&occupied.find(p=>p.id==='seongmin'&&p.seat&&(p.walking||p.pose==='sitting'||p.seat.posture==='sitting'));\n",
-        "      const floor=chairman&&(!clock.night||chairman.floor==='1f')?chairman.floor:window[2],spots=(person.pet&&clock.night?residentNightSpots[person.id]:person.places[floor]||[...residentStops.values()].filter(a=>a.floor===floor).map(a=>a.id)).filter(residentSpot);if(!spots.length)return [];\n",
-        "      const seed=residentSeed('office-residents|'+day+'|'+person.id),beat=Math.floor(seconds/900),index=sleeping?0:(beat+(person.pet?seed%spots.length:0))%spots.length;\n",
+        "      const floor=chairman&&(!clock.night||chairman.floor==='1f')?chairman.floor:window[2],spots=(person.pet&&clock.night?residentNightSpots[person.id]:person.places[floor]||[...residentStops.values()].filter(a=>a.floor===floor&&(person.id==='pet-rabbit'||!a.id.startsWith('resident_rabbit_'))).map(a=>a.id)).filter(residentSpot);if(!spots.length)return [];\n",
+        "      const seed=residentSeed('office-residents|'+day+'|'+person.id),beat=Math.floor(seconds/900),index=sleeping?0:((person.id==='pet-rabbit'?Math.floor(beat/2):beat)+(person.pet?seed%spots.length:0))%spots.length;\n",
         "      const free=p=>!occupied.some(q=>{const at=q.position||(q.seat&&[q.seat.x,q.seat.y]);return q.floor===floor&&at&&Math.hypot((p[0]-at[0])*art.width/100,(p[1]-at[1])*art.height/100)<(q.resident?96:100)});\n",
-        "      let anchor=residentSpot(spots[index]),path=residentPath(spots[(index+spots.length-1)%spots.length],spots[index]),scene=null;\n",
+        "      const trio=interactions&&!sleeping&&residentTrioHold?.floor===floor?residentTrioHold.spots[person.id]:null;\n",
+        "      let anchor=trio||residentSpot(spots[index]),path=residentPath(spots[(index+spots.length-1)%spots.length],spots[index]),scene=null;\n",
         "      // A social visit yields to the other pet's usual stops, including pets\n",
         "      // evaluated later; neither late-night companion gets pushed offscreen.\n",
-        "      const visitFree=p=>free(p)&&!residentPeople.some(other=>other.pet&&other.id!==person.id&&(clock.night?residentNightSpots[other.id]:other.places[floor]||[]).some(id=>{const a=residentSpot(id);return a&&Math.hypot((p[0]-a.visual[0])*art.width/100,(p[1]-a.visual[1])*art.height/100)<96}));\n",
-        "      const visit=interactions&&person.pet&&!sleeping?residentVisit(person,floor,occupied,seed,beat,visitFree):null;\n",
+        "      const visitFree=p=>free(p)&&!residentPeople.some(other=>other.pet&&other.id!==person.id&&other.id!=='pet-rabbit'&&(clock.night?residentNightSpots[other.id]:other.places[floor]||[]).some(id=>{const a=residentSpot(id);return a&&Math.hypot((p[0]-a.visual[0])*art.width/100,(p[1]-a.visual[1])*art.height/100)<96}));\n",
+        "      const visit=interactions&&person.pet&&!sleeping&&!trio?residentVisit(person,floor,occupied,seed,beat,visitFree):null;\n",
         "      if(visit){const approach=residentVisitPath({...anchor,pet:true},visit.anchor,free);if(approach.length||!person.places[floor]||visit.scene.kind==='chairman'){anchor=visit.anchor;path=approach.length?approach:[anchor];scene=visit.scene}}\n",
         "      let position=anchor.visual,point=[anchor.x,anchor.y],walking=false,facing=seed%2?'left':'right',pose=person.pet?(sleeping?'sleep':scene?'sitting':beat%3?'sitting':'standing'):'standing',distance=0;\n",
         "      // Walk a short, validated same-floor route each quarter hour. No lifts,\n",
         "      // staff reservations or route cache are read or modified by residents.\n",
         "      let elapsed=seconds%900;\n",
+        "      // A quiet rabbit moves once per half hour, after a full minute of rest.\n",
+        "      const rabbit=person.id==='pet-rabbit';if(rabbit&&!reduced&&!trio&&!sleeping){if(beat%2)path=[anchor];else if(elapsed<60){anchor=path[0]||anchor;position=anchor.visual;point=[anchor.x,anchor.y];path=[anchor];scene=null}else elapsed-=60}if(trio)path=[anchor];\n",
         "      if(!reduced&&path.length>1&&!sleeping)for(let i=1;i<path.length;i++){\n",
-        "        const a=path[i-1],b=path[i],va=a.visual,vb=b.visual,length=Math.hypot((vb[0]-va[0])*art.width/100,(vb[1]-va[1])*art.height/100),duration=length/40;\n",
-        "        if(elapsed<duration){const t=duration?elapsed/duration:1;anchor=a;position=[va[0]+(vb[0]-va[0])*t,va[1]+(vb[1]-va[1])*t];point=[a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t];distance+=length*t;walking=true;facing=vb[0]<va[0]?'left':'right';pose=Math.floor(distance/30)%2?'walk-b':'walk-a';break}\n",
+        "        const a=path[i-1],b=path[i],va=a.visual,vb=b.visual,length=Math.hypot((vb[0]-va[0])*art.width/100,(vb[1]-va[1])*art.height/100),duration=length/(rabbit?18:40);\n",
+        "        if(elapsed<duration){const t=duration?elapsed/duration:1;anchor=a;position=[va[0]+(vb[0]-va[0])*t,va[1]+(vb[1]-va[1])*t];point=[a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t];distance+=length*t;walking=true;facing=vb[0]<va[0]?'left':'right';pose=(rabbit?'hop-':'walk-')+(Math.floor(distance/(rabbit?18:30))%2?'b':'a');break}\n",
         "        elapsed-=duration;distance+=length;\n",
         "      }\n",
-        "      if(!free(position)){const alternatives=sleeping?[...spots.map(residentSpot),...[...residentStops.values()].filter(a=>a.floor===floor&&residentSpot(a.id))]:spots.map(residentSpot),fallback=alternatives.find(a=>free(a.visual));if(!fallback)return [];anchor=fallback;position=anchor.visual;point=[anchor.x,anchor.y];walking=false;pose=person.pet?(sleeping?'sleep':'sitting'):'standing';scene=null}\n",
+        "      if(!free(position)){const alternatives=sleeping?[...spots.map(residentSpot),...[...residentStops.values()].filter(a=>a.floor===floor&&(person.id==='pet-rabbit'||!a.id.startsWith('resident_rabbit_'))&&residentSpot(a.id))]:spots.map(residentSpot),fallback=alternatives.find(a=>free(a.visual));if(!fallback)return [];anchor=fallback;position=anchor.visual;point=[anchor.x,anchor.y];walking=false;pose=person.pet?(sleeping?'sleep':'sitting'):'standing';scene=null}\n",
         "      occupied.push({floor,resident:true,seat:{x:position[0],y:position[1]}});\n",
         "      if(walking)scene=null;\n",
         "      return [{id:person.id,name:person.name,sprite:person.sprite,pet:!!person.pet,floor,anchor:anchor.id,position,point,walking,facing,pose,scene}];\n",
@@ -157,13 +182,13 @@
         "  }\n",
         "  // Compact atlas fallback also works with a cached, pre-resident manifest.\n",
         "  // The approved entries in manifest-v3.json remain the asset source of truth.\n",
-        "  function residentAtlas(person){const poses=person.pet?['sitting','standing','walk-a','walk-b','sleep']:['standing','sitting','walk-a','walk-b'];return {id:person.id,file:person.sprite+'.webp',scale:3,cell:[96,144],atlas:person.pet?[480,288]:[768,768],frames:(person.pet?['left','right']:['']).flatMap((direction,row)=>poses.map((pose,col)=>({name:pose+(direction?'-'+direction:''),rect:[col*96,row*144,96,144],pivot:[48,135]})))}}\n",
-        "  const residents=Object.freeze({names:residentNames,people:residentPeople,seed:residentSeed,clock:residentClock,voice:residentVoice,snapshot:residentSnapshot,safe:residentSafe,spot:residentSpot,path:residentPath,atlas:residentAtlas,bounds:residentBounds,furniture:residentFurniture});\n"
+        "  function residentAtlas(person){const poses=person.pet?['sitting','standing',...(person.id==='pet-rabbit'?['hop-a','hop-b']:['walk-a','walk-b']),'sleep']:['standing','sitting','walk-a','walk-b'];return {id:person.id,file:person.sprite+'.webp',scale:3,cell:[96,144],atlas:person.pet?[480,288]:[768,768],frames:(person.pet?['left','right']:['']).flatMap((direction,row)=>poses.map((pose,col)=>({name:pose+(direction?'-'+direction:''),rect:[col*96,row*144,96,144],pivot:[48,135]})))}}\n",
+        "  const residents=Object.freeze({names:residentNames,people:residentPeople,seed:residentSeed,clock:residentClock,voice:residentVoice,snapshot:residentSnapshot,safe:residentSafe,spot:residentSpot,path:residentPath,atlas:residentAtlas,bounds:residentBounds,trio:residentTrio,trioLines:residentTrioLines,furniture:residentFurniture});\n"
       ]
     },
     {
       "beforeLine": 2126,
-      "afterLine": 2270,
+      "afterLine": 2295,
       "before": [],
       "after": [
         "    const cell=box,bounds=actor.dataset.resident&&actor.officeArtBounds;\n",
@@ -172,7 +197,7 @@
     },
     {
       "beforeLine": 2128,
-      "afterLine": 2274,
+      "afterLine": 2299,
       "before": [
         "    const angle=reduced||actor.dataset.walking==='true'?0:actor.dataset.facing==='left'?-4:actor.dataset.facing==='right'?4:0;\n"
       ],
@@ -182,7 +207,7 @@
     },
     {
       "beforeLine": 2130,
-      "afterLine": 2276,
+      "afterLine": 2301,
       "before": [
         "    const pivot=actor.officePivot||[.5,.953125],x=box.left+box.width*pivot[0],y=box.top+box.height*pivot[1],c=Math.cos(angle*Math.PI/180),s=Math.sin(angle*Math.PI/180);\n"
       ],
@@ -192,7 +217,7 @@
     },
     {
       "beforeLine": 2140,
-      "afterLine": 2286,
+      "afterLine": 2311,
       "before": [
         "  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,motion:Object.freeze({gait:distanceGait,sample:sampleMotion,createReactions,stableActorBox,stableSpriteBox,stableMascotBox,effectDurations}),atmosphere:Object.freeze({light:officeLight,background:officeBackground,monitors:workingMonitors,opacity:monitorOpacity}),labels:Object.freeze({priority:statusLabelPriority,place:placeStatusLabels,short:phoneStatusLine}),places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines,dramaDate,validateDrama:validDramaBank})});\n"
       ],
@@ -202,7 +227,7 @@
     },
     {
       "beforeLine": 2168,
-      "afterLine": 2314,
+      "afterLine": 2339,
       "before": [
         "  const hdEntries=new Map((assets?.spritesV3?.entries||[]).filter(e=>e.scale===3&&e.frames?.length===4&&e.cell?.length===2&&e.atlas?.length===2).map(e=>[e.id,e]));\n"
       ],
@@ -214,7 +239,7 @@
     },
     {
       "beforeLine": 2184,
-      "afterLine": 2332,
+      "afterLine": 2357,
       "before": [
         "    const f=entry.frames.find(f=>f.name===name)||entry.frames[0];\n"
       ],
@@ -224,7 +249,7 @@
     },
     {
       "beforeLine": 2186,
-      "afterLine": 2334,
+      "afterLine": 2359,
       "before": [],
       "after": [
         "    if(actor.dataset.resident){const bounds=HaniBuildingScene.residents.bounds(actor.dataset.person,name);actor.officeArtBounds=bounds.map((v,i)=>v/entry.cell[i%2]);actor.style.setProperty('--resident-top',String(bounds[1]/entry.cell[1]))}\n"
@@ -232,7 +257,7 @@
     },
     {
       "beforeLine": 2210,
-      "afterLine": 2359,
+      "afterLine": 2384,
       "before": [],
       "after": [
         "    if(actor.dataset.visitor==='true'&&!actor.officeTravel&&actor.dataset.walking!=='true'&&!['GOING','RETURNING'].includes(actor.dataset.behavior)&&/^(?:상담 대기 중|면접 대기 중… 두근)$/.test(full))return 'waiting';\n"
@@ -240,7 +265,7 @@
     },
     {
       "beforeLine": 2216,
-      "afterLine": 2366,
+      "afterLine": 2391,
       "before": [
         "  const statusNames={work:'근무 중',rest:'휴식 중',meeting:'회의 중',moving:'이동 중',night:'야근 중'};\n",
         "  const statusIcons={work:'💻',rest:'☕',meeting:'💬',moving:'🚶',night:'🌙'};\n",
@@ -254,7 +279,7 @@
     },
     {
       "beforeLine": 2248,
-      "afterLine": 2398,
+      "afterLine": 2423,
       "before": [],
       "after": [
         "      if(actor.dataset.resident){actor.dataset.labelMode='name';actor.officeCompact.textContent='';name.title=actor.dataset.name;name.setAttribute('aria-label',name.title);name.hidden=false;name.style.visibility='';name.style.setProperty('--name-x','0px');name.style.setProperty('--name-y','0px');status.hidden=true;status.style.visibility='hidden';continue}\n"
@@ -262,7 +287,7 @@
     },
     {
       "beforeLine": 2256,
-      "afterLine": 2407,
+      "afterLine": 2432,
       "before": [
         "    const groups=rows.map(({actor,name,status})=>{const box=HaniBuildingScene.motion.stableActorBox(actor);return {id:actor.dataset.person,compact,priority:HaniBuildingScene.labels.priority(actor.dataset),actor:box,sprite:HaniBuildingScene.motion.stableSpriteBox(actor,box,reduced),name:name.getBoundingClientRect(),status:status.getBoundingClientRect()}});\n"
       ],
@@ -272,7 +297,7 @@
     },
     {
       "beforeLine": 2263,
-      "afterLine": 2414,
+      "afterLine": 2439,
       "before": [],
       "after": [
         "    for(let i=0;i<rows.length;i++)if(rows[i].actor.dataset.resident)groups[i].nameOnly=groups[i].name;\n"
@@ -280,7 +305,7 @@
     },
     {
       "beforeLine": 2267,
-      "afterLine": 2419,
+      "afterLine": 2444,
       "before": [
         "    for(const {actor}of rows)if(compact)actor.dataset.labelMode=placements.get(actor.dataset.person)?.dot?'dot':placements.get(actor.dataset.person)?.mode||'pill';\n"
       ],
@@ -290,7 +315,7 @@
     },
     {
       "beforeLine": 2269,
-      "afterLine": 2421,
+      "afterLine": 2446,
       "before": [
         "      const node=rows[i][kind],base=compact&&placements.get(groups[i].id)?.dot?node.getBoundingClientRect():compact&&placements.get(groups[i].id)?.mode==='name'&&kind==='name'?groups[i].nameOnly:groups[i][kind],p=placements.get(groups[i].id)?.[kind];\n"
       ],
@@ -301,7 +326,7 @@
     },
     {
       "beforeLine": 2280,
-      "afterLine": 2433,
+      "afterLine": 2458,
       "before": [
         "  for(const [key,name,group,row] of people){\n",
         "    const actor=document.createElement(\"div\");actor.className=\"hani-office-actor\";actor.dataset.person=key;actor.dataset.name=name;actor.dataset.seat=(HaniBuildingScene.homeSeat(key)||buildingChairmanSlot()).id;actor.dataset.spot=\"seat\";actor.officeReactions=HaniBuildingScene.motion.createReactions();\n"
@@ -314,7 +339,7 @@
     },
     {
       "beforeLine": 2290,
-      "afterLine": 2444,
+      "afterLine": 2469,
       "before": [
         "    const rhythm=HaniBuildingScene.scheduler?.seed('idle-motion|'+key)||row;actor.style.setProperty('--idle-duration',(3.6+rhythm%29/10)+'s');actor.style.setProperty('--idle-delay',(-rhythm%67/10)+'s');\n"
       ],
@@ -324,7 +349,7 @@
     },
     {
       "beforeLine": 2294,
-      "afterLine": 2448,
+      "afterLine": 2473,
       "before": [
         "  const roster=document.createElement(\"ul\");roster.className=\"hani-building-roster\";roster.setAttribute(\"aria-label\",\"현재 층 직원과 활동\");root.querySelector(\".hani-office-scroll\").after(roster);for(const actor of actors.values()){const row=document.createElement(\"li\"),name=document.createElement(\"b\"),text=document.createElement(\"span\");name.textContent=actor.dataset.name;row.append(name,text);roster.append(row);actor.officeRow=row;actor.officeRowName=name;actor.officeText=text}\n",
         "  const actorBubble=document.createElement('div'),bubbleLine=document.createElement('p'),profileLink=document.createElement('a');\n",
@@ -338,7 +363,7 @@
     },
     {
       "beforeLine": 2330,
-      "afterLine": 2484,
+      "afterLine": 2509,
       "before": [],
       "after": [
         "    if(actor.dataset.resident)return actor.dataset.name+' · '+(bubbleSelection?.line||actor.dataset.line);\n"
@@ -346,7 +371,7 @@
     },
     {
       "beforeLine": 2333,
-      "afterLine": 2488,
+      "afterLine": 2513,
       "before": [
         "  function fitBubble(){\n"
       ],
@@ -362,7 +387,7 @@
     },
     {
       "beforeLine": 2335,
-      "afterLine": 2496,
+      "afterLine": 2521,
       "before": [
         "    const person=actors.get(bubblePerson),floor=map.getBoundingClientRect?.(),bubble=actorBubble.getBoundingClientRect?.(),actor=person?.getBoundingClientRect?building.motion.stableActorBox(person):null;\n"
       ],
@@ -374,7 +399,7 @@
     },
     {
       "beforeLine": 2339,
-      "afterLine": 2502,
+      "afterLine": 2527,
       "before": [],
       "after": [
         "    actorBubble.officeFollow={person:bubblePerson,position:person.officePosition?.slice()||[0,0],left:actor.left-floor.left+actor.width/2-bubble.width/2,top:actor.top-floor.top-bubble.height-6,width:floor.width,height:floor.height,bw:bubble.width,bh:bubble.height};\n"
@@ -382,7 +407,7 @@
     },
     {
       "beforeLine": 2342,
-      "afterLine": 2506,
+      "afterLine": 2531,
       "before": [
         "  function showBubble(actor,selection,duration=3000){bubblePerson=actor.dataset.person;bubbleSelection=selection;actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);fitStatusLabels();fitBubble();const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble(false)}},duration)}\n"
       ],
@@ -397,20 +422,22 @@
         "    bubbleSprite.style.setProperty('--bubble-sprite-ratio',String(entry.cell[0]/entry.cell[1]));\n",
         "    bubbleSprite.dataset.pose=actor.dataset.pose;\n",
         "  }\n",
-        "  function showBubble(actor,selection,duration=3000,automatic=false){bubblePerson=actor.dataset.person;bubbleSelection=selection;updateBubbleSprite(actor,automatic);actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=!!actor.dataset.resident||actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);fitStatusLabels();fitBubble();const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble(false)}},duration)}\n"
+        "  function showBubble(actor,selection,duration=3000,automatic=false){bubblePerson=actor.dataset.person;bubbleSelection=selection;updateBubbleSprite(actor,automatic);actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=!!actor.dataset.resident||actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);fitStatusLabels();fitBubble();const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;const next=selection?.residentTrio?.lines[selection.trioIndex+1],speaker=next&&actors.get(next.id);if(speaker&&!speaker.hidden&&selection.residentTrio.key===building.residents.clock(new Date()).day+'|'+Math.floor(building.residents.clock(new Date()).seconds/900))showBubble(speaker,{speaker:next.id,line:next.line,resident:true,residentTrio:selection.residentTrio,trioIndex:selection.trioIndex+1},duration,automatic);else closeBubble(false)}},duration)}\n"
       ]
     },
     {
       "beforeLine": 2346,
-      "afterLine": 2520,
+      "afterLine": 2545,
       "before": [],
       "after": [
-        "    if(actor.dataset.resident){const person=residentSlots.find(p=>p.id===actor.dataset.person),index=actor.officeResidentTap||0;actor.officeResidentTap=index+1;pendingTap=null;if(!reduced)actor.officeReactions.request(person.pet?'hop':'tap',Date.now(),true);showBubble(actor,{speaker:person.id,line:actor.officeResidentState?.scene?.line||person.lines[index%person.lines.length],resident:true},3000,automatic);return}\n"
+        "    if(actor.dataset.resident){\n",
+        "      if(!automatic&&actor.dataset.resident==='pet'){const now=new Date(),trio=building.residents.trio(now,residentSlots.map(p=>actors.get(p.id)).filter(a=>!a.hidden).map(a=>a.officeResidentState).filter(Boolean),floorSnapshot);if(trio){pendingTap=null;updateResidents(now);const first=trio.lines[0];showBubble(actors.get(first.id),{speaker:first.id,line:first.line,resident:true,residentTrio:trio,trioIndex:0});return}}\n",
+        "      const person=residentSlots.find(p=>p.id===actor.dataset.person),index=actor.officeResidentTap||0;actor.officeResidentTap=index+1;pendingTap=null;if(!reduced)actor.officeReactions.request(person.pet?'hop':'tap',Date.now(),true);showBubble(actor,{speaker:person.id,line:actor.officeResidentState?.scene?.line||person.lines[index%person.lines.length],resident:true},3000,automatic);return}\n"
       ]
     },
     {
       "beforeLine": 2349,
-      "afterLine": 2524,
+      "afterLine": 2551,
       "before": [
         "    showBubble(actor,selection||null,automatic?4000:3000);\n"
       ],
@@ -419,8 +446,8 @@
       ]
     },
     {
-      "beforeLine": 2434,
-      "afterLine": 2609,
+      "beforeLine": 2455,
+      "afterLine": 2657,
       "before": [
         "    if(actor.dataset.person==='seongmin'||actor.dataset.person.startsWith('visitor')){sprite.className='hani-office-sprite';sprite.style.backgroundImage='';actor.dataset.avatar='pending';return}\n"
       ],
@@ -429,8 +456,8 @@
       ]
     },
     {
-      "beforeLine": 2515,
-      "afterLine": 2690,
+      "beforeLine": 2538,
+      "afterLine": 2740,
       "before": [
         "    for(const actor of actors.values()){actor.officeWasVisible=!actor.hidden;actor.hidden=true;actor.officeRow.hidden=true;actor.dataset.called=\"false\"}\n"
       ],
@@ -439,16 +466,16 @@
       ]
     },
     {
-      "beforeLine": 2544,
-      "afterLine": 2719,
+      "beforeLine": 2567,
+      "afterLine": 2769,
       "before": [],
       "after": [
         "    updateResidents(now);\n"
       ]
     },
     {
-      "beforeLine": 2550,
-      "afterLine": 2726,
+      "beforeLine": 2573,
+      "afterLine": 2776,
       "before": [],
       "after": [
         "  function updateResidents(now){\n",
@@ -478,16 +505,16 @@
       ]
     },
     {
-      "beforeLine": 2618,
-      "afterLine": 2818,
+      "beforeLine": 2641,
+      "afterLine": 2868,
       "before": [],
       "after": [
         "    updateResidents(new Date(now));\n"
       ]
     },
     {
-      "beforeLine": 2620,
-      "afterLine": 2821,
+      "beforeLine": 2643,
+      "afterLine": 2871,
       "before": [],
       "after": [
         "      if(actor.dataset.resident){const effect=actor.officeReactions.tick(now,reduced,actor.dataset.walking==='true');if(effect){if(actor.dataset.motion!==effect.kind)actor.dataset.motion=effect.kind}else if(actor.dataset.motion!==undefined)delete actor.dataset.motion;continue}\n"
