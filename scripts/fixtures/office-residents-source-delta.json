@@ -1,11 +1,19 @@
 {
   "scope": "Approved seven residents only; exact changed lines. Reverse before historical label/motion guards. All other bytes, scheduler, staff/visitor plans and previous fixtures remain frozen.",
   "beforeSha256": "d2f5be9b6e35e58da597985f43e94a8541542eafa191be35aa0d90838af7d8a8",
-  "afterSha256": "8b52b3c715b931e36f2a5c77d65767b9002ff727a2955bcb8336eb0f269200a0",
+  "afterSha256": "f25b22b5f75d2b6f373b38df3b9308bb1cee7b24ab6bb05218e4c91f5add22ef",
   "changes": [
     {
+      "beforeLine": 1879,
+      "afterLine": 1879,
+      "before": [],
+      "after": [
+        "    [/^상담 대기 중$/,'상담 대기',true],[/^면접 대기 중… 두근$/,'면접 대기',true],\n"
+      ]
+    },
+    {
       "beforeLine": 2063,
-      "afterLine": 2063,
+      "afterLine": 2064,
       "before": [],
       "after": [
         "  // Residents own no staff seats, reservations, scheduler seeds or saved state.\n",
@@ -155,7 +163,7 @@
     },
     {
       "beforeLine": 2126,
-      "afterLine": 2269,
+      "afterLine": 2270,
       "before": [],
       "after": [
         "    const cell=box,bounds=actor.dataset.resident&&actor.officeArtBounds;\n",
@@ -164,7 +172,7 @@
     },
     {
       "beforeLine": 2128,
-      "afterLine": 2273,
+      "afterLine": 2274,
       "before": [
         "    const angle=reduced||actor.dataset.walking==='true'?0:actor.dataset.facing==='left'?-4:actor.dataset.facing==='right'?4:0;\n"
       ],
@@ -174,7 +182,7 @@
     },
     {
       "beforeLine": 2130,
-      "afterLine": 2275,
+      "afterLine": 2276,
       "before": [
         "    const pivot=actor.officePivot||[.5,.953125],x=box.left+box.width*pivot[0],y=box.top+box.height*pivot[1],c=Math.cos(angle*Math.PI/180),s=Math.sin(angle*Math.PI/180);\n"
       ],
@@ -184,7 +192,7 @@
     },
     {
       "beforeLine": 2140,
-      "afterLine": 2285,
+      "afterLine": 2286,
       "before": [
         "  globalThis.HaniBuildingScene=Object.freeze({floors,snapshot,projection,profile,spriteSource,seatMaps,deskSurfaces,homeSeat,assignSeats,actionPool,bubble,canon,art,visualPoint,anchors,route,deskPropArt:DESK_PROP_ART,legacySeatMaps,legacySurfaces,scheduler,createScheduler,createPresence,motion:Object.freeze({gait:distanceGait,sample:sampleMotion,createReactions,stableActorBox,stableSpriteBox,stableMascotBox,effectDurations}),atmosphere:Object.freeze({light:officeLight,background:officeBackground,monitors:workingMonitors,opacity:monitorOpacity}),labels:Object.freeze({priority:statusLabelPriority,place:placeStatusLabels,short:phoneStatusLine}),places:Object.freeze([...places,...(scheduler?.errandPlaces||[]),...(scheduler?.reportPlaces||[])]),tapLines:Object.freeze({bucket:tapBucket,validate:validTapBank,create:createTapLines,dramaDate,validateDrama:validDramaBank})});\n"
       ],
@@ -194,7 +202,7 @@
     },
     {
       "beforeLine": 2168,
-      "afterLine": 2313,
+      "afterLine": 2314,
       "before": [
         "  const hdEntries=new Map((assets?.spritesV3?.entries||[]).filter(e=>e.scale===3&&e.frames?.length===4&&e.cell?.length===2&&e.atlas?.length===2).map(e=>[e.id,e]));\n"
       ],
@@ -206,7 +214,7 @@
     },
     {
       "beforeLine": 2184,
-      "afterLine": 2331,
+      "afterLine": 2332,
       "before": [
         "    const f=entry.frames.find(f=>f.name===name)||entry.frames[0];\n"
       ],
@@ -216,25 +224,37 @@
     },
     {
       "beforeLine": 2186,
-      "afterLine": 2333,
+      "afterLine": 2334,
       "before": [],
       "after": [
         "    if(actor.dataset.resident){const bounds=HaniBuildingScene.residents.bounds(actor.dataset.person,name);actor.officeArtBounds=bounds.map((v,i)=>v/entry.cell[i%2]);actor.style.setProperty('--resident-top',String(bounds[1]/entry.cell[1]))}\n"
       ]
     },
     {
-      "beforeLine": 2218,
+      "beforeLine": 2210,
+      "afterLine": 2359,
+      "before": [],
+      "after": [
+        "    if(actor.dataset.visitor==='true'&&!actor.officeTravel&&actor.dataset.walking!=='true'&&!['GOING','RETURNING'].includes(actor.dataset.behavior)&&/^(?:상담 대기 중|면접 대기 중… 두근)$/.test(full))return 'waiting';\n"
+      ]
+    },
+    {
+      "beforeLine": 2216,
       "afterLine": 2366,
       "before": [
+        "  const statusNames={work:'근무 중',rest:'휴식 중',meeting:'회의 중',moving:'이동 중',night:'야근 중'};\n",
+        "  const statusIcons={work:'💻',rest:'☕',meeting:'💬',moving:'🚶',night:'🌙'};\n",
         "  function statusDot(actor){const dot=actor.querySelector('.hani-office-status-dot'),full=actor.querySelector('.hani-office-status').dataset.full||'';actor.dataset.status=activityStatus(actor,full);dot.title=statusNames[actor.dataset.status];dot.setAttribute('aria-label',dot.title);actor.setAttribute('aria-label',`${actor.dataset.name}: ${dot.title} · ${full}`)}\n"
       ],
       "after": [
+        "  const statusNames={work:'근무 중',rest:'휴식 중',waiting:'대기 중',meeting:'회의 중',moving:'이동 중',night:'야근 중'};\n",
+        "  const statusIcons={work:'💻',rest:'☕',waiting:'💬',meeting:'💬',moving:'🚶',night:'🌙'};\n",
         "  function statusDot(actor){if(actor.dataset.resident){actor.dataset.status='resident';actor.setAttribute('aria-label',actor.dataset.name);return}const dot=actor.querySelector('.hani-office-status-dot'),full=actor.querySelector('.hani-office-status').dataset.full||'';actor.dataset.status=activityStatus(actor,full);dot.title=statusNames[actor.dataset.status];dot.setAttribute('aria-label',dot.title);actor.setAttribute('aria-label',`${actor.dataset.name}: ${dot.title} · ${full}`)}\n"
       ]
     },
     {
       "beforeLine": 2248,
-      "afterLine": 2396,
+      "afterLine": 2398,
       "before": [],
       "after": [
         "      if(actor.dataset.resident){actor.dataset.labelMode='name';actor.officeCompact.textContent='';name.title=actor.dataset.name;name.setAttribute('aria-label',name.title);name.hidden=false;name.style.visibility='';name.style.setProperty('--name-x','0px');name.style.setProperty('--name-y','0px');status.hidden=true;status.style.visibility='hidden';continue}\n"
@@ -242,7 +262,7 @@
     },
     {
       "beforeLine": 2256,
-      "afterLine": 2405,
+      "afterLine": 2407,
       "before": [
         "    const groups=rows.map(({actor,name,status})=>{const box=HaniBuildingScene.motion.stableActorBox(actor);return {id:actor.dataset.person,compact,priority:HaniBuildingScene.labels.priority(actor.dataset),actor:box,sprite:HaniBuildingScene.motion.stableSpriteBox(actor,box,reduced),name:name.getBoundingClientRect(),status:status.getBoundingClientRect()}});\n"
       ],
@@ -252,7 +272,7 @@
     },
     {
       "beforeLine": 2263,
-      "afterLine": 2412,
+      "afterLine": 2414,
       "before": [],
       "after": [
         "    for(let i=0;i<rows.length;i++)if(rows[i].actor.dataset.resident)groups[i].nameOnly=groups[i].name;\n"
@@ -260,7 +280,7 @@
     },
     {
       "beforeLine": 2267,
-      "afterLine": 2417,
+      "afterLine": 2419,
       "before": [
         "    for(const {actor}of rows)if(compact)actor.dataset.labelMode=placements.get(actor.dataset.person)?.dot?'dot':placements.get(actor.dataset.person)?.mode||'pill';\n"
       ],
@@ -270,7 +290,7 @@
     },
     {
       "beforeLine": 2269,
-      "afterLine": 2419,
+      "afterLine": 2421,
       "before": [
         "      const node=rows[i][kind],base=compact&&placements.get(groups[i].id)?.dot?node.getBoundingClientRect():compact&&placements.get(groups[i].id)?.mode==='name'&&kind==='name'?groups[i].nameOnly:groups[i][kind],p=placements.get(groups[i].id)?.[kind];\n"
       ],
@@ -281,7 +301,7 @@
     },
     {
       "beforeLine": 2280,
-      "afterLine": 2431,
+      "afterLine": 2433,
       "before": [
         "  for(const [key,name,group,row] of people){\n",
         "    const actor=document.createElement(\"div\");actor.className=\"hani-office-actor\";actor.dataset.person=key;actor.dataset.name=name;actor.dataset.seat=(HaniBuildingScene.homeSeat(key)||buildingChairmanSlot()).id;actor.dataset.spot=\"seat\";actor.officeReactions=HaniBuildingScene.motion.createReactions();\n"
@@ -294,7 +314,7 @@
     },
     {
       "beforeLine": 2290,
-      "afterLine": 2442,
+      "afterLine": 2444,
       "before": [
         "    const rhythm=HaniBuildingScene.scheduler?.seed('idle-motion|'+key)||row;actor.style.setProperty('--idle-duration',(3.6+rhythm%29/10)+'s');actor.style.setProperty('--idle-delay',(-rhythm%67/10)+'s');\n"
       ],
@@ -304,17 +324,21 @@
     },
     {
       "beforeLine": 2294,
-      "afterLine": 2446,
+      "afterLine": 2448,
       "before": [
-        "  const roster=document.createElement(\"ul\");roster.className=\"hani-building-roster\";roster.setAttribute(\"aria-label\",\"현재 층 직원과 활동\");root.querySelector(\".hani-office-scroll\").after(roster);for(const actor of actors.values()){const row=document.createElement(\"li\"),name=document.createElement(\"b\"),text=document.createElement(\"span\");name.textContent=actor.dataset.name;row.append(name,text);roster.append(row);actor.officeRow=row;actor.officeRowName=name;actor.officeText=text}\n"
+        "  const roster=document.createElement(\"ul\");roster.className=\"hani-building-roster\";roster.setAttribute(\"aria-label\",\"현재 층 직원과 활동\");root.querySelector(\".hani-office-scroll\").after(roster);for(const actor of actors.values()){const row=document.createElement(\"li\"),name=document.createElement(\"b\"),text=document.createElement(\"span\");name.textContent=actor.dataset.name;row.append(name,text);roster.append(row);actor.officeRow=row;actor.officeRowName=name;actor.officeText=text}\n",
+        "  const actorBubble=document.createElement('div'),bubbleLine=document.createElement('p'),profileLink=document.createElement('a');\n",
+        "  actorBubble.className='hani-office-character-bubble';actorBubble.hidden=true;actorBubble.setAttribute('aria-live','polite');actorBubble.setAttribute('aria-atomic','true');profileLink.textContent='프로필 ↗';profileLink.href='#organization/people';actorBubble.append(bubbleLine,profileLink);map.append(actorBubble);\n"
       ],
       "after": [
-        "  const roster=document.createElement(\"ul\");roster.className=\"hani-building-roster\";roster.setAttribute(\"aria-label\",\"현재 층 직원과 활동\");root.querySelector(\".hani-office-scroll\").after(roster);for(const actor of actors.values()){const row=document.createElement(\"li\"),name=document.createElement(\"b\"),text=document.createElement(\"span\");name.textContent=actor.dataset.name;row.append(name,text);if(!actor.dataset.resident)roster.append(row);actor.officeRow=row;actor.officeRowName=name;actor.officeText=text}\n"
+        "  const roster=document.createElement(\"ul\");roster.className=\"hani-building-roster\";roster.setAttribute(\"aria-label\",\"현재 층 직원과 활동\");root.querySelector(\".hani-office-scroll\").after(roster);for(const actor of actors.values()){const row=document.createElement(\"li\"),name=document.createElement(\"b\"),text=document.createElement(\"span\");name.textContent=actor.dataset.name;row.append(name,text);if(!actor.dataset.resident)roster.append(row);actor.officeRow=row;actor.officeRowName=name;actor.officeText=text}\n",
+        "  const actorBubble=document.createElement('div'),bubbleLine=document.createElement('p'),profileLink=document.createElement('a'),bubbleSprite=document.createElement('div');\n",
+        "  actorBubble.className='hani-office-character-bubble';actorBubble.hidden=true;actorBubble.setAttribute('aria-live','polite');actorBubble.setAttribute('aria-atomic','false');bubbleLine.setAttribute('aria-atomic','true');profileLink.setAttribute('aria-live','off');profileLink.textContent='프로필 ↗';profileLink.href='#organization/people';bubbleSprite.className='hani-office-bubble-sprite';bubbleSprite.hidden=true;bubbleSprite.setAttribute('aria-hidden','true');actorBubble.append(bubbleLine,profileLink,bubbleSprite);map.append(actorBubble);\n"
       ]
     },
     {
       "beforeLine": 2330,
-      "afterLine": 2482,
+      "afterLine": 2484,
       "before": [],
       "after": [
         "    if(actor.dataset.resident)return actor.dataset.name+' · '+(bubbleSelection?.line||actor.dataset.line);\n"
@@ -322,7 +346,7 @@
     },
     {
       "beforeLine": 2333,
-      "afterLine": 2486,
+      "afterLine": 2488,
       "before": [
         "  function fitBubble(){\n"
       ],
@@ -337,8 +361,20 @@
       ]
     },
     {
+      "beforeLine": 2335,
+      "afterLine": 2496,
+      "before": [
+        "    const person=actors.get(bubblePerson),floor=map.getBoundingClientRect?.(),bubble=actorBubble.getBoundingClientRect?.(),actor=person?.getBoundingClientRect?building.motion.stableActorBox(person):null;\n"
+      ],
+      "after": [
+        "    const person=actors.get(bubblePerson),floor=map.getBoundingClientRect?.();\n",
+        "    if(actorBubble.dataset.zoom==='true'&&floor?.height)actorBubble.style.setProperty('--bubble-max-height',Math.max(0,floor.height-8)+'px');\n",
+        "    const bubble=actorBubble.getBoundingClientRect?.(),actor=person?.getBoundingClientRect?building.motion.stableActorBox(person):null;\n"
+      ]
+    },
+    {
       "beforeLine": 2339,
-      "afterLine": 2498,
+      "afterLine": 2502,
       "before": [],
       "after": [
         "    actorBubble.officeFollow={person:bubblePerson,position:person.officePosition?.slice()||[0,0],left:actor.left-floor.left+actor.width/2-bubble.width/2,top:actor.top-floor.top-bubble.height-6,width:floor.width,height:floor.height,bw:bubble.width,bh:bubble.height};\n"
@@ -346,25 +382,45 @@
     },
     {
       "beforeLine": 2342,
-      "afterLine": 2502,
+      "afterLine": 2506,
       "before": [
         "  function showBubble(actor,selection,duration=3000){bubblePerson=actor.dataset.person;bubbleSelection=selection;actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);fitStatusLabels();fitBubble();const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble(false)}},duration)}\n"
       ],
       "after": [
-        "  function showBubble(actor,selection,duration=3000){bubblePerson=actor.dataset.person;bubbleSelection=selection;actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=!!actor.dataset.resident||actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);fitStatusLabels();fitBubble();const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble(false)}},duration)}\n"
+        "  function updateBubbleSprite(actor,automatic){\n",
+        "    const sprite=actor.querySelector('.hani-office-sprite'),entry=spriteEntries.get(spriteId(actor));\n",
+        "    const ready=!automatic&&actor.dataset.avatar==='v2'&&entry&&sprite?.style.backgroundImage&&sprite.style.backgroundImage!=='none';\n",
+        "    bubbleSprite.hidden=!ready;actorBubble.dataset.zoom=String(!!ready);\n",
+        "    if(!ready)return;\n",
+        "    // Copy the loaded atlas and its current frame; never load or advance a sprite here.\n",
+        "    for(const property of ['backgroundImage','backgroundSize','backgroundPosition'])bubbleSprite.style[property]=sprite.style[property];\n",
+        "    bubbleSprite.style.setProperty('--bubble-sprite-ratio',String(entry.cell[0]/entry.cell[1]));\n",
+        "    bubbleSprite.dataset.pose=actor.dataset.pose;\n",
+        "  }\n",
+        "  function showBubble(actor,selection,duration=3000,automatic=false){bubblePerson=actor.dataset.person;bubbleSelection=selection;updateBubbleSprite(actor,automatic);actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=!!actor.dataset.resident||actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);fitStatusLabels();fitBubble();const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble(false)}},duration)}\n"
       ]
     },
     {
       "beforeLine": 2346,
-      "afterLine": 2506,
+      "afterLine": 2520,
       "before": [],
       "after": [
-        "    if(actor.dataset.resident){const person=residentSlots.find(p=>p.id===actor.dataset.person),index=actor.officeResidentTap||0;actor.officeResidentTap=index+1;pendingTap=null;if(!reduced)actor.officeReactions.request(person.pet?'hop':'tap',Date.now(),true);showBubble(actor,{speaker:person.id,line:actor.officeResidentState?.scene?.line||person.lines[index%person.lines.length],resident:true});return}\n"
+        "    if(actor.dataset.resident){const person=residentSlots.find(p=>p.id===actor.dataset.person),index=actor.officeResidentTap||0;actor.officeResidentTap=index+1;pendingTap=null;if(!reduced)actor.officeReactions.request(person.pet?'hop':'tap',Date.now(),true);showBubble(actor,{speaker:person.id,line:actor.officeResidentState?.scene?.line||person.lines[index%person.lines.length],resident:true},3000,automatic);return}\n"
+      ]
+    },
+    {
+      "beforeLine": 2349,
+      "afterLine": 2524,
+      "before": [
+        "    showBubble(actor,selection||null,automatic?4000:3000);\n"
+      ],
+      "after": [
+        "    showBubble(actor,selection||null,automatic?4000:3000,automatic);\n"
       ]
     },
     {
       "beforeLine": 2434,
-      "afterLine": 2595,
+      "afterLine": 2609,
       "before": [
         "    if(actor.dataset.person==='seongmin'||actor.dataset.person.startsWith('visitor')){sprite.className='hani-office-sprite';sprite.style.backgroundImage='';actor.dataset.avatar='pending';return}\n"
       ],
@@ -374,7 +430,7 @@
     },
     {
       "beforeLine": 2515,
-      "afterLine": 2676,
+      "afterLine": 2690,
       "before": [
         "    for(const actor of actors.values()){actor.officeWasVisible=!actor.hidden;actor.hidden=true;actor.officeRow.hidden=true;actor.dataset.called=\"false\"}\n"
       ],
@@ -384,7 +440,7 @@
     },
     {
       "beforeLine": 2544,
-      "afterLine": 2705,
+      "afterLine": 2719,
       "before": [],
       "after": [
         "    updateResidents(now);\n"
@@ -392,7 +448,7 @@
     },
     {
       "beforeLine": 2550,
-      "afterLine": 2712,
+      "afterLine": 2726,
       "before": [],
       "after": [
         "  function updateResidents(now){\n",
@@ -423,7 +479,7 @@
     },
     {
       "beforeLine": 2618,
-      "afterLine": 2804,
+      "afterLine": 2818,
       "before": [],
       "after": [
         "    updateResidents(new Date(now));\n"
@@ -431,7 +487,7 @@
     },
     {
       "beforeLine": 2620,
-      "afterLine": 2807,
+      "afterLine": 2821,
       "before": [],
       "after": [
         "      if(actor.dataset.resident){const effect=actor.officeReactions.tick(now,reduced,actor.dataset.walking==='true');if(effect){if(actor.dataset.motion!==effect.kind)actor.dataset.motion=effect.kind}else if(actor.dataset.motion!==undefined)delete actor.dataset.motion;continue}\n"
