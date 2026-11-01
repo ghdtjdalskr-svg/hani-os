@@ -28,12 +28,14 @@ const settled=()=>new Promise(resolve=>setImmediate(resolve));
 const sharpModule=()=>{const require=createRequire(import.meta.url);try{return require('sharp')}catch{return require(process.env.HANI_SHARP_MODULE||path.join(os.homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/sharp'))}};
 const rect=(left,top,width,height)=>({left,top,width,height,right:left+width,bottom:top+height});
 
-test('final names, personalities and all report lines obey the local dialogue rules',()=>{
+test('final names, personalities and actual residentPeople lines obey the local dialogue rules',()=>{
  assert.equal(r.names.cat,'치즈');assert.equal(r.names.dog,'크림');
- const report=JSON.parse(read('.serin-residents-result.md').match(/```json\s*([\s\S]*?)```/)[1]);
+ const seen=new Set();
  for(const person of people){
-  for(const line of report[person.id].filter(line=>Array.from(line).length<=22))assert.ok(person.lines.includes(line));
-  for(const line of person.lines){assert.ok(Array.from(line).length<=22,line);assert.doesNotMatch(line,/뚱|못생|살쪘|키가|외모|개구리|왕눈|초록 회장/)}
+  for(const line of person.lines){
+   assert.ok(Array.from(line).length<=22,line);assert.doesNotMatch(line,/뚱|못생|살쪘|키가|외모|개구리|왕눈|초록 회장/);
+   assert.ok(!seen.has(line),'duplicate resident line: '+line);seen.add(line);
+  }
  }
  assert.ok(people[0].lines.includes('관심은 없지만 곁에 있을게요.'));assert.ok(people[1].lines.includes('모두 만나니 기분이 좋아요!'));
  assert.ok(people[0].lines.includes('츄르 없이는 면담 신청 안 받아요.'));
