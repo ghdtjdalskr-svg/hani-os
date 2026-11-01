@@ -115,3 +115,11 @@
 
 - 다음 한 가지 행동: 허용된 환경에서 해결한 두 파일 stage 후 진행 중인 병합 commit 완료. 현재 Git 금지로 이 단계 미수행, 추가 사용자 결정 없음.
 - Notion 현황판 읽기는 성공했으나 착수 append는 자동 승인 검토가 `MCP tool call requires approval, but approval policy is never`로 거절하여 저장/read-back 미완료. 위 결과를 미반영 원문으로 보존한다.
+
+## qa-b11d 모찌 후속 · 2026-11-02 KST
+
+- `hani/mascots-poster` / 작업 HEAD `ab146f8`, 원격 main·로컬 캐시 `13fe873` 일치(GitHub connector, Git subprocess 없음). 모찌를 기존 주민 경로에 추가했으며 위 치즈·크림 생활 및 직원/방문객 plan을 보존했다.
+- 3F 오전·4F 낮·1F 저녁/야간, 느린 hop·긴 휴식, 쉬는 히나 선호, 어느 동물 탭이든 세 동물 순차 대사와 15분 동행. 같은 승인 atlas·literal CSS/manifest/fallback 연결, staff/층 인원·roster 제외.
+- 지정11묶음 **163통과·7실패**(기존 Git EPERM7·신규0), 주민36/36·syntax8/8·byte 보존10/10. complete-line LCS·기존 guard 유지, closure **147/160·누락0**.
+- 서윤 manifest 별도 PR 선행 및 허용 환경 Preview 대기. 버전2.9.258/cache·저장/Cloud/schema 유지, commit/push/merge/배포 없음. 실화면·운영 미검증, Notion은 자동 승인 never 거절로 갱신 대기.
+- 원문·파일·검사·정확한 pin 및 다음 행동: [모찌 작업 인수인계](2026-11-02-office-mochi-life.md). 위 과거 작업별 SHA/검증은 당시 근거로 보존한다.

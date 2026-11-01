@@ -90,7 +90,7 @@ test('nine actual WebP portraits decode at staff dimensions and thumbnail dimens
     assert.equal((await sharp(buffer).raw().toBuffer({resolveWithObject:true})).info.width,size);
   }
 });
-test('responsive portraits include Mochi; sprite remains art-only and closure stays at most 160',async()=>{
+test('responsive portraits include Mochi; approved sprite joins residents and closure stays at most 160',async()=>{
   const closure=await resolveRuntimeClosure({exists:f=>fs.existsSync(new URL('../'+f,import.meta.url)),read});
   assert.deepEqual(closure.missing,[]);assert.ok(closure.files.length<=160);
   for(const id of ['cheese','cream','mochi'])for(const size of [720,256,128]){
@@ -99,7 +99,8 @@ test('responsive portraits include Mochi; sprite remains art-only and closure st
   }
   assert.ok(!closure.files.some(p=>p.startsWith('artifacts/queen-poster/')),'poster art is not shipped yet');
   assert.ok(!closure.files.includes('artifacts/office-pets-npc/pet-rabbit.webp'));
-  assert.equal(fs.existsSync(new URL('../assets/sprites-v3/pet-rabbit.webp',import.meta.url)),false,'rabbit runtime connection needs a separate manifest PR');
+  assert.ok(closure.files.includes('assets/sprites-v3/pet-rabbit.webp'));
+  assert.ok(fs.readFileSync(new URL('../assets/sprites-v3/pet-rabbit.webp',import.meta.url)).equals(fs.readFileSync(new URL('../artifacts/office-pets-npc/pet-rabbit.webp',import.meta.url))),'only approved rabbit bytes shipped');
   console.log(JSON.stringify({closure:closure.files.length,limit:160,missing:closure.missing.length}));
 });
 test('Mochi atlas decodes ten contained left/right frames, distinct hop phases and translucent shadows',async()=>{
@@ -254,7 +255,7 @@ test('poster: steady frames add no layout reads or persistence/network paths; st
     assert.equal(JSON.stringify(plan),JSON.stringify(previous));assert.equal(JSON.stringify(current.scheduler.blockPlan(day,0,plan,options)),JSON.stringify(old.scheduler.blockPlan(day,0,previous,options)));
     for(const seconds of [1,7200,25200,36000,50400,79200,86399]){
       const now=posterAt(day,seconds),snap=current.snapshot(now,options),before=old.snapshot(now,options);
-      assert.equal(JSON.stringify(snap),JSON.stringify(before));assert.equal(JSON.stringify(current.residents.snapshot(now,snap,true)),JSON.stringify(old.residents.snapshot(now,before,true)));
+      assert.equal(JSON.stringify(snap),JSON.stringify(before));assert.equal(JSON.stringify(current.residents.snapshot(now,snap,true).filter(p=>p.id!=='pet-rabbit')),JSON.stringify(old.residents.snapshot(now,before,true)));
     }
   }
 });
@@ -263,7 +264,7 @@ test('poster: shipped WebP decodes under 120KB, retains approved ratio and is in
   const file=fs.readFileSync(new URL('../'+posterPath,import.meta.url)),meta=await sharp(file).metadata();
   assert.equal(meta.format,'webp');assert.deepEqual([meta.width,meta.height],[360,540]);assert.ok(file.length<120000);
   const closure=await resolveRuntimeClosure({exists:fs.existsSync,read:fs.readFileSync});assert.ok(closure.files.includes(posterPath));assert.ok(closure.files.length<=160);assert.deepEqual(closure.missing,[]);
-  const baseline=JSON.parse(read('artifacts/queen-poster-install/baseline.json'));assert.deepEqual(closure.files.filter(p=>!baseline.closure.includes(p)),[posterPath]);assert.deepEqual(baseline.closure.filter(p=>!closure.files.includes(p)),[]);
+  const baseline=JSON.parse(read('artifacts/queen-poster-install/baseline.json'));assert.deepEqual(closure.files.filter(p=>!baseline.closure.includes(p)),[posterPath,'assets/sprites-v3/pet-rabbit.webp']);assert.deepEqual(baseline.closure.filter(p=>!closure.files.includes(p)),[]);
   const hash=x=>createHash('sha256').update(x).digest('hex');assert.equal(hash(fs.readFileSync('index.html')),baseline.sha256['index.html']);assert.equal(hash(fs.readFileSync('hani-main.js')),baseline.sha256['hani-main.js']);
   console.log(JSON.stringify({poster:{left:41,top:19,width:60/1672*100,height:90/941*100,bytes:file.length},closure:closure.files.length,limit:160,missing:0}));
 });

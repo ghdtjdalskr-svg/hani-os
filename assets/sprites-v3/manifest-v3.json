@@ -6,7 +6,7 @@
   "layout": "Only row 0 columns 0..3 are populated: standing, sitting, walk-a, walk-b. Other cells are transparent reserved capacity. This is the user-requested front-only four-pose subset, not a completed four-direction animation set. Resident humans use the same four columns; pets use five poses in left/right rows.",
   "shadow": "Generated translucent floor shadow included per frame. Do not double-render; future split shadow pass requires mask/extraction work.",
   "pivotMeaning": "Bottom center of included floor shadow; chair/desk masking must be validated by runtime owner.",
-  "spriteBytes": 1101348,
+  "spriteBytes": 1133790,
   "maxSpriteBytes": 1475000,
   "entries": [
     {
@@ -4577,6 +4577,227 @@
       "generator": "built-in image_gen",
       "scale": 3,
       "quality": 88
+    },
+    {
+      "id": "pet-rabbit",
+      "name": "모찌",
+      "kind": "pet",
+      "planned": true,
+      "file": "pet-rabbit.webp",
+      "sizeBytes": 32442,
+      "sha256": "dd0e60bde7eb949bac0d491b659d2d93720e042b172c328457a7e9f29975ec2f",
+      "sourceSha256": "458ea85e0cb8f5c098d33a0f38dd0e99214bcf69fd4fdd15e51599a35ea9a1e0",
+      "identityReference": null,
+      "atlas": [
+        480,
+        288
+      ],
+      "cell": [
+        96,
+        144
+      ],
+      "direction": "left/right",
+      "frames": [
+        {
+          "name": "sitting-left",
+          "rect": [
+            0,
+            0,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            21,
+            60,
+            54,
+            75
+          ]
+        },
+        {
+          "name": "standing-left",
+          "rect": [
+            96,
+            0,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            13,
+            63,
+            70,
+            72
+          ]
+        },
+        {
+          "name": "hop-a-left",
+          "rect": [
+            192,
+            0,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            11,
+            73,
+            73,
+            62
+          ]
+        },
+        {
+          "name": "hop-b-left",
+          "rect": [
+            288,
+            0,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            12,
+            69,
+            72,
+            66
+          ]
+        },
+        {
+          "name": "sleep-left",
+          "rect": [
+            384,
+            0,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            12,
+            99,
+            71,
+            36
+          ]
+        },
+        {
+          "name": "sitting-right",
+          "rect": [
+            0,
+            144,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            21,
+            60,
+            54,
+            75
+          ]
+        },
+        {
+          "name": "standing-right",
+          "rect": [
+            96,
+            144,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            13,
+            63,
+            70,
+            72
+          ]
+        },
+        {
+          "name": "hop-a-right",
+          "rect": [
+            192,
+            144,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            12,
+            73,
+            73,
+            62
+          ]
+        },
+        {
+          "name": "hop-b-right",
+          "rect": [
+            288,
+            144,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            12,
+            69,
+            72,
+            66
+          ]
+        },
+        {
+          "name": "sleep-right",
+          "rect": [
+            384,
+            144,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            13,
+            99,
+            71,
+            36
+          ]
+        }
+      ],
+      "maxBytes": 50000,
+      "generator": "built-in image_gen",
+      "scale": 3,
+      "quality": 88,
+      "alpha": {
+        "transparent": 109914,
+        "partial": 26860,
+        "opaque": 1466
+      }
     }
   ],
   "scale": 3,

@@ -1,3 +1,7 @@
+# 2026-11-02 · 모찌 본사 주민 추가 (Codex / qa-b11d)
+
+`hani/mascots-poster` / 작업 HEAD `ab146f8` / 원격 main·로컬 캐시 `13fe873` 일치(GitHub connector) / 2.9.258 유지 / 미커밋. 모찌 atlas·literal CSS·manifest/fallback, 3F오전/4F낮/1F저녁·22~02시 동행·02~07시수면, 느린hop/긴휴식·대사10개·쉬는 히나 선호·단일bubble 세동물 순차대사/quarter유지 구현. **주민36/36·지정11묶음163통과7실패(기존Git EPERM7·신규0)·syntax8/8·byte보존10/10·closure146→147/160·누락0.** 직원/방문객plans·기존주민동작·인원/roster·저장/Cloud/schema·버전/cache 보존. labels/residents complete-line LCS 재생성·원래 guard 유지. 브라우저/Git 직접실행·commit/push/PR/merge/배포 없음. 실화면·운영 미검증, 서윤 manifest 별도PR 선행·Preview 대기. Notion append는 자동 승인 never 거절로 갱신 대기. [인수인계·명령/실패/정확한pin](handoffs/2026-11-02-office-mochi-life.md). 아래 기존·타 담당 기록 보존.
+
 # 2026-11-02 · 1F 이달의 퀸 포스터 설치 (Codex / qa-b11c)
 
 `hani/mascots-poster` / HEAD `3f9a7ed` / 통합 main·로컬 캐시 `13fe873` / 2.9.258 유지 / 미커밋. 전광판과 같은 queenWinner 읽기 API로 10월 수상 포스터를 11월 1F에만 persistent 표시. 좌측41%·상단19%·60×90 native px, 간판·엘리베이터·액자와 좌표 비겹침, 기존 bubble에 실제 당선자 이름. 자산360×540·52,018B, **closure145→146/160·누락0. 포스터8/8·파일전체23/23·전광판27/27·syntax10/10·보존10/10 PASS.** 지정/추가18명령 합계 **264통과·10실패·1skip**, 실패10은 수정 전후 동일(Git 차단8·주민 closure 기대값1·zoom 기준 파일 누락1), 신규 실패0. labels/residents exact-line LCS 재생성·pin만 갱신, 원래 guard/모든 plan·저장/Cloud/schema·버전/cache 보존. Git·browser·commit/push/merge·배포 없음, 실화면·원격 최신성 미검증. Notion append 자동 승인 never 거절로 갱신 대기. [인수인계·명령/기존 실패/증거](handoffs/2026-11-02-queen-poster-install.md). 아래 기존·타 담당 기록 보존.
