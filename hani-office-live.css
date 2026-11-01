@@ -124,6 +124,9 @@
 .hani-office-brand{display:flex;align-items:center;justify-content:center;gap:.6cqw;color:#655076;filter:drop-shadow(.06cqw .12cqw .08cqw #3d294a50)}
 .hani-office-brand-mark{display:block;width:3.1cqw;height:3.1cqw;object-fit:contain}
 .hani-office-brand b{font-family:Georgia,"Times New Roman",serif;font-size:1.65cqw;letter-spacing:.12em;font-weight:600;line-height:1;color:#6b567b;text-shadow:0 -.04cqw #e5d7ed,.06cqw .08cqw #49384f}
+.hani-office-queen-poster{--queen-poster-2026-10:url('./assets/queen/poster-2026-10.webp');position:absolute;z-index:2;box-sizing:border-box;display:block;margin:0;padding:0;border:0;border-radius:0;background-color:transparent;background-size:contain;background-position:center;background-repeat:no-repeat;cursor:pointer;pointer-events:auto}
+.hani-office-queen-poster[hidden]{display:none}
+.hani-office-queen-poster:focus-visible{outline:2px solid #7656c4;outline-offset:2px}
 .hani-office-desk-props{position:absolute;z-index:2;height:auto;max-height:4cqw;object-fit:contain;object-position:left top;pointer-events:none;visibility:hidden}
 .hani-office-desk-props[data-loaded="true"]{visibility:visible}
 .hani-office-desk-props[data-planned="true"]{opacity:.38}

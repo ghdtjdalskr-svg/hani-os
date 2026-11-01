@@ -162,3 +162,108 @@ test('poster and comparisons decode, include a true 60x90 sample and leave origi
   }
   assert.ok(changed>5000,'poster fills its exact 60x90 rectangle');
 });
+
+// qa-b11c: execute the real board read and the mounted office owner, no browser.
+import {fixture as officeFixture} from './hani-building-206-engine.test.mjs';
+import {loadScene as posterScene,at as posterAt} from './hani-office-lively-fixture.mjs';
+import {createHash} from 'node:crypto';
+const officeSource=read('hani-office-live.js'),officeCss=read('hani-office-live.css');
+const posterPath='assets/queen/poster-2026-10.webp';
+const settlePoster=async()=>{for(let i=0;i<30;i++)await Promise.resolve()};
+async function posterFixture({date='2026-11-02T10:00:00+09:00',art=true,board=true}={}){
+  const canonical=createBannerFixture(),writes=[],pending=new Map();let timer=0;
+  const deny=(...args)=>{writes.push(args);throw Error('poster attempted write/network')};
+  const window=board?{HaniBoard:canonical.c.window.HaniBoard}:{};
+  const f=officeFixture('10:00',true,()=>art,null,{
+    window,setTimeout(fn,ms){pending.set(++timer,{fn,ms});return timer},clearTimeout:id=>pending.delete(id),
+    localStorage:{setItem:deny,removeItem:deny,clear:deny},sessionStorage:{setItem:deny,removeItem:deny,clear:deny},
+    save:deny,persist:deny,commit:deny,fetch:async(url,options)=>{assert.ok(!options?.method||options.method==='GET');assert.match(String(url),/^\.\/assets\/data\//);return {ok:false}},supabase:{from:deny},
+  });
+  await settlePoster();f.setDateTime(date);f.click('1f');await settlePoster();
+  const poster=f.map.querySelector('.hani-office-queen-poster'),bubble=f.map.querySelector('.hani-office-character-bubble');
+  return {...f,poster,bubble,canonical,writes,pending};
+}
+
+test('poster: canonical board read shares the billboard winner/month and reads names from roster data',()=>{
+  const f=createBannerFixture(),api=f.c.window.HaniBoard;
+  for(const date of ['2026-10-31T23:59:59+09:00','2026-11-01T00:00:00+09:00','2026-11-30T23:59:59+09:00','2026-12-01T00:00:00+09:00','2027-01-01T00:00:00+09:00']){
+    const now=Date.parse(date),award=api.queenWinner(now),slide=f.c.queenSlides(now).find(s=>s.kind==='queen-winner');
+    assert.equal(Boolean(award),Boolean(slide),date);
+    if(award){assert.equal(award.month,'2026-10');assert.ok(slide.href.endsWith('/'+award.id));assert.equal(slide.title,award.name+' · '+award.rank)}
+  }
+  const old=f.c.window.HaniOrganizationRoster;
+  f.c.window.HaniOrganizationRoster={...old,people:old.people.map(p=>p.id==='seoyun'?{...p,name:'자료이름'}:p)};
+  assert.equal(api.queenWinner(Date.parse('2026-11-02T10:00:00+09:00')).name,'자료이름');
+});
+
+test('poster: one persistent element is visible only on the loaded 1F map and survives every floor change',async()=>{
+  const f=await posterFixture(),slot=f.poster,actors=[...f.ids.get('haniOfficeActors').children];assert.ok(slot);assert.equal(slot.tagName,'button');assert.equal(slot.hidden,false);
+  for(const floor of ['2f','3f','4f','5f','1f','4f','1f']){
+    f.click(floor);await settlePoster();assert.equal(slot.hidden,floor!=='1f',floor);
+    assert.equal(f.map.querySelector('.hani-office-queen-poster'),slot);assert.equal(f.map.querySelectorAll('.hani-office-queen-poster').length,1);
+    assert.deepEqual(f.ids.get('haniOfficeActors').children,actors);
+  }
+});
+
+test('poster: October award is shown throughout November KST, never in October, December or an unknown month',async()=>{
+  const f=await posterFixture();
+  for(const [date,visible]of [['2026-10-31T23:59:59+09:00',false],['2026-11-01T00:00:00+09:00',true],['2026-11-30T23:59:59+09:00',true],['2026-12-01T00:00:00+09:00',false],['2027-01-01T00:00:00+09:00',false]]){
+    f.setDateTime(date);f.click('1f');await settlePoster();assert.equal(f.poster.hidden,!visible,date);
+    assert.equal(f.poster.querySelector('img'),null,'CSS image has no broken-image glyph');
+  }
+  f.canonical.c.window.HaniBoard={queenWinner:()=>({month:'2099-01',name:'미등록',id:'hani'})};
+  f.context.window.HaniBoard=f.canonical.c.window.HaniBoard;f.click('1f');await settlePoster();assert.equal(f.poster.hidden,true);
+});
+
+test('poster: missing board source or fallback art shows nothing; stale background completion cannot leak to another floor',async()=>{
+  for(const options of [{board:false},{art:false}]){const f=await posterFixture(options);assert.equal(f.poster.hidden,true);f.poster.onclick();assert.equal(f.bubble.hidden,true)}
+  const f=await posterFixture();f.click('1f');f.click('5f');await settlePoster();assert.equal(f.poster.hidden,true);assert.equal(f.map.dataset.floor,'5f');
+});
+
+test('poster: art-map percent bounds clear the entire app sign box, elevator and existing frame; scale behind actors',async()=>{
+  const f=await posterFixture(),s=f.poster.style,b=[parseFloat(s.left),parseFloat(s.top),parseFloat(s.width),parseFloat(s.height)];
+  assert.deepEqual(b.slice(0,2),[41,19]);assert.ok(Math.abs(b[2]-60/1672*100)<1e-10);assert.ok(Math.abs(b[3]-90/941*100)<1e-10);
+  const overlap=([x,y,w,h],[l,t,r,bottom])=>x<r&&x+w>l&&y<bottom&&y+h>t;
+  for(const [name,box]of [['HANI GROUP sign',[40,10,58,17.5]],['elevator',[17,2,29,29]],['art frame',[69,5,82,21]]])assert.equal(overlap(b,box),false,name);
+  for(const width of [360,390,416,1440]){const height=width*941/1672,px=b[2]/100*width,py=b[3]/100*height;assert.ok(Math.abs(px/py-2/3)<1e-10);assert.ok(b[0]+b[2]<100&&b[1]+b[3]<100)}
+  const block=officeCss.match(/\.hani-office-queen-poster\{([^}]+)\}/)[1];
+  assert.match(block,/position:absolute/);assert.match(block,/z-index:2/);assert.match(officeCss,/\.hani-office-sprite\{[^}]*z-index:4/);
+  assert.match(officeCss,/\.hani-office-queen-poster\[hidden\]\{display:none\}/);
+});
+
+test('poster: tapping uses the existing bubble, current data name, native button and close timer without a profile or zoom',async()=>{
+  const f=await posterFixture(),roster=f.canonical.c.window.HaniOrganizationRoster;
+  f.canonical.c.window.HaniOrganizationRoster={...roster,people:roster.people.map(p=>p.id==='seoyun'?{...p,name:'당선자료'}:p)};
+  f.poster.onclick();assert.equal(f.bubble.hidden,false);assert.equal(f.bubble.querySelector('p').textContent,'👑 10월의 퀸 · 당선자료');
+  assert.equal(f.poster.getAttribute('aria-label'),'👑 10월의 퀸 · 당선자료');assert.equal(f.bubble.querySelector('a').hidden,true);
+  assert.equal(f.bubble.querySelector('.hani-office-bubble-sprite').hidden,true);assert.equal(f.bubble.dataset.zoom,'false');
+  assert.equal(f.map.querySelectorAll('.hani-office-character-bubble').length,1);assert.equal(f.poster.type,'button');
+  const timer=[...f.pending.values()].find(t=>t.ms===3000);assert.ok(timer);timer.fn();assert.equal(f.bubble.hidden,true);
+  f.poster.onclick();f.poster.onkeydown({key:'Escape'});assert.equal(f.bubble.hidden,true);
+  f.poster.onclick();f.click('2f');assert.equal(f.bubble.hidden,true);assert.equal(f.writes.length,0);
+});
+
+test('poster: steady frames add no layout reads or persistence/network paths; staff/visitor/resident plans stay byte-identical',async()=>{
+  const f=await posterFixture();let reads=0;
+  for(const node of [f.map,...f.root.querySelectorAll('*')])node.getBoundingClientRect=()=>{reads++;throw Error('unexpected frame layout read')};
+  for(let i=0;i<20;i++){f.setDateTime('2026-11-02T10:00:00.'+String(i*5).padStart(3,'0')+'+09:00');f.timers.find(t=>t.ms===100).fn()}
+  assert.equal(reads,0);assert.equal(f.writes.length,0);
+  const old=posterScene({transform:()=>read('artifacts/queen-poster-install/hani-office-live.js.before')}).scene,current=posterScene().scene;
+  for(const day of ['2026-10-31','2026-11-01','2026-11-02','2026-11-30','2026-12-01'])for(const chairmanPresent of [false,true]){
+    const options={chairmanPresent},plan=current.scheduler.plan(day,options),previous=old.scheduler.plan(day,options);
+    assert.equal(JSON.stringify(plan),JSON.stringify(previous));assert.equal(JSON.stringify(current.scheduler.blockPlan(day,0,plan,options)),JSON.stringify(old.scheduler.blockPlan(day,0,previous,options)));
+    for(const seconds of [1,7200,25200,36000,50400,79200,86399]){
+      const now=posterAt(day,seconds),snap=current.snapshot(now,options),before=old.snapshot(now,options);
+      assert.equal(JSON.stringify(snap),JSON.stringify(before));assert.equal(JSON.stringify(current.residents.snapshot(now,snap,true)),JSON.stringify(old.residents.snapshot(now,before,true)));
+    }
+  }
+});
+
+test('poster: shipped WebP decodes under 120KB, retains approved ratio and is in the literal runtime closure',async()=>{
+  const file=fs.readFileSync(new URL('../'+posterPath,import.meta.url)),meta=await sharp(file).metadata();
+  assert.equal(meta.format,'webp');assert.deepEqual([meta.width,meta.height],[360,540]);assert.ok(file.length<120000);
+  const closure=await resolveRuntimeClosure({exists:fs.existsSync,read:fs.readFileSync});assert.ok(closure.files.includes(posterPath));assert.ok(closure.files.length<=160);assert.deepEqual(closure.missing,[]);
+  const baseline=JSON.parse(read('artifacts/queen-poster-install/baseline.json'));assert.deepEqual(closure.files.filter(p=>!baseline.closure.includes(p)),[posterPath]);assert.deepEqual(baseline.closure.filter(p=>!closure.files.includes(p)),[]);
+  const hash=x=>createHash('sha256').update(x).digest('hex');assert.equal(hash(fs.readFileSync('index.html')),baseline.sha256['index.html']);assert.equal(hash(fs.readFileSync('hani-main.js')),baseline.sha256['hani-main.js']);
+  console.log(JSON.stringify({poster:{left:41,top:19,width:60/1672*100,height:90/941*100,bytes:file.length},closure:closure.files.length,limit:160,missing:0}));
+});

@@ -18,7 +18,7 @@ let writes=0;const fail=()=>{writes++;throw Error('storage forbidden')};
 context.localStorage=context.sessionStorage={setItem:fail,removeItem:fail,clear:fail};
 // Exact QA-3/18/19 display edits are restored before the unchanged behavior guard.
 const labelDeltaBytes=fs.readFileSync('scripts/fixtures/office-labels-qa-source-delta.json');
-assert.equal(createHash('sha256').update(labelDeltaBytes).digest('hex'),'316a3cbc77168e51952319d34755c27ec7a26d65dc55bb5c58b77a25a53dea8b');
+assert.equal(createHash('sha256').update(labelDeltaBytes).digest('hex'),'358805b81981c722cb1278aab28fe053af0b03f677b14d56ec0fd1d61ea2737d');
 const labelDelta=JSON.parse(labelDeltaBytes);
 assert.equal(labelDelta.beforeSha256,'406937ae1d69c0379bb735e961734b517ae9440a02c93a0d41771dc0c694d246');
 function restoreOfficeLabelsSource(source){

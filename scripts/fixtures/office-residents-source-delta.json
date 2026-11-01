@@ -1,7 +1,7 @@
 {
   "scope": "Approved seven residents only; exact changed lines. Reverse before historical label/motion guards. All other bytes, scheduler, staff/visitor plans and previous fixtures remain frozen.",
-  "beforeSha256": "d2f5be9b6e35e58da597985f43e94a8541542eafa191be35aa0d90838af7d8a8",
-  "afterSha256": "f25b22b5f75d2b6f373b38df3b9308bb1cee7b24ab6bb05218e4c91f5add22ef",
+  "beforeSha256": "992a9a89ea355458a395ebca2417f307e5f213cba5c29087ab3b82ca9bfdd0be",
+  "afterSha256": "b6e31c96b8173a27468257068f20d22d9a9e69d1c101eada26f6562679790fcc",
   "changes": [
     {
       "beforeLine": 1879,
@@ -419,8 +419,8 @@
       ]
     },
     {
-      "beforeLine": 2434,
-      "afterLine": 2609,
+      "beforeLine": 2455,
+      "afterLine": 2630,
       "before": [
         "    if(actor.dataset.person==='seongmin'||actor.dataset.person.startsWith('visitor')){sprite.className='hani-office-sprite';sprite.style.backgroundImage='';actor.dataset.avatar='pending';return}\n"
       ],
@@ -429,8 +429,8 @@
       ]
     },
     {
-      "beforeLine": 2515,
-      "afterLine": 2690,
+      "beforeLine": 2538,
+      "afterLine": 2713,
       "before": [
         "    for(const actor of actors.values()){actor.officeWasVisible=!actor.hidden;actor.hidden=true;actor.officeRow.hidden=true;actor.dataset.called=\"false\"}\n"
       ],
@@ -439,16 +439,16 @@
       ]
     },
     {
-      "beforeLine": 2544,
-      "afterLine": 2719,
+      "beforeLine": 2567,
+      "afterLine": 2742,
       "before": [],
       "after": [
         "    updateResidents(now);\n"
       ]
     },
     {
-      "beforeLine": 2550,
-      "afterLine": 2726,
+      "beforeLine": 2573,
+      "afterLine": 2749,
       "before": [],
       "after": [
         "  function updateResidents(now){\n",
@@ -478,16 +478,16 @@
       ]
     },
     {
-      "beforeLine": 2618,
-      "afterLine": 2818,
+      "beforeLine": 2641,
+      "afterLine": 2841,
       "before": [],
       "after": [
         "    updateResidents(new Date(now));\n"
       ]
     },
     {
-      "beforeLine": 2620,
-      "afterLine": 2821,
+      "beforeLine": 2643,
+      "afterLine": 2844,
       "before": [],
       "after": [
         "      if(actor.dataset.resident){const effect=actor.officeReactions.tick(now,reduced,actor.dataset.walking==='true');if(effect){if(actor.dataset.motion!==effect.kind)actor.dataset.motion=effect.kind}else if(actor.dataset.motion!==undefined)delete actor.dataset.motion;continue}\n"

@@ -2565,6 +2565,27 @@
     plate.style.transform='rotate('+entry.rotate+'deg) skewX('+entry.skew+'deg)';
     map.append(plate);plates.push({plate,floor:floor.id});
   }
+  // Award month -> CSS image token. The canonical board owns month/winner data.
+  const queenPosters=Object.freeze({'2026-10':'var(--queen-poster-2026-10)'});
+  const queenPoster=document.createElement('button');queenPoster.type='button';queenPoster.className='hani-office-queen-poster';queenPoster.hidden=true;
+  queenPoster.style.left='41%';queenPoster.style.top='19%';queenPoster.style.width=(60/(building.art?.width||1672)*100)+'%';queenPoster.style.height=(90/(building.art?.height||941)*100)+'%';
+  map.append(queenPoster);
+  function updateQueenPoster(now=Date.now()){
+    const award=activeFloor==='1f'&&map.dataset.art==='floor'?window.HaniBoard?.queenWinner?.(now):null;
+    const image=award&&queenPosters[award.month];
+    const hidden=!image;if(queenPoster.hidden!==hidden)queenPoster.hidden=hidden;if(hidden)return;
+    const title='👑 '+Number(award.month.slice(5))+'월의 퀸 · '+award.name;
+    if(queenPoster.dataset.month!==award.month){queenPoster.dataset.month=award.month;queenPoster.style.backgroundImage=image}
+    if(queenPoster.title!==title){queenPoster.title=title;queenPoster.setAttribute('aria-label',title)}
+  }
+  queenPoster.onclick=()=>{
+    updateQueenPoster();if(queenPoster.hidden)return;
+    closeBubble();lastBubbleTap=Date.now();autoBubbleEntry=false;
+    bubbleSprite.hidden=true;actorBubble.dataset.zoom='false';actorBubble.officeFollow=null;
+    bubbleLine.textContent=queenPoster.title;profileLink.hidden=true;actorBubble.style.left='4px';actorBubble.style.top='4px';actorBubble.hidden=false;
+    const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble(false)}},3000);
+  };
+  queenPoster.onkeydown=event=>{if(event.key==='Escape')closeBubble()};
   // Each floor owns persistent decorative slots; positions are desk anchor + art offset.
   const deskProps=[];
   for(const floor of building.floors)for(const entry of building.art?.floors[floor.id].deskProps||[]){
@@ -2655,6 +2676,7 @@
       map.dataset.mask='none';
       for(const entry of plates)entry.plate.hidden=entry.floor!==floor.id||!isFloor;
       for(const entry of deskProps){entry.prop.hidden=entry.floor!==floor.id||!isFloor;if(!entry.prop.hidden&&!entry.prop.src)entry.prop.src=entry.src}
+      updateQueenPoster();
       updateAtmosphere(Date.now());
       scheduleFloorBubble();
     });
@@ -2674,6 +2696,7 @@
     const floor=floorSnapshot.floors.find(f=>f.id===activeFloor),selected=meeting&&activeFloor==="2f"?selectedAgents():null;
     const entries=selected?building.assignSeats(activeFloor,selected.map(id=>({id,activity:"meeting"}))):meeting&&activeFloor==='4f'&&selectedAgents().includes('mir')?building.assignSeats(activeFloor,[...floor.visible.filter(p=>p.id!=='mir'),{id:'mir',activity:'meeting'}]):[...floor.visible,...(meeting?[]:(floorSnapshot.visitors||[]).filter(v=>v.floor===activeFloor))];
     const nextKey=floorSnapshot.day+":"+activeFloor+":"+entries.map(p=>p.id+"/"+p.activity+"/"+p.seat?.id+"/"+p.actionId+"/"+p.eventId+"/"+p.outingId+"/"+p.line+"/"+p.state+"/"+(p.walking?'walk':p.pose)).join(",")+":"+Boolean(selected)+":"+Math.floor(floorSnapshot.minutes/5);
+    updateQueenPoster(now.getTime());
     if(!force&&nextKey===layoutKey)return;
     const sameFloor=displayedFloor===activeFloor;displayedFloor=activeFloor;
     for(const [id,list] of roomLabels)list.hidden=id!==activeFloor;
@@ -2682,7 +2705,7 @@
     for(const entry of plates)entry.plate.hidden=entry.floor!==activeFloor||map.dataset.art!=='floor';
     if(!sameFloor)for(const entry of deskProps)entry.prop.hidden=true;
     if(!sameFloor)foregrounds.forEach(img=>{img.hidden=true});
-    setBackground(floor);
+    setBackground(floor);updateQueenPoster(now.getTime());
     for(const entry of plannedRows)entry.row.hidden=entry.floor!==activeFloor;
     // Reuse the scheduler's exact formal/outing legs; never predict a route.
     const formal=building.scheduler&&!meeting?building.scheduler.plan(day,presence):[];

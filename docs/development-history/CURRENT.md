@@ -1,3 +1,7 @@
+# 2026-11-02 · 1F 이달의 퀸 포스터 설치 (Codex / qa-b11c)
+
+`hani/mascots-poster` / HEAD `3f9a7ed` / 통합 main·로컬 캐시 `13fe873` / 2.9.258 유지 / 미커밋. 전광판과 같은 queenWinner 읽기 API로 10월 수상 포스터를 11월 1F에만 persistent 표시. 좌측41%·상단19%·60×90 native px, 간판·엘리베이터·액자와 좌표 비겹침, 기존 bubble에 실제 당선자 이름. 자산360×540·52,018B, **closure145→146/160·누락0. 포스터8/8·파일전체23/23·전광판27/27·syntax10/10·보존10/10 PASS.** 지정/추가18명령 합계 **264통과·10실패·1skip**, 실패10은 수정 전후 동일(Git 차단8·주민 closure 기대값1·zoom 기준 파일 누락1), 신규 실패0. labels/residents exact-line LCS 재생성·pin만 갱신, 원래 guard/모든 plan·저장/Cloud/schema·버전/cache 보존. Git·browser·commit/push/merge·배포 없음, 실화면·원격 최신성 미검증. Notion append 자동 승인 never 거절로 갱신 대기. [인수인계·명령/기존 실패/증거](handoffs/2026-11-02-queen-poster-install.md). 아래 기존·타 담당 기록 보존.
+
 # 2026-11-02 · 세 번째 마스코트 모찌 (Codex / qa-b11b)
 
 `hani/mascots-poster` / 로컬 HEAD `39cb3c7` / 표시 2.9.257 유지 / 미커밋. 기존 사내 마스코트에 모찌·사내 토끼·성격 한 줄 추가, 소개 문구를 인원수 무관하게 수정. 하니 전무 디자인 설정의 흰색·아이보리/회분홍 귀/분홍 리본 atlas480×288·초상화720/256/128·실제 로비 CSS 크기 비교1200×1220 제작. **지정 테스트21/21(전용9·cleanup12), syntax6/6·보존15/15 PASS·실패0. closure142→145/160·누락0.** 직원19명·roster/투표/집계·저장/Cloud·index/main·office-live·manifest·버전/cache 보존. sprite는 artifacts에만, 별도 manifest PR 필요. Git·브라우저 금지로 원격 최신성·실화면·운영 미검증. origin/main 캐시 `9eae97c`는 HEAD와 다르며 통합 영향 미확인, merge/rebase 없음. commit/push/merge/배포 없음. Notion 착수 append 자동 승인 never 거절로 갱신 대기. [인수인계·이미지 경로/크기·검사 근거](handoffs/2026-11-02-mochi-mascot.md). 아래 이전·타 담당 기록 보존.
