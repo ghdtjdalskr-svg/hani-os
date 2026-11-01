@@ -246,7 +246,10 @@
     if (typeof raw !== 'string' || raw.length > 1000000) throw Error('JSON 리포트는 1MB 이하 텍스트로 붙여넣으세요.');
     const fragments = [raw.trim(), ...Array.from(raw.matchAll(/```(?:json)?\s*([\s\S]*?)```/gi), m => m[1])];
     const decode = fragment => {
-      try {const parsed = JSON.parse(fragment), rows = Array.isArray(parsed) ? parsed : parsed?.cards; return Array.isArray(rows) && rows.length && rows.length <= 200 && rows.every(c => c && typeof c === 'object' && !Array.isArray(c)) ? rows : null;} catch (_) {return null;}
+      const parse = value => {try {return JSON.parse(value);} catch (_) {return null;}};
+      // Web citations can carry an escape JSON rejects, such as \&; retry without the stray backslash.
+      const parsed = parse(fragment) ?? parse(fragment.replace(/\\(["\\/bfnrtu])|\\/g, (found, valid) => valid ? found : '')), rows = Array.isArray(parsed) ? parsed : parsed?.cards;
+      return Array.isArray(rows) && rows.length && rows.length <= 200 && rows.every(c => c && typeof c === 'object' && !Array.isArray(c)) ? rows : null;
     };
     for (const fragment of fragments) {const rows = decode(fragment); if (rows) return rows;}
     let scanBudget = 2000000;
@@ -308,7 +311,7 @@
   }
   const hasFairValue = card => typeof card?.fairValue === 'number' && Number.isFinite(card.fairValue) && card.fairValue > 0;
   const missingFairItems = items => items.filter(item => !item.excluded && item.missingFairValue);
-  const WEB_RESEARCH_RULE = '답변 전에 웹 검색으로 종목별 최신 공식 실적, IR 자료, 컨센서스, 밸류에이션 자료를 먼저 찾으세요. 적정가는 찾은 자료로 최대한 산정하고 valuationNote에 근거와 기준일을 적으세요. 충분히 찾아도 산정이 어려운 종목만 null로 두고, 무엇을 찾아봤고 무엇이 부족한지 적으세요.';
+  const WEB_RESEARCH_RULE = '답변 전에 웹 검색으로 종목별 최신 공식 실적, IR 자료, 컨센서스, 밸류에이션 자료를 먼저 찾으세요. 적정가는 찾은 자료로 최대한 산정하고 valuationNote에 근거와 기준일을 적으세요. 출처는 이름만 적고 링크는 JSON에 넣지 마세요. 충분히 찾아도 산정이 어려운 종목만 null로 두고, 무엇을 찾아봤고 무엇이 부족한지 적으세요.';
   function fairFollowupPrompt(items, priceSource = {}) {
     const missing = missingFairItems(items);
     if (!missing.length) throw Error('적정가 누락 종목이 없습니다.');

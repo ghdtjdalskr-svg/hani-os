@@ -45,7 +45,7 @@ test('without-card holdings split by identity; accumulation and existing cards s
 test('instruction bytes match the frozen baseline when no ready holdings exist', () => {
   const rows = [{name: '코드 없음', quantity: 1}];
   const prefix = C.buildPrompt(blank(), rows).split('자료(JSON):')[0];
-  assert.equal(createHash('sha256').update(prefix).digest('hex'), 'a499606748082570a1a2af7d293a6de77bc39e6305826cd94e141ae3f097e31b');
+  assert.equal(createHash('sha256').update(prefix).digest('hex'), '2046c51049c969349c1b8f502014136d9e1de7a810dcf619e9044bb9a679c066');
   assert.equal(C.buildPrompt(blank(), rows), C.buildPrompt(blank()));
 });
 
@@ -173,4 +173,12 @@ test('both GPT prompts ask for web research first and keep the no-invention rule
   assert.match(C.buildPrompt(blank()), rule);
   assert.match(C.buildPrompt(blank()), /임의로 만들지 마세요/);
   assert.match(C.fairFollowupPrompt([{missingFairValue: true, card: {name: '삼성증권', ticker: '016360', market: 'KR', currency: 'KRW', thesis: []}}]), rule);
+});
+
+test('a citation with a stray JSON escape still parses and valid escapes are kept', () => {
+  const raw = String.raw`[{"name":"삼성증권","changeReason":"줄\n바꿈 \"인용\" [WiseReport](https://x?cmp_cd=016360\&utm_source=chatgpt.com)"}]`;
+  const rows = C.parseReport(raw);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].changeReason, '줄\n바꿈 "인용" [WiseReport](https://x?cmp_cd=016360&utm_source=chatgpt.com)');
+  assert.throws(() => C.parseReport('[{"name":'), /찾지 못했습니다/);
 });
