@@ -35,7 +35,7 @@
   const people = rows.map(([id,name,rank,team,role,line,keywords,group,status])=>({id,name,rank,team,role,line,keywords,group,...(status?{status,registration:status==='planned'?'planned':'registered',floor:'2F',profile:staffProfile(id)}:{})})).sort((a,b)=>Number(b.group==='M9')-Number(a.group==='M9'));
   window.HaniOrganizationRoster=Object.freeze({
     chairman:Object.freeze({id:"seongmin",name:"성민",rank:"회장",team:"HANI GROUP"}),
-    teams:Object.freeze(teams.map(({id,name})=>Object.freeze({id,name}))),
+    teams:Object.freeze(teams.map(({id,name,color,tint})=>Object.freeze({id,name,color,tint}))),
     people:Object.freeze(people.map(({id,name,rank,team,group,role,line,keywords,status,registration,floor})=>Object.freeze({id,name,rank,team,group,role,line,keywords,status,registration,floor})))
   });
   (document.querySelectorAll?.('.sidebar-corporate-lockup small')||[]).forEach(label=>{label.textContent='PERSONAL AI COMPANY · '+window.HaniOrganizationRoster.people.length+' AGENTS'});
