@@ -13,6 +13,11 @@ export function assertOnboardedCanon(){
  const original=readAt('data/hani-building/spatial-contract.json','65cd8a071d657741319b54c063d1ba8c5ab6aefb');
  assert.equal(crypto.createHash('sha256').update(original).digest('hex'),'d02426b44c49db169efebd782e110226fd1d719d016bc5912516753f3df8841d');
  const actual=JSON.parse(fs.readFileSync(new URL('../data/hani-building/spatial-contract.json',import.meta.url)));
- assert.deepEqual(actual,expectedOnboardedCanon(JSON.parse(original)),'only the explicit onboarding delta is allowed; all 326 anchors, coordinates, edges and other contract fields stay frozen');
+ const expected=expectedOnboardedCanon(JSON.parse(original));
+ // Approved cafe approaches use the room doors; keep every other edge exact.
+ for(const [target,from,to]of [['approach_arrival_gate','junction_lobby','door_lobby'],['approach_coffee_counter','junction_cafe','door_cafe']]){
+  const edges=expected.edges.filter(e=>e.from===from&&e.to===target);assert.equal(edges.length,1);edges[0].from=to;
+ }
+ assert.deepEqual(actual,expected,'only explicit onboarding and two cafe approach edges are allowed; all 326 anchors and every other field stay frozen');
  assert.equal(actual.anchors.length,326);
 }

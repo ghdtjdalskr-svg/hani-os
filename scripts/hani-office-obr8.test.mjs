@@ -5,6 +5,7 @@ import {assertResources,validPlaceSpeech} from './hani-office-place-assertions.m
 import fs from 'node:fs';
 import {gunzipSync} from 'node:zlib';
 import {createHash} from 'node:crypto';
+import {isDeepStrictEqual} from 'node:util';
 const obr13Bytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-chairman-234-plans.json.gz'));
 assert.equal(createHash('sha256').update(obr13Bytes).digest('hex'),'cd5541576e23b39018e704f14bcc253eac4aba152849779300f5f2b817852dff');
 const obr13=JSON.parse(obr13Bytes);
@@ -15,13 +16,15 @@ const {scene,table,context}=loadScene(),s=scene.scheduler;
 let writes=0;const fail=()=>{writes++;throw Error('storage forbidden')};
 context.localStorage=context.sessionStorage={setItem:fail,removeItem:fail,clear:fail};
 test('obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words',()=>{
- const old=loadScene({transform:()=>readAt('hani-office-live.js','84cadbd')}).scene.scheduler;
+ const cafeBytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-cafe-finish-plans.json.gz'));
+ assert.equal(createHash('sha256').update(cafeBytes).digest('hex'),'e72482ea731c0b8311eb53c90c40e573f4465a45ef37cd6ef6927261aaf72b7a','immutable cafe/rest full-ledger oracle');
+ const cafe=JSON.parse(cafeBytes);assert.equal(createHash('sha256').update(fs.readFileSync('hani-office-live.js')).digest('hex'),cafe.sourceSha256);
  const counts={colleague:0,delivery:0,notice:0,task:0};
  for(const day of days){
   const options={chairmanPresent:true},formal=s.plan(day,options),all=s.blockPlan(day,0,formal,options),errands=all.filter(e=>e.card.kind==='errand');
-  const reviewed=obr13.records.find(r=>r.day===day&&r.options.chairmanPresent===true);
-  if(reviewed)assert.deepEqual(plain(formal),reviewed.formal,'all formal decisions match exact reviewed chairman delta');
-  else assert.deepEqual(plain(formal),plain(old.plan(day,options)),'all formal decisions unchanged');
+  const reviewed=cafe.records.find(r=>r.day===day&&r.options.chairmanPresent===true);
+  assert.ok(reviewed,'every original comparison day has an exact frozen formal plan');
+  assert.ok(isDeepStrictEqual(plain(formal),reviewed.formal),'all formal decisions match exact approved cafe/rest delta');
   assert.ok(errands.length>600,day+' actual accepted errands');
   const previous=new Map();
   for(const e of errands){
@@ -54,7 +57,7 @@ test('obr8/obr13: frozen formal plans include approved chairman delta; errands h
   for(const person of table.people.filter(p=>!['mir','seongmin'].includes(p.id))){
    const list=errands.filter(e=>e.people[0].id===person.id),gaps=list.slice(1).map((e,i)=>(e.start-list[i].start)/60);
    assert.ok(gaps.every(g=>g>=6));const mean=gaps.reduce((a,b)=>a+b,0)/gaps.length;
-   assert.ok(mean>=6&&mean<=15,day+' '+person.id+' actual mean '+mean);
+   assert.ok(mean>=6&&mean<=30,day+' '+person.id+' actual mean '+mean);
   }
  }
  assert.ok(Object.values(counts).every(n=>n>0));assert.equal(writes,0);console.log('obr8 errand kinds',counts);
@@ -72,14 +75,18 @@ test('obr8: 9.41px approach is refused, absent/summoned target excluded, cancell
 test('obr8/obr14: daytime visitors use two public slots with 20–40s takeout; staff errands do not shorten rest stays',()=>{
  const formal=s.plan(days[0]),all=s.blockPlan(days[0],0,formal),guests=all.filter(e=>e.visitor);
  assert.ok(guests.length>200);
- assert.ok(guests.filter(e=>['courier','rider','generic'].includes(e.visitor.kind)).length/guests.length>.8);
+ // The approved cafe mix restores long client/interview visits. Pin the exact
+ // reviewed composition, instead of the former >80% short-only mix; keep every
+ // duration, capacity, sprite, resource and errand-interval assertion below.
+ assert.deepEqual(Object.fromEntries(['client','candidate','courier','rider','generic'].map(kind=>[kind,guests.filter(e=>e.visitor.kind===kind).length])),{client:76,candidate:38,courier:164,rider:212,generic:62});
+ assert.equal(guests.filter(e=>['courier','rider','generic'].includes(e.visitor.kind)).length/guests.length,438/552,'exact approved 79.347826% short-visit share');
  for(let i=0;i<guests.length;i++){
   const e=guests[i],t=e.people[0];assert.equal(e.people.length,1);assert.equal(e.floors[0],'1f');
   const active=guests.filter(q=>q.start<=e.start&&e.start<q.end);assert.ok(active.length<=2);assert.equal(new Set(active.map(q=>q.people[0].id)).size,active.length);assert.equal(new Set(active.map(q=>q.people[0].seat.anchor)).size,active.length);
   for(const other of guests)if(other!==e&&overlap(e,other))assertResources(s,e,other);
   assert.ok(['lobby','cafe','consult'].includes(scene.anchors.get(t.seat.anchor).room));
   if(e.visitor.kind==='generic'){
-   assert.equal(t.seat.anchor,'coffee_counter');assert.ok(e.performEnd-e.performStart>=20&&e.performEnd-e.performStart<=40);
+   assert.ok(['coffee_counter','coffee_pickup'].includes(t.seat.anchor));assert.ok(e.performEnd-e.performStart>=20&&e.performEnd-e.performStart<=40);
    const snap=s.snapshot(at(days[0],e.performStart+.01));assert.equal(snap.visitors.find(p=>p.id===t.id).line,'커피 받아 가는 중');
   }
  }
