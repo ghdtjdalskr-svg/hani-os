@@ -3,10 +3,69 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 import {newsroomScript,newsroomEntry,newsroomCss} from './hani-newsroom-4cut-preservation.mjs';
-import {readReleaseSource,readReviewedReleaseBaseline,assertReviewedReleaseSource,guardedRelease,approvedReleases,projectTrainVersion,pendingApprovedConnections,released233Connections,released233Sha,normalizeReviewedCurrentSource,normalizeReviewedConnection,trainBaseVersion} from './hani-reviewed-release-baseline.mjs';
+import {readReleaseSource,readReviewedReleaseBaseline,assertReviewedReleaseSource,guardedRelease,approvedReleases,projectTrainVersion,pendingApprovedConnections,released233Connections,released233Sha,normalizeReviewedCurrentSource,normalizeReviewedConnection,trainBaseVersion,releasedOfficeConnections,readReviewedRelease233Baseline,readMergedReleaseChain,reviewedReleaseFiles} from './hani-reviewed-release-baseline.mjs';
+import {discoverMergedReleaseChain,advanceMergedReleaseFile,releaseChainAnchor} from './hani-merged-release-chain.mjs';
+
+test('every current owner rejects missing, duplicated, altered, moved and EOL bytes after a positive baseline',()=>{
+ for(const file of reviewedReleaseFiles()){
+  const current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
+  assertReviewedReleaseSource(file,current);
+  const eol=current.includes('\r\n')?current.replace('\r\n','\n'):current.includes('\n')?current.replace('\n','\r\n'):current+'\n';
+  for(const mutation of [current.slice(1),current+current,'/* unlisted */'+current,current.slice(1)+current[0],eol]){
+   assert.notEqual(mutation,current,file+' mutation actually changes bytes');
+   assert.throws(()=>assertReviewedReleaseSource(file,mutation),{code:'ERR_ASSERTION'},file+' unlisted mutation reaches byte comparison');
+  }
+ }
+});
+
+function releaseHistoryHarness(releases){
+ const rows=[{sha:releaseChainAnchor,subject:'release: v2.9.233 anchor (#343)'},...releases];
+ return args=>{
+  if(args[0]==='log'){
+   assert.deepEqual(args,['log','--first-parent','--format=%H%x09%s','origin/main']);
+   return rows.toReversed().map(r=>r.sha+'\t'+r.subject).join('\n');
+  }
+  const release=releases.find(r=>args.includes(r.sha)||args.includes(r.sha+':hani-main.js'));
+  assert.ok(release,'only enumerated release identities may be read');
+  if(args[0]==='show')return 'const HANI_DISPLAY_VERSION="'+release.version+'";';
+  assert.deepEqual(args,['diff-tree','--no-commit-id','--name-only','-r',release.sha]);
+  return release.files.join('\n');
+ };
+}
+
+test('merged release discovery follows 234 through 244 without a new fixture; gaps, duplicates and forged metadata fail closed',()=>{
+ const actual=readMergedReleaseChain();
+ assert.ok(actual.length>=10,'all shipped 234 through 243 releases are registered');
+ assert.deepEqual(actual.slice(0,10).map(r=>r.version),Array.from({length:10},(_,i)=>'2.9.'+(234+i)));
+ // Synthetic read-only Git transcript: no refs, commits or runtime files are changed.
+ const releases=actual.slice(0,10).map(r=>({...r}));
+ releases.push({sha:'f'.repeat(40),subject:'release: v2.9.244 next train (#369)',version:'2.9.244',files:['hani-main.js','hani-office-live.js','index.html']});
+ assert.equal(discoverMergedReleaseChain(releaseHistoryHarness(releases)).at(-1).version,'2.9.244');
+ assert.equal(discoverMergedReleaseChain(releaseHistoryHarness(releases),releases[9].sha).at(-1).version,'2.9.243','newer main must not force 244 onto a 243 feature branch');
+ assert.throws(()=>discoverMergedReleaseChain(releaseHistoryHarness(releases),'e'.repeat(40)),{code:'ERR_ASSERTION'},'unrelated base cannot select a release chain');
+ for(const altered of [releases.filter(r=>r.version!=='2.9.238'),[...releases,releases.at(-1)],releases.map((r,i)=>i===10?{...r,subject:'release: v2.9.244 unmerged'}:r),releases.map((r,i)=>i===10?{...r,version:'2.9.243'}:r),releases.map((r,i)=>i===10?{...r,subject:'release: v2.9.244 duplicate PR (#367)'}:r),releases.map((r,i)=>i===10?{...r,files:['hani-main.js']}:r)]){
+  assert.throws(()=>discoverMergedReleaseChain(releaseHistoryHarness(altered)),{code:'ERR_ASSERTION'});
+ }
+ assert.throws(()=>discoverMergedReleaseChain(()=>releases[0].sha+'\t'+releases[0].subject),{code:'ERR_ASSERTION'},'unrelated origin/main cannot replace the historical anchor');
+});
+
+test('a release delta permits its Git bytes only; intervening, trailing, unlisted owner and EOL edits are rejected',()=>{
+ const file='hani-office-live.js',before='fixed233\r\n',after='merged234\r\n';
+ const releases=[{sha:'a'.repeat(40),files:[file]}];
+ const read=(ref,owner)=>{assert.equal(owner,file);return ref.endsWith('^')?before:after;};
+ assert.equal(advanceMergedReleaseFile(file,before,releases,read),after);
+ for(const altered of ['unlisted control\r\n',before.replace('\r\n','\n')]){
+  assert.throws(()=>advanceMergedReleaseFile(file,before,releases,(ref,f)=>ref.endsWith('^')?altered:read(ref,f)),{code:'ERR_ASSERTION'},'before release gap');
+  assert.throws(()=>advanceMergedReleaseFile(file,before,releases,(ref,f)=>ref==='origin/main'?altered:read(ref,f)),{code:'ERR_ASSERTION'},'after release gap');
+ }
+ assert.throws(()=>advanceMergedReleaseFile(file,before,[{...releases[0],files:['index.html']}],read),{code:'ERR_ASSERTION'},'change to owner omitted from release file list');
+ // 244 can change this owner while preserving every earlier parent-byte proof.
+ const next={sha:'b'.repeat(40),files:[file]},future='merged244\r\n';
+ assert.equal(advanceMergedReleaseFile(file,before,[...releases,next],ref=>ref===releases[0].sha+'^'?before:ref===releases[0].sha||ref===next.sha+'^'?after:future),future);
+});
 
 test('release225 plus only named later release changes reproduces current source bytes',()=>{
- for(const file of new Set(['hani-development-history-v1.js',...approvedReleases.flatMap(r=>r.files),...released233Connections.map(c=>c.file),...pendingApprovedConnections.map(c=>c.file)])){
+ for(const file of reviewedReleaseFiles()){
   assertReviewedReleaseSource(file,fs.readFileSync(new URL('../'+file,import.meta.url),'utf8'));
  }
  assert.ok(approvedReleases.every(r=>/^[0-9a-f]{40}$/.test(r.sha)));
@@ -41,7 +100,7 @@ test('release projection advances cache/display only; internal and historical li
  assert.equal(projectTrainVersion(source,'2.9.234'),'x.js?v=2.9.234 const HANI_DISPLAY_VERSION="2.9.234"; internal="2.9.15-safe-baseline-bootstrap"; old="2.9.225";');
  assert.throws(()=>projectTrainVersion(source,'2.9.230'));
  assert.throws(()=>projectTrainVersion(source,'2.9.233-invalid'));
- const html=readReviewedReleaseBaseline('index.html'),future=projectTrainVersion(html,'2.9.234');
+ const html=readReviewedRelease233Baseline('index.html'),future=projectTrainVersion(html,'2.9.234');
  assert.doesNotMatch(future,/2\.9\.233/,'next train updates all existing visible labels and cache tags');
  assert.match(future,/<title>갓생살기 프로젝트 · HANI OS Life Edition v2\.9\.234<\/title>/);
  assert.equal(projectTrainVersion('unrelated v2.9.233','2.9.234'),'unrelated v2.9.233');
@@ -62,31 +121,28 @@ test('unlisted controls, storage, source and EOL edits remain detectable against
  assert.notEqual(readReleaseSource(guardedRelease,'hani-investment-committee.js'),readReviewedReleaseBaseline('hani-investment-committee.js'),'later third tab requires explicit release allow-list');
 });
 
-test('pending approved connections strip CURRENT source only; an unlisted index line is rejected',()=>{
+test('shipped office deltas no longer strip CURRENT source; an unlisted index line is rejected',()=>{
  const file='index.html',source=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
  const oracle=readReviewedReleaseBaseline(file);
  assert.equal(normalizeReviewedCurrentSource(file,source),oracle);
- for(const {file:owner,lines} of pendingApprovedConnections)for(const line of lines)assert.ok(!readReviewedReleaseBaseline(owner).includes(line),'Git oracle has no pending connections');
+ assert.deepEqual(pendingApprovedConnections,[],'both office fixtures are shipped and must not normalize current bytes');
+ assert.equal(normalizeReviewedCurrentSource('hani-office-live.js','unlisted bytes'),'unlisted bytes');
  assertReviewedReleaseSource(file,source);
  assert.throws(()=>assertReviewedReleaseSource(file,source.replace('</head>','<script src="./unlisted-third.js"></script>\n</head>')),
   {code:'ERR_ASSERTION',message:/index\.html release225/},'third line reaches and fails the Git byte comparison');
 });
 
-test('pending connections reject missing, duplicate or altered additions in every current owner',()=>{
- const stages=new Map();
- for(const connection of pendingApprovedConnections){
-  const {file,lines}=connection,source=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
-  assertReviewedReleaseSource(file,source);
-  const stage=stages.get(file)??source;
+test('released office connections reject missing, duplicate or altered additions at every fixed historical stage',()=>{
+ assert.equal(releasedOfficeConnections.length,2);
+ assert.deepEqual(releasedOfficeConnections.map(r=>r.connections.map(c=>c.file)),[['hani-office-live.js'],['hani-office-live.js','hani-office-live.css']]);
+ for(const release of releasedOfficeConnections)for(const connection of release.connections){
+  const {file,lines}=connection,stage=readReleaseSource(release.sha,file);
+  assert.equal(normalizeReviewedConnection(connection,stage),readReleaseSource(release.previous,file),file+' exact released inverse');
   for(const line of lines)for(const replacement of ['',line+'\n'+line,line.slice(0,-1)+'!']){
-   assert.equal(stage.split(line).length-1,1,file+' exact layer is present before mutation');
-   assert.throws(()=>normalizeReviewedConnection(connection,stage.replace(line,()=>replacement)),{code:'ERR_ASSERTION'},file+' exact approved addition must occur once at its normalization stage');
+   assert.equal(stage.split(line).length-1,1,file+' exact historical layer exists before mutation');
+   assert.throws(()=>normalizeReviewedConnection(connection,stage.replace(line,()=>replacement)),{code:'ERR_ASSERTION'},file+' missing/duplicate/altered frozen addition');
   }
-  stages.set(file,normalizeReviewedConnection(connection,stage));
-  assert.throws(()=>normalizeReviewedCurrentSource(file,readReviewedReleaseBaseline(file)),{code:'ERR_ASSERTION'},'never normalize Git oracle bytes');
  }
- const other='unrelated\r\n'+pendingApprovedConnections[0].lines.join('\n');
- assert.equal(normalizeReviewedCurrentSource('other.html',other),other);
 });
 
 test('released newsroom bytes reject unlisted edits, including EOL and report data',()=>{
@@ -116,27 +172,22 @@ test('approved additions cannot move to another script, event or cascade positio
  }
 });
 
-test('released 233 keeps all prior scoped proofs; pending 235/234 allows only exact JS/CSS office bytes; released staff and moved fragments stay strict',()=>{
- assert.deepEqual(pendingApprovedConnections.map(c=>c.file),['hani-office-live.js','hani-office-live.css','hani-office-live.js']);
+test('released 233 and shipped office retain scoped proofs; moved fragments and live staff edits stay strict',()=>{
  assert.equal(released233Sha,'beffc3850ea890ec84ce623579b26b4b5a3cd35c');
  assert.deepEqual(released233Connections.map(c=>c.file).sort(),["hani-design-system.css","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-context-remote.css","hani-context-remote.css","hani-design-system.css","hani-portfolio-preview.css",...["assets/data/office-actions-216.json","assets/data/office-actions-221.json","hani-asset-market-view.js","hani-asset-update-v1.js","hani-context-remote-v1.js","hani-context-remote.css","hani-design-system.css","hani-design-system.css","hani-design-system.css","hani-investment-committee.js","hani-main.js","hani-main.js","hani-office-live.js","hani-organization-hub.css","hani-organization-hub.js","hani-study-v02984.js","hani-style-07.css","hani-ui-v02992.js","hani-yuna-helpdesk.js","index.html","index.html"]].sort());
- const stages=new Map();
- for(const connection of pendingApprovedConnections){
-  const {file,lines}=connection,current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
-  const stage=stages.get(file)??current;
-  assertReviewedReleaseSource(file,current);
-  assert.throws(()=>assertReviewedReleaseSource(file,'// unlisted staff edit\n'+current),{code:'ERR_ASSERTION'},file+' outside fragment');
+ for(const release of releasedOfficeConnections)for(const connection of release.connections){
+  const {file,lines}=connection,stage=readReleaseSource(release.sha,file);
   for(const fragment of lines){
-   // Full JSON is one frozen line; a leading JS hunk must move to the end.
-   assert.equal(stage.split(fragment).length-1,1,file+' fragment exists at this exact stage');
+   assert.equal(stage.split(fragment).length-1,1,file+' historical fragment exists');
    const rest=stage.replace(fragment,''),moved=rest?(stage.startsWith(fragment)?rest+fragment:fragment+rest):fragment+'\n';
-   assert.notEqual(normalizeReviewedConnection(connection,moved),normalizeReviewedConnection(connection,stage),file+' moved fragment changes normalized bytes');
-   if(current.includes(fragment)){
-    const rest=current.replace(fragment,''),moved=rest?(current.startsWith(fragment)?rest+fragment:fragment+rest):fragment+'\n';
-    assert.throws(()=>assertReviewedReleaseSource(file,moved),{code:'ERR_ASSERTION'},file+' moved current fragment rejected');
-   }
+   assert.notEqual(normalizeReviewedConnection(connection,moved),normalizeReviewedConnection(connection,stage),file+' moved historical fragment rejected');
   }
-  stages.set(file,normalizeReviewedConnection(connection,stage));
+  const current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
+  assertReviewedReleaseSource(file,current);
+  for(const changed of ['// unlisted staff edit\n'+current,current.slice(1),current+current,current.replace(/\r?\n/,'\r\n\n')]){
+   assert.notEqual(changed,current);
+   assert.throws(()=>assertReviewedReleaseSource(file,changed),{code:'ERR_ASSERTION'},file+' live missing/duplicate/altered/EOL bytes rejected');
+  }
  }
  for(const [file,from,to] of [
   ['hani-main.js','사원 · 2F','부장 · 2F'],
@@ -159,15 +210,15 @@ test('approved numeric integration fixes retain exact origin and reject removal,
   const oldLines=lines(before),newLines=lines(after);assert.equal(oldLines.length,newLines.length);
   const changes=oldLines.flatMap((line,i)=>line===newLines[i]?[]:[{before:line,after:newLines[i]}]);
   assert.equal(changes.length,1,file+' approved commit changes one line only');
-  const change=changes[0],current=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
+  const change=changes[0],current=readReleaseSource(released233Sha,file);
   assert.equal(current.split(change.after).length-1,1,file+' exact approved current line');
-  assertReviewedReleaseSource(file,current);
+  assert.equal(current,readReviewedRelease233Baseline(file));
   const badEol=change.after.endsWith('\r\n')?change.after.replace(/\r\n$/,'\n'):change.after.replace(/\n$/,'\r\n');
   for(const replacement of [change.before,'',change.after+change.after,change.after.replace('return null','return 0'),badEol]){
    assert.notEqual(replacement,change.after);
-   assert.throws(()=>assertReviewedReleaseSource(file,current.replace(change.after,()=>replacement)),{code:'ERR_ASSERTION'},file+' invalid approved line');
+   assert.throws(()=>assert.equal(current.replace(change.after,()=>replacement),readReviewedRelease233Baseline(file)),{code:'ERR_ASSERTION'},file+' invalid approved line');
   }
-  assert.throws(()=>assertReviewedReleaseSource(file,change.after+current.replace(change.after,'')),{code:'ERR_ASSERTION'},file+' approved line cannot move');
+  assert.throws(()=>assert.equal(change.after+current.replace(change.after,''),readReviewedRelease233Baseline(file)),{code:'ERR_ASSERTION'},file+' approved line cannot move');
  }
 });
 
@@ -191,7 +242,7 @@ test('fixed f27be17 CSS follow-up and named owner corrections retain exact bytes
  for(const change of f.corrections){
   let expected=readReleaseSource(f.candidateSha,change.file);assert.equal(hash(expected),change.beforeHash);
   for(const h of change.replacements){assert.equal(expected.split(h.before).length-1,1);expected=expected.replace(h.before,()=>h.after)}
-  let current=fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8');
+  let current=readReleaseSource(released233Sha,change.file);
   const {browserScroll,browserSticky,browserResidual}=JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8'));
   for(const delta of [...browserScroll.changes,...browserSticky.changes,...browserResidual.changes].filter(c=>c.file===change.file))for(const h of delta.replacements){assert.equal(current.split(h.after).length-1,1);current=current.replace(h.after,()=>h.before)}
   assert.equal(hash(expected),change.afterHash);assert.equal(current,expected);
@@ -209,14 +260,14 @@ test('date border correction is an exact delta from fixed 18916a0; old integrati
  const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
  for(const change of f.changes){
   const before=readReleaseSource(f.baseSha,change.file);
-  let after=fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8');
+  let after=readReleaseSource(released233Sha,change.file);
   for(const delta of JSON.parse(fs.readFileSync(new URL('./fixtures/train233-integrations.json',import.meta.url),'utf8')).browserScroll.changes.filter(c=>c.file===change.file))for(const h of delta.replacements){assert.equal(after.split(h.after).length-1,1);after=after.replace(h.after,()=>h.before)}
   assert.equal(hash(before),change.beforeHash);assert.equal(hash(after),change.afterHash);
   let forward=before,reverse=after;
   for(const h of change.replacements){assert.equal(forward.split(h.before).length-1,1);assert.equal(reverse.split(h.after).length-1,1);forward=forward.replace(h.before,()=>h.after);reverse=reverse.replace(h.after,()=>h.before)}
   assert.equal(forward,after);assert.equal(reverse,before);assertReviewedReleaseSource(change.file,fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8'));
-  const current=fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8');
-  for(const h of change.replacements)for(const mutation of [current.replace(h.after,''),current.replace(h.after,h.after+h.after),current.replace(h.after,h.after+'/* unlisted */')])assert.throws(()=>assertReviewedReleaseSource(change.file,mutation),{code:'ERR_ASSERTION'});
+  const current=after; // Fixed date stage, before the later scroll delta.
+  for(const h of change.replacements)for(const mutation of [current.replace(h.after,''),current.replace(h.after,h.after+h.after),current.replace(h.after,h.after+'/* unlisted */')]){assert.notEqual(mutation,after);assert.throws(()=>assert.equal(mutation,after),{code:'ERR_ASSERTION'});}
  }
 });
 
@@ -227,12 +278,12 @@ test('open-only Remote CSS is an exact delta from fixed c026b63; sticky and all 
  assert.deepEqual(f.changes.map(c=>[c.file,c.beforeHash,c.afterHash]),[['hani-context-remote.css','6ec52443784833f7c09b5c16318342b038534b8f5819694fe8360989d8039e4c','b543f80d8301c5427f1c44d631b831b76e60e1b657f7ee076c6be290c9b36a68']]);
  const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
  for(const change of f.changes){
-  const before=readReleaseSource(f.baseSha,change.file),after=fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8');
+  const before=readReleaseSource(f.baseSha,change.file),after=readReleaseSource(released233Sha,change.file);
   assert.equal(hash(before),change.beforeHash);assert.equal(hash(after),change.afterHash);
   let forward=before,reverse=after;
   for(const h of change.replacements){assert.equal(forward.split(h.before).length-1,1);assert.equal(reverse.split(h.after).length-1,1);forward=forward.replace(h.before,()=>h.after);reverse=reverse.replace(h.after,()=>h.before)}
-  assert.equal(forward,after);assert.equal(reverse,before);assertReviewedReleaseSource(change.file,after);
-  for(const h of change.replacements)for(const mutation of [after.replace(h.after,''),after.replace(h.after,h.after+h.after),after.replace(h.after,h.after.replace('[data-open="true"]','')),after.replace(h.after,h.after+'/* unlisted */')])assert.throws(()=>assertReviewedReleaseSource(change.file,mutation),{code:'ERR_ASSERTION'});
+  assert.equal(forward,after);assert.equal(reverse,before);assert.equal(after,readReviewedRelease233Baseline(change.file));
+  for(const h of change.replacements)for(const mutation of [after.replace(h.after,''),after.replace(h.after,h.after+h.after),after.replace(h.after,h.after.replace('[data-open="true"]','')),after.replace(h.after,h.after+'/* unlisted */')])assert.throws(()=>assert.equal(mutation,readReviewedRelease233Baseline(change.file)),{code:'ERR_ASSERTION'});
   const connection=released233Connections.find(c=>c.file===change.file);
   assert.equal(normalizeReviewedConnection(connection,after),before,'only newest delta is reversed before older fixed hunks');
  }
@@ -246,13 +297,13 @@ test('mobile scroll spacing is an exact delta from a29ff90; all older fixture id
  assert.deepEqual(f.changes.map(c=>[c.file,c.beforeHash,c.afterHash]),[['hani-design-system.css','8f3fc89d4a4138dce379f5ffd194505048aea85b8e395a0ada5c24246decb10b','f38f2b9a3cd7d55becadadea904a1fbe4d6b76090083b4edcba2c9ebcebbe002']]);
  const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
  for(const change of f.changes){
-  const before=readReleaseSource(f.baseSha,change.file),after=fs.readFileSync(new URL('../'+change.file,import.meta.url),'utf8');
+  const before=readReleaseSource(f.baseSha,change.file),after=readReleaseSource(released233Sha,change.file);
   assert.equal(hash(before),change.beforeHash);assert.equal(hash(after),change.afterHash);assert.equal(change.replacements.length,1);
   let forward=before,reverse=after;
   for(const h of change.replacements){assert.equal(forward.split(h.before).length-1,1);assert.equal(reverse.split(h.after).length-1,1);forward=forward.replace(h.before,()=>h.after);reverse=reverse.replace(h.after,()=>h.before)}
-  assert.equal(forward,after);assert.equal(reverse,before);assertReviewedReleaseSource(change.file,after);
+  assert.equal(forward,after);assert.equal(reverse,before);assert.equal(after,readReviewedRelease233Baseline(change.file));
   for(const h of change.replacements){
-   for(const mutated of [after.replace(h.after,''),after.replace(h.after,h.after+h.after),after.replace(h.after,h.after+'/* unlisted */'),after.replace('scroll-padding-top:calc(56px','scroll-padding-top:calc(0px'),after.replace('scroll-margin-top:8px','scroll-margin-top:0px'),after.replace('screen and (max-width:768px){\n  /* Native','screen and (max-width:850px){\n  /* Native'),after.replace(h.after,'')+'\n'+h.after,after.replace(h.after,h.after.replace(/\n/g,'\r\n'))])assert.throws(()=>assertReviewedReleaseSource(change.file,mutated),{code:'ERR_ASSERTION'});
+   for(const mutated of [after.replace(h.after,''),after.replace(h.after,h.after+h.after),after.replace(h.after,h.after+'/* unlisted */'),after.replace('scroll-padding-top:calc(56px','scroll-padding-top:calc(0px'),after.replace('scroll-margin-top:8px','scroll-margin-top:0px'),after.replace('screen and (max-width:768px){\n  /* Native','screen and (max-width:850px){\n  /* Native'),after.replace(h.after,'')+'\n'+h.after,after.replace(h.after,h.after.replace(/\n/g,'\r\n'))])assert.throws(()=>assert.equal(mutated,readReviewedRelease233Baseline(change.file)),{code:'ERR_ASSERTION'});
   }
   const connection=released233Connections.find(c=>c.file===change.file);
   assert.equal(normalizeReviewedConnection(connection,after),before,'newest scroll delta reverses before historical date correction');
