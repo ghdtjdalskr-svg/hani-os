@@ -1,3 +1,7 @@
+# 2026-11-01 · QA design bundle 4 QA-2·5·10·11·오늘의 한마디 (Codex)
+
+`hani/qa-design-b4` / qa-b6 / base·로컬 HEAD `9b50d16` / 표시 2.9.249 유지. 대시보드 「오늘의 소식」 native 접기·원래 링크/건수, 19명 새 한마디(총37)·roster 직급, 회사 소개 단체 배경·AA 흰 상자·roster 인원, 시황 만화/요약/지수 2열, 승인 목표 체중 여정·걸음 달력 읽기 전용 구현. 사진은 closure의 M9 9명(전체 직원19명 사진 아님). 시황 1호는 요약·지수 있음, 실제 다음 주 일정 없어 생략. **새 Node15/15·cleanup12/12·syntax6/6·별도 보존9/9 PASS, 기존11명령 중9성공·2실패(세부3건 모두 Git EPERM).** closure128/missing0·기존 목록/버전/cache·저장/Cloud 호출·선택 함수·office/board 보존. 기존 테스트 수정0. **브라우저·360px·화면 AA/가로 넘침·운영 미검증**, 서윤 개발 리드 검토 대기. 로컬 origin/main 캐시 `f726cb6`는 base와 다르며 원격 최신성/통합 영향 미확인, merge/rebase 없음. commit/push/PR/main/배포 없음. Notion append는 자동 승인 never로 거절되어 갱신 대기. [인수인계](handoffs/2026-11-01-qa-design-b4.md). 아래 타 담당·과거 기록 보존.
+
 # 2026-11-01 · 라운지 이미지 전광판 QA-20 (Codex)
 
 hani/lounge-billboard / qa-b4 / 커밋된 전광판 ee88f6a 위 후속 미커밋 / 표시 2.9.246 유지. 정적 library poll/voteChoice 전달·11월3일 사내 인기상 투표·직원19표 고정 seed/canon·자기투표 금지·화면 전용 월말 마감·다음 달 수상자와 진행 투표 슬라이드 구현. **실제 votePoll/persist/save/보호 writer/loadState로 직원19표+회장님1표 저장·재로드 확인. 게시판10+전광판+QA 총12명령 PASS(집계형37/37), syntax7/7·library check PASS·closure128/missing0·목록 동일·기존220글 보존.** 저장·투표·AI/Cloud 원문과 main/index·버전/cache·office 유지. commit/push/merge/배포 없음. 화면 마감은 저장 함수의 시간 제한/결과 스냅샷을 추가하지 않음. 브라우저·실제 Cloud/AI·원격 최신성·운영·최종 release gate 미검증. Notion append 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-11-01-lounge-billboard.md). 아래 타 담당·과거 기록 보존.

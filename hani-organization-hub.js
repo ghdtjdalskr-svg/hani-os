@@ -100,9 +100,10 @@
   function renderOverview(){
     const slot=root.querySelector('.ogh-overview');if(!slot)return;
     const model=organizationOverviewData(typeof state==='undefined'?null:state,historyReleases,window.HaniOrganizationRoster),employee=model.employee;
-    if(!slot.querySelector('.ogh-history'))slot.innerHTML='<section class="ogh-hero" aria-labelledby="ogh-title"><div class="ogh-hero-copy"><span class="ogh-kicker">HANI GROUP / PERSONAL AI COMPANY</span><h1 id="ogh-title">사람의 전문성.<br><em>AI의 실행력.</em></h1><p>전략, 기술, 재무, 라이프, 비즈니스.<br>다섯 전문 조직을 하나의 AI 운영 체계로 연결합니다.</p><button type="button" class="ogh-cta" data-scroll="ogh-chart">조직 구조 살펴보기 <span>↘</span></button><div class="ogh-signature">HANI GROUP <span>Expertise. Technology. Execution.</span></div></div><figure class="ogh-hero-art"><img src="./assets/team/hani-org-demo-day-v1.webp" alt="M9 아홉 멤버가 제품 시연 현장에서 발표·기록·검토하는 협업 장면" width="1439" height="810" loading="lazy" decoding="async"><figcaption><span>INSIDE HANI / DEMO DAY</span><span>M9 · IN ACTION</span></figcaption><span class="ogh-seal" aria-hidden="true">ONE<br>TEAM<br>✳</span></figure></section>'+
+    if(!slot.querySelector('.ogh-history'))slot.innerHTML='<section class="ogh-hero" aria-labelledby="ogh-title"><div class="ogh-hero-copy"><span class="ogh-kicker">HANI GROUP / PERSONAL AI COMPANY</span><h1 id="ogh-title">사람의 전문성.<br><em>AI의 실행력.</em></h1><p>전략, 기술, 재무, 라이프, 비즈니스.<br>다섯 전문 조직을 하나의 AI 운영 체계로 연결합니다.</p><p class="ogh-staff-count" data-ogh-staff-count></p><button type="button" class="ogh-cta" data-scroll="ogh-chart">조직 구조 살펴보기 <span>↘</span></button><div class="ogh-signature">HANI GROUP <span>Expertise. Technology. Execution.</span></div></div><figure class="ogh-hero-art"><img src="./assets/team/hani-team-office.webp" alt="M9 아홉 동료의 단체 사진 · 전체 직원 명단은 아래 조직도에서 확인" width="1439" height="810" loading="lazy" decoding="async"><figcaption>M9 / OUR PEOPLE</figcaption></figure></section>'+
       '<section class="ogh-section ogh-history" aria-labelledby="ogh-history-title"><div class="ogh-history-head"><div><span class="ogh-kicker">HANI GROUP / CHRONICLE</span><h2 id="ogh-history-title">HANI GROUP 연혁</h2><p>함께 만든 변화, 기록으로 이어가다.</p></div><div class="ogh-history-counts" aria-label="HANI 기록 집계"></div></div><div class="ogh-history-months" id="ogh-history-months"></div><button type="button" class="ogh-history-more" data-history-more aria-controls="ogh-history-months" aria-expanded="false" hidden>더 보기</button></section><div class="ogh-overview-details"></div>';
     const staff=window.HaniOrganizationRoster.people.filter(p=>p.status!=='planned'&&p.registration!=='planned');
+    const headcount=slot.querySelector('[data-ogh-staff-count]');if(headcount)headcount.textContent='함께하는 AI 직원 '+staff.length+'명 · 전체 명단은 조직도에서 만나요.';
     const issueCount=window.HaniIlbo?.publishedCount?.()??null;
     const key=JSON.stringify([model.releases,staff,historyReleases===null,historyReleasesFailed]);
     const countsMarkup='<span title="배포 이력 카탈로그 전체 기록">릴리스 <strong>'+(historyReleases===null?'—':model.releases.length)+'</strong>회</span><span title="입사 예정 제외">직원 <strong>'+staff.length+'</strong>명</span><span data-history-ilbo title="일보 모듈의 발행 목록 기준">하니일보 <strong>—</strong>호</span>';
@@ -260,7 +261,7 @@
     const overview=root.querySelector('.ogh-overview');
     if(overview){overview.hidden=tab!=='overview';if(!overview.hidden)renderOverview()}
     root.dataset.hubTab=tab;
-    root.querySelectorAll('.ogh-hero').forEach(node=>{node.hidden=tab!=='overview'});
+    root.querySelectorAll('.ogh-hero,.ogh-demo-card').forEach(node=>{node.hidden=tab!=='overview'});
     root.querySelectorAll('.ogh-strip').forEach(node=>{node.hidden=directoryMode});
     root.querySelectorAll('#ogh-chart,#ogh-teams,.ogh-type-controls').forEach(node=>{node.hidden=tab!=='people'});
     root.querySelector('.ogh-mast nav').hidden=tab!=='people';
