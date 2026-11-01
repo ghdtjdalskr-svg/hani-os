@@ -1,3 +1,7 @@
+# 2026-11-02 · 세 번째 마스코트 모찌 (Codex / qa-b11b)
+
+`hani/mascots-poster` / 로컬 HEAD `39cb3c7` / 표시 2.9.257 유지 / 미커밋. 기존 사내 마스코트에 모찌·사내 토끼·성격 한 줄 추가, 소개 문구를 인원수 무관하게 수정. 하니 전무 디자인 설정의 흰색·아이보리/회분홍 귀/분홍 리본 atlas480×288·초상화720/256/128·실제 로비 CSS 크기 비교1200×1220 제작. **지정 테스트21/21(전용9·cleanup12), syntax6/6·보존15/15 PASS·실패0. closure142→145/160·누락0.** 직원19명·roster/투표/집계·저장/Cloud·index/main·office-live·manifest·버전/cache 보존. sprite는 artifacts에만, 별도 manifest PR 필요. Git·브라우저 금지로 원격 최신성·실화면·운영 미검증. origin/main 캐시 `9eae97c`는 HEAD와 다르며 통합 영향 미확인, merge/rebase 없음. commit/push/merge/배포 없음. Notion 착수 append 자동 승인 never 거절로 갱신 대기. [인수인계·이미지 경로/크기·검사 근거](handoffs/2026-11-02-mochi-mascot.md). 아래 이전·타 담당 기록 보존.
+
 # 2026-11-02 · 치즈·크림 조직도 / 퀸 포스터 (Codex / qa-b11)
 
 `hani/mascots-poster` / base·로컬 HEAD·origin/main 캐시 `1f03c98` / 2.9.257 유지 / 미커밋. 조직도에 직원과 분리된 「사내 마스코트」 카드2개, 초상화720·썸네일256/128 6개·직원3명 비교판, 10월 퀸 서윤 포스터720×1080·60×90 로비 배치 비교 아트 제작. **신규7/7·전광판27/27·cleanup12/12·인원1/1·연혁14/14, syntax6/6·보존11/11 PASS. 테스트10명령8성공·2실패: 기존 office fixture·portraitSource 추출·gate 버전 기대값3결함은 변경 전 원문에서도 동일 재현.** closure136→142/160·누락0. 직원19명·roster/투표/집계·저장/Cloud·office-live·index·버전/cache 원문 보존. Git·브라우저 금지로 원격 최신성·실화면·운영 미검증. commit/push/merge/배포 없음. Notion 착수 저장·읽기 확인, 최종 갱신은 자동 승인 never 거절로 대기. [인수인계·이미지 경로/크기·검사 근거](handoffs/2026-11-02-mascots-poster.md). 아래 타 담당·기존 기록 보존.
