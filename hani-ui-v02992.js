@@ -484,7 +484,7 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
   speaker: "하니",
   role: "Chief of Staff",
   eyebrow: "OFFICE · HANI BOARDROOM",
-  title: "HANI 본사",
+  title: "HANI GROUP",
   description: "중요한 안건을 함께 검토해요",
   quote: "확인할 건 직원들이 확인하고, 결정할 건 대표가 결정합니다.",
   sceneImage: "./assets/banner-preview-v1/ai-approval-boardroom-v1.webp",

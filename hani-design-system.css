@@ -17,6 +17,16 @@ body,input,textarea,select,button{font-family:var(--ds-font)}
 #app .view .btn{font-family:var(--ds-font);font-size:14px;min-height:38px;border-radius:11px}
 #app .view .btn:focus-visible,#app [data-life-index]:focus-visible{outline:3px solid #997bed;outline-offset:3px}
 #app .view .pill{font-size:11px}
+/* Asset KPI meaning is independent of saved theme values. */
+#app #asset #assetStats{--invest-up:#b3263c;--invest-down:#2459b5}
+:root:is([data-finish="midnight-black"],[data-finish="titanium-graphite"]) #app #asset #assetStats{--invest-up:#ff8393;--invest-down:#8ab8ff}
+#app #asset #assetStats .stat{background:var(--surface-raised)!important}
+#app #asset #assetStats .value{color:var(--text-primary)!important}
+#app #asset #assetStats .value.asset-evaluation{color:var(--structure-accent)!important}
+#app #asset #assetStats .value.asset-cash{color:var(--text-secondary)!important}
+#app #asset #assetStats .value.invest-up{color:var(--invest-up)!important}
+#app #asset #assetStats .value.invest-down{color:var(--invest-down)!important}
+#app #ledger .ledger-special-badge{font-size:10px;white-space:nowrap;color:var(--text-primary);background:var(--surface-raised);border:1px solid var(--border-strong)}
 /* Dashboard: one shared grid rhythm and a character-led companion panel. */
 #app .ds-team-hero{display:grid;grid-template-columns:44% 56%;height:240px;background:linear-gradient(115deg,#eee7f6,#f5f0f7 55%,#eae9f4);border:1px solid #eae4f0;border-radius:24px;overflow:hidden;margin-bottom:16px}
 #app .ds-team-hero>div:first-child{padding:28px 32px;align-self:center}
@@ -666,7 +676,11 @@ body[data-finish-active] #app .view .btn.primary{background:var(--control-accent
 .aura-wordmark{display:flex;align-items:baseline;gap:10px;white-space:nowrap}.aura-wordmark>span{font-size:15px;font-weight:800;letter-spacing:.18em}.aura-wordmark>strong{font-size:42px;font-weight:750;letter-spacing:-.06em;line-height:1.1}
 .aura-heading h2{font-size:20px;margin:0 0 5px}.aura-heading p{font-size:10px;letter-spacing:.16em;margin:0;color:var(--text-secondary)}
 .aura-showroom{display:grid;grid-template-columns:minmax(0,1fr);gap:26px;max-width:1080px;margin-inline:auto}
+.aura-preview{animation:aura-hero-fade .24s ease-out}
+@keyframes aura-hero-fade{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.aura-preview{animation:none}}
 .aura-preview--season{display:none!important}
+.aura-preview--season figcaption{order:0}
 .aura-showroom:has(#auraSeasons.active) .aura-preview--finish{display:none}
 .aura-showroom:has(#auraSeasons.active) .aura-preview--season{display:flex!important}
 /* Restore the approved campaign composition at a smaller display scale. */
@@ -685,6 +699,9 @@ body[data-finish-active] #app .view .btn.primary{background:var(--control-accent
   .aura-preview figcaption{grid-column:1;grid-row:1;order:0;align-self:center;padding:28px 24px 16px;text-align:left}
   .aura-preview h3{font-size:clamp(28px,2.35vw,40px)}
   .aura-preview .aura-poster-signature{grid-column:1;grid-row:2;justify-items:start;padding:16px 24px 26px;border-radius:0 0 0 19px;background:none}
+  .aura-preview--season{grid-template-columns:minmax(0,58fr) minmax(0,42fr)}
+  .aura-preview--season>img{grid-column:1;border-radius:19px 0 0 19px}
+  .aura-preview--season figcaption,.aura-preview--season .aura-poster-signature{grid-column:2}
   .aura-poster-signature .aura-wordmark{display:flex;align-items:baseline;gap:10px}
 }
 #auraCurrentCombination{font-size:13px;font-weight:750;line-height:1.7}#auraPreviewCast{font-size:12px;color:var(--text-secondary)}
@@ -1131,7 +1148,8 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 #app .monthly-report-kpi:nth-child(n+4){grid-column:span 3}
 #app .monthly-report-kpi{display:grid;gap:7px;min-width:0;min-height:112px;padding:16px;border:1px solid var(--report-line);border-radius:16px;background:linear-gradient(145deg,#171f31,#121929);box-shadow:none}
 #app .monthly-report-kpi>span{color:#c0cbe0;font-size:15px;font-weight:850}
-#app .monthly-report-kpi>strong{color:#bfb2ff;font-size:clamp(26px,2vw,34px);line-height:1.2;word-break:keep-all;overflow-wrap:anywhere}
+#app .monthly-report-kpi>strong{color:var(--report-tone,#bfb2ff);font-size:clamp(26px,2vw,34px);line-height:1.2;word-break:keep-all;overflow-wrap:anywhere}
+#app [data-quarter-report-summary]{cursor:pointer;font-weight:800}
 #app .monthly-report-kpi>small{color:#a8b4cb;font-size:14px;line-height:1.5}
 #app .monthly-report-insight{display:grid;grid-template-columns:72px minmax(0,1fr);align-items:center;gap:17px;padding:19px 21px;border:1px solid rgba(155,140,255,.3);border-radius:18px;background:linear-gradient(110deg,rgba(120,96,229,.22),rgba(24,32,51,.9) 58%)}
 #app .monthly-report-insight-avatar{width:72px;height:72px;overflow:hidden;border:2px solid rgba(193,183,255,.5);border-radius:23px;background:#fff}
@@ -1141,7 +1159,7 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 #app .monthly-report-insight p{margin:0;color:#e4e9f6;font-size:18px;line-height:1.75}
 #app .monthly-report-domains{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
 #app .monthly-report-domain{--report-tone:#7569e8;display:grid;gap:20px;min-width:0;padding:26px;border:1px solid var(--report-line);border-top:4px solid var(--report-tone);border-radius:20px;background:radial-gradient(ellipse at 100% 0,color-mix(in srgb,var(--report-tone) 14%,transparent),transparent 60%),linear-gradient(145deg,#171f31,#111827)}
-#app .monthly-report-domain.tone-finance{--report-tone:#6f8dff}#app .monthly-report-domain.tone-money{--report-tone:#f0a15c}#app .monthly-report-domain.tone-health{--report-tone:#4fd0aa}#app .monthly-report-domain.tone-activity{--report-tone:#55b7ee}#app .monthly-report-domain.tone-culture{--report-tone:#c184ef}#app .monthly-report-domain.tone-learning{--report-tone:#ffd166}
+#app :is(.monthly-report-domain,.monthly-report-kpi).tone-finance{--report-tone:#6f8dff}#app :is(.monthly-report-domain,.monthly-report-kpi).tone-money{--report-tone:#f0a15c}#app :is(.monthly-report-domain,.monthly-report-kpi).tone-health{--report-tone:#4fd0aa}#app :is(.monthly-report-domain,.monthly-report-kpi).tone-activity{--report-tone:#55b7ee}#app :is(.monthly-report-domain,.monthly-report-kpi).tone-culture{--report-tone:#c184ef}#app :is(.monthly-report-domain,.monthly-report-kpi).tone-learning{--report-tone:#ffd166}
 #app .monthly-report-domain-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 #app .monthly-report-domain-head span{color:var(--report-tone)}
 #app .monthly-report-domain-head h3{margin:5px 0 0;color:var(--report-white);font-size:25px}

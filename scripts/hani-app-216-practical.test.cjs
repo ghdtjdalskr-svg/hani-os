@@ -65,7 +65,8 @@ test('quick wrong selection excludes mastered/disputed via canonical wrongRows, 
 });
 test('native collapsed forms use original unique IDs and save path; persistent slots and phone order anchors',()=>{
  const html=fs.readFileSync('index.html','utf8');for(const view of ['reading','movie']){const match=html.match(new RegExp('<details[^>]+data-phase1-form="'+view+'"[^>]*>'));assert.ok(match);assert.doesNotMatch(match[0],/\bopen\b/)}
- for(const id of ['saveBook','saveMovie','bookTitle','movieTitle','bodyWeight','readingActivityTrend','movieActivityTrend','monthlyReadingActivityTrend','settlementQuickCheck'])assert.equal((html.match(new RegExp('id="'+id+'"','g'))||[]).length,1,id);
+ for(const id of ['saveBook','saveMovie','bookTitle','movieTitle','bodyWeight','readingActivityTrend','movieActivityTrend','settlementQuickCheck'])assert.equal((html.match(new RegExp('id="'+id+'"','g'))||[]).length,1,id);
+ assert.equal((html.match(/id="monthlyReadingActivityTrend"/g)||[]).length,0,'monthly report no longer duplicates the library trend');
  for(const view of ['reading','movie']){const section=pick(html,'<section id="'+view+'"','</section>');assert.match(section,new RegExp('</details>\\s*<div class="card full activity-trend-card" id="'+view+'ActivityTrend"></div>'),'persistent trend slot immediately follows record form');}
  assert.match(fs.readFileSync('hani-design-system.css','utf8'),/\.body-quick-input\{order:-2/);
 });

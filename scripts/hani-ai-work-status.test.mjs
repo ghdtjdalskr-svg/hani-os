@@ -17,7 +17,7 @@ const ctx=vm.createContext({$:node,team:[{key:'hani'}],agentImages:{},sidebarAge
 vm.runInContext(source.slice(source.indexOf('const developmentTeam='),source.indexOf('// ===== v2.9.0 Campus MVP'))+'\nglobalThis.catalog=developmentTeam;renderTeam=()=>{};',ctx);
 await ctx.loadAiTeamStatus();await ctx.loadAiTeamStatus();assert.equal(requests,1,'one cached request');
 assert.ok(node('aiTeamStatusSummary').textContent.includes(data.updatedAt));
-assert.ok(node('aiTeamStatusSummary').textContent.includes('운영 v'+data.productionVersion));
+assert.match(node('aiTeamStatusSummary').textContent,/릴리스 기록을 불러오지 못했어요/);assert.ok(!node('aiTeamStatusSummary').textContent.includes('운영 v'+data.productionVersion),'member feed version is not production metadata');
 assert.deepEqual(Array.from(ctx.catalog,x=>x.name),['서윤','도연','세린','하니 전무','유리','아린','히나']);
 assert.equal(new Set(ctx.catalog.map(x=>x.key)).size,7);
 for(const member of ctx.catalog){

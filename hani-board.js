@@ -1321,6 +1321,32 @@
     }
     return text;
   }
+  // Read-only lounge promotion. Persistent nodes; a single visibility-owned timer.
+  let bannerTimer=null,bannerIndex=0,bannerPaused=false;
+  const bannerMotion=window.matchMedia?.('(prefers-reduced-motion: reduce)');
+  function loungeBannerItems(now=Date.now()){
+    const employee=window.HaniOrganizationHub?.overviewData?.(state,null,roster(),now)?.employee;
+    return [...(employee?[{kicker:'이달의 직원',title:employee.name,copy:'이번 달 게시글·공개 댓글 '+employee.count+'건 · 조직 소개에서 만나보세요.',image:window.HaniOrganizationHub.portraitSource(employee.id),href:'#organization/people/'+employee.id}]:[]),
+      {kicker:'HANI 일보',title:'오늘의 사내 소식',copy:'팀의 이야기와 새 소식을 HANI 일보에서 만나보세요.',image:'./assets/heroes/newsroom-218.webp',href:'#ilbo'}];
+  }
+  function paintLoungeBanner(now=Date.now()){
+    const slot=get('unread');if(!slot)return;
+    const items=loungeBannerItems(now),item=items[bannerIndex%items.length],link=slot.querySelector('[data-board-banner-link]'),image=slot.querySelector('[data-board-banner-image]');
+    if(!link||!image)return;
+    link.setAttribute('href',item.href);image.setAttribute('src',item.image);
+    for(const key of ['kicker','title','copy'])slot.querySelector('[data-board-banner-'+key+']').textContent=item[key];
+    const pause=slot.querySelector('[data-board-banner-pause]');pause.textContent=bannerPaused?'자동 전환 재개':'자동 전환 멈춤';pause.setAttribute('aria-pressed',String(bannerPaused));pause.hidden=!!bannerMotion?.matches;
+  }
+  function syncBanner(){
+    if(bannerTimer!==null){clearTimeout(bannerTimer);bannerTimer=null}
+    if(!root?.classList.contains('active')||document.visibilityState==='hidden'||bannerMotion?.matches||bannerPaused)return;
+    bannerTimer=setTimeout(()=>{
+      bannerTimer=null;
+      if(!root.classList.contains('active')||document.visibilityState==='hidden')return;
+      if(!get('unread')?.contains(document.activeElement))bannerIndex++;
+      paintLoungeBanner();syncBanner();
+    },6000);
+  }
   function paintLiving(writable,now=Date.now()){
     const disabled=writable?"":" disabled",drafts=postDrafts(),replies=replyDrafts();
     const reviewing=replyMode()==="review";
@@ -1330,7 +1356,7 @@
     if(get("trayCount"))get("trayCount").textContent="📬 새 글 "+drafts.length+"개 도착 · 답글 미리보기 "+replies.length+"개 · 새 댓글 "+badge+" · 예약 답글 "+waiting+"개";
     html("tray",reviewing?([...drafts.map(p=>'<article class="board-draft">'+authorCard(p.authorId)+'<span class="pill">'+escape(p.category)+'</span><h4>'+escape(displayText(p,p.title))+'</h4><p class="board-body">'+escape(displayText(p,p.body))+'</p>'+interactiveMarkup(p,false)+draftButtons("post",p,disabled)+'</article>'),
       ...replies.map(c=>'<article class="board-draft">'+authorCard(c.authorId)+'<p class="sub">'+escape(publicText(posts().find(p=>p.id===c.postId)?.title))+' · '+(c.parentId?"답글":"댓글")+'</p><p class="board-body">'+escape(displayText(c,c.body))+'</p>'+draftButtons("comment",c,disabled)+'</article>')].join("")||'<p class="empty">도착한 초안을 모두 확인했어요.</p>'):"");
-    html("unread",posts().filter(p=>published(p)&&unreadCount(p)).map(p=>'<button class="btn sm" type="button" data-board-open="'+escape(p.id)+'">'+escape(displayText(p,p.title))+' · 새 댓글 '+unreadCount(p)+'</button>').join(""));
+    paintLoungeBanner(now);syncBanner();
     const archives=[...posts().filter(p=>p.disposition==="archived").map(p=>({...p,kind:"post"})),...comments().filter(c=>c.disposition==="archived").map(c=>({...c,kind:"comment"}))];
     html("archive",archives.map(p=>'<div class="board-draft">'+escape(publicText(p.title||p.body))+' <button class="btn sm" type="button" data-board-draft="restore" data-kind="'+p.kind+'" data-key="'+escape(p.id)+'"'+disabled+'>초안함으로</button></div>').join(""));
     html("activity",weeklyActivity().map(a=>'<span class="board-member'+(a.posts+a.comments?' is-active':'')+'" title="'+escape(author(a.id))+'">'+escape(person(a.id)?.name)+' · 글 '+a.posts+' / 댓글 '+a.comments+(a.posts+a.comments>=3?' ✨ 활발':a.posts+a.comments?' 🌱 참여':'')+'</span>').join(""));
@@ -1395,6 +1421,10 @@
   }
   function init(){
     if(!root)return;
+    document.addEventListener?.('visibilitychange',syncBanner);
+    window.addEventListener?.('pagehide',()=>{if(bannerTimer!==null){clearTimeout(bannerTimer);bannerTimer=null}});
+    window.addEventListener?.('pageshow',syncBanner);
+    bannerMotion?.addEventListener?.('change',()=>{paintLoungeBanner();syncBanner()});
     if(!get("syncNotice")){
       const notice=document.createElement("p");notice.className="sub";notice.dataset.board="syncNotice";notice.hidden=true;
       notice.textContent="Cloud 동기화가 준비되면 새 글과 답글이 도착해요.";
@@ -1404,6 +1434,10 @@
     get("preview").addEventListener("cancel",cancelPreview);get("preview").addEventListener("close",cancelPreview);
     get("search").addEventListener("input",event=>{query=event.target.value;visible=pageSize;render()});
     root.addEventListener("click",event=>{
+      const bannerLink=event.target.closest('[data-board-banner-link]');
+      if(bannerLink){event.preventDefault();showView(bannerLink.getAttribute('href').slice(1));return}
+      if(event.target.closest('[data-board-banner-pause]')){bannerPaused=!bannerPaused;paintLoungeBanner();syncBanner();return}
+      if(event.target.closest('[data-board-banner-next]')){bannerIndex++;paintLoungeBanner();syncBanner();return}
       const profile=event.target.closest("[data-board-person]");
       if(profile?.dataset.boardPerson&&root.contains(profile)){
         event.preventDefault();showView("organization/people/"+profile.dataset.boardPerson);return;
@@ -1461,7 +1495,7 @@
     window.addEventListener?.("hashchange",historyChange);
     renderBoard();
   }
-  window.HaniBoard=Object.freeze({render:renderBoard,savePost,saveComment,deleteOwn,openPost,toggleLike,listPosts,
+  window.HaniBoard=Object.freeze({render:renderBoard,syncBanner,savePost,saveComment,deleteOwn,openPost,toggleLike,listPosts,
     postFields,displayViews,staffReads,displayLikes,boardReaders,commentFields,relativeTime,boardDate,closePost,previewThread,postPreview,cancelPreview,ownerReactions,replyIntent,chairmanReplyIntent,chairmanReplyTopic,CHAIRMAN_TOPIC_REPLIES,CHAIRMAN_REPLIES,orderedComments,commentMarkup,stripLeadingVocative,
     ADDRESS_RULES,personaMap,personaMode,staffAddress,candidateScore,commentCandidates,selectAuthors,queueReplies,generateDaily,realEvents,refreshLiving,
     setReplyMode,replyMode,draftAction,postDrafts,replyDrafts,votePoll,toggleReaction,weeklyBest,weeklyActivity,
