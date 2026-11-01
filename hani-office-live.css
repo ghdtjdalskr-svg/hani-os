@@ -135,7 +135,10 @@
 /* A transparent target shares the actor's delegated events, without stretching art. */
 .hani-office-actor[role="button"]:before{content:"";position:absolute;z-index:4;left:50%;top:50%;width:max(40px,100%);height:max(40px,100%);transform:translate(-50%,-50%);pointer-events:auto}
 .hani-office-actor:focus-visible{outline:2px solid #8363b8;outline-offset:3px;border-radius:8px}
-.hani-office-prop{position:absolute;z-index:4;right:-4px;top:25%;font-size:clamp(9px,1.4cqw,17px);line-height:1;pointer-events:none}
+.hani-office-prop{position:absolute;z-index:4;left:100%;top:2px;translate:-35% 0;box-sizing:content-box;width:1em;height:1em;padding:2px;border-radius:50%;background:#fff;font-size:18px;line-height:1;text-align:center;pointer-events:none;animation:none;transition:none;display:none}
+.hani-office-actor .hani-office-prop:not(:empty){display:block}
+.hani-office-actor[data-walking="true"] .hani-office-prop:not(:empty),.hani-office-actor[data-pose="walk-a"] .hani-office-prop:not(:empty),.hani-office-actor[data-pose="walk-b"] .hani-office-prop:not(:empty),.hani-office-actor[data-behavior="GOING"] .hani-office-prop:not(:empty),.hani-office-actor[data-behavior="RETURNING"] .hani-office-prop:not(:empty){display:none}
+@media(max-width:600px){.hani-office-prop{font-size:14px}}
 .hani-office-character-bubble{position:absolute;z-index:10;box-sizing:border-box;left:4px;top:4px;max-width:calc(100% - 8px);display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0;padding:4px 8px;border:1px solid #d8cce7;border-radius:12px;background:#fffaf0;color:#493752;font-size:13px}
 .hani-office-character-bubble[hidden]{display:none}.hani-office-character-bubble p{margin:0;overflow-wrap:anywhere}.hani-office-character-bubble a{flex:none;min-height:44px;display:flex;align-items:center;color:#67418b;font-weight:700}
 .hani-building-roster [role="button"]{cursor:pointer}.hani-building-roster [role="button"]:focus-visible{outline:2px solid #8363b8}
