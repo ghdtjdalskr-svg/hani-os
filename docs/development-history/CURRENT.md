@@ -1,3 +1,7 @@
+# 2026-11-01 · qa-b8 홈 조치·건강 결함 후속 수정 (Codex)
+
+hani/qa-home-fixes / qa-b8 / base·로컬 HEAD·origin/main 캐시 2c0064f / 미커밋. 홈 고정 조치 슬롯으로 storage 경고·월말 chip·정산·care 카드 상시 노출, 소식은 일보·마일스톤만 건수 계산. 체중 방향 근거/활성일·중복, 걸음 빈 상태/KST·중복 보완. import·보고서 생성·홈 진입의 기존 owner로 갱신. **전용24/24, 지정 포함 테스트10명령 성공/0실패, syntax2/2·보존10/10·closure128 불변.** showView는 원래 care 호출이 있어 바이트 보존. Data Hub와 월간보고 동률 중복 정책은 기존 차이가 있어 보고서 helper를 재사용하고 차이를 명시. 저장/Cloud·버전/cache·금지 파일·혼합개행 보존, commit/push/merge/배포 없음. 브라우저·원격 최신성·운영 미검증. Notion 쓰기 자동 승인 never 거절로 갱신 대기. [인수인계](handoffs/2026-11-01-qa-design-b4.md). 아래 이전 작업·다른 담당 근거 보존.
+
 # 2026-11-01 · QA design bundle 4 QA-2·5·10·11·오늘의 한마디 (Codex)
 
 `hani/qa-design-b4` / qa-b6 / base·로컬 HEAD `9b50d16` / 표시 2.9.249 유지. 대시보드 「오늘의 소식」 native 접기·원래 링크/건수, 19명 새 한마디(총37)·roster 직급, 회사 소개 단체 배경·AA 흰 상자·roster 인원, 시황 만화/요약/지수 2열, 승인 목표 체중 여정·걸음 달력 읽기 전용 구현. 사진은 closure의 M9 9명(전체 직원19명 사진 아님). 시황 1호는 요약·지수 있음, 실제 다음 주 일정 없어 생략. **새 Node15/15·cleanup12/12·syntax6/6·별도 보존9/9 PASS, 기존11명령 중9성공·2실패(세부3건 모두 Git EPERM).** closure128/missing0·기존 목록/버전/cache·저장/Cloud 호출·선택 함수·office/board 보존. 기존 테스트 수정0. **브라우저·360px·화면 AA/가로 넘침·운영 미검증**, 서윤 개발 리드 검토 대기. 로컬 origin/main 캐시 `f726cb6`는 base와 다르며 원격 최신성/통합 영향 미확인, merge/rebase 없음. commit/push/PR/main/배포 없음. Notion append는 자동 승인 never로 거절되어 갱신 대기. [인수인계](handoffs/2026-11-01-qa-design-b4.md). 아래 타 담당·과거 기록 보존.
