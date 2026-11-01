@@ -37,16 +37,16 @@ test('number suffixes and ranges yield positive plain numbers; invalid values re
   assert.throws(()=>C.importFairValues({fairValue:{currency:'USD',mid:90}},'KRW'),/통화/);
 });
 
-test('review warns for incoming missing fair value even when retaining an existing value; never mutates source', () => {
+test('review explains retained existing fair value instead of warning; never mutates source', () => {
   const s=blank(),old={...C.normalizeCard(fixture.cards[0]),id:'old',extra:{keep:true}};
   s.investmentResearchCards=[old]; s.investmentResearchHistory=[{id:'history',keep:true}];s.investmentCommitteeSnapshots=[{id:'snapshot',keep:true}];
   const before=JSON.stringify(s),items=C.reviewReport([raw({})],s);
-  assert.equal(items[0].missingFairValue,true);assert.equal(items[0].card.fairValue,old.fairValue);
+  assert.equal(items[0].missingFairValue,false);assert.equal(items[0].card.fairValue,old.fairValue);
   assert.equal(JSON.stringify(s),before);assert.equal(s.investmentResearchCards[0],old);
   assert.equal(review(raw({fairValue:null,valuationNote:'비상장으로 산정 불가'})).missingFairValue,true);
   const slot={innerHTML:''},context=vm.createContext({importReview:items,importDialog:{querySelector:()=>slot},missingFairItems:C.missingFairItems,esc,labels:{},valueText:JSON.stringify});
   vm.runInContext(fn('renderReview','  const monthlyHost')+'\nrenderReview();',context);
-  assert.match(slot.innerHTML,/적정가 누락 1종목/);assert.match(slot.innerHTML,/적정가 누락 – GPT에 다시 요청하거나 직접 입력/);assert.match(slot.innerHTML,/누락 종목만 GPT 재요청 복사/);
+  assert.doesNotMatch(slot.innerHTML,/적정가 누락/);assert.match(slot.innerHTML,/GPT가 적정가를 주지 않아 기존 적정가를 유지해요/);
   assert.equal(JSON.stringify(s),before);
 });
 
@@ -124,6 +124,6 @@ test('actual delegated import handler accepts a valuation-only follow-up and per
   const thesis=context.importReview[0].card.thesis;
   report.value=JSON.stringify([{name:fixture.cards[0].name,targetPrice:'9만',fairValueLow:'8만',fairValueHigh:'10만',valuationMethod:'배수',valuationNote:'보완'}]);
   await click('parse');assert.equal(context.importReview[0].card.fairValue,90000);assert.deepEqual(context.importReview[0].card.thesis,thesis);assert.doesNotMatch(slot.innerHTML,/적정가 누락/);assert.equal(context.importReview.length,2);assert.equal(context.importReview[1].card.name,fixture.cards[3].name);assert.equal(context.importReview[1].include,false);assert.equal(saved,0);assert.equal(JSON.stringify(s),before);
-  await click('apply');assert.equal(saved,1);assert.equal(closed,1);assert.equal(renders,1);assert.equal(s.investmentResearchCards[0].fairValue,90000);assert.equal(next.dataset.appliedOwner,'local');
+  await click('apply');assert.equal(saved,1);assert.equal(closed,1);assert.equal(renders,1);assert.equal(s.investmentResearchCards[0].fairValue,90000);assert.equal(next.dataset.appliedOwner,undefined);
   assert.equal(s.investmentCommitteeSnapshots.length,0);
 });
