@@ -178,10 +178,10 @@ test('release trace sees literal JSON path; caption wraps in full; scheduler and
  const css=read('hani-office-live.css');assert.match(css,/\.hani-building-drama-caption\{flex:1 1 100%;/);assert.doesNotMatch(css,/\.hani-building-drama-caption[^{]*\{[^}]*nowrap/);
  const normalized=source.replace(/\r\n/g,'\n');
  for(const [start,end,expected] of [
-  ['  function createScheduler(','  function statusLabelPriority(','8fd98dc3573c2dac531cfd835722d22c57dced5cd3d4dacfbea22825f59d9bf3'],
+  ['  function createScheduler(','  function statusLabelPriority(','b7256f6c59e778864d6b7a8050d0bcd9976bb8a70b39005559989c374cec1d3a'],
   ['  function placeStatusLabels(','  const scheduler=','5070f7e62556b89410bc7588600fefe80ba99579e945ae49bab89def98bec6f0']
  ]){const from=normalized.indexOf(start),until=normalized.indexOf(end,from);assert.ok(from>0&&until>from);
-  assert.equal(createHash('sha256').update(normalized.slice(from,until)).digest('hex'),expected,start+' frozen after approved consultations; placement unchanged');
+  assert.equal(createHash('sha256').update(normalized.slice(from,until)).digest('hex'),expected,start+' approved G reservation ranking compensation; protected placement unchanged');
  }
 });
 

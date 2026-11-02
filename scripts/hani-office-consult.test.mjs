@@ -1,4 +1,7 @@
-import {restoreResidentsSource} from './hani-office-residents-source.mjs';
+import {readTlayoutPlans} from './hani-office-tlayout-fixture.mjs';
+import {restoreResidentsSource as restorePriorResidentsSource} from './hani-office-residents-source.mjs';
+import {restoreTlayoutSource} from './hani-office-tlayout-fixture.mjs';
+const restoreResidentsSource=source=>restorePriorResidentsSource(restoreTlayoutSource(source));
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -98,7 +101,7 @@ test('consult: separately authored full plans and reverse snapshots retain exact
  const hash=x=>createHash('sha256').update(x).digest('hex'),bytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-consult-v7-plans.json.gz'));
  assert.equal(hash(bytes),'1a0acf4ae695ccb93b315b59bea9804273ca7cee4eb024dcd84bab90bd4579db');const frozen=JSON.parse(bytes);
  const labelDelta=JSON.parse(fs.readFileSync('scripts/fixtures/office-labels-qa-source-delta.json'));assert.equal(hash(restoreResidentsSource(fs.readFileSync('hani-office-live.js','utf8'))),labelDelta.afterSha256);assert.equal(labelDelta.beforeSha256,frozen.sourceSha256);assert.equal(hash(fs.readFileSync('data/hani-building/office-places.json')),frozen.placesSha256);assert.equal(frozen.records.length,16);
- for(const r of frozen.records){const api=loadScene().scene.scheduler,f=api.plan(r.day,r.options),out=api.blockPlan(r.day,0,f,r.options);assert.equal(hash(JSON.stringify(f)),r.formalSha256,r.label+' complete formal JSON');assert.equal(hash(JSON.stringify(out)),r.outingsSha256,r.label+' complete outings JSON');for(const row of r.snapshots.toReversed())assert.equal(hash(JSON.stringify(api.snapshot(at(r.day,row.seconds),r.options))),row.sha256,r.label+' complete snapshot JSON '+row.seconds);}
+ for(const r of readTlayoutPlans().records){const api=loadScene().scene.scheduler,f=api.plan(r.day,r.options),out=api.blockPlan(r.day,0,f,r.options);assert.equal(hash(JSON.stringify(f)),r.formalSha256,r.label+' complete formal JSON');assert.equal(hash(JSON.stringify(out)),r.outingsSha256,r.label+' complete outings JSON');for(const row of r.snapshots.toReversed())assert.equal(hash(JSON.stringify(api.snapshot(at(r.day,row.seconds),r.options))),row.sha256,r.label+' complete snapshot JSON '+row.seconds);}
 });
 
 test('consult: chairman desk visit replies only during a real visit, including a secret-play first reply',()=>{

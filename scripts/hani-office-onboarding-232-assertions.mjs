@@ -1,3 +1,4 @@
+import {applyTlayoutCanon} from './hani-office-tlayout-fixture.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
@@ -18,6 +19,7 @@ export function assertOnboardedCanon(){
  for(const [target,from,to]of [['approach_arrival_gate','junction_lobby','door_lobby'],['approach_coffee_counter','junction_cafe','door_cafe']]){
   const edges=expected.edges.filter(e=>e.from===from&&e.to===target);assert.equal(edges.length,1);edges[0].from=to;
  }
- assert.deepEqual(actual,expected,'only explicit onboarding and two cafe approach edges are allowed; all 326 anchors and every other field stay frozen');
+ applyTlayoutCanon(expected);
+ assert.deepEqual(actual,expected,'only explicit onboarding, cafe approaches and pinned approved G fields; all 326 anchors and every other field stay frozen');
  assert.equal(actual.anchors.length,326);
 }

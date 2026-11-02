@@ -1,4 +1,7 @@
-import {restoreResidentsSource} from './hani-office-residents-source.mjs';
+import {readTlayoutPlans} from './hani-office-tlayout-fixture.mjs';
+import {restoreResidentsSource as restorePriorResidentsSource} from './hani-office-residents-source.mjs';
+import {restoreTlayoutSource} from './hani-office-tlayout-fixture.mjs';
+const restoreResidentsSource=source=>restorePriorResidentsSource(restoreTlayoutSource(source));
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {loadScene,at,readAt} from './hani-office-lively-fixture.mjs';
@@ -40,7 +43,7 @@ test('obr8/obr13: frozen formal plans include approved chairman delta; errands h
  const counts={colleague:0,delivery:0,notice:0,task:0};
  for(const day of days){
   const options={chairmanPresent:true},formal=s.plan(day,options),all=s.blockPlan(day,0,formal,options),errands=all.filter(e=>e.card.kind==='errand');
-  const reviewed=cafe.records.find(r=>r.day===day&&r.options.chairmanPresent===true);
+  const reviewed=readTlayoutPlans().records.find(r=>r.day===day&&r.options.chairmanPresent===true);
   assert.ok(reviewed,'every original comparison day has an exact frozen formal plan');
   assert.ok(isDeepStrictEqual(plain(formal),reviewed.formal),'all formal decisions match exact approved cafe/rest delta');
   assert.ok(errands.length>600,day+' actual accepted errands');

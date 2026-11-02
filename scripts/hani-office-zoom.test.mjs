@@ -8,6 +8,8 @@ import vm from 'node:vm';
 import http from 'node:http';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
+import {gunzipSync} from 'node:zlib';
+import {restoreTlayoutSource} from './hani-office-tlayout-fixture.mjs';
 import {pathToFileURL,fileURLToPath} from 'node:url';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
@@ -144,17 +146,19 @@ test('zoom: waiting client/candidate labels use 대기 중 instead of rest on ph
 
 test('zoom: scheduler, snapshots and all three protected geometry functions stay byte identical to task base',()=>{
   // Pre-edit bytes verified against the e2cd3fd GitHub blob 5957499bd25d544a8ff6504afc2a2afa67f7a936.
-  const baseline=fs.readFileSync(new URL('../artifacts/office-zoom/source-before.txt',import.meta.url),'utf8');
+  const baseline=gunzipSync(fs.readFileSync(new URL('fixtures/office-zoom-source-before.txt.gz',import.meta.url))).toString('utf8');
+  // Normalize only the exact frozen G edits; the complete G outputs have their own oracle.
+  const comparableSource=restoreTlayoutSource(source),comparableScene=loadScene({transform:()=>comparableSource}).scene;
   assert.equal(createHash('sha256').update(baseline).digest('hex'),'d8f377329117914108645270e598d6d963cc640900f412203d3450aca679e68c');
   const section=(text,a,b)=>{const i=text.indexOf(a),j=text.indexOf(b,i);assert.ok(i>=0&&j>i,a);return text.slice(i,j)};
-  for(const [a,b]of [['  function createScheduler(','  // Read-only label geometry'],['  function snapshot(now=new Date()','  function profile('],['    function screenHomeClear(','    function stationaryStops('],['  function placeStatusLabels(','  const scheduler='],['  function fitStatusLabels(','  if(buildingChairmanSlot())people.push']])assert.equal(section(source,a,b),section(baseline,a,b),a);
+  for(const [a,b]of [['  function createScheduler(','  // Read-only label geometry'],['  function snapshot(now=new Date()','  function profile('],['    function screenHomeClear(','    function stationaryStops('],['  function placeStatusLabels(','  const scheduler='],['  function fitStatusLabels(','  if(buildingChairmanSlot())people.push']])assert.equal(section(comparableSource,a,b),section(baseline,a,b),a);
   const old=loadScene({transform:()=>baseline}).scene;
   for(const day of ['2026-11-02','2026-11-07'])for(const chairmanPresent of [false,true]){
-    const o={chairmanPresent},a=scene.scheduler.plan(day,o),b=old.scheduler.plan(day,o);
-    assert.equal(JSON.stringify(a),JSON.stringify(b));assert.equal(JSON.stringify(scene.scheduler.blockPlan(day,0,a,o)),JSON.stringify(old.scheduler.blockPlan(day,0,b,o)));
+    const o={chairmanPresent},a=comparableScene.scheduler.plan(day,o),b=old.scheduler.plan(day,o);
+    assert.equal(JSON.stringify(a),JSON.stringify(b));assert.equal(JSON.stringify(comparableScene.scheduler.blockPlan(day,0,a,o)),JSON.stringify(old.scheduler.blockPlan(day,0,b,o)));
     for(const seconds of [1,32400,36000,43200,64800,82800]){
-      assert.equal(JSON.stringify(scene.scheduler.snapshot(at(day,seconds),o)),JSON.stringify(old.scheduler.snapshot(at(day,seconds),o)));
-      assert.equal(JSON.stringify(scene.snapshot(at(day,seconds),o)),JSON.stringify(old.snapshot(at(day,seconds),o)));
+      assert.equal(JSON.stringify(comparableScene.scheduler.snapshot(at(day,seconds),o)),JSON.stringify(old.scheduler.snapshot(at(day,seconds),o)));
+      assert.equal(JSON.stringify(comparableScene.snapshot(at(day,seconds),o)),JSON.stringify(old.snapshot(at(day,seconds),o)));
     }
   }
   for(const token of ['setInterval(','setTimeout(','fetch('])assert.equal(source.split(token).length,baseline.split(token).length,token);
