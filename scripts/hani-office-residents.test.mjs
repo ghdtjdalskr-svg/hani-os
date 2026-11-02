@@ -122,7 +122,7 @@ test('eight approved atlases decode, match their manifest hashes, load through t
  const closure=await resolveRuntimeClosure({exists:fs.existsSync,read:f=>fs.readFileSync(f)});
  assert.ok(closure.files.length<=160);assert.deepEqual(closure.missing,[]);
  const baseline=(await resolveRuntimeClosure({exists:fs.existsSync,read:f=>f==='hani-office-live.css'?read(f).split('/* Resident art uses the existing sheet loader;')[0]:f==='hani-office-live.js'?restoreResidentsSource(read(f)):fs.readFileSync(f)})).files;
- assert.equal(baseline.length,139,'existing closure unchanged');
+ assert.equal(baseline.length,138,'existing closure loses only removed portrait');
  assert.deepEqual(closure.files.filter(f=>!baseline.includes(f)).sort(),plain(ids.map(id=>'assets/sprites-v3/'+id+'.webp')).sort());
 });
 

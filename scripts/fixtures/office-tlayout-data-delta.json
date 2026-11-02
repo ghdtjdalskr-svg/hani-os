@@ -1,6 +1,6 @@
 {
   "schema": "office-tlayout-approved-g-v1",
-  "base": "476210cdbe0408039672932aa3ab6bbde825860a",
+  "base": "cf1d3ccddf1bfc76563bc38e71d03e127db825ec",
   "reason": "approved G: QA real chair y84.5 clears 312px conservative sprite boxes, original 19 desk prop slots retained by moving lead prop onto new desk; safe data-only trials fail rest lower bounds; two existing ranking lines only (lunch present/absent 4/64→16/10, same-floor non-lunch16→17) preserve rest, roof and nearby dialogue dots; every safety gate unchanged",
   "files": [
     {
@@ -2793,8 +2793,8 @@
     }
   ],
   "source": {
-    "beforeSha256": "9d163016ff9b5d301f0b9088fbaadc5d7af21c4fa77ae62fe465c6253e42fe43",
-    "afterSha256": "3fe955345e8e843d05035159468ea364221b5bcb606a9edf73a80b9355455a46",
+    "beforeSha256": "bc100b705d67c74e85fb3c595f134359e111ff0672ceb6bef5902fa56245f62a",
+    "afterSha256": "bbb4d645aa644d5fd3704a3240118ee45e2f038866064fe277db8806ebc1668e",
     "replacements": [
       {
         "before": "screen=monitorScreens[anchor],rect=furniture[anchor]?.deskBounds",
@@ -2819,7 +2819,7 @@
     ]
   },
   "css": {
-    "beforeSha256": "52958c350dcb51bbdeb8264199eb75b1f0b7e646cf8a05a735cb04c74dffe51b",
-    "afterSha256": "bb3441e5c4fb23e71323c8d123648d355eca6d8b00a1c1704063766610616786"
+    "beforeSha256": "27f62b885e3ad6a55cd2fdaf64d50873aee785f36d82da79be067f54e431d632",
+    "afterSha256": "2ea3df940a170da67124f545c885a436fba54fe4d4896682d841e9fd3b695e62"
   }
 }

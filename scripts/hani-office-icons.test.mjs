@@ -113,8 +113,8 @@ test('icons: scheduler, home clearance, public snapshots and both label geometry
  const restored=restoreResidentsSource(source);
  const original=readAt('hani-office-live.js','15747bc');
  for(const [a,b]of [['  function createScheduler(','  // Read-only label geometry'],['  function snapshot(now=new Date()','  function profile('],['    function screenHomeClear(','    function stationaryStops('],['  function placeStatusLabels(','  const scheduler='],['  function fitStatusLabels(','  if(buildingChairmanSlot())people.push']])assert.equal(section(restored,a,b),section(original,a,b),a);
- // The tap zoom bubble slot and the lobby poster are one persistent element each.
- for(const token of ['setInterval(','setTimeout(','document.createElement(','fetch('])assert.equal(source.split(token).length,original.split(token).length+(token==='document.createElement('?2:0),token);
+ // The tap zoom bubble slot is one element; the lobby frame is a button, image and caption, once each.
+ for(const token of ['setInterval(','setTimeout(','document.createElement(','fetch('])assert.equal(source.split(token).length,original.split(token).length+(token==='document.createElement('?4:0),token);
  assert.equal(source.split("bubbleSprite=document.createElement('div')").length,2);
  assert.doesNotMatch(source,/localStorage|sessionStorage|supabase/);
 });
