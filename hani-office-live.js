@@ -2317,7 +2317,7 @@
   const root=document.getElementById("haniOfficeLive"),map=document.getElementById("haniOfficeMap");
   if(!root||!map)return;
   const officePresence=HaniBuildingScene.createPresence({now:()=>Date.now(),locked:()=>!document.getElementById('app')||document.getElementById('app').classList.contains('login-locked'),visible:()=>document.visibilityState==='visible',override:()=>window.HaniOfficePresence});
-  for(const type of ['pointerdown','keydown','wheel','touchstart'])document.addEventListener(type,officePresence.interact,{passive:true});
+  for(const type of ['pointerdown','keydown','wheel','touchstart'])document.addEventListener(type,event=>{officePresence.interact(event);if(type==='pointerdown'&&event?.target)activateActor(event,true)},{passive:true});
   const people=[
     ["hani","하니","a",0],
     ["jieun","지은","a",1],
@@ -2560,7 +2560,12 @@
       bubbleLine.textContent=bubbleText(actor);fitBubble();
     });
   }
-  function activateActor(event){const actor=event.target.closest('.hani-office-actor');if(actor&&actorLayer.contains(actor))openBubble(actor)}
+  function activateActor(event,dismissOnly=false){
+    const actor=event.target.closest?.('.hani-office-actor');
+    if(actor&&actorLayer.contains(actor)){if(!dismissOnly)openBubble(actor);return}
+    if(!dismissOnly||actorBubble.hidden||actorBubble.contains(event.target)||[...actors.values()].some(a=>a.officeRow.contains(event.target)))return;
+    closeBubble();
+  }
   actorLayer.addEventListener('click',activateActor);
   actorLayer.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();activateActor(event)}else if(event.key==='Escape')closeBubble()});
   profileLink.addEventListener('click',event=>{if(typeof showView==='function'){event.preventDefault();showView('organization/people/'+bubblePerson)}});
@@ -2592,27 +2597,28 @@
     plate.style.transform='rotate('+entry.rotate+'deg) skewX('+entry.skew+'deg)';
     map.append(plate);plates.push({plate,floor:floor.id});
   }
-  // Award month -> CSS image token. The canonical board owns month/winner data.
-  const queenPosters=Object.freeze({'2026-10':'var(--queen-poster-2026-10)'});
-  const queenPoster=document.createElement('button');queenPoster.type='button';queenPoster.className='hani-office-queen-poster';queenPoster.hidden=true;
-  queenPoster.style.left='41%';queenPoster.style.top='19%';queenPoster.style.width=(60/(building.art?.width||1672)*100)+'%';queenPoster.style.height=(90/(building.art?.height||941)*100)+'%';
-  map.append(queenPoster);
-  function updateQueenPoster(now=Date.now()){
+  // Measured purple inner canvas in art-map 1F floor-1f-217.webp (1672 x 941).
+  const queenFrame=document.createElement('button');queenFrame.type='button';queenFrame.className='hani-office-queen-frame';queenFrame.hidden=true;
+  const queenImage=document.createElement('img'),queenCaption=document.createElement('span');
+  queenImage.alt='';queenImage.draggable=false;queenCaption.className='hani-office-queen-caption';queenCaption.setAttribute('aria-hidden','true');queenFrame.append(queenImage,queenCaption);
+  queenFrame.style.left=(1171/(building.art?.width||1672)*100)+'%';queenFrame.style.top=(73/(building.art?.height||941)*100)+'%';queenFrame.style.width=(176/(building.art?.width||1672)*100)+'%';queenFrame.style.height=(107/(building.art?.height||941)*100)+'%';
+  map.append(queenFrame);
+  function updateQueenFrame(now=Date.now()){
     const award=activeFloor==='1f'&&map.dataset.art==='floor'?window.HaniBoard?.queenWinner?.(now):null;
-    const image=award&&queenPosters[award.month];
-    const hidden=!image;if(queenPoster.hidden!==hidden)queenPoster.hidden=hidden;if(hidden)return;
-    const title='👑 '+Number(award.month.slice(5))+'월의 퀸 · '+award.name;
-    if(queenPoster.dataset.month!==award.month){queenPoster.dataset.month=award.month;queenPoster.style.backgroundImage=image}
-    if(queenPoster.title!==title){queenPoster.title=title;queenPoster.setAttribute('aria-label',title)}
+    const image=award&&window.HaniBoard?.queenImages?.[award.month];
+    const hidden=!image;if(queenFrame.hidden!==hidden)queenFrame.hidden=hidden;if(hidden)return;
+    const caption='👑 '+Number(award.month.slice(5))+'월의 퀸',title=caption+' · '+award.name;
+    if(queenFrame.dataset.month!==award.month){queenFrame.dataset.month=award.month;queenImage.src=image;queenCaption.textContent=caption}
+    if(queenFrame.title!==title){queenFrame.title=title;queenFrame.setAttribute('aria-label',title)}
   }
-  queenPoster.onclick=()=>{
-    updateQueenPoster();if(queenPoster.hidden)return;
+  queenFrame.onclick=()=>{
+    updateQueenFrame();if(queenFrame.hidden)return;
     closeBubble();lastBubbleTap=Date.now();autoBubbleEntry=false;
     bubbleSprite.hidden=true;actorBubble.dataset.zoom='false';actorBubble.officeFollow=null;
-    bubbleLine.textContent=queenPoster.title;profileLink.hidden=true;actorBubble.style.left='4px';actorBubble.style.top='4px';actorBubble.hidden=false;
+    bubbleLine.textContent=queenFrame.title;profileLink.hidden=true;actorBubble.style.left='4px';actorBubble.style.top='4px';actorBubble.hidden=false;
     const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble(false)}},3000);
   };
-  queenPoster.onkeydown=event=>{if(event.key==='Escape')closeBubble()};
+  queenFrame.onkeydown=event=>{if(event.key==='Escape')closeBubble()};
   // Each floor owns persistent decorative slots; positions are desk anchor + art offset.
   const deskProps=[];
   for(const floor of building.floors)for(const entry of building.art?.floors[floor.id].deskProps||[]){
@@ -2703,7 +2709,7 @@
       map.dataset.mask='none';
       for(const entry of plates)entry.plate.hidden=entry.floor!==floor.id||!isFloor;
       for(const entry of deskProps){entry.prop.hidden=entry.floor!==floor.id||!isFloor;if(!entry.prop.hidden&&!entry.prop.src)entry.prop.src=entry.src}
-      updateQueenPoster();
+      updateQueenFrame();
       updateAtmosphere(Date.now());
       scheduleFloorBubble();
     });
@@ -2723,7 +2729,7 @@
     const floor=floorSnapshot.floors.find(f=>f.id===activeFloor),selected=meeting&&activeFloor==="2f"?selectedAgents():null;
     const entries=selected?building.assignSeats(activeFloor,selected.map(id=>({id,activity:"meeting"}))):meeting&&activeFloor==='4f'&&selectedAgents().includes('mir')?building.assignSeats(activeFloor,[...floor.visible.filter(p=>p.id!=='mir'),{id:'mir',activity:'meeting'}]):[...floor.visible,...(meeting?[]:(floorSnapshot.visitors||[]).filter(v=>v.floor===activeFloor))];
     const nextKey=floorSnapshot.day+":"+activeFloor+":"+entries.map(p=>p.id+"/"+p.activity+"/"+p.seat?.id+"/"+p.actionId+"/"+p.eventId+"/"+p.outingId+"/"+p.line+"/"+p.state+"/"+(p.walking?'walk':p.pose)).join(",")+":"+Boolean(selected)+":"+Math.floor(floorSnapshot.minutes/5);
-    updateQueenPoster(now.getTime());
+    updateQueenFrame(now.getTime());
     if(!force&&nextKey===layoutKey)return;
     const sameFloor=displayedFloor===activeFloor;displayedFloor=activeFloor;
     for(const [id,list] of roomLabels)list.hidden=id!==activeFloor;
@@ -2732,7 +2738,7 @@
     for(const entry of plates)entry.plate.hidden=entry.floor!==activeFloor||map.dataset.art!=='floor';
     if(!sameFloor)for(const entry of deskProps)entry.prop.hidden=true;
     if(!sameFloor)foregrounds.forEach(img=>{img.hidden=true});
-    setBackground(floor);updateQueenPoster(now.getTime());
+    setBackground(floor);updateQueenFrame(now.getTime());
     for(const entry of plannedRows)entry.row.hidden=entry.floor!==activeFloor;
     // Reuse the scheduler's exact formal/outing legs; never predict a route.
     const formal=building.scheduler&&!meeting?building.scheduler.plan(day,presence):[];
