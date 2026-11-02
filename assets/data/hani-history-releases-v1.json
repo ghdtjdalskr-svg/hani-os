@@ -26,6 +26,18 @@
   ],
   "entries": [
     {
+      "id": "v2.9.261",
+      "date": "2026-11-02",
+      "status": "released",
+      "title": "3층 팀장석 T자 배치",
+      "category": "하니 그룹",
+      "credits": [],
+      "source": {
+        "commit": "",
+        "subject": "release: v2.9.261 3층 팀장석 T자 배치"
+      }
+    },
+    {
       "id": "v2.9.260",
       "date": "2026-11-02",
       "status": "released",
@@ -33,8 +45,8 @@
       "category": "하니 그룹",
       "credits": [],
       "source": {
-        "commit": "",
-        "subject": "release: v2.9.260 로비 액자 퀸과 말풍선 닫기"
+        "commit": "0d5f8534363a435c09f1cba9d463a623b2cb8345",
+        "subject": "release: v2.9.260 로비 액자 퀸과 말풍선 닫기 (#410)"
       }
     },
     {
