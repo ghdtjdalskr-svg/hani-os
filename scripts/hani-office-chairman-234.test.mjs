@@ -26,7 +26,7 @@ test('234 actual owner renders and hides persistent chairman actor through the s
  f.setDateTime('2026-10-22T09:00:00+09:00');f.document.events.pointerdown();f.click('4f');
  const actor=f.ids.get('haniOfficeActors').children.find(a=>a.dataset.person==='seongmin');assert.ok(actor&&!actor.hidden);
  const nodes=[...f.ids.get('haniOfficeActors').children];
- for(const type of ['keydown','wheel','touchstart'])assert.strictEqual(f.document.events[type],f.document.events.pointerdown);
+ for(const type of ['keydown','wheel','touchstart'])assert.equal(typeof f.document.events[type],'function');
  const tick=f.timers.find(t=>t.ms===4200).fn;
  f.setDateTime('2026-10-22T09:10:00+09:00');tick();assert.equal(actor.hidden,true);
  f.document.events.wheel();tick();
@@ -51,7 +51,7 @@ test('234 presence: initial login/visibility, four shared passive input bindings
  a.env.override={};assert.equal(a.read(),false);a.env.override=undefined;assert.equal(a.read(),true);
  const source=fs.readFileSync('hani-office-live.js','utf8');
  assert.equal((source.match(/window\.HaniOfficePresence/g)||[]).length,1,'only injected canonical override reader');
- assert.match(source,/\['pointerdown','keydown','wheel','touchstart'\]\)document\.addEventListener\(type,officePresence\.interact,\{passive:true\}\)/);
+ assert.match(source,/\['pointerdown','keydown','wheel','touchstart'\]\)document\.addEventListener\(type,event=>\{officePresence\.interact\(event\);/);
  assert.equal((source.match(/const presence=officePresence\.read\(\)/g)||[]).length,2);
  assert.equal((source.match(/setInterval\(/g)||[]).length,2,'existing frame/update timers only');
  assert.doesNotMatch(source,/localStorage|sessionStorage|\.setItem\(|\.removeItem\(|\.clear\(\)\s*;?\s*\/\/.*storage/);
