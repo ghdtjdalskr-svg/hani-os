@@ -494,7 +494,7 @@
       ]
     },
     "3f": {
-      "background": "./assets/building/floor-3f-215.webp",
+      "background": "./assets/building/floor-3f-218.webp",
       "plates": [
         {
           "room": "platform",
@@ -620,18 +620,24 @@
       "homeFurniture": {
         "dev-lead": {
           "type": "desk-chair",
-          "row": "platform-north",
+          "row": "platform-lead",
           "seatBounds": [
-            150,
-            498,
-            237,
-            605
+            134,
+            527,
+            166,
+            683
           ],
           "deskBounds": [
-            90,
-            432,
-            317,
-            583
+            156,
+            423,
+            248,
+            798
+          ],
+          "monitorScreen": [
+            0.7,
+            0.4,
+            26,
+            150
           ]
         },
         "dev-build": {
@@ -670,15 +676,15 @@
           "type": "desk-chair",
           "row": "platform-south",
           "seatBounds": [
-            136,
+            574,
             706,
-            230,
+            674,
             816
           ],
           "deskBounds": [
-            66,
+            504,
             648,
-            300,
+            744,
             794
           ]
         },
@@ -699,7 +705,7 @@
           ]
         }
       },
-      "backgroundSha256": "0dca7fdfa3aa8793591f652c5f8c1f48cbfb642a1b4160ca8594a030efaddd93",
+      "backgroundSha256": "3529aea428e077dfd3e1c8fa929a471b125d8ef71b87ed47511878f475a1d56c",
       "signPatchBoxes": [
         [
           125,
@@ -732,8 +738,8 @@
           "anchor": "dev-lead",
           "file": "./assets/building/props/seoyun-217.webp",
           "offset": [
-            68.72,
-            -135.715
+            47.848,
+            -174.585
           ],
           "width": 46,
           "planned": false
@@ -766,7 +772,7 @@
           "file": "./assets/building/props/yuri-217.webp",
           "offset": [
             62.424,
-            -128.735
+            -138.145
           ],
           "width": 48,
           "planned": false
@@ -2091,11 +2097,11 @@
       "y": 55
     },
     "door_platform": {
-      "x": 46,
+      "x": 49,
       "y": 89
     },
     "junction_platform": {
-      "x": 45,
+      "x": 49,
       "y": 67.5
     },
     "hall_platform": {
@@ -2139,17 +2145,18 @@
       "y": 80
     },
     "dev-lead": {
-      "x": 11.5,
-      "y": 61.5,
-      "furniture": "chair / sofa at table"
+      "x": 9.1,
+      "y": 68.5,
+      "furniture": "chair / sofa at table",
+      "facing": "right"
     },
     "approach_desk_seoyun": {
-      "x": 8.252,
-      "y": 67.5
+      "x": 6.5,
+      "y": 41
     },
     "side_desk_seoyun": {
-      "x": 8.252,
-      "y": 64
+      "x": 6.5,
+      "y": 43
     },
     "dev-build": {
       "x": 24.5,
@@ -2171,24 +2178,24 @@
     },
     "approach_desk_serin": {
       "x": 40,
-      "y": 67.5
+      "y": 62.5
     },
     "side_desk_serin": {
       "x": 40,
-      "y": 64
+      "y": 62.5
     },
     "dev-qa": {
-      "x": 10.8,
-      "y": 83.5,
+      "x": 37.7,
+      "y": 84.5,
       "furniture": "chair / sofa at table"
     },
     "approach_desk_yuri": {
-      "x": 45,
+      "x": 49,
       "y": 89
     },
     "side_desk_yuri": {
-      "x": 7.5,
-      "y": 85
+      "x": 49,
+      "y": 87
     },
     "dev-design": {
       "x": 24,
@@ -2196,12 +2203,12 @@
       "furniture": "chair / sofa at table"
     },
     "approach_desk_arin": {
-      "x": 45,
-      "y": 89
+      "x": 49,
+      "y": 99
     },
     "side_desk_arin": {
       "x": 27,
-      "y": 85
+      "y": 99
     },
     "server-console": {
       "x": 88.8,
@@ -2256,9 +2263,8 @@
       "furniture": "chair / sofa at table"
     },
     "dev-spare": {
-      "x": 37.7,
-      "y": 83.5,
-      "furniture": "chair / sofa at table"
+      "x": 8.5,
+      "y": 39
     },
     "dev-lounge-a": {
       "x": 19,
@@ -2343,11 +2349,11 @@
       "y": 74.5
     },
     "path_dev-lounge-a_71": {
-      "x": 45,
+      "x": 49,
       "y": 39
     },
     "path_dev-lounge-b_39": {
-      "x": 46,
+      "x": 49,
       "y": 39
     },
     "hall_2f": {
