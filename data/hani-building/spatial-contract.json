@@ -1142,10 +1142,10 @@
         },
         {
           "id": "surface_dev-lead",
-          "x": 104,
+          "x": 146,
           "y": 141,
-          "w": 52,
-          "h": 18,
+          "w": 18,
+          "h": 68,
           "kind": "desk_surface"
         },
         {
@@ -1166,8 +1166,8 @@
         },
         {
           "id": "surface_dev-qa",
-          "x": 584,
-          "y": 141,
+          "x": 424,
+          "y": 211,
           "w": 52,
           "h": 18,
           "kind": "desk_surface"
@@ -1224,14 +1224,6 @@
           "id": "surface_dev-meeting-se",
           "x": 774,
           "y": 526,
-          "w": 52,
-          "h": 18,
-          "kind": "sofa_or_table_surface"
-        },
-        {
-          "id": "surface_dev-spare",
-          "x": 424,
-          "y": 211,
           "w": 52,
           "h": 18,
           "kind": "sofa_or_table_surface"
@@ -3261,8 +3253,8 @@
       "id": "approach_desk_seoyun",
       "floor": "3f",
       "room": "platform",
-      "x": 88,
-      "y": 245,
+      "x": 70,
+      "y": 175,
       "type": "junction",
       "label": "접근 · 서윤 · 개발 리드",
       "capacity": 1
@@ -3371,8 +3363,8 @@
       "id": "dev-qa",
       "floor": "3f",
       "room": "platform",
-      "x": 610,
-      "y": 175,
+      "x": 450,
+      "y": 245,
       "type": "desk",
       "label": "유리 · QA 책임",
       "capacity": 1,
@@ -3380,15 +3372,15 @@
       "rendererSeat": {
         "id": "dev-qa",
         "zone": "desk",
-        "x": 61,
-        "y": 27.34375,
+        "x": 45,
+        "y": 38.28125,
         "owner": "yuri",
         "layer": 4,
         "box": [
-          59.6,
-          25.94375,
-          62.4,
-          27.34375
+          43.6,
+          36.88125,
+          46.4,
+          38.28125
         ]
       }
     },
@@ -3396,8 +3388,8 @@
       "id": "approach_desk_yuri",
       "floor": "3f",
       "room": "platform",
-      "x": 568,
-      "y": 245,
+      "x": 540,
+      "y": 275,
       "type": "junction",
       "label": "접근 · 유리 · QA 책임",
       "capacity": 1
@@ -3406,8 +3398,8 @@
       "id": "side_desk_yuri",
       "floor": "3f",
       "room": "platform",
-      "x": 568,
-      "y": 175,
+      "x": 500,
+      "y": 245,
       "type": "junction",
       "label": "측면 접근 · 유리 · QA 책임",
       "capacity": 1
@@ -4803,26 +4795,11 @@
       "id": "dev-spare",
       "floor": "3f",
       "room": "platform",
-      "x": 450,
+      "x": 70,
       "y": 245,
-      "type": "seat",
-      "label": "dev-spare",
-      "capacity": 1,
-      "walkTarget": true,
-      "rendererSeat": {
-        "id": "dev-spare",
-        "zone": "desk",
-        "x": 45,
-        "y": 38.28125,
-        "owner": null,
-        "layer": 4,
-        "box": [
-          43.6,
-          36.88125,
-          46.4,
-          38.28125
-        ]
-      }
+      "type": "junction",
+      "label": "팀장석 북쪽 우회 통로",
+      "capacity": 1
     },
     {
       "id": "dev-lounge-a",
@@ -7171,7 +7148,7 @@
       "terminalOnly": true
     },
     {
-      "from": "junction_platform",
+      "from": "dev-spare",
       "to": "approach_desk_seoyun",
       "kind": "walk",
       "bidirectional": true
@@ -8063,9 +8040,9 @@
       "bidirectional": true
     },
     {
-      "from": "junction_platform",
+      "from": "path_dev-lounge-a_71",
       "to": "dev-spare",
-      "kind": "seat",
+      "kind": "walk",
       "bidirectional": true
     },
     {
@@ -9970,14 +9947,14 @@
         {
           "id": "dev-qa",
           "zone": "desk",
-          "x": 13,
+          "x": 38,
           "y": 68,
           "owner": "yuri",
           "layer": 4,
           "box": [
-            11.6,
+            36.6,
             66.6,
-            14.4,
+            39.4,
             68
           ]
         },
@@ -9992,20 +9969,6 @@
             23.6,
             66.6,
             26.4,
-            68
-          ]
-        },
-        {
-          "id": "dev-spare",
-          "zone": "desk",
-          "x": 38,
-          "y": 68,
-          "owner": null,
-          "layer": 4,
-          "box": [
-            36.6,
-            66.6,
-            39.4,
             68
           ]
         },
@@ -10609,13 +10572,6 @@
         "floor215": "3f",
         "zone215": "desk",
         "anchorId": "dev-design",
-        "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
-      },
-      {
-        "seatId": "dev-spare",
-        "floor215": "3f",
-        "zone215": "desk",
-        "anchorId": "dev-spare",
         "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
       },
       {
@@ -11252,15 +11208,15 @@
         {
           "id": "dev-qa",
           "zone": "desk",
-          "x": 61,
-          "y": 27.34375,
+          "x": 45,
+          "y": 38.28125,
           "owner": "yuri",
           "layer": 4,
           "box": [
-            59.6,
-            25.94375,
-            62.4,
-            27.34375
+            43.6,
+            36.88125,
+            46.4,
+            38.28125
           ]
         },
         {
@@ -11387,20 +11343,6 @@
             86.1,
             81.4,
             87.5
-          ]
-        },
-        {
-          "id": "dev-spare",
-          "zone": "desk",
-          "x": 45,
-          "y": 38.28125,
-          "owner": null,
-          "layer": 4,
-          "box": [
-            43.6,
-            36.88125,
-            46.4,
-            38.28125
           ]
         },
         {

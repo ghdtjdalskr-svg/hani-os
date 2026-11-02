@@ -1,0 +1,2825 @@
+{
+  "schema": "office-tlayout-approved-g-v1",
+  "base": "476210cdbe0408039672932aa3ab6bbde825860a",
+  "reason": "approved G: QA real chair y84.5 clears 312px conservative sprite boxes, original 19 desk prop slots retained by moving lead prop onto new desk; safe data-only trials fail rest lower bounds; two existing ranking lines only (lunch present/absent 4/64→16/10, same-floor non-lunch16→17) preserve rest, roof and nearby dialogue dots; every safety gate unchanged",
+  "files": [
+    {
+      "file": "data/hani-building/art-map-v1.json",
+      "beforeSha256": "4bc77ecb0962ddde357616455609cc4fd5d5380566a806ba69b15b473591521e",
+      "afterSha256": "50d60c3da36936a77c22f572fe7ed137b3f81fea3972976ba4501d90441c7666",
+      "changes": [
+        {
+          "path": [
+            "floors",
+            "3f",
+            "background"
+          ],
+          "before": "./assets/building/floor-3f-215.webp",
+          "after": "./assets/building/floor-3f-218.webp"
+        },
+        {
+          "path": [
+            "floors",
+            "3f",
+            "homeFurniture",
+            "dev-lead",
+            "row"
+          ],
+          "before": "platform-north",
+          "after": "platform-lead"
+        },
+        {
+          "path": [
+            "floors",
+            "3f",
+            "homeFurniture",
+            "dev-lead",
+            "seatBounds",
+            0
+          ],
+          "before": 150,
+          "after": 134
+        },
+        {
+          "path": [
+            "floors",
+            "3f",
+            "homeFurniture",
+            "dev-lead",
+            "seatBounds",
+            1
+          ],
+          "before": 498,
+          "after": 527
+        },
+        {
+          "path": [
+            "floors",
+            "3f",
+            "homeFurniture",
+            "dev-lead",
+            "seatBounds",
+            2
+          ],
+          "before": 237,
+          "after": 166
+        },
+        {
+          "path": [
+            "floors",
+            "3f",
+            "homeFurniture",
+            "dev-lead",
+            "seatBounds",
+            3
+          ],
+          "before": 605,
+          "after": 683
+        },
+        {
+          "path": [
+            "floors",
+            "3f",
+            "homeFurniture",
+            "dev-lead",
+            "deskBounds",
+            0
+          ],
+          "before": 90,
+          "after": 156
+        },
+        {
+          "path": [
+            "floors",
+            "3f",
+            "homeFurniture",
+            "dev-lead",
+            "deskBounds",
+            1
+          ],
+          "before": 432,
+          "after": 423
+        },
+        {
+          "path": [
+            "floors",
+            "3f",
+            "homeFurniture",
+            "dev-lead",
+            "deskBounds",
+            2
+          ],
+          "before": 317,
+          "after": 248
+        },
+        {
+          "path": [
+            "floors",
+            "3f",
+            "homeFurniture",
+            "dev-lead",
+            "deskBounds",
+            3
+          ],
+          "before": 583,
+          "after": 798
+        },
+        {
+          "path": [
+            "floors",
+            "3f",
+            "homeFurniture",
+            "dev-lead",
+            "monitorScreen"
+          ],
+          "beforeMissing": true,
+          "after": [
+            0.7,
+            0.4,
+            26,
+            150
+          ]
+        },
+        {
+          "path": [
+            "floors",
+            "3f",
+            "homeFurniture",
+            "dev-qa",
+            "seatBounds",
+            0
+          ],
+          "before": 136,
+          "after": 574
+        },
+        {
+          "path": [
+            "floors",
+            "3f",
+            "homeFurniture",
+            "dev-qa",
+            "seatBounds",
+            2
+          ],
+          "before": 230,
+          "after": 674
+        },
+        {
+          "path": [
+            "floors",
+            "3f",
+            "homeFurniture",
+            "dev-qa",
+            "deskBounds",
+            0
+          ],
+          "before": 66,
+          "after": 504
+        },
+        {
+          "path": [
+            "floors",
+            "3f",
+            "homeFurniture",
+            "dev-qa",
+            "deskBounds",
+            2
+          ],
+          "before": 300,
+          "after": 744
+        },
+        {
+          "path": [
+            "floors",
+            "3f",
+            "backgroundSha256"
+          ],
+          "before": "0dca7fdfa3aa8793591f652c5f8c1f48cbfb642a1b4160ca8594a030efaddd93",
+          "after": "3529aea428e077dfd3e1c8fa929a471b125d8ef71b87ed47511878f475a1d56c"
+        },
+        {
+          "path": [
+            "floors",
+            "3f",
+            "deskProps",
+            0,
+            "offset",
+            0
+          ],
+          "before": 68.72,
+          "after": 47.848
+        },
+        {
+          "path": [
+            "floors",
+            "3f",
+            "deskProps",
+            0,
+            "offset",
+            1
+          ],
+          "before": -135.715,
+          "after": -174.585
+        },
+        {
+          "path": [
+            "floors",
+            "3f",
+            "deskProps",
+            3,
+            "offset",
+            1
+          ],
+          "before": -128.735,
+          "after": -138.145
+        },
+        {
+          "path": [
+            "anchors",
+            "door_platform",
+            "x"
+          ],
+          "before": 46,
+          "after": 49
+        },
+        {
+          "path": [
+            "anchors",
+            "junction_platform",
+            "x"
+          ],
+          "before": 45,
+          "after": 49
+        },
+        {
+          "path": [
+            "anchors",
+            "dev-lead",
+            "x"
+          ],
+          "before": 11.5,
+          "after": 9.1
+        },
+        {
+          "path": [
+            "anchors",
+            "dev-lead",
+            "y"
+          ],
+          "before": 61.5,
+          "after": 68.5
+        },
+        {
+          "path": [
+            "anchors",
+            "dev-lead",
+            "facing"
+          ],
+          "beforeMissing": true,
+          "after": "right"
+        },
+        {
+          "path": [
+            "anchors",
+            "approach_desk_seoyun",
+            "x"
+          ],
+          "before": 8.252,
+          "after": 6.5
+        },
+        {
+          "path": [
+            "anchors",
+            "approach_desk_seoyun",
+            "y"
+          ],
+          "before": 67.5,
+          "after": 41
+        },
+        {
+          "path": [
+            "anchors",
+            "side_desk_seoyun",
+            "x"
+          ],
+          "before": 8.252,
+          "after": 6.5
+        },
+        {
+          "path": [
+            "anchors",
+            "side_desk_seoyun",
+            "y"
+          ],
+          "before": 64,
+          "after": 43
+        },
+        {
+          "path": [
+            "anchors",
+            "approach_desk_serin",
+            "y"
+          ],
+          "before": 67.5,
+          "after": 62.5
+        },
+        {
+          "path": [
+            "anchors",
+            "side_desk_serin",
+            "y"
+          ],
+          "before": 64,
+          "after": 62.5
+        },
+        {
+          "path": [
+            "anchors",
+            "dev-qa",
+            "x"
+          ],
+          "before": 10.8,
+          "after": 37.7
+        },
+        {
+          "path": [
+            "anchors",
+            "dev-qa",
+            "y"
+          ],
+          "before": 83.5,
+          "after": 84.5
+        },
+        {
+          "path": [
+            "anchors",
+            "approach_desk_yuri",
+            "x"
+          ],
+          "before": 45,
+          "after": 49
+        },
+        {
+          "path": [
+            "anchors",
+            "side_desk_yuri",
+            "x"
+          ],
+          "before": 7.5,
+          "after": 49
+        },
+        {
+          "path": [
+            "anchors",
+            "side_desk_yuri",
+            "y"
+          ],
+          "before": 85,
+          "after": 87
+        },
+        {
+          "path": [
+            "anchors",
+            "approach_desk_arin",
+            "x"
+          ],
+          "before": 45,
+          "after": 49
+        },
+        {
+          "path": [
+            "anchors",
+            "approach_desk_arin",
+            "y"
+          ],
+          "before": 89,
+          "after": 99
+        },
+        {
+          "path": [
+            "anchors",
+            "side_desk_arin",
+            "y"
+          ],
+          "before": 85,
+          "after": 99
+        },
+        {
+          "path": [
+            "anchors",
+            "dev-spare",
+            "x"
+          ],
+          "before": 37.7,
+          "after": 8.5
+        },
+        {
+          "path": [
+            "anchors",
+            "dev-spare",
+            "y"
+          ],
+          "before": 83.5,
+          "after": 39
+        },
+        {
+          "path": [
+            "anchors",
+            "dev-spare",
+            "furniture"
+          ],
+          "before": "chair / sofa at table",
+          "afterMissing": true
+        },
+        {
+          "path": [
+            "anchors",
+            "path_dev-lounge-a_71",
+            "x"
+          ],
+          "before": 45,
+          "after": 49
+        },
+        {
+          "path": [
+            "anchors",
+            "path_dev-lounge-b_39",
+            "x"
+          ],
+          "before": 46,
+          "after": 49
+        }
+      ]
+    },
+    {
+      "file": "data/hani-building/spatial-contract.json",
+      "beforeSha256": "4612ae9a8bbd2fbcfbf054d261293085df7832d93535bd6b651e03aa013d90cf",
+      "afterSha256": "ec9921524c70cd8114c5878f5397e568fb37dda7e52b917d016540e65bab1117",
+      "changes": [
+        {
+          "path": [
+            "floors",
+            2,
+            "noWalk"
+          ],
+          "before": [
+            {
+              "id": "wall_top_platform",
+              "x": 40,
+              "y": 50,
+              "w": 810,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_left_platform",
+              "x": 40,
+              "y": 50,
+              "w": 8,
+              "h": 250,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_right_platform",
+              "x": 842,
+              "y": 50,
+              "w": 8,
+              "h": 250,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_door_platform_40",
+              "x": 40,
+              "y": 296,
+              "w": 383,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_door_platform_467",
+              "x": 467,
+              "y": 296,
+              "w": 383,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_left_server",
+              "x": 40,
+              "y": 360,
+              "w": 8,
+              "h": 240,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_right_server",
+              "x": 272,
+              "y": 360,
+              "w": 8,
+              "h": 240,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_door_server_40",
+              "x": 40,
+              "y": 356,
+              "w": 98,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_door_server_182",
+              "x": 182,
+              "y": 356,
+              "w": 98,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_left_standup",
+              "x": 300,
+              "y": 360,
+              "w": 8,
+              "h": 240,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_right_standup",
+              "x": 532,
+              "y": 360,
+              "w": 8,
+              "h": 240,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_door_standup_300",
+              "x": 300,
+              "y": 356,
+              "w": 98,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_door_standup_442",
+              "x": 442,
+              "y": 356,
+              "w": 98,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_left_release",
+              "x": 560,
+              "y": 360,
+              "w": 8,
+              "h": 240,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_right_release",
+              "x": 842,
+              "y": 360,
+              "w": 8,
+              "h": 240,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_door_release_560",
+              "x": 560,
+              "y": 356,
+              "w": 123,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_door_release_727",
+              "x": 727,
+              "y": 356,
+              "w": 123,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_bottom_server",
+              "x": 40,
+              "y": 592,
+              "w": 240,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_bottom_standup",
+              "x": 300,
+              "y": 592,
+              "w": 240,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_bottom_release",
+              "x": 560,
+              "y": 592,
+              "w": 290,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "surface_dev-lead",
+              "x": 104,
+              "y": 141,
+              "w": 52,
+              "h": 18,
+              "kind": "desk_surface"
+            },
+            {
+              "id": "surface_dev-build",
+              "x": 264,
+              "y": 141,
+              "w": 52,
+              "h": 18,
+              "kind": "desk_surface"
+            },
+            {
+              "id": "surface_dev-research",
+              "x": 424,
+              "y": 141,
+              "w": 52,
+              "h": 18,
+              "kind": "desk_surface"
+            },
+            {
+              "id": "surface_dev-qa",
+              "x": 584,
+              "y": 141,
+              "w": 52,
+              "h": 18,
+              "kind": "desk_surface"
+            },
+            {
+              "id": "surface_dev-design",
+              "x": 744,
+              "y": 141,
+              "w": 52,
+              "h": 18,
+              "kind": "desk_surface"
+            },
+            {
+              "id": "surface_dev-meeting-nw",
+              "x": 584,
+              "y": 426,
+              "w": 52,
+              "h": 18,
+              "kind": "sofa_or_table_surface"
+            },
+            {
+              "id": "surface_dev-meeting-n",
+              "x": 679,
+              "y": 426,
+              "w": 52,
+              "h": 18,
+              "kind": "sofa_or_table_surface"
+            },
+            {
+              "id": "surface_dev-meeting-ne",
+              "x": 774,
+              "y": 426,
+              "w": 52,
+              "h": 18,
+              "kind": "sofa_or_table_surface"
+            },
+            {
+              "id": "surface_dev-meeting-sw",
+              "x": 584,
+              "y": 526,
+              "w": 52,
+              "h": 18,
+              "kind": "sofa_or_table_surface"
+            },
+            {
+              "id": "surface_dev-meeting-s",
+              "x": 679,
+              "y": 526,
+              "w": 52,
+              "h": 18,
+              "kind": "sofa_or_table_surface"
+            },
+            {
+              "id": "surface_dev-meeting-se",
+              "x": 774,
+              "y": 526,
+              "w": 52,
+              "h": 18,
+              "kind": "sofa_or_table_surface"
+            },
+            {
+              "id": "surface_dev-spare",
+              "x": 424,
+              "y": 211,
+              "w": 52,
+              "h": 18,
+              "kind": "sofa_or_table_surface"
+            },
+            {
+              "id": "surface_dev-lounge-a",
+              "x": 64,
+              "y": 81,
+              "w": 52,
+              "h": 18,
+              "kind": "sofa_or_table_surface"
+            },
+            {
+              "id": "surface_dev-lounge-b",
+              "x": 224,
+              "y": 81,
+              "w": 52,
+              "h": 18,
+              "kind": "sofa_or_table_surface"
+            }
+          ],
+          "after": [
+            {
+              "id": "wall_top_platform",
+              "x": 40,
+              "y": 50,
+              "w": 810,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_left_platform",
+              "x": 40,
+              "y": 50,
+              "w": 8,
+              "h": 250,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_right_platform",
+              "x": 842,
+              "y": 50,
+              "w": 8,
+              "h": 250,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_door_platform_40",
+              "x": 40,
+              "y": 296,
+              "w": 383,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_door_platform_467",
+              "x": 467,
+              "y": 296,
+              "w": 383,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_left_server",
+              "x": 40,
+              "y": 360,
+              "w": 8,
+              "h": 240,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_right_server",
+              "x": 272,
+              "y": 360,
+              "w": 8,
+              "h": 240,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_door_server_40",
+              "x": 40,
+              "y": 356,
+              "w": 98,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_door_server_182",
+              "x": 182,
+              "y": 356,
+              "w": 98,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_left_standup",
+              "x": 300,
+              "y": 360,
+              "w": 8,
+              "h": 240,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_right_standup",
+              "x": 532,
+              "y": 360,
+              "w": 8,
+              "h": 240,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_door_standup_300",
+              "x": 300,
+              "y": 356,
+              "w": 98,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_door_standup_442",
+              "x": 442,
+              "y": 356,
+              "w": 98,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_left_release",
+              "x": 560,
+              "y": 360,
+              "w": 8,
+              "h": 240,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_right_release",
+              "x": 842,
+              "y": 360,
+              "w": 8,
+              "h": 240,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_door_release_560",
+              "x": 560,
+              "y": 356,
+              "w": 123,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_door_release_727",
+              "x": 727,
+              "y": 356,
+              "w": 123,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_bottom_server",
+              "x": 40,
+              "y": 592,
+              "w": 240,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_bottom_standup",
+              "x": 300,
+              "y": 592,
+              "w": 240,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "wall_bottom_release",
+              "x": 560,
+              "y": 592,
+              "w": 290,
+              "h": 8,
+              "kind": "wall"
+            },
+            {
+              "id": "surface_dev-lead",
+              "x": 146,
+              "y": 141,
+              "w": 18,
+              "h": 68,
+              "kind": "desk_surface"
+            },
+            {
+              "id": "surface_dev-build",
+              "x": 264,
+              "y": 141,
+              "w": 52,
+              "h": 18,
+              "kind": "desk_surface"
+            },
+            {
+              "id": "surface_dev-research",
+              "x": 424,
+              "y": 141,
+              "w": 52,
+              "h": 18,
+              "kind": "desk_surface"
+            },
+            {
+              "id": "surface_dev-qa",
+              "x": 424,
+              "y": 211,
+              "w": 52,
+              "h": 18,
+              "kind": "desk_surface"
+            },
+            {
+              "id": "surface_dev-design",
+              "x": 744,
+              "y": 141,
+              "w": 52,
+              "h": 18,
+              "kind": "desk_surface"
+            },
+            {
+              "id": "surface_dev-meeting-nw",
+              "x": 584,
+              "y": 426,
+              "w": 52,
+              "h": 18,
+              "kind": "sofa_or_table_surface"
+            },
+            {
+              "id": "surface_dev-meeting-n",
+              "x": 679,
+              "y": 426,
+              "w": 52,
+              "h": 18,
+              "kind": "sofa_or_table_surface"
+            },
+            {
+              "id": "surface_dev-meeting-ne",
+              "x": 774,
+              "y": 426,
+              "w": 52,
+              "h": 18,
+              "kind": "sofa_or_table_surface"
+            },
+            {
+              "id": "surface_dev-meeting-sw",
+              "x": 584,
+              "y": 526,
+              "w": 52,
+              "h": 18,
+              "kind": "sofa_or_table_surface"
+            },
+            {
+              "id": "surface_dev-meeting-s",
+              "x": 679,
+              "y": 526,
+              "w": 52,
+              "h": 18,
+              "kind": "sofa_or_table_surface"
+            },
+            {
+              "id": "surface_dev-meeting-se",
+              "x": 774,
+              "y": 526,
+              "w": 52,
+              "h": 18,
+              "kind": "sofa_or_table_surface"
+            },
+            {
+              "id": "surface_dev-lounge-a",
+              "x": 64,
+              "y": 81,
+              "w": 52,
+              "h": 18,
+              "kind": "sofa_or_table_surface"
+            },
+            {
+              "id": "surface_dev-lounge-b",
+              "x": 224,
+              "y": 81,
+              "w": 52,
+              "h": 18,
+              "kind": "sofa_or_table_surface"
+            }
+          ]
+        },
+        {
+          "path": [
+            "anchors",
+            106,
+            "x"
+          ],
+          "before": 88,
+          "after": 70
+        },
+        {
+          "path": [
+            "anchors",
+            106,
+            "y"
+          ],
+          "before": 245,
+          "after": 175
+        },
+        {
+          "path": [
+            "anchors",
+            114,
+            "x"
+          ],
+          "before": 610,
+          "after": 450
+        },
+        {
+          "path": [
+            "anchors",
+            114,
+            "y"
+          ],
+          "before": 175,
+          "after": 245
+        },
+        {
+          "path": [
+            "anchors",
+            114,
+            "rendererSeat",
+            "x"
+          ],
+          "before": 61,
+          "after": 45
+        },
+        {
+          "path": [
+            "anchors",
+            114,
+            "rendererSeat",
+            "y"
+          ],
+          "before": 27.34375,
+          "after": 38.28125
+        },
+        {
+          "path": [
+            "anchors",
+            114,
+            "rendererSeat",
+            "box",
+            0
+          ],
+          "before": 59.6,
+          "after": 43.6
+        },
+        {
+          "path": [
+            "anchors",
+            114,
+            "rendererSeat",
+            "box",
+            1
+          ],
+          "before": 25.94375,
+          "after": 36.88125
+        },
+        {
+          "path": [
+            "anchors",
+            114,
+            "rendererSeat",
+            "box",
+            2
+          ],
+          "before": 62.4,
+          "after": 46.4
+        },
+        {
+          "path": [
+            "anchors",
+            114,
+            "rendererSeat",
+            "box",
+            3
+          ],
+          "before": 27.34375,
+          "after": 38.28125
+        },
+        {
+          "path": [
+            "anchors",
+            115,
+            "x"
+          ],
+          "before": 568,
+          "after": 540
+        },
+        {
+          "path": [
+            "anchors",
+            115,
+            "y"
+          ],
+          "before": 245,
+          "after": 275
+        },
+        {
+          "path": [
+            "anchors",
+            116,
+            "x"
+          ],
+          "before": 568,
+          "after": 500
+        },
+        {
+          "path": [
+            "anchors",
+            116,
+            "y"
+          ],
+          "before": 175,
+          "after": 245
+        },
+        {
+          "path": [
+            "anchors",
+            189,
+            "x"
+          ],
+          "before": 450,
+          "after": 70
+        },
+        {
+          "path": [
+            "anchors",
+            189,
+            "type"
+          ],
+          "before": "seat",
+          "after": "junction"
+        },
+        {
+          "path": [
+            "anchors",
+            189,
+            "label"
+          ],
+          "before": "dev-spare",
+          "after": "팀장석 북쪽 우회 통로"
+        },
+        {
+          "path": [
+            "anchors",
+            189,
+            "walkTarget"
+          ],
+          "before": true,
+          "afterMissing": true
+        },
+        {
+          "path": [
+            "anchors",
+            189,
+            "rendererSeat"
+          ],
+          "before": {
+            "id": "dev-spare",
+            "zone": "desk",
+            "x": 45,
+            "y": 38.28125,
+            "owner": null,
+            "layer": 4,
+            "box": [
+              43.6,
+              36.88125,
+              46.4,
+              38.28125
+            ]
+          },
+          "afterMissing": true
+        },
+        {
+          "path": [
+            "edges",
+            108,
+            "from"
+          ],
+          "before": "junction_platform",
+          "after": "dev-spare"
+        },
+        {
+          "path": [
+            "edges",
+            255,
+            "from"
+          ],
+          "before": "junction_platform",
+          "after": "path_dev-lounge-a_71"
+        },
+        {
+          "path": [
+            "edges",
+            255,
+            "kind"
+          ],
+          "before": "seat",
+          "after": "walk"
+        },
+        {
+          "path": [
+            "rendererIntegration",
+            "sourceSeatMaps",
+            "3f"
+          ],
+          "before": [
+            {
+              "id": "dev-lead",
+              "zone": "desk",
+              "x": 13,
+              "y": 46,
+              "owner": "seoyun",
+              "layer": 4,
+              "box": [
+                11.6,
+                44.6,
+                14.4,
+                46
+              ]
+            },
+            {
+              "id": "dev-build",
+              "zone": "desk",
+              "x": 25,
+              "y": 46,
+              "owner": "dohyun",
+              "layer": 4,
+              "box": [
+                23.6,
+                44.6,
+                26.4,
+                46
+              ]
+            },
+            {
+              "id": "dev-research",
+              "zone": "desk",
+              "x": 38,
+              "y": 46,
+              "owner": "serin",
+              "layer": 4,
+              "box": [
+                36.6,
+                44.6,
+                39.4,
+                46
+              ]
+            },
+            {
+              "id": "dev-qa",
+              "zone": "desk",
+              "x": 13,
+              "y": 68,
+              "owner": "yuri",
+              "layer": 4,
+              "box": [
+                11.6,
+                66.6,
+                14.4,
+                68
+              ]
+            },
+            {
+              "id": "dev-design",
+              "zone": "desk",
+              "x": 25,
+              "y": 68,
+              "owner": "arin",
+              "layer": 4,
+              "box": [
+                23.6,
+                66.6,
+                26.4,
+                68
+              ]
+            },
+            {
+              "id": "dev-spare",
+              "zone": "desk",
+              "x": 38,
+              "y": 68,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                36.6,
+                66.6,
+                39.4,
+                68
+              ]
+            },
+            {
+              "id": "dev-lounge-a",
+              "zone": "lounge",
+              "x": 19,
+              "y": 20.5,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                17.6,
+                19.1,
+                20.4,
+                20.5
+              ]
+            },
+            {
+              "id": "dev-lounge-b",
+              "zone": "lounge",
+              "x": 27,
+              "y": 20.5,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                25.6,
+                19.1,
+                28.4,
+                20.5
+              ]
+            },
+            {
+              "id": "dev-meeting-nw",
+              "zone": "meeting",
+              "x": 73,
+              "y": 59,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                71.6,
+                57.6,
+                74.4,
+                59
+              ]
+            },
+            {
+              "id": "dev-meeting-n",
+              "zone": "meeting",
+              "x": 81,
+              "y": 59,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                79.6,
+                57.6,
+                82.4,
+                59
+              ]
+            },
+            {
+              "id": "dev-meeting-ne",
+              "zone": "meeting",
+              "x": 88,
+              "y": 59,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                86.6,
+                57.6,
+                89.4,
+                59
+              ]
+            },
+            {
+              "id": "dev-meeting-sw",
+              "zone": "meeting",
+              "x": 74,
+              "y": 79,
+              "owner": null,
+              "layer": 9,
+              "box": [
+                72.6,
+                77.6,
+                75.4,
+                79
+              ]
+            },
+            {
+              "id": "dev-meeting-s",
+              "zone": "meeting",
+              "x": 81,
+              "y": 79,
+              "owner": null,
+              "layer": 9,
+              "box": [
+                79.6,
+                77.6,
+                82.4,
+                79
+              ]
+            },
+            {
+              "id": "dev-meeting-se",
+              "zone": "meeting",
+              "x": 88,
+              "y": 79,
+              "owner": null,
+              "layer": 9,
+              "box": [
+                86.6,
+                77.6,
+                89.4,
+                79
+              ]
+            },
+            {
+              "id": "server-console",
+              "zone": "server",
+              "x": 89,
+              "y": 20,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                87.6,
+                18.6,
+                90.4,
+                20
+              ]
+            }
+          ],
+          "after": [
+            {
+              "id": "dev-lead",
+              "zone": "desk",
+              "x": 13,
+              "y": 46,
+              "owner": "seoyun",
+              "layer": 4,
+              "box": [
+                11.6,
+                44.6,
+                14.4,
+                46
+              ]
+            },
+            {
+              "id": "dev-build",
+              "zone": "desk",
+              "x": 25,
+              "y": 46,
+              "owner": "dohyun",
+              "layer": 4,
+              "box": [
+                23.6,
+                44.6,
+                26.4,
+                46
+              ]
+            },
+            {
+              "id": "dev-research",
+              "zone": "desk",
+              "x": 38,
+              "y": 46,
+              "owner": "serin",
+              "layer": 4,
+              "box": [
+                36.6,
+                44.6,
+                39.4,
+                46
+              ]
+            },
+            {
+              "id": "dev-qa",
+              "zone": "desk",
+              "x": 38,
+              "y": 68,
+              "owner": "yuri",
+              "layer": 4,
+              "box": [
+                36.6,
+                66.6,
+                39.4,
+                68
+              ]
+            },
+            {
+              "id": "dev-design",
+              "zone": "desk",
+              "x": 25,
+              "y": 68,
+              "owner": "arin",
+              "layer": 4,
+              "box": [
+                23.6,
+                66.6,
+                26.4,
+                68
+              ]
+            },
+            {
+              "id": "dev-lounge-a",
+              "zone": "lounge",
+              "x": 19,
+              "y": 20.5,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                17.6,
+                19.1,
+                20.4,
+                20.5
+              ]
+            },
+            {
+              "id": "dev-lounge-b",
+              "zone": "lounge",
+              "x": 27,
+              "y": 20.5,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                25.6,
+                19.1,
+                28.4,
+                20.5
+              ]
+            },
+            {
+              "id": "dev-meeting-nw",
+              "zone": "meeting",
+              "x": 73,
+              "y": 59,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                71.6,
+                57.6,
+                74.4,
+                59
+              ]
+            },
+            {
+              "id": "dev-meeting-n",
+              "zone": "meeting",
+              "x": 81,
+              "y": 59,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                79.6,
+                57.6,
+                82.4,
+                59
+              ]
+            },
+            {
+              "id": "dev-meeting-ne",
+              "zone": "meeting",
+              "x": 88,
+              "y": 59,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                86.6,
+                57.6,
+                89.4,
+                59
+              ]
+            },
+            {
+              "id": "dev-meeting-sw",
+              "zone": "meeting",
+              "x": 74,
+              "y": 79,
+              "owner": null,
+              "layer": 9,
+              "box": [
+                72.6,
+                77.6,
+                75.4,
+                79
+              ]
+            },
+            {
+              "id": "dev-meeting-s",
+              "zone": "meeting",
+              "x": 81,
+              "y": 79,
+              "owner": null,
+              "layer": 9,
+              "box": [
+                79.6,
+                77.6,
+                82.4,
+                79
+              ]
+            },
+            {
+              "id": "dev-meeting-se",
+              "zone": "meeting",
+              "x": 88,
+              "y": 79,
+              "owner": null,
+              "layer": 9,
+              "box": [
+                86.6,
+                77.6,
+                89.4,
+                79
+              ]
+            },
+            {
+              "id": "server-console",
+              "zone": "server",
+              "x": 89,
+              "y": 20,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                87.6,
+                18.6,
+                90.4,
+                20
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "rendererIntegration",
+            "bindings"
+          ],
+          "before": [
+            {
+              "seatId": "reception",
+              "floor215": "1f",
+              "zone215": "reception",
+              "anchorId": "reception",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "business-west",
+              "floor215": "1f",
+              "zone215": "lounge",
+              "anchorId": "business-west",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "business-east",
+              "floor215": "1f",
+              "zone215": "lounge",
+              "anchorId": "business-east",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "lobby-nw",
+              "floor215": "1f",
+              "zone215": "lounge",
+              "anchorId": "lobby-nw",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "lobby-ne",
+              "floor215": "1f",
+              "zone215": "lounge",
+              "anchorId": "lobby-ne",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "lobby-sw",
+              "floor215": "1f",
+              "zone215": "lounge",
+              "anchorId": "lobby-sw",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "lobby-se",
+              "floor215": "1f",
+              "zone215": "lounge",
+              "anchorId": "lobby-se",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "finance-lead",
+              "floor215": "2f",
+              "zone215": "desk",
+              "anchorId": "desk_daon",
+              "resolution": "215 slot ID 유지 + 명명 anchor alias"
+            },
+            {
+              "seatId": "finance-a",
+              "floor215": "2f",
+              "zone215": "desk",
+              "anchorId": "finance-a",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "finance-b",
+              "floor215": "2f",
+              "zone215": "desk",
+              "anchorId": "finance-b",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "life-a",
+              "floor215": "2f",
+              "zone215": "desk",
+              "anchorId": "life-a",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "life-b",
+              "floor215": "2f",
+              "zone215": "desk",
+              "anchorId": "life-b",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "life-c",
+              "floor215": "2f",
+              "zone215": "desk",
+              "anchorId": "life-c",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "life-d",
+              "floor215": "2f",
+              "zone215": "desk",
+              "anchorId": "life-d",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "finance-lounge-a",
+              "floor215": "2f",
+              "zone215": "lounge",
+              "anchorId": "finance-lounge-a",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "finance-lounge-b",
+              "floor215": "2f",
+              "zone215": "lounge",
+              "anchorId": "finance-lounge-b",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "meeting-nw",
+              "floor215": "2f",
+              "zone215": "meeting",
+              "anchorId": "meeting-nw",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "meeting-ne",
+              "floor215": "2f",
+              "zone215": "meeting",
+              "anchorId": "meeting-ne",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "meeting-sw",
+              "floor215": "2f",
+              "zone215": "meeting",
+              "anchorId": "meeting-sw",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "meeting-s",
+              "floor215": "2f",
+              "zone215": "meeting",
+              "anchorId": "meeting-s",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "meeting-se",
+              "floor215": "2f",
+              "zone215": "meeting",
+              "anchorId": "meeting-se",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "meeting-e",
+              "floor215": "2f",
+              "zone215": "meeting",
+              "anchorId": "meeting-e",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-lead",
+              "floor215": "3f",
+              "zone215": "desk",
+              "anchorId": "dev-lead",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-build",
+              "floor215": "3f",
+              "zone215": "desk",
+              "anchorId": "dev-build",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-research",
+              "floor215": "3f",
+              "zone215": "desk",
+              "anchorId": "dev-research",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-qa",
+              "floor215": "3f",
+              "zone215": "desk",
+              "anchorId": "dev-qa",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-design",
+              "floor215": "3f",
+              "zone215": "desk",
+              "anchorId": "dev-design",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-spare",
+              "floor215": "3f",
+              "zone215": "desk",
+              "anchorId": "dev-spare",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-lounge-a",
+              "floor215": "3f",
+              "zone215": "lounge",
+              "anchorId": "dev-lounge-a",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-lounge-b",
+              "floor215": "3f",
+              "zone215": "lounge",
+              "anchorId": "dev-lounge-b",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-meeting-nw",
+              "floor215": "3f",
+              "zone215": "meeting",
+              "anchorId": "dev-meeting-nw",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-meeting-n",
+              "floor215": "3f",
+              "zone215": "meeting",
+              "anchorId": "dev-meeting-n",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-meeting-ne",
+              "floor215": "3f",
+              "zone215": "meeting",
+              "anchorId": "dev-meeting-ne",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-meeting-sw",
+              "floor215": "3f",
+              "zone215": "meeting",
+              "anchorId": "dev-meeting-sw",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-meeting-s",
+              "floor215": "3f",
+              "zone215": "meeting",
+              "anchorId": "dev-meeting-s",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-meeting-se",
+              "floor215": "3f",
+              "zone215": "meeting",
+              "anchorId": "dev-meeting-se",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "server-console",
+              "floor215": "3f",
+              "zone215": "server",
+              "anchorId": "server-console",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "ceo-reserved",
+              "floor215": "4f",
+              "zone215": "desk",
+              "anchorId": "ceo-reserved",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "hani-side",
+              "floor215": "4f",
+              "zone215": "lounge",
+              "anchorId": "hani-side",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "lounge-center",
+              "floor215": "4f",
+              "zone215": "lounge",
+              "anchorId": "lounge-center",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "lounge-east",
+              "floor215": "4f",
+              "zone215": "lounge",
+              "anchorId": "lounge-east",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "lounge-armchair",
+              "floor215": "4f",
+              "zone215": "lounge",
+              "anchorId": "lounge-armchair",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "secretary-side",
+              "floor215": "4f",
+              "zone215": "meeting",
+              "anchorId": "secretary-side",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "context-side",
+              "floor215": "4f",
+              "zone215": "meeting",
+              "anchorId": "mir_meeting_pos",
+              "resolution": "215 slot ID 유지 + 명명 anchor alias"
+            },
+            {
+              "seatId": "board-n",
+              "floor215": "4f",
+              "zone215": "meeting",
+              "anchorId": "board-n",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "board-ne",
+              "floor215": "4f",
+              "zone215": "meeting",
+              "anchorId": "board-ne",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "board-sw",
+              "floor215": "4f",
+              "zone215": "meeting",
+              "anchorId": "board-sw",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "board-s",
+              "floor215": "4f",
+              "zone215": "meeting",
+              "anchorId": "board-s",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "board-se",
+              "floor215": "4f",
+              "zone215": "meeting",
+              "anchorId": "board-se",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "board-e",
+              "floor215": "4f",
+              "zone215": "meeting",
+              "anchorId": "board-e",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            }
+          ],
+          "after": [
+            {
+              "seatId": "reception",
+              "floor215": "1f",
+              "zone215": "reception",
+              "anchorId": "reception",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "business-west",
+              "floor215": "1f",
+              "zone215": "lounge",
+              "anchorId": "business-west",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "business-east",
+              "floor215": "1f",
+              "zone215": "lounge",
+              "anchorId": "business-east",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "lobby-nw",
+              "floor215": "1f",
+              "zone215": "lounge",
+              "anchorId": "lobby-nw",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "lobby-ne",
+              "floor215": "1f",
+              "zone215": "lounge",
+              "anchorId": "lobby-ne",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "lobby-sw",
+              "floor215": "1f",
+              "zone215": "lounge",
+              "anchorId": "lobby-sw",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "lobby-se",
+              "floor215": "1f",
+              "zone215": "lounge",
+              "anchorId": "lobby-se",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "finance-lead",
+              "floor215": "2f",
+              "zone215": "desk",
+              "anchorId": "desk_daon",
+              "resolution": "215 slot ID 유지 + 명명 anchor alias"
+            },
+            {
+              "seatId": "finance-a",
+              "floor215": "2f",
+              "zone215": "desk",
+              "anchorId": "finance-a",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "finance-b",
+              "floor215": "2f",
+              "zone215": "desk",
+              "anchorId": "finance-b",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "life-a",
+              "floor215": "2f",
+              "zone215": "desk",
+              "anchorId": "life-a",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "life-b",
+              "floor215": "2f",
+              "zone215": "desk",
+              "anchorId": "life-b",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "life-c",
+              "floor215": "2f",
+              "zone215": "desk",
+              "anchorId": "life-c",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "life-d",
+              "floor215": "2f",
+              "zone215": "desk",
+              "anchorId": "life-d",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "finance-lounge-a",
+              "floor215": "2f",
+              "zone215": "lounge",
+              "anchorId": "finance-lounge-a",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "finance-lounge-b",
+              "floor215": "2f",
+              "zone215": "lounge",
+              "anchorId": "finance-lounge-b",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "meeting-nw",
+              "floor215": "2f",
+              "zone215": "meeting",
+              "anchorId": "meeting-nw",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "meeting-ne",
+              "floor215": "2f",
+              "zone215": "meeting",
+              "anchorId": "meeting-ne",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "meeting-sw",
+              "floor215": "2f",
+              "zone215": "meeting",
+              "anchorId": "meeting-sw",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "meeting-s",
+              "floor215": "2f",
+              "zone215": "meeting",
+              "anchorId": "meeting-s",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "meeting-se",
+              "floor215": "2f",
+              "zone215": "meeting",
+              "anchorId": "meeting-se",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "meeting-e",
+              "floor215": "2f",
+              "zone215": "meeting",
+              "anchorId": "meeting-e",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-lead",
+              "floor215": "3f",
+              "zone215": "desk",
+              "anchorId": "dev-lead",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-build",
+              "floor215": "3f",
+              "zone215": "desk",
+              "anchorId": "dev-build",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-research",
+              "floor215": "3f",
+              "zone215": "desk",
+              "anchorId": "dev-research",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-qa",
+              "floor215": "3f",
+              "zone215": "desk",
+              "anchorId": "dev-qa",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-design",
+              "floor215": "3f",
+              "zone215": "desk",
+              "anchorId": "dev-design",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-lounge-a",
+              "floor215": "3f",
+              "zone215": "lounge",
+              "anchorId": "dev-lounge-a",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-lounge-b",
+              "floor215": "3f",
+              "zone215": "lounge",
+              "anchorId": "dev-lounge-b",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-meeting-nw",
+              "floor215": "3f",
+              "zone215": "meeting",
+              "anchorId": "dev-meeting-nw",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-meeting-n",
+              "floor215": "3f",
+              "zone215": "meeting",
+              "anchorId": "dev-meeting-n",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-meeting-ne",
+              "floor215": "3f",
+              "zone215": "meeting",
+              "anchorId": "dev-meeting-ne",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-meeting-sw",
+              "floor215": "3f",
+              "zone215": "meeting",
+              "anchorId": "dev-meeting-sw",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-meeting-s",
+              "floor215": "3f",
+              "zone215": "meeting",
+              "anchorId": "dev-meeting-s",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "dev-meeting-se",
+              "floor215": "3f",
+              "zone215": "meeting",
+              "anchorId": "dev-meeting-se",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "server-console",
+              "floor215": "3f",
+              "zone215": "server",
+              "anchorId": "server-console",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "ceo-reserved",
+              "floor215": "4f",
+              "zone215": "desk",
+              "anchorId": "ceo-reserved",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "hani-side",
+              "floor215": "4f",
+              "zone215": "lounge",
+              "anchorId": "hani-side",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "lounge-center",
+              "floor215": "4f",
+              "zone215": "lounge",
+              "anchorId": "lounge-center",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "lounge-east",
+              "floor215": "4f",
+              "zone215": "lounge",
+              "anchorId": "lounge-east",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "lounge-armchair",
+              "floor215": "4f",
+              "zone215": "lounge",
+              "anchorId": "lounge-armchair",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "secretary-side",
+              "floor215": "4f",
+              "zone215": "meeting",
+              "anchorId": "secretary-side",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "context-side",
+              "floor215": "4f",
+              "zone215": "meeting",
+              "anchorId": "mir_meeting_pos",
+              "resolution": "215 slot ID 유지 + 명명 anchor alias"
+            },
+            {
+              "seatId": "board-n",
+              "floor215": "4f",
+              "zone215": "meeting",
+              "anchorId": "board-n",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "board-ne",
+              "floor215": "4f",
+              "zone215": "meeting",
+              "anchorId": "board-ne",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "board-sw",
+              "floor215": "4f",
+              "zone215": "meeting",
+              "anchorId": "board-sw",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "board-s",
+              "floor215": "4f",
+              "zone215": "meeting",
+              "anchorId": "board-s",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "board-se",
+              "floor215": "4f",
+              "zone215": "meeting",
+              "anchorId": "board-se",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            },
+            {
+              "seatId": "board-e",
+              "floor215": "4f",
+              "zone215": "meeting",
+              "anchorId": "board-e",
+              "resolution": "215 seat ID 유지; V2 도식 좌표/방/owner는 차이 표 참조"
+            }
+          ]
+        },
+        {
+          "path": [
+            "rendererIntegration",
+            "planSeatMaps",
+            "3f"
+          ],
+          "before": [
+            {
+              "id": "dev-lead",
+              "zone": "desk",
+              "x": 13,
+              "y": 27.34375,
+              "owner": "seoyun",
+              "layer": 4,
+              "box": [
+                11.6,
+                25.94375,
+                14.4,
+                27.34375
+              ]
+            },
+            {
+              "id": "dev-build",
+              "zone": "desk",
+              "x": 29,
+              "y": 27.34375,
+              "owner": "dohyun",
+              "layer": 4,
+              "box": [
+                27.6,
+                25.94375,
+                30.4,
+                27.34375
+              ]
+            },
+            {
+              "id": "dev-research",
+              "zone": "desk",
+              "x": 45,
+              "y": 27.34375,
+              "owner": "serin",
+              "layer": 4,
+              "box": [
+                43.6,
+                25.94375,
+                46.4,
+                27.34375
+              ]
+            },
+            {
+              "id": "dev-qa",
+              "zone": "desk",
+              "x": 61,
+              "y": 27.34375,
+              "owner": "yuri",
+              "layer": 4,
+              "box": [
+                59.6,
+                25.94375,
+                62.4,
+                27.34375
+              ]
+            },
+            {
+              "id": "dev-design",
+              "zone": "desk",
+              "x": 77,
+              "y": 27.34375,
+              "owner": "arin",
+              "layer": 4,
+              "box": [
+                75.6,
+                25.94375,
+                78.4,
+                27.34375
+              ]
+            },
+            {
+              "id": "server-console",
+              "zone": "server",
+              "x": 17,
+              "y": 78.125,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                15.6,
+                76.725,
+                18.4,
+                78.125
+              ]
+            },
+            {
+              "id": "standup_room",
+              "zone": "lounge",
+              "x": 43,
+              "y": 78.125,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                41.6,
+                76.725,
+                44.4,
+                78.125
+              ]
+            },
+            {
+              "id": "dev-meeting-nw",
+              "zone": "meeting",
+              "x": 61,
+              "y": 71.875,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                59.6,
+                70.475,
+                62.4,
+                71.875
+              ]
+            },
+            {
+              "id": "dev-meeting-n",
+              "zone": "meeting",
+              "x": 70.5,
+              "y": 71.875,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                69.1,
+                70.475,
+                71.9,
+                71.875
+              ]
+            },
+            {
+              "id": "dev-meeting-ne",
+              "zone": "meeting",
+              "x": 80,
+              "y": 71.875,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                78.6,
+                70.475,
+                81.4,
+                71.875
+              ]
+            },
+            {
+              "id": "dev-meeting-sw",
+              "zone": "meeting",
+              "x": 61,
+              "y": 87.5,
+              "owner": null,
+              "layer": 9,
+              "box": [
+                59.6,
+                86.1,
+                62.4,
+                87.5
+              ]
+            },
+            {
+              "id": "dev-meeting-s",
+              "zone": "meeting",
+              "x": 70.5,
+              "y": 87.5,
+              "owner": null,
+              "layer": 9,
+              "box": [
+                69.1,
+                86.1,
+                71.9,
+                87.5
+              ]
+            },
+            {
+              "id": "dev-meeting-se",
+              "zone": "meeting",
+              "x": 80,
+              "y": 87.5,
+              "owner": null,
+              "layer": 9,
+              "box": [
+                78.6,
+                86.1,
+                81.4,
+                87.5
+              ]
+            },
+            {
+              "id": "dev-spare",
+              "zone": "desk",
+              "x": 45,
+              "y": 38.28125,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                43.6,
+                36.88125,
+                46.4,
+                38.28125
+              ]
+            },
+            {
+              "id": "dev-lounge-a",
+              "zone": "lounge",
+              "x": 9,
+              "y": 17.96875,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                7.6,
+                16.56875,
+                10.4,
+                17.96875
+              ]
+            },
+            {
+              "id": "dev-lounge-b",
+              "zone": "lounge",
+              "x": 25,
+              "y": 17.96875,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                23.6,
+                16.56875,
+                26.4,
+                17.96875
+              ]
+            }
+          ],
+          "after": [
+            {
+              "id": "dev-lead",
+              "zone": "desk",
+              "x": 13,
+              "y": 27.34375,
+              "owner": "seoyun",
+              "layer": 4,
+              "box": [
+                11.6,
+                25.94375,
+                14.4,
+                27.34375
+              ]
+            },
+            {
+              "id": "dev-build",
+              "zone": "desk",
+              "x": 29,
+              "y": 27.34375,
+              "owner": "dohyun",
+              "layer": 4,
+              "box": [
+                27.6,
+                25.94375,
+                30.4,
+                27.34375
+              ]
+            },
+            {
+              "id": "dev-research",
+              "zone": "desk",
+              "x": 45,
+              "y": 27.34375,
+              "owner": "serin",
+              "layer": 4,
+              "box": [
+                43.6,
+                25.94375,
+                46.4,
+                27.34375
+              ]
+            },
+            {
+              "id": "dev-qa",
+              "zone": "desk",
+              "x": 45,
+              "y": 38.28125,
+              "owner": "yuri",
+              "layer": 4,
+              "box": [
+                43.6,
+                36.88125,
+                46.4,
+                38.28125
+              ]
+            },
+            {
+              "id": "dev-design",
+              "zone": "desk",
+              "x": 77,
+              "y": 27.34375,
+              "owner": "arin",
+              "layer": 4,
+              "box": [
+                75.6,
+                25.94375,
+                78.4,
+                27.34375
+              ]
+            },
+            {
+              "id": "server-console",
+              "zone": "server",
+              "x": 17,
+              "y": 78.125,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                15.6,
+                76.725,
+                18.4,
+                78.125
+              ]
+            },
+            {
+              "id": "standup_room",
+              "zone": "lounge",
+              "x": 43,
+              "y": 78.125,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                41.6,
+                76.725,
+                44.4,
+                78.125
+              ]
+            },
+            {
+              "id": "dev-meeting-nw",
+              "zone": "meeting",
+              "x": 61,
+              "y": 71.875,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                59.6,
+                70.475,
+                62.4,
+                71.875
+              ]
+            },
+            {
+              "id": "dev-meeting-n",
+              "zone": "meeting",
+              "x": 70.5,
+              "y": 71.875,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                69.1,
+                70.475,
+                71.9,
+                71.875
+              ]
+            },
+            {
+              "id": "dev-meeting-ne",
+              "zone": "meeting",
+              "x": 80,
+              "y": 71.875,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                78.6,
+                70.475,
+                81.4,
+                71.875
+              ]
+            },
+            {
+              "id": "dev-meeting-sw",
+              "zone": "meeting",
+              "x": 61,
+              "y": 87.5,
+              "owner": null,
+              "layer": 9,
+              "box": [
+                59.6,
+                86.1,
+                62.4,
+                87.5
+              ]
+            },
+            {
+              "id": "dev-meeting-s",
+              "zone": "meeting",
+              "x": 70.5,
+              "y": 87.5,
+              "owner": null,
+              "layer": 9,
+              "box": [
+                69.1,
+                86.1,
+                71.9,
+                87.5
+              ]
+            },
+            {
+              "id": "dev-meeting-se",
+              "zone": "meeting",
+              "x": 80,
+              "y": 87.5,
+              "owner": null,
+              "layer": 9,
+              "box": [
+                78.6,
+                86.1,
+                81.4,
+                87.5
+              ]
+            },
+            {
+              "id": "dev-lounge-a",
+              "zone": "lounge",
+              "x": 9,
+              "y": 17.96875,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                7.6,
+                16.56875,
+                10.4,
+                17.96875
+              ]
+            },
+            {
+              "id": "dev-lounge-b",
+              "zone": "lounge",
+              "x": 25,
+              "y": 17.96875,
+              "owner": null,
+              "layer": 4,
+              "box": [
+                23.6,
+                16.56875,
+                26.4,
+                17.96875
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "source": {
+    "beforeSha256": "9d163016ff9b5d301f0b9088fbaadc5d7af21c4fa77ae62fe465c6253e42fe43",
+    "afterSha256": "3fe955345e8e843d05035159468ea364221b5bcb606a9edf73a80b9355455a46",
+    "replacements": [
+      {
+        "before": "screen=monitorScreens[anchor],rect=furniture[anchor]?.deskBounds",
+        "after": "screen=furniture[anchor]?.monitorScreen||monitorScreens[anchor],rect=furniture[anchor]?.deskBounds"
+      },
+      {
+        "before": "actor.dataset.facing=p.facing||'';",
+        "after": "actor.dataset.facing=p.facing||p.seat.facing||'';"
+      },
+      {
+        "before": "options.chairmanPresent?4:64",
+        "after": "options.chairmanPresent?16:10"
+      },
+      {
+        "before": "(c.floor==='5f'?4:16)",
+        "after": "(c.floor==='5f'?4:17)"
+      },
+      {
+        "before": "bg.src=background;bg.hidden=false;",
+        "after": "bg.src=background;if(floor.id==='3f')foregrounds[0].src=background;bg.hidden=false;"
+      }
+    ]
+  },
+  "css": {
+    "beforeSha256": "52958c350dcb51bbdeb8264199eb75b1f0b7e646cf8a05a735cb04c74dffe51b",
+    "afterSha256": "bb3441e5c4fb23e71323c8d123648d355eca6d8b00a1c1704063766610616786"
+  }
+}

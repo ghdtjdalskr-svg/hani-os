@@ -50,8 +50,8 @@ for(const expected of baseline.records)test('obr6/obr8: '+expected.label+' origi
  assert.equal(writes,0);
 });
 test('obr6: all anchor pairs keep the exact approved cafe paths and equal-distance tie order',()=>{
- const routeBytes=fs.readFileSync(new URL('scripts/fixtures/office-cafe-finish-routes.json',root));
- assert.equal(crypto.createHash('sha256').update(routeBytes).digest('hex'),'3072cbaeca0b4b1f52c7965a5678eba8ce51cebe4883c8c465ea94b9c5aa38a4','exact approved cafe service branches and all unchanged Dijkstra tie orders');
+ const routeBytes=fs.readFileSync(new URL('scripts/fixtures/office-tlayout-routes-v7.json',root));
+ assert.equal(crypto.createHash('sha256').update(routeBytes).digest('hex'),'5283c2b47a0b67ece871e330174b990b71bd2c39cf30058a381f0c794c56e1ee','exact approved G north bypass, cafe service branches and Dijkstra tie orders');
  const expected=JSON.parse(routeBytes);
  const {scene}=loadScene();assert.deepEqual([...scene.anchors.keys()],expected.ids);
  for(const {from,sha256}of expected.rows){

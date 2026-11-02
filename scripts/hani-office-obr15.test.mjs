@@ -1,4 +1,7 @@
-import {restoreResidentsSource} from './hani-office-residents-source.mjs';
+import {readTlayoutPlans} from './hani-office-tlayout-fixture.mjs';
+import {restoreResidentsSource as restorePriorResidentsSource} from './hani-office-residents-source.mjs';
+import {restoreTlayoutSource} from './hani-office-tlayout-fixture.mjs';
+const restoreResidentsSource=source=>restorePriorResidentsSource(restoreTlayoutSource(source));
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -40,7 +43,7 @@ test('obr15 historical source identities retained; cafe/rest source and full abs
   const consultBytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-consult-v7-plans.json.gz'));
   assert.equal(hash(consultBytes),'1a0acf4ae695ccb93b315b59bea9804273ca7cee4eb024dcd84bab90bd4579db','approved consultation full-output SHA-256 oracle');
   const consult=JSON.parse(consultBytes);assert.equal(hash(restoreOfficeLabelsSource(fs.readFileSync('hani-office-live.js','utf8'))),consult.sourceSha256);assert.equal(hash(fs.readFileSync('data/hani-building/office-places.json')),consult.placesSha256);
-  const reviewed=consult.records.find(r=>r.label==='obr15 absent '+day);
+  const reviewed=readTlayoutPlans().records.find(r=>r.label==='obr15 absent '+day);
   assert.ok(reviewed);assert.equal(serialize(o),serialize(reviewed.options));
   const a=actual.plan(day,o),out=actual.blockPlan(day,0,a,o);assert.equal(hash(serialize(a)),reviewed.formalSha256);assert.equal(hash(serialize(out)),reviewed.outingsSha256);
   for(let sec=86399;sec>=0;sec-=137)assert.equal(serialize(actual.snapshot(at(day,sec),{...o,chairmanArrivalAt:at(day,32400).getTime()})),serialize(actual.snapshot(at(day,sec),o)),day+' '+sec);

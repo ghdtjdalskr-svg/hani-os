@@ -5,7 +5,9 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import {loadScene,at,readAt} from './hani-office-lively-fixture.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
-import {restoreResidentsSource} from './hani-office-residents-source.mjs';
+import {restoreResidentsSource as restorePriorResidentsSource} from './hani-office-residents-source.mjs';
+import {restoreTlayoutSource} from './hani-office-tlayout-fixture.mjs';
+const restoreResidentsSource=source=>restorePriorResidentsSource(restoreTlayoutSource(source));
 
 const source=fs.readFileSync('hani-office-live.js','utf8'),css=fs.readFileSync('hani-office-live.css','utf8');
 const {scene,table}=loadScene(),s=scene.scheduler;
