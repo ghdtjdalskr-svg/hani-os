@@ -1,3 +1,8 @@
+# 2026-11-02 · 로비 큰 액자 퀸 / 말풍선 바깥 탭 (Codex / qa-b12)
+
+`hani/lobby-frame` / base·HEAD·origin/main 캐시 `28cce59a` / 2.9.259 유지 / 미커밋. 1F 실제 아트의 안쪽 캔버스(1171,73)–(1347,180), 176×107px에 기존 queen 배너를 오른쪽 cover·HTML 금색 캡션으로 표시. 기존 문서 pointer owner·actor 위임으로 바깥 탭 즉시 닫기, 다른 배우·링크·3초 timer 유지. portrait 삭제, 월별 이미지표는 전광판과 공유. **지정11묶음182통과·7실패(모두 Git EPERM), 전용22/22·주민36/36·syntax8/8·보존11/11 PASS. closure147→146/160·누락0.** 직원/방문객/주민 plans·저장/Cloud/schema·board-library·버전/cache 보존, exact-line LCS·pin 및 정확한 closure 기대값 갱신. 실제 배경 PC/폰 비교 PNG 확인, 브라우저·원격 최신성·운영 미검증. commit/push/merge/배포 없음. Notion 쓰기 자동 승인 never 거절로 갱신 대기. [인수인계·좌표·테스트·비교 PNG](handoffs/2026-11-02-lobby-frame.md). 아래 기존·다른 담당 기록 보존.
+
+
 # 2026-11-02 · 모찌 본사 주민 추가 (Codex / qa-b11d)
 
 `hani/mascots-poster` / 작업 HEAD `ab146f8` / 원격 main·로컬 캐시 `13fe873` 일치(GitHub connector) / 2.9.258 유지 / 미커밋. 모찌 atlas·literal CSS·manifest/fallback, 3F오전/4F낮/1F저녁·22~02시 동행·02~07시수면, 느린hop/긴휴식·대사10개·쉬는 히나 선호·단일bubble 세동물 순차대사/quarter유지 구현. **주민36/36·지정11묶음163통과7실패(기존Git EPERM7·신규0)·syntax8/8·byte보존10/10·closure146→147/160·누락0.** 직원/방문객plans·기존주민동작·인원/roster·저장/Cloud/schema·버전/cache 보존. labels/residents complete-line LCS 재생성·원래 guard 유지. 브라우저/Git 직접실행·commit/push/PR/merge/배포 없음. 실화면·운영 미검증, 서윤 manifest 별도PR 선행·Preview 대기. Notion append는 자동 승인 never 거절로 갱신 대기. [인수인계·명령/실패/정확한pin](handoffs/2026-11-02-office-mochi-life.md). 아래 기존·타 담당 기록 보존.
