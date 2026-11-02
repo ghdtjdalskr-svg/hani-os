@@ -1,7 +1,7 @@
 {
   "scope": "Approved seven residents only; exact changed lines. Reverse before historical label/motion guards. All other bytes, scheduler, staff/visitor plans and previous fixtures remain frozen.; approved Mochi resident and trio display only",
-  "beforeSha256": "992a9a89ea355458a395ebca2417f307e5f213cba5c29087ab3b82ca9bfdd0be",
-  "afterSha256": "9d163016ff9b5d301f0b9088fbaadc5d7af21c4fa77ae62fe465c6253e42fe43",
+  "beforeSha256": "672b4fa6b15ef08859822870c7a3ff12d8029a65a972010799391ea5eb33d00f",
+  "afterSha256": "bc100b705d67c74e85fb3c595f134359e111ff0672ceb6bef5902fa56245f62a",
   "changes": [
     {
       "beforeLine": 1879,
@@ -446,8 +446,8 @@
       ]
     },
     {
-      "beforeLine": 2455,
-      "afterLine": 2657,
+      "beforeLine": 2461,
+      "afterLine": 2663,
       "before": [
         "    if(actor.dataset.person==='seongmin'||actor.dataset.person.startsWith('visitor')){sprite.className='hani-office-sprite';sprite.style.backgroundImage='';actor.dataset.avatar='pending';return}\n"
       ],
@@ -456,8 +456,8 @@
       ]
     },
     {
-      "beforeLine": 2538,
-      "afterLine": 2740,
+      "beforeLine": 2544,
+      "afterLine": 2746,
       "before": [
         "    for(const actor of actors.values()){actor.officeWasVisible=!actor.hidden;actor.hidden=true;actor.officeRow.hidden=true;actor.dataset.called=\"false\"}\n"
       ],
@@ -466,16 +466,16 @@
       ]
     },
     {
-      "beforeLine": 2567,
-      "afterLine": 2769,
+      "beforeLine": 2573,
+      "afterLine": 2775,
       "before": [],
       "after": [
         "    updateResidents(now);\n"
       ]
     },
     {
-      "beforeLine": 2573,
-      "afterLine": 2776,
+      "beforeLine": 2579,
+      "afterLine": 2782,
       "before": [],
       "after": [
         "  function updateResidents(now){\n",
@@ -505,16 +505,16 @@
       ]
     },
     {
-      "beforeLine": 2641,
-      "afterLine": 2868,
+      "beforeLine": 2647,
+      "afterLine": 2874,
       "before": [],
       "after": [
         "    updateResidents(new Date(now));\n"
       ]
     },
     {
-      "beforeLine": 2643,
-      "afterLine": 2871,
+      "beforeLine": 2649,
+      "afterLine": 2877,
       "before": [],
       "after": [
         "      if(actor.dataset.resident){const effect=actor.officeReactions.tick(now,reduced,actor.dataset.walking==='true');if(effect){if(actor.dataset.motion!==effect.kind)actor.dataset.motion=effect.kind}else if(actor.dataset.motion!==undefined)delete actor.dataset.motion;continue}\n"

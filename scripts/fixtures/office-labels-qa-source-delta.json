@@ -1,7 +1,7 @@
 {
   "scope": "QA-3/18/19 + QA-b5b exact display-only source delta; no scheduler, placement, click or frame changes; rebased on the approved consultation source; phone action labels and head icons; approved qa-b11c persistent 1F poster UI only",
   "beforeSha256": "406937ae1d69c0379bb735e961734b517ae9440a02c93a0d41771dc0c694d246",
-  "afterSha256": "992a9a89ea355458a395ebca2417f307e5f213cba5c29087ab3b82ca9bfdd0be",
+  "afterSha256": "672b4fa6b15ef08859822870c7a3ff12d8029a65a972010799391ea5eb33d00f",
   "changes": [
     {
       "beforeLine": 1876,
@@ -83,6 +83,16 @@
         "    const fallback={work:'근무 중|일하는 중|업무 진행|근무 계속|근무 이어감|업무 이어감|업무 진행중|업무 보는중',rest:'휴식 중|쉬는 중|잠깐 휴식|휴식 취하기|잠시 쉬기|쉬어 가기|휴식 이어감|잠깐 쉬기',meeting:'회의 중|회의 참여|회의 진행|회의 참석|회의 함께|회의 나눔|회의 이어감|회의 진행중',moving:'이동 중|걸어가는 중|목적지 이동|걷는 중|이동 계속|이동 이어감|걸어서 이동|목적지 걷기',night:'야근 중|야간 근무|야근 진행|야근 계속|야근 이어감|야간 작업|밤 근무중|야근 진행중'};\n",
         "    const options=(authored||fallback[state]||fallback.work).split('|');\n",
         "    const choices=(compact?[...options.map(w=>w.replace(/ /g,'')),...options]:options).filter(w=>[...w].length>=2&&[...w].length<=(compact?6:8));\n"
+      ]
+    },
+    {
+      "beforeLine": 2139,
+      "afterLine": 2148,
+      "before": [
+        "  for(const type of ['pointerdown','keydown','wheel','touchstart'])document.addEventListener(type,officePresence.interact,{passive:true});\n"
+      ],
+      "after": [
+        "  for(const type of ['pointerdown','keydown','wheel','touchstart'])document.addEventListener(type,event=>{officePresence.interact(event);if(type==='pointerdown'&&event?.target)activateActor(event,true)},{passive:true});\n"
       ]
     },
     {
@@ -245,36 +255,52 @@
       ]
     },
     {
+      "beforeLine": 2300,
+      "afterLine": 2360,
+      "before": [
+        "  function activateActor(event){const actor=event.target.closest('.hani-office-actor');if(actor&&actorLayer.contains(actor))openBubble(actor)}\n"
+      ],
+      "after": [
+        "  function activateActor(event,dismissOnly=false){\n",
+        "    const actor=event.target.closest?.('.hani-office-actor');\n",
+        "    if(actor&&actorLayer.contains(actor)){if(!dismissOnly)openBubble(actor);return}\n",
+        "    if(!dismissOnly||actorBubble.hidden||actorBubble.contains(event.target)||[...actors.values()].some(a=>a.officeRow.contains(event.target)))return;\n",
+        "    closeBubble();\n",
+        "  }\n"
+      ]
+    },
+    {
       "beforeLine": 2332,
-      "afterLine": 2392,
+      "afterLine": 2397,
       "before": [],
       "after": [
-        "  // Award month -> CSS image token. The canonical board owns month/winner data.\n",
-        "  const queenPosters=Object.freeze({'2026-10':'var(--queen-poster-2026-10)'});\n",
-        "  const queenPoster=document.createElement('button');queenPoster.type='button';queenPoster.className='hani-office-queen-poster';queenPoster.hidden=true;\n",
-        "  queenPoster.style.left='41%';queenPoster.style.top='19%';queenPoster.style.width=(60/(building.art?.width||1672)*100)+'%';queenPoster.style.height=(90/(building.art?.height||941)*100)+'%';\n",
-        "  map.append(queenPoster);\n",
-        "  function updateQueenPoster(now=Date.now()){\n",
+        "  // Measured purple inner canvas in art-map 1F floor-1f-217.webp (1672 x 941).\n",
+        "  const queenFrame=document.createElement('button');queenFrame.type='button';queenFrame.className='hani-office-queen-frame';queenFrame.hidden=true;\n",
+        "  const queenImage=document.createElement('img'),queenCaption=document.createElement('span');\n",
+        "  queenImage.alt='';queenImage.draggable=false;queenCaption.className='hani-office-queen-caption';queenCaption.setAttribute('aria-hidden','true');queenFrame.append(queenImage,queenCaption);\n",
+        "  queenFrame.style.left=(1171/(building.art?.width||1672)*100)+'%';queenFrame.style.top=(73/(building.art?.height||941)*100)+'%';queenFrame.style.width=(176/(building.art?.width||1672)*100)+'%';queenFrame.style.height=(107/(building.art?.height||941)*100)+'%';\n",
+        "  map.append(queenFrame);\n",
+        "  function updateQueenFrame(now=Date.now()){\n",
         "    const award=activeFloor==='1f'&&map.dataset.art==='floor'?window.HaniBoard?.queenWinner?.(now):null;\n",
-        "    const image=award&&queenPosters[award.month];\n",
-        "    const hidden=!image;if(queenPoster.hidden!==hidden)queenPoster.hidden=hidden;if(hidden)return;\n",
-        "    const title='👑 '+Number(award.month.slice(5))+'월의 퀸 · '+award.name;\n",
-        "    if(queenPoster.dataset.month!==award.month){queenPoster.dataset.month=award.month;queenPoster.style.backgroundImage=image}\n",
-        "    if(queenPoster.title!==title){queenPoster.title=title;queenPoster.setAttribute('aria-label',title)}\n",
+        "    const image=award&&window.HaniBoard?.queenImages?.[award.month];\n",
+        "    const hidden=!image;if(queenFrame.hidden!==hidden)queenFrame.hidden=hidden;if(hidden)return;\n",
+        "    const caption='👑 '+Number(award.month.slice(5))+'월의 퀸',title=caption+' · '+award.name;\n",
+        "    if(queenFrame.dataset.month!==award.month){queenFrame.dataset.month=award.month;queenImage.src=image;queenCaption.textContent=caption}\n",
+        "    if(queenFrame.title!==title){queenFrame.title=title;queenFrame.setAttribute('aria-label',title)}\n",
         "  }\n",
-        "  queenPoster.onclick=()=>{\n",
-        "    updateQueenPoster();if(queenPoster.hidden)return;\n",
+        "  queenFrame.onclick=()=>{\n",
+        "    updateQueenFrame();if(queenFrame.hidden)return;\n",
         "    closeBubble();lastBubbleTap=Date.now();autoBubbleEntry=false;\n",
         "    bubbleSprite.hidden=true;actorBubble.dataset.zoom='false';actorBubble.officeFollow=null;\n",
-        "    bubbleLine.textContent=queenPoster.title;profileLink.hidden=true;actorBubble.style.left='4px';actorBubble.style.top='4px';actorBubble.hidden=false;\n",
+        "    bubbleLine.textContent=queenFrame.title;profileLink.hidden=true;actorBubble.style.left='4px';actorBubble.style.top='4px';actorBubble.hidden=false;\n",
         "    const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble(false)}},3000);\n",
         "  };\n",
-        "  queenPoster.onkeydown=event=>{if(event.key==='Escape')closeBubble()};\n"
+        "  queenFrame.onkeydown=event=>{if(event.key==='Escape')closeBubble()};\n"
       ]
     },
     {
       "beforeLine": 2417,
-      "afterLine": 2498,
+      "afterLine": 2504,
       "before": [
         "      bg.src=background;bg.hidden=false;bg.alt=floor.label+' · HANI 본사';map.dataset.art=isFloor?'floor':'fallback';\n"
       ],
@@ -284,15 +310,15 @@
     },
     {
       "beforeLine": 2422,
-      "afterLine": 2503,
+      "afterLine": 2509,
       "before": [],
       "after": [
-        "      updateQueenPoster();\n"
+        "      updateQueenFrame();\n"
       ]
     },
     {
       "beforeLine": 2423,
-      "afterLine": 2505,
+      "afterLine": 2511,
       "before": [],
       "after": [
         "      scheduleFloorBubble();\n"
@@ -300,25 +326,25 @@
     },
     {
       "beforeLine": 2440,
-      "afterLine": 2523,
+      "afterLine": 2529,
       "before": [],
       "after": [
-        "    updateQueenPoster(now.getTime());\n"
+        "    updateQueenFrame(now.getTime());\n"
       ]
     },
     {
       "beforeLine": 2448,
-      "afterLine": 2532,
+      "afterLine": 2538,
       "before": [
         "    setBackground(floor);\n"
       ],
       "after": [
-        "    setBackground(floor);updateQueenPoster(now.getTime());\n"
+        "    setBackground(floor);updateQueenFrame(now.getTime());\n"
       ]
     },
     {
       "beforeLine": 2477,
-      "afterLine": 2561,
+      "afterLine": 2567,
       "before": [
         "      actor.querySelector('.hani-office-prop').textContent=actor.dataset.emoji;\n"
       ],
@@ -328,7 +354,7 @@
     },
     {
       "beforeLine": 2487,
-      "afterLine": 2571,
+      "afterLine": 2577,
       "before": [],
       "after": [
         "    scheduleFloorBubble();\n"
@@ -336,7 +362,7 @@
     },
     {
       "beforeLine": 2488,
-      "afterLine": 2573,
+      "afterLine": 2579,
       "before": [
         "  function selectFloor(id,animate=false){closeBubble();if(!floorButtons.has(id))return;for(const actor of actors.values())finishTravel(actor);activeFloor=id;updateBuilding(true,animate)}\n"
       ],
@@ -346,7 +372,7 @@
     },
     {
       "beforeLine": 2491,
-      "afterLine": 2576,
+      "afterLine": 2582,
       "before": [
         "  function syncVisibility(){officePresence.read();const visible=sceneVisible();sceneActive=visible;root.dataset.paused=String(!visible);if(visible)updateBuilding(true,false);else{for(const actor of actors.values())clearMotion(actor);closeBubble()}map.officeMascotMotion?.({now:Date.now(),reduced,visible,actors})}\n"
       ],
