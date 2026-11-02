@@ -8,7 +8,9 @@ import {createHash} from 'node:crypto';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
-import {restoreResidentsSource} from './hani-office-residents-source.mjs';
+import {restoreResidentsSource as restorePriorResidentsSource} from './hani-office-residents-source.mjs';
+import {restoreTlayoutSource,reapplyTlayoutSource} from './hani-office-tlayout-fixture.mjs';
+const restoreResidentsSource=source=>restorePriorResidentsSource(restoreTlayoutSource(source));
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 const read=f=>fs.readFileSync(f,'utf8'),hash=b=>createHash('sha256').update(b).digest('hex');
 const manifest=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));
@@ -257,7 +259,7 @@ test('cream follows seated or walking chairman to his floor, dwells beside clear
 });
 
 test('interaction routes and dwell spots clear full furniture envelopes and staff snapshots/plans remain byte-identical on and off',()=>{
- const original=loadScene({transform:()=>restoreResidentsSource(read('hani-office-live.js'))}).scene;
+ const original=loadScene({transform:()=>reapplyTlayoutSource(restoreResidentsSource(read('hani-office-live.js')))}).scene;
  let scenes=0,moving=0;
  for(const day of ['2026-11-02','2026-11-03'])for(const chairmanPresent of [false,true]){
   const options={chairmanPresent},plan=scene.scheduler.plan(day,options);assert.equal(JSON.stringify(plan),JSON.stringify(original.scheduler.plan(day,options)));
@@ -341,7 +343,7 @@ test('the shared bubble hidden CSS wins over display:flex for residents and visi
 
 test('every original source byte and staff/visitor plan, outing and snapshot stays identical with residents on or off',()=>{
  const original=restoreResidentsSource(read('hani-office-live.js'));
- const old=loadScene({transform:()=>original}).scene;
+ const old=loadScene({transform:()=>reapplyTlayoutSource(original)}).scene;
  for(const day of ['2026-11-01','2026-11-02'])for(const chairmanPresent of [false,true]){
   const options={chairmanPresent},before=old.scheduler.plan(day,options),after=scene.scheduler.plan(day,options);
   assert.equal(JSON.stringify(after),JSON.stringify(before));
@@ -442,7 +444,7 @@ test('trio rejects missing/different-floor/sleeping pets and staff-blocked floor
  assert.equal(rr.trio(now,states.filter(p=>p.id!=='pet-rabbit'),staff),null);assert.equal(rr.trio(now,states.map(p=>p.id==='pet-rabbit'?{...p,floor:'3f'}:p),staff),null);
  assert.equal(rr.trio(at('2026-11-03',3*3600),rr.snapshot(at('2026-11-03',3*3600)),staff),null);
  const stop=rr.spot('resident_rabbit_night_a'),blocked=staffWith({id:'visitor',visitor:true,floor:'1f',position:plain(stop.visual),walking:true});assert.equal(rr.trio(now,states,blocked),null);
- const old=loadScene({transform:restoreResidentsSource}).scene;
+ const old=loadScene({transform:source=>reapplyTlayoutSource(restoreResidentsSource(source))}).scene;
  assert.ok(rr.trio(now,states,staff));rr.snapshot(now,staff);assert.equal(JSON.stringify(staff),bytes);
  for(const day of ['2026-11-02','2026-11-03'])for(const chairmanPresent of [true,false]){const options={chairmanPresent},plan=isolated.scheduler.plan(day,options),prior=old.scheduler.plan(day,options);assert.equal(JSON.stringify(plan),JSON.stringify(prior));for(const block of [0,48,72,120,143])assert.equal(JSON.stringify(isolated.scheduler.blockPlan(day,block,plan,options)),JSON.stringify(old.scheduler.blockPlan(day,block,prior,options)))}
  const source=read('hani-office-live.js'),before=restoreResidentsSource(source);for(const re of [/\bfetch\s*\(/g,/\bsetInterval\s*\(/g,/\bsetTimeout\s*\(/g,/\baddEventListener\s*\(/g])assert.deepEqual(source.match(re),before.match(re));

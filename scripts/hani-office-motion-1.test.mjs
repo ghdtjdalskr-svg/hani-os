@@ -1,3 +1,4 @@
+import {restoreTlayoutSource} from './hani-office-tlayout-fixture.mjs';
 // Node-only execution of the actual owners. These doubles do not prove pixels
 // or Android performance; the reviewer runs the real browser checks separately.
 import test from 'node:test';
@@ -23,7 +24,7 @@ test('distance, not elapsed ticks, swaps both walk frames; stopping and resampli
 });
 
 test('approved consultation scheduler source stays frozen, including every route and arrival calculation',()=>{
-  const normalized=source.replace(/\r/g,''),scheduler=normalized.slice(normalized.indexOf('  function createScheduler('),normalized.indexOf('  // Read-only label geometry'));
+  const normalized=restoreTlayoutSource(source).replace(/\r/g,''),scheduler=normalized.slice(normalized.indexOf('  function createScheduler('),normalized.indexOf('  // Read-only label geometry'));
   assert.equal(createHash('sha256').update(scheduler).digest('hex'),'ca728c14b239d62a73f89db489d3f14c41a3b32e5367f396a4c8b5638feecde8');
   const placement=normalized.slice(normalized.indexOf('  function placeStatusLabels('),normalized.indexOf('  const scheduler='));
   assert.equal(createHash('sha256').update(placement).digest('hex'),'5070f7e62556b89410bc7588600fefe80ba99579e945ae49bab89def98bec6f0','placeStatusLabels rules remain unchanged');

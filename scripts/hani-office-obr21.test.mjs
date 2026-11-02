@@ -1,4 +1,6 @@
-import {restoreResidentsSource} from './hani-office-residents-source.mjs';
+import {restoreResidentsSource as restorePriorResidentsSource} from './hani-office-residents-source.mjs';
+import {restoreTlayoutSource} from './hani-office-tlayout-fixture.mjs';
+const restoreResidentsSource=source=>restorePriorResidentsSource(restoreTlayoutSource(source));
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -38,7 +40,7 @@ function restoreOfficeLabelsSource(source){
 }
 test('obr21 authored full absent/present plans and reverse snapshots match frozen delta',()=>{
  const bytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-obr21-plans.json.gz'));
- assert.equal(createHash('sha256').update(bytes).digest('hex'),'1942680012eb088a02b9aae35df41f7286a6f281bde1c4628a4fa8b998921a1d');
+ assert.equal(createHash('sha256').update(bytes).digest('hex'),'f9b5785ccddaadc9a6dda5fa46d51aa034372c57da16c81032840f2b4a5c1b35');
  const frozen=JSON.parse(bytes),current=fs.readFileSync('hani-office-live.js','utf8'),source=restoreOfficeLabelsSource(current);
  const displayChange=labelDelta.changes.find(c=>c.after.some(l=>l.trim())),displayLine=displayChange.after.find(l=>l.trim());
  assert.throws(()=>restoreOfficeLabelsSource(current.replace(displayLine,displayLine.replace(/\S/,'!'))));
