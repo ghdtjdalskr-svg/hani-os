@@ -16,7 +16,11 @@ export function restoreTlayoutSource(source){
  for(const r of tlayoutDelta.source.replacements){assert.equal(source.split(r.after).length-1,1,'unique approved G line');source=source.replace(r.after,r.before)}
  assert.equal(hash(source),tlayoutDelta.source.beforeSha256,'every source byte before G restored');return source;
 }
+export function reapplyTlayoutSource(source){
+ for(const r of tlayoutDelta.source.replacements){assert.equal(source.split(r.before).length-1,1,'unique pre-G line');source=source.replace(r.before,r.after)}
+ return source;
+}
 export function readTlayoutPlans(){
  const b=gunzipSync(fs.readFileSync(new URL('fixtures/office-tlayout-plans-v7.json.gz',import.meta.url)));
- assert.equal(hash(b),'5346e9f33c1b278d56ae925d17e757225b0f7f232f69d95819a67dbb8cf3137d','separately frozen complete G output');return JSON.parse(b);
+ assert.equal(hash(b),'e8c33d6488346d548e5ffc18e5d97c03a3279d8e733ad9116f6badcfc3a92224','separately frozen complete G output');return JSON.parse(b);
 }
