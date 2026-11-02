@@ -1660,6 +1660,6 @@
     postFields,displayViews,staffReads,displayLikes,boardReaders,commentFields,relativeTime,boardDate,closePost,previewThread,postPreview,cancelPreview,ownerReactions,replyIntent,chairmanReplyIntent,chairmanReplyTopic,CHAIRMAN_TOPIC_REPLIES,CHAIRMAN_REPLIES,orderedComments,commentMarkup,stripLeadingVocative,
     ADDRESS_RULES,personaMap,personaMode,staffAddress,candidateScore,commentCandidates,selectAuthors,queueReplies,generateDaily,realEvents,refreshLiving,
     setReplyMode,replyMode,draftAction,postDrafts,replyDrafts,votePoll,toggleReaction,weeklyBest,weeklyActivity,
-    attendance,unreadCount,mentionIds,dayKey,replySafetyBound,queenWinner});
+    attendance,unreadCount,mentionIds,dayKey,replySafetyBound,queenWinner,queenImages});
   init();
 })();

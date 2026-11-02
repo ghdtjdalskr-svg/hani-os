@@ -131,112 +131,165 @@ test('Mochi atlas decodes ten contained left/right frames, distinct hop phases a
   for(let i=3;i<frames[2].length;i+=4)if(Math.abs(frames[2][i]-frames[3][i])>32)changed++;
   assert.ok(changed>500,'hop-a and hop-b have distinct gathered / extended silhouettes');
 });
-// qa-b11c: execute the real board read and the mounted office owner, no browser.
+// qa-b12: execute canonical board reads and the real mounted office/event owner.
 import {fixture as officeFixture} from './hani-building-206-engine.test.mjs';
-import {loadScene as posterScene,at as posterAt} from './hani-office-lively-fixture.mjs';
+import {loadScene as frameScene,at as frameAt} from './hani-office-lively-fixture.mjs';
 import {createHash} from 'node:crypto';
 const officeSource=read('hani-office-live.js'),officeCss=read('hani-office-live.css');
-const posterPath='assets/queen/poster-2026-10.webp';
-const settlePoster=async()=>{for(let i=0;i<30;i++)await Promise.resolve()};
-async function posterFixture({date='2026-11-02T10:00:00+09:00',art=true,board=true}={}){
-  const canonical=createBannerFixture(),writes=[],pending=new Map();let timer=0;
-  const deny=(...args)=>{writes.push(args);throw Error('poster attempted write/network')};
+const portraitPath='assets/queen/poster-2026-10.webp',bannerPath='assets/queen/2026-10.webp';
+const settleFrame=async()=>{for(let i=0;i<30;i++)await Promise.resolve()};
+async function frameFixture({date='2026-11-02T10:00:00+09:00',art=true,board=true,width=1440}={}){
+  const canonical=createBannerFixture(),writes=[],routes=[],pending=new Map();let timer=0;
+  const deny=(...args)=>{writes.push(args);throw Error('frame attempted write/network')};
   const window=board?{HaniBoard:canonical.c.window.HaniBoard}:{};
   const f=officeFixture('10:00',true,()=>art,JSON.parse(read('assets/data/office-actions-221.json')),{
-    window,setTimeout(fn,ms){pending.set(++timer,{fn,ms});return timer},clearTimeout:id=>pending.delete(id),
+    window,showView:route=>routes.push(route),setTimeout(fn,ms){pending.set(++timer,{fn,ms});return timer},clearTimeout:id=>pending.delete(id),
+    matchMedia:q=>({matches:/prefers-reduced-motion/.test(q)||width<=Number(q.match(/max-width:\s*(\d+)/)?.[1]||0),addEventListener(){}}),
     localStorage:{setItem:deny,removeItem:deny,clear:deny},sessionStorage:{setItem:deny,removeItem:deny,clear:deny},
     save:deny,persist:deny,commit:deny,fetch:async(url,options)=>{assert.ok(!options?.method||options.method==='GET');assert.match(String(url),/^\.\/assets\/data\//);return {ok:false}},supabase:{from:deny},
   });
-  await settlePoster();f.setDateTime(date);f.click('1f');await settlePoster();
-  const poster=f.map.querySelector('.hani-office-queen-poster'),bubble=f.map.querySelector('.hani-office-character-bubble');
-  return {...f,poster,bubble,canonical,writes,pending};
+  await settleFrame();f.setDateTime(date);f.click('1f');await settleFrame();
+  const frame=f.map.querySelector('.hani-office-queen-frame'),bubble=f.map.querySelector('.hani-office-character-bubble');
+  const pointer=target=>f.document.events.pointerdown({type:'pointerdown',target});
+  const actorTap=target=>{pointer(target);f.ids.get('haniOfficeActors').events.click({type:'click',target})};
+  const frameTap=()=>{pointer(frame);frame.onclick()};
+  return {...f,frame,bubble,canonical,writes,routes,pending,pointer,actorTap,frameTap};
 }
 
-test('poster: canonical board read shares the billboard winner/month and reads names from roster data',()=>{
+test('frame: one frozen month-image table is shared with the billboard and the winner name comes from the roster',()=>{
   const f=createBannerFixture(),api=f.c.window.HaniBoard;
+  assert.ok(Object.isFrozen(api.queenImages));assert.deepEqual(Object.keys(api.queenImages),['2026-10']);
   for(const date of ['2026-10-31T23:59:59+09:00','2026-11-01T00:00:00+09:00','2026-11-30T23:59:59+09:00','2026-12-01T00:00:00+09:00','2027-01-01T00:00:00+09:00']){
     const now=Date.parse(date),award=api.queenWinner(now),slide=f.c.queenSlides(now).find(s=>s.kind==='queen-winner');
     assert.equal(Boolean(award),Boolean(slide),date);
-    if(award){assert.equal(award.month,'2026-10');assert.ok(slide.href.endsWith('/'+award.id));assert.equal(slide.title,award.name+' · '+award.rank)}
+    if(award){assert.equal(award.month,'2026-10');assert.equal(api.queenImages[award.month],slide.image);assert.ok(slide.href.endsWith('/'+award.id));assert.equal(slide.title,award.name+' · '+award.rank)}
   }
-  const old=f.c.window.HaniOrganizationRoster;
-  f.c.window.HaniOrganizationRoster={...old,people:old.people.map(p=>p.id==='seoyun'?{...p,name:'자료이름'}:p)};
+  const old=api.queenWinner(Date.parse('2026-11-02T10:00:00+09:00'));
+  const roster=f.c.window.HaniOrganizationRoster;
+  f.c.window.HaniOrganizationRoster={...roster,people:roster.people.map(p=>p.id===old.id?{...p,name:'자료이름'}:p)};
   assert.equal(api.queenWinner(Date.parse('2026-11-02T10:00:00+09:00')).name,'자료이름');
+  assert.doesNotMatch(officeSource,/queenPosters|hani-office-queen-poster/);
 });
 
-test('poster: one persistent element is visible only on the loaded 1F map and survives every floor change',async()=>{
-  const f=await posterFixture(),slot=f.poster,actors=[...f.ids.get('haniOfficeActors').children];assert.ok(slot);assert.equal(slot.tagName,'button');assert.equal(slot.hidden,false);
+test('frame: persistent button stays behind actors and is shown only on loaded 1F art',async()=>{
+  const f=await frameFixture(),slot=f.frame,actors=[...f.ids.get('haniOfficeActors').children];assert.ok(slot);assert.equal(slot.tagName,'button');assert.equal(slot.hidden,false);
   for(const floor of ['2f','3f','4f','5f','1f','4f','1f']){
-    f.click(floor);await settlePoster();assert.equal(slot.hidden,floor!=='1f',floor);
-    assert.equal(f.map.querySelector('.hani-office-queen-poster'),slot);assert.equal(f.map.querySelectorAll('.hani-office-queen-poster').length,1);
+    f.click(floor);await settleFrame();assert.equal(slot.hidden,floor!=='1f',floor);
+    assert.equal(f.map.querySelector('.hani-office-queen-frame'),slot);assert.equal(f.map.querySelectorAll('.hani-office-queen-frame').length,1);
     assert.deepEqual(f.ids.get('haniOfficeActors').children,actors);
   }
+  assert.match(officeCss,/\.hani-office-queen-frame\{[^}]*z-index:2/);assert.match(officeCss,/\.hani-office-sprite\{[^}]*z-index:4/);
 });
 
-test('poster: October award is shown throughout November KST, never in October, December or an unknown month',async()=>{
-  const f=await posterFixture();
+test('frame: October image throughout November KST; original painting in other months and unregistered award months',async()=>{
+  const f=await frameFixture(),background=f.map.querySelector('.hani-office-background');
   for(const [date,visible]of [['2026-10-31T23:59:59+09:00',false],['2026-11-01T00:00:00+09:00',true],['2026-11-30T23:59:59+09:00',true],['2026-12-01T00:00:00+09:00',false],['2027-01-01T00:00:00+09:00',false]]){
-    f.setDateTime(date);f.click('1f');await settlePoster();assert.equal(f.poster.hidden,!visible,date);
-    assert.equal(f.poster.querySelector('img'),null,'CSS image has no broken-image glyph');
+    f.setDateTime(date);f.click('1f');await settleFrame();assert.equal(f.frame.hidden,!visible,date);
+    assert.equal(background.src,'./assets/building/floor-1f-217.webp','real painting stays in the unchanged floor image');
+    if(visible){assert.equal(f.frame.querySelector('img').src,'./'+bannerPath);assert.equal(f.frame.querySelector('span').textContent,'👑 10월의 퀸')}
   }
-  f.canonical.c.window.HaniBoard={queenWinner:()=>({month:'2099-01',name:'미등록',id:'hani'})};
-  f.context.window.HaniBoard=f.canonical.c.window.HaniBoard;f.click('1f');await settlePoster();assert.equal(f.poster.hidden,true);
+  f.context.window.HaniBoard={...f.canonical.c.window.HaniBoard,queenWinner:()=>({month:'2099-01',name:'미등록',id:'hani'})};
+  f.click('1f');await settleFrame();assert.equal(f.frame.hidden,true);assert.equal(background.src,'./assets/building/floor-1f-217.webp');
 });
 
-test('poster: missing board source or fallback art shows nothing; stale background completion cannot leak to another floor',async()=>{
-  for(const options of [{board:false},{art:false}]){const f=await posterFixture(options);assert.equal(f.poster.hidden,true);f.poster.onclick();assert.equal(f.bubble.hidden,true)}
-  const f=await posterFixture();f.click('1f');f.click('5f');await settlePoster();assert.equal(f.poster.hidden,true);assert.equal(f.map.dataset.floor,'5f');
+test('frame: missing board or fallback art hides the overlay and stale background completion cannot leak floors',async()=>{
+  for(const options of [{board:false},{art:false}]){const f=await frameFixture(options);assert.equal(f.frame.hidden,true);f.frame.onclick();assert.equal(f.bubble.hidden,true)}
+  const f=await frameFixture();f.click('1f');f.click('5f');await settleFrame();assert.equal(f.frame.hidden,true);assert.equal(f.map.dataset.floor,'5f');
 });
 
-test('poster: art-map percent bounds clear the entire app sign box, elevator and existing frame; scale behind actors',async()=>{
-  const f=await posterFixture(),s=f.poster.style,b=[parseFloat(s.left),parseFloat(s.top),parseFloat(s.width),parseFloat(s.height)];
-  assert.deepEqual(b.slice(0,2),[41,19]);assert.ok(Math.abs(b[2]-60/1672*100)<1e-10);assert.ok(Math.abs(b[3]-90/941*100)<1e-10);
-  const overlap=([x,y,w,h],[l,t,r,bottom])=>x<r&&x+w>l&&y<bottom&&y+h>t;
-  for(const [name,box]of [['HANI GROUP sign',[40,10,58,17.5]],['elevator',[17,2,29,29]],['art frame',[69,5,82,21]]])assert.equal(overlap(b,box),false,name);
-  for(const width of [360,390,416,1440]){const height=width*941/1672,px=b[2]/100*width,py=b[3]/100*height;assert.ok(Math.abs(px/py-2/3)<1e-10);assert.ok(b[0]+b[2]<100&&b[1]+b[3]<100)}
-  const block=officeCss.match(/\.hani-office-queen-poster\{([^}]+)\}/)[1];
-  assert.match(block,/position:absolute/);assert.match(block,/z-index:2/);assert.match(officeCss,/\.hani-office-sprite\{[^}]*z-index:4/);
-  assert.match(officeCss,/\.hani-office-queen-poster\[hidden\]\{display:none\}/);
+test('frame: measured canvas bounds, full right-side winner, scaled HTML caption and minimum 44px phone target',async()=>{
+  const f=await frameFixture(),s=f.frame.style,art=JSON.parse(read('data/hani-building/art-map-v1.json'));
+  assert.deepEqual([art.width,art.height],[1672,941]);assert.equal(art.floors['1f'].background,'./assets/building/floor-1f-217.webp');
+  const native=[parseFloat(s.left)/100*art.width,parseFloat(s.top)/100*art.height,parseFloat(s.width)/100*art.width,parseFloat(s.height)/100*art.height];
+  native.forEach((v,i)=>assert.ok(Math.abs(v-[1171,73,176,107][i])<1e-9));
+  assert.match(officeCss,/\.hani-office-queen-frame img\{[^}]*height:86%;object-fit:cover;object-position:100% 50%/);
+  assert.match(officeCss,/\.hani-office-queen-caption\{[^}]*height:14%;background:#ebcc7d;[^}]*font-size:\.65cqw/);
+  assert.match(officeCss,/\.hani-office-queen-frame::after\{[^}]*width:100%;height:100%;min-width:44px;min-height:44px/);
+  // The app's global mobile button minimum must not enlarge the visual canvas.
+  const mobileCss=read('hani-design-system.css');
+  assert.match(mobileCss,/#app\.app :is\(button,[^}]+min-height:40px!important/);
+  assert.match(officeCss,/#app #haniOfficeMap \.hani-office-queen-frame\{min-width:0!important;min-height:0!important\}/);
+  // Two ID selectors outrank the global single-ID rule, independent of load order.
+  const localIds=(officeCss.match(/(#app #haniOfficeMap \.hani-office-queen-frame)\{/)[1].match(/#/g)||[]).length;
+  assert.equal(localIds,2);assert.ok(localIds>1);
+  assert.match(officeCss,/\.hani-office-queen-frame\[hidden\]\{display:none\}/);
+  // Measured full winner box in the shared 1600x400 image, crown through shoes.
+  for(const width of [320,360,390,416,1440]){
+    const scale=width/art.width,w=176*scale,h=107*scale,imageH=h*.86,coverScale=Math.max(w/1600,imageH/400),cropLeft=1600-w/coverScale;
+    assert.ok(cropLeft<=1200&&cropLeft+w/coverScale>=1460,'full horizontal silhouette');
+    assert.ok(390*coverScale<=imageH,'shoes above caption');assert.ok(2*coverScale>=0,'crown inside image');
+    assert.ok(Math.max(44,w)>=44&&Math.max(44,h)>=44);
+    assert.ok(1171*scale+w<=1347*scale+1e-9&&73*scale+h<=180*scale+1e-9);
+  }
 });
 
-test('poster: tapping uses the existing bubble, current data name, native button and close timer without a profile or zoom',async()=>{
-  const f=await posterFixture(),roster=f.canonical.c.window.HaniOrganizationRoster;
+test('frame: tap shows current name in the existing bubble; 3s timer, Escape and floor close remain',async()=>{
+  const f=await frameFixture(),roster=f.canonical.c.window.HaniOrganizationRoster;
   f.canonical.c.window.HaniOrganizationRoster={...roster,people:roster.people.map(p=>p.id==='seoyun'?{...p,name:'당선자료'}:p)};
-  f.poster.onclick();assert.equal(f.bubble.hidden,false);assert.equal(f.bubble.querySelector('p').textContent,'👑 10월의 퀸 · 당선자료');
-  assert.equal(f.poster.getAttribute('aria-label'),'👑 10월의 퀸 · 당선자료');assert.equal(f.bubble.querySelector('a').hidden,true);
+  f.frameTap();assert.equal(f.bubble.hidden,false);assert.equal(f.bubble.querySelector('p').textContent,'👑 10월의 퀸 · 당선자료');
+  assert.equal(f.frame.getAttribute('aria-label'),'👑 10월의 퀸 · 당선자료');assert.equal(f.bubble.querySelector('a').hidden,true);
   assert.equal(f.bubble.querySelector('.hani-office-bubble-sprite').hidden,true);assert.equal(f.bubble.dataset.zoom,'false');
-  assert.equal(f.map.querySelectorAll('.hani-office-character-bubble').length,1);assert.equal(f.poster.type,'button');
+  assert.equal(f.map.querySelectorAll('.hani-office-character-bubble').length,1);assert.equal(f.frame.type,'button');
   const timer=[...f.pending.values()].find(t=>t.ms===3000);assert.ok(timer);timer.fn();assert.equal(f.bubble.hidden,true);
-  f.poster.onclick();f.poster.onkeydown({key:'Escape'});assert.equal(f.bubble.hidden,true);
-  f.poster.onclick();f.click('2f');assert.equal(f.bubble.hidden,true);assert.equal(f.writes.length,0);
+  f.frameTap();f.frame.onkeydown({key:'Escape'});assert.equal(f.bubble.hidden,true);
+  f.frameTap();f.click('2f');assert.equal(f.bubble.hidden,true);assert.equal(f.writes.length,0);
 });
 
-test('poster: steady frames add no layout reads or persistence/network paths; staff/visitor/resident plans stay byte-identical',async()=>{
-  const f=await posterFixture();let reads=0;
+test('bubble: existing document pointer owner closes on outside tap across phone/desktop; actor switch and inside profile link work',async()=>{
+  for(const width of [360,390,1440]){
+    const f=await frameFixture({width});f.click('2f');await settleFrame();
+    const actors=f.visible().filter(a=>!a.dataset.resident&&a.dataset.visitor!=='true'),[first,second]=actors;
+    assert.ok(first&&second);f.actorTap(first);assert.equal(f.bubble.hidden,false);assert.match(f.bubble.querySelector('p').textContent,new RegExp(first.dataset.name));
+    const stale=[...f.pending.values()].find(t=>t.ms===3000);assert.ok(stale);
+    // Targets include floor, outside the office, a tab/control and a text node.
+    for(const target of [f.map,f.document.createElement('main'),f.tabs,{nodeType:3}]){
+      f.actorTap(first);f.pointer(target);assert.equal(f.bubble.hidden,true,'closes synchronously');assert.ok([...f.pending.values()].every(t=>t.ms!==3000),'timer cleared');
+    }
+    stale.fn();assert.equal(f.bubble.hidden,true,'cleared stale timer cannot reopen bubble');
+    f.actorTap(first);f.pointer(second);assert.equal(f.bubble.hidden,false,'another actor pointer does not dismiss');f.ids.get('haniOfficeActors').events.click({target:second});
+    assert.match(f.bubble.querySelector('p').textContent,new RegExp(second.dataset.name));
+    const link=f.bubble.querySelector('a'),before=[...f.pending.values()].find(t=>t.ms===3000);let prevented=0;
+    for(const target of [f.bubble,f.bubble.querySelector('p'),link]){f.pointer(target);assert.equal(f.bubble.hidden,false)}
+    link.events.click({preventDefault(){prevented++}});assert.equal(prevented,1);assert.deepEqual(f.routes,['organization/people/'+second.dataset.person]);
+    assert.equal(link.href,'#organization/people/'+second.dataset.person);
+    assert.equal([...f.pending.values()].find(t=>t.ms===3000),before,'inside tap preserves the original close timer');
+    f.pointer(first.officeRow);first.officeRow.events.click();assert.equal(f.bubble.hidden,false,'touch-sized roster entry remains usable');
+    f.click('1f');await settleFrame();f.frameTap();f.pointer(f.map);assert.equal(f.bubble.hidden,true,'frame bubble also dismisses outside');
+    assert.equal(f.writes.length,0);
+  }
+  assert.equal((officeSource.match(/document\.addEventListener/g)||[]).length,2,'original document listener count; no second listener');
+  assert.match(officeSource,/officePresence\.interact\(event\);if\(type==='pointerdown'&&event\?\.target\)activateActor\(event,true\)/);
+});
+
+test('frame: steady frames add no layout reads or writes; all staff/visitor/resident scheduling source bytes stay identical',async()=>{
+  const f=await frameFixture();let reads=0;
   for(const node of [f.map,...f.root.querySelectorAll('*')])node.getBoundingClientRect=()=>{reads++;throw Error('unexpected frame layout read')};
   for(let i=0;i<20;i++){f.setDateTime('2026-11-02T10:00:00.'+String(i*5).padStart(3,'0')+'+09:00');f.timers.find(t=>t.ms===100).fn()}
   assert.equal(reads,0);assert.equal(f.writes.length,0);
-  // The checked-in delta verifies every source byte before restoring the pre-resident owner.
-  const old=posterScene({transform:restoreResidentsSource}).scene,current=posterScene().scene;
-  const mounted=f.context.HaniBuildingScene;
+  const sceneEnd='/* Read-only Living Office.';
+  assert.equal(hash(officeSource.slice(0,officeSource.indexOf(sceneEnd))),'c1cde0b0c747a11842079c2d62950f9d848600d2d710454a4eec0f79c40b1dd3','frozen entire scene/scheduler/residents source bytes');
+  const old=frameScene({transform:restoreResidentsSource}).scene,current=frameScene().scene;
   for(const day of ['2026-10-31','2026-11-01','2026-11-02','2026-11-30','2026-12-01'])for(const chairmanPresent of [false,true]){
     const options={chairmanPresent},plan=current.scheduler.plan(day,options),previous=old.scheduler.plan(day,options);
     assert.equal(JSON.stringify(plan),JSON.stringify(previous));assert.equal(JSON.stringify(current.scheduler.blockPlan(day,0,plan,options)),JSON.stringify(old.scheduler.blockPlan(day,0,previous,options)));
     for(const seconds of [1,7200,25200,36000,50400,79200,86399]){
-      const now=posterAt(day,seconds),snap=current.snapshot(now,options),before=old.snapshot(now,options);
+      const now=frameAt(day,seconds),snap=current.snapshot(now,options),before=old.snapshot(now,options);
       assert.equal(JSON.stringify(snap),JSON.stringify(before));
-      assert.equal(JSON.stringify(current.residents.snapshot(now,snap,true)),JSON.stringify(mounted.residents.snapshot(now,before,true)),'poster UI leaves all resident schedules unchanged');
+      assert.equal(JSON.stringify(current.residents.snapshot(now,snap,true)),JSON.stringify(f.context.HaniBuildingScene.residents.snapshot(now,before,true)));
     }
   }
 });
 
-test('poster: shipped WebP decodes under 120KB, retains approved ratio and is in the literal runtime closure',async()=>{
-  const file=fs.readFileSync(new URL('../'+posterPath,import.meta.url)),meta=await sharp(file).metadata();
-  assert.equal(meta.format,'webp');assert.deepEqual([meta.width,meta.height],[360,540]);assert.ok(file.length<120000);
-  const closure=await resolveRuntimeClosure({exists:fs.existsSync,read:fs.readFileSync});assert.ok(closure.files.includes(posterPath));assert.ok(closure.files.length<=160);assert.deepEqual(closure.missing,[]);
-  // Frozen shipped inventory from the supplied main 476210c; no local artifact baseline.
-  assert.equal(hash(JSON.stringify([...closure.files].sort())),'27e69a83e1d076a2ec278876ab8fe6041846a958af64a91a70c438a522f3a799','exact shipped closure');
-  assert.equal(hash(fs.readFileSync(new URL('../index.html',import.meta.url))),'529a83691c5fb522636738add9ffb9e546a1f09665c2ed0de7ecb17d0c2c14ca','frozen shipped index');
-  assert.equal(hash(fs.readFileSync(new URL('../hani-main.js',import.meta.url))),'642e9ff30e37f334295a3a019ce5583f2043e10c1b24d5fd5e3e2ffaa3eb78b8','frozen shipped main');
-  console.log(JSON.stringify({poster:{left:41,top:19,width:60/1672*100,height:90/941*100,bytes:file.length},closure:closure.files.length,limit:160,missing:0}));
+test('frame: portrait file is gone, shared banner decodes, closure loses only the portrait and protected files retain frozen bytes',async()=>{
+  assert.equal(fs.existsSync(new URL('../'+portraitPath,import.meta.url)),false);
+  assert.doesNotMatch(officeCss,/queen-poster|poster-2026-10/);
+  const file=fs.readFileSync(new URL('../'+bannerPath,import.meta.url)),meta=await sharp(file).metadata();
+  assert.equal(meta.format,'webp');assert.deepEqual([meta.width,meta.height],[1600,400]);
+  const closure=await resolveRuntimeClosure({exists:fs.existsSync,read:fs.readFileSync});assert.ok(closure.files.includes(bannerPath));assert.ok(!closure.files.includes(portraitPath));assert.ok(closure.files.length<=160);assert.deepEqual(closure.missing,[]);
+  assert.equal(hash(JSON.stringify([...closure.files,portraitPath].sort())),'27e69a83e1d076a2ec278876ab8fe6041846a958af64a91a70c438a522f3a799','previous frozen inventory loses exactly the portrait');
+  assert.equal(hash(JSON.stringify([...closure.files].sort())),'73680703cbd8d17cba268db3a5b51f56842843b6dccaf9b3773cfdde61a9cace','exact shipped closure');
+  assert.equal(hash(fs.readFileSync(new URL('../index.html',import.meta.url))),'529a83691c5fb522636738add9ffb9e546a1f09665c2ed0de7ecb17d0c2c14ca');
+  assert.equal(hash(fs.readFileSync(new URL('../hani-main.js',import.meta.url))),'642e9ff30e37f334295a3a019ce5583f2043e10c1b24d5fd5e3e2ffaa3eb78b8');
+  assert.equal(hash(fs.readFileSync(new URL('../hani-board-library.js',import.meta.url))),'46de2310c80c3672cda9d80430f93f9198e65450fc8faa7a58690cda69944423');
+  console.log(JSON.stringify({frame:[1171,73,176,107],closureBefore:closure.files.length+1,closure:closure.files.length,limit:160,missing:0}));
 });
