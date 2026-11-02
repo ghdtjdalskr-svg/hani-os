@@ -211,7 +211,7 @@
   function workingMonitors(floorId,entries){
     const furniture=art?.floors[floorId]?.homeFurniture;if(!furniture)return [];
     return entries.flatMap(p=>{
-      const seat=p.seat,anchor=seat?.anchor,screen=monitorScreens[anchor],rect=furniture[anchor]?.deskBounds;
+      const seat=p.seat,anchor=seat?.anchor,screen=furniture[anchor]?.monitorScreen||monitorScreens[anchor],rect=furniture[anchor]?.deskBounds;
       const owner=anchors.get(anchor)?.rendererSeat?.owner;
       if(!screen||!rect||p.id!==(owner==='chairman'?'seongmin':owner)||p.activity!=='work'||p.walking||p.travel||p.called||p.pose!=='sitting'||p.deskPartner||p.behaviorKind==='chairman-greeting')return [];
       if(p.state&&p.state!=='AT_HOME'&&p.state!=='AT_PLACE')return [];
@@ -1357,8 +1357,8 @@
         const rankBase=visitor?'':day+'|card|'+people.map(p=>p.id).join()+'|'+at+'|';
         const rankSeed=visitor?0:seed(rankBase),slotSeed=visitor?0:seed(day+'|slot|'+at);
         // Keep the lunch rest target with one fewer person when he is absent.
-        const restPriority=lunch(at)?(options.chairmanPresent?4:64):null;
-        if(!visitor||cards.length>1)cards=cards.map(c=>({c,rank:visitor?seed(day+at+c.id):-Math.log(Math.max(.000001,seedTail(rankSeed,c.id)/4294967296))/(weight(c,people,at)*(displacedLounge&&(c.floor==='5f'||people.every(p=>homeAt(p,at).floor===c.floor))&&['coffee','sofa','garden','terrace','window'].includes(c.kind)?(restPriority??(c.floor==='5f'?4:16)):1))})).sort((a,b)=>a.rank-b.rank||a.c.id.localeCompare(b.c.id)).map(r=>r.c);
+        const restPriority=lunch(at)?(options.chairmanPresent?16:10):null;
+        if(!visitor||cards.length>1)cards=cards.map(c=>({c,rank:visitor?seed(day+at+c.id):-Math.log(Math.max(.000001,seedTail(rankSeed,c.id)/4294967296))/(weight(c,people,at)*(displacedLounge&&(c.floor==='5f'||people.every(p=>homeAt(p,at).floor===c.floor))&&['coffee','sofa','garden','terrace','window'].includes(c.kind)?(restPriority??(c.floor==='5f'?4:17)):1))})).sort((a,b)=>a.rank-b.rank||a.c.id.localeCompare(b.c.id)).map(r=>r.c);
         if(!visitor&&!fill&&at-(lastFloor.get(homeAt(people[0],at).floor)??-Infinity)<BLOCK)cards=cards.slice(0,3);
         // During work hours allow three ranked cards, so a busy cafe does not
         // suppress an otherwise legal rest upstairs. Other hours retain one.
@@ -2704,7 +2704,7 @@
     })());
     variants.get(source).then(({background,isFloor})=>{
       if(token!==backgroundToken||floor.id!==activeFloor||source!==building.atmosphere.background(floor)||!viewVisible())return;
-      bg.src=background;bg.hidden=false;bg.alt=floor.label+' · HANI GROUP';map.dataset.art=isFloor?'floor':'fallback';
+      bg.src=background;if(floor.id==='3f')foregrounds[0].src=background;bg.hidden=false;bg.alt=floor.label+' · HANI GROUP';map.dataset.art=isFloor?'floor':'fallback';
       foregrounds.forEach(img=>{img.hidden=true});
       map.dataset.mask='none';
       for(const entry of plates)entry.plate.hidden=entry.floor!==floor.id||!isFloor;
@@ -2762,7 +2762,7 @@
       if(building.scheduler&&!meeting){actor.officeTravel=null;actor.officeAnchor=p.seat.anchor;actor.dataset.seat=p.seat.id;actor.dataset.zone=p.seat.zone;actor.dataset.spot=p.seat.zone==='desk'?'seat':p.seat.zone;actor.dataset.home=[p.seat.x,p.seat.y].join(',');place(actor,p.position||[p.seat.x,p.seat.y]);if(!p.walking)pose(actor,p.pose);else if(reduced)pose(actor,'standing')}
       else seatActor(actor,p.seat,animate&&(sameFloor||meeting));
       actor.dataset.behavior=p.state||'AT_HOME';actor.dataset.place=p.placeId||'';actor.dataset.slot=p.targetAnchor||'';
-      actor.dataset.partner=p.deskPartner||'';actor.dataset.greeting=String(p.behaviorKind==='chairman-greeting'||p.id==='seongmin'&&entries.some(q=>q.behaviorKind==='chairman-greeting'));actor.dataset.facing=p.facing||'';
+      actor.dataset.partner=p.deskPartner||'';actor.dataset.greeting=String(p.behaviorKind==='chairman-greeting'||p.id==='seongmin'&&entries.some(q=>q.behaviorKind==='chairman-greeting'));actor.dataset.facing=p.facing||p.seat.facing||'';
       const peer=entries.find(q=>q.id===p.deskPartner);actor.style.setProperty('--response-lean',peer&&peer.seat.x<p.seat.x?'-1deg':'1deg');
       actor.dataset.action=selected?'agent-case':p.actionId||'base-work';actor.dataset.event=p.eventId||'';actor.dataset.line=selected?'실제 안건 검토 중':p.line||'자료 확인 중';
       actor.dataset.emoji=selected||actor.dataset.action==='base-work'?'':p.emoji||'';actor.dataset.walking=String(Boolean(p.walking||actor.officeTravel));
