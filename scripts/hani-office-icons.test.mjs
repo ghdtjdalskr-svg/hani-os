@@ -6,9 +6,8 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import {loadScene,at,readAt} from './hani-office-lively-fixture.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
-import {restoreResidentsSource as restorePriorResidentsSource} from './hani-office-residents-source.mjs';
-import {restoreTlayoutSource,readTlayoutPlans} from './hani-office-tlayout-fixture.mjs';
-const restoreResidentsSource=source=>restorePriorResidentsSource(restoreTlayoutSource(source));
+import {restoreResidentsSource} from './hani-office-residents-source.mjs';
+import {readTlayoutPlans} from './hani-office-tlayout-fixture.mjs';
 
 const source=fs.readFileSync('hani-office-live.js','utf8'),css=fs.readFileSync('hani-office-live.css','utf8');
 const {scene,table}=loadScene(),s=scene.scheduler;
@@ -114,9 +113,12 @@ test('icons: scheduler, home clearance, public snapshots and both label geometry
  const restored=restoreResidentsSource(source);
  const original=readAt('hani-office-live.js','15747bc');
  for(const [a,b]of [['  function createScheduler(','  // Read-only label geometry'],['  function snapshot(now=new Date()','  function profile('],['    function screenHomeClear(','    function stationaryStops('],['  function placeStatusLabels(','  const scheduler='],['  function fitStatusLabels(','  if(buildingChairmanSlot())people.push']])assert.equal(section(restored,a,b),section(original,a,b),a);
- // The tap zoom bubble slot is one element; the lobby frame is a button, image and caption, once each.
- for(const token of ['setInterval(','setTimeout(','document.createElement(','fetch('])assert.equal(source.split(token).length,original.split(token).length+(token==='document.createElement('?5:token==='setTimeout('?2:0),token);
- assert.equal(source.split(/snack(?:End|Cooldown)Timer=setTimeout\(/).length-1,2,'snack owns exactly two new timeouts');assert.equal(source.split("snackButton=document.createElement('button')").length-1,1,'one persistent snack button');
+ // One tap bubble slot, three lobby frame elements, one persistent heart per pet, and the owner event button, panel and choice-button creation paths.
+ for(const token of ['setInterval(','setTimeout(','document.createElement(','fetch('])assert.equal(source.split(token).length,original.split(token).length+(token==='document.createElement('?8:token==='setTimeout('?2:0),token);
+ assert.equal(source.split(/event(?:End|Cooldown)Timer=setTimeout\(/).length-1,2,'owner events own exactly two new timeouts');assert.equal(source.split("eventButton=document.createElement('button')").length-1,1,'one persistent event button');assert.equal(source.split("eventPanel=document.createElement('div')").length-1,1,'one persistent event panel');assert.equal(source.split("const button=document.createElement('button');button.id=id==='snack'").length-1,1,'one choice button per event, created once');
+ assert.equal(source.split("heart=document.createElement('span')").length-1,1,'one persistent heart creation path');
+ for(const listener of ["eventButton.addEventListener('click',","eventPanel.addEventListener('keydown',","button.addEventListener('click',()=>runOwnerEvent(id))"])assert.equal(source.split(listener).length-1,1,listener);
+ assert.equal(source.split('addEventListener(').length,original.split('addEventListener(').length+3,'only the owner event button, panel and choice buttons add event listeners');
  assert.equal(source.split("bubbleSprite=document.createElement('div')").length,2);
  assert.doesNotMatch(source,/localStorage|sessionStorage|supabase/);
 });

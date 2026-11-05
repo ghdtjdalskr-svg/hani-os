@@ -1,0 +1,477 @@
+{
+  "ref": "e03a029d6a81f3c6fc025cc0234e82580c696870",
+  "sourceBlob": "d2822185703b2e9c6c2acf50718e24b48e790ffa",
+  "sourceSha256": "328457e0bcdc7345afca2c974d895a22f6e7cfd56f9544ac7984a6150e7e9f1f",
+  "inputs": [
+    {
+      "path": "assets/data/office-actions-221.json",
+      "sha": "876e4f5ff9c0081729ed5bed91d1c05c9d251a24"
+    },
+    {
+      "path": "assets/sprites-v2/manifest.json",
+      "sha": "342731a825223ceb179e933e7d5007fd2220ca62"
+    },
+    {
+      "path": "data/hani-building/art-map-v1.json",
+      "sha": "6262494aec75d4d78a6cf67b0cd50017e1a74646"
+    },
+    {
+      "path": "data/hani-building/office-places.json",
+      "sha": "53de6bd709baee3e3cb46784b923259a9575fc33"
+    },
+    {
+      "path": "data/hani-building/spatial-contract.json",
+      "sha": "1942b188a0686271e1f795858efbda86a518f3da"
+    },
+    {
+      "path": "hani-office-live.js",
+      "sha": "d2822185703b2e9c6c2acf50718e24b48e790ffa"
+    }
+  ],
+  "sections": [
+    {
+      "name": "scheduler",
+      "start": "  function createScheduler(",
+      "end": "  // Read-only label geometry",
+      "sha256": "2fb5f8eda0313523f45b7b0cd988402b221fb8a0cec823e69beb09141d673ad8"
+    },
+    {
+      "name": "view snapshot",
+      "start": "  function snapshot(now=new Date()",
+      "end": "  function profile(",
+      "sha256": "f790950ad2e6a2a672a547aec7a094e082bd3b3a98d5e853e7a4cba6acbe456f"
+    },
+    {
+      "name": "screenHomeClear",
+      "start": "    function screenHomeClear(",
+      "end": "    function stationaryStops(",
+      "sha256": "3ca18b4e6f2b302d445b29d3d47c17a5743129ebcfe892deb1f4124cae10bc0a"
+    },
+    {
+      "name": "placeStatusLabels",
+      "start": "  function placeStatusLabels(",
+      "end": "  const scheduler=",
+      "sha256": "5070f7e62556b89410bc7588600fefe80ba99579e945ae49bab89def98bec6f0"
+    },
+    {
+      "name": "fitStatusLabels",
+      "start": "  function fitStatusLabels(",
+      "end": "  if(buildingChairmanSlot())people.push",
+      "sha256": "e7f807dd9110c0e44fd613c528b2cdf8c2f75df3e442ded716f768b9bdd0c3ac"
+    },
+    {
+      "name": "residents model",
+      "start": "  const residentNames=",
+      "end": "  function createPresence(",
+      "sha256": "aa0f74bb5073ae851274c0690810e9af5326442448956e3064942a7e94581eb4"
+    },
+    {
+      "name": "residents renderer",
+      "start": "  function updateResidents(now){",
+      "end": "  function selectFloor(",
+      "sha256": "2996a42b596252f9af13ba8ff09bf4f315a7ab5f738d4e04234cb1fb013cab72"
+    }
+  ],
+  "models": [
+    {
+      "day": "2026-01-17",
+      "options": {
+        "chairmanPresent": false
+      },
+      "plan": "78182573a853e6cbf89eb650ac6725e7ea60f221bebd8622dd4823769cd4a5dd",
+      "blockPlan": "882889609cbef76fc215457607888a665232bd03d5727359d884c1549ccebe0a",
+      "snapshots": [
+        {
+          "seconds": 0,
+          "scheduler": "d8922904d178408973d8914a515aa4a077f1190ab46f20dc834599e5359c5382",
+          "view": "2ac745396f12befc090e5acd516f4b5c602281f8cba10e20bea76895e5ecdae3"
+        },
+        {
+          "seconds": 10800,
+          "scheduler": "a77605c58367f7ef4fbc382cd737e13ca52609ad9dfdefb48bb58e726306da9c",
+          "view": "c444423139b5f2fefa65eac38267272a58416b8a51c56d2ff3d22d01b1b2830d"
+        },
+        {
+          "seconds": 25200,
+          "scheduler": "f2807b7c4c96ec16b3bfa1a7ae0a2031f1aaf86db600cb4ba520105aa1867ab6",
+          "view": "5da12dbcf8aac30d761208f7ae8b9d46f0680fc45c4219427ea56861969e211a"
+        },
+        {
+          "seconds": 36000,
+          "scheduler": "50a126877ae150f3fb407f5830f2e209fbe38332bbe319f99d3b5a63015a4e51",
+          "view": "65823c6d251931716210a7feb831cbeabf7b90513db224a2aef97d30bb9006ea"
+        },
+        {
+          "seconds": 43200,
+          "scheduler": "e6d4a76b41749b242e976b4eec809fdcfb95536090353d79851236548215820d",
+          "view": "c54809b7c88bb866da694736c84d6a26ce05962f15fe2c5a02724088af744888"
+        },
+        {
+          "seconds": 64800,
+          "scheduler": "7439a797b419d67fd6569d32a2e5497bb8bb6ec362539a3ea1ff90b6056b6525",
+          "view": "ae0430a37ba708c7e880dec980afca0f2fbe3b84b04954dfc415792793921de8"
+        },
+        {
+          "seconds": 82800,
+          "scheduler": "93947fbb7d05b7f04b1b3f74eeda69945cc6b41a6fe3eab097d6b5d5fc571cdb",
+          "view": "6228acc3c9229f664901c45885be3a6c5fc53f53048b40d104ddd62cdeb1fc65"
+        },
+        {
+          "seconds": 86399,
+          "scheduler": "6ebca714cbff66d8b887c071b161803d510d080830e2dd549b5d0dfaaca3c2d3",
+          "view": "ed6ee564d9d87b485a588bfa96a791b90e49cc817d1855c7dcd1d66b9d31949b"
+        }
+      ]
+    },
+    {
+      "day": "2026-01-17",
+      "options": {
+        "chairmanPresent": true
+      },
+      "plan": "5cd678581316e2ee7324e92010e8d671c2df4f7536f61ea919db8a4f801cd194",
+      "blockPlan": "ec9f0942dfa00c08409b6f765a05ea4e12c474a96d8a612a1cf7a22e0b246966",
+      "snapshots": [
+        {
+          "seconds": 0,
+          "scheduler": "0c697f0743408e616882865e8d0640398da61825d313d89c1ead61c086c98eb4",
+          "view": "e2dbc938b4d358cabf2eb9706704e3bce8c016f1c4d363535ccf858f43224b02"
+        },
+        {
+          "seconds": 10800,
+          "scheduler": "5032ab08ddffc92ab47f1b5505523af371a77dcdd1f78c17852c263f225329b4",
+          "view": "a69c4128a2ad5c27d877781639db1e3adea74a4924f48542fe53a2ffb3e61a05"
+        },
+        {
+          "seconds": 25200,
+          "scheduler": "004a0cdf4e40706ac6c520f3b80bc3447f40246eab8b7dcbb386749883c62be0",
+          "view": "aa54e283fa0afc09eb86145ab4afcb3ece44b2456e833634e962cae18522de6e"
+        },
+        {
+          "seconds": 36000,
+          "scheduler": "4c42821e59b4d7a08f8f09c0b16a8dc905c2ae7dd20250c3268f3c0057bc4f9a",
+          "view": "23c5a2316cf2fe748f88e6629ae99db54b8084cd39a1c2ca2b4077ffb602ef0f"
+        },
+        {
+          "seconds": 43200,
+          "scheduler": "9e23f1d47d985a5ed516f585c709a32044d355891b007b3baf4951392a4dae24",
+          "view": "4e53c785bfe82031e0933329006301c966739eb9bb1d4d8192cd487e0e536c12"
+        },
+        {
+          "seconds": 64800,
+          "scheduler": "bd5ee5d4b0d7a681aaf3e6311e7f53b2e96ae2abc744097fa7fcd3a4b705a8fa",
+          "view": "b9063e81add9517804ea5c3e3ab26abecf767685488f7dae7c6e675dd64c4625"
+        },
+        {
+          "seconds": 82800,
+          "scheduler": "eb2ed6559eaadf89afddf19bf6806bca8c17e228176bbe1a7c5abc624710a3fd",
+          "view": "e4adb6b9fdf2c4c18507789944c5a119ebb02ad1c715d301b0cf0b0b847dd754"
+        },
+        {
+          "seconds": 86399,
+          "scheduler": "84afe7beea1fabade10acf262aeb3d47361c32dd6217b75be1894928f632a125",
+          "view": "f22ddda18cabb8302050c5c57ccdeb8a526a37e93e846d1a6230fa725a1b16cd"
+        }
+      ]
+    },
+    {
+      "day": "2026-07-23",
+      "options": {
+        "chairmanPresent": false
+      },
+      "plan": "83e10e6801d1226ac04328965b903c3dee31010eb3ab7abad8e66f57cd901d2a",
+      "blockPlan": "2a80b218ad0534287cdc476cc3fe3e4c1bff5b732ea3ee866efe8136b6904482",
+      "snapshots": [
+        {
+          "seconds": 0,
+          "scheduler": "c09ef121881b623dda5b2585c42ab61b508a38b942aea3b1195d1ce33dfaecdc",
+          "view": "64408de06512621d0e7f9782ab89e039c954a553ad759c57f33a8f37fa0a68ac"
+        },
+        {
+          "seconds": 10800,
+          "scheduler": "f207d45211ac4de4715d44d131dd5dfc22586bab54838a340c77e3033e5c296d",
+          "view": "66df84e4a159f95ab3727a0a2cf67cdb8d8f0631ff3349288935e707bcadb044"
+        },
+        {
+          "seconds": 25200,
+          "scheduler": "843cf7ca2df8ba48abd6a4d0bbaa39be27f75e9db69de01383dca315d8258a16",
+          "view": "3bb9ef9b668e4630e8c1a2847e973ec2f5e4a82b0c104160a499e8c4db27b964"
+        },
+        {
+          "seconds": 36000,
+          "scheduler": "ea3187c0a2136793d9cce9b380f1de25e9d3f5fcf2674678aac386736842b298",
+          "view": "5c79afa0f7318d55e8c90bf74cc1ac5a1e2f527d310f67f6ca780c9b690f3e77"
+        },
+        {
+          "seconds": 43200,
+          "scheduler": "3591a07c62d3495fac85ed65f438a43a9a8bf67ee00a3009ea97171bd9d98b4e",
+          "view": "87e458735782564f8c51f959a24021c58edc5c654aa257473dfd144d00d895f2"
+        },
+        {
+          "seconds": 64800,
+          "scheduler": "4f41906a0d23fdfbf0363e341b6dd383551d647572539750b47f90779eb1590f",
+          "view": "80d4d8bdf7855118baf1982a14a4841352d8ae562e4f5207e2e01147b4621a89"
+        },
+        {
+          "seconds": 82800,
+          "scheduler": "9b27e1ed984b992289d5d3ebec4c652d94465ef1a74b0a5a473855a12fbbaf27",
+          "view": "819621f1016f613de4b5454dba54c8f0978515447dc50dd42f314c92485a5a38"
+        },
+        {
+          "seconds": 86399,
+          "scheduler": "3231f13c0f321f7e34550d9b2664c466be7fd1d9aac73c3b708b133873089d05",
+          "view": "bcf79aba221f617a3589e1ae3dbf18bd232dd3f98a7e57d3a7ba5640db45c96a"
+        }
+      ]
+    },
+    {
+      "day": "2026-07-23",
+      "options": {
+        "chairmanPresent": true
+      },
+      "plan": "55793eb076c09538137aeba6e19b5b2d2eb2db3774866ecfc697b683c1c5f105",
+      "blockPlan": "babaac23c0d4e6e07ce302066b4b9dd2e2153a20dbbfb0ccbeb0a64a89d0c57f",
+      "snapshots": [
+        {
+          "seconds": 0,
+          "scheduler": "d298722c3444ef78009c2596ff6e2ac7e6e945c30de0f3f0cc17cb3cf87bb2c4",
+          "view": "98224a1760bec335d71d73b27c8b3aad0190e3e18ac7304f7423874e738e0db4"
+        },
+        {
+          "seconds": 10800,
+          "scheduler": "024d1595fca39c95f32fe350867e59e0b448ad17f12fdb52f1bec0fb72af1883",
+          "view": "44f77a79d49c5fe29c0b39ce994fca60e51c1f3f58ab0fb9f8be6eca57ed53b4"
+        },
+        {
+          "seconds": 25200,
+          "scheduler": "815530eaf2862e9d2bc6ec28f63dd2001a7a5c60a516f83d81608edeec541257",
+          "view": "b03db2aae0c2a82066a06bd80442f14016d645d49a034aeac24b2e1b6d88a4e6"
+        },
+        {
+          "seconds": 36000,
+          "scheduler": "795e174defd28035afe06238746d4c542eada8f720567bb61c6c9cd3cfb7bfb6",
+          "view": "b82c22559fcc7f41a3fb659ad67d77048e46d2b07b8c782682ac4711c4c3eabf"
+        },
+        {
+          "seconds": 43200,
+          "scheduler": "504a398bdfc886d0877e4b0455ccb49ec82831a055a4be5e3125cecf4dbabd55",
+          "view": "da52c818c6fdee573d67fab76d32a10d584369127bb89cf33122a2c161b3fe23"
+        },
+        {
+          "seconds": 64800,
+          "scheduler": "3395cdd7e376b8b6232b91b41ad51658e2a873c09a6bd3b20056f68195e5970b",
+          "view": "46b7f581a9ab24f9edd4dfbade1c53ee996bd5a464f79be9edd4814f274e4f3e"
+        },
+        {
+          "seconds": 82800,
+          "scheduler": "de88be43d7f8e88e503000d84089e5ec248206ec09f7de3d28db382ccaa579c4",
+          "view": "c5c3ed82236bd2f38a86cb00759f3588c1fbe1e0130343c33750e481c69b466a"
+        },
+        {
+          "seconds": 86399,
+          "scheduler": "ae979add6f8c043006fb154ac285bf64942db205f805ded05019f2312c8e9103",
+          "view": "44f2c31cc41ed8ca4c7abcfbc6c142ba0d3e138de6b9ec6f597b1846ca9e533b"
+        }
+      ]
+    },
+    {
+      "day": "2026-11-05",
+      "options": {
+        "chairmanPresent": false
+      },
+      "plan": "d6628a5b4c002c2b84e68c391a3831ad73a51d99ce63d68c0b7dcf3becebb96e",
+      "blockPlan": "0f502e3ddb762c03afcd994aa1ae75be7808a3387b455c6a9837f6091d50a0b0",
+      "snapshots": [
+        {
+          "seconds": 0,
+          "scheduler": "1795f2201a74bc9c2bedec0190e974a86796136aeb92f0c1767e5f4cec9d63bb",
+          "view": "8fcc541b34c9627b706c8c566dd5472e5fda87f17744284e2b99558ed393cf7e"
+        },
+        {
+          "seconds": 10800,
+          "scheduler": "45dc6e061672ff05c8d9bbd29d1969a3d49eec3ef75fa1b34e38bcbfc20c77e9",
+          "view": "3a4092dda4c98ca6a8482c7c0e5b0aa4024b9a1d350910c0083a2983ca21e440"
+        },
+        {
+          "seconds": 25200,
+          "scheduler": "6e446c9c1cd639be9df4aaf731c3200e6ed1dbdac6bae99864dbab05217cddd3",
+          "view": "1da97d1319ff14f746f93275299ffd11d0fccb0dce48700ad2cd0c8ef6f8f839"
+        },
+        {
+          "seconds": 36000,
+          "scheduler": "40c6585c9c027c753398cc7c96d7d6a99ee43fd094ff1eb6e7a96eee2cabd3ae",
+          "view": "bc9445e950e74eb19c82947fcbe4e637462cdbc178e6b2cd1414acf872511d13"
+        },
+        {
+          "seconds": 43200,
+          "scheduler": "8a42f1ee4cf08fc389092c988f1a8b985a4401f7eda26b88c932314d4ead6794",
+          "view": "bf8ef96165bcf8c6ccff39f4c713174c6303c59915247d589ebf1cd44d9c3a0a"
+        },
+        {
+          "seconds": 64800,
+          "scheduler": "7820ca1f8396e7f56a38caae3540c2b561f7998d8537a44e03777df75908d564",
+          "view": "edcb6f1991d5e6ff69f2a9cdda7b37cf42a50e7f95d2d93d185a266df11db1f9"
+        },
+        {
+          "seconds": 82800,
+          "scheduler": "6997842faf0f9e5e2c732945abf2cedad937b05a40697c69169698b5c1d6f2e4",
+          "view": "530ffa7ae31ede9845f13d449a9369f9bc59dc0be3962bcb7d47075d0fa8dcbf"
+        },
+        {
+          "seconds": 86399,
+          "scheduler": "8559ad5243d332ed0ed654d55872d33df4d60e04d99854b3601765de705fd4b1",
+          "view": "04075d9164315fc469d33c7455085193fcde0c7a80ffdc0c57ee904cd93d5023"
+        }
+      ]
+    },
+    {
+      "day": "2026-11-05",
+      "options": {
+        "chairmanPresent": true
+      },
+      "plan": "36aaa823d767fe037d34a950047a1d59c10474d8103d48b0899ae76bc8c65668",
+      "blockPlan": "bb7fb433e805ff1f0ed2d285785db068084a80d91ffa50aff38a858681d81e6b",
+      "snapshots": [
+        {
+          "seconds": 0,
+          "scheduler": "d85b99266313c97157be5e299238c3796b1bf54dc1e1f461331330274ad98956",
+          "view": "ccf77ae7cd75e1bfee073fc05ee9d9dd14fa720dc0ff0e4f11e1b7d0f8b22e4b"
+        },
+        {
+          "seconds": 10800,
+          "scheduler": "f7cdbef46b1254bf3ac811ee5bcc30405a7841078315b9d186f490230acfa4a9",
+          "view": "de8b306a5307ce9355063a8266185ee71820d84291b745c98f41f14dd0c2aa4a"
+        },
+        {
+          "seconds": 25200,
+          "scheduler": "5f578e60046167e297b7c58b7514fbed4db35fff48913012531acbcba2637158",
+          "view": "9b56204b3593a2519867c435282f7876f9c2a010f9cbd612dbd898d314460e41"
+        },
+        {
+          "seconds": 36000,
+          "scheduler": "51ed3ccfe2e81d6dd5b07f4c1a8431b19b5ba154e4e44d6852f42d5c6b9be448",
+          "view": "285dbda089903054a866b707d65e94ce4ab234d0261de396b82e3bfef16f4bce"
+        },
+        {
+          "seconds": 43200,
+          "scheduler": "bf54dadaf592290b6936afea75d871cc9e8defbe3684466802f89f77fec6e23c",
+          "view": "307d3e8b578d5bbeb6161ffab1e6b4c5f98b4995010b6c4d0d879bb40227e54c"
+        },
+        {
+          "seconds": 64800,
+          "scheduler": "6a74308c6a8660f19cf94da4a3b293d50fabf74a488c0bf680733eeee3afce8f",
+          "view": "30f0ec8f03ae062b420a01b1440b34c231ed0d6a58491360fc2e0f85f462872c"
+        },
+        {
+          "seconds": 82800,
+          "scheduler": "188fe9f834a45102970539ec24156cb491987d0f14aa6613db46ce7da0288ea8",
+          "view": "c20492adb098ff0bda52f7f8e8882394656c47e40b199b3c9aa693b5f5f9ebb8"
+        },
+        {
+          "seconds": 86399,
+          "scheduler": "2f5e905f253dd6d97aef67124d28444400920ef7ff075129fb3ff798ae6933c5",
+          "view": "1457da085e3e7b9f45a0b729200705c049904631f2524c41f7c40113b39ba96a"
+        }
+      ]
+    },
+    {
+      "day": "2026-11-06",
+      "options": {
+        "chairmanPresent": false
+      },
+      "plan": "721cef3e2922a5823cfdc99bebaa14c83cfbe8f9676d67eba2f617357b72c984",
+      "blockPlan": "76afff0ec0e7e1dfceebec7e226278303e949f9965c493c2e923a61a5188f2b2",
+      "snapshots": [
+        {
+          "seconds": 0,
+          "scheduler": "c4eb8d6aa9b3ae39927be4c373f30e08433ece6325fb0749c9610a6c66ee9a6a",
+          "view": "22a94da8c072099dba9b5d44666d5675c9a39454bd17bab599cd9ddb05d609e5"
+        },
+        {
+          "seconds": 10800,
+          "scheduler": "c69c43b9a3000c1f0426548d97bbd0b8029b2048d335b95c3f7e47dad2bc6d46",
+          "view": "9ec5b620d9256e41f699a8055cb7b31082f3a1f5fd7f0e7141359da58acd3d11"
+        },
+        {
+          "seconds": 25200,
+          "scheduler": "6c055689890101cb0b53f214cea7a2c461b9e175a28f792456c795cba90f4402",
+          "view": "9e4d4c06fb6eb82cab1ac09e2f17cf2b16fe40bcef49bb1c6b621f37498bb5ad"
+        },
+        {
+          "seconds": 36000,
+          "scheduler": "63182e55f699d623f80d7cd50976998ddadf93f35295a35131871eaa5c0d07a8",
+          "view": "016bf20c8f7cf0533a0a845895a887c79de2e3a660c4ddcfad3e6bb270f8c591"
+        },
+        {
+          "seconds": 43200,
+          "scheduler": "e9bb0739a98a078c7a778c78f9497971ddd0fc6ca3a7f73c31adff32a4af8f0f",
+          "view": "c23ecd804a167617447f2f6a104561d848d66f77d9cbe3488c9b276ddba3b816"
+        },
+        {
+          "seconds": 64800,
+          "scheduler": "398184f9d681e74e016b6e66bea396fdeda5f651e6d412062c96393ec44f9201",
+          "view": "825ff8ca69d8676bbf32eceee90f5fbae20de276a34bfa69e951efe3ab723463"
+        },
+        {
+          "seconds": 82800,
+          "scheduler": "09f1dfc1d197c22d6b5e8b832681a4cbf6149fb3ef52e7924da7c2f6deeee14c",
+          "view": "dad7a458c4ab9d4387fd5a97b0792196285cc07c61a3e02ccf574622965e45be"
+        },
+        {
+          "seconds": 86399,
+          "scheduler": "7ec0646a594e3e81b879d992098ec81282fc4d1d769c635f7b0cc1f7e1603ecd",
+          "view": "24012593d517189a699418efabb7ae2e1499137549c4e9a7c115629fa03591d3"
+        }
+      ]
+    },
+    {
+      "day": "2026-11-06",
+      "options": {
+        "chairmanPresent": true
+      },
+      "plan": "efd3105351653efd9b6b45d46061cc0b9351c106573c8a3764364adfbb63015e",
+      "blockPlan": "c8b0ef69a2e05aca137f9dbefa63f2532df8672d8739ae973a33033734f6bccc",
+      "snapshots": [
+        {
+          "seconds": 0,
+          "scheduler": "5125d090730653f97091673feab8371347793e857eb9248630467addda210999",
+          "view": "1064fbcf67204626f409e9e3ff0d7999d2d2b779faea397b343e80f4fb1af6c6"
+        },
+        {
+          "seconds": 10800,
+          "scheduler": "a4a35c311c8d87e1393c0a8207aebf8c69bfa38de695dfd86befe2ec939cb6e9",
+          "view": "c902581552e52f1831a61ab819d7b4a7083bace890124440452ce60ac92e632c"
+        },
+        {
+          "seconds": 25200,
+          "scheduler": "d2f33f70b61337a55dfa9dbb282e7e8b7396c353d0069a4ffacb2ecfb2148901",
+          "view": "dc52db41f6e29735c7cd0d75cbdae5a2096885788e7d305fb10e015479c68a41"
+        },
+        {
+          "seconds": 36000,
+          "scheduler": "844255fce565ea2699ba8ab15a0b751b37a326f0f7a7458875e1f5ee51daaae8",
+          "view": "16ad6f0e76262d8ad6c9638e15dcb4044026edf32d90e9a0d167bfdeba3e17dc"
+        },
+        {
+          "seconds": 43200,
+          "scheduler": "9b4a00b4398a1f4b93b2ce65ab4248729df93937125298f31ffe5353279a0de8",
+          "view": "1a59a3ed2edda0b861cd1f4ddc48b80b3ea0d7c62c0b5ee044a35c00f280bb4d"
+        },
+        {
+          "seconds": 64800,
+          "scheduler": "54643f0aaf1f1ccdbef16bcc56cdd325567bc5aa48a34471b89febad0422f7f1",
+          "view": "51390458e8f9f69c034fdb18992860bf22acf6b1d40ccf7866acd8c8263517f5"
+        },
+        {
+          "seconds": 82800,
+          "scheduler": "823b8affddfb45e6c9002ab709ba11c65d269b980d8d987a339683280f3b80bf",
+          "view": "f9256f0e9ee5bfe5122fa9e2ab9f449812823c6015d745d35e50edfdcd228445"
+        },
+        {
+          "seconds": 86399,
+          "scheduler": "3ae808e043e34acad62a0fafbb0722dbfe47fc40ffb004760d3012e8d0991f78",
+          "view": "e713e1b49e2bea26eb0807fc4492aa729fb3ba273d4e160ed5eeac55d47dc762"
+        }
+      ]
+    }
+  ]
+}

@@ -34,7 +34,7 @@ async function mount({floor='3f',time=at(day,10*3600),reduced=false,width=1280,r
 const status=a=>a.querySelector('.hani-office-status');
 const prop=a=>a.querySelector('.hani-office-prop');
 const display=a=>({line:a.dataset.line,emoji:a.dataset.emoji,full:status(a).dataset.full,text:status(a).textContent,prop:prop(a).textContent});
-function eventTime(predicate){
+function eventTime(predicate,day='2026-11-05'){
  const s=scene.scheduler,options={chairmanPresent:false},formal=s.plan(day,options),events=[...formal,...s.blockPlan(day,0,formal,options)];
  for(const e of events)for(const sec of [(e.performStart+e.performEnd)/2,...e.people.flatMap(p=>[...p.out,...p.back].map(l=>(l.start+l.end)/2))]){
   if(!Number.isFinite(sec))continue;const now=at(day,sec),snap=s.snapshot(now,options),match=predicate(snap);
@@ -47,11 +47,11 @@ test('snack: mounted persistent caption button reacts only to stationary staff o
  const x=await mount(),selected=x.all().filter(x.stationary),others=x.all().filter(a=>!selected.includes(a)),before=new Map(others.map(a=>[a,display(a)]));
  assert.ok(selected.length>0);assert.equal(x.button.textContent,'🍪 간식 돌리기');assert.equal(x.button.className,'btn hani-office-snack');
  const model=x.f.context.HaniBuildingScene,modelBefore=JSON.stringify(model.snapshot(new x.f.context.Date(),{chairmanPresent:false}));
- assert.equal(x.button.parentElement.className,'hani-building-floor-caption');x.snack();
+ assert.equal(x.button.parentElement.className,'hani-office-event-panel');assert.equal(x.button.parentElement.parentElement.className,'hani-building-floor-caption');x.snack();
  assert.equal(JSON.stringify(model.snapshot(new x.f.context.Date(),{chairmanPresent:false})),modelBefore,'mounted scene output remains byte identical during reaction');
  for(const a of selected){assert.equal(prop(a).textContent,'🍪');assert.equal(status(a).dataset.full,'간식 먹는 중');assert.equal(status(a).textContent,'🍪 간식 먹는 중')}
  for(const a of others)assert.deepEqual(display(a),before.get(a),a.dataset.person);
- assert.equal(x.button.textContent,'간식 다 먹는 중…');assert.equal(x.button.disabled,true);
+ assert.equal(x.button.textContent,'🍪 간식 돌리기 (10분 뒤)');assert.equal(x.button.disabled,true);
  const expected=selected.map(a=>a.dataset.person).sort()[0];assert.equal(x.speaker().dataset.person,expected);assert.equal(x.panel.hidden,false);
  assert.ok(x.panel.textContent.includes(JSON.parse(read('artifacts/office-snack/lines-serin.json'))[expected][0]));
 });
@@ -134,7 +134,99 @@ test('snack: scheduler/snapshot/geometry/residents bytes and complete sampled mo
  for(const row of baseline.models){const s=scene.scheduler,f=s.plan(row.day,row.options);assert.equal(hash(JSON.stringify(f)),row.plan);assert.equal(hash(JSON.stringify(s.blockPlan(row.day,0,f,row.options))),row.blockPlan);
   for(const snap of row.snapshots){assert.equal(hash(JSON.stringify(s.snapshot(at(row.day,snap.seconds),row.options))),snap.scheduler);assert.equal(hash(JSON.stringify(scene.snapshot(at(row.day,snap.seconds),row.options))),snap.view)}
  }
- const start=source.indexOf('  const snackLines='),end=source.indexOf('  const snackButton=',start),lines=vm.runInNewContext(source.slice(start,end)+';snackLines');
+ const start=source.indexOf('  const snackLines='),end=source.indexOf('  const eventLines=',start),lines=vm.runInNewContext(source.slice(start,end)+';snackLines');
  assert.deepEqual(JSON.parse(JSON.stringify(lines)),JSON.parse(read('artifacts/office-snack/lines-serin.json')));
  assert.deepEqual(Object.keys(lines).sort(),assets.canon.people.filter(p=>p.id!=='seongmin').map(p=>p.id).sort());for(const list of Object.values(lines))assert.ok(list.length>=1&&list.length<=3);
+});
+
+const eventSpecs={snack:['🍪 간식 돌리기','🍪','간식 먹는 중','간식먹기'],coffee:['☕ 커피 쏘기','☕','커피 마시는 중','커피타임'],applause:['👏 칭찬 박수','👏','칭찬 받는 중','칭찬받기'],cheer:['📣 깜짝 응원','📣','화이팅 외치는 중','화이팅'],birthday:['🎂 생일 축하','🎉','생일 축하 중','생일축하']};
+const eventButton=(x,id)=>x.f.ids.get(id==='snack'?'haniOfficeSnack':'haniOfficeEvent-'+id);
+const runEvent=(x,id)=>{const toggle=x.f.ids.get('haniOfficeEvents');x.f.document.events.pointerdown({target:toggle});toggle.events.click();x.f.document.events.pointerdown({target:eventButton(x,id)});eventButton(x,id).events.click()};
+for(const [id,[title,icon,line,short]]of Object.entries(eventSpecs)){
+ test(`events ${id}: stationary floor scope, exact status at both widths, 8s restore, viewer priority and no writes`,async()=>{
+  for(const width of [1280,390])for(const reduced of [false,true]){
+   const x=await mount({time:at('2026-11-06',36000),width,reduced});
+   const selected=x.all().filter(x.stationary),others=x.all().filter(a=>!selected.includes(a)),before=new Map(x.all().map(a=>[a,display(a)]));
+   assert.ok(selected.length>1);runEvent(x,id);assert.equal(x.f.ids.get('haniOfficeEventPanel').hidden,true);
+   for(const a of selected){assert.equal(prop(a).textContent,icon);assert.equal(status(a).dataset.full,line);assert.equal(status(a).textContent,icon+' '+(width===390?short:line))}
+   for(const a of others)assert.deepEqual(display(a),before.get(a));
+   assert.equal(eventButton(x,id).textContent,title+' (10분 뒤)');assert.equal(eventButton(x,id).disabled,true);
+   assert.equal(x.history.filter(t=>t.ms===8000).length,1);const oldBubble=x.history.find(t=>t.ms===4000),target=selected.find(a=>a!==x.speaker());
+   x.tap(target);await flush();assert.equal(x.speaker(),target);oldBubble.fn();assert.equal(x.speaker(),target);
+   await x.advance(7999);for(const a of selected)assert.equal(prop(a).textContent,icon);
+   await x.advance(1);for(const a of selected)assert.deepEqual(display(a),before.get(a));assert.deepEqual(x.writes,[]);
+   const y=await mount({time:at('2026-11-06',36000)}),chosen=y.all().filter(y.stationary).at(-1);y.tap(chosen);runEvent(y,id);await flush();assert.equal(y.speaker(),chosen);
+  }
+ });
+}
+
+test('events: independent event/floor cooldowns share two timer slots; stale callbacks cannot clear a replacement',async()=>{
+ const x=await mount({time:at('2026-11-06',36000)}),ids=Object.keys(eventSpecs);
+ for(const [index,id]of ids.entries()){
+  assert.equal(eventButton(x,id).disabled,false);runEvent(x,id);
+  const end=x.history.filter(t=>t.ms===8000).at(-1);eventButton(x,id).events.click();assert.equal(x.history.filter(t=>t.ms===8000).at(-1),end);
+  assert.equal([...x.pending.values()].filter(t=>t.ms===8000).length,1);assert.equal([...x.pending.values()].filter(t=>t.ms>8000).length,1);
+  for(const used of ids.slice(0,index+1))assert.equal(eventButton(x,used).disabled,true);
+  await x.advance(1000);
+ }
+ for(const stale of x.history.filter(t=>t.ms===8000).slice(0,-1))stale.fn();assert.ok(x.all().filter(x.stationary).every(a=>a.dataset.ownerEvent==='birthday'));
+ x.f.click('1f');for(const id of ids)assert.equal(eventButton(x,id).disabled,false);runEvent(x,'coffee');
+ x.f.click('3f');for(const id of ids)assert.equal(eventButton(x,id).disabled,true);
+ await x.advance(595000);assert.equal(eventButton(x,'snack').disabled,false);for(const id of ids.slice(1))assert.equal(eventButton(x,id).disabled,true);
+ for(const id of ids.slice(1)){await x.advance(1000);assert.equal(eventButton(x,id).disabled,false)}
+ assert.deepEqual(x.writes,[]);
+});
+
+test('events: persistent panel/buttons, outside pointer, keyboard, floors, lock and reload',async()=>{
+ const x=await mount({time:at('2026-11-06',36000)}),toggle=x.f.ids.get('haniOfficeEvents'),panel=x.f.ids.get('haniOfficeEventPanel'),nodes=x.f.root.querySelectorAll('*');
+ assert.equal(toggle.textContent,'🎉 회장님 이벤트');assert.equal(panel.hidden,true);assert.equal(panel.children.length,5);assert.equal(toggle.parentElement.className,'hani-building-floor-caption');
+ let created=0;const create=x.f.document.createElement;x.f.document.createElement=(...a)=>{created++;return create(...a)};
+ for(const id of Object.keys(eventSpecs)){
+  toggle.events.click();assert.equal(panel.hidden,false);assert.equal(toggle.getAttribute('aria-expanded'),'true');
+  x.f.document.events.pointerdown({target:eventButton(x,id)});assert.equal(panel.hidden,false);eventButton(x,id).events.click();assert.equal(panel.hidden,true);
+  toggle.events.click();x.f.document.events.pointerdown({target:x.f.map});assert.equal(panel.hidden,true);assert.equal(toggle.getAttribute('aria-expanded'),'false');
+  toggle.events.click();panel.events.keydown({key:'Escape'});assert.equal(panel.hidden,true);assert.equal(x.f.document.activeElement,toggle);
+  await x.advance(600000);
+ }
+ toggle.events.click();x.f.click('1f');assert.equal(panel.hidden,true);toggle.events.click();x.lock(true);assert.equal(panel.hidden,true);assert.equal(toggle.hidden,true);
+ x.lock(false);toggle.events.click();x.f.hide();assert.equal(panel.hidden,true);
+ assert.equal(created,0);assert.deepEqual(x.f.root.querySelectorAll('*'),nodes);assert.deepEqual(x.writes,[]);
+ const fresh=await mount({time:at('2026-11-06',36000)});for(const id of Object.keys(eventSpecs))assert.equal(eventButton(fresh,id).disabled,false);
+});
+
+test('events: birthday uses final dates, KST midnight, own and colleague lines, absence and stationary scope',async()=>{
+ const dates={hani:'01-17',gaeun:'09-25',yuna:'02-20',mir:'05-14',seoyun:'03-12',dohyun:'06-18',serin:'07-23',yuri:'09-11',arin:'04-24',jieun:'04-09',haru:'05-29',daon:'11-21',naeun:'07-08',hina:'08-21',minji:'10-08',sooyeon:'11-06',yoonseul:'03-26',sua:'12-12',taeo:'02-06'};
+ for(const [id,date]of Object.entries(dates)){
+  const x=await mount({time:at('2026-'+date,36000)}),p=x.f.context.HaniBuildingScene.snapshot(new x.f.context.Date()).floors.find(f=>f.people.some(p=>p.id===id));
+  assert.ok(p,id);x.f.click(p.id);assert.equal(eventButton(x,'birthday').hidden,false,id);runEvent(x,'birthday');assert.equal(x.speaker().dataset.person,id);assert.equal(prop(x.speaker()).textContent,'🎂');
+  assert.ok(x.panel.textContent.includes(eventTable().birthday[id][0]));for(const a of x.all().filter(x.stationary))assert.equal(prop(a).textContent,a.dataset.person===id?'🎂':'🎉');
+ }
+ const away=await mount({time:at('2026-11-06',36000),floor:'3f'});runEvent(away,'birthday');assert.notEqual(away.speaker().dataset.person,'sooyeon');assert.ok(away.panel.textContent.includes(eventTable().birthday.sooyeon[1]));
+ const edge=await mount({time:new Date('2026-11-05T14:59:59Z')});assert.equal(eventButton(edge,'birthday').hidden,true);await edge.advance(1000);edge.f.show();assert.equal(eventButton(edge,'birthday').hidden,false);await edge.advance(86400000);edge.f.show();assert.equal(eventButton(edge,'birthday').hidden,true);
+ // The actual birthday selector must reject a birthday person absent for the entire day.
+ const source=read('hani-office-live.js'),start=source.indexOf('  function birthdayPerson(){'),end=source.indexOf('  function syncEventButtons()',start);
+ class BirthdayClock extends Date{static now(){return +at('2026-11-06',36000)}}
+ const select=vm.runInNewContext("let birthdayDay='',birthdayPresent=new Set();"+source.slice(start,end)+';birthdayPerson',{Date:BirthdayClock,staffBirthdays:{sooyeon:'11-06'},officePresence:{read:()=>({})},actors:new Map([['sooyeon',{hidden:true}]]),building:{snapshot:()=>({floors:[{people:[]}]})}});
+ assert.equal(select(),null);
+ const night=await mount({time:at('2026-11-06',3*3600),real:true,floor:'3f'});assert.equal(eventButton(night,'birthday').hidden,false,'birthday colleague is in the building that day even if home overnight');
+ const noBirthday=await mount();assert.equal(eventButton(noBirthday,'birthday').hidden,true);runEvent(noBirthday,'birthday');assert.equal(noBirthday.history.some(t=>t.ms===8000),false);
+});
+
+test('events: every event excludes actual walking staff, visitors and residents without changing their paths',async()=>{
+ const candidate=eventTime(snap=>{for(const p of snap.entries.filter(p=>p.walking))if(snap.entries.some(q=>q.floor===p.floor&&!q.walking&&q.id!=='seongmin'))return {floor:p.floor,walker:p.id}},'2026-11-06');
+ for(const id of Object.keys(eventSpecs)){
+  const x=await mount({...candidate,real:true}),walker=x.all().find(a=>a.dataset.person===candidate.walker),before=display(walker),position=walker.officePosition.slice();
+  const excluded=x.all().filter(a=>a.dataset.resident||a.dataset.visitor==='true'),original=new Map(excluded.map(a=>[a,display(a)]));
+  assert.equal(walker.dataset.walking,'true');runEvent(x,id);assert.deepEqual(display(walker),before);assert.deepEqual(walker.officePosition,position);
+  for(const a of excluded)assert.deepEqual(display(a),original.get(a),id+' '+a.dataset.person);
+  assert.ok(x.all().some(a=>a.dataset.ownerEvent===id));await x.advance(100);assert.equal(walker.dataset.walking,'true');assert.notDeepEqual(walker.officePosition,position);
+ }
+});
+
+function eventTable(){const source=read('hani-office-live.js'),start=source.indexOf('  const snackLines='),end=source.indexOf('  const ownerEvents=',start);return JSON.parse(JSON.stringify(vm.runInNewContext(source.slice(start,end)+';eventLines')))}
+test('events: authored table preserves every short line and records every necessary shortening',()=>{
+ const table=eventTable(),original=JSON.parse(read('artifacts/office-snack/events-serin.json')),changes=JSON.parse(read('artifacts/office-events/shortened-lines.json'));
+ original.birthday={};for(const row of read('artifacts/office-snack/birthdays-proposal.md').split('\n').filter(s=>s.startsWith('| `'))){const c=row.split('|').map(s=>s.trim());original.birthday[c[1].replaceAll('`','')]=[c[5],c[6]]}
+ assert.deepEqual(table.snack,JSON.parse(read('artifacts/office-snack/lines-serin.json')));
+ let count=0;for(const [event,people]of Object.entries(original)){assert.deepEqual(Object.keys(table[event]).sort(),Object.keys(table.snack).sort());for(const [id,lines]of Object.entries(people))lines.forEach((line,i)=>{const actual=table[event][id][i];assert.ok([...actual].length<=24);if([...line].length<=24)assert.equal(actual,line);else{count++;assert.ok(changes.some(c=>c.id===id&&c.before===line&&c.after===actual))}})}assert.equal(count,20);assert.equal(changes.length,count);
 });

@@ -162,7 +162,7 @@ test('zoom: scheduler, snapshots and all three protected geometry functions stay
     }
   }
   for(const token of ['setInterval(','setTimeout(','fetch('])assert.equal(source.split(token).length,baseline.split(token).length+(token==='setTimeout('?2:0),token);
- assert.equal(source.split(/snack(?:End|Cooldown)Timer=setTimeout\(/).length-1,2,'snack owns exactly two new timeouts');
+ assert.equal(source.split(/event(?:End|Cooldown)Timer=setTimeout\(/).length-1,2,'owner events own exactly two new timeouts');
   assert.doesNotMatch(source,/localStorage|sessionStorage|supabase/);
 });
 
