@@ -8,9 +8,8 @@ import {createHash} from 'node:crypto';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
-import {restoreResidentsSource as restorePriorResidentsSource} from './hani-office-residents-source.mjs';
-import {restoreTlayoutSource,reapplyTlayoutSource} from './hani-office-tlayout-fixture.mjs';
-const restoreResidentsSource=source=>restorePriorResidentsSource(restoreTlayoutSource(source));
+import {restoreResidentsSource} from './hani-office-residents-source.mjs';
+import {reapplyTlayoutSource} from './hani-office-tlayout-fixture.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 const read=f=>fs.readFileSync(f,'utf8'),hash=b=>createHash('sha256').update(b).digest('hex');
 const manifest=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));
@@ -29,6 +28,7 @@ const mount=(enabled=true,reduced=false,width=1440,options={})=>{
 const settled=()=>new Promise(resolve=>setImmediate(resolve));
 const sharpModule=()=>{const require=createRequire(import.meta.url);try{return require('sharp')}catch{return require(process.env.HANI_SHARP_MODULE||path.join(os.homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/sharp'))}};
 const rect=(left,top,width,height)=>({left,top,width,height,right:left+width,bottom:top+height});
+const movingSecond=(id,start,day='2026-11-02')=>{for(let t=start;t<start+300;t+=.1)if(r.snapshot(at(day,t),null,true,false,false).find(p=>p.id===id)?.walking)return t;throw Error('no safe movement within five minutes: '+id)};
 
 test('final names, personalities and actual residentPeople lines obey the local dialogue rules',()=>{
  assert.equal(r.names.cat,'치즈');assert.equal(r.names.dog,'크림');
@@ -44,10 +44,10 @@ test('final names, personalities and actual residentPeople lines obey the local 
 });
 
 test('reduced motion jumps to the stop and keeps coordinates fixed throughout every walking interval',async()=>{
- for(const seconds of [7*3600,9*3600,12*3600,17*3600]){
-  const first=r.snapshot(at('2026-11-02',seconds+.1),null,true,true);
-  for(const offset of [.2,.5,1,2,5])assert.deepEqual(plain(r.snapshot(at('2026-11-02',seconds+offset),null,true,true)),plain(first));
-  assert.ok(first.every(p=>!p.walking&&!p.pose.startsWith('walk-')));
+ for(const start of [7*3600,9*3600,12*3600,17*3600])for(const id of ['pet-cat','pet-dog','pet-rabbit']){
+  const seconds=movingSecond(id,start),first=r.snapshot(at('2026-11-02',seconds),null,true,true,false).find(p=>p.id===id);
+  for(const offset of [.01,.02,.05]){const pet=r.snapshot(at('2026-11-02',seconds+offset),null,true,true,false).find(p=>p.id===id);assert.deepEqual(plain(pet.position),plain(first.position));assert.equal(pet.walking,false);assert.doesNotMatch(pet.pose,/walk|hop/)}
+  assert.equal(first.life,undefined);
  }
  const f=mount(true,true);f.setDateTime('2026-11-02T10:00:00.100+09:00');f.click('1f');await settled();
  const before=f.residents().map(a=>[a.style.left,a.style.top]);
@@ -74,14 +74,14 @@ test('unchanged residents perform no DOM writes on the shared clock',async()=>{
 });
 
 test('walking taps wait for arrival, NPC sprites stay upright, and label fit runs at arrival',async()=>{
- const f=mount();f.setDateTime('2026-11-02T10:00:00.100+09:00');f.click('1f');await settled();
+ const start=movingSecond('pet-cat',10*3600),f=mount();f.setDateTime(at('2026-11-02',start).toISOString());f.click('1f');await settled();
  const pet=f.residents().find(a=>!a.hidden&&a.dataset.walking==='true');assert.ok(pet);
  const calls=[],tick=pet.officeReactions.tick;pet.officeReactions.tick=(...args)=>{calls.push(args[2]);return tick(...args)};
  f.ids.get('haniOfficeActors').events.click({target:pet});f.tick();assert.equal(pet.dataset.motion,undefined);assert.equal(calls.at(-1),true);
  const owner=f.context.HaniBuildingScene;let fits=0;f.map.getBoundingClientRect=()=>rect(0,0,390,220);
  for(const a of f.ids.get('haniOfficeActors').children)for(const node of [a,...a.querySelectorAll('*')])node.getBoundingClientRect=()=>rect(100,100,30,30);
  f.context.HaniBuildingScene={...owner,labels:{...owner.labels,place(...args){fits++;return owner.labels.place(...args)}}};
- f.setDateTime('2026-11-02T10:00:10+09:00');f.tick();assert.equal(calls.at(-1),false);assert.equal(pet.dataset.motion,'hop');assert.ok(fits>0,'arrival repacks labels');
+ f.setDateTime(at('2026-11-02',start+10).toISOString());f.tick();assert.equal(calls.at(-1),false);assert.equal(pet.dataset.motion,'hop');assert.ok(fits>0,'arrival repacks labels');
  f.click('2f');for(const a of f.residents().filter(a=>a.dataset.resident==='npc'&&!a.hidden)){
   const box=rect(100,100,40,60),expected=owner.motion.stableSpriteBox({...a,dataset:{...a.dataset,facing:''}},box);assert.deepEqual(plain(owner.motion.stableSpriteBox(a,box)),plain(expected));
  }
@@ -89,13 +89,13 @@ test('walking taps wait for arrival, NPC sprites stay upright, and label fit run
 });
 
 test('moving open bubbles follow cached geometry without frame reads and close when their resident hides',async()=>{
- const f=mount();f.setDateTime('2026-11-02T10:00:00.100+09:00');f.click('1f');await settled();
+ const start=movingSecond('pet-cat',10*3600),f=mount();f.setDateTime(at('2026-11-02',start).toISOString());f.click('1f');await settled();
  const bubble=f.map.querySelector('.hani-office-character-bubble'),pet=f.residents().find(a=>!a.hidden&&a.dataset.walking==='true');
  f.map.getBoundingClientRect=()=>rect(0,0,1000,560);bubble.getBoundingClientRect=()=>rect(0,0,180,35);
  for(const a of f.ids.get('haniOfficeActors').children){a.getBoundingClientRect=()=>rect(parseFloat(a.style.left)*10-15,parseFloat(a.style.top)*5.6-60,30,60);for(const n of a.querySelectorAll('*'))n.getBoundingClientRect=()=>rect(0,0,30,12)}
  f.ids.get('haniOfficeActors').events.click({target:pet});const left=bubble.style.left;let reads=0;
  for(const node of [f.map,bubble,...f.ids.get('haniOfficeActors').children.flatMap(a=>[a,...a.querySelectorAll('*')])]){const measure=node.getBoundingClientRect;node.getBoundingClientRect=()=>{reads++;return measure()}}
- f.setDateTime('2026-11-02T10:00:00.200+09:00');f.tick();assert.notEqual(bubble.style.left,left);assert.equal(reads,0);
+ f.setDateTime(at('2026-11-02',start+.1).toISOString());f.tick();assert.notEqual(bubble.style.left,left);assert.equal(reads,0);
  f.setDateTime('2026-11-02T12:00:00.200+09:00');f.tick();assert.equal(pet.hidden,true);assert.equal(bubble.hidden,true);
 });
 
@@ -192,7 +192,7 @@ test('pets stay awake at 23:59 and 01:30, walk after midnight, and sleep only fr
   const states=r.snapshot(at('2026-11-02',seconds));assert.equal(states.filter(p=>p.pet).length,3);
   assert.ok(states.filter(p=>p.pet).every(p=>p.pose!=='sleep'));
  }
- for(const seconds of [23*3600+45*60+.1,86400+90*60+.1])assert.ok(r.snapshot(at('2026-11-02',seconds)).filter(p=>p.id!=='pet-rabbit').every(p=>p.pet&&p.walking),'cat/dog still walk their safe quarter-hour routes; rabbit rests longer');
+ for(const start of [23*3600+45*60,86400+90*60])for(const id of ['pet-cat','pet-dog'])assert.ok(movingSecond(id,start)<start+300,'cat/dog walk safe seeded routes within five minutes, including after midnight');
  for(const seconds of [2*3600,3*3600,7*3600-.01])assert.ok(r.snapshot(at('2026-11-02',seconds)).every(p=>p.pose==='sleep'&&!p.walking));
  for(const person of people.filter(p=>p.pet))assert.ok(person.hours.some(([start,end,floor])=>start===22&&end===26&&floor==='1f'),'explicit cross-midnight 1F window');
  for(const seconds of [22*3600+.1,23*3600+120,86400+90*60+.1])for(const pet of r.snapshot(at('2026-11-02',seconds)).filter(p=>p.id!=='pet-rabbit')){
@@ -236,7 +236,7 @@ test('thirty short voiced lines include every canonical staff member and monitor
  assert.deepEqual(Object.keys(r.voice.staff).sort(),table.people.map(p=>p.id).sort());
  const lines=[...r.voice.cat,...r.voice.dog,...Object.values(r.voice.staff)];assert.equal(lines.length,30);assert.equal(new Set(lines).size,30);
  for(const line of lines){assert.ok(Array.from(line).length<=22,line);assert.doesNotMatch(line,/뚱|못생|살쪘|개구리|왕눈|초록 회장/)}
- const peer=restingPeer(),now=at('2026-11-02',9*3600+47*60),cat=r.snapshot(now,staffWith(peer)).find(p=>p.id==='pet-cat');
+ const peer=restingPeer(),now=at('2026-11-02',9*3600+47*60+20),cat=r.snapshot(now,staffWith(peer)).find(p=>p.id==='pet-cat');
  assert.equal(cat.scene.kind,'monitor');assert.equal(cat.scene.partnerId,peer.id);assert.equal(cat.pose,'sitting');assert.equal(cat.scene.petLine,r.voice.cat[2]);assert.equal(cat.scene.staffLine,r.voice.staff[peer.id]);
  assert.ok(r.safe(cat.floor,cat.point,cat.position));
  const [x,y]=[cat.position[0]*16.72,cat.position[1]*9.41],box=scene.art.floors['1f'].homeFurniture[peer.seat.anchor].deskBounds;
@@ -249,7 +249,7 @@ test('cream follows seated or walking chairman to his floor, dwells beside clear
  for(const floor of ['2f','3f','4f','5f'])for(const walking of [false,true]){
   const chair={id:'seongmin',floor,seat:{x:51,y:40,posture:'sitting'},position:walking?[51,40]:null,walking,pose:walking?'walk-a':'sitting',activity:'work'},staff=staffWith(chair),bytes=JSON.stringify(staff);
   const dog=r.snapshot(now,staff).find(p=>p.id==='pet-dog');assert.ok(dog);assert.equal(dog.floor,floor);assert.equal(dog.scene.kind,'chairman');assert.equal(dog.scene.partnerName,'회장님');assert.ok(petGap(dog,chair)>=100&&petGap(dog,chair)<=320);assert.ok(r.safe(floor,dog.point,dog.position));
-  for(const offset of [180,300,600])assert.deepEqual(plain(r.snapshot(at('2026-11-02',10*3600+offset),staff).find(p=>p.id===dog.id).position),plain(dog.position),'stays beside the present chairman within the quarter hour');
+  for(const offset of [180,300,600]){const next=r.snapshot(at('2026-11-02',10*3600+offset),staff).find(p=>p.id===dog.id);assert.equal(next.floor,floor);assert.ok(petGap(next,chair)>=100&&petGap(next,chair)<=320,'short seeded walks stay beside the present chairman');assert.ok(r.safe(next.floor,next.point,next.position))}
   assert.equal(JSON.stringify(staff),bytes);
   const blockers={...chair,id:'visitor-test',visitor:true,walking:true,position:dog.position};
   const yielded=r.snapshot(now,staffWith(chair,blockers)).find(p=>p.id===dog.id);if(yielded)assert.ok(petGap(yielded,blockers)>=100,'moving staff/visitor route gets priority');
@@ -270,7 +270,7 @@ test('interaction routes and dwell spots clear full furniture envelopes and staf
    assert.equal(JSON.stringify(staff),bytes);assert.equal(bytes,JSON.stringify(original.snapshot(now,options)));
   }
  }
- for(const seconds of [9*3600+45*60,10*3600,23*3600])for(const offset of [.001,.1,.5,1,2,3,5,10,20,60,120]){
+ for(const seconds of [9*3600+45*60,10*3600,23*3600])for(const offset of Array.from({length:1201},(_,i)=>i*.25)){
   const now=at('2026-11-02',seconds+offset),staff=seconds===23*3600?scene.snapshot(now,{chairmanPresent:true}):staffWith(restingPeer());
   for(const pet of r.snapshot(now,staff).filter(p=>p.pet)){
    assert.ok(r.safe(pet.floor,pet.point,pet.position));if(pet.walking)moving++;if(pet.scene){scenes++;const peer=staff.floors.flatMap(f=>f.people).find(p=>p.id===pet.scene.partnerId);assert.ok(peer);assert.equal(peer.floor,pet.floor);assert.equal(peer.activity,'rest')}
@@ -412,11 +412,12 @@ test('Mochi schedule covers quiet 3F mornings, 4F days, 1F evenings, midnight co
  }
 });
 
-test('Mochi uses calm 18px/sec hop phases, rests at least a minute, skips alternate quarters and clears furniture',()=>{
- const start=8*3600,states=[];for(let second=0;second<1800;second+=.25){const p=r.snapshot(at('2026-11-02',start+second),null,true,false,false).find(p=>p.id==='pet-rabbit');assert.ok(p);assert.ok(r.safe(p.floor,p.point,p.position,true));states.push({second,p});if(p.walking)assert.match(p.pose,/^hop-[ab]$/);else assert.doesNotMatch(p.pose,/walk|hop/);if(second<60||second>=900)assert.equal(p.walking,false)}
- const moving=states.filter(s=>s.p.walking);assert.ok(moving.length>2);assert.deepEqual([...new Set(moving.map(s=>s.p.pose))].sort(),['hop-a','hop-b']);assert.ok(moving.length*.25<10,'more than 29 minutes at rest per half hour');
- for(let i=1;i<moving.length;i++)if(moving[i].second-moving[i-1].second===.25)assert.ok(Math.abs(petGap(moving[i].p,{position:moving[i-1].p.position})-4.5)<.001);
- for(const sample of states.filter(s=>s.second>=900))assert.deepEqual(plain(sample.p.position),plain(states.at(-1).p.position),'long rest stays in place');
+test('Mochi uses eased hops around 18px/sec every 120..180 seconds, with longer rests and whole-body clearance',()=>{
+ const start=8*3600,states=[];for(let second=0;second<1800;second+=.25){const p=r.snapshot(at('2026-11-02',start+second),null,true,false,false).find(p=>p.id==='pet-rabbit');assert.ok(p);assert.ok(r.safe(p.floor,p.point,p.position,true));states.push({second,p});if(p.walking)assert.match(p.pose,/^hop-[ab]$/);else assert.doesNotMatch(p.pose,/walk|hop/);const clock=r.clock(at('2026-11-02',start+second)),rhythm=r.rhythm(p.id,clock.day,clock.seconds);if(rhythm.elapsed<30)assert.equal(p.walking,false)}
+ const moving=states.filter(s=>s.p.walking);assert.ok(moving.length>2);assert.deepEqual([...new Set(moving.map(s=>s.p.pose))].sort(),['hop-a','hop-b']);assert.ok(moving.length*.25<50,'almost all time is quiet rest');
+ for(let i=1;i<moving.length;i++)if(moving[i].second-moving[i-1].second===.25)assert.ok(petGap(moving[i].p,{position:moving[i-1].p.position})<=18*1.1*1.5*.25+.01);
+ const starts=moving.filter((p,i)=>!i||r.rhythm('pet-rabbit','2026-11-02',start+p.second).beat!==r.rhythm('pet-rabbit','2026-11-02',start+moving[i-1].second).beat);assert.ok(starts.length>=5);for(let i=1;i<starts.length;i++)assert.ok(starts[i].second-starts[i-1].second>=120&&starts[i].second-starts[i-1].second<=180);
+ for(const id of ['pet-cat','pet-dog'])assert.ok(r.rhythm(id,'2026-11-02',start).period<r.rhythm('pet-rabbit','2026-11-02',start).period,'Mochi rests longer than both pets');
 });
 
 test('Mochi prefers resting guardian Hina, yields to work/travel/visitors and never changes staff',()=>{
@@ -429,16 +430,16 @@ test('Mochi prefers resting guardian Hina, yields to work/travel/visitors and ne
  assert.ok(people.find(p=>p.id==='pet-cat').lines.includes('쟤는 말이 없어서 괜찮네요.'));
 });
 
-test('tap any trio member sequences Cream, Cheese, Mochi on the single bubble and holds safe nearby stops only this quarter',async()=>{
+test('tap any trio member sequences Cream, Cheese, Mochi on the single bubble and holds safe nearby stops for twelve seconds',async()=>{
  for(const tappedId of ['pet-cat','pet-dog','pet-rabbit']){
   let timer;const f=mount(true,false,1440,{setTimeout(fn){timer=fn;return 1}});f.setDateTime('2026-11-02T20:02:00+09:00');f.click('1f');await settled();
   const pet=id=>f.residents().find(a=>a.dataset.person===id),layer=f.ids.get('haniOfficeActors'),bubble=f.map.querySelector('.hani-office-character-bubble');
   layer.events.click({target:pet(tappedId)});assert.equal(bubble.querySelector('p').textContent,'크림 · 같이 놀자!!');assert.equal(bubble.querySelector('a').hidden,true);
   timer();assert.equal(bubble.querySelector('p').textContent,'치즈 · 싫어요.');timer();assert.equal(bubble.querySelector('p').textContent,'모찌 · ……조용히 놀면요.');timer();assert.equal(bubble.hidden,true);
   const positions=['pet-cat','pet-dog','pet-rabbit'].map(id=>plain(pet(id).officeResidentState.position));
-  for(const minute of [3,6,10,14]){f.setDateTime('2026-11-02T20:'+String(minute).padStart(2,'0')+':00+09:00');f.tick();for(const [i,id]of ['pet-cat','pet-dog','pet-rabbit'].entries()){const state=pet(id).officeResidentState;assert.deepEqual(plain(state.position),positions[i]);assert.equal(state.walking,false);assert.ok(f.context.HaniBuildingScene.residents.safe(state.floor,state.point,state.position,true))}}
+  for(const second of [1,4,8,11]){f.setDateTime('2026-11-02T20:02:'+String(second).padStart(2,'0')+'+09:00');f.tick();for(const [i,id]of ['pet-cat','pet-dog','pet-rabbit'].entries()){const state=pet(id).officeResidentState;assert.deepEqual(plain(state.position),positions[i]);assert.equal(state.walking,false);assert.ok(f.context.HaniBuildingScene.residents.safe(state.floor,state.point,state.position,true))}}
   for(let i=0;i<positions.length;i++)for(let j=i+1;j<positions.length;j++){const gap=petGap({position:positions[i]},{position:positions[j]});assert.ok(gap>=96&&gap<280)}
-  f.setDateTime('2026-11-02T20:16:00+09:00');f.tick();assert.notDeepEqual(plain(pet('pet-rabbit').officeResidentState.position),positions[2]);assert.equal(f.writes.length,0);
+  f.setDateTime('2026-11-02T20:02:13+09:00');f.tick();assert.notDeepEqual(plain(pet('pet-rabbit').officeResidentState.position),positions[2]);assert.equal(f.writes.length,0);
  }
 });
 
@@ -453,4 +454,168 @@ test('trio rejects missing/different-floor/sleeping pets and staff-blocked floor
  // The owner events' two timeouts and three listeners share the same line delta; residents add none.
  const source=read('hani-office-live.js'),before=restoreResidentsSource(source),withoutSnack=source.replace(/event(?:End|Cooldown)Timer=setTimeout\(/g,'').replace("eventButton.addEventListener('click',",'').replace("eventPanel.addEventListener('keydown',",'').replace("button.addEventListener('click',()=>runOwnerEvent(id))",'');for(const re of [/\bfetch\s*\(/g,/\bsetInterval\s*\(/g,/\bsetTimeout\s*\(/g,/\baddEventListener\s*\(/g])assert.deepEqual(withoutSnack.match(re),before.match(re));
  assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|\bsave\s*\(/);
+});
+
+
+test('seeded Cheese and Cream spots change within two minutes; NPC quarters and all staff plans stay frozen',()=>{
+ for(const day of ['2026-11-02','2026-11-03','2026-11-04'])for(const id of ['pet-cat','pet-dog'])for(const start of [8*3600+30,10*3600+120,14*3600+60,20*3600+150,23*3600+30,25*3600+30]){
+  const first=r.snapshot(at(day,start),null,true,false,false).find(p=>p.id===id);let changed=false,moving=false;
+  for(let offset=.5;offset<=120;offset+=.5){const now=at(day,start+offset),pet=r.snapshot(now,null,true,false,false).find(p=>p.id===id);assert.equal(pet.floor,first.floor);assert.ok(r.safe(pet.floor,pet.point,pet.position));if(pet.walking)moving=true;if(petGap(pet,{position:first.position})>2)changed=true}
+  assert.ok(changed&&moving,day+' '+id+' '+start);
+  const a=r.snapshot(at(day,start)),b=r.snapshot(at(day,start));assert.equal(JSON.stringify(a),JSON.stringify(b),'stable seed, no random clock state');
+ }
+ const original=loadScene({transform:source=>reapplyTlayoutSource(restoreResidentsSource(source))}).scene;
+ for(const day of ['2026-11-02','2026-11-03'])for(const chairmanPresent of [false,true]){const options={chairmanPresent},plan=scene.scheduler.plan(day,options),old=original.scheduler.plan(day,options);assert.equal(JSON.stringify(plan),JSON.stringify(old));for(const block of [0,48,72,120,143])assert.equal(JSON.stringify(scene.scheduler.blockPlan(day,block,plan,options)),JSON.stringify(original.scheduler.blockPlan(day,block,old,options)))}
+});
+
+test('affection is brief, deterministic, floor-local and near a stationary working or resting member; Cream prefers chairman',()=>{
+ const templates=r.snapshot(at('2026-11-02',20*3600),null,true,true,false).filter(p=>p.pet),counts={'pet-cat':0,'pet-dog':0,'pet-rabbit':0},seen=new Set();const starts=Object.fromEntries(templates.map(p=>[p.id,[]]));
+ const staff=templates.map((p,i)=>({id:['sua','seongmin','hina'][i],floor:p.floor,activity:i%2?'work':'rest',state:'AT_PLACE',walking:false,position:[p.position[0],p.position[1]-120/9.41]})),bytes=JSON.stringify(staff);
+ for(let second=17*3600;second<22*3600;second++){
+  const now=at('2026-11-02',second),states=r.affection(now,plain(templates),staff),active=states.filter(p=>p.affection);assert.ok(active.length<=3,'each pet owns a greeting window');
+  for(const p of active){const a=p.affection,peer=staff.find(q=>q.id===a.partnerId);assert.ok(peer);assert.equal(peer.floor,p.floor);assert.ok(petGap(p,peer)>=100&&petGap(p,peer)<=320);assert.ok(['rest','work'].includes(peer.activity));assert.equal(JSON.stringify(states),JSON.stringify(r.affection(now,plain(templates),staff)));
+   if(!seen.has(a.key)){seen.add(a.key);counts[p.id]++;starts[p.id].push(second);}
+   if(p.id==='pet-dog'){assert.equal(a.heart,'💕');assert.equal(a.partnerId,'seongmin');assert.equal(a.partnerName,'회장님')}else assert.equal(a.heart,'♥');
+   for(const edit of [{floor:'5f'},{walking:true},{visitor:true},{activity:'meeting'},{state:'GOING'},{state:'RETURNING'},{position:[0,0]}]){const excluded=staff.map(q=>q.id===peer.id?{...q,...edit}:q);assert.ok(!r.affection(now,plain(templates),excluded).some(q=>q.affection?.partnerId===peer.id),JSON.stringify(edit))}
+  }
+ }
+ assert.ok(counts['pet-dog']>counts['pet-rabbit']&&counts['pet-rabbit']>counts['pet-cat']&&counts['pet-cat']>0,JSON.stringify(counts));for(const times of Object.values(starts)){assert.ok(times.length>100);for(let i=1;i<times.length;i++)assert.ok(times[i]-times[i-1]>=60&&times[i]-times[i-1]<=120,'each pet greets every one to two minutes when staff stay near')} assert.equal(JSON.stringify(staff),bytes);
+ assert.ok(!r.affection(at('2026-11-03',3*3600),plain(templates),staff).some(p=>p.affection));
+ for(const p of templates)p.walking=true;assert.ok(!r.affection(at('2026-11-02',79252),plain(templates),staff).some(p=>p.affection));
+ const lines=Object.values(r.affectionVoice).flatMap(Object.values);assert.equal(lines.length,20);assert.equal(new Set(lines).size,20);for(const line of lines){assert.ok([...line].length<=22,line);assert.doesNotMatch(line,/개구리|왕눈|초록 회장/)}
+});
+
+test('real pet hearts reuse one mounted node, pair taps override trio during affection, and reduced motion is still with zero writes',async()=>{
+ for(const reduced of [false,true]){
+  const f=mount(true,reduced);await settled();const slots=f.residents(),hearts=slots.filter(p=>p.dataset.resident==='pet').map(p=>p.officeHeart);assert.equal(hearts.length,3);assert.equal(new Set(hearts).size,3);assert.ok(hearts.every(Boolean));assert.ok(slots.filter(p=>p.dataset.resident==='npc').every(p=>!p.officeHeart));
+  const nextScene=(start,wantBubble)=>{for(let sec=start;sec<start+1800;sec++){const now=at('2026-11-02',sec),staff=scene.snapshot(now,{chairmanPresent:false}),p=r.snapshot(now,staff,true,reduced).find(p=>p.id==='pet-dog'&&p.affection&&p.affection.bubble===wantBubble);if(p)return {sec,p}}throw Error('no real Cream affection scene')};
+  const hit=nextScene(22*3600,true);f.setDateTime(at('2026-11-02',hit.sec-1).toISOString());f.click('1f');await settled();
+  const dog=slots.find(a=>a.dataset.person==='pet-dog'),heart=dog.officeHeart,bubble=f.map.querySelector('.hani-office-character-bubble'),create=f.document.createElement;let creates=0;f.document.createElement=(...args)=>{creates++;return create(...args)};
+  f.setDateTime(at('2026-11-02',hit.sec).toISOString());f.tick();assert.ok(dog.officeResidentState.affection);assert.equal(heart.hidden,false);assert.equal(heart.textContent,'💕');assert.equal(dog.dataset.affection,'dog');assert.equal(bubble.hidden,false);assert.ok(bubble.querySelector('p').textContent.includes(dog.officeResidentState.affection.staffLine));
+  f.ids.get('haniOfficeActors').events.click({target:dog});assert.equal(bubble.querySelector('p').textContent,'크림 · '+dog.officeResidentState.affection.line,'pair takes precedence over trio');assert.equal(bubble.querySelector('a').hidden,true);
+  let reads=0;const measures=new Map();for(const n of new Set([f.map,...f.root.querySelectorAll('*')])){measures.set(n,n.getBoundingClientRect);n.getBoundingClientRect=()=>{reads++;throw Error('per-frame layout read')}};
+  f.setDateTime(at('2026-11-02',hit.sec+.1).toISOString());f.tick();assert.equal(reads,0);for(const [n,measure]of measures){if(measure)n.getBoundingClientRect=measure;else delete n.getBoundingClientRect}
+  f.setDateTime(at('2026-11-02',hit.sec+8).toISOString());f.tick();assert.equal(heart.hidden,true);assert.equal(dog.dataset.affection,undefined);
+  const second=nextScene(hit.sec+20,false);f.setDateTime(at('2026-11-02',second.sec).toISOString());f.tick();assert.equal(dog.officeHeart,heart);assert.equal(heart.hidden,false);assert.equal(creates,0);assert.equal(f.writes.length,0);if(reduced){assert.equal(dog.dataset.motion,undefined);assert.equal(dog.dataset.walking,'false')}
+ }
+ const css=read('hani-office-live.css');assert.match(css,/\.hani-office-pet-heart\[hidden\]\{display:none!important\}/);assert.match(css,/@media\(prefers-reduced-motion:reduce\)\{\.hani-office-actor\[data-affection\] \.hani-office-pet-heart\{animation:none!important;transform:translateX\(-50%\);opacity:\.9\}/);assert.match(css,/data-affection="dog"\] \.hani-office-sprite\{animation:hani-office-hop \.48s ease-in-out 2\}/);
+ const source=read('hani-office-live.js'),before=restoreResidentsSource(source);assert.equal(source.split(/snack(?:End|Cooldown)Timer=setTimeout\(/).length-1,2);assert.equal(source.split("snackButton.addEventListener('click',").length-1,1);const withoutSnack=source.replace(/snack(?:End|Cooldown)Timer=setTimeout\(/g,'').replace("snackButton.addEventListener('click',",'');for(const re of [/\bfetch\s*\(/g,/\bsetInterval\s*\(/g,/\bsetTimeout\s*\(/g,/\baddEventListener\s*\(/g])assert.deepEqual(withoutSnack.match(re),before.match(re));assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|\bsave\s*\(/);
+});
+
+test('life signs repeat every 10..20 seconds, cover four gestures, and sleep or reduced motion suppresses them',()=>{
+ for(const day of ['2026-11-02','2026-11-03','2026-11-04'])for(const id of ['pet-cat','pet-dog','pet-rabbit']){
+  const kinds=new Set(),times=[],template={id,pet:true,floor:'1f',position:[50,55],pose:'sitting',walking:false,facing:'left'};let last;
+  for(let sec=20*3600;sec<20*3600+300;sec+=.1){
+   const now=at(day,sec),p=r.life(now,[{...template}],false)[0];
+   if(p.life&&p.life.key!==last){kinds.add(p.life.kind);times.push(sec);last=p.life.key;if(p.life.kind==='sit-stand')assert.equal(p.pose,'standing')}
+   assert.equal(r.life(now,[{...template}],true)[0].life,undefined);
+  }
+  assert.deepEqual([...kinds].sort(),['hop','sit-stand','turn','wag']);assert.ok(times.length>=14);
+  for(let i=1;i<times.length;i++)assert.ok(times[i]-times[i-1]>=9.9&&times[i]-times[i-1]<=20.1);
+  for(const edit of [{walking:true},{affection:{kind:'cat'}}])assert.equal(r.life(at(day,72000),[{...template,...edit}],false)[0].life,undefined);
+  assert.equal(r.life(at(day,3*3600),[{...template,pose:'sleep'}],false)[0].life,undefined);
+ }
+});
+
+test('persistent pet life gestures run on the shared tick without creating nodes, timers or frame layout reads; sleeping taps hop',async()=>{
+ const f=mount();await settled();const slots=f.residents(),pet=slots.find(a=>a.dataset.person==='pet-cat'),timers=f.timers.length,children=slots.map(a=>a.children.length),kinds=new Set();let reads=0,creates=0;
+ const create=f.document.createElement;f.document.createElement=(...args)=>{creates++;return create(...args)};
+ for(let sec=10*3600;sec<10*3600+300&&kinds.size<4;sec++){
+  const now=at('2026-11-02',sec),sample=r.life(now,[{id:'pet-cat',pet:true,pose:'sitting',walking:false}],false)[0];if(!sample.life||kinds.has(sample.life.kind))continue;
+  f.setDateTime(now.toISOString());f.click('1f');await settled();f.tick();if(pet.dataset.life!==sample.life.kind)continue;
+  // Measure start and end on the 100ms resident clock between the existing
+  // 200ms staff projections; staff layout events have their own owner/tests.
+  for(const [before,after]of [[-.1,.01],[1.1,1.21]]){
+   f.setDateTime(at('2026-11-02',sec+before).toISOString());f.click('1f');await settled();f.tick();assert.equal(pet.officeResidentState.walking,false);
+   const measures=new Map();for(const n of new Set([f.map,...f.root.querySelectorAll('*')])){measures.set(n,n.getBoundingClientRect);n.getBoundingClientRect=()=>{reads++;throw Error('life frame layout read')}}
+   for(const offset of [after,after+.03,after+.05]){f.setDateTime(at('2026-11-02',sec+offset).toISOString());f.tick()}
+   for(const [n,measure]of measures){if(measure)n.getBoundingClientRect=measure;else delete n.getBoundingClientRect}
+  }
+  kinds.add(sample.life.kind);
+ }
+ assert.deepEqual([...kinds].sort(),['hop','sit-stand','turn','wag']);assert.equal(reads,0);assert.equal(creates,0);assert.equal(f.timers.length,timers);assert.deepEqual(slots.map(a=>a.children.length),children);assert.equal(f.writes.length,0);
+ f.setDateTime('2026-11-03T03:00:00+09:00');f.click('1f');f.tick();
+ for(const a of slots.filter(a=>a.dataset.resident==='pet')){assert.equal(a.dataset.pose,'sleep');assert.equal(a.dataset.life,undefined);assert.equal(a.dataset.affection,undefined);assert.equal(a.dataset.motion,undefined)}
+ const position=[pet.style.left,pet.style.top];f.ids.get('haniOfficeActors').events.click({target:pet});f.tick();assert.equal(pet.dataset.motion,'hop');assert.equal(f.map.querySelector('.hani-office-character-bubble').hidden,false);assert.deepEqual([pet.style.left,pet.style.top],position);
+ const css=read('hani-office-live.css');assert.match(css,/data-pose="sleep"\]:not\(\[data-motion\]\) \.hani-office-sprite\{animation:hani-pet-sleep/);assert.match(css,/data-resident="pet"\] \.hani-office-sprite\{animation:none!important;transform:none!important;rotate:none!important/);
+});
+
+test('pet nominal speeds vary per leg around Cream 48, Cheese 40 and Mochi 18 while periods remain stable over days',()=>{
+ for(const day of ['2026-11-02','2026-11-03','2026-11-04'])for(const [id,speed]of [['pet-cat',40],['pet-dog',48],['pet-rabbit',18]]){
+  const period=r.rhythm(id,day,30000).period;assert.ok(period>=(id==='pet-rabbit'?120:60)&&period<=(id==='pet-rabbit'?180:120));
+  const sec=movingSecond(id,10*3600,day),a=r.snapshot(at(day,sec),null,true,false,false).find(p=>p.id===id),b=r.snapshot(at(day,sec+.1),null,true,false,false).find(p=>p.id===id);assert.ok(b.walking);assert.ok(a.motion.speed>=speed*.9&&a.motion.speed<=speed*1.1);assert.ok(petGap(a,b)<speed*1.1*1.5*.1+.01);
+ }
+});
+
+test('shared-floor companions safely approach each other and the trio speaks automatically once together',async()=>{
+ const local=loadScene().scene.residents;let approached=false;const gaps=[];
+ for(let second=7*3600+60;second<7*3600+540;second+=.5){const now=at('2026-11-02',second),states=local.snapshot(now),cat=states.find(p=>p.id==='pet-cat'),dog=states.find(p=>p.id==='pet-dog');if(!cat||!dog)continue;assert.ok(local.safe(cat.floor,cat.point,cat.position));assert.ok(local.safe(dog.floor,dog.point,dog.position));const gap=petGap(cat,dog);assert.ok(gap>=96);gaps.push(gap);if(cat.walking&&cat.position[0]>47)approached=true}
+ assert.ok(approached,'Cheese walks beyond its usual stop toward Cream');assert.ok(Math.max(...gaps)-Math.min(...gaps)>100);
+ const f=mount();await settled();f.setDateTime('2026-11-02T22:05:40+09:00');f.click('1f');await settled();
+ const pets=f.residents().filter(a=>a.dataset.resident==='pet');assert.ok(pets.every(a=>!a.hidden&&!a.officeResidentState.walking&&!a.officeResidentState.affection));for(const a of pets)for(const b of pets)assert.ok(petGap(a.officeResidentState,b.officeResidentState)<280);
+ const bubble=f.map.querySelector('.hani-office-character-bubble');bubble.hidden=true;f.root.officeTrioBeat=undefined;f.tick();assert.equal(bubble.hidden,false);assert.equal(bubble.querySelector('p').textContent,'크림 · 같이 놀자!!');assert.equal(f.writes.length,0);
+});
+
+test('pet easing moves less at both ends than in the middle, with seeded per-leg speeds and variable launch rests',()=>{
+ const a=r.spot('resident_cat_lobby'),end=r.spot('resident_cat_front'),b={...end,x:a.x+(end.x-a.x)*.4,visual:a.visual.map((v,i)=>v+(end.visual[i]-v)*.4)};
+ for(const [id,base]of [['pet-cat',40],['pet-dog',48],['pet-rabbit',18]]){
+  const speeds=new Set(),rests=new Set();let tested=0;
+  for(let beat=0;beat<25;beat++){
+   const first=r.motion(id,'2026-11-02',beat,a,b,0);assert.ok(first);assert.ok(first.speed>=base*.9&&first.speed<=base*1.1);speeds.add(first.speed);rests.add(r.rhythm(id,'2026-11-02',beat*r.rhythm(id,'2026-11-02',30000).period).rest);
+   if(first.pause)continue;
+   const sample=t=>r.motion(id,'2026-11-02',beat,a,b,first.duration*t),gap=(x,y)=>petGap(sample(x),sample(y));
+   assert.ok(gap(0,.1)<gap(.45,.55)*.4);assert.ok(gap(.9,1)<gap(.45,.55)*.4);assert.ok(petGap(sample(0),{position:a.visual})<.001);assert.ok(petGap(sample(1),{position:b.visual})<.001);tested++;
+  }
+  assert.ok(tested>5);assert.ok(speeds.size>5);assert.ok(rests.size>1);
+ }
+});
+
+test('a seeded day includes reproducible one-to-three second mid-route pauses followed by onward movement',()=>{
+ for(const id of ['pet-cat','pet-dog','pet-rabbit']){
+  let witness;
+  for(let sec=7*3600;sec<21*3600;sec+=.5){const p=r.snapshot(at('2026-11-02',sec),null,true,false,false).find(p=>p.id===id);if(p?.motion?.paused&&p.motion.kind!=='ears'){witness={sec,p};break}}
+  assert.ok(witness,id+' has an actual paused snapshot');const {sec,p}=witness;assert.equal(p.walking,false);assert.ok(p.motion.pause>=1&&p.motion.pause<=3);assert.equal(JSON.stringify(p),JSON.stringify(r.snapshot(at('2026-11-02',sec),null,true,false,false).find(q=>q.id===id)));
+  let resumed=false,held=false;for(let dt=.1;dt<8;dt+=.1){const q=r.snapshot(at('2026-11-02',sec+dt),null,true,false,false).find(q=>q.id===id);if(q.motion?.paused&&petGap(p,q)<.001)held=true;if(q.walking&&petGap(p,q)>1)resumed=true}
+  assert.ok(held);assert.ok(resumed,id+' resumes after inspecting the floor');
+ }
+});
+
+test('curves use clear midpoints and whole corridors on every pet floor, and still reject blocked points',()=>{
+ let curved=0;
+ for(const p of r.people.filter(p=>p.pet))for(const [floor,ids]of Object.entries(p.places))for(let i=0;i<ids.length;i++){
+  const a=r.spot(ids[i]),b=r.spot(ids[(i+1)%ids.length]);if(!a||!b)continue;
+  for(const seed of [0,1]){const route=r.route(a,b,seed);assert.ok(route.nodes.length);for(const n of route.nodes)assert.ok(r.safe(floor,n.point,n.visual,true));const mid=route.nodes[Math.floor(route.nodes.length/2)],linear=a.visual.map((v,j)=>(v+b.visual[j])/2);if(petGap({position:mid.visual},{position:linear})>1)curved++}
+ }
+ assert.ok(curved>=3,'safe bends on multiple routes');
+ const a=r.spot('resident_cat_lobby'),b=r.spot('resident_cat_front');assert.equal(r.motion('pet-cat','2026-11-02',1,a,b,.5,()=>false),null);
+ let actual=false;for(let sec=20*3600;sec<20*3600+120;sec+=.1){const p=r.snapshot(at('2026-11-02',sec),null,true,false,false).find(p=>p.id==='pet-cat');assert.ok(r.safe(p.floor,p.point,p.position));if(p.walking&&Math.abs(p.position[1]-55)>.02)actual=true}assert.ok(actual,'actual snapshot follows a curve');
+});
+
+test('facing is stable across short and vertical legs, including reversed legs and their arrival',()=>{
+ const a=r.spot('resident_dog_hall'),b={...a,visual:[a.visual[0]+.4,a.visual[1]+1]};
+ for(const fallback of ['left','right']){assert.equal(r.facing(a,b,fallback),fallback);assert.equal(r.facing(b,a,fallback),fallback)}
+ for(const id of ['pet-cat','pet-dog','pet-rabbit'])for(let beat=0;beat<8;beat++){
+  const facings=new Set();for(const [from,to]of [[a,b],[b,a]]){const first=r.motion(id,'2026-11-02',beat,from,to,0);assert.ok(first);for(let t=0;t<=first.duration+1;t+=.02)facings.add(r.motion(id,'2026-11-02',beat,from,to,t).facing)}assert.equal(facings.size,1);
+ }
+});
+
+test('personalities use distance-synced quiet steps, bouncy trot and two hops then ears-up rest; Cream can spin',()=>{
+ const a=r.spot('resident_cat_lobby'),b=r.spot('resident_cat_front');let spin=false,tail=false,ears=false;
+ for(const id of ['pet-cat','pet-dog','pet-rabbit'])for(let beat=0;beat<25;beat++){
+  const first=r.motion(id,'2026-11-02',beat,a,b,0);let previous;
+  for(let t=0;t<first.duration;t+=.05){const q=r.motion(id,'2026-11-02',beat,a,b,t);assert.ok(q);if(q.walking){const stride=id==='pet-rabbit'?18:id==='pet-dog'?24:30;assert.equal(q.pose,(id==='pet-rabbit'?'hop-':'walk-')+(Math.floor(q.distance/stride)%2?'b':'a'));assert.ok(Math.abs(q.bob)<=(id==='pet-cat'?.35:id==='pet-dog'?1.3:2.2)+.001)}
+   if(id==='pet-cat'&&Math.abs(q.lean)>.1)tail=true;
+   if(id==='pet-dog'&&q.spin>10&&q.spin<350)spin=true;
+   if(id==='pet-rabbit'&&q.kind==='ears'){ears=true;assert.equal(q.pose,'standing');assert.ok(Math.abs(q.distance-36)<.001);assert.equal(q.walking,false);if(previous?.kind==='ears')assert.equal(q.distance,previous.distance)}previous=q;
+  }
+ }
+ assert.ok(spin);assert.ok(tail);assert.ok(ears);
+});
+
+test('reduced pet motion has no bob, lean, spin, animated pose or easing properties in the persistent owner',async()=>{
+ const f=mount(true,true);await settled();
+ for(const sec of [36000,36001,36003,72000,79200]){f.setDateTime(at('2026-11-02',sec).toISOString());f.click('1f');f.tick();for(const actor of f.residents().filter(a=>a.dataset.resident==='pet'&&!a.hidden)){
+  assert.equal(actor.officeResidentState.motion,undefined);assert.equal(actor.officeResidentState.walking,false);assert.equal(actor.dataset.petPause,undefined);assert.equal(actor.dataset.life,undefined);assert.equal((actor.style.getPropertyValue?.('--pet-bob')??actor.style['--pet-bob']),'0px');assert.equal((actor.style.getPropertyValue?.('--pet-lean')??actor.style['--pet-lean']),'0deg');assert.equal((actor.style.getPropertyValue?.('--pet-spin')??actor.style['--pet-spin']),'0deg');assert.doesNotMatch(actor.dataset.pose,/walk|hop/);
+ }}
+ const css=read('hani-office-live.css');assert.match(css,/@media\(prefers-reduced-motion:reduce\)\{\.hani-office-actor\[data-resident="pet"\] \.hani-office-sprite\{animation:none!important;transition:none!important;transform:none!important;rotate:none!important\}/);assert.equal(f.writes.length,0);
 });

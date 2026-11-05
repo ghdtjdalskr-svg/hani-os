@@ -221,3 +221,33 @@
 /* Approved 3F G: reuse the existing foreground slot for the lead desk edge.
    Its own lower-body slice hides ankles; face/labels remain above the desk. */
 .hani-office-map[data-floor="3f"][data-art="floor"]:has(.hani-office-actor[data-seat="dev-lead"][data-pose="sitting"]:not([hidden]))>.hani-office-foreground:nth-of-type(2){display:block;clip-path:polygon(9.33% 67%,14.83% 67%,14.83% 85%,9.33% 85%)}
+
+/* One reusable heart per pet, driven by the resident clock without layout reads. */
+.hani-office-pet-heart{position:absolute;left:50%;bottom:calc(100% - var(--actor-height)*var(--resident-top,0) + 18px);z-index:8;font-size:13px;line-height:1;color:#e68b9b;pointer-events:none;opacity:0;transform:translateX(-50%)}
+.hani-office-pet-heart[hidden]{display:none!important}
+.hani-office-actor[data-affection] .hani-office-pet-heart{animation:hani-pet-heart 3s ease-out both}
+.hani-office-actor[data-affection="dog"] .hani-office-pet-heart{animation-duration:6s}
+.hani-office-actor[data-affection="rabbit"] .hani-office-pet-heart{animation-duration:7s;color:#dbb1bb;font-size:12px}
+.hani-office-actor[data-affection="cat"] .hani-office-pet-heart{font-size:11px}
+.hani-office-actor[data-affection="cat"] .hani-office-sprite{animation:hani-pet-nudge .65s ease-in-out both}
+.hani-office-actor[data-affection="dog"] .hani-office-sprite{animation:hani-office-hop .48s ease-in-out 2}
+.hani-office-actor[data-affection="rabbit"] .hani-office-sprite{animation:hani-pet-nudge 1.4s ease-in-out both}
+@keyframes hani-pet-heart{0%{opacity:0;transform:translate(-50%,0)}15%,55%{opacity:.9}100%{opacity:0;transform:translate(-50%,-14px)}}
+@keyframes hani-pet-nudge{0%,100%{transform:rotate(0deg)}40%,65%{transform:rotate(var(--affection-lean,1deg))}}
+@media(prefers-reduced-motion:reduce){.hani-office-actor[data-affection] .hani-office-pet-heart{animation:none!important;transform:translateX(-50%);opacity:.9}.hani-office-actor[data-affection] .hani-office-sprite{animation:none!important;transform:none!important}}
+
+/* Small life signs reuse the pet sprite; sleep has breathing only. */
+.hani-office-actor[data-resident="pet"][data-life="hop"]:not([data-motion]):not([data-affection]) .hani-office-sprite{animation:hani-office-hop .48s ease-in-out both}
+.hani-office-actor[data-resident="pet"][data-life="turn"]:not([data-motion]):not([data-affection]) .hani-office-sprite{animation:hani-pet-turn .6s ease-in-out both}
+.hani-office-actor[data-resident="pet"][data-life="sit-stand"]:not([data-motion]):not([data-affection]) .hani-office-sprite{animation:hani-office-stand .48s ease-in-out both}
+.hani-office-actor[data-resident="pet"][data-life="wag"]:not([data-motion]):not([data-affection]) .hani-office-sprite{animation:hani-pet-wag .7s ease-in-out both}
+.hani-office-actor[data-resident="pet"][data-pose="sleep"]:not([data-motion]) .hani-office-sprite{animation:hani-pet-sleep 4s ease-in-out infinite}
+@keyframes hani-pet-turn{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.94)}}
+@keyframes hani-pet-wag{0%,100%{transform:rotate(0)}25%,65%{transform:rotate(2deg)}45%,80%{transform:rotate(-2deg)}}
+@keyframes hani-pet-sleep{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.012)}}
+@media(prefers-reduced-motion:reduce){.hani-office-actor[data-resident="pet"] .hani-office-sprite{animation:none!important;transform:none!important;rotate:none!important}.hani-office-actor[data-resident="pet"]{transition:none!important}}
+
+/* Clock-sampled pet motion: the atlas frame and bob share travelled distance. */
+.hani-office-actor[data-resident="pet"]:not([data-motion]):not([data-life]):not([data-affection]):not([data-pose="sleep"]) .hani-office-sprite{transform:translateY(var(--pet-bob,0px)) rotate(var(--pet-lean,0deg));rotate:var(--pet-spin,0deg)}
+.hani-office-actor[data-pet-pause="ears"]:not([data-motion]):not([data-affection]) .hani-office-sprite{transform:scaleY(1.015)}
+@media(prefers-reduced-motion:reduce){.hani-office-actor[data-resident="pet"] .hani-office-sprite{animation:none!important;transition:none!important;transform:none!important;rotate:none!important}.hani-office-actor[data-resident="pet"]{animation:none!important;transition:none!important}}
