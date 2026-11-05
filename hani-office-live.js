@@ -2668,6 +2668,7 @@
     if(eventPanel.contains(event.target)||eventButton.contains(event.target))return;
     const actor=event.target.closest?.('.hani-office-actor');
     if(actor&&actorLayer.contains(actor)){if(!dismissOnly)openBubble(actor);return}
+    if(event.target.closest?.('.hani-office-barista')===baristaButton){if(!dismissOnly)openBaristaBubble();return}
     if(!dismissOnly||actorBubble.hidden||actorBubble.contains(event.target)||[...actors.values()].some(a=>a.officeRow.contains(event.target)))return;
     closeBubble();
   }
@@ -2724,6 +2725,21 @@
     const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble(false)}},3000);
   };
   queenFrame.onkeydown=event=>{if(event.key==='Escape')closeBubble()};
+  // Visible barista pixels only: (1536,650)..(1581,706) in floor-1f-217.webp.
+  // Below staff/visitor sprites; no enlarged invisible touch area over the counter.
+  const baristaButton=document.createElement('button');baristaButton.type='button';baristaButton.id='haniOfficeBarista';baristaButton.className='hani-office-barista';baristaButton.hidden=true;baristaButton.onclick=activateActor;baristaButton.onkeydown=event=>{if(event.key==='Escape')closeBubble()};baristaButton.setAttribute('aria-label','바리스타 이슬 · 카페 운영 중');
+  baristaButton.style.left=(1536/(building.art?.width||1672)*100)+'%';baristaButton.style.top=(650/(building.art?.height||941)*100)+'%';baristaButton.style.width=(45/(building.art?.width||1672)*100)+'%';baristaButton.style.height=(56/(building.art?.height||941)*100)+'%';map.append(baristaButton);
+  const baristaLines=['회장님, 오늘도 늘 드시던 걸로요?','원두는 오늘 아침에 새로 볶았어요.','라떼 아트는 하트가 제일 자신 있어요.','직원분들 주문 순서, 다 외웠답니다.','크림이가 또 쿠키 냄새 맡고 왔네요.','치즈는 창가 자리 단골손님이에요.','바쁜 날엔 샷 하나 추가해 드릴게요.','디카페인도 맛있게 내려 드려요.'];
+  let baristaTap=0;
+  function updateBarista(){baristaButton.hidden=activeFloor!=='1f'||map.dataset.art!=='floor'}
+  function openBaristaBubble(){
+    updateBarista();if(baristaButton.hidden||!sceneVisible()||document.getElementById('app')?.classList.contains('login-locked'))return;
+    closeBubble();lastBubbleTap=Date.now();autoBubbleEntry=false;
+    bubbleSprite.hidden=true;actorBubble.dataset.zoom='false';actorBubble.officeFollow=null;
+    bubbleLine.textContent='바리스타 이슬 · '+(matchMedia('(max-width:600px)').matches?'카페운영':'카페 운영 중')+' · '+baristaLines[baristaTap++%baristaLines.length];
+    profileLink.hidden=true;actorBubble.style.left='4px';actorBubble.style.top='4px';actorBubble.hidden=false;
+    const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble(false)}},3000);
+  }
   // Each floor owns persistent decorative slots; positions are desk anchor + art offset.
   const deskProps=[];
   for(const floor of building.floors)for(const entry of building.art?.floors[floor.id].deskProps||[]){
@@ -2975,7 +2991,7 @@
       map.dataset.mask='none';
       for(const entry of plates)entry.plate.hidden=entry.floor!==floor.id||!isFloor;
       for(const entry of deskProps){entry.prop.hidden=entry.floor!==floor.id||!isFloor;if(!entry.prop.hidden&&!entry.prop.src)entry.prop.src=entry.src}
-      updateQueenFrame();
+      updateQueenFrame();updateBarista();
       updateAtmosphere(Date.now());
       scheduleFloorBubble();
     });
@@ -2996,7 +3012,7 @@
     const floor=floorSnapshot.floors.find(f=>f.id===activeFloor),selected=meeting&&activeFloor==="2f"?selectedAgents():null;
     const entries=selected?building.assignSeats(activeFloor,selected.map(id=>({id,activity:"meeting"}))):meeting&&activeFloor==='4f'&&selectedAgents().includes('mir')?building.assignSeats(activeFloor,[...floor.visible.filter(p=>p.id!=='mir'),{id:'mir',activity:'meeting'}]):[...floor.visible,...(meeting?[]:(floorSnapshot.visitors||[]).filter(v=>v.floor===activeFloor))];
     const nextKey=floorSnapshot.day+":"+activeFloor+":"+entries.map(p=>p.id+"/"+p.activity+"/"+p.seat?.id+"/"+p.actionId+"/"+p.eventId+"/"+p.outingId+"/"+p.line+"/"+p.state+"/"+(p.walking?'walk':p.pose)).join(",")+":"+Boolean(selected)+":"+Math.floor(floorSnapshot.minutes/5);
-    updateQueenFrame(now.getTime());
+    updateQueenFrame(now.getTime());updateBarista();
     if(!force&&nextKey===layoutKey)return;
     const sameFloor=displayedFloor===activeFloor;displayedFloor=activeFloor;
     for(const [id,list] of roomLabels)list.hidden=id!==activeFloor;
@@ -3005,7 +3021,7 @@
     for(const entry of plates)entry.plate.hidden=entry.floor!==activeFloor||map.dataset.art!=='floor';
     if(!sameFloor)for(const entry of deskProps)entry.prop.hidden=true;
     if(!sameFloor)foregrounds.forEach(img=>{img.hidden=true});
-    setBackground(floor);updateQueenFrame(now.getTime());
+    setBackground(floor);updateQueenFrame(now.getTime());updateBarista();
     for(const entry of plannedRows)entry.row.hidden=entry.floor!==activeFloor;
     // Reuse the scheduler's exact formal/outing legs; never predict a route.
     const formal=building.scheduler&&!meeting?building.scheduler.plan(day,presence):[];

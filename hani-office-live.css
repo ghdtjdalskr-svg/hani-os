@@ -129,6 +129,12 @@
 .hani-office-brand{display:flex;align-items:center;justify-content:center;gap:.6cqw;color:#655076;filter:drop-shadow(.06cqw .12cqw .08cqw #3d294a50)}
 .hani-office-brand-mark{display:block;width:3.1cqw;height:3.1cqw;object-fit:contain}
 .hani-office-brand b{font-family:Georgia,"Times New Roman",serif;font-size:1.65cqw;letter-spacing:.12em;font-weight:600;line-height:1;color:#6b567b;text-shadow:0 -.04cqw #e5d7ed,.06cqw .08cqw #49384f}
+.hani-office-barista{position:absolute;z-index:2;box-sizing:border-box;display:block;margin:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;cursor:pointer;pointer-events:auto}
+.hani-office-barista[hidden],.login-locked .hani-office-barista{display:none}
+/* The shared press scale gives actors a temporary stacking context. */
+#haniOfficeMap:has(.hani-office-actor:active) .hani-office-barista{pointer-events:none}
+#app #haniOfficeMap .hani-office-barista{min-width:0!important;min-height:0!important;max-width:none;transform:none;transition:none}
+.hani-office-barista:focus-visible{outline:2px solid #7656c4;outline-offset:0}
 .hani-office-queen-frame{position:absolute;z-index:2;box-sizing:border-box;display:block;margin:0;padding:0;border:0;border-radius:0;background:transparent;cursor:pointer;pointer-events:auto}
 .hani-office-queen-frame[hidden]{display:none}
 #app #haniOfficeMap .hani-office-queen-frame{min-width:0!important;min-height:0!important}
