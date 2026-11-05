@@ -2793,8 +2793,8 @@
     }
   ],
   "source": {
-    "beforeSha256": "21465eb714a788e157444ccdf30d9d8677283deb2ba17181ab6317b3a9da39c8",
-    "afterSha256": "3aac361387dd66736580df61d2c254bb50a131a724831b0a30c91a89e8b4bc3b",
+    "beforeSha256": "c14f9f93c3a61d3542b5ec9455d55f1e09f8eaba6059a7db610d4b4d1f5e07c0",
+    "afterSha256": "328457e0bcdc7345afca2c974d895a22f6e7cfd56f9544ac7984a6150e7e9f1f",
     "replacements": [
       {
         "before": "screen=monitorScreens[anchor],rect=furniture[anchor]?.deskBounds",
