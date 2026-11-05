@@ -1920,6 +1920,7 @@
     [/조언|설명.*듣/,'설명 듣기|조언 듣기|이야기 듣기'],[/공부|단어|외우|복습/,'단어 복습|공부 하기|단어 외우기']
   ];
   function phoneStatusLine(line,used=new Set(),state='work',compact=true){
+    if(line==='간식 먹는 중'){const result=compact?'간식먹기':line;used.add(result);return result}
     const report=line.match(/회장님께 (.+?) 보고/);
     if(report){const topic=report[1].replace(/^(오늘|다음) /,'').split(' ')[0],short=/^[가-힣A-Za-z0-9]{1,4}$/.test(topic)?topic+(compact?'':' ')+'보고':compact?'회장보고':'회장 보고';used.add(short);return short}
     const known=scheduler?.shortLine(line),action=phoneActions.find(([pattern])=>pattern.test(line)),authored=known==='회장님께 인사 중'?'도착 인사|환영 인사|인사 건네기':known==='보고 답변 중'?'보고 답변|보고 응답|답변 전하기':action?.[1];
@@ -2508,7 +2509,7 @@
   function actionRunning(actor){return meeting||!!actor.officeTravel||actor.dataset.walking==='true'||!!actor.dataset.event||actor.dataset.action&&actor.dataset.action!=='base-work'}
   function bubbleText(actor){
     if(actor.dataset.resident)return actor.dataset.name+' · '+(bubbleSelection?.line||actor.dataset.line);
-    if(bubbleSelection&&(bubbleSelection.drama||!actionRunning(actor))){const speaker=actors.get(bubbleSelection.speaker);return (speaker?.dataset.name||actor.dataset.name)+' · '+actor.querySelector('.hani-office-status').dataset.full+' · '+bubbleSelection.line}
+    if(bubbleSelection&&(bubbleSelection.drama||bubbleSelection.snack||!actionRunning(actor))){const speaker=actors.get(bubbleSelection.speaker);return (speaker?.dataset.name||actor.dataset.name)+' · '+actor.querySelector('.hani-office-status').dataset.full+' · '+bubbleSelection.line}
     return actor.dataset.name+' · '+statusNames[actor.dataset.status]+' · '+actor.querySelector('.hani-office-status').dataset.full;
   }
   function fitBubble(follow=false){
@@ -2634,6 +2635,58 @@
   let activeFloor="4f",floorSnapshot=null,layoutKey="",backgroundToken=0,returnFloor="4f",displayedFloor=null;
   floorLabel.className="hani-building-floor-label";overflowChip.className="hani-building-overflow";const caption=document.createElement('div');caption.className='hani-building-floor-caption';const presenceNote=document.createElement('small');presenceNote.className='hani-building-presence-note';presenceNote.setAttribute('role','status');presenceNote.hidden=true;caption.append(floorLabel,overflowChip,presenceNote);root.querySelector('.hani-office-scroll').after(caption);
   const dramaCaption=document.createElement('small'),dramaTitle=document.createElement('b'),dramaSummary=document.createElement('span');dramaCaption.className='hani-building-drama-caption';dramaCaption.hidden=true;dramaCaption.append(dramaTitle,dramaSummary);caption.append(dramaCaption);let tapCatalogStarted=false;
+  // View-only snack overlay. The table is the sole copy-edit point (up to 3 lines per staff id).
+  const snackLines={
+    hani:["회장님, 간식은 이번 Scope 안이네요♡","회장님, 당 충전 끝! 전략부터 잡을게요.","회장님 간식이라니, 헤헤 힘이 나네요♡"],
+    gaeun:["회장님, 간식 타임도 일정에 넣어둘게요.","회장님 감사해요, 회의 준비도 마쳤어요.","회장님 덕분에 다음 일정도 든든하겠어요."],
+    yuna:["회장님! 간식 접수는 제가 먼저 할게요!","감사합니다 회장님, 기운 내서 안내할게요!","회장님, 이 간식은 제 자리로 분류할게요!"],
+    mir:["회장님, 간식 주시는 거예요? 헤헤.","회장님, 다들 좋아하네. 헤헤, 고마워요.","왜 기분이 좋지? 조금 더 볼게, 회장님."],
+    seoyun:["회장님, 먼저 간식 범위부터 살펴볼게요.","회장님, 정리하면 맛있고 든든하네요 💜","회장님 덕분에 설계가 한결 잘 풀리네요."],
+    dohyun:["회장님, 당 충전 완료. 테스트 통과요.","회장님, 간식 수령 완료. 구현 갑니다.","회장님, 간식 재현 완료. 바로 통과요 ☕"],
+    serin:["회장님!! 간식 보급도 자동화 각인데요?!","회장님! 집중력 오르는 패턴이 보여요!!","회장님 감사해요!! 리서치 속도 올라가요!"],
+    yuri:["회장님, 간식 품질 확인. 깔끔합니다.","회장님, 직접 먹어보니 PASS입니다.","회장님, 감사히 먹되 검수는 공정합니다."],
+    arin:["회장님, 간식 색감까지 너무 예쁜데요? ✨","회장님, 잠깐 숨 쉬게 간식 타임 어때요?","회장님 고마워요, 마음까지 말랑해지네요!"],
+    jieun:["회장님, 예산 밖이지만 이번만 승인할게요.","회장님, 사기 진작 예산으로 처리할게요.","회장님, 계획소비 맞죠? 감사히 먹을게요."],
+    haru:["회장님, 오늘 간식 큐레이션 아주 좋네요.","회장님, 다들 좋아할 맛이에요. 고마워요.","회장님, 후회 없는 픽이네요. 고마워요."],
+    daon:["회장님… 혹시 제 몫까지 주시는 건가요?","회장님 감사합니다… 아껴서 먹을게요.","회장님, 간식은 하방 위험이 전혀 없네요…"],
+    naeun:["회장님, 칼로리는 제가 살짝 확인했어요!","회장님도 드셨어요? 같이 맛있게 먹어요!","회장님 고마워요! 기분 좋게 충전할게요."],
+    hina:["회장님! 오늘 간식 센스 백점이에용♡","회장님 고마워용♡ 먹고 열심히 검수할게요!","와아 간식이다! 회장님 최고예용, 헤헤♡"],
+    minji:["회장님, 간식 주시는 장면 바로 찍었어요!","컷! 회장님 미담 장면 하나 기록했어요.","회장님, 오늘 간식 연출 아주 완벽해요!"],
+    sooyeon:["회장님! 간식 보급이라니 낭만상 가능해요!","회장님, 에너지 충전 끝! 힘내서 뛸게요!","회장님, 현장 보급 최고! 잘 먹을게요!"],
+    yoonseul:["회장님, 이거 아세요? 책이랑 딱 맞아요!","회장님, 간식과 책이 여기서 이어지네요!","회장님 감사해요! 책갈피 꽂고 먹을게요."],
+    sua:["회장님, 간식 기한 내 빈틈없이 먹을게요!","회장님이 챙겨주시다니, 헤헤ㅎㅎ 고마워요!","회장님, 잘 먹고 오후 제안서도 끝낼게요!"],
+    taeo:["회장님, 정리하면 세 가지로 완벽합니다.","회장님, 간식 지원 건은 즉시 수용합니다.","회장님, 감사히 먹고 후속 실행 갈게요."]
+  };
+  const snackButton=document.createElement('button');snackButton.id='haniOfficeSnack';snackButton.type='button';snackButton.className='btn hani-office-snack';snackButton.hidden=true;caption.append(snackButton);
+  const snackCooldowns=new Map();let snackPeople=new Set(),snackFloor=null,snackUntil=0,snackEndTimer=null,snackCooldownTimer=null;
+  function syncSnackButton(){
+    snackButton.hidden=!document.getElementById('app')||document.getElementById('app').classList.contains('login-locked');
+    snackButton.disabled=(snackCooldowns.get(activeFloor)||0)>Date.now();
+    const text=snackButton.disabled?'간식 다 먹는 중…':'🍪 간식 돌리기';if(snackButton.textContent!==text)snackButton.textContent=text;
+  }
+  function snackStationary(actor){return !actor.hidden&&!actor.dataset.resident&&actor.dataset.visitor!=='true'&&Object.hasOwn(snackLines,actor.dataset.person)&&!actor.officeTravel&&actor.dataset.walking!=='true'&&!actor.dataset.pose?.startsWith('walk')&&!['GOING','RETURNING'].includes(actor.dataset.behavior)}
+  function snackApplies(actor){return snackFloor===activeFloor&&Date.now()<snackUntil&&snackPeople.has(actor.dataset.person)&&snackStationary(actor)}
+  function clearSnackReaction(){if(snackEndTimer!==null)clearTimeout(snackEndTimer);snackEndTimer=null;snackFloor=null;snackUntil=0;snackPeople=new Set()}
+  function armSnackCooldown(){
+    if(snackCooldownTimer!==null)clearTimeout(snackCooldownTimer);snackCooldownTimer=null;
+    const floor=activeFloor,remaining=(snackCooldowns.get(floor)||0)-Date.now();
+    if(remaining>0)snackCooldownTimer=setTimeout(()=>{snackCooldownTimer=null;if(activeFloor===floor)syncSnackButton()},remaining);
+  }
+  snackButton.addEventListener('click',()=>{
+    syncSnackButton();if(snackButton.hidden||snackButton.disabled||!sceneVisible())return;
+    updateBuilding(true,false);
+    const eligible=[...actors.values()].filter(snackStationary).sort((a,b)=>a.dataset.person.localeCompare(b.dataset.person));
+    const now=Date.now(),floor=activeFloor,end=now+8000;clearSnackReaction();
+    snackFloor=floor;snackUntil=end;for(const actor of eligible)snackPeople.add(actor.dataset.person);
+    snackCooldowns.set(floor,now+600000);syncSnackButton();armSnackCooldown();autoBubbleEntry=false;
+    snackEndTimer=setTimeout(()=>{if(snackFloor!==floor||snackUntil!==end)return;snackEndTimer=null;clearSnackReaction();updateBuilding(true,false)},8000);
+    updateBuilding(true,false);
+    // Use the existing single bubble. A pending/recent viewer choice keeps priority.
+    if(eligible.length&&!pendingTap&&(actorBubble.hidden||now-lastBubbleTap>=5000)){
+      const actor=eligible[0],lines=snackLines[actor.dataset.person];
+      showBubble(actor,{speaker:actor.dataset.person,line:lines[0],snack:true},4000,true);
+    }
+  });
   const foregrounds=[...map.querySelectorAll(".hani-office-foreground")];
   for(const img of foregrounds){img.className='hani-office-foreground';img.hidden=true}
   // One persistent, non-interactive layer; monitor gradients share one pulse.
@@ -2715,6 +2768,7 @@
     });
   }
   function updateBuilding(force=false,animate=true){
+    syncSnackButton();
     if(sceneVisible()&&!tapCatalogStarted){tapCatalogStarted=true;void tapLines.load().then(()=>{if(sceneVisible())updateBuilding(true,false)})}
     const now=new Date(),day=new Date(now.getTime()+32400000).toISOString().slice(0,10);
     const episode=tapLines.episode(now),dramaText=episode?episode.title+' · '+episode.summary:'';
@@ -2766,10 +2820,11 @@
       const peer=entries.find(q=>q.id===p.deskPartner);actor.style.setProperty('--response-lean',peer&&peer.seat.x<p.seat.x?'-1deg':'1deg');
       actor.dataset.action=selected?'agent-case':p.actionId||'base-work';actor.dataset.event=p.eventId||'';actor.dataset.line=selected?'실제 안건 검토 중':p.line||'자료 확인 중';
       actor.dataset.emoji=selected||actor.dataset.action==='base-work'?'':p.emoji||'';actor.dataset.walking=String(Boolean(p.walking||actor.officeTravel));
+      actor.dataset.snack=String(snackApplies(actor));if(actor.dataset.snack==='true'){actor.dataset.line='간식 먹는 중';actor.dataset.emoji='🍪'}
       actor.officeReactions.observe(actor.dataset,now.getTime());
       const prop=actor.querySelector('.hani-office-prop'),emoji=headIcon(actor);if(prop.textContent!==emoji)prop.textContent=emoji;
       if(selected)actor.dataset.called='true';
-      label(actor,(actor.dataset.emoji?actor.dataset.emoji+' ':'')+actor.dataset.line);
+      label(actor,actor.dataset.snack==='true'?actor.dataset.line:(actor.dataset.emoji?actor.dataset.emoji+' ':'')+actor.dataset.line);
       if(bubblePerson===p.id)bubbleLine.textContent=bubbleText(actor);
     }
     for(const actor of actors.values())if(actor.hidden){clearMotion(actor);actor.officeSchedule=null;actor.dataset.partner='';actor.dataset.greeting='false'}
@@ -2804,7 +2859,7 @@
     }
     if(changed)fitStatusLabels();
   }
-  function selectFloor(id,animate=false){closeBubble();if(!floorButtons.has(id))return;autoBubbleEntry=true;for(const actor of actors.values())finishTravel(actor);activeFloor=id;updateBuilding(true,animate)}
+  function selectFloor(id,animate=false){closeBubble();if(!floorButtons.has(id))return;autoBubbleEntry=true;for(const actor of actors.values())finishTravel(actor);if(id!==activeFloor)clearSnackReaction();activeFloor=id;armSnackCooldown();updateBuilding(true,animate)}
   tabs.addEventListener("click",event=>{const button=event.target.closest("[data-building-floor]");if(button&&tabs.contains(button))selectFloor(button.dataset.buildingFloor)});
   tabs.addEventListener("keydown",event=>{const keys=[...floorButtons.keys()],index=keys.indexOf(activeFloor);let next;if(event.key==="ArrowRight")next=(index+1)%keys.length;else if(event.key==="ArrowLeft")next=(index+keys.length-1)%keys.length;else if(event.key==="Home")next=0;else if(event.key==="End")next=keys.length-1;else return;event.preventDefault();selectFloor(keys[next]);floorButtons.get(keys[next]).focus()});
   function syncVisibility(){officePresence.read();const visible=sceneVisible();if(visible&&!sceneActive)autoBubbleEntry=true;sceneActive=visible;root.dataset.paused=String(!visible);if(visible)updateBuilding(true,false);else{autoBubbleEntry=false;for(const actor of actors.values())clearMotion(actor);closeBubble()}map.officeMascotMotion?.({now:Date.now(),reduced,visible,actors})}
