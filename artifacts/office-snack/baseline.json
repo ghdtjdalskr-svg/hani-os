@@ -1,7 +1,7 @@
 {
-  "ref": "c301a1391f06eb636cb369e43bba7260c883bc04",
-  "sourceBlob": "a7730fee8ee8c1cd18d25a4a941be80c60621665",
-  "sourceSha256": "bbb4d645aa644d5fd3704a3240118ee45e2f038866064fe277db8806ebc1668e",
+  "ref": "e03a029d6a81f3c6fc025cc0234e82580c696870",
+  "sourceBlob": "d2822185703b2e9c6c2acf50718e24b48e790ffa",
+  "sourceSha256": "328457e0bcdc7345afca2c974d895a22f6e7cfd56f9544ac7984a6150e7e9f1f",
   "inputs": [
     {
       "path": "assets/data/office-actions-221.json",
@@ -25,7 +25,7 @@
     },
     {
       "path": "hani-office-live.js",
-      "sha": "a7730fee8ee8c1cd18d25a4a941be80c60621665"
+      "sha": "d2822185703b2e9c6c2acf50718e24b48e790ffa"
     }
   ],
   "sections": [
@@ -63,13 +63,13 @@
       "name": "residents model",
       "start": "  const residentNames=",
       "end": "  function createPresence(",
-      "sha256": "7c67c7b6976bfcf5eae82fd96dbe58b05a3dbaef2d7c7890cb90d01f55bb3155"
+      "sha256": "aa0f74bb5073ae851274c0690810e9af5326442448956e3064942a7e94581eb4"
     },
     {
       "name": "residents renderer",
       "start": "  function updateResidents(now){",
       "end": "  function selectFloor(",
-      "sha256": "6f915f5d6b2172d8072bad189fca682250db03655b605aaf26c802f0b5ce6f9c"
+      "sha256": "2996a42b596252f9af13ba8ff09bf4f315a7ab5f738d4e04234cb1fb013cab72"
     }
   ],
   "models": [

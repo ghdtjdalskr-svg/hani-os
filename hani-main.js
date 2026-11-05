@@ -4253,7 +4253,27 @@ function renderMediaPreview(){
       " · 분리 후 예상 기록 "+bytesLabel(report.estimatedAfterBytes);
   }catch(_){host.textContent="미리보기 계산을 하지 못했습니다. 원본 기록은 유지됩니다.";if($("group-storage"))$("group-storage").open=true}
 }
-function bookCard(b){return `<article class="archive-card">${mediaImage(b,"cover")?`<img class="archive-cover" src="${esc(mediaImage(b,"cover"))}" alt="${esc(b.title)} 표지">`:'<div class="archive-cover placeholder">📚</div>'}<div><span class="topic-tag" style="--tag:${TOPIC_COLORS[b.topic]||TOPIC_COLORS["기타"]}">${esc(b.topic||"기타")}</span><h4>${esc(b.title)}</h4><div class="archive-meta">${esc(b.author||"저자 미입력")}${b.status==="read"?` · ${stars(b.rating)}`:""}${b.completedDate?`<br>완독 ${esc(b.completedDate)}`:""}</div>${b.review?`<div class="archive-review">${esc(b.review)}</div>`:""}</div><div class="archive-actions"><button class="btn sm" ${recordIdAttributes("data-book-toggle",b.id)}>${b.status==="read"?"읽기 목록으로":"서재로 이동"}</button><button class="btn sm" ${recordIdAttributes("data-book-edit",b.id)}>수정</button><button class="btn sm danger" ${recordIdAttributes("data-book-delete",b.id)}>삭제</button></div></article>`}
+// Screen-only bookmark: determine eligibility once for the complete shelf, before paging.
+function bookThanksIds(books,todayKst=activityDate(new Date().toISOString())){
+  const counts=new Map(),eligible=new Set(),cutoff=activityDate(todayKst);
+  for(const b of books||[])if(typeof b?.id==='string'&&b.id.trim())counts.set(b.id,(counts.get(b.id)||0)+1);
+  for(const b of books||[]){
+    if(b?.status!=='read'||typeof b.id!=='string'||!b.id.trim()||counts.get(b.id)!==1)continue;
+    const dates=[b.completedDate,b.readDate].filter(v=>v!==undefined&&v!==null&&v!=='');
+    const days=dates.map(activityDate);
+    if(cutoff&&days.length&&days.every(day=>day&&day<=cutoff&&day===days[0]))eligible.add(b.id);
+  }
+  return eligible;
+}
+function bookThanksMarkup(){
+  const member=window.HaniOrganizationRoster?.people?.find(p=>p.id==='yoonseul');
+  return '<details class="book-thanks"><summary>'+esc(member?member.name+'의 책갈피':'완독 책갈피')+'</summary><p>책 한 권 끝까지 읽으셨네요. 책갈피는 잠깐 쉬겠습니다!</p></details>';
+}
+function closeBookThanks(event){
+  document.querySelectorAll('#reading .book-thanks[open]').forEach(note=>{if(!note.contains(event.target))note.open=false;});
+}
+document.addEventListener('click',closeBookThanks);
+function bookCard(b,thanks=false){return `<article class="archive-card">${mediaImage(b,"cover")?`<img class="archive-cover" src="${esc(mediaImage(b,"cover"))}" alt="${esc(b.title)} 표지">`:'<div class="archive-cover placeholder">📚</div>'}<div><span class="topic-tag" style="--tag:${TOPIC_COLORS[b.topic]||TOPIC_COLORS["기타"]}">${esc(b.topic||"기타")}</span><h4>${esc(b.title)}</h4><div class="archive-meta">${esc(b.author||"저자 미입력")}${b.status==="read"?` · ${stars(b.rating)}`:""}${b.completedDate?`<br>완독 ${esc(b.completedDate)}`:""}</div>${b.review?`<div class="archive-review">${esc(b.review)}</div>`:""}${thanks===true?bookThanksMarkup():""}</div><div class="archive-actions"><button class="btn sm" ${recordIdAttributes("data-book-toggle",b.id)}>${b.status==="read"?"읽기 목록으로":"서재로 이동"}</button><button class="btn sm" ${recordIdAttributes("data-book-edit",b.id)}>수정</button><button class="btn sm danger" ${recordIdAttributes("data-book-delete",b.id)}>삭제</button></div></article>`}
 function updateBookFormState(){const read=$("bookStatus").value==="read";$("bookRating").disabled=!read;$("bookDate").disabled=!read;$("bookRatingField")?.classList.toggle("is-disabled",!read);$("bookDateField")?.classList.toggle("is-disabled",!read);if($("bookReviewLabel"))$("bookReviewLabel").textContent=read?"완독 후기 / 메모":"읽고 싶은 이유 / 기대 메모";$("bookReview").placeholder=read?"완독 후 인상과 배운 점을 남겨요.":"이 책을 읽고 싶은 이유를 남겨요.";ratingPreview("bookRating","bookRatingPreview","완독 후 입력할 수 있어요.")}
 function resetBookForm(){["bookEditId","bookTitle","bookAuthor","bookReview"].forEach(id=>$(id).value="");$("bookStatus").value="wish";$("bookTopic").value="교양";$("bookRating").value="";$("bookDate").value="";$("bookCover").value="";$("saveBook").textContent="책 저장";updateBookFormState()}
 function renderReadingGoals(read){
@@ -4366,7 +4386,8 @@ function renderReading(){
   renderActivityTrend("readingActivityTrend","reading");
   const sort=state.ui.readingSort||'recent',min=Math.max(0,Math.min(5,n(state.ui.readingMinRating))),search=state.ui.readingSearch||'',allWish=state.books.filter(b=>b.status!=='read'),allRead=state.books.filter(b=>b.status==='read'),wish=sortRatedItems(allWish,'recent','completedDate'),read=sortRatedItems(filterMinimumRating(filterText(allRead,search,['title','author','topic','review']),min),sort,'completedDate'),completedRead=allRead.filter(b=>completedByToday(b.completedDate)),ratings=completedRead.map(b=>ratingValue(b.rating)).filter(v=>v!==null),avg=ratings.length?ratings.reduce((a,b)=>a+b,0)/ratings.length:0,five=ratings.filter(v=>v===5).length,currentYear=today().slice(0,4),month=today().slice(0,7);
   $('bookCount').textContent=state.books.length+'권';$('wishBookCount').textContent=wish.length+'권';$('readBookCount').textContent=read.length+'권';$('bookStats').innerHTML=[['전체 기록',state.books.length+'권'],['올해 완독',completedRead.filter(b=>completedInYearByToday(b.completedDate,currentYear)).length+'권'],['이번 달 완독',completedRead.filter(b=>completedInMonthByToday(b.completedDate,month)).length+'권'],['평균 평점',avg?`${avg.toFixed(1)}점 · 만점 ${five}권`:'-']].map(([l,v])=>`<div class="stat"><div class="label">${l}</div><div class="value">${v}</div></div>`).join('');
-  const size=uiPageSize(12,4),readPage=uiPageSlice('readingRead',read,size),wishPage=uiPageSlice('readingWish',wish,size);$('wishBooks').innerHTML=wishPage.rows.map(bookCard).join('')||'<div class="empty">읽기 목록이 비어 있습니다.</div>';$('readBooks').innerHTML=readPage.rows.map(bookCard).join('')||'<div class="empty">조건에 맞는 서재 도서가 없습니다.</div>';uiMountPagination($('readBooks'),'readingRead',readPage,renderReading,'권');uiMountPagination($('wishBooks'),'readingWish',wishPage,renderReading,'권');
+  const thanksIds=bookThanksIds(state.books);
+  const size=uiPageSize(12,4),readPage=uiPageSlice('readingRead',read,size),wishPage=uiPageSlice('readingWish',wish,size);$('wishBooks').innerHTML=wishPage.rows.map(bookCard).join('')||'<div class="empty">읽기 목록이 비어 있습니다.</div>';$('readBooks').innerHTML=readPage.rows.map(b=>bookCard(b,thanksIds.has(b.id))).join('')||'<div class="empty">조건에 맞는 서재 도서가 없습니다.</div>';uiMountPagination($('readBooks'),'readingRead',readPage,renderReading,'권');uiMountPagination($('wishBooks'),'readingWish',wishPage,renderReading,'권');
   $('bookSort').value=sort;$('bookMinRating').value=min||'';$('bookSearch').value=search;$('bookSort').onchange=()=>{state.ui.readingSort=$('bookSort').value;uiResetPage('readingRead');save();renderReading()};$('bookMinRating').oninput=()=>{state.ui.readingMinRating=Math.max(0,Math.min(5,n($('bookMinRating').value)));uiResetPage('readingRead');save();renderReading()};$('bookSearch').oninput=()=>{state.ui.readingSearch=$('bookSearch').value;uiResetPage('readingRead');renderReading()};updateBookFormState();renderReadingGoals(allRead);
   document.querySelectorAll('[data-book-delete]').forEach(b=>b.onclick=async()=>{if(!await confirmRecordDelete(state.books.find(x=>x.id===b.dataset.bookDelete),'책 기록'))return;state.books=state.books.filter(x=>x.id!==b.dataset.bookDelete);commit('책을 삭제했습니다.')});document.querySelectorAll('[data-book-toggle]').forEach(b=>b.onclick=()=>{const x=state.books.find(v=>v.id===b.dataset.bookToggle);if(!x)return;const wasRead=x.status==='read',anchor=b.getBoundingClientRect();x.status=x.status==='read'?'wish':'read';if(x.status==='read'&&!x.completedDate)x.completedDate=today();x.updatedAt=new Date().toISOString();if(commit('책 분류를 변경했습니다.'))window.HaniMotion?.completion('book:'+x.id,wasRead,x.status==='read',anchor,'reading')});document.querySelectorAll('[data-book-edit]').forEach(b=>b.onclick=()=>{const x=state.books.find(v=>v.id===b.dataset.bookEdit);if(!x)return;$('bookEditId').value=x.id;$('bookStatus').value=x.status||'wish';$('bookTitle').value=x.title||'';$('bookAuthor').value=x.author||'';$('bookTopic').value=x.topic||'교양';$('bookRating').value=x.rating??'';$('bookDate').value=x.completedDate||'';$('bookReview').value=x.review||'';$('saveBook').textContent='수정 저장';updateBookFormState();document.querySelector('#reading .phase1-collapsible-form')?.setAttribute('open','');$('reading').scrollIntoView({behavior:'smooth'})});
 }
@@ -7398,7 +7419,7 @@ let agentPolicyRegistryCache={base_policy:{},policies:[],counts:{total:0,draft:0
 const AGENT_STATUS_LABELS={DRAFT:"접수",ANALYZING:"분석 중",REVIEW_COMPLETE:"심의 완료",AWAITING_APPROVAL:"대표 결재 대기",APPROVED:"승인",HELD:"보류",REJECTED:"반려",COMMITTING:"Commit 중",COMMITTED:"Commit 완료",COMMIT_FAILED:"Commit 실패"};
 const AGENT_VERDICT_LABELS={PROCEED:"진행",CONDITIONAL:"조건부",DELAY:"보류 권고",REJECT:"반대",NEEDS_DATA:"정보 필요"};
 const AGENT_DECISION_LABELS={APPROVE:"승인",HOLD:"보류",REJECT:"반려",REVISION_REQUESTED:"수정 요청"};
-const HANI_DISPLAY_VERSION="2.9.263";
+const HANI_DISPLAY_VERSION="2.9.265";
 function syncHaniDisplayVersion(){
   const rx=/v\d+\.\d+\.\d+/g;
   const selectors=[".login-brand p",".sidebar-brand-hero small",".side .foot",".footer"];
