@@ -319,6 +319,12 @@
       '<span class="ms-compare-cell ms-after"><small>AFTER</small><b>' + esc(x.after) + '</b>' + (x.change ? '<em>' + esc(x.change) + '</em>' : '') + '</span>' +
       '<span class="ms-sr">' + esc(x.label + ' ' + (x.before ? '이전 ' + x.before + ', ' : '') + '이후 ' + x.after + (x.change ? ', 변화 ' + x.change : '')) + '</span></div>').join('') + '</div>';
   }
+  function encoreEligible(m, today = new Date(Date.now() + 9 * 3600000).toISOString().slice(0,10)) {
+    return !!m && !validate(m).length && !isPending(m) && validDate(today) && m.date <= today && !['FINANCE','INVESTMENT'].includes(m.category);
+  }
+  function encoreMarkup(m) {
+    return encoreEligible(m) ? '<section class="ms-encore" aria-label="앙코르"><button type="button" class="btn" data-ms-encore="' + esc(m.id) + '">한 번 더 박수</button><div data-ms-encore-status role="status" hidden><span class="ms-encore-clap" aria-hidden="true">👏</span><span data-ms-encore-copy></span></div></section>' : '';
+  }
   // Seed records can be annotated (saved as an override) but never deleted.
   function detail(m, {deletable = false} = {}) {
     const grade = find(GRADES, m.grade), importance = find(IMPORTANCE, m.importance);
@@ -328,7 +334,7 @@
       '<header class="ms-detail-head" data-importance="' + esc(m.importance) + '"><time datetime="' + esc(m.date) + '">' + esc(dateText(m)) + '</time>' + kicker(m) +
       '<h3 data-ms-detail-title tabindex="-1">' + esc(m.title) + '</h3><blockquote class="ms-quote ms-quote-lead">“' + esc(m.summary) + '”</blockquote>' +
       '<p class="ms-quiet">중요도 · ' + esc(importance.ko) + (grade ? ' / 난이도 등급 · ' + esc(grade.label + ' (' + grade.ko + ') — ' + grade.note) : '') + '</p></header>' +
-      block('핵심 지표 · Before / After', metricTable(m.metrics)) +
+      encoreMarkup(m) + block('핵심 지표 · Before / After', metricTable(m.metrics)) +
       block('성과 설명', paragraphs(m.description) || quiet('아직 적지 않았어요.')) +
       block('과정 / 배경', paragraphs(m.background) || quiet('아직 적지 않았어요.')) +
       block('이 변화의 의미', paragraphs(m.meaning) || quiet('아직 적지 않았어요.'), ' ms-block-meaning') +
@@ -462,6 +468,34 @@
   }
 
   // ---- Runtime (persistent slots in #milestones; one delegated handler) ----
+  // Only transient DOM references live here. Closing/replacing a detail invalidates late timers.
+  const encore = {timer:null, token:0, button:null, note:null};
+  function resetEncore() {
+    if(encore.timer!==null)clearTimeout(encore.timer);
+    encore.token++; encore.timer=null;
+    if(encore.button)encore.button.setAttribute('aria-disabled','false');
+    if(encore.note){encore.note.hidden=true;encore.note.classList.remove('is-clapping');}
+    encore.button=null; encore.note=null;
+  }
+  function playEncore(button) {
+    const host=slot('detail'),m=items().find(x=>x.id===ui.detail);
+    if(encore.timer!==null||!host?.open||host.hidden||button.dataset.msEncore!==ui.detail||!host.contains(button)||!encoreEligible(m))return;
+    const note=host.querySelector('[data-ms-encore-status]'),copy=host.querySelector('[data-ms-encore-copy]');
+    if(!note||!copy)return;
+    const member=person('hani'),line=(member?member.name+' · ':'')+'회장님이 남겨 둔 순간, 다시 함께 기뻐해요.';
+    if(copy.textContent!==line)copy.textContent=line;
+    note.hidden=false; encore.note=note;
+    const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if(reduced)return;
+    encore.button=button; encore.note=note; button.setAttribute('aria-disabled','true');
+    note.classList.remove('is-clapping'); void note.offsetWidth; note.classList.add('is-clapping');
+    const token=++encore.token;
+    encore.timer=setTimeout(()=>{
+      if(token!==encore.token)return;
+      button.setAttribute('aria-disabled','false');note.classList.remove('is-clapping');
+      encore.timer=null;encore.button=null;
+    },1000);
+  }
   const ui = {category:'ALL', grade:'ALL', sort:'newest', detail:null, editing:null, returnFocus:null};
   const items = () => merged().items;
   const root = () => typeof document === 'undefined' ? null : document.getElementById(VIEW);
@@ -488,6 +522,7 @@
     bindAvatars(host);
   }
   function show(mode) {
+    if(mode!=='detail')resetEncore();
     const archive = slot('archive'), detailSlot = slot('detail'), form = slot('form');
     if (archive) archive.hidden = mode === 'form';
     if (detailSlot) { detailSlot.hidden = mode !== 'detail'; if (mode !== 'detail' && detailSlot.open) detailSlot.close(); }
@@ -497,6 +532,7 @@
   function openDetail(id, trigger) {
     const m = items().find(x => x.id === id), host = slot('detail');
     if (!m || !host) return;
+    resetEncore();
     ui.detail = id;
     if (trigger?.dataset?.msOpen) ui.returnFocus = '[data-ms-open="' + id + '"]';
     host.innerHTML = detailSheet(m, {deletable:isSaved(id) && !seedIds.includes(id)}); bindAvatars(host); show('detail');
@@ -588,6 +624,9 @@
     });
     if (!host || host.dataset.msMounted) return;
     host.dataset.msMounted = 'true';
+    if(typeof MutationObserver!=='undefined'&&document.body){
+      new MutationObserver(()=>{if(document.body.dataset.view!==VIEW)resetEncore();}).observe(document.body,{attributes:true,attributeFilter:['data-view']});
+    }
     host.style.setProperty('--ms-sheet-url', 'url("' + ART.sheet + '")');
     const dialog = slot('detail');
     dialog?.addEventListener('cancel', event => { event.preventDefault(); back(); });
@@ -600,6 +639,8 @@
     dialog?.addEventListener('close', () => { if (ui.detail && !dialog.open) back(); });
     host.addEventListener('click', event => {
       const t = event.target;
+      const clap = t.closest('[data-ms-encore]');
+      if (clap) { playEncore(clap); return; }
       const grade = t.closest('[data-ms-grade]');
       if (grade) { ui.grade = ui.grade === grade.dataset.msGrade ? 'ALL' : grade.dataset.msGrade; renderList(); return; }
       const filter = t.closest('[data-ms-filter]');

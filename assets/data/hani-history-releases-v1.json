@@ -26,6 +26,18 @@
   ],
   "entries": [
     {
+      "id": "v2.9.265",
+      "date": "2026-11-06",
+      "status": "released",
+      "title": "책갈피·마무리 쪽지·앙코르",
+      "category": "하니 그룹",
+      "credits": [],
+      "source": {
+        "commit": "",
+        "subject": "release: v2.9.265 책갈피·마무리 쪽지·앙코르"
+      }
+    },
+    {
       "id": "v2.9.264",
       "date": "2026-11-06",
       "status": "released",
@@ -33,8 +45,8 @@
       "category": "하니 그룹",
       "credits": [],
       "source": {
-        "commit": "",
-        "subject": "release: v2.9.264 회장님 이벤트 5종"
+        "commit": "813cedc5aaaa372d569d7d882a1d98cececc6b42",
+        "subject": "release: v2.9.264 회장님 이벤트 5종 (#420)"
       }
     },
     {
