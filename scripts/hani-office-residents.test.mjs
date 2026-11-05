@@ -289,10 +289,10 @@ test('actual delegated pet taps show both speakers, automatic scene uses existin
  f.ids.get('haniOfficeActors').events.click({target:dog});assert.equal(line.textContent,'크림 · 같이 놀자!!');assert.equal(bubble.querySelector('a').hidden,true);assert.equal(f.writes.length,0);
  f.setDateTime('2026-11-03T03:00:00+09:00');f.tick();assert.ok(!line.textContent.includes(scene.staffLine),'a departed partner cannot leave a stale pair line');
  const patch=read('hani-office-live.js'),before=restoreResidentsSource(patch);
- // The snack's two approved timeouts sit in the same line delta; residents add none.
- assert.equal(patch.split(/snack(?:End|Cooldown)Timer=setTimeout\(/).length-1,2);
- assert.equal(patch.split("snackButton.addEventListener('click',").length-1,1);
- assert.deepEqual(patch.replace(/snack(?:End|Cooldown)Timer=setTimeout\(/g,'').replace("snackButton.addEventListener('click',",'').match(/\b(?:fetch|setInterval|setTimeout|addEventListener)\s*\(/g),before.match(/\b(?:fetch|setInterval|setTimeout|addEventListener)\s*\(/g),'no additional network, timer or event paths');
+ // The owner events' two approved timeouts and three listeners sit in the same line delta; residents add none.
+ assert.equal(patch.split(/event(?:End|Cooldown)Timer=setTimeout\(/).length-1,2);
+ assert.equal(patch.split("eventButton.addEventListener('click',").length-1,1);assert.equal(patch.split("eventPanel.addEventListener('keydown',").length-1,1);assert.equal(patch.split("button.addEventListener('click',()=>runOwnerEvent(id))").length-1,1);
+ assert.deepEqual(patch.replace(/event(?:End|Cooldown)Timer=setTimeout\(/g,'').replace("eventButton.addEventListener('click',",'').replace("eventPanel.addEventListener('keydown',",'').replace("button.addEventListener('click',()=>runOwnerEvent(id))",'').match(/\b(?:fetch|setInterval|setTimeout|addEventListener)\s*\(/g),before.match(/\b(?:fetch|setInterval|setTimeout|addEventListener)\s*\(/g),'no additional network, timer or event paths');
  assert.doesNotMatch(patch,/localStorage|sessionStorage|\bsave\s*\(|supabase/);
 });
 
@@ -451,8 +451,8 @@ test('trio rejects missing/different-floor/sleeping pets and staff-blocked floor
  const old=loadScene({transform:source=>reapplyTlayoutSource(restoreResidentsSource(source))}).scene;
  assert.ok(rr.trio(now,states,staff));rr.snapshot(now,staff);assert.equal(JSON.stringify(staff),bytes);
  for(const day of ['2026-11-02','2026-11-03'])for(const chairmanPresent of [true,false]){const options={chairmanPresent},plan=isolated.scheduler.plan(day,options),prior=old.scheduler.plan(day,options);assert.equal(JSON.stringify(plan),JSON.stringify(prior));for(const block of [0,48,72,120,143])assert.equal(JSON.stringify(isolated.scheduler.blockPlan(day,block,plan,options)),JSON.stringify(old.scheduler.blockPlan(day,block,prior,options)))}
- // The snack's two timeouts and one button listener share the same line delta; residents add none.
- const source=read('hani-office-live.js'),before=restoreResidentsSource(source),withoutSnack=source.replace(/snack(?:End|Cooldown)Timer=setTimeout\(/g,'').replace("snackButton.addEventListener('click',",'');for(const re of [/\bfetch\s*\(/g,/\bsetInterval\s*\(/g,/\bsetTimeout\s*\(/g,/\baddEventListener\s*\(/g])assert.deepEqual(withoutSnack.match(re),before.match(re));
+ // The owner events' two timeouts and three listeners share the same line delta; residents add none.
+ const source=read('hani-office-live.js'),before=restoreResidentsSource(source),withoutSnack=source.replace(/event(?:End|Cooldown)Timer=setTimeout\(/g,'').replace("eventButton.addEventListener('click',",'').replace("eventPanel.addEventListener('keydown',",'').replace("button.addEventListener('click',()=>runOwnerEvent(id))",'');for(const re of [/\bfetch\s*\(/g,/\bsetInterval\s*\(/g,/\bsetTimeout\s*\(/g,/\baddEventListener\s*\(/g])assert.deepEqual(withoutSnack.match(re),before.match(re));
  assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|\bsave\s*\(/);
 });
 
@@ -499,7 +499,7 @@ test('real pet hearts reuse one mounted node, pair taps override trio during aff
   const second=nextScene(hit.sec+20,false);f.setDateTime(at('2026-11-02',second.sec).toISOString());f.tick();assert.equal(dog.officeHeart,heart);assert.equal(heart.hidden,false);assert.equal(creates,0);assert.equal(f.writes.length,0);if(reduced){assert.equal(dog.dataset.motion,undefined);assert.equal(dog.dataset.walking,'false')}
  }
  const css=read('hani-office-live.css');assert.match(css,/\.hani-office-pet-heart\[hidden\]\{display:none!important\}/);assert.match(css,/@media\(prefers-reduced-motion:reduce\)\{\.hani-office-actor\[data-affection\] \.hani-office-pet-heart\{animation:none!important;transform:translateX\(-50%\);opacity:\.9\}/);assert.match(css,/data-affection="dog"\] \.hani-office-sprite\{animation:hani-office-hop \.48s ease-in-out 2\}/);
- const source=read('hani-office-live.js'),before=restoreResidentsSource(source);assert.equal(source.split(/snack(?:End|Cooldown)Timer=setTimeout\(/).length-1,2);assert.equal(source.split("snackButton.addEventListener('click',").length-1,1);const withoutSnack=source.replace(/snack(?:End|Cooldown)Timer=setTimeout\(/g,'').replace("snackButton.addEventListener('click',",'');for(const re of [/\bfetch\s*\(/g,/\bsetInterval\s*\(/g,/\bsetTimeout\s*\(/g,/\baddEventListener\s*\(/g])assert.deepEqual(withoutSnack.match(re),before.match(re));assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|\bsave\s*\(/);
+ const source=read('hani-office-live.js'),before=restoreResidentsSource(source);assert.equal(source.split(/event(?:End|Cooldown)Timer=setTimeout\(/).length-1,2);assert.equal(source.split("eventButton.addEventListener('click',").length-1,1);assert.equal(source.split("eventPanel.addEventListener('keydown',").length-1,1);assert.equal(source.split("button.addEventListener('click',()=>runOwnerEvent(id))").length-1,1);const withoutSnack=source.replace(/event(?:End|Cooldown)Timer=setTimeout\(/g,'').replace("eventButton.addEventListener('click',",'').replace("eventPanel.addEventListener('keydown',",'').replace("button.addEventListener('click',()=>runOwnerEvent(id))",'');for(const re of [/\bfetch\s*\(/g,/\bsetInterval\s*\(/g,/\bsetTimeout\s*\(/g,/\baddEventListener\s*\(/g])assert.deepEqual(withoutSnack.match(re),before.match(re));assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|\bsave\s*\(/);
 });
 
 test('life signs repeat every 10..20 seconds, cover four gestures, and sleep or reduced motion suppresses them',()=>{

@@ -52,7 +52,7 @@ test('234 presence: initial login/visibility, four shared passive input bindings
  const source=fs.readFileSync('hani-office-live.js','utf8');
  assert.equal((source.match(/window\.HaniOfficePresence/g)||[]).length,1,'only injected canonical override reader');
  assert.match(source,/\['pointerdown','keydown','wheel','touchstart'\]\)document\.addEventListener\(type,event=>\{officePresence\.interact\(event\);/);
- assert.equal((source.match(/const presence=officePresence\.read\(\)/g)||[]).length,2);
+ assert.equal((source.match(/const presence=officePresence\.read\(\)/g)||[]).length,3);assert.equal((source.match(/const presence=officePresence\.read\(\),key=day\+'\|'/g)||[]).length,1,'third read is the birthday button presence only');
  assert.equal((source.match(/setInterval\(/g)||[]).length,2,'existing frame/update timers only');
  assert.doesNotMatch(source,/localStorage|sessionStorage|\.setItem\(|\.removeItem\(|\.clear\(\)\s*;?\s*\/\/.*storage/);
 });
