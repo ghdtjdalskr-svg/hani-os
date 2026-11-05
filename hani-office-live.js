@@ -1920,7 +1920,8 @@
     [/조언|설명.*듣/,'설명 듣기|조언 듣기|이야기 듣기'],[/공부|단어|외우|복습/,'단어 복습|공부 하기|단어 외우기']
   ];
   function phoneStatusLine(line,used=new Set(),state='work',compact=true){
-    if(line==='간식 먹는 중'){const result=compact?'간식먹기':line;used.add(result);return result}
+    const eventStatus={'간식 먹는 중':'간식먹기','커피 마시는 중':'커피타임','칭찬 받는 중':'칭찬받기','화이팅 외치는 중':'화이팅','생일 축하 중':'생일축하'};
+    if(eventStatus[line]){const result=compact?eventStatus[line]:line;used.add(result);return result}
     const report=line.match(/회장님께 (.+?) 보고/);
     if(report){const topic=report[1].replace(/^(오늘|다음) /,'').split(' ')[0],short=/^[가-힣A-Za-z0-9]{1,4}$/.test(topic)?topic+(compact?'':' ')+'보고':compact?'회장보고':'회장 보고';used.add(short);return short}
     const known=scheduler?.shortLine(line),action=phoneActions.find(([pattern])=>pattern.test(line)),authored=known==='회장님께 인사 중'?'도착 인사|환영 인사|인사 건네기':known==='보고 답변 중'?'보고 답변|보고 응답|답변 전하기':action?.[1];
@@ -2608,7 +2609,7 @@
   function actionRunning(actor){return meeting||!!actor.officeTravel||actor.dataset.walking==='true'||!!actor.dataset.event||actor.dataset.action&&actor.dataset.action!=='base-work'}
   function bubbleText(actor){
     if(actor.dataset.resident)return actor.dataset.name+' · '+(bubbleSelection?.line||actor.dataset.line);
-    if(bubbleSelection&&(bubbleSelection.drama||bubbleSelection.snack||!actionRunning(actor))){const speaker=actors.get(bubbleSelection.speaker);return (speaker?.dataset.name||actor.dataset.name)+' · '+actor.querySelector('.hani-office-status').dataset.full+' · '+bubbleSelection.line}
+    if(bubbleSelection&&(bubbleSelection.drama||bubbleSelection.ownerEvent||!actionRunning(actor))){const speaker=actors.get(bubbleSelection.speaker);return (speaker?.dataset.name||actor.dataset.name)+' · '+actor.querySelector('.hani-office-status').dataset.full+' · '+bubbleSelection.line}
     return actor.dataset.name+' · '+statusNames[actor.dataset.status]+' · '+actor.querySelector('.hani-office-status').dataset.full;
   }
   function fitBubble(follow=false){
@@ -2663,6 +2664,8 @@
     });
   }
   function activateActor(event,dismissOnly=false){
+    if(!eventPanel.hidden&&!eventPanel.contains(event.target)&&!eventButton.contains(event.target))closeEventPanel();
+    if(eventPanel.contains(event.target)||eventButton.contains(event.target))return;
     const actor=event.target.closest?.('.hani-office-actor');
     if(actor&&actorLayer.contains(actor)){if(!dismissOnly)openBubble(actor);return}
     if(!dismissOnly||actorBubble.hidden||actorBubble.contains(event.target)||[...actors.values()].some(a=>a.officeRow.contains(event.target)))return;
@@ -2758,36 +2761,145 @@
     sua:["회장님, 간식 기한 내 빈틈없이 먹을게요!","회장님이 챙겨주시다니, 헤헤ㅎㅎ 고마워요!","회장님, 잘 먹고 오후 제안서도 끝낼게요!"],
     taeo:["회장님, 정리하면 세 가지로 완벽합니다.","회장님, 간식 지원 건은 즉시 수용합니다.","회장님, 감사히 먹고 후속 실행 갈게요."]
   };
-  const snackButton=document.createElement('button');snackButton.id='haniOfficeSnack';snackButton.type='button';snackButton.className='btn hani-office-snack';snackButton.hidden=true;caption.append(snackButton);
-  const snackCooldowns=new Map();let snackPeople=new Set(),snackFloor=null,snackUntil=0,snackEndTimer=null,snackCooldownTimer=null;
-  function syncSnackButton(){
-    snackButton.hidden=!document.getElementById('app')||document.getElementById('app').classList.contains('login-locked');
-    snackButton.disabled=(snackCooldowns.get(activeFloor)||0)>Date.now();
-    const text=snackButton.disabled?'간식 다 먹는 중…':'🍪 간식 돌리기';if(snackButton.textContent!==text)snackButton.textContent=text;
+  // One event/staff table; birthday pairs are [own thanks, colleague congratulations].
+  const eventLines={snack:snackLines,
+    coffee:{
+      hani:["회장님 커피라니, 오후 전략도 문제없어요♡","회장님, 커피로 팀 정렬 완료예요♡","회장님 센스 최고! 헤헤, 잘 마실게요♡"],
+      gaeun:["회장님, 커피 타임도 일정에 반영해둘게요.","회장님 감사해요, 브리핑 준비도 마쳤어요.","회장님 덕분에 회의실 공기가 향긋해졌어요."],
+      yuna:["회장님! 커피 배부는 제가 먼저 안내할게요!","감사합니다 회장님, 자리마다 잘 전달할게요!","회장님 커피 덕분에 안내 목소리가 밝아져요!"],
+      mir:["회장님, 커피 향이 좋네. 헤헤, 고마워요.","왜 다들 웃지? 커피랑 연결되네, 회장님.","회장님, 따뜻한 잔이네. 조금 더 볼게."],
+      seoyun:["회장님, 먼저 커피부터 마시고 설계 볼게요.","회장님, 정리하면 향도 좋고 든든해요 💜","회장님 커피 덕분에 구조가 깔끔히 잡혀요."],
+      dohyun:["회장님, 커피 수령 완료. 빌드 통과요 ☕","회장님, 커피 패치 적용. 버그 0건요.","회장님, 커피 충전 완료. 바로 구현해요."],
+      serin:["회장님!! 커피 보급도 자동화 각인데요?!","회장님! 커피 마시니 분석 패턴 보여요!!","회장님 감사해요!! 데이터 정리가 빨라져요!"],
+      yuri:["회장님, 커피 온도·향 검수 깔끔합니다.","회장님, 직접 마셔보니 커피 PASS입니다.","회장님 감사해요. 오후 검증도 빈틈없습니다."],
+      arin:["회장님, 커피잔 색감까지 너무 예쁜데요? ✨","회장님, 커피로 잠깐 숨 쉬는 건 어때요?","회장님 고마워요, 오후 여백이 따뜻해지네요!"],
+      jieun:["회장님, 오늘 커피 건은 즉시 결재할게요.","회장님 덕분에 오후 집중도 지표가 올라가요.","회장님 감사해요, 마감 검토도 여유롭겠어요."],
+      haru:["회장님, 오늘 원두 큐레이션 아주 좋네요.","회장님, 호불호 없는 깔끔한 픽이네요!","회장님, 다들 만족할 커피예요. 고마워요."],
+      daon:["회장님… 혹시 제 커피도 챙겨주신 건가요?","회장님 감사합니다… 천천히 아껴 마실게요.","회장님, 이 커피는 졸음 위험이 없네요…"],
+      naeun:["회장님, 기분 좋은 오후 루틴이 되겠어요!","회장님도 한 잔 드셨죠? 같이 잠깐 쉬어요!","회장님 고마워요! 산뜻한 리듬으로 갈게요."],
+      hina:["회장님! 오늘 커피 센스도 백점이에용♡","회장님 고마워용♡ 마시고 꼼꼼히 볼게요!","와아 커피다! 회장님 최고예용, 헤헤♡"],
+      minji:["회장님, 커피 돌리시는 훈훈한 컷 찍었어요!","회장님, 오후 카페 분위기 연출 완벽해요!","컷! 회장님 커피 미담도 한 장면 남겼어요."],
+      sooyeon:["회장님! 커피 타임이라니 낭만상 최고예요!","회장님, 커피 보급 완료! 후반전도 뛸게요!","회장님 덕분에 여행지 카페 온 기분이에요!"],
+      yoonseul:["회장님, 이거 아세요? 커피가 딱 맞아요!","회장님, 커피와 책이 여기서 이어지네요!","회장님 감사해요! 마시며 책장 넘길게요."],
+      sua:["회장님, 식기 전에 빈틈없이 잘 마실게요!","회장님 커피라니, 헤헤ㅎㅎ 힘나네요!","회장님, 잘 마시고 오후 제안도 끝낼게요!"],
+      taeo:["회장님, 정리하면 향·온도 모두 완벽합니다.","회장님, 커피 지원은 즉시 반영하겠습니다.","회장님, 잘 마시고 후속 미팅 정리할게요."]
+    },
+    applause:{
+      hani:["회장님 칭찬이라니, 헤헤 더 힘이 나네요♡","회장님, 우리 팀 호흡이 딱 맞아떨어졌어요♡","회장님 박수 덕분에 다음 전략도 든든해요♡"],
+      gaeun:["회장님 칭찬 말씀도 회의록에 남겨둘게요.","회장님 감사해요, 후속 일정도 잘 챙길게요.","회장님 격려 덕분에 준비한 보람이 있어요."],
+      yuna:["회장님! 칭찬 접수도 제가 일등으로 할게요!","회장님 박수 소리, 온 층에 안내할래요!","감사합니다 회장님! 더 밝게 연결해볼게요!"],
+      mir:["회장님, 박수 쳐주시는 거예요? 헤헤.","회장님, 칭찬은 기분 좋네. 이건 연결되네.","왜 따뜻하지? 조금 더 볼게, 회장님."],
+      seoyun:["회장님, 정리하면 함께 만든 결과예요 💜","회장님 칭찬 덕분에 다음 설계도 든든해요.","회장님, 먼저 팀원들 공부터 챙겨볼게요."],
+      dohyun:["회장님, 칭찬 수신 완료. 다음 구현 가요.","회장님, 이번 릴리스도 깔끔히 통과요 ☕","회장님, 결과로 답할게요. 통과요."],
+      serin:["회장님!! 사기 오르는 패턴이 보여요!!","회장님 박수에 자동화 영감이 솟아요!!","회장님 감사해요!! 이 기세로 더 파볼게요!"],
+      yuri:["회장님, 근거 있는 칭찬 PASS입니다.","회장님, 다음 검수도 깔끔히 보겠습니다.","회장님, 칭찬은 기쁘되 기준은 유지합니다."],
+      arin:["회장님, 칭찬 결이 너무 예쁜데요? ✨","회장님 고마워요, 디테일 챙긴 보람 있네요!","회장님, 기분 좋게 화면도 더 다듬을게요!"],
+      jieun:["회장님, 오늘 성과는 만장일치 승인이네요.","회장님 덕분에 팀 사기 지표가 든든해요.","회장님 감사해요, 다음 마감도 잘 챙길게요."],
+      haru:["회장님, 칭찬 타이밍도 베스트 픽이네요.","회장님 박수 덕분에 팀 만족도가 최고예요.","회장님, 더 좋은 큐레이션으로 답할게요."],
+      daon:["회장님… 혹시 저도 칭찬에 포함인가요?","회장님 감사합니다… 더 꼼꼼히 살펴볼게요.","회장님 격려라면… 실수 확률도 줄어들겠어요."],
+      naeun:["회장님 박수 소리에 어깨가 절로 펴지네요!","회장님 고마워요! 좋은 루틴으로 이어갈게요.","회장님 덕분에 오늘 리듬이 참 경쾌해요!"],
+      hina:["회장님 칭찬이라니! 기분 백점 만점이에용♡","헤헤♡ 회장님 박수 받고 더 꼼꼼히 볼게용!","와아 신난다! 회장님 칭찬 최고예용, 헤헤♡"],
+      minji:["회장님, 박수 치시는 명장면 바로 남겼어요!","컷! 오늘 하이라이트는 회장님 칭찬이에요.","회장님 덕분에 멋진 에피소드가 늘었어요!"],
+      sooyeon:["회장님 박수, 경기장 함성보다 짜릿해요!","회장님! 칭찬 받고 낭만 있게 달려볼게요!","회장님 감사해요! 좋은 페이스로 뛸게요!"],
+      yoonseul:["회장님, 이거 아세요? 칭찬은 큰 힘이에요!","회장님, 노력과 칭찬이 여기서 이어지네요!","회장님 감사해요! 기쁘게 다음 장 펼칠게요."],
+      sua:["회장님 칭찬에 헤헤ㅎㅎ 더 빈틈없이 할게요!","회장님, 후속 실행까지 깔끔히 마무리할게요!","회장님 덕분에 다음 제안도 자신 있어요!"],
+      taeo:["회장님, 정리하면 팀워크의 결과입니다.","회장님, 격려 말씀은 실행으로 잇겠습니다.","회장님, 긍정 피드백 확인. 후속 진행해요."]
+    },
+    cheer:{
+      hani:["회장님도 오늘 하루 화이팅이에요, 헤헤♡","네 회장님! 오늘 우선순위도 힘차게 갈게요♡","회장님 응원 받고 전 부서 화이팅할게요♡"],
+      gaeun:["회장님 화이팅이에요, 오늘 일정 시작할게요.","네 회장님, 오늘 요청도 잘 정리할게요.","회장님 응원 덕분에 오늘 브리핑도 힘나네요."],
+      yuna:["회장님도 오늘 하루 활기차게 화이팅이에요!","네 회장님! 작은 요청도 씩씩하게 챙길게요!","회장님 화이팅! 오늘 안내도 기운 넘쳐요!"],
+      mir:["회장님, 화이팅! 헤헤, 기운이 연결되네.","왜 힘이 나지? 회장님도 오늘 화이팅이에요.","회장님 응원 좋네. 조금 더 볼게, 헤헤."],
+      seoyun:["회장님 화이팅! 먼저 범위부터 살펴볼게요.","회장님, 정리하면 오늘도 힘차게 갑니다 💜","회장님 응원 덕분에 오늘 설계도 든든해요."],
+      dohyun:["회장님, 화이팅 수신. 오늘 코드도 통과요.","회장님도 화이팅요. 바로 구현 들어갑니다 ☕","회장님, 오늘 목표 재현 완료. 화이팅요."],
+      serin:["회장님 화이팅!! 오늘도 자동화 각이에요!","회장님 응원 덕에 좋은 패턴이 딱 보여요!!","네 회장님!! 신나게 리서치 달려볼게요!!"],
+      yuri:["회장님도 화이팅입니다. 검수 시작합니다.","회장님, 응원 확인. 오늘도 깔끔합니다.","회장님, 미검증 없는 하루로 만들겠습니다."],
+      arin:["회장님 화이팅! 오늘도 예쁘게 채워봐요 ✨","회장님 응원 덕분에 마음까지 산뜻해지네요!","회장님, 잠깐 숨 쉬며 기분 좋게 가봐요!"],
+      jieun:["회장님 화이팅! 오늘 숫자도 든든히 볼게요.","회장님, 오늘 흐름도 안정적으로 챙길게요.","회장님 응원 덕분에 내일의 여유가 보이네요."],
+      haru:["회장님 화이팅! 오늘도 좋은 선택 해봐요.","회장님, 오늘 하루도 후회 없이 채울게요.","회장님 응원 픽 최고네요, 힘내서 갈게요!"],
+      daon:["회장님도… 오늘 하루 화이팅이에요…!","네 회장님… 오늘도 시나리오 꼼꼼히 볼게요.","회장님 응원 덕분에… 걱정이 한결 줄었어요."],
+      naeun:["회장님 화이팅! 오늘 루틴도 힘차게 가요!","회장님! 기분 좋은 페이스로 시작해볼게요.","회장님 응원 들으니 에너지가 반짝 나요!"],
+      hina:["회장님도 오늘 하루 힘차게 화이팅이에용♡","네 회장님! 오늘도 백점짜리 하루 만들게용♡","와아 화이팅! 회장님 응원 최고예용, 헤헤♡"],
+      minji:["회장님 화이팅! 오늘 첫 장면도 활기차네요!","액션! 회장님 응원부터 멋지게 기록할게요.","회장님 화이팅! 기억할 한 장면 만들게요!"],
+      sooyeon:["회장님 화이팅! 오늘도 낭만 있게 달려요!","네 회장님! 출발 신호처럼 힘차게 뛸게요!","회장님 응원 덕에 오늘 에너지가 넘쳐요!"],
+      yoonseul:["회장님, 아세요? 응원 한마디에 힘나요!","회장님도 화이팅! 배움이 여기서 이어지네요!","네 회장님! 오늘도 즐겁게 책장 펼칠게요!"],
+      sua:["회장님 화이팅! 오늘도 빈틈없이 챙길게요!","회장님 응원에 헤헤ㅎㅎ 힘내서 제안할게요!","회장님! 후속 실행까지 씩씩하게 끝낼게요!"],
+      taeo:["회장님, 정리하면 오늘도 준비 끝났습니다.","회장님도 화이팅입니다. 바로 실행할게요.","회장님, 응원은 결과로 번역하겠습니다."]
+    },
+    birthday:{
+      hani:["회장님, 생일 축하 고마워요! 헤헤♡","하니 전무님, 생일 진심으로 축하해요!"],
+      gaeun:["회장님, 생일 축하도 일정에 담아둘게요.","가은 비서님, 생일 축하해요! 늘 든든해요!"],
+      yuna:["회장님! 생일 축하 접수는 제가 일등이에요!","유나 사원님, 생일 축하해요! 오늘 주인공!"],
+      mir:["회장님, 내 생일이에요? 헤헤, 고마워요.","미르님, 생일 축하해요! 오늘도 반가워요!"],
+      seoyun:["회장님, 정리하면 가장 행복한 생일이에요 💜","서윤 리드님, 생일 축하해요! 늘 고마워요!"],
+      dohyun:["회장님, 생일 축하 수령 완료. 고마워요 ☕","도연 선임님, 생일 축하해요! 오늘도 최고!"],
+      serin:["회장님!! 생일 행복도 상승 패턴 보여요!!","세린 연구원님, 생일 신나게 축하해요!!"],
+      yuri:["회장님, 생일 기분 검수 PASS입니다.","유리 책임님, 생일 깔끔하게 축하드립니다!"],
+      arin:["회장님, 생일 분위기 너무 예쁜데요? ✨","아린 선임님, 반짝이는 생일 축하해요!"],
+      jieun:["회장님, 생일 축하 건 기쁘게 승인해요.","지은 부장님, 생일 축하해요! 늘 든든해요!"],
+      haru:["회장님, 오늘 축하 센스도 최고의 픽이네요.","하루 대리님, 기분 좋은 생일 축하해요!"],
+      daon:["회장님… 제 생일까지 챙겨주셔서 감사해요…","다온 사원님, 따뜻한 생일 축하해요!"],
+      naeun:["회장님 고마워요! 행복한 생일 루틴이에요!","나은 차장님, 활기찬 생일 축하해요!"],
+      hina:["회장님 고마워용♡ 오늘 생일 백점이에용♡","히나 과장님, 사랑스러운 생일 축하해용!"],
+      minji:["회장님, 제 생일 명장면 바로 남겼어요!","민지 대리님, 영화 같은 생일 축하해요!"],
+      sooyeon:["회장님! 생일 축하까지 낭만상 최고예요!","수연 주임님, 에너지 넘치는 생일 축하해요!"],
+      yoonseul:["회장님, 아세요? 생일과 기쁨이 이어져요!","윤슬 사원님, 책향기 가득한 생일 축하해요!"],
+      sua:["회장님 축하라니, 헤헤ㅎㅎ 오늘 참 기뻐요!","수아 과장님, 빈틈없이 행복한 생일 되세요!"],
+      taeo:["회장님, 정리하면 뜻깊고 감사한 생일입니다.","채원 매니저님, 뜻깊은 생일 축하드립니다!"]
+    }
+  };
+  const ownerEvents={
+    snack:{label:'🍪 간식 돌리기',icon:'🍪',status:'간식 먹는 중'},
+    coffee:{label:'☕ 커피 쏘기',icon:'☕',status:'커피 마시는 중'},
+    applause:{label:'👏 칭찬 박수',icon:'👏',status:'칭찬 받는 중'},
+    cheer:{label:'📣 깜짝 응원',icon:'📣',status:'화이팅 외치는 중'},
+    birthday:{label:'🎂 생일 축하',icon:'🎂',status:'생일 축하 중'}
+  };
+  const staffBirthdays={hani:'01-17',gaeun:'09-25',yuna:'02-20',mir:'05-14',seoyun:'03-12',dohyun:'06-18',serin:'07-23',yuri:'09-11',arin:'04-24',jieun:'04-09',haru:'05-29',daon:'11-21',naeun:'07-08',hina:'08-21',minji:'10-08',sooyeon:'11-06',yoonseul:'03-26',sua:'12-12',taeo:'02-06'};
+  const eventButton=document.createElement('button');eventButton.id='haniOfficeEvents';eventButton.type='button';eventButton.className='btn hani-office-events';eventButton.textContent='🎉 회장님 이벤트';eventButton.hidden=true;eventButton.setAttribute('aria-expanded','false');eventButton.setAttribute('aria-controls','haniOfficeEventPanel');caption.append(eventButton);
+  const eventPanel=document.createElement('div');eventPanel.id='haniOfficeEventPanel';eventPanel.className='hani-office-event-panel';eventPanel.hidden=true;eventPanel.setAttribute('role','group');eventPanel.setAttribute('aria-label','회장님 이벤트');caption.append(eventPanel);
+  const eventButtons=new Map();
+  for(const [id,event]of Object.entries(ownerEvents)){const button=document.createElement('button');button.id=id==='snack'?'haniOfficeSnack':'haniOfficeEvent-'+id;button.type='button';button.className='btn hani-office-snack';button.dataset.ownerEvent=id;button.textContent=event.label;eventPanel.append(button);eventButtons.set(id,button);button.addEventListener('click',()=>runOwnerEvent(id))}
+  const eventCooldowns=new Map();let eventPeople=new Set(),eventFloor=null,eventUntil=0,eventEndTimer=null,eventCooldownTimer=null,activeEvent=null,eventBirthday=null,birthdayDay='',birthdayPresent=new Set();
+  function closeEventPanel(){eventPanel.hidden=true;eventButton.setAttribute('aria-expanded','false')}
+  function birthdayPerson(){
+    const day=new Date(Date.now()+32400000).toISOString().slice(0,10),id=Object.keys(staffBirthdays).find(id=>staffBirthdays[id]===day.slice(5));
+    if(!id)return null;
+    // Daytime presence also covers a colleague temporarily away or already home at night.
+    const presence=officePresence.read(),key=day+'|'+JSON.stringify(presence.presentIds||null);
+    if(birthdayDay!==key){birthdayDay=key;birthdayPresent=new Set(building.snapshot(new Date(day+'T12:00:00+09:00'),presence).floors.flatMap(f=>f.people.map(p=>p.id)))}
+    return actors.get(id)?.hidden===false||birthdayPresent.has(id)?id:null;
   }
-  function snackStationary(actor){return !actor.hidden&&!actor.dataset.resident&&actor.dataset.visitor!=='true'&&Object.hasOwn(snackLines,actor.dataset.person)&&!actor.officeTravel&&actor.dataset.walking!=='true'&&!actor.dataset.pose?.startsWith('walk')&&!['GOING','RETURNING'].includes(actor.dataset.behavior)}
-  function snackApplies(actor){return snackFloor===activeFloor&&Date.now()<snackUntil&&snackPeople.has(actor.dataset.person)&&snackStationary(actor)}
-  function clearSnackReaction(){if(snackEndTimer!==null)clearTimeout(snackEndTimer);snackEndTimer=null;snackFloor=null;snackUntil=0;snackPeople=new Set()}
-  function armSnackCooldown(){
-    if(snackCooldownTimer!==null)clearTimeout(snackCooldownTimer);snackCooldownTimer=null;
-    const floor=activeFloor,remaining=(snackCooldowns.get(floor)||0)-Date.now();
-    if(remaining>0)snackCooldownTimer=setTimeout(()=>{snackCooldownTimer=null;if(activeFloor===floor)syncSnackButton()},remaining);
+  function syncEventButtons(){
+    eventButton.hidden=!document.getElementById('app')||document.getElementById('app').classList.contains('login-locked');
+    if(eventButton.hidden)closeEventPanel();
+    for(const [id,button]of eventButtons){button.hidden=eventButton.hidden||id==='birthday'&&!birthdayPerson();button.disabled=(eventCooldowns.get(activeFloor+'|'+id)||0)>Date.now();const text=ownerEvents[id].label+(button.disabled?' (10분 뒤)':'');if(button.textContent!==text)button.textContent=text}
   }
-  snackButton.addEventListener('click',()=>{
-    syncSnackButton();if(snackButton.hidden||snackButton.disabled||!sceneVisible())return;
-    updateBuilding(true,false);
-    const eligible=[...actors.values()].filter(snackStationary).sort((a,b)=>a.dataset.person.localeCompare(b.dataset.person));
-    const now=Date.now(),floor=activeFloor,end=now+8000;clearSnackReaction();
-    snackFloor=floor;snackUntil=end;for(const actor of eligible)snackPeople.add(actor.dataset.person);
-    snackCooldowns.set(floor,now+600000);syncSnackButton();armSnackCooldown();autoBubbleEntry=false;
-    snackEndTimer=setTimeout(()=>{if(snackFloor!==floor||snackUntil!==end)return;snackEndTimer=null;clearSnackReaction();updateBuilding(true,false)},8000);
+  function eventStationary(actor){return !actor.hidden&&!actor.dataset.resident&&actor.dataset.visitor!=='true'&&Object.hasOwn(eventLines.snack,actor.dataset.person)&&!actor.officeTravel&&actor.dataset.walking!=='true'&&!actor.dataset.pose?.startsWith('walk')&&!['GOING','RETURNING'].includes(actor.dataset.behavior)}
+  function eventApplies(actor){return eventFloor===activeFloor&&Date.now()<eventUntil&&eventPeople.has(actor.dataset.person)&&eventStationary(actor)}
+  function clearEventReaction(){if(eventEndTimer!==null)clearTimeout(eventEndTimer);eventEndTimer=null;eventFloor=null;eventUntil=0;activeEvent=null;eventBirthday=null;eventPeople=new Set()}
+  function armEventCooldown(){
+    if(eventCooldownTimer!==null)clearTimeout(eventCooldownTimer);eventCooldownTimer=null;
+    const floor=activeFloor,now=Date.now(),ends=[...eventButtons.keys()].map(id=>eventCooldowns.get(floor+'|'+id)||0).filter(end=>end>now);
+    if(ends.length)eventCooldownTimer=setTimeout(()=>{eventCooldownTimer=null;if(activeFloor===floor){syncEventButtons();armEventCooldown()}},Math.min(...ends)-now);
+  }
+  eventButton.addEventListener('click',()=>{syncEventButtons();if(eventButton.hidden||!sceneVisible())return;eventPanel.hidden=!eventPanel.hidden;eventButton.setAttribute('aria-expanded',String(!eventPanel.hidden))});
+  eventPanel.addEventListener('keydown',event=>{if(event.key==='Escape'){closeEventPanel();eventButton.focus()}});
+  function runOwnerEvent(id){
+    syncEventButtons();const button=eventButtons.get(id);if(button.hidden||button.disabled||!sceneVisible())return;
+    closeEventPanel();updateBuilding(true,false);
+    const eligible=[...actors.values()].filter(eventStationary).sort((a,b)=>a.dataset.person.localeCompare(b.dataset.person));
+    const now=Date.now(),floor=activeFloor,end=now+8000,birthday=id==='birthday'?birthdayPerson():null;clearEventReaction();
+    activeEvent=id;eventBirthday=birthday;eventFloor=floor;eventUntil=end;for(const actor of eligible)eventPeople.add(actor.dataset.person);
+    eventCooldowns.set(floor+'|'+id,now+600000);syncEventButtons();armEventCooldown();autoBubbleEntry=false;
+    eventEndTimer=setTimeout(()=>{if(eventFloor!==floor||eventUntil!==end||activeEvent!==id)return;eventEndTimer=null;clearEventReaction();updateBuilding(true,false)},8000);
     updateBuilding(true,false);
     // Use the existing single bubble. A pending/recent viewer choice keeps priority.
     if(eligible.length&&!pendingTap&&(actorBubble.hidden||now-lastBubbleTap>=5000)){
-      const actor=eligible[0],lines=snackLines[actor.dataset.person];
-      showBubble(actor,{speaker:actor.dataset.person,line:lines[0],snack:true},4000,true);
+      const actor=eligible.find(a=>a.dataset.person===birthday)||eligible[0],lines=eventLines[id][birthday||actor.dataset.person];
+      showBubble(actor,{speaker:actor.dataset.person,line:lines[id==='birthday'&&actor.dataset.person!==birthday?1:0],ownerEvent:true},4000,true);
     }
-  });
+  }
   const foregrounds=[...map.querySelectorAll(".hani-office-foreground")];
   for(const img of foregrounds){img.className='hani-office-foreground';img.hidden=true}
   // One persistent, non-interactive layer; monitor gradients share one pulse.
@@ -2869,7 +2981,7 @@
     });
   }
   function updateBuilding(force=false,animate=true){
-    syncSnackButton();
+    syncEventButtons();
     if(sceneVisible()&&!tapCatalogStarted){tapCatalogStarted=true;void tapLines.load().then(()=>{if(sceneVisible())updateBuilding(true,false)})}
     const now=new Date(),day=new Date(now.getTime()+32400000).toISOString().slice(0,10);
     const episode=tapLines.episode(now),dramaText=episode?episode.title+' · '+episode.summary:'';
@@ -2921,11 +3033,11 @@
       const peer=entries.find(q=>q.id===p.deskPartner);actor.style.setProperty('--response-lean',peer&&peer.seat.x<p.seat.x?'-1deg':'1deg');
       actor.dataset.action=selected?'agent-case':p.actionId||'base-work';actor.dataset.event=p.eventId||'';actor.dataset.line=selected?'실제 안건 검토 중':p.line||'자료 확인 중';
       actor.dataset.emoji=selected||actor.dataset.action==='base-work'?'':p.emoji||'';actor.dataset.walking=String(Boolean(p.walking||actor.officeTravel));
-      actor.dataset.snack=String(snackApplies(actor));if(actor.dataset.snack==='true'){actor.dataset.line='간식 먹는 중';actor.dataset.emoji='🍪'}
+      actor.dataset.ownerEvent=eventApplies(actor)?activeEvent:'';actor.dataset.snack=String(actor.dataset.ownerEvent==='snack');if(actor.dataset.ownerEvent){actor.dataset.line=ownerEvents[activeEvent].status;actor.dataset.emoji=activeEvent==='birthday'&&p.id!==eventBirthday?'🎉':ownerEvents[activeEvent].icon}
       actor.officeReactions.observe(actor.dataset,now.getTime());
       const prop=actor.querySelector('.hani-office-prop'),emoji=headIcon(actor);if(prop.textContent!==emoji)prop.textContent=emoji;
       if(selected)actor.dataset.called='true';
-      label(actor,actor.dataset.snack==='true'?actor.dataset.line:(actor.dataset.emoji?actor.dataset.emoji+' ':'')+actor.dataset.line);
+      label(actor,actor.dataset.ownerEvent?actor.dataset.line:(actor.dataset.emoji?actor.dataset.emoji+' ':'')+actor.dataset.line);
       if(bubblePerson===p.id)bubbleLine.textContent=bubbleText(actor);
     }
     for(const actor of actors.values())if(actor.hidden){clearMotion(actor);actor.officeSchedule=null;actor.dataset.partner='';actor.dataset.greeting='false'}
@@ -2978,10 +3090,10 @@
     }
     if(changed)fitStatusLabels();
   }
-  function selectFloor(id,animate=false){closeBubble();if(!floorButtons.has(id))return;autoBubbleEntry=true;for(const actor of actors.values())finishTravel(actor);if(id!==activeFloor)clearSnackReaction();activeFloor=id;armSnackCooldown();updateBuilding(true,animate)}
+  function selectFloor(id,animate=false){closeEventPanel();closeBubble();if(!floorButtons.has(id))return;autoBubbleEntry=true;for(const actor of actors.values())finishTravel(actor);if(id!==activeFloor)clearEventReaction();activeFloor=id;armEventCooldown();updateBuilding(true,animate)}
   tabs.addEventListener("click",event=>{const button=event.target.closest("[data-building-floor]");if(button&&tabs.contains(button))selectFloor(button.dataset.buildingFloor)});
   tabs.addEventListener("keydown",event=>{const keys=[...floorButtons.keys()],index=keys.indexOf(activeFloor);let next;if(event.key==="ArrowRight")next=(index+1)%keys.length;else if(event.key==="ArrowLeft")next=(index+keys.length-1)%keys.length;else if(event.key==="Home")next=0;else if(event.key==="End")next=keys.length-1;else return;event.preventDefault();selectFloor(keys[next]);floorButtons.get(keys[next]).focus()});
-  function syncVisibility(){officePresence.read();const visible=sceneVisible();if(visible&&!sceneActive)autoBubbleEntry=true;sceneActive=visible;root.dataset.paused=String(!visible);if(visible)updateBuilding(true,false);else{autoBubbleEntry=false;for(const actor of actors.values())clearMotion(actor);closeBubble()}map.officeMascotMotion?.({now:Date.now(),reduced,visible,actors})}
+  function syncVisibility(){officePresence.read();const visible=sceneVisible();if(visible&&!sceneActive)autoBubbleEntry=true;sceneActive=visible;root.dataset.paused=String(!visible);if(visible)updateBuilding(true,false);else{closeEventPanel();autoBubbleEntry=false;for(const actor of actors.values())clearMotion(actor);closeBubble()}map.officeMascotMotion?.({now:Date.now(),reduced,visible,actors})}
   document.addEventListener("visibilitychange",syncVisibility);
   new MutationObserver(syncVisibility).observe(root.closest(".view"),{attributes:true,attributeFilter:["class","hidden","style"]});
   if(typeof IntersectionObserver==='function')new IntersectionObserver(entries=>{mapOnScreen=entries[0].isIntersecting;syncVisibility()}).observe(map);
