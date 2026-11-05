@@ -1,0 +1,47 @@
+{
+  "baseline": "0689b1be269f4b7d7f96ca15091f7ec2ef7cf38d",
+  "beforeSha256": "3aac361387dd66736580df61d2c254bb50a131a724831b0a30c91a89e8b4bc3b",
+  "afterSha256": "e69a3ed1304f56ec9d42d92fa659005bb4307d54694b92381e7961dd1945c407",
+  "sections": [
+    {
+      "name": "scheduler",
+      "sha256": "2fb5f8eda0313523f45b7b0cd988402b221fb8a0cec823e69beb09141d673ad8",
+      "result": "PASS"
+    },
+    {
+      "name": "view snapshot",
+      "sha256": "f790950ad2e6a2a672a547aec7a094e082bd3b3a98d5e853e7a4cba6acbe456f",
+      "result": "PASS"
+    },
+    {
+      "name": "screenHomeClear",
+      "sha256": "3ca18b4e6f2b302d445b29d3d47c17a5743129ebcfe892deb1f4124cae10bc0a",
+      "result": "PASS"
+    },
+    {
+      "name": "placeStatusLabels",
+      "sha256": "5070f7e62556b89410bc7588600fefe80ba99579e945ae49bab89def98bec6f0",
+      "result": "PASS"
+    },
+    {
+      "name": "fitStatusLabels",
+      "sha256": "e7f807dd9110c0e44fd613c528b2cdf8c2f75df3e442ded716f768b9bdd0c3ac",
+      "result": "PASS"
+    },
+    {
+      "name": "residents model",
+      "sha256": "7c67c7b6976bfcf5eae82fd96dbe58b05a3dbaef2d7c7890cb90d01f55bb3155",
+      "result": "PASS"
+    },
+    {
+      "name": "residents renderer",
+      "sha256": "6f915f5d6b2172d8072bad189fca682250db03655b605aaf26c802f0b5ce6f9c",
+      "result": "PASS"
+    }
+  ],
+  "plans": 4,
+  "blocks": 16,
+  "snapshots": 32,
+  "timers": "existing two slots; zero added",
+  "storage": "zero calls"
+}

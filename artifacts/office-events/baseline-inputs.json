@@ -1,0 +1,29 @@
+{
+  "ref": "e03a029d6a81f3c6fc025cc0234e82580c696870",
+  "files": [
+    {
+      "path": "assets/data/office-actions-221.json",
+      "sha": "876e4f5ff9c0081729ed5bed91d1c05c9d251a24"
+    },
+    {
+      "path": "assets/sprites-v2/manifest.json",
+      "sha": "342731a825223ceb179e933e7d5007fd2220ca62"
+    },
+    {
+      "path": "data/hani-building/art-map-v1.json",
+      "sha": "6262494aec75d4d78a6cf67b0cd50017e1a74646"
+    },
+    {
+      "path": "data/hani-building/office-places.json",
+      "sha": "53de6bd709baee3e3cb46784b923259a9575fc33"
+    },
+    {
+      "path": "data/hani-building/spatial-contract.json",
+      "sha": "1942b188a0686271e1f795858efbda86a518f3da"
+    },
+    {
+      "path": "hani-office-live.js",
+      "sha": "d2822185703b2e9c6c2acf50718e24b48e790ffa"
+    }
+  ]
+}
