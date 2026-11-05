@@ -2019,3 +2019,17 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 #newsroom .newsroom-4cut-layout.has-context>.newsroom-4cut-context{flex:1 1 260px}
 
 #app #diet #dietStats .stat{background:var(--surface-raised)!important;color:var(--text-primary)!important}
+
+/* Read-only shelf bookmark and milestone encore. */
+#reading .book-thanks{min-width:0;max-width:100%;margin-top:8px;padding:0 10px;border:1px solid currentColor;border-radius:10px;color:var(--text-primary,var(--text,#222638));background:var(--surface-raised,var(--panel,#fffdf6));overflow-wrap:anywhere}
+#reading .book-thanks summary{min-height:44px;display:list-item;align-content:center;cursor:pointer}
+#reading .book-thanks p{margin:0 0 12px;line-height:1.6}
+#milestones .ms-encore{min-width:0;max-width:100%;margin:12px 0;overflow-wrap:anywhere;color:var(--ms-ink,var(--text-primary,var(--text,#222638)))}
+#milestones .ms-encore .btn{min-height:44px;max-width:100%;white-space:normal}
+#milestones [data-ms-encore-status]{margin-top:8px;line-height:1.6}
+#milestones [data-ms-encore-status][hidden]{display:none!important}
+#milestones .ms-encore-clap{display:none}
+#milestones .is-clapping .ms-encore-clap{display:inline-block;margin-right:6px;animation:ms-encore-clap 900ms ease-in-out 1}
+@keyframes ms-encore-clap{0%,100%{transform:rotate(0) scale(1)}35%{transform:rotate(-12deg) scale(1.12)}65%{transform:rotate(10deg) scale(1.06)}}
+@media(prefers-reduced-motion:reduce){#milestones .ms-encore-clap{display:none!important;animation:none!important}}
+@media print{#reading .book-thanks,#milestones .ms-encore{display:none!important}}

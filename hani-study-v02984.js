@@ -732,6 +732,7 @@
     const el = document.createElement('style');
     el.id = STYLE_ID;
     el.textContent = `
+#study .study-thanks{min-width:0;max-width:100%;margin:10px 0;overflow-wrap:anywhere;color:var(--text-primary,var(--text,#222638));background:var(--surface-raised,var(--panel,#fffdf6));border:1px solid currentColor;border-radius:10px;padding:0 12px}#study .study-thanks summary{min-height:44px;display:list-item;align-content:center;cursor:pointer}#study .study-thanks p{margin:0 0 12px;line-height:1.6}@media print{#study .study-thanks{display:none!important}}
 .study-popup-exam{--exam-paper:var(--surface-raised,var(--panel,#fffdf6));--exam-ink:var(--text-primary,var(--text,#222638));--exam-line:var(--text-primary,var(--text,#34384b));--exam-accent:var(--text-primary,var(--text,#34384b));--exam-stamp:#b42332;box-sizing:border-box;position:fixed;inset:0;width:100%;max-width:none;height:100%;height:100dvh;max-height:none;margin:0;padding:clamp(12px,3vw,36px);border:0;overflow:auto;color:var(--exam-ink);background:var(--surface-page,var(--bg,#e7e5df));font:inherit;overscroll-behavior:contain}
 .study-popup-exam::backdrop{background:#161a29cc}.study-popup-exam *{box-sizing:border-box;min-width:0}.study-popup-exam [hidden]{display:none!important}
 .study-popup-paper{max-width:1160px;margin:auto;padding:clamp(18px,4vw,48px);background-color:var(--exam-paper);background-image:repeating-linear-gradient(0deg,transparent,transparent 3px,#80735506 3px,#80735506 4px);border:1px solid var(--exam-line);box-shadow:0 16px 60px #14172618;border-radius:6px;overflow-wrap:anywhere}
@@ -1165,6 +1166,18 @@
       .filter(Boolean).map(label => '<span>' + safe(label) + '</span>').join('');
   }
 
+  // A completed-result disclosure only; no grading, persistence or generation work.
+  function quizThanksMarkup(project, quiz, readOnly) {
+    if(readOnly||!project||quiz.projectId!==project.id||!['economy','jlpt'].includes(effectiveProjectCategory(project))||
+      quiz.status!=='completed'||typeof quiz.id!=='string'||!/^[a-z0-9][a-z0-9_-]{0,159}$/i.test(quiz.id)||!quiz.questions?.length)return '';
+    const raw=quiz.completedAt;
+    if(typeof raw!=='string'||!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(raw))return '';
+    const day=raw.slice(0,10),dayTime=Date.parse(day+'T00:00:00Z'),time=Date.parse(raw);
+    if(!Number.isFinite(dayTime)||new Date(dayTime).toISOString().slice(0,10)!==day||!Number.isFinite(time)||time>Date.now())return '';
+    const member=window.HaniOrganizationRoster?.people?.find(p=>p.id==='hina');
+    return '<details class="study-thanks"><summary>'+safe(member?member.name+'의 마무리 한마디':'마무리 한마디')+'</summary><p>한 세트 마무리! 빨간 펜도 잠깐 뚜껑 닫을게요.</p></details>';
+  }
+
   function renderQuizDetail(project, quiz, readOnly = false) {
     if (!quiz) return '';
     const graded = quiz.status === 'completed';
@@ -1172,7 +1185,7 @@
     return `<div class="study-card-v02984 study-exam-sheet" ${readOnly ? '' : 'id="studyQuizDetail"'} style="margin-top:16px">
       <header class="study-exam-head"><div><span class="study-exam-kicker">HANI OS · MOCK EXAM</span><h3>${safe(quiz.title || `${project.name} 문제세트`)}</h3><p>${graded ? `채점 완료 · 점수 ${safe(quizStatusLabel(quiz))}` : readOnly ? '프로젝트에 연결하면 이어서 풀 수 있어요.' : '각 문항의 답을 하나씩 고른 뒤 마지막에 채점하세요.'}</p></div><div class="study-exam-stamp"><b>${safe(String(quizDate(quiz)).replaceAll('-','.'))}</b><span>${Number(quiz.total||quiz.questions.length)}문항</span><em class="study-status ${safe(quiz.status || 'pending')}">${safe(quizStatusLabel(quiz))}</em></div></header>
       <div class="study-exam-instructions">${graded?'해설과 오답 표시를 확인하세요. 틀린 문항은 오답노트에 자동 누적됩니다.':readOnly ? '보존된 문제와 답안을 보여드립니다.' : '답안은 선택 즉시 안전하게 임시 저장됩니다. 모든 문항을 선택하면 채점 버튼이 활성화됩니다.'}</div>
-      ${graded ? `<div class="study-wrong-actions"><button class="btn sm" type="button" data-hina-set="${safe(quiz.id)}" ${hinaQuizItems(quiz, true).length ? '' : 'disabled'}>이번 세트 틀린 문제 전체 복사</button></div>` : ''}
+      ${quizThanksMarkup(project, quiz, readOnly)}${graded ? `<div class="study-wrong-actions"><button class="btn sm" type="button" data-hina-set="${safe(quiz.id)}" ${hinaQuizItems(quiz, true).length ? '' : 'disabled'}>이번 세트 틀린 문제 전체 복사</button></div>` : ''}
       ${quiz.questions.map((question, qi) => {
         const selected = quiz.answers[qi], accepted = acceptedRegrade(quiz,qi);
         return `<article class="study-question ${graded ? 'is-graded' : ''}" data-study-question="${qi}"><div class="study-question-head"><span>Q${qi + 1}</span>${questionChips(question)}</div><h4 style="white-space:pre-line">${safe(question.prompt)}</h4><div class="study-choices">${question.choices.map((choice, ci) => {
