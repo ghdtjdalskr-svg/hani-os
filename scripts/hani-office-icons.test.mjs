@@ -113,8 +113,12 @@ test('icons: scheduler, home clearance, public snapshots and both label geometry
  const restored=restoreResidentsSource(source);
  const original=readAt('hani-office-live.js','15747bc');
  for(const [a,b]of [['  function createScheduler(','  // Read-only label geometry'],['  function snapshot(now=new Date()','  function profile('],['    function screenHomeClear(','    function stationaryStops('],['  function placeStatusLabels(','  const scheduler='],['  function fitStatusLabels(','  if(buildingChairmanSlot())people.push']])assert.equal(section(restored,a,b),section(original,a,b),a);
- // The tap zoom bubble slot is one element; the lobby frame is a button, image and caption; each pet has one persistent heart. All are created once.
- for(const token of ['setInterval(','setTimeout(','document.createElement(','fetch('])assert.equal(source.split(token).length,original.split(token).length+(token==='document.createElement('?5:0),token);
+ // One tap bubble slot, three lobby frame elements, one persistent heart per pet, and one snack button creation path.
+ for(const token of ['setInterval(','setTimeout(','document.createElement(','fetch('])assert.equal(source.split(token).length,original.split(token).length+(token==='document.createElement('?6:token==='setTimeout('?2:0),token);
+ assert.equal(source.split(/snack(?:End|Cooldown)Timer=setTimeout\(/).length-1,2,'snack owns exactly two new timeouts');assert.equal(source.split("snackButton=document.createElement('button')").length-1,1,'one persistent snack button');
+ assert.equal(source.split("heart=document.createElement('span')").length-1,1,'one persistent heart creation path');
+ assert.equal(source.split("snackButton.addEventListener('click',").length-1,1,'one snack click listener');
+ assert.equal(source.split('addEventListener(').length,original.split('addEventListener(').length+1,'only the snack adds an event listener');
  assert.equal(source.split("bubbleSprite=document.createElement('div')").length,2);
  assert.doesNotMatch(source,/localStorage|sessionStorage|supabase/);
 });

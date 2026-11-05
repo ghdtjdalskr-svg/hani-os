@@ -268,7 +268,7 @@ test('frame: steady frames add no layout reads or writes; all staff/visitor/resi
   for(let i=0;i<20;i++){f.setDateTime('2026-11-02T10:00:00.'+String(i*5).padStart(3,'0')+'+09:00');f.timers.find(t=>t.ms===100).fn()}
   assert.equal(reads,0);assert.equal(f.writes.length,0);
   const sceneEnd='/* Read-only Living Office.';
-  assert.equal(hash(officeSource.slice(0,officeSource.indexOf(sceneEnd))),'cd7383b1db3835c09efbe4db235cdc0209b7e39da09136dae7c5767c4622d1e3','frozen entire scene/scheduler/residents source bytes (residents updated by pets-affection; staff plans are proven by the tlayout and residents pins)');
+  assert.equal(hash(officeSource.slice(0,officeSource.indexOf(sceneEnd))),'732be6ee8c4ac02ae0e9d984311c2c43c9e6192fd2468eac48c98b7b05190f91','frozen entire scene/scheduler/residents source bytes (residents updated by pets-affection; staff plans are proven by the tlayout and residents pins)');
   const old=frameScene({transform:source=>reapplyTlayoutSource(restoreResidentsSource(source))}).scene,current=frameScene().scene;
   for(const day of ['2026-10-31','2026-11-01','2026-11-02','2026-11-30','2026-12-01'])for(const chairmanPresent of [false,true]){
     const options={chairmanPresent},plan=current.scheduler.plan(day,options),previous=old.scheduler.plan(day,options);

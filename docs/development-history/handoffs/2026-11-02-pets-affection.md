@@ -1,5 +1,14 @@
 # 반려동물 이동·애정표현 · qa-b13
 
+## 2026-11-06 qa-b13e · main 병합 충돌 후속
+
+- Codex 단독 / `hani/pets-affection` / HEAD `44738fe8a2d347391a926fdcbeec74a67380ea03`, 병합 대상·로컬 origin/main `04956ba4e18cb95ae8b035b151d28f755002a9ff`. 승인 원문 `../qa-b13e-task.md` 전체 UTF-8 읽음, 한글 정상. 지정 7파일 충돌·관련 pin만 정리하며 runtime JS/CSS·표시2.9.262·저장/Cloud/schema를 보존한다. commit/push/배포 없음, 서윤이 stage·commit 담당.
+- 진행: `tlayout → residents → labels` 순서로 complete-line delta·pin 재생성, 중복 tlayout 복원 제거, 간식 timeout2·버튼1·listener1과 pet persistent heart 경로 합산, 양쪽 테스트 보존. 포스터 전체 scene pin은 pre-snack 양쪽 원문 hash를 확인한 뒤 literal1개 갱신. 기존 SHA·exact-line·변조 거부 guard 유지.
+- 최종 근거: `artifacts/pets-merge-main/fixture-evidence.json`, `preservation.json`(**12/12**), v7 16 records·서식까지 main과 byte동일 및 실제 tlayout13/13. runtime JS/CSS는 착수 전 merged bytes와 동일(JS SHA256 `328457e0bcdc7345afca2c974d895a22f6e7cfd56f9544ac7984a6150e7e9f1f`). 충돌 표식0, syntax6/6(runtime 포함). 전체44개 파일 **497통과·22실패·3skip**, 명령27성공·17실패. residents49/49·poster22/22. 파일별 통과/실패와 원인·실행 명령은 `artifacts/pets-merge-main/REPORT.md`, `tests-summary.json` 및 로그에 기록했다.
+- 실패 구분: `spawnSync git EPERM` **18건**은 예상된 차단. 기타 **4건**은 café·lively-v2의 기존400ms 한도 초과(재실행 최소420.35/431.5ms), snack 원본 `artifacts/office-snack/lines-serin.json`·`baseline.json` 누락2건. 기준값·guard를 완화하지 않았고 원본 artifact 확보·성능 검토가 필요하다. 최초 포스터 hash 실패는 정확한 과거 source pin 확인 후 literal1개 갱신·재실행22/22로 해소했다. 최초 로그도 보존한다.
+- 다음 담당: 서윤이 누락된 snack 원본 증거 파일을 확보해2건과 성능/Git 차단 검사를 재검증한 뒤 Git stage·commit 처리. 이 작업은 파일 충돌 해소이며 merge commit 완료/배포 완료가 아니다. 원격 최신성·브라우저·Production read-back·Candidate QA는 미검증, skip3 포함. CURRENT/DECISIONS·타 담당 파일·운영 source 변경0.
+- Notion 갱신 대기: 착수 쓰기는 자동 승인 검토가 `MCP tool call requires approval, but approval policy is never`로 거절하여 미반영. 2026-11-06 KST / Codex qa-b13e / 위 branch·SHA / main 병합 충돌 파일 정리·runtime/직원/방문객 계획 보존 / 전체44파일497통과22실패3skip(Git18·기타4), syntax6/6·보존12/12 / commit/push없음·서윤 인계 / 누락 원본·성능·허용환경Git 재검증 대기. 원문은 이 인수인계와 REPORT.md.
+
 ## 2026-11-05 후속 qa-b13c · 구현·targeted 검증 완료
 
 ### 작업 식별 / 승인 경계
