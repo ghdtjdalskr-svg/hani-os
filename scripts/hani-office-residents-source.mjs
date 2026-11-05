@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 const hash=x=>createHash('sha256').update(x).digest('hex');
 const bytes=fs.readFileSync(new URL('fixtures/office-residents-source-delta.json',import.meta.url));
-assert.equal(hash(bytes),'0026d82b6e3a66ce44d228b27eead564b284fb4f4ecf11942db74cdb834c5aa1','exact authored residents delta');
+assert.equal(hash(bytes),'0814689e38fa439fc2e0cd4bca410c59a2fa294bdea2c7d594ee5f7415805442','exact authored residents delta');
 const delta=JSON.parse(bytes);
 assert.equal(delta.beforeSha256,'672b4fa6b15ef08859822870c7a3ff12d8029a65a972010799391ea5eb33d00f','pre-resident source identity');
 export function restoreResidentsSource(source){
