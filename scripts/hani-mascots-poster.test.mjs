@@ -7,6 +7,7 @@ import vm from 'node:vm';
 import {createRequire} from 'node:module';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 import {restoreResidentsSource} from './hani-office-residents-source.mjs';
+import {reapplyTlayoutSource} from './hani-office-tlayout-fixture.mjs';
 import {createBannerFixture} from './hani-lounge-billboard.test.mjs';
 const require=createRequire(import.meta.url);
 const sharp=require(process.env.HANI_SHARP_PATH||os.homedir()+'/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/sharp');
@@ -267,8 +268,8 @@ test('frame: steady frames add no layout reads or writes; all staff/visitor/resi
   for(let i=0;i<20;i++){f.setDateTime('2026-11-02T10:00:00.'+String(i*5).padStart(3,'0')+'+09:00');f.timers.find(t=>t.ms===100).fn()}
   assert.equal(reads,0);assert.equal(f.writes.length,0);
   const sceneEnd='/* Read-only Living Office.';
-  assert.equal(hash(officeSource.slice(0,officeSource.indexOf(sceneEnd))),'c1cde0b0c747a11842079c2d62950f9d848600d2d710454a4eec0f79c40b1dd3','frozen entire scene/scheduler/residents source bytes');
-  const old=frameScene({transform:restoreResidentsSource}).scene,current=frameScene().scene;
+  assert.equal(hash(officeSource.slice(0,officeSource.indexOf(sceneEnd))),'cd7383b1db3835c09efbe4db235cdc0209b7e39da09136dae7c5767c4622d1e3','frozen entire scene/scheduler/residents source bytes (residents updated by pets-affection; staff plans are proven by the tlayout and residents pins)');
+  const old=frameScene({transform:source=>reapplyTlayoutSource(restoreResidentsSource(source))}).scene,current=frameScene().scene;
   for(const day of ['2026-10-31','2026-11-01','2026-11-02','2026-11-30','2026-12-01'])for(const chairmanPresent of [false,true]){
     const options={chairmanPresent},plan=current.scheduler.plan(day,options),previous=old.scheduler.plan(day,options);
     assert.equal(JSON.stringify(plan),JSON.stringify(previous));assert.equal(JSON.stringify(current.scheduler.blockPlan(day,0,plan,options)),JSON.stringify(old.scheduler.blockPlan(day,0,previous,options)));

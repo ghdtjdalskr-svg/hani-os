@@ -1,6 +1,4 @@
-import {restoreResidentsSource as restorePriorResidentsSource} from './hani-office-residents-source.mjs';
-import {restoreTlayoutSource} from './hani-office-tlayout-fixture.mjs';
-const restoreResidentsSource=source=>restorePriorResidentsSource(restoreTlayoutSource(source));
+import {restoreResidentsSource} from './hani-office-residents-source.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
