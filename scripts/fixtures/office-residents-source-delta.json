@@ -1,7 +1,7 @@
 {
   "scope": "Approved seven residents only; exact changed lines. Reverse before historical label/motion guards. All other bytes, scheduler, staff/visitor plans and previous fixtures remain frozen.; approved Mochi resident and trio display only",
   "beforeSha256": "672b4fa6b15ef08859822870c7a3ff12d8029a65a972010799391ea5eb33d00f",
-  "afterSha256": "2901d7bba2703ab79a9004dac99653aadfc3019dae2f0e3d939caf5bda3e5ccb",
+  "afterSha256": "1786761f6ff72e3464821881fc746d93161ffa67b0ed0ed1bfd35680909ae08a",
   "changes": [
     {
       "beforeLine": 1879,
@@ -660,7 +660,18 @@
       "afterLine": 2766,
       "before": [],
       "after": [
-        "  // Approved four-frame art: one map-owned layer and seven persistent slots.\n",
+        "  // Annual KST windows are read-only; the exclusive end includes Dec 26 23:59.\n",
+        "  // Future events add a row/atlas using the five shared CSS atlas rectangle presets.\n",
+        "  const officeEventCalendar=Object.freeze([\n",
+        "    Object.freeze({id:'christmas',atlas:'./assets/office-season/xmas.webp',startKst:'12-01T00:00',endKstExclusive:'12-27T00:00',decorations:Object.freeze([\n",
+        "      ['xmas-tree','event-tall','1f',493,435,112,136,'bottom-center',false],\n",
+        "      ['xmas-snow','event-window','1f',1580,230,160,204,'center',false],\n",
+        "      ['xmas-wreath','event-wall','1f',832,196,76,76,'center',false],\n",
+        "      ['xmas-gifts','event-floor','1f',520,443,48,36,'bottom-center',false],\n",
+        "      ['xmas-lights','event-wide','5f',1344,565,384,64,'bottom-center',true]\n",
+        "    ].map(Object.freeze))})\n",
+        "  ]);\n",
+        "  // Approved four-frame art: one map-owned layer and persistent prop/event slots.\n",
         "  const livePropLayer=document.createElement('div');livePropLayer.className='hani-office-live-props';livePropLayer.setAttribute('aria-hidden','true');livePropLayer.hidden=true;map.append(livePropLayer);\n",
         "  const liveProps=[\n",
         "    ['coffee-desk','coffee-steam','1f',238,570,32,48,'bottom-center'],\n",
@@ -669,21 +680,26 @@
         "    ['monitor','monitor-glow','3f',466,480,64,40,'center'],\n",
         "    ['lantern','lantern-flicker','5f',1380,738,40,56,'bottom-center'],\n",
         "    ['stamp','stamp-sparkle','3f',213,676,32,32,'center'],\n",
-        "    ['paper','paper-flutter','1f',1605,520,40,48,'center']\n",
-        "  ].map(([id,art,floor,x,y,width,height,anchor])=>{\n",
+        "    ['paper','paper-flutter','1f',1605,520,40,48,'center'],\n",
+        "    ...officeEventCalendar.flatMap(event=>event.decorations.map(decoration=>[...decoration,event]))\n",
+        "  ].map(([id,art,floor,x,y,width,height,anchor,nightOnly=false,event=null])=>{\n",
         "    const prop=document.createElement('span');prop.className='hani-office-live-prop';prop.dataset.prop=id;prop.dataset.sprite=art;prop.dataset.anchor=anchor;prop.hidden=true;\n",
+        "    if(event){prop.dataset.event=event.id;prop.style.backgroundImage='url(\"'+event.atlas+'\")'}\n",
         "    prop.style.left=x/(building.art?.width||1672)*100+'%';prop.style.top=y/(building.art?.height||941)*100+'%';prop.style.width=width/(building.art?.width||1672)*100+'%';prop.style.height=height/(building.art?.height||941)*100+'%';\n",
-        "    livePropLayer.append(prop);return {prop,floor};\n",
+        "    livePropLayer.append(prop);return {prop,floor,nightOnly:nightOnly||id==='lantern',event};\n",
         "  });\n",
-        "  function updateLiveProps(floor,background,isFloor){\n",
+        "  function updateLiveProps(floor,background,isFloor,now=new Date()){\n",
+        "    const date=koreaTime(now).toISOString().slice(5,16);\n",
+        "    const activeEvents=new Set(officeEventCalendar.filter(event=>event.startKst<event.endKstExclusive\n",
+        "      ?date>=event.startKst&&date<event.endKstExclusive:date>=event.startKst||date<event.endKstExclusive));\n",
         "    livePropLayer.hidden=!isFloor;\n",
-        "    for(const entry of liveProps)entry.prop.hidden=!isFloor||entry.floor!==floor.id||(entry.prop.dataset.prop==='lantern'&&background!==floor.nightBackground);\n",
+        "    for(const entry of liveProps)entry.prop.hidden=!isFloor||entry.floor!==floor.id||(entry.nightOnly&&background!==floor.nightBackground)||(!!entry.event&&!activeEvents.has(entry.event));\n",
         "  }\n"
       ]
     },
     {
       "beforeLine": 2434,
-      "afterLine": 2788,
+      "afterLine": 2804,
       "before": [],
       "after": [
         "  // View-only snack overlay. The table is the sole copy-edit point (up to 3 lines per staff id).\n",
@@ -850,8 +866,16 @@
       ]
     },
     {
+      "beforeLine": 2446,
+      "afterLine": 2977,
+      "before": [],
+      "after": [
+        "    updateLiveProps(floor,map.querySelector('.hani-office-background').getAttribute('src'),map.dataset.art==='floor'&&map.dataset.floor===activeFloor,now);\n"
+      ]
+    },
+    {
       "beforeLine": 2461,
-      "afterLine": 2976,
+      "afterLine": 2993,
       "before": [
         "    if(actor.dataset.person==='seongmin'||actor.dataset.person.startsWith('visitor')){sprite.className='hani-office-sprite';sprite.style.backgroundImage='';actor.dataset.avatar='pending';return}\n"
       ],
@@ -861,7 +885,7 @@
     },
     {
       "beforeLine": 2491,
-      "afterLine": 3006,
+      "afterLine": 3023,
       "before": [
         "    if(backgroundRequest!==request){backgroundRequest=request;bg.hidden=true;map.dataset.art='loading';monitorGlow.hidden=true;for(const entry of plates)entry.plate.hidden=true;for(const entry of deskProps)entry.prop.hidden=true}\n"
       ],
@@ -871,7 +895,7 @@
     },
     {
       "beforeLine": 2509,
-      "afterLine": 3024,
+      "afterLine": 3041,
       "before": [
         "      updateQueenFrame();\n"
       ],
@@ -881,7 +905,7 @@
     },
     {
       "beforeLine": 2515,
-      "afterLine": 3030,
+      "afterLine": 3047,
       "before": [],
       "after": [
         "    syncEventButtons();\n"
@@ -889,7 +913,7 @@
     },
     {
       "beforeLine": 2529,
-      "afterLine": 3045,
+      "afterLine": 3062,
       "before": [
         "    updateQueenFrame(now.getTime());\n"
       ],
@@ -899,7 +923,7 @@
     },
     {
       "beforeLine": 2538,
-      "afterLine": 3054,
+      "afterLine": 3071,
       "before": [
         "    setBackground(floor);updateQueenFrame(now.getTime());\n"
       ],
@@ -909,7 +933,7 @@
     },
     {
       "beforeLine": 2544,
-      "afterLine": 3060,
+      "afterLine": 3077,
       "before": [
         "    for(const actor of actors.values()){actor.officeWasVisible=!actor.hidden;actor.hidden=true;actor.officeRow.hidden=true;actor.dataset.called=\"false\"}\n"
       ],
@@ -919,7 +943,7 @@
     },
     {
       "beforeLine": 2566,
-      "afterLine": 3082,
+      "afterLine": 3099,
       "before": [],
       "after": [
         "      actor.dataset.ownerEvent=eventApplies(actor)?activeEvent:'';actor.dataset.snack=String(actor.dataset.ownerEvent==='snack');if(actor.dataset.ownerEvent){actor.dataset.line=ownerEvents[activeEvent].status;actor.dataset.emoji=activeEvent==='birthday'&&p.id!==eventBirthday?'🎉':ownerEvents[activeEvent].icon}\n"
@@ -927,7 +951,7 @@
     },
     {
       "beforeLine": 2569,
-      "afterLine": 3086,
+      "afterLine": 3103,
       "before": [
         "      label(actor,(actor.dataset.emoji?actor.dataset.emoji+' ':'')+actor.dataset.line);\n"
       ],
@@ -937,7 +961,7 @@
     },
     {
       "beforeLine": 2573,
-      "afterLine": 3090,
+      "afterLine": 3107,
       "before": [],
       "after": [
         "    updateResidents(now);\n"
@@ -945,7 +969,7 @@
     },
     {
       "beforeLine": 2579,
-      "afterLine": 3097,
+      "afterLine": 3114,
       "before": [
         "  function selectFloor(id,animate=false){closeBubble();if(!floorButtons.has(id))return;autoBubbleEntry=true;for(const actor of actors.values())finishTravel(actor);activeFloor=id;updateBuilding(true,animate)}\n"
       ],
@@ -1002,7 +1026,7 @@
     },
     {
       "beforeLine": 2582,
-      "afterLine": 3147,
+      "afterLine": 3164,
       "before": [
         "  function syncVisibility(){officePresence.read();const visible=sceneVisible();if(visible&&!sceneActive)autoBubbleEntry=true;sceneActive=visible;root.dataset.paused=String(!visible);if(visible)updateBuilding(true,false);else{autoBubbleEntry=false;for(const actor of actors.values())clearMotion(actor);closeBubble()}map.officeMascotMotion?.({now:Date.now(),reduced,visible,actors})}\n"
       ],
@@ -1012,7 +1036,7 @@
     },
     {
       "beforeLine": 2647,
-      "afterLine": 3212,
+      "afterLine": 3229,
       "before": [],
       "after": [
         "    updateResidents(new Date(now));\n"
@@ -1020,7 +1044,7 @@
     },
     {
       "beforeLine": 2649,
-      "afterLine": 3215,
+      "afterLine": 3232,
       "before": [],
       "after": [
         "      if(actor.dataset.resident){const effect=actor.officeReactions.tick(now,reduced,actor.dataset.walking==='true');if(effect){if(actor.dataset.motion!==effect.kind)actor.dataset.motion=effect.kind}else if(actor.dataset.motion!==undefined)delete actor.dataset.motion;continue}\n"
