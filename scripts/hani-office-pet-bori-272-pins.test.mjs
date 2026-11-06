@@ -9,7 +9,7 @@ import {restorePets268Source,pets268Delta} from './hani-office-pets-268-source.m
 const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
 const hash=x=>createHash('sha256').update(x).digest('hex');
 test('272: exact ordered pairs are the complete fixed-271 JS/CSS diff, rejecting all unlisted bytes',()=>{
- assert.equal(delta.version,'2.9.272');assert.deepEqual(delta.files.map(f=>[f.file,f.replacements.length]),[['hani-office-live.js',20],['hani-office-live.css',1]]);
+ assert.equal(delta.version,'2.9.272');assert.deepEqual(delta.files.map(f=>[f.file,f.replacements.length]),[['hani-office-live.js',20],['hani-office-live.css',2]]);
  for(const row of delta.files){
   const source=read(row.file),before=restoreBori272Source(source,row.file);let forward=before,previousBeforeEnd=0,previousAfterEnd=0;
   for(const r of row.replacements){
