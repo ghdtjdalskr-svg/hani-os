@@ -3924,6 +3924,252 @@
       "quality": 88
     },
     {
+      "id": "pet-bori",
+      "name": "보리",
+      "kind": "pet",
+      "planned": true,
+      "file": "pet-bori.webp",
+      "sizeBytes": 39404,
+      "sha256": "5180a9c32c3cd2c4c2c9967d2195dd8207294a5b5d98001278284d53fafb2265",
+      "sourceSha256": "6a05e275cc9a55cf127f55c7687cb2bc094be7d652b8aa8fa0ba073fa0e747a3",
+      "identityReference": null,
+      "atlas": [
+        480,
+        288
+      ],
+      "cell": [
+        96,
+        144
+      ],
+      "direction": "left-right",
+      "frames": [
+        {
+          "name": "sitting-left",
+          "rect": [
+            0,
+            0,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            10,
+            52,
+            75,
+            83
+          ],
+          "pose": "sitting",
+          "direction": "left"
+        },
+        {
+          "name": "standing-left",
+          "rect": [
+            96,
+            0,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            2,
+            53,
+            92,
+            81
+          ],
+          "pose": "standing",
+          "direction": "left"
+        },
+        {
+          "name": "walk-a-left",
+          "rect": [
+            192,
+            0,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            2,
+            63,
+            92,
+            71
+          ],
+          "pose": "walk-a",
+          "direction": "left"
+        },
+        {
+          "name": "walk-b-left",
+          "rect": [
+            288,
+            0,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            2,
+            65,
+            92,
+            70
+          ],
+          "pose": "walk-b",
+          "direction": "left"
+        },
+        {
+          "name": "sleep-left",
+          "rect": [
+            384,
+            0,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            2,
+            89,
+            91,
+            46
+          ],
+          "pose": "sleep",
+          "direction": "left"
+        },
+        {
+          "name": "sitting-right",
+          "rect": [
+            0,
+            144,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            11,
+            52,
+            75,
+            83
+          ],
+          "pose": "sitting",
+          "direction": "right",
+          "mirrored": true
+        },
+        {
+          "name": "standing-right",
+          "rect": [
+            96,
+            144,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            2,
+            53,
+            92,
+            81
+          ],
+          "pose": "standing",
+          "direction": "right",
+          "mirrored": true
+        },
+        {
+          "name": "walk-a-right",
+          "rect": [
+            192,
+            144,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            2,
+            63,
+            92,
+            71
+          ],
+          "pose": "walk-a",
+          "direction": "right",
+          "mirrored": true
+        },
+        {
+          "name": "walk-b-right",
+          "rect": [
+            288,
+            144,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            2,
+            65,
+            92,
+            70
+          ],
+          "pose": "walk-b",
+          "direction": "right",
+          "mirrored": true
+        },
+        {
+          "name": "sleep-right",
+          "rect": [
+            384,
+            144,
+            96,
+            144
+          ],
+          "pivot": [
+            48,
+            135
+          ],
+          "contentRect": [
+            3,
+            89,
+            91,
+            46
+          ],
+          "pose": "sleep",
+          "direction": "right",
+          "mirrored": true
+        }
+      ],
+      "alpha": {
+        "transparent": 90390,
+        "partial": 46578,
+        "opaque": 1272
+      },
+      "maxBytes": 40000,
+      "generator": "built-in image_gen",
+      "scale": 3,
+      "quality": 68
+    },
+    {
       "id": "npc-cleaner",
       "name": "미화 직원 (가제)",
       "kind": "npc",

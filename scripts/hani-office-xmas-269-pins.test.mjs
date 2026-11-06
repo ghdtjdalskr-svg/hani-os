@@ -4,9 +4,10 @@ import fs from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {xmas269Delta as delta,restoreXmas269Source} from './hani-office-xmas-269-source.mjs';
+import {restoreBori272Source} from './hani-office-pet-bori-272-source.mjs';
 
 const hash=x=>createHash('sha256').update(x).digest('hex');
-const read=file=>fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
+const read=file=>{const source=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');return ['hani-office-live.js','hani-office-live.css'].includes(file)?restoreBori272Source(source,file):source};
 
 test('v2.9.269: ordered unique pairs are the complete JS/CSS diff and reject unlisted edits',()=>{
  assert.equal(delta.version,'2.9.269');
