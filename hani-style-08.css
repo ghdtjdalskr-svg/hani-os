@@ -246,3 +246,28 @@
 @keyframes hani-helper-tilt{0%,90%,100%{transform:rotate(0)}94%{transform:rotate(-6deg)}97%{transform:rotate(3deg)}}
 @media(prefers-reduced-motion:no-preference){#haniHelperBot .hani-helper-art{animation:hani-helper-tilt 13s ease-in-out infinite}#haniHelperBot:focus-within .hani-helper-art,#haniHelperBot:hover .hani-helper-art{animation-play-state:paused}}
 @media(prefers-reduced-motion:reduce){#haniHelperBot .hani-helper-art{animation:none}}
+
+/* Read-only daily office previews, inside the helper's existing persistent panel. */
+#haniHelperBot .hani-fun-entries{display:grid;gap:6px;margin-top:12px}
+#haniHelperBot .hani-fun-entries button,#haniHelperBot [data-fun-back]{min-height:40px;border:1px solid #d8c8e4;border-radius:12px;background:#f6effb;color:#593b70;padding:9px 10px;text-align:left;font-size:12px;font-weight:700}
+#haniHelperBot #haniFunPreview>h3{font-size:17px;color:#493155;margin:14px 0 4px}
+#haniHelperBot .hani-fun-meta{font-size:10px;color:#75667c;margin-bottom:10px}
+#haniHelperBot .hani-fun-topic{font-size:12px;text-align:center;padding:9px;background:#ede8f4;border-radius:12px 12px 0 0;color:#63516d}
+#haniHelperBot .hani-fun-chat{padding:12px 10px;background:#f0edf6;border-radius:0 0 14px 14px}
+#haniHelperBot .hani-fun-messages{display:grid;gap:13px}
+#haniHelperBot .hani-fun-message{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px 7px;min-width:0}
+#haniHelperBot .hani-fun-message b{grid-column:1/-1;font-size:10px;color:#665474;font-weight:700}
+#haniHelperBot .hani-fun-message p{padding:8px 10px;background:#fff;border:1px solid #e5ddec;border-radius:2px 12px 12px;box-shadow:0 2px 4px #4b325908;font-size:12px;line-height:1.6;color:#382c40}
+#haniHelperBot .hani-fun-message:nth-child(even) p{background:#fff8e7}
+#haniHelperBot .hani-fun-message time{align-self:end;font-size:9px;color:#76657d;padding-bottom:3px;font-variant-numeric:tabular-nums}
+#haniHelperBot .hani-fun-typing{font-size:11px;color:#735e80;margin-top:12px}
+#haniHelperBot .hani-fun-card{border:1px solid #d9c8e6;border-radius:18px;padding:20px 14px 16px;background:radial-gradient(ellipse at top,#fff8e5,#f4edfb 70%);text-align:center;transform-origin:center;backface-visibility:hidden;animation:hani-fun-flip .5s ease-out both}
+#haniHelperBot .hani-fun-star{font-size:42px;line-height:1;color:#8f669e;margin-bottom:12px}
+#haniHelperBot .hani-fun-drawer{font-size:11px;color:#73547f}
+#haniHelperBot .hani-fun-line{font-size:17px;font-weight:800;line-height:1.65;margin:14px 0 18px;color:#493155}
+#haniHelperBot .hani-fun-card dl{display:grid;grid-template-columns:1fr 1.3fr;gap:8px;text-align:left;padding:12px;margin:0 0 14px;background:#ffffffb8;border-radius:12px;font-size:11px;color:#634e70}
+#haniHelperBot .hani-fun-card dd{margin:0;font-weight:750;color:#493155;overflow-wrap:anywhere}
+#haniHelperBot .hani-fun-tip{font-size:12px;color:#6c5279}
+#haniHelperBot .hani-fun-card small{display:block;font-size:10px;color:#806a88;margin-top:14px}
+@keyframes hani-fun-flip{from{transform:perspective(600px) rotateY(-85deg);opacity:0}to{transform:perspective(600px) rotateY(0);opacity:1}}
+@media(prefers-reduced-motion:reduce){#haniHelperBot .hani-fun-card{animation:none;transform:none;opacity:1}}
