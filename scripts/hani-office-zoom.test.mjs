@@ -9,8 +9,9 @@ import http from 'node:http';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {gunzipSync} from 'node:zlib';
-import {restoreTlayoutSource} from './hani-office-tlayout-fixture.mjs';
+import {restoreTlayoutSource,restoreTlayoutPairs,reapplyTlayoutSource} from './hani-office-tlayout-fixture.mjs';
 import {restorePets268Source,restorePets268Pairs} from './hani-office-pets-268-source.mjs';
+import {restoreXmas269Source} from './hani-office-xmas-269-source.mjs';
 import {pathToFileURL,fileURLToPath} from 'node:url';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
@@ -148,10 +149,13 @@ test('zoom: waiting client/candidate labels use 대기 중 instead of rest on ph
 test('zoom: scheduler, snapshots and all three protected geometry functions stay byte identical to task base',()=>{
   // Pre-edit bytes verified against the e2cd3fd GitHub blob 5957499bd25d544a8ff6504afc2a2afa67f7a936.
   const baseline=gunzipSync(fs.readFileSync(new URL('fixtures/office-zoom-source-before.txt.gz',import.meta.url))).toString('utf8');
-  // v2.9.268: verify the complete pet delta, then restore its literal pairs after
-  // the existing hash-pinned G normalization. The old zoom baseline stays intact.
+  // G was independently repinned with Christmas already present. Verify that
+  // complete source too, then apply its same literal pairs AFTER restoring 269.
   restorePets268Source(source);
-  const comparableSource=restorePets268Pairs(restoreTlayoutSource(source)),comparableScene=loadScene({transform:()=>comparableSource}).scene;
+  restoreTlayoutSource(source);
+  const source268=restoreXmas269Source(source),beforeG=restoreTlayoutPairs(source268);
+  assert.equal(reapplyTlayoutSource(beforeG),source268,'the exact G pairs also round-trip the restored v268 bytes');
+  const comparableSource=restorePets268Pairs(beforeG),comparableScene=loadScene({transform:()=>comparableSource}).scene;
   assert.equal(createHash('sha256').update(baseline).digest('hex'),'d8f377329117914108645270e598d6d963cc640900f412203d3450aca679e68c');
   const section=(text,a,b)=>{const i=text.indexOf(a),j=text.indexOf(b,i);assert.ok(i>=0&&j>i,a);return text.slice(i,j)};
   for(const [a,b]of [['  function createScheduler(','  // Read-only label geometry'],['  function snapshot(now=new Date()','  function profile('],['    function screenHomeClear(','    function stationaryStops('],['  function placeStatusLabels(','  const scheduler='],['  function fitStatusLabels(','  if(buildingChairmanSlot())people.push']])assert.equal(section(comparableSource,a,b),section(baseline,a,b),a);

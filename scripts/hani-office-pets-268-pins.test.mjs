@@ -4,10 +4,12 @@ import fs from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {pets268Delta as delta,restorePets268Source} from './hani-office-pets-268-source.mjs';
+import {restoreXmas269Source} from './hani-office-xmas-269-source.mjs';
 
 test('v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits',()=>{
- const source=fs.readFileSync(new URL('../hani-office-live.js',import.meta.url),'utf8');
- const before=restorePets268Source(source),hash=x=>createHash('sha256').update(x).digest('hex');
+ const currentSource=fs.readFileSync(new URL('../hani-office-live.js',import.meta.url),'utf8');
+ const source=restoreXmas269Source(currentSource);
+ const before=restorePets268Source(currentSource),hash=x=>createHash('sha256').update(x).digest('hex');
  assert.equal(delta.baseRef,'origin/main');assert.equal(delta.version,'2.9.268');assert.equal(delta.replacements.length,23);
  let forward=before,previousBeforeEnd=0,previousAfterEnd=0;
  for(const r of delta.replacements){
@@ -21,8 +23,8 @@ test('v2.9.268: exact fixture pairs are the complete diff from pinned origin/mai
  }
  assert.equal(forward,source,'applying exactly these pairs reproduces every current byte');
  assert.equal(hash(forward),delta.afterSha256);
- assert.throws(()=>restorePets268Source(source+'\n'),'unlisted insertion rejected');
- assert.throws(()=>restorePets268Source(source.replace('function createScheduler(','function changedScheduler(')),'staff change rejected');
+ assert.throws(()=>restorePets268Source(currentSource+'\n'),'unlisted insertion rejected');
+ assert.throws(()=>restorePets268Source(currentSource.replace('function createScheduler(','function changedScheduler(')),'staff change rejected');
  const options={cwd:new URL('../',import.meta.url),encoding:'utf8',maxBuffer:32*1024*1024};
  const origin=execFileSync('git',['show','461dfdff4d26275a4d6d61c177280fd2d6ed35fe:hani-office-live.js' /* pre-v2.9.268 main */],options);
  assert.equal(hash(origin),delta.beforeSha256,'actual origin/main blob is the pinned base');
