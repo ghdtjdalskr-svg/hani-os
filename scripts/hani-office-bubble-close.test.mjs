@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {at} from './hani-office-lively-fixture.mjs';
+import {restorePets268Source} from './hani-office-pets-268-source.mjs';
 
 const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
 const table=JSON.parse(read('assets/data/office-actions-221.json'));
@@ -81,9 +82,11 @@ test('bubble close: barista shares close/timer, switch, persistent controls and 
 
 test('bubble close: protected owner bytes, global listeners and timer allocations are unchanged',()=>{
  const source=read('hani-office-live.js'),before=read('artifacts/bubble-close/before-source.txt');
- assert.equal(source.slice(0,source.indexOf('/* Read-only Living Office.')),before.slice(0,before.indexOf('/* Read-only Living Office.')),'entire model including plan, blockPlan and snapshot');
+ // v2.9.268: exact inverse pairs preserve the old prefix/geometry baselines.
+ const comparableSource=restorePets268Source(source);
+ assert.equal(comparableSource.slice(0,comparableSource.indexOf('/* Read-only Living Office.')),before.slice(0,before.indexOf('/* Read-only Living Office.')),'entire model including plan, blockPlan and snapshot');
  const baseline=JSON.parse(read('artifacts/cafe-barista/baseline.json'));
- for(const {name,start,end} of baseline.sections){const i=source.indexOf(start),j=source.indexOf(end,i),a=before.indexOf(start),b=before.indexOf(end,a);assert.ok(i>=0&&j>i,name);assert.equal(source.slice(i,j),before.slice(a,b),name)}
+ for(const {name,start,end} of baseline.sections){const i=comparableSource.indexOf(start),j=comparableSource.indexOf(end,i),a=before.indexOf(start),b=before.indexOf(end,a);assert.ok(i>=0&&j>i,name);assert.equal(comparableSource.slice(i,j),before.slice(a,b),name)}
  for(const pattern of [/document\.addEventListener\(/g,/setInterval\(/g,/setTimeout\(/g])assert.equal([...source.matchAll(pattern)].length,[...before.matchAll(pattern)].length,pattern.toString());
  assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|\.setItem\(|\.removeItem\(/);
  const css=read('hani-office-live.css');assert.match(css,/width:32px;height:32px;min-width:32px;min-height:32px/);assert.match(css,/@media\(max-width:480px\)/);assert.match(css,/-webkit-line-clamp:2/);assert.match(css,/\.hani-office-character-bubble\[hidden\]\{display:none\}/);assert.ok(css.lastIndexOf('.hani-office-character-bubble[hidden]{display:none}')>css.lastIndexOf('.hani-office-character-bubble[data-zoom="true"]{display:flex}'),'hidden follows every zoom display variant');
