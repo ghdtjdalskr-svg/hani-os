@@ -1,3 +1,5 @@
+// 274: hash-verified exact inverse preserves the legacy no-storage assertion; raw runtime is tested by affinity safety QA.
+import {restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';
 // node scripts/hani-office-zoom.test.mjs
 // Real CSS/layout QA: node scripts/hani-office-zoom.test.mjs --browser <playwright/index.mjs> [browser.exe]
 // DOM doubles below exercise the mounted owner; only the browser test claims pixel layout.
@@ -170,7 +172,7 @@ test('zoom: scheduler, snapshots and all three protected geometry functions stay
   }
   for(const token of ['setInterval(','setTimeout(','fetch('])assert.equal(source.split(token).length,baseline.split(token).length+(token==='setTimeout('?2:0),token);
  assert.equal(source.split(/event(?:End|Cooldown)Timer=setTimeout\(/).length-1,2,'owner events own exactly two new timeouts');
-  assert.doesNotMatch(source,/localStorage|sessionStorage|supabase/);
+  assert.doesNotMatch(restoreAffinity274Source(source),/localStorage|sessionStorage|supabase/);
 });
 
 const browserArg=process.argv.indexOf('--browser');

@@ -326,3 +326,14 @@
 @media(prefers-reduced-motion:reduce){
  .hani-office-live-props .hani-office-live-prop[data-event]{animation:none;background-position:var(--event-static) var(--event-y)}
 }
+
+/* Local affinity: persistent slots, decorative CSS-only motion. */
+.hani-office-character-bubble:has(>.hani-office-affinity:not([hidden])){flex-wrap:wrap}
+.hani-office-affinity{display:block;grid-column:1 / -1;flex:0 0 100%;margin-top:4px;color:#a02659;font-size:11px;line-height:1.5;white-space:nowrap}
+.hani-office-affinity[hidden],.hani-office-affinity-float[hidden]{display:none}
+.hani-office-affinity-float{position:absolute;right:26px;top:2px;font-size:11px;font-weight:700;color:#a02659;pointer-events:none;opacity:0}
+.hani-office-affinity-float[data-beat="a"]{animation:office-affinity-a .8s ease-out both}
+.hani-office-affinity-float[data-beat="b"]{animation:office-affinity-b .8s ease-out both}
+@keyframes office-affinity-a{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-16px)}}
+@keyframes office-affinity-b{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-16px)}}
+@media(prefers-reduced-motion:reduce){.hani-office-affinity-float{display:none;animation:none!important}}

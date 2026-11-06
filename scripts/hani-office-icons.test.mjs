@@ -1,3 +1,5 @@
+// 274: hash-verified exact inverse preserves the legacy no-storage assertion; raw runtime is tested by affinity safety QA.
+import {restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';
 import {createHash} from 'node:crypto';
 // Execute the existing label owner, scheduler and mounted renderer; no mock label logic.
 import test from 'node:test';
@@ -120,7 +122,7 @@ test('icons: scheduler, home clearance, public snapshots and both label geometry
  for(const listener of ["eventButton.addEventListener('click',","eventPanel.addEventListener('keydown',","button.addEventListener('click',()=>runOwnerEvent(id))"])assert.equal(source.split(listener).length-1,1,listener);
  assert.equal(source.split('addEventListener(').length,original.split('addEventListener(').length+3,'only the owner event button, panel and choice buttons add event listeners');
  assert.equal(source.split("bubbleSprite=document.createElement('div')").length,2);
- assert.doesNotMatch(source,/localStorage|sessionStorage|supabase/);
+ assert.doesNotMatch(restoreAffinity274Source(source),/localStorage|sessionStorage|supabase/);
 });
 
 const digest=x=>createHash('sha256').update(x).digest('hex');

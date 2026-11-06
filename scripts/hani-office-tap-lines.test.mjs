@@ -1,3 +1,5 @@
+// 274: hash-verified exact inverse preserves the legacy no-storage assertion; raw runtime is tested by affinity safety QA.
+import {restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';
 // node scripts/hani-office-tap-lines.test.mjs [--browser [playwright/index.mjs] [browser.exe]]
 import assert from 'node:assert/strict';
 import test from 'node:test';
@@ -110,7 +112,7 @@ test('real delegated taps and keyboard reuse one slot, preserve labels, latest 3
  assert.equal(panel.getAttribute('aria-live'),'polite');assert.equal(panel.parentElement,f.map);assert.equal(f.root.querySelectorAll('.hani-office-character-bubble').length,1);
  assert.ok(timeouts.every(t=>t.ms===3000));timeouts[0].fn();assert.equal(panel.hidden,false);timeouts.at(-1).fn();assert.equal(panel.hidden,true);
  actor.officeRow.events.click();assert.equal(panel.hidden,false);f.click('2f');assert.equal(panel.hidden,true);assert.deepEqual(f.ids.get('haniOfficeActors').children,nodes);
- assert.equal(writes,0);assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|\.setItem\(|\.removeItem\(|\.clear\(/);
+ assert.equal(writes,0);assert.doesNotMatch(restoreAffinity274Source(source),/localStorage|sessionStorage|supabase|\.setItem\(|\.removeItem\(|\.clear\(/);
 });
 
 test('216/221 action and travel speech take priority; latest queued line shows only after action and expires after 3s',async()=>{

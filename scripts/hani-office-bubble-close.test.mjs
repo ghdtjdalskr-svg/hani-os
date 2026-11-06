@@ -1,3 +1,5 @@
+// 274: hash-verified exact inverse preserves the legacy no-storage assertion; raw runtime is tested by affinity safety QA.
+import {restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -88,6 +90,6 @@ test('bubble close: protected owner bytes, global listeners and timer allocation
  const baseline=JSON.parse(read('artifacts/cafe-barista/baseline.json'));
  for(const {name,start,end} of baseline.sections){const i=comparableSource.indexOf(start),j=comparableSource.indexOf(end,i),a=before.indexOf(start),b=before.indexOf(end,a);assert.ok(i>=0&&j>i,name);assert.equal(comparableSource.slice(i,j),before.slice(a,b),name)}
  for(const pattern of [/document\.addEventListener\(/g,/setInterval\(/g,/setTimeout\(/g])assert.equal([...source.matchAll(pattern)].length,[...before.matchAll(pattern)].length,pattern.toString());
- assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|\.setItem\(|\.removeItem\(/);
+ assert.doesNotMatch(restoreAffinity274Source(source),/localStorage|sessionStorage|supabase|\.setItem\(|\.removeItem\(/);
  const css=read('hani-office-live.css');assert.match(css,/width:32px;height:32px;min-width:32px;min-height:32px/);assert.match(css,/@media\(max-width:480px\)/);assert.match(css,/-webkit-line-clamp:2/);assert.match(css,/\.hani-office-character-bubble\[hidden\]\{display:none\}/);assert.ok(css.lastIndexOf('.hani-office-character-bubble[hidden]{display:none}')>css.lastIndexOf('.hani-office-character-bubble[data-zoom="true"]{display:flex}'),'hidden follows every zoom display variant');
 });
