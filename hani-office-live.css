@@ -129,6 +129,12 @@
 .hani-office-brand{display:flex;align-items:center;justify-content:center;gap:.6cqw;color:#655076;filter:drop-shadow(.06cqw .12cqw .08cqw #3d294a50)}
 .hani-office-brand-mark{display:block;width:3.1cqw;height:3.1cqw;object-fit:contain}
 .hani-office-brand b{font-family:Georgia,"Times New Roman",serif;font-size:1.65cqw;letter-spacing:.12em;font-weight:600;line-height:1;color:#6b567b;text-shadow:0 -.04cqw #e5d7ed,.06cqw .08cqw #49384f}
+.hani-office-barista{position:absolute;z-index:2;box-sizing:border-box;display:block;margin:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;cursor:pointer;pointer-events:auto}
+.hani-office-barista[hidden],.login-locked .hani-office-barista{display:none}
+/* The shared press scale gives actors a temporary stacking context. */
+#haniOfficeMap:has(.hani-office-actor:active) .hani-office-barista{pointer-events:none}
+#app #haniOfficeMap .hani-office-barista{min-width:0!important;min-height:0!important;max-width:none;transform:none;transition:none}
+.hani-office-barista:focus-visible{outline:2px solid #7656c4;outline-offset:0}
 .hani-office-queen-frame{position:absolute;z-index:2;box-sizing:border-box;display:block;margin:0;padding:0;border:0;border-radius:0;background:transparent;cursor:pointer;pointer-events:auto}
 .hani-office-queen-frame[hidden]{display:none}
 #app #haniOfficeMap .hani-office-queen-frame{min-width:0!important;min-height:0!important}
@@ -152,7 +158,7 @@
 .hani-office-actor[data-walking="true"] .hani-office-prop:not(:empty),.hani-office-actor[data-pose="walk-a"] .hani-office-prop:not(:empty),.hani-office-actor[data-pose="walk-b"] .hani-office-prop:not(:empty),.hani-office-actor[data-behavior="GOING"] .hani-office-prop:not(:empty),.hani-office-actor[data-behavior="RETURNING"] .hani-office-prop:not(:empty){display:none}
 @media(max-width:600px){.hani-office-prop{font-size:14px}}
 .hani-office-character-bubble{position:absolute;z-index:10;box-sizing:border-box;left:4px;top:4px;max-width:calc(100% - 8px);display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0;padding:4px 8px;border:1px solid #d8cce7;border-radius:12px;background:#fffaf0;color:#493752;font-size:13px}
-.hani-office-character-bubble[hidden],.hani-office-character-bubble [hidden]{display:none}.hani-office-character-bubble p{margin:0;overflow-wrap:anywhere}.hani-office-character-bubble a{flex:none;min-height:44px;display:flex;align-items:center;color:#67418b;font-weight:700}
+.hani-office-character-bubble [hidden]{display:none}.hani-office-character-bubble p{margin:0;overflow-wrap:anywhere}.hani-office-character-bubble a{flex:none;min-height:44px;display:flex;align-items:center;color:#67418b;font-weight:700}
 .hani-office-character-bubble[data-zoom="true"]{display:grid;grid-template-columns:max-content minmax(0,1fr);row-gap:0;width:max-content;max-height:var(--bubble-max-height,none);overflow:auto}
 .hani-office-character-bubble[data-zoom="true"] p{grid-column:2;min-width:0;max-height:max(1em,calc(var(--bubble-max-height,174px) - 54px));overflow:auto}
 .hani-office-character-bubble[data-zoom="true"] a{grid-column:2}
@@ -251,3 +257,18 @@
 .hani-office-actor[data-resident="pet"]:not([data-motion]):not([data-life]):not([data-affection]):not([data-pose="sleep"]) .hani-office-sprite{transform:translateY(var(--pet-bob,0px)) rotate(var(--pet-lean,0deg));rotate:var(--pet-spin,0deg)}
 .hani-office-actor[data-pet-pause="ears"]:not([data-motion]):not([data-affection]) .hani-office-sprite{transform:scaleY(1.015)}
 @media(prefers-reduced-motion:reduce){.hani-office-actor[data-resident="pet"] .hani-office-sprite{animation:none!important;transition:none!important;transform:none!important;rotate:none!important}.hani-office-actor[data-resident="pet"]{animation:none!important;transition:none!important}}
+
+/* The same persistent bubble owns close and reading controls. */
+.hani-office-character-bubble{padding-right:38px}
+.hani-office-bubble-close{position:absolute;right:2px;top:2px;box-sizing:border-box;width:32px;height:32px;min-width:32px;min-height:32px;margin:0;padding:0;display:grid;place-items:center;border:0;border-radius:8px;background:transparent;color:inherit;font:inherit;cursor:pointer}
+.hani-office-bubble-close:focus-visible{outline:2px solid #8363b8;outline-offset:-2px}
+@media(max-width:480px){
+ .hani-office-character-bubble,.hani-office-character-bubble[data-zoom="true"]{padding:3px 36px 3px 6px;gap:4px;font-size:11px;line-height:1.3;min-height:36px;max-width:min(280px,calc(100% - 8px));max-height:none;overflow:visible}
+ .hani-office-character-bubble p,.hani-office-character-bubble[data-zoom="true"] p{min-width:0;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;max-height:2.6em;overflow:hidden}
+ .hani-office-character-bubble a{min-height:32px;font-size:11px}
+ .hani-office-bubble-sprite{display:none}
+ .hani-office-character-bubble[data-zoom="true"]{display:flex}
+}
+
+/* Keep parent hiding after every flex/grid variant, including the phone layout. */
+.hani-office-character-bubble[hidden]{display:none}
