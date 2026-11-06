@@ -1,0 +1,290 @@
+[
+  {
+    "file": "hani-office-219.test.mjs:1:1",
+    "title": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-219.test.mjs",
+    "kind": "BLOCKED: spawnSync git EPERM",
+    "error": "'test failed'"
+  },
+  {
+    "file": "hani-office-actions-216.test.mjs:19:1",
+    "title": "approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract",
+    "kind": "BLOCKED: spawnSync git EPERM",
+    "error": "'spawnSync git EPERM'"
+  },
+  {
+    "file": "hani-office-barista.test.mjs:65:1",
+    "title": "barista: plan, blockPlan, snapshot outputs and protected owner bytes preserve the pre-patch baseline",
+    "kind": "source/whole-model pin",
+    "error": "model (all schedules, snapshots, geometry, label placement)\r\n    + actual - expected\r\n    \r\n    + '6ff742bc17df74ce3f5cc7bc8d201549cc8709e4b09e779850d3bac97a4034e5'\r\n    - '7d666366cf953df1fb7e18927dd9a203b21d09e2d20afe2a59a90d9360eae6ff'\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'"
+  },
+  {
+    "file": "hani-office-bubble-close.test.mjs:82:1",
+    "title": "bubble close: protected owner bytes, global listeners and timer allocations are unchanged",
+    "kind": "source/whole-model pin",
+    "error": "entire model including plan, blockPlan and snapshot\r\n    + actual - expected\r\n    ... Skipped lines\r\n    \r\n      '/* V2 metadata is read-only; a failed metadata request keeps the production renderer. */\\n' +\r\n        '(async () => {\\n' +\r\n        '  const Math=globalThis.Math,Map=globalThis.Map,Set=globalThis.Set,Infinity=globalThis.Infinity;\\n' +\r\n        '  let assets=globalThis.HaniOfficeV2Assets||null,seededPlaces=null;\\n' +"
+  },
+  {
+    "file": "hani-office-cafe-rest.test.mjs:10:1",
+    "title": "cafe route uses clear lower-right floor, retains the lounge and sign mounting surface",
+    "kind": "BLOCKED: spawnSync git EPERM",
+    "error": "'spawnSync git EPERM'"
+  },
+  {
+    "file": "hani-office-chairman-234.test.mjs:1:1",
+    "title": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-chairman-234.test.mjs",
+    "kind": "BLOCKED: spawnSync git EPERM",
+    "error": "'test failed'"
+  },
+  {
+    "file": "hani-office-consult.test.mjs:80:1",
+    "title": "consult: sofa wording, counter words, safety owners and runtime timers",
+    "kind": "BLOCKED: spawnSync git EPERM",
+    "error": "'spawnSync git EPERM'"
+  },
+  {
+    "file": "hani-office-consult.test.mjs:98:1",
+    "title": "consult: separately authored full plans and reverse snapshots retain exact identity in both presence states",
+    "kind": "source/whole-model pin",
+    "error": "only the approved G source is accepted\r\n    + actual - expected\r\n    \r\n    + '447edb86def004395e66af6aa79950280c23f3698f53af28db8d1f6fe6f6b148'\r\n    - '23bfee4131e163aa30453e5579452d364d4ec2455b382c15b67a45ffd5c25710'\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'"
+  },
+  {
+    "file": "hani-office-icons.test.mjs:111:1",
+    "title": "icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc",
+    "kind": "source/whole-model pin",
+    "error": "only the approved G source is accepted\r\n    + actual - expected\r\n    \r\n    + '447edb86def004395e66af6aa79950280c23f3698f53af28db8d1f6fe6f6b148'\r\n    - '23bfee4131e163aa30453e5579452d364d4ec2455b382c15b67a45ffd5c25710'\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'"
+  },
+  {
+    "file": "hani-office-lively-v2.test.mjs:90:1",
+    "title": "obr2: deterministic query order, reduced motion and frozen spatial bytes",
+    "kind": "BLOCKED: spawnSync git EPERM",
+    "error": "'spawnSync git EPERM'"
+  },
+  {
+    "file": "hani-office-motion-1.test.mjs:26:1",
+    "title": "approved consultation scheduler source stays frozen, including every route and arrival calculation",
+    "kind": "source/whole-model pin",
+    "error": "only the approved G source is accepted\r\n    + actual - expected\r\n    \r\n    + '447edb86def004395e66af6aa79950280c23f3698f53af28db8d1f6fe6f6b148'\r\n    - '23bfee4131e163aa30453e5579452d364d4ec2455b382c15b67a45ffd5c25710'\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'"
+  },
+  {
+    "file": "hani-office-obr12.test.mjs:1:1",
+    "title": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-obr12.test.mjs",
+    "kind": "BLOCKED: spawnSync git EPERM",
+    "error": "'test failed'"
+  },
+  {
+    "file": "hani-office-obr14.test.mjs:10:1",
+    "title": "235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism",
+    "kind": "BLOCKED: spawnSync git EPERM",
+    "error": "'spawnSync git EPERM'"
+  },
+  {
+    "file": "hani-office-obr15.test.mjs:30:1",
+    "title": "obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately",
+    "kind": "BLOCKED: spawnSync git EPERM",
+    "error": "'spawnSync git EPERM'"
+  },
+  {
+    "file": "hani-office-obr21.test.mjs:39:1",
+    "title": "obr21 authored full absent/present plans and reverse snapshots match frozen delta",
+    "kind": "source/whole-model pin",
+    "error": "only the approved G source is accepted\r\n    + actual - expected\r\n    \r\n    + '447edb86def004395e66af6aa79950280c23f3698f53af28db8d1f6fe6f6b148'\r\n    - '23bfee4131e163aa30453e5579452d364d4ec2455b382c15b67a45ffd5c25710'\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'"
+  },
+  {
+    "file": "hani-office-obr21.test.mjs:103:1",
+    "title": "obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+    "kind": "BLOCKED: spawnSync git EPERM",
+    "error": "'spawnSync git EPERM'"
+  },
+  {
+    "file": "hani-office-obr21.test.mjs:120:1",
+    "title": "obr21 cached gathering/index decisions equal full index rebuilds",
+    "kind": "BLOCKED: spawnSync git EPERM",
+    "error": "'spawnSync git EPERM'"
+  },
+  {
+    "file": "hani-office-obr4.test.mjs:12:1",
+    "title": "obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+    "kind": "BLOCKED: spawnSync git EPERM",
+    "error": "'spawnSync git EPERM'"
+  },
+  {
+    "file": "hani-office-obr4.test.mjs:25:1",
+    "title": "obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats",
+    "kind": "BLOCKED: spawnSync git EPERM",
+    "error": "'spawnSync git EPERM'"
+  },
+  {
+    "file": "hani-office-obr6.test.mjs:1:1",
+    "title": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-obr6.test.mjs",
+    "kind": "BLOCKED: spawnSync git EPERM",
+    "error": "'test failed'"
+  },
+  {
+    "file": "hani-office-obr7.test.mjs:1:1",
+    "title": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-obr7.test.mjs",
+    "kind": "BLOCKED: spawnSync git EPERM",
+    "error": "'test failed'"
+  },
+  {
+    "file": "hani-office-obr8.test.mjs:34:1",
+    "title": "obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words",
+    "kind": "BLOCKED: spawnSync git EPERM",
+    "error": "'spawnSync git EPERM'"
+  },
+  {
+    "file": "hani-office-obr9.test.mjs:1:1",
+    "title": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-obr9.test.mjs",
+    "kind": "BLOCKED: spawnSync git EPERM",
+    "error": "'test failed'"
+  },
+  {
+    "file": "hani-office-pets-bubble.test.mjs:90:1",
+    "title": "model plan/blockPlan/snapshot and all model helpers stay byte identical; no extra loops, listeners or nodes",
+    "kind": "source/whole-model pin",
+    "error": "Expected values to be strictly equal:\r\n    + actual - expected\r\n    ... Skipped lines\r\n    \r\n      '/* V2 metadata is read-only; a failed metadata request keeps the production renderer. */\\n' +\r\n        '(async () => {\\n' +\r\n        '  const Math=globalThis.Math,Map=globalThis.Map,Set=globalThis.Set,Infinity=globalThis.Infinity;\\n' +\r\n        '  let assets=globalThis.HaniOfficeV2Assets||null,seededPlaces=null;\\n' +"
+  },
+  {
+    "file": "hani-office-props.test.mjs:87:1",
+    "title": "props: scheduler/plan/blockPlan/snapshot/labels/home-clear source bytes and all six assets are unchanged",
+    "kind": "source/whole-model pin",
+    "error": "fitStatusLabels\r\n    + actual - expected\r\n    \r\n    + '638089f0ae1fe6f0f46a8c267f1c574b4a2409ba7e1223f4242651cac786f1dd'\r\n    - 'e7f807dd9110c0e44fd613c528b2cdf8c2f75df3e442ded716f768b9bdd0c3ac'\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'"
+  },
+  {
+    "file": "hani-office-residents.test.mjs:57:1",
+    "title": "resident occupancy stays separate for multiple days and moving as well as resting residents",
+    "kind": "changed resident behavior fixture",
+    "error": "shared stops cannot fit both bodies: later resident waits offscreen\r\n    \r\n    3 !== 2\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'\r\n  expected: 2\r\n  actual: 3"
+  },
+  {
+    "file": "hani-office-residents.test.mjs:66:1",
+    "title": "unchanged residents perform no DOM writes on the shared clock",
+    "kind": "changed resident behavior fixture",
+    "error": "Expected values to be strictly equal:\r\n    \r\n    56 !== 0\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'\r\n  expected: 0\r\n  actual: 56"
+  },
+  {
+    "file": "hani-office-residents.test.mjs:110:1",
+    "title": "eight approved atlases decode, match their manifest hashes, load through the real owner and enter the closure",
+    "kind": "source/whole-model pin",
+    "error": "only the approved G source is accepted\r\n    + actual - expected\r\n    \r\n    + '447edb86def004395e66af6aa79950280c23f3698f53af28db8d1f6fe6f6b148'\r\n    - '23bfee4131e163aa30453e5579452d364d4ec2455b382c15b67a45ffd5c25710'\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'"
+  },
+  {
+    "file": "hani-office-residents.test.mjs:223:1",
+    "title": "stable quarter-hour visits use only resting staff on the same floor and never visitors or travellers",
+    "kind": "changed resident behavior fixture",
+    "error": "\"Cannot read properties of null (reading 'partnerId')\""
+  },
+  {
+    "file": "hani-office-residents.test.mjs:262:1",
+    "title": "interaction routes and dwell spots clear full furniture envelopes and staff snapshots/plans remain byte-identical on and off",
+    "kind": "source/whole-model pin",
+    "error": "only the approved G source is accepted\r\n    + actual - expected\r\n    \r\n    + '447edb86def004395e66af6aa79950280c23f3698f53af28db8d1f6fe6f6b148'\r\n    - '23bfee4131e163aa30453e5579452d364d4ec2455b382c15b67a45ffd5c25710'\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'"
+  },
+  {
+    "file": "hani-office-residents.test.mjs:285:1",
+    "title": "actual delegated pet taps show both speakers, automatic scene uses existing bubble, and all persistence/AI paths remain unused",
+    "kind": "source/whole-model pin",
+    "error": "only the approved G source is accepted\r\n    + actual - expected\r\n    \r\n    + '447edb86def004395e66af6aa79950280c23f3698f53af28db8d1f6fe6f6b148'\r\n    - '23bfee4131e163aa30453e5579452d364d4ec2455b382c15b67a45ffd5c25710'\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'"
+  },
+  {
+    "file": "hani-office-residents.test.mjs:300:1",
+    "title": "all decoded pose tops drive the existing label flow at phone and desktop widths without frame layout reads",
+    "kind": "changed resident behavior fixture",
+    "error": "packing uses real art top\r\n    + actual - expected\r\n    \r\n    + 94.10087719298244\r\n    - 98.10087719298244\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'"
+  },
+  {
+    "file": "hani-office-residents.test.mjs:348:1",
+    "title": "every original source byte and staff/visitor plan, outing and snapshot stays identical with residents on or off",
+    "kind": "source/whole-model pin",
+    "error": "only the approved G source is accepted\r\n    + actual - expected\r\n    \r\n    + '447edb86def004395e66af6aa79950280c23f3698f53af28db8d1f6fe6f6b148'\r\n    - '23bfee4131e163aa30453e5579452d364d4ec2455b382c15b67a45ffd5c25710'\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'"
+  },
+  {
+    "file": "hani-office-residents.test.mjs:384:1",
+    "title": "existing delegated tap/keyboard bubbles use short local lines, pet hop, no profile or writes; hidden/reduced clocks stay still",
+    "kind": "changed resident behavior fixture",
+    "error": "Expected values to be strictly equal:\r\n    \r\n    undefined !== 'hop'\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'\r\n  expected: 'hop'\r\n  operator: 'strictEqual'"
+  },
+  {
+    "file": "hani-office-residents.test.mjs:407:1",
+    "title": "Mochi schedule covers quiet 3F mornings, 4F days, 1F evenings, midnight continuity and 02..07 sleep",
+    "kind": "changed resident behavior fixture",
+    "error": "Expected values to be strictly equal:\r\n    \r\n    '1f' !== '4f'\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'\r\n  expected: '4f'\r\n  actual: '1f'"
+  },
+  {
+    "file": "hani-office-residents.test.mjs:416:1",
+    "title": "Mochi uses eased hops around 18px/sec every 120..180 seconds, with longer rests and whole-body clearance",
+    "kind": "changed resident behavior fixture",
+    "error": "Expected values to be strictly equal:\r\n    \r\n    true !== false\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'\r\n  expected: false\r\n  actual: true"
+  },
+  {
+    "file": "hani-office-residents.test.mjs:447:1",
+    "title": "trio rejects missing/different-floor/sleeping pets and staff-blocked floor; plan and snapshot bytes stay frozen",
+    "kind": "source/whole-model pin",
+    "error": "only the approved G source is accepted\r\n    + actual - expected\r\n    \r\n    + '447edb86def004395e66af6aa79950280c23f3698f53af28db8d1f6fe6f6b148'\r\n    - '23bfee4131e163aa30453e5579452d364d4ec2455b382c15b67a45ffd5c25710'\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'"
+  },
+  {
+    "file": "hani-office-residents.test.mjs:461:1",
+    "title": "seeded Cheese and Cream spots change within two minutes; NPC quarters and all staff plans stay frozen",
+    "kind": "source/whole-model pin",
+    "error": "only the approved G source is accepted\r\n    + actual - expected\r\n    \r\n    + '447edb86def004395e66af6aa79950280c23f3698f53af28db8d1f6fe6f6b148'\r\n    - '23bfee4131e163aa30453e5579452d364d4ec2455b382c15b67a45ffd5c25710'\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'"
+  },
+  {
+    "file": "hani-office-residents.test.mjs:489:1",
+    "title": "real pet hearts reuse one mounted node, pair taps override trio during affection, and reduced motion is still with zero writes",
+    "kind": "source/whole-model pin",
+    "error": "only the approved G source is accepted\r\n    + actual - expected\r\n    \r\n    + '447edb86def004395e66af6aa79950280c23f3698f53af28db8d1f6fe6f6b148'\r\n    - '23bfee4131e163aa30453e5579452d364d4ec2455b382c15b67a45ffd5c25710'\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'"
+  },
+  {
+    "file": "hani-office-residents.test.mjs:506:1",
+    "title": "life signs repeat every 10..20 seconds, cover four gestures, and sleep or reduced motion suppresses them",
+    "kind": "changed resident behavior fixture",
+    "error": "The expression evaluated to a falsy value:\r\n    \r\n      assert.ok(times[i]-times[i-1]>=9.9&&times[i]-times[i-1]<=20.1)\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'\r\n  expected: true\r\n  actual: false"
+  },
+  {
+    "file": "hani-office-residents.test.mjs:544:1",
+    "title": "pet nominal speeds vary per leg around Cream 48, Cheese 40 and Mochi 18 while periods remain stable over days",
+    "kind": "changed resident behavior fixture",
+    "error": "The expression evaluated to a falsy value:\r\n    \r\n      assert.ok(period>=(id==='pet-rabbit'?120:60)&&period<=(id==='pet-rabbit'?180:120))\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'\r\n  expected: true\r\n  actual: false"
+  },
+  {
+    "file": "hani-office-residents.test.mjs:560:1",
+    "title": "pet easing moves less at both ends than in the middle, with seeded per-leg speeds and variable launch rests",
+    "kind": "changed resident behavior fixture",
+    "error": "The expression evaluated to a falsy value:\r\n    \r\n      assert.ok(rests.size>1)\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'\r\n  expected: true\r\n  actual: false"
+  },
+  {
+    "file": "hani-office-residents.test.mjs:574:1",
+    "title": "a seeded day includes reproducible one-to-three second mid-route pauses followed by onward movement",
+    "kind": "changed resident behavior fixture",
+    "error": "'pet-rabbit has an actual paused snapshot'"
+  },
+  {
+    "file": "hani-office-snack.test.mjs:131:1",
+    "title": "snack: scheduler/snapshot/geometry/residents bytes and complete sampled model JSON preserve c301a13",
+    "kind": "source/whole-model pin",
+    "error": "fitStatusLabels\r\n    + actual - expected\r\n    \r\n    + '638089f0ae1fe6f0f46a8c267f1c574b4a2409ba7e1223f4242651cac786f1dd'\r\n    - 'e7f807dd9110c0e44fd613c528b2cdf8c2f75df3e442ded716f768b9bdd0c3ac'\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'"
+  },
+  {
+    "file": "hani-office-tlayout.test.mjs:33:1",
+    "title": "only the five pinned source fragments change; protected home and label owners are byte identical",
+    "kind": "source/whole-model pin",
+    "error": "only the approved G source is accepted\r\n    + actual - expected\r\n    \r\n    + '447edb86def004395e66af6aa79950280c23f3698f53af28db8d1f6fe6f6b148'\r\n    - '23bfee4131e163aa30453e5579452d364d4ec2455b382c15b67a45ffd5c25710'\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'"
+  },
+  {
+    "file": "hani-office-tlayout.test.mjs:39:1",
+    "title": "16 separately authored complete plan/outings/reverse-snapshot outputs have no exclusions",
+    "kind": "source/whole-model pin",
+    "error": "hani-office-live.js exact input\r\n    + actual - expected\r\n    \r\n    + '447edb86def004395e66af6aa79950280c23f3698f53af28db8d1f6fe6f6b148'\r\n    - '23bfee4131e163aa30453e5579452d364d4ec2455b382c15b67a45ffd5c25710'\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'"
+  },
+  {
+    "file": "hani-office-v2-215.test.mjs:16:1",
+    "title": "frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture",
+    "kind": "BLOCKED: spawnSync git EPERM",
+    "error": "'spawnSync git EPERM'"
+  },
+  {
+    "file": "hani-office-zoom.test.mjs:147:1",
+    "title": "zoom: scheduler, snapshots and all three protected geometry functions stay byte identical to task base",
+    "kind": "source/whole-model pin",
+    "error": "only the approved G source is accepted\r\n    + actual - expected\r\n    \r\n    + '447edb86def004395e66af6aa79950280c23f3698f53af28db8d1f6fe6f6b148'\r\n    - '23bfee4131e163aa30453e5579452d364d4ec2455b382c15b67a45ffd5c25710'\r\n    \r\n  code: 'ERR_ASSERTION'\r\n  name: 'AssertionError'"
+  }
+]

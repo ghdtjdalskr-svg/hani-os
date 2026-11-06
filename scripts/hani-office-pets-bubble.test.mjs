@@ -93,3 +93,119 @@ test('model plan/blockPlan/snapshot and all model helpers stay byte identical; n
  for(const regex of [/document\.addEventListener\(/g,/addEventListener\(/g,/createElement\(/g,/setInterval\(/g,/setTimeout\(/g])assert.equal([...after.matchAll(regex)].length,[...before.matchAll(regex)].length,regex.toString());
  for(const regex of [/localStorage\.[a-zA-Z]+\(/g,/sessionStorage\.[a-zA-Z]+\(/g])assert.deepEqual(after.match(regex),before.match(regex));
 });
+
+// Round 2 adds checks; the round 1 assertions above remain verbatim, including
+// its now-stale whole-model pin. Staff-only preservation is checked separately.
+const petIds=['pet-cat','pet-dog','pet-rabbit'];
+const plain=x=>JSON.parse(JSON.stringify(x));
+test('round2: a manual pet tap takes priority over the pending entrance gesture',async()=>{
+ const x=await mount({seconds:36003}),pet=x.f.visible().find(a=>a.dataset.resident==='pet'&&a.dataset.walking==='false');assert.ok(pet);
+ x.tap(pet);await x.advance(100);assert.equal(pet.dataset.motion,'hop');assert.equal(x.panel.hidden,false);assert.deepEqual(x.writes,[]);
+});
+test('round2: sleeping pets do not greet automatically, but a manual tap still gets one hop',async()=>{
+ const x=await mount({seconds:10800}),pets=x.f.visible().filter(a=>a.dataset.resident==='pet');assert.equal(pets.length,3);
+ for(let i=0;i<60;i++){await x.advance(100);for(const pet of pets){assert.equal(pet.dataset.pose,'sleep');assert.equal(pet.dataset.motion,undefined)}}
+ x.tap(pets[0]);await x.advance(100);assert.equal(pets[0].dataset.motion,'hop');assert.deepEqual(x.writes,[]);
+});
+test('round2: every visible pet starts a queued gesture within ten seconds of entering its floor',async()=>{
+ for(const seconds of [36000,36003,46800,61426,61427,72000])for(const floor of ['1f','2f','3f','5f']){
+  const x=await mount({seconds,floor}),pets=x.f.visible().filter(a=>a.dataset.resident==='pet'),started=new Set();
+  for(const pet of pets)assert.equal(pet.officePetFloor,floor,'entrance gesture armed on the visible floor');
+  for(let t=0;t<100;t++){await x.advance(100);for(const pet of pets)if(pet.dataset.motion)started.add(pet.dataset.person)}
+  for(const pet of pets)assert.ok(started.has(pet.dataset.person),`${seconds} ${floor} ${pet.dataset.person}`);
+  assert.deepEqual(x.writes,[]);
+ }
+});
+
+test('round2: six-second gestures are staggered, use all four kinds and change existing atlas rows',async()=>{
+ const x=await mount({seconds:72000}),r=x.f.context.HaniBuildingScene.residents,starts=new Map(),kinds=new Set(),previous=new Map();
+ for(const id of petIds)previous.set(id,r.life(at('2026-11-06',72000),[{id,pet:true,pose:'sitting'}],false)[0].life?.key);
+ for(let sec=72000;sec<72060;sec+=.1){
+  for(const id of petIds){const p=r.life(at('2026-11-06',sec),[{id,pet:true,pose:'sitting'}],false)[0];
+   if(p.life&&previous.get(id)!==p.life.key){previous.set(id,p.life.key);kinds.add(p.life.kind);const times=starts.get(id)||[];times.push(sec);starts.set(id,times)}
+  }
+ }
+ assert.deepEqual([...kinds].sort(),['hop','sit-stand','turn','wag']);
+ for(const times of starts.values()){assert.ok(times.length>=9);for(let i=1;i<times.length;i++)assert.ok(times[i]-times[i-1]>=4&&times[i]-times[i-1]<=8)}
+ const all=[...starts].flatMap(([id,times])=>times.map(t=>({id,t}))).sort((a,b)=>a.t-b.t);
+ for(let i=1;i<all.length;i++)assert.ok(all[i].t-all[i-1].t>=1.9,'different pets start two seconds apart');
+ const pet=x.f.visible().find(a=>a.dataset.resident==='pet'),sprite=pet.querySelector('.hani-office-sprite'),frames=new Map();
+ for(let t=0;t<300;t++){await x.advance(100);if(pet.dataset.life==='turn')frames.set(pet.dataset.facing,sprite.style.backgroundPosition)}
+ assert.equal(frames.size,2,'left and right atlas frames both rendered');assert.equal(new Set(frames.values()).size,2);
+ assert.deepEqual(x.writes,[]);
+ const css=read('hani-office-live.css');assert.match(css,/@keyframes hani-pet-hop\{[^\n]+translateY\(-3px\)/);assert.match(css,/@keyframes hani-pet-wag\{[^\n]+rotate\(7deg\)/);
+});
+
+test('round2: walks start within the new windows and every sampled body stays on existing safe routes',async()=>{
+ const x=await mount(),model=x.f.context.HaniBuildingScene,r=model.residents;
+ for(const day of ['2026-11-02','2026-11-06','2026-11-07'])for(const start of [36000,46800,72000]){
+  const starts=new Map(petIds.map(id=>[id,[]])),last=new Map();
+  for(let t=0;t<=140;t+=.2){
+   const now=at(day,start+t),states=r.snapshot(now,null,true,false,false);
+   for(const pet of states.filter(p=>p.pet)){
+    assert.equal(r.safe(pet.floor,pet.point,pet.position),true,pet.id+' safe whole body');
+    assert.ok(r.people.find(p=>p.id===pet.id).places[pet.floor],pet.id+' stays on an allowed floor');
+    const beat=r.rhythm(pet.id,day,start+t).beat;
+    if(pet.walking&&last.get(pet.id)!==beat){starts.get(pet.id).push(t);last.set(pet.id,beat)}
+   }
+  }
+  for(const id of petIds){const times=starts.get(id),max=id==='pet-rabbit'?45:30,min=id==='pet-rabbit'?25:15;
+   assert.ok(times.length>=2,id+' repeated walks');assert.ok(times[0]<=max,id+' first walk');
+   for(let i=1;i<times.length;i++)assert.ok(times[i]-times[i-1]>=min-.21&&times[i]-times[i-1]<=max+.21,`${id} interval ${times[i]-times[i-1]}`);
+   const rhythm=r.rhythm(id,day,start);assert.ok(rhythm.period>=min&&rhythm.period<=max);
+  }
+ }
+ assert.deepEqual(x.writes,[]);
+});
+
+test('round2: reduced motion fixes pets for a full minute and hidden floors retain no advancing state',async()=>{
+ for(const [floor,seconds] of [['1f',46800],['2f',36000],['3f',36000],['5f',46800]]){
+  const x=await mount({floor,seconds,reduced:true}),pets=x.f.visible().filter(a=>a.dataset.resident==='pet'),positions=pets.map(a=>plain(a.officePosition));
+  for(let i=0;i<60;i++){await x.advance(1000);pets.forEach((pet,n)=>{assert.deepEqual(plain(pet.officePosition),positions[n]);assert.equal(pet.dataset.life,undefined);assert.equal(pet.dataset.motion,undefined);assert.equal(pet.dataset.walking,'false');assert.equal(pet.style['--pet-bob'],'0px')})}
+  assert.deepEqual(x.writes,[]);
+ }
+ const x=await mount(),pets=x.f.ids.get('haniOfficeActors').children.filter(a=>a.dataset.resident==='pet');
+ const hidden=pets.filter(a=>a.hidden),before=hidden.map(a=>a.officeResidentState);
+ for(let i=0;i<100;i++)await x.advance(100);hidden.forEach((a,i)=>assert.equal(a.officeResidentState,before[i]));
+ x.f.hide();const states=pets.map(a=>a.officeResidentState);for(let i=0;i<100;i++)await x.advance(100);pets.forEach((a,i)=>assert.equal(a.officeResidentState,states[i]));assert.equal(x.f.root.dataset.paused,'true');assert.deepEqual(x.writes,[]);
+});
+
+test('round2: all three pets are present for at least 95 percent of working-day samples',async()=>{
+ const x=await mount(),model=x.f.context.HaniBuildingScene,r=model.residents;
+ for(const day of ['2026-11-02','2026-11-06','2026-11-07']){
+  const counts=Object.fromEntries(petIds.map(id=>[id,0]));let samples=0;
+  for(let seconds=9*3600;seconds<18*3600;seconds+=60){samples++;const now=at(day,seconds),staff=model.snapshot(now,{chairmanPresent:false}),bytes=JSON.stringify(staff),pets=r.snapshot(now,staff).filter(p=>p.pet);
+   assert.equal(JSON.stringify(staff),bytes,'resident snapshots do not mutate staff input');
+   for(const pet of pets){counts[pet.id]++;assert.equal(r.safe(pet.floor,pet.point,pet.position),true);if(pet.id==='pet-rabbit')assert.equal(pet.floor,seconds<43200?'3f':'1f')}
+  }
+  for(const id of petIds)assert.ok(counts[id]/samples>=.95,day+' '+id+' '+counts[id]+'/'+samples);
+ }
+ assert.deepEqual(x.writes,[]);
+});
+
+test('round2: staff scheduler and snapshot source bytes stay identical; timer/listener/node/storage paths do not increase',()=>{
+ const before=read('artifacts/office-pets-bubble/round2-before-source.txt'),after=read('hani-office-live.js');
+ const section=(s,a,b)=>{const i=s.indexOf(a),j=s.indexOf(b,i);assert.ok(i>=0&&j>i);return s.slice(i,j)};
+ for(const [a,b]of [['  function createScheduler(','  // Read-only label geometry'],['  function snapshot(now=new Date()','  function profile('],['  function createPresence(','/* Read-only Living Office.']])assert.equal(section(after,a,b),section(before,a,b),a);
+ for(const regex of [/document\.addEventListener\(/g,/addEventListener\(/g,/createElement\(/g,/setInterval\(/g,/setTimeout\(/g,/requestAnimationFrame\(/g,/\bfetch\(/g])assert.equal([...after.matchAll(regex)].length,[...before.matchAll(regex)].length,regex.toString());
+ assert.doesNotMatch(after,/localStorage|sessionStorage|supabase|\bsave\s*\(/);
+});
+
+test('round2: the existing label packer reserves the full pet gesture envelope at PC and phone scale',async()=>{
+ for(const width of [390,1280]){
+  const x=await mount({width,seconds:72000}),owner=x.f.context.HaniBuildingScene,captured=[];
+  const rect=(left,top,width,height)=>({left,top,width,height,right:left+width,bottom:top+height});
+  x.f.map.getBoundingClientRect=()=>rect(0,0,width,width*941/1672);
+  for(const a of x.f.ids.get('haniOfficeActors').children){
+   const height=Math.max(40,width*.068);a.getBoundingClientRect=()=>rect(parseFloat(a.style.left)*width/100-height/3,parseFloat(a.style.top)*width*941/167200-height,height*2/3,height);
+   for(const n of a.querySelectorAll('*'))n.getBoundingClientRect=()=>rect(0,0,24,10);
+  }
+  x.f.context.HaniBuildingScene={...owner,labels:{...owner.labels,place(floor,groups,obstacles){captured.push(...groups);return owner.labels.place(floor,groups,obstacles)}}};
+  x.f.click('1f');assert.ok(captured.some(g=>g.id==='pet-rabbit'));
+  for(const g of captured){const actor=x.f.ids.get('haniOfficeActors').children.find(a=>a.dataset.person===g.id),base=owner.motion.stableSpriteBox(actor,owner.motion.stableActorBox(actor));
+   if(actor.dataset.resident==='pet'){const pad=Math.max(4,base.height*.14);assert.equal(g.sprite.top,base.top-pad);assert.equal(g.sprite.width,base.width+2*pad);assert.ok(pad>=3,'hop clearance');assert.ok(pad>=base.height*Math.sin(7*Math.PI/180),'wiggle clearance')}
+   else assert.deepEqual(plain(g.sprite),plain(base));
+  }
+  assert.deepEqual(x.writes,[]);
+ }
+});
