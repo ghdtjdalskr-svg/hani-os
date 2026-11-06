@@ -1358,3 +1358,232 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
   refresh();setTimeout(refresh,120);
   console.info('[HANI OS] v2.9.119 Library and viewing archive UX ready');
 })();
+
+// BEGIN HANI HELPER BOT · read-only daily duty / one persistent slot
+(() => {
+  'use strict';
+  if (window.HaniHelperBot) return;
+  const DAY = 86400000, KST = 9 * 3600000;
+  const HELP = Object.freeze({
+    home: '오늘의 흐름과 소식을 한눈에 볼 수 있어요. 필요한 항목을 눌러 자세히 살펴보세요.',
+    intake: '떠오른 메모나 요청을 인포데스크에 적어 보세요. 안내된 내용을 확인하고 다음 단계로 가면 돼요.',
+    tasks: '할 일을 날짜와 상태별로 살펴볼 수 있어요. 오늘 할 일부터 하나씩 확인해 보세요.',
+    agentReview: '사무실에서 직원들의 하루를 구경할 수 있어요. 층을 바꾸거나 직원을 눌러 인사해 보세요.',
+    organization: '팀과 직원 소개, 회사 연혁을 볼 수 있어요. 궁금한 팀이나 얼굴을 눌러 보세요.',
+    ilbo: '하니 일보에서 회사 소식과 지난 신문을 읽을 수 있어요. 발행일을 골라 살펴보세요.',
+    board: '하니 라운지의 글과 대화를 둘러볼 수 있어요. 관심 있는 게시판을 골라 보세요.',
+    investmentCommittee: '투자 리포트에서 리서치와 월간 자료를 확인할 수 있어요. 상단 탭으로 보고 싶은 자료를 고르세요.',
+    investment: '투자 기록과 포트폴리오를 살펴볼 수 있어요. 기준 날짜와 계좌를 먼저 확인해 보세요.',
+    investmentIntake: '투자 자료를 입력하고 내용을 검토하는 화면이에요. 반영 전 미리보기를 확인해 보세요.',
+    asset: '자산 현황과 구성을 함께 볼 수 있어요. 각 항목의 기준 시점을 확인해 보세요.',
+    ledger: '월별 가계부와 소비 흐름을 살펴볼 수 있어요. 보고 싶은 달을 먼저 고르세요.',
+    newsroom: '뉴스와 주간 아카이브를 읽을 수 있어요. 분야나 날짜를 골라 관심 소식을 찾아보세요.',
+    diet: '몸의 변화와 식사 기록을 살펴볼 수 있어요. 하루 수치보다 기간별 흐름을 확인해 보세요.',
+    exercise: '운동 기록과 활동 흐름을 볼 수 있어요. 기간을 골라 꾸준히 이어 온 날들을 살펴보세요.',
+    reading: '읽은 책과 읽고 싶은 책을 모아 볼 수 있어요. 새 기록은 입력 영역을 열어 적으면 돼요.',
+    study: '학습 프로젝트와 퀴즈를 확인할 수 있어요. 진행 중인 학습이나 복습할 내용을 골라 보세요.',
+    university: '학기와 과목, 학사일정을 확인하는 공간이에요. 현재 학기부터 살펴보세요.',
+    certificate: '자격증과 공부 계획을 정리하는 공간이에요. 목표와 준비 일정을 확인해 보세요.',
+    wishlist: '관심 있는 물건과 구매 기록을 볼 수 있어요. 필요한 것부터 천천히 비교해 보세요.',
+    travel: '여행 계획과 다녀온 곳을 모아 볼 수 있어요. 여행을 골라 일정과 장소를 확인해 보세요.',
+    movie: '본 작품과 보고 싶은 작품을 모아 볼 수 있어요. 새 기록은 입력 영역에서 시작하세요.',
+    game: '스포츠 소식과 기록을 볼 수 있어요. 상단 종목 탭을 골라 둘러보세요.',
+    diary: '하루의 기억을 남기는 공간이에요. 작성할 날짜와 기존 기록을 먼저 확인해 보세요.',
+    calendar: '날짜별 일정을 확인할 수 있어요. 보고 싶은 날이나 달로 이동해 보세요.',
+    work: '업무와 진행 상황을 정리하는 공간이에요. 지금 필요한 항목부터 확인해 보세요.',
+    drive: '연결된 드라이브의 파일을 찾는 공간이에요. 연결 상태와 대상 폴더를 확인해 보세요.',
+    monthlyReport: '월간·분기·연간 흐름을 보고서로 살펴볼 수 있어요. 먼저 기간을 골라 보세요.',
+    milestones: '함께 쌓아 온 주요 기록을 볼 수 있어요. 관심 있는 항목을 펼쳐 보세요.',
+    aiWork: 'AI 직원의 업무와 결과를 확인하는 공간이에요. 담당자와 작업 내용을 함께 살펴보세요.',
+    dev: '개발 계획과 진행 기록을 확인할 수 있어요. 항목별 설명을 살펴보세요.',
+    geminiReports: '분석 보고서를 모아 읽는 공간이에요. 보고 싶은 자료를 골라 보세요.',
+    deployment: '배포 준비와 검증 상태를 확인하는 공간이에요. 후보와 검사 결과를 먼저 살펴보세요.',
+    aiBudget: 'AI 사용 현황을 확인하는 공간이에요. 기간과 표시된 기준을 함께 살펴보세요.',
+    settings: '화면과 연결 설정을 확인할 수 있어요. 바꾸려는 항목의 설명부터 읽어 보세요.',
+    aura: '테마 스튜디오에서 화면 색과 분위기를 고를 수 있어요. 미리보기를 보며 편안한 조합을 찾아보세요.'
+  });
+  const FALLBACK = '이 화면의 제목과 항목을 먼저 살펴보세요. 아래 바로가기로 주요 화면에 이동할 수 있어요.';
+  // Two missing time bands in the existing tap bank; public character voices only.
+  const WARM = Object.freeze({
+    hani: ['점심엔 잠깐 쉬자. 오후 방향은 같이 잡으면 돼♡', '늦은 밤이네. 새 아이디어는 내일 같이 펼쳐보자♡'],
+    yuna: ['점심 안내도 제가 맡을게요! 잠깐 쉬었다 가세요!', '야간 안내는 제가 맡을게요. 편히 쉬세요!'],
+    mir: ['점심의 짧은 쉼도 좋은 연결점이 되겠네요.', '밤의 생각은 잠시 접어두어도 괜찮아요.'],
+    seoyun: ['점심에는 잠깐 환기해요. 다음 순서는 차분히 잡을게요.', '늦었네요. 이어 볼 지점은 내일 차분히 짚어봐요.'],
+    dohyun: ['점심엔 손도 눈도 쉬어가요. 한 단계씩 가면 돼요.', '오늘은 여기까지도 좋아요. 내일 한 단계 이어가요.'],
+    serin: ['점심엔 다른 풍경도 볼까요? 뜻밖의 힌트가 있거든요.', '밤에는 생각을 느슨하게 풀어도 좋아요.'],
+    yuri: ['점심 휴식도 확인 완료! 편히 쉬었다 오세요.', '늦은 밤이네요. 충분히 쉬는지도 챙겨주세요.'],
+    arin: ['점심엔 창밖도 봐요. 눈이 편해야 화면도 잘 보이죠.', '화면은 잠시 내려두고 눈도 쉬어주세요.'],
+    gaeun: ['점심 시간의 여유도 챙겨주세요. 안내는 제가 도울게요.', '늦은 호출도 괜찮아요. 그래도 휴식은 꼭 챙겨주세요.'],
+    jieun: ['따뜻한 점심 드세요. 잠깐의 여유도 소중하니까요.', '늦은 밤이네요. 오늘의 고민은 잠시 내려놓으셔도 돼요.'],
+    haru: ['점심엔 좋아하는 차 한 잔 어때요? 천천히 골라요.', '조용한 밤엔 가벼운 책 한 장도 좋겠네요.'],
+    naeun: ['점심 맛있게 드세요~ 든든하게 먹고 쉬어가요!', '이제 쉬어가요~ 포근한 잠도 꼭 챙겨요.'],
+    hina: ['점심 맛있게 드세용! 쉬는 시간도 필요해용♡', '오늘 복습은 여기까지 해도 돼용. 푹 쉬어용♡'],
+    minji: ['점심엔 기분 좋은 장면 하나 찾아볼까요?', '하루의 엔딩은 포근하게! 오늘도 수고했어요.'],
+    sooyeon: ['점심엔 잠깐 호흡 고르고 가요. 페이스는 천천히요.', '오늘 페이스는 여기까지. 회복할 시간도 챙겨요.'],
+    sua: ['점심에는 잠시 쉬어요. 다음 이야기는 차분히 이어가요.', '늦은 밤까지 수고했어요. 편안히 마무리하세요.'],
+    taeo: ['점심 맛있게 드세요. 오후 안내도 차근차근 도울게요.', '오늘도 고생하셨어요. 다음 이야기는 내일 이어가요.'],
+    daon: ['점심엔 잠깐 거리 두고 쉬어요. 여유도 필요하니까요.', '늦은 밤엔 판단도 쉬어가요. 내일 다시 살펴봐요.'],
+    yoonseul: ['점심엔 책갈피를 끼워두고 쉬어가요.', '오늘의 책장은 여기까지. 내일 또 함께 펼쳐봐요.']
+  });
+  // Pick suitable public lines, excluding old planned-hire and unperformed-work claims.
+  const TAP_PICKS = Object.freeze({hani:[2,2,0],gaeun:[0,0,2],yuna:[2,2,2],mir:[2,1,0],seoyun:[2,1,0],dohyun:[1,0,0],serin:[1,1,0],yuri:[0,2,2],arin:[1,0,2],jieun:[0,1,0],haru:[1,1,1],naeun:[1,1,2],hina:[0,0,1],minji:[1,0,0],sooyeon:[0,1,0],sua:[0,1,0],taeo:[2,1,0],daon:[1,0,0],yoonseul:[0,2,1]});
+  // Local UI identities only; the canonical employee roster stays at 19.
+  const PETS = Object.freeze([
+    Object.freeze({id:'pet-cat', name:'치즈', rank:'사무실 고양이', voice:'야옹! ', call:'냥', lines:Object.freeze({morning:'좋은 아침이다냥. 햇볕 자리는 예약했어요.', lunch:'점심이다냥! 낮잠도 일정에 넣어 주세요.', afternoon:'나른한 오후다냥. 키보드 위가 제 지정석인데요.', evening:'복도 순찰 완료, 이상 무다옹.', night:'졸린 밤이다냥. 관심은 없지만 곁에 있을게요.'})}),
+    Object.freeze({id:'pet-dog', name:'크림', rank:'사무실 강아지', voice:'멍! ', call:'멍', lines:Object.freeze({morning:'좋은 아침, 멍! 오늘도 모두 무사 출근!', lunch:'점심시간 알림은 제가 일등이에요! 멍!', afternoon:'오후엔 산책 어때요? 꼬리 흔들며 기다릴게요!', evening:'퇴근길 에스코트 예약 받습니다! 멍!', night:'졸리면 푹 쉬어요. 발치에서 지켜줄게요, 멍.'})}),
+    Object.freeze({id:'pet-rabbit', name:'모찌', rank:'사무실 토끼', voice:'깡총, ', call:'깡총', lines:Object.freeze({morning:'좋은 아침, 깡총. 햇살이 머무는 자리네요.', lunch:'점심엔 살며시 쉬어요. 간식보다 평온이 좋아요.', afternoon:'나른한 오후네요. 오늘은 여기서 지켜볼게요.', evening:'저녁엔 귀 쫑긋. 발소리가 다정해서 알아봤어요.', night:'고요한 밤이네요. 잠깐 눈을 감아도 될까요.'})})
+  ]);
+  function pet(person) { return PETS.find(p => p.id === person?.id); }
+  const links = [['tasks', '오늘 할 일'], ['agentReview', '사무실'], ['ilbo', '하니 일보'], ['investmentCommittee', '투자 리포트']];
+  function kstDate(now = Date.now()) { return new Date(Number(now) + KST).toISOString().slice(0, 10); }
+  function duty(people, now = Date.now()) {
+    const staff = [...people].filter(p => p.id !== 'seongmin' && p.status !== 'planned' && !pet(p)).sort((a,b) => a.id.localeCompare(b.id, 'en'));
+    if (!staff.length) return null;
+    const cycle = [...staff];
+    // With 19 employees, pets occupy slots 7, 14 and 22: gaps of 7 / 8 / 7 days.
+    PETS.forEach((p, i) => cycle.splice(Math.floor((i + 1) * staff.length / PETS.length) + i, 0, p));
+    const index = Math.floor((Number(now) + KST) / DAY);
+    return cycle[((index % cycle.length) + cycle.length) % cycle.length];
+  }
+  function timeBand(now = Date.now()) {
+    const hour = new Date(Number(now) + KST).getUTCHours();
+    return hour < 6 || hour >= 22 ? 'night' : hour < 11 ? 'morning' : hour < 14 ? 'lunch' : hour < 18 ? 'afternoon' : 'evening';
+  }
+  function greeting(person, bank, now = Date.now()) {
+    const resident = pet(person);
+    if (resident) return resident.lines[timeBand(now)];
+    const band = timeBand(now), warm = WARM[person.id] || ['점심 맛있게 드세요. 잠깐 쉬어가요.', '늦은 밤이네요. 편히 쉬세요.'];
+    if (band === 'lunch' || band === 'night') return warm[band === 'lunch' ? 0 : 1];
+    if (person.id === 'gaeun' && band === 'morning') return '좋은 아침이에요. 오늘 안내는 제가 도울게요.';
+    if (person.id === 'yuna' && band === 'evening') return '오늘도 수고하셨어요! 편히 쉬세요!';
+    const row = bank?.staff?.[person.id], pick = (TAP_PICKS[person.id] || [0,0,0])[band === 'morning' ? 0 : band === 'afternoon' ? 1 : 2];
+    const line = row?.[band === 'afternoon' ? 'day' : band]?.[pick];
+    return line || ({morning:'좋은 아침이에요. 오늘도 차근차근 시작해요.', afternoon:'오후에도 잠깐 쉬어가며 함께해요.', evening:'오늘도 수고하셨어요. 편안한 저녁 보내세요.'})[band];
+  }
+  function help(view, person = duty(people())) { return (pet(person)?.voice || '') + (HELP[String(view || '').split('/')[0]] || FALLBACK); }
+  function news(releases, people, now = Date.now()) {
+    const entries = Array.isArray(releases?.entries) ? releases.entries : [];
+    const recent = entries.filter(e => {
+      if (e.status !== 'released') return false;
+      // Catalog dates have day precision only: treat them as KST midnight, never UTC midnight.
+      const raw = e.publishedAt || e.date;
+      const at = typeof raw === 'string' ? Date.parse(/^\d{4}-\d{2}-\d{2}$/.test(raw) ? raw + 'T00:00:00+09:00' : raw) : NaN;
+      return Number.isFinite(at) && now >= at && now - at <= DAY;
+    });
+    const today = kstDate(now).slice(5), birthdays = people.filter(p => String(p.birthday || p.birthDate || '').slice(-5) === today);
+    return {dot: recent.length > 0 || birthdays.length > 0, text: [recent.length ? '새 업데이트 · ' + recent[0].title : '', birthdays.length ? birthdays.map(p => p.name).join(', ') + ' 생일이에요!' : ''].filter(Boolean).join(' / ')};
+  }
+  const overlaps = (a,b) => a.left < b.right + 8 && a.right > b.left - 8 && a.top < b.bottom + 8 && a.bottom > b.top - 8;
+  function slot(viewport, obstacles, size = 56) {
+    const left = viewport.left + viewport.width - size - 16;
+    let top = viewport.top + viewport.height - size - 16;
+    // Lift only when an existing control occupies this corner; a bottom bar is an obstacle too.
+    while (top >= viewport.top + 12) {
+      const box = {left, top, right: left + size, bottom: top + size};
+      const hits = obstacles.filter(b => overlaps(box,b));
+      if (!hits.length) return box;
+      top = Math.min(...hits.map(b => b.top)) - size - 8;
+    }
+    return null;
+  }
+  let root, face, panel, dot, title, greetingLine, helpLine, newsLine, bank, loadNews, returnFocus, pending = false;
+  function people() { return window.HaniOrganizationRoster?.people || []; }
+  function update() {
+    if (!root) return;
+    const person = duty(people());
+    if (!person) { root.hidden = true; return; }
+    root.dataset.staff = person.id;
+    face.setAttribute('aria-label', person.name + ' · 오늘의 도우미' + (loadNews?.dot ? ' · 새 소식 있음' : ''));
+    title.textContent = person.name + ' · ' + person.rank;
+    greetingLine.textContent = greeting(person, bank);
+    helpLine.textContent = help(document.body.dataset.view, person);
+    for (const button of panel.querySelectorAll('[data-helper-go]')) {
+      const label = links.find(([id]) => id === button.dataset.helperGo)?.[1];
+      button.textContent = label + (pet(person) ? ' · ' + pet(person).call : '');
+    }
+    dot.hidden = !loadNews?.dot;
+    newsLine.textContent = loadNews?.text || (loadNews ? '새 소식이 없어요.' : '소식을 확인하는 중이에요.');
+    schedulePlace();
+  }
+  function close(restore = false) {
+    if (!panel || panel.hidden) return;
+    panel.hidden = true; face.setAttribute('aria-expanded', 'false');
+    if (restore) (returnFocus?.isConnected ? returnFocus : face).focus({preventScroll: true});
+  }
+  function open() {
+    update(); returnFocus = document.activeElement;
+    panel.hidden = false; face.setAttribute('aria-expanded', 'true');
+    place(); panel.querySelector('[data-helper-close]').focus({preventScroll: true});
+  }
+  function place() {
+    if (!root) return;
+    const vv = window.visualViewport, viewport = {left: vv?.offsetLeft || 0, top: vv?.offsetTop || 0, width: vv?.width || window.innerWidth, height: vv?.height || window.innerHeight};
+    viewport.height -= parseFloat(getComputedStyle(root).getPropertyValue('--helper-safe-bottom')) || 0;
+    const desktop = window.innerWidth > 850, column = {...viewport};
+    const rail = document.getElementById('haniContextRemote'), app = document.getElementById('app');
+    const railBox = rail?.getBoundingClientRect();
+    if (desktop && railBox?.width > 0 && railBox.height > 0 && !app?.classList.contains('hani-remote-mini')) {
+      const mainBox = app?.querySelector('.main')?.getBoundingClientRect();
+      column.left = Math.max(viewport.left, mainBox?.left || 0);
+      column.width = Math.max(0, Math.min(viewport.left + viewport.width, railBox.left) - column.left);
+    }
+    // PC may float over ordinary cards. Only the named controls and focused input reserve space.
+    const controls = desktop
+      ? [...document.querySelectorAll('.yuna-composer,.toast,.offline-entry-badge,.hani-office-events,.hani-office-event-panel'),
+        ...(rail?.querySelectorAll('button,a[href],input,textarea,select,[role="button"]') || []),
+        ...(document.activeElement?.matches('input:not([type="hidden"]),textarea,select,[contenteditable="true"]') ? [document.activeElement] : [])]
+      : [...document.querySelectorAll('button,a[href],input:not([type="hidden"]),textarea,select,summary,[contenteditable="true"],[role="button"],nav,footer,.yuna-composer,.toast,.offline-entry-badge,.hani-context-remote,.hani-office-event-panel')];
+    const obstacles = controls
+      .filter(el => !root.contains(el))
+      .filter(el => { const s = getComputedStyle(el); return s.visibility !== 'hidden' && s.display !== 'none' && Number(s.opacity) !== 0 && (desktop || s.pointerEvents !== 'none'); })
+      .map(el => el.getBoundingClientRect()).filter(b => b.width > 0 && b.height > 0 && b.right > viewport.left && b.left < viewport.left + viewport.width && b.bottom > viewport.top && b.top < viewport.top + viewport.height);
+    const box = slot(column, obstacles);
+    root.hidden = !box || !duty(people());
+    if (!box) return;
+    root.style.left = box.left + 'px'; root.style.top = box.top + 'px';
+    panel.style.width = desktop ? Math.min(320, column.width - 32) + 'px' : '';
+    panel.style.maxHeight = (desktop ? Math.max(0, box.top - viewport.top - 28) : Math.max(80, viewport.height - 32)) + 'px';
+    panel.style.left = Math.max(column.left + 16, box.right - Math.min(320, column.width - 32)) + 'px';
+    panel.style.top = Math.max(viewport.top + 16, box.top - panel.getBoundingClientRect().height - 12) + 'px';
+  }
+  function schedulePlace() {
+    if (pending) return;
+    pending = true; requestAnimationFrame(() => { pending = false; place(); });
+  }
+  function init() {
+    if (root || document.getElementById('haniHelperBot')) return;
+    root = document.createElement('aside'); root.id = 'haniHelperBot'; root.hidden = true;
+    root.innerHTML = '<button class="hani-helper-face" type="button" aria-expanded="false" aria-controls="haniHelperSpeech"><span class="hani-helper-art" aria-hidden="true"></span><i class="hani-helper-dot" aria-hidden="true" hidden></i></button><section id="haniHelperSpeech" class="hani-helper-speech" role="dialog" aria-modal="false" aria-labelledby="haniHelperTitle" hidden><header><div><small>오늘의 당번</small><h2 id="haniHelperTitle"></h2></div><button type="button" data-helper-close aria-label="도우미 닫기">×</button></header><p class="hani-helper-greeting"></p><h3>이 화면 도움말</h3><p class="hani-helper-help"></p><nav aria-label="도우미 바로가기"></nav><p class="hani-helper-news" aria-live="polite"></p></section>';
+    document.body.append(root);
+    face = root.querySelector('.hani-helper-face'); panel = root.querySelector('.hani-helper-speech'); dot = root.querySelector('.hani-helper-dot');
+    title = root.querySelector('h2'); greetingLine = root.querySelector('.hani-helper-greeting'); helpLine = root.querySelector('.hani-helper-help'); newsLine = root.querySelector('.hani-helper-news');
+    const nav = root.querySelector('nav');
+    for (const [id, label] of links) {
+      if (!document.getElementById(id)) continue;
+      const button = document.createElement('button'); button.type = 'button'; button.dataset.helperGo = id; button.textContent = label; nav.append(button);
+    }
+    document.addEventListener('click', event => {
+      if (face.contains(event.target)) { panel.hidden ? open() : close(true); return; }
+      if (!root.contains(event.target)) { close(); schedulePlace(); return; }
+      if (event.target.closest('[data-helper-close]')) { close(true); return; }
+      const target = event.target.closest('[data-helper-go]');
+      if (target && typeof showView === 'function') { close(true); showView(target.dataset.helperGo); }
+    });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape' && !panel.hidden) { event.preventDefault(); close(true); } });
+    document.addEventListener('scroll', schedulePlace, {passive: true, capture: true});
+    document.addEventListener('focusin', schedulePlace);
+    document.addEventListener('input', schedulePlace);
+    window.addEventListener('resize', schedulePlace, {passive: true});
+    window.visualViewport?.addEventListener('resize', schedulePlace, {passive: true});
+    window.visualViewport?.addEventListener('scroll', schedulePlace, {passive: true});
+    // Canonical showView publishes this attribute; no navigation wrapper or event replacement.
+    new MutationObserver(() => { update(); }).observe(document.body, {attributes: true, attributeFilter: ['data-view', 'class']});
+    update();
+    const read = url => fetch(url, {cache: 'no-cache'}).then(r => { if (!r.ok) throw new Error('Helper data unavailable'); return r.json(); });
+    read('./assets/data/office-tap-lines-v1.json').then(value => { bank = value; update(); }).catch(() => {});
+    read('./assets/data/hani-history-releases-v1.json').then(value => { loadNews = news(value, people()); update(); }).catch(() => { loadNews = {dot: false, text: '소식을 확인하지 못했어요.'}; update(); });
+  }
+  window.HaniHelperBot = Object.freeze({init, update, duty, kstDate, timeBand, greeting, help, news, slot});
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, {once: true}); else init();
+})();
+// END HANI HELPER BOT
