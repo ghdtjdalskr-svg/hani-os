@@ -2793,8 +2793,8 @@
     }
   ],
   "source": {
-    "beforeSha256": "d220a457db20ea601dd30c4825f345bc96d6a8dfd7b3e2719a73c670bd7829a0",
-    "afterSha256": "efd30f85948111c4b19c224a161eba9621872ef35c921c380e65e5d1f3c4745e",
+    "beforeSha256": "25491227d72081975baddf85735a507ee73b45d6d7761a7a7926db182f5f1dd3",
+    "afterSha256": "6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7",
     "replacements": [
       {
         "before": "screen=monitorScreens[anchor],rect=furniture[anchor]?.deskBounds",
@@ -2820,6 +2820,6 @@
   },
   "css": {
     "beforeSha256": "27f62b885e3ad6a55cd2fdaf64d50873aee785f36d82da79be067f54e431d632",
-    "afterSha256": "1ade18128f5d0ead9126cd93105bbd382b25f3be6f127d5381175cce89a2a5d2"
+    "afterSha256": "71cfb2dd242482f4c42a5a0e2e1f11799c56c250bcc4d371d279b07bf65164cd"
   }
 }
