@@ -7,6 +7,9 @@ import {assets} from './hani-office-v2-fixture.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 import {restorePets268Source} from './hani-office-pets-268-source.mjs';
 import {xmas269Delta} from './hani-office-xmas-269-source.mjs';
+import {restoreBori272Source} from './hani-office-pet-bori-272-source.mjs';
+import {normalizeReleaseVersion,readReleaseSource} from './hani-reviewed-release-baseline.mjs';
+import {approvedOfficeRuntimeAdditions} from './hani-office-runtime-additions.mjs';
 
 const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
 const source=read('hani-office-live.js'),css=read('hani-office-live.css');
@@ -119,9 +122,10 @@ test('xmas: source patch has no storage/Cloud/AI path; protected function and ru
  for(const row of base.sections){const a=comparableSource.indexOf(row.start),b=comparableSource.indexOf(row.end,a);assert.ok(a>=0&&b>a,row.name);assert.equal(hash(comparableSource.slice(a,b)),row.sha256,row.name)}
  for(const row of base.assets)assert.equal(hash(fs.readFileSync(new URL('../'+row.file,import.meta.url))),row.sha256,row.file);
  for(const row of base.files){
-  // v2.9.269 release bump only: the 268 files contain no '2.9.269', so this restores the exact 268 bytes.
-  const text=read(row.file).replaceAll('2.9.269','2.9.268'),pin=xmas269Delta.unchangedRuntime.find(p=>p.file===row.file);assert.ok(pin,row.file);
+  // Only cache tags and canonical display fields may change across releases.
+  const text=readReleaseSource(xmas269Delta.baseCommit,row.file),pin=xmas269Delta.unchangedRuntime.find(p=>p.file===row.file);assert.ok(pin,row.file);
   assert.equal(hash(text),pin.sha256,'unchanged fixed v268 runtime: '+row.file);
+  assert.equal(normalizeReleaseVersion(read(row.file),'2.9.268'),normalizeReleaseVersion(text,'2.9.268'),'only release version projection differs from fixed v268 runtime: '+row.file);
   assert.equal(text.split('2.9.268').length-1,pin.versionCount,'exact v268 version occurrences');
   assert.equal(hash(text.replaceAll('2.9.268','2.9.267')),row.sha256,row.file+' retains the original pre-v268 pin after exact version reversal');
  }
@@ -135,8 +139,10 @@ test('xmas: source patch has no storage/Cloud/AI path; protected function and ru
 
 test('xmas: literal atlas enters the release closure as the only new runtime file',async()=>{
  const beforeJs=read('artifacts/office-xmas-live/before.js'),beforeCss=read('artifacts/office-xmas-live/before.css');
- const options={exists:f=>fs.existsSync(new URL('../'+f,import.meta.url)),read:f=>fs.readFileSync(new URL('../'+f,import.meta.url))};
+ // Restore the exact 272 office layer before testing the historical 269 closure.
+ // Exclude only the individually approved helper/Bori files from both closures.
+ const options={exists:f=>fs.existsSync(new URL('../'+f,import.meta.url)),read:f=>['hani-office-live.js','hani-office-live.css'].includes(f)?restoreBori272Source(read(f),f):fs.readFileSync(new URL('../'+f,import.meta.url))};
  const current=await resolveRuntimeClosure(options),before=await resolveRuntimeClosure({...options,read:f=>f==='hani-office-live.js'?beforeJs:f==='hani-office-live.css'?beforeCss:options.read(f)});
- assert.deepEqual(before.missing,[]);assert.deepEqual(current.missing,[]);assert.equal(before.files.length,152);assert.equal(current.files.length,153);assert.ok(current.files.length<=160);
+ assert.deepEqual(before.missing,[]);assert.deepEqual(current.missing,[]);assert.equal(before.files.filter(f=>!approvedOfficeRuntimeAdditions.includes(f)).length,152);assert.equal(current.files.filter(f=>!approvedOfficeRuntimeAdditions.includes(f)).length,153);assert.ok(current.files.length<=160);
  assert.deepEqual(current.files.filter(f=>!before.files.includes(f)),['assets/office-season/xmas.webp']);
 });

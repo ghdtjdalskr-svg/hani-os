@@ -18,7 +18,8 @@ import {fixture} from './hani-building-206-engine.test.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url)),out=path.join(root,'artifacts/office-hd-224');
 const read=f=>fs.readFileSync(path.join(root,f),'utf8'),json=f=>JSON.parse(read(f));
 const hd=json('assets/sprites-v3/manifest-v3.json'),sources=json('docs/design/sprites-v3-meta/_sources.json');
-const residentIds=['pet-cat','pet-dog','pet-rabbit','npc-cleaner','npc-gardener','npc-temp-a','npc-temp-b','npc-temp-c'];
+// Bori is a fourth resident, with no original staff provenance in _sources.json.
+const residentIds=['pet-cat','pet-dog','pet-rabbit','pet-bori','npc-cleaner','npc-gardener','npc-temp-a','npc-temp-b','npc-temp-c'];
 const staffHD=hd.entries.filter(e=>!residentIds.includes(e.id));
 const source=read('hani-office-live.js'),hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 const runtime=path.join(os.homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules');
@@ -42,7 +43,7 @@ test('separately seeded HD manifest resolves every asset; pre-mascot runtime clo
 });
 
 test('25 original artworks / 100 physical 3x frames retain exact crop, footprint and pivot ratios',async()=>{
- assert.equal(hd.scale,3);assert.equal(staffHD.length,25);assert.equal(hd.entries.length,33);let bytes=0;
+ assert.equal(hd.scale,3);assert.equal(staffHD.length,25);assert.equal(hd.entries.length,34);let bytes=0;
  assert.deepEqual(hd.entries.filter(e=>residentIds.includes(e.id)).map(e=>e.id).sort(),residentIds.slice().sort());
  assert.equal(new Set(staffHD.map(e=>e.id)).size,25);
  for(const entry of staffHD){
@@ -74,7 +75,7 @@ test('real canonical loader prefers v3; per-atlas failure falls back once to v2 
   const store={setItem(...v){writes.push(v)},removeItem(...v){writes.push(v)},clear(){writes.push('clear')}};
   const f=fixture('10:00',true,url=>{requests.push(url);return mode==='hd'?/sprites-v[23]\//.test(url):/sprites-v2\//.test(url)},null,{HaniOfficeV2Assets:metadata,localStorage:store,sessionStorage:store});
   const allNodes=[...f.ids.get('haniOfficeActors').children],nodes=allNodes.filter(a=>!a.dataset.resident);
-  assert.equal(nodes.length,19);assert.equal(allNodes.length,mode==='missing-manifest'?19:27);
+  assert.equal(nodes.length,19);assert.equal(allNodes.length,mode==='missing-manifest'?19:28);
   for(const floor of ['1f','2f','3f','4f','5f']){f.click(floor);await flush()}
   for(const actor of nodes){
    assert.equal(actor.dataset.spriteScale,mode==='hd'?'3':'1');

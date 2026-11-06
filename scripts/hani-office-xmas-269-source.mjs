@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
+import {restoreBori272Source} from './hani-office-pet-bori-272-source.mjs';
 
 const hash=x=>createHash('sha256').update(x).digest('hex');
 const bytes=fs.readFileSync(new URL('fixtures/office-xmas-269-delta.json',import.meta.url));
@@ -14,6 +15,7 @@ assert.equal(xmas269Delta.files[1].beforeSha256,'b00bf744040c4cc24529eda7c9a5ad1
 // Literal required pairs and both full hashes reject any unlisted byte change.
 export function restoreXmas269Source(source,file='hani-office-live.js'){
  const delta=xmas269Delta.files.find(row=>row.file===file);assert.ok(delta,'approved Christmas file: '+file);
+ if(hash(source)!==delta.afterSha256)source=restoreBori272Source(source,file);
  assert.equal(hash(source),delta.afterSha256,'only the approved v2.9.269 source is accepted: '+file);
  for(const r of delta.replacements){
   assert.equal(source.split(r.after).length-1,1,'unique approved Christmas bytes: '+r.name);

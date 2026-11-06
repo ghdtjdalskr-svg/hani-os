@@ -92,17 +92,17 @@ function fixture({now=Date.parse('2026-11-06T12:30:00+09:00'),failRelease=false,
   return {window,document,api:window.HaniHelperBot,callbacks,calls,requests,storageCalls,Element,flush,fire,resize,ready,rerun:()=>vm.runInContext(source,context),setNow:v=>{now=v;},mutate:target=>{observers.forEach(fn=>fn([{target}]));flush();},navigate:id=>{body.dataset.view=id;observers.forEach(fn=>fn([{target:body}]));flush();}};
 }
 
-test('KST midnight, deterministic fair 22-day rotation, 19 staff + 3 separated pets',()=>{
+test('KST midnight, deterministic fair 23-day rotation, 19 staff + 4 separated pets',()=>{
   const {api}=fixture({loading:true}),start=Date.parse('2026-11-06T00:00:00+09:00');
   const before=plain(staff);
-  assert.equal(staff.length,19);assert.equal(pets.length,3);assert.equal(cycleSize,22);
+  assert.equal(staff.length,19);assert.equal(pets.length,4);assert.equal(cycleSize,23);
   assert.equal(api.kstDate(start-1),'2026-11-05');assert.equal(api.kstDate(start),'2026-11-06');
   const expected=[...staff,...pets].map(p=>p.id).sort();
   const ids=cycle(api,start).map(p=>p.id);
-  assert.deepEqual(ids.slice().sort(),plain(expected));assert.equal(new Set(ids).size,22);
+  assert.deepEqual(ids.slice().sort(),plain(expected));assert.equal(new Set(ids).size,23);
   assert.ok(!ids.includes('seongmin'));
   // Check every sliding window, cycle seams and pre-epoch modulo too.
-  for(const offset of [-30000,-1,0,1,21,22,43,65]){
+  for(const offset of [-30000,-1,0,1,22,23,45,68]){
     const t=start+offset*86400000,windowIds=cycle(api,t).map(p=>p.id);
     assert.deepEqual(windowIds.slice().sort(),plain(expected));
     for(let i=0;i<cycleSize;i++){
@@ -114,7 +114,7 @@ test('KST midnight, deterministic fair 22-day rotation, 19 staff + 3 separated p
     }
   }
   const slots=ids.flatMap((id,i)=>id.startsWith('pet-')?[i]:[]);
-  const gaps=slots.map((p,i)=>(slots[(i+1)%3]-p+22)%22).sort();assert.deepEqual(gaps,[7,7,8]);
+  const gaps=slots.map((p,i)=>(slots[(i+1)%4]-p+23)%23).sort();assert.deepEqual(gaps,[5,6,6,6]);
   assert.notEqual(api.duty(staff,start-1).id,api.duty(staff,start).id);
   assert.equal(api.duty([],start),null);
   const doubled=[...ids,...cycle(api,start+cycleSize*86400000).map(p=>p.id)];
@@ -135,11 +135,11 @@ test('five KST greeting bands; all staff voices, no private state dependency',()
 test('pet voices, real species, five greetings, same help/routes and midnight return to staff',async()=>{
   const f=fixture();await f.ready();
   const start=Date.parse('2026-11-06T00:00:00+09:00'),root=f.document.getElementById('haniHelperBot'),face=root.querySelector('.hani-helper-face');
-  const expected={ 'pet-cat':['치즈','사무실 고양이','냥'], 'pet-dog':['크림','사무실 강아지','멍'], 'pet-rabbit':['모찌','사무실 토끼','깡총'] };
-  const staffDay=Array.from({length:22},(_,i)=>start+i*86400000).find(t=>!f.api.duty(staff,t).id.startsWith('pet-'));
+  const expected={ 'pet-cat':['치즈','사무실 고양이','냥'], 'pet-dog':['크림','사무실 강아지','멍'], 'pet-rabbit':['모찌','사무실 토끼','깡총'], 'pet-bori':['보리','로비 지킴이 리트리버','멍'] };
+  const staffDay=Array.from({length:23},(_,i)=>start+i*86400000).find(t=>!f.api.duty(staff,t).id.startsWith('pet-'));
   const reference=f.api.duty(staff,staffDay),buttons=root.querySelectorAll('[data-helper-go]'),labels=buttons.map(b=>{f.setNow(staffDay);f.api.update();return b.textContent;});
   for(const resident of pets){
-    const day=Array.from({length:22},(_,i)=>start+i*86400000).find(t=>f.api.duty(staff,t).id===resident.id);
+    const day=Array.from({length:23},(_,i)=>start+i*86400000).find(t=>f.api.duty(staff,t).id===resident.id);
     const person=f.api.duty(staff,day),[name,rank,call]=expected[resident.id];
     assert.equal(person.name,name);assert.equal(person.name,resident.name);assert.equal(person.rank,rank);
     const greetings=[6,11,14,18,22].map(hour=>f.api.greeting(person,null,day+hour*3600000));
@@ -163,7 +163,7 @@ test('pet voices, real species, five greetings, same help/routes and midnight re
     assert.ok(!root.dataset.staff.startsWith('pet-'));assert.equal(root,f.document.getElementById('haniHelperBot'));
     assert.deepEqual(buttons.map(b=>b.textContent),labels);f.fire('keydown',face,{key:'Escape'});
   }
-  assert.deepEqual(f.calls,Array(3).fill(['tasks','agentReview','ilbo','investmentCommittee']).flat());
+  assert.deepEqual(f.calls,Array(4).fill(['tasks','agentReview','ilbo','investmentCommittee']).flat());
   assert.deepEqual(f.storageCalls,[]);assert.equal(f.requests.length,2);assert.equal(f.callbacks.get('document:click').length,1);
 });
 
@@ -439,14 +439,14 @@ test('every canonical staff has an explicit crop; none paints the chairman frog'
   assert.match(css,/background-image:var\(--helper-image,none\)/);
 });
 
-test('all three pet crops use their existing profile art, never a frog or employee sheet',()=>{
-  const profiles={'pet-cat':'cheese','pet-dog':'cream','pet-rabbit':'mochi'};
+test('all four pet crops use approved profile art, never a frog or employee sheet',()=>{
+  const profiles={'pet-cat':'cheese','pet-dog':'cream','pet-rabbit':'mochi','pet-bori':'bori'};
   const before=JSON.parse(read('artifacts/helper-bot/baseline-closure.json'));
   assert.deepEqual(plain(pets.map(p=>p.id).sort()),Object.keys(profiles).sort());
   for(const p of pets){
     const crop=helperCrop(p.id),expected='assets/profiles/thumb/hani-profile-'+profiles[p.id]+'-256.webp';
     assert.equal(crop.ownEntry,true);assert.equal(crop.image,expected);assert.ok(fs.existsSync(path.join(root,expected)));
-    assert.ok(before.includes(expected),'pet asset already shipped');
+    assert.equal(before.includes(expected),p.id!=='pet-bori','only the approved Bori thumb is newly shipped');
     assert.equal(crop.width,52);assert.equal(crop.height,52);assert.equal(crop.x,0);assert.equal(crop.y,0);
     assert.deepEqual(crop.trim,[0,0,0,0]);assert.equal(crop.shape,undefined);
   }
@@ -455,9 +455,9 @@ test('all three pet crops use their existing profile art, never a frog or employ
 
 test('asset closure <= 160, existing images only, CSS covers canonical staff and reduced motion',async()=>{
   const closure=await resolveRuntimeClosure({exists:f=>fs.existsSync(path.join(root,f)),read:f=>fs.readFileSync(path.join(root,f))});
-  assert.deepEqual(closure.missing,[]);assert.equal(closure.files.length,155);assert.ok(closure.files.length<=160);
+  assert.deepEqual(closure.missing,[]);assert.equal(closure.files.length,158);assert.ok(closure.files.length<=160);
   const before=JSON.parse(read('artifacts/helper-bot/baseline-closure.json'));
-  assert.deepEqual(closure.files.filter(f=>!before.includes(f)).sort(),['assets/sprites-v3/daon.webp','assets/sprites-v3/yoonseul.webp']);
+  assert.deepEqual(closure.files.filter(f=>!before.includes(f)).sort(),['assets/profiles/thumb/hani-profile-bori-128.webp','assets/profiles/thumb/hani-profile-bori-256.webp','assets/sprites-v3/daon.webp','assets/sprites-v3/pet-bori.webp','assets/sprites-v3/yoonseul.webp']);
   for(const p of staff){assert.ok(manifest.entries.some(e=>e.id===p.id),'missing chibi '+p.id);assert.ok(css.includes(`[data-staff="${p.id}"]`),'missing crop '+p.id);}
   assert.match(css,/@media\(prefers-reduced-motion:reduce\)\{#haniHelperBot \.hani-helper-art\{animation:none\}/);
   assert.doesNotMatch(source,/localStorage|sessionStorage|setInterval|setTimeout|\.setItem\(|\.removeItem\(|\.clear\(|supabase|\bagentApi\b|\bcommit\(|\bsave\(/);

@@ -7,6 +7,7 @@ import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
 import {restorePets268Source} from './hani-office-pets-268-source.mjs';
+import {restoreXmas269Source} from './hani-office-xmas-269-source.mjs';
 
 const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
 const table=JSON.parse(read('assets/data/office-actions-221.json'));
@@ -131,10 +132,10 @@ test('snack: login lock hides button and rejects clicks; no scene interaction wh
 
 test('snack: scheduler/snapshot/geometry/residents bytes and complete sampled model JSON preserve c301a13',()=>{
  const hash=x=>createHash('sha256').update(x).digest('hex'),source=read('hani-office-live.js'),baseline=JSON.parse(read('artifacts/office-snack/baseline.json'));
- // v2.9.268: exact inverse delta for old pins; preserve the owner's already
- // repinned renderer row and all existing plan/blockPlan/snapshot output hashes.
- const comparableSource=restorePets268Source(source);
- for(const {name,start,end,sha256}of baseline.sections){const text=name==='residents renderer'?source:comparableSource;const i=text.indexOf(start),j=text.indexOf(end,i);assert.ok(i>=0&&j>i,name);assert.equal(hash(text.slice(i,j)),sha256,name)}
+ // 272 -> 269 -> 268 for the renderer, then pre-pet bytes for older pins.
+ // Preserve every existing section and plan/blockPlan/snapshot output hash.
+ const source268=restoreXmas269Source(source),comparableSource=restorePets268Source(source);
+ for(const {name,start,end,sha256}of baseline.sections){const text=name==='residents renderer'?source268:comparableSource;const i=text.indexOf(start),j=text.indexOf(end,i);assert.ok(i>=0&&j>i,name);assert.equal(hash(text.slice(i,j)),sha256,name)}
  for(const row of baseline.models){const s=scene.scheduler,f=s.plan(row.day,row.options);assert.equal(hash(JSON.stringify(f)),row.plan);assert.equal(hash(JSON.stringify(s.blockPlan(row.day,0,f,row.options))),row.blockPlan);
   for(const snap of row.snapshots){assert.equal(hash(JSON.stringify(s.snapshot(at(row.day,snap.seconds),row.options))),snap.scheduler);assert.equal(hash(JSON.stringify(scene.snapshot(at(row.day,snap.seconds),row.options))),snap.view)}
  }
