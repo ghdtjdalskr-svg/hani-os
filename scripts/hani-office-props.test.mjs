@@ -6,6 +6,7 @@ import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
 import {restorePets268Source} from './hani-office-pets-268-source.mjs';
+import {restoreXmas269Source} from './hani-office-xmas-269-source.mjs';
 
 const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
 const flush=async()=>{for(let i=0;i<30;i++)await Promise.resolve()};
@@ -18,6 +19,13 @@ const expected=[
  ['stamp','stamp-sparkle','3f',213,676,32,32,'center'],
  ['paper','paper-flutter','1f',1605,520,40,48,'center']
 ];
+const decorationIds=['xmas-tree','xmas-snow','xmas-wreath','xmas-gifts','xmas-lights'];
+function exactSlots(layer){
+ // Five decorations share the existing single live-prop creation path.
+ assert.equal(layer.children.length,12,'seven original props plus exactly five decorations');
+ assert.deepEqual(layer.children.filter(p=>p.dataset.event==='christmas').map(p=>p.dataset.prop),decorationIds);
+ const props=layer.children.filter(p=>!p.dataset.event);assert.equal(props.length,7);return props;
+}
 async function mount({reduced=false,load=()=>true,time='20:00',width=1280}={}){
  const writes=[],deny=(...args)=>{writes.push(args);throw Error('unexpected persistence')};
  const f=fixture(time,reduced,load,null,{
@@ -30,7 +38,7 @@ async function mount({reduced=false,load=()=>true,time='20:00',width=1280}={}){
 
 test('props: one persistent map layer and seven persistent, map-relative slots across floors and clocks',async()=>{
  for(const width of [390,1280]){
-  const {f,layer,writes}=await mount({width}),props=[...layer.children],nodes=f.root.querySelectorAll('*');
+  const {f,layer,writes}=await mount({width}),all=[...layer.children],props=exactSlots(layer),nodes=f.root.querySelectorAll('*');
   assert.equal(layer.parentElement,f.map);assert.equal(layer.getAttribute('aria-hidden'),'true');assert.equal(props.length,7);
   assert.equal(f.map.querySelectorAll('.hani-office-live-props').length,1);
   props.forEach((p,i)=>{const [id,sprite,,x,y,w,h,anchor]=expected[i];assert.equal(p.dataset.prop,id);assert.equal(p.dataset.sprite,sprite);assert.equal(p.dataset.anchor,anchor);
@@ -42,7 +50,7 @@ test('props: one persistent map layer and seven persistent, map-relative slots a
    props.forEach((p,i)=>assert.equal(p.hidden,expected[i][2]!==floor||(p.dataset.prop==='lantern'&&time!=='20:00'),p.dataset.prop+' '+floor+' '+time));
    for(const timer of f.timers)timer.fn();await flush();
   }
-  assert.equal(created,0);assert.deepEqual(layer.children,props);assert.deepEqual(f.root.querySelectorAll('*'),nodes);assert.deepEqual(writes,[]);
+  assert.equal(created,0);assert.deepEqual(layer.children,all);assert.deepEqual(layer.children.filter(p=>!p.dataset.event),props);assert.deepEqual(f.root.querySelectorAll('*'),nodes);assert.deepEqual(writes,[]);
  }
 });
 
@@ -80,17 +88,17 @@ test('props: CSS owns four-frame timing, long-idle sparkle, tap-through, stackin
 });
 
 test('props: reduced-motion owner remains persistent, floor-scoped and write-free',async()=>{
- const {f,layer,writes}=await mount({reduced:true,width:390}),props=[...layer.children];
- for(const floor of ['1f','2f','3f','5f']){f.click(floor);await flush();assert.equal(layer.hidden,false);assert.deepEqual(layer.children,props);props.forEach((p,i)=>assert.equal(p.hidden,expected[i][2]!==floor))}
+ const {f,layer,writes}=await mount({reduced:true,width:390}),all=[...layer.children],props=exactSlots(layer);
+ for(const floor of ['1f','2f','3f','5f']){f.click(floor);await flush();assert.equal(layer.hidden,false);assert.deepEqual(layer.children,all);assert.deepEqual(layer.children.filter(p=>!p.dataset.event),props);props.forEach((p,i)=>assert.equal(p.hidden,expected[i][2]!==floor))}
  assert.deepEqual(writes,[]);
 });
 
 test('props: scheduler/plan/blockPlan/snapshot/labels/home-clear source bytes and all six assets are unchanged',()=>{
  const hash=x=>createHash('sha256').update(x).digest('hex'),source=read('hani-office-live.js'),base=JSON.parse(read('artifacts/office-props-live/baseline.json'));
- // v2.9.268: restore exact approved bytes for old pins; the renderer row was
- // already frozen by its owner at the current revision and remains checked raw.
- const comparableSource=restorePets268Source(source);
- for(const row of base.sections){const text=row.name==='residents renderer'?source:comparableSource;const i=text.indexOf(row.start),j=text.indexOf(row.end,i);assert.ok(i>=0&&j>i,row.name);assert.equal(hash(text.slice(i,j)),row.sha256,row.name)}
+ // The renderer pin is v268; the remaining pins predate pets. Remove 269
+ // first on both paths, preserving every original section hash.
+ const source268=restoreXmas269Source(source),comparableSource=restorePets268Source(source);
+ for(const row of base.sections){const text=row.name==='residents renderer'?source268:comparableSource;const i=text.indexOf(row.start),j=text.indexOf(row.end,i);assert.ok(i>=0&&j>i,row.name);assert.equal(hash(text.slice(i,j)),row.sha256,row.name)}
  for(const row of base.assets)assert.equal(hash(fs.readFileSync(new URL('../'+row.file,import.meta.url))),row.sha256,row.file);
  const {scene}=loadScene(),s=scene.scheduler,original=JSON.parse(read('artifacts/office-snack/baseline.json'));
  for(const row of original.models){const formal=s.plan(row.day,row.options);assert.equal(hash(JSON.stringify(formal)),row.plan);assert.equal(hash(JSON.stringify(s.blockPlan(row.day,0,formal,row.options))),row.blockPlan);
