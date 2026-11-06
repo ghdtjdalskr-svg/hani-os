@@ -11,6 +11,7 @@ import {assets} from './hani-office-v2-fixture.mjs';
 import {restoreResidentsSource} from './hani-office-residents-source.mjs';
 import {reapplyTlayoutSource} from './hani-office-tlayout-fixture.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
+import {approvedOfficeRuntimeAdditions,bori272Files} from './hani-office-runtime-additions.mjs';
 const read=f=>fs.readFileSync(f,'utf8'),hash=b=>createHash('sha256').update(b).digest('hex');
 const manifest=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));
 const {scene,table}=loadScene(),r=scene.residents;
@@ -135,12 +136,12 @@ test('nine approved atlases decode, match their manifest hashes, load through th
  const closure=await resolveRuntimeClosure({exists:fs.existsSync,read:f=>fs.readFileSync(f)});
  assert.ok(closure.files.length<=160);assert.deepEqual(closure.missing,[]);
  const baseline=(await resolveRuntimeClosure({exists:fs.existsSync,read:f=>f==='hani-office-live.css'?read(f).split('/* Resident art uses the existing sheet loader;')[0]:f==='hani-office-live.js'?restoreResidentsSource(read(f)):fs.readFileSync(f)})).files;
- assert.equal(baseline.length,138,'existing closure loses only removed portrait');
+ assert.equal(baseline.filter(f=>!approvedOfficeRuntimeAdditions.includes(f)).length,138,'existing closure loses only removed portrait, apart from explicit 270/272 additions');
+ for(const file of bori272Files)assert.ok(closure.files.includes(file),'approved Bori runtime file: '+file);
  const props=['coffee-steam','plant-sway','monitor-glow','lantern-flicker','stamp-sparkle','paper-flutter'].map(n=>'assets/office-props/'+n+'.webp');
  // v2.9.269 explicitly approves this one season atlas; all other closure bytes stay exact.
  const season=['assets/office-season/xmas.webp'];
- const bori=['assets/sprites-v3/pet-bori.webp']; // Explicit approved fourth resident atlas.
- assert.deepEqual(closure.files.filter(f=>!baseline.includes(f)).sort(),plain([...ids.filter(id=>id!=='pet-bori').map(id=>'assets/sprites-v3/'+id+'.webp'),...bori,...props,...season]).sort(),'resident atlases plus the six approved live prop strips and the one approved season atlas only');
+ assert.deepEqual(closure.files.filter(f=>!baseline.includes(f)&&!approvedOfficeRuntimeAdditions.includes(f)).sort(),plain([...ids.filter(id=>id!=='pet-bori').map(id=>'assets/sprites-v3/'+id+'.webp'),...props,...season]).sort(),'resident atlases plus the six approved live prop strips and the one approved season atlas only, apart from explicit 270/272 additions');
 });
 
 test('separate date seed, stable hour/floor schedule, nine daytime residents and only pets overnight',()=>{

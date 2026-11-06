@@ -6,7 +6,7 @@
   "layout": "Only row 0 columns 0..3 are populated: standing, sitting, walk-a, walk-b. Other cells are transparent reserved capacity. This is the user-requested front-only four-pose subset, not a completed four-direction animation set. Resident humans use the same four columns; pets use five poses in left/right rows.",
   "shadow": "Generated translucent floor shadow included per frame. Do not double-render; future split shadow pass requires mask/extraction work.",
   "pivotMeaning": "Bottom center of included floor shadow; chair/desk masking must be validated by runtime owner.",
-  "spriteBytes": 1133790,
+  "spriteBytes": 1173194,
   "maxSpriteBytes": 1475000,
   "entries": [
     {
