@@ -1491,7 +1491,7 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
   function update() {
     if (!root) return;
     const person = duty(people());
-    if (!person) { root.hidden = true; return; }
+    if (!person) { schedulePlace(); return; }
     root.dataset.staff = person.id;
     face.setAttribute('aria-label', person.name + ' · 오늘의 도우미' + (loadNews?.dot ? ' · 새 소식 있음' : ''));
     title.textContent = person.name + ' · ' + person.rank;
@@ -1517,29 +1517,46 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
   }
   function place() {
     if (!root) return;
+    const visible = el => {
+      if (!el || el.hidden) return false;
+      const s = getComputedStyle(el), b = el.getBoundingClientRect();
+      return s.visibility !== 'hidden' && s.display !== 'none' && Number(s.opacity) !== 0 && b.width > 0 && b.height > 0;
+    };
+    const rail = document.getElementById('haniContextRemote'), app = document.getElementById('app');
+    const login = document.body.dataset.view === 'login' || document.body.classList.contains('login-scroll-locked') ||
+      document.body.classList.contains('login-locked') || app?.classList.contains('login-locked') || visible(document.getElementById('loginGate'));
+    const modal = [...document.querySelectorAll('.modal.open,dialog[open],[role="dialog"],[aria-modal="true"]')].some(el => !root.contains(el) && visible(el));
+    root.dataset.helperReason = login ? 'login' : modal ? 'modal' : !duty(people()) ? 'no-duty' : 'shown';
+    root.hidden = root.dataset.helperReason !== 'shown';
+    if (root.hidden) { close(); return; }
     const vv = window.visualViewport, viewport = {left: vv?.offsetLeft || 0, top: vv?.offsetTop || 0, width: vv?.width || window.innerWidth, height: vv?.height || window.innerHeight};
     viewport.height -= parseFloat(getComputedStyle(root).getPropertyValue('--helper-safe-bottom')) || 0;
     const desktop = window.innerWidth > 850, column = {...viewport};
-    const rail = document.getElementById('haniContextRemote'), app = document.getElementById('app');
     const railBox = rail?.getBoundingClientRect();
     if (desktop && railBox?.width > 0 && railBox.height > 0 && !app?.classList.contains('hani-remote-mini')) {
       const mainBox = app?.querySelector('.main')?.getBoundingClientRect();
       column.left = Math.max(viewport.left, mainBox?.left || 0);
       column.width = Math.max(0, Math.min(viewport.left + viewport.width, railBox.left) - column.left);
     }
-    // PC may float over ordinary cards. Only the named controls and focused input reserve space.
-    const controls = desktop
-      ? [...document.querySelectorAll('.yuna-composer,.toast,.offline-entry-badge,.hani-office-events,.hani-office-event-panel'),
-        ...(rail?.querySelectorAll('button,a[href],input,textarea,select,[role="button"]') || []),
-        ...(document.activeElement?.matches('input:not([type="hidden"]),textarea,select,[contenteditable="true"]') ? [document.activeElement] : [])]
-      : [...document.querySelectorAll('button,a[href],input:not([type="hidden"]),textarea,select,summary,[contenteditable="true"],[role="button"],nav,footer,.yuna-composer,.toast,.offline-entry-badge,.hani-context-remote,.hani-office-event-panel')];
+    // Floating UI reserves space on both sizes; ordinary scrolling controls never do.
+    const floating = el => ['fixed', 'sticky'].includes(getComputedStyle(el).position);
+    const controls = [...document.querySelectorAll('*')].filter(el => floating(el) && !(desktop && el === rail));
+    // Open rail bounds the main column above. In mini mode only its controls reserve space,
+    // preserving the existing viewport-corner placement over the rail's inert background.
+    if (rail && floating(rail)) controls.push(...rail.querySelectorAll('button,a[href],input,textarea,select,[role="button"]'));
+    if (document.activeElement?.matches('input:not([type="hidden"]),textarea,select,[contenteditable="true"]')) controls.push(document.activeElement);
     const obstacles = controls
       .filter(el => !root.contains(el))
-      .filter(el => { const s = getComputedStyle(el); return s.visibility !== 'hidden' && s.display !== 'none' && Number(s.opacity) !== 0 && (desktop || s.pointerEvents !== 'none'); })
+      .filter(visible)
       .map(el => el.getBoundingClientRect()).filter(b => b.width > 0 && b.height > 0 && b.right > viewport.left && b.left < viewport.left + viewport.width && b.bottom > viewport.top && b.top < viewport.top + viewport.height);
-    const box = slot(column, obstacles);
-    root.hidden = !box || !duty(people());
-    if (!box) return;
+    // Exhausted slots must not remove the helper. Phone fallback stays above a bottom bar.
+    const fallback = {...column};
+    if (!desktop) {
+      const bars = obstacles.filter(b => b.width >= viewport.width / 2 && b.top >= viewport.top + viewport.height / 2 && b.bottom >= viewport.top + viewport.height - 16);
+      if (bars.length) fallback.height = Math.max(84, Math.min(...bars.map(b => b.top)) - viewport.top);
+    }
+    const box = slot(column, obstacles) || slot(fallback, []) || {left:column.left + Math.max(0, column.width - 72),top:viewport.top + Math.max(0, fallback.height - 72)};
+    box.right = box.left + 56; box.bottom = box.top + 56;
     root.style.left = box.left + 'px'; root.style.top = box.top + 'px';
     panel.style.width = desktop ? Math.min(320, column.width - 32) + 'px' : '';
     panel.style.maxHeight = (desktop ? Math.max(0, box.top - viewport.top - 28) : Math.max(80, viewport.height - 32)) + 'px';
@@ -1577,7 +1594,13 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
     window.visualViewport?.addEventListener('resize', schedulePlace, {passive: true});
     window.visualViewport?.addEventListener('scroll', schedulePlace, {passive: true});
     // Canonical showView publishes this attribute; no navigation wrapper or event replacement.
-    new MutationObserver(() => { update(); }).observe(document.body, {attributes: true, attributeFilter: ['data-view', 'class']});
+    new MutationObserver(records => {
+      const surfaces = '#app,#loginGate,.modal,dialog,[role="dialog"],[aria-modal="true"]';
+      // Watch login/dialog transitions without following every animated content style.
+      if (records.some(({target, removedNodes = []}) => !root.contains(target) &&
+        (target === document.body || target.matches(surfaces) || target.querySelector(surfaces) ||
+          [...removedNodes].some(el => el.matches?.(surfaces) || el.querySelector?.(surfaces))))) update();
+    }).observe(document.body, {attributes: true, childList: true, subtree: true, attributeFilter: ['data-view', 'class', 'hidden', 'open', 'style']});
     update();
     const read = url => fetch(url, {cache: 'no-cache'}).then(r => { if (!r.ok) throw new Error('Helper data unavailable'); return r.json(); });
     read('./assets/data/office-tap-lines-v1.json').then(value => { bank = value; update(); }).catch(() => {});
