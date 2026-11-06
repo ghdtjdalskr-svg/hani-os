@@ -2769,9 +2769,9 @@
   const officeEventCalendar=Object.freeze([
     Object.freeze({id:'christmas',atlas:'./assets/office-season/xmas.webp',startKst:'12-01T00:00',endKstExclusive:'12-27T00:00',decorations:Object.freeze([
       ['xmas-tree','event-tall','1f',493,435,112,136,'bottom-center',false],
-      ['xmas-snow','event-window','1f',1600,146,88,112,'center',false],
+      ['xmas-snow','event-window','1f',1580,230,160,204,'center',false],
       ['xmas-wreath','event-wall','1f',832,196,76,76,'center',false],
-      ['xmas-gifts','event-floor','1f',548,450,80,60,'bottom-center',false],
+      ['xmas-gifts','event-floor','1f',520,443,48,36,'bottom-center',false],
       ['xmas-lights','event-wide','5f',1344,565,384,64,'bottom-center',true]
     ].map(Object.freeze))})
   ]);

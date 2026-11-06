@@ -1,0 +1,4068 @@
+[
+  {
+    "floor": "1f",
+    "art": "http://127.0.0.1:1863/assets/building/floor-1f-217.webp",
+    "props": [
+      {
+        "id": "xmas-tree",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 0%",
+        "rect": [
+          343.171875,
+          353.171875,
+          83.59375,
+          101.5
+        ]
+      },
+      {
+        "id": "xmas-snow",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 48.6111%",
+        "rect": [
+          1178.4140625,
+          197.171875,
+          65.671875,
+          83.59375
+        ]
+      },
+      {
+        "id": "xmas-wreath",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "0% 79.0123%",
+        "rect": [
+          609.640625,
+          247.921875,
+          56.71875,
+          56.71875
+        ]
+      },
+      {
+        "id": "xmas-gifts",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "5.4945% 75.2941%",
+        "rect": [
+          396.1796875,
+          421.09375,
+          59.703125,
+          44.78125
+        ]
+      },
+      {
+        "id": "xmas-lights",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 100%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "layers": [
+      {
+        "class": "",
+        "id": "haniOfficeActors",
+        "style": null,
+        "z": "auto",
+        "transform": "none",
+        "rect": {
+          "x": 17,
+          "y": 130,
+          "width": 1248,
+          "height": 0,
+          "top": 130,
+          "right": 1265,
+          "bottom": 130,
+          "left": 17
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #685486; --office-team-tint: #eee7f4; --name-x: 0.0078125px; --name-y: -95.859375px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": "--status-x: 0.0078125px; --status-y: -22px;",
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #836445; --office-team-tint: #f2e9db;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #42675e; --office-team-tint: #e5eee7;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #42675e; --office-team-tint: #e5eee7;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-actor",
+        "id": "",
+        "person": "sua",
+        "style": "--idle-duration: 4.7s; --idle-delay: -3.7s; --step-bounce: 0px; --step-lean: 0deg; left: 10.6%; top: 67.7%; --response-lean: 1deg; --idle-pivot-x: 50%; --idle-pivot-y: 95.3125%; --sprite-ratio: 0.75; --actor-pivot-x: -0.5; --actor-pivot-y: -0.953125;",
+        "z": "auto",
+        "transform": "none",
+        "rect": {
+          "x": 117.46875,
+          "y": 524.609375,
+          "width": 63.640625,
+          "height": 84.859375,
+          "top": 524.609375,
+          "right": 181.109375,
+          "bottom": 609.46875,
+          "left": 117.46875
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #815962; --office-team-tint: #f2e6e8; --name-x: -13.8984375px; --name-y: -95.859375px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 97.125,
+          "y": 501.609375,
+          "width": 76.515625,
+          "height": 19,
+          "top": 501.609375,
+          "right": 173.640625,
+          "bottom": 520.609375,
+          "left": 97.125
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": "--status-x: -13.8984375px; --status-y: -22px;",
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 96.0859375,
+          "y": 479.015625,
+          "width": 78.59375,
+          "height": 20.59375,
+          "top": 479.015625,
+          "right": 174.6796875,
+          "bottom": 499.609375,
+          "left": 96.0859375
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #836445; --office-team-tint: #f2e9db;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-actor",
+        "id": "",
+        "person": "minji",
+        "style": "--idle-duration: 4.1s; --idle-delay: -4.4s; --step-bounce: 0px; --step-lean: 0deg; left: 86%; top: 37%; --response-lean: 1deg; --idle-pivot-x: 50%; --idle-pivot-y: 95.3125%; --sprite-ratio: 0.75; --actor-pivot-x: -0.5; --actor-pivot-y: -0.953125;",
+        "z": "auto",
+        "transform": "none",
+        "rect": {
+          "x": 1058.453125,
+          "y": 308.984375,
+          "width": 63.640625,
+          "height": 84.859375,
+          "top": 308.984375,
+          "right": 1122.09375,
+          "bottom": 393.84375,
+          "left": 1058.453125
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #42675e; --office-team-tint: #e5eee7; --name-x: 0.0078125px; --name-y: -95.859375px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 1052.015625,
+          "y": 285.984375,
+          "width": 76.515625,
+          "height": 19,
+          "top": 285.984375,
+          "right": 1128.53125,
+          "bottom": 304.984375,
+          "left": 1052.015625
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": "--status-x: 0.0078125px; --status-y: -22px;",
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 1050.9765625,
+          "y": 263.390625,
+          "width": 78.59375,
+          "height": 20.59375,
+          "top": 263.390625,
+          "right": 1129.5703125,
+          "bottom": 283.984375,
+          "left": 1050.9765625
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #42675e; --office-team-tint: #e5eee7;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-actor",
+        "id": "",
+        "person": "yuna",
+        "style": "--idle-duration: 5s; --idle-delay: -1.8s; --step-bounce: 0px; --step-lean: 0deg; left: 72%; top: 37%; --response-lean: 1deg; --idle-pivot-x: 50%; --idle-pivot-y: 95.3125%; --sprite-ratio: 0.75; --actor-pivot-x: -0.5; --actor-pivot-y: -0.953125;",
+        "z": "auto",
+        "transform": "none",
+        "rect": {
+          "x": 883.734375,
+          "y": 308.984375,
+          "width": 63.640625,
+          "height": 84.859375,
+          "top": 308.984375,
+          "right": 947.375,
+          "bottom": 393.84375,
+          "left": 883.734375
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #685486; --office-team-tint: #eee7f4; --name-x: 0.0078125px; --name-y: -95.859375px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 877.296875,
+          "y": 285.984375,
+          "width": 76.515625,
+          "height": 19,
+          "top": 285.984375,
+          "right": 953.8125,
+          "bottom": 304.984375,
+          "left": 877.296875
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": "--status-x: 0.0078125px; --status-y: -22px;",
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 870.6484375,
+          "y": 263.390625,
+          "width": 89.8125,
+          "height": 20.59375,
+          "top": 263.390625,
+          "right": 960.4609375,
+          "bottom": 283.984375,
+          "left": 870.6484375
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #685486; --office-team-tint: #eee7f4; --name-x: 0.0078125px; --name-y: -95.859375px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": "--status-x: 0.0078125px; --status-y: -22px;",
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #685486; --office-team-tint: #eee7f4; --name-x: 0.0078125px; --name-y: -95.859375px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": "--status-x: 0.0078125px; --status-y: -22px;",
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #43637f; --office-team-tint: #e6edf3;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #43637f; --office-team-tint: #e6edf3;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #43637f; --office-team-tint: #e6edf3;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #43637f; --office-team-tint: #e6edf3;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #43637f; --office-team-tint: #e6edf3;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #836445; --office-team-tint: #f2e9db;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #42675e; --office-team-tint: #e5eee7;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-actor",
+        "id": "",
+        "person": "taeo",
+        "style": "--idle-duration: 4.7s; --idle-delay: -4.5s; --step-bounce: 0px; --step-lean: 0deg; left: 17.7%; top: 67.7%; --response-lean: 1deg; --idle-pivot-x: 50%; --idle-pivot-y: 95.3125%; --sprite-ratio: 0.75; --actor-pivot-x: -0.5; --actor-pivot-y: -0.953125;",
+        "z": "auto",
+        "transform": "none",
+        "rect": {
+          "x": 206.078125,
+          "y": 524.609375,
+          "width": 63.640625,
+          "height": 84.859375,
+          "top": 524.609375,
+          "right": 269.71875,
+          "bottom": 609.46875,
+          "left": 206.078125
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #815962; --office-team-tint: #f2e6e8; --name-x: 0.0078125px; --name-y: -95.859375px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 176.6796875,
+          "y": 501.609375,
+          "width": 122.4375,
+          "height": 19,
+          "top": 501.609375,
+          "right": 299.1171875,
+          "bottom": 520.609375,
+          "left": 176.6796875
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": "--status-x: 0.0078125px; --status-y: -22px;",
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 192.9921875,
+          "y": 479.015625,
+          "width": 89.8125,
+          "height": 20.59375,
+          "top": 479.015625,
+          "right": 282.8046875,
+          "bottom": 499.609375,
+          "left": 192.9921875
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--name-x: 0.0078125px; --name-y: -95.859375px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": "--status-x: 0.0078125px; --status-y: -22px;",
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-actor",
+        "id": "",
+        "person": "visitor-2",
+        "style": "--idle-duration: 3.8000000000000003s; --idle-delay: -2.3s; --step-bounce: 0px; --step-lean: 0deg; left: 50%; top: 87.4355%; --response-lean: 1deg; --idle-pivot-x: 50%; --idle-pivot-y: 93.75%; --sprite-ratio: 0.6666666666666666; --actor-pivot-x: -0.5; --actor-pivot-y: -0.9375;",
+        "z": "auto",
+        "transform": "none",
+        "rect": {
+          "x": 612.71875,
+          "y": 664.5625,
+          "width": 56.5625,
+          "height": 84.859375,
+          "top": 664.5625,
+          "right": 669.28125,
+          "bottom": 749.421875,
+          "left": 612.71875
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--name-x: 0px; --name-y: -95.859375px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 602.75,
+          "y": 641.5625,
+          "width": 76.5,
+          "height": 19,
+          "top": 641.5625,
+          "right": 679.25,
+          "bottom": 660.5625,
+          "left": 602.75
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": "--status-x: 0px; --status-y: -22px;",
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 601.703125,
+          "y": 618.96875,
+          "width": 78.59375,
+          "height": 20.59375,
+          "top": 618.96875,
+          "right": 680.296875,
+          "bottom": 639.5625,
+          "left": 601.703125
+        }
+      },
+      {
+        "class": "hani-office-actor",
+        "id": "",
+        "person": "pet-cat",
+        "style": "--idle-duration: 3.8000000000000003s; --idle-delay: -0.8s; --step-bounce: 0px; --step-lean: 0deg; left: 45.4873%; top: 55.8926%; --pet-bob: -0.219px; --pet-lean: 0.000deg; --pet-spin: 0.000deg; --idle-pivot-x: 50%; --idle-pivot-y: 93.75%; --sprite-ratio: 0.6666666666666666; --resident-top: 0.6041666666666666; --actor-pivot-x: -0.5; --actor-pivot-y: -0.9375;",
+        "z": "auto",
+        "transform": "none",
+        "rect": {
+          "x": 556.390625,
+          "y": 443.015625,
+          "width": 56.5625,
+          "height": 84.859375,
+          "top": 443.015625,
+          "right": 612.953125,
+          "bottom": 527.875,
+          "left": 556.390625
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--name-x: -0.29459635416662877px; --name-y: -5.012044270833314px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 573.7756958007812,
+          "y": 471.2848205566406,
+          "width": 21.203125,
+          "height": 15,
+          "top": 471.2848205566406,
+          "right": 594.9788208007812,
+          "bottom": 486.2848205566406,
+          "left": 573.7756958007812
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--name-x: -0.29459635416662877px; --name-y: -5.378040364583342px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-actor",
+        "id": "",
+        "person": "pet-rabbit",
+        "style": "--idle-duration: 5.1s; --idle-delay: -1.9s; --step-bounce: 0px; --step-lean: 0deg; left: 34%; top: 55%; --pet-bob: 0.000px; --pet-lean: 0.000deg; --pet-spin: 0.000deg; --idle-pivot-x: 50%; --idle-pivot-y: 93.75%; --sprite-ratio: 0.6666666666666666; --resident-top: 0.4236111111111111; --actor-pivot-x: -0.5; --actor-pivot-y: -0.9375;",
+        "z": "auto",
+        "transform": "none",
+        "rect": {
+          "x": 413.03125,
+          "y": 436.75,
+          "width": 56.5625,
+          "height": 84.859375,
+          "top": 436.75,
+          "right": 469.59375,
+          "bottom": 521.609375,
+          "left": 413.03125
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--name-x: 5.684341886080802e-14px; --name-y: -7.110911458333305px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 430.7109375,
+          "y": 447.59222412109375,
+          "width": 21.203125,
+          "height": 15,
+          "top": 447.59222412109375,
+          "right": 451.9140625,
+          "bottom": 462.59222412109375,
+          "left": 430.7109375
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-live-props",
+        "id": "",
+        "style": null,
+        "z": "2",
+        "transform": "none",
+        "rect": {
+          "x": 17,
+          "y": 130,
+          "width": 1248,
+          "height": 702.359375,
+          "top": 130,
+          "right": 1265,
+          "bottom": 832.359375,
+          "left": 17
+        }
+      }
+    ],
+    "wreathOverlapsBrand": false,
+    "writes": [],
+    "reduced": [
+      {
+        "id": "xmas-tree",
+        "animation": "none",
+        "position": "7.86517% 0%"
+      },
+      {
+        "id": "xmas-snow",
+        "animation": "none",
+        "position": "6.07735% 48.6111%"
+      },
+      {
+        "id": "xmas-wreath",
+        "animation": "none",
+        "position": "0% 79.0123%"
+      },
+      {
+        "id": "xmas-gifts",
+        "animation": "none",
+        "position": "5.4945% 75.2941%"
+      },
+      {
+        "id": "xmas-lights",
+        "animation": "none",
+        "position": "33.3333% 100%"
+      }
+    ]
+  },
+  {
+    "floor": "5f",
+    "art": "http://127.0.0.1:1863/assets/building/floor-5f-night-243.webp",
+    "props": [
+      {
+        "id": "xmas-tree",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 0%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-snow",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 48.6111%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-wreath",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "0% 79.0123%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-gifts",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "5.4945% 75.2941%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-lights",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 100%",
+        "rect": [
+          876.8671875,
+          503.9375,
+          286.609375,
+          47.765625
+        ]
+      }
+    ],
+    "layers": [
+      {
+        "class": "",
+        "id": "haniOfficeActors",
+        "style": null,
+        "z": "auto",
+        "transform": "none",
+        "rect": {
+          "x": 17,
+          "y": 130,
+          "width": 1248,
+          "height": 0,
+          "top": 130,
+          "right": 1265,
+          "bottom": 130,
+          "left": 17
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #685486; --office-team-tint: #eee7f4; --name-x: 0.0078125px; --name-y: -95.859375px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": "--status-x: 0.0078125px; --status-y: -22px;",
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #836445; --office-team-tint: #f2e9db;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #42675e; --office-team-tint: #e5eee7;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #42675e; --office-team-tint: #e5eee7;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #815962; --office-team-tint: #f2e6e8; --name-x: -13.8984375px; --name-y: -95.859375px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": "--status-x: -13.8984375px; --status-y: -22px;",
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #836445; --office-team-tint: #f2e9db;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #42675e; --office-team-tint: #e5eee7; --name-x: 0.0078125px; --name-y: -95.859375px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": "--status-x: 0.0078125px; --status-y: -22px;",
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #42675e; --office-team-tint: #e5eee7;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #685486; --office-team-tint: #eee7f4; --name-x: 0.0078125px; --name-y: -95.859375px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": "--status-x: 0.0078125px; --status-y: -22px;",
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #685486; --office-team-tint: #eee7f4; --name-x: 0.0078125px; --name-y: -95.859375px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": "--status-x: 0.0078125px; --status-y: -22px;",
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #685486; --office-team-tint: #eee7f4; --name-x: 0.0078125px; --name-y: -95.859375px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": "--status-x: 0.0078125px; --status-y: -22px;",
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #43637f; --office-team-tint: #e6edf3;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #43637f; --office-team-tint: #e6edf3;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #43637f; --office-team-tint: #e6edf3;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #43637f; --office-team-tint: #e6edf3;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #43637f; --office-team-tint: #e6edf3;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #836445; --office-team-tint: #f2e9db;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #42675e; --office-team-tint: #e5eee7;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #815962; --office-team-tint: #f2e6e8; --name-x: 0.0078125px; --name-y: -95.859375px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": "--status-x: 0.0078125px; --status-y: -22px;",
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--name-x: 0.0078125px; --name-y: -95.859375px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": "--status-x: 0.0078125px; --status-y: -22px;",
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--name-x: 0px; --name-y: -95.859375px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": "--status-x: 0px; --status-y: -22px;",
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--name-x: -0.29459635416662877px; --name-y: -5.012044270833314px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--name-x: -0.29459635416662877px; --name-y: -5.378040364583342px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--name-x: 5.684341886080802e-14px; --name-y: -7.110911458333305px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-live-props",
+        "id": "",
+        "style": null,
+        "z": "2",
+        "transform": "none",
+        "rect": {
+          "x": 17,
+          "y": 130,
+          "width": 1248,
+          "height": 702.359375,
+          "top": 130,
+          "right": 1265,
+          "bottom": 832.359375,
+          "left": 17
+        }
+      }
+    ],
+    "wreathOverlapsBrand": false,
+    "writes": [],
+    "reduced": [
+      {
+        "id": "xmas-tree",
+        "animation": "none",
+        "position": "7.86517% 0%"
+      },
+      {
+        "id": "xmas-snow",
+        "animation": "none",
+        "position": "6.07735% 48.6111%"
+      },
+      {
+        "id": "xmas-wreath",
+        "animation": "none",
+        "position": "0% 79.0123%"
+      },
+      {
+        "id": "xmas-gifts",
+        "animation": "none",
+        "position": "5.4945% 75.2941%"
+      },
+      {
+        "id": "xmas-lights",
+        "animation": "none",
+        "position": "33.3333% 100%"
+      }
+    ]
+  },
+  {
+    "floor": "1f",
+    "art": "http://127.0.0.1:1863/assets/building/floor-1f-217.webp",
+    "props": [
+      {
+        "id": "xmas-tree",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 0%",
+        "rect": [
+          110.5625,
+          342.015625,
+          23.96875,
+          29.109375
+        ]
+      },
+      {
+        "id": "xmas-snow",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 48.6111%",
+        "rect": [
+          350.1640625,
+          297.265625,
+          18.828125,
+          23.96875
+        ]
+      },
+      {
+        "id": "xmas-wreath",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "0% 79.0123%",
+        "rect": [
+          187.0078125,
+          311.8203125,
+          16.265625,
+          16.265625
+        ]
+      },
+      {
+        "id": "xmas-gifts",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "5.4945% 75.2941%",
+        "rect": [
+          125.765625,
+          361.5,
+          17.125,
+          12.84375
+        ]
+      },
+      {
+        "id": "xmas-lights",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 100%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "layers": [
+      {
+        "class": "",
+        "id": "haniOfficeActors",
+        "style": null,
+        "z": "auto",
+        "transform": "none",
+        "rect": {
+          "x": 17,
+          "y": 278,
+          "width": 358,
+          "height": 0,
+          "top": 278,
+          "right": 375,
+          "bottom": 278,
+          "left": 17
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #685486; --office-team-tint: #eee7f4; --name-x: -68.875px; --name-y: -41.265625px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #836445; --office-team-tint: #f2e9db;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #42675e; --office-team-tint: #e5eee7;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #42675e; --office-team-tint: #e5eee7;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-actor",
+        "id": "",
+        "person": "sua",
+        "style": "--idle-duration: 4.7s; --idle-delay: -3.7s; --step-bounce: 0px; --step-lean: 0deg; left: 10.6%; top: 67.7%; --response-lean: 1deg; --idle-pivot-x: 50%; --idle-pivot-y: 95.3125%; --sprite-ratio: 0.75; --actor-pivot-x: -0.5; --actor-pivot-y: -0.953125;",
+        "z": "auto",
+        "transform": "none",
+        "rect": {
+          "x": 39.9375,
+          "y": 376.265625,
+          "width": 30,
+          "height": 40,
+          "top": 376.265625,
+          "right": 69.9375,
+          "bottom": 416.265625,
+          "left": 39.9375
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #815962; --office-team-tint: #f2e6e8; --name-x: 8.9375px; --name-y: -59px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 16.5,
+          "y": 354.265625,
+          "width": 94.75,
+          "height": 10,
+          "top": 354.265625,
+          "right": 111.25,
+          "bottom": 364.265625,
+          "left": 16.5
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #836445; --office-team-tint: #f2e9db;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-actor",
+        "id": "",
+        "person": "minji",
+        "style": "--idle-duration: 4.1s; --idle-delay: -4.4s; --step-bounce: 0px; --step-lean: 0deg; left: 86%; top: 37%; --response-lean: 1deg; --idle-pivot-x: 50%; --idle-pivot-y: 95.3125%; --sprite-ratio: 0.75; --actor-pivot-x: -0.5; --actor-pivot-y: -0.953125;",
+        "z": "auto",
+        "transform": "none",
+        "rect": {
+          "x": 309.875,
+          "y": 314.40625,
+          "width": 30,
+          "height": 40,
+          "top": 314.40625,
+          "right": 339.875,
+          "bottom": 354.40625,
+          "left": 309.875
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #42675e; --office-team-tint: #e5eee7; --name-x: 0px; --name-y: -48.5px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 277.5,
+          "y": 302.90625,
+          "width": 94.75,
+          "height": 10,
+          "top": 302.90625,
+          "right": 372.25,
+          "bottom": 312.90625,
+          "left": 277.5
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #42675e; --office-team-tint: #e5eee7;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-actor",
+        "id": "",
+        "person": "yuna",
+        "style": "--idle-duration: 5s; --idle-delay: -1.8s; --step-bounce: 0px; --step-lean: 0deg; left: 72%; top: 37%; --response-lean: 1deg; --idle-pivot-x: 50%; --idle-pivot-y: 95.3125%; --sprite-ratio: 0.75; --actor-pivot-x: -0.5; --actor-pivot-y: -0.953125;",
+        "z": "auto",
+        "transform": "none",
+        "rect": {
+          "x": 259.75,
+          "y": 314.40625,
+          "width": 30,
+          "height": 40,
+          "top": 314.40625,
+          "right": 289.75,
+          "bottom": 354.40625,
+          "left": 259.75
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #685486; --office-team-tint: #eee7f4; --name-x: 0px; --name-y: -59px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 222.375,
+          "y": 292.40625,
+          "width": 104.75,
+          "height": 10,
+          "top": 292.40625,
+          "right": 327.125,
+          "bottom": 302.40625,
+          "left": 222.375
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #685486; --office-team-tint: #eee7f4; --name-x: 5.359375px; --name-y: -48.5px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #685486; --office-team-tint: #eee7f4; --name-x: 0px; --name-y: -48.5px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #43637f; --office-team-tint: #e6edf3;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #43637f; --office-team-tint: #e6edf3;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #43637f; --office-team-tint: #e6edf3;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #43637f; --office-team-tint: #e6edf3;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #43637f; --office-team-tint: #e6edf3;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #836445; --office-team-tint: #f2e9db;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #42675e; --office-team-tint: #e5eee7;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-actor",
+        "id": "",
+        "person": "taeo",
+        "style": "--idle-duration: 4.7s; --idle-delay: -4.5s; --step-bounce: 0px; --step-lean: 0deg; left: 17.7%; top: 67.7%; --response-lean: 1deg; --idle-pivot-x: 50%; --idle-pivot-y: 95.3125%; --sprite-ratio: 0.75; --actor-pivot-x: -0.5; --actor-pivot-y: -0.953125;",
+        "z": "auto",
+        "transform": "none",
+        "rect": {
+          "x": 65.359375,
+          "y": 376.265625,
+          "width": 30,
+          "height": 40,
+          "top": 376.265625,
+          "right": 95.359375,
+          "bottom": 416.265625,
+          "left": 65.359375
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #815962; --office-team-tint: #f2e6e8; --name-x: -9.789388020833343px; --name-y: -48.5px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 18.194988250732422,
+          "y": 364.765625,
+          "width": 104.75,
+          "height": 10,
+          "top": 364.765625,
+          "right": 122.94498825073242,
+          "bottom": 374.765625,
+          "left": 18.194988250732422
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--name-x: 0px; --name-y: -48.5px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-actor",
+        "id": "",
+        "person": "visitor-2",
+        "style": "--idle-duration: 3.8000000000000003s; --idle-delay: -2.3s; --step-bounce: 0px; --step-lean: 0deg; left: 50%; top: 87.4355%; --response-lean: 1deg; --idle-pivot-x: 50%; --idle-pivot-y: 93.75%; --sprite-ratio: 0.6666666666666666; --actor-pivot-x: -0.5; --actor-pivot-y: -0.9375;",
+        "z": "auto",
+        "transform": "none",
+        "rect": {
+          "x": 182.671875,
+          "y": 416.640625,
+          "width": 26.65625,
+          "height": 40,
+          "top": 416.640625,
+          "right": 209.328125,
+          "bottom": 456.640625,
+          "left": 182.671875
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--name-x: 0px; --name-y: -48.5px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 136.953125,
+          "y": 405.140625,
+          "width": 118.09375,
+          "height": 10,
+          "top": 405.140625,
+          "right": 255.046875,
+          "bottom": 415.140625,
+          "left": 136.953125
+        }
+      },
+      {
+        "class": "hani-office-actor",
+        "id": "",
+        "person": "pet-cat",
+        "style": "--idle-duration: 3.8000000000000003s; --idle-delay: -0.8s; --step-bounce: 0px; --step-lean: 0deg; left: 45.4873%; top: 55.8926%; --pet-bob: -0.219px; --pet-lean: 0.000deg; --pet-spin: 0.000deg; --idle-pivot-x: 50%; --idle-pivot-y: 93.75%; --sprite-ratio: 0.6666666666666666; --resident-top: 0.6041666666666666; --actor-pivot-x: -0.5; --actor-pivot-y: -0.9375;",
+        "z": "auto",
+        "transform": "none",
+        "rect": {
+          "x": 166.515625,
+          "y": 353.09375,
+          "width": 26.65625,
+          "height": 40,
+          "top": 353.09375,
+          "right": 193.171875,
+          "bottom": 393.09375,
+          "left": 166.515625
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--name-x: -0.1388346354166572px; --name-y: -2.5052083333333144px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 169.7049102783203,
+          "y": 361.7604064941406,
+          "width": 20,
+          "height": 10,
+          "top": 361.7604064941406,
+          "right": 189.7049102783203,
+          "bottom": 371.7604064941406,
+          "left": 169.7049102783203
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--name-x: -0.1388346354166572px; --name-y: -2.5034722222222285px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-actor",
+        "id": "",
+        "person": "pet-rabbit",
+        "style": "--idle-duration: 5.1s; --idle-delay: -1.9s; --step-bounce: 0px; --step-lean: 0deg; left: 34%; top: 55%; --pet-bob: 0.000px; --pet-lean: 0.000deg; --pet-spin: 0.000deg; --idle-pivot-x: 50%; --idle-pivot-y: 93.75%; --sprite-ratio: 0.6666666666666666; --resident-top: 0.4236111111111111; --actor-pivot-x: -0.5; --actor-pivot-y: -0.9375;",
+        "z": "auto",
+        "transform": "none",
+        "rect": {
+          "x": 125.390625,
+          "y": 351.296875,
+          "width": 26.65625,
+          "height": 40,
+          "top": 351.296875,
+          "right": 152.046875,
+          "bottom": 391.296875,
+          "left": 125.390625
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--name-x: 0px; --name-y: -2.508680555555543px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 128.71875,
+          "y": 352.7413330078125,
+          "width": 20,
+          "height": 10,
+          "top": 352.7413330078125,
+          "right": 148.71875,
+          "bottom": 362.7413330078125,
+          "left": 128.71875
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-live-props",
+        "id": "",
+        "style": null,
+        "z": "2",
+        "transform": "none",
+        "rect": {
+          "x": 17,
+          "y": 278,
+          "width": 358,
+          "height": 201.46875,
+          "top": 278,
+          "right": 375,
+          "bottom": 479.46875,
+          "left": 17
+        }
+      }
+    ],
+    "wreathOverlapsBrand": false,
+    "writes": [],
+    "reduced": [
+      {
+        "id": "xmas-tree",
+        "animation": "none",
+        "position": "7.86517% 0%"
+      },
+      {
+        "id": "xmas-snow",
+        "animation": "none",
+        "position": "6.07735% 48.6111%"
+      },
+      {
+        "id": "xmas-wreath",
+        "animation": "none",
+        "position": "0% 79.0123%"
+      },
+      {
+        "id": "xmas-gifts",
+        "animation": "none",
+        "position": "5.4945% 75.2941%"
+      },
+      {
+        "id": "xmas-lights",
+        "animation": "none",
+        "position": "33.3333% 100%"
+      }
+    ]
+  },
+  {
+    "floor": "5f",
+    "art": "http://127.0.0.1:1863/assets/building/floor-5f-night-243.webp",
+    "props": [
+      {
+        "id": "xmas-tree",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 0%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-snow",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 48.6111%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-wreath",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "0% 79.0123%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-gifts",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "5.4945% 75.2941%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-lights",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 100%",
+        "rect": [
+          263.65625,
+          385.265625,
+          82.21875,
+          13.6875
+        ]
+      }
+    ],
+    "layers": [
+      {
+        "class": "",
+        "id": "haniOfficeActors",
+        "style": null,
+        "z": "auto",
+        "transform": "none",
+        "rect": {
+          "x": 17,
+          "y": 278,
+          "width": 358,
+          "height": 0,
+          "top": 278,
+          "right": 375,
+          "bottom": 278,
+          "left": 17
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #685486; --office-team-tint: #eee7f4; --name-x: -68.875px; --name-y: -41.265625px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #836445; --office-team-tint: #f2e9db;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #42675e; --office-team-tint: #e5eee7;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #42675e; --office-team-tint: #e5eee7;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #815962; --office-team-tint: #f2e6e8; --name-x: 8.9375px; --name-y: -59px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #836445; --office-team-tint: #f2e9db;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #42675e; --office-team-tint: #e5eee7; --name-x: 0px; --name-y: -48.5px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #42675e; --office-team-tint: #e5eee7;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #685486; --office-team-tint: #eee7f4; --name-x: 0px; --name-y: -59px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #685486; --office-team-tint: #eee7f4; --name-x: 5.359375px; --name-y: -48.5px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #685486; --office-team-tint: #eee7f4; --name-x: 0px; --name-y: -48.5px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #43637f; --office-team-tint: #e6edf3;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #43637f; --office-team-tint: #e6edf3;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #43637f; --office-team-tint: #e6edf3;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #43637f; --office-team-tint: #e6edf3;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #43637f; --office-team-tint: #e6edf3;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #836445; --office-team-tint: #f2e9db;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #42675e; --office-team-tint: #e5eee7;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--office-team: #815962; --office-team-tint: #f2e6e8; --name-x: -9.789388020833343px; --name-y: -48.5px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--name-x: 0px; --name-y: -48.5px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-status",
+        "id": "",
+        "style": null,
+        "z": "6",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--name-x: 0px; --name-y: -48.5px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--name-x: -0.1388346354166572px; --name-y: -2.5052083333333144px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--name-x: -0.1388346354166572px; --name-y: -2.5034722222222285px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": "--name-x: 0px; --name-y: -2.508680555555543px;",
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-name",
+        "id": "",
+        "style": null,
+        "z": "5",
+        "transform": "none",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "class": "hani-office-live-props",
+        "id": "",
+        "style": null,
+        "z": "2",
+        "transform": "none",
+        "rect": {
+          "x": 17,
+          "y": 278,
+          "width": 358,
+          "height": 201.46875,
+          "top": 278,
+          "right": 375,
+          "bottom": 479.46875,
+          "left": 17
+        }
+      }
+    ],
+    "wreathOverlapsBrand": false,
+    "writes": [],
+    "reduced": [
+      {
+        "id": "xmas-tree",
+        "animation": "none",
+        "position": "7.86517% 0%"
+      },
+      {
+        "id": "xmas-snow",
+        "animation": "none",
+        "position": "6.07735% 48.6111%"
+      },
+      {
+        "id": "xmas-wreath",
+        "animation": "none",
+        "position": "0% 79.0123%"
+      },
+      {
+        "id": "xmas-gifts",
+        "animation": "none",
+        "position": "5.4945% 75.2941%"
+      },
+      {
+        "id": "xmas-lights",
+        "animation": "none",
+        "position": "33.3333% 100%"
+      }
+    ]
+  }
+]

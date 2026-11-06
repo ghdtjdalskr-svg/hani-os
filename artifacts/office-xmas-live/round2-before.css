@@ -1,0 +1,321 @@
+.hani-office-live{min-width:0;max-width:100%;margin-bottom:16px;padding:16px;border:1px solid #ded8ed;border-radius:22px;background:linear-gradient(135deg,#fffdfb,#f7f4fc);box-shadow:0 14px 34px rgba(46,38,72,.07)}
+.hani-office-live-head,.hani-office-live-actions,.hani-office-meeting-title{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.hani-office-live-head small,.hani-office-meeting-title small{color:#7656c4;font-size:10px;font-weight:900;letter-spacing:.1em}
+.hani-office-live-head h3{margin:4px 0;font-size:22px}.hani-office-live-head p,.hani-office-meeting-title p{margin:0;color:#6f6b7b;font-size:13px}
+.hani-office-live-actions{flex-wrap:wrap;justify-content:flex-end}.hani-office-live-actions span{padding:7px 10px;border-radius:999px;background:#ede8f7;color:#59429b;font-size:11px;font-weight:800}
+.hani-office-scroll{width:100%;margin-top:14px;overflow-x:auto;overscroll-behavior-inline:contain;border-radius:18px}
+.hani-office-map{position:relative;width:100%;min-width:0;aspect-ratio:1672/941;overflow:hidden;border:1px solid #d7d1df;border-radius:18px;background:#f8f6f2}
+.hani-office-background,.hani-office-foreground{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.hani-office-background{z-index:0}
+.hani-office-background[hidden]{display:none}
+.hani-office-atmosphere{position:absolute;inset:0;z-index:1;pointer-events:none}
+.hani-office-wash,.hani-office-monitor-glow{position:absolute;inset:0;pointer-events:none}
+.hani-office-wash-morning{background:linear-gradient(125deg,#ffe7ae,#fff3d8 65%,transparent)}
+.hani-office-wash-evening{background:linear-gradient(125deg,#ef9b54,#f8bb87 65%,transparent)}
+.hani-office-wash-night{background:#244c87}
+.hani-office-monitor-glow[hidden]{display:none}
+.hani-office-foreground{z-index:8}
+/* No actor stacking context: persistent child labels share the map's layer.
+   Margin offsets preserve the atlas foot pivot without transform/translate. */
+.hani-office-actor{--actor-height:max(40px,6.8cqw);--sprite-ratio:.75;position:absolute;width:calc(var(--actor-height)*var(--sprite-ratio));height:var(--actor-height);margin:0;margin-left:calc(var(--actor-height)*var(--sprite-ratio)*var(--actor-pivot-x,-.5));margin-top:calc(var(--actor-height)*var(--actor-pivot-y,-1));transition:opacity .3s;pointer-events:none}
+
+.hani-office-sprite{position:relative;z-index:4;width:100%;height:100%;background-image:var(--sheet);background-repeat:no-repeat;background-size:600% 300%;filter:drop-shadow(0 3px 3px rgba(42,36,51,.2))}
+.hani-office-sheet-a{--sheet:url("./assets/ai-approval-characters/v3-animation-approved-transparent-group-a.webp")}.hani-office-sheet-b{--sheet:url("./assets/ai-approval-characters/v3-animation-approved-transparent-group-b.webp")}.hani-office-sheet-c{--sheet:url("./assets/ai-approval-characters/v3-animation-approved-transparent-group-c.webp")}
+.hani-office-actor[data-called="true"] .hani-office-sprite{filter:drop-shadow(0 0 9px #7457d8)}
+.hani-office-status{position:absolute;z-index:6;display:block;left:50%;bottom:calc(100% + 3px);translate:calc(-50% + var(--status-x,0px)) var(--status-y,0px);box-sizing:border-box;width:max-content;max-width:none;padding:2px 5px;border:1px solid #d7cbed;border-radius:7px;background:#fff;color:#493752;font-size:clamp(9px,.9cqw,12px);line-height:1.3;white-space:nowrap;overflow:visible;pointer-events:none}
+.hani-office-status[hidden]{display:none}
+
+.hani-office-actor[data-status="work"]{--activity-bg:#fff;--activity-ink:#493752;--activity-border:#d7cbed}
+.hani-office-actor[data-status="rest"]{--activity-bg:#fff8df;--activity-ink:#795919;--activity-border:#ebc770}
+.hani-office-actor[data-status="meeting"]{--activity-bg:#7354ca;--activity-ink:#fff;--activity-border:#7354ca}
+.hani-office-actor[data-status="moving"]{--activity-bg:#f1f5f9;--activity-ink:#334155;--activity-border:#94a3b8}
+.hani-office-actor[data-status="night"]{--activity-bg:#f3e8ff;--activity-ink:#6b21a8;--activity-border:#c4b5fd}
+.hani-office-status,.hani-office-compact-line{background:var(--activity-bg,#fff);color:var(--activity-ink,#493752);border-color:var(--activity-border,#d7cbed)}
+.hani-office-compact-line{border-radius:4px}
+.hani-office-meeting{margin-top:14px;padding:16px;border:1px solid #d4cbed;border-radius:18px;background:#f9f7fe}.hani-office-meeting[hidden]{display:none}.hani-office-meeting-title{align-items:start}.hani-office-meeting-title h4{margin:3px 0;font-size:18px}
+.hani-office-conversation{display:grid;gap:10px;max-height:430px;margin-top:14px;overflow:auto}.hani-office-line{display:grid;grid-template-columns:38px minmax(0,1fr);gap:10px;max-width:780px}.hani-office-line img{width:38px;height:38px;border:2px solid #fff;border-radius:12px;object-fit:cover;box-shadow:0 3px 9px rgba(49,39,77,.14)}.hani-office-line-body{padding:10px 13px;border:1px solid #e5deef;border-radius:5px 15px 15px 15px;background:#fff}.hani-office-line-body b{display:block;color:#5e43a4;font-size:11px}.hani-office-line-body p{margin:4px 0 0;font-size:13px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}.hani-office-line-summary .hani-office-line-body{border-color:#bdb0e1;background:#f0ebfc}.hani-office-empty{padding:14px;border-radius:12px;background:#fff;color:#777080;font-size:13px}
+.hani-office-participants{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}.hani-office-participants[hidden]{display:none}.hani-office-participants span{padding:6px 9px;border:1px solid #ded5ed;border-radius:999px;background:#fff;color:#584586;font-size:11px;font-weight:800}
+.hani-office-questions{margin-top:14px}.hani-office-questions[hidden]{display:none}.hani-office-questions .agent-subsection{margin:0;padding:14px;border:1px solid #ded5ed;border-radius:14px;background:#fff}.hani-office-questions textarea{display:block;width:100%;min-height:76px;margin:9px 0 12px;padding:10px 12px;border:1px solid #cfc4e4;border-radius:10px;font:inherit;resize:vertical}
+@media(max-width:700px){.hani-office-live{padding:10px}.hani-office-live-head,.hani-office-meeting-title{align-items:stretch;flex-direction:column}.hani-office-live-actions{justify-content:flex-start}.hani-office-map{width:100%}}
+@media(max-width:700px){.hani-office-live:has(.hani-office-map[data-state="meeting"]) .hani-office-scroll{display:none}}
+@media(prefers-reduced-motion:reduce){.hani-office-actor{transition:none}}
+.hani-building-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:16px}
+.hani-building-tabs button{min-width:0;min-height:58px;padding:10px 8px;border:1px solid #dcd5e8;border-radius:12px;background:#fff;color:#574666;text-align:left;cursor:pointer}
+.hani-building-tabs strong,.hani-building-tabs small{display:block;overflow-wrap:anywhere}.hani-building-tabs strong{font-size:12px}.hani-building-tabs small{margin-top:5px;font-size:11px;color:#71657e}
+.hani-building-tabs [aria-selected="true"]{border-color:#8363b8;background:#eee7f8;box-shadow:inset 0 -3px #8363b8}.hani-building-tabs button:focus-visible{outline:3px solid #8363b8;outline-offset:2px}
+.hani-office-scroll{overflow:visible}.hani-office-map{width:100%;min-width:0;container-type:inline-size}
+.hani-office-background,.hani-office-foreground{object-fit:fill}
+
+.hani-building-floor-label,.hani-building-overflow{position:relative;z-index:15;display:inline-block;padding:6px 10px;border:1px solid #ded5e8;border-radius:10px;background:#fffffff0;color:#51425e;font-size:12px;font-weight:800}
+.hani-building-presence-note{display:block;margin-top:6px;color:#6f6b7b;font-size:12px;line-height:1.5}.hani-building-presence-note[hidden]{display:none}
+.hani-building-floor-label{margin-top:8px}.hani-building-overflow{margin-left:8px}.hani-building-overflow[hidden],.hani-office-foreground[hidden],.hani-office-actor[hidden]{display:none}
+.hani-office-avatar{box-sizing:border-box;position:absolute;z-index:4;top:0;left:12%;width:76%;height:76%;margin:0;border:2px solid #fff;border-radius:50%;object-fit:cover;background:#eee7f8;background-image:none;box-shadow:0 3px 9px #3a274637}
+
+.hani-building-roster{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:12px 0 0;padding:0;list-style:none}
+.hani-building-roster li{min-width:0;padding:8px 10px;border-radius:10px;background:#ffffffb8;color:#61546c;font-size:11px;overflow-wrap:anywhere}.hani-building-roster li[hidden]{display:none}
+.hani-building-roster b{display:block;margin-bottom:3px;color:#493752;font-size:12px}
+.hani-office-live[data-paused="true"] .hani-office-actor{transition:none}.hani-office-live[data-paused="true"] *{animation-play-state:paused!important}
+@media(max-width:700px){
+ .hani-building-tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.hani-building-tabs button{min-height:60px}
+ .hani-office-map{width:100%;min-width:0;aspect-ratio:1672/941}
+ 
+ .hani-office-status{max-width:none;font-size:9px;padding:1px 4px}
+ .hani-office-actor:after{width:22px;height:5px}.hani-building-floor-label{top:8px;right:8px;font-size:10px}.hani-building-overflow{bottom:8px;right:8px;font-size:10px}
+ .hani-building-roster{grid-template-columns:repeat(2,minmax(0,1fr))}.hani-office-meeting-title h4,.hani-office-live-actions span{overflow-wrap:anywhere}
+ .hani-office-live:has(.hani-office-map[data-state="meeting"]) .hani-office-scroll{display:block}
+}
+
+/* Standing badges share the chibi footprint until their sprite art exists. */
+
+.hani-office-name{position:absolute;z-index:5;left:50%;bottom:0;translate:calc(-50% + var(--name-x,0px)) var(--name-y,0px);width:max-content;max-width:none;padding:1px 5px;border:1px solid var(--office-team,#ded5e8);border-left-width:3px;border-radius:5px;background:var(--office-team-tint,#fff);color:#493752;font-size:clamp(7px,.85cqw,12px);font-weight:800;white-space:nowrap;pointer-events:none}
+.hani-office-status-dot{display:none}.hani-office-activity-icon{display:inline;margin-right:2px}
+.hani-office-compact-line{display:none}
+@media(max-width:600px){
+ .hani-office-prop,.hani-office-rank,.hani-office-activity-icon{display:none}
+ .hani-office-status{display:block;max-width:none;font-size:10px;line-height:1.1;padding:0 2px;text-overflow:clip}
+ .hani-office-name{display:flex;align-items:center;gap:1px;width:max-content;max-width:none;border-width:0;border-radius:999px;padding:0 2px;font-size:10px;line-height:1;pointer-events:auto}
+ .hani-office-actor[data-avatar="v2"] .hani-office-name{font-size:10px}
+ .hani-office-status-dot{display:inline-block;flex:none;width:5px;height:5px;border-radius:50%;background:#16803c}
+ .hani-office-compact-line{display:inline}
+ .hani-office-actor[data-label-mode="name"] .hani-office-compact-line{display:none}
+ .hani-office-actor[data-label-mode="dot"] .hani-office-name{width:5px;height:5px;padding:0;background:transparent;gap:0}
+ .hani-office-actor[data-label-mode="dot"] .hani-office-name>span:not(.hani-office-status-dot){display:none}
+ .hani-office-actor[data-status="rest"] .hani-office-status-dot{background:#a86408}
+ .hani-office-actor[data-status="meeting"] .hani-office-status-dot{background:#2563eb}
+ .hani-office-actor[data-status="moving"] .hani-office-status-dot{background:#64748b}
+ .hani-office-actor[data-status="night"] .hani-office-status-dot{background:#7e22ce}
+}
+
+
+
+
+
+/* One persistent, responsive canon canvas. Atlas crop includes its original shadow. */
+.hani-office-sprite{filter:none}
+.hani-office-actor[data-avatar="v2"] .hani-office-sprite{background-repeat:no-repeat}
+.hani-office-actor[data-avatar="v2"] .hani-office-name{bottom:-7px}
+.hani-office-actor[data-avatar="pending"] .hani-office-sprite{background-image:none}
+.hani-building-rooms{font-size:12px;line-height:1.6;color:#61546c;overflow-wrap:anywhere}
+.hani-building-rooms p{margin:8px 0 0}.hani-building-rooms [hidden]{display:none}
+.hani-office-live-head>div{min-width:0}.hani-office-live-actions button{min-height:44px;white-space:normal}
+.hani-office-live{scroll-margin-top:80px}
+.hani-office-map{overflow:hidden}.hani-office-scroll{overflow:visible}
+.hani-building-floor-caption{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.hani-office-snack{min-height:44px}.login-locked .hani-office-snack{display:none}
+.hani-office-events{min-height:44px}
+.hani-office-event-panel{display:flex;flex-wrap:wrap;gap:6px;flex:0 1 100%;max-width:440px;padding:8px;border:1px solid var(--line,#d7dce5);border-radius:10px;background:var(--card,#fff)}
+.hani-office-event-panel[hidden],.hani-office-event-panel button[hidden],.hani-office-events[hidden],.login-locked .hani-office-events,.login-locked .hani-office-event-panel{display:none}
+.hani-office-event-panel button{flex:1 1 180px;text-align:left}.hani-office-event-panel button:disabled{opacity:.55;cursor:default}
+.hani-building-drama-caption{flex:1 1 100%;font-size:12px;line-height:17px;color:inherit;overflow-wrap:anywhere}
+.hani-building-drama-caption[hidden]{display:none}
+:root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-office-live{background:#201e2a;border-color:#51445e;color:#f4edf8}
+:root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-office-live-head p,:root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-building-rooms{color:#d7cbe3}
+:root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-building-tabs button{background:#302839;color:#f4edf8;border-color:#685477}
+:root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-building-tabs small{color:#d7cbe3}
+:root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-building-tabs [aria-selected="true"]{background:#5b4175;border-color:#c7a8e8}
+:root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-building-roster li{background:#302839;color:#ddd1e7}
+:root:is([data-theme="dark"],[data-finish="midnight-black"]) .hani-building-roster b{color:#f4edf8}
+@media(max-width:700px){.hani-building-floor-label,.hani-building-overflow{top:auto;right:auto;bottom:auto;font-size:12px}.hani-building-tabs button:last-child{grid-column:1/-1}}
+@media(max-width:1024px){.hani-office-live{padding-bottom:64px}}
+
+.hani-building-roster .hani-office-planned-badge{display:inline-block;font-size:11px;line-height:1.5;border:1px solid currentColor;border-radius:8px;padding:2px 6px;margin:0 5px 4px 0}
+
+/* Small wall plates, independent of image art; room directory handles small screens. */
+.hani-office-room-plate{position:absolute;z-index:3;translate:-50% -50%;box-sizing:border-box;padding:.28cqw .38cqw;border:0;border-radius:0;background:#3f444a;color:#fff;font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif;font-weight:400;letter-spacing:0;line-height:1.18;text-align:left;white-space:nowrap;box-shadow:none;text-shadow:none;transform-origin:center;pointer-events:none}
+.hani-office-room-plate b{display:block;font-size:min(10px,1.2cqw);font-weight:400}
+.hani-office-room-plate small{display:block;margin-top:.08cqw;font-size:min(8px,.96cqw);font-weight:400}
+.hani-office-room-plate[hidden],.hani-office-desk-props[hidden]{display:none}
+.hani-office-room-plate[data-brand="true"]{padding:0;background:none;box-shadow:none}
+.hani-office-brand{display:flex;align-items:center;justify-content:center;gap:.6cqw;color:#655076;filter:drop-shadow(.06cqw .12cqw .08cqw #3d294a50)}
+.hani-office-brand-mark{display:block;width:3.1cqw;height:3.1cqw;object-fit:contain}
+.hani-office-brand b{font-family:Georgia,"Times New Roman",serif;font-size:1.65cqw;letter-spacing:.12em;font-weight:600;line-height:1;color:#6b567b;text-shadow:0 -.04cqw #e5d7ed,.06cqw .08cqw #49384f}
+.hani-office-barista{position:absolute;z-index:2;box-sizing:border-box;display:block;margin:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;cursor:pointer;pointer-events:auto}
+.hani-office-barista[hidden],.login-locked .hani-office-barista{display:none}
+/* The shared press scale gives actors a temporary stacking context. */
+#haniOfficeMap:has(.hani-office-actor:active) .hani-office-barista{pointer-events:none}
+#app #haniOfficeMap .hani-office-barista{min-width:0!important;min-height:0!important;max-width:none;transform:none;transition:none}
+.hani-office-barista:focus-visible{outline:2px solid #7656c4;outline-offset:0}
+.hani-office-queen-frame{position:absolute;z-index:2;box-sizing:border-box;display:block;margin:0;padding:0;border:0;border-radius:0;background:transparent;cursor:pointer;pointer-events:auto}
+.hani-office-queen-frame[hidden]{display:none}
+#app #haniOfficeMap .hani-office-queen-frame{min-width:0!important;min-height:0!important}
+.hani-office-queen-frame img{display:block;width:100%;height:86%;object-fit:cover;object-position:100% 50%;pointer-events:none}
+.hani-office-queen-caption{position:absolute;inset:auto 0 0;display:flex;align-items:center;justify-content:center;height:14%;background:#ebcc7d;color:#4b3219;font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif;font-size:.65cqw;line-height:1;font-weight:700;white-space:nowrap;pointer-events:none}
+.hani-office-queen-frame::after{content:"";position:absolute;left:50%;top:50%;translate:-50% -50%;width:100%;height:100%;min-width:44px;min-height:44px}
+.hani-office-queen-frame:focus-visible{outline:2px solid #7656c4;outline-offset:2px}
+.hani-office-desk-props{position:absolute;z-index:2;height:auto;max-height:4cqw;object-fit:contain;object-position:left top;pointer-events:none;visibility:hidden}
+.hani-office-desk-props[data-loaded="true"]{visibility:visible}
+.hani-office-desk-props[data-planned="true"]{opacity:.38}
+@media(max-width:412px){.hani-office-room-plate:not([data-brand="true"]){display:none}}
+@container(max-width:650px){.hani-office-room-plate:not([data-brand="true"]){visibility:hidden}}
+
+/* Living Office Core uses the existing actor slots and an HTML speech panel. */
+.hani-office-actor[role="button"]{cursor:pointer;pointer-events:auto}
+/* A transparent target shares the actor's delegated events, without stretching art. */
+.hani-office-actor[role="button"]:before{content:"";position:absolute;z-index:4;left:50%;top:50%;width:max(40px,100%);height:max(40px,100%);transform:translate(-50%,-50%);pointer-events:auto}
+.hani-office-actor:focus-visible{outline:2px solid #8363b8;outline-offset:3px;border-radius:8px}
+.hani-office-prop{position:absolute;z-index:4;left:100%;top:2px;translate:-35% 0;box-sizing:content-box;width:1em;height:1em;padding:2px;border-radius:50%;background:#fff;font-size:18px;line-height:1;text-align:center;pointer-events:none;animation:none;transition:none;display:none}
+.hani-office-actor .hani-office-prop:not(:empty){display:block}
+.hani-office-actor[data-walking="true"] .hani-office-prop:not(:empty),.hani-office-actor[data-pose="walk-a"] .hani-office-prop:not(:empty),.hani-office-actor[data-pose="walk-b"] .hani-office-prop:not(:empty),.hani-office-actor[data-behavior="GOING"] .hani-office-prop:not(:empty),.hani-office-actor[data-behavior="RETURNING"] .hani-office-prop:not(:empty){display:none}
+@media(max-width:600px){.hani-office-prop{font-size:14px}}
+.hani-office-character-bubble{position:absolute;z-index:10;box-sizing:border-box;left:4px;top:4px;max-width:calc(100% - 8px);display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0;padding:4px 8px;border:1px solid #d8cce7;border-radius:12px;background:#fffaf0;color:#493752;font-size:13px}
+.hani-office-character-bubble [hidden]{display:none}.hani-office-character-bubble p{margin:0;overflow-wrap:anywhere}.hani-office-character-bubble a{flex:none;min-height:44px;display:flex;align-items:center;color:#67418b;font-weight:700}
+.hani-office-character-bubble[data-zoom="true"]{display:grid;grid-template-columns:max-content minmax(0,1fr);row-gap:0;width:max-content;max-height:var(--bubble-max-height,none);overflow:auto}
+.hani-office-character-bubble[data-zoom="true"] p{grid-column:2;min-width:0;max-height:max(1em,calc(var(--bubble-max-height,174px) - 54px));overflow:auto}
+.hani-office-character-bubble[data-zoom="true"] a{grid-column:2}
+.hani-office-bubble-sprite{grid-column:1;grid-row:1 / span 2;align-self:center;height:120px;aspect-ratio:var(--bubble-sprite-ratio,.75);background-repeat:no-repeat;image-rendering:pixelated;pointer-events:none}
+@media(max-width:700px){.hani-office-bubble-sprite{height:96px}}
+.hani-building-roster [role="button"]{cursor:pointer}.hani-building-roster [role="button"]:focus-visible{outline:2px solid #8363b8}
+@media(max-width:700px){.hani-office-character-bubble{font-size:12px}.hani-building-roster [role="button"]{min-height:44px}}
+
+/* Idle motion belongs only to the sprite; actor coordinates/pivot stay fixed.
+   Scaling/rotation about the atlas foot keeps the foot itself stationary. */
+.hani-office-sprite{transform-origin:var(--idle-pivot-x,50%) var(--idle-pivot-y,95.3125%)}
+.hani-office-actor[data-pose="sitting"]:not([data-walking="true"]) .hani-office-sprite{animation:hani-office-breathe var(--idle-duration,4.8s) var(--idle-delay,0s) ease-in-out infinite}
+.hani-office-actor[data-pose="standing"]:not([data-walking="true"]) .hani-office-sprite{animation:hani-office-sway var(--idle-duration,4.8s) var(--idle-delay,0s) ease-in-out infinite}
+@keyframes hani-office-breathe{0%,100%{transform:scaleY(1) rotate(0deg)}45%{transform:scaleY(1.012) rotate(.35deg)}70%{transform:scaleY(1.004) rotate(-.2deg)}}
+@keyframes hani-office-sway{0%,100%{transform:rotate(0deg) scaleY(1)}35%{transform:rotate(.65deg) scaleY(1.006)}75%{transform:rotate(-.45deg) scaleY(1.01)}}
+@media(prefers-reduced-motion:reduce){.hani-office-sprite{animation:none!important;transform:none!important}}
+/* Static reciprocal head/body turn uses the same persistent partner slots.
+   Individual rotate composes with idle transform about the existing foot pivot. */
+.hani-office-actor[data-facing="left"] .hani-office-sprite{rotate:-4deg}
+.hani-office-actor[data-facing="right"] .hani-office-sprite{rotate:4deg}
+@media(prefers-reduced-motion:reduce){.hani-office-sprite{rotate:none!important}}
+
+/* Route coordinates belong to actor left/top. Sprite-only visual effects never
+   enter the stable layout box used for label ownership and placement. */
+.hani-office-actor[data-walking="true"] .hani-office-sprite{animation:none;transform:translateY(var(--step-bounce,0px)) rotate(var(--step-lean,0deg));rotate:none}
+.hani-office-actor[data-motion="stand"]:not([data-walking="true"]) .hani-office-sprite{animation:hani-office-stand .48s ease-in-out both}
+.hani-office-actor[data-motion="sit"]:not([data-walking="true"]) .hani-office-sprite{animation:hani-office-sit .52s ease-in-out both}
+.hani-office-actor[data-motion="nod"]:not([data-walking="true"]) .hani-office-sprite{animation:hani-office-nod .46s ease-in-out both}
+.hani-office-actor[data-motion="lean"]:not([data-walking="true"]) .hani-office-sprite{animation:hani-office-lean .62s ease-in-out both}
+.hani-office-actor[data-motion="tap"]:not([data-walking="true"]) .hani-office-sprite{animation:hani-office-hop .44s ease-in-out both}
+@keyframes hani-office-stand{0%,100%{transform:scaleY(1)}40%{transform:scaleY(.96)}68%{transform:scaleY(1.008)}}
+@keyframes hani-office-sit{0%,100%{transform:scaleY(1)}38%{transform:scaleY(.98)}65%{transform:scaleY(.955)}84%{transform:scaleY(1.006)}}
+@keyframes hani-office-nod{0%,100%{transform:scaleY(1)}45%{transform:scaleY(.97)}70%{transform:scaleY(1.004)}}
+@keyframes hani-office-lean{0%,100%{transform:rotate(0deg)}45%,65%{transform:rotate(var(--response-lean,1deg))}}
+@keyframes hani-office-hop{0%,100%{transform:translateY(0) scaleY(1)}25%{transform:scaleY(.97)}52%{transform:translateY(-1.2px) scaleY(1.005)}78%{transform:scaleY(.985)}}
+
+/* The existing image translation and bottom anchor remain in every keyframe.
+   One mascot at a time; displacement stays inside the label packing gap. */
+.hani-desk-mascot{transform-origin:50% 100%}
+.hani-desk-mascot[data-motion="wiggle"]{animation:hani-mascot-wiggle .72s ease-in-out both}
+.hani-desk-mascot[data-motion="hop"]{animation:hani-mascot-hop .48s ease-in-out both}
+@keyframes hani-mascot-wiggle{0%,100%{transform:translate(-50%,-100%) rotate(0deg)}30%{transform:translate(-50%,-100%) rotate(-2deg) scaleY(.98)}65%{transform:translate(-50%,-100%) rotate(2deg) scaleY(.98)}}
+@keyframes hani-mascot-hop{0%,100%{transform:translate(-50%,-100%) scaleY(1)}25%{transform:translate(-50%,-100%) scaleY(.96)}52%{transform:translate(-50%,calc(-100% - 1px))}78%{transform:translate(-50%,-100%) scaleY(.98)}}
+@media(prefers-reduced-motion:reduce){
+  .hani-office-sprite{animation:none!important;transform:none!important;rotate:none!important}
+  .hani-desk-mascot{animation:none!important;transform:translate(-50%,-100%)!important}
+}
+
+/* Resident art uses the existing sheet loader; literal URLs ship only these seven atlases. */
+.hani-office-actor[data-sprite="pet-cat"]{--sheet:url("./assets/sprites-v3/pet-cat.webp")}
+.hani-office-actor[data-sprite="pet-dog"]{--sheet:url("./assets/sprites-v3/pet-dog.webp")}
+.hani-office-actor[data-sprite="npc-cleaner"]{--sheet:url("./assets/sprites-v3/npc-cleaner.webp")}
+.hani-office-actor[data-sprite="npc-gardener"]{--sheet:url("./assets/sprites-v3/npc-gardener.webp")}
+.hani-office-actor[data-sprite="npc-temp-a"]{--sheet:url("./assets/sprites-v3/npc-temp-a.webp")}
+.hani-office-actor[data-sprite="npc-temp-b"]{--sheet:url("./assets/sprites-v3/npc-temp-b.webp")}
+.hani-office-actor[data-sprite="npc-temp-c"]{--sheet:url("./assets/sprites-v3/npc-temp-c.webp")}
+.hani-office-character-bubble a[hidden]{display:none!important}
+.hani-office-actor[data-resident] .hani-office-name{--office-team:#94a3b8;--office-team-tint:#f8fafc;color:#334155}
+.hani-office-actor[data-resident][data-avatar="v2"] .hani-office-name{bottom:calc(100% - var(--actor-height)*var(--resident-top,0) + 3px)}
+.hani-office-actor[data-resident] .hani-office-status,.hani-office-actor[data-resident] .hani-office-status-dot,.hani-office-actor[data-resident] .hani-office-activity-icon,.hani-office-actor[data-resident] .hani-office-compact-line{display:none}
+.hani-office-actor[data-resident="pet"] .hani-office-name{background:transparent;border:0;padding:0}
+.hani-office-actor[data-resident] .hani-office-sprite{rotate:0deg;filter:none}
+.hani-office-actor[data-resident="pet"][data-motion="hop"] .hani-office-sprite{animation:hani-pet-hop .48s ease-in-out both}
+.hani-office-actor[data-sprite="pet-rabbit"]{--sheet:url("./assets/sprites-v3/pet-rabbit.webp")}
+
+/* Approved 3F G: reuse the existing foreground slot for the lead desk edge.
+   Its own lower-body slice hides ankles; face/labels remain above the desk. */
+.hani-office-map[data-floor="3f"][data-art="floor"]:has(.hani-office-actor[data-seat="dev-lead"][data-pose="sitting"]:not([hidden]))>.hani-office-foreground:nth-of-type(2){display:block;clip-path:polygon(9.33% 67%,14.83% 67%,14.83% 85%,9.33% 85%)}
+
+/* One reusable heart per pet, driven by the resident clock without layout reads. */
+.hani-office-pet-heart{position:absolute;left:50%;bottom:calc(100% - var(--actor-height)*var(--resident-top,0) + 18px);z-index:8;font-size:13px;line-height:1;color:#e68b9b;pointer-events:none;opacity:0;transform:translateX(-50%)}
+.hani-office-pet-heart[hidden]{display:none!important}
+.hani-office-actor[data-affection] .hani-office-pet-heart{animation:hani-pet-heart 3s ease-out both}
+.hani-office-actor[data-affection="dog"] .hani-office-pet-heart{animation-duration:6s}
+.hani-office-actor[data-affection="rabbit"] .hani-office-pet-heart{animation-duration:7s;color:#dbb1bb;font-size:12px}
+.hani-office-actor[data-affection="cat"] .hani-office-pet-heart{font-size:11px}
+.hani-office-actor[data-affection="cat"] .hani-office-sprite{animation:hani-pet-nudge .65s ease-in-out both}
+.hani-office-actor[data-affection="dog"] .hani-office-sprite{animation:hani-office-hop .48s ease-in-out 2}
+.hani-office-actor[data-affection="rabbit"] .hani-office-sprite{animation:hani-pet-nudge 1.4s ease-in-out both}
+@keyframes hani-pet-heart{0%{opacity:0;transform:translate(-50%,0)}15%,55%{opacity:.9}100%{opacity:0;transform:translate(-50%,-14px)}}
+@keyframes hani-pet-nudge{0%,100%{transform:rotate(0deg)}40%,65%{transform:rotate(var(--affection-lean,1deg))}}
+@media(prefers-reduced-motion:reduce){.hani-office-actor[data-affection] .hani-office-pet-heart{animation:none!important;transform:translateX(-50%);opacity:.9}.hani-office-actor[data-affection] .hani-office-sprite{animation:none!important;transform:none!important}}
+
+/* Small life signs reuse the pet sprite; sleep has breathing only. */
+.hani-office-actor[data-resident="pet"]:not([data-walking="true"]):not([data-motion]):not([data-life]):not([data-affection]):not([data-pose="sleep"]) .hani-office-sprite{animation:hani-pet-idle var(--idle-duration,4.8s) var(--idle-delay,0s) ease-in-out infinite}
+/* Shrink about the existing foot pivot, inside the reserved atlas bounds. */
+@keyframes hani-pet-idle{0%,100%{transform:scale(1)}40%{transform:scale(.98,.97)}72%{transform:scale(.99,.985)}}
+.hani-office-actor[data-resident="pet"][data-life="hop"]:not([data-motion]):not([data-affection]) .hani-office-sprite{animation:hani-pet-hop .48s ease-in-out both}
+.hani-office-actor[data-resident="pet"][data-life="turn"]:not([data-motion]):not([data-affection]) .hani-office-sprite{animation:hani-pet-turn .6s ease-in-out both}
+.hani-office-actor[data-resident="pet"][data-life="sit-stand"]:not([data-motion]):not([data-affection]) .hani-office-sprite{animation:hani-office-stand .48s ease-in-out both}
+.hani-office-actor[data-resident="pet"][data-life="wag"]:not([data-motion]):not([data-affection]) .hani-office-sprite{animation:hani-pet-wag .7s ease-in-out both}
+.hani-office-actor[data-resident="pet"][data-pose="sleep"]:not([data-motion]) .hani-office-sprite{animation:hani-pet-sleep 4s ease-in-out infinite}
+/* Pet-only effects stay within the existing 88px native body envelope. */
+.hani-office-actor[data-resident="pet"][data-life="turn"][data-motion="nod"] .hani-office-sprite{animation:hani-pet-turn .46s ease-in-out both}
+.hani-office-actor[data-resident="pet"][data-life="sit-stand"][data-motion="stand"] .hani-office-sprite{animation:hani-pet-stretch .48s ease-in-out both}
+.hani-office-actor[data-resident="pet"][data-life="wag"][data-motion="wiggle"] .hani-office-sprite{animation:hani-pet-wag .72s ease-in-out both}
+@keyframes hani-pet-hop{0%,100%{transform:translateY(0)}25%{transform:scaleY(.94)}52%{transform:translateY(-3px)}78%{transform:scaleY(.97)}}
+@keyframes hani-pet-stretch{0%,100%{transform:scale(1)}45%{transform:scale(.92,1.06)}70%{transform:scale(1.04,.94)}}
+@keyframes hani-pet-turn{0%,100%{transform:scaleX(1)}45%{transform:scaleX(.8)}}
+@keyframes hani-pet-wag{0%,100%{transform:rotate(0)}25%,65%{transform:rotate(7deg)}45%,80%{transform:rotate(-7deg)}}
+@keyframes hani-pet-sleep{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.012)}}
+@media(prefers-reduced-motion:reduce){.hani-office-actor[data-resident="pet"] .hani-office-sprite{animation:none!important;transform:none!important;rotate:none!important}.hani-office-actor[data-resident="pet"]{transition:none!important}}
+
+/* Clock-sampled pet motion: the atlas frame and bob share travelled distance. */
+.hani-office-actor[data-resident="pet"]:not([data-motion]):not([data-life]):not([data-affection]):not([data-pose="sleep"]) .hani-office-sprite{transform:translateY(var(--pet-bob,0px)) rotate(var(--pet-lean,0deg));rotate:var(--pet-spin,0deg)}
+.hani-office-actor[data-pet-pause="ears"]:not([data-motion]):not([data-affection]) .hani-office-sprite{transform:scaleY(1.015)}
+@media(prefers-reduced-motion:reduce){.hani-office-actor[data-resident="pet"] .hani-office-sprite{animation:none!important;transition:none!important;transform:none!important;rotate:none!important}.hani-office-actor[data-resident="pet"]{animation:none!important;transition:none!important}}
+
+/* The same persistent bubble owns close and reading controls. */
+.hani-office-character-bubble{padding-right:38px}
+.hani-office-bubble-close{position:absolute;right:2px;top:2px;box-sizing:border-box;width:32px;height:32px;min-width:32px;min-height:32px;margin:0;padding:0;display:grid;place-items:center;border:0;border-radius:8px;background:transparent;color:inherit;font:inherit;cursor:pointer}
+.hani-office-bubble-close:focus-visible{outline:2px solid #8363b8;outline-offset:-2px}
+@media(max-width:480px){
+ .hani-office-character-bubble,.hani-office-character-bubble[data-zoom="true"]{padding:3px 36px 3px 6px;gap:4px;font-size:11px;line-height:1.3;min-height:36px;max-width:min(280px,calc(100% - 8px));max-height:none;overflow:visible}
+ .hani-office-character-bubble p,.hani-office-character-bubble[data-zoom="true"] p{min-width:0;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;max-height:2.6em;overflow:hidden}
+ .hani-office-character-bubble a{min-height:32px;font-size:11px}
+ .hani-office-bubble-sprite{display:none}
+ .hani-office-character-bubble[data-zoom="true"]{display:flex}
+}
+
+/* Keep parent hiding after every flex/grid variant, including the phone layout. */
+.hani-office-character-bubble[hidden]{display:none}
+
+/* Map-relative sprite strips: background < props (2) < actors (4) < bubble (10). */
+.hani-office-live-props{position:absolute;inset:0;z-index:2;pointer-events:none}
+.hani-office-live-prop{position:absolute;display:block;pointer-events:none;background-size:400% 100%;background-repeat:no-repeat;transform:translate(-50%,-100%);animation:hani-office-prop-frames 4.8s steps(4) infinite}
+.hani-office-live-prop[data-anchor="center"]{transform:translate(-50%,-50%)}
+.hani-office-live-props[hidden],.hani-office-live-prop[hidden]{display:none}
+.hani-office-live-props[hidden] .hani-office-live-prop,.hani-office-live-prop[hidden],.hani-office-live[data-paused="true"] .hani-office-live-prop{animation-play-state:paused}
+.hani-office-live-prop[data-sprite="coffee-steam"]{background-image:url("./assets/office-props/coffee-steam.webp");animation-duration:2.4s}
+.hani-office-live-prop[data-sprite="plant-sway"]{background-image:url("./assets/office-props/plant-sway.webp")}
+.hani-office-live-prop[data-sprite="monitor-glow"]{background-image:url("./assets/office-props/monitor-glow.webp");opacity:.32}
+.hani-office-live-prop[data-sprite="lantern-flicker"]{background-image:url("./assets/office-props/lantern-flicker.webp");animation-duration:3.2s}
+.hani-office-live-prop[data-sprite="stamp-sparkle"]{background-image:url("./assets/office-props/stamp-sparkle.webp");animation-name:hani-office-prop-sparkle;animation-duration:12s}
+.hani-office-live-prop[data-sprite="paper-flutter"]{background-image:url("./assets/office-props/paper-flutter.webp")}
+/* 400% background width: -133.333% is one whole strip. steps(4) holds each valid frame. */
+@keyframes hani-office-prop-frames{from{background-position:0% 0}to{background-position:133.333333% 0}}
+/* Four 0.2s frames, then invisible until the next 12s cycle. */
+@keyframes hani-office-prop-sparkle{0%{opacity:1;background-position:0% 0}6.666667%{opacity:1;background-position:133.333333% 0}6.666668%,100%{opacity:0;background-position:100% 0}}
+@media(prefers-reduced-motion:reduce){
+ .hani-office-live-props .hani-office-live-prop{animation:none;background-position:33.333333% 0}
+}
+
+/* Christmas atlas: 1536x400, original RGBA pixels, 4px row gaps.
+   Rectangles are x,y,frame width,frame height,count (horizontal frames).
+   tree:0,0,112,136,4; snow:0,140,88,112,4; wreath:0,256,76,76,1;
+   gifts:80,256,80,60,1; lights:0,336,384,64,4.
+   Percent positions divide atlas offsets by (atlas size - viewport size). */
+.hani-office-live-prop[data-event]{background-position:var(--event-x) var(--event-y);animation:hani-office-event-frames 3.2s steps(4) infinite;--event-x:0%}
+/* Literal URL keeps the current atlas in the release package closure. */
+.hani-office-live-prop[data-event="christmas"]{background-image:url("./assets/office-season/xmas.webp")}
+.hani-office-live-prop[data-sprite="event-tall"]{background-size:1371.428571% 294.117647%;--event-y:0%;--event-end:31.460674%;--event-static:7.865169%}
+.hani-office-live-prop[data-sprite="event-window"]{background-size:1745.454545% 357.142857%;--event-y:48.611111%;--event-end:24.309392%;--event-static:6.077348%}
+.hani-office-live-prop[data-sprite="event-wall"]{background-size:2021.052632% 526.315789%;--event-y:79.012346%;--event-static:0%;animation:none}
+.hani-office-live-prop[data-sprite="event-floor"]{background-size:1920% 666.666667%;--event-x:5.494505%;--event-y:75.294118%;--event-static:5.494505%;animation:none}
+.hani-office-live-prop[data-sprite="event-wide"]{background-size:400% 625%;--event-y:100%;--event-end:133.333333%;--event-static:33.333333%}
+@keyframes hani-office-event-frames{from{background-position:var(--event-x) var(--event-y)}to{background-position:var(--event-end) var(--event-y)}}
+@media(prefers-reduced-motion:reduce){
+ .hani-office-live-props .hani-office-live-prop[data-event]{animation:none;background-position:var(--event-static) var(--event-y)}
+}

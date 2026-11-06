@@ -284,6 +284,9 @@
 
 /* Map-relative sprite strips: background < props (2) < actors (4) < bubble (10). */
 .hani-office-live-props{position:absolute;inset:0;z-index:2;pointer-events:none}
+/* Keep the existing actor host (including every name/status label) above all
+   live props, even while an actor temporarily creates its own stacking context. */
+#haniOfficeActors{position:absolute;inset:0;z-index:4;pointer-events:none}
 .hani-office-live-prop{position:absolute;display:block;pointer-events:none;background-size:400% 100%;background-repeat:no-repeat;transform:translate(-50%,-100%);animation:hani-office-prop-frames 4.8s steps(4) infinite}
 .hani-office-live-prop[data-anchor="center"]{transform:translate(-50%,-50%)}
 .hani-office-live-props[hidden],.hani-office-live-prop[hidden]{display:none}
@@ -311,7 +314,7 @@
 /* Literal URL keeps the current atlas in the release package closure. */
 .hani-office-live-prop[data-event="christmas"]{background-image:url("./assets/office-season/xmas.webp")}
 .hani-office-live-prop[data-sprite="event-tall"]{background-size:1371.428571% 294.117647%;--event-y:0%;--event-end:31.460674%;--event-static:7.865169%}
-.hani-office-live-prop[data-sprite="event-window"]{background-size:1745.454545% 357.142857%;--event-y:48.611111%;--event-end:24.309392%;--event-static:6.077348%}
+.hani-office-live-prop[data-sprite="event-window"]{background-size:1745.454545% 357.142857%;--event-y:48.611111%;--event-end:24.309392%;--event-static:6.077348%;filter:brightness(0) invert(1) drop-shadow(0 0 .08cqw #fff) drop-shadow(.6cqw 1cqw 0 #fff) drop-shadow(-.7cqw 1.4cqw 0 #fff);clip-path:inset(0)}
 .hani-office-live-prop[data-sprite="event-wall"]{background-size:2021.052632% 526.315789%;--event-y:79.012346%;--event-static:0%;animation:none}
 .hani-office-live-prop[data-sprite="event-floor"]{background-size:1920% 666.666667%;--event-x:5.494505%;--event-y:75.294118%;--event-static:5.494505%;animation:none}
 .hani-office-live-prop[data-sprite="event-wide"]{background-size:400% 625%;--event-y:100%;--event-end:133.333333%;--event-static:33.333333%}

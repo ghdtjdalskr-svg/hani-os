@@ -1,0 +1,210 @@
+{
+    "main":  "f753c66af9d2b6a7535924e8d237e8b1980ae67a",
+    "files":  [
+                  {
+                      "file":  "hani-office-live.js",
+                      "sha256":  "39142E3354DDEB2A61F8942DEB520E6729F7BF93AC5E27819E0CF068D4F054D5"
+                  },
+                  {
+                      "file":  "hani-office-live.css",
+                      "sha256":  "B36598C5223FD48B954A32D20F3F0F58D3ECA4445EAE71B6256FF13D4EDE30D9"
+                  },
+                  {
+                      "file":  "assets/office-season/xmas.webp",
+                      "sha256":  "7C5315C3B924A05B4ED00679C532410569010A5731FE04DB9D5302EC063E7232"
+                  },
+                  {
+                      "file":  "index.html",
+                      "sha256":  "D992DB9B57B6EAD06581D025D124CCD4299E931A61AAA2250908D90656D3C333"
+                  },
+                  {
+                      "file":  "hani-main.js",
+                      "sha256":  "4833EF3FABE5E2EB4BD646993F6E8CF157D6CD6B75727DB73C43018FE21B2147"
+                  },
+                  {
+                      "file":  "scripts/hani-office-219.test.mjs",
+                      "sha256":  "978A486E648C7DA97198A77E67871A29739EC6979BAF48D35BE82273F62C9798"
+                  },
+                  {
+                      "file":  "scripts/hani-office-actions-216.test.mjs",
+                      "sha256":  "E947823F9B0E5BB6DE1DA8A440596248962A126D9C8700C48C3156B79AD07745"
+                  },
+                  {
+                      "file":  "scripts/hani-office-actions-221.test.mjs",
+                      "sha256":  "B1B4168CF86305503E8A9985D407351B715C49D4919F1DC91E1565A0F03FFE9F"
+                  },
+                  {
+                      "file":  "scripts/hani-office-barista.test.mjs",
+                      "sha256":  "110235B2FF10009B90F8F8E378A0D2680F6F102E497B2A6AFD3F98D40D8EF041"
+                  },
+                  {
+                      "file":  "scripts/hani-office-behavior.test.mjs",
+                      "sha256":  "6637D94C37FAF82C28463920E45F14414FB0E6AAB35A448B23D88ABD20D095A5"
+                  },
+                  {
+                      "file":  "scripts/hani-office-bubble-close.test.mjs",
+                      "sha256":  "025324D3E57EA864E2CAFE7A3485DAA3745440C9671C9408108ADA1BB79ACE50"
+                  },
+                  {
+                      "file":  "scripts/hani-office-cafe-rest.test.mjs",
+                      "sha256":  "9A23AF898B14ED1FB2758E41D4ED914FE04E6998F1ABAE15CF634EEADFEDA20B"
+                  },
+                  {
+                      "file":  "scripts/hani-office-chairman-234.test.mjs",
+                      "sha256":  "3CA0123694C1C70737D1C420CB6EBB7E2D7F9FC028661CDBA3107966AEC704F6"
+                  },
+                  {
+                      "file":  "scripts/hani-office-consult.test.mjs",
+                      "sha256":  "918B1B1B8F1199E782A6FBF44D7F4D5B7869C27FDE0D21F2665A67173AE36B94"
+                  },
+                  {
+                      "file":  "scripts/hani-office-crowded-labels.test.mjs",
+                      "sha256":  "51BE80096A969E2CCC65BD157E0949110C9668D6B937BD4137656DD7D082BBD1"
+                  },
+                  {
+                      "file":  "scripts/hani-office-drama.test.mjs",
+                      "sha256":  "313D4A6F39B655C395F266227EB0CB20629E7196485C787AFCD01D875D665F7C"
+                  },
+                  {
+                      "file":  "scripts/hani-office-fix-218.test.mjs",
+                      "sha256":  "017E5653325E67712C42F2947A477362516FB58C159F2A383F5F5AFDAB6D458B"
+                  },
+                  {
+                      "file":  "scripts/hani-office-floor-bubble.test.mjs",
+                      "sha256":  "FF33E5E8AE85DF8C7FC6F774568F61E90A11B4865D7B90AD57BD95F896E4571D"
+                  },
+                  {
+                      "file":  "scripts/hani-office-hd-224.test.mjs",
+                      "sha256":  "3A5E719F64AE6D8864B98A0F42BE29F421AADFB2586CA18A2CAC3C31CE27E5DF"
+                  },
+                  {
+                      "file":  "scripts/hani-office-icons.test.mjs",
+                      "sha256":  "04C3BD84E797A245DA48147BCDE1CAF487472A22312DBAAAB2C31DFA01B8A299"
+                  },
+                  {
+                      "file":  "scripts/hani-office-labels-qa.test.mjs",
+                      "sha256":  "7686E5BD34BA36B9F4F9EE39A870219849FD6A18D1C9F083E5DB09A00900476A"
+                  },
+                  {
+                      "file":  "scripts/hani-office-lively-v2.test.mjs",
+                      "sha256":  "CEDDF645F2EE8A92B877275550D886A7C82A331185100417122BD1EDA384D3F0"
+                  },
+                  {
+                      "file":  "scripts/hani-office-lively.test.mjs",
+                      "sha256":  "E804637BCF7E6EF08A31FA4451922CA6A6F0CAD5E39D7B401A597D5F0BE66A84"
+                  },
+                  {
+                      "file":  "scripts/hani-office-motion-1.test.mjs",
+                      "sha256":  "A33231A3BD2E16E062110BB463399FE1CFA36117838720EEA9484E748BB4EC4C"
+                  },
+                  {
+                      "file":  "scripts/hani-office-motion-2.test.mjs",
+                      "sha256":  "1E7EA3CF2EC684F668AADEFEDF65A7762F5E5DECCDA8422E08301F257AB784E2"
+                  },
+                  {
+                      "file":  "scripts/hani-office-obr10.test.mjs",
+                      "sha256":  "89EDE28E319F69DFE8E564C2329A885C72E7A192AE1150CBCBEA7C77F1923402"
+                  },
+                  {
+                      "file":  "scripts/hani-office-obr12.test.mjs",
+                      "sha256":  "DF81E77E28010D60FA3D219F98EA17E11FABD02CA1A3C60645D3C9FEE1D760F7"
+                  },
+                  {
+                      "file":  "scripts/hani-office-obr14.test.mjs",
+                      "sha256":  "AFA2DD6A198F2FF44D1F8C81F5A4707ED308B55E776D1F882CB3999264534EA4"
+                  },
+                  {
+                      "file":  "scripts/hani-office-obr15.test.mjs",
+                      "sha256":  "A68A4F3F7EC3C6CED7EBFBF4BFC1FE50A32A232DABD32C48BDACDBCB164416F7"
+                  },
+                  {
+                      "file":  "scripts/hani-office-obr16.test.mjs",
+                      "sha256":  "21F036ED18689296A9F5D36AC09FA404714E05627F7BED1A5F15F9C9178074AD"
+                  },
+                  {
+                      "file":  "scripts/hani-office-obr17.test.mjs",
+                      "sha256":  "693C029D2F1BF6A951153D31DDAC0CF806B76864AEC40C00EB8BD50000AD573B"
+                  },
+                  {
+                      "file":  "scripts/hani-office-obr18.test.mjs",
+                      "sha256":  "DAE591EF4F582E2C7DC764706AE1286D17FD5785A549E3B732523FD2ED1B8C34"
+                  },
+                  {
+                      "file":  "scripts/hani-office-obr19.test.mjs",
+                      "sha256":  "50D146FDB6ECF1A19AD07B88F3172BF00303C97690BFA5C6A415ECD1B281FBCD"
+                  },
+                  {
+                      "file":  "scripts/hani-office-obr21.test.mjs",
+                      "sha256":  "2A45E415FEAF39D91A8EA1BD4CF09F0FFABA87AF4DAD20F43086F46DDB2793F6"
+                  },
+                  {
+                      "file":  "scripts/hani-office-obr3.test.mjs",
+                      "sha256":  "51E98BA08C70645E0DB47CAEF0062C924A87A997D0ADF5406AFB4D690982A5C2"
+                  },
+                  {
+                      "file":  "scripts/hani-office-obr4.test.mjs",
+                      "sha256":  "183950FBE3EA17CB51DCC9EE3E02210712F83378CBEF1A566AC6298C421CBFBA"
+                  },
+                  {
+                      "file":  "scripts/hani-office-obr6.test.mjs",
+                      "sha256":  "D5EEA31BDC288DF38D73368FD9B302FADAA4383476B3E947434C015866432671"
+                  },
+                  {
+                      "file":  "scripts/hani-office-obr7.test.mjs",
+                      "sha256":  "DA78B7A6918387F090494342C5B871AF347B1BD6D8B061D87D7FFEA9BD38B3B1"
+                  },
+                  {
+                      "file":  "scripts/hani-office-obr8.test.mjs",
+                      "sha256":  "FD865586AFA45713B3929184299ECA2FED065EEF957F6A5A268D280ACA8828D6"
+                  },
+                  {
+                      "file":  "scripts/hani-office-obr9.test.mjs",
+                      "sha256":  "DFDE93CCD2C6B6FDF237E348E9D709CF7EC75991ECA130756D655DC61281DB52"
+                  },
+                  {
+                      "file":  "scripts/hani-office-props.test.mjs",
+                      "sha256":  "E19CDB5C6833B54DB4CA57FE00C40AE05864960E942274C9BA473703BC27D8B9"
+                  },
+                  {
+                      "file":  "scripts/hani-office-residents.test.mjs",
+                      "sha256":  "668BE6104892B334D2FCCD24AE3C78E441FEFD8C66991038099755FB04480F4C"
+                  },
+                  {
+                      "file":  "scripts/hani-office-seats-215.test.mjs",
+                      "sha256":  "EEA5519E5BEAC367FBD1D8BE247DF5B930E29B2C72B0098E58ADCAF5565B74CD"
+                  },
+                  {
+                      "file":  "scripts/hani-office-snack.test.mjs",
+                      "sha256":  "001CBAF6EDABFA6564F6A2DA34EC96856C9D66C79CC70EC8CD2C8C8D9700E890"
+                  },
+                  {
+                      "file":  "scripts/hani-office-tap-lines.test.mjs",
+                      "sha256":  "A28A08CFA3611F6CE52D9D95854A5C047DD90D0A662C4FB882E6A8909CE2E6CB"
+                  },
+                  {
+                      "file":  "scripts/hani-office-tlayout.test.mjs",
+                      "sha256":  "6DA3EA70DAC16EAE2423E6BFFE1CFA6DED453C5F5453005E2D85DAC197699132"
+                  },
+                  {
+                      "file":  "scripts/hani-office-top-labels.test.mjs",
+                      "sha256":  "F33EA27572EECE2E587EFB19D9642556E12C4E238AD5472900A231E9B0C92189"
+                  },
+                  {
+                      "file":  "scripts/hani-office-v2-215.test.mjs",
+                      "sha256":  "F537B7A39F69BE0988531F9E186B56419389B22728524B52423D3CEDD1F46436"
+                  },
+                  {
+                      "file":  "scripts/hani-office-visitors-cafe.test.mjs",
+                      "sha256":  "01A49DDEEE98D223B632CE99E3318C539271B6552348B6127C464273CCB71E23"
+                  },
+                  {
+                      "file":  "scripts/hani-office-xmas.test.mjs",
+                      "sha256":  "80C9DEC56D2BF8DBEB826613B832A0968C859A25E872DCBAC4ABC665BD964AEF"
+                  },
+                  {
+                      "file":  "scripts/hani-office-zoom.test.mjs",
+                      "sha256":  "744BEF584662BAEDEB41080599A9366D46A6A20B4C9BD46779F37E7BA36E41B3"
+                  }
+              ],
+    "head":  "f81f170cef43d02b9a269fa96024f3c204d54855"
+}

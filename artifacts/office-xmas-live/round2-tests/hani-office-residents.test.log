@@ -1,0 +1,662 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 18.015
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.7651
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 9.8038
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 10.7092
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 70.9243
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 250.2695
+  type: 'test'
+  ...
+# Subtest: final names, personalities and actual residentPeople lines obey the local dialogue rules
+ok 7 - final names, personalities and actual residentPeople lines obey the local dialogue rules
+  ---
+  duration_ms: 0.5659
+  type: 'test'
+  ...
+# Subtest: reduced motion jumps to the stop and keeps coordinates fixed throughout every walking interval
+ok 8 - reduced motion jumps to the stop and keeps coordinates fixed throughout every walking interval
+  ---
+  duration_ms: 937.9435
+  type: 'test'
+  ...
+# Subtest: resident occupancy stays separate for multiple days and moving as well as resting residents
+not ok 9 - resident occupancy stays separate for multiple days and moving as well as resting residents
+  ---
+  duration_ms: 24.4174
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-residents.test.mjs:57:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    shared stops cannot fit both bodies: later resident waits offscreen
+    
+    3 !== 2
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 2
+  actual: 3
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents.test.mjs:59:68)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: unchanged residents perform no DOM writes on the shared clock
+not ok 10 - unchanged residents perform no DOM writes on the shared clock
+  ---
+  duration_ms: 750.0889
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-residents.test.mjs:66:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    56 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 56
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents.test.mjs:73:115)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: walking taps wait for arrival, NPC sprites stay upright, and label fit runs at arrival
+ok 11 - walking taps wait for arrival, NPC sprites stay upright, and label fit runs at arrival
+  ---
+  duration_ms: 811.6575
+  type: 'test'
+  ...
+# Subtest: moving open bubbles follow cached geometry without frame reads and close when their resident hides
+ok 12 - moving open bubbles follow cached geometry without frame reads and close when their resident hides
+  ---
+  duration_ms: 821.1916
+  type: 'test'
+  ...
+# Subtest: compact dot fallback never exposes a full resident name
+ok 13 - compact dot fallback never exposes a full resident name
+  ---
+  duration_ms: 734.1156
+  type: 'test'
+  ...
+# Subtest: eight approved atlases decode, match their manifest hashes, load through the real owner and enter the closure
+not ok 14 - eight approved atlases decode, match their manifest hashes, load through the real owner and enter the closure
+  ---
+  duration_ms: 952.5398
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-residents.test.mjs:110:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    restoreResidentsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents-source.mjs:12:9)
+    read (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents.test.mjs:124:197)
+    resolveRuntimeClosure (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-runtime-closure.mjs:78:25)
+    async TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents.test.mjs:124:18)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: separate date seed, stable hour/floor schedule, eight daytime residents and only pets overnight
+ok 15 - separate date seed, stable hour/floor schedule, eight daytime residents and only pets overnight
+  ---
+  duration_ms: 22.1828
+  type: 'test'
+  ...
+# Subtest: all resident dwell points and sampled walking positions stay walkable, outside walls and all furniture
+ok 16 - all resident dwell points and sampled walking positions stay walkable, outside walls and all furniture
+  ---
+  duration_ms: 6028.6184
+  type: 'test'
+  ...
+# Subtest: every stop and whole walking segment clears painted furniture, counters, cabinets, sofas, tables and spare desks on all five floors
+ok 17 - every stop and whole walking segment clears painted furniture, counters, cabinets, sofas, tables and spare desks on all five floors
+  ---
+  duration_ms: 1.2532
+  type: 'test'
+  ...
+# Subtest: 02:00 to 07:00 sleeping pets keep separate stable spots, including occupied-spot fallback
+ok 18 - 02:00 to 07:00 sleeping pets keep separate stable spots, including occupied-spot fallback
+  ---
+  duration_ms: 3.0826
+  type: 'test'
+  ...
+# Subtest: pets stay awake at 23:59 and 01:30, walk after midnight, and sleep only from 02:00 to 07:00 KST
+ok 19 - pets stay awake at 23:59 and 01:30, walk after midnight, and sleep only from 02:00 to 07:00 KST
+  ---
+  duration_ms: 900.7823
+  type: 'test'
+  ...
+# Subtest: pet daily seeds and positions remain continuous over midnight and roll over at 07:00
+ok 20 - pet daily seeds and positions remain continuous over midnight and roll over at 07:00
+  ---
+  duration_ms: 0.4251
+  type: 'test'
+  ...
+# Subtest: stable quarter-hour visits use only resting staff on the same floor and never visitors or travellers
+not ok 21 - stable quarter-hour visits use only resting staff on the same floor and never visitors or travellers
+  ---
+  duration_ms: 1.755
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-residents.test.mjs:223:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot read properties of null (reading 'partnerId')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents.test.mjs:225:83)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: thirty short voiced lines include every canonical staff member and monitor-side cat reactions stay on clear floor
+ok 22 - thirty short voiced lines include every canonical staff member and monitor-side cat reactions stay on clear floor
+  ---
+  duration_ms: 2.8503
+  type: 'test'
+  ...
+# Subtest: cream follows seated or walking chairman to his floor, dwells beside clear positions, and yields when blocked
+ok 23 - cream follows seated or walking chairman to his floor, dwells beside clear positions, and yields when blocked
+  ---
+  duration_ms: 378.2105
+  type: 'test'
+  ...
+# Subtest: interaction routes and dwell spots clear full furniture envelopes and staff snapshots/plans remain byte-identical on and off
+not ok 24 - interaction routes and dwell spots clear full furniture envelopes and staff snapshots/plans remain byte-identical on and off
+  ---
+  duration_ms: 6.1099
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-residents.test.mjs:262:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    restoreResidentsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents-source.mjs:12:9)
+    transform (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents.test.mjs:263:63)
+    loadScene (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-lively-fixture.mjs:17:18)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents.test.mjs:263:17)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+  ...
+# Subtest: actual delegated pet taps show both speakers, automatic scene uses existing bubble, and all persistence/AI paths remain unused
+not ok 25 - actual delegated pet taps show both speakers, automatic scene uses existing bubble, and all persistence/AI paths remain unused
+  ---
+  duration_ms: 1113.1828
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-residents.test.mjs:285:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    restoreResidentsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents-source.mjs:12:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents.test.mjs:292:49)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: all decoded pose tops drive the existing label flow at phone and desktop widths without frame layout reads
+not ok 26 - all decoded pose tops drive the existing label flow at phone and desktop widths without frame layout reads
+  ---
+  duration_ms: 924.5774
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-residents.test.mjs:300:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    packing uses real art top
+    + actual - expected
+    
+    + 94.10087719298244
+    - 98.10087719298244
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 98.10087719298244
+  actual: 94.10087719298244
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents.test.mjs:324:12)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: the shared bubble hidden CSS wins over display:flex for residents and visitors, and staff links remain shown
+ok 27 - the shared bubble hidden CSS wins over display:flex for residents and visitors, and staff links remain shown
+  ---
+  duration_ms: 840.2413
+  type: 'test'
+  ...
+# Subtest: every original source byte and staff/visitor plan, outing and snapshot stays identical with residents on or off
+not ok 28 - every original source byte and staff/visitor plan, outing and snapshot stays identical with residents on or off
+  ---
+  duration_ms: 1.3568
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-residents.test.mjs:348:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    restoreResidentsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents-source.mjs:12:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents.test.mjs:349:17)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: real persistent actors survive floor changes, do not affect floor counts or roster, and use both pet facing rows
+ok 29 - real persistent actors survive floor changes, do not affect floor counts or roster, and use both pet facing rows
+  ---
+  duration_ms: 2141.6416
+  type: 'test'
+  ...
+# Subtest: existing delegated tap/keyboard bubbles use short local lines, pet hop, no profile or writes; hidden/reduced clocks stay still
+not ok 30 - existing delegated tap/keyboard bubbles use short local lines, pet hop, no profile or writes; hidden/reduced clocks stay still
+  ---
+  duration_ms: 817.9747
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-residents.test.mjs:384:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    undefined !== 'hop'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'hop'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents.test.mjs:386:113)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: Mochi approved atlas decodes with hop phases, exact manifest metadata and cached-manifest fallback
+ok 31 - Mochi approved atlas decodes with hop phases, exact manifest metadata and cached-manifest fallback
+  ---
+  duration_ms: 772.0971
+  type: 'test'
+  ...
+# Subtest: Mochi schedule covers quiet 3F mornings, 4F days, 1F evenings, midnight continuity and 02..07 sleep
+not ok 32 - Mochi schedule covers quiet 3F mornings, 4F days, 1F evenings, midnight continuity and 02..07 sleep
+  ---
+  duration_ms: 4.6836
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-residents.test.mjs:407:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    '1f' !== '4f'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '4f'
+  actual: '1f'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents.test.mjs:409:123)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: Mochi uses eased hops around 18px/sec every 120..180 seconds, with longer rests and whole-body clearance
+not ok 33 - Mochi uses eased hops around 18px/sec every 120..180 seconds, with longer rests and whole-body clearance
+  ---
+  duration_ms: 2.2261
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-residents.test.mjs:416:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents.test.mjs:417:478)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: Mochi prefers resting guardian Hina, yields to work/travel/visitors and never changes staff
+ok 34 - Mochi prefers resting guardian Hina, yields to work/travel/visitors and never changes staff
+  ---
+  duration_ms: 21.5926
+  type: 'test'
+  ...
+# Subtest: tap any trio member sequences Cream, Cheese, Mochi on the single bubble and holds safe nearby stops for twelve seconds
+ok 35 - tap any trio member sequences Cream, Cheese, Mochi on the single bubble and holds safe nearby stops for twelve seconds
+  ---
+  duration_ms: 2480.9131
+  type: 'test'
+  ...
+# Subtest: trio rejects missing/different-floor/sleeping pets and staff-blocked floor; plan and snapshot bytes stay frozen
+not ok 36 - trio rejects missing/different-floor/sleeping pets and staff-blocked floor; plan and snapshot bytes stay frozen
+  ---
+  duration_ms: 468.9445
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-residents.test.mjs:447:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    restoreResidentsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents-source.mjs:12:9)
+    transform (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents.test.mjs:452:62)
+    loadScene (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-lively-fixture.mjs:17:18)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents.test.mjs:452:12)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+  ...
+# Subtest: seeded Cheese and Cream spots change within two minutes; NPC quarters and all staff plans stay frozen
+not ok 37 - seeded Cheese and Cream spots change within two minutes; NPC quarters and all staff plans stay frozen
+  ---
+  duration_ms: 690.68
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-residents.test.mjs:461:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    restoreResidentsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents-source.mjs:12:9)
+    transform (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents.test.mjs:468:67)
+    loadScene (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-lively-fixture.mjs:17:18)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents.test.mjs:468:17)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+  ...
+# Subtest: affection is brief, deterministic, floor-local and near a stationary working or resting member; Cream prefers chairman
+ok 38 - affection is brief, deterministic, floor-local and near a stationary working or resting member; Cream prefers chairman
+  ---
+  duration_ms: 294.284
+  type: 'test'
+  ...
+# Subtest: real pet hearts reuse one mounted node, pair taps override trio during affection, and reduced motion is still with zero writes
+not ok 39 - real pet hearts reuse one mounted node, pair taps override trio during affection, and reduced motion is still with zero writes
+  ---
+  duration_ms: 1998.2782
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-residents.test.mjs:489:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    restoreResidentsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents-source.mjs:12:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents.test.mjs:503:50)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: life signs repeat every 10..20 seconds, cover four gestures, and sleep or reduced motion suppresses them
+not ok 40 - life signs repeat every 10..20 seconds, cover four gestures, and sleep or reduced motion suppresses them
+  ---
+  duration_ms: 12.0269
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-residents.test.mjs:506:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(times[i]-times[i-1]>=9.9&&times[i]-times[i-1]<=20.1)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents.test.mjs:515:41)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: persistent pet life gestures run on the shared tick without creating nodes, timers or frame layout reads; sleeping taps hop
+ok 41 - persistent pet life gestures run on the shared tick without creating nodes, timers or frame layout reads; sleeping taps hop
+  ---
+  duration_ms: 1091.3496
+  type: 'test'
+  ...
+# Subtest: pet nominal speeds vary per leg around Cream 48, Cheese 40 and Mochi 18 while periods remain stable over days
+not ok 42 - pet nominal speeds vary per leg around Cream 48, Cheese 40 and Mochi 18 while periods remain stable over days
+  ---
+  duration_ms: 0.5738
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-residents.test.mjs:544:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(period>=(id==='pet-rabbit'?120:60)&&period<=(id==='pet-rabbit'?180:120))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents.test.mjs:546:53)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: shared-floor companions safely approach each other and the trio speaks automatically once together
+ok 43 - shared-floor companions safely approach each other and the trio speaks automatically once together
+  ---
+  duration_ms: 3075.7892
+  type: 'test'
+  ...
+# Subtest: pet easing moves less at both ends than in the middle, with seeded per-leg speeds and variable launch rests
+not ok 44 - pet easing moves less at both ends than in the middle, with seeded per-leg speeds and variable launch rests
+  ---
+  duration_ms: 2.0733
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-residents.test.mjs:560:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(rests.size>1)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents.test.mjs:570:55)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: a seeded day includes reproducible one-to-three second mid-route pauses followed by onward movement
+not ok 45 - a seeded day includes reproducible one-to-three second mid-route pauses followed by onward movement
+  ---
+  duration_ms: 9040.5061
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-residents.test.mjs:574:1'
+  failureType: 'testCodeFailure'
+  error: 'pet-rabbit has an actual paused snapshot'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents.test.mjs:578:10)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: curves use clear midpoints and whole corridors on every pet floor, and still reject blocked points
+ok 46 - curves use clear midpoints and whole corridors on every pet floor, and still reject blocked points
+  ---
+  duration_ms: 83.9936
+  type: 'test'
+  ...
+# Subtest: facing is stable across short and vertical legs, including reversed legs and their arrival
+ok 47 - facing is stable across short and vertical legs, including reversed legs and their arrival
+  ---
+  duration_ms: 21.1285
+  type: 'test'
+  ...
+# Subtest: personalities use distance-synced quiet steps, bouncy trot and two hops then ears-up rest; Cream can spin
+ok 48 - personalities use distance-synced quiet steps, bouncy trot and two hops then ears-up rest; Cream can spin
+  ---
+  duration_ms: 26.2647
+  type: 'test'
+  ...
+# Subtest: reduced pet motion has no bob, lean, spin, animated pose or easing properties in the persistent owner
+ok 49 - reduced pet motion has no bob, lean, spin, animated pose or easing properties in the persistent owner
+  ---
+  duration_ms: 814.2366
+  type: 'test'
+  ...
+1..49
+# tests 49
+# suites 0
+# pass 31
+# fail 18
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 39507.5014

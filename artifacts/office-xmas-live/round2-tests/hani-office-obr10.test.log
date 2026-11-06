@@ -1,0 +1,36 @@
+obr10 gathering extensions and sampled member states { extensions: 108, moments: 1791 }
+obr10 visitor host pairs 65
+TAP version 13
+# Subtest: obr10: data owns 5+ unique desk actions and 2 signatures per existing person, paired words, real same-floor errands and unchanged rest minima
+ok 1 - obr10: data owns 5+ unique desk actions and 2 signatures per existing person, paired words, real same-floor errands and unchanged rest minima
+  ---
+  duration_ms: 1.3556
+  type: 'test'
+  ...
+# Subtest: obr10: gathering extensions re-reserve complete trajectories, resources and cooldowns; actual names, cancellation and determinism
+ok 2 - obr10: gathering extensions re-reserve complete trajectories, resources and cooldowns; actual names, cancellation and determinism
+  ---
+  duration_ms: 2053.2783
+  type: 'test'
+  ...
+# Subtest: obr10: rejected extension leaves no partial reservation; same original 20/24px sweep still owns acceptance
+ok 3 - obr10: rejected extension leaves no partial reservation; same original 20/24px sweep still owns acceptance
+  ---
+  duration_ms: 452.6104
+  type: 'test'
+  ...
+# Subtest: obr10: visitor and host really co-locate, use distinct ≥40px slots, cancel with guest and preserve reduced motion
+ok 4 - obr10: visitor and host really co-locate, use distinct ≥40px slots, cancel with guest and preserve reduced motion
+  ---
+  duration_ms: 178.5928
+  type: 'test'
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2691.8212

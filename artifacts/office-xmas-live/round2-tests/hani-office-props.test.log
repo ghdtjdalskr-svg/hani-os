@@ -1,0 +1,125 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 26.5124
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.4186
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 12.1789
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 13.8487
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 85.4178
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 247.2309
+  type: 'test'
+  ...
+# Subtest: props: one persistent map layer and seven persistent, map-relative slots across floors and clocks
+not ok 7 - props: one persistent map layer and seven persistent, map-relative slots across floors and clocks
+  ---
+  duration_ms: 7.5977
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-props.test.mjs:30:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    12 !== 7
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 7
+  actual: 12
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-props.test.mjs:33:105)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: props: lantern follows committed night art, exact 18:30/06:00 boundary, fallback and loading
+ok 8 - props: lantern follows committed night art, exact 18:30/06:00 boundary, fallback and loading
+  ---
+  duration_ms: 22.3899
+  type: 'test'
+  ...
+# Subtest: props: CSS owns four-frame timing, long-idle sparkle, tap-through, stacking and reduced frame 2
+ok 9 - props: CSS owns four-frame timing, long-idle sparkle, tap-through, stacking and reduced frame 2
+  ---
+  duration_ms: 2.0075
+  type: 'test'
+  ...
+# Subtest: props: reduced-motion owner remains persistent, floor-scoped and write-free
+not ok 10 - props: reduced-motion owner remains persistent, floor-scoped and write-free
+  ---
+  duration_ms: 6.3685
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-props.test.mjs:81:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot read properties of undefined (reading '2')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-props.test.mjs:83:199
+    Array.forEach (<anonymous>)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-props.test.mjs:83:151)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: props: scheduler/plan/blockPlan/snapshot/labels/home-clear source bytes and all six assets are unchanged
+not ok 11 - props: scheduler/plan/blockPlan/snapshot/labels/home-clear source bytes and all six assets are unchanged
+  ---
+  duration_ms: 1.5959
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-props.test.mjs:87:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    fitStatusLabels
+    + actual - expected
+    
+    + '638089f0ae1fe6f0f46a8c267f1c574b4a2409ba7e1223f4242651cac786f1dd'
+    - 'e7f807dd9110c0e44fd613c528b2cdf8c2f75df3e442ded716f768b9bdd0c3ac'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'e7f807dd9110c0e44fd613c528b2cdf8c2f75df3e442ded716f768b9bdd0c3ac'
+  actual: '638089f0ae1fe6f0f46a8c267f1c574b4a2409ba7e1223f4242651cac786f1dd'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-props.test.mjs:89:133)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 8
+# fail 3
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 440.6292

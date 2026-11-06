@@ -1,0 +1,130 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 23.0555
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.0003
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 9.7027
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 10.0071
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 69.2447
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 246.0435
+  type: 'test'
+  ...
+# Subtest: xmas: annual KST start/end boundaries include the entire final minute
+ok 7 - xmas: annual KST start/end boundaries include the entire final minute
+  ---
+  duration_ms: 15.7818
+  type: 'test'
+  ...
+# Subtest: xmas: same-floor clock ticks toggle the event without a click, new timer or listener
+ok 8 - xmas: same-floor clock ticks toggle the event without a click, new timer or listener
+  ---
+  duration_ms: 7.5893
+  type: 'test'
+  ...
+# Subtest: xmas: all five map-relative slots are created once, floor-scoped and tap-through at both widths
+not ok 9 - xmas: all five map-relative slots are created once, floor-scoped and tap-through at both widths
+  ---
+  duration_ms: 6.2091
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-xmas.test.mjs:60:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + '94.49760765550239%'
+    - '95.69377990430623%'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '95.69377990430623%'
+  actual: '94.49760765550239%'
+  operator: 'strictEqual'
+  stack: |-
+    file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-xmas.test.mjs:66:99
+    Array.forEach (<anonymous>)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-xmas.test.mjs:65:15)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: xmas: rooftop lights follow the same committed night background as the lantern, including fallback/loading
+ok 10 - xmas: rooftop lights follow the same committed night background as the lantern, including fallback/loading
+  ---
+  duration_ms: 20.2449
+  type: 'test'
+  ...
+# Subtest: xmas: CSS rectangles sample the original frames, animations use steps(4), reduced motion fixes frame 2
+ok 11 - xmas: CSS rectangles sample the original frames, animations use steps(4), reduced motion fixes frame 2
+  ---
+  duration_ms: 0.5095
+  type: 'test'
+  ...
+# Subtest: xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged
+not ok 12 - xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged
+  ---
+  duration_ms: 1.4846
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-xmas.test.mjs:111:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    fitStatusLabels
+    + actual - expected
+    
+    + '638089f0ae1fe6f0f46a8c267f1c574b4a2409ba7e1223f4242651cac786f1dd'
+    - 'e7f807dd9110c0e44fd613c528b2cdf8c2f75df3e442ded716f768b9bdd0c3ac'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'e7f807dd9110c0e44fd613c528b2cdf8c2f75df3e442ded716f768b9bdd0c3ac'
+  actual: '638089f0ae1fe6f0f46a8c267f1c574b4a2409ba7e1223f4242651cac786f1dd'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-xmas.test.mjs:114:133)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: xmas: literal atlas enters the release closure as the only new runtime file
+ok 13 - xmas: literal atlas enters the release closure as the only new runtime file
+  ---
+  duration_ms: 105.646
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 11
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 543.9261

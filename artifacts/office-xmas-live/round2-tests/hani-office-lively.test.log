@@ -1,0 +1,91 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 23.1332
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 6.8199
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 10.1692
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 7.3668
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 75.6669
+  type: 'test'
+  ...
+stroll-at-spot seconds 4186 busy share 0.5 dup-line samples 0
+stroll-at-spot seconds 1827 busy share 0.43 dup-line samples 0
+stroll-at-spot seconds 2429 busy share 0.44 dup-line samples 0
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 248.2013
+  type: 'test'
+  ...
+# Subtest: weekday day: every occupied floor keeps changing (avg <=5s, never frozen over 35s)
+ok 7 - weekday day: every occupied floor keeps changing (avg <=5s, never frozen over 35s)
+  ---
+  duration_ms: 1881.9163
+  type: 'test'
+  ...
+# Subtest: weekday evening: every occupied floor keeps changing (avg <=5s, never frozen over 35s)
+ok 8 - weekday evening: every occupied floor keeps changing (avg <=5s, never frozen over 35s)
+  ---
+  duration_ms: 1532.2115
+  type: 'test'
+  ...
+# Subtest: weekend evening: every occupied floor keeps changing (avg <=5s, never frozen over 35s)
+ok 9 - weekend evening: every occupied floor keeps changing (avg <=5s, never frozen over 35s)
+  ---
+  duration_ms: 1408.9968
+  type: 'test'
+  ...
+# Subtest: evening mixes playful statuses and short same-floor strolls; reduced motion keeps everyone seated
+ok 10 - evening mixes playful statuses and short same-floor strolls; reduced motion keeps everyone seated
+  ---
+  duration_ms: 2592.9908
+  type: 'test'
+  ...
+# Subtest: lively-3/obr2: one bit per person per cycle, door paths and two outing units per floor
+ok 11 - lively-3/obr2: one bit per person per cycle, door paths and two outing units per floor
+  ---
+  duration_ms: 3139.5881
+  type: 'test'
+  ...
+# Subtest: visitors: up to two guests at a time (obr14), public 1F rooms only, gate in/out, never on a staff spot, none at night
+ok 12 - visitors: up to two guests at a time (obr14), public 1F rooms only, gate in/out, never on a staff spot, none at night
+  ---
+  duration_ms: 15497.8891
+  type: 'test'
+  ...
+# Subtest: renderer shows either guest in its own persistent 1F slot with its own name and sprite
+ok 13 - renderer shows either guest in its own persistent 1F slot with its own name and sprite
+  ---
+  duration_ms: 761.0994
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 27204.6898

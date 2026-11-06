@@ -1,0 +1,380 @@
+{
+  "identity": {
+    "css": "6DACE7444EF33A861C55883D240E763C6845873CB0285F4C7CED60CD936D437C",
+    "js": "DBC449E861D78F8ECFA7B05FDA83BF5B8C7FF811D86C2EFDE3320E7B78FE8E9B"
+  },
+  "files": 46,
+  "successfulFiles": 20,
+  "counts": {
+    "tests": 523,
+    "pass": 475,
+    "fail": 45,
+    "skipped": 3,
+    "cancelled": 0
+  },
+  "startupBlocked": [
+    "hani-office-219.test.mjs",
+    "hani-office-chairman-234.test.mjs",
+    "hani-office-obr12.test.mjs",
+    "hani-office-obr6.test.mjs",
+    "hani-office-obr7.test.mjs",
+    "hani-office-obr9.test.mjs"
+  ],
+  "failures": [
+    {
+      "file": "hani-office-barista.test.mjs",
+      "number": 10,
+      "name": "barista: plan, blockPlan, snapshot outputs and protected owner bytes preserve the pre-patch baseline",
+      "category": "pin/기존 기대값 확인 (서윤)",
+      "error": "model (all schedules, snapshots, geometry, label placement) + actual - expected  + '6ff742bc17df74ce3f5cc7bc8d201549cc8709e4b09e779850d3bac97a4034e5' - '7d666366cf953df1fb7e18927dd9a203b21d09e2d20afe2a59a90d9360eae6ff'"
+    },
+    {
+      "file": "hani-office-bubble-close.test.mjs",
+      "number": 17,
+      "name": "bubble close: protected owner bytes, global listeners and timer allocations are unchanged",
+      "category": "pin/기존 기대값 확인 (서윤)",
+      "error": "entire model including plan, blockPlan and snapshot + actual - expected ... Skipped lines  '/* V2 metadata is read-only; a failed metadata request keeps the production renderer. */\\n' +"
+    },
+    {
+      "file": "hani-office-cafe-rest.test.mjs",
+      "number": 1,
+      "name": "cafe route uses clear lower-right floor, retains the lounge and sign mounting surface",
+      "category": "Git EPERM 차단",
+      "error": "'spawnSync git EPERM'"
+    },
+    {
+      "file": "hani-office-consult.test.mjs",
+      "number": 14,
+      "name": "consult: sofa wording, counter words, safety owners and runtime timers",
+      "category": "Git EPERM 차단",
+      "error": "'spawnSync git EPERM'"
+    },
+    {
+      "file": "hani-office-consult.test.mjs",
+      "number": 15,
+      "name": "consult: separately authored full plans and reverse snapshots retain exact identity in both presence states",
+      "category": "pin/기존 기대값 확인 (서윤)",
+      "error": "only the approved G source is accepted + actual - expected  + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b' - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'"
+    },
+    {
+      "file": "hani-office-actions-216.test.mjs",
+      "number": 7,
+      "name": "approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract",
+      "category": "Git EPERM 차단",
+      "error": "'spawnSync git EPERM'"
+    },
+    {
+      "file": "hani-office-icons.test.mjs",
+      "number": 14,
+      "name": "icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc",
+      "category": "pin/기존 기대값 확인 (서윤)",
+      "error": "only the approved G source is accepted + actual - expected  + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b' - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'"
+    },
+    {
+      "file": "hani-office-motion-1.test.mjs",
+      "number": 2,
+      "name": "approved consultation scheduler source stays frozen, including every route and arrival calculation",
+      "category": "pin/기존 기대값 확인 (서윤)",
+      "error": "only the approved G source is accepted + actual - expected  + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b' - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'"
+    },
+    {
+      "file": "hani-office-lively-v2.test.mjs",
+      "number": 6,
+      "name": "obr2: deterministic query order, reduced motion and frozen spatial bytes",
+      "category": "Git EPERM 차단",
+      "error": "'spawnSync git EPERM'"
+    },
+    {
+      "file": "hani-office-obr15.test.mjs",
+      "number": 7,
+      "name": "obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately",
+      "category": "Git EPERM 차단",
+      "error": "'spawnSync git EPERM'"
+    },
+    {
+      "file": "hani-office-obr4.test.mjs",
+      "number": 7,
+      "name": "obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+      "category": "Git EPERM 차단",
+      "error": "'spawnSync git EPERM'"
+    },
+    {
+      "file": "hani-office-obr4.test.mjs",
+      "number": 8,
+      "name": "obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats",
+      "category": "Git EPERM 차단",
+      "error": "'spawnSync git EPERM'"
+    },
+    {
+      "file": "hani-office-obr8.test.mjs",
+      "number": 1,
+      "name": "obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words",
+      "category": "Git EPERM 차단",
+      "error": "'spawnSync git EPERM'"
+    },
+    {
+      "file": "hani-office-props.test.mjs",
+      "number": 7,
+      "name": "props: one persistent map layer and seven persistent, map-relative slots across floors and clocks",
+      "category": "pin/기존 기대값 확인 (서윤)",
+      "error": "Expected values to be strictly equal:  12 !== 7  code: 'ERR_ASSERTION'"
+    },
+    {
+      "file": "hani-office-props.test.mjs",
+      "number": 10,
+      "name": "props: reduced-motion owner remains persistent, floor-scoped and write-free",
+      "category": "pin/기존 기대값 확인 (서윤)",
+      "error": "\"Cannot read properties of undefined (reading '2')\""
+    },
+    {
+      "file": "hani-office-props.test.mjs",
+      "number": 11,
+      "name": "props: scheduler/plan/blockPlan/snapshot/labels/home-clear source bytes and all six assets are unchanged",
+      "category": "pin/기존 기대값 확인 (서윤)",
+      "error": "fitStatusLabels + actual - expected  + '638089f0ae1fe6f0f46a8c267f1c574b4a2409ba7e1223f4242651cac786f1dd' - 'e7f807dd9110c0e44fd613c528b2cdf8c2f75df3e442ded716f768b9bdd0c3ac'"
+    },
+    {
+      "file": "hani-office-obr21.test.mjs",
+      "number": 1,
+      "name": "obr21 authored full absent/present plans and reverse snapshots match frozen delta",
+      "category": "pin/기존 기대값 확인 (서윤)",
+      "error": "only the approved G source is accepted + actual - expected  + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b' - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'"
+    },
+    {
+      "file": "hani-office-obr21.test.mjs",
+      "number": 4,
+      "name": "obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+      "category": "Git EPERM 차단",
+      "error": "'spawnSync git EPERM'"
+    },
+    {
+      "file": "hani-office-obr21.test.mjs",
+      "number": 5,
+      "name": "obr21 cached gathering/index decisions equal full index rebuilds",
+      "category": "Git EPERM 차단",
+      "error": "'spawnSync git EPERM'"
+    },
+    {
+      "file": "hani-office-snack.test.mjs",
+      "number": 16,
+      "name": "snack: scheduler/snapshot/geometry/residents bytes and complete sampled model JSON preserve c301a13",
+      "category": "pin/기존 기대값 확인 (서윤)",
+      "error": "fitStatusLabels + actual - expected  + '638089f0ae1fe6f0f46a8c267f1c574b4a2409ba7e1223f4242651cac786f1dd' - 'e7f807dd9110c0e44fd613c528b2cdf8c2f75df3e442ded716f768b9bdd0c3ac'"
+    },
+    {
+      "file": "hani-office-tlayout.test.mjs",
+      "number": 11,
+      "name": "only the five pinned source fragments change; protected home and label owners are byte identical",
+      "category": "pin/기존 기대값 확인 (서윤)",
+      "error": "only the approved G source is accepted + actual - expected  + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b' - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'"
+    },
+    {
+      "file": "hani-office-tlayout.test.mjs",
+      "number": 12,
+      "name": "16 separately authored complete plan/outings/reverse-snapshot outputs have no exclusions",
+      "category": "pin/기존 기대값 확인 (서윤)",
+      "error": "hani-office-live.js exact input + actual - expected  + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b' - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'"
+    },
+    {
+      "file": "hani-office-v2-215.test.mjs",
+      "number": 7,
+      "name": "frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture",
+      "category": "Git EPERM 차단",
+      "error": "'spawnSync git EPERM'"
+    },
+    {
+      "file": "hani-office-xmas.test.mjs",
+      "number": 9,
+      "name": "xmas: all five map-relative slots are created once, floor-scoped and tap-through at both widths",
+      "category": "pin/기존 기대값 확인 (서윤)",
+      "error": "Expected values to be strictly equal: + actual - expected  + '94.49760765550239%' - '95.69377990430623%'"
+    },
+    {
+      "file": "hani-office-xmas.test.mjs",
+      "number": 12,
+      "name": "xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged",
+      "category": "pin/기존 기대값 확인 (서윤)",
+      "error": "fitStatusLabels + actual - expected  + '638089f0ae1fe6f0f46a8c267f1c574b4a2409ba7e1223f4242651cac786f1dd' - 'e7f807dd9110c0e44fd613c528b2cdf8c2f75df3e442ded716f768b9bdd0c3ac'"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "number": 9,
+      "name": "resident occupancy stays separate for multiple days and moving as well as resting residents",
+      "category": "기존 동작/기대값 불일치 (서윤, 수정 전 재현)",
+      "error": "shared stops cannot fit both bodies: later resident waits offscreen  3 !== 2  code: 'ERR_ASSERTION'"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "number": 10,
+      "name": "unchanged residents perform no DOM writes on the shared clock",
+      "category": "기존 동작/기대값 불일치 (서윤, 수정 전 재현)",
+      "error": "Expected values to be strictly equal:  56 !== 0  code: 'ERR_ASSERTION'"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "number": 14,
+      "name": "eight approved atlases decode, match their manifest hashes, load through the real owner and enter the closure",
+      "category": "pin/기존 기대값 확인 (서윤)",
+      "error": "only the approved G source is accepted + actual - expected  + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b' - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "number": 21,
+      "name": "stable quarter-hour visits use only resting staff on the same floor and never visitors or travellers",
+      "category": "기존 동작/기대값 불일치 (서윤, 수정 전 재현)",
+      "error": "\"Cannot read properties of null (reading 'partnerId')\""
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "number": 24,
+      "name": "interaction routes and dwell spots clear full furniture envelopes and staff snapshots/plans remain byte-identical on and off",
+      "category": "pin/기존 기대값 확인 (서윤)",
+      "error": "only the approved G source is accepted + actual - expected  + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b' - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "number": 25,
+      "name": "actual delegated pet taps show both speakers, automatic scene uses existing bubble, and all persistence/AI paths remain unused",
+      "category": "pin/기존 기대값 확인 (서윤)",
+      "error": "only the approved G source is accepted + actual - expected  + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b' - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "number": 26,
+      "name": "all decoded pose tops drive the existing label flow at phone and desktop widths without frame layout reads",
+      "category": "기존 동작/기대값 불일치 (서윤, 수정 전 재현)",
+      "error": "packing uses real art top + actual - expected  + 94.10087719298244 - 98.10087719298244"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "number": 28,
+      "name": "every original source byte and staff/visitor plan, outing and snapshot stays identical with residents on or off",
+      "category": "pin/기존 기대값 확인 (서윤)",
+      "error": "only the approved G source is accepted + actual - expected  + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b' - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "number": 30,
+      "name": "existing delegated tap/keyboard bubbles use short local lines, pet hop, no profile or writes; hidden/reduced clocks stay still",
+      "category": "기존 동작/기대값 불일치 (서윤, 수정 전 재현)",
+      "error": "Expected values to be strictly equal:  undefined !== 'hop'  code: 'ERR_ASSERTION'"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "number": 32,
+      "name": "Mochi schedule covers quiet 3F mornings, 4F days, 1F evenings, midnight continuity and 02..07 sleep",
+      "category": "기존 동작/기대값 불일치 (서윤, 수정 전 재현)",
+      "error": "Expected values to be strictly equal:  '1f' !== '4f'  code: 'ERR_ASSERTION'"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "number": 33,
+      "name": "Mochi uses eased hops around 18px/sec every 120..180 seconds, with longer rests and whole-body clearance",
+      "category": "기존 동작/기대값 불일치 (서윤, 수정 전 재현)",
+      "error": "Expected values to be strictly equal:  true !== false  code: 'ERR_ASSERTION'"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "number": 36,
+      "name": "trio rejects missing/different-floor/sleeping pets and staff-blocked floor; plan and snapshot bytes stay frozen",
+      "category": "pin/기존 기대값 확인 (서윤)",
+      "error": "only the approved G source is accepted + actual - expected  + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b' - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "number": 37,
+      "name": "seeded Cheese and Cream spots change within two minutes; NPC quarters and all staff plans stay frozen",
+      "category": "pin/기존 기대값 확인 (서윤)",
+      "error": "only the approved G source is accepted + actual - expected  + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b' - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "number": 39,
+      "name": "real pet hearts reuse one mounted node, pair taps override trio during affection, and reduced motion is still with zero writes",
+      "category": "pin/기존 기대값 확인 (서윤)",
+      "error": "only the approved G source is accepted + actual - expected  + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b' - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "number": 40,
+      "name": "life signs repeat every 10..20 seconds, cover four gestures, and sleep or reduced motion suppresses them",
+      "category": "기존 동작/기대값 불일치 (서윤, 수정 전 재현)",
+      "error": "The expression evaluated to a falsy value:  assert.ok(times[i]-times[i-1]>=9.9&&times[i]-times[i-1]<=20.1)  code: 'ERR_ASSERTION'"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "number": 42,
+      "name": "pet nominal speeds vary per leg around Cream 48, Cheese 40 and Mochi 18 while periods remain stable over days",
+      "category": "기존 동작/기대값 불일치 (서윤, 수정 전 재현)",
+      "error": "The expression evaluated to a falsy value:  assert.ok(period>=(id==='pet-rabbit'?120:60)&&period<=(id==='pet-rabbit'?180:120))  code: 'ERR_ASSERTION'"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "number": 44,
+      "name": "pet easing moves less at both ends than in the middle, with seeded per-leg speeds and variable launch rests",
+      "category": "기존 동작/기대값 불일치 (서윤, 수정 전 재현)",
+      "error": "The expression evaluated to a falsy value:  assert.ok(rests.size>1)  code: 'ERR_ASSERTION'"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "number": 45,
+      "name": "a seeded day includes reproducible one-to-three second mid-route pauses followed by onward movement",
+      "category": "기존 동작/기대값 불일치 (서윤, 수정 전 재현)",
+      "error": "'pet-rabbit has an actual paused snapshot'"
+    },
+    {
+      "file": "hani-office-zoom.test.mjs",
+      "number": 12,
+      "name": "zoom: scheduler, snapshots and all three protected geometry functions stay byte identical to task base",
+      "category": "pin/기존 기대값 확인 (서윤)",
+      "error": "only the approved G source is accepted + actual - expected  + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b' - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'"
+    },
+    {
+      "file": "hani-office-obr14.test.mjs",
+      "number": 1,
+      "name": "235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism",
+      "category": "Git EPERM 차단",
+      "error": "'spawnSync git EPERM'"
+    }
+  ],
+  "baseline": {
+    "residents": {
+      "before": {
+        "pass": 31,
+        "fail": 18
+      },
+      "after": {
+        "pass": 31,
+        "fail": 18
+      },
+      "sameFailedNames": true
+    },
+    "props": {
+      "before": {
+        "pass": 8,
+        "fail": 3
+      },
+      "after": {
+        "pass": 8,
+        "fail": 3
+      },
+      "sameFailedNames": true
+    },
+    "xmas": {
+      "before": {
+        "pass": 12,
+        "fail": 1
+      },
+      "after": {
+        "pass": 11,
+        "fail": 2
+      },
+      "sameFailedNames": false
+    }
+  },
+  "browser": {
+    "screenshots": 8,
+    "paintChecks": 576,
+    "petLabelOverlaps": 0
+  }
+}

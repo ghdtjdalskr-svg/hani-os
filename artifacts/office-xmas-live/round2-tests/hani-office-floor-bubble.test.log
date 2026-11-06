@@ -1,0 +1,118 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 24.457
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.5377
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 10.2277
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 10.0246
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 73.1503
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 234.5626
+  type: 'test'
+  ...
+# Subtest: floor bubble: entry waits for rendered floor, opens once and closes through existing path after 4s
+ok 7 - floor bubble: entry waits for rendered floor, opens once and closes through existing path after 4s
+  ---
+  duration_ms: 13.0786
+  type: 'test'
+  ...
+# Subtest: floor bubble: no nonempty head icon means no bubble
+ok 8 - floor bubble: no nonempty head icon means no bubble
+  ---
+  duration_ms: 5.434
+  type: 'test'
+  ...
+# Subtest: floor bubble: day/floor selection is deterministic and prefers conversation/phone icons
+ok 9 - floor bubble: day/floor selection is deterministic and prefers conversation/phone icons
+  ---
+  duration_ms: 16.8191
+  type: 'test'
+  ...
+# Subtest: floor bubble: same floor remains quiet for 60s and is eligible afterwards
+ok 10 - floor bubble: same floor remains quiet for 60s and is eligible afterwards
+  ---
+  duration_ms: 7.7967
+  type: 'test'
+  ...
+# Subtest: floor bubble: tapping before delay cancels auto; tapping an auto bubble replaces it without hiding
+ok 11 - floor bubble: tapping before delay cancels auto; tapping an auto bubble replaces it without hiding
+  ---
+  duration_ms: 11.8146
+  type: 'test'
+  ...
+# Subtest: floor bubble: recent roster tap suppresses floor entry and existing bubble is retained
+ok 12 - floor bubble: recent roster tap suppresses floor entry and existing bubble is retained
+  ---
+  duration_ms: 6.7399
+  type: 'test'
+  ...
+# Subtest: floor bubble: reduced motion, hidden tab and login lock stay quiet
+ok 13 - floor bubble: reduced motion, hidden tab and login lock stay quiet
+  ---
+  duration_ms: 34.7782
+  type: 'test'
+  ...
+# Subtest: floor bubble: walking and travelling people are excluded even with preferred icons
+ok 14 - floor bubble: walking and travelling people are excluded even with preferred icons
+  ---
+  duration_ms: 12.418
+  type: 'test'
+  ...
+# Subtest: floor bubble: floor switch clears delay/close and stale callbacks cannot close the next bubble
+ok 15 - floor bubble: floor switch clears delay/close and stale callbacks cannot close the next bubble
+  ---
+  duration_ms: 6.5229
+  type: 'test'
+  ...
+# Subtest: floor bubble: leaving and reentering office uses the existing visibility owner
+ok 16 - floor bubble: leaving and reentering office uses the existing visibility owner
+  ---
+  duration_ms: 5.5118
+  type: 'test'
+  ...
+# Subtest: floor bubble: a slow floor image must commit before the entry delay is armed
+ok 17 - floor bubble: a slow floor image must commit before the entry delay is armed
+  ---
+  duration_ms: 6.3696
+  type: 'test'
+  ...
+# Subtest: floor bubble: real scheduler entries and renderer head icons feed the same selection path
+ok 18 - floor bubble: real scheduler entries and renderer head icons feed the same selection path
+  ---
+  duration_ms: 1235.8435
+  type: 'test'
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1733.1251

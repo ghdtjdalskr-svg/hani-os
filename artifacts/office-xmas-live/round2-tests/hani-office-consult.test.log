@@ -1,0 +1,214 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 18.2534
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 6.5972
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 9.8462
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 10.2497
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 79.2911
+  type: 'test'
+  ...
+{
+  day: '2026-11-02',
+  counts: { client: 81, candidate: 37, courier: 172 },
+  hosted: { client: 41, candidate: 19 }
+}
+{
+  day: '2026-11-04',
+  counts: { client: 77, candidate: 37, courier: 180 },
+  hosted: { client: 39, candidate: 19 }
+}
+{
+  day: '2026-11-07',
+  counts: { client: 106, candidate: 0, courier: 187 },
+  hosted: { client: 53, candidate: 0 }
+}
+{
+  day: '2026-11-08',
+  counts: { client: 104, candidate: 0, courier: 181 },
+  hosted: { client: 52, candidate: 0 }
+}
+{
+  chairmanPresent: true,
+  outside: 3.5522222222222224,
+  lunch: 6.938888888888889,
+  rooftop: 0.5011111111111111
+}
+{
+  chairmanPresent: false,
+  outside: 3.418888888888889,
+  lunch: 6.7444444444444445,
+  rooftop: 0.5388888888888889
+}
+{
+  deskVisits: 26,
+  secretFirstReplies: 6,
+  lines: [ '회장님께 화면 설명 중', '급하게 인스타 끄는 중', '회장님 질문 듣는 중' ]
+}
+{
+  deskVisits: 313,
+  instagramFirstReplies: 42,
+  weeks: [
+    { week: '2026-11-02–08', visits: 183, instagram: 28 },
+    { week: '2026-11-09–13', visits: 130, instagram: 14 }
+  ]
+}
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 246.1439
+  type: 'test'
+  ...
+# Subtest: consult: sofa host coverage, real round trips and matching words 2026-11-02
+ok 7 - consult: sofa host coverage, real round trips and matching words 2026-11-02
+  ---
+  duration_ms: 1327.4025
+  type: 'test'
+  ...
+# Subtest: consult: sofa host coverage, real round trips and matching words 2026-11-04
+ok 8 - consult: sofa host coverage, real round trips and matching words 2026-11-04
+  ---
+  duration_ms: 1177.3629
+  type: 'test'
+  ...
+# Subtest: consult: sofa host coverage, real round trips and matching words 2026-11-07
+ok 9 - consult: sofa host coverage, real round trips and matching words 2026-11-07
+  ---
+  duration_ms: 991.0249
+  type: 'test'
+  ...
+# Subtest: consult: sofa host coverage, real round trips and matching words 2026-11-08
+ok 10 - consult: sofa host coverage, real round trips and matching words 2026-11-08
+  ---
+  duration_ms: 924.1579
+  type: 'test'
+  ...
+# Subtest: consult: weekday client and candidate host shares also stay at least half when chairman is absent
+ok 11 - consult: weekday client and candidate host shares also stay at least half when chairman is absent
+  ---
+  duration_ms: 645.8759
+  type: 'test'
+  ...
+# Subtest: consult: weekday rest means and rooftop minutes retain the existing bounds
+ok 12 - consult: weekday rest means and rooftop minutes retain the existing bounds
+  ---
+  duration_ms: 3001.0643
+  type: 'test'
+  ...
+# Subtest: consult: absent booth owners never make booth seats eligible, and guests without a host keep waiting
+ok 13 - consult: absent booth owners never make booth seats eligible, and guests without a host keep waiting
+  ---
+  duration_ms: 47.2663
+  type: 'test'
+  ...
+# Subtest: consult: sofa wording, counter words, safety owners and runtime timers
+not ok 14 - consult: sofa wording, counter words, safety owners and runtime timers
+  ---
+  duration_ms: 9.4655
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-consult.test.mjs:80:1'
+  failureType: 'testCodeFailure'
+  error: 'spawnSync git EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1191:20)
+    spawnSync (node:child_process:929:24)
+    execFileSync (node:child_process:972:15)
+    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-lively-fixture.mjs:9:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-consult.test.mjs:81:70)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+  ...
+# Subtest: consult: separately authored full plans and reverse snapshots retain exact identity in both presence states
+not ok 15 - consult: separately authored full plans and reverse snapshots retain exact identity in both presence states
+  ---
+  duration_ms: 2.2392
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-consult.test.mjs:98:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    restoreResidentsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents-source.mjs:12:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-consult.test.mjs:101:120)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: consult: chairman desk visit replies only during a real visit, including a secret-play first reply
+ok 16 - consult: chairman desk visit replies only during a real visit, including a secret-play first reply
+  ---
+  duration_ms: 235.3137
+  type: 'test'
+  ...
+# Subtest: consult: November 2–13 real desk visits show 12–45 Instagram first replies, identical on reverse reads
+ok 17 - consult: November 2–13 real desk visits show 12–45 Instagram first replies, identical on reverse reads
+  ---
+  duration_ms: 7354.2663
+  type: 'test'
+  ...
+# Subtest: consult: actual desk reply path distinguishes an Instagram idle line from other secret play
+ok 18 - consult: actual desk reply path distinguishes an Instagram idle line from other secret play
+  ---
+  duration_ms: 1686.8115
+  type: 'test'
+  ...
+# Subtest: consult: caught-out visit takes Instagram priority for secret and ordinary idle lines, then keeps the chairman reply
+ok 19 - consult: caught-out visit takes Instagram priority for secret and ordinary idle lines, then keeps the chairman reply
+  ---
+  duration_ms: 1293.8238
+  type: 'test'
+  ...
+# Subtest: consult: existing persistent actor slots render both sides without another timer
+ok 20 - consult: existing persistent actor slots render both sides without another timer
+  ---
+  duration_ms: 758.1704
+  type: 'test'
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 18
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 19858.7275

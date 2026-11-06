@@ -1,0 +1,126 @@
+{
+  "head": "f81f170cef43d02b9a269fa96024f3c204d54855",
+  "main": "f753c66af9d2b6a7535924e8d237e8b1980ae67a",
+  "exactPatch": true,
+  "preservedFiles": 49,
+  "atlasBytes": 77544,
+  "stops": [
+    {
+      "id": "resident_cat_lobby",
+      "native": [
+        718.96,
+        517.55
+      ],
+      "gap": 190.18071432193122
+    },
+    {
+      "id": "resident_cat_front",
+      "native": [
+        785.84,
+        517.55
+      ],
+      "gap": 253.06972971890573
+    },
+    {
+      "id": "resident_dog_lobby",
+      "native": [
+        953.04,
+        517.55
+      ],
+      "gap": 415.7780947813389
+    },
+    {
+      "id": "resident_dog_front",
+      "native": [
+        1019.92,
+        517.55
+      ],
+      "gap": 481.7235191476538
+    },
+    {
+      "id": "resident_cat_night_a",
+      "native": [
+        902.88,
+        517.55
+      ],
+      "gap": 366.5413440527548
+    },
+    {
+      "id": "resident_cat_night_b",
+      "native": [
+        927.96,
+        517.55
+      ],
+      "gap": 391.1303927081096
+    },
+    {
+      "id": "resident_dog_night_a",
+      "native": [
+        1028.28,
+        517.55
+      ],
+      "gap": 489.9845108776399
+    },
+    {
+      "id": "resident_dog_night_b",
+      "native": [
+        1045,
+        517.55
+      ],
+      "gap": 506.5162411019018
+    },
+    {
+      "id": "resident_rabbit_lobby_a",
+      "native": [
+        568.48,
+        517.55
+      ],
+      "gap": 78.46638069899741
+    },
+    {
+      "id": "resident_rabbit_lobby_b",
+      "native": [
+        585.2,
+        517.55
+      ],
+      "gap": 85.1771242764159
+    },
+    {
+      "id": "resident_rabbit_night_a",
+      "native": [
+        785.84,
+        517.55
+      ],
+      "gap": 253.06972971890573
+    },
+    {
+      "id": "resident_rabbit_night_b",
+      "native": [
+        794.2,
+        517.55
+      ],
+      "gap": 261.07037844228904
+    },
+    {
+      "id": "resident_rabbit_sleep_spare",
+      "native": [
+        836,
+        517.55
+      ],
+      "gap": 301.36639245277496
+    }
+  ],
+  "routeSamples": 17069,
+  "minRouteGap": 78.46638069899741,
+  "staffRouteSamples": 5959,
+  "minStaffRouteGap": 16.18849023226071,
+  "nearestStaffEdge": [
+    "hall_1f",
+    "stairs_1f"
+  ],
+  "closure": {
+    "files": 153,
+    "missing": []
+  },
+  "notes": "Gaps measure native floor coordinates; actual rendered sprite/label clearance is checked separately in Chrome. Entire scheduler, pet walks, storage/Cloud, version and existing assertions are byte-preserved."
+}

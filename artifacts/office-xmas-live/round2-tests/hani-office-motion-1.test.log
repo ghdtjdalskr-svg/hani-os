@@ -1,0 +1,129 @@
+TAP version 13
+# Subtest: distance, not elapsed ticks, swaps both walk frames; stopping and resampling never invent steps
+ok 1 - distance, not elapsed ticks, swaps both walk frames; stopping and resampling never invent steps
+  ---
+  duration_ms: 0.6683
+  type: 'test'
+  ...
+# Subtest: approved consultation scheduler source stays frozen, including every route and arrival calculation
+not ok 2 - approved consultation scheduler source stays frozen, including every route and arrival calculation
+  ---
+  duration_ms: 1.0581
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-motion-1.test.mjs:26:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-motion-1.test.mjs:27:20)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: current-time projection follows scheduler stateAt on every sampled leg, wait, floor change and exact arrival
+ok 3 - current-time projection follows scheduler stateAt on every sampled leg, wait, floor change and exact arrival
+  ---
+  duration_ms: 646.7332
+  type: 'test'
+  ...
+# Subtest: reduced motion removes every one-shot and gait effect, with scheduler positions unchanged
+ok 4 - reduced motion removes every one-shot and gait effect, with scheduler positions unchanged
+  ---
+  duration_ms: 0.4998
+  type: 'test'
+  ...
+# Subtest: greeting, conversation and tap reactions wait until walking ends and coalesce repeated taps
+ok 5 - greeting, conversation and tap reactions wait until walking ends and coalesce repeated taps
+  ---
+  duration_ms: 0.1933
+  type: 'test'
+  ...
+# Subtest: all one-shot effects finish, clear their state, and never repeat without a new trigger
+ok 6 - all one-shot effects finish, clear their state, and never repeat without a new trigger
+  ---
+  duration_ms: 0.1257
+  type: 'test'
+  ...
+# Subtest: stable actor and mascot measurement keeps label packing identical through bounce, lean, dip and hop
+ok 7 - stable actor and mascot measurement keeps label packing identical through bounce, lean, dip and hop
+  ---
+  duration_ms: 2.2074
+  type: 'test'
+  ...
+# Subtest: phone checker independently uses the same stable facing box through all visual phases and still rejects ambiguous ownership
+ok 8 - phone checker independently uses the same stable facing box through all visual phases and still rejects ambiguous ownership
+  ---
+  duration_ms: 21.8158
+  type: 'test'
+  ...
+# Subtest: 217 floor art and desk-prop readiness commits offscreen while movement stays paused
+ok 9 - 217 floor art and desk-prop readiness commits offscreen while movement stays paused
+  ---
+  duration_ms: 483.8257
+  type: 'test'
+  ...
+# Subtest: actual owner uses one 100ms motion clock, preserves actor slots, pauses offscreen/hidden and resumes at current scheduler time
+ok 10 - actual owner uses one 100ms motion clock, preserves actor slots, pauses offscreen/hidden and resumes at current scheduler time
+  ---
+  duration_ms: 753.4571
+  type: 'test'
+  ...
+# Subtest: actual tap keeps delegated bubble handling and clears its hop after one cycle
+ok 11 - actual tap keeps delegated bubble handling and clears its hop after one cycle
+  ---
+  duration_ms: 419.3434
+  type: 'test'
+  ...
+# Subtest: actual walking advances canonical left/top on one tick and follows reserved distance frames without label refits
+ok 12 - actual walking advances canonical left/top on one tick and follows reserved distance frames without label refits
+  ---
+  duration_ms: 759.8306
+  type: 'test'
+  ...
+# Subtest: scheduled stand anticipation starts before departure and never shifts its route or arrival time
+ok 13 - scheduled stand anticipation starts before departure and never shifts its route or arrival time
+  ---
+  duration_ms: 772.3469
+  type: 'test'
+  ...
+# Subtest: actual mascot owner shares the office clock, reacts once on return, limits concurrency and clears reduced/hidden effects
+ok 14 - actual mascot owner shares the office clock, reacts once on return, limits concurrency and clears reduced/hidden effects
+  ---
+  duration_ms: 431.8322
+  type: 'test'
+  ...
+# Subtest: actual sit/stand changes logical pose immediately while the visual dip is a single independent effect
+ok 15 - actual sit/stand changes logical pose immediately while the visual dip is a single independent effect
+  ---
+  duration_ms: 0.7778
+  type: 'test'
+  ...
+# Subtest: walking frames update canonical coordinates without label refits or layout reads
+ok 16 - walking frames update canonical coordinates without label refits or layout reads
+  ---
+  duration_ms: 0.3409
+  type: 'test'
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 15
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4307.2911

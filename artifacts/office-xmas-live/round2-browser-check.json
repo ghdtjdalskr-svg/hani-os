@@ -1,0 +1,5559 @@
+[
+  {
+    "floor": "1f",
+    "art": "http://127.0.0.1:1942/assets/building/floor-1f-217.webp",
+    "props": [
+      {
+        "id": "xmas-tree",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 0%",
+        "rect": [
+          343.171875,
+          353.171875,
+          83.59375,
+          101.5
+        ]
+      },
+      {
+        "id": "xmas-snow",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 48.6111%",
+        "rect": [
+          1136.6171875,
+          225.53125,
+          119.421875,
+          152.25
+        ]
+      },
+      {
+        "id": "xmas-wreath",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "0% 79.0123%",
+        "rect": [
+          609.640625,
+          247.921875,
+          56.71875,
+          56.71875
+        ]
+      },
+      {
+        "id": "xmas-gifts",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "5.4945% 75.2941%",
+        "rect": [
+          387.21875,
+          433.78125,
+          35.8125,
+          26.859375
+        ]
+      },
+      {
+        "id": "xmas-lights",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 100%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "giftLabelOverlaps": [],
+    "giftCoveredLabels": [],
+    "wreathOverlapsBrand": false,
+    "writes": [],
+    "viewport": [
+      1280,
+      900
+    ],
+    "kst": "2026-12-24 20:00",
+    "stacking": [
+      {
+        "prop": "coffee-desk",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      }
+    ],
+    "reduced": [
+      {
+        "id": "xmas-tree",
+        "animation": "none",
+        "position": "7.86517% 0%"
+      },
+      {
+        "id": "xmas-snow",
+        "animation": "none",
+        "position": "6.07735% 48.6111%"
+      },
+      {
+        "id": "xmas-wreath",
+        "animation": "none",
+        "position": "0% 79.0123%"
+      },
+      {
+        "id": "xmas-gifts",
+        "animation": "none",
+        "position": "5.4945% 75.2941%"
+      },
+      {
+        "id": "xmas-lights",
+        "animation": "none",
+        "position": "33.3333% 100%"
+      }
+    ]
+  },
+  {
+    "floor": "5f",
+    "art": "http://127.0.0.1:1942/assets/building/floor-5f-night-243.webp",
+    "props": [
+      {
+        "id": "xmas-tree",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 0%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-snow",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 48.6111%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-wreath",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "0% 79.0123%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-gifts",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "5.4945% 75.2941%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-lights",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 100%",
+        "rect": [
+          876.8671875,
+          503.9375,
+          286.609375,
+          47.765625
+        ]
+      }
+    ],
+    "giftLabelOverlaps": [],
+    "giftCoveredLabels": [],
+    "wreathOverlapsBrand": false,
+    "writes": [],
+    "viewport": [
+      1280,
+      900
+    ],
+    "kst": "2026-12-24 20:00",
+    "reduced": [
+      {
+        "id": "xmas-tree",
+        "animation": "none",
+        "position": "7.86517% 0%"
+      },
+      {
+        "id": "xmas-snow",
+        "animation": "none",
+        "position": "6.07735% 48.6111%"
+      },
+      {
+        "id": "xmas-wreath",
+        "animation": "none",
+        "position": "0% 79.0123%"
+      },
+      {
+        "id": "xmas-gifts",
+        "animation": "none",
+        "position": "5.4945% 75.2941%"
+      },
+      {
+        "id": "xmas-lights",
+        "animation": "none",
+        "position": "33.3333% 100%"
+      }
+    ]
+  },
+  {
+    "floor": "1f",
+    "art": "http://127.0.0.1:1942/assets/building/floor-1f-217.webp",
+    "props": [
+      {
+        "id": "xmas-tree",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 0%",
+        "rect": [
+          343.171875,
+          353.171875,
+          83.59375,
+          101.5
+        ]
+      },
+      {
+        "id": "xmas-snow",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 48.6111%",
+        "rect": [
+          1136.6171875,
+          225.53125,
+          119.421875,
+          152.25
+        ]
+      },
+      {
+        "id": "xmas-wreath",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "0% 79.0123%",
+        "rect": [
+          609.640625,
+          247.921875,
+          56.71875,
+          56.71875
+        ]
+      },
+      {
+        "id": "xmas-gifts",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "5.4945% 75.2941%",
+        "rect": [
+          387.21875,
+          433.78125,
+          35.8125,
+          26.859375
+        ]
+      },
+      {
+        "id": "xmas-lights",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 100%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "giftLabelOverlaps": [],
+    "giftCoveredLabels": [],
+    "wreathOverlapsBrand": false,
+    "writes": [],
+    "viewport": [
+      1280,
+      900
+    ],
+    "kst": "2026-12-24 12:00",
+    "stacking": [
+      {
+        "prop": "coffee-desk",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      }
+    ],
+    "reduced": [
+      {
+        "id": "xmas-tree",
+        "animation": "none",
+        "position": "7.86517% 0%"
+      },
+      {
+        "id": "xmas-snow",
+        "animation": "none",
+        "position": "6.07735% 48.6111%"
+      },
+      {
+        "id": "xmas-wreath",
+        "animation": "none",
+        "position": "0% 79.0123%"
+      },
+      {
+        "id": "xmas-gifts",
+        "animation": "none",
+        "position": "5.4945% 75.2941%"
+      },
+      {
+        "id": "xmas-lights",
+        "animation": "none",
+        "position": "33.3333% 100%"
+      }
+    ]
+  },
+  {
+    "floor": "5f",
+    "art": "http://127.0.0.1:1942/assets/building/floor-5f-217.webp",
+    "props": [
+      {
+        "id": "xmas-tree",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 0%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-snow",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 48.6111%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-wreath",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "0% 79.0123%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-gifts",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "5.4945% 75.2941%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-lights",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 100%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "giftLabelOverlaps": [],
+    "giftCoveredLabels": [],
+    "wreathOverlapsBrand": false,
+    "writes": [],
+    "viewport": [
+      1280,
+      900
+    ],
+    "kst": "2026-12-24 12:00",
+    "reduced": [
+      {
+        "id": "xmas-tree",
+        "animation": "none",
+        "position": "7.86517% 0%"
+      },
+      {
+        "id": "xmas-snow",
+        "animation": "none",
+        "position": "6.07735% 48.6111%"
+      },
+      {
+        "id": "xmas-wreath",
+        "animation": "none",
+        "position": "0% 79.0123%"
+      },
+      {
+        "id": "xmas-gifts",
+        "animation": "none",
+        "position": "5.4945% 75.2941%"
+      },
+      {
+        "id": "xmas-lights",
+        "animation": "none",
+        "position": "33.3333% 100%"
+      }
+    ]
+  },
+  {
+    "floor": "1f",
+    "art": "http://127.0.0.1:1942/assets/building/floor-1f-217.webp",
+    "props": [
+      {
+        "id": "xmas-tree",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 0%",
+        "rect": [
+          110.5625,
+          342.015625,
+          23.96875,
+          29.109375
+        ]
+      },
+      {
+        "id": "xmas-snow",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 48.6111%",
+        "rect": [
+          338.171875,
+          305.3984375,
+          34.25,
+          43.671875
+        ]
+      },
+      {
+        "id": "xmas-wreath",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "0% 79.0123%",
+        "rect": [
+          187.0078125,
+          311.8203125,
+          16.265625,
+          16.265625
+        ]
+      },
+      {
+        "id": "xmas-gifts",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "5.4945% 75.2941%",
+        "rect": [
+          123.1953125,
+          365.140625,
+          10.265625,
+          7.703125
+        ]
+      },
+      {
+        "id": "xmas-lights",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 100%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "giftLabelOverlaps": [],
+    "giftCoveredLabels": [],
+    "wreathOverlapsBrand": false,
+    "writes": [],
+    "viewport": [
+      390,
+      844
+    ],
+    "kst": "2026-12-24 20:00",
+    "stacking": [
+      {
+        "prop": "coffee-desk",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 2,
+        "propIndex": 3,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      }
+    ],
+    "reduced": [
+      {
+        "id": "xmas-tree",
+        "animation": "none",
+        "position": "7.86517% 0%"
+      },
+      {
+        "id": "xmas-snow",
+        "animation": "none",
+        "position": "6.07735% 48.6111%"
+      },
+      {
+        "id": "xmas-wreath",
+        "animation": "none",
+        "position": "0% 79.0123%"
+      },
+      {
+        "id": "xmas-gifts",
+        "animation": "none",
+        "position": "5.4945% 75.2941%"
+      },
+      {
+        "id": "xmas-lights",
+        "animation": "none",
+        "position": "33.3333% 100%"
+      }
+    ]
+  },
+  {
+    "floor": "5f",
+    "art": "http://127.0.0.1:1942/assets/building/floor-5f-night-243.webp",
+    "props": [
+      {
+        "id": "xmas-tree",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 0%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-snow",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 48.6111%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-wreath",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "0% 79.0123%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-gifts",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "5.4945% 75.2941%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-lights",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 100%",
+        "rect": [
+          263.65625,
+          385.265625,
+          82.21875,
+          13.6875
+        ]
+      }
+    ],
+    "giftLabelOverlaps": [],
+    "giftCoveredLabels": [],
+    "wreathOverlapsBrand": false,
+    "writes": [],
+    "viewport": [
+      390,
+      844
+    ],
+    "kst": "2026-12-24 20:00",
+    "reduced": [
+      {
+        "id": "xmas-tree",
+        "animation": "none",
+        "position": "7.86517% 0%"
+      },
+      {
+        "id": "xmas-snow",
+        "animation": "none",
+        "position": "6.07735% 48.6111%"
+      },
+      {
+        "id": "xmas-wreath",
+        "animation": "none",
+        "position": "0% 79.0123%"
+      },
+      {
+        "id": "xmas-gifts",
+        "animation": "none",
+        "position": "5.4945% 75.2941%"
+      },
+      {
+        "id": "xmas-lights",
+        "animation": "none",
+        "position": "33.3333% 100%"
+      }
+    ]
+  },
+  {
+    "floor": "1f",
+    "art": "http://127.0.0.1:1942/assets/building/floor-1f-217.webp",
+    "props": [
+      {
+        "id": "xmas-tree",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 0%",
+        "rect": [
+          110.5625,
+          342.015625,
+          23.96875,
+          29.109375
+        ]
+      },
+      {
+        "id": "xmas-snow",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 48.6111%",
+        "rect": [
+          338.171875,
+          305.3984375,
+          34.25,
+          43.671875
+        ]
+      },
+      {
+        "id": "xmas-wreath",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "0% 79.0123%",
+        "rect": [
+          187.0078125,
+          311.8203125,
+          16.265625,
+          16.265625
+        ]
+      },
+      {
+        "id": "xmas-gifts",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "5.4945% 75.2941%",
+        "rect": [
+          123.1953125,
+          365.140625,
+          10.265625,
+          7.703125
+        ]
+      },
+      {
+        "id": "xmas-lights",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 100%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "giftLabelOverlaps": [
+      {
+        "person": "taeo",
+        "kind": "hani-office-name"
+      }
+    ],
+    "giftCoveredLabels": [],
+    "wreathOverlapsBrand": false,
+    "writes": [],
+    "viewport": [
+      390,
+      844
+    ],
+    "kst": "2026-12-24 12:00",
+    "stacking": [
+      {
+        "prop": "coffee-desk",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-desk",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "coffee-counter",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "plant",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "monitor",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "lantern",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "stamp",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "paper",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-tree",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-snow",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-wreath",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-gifts",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "normal",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "normal",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "normal",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "normal",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "fade",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "fade",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "fade",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "fade",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "press",
+        "target": "hani-office-name",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "press",
+        "target": "hani-office-status",
+        "targetIndex": 0,
+        "propIndex": 1,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "press",
+        "target": "hani-office-sprite",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      },
+      {
+        "prop": "xmas-lights",
+        "mode": "press",
+        "target": "hani-office-character-bubble",
+        "targetIndex": 0,
+        "propIndex": 2,
+        "above": true
+      }
+    ],
+    "reduced": [
+      {
+        "id": "xmas-tree",
+        "animation": "none",
+        "position": "7.86517% 0%"
+      },
+      {
+        "id": "xmas-snow",
+        "animation": "none",
+        "position": "6.07735% 48.6111%"
+      },
+      {
+        "id": "xmas-wreath",
+        "animation": "none",
+        "position": "0% 79.0123%"
+      },
+      {
+        "id": "xmas-gifts",
+        "animation": "none",
+        "position": "5.4945% 75.2941%"
+      },
+      {
+        "id": "xmas-lights",
+        "animation": "none",
+        "position": "33.3333% 100%"
+      }
+    ]
+  },
+  {
+    "floor": "5f",
+    "art": "http://127.0.0.1:1942/assets/building/floor-5f-217.webp",
+    "props": [
+      {
+        "id": "xmas-tree",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 0%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-snow",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 48.6111%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-wreath",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "0% 79.0123%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-gifts",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "5.4945% 75.2941%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-lights",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 100%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "giftLabelOverlaps": [],
+    "giftCoveredLabels": [],
+    "wreathOverlapsBrand": false,
+    "writes": [],
+    "viewport": [
+      390,
+      844
+    ],
+    "kst": "2026-12-24 12:00",
+    "reduced": [
+      {
+        "id": "xmas-tree",
+        "animation": "none",
+        "position": "7.86517% 0%"
+      },
+      {
+        "id": "xmas-snow",
+        "animation": "none",
+        "position": "6.07735% 48.6111%"
+      },
+      {
+        "id": "xmas-wreath",
+        "animation": "none",
+        "position": "0% 79.0123%"
+      },
+      {
+        "id": "xmas-gifts",
+        "animation": "none",
+        "position": "5.4945% 75.2941%"
+      },
+      {
+        "id": "xmas-lights",
+        "animation": "none",
+        "position": "33.3333% 100%"
+      }
+    ]
+  }
+]

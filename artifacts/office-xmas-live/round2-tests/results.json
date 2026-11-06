@@ -1,0 +1,769 @@
+{
+    "results":  [
+                    {
+                        "file":  "hani-office-219.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  null,
+                                       "cancelled":  null,
+                                       "pass":  null,
+                                       "skipped":  null,
+                                       "tests":  null
+                                   },
+                        "gitEperm":  true,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-actions-221.test.mjs",
+                        "exitCode":  0,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  0,
+                                       "cancelled":  0,
+                                       "pass":  20,
+                                       "skipped":  0,
+                                       "tests":  20
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-barista.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  1,
+                                       "cancelled":  0,
+                                       "pass":  9,
+                                       "skipped":  0,
+                                       "tests":  10
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+                                            "barista: plan, blockPlan, snapshot outputs and protected owner bytes preserve the pre-patch baseline"
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-bubble-close.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  1,
+                                       "cancelled":  0,
+                                       "pass":  16,
+                                       "skipped":  0,
+                                       "tests":  17
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+                                            "bubble close: protected owner bytes, global listeners and timer allocations are unchanged"
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-cafe-rest.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  1,
+                                       "cancelled":  0,
+                                       "pass":  3,
+                                       "skipped":  0,
+                                       "tests":  4
+                                   },
+                        "gitEperm":  true,
+                        "failedTests":  [
+                                            "cafe route uses clear lower-right floor, retains the lounge and sign mounting surface"
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-chairman-234.test.mjs",
+                        "exitCode":  7,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  null,
+                                       "cancelled":  null,
+                                       "pass":  null,
+                                       "skipped":  null,
+                                       "tests":  null
+                                   },
+                        "gitEperm":  true,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-consult.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  2,
+                                       "cancelled":  0,
+                                       "pass":  18,
+                                       "skipped":  0,
+                                       "tests":  20
+                                   },
+                        "gitEperm":  true,
+                        "failedTests":  [
+                                            "consult: sofa wording, counter words, safety owners and runtime timers",
+                                            "consult: separately authored full plans and reverse snapshots retain exact identity in both presence states"
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-crowded-labels.test.mjs",
+                        "exitCode":  0,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  0,
+                                       "cancelled":  0,
+                                       "pass":  19,
+                                       "skipped":  0,
+                                       "tests":  19
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-actions-216.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  1,
+                                       "cancelled":  0,
+                                       "pass":  14,
+                                       "skipped":  0,
+                                       "tests":  15
+                                   },
+                        "gitEperm":  true,
+                        "failedTests":  [
+                                            "approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract"
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-fix-218.test.mjs",
+                        "exitCode":  0,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  0,
+                                       "cancelled":  0,
+                                       "pass":  6,
+                                       "skipped":  0,
+                                       "tests":  6
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-floor-bubble.test.mjs",
+                        "exitCode":  0,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  0,
+                                       "cancelled":  0,
+                                       "pass":  18,
+                                       "skipped":  0,
+                                       "tests":  18
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-hd-224.test.mjs",
+                        "exitCode":  0,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  0,
+                                       "cancelled":  0,
+                                       "pass":  10,
+                                       "skipped":  0,
+                                       "tests":  10
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-behavior.test.mjs",
+                        "exitCode":  0,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  0,
+                                       "cancelled":  0,
+                                       "pass":  10,
+                                       "skipped":  0,
+                                       "tests":  10
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-drama.test.mjs",
+                        "exitCode":  0,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  0,
+                                       "cancelled":  0,
+                                       "pass":  20,
+                                       "skipped":  0,
+                                       "tests":  20
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-labels-qa.test.mjs",
+                        "exitCode":  0,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  0,
+                                       "cancelled":  0,
+                                       "pass":  17,
+                                       "skipped":  0,
+                                       "tests":  17
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-icons.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  1,
+                                       "cancelled":  0,
+                                       "pass":  14,
+                                       "skipped":  0,
+                                       "tests":  15
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+                                            "icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc"
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-motion-1.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  1,
+                                       "cancelled":  0,
+                                       "pass":  15,
+                                       "skipped":  0,
+                                       "tests":  16
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+                                            "approved consultation scheduler source stays frozen, including every route and arrival calculation"
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-motion-2.test.mjs",
+                        "exitCode":  0,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  0,
+                                       "cancelled":  0,
+                                       "pass":  24,
+                                       "skipped":  0,
+                                       "tests":  24
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-obr10.test.mjs",
+                        "exitCode":  0,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  0,
+                                       "cancelled":  0,
+                                       "pass":  4,
+                                       "skipped":  0,
+                                       "tests":  4
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-obr12.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  null,
+                                       "cancelled":  null,
+                                       "pass":  null,
+                                       "skipped":  null,
+                                       "tests":  null
+                                   },
+                        "gitEperm":  true,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-lively-v2.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  1,
+                                       "cancelled":  0,
+                                       "pass":  7,
+                                       "skipped":  0,
+                                       "tests":  8
+                                   },
+                        "gitEperm":  true,
+                        "failedTests":  [
+                                            "obr2: deterministic query order, reduced motion and frozen spatial bytes"
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-lively.test.mjs",
+                        "exitCode":  0,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  0,
+                                       "cancelled":  0,
+                                       "pass":  13,
+                                       "skipped":  0,
+                                       "tests":  13
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-obr15.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  1,
+                                       "cancelled":  0,
+                                       "pass":  13,
+                                       "skipped":  0,
+                                       "tests":  14
+                                   },
+                        "gitEperm":  true,
+                        "failedTests":  [
+                                            "obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately"
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-obr16.test.mjs",
+                        "exitCode":  0,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  0,
+                                       "cancelled":  0,
+                                       "pass":  12,
+                                       "skipped":  0,
+                                       "tests":  12
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-obr17.test.mjs",
+                        "exitCode":  0,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  0,
+                                       "cancelled":  0,
+                                       "pass":  3,
+                                       "skipped":  0,
+                                       "tests":  3
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-obr19.test.mjs",
+                        "exitCode":  0,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  0,
+                                       "cancelled":  0,
+                                       "pass":  3,
+                                       "skipped":  0,
+                                       "tests":  3
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-obr18.test.mjs",
+                        "exitCode":  0,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  0,
+                                       "cancelled":  0,
+                                       "pass":  12,
+                                       "skipped":  0,
+                                       "tests":  12
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-obr3.test.mjs",
+                        "exitCode":  0,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  0,
+                                       "cancelled":  0,
+                                       "pass":  5,
+                                       "skipped":  0,
+                                       "tests":  5
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-obr4.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  2,
+                                       "cancelled":  0,
+                                       "pass":  8,
+                                       "skipped":  0,
+                                       "tests":  10
+                                   },
+                        "gitEperm":  true,
+                        "failedTests":  [
+                                            "obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+                                            "obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats"
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-obr6.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  null,
+                                       "cancelled":  null,
+                                       "pass":  null,
+                                       "skipped":  null,
+                                       "tests":  null
+                                   },
+                        "gitEperm":  true,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-obr7.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  null,
+                                       "cancelled":  null,
+                                       "pass":  null,
+                                       "skipped":  null,
+                                       "tests":  null
+                                   },
+                        "gitEperm":  true,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-obr8.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  1,
+                                       "cancelled":  0,
+                                       "pass":  2,
+                                       "skipped":  0,
+                                       "tests":  3
+                                   },
+                        "gitEperm":  true,
+                        "failedTests":  [
+                                            "obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words"
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-obr9.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  null,
+                                       "cancelled":  null,
+                                       "pass":  null,
+                                       "skipped":  null,
+                                       "tests":  null
+                                   },
+                        "gitEperm":  true,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-props.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  3,
+                                       "cancelled":  0,
+                                       "pass":  8,
+                                       "skipped":  0,
+                                       "tests":  11
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+                                            "props: one persistent map layer and seven persistent, map-relative slots across floors and clocks",
+                                            "props: reduced-motion owner remains persistent, floor-scoped and write-free",
+                                            "props: scheduler/plan/blockPlan/snapshot/labels/home-clear source bytes and all six assets are unchanged"
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-obr21.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  3,
+                                       "cancelled":  0,
+                                       "pass":  3,
+                                       "skipped":  0,
+                                       "tests":  6
+                                   },
+                        "gitEperm":  true,
+                        "failedTests":  [
+                                            "obr21 authored full absent/present plans and reverse snapshots match frozen delta",
+                                            "obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+                                            "obr21 cached gathering/index decisions equal full index rebuilds"
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-seats-215.test.mjs",
+                        "exitCode":  0,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  0,
+                                       "cancelled":  0,
+                                       "pass":  12,
+                                       "skipped":  0,
+                                       "tests":  12
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-snack.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  1,
+                                       "cancelled":  0,
+                                       "pass":  25,
+                                       "skipped":  0,
+                                       "tests":  26
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+                                            "snack: scheduler/snapshot/geometry/residents bytes and complete sampled model JSON preserve c301a13"
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-tap-lines.test.mjs",
+                        "exitCode":  0,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  0,
+                                       "cancelled":  0,
+                                       "pass":  15,
+                                       "skipped":  0,
+                                       "tests":  15
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-tlayout.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  2,
+                                       "cancelled":  0,
+                                       "pass":  11,
+                                       "skipped":  0,
+                                       "tests":  13
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+                                            "only the five pinned source fragments change; protected home and label owners are byte identical",
+                                            "16 separately authored complete plan/outings/reverse-snapshot outputs have no exclusions"
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-top-labels.test.mjs",
+                        "exitCode":  0,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  0,
+                                       "cancelled":  0,
+                                       "pass":  7,
+                                       "skipped":  0,
+                                       "tests":  7
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-v2-215.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  1,
+                                       "cancelled":  0,
+                                       "pass":  17,
+                                       "skipped":  2,
+                                       "tests":  20
+                                   },
+                        "gitEperm":  true,
+                        "failedTests":  [
+                                            "frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture"
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-visitors-cafe.test.mjs",
+                        "exitCode":  0,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  0,
+                                       "cancelled":  0,
+                                       "pass":  5,
+                                       "skipped":  0,
+                                       "tests":  5
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-xmas.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  2,
+                                       "cancelled":  0,
+                                       "pass":  11,
+                                       "skipped":  0,
+                                       "tests":  13
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+                                            "xmas: all five map-relative slots are created once, floor-scoped and tap-through at both widths",
+                                            "xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged"
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-residents.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  18,
+                                       "cancelled":  0,
+                                       "pass":  31,
+                                       "skipped":  0,
+                                       "tests":  49
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+                                            "resident occupancy stays separate for multiple days and moving as well as resting residents",
+                                            "unchanged residents perform no DOM writes on the shared clock",
+                                            "eight approved atlases decode, match their manifest hashes, load through the real owner and enter the closure",
+                                            "stable quarter-hour visits use only resting staff on the same floor and never visitors or travellers",
+                                            "interaction routes and dwell spots clear full furniture envelopes and staff snapshots/plans remain byte-identical on and off",
+                                            "actual delegated pet taps show both speakers, automatic scene uses existing bubble, and all persistence/AI paths remain unused",
+                                            "all decoded pose tops drive the existing label flow at phone and desktop widths without frame layout reads",
+                                            "every original source byte and staff/visitor plan, outing and snapshot stays identical with residents on or off",
+                                            "existing delegated tap/keyboard bubbles use short local lines, pet hop, no profile or writes; hidden/reduced clocks stay still",
+                                            "Mochi schedule covers quiet 3F mornings, 4F days, 1F evenings, midnight continuity and 02..07 sleep",
+                                            "Mochi uses eased hops around 18px/sec every 120..180 seconds, with longer rests and whole-body clearance",
+                                            "trio rejects missing/different-floor/sleeping pets and staff-blocked floor; plan and snapshot bytes stay frozen",
+                                            "seeded Cheese and Cream spots change within two minutes; NPC quarters and all staff plans stay frozen",
+                                            "real pet hearts reuse one mounted node, pair taps override trio during affection, and reduced motion is still with zero writes",
+                                            "life signs repeat every 10..20 seconds, cover four gestures, and sleep or reduced motion suppresses them",
+                                            "pet nominal speeds vary per leg around Cream 48, Cheese 40 and Mochi 18 while periods remain stable over days",
+                                            "pet easing moves less at both ends than in the middle, with seeded per-leg speeds and variable launch rests",
+                                            "a seeded day includes reproducible one-to-three second mid-route pauses followed by onward movement"
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-zoom.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  1,
+                                       "cancelled":  0,
+                                       "pass":  11,
+                                       "skipped":  1,
+                                       "tests":  13
+                                   },
+                        "gitEperm":  false,
+                        "failedTests":  [
+                                            "zoom: scheduler, snapshots and all three protected geometry functions stay byte identical to task base"
+                                        ]
+                    },
+                    {
+                        "file":  "hani-office-obr14.test.mjs",
+                        "exitCode":  1,
+                        "timedOut":  false,
+                        "counts":  {
+                                       "fail":  1,
+                                       "cancelled":  0,
+                                       "pass":  4,
+                                       "skipped":  0,
+                                       "tests":  5
+                                   },
+                        "gitEperm":  true,
+                        "failedTests":  [
+                                            "235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism"
+                                        ]
+                    }
+                ],
+    "identity":  {
+                     "css":  "6DACE7444EF33A861C55883D240E763C6845873CB0285F4C7CED60CD936D437C",
+                     "js":  "DBC449E861D78F8ECFA7B05FDA83BF5B8C7FF811D86C2EFDE3320E7B78FE8E9B"
+                 }
+}

@@ -1,0 +1,111 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 17.8917
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.9271
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 10.2458
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 9.0377
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 70.2886
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 246.0439
+  type: 'test'
+  ...
+# Subtest: zoom: staff/visitor/NPC/pet taps copy the currently loaded atlas frame into one persistent decorative slot
+ok 7 - zoom: staff/visitor/NPC/pet taps copy the currently loaded atlas frame into one persistent decorative slot
+  ---
+  duration_ms: 2676.1472
+  type: 'test'
+  ...
+# Subtest: zoom: automatic floor bubble stays small, including after a previous manual zoom
+ok 8 - zoom: automatic floor bubble stays small, including after a previous manual zoom
+  ---
+  duration_ms: 1085.3723
+  type: 'test'
+  ...
+# Subtest: zoom: missing or failed sprite hides the slot and preserves the old bubble and line
+ok 9 - zoom: missing or failed sprite hides the slot and preserves the old bubble and line
+  ---
+  duration_ms: 1595.4677
+  type: 'test'
+  ...
+# Subtest: zoom: fitBubble clamps all edges at 360/390/416/1280 widths
+ok 10 - zoom: fitBubble clamps all edges at 360/390/416/1280 widths
+  ---
+  duration_ms: 2956.263
+  type: 'test'
+  ...
+# Subtest: zoom: waiting client/candidate labels use 대기 중 instead of rest on phone and desktop
+ok 11 - zoom: waiting client/candidate labels use 대기 중 instead of rest on phone and desktop
+  ---
+  duration_ms: 1450.2246
+  type: 'test'
+  ...
+# Subtest: zoom: scheduler, snapshots and all three protected geometry functions stay byte identical to task base
+not ok 12 - zoom: scheduler, snapshots and all three protected geometry functions stay byte identical to task base
+  ---
+  duration_ms: 2.4313
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-zoom.test.mjs:147:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-zoom.test.mjs:151:26)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: zoom: real browser CSS keeps manual/automatic bubbles inside the map at every requested viewport
+ok 13 - zoom: real browser CSS keeps manual/automatic bubbles inside the map at every requested viewport # SKIP
+  ---
+  duration_ms: 0.0582
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 11
+# fail 1
+# cancelled 0
+# skipped 1
+# todo 0
+# duration_ms 10149.8366
