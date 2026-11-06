@@ -226,10 +226,11 @@
 #haniHelperBot[data-staff="daon"]{--helper-image:url('./assets/sprites-v3/daon.webp')}
 #haniHelperBot[data-staff="yoonseul"]{--helper-image:url('./assets/sprites-v3/yoonseul.webp')}
 /* Existing profile thumbnails are already in the runtime package. */
-#haniHelperBot:is([data-staff="pet-cat"],[data-staff="pet-dog"],[data-staff="pet-rabbit"]){--helper-size:52px 52px;--helper-x:0px;--helper-y:0px}
+#haniHelperBot:is([data-staff="pet-cat"],[data-staff="pet-dog"],[data-staff="pet-rabbit"],[data-staff="pet-bori"]){--helper-size:52px 52px;--helper-x:0px;--helper-y:0px}
 #haniHelperBot[data-staff="pet-cat"]{--helper-image:url('./assets/profiles/thumb/hani-profile-cheese-256.webp')}
 #haniHelperBot[data-staff="pet-dog"]{--helper-image:url('./assets/profiles/thumb/hani-profile-cream-256.webp')}
 #haniHelperBot[data-staff="pet-rabbit"]{--helper-image:url('./assets/profiles/thumb/hani-profile-mochi-256.webp')}
+#haniHelperBot[data-staff="pet-bori"]{--helper-image:url('./assets/profiles/thumb/hani-profile-bori-256.webp')}
 #haniHelperBot .hani-helper-dot{position:absolute;right:0;top:1px;width:10px;height:10px;background:#d93b46;border:2px solid #fff;border-radius:50%}
 #haniHelperBot .hani-helper-speech{position:fixed;box-sizing:border-box;width:min(320px,calc(100vw - 32px));padding:16px;border:1px solid #d9cce1;border-radius:20px;background:#fffdfb;box-shadow:0 10px 38px #36213b24;overflow:auto;overscroll-behavior:contain;text-align:left}
 #haniHelperBot header{display:flex;align-items:start;justify-content:space-between;gap:12px}
