@@ -1,0 +1,77 @@
+{
+  "version": "2.9.269",
+  "baseCommit": "f753c66af9d2b6a7535924e8d237e8b1980ae67a",
+  "files": [
+    {
+      "file": "hani-office-live.js",
+      "beforeSha256": "447edb86def004395e66af6aa79950280c23f3698f53af28db8d1f6fe6f6b148",
+      "afterSha256": "dbc449e861d78f8ecfa7b05fda83bf5b8c7ff811d86c2efde3320e7b78fe8e9b",
+      "replacements": [
+        {
+          "name": "js exact hunk 1",
+          "before": "  // Approved four-frame art: one map-owned layer and seven persistent slots.\n",
+          "after": "  // Annual KST windows are read-only; the exclusive end includes Dec 26 23:59.\n  // Future events add a row/atlas using the five shared CSS atlas rectangle presets.\n  const officeEventCalendar=Object.freeze([\n    Object.freeze({id:'christmas',atlas:'./assets/office-season/xmas.webp',startKst:'12-01T00:00',endKstExclusive:'12-27T00:00',decorations:Object.freeze([\n      ['xmas-tree','event-tall','1f',493,435,112,136,'bottom-center',false],\n      ['xmas-snow','event-window','1f',1580,230,160,204,'center',false],\n      ['xmas-wreath','event-wall','1f',832,196,76,76,'center',false],\n      ['xmas-gifts','event-floor','1f',520,443,48,36,'bottom-center',false],\n      ['xmas-lights','event-wide','5f',1344,565,384,64,'bottom-center',true]\n    ].map(Object.freeze))})\n  ]);\n  // Approved four-frame art: one map-owned layer and persistent prop/event slots.\n"
+        },
+        {
+          "name": "js exact hunk 2",
+          "before": "    ['paper','paper-flutter','1f',1605,520,40,48,'center']\n  ].map(([id,art,floor,x,y,width,height,anchor])=>{\n",
+          "after": "    ['paper','paper-flutter','1f',1605,520,40,48,'center'],\n    ...officeEventCalendar.flatMap(event=>event.decorations.map(decoration=>[...decoration,event]))\n  ].map(([id,art,floor,x,y,width,height,anchor,nightOnly=false,event=null])=>{\n"
+        },
+        {
+          "name": "js exact hunk 3",
+          "before": "    const prop=document.createElement('span');prop.className='hani-office-live-prop';prop.dataset.prop=id;prop.dataset.sprite=art;prop.dataset.anchor=anchor;prop.hidden=true;\n",
+          "after": "    const prop=document.createElement('span');prop.className='hani-office-live-prop';prop.dataset.prop=id;prop.dataset.sprite=art;prop.dataset.anchor=anchor;prop.hidden=true;\n    if(event){prop.dataset.event=event.id;prop.style.backgroundImage='url(\"'+event.atlas+'\")'}\n"
+        },
+        {
+          "name": "js exact hunk 4",
+          "before": "    livePropLayer.append(prop);return {prop,floor};\n",
+          "after": "    livePropLayer.append(prop);return {prop,floor,nightOnly:nightOnly||id==='lantern',event};\n"
+        },
+        {
+          "name": "js exact hunk 5",
+          "before": "  function updateLiveProps(floor,background,isFloor){\n",
+          "after": "  function updateLiveProps(floor,background,isFloor,now=new Date()){\n    const date=koreaTime(now).toISOString().slice(5,16);\n    const activeEvents=new Set(officeEventCalendar.filter(event=>event.startKst<event.endKstExclusive\n      ?date>=event.startKst&&date<event.endKstExclusive:date>=event.startKst||date<event.endKstExclusive));\n"
+        },
+        {
+          "name": "js exact hunk 6",
+          "before": "    for(const entry of liveProps)entry.prop.hidden=!isFloor||entry.floor!==floor.id||(entry.prop.dataset.prop==='lantern'&&background!==floor.nightBackground);\n",
+          "after": "    for(const entry of liveProps)entry.prop.hidden=!isFloor||entry.floor!==floor.id||(entry.nightOnly&&background!==floor.nightBackground)||(!!entry.event&&!activeEvents.has(entry.event));\n"
+        },
+        {
+          "name": "js exact hunk 7",
+          "before": "    const floor=building.floors.find(f=>f.id===activeFloor);\n",
+          "after": "    const floor=building.floors.find(f=>f.id===activeFloor);\n    updateLiveProps(floor,map.querySelector('.hani-office-background').getAttribute('src'),map.dataset.art==='floor'&&map.dataset.floor===activeFloor,now);\n"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-live.css",
+      "beforeSha256": "b00bf744040c4cc24529eda7c9a5ad1ce2da40fd9e16a5a626668869b15ae368",
+      "afterSha256": "6dace7444ef33a861c55883d240e763c6845873cb0285f4c7ced60cd936d437c",
+      "replacements": [
+        {
+          "name": "css exact hunk 1",
+          "before": ".hani-office-live-props{position:absolute;inset:0;z-index:2;pointer-events:none}\n",
+          "after": ".hani-office-live-props{position:absolute;inset:0;z-index:2;pointer-events:none}\n/* Keep the existing actor host (including every name/status label) above all\n   live props, even while an actor temporarily creates its own stacking context. */\n#haniOfficeActors{position:absolute;inset:0;z-index:4;pointer-events:none}\n"
+        },
+        {
+          "name": "css exact hunk 2",
+          "before": " .hani-office-live-props .hani-office-live-prop{animation:none;background-position:33.333333% 0}\n}\n",
+          "after": " .hani-office-live-props .hani-office-live-prop{animation:none;background-position:33.333333% 0}\n}\n\n/* Christmas atlas: 1536x400, original RGBA pixels, 4px row gaps.\n   Rectangles are x,y,frame width,frame height,count (horizontal frames).\n   tree:0,0,112,136,4; snow:0,140,88,112,4; wreath:0,256,76,76,1;\n   gifts:80,256,80,60,1; lights:0,336,384,64,4.\n   Percent positions divide atlas offsets by (atlas size - viewport size). */\n.hani-office-live-prop[data-event]{background-position:var(--event-x) var(--event-y);animation:hani-office-event-frames 3.2s steps(4) infinite;--event-x:0%}\n/* Literal URL keeps the current atlas in the release package closure. */\n.hani-office-live-prop[data-event=\"christmas\"]{background-image:url(\"./assets/office-season/xmas.webp\")}\n.hani-office-live-prop[data-sprite=\"event-tall\"]{background-size:1371.428571% 294.117647%;--event-y:0%;--event-end:31.460674%;--event-static:7.865169%}\n.hani-office-live-prop[data-sprite=\"event-window\"]{background-size:1745.454545% 357.142857%;--event-y:48.611111%;--event-end:24.309392%;--event-static:6.077348%;filter:brightness(0) invert(1) drop-shadow(0 0 .08cqw #fff) drop-shadow(.6cqw 1cqw 0 #fff) drop-shadow(-.7cqw 1.4cqw 0 #fff);clip-path:inset(0)}\n.hani-office-live-prop[data-sprite=\"event-wall\"]{background-size:2021.052632% 526.315789%;--event-y:79.012346%;--event-static:0%;animation:none}\n.hani-office-live-prop[data-sprite=\"event-floor\"]{background-size:1920% 666.666667%;--event-x:5.494505%;--event-y:75.294118%;--event-static:5.494505%;animation:none}\n.hani-office-live-prop[data-sprite=\"event-wide\"]{background-size:400% 625%;--event-y:100%;--event-end:133.333333%;--event-static:33.333333%}\n@keyframes hani-office-event-frames{from{background-position:var(--event-x) var(--event-y)}to{background-position:var(--event-end) var(--event-y)}}\n@media(prefers-reduced-motion:reduce){\n .hani-office-live-props .hani-office-live-prop[data-event]{animation:none;background-position:var(--event-static) var(--event-y)}\n}\n"
+        }
+      ]
+    }
+  ],
+  "unchangedRuntime": [
+    {
+      "file": "index.html",
+      "sha256": "d992db9b57b6ead06581d025d124ccd4299e931a61aaa2250908d90656d3c333",
+      "versionCount": 60
+    },
+    {
+      "file": "hani-main.js",
+      "sha256": "4833ef3fabe5e2eb4bd646993f6e8cf157d6cd6b75727db73c43018fe21b2147",
+      "versionCount": 1
+    }
+  ]
+}

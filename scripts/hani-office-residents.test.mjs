@@ -137,7 +137,9 @@ test('eight approved atlases decode, match their manifest hashes, load through t
  const baseline=(await resolveRuntimeClosure({exists:fs.existsSync,read:f=>f==='hani-office-live.css'?read(f).split('/* Resident art uses the existing sheet loader;')[0]:f==='hani-office-live.js'?restoreResidentsSource(read(f)):fs.readFileSync(f)})).files;
  assert.equal(baseline.length,138,'existing closure loses only removed portrait');
  const props=['coffee-steam','plant-sway','monitor-glow','lantern-flicker','stamp-sparkle','paper-flutter'].map(n=>'assets/office-props/'+n+'.webp');
- assert.deepEqual(closure.files.filter(f=>!baseline.includes(f)).sort(),plain([...ids.map(id=>'assets/sprites-v3/'+id+'.webp'),...props]).sort(),'resident atlases plus the six approved live prop strips only');
+ // v2.9.269 explicitly approves this one season atlas; all other closure bytes stay exact.
+ const season=['assets/office-season/xmas.webp'];
+ assert.deepEqual(closure.files.filter(f=>!baseline.includes(f)).sort(),plain([...ids.map(id=>'assets/sprites-v3/'+id+'.webp'),...props,...season]).sort(),'resident atlases plus the six approved live prop strips and the one approved season atlas only');
 });
 
 test('separate date seed, stable hour/floor schedule, eight daytime residents and only pets overnight',()=>{

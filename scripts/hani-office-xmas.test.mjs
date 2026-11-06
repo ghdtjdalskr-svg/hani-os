@@ -5,15 +5,17 @@ import {createHash} from 'node:crypto';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
+import {restorePets268Source} from './hani-office-pets-268-source.mjs';
+import {xmas269Delta} from './hani-office-xmas-269-source.mjs';
 
 const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
 const source=read('hani-office-live.js'),css=read('hani-office-live.css');
 const flush=async()=>{for(let i=0;i<30;i++)await Promise.resolve()};
 const expected=[
  ['xmas-tree','1f',493,435,112,136,'bottom-center'],
- ['xmas-snow','1f',1600,146,88,112,'center'],
+ ['xmas-snow','1f',1580,230,160,204,'center'],
  ['xmas-wreath','1f',832,196,76,76,'center'],
- ['xmas-gifts','1f',548,450,80,60,'bottom-center'],
+ ['xmas-gifts','1f',520,443,48,36,'bottom-center'],
  ['xmas-lights','5f',1344,565,384,64,'bottom-center']
 ];
 const layouts=['event-tall','event-window','event-wall','event-floor','event-wide'];
@@ -110,15 +112,25 @@ test('xmas: CSS rectangles sample the original frames, animations use steps(4), 
 
 test('xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged',()=>{
  const before=read('artifacts/office-xmas-live/before.js'),base=JSON.parse(read('artifacts/office-xmas-live/baseline.json'));
+ // 269 -> exact 268 -> exact pre-pet source. The original section hashes
+ // still apply; the outer full-file pin proves there are no unlisted edits.
+ const comparableSource=restorePets268Source(source);
  const hash=x=>createHash('sha256').update(x).digest('hex');
- for(const row of base.sections){const a=source.indexOf(row.start),b=source.indexOf(row.end,a);assert.ok(a>=0&&b>a,row.name);assert.equal(hash(source.slice(a,b)),row.sha256,row.name)}
- for(const row of [...base.assets,...base.files])assert.equal(hash(fs.readFileSync(new URL('../'+row.file,import.meta.url))),row.sha256,row.file);
+ for(const row of base.sections){const a=comparableSource.indexOf(row.start),b=comparableSource.indexOf(row.end,a);assert.ok(a>=0&&b>a,row.name);assert.equal(hash(comparableSource.slice(a,b)),row.sha256,row.name)}
+ for(const row of base.assets)assert.equal(hash(fs.readFileSync(new URL('../'+row.file,import.meta.url))),row.sha256,row.file);
+ for(const row of base.files){
+  // v2.9.269 release bump only: the 268 files contain no '2.9.269', so this restores the exact 268 bytes.
+  const text=read(row.file).replaceAll('2.9.269','2.9.268'),pin=xmas269Delta.unchangedRuntime.find(p=>p.file===row.file);assert.ok(pin,row.file);
+  assert.equal(hash(text),pin.sha256,'unchanged fixed v268 runtime: '+row.file);
+  assert.equal(text.split('2.9.268').length-1,pin.versionCount,'exact v268 version occurrences');
+  assert.equal(hash(text.replaceAll('2.9.268','2.9.267')),row.sha256,row.file+' retains the original pre-v268 pin after exact version reversal');
+ }
  const start=source.indexOf('  // Annual KST windows'),end=source.indexOf('  let activeFloor=',start),added=source.slice(start,end);
  assert.doesNotMatch(added,/localStorage|sessionStorage|supabase|\.setItem|\.removeItem|\.clear\(|\bfetch\(|setInterval|setTimeout|addEventListener|requestAnimationFrame/);
  for(const token of ['localStorage','sessionStorage','supabase','.setItem(','.removeItem(','.clear(','fetch('])assert.equal(source.split(token).length,before.split(token).length,token);
  const marker='    updateLiveProps(floor,map.querySelector(\'.hani-office-background\').getAttribute(\'src\'),map.dataset.art===\'floor\'&&map.dataset.floor===activeFloor,now);';
- assert.equal(source.slice(0,source.indexOf('  // Annual KST windows')),before.slice(0,before.indexOf('  // Approved four-frame art:')));
- assert.equal(source.slice(source.indexOf('  let activeFloor=')).replace(marker+'\n','').replace(marker+'\r\n',''),before.slice(before.indexOf('  let activeFloor=')));
+ assert.equal(comparableSource.slice(0,comparableSource.indexOf('  // Approved four-frame art:')),before.slice(0,before.indexOf('  // Approved four-frame art:')));
+ assert.equal(comparableSource.slice(comparableSource.indexOf('  let activeFloor=')).replace(marker+'\n','').replace(marker+'\r\n',''),before.slice(before.indexOf('  let activeFloor=')));
 });
 
 test('xmas: literal atlas enters the release closure as the only new runtime file',async()=>{

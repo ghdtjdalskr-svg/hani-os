@@ -13,8 +13,14 @@ export function applyTlayoutCanon(expected){
 }
 export function restoreTlayoutSource(source){
  assert.equal(hash(source),tlayoutDelta.source.afterSha256,'only the approved G source is accepted');
- for(const r of tlayoutDelta.source.replacements){assert.equal(source.split(r.after).length-1,1,'unique approved G line');source=source.replace(r.after,r.before)}
+ source=restoreTlayoutPairs(source);
  assert.equal(hash(source),tlayoutDelta.source.beforeSha256,'every source byte before G restored');return source;
+}
+// Used only after the caller verifies the complete G source and restores the
+// independently hash-pinned outer Christmas layer; keep every G pair required.
+export function restoreTlayoutPairs(source){
+ for(const r of tlayoutDelta.source.replacements){assert.equal(source.split(r.after).length-1,1,'unique approved G line');source=source.replace(r.after,r.before)}
+ return source;
 }
 export function reapplyTlayoutSource(source){
  for(const r of tlayoutDelta.source.replacements){assert.equal(source.split(r.before).length-1,1,'unique pre-G line');source=source.replace(r.before,r.after)}
