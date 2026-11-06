@@ -1,0 +1,110 @@
+[
+  {
+    "name": "before",
+    "seconds": 36120,
+    "walking": false,
+    "anchor": "resident-visit-taeo-239.09600000000003--100",
+    "scene": "taeo",
+    "position": [
+      32,
+      57.0730074388948
+    ]
+  },
+  {
+    "name": "after",
+    "seconds": 36120,
+    "walking": true,
+    "anchor": "resident-visit-taeo-220--100",
+    "position": [
+      30.857894736842105,
+      57.0730074388948
+    ]
+  },
+  {
+    "name": "before",
+    "seconds": 36121,
+    "walking": false,
+    "anchor": "resident-visit-taeo-239.09600000000003--100",
+    "scene": "taeo",
+    "position": [
+      32,
+      57.0730074388948
+    ]
+  },
+  {
+    "name": "after",
+    "seconds": 36121,
+    "walking": false,
+    "anchor": "resident-visit-taeo-239.09600000000003--100",
+    "scene": "taeo",
+    "position": [
+      32,
+      57.0730074388948
+    ]
+  },
+  {
+    "name": "before",
+    "seconds": 36125,
+    "walking": false,
+    "anchor": "resident-visit-taeo-239.09600000000003--100",
+    "scene": "taeo",
+    "position": [
+      32,
+      57.0730074388948
+    ]
+  },
+  {
+    "name": "after",
+    "seconds": 36125,
+    "walking": false,
+    "anchor": "resident-visit-taeo-239.09600000000003--100",
+    "scene": "taeo",
+    "position": [
+      32,
+      57.0730074388948
+    ]
+  },
+  {
+    "name": "before",
+    "seconds": 36200,
+    "walking": false,
+    "anchor": "resident-visit-taeo-220--100",
+    "scene": "taeo",
+    "position": [
+      30.857894736842105,
+      57.0730074388948
+    ]
+  },
+  {
+    "name": "after",
+    "seconds": 36200,
+    "walking": false,
+    "anchor": "resident-visit-taeo-239.09600000000003--100",
+    "scene": "taeo",
+    "position": [
+      32,
+      57.0730074388948
+    ]
+  },
+  {
+    "name": "before",
+    "seconds": 36300,
+    "walking": false,
+    "anchor": "resident-visit-taeo-220--100",
+    "scene": "taeo",
+    "position": [
+      30.857894736842105,
+      57.0730074388948
+    ]
+  },
+  {
+    "name": "after",
+    "seconds": 36300,
+    "walking": true,
+    "anchor": "resident-visit-taeo-220--100",
+    "position": [
+      30.857894736842105,
+      57.0730074388948
+    ]
+  }
+]

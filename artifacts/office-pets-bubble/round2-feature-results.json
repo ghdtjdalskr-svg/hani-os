@@ -1,0 +1,57 @@
+{
+  "source": "447edb86def004395e66af6aa79950280c23f3698f53af28db8d1f6fe6f6b148",
+  "checks": [
+    {
+      "result": "PASS",
+      "name": "round2: a manual pet tap takes priority over the pending entrance gesture"
+    },
+    {
+      "result": "PASS",
+      "name": "round2: sleeping pets do not greet automatically, but a manual tap still gets one hop"
+    },
+    {
+      "result": "PASS",
+      "name": "round2: every visible pet starts a queued gesture within ten seconds of entering its floor"
+    },
+    {
+      "result": "PASS",
+      "name": "round2: six-second gestures are staggered, use all four kinds and change existing atlas rows"
+    },
+    {
+      "result": "PASS",
+      "name": "round2: walks start within the new windows and every sampled body stays on existing safe routes"
+    },
+    {
+      "result": "PASS",
+      "name": "round2: reduced motion fixes pets for a full minute and hidden floors retain no advancing state"
+    },
+    {
+      "result": "PASS",
+      "name": "round2: all three pets are present for at least 95 percent of working-day samples"
+    },
+    {
+      "result": "PASS",
+      "name": "round2: staff scheduler and snapshot source bytes stay identical; timer/listener/node/storage paths do not increase"
+    },
+    {
+      "result": "PASS",
+      "name": "round2: the existing label packer reserves the full pet gesture envelope at PC and phone scale"
+    }
+  ],
+  "affected": {
+    "tests": 105,
+    "pass": 85,
+    "fail": 20,
+    "skipped": 0
+  },
+  "dedicated": {
+    "tests": 21,
+    "pass": 20,
+    "fail": 1
+  },
+  "browser": {
+    "result": "BLOCKED",
+    "error": "The browser access host is unavailable",
+    "gif": false
+  }
+}

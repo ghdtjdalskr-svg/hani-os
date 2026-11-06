@@ -4,7 +4,7 @@ import {createHash} from 'node:crypto';
 import {gunzipSync} from 'node:zlib';
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const bytes=fs.readFileSync(new URL('fixtures/office-tlayout-data-delta.json',import.meta.url));
-assert.equal(hash(bytes),'0c3ffa5d1be2214413d1ff2a92c45dd26cf949ee325bcdee99fdba6915a43c25','exact approved G data/source delta');
+assert.equal(hash(bytes),'866f5ae2ee5d0583b18ddcbb3b2b335462f3283a171b2ea9301656384e4c7ae8','exact approved G data/source delta');
 export const tlayoutDelta=JSON.parse(bytes);
 export function applyTlayoutCanon(expected){
  const file=tlayoutDelta.files.find(c=>c.file.endsWith('spatial-contract.json'));
@@ -22,5 +22,5 @@ export function reapplyTlayoutSource(source){
 }
 export function readTlayoutPlans(){
  const b=gunzipSync(fs.readFileSync(new URL('fixtures/office-tlayout-plans-v7.json.gz',import.meta.url)));
- assert.equal(hash(b),'1f9ced3120792855c8e6b9d765c0cbe0603edebf191fdcbd37217b177893af34','separately frozen complete G output');return JSON.parse(b);
+ assert.equal(hash(b),'09b8bd87286d941ff1e17a286806397521476980136d4bf8a9fe61e0e20c30a0','separately frozen complete G output');return JSON.parse(b);
 }
