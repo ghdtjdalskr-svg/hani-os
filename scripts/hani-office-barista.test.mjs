@@ -5,6 +5,7 @@ import {createHash} from 'node:crypto';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
+import {restorePets268Source} from './hani-office-pets-268-source.mjs';
 
 const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
 const table=JSON.parse(read('assets/data/office-actions-221.json'));
@@ -64,7 +65,10 @@ test('barista: outside tap, Escape, existing auto close, stale callbacks, floor 
 
 test('barista: plan, blockPlan, snapshot outputs and protected owner bytes preserve the pre-patch baseline',()=>{
  const baseline=JSON.parse(read('artifacts/cafe-barista/baseline.json')),source=read('hani-office-live.js'),hash=x=>createHash('sha256').update(x).digest('hex'),{scene}=loadScene();
- for(const {name,start,end,sha256}of baseline.sections){const i=source.indexOf(start),j=source.indexOf(end,i);assert.ok(i>=0&&j>i,name);assert.equal(hash(source.slice(i,j)),sha256,name)}
+ // v2.9.268: normalize only the approved literal source delta. Every sampled
+ // model output below still matches its old exact hash, including staff outputs.
+ const comparableSource=restorePets268Source(source);
+ for(const {name,start,end,sha256}of baseline.sections){const i=comparableSource.indexOf(start),j=comparableSource.indexOf(end,i);assert.ok(i>=0&&j>i,name);assert.equal(hash(comparableSource.slice(i,j)),sha256,name)}
  for(const row of baseline.models){const s=scene.scheduler,plan=s.plan(row.day,row.options);assert.equal(hash(JSON.stringify(plan)),row.plan);assert.equal(hash(JSON.stringify(s.blockPlan(row.day,0,plan,row.options))),row.blockPlan);for(const snap of row.snapshots){assert.equal(hash(JSON.stringify(s.snapshot(at(row.day,snap.seconds),row.options))),snap.scheduler);assert.equal(hash(JSON.stringify(scene.snapshot(at(row.day,snap.seconds),row.options))),snap.view)}}
  const before=read('artifacts/cafe-barista/before-source.txt');for(const pattern of [/document\.addEventListener\(/g,/setInterval\(/g,/setTimeout\(/g])assert.equal([...source.matchAll(pattern)].length,[...before.matchAll(pattern)].length,pattern.toString());
  assert.doesNotMatch(source.slice(source.indexOf('  // Visible barista pixels only:'),source.indexOf('  // Each floor owns persistent decorative slots;')),/localStorage|sessionStorage|fetch\(|\.addEventListener\(|setTimeout\(|setInterval\(/);

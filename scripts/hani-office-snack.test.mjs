@@ -6,6 +6,7 @@ import {createHash} from 'node:crypto';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
+import {restorePets268Source} from './hani-office-pets-268-source.mjs';
 
 const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
 const table=JSON.parse(read('assets/data/office-actions-221.json'));
@@ -130,7 +131,10 @@ test('snack: login lock hides button and rejects clicks; no scene interaction wh
 
 test('snack: scheduler/snapshot/geometry/residents bytes and complete sampled model JSON preserve c301a13',()=>{
  const hash=x=>createHash('sha256').update(x).digest('hex'),source=read('hani-office-live.js'),baseline=JSON.parse(read('artifacts/office-snack/baseline.json'));
- for(const {name,start,end,sha256}of baseline.sections){const i=source.indexOf(start),j=source.indexOf(end,i);assert.ok(i>=0&&j>i,name);assert.equal(hash(source.slice(i,j)),sha256,name)}
+ // v2.9.268: exact inverse delta for old pins; preserve the owner's already
+ // repinned renderer row and all existing plan/blockPlan/snapshot output hashes.
+ const comparableSource=restorePets268Source(source);
+ for(const {name,start,end,sha256}of baseline.sections){const text=name==='residents renderer'?source:comparableSource;const i=text.indexOf(start),j=text.indexOf(end,i);assert.ok(i>=0&&j>i,name);assert.equal(hash(text.slice(i,j)),sha256,name)}
  for(const row of baseline.models){const s=scene.scheduler,f=s.plan(row.day,row.options);assert.equal(hash(JSON.stringify(f)),row.plan);assert.equal(hash(JSON.stringify(s.blockPlan(row.day,0,f,row.options))),row.blockPlan);
   for(const snap of row.snapshots){assert.equal(hash(JSON.stringify(s.snapshot(at(row.day,snap.seconds),row.options))),snap.scheduler);assert.equal(hash(JSON.stringify(scene.snapshot(at(row.day,snap.seconds),row.options))),snap.view)}
  }
