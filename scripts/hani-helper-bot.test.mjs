@@ -33,8 +33,9 @@ function fixture({now=Date.parse('2026-11-06T12:30:00+09:00'),failRelease=false,
   let document;
   const matches=(el,selector)=>selector.split(',').some(s=>{
     s=s.trim();
+    if(s==='*')return true;
     if(s.includes(':not('))return el.tagName==='INPUT'&&el.attributes.type!=='hidden';
-    if(s.startsWith('.'))return (el.attributes.class||'').split(/\s+/).includes(s.slice(1));
+    if(s.startsWith('.'))return s.slice(1).split('.').every(c=>(el.attributes.class||'').split(/\s+/).includes(c));
     if(s.startsWith('#'))return el.id===s.slice(1);
     const attr=s.match(/^(\w+)?\[([^=\]]+)(?:="([^"]*)")?\]$/);
     if(attr)return (!attr[1]||el.tagName===attr[1].toUpperCase())&&el.attributes[attr[2]]!==undefined&&(attr[3]===undefined||el.attributes[attr[2]]===attr[3]);
@@ -54,7 +55,7 @@ function fixture({now=Date.parse('2026-11-06T12:30:00+09:00'),failRelease=false,
     querySelector(s){return this.querySelectorAll(s)[0]||null;}
     focus(){document.activeElement=this;}
     getBoundingClientRect(){
-      const invisible=this.hidden||this.parent?.hidden;
+      let invisible=false;for(let el=this;el;el=el.parent)if(el.hidden)invisible=true;
       const b=this.box||{left:0,top:0,width:this.tagName==='SECTION'?320:0,height:this.tagName==='SECTION'?320:0};
       return {...b,right:b.left+b.width,bottom:b.top+b.height,...(invisible?{width:0,height:0}:{} )};
     }
@@ -79,7 +80,7 @@ function fixture({now=Date.parse('2026-11-06T12:30:00+09:00'),failRelease=false,
   const context=vm.createContext({window,document,Date:Clock,localStorage:storage,sessionStorage:storage,
     requestAnimationFrame:fn=>frames.push(fn),
     MutationObserver:class {constructor(fn){observers.push(fn);}observe(){}},
-    getComputedStyle:el=>({visibility:'visible',display:'block',opacity:'1',pointerEvents:'auto',getPropertyValue:()=> '0px',...el.computed}),
+    getComputedStyle:el=>({visibility:'visible',display:'block',opacity:'1',pointerEvents:'auto',position:'static',getPropertyValue:()=> '0px',...el.computed}),
     showView:id=>{calls.push(id);body.dataset.view=id;observers.forEach(fn=>fn([{target:body}]));},
     fetch:async(url,opts)=>{requests.push({url,opts});if(failRelease&&url.includes('releases'))throw Error('offline');return {ok:true,json:async()=>url.includes('tap-lines')?tapBank:releases};}
   });
@@ -88,7 +89,7 @@ function fixture({now=Date.parse('2026-11-06T12:30:00+09:00'),failRelease=false,
   const fire=(name,target=body,extra={})=>{const event={target,key:'',preventDefault(){this.prevented=true;},...extra};for(const fn of callbacks.get('document:'+name)||[])fn(event);flush();return event;};
   const resize=(width,height)=>{window.innerWidth=width;window.innerHeight=height;for(const fn of callbacks.get('window:resize')||[])fn();flush();};
   const ready=async()=>{for(let i=0;i<8;i++)await Promise.resolve();flush();};
-  return {window,document,api:window.HaniHelperBot,callbacks,calls,requests,storageCalls,Element,flush,fire,resize,ready,rerun:()=>vm.runInContext(source,context),setNow:v=>{now=v;},navigate:id=>{body.dataset.view=id;observers.forEach(fn=>fn([{target:body}]));flush();}};
+  return {window,document,api:window.HaniHelperBot,callbacks,calls,requests,storageCalls,Element,flush,fire,resize,ready,rerun:()=>vm.runInContext(source,context),setNow:v=>{now=v;},mutate:target=>{observers.forEach(fn=>fn([{target}]));flush();},navigate:id=>{body.dataset.view=id;observers.forEach(fn=>fn([{target:body}]));flush();}};
 }
 
 test('KST midnight, deterministic fair 23-day rotation, 19 staff + 4 separated pets',()=>{
@@ -223,7 +224,7 @@ test('midnight refresh on open, deferred mount, failed read has no false news do
   assert.deepEqual(f.storageCalls,[]);
 });
 
-test('phone keeps bottom bar, ordinary control and input avoidance / no-space hiding',async()=>{
+test('phone keeps fixed UI and focused input avoidance; no-space fallback stays shown',async()=>{
   const f=fixture();await f.ready();
   for(const [width,height] of [[390,844],[1280,900]]){
     const viewport={left:0,top:0,width,height};
@@ -236,15 +237,19 @@ test('phone keeps bottom bar, ordinary control and input avoidance / no-space hi
     assert.ok(box.top>=0&&box.right<=width);
   }
   const button=new f.Element('button');button.box={left:300,top:760,width:80,height:60};f.document.body.append(button);
-  f.navigate('home');const helper=f.document.getElementById('haniHelperBot');assert.ok(parseFloat(helper.style.top)+56<=752);
-  const full=new f.Element('textarea');full.box={left:0,top:0,width:390,height:844};f.document.body.append(full);f.fire('focusin',full);assert.equal(helper.hidden,true);
+  // A floating helper may cover in-flow buttons; exhausted slots now use the default corner.
+  f.navigate('home');const helper=f.document.getElementById('haniHelperBot');assert.equal(helper.style.top,'772px');
+  button.computed={position:'fixed'};f.fire('input',button);assert.ok(parseFloat(helper.style.top)+56<=752);
+  const full=new f.Element('textarea');full.box={left:0,top:0,width:390,height:844};f.document.body.append(full);full.focus();f.fire('focusin',full);assert.equal(helper.hidden,false);assert.equal(helper.style.top,'772px');assert.equal(helper.dataset.helperReason,'shown');
+  const nav=new f.Element('nav');nav.computed={position:'fixed'};nav.box={left:0,top:780,width:390,height:64};f.document.body.append(nav);f.fire('input',nav);
+  assert.equal(helper.hidden,false);assert.equal(helper.style.top,'708px','fallback above fixed bottom bar');
   assert.equal(f.api.slot({left:0,top:0,width:390,height:844},[{left:0,right:390,top:0,bottom:844}]),null);
 });
 
 function desktopFixture(f,width,height) {
   const app=new f.Element('div');app.id='app';app.setAttribute('class','app');
   const main=new f.Element('main');main.setAttribute('class','main');main.box={left:240,top:0,width:width-476,height};
-  const rail=new f.Element('aside');rail.id='haniContextRemote';rail.setAttribute('class','hani-context-remote');rail.box={left:width-236,top:0,width:236,height};
+  const rail=new f.Element('aside');rail.id='haniContextRemote';rail.setAttribute('class','hani-context-remote');rail.computed={position:'sticky'};rail.box={left:width-236,top:0,width:236,height};
   const toggle=new f.Element('button');toggle.setAttribute('class','hani-remote-collapse');toggle.box={left:width-48,top:16,width:32,height:32};
   rail.append(toggle);app.append(main,rail);f.document.body.append(app);f.resize(width,height);
   const helper=f.document.getElementById('haniHelperBot'),face=helper.querySelector('.hani-helper-face'),panel=helper.querySelector('.hani-helper-speech');
@@ -295,7 +300,7 @@ for(const [width,height] of [[1280,900],[1440,900],[1920,1080]]){
       d.setRail(mode);const right=mode==='open'?width-236:width;
       for(const name of selectors){
         const el=new f.Element('div');el.setAttribute('class',name);el.box={left:right-180,top:height-90,width:180,height:90};
-        if(name==='toast')el.computed={pointerEvents:'none'};
+        el.computed={position:name==='hani-office-events'?'sticky':'fixed',...(name==='toast'?{pointerEvents:'none'}:{})};
         f.document.body.append(el);
         f.fire('input',el);assert.equal(d.helper.hidden,false);assert.equal(d.xy().left,right-72);assert.equal(d.xy().top,height-154,name);
         el.hidden=true;f.fire('input',el);assert.equal(d.xy().top,height-72,'hidden '+name);
@@ -325,6 +330,53 @@ test('PC without a rail uses viewport corner even over an ordinary full-screen c
   const f=fixture();await f.ready();const button=new f.Element('button');button.box={left:0,top:0,width:1920,height:1080};f.document.body.append(button);
   f.resize(1920,1080);const helper=f.document.getElementById('haniHelperBot');
   assert.equal(helper.hidden,false);assert.equal(helper.style.left,'1848px');assert.equal(helper.style.top,'1008px');
+});
+
+for(const [width,height] of [[390,844],[1280,900],[1920,1080]]){
+  test(`crowded ${width}x${height}: in-flow controls cannot hide helper; fixed wall falls back`,async()=>{
+    const f=fixture();await f.ready();const d=desktopFixture(f,width,height);
+    for(let i=0;i<80;i++){
+      const el=new f.Element(['button','a','input','nav','footer'][i%5]);if(el.tagName==='A')el.setAttribute('href','#');
+      el.box={left:0,top:i*10,width,height:80};d.main.append(el);
+    }
+    for(const mode of ['open','mini','hidden']){
+      d.setRail(mode);if(width<=850){d.rail.hidden=true;f.fire('input');}
+      const right=width>850&&mode==='open'?width-236:width;
+      assert.equal(d.helper.hidden,false);assert.equal(d.helper.dataset.helperReason,'shown');
+      assert.deepEqual(d.xy(),{left:right-72,top:height-72});
+      const wall=new f.Element('div');wall.computed={position:'fixed'};wall.box={left:0,top:0,width,height};f.document.body.append(wall);
+      f.fire('input',wall);assert.equal(d.helper.hidden,false);assert.equal(d.helper.dataset.helperReason,'shown');
+      assert.deepEqual(d.xy(),{left:right-72,top:height-72},'default corner despite exhausted slots');
+      wall.hidden=true;f.fire('input',wall);
+      if(width>850&&mode==='mini'){
+        const railControl=new f.Element('button');railControl.box={left:width-64,top:0,width:64,height};d.rail.append(railControl);
+        f.fire('input',railControl);assert.equal(d.helper.hidden,false);assert.deepEqual(d.xy(),{left:right-72,top:height-72},'exhausted mini rail controls');
+        railControl.hidden=true;
+      }
+    }
+    assert.deepEqual(f.storageCalls,[]);
+  });
+}
+
+test('visibility reasons follow login, external dialogs and duty; helper dialog never hides itself',async()=>{
+  const f=fixture();await f.ready();const root=f.document.getElementById('haniHelperBot');
+  const check=(hidden,reason)=>{assert.equal(root.hidden,hidden);assert.equal(root.dataset.helperReason,reason);};
+  check(false,'shown');f.fire('click',root.querySelector('.hani-helper-face'));check(false,'shown');
+  const app=new f.Element('div');app.id='app';f.document.body.append(app);
+  app.setAttribute('class','login-locked');f.mutate(app);check(true,'login');
+  assert.equal(root.querySelector('.hani-helper-speech').hidden,true);
+  app.setAttribute('class','');f.mutate(app);check(false,'shown');
+  f.navigate('login');check(true,'login');f.navigate('home');check(false,'shown');
+  const gate=new f.Element('div');gate.id='loginGate';gate.box={left:0,top:0,width:390,height:844};f.document.body.append(gate);
+  f.mutate(gate);check(true,'login');gate.hidden=true;f.mutate(gate);check(false,'shown');
+  for(const kind of ['native','role','modal']){
+    const dialog=new f.Element(kind==='native'?'dialog':'section');dialog.box={left:30,top:30,width:300,height:300};
+    if(kind==='native')dialog.setAttribute('open','');else if(kind==='role')dialog.setAttribute('role','dialog');else dialog.setAttribute('class','modal open');
+    f.document.body.append(dialog);f.mutate(dialog);check(true,'modal');
+    dialog.hidden=true;f.mutate(dialog);check(false,'shown');
+  }
+  f.window.HaniOrganizationRoster.people=[];f.api.update();f.flush();check(true,'no-duty');
+  f.window.HaniOrganizationRoster.people=staff;f.api.update();f.flush();check(false,'shown');
 });
 
 // Resolve the actual shared and per-staff CSS variables, including :is() groups.
@@ -432,7 +484,14 @@ test('actual app screenshots and collision read-back', {skip:!process.argv[2]}, 
         const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
         await page.clock.setFixedTime(new Date(day+'T12:30:00+09:00'));
         await page.goto(origin);await page.waitForFunction(()=>!!window.HaniHelperBot&&!!window.HaniOrganizationRoster);
-        await page.evaluate(()=>{unlockLoginGate();showView('home');});
+        await page.evaluate(()=>{
+          unlockLoginGate();showView('home');
+          // Simulate a populated screen using ordinary in-flow controls, without private records.
+          const content=document.createElement('div');content.id='helperCrowdedFixture';
+          content.style.cssText='display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px';
+          for(let i=0;i<120;i++){const b=document.createElement('button');b.textContent='화면 항목 '+i;b.style.minHeight='44px';content.append(b);}
+          document.querySelector('#app > .main').prepend(content);
+        });
         await page.waitForFunction(()=>!document.getElementById('haniLaunchGreeting'));
         await page.locator('#haniHelperBot').waitFor({state:'visible'});
         await page.waitForFunction(()=>document.querySelector('.hani-helper-news').textContent!=='소식을 확인하는 중이에요.');
@@ -460,8 +519,9 @@ test('actual app screenshots and collision read-back', {skip:!process.argv[2]}, 
             const face=el.querySelector('.hani-helper-face').getBoundingClientRect(),panel=el.querySelector('.hani-helper-speech').getBoundingClientRect();
             const desktop=innerWidth>850,mini=document.getElementById('app').classList.contains('hani-remote-mini');
             const rail=document.getElementById('haniContextRemote'),railBox=rail.getBoundingClientRect();
-            const controls=[...document.querySelectorAll(desktop?'.yuna-composer,.toast,.offline-entry-badge,#haniOfficeEvents,#haniOfficeEventPanel':'button,input,textarea,select,a[href],nav,footer'),
-              ...(desktop?(mini?[...rail.querySelectorAll('button,a[href],input,textarea,select,[role="button"]')]:[rail]):[]),
+            // Ordinary content may be covered by a floating helper on phone as well as PC.
+            const controls=[...[...document.querySelectorAll('*')].filter(e=>['fixed','sticky'].includes(getComputedStyle(e).position)&&!(desktop&&e===rail)),
+              ...(['fixed','sticky'].includes(getComputedStyle(rail).position)?[...rail.querySelectorAll('button,a[href],input,textarea,select,[role="button"]')]:[]),
               ...(document.activeElement.matches('input,textarea,select,[contenteditable="true"]')?[document.activeElement]:[])].filter(e=>!el.contains(e));
             const collisions=controls.filter(e=>{const b=e.getBoundingClientRect(),s=getComputedStyle(e);return b.width&&b.height&&s.visibility!=='hidden'&&s.opacity!=='0'&&face.left<b.right&&face.right>b.left&&face.top<b.bottom&&face.bottom>b.top;}).map(e=>({id:e.id,cls:e.className}));
             return {face:face.toJSON(),panel:panel.toJSON(),collisions,mainLeft:document.querySelector('#app > .main').getBoundingClientRect().left,columnRight:desktop&&!mini?railBox.left:innerWidth,overflow:document.documentElement.scrollWidth-innerWidth};
