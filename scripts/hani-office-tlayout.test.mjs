@@ -1,3 +1,4 @@
+import {stripApprovedAffinityStorage} from './hani-office-affinity-storage.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -33,7 +34,7 @@ test('real DOM owner seats all five at 10:00/12:00, carries lead facing and reta
 test('only the five pinned source fragments change; protected home and label owners are byte identical',()=>{
  const source=fs.readFileSync('hani-office-live.js','utf8'),restored=restoreTlayoutSource(source);assert.equal(hash(restored),tlayoutDelta.source.beforeSha256);
  for(const p of [{"a":"    function screenHomeClear(","b":"    function stationaryStops(","sha256":"3ca18b4e6f2b302d445b29d3d47c17a5743129ebcfe892deb1f4124cae10bc0a"},{"a":"  function placeStatusLabels(","b":"  const scheduler=","sha256":"5070f7e62556b89410bc7588600fefe80ba99579e945ae49bab89def98bec6f0"}]){const a=source.indexOf(p.a),b=source.indexOf(p.b,a);assert.ok(a>0&&b>a);assert.equal(hash(source.slice(a,b)),p.sha256,p.a+' exact bytes');}
- assert.doesNotMatch(source,/localStorage|sessionStorage|supabase/);assert.equal((source.match(/fetch\(/g)||[]).length,(restored.match(/fetch\(/g)||[]).length);
+ assert.doesNotMatch(stripApprovedAffinityStorage(source),/localStorage|sessionStorage|supabase/);assert.equal((source.match(/fetch\(/g)||[]).length,(restored.match(/fetch\(/g)||[]).length);
  assert.throws(()=>restoreTlayoutSource(source.replace('function visualPoint','function changedVisualPoint')));
 });
 test('16 separately authored complete plan/outings/reverse-snapshot outputs have no exclusions',()=>{

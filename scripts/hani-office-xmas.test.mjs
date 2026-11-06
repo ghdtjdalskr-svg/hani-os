@@ -1,3 +1,4 @@
+import {stripApprovedAffinityStorage} from './hani-office-affinity-storage.mjs';
 import test from 'node:test';
 import {restoreBarista273Source} from './hani-office-barista-night-273-source.mjs';
 import assert from 'node:assert/strict';
@@ -130,9 +131,10 @@ test('xmas: source patch has no storage/Cloud/AI path; protected function and ru
   assert.equal(text.split('2.9.268').length-1,pin.versionCount,'exact v268 version occurrences');
   assert.equal(hash(text.replaceAll('2.9.268','2.9.267')),row.sha256,row.file+' retains the original pre-v268 pin after exact version reversal');
  }
- const start=source.indexOf('  // Annual KST windows'),end=source.indexOf('  let activeFloor=',start),added=source.slice(start,end);
+ const storageStripped=stripApprovedAffinityStorage(source);
+ const start=storageStripped.indexOf('  // Annual KST windows'),end=storageStripped.indexOf('  let activeFloor=',start),added=storageStripped.slice(start,end);
  assert.doesNotMatch(added,/localStorage|sessionStorage|supabase|\.setItem|\.removeItem|\.clear\(|\bfetch\(|setInterval|setTimeout|addEventListener|requestAnimationFrame/);
- for(const token of ['localStorage','sessionStorage','supabase','.setItem(','.removeItem(','.clear(','fetch('])assert.equal(source.split(token).length,before.split(token).length,token);
+ for(const token of ['localStorage','sessionStorage','supabase','.setItem(','.removeItem(','.clear(','fetch('])assert.equal(storageStripped.split(token).length,before.split(token).length,token);
  const marker='    updateLiveProps(floor,map.querySelector(\'.hani-office-background\').getAttribute(\'src\'),map.dataset.art===\'floor\'&&map.dataset.floor===activeFloor,now);';
  assert.equal(comparableSource.slice(0,comparableSource.indexOf('  // Approved four-frame art:')),before.slice(0,before.indexOf('  // Approved four-frame art:')));
  assert.equal(comparableSource.slice(comparableSource.indexOf('  let activeFloor=')).replace(marker+'\n','').replace(marker+'\r\n',''),before.slice(before.indexOf('  let activeFloor=')));

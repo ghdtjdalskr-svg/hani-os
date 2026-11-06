@@ -1,3 +1,4 @@
+import {stripApprovedAffinityStorage} from './hani-office-affinity-storage.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -54,7 +55,7 @@ test('234 presence: initial login/visibility, four shared passive input bindings
  assert.match(source,/\['pointerdown','keydown','wheel','touchstart'\]\)document\.addEventListener\(type,event=>\{officePresence\.interact\(event\);/);
  assert.equal((source.match(/const presence=officePresence\.read\(\)/g)||[]).length,3);assert.equal((source.match(/const presence=officePresence\.read\(\),key=day\+'\|'/g)||[]).length,1,'third read is the birthday button presence only');
  assert.equal((source.match(/setInterval\(/g)||[]).length,2,'existing frame/update timers only');
- assert.doesNotMatch(source,/localStorage|sessionStorage|\.setItem\(|\.removeItem\(|\.clear\(\)\s*;?\s*\/\/.*storage/);
+ assert.doesNotMatch(stripApprovedAffinityStorage(source),/localStorage|sessionStorage|\.setItem\(|\.removeItem\(|\.clear\(\)\s*;?\s*\/\/.*storage/);
 });
 test('234 presence: exact ten-minute idle expiry, hidden grace, renewed input, brief flicker and repeated reads',()=>{
  const a=presence();assert.equal(a.read(),true);a.env.time=599999;assert.equal(a.read(),true);a.env.time=600000;assert.equal(a.read(),false);
