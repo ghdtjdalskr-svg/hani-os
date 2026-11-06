@@ -1,0 +1,313 @@
+{
+  "base": "a80c8e9f994716695b5b5f7a77d65cc953055865",
+  "source": "0a8f949507b048c3156cf46e4d118837d0e8848c1c1f9e27e8cdbf2173f5af63",
+  "sections": [
+    {
+      "name": "model (all schedules, snapshots, geometry, label placement)",
+      "start": "/* V2 metadata is read-only; a failed metadata request keeps the production renderer. */\n(",
+      "end": "  const root=",
+      "sha256": "7d666366cf953df1fb7e18927dd9a203b21d09e2d20afe2a59a90d9360eae6ff"
+    },
+    {
+      "name": "fitStatusLabels",
+      "start": "  function fitStatusLabels()",
+      "end": "  if(buildingChairmanSlot())",
+      "sha256": "e7f807dd9110c0e44fd613c528b2cdf8c2f75df3e442ded716f768b9bdd0c3ac"
+    }
+  ],
+  "models": [
+    {
+      "day": "2026-11-05",
+      "options": {
+        "chairmanPresent": false,
+        "reducedMotion": false
+      },
+      "plan": "d6628a5b4c002c2b84e68c391a3831ad73a51d99ce63d68c0b7dcf3becebb96e",
+      "blockPlan": "0f502e3ddb762c03afcd994aa1ae75be7808a3387b455c6a9837f6091d50a0b0",
+      "snapshots": [
+        {
+          "seconds": 28800,
+          "scheduler": "53437a5af2326084135f82e4a178b571b54f89315f87f6b586adf8d8067552e0",
+          "view": "437ebdbb6f393a034eb888ff8f7058ee3cd4e20c5532d62e1ceff955c7c65193"
+        },
+        {
+          "seconds": 36000,
+          "scheduler": "40c6585c9c027c753398cc7c96d7d6a99ee43fd094ff1eb6e7a96eee2cabd3ae",
+          "view": "bc9445e950e74eb19c82947fcbe4e637462cdbc178e6b2cd1414acf872511d13"
+        },
+        {
+          "seconds": 45000,
+          "scheduler": "e958f51606d487a0453da56bb3e66fa0aff266be94126cd1b2c9938e627ca4b1",
+          "view": "138723aabcab3594a6aacec40bb586265b047f258292376e0e33f38b38fa1673"
+        },
+        {
+          "seconds": 64800,
+          "scheduler": "7820ca1f8396e7f56a38caae3540c2b561f7998d8537a44e03777df75908d564",
+          "view": "edcb6f1991d5e6ff69f2a9cdda7b37cf42a50e7f95d2d93d185a266df11db1f9"
+        },
+        {
+          "seconds": 82800,
+          "scheduler": "6997842faf0f9e5e2c732945abf2cedad937b05a40697c69169698b5c1d6f2e4",
+          "view": "530ffa7ae31ede9845f13d449a9369f9bc59dc0be3962bcb7d47075d0fa8dcbf"
+        }
+      ]
+    },
+    {
+      "day": "2026-11-05",
+      "options": {
+        "chairmanPresent": false,
+        "reducedMotion": true
+      },
+      "plan": "d6628a5b4c002c2b84e68c391a3831ad73a51d99ce63d68c0b7dcf3becebb96e",
+      "blockPlan": "0f502e3ddb762c03afcd994aa1ae75be7808a3387b455c6a9837f6091d50a0b0",
+      "snapshots": [
+        {
+          "seconds": 28800,
+          "scheduler": "7cd8adfd5989d966537020342f872b32eb2925235d22bc950d03652701d968cf",
+          "view": "50a68e45c8c66a1bdae668f48a8cf9947d8972cb0ef8c95de57096f62cdbaeac"
+        },
+        {
+          "seconds": 36000,
+          "scheduler": "2b6b435eb9603b681f8b9b88a82e3cf4eb7c36684a76bd689dcb858e99af8466",
+          "view": "d141949feb93a86e50731f977987b47edd57b90945cfec0025b4f0db9573a907"
+        },
+        {
+          "seconds": 45000,
+          "scheduler": "2b7832a8a600dd9f85ac32ef85f64671359c79f587c6a252555e4d4449ff0a15",
+          "view": "7d9a1654f732b896b7afc9a63793c08968e3428df42afd4b45c9ea3df2fbb034"
+        },
+        {
+          "seconds": 64800,
+          "scheduler": "f9d8f4e4d94a26131019c5ce2753f89f080da9b70154d9473540b716ab19d96a",
+          "view": "a23a621d4d436a7a145bfc6bef561772ba775f436d02903d121f046b5762302b"
+        },
+        {
+          "seconds": 82800,
+          "scheduler": "24cb031a473184b11f65372de956ee46427eb37845421243a8eeddda986ed126",
+          "view": "04688b13d76c702daf4eaad03d52995bc016a0e1de56bf0e7bd3b7b3000f7658"
+        }
+      ]
+    },
+    {
+      "day": "2026-11-05",
+      "options": {
+        "chairmanPresent": true,
+        "reducedMotion": false
+      },
+      "plan": "36aaa823d767fe037d34a950047a1d59c10474d8103d48b0899ae76bc8c65668",
+      "blockPlan": "bb7fb433e805ff1f0ed2d285785db068084a80d91ffa50aff38a858681d81e6b",
+      "snapshots": [
+        {
+          "seconds": 28800,
+          "scheduler": "22d15a8b2d9ccc5f5dca12e9425e05bef960bfe7782b5450b6f1c7047fe086cd",
+          "view": "811432d2fbd487aba14f28bb4949c695bb1aa953990d02b6614f8d40cd5d310c"
+        },
+        {
+          "seconds": 36000,
+          "scheduler": "51ed3ccfe2e81d6dd5b07f4c1a8431b19b5ba154e4e44d6852f42d5c6b9be448",
+          "view": "285dbda089903054a866b707d65e94ce4ab234d0261de396b82e3bfef16f4bce"
+        },
+        {
+          "seconds": 45000,
+          "scheduler": "c545f42cb559965104e5dfa84dabfaa02ed58dfc857557aab5bcbd0df867f987",
+          "view": "e8dd4d7a692bb4d75d23a3f9ecd85e94fc0f433d86b0b446a01d5fccae771b09"
+        },
+        {
+          "seconds": 64800,
+          "scheduler": "6a74308c6a8660f19cf94da4a3b293d50fabf74a488c0bf680733eeee3afce8f",
+          "view": "30f0ec8f03ae062b420a01b1440b34c231ed0d6a58491360fc2e0f85f462872c"
+        },
+        {
+          "seconds": 82800,
+          "scheduler": "188fe9f834a45102970539ec24156cb491987d0f14aa6613db46ce7da0288ea8",
+          "view": "c20492adb098ff0bda52f7f8e8882394656c47e40b199b3c9aa693b5f5f9ebb8"
+        }
+      ]
+    },
+    {
+      "day": "2026-11-05",
+      "options": {
+        "chairmanPresent": true,
+        "reducedMotion": true
+      },
+      "plan": "36aaa823d767fe037d34a950047a1d59c10474d8103d48b0899ae76bc8c65668",
+      "blockPlan": "bb7fb433e805ff1f0ed2d285785db068084a80d91ffa50aff38a858681d81e6b",
+      "snapshots": [
+        {
+          "seconds": 28800,
+          "scheduler": "8e7cd12e47cfe27fccf5272ef56291bfa52291176e0be663a5f10c9c0269e1cf",
+          "view": "e010c8b580c78a64e9556782dd0797b5a08f761d8764be3e0fb4bc860dceb9ff"
+        },
+        {
+          "seconds": 36000,
+          "scheduler": "0c815657897e9645363df550789c8f1b69631bf24f0a02232436444775f4bb43",
+          "view": "b62a5f1842b2ea531c84dcb0f80fd862bc1de270e5f262fe0e5cc64206022210"
+        },
+        {
+          "seconds": 45000,
+          "scheduler": "aa1b1a7de0fc819d5e2100d9dcb17f25977e337ed3f8ae9aa7254668aed02901",
+          "view": "d587f6c40b8d45cf7e99974f2e7a338ade948908870a9434704fed0af02fa481"
+        },
+        {
+          "seconds": 64800,
+          "scheduler": "3f8fc2e7e2a879085df0e8f6e34741240dd4122834aac0a92d637b31b9732496",
+          "view": "bddcdd2a5ba0ac4e114fe13acb5ca8ba70018de815cb0599b26a16819f5a1d01"
+        },
+        {
+          "seconds": 82800,
+          "scheduler": "bf1bbd661d2724841012df907290790aacb644ac74fdc48137d9fba6e83d0dd6",
+          "view": "e7cf5e52cc555ffbd531f262afd9918bd2148d614e5d1ef9baee5277e5456846"
+        }
+      ]
+    },
+    {
+      "day": "2026-11-06",
+      "options": {
+        "chairmanPresent": false,
+        "reducedMotion": false
+      },
+      "plan": "721cef3e2922a5823cfdc99bebaa14c83cfbe8f9676d67eba2f617357b72c984",
+      "blockPlan": "76afff0ec0e7e1dfceebec7e226278303e949f9965c493c2e923a61a5188f2b2",
+      "snapshots": [
+        {
+          "seconds": 28800,
+          "scheduler": "a6fdc28a0cde8847f2688914bbf7ac18ab9b37fb6c09dd8b12731afa383e3f9d",
+          "view": "9b3971f55204e9b318928d0ccaec64eaed43bd8073b3aee3bad5f87d2a0b4807"
+        },
+        {
+          "seconds": 36000,
+          "scheduler": "63182e55f699d623f80d7cd50976998ddadf93f35295a35131871eaa5c0d07a8",
+          "view": "016bf20c8f7cf0533a0a845895a887c79de2e3a660c4ddcfad3e6bb270f8c591"
+        },
+        {
+          "seconds": 45000,
+          "scheduler": "135f017fc0da1284e18d3a3e86d0b6859c9359633c5f91af382e94e9a302742d",
+          "view": "065da4c4c096c502e10aef06350f074827e830ee37716519ec09e36301ad3572"
+        },
+        {
+          "seconds": 64800,
+          "scheduler": "398184f9d681e74e016b6e66bea396fdeda5f651e6d412062c96393ec44f9201",
+          "view": "825ff8ca69d8676bbf32eceee90f5fbae20de276a34bfa69e951efe3ab723463"
+        },
+        {
+          "seconds": 82800,
+          "scheduler": "09f1dfc1d197c22d6b5e8b832681a4cbf6149fb3ef52e7924da7c2f6deeee14c",
+          "view": "dad7a458c4ab9d4387fd5a97b0792196285cc07c61a3e02ccf574622965e45be"
+        }
+      ]
+    },
+    {
+      "day": "2026-11-06",
+      "options": {
+        "chairmanPresent": false,
+        "reducedMotion": true
+      },
+      "plan": "721cef3e2922a5823cfdc99bebaa14c83cfbe8f9676d67eba2f617357b72c984",
+      "blockPlan": "76afff0ec0e7e1dfceebec7e226278303e949f9965c493c2e923a61a5188f2b2",
+      "snapshots": [
+        {
+          "seconds": 28800,
+          "scheduler": "10c51e1b6bbd90a2b3bf71471f229c0e74c4646eeae11e5461b36e1c6a64b44d",
+          "view": "7d47fad76487a9c36cdd6712ab072880a283e5fe21c4bd5230a8d66b3ca92e34"
+        },
+        {
+          "seconds": 36000,
+          "scheduler": "ce5a706a121c2d4e21dbe5cd69fd56a22195b8fe9b1e8774dd5ed6005e840355",
+          "view": "5528deabae7051e21875b0450838c54536874eca813ceebca7b3b58ffb5b8cc8"
+        },
+        {
+          "seconds": 45000,
+          "scheduler": "62a04175b76c48629f8f522f671de1c6a9719b9cbf391d96b7a9ce081b33190e",
+          "view": "d344cfd8364454b4464d61e40d428128097c75645da68328b274eee9d06abe18"
+        },
+        {
+          "seconds": 64800,
+          "scheduler": "d804c5af496b63a20ee6f1cca81f7dd824c64b86203d5ecd01ad198f02d91c4b",
+          "view": "6c7fcd2cb4d7f2ce7f8f669983cbfd236787b63b327dd9a913c42b2b1bb6d99f"
+        },
+        {
+          "seconds": 82800,
+          "scheduler": "de0bdbbecb17b52d10e550b6491a5e868eed27d214090f836f0f17b258e8f958",
+          "view": "d1239ef455ace98ff43f7dd1daf83382d33e6c7118e9e0b7dd45a6776d9e50ce"
+        }
+      ]
+    },
+    {
+      "day": "2026-11-06",
+      "options": {
+        "chairmanPresent": true,
+        "reducedMotion": false
+      },
+      "plan": "efd3105351653efd9b6b45d46061cc0b9351c106573c8a3764364adfbb63015e",
+      "blockPlan": "c8b0ef69a2e05aca137f9dbefa63f2532df8672d8739ae973a33033734f6bccc",
+      "snapshots": [
+        {
+          "seconds": 28800,
+          "scheduler": "570d0dda9ea88a7a34bf84b57a0ac5dfb06732c9b7518a177010b7261ccfecf8",
+          "view": "de4c4a92fa6d165fe292c34669481a072a486a5fe481718648b3a1bcdfb9b692"
+        },
+        {
+          "seconds": 36000,
+          "scheduler": "844255fce565ea2699ba8ab15a0b751b37a326f0f7a7458875e1f5ee51daaae8",
+          "view": "16ad6f0e76262d8ad6c9638e15dcb4044026edf32d90e9a0d167bfdeba3e17dc"
+        },
+        {
+          "seconds": 45000,
+          "scheduler": "dc9aae6b02734ce6f2388aba02d6356838253d11198f165204a3dabedd4005b3",
+          "view": "d2312fc1a1218891920e74a6f0b54a8693f18931fd703e445004239659a2061d"
+        },
+        {
+          "seconds": 64800,
+          "scheduler": "54643f0aaf1f1ccdbef16bcc56cdd325567bc5aa48a34471b89febad0422f7f1",
+          "view": "51390458e8f9f69c034fdb18992860bf22acf6b1d40ccf7866acd8c8263517f5"
+        },
+        {
+          "seconds": 82800,
+          "scheduler": "823b8affddfb45e6c9002ab709ba11c65d269b980d8d987a339683280f3b80bf",
+          "view": "f9256f0e9ee5bfe5122fa9e2ab9f449812823c6015d745d35e50edfdcd228445"
+        }
+      ]
+    },
+    {
+      "day": "2026-11-06",
+      "options": {
+        "chairmanPresent": true,
+        "reducedMotion": true
+      },
+      "plan": "efd3105351653efd9b6b45d46061cc0b9351c106573c8a3764364adfbb63015e",
+      "blockPlan": "c8b0ef69a2e05aca137f9dbefa63f2532df8672d8739ae973a33033734f6bccc",
+      "snapshots": [
+        {
+          "seconds": 28800,
+          "scheduler": "5f8b48edd0b17f5f8b77a226e8bde9bf61f5719f42816f148dcc8ff5494b13de",
+          "view": "4aac3265a97247a09025469f19ffccd2c956f7e4ff42ca5aa716426e42421a49"
+        },
+        {
+          "seconds": 36000,
+          "scheduler": "2c24f9449e9578e2da4637647093c9532824c1ff16f994c333a9ffd2b761050b",
+          "view": "572dfaacbbcd79ac29b9060f363833e651cb7379822ea22bc68a7da938ff85ca"
+        },
+        {
+          "seconds": 45000,
+          "scheduler": "a9297010975c9fb760cb2bda864e502bb4ae40833e1ff909b130f29268719361",
+          "view": "9b1c5571529b5dd20ef8547656fdd04ca85e599435698e1db243294321806d0f"
+        },
+        {
+          "seconds": 64800,
+          "scheduler": "1f3731c1b373a97925c10e81325f791d6ec3a63e34b894043ec64bb547a48a2f",
+          "view": "2c087ee0c877039f93c203a17b1cce1158e544b5fad61c17f7c7092da7783331"
+        },
+        {
+          "seconds": 82800,
+          "scheduler": "de479558c1f2a759f48767afd242bd7a74d32b404805719a0f78a5974199b2bb",
+          "view": "62165e67642255bc86fbe7957021632f6886a5062e1d8b1d41c06019b8db929d"
+        }
+      ]
+    }
+  ],
+  "callCounts": {
+    "document.addEventListener(": 2,
+    "setInterval(": 2,
+    "setTimeout(": 4
+  }
+}
