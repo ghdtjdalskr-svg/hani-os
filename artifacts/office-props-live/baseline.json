@@ -41,7 +41,7 @@
       "name": "residents renderer",
       "start": "  function updateResidents(now){",
       "end": "  function selectFloor(",
-      "sha256": "2996a42b596252f9af13ba8ff09bf4f315a7ab5f738d4e04234cb1fb013cab72"
+      "sha256": "fecbb4fd530607479d6af26c71f6e7f5e6b1b5101e33f4be92504db8360537e2"
     }
   ],
   "assets": [

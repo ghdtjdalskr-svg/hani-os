@@ -1,0 +1,80 @@
+✔ actual owner reuses 19 actors and a single host across all floor clicks (23.6278ms)
+✔ missing action table keeps base work instead of the retired fixed-time break/meeting schedule (8.0945ms)
+✔ actual owner loads approved 3F art when present and caches production fallback when absent (9.2073ms)
+✔ hidden view and document pause sprite frames and behaviour; visible view resumes (10.8448ms)
+✔ existing case meeting stays available during floor switches and returns to prior floor (74.5708ms)
+✔ summon animation waits while its view is hidden and resumes without a second engine (249.8382ms)
+✔ mouse 1280: map/card/page/header/sidebar close; staff, pets, barista and event controls work (854.5004ms)
+✔ mouse 1920: map/card/page/header/sidebar close; staff, pets, barista and event controls work (762.7919ms)
+✖ existing pointer owner runs before a descendant stopPropagation, without adding document listeners (2.3074ms)
+✖ real cause: dismissing a manually opened pet trio cannot immediately trigger the automatic trio (777.6135ms)
+✖ pets: bounded idle motion fills pauses, preserves clock paths, and reduced/offscreen rules stop it (7.4012ms)
+✔ model plan/blockPlan/snapshot and all model helpers stay byte identical; no extra loops, listeners or nodes (3.5467ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 9
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2874.7102
+
+✖ failing tests:
+
+test at scripts\hani-office-pets-bubble.test.mjs:47:1
+✖ existing pointer owner runs before a descendant stopPropagation, without adding document listeners (2.3074ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - true
+  
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-pets-bubble.test.mjs:50:104)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts\hani-office-pets-bubble.test.mjs:59:1
+✖ real cause: dismissing a manually opened pet trio cannot immediately trigger the automatic trio (777.6135ms)
+  AssertionError [ERR_ASSERTION]: resident auto trio used to reopen on the very next shared tick
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-pets-bubble.test.mjs:65:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts\hani-office-pets-bubble.test.mjs:70:1
+✖ pets: bounded idle motion fills pauses, preserves clock paths, and reduced/offscreen rules stop it (7.4012ms)
+  AssertionError [ERR_ASSERTION]: persistent pet sprite idle rule
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-pets-bubble.test.mjs:72:115)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

@@ -1,0 +1,57 @@
+[
+  {
+    "file": "artifacts/l216-2/simulation-status.json",
+    "tracked": false,
+    "mtime": "2026-11-06T10:55:05.502Z"
+  },
+  {
+    "file": "artifacts/l216-2/reachability-status.json",
+    "tracked": false,
+    "mtime": "2026-11-06T10:55:07.018Z"
+  },
+  {
+    "file": "artifacts/night-actions-221/targeted.json",
+    "tracked": false,
+    "mtime": "2026-11-06T10:54:31.114Z"
+  },
+  {
+    "file": "artifacts/office-drama/reachability.json",
+    "tracked": false,
+    "mtime": "2026-11-06T10:55:48.353Z"
+  },
+  {
+    "file": "artifacts/fix-218/clock-results.json",
+    "tracked": false,
+    "mtime": "2026-11-06T10:55:47.221Z"
+  },
+  {
+    "file": "artifacts/office-behavior/obr16-layout-node.json",
+    "tracked": false,
+    "mtime": "2026-11-06T10:56:44.510Z"
+  },
+  {
+    "file": "artifacts/office-behavior/obr17-layout-node.json",
+    "tracked": false,
+    "mtime": "2026-11-06T10:56:47.823Z"
+  },
+  {
+    "file": "artifacts/office-behavior/obr19-layout-node.json",
+    "tracked": false,
+    "mtime": "2026-11-06T10:56:52.693Z"
+  },
+  {
+    "file": "artifacts/office-behavior/obr19-vocabulary.json",
+    "tracked": false,
+    "mtime": "2026-11-06T10:56:57.575Z"
+  },
+  {
+    "file": "artifacts/office-behavior/obr21-stationary.json",
+    "tracked": false,
+    "mtime": "2026-11-06T11:00:19.060Z"
+  },
+  {
+    "file": "artifacts/office-tlayout-apply/phone-boxes.json",
+    "tracked": false,
+    "mtime": "2026-11-06T10:58:20.912Z"
+  }
+]

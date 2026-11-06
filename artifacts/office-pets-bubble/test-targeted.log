@@ -1,0 +1,37 @@
+✔ actual owner reuses 19 actors and a single host across all floor clicks (22.5417ms)
+✔ missing action table keeps base work instead of the retired fixed-time break/meeting schedule (7.2008ms)
+✔ actual owner loads approved 3F art when present and caches production fallback when absent (8.4238ms)
+✔ hidden view and document pause sprite frames and behaviour; visible view resumes (12.8173ms)
+✔ existing case meeting stays available during floor switches and returns to prior floor (68.8519ms)
+✔ summon animation waits while its view is hidden and resumes without a second engine (246.7044ms)
+✔ bubble close: pointer/tap, profile, switch, Escape and expiry at 390px reduced=false (829.1225ms)
+✔ bubble close: pointer/tap, profile, switch, Escape and expiry at 390px reduced=true (749.0601ms)
+✔ bubble close: pointer/tap, profile, switch, Escape and expiry at 480px reduced=false (740.3122ms)
+✔ bubble close: pointer/tap, profile, switch, Escape and expiry at 480px reduced=true (725.4506ms)
+✔ bubble close: pointer/tap, profile, switch, Escape and expiry at 481px reduced=false (836.6428ms)
+✔ bubble close: pointer/tap, profile, switch, Escape and expiry at 481px reduced=true (734.2485ms)
+✔ bubble close: pointer/tap, profile, switch, Escape and expiry at 1280px reduced=false (672.3791ms)
+✔ bubble close: pointer/tap, profile, switch, Escape and expiry at 1280px reduced=true (645.0008ms)
+✔ bubble close: phone timeout drops deferred speech; explicit dismiss defeats async replay and action end (929.655ms)
+✔ bubble close: barista shares close/timer, switch, persistent controls and no writes (1391.5864ms)
+✔ bubble close: protected owner bytes, global listeners and timer allocations are unchanged (2.984ms)
+✔ actual owner reuses 19 actors and a single host across all floor clicks (27.1269ms)
+✔ missing action table keeps base work instead of the retired fixed-time break/meeting schedule (7.2441ms)
+✔ actual owner loads approved 3F art when present and caches production fallback when absent (11.1645ms)
+✔ hidden view and document pause sprite frames and behaviour; visible view resumes (11.0973ms)
+✔ existing case meeting stays available during floor switches and returns to prior floor (75.0896ms)
+✔ summon animation waits while its view is hidden and resumes without a second engine (246.6563ms)
+✔ mouse 1280: map/card/page/header/sidebar close; staff, pets, barista and event controls work (814.8305ms)
+✔ mouse 1920: map/card/page/header/sidebar close; staff, pets, barista and event controls work (782.0999ms)
+✔ existing pointer owner runs before a descendant stopPropagation, without adding document listeners (736.6017ms)
+✔ real cause: dismissing a manually opened pet trio cannot immediately trigger the automatic trio (771.3095ms)
+✔ pets: bounded idle motion fills pauses, preserves clock paths, and reduced/offscreen rules stop it (1648.6956ms)
+✔ model plan/blockPlan/snapshot and all model helpers stay byte identical; no extra loops, listeners or nodes (2.7671ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8748.991

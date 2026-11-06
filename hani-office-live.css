@@ -243,6 +243,9 @@
 @media(prefers-reduced-motion:reduce){.hani-office-actor[data-affection] .hani-office-pet-heart{animation:none!important;transform:translateX(-50%);opacity:.9}.hani-office-actor[data-affection] .hani-office-sprite{animation:none!important;transform:none!important}}
 
 /* Small life signs reuse the pet sprite; sleep has breathing only. */
+.hani-office-actor[data-resident="pet"]:not([data-walking="true"]):not([data-motion]):not([data-life]):not([data-affection]):not([data-pose="sleep"]) .hani-office-sprite{animation:hani-pet-idle var(--idle-duration,4.8s) var(--idle-delay,0s) ease-in-out infinite}
+/* Shrink about the existing foot pivot, inside the reserved atlas bounds. */
+@keyframes hani-pet-idle{0%,100%{transform:scale(1)}40%{transform:scale(.98,.97)}72%{transform:scale(.99,.985)}}
 .hani-office-actor[data-resident="pet"][data-life="hop"]:not([data-motion]):not([data-affection]) .hani-office-sprite{animation:hani-office-hop .48s ease-in-out both}
 .hani-office-actor[data-resident="pet"][data-life="turn"]:not([data-motion]):not([data-affection]) .hani-office-sprite{animation:hani-pet-turn .6s ease-in-out both}
 .hani-office-actor[data-resident="pet"][data-life="sit-stand"]:not([data-motion]):not([data-affection]) .hani-office-sprite{animation:hani-office-stand .48s ease-in-out both}

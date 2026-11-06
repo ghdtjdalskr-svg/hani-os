@@ -1,0 +1,4255 @@
+TAP version 13
+# node:internal/child_process:1191
+#     result.error = new ErrnoException(result.error, 'spawnSync ' + options.file);
+#                    ^
+# <ref *1> Error: spawnSync git EPERM
+#     at Object.spawnSync (node:internal/child_process:1191:20)
+#     at spawnSync (node:child_process:929:24)
+#     at execFileSync (node:child_process:972:15)
+#     at git (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-219.test.mjs:26:9)
+#     at old (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-219.test.mjs:30:14)
+#     at file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-219.test.mjs:39:44
+#     at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+#     at async node:internal/modules/esm/loader:647:26
+#     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+#   errno: -4048,
+#   code: 'EPERM',
+#   syscall: 'spawnSync git',
+#   path: 'git',
+#   spawnargs: [ 'show', '60db7b5:hani-office-live.js' ],
+#   error: [Circular *1],
+#   status: null,
+#   signal: null,
+#   output: null,
+#   pid: 0,
+#   stdout: undefined,
+#   stderr: undefined
+# }
+# Node.js v24.22.1
+# Subtest: C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-219.test.mjs
+not ok 1 - C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-219.test.mjs
+  ---
+  duration_ms: 115.0807
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-219.test.mjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 2 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 17.1188
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 3 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.6392
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 4 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 8.406
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 5 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 9.8083
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 6 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 77.2498
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 7 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 234.2019
+  type: 'test'
+  ...
+# Subtest: approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract
+not ok 8 - approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract
+  ---
+  duration_ms: 28.854
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-actions-216.test.mjs:19:1'
+  failureType: 'testCodeFailure'
+  error: 'spawnSync git EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1191:20)
+    spawnSync (node:child_process:929:24)
+    execFileSync (node:child_process:972:15)
+    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:9:9)
+    assertOnboardedCanon (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-onboarding-232-assertions.mjs:14:17)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-actions-216.test.mjs:25:3)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+  ...
+# Subtest: 120 deterministic simulated days enforce all shared caps, cooldowns, parent eligibility and atomic path reservations
+ok 9 - 120 deterministic simulated days enforce all shared caps, cooldowns, parent eligibility and atomic path reservations
+  ---
+  duration_ms: 39648.6532
+  type: 'test'
+  ...
+# Subtest: KST seed, day boundaries, chairman identity/presence, MIR limits and independent daily 15% gates
+ok 10 - KST seed, day boundaries, chairman identity/presence, MIR limits and independent daily 15% gates
+  ---
+  duration_ms: 941.2497
+  type: 'test'
+  ...
+# Subtest: every one of the 97 scheduled core rows is reachable; base-work remains the default 98th row
+ok 11 - every one of the 97 scheduled core rows is reachable; base-work remains the default 98th row
+  ---
+  duration_ms: 573.4252
+  type: 'test'
+  ...
+# Subtest: blocked parents/slots never rescue with a variant; disabled and data-triggered rows cannot execute
+ok 12 - blocked parents/slots never rescue with a variant; disabled and data-triggered rows cannot execute
+  ---
+  duration_ms: 59.6407
+  type: 'test'
+  ...
+# Subtest: random access snapshots skip missed events; summoned and cancelled events stay out; reduced motion is static
+ok 13 - random access snapshots skip missed events; summoned and cancelled events stay out; reduced motion is static
+  ---
+  duration_ms: 12.4112
+  type: 'test'
+  ...
+# Subtest: actual renderer uses persistent actor/prop/bubble slots, tap/keyboard/profile, visible-only motion and case priority
+ok 14 - actual renderer uses persistent actor/prop/bubble slots, tap/keyboard/profile, visible-only motion and case priority
+  ---
+  duration_ms: 1595.3516
+  type: 'test'
+  ...
+# Subtest: literal runtime fetch executes and an offline table settles into safe base work
+ok 15 - literal runtime fetch executes and an offline table settles into safe base work
+  ---
+  duration_ms: 360.8962
+  type: 'test'
+  ...
+# Subtest: canonical animation samples the reserved path, pauses other floors, and snaps on a motion preference change
+ok 16 - canonical animation samples the reserved path, pauses other floors, and snaps on a motion preference change
+  ---
+  duration_ms: 961.0825
+  type: 'test'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 17 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 16.9687
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 18 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 6.0448
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 19 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 7.6034
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 20 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 9.9808
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 21 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 73.0025
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 22 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 233.4732
+  type: 'test'
+  ...
+# Subtest: 221 preserves 98 released actions, adds 22, keeps disabled/identity/rest/movement budgets and reproduces exactly
+ok 23 - 221 preserves 98 released actions, adds 22, keeps disabled/identity/rest/movement budgets and reproduces exactly
+  ---
+  duration_ms: 6.609
+  type: 'test'
+  ...
+# Subtest: fake clock 2026-10-20 10:00 KST: every occupied floor has an eligible visible action within 90s
+ok 24 - fake clock 2026-10-20 10:00 KST: every occupied floor has an eligible visible action within 90s
+  ---
+  duration_ms: 460.05
+  type: 'test'
+  ...
+# Subtest: fake clock 2026-10-20 21:00 KST: every occupied floor has an eligible visible action within 90s
+ok 25 - fake clock 2026-10-20 21:00 KST: every occupied floor has an eligible visible action within 90s
+  ---
+  duration_ms: 412.3921
+  type: 'test'
+  ...
+# Subtest: fake clock 2026-10-21 00:30 KST: every occupied floor has an eligible visible action within 90s
+ok 26 - fake clock 2026-10-21 00:30 KST: every occupied floor has an eligible visible action within 90s
+  ---
+  duration_ms: 405.1606
+  type: 'test'
+  ...
+# Subtest: fake clock 2026-10-21 02:00 KST: every occupied floor has an eligible visible action within 90s
+ok 27 - fake clock 2026-10-21 02:00 KST: every occupied floor has an eligible visible action within 90s
+  ---
+  duration_ms: 383.3893
+  type: 'test'
+  ...
+# Subtest: fake clock 2026-10-24 15:00 KST: every occupied floor has an eligible visible action within 90s
+ok 28 - fake clock 2026-10-24 15:00 KST: every occupied floor has an eligible visible action within 90s
+  ---
+  duration_ms: 373.2839
+  type: 'test'
+  ...
+# Subtest: fake clock 2026-10-25 23:30 KST: every occupied floor has an eligible visible action within 90s
+ok 29 - fake clock 2026-10-25 23:30 KST: every occupied floor has an eligible visible action within 90s
+  ---
+  duration_ms: 368.0008
+  type: 'test'
+  ...
+# Subtest: all scheduled actors/parents remain present for the entire excursion, no actor/anchor conflicts; rest and floor budgets hold
+ok 30 - all scheduled actors/parents remain present for the entire excursion, no actor/anchor conflicts; rest and floor budgets hold
+  ---
+  duration_ms: 725.7745
+  type: 'test'
+  ...
+# Subtest: wrapped time windows, weekend-only/weekday-only/local day boundaries and exact 02:00 exclusion execute in the scheduler
+ok 31 - wrapped time windows, weekend-only/weekday-only/local day boundaries and exact 02:00 exclusion execute in the scheduler
+  ---
+  duration_ms: 456.3391
+  type: 'test'
+  ...
+# Subtest: floor cadence is shared, weekend lighter, deterministic, and late exclusions/empty presence/summons cancel atomically
+ok 32 - floor cadence is shared, weekend lighter, deterministic, and late exclusions/empty presence/summons cancel atomically
+  ---
+  duration_ms: 204.2891
+  type: 'test'
+  ...
+# Subtest: seven consecutive KST days including weekday/weekend transitions preserve family, rest and floor cooldowns across midnight
+ok 33 - seven consecutive KST days including weekday/weekend transitions preserve family, rest and floor cooldowns across midnight
+  ---
+  duration_ms: 270.5182
+  type: 'test'
+  ...
+# Subtest: MIR stays virtual and standing; frog chairman acts only with explicit presence
+ok 34 - MIR stays virtual and standing; frog chairman acts only with explicit presence
+  ---
+  duration_ms: 417.8238
+  type: 'test'
+  ...
+# Subtest: real loader selects 221, rejects invalid schema/count/JSON and falls back to 216, then offline base-work
+ok 35 - real loader selects 221, rejects invalid schema/count/JSON and falls back to 216, then offline base-work
+  ---
+  duration_ms: 17.0077
+  type: 'test'
+  ...
+# Subtest: actual renderer at 01:40 on 3F visibly updates the existing emoji/status slots within 90 seconds, no extra timer or actor
+ok 36 - actual renderer at 01:40 on 3F visibly updates the existing emoji/status slots within 90 seconds, no extra timer or actor
+  ---
+  duration_ms: 678.9601
+  type: 'test'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 37 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 21.5572
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 38 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 8.769
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 39 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 10.0452
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 40 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 9.3474
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 41 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 70.2706
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 42 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 248.8209
+  type: 'test'
+  ...
+# Subtest: barista: one transparent persistent map button, exact art box, 1F only including fallback
+ok 43 - barista: one transparent persistent map button, exact art box, 1F only including fallback
+  ---
+  duration_ms: 1566.4772
+  type: 'test'
+  ...
+# Subtest: barista: exact rotating lines, shared bubble, phone status, reduced motion and zero writes
+ok 44 - barista: exact rotating lines, shared bubble, phone status, reduced motion and zero writes
+  ---
+  duration_ms: 2897.6037
+  type: 'test'
+  ...
+# Subtest: barista: outside tap, Escape, existing auto close, stale callbacks, floor changes and staff link restore
+ok 45 - barista: outside tap, Escape, existing auto close, stale callbacks, floor changes and staff link restore
+  ---
+  duration_ms: 717.2594
+  type: 'test'
+  ...
+# Subtest: barista: plan, blockPlan, snapshot outputs and protected owner bytes preserve the pre-patch baseline
+ok 46 - barista: plan, blockPlan, snapshot outputs and protected owner bytes preserve the pre-patch baseline
+  ---
+  duration_ms: 2334.5899
+  type: 'test'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 47 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 9.6002
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 48 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.3591
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 49 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 12.671
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 50 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 7.2311
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 51 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 72.0588
+  type: 'test'
+  ...
+# weekday full day and late night { samples: 93600, places: 184243, walks: 28213, returns: 14411 }
+# weekend evening { samples: 7200, places: 13112, walks: 3400, returns: 1709 }
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 52 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 245.7377
+  type: 'test'
+  ...
+# Subtest: weekday full day and late night — all people every second
+ok 53 - weekday full day and late night — all people every second
+  ---
+  duration_ms: 42609.6375
+  type: 'test'
+  ...
+# Subtest: weekend evening — all people every second
+ok 54 - weekend evening — all people every second
+  ---
+  duration_ms: 4026.134
+  type: 'test'
+  ...
+# Subtest: reported reproductions, reduced motion and arbitrary query order use the same reservations
+ok 55 - reported reproductions, reduced motion and arbitrary query order use the same reservations
+  ---
+  duration_ms: 23.2217
+  type: 'test'
+  ...
+# Subtest: place/geometry contract, no sub-4px timed edge, private homes and full return endpoints
+ok 56 - place/geometry contract, no sub-4px timed edge, private homes and full return endpoints
+  ---
+  duration_ms: 5.6726
+  type: 'test'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 57 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 21.7768
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 58 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 6.7024
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 59 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 7.6622
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 60 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 9.4518
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 61 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 70.4545
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 62 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 235.4045
+  type: 'test'
+  ...
+# Subtest: bubble close: pointer/tap, profile, switch, Escape and expiry at 390px reduced=false
+ok 63 - bubble close: pointer/tap, profile, switch, Escape and expiry at 390px reduced=false
+  ---
+  duration_ms: 785.4359
+  type: 'test'
+  ...
+# Subtest: bubble close: pointer/tap, profile, switch, Escape and expiry at 390px reduced=true
+ok 64 - bubble close: pointer/tap, profile, switch, Escape and expiry at 390px reduced=true
+  ---
+  duration_ms: 743.6105
+  type: 'test'
+  ...
+# Subtest: bubble close: pointer/tap, profile, switch, Escape and expiry at 480px reduced=false
+ok 65 - bubble close: pointer/tap, profile, switch, Escape and expiry at 480px reduced=false
+  ---
+  duration_ms: 722.4786
+  type: 'test'
+  ...
+# Subtest: bubble close: pointer/tap, profile, switch, Escape and expiry at 480px reduced=true
+ok 66 - bubble close: pointer/tap, profile, switch, Escape and expiry at 480px reduced=true
+  ---
+  duration_ms: 707.5631
+  type: 'test'
+  ...
+# Subtest: bubble close: pointer/tap, profile, switch, Escape and expiry at 481px reduced=false
+ok 67 - bubble close: pointer/tap, profile, switch, Escape and expiry at 481px reduced=false
+  ---
+  duration_ms: 786.0295
+  type: 'test'
+  ...
+# Subtest: bubble close: pointer/tap, profile, switch, Escape and expiry at 481px reduced=true
+ok 68 - bubble close: pointer/tap, profile, switch, Escape and expiry at 481px reduced=true
+  ---
+  duration_ms: 667.8968
+  type: 'test'
+  ...
+# Subtest: bubble close: pointer/tap, profile, switch, Escape and expiry at 1280px reduced=false
+ok 69 - bubble close: pointer/tap, profile, switch, Escape and expiry at 1280px reduced=false
+  ---
+  duration_ms: 691.3355
+  type: 'test'
+  ...
+# Subtest: bubble close: pointer/tap, profile, switch, Escape and expiry at 1280px reduced=true
+ok 70 - bubble close: pointer/tap, profile, switch, Escape and expiry at 1280px reduced=true
+  ---
+  duration_ms: 739.0526
+  type: 'test'
+  ...
+# Subtest: bubble close: phone timeout drops deferred speech; explicit dismiss defeats async replay and action end
+ok 71 - bubble close: phone timeout drops deferred speech; explicit dismiss defeats async replay and action end
+  ---
+  duration_ms: 1028.9852
+  type: 'test'
+  ...
+# Subtest: bubble close: barista shares close/timer, switch, persistent controls and no writes
+ok 72 - bubble close: barista shares close/timer, switch, persistent controls and no writes
+  ---
+  duration_ms: 1422.3097
+  type: 'test'
+  ...
+# Subtest: bubble close: protected owner bytes, global listeners and timer allocations are unchanged
+ok 73 - bubble close: protected owner bytes, global listeners and timer allocations are unchanged
+  ---
+  duration_ms: 2.7738
+  type: 'test'
+  ...
+# simultaneous takeaway stays 53
+# cafe cold plan {
+#   chairmanPresent: false,
+#   samples: [ 352.04049999999984, 342.0014000000001, 344.11619999999994 ]
+# }
+# cafe cold plan {
+#   chairmanPresent: true,
+#   samples: [ 393.8737000000001, 390.05610000000024, 416.16029999999955 ]
+# }
+# Subtest: cafe route uses clear lower-right floor, retains the lounge and sign mounting surface
+not ok 74 - cafe route uses clear lower-right floor, retains the lounge and sign mounting surface
+  ---
+  duration_ms: 8.3811
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-cafe-rest.test.mjs:10:1'
+  failureType: 'testCodeFailure'
+  error: 'spawnSync git EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1191:20)
+    spawnSync (node:child_process:929:24)
+    execFileSync (node:child_process:972:15)
+    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:9:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-cafe-rest.test.mjs:13:28)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.start (node:internal/test_runner/test:1262:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+  ...
+# Subtest: two real takeaway customers can stay at distinct non-overlapping service slots
+ok 75 - two real takeaway customers can stay at distinct non-overlapping service slots
+  ---
+  duration_ms: 1632.8606
+  type: 'test'
+  ...
+# Subtest: approved workday cadence and exact frozen placement code stay intact
+ok 76 - approved workday cadence and exact frozen placement code stay intact
+  ---
+  duration_ms: 7.9252
+  type: 'test'
+  ...
+# Subtest: first full daily plan stays below the unchanged 400ms limit, chairman absent and present
+ok 77 - first full daily plan stays below the unchanged 400ms limit, chairman absent and present
+  ---
+  duration_ms: 2276.0187
+  type: 'test'
+  ...
+# node:internal/test_runner/harness:124
+#       throw err;
+#       ^
+# <ref *1> Error: spawnSync git EPERM
+#     at Object.spawnSync (node:internal/child_process:1191:20)
+#     at spawnSync (node:child_process:929:24)
+#     at execFileSync (node:child_process:972:15)
+#     at readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:9:9)
+#     at file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-chairman-234.test.mjs:16:42
+#     at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+#     at async node:internal/modules/esm/loader:647:26
+#     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+#   errno: -4048,
+#   code: 'EPERM',
+#   syscall: 'spawnSync git',
+#   path: 'git',
+#   spawnargs: [
+#     'show',
+#     '33d39892c2a5c0a1779650e440a2dd5068b44495:hani-office-live.js'
+#   ],
+#   error: [Circular *1],
+#   status: null,
+#   signal: null,
+#   output: null,
+#   pid: 0,
+#   stdout: undefined,
+#   stderr: undefined
+# }
+# Node.js v24.22.1
+# Subtest: C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-chairman-234.test.mjs
+not ok 8 - C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-chairman-234.test.mjs
+  ---
+  duration_ms: 718.8828
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-chairman-234.test.mjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 7
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 79 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 17.3998
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 80 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 6.4588
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 81 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 8.9496
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 82 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 9.849
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 83 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 65.243
+  type: 'test'
+  ...
+# {
+#   day: '2026-11-02',
+#   counts: { client: 81, candidate: 37, courier: 172 },
+#   hosted: { client: 41, candidate: 19 }
+# }
+# {
+#   day: '2026-11-04',
+#   counts: { client: 77, candidate: 37, courier: 180 },
+#   hosted: { client: 39, candidate: 19 }
+# }
+# {
+#   day: '2026-11-07',
+#   counts: { client: 106, candidate: 0, courier: 187 },
+#   hosted: { client: 53, candidate: 0 }
+# }
+# {
+#   day: '2026-11-08',
+#   counts: { client: 104, candidate: 0, courier: 181 },
+#   hosted: { client: 52, candidate: 0 }
+# }
+# {
+#   chairmanPresent: true,
+#   outside: 3.5522222222222224,
+#   lunch: 6.938888888888889,
+#   rooftop: 0.5011111111111111
+# }
+# {
+#   chairmanPresent: false,
+#   outside: 3.418888888888889,
+#   lunch: 6.7444444444444445,
+#   rooftop: 0.5388888888888889
+# }
+# {
+#   deskVisits: 26,
+#   secretFirstReplies: 6,
+#   lines: [ '회장님께 화면 설명 중', '급하게 인스타 끄는 중', '회장님 질문 듣는 중' ]
+# }
+# {
+#   deskVisits: 313,
+#   instagramFirstReplies: 42,
+#   weeks: [
+#     { week: '2026-11-02–08', visits: 183, instagram: 28 },
+#     { week: '2026-11-09–13', visits: 130, instagram: 14 }
+#   ]
+# }
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 84 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 233.0593
+  type: 'test'
+  ...
+# Subtest: consult: sofa host coverage, real round trips and matching words 2026-11-02
+ok 85 - consult: sofa host coverage, real round trips and matching words 2026-11-02
+  ---
+  duration_ms: 1247.2651
+  type: 'test'
+  ...
+# Subtest: consult: sofa host coverage, real round trips and matching words 2026-11-04
+ok 86 - consult: sofa host coverage, real round trips and matching words 2026-11-04
+  ---
+  duration_ms: 1019.8683
+  type: 'test'
+  ...
+# Subtest: consult: sofa host coverage, real round trips and matching words 2026-11-07
+ok 87 - consult: sofa host coverage, real round trips and matching words 2026-11-07
+  ---
+  duration_ms: 961.3245
+  type: 'test'
+  ...
+# Subtest: consult: sofa host coverage, real round trips and matching words 2026-11-08
+ok 88 - consult: sofa host coverage, real round trips and matching words 2026-11-08
+  ---
+  duration_ms: 919.9381
+  type: 'test'
+  ...
+# Subtest: consult: weekday client and candidate host shares also stay at least half when chairman is absent
+ok 89 - consult: weekday client and candidate host shares also stay at least half when chairman is absent
+  ---
+  duration_ms: 639.0541
+  type: 'test'
+  ...
+# Subtest: consult: weekday rest means and rooftop minutes retain the existing bounds
+ok 90 - consult: weekday rest means and rooftop minutes retain the existing bounds
+  ---
+  duration_ms: 3020.2312
+  type: 'test'
+  ...
+# Subtest: consult: absent booth owners never make booth seats eligible, and guests without a host keep waiting
+ok 91 - consult: absent booth owners never make booth seats eligible, and guests without a host keep waiting
+  ---
+  duration_ms: 49.253
+  type: 'test'
+  ...
+# Subtest: consult: sofa wording, counter words, safety owners and runtime timers
+not ok 92 - consult: sofa wording, counter words, safety owners and runtime timers
+  ---
+  duration_ms: 9.5083
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-consult.test.mjs:80:1'
+  failureType: 'testCodeFailure'
+  error: 'spawnSync git EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1191:20)
+    spawnSync (node:child_process:929:24)
+    execFileSync (node:child_process:972:15)
+    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:9:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-consult.test.mjs:81:70)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+  ...
+# Subtest: consult: separately authored full plans and reverse snapshots retain exact identity in both presence states
+not ok 93 - consult: separately authored full plans and reverse snapshots retain exact identity in both presence states
+  ---
+  duration_ms: 3.2063
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-consult.test.mjs:98:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    restoreResidentsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-residents-source.mjs:12:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-consult.test.mjs:101:120)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: consult: chairman desk visit replies only during a real visit, including a secret-play first reply
+ok 94 - consult: chairman desk visit replies only during a real visit, including a secret-play first reply
+  ---
+  duration_ms: 210.2181
+  type: 'test'
+  ...
+# Subtest: consult: November 2–13 real desk visits show 12–45 Instagram first replies, identical on reverse reads
+ok 95 - consult: November 2–13 real desk visits show 12–45 Instagram first replies, identical on reverse reads
+  ---
+  duration_ms: 7192.4679
+  type: 'test'
+  ...
+# Subtest: consult: actual desk reply path distinguishes an Instagram idle line from other secret play
+ok 96 - consult: actual desk reply path distinguishes an Instagram idle line from other secret play
+  ---
+  duration_ms: 1879.1932
+  type: 'test'
+  ...
+# Subtest: consult: caught-out visit takes Instagram priority for secret and ordinary idle lines, then keeps the chairman reply
+ok 97 - consult: caught-out visit takes Instagram priority for secret and ordinary idle lines, then keeps the chairman reply
+  ---
+  duration_ms: 1394.1656
+  type: 'test'
+  ...
+# Subtest: consult: existing persistent actor slots render both sides without another timer
+ok 98 - consult: existing persistent actor slots render both sides without another timer
+  ---
+  duration_ms: 808.8101
+  type: 'test'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 99 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 17.1784
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 100 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 6.5058
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 101 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 7.3935
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 102 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 10.0209
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 103 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 77.1183
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 104 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 246.4945
+  type: 'test'
+  ...
+# Subtest: touching sprites in one desk row all keep their names above their own heads
+ok 105 - touching sprites in one desk row all keep their names above their own heads
+  ---
+  duration_ms: 13.6929
+  type: 'test'
+  ...
+# Subtest: crowded 38px desk row upgrades a former dot to name without moving dialogue or full pills
+ok 106 - crowded 38px desk row upgrades a former dot to name without moving dialogue or full pills
+  ---
+  duration_ms: 14.3373
+  type: 'test'
+  ...
+# Subtest: names precede last-resort dots; all three modes remain collision-free and deterministic
+ok 107 - names precede last-resort dots; all three modes remain collision-free and deterministic
+  ---
+  duration_ms: 13.848
+  type: 'test'
+  ...
+# Subtest: top-edge full pill allowance survives; a smaller name uses the same legal side lane
+ok 108 - top-edge full pill allowance survives; a smaller name uses the same legal side lane
+  ---
+  duration_ms: 2.3282
+  type: 'test'
+  ...
+# Subtest: a name cannot escape ordinary head reach to a distant free desk
+ok 109 - a name cannot escape ordinary head reach to a distant free desk
+  ---
+  duration_ms: 1.4817
+  type: 'test'
+  ...
+# Subtest: seated 3F row under another row gets own-body names without covering faces or moving full pills
+ok 110 - seated 3F row under another row gets own-body names without covering faces or moving full pills
+  ---
+  duration_ms: 31.2859
+  type: 'test'
+  ...
+# Subtest: body tag wider than a sprite cannot touch a neighbour; keep the nearby dot
+ok 111 - body tag wider than a sprite cannot touch a neighbour; keep the nearby dot
+  ---
+  duration_ms: 2.014
+  type: 'test'
+  ...
+# Subtest: own-body name stays below face and clamps to floor; reject floor/mascot blocked bodies
+ok 112 - own-body name stays below face and clamps to floor; reject floor/mascot blocked bodies
+  ---
+  duration_ms: 2.7277
+  type: 'test'
+  ...
+# Subtest: a missing label with no legal head dot is rescued by the same name slot when its lower body is clear
+ok 113 - a missing label with no legal head dot is rescued by the same name slot when its lower body is clear
+  ---
+  duration_ms: 1.1015
+  type: 'test'
+  ...
+# Subtest: persistent own-body slot preserves tap/title/aria and strict browser checker rejects face, neighbour, label and mascot collisions
+ok 114 - persistent own-body slot preserves tap/title/aria and strict browser checker rejects face, neighbour, label and mascot collisions
+  ---
+  duration_ms: 140.5971
+  type: 'test'
+  ...
+# Subtest: actual persistent name slot retains title/aria/full activity and delegated tap opens the same bubble
+ok 115 - actual persistent name slot retains title/aria/full activity and delegated tap opens the same bubble
+  ---
+  duration_ms: 48.3131
+  type: 'test'
+  ...
+# Subtest: desktop ignores name-only dimensions and keeps the exact separate placement
+ok 116 - desktop ignores name-only dimensions and keeps the exact separate placement
+  ---
+  duration_ms: 34.4466
+  type: 'test'
+  ...
+# Subtest: browser geometry contract accepts name mode and rejects hidden text, lost full text, tiny font, overlaps and downgraded dialogue
+ok 117 - browser geometry contract accepts name mode and rejects hidden text, lost full text, tiny font, overlaps and downgraded dialogue
+  ---
+  duration_ms: 34.3418
+  type: 'test'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 118 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 16.7149
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 119 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 6.0927
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 120 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 9.8951
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 121 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 10.5572
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 122 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 74.1268
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 123 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 248.9045
+  type: 'test'
+  ...
+# Subtest: selection: every day in November, first four weeks and next cycle, independent of host timezone
+ok 124 - selection: every day in November, first four weeks and next cycle, independent of host timezone
+  ---
+  duration_ms: 0.9288
+  type: 'test'
+  ...
+# Subtest: selection: KST midnight, weekends, year boundary, leap date and pre-anchor modulo
+ok 125 - selection: KST midnight, weekends, year boundary, leap date and pre-anchor modulo
+  ---
+  duration_ms: 0.1585
+  type: 'test'
+  ...
+# Subtest: data: 4 approved scripts, 20 standalone days and all 100 verbatim lines, floors and clues
+ok 126 - data: 4 approved scripts, 20 standalone days and all 100 verbatim lines, floors and clues
+  ---
+  duration_ms: 1.3937
+  type: 'test'
+  ...
+# Subtest: validation rejects malformed shape, every invalid staff/floor/length, empty text and duplicate lines
+ok 127 - validation rejects malformed shape, every invalid staff/floor/length, empty text and duplicate lines
+  ---
+  duration_ms: 77.2701
+  type: 'test'
+  ...
+# Subtest: missing, network error, broken JSON and invalid catalog preserve ordinary taps and hide the caption data
+ok 128 - missing, network error, broken JSON and invalid catalog preserve ordinary taps and hide the caption data
+  ---
+  duration_ms: 1.3011
+  type: 'test'
+  ...
+# Subtest: first eligible tap then normal cadence; memory is per actor and per date, refreshed pages and four-week repeat reset
+ok 129 - first eligible tap then normal cadence; memory is per actor and per date, refreshed pages and four-week repeat reset
+  ---
+  duration_ms: 0.677
+  type: 'test'
+  ...
+# Subtest: wrong floor and other staff do not consume a drama; hidden clues use their own floor
+ok 130 - wrong floor and other staff do not consume a drama; hidden clues use their own floor
+  ---
+  duration_ms: 0.3968
+  type: 'test'
+  ...
+# Subtest: chairman speaks his own script only when present on the specified floor; Saturday stays ordinary
+ok 131 - chairman speaks his own script only when present on the specified floor; Saturday stays ordinary
+  ---
+  duration_ms: 0.3855
+  type: 'test'
+  ...
+# Subtest: loads each literal local GET once, waits for slow drama, and performs zero storage/network writes
+ok 132 - loads each literal local GET once, waits for slow drama, and performs zero storage/network writes
+  ---
+  duration_ms: 0.5243
+  type: 'test'
+  ...
+# Subtest: DOM owner: Monday caption, delegated first tap during an action, second normal tap, and Saturday clearing
+ok 133 - DOM owner: Monday caption, delegated first tap during an action, second normal tap, and Saturday clearing
+  ---
+  duration_ms: 1078.1381
+  type: 'test'
+  ...
+# Subtest: DOM missing/broken drama keeps the same normal speech and no caption
+ok 134 - DOM missing/broken drama keeps the same normal speech and no caption
+  ---
+  duration_ms: 1358.2903
+  type: 'test'
+  ...
+# Subtest: DOM slow load after a floor change cannot consume the first drama line on the old floor
+ok 135 - DOM slow load after a floor change cannot consume the first drama line on the old floor
+  ---
+  duration_ms: 692.2368
+  type: 'test'
+  ...
+# Subtest: release trace sees literal JSON path; caption wraps in full; scheduler and label placement remain frozen
+ok 136 - release trace sees literal JSON path; caption wraps in full; scheduler and label placement remain frozen
+  ---
+  duration_ms: 2.1009
+  type: 'test'
+  ...
+# Subtest: 09:00–18:00 reachability uses scheduler event/leg intervals and actual snapshot witnesses, floor by floor
+ok 137 - 09:00–18:00 reachability uses scheduler event/leg intervals and actual snapshot witnesses, floor by floor
+  ---
+  duration_ms: 17177.6636
+  type: 'test'
+  ...
+# Subtest: real metadata/bootstrap + fake Date at Sunday 19:31 KST
+ok 138 - real metadata/bootstrap + fake Date at Sunday 19:31 KST
+  ---
+  duration_ms: 480.1016
+  type: 'test'
+  ...
+# Subtest: real metadata/bootstrap + fake Date at Sunday 23:00 KST
+ok 139 - real metadata/bootstrap + fake Date at Sunday 23:00 KST
+  ---
+  duration_ms: 406.8712
+  type: 'test'
+  ...
+# Subtest: real metadata/bootstrap + fake Date at Sunday 07:00 KST
+ok 140 - real metadata/bootstrap + fake Date at Sunday 07:00 KST
+  ---
+  duration_ms: 446.5574
+  type: 'test'
+  ...
+# Subtest: real metadata/bootstrap + fake Date at Sunday 12:30 KST
+ok 141 - real metadata/bootstrap + fake Date at Sunday 12:30 KST
+  ---
+  duration_ms: 386.9126
+  type: 'test'
+  ...
+# Subtest: real metadata/bootstrap + fake Date at Sunday 02:00 KST
+ok 142 - real metadata/bootstrap + fake Date at Sunday 02:00 KST
+  ---
+  duration_ms: 384.8106
+  type: 'test'
+  ...
+# Subtest: 01/07/18 boundaries, weekday behaviour, presence exclusions and chairman
+ok 143 - 01/07/18 boundaries, weekday behaviour, presence exclusions and chairman
+  ---
+  duration_ms: 732.52
+  type: 'test'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 144 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 22.7596
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 145 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.0118
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 146 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 7.4435
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 147 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 7.7946
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 148 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 71.4613
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 149 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 247.8083
+  type: 'test'
+  ...
+# Subtest: floor bubble: entry waits for rendered floor, opens once and closes through existing path after 4s
+ok 150 - floor bubble: entry waits for rendered floor, opens once and closes through existing path after 4s
+  ---
+  duration_ms: 13.1891
+  type: 'test'
+  ...
+# Subtest: floor bubble: no nonempty head icon means no bubble
+ok 151 - floor bubble: no nonempty head icon means no bubble
+  ---
+  duration_ms: 6.4345
+  type: 'test'
+  ...
+# Subtest: floor bubble: day/floor selection is deterministic and prefers conversation/phone icons
+ok 152 - floor bubble: day/floor selection is deterministic and prefers conversation/phone icons
+  ---
+  duration_ms: 17.0358
+  type: 'test'
+  ...
+# Subtest: floor bubble: same floor remains quiet for 60s and is eligible afterwards
+ok 153 - floor bubble: same floor remains quiet for 60s and is eligible afterwards
+  ---
+  duration_ms: 7.5556
+  type: 'test'
+  ...
+# Subtest: floor bubble: tapping before delay cancels auto; tapping an auto bubble replaces it without hiding
+ok 154 - floor bubble: tapping before delay cancels auto; tapping an auto bubble replaces it without hiding
+  ---
+  duration_ms: 10.6763
+  type: 'test'
+  ...
+# Subtest: floor bubble: recent roster tap suppresses floor entry and existing bubble is retained
+ok 155 - floor bubble: recent roster tap suppresses floor entry and existing bubble is retained
+  ---
+  duration_ms: 6.4468
+  type: 'test'
+  ...
+# Subtest: floor bubble: reduced motion, hidden tab and login lock stay quiet
+ok 156 - floor bubble: reduced motion, hidden tab and login lock stay quiet
+  ---
+  duration_ms: 35.1989
+  type: 'test'
+  ...
+# Subtest: floor bubble: walking and travelling people are excluded even with preferred icons
+ok 157 - floor bubble: walking and travelling people are excluded even with preferred icons
+  ---
+  duration_ms: 10.4188
+  type: 'test'
+  ...
+# Subtest: floor bubble: floor switch clears delay/close and stale callbacks cannot close the next bubble
+ok 158 - floor bubble: floor switch clears delay/close and stale callbacks cannot close the next bubble
+  ---
+  duration_ms: 7.6189
+  type: 'test'
+  ...
+# Subtest: floor bubble: leaving and reentering office uses the existing visibility owner
+ok 159 - floor bubble: leaving and reentering office uses the existing visibility owner
+  ---
+  duration_ms: 5.1734
+  type: 'test'
+  ...
+# Subtest: floor bubble: a slow floor image must commit before the entry delay is armed
+ok 160 - floor bubble: a slow floor image must commit before the entry delay is armed
+  ---
+  duration_ms: 5.7437
+  type: 'test'
+  ...
+# Subtest: floor bubble: real scheduler entries and renderer head icons feed the same selection path
+ok 161 - floor bubble: real scheduler entries and renderer head icons feed the same selection path
+  ---
+  duration_ms: 1106.373
+  type: 'test'
+  ...
+# NOT RUN: real browser geometry, hit testing, anchor comparison and screenshots; use --browser
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 162 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 22.4272
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 163 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 6.8603
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 164 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 9.4613
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 165 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 10.0392
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 166 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 65.7762
+  type: 'test'
+  ...
+# {"runtimeFiles":149,"seedFiles":53,"seedBytes":2336806}
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 167 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 247.4567
+  type: 'test'
+  ...
+# Subtest: separately seeded HD manifest resolves every asset; pre-mascot runtime closure retains the 128-file contract
+ok 168 - separately seeded HD manifest resolves every asset; pre-mascot runtime closure retains the 128-file contract
+  ---
+  duration_ms: 103.3415
+  type: 'test'
+  ...
+# Subtest: 25 original artworks / 100 physical 3x frames retain exact crop, footprint and pivot ratios
+ok 169 - 25 original artworks / 100 physical 3x frames retain exact crop, footprint and pivot ratios
+  ---
+  duration_ms: 1750.8633
+  type: 'test'
+  ...
+# Subtest: real canonical loader prefers v3; per-atlas failure falls back once to v2 without new actors or storage writes
+ok 170 - real canonical loader prefers v3; per-atlas failure falls back once to v2 without new actors or storage writes
+  ---
+  duration_ms: 34.501
+  type: 'test'
+  ...
+# Subtest: actual metadata bootstrap tolerates missing/malformed v3 and keeps the v2 scene
+ok 171 - actual metadata bootstrap tolerates missing/malformed v3 and keeps the v2 scene
+  ---
+  duration_ms: 29.9107
+  type: 'test'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 172 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 18.1279
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 173 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.1246
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 174 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 8.0857
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 175 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 10.0454
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 176 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 65.7193
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 177 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 248.6543
+  type: 'test'
+  ...
+# Subtest: icons: actual consulting and candidate pairs retain exact phone text and purple state at both widths
+ok 178 - icons: actual consulting and candidate pairs retain exact phone text and purple state at both widths
+  ---
+  duration_ms: 786.2193
+  type: 'test'
+  ...
+# Subtest: icons: caught-out and reply lines keep the joke and are work, even at a lounge home
+ok 179 - icons: caught-out and reply lines keep the joke and are work, even at a lounge home
+  ---
+  duration_ms: 2.7138
+  type: 'test'
+  ...
+# Subtest: icons: ten frequent specific fallbacks have authored whole short phrases
+ok 180 - icons: ten frequent specific fallbacks have authored whole short phrases
+  ---
+  duration_ms: 0.3617
+  type: 'test'
+  ...
+# Subtest: icons: semantic work/rest classification also covers errands, deliveries and personal idle lines
+ok 181 - icons: semantic work/rest classification also covers errands, deliveries and personal idle lines
+  ---
+  duration_ms: 0.5425
+  type: 'test'
+  ...
+# Subtest: icons: special moment rules, combined-line precedence and existing performance emoji use the real helper
+ok 182 - icons: special moment rules, combined-line precedence and existing performance emoji use the real helper
+  ---
+  duration_ms: 0.5095
+  type: 'test'
+  ...
+# Subtest: icons: walking, live travel and outbound/return elevator waits suppress every head icon
+ok 183 - icons: walking, live travel and outbound/return elevator waits suppress every head icon
+  ---
+  duration_ms: 0.4632
+  type: 'test'
+  ...
+# Subtest: icons: actual repeated phone/desktop/reduced renderer updates reuse nodes and skip unchanged prop writes
+ok 184 - icons: actual repeated phone/desktop/reduced renderer updates reuse nodes and skip unchanged prop writes
+  ---
+  duration_ms: 3143.8128
+  type: 'test'
+  ...
+# Subtest: icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc
+not ok 185 - icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc
+  ---
+  duration_ms: 1.2383
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-icons.test.mjs:111:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    restoreResidentsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-residents-source.mjs:12:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-icons.test.mjs:113:17)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: icons: complete plan/blockPlan and sampled snapshot JSON match the approved G output
+ok 186 - icons: complete plan/blockPlan and sampled snapshot JSON match the approved G output
+  ---
+  duration_ms: 5999.3342
+  type: 'test'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 187 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 18.1076
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 188 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.0009
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 189 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 8.7015
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 190 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 11.0393
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 191 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 69.5781
+  type: 'test'
+  ...
+# QA18 coverage {
+#   authoredStrings: 2991,
+#   generatedSentences: 46500,
+#   stateCounts: { work: 2730, rest: 255, meeting: 4, moving: 0, night: 2 }
+# }
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 192 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 247.2436
+  type: 'test'
+  ...
+# Subtest: QA18/19: every vocabulary sentence has a display state and whole phone <=6 / wide <=8 phrases
+ok 193 - QA18/19: every vocabulary sentence has a display state and whole phone <=6 / wide <=8 phrases
+  ---
+  duration_ms: 5044.7633
+  type: 'test'
+  ...
+# Subtest: QA18: unknown sentences use state fallbacks; used set selects whole alternatives
+ok 194 - QA18: unknown sentences use state fallbacks; used set selects whole alternatives
+  ---
+  duration_ms: 0.7222
+  type: 'test'
+  ...
+# Subtest: QA19: real single status owner maps work/rest/play/meeting/moving/night to AA CSS colours
+ok 195 - QA19: real single status owner maps work/rest/play/meeting/moving/night to AA CSS colours
+  ---
+  duration_ms: 0.7613
+  type: 'test'
+  ...
+# Subtest: QA19: leisure at desks and rest seats is yellow; four overlapping work phrases stay white
+ok 196 - QA19: leisure at desks and rest seats is yellow; four overlapping work phrases stay white
+  ---
+  duration_ms: 1.1453
+  type: 'test'
+  ...
+# Subtest: QA18: wide chooses spaced phrases, phones choose space-free phrases including food votes
+ok 197 - QA18: wide chooses spaced phrases, phones choose space-free phrases including food votes
+  ---
+  duration_ms: 5.7945
+  type: 'test'
+  ...
+# Subtest: QA3: persistent names use canonical roster team/rank/colours; chairman has no nickname or duplicated rank
+ok 198 - QA3: persistent names use canonical roster team/rank/colours; chairman has no nickname or duplicated rank
+  ---
+  duration_ms: 408.2563
+  type: 'test'
+  ...
+# Subtest: QA18: real desktop/phone label keeps full title/aria/roster and delegated tap/keyboard bubble without writes
+ok 199 - QA18: real desktop/phone label keeps full title/aria/roster and delegated tap/keyboard bubble without writes
+  ---
+  duration_ms: 71.8439
+  type: 'test'
+  ...
+# Subtest: QA18: label fitting keeps batched reads; existing steady frames do not add layout measurements
+ok 200 - QA18: label fitting keeps batched reads; existing steady frames do not add layout measurements
+  ---
+  duration_ms: 13.0756
+  type: 'test'
+  ...
+# Subtest: label review: real weekly desk notes and stamp doodle keep their literal meaning
+ok 201 - label review: real weekly desk notes and stamp doodle keep their literal meaning
+  ---
+  duration_ms: 272.8584
+  type: 'test'
+  ...
+# Subtest: label review: consultation schedule is work and travel precedes destination rules
+ok 202 - label review: consultation schedule is work and travel precedes destination rules
+  ---
+  duration_ms: 292.9114
+  type: 'test'
+  ...
+# Subtest: label review: actual everyday scenes use rest labels while scheduler meeting and real meetings stay intact
+ok 203 - label review: actual everyday scenes use rest labels while scheduler meeting and real meetings stay intact
+  ---
+  duration_ms: 714.261
+  type: 'test'
+  ...
+# obr2 floor unit maxima { normal: 2, lunch: 4, late: 1 } formal + optional share the same cap
+# obr2 groups 13 trios 0
+# obr2 cafe/terrace morning/lunch shares 0.2631578947368421 0.5434782608695652
+# obr2 completed desk text runs {
+#   count: 506,
+#   minSeconds: 10.79999999984284,
+#   maxSeconds: 10.999999999839929
+# }
+# obr2 Node performance {
+#   firstMs: [ 403.4222, 368.77540000000226, 340.4379000000008 ],
+#   warmMs: 0.5696379000000016
+# }
+# Subtest: obr2: whole-day ledger keeps minimum stays across block boundaries, visitor timing and personal cooldowns
+ok 204 - obr2: whole-day ledger keeps minimum stays across block boundaries, visitor timing and personal cooldowns
+  ---
+  duration_ms: 4.8075
+  type: 'test'
+  ...
+# Subtest: obr2: floor outing units have quiet/lunch/normal caps and every populated work window has an outing
+ok 205 - obr2: floor outing units have quiet/lunch/normal caps and every populated work window has an outing
+  ---
+  duration_ms: 4151.6993
+  type: 'test'
+  ...
+# Subtest: obr2: related groups reserve ALL unique slots atomically, FIFO doors, 0–3s departures, and no formal double assignment
+ok 206 - obr2: related groups reserve ALL unique slots atomically, FIFO doors, 0–3s departures, and no formal double assignment
+  ---
+  duration_ms: 72.9115
+  type: 'test'
+  ...
+# Subtest: obr2: each worker sees ≥4 place cards and ≥10 distinct lines, with lunch cafe/terrace share above morning
+ok 207 - obr2: each worker sees ≥4 place cards and ≥10 distinct lines, with lunch cafe/terrace share above morning
+  ---
+  duration_ms: 9988.5539
+  type: 'test'
+  ...
+# Subtest: obr2: desk text survives ≥10 actual seconds despite posture changes and upcoming outings
+ok 208 - obr2: desk text survives ≥10 actual seconds despite posture changes and upcoming outings
+  ---
+  duration_ms: 3456.4458
+  type: 'test'
+  ...
+# Subtest: obr2: deterministic query order, reduced motion and frozen spatial bytes
+not ok 209 - obr2: deterministic query order, reduced motion and frozen spatial bytes
+  ---
+  duration_ms: 7.5456
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-lively-v2.test.mjs:90:1'
+  failureType: 'testCodeFailure'
+  error: 'spawnSync git EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1191:20)
+    spawnSync (node:child_process:929:24)
+    execFileSync (node:child_process:972:15)
+    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:9:9)
+    assertOnboardedCanon (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-onboarding-232-assertions.mjs:14:17)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-v2.test.mjs:91:2)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+  ...
+# Subtest: obr2: approved 4-minute personal cooldown survives midnight without a previous-day replay
+ok 210 - obr2: approved 4-minute personal cooldown survives midnight without a previous-day replay
+  ---
+  duration_ms: 288.2947
+  type: 'test'
+  ...
+# Subtest: obr2: warm snapshot <3ms, first full daily formal+outing plan <400ms
+ok 211 - obr2: warm snapshot <3ms, first full daily formal+outing plan <400ms
+  ---
+  duration_ms: 1291.5459
+  type: 'test'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 212 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 22.4873
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 213 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 6.8167
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 214 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 8.1985
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 215 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 9.1994
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 216 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 74.6717
+  type: 'test'
+  ...
+# stroll-at-spot seconds 4186 busy share 0.5 dup-line samples 0
+# stroll-at-spot seconds 1827 busy share 0.43 dup-line samples 0
+# stroll-at-spot seconds 2429 busy share 0.44 dup-line samples 0
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 217 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 232.7414
+  type: 'test'
+  ...
+# Subtest: weekday day: every occupied floor keeps changing (avg <=5s, never frozen over 35s)
+ok 218 - weekday day: every occupied floor keeps changing (avg <=5s, never frozen over 35s)
+  ---
+  duration_ms: 1733.0629
+  type: 'test'
+  ...
+# Subtest: weekday evening: every occupied floor keeps changing (avg <=5s, never frozen over 35s)
+ok 219 - weekday evening: every occupied floor keeps changing (avg <=5s, never frozen over 35s)
+  ---
+  duration_ms: 1392.0762
+  type: 'test'
+  ...
+# Subtest: weekend evening: every occupied floor keeps changing (avg <=5s, never frozen over 35s)
+ok 220 - weekend evening: every occupied floor keeps changing (avg <=5s, never frozen over 35s)
+  ---
+  duration_ms: 1275.4088
+  type: 'test'
+  ...
+# Subtest: evening mixes playful statuses and short same-floor strolls; reduced motion keeps everyone seated
+ok 221 - evening mixes playful statuses and short same-floor strolls; reduced motion keeps everyone seated
+  ---
+  duration_ms: 2536.7397
+  type: 'test'
+  ...
+# Subtest: lively-3/obr2: one bit per person per cycle, door paths and two outing units per floor
+ok 222 - lively-3/obr2: one bit per person per cycle, door paths and two outing units per floor
+  ---
+  duration_ms: 3120.6425
+  type: 'test'
+  ...
+# Subtest: visitors: up to two guests at a time (obr14), public 1F rooms only, gate in/out, never on a staff spot, none at night
+ok 223 - visitors: up to two guests at a time (obr14), public 1F rooms only, gate in/out, never on a staff spot, none at night
+  ---
+  duration_ms: 14842.9567
+  type: 'test'
+  ...
+# Subtest: renderer shows either guest in its own persistent 1F slot with its own name and sprite
+ok 224 - renderer shows either guest in its own persistent 1F slot with its own name and sprite
+  ---
+  duration_ms: 747.953
+  type: 'test'
+  ...
+# Subtest: distance, not elapsed ticks, swaps both walk frames; stopping and resampling never invent steps
+ok 225 - distance, not elapsed ticks, swaps both walk frames; stopping and resampling never invent steps
+  ---
+  duration_ms: 0.7671
+  type: 'test'
+  ...
+# Subtest: approved consultation scheduler source stays frozen, including every route and arrival calculation
+not ok 226 - approved consultation scheduler source stays frozen, including every route and arrival calculation
+  ---
+  duration_ms: 1.2095
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-motion-1.test.mjs:26:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-motion-1.test.mjs:27:20)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: current-time projection follows scheduler stateAt on every sampled leg, wait, floor change and exact arrival
+ok 227 - current-time projection follows scheduler stateAt on every sampled leg, wait, floor change and exact arrival
+  ---
+  duration_ms: 564.0101
+  type: 'test'
+  ...
+# Subtest: reduced motion removes every one-shot and gait effect, with scheduler positions unchanged
+ok 228 - reduced motion removes every one-shot and gait effect, with scheduler positions unchanged
+  ---
+  duration_ms: 0.4289
+  type: 'test'
+  ...
+# Subtest: greeting, conversation and tap reactions wait until walking ends and coalesce repeated taps
+ok 229 - greeting, conversation and tap reactions wait until walking ends and coalesce repeated taps
+  ---
+  duration_ms: 0.1786
+  type: 'test'
+  ...
+# Subtest: all one-shot effects finish, clear their state, and never repeat without a new trigger
+ok 230 - all one-shot effects finish, clear their state, and never repeat without a new trigger
+  ---
+  duration_ms: 0.1138
+  type: 'test'
+  ...
+# Subtest: stable actor and mascot measurement keeps label packing identical through bounce, lean, dip and hop
+ok 231 - stable actor and mascot measurement keeps label packing identical through bounce, lean, dip and hop
+  ---
+  duration_ms: 1.8695
+  type: 'test'
+  ...
+# Subtest: phone checker independently uses the same stable facing box through all visual phases and still rejects ambiguous ownership
+ok 232 - phone checker independently uses the same stable facing box through all visual phases and still rejects ambiguous ownership
+  ---
+  duration_ms: 19.8687
+  type: 'test'
+  ...
+# Subtest: 217 floor art and desk-prop readiness commits offscreen while movement stays paused
+ok 233 - 217 floor art and desk-prop readiness commits offscreen while movement stays paused
+  ---
+  duration_ms: 415.5564
+  type: 'test'
+  ...
+# Subtest: actual owner uses one 100ms motion clock, preserves actor slots, pauses offscreen/hidden and resumes at current scheduler time
+ok 234 - actual owner uses one 100ms motion clock, preserves actor slots, pauses offscreen/hidden and resumes at current scheduler time
+  ---
+  duration_ms: 702.1849
+  type: 'test'
+  ...
+# Subtest: actual tap keeps delegated bubble handling and clears its hop after one cycle
+ok 235 - actual tap keeps delegated bubble handling and clears its hop after one cycle
+  ---
+  duration_ms: 378.8533
+  type: 'test'
+  ...
+# Subtest: actual walking advances canonical left/top on one tick and follows reserved distance frames without label refits
+ok 236 - actual walking advances canonical left/top on one tick and follows reserved distance frames without label refits
+  ---
+  duration_ms: 681.2288
+  type: 'test'
+  ...
+# Subtest: scheduled stand anticipation starts before departure and never shifts its route or arrival time
+ok 237 - scheduled stand anticipation starts before departure and never shifts its route or arrival time
+  ---
+  duration_ms: 684.1725
+  type: 'test'
+  ...
+# Subtest: actual mascot owner shares the office clock, reacts once on return, limits concurrency and clears reduced/hidden effects
+ok 238 - actual mascot owner shares the office clock, reacts once on return, limits concurrency and clears reduced/hidden effects
+  ---
+  duration_ms: 400.3725
+  type: 'test'
+  ...
+# Subtest: actual sit/stand changes logical pose immediately while the visual dip is a single independent effect
+ok 239 - actual sit/stand changes logical pose immediately while the visual dip is a single independent effect
+  ---
+  duration_ms: 0.7199
+  type: 'test'
+  ...
+# Subtest: walking frames update canonical coordinates without label refits or layout reads
+ok 240 - walking frames update canonical coordinates without label refits or layout reads
+  ---
+  duration_ms: 0.314
+  type: 'test'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 241 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 19.8116
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 242 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 6.7706
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 243 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 9.8043
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 244 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 10.2417
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 245 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 73.8571
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 246 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 248.6098
+  type: 'test'
+  ...
+# Subtest: motion2: phase/tint boundaries follow the KST light schedule regardless of device timezone
+ok 247 - motion2: phase/tint boundaries follow the KST light schedule regardless of device timezone
+  ---
+  duration_ms: 0.5463
+  type: 'test'
+  ...
+# Subtest: motion2: each wash moves continuously and monotonically for ten minutes
+ok 248 - motion2: each wash moves continuously and monotonically for ten minutes
+  ---
+  duration_ms: 0.3006
+  type: 'test'
+  ...
+# Subtest: motion2: rooftop image switches at 18:30 and 06:00 with the night light
+ok 249 - motion2: rooftop image switches at 18:30 and 06:00 with the night light
+  ---
+  duration_ms: 0.1854
+  type: 'test'
+  ...
+# Subtest: motion2: shared clock switches open 5F without reload and reuses the correct cached variant
+ok 250 - motion2: shared clock switches open 5F without reload and reuses the correct cached variant
+  ---
+  duration_ms: 44.47
+  type: 'test'
+  ...
+# Subtest: motion2: delayed night result cannot overwrite a new daytime request or another floor
+ok 251 - motion2: delayed night result cannot overwrite a new daytime request or another floor
+  ---
+  duration_ms: 45.8071
+  type: 'test'
+  ...
+# Subtest: motion2: result rechecks Korea time even before the next clock tick
+ok 252 - motion2: result rechecks Korea time even before the next clock tick
+  ---
+  duration_ms: 30.979
+  type: 'test'
+  ...
+# Subtest: motion2: delayed daytime result cannot replace cached night art after the reverse boundary
+ok 253 - motion2: delayed daytime result cannot replace cached night art after the reverse boundary
+  ---
+  duration_ms: 30.9432
+  type: 'test'
+  ...
+# Subtest: motion2: failed night image falls back to day art, retaining floor identity and plates
+ok 254 - motion2: failed night image falls back to day art, retaining floor identity and plates
+  ---
+  duration_ms: 31.1242
+  type: 'test'
+  ...
+# Subtest: motion2: failed night and day art retain production fallback and the rest of the floor
+ok 255 - motion2: failed night and day art retain production fallback and the rest of the floor
+  ---
+  duration_ms: 31.6469
+  type: 'test'
+  ...
+# Subtest: motion2: glow requires the seated, working owner at a visible monitor
+ok 256 - motion2: glow requires the seated, working owner at a visible monitor
+  ---
+  duration_ms: 0.4203
+  type: 'test'
+  ...
+# Subtest: motion2: each authored monitor belongs to an existing desk, with no glow at unowned/spare seats
+ok 257 - motion2: each authored monitor belongs to an existing desk, with no glow at unowned/spare seats
+  ---
+  duration_ms: 0.2981
+  type: 'test'
+  ...
+# Subtest: motion2: one persistent glow element follows actual actors and disappears at empty desks
+ok 258 - motion2: one persistent glow element follows actual actors and disappears at empty desks
+  ---
+  duration_ms: 29.5267
+  type: 'test'
+  ...
+# Subtest: motion2: reduced motion keeps static phase tint, static glow and night art
+ok 259 - motion2: reduced motion keeps static phase tint, static glow and night art
+  ---
+  duration_ms: 46.9357
+  type: 'test'
+  ...
+# Subtest: motion2: hidden tab and inactive view stop updates; resume samples current phase/image
+ok 260 - motion2: hidden tab and inactive view stop updates; resume samples current phase/image
+  ---
+  duration_ms: 30.7769
+  type: 'test'
+  ...
+# Subtest: motion2: offscreen intersection pauses pulse, then refreshes tint and rooftop on resume
+ok 261 - motion2: offscreen intersection pauses pulse, then refreshes tint and rooftop on resume
+  ---
+  duration_ms: 15.8022
+  type: 'test'
+  ...
+# Subtest: motion2: calm pulse varies only while visible and motion is allowed
+ok 262 - motion2: calm pulse varies only while visible and motion is allowed
+  ---
+  duration_ms: 0.2364
+  type: 'test'
+  ...
+# Subtest: motion2: catalog references one allowed, bounded WebP asset for the release owner
+ok 263 - motion2: catalog references one allowed, bounded WebP asset for the release owner
+  ---
+  duration_ms: 5.778
+  type: 'test'
+  ...
+# Subtest: motion2: phase changes, pulses and floor switching never write to storage or Cloud
+ok 264 - motion2: phase changes, pulses and floor switching never write to storage or Cloud
+  ---
+  duration_ms: 323.637
+  type: 'test'
+  ...
+# obr10 gathering extensions and sampled member states { extensions: 108, moments: 1791 }
+# obr10 visitor host pairs 65
+# Subtest: obr10: data owns 5+ unique desk actions and 2 signatures per existing person, paired words, real same-floor errands and unchanged rest minima
+ok 265 - obr10: data owns 5+ unique desk actions and 2 signatures per existing person, paired words, real same-floor errands and unchanged rest minima
+  ---
+  duration_ms: 1.5724
+  type: 'test'
+  ...
+# Subtest: obr10: gathering extensions re-reserve complete trajectories, resources and cooldowns; actual names, cancellation and determinism
+ok 266 - obr10: gathering extensions re-reserve complete trajectories, resources and cooldowns; actual names, cancellation and determinism
+  ---
+  duration_ms: 1916.3703
+  type: 'test'
+  ...
+# Subtest: obr10: rejected extension leaves no partial reservation; same original 20/24px sweep still owns acceptance
+ok 267 - obr10: rejected extension leaves no partial reservation; same original 20/24px sweep still owns acceptance
+  ---
+  duration_ms: 486.2287
+  type: 'test'
+  ...
+# Subtest: obr10: visitor and host really co-locate, use distinct ≥40px slots, cancel with guest and preserve reduced motion
+ok 268 - obr10: visitor and host really co-locate, use distinct ≥40px slots, cancel with guest and preserve reduced motion
+  ---
+  duration_ms: 180.5996
+  type: 'test'
+  ...
+# node:internal/child_process:1191
+#     result.error = new ErrnoException(result.error, 'spawnSync ' + options.file);
+#                    ^
+# <ref *1> Error: spawnSync git EPERM
+#     at Object.spawnSync (node:internal/child_process:1191:20)
+#     at spawnSync (node:child_process:929:24)
+#     at execFileSync (node:child_process:972:15)
+#     at readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:9:9)
+#     at file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-obr12.test.mjs:5:14
+#     at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+#     at async node:internal/modules/esm/loader:647:26
+#     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+#   errno: -4048,
+#   code: 'EPERM',
+#   syscall: 'spawnSync git',
+#   path: 'git',
+#   spawnargs: [ 'show', '0d47015:hani-office-live.js' ],
+#   error: [Circular *1],
+#   status: null,
+#   signal: null,
+#   output: null,
+#   pid: 0,
+#   stdout: undefined,
+#   stderr: undefined
+# }
+# Node.js v24.22.1
+# Subtest: C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-obr12.test.mjs
+not ok 22 - C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-obr12.test.mjs
+  ---
+  duration_ms: 56.9069
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-obr12.test.mjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# 235 daytime {
+#   day: '2026-10-21',
+#   activeRatio: 0.9055833333333333,
+#   walkingOrGuestsRatio: 0.8983888888888889,
+#   peopleMean: 3.15775,
+#   maxGuests: 2,
+#   kinds: [ 'courier', 'generic', 'candidate', 'client', 'rider' ]
+# }
+# 235 daytime {
+#   day: '2026-10-22',
+#   activeRatio: 0.9196111111111112,
+#   walkingOrGuestsRatio: 0.9099722222222222,
+#   peopleMean: 3.1574444444444443,
+#   maxGuests: 2,
+#   kinds: [ 'courier', 'generic', 'client', 'candidate', 'rider' ]
+# }
+# 235 daytime {
+#   day: '2026-10-23',
+#   activeRatio: 0.9069444444444444,
+#   walkingOrGuestsRatio: 0.8988888888888888,
+#   peopleMean: 3.2140833333333334,
+#   maxGuests: 2,
+#   kinds: [ 'courier', 'generic', 'candidate', 'client', 'rider' ]
+# }
+# 235 short examples [
+#   [ '사내 기획 퀴즈 혼자 풀어 보는 중', '퀴즈 푸는 중' ],
+#   [ '라운지에서 오늘 고생했다고 말하는 중', '인사 나누는 중' ],
+#   [ '작은 비용도 한 번 더 보는 중', '비용 살피는 중' ],
+#   [ '생활용품 메모에 작은 별 그리는 중', '메모 정리 중' ],
+#   [ '라운지에서 야근 이야기 중', '이야기 나누는 중' ],
+#   [ '협업 회의실로 가는 중', '용무 보러 이동 중' ],
+#   [ '설명 연습하다 작게 웃는 중', '살짝 웃는 중' ],
+#   [ '실험 메모에 작은 별 그리는 중', '메모 정리 중' ]
+# ]
+# Subtest: 235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism
+not ok 270 - 235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism
+  ---
+  duration_ms: 708.9255
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-obr14.test.mjs:10:1'
+  failureType: 'testCodeFailure'
+  error: 'spawnSync git EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1191:20)
+    spawnSync (node:child_process:929:24)
+    execFileSync (node:child_process:972:15)
+    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:9:9)
+    json (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:12:30)
+    loadScene (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:13:14)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-obr14.test.mjs:14:53)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.start (node:internal/test_runner/test:1262:17)
+  ...
+# Subtest: 235 weekdays 09–19 each second: 1F active >=70%, visible mean >=3, two public guests with separate targets and reservations
+ok 271 - 235 weekdays 09–19 each second: 1F active >=70%, visible mean >=3, two public guests with separate targets and reservations
+  ---
+  duration_ms: 73308.5088
+  type: 'test'
+  ...
+# Subtest: 235 all present staff have full and meaningful <=10-character short lines; idle duplicates avoided; walking/place speech kept
+ok 272 - 235 all present staff have full and meaningful <=10-character short lines; idle duplicates avoided; walking/place speech kept
+  ---
+  duration_ms: 26962.9435
+  type: 'test'
+  ...
+# Subtest: 235 motion only changes inner sprite transform, deterministic rhythm, walking/reduced-motion/pause exclusions
+ok 273 - 235 motion only changes inner sprite transform, deterministic rhythm, walking/reduced-motion/pause exclusions
+  ---
+  duration_ms: 1.252
+  type: 'test'
+  ...
+# Subtest: 235 last fractional second before a guest leaves remains in the continuous proximity check
+ok 274 - 235 last fractional second before a guest leaves remains in the continuous proximity check
+  ---
+  duration_ms: 1959.296
+  type: 'test'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 275 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 19.3165
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 276 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 6.7783
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 277 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 7.5294
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 278 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 10.012
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 279 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 71.2276
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 280 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 247.8606
+  type: 'test'
+  ...
+# Subtest: obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately
+not ok 281 - obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately
+  ---
+  duration_ms: 712.7909
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-obr15.test.mjs:30:1'
+  failureType: 'testCodeFailure'
+  error: 'spawnSync git EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1191:20)
+    spawnSync (node:child_process:929:24)
+    execFileSync (node:child_process:972:15)
+    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:9:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-obr15.test.mjs:32:20)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+  ...
+# Subtest: obr15 canonical presence first arrival / >=10 minute absence / brief flicker / day rollover / override
+ok 282 - obr15 canonical presence first arrival / >=10 minute absence / brief flicker / day rollover / override
+  ---
+  duration_ms: 0.3375
+  type: 'test'
+  ...
+# Subtest: obr15 greeting occurs immediately, 1–2 nearest available 4F staff stand in place for 5–10 seconds, then exact original action
+ok 283 - obr15 greeting occurs immediately, 1–2 nearest available 4F staff stand in place for 5–10 seconds, then exact original action
+  ---
+  duration_ms: 5188.1811
+  type: 'test'
+  ...
+# Subtest: obr15 greeting never addresses a chairman on a different floor
+ok 284 - obr15 greeting never addresses a chairman on a different floor
+  ---
+  duration_ms: 3.1349
+  type: 'test'
+  ...
+# Subtest: obr15 legacy 216 fallback retains its no-chairman-outing contract
+ok 285 - obr15 legacy 216 fallback retains its no-chairman-outing contract
+  ---
+  duration_ms: 397.8294
+  type: 'test'
+  ...
+# Subtest: obr15 reports: 4–8/day, one/person, 20–60 seconds, private chair unused, actor/resource collision zero, elevator round trip
+ok 286 - obr15 reports: 4–8/day, one/person, 20–60 seconds, private chair unused, actor/resource collision zero, elevator round trip
+  ---
+  duration_ms: 1172.8194
+  type: 'test'
+  ...
+# Subtest: obr15 reciprocal two-line report dialogue, exact endpoints, absent/cancelled/summoned gates and deterministic order
+ok 287 - obr15 reciprocal two-line report dialogue, exact endpoints, absent/cancelled/summoned gates and deterministic order
+  ---
+  duration_ms: 2901.2356
+  type: 'test'
+  ...
+# Subtest: obr15 actual persistent renderer consumes presence greeting and reciprocal facing, then resets through the existing update path
+ok 288 - obr15 actual persistent renderer consumes presence greeting and reciprocal facing, then resets through the existing update path
+  ---
+  duration_ms: 1025.8104
+  type: 'test'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 289 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 19.5713
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 290 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 6.3343
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 291 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 8.3982
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 292 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 9.0717
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 293 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 74.0673
+  type: 'test'
+  ...
+# phone vocabulary 83 [
+#   '퀴즈 푸는 중',   '인사 나누는 중', '비용 살피는 중', '메모 정리 중',
+#   '예산 점검 중',   '검증 기록 중',   '대화 나누는 중', '용무 보러 이동',
+#   '접수 확인 중',   '살짝 웃는 중',   '코드 수정 중',   '화면 검토 중',
+#   '일정 확인 중',   '업무 진행 중',   '흐름 살피는 중', '콘텐츠 구상 중',
+#   '문장 다듬는 중', '기획안 정리 중', '일정 조율 중',   '기록 정리 중',
+#   '설계 검토 중',   '수치 분석 중',   '내용 확인 중',   '안내 준비 중',
+#   '생각 정리 중',   '잠깐 고민 중',   '잠깐 몸 풀기',   '자료 정리 중',
+#   '복귀하는 중',    '품질 점검 중',   '결재 검토 중',   '고양이 영상 중',
+#   '잠깐 쉬는 중',   '자료 대조 중',   '커피 사러 이동', '풍경 보는 중',
+#   '결과 확인 중',   '커피 한 모금',   '인스타 보는 중', '읽어 보는 중',
+#   '가방 챙기는 중', '간식 살피는 중', '음악 고르는 중', '택배 확인 중',
+#   '스트레칭 중',    '커피 주문 중',   '기지개 켜는 중', '메뉴 고르는 중',
+#   '결재 확인 중',   '조금 더 볼게.',  '이건 연결되네.', '코드 살피는 중',
+#   '잠깐 걸을게요',  '소식 읽는 중',   '차례 대기 중',   '야식 고민 중',
+#   '졸음 참는 중',   '택배 찾기 이동', '요청 분류 중',   '업무 메모 중',
+#   '메일함 정리 중', '보고서 수정 중', '메모에 낙서 중', '출입 중',
+#   '서류 전달 중',   '배포 보고 중',   '좋아요, 갑시다', '보고 답변 중',
+#   '화면 설명 중',   '자료 확인 중',   '상담 중',        '면접 진행 중',
+#   '비용 보고 중',   '질문 듣는 중',   '잠깐 확인 중',   '함께 쉬는 중',
+#   '접수 보고 중',   '창 닫는 중',     '구현 보고 중',   '안건 보고 중',
+#   '졸음 쫓는 중',   '예산 보고 중',   '인스타 끄는 중'
+# ]
+# Node geometry only [
+#   {
+#     width: 300,
+#     metrics: 'synthetic, not browser pixels',
+#     minimumRatio: 0.875,
+#     samples: 365,
+#     meanMs: 1.6458175342466148,
+#     maxMs: 31.628700000000208,
+#     failures: []
+#   },
+#   {
+#     width: 342,
+#     metrics: 'synthetic, not browser pixels',
+#     minimumRatio: 1,
+#     samples: 365,
+#     meanMs: 0.9578772602739712,
+#     maxMs: 9.368099999999686,
+#     failures: []
+#   },
+#   {
+#     width: 1348,
+#     metrics: 'synthetic, not browser pixels',
+#     minimumRatio: 1,
+#     samples: 365,
+#     meanMs: 0.8211947945205257,
+#     maxMs: 2.8608000000003813,
+#     failures: []
+#   }
+# ]
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 294 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 235.0967
+  type: 'test'
+  ...
+# Subtest: obr16 conversations and greetings precede outings/movement, then ordinary work
+ok 295 - obr16 conversations and greetings precede outings/movement, then ordinary work
+  ---
+  duration_ms: 9.7917
+  type: 'test'
+  ...
+# Subtest: obr16 side lanes keep eight identical-column label groups within obr17 nearby limits
+ok 296 - obr16 side lanes keep eight identical-column label groups within obr17 nearby limits
+  ---
+  duration_ms: 3.9429
+  type: 'test'
+  ...
+# Subtest: obr16 default short vocabulary unchanged; phone lines <=8, semantic travel/report/greeting preserved
+ok 297 - obr16 default short vocabulary unchanged; phone lines <=8, semantic travel/report/greeting preserved
+  ---
+  duration_ms: 4835.5561
+  type: 'test'
+  ...
+# Subtest: obr16 real snapshot coordinates + synthetic label metrics: all floors/times, mascot obstacles and solver cost
+ok 298 - obr16 real snapshot coordinates + synthetic label metrics: all floors/times, mascot obstacles and solver cost
+  ---
+  duration_ms: 1632.9128
+  type: 'test'
+  ...
+# Subtest: obr16 frozen page clock polling runs on Node without in-page timer APIs
+ok 299 - obr16 frozen page clock polling runs on Node without in-page timer APIs
+  ---
+  duration_ms: 232.4205
+  type: 'test'
+  ...
+# Subtest: obr16 actual DOM owner applies grouped geometry through its public scene API, preserves slots and feet
+ok 300 - obr16 actual DOM owner applies grouped geometry through its public scene API, preserves slots and feet
+  ---
+  duration_ms: 700.9811
+  type: 'test'
+  ...
+# [
+#   {
+#     width: 300,
+#     metrics: 'Node synthetic font/animation geometry, not browser pixels',
+#     samples: 365,
+#     minimumRatio: 0.75,
+#     meanMs: 2.3142999999999985,
+#     maxMs: 33.63629999999995,
+#     counts: {
+#       sprite: 0,
+#       face: 0,
+#       label: 0,
+#       mascot: 0,
+#       outside: 0,
+#       distant: 0,
+#       dialogue: 0
+#     },
+#     failures: []
+#   },
+#   {
+#     width: 342,
+#     metrics: 'Node synthetic font/animation geometry, not browser pixels',
+#     samples: 365,
+#     minimumRatio: 1,
+#     meanMs: 0.8905238356164362,
+#     maxMs: 9.721299999999928,
+#     counts: {
+#       sprite: 0,
+#       face: 0,
+#       label: 0,
+#       mascot: 0,
+#       outside: 0,
+#       distant: 0,
+#       dialogue: 0
+#     },
+#     failures: []
+#   },
+#   {
+#     width: 1348,
+#     metrics: 'Node synthetic font/animation geometry, not browser pixels',
+#     samples: 365,
+#     minimumRatio: 1,
+#     meanMs: 0.8740501369863031,
+#     maxMs: 3.880000000000109,
+#     counts: {
+#       sprite: 0,
+#       face: 0,
+#       label: 0,
+#       mascot: 0,
+#       outside: 0,
+#       distant: 0,
+#       dialogue: 0
+#     },
+#     failures: []
+#   }
+# ]
+# Subtest: obr17 actual atlas proportions / phone dimensions: ratios, dialogue, all sprite/face/label/mascot/bounds and nearby limit
+ok 301 - obr17 actual atlas proportions / phone dimensions: ratios, dialogue, all sprite/face/label/mascot/bounds and nearby limit
+  ---
+  duration_ms: 2280.5447
+  type: 'test'
+  ...
+# Subtest: obr17 actor context removed; canonical layers, atlas pivot and compact >=10px are explicit
+ok 302 - obr17 actor context removed; canonical layers, atlas pivot and compact >=10px are explicit
+  ---
+  duration_ms: 1.7374
+  type: 'test'
+  ...
+# Subtest: obr17 blocked nearby space hides a label instead of sending it to a distant empty desk
+ok 303 - obr17 blocked nearby space hides a label instead of sending it to a distant empty desk
+  ---
+  duration_ms: 1.1096
+  type: 'test'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 304 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 16.8784
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 305 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 6.0281
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 306 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 7.7567
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 307 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 9.9561
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 308 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 64.9311
+  type: 'test'
+  ...
+# [
+#   {
+#     width: 300,
+#     metrics: 'Node synthetic font/animation geometry, not browser pixels',
+#     samples: 370,
+#     minimumRatio: 0.25,
+#     meanMs: 4.55479702702703,
+#     maxMs: 22.41949999999997,
+#     counts: {
+#       sprite: 0,
+#       face: 0,
+#       label: 0,
+#       mascot: 0,
+#       outside: 0,
+#       distant: 0,
+#       dialogue: 0
+#     },
+#     failures: [],
+#     missingDots: [
+#       [Object], [Object], [Object],
+#       [Object], [Object], [Object],
+#       [Object], [Object], [Object],
+#       [Object], [Object], [Object],
+#       [Object], [Object], [Object],
+#       [Object], [Object], [Object],
+#       [Object], [Object], [Object]
+#     ],
+#     spritePairs: 417
+#   },
+#   {
+#     width: 342,
+#     metrics: 'Node synthetic font/animation geometry, not browser pixels',
+#     samples: 370,
+#     minimumRatio: 0.3333333333333333,
+#     meanMs: 3.9862762162162064,
+#     maxMs: 17.008899999999812,
+#     counts: {
+#       sprite: 0,
+#       face: 0,
+#       label: 0,
+#       mascot: 0,
+#       outside: 0,
+#       distant: 0,
+#       dialogue: 0
+#     },
+#     failures: [],
+#     missingDots: [],
+#     spritePairs: 266
+#   },
+#   {
+#     width: 1348,
+#     metrics: 'Node synthetic font/animation geometry, not browser pixels',
+#     samples: 370,
+#     minimumRatio: 1,
+#     meanMs: 0.9707105405405363,
+#     maxMs: 4.0578999999997905,
+#     counts: {
+#       sprite: 0,
+#       face: 0,
+#       label: 0,
+#       mascot: 0,
+#       outside: 0,
+#       distant: 0,
+#       dialogue: 0
+#     },
+#     failures: [],
+#     missingDots: [],
+#     spritePairs: 14
+#   }
+# ]
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 309 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 247.5423
+  type: 'test'
+  ...
+# Subtest: obr19 original >=40px atlas / phone dimensions: measured ratios, mandatory dialogue, all sprite/face/label/mascot/bounds and nearby limit
+ok 310 - obr19 original >=40px atlas / phone dimensions: measured ratios, mandatory dialogue, all sprite/face/label/mascot/bounds and nearby limit
+  ---
+  duration_ms: 4423.7248
+  type: 'test'
+  ...
+# Subtest: obr18 suppressed pills retain collision-free nearby dots; dots excluded from visible count
+ok 311 - obr18 suppressed pills retain collision-free nearby dots; dots excluded from visible count
+  ---
+  duration_ms: 5.959
+  type: 'test'
+  ...
+# Subtest: obr18 mobile actual owner keeps one merged slot, full tap source, feet and persistent nodes through updates
+ok 312 - obr18 mobile actual owner keeps one merged slot, full tap source, feet and persistent nodes through updates
+  ---
+  duration_ms: 855.9659
+  type: 'test'
+  ...
+# Subtest: obr18 phone vocabulary preserves report topic, assent and greeting without clipping
+ok 313 - obr18 phone vocabulary preserves report topic, assent and greeting without clipping
+  ---
+  duration_ms: 0.2633
+  type: 'test'
+  ...
+# Subtest: obr18 actor context removed; canonical layers, atlas pivot and compact >=10px are explicit
+ok 314 - obr18 actor context removed; canonical layers, atlas pivot and compact >=10px are explicit
+  ---
+  duration_ms: 1.6546
+  type: 'test'
+  ...
+# Subtest: obr18 blocked nearby space hides a label instead of sending it to a distant empty desk
+ok 315 - obr18 blocked nearby space hides a label instead of sending it to a distant empty desk
+  ---
+  duration_ms: 1.1164
+  type: 'test'
+  ...
+# Subtest: obr19 full source produces concrete 2–6 character actions; no generic words or clipping
+ok 316 - obr19 full source produces concrete 2–6 character actions; no generic words or clipping
+  ---
+  duration_ms: 1.8227
+  type: 'test'
+  ...
+# Subtest: obr19 same-floor authored activity alternatives avoid simultaneous duplicates; full original unchanged
+ok 317 - obr19 same-floor authored activity alternatives avoid simultaneous duplicates; full original unchanged
+  ---
+  duration_ms: 3916.3834
+  type: 'test'
+  ...
+# Subtest: obr19 CSS restores the exact original minimum40 rule and adds no phone scale override
+ok 318 - obr19 CSS restores the exact original minimum40 rule and adds no phone scale override
+  ---
+  duration_ms: 0.3767
+  type: 'test'
+  ...
+# Subtest: obr21 authored full absent/present plans and reverse snapshots match frozen delta
+not ok 319 - obr21 authored full absent/present plans and reverse snapshots match frozen delta
+  ---
+  duration_ms: 2030.9101
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-obr21.test.mjs:39:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    restoreResidentsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-residents-source.mjs:12:9)
+    restoreOfficeLabelsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-obr21.test.mjs:31:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-obr21.test.mjs:42:94)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.start (node:internal/test_runner/test:1262:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+  ...
+# Subtest: obr21 all 1F stationary intervals incl waits: independent phone sprite boxes do not overlap; formal catalog and fixed homes exempt
+ok 320 - obr21 all 1F stationary intervals incl waits: independent phone sprite boxes do not overlap; formal catalog and fixed homes exempt
+  ---
+  duration_ms: 3730.571
+  type: 'test'
+  ...
+# Subtest: obr21 every report uses existing CEO floor >=170 art pixels away with reciprocal facing and safe phone boxes
+ok 321 - obr21 every report uses existing CEO floor >=170 art pixels away with reciprocal facing and safe phone boxes
+  ---
+  duration_ms: 948.2134
+  type: 'test'
+  ...
+# Subtest: obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation
+not ok 322 - obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation
+  ---
+  duration_ms: 8.4226
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-obr21.test.mjs:103:1'
+  failureType: 'testCodeFailure'
+  error: 'spawnSync git EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1191:20)
+    spawnSync (node:child_process:929:24)
+    execFileSync (node:child_process:972:15)
+    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:9:9)
+    json (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:12:30)
+    loadScene (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:13:14)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-obr21.test.mjs:104:12)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+  ...
+# Subtest: obr21 cached gathering/index decisions equal full index rebuilds
+not ok 323 - obr21 cached gathering/index decisions equal full index rebuilds
+  ---
+  duration_ms: 3.6751
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-obr21.test.mjs:120:1'
+  failureType: 'testCodeFailure'
+  error: 'spawnSync git EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1191:20)
+    spawnSync (node:child_process:929:24)
+    execFileSync (node:child_process:972:15)
+    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:9:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-obr21.test.mjs:121:17)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+  ...
+# Subtest: obr21 new desk gestures keep the phone envelope clear without moving fixed homes
+ok 324 - obr21 new desk gestures keep the phone envelope clear without moving fixed homes
+  ---
+  duration_ms: 11002.4471
+  type: 'test'
+  ...
+# obr3 formal bounds { catalog: 216, away: 184, home: 158, groups: 0 }
+# obr3 formal bounds { catalog: 221, away: 183, home: 10740, groups: 1 }
+# obr3 companion week [
+#   { day: '2026-10-19', groups: 13, trios: 0 },
+#   { day: '2026-10-20', groups: 11, trios: 0 },
+#   { day: '2026-10-21', groups: 13, trios: 0 },
+#   { day: '2026-10-22', groups: 13, trios: 0 },
+#   { day: '2026-10-23', groups: 12, trios: 0 },
+#   { day: '2026-10-24', groups: 11, trios: 0 },
+#   { day: '2026-10-25', groups: 15, trios: 0 }
+# ]
+# Subtest: obr3: every places JSON string is free of file extensions, including keys and nested evidence
+ok 325 - obr3: every places JSON string is free of file extensions, including keys and nested evidence
+  ---
+  duration_ms: 3.6268
+  type: 'test'
+  ...
+# Subtest: obr3: formal 216/221 trips obey destination bounds including FIFO waiting; home durations stay exact
+ok 326 - obr3: formal 216/221 trips obey destination bounds including FIFO waiting; home durations stay exact
+  ---
+  duration_ms: 285.9273
+  type: 'test'
+  ...
+# Subtest: obr3: unmapped destination falls back to its room kind, then a 45-second minimum
+ok 327 - obr3: unmapped destination falls back to its room kind, then a 45-second minimum
+  ---
+  duration_ms: 69.2733
+  type: 'test'
+  ...
+# Subtest: obr3: staff companionship fits 09:00–19:30, avoids consult/reception, and cross-floor companionship stays ≤2 per person/day
+ok 328 - obr3: staff companionship fits 09:00–19:30, avoids consult/reception, and cross-floor companionship stays ≤2 per person/day
+  ---
+  duration_ms: 2680.8891
+  type: 'test'
+  ...
+# Subtest: obr3: explicit human presence retains its reserved seat; staff leisure does not invite the chairman or virtual MIR
+ok 329 - obr3: explicit human presence retains its reserved seat; staff leisure does not invite the chairman or virtual MIR
+  ---
+  duration_ms: 898.6749
+  type: 'test'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 330 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 29.2654
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 331 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 9.9407
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 332 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 9.8662
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 333 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 14.9436
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 334 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 79.9695
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 335 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 249.7402
+  type: 'test'
+  ...
+# Subtest: obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows
+not ok 336 - obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows
+  ---
+  duration_ms: 10.0372
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-obr4.test.mjs:12:1'
+  failureType: 'testCodeFailure'
+  error: 'spawnSync git EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1191:20)
+    spawnSync (node:child_process:929:24)
+    execFileSync (node:child_process:972:15)
+    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:9:9)
+    assertOnboardedCanon (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-onboarding-232-assertions.mjs:14:17)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-obr4.test.mjs:13:2)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+  ...
+# Subtest: obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats
+not ok 337 - obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats
+  ---
+  duration_ms: 4.7806
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-obr4.test.mjs:25:1'
+  failureType: 'testCodeFailure'
+  error: 'spawnSync git EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1191:20)
+    spawnSync (node:child_process:929:24)
+    execFileSync (node:child_process:972:15)
+    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:9:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-obr4.test.mjs:26:23)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+  ...
+# Subtest: obr4: untouched mascot runtime derives data-planned=false for both onboarded people and preserves home coordinates
+ok 338 - obr4: untouched mascot runtime derives data-planned=false for both onboarded people and preserves home coordinates
+  ---
+  duration_ms: 15.2303
+  type: 'test'
+  ...
+# Subtest: obr4: both people participate in generic actions and all place cards carry sourced safe preferences/arrival lines
+ok 339 - obr4: both people participate in generic actions and all place cards carry sourced safe preferences/arrival lines
+  ---
+  duration_ms: 5.061
+  type: 'test'
+  ...
+# node:internal/child_process:1191
+#     result.error = new ErrnoException(result.error, 'spawnSync ' + options.file);
+#                    ^
+# <ref *1> Error: spawnSync git EPERM
+#     at Object.spawnSync (node:internal/child_process:1191:20)
+#     at spawnSync (node:child_process:929:24)
+#     at execFileSync (node:child_process:972:15)
+#     at readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:9:9)
+#     at file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-obr6.test.mjs:26:49
+#     at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+#     at async node:internal/modules/esm/loader:647:26
+#     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+#   errno: -4048,
+#   code: 'EPERM',
+#   syscall: 'spawnSync git',
+#   path: 'git',
+#   spawnargs: [ 'show', '0d47015:hani-office-live.js' ],
+#   error: [Circular *1],
+#   status: null,
+#   signal: null,
+#   output: null,
+#   pid: 0,
+#   stdout: undefined,
+#   stderr: undefined
+# }
+# Node.js v24.22.1
+# Subtest: C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-obr6.test.mjs
+not ok 32 - C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-obr6.test.mjs
+  ---
+  duration_ms: 865.8194
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-obr6.test.mjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# node:internal/child_process:1191
+#     result.error = new ErrnoException(result.error, 'spawnSync ' + options.file);
+#                    ^
+# <ref *1> Error: spawnSync git EPERM
+#     at Object.spawnSync (node:internal/child_process:1191:20)
+#     at spawnSync (node:child_process:929:24)
+#     at execFileSync (node:child_process:972:15)
+#     at readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:9:9)
+#     at file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-obr7.test.mjs:5:14
+#     at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+#     at async node:internal/modules/esm/loader:647:26
+#     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+#   errno: -4048,
+#   code: 'EPERM',
+#   syscall: 'spawnSync git',
+#   path: 'git',
+#   spawnargs: [ 'show', 'ecc1384:hani-office-live.js' ],
+#   error: [Circular *1],
+#   status: null,
+#   signal: null,
+#   output: null,
+#   pid: 0,
+#   stdout: undefined,
+#   stderr: undefined
+# }
+# Node.js v24.22.1
+# Subtest: C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-obr7.test.mjs
+not ok 33 - C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-obr7.test.mjs
+  ---
+  duration_ms: 72.5061
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-obr7.test.mjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words
+not ok 342 - obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words
+  ---
+  duration_ms: 909.0316
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-obr8.test.mjs:34:1'
+  failureType: 'testCodeFailure'
+  error: 'spawnSync git EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1191:20)
+    spawnSync (node:child_process:929:24)
+    execFileSync (node:child_process:972:15)
+    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:9:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-obr8.test.mjs:37:76)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.start (node:internal/test_runner/test:1262:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+  ...
+# Subtest: obr8: 9.41px approach is refused, absent/summoned target excluded, cancellation atomic, reduced motion and query order stable
+ok 343 - obr8: 9.41px approach is refused, absent/summoned target excluded, cancellation atomic, reduced motion and query order stable
+  ---
+  duration_ms: 1039.4716
+  type: 'test'
+  ...
+# Subtest: obr8/obr14: daytime visitors use two public slots with 20–40s takeout; staff errands do not shorten rest stays
+ok 344 - obr8/obr14: daytime visitors use two public slots with 20–40s takeout; staff errands do not shorten rest stays
+  ---
+  duration_ms: 119.7108
+  type: 'test'
+  ...
+# node:internal/child_process:1191
+#     result.error = new ErrnoException(result.error, 'spawnSync ' + options.file);
+#                    ^
+# <ref *1> Error: spawnSync git EPERM
+#     at Object.spawnSync (node:internal/child_process:1191:20)
+#     at spawnSync (node:child_process:929:24)
+#     at execFileSync (node:child_process:972:15)
+#     at readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:9:9)
+#     at file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-obr9.test.mjs:6:14
+#     at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+#     at async node:internal/modules/esm/loader:647:26
+#     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+#   errno: -4048,
+#   code: 'EPERM',
+#   syscall: 'spawnSync git',
+#   path: 'git',
+#   spawnargs: [ 'show', '0b7bedd:hani-office-live.js' ],
+#   error: [Circular *1],
+#   status: null,
+#   signal: null,
+#   output: null,
+#   pid: 0,
+#   stdout: undefined,
+#   stderr: undefined
+# }
+# Node.js v24.22.1
+# Subtest: C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-obr9.test.mjs
+not ok 35 - C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-obr9.test.mjs
+  ---
+  duration_ms: 69.7201
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-obr9.test.mjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 346 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 26.1709
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 347 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 8.6712
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 348 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 10.0959
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 349 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 11.8656
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 350 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 82.7184
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 351 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 247.3384
+  type: 'test'
+  ...
+# Subtest: mouse 1280: map/card/page/header/sidebar close; staff, pets, barista and event controls work
+ok 352 - mouse 1280: map/card/page/header/sidebar close; staff, pets, barista and event controls work
+  ---
+  duration_ms: 1140.9708
+  type: 'test'
+  ...
+# Subtest: mouse 1920: map/card/page/header/sidebar close; staff, pets, barista and event controls work
+ok 353 - mouse 1920: map/card/page/header/sidebar close; staff, pets, barista and event controls work
+  ---
+  duration_ms: 979.9741
+  type: 'test'
+  ...
+# Subtest: existing pointer owner runs before a descendant stopPropagation, without adding document listeners
+ok 354 - existing pointer owner runs before a descendant stopPropagation, without adding document listeners
+  ---
+  duration_ms: 903.3168
+  type: 'test'
+  ...
+# Subtest: real cause: dismissing a manually opened pet trio cannot immediately trigger the automatic trio
+ok 355 - real cause: dismissing a manually opened pet trio cannot immediately trigger the automatic trio
+  ---
+  duration_ms: 924.8254
+  type: 'test'
+  ...
+# Subtest: pets: bounded idle motion fills pauses, preserves clock paths, and reduced/offscreen rules stop it
+ok 356 - pets: bounded idle motion fills pauses, preserves clock paths, and reduced/offscreen rules stop it
+  ---
+  duration_ms: 1957.8229
+  type: 'test'
+  ...
+# Subtest: model plan/blockPlan/snapshot and all model helpers stay byte identical; no extra loops, listeners or nodes
+ok 357 - model plan/blockPlan/snapshot and all model helpers stay byte identical; no extra loops, listeners or nodes
+  ---
+  duration_ms: 2.7735
+  type: 'test'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 358 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 24.0432
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 359 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 8.7299
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 360 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 10.3095
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 361 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 13.8064
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 362 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 80.9013
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 363 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 250.464
+  type: 'test'
+  ...
+# Subtest: props: one persistent map layer and seven persistent, map-relative slots across floors and clocks
+ok 364 - props: one persistent map layer and seven persistent, map-relative slots across floors and clocks
+  ---
+  duration_ms: 42.6113
+  type: 'test'
+  ...
+# Subtest: props: lantern follows committed night art, exact 18:30/06:00 boundary, fallback and loading
+ok 365 - props: lantern follows committed night art, exact 18:30/06:00 boundary, fallback and loading
+  ---
+  duration_ms: 22.1683
+  type: 'test'
+  ...
+# Subtest: props: CSS owns four-frame timing, long-idle sparkle, tap-through, stacking and reduced frame 2
+ok 366 - props: CSS owns four-frame timing, long-idle sparkle, tap-through, stacking and reduced frame 2
+  ---
+  duration_ms: 1.3905
+  type: 'test'
+  ...
+# Subtest: props: reduced-motion owner remains persistent, floor-scoped and write-free
+ok 367 - props: reduced-motion owner remains persistent, floor-scoped and write-free
+  ---
+  duration_ms: 8.2486
+  type: 'test'
+  ...
+# Subtest: props: scheduler/plan/blockPlan/snapshot/labels/home-clear source bytes and all six assets are unchanged
+not ok 368 - props: scheduler/plan/blockPlan/snapshot/labels/home-clear source bytes and all six assets are unchanged
+  ---
+  duration_ms: 11.6877
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-props.test.mjs:87:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    residents renderer
+    + actual - expected
+    
+    + 'a7a32a21974d468b81efde6b95363eb5b3faa33712a6aaad579d9c0ef878fa49'
+    - '2996a42b596252f9af13ba8ff09bf4f315a7ab5f738d4e04234cb1fb013cab72'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '2996a42b596252f9af13ba8ff09bf4f315a7ab5f738d4e04234cb1fb013cab72'
+  actual: 'a7a32a21974d468b81efde6b95363eb5b3faa33712a6aaad579d9c0ef878fa49'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-props.test.mjs:89:133)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 369 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 23.5465
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 370 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.9857
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 371 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 11.9695
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 372 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 12.7893
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 373 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 76.5994
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 374 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 247.0161
+  type: 'test'
+  ...
+# Subtest: final names, personalities and actual residentPeople lines obey the local dialogue rules
+ok 375 - final names, personalities and actual residentPeople lines obey the local dialogue rules
+  ---
+  duration_ms: 0.616
+  type: 'test'
+  ...
+# Subtest: reduced motion jumps to the stop and keeps coordinates fixed throughout every walking interval
+ok 376 - reduced motion jumps to the stop and keeps coordinates fixed throughout every walking interval
+  ---
+  duration_ms: 1348.7895
+  type: 'test'
+  ...
+# Subtest: resident occupancy stays separate for multiple days and moving as well as resting residents
+ok 377 - resident occupancy stays separate for multiple days and moving as well as resting residents
+  ---
+  duration_ms: 3122.0921
+  type: 'test'
+  ...
+# Subtest: unchanged residents perform no DOM writes on the shared clock
+ok 378 - unchanged residents perform no DOM writes on the shared clock
+  ---
+  duration_ms: 1036.757
+  type: 'test'
+  ...
+# Subtest: walking taps wait for arrival, NPC sprites stay upright, and label fit runs at arrival
+ok 379 - walking taps wait for arrival, NPC sprites stay upright, and label fit runs at arrival
+  ---
+  duration_ms: 1013.3022
+  type: 'test'
+  ...
+# Subtest: moving open bubbles follow cached geometry without frame reads and close when their resident hides
+ok 380 - moving open bubbles follow cached geometry without frame reads and close when their resident hides
+  ---
+  duration_ms: 990.6874
+  type: 'test'
+  ...
+# Subtest: compact dot fallback never exposes a full resident name
+ok 381 - compact dot fallback never exposes a full resident name
+  ---
+  duration_ms: 879.9455
+  type: 'test'
+  ...
+# Subtest: eight approved atlases decode, match their manifest hashes, load through the real owner and enter the closure
+not ok 382 - eight approved atlases decode, match their manifest hashes, load through the real owner and enter the closure
+  ---
+  duration_ms: 1224.5203
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-residents.test.mjs:110:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    restoreResidentsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-residents-source.mjs:12:9)
+    read (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-residents.test.mjs:124:197)
+    resolveRuntimeClosure (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-runtime-closure.mjs:78:25)
+    async TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-residents.test.mjs:124:18)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: separate date seed, stable hour/floor schedule, eight daytime residents and only pets overnight
+ok 383 - separate date seed, stable hour/floor schedule, eight daytime residents and only pets overnight
+  ---
+  duration_ms: 14.0192
+  type: 'test'
+  ...
+# Subtest: all resident dwell points and sampled walking positions stay walkable, outside walls and all furniture
+ok 384 - all resident dwell points and sampled walking positions stay walkable, outside walls and all furniture
+  ---
+  duration_ms: 6386.5854
+  type: 'test'
+  ...
+# Subtest: every stop and whole walking segment clears painted furniture, counters, cabinets, sofas, tables and spare desks on all five floors
+ok 385 - every stop and whole walking segment clears painted furniture, counters, cabinets, sofas, tables and spare desks on all five floors
+  ---
+  duration_ms: 1.7505
+  type: 'test'
+  ...
+# Subtest: 02:00 to 07:00 sleeping pets keep separate stable spots, including occupied-spot fallback
+ok 386 - 02:00 to 07:00 sleeping pets keep separate stable spots, including occupied-spot fallback
+  ---
+  duration_ms: 4.111
+  type: 'test'
+  ...
+# Subtest: pets stay awake at 23:59 and 01:30, walk after midnight, and sleep only from 02:00 to 07:00 KST
+ok 387 - pets stay awake at 23:59 and 01:30, walk after midnight, and sleep only from 02:00 to 07:00 KST
+  ---
+  duration_ms: 934.2682
+  type: 'test'
+  ...
+# Subtest: pet daily seeds and positions remain continuous over midnight and roll over at 07:00
+ok 388 - pet daily seeds and positions remain continuous over midnight and roll over at 07:00
+  ---
+  duration_ms: 0.3957
+  type: 'test'
+  ...
+# Subtest: stable quarter-hour visits use only resting staff on the same floor and never visitors or travellers
+ok 389 - stable quarter-hour visits use only resting staff on the same floor and never visitors or travellers
+  ---
+  duration_ms: 6.3503
+  type: 'test'
+  ...
+# Subtest: thirty short voiced lines include every canonical staff member and monitor-side cat reactions stay on clear floor
+ok 390 - thirty short voiced lines include every canonical staff member and monitor-side cat reactions stay on clear floor
+  ---
+  duration_ms: 2.9462
+  type: 'test'
+  ...
+# Subtest: cream follows seated or walking chairman to his floor, dwells beside clear positions, and yields when blocked
+ok 391 - cream follows seated or walking chairman to his floor, dwells beside clear positions, and yields when blocked
+  ---
+  duration_ms: 379.712
+  type: 'test'
+  ...
+# Subtest: interaction routes and dwell spots clear full furniture envelopes and staff snapshots/plans remain byte-identical on and off
+not ok 392 - interaction routes and dwell spots clear full furniture envelopes and staff snapshots/plans remain byte-identical on and off
+  ---
+  duration_ms: 5.5777
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-residents.test.mjs:262:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    restoreResidentsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-residents-source.mjs:12:9)
+    transform (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-residents.test.mjs:263:63)
+    loadScene (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:17:18)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-residents.test.mjs:263:17)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+  ...
+# Subtest: actual delegated pet taps show both speakers, automatic scene uses existing bubble, and all persistence/AI paths remain unused
+not ok 393 - actual delegated pet taps show both speakers, automatic scene uses existing bubble, and all persistence/AI paths remain unused
+  ---
+  duration_ms: 881.8402
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-residents.test.mjs:285:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-residents.test.mjs:288:106)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: all decoded pose tops drive the existing label flow at phone and desktop widths without frame layout reads
+ok 394 - all decoded pose tops drive the existing label flow at phone and desktop widths without frame layout reads
+  ---
+  duration_ms: 3350.2343
+  type: 'test'
+  ...
+# Subtest: the shared bubble hidden CSS wins over display:flex for residents and visitors, and staff links remain shown
+ok 395 - the shared bubble hidden CSS wins over display:flex for residents and visitors, and staff links remain shown
+  ---
+  duration_ms: 1067.5741
+  type: 'test'
+  ...
+# Subtest: every original source byte and staff/visitor plan, outing and snapshot stays identical with residents on or off
+not ok 396 - every original source byte and staff/visitor plan, outing and snapshot stays identical with residents on or off
+  ---
+  duration_ms: 1.4513
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-residents.test.mjs:348:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    restoreResidentsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-residents-source.mjs:12:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-residents.test.mjs:349:17)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: real persistent actors survive floor changes, do not affect floor counts or roster, and use both pet facing rows
+ok 397 - real persistent actors survive floor changes, do not affect floor counts or roster, and use both pet facing rows
+  ---
+  duration_ms: 2131.3055
+  type: 'test'
+  ...
+# Subtest: existing delegated tap/keyboard bubbles use short local lines, pet hop, no profile or writes; hidden/reduced clocks stay still
+ok 398 - existing delegated tap/keyboard bubbles use short local lines, pet hop, no profile or writes; hidden/reduced clocks stay still
+  ---
+  duration_ms: 1814.1182
+  type: 'test'
+  ...
+# Subtest: Mochi approved atlas decodes with hop phases, exact manifest metadata and cached-manifest fallback
+ok 399 - Mochi approved atlas decodes with hop phases, exact manifest metadata and cached-manifest fallback
+  ---
+  duration_ms: 898.9459
+  type: 'test'
+  ...
+# Subtest: Mochi schedule covers quiet 3F mornings, 4F days, 1F evenings, midnight continuity and 02..07 sleep
+ok 400 - Mochi schedule covers quiet 3F mornings, 4F days, 1F evenings, midnight continuity and 02..07 sleep
+  ---
+  duration_ms: 18.777
+  type: 'test'
+  ...
+# Subtest: Mochi uses eased hops around 18px/sec every 120..180 seconds, with longer rests and whole-body clearance
+ok 401 - Mochi uses eased hops around 18px/sec every 120..180 seconds, with longer rests and whole-body clearance
+  ---
+  duration_ms: 622.9474
+  type: 'test'
+  ...
+# Subtest: Mochi prefers resting guardian Hina, yields to work/travel/visitors and never changes staff
+ok 402 - Mochi prefers resting guardian Hina, yields to work/travel/visitors and never changes staff
+  ---
+  duration_ms: 34.9474
+  type: 'test'
+  ...
+# Subtest: tap any trio member sequences Cream, Cheese, Mochi on the single bubble and holds safe nearby stops for twelve seconds
+ok 403 - tap any trio member sequences Cream, Cheese, Mochi on the single bubble and holds safe nearby stops for twelve seconds
+  ---
+  duration_ms: 3013.868
+  type: 'test'
+  ...
+# Subtest: trio rejects missing/different-floor/sleeping pets and staff-blocked floor; plan and snapshot bytes stay frozen
+not ok 404 - trio rejects missing/different-floor/sleeping pets and staff-blocked floor; plan and snapshot bytes stay frozen
+  ---
+  duration_ms: 599.4754
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-residents.test.mjs:447:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    restoreResidentsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-residents-source.mjs:12:9)
+    transform (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-residents.test.mjs:452:62)
+    loadScene (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:17:18)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-residents.test.mjs:452:12)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+  ...
+# Subtest: seeded Cheese and Cream spots change within two minutes; NPC quarters and all staff plans stay frozen
+not ok 405 - seeded Cheese and Cream spots change within two minutes; NPC quarters and all staff plans stay frozen
+  ---
+  duration_ms: 863.0033
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-residents.test.mjs:461:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    restoreResidentsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-residents-source.mjs:12:9)
+    transform (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-residents.test.mjs:468:67)
+    loadScene (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:17:18)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-residents.test.mjs:468:17)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+  ...
+# Subtest: affection is brief, deterministic, floor-local and near a stationary working or resting member; Cream prefers chairman
+ok 406 - affection is brief, deterministic, floor-local and near a stationary working or resting member; Cream prefers chairman
+  ---
+  duration_ms: 324.3217
+  type: 'test'
+  ...
+# Subtest: real pet hearts reuse one mounted node, pair taps override trio during affection, and reduced motion is still with zero writes
+not ok 407 - real pet hearts reuse one mounted node, pair taps override trio during affection, and reduced motion is still with zero writes
+  ---
+  duration_ms: 1145.2658
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-residents.test.mjs:489:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-residents.test.mjs:495:230)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: life signs repeat every 10..20 seconds, cover four gestures, and sleep or reduced motion suppresses them
+ok 408 - life signs repeat every 10..20 seconds, cover four gestures, and sleep or reduced motion suppresses them
+  ---
+  duration_ms: 89.8292
+  type: 'test'
+  ...
+# Subtest: persistent pet life gestures run on the shared tick without creating nodes, timers or frame layout reads; sleeping taps hop
+ok 409 - persistent pet life gestures run on the shared tick without creating nodes, timers or frame layout reads; sleeping taps hop
+  ---
+  duration_ms: 1365.8187
+  type: 'test'
+  ...
+# Subtest: pet nominal speeds vary per leg around Cream 48, Cheese 40 and Mochi 18 while periods remain stable over days
+ok 410 - pet nominal speeds vary per leg around Cream 48, Cheese 40 and Mochi 18 while periods remain stable over days
+  ---
+  duration_ms: 388.4307
+  type: 'test'
+  ...
+# Subtest: shared-floor companions safely approach each other and the trio speaks automatically once together
+not ok 411 - shared-floor companions safely approach each other and the trio speaks automatically once together
+  ---
+  duration_ms: 3378.1885
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-residents.test.mjs:551:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-residents.test.mjs:557:135)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: pet easing moves less at both ends than in the middle, with seeded per-leg speeds and variable launch rests
+ok 412 - pet easing moves less at both ends than in the middle, with seeded per-leg speeds and variable launch rests
+  ---
+  duration_ms: 3.839
+  type: 'test'
+  ...
+# Subtest: a seeded day includes reproducible one-to-three second mid-route pauses followed by onward movement
+ok 413 - a seeded day includes reproducible one-to-three second mid-route pauses followed by onward movement
+  ---
+  duration_ms: 4147.8009
+  type: 'test'
+  ...
+# Subtest: curves use clear midpoints and whole corridors on every pet floor, and still reject blocked points
+ok 414 - curves use clear midpoints and whole corridors on every pet floor, and still reject blocked points
+  ---
+  duration_ms: 102.14
+  type: 'test'
+  ...
+# Subtest: facing is stable across short and vertical legs, including reversed legs and their arrival
+ok 415 - facing is stable across short and vertical legs, including reversed legs and their arrival
+  ---
+  duration_ms: 24.6221
+  type: 'test'
+  ...
+# Subtest: personalities use distance-synced quiet steps, bouncy trot and two hops then ears-up rest; Cream can spin
+ok 416 - personalities use distance-synced quiet steps, bouncy trot and two hops then ears-up rest; Cream can spin
+  ---
+  duration_ms: 28.5371
+  type: 'test'
+  ...
+# Subtest: reduced pet motion has no bob, lean, spin, animated pose or easing properties in the persistent owner
+ok 417 - reduced pet motion has no bob, lean, spin, animated pose or easing properties in the persistent owner
+  ---
+  duration_ms: 1164.8213
+  type: 'test'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 418 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 25.9319
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 419 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.7205
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 420 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 11.6129
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 421 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 11.2588
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 422 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 69.686
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 423 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 247.8722
+  type: 'test'
+  ...
+# Subtest: 19 staff have unique named home chairs on their canonical floor; CEO reserved
+ok 424 - 19 staff have unique named home chairs on their canonical floor; CEO reserved
+  ---
+  duration_ms: 8.6138
+  type: 'test'
+  ...
+# Subtest: every chair preserves canon ownership and uses its explicit v1 furniture footprint
+ok 425 - every chair preserves canon ownership and uses its explicit v1 furniture footprint
+  ---
+  duration_ms: 0.7101
+  type: 'test'
+  ...
+# Subtest: 31 days of work/break/meeting slots use valid noncolliding chairs with CEO always empty
+ok 426 - 31 days of work/break/meeting slots use valid noncolliding chairs with CEO always empty
+  ---
+  duration_ms: 87.1644
+  type: 'test'
+  ...
+# Subtest: zone action pools combine role with place; lounge never claims desk work
+ok 427 - zone action pools combine role with place; lounge never claims desk work
+  ---
+  duration_ms: 3.2524
+  type: 'test'
+  ...
+# Subtest: actual renderer remains seated across timer updates, reloads and meeting round-trip
+ok 428 - actual renderer remains seated across timer updates, reloads and meeting round-trip
+  ---
+  duration_ms: 103.6789
+  type: 'test'
+  ...
+# Subtest: logo removed, one persistent actor owner, lazy sprite slots and no random render path
+ok 429 - logo removed, one persistent actor owner, lazy sprite slots and no random render path
+  ---
+  duration_ms: 6.1489
+  type: 'test'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 430 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 18.2665
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 431 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.8235
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 432 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 9.2146
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 433 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 11.1146
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 434 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 70.4072
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 435 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 250.9642
+  type: 'test'
+  ...
+# Subtest: snack: mounted persistent caption button reacts only to stationary staff on this floor
+ok 436 - snack: mounted persistent caption button reacts only to stationary staff on this floor
+  ---
+  duration_ms: 27.0648
+  type: 'test'
+  ...
+# Subtest: snack: phone exact short form is shared by everyone, including reduced motion with no new effect
+ok 437 - snack: phone exact short form is shared by everyone, including reduced motion with no new effect
+  ---
+  duration_ms: 120.3171
+  type: 'test'
+  ...
+# Subtest: snack: real walking staff keep the same motion path; visitors, NPCs and pets never react
+ok 438 - snack: real walking staff keep the same motion path; visitors, NPCs and pets never react
+  ---
+  duration_ms: 4632.6715
+  type: 'test'
+  ...
+# Subtest: snack: after exactly 8 seconds icon/status restore in place without an intermediate schedule flash
+ok 439 - snack: after exactly 8 seconds icon/status restore in place without an intermediate schedule flash
+  ---
+  duration_ms: 25.1634
+  type: 'test'
+  ...
+# Subtest: snack: schedule advances during overlay and expiry restores the current schedule
+ok 440 - snack: schedule advances during overlay and expiry restores the current schedule
+  ---
+  duration_ms: 2245.0446
+  type: 'test'
+  ...
+# Subtest: snack: ten-minute floor cooldown survives floor changes, both timers clear, stale end cannot affect another floor
+ok 441 - snack: ten-minute floor cooldown survives floor changes, both timers clear, stale end cannot affect another floor
+  ---
+  duration_ms: 27.083
+  type: 'test'
+  ...
+# Subtest: snack: viewer tap wins over thank-you, including stale bubble timer and pending async loads
+ok 442 - snack: viewer tap wins over thank-you, including stale bubble timer and pending async loads
+  ---
+  duration_ms: 32.2797
+  type: 'test'
+  ...
+# Subtest: snack: no node allocation on repeated taps, floor switches or expiry; no storage writes; reload clears memory
+ok 443 - snack: no node allocation on repeated taps, floor switches or expiry; no storage writes; reload clears memory
+  ---
+  duration_ms: 59.3983
+  type: 'test'
+  ...
+# Subtest: snack: login lock hides button and rejects clicks; no scene interaction when hidden
+ok 444 - snack: login lock hides button and rejects clicks; no scene interaction when hidden
+  ---
+  duration_ms: 14.2476
+  type: 'test'
+  ...
+# Subtest: snack: scheduler/snapshot/geometry/residents bytes and complete sampled model JSON preserve c301a13
+not ok 445 - snack: scheduler/snapshot/geometry/residents bytes and complete sampled model JSON preserve c301a13
+  ---
+  duration_ms: 2.2493
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-snack.test.mjs:131:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    residents renderer
+    + actual - expected
+    
+    + 'a7a32a21974d468b81efde6b95363eb5b3faa33712a6aaad579d9c0ef878fa49'
+    - '2996a42b596252f9af13ba8ff09bf4f315a7ab5f738d4e04234cb1fb013cab72'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '2996a42b596252f9af13ba8ff09bf4f315a7ab5f738d4e04234cb1fb013cab72'
+  actual: 'a7a32a21974d468b81efde6b95363eb5b3faa33712a6aaad579d9c0ef878fa49'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-snack.test.mjs:133:144)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: events snack: stationary floor scope, exact status at both widths, 8s restore, viewer priority and no writes
+ok 446 - events snack: stationary floor scope, exact status at both widths, 8s restore, viewer priority and no writes
+  ---
+  duration_ms: 129.3451
+  type: 'test'
+  ...
+# Subtest: events coffee: stationary floor scope, exact status at both widths, 8s restore, viewer priority and no writes
+ok 447 - events coffee: stationary floor scope, exact status at both widths, 8s restore, viewer priority and no writes
+  ---
+  duration_ms: 159.0754
+  type: 'test'
+  ...
+# Subtest: events applause: stationary floor scope, exact status at both widths, 8s restore, viewer priority and no writes
+ok 448 - events applause: stationary floor scope, exact status at both widths, 8s restore, viewer priority and no writes
+  ---
+  duration_ms: 151.2343
+  type: 'test'
+  ...
+# Subtest: events cheer: stationary floor scope, exact status at both widths, 8s restore, viewer priority and no writes
+ok 449 - events cheer: stationary floor scope, exact status at both widths, 8s restore, viewer priority and no writes
+  ---
+  duration_ms: 149.5604
+  type: 'test'
+  ...
+# Subtest: events birthday: stationary floor scope, exact status at both widths, 8s restore, viewer priority and no writes
+ok 450 - events birthday: stationary floor scope, exact status at both widths, 8s restore, viewer priority and no writes
+  ---
+  duration_ms: 155.1463
+  type: 'test'
+  ...
+# Subtest: events: independent event/floor cooldowns share two timer slots; stale callbacks cannot clear a replacement
+ok 451 - events: independent event/floor cooldowns share two timer slots; stale callbacks cannot clear a replacement
+  ---
+  duration_ms: 32.3926
+  type: 'test'
+  ...
+# Subtest: events: persistent panel/buttons, outside pointer, keyboard, floors, lock and reload
+ok 452 - events: persistent panel/buttons, outside pointer, keyboard, floors, lock and reload
+  ---
+  duration_ms: 61.5753
+  type: 'test'
+  ...
+# Subtest: events: birthday uses final dates, KST midnight, own and colleague lines, absence and stationary scope
+ok 453 - events: birthday uses final dates, KST midnight, own and colleague lines, absence and stationary scope
+  ---
+  duration_ms: 1597.9237
+  type: 'test'
+  ...
+# Subtest: events: every event excludes actual walking staff, visitors and residents without changing their paths
+ok 454 - events: every event excludes actual walking staff, visitors and residents without changing their paths
+  ---
+  duration_ms: 5344.3229
+  type: 'test'
+  ...
+# Subtest: events: authored table preserves every short line and records every necessary shortening
+ok 455 - events: authored table preserves every short line and records every necessary shortening
+  ---
+  duration_ms: 16.3915
+  type: 'test'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 456 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 25.3934
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 457 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 10.2478
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 458 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 13.8896
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 459 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 14.6596
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 460 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 82.0211
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 461 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 248.2091
+  type: 'test'
+  ...
+# Subtest: schema: every roster id, exact bucket sizes, 28 codepoints, safe content and real staff names
+ok 462 - schema: every roster id, exact bucket sizes, 28 codepoints, safe content and real staff names
+  ---
+  duration_ms: 1.7451
+  type: 'test'
+  ...
+# Subtest: fake clock: KST boundaries including UTC host, midnight, and night-only presence
+ok 463 - fake clock: KST boundaries including UTC host, midnight, and night-only presence
+  ---
+  duration_ms: 35.1214
+  type: 'test'
+  ...
+# Subtest: cycles all bucket/chairman lines, one-in-five friend, then resets after 10s or bucket change
+ok 464 - cycles all bucket/chairman lines, one-in-five friend, then resets after 10s or bucket change
+  ---
+  duration_ms: 4.3753
+  type: 'test'
+  ...
+# Subtest: three taps within 2s override friend/normal selection, exact boundary, and reset the burst
+ok 465 - three taps within 2s override friend/normal selection, exact boundary, and reset the burst
+  ---
+  duration_ms: 8.3573
+  type: 'test'
+  ...
+# Subtest: chairman remains the official frog: five reactions from actual staff, no invented speaker
+ok 466 - chairman remains the official frog: five reactions from actual staff, no invented speaker
+  ---
+  duration_ms: 4.2076
+  type: 'test'
+  ...
+# Subtest: lazy catalog is loaded only once; missing, invalid and network failures retain status speech
+ok 467 - lazy catalog is loaded only once; missing, invalid and network failures retain status speech
+  ---
+  duration_ms: 685.4189
+  type: 'test'
+  ...
+# Subtest: real delegated taps and keyboard reuse one slot, preserve labels, latest 3s timeout and no storage writes
+ok 468 - real delegated taps and keyboard reuse one slot, preserve labels, latest 3s timeout and no storage writes
+  ---
+  duration_ms: 683.4703
+  type: 'test'
+  ...
+# Subtest: 216/221 action and travel speech take priority; latest queued line shows only after action and expires after 3s
+ok 469 - 216/221 action and travel speech take priority; latest queued line shows only after action and expires after 3s
+  ---
+  duration_ms: 1106.4025
+  type: 'test'
+  ...
+# Subtest: rapid first-view taps survive a slow catalog and keep floor bounds at 390 and 1440 (supplied geometry)
+ok 470 - rapid first-view taps survive a slow catalog and keep floor bounds at 390 and 1440 (supplied geometry)
+  ---
+  duration_ms: 633.1699
+  type: 'test'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 471 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 25.7582
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 472 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 10.9688
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 473 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 12.7151
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 474 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 16.401
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 475 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 85.0136
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 476 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 248.5603
+  type: 'test'
+  ...
+# Subtest: G image is the exact approved WebP; old background and other staff seats remain
+ok 477 - G image is the exact approved WebP; old background and other staff seats remain
+  ---
+  duration_ms: 1.1586
+  type: 'test'
+  ...
+# Subtest: every effective 3F edge avoids the 32px gap; lead walk goes around north and left
+ok 478 - every effective 3F edge avoids the 32px gap; lead walk goes around north and left
+  ---
+  duration_ms: 1.0226
+  type: 'test'
+  ...
+# Subtest: 360/390/416 phone boxes have zero overlap involving either new seat
+ok 479 - 360/390/416 phone boxes have zero overlap involving either new seat
+  ---
+  duration_ms: 0.825
+  type: 'test'
+  ...
+# Subtest: real DOM owner seats all five at 10:00/12:00, carries lead facing and retains existing mask slot
+ok 480 - real DOM owner seats all five at 10:00/12:00, carries lead facing and retains existing mask slot
+  ---
+  duration_ms: 27.9436
+  type: 'test'
+  ...
+# Subtest: only the five pinned source fragments change; protected home and label owners are byte identical
+not ok 481 - only the five pinned source fragments change; protected home and label owners are byte identical
+  ---
+  duration_ms: 2.832
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-tlayout.test.mjs:33:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-tlayout.test.mjs:34:70)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: 16 separately authored complete plan/outings/reverse-snapshot outputs have no exclusions
+not ok 482 - 16 separately authored complete plan/outings/reverse-snapshot outputs have no exclusions
+  ---
+  duration_ms: 707.0707
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-tlayout.test.mjs:39:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    hani-office-live.js exact input
+    + actual - expected
+    
+    + 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-tlayout.test.mjs:40:132)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: G keeps all five 3F resident stops, complete body routes and weekly resident separation
+ok 483 - G keeps all five 3F resident stops, complete body routes and weekly resident separation
+  ---
+  duration_ms: 3254.0305
+  type: 'test'
+  ...
+# Subtest: phone head touching floor top gets a legal adjacent pill and keeps its slot
+ok 484 - phone head touching floor top gets a legal adjacent pill and keeps its slot
+  ---
+  duration_ms: 3.3718
+  type: 'test'
+  ...
+# Subtest: top-edge pill can go below when both sides are blocked
+ok 485 - top-edge pill can go below when both sides are blocked
+  ---
+  duration_ms: 0.3894
+  type: 'test'
+  ...
+# Subtest: a wide top-edge guest pill uses a legal side lane beyond the old centre search bound
+ok 486 - a wide top-edge guest pill uses a legal side lane beyond the old centre search bound
+  ---
+  duration_ms: 0.3909
+  type: 'test'
+  ...
+# Subtest: wider top-edge allowance rejects a pill nearer a neighbour and still prioritizes dialogue
+ok 487 - wider top-edge allowance rejects a pill nearer a neighbour and still prioritizes dialogue
+  ---
+  duration_ms: 1.8338
+  type: 'test'
+  ...
+# Subtest: ordinary actors keep head reach; top-edge fully blocked space uses a dot
+ok 488 - ordinary actors keep head reach; top-edge fully blocked space uses a dot
+  ---
+  duration_ms: 7.2499
+  type: 'test'
+  ...
+# Subtest: a legal empty side lane belonging to the neighbour cannot receive the top actor pill
+ok 489 - a legal empty side lane belonging to the neighbour cannot receive the top actor pill
+  ---
+  duration_ms: 9.6919
+  type: 'test'
+  ...
+# Subtest: browser distant check accepts only the top-edge nearest-sprite exception, never an ordinary actor or dot
+ok 490 - browser distant check accepts only the top-edge nearest-sprite exception, never an ordinary actor or dot
+  ---
+  duration_ms: 5.4458
+  type: 'test'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 491 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 20.2942
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 492 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.2845
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 493 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 11.3764
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 494 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 10.3798
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 495 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 77.8229
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 496 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 247.9867
+  type: 'test'
+  ...
+# Subtest: frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture
+not ok 497 - frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture
+  ---
+  duration_ms: 9.6442
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-v2-215.test.mjs:16:1'
+  failureType: 'testCodeFailure'
+  error: 'spawnSync git EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1191:20)
+    spawnSync (node:child_process:929:24)
+    execFileSync (node:child_process:972:15)
+    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-lively-fixture.mjs:9:9)
+    assertOnboardedCanon (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-onboarding-232-assertions.mjs:14:17)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-v2-215.test.mjs:17:3)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+  ...
+# Subtest: all floors: home seats stay in their canon team/room art zone, with separate planned seats
+ok 498 - all floors: home seats stay in their canon team/room art zone, with separate planned seats
+  ---
+  duration_ms: 0.524
+  type: 'test'
+  ...
+# Subtest: every assignable slot has an explicit canon path from elevator without intermediate chairs or stairs
+ok 499 - every assignable slot has an explicit canon path from elevator without intermediate chairs or stairs
+  ---
+  duration_ms: 3.0901
+  type: 'test'
+  ...
+# Subtest: audited art has a physical workstation per person, registered desks have owners and lounge is rest-only
+ok 500 - audited art has a physical workstation per person, registered desks have owners and lounge is rest-only
+  ---
+  duration_ms: 24.9666
+  type: 'test'
+  ...
+# Subtest: architectural sign mounts or painted planes are explicit, and Hani office stays separate
+ok 501 - architectural sign mounts or painted planes are explicit, and Hani office stays separate
+  ---
+  duration_ms: 0.4418
+  type: 'test'
+  ...
+# Subtest: final polish: director uses private furniture, row spare stays free, full signs and official CI
+ok 502 - final polish: director uses private furniture, row spare stays free, full signs and official CI
+  ---
+  duration_ms: 0.2297
+  type: 'test'
+  ...
+# Subtest: 4F executive hierarchy: spacious private suite, separate shared lounge and MIR pod
+ok 503 - 4F executive hierarchy: spacious private suite, separate shared lounge and MIR pod
+  ---
+  duration_ms: 0.6325
+  type: 'test'
+  ...
+# Subtest: 2F: five Life desks, two Finance spares, no LIFE sign or life spill-over, registered roster agrees
+ok 504 - 2F: five Life desks, two Finance spares, no LIFE sign or life spill-over, registered roster agrees
+  ---
+  duration_ms: 0.3875
+  type: 'test'
+  ...
+# Subtest: walking updates canonical coordinates and both distance frames in existing slots, hidden pauses, reduced motion snaps
+ok 505 - walking updates canonical coordinates and both distance frames in existing slots, hidden pauses, reduced motion snaps
+  ---
+  duration_ms: 163.1947
+  type: 'test'
+  ...
+# Subtest: v2 sprite metadata is real, all art exists, no persistence/cloud calls added
+ok 506 - v2 sprite metadata is real, all art exists, no persistence/cloud calls added
+  ---
+  duration_ms: 4.1159
+  type: 'test'
+  ...
+# Subtest: HTML plates and desk props reuse persistent slots; no painted sign patches load
+ok 507 - HTML plates and desk props reuse persistent slots; no painted sign patches load
+  ---
+  duration_ms: 22.6884
+  type: 'test'
+  ...
+# Subtest: 217 prop assets match each active/planned home desk, with explicit URLs and small alpha WebPs
+ok 508 - 217 prop assets match each active/planned home desk, with explicit URLs and small alpha WebPs
+  ---
+  duration_ms: 61.7237
+  type: 'test'
+  ...
+# Subtest: Edge: office-217 all floors at 390/1440 light
+ok 509 - Edge: office-217 all floors at 390/1440 light # SKIP
+  ---
+  duration_ms: 0.0788
+  type: 'test'
+  ...
+# Subtest: Edge: 6 widths light/dark × 5 floors, lazy art, persistent DOM, zero office storage writes; failures and motion
+ok 510 - Edge: 6 widths light/dark × 5 floors, lazy art, persistent DOM, zero office storage writes; failures and motion # SKIP
+  ---
+  duration_ms: 0.0468
+  type: 'test'
+  ...
+# {
+#   day: '2026-11-02',
+#   counts: [ 81, 37, 172, 189, 66 ],
+#   onFloor: { ratio: 0.846276678214246, gap: 158.21211634229985 }
+# }
+# {
+#   day: '2026-11-04',
+#   counts: [ 77, 37, 180, 194, 52 ],
+#   onFloor: { ratio: 0.8620005832617877, gap: 132.21211634229985 }
+# }
+# {
+#   day: '2026-11-07',
+#   counts: [ 106, 0, 187, 211, 74 ],
+#   onFloor: { ratio: 0.782403218944121, gap: 281.21211634229985 }
+# }
+# {
+#   day: '2026-11-08',
+#   counts: [ 104, 0, 181, 218, 72 ],
+#   onFloor: { ratio: 0.7890895260128524, gap: 309.21211634229985 }
+# }
+# {
+#   outside: 3.5522222222222224,
+#   lunch: 6.938888888888889,
+#   rooftop: 0.5011111111111111
+# }
+# Subtest: cafe visitors: main-relative counts and visible appointments 2026-11-02
+ok 511 - cafe visitors: main-relative counts and visible appointments 2026-11-02
+  ---
+  duration_ms: 562.7607
+  type: 'test'
+  ...
+# Subtest: cafe visitors: main-relative counts and visible appointments 2026-11-04
+ok 512 - cafe visitors: main-relative counts and visible appointments 2026-11-04
+  ---
+  duration_ms: 411.6474
+  type: 'test'
+  ...
+# Subtest: cafe visitors: main-relative counts and visible appointments 2026-11-07
+ok 513 - cafe visitors: main-relative counts and visible appointments 2026-11-07
+  ---
+  duration_ms: 432.5452
+  type: 'test'
+  ...
+# Subtest: cafe visitors: main-relative counts and visible appointments 2026-11-08
+ok 514 - cafe visitors: main-relative counts and visible appointments 2026-11-08
+  ---
+  duration_ms: 306.0653
+  type: 'test'
+  ...
+# Subtest: cafe visitors: weekday breaks and rooftop time retain REPORT-2 levels
+ok 515 - cafe visitors: weekday breaks and rooftop time retain REPORT-2 levels
+  ---
+  duration_ms: 3417.9843
+  type: 'test'
+  ...
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 516 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 21.4601
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 517 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 9.7701
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 518 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 12.2062
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 519 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 14.9401
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 520 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 72.8136
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 521 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 247.6167
+  type: 'test'
+  ...
+# Subtest: zoom: staff/visitor/NPC/pet taps copy the currently loaded atlas frame into one persistent decorative slot
+ok 522 - zoom: staff/visitor/NPC/pet taps copy the currently loaded atlas frame into one persistent decorative slot
+  ---
+  duration_ms: 2974.0578
+  type: 'test'
+  ...
+# Subtest: zoom: automatic floor bubble stays small, including after a previous manual zoom
+ok 523 - zoom: automatic floor bubble stays small, including after a previous manual zoom
+  ---
+  duration_ms: 1159.302
+  type: 'test'
+  ...
+# Subtest: zoom: missing or failed sprite hides the slot and preserves the old bubble and line
+ok 524 - zoom: missing or failed sprite hides the slot and preserves the old bubble and line
+  ---
+  duration_ms: 1588.0733
+  type: 'test'
+  ...
+# Subtest: zoom: fitBubble clamps all edges at 360/390/416/1280 widths
+ok 525 - zoom: fitBubble clamps all edges at 360/390/416/1280 widths
+  ---
+  duration_ms: 3111.5702
+  type: 'test'
+  ...
+# Subtest: zoom: waiting client/candidate labels use 대기 중 instead of rest on phone and desktop
+ok 526 - zoom: waiting client/candidate labels use 대기 중 instead of rest on phone and desktop
+  ---
+  duration_ms: 1478.3271
+  type: 'test'
+  ...
+# Subtest: zoom: scheduler, snapshots and all three protected geometry functions stay byte identical to task base
+not ok 527 - zoom: scheduler, snapshots and all three protected geometry functions stay byte identical to task base
+  ---
+  duration_ms: 2.4665
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pets-bubble\\scripts\\hani-office-zoom.test.mjs:147:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pets-bubble/scripts/hani-office-zoom.test.mjs:151:26)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: zoom: real browser CSS keeps manual/automatic bubbles inside the map at every requested viewport
+ok 528 - zoom: real browser CSS keeps manual/automatic bubbles inside the map at every requested viewport # SKIP
+  ---
+  duration_ms: 0.0553
+  type: 'test'
+  ...
+1..528
+# tests 528
+# suites 0
+# pass 490
+# fail 35
+# cancelled 0
+# skipped 3
+# todo 0
+# duration_ms 251347.269
