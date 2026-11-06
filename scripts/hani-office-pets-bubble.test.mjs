@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
-import {at} from './hani-office-lively-fixture.mjs';
+import {at,readAt} from './hani-office-lively-fixture.mjs';
 
 const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
 const table=JSON.parse(read('assets/data/office-actions-221.json'));
@@ -87,15 +87,30 @@ test('pets: bounded idle motion fills pauses, preserves clock paths, and reduced
  }
 });
 
-test('model plan/blockPlan/snapshot and all model helpers stay byte identical; no extra loops, listeners or nodes',()=>{
+test('staff scheduler/plan/blockPlan/snapshot and all staff model helpers stay byte identical; no extra loops, listeners or nodes',()=>{
  const before=read('artifacts/office-pets-bubble/before-source.txt'),after=read('hani-office-live.js'),boundary='/* Read-only Living Office.';
- assert.equal(after.slice(0,after.indexOf(boundary)),before.slice(0,before.indexOf(boundary)));
+ // v2.9.268: retain byte identity for the entire staff model on both sides of the residents.
+ const staff=s=>{const a=s.indexOf('  const residentNames='),b=s.indexOf('  function createPresence('),c=s.indexOf(boundary);assert.ok(a>=0&&b>a&&c>b);return s.slice(0,a)+s.slice(b,c)};
+ assert.equal(staff(after),staff(before));
  for(const regex of [/document\.addEventListener\(/g,/addEventListener\(/g,/createElement\(/g,/setInterval\(/g,/setTimeout\(/g])assert.equal([...after.matchAll(regex)].length,[...before.matchAll(regex)].length,regex.toString());
  for(const regex of [/localStorage\.[a-zA-Z]+\(/g,/sessionStorage\.[a-zA-Z]+\(/g])assert.deepEqual(after.match(regex),before.match(regex));
 });
 
-// Round 2 adds checks; the round 1 assertions above remain verbatim, including
-// its now-stale whole-model pin. Staff-only preservation is checked separately.
+test('resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections',()=>{
+ // v2.9.268: compare every other resident source byte to origin/main; no source pins are repinned here.
+ const before=readAt('hani-office-live.js','origin/main'),after=read('hani-office-live.js');
+ const section=(s,a,b)=>{const i=s.indexOf(a),j=s.indexOf(b,i);assert.ok(i>=0&&j>i,a);return s.slice(i,j)};
+ const people=['  const residentPeople=','  function residentSeed('];
+ const oldPeople=section(before,...people),newPeople=section(after,...people),hours="hours:[[7,12,'3f'],[12,17,'1f']";
+ assert.equal(newPeople.split(hours).length,2,'exactly one Mochi schedule change');
+ assert.equal(newPeople.replace(hours,"hours:[[7,12,'3f'],[12,17,'4f']"),oldPeople,'all other people bytes stay identical');
+ const allowed=[people,['  function residentRhythm(','  const residentAffectionVoice='],['  function residentLife(','  // Pet-only, bounded route cache.'],['  function residentSnapshot(','  // Compact atlas fallback']];
+ const unchanged=s=>{let model=section(s,'  const residentNames=','  function createPresence(');for(const [a,b]of allowed)model=model.replace(section(s,a,b),a+'<approved>\n');return model};
+ for(const [a,b]of allowed)assert.notEqual(section(after,a,b),section(before,a,b),a+' is an approved changed section');
+ assert.equal(unchanged(after),unchanged(before),'every other resident section is byte identical to origin/main');
+});
+
+// Round 2 adds behavioural checks; round 3 scopes source preservation to the approved model changes.
 const petIds=['pet-cat','pet-dog','pet-rabbit'];
 const plain=x=>JSON.parse(JSON.stringify(x));
 test('round2: a manual pet tap takes priority over the pending entrance gesture',async()=>{
