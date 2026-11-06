@@ -4,7 +4,7 @@ import {createHash} from 'node:crypto';
 import {restoreTlayoutSource} from './hani-office-tlayout-fixture.mjs';
 const hash=x=>createHash('sha256').update(x).digest('hex');
 const bytes=fs.readFileSync(new URL('fixtures/office-residents-source-delta.json',import.meta.url));
-assert.equal(hash(bytes),'5fff196c4d8adce39d2994db4e5b759f71c5f21feeac9fa905d12d354125165e','exact authored residents delta');
+assert.equal(hash(bytes),'0242ea71e357dd04e96509339d96841ddb0f4aaeaee975d20d570431826783b3','exact authored residents delta');
 const delta=JSON.parse(bytes);
 assert.equal(delta.beforeSha256,'672b4fa6b15ef08859822870c7a3ff12d8029a65a972010799391ea5eb33d00f','pre-resident source identity');
 export function restoreResidentsSource(source){
