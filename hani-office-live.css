@@ -272,3 +272,23 @@
 
 /* Keep parent hiding after every flex/grid variant, including the phone layout. */
 .hani-office-character-bubble[hidden]{display:none}
+
+/* Map-relative sprite strips: background < props (2) < actors (4) < bubble (10). */
+.hani-office-live-props{position:absolute;inset:0;z-index:2;pointer-events:none}
+.hani-office-live-prop{position:absolute;display:block;pointer-events:none;background-size:400% 100%;background-repeat:no-repeat;transform:translate(-50%,-100%);animation:hani-office-prop-frames 4.8s steps(4) infinite}
+.hani-office-live-prop[data-anchor="center"]{transform:translate(-50%,-50%)}
+.hani-office-live-props[hidden],.hani-office-live-prop[hidden]{display:none}
+.hani-office-live-props[hidden] .hani-office-live-prop,.hani-office-live-prop[hidden],.hani-office-live[data-paused="true"] .hani-office-live-prop{animation-play-state:paused}
+.hani-office-live-prop[data-sprite="coffee-steam"]{background-image:url("./assets/office-props/coffee-steam.webp");animation-duration:2.4s}
+.hani-office-live-prop[data-sprite="plant-sway"]{background-image:url("./assets/office-props/plant-sway.webp")}
+.hani-office-live-prop[data-sprite="monitor-glow"]{background-image:url("./assets/office-props/monitor-glow.webp");opacity:.32}
+.hani-office-live-prop[data-sprite="lantern-flicker"]{background-image:url("./assets/office-props/lantern-flicker.webp");animation-duration:3.2s}
+.hani-office-live-prop[data-sprite="stamp-sparkle"]{background-image:url("./assets/office-props/stamp-sparkle.webp");animation-name:hani-office-prop-sparkle;animation-duration:12s}
+.hani-office-live-prop[data-sprite="paper-flutter"]{background-image:url("./assets/office-props/paper-flutter.webp")}
+/* 400% background width: -133.333% is one whole strip. steps(4) holds each valid frame. */
+@keyframes hani-office-prop-frames{from{background-position:0% 0}to{background-position:133.333333% 0}}
+/* Four 0.2s frames, then invisible until the next 12s cycle. */
+@keyframes hani-office-prop-sparkle{0%{opacity:1;background-position:0% 0}6.666667%{opacity:1;background-position:133.333333% 0}6.666668%,100%{opacity:0;background-position:100% 0}}
+@media(prefers-reduced-motion:reduce){
+ .hani-office-live-props .hani-office-live-prop{animation:none;background-position:33.333333% 0}
+}
