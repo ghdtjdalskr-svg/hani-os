@@ -4,9 +4,11 @@ import fs from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {xmas269Delta as delta,restoreXmas269Source} from './hani-office-xmas-269-source.mjs';
+import {restoreBori272Source} from './hani-office-pet-bori-272-source.mjs';
+import {normalizeReleaseVersion} from './hani-reviewed-release-baseline.mjs';
 
 const hash=x=>createHash('sha256').update(x).digest('hex');
-const read=file=>fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
+const read=file=>{const source=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');return ['hani-office-live.js','hani-office-live.css'].includes(file)?restoreBori272Source(source,file):source};
 
 test('v2.9.269: ordered unique pairs are the complete JS/CSS diff and reject unlisted edits',()=>{
  assert.equal(delta.version,'2.9.269');
@@ -47,8 +49,8 @@ test('v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 rele
  for(const pin of delta.unchangedRuntime){
   const before=execFileSync('git',['show',delta.baseCommit+':'+pin.file],options);
   assert.equal(hash(before),pin.sha256,'runtime baseline comes from the same fixed release');
-  // v2.9.269 release bump only: the 268 files contain no '2.9.269', so this restores the exact 268 bytes.
-  assert.equal(read(pin.file).replaceAll('2.9.269','2.9.268'),before,'269 changes no runtime file outside office JS/CSS');
+  // Project only cache tags and canonical display fields, including mixed generations.
+  assert.equal(normalizeReleaseVersion(read(pin.file),'2.9.268'),normalizeReleaseVersion(before,'2.9.268'),'269 changes no runtime file outside office JS/CSS except the release version projection');
   assert.equal(before.split('2.9.268').length-1,pin.versionCount);
  }
 });

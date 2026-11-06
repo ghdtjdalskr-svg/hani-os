@@ -95,11 +95,20 @@ function projectVersion(source,base,version){
  assert.match(version,/^2\.9\.\d+$/);
  const baseRe=base.replaceAll('.','\\.');
  assert.ok(Number(version.split('.').at(-1))>=Number(base.split('.').at(-1)),'train version cannot roll back');
+ return projectVersionFields(source,baseRe,version);
+}
+// Fixed historical pins may contain mixed cache generations. Normalize only
+// release projection fields; internal/history literals and all other bytes remain strict.
+export function normalizeReleaseVersion(source,version){
+ assert.match(version,/^2\.9\.\d+$/);
+ return projectVersionFields(source,'2\\.9\\.\\d+',version);
+}
+function projectVersionFields(source,baseRe,version){
  return source.replace(new RegExp('(\\?v=)'+baseRe+'\\b','g'),'$1'+version)
   .replace(new RegExp('(const HANI_DISPLAY_VERSION=")'+baseRe+'(")','g'),'$1'+version+'$2')
-  .replaceAll('HANI OS Life Edition v'+base,'HANI OS Life Edition v'+version)
-  .replaceAll('HANI OS · Life Edition v'+base,'HANI OS · Life Edition v'+version)
-  .replaceAll('HANI OS · v'+base,'HANI OS · v'+version);
+  .replace(new RegExp('(HANI OS Life Edition v)'+baseRe,'g'),'$1'+version)
+  .replace(new RegExp('(HANI OS · Life Edition v)'+baseRe,'g'),'$1'+version)
+  .replace(new RegExp('(HANI OS · v)'+baseRe,'g'),'$1'+version);
 }
 export function readReviewedRelease233Baseline(file){
  let expected=readReleaseSource(approvedSourceOrigins[file]||guardedRelease,file);

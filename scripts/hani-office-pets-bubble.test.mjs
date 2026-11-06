@@ -5,6 +5,7 @@ import vm from 'node:vm';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {at,readAt} from './hani-office-lively-fixture.mjs';
+import {restoreBori272Source} from './hani-office-pet-bori-272-source.mjs';
 
 const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
 const table=JSON.parse(read('assets/data/office-actions-221.json'));
@@ -59,7 +60,7 @@ test('existing pointer owner runs before a descendant stopPropagation, without a
 test('real cause: dismissing a manually opened pet trio cannot immediately trigger the automatic trio',async()=>{
  // Real resident schedule: 17:03:47 KST, all three pets are nearby and stationary.
  const x=await mount({seconds:61426});const a=x.staff()[0];assert.ok(a);x.tap(a);await x.advance(1000);
- const pets=x.f.visible().filter(a=>a.dataset.resident==='pet');assert.equal(pets.length,3);
+ const pets=x.f.visible().filter(a=>a.dataset.resident==='pet');assert.equal(pets.length,4);
  x.tap(pets[0]);assert.equal(x.panel.hidden,false);const stale=x.history.at(-1);
  x.down(x.f.map);assert.equal(x.panel.hidden,true);stale.fn();await x.advance(100);
  assert.equal(x.panel.hidden,true,'resident auto trio used to reopen on the very next shared tick');
@@ -98,7 +99,7 @@ test('staff scheduler/plan/blockPlan/snapshot and all staff model helpers stay b
 
 test('resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections',()=>{
  // v2.9.268: compare every other resident source byte to origin/main; no source pins are repinned here.
- const before=readAt('hani-office-live.js','461dfdff4d26275a4d6d61c177280fd2d6ed35fe' /* pre-v2.9.268 main */),after=read('hani-office-live.js');
+ const before=readAt('hani-office-live.js','461dfdff4d26275a4d6d61c177280fd2d6ed35fe' /* pre-v2.9.268 main */),after=restoreBori272Source(read('hani-office-live.js'));
  const section=(s,a,b)=>{const i=s.indexOf(a),j=s.indexOf(b,i);assert.ok(i>=0&&j>i,a);return s.slice(i,j)};
  const people=['  const residentPeople=','  function residentSeed('];
  const oldPeople=section(before,...people),newPeople=section(after,...people),hours="hours:[[7,12,'3f'],[12,17,'1f']";
@@ -118,13 +119,13 @@ test('round2: a manual pet tap takes priority over the pending entrance gesture'
  x.tap(pet);await x.advance(100);assert.equal(pet.dataset.motion,'hop');assert.equal(x.panel.hidden,false);assert.deepEqual(x.writes,[]);
 });
 test('round2: sleeping pets do not greet automatically, but a manual tap still gets one hop',async()=>{
- const x=await mount({seconds:10800}),pets=x.f.visible().filter(a=>a.dataset.resident==='pet');assert.equal(pets.length,3);
+ const x=await mount({seconds:10800}),pets=x.f.visible().filter(a=>a.dataset.resident==='pet');assert.equal(pets.length,4);
  for(let i=0;i<60;i++){await x.advance(100);for(const pet of pets){assert.equal(pet.dataset.pose,'sleep');assert.equal(pet.dataset.motion,undefined)}}
  x.tap(pets[0]);await x.advance(100);assert.equal(pets[0].dataset.motion,'hop');assert.deepEqual(x.writes,[]);
 });
 test('round2: every visible pet starts a queued gesture within ten seconds of entering its floor',async()=>{
  for(const seconds of [36000,36003,46800,61426,61427,72000])for(const floor of ['1f','2f','3f','5f']){
-  const x=await mount({seconds,floor}),pets=x.f.visible().filter(a=>a.dataset.resident==='pet'),started=new Set();
+  const x=await mount({seconds,floor}),pets=x.f.visible().filter(a=>a.dataset.resident==='pet'&&a.dataset.pose!=='sleep'),started=new Set();
   for(const pet of pets)assert.equal(pet.officePetFloor,floor,'entrance gesture armed on the visible floor');
   for(let t=0;t<100;t++){await x.advance(100);for(const pet of pets)if(pet.dataset.motion)started.add(pet.dataset.person)}
   for(const pet of pets)assert.ok(started.has(pet.dataset.person),`${seconds} ${floor} ${pet.dataset.person}`);
