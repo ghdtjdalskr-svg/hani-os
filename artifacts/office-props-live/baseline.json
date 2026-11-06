@@ -1,0 +1,73 @@
+{
+  "base": "813124e8087accbcce59f12a64b091f144e0b2c3",
+  "sections": [
+    {
+      "name": "scheduler",
+      "start": "  function createScheduler(",
+      "end": "  // Read-only label geometry",
+      "sha256": "2fb5f8eda0313523f45b7b0cd988402b221fb8a0cec823e69beb09141d673ad8"
+    },
+    {
+      "name": "view snapshot",
+      "start": "  function snapshot(now=new Date()",
+      "end": "  function profile(",
+      "sha256": "f790950ad2e6a2a672a547aec7a094e082bd3b3a98d5e853e7a4cba6acbe456f"
+    },
+    {
+      "name": "screenHomeClear",
+      "start": "    function screenHomeClear(",
+      "end": "    function stationaryStops(",
+      "sha256": "3ca18b4e6f2b302d445b29d3d47c17a5743129ebcfe892deb1f4124cae10bc0a"
+    },
+    {
+      "name": "placeStatusLabels",
+      "start": "  function placeStatusLabels(",
+      "end": "  const scheduler=",
+      "sha256": "5070f7e62556b89410bc7588600fefe80ba99579e945ae49bab89def98bec6f0"
+    },
+    {
+      "name": "fitStatusLabels",
+      "start": "  function fitStatusLabels(",
+      "end": "  if(buildingChairmanSlot())people.push",
+      "sha256": "e7f807dd9110c0e44fd613c528b2cdf8c2f75df3e442ded716f768b9bdd0c3ac"
+    },
+    {
+      "name": "residents model",
+      "start": "  const residentNames=",
+      "end": "  function createPresence(",
+      "sha256": "aa0f74bb5073ae851274c0690810e9af5326442448956e3064942a7e94581eb4"
+    },
+    {
+      "name": "residents renderer",
+      "start": "  function updateResidents(now){",
+      "end": "  function selectFloor(",
+      "sha256": "2996a42b596252f9af13ba8ff09bf4f315a7ab5f738d4e04234cb1fb013cab72"
+    }
+  ],
+  "assets": [
+    {
+      "file": "assets/office-props/coffee-steam.webp",
+      "sha256": "feb2dd03500f95727b1e71df9f4941d6b3d714e8b49a2458a25078dc1c51ad38"
+    },
+    {
+      "file": "assets/office-props/plant-sway.webp",
+      "sha256": "3f0ebbe6dd3080747fdf0c851e52ad6e840285d1991069c9f8692a6fdafdd295"
+    },
+    {
+      "file": "assets/office-props/monitor-glow.webp",
+      "sha256": "db6b7bba16223811cdfd41ccd2be97ea1d57e5744c49c63ec05d48798858df12"
+    },
+    {
+      "file": "assets/office-props/lantern-flicker.webp",
+      "sha256": "a773aa957b2a7079fb8c38ffd3f1030ffb086bc61e65243eca9981d950f7f62f"
+    },
+    {
+      "file": "assets/office-props/stamp-sparkle.webp",
+      "sha256": "83de81db55c18381da4498bc91705f3aad37047be7a5079409bfbcb67e2cd497"
+    },
+    {
+      "file": "assets/office-props/paper-flutter.webp",
+      "sha256": "74004f826f18adeaf88223751c3beb066b121ece44a738e252bba2e421ee90fb"
+    }
+  ]
+}
