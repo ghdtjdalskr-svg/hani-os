@@ -1,0 +1,26 @@
+[
+  {
+    "name": "consult: sofa wording, counter words, safety owners and runtime timers",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-consult.test.mjs:80:1",
+    "error": "'spawnSync git EPERM'",
+    "code": "'EPERM'"
+  },
+  {
+    "name": "icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-icons.test.mjs:111:1",
+    "error": "'spawnSync git EPERM'",
+    "code": "'EPERM'"
+  },
+  {
+    "name": "obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-obr21.test.mjs:103:1",
+    "error": "'spawnSync git EPERM'",
+    "code": "'EPERM'"
+  },
+  {
+    "name": "obr21 cached gathering/index decisions equal full index rebuilds",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-obr21.test.mjs:120:1",
+    "error": "'spawnSync git EPERM'",
+    "code": "'EPERM'"
+  }
+]

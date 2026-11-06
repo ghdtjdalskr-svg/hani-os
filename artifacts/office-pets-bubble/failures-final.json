@@ -1,0 +1,132 @@
+[
+  {
+    "name": "consult: sofa wording, counter words, safety owners and runtime timers",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-consult.test.mjs:80:1",
+    "error": "'spawnSync git EPERM'",
+    "code": "'EPERM'"
+  },
+  {
+    "name": "consult: separately authored full plans and reverse snapshots retain exact identity in both presence states",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-consult.test.mjs:98:1",
+    "error": "|-",
+    "code": "'ERR_ASSERTION'",
+    "message": "only the approved G source is accepted"
+  },
+  {
+    "name": "icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-icons.test.mjs:111:1",
+    "error": "|-",
+    "code": "'ERR_ASSERTION'",
+    "message": "only the approved G source is accepted"
+  },
+  {
+    "name": "approved consultation scheduler source stays frozen, including every route and arrival calculation",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-motion-1.test.mjs:26:1",
+    "error": "|-",
+    "code": "'ERR_ASSERTION'",
+    "message": "only the approved G source is accepted"
+  },
+  {
+    "name": "obr21 authored full absent/present plans and reverse snapshots match frozen delta",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-obr21.test.mjs:39:1",
+    "error": "|-",
+    "code": "'ERR_ASSERTION'",
+    "message": "only the approved G source is accepted"
+  },
+  {
+    "name": "obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-obr21.test.mjs:103:1",
+    "error": "'spawnSync git EPERM'",
+    "code": "'EPERM'"
+  },
+  {
+    "name": "obr21 cached gathering/index decisions equal full index rebuilds",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-obr21.test.mjs:120:1",
+    "error": "'spawnSync git EPERM'",
+    "code": "'EPERM'"
+  },
+  {
+    "name": "props: scheduler/plan/blockPlan/snapshot/labels/home-clear source bytes and all six assets are unchanged",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-props.test.mjs:87:1",
+    "error": "|-",
+    "code": "'ERR_ASSERTION'",
+    "message": "residents renderer"
+  },
+  {
+    "name": "eight approved atlases decode, match their manifest hashes, load through the real owner and enter the closure",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-residents.test.mjs:110:1",
+    "error": "|-",
+    "code": "'ERR_ASSERTION'",
+    "message": "only the approved G source is accepted"
+  },
+  {
+    "name": "interaction routes and dwell spots clear full furniture envelopes and staff snapshots/plans remain byte-identical on and off",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-residents.test.mjs:262:1",
+    "error": "|-",
+    "code": "'ERR_ASSERTION'",
+    "message": "only the approved G source is accepted"
+  },
+  {
+    "name": "actual delegated pet taps show both speakers, automatic scene uses existing bubble, and all persistence/AI paths remain unused",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-residents.test.mjs:285:1",
+    "error": "|-",
+    "code": "'ERR_ASSERTION'",
+    "message": "only the approved G source is accepted"
+  },
+  {
+    "name": "every original source byte and staff/visitor plan, outing and snapshot stays identical with residents on or off",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-residents.test.mjs:348:1",
+    "error": "|-",
+    "code": "'ERR_ASSERTION'",
+    "message": "only the approved G source is accepted"
+  },
+  {
+    "name": "trio rejects missing/different-floor/sleeping pets and staff-blocked floor; plan and snapshot bytes stay frozen",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-residents.test.mjs:447:1",
+    "error": "|-",
+    "code": "'ERR_ASSERTION'",
+    "message": "only the approved G source is accepted"
+  },
+  {
+    "name": "seeded Cheese and Cream spots change within two minutes; NPC quarters and all staff plans stay frozen",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-residents.test.mjs:461:1",
+    "error": "|-",
+    "code": "'ERR_ASSERTION'",
+    "message": "only the approved G source is accepted"
+  },
+  {
+    "name": "real pet hearts reuse one mounted node, pair taps override trio during affection, and reduced motion is still with zero writes",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-residents.test.mjs:489:1",
+    "error": "|-",
+    "code": "'ERR_ASSERTION'",
+    "message": "only the approved G source is accepted"
+  },
+  {
+    "name": "snack: scheduler/snapshot/geometry/residents bytes and complete sampled model JSON preserve c301a13",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-snack.test.mjs:131:1",
+    "error": "|-",
+    "code": "'ERR_ASSERTION'",
+    "message": "residents renderer"
+  },
+  {
+    "name": "only the five pinned source fragments change; protected home and label owners are byte identical",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-tlayout.test.mjs:33:1",
+    "error": "|-",
+    "code": "'ERR_ASSERTION'",
+    "message": "only the approved G source is accepted"
+  },
+  {
+    "name": "16 separately authored complete plan/outings/reverse-snapshot outputs have no exclusions",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-tlayout.test.mjs:39:1",
+    "error": "|-",
+    "code": "'ERR_ASSERTION'",
+    "message": "hani-office-live.js exact input"
+  },
+  {
+    "name": "zoom: scheduler, snapshots and all three protected geometry functions stay byte identical to task base",
+    "location": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\pets-bubble\\\\scripts\\\\hani-office-zoom.test.mjs:147:1",
+    "error": "|-",
+    "code": "'ERR_ASSERTION'",
+    "message": "only the approved G source is accepted"
+  }
+]

@@ -1,0 +1,183 @@
+{
+  "runtime": "Node v24.22.1",
+  "commands": {
+    "all": "node --test --test-concurrency=2 --test-reporter=tap scripts/hani-office-*.test.mjs",
+    "before": "node --import ./artifacts/office-pets-bubble/use-before.mjs --test --test-concurrency=2 --test-reporter=tap <8 preservation files>",
+    "final": "node --test --test-concurrency=2 --test-reporter=tap <12 affected files>"
+  },
+  "allFirst": {
+    "files": 46,
+    "sourceSha256": "ad5f5595e6bb62329d5a307727e8b018bb19266936eba14ef2c59829efc46ab9",
+    "tests": 528,
+    "pass": 490,
+    "fail": 35,
+    "cancelled": 0,
+    "skipped": 3,
+    "duration_ms": 251347.269
+  },
+  "preservationBefore": {
+    "files": 8,
+    "sourceSha256": "6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7",
+    "tests": 143,
+    "pass": 138,
+    "fail": 4,
+    "cancelled": 0,
+    "skipped": 1,
+    "duration_ms": 107487.5064
+  },
+  "affectedFinal": {
+    "files": 12,
+    "sourceSha256": "23bfee4131e163aa30453e5579452d364d4ec2455b382c15b67a45ffd5c25710",
+    "tests": 216,
+    "pass": 196,
+    "fail": 19,
+    "cancelled": 0,
+    "skipped": 1,
+    "duration_ms": 67898.2254
+  },
+  "featureFinal": {
+    "files": 3,
+    "pass": 47,
+    "fail": 0,
+    "note": "pets-bubble 12 + bubble-close 17 + floor-bubble 18; imported engine tests included"
+  },
+  "finalFailures": [
+    {
+      "file": "hani-office-consult.test.mjs",
+      "line": 80,
+      "kind": "BLOCKED: spawnSync git EPERM",
+      "message": "'spawnSync git EPERM'"
+    },
+    {
+      "file": "hani-office-consult.test.mjs",
+      "line": 98,
+      "kind": "source pin",
+      "message": "only the approved G source is accepted"
+    },
+    {
+      "file": "hani-office-icons.test.mjs",
+      "line": 111,
+      "kind": "source pin",
+      "message": "only the approved G source is accepted"
+    },
+    {
+      "file": "hani-office-motion-1.test.mjs",
+      "line": 26,
+      "kind": "source pin",
+      "message": "only the approved G source is accepted"
+    },
+    {
+      "file": "hani-office-obr21.test.mjs",
+      "line": 39,
+      "kind": "source pin",
+      "message": "only the approved G source is accepted"
+    },
+    {
+      "file": "hani-office-obr21.test.mjs",
+      "line": 103,
+      "kind": "BLOCKED: spawnSync git EPERM",
+      "message": "'spawnSync git EPERM'"
+    },
+    {
+      "file": "hani-office-obr21.test.mjs",
+      "line": 120,
+      "kind": "BLOCKED: spawnSync git EPERM",
+      "message": "'spawnSync git EPERM'"
+    },
+    {
+      "file": "hani-office-props.test.mjs",
+      "line": 87,
+      "kind": "source pin",
+      "message": "residents renderer"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "line": 110,
+      "kind": "source pin",
+      "message": "only the approved G source is accepted"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "line": 262,
+      "kind": "source pin",
+      "message": "only the approved G source is accepted"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "line": 285,
+      "kind": "source pin",
+      "message": "only the approved G source is accepted"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "line": 348,
+      "kind": "source pin",
+      "message": "only the approved G source is accepted"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "line": 447,
+      "kind": "source pin",
+      "message": "only the approved G source is accepted"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "line": 461,
+      "kind": "source pin",
+      "message": "only the approved G source is accepted"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "line": 489,
+      "kind": "source pin",
+      "message": "only the approved G source is accepted"
+    },
+    {
+      "file": "hani-office-snack.test.mjs",
+      "line": 131,
+      "kind": "source pin",
+      "message": "residents renderer"
+    },
+    {
+      "file": "hani-office-tlayout.test.mjs",
+      "line": 33,
+      "kind": "source pin",
+      "message": "only the approved G source is accepted"
+    },
+    {
+      "file": "hani-office-tlayout.test.mjs",
+      "line": 39,
+      "kind": "source pin",
+      "message": "hani-office-live.js exact input"
+    },
+    {
+      "file": "hani-office-zoom.test.mjs",
+      "line": 147,
+      "kind": "source pin",
+      "message": "only the approved G source is accepted"
+    }
+  ],
+  "browser": {
+    "result": "BLOCKED",
+    "host": "The browser access host is unavailable",
+    "native": "Computer Use was not approved to use Google Chrome",
+    "viewports": [
+      "1280x900",
+      "1920x1080"
+    ],
+    "realClicksVerified": false,
+    "screenshots": 0
+  },
+  "contrast219": [
+    {
+      "label": "before",
+      "result": "FAIL",
+      "message": ".hani-office-name AA text contrast"
+    },
+    {
+      "label": "after",
+      "result": "FAIL",
+      "message": ".hani-office-name AA text contrast"
+    }
+  ]
+}

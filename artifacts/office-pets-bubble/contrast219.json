@@ -1,0 +1,12 @@
+[
+  {
+    "label": "before",
+    "result": "FAIL",
+    "message": ".hani-office-name AA text contrast"
+  },
+  {
+    "label": "after",
+    "result": "FAIL",
+    "message": ".hani-office-name AA text contrast"
+  }
+]
