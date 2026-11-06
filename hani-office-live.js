@@ -2753,6 +2753,25 @@
     prop.onload=()=>{prop.dataset.loaded='true'};prop.onerror=()=>{prop.dataset.loaded='false'};
     map.append(prop);deskProps.push({prop,floor:floor.id,src:building.deskPropArt[entry.id]});
   }
+  // Approved four-frame art: one map-owned layer and seven persistent slots.
+  const livePropLayer=document.createElement('div');livePropLayer.className='hani-office-live-props';livePropLayer.setAttribute('aria-hidden','true');livePropLayer.hidden=true;map.append(livePropLayer);
+  const liveProps=[
+    ['coffee-desk','coffee-steam','1f',238,570,32,48,'bottom-center'],
+    ['coffee-counter','coffee-steam','1f',1530,720,32,48,'bottom-center'],
+    ['plant','plant-sway','2f',1197,314,48,64,'bottom-center'],
+    ['monitor','monitor-glow','3f',466,480,64,40,'center'],
+    ['lantern','lantern-flicker','5f',1380,738,40,56,'bottom-center'],
+    ['stamp','stamp-sparkle','3f',213,676,32,32,'center'],
+    ['paper','paper-flutter','1f',1605,520,40,48,'center']
+  ].map(([id,art,floor,x,y,width,height,anchor])=>{
+    const prop=document.createElement('span');prop.className='hani-office-live-prop';prop.dataset.prop=id;prop.dataset.sprite=art;prop.dataset.anchor=anchor;prop.hidden=true;
+    prop.style.left=x/(building.art?.width||1672)*100+'%';prop.style.top=y/(building.art?.height||941)*100+'%';prop.style.width=width/(building.art?.width||1672)*100+'%';prop.style.height=height/(building.art?.height||941)*100+'%';
+    livePropLayer.append(prop);return {prop,floor};
+  });
+  function updateLiveProps(floor,background,isFloor){
+    livePropLayer.hidden=!isFloor;
+    for(const entry of liveProps)entry.prop.hidden=!isFloor||entry.floor!==floor.id||(entry.prop.dataset.prop==='lantern'&&background!==floor.nightBackground);
+  }
   let activeFloor="4f",floorSnapshot=null,layoutKey="",backgroundToken=0,returnFloor="4f",displayedFloor=null;
   floorLabel.className="hani-building-floor-label";overflowChip.className="hani-building-overflow";const caption=document.createElement('div');caption.className='hani-building-floor-caption';const presenceNote=document.createElement('small');presenceNote.className='hani-building-presence-note';presenceNote.setAttribute('role','status');presenceNote.hidden=true;caption.append(floorLabel,overflowChip,presenceNote);root.querySelector('.hani-office-scroll').after(caption);
   const dramaCaption=document.createElement('small'),dramaTitle=document.createElement('b'),dramaSummary=document.createElement('span');dramaCaption.className='hani-building-drama-caption';dramaCaption.hidden=true;dramaCaption.append(dramaTitle,dramaSummary);caption.append(dramaCaption);let tapCatalogStarted=false;
@@ -2974,7 +2993,7 @@
     const token=++backgroundToken,bg=map.querySelector('.hani-office-background'),source=building.atmosphere.background(floor);
     const request=floor.id+'|'+source;
     // Never leave a previous floor/variant showing while its replacement loads.
-    if(backgroundRequest!==request){backgroundRequest=request;bg.hidden=true;map.dataset.art='loading';monitorGlow.hidden=true;for(const entry of plates)entry.plate.hidden=true;for(const entry of deskProps)entry.prop.hidden=true}
+    if(backgroundRequest!==request){backgroundRequest=request;bg.hidden=true;map.dataset.art='loading';livePropLayer.hidden=true;monitorGlow.hidden=true;for(const entry of plates)entry.plate.hidden=true;for(const entry of deskProps)entry.prop.hidden=true}
     if(!backgroundCache.has(floor.id))backgroundCache.set(floor.id,new Map());
     const variants=backgroundCache.get(floor.id);
     const day=()=>{if(!variants.has(floor.background))variants.set(floor.background,(async()=>{
@@ -2992,7 +3011,7 @@
       map.dataset.mask='none';
       for(const entry of plates)entry.plate.hidden=entry.floor!==floor.id||!isFloor;
       for(const entry of deskProps){entry.prop.hidden=entry.floor!==floor.id||!isFloor;if(!entry.prop.hidden&&!entry.prop.src)entry.prop.src=entry.src}
-      updateQueenFrame();updateBarista();
+      updateLiveProps(floor,background,isFloor);updateQueenFrame();updateBarista();
       updateAtmosphere(Date.now());
       scheduleFloorBubble();
     });
