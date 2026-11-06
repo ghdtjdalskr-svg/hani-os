@@ -1,0 +1,124 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 25.5511
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 11.5237
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 24.3989
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 15.2967
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 79.5685
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 260.8755
+  type: 'test'
+  ...
+# Subtest: icons: actual consulting and candidate pairs retain exact phone text and purple state at both widths
+ok 7 - icons: actual consulting and candidate pairs retain exact phone text and purple state at both widths
+  ---
+  duration_ms: 902.1685
+  type: 'test'
+  ...
+# Subtest: icons: caught-out and reply lines keep the joke and are work, even at a lounge home
+ok 8 - icons: caught-out and reply lines keep the joke and are work, even at a lounge home
+  ---
+  duration_ms: 3.0429
+  type: 'test'
+  ...
+# Subtest: icons: ten frequent specific fallbacks have authored whole short phrases
+ok 9 - icons: ten frequent specific fallbacks have authored whole short phrases
+  ---
+  duration_ms: 0.5374
+  type: 'test'
+  ...
+# Subtest: icons: semantic work/rest classification also covers errands, deliveries and personal idle lines
+ok 10 - icons: semantic work/rest classification also covers errands, deliveries and personal idle lines
+  ---
+  duration_ms: 0.6749
+  type: 'test'
+  ...
+# Subtest: icons: special moment rules, combined-line precedence and existing performance emoji use the real helper
+ok 11 - icons: special moment rules, combined-line precedence and existing performance emoji use the real helper
+  ---
+  duration_ms: 0.5606
+  type: 'test'
+  ...
+# Subtest: icons: walking, live travel and outbound/return elevator waits suppress every head icon
+ok 12 - icons: walking, live travel and outbound/return elevator waits suppress every head icon
+  ---
+  duration_ms: 0.5092
+  type: 'test'
+  ...
+# Subtest: icons: actual repeated phone/desktop/reduced renderer updates reuse nodes and skip unchanged prop writes
+ok 13 - icons: actual repeated phone/desktop/reduced renderer updates reuse nodes and skip unchanged prop writes
+  ---
+  duration_ms: 3624.3025
+  type: 'test'
+  ...
+# Subtest: icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc
+not ok 14 - icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc
+  ---
+  duration_ms: 1.3186
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-icons.test.mjs:111:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'ba97edaa808c7892f6eddb020e7bebce5ade51795dfaea818dd95b48fcb5e107'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'ba97edaa808c7892f6eddb020e7bebce5ade51795dfaea818dd95b48fcb5e107'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    restoreResidentsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-residents-source.mjs:12:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-icons.test.mjs:113:17)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: icons: complete plan/blockPlan and sampled snapshot JSON match the approved G output
+ok 15 - icons: complete plan/blockPlan and sampled snapshot JSON match the approved G output
+  ---
+  duration_ms: 7856.5888
+  type: 'test'
+  ...
+1..15
+# tests 15
+# suites 0
+# pass 14
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 12832.6964

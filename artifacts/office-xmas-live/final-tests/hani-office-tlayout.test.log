@@ -1,0 +1,133 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 21.9323
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 8.913
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 26.1187
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 7.9312
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 68.6415
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 249.4243
+  type: 'test'
+  ...
+# Subtest: G image is the exact approved WebP; old background and other staff seats remain
+ok 7 - G image is the exact approved WebP; old background and other staff seats remain
+  ---
+  duration_ms: 1.3604
+  type: 'test'
+  ...
+# Subtest: every effective 3F edge avoids the 32px gap; lead walk goes around north and left
+ok 8 - every effective 3F edge avoids the 32px gap; lead walk goes around north and left
+  ---
+  duration_ms: 1.1823
+  type: 'test'
+  ...
+# Subtest: 360/390/416 phone boxes have zero overlap involving either new seat
+ok 9 - 360/390/416 phone boxes have zero overlap involving either new seat
+  ---
+  duration_ms: 0.9174
+  type: 'test'
+  ...
+# Subtest: real DOM owner seats all five at 10:00/12:00, carries lead facing and retains existing mask slot
+ok 10 - real DOM owner seats all five at 10:00/12:00, carries lead facing and retains existing mask slot
+  ---
+  duration_ms: 26.1291
+  type: 'test'
+  ...
+# Subtest: only the five pinned source fragments change; protected home and label owners are byte identical
+not ok 11 - only the five pinned source fragments change; protected home and label owners are byte identical
+  ---
+  duration_ms: 2.6581
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-tlayout.test.mjs:33:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the approved G source is accepted
+    + actual - expected
+    
+    + 'ba97edaa808c7892f6eddb020e7bebce5ade51795dfaea818dd95b48fcb5e107'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'ba97edaa808c7892f6eddb020e7bebce5ade51795dfaea818dd95b48fcb5e107'
+  operator: 'strictEqual'
+  stack: |-
+    restoreTlayoutSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-tlayout-fixture.mjs:15:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-tlayout.test.mjs:34:70)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: 16 separately authored complete plan/outings/reverse-snapshot outputs have no exclusions
+not ok 12 - 16 separately authored complete plan/outings/reverse-snapshot outputs have no exclusions
+  ---
+  duration_ms: 692.003
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-tlayout.test.mjs:39:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    hani-office-live.js exact input
+    + actual - expected
+    
+    + 'ba97edaa808c7892f6eddb020e7bebce5ade51795dfaea818dd95b48fcb5e107'
+    - '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '6729f9f832851446fcc4b9df9b6ccb21e8b999a9a2559f4a0ba750d27ec671f7'
+  actual: 'ba97edaa808c7892f6eddb020e7bebce5ade51795dfaea818dd95b48fcb5e107'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-tlayout.test.mjs:40:132)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: G keeps all five 3F resident stops, complete body routes and weekly resident separation
+ok 13 - G keeps all five 3F resident stops, complete body routes and weekly resident separation
+  ---
+  duration_ms: 2894.1772
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 11
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4028.2901

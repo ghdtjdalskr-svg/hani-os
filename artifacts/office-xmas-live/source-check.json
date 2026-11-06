@@ -1,0 +1,109 @@
+{
+  "base": "461dfdff4d26275a4d6d61c177280fd2d6ed35fe",
+  "protected": [
+    {
+      "name": "scheduler",
+      "unchanged": true,
+      "sha256": "2fb5f8eda0313523f45b7b0cd988402b221fb8a0cec823e69beb09141d673ad8"
+    },
+    {
+      "name": "view snapshot",
+      "unchanged": true,
+      "sha256": "f790950ad2e6a2a672a547aec7a094e082bd3b3a98d5e853e7a4cba6acbe456f"
+    },
+    {
+      "name": "screenHomeClear",
+      "unchanged": true,
+      "sha256": "3ca18b4e6f2b302d445b29d3d47c17a5743129ebcfe892deb1f4124cae10bc0a"
+    },
+    {
+      "name": "placeStatusLabels",
+      "unchanged": true,
+      "sha256": "5070f7e62556b89410bc7588600fefe80ba99579e945ae49bab89def98bec6f0"
+    },
+    {
+      "name": "fitStatusLabels",
+      "unchanged": true,
+      "sha256": "e7f807dd9110c0e44fd613c528b2cdf8c2f75df3e442ded716f768b9bdd0c3ac"
+    },
+    {
+      "name": "residents model",
+      "unchanged": true,
+      "sha256": "aa0f74bb5073ae851274c0690810e9af5326442448956e3064942a7e94581eb4"
+    },
+    {
+      "name": "residents renderer",
+      "unchanged": true,
+      "sha256": "2996a42b596252f9af13ba8ff09bf4f315a7ab5f738d4e04234cb1fb013cab72"
+    }
+  ],
+  "cssBeforePrefixUnchanged": true,
+  "sourceTokenCounts": {
+    "setInterval(": [
+      2,
+      2
+    ],
+    "setTimeout(": [
+      4,
+      4
+    ],
+    "addEventListener(": [
+      15,
+      15
+    ],
+    "requestAnimationFrame(": [
+      0,
+      0
+    ],
+    "document.createElement(": [
+      64,
+      64
+    ],
+    "localStorage": [
+      0,
+      0
+    ],
+    "sessionStorage": [
+      0,
+      0
+    ],
+    "supabase": [
+      0,
+      0
+    ],
+    ".setItem(": [
+      0,
+      0
+    ],
+    ".removeItem(": [
+      0,
+      0
+    ],
+    ".clear(": [
+      0,
+      0
+    ],
+    "fetch(": [
+      5,
+      5
+    ]
+  },
+  "files": [
+    {
+      "file": "hani-office-live.js",
+      "sha256": "ba97edaa808c7892f6eddb020e7bebce5ade51795dfaea818dd95b48fcb5e107"
+    },
+    {
+      "file": "hani-office-live.css",
+      "sha256": "29cdcefbb98925b4a56a008a0d8adbb83ceb1fa3a6e28ed88ddcd72dcdeddce0"
+    },
+    {
+      "file": "assets/office-season/xmas.webp",
+      "sha256": "8ef898c5d7ab9e9aa6cb3abfa70dc7b4b10fc3e7964eb57902f9183a1b9473dc"
+    },
+    {
+      "file": "scripts/hani-office-xmas.test.mjs",
+      "sha256": "80c9dec56d2bf8dbeb826613b832a0968c859a25e872dcbac4abc665bd964aef"
+    }
+  ]
+}

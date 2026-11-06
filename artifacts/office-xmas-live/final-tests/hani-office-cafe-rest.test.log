@@ -1,0 +1,73 @@
+simultaneous takeaway stays 53
+cafe cold plan {
+  chairmanPresent: false,
+  samples: [ 412.9425000000001, 464.4946, 396.82840000000033 ]
+}
+cafe cold plan {
+  chairmanPresent: true,
+  samples: [ 449.0167000000001, 432.96569999999974, 436.89769999999953 ]
+}
+TAP version 13
+# Subtest: cafe route uses clear lower-right floor, retains the lounge and sign mounting surface
+not ok 1 - cafe route uses clear lower-right floor, retains the lounge and sign mounting surface
+  ---
+  duration_ms: 9.3006
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-cafe-rest.test.mjs:10:1'
+  failureType: 'testCodeFailure'
+  error: 'spawnSync git EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1191:20)
+    spawnSync (node:child_process:929:24)
+    execFileSync (node:child_process:972:15)
+    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-lively-fixture.mjs:9:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-cafe-rest.test.mjs:13:28)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.start (node:internal/test_runner/test:1262:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+  ...
+# Subtest: two real takeaway customers can stay at distinct non-overlapping service slots
+ok 2 - two real takeaway customers can stay at distinct non-overlapping service slots
+  ---
+  duration_ms: 1733.9524
+  type: 'test'
+  ...
+# Subtest: approved workday cadence and exact frozen placement code stay intact
+ok 3 - approved workday cadence and exact frozen placement code stay intact
+  ---
+  duration_ms: 2.844
+  type: 'test'
+  ...
+# Subtest: first full daily plan stays below the unchanged 400ms limit, chairman absent and present
+not ok 4 - first full daily plan stays below the unchanged 400ms limit, chairman absent and present
+  ---
+  duration_ms: 2638.994
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-cafe-rest.test.mjs:50:1'
+  failureType: 'testCodeFailure'
+  error: '{"chairmanPresent":true,"samples":[449.0167000000001,432.96569999999974,436.89769999999953]}'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-cafe-rest.test.mjs:54:66)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 2
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4422.1758

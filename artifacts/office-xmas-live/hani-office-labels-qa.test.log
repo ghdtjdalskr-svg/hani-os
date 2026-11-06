@@ -1,0 +1,117 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 19.7744
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 6.9459
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 19.6274
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 10.0064
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 67.5521
+  type: 'test'
+  ...
+QA18 coverage {
+  authoredStrings: 2991,
+  generatedSentences: 46500,
+  stateCounts: { work: 2730, rest: 255, meeting: 4, moving: 0, night: 2 }
+}
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 232.9602
+  type: 'test'
+  ...
+# Subtest: QA18/19: every vocabulary sentence has a display state and whole phone <=6 / wide <=8 phrases
+ok 7 - QA18/19: every vocabulary sentence has a display state and whole phone <=6 / wide <=8 phrases
+  ---
+  duration_ms: 4495.4757
+  type: 'test'
+  ...
+# Subtest: QA18: unknown sentences use state fallbacks; used set selects whole alternatives
+ok 8 - QA18: unknown sentences use state fallbacks; used set selects whole alternatives
+  ---
+  duration_ms: 0.6826
+  type: 'test'
+  ...
+# Subtest: QA19: real single status owner maps work/rest/play/meeting/moving/night to AA CSS colours
+ok 9 - QA19: real single status owner maps work/rest/play/meeting/moving/night to AA CSS colours
+  ---
+  duration_ms: 0.6811
+  type: 'test'
+  ...
+# Subtest: QA19: leisure at desks and rest seats is yellow; four overlapping work phrases stay white
+ok 10 - QA19: leisure at desks and rest seats is yellow; four overlapping work phrases stay white
+  ---
+  duration_ms: 0.9287
+  type: 'test'
+  ...
+# Subtest: QA18: wide chooses spaced phrases, phones choose space-free phrases including food votes
+ok 11 - QA18: wide chooses spaced phrases, phones choose space-free phrases including food votes
+  ---
+  duration_ms: 5.1921
+  type: 'test'
+  ...
+# Subtest: QA3: persistent names use canonical roster team/rank/colours; chairman has no nickname or duplicated rank
+ok 12 - QA3: persistent names use canonical roster team/rank/colours; chairman has no nickname or duplicated rank
+  ---
+  duration_ms: 388.5232
+  type: 'test'
+  ...
+# Subtest: QA18: real desktop/phone label keeps full title/aria/roster and delegated tap/keyboard bubble without writes
+ok 13 - QA18: real desktop/phone label keeps full title/aria/roster and delegated tap/keyboard bubble without writes
+  ---
+  duration_ms: 83.606
+  type: 'test'
+  ...
+# Subtest: QA18: label fitting keeps batched reads; existing steady frames do not add layout measurements
+ok 14 - QA18: label fitting keeps batched reads; existing steady frames do not add layout measurements
+  ---
+  duration_ms: 13.0143
+  type: 'test'
+  ...
+# Subtest: label review: real weekly desk notes and stamp doodle keep their literal meaning
+ok 15 - label review: real weekly desk notes and stamp doodle keep their literal meaning
+  ---
+  duration_ms: 267.1256
+  type: 'test'
+  ...
+# Subtest: label review: consultation schedule is work and travel precedes destination rules
+ok 16 - label review: consultation schedule is work and travel precedes destination rules
+  ---
+  duration_ms: 299.8766
+  type: 'test'
+  ...
+# Subtest: label review: actual everyday scenes use rest labels while scheduler meeting and real meetings stay intact
+ok 17 - label review: actual everyday scenes use rest labels while scheduler meeting and real meetings stay intact
+  ---
+  duration_ms: 606.2493
+  type: 'test'
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 17
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6563.8081

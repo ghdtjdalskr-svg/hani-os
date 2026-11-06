@@ -2753,7 +2753,18 @@
     prop.onload=()=>{prop.dataset.loaded='true'};prop.onerror=()=>{prop.dataset.loaded='false'};
     map.append(prop);deskProps.push({prop,floor:floor.id,src:building.deskPropArt[entry.id]});
   }
-  // Approved four-frame art: one map-owned layer and seven persistent slots.
+  // Annual KST windows are read-only; the exclusive end includes Dec 26 23:59.
+  // Future events add a row/atlas using the five shared CSS atlas rectangle presets.
+  const officeEventCalendar=Object.freeze([
+    Object.freeze({id:'christmas',atlas:'./assets/office-season/xmas.webp',startKst:'12-01T00:00',endKstExclusive:'12-27T00:00',decorations:Object.freeze([
+      ['xmas-tree','event-tall','1f',493,435,112,136,'bottom-center',false],
+      ['xmas-snow','event-window','1f',1600,146,88,112,'center',false],
+      ['xmas-wreath','event-wall','1f',832,196,76,76,'center',false],
+      ['xmas-gifts','event-floor','1f',548,450,80,60,'bottom-center',false],
+      ['xmas-lights','event-wide','5f',1344,565,384,64,'bottom-center',true]
+    ].map(Object.freeze))})
+  ]);
+  // Approved four-frame art: one map-owned layer and persistent prop/event slots.
   const livePropLayer=document.createElement('div');livePropLayer.className='hani-office-live-props';livePropLayer.setAttribute('aria-hidden','true');livePropLayer.hidden=true;map.append(livePropLayer);
   const liveProps=[
     ['coffee-desk','coffee-steam','1f',238,570,32,48,'bottom-center'],
@@ -2762,15 +2773,20 @@
     ['monitor','monitor-glow','3f',466,480,64,40,'center'],
     ['lantern','lantern-flicker','5f',1380,738,40,56,'bottom-center'],
     ['stamp','stamp-sparkle','3f',213,676,32,32,'center'],
-    ['paper','paper-flutter','1f',1605,520,40,48,'center']
-  ].map(([id,art,floor,x,y,width,height,anchor])=>{
+    ['paper','paper-flutter','1f',1605,520,40,48,'center'],
+    ...officeEventCalendar.flatMap(event=>event.decorations.map(decoration=>[...decoration,event]))
+  ].map(([id,art,floor,x,y,width,height,anchor,nightOnly=false,event=null])=>{
     const prop=document.createElement('span');prop.className='hani-office-live-prop';prop.dataset.prop=id;prop.dataset.sprite=art;prop.dataset.anchor=anchor;prop.hidden=true;
+    if(event){prop.dataset.event=event.id;prop.style.backgroundImage='url("'+event.atlas+'")'}
     prop.style.left=x/(building.art?.width||1672)*100+'%';prop.style.top=y/(building.art?.height||941)*100+'%';prop.style.width=width/(building.art?.width||1672)*100+'%';prop.style.height=height/(building.art?.height||941)*100+'%';
-    livePropLayer.append(prop);return {prop,floor};
+    livePropLayer.append(prop);return {prop,floor,nightOnly:nightOnly||id==='lantern',event};
   });
-  function updateLiveProps(floor,background,isFloor){
+  function updateLiveProps(floor,background,isFloor,now=new Date()){
+    const date=koreaTime(now).toISOString().slice(5,16);
+    const activeEvents=new Set(officeEventCalendar.filter(event=>event.startKst<event.endKstExclusive
+      ?date>=event.startKst&&date<event.endKstExclusive:date>=event.startKst||date<event.endKstExclusive));
     livePropLayer.hidden=!isFloor;
-    for(const entry of liveProps)entry.prop.hidden=!isFloor||entry.floor!==floor.id||(entry.prop.dataset.prop==='lantern'&&background!==floor.nightBackground);
+    for(const entry of liveProps)entry.prop.hidden=!isFloor||entry.floor!==floor.id||(entry.nightOnly&&background!==floor.nightBackground)||(!!entry.event&&!activeEvents.has(entry.event));
   }
   let activeFloor="4f",floorSnapshot=null,layoutKey="",backgroundToken=0,returnFloor="4f",displayedFloor=null;
   floorLabel.className="hani-building-floor-label";overflowChip.className="hani-building-overflow";const caption=document.createElement('div');caption.className='hani-building-floor-caption';const presenceNote=document.createElement('small');presenceNote.className='hani-building-presence-note';presenceNote.setAttribute('role','status');presenceNote.hidden=true;caption.append(floorLabel,overflowChip,presenceNote);root.querySelector('.hani-office-scroll').after(caption);
@@ -2948,6 +2964,7 @@
     const light=building.atmosphere.light(now,reduced);atmosphere.dataset.phase=light.phase;
     for(const [phase,wash] of washes){const opacity=light.tint[phase].toFixed(5);if(wash.style.opacity!==opacity)wash.style.opacity=opacity}
     const floor=building.floors.find(f=>f.id===activeFloor);
+    updateLiveProps(floor,map.querySelector('.hani-office-background').getAttribute('src'),map.dataset.art==='floor'&&map.dataset.floor===activeFloor,now);
     if(visible&&backgroundRequest!==floor.id+'|'+building.atmosphere.background(floor,now))setBackground(floor);
     const monitors=map.dataset.art==='floor'?building.atmosphere.monitors(activeFloor,[...actors.values()].filter(a=>!a.hidden).map(a=>({
       id:a.dataset.person,seat:building.seatMaps[activeFloor]?.find(s=>s.id===a.dataset.seat),activity:a.dataset.activity,

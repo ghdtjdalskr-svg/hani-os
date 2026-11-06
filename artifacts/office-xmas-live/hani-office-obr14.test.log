@@ -1,0 +1,16 @@
+235 daytime {
+  day: '2026-10-21',
+  activeRatio: 0.9055833333333333,
+  walkingOrGuestsRatio: 0.8983888888888889,
+  peopleMean: 3.15775,
+  maxGuests: 2,
+  kinds: [ 'courier', 'generic', 'candidate', 'client', 'rider' ]
+}
+235 daytime {
+  day: '2026-10-22',
+  activeRatio: 0.9196111111111112,
+  walkingOrGuestsRatio: 0.9099722222222222,
+  peopleMean: 3.1574444444444443,
+  maxGuests: 2,
+  kinds: [ 'courier', 'generic', 'client', 'candidate', 'rider' ]
+}

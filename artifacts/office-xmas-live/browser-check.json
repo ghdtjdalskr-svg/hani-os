@@ -1,0 +1,442 @@
+[
+  {
+    "floor": "1f",
+    "art": "http://127.0.0.1:14727/assets/building/floor-1f-217.webp",
+    "props": [
+      {
+        "id": "xmas-tree",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 0%",
+        "rect": [
+          343.171875,
+          353.171875,
+          83.59375,
+          101.5
+        ]
+      },
+      {
+        "id": "xmas-snow",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 48.6111%",
+        "rect": [
+          1178.4140625,
+          197.171875,
+          65.671875,
+          83.59375
+        ]
+      },
+      {
+        "id": "xmas-wreath",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "0% 79.0123%",
+        "rect": [
+          609.640625,
+          247.921875,
+          56.71875,
+          56.71875
+        ]
+      },
+      {
+        "id": "xmas-gifts",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "5.4945% 75.2941%",
+        "rect": [
+          396.1796875,
+          421.09375,
+          59.703125,
+          44.78125
+        ]
+      },
+      {
+        "id": "xmas-lights",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 100%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "wreathOverlapsBrand": false,
+    "writes": [],
+    "reduced": [
+      {
+        "id": "xmas-tree",
+        "animation": "none",
+        "position": "7.86517% 0%"
+      },
+      {
+        "id": "xmas-snow",
+        "animation": "none",
+        "position": "6.07735% 48.6111%"
+      },
+      {
+        "id": "xmas-wreath",
+        "animation": "none",
+        "position": "0% 79.0123%"
+      },
+      {
+        "id": "xmas-gifts",
+        "animation": "none",
+        "position": "5.4945% 75.2941%"
+      },
+      {
+        "id": "xmas-lights",
+        "animation": "none",
+        "position": "33.3333% 100%"
+      }
+    ]
+  },
+  {
+    "floor": "5f",
+    "art": "http://127.0.0.1:14727/assets/building/floor-5f-night-243.webp",
+    "props": [
+      {
+        "id": "xmas-tree",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 0%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-snow",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 48.6111%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-wreath",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "0% 79.0123%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-gifts",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "5.4945% 75.2941%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-lights",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 100%",
+        "rect": [
+          876.8671875,
+          503.9375,
+          286.609375,
+          47.765625
+        ]
+      }
+    ],
+    "wreathOverlapsBrand": false,
+    "writes": [],
+    "reduced": [
+      {
+        "id": "xmas-tree",
+        "animation": "none",
+        "position": "7.86517% 0%"
+      },
+      {
+        "id": "xmas-snow",
+        "animation": "none",
+        "position": "6.07735% 48.6111%"
+      },
+      {
+        "id": "xmas-wreath",
+        "animation": "none",
+        "position": "0% 79.0123%"
+      },
+      {
+        "id": "xmas-gifts",
+        "animation": "none",
+        "position": "5.4945% 75.2941%"
+      },
+      {
+        "id": "xmas-lights",
+        "animation": "none",
+        "position": "33.3333% 100%"
+      }
+    ]
+  },
+  {
+    "floor": "1f",
+    "art": "http://127.0.0.1:14727/assets/building/floor-1f-217.webp",
+    "props": [
+      {
+        "id": "xmas-tree",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 0%",
+        "rect": [
+          110.5625,
+          342.015625,
+          23.96875,
+          29.109375
+        ]
+      },
+      {
+        "id": "xmas-snow",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 48.6111%",
+        "rect": [
+          350.1640625,
+          297.265625,
+          18.828125,
+          23.96875
+        ]
+      },
+      {
+        "id": "xmas-wreath",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "0% 79.0123%",
+        "rect": [
+          187.0078125,
+          311.8203125,
+          16.265625,
+          16.265625
+        ]
+      },
+      {
+        "id": "xmas-gifts",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "5.4945% 75.2941%",
+        "rect": [
+          125.765625,
+          361.5,
+          17.125,
+          12.84375
+        ]
+      },
+      {
+        "id": "xmas-lights",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 100%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "wreathOverlapsBrand": false,
+    "writes": [],
+    "reduced": [
+      {
+        "id": "xmas-tree",
+        "animation": "none",
+        "position": "7.86517% 0%"
+      },
+      {
+        "id": "xmas-snow",
+        "animation": "none",
+        "position": "6.07735% 48.6111%"
+      },
+      {
+        "id": "xmas-wreath",
+        "animation": "none",
+        "position": "0% 79.0123%"
+      },
+      {
+        "id": "xmas-gifts",
+        "animation": "none",
+        "position": "5.4945% 75.2941%"
+      },
+      {
+        "id": "xmas-lights",
+        "animation": "none",
+        "position": "33.3333% 100%"
+      }
+    ]
+  },
+  {
+    "floor": "5f",
+    "art": "http://127.0.0.1:14727/assets/building/floor-5f-night-243.webp",
+    "props": [
+      {
+        "id": "xmas-tree",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 0%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-snow",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 48.6111%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-wreath",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "0% 79.0123%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-gifts",
+        "hidden": true,
+        "display": "none",
+        "pointerEvents": "none",
+        "animation": "none",
+        "timing": "ease",
+        "position": "5.4945% 75.2941%",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "id": "xmas-lights",
+        "hidden": false,
+        "display": "block",
+        "pointerEvents": "none",
+        "animation": "hani-office-event-frames",
+        "timing": "steps(4)",
+        "position": "0% 100%",
+        "rect": [
+          263.65625,
+          385.265625,
+          82.21875,
+          13.6875
+        ]
+      }
+    ],
+    "wreathOverlapsBrand": false,
+    "writes": [],
+    "reduced": [
+      {
+        "id": "xmas-tree",
+        "animation": "none",
+        "position": "7.86517% 0%"
+      },
+      {
+        "id": "xmas-snow",
+        "animation": "none",
+        "position": "6.07735% 48.6111%"
+      },
+      {
+        "id": "xmas-wreath",
+        "animation": "none",
+        "position": "0% 79.0123%"
+      },
+      {
+        "id": "xmas-gifts",
+        "animation": "none",
+        "position": "5.4945% 75.2941%"
+      },
+      {
+        "id": "xmas-lights",
+        "animation": "none",
+        "position": "33.3333% 100%"
+      }
+    ]
+  }
+]

@@ -1,0 +1,56 @@
+[
+  {
+    "width": 300,
+    "metrics": "Node synthetic font/animation geometry, not browser pixels",
+    "samples": 365,
+    "minimumRatio": 0.75,
+    "meanMs": 3.082061643835617,
+    "maxMs": 44.5326,
+    "counts": {
+      "sprite": 0,
+      "face": 0,
+      "label": 0,
+      "mascot": 0,
+      "outside": 0,
+      "distant": 0,
+      "dialogue": 0
+    },
+    "failures": []
+  },
+  {
+    "width": 342,
+    "metrics": "Node synthetic font/animation geometry, not browser pixels",
+    "samples": 365,
+    "minimumRatio": 1,
+    "meanMs": 1.1858120547945126,
+    "maxMs": 14.046499999999924,
+    "counts": {
+      "sprite": 0,
+      "face": 0,
+      "label": 0,
+      "mascot": 0,
+      "outside": 0,
+      "distant": 0,
+      "dialogue": 0
+    },
+    "failures": []
+  },
+  {
+    "width": 1348,
+    "metrics": "Node synthetic font/animation geometry, not browser pixels",
+    "samples": 365,
+    "minimumRatio": 1,
+    "meanMs": 1.1477115068493158,
+    "maxMs": 5.577499999999873,
+    "counts": {
+      "sprite": 0,
+      "face": 0,
+      "label": 0,
+      "mascot": 0,
+      "outside": 0,
+      "distant": 0,
+      "dialogue": 0
+    },
+    "failures": []
+  }
+]

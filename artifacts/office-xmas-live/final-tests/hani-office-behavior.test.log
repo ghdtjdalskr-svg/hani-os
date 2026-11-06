@@ -1,0 +1,72 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 12.5036
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 6.7945
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 28.5347
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 7.4498
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 70.9696
+  type: 'test'
+  ...
+weekday full day and late night { samples: 93600, places: 184243, walks: 28213, returns: 14411 }
+weekend evening { samples: 7200, places: 13112, walks: 3400, returns: 1709 }
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 246.5735
+  type: 'test'
+  ...
+# Subtest: weekday full day and late night — all people every second
+ok 7 - weekday full day and late night — all people every second
+  ---
+  duration_ms: 48607.0551
+  type: 'test'
+  ...
+# Subtest: weekend evening — all people every second
+ok 8 - weekend evening — all people every second
+  ---
+  duration_ms: 5021.8356
+  type: 'test'
+  ...
+# Subtest: reported reproductions, reduced motion and arbitrary query order use the same reservations
+ok 9 - reported reproductions, reduced motion and arbitrary query order use the same reservations
+  ---
+  duration_ms: 24.9826
+  type: 'test'
+  ...
+# Subtest: place/geometry contract, no sub-4px timed edge, private homes and full return endpoints
+ok 10 - place/geometry contract, no sub-4px timed edge, private homes and full return endpoints
+  ---
+  duration_ms: 6.1626
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 54608.2243

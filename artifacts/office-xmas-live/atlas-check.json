@@ -1,0 +1,75 @@
+{
+    "size":  [
+                 1536,
+                 400
+             ],
+    "bytes":  220968,
+    "sha256":  "8ef898c5d7ab9e9aa6cb3abfa70dc7b4b10fc3e7964eb57902f9183a1b9473dc",
+    "lossless":  true,
+    "resampled":  false,
+    "copiedPixelsEqual":  true,
+    "strips":  [
+                   {
+                       "id":  "tree",
+                       "file":  "christmas-tree.webp",
+                       "rect":  [
+                                    0,
+                                    0,
+                                    112,
+                                    136
+                                ],
+                       "frames":  4,
+                       "rgbaSha256":  "8beacc1d053da63e677262dcb05c6d33f367c5db3084129fc7807bf345196363"
+                   },
+                   {
+                       "id":  "snow",
+                       "file":  "window-snow.webp",
+                       "rect":  [
+                                    0,
+                                    140,
+                                    88,
+                                    112
+                                ],
+                       "frames":  4,
+                       "rgbaSha256":  "bbaee18461adacb406f355b12cf81174ce85d529f01afbef1a685b4a5fa9953a"
+                   },
+                   {
+                       "id":  "wreath",
+                       "file":  "wall-wreath.webp",
+                       "rect":  [
+                                    0,
+                                    256,
+                                    76,
+                                    76
+                                ],
+                       "frames":  1,
+                       "rgbaSha256":  "bda94f0a114ee572617ad9c4b774d48356fb4f82d0dc692ae8c56033ade5e0ed"
+                   },
+                   {
+                       "id":  "gifts",
+                       "file":  "gift-boxes.webp",
+                       "rect":  [
+                                    80,
+                                    256,
+                                    80,
+                                    60
+                                ],
+                       "frames":  1,
+                       "rgbaSha256":  "0ff5d9909c5b5648cdd4d97921787abf15eaf48b336bb592b59a45d2abe8a971"
+                   },
+                   {
+                       "id":  "lights",
+                       "file":  "rooftop-lights.webp",
+                       "rect":  [
+                                    0,
+                                    336,
+                                    384,
+                                    64
+                                ],
+                       "frames":  4,
+                       "rgbaSha256":  "3bbe8c6b623ae00da658e2d3148ee50ac9c7e5d45883464118fd0fd726ea9d95"
+                   }
+               ],
+    "limitBytes":  120000,
+    "limitPassed":  false
+}

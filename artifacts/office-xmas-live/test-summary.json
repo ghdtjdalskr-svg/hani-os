@@ -1,0 +1,935 @@
+{
+  "identity": {
+    "css": "29CDCEFBB98925B4A56A008A0D8ADBB83CEB1FA3A6E28ED88DDCD72DCDEDDCE0",
+    "js": "BA97EDAA808C7892F6EDDB020E7BEBCE5ADE51795DFAEA818DD95B48FCB5E107"
+  },
+  "files": 46,
+  "filePass": 24,
+  "startupBlocked": [
+    "hani-office-219.test.mjs",
+    "hani-office-chairman-234.test.mjs",
+    "hani-office-obr12.test.mjs",
+    "hani-office-obr6.test.mjs",
+    "hani-office-obr7.test.mjs",
+    "hani-office-obr9.test.mjs"
+  ],
+  "counts": {
+    "tests": 523,
+    "pass": 492,
+    "fail": 28,
+    "skipped": 3
+  },
+  "timedOut": 0,
+  "results": [
+    {
+      "file": "hani-office-219.test.mjs",
+      "exitCode": 1,
+      "timedOut": false,
+      "counts": {
+        "fail": null,
+        "cancelled": null,
+        "pass": null,
+        "skipped": null,
+        "tests": null
+      },
+      "gitEperm": true,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-219.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-actions-221.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 20,
+        "skipped": 0,
+        "tests": 20
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-actions-221.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-barista.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 10,
+        "skipped": 0,
+        "tests": 10
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-barista.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-bubble-close.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 17,
+        "skipped": 0,
+        "tests": 17
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-bubble-close.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-cafe-rest.test.mjs",
+      "exitCode": 1,
+      "timedOut": false,
+      "counts": {
+        "fail": 1,
+        "cancelled": 0,
+        "pass": 3,
+        "skipped": 0,
+        "tests": 4
+      },
+      "gitEperm": true,
+      "failedTests": [
+        "cafe route uses clear lower-right floor, retains the lounge and sign mounting surface\r"
+      ],
+      "evidence": "final-tests/cafe-rest-serial.log",
+      "serialPerformanceRecheck": true,
+      "failures": [
+        {
+          "test": "cafe route uses clear lower-right floor, retains the lounge and sign mounting surface",
+          "reason": "Git EPERM 실행 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-chairman-234.test.mjs",
+      "exitCode": 7,
+      "timedOut": false,
+      "counts": {
+        "fail": null,
+        "cancelled": null,
+        "pass": null,
+        "skipped": null,
+        "tests": null
+      },
+      "gitEperm": true,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-chairman-234.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-consult.test.mjs",
+      "exitCode": 1,
+      "timedOut": false,
+      "counts": {
+        "fail": 2,
+        "cancelled": 0,
+        "pass": 18,
+        "skipped": 0,
+        "tests": 20
+      },
+      "gitEperm": true,
+      "failedTests": [
+        "consult: sofa wording, counter words, safety owners and runtime timers",
+        "consult: separately authored full plans and reverse snapshots retain exact identity in both presence states"
+      ],
+      "evidence": "final-tests/hani-office-consult.test.log",
+      "failures": [
+        {
+          "test": "consult: sofa wording, counter words, safety owners and runtime timers",
+          "reason": "Git EPERM 실행 차단"
+        },
+        {
+          "test": "consult: separately authored full plans and reverse snapshots retain exact identity in both presence states",
+          "reason": "기존 source pin 또는 소품 개수 가정"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-crowded-labels.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 19,
+        "skipped": 0,
+        "tests": 19
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-crowded-labels.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-actions-216.test.mjs",
+      "exitCode": 1,
+      "timedOut": false,
+      "counts": {
+        "fail": 1,
+        "cancelled": 0,
+        "pass": 14,
+        "skipped": 0,
+        "tests": 15
+      },
+      "gitEperm": true,
+      "failedTests": [
+        "approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract"
+      ],
+      "evidence": "final-tests/hani-office-actions-216.test.log",
+      "failures": [
+        {
+          "test": "approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract",
+          "reason": "Git EPERM 실행 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-fix-218.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 6,
+        "skipped": 0,
+        "tests": 6
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-fix-218.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-floor-bubble.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 18,
+        "skipped": 0,
+        "tests": 18
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-floor-bubble.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-behavior.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 10,
+        "skipped": 0,
+        "tests": 10
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-behavior.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-hd-224.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 10,
+        "skipped": 0,
+        "tests": 10
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-hd-224.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-labels-qa.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 17,
+        "skipped": 0,
+        "tests": 17
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-labels-qa.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-icons.test.mjs",
+      "exitCode": 1,
+      "timedOut": false,
+      "counts": {
+        "fail": 1,
+        "cancelled": 0,
+        "pass": 14,
+        "skipped": 0,
+        "tests": 15
+      },
+      "gitEperm": false,
+      "failedTests": [
+        "icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc"
+      ],
+      "evidence": "final-tests/hani-office-icons.test.log",
+      "failures": [
+        {
+          "test": "icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc",
+          "reason": "기존 source pin 또는 소품 개수 가정"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-drama.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 20,
+        "skipped": 0,
+        "tests": 20
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-drama.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-motion-1.test.mjs",
+      "exitCode": 1,
+      "timedOut": false,
+      "counts": {
+        "fail": 1,
+        "cancelled": 0,
+        "pass": 15,
+        "skipped": 0,
+        "tests": 16
+      },
+      "gitEperm": false,
+      "failedTests": [
+        "approved consultation scheduler source stays frozen, including every route and arrival calculation"
+      ],
+      "evidence": "final-tests/hani-office-motion-1.test.log",
+      "failures": [
+        {
+          "test": "approved consultation scheduler source stays frozen, including every route and arrival calculation",
+          "reason": "기존 source pin 또는 소품 개수 가정"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-motion-2.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 24,
+        "skipped": 0,
+        "tests": 24
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-motion-2.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr10.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 4,
+        "skipped": 0,
+        "tests": 4
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-obr10.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr12.test.mjs",
+      "exitCode": 1,
+      "timedOut": false,
+      "counts": {
+        "fail": null,
+        "cancelled": null,
+        "pass": null,
+        "skipped": null,
+        "tests": null
+      },
+      "gitEperm": true,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-obr12.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-lively-v2.test.mjs",
+      "exitCode": 1,
+      "timedOut": false,
+      "counts": {
+        "fail": 1,
+        "cancelled": 0,
+        "pass": 7,
+        "skipped": 0,
+        "tests": 8
+      },
+      "gitEperm": true,
+      "failedTests": [
+        "obr2: deterministic query order, reduced motion and frozen spatial bytes\r"
+      ],
+      "evidence": "final-tests/lively-v2-serial.log",
+      "serialPerformanceRecheck": true,
+      "failures": [
+        {
+          "test": "obr2: deterministic query order, reduced motion and frozen spatial bytes",
+          "reason": "Git EPERM 실행 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-lively.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 13,
+        "skipped": 0,
+        "tests": 13
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-lively.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr16.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 12,
+        "skipped": 0,
+        "tests": 12
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-obr16.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr15.test.mjs",
+      "exitCode": 1,
+      "timedOut": false,
+      "counts": {
+        "fail": 1,
+        "cancelled": 0,
+        "pass": 13,
+        "skipped": 0,
+        "tests": 14
+      },
+      "gitEperm": true,
+      "failedTests": [
+        "obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately"
+      ],
+      "evidence": "final-tests/hani-office-obr15.test.log",
+      "failures": [
+        {
+          "test": "obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately",
+          "reason": "Git EPERM 실행 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr17.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 3,
+        "skipped": 0,
+        "tests": 3
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-obr17.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr19.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 3,
+        "skipped": 0,
+        "tests": 3
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-obr19.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr18.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 12,
+        "skipped": 0,
+        "tests": 12
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-obr18.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr3.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 5,
+        "skipped": 0,
+        "tests": 5
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-obr3.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr4.test.mjs",
+      "exitCode": 1,
+      "timedOut": false,
+      "counts": {
+        "fail": 2,
+        "cancelled": 0,
+        "pass": 8,
+        "skipped": 0,
+        "tests": 10
+      },
+      "gitEperm": true,
+      "failedTests": [
+        "obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+        "obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats"
+      ],
+      "evidence": "final-tests/hani-office-obr4.test.log",
+      "failures": [
+        {
+          "test": "obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+          "reason": "Git EPERM 실행 차단"
+        },
+        {
+          "test": "obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats",
+          "reason": "Git EPERM 실행 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr6.test.mjs",
+      "exitCode": 1,
+      "timedOut": false,
+      "counts": {
+        "fail": null,
+        "cancelled": null,
+        "pass": null,
+        "skipped": null,
+        "tests": null
+      },
+      "gitEperm": true,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-obr6.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr7.test.mjs",
+      "exitCode": 1,
+      "timedOut": false,
+      "counts": {
+        "fail": null,
+        "cancelled": null,
+        "pass": null,
+        "skipped": null,
+        "tests": null
+      },
+      "gitEperm": true,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-obr7.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr8.test.mjs",
+      "exitCode": 1,
+      "timedOut": false,
+      "counts": {
+        "fail": 1,
+        "cancelled": 0,
+        "pass": 2,
+        "skipped": 0,
+        "tests": 3
+      },
+      "gitEperm": true,
+      "failedTests": [
+        "obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words"
+      ],
+      "evidence": "final-tests/hani-office-obr8.test.log",
+      "failures": [
+        {
+          "test": "obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words",
+          "reason": "Git EPERM 실행 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr9.test.mjs",
+      "exitCode": 1,
+      "timedOut": false,
+      "counts": {
+        "fail": null,
+        "cancelled": null,
+        "pass": null,
+        "skipped": null,
+        "tests": null
+      },
+      "gitEperm": true,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-obr9.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-props.test.mjs",
+      "exitCode": 1,
+      "timedOut": false,
+      "counts": {
+        "fail": 2,
+        "cancelled": 0,
+        "pass": 9,
+        "skipped": 0,
+        "tests": 11
+      },
+      "gitEperm": false,
+      "failedTests": [
+        "props: one persistent map layer and seven persistent, map-relative slots across floors and clocks",
+        "props: reduced-motion owner remains persistent, floor-scoped and write-free"
+      ],
+      "evidence": "final-tests/hani-office-props.test.log",
+      "failures": [
+        {
+          "test": "props: one persistent map layer and seven persistent, map-relative slots across floors and clocks",
+          "reason": "기존 source pin 또는 소품 개수 가정"
+        },
+        {
+          "test": "props: reduced-motion owner remains persistent, floor-scoped and write-free",
+          "reason": "기존 source pin 또는 소품 개수 가정"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr21.test.mjs",
+      "exitCode": 1,
+      "timedOut": false,
+      "counts": {
+        "fail": 3,
+        "cancelled": 0,
+        "pass": 3,
+        "skipped": 0,
+        "tests": 6
+      },
+      "gitEperm": true,
+      "failedTests": [
+        "obr21 authored full absent/present plans and reverse snapshots match frozen delta",
+        "obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+        "obr21 cached gathering/index decisions equal full index rebuilds"
+      ],
+      "evidence": "final-tests/hani-office-obr21.test.log",
+      "failures": [
+        {
+          "test": "obr21 authored full absent/present plans and reverse snapshots match frozen delta",
+          "reason": "기존 source pin 또는 소품 개수 가정"
+        },
+        {
+          "test": "obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+          "reason": "Git EPERM 실행 차단"
+        },
+        {
+          "test": "obr21 cached gathering/index decisions equal full index rebuilds",
+          "reason": "Git EPERM 실행 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-seats-215.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 12,
+        "skipped": 0,
+        "tests": 12
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-seats-215.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-snack.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 26,
+        "skipped": 0,
+        "tests": 26
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-snack.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-tap-lines.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 15,
+        "skipped": 0,
+        "tests": 15
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-tap-lines.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-tlayout.test.mjs",
+      "exitCode": 1,
+      "timedOut": false,
+      "counts": {
+        "fail": 2,
+        "cancelled": 0,
+        "pass": 11,
+        "skipped": 0,
+        "tests": 13
+      },
+      "gitEperm": false,
+      "failedTests": [
+        "only the five pinned source fragments change; protected home and label owners are byte identical",
+        "16 separately authored complete plan/outings/reverse-snapshot outputs have no exclusions"
+      ],
+      "evidence": "final-tests/hani-office-tlayout.test.log",
+      "failures": [
+        {
+          "test": "only the five pinned source fragments change; protected home and label owners are byte identical",
+          "reason": "기존 source pin 또는 소품 개수 가정"
+        },
+        {
+          "test": "16 separately authored complete plan/outings/reverse-snapshot outputs have no exclusions",
+          "reason": "기존 source pin 또는 소품 개수 가정"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-top-labels.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 7,
+        "skipped": 0,
+        "tests": 7
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-top-labels.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-v2-215.test.mjs",
+      "exitCode": 1,
+      "timedOut": false,
+      "counts": {
+        "fail": 1,
+        "cancelled": 0,
+        "pass": 17,
+        "skipped": 2,
+        "tests": 20
+      },
+      "gitEperm": true,
+      "failedTests": [
+        "frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture"
+      ],
+      "evidence": "final-tests/hani-office-v2-215.test.log",
+      "failures": [
+        {
+          "test": "frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture",
+          "reason": "Git EPERM 실행 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-visitors-cafe.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 5,
+        "skipped": 0,
+        "tests": 5
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-visitors-cafe.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-xmas.test.mjs",
+      "exitCode": 0,
+      "timedOut": false,
+      "counts": {
+        "fail": 0,
+        "cancelled": 0,
+        "pass": 13,
+        "skipped": 0,
+        "tests": 13
+      },
+      "gitEperm": false,
+      "failedTests": [],
+      "evidence": "final-tests/hani-office-xmas.test.log",
+      "failures": []
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "exitCode": 1,
+      "timedOut": false,
+      "counts": {
+        "fail": 7,
+        "cancelled": 0,
+        "pass": 42,
+        "skipped": 0,
+        "tests": 49
+      },
+      "gitEperm": false,
+      "failedTests": [
+        "eight approved atlases decode, match their manifest hashes, load through the real owner and enter the closure",
+        "interaction routes and dwell spots clear full furniture envelopes and staff snapshots/plans remain byte-identical on and off",
+        "actual delegated pet taps show both speakers, automatic scene uses existing bubble, and all persistence/AI paths remain unused",
+        "every original source byte and staff/visitor plan, outing and snapshot stays identical with residents on or off",
+        "trio rejects missing/different-floor/sleeping pets and staff-blocked floor; plan and snapshot bytes stay frozen",
+        "seeded Cheese and Cream spots change within two minutes; NPC quarters and all staff plans stay frozen",
+        "real pet hearts reuse one mounted node, pair taps override trio during affection, and reduced motion is still with zero writes"
+      ],
+      "evidence": "final-tests/hani-office-residents.test.log",
+      "failures": [
+        {
+          "test": "eight approved atlases decode, match their manifest hashes, load through the real owner and enter the closure",
+          "reason": "기존 source pin 또는 소품 개수 가정"
+        },
+        {
+          "test": "interaction routes and dwell spots clear full furniture envelopes and staff snapshots/plans remain byte-identical on and off",
+          "reason": "기존 source pin 또는 소품 개수 가정"
+        },
+        {
+          "test": "actual delegated pet taps show both speakers, automatic scene uses existing bubble, and all persistence/AI paths remain unused",
+          "reason": "기존 source pin 또는 소품 개수 가정"
+        },
+        {
+          "test": "every original source byte and staff/visitor plan, outing and snapshot stays identical with residents on or off",
+          "reason": "기존 source pin 또는 소품 개수 가정"
+        },
+        {
+          "test": "trio rejects missing/different-floor/sleeping pets and staff-blocked floor; plan and snapshot bytes stay frozen",
+          "reason": "기존 source pin 또는 소품 개수 가정"
+        },
+        {
+          "test": "seeded Cheese and Cream spots change within two minutes; NPC quarters and all staff plans stay frozen",
+          "reason": "기존 source pin 또는 소품 개수 가정"
+        },
+        {
+          "test": "real pet hearts reuse one mounted node, pair taps override trio during affection, and reduced motion is still with zero writes",
+          "reason": "기존 source pin 또는 소품 개수 가정"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-zoom.test.mjs",
+      "exitCode": 1,
+      "timedOut": false,
+      "counts": {
+        "fail": 1,
+        "cancelled": 0,
+        "pass": 11,
+        "skipped": 1,
+        "tests": 13
+      },
+      "gitEperm": false,
+      "failedTests": [
+        "zoom: scheduler, snapshots and all three protected geometry functions stay byte identical to task base"
+      ],
+      "evidence": "final-tests/hani-office-zoom.test.log",
+      "failures": [
+        {
+          "test": "zoom: scheduler, snapshots and all three protected geometry functions stay byte identical to task base",
+          "reason": "기존 source pin 또는 소품 개수 가정"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr14.test.mjs",
+      "exitCode": 1,
+      "timedOut": false,
+      "counts": {
+        "fail": 1,
+        "cancelled": 0,
+        "pass": 4,
+        "skipped": 0,
+        "tests": 5
+      },
+      "gitEperm": true,
+      "failedTests": [
+        "235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism"
+      ],
+      "evidence": "final-tests/hani-office-obr14.test.log",
+      "failures": [
+        {
+          "test": "235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism",
+          "reason": "Git EPERM 실행 차단"
+        }
+      ]
+    }
+  ]
+}

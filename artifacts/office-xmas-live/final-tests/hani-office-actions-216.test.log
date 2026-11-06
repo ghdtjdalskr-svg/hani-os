@@ -1,0 +1,115 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 20.9862
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 8.895
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 28.9399
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 8.8516
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 64.7257
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 233.08
+  type: 'test'
+  ...
+# Subtest: approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract
+not ok 7 - approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract
+  ---
+  duration_ms: 33.1843
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\xmas-live\\scripts\\hani-office-actions-216.test.mjs:19:1'
+  failureType: 'testCodeFailure'
+  error: 'spawnSync git EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1191:20)
+    spawnSync (node:child_process:929:24)
+    execFileSync (node:child_process:972:15)
+    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-lively-fixture.mjs:9:9)
+    assertOnboardedCanon (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-onboarding-232-assertions.mjs:14:17)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/xmas-live/scripts/hani-office-actions-216.test.mjs:25:3)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+  ...
+# Subtest: 120 deterministic simulated days enforce all shared caps, cooldowns, parent eligibility and atomic path reservations
+ok 8 - 120 deterministic simulated days enforce all shared caps, cooldowns, parent eligibility and atomic path reservations
+  ---
+  duration_ms: 46202.919
+  type: 'test'
+  ...
+# Subtest: KST seed, day boundaries, chairman identity/presence, MIR limits and independent daily 15% gates
+ok 9 - KST seed, day boundaries, chairman identity/presence, MIR limits and independent daily 15% gates
+  ---
+  duration_ms: 1327.9895
+  type: 'test'
+  ...
+# Subtest: every one of the 97 scheduled core rows is reachable; base-work remains the default 98th row
+ok 10 - every one of the 97 scheduled core rows is reachable; base-work remains the default 98th row
+  ---
+  duration_ms: 749.0321
+  type: 'test'
+  ...
+# Subtest: blocked parents/slots never rescue with a variant; disabled and data-triggered rows cannot execute
+ok 11 - blocked parents/slots never rescue with a variant; disabled and data-triggered rows cannot execute
+  ---
+  duration_ms: 74.6143
+  type: 'test'
+  ...
+# Subtest: random access snapshots skip missed events; summoned and cancelled events stay out; reduced motion is static
+ok 12 - random access snapshots skip missed events; summoned and cancelled events stay out; reduced motion is static
+  ---
+  duration_ms: 14.9096
+  type: 'test'
+  ...
+# Subtest: actual renderer uses persistent actor/prop/bubble slots, tap/keyboard/profile, visible-only motion and case priority
+ok 13 - actual renderer uses persistent actor/prop/bubble slots, tap/keyboard/profile, visible-only motion and case priority
+  ---
+  duration_ms: 1693.8161
+  type: 'test'
+  ...
+# Subtest: literal runtime fetch executes and an offline table settles into safe base work
+ok 14 - literal runtime fetch executes and an offline table settles into safe base work
+  ---
+  duration_ms: 401.8397
+  type: 'test'
+  ...
+# Subtest: canonical animation samples the reserved path, pauses other floors, and snaps on a motion preference change
+ok 15 - canonical animation samples the reserved path, pauses other floors, and snaps on a motion preference change
+  ---
+  duration_ms: 1217.5049
+  type: 'test'
+  ...
+1..15
+# tests 15
+# suites 0
+# pass 14
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 52615.8976

@@ -292,3 +292,21 @@
 @media(prefers-reduced-motion:reduce){
  .hani-office-live-props .hani-office-live-prop{animation:none;background-position:33.333333% 0}
 }
+
+/* Christmas atlas: 1536x400, original RGBA pixels, 4px row gaps.
+   Rectangles are x,y,frame width,frame height,count (horizontal frames).
+   tree:0,0,112,136,4; snow:0,140,88,112,4; wreath:0,256,76,76,1;
+   gifts:80,256,80,60,1; lights:0,336,384,64,4.
+   Percent positions divide atlas offsets by (atlas size - viewport size). */
+.hani-office-live-prop[data-event]{background-position:var(--event-x) var(--event-y);animation:hani-office-event-frames 3.2s steps(4) infinite;--event-x:0%}
+/* Literal URL keeps the current atlas in the release package closure. */
+.hani-office-live-prop[data-event="christmas"]{background-image:url("./assets/office-season/xmas.webp")}
+.hani-office-live-prop[data-sprite="event-tall"]{background-size:1371.428571% 294.117647%;--event-y:0%;--event-end:31.460674%;--event-static:7.865169%}
+.hani-office-live-prop[data-sprite="event-window"]{background-size:1745.454545% 357.142857%;--event-y:48.611111%;--event-end:24.309392%;--event-static:6.077348%}
+.hani-office-live-prop[data-sprite="event-wall"]{background-size:2021.052632% 526.315789%;--event-y:79.012346%;--event-static:0%;animation:none}
+.hani-office-live-prop[data-sprite="event-floor"]{background-size:1920% 666.666667%;--event-x:5.494505%;--event-y:75.294118%;--event-static:5.494505%;animation:none}
+.hani-office-live-prop[data-sprite="event-wide"]{background-size:400% 625%;--event-y:100%;--event-end:133.333333%;--event-static:33.333333%}
+@keyframes hani-office-event-frames{from{background-position:var(--event-x) var(--event-y)}to{background-position:var(--event-end) var(--event-y)}}
+@media(prefers-reduced-motion:reduce){
+ .hani-office-live-props .hani-office-live-prop[data-event]{animation:none;background-position:var(--event-static) var(--event-y)}
+}
