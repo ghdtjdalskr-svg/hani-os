@@ -3,10 +3,11 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
+import {restoreBarista273Source} from './hani-office-barista-night-273-source.mjs';
 import {bori272Delta as delta,restoreBori272Source} from './hani-office-pet-bori-272-source.mjs';
 import {restoreXmas269Source,xmas269Delta} from './hani-office-xmas-269-source.mjs';
 import {restorePets268Source,pets268Delta} from './hani-office-pets-268-source.mjs';
-const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
+const read=f=>{const source=fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');return ['hani-office-live.js','hani-office-live.css'].includes(f)?restoreBarista273Source(source,f):source};
 const hash=x=>createHash('sha256').update(x).digest('hex');
 test('272: exact ordered pairs are the complete fixed-271 JS/CSS diff, rejecting all unlisted bytes',()=>{
  assert.equal(delta.version,'2.9.272');assert.deepEqual(delta.files.map(f=>[f.file,f.replacements.length]),[['hani-office-live.js',20],['hani-office-live.css',2]]);

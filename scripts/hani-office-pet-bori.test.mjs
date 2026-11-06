@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {restoreBarista273Source} from './hani-office-barista-night-273-source.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
@@ -85,7 +86,7 @@ test('Bori: eligible for a three-way chat; four present pets keep the original n
  const lines=r.trioChat(states);assert.equal(lines.length,3);assert.ok(lines.some(p=>p.id==='pet-bori'));states.find(p=>p.id==='pet-rabbit').pose='sitting';assert.deepEqual(plain(r.trioChat(states).map(p=>p.id)),['pet-dog','pet-cat','pet-rabbit']);assert.deepEqual(x.writes,[]);
 });
 test('Bori: no persistence, staff plan owner, timers, listeners and nodes remain unchanged',()=>{
- const before=read('artifacts/pet-bori-live/baseline-hani-office-live.js.txt'),after=read('hani-office-live.js');
+ const before=read('artifacts/pet-bori-live/baseline-hani-office-live.js.txt'),after=restoreBarista273Source(read('hani-office-live.js'));
  const staff=s=>{const a=s.indexOf('  const residentNames='),b=s.indexOf('  function createPresence('),c=s.indexOf('/* Read-only Living Office.');return s.slice(0,a)+s.slice(b,c)};assert.equal(staff(after),staff(before));
  for(const regex of [/document\.addEventListener\(/g,/addEventListener\(/g,/createElement\(/g,/setInterval\(/g,/setTimeout\(/g,/requestAnimationFrame\(/g,/\bfetch\(/g])assert.equal([...after.matchAll(regex)].length,[...before.matchAll(regex)].length);assert.doesNotMatch(after,/localStorage|sessionStorage|supabase|\bsave\s*\(/);
 });
