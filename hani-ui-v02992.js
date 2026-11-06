@@ -1431,6 +1431,7 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
   const PETS = Object.freeze([
     Object.freeze({id:'pet-cat', name:'치즈', rank:'사무실 고양이', voice:'야옹! ', call:'냥', lines:Object.freeze({morning:'좋은 아침이다냥. 햇볕 자리는 예약했어요.', lunch:'점심이다냥! 낮잠도 일정에 넣어 주세요.', afternoon:'나른한 오후다냥. 키보드 위가 제 지정석인데요.', evening:'복도 순찰 완료, 이상 무다옹.', night:'졸린 밤이다냥. 관심은 없지만 곁에 있을게요.'})}),
     Object.freeze({id:'pet-dog', name:'크림', rank:'사무실 강아지', voice:'멍! ', call:'멍', lines:Object.freeze({morning:'좋은 아침, 멍! 오늘도 모두 무사 출근!', lunch:'점심시간 알림은 제가 일등이에요! 멍!', afternoon:'오후엔 산책 어때요? 꼬리 흔들며 기다릴게요!', evening:'퇴근길 에스코트 예약 받습니다! 멍!', night:'졸리면 푹 쉬어요. 발치에서 지켜줄게요, 멍.'})}),
+    Object.freeze({id:'pet-bori', name:'보리', rank:'로비 지킴이 리트리버', voice:'멍, ', call:'멍', lines:Object.freeze({morning:'좋은 아침, 멍. 로비는 제가 느긋하게 지킬게요.', lunch:'점심엔 제 옆에서 한숨 돌려요.', afternoon:'햇살이 따뜻해서 눈이 감겨요. 멍.', evening:'오늘도 무사히 와 줘서 고마워요.', night:'잠깐 누워서 기다릴게요. 편히 쉬어요, 멍.'})}),
     Object.freeze({id:'pet-rabbit', name:'모찌', rank:'사무실 토끼', voice:'깡총, ', call:'깡총', lines:Object.freeze({morning:'좋은 아침, 깡총. 햇살이 머무는 자리네요.', lunch:'점심엔 살며시 쉬어요. 간식보다 평온이 좋아요.', afternoon:'나른한 오후네요. 오늘은 여기서 지켜볼게요.', evening:'저녁엔 귀 쫑긋. 발소리가 다정해서 알아봤어요.', night:'고요한 밤이네요. 잠깐 눈을 감아도 될까요.'})})
   ]);
   function pet(person) { return PETS.find(p => p.id === person?.id); }
@@ -1440,7 +1441,7 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
     const staff = [...people].filter(p => p.id !== 'seongmin' && p.status !== 'planned' && !pet(p)).sort((a,b) => a.id.localeCompare(b.id, 'en'));
     if (!staff.length) return null;
     const cycle = [...staff];
-    // With 19 employees, pets occupy slots 7, 14 and 22: gaps of 7 / 8 / 7 days.
+    // With 19 employees and four pets: 23 days, with 4..5 staff between pets.
     PETS.forEach((p, i) => cycle.splice(Math.floor((i + 1) * staff.length / PETS.length) + i, 0, p));
     const index = Math.floor((Number(now) + KST) / DAY);
     return cycle[((index % cycle.length) + cycle.length) % cycle.length];
