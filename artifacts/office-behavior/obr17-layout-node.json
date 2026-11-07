@@ -4,8 +4,8 @@
     "metrics": "Node synthetic font/animation geometry, not browser pixels",
     "samples": 365,
     "minimumRatio": 0.75,
-    "meanMs": 2.361084383561643,
-    "maxMs": 35.141099999999994,
+    "meanMs": 2.2096235616438333,
+    "maxMs": 31.389499999999998,
     "counts": {
       "sprite": 0,
       "face": 0,
@@ -22,8 +22,8 @@
     "metrics": "Node synthetic font/animation geometry, not browser pixels",
     "samples": 365,
     "minimumRatio": 1,
-    "meanMs": 0.956686301369866,
-    "maxMs": 12.034000000000106,
+    "meanMs": 0.9084309589041081,
+    "maxMs": 11.755699999999933,
     "counts": {
       "sprite": 0,
       "face": 0,
@@ -40,8 +40,8 @@
     "metrics": "Node synthetic font/animation geometry, not browser pixels",
     "samples": 365,
     "minimumRatio": 1,
-    "meanMs": 0.9072665753424501,
-    "maxMs": 4.012499999999818,
+    "meanMs": 0.871503561643833,
+    "maxMs": 3.5173999999999523,
     "counts": {
       "sprite": 0,
       "face": 0,

@@ -26,6 +26,18 @@
   ],
   "entries": [
     {
+      "id": "v2.9.279",
+      "date": "2026-11-07",
+      "status": "released",
+      "title": "동행 동물들 부서 상주",
+      "category": "하니 그룹",
+      "credits": [],
+      "source": {
+        "commit": "",
+        "subject": "release: v2.9.279 동행 동물들 부서 상주"
+      }
+    },
+    {
       "id": "v2.9.278",
       "date": "2026-11-07",
       "status": "released",
@@ -33,8 +45,8 @@
       "category": "하니 그룹",
       "credits": [],
       "source": {
-        "commit": "",
-        "subject": "release: v2.9.278 회장님 순찰과 활발한 사무실"
+        "commit": "882e6c604c5bdc1a72cb7fde1151f67d7b4f236f",
+        "subject": "release: v2.9.278 회장님 순찰과 활발한 사무실 (#457)"
       }
     },
     {
