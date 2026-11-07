@@ -9,7 +9,7 @@ import os from 'node:os';
 import {createRequire} from 'node:module';
 import {createHash} from 'node:crypto';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
-import {projectPrePatrolSource} from './hani-office-chairman-patrol-278-source.mjs';
+import {projectPrePatrolSource,projectPreStaffChatSource} from './hani-office-chairman-patrol-278-source.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {restoreResidentsSource} from './hani-office-residents-source.mjs';
@@ -26,7 +26,7 @@ const mount=(enabled=true,reduced=false,width=1440,options={})=>{
   HaniOfficeV2Assets:enabled?{...assets,spritesV3:options.spritesV3||manifest}:assets,setTimeout:options.setTimeout||(()=>0),
   matchMedia:q=>({matches:/prefers-reduced-motion/.test(q)?reduced:width<=Number(q.match(/max-width:\s*(\d+)/)?.[1]||0),addEventListener(){}}),
   localStorage:{setItem:deny,removeItem:deny,clear:deny},sessionStorage:{setItem:deny,removeItem:deny,clear:deny},save:deny,
- });
+ },projectPreStaffChatSource);
  f.setDateTime('2026-11-02T10:02:00+09:00');f.click('1f');
  return {...f,loaded,writes,residents:()=>legacyOfficeNodes(f.ids.get('haniOfficeActors').children).filter(a=>a.dataset.resident),tick:()=>f.timers.find(t=>t.ms===100).fn()};
 };

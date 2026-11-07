@@ -1,7 +1,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
 import {fixture as mountFixture} from './hani-building-206-engine.test.mjs';import {assets} from './hani-office-v2-fixture.mjs';
-import {restoreKids278Source,projectPreKidsSource,projectPreVisitsSource} from './hani-office-chairman-patrol-278-source.mjs';
+import {restoreKids278Source,projectPreKidsSource,projectPreVisitsSource,projectPreStaffChatSource} from './hani-office-chairman-patrol-278-source.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 const fixture=(...args)=>{while(args.length<5)args.push(undefined);return mountFixture(...args,projectPreVisitsSource)};
 const {scene,table}=loadScene(),r=scene.residents,plain=x=>JSON.parse(JSON.stringify(x)),day='2026-11-07',options={chairmanPresent:true};
@@ -62,7 +62,7 @@ test('latest mounted slots rotate every new dialogue, retain taps/bubble, reduce
  }assert.deepEqual(writes,[]);
  const source=fs.readFileSync('hani-office-live.js','utf8'),base=restoreKids278Source(source),count=(s,re)=>[...s.matchAll(re)].length;
  for(const re of [/\bsetInterval\s*\(/g,/\bsetTimeout\s*\(/g,/\baddEventListener\s*\(/g,/\b(?:localStorage|sessionStorage)\b/g,/\bsupabase\b/g])assert.equal(count(source,re),count(base,re));
- assert.equal(source.slice(source.indexOf('  function createScheduler('),source.indexOf('  function snapshot(now=new Date(),options={})')),base.slice(base.indexOf('  function createScheduler('),base.indexOf('  function snapshot(now=new Date(),options={})')));
+ const projected=projectPreStaffChatSource(source);assert.equal(projected.slice(projected.indexOf('  function createScheduler('),projected.indexOf('  function snapshot(now=new Date(),options={})')),base.slice(base.indexOf('  function createScheduler('),base.indexOf('  function snapshot(now=new Date(),options={})')));
  assert.equal(r.companions.find(p=>p.id==='kid-suyeon').lines.length,10);assert.equal(r.companions.find(p=>p.id==='kid-suhyeon').lines.length,6);
 });
 test('kids add no runtime files or atlas/CSS bytes',async()=>{

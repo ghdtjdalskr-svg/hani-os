@@ -362,6 +362,49 @@
   function projection(entries,capacity=6){const ordered=[...entries].sort((a,b)=>Number(b.activity!=="work")-Number(a.activity!=="work"));return {visible:ordered.slice(0,capacity),overflow:Math.max(0,entries.length-capacity)}}
   // One canonical scheduler. Daily plans are projections, never queues to replay.
   // All mutable state is disposable memory; no life records or data triggers enter here.
+  // Approved staff dialogue is embedded beside existing dialogue data.
+  const staffChatLines=Object.freeze([
+    {"id":"chat-01","a":"하니","b":"나은","place":"lounge","time":"morning","lines":[{"speaker":"a","text":"나은아, 오늘 안건 우선순위 다 잡았어!"},{"speaker":"b","text":"우선순위보다 아침밥 먹었는지가 먼저야!"},{"speaker":"a","text":"아메리카노 마셨는데 밥으로 안 쳐줘? 헤헤♡"},{"speaker":"b","text":"절대 안 되지! 팬트리에 구운 계란 챙겨놨어."}]},
+    {"id":"chat-02","a":"하니","b":"히나","place":"desk","time":"day","lines":[{"speaker":"a","text":"히나야, 이번 학습 화면 검수 일정 괜찮아?"},{"speaker":"b","text":"만년 과장 히나 선생님한테 맡겨만 줘용! 🐰"},{"speaker":"a","text":"방금 칠판 예문 오타 난 건 못 본 척할게?"},{"speaker":"b","text":"あれ？😳 그건 Scope 밖이라 못 본 거예용!"}]},
+    {"id":"chat-03","a":"나은","b":"히나","place":"pantry","time":"evening","lines":[{"speaker":"a","text":"히나야, 눈 반쯤 감겼는데 얼른 퇴근해야지."},{"speaker":"b","text":"언니이~ 저 하나도 안 졸려용, 문제 더 볼래용!"},{"speaker":"a","text":"잠깐, 펜 내려놔! 오늘은 회복이 먼저야."},{"speaker":"b","text":"헤헤♡ 언니 허브차 마시고 딱 정리할게용!"}]},
+    {"id":"chat-04","a":"하니","b":"가은","place":"desk","time":"morning","lines":[{"speaker":"a","text":"가은님, 오후 회의 사이에 안건 하나 더 넣죠!"},{"speaker":"b","text":"전무님, 회의 사이 10분은 이동 시간입니다."},{"speaker":"a","text":"복도 걸으면서 회의하면 딱 맞지 않을까요?"},{"speaker":"b","text":"숨 돌릴 시간까지 포함해 세 개만 넣으시죠."}]},
+    {"id":"chat-05","a":"가은","b":"유나","place":"desk","time":"day","lines":[{"speaker":"b","text":"제가요?! 이 문의도 전부 전략실로 오나요?!"},{"speaker":"a","text":"놀라지 말아요. 일정 건은 제가 먼저 볼게요."},{"speaker":"b","text":"휴, 다행이에요! 담당 팀 태그 붙여둘게요!"}]},
+    {"id":"chat-06","a":"하니","b":"미르","place":"hallway","time":"day","lines":[{"speaker":"b","text":"하니, 왜 다들 갑자기 책상을 정리해?"},{"speaker":"a","text":"회장님 오늘 오후에 순찰 오신대! 헤헤♡"},{"speaker":"b","text":"순찰이랑 책상 정리는 연결되네. 조금 더 볼게."}]},
+    {"id":"chat-07","a":"서윤","b":"도연","place":"desk","time":"morning","lines":[{"speaker":"a","text":"도연 선임님, 먼저 변경 범위부터 나눠봤어요 💜"},{"speaker":"b","text":"설계 확인했어요. 로컬에서 바로 재현했어요 ☕"},{"speaker":"a","text":"역시 빠르네요! 기존 경로는 그대로 유지되죠?"},{"speaker":"b","text":"네, 수정 8줄이고 타겟 테스트 통과요."}]},
+    {"id":"chat-08","a":"도연","b":"유리","place":"desk","time":"day","lines":[{"speaker":"a","text":"유리 책임님, 이번엔 진짜 다 고쳤어요 ☕"},{"speaker":"b","text":"일반 경로는 깔끔합니다. 엣지 케이스는요?"},{"speaker":"a","text":"모바일 회전까지 방금 테스트 붙였어요."},{"speaker":"b","text":"직접 깨보고 이상 없으면 PASS 드릴게요 ✅"}]},
+    {"id":"chat-09","a":"세린","b":"서윤","place":"desk","time":"day","lines":[{"speaker":"a","text":"서윤 리드님!! 주간 보고서 자동화 각인데요?!"},{"speaker":"b","text":"패턴은 좋네요! 먼저 영향 범위부터 볼게요 💜"},{"speaker":"a","text":"최근 한 달 로그에 반복 패턴이 딱 보여요!!📊"},{"speaker":"b","text":"정리하면 두 가지네요. 작은 실험부터 해봐요."}]},
+    {"id":"chat-10","a":"아린","b":"유리","place":"desk","time":"day","lines":[{"speaker":"a","text":"유리님, 이 카드 여백 숨 쉬게 넓혀봤어요 ✨"},{"speaker":"b","text":"예쁘긴 한데, 긴 제목 넣어도 안 깨지나요?"},{"speaker":"a","text":"앗, 두 줄 말줄임표까지 예쁘게 맞췄어요 🎨"},{"speaker":"b","text":"모바일 폭까지 확인했습니다. 깔끔합니다 ✅"}]},
+    {"id":"chat-11","a":"세린","b":"도연","place":"pantry","time":"day","lines":[{"speaker":"a","text":"도연 선임님! 이 반복 클릭 패턴 보여요?!✨"},{"speaker":"b","text":"세 번 누르는 거네요. 스크립트 10줄이면 돼요."},{"speaker":"a","text":"와아!! 역시 자동화 각이에요!! 바로 돌려봐요!"},{"speaker":"b","text":"커피 타는 김에 로컬에서 먼저 돌려볼게요 ☕"}]},
+    {"id":"chat-12","a":"서윤","b":"아린","place":"lounge","time":"evening","lines":[{"speaker":"a","text":"이 패널은 내부 모듈 두 개가 연결된 구조예요."},{"speaker":"b","text":"리드님, 사용자는 그 구조 몰라도 되잖아요 ✨"},{"speaker":"a","text":"하하, 맞아요. 먼저 첫 화면은 단순하게 갈까요?"},{"speaker":"b","text":"네! 버튼 하나만 예쁘게 숨 쉬게 해봐요 🎨"}]},
+    {"id":"chat-13","a":"세린","b":"유리","place":"hallway","time":"day","lines":[{"speaker":"a","text":"유리 책임님!! 응답 속도 개선 패턴 보여요!!📊"},{"speaker":"b","text":"패턴은 좋지만 미검증은 PASS 아닙니다."},{"speaker":"a","text":"샘플 백 건 비교표까지 준비해 뒀어요!!✨"},{"speaker":"b","text":"근거가 명확하네요. 회귀 검사 바로 볼게요 ✅"}]},
+    {"id":"chat-14","a":"도연","b":"아린","place":"rooftop","time":"evening","lines":[{"speaker":"b","text":"도연님, 아까 아이콘 간격 2픽셀 맞춰주셨죠? ✨"},{"speaker":"a","text":"네, 말씀하신 여백 수치대로 재현했어요 ☕"},{"speaker":"b","text":"너무 예쁜데요? 누를 때 기분 좋아지는 흐름이에요!"}]},
+    {"id":"chat-15","a":"지은","b":"하루","place":"desk","time":"day","lines":[{"speaker":"b","text":"부장님, 2층 팬트리 토스터기 이 모델 어때요?"},{"speaker":"a","text":"실사용성은 합격인데, 이번 달 비품 예산부터 보죠."},{"speaker":"b","text":"유령 구독 하나 정리한 금액이랑 딱 맞아요."},{"speaker":"a","text":"오차 없이 깔끔하네요. 이번 달 예산 승인할게요."}]},
+    {"id":"chat-16","a":"지은","b":"다온","place":"desk","time":"morning","lines":[{"speaker":"b","text":"부장님… 혹시 간식 바구니도 최악의 경우엔요😅"},{"speaker":"a","text":"간식 바구니에 무슨 하방 위험이 있어요, 다온님?"},{"speaker":"b","text":"오후 세 시에 초콜릿이 동날 시나리오가 보여서요…"},{"speaker":"a","text":"그건 중대 리스크네요. 예비분 한 상자 더 챙기죠."}]},
+    {"id":"chat-17","a":"하루","b":"다온","place":"pantry","time":"day","lines":[{"speaker":"a","text":"다온님, 새로 나온 보온 머그컵 두 개 비교해 봤어요."},{"speaker":"b","text":"혹시… 손잡이가 떨어질 최악의 경우엔요😅"},{"speaker":"a","text":"스텐 일체형이라 평생 안 떨어져요. 편히 골라요."}]},
+    {"id":"chat-18","a":"윤슬","b":"히나","place":"desk","time":"day","lines":[{"speaker":"a","text":"과장님, 이거 아세요? 문법 배경서 다섯 권이에요!📚"},{"speaker":"b","text":"윤슬아, 이거 다 읽으면 시험 전에 밤새워용! 🐰"},{"speaker":"a","text":"앗, 핵심 요약 카드만 추려서 바통 넘길게요!🔖"},{"speaker":"b","text":"헤헤♡ 요약은 윤슬이, 채점은 히나 선생님이 해용!"}]},
+    {"id":"chat-19","a":"민지","b":"수연","place":"hallway","time":"day","lines":[{"speaker":"b","text":"민지야, 날씨 좋은데 점심 먹고 산책 루트 돌자!"},{"speaker":"a","text":"일단 가, 내가 찍을게! 복귀 시간은 맞췄지?"},{"speaker":"b","text":"당연하지, 25분 코스라 낭만상 완벽히 가능해!"}]},
+    {"id":"chat-20","a":"하루","b":"민지","place":"pantry","time":"day","lines":[{"speaker":"b","text":"하루야, 이 영화 한정판 팝콘통 연출 완벽하지?!"},{"speaker":"a","text":"예쁘긴 한데… 그거 집에 둘 데 있어?"},{"speaker":"b","text":"컷! 방금 감동코드에 현실 팩폭 들어왔습니다!"},{"speaker":"a","text":"책상 위 작은 엽서 세트로 고르면 오래 잘 볼걸."}]},
+    {"id":"chat-21","a":"나은","b":"수연","place":"lounge","time":"morning","lines":[{"speaker":"b","text":"언니! 저 오늘 아침에 자전거 15킬로 타고 왔어요!"},{"speaker":"a","text":"출근 전부터 무리하면 안 돼! 물이랑 스트레칭은?"},{"speaker":"b","text":"스마트워치 회복 지표 만점이라 낭만상 안전해요!"}]},
+    {"id":"chat-22","a":"다온","b":"윤슬","place":"desk","time":"day","lines":[{"speaker":"b","text":"다온님, 이거 아세요? 리스크 용어집도 재밌네요!📚"},{"speaker":"a","text":"혹시… 제 메모지 접힌 부분까지 다 보셨나요😅"},{"speaker":"b","text":"지난주 회의록이랑 여기서 이어지네요! 신기해요🔖"}]},
+    {"id":"chat-23","a":"수아","b":"채원","place":"desk","time":"morning","lines":[{"speaker":"b","text":"과장님, 고객사 요청을 세 가지로 다시 정리했습니다."},{"speaker":"a","text":"역시 채원님! Owner랑 Due Date도 맞췄죠?"},{"speaker":"b","text":"네, 구두 약속은 빼고 증빙 기준으로만 적었습니다."},{"speaker":"a","text":"완벽해요! 후속 메일은 제가 기한 내에 챙길게요ㅎㅎ"}]},
+    {"id":"chat-24","a":"수아","b":"유나","place":"hallway","time":"day","lines":[{"speaker":"b","text":"수아 과장님! 1층 방문객 접수랑 분류 끝냈어요!"},{"speaker":"a","text":"유나님 요즘 후속 전달까지 정말 빈틈없네요!"},{"speaker":"b","text":"과장님께 배운 대로 다음 담당자까지 적었어요!"},{"speaker":"a","text":"칭찬 들으니까 저까지 기분 좋네요, 헤헤ㅎㅎ"}]},
+    {"id":"chat-25","a":"하니","b":"이슬","place":"cafe","time":"morning","lines":[{"speaker":"b","text":"하니 전무님, 오늘도 진한 아메리카노 맞으시죠?"},{"speaker":"a","text":"역시 이슬님! 회장님도 곧 커피 찾으실 시간이에요."},{"speaker":"b","text":"오늘 아침 새로 볶은 원두라 향이 더 좋을 거예요."}]},
+    {"id":"chat-26","a":"도연","b":"이슬","place":"cafe","time":"day","lines":[{"speaker":"b","text":"도연 선임님, 바쁜 날이니 샷 하나 추가해 드릴까요?"},{"speaker":"a","text":"오, 주문 순서까지 기억하셨네요. 통과요 ☕"},{"speaker":"b","text":"하트 라떼 아트도 선명하게 담아드렸답니다!"}]},
+    {"id":"chat-27","a":"수아","b":"이슬","place":"cafe","time":"day","lines":[{"speaker":"a","text":"이슬님, 상담실 미팅 전에 따뜻한 차 한 잔만요!"},{"speaker":"b","text":"목 축이시게 캐모마일로 따뜻하게 우려뒀어요."},{"speaker":"a","text":"센스 최고예요! 기한 내 미팅 잘 마칠게요ㅎㅎ"}]},
+    {"id":"chat-28","a":"서윤","b":"은하","place":"cafe","time":"night","lines":[{"speaker":"b","text":"서윤 리드님, 야근이세요? 따뜻한 디카페인 드릴까요?"},{"speaker":"a","text":"고마워요 은하님. 정리하면 구조 리뷰만 남았어요 💜"},{"speaker":"b","text":"급하지 않아요. 원두 향 맡으며 잠깐 쉬다 가세요."}]},
+    {"id":"chat-29","a":"미르","b":"은하","place":"cafe","time":"night","lines":[{"speaker":"a","text":"은하, 왜 밤에는 카페 시계 소리가 더 잘 들려?"},{"speaker":"b","text":"조용한 밤이라 그래요. 제 앞치마 별 자수도 보이죠?"},{"speaker":"a","text":"별빛이랑 밤 카페, 이건 연결되네. 헤헤."}]},
+    {"id":"chat-30","a":"민지","b":"은하","place":"cafe","time":"night","lines":[{"speaker":"a","text":"은하님, 방금 꾸벅 조는 장면 영화 같았어요!"},{"speaker":"b","text":"앗, 민지 대리님! 졸지 않았어요… 차 드릴게요."},{"speaker":"a","text":"걱정 마요, 야간 카페 비밀은 카메라 내려놓을게요!"}]},
+    {"id":"chat-31","a":"지은","b":"수아","place":"lounge","time":"day","lines":[{"speaker":"b","text":"부장님, 이번 계약 건 증빙 서류까지 다 챙겼어요."},{"speaker":"a","text":"역시 수아 과장님, 숫자랑 증빙이 맞으니 든든해요."},{"speaker":"b","text":"부장님이 예산 잡아주신 덕분이죠, 헤헤ㅎㅎ"}]},
+    {"id":"chat-32","a":"수아","b":"하루","place":"lounge","time":"evening","lines":[{"speaker":"a","text":"하루야, 상담실 태블릿 거치대 뭐가 제일 튼튼해?"},{"speaker":"b","text":"매일 각도 조절할 거면 무거운 철제가 오래 가."},{"speaker":"a","text":"역시 실사용 전문가! 바로 구매 기안 올릴게ㅎㅎ"}]},
+    {"id":"chat-33","a":"나은","b":"수아","place":"pantry","time":"evening","lines":[{"speaker":"a","text":"수아야, 제안서도 중요하지만 저녁밥은 먹었어?"},{"speaker":"b","text":"이번 Follow-up 메일 한 통만 보내고 먹을게요!"},{"speaker":"a","text":"일은 끝나도 사람은 안 끝나야지! 샌드위치부터 먹자."},{"speaker":"b","text":"언니한테는 못 당하겠네요, 헤헤ㅎㅎ 잘 먹을게요!"}]},
+    {"id":"chat-34","a":"유나","b":"미르","place":"cafe","time":"day","lines":[{"speaker":"b","text":"유나, 왜 메모지를 색깔별로 다르게 붙여?"},{"speaker":"a","text":"제가요?! 그래야 어느 팀 질문인지 한눈에 보여요!"},{"speaker":"b","text":"색깔이랑 담당자가 연결되네. 좋은 방법이야, 헤헤."}]},
+    {"id":"chat-35","a":"유나","b":"민지","place":"lounge","time":"day","lines":[{"speaker":"b","text":"컷! 유나 사원 '제가요?!' 놀라는 표정 포착!"},{"speaker":"a","text":"민지 선배님! 카메라 먼저 꺼주시면 안 돼요?!"},{"speaker":"b","text":"막내 적응기 1호 장면인데 아깝지만 보호해 줄게!"}]},
+    {"id":"chat-36","a":"수연","b":"미르","place":"rooftop","time":"day","lines":[{"speaker":"b","text":"수연, 왜 목적지도 없이 옥상 트랙을 계속 걸어?"},{"speaker":"a","text":"머릿속으로만 생각하지 말고 걸어봐, 바람이 좋잖아!"},{"speaker":"b","text":"바람이랑 기분이 연결되네. 조금 더 같이 걸을게."}]},
+    {"id":"chat-37","a":"채원","b":"서윤","place":"hallway","time":"day","lines":[{"speaker":"a","text":"리드님, 고객의 '버튼 하나' 요청을 번역해 왔습니다."},{"speaker":"b","text":"고마워요! 먼저 기존 구조 영향 범위부터 볼게요 💜"},{"speaker":"a","text":"정리하면 세 가지입니다. 예외 조건도 적어뒀어요."}]},
+    {"id":"chat-38","a":"채원","b":"아린","place":"lounge","time":"day","lines":[{"speaker":"a","text":"아린 선임님, 고객사 요구사항을 화면 흐름으로 묶었어요."},{"speaker":"b","text":"채원님 번역 덕분에 여백이 숨 쉬게 정리되겠어요 ✨"},{"speaker":"a","text":"복잡한 표 대신 카드 두 장으로 줄이면 충분합니다."},{"speaker":"b","text":"너무 예쁜데요? 모바일 가독성도 바로 맞춰볼게요 🎨"}]},
+    {"id":"chat-39","a":"세린","b":"윤슬","place":"lounge","time":"day","lines":[{"speaker":"b","text":"세린님, 이거 아세요? 지난주 실험과 책이 이어져요!📚"},{"speaker":"a","text":"와아!! 독서 기록에서도 학습 패턴이 딱 보여요!!📊"},{"speaker":"b","text":"제가 배경 자료 묶어둘 테니 분류 자동화 해볼까요?🔖"},{"speaker":"a","text":"완전 자동화 각인데요?! 인덱스 표부터 만들어볼게요!✨"}]},
+    {"id":"chat-40","a":"가은","b":"다온","place":"rooftop","time":"evening","lines":[{"speaker":"b","text":"가은 비서님… 혹시 내일 아침 회의가 겹칠 경우엔요😅"},{"speaker":"a","text":"걱정 마세요. 두 일정 사이에 15분 여유를 두었답니다."},{"speaker":"b","text":"다행이에요… 하방 위험 없는 평화로운 퇴근길이네요😅"}]}
+  ].map(p=>Object.freeze({...p,aId:canon?.people.find(q=>q.name.split('/')[0]===p.a)?.id||({이슬:'iseul',은하:'eunha'})[p.a],bId:canon?.people.find(q=>q.name.split('/')[0]===p.b)?.id||({이슬:'iseul',은하:'eunha'})[p.b],lines:Object.freeze(p.lines.map(Object.freeze))})));
   function createScheduler(table){
     const Math=globalThis.Math,Set=globalThis.Set,Map=globalThis.Map,Object=globalThis.Object,Infinity=globalThis.Infinity,Array=globalThis.Array,Date=globalThis.Date;
     const nightCatalog=table.schemaVersion==='office-actions-221-v1';
@@ -1803,7 +1846,7 @@
       const events=plan(day,options),cancelled=options.cancelled||new Set(),blocked=new Set(options.summoned||[]);
       const late=isLate(seconds),evening=isEvening(seconds),presenceNote=late?'심야에도 함께해요 · 개발실과 라운지에 직원들이 남아 있어요':'';
       // Outings respect the complete frozen formal ledger, including suppressed events.
-      const outings=blockPlan(day,Math.floor(seconds/BLOCK),events,options);
+      const outings=options.staffChat?[...blockPlan(day,Math.floor(seconds/BLOCK),events,options),options.staffChat]:blockPlan(day,Math.floor(seconds/BLOCK),events,options);
       if(!idleLedgers.has(outings))idleLedgers.set(outings,[...events,...outings]);const idleLedger=idleLedgers.get(outings);
       const since=options.chairmanSince==null?-Infinity:(options.chairmanSince-Date.parse(day+'T00:00:00+09:00'))/1000;
       const visibleOutings=cancelled.size||blocked.size||since!==-Infinity?outings.filter(e=>!cancelled.has(e.id)&&!cancelled.has(e.guestId)&&!e.people.some(t=>blocked.has(t.id))&&!blocked.has(e.card?.targetPerson)&&(!e.report||e.start>=since)):outings;
@@ -1840,7 +1883,7 @@
             line=p.visitor?'안녕히 계세요~':voice?.length?voice[Math.floor(event.start/90)%voice.length]:'자리로 돌아가는 중';
           }
           else if(state.state==='AT_PLACE'||t.seat.anchor===home.anchorId){
-            line=event.report?(p.id==='seongmin'?'보고 기다리는 중':card.at[0]):p.visitor?event.visitor.at:card?placeLine(card,p.id,day,event,t,seconds):speech(action,p.id,day);
+            line=event.report?(p.id==='seongmin'?'보고 기다리는 중':card.at[0]):p.visitor?event.visitor.at:event.staffChat?'잠깐 이야기 나누는 중':card?placeLine(card,p.id,day,event,t,seconds):speech(action,p.id,day);
             if(event.group&&state.state==='AT_PLACE'){
               const partners=event.group.filter(id=>id!==p.id).map(id=>persons.find(p=>p.id===id).name).join('·'),location=card.at[0].split('에서')[0];
               line=seconds<event.performStart?location+'에서 '+partners+' 기다리는 중':seconds>=event.performEnd?location+'에서 '+partners+'와 나눈 이야기 정리 중':partners+'와 '+location+'에서 '+(event.companion?.topic||'잠깐 수다')+' 중';
@@ -1953,7 +1996,89 @@
       return {day,minutes:seconds/60,seconds,entries,visitors,events:active,presenceNote};
     }
 
-    return Object.freeze({plan,snapshot,seed,slot,actions,windows,presentAt,homeAt,blockPlan,stateAt,resourceIntervals,errandPlaces,reportPlaces,shortLine,identity:table.identity});
+    // Optional conversations reserve gaps AFTER every existing work/rest trip.
+    // Their tracks, geometry gates and renderer are the scheduler's own owners.
+    function createStaffChats(){
+      let day='',ledger=[],allowed=[],active=null,retryAt=0,identity='';
+      const due=new Map(),turns=new Map(),uses=new Map();
+      const period=f=>1200+seed(day+'|staff-chat-period|'+f+'|'+(turns.get(f)||0))%601;
+      function reset(today,options,seconds){
+        const key=Boolean(options.chairmanPresent)+'|'+(options.presentIds?.join(',')||'');
+        if(day===today&&identity===key)return;
+        const changedDay=day!==today;day=today;identity=key;active=null;retryAt=seconds+5;
+        allowed=persons.filter(p=>(p.id!=='seongmin'||options.chairmanPresent)&&(!options.presentIds||options.presentIds.includes(p.id)));
+        const formal=plan(day,options);ledger=[...formal,...blockPlan(day,0,formal,options)];
+        if(changedDay){due.clear();turns.clear();uses.clear();for(const f of floors){const first=(f.id==='1f'?0:32400)+seed(day+'|staff-chat-first|'+f.id)%1201;due.set(f.id,Math.max(first,Math.floor(seconds/1800)*1800+seed(day+'|staff-chat-first|'+f.id)%1201))}}
+      }
+      function timeMatches(pair,seconds){
+        const hour=seconds/3600,night=hour>=19||hour<7;
+        if(pair.time==='morning'&&(hour<9||hour>=12)||pair.time==='day'&&(hour<12||hour>=18)||pair.time==='evening'&&(hour<18||hour>=22)||pair.time==='night'&&!night)return false;
+        if([pair.aId,pair.bId].includes('eunha')&&!night||[pair.aId,pair.bId].includes('iseul')&&(hour<9||hour>=19))return false;
+        return pair.time==='night'||hour>=9&&hour<22;
+      }
+      function locations(pair,seconds){
+        if(pair.place==='cafe')return places.filter(c=>c.id===([pair.aId,pair.bId].some(id=>id==='iseul'||id==='eunha')?'coffee-1f':'cafe-1f'));
+        if(pair.place==='rooftop')return places.filter(c=>c.id==='terrace-5f');
+        if(pair.place==='lounge')return places.filter(c=>c.id==='sofa-4f');
+        if(pair.place==='pantry')return places.filter(c=>c.id==='pantry-seats-2f');
+        const b=personById.get(pair.bId);if(!b)return [];
+        const home=homeAt(b,seconds);
+        return errandPlaces.filter(c=>c.targetPerson===b.id&&c.floor===home.floor&&home.anchorId===b.home.anchorId);
+      }
+      function book(pair,card,start){
+        const ids=[pair.aId,pair.bId],barista=ids.find(id=>id==='iseul'||id==='eunha'),roster=ids.filter(id=>id!==barista).map(id=>personById.get(id));
+        if(roster.some(p=>!p||!allowed.includes(p)||!presentAt(p.id,start)))return null;
+        const stay=pair.lines.length*2.2,targets=card.slots;
+        for(let offset=0;offset<targets.length;offset++){
+          const tracks=[];let failed=false;
+          for(const [i,p]of roster.entries()){
+            const home=homeAt(p,start),atDesk=['desk','hallway'].includes(pair.place)&&p.id===pair.bId,target=atDesk?home.anchorId:targets[(offset+i)%targets.length];
+            if(atDesk){const nodes=path(home.anchorId,home.anchorId);tracks.push({id:p.id,home,seat:slot(home.anchorId,p.id==='mir'?'stand':'sit'),outbound:nodes,inbound:nodes,out:[],back:[]});continue}
+            const e=excursion(p.id,home,card,target,start+i*1.6,stay,day);
+            if(!e){failed=true;break}tracks.push(e.people[0]);
+          }
+          if(failed||tracks.length!==roster.length)continue;
+          const performStart=Math.max(start,...tracks.map(t=>t.out.at(-1)?.end||start)),performEnd=performStart+stay;
+          for(const [i,t]of tracks.entries()){const shift=performEnd+i*1.6-(t.back[0]?.start||performEnd);t.back=t.back.map(l=>({...l,start:l.start+shift,end:l.end+shift}))}
+          const end=Math.max(performEnd,...tracks.map(t=>t.back.at(-1)?.end||performEnd));
+          if(!timeMatches(pair,end-.001)||roster.some(p=>!presentAt(p.id,end-.001)))continue;
+          const event={id:day+'|staff-chat|'+pair.id+'|'+start,actionId:'base-work',start,end,performStart,performEnd,card:{...card,at:['잠깐 이야기 나누는 중'],go:'동료와 이야기하러 가는 중'},people:tracks,resources:[...new Set(tracks.flatMap(t=>[...t.outbound,...t.inbound].map(n=>n.id)).concat(barista?['coffee_counter']:[]))],staffChat:{...pair,floor:card.floor},floors:[...new Set(tracks.flatMap(t=>[t.home.floor,card.floor]))]};
+          const near=ledgerOverlaps(ledger,start,end);
+          if(near.some(e=>e.patrol||e.report||e.people.some(t=>t.id==='seongmin')&&e.card)||near.some(e=>e.card?.targetPerson&&ids.includes(e.card.targetPerson)))continue;
+          // A barista owns the existing counter; reject public service overlap.
+          if(barista&&near.some(e=>e.resources.includes('coffee_counter')||e.resources.includes('coffee_pickup')))continue;
+          if(reserve(event,ledger,allowed,near))return event;
+        }return null;
+      }
+      function cancel(now){
+        if(!active)return;
+        // Keep the proven return reservation even when a higher-priority scene
+        // interrupts speech. Moving the return earlier would need a new proof.
+        if(!active.staffChat.cancelled){
+          due.set(active.card.floor,active.end);uses.set(active.staffChat.id,Math.max(0,(uses.get(active.staffChat.id)||1)-1));
+          active={...active,staffChat:{...active.staffChat,cancelled:true}};
+        }
+      }
+      function update(now,options={}){
+        const date=new Date(now.getTime()+32400000),today=date.toISOString().slice(0,10),seconds=date.getUTCHours()*3600+date.getUTCMinutes()*60+date.getUTCSeconds()+date.getUTCMilliseconds()/1000;
+        reset(today,options,seconds);
+        if(active&&seconds>=active.end)active=null;
+        if(active){if(options.blocked)cancel(now);return active}
+        if(options.blocked||seconds<retryAt)return null;
+        retryAt=seconds+15;
+        const pending=[...due].filter(([,at])=>at<=seconds).sort((a,b)=>a[1]-b[1]);
+        for(const [floor]of pending){
+          const ranked=staffChatLines.filter(p=>p.aId&&p.bId&&timeMatches(p,seconds)).sort((a,b)=>(uses.get(a.id)||0)-(uses.get(b.id)||0)||seed(day+'|staff-chat-order|'+a.id)-seed(day+'|staff-chat-order|'+b.id));
+          for(const pair of ranked)for(const card of locations(pair,seconds).filter(c=>c.floor===floor)){
+            const event=book(pair,card,seconds);if(!event)continue;
+            active=event;uses.set(pair.id,(uses.get(pair.id)||0)+1);turns.set(floor,(turns.get(floor)||0)+1);due.set(floor,seconds+period(floor));return active;
+          }
+        }return null;
+      }
+      return {update,cancel,current:()=>active,timeMatches};
+    }
+
+    return Object.freeze({createStaffChats,staffChatLines,plan,snapshot,seed,slot,actions,windows,presentAt,homeAt,blockPlan,stateAt,resourceIntervals,errandPlaces,reportPlaces,shortLine,identity:table.identity});
   }
   // Read-only label geometry, shared by the persistent renderer and Node tests.
   function statusLabelPriority(data){
@@ -2956,7 +3081,7 @@
       const candidates=peers(now,staff,states).filter(p=>distance(child.position,position(p.peer))<=420).sort((a,b)=>distance(child.position,position(a.peer))-distance(child.position,position(b.peer)));
       return candidates.length?begin(now,staff,states,reduced,candidates,true):null;
     }
-    return {update,request,cancel};
+    return {update,request,cancel,current:()=>active};
   }
 
   function companionSnapshot(now=new Date(),staff=null,enabled=true,reduced=false,neighbors=[]){
@@ -3554,7 +3679,7 @@
     for(let i=0;i<rows.length;i++)if(rows[i].actor.dataset.resident)groups[i].nameOnly=groups[i].name;
     // Reserve the separate mascot owner's actual visible sprite boxes.
     const obstacles=[];
-    if(compact&&!actorBubble.hidden&&(actors.get(bubblePerson)?.dataset.companion==='true'||bubbleSelection?.kidsVisit)){const b=actorBubble.getBoundingClientRect();if(b.width&&b.height)obstacles.push(b)}
+    if(compact&&!actorBubble.hidden&&(actors.get(bubblePerson)?.dataset.companion==='true'||bubbleSelection?.kidsVisit||bubbleSelection?.staffChat)){const b=actorBubble.getBoundingClientRect();if(b.width&&b.height)obstacles.push(b)}
     for(const node of root.querySelectorAll('.hani-desk-mascots:not([hidden]) .hani-desk-mascot[data-ready="true"]')){const r=HaniBuildingScene.motion.stableMascotBox(node,floor);if(r.width&&r.height)obstacles.push(r)}
     const placements=HaniBuildingScene.labels.place(floor,groups,obstacles);
     for(const {actor}of rows)if(compact||actor.dataset.resident)actor.dataset.labelMode=actor.dataset.resident?'name':placements.get(actor.dataset.person)?.dot?'dot':placements.get(actor.dataset.person)?.mode||'pill';
@@ -3615,6 +3740,7 @@
   function bubbleDuration(ms=3000){return globalThis.innerWidth<=480?Math.max(5000,ms):ms}
   function autoBubbleQuiet(){return reduced||document.hidden||!sceneVisible()||!actorBubble.hidden||Date.now()-lastBubbleTap<5000||!document.getElementById('app')||document.getElementById('app').classList.contains('login-locked')}
   function scheduleFloorBubble(){
+    if(staffChats?.current())return;
     if(!autoBubbleEntry||map.dataset.art==='loading'||!sceneVisible())return;
     autoBubbleEntry=false;
     if(autoBubbleQuiet()||Date.now()-(autoBubbleFloors.get(activeFloor)??-Infinity)<60000)return;
@@ -3640,7 +3766,7 @@
   }
   function actionRunning(actor){return meeting||!!actor.officeTravel||actor.dataset.walking==='true'||!!actor.dataset.event||actor.dataset.action&&actor.dataset.action!=='base-work'}
   function bubbleText(actor){
-    if(bubbleSelection?.kidsVisit)return bubbleSelection.name+' · '+bubbleSelection.line;
+    if(bubbleSelection?.kidsVisit||bubbleSelection?.staffChat)return bubbleSelection.name+' · '+bubbleSelection.line;
     if(bubbleSelection?.affinity)return actor.dataset.name+' · '+bubbleSelection.line;
     if(actor.dataset.resident)return actor.dataset.name+' · '+(bubbleSelection?.line||actor.dataset.line);
     if(bubbleSelection&&(bubbleSelection.drama||bubbleSelection.ownerEvent||!actionRunning(actor))){const speaker=actors.get(bubbleSelection.speaker);return (speaker?.dataset.name||actor.dataset.name)+' · '+actor.querySelector('.hani-office-status').dataset.full+' · '+bubbleSelection.line}
@@ -3665,7 +3791,7 @@
   }
   function closeBubble(clearPending=true,explicit=false){
     if(explicit){
-      kidsVisits.cancel(new Date());
+      kidsVisits.cancel(new Date());staffChats?.cancel(new Date());
       lastBubbleTap=Date.now();autoBubbleEntry=false;
       // A viewer dismissal also consumes this automatic trio window. Otherwise
       // the next 100ms resident sample can immediately reopen the same bubble.
@@ -3684,7 +3810,7 @@
     bubbleSprite.style.setProperty('--bubble-sprite-ratio',String(entry.cell[0]/entry.cell[1]));
     bubbleSprite.dataset.pose=actor.dataset.pose;
   }
-  function showBubble(actor,selection,duration=3000,automatic=false){showAffinity(actor.dataset.person,selection?.affinity||(!automatic?actor.officeAffinityTap:null));actor.officeAffinityTap=null;bubblePerson=actor.dataset.person;bubbleSelection=selection;updateBubbleSprite(actor,automatic);actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=!!actor.dataset.resident||actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);if(actor.dataset.companion==='true'){fitBubble();fitStatusLabels()}else{fitStatusLabels();fitBubble()}const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;const next=selection?.residentTrio?.lines[selection.trioIndex+1],speaker=next&&actors.get(next.id);if(speaker&&!speaker.hidden&&selection.residentTrio.key===building.residents.clock(new Date()).day+'|'+Math.floor(building.residents.clock(new Date()).seconds/900))showBubble(speaker,{speaker:next.id,line:next.line,resident:true,residentTrio:selection.residentTrio,trioIndex:selection.trioIndex+1},duration,automatic);else closeBubble(globalThis.innerWidth<=480)}},selection?.kidsVisit?duration:bubbleDuration(duration))}
+  function showBubble(actor,selection,duration=3000,automatic=false){showAffinity(actor.dataset.person,selection?.affinity||(!automatic?actor.officeAffinityTap:null));actor.officeAffinityTap=null;bubblePerson=actor.dataset.person;bubbleSelection=selection;updateBubbleSprite(actor,automatic);actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=!!actor.dataset.resident||actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);if(actor.dataset.companion==='true'){fitBubble();fitStatusLabels()}else{fitStatusLabels();fitBubble()}const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;const next=selection?.residentTrio?.lines[selection.trioIndex+1],speaker=next&&actors.get(next.id);if(speaker&&!speaker.hidden&&selection.residentTrio.key===building.residents.clock(new Date()).day+'|'+Math.floor(building.residents.clock(new Date()).seconds/900))showBubble(speaker,{speaker:next.id,line:next.line,resident:true,residentTrio:selection.residentTrio,trioIndex:selection.trioIndex+1},duration,automatic);else closeBubble(globalThis.innerWidth<=480)}},selection?.kidsVisit||selection?.staffChat?duration:bubbleDuration(duration))}
   function openBubble(actor,automatic=false,event=null){
     if(!automatic){lastBubbleTap=Date.now();autoBubbleEntry=false;clearBubbleTimer()}
     if(actor.hidden)return;
@@ -3695,7 +3821,7 @@
         const visit=kidsVisits.request(now,floorSnapshot,states,actor.dataset.person,reduced);
         if(visit){pendingTap=null;closeBubble();updateResidents(now);return}
       }
-      kidsVisits.cancel(now);
+      kidsVisits.cancel(now);staffChats?.cancel(now);
     }
     const result=automatic||actor.dataset.companion==='true'?null:affinity.tap(actor.dataset.person,event);
     if(result?.line){
@@ -4121,7 +4247,8 @@
     if(day!==cancelledDay){cancelled=new Set();cancelledDay=day}
     const presence=officePresence.read();
     cancelScheduledDuringMeeting(now);
-    floorSnapshot=building.snapshot(now,{...presence,reducedMotion:reduced,cancelled,summoned:meeting?selectedAgents():[]});
+    const staffChat=staffChats?.update(now,{...presence,blocked:!!meeting||!!activeEvent||!!kidsVisits.current()||!sceneVisible()||document.hidden||Date.now()-lastBubbleTap<5000||!actorBubble.hidden&&!bubbleSelection?.staffChat});
+    floorSnapshot=building.snapshot(now,{...presence,reducedMotion:reduced,cancelled,summoned:meeting?selectedAgents():[],staffChat});
     presenceNote.textContent=floorSnapshot.presenceNote||'';presenceNote.hidden=!floorSnapshot.presenceNote;
     for(const floor of floorSnapshot.floors){const button=floorButtons.get(floor.id),selected=floor.id===activeFloor;button.setAttribute("aria-selected",String(selected));button.tabIndex=selected?0:-1;button.querySelector("small").textContent=`근무 ${floor.work} · 휴식 ${floor.rest}`}
     const floor=floorSnapshot.floors.find(f=>f.id===activeFloor),selected=meeting&&activeFloor==="2f"?selectedAgents():null;
@@ -4140,7 +4267,7 @@
     for(const entry of plannedRows)entry.row.hidden=entry.floor!==activeFloor;
     // Reuse the scheduler's exact formal/outing legs; never predict a route.
     const formal=building.scheduler&&!meeting?building.scheduler.plan(day,presence):[];
-    const scheduled=building.scheduler&&!meeting?[...formal,...building.scheduler.blockPlan(day,Math.floor(floorSnapshot.seconds/600),formal,presence)]:[];
+    const scheduled=building.scheduler&&!meeting?[...formal,...building.scheduler.blockPlan(day,Math.floor(floorSnapshot.seconds/600),formal,presence),...(staffChat?[staffChat]:[])]:[];
     const midnight=Date.parse(day+'T00:00:00+09:00');
     for(const actor of actors.values()){if(actor.dataset.resident)continue;actor.officeWasVisible=!actor.hidden;actor.hidden=true;actor.officeRow.hidden=true;actor.dataset.called="false"}
     for(const p of entries){const actor=actors.get(p.id);if(!actor||!p.seat)continue;actor.hidden=false;actor.officeRow.hidden=false;actor.dataset.activity=p.activity;actor.dataset.plain=String(Boolean(p.plain&&!selected&&!meeting));
@@ -4180,6 +4307,7 @@
     scheduleFloorBubble();
   }
   const kidsVisits=building.residents.createKidsVisits();
+  const staffChats=building.scheduler?.createStaffChats();
   function updateResidents(now){
     if(!residentSlots.length)return;
     const existing=building.residents.snapshot(now,floorSnapshot,true,reduced),states=[...existing,...building.residents.companionSnapshot(now,floorSnapshot,true,reduced,existing)];let changed=false;
@@ -4214,10 +4342,10 @@
         actor.officeHeart.hidden=!affection;
         if(affection){actor.officeHeart.textContent=affection.heart;actor.dataset.affection=affection.kind;actor.style.setProperty('--affection-lean',affection.lean+'deg')}
         else delete actor.dataset.affection;
-        if(affection?.bubble&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)showBubble(actor,{speaker:person.id,line:affection.line,resident:true},3000,true);
+        if(affection?.bubble&&!staffChats?.current()&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)showBubble(actor,{speaker:person.id,line:affection.line,resident:true},3000,true);
       }
       const line=affection?.line||state.scene?.line||person.lines[0];
-      if(actor.dataset.line!==line){actor.dataset.line=line;actor.querySelector('.hani-office-status').dataset.full=line;if(bubblePerson===person.id&&!bubbleSelection?.affinity&&!bubbleSelection?.kidsVisit&&(!person.companion||autoBubbleEntry)){bubbleSelection={speaker:person.id,line,resident:true};bubbleLine.textContent=bubbleText(actor)}}
+      if(actor.dataset.line!==line){actor.dataset.line=line;actor.querySelector('.hani-office-status').dataset.full=line;if(bubblePerson===person.id&&!bubbleSelection?.affinity&&!bubbleSelection?.kidsVisit&&!bubbleSelection?.staffChat&&(!person.companion||autoBubbleEntry)){bubbleSelection={speaker:person.id,line,resident:true};bubbleLine.textContent=bubbleText(actor)}}
       // Patrol greetings and siblings take turns on this same slot; a busy bubble
       // leaves each child's line pending instead of consuming it unseen.
       if(person.kid&&state.reaction?.key.includes('|kids|')&&root.officeCompanionReaction!==state.reaction.key&&actor.officeKidReaction?.key!==state.reaction.key)actor.officeKidReaction={...state.reaction,floor:activeFloor,expires:now.getTime()+20000};
@@ -4225,7 +4353,7 @@
       if(person.kid&&visit){delete actor.officeKidReaction;if(moved&&bubblePerson===person.id)fitBubble(true);if(moved&&matchMedia('(max-width:600px)').matches)changed=true;continue}
       const reaction=actor.officeKidReaction||state.reaction;
       if(reaction&&root.officeCompanionReaction!==reaction.key&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000){const speaker=actors.get(reaction.id);if(speaker&&!speaker.hidden){root.officeCompanionReaction=reaction.key;delete actor.officeKidReaction;showBubble(speaker,{speaker:reaction.id,line:reaction.line},3000,true)}}
-      if(state.scene&&actor.officeResidentScene!==state.scene.key&&(!state.scene.patrol||Date.now()>=state.scene.notBefore&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)){actor.officeResidentScene=state.scene.key;if(actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)showBubble(actor,{speaker:person.id,line:state.scene.line,resident:true},3000,!!state.scene.patrol)}
+      if(!staffChats?.current()&&state.scene&&actor.officeResidentScene!==state.scene.key&&(!state.scene.patrol||Date.now()>=state.scene.notBefore&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)){actor.officeResidentScene=state.scene.key;if(actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)showBubble(actor,{speaker:person.id,line:state.scene.line,resident:true},3000,!!state.scene.patrol)}
       if(moved&&bubblePerson===person.id){fitBubble(true);if(person.companion&&matchMedia('(max-width:600px)').matches)changed=true}
     }
     if(visit?.line&&visit.floor===activeFloor&&sceneVisible()&&!document.hidden){
@@ -4240,9 +4368,21 @@
         }
       }
     }
+    const chat=staffChats?.current(),seconds=(now.getTime()-Date.parse(floorSnapshot.day+'T00:00:00+09:00'))/1000;
+    if(chat&&chat.staffChat.floor===activeFloor&&seconds>=chat.performStart&&seconds<chat.performEnd&&!chat.staffChat.cancelled&&!visit&&!activeEvent&&sceneVisible()&&!document.hidden){
+      const index=Math.floor((seconds-chat.performStart)/2.2),line=chat.staffChat.lines[index],key=chat.id+'|'+index;
+      if(line&&root.officeStaffChatLine!==key&&(actorBubble.hidden||bubbleSelection?.staffChat)){
+        const id=chat.staffChat[line.speaker+'Id'],speaker=actors.get(id),barista=['iseul','eunha'].includes(id);
+        if(speaker&&!speaker.hidden||barista&&!baristaButton.hidden){
+          root.officeStaffChatLine=key;const selection={speaker:id,name:chat.staffChat[line.speaker],line:line.text,staffChat:true,ownerEvent:true};
+          if(barista){closeBubble();bubbleSelection=selection;bubbleLine.textContent=selection.name+' · '+line.text;bubbleSprite.hidden=true;actorBubble.dataset.zoom='false';actorBubble.officeFollow=null;profileLink.hidden=true;actorBubble.style.left='4px';actorBubble.style.top='4px';actorBubble.hidden=false;const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial)closeBubble()},2200);fitStatusLabels()}
+          else showBubble(speaker,selection,2200,true);
+        }
+      }
+    }else if(bubbleSelection?.staffChat)closeBubble();
     const pets=states.filter(p=>p.pet&&p.floor===activeFloor),clock=building.residents.clock(now),trioBeat=clock.day+'|'+Math.floor(clock.seconds/120);
     const trioLines=building.residents.trioChat(pets);
-    if(!visit&&trioLines&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000&&root.officeTrioBeat!==trioBeat){
+    if(!visit&&!chat&&trioLines&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000&&root.officeTrioBeat!==trioBeat){
       root.officeTrioBeat=trioBeat;const trio={key:clock.day+'|'+Math.floor(clock.seconds/900),lines:trioLines},first=trio.lines[0];
       showBubble(actors.get(first.id),{speaker:first.id,line:first.line,resident:true,residentTrio:trio,trioIndex:0},3000,true);
     }
