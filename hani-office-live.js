@@ -2394,11 +2394,11 @@
   ].map(p=>Object.freeze({...p,hours:Object.freeze(p.hours.map(Object.freeze)),places:Object.freeze(Object.fromEntries(Object.entries(p.places).map(([f,spots])=>[f,Object.freeze(spots)]))),lines:Object.freeze(p.lines)})));
   // Calendar-day companions are display-only residents; the existing 07:00 pet day is unchanged.
   const companionPeople=Object.freeze([
-    {id:'companion-frog',name:'아기 개구리',pet:true,atlasRow:0,lines:['회장님, 폴짝 따라갈게요!','회장님 옆이 제 연못이에요.','회장님, 잠깐 쉬어요!']},
-    {id:'companion-penguin',name:'꼬마 펭귄',pet:true,atlasRow:1,lines:['회장님, 순찰 완료예요!','회장님 일정은 제가 챙겨요!','회장님, 뒤뚱뒤뚱 갑니다!']},
-    {id:'companion-otter',name:'아기 수달',pet:true,atlasRow:2,lines:['회장님, 조개 선물이에요!','회장님 옆에서 냠냠해요.','회장님, 카페도 같이 가요!']},
-    {id:'companion-chick',name:'병아리',pet:true,atlasRow:3,lines:['회장님, 삐약 출근했어요!','회장님 따라 통통통!','회장님, 제 날개도 쉬어요.']},
-    {id:'companion-fox',name:'아기 여우',pet:true,atlasRow:4,lines:['회장님, 꼬리로 인사해요!','회장님 곁은 포근하네요.','회장님, 살금살금 갈게요!']},
+    {id:'companion-frog',name:'아기 개구리',pet:true,mascot:'전략기획실 마스코트',atlasRow:0,lines:['회장님, 폴짝 따라갈게요!','회장님 옆이 제 연못이에요.','회장님, 잠깐 쉬어요!']},
+    {id:'companion-penguin',name:'꼬마 펭귄',pet:true,mascot:'개발실 마스코트',atlasRow:1,lines:['회장님, 순찰 완료예요!','회장님 일정은 제가 챙겨요!','회장님, 뒤뚱뒤뚱 갑니다!']},
+    {id:'companion-otter',name:'아기 수달',pet:true,mascot:'기업솔루션 마스코트',atlasRow:2,lines:['회장님, 조개 선물이에요!','회장님 옆에서 냠냠해요.','회장님, 카페도 같이 가요!']},
+    {id:'companion-chick',name:'병아리',pet:true,mascot:'라이프&엔터 마스코트',atlasRow:3,lines:['회장님, 삐약 출근했어요!','회장님 따라 통통통!','회장님, 제 날개도 쉬어요.']},
+    {id:'companion-fox',name:'아기 여우',pet:true,mascot:'재무실 마스코트',atlasRow:4,lines:['회장님, 꼬리로 인사해요!','회장님 곁은 포근하네요.','회장님, 살금살금 갈게요!']},
     {id:'kid-suhyeon',name:'수현',kid:true,atlasRow:0,lines:['…지금 말고.','가방? 그냥 들어 준 거야.','아빠, 얘 좀 떼 줘.','…거기 위험해.','옆에 있어 줄게. 책 읽으러 온 거지만.','이쪽이 조용해. 너도 와.']},
     {id:'kid-suyeon',name:'수연',kid:true,atlasRow:1,lines:['아빠아아!','나 커서 아빠랑 결혼할 거야!','오빠는 맨날 아닌 척해!','아빠 손 꼭 잡고 갈래!','아빠랑 다니니까 제일 좋아!','아빠 여기여기! 나랑 같이 가!','아빠! 나 통통 뛰는 거 봐 봐!','저기까지 갔다가 꼭 돌아올게!','아빠 옆자리 찜! 내 자리야!','나 먼저 갈게! 아빠 오고 있지?']}
   ].map(p=>Object.freeze({...p,companion:true,sprite:p.id,lines:Object.freeze(p.lines)})));
@@ -3802,7 +3802,13 @@
     const rows=visible.map(actor=>({actor,name:actor.querySelector('.hani-office-name'),status:actor.querySelector('.hani-office-status')}));
     const used=new Set();
     for(const {actor,name,status}of rows){
-      if(actor.dataset.resident){actor.dataset.labelMode='name';actor.officeCompact.textContent='';name.title=actor.dataset.name;name.setAttribute('aria-label',name.title);name.hidden=false;name.style.visibility='';name.style.setProperty('--name-x','0px');name.style.setProperty('--name-y','0px');status.hidden=true;status.style.visibility='hidden';continue}
+      if(actor.dataset.resident){
+        const mascot=residentSlots.find(p=>p.id===actor.dataset.person)?.mascot,following=actor.officeResidentState?.following;
+        const full=mascot?(following?'오늘의 동행 · ':'')+mascot:'',short=mascot?(following?(compact?'동행 · ':'오늘의 동행 · '):'')+mascot:'';
+        actor.dataset.labelMode='name';actor.officeCompact.textContent=short;actor.officeCompact.style.display=mascot?'block':'';
+        name.title=actor.dataset.name+(full?' · '+full:'');name.setAttribute('aria-label',name.title);if(mascot)actor.setAttribute('aria-label',name.title);
+        name.hidden=false;name.style.visibility='';name.style.setProperty('--name-x','0px');name.style.setProperty('--name-y','0px');status.hidden=true;status.style.visibility='hidden';continue
+      }
       statusDot(actor);
       actor.dataset.labelMode=compact?'pill':'separate';
       status.textContent=actor.querySelector('.hani-office-activity-icon').textContent+' '+HaniBuildingScene.labels.short(status.dataset.full,used,actor.dataset.status,compact);
@@ -4471,7 +4477,7 @@
       const prior=actor.officeResidentState,walking=String(state.walking),moved=!prior||prior.position[0]!==state.position[0]||prior.position[1]!==state.position[1],turned=!prior||prior.facing!==state.facing,posed=!prior||prior.pose!==state.pose;
       if(person.pet&&state.pose==='sleep'&&(!wasVisible||prior?.pose!=='sleep'))clearMotion(actor);
       if(!wasVisible){actor.hidden=false;changed=true}
-      if(!prior||prior.walking!==state.walking||prior.anchor!==state.anchor)changed=true;
+      if(!prior||prior.walking!==state.walking||prior.anchor!==state.anchor||prior.following!==state.following)changed=true;
       if(sceneVisible())loadSprite(actor,fitStatusLabels);
       if(!prior){actor.officeRow.hidden=true;actor.dataset.activity='resident';actor.dataset.status='resident';actor.dataset.line=person.lines[0];const status=actor.querySelector('.hani-office-status');status.dataset.full=actor.dataset.line;status.hidden=true;actor.setAttribute('aria-label',actor.dataset.name)}
       if(turned)actor.dataset.facing=state.facing;

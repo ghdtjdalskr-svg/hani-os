@@ -3,12 +3,13 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import inverse from './hani-office-affinity-cap-source.cjs';
+import mascotInverse from './hani-office-mascot-label-source.cjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {stripApprovedAffinityStorage} from './hani-office-affinity-storage.mjs';
 
 const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
-const source=read('hani-office-live.js'),key='hani_office_affinity_v1';
+const source=mascotInverse.projectPreMascotLabelSource(read('hani-office-live.js')),key='hani_office_affinity_v1';
 const owner=source.slice(source.indexOf('  function createOfficeAffinity(){'),source.indexOf('  function createTapLines('));
 const user={type:'click',isTrusted:true},enter={type:'keydown',key:'Enter',isTrusted:true};
 const ids=['hani','gaeun','yuna','jieun','haru','naeun','hina','minji','sooyeon','sua','taeo','seoyun','dohyun','serin','yuri','arin','daon','yoonseul','mir','pet-cat','pet-dog','pet-rabbit','pet-bori','iseul','eunha'];
