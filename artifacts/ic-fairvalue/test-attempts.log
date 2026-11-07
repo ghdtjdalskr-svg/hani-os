@@ -1,0 +1,12 @@
+Requested command: node --test scripts/hani-investment-committee.test.cjs scripts/hani-ic-accumulation.test.cjs scripts/hani-ic-polish-205.test.cjs scripts/hani-ic-report-205.test.cjs scripts/hani-ic-report-flow.test.cjs scripts/hani-ic-fairvalue-range.test.cjs scripts/hani-investment-research.test.cjs scripts/hani-investment-research-safety.test.cjs scripts/hani-post-audit-investment.test.mjs scripts/hani-second-opinion.test.mjs scripts/hani-final-review.test.mjs scripts/hani-protected-write-contract.test.mjs
+BLOCKED before test execution: Program 'node.exe' failed to run: Access is deniedAt line:9 char:7
++ try { & $nodeExe --test @tests 2>&1 | ForEach-Object {$logs.Add([stri ...
++       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
+Requested command: node --check hani-investment-committee.js
+BLOCKED before syntax check: Program 'node.exe' failed to run: Access is deniedAt line:12 char:9
++   try { & $nodeExe --check $file 2>&1 | ForEach-Object {$logs.Add([st ...
++         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
+Requested command: node --check scripts/hani-ic-fairvalue-range.test.cjs
+BLOCKED before syntax check: Program 'node.exe' failed to run: Access is deniedAt line:12 char:9
++   try { & $nodeExe --check $file 2>&1 | ForEach-Object {$logs.Add([st ...
++         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.

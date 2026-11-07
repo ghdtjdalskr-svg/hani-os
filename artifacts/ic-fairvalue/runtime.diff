@@ -1,0 +1,6 @@
+diff --git a/hani-investment-committee.js b/hani-investment-committee.js
+--- a/hani-investment-committee.js
++++ b/hani-investment-committee.js
+@@ -303,1 +303,1 @@
+-    if (mid === undefined && out.fairValueLow > 0 && out.fairValueHigh > 0) {
++    if (out.fairValue == null && out.fairValueLow > 0 && out.fairValueHigh > 0) {
