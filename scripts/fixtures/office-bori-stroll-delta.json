@@ -1,0 +1,93 @@
+{
+  "baseCommit": "f1a457f0ffe6a42721c73cf22218f13e4e961bf6",
+  "file": "hani-office-live.js",
+  "beforeSha256": "84b448af3f4251d33b4d992016a7f158524fad49bbeb589c67e8a07c80d557ec",
+  "afterSha256": "6085c14f506f8cba92470409e97d19889646d748f71752b6abb0ba4a5975480c",
+  "replacements": [
+    {
+      "name": "reserve stroll corridor",
+      "before": "states=[],usedStops=new Set();",
+      "after": "states=[],usedStops=new Set(neighbors.flatMap(p=>p.stroll?.stops||[]));"
+    },
+    {
+      "name": "companion free respects complete stroll route",
+      "before": "return p.floor===floor&&at.every(Number.isFinite)&&Math.hypot((v[0]-at[0])*art.width/100,(v[1]-at[1])*art.height/100)<(p.id==='seongmin'?80:p.resident||p.pet?96:person.kid?90:70)",
+      "after": "return p.floor===floor&&at.every(Number.isFinite)&&(Math.hypot((v[0]-at[0])*art.width/100,(v[1]-at[1])*art.height/100)<(p.id==='seongmin'?80:p.resident||p.pet?96:person.kid?90:70)||p.id==='pet-bori'&&p.stroll?.stops?.some((id,i,ids)=>{const a=residentSpot(id),b=residentSpot(ids[(i+1)%ids.length]),x=(v[0]-a.visual[0])*art.width/100,y=(v[1]-a.visual[1])*art.height/100,dx=(b.visual[0]-a.visual[0])*art.width/100,dy=(b.visual[1]-a.visual[1])*art.height/100,t=Math.max(0,Math.min(1,(x*dx+y*dy)/(dx*dx+dy*dy||1)));return Math.hypot(x-t*dx,y-t*dy)<108}))"
+    },
+    {
+      "name": "siblings keep the Bori pet envelope after their activity movement",
+      "before": "distance(v,at(p))<(p.id==='seongmin'?80:86)",
+      "after": "distance(v,at(p))<(p.id==='seongmin'?80:p.id==='pet-bori'?96:86)"
+    },
+    {
+      "name": "Bori fractional wakeful rhythm",
+      "before": "    const seed=residentSeed('pet-rhythm|'+day+'|'+id),rabbit=id==='pet-rabbit',bori=id==='pet-bori',period=id==='kid-suyeon'?6+seed%7:id==='kid-suhyeon'?20+seed%21:rabbit||bori?25+seed%21:15+seed%16,phase=seed%period;",
+      "after": "    // Bori keeps short wakeful shuffles; fractional seconds avoid a fixed pose\n    // when the existing renderer is sampled at whole-minute intervals.\n    const seed=residentSeed('pet-rhythm|'+day+'|'+id),rabbit=id==='pet-rabbit',bori=id==='pet-bori',period=bori?26+seed%8+(1+seed%7)/10:id==='kid-suyeon'?6+seed%7:id==='kid-suhyeon'?20+seed%21:rabbit?25+seed%21:15+seed%16,phase=seed%period;"
+    },
+    {
+      "name": "pure seeded daytime stroll",
+      "before": "  const residentAffectionVoice=Object.freeze({",
+      "after": "  // One clock-derived outing every 30..45 minutes; no saved day or timer.\n  function boriStroll(day,seconds){\n    const seed=residentSeed('bori-stroll|'+day),period=(34+seed%8)*60,first=9*3600+seed%900,index=Math.floor((seconds-first)/period);\n    // Move a boundary-crossing outing slightly earlier, keeping the same floor\n    // and all actual departure intervals within 30..45 minutes.\n    for(const beat of [index,index+1]){\n      if(beat<0)continue;\n      let start=first+beat*period;const duration=120+residentSeed(day+'|bori-stroll|'+beat)%121;\n      for(const hour of [13,15,21])if(start<hour*3600&&start+duration>hour*3600)start=hour*3600-duration;\n      if(start>=21*3600||seconds<start||seconds>=start+duration)continue;\n      return {key:day+'|bori-stroll|'+beat,beat,start,duration,elapsed:seconds-start};\n    }\n    return null;\n  }\n  function boriStrollSample(person,day,stroll,spots,free){\n    const home=residentSpot(spots[0]),other=residentSpot(spots[1]),extra=residentSpot(home.floor==='1f'?'resident_bori_stroll_lobby':'resident_bori_stroll_lounge');\n    // A blocked optional stop shortens the route, never relaxes free()/safe().\n    const stops=[home,other];if(extra&&free(extra.visual)&&residentPath(other.id,extra.id).length&&residentPath(extra.id,home.id).length)stops.push(extra);\n    if(!stops.every(a=>free(a.visual)))return null;\n    const route=[...stops,home],stage=(stroll.duration-8)/(route.length-1),legs=[];\n    for(let i=1;i<route.length;i++){const a=route[i-1],b=route[i],sample=petMotion(person.id,day,stroll.beat+i,a,b,0,free);if(!sample||sample.duration>stage)return null;legs.push({a,b,sample})}\n    const time=stroll.elapsed-4,index=Math.min(legs.length-1,Math.max(0,Math.floor(time/stage))),leg=legs[index],elapsed=Math.max(0,time-index*stage),sample=petMotion(person.id,day,stroll.beat+index+1,leg.a,leg.b,elapsed,free);\n    if(!sample)return null;\n    let {position,point,walking,facing,pose}=sample;\n    if(time<0){position=home.visual;point=[home.x,home.y];walking=false;pose='standing'}\n    if(stroll.elapsed>=stroll.duration-4){position=home.visual;point=[home.x,home.y];walking=false;pose='sleep'}\n    const scene=stroll.beat%3===0&&index===0&&elapsed>=leg.sample.duration+8&&elapsed<leg.sample.duration+13?{key:stroll.key,line:person.lines[(stroll.beat+3)%person.lines.length],patrol:true,notBefore:0}:null;\n    return {position,point,walking,facing,pose,scene,motion:sample,stroll:{...stroll,stops:stops.map(a=>a.id)},...(time<0?{life:{key:stroll.key,kind:'sit-stand'}}:{})};\n  }\n  const residentAffectionVoice=Object.freeze({"
+    },
+    {
+      "name": "keep stroll poses on existing life owner",
+      "before": "p.pet&&!p.walking&&!p.motion?.active&&p.pose!=='sleep'",
+      "after": "p.pet&&!p.stroll&&!p.walking&&!p.motion?.active&&p.pose!=='sleep'"
+    },
+    {
+      "name": "keep stroll poses from ambient life",
+      "before": "states.filter(p=>p.pet&&!p.walking&&!p.motion?.active&&!p.affection",
+      "after": "states.filter(p=>p.pet&&!p.stroll&&!p.walking&&!p.motion?.active&&!p.affection"
+    },
+    {
+      "name": "same motion owner accepts local pace",
+      "before": "  function petMotion(id,day,beat,a,b,elapsed,free=()=>true){\r",
+      "after": "  function petMotion(id,day,beat,a,b,elapsed,free=()=>true,pace=1){"
+    },
+    {
+      "name": "slightly quicker Bori walk",
+      "before": "    const seed=residentSeed('pet-leg|'+day+'|'+id+'|'+beat),rabbit=id==='pet-rabbit',dog=id==='pet-dog',base=id==='pet-bori'?12:rabbit?18:dog?48:40,speed=base*(.9+seed%21/100),route=petRoute(a,b,seed),fallback=residentSeed('pet-facing|'+day+'|'+id)%2?'left':'right';\r",
+      "after": "    const seed=residentSeed('pet-leg|'+day+'|'+id+'|'+beat),rabbit=id==='pet-rabbit',dog=id==='pet-dog',base=id==='pet-bori'?18:rabbit?18:dog?48:40,speed=base*pace*(.9+seed%21/100),route=petRoute(a,b,seed),fallback=residentSeed('pet-facing|'+day+'|'+id)%2?'left':'right';"
+    },
+    {
+      "name": "two safe optional existing-map pet stops",
+      "before": "    ['resident_bori_lounge_a','2f',51,57,true],['resident_bori_lounge_b','2f',51,59,true]",
+      "after": "    ['resident_bori_lounge_a','2f',51,57,true],['resident_bori_lounge_b','2f',51,59,true],\n    ['resident_bori_stroll_lobby','1f',79.5,83,true],['resident_bori_stroll_lounge','2f',51,71,true]"
+    },
+    {
+      "name": "daytime naps retain awake rhythm outside strolls",
+      "before": "day=person.pet?clock.day:time.toISOString().slice(0,10),sleeping=person.pet&&(clock.sleeping||person.id==='pet-bori'&&!reduced&&(clock.seconds+residentSeed('bori-nap|'+clock.day)%300)%900<600);",
+      "after": "day=person.pet?clock.day:time.toISOString().slice(0,10),stroll=person.id==='pet-bori'&&!reduced?boriStroll(day,seconds):null,sleeping=person.pet&&(clock.sleeping||person.id==='pet-bori'&&!stroll&&(reduced||clock.hour<9||clock.hour>=21||(seconds+residentSeed('bori-nap|'+day)%300)%900<360));"
+    },
+    {
+      "name": "stable nap and departure stop",
+      "before": "index=sleeping||reduced?0:",
+      "after": "index=sleeping||reduced||stroll?0:"
+    },
+    {
+      "name": "stroll uses its own elapsed on same petMotion owner",
+      "before": "if(person.pet&&!reduced&&path.length>1&&!sleeping){",
+      "after": "if(person.pet&&!stroll&&!reduced&&path.length>1&&!sleeping){"
+    },
+    {
+      "name": "visible sleepy shuffle on existing home route",
+      "before": "        const a=path[0],b=path.at(-1),sample=petMotion(person.id,day,rhythm.beat,a,b,elapsed,free);\r",
+      "after": "        // A sleepy shuffle between nearby home stops stays visible for seconds;\n        // scheduled outings use the same motion owner at its normal pace.\n        const a=path[0],b=path.at(-1),sample=petMotion(person.id,day,rhythm.beat,a,b,elapsed,free,person.id==='pet-bori'?.2:1);"
+    },
+    {
+      "name": "exclude generic legacy walk on stroll",
+      "before": "}else if(!reduced&&path.length>1&&!sleeping)for",
+      "after": "}else if(!stroll&&!reduced&&path.length>1&&!sleeping)for"
+    },
+    {
+      "name": "sample stroll before existing occupancy fallback",
+      "before": "      if(!free(position)){const alternatives=",
+      "after": "      const outing=stroll&&boriStrollSample(person,day,stroll,spots,free);\n      if(stroll){if(outing)({position,point,walking,facing,pose,scene,motion}=outing);else {position=anchor.visual;point=[anchor.x,anchor.y];walking=false;pose='sleep';motion=undefined;scene=null}}\n      if(!free(position)){const alternatives="
+    },
+    {
+      "name": "publish pure stroll metadata on existing resident",
+      "before": "walking,facing,pose,scene,...(motion?{motion}:{})}];",
+      "after": "walking,facing,pose,scene,...(motion?{motion}:{}),...(outing?{stroll:outing.stroll,...(outing.life?{life:outing.life}:{})}:{})}];"
+    }
+  ]
+}
