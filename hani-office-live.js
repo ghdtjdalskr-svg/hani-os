@@ -3161,10 +3161,12 @@
   function companionSnapshot(now=new Date(),staff=null,enabled=true,reduced=false,neighbors=[]){
     if(!enabled||!canon||!art)return [];
     const date=koreaTime(now),weekday=date.getUTCDay(),weekend=weekday===0||weekday===6,day=date.toISOString().slice(0,10),seconds=date.getUTCHours()*3600+date.getUTCMinutes()*60+date.getUTCSeconds()+date.getUTCMilliseconds()/1000;
-    const people=[...(staff?.floors?.flatMap(f=>f.people||[])||[]),...neighbors],chair=people.find(p=>p.id==='seongmin'&&floors.some(f=>f.id===p.floor)&&p.state!=='ABSENT'),center=chair&&(chair.position||[chair.seat?.x,chair.seat?.y]),states=[];
-    for(const person of companionPeople){
-      const follow=person.kid?weekend:!weekend&&person.atlasRow===weekday-1;
-      if(person.kid&&!weekend||!person.kid&&!weekend&&!follow||follow&&(!chair||!center?.every(Number.isFinite)))continue;
+    const people=[...(staff?.floors?.flatMap(f=>f.people||[])||[]),...neighbors],chair=people.find(p=>p.id==='seongmin'&&floors.some(f=>f.id===p.floor)&&p.state!=='ABSENT'),center=chair&&(chair.position||[chair.seat?.x,chair.seat?.y]),states=[],usedStops=new Set();
+    const follows=person=>person.kid?weekend:!weekend&&person.atlasRow===weekday-1;
+    // Reserve the chairman's companions first, then place department pets safely.
+    for(const person of companionPeople.filter(follows).concat(companionPeople.filter(p=>!follows(p)))){
+      const follow=follows(person);
+      if(person.kid&&!weekend||follow&&(!chair||!center?.every(Number.isFinite)))continue;
       const seed=residentSeed(day+'|'+person.id),rhythm=residentRhythm(person.id,day,seconds),free=(floor,v)=>!people.concat(states).some(p=>{const at=p.position||[p.seat?.x,p.seat?.y];return p.floor===floor&&at.every(Number.isFinite)&&Math.hypot((v[0]-at[0])*art.width/100,(v[1]-at[1])*art.height/100)<(p.id==='seongmin'?80:p.resident||p.pet?96:person.kid?90:70)});
       let floor,position,point=[500,330],walking=false,facing='left',pose='standing',motion;
       if(follow){
@@ -3182,11 +3184,13 @@
         if(!position)continue;
         walking=!reduced&&!!chair.walking;pose=walking?(Math.floor(seconds*4)%2?'walk-a':'walk-b'):chair.pose==='sitting'||chair.seat?.posture==='sitting'?'sitting':'standing';
       }else{
-        // Weekend pets roam independently. Penguin patrols all five floors; otter favors the cafe.
-        floor=person.id==='companion-otter'?'1f':floors[(Math.floor(seconds/900)+person.atlasRow)%floors.length].id;
-        const stops=[...residentStops.values()].filter(a=>a.floor===floor&&a.pet&&residentSpot(a.id)).flatMap(a=>[0,-12,12,24].map(dy=>({...a,visual:[a.visual[0],a.visual[1]+dy]}))).filter(a=>residentSafe(floor,[a.x,a.y],a.visual)&&free(floor,a.visual));
+        // Off-duty companions stay in their department, on the existing pet rhythm.
+        floor=['4f','3f','1f','2f','2f'][person.atlasRow];
+        const available=[...residentStops.values()].filter(a=>a.floor===floor&&a.pet&&!usedStops.has(a.id)&&residentSpot(a.id)).flatMap(a=>[0,-12,12,24].map(dy=>({...a,visual:[a.visual[0],a.visual[1]+dy]}))).filter(a=>residentSafe(floor,[a.x,a.y],a.visual)&&free(floor,a.visual));
+        // The 2F hall stops face finance above and life/entertainment below.
+        const preferred=available.filter(a=>person.id==='companion-chick'?a.id.startsWith('resident_bori_'):person.id==='companion-fox'?a.id.startsWith('resident_dog_'):true),stops=preferred.length?preferred:available;
         if(!stops.length)continue;
-        const index=reduced?seed%stops.length:(rhythm.beat+seed)%stops.length,a=stops[(index+stops.length-1)%stops.length],b=stops[index];position=b.visual;point=[b.x,b.y];pose=rhythm.beat%3?'sitting':'standing';
+        const index=reduced?seed%stops.length:(rhythm.beat+seed)%stops.length,a=stops[(index+stops.length-1)%stops.length],b=stops[index];usedStops.add(a.id);usedStops.add(b.id);position=b.visual;point=[b.x,b.y];pose=rhythm.beat%3?'sitting':'standing';
         if(!reduced&&a!==b){motion=petMotion(person.id,day,rhythm.beat,a,b,rhythm.elapsed,v=>free(floor,v));if(motion){({position,point,walking,facing,pose}=motion);if(person.id==='companion-chick'&&walking)motion={...motion,bob:-Math.abs(Math.sin(seconds*9))*2.5}}}
       }
       const state={id:person.id,name:person.name,sprite:person.id,pet:!!person.pet,kid:!!person.kid,companion:true,following:follow,floor,anchor:follow?'companion-'+chair.id:person.id+'-'+floor,position,point,walking,facing,pose,...(motion?{motion}:{})};
