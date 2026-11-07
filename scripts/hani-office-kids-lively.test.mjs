@@ -1,7 +1,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
 import {fixture as mountFixture} from './hani-building-206-engine.test.mjs';import {assets} from './hani-office-v2-fixture.mjs';
-import {restoreKids278Source,projectPreKidsSource,projectPreVisitsSource,projectPreStaffChatSource} from './hani-office-chairman-patrol-278-source.mjs';
+import {restoreKids278Source,projectPreKidsSource,projectPreVisitsSource,projectPreStaffChatSource,projectPreCompanionHomesSource} from './hani-office-chairman-patrol-278-source.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 const fixture=(...args)=>{while(args.length<5)args.push(undefined);return mountFixture(...args,projectPreVisitsSource)};
 const {scene,table}=loadScene(),r=scene.residents,plain=x=>JSON.parse(JSON.stringify(x)),day='2026-11-07',options={chairmanPresent:true};
@@ -31,10 +31,11 @@ test('reduced motion has no bounce/lean/spin and retains slower continuous posit
  assert.ok(Math.max(...sameCycle(a))<Math.max(...sameCycle(b)),'slower reduced-motion travel');
 });
 test('live walking leads and looks back while brother follows, floor/presence remain authoritative and pets unchanged',()=>{
- let looked=false,led=false;const frozen=loadScene({transform:projectPreKidsSource}).scene.residents;
+ let looked=false,led=false;const frozen=loadScene({transform:projectPreKidsSource}).scene.residents,homeBaseline=loadScene({transform:projectPreCompanionHomesSource}).scene.residents;
  for(let t=50400;t<50420;t+=.2)for(const facing of ['left','right']){const snap=chair('5f',{walking:true,pose:'walk-a',facing,patrol:{window:50400},state:'GOING'}),states=kids(t,snap),sister=states[1];assert.ok(states.every(p=>p.floor==='5f'));assert.equal(states[0].activity.kind,'follow');assert.equal(sister.activity.kind,'lead-look');if(sister.facing!==facing)looked=true;if((sister.position[0]-51)*(facing==='left'?-1:1)>0)led=true;}
  assert.ok(looked&&led);assert.equal(kids(36000,{floors:[]}).length,0);
- for(const sec of [36000,36007,36030]){const snap=chair(),now=at(day,sec);assert.deepEqual(plain(r.companionSnapshot(now,snap).filter(p=>p.pet)),plain(frozen.companionSnapshot(now,snap).filter(p=>p.pet)));}
+ // The approved outer home layer is tested raw by companion-homes; retain this exact older pet contract.
+ for(const sec of [36000,36007,36030]){const snap=chair(),now=at(day,sec);assert.deepEqual(plain(homeBaseline.companionSnapshot(now,snap).filter(p=>p.pet)),plain(frozen.companionSnapshot(now,snap).filter(p=>p.pet)));}
 });
 test('latest real patrol departure/transfer/arrival/return paths retain chairman ownership and safe siblings',()=>{
  const events=scene.scheduler.blockPlan(day,0,scene.scheduler.plan(day,options),options).filter(e=>e.patrol);
