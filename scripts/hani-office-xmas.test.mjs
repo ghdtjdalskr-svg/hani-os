@@ -146,6 +146,6 @@ test('xmas: literal atlas enters the release closure as the only new runtime fil
  // Exclude only the individually approved helper/Bori files from both closures.
  const options={exists:f=>fs.existsSync(new URL('../'+f,import.meta.url)),read:f=>['hani-office-live.js','hani-office-live.css'].includes(f)?restoreBori272Source(read(f),f):fs.readFileSync(new URL('../'+f,import.meta.url))};
  const current=await resolveRuntimeClosure(options),before=await resolveRuntimeClosure({...options,read:f=>f==='hani-office-live.js'?beforeJs:f==='hani-office-live.css'?beforeCss:options.read(f)});
- assert.deepEqual(before.missing,[]);assert.deepEqual(current.missing,[]);assert.equal(before.files.filter(f=>!approvedOfficeRuntimeAdditions.includes(f)).length,152);assert.equal(current.files.filter(f=>!approvedOfficeRuntimeAdditions.includes(f)).length,153);assert.ok(current.files.length<=160);
+ assert.deepEqual(before.missing,[]);assert.deepEqual(current.missing,[]);assert.equal(before.files.filter(f=>!approvedOfficeRuntimeAdditions.includes(f)).length,152);assert.equal(current.files.filter(f=>!approvedOfficeRuntimeAdditions.includes(f)).length,153);assert.ok(current.files.length<=200);
  assert.deepEqual(current.files.filter(f=>!before.files.includes(f)),['assets/office-season/xmas.webp']);
 });

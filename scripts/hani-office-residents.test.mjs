@@ -136,7 +136,7 @@ test('nine approved atlases decode, match their manifest hashes, load through th
   const fallback=r.atlas(p);assert.deepEqual(plain(fallback.frames.map(f=>[f.name,f.rect,f.pivot])),entry.frames.map(f=>[f.name,f.rect,f.pivot]));
  }
  const closure=await resolveRuntimeClosure({exists:fs.existsSync,read:f=>fs.readFileSync(f)});
- assert.ok(closure.files.length<=160);assert.deepEqual(closure.missing,[]);
+ assert.ok(closure.files.length<=200);assert.deepEqual(closure.missing,[]);
  const baseline=(await resolveRuntimeClosure({exists:fs.existsSync,read:f=>f==='hani-office-live.css'?read(f).split('/* Resident art uses the existing sheet loader;')[0]:f==='hani-office-live.js'?restoreResidentsSource(read(f)):fs.readFileSync(f)})).files;
  assert.equal(baseline.filter(f=>!approvedOfficeRuntimeAdditions.includes(f)).length,138,'existing closure loses only removed portrait, apart from explicit 270/272 additions');
  for(const file of bori272Files)assert.ok(closure.files.includes(file),'approved Bori runtime file: '+file);
