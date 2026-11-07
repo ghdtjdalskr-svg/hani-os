@@ -28,7 +28,7 @@ const pets=residents.filter(p=>p.pet),cycleSize=staff.length+pets.length;
 const cycle=(api,start)=>Array.from({length:cycleSize},(_,i)=>api.duty(staff,start+i*86400000));
 
 // Minimal event/DOM fixture. Geometry and CSS painting are tested separately in a real browser.
-function fixture({now=Date.parse('2026-11-06T12:30:00+09:00'),failRelease=false,loading=false}={}) {
+function fixture({now=Date.parse('2026-11-06T12:30:00+09:00'),failRelease=false,loading=false,stored=null,storageFails=false}={}) {
   const callbacks=new Map(),frames=[],observers=[],calls=[],requests=[],storageCalls=[];
   let document;
   const matches=(el,selector)=>selector.split(',').some(s=>{
@@ -43,6 +43,9 @@ function fixture({now=Date.parse('2026-11-06T12:30:00+09:00'),failRelease=false,
   });
   class Element {
     constructor(tag){this.tagName=tag.toUpperCase();this.children=[];this.attributes={};this.dataset=new Proxy({}, {set:(data,key,value)=>{data[key]=String(value);this.attributes['data-'+key.replace(/[A-Z]/g,c=>'-'+c.toLowerCase())]=String(value);return true;}});this.style={};this.hidden=false;this.textContent='';this.isConnected=false;}
+    setPointerCapture(id){this.captured=id;}
+    hasPointerCapture(id){return this.captured===id;}
+    releasePointerCapture(){this.captured=null;}
     set id(v){this.attributes.id=v;}get id(){return this.attributes.id;}
     setAttribute(k,v){this.attributes[k]=String(v);if(k.startsWith('data-'))this.dataset[k.slice(5).replace(/-([a-z])/g,(_,c)=>c.toUpperCase())]=String(v);if(k==='hidden')this.hidden=true;}
     getAttribute(k){return this.attributes[k]??null;}
@@ -74,7 +77,11 @@ function fixture({now=Date.parse('2026-11-06T12:30:00+09:00'),failRelease=false,
   const events=(target,name,fn)=>{const key=target+':'+name;if(!callbacks.has(key))callbacks.set(key,[]);callbacks.get(key).push(fn);};
   document={body,readyState:loading?'loading':'complete',activeElement:body,createElement:tag=>new Element(tag),getElementById:id=>body.querySelector('#'+id),querySelectorAll:s=>body.querySelectorAll(s),addEventListener:(name,fn)=>events('document',name,fn)};
   for(const id of ['home','tasks','agentReview','ilbo','investmentCommittee']){const el=new Element('section');el.id=id;body.append(el);}
-  const storage=new Proxy({}, {get:(_,key)=>{storageCalls.push(key);throw Error('Storage access forbidden');}});
+  let saved=stored;
+  const storage={getItem(key){storageCalls.push(['getItem',key]);assert.equal(key,'hani_helper_pos_v1');if(storageFails)throw Error('unavailable');return saved;},
+    setItem(key,value){storageCalls.push(['setItem',key,value]);assert.equal(key,'hani_helper_pos_v1');if(storageFails)throw Error('full');saved=value;},
+    removeItem(key){storageCalls.push(['removeItem',key]);throw Error('unexpected storage removal');},
+    clear(){storageCalls.push(['clear']);throw Error('unexpected storage clear');}};
   class Clock extends Date {constructor(...args){super(...(args.length?args:[now]));}static now(){return now;}}
   const window={innerWidth:390,innerHeight:844,HaniOrganizationRoster:{people:staff},addEventListener:(name,fn)=>events('window',name,fn)};
   const context=vm.createContext({window,document,Date:Clock,localStorage:storage,sessionStorage:storage,
@@ -86,11 +93,22 @@ function fixture({now=Date.parse('2026-11-06T12:30:00+09:00'),failRelease=false,
   });
   vm.runInContext(source,context);
   const flush=()=>{let n=0;while(frames.length){assert.ok(++n<20,'no animation loop');frames.shift()();}};
-  const fire=(name,target=body,extra={})=>{const event={target,key:'',preventDefault(){this.prevented=true;},...extra};for(const fn of callbacks.get('document:'+name)||[])fn(event);flush();return event;};
+  const fire=(name,target=body,extra={})=>{const event={type:name,target,key:'',button:0,pointerId:1,isPrimary:true,clientX:0,clientY:0,preventDefault(){this.prevented=true;},...extra};for(const fn of callbacks.get('document:'+name)||[])fn(event);flush();return event;};
   const resize=(width,height)=>{window.innerWidth=width;window.innerHeight=height;for(const fn of callbacks.get('window:resize')||[])fn();flush();};
   const ready=async()=>{for(let i=0;i<8;i++)await Promise.resolve();flush();};
-  return {window,document,api:window.HaniHelperBot,callbacks,calls,requests,storageCalls,Element,flush,fire,resize,ready,rerun:()=>vm.runInContext(source,context),setNow:v=>{now=v;},mutate:target=>{observers.forEach(fn=>fn([{target}]));flush();},navigate:id=>{body.dataset.view=id;observers.forEach(fn=>fn([{target:body}]));flush();}};
+  return {saved:()=>saved,window,document,api:window.HaniHelperBot,callbacks,calls,requests,storageCalls,Element,flush,fire,resize,ready,rerun:()=>vm.runInContext(source,context),setNow:v=>{now=v;},mutate:target=>{observers.forEach(fn=>fn([{target}]));flush();},navigate:id=>{body.dataset.view=id;observers.forEach(fn=>fn([{target:body}]));flush();}};
 }
+// END HANI HELPER TEST FIXTURE
+
+const unexpectedStorageCalls=calls=>calls.filter(([method,key])=>!(key==='hani_helper_pos_v1'&&(method==='getItem'||method==='setItem')));
+
+test('affinity storage allowance accepts only approved position get/set and rejects every other call',()=>{
+  assert.deepEqual(unexpectedStorageCalls([['getItem','hani_helper_pos_v1'],['setItem','hani_helper_pos_v1','{}']]),[]);
+  for(const call of [['getItem','other'],['setItem','other','{}'],['getItem','hani_os_life_v23'],['setItem','hani_os_life_v23','{}'],['removeItem','hani_helper_pos_v1'],['removeItem','hani_os_life_v23'],['clear'],['clear','hani_helper_pos_v1']]){
+    assert.deepEqual(unexpectedStorageCalls([call]),[call]);
+    assert.throws(()=>assert.deepEqual(unexpectedStorageCalls([call]),[]));
+  }
+});
 
 test('affinity: duty getter updates the single panel line across levels and staff/pet days without storage',async()=>{
   const f=fixture();await f.ready();const seen=[],start=Date.parse('2026-11-06T00:00:00+09:00');let level=3;
@@ -102,7 +120,7 @@ test('affinity: duty getter updates the single panel line across levels and staf
     assert.equal(rows[0].textContent,'오늘 당번과의 친밀도: Lv3 편한 동료 ♡♡♡');assert.equal(seen.at(-1),f.api.duty(staff,day).id);
   }
   level=5;f.api.update();assert.equal(f.document.body.querySelector('.hani-helper-affinity').textContent,'오늘 당번과의 친밀도: Lv5 최애 콤비 ♡♡♡♡♡');
-  assert.deepEqual(f.storageCalls,[]);
+  assert.deepEqual(unexpectedStorageCalls(f.storageCalls),[]);
 });
 
 test('KST midnight, deterministic fair 23-day rotation, 19 staff + 4 separated pets',()=>{
@@ -177,7 +195,7 @@ test('pet voices, real species, five greetings, same help/routes and midnight re
     assert.deepEqual(buttons.map(b=>b.textContent),labels);f.fire('keydown',face,{key:'Escape'});
   }
   assert.deepEqual(f.calls,Array(4).fill(['tasks','agentReview','ilbo','investmentCommittee']).flat());
-  assert.deepEqual(f.storageCalls,[]);assert.equal(f.requests.length,2);assert.equal(f.callbacks.get('document:click').length,1);
+  assert.deepEqual(f.storageCalls,[['getItem','hani_helper_pos_v1']]);assert.equal(f.requests.length,2);assert.equal(f.callbacks.get('document:click').length,1);
 });
 
 test('per-view help follows canonical body view; unknown route has fallback',async()=>{
@@ -223,7 +241,7 @@ test('persistent root, click toggle, X, outside click, Escape, focus, four exist
   assert.equal(root,f.document.getElementById('haniHelperBot'));
   assert.equal(root.querySelector('.hani-helper-dot').hidden,false);
   assert.match(face.getAttribute('aria-label'),/새 소식/);
-  assert.deepEqual(f.storageCalls,[]);
+  assert.deepEqual(f.storageCalls,[['getItem','hani_helper_pos_v1']]);
   assert.equal(f.requests.length,2);for(const r of f.requests)assert.ok(!r.opts.method||r.opts.method==='GET');
 });
 
@@ -234,7 +252,7 @@ test('midnight refresh on open, deferred mount, failed read has no false news do
   assert.equal(root.querySelector('.hani-helper-dot').hidden,true);
   assert.match(root.querySelector('.hani-helper-news').textContent,/확인하지 못/);
   f.setNow(Date.parse('2026-11-07T12:30:00+09:00'));f.fire('click',face);assert.notEqual(root.dataset.staff,first);
-  assert.deepEqual(f.storageCalls,[]);
+  assert.deepEqual(f.storageCalls,[['getItem','hani_helper_pos_v1']]);
 });
 
 test('phone keeps fixed UI and focused input avoidance; no-space fallback stays shown',async()=>{
@@ -251,11 +269,11 @@ test('phone keeps fixed UI and focused input avoidance; no-space fallback stays 
   }
   const button=new f.Element('button');button.box={left:300,top:760,width:80,height:60};f.document.body.append(button);
   // A floating helper may cover in-flow buttons; exhausted slots now use the default corner.
-  f.navigate('home');const helper=f.document.getElementById('haniHelperBot');assert.equal(helper.style.top,'772px');
-  button.computed={position:'fixed'};f.fire('input',button);assert.ok(parseFloat(helper.style.top)+56<=752);
-  const full=new f.Element('textarea');full.box={left:0,top:0,width:390,height:844};f.document.body.append(full);full.focus();f.fire('focusin',full);assert.equal(helper.hidden,false);assert.equal(helper.style.top,'772px');assert.equal(helper.dataset.helperReason,'shown');
+  f.navigate('home');const helper=f.document.getElementById('haniHelperBot');assert.equal(helper.style.top,'750px');
+  button.computed={position:'fixed'};f.fire('input',button);assert.ok(parseFloat(helper.style.top)+78<=752);
+  const full=new f.Element('textarea');full.box={left:0,top:0,width:390,height:844};f.document.body.append(full);full.focus();f.fire('focusin',full);assert.equal(helper.hidden,false);assert.equal(helper.style.top,'750px');assert.equal(helper.dataset.helperReason,'shown');
   const nav=new f.Element('nav');nav.computed={position:'fixed'};nav.box={left:0,top:780,width:390,height:64};f.document.body.append(nav);f.fire('input',nav);
-  assert.equal(helper.hidden,false);assert.equal(helper.style.top,'708px','fallback above fixed bottom bar');
+  assert.equal(helper.hidden,false);assert.equal(helper.style.top,'686px','fallback above fixed bottom bar');
   assert.equal(f.api.slot({left:0,top:0,width:390,height:844},[{left:0,right:390,top:0,bottom:844}]),null);
 });
 
@@ -287,12 +305,12 @@ for(const [width,height] of [[1280,900],[1440,900],[1920,1080]]){
     for(const mode of ['open','mini','hidden','open']){
       d.setRail(mode);assert.equal(d.helper.hidden,false,mode);
       const right=mode==='open'?width-236:width;
-      assert.deepEqual(d.xy(),{left:right-72,top:height-72},mode+' anchor');
+      assert.deepEqual(d.xy(),{left:right-(width>850?106:94),top:height-(width>850?106:94)},mode+' anchor');
       // All canonical sidebar views remain visible over content cards.
       const sidebar=read('index.html').match(/<aside\b[^>]*class="[^\"]*\bside\b[^\"]*"[^>]*>([\s\S]*?)<\/aside>/)[1];
       const views=[...sidebar.matchAll(/data-view="([^\"]+)"/g)].map(m=>m[1]);assert.ok(views.length>20);
       for(const view of views){
-        f.navigate(view);assert.equal(d.helper.hidden,false,view);assert.equal(d.xy().left,right-72);
+        f.navigate(view);assert.equal(d.helper.hidden,false,view);assert.equal(d.xy().left,right-(width>850?106:94));
       }
       f.fire('click',d.face);assert.equal(d.panel.hidden,false);
       const panelLeft=parseFloat(d.panel.style.left),panelWidth=parseFloat(d.panel.style.width),panelTop=parseFloat(d.panel.style.top);
@@ -301,7 +319,7 @@ for(const [width,height] of [[1280,900],[1440,900],[1920,1080]]){
       assert.ok(parseFloat(d.panel.style.maxHeight)<=d.xy().top-28);
       f.fire('keydown',d.face,{key:'Escape'});
     }
-    assert.deepEqual(f.storageCalls,[]);
+    assert.deepEqual(f.storageCalls,[['getItem','hani_helper_pos_v1']]);
     assert.equal(f.callbacks.get('document:click').length,1);
     assert.equal(f.callbacks.get('window:resize').length,1);
   });
@@ -315,34 +333,34 @@ for(const [width,height] of [[1280,900],[1440,900],[1920,1080]]){
         const el=new f.Element('div');el.setAttribute('class',name);el.box={left:right-180,top:height-90,width:180,height:90};
         el.computed={position:name==='hani-office-events'?'sticky':'fixed',...(name==='toast'?{pointerEvents:'none'}:{})};
         f.document.body.append(el);
-        f.fire('input',el);assert.equal(d.helper.hidden,false);assert.equal(d.xy().left,right-72);assert.equal(d.xy().top,height-154,name);
-        el.hidden=true;f.fire('input',el);assert.equal(d.xy().top,height-72,'hidden '+name);
+        f.fire('input',el);assert.equal(d.helper.hidden,false);assert.equal(d.xy().left,right-(width>850?106:94));assert.equal(d.xy().top,height-188,name);
+        el.hidden=true;f.fire('input',el);assert.equal(d.xy().top,height-(width>850?106:94),'hidden '+name);
       }
       const input=new f.Element('textarea');input.box={left:right-180,top:height-90,width:180,height:90};d.main.append(input);
-      f.navigate('home');assert.equal(d.xy().top,height-72,'idle input is ordinary content');
-      input.focus();f.fire('focusin',input);assert.equal(d.xy().top,height-154,'focused input');
-      f.document.body.focus();f.fire('focusin');assert.equal(d.xy().top,height-72);
+      f.navigate('home');assert.equal(d.xy().top,height-(width>850?106:94),'idle input is ordinary content');
+      input.focus();f.fire('focusin',input);assert.equal(d.xy().top,height-188,'focused input');
+      f.document.body.focus();f.fire('focusin');assert.equal(d.xy().top,height-(width>850?106:94));
     }
     const utility=new f.Element('button');utility.box={left:width-56,top:height-60,width:48,height:44};d.rail.append(utility);
-    f.fire('click',d.toggle);assert.equal(d.helper.hidden,false);assert.ok(d.xy().top+56<=utility.box.top-8,'collapsed rail control');
+    f.fire('click',d.toggle);assert.equal(d.helper.hidden,false);assert.ok(d.xy().top+90<=utility.box.top-8,'collapsed rail control');
   });
 }
 
 test('existing resize and open paths remeasure rail and viewport; phone geometry restored',async()=>{
   const f=fixture();await f.ready();const d=desktopFixture(f,1280,900);
   d.rail.box={left:1440-236,top:0,width:236,height:900};f.resize(1440,900);
-  assert.deepEqual(d.xy(),{left:1440-236-72,top:828});
+  assert.deepEqual(d.xy(),{left:1440-236-106,top:794});
   d.rail.box.left=1440-300;f.fire('click',d.face);
-  assert.equal(d.xy().left,1440-300-72,'open measures current rail geometry');
-  f.resize(390,844);assert.equal(d.helper.hidden,false);assert.deepEqual(d.xy(),{left:318,top:772});assert.equal(d.panel.style.width,'');
-  assert.equal(d.panel.style.maxHeight,'812px');
-  assert.equal((source.match(/addEventListener\(/g)||[]).length,9,'round 1 listener count retained');
+  assert.equal(d.xy().left,1440-300-106,'open measures current rail geometry');
+  f.resize(390,844);assert.equal(d.helper.hidden,false);assert.deepEqual(d.xy(),{left:296,top:750});assert.equal(d.panel.style.width,'320px');
+  assert.equal(d.panel.style.maxHeight,'722px');
+  assert.equal((source.match(/addEventListener\(/g)||[]).length,10,'one shared pointer listener registration added');
 });
 
 test('PC without a rail uses viewport corner even over an ordinary full-screen card',async()=>{
   const f=fixture();await f.ready();const button=new f.Element('button');button.box={left:0,top:0,width:1920,height:1080};f.document.body.append(button);
   f.resize(1920,1080);const helper=f.document.getElementById('haniHelperBot');
-  assert.equal(helper.hidden,false);assert.equal(helper.style.left,'1848px');assert.equal(helper.style.top,'1008px');
+  assert.equal(helper.hidden,false);assert.equal(helper.style.left,'1814px');assert.equal(helper.style.top,'974px');
 });
 
 for(const [width,height] of [[390,844],[1280,900],[1920,1080]]){
@@ -356,18 +374,18 @@ for(const [width,height] of [[390,844],[1280,900],[1920,1080]]){
       d.setRail(mode);if(width<=850){d.rail.hidden=true;f.fire('input');}
       const right=width>850&&mode==='open'?width-236:width;
       assert.equal(d.helper.hidden,false);assert.equal(d.helper.dataset.helperReason,'shown');
-      assert.deepEqual(d.xy(),{left:right-72,top:height-72});
+      assert.deepEqual(d.xy(),{left:right-(width>850?106:94),top:height-(width>850?106:94)});
       const wall=new f.Element('div');wall.computed={position:'fixed'};wall.box={left:0,top:0,width,height};f.document.body.append(wall);
       f.fire('input',wall);assert.equal(d.helper.hidden,false);assert.equal(d.helper.dataset.helperReason,'shown');
-      assert.deepEqual(d.xy(),{left:right-72,top:height-72},'default corner despite exhausted slots');
+      assert.deepEqual(d.xy(),{left:right-(width>850?106:94),top:height-(width>850?106:94)},'default corner despite exhausted slots');
       wall.hidden=true;f.fire('input',wall);
       if(width>850&&mode==='mini'){
         const railControl=new f.Element('button');railControl.box={left:width-64,top:0,width:64,height};d.rail.append(railControl);
-        f.fire('input',railControl);assert.equal(d.helper.hidden,false);assert.deepEqual(d.xy(),{left:right-72,top:height-72},'exhausted mini rail controls');
+        f.fire('input',railControl);assert.equal(d.helper.hidden,false);assert.deepEqual(d.xy(),{left:right-(width>850?106:94),top:height-(width>850?106:94)},'exhausted mini rail controls');
         railControl.hidden=true;
       }
     }
-    assert.deepEqual(f.storageCalls,[]);
+    assert.deepEqual(f.storageCalls,[['getItem','hani_helper_pos_v1']]);
   });
 }
 
@@ -473,7 +491,70 @@ test('asset closure <= 160, existing images only, CSS covers canonical staff and
   assert.deepEqual(closure.files.filter(f=>!before.includes(f)).sort(),['assets/office-season/barista-night.webp','assets/profiles/thumb/hani-profile-bori-128.webp','assets/profiles/thumb/hani-profile-bori-256.webp','assets/sprites-v3/daon.webp','assets/sprites-v3/pet-bori.webp','assets/sprites-v3/yoonseul.webp']);
   for(const p of staff){assert.ok(manifest.entries.some(e=>e.id===p.id),'missing chibi '+p.id);assert.ok(css.includes(`[data-staff="${p.id}"]`),'missing crop '+p.id);}
   assert.match(css,/@media\(prefers-reduced-motion:reduce\)\{#haniHelperBot \.hani-helper-art\{animation:none\}/);
-  assert.doesNotMatch(source,/localStorage|sessionStorage|setInterval|setTimeout|\.setItem\(|\.removeItem\(|\.clear\(|supabase|\bagentApi\b|\bcommit\(|\bsave\(/);
+  assert.equal((source.match(/localStorage\.getItem\(POSITION_KEY\)/g)||[]).length,1);
+  assert.equal((source.match(/localStorage\.setItem\(POSITION_KEY, JSON\.stringify\(value\)\)/g)||[]).length,1);
+  assert.equal((source.match(/const POSITION_KEY = 'hani_helper_pos_v1';/g)||[]).length,1);
+  const remaining=source.replace('localStorage.getItem(POSITION_KEY)','APPROVED_POSITION_READ').replace('localStorage.setItem(POSITION_KEY, JSON.stringify(value))','APPROVED_POSITION_WRITE');
+  assert.doesNotMatch(remaining,/localStorage|sessionStorage|setInterval|setTimeout|\.setItem\(|\.removeItem\(|\.clear\(|supabase|\bagentApi\b|\bcommit\(|\bsave\(/);
+});
+
+test('pointer threshold, capture, single save and click suppression, then ordinary tap',async()=>{
+  const f=fixture();await f.ready();const helper=f.document.getElementById('haniHelperBot'),face=helper.querySelector('.hani-helper-face'),panel=helper.querySelector('.hani-helper-speech');
+  const writes=()=>f.storageCalls.filter(c=>c[0]==='setItem');
+  f.fire('pointerdown',face,{clientX:320,clientY:770});assert.equal(face.captured,1);
+  f.fire('pointermove',face,{clientX:323,clientY:774});f.fire('pointerup',face,{clientX:323,clientY:774});
+  assert.equal(panel.hidden,false,'tap is resolved by pointerup even when a touch browser omits click');
+  assert.equal(writes().length,0);f.fire('click',face);assert.equal(panel.hidden,false);f.fire('click',face);
+  f.fire('pointerdown',face,{clientX:320,clientY:770});
+  f.fire('pointermove',face,{clientX:326,clientY:770});assert.equal(helper.style.left,'302px');assert.equal(writes().length,0);
+  f.fire('pointermove',face,{clientX:100,clientY:180});assert.equal(writes().length,0);
+  f.fire('pointerup',face,{clientX:100,clientY:180});assert.equal(face.captured,null);assert.equal(writes().length,1);
+  assert.equal(f.fire('click',face).prevented,true);assert.equal(panel.hidden,true);
+  const value=JSON.parse(f.saved());assert.deepEqual(Object.keys(value).sort(),['v','x','y']);assert.equal(value.v,1);
+  assert.equal(value.x,76/390);assert.equal(value.y,160/844);
+  f.fire('pointerdown',face);f.fire('pointerup',face);f.fire('click',face);assert.equal(panel.hidden,false);assert.equal(writes().length,1);
+  f.fire('keydown',face,{key:'Escape'});
+  f.fire('pointerdown',face);f.fire('pointermove',face,{clientX:20});f.fire('pointerup',face,{clientX:20});
+  f.fire('click',face,{detail:0});assert.equal(panel.hidden,false,'keyboard activation survives a drag without a synthesized click');
+});
+
+test('drag clamps all edges, survives resize/reload, user position beats input and rail avoidance',async()=>{
+  const f=fixture();await f.ready();const helper=f.document.getElementById('haniHelperBot'),face=helper.querySelector('.hani-helper-face');
+  const xy=()=>[parseFloat(helper.style.left),parseFloat(helper.style.top)];
+  f.fire('pointerdown',face);f.fire('pointermove',face,{clientX:-9000,clientY:-9000});assert.deepEqual(xy(),[0,0]);
+  f.fire('pointermove',face,{clientX:9000,clientY:9000});assert.deepEqual(xy(),[312,766]);
+  f.fire('pointerup',face,{clientX:9000,clientY:9000});f.fire('click',face);
+  const value=f.saved(),reloaded=fixture({stored:value});await reloaded.ready();const h=reloaded.document.getElementById('haniHelperBot');
+  assert.equal(h.style.left,'312px');assert.equal(h.style.top,'766px');
+  const input=new f.Element('textarea');input.box={left:0,top:0,width:390,height:844};f.document.body.append(input);input.focus();f.fire('focusin',input);assert.deepEqual(xy(),[312,766]);
+  f.resize(200,150);assert.deepEqual(xy(),[122,72]);assert.equal(f.saved(),value,'resize never writes');
+  const d=desktopFixture(f,1280,900);assert.ok(d.xy().left+90>d.rail.box.left,'manual position overrides rail');
+  f.fire('click',face);const left=parseFloat(d.panel.style.left),top=parseFloat(d.panel.style.top);assert.ok(left>=16&&left+parseFloat(d.panel.style.width)<=1264);assert.ok(top>=16&&top+320<=884);
+});
+
+test('cancel/lost capture rolls back without saving; secondary pointers cannot interfere',async()=>{
+  const f=fixture();await f.ready();const root=f.document.getElementById('haniHelperBot'),face=root.querySelector('.hani-helper-face');
+  const original=root.style.left;
+  f.fire('pointerdown',face,{button:2});assert.equal(face.captured,undefined);
+  f.fire('pointerdown',face,{isPrimary:false});assert.equal(face.captured,undefined);
+  for(const end of ['pointercancel','lostpointercapture']){
+    f.fire('pointerdown',face);f.fire('pointermove',face,{pointerId:2,clientX:-100});assert.equal(root.style.left,original);
+    f.fire('pointermove',face,{clientX:-100});assert.notEqual(root.style.left,original);f.fire(end,face);assert.equal(root.style.left,original);
+  }
+  assert.deepEqual(f.storageCalls,[['getItem','hani_helper_pos_v1']]);
+});
+
+test('strict saved-position validation, default overwrite and unavailable storage stay usable',async()=>{
+  for(const stored of ['broken','null','[]','{}','{"x":0.2,"y":0.3,"v":2}','{"x":"0.2","y":0.3,"v":1}','{"x":-0.1,"y":0.3,"v":1}','{"x":0.2,"y":1.01,"v":1}','{"x":0.2,"y":null,"v":1}','{"x":0.2,"y":0.3,"v":1,"extra":1}','{"x":1,"y":1,"v":1}']){
+    const f=fixture({stored});await f.ready();const h=f.document.getElementById('haniHelperBot');assert.equal(h.style.left,'296px',stored);assert.equal(h.style.top,'750px',stored);
+  }
+  for(const storageFails of [false,true]){
+    const f=fixture({stored:'{"x":0.2,"y":0.3,"v":1}',storageFails});await f.ready();const h=f.document.getElementById('haniHelperBot'),face=h.querySelector('.hani-helper-face');
+    if(!storageFails){assert.equal(h.style.left,'78px');assert.equal(h.style.top,'253.2px');}
+    f.fire('click',face);f.fire('click',h.querySelector('[data-helper-reset]'));assert.equal(h.style.left,'296px');assert.equal(h.style.top,'750px');
+    assert.deepEqual(f.storageCalls.filter(c=>c[0]==='setItem'),[['setItem','hani_helper_pos_v1','{"x":1,"y":1,"v":1}']]);
+    if(!storageFails){const again=fixture({stored:f.saved()});await again.ready();assert.equal(again.document.getElementById('haniHelperBot').style.left,'296px');}
+  }
 });
 
 test('actual app screenshots and collision read-back', {skip:!process.argv[2]}, async()=>{
