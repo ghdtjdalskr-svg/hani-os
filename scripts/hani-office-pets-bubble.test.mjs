@@ -7,12 +7,15 @@ import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {at,readAt} from './hani-office-lively-fixture.mjs';
 import {restoreBori272Source} from './hani-office-pet-bori-272-source.mjs';
+import {projectPreCompanionHomesSource} from './hani-office-chairman-patrol-278-source.mjs';
 
 const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
 const table=JSON.parse(read('assets/data/office-actions-221.json'));
 const manifest=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));
 const flush=async()=>{for(let i=0;i<25;i++)await Promise.resolve()};
 // Same real owner/DOM loader, fake clock and persistence traps as snack.test.
+// Freeze the original four-pet bubble contract via the exact outer inverse;
+// companion-homes tests mount the current seven companion slots separately.
 async function mount({width=1280,reduced=false,seconds=36000,floor='1f'}={}){
  let clock=+at('2026-11-06',seconds),next=0;const pending=new Map(),history=[],writes=[];
  const deny=(...args)=>{writes.push(args);throw Error('unexpected persistence')};
@@ -22,7 +25,7 @@ async function mount({width=1280,reduced=false,seconds=36000,floor='1f'}={}){
   matchMedia:q=>({matches:q.includes('prefers-reduced-motion')?reduced:width<=Number(q.match(/max-width:\s*(\d+)/)?.[1]||0),addEventListener(){}}),
   setTimeout(fn,ms){const t={id:++next,fn,ms,at:clock+ms};pending.set(t.id,t);history.push(t);return t.id},clearTimeout:id=>pending.delete(id),
   localStorage:{setItem:deny,removeItem:deny,clear:deny},sessionStorage:{setItem:deny,removeItem:deny,clear:deny},save:deny
- });
+ },projectPreCompanionHomesSource);
  f.ids.set('app',{classList:{contains:()=>false}});f.context.window.HaniOfficePresence={chairman:'absent'};
  f.document.visibilityState='visible';f.setDateTime(new Date(clock).toISOString());f.click(floor);await flush();
  const panel=f.root.querySelector('.hani-office-character-bubble');

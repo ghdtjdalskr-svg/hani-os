@@ -1,3 +1,7 @@
+# 2026-11-07 · 동행 동물 부서 상주 (Codex / companion-homes)
+
+`hani/companion-homes` / base·HEAD `c590f8a` / GitHub main `882e6c6`(수정 전 office JS blob 동일) / 표시·cache2.9.277 유지. 비동행 개구리4F·펭귄3F·병아리/여우2F·수달1F, 동행 자리 우선·2F 정류장 양끝 예약 분리. **7일×1440분 지정 층·평일1종/주말남매 PASS, 전체67파일736통과·Git EPERM33차단·기존skip5·그 외 실패0, 성능3/3·syntax·closure161/누락0·저장/새timer/listener/runtime파일0.** 혼잡 시 일부 펭귄/여우 숨김·새5종5F재회 대사 없음 기록. Edge 실행/CDP 차단으로 PNG·실화면 미검증. Git add index.lock 권한 거절로 **미커밋**, push/merge/버전변경/배포 없음. Notion 착수 저장/read-back 성공, 이후 진행 갱신은 자동 승인 never 거절로 대기. [보고서](../../artifacts/companion-homes/REPORT.md) · [인수인계](handoffs/2026-11-07-companion-homes.md). 아래 다른 담당·과거 기록 보존.
+
 # 2026-11-07 · fix278 후보 정리 3건 (Codex / companion-live)
 
 `hani/office-companions` / base·HEAD `ccda3c8` / 확인한 원격 main `b736774` / 표시·cache2.9.277 유지. 하루 계획 계산 색인·연속 거리 검사·내부 예약 배열 최적화(공개 API 보존), main 기준 baseline 갱신, 메모리 Map clear 제거. **원본 계획/공개 예약값/매분 snapshot 16조합·수다 3일 동등성3/3, 전체67파일724통과·Git32차단·기존skip5·기타실패0, syntax6/6·closure161/누락0.** 기존400ms 성능 assertion 3회 모두 통과하나 lively 판정값324.4~340.4ms·개별 최대429.6ms로320ms 목표 미달. runtime aa5c9893 / contract22a25dca. 실제 git add는 index.lock 권한 거부로 **미커밋**. push/merge/버전변경/배포 없음, Notion 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/fix278/REPORT.md) · [인수인계](handoffs/2026-11-07-fix278.md). 아래 타 담당·과거 기록 보존.

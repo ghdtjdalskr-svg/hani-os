@@ -1,5 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import {createHash} from 'node:crypto';import {execFileSync} from 'node:child_process';
-import {patrol278Delta as delta,restorePatrol278Source as restore,projectPreKidsSource,restoreKids278Source,projectPreVisitsSource,restoreVisits278Source,projectPreStaffChatSource,restoreStaffChats278Source,projectPreBubblePlaceSource,restoreBubblePlace278Source,projectPreFix278Source,restoreFix278Source} from './hani-office-chairman-patrol-278-source.mjs';
+import {patrol278Delta as fullDelta,projectPreCompanionHomesSource,restorePatrol278Source as restore,projectPreKidsSource,restoreKids278Source,projectPreVisitsSource,restoreVisits278Source,projectPreStaffChatSource,restoreStaffChats278Source,projectPreBubblePlaceSource,restoreBubblePlace278Source,projectPreFix278Source,restoreFix278Source} from './hani-office-chairman-patrol-278-source.mjs';
+const {companionHomesExtension,...delta}=fullDelta;
 const hash=x=>createHash('sha256').update(x).digest('hex'),read=f=>projectPreKidsSource(fs.readFileSync(f,'utf8'),f);
 test('278 exact complete ordered replacements reject missing, duplicate, unrelated and baseline bytes',()=>{
  assert.equal(delta.version,'2.9.278');assert.deepEqual(delta.files.map(r=>r.file),['hani-office-live.js','hani-office-live.css']);
@@ -47,7 +48,7 @@ test('278 bubble placement extension independently matches fixed Git base',()=>{
 
 test('278 optimization extension preserves the entire previous contract and rejects all mutations',()=>{
  const {fix278Extension:row,...older}=delta;assert.deepEqual(older,JSON.parse(fs.readFileSync('artifacts/fix278/baseline/office-chairman-patrol-278-delta.json','utf8')));
- const current=fs.readFileSync(row.file,'utf8'),before=restoreFix278Source(current);let forward=before,aEnd=0,bEnd=0;
+ const current=projectPreCompanionHomesSource(fs.readFileSync(row.file,'utf8')),before=restoreFix278Source(current);let forward=before,aEnd=0,bEnd=0;
  assert.equal(row.baseCommit,'ccda3c85aad7fe6a04d3b4f5e64bfa92b129e4b5');assert.equal(row.beforeSha256,'f3797ab8a7fdefdee7b475b604cc9aa8f60c9e15ade6089e517e735eb9efd1ff');
  for(const r of row.replacements){assert.ok(r.before.length&&r.after.length);assert.notEqual(r.before,r.after);assert.equal(before.split(r.before).length-1,1);assert.equal(current.split(r.after).length-1,1);const a=before.indexOf(r.before),b=current.indexOf(r.after);assert.ok(a>=aEnd&&b>=bEnd);aEnd=a+r.before.length;bEnd=b+r.after.length;forward=forward.replace(r.before,()=>r.after);assert.throws(()=>restoreFix278Source(current.replace(r.after,()=>r.before)));assert.throws(()=>restoreFix278Source(current+r.after));}
  assert.equal(forward,current);for(const bad of [current+'\n',current.slice(1),before,current+current])assert.throws(()=>restoreFix278Source(bad));assert.throws(()=>restoreFix278Source(current,'hani-main.js'));

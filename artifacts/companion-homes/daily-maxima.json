@@ -1,0 +1,177 @@
+[
+  {
+    "day": "2026-11-02",
+    "samples": 1440,
+    "allPets": {
+      "5f": 3,
+      "4f": 2,
+      "3f": 4,
+      "2f": 5,
+      "1f": 6
+    },
+    "companionsOnly": {
+      "5f": 1,
+      "4f": 1,
+      "3f": 2,
+      "2f": 3,
+      "1f": 2
+    },
+    "hiddenByExistingFreeRule": {
+      "companion-frog": 0,
+      "companion-penguin": 1,
+      "companion-chick": 0,
+      "companion-fox": 36,
+      "companion-otter": 0
+    }
+  },
+  {
+    "day": "2026-11-03",
+    "samples": 1440,
+    "allPets": {
+      "5f": 3,
+      "4f": 3,
+      "3f": 3,
+      "2f": 5,
+      "1f": 6
+    },
+    "companionsOnly": {
+      "5f": 1,
+      "4f": 2,
+      "3f": 1,
+      "2f": 3,
+      "1f": 2
+    },
+    "hiddenByExistingFreeRule": {
+      "companion-frog": 0,
+      "companion-penguin": 0,
+      "companion-chick": 0,
+      "companion-fox": 2,
+      "companion-otter": 0
+    }
+  },
+  {
+    "day": "2026-11-04",
+    "samples": 1440,
+    "allPets": {
+      "5f": 3,
+      "4f": 3,
+      "3f": 4,
+      "2f": 4,
+      "1f": 5
+    },
+    "companionsOnly": {
+      "5f": 1,
+      "4f": 2,
+      "3f": 2,
+      "2f": 3,
+      "1f": 1
+    },
+    "hiddenByExistingFreeRule": {
+      "companion-frog": 0,
+      "companion-penguin": 0,
+      "companion-chick": 0,
+      "companion-fox": 19,
+      "companion-otter": 0
+    }
+  },
+  {
+    "day": "2026-11-05",
+    "samples": 1440,
+    "allPets": {
+      "5f": 2,
+      "4f": 3,
+      "3f": 4,
+      "2f": 3,
+      "1f": 6
+    },
+    "companionsOnly": {
+      "5f": 1,
+      "4f": 2,
+      "3f": 2,
+      "2f": 2,
+      "1f": 2
+    },
+    "hiddenByExistingFreeRule": {
+      "companion-frog": 0,
+      "companion-penguin": 0,
+      "companion-chick": 0,
+      "companion-fox": 0,
+      "companion-otter": 0
+    }
+  },
+  {
+    "day": "2026-11-06",
+    "samples": 1440,
+    "allPets": {
+      "5f": 3,
+      "4f": 3,
+      "3f": 4,
+      "2f": 4,
+      "1f": 6
+    },
+    "companionsOnly": {
+      "5f": 1,
+      "4f": 2,
+      "3f": 2,
+      "2f": 2,
+      "1f": 2
+    },
+    "hiddenByExistingFreeRule": {
+      "companion-frog": 0,
+      "companion-penguin": 0,
+      "companion-chick": 0,
+      "companion-fox": 0,
+      "companion-otter": 0
+    }
+  },
+  {
+    "day": "2026-11-07",
+    "samples": 1440,
+    "allPets": {
+      "5f": 2,
+      "4f": 2,
+      "3f": 2,
+      "2f": 4,
+      "1f": 5
+    },
+    "companionsOnly": {
+      "5f": 0,
+      "4f": 1,
+      "3f": 1,
+      "2f": 2,
+      "1f": 1
+    },
+    "hiddenByExistingFreeRule": {
+      "companion-frog": 0,
+      "companion-penguin": 1,
+      "companion-chick": 0,
+      "companion-fox": 23,
+      "companion-otter": 0
+    }
+  },
+  {
+    "day": "2026-11-08",
+    "samples": 1440,
+    "allPets": {
+      "5f": 1,
+      "4f": 2,
+      "3f": 2,
+      "2f": 4,
+      "1f": 5
+    },
+    "companionsOnly": {
+      "5f": 0,
+      "4f": 1,
+      "3f": 1,
+      "2f": 2,
+      "1f": 1
+    },
+    "hiddenByExistingFreeRule": {
+      "companion-frog": 0,
+      "companion-penguin": 2,
+      "companion-chick": 0,
+      "companion-fox": 19,
+      "companion-otter": 0
+    }
+  }
+]
