@@ -1,0 +1,46 @@
+{
+  "base": "507c344775c70eb25bf4f4e8107cbb3169cd489e",
+  "head": "349fda9311ca7012158a9450fad628f3b3a279dd",
+  "proved": [
+    {
+      "file": "hani-ui-v02992.js",
+      "blob": "6da025fa4aa91d3d39328c226c89faccb5ffe4ae",
+      "beforeSha256": "fc5806fa3a0beef21264218f26d07980b328fb6679573dda94cce2994db1dec7",
+      "afterSha256": "5a83b8de88c24e8fe6f5df68d0d67d1e85f26d08bab0f286f4bf8a1a9a01bd62"
+    },
+    {
+      "file": "hani-style-08.css",
+      "blob": "c03ed9151f4d7ee842629a5fe6ac45cd3806813d",
+      "beforeSha256": "ae02df55ee6be7d903b19ff00f8a3fbf9bf687937ad99162c891a86801e27075",
+      "afterSha256": "ce9fbb9e75549f581443a241178fe0fa1fce45c84a614b5bc6652fb622e4350f"
+    }
+  ],
+  "runtimeUnchangedFromTaskHead": [
+    {
+      "file": "hani-ui-v02992.js",
+      "sha256": "5a83b8de88c24e8fe6f5df68d0d67d1e85f26d08bab0f286f4bf8a1a9a01bd62"
+    },
+    {
+      "file": "hani-style-08.css",
+      "sha256": "ce9fbb9e75549f581443a241178fe0fa1fce45c84a614b5bc6652fb622e4350f"
+    },
+    {
+      "file": "hani-office-live.js",
+      "sha256": "d42811da8644c5be985bfd0912bc0d258c3f7e39d51cd9f97e929e2d37aa6573"
+    },
+    {
+      "file": "hani-office-live.css",
+      "sha256": "38851731fc7540954826c6409d85c7be34163d04c0d1d99745c89cc082d9bdc0"
+    },
+    {
+      "file": "hani-main.js",
+      "sha256": "40994fc7ba8550217bfbad41a264e2e81962a2e09cad455b0a9dd14ba4ac92c0"
+    },
+    {
+      "file": "index.html",
+      "sha256": "31e3fd35bcb9bf0b3ed4d62476ff1a6135ea6c3037014ead0c130773713e9706"
+    }
+  ],
+  "canonicalDisplayVersion": "2.9.274",
+  "method": "SHA-1-verified fixed loose Git objects; Git subprocess tests remain blocked"
+}

@@ -79,7 +79,9 @@ function fixture({now=Date.parse('2026-11-06T12:30:00+09:00'),failRelease=false,
   for(const id of ['home','tasks','agentReview','ilbo','investmentCommittee']){const el=new Element('section');el.id=id;body.append(el);}
   let saved=stored;
   const storage={getItem(key){storageCalls.push(['getItem',key]);assert.equal(key,'hani_helper_pos_v1');if(storageFails)throw Error('unavailable');return saved;},
-    setItem(key,value){storageCalls.push(['setItem',key,value]);assert.equal(key,'hani_helper_pos_v1');if(storageFails)throw Error('full');saved=value;}};
+    setItem(key,value){storageCalls.push(['setItem',key,value]);assert.equal(key,'hani_helper_pos_v1');if(storageFails)throw Error('full');saved=value;},
+    removeItem(key){storageCalls.push(['removeItem',key]);throw Error('unexpected storage removal');},
+    clear(){storageCalls.push(['clear']);throw Error('unexpected storage clear');}};
   class Clock extends Date {constructor(...args){super(...(args.length?args:[now]));}static now(){return now;}}
   const window={innerWidth:390,innerHeight:844,HaniOrganizationRoster:{people:staff},addEventListener:(name,fn)=>events('window',name,fn)};
   const context=vm.createContext({window,document,Date:Clock,localStorage:storage,sessionStorage:storage,
@@ -96,6 +98,17 @@ function fixture({now=Date.parse('2026-11-06T12:30:00+09:00'),failRelease=false,
   const ready=async()=>{for(let i=0;i<8;i++)await Promise.resolve();flush();};
   return {saved:()=>saved,window,document,api:window.HaniHelperBot,callbacks,calls,requests,storageCalls,Element,flush,fire,resize,ready,rerun:()=>vm.runInContext(source,context),setNow:v=>{now=v;},mutate:target=>{observers.forEach(fn=>fn([{target}]));flush();},navigate:id=>{body.dataset.view=id;observers.forEach(fn=>fn([{target:body}]));flush();}};
 }
+// END HANI HELPER TEST FIXTURE
+
+const unexpectedStorageCalls=calls=>calls.filter(([method,key])=>!(key==='hani_helper_pos_v1'&&(method==='getItem'||method==='setItem')));
+
+test('affinity storage allowance accepts only approved position get/set and rejects every other call',()=>{
+  assert.deepEqual(unexpectedStorageCalls([['getItem','hani_helper_pos_v1'],['setItem','hani_helper_pos_v1','{}']]),[]);
+  for(const call of [['getItem','other'],['setItem','other','{}'],['getItem','hani_os_life_v23'],['setItem','hani_os_life_v23','{}'],['removeItem','hani_helper_pos_v1'],['removeItem','hani_os_life_v23'],['clear'],['clear','hani_helper_pos_v1']]){
+    assert.deepEqual(unexpectedStorageCalls([call]),[call]);
+    assert.throws(()=>assert.deepEqual(unexpectedStorageCalls([call]),[]));
+  }
+});
 
 test('affinity: duty getter updates the single panel line across levels and staff/pet days without storage',async()=>{
   const f=fixture();await f.ready();const seen=[],start=Date.parse('2026-11-06T00:00:00+09:00');let level=3;
@@ -107,7 +120,7 @@ test('affinity: duty getter updates the single panel line across levels and staf
     assert.equal(rows[0].textContent,'오늘 당번과의 친밀도: Lv3 편한 동료 ♡♡♡');assert.equal(seen.at(-1),f.api.duty(staff,day).id);
   }
   level=5;f.api.update();assert.equal(f.document.body.querySelector('.hani-helper-affinity').textContent,'오늘 당번과의 친밀도: Lv5 최애 콤비 ♡♡♡♡♡');
-  assert.deepEqual(f.storageCalls,[]);
+  assert.deepEqual(unexpectedStorageCalls(f.storageCalls),[]);
 });
 
 test('KST midnight, deterministic fair 23-day rotation, 19 staff + 4 separated pets',()=>{

@@ -19,9 +19,12 @@ const staff=rosterContext.window.HaniOrganizationRoster.people;
 const tapBank=JSON.parse(read('assets/data/office-tap-lines-v1.json'));
 const releases=JSON.parse(read('assets/data/hani-history-releases-v1.json'));
 // Reuse the existing helper event fixture, with className reflection and a captured clock.
-// Its storage proxy throws on any access and its fetch spy records every request.
+// Its storage fixture records every access and its fetch spy records every request.
 const helperTest=read('scripts/hani-helper-bot.test.mjs');
-const fixtureText=helperTest.slice(helperTest.indexOf('function fixture('),helperTest.indexOf("\ntest('KST midnight"))
+const fixtureStart=helperTest.indexOf('function fixture(');
+const fixtureEnd=helperTest.indexOf('// END HANI HELPER TEST FIXTURE',fixtureStart);
+assert.ok(fixtureStart>=0&&fixtureEnd>fixtureStart,'exact helper fixture boundaries');
+const fixtureText=helperTest.slice(fixtureStart,fixtureEnd)
   .replace('set id(v)',"set className(v){this.attributes.class=v;}get className(){return this.attributes.class||'';}\n    set id(v)")
   .replace('const window={innerWidth:',"const window={setInterval:(fn,ms)=>events('clock',String(ms),fn),innerWidth:");
 const fixture=vm.runInNewContext(fixtureText+';fixture',{assert,vm,staff,tapBank,releases,source});
