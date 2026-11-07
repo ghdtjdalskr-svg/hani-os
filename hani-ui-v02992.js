@@ -1501,7 +1501,7 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
 })();
 // END HANI FUN CHAT FORTUNE
 
-// BEGIN HANI HELPER BOT · read-only daily duty / one persistent slot
+// BEGIN HANI HELPER BOT · daily duty / one persistent slot / approved UI position only
 (() => {
   'use strict';
   if (window.HaniHelperBot) return;
@@ -1630,6 +1630,62 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
     return null;
   }
   let root, face, panel, dot, title, greetingLine, helpLine, newsLine, bank, loadNews, returnFocus, pending = false;
+  const POSITION_KEY = 'hani_helper_pos_v1';
+  let position = null, drag = null, suppressClick = false;
+  function readPosition() {
+    try {
+      const value = JSON.parse(localStorage.getItem(POSITION_KEY));
+      if (value && value.v === 1 && Object.keys(value).length === 3 &&
+        [value.x, value.y].every(n => typeof n === 'number' && Number.isFinite(n) && n >= 0 && n <= 1)) {
+        // (1,1) is the default-slot marker, outside the reachable face top-left range.
+        return value.x === 1 && value.y === 1 ? null : value;
+      }
+    } catch (_) {}
+    return null;
+  }
+  function writePosition(value) {
+    try { localStorage.setItem(POSITION_KEY, JSON.stringify(value)); } catch (_) {}
+  }
+  function viewportBox() {
+    const vv = window.visualViewport;
+    return {left: vv?.offsetLeft || 0, top: vv?.offsetTop || 0,
+      width: vv?.width || window.innerWidth,
+      height: Math.max(0, (vv?.height || window.innerHeight) - (parseFloat(getComputedStyle(root).getPropertyValue('--helper-safe-bottom')) || 0))};
+  }
+  function faceSize() { return face.getBoundingClientRect().width || (window.innerWidth > 850 ? 90 : 78); }
+  function clampBox(left, top, viewport, size) {
+    left = Math.max(viewport.left, Math.min(left, viewport.left + Math.max(0, viewport.width - size)));
+    top = Math.max(viewport.top, Math.min(top, viewport.top + Math.max(0, viewport.height - size)));
+    return {left, top, right: left + size, bottom: top + size};
+  }
+  function movePointer(event) {
+    if (!drag || drag.id !== event.pointerId) return;
+    const dx = event.clientX - drag.x, dy = event.clientY - drag.y;
+    if (!drag.moved && Math.hypot(dx, dy) < 6) return;
+    drag.moved = true; suppressClick = true; event.preventDefault();
+    const viewport = viewportBox(), box = clampBox(drag.left + dx, drag.top + dy, viewport, faceSize());
+    position = {x: (box.left - viewport.left) / Math.max(1, viewport.width), y: (box.top - viewport.top) / Math.max(1, viewport.height), v: 1};
+    place();
+  }
+  function pointer(event) {
+    if (event.type === 'pointerdown') {
+      if (drag || !face.contains(event.target) || event.isPrimary === false || event.button !== 0) return;
+      suppressClick = false;
+      drag = {id: event.pointerId, x: event.clientX, y: event.clientY,
+        left: parseFloat(root.style.left), top: parseFloat(root.style.top), previous: position, moved: false};
+      face.setPointerCapture(event.pointerId);
+    } else if (event.type === 'pointermove') movePointer(event);
+    else if (drag && drag.id === event.pointerId) {
+      if (event.type === 'pointerup') movePointer(event);
+      const ended = drag; drag = null;
+      if (event.type === 'pointerup') {
+        suppressClick = true;
+        if (ended.moved) writePosition(position);
+        else if (!root.hidden) toggle();
+      } else if (ended.moved) { position = ended.previous; place(); }
+      if (face.hasPointerCapture(event.pointerId)) face.releasePointerCapture(event.pointerId);
+    }
+  }
   function people() { return window.HaniOrganizationRoster?.people || []; }
   function update() {
     if (!root) return;
@@ -1659,6 +1715,7 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
     panel.hidden = false; face.setAttribute('aria-expanded', 'true');
     place(); panel.querySelector('[data-helper-close]').focus({preventScroll: true});
   }
+  function toggle() { panel.hidden ? open() : close(true); }
   function place() {
     if (!root) return;
     const visible = el => {
@@ -1673,8 +1730,7 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
     root.dataset.helperReason = login ? 'login' : modal ? 'modal' : !duty(people()) ? 'no-duty' : 'shown';
     root.hidden = root.dataset.helperReason !== 'shown';
     if (root.hidden) { close(); return; }
-    const vv = window.visualViewport, viewport = {left: vv?.offsetLeft || 0, top: vv?.offsetTop || 0, width: vv?.width || window.innerWidth, height: vv?.height || window.innerHeight};
-    viewport.height -= parseFloat(getComputedStyle(root).getPropertyValue('--helper-safe-bottom')) || 0;
+    const viewport = viewportBox(), size = faceSize();
     const desktop = window.innerWidth > 850, column = {...viewport};
     const railBox = rail?.getBoundingClientRect();
     if (desktop && railBox?.width > 0 && railBox.height > 0 && !app?.classList.contains('hani-remote-mini')) {
@@ -1684,11 +1740,11 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
     }
     // Floating UI reserves space on both sizes; ordinary scrolling controls never do.
     const floating = el => ['fixed', 'sticky'].includes(getComputedStyle(el).position);
-    const controls = [...document.querySelectorAll('*')].filter(el => floating(el) && !(desktop && el === rail));
+    const controls = position ? [] : [...document.querySelectorAll('*')].filter(el => floating(el) && !(desktop && el === rail));
     // Open rail bounds the main column above. In mini mode only its controls reserve space,
     // preserving the existing viewport-corner placement over the rail's inert background.
-    if (rail && floating(rail)) controls.push(...rail.querySelectorAll('button,a[href],input,textarea,select,[role="button"]'));
-    if (document.activeElement?.matches('input:not([type="hidden"]),textarea,select,[contenteditable="true"]')) controls.push(document.activeElement);
+    if (!position && rail && floating(rail)) controls.push(...rail.querySelectorAll('button,a[href],input,textarea,select,[role="button"]'));
+    if (!position && document.activeElement?.matches('input:not([type="hidden"]),textarea,select,[contenteditable="true"]')) controls.push(document.activeElement);
     const obstacles = controls
       .filter(el => !root.contains(el))
       .filter(visible)
@@ -1699,13 +1755,20 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
       const bars = obstacles.filter(b => b.width >= viewport.width / 2 && b.top >= viewport.top + viewport.height / 2 && b.bottom >= viewport.top + viewport.height - 16);
       if (bars.length) fallback.height = Math.max(84, Math.min(...bars.map(b => b.top)) - viewport.top);
     }
-    const box = slot(column, obstacles) || slot(fallback, []) || {left:column.left + Math.max(0, column.width - 72),top:viewport.top + Math.max(0, fallback.height - 72)};
-    box.right = box.left + 56; box.bottom = box.top + 56;
+    const proposed = position ? {left: viewport.left + position.x * viewport.width, top: viewport.top + position.y * viewport.height} :
+      slot(column, obstacles, size) || slot(fallback, [], size) || {left:column.left, top:viewport.top};
+    const box = clampBox(proposed.left, proposed.top, viewport, size);
     root.style.left = box.left + 'px'; root.style.top = box.top + 'px';
-    panel.style.width = desktop ? Math.min(320, column.width - 32) + 'px' : '';
-    panel.style.maxHeight = (desktop ? Math.max(0, box.top - viewport.top - 28) : Math.max(80, viewport.height - 32)) + 'px';
-    panel.style.left = Math.max(column.left + 16, box.right - Math.min(320, column.width - 32)) + 'px';
-    panel.style.top = Math.max(viewport.top + 16, box.top - panel.getBoundingClientRect().height - 12) + 'px';
+    const bounds = position ? viewport : column, gap = 12;
+    const width = Math.max(0, Math.min(desktop ? 360 : 320, bounds.width - 32));
+    panel.style.width = width + 'px';
+    const above = box.top - viewport.top - 16 - gap;
+    const below = viewport.top + viewport.height - box.bottom - 16 - gap;
+    const upwards = above >= below;
+    panel.style.maxHeight = Math.max(0, Math.max(above, below)) + 'px';
+    panel.style.left = Math.max(bounds.left + 16, Math.min(box.right - width, bounds.left + bounds.width - width - 16)) + 'px';
+    const height = panel.getBoundingClientRect().height;
+    panel.style.top = Math.max(viewport.top + 16, Math.min(upwards ? box.top - height - gap : box.bottom + gap, viewport.top + viewport.height - height - 16)) + 'px';
   }
   function schedulePlace() {
     if (pending) return;
@@ -1723,12 +1786,17 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
       if (!document.getElementById(id)) continue;
       const button = document.createElement('button'); button.type = 'button'; button.dataset.helperGo = id; button.textContent = label; nav.append(button);
     }
+    const reset = document.createElement('button'); reset.type = 'button'; reset.dataset.helperReset = ''; reset.textContent = '제자리로'; panel.append(reset);
+    position = readPosition();
     window.HaniFunPreview?.mount(root, panel);
+    for (const type of ['pointerdown', 'pointermove', 'pointerup', 'pointercancel', 'lostpointercapture']) document.addEventListener(type, pointer);
     document.addEventListener('click', event => {
+      if (suppressClick && event.detail !== 0 && face.contains(event.target)) { suppressClick = false; event.preventDefault(); return; }
       if (window.HaniFunPreview?.action(event.target)) { schedulePlace(); return; }
-      if (face.contains(event.target)) { panel.hidden ? open() : close(true); return; }
+      if (face.contains(event.target)) { toggle(); return; }
       if (!root.contains(event.target)) { close(); schedulePlace(); return; }
       if (event.target.closest('[data-helper-close]')) { close(true); return; }
+      if (event.target.closest('[data-helper-reset]')) { position = null; writePosition({x: 1, y: 1, v: 1}); place(); return; }
       const target = event.target.closest('[data-helper-go]');
       if (target && typeof showView === 'function') { close(true); showView(target.dataset.helperGo); }
     });

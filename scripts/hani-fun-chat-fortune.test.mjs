@@ -111,7 +111,7 @@ test('persistent root/slot/message nodes, one click owner, back/X/Escape/outside
   assert.match(r.querySelector('.hani-fun-meta').textContent,/2026-11-08/);
   assert.ok(rows.every(row=>row.hidden));
   assert.equal(r.querySelector('#haniFunPreview'),content);assert.deepEqual(r.querySelectorAll('.hani-fun-message'),rows);
-  assert.deepEqual(plain(f.storageCalls),[]);assert.equal(f.requests.length,2,'existing helper static GETs only');
+  assert.deepEqual(plain(f.storageCalls),[['getItem','hani_helper_pos_v1']]);assert.equal(f.requests.length,2,'existing helper static GETs only');
   assert.ok(f.requests.every(r=>!r.opts.method||r.opts.method==='GET'));
   assert.match(css,/@keyframes hani-fun-flip/);
   assert.match(css,/@media\(prefers-reduced-motion:reduce\)\{#haniHelperBot \.hani-fun-card\{animation:none;transform:none;opacity:1\}\}/);
@@ -126,7 +126,7 @@ test('same duty as helper for every employee/pet; runtime files stay exactly 158
   assert.equal(ids.size,23);
   const closure=await resolveRuntimeClosure({read:f=>fs.readFileSync(path.join(root,f)),exists:f=>fs.existsSync(path.join(root,f))});
   assert.deepEqual(closure.missing,[]);assert.equal(closure.files.length,158);
-  assert.deepEqual(closure.files,JSON.parse(read('artifacts/fun-chat-fortune/baseline-runtime-files.json')));
+  assert.deepEqual(closure.files,JSON.parse(read('artifacts/helper-drag/baseline-runtime-files.json')));
   new vm.Script(ui);assert.match(ui,/window\.HaniFunPreview\?\.mount\(root, panel\)/);
 });
 
