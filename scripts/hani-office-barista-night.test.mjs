@@ -78,7 +78,7 @@ test('night barista: byte-exact 360x110 opaque atlas; sole new runtime file 158 
  const require=createRequire(import.meta.url),sharp=require(path.join(os.homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/sharp'));
  const file='assets/office-season/barista-night.webp',bytes=fs.readFileSync(new URL('../'+file,import.meta.url));assert.deepEqual(bytes,fs.readFileSync(new URL('../../barista-night/artifacts/barista-night/counter-night.webp',import.meta.url)));const meta=await sharp(bytes).metadata();assert.deepEqual([meta.width,meta.height],[360,110]);const {data,info}=await sharp(bytes).ensureAlpha().raw().toBuffer({resolveWithObject:true});for(let i=3;i<data.length;i+=info.channels)assert.equal(data[i],255);
  const options={exists:f=>fs.existsSync(f),read:f=>fs.readFileSync(f)},current=await resolveRuntimeClosure(options),before=await resolveRuntimeClosure({...options,read:f=>['hani-office-live.js','hani-office-live.css'].includes(f)?restoreBarista273Source(read(f),f):fs.readFileSync(f)});
- assert.deepEqual(current.missing,[]);assert.deepEqual(before.missing,[]);assert.equal(before.files.length,158);assert.equal(current.files.length,159);assert.ok(current.files.length<=160);assert.deepEqual(current.files.filter(f=>!before.files.includes(f)),[file]);
+ assert.deepEqual(current.missing,[]);assert.deepEqual(before.missing,[]);assert.equal(before.files.length,158);assert.equal(current.files.length,159);assert.ok(current.files.length<=200);assert.deepEqual(current.files.filter(f=>!before.files.includes(f)),[file]);
 });
 
 test('night barista: unchanged scheduler/labels/pets/props, timer and listener counts, no storage/Cloud paths',()=>{

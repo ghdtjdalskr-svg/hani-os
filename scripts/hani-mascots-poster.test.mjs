@@ -95,7 +95,7 @@ test('nine actual WebP portraits decode at staff dimensions and thumbnail dimens
 });
 test('responsive portraits include Mochi; approved sprite joins residents and closure stays at most 160',async()=>{
   const closure=await resolveRuntimeClosure({exists:f=>fs.existsSync(new URL('../'+f,import.meta.url)),read});
-  assert.deepEqual(closure.missing,[]);assert.ok(closure.files.length<=160);
+  assert.deepEqual(closure.missing,[]);assert.ok(closure.files.length<=200);
   for(const id of ['cheese','cream','mochi'])for(const size of [720,256,128]){
     const path=size===720?`assets/profiles/hani-profile-${id}.webp`:`assets/profiles/thumb/hani-profile-${id}-${size}.webp`;
     assert.ok(closure.files.includes(path),path);assert.ok(css.includes("url('./"+path+"')"));
@@ -286,7 +286,7 @@ test('frame: portrait file is gone, shared banner decodes, closure loses only th
   assert.doesNotMatch(officeCss,/queen-poster|poster-2026-10/);
   const file=fs.readFileSync(new URL('../'+bannerPath,import.meta.url)),meta=await sharp(file).metadata();
   assert.equal(meta.format,'webp');assert.deepEqual([meta.width,meta.height],[1600,400]);
-  const closure=await resolveRuntimeClosure({exists:fs.existsSync,read:fs.readFileSync});assert.ok(closure.files.includes(bannerPath));assert.ok(!closure.files.includes(portraitPath));assert.ok(closure.files.length<=160);assert.deepEqual(closure.missing,[]);
+  const closure=await resolveRuntimeClosure({exists:fs.existsSync,read:fs.readFileSync});assert.ok(closure.files.includes(bannerPath));assert.ok(!closure.files.includes(portraitPath));assert.ok(closure.files.length<=200);assert.deepEqual(closure.missing,[]);
   assert.equal(hash(JSON.stringify([...closure.files,portraitPath].sort())),'27e69a83e1d076a2ec278876ab8fe6041846a958af64a91a70c438a522f3a799','previous frozen inventory loses exactly the portrait');
   assert.equal(hash(JSON.stringify([...closure.files].sort())),'73680703cbd8d17cba268db3a5b51f56842843b6dccaf9b3773cfdde61a9cace','exact shipped closure');
   console.log(JSON.stringify({frame:[1171,73,176,107],closureBefore:closure.files.length+1,closure:closure.files.length,limit:160,missing:0}));

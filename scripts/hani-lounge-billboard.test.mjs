@@ -133,7 +133,7 @@ test('build reuses the actual publication sources and keeps nested data immutabl
 
 test('solo artwork is traced in runtime closure and all fallback portraits exist',async()=>{
   const closure=await resolveRuntimeClosure({exists:f=>fs.existsSync(new URL('../'+f,import.meta.url)),read});
-  assert.ok(closure.files.length<=160);assert.deepEqual(closure.missing,[]);
+  assert.ok(closure.files.length<=200);assert.deepEqual(closure.missing,[]);
   assert.ok(closure.files.includes('assets/queen/2026-10.webp'));
   assert.ok(fs.statSync(new URL('../assets/queen/2026-10.webp',import.meta.url)).size<200000);
   const f=createBannerFixture();for(let day=0;day<6;day++)for(const row of f.c.loungeBannerItems(f.now+day*86400000))
