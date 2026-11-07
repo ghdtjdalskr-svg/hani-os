@@ -1,0 +1,355 @@
+{
+  "version": 1,
+  "pairs": [
+    {
+      "staffId": "hani",
+      "staffName": "하니",
+      "lines": [
+        { "speaker": "suyeon", "text": "하니 이모! 아빠 옆에 앉아!" },
+        { "speaker": "staff", "text": "오늘 작전 회의는 수연이가 대장 해!" },
+        { "speaker": "suhyeon", "text": "…게임 전략부터 다시 짜요." },
+        { "speaker": "staff", "text": "오케이, 간식 보급부터 완료하자!" }
+      ],
+      "rare": {
+        "speaker": "staff",
+        "text": "회장님, 오늘 꼬마 본부장님들 출근입니다!"
+      }
+    },
+    {
+      "staffId": "naeun",
+      "staffName": "나은",
+      "lines": [
+        { "speaker": "suyeon", "text": "나은 이모, 나 양갈래 다시 묶어줘!" },
+        { "speaker": "staff", "text": "그럼, 이리 와. 물도 한 모금 마시자." },
+        { "speaker": "suhyeon", "text": "…이모 옆에 있으면 마음이 편해요." },
+        { "speaker": "staff", "text": "수현이도 오늘 잠 잘 잤네, 기특해라." }
+      ],
+      "rare": {
+        "speaker": "suhyeon",
+        "text": "…나은 이모가 주는 미지근한 물이 제일 좋아요."
+      }
+    },
+    {
+      "staffId": "hina",
+      "staffName": "히나",
+      "lines": [
+        { "speaker": "staff", "text": "자, 노래 부르면서 일본어 퀴즈 출발~!" },
+        { "speaker": "suyeon", "text": "신난다! 내가 먼저 맞힐래!" },
+        { "speaker": "suhyeon", "text": "…이거 결국 공부잖아요." },
+        { "speaker": "staff", "text": "수현이 벌써 손 들었으면서~ 정답!" }
+      ],
+      "rare": {
+        "speaker": "suhyeon",
+        "text": "…다음 노래 율동은 딱 한 번만 따라 할게요."
+      }
+    },
+    {
+      "staffId": "jieun",
+      "staffName": "지은",
+      "lines": [
+        { "speaker": "staff", "text": "이번 주 용돈 예산이랑 이유는 적었나요?" },
+        { "speaker": "suhyeon", "text": "네, 항목별로 정리해 왔어요." },
+        { "speaker": "suyeon", "text": "으으… 나는 스티커 한 장만 샀어요!" },
+        { "speaker": "staff", "text": "약속 지켰네, 수연이도 정말 잘했어요." }
+      ],
+      "rare": {
+        "speaker": "suyeon",
+        "text": "헤헤, 지은 이모한테 칭찬받았다! 아빠한테 말해야지!"
+      }
+    },
+    {
+      "staffId": "sua",
+      "staffName": "수아",
+      "lines": [
+        { "speaker": "suyeon", "text": "수아 이모는 진짜 거의 다 알아!" },
+        { "speaker": "suhyeon", "text": "…장난감 태엽이 안 돌아가는데 봐주실래요?" },
+        { "speaker": "staff", "text": "잠깐만 봐줄게. 자, 이제 부드럽게 돌지?" },
+        { "speaker": "suyeon", "text": "우와! 역시 해결사 이모야!" }
+      ],
+      "rare": {
+        "speaker": "staff",
+        "text": "막히는 게 있으면 언제든 이모 책상으로 가져와."
+      }
+    },
+    {
+      "staffId": "haru",
+      "staffName": "하루",
+      "lines": [
+        { "speaker": "suyeon", "text": "하루 이모! 반짝이 필통 열 개 살래!" },
+        { "speaker": "staff", "text": "수연아, 오래 쓸 튼튼한 걸로 하나 골라볼까?" },
+        { "speaker": "suhyeon", "text": "…내가 봐도 그게 훨씬 덜 고장 나겠어." },
+        { "speaker": "suyeon", "text": "응! 그럼 이모가 골라준 걸로 할래!" }
+      ],
+      "rare": {
+        "speaker": "staff",
+        "text": "오래 아껴 쓰는 마음이 제일 멋진 보물이야."
+      }
+    },
+    {
+      "staffId": "minji",
+      "staffName": "민지",
+      "lines": [
+        { "speaker": "staff", "text": "오늘의 남매 출근 기록, 카메라 봅니다~!" },
+        { "speaker": "suyeon", "text": "브이! 나 한 장 더 찍어줘, 민지 이모!" },
+        { "speaker": "suhyeon", "text": "…지금 말고요. 저 찍지 마세요." },
+        { "speaker": "staff", "text": "수현이 동생 챙기는 순간 이미 다 찍혔지~" }
+      ],
+      "rare": {
+        "speaker": "suhyeon",
+        "text": "…나중에 앨범에 작게만 넣어주세요."
+      }
+    },
+    {
+      "staffId": "suyeon_staff",
+      "staffName": "수연",
+      "lines": [
+        { "speaker": "suyeon", "text": "큰 수연 이모! 우리 수연 콤비 출동하자!" },
+        { "speaker": "staff", "text": "좋아! 복도 끝까지 자전거 타듯 달려볼까?!" },
+        { "speaker": "suhyeon", "text": "…둘 다 뛰지 마요. 실내잖아요." },
+        { "speaker": "staff", "text": "앗, 수현 반장님 브레이크에 급정거!" }
+      ],
+      "rare": {
+        "speaker": "suyeon",
+        "text": "이름이 같으니까 우리가 회사 최강 콤비야!"
+      }
+    },
+    {
+      "staffId": "yuna",
+      "staffName": "유나",
+      "lines": [
+        { "speaker": "suyeon", "text": "유나 언니! 그거 해봐, 제가요?!" },
+        { "speaker": "staff", "text": "에엑, 제가요?! 애들까지 왜 그래요!" },
+        { "speaker": "suhyeon", "text": "…언니, 오늘 발표도 잘할 수 있어요." },
+        { "speaker": "suyeon", "text": "맞아! 우리가 유나 언니 일등 응원단이야!" }
+      ],
+      "rare": {
+        "speaker": "staff",
+        "text": "꼬마 응원단 덕분에 오늘 진짜 힘난다!"
+      }
+    },
+    {
+      "staffId": "mir",
+      "staffName": "미르",
+      "lines": [
+        { "speaker": "staff", "text": "왜?" },
+        { "speaker": "suyeon", "text": "그냥!" },
+        { "speaker": "staff", "text": "이건 연결되네. 헤헤." },
+        { "speaker": "suhyeon", "text": "…둘이 무슨 대화가 통하는 거야." }
+      ],
+      "rare": {
+        "speaker": "staff",
+        "text": "수연이랑 조금 더 볼게. 헤헤."
+      }
+    },
+    {
+      "staffId": "seoyun",
+      "staffName": "서윤",
+      "lines": [
+        { "speaker": "suyeon", "text": "서윤 언니~♡ 나 왔어!" },
+        { "speaker": "staff", "text": "수연이 왔어? 배포 멈추고 안아줄게 💜" },
+        { "speaker": "suhyeon", "text": "…일하시는 데 방해하지 마, 수연아." },
+        { "speaker": "staff", "text": "괜찮아요, 정리하면 휴식도 일정이에요!" }
+      ],
+      "rare": {
+        "speaker": "staff",
+        "text": "먼저 간식 범위부터 볼게요, 이리 와요 💜"
+      }
+    },
+    {
+      "staffId": "gaeun",
+      "staffName": "가은",
+      "lines": [
+        { "speaker": "suyeon", "text": "가은 이모! 방금 그 피아노 소리 뭐야?" },
+        { "speaker": "staff", "text": "수연이 발걸음으로 만든 새 멜로디야." },
+        { "speaker": "suhyeon", "text": "…조용한 부분도 듣기 좋네요." },
+        { "speaker": "staff", "text": "수현이 몫으로 차분한 화음도 넣었어." }
+      ],
+      "rare": {
+        "speaker": "suyeon",
+        "text": "우와, 우리 남매 주제가가 생겼다!"
+      }
+    },
+    {
+      "staffId": "dohyun",
+      "staffName": "도연",
+      "lines": [
+        { "speaker": "suhyeon", "text": "도연 언니, 미니카 바퀴가 자꾸 틀어져요." },
+        { "speaker": "staff", "text": "재현했어요. 나사 2바퀴 조임, 통과요 ☕" },
+        { "speaker": "suyeon", "text": "우와, 3초 만에 고쳤어!" },
+        { "speaker": "staff", "text": "주행 테스트 완료. 안전 운행하세요." }
+      ],
+      "rare": {
+        "speaker": "suhyeon",
+        "text": "…말은 짧은데 제일 확실해요."
+      }
+    },
+    {
+      "staffId": "serin",
+      "staffName": "세린",
+      "lines": [
+        { "speaker": "staff", "text": "수연이 간식 취향 패턴 보여요!! ✨📊" },
+        { "speaker": "suyeon", "text": "맞아! 나 딸기맛이랑 초코맛 다 좋아해!" },
+        { "speaker": "staff", "text": "이거 간식 추천 자동화 각인데요?!" },
+        { "speaker": "suhyeon", "text": "…그냥 골고루 먹게 해주세요." }
+      ],
+      "rare": {
+        "speaker": "staff",
+        "text": "남매 웃음 데이터, 오늘 최고치예요!! ✨"
+      }
+    },
+    {
+      "staffId": "yuri",
+      "staffName": "유리",
+      "lines": [
+        { "speaker": "suyeon", "text": "유리 언니, 나 숙제 다 했어! 통과지?" },
+        { "speaker": "staff", "text": "이름 칸 비었네요. 미검증은 PASS 아닙니다." },
+        { "speaker": "suhyeon", "text": "…내가 아까 확인하라고 했잖아." },
+        { "speaker": "staff", "text": "이름 기입 확인. 이제 깔끔합니다 ✅" }
+      ],
+      "rare": {
+        "speaker": "suyeon",
+        "text": "휴, 유리 언니한테 합격 도장 받았다!"
+      }
+    },
+    {
+      "staffId": "arin",
+      "staffName": "아린",
+      "lines": [
+        { "speaker": "suyeon", "text": "아린 언니, 내 스케치북 어때?" },
+        { "speaker": "staff", "text": "너무 예쁜데요? 여백도 숨 쉬게 해봐요 ✨🎨" },
+        { "speaker": "suhyeon", "text": "…구름 옆을 조금 비워두라는 뜻이지?" },
+        { "speaker": "staff", "text": "맞아요! 구름 스티커 붙여보는 건 어때요?" }
+      ],
+      "rare": {
+        "speaker": "suyeon",
+        "text": "언니랑 그리니까 도화지가 살아 움직이는 것 같아!"
+      }
+    },
+    {
+      "staffId": "chaewon",
+      "staffName": "채원",
+      "lines": [
+        { "speaker": "suyeon", "text": "아빠가 놀아주고 과자 주고 책도 읽어준댔어!" },
+        { "speaker": "staff", "text": "정리하면 세 가지입니다. 놀이, 간식, 독서군요." },
+        { "speaker": "suhyeon", "text": "…순서랑 완료 시간도 정해야 안 싸워요." },
+        { "speaker": "staff", "text": "훌륭합니다. 회장님께 일정표로 전달하겠습니다." }
+      ],
+      "rare": {
+        "speaker": "staff",
+        "text": "꼬마 고객님들 요구사항, 명확히 접수됐습니다."
+      }
+    },
+    {
+      "staffId": "daon",
+      "staffName": "다온",
+      "lines": [
+        { "speaker": "staff", "text": "혹시… 신발 끈이 풀리는 최악의 경우엔요… 😅" },
+        { "speaker": "suhyeon", "text": "미리 두 번 묶어두면 안전해요." },
+        { "speaker": "suyeon", "text": "다온 언니, 내 신발 끈도 확인해줘!" },
+        { "speaker": "staff", "text": "네…! 양쪽 다 단단히 묶었으니 안심이에요 😅" }
+      ],
+      "rare": {
+        "speaker": "suhyeon",
+        "text": "…미리 걱정해 주셔서 오히려 든든해요."
+      }
+    },
+    {
+      "staffId": "yunseul",
+      "staffName": "윤슬",
+      "lines": [
+        { "speaker": "staff", "text": "이거 아세요? 동화책이랑 여기서 이어지네요! 📚" },
+        { "speaker": "suhyeon", "text": "아, 그 별자리 이야기가 백과사전에 나오네요." },
+        { "speaker": "suyeon", "text": "윤슬 언니, 나도 책갈피 꽂아줘!" },
+        { "speaker": "staff", "text": "그럼요! 다음 장은 같이 펼쳐봐요 🔖" }
+      ],
+      "rare": {
+        "speaker": "suhyeon",
+        "text": "…언니가 골라준 책은 끝까지 읽게 돼요."
+      }
+    },
+    {
+      "staffId": "isle",
+      "staffName": "이슬",
+      "lines": [
+        { "speaker": "staff", "text": "꼬마 손님들, 따뜻한 우유 거품 준비됐어요." },
+        { "speaker": "suyeon", "text": "와아! 이슬 언니, 입술에 거품 수염 생겼어!" },
+        { "speaker": "suhyeon", "text": "…휴지로 닦고 마셔, 수연아." },
+        { "speaker": "staff", "text": "수현이 컵엔 코코아 가루도 살짝 올렸단다." }
+      ],
+      "rare": {
+        "speaker": "suyeon",
+        "text": "이슬 언니네 카페가 세상에서 제일 맛있어!"
+      }
+    },
+    {
+      "staffId": "eunha",
+      "staffName": "은하",
+      "lines": [
+        { "speaker": "staff", "text": "짜잔, 우유 위에 개구리 라떼아트 그려봤어!" },
+        { "speaker": "suyeon", "text": "우와, 아빠 닮은 개구리다! 은하 언니 최고!" },
+        { "speaker": "suhyeon", "text": "…아까워서 어떻게 마셔요." },
+        { "speaker": "staff", "text": "다 마시면 쿠키 접시에서 또 만날 수 있지~" }
+      ],
+      "rare": {
+        "speaker": "suhyeon",
+        "text": "…사진 한 장만 찍고 마실게요."
+      }
+    },
+    {
+      "staffId": "cheese",
+      "staffName": "치즈",
+      "lines": [
+        { "speaker": "suyeon", "text": "치즈야~ 이리 와, 나랑 놀자!" },
+        { "speaker": "staff", "text": "야옹~ (식빵 자세로 꼬리만 살랑거린다)" },
+        { "speaker": "suhyeon", "text": "…갑자기 다가가면 놀라. 손부터 내밀어 봐." },
+        { "speaker": "staff", "text": "골골골… (수현이 손등에 머리를 비빈다)" }
+      ],
+      "rare": {
+        "speaker": "suyeon",
+        "text": "치즈가 내 무릎 위에서 하품했어!"
+      }
+    },
+    {
+      "staffId": "cream",
+      "staffName": "크림",
+      "lines": [
+        { "speaker": "staff", "text": "멍… (조용히 다가와 수현이 발치에 앉는다)" },
+        { "speaker": "suhyeon", "text": "…크림이 너도 조용한 데가 좋구나." },
+        { "speaker": "suyeon", "text": "나도 조용히 쓰다듬어 줄래! 털이 솜사탕 같아!" },
+        { "speaker": "staff", "text": "킁… (꼬리를 살랑, 눈을 반쯤 감는다)" }
+      ],
+      "rare": {
+        "speaker": "suhyeon",
+        "text": "…크림이 깨지 않게 책장 천천히 넘길게."
+      }
+    },
+    {
+      "staffId": "mochi",
+      "staffName": "모찌",
+      "lines": [
+        { "speaker": "suyeon", "text": "모찌야! 볼살이 진짜 찹쌀떡 같아!" },
+        { "speaker": "staff", "text": "(귀를 쫑긋, 코를 오물오물하며 다가온다)" },
+        { "speaker": "suhyeon", "text": "…당근 달라고 애교 부리는 거잖아." },
+        { "speaker": "suyeon", "text": "나랑 똑같네! 모찌도 애교 대장이야!" }
+      ],
+      "rare": {
+        "speaker": "staff",
+        "text": "(남매 사이로 쏙 파고들어 동그랗게 눕는다)"
+      }
+    },
+    {
+      "staffId": "bori",
+      "staffName": "보리",
+      "lines": [
+        { "speaker": "staff", "text": "(쿨쿨 자다가 남매 발소리에 꼬리만 탁탁)" },
+        { "speaker": "suyeon", "text": "보리야! 나 잡기 놀이 하자!" },
+        { "speaker": "suhyeon", "text": "…보리야, 앉아. 기다려 먼저 해야지." },
+        { "speaker": "staff", "text": "왕! (수현이 말에 늠름하게 앉아 앞발을 준다)" }
+      ],
+      "rare": {
+        "speaker": "suhyeon",
+        "text": "…착하지, 산책 갈 때 내가 줄 잡아줄게."
+      }
+    }
+  ]
+}

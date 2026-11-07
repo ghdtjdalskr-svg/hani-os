@@ -10,7 +10,8 @@ import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 import {restoreCompanions276Source} from './hani-office-companions-276-source.mjs';
-const read=f=>fs.readFileSync(f,'utf8'),plain=x=>JSON.parse(JSON.stringify(x)),{scene,table}=loadScene(),r=scene.residents;
+import {projectPrePatrolSource} from './hani-office-chairman-patrol-278-source.mjs';
+const read=f=>projectPrePatrolSource(fs.readFileSync(f,'utf8'),f),plain=x=>JSON.parse(JSON.stringify(x)),{scene,table}=loadScene({transform:projectPrePatrolSource}),r=scene.residents;
 const chair=(floor='4f',extra={})=>({floors:[{id:floor,people:[{id:'seongmin',floor,position:[51,66],pose:'standing',walking:false,...extra}]}]});
 const ids=s=>s.map(p=>p.id),pets=r.companions.filter(p=>p.pet),kids=r.companions.filter(p=>p.kid);
 
@@ -50,7 +51,7 @@ test('shared atlas cells and sit frames encode book-reading brother and waving s
 const settle=()=>new Promise(resolve=>setImmediate(resolve));
 test('actual persistent DOM slots rotate all seven tap dialogues via existing bubble with zero storage writes and survive floor changes',async()=>{
  const writes=[],deny=(...a)=>{writes.push(a);throw Error('forbidden companion persistence')},manifest=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));
- const f=fixture('10:00',false,()=>true,table,{HaniOfficeV2Assets:{...assets,spritesV3:manifest},HaniOfficePresence:{chairman:'active'},localStorage:{getItem:()=>null,setItem:deny,removeItem:deny,clear:deny},sessionStorage:{setItem:deny,removeItem:deny,clear:deny},setTimeout:()=>0});
+ const f=fixture('10:00',false,()=>true,table,{HaniOfficeV2Assets:{...assets,spritesV3:manifest},HaniOfficePresence:{chairman:'active'},localStorage:{getItem:()=>null,setItem:deny,removeItem:deny,clear:deny},sessionStorage:{setItem:deny,removeItem:deny,clear:deny},setTimeout:()=>0},projectPrePatrolSource);
  f.context.window.HaniOfficePresence={chairman:'active'};const all=f.ids.get('haniOfficeActors').children,slots=all.filter(a=>a.dataset.companion==='true');assert.equal(slots.length,7);const tick=()=>f.timers.find(t=>t.ms===100).fn();
  for(const [d,want] of [[2,pets[0]],[3,pets[1]],[4,pets[2]],[5,pets[3]],[6,pets[4]],[7,kids[0]],[7,kids[1]]]){
   f.setDateTime('2026-11-'+String(d).padStart(2,'0')+'T10:02:20+09:00');f.click('4f');tick();await settle();const actor=slots.find(a=>a.dataset.person===want.id);assert.equal(actor.hidden,false,want.id);assert.equal(actor.dataset.avatar,'v2');const bubble=f.map.children.find(a=>a.className==='hani-office-character-bubble');
