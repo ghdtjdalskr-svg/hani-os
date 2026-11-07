@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
+import seoyunM9 from './hani-seoyun-m9-source.cjs';
 const hash=x=>createHash('sha256').update(x).digest('hex');
 const bytes=fs.readFileSync(new URL('fixtures/office-chairman-patrol-278-delta.json',import.meta.url));
 assert.equal(hash(bytes),'a096d64a75128b63d1b67e5b0a2c51ef648a24653be77da8100ca4ae68f21c2c','exact authored patrol 278 delta');
@@ -82,10 +83,12 @@ export function projectPreFix278Source(source,file='hani-office-live.js'){
 
 // Exact department-home outer layer; every older frozen contract stays intact.
 export function restoreCompanionHomesSource(source,file='hani-office-live.js'){
+ source=seoyunM9.projectPreSeoyunM9Source(source,file);
  const row=patrol278Delta.companionHomesExtension;assert.equal(file,row.file);assert.equal(hash(source),row.afterSha256,'only exact companion home bytes accepted');
  for(const r of row.replacements){assert.equal(source.split(r.after).length-1,1,'one complete home pair: '+r.name);source=source.replace(r.after,()=>r.before)}
  assert.equal(hash(source),row.beforeSha256,'every c590f8a byte restored');return source;
 }
 export function projectPreCompanionHomesSource(source,file='hani-office-live.js'){
+ source=seoyunM9.projectPreSeoyunM9Source(source,file);
  const row=patrol278Delta.companionHomesExtension;return file===row.file&&hash(source)===row.afterSha256?restoreCompanionHomesSource(source,file):source;
 }

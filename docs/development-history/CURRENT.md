@@ -1,3 +1,7 @@
+# 2026-11-08 · 서윤 M9 특별 합류 1단계 (Codex / seoyun-m9)
+
+`hani/seoyun-m9` / base·확인한 원격 main `f1a457f` / 표시·cache2.9.279 유지. 기존 9인 뒤·MIR 앞 표시 전용 서윤 특별 카드1개, 조직도·AI팀·상세 배지, 기존 탭/남매방문/주민 owner 대사10줄 추가. **전용15/15·기존탭15/15·syntax10/10·diff check PASS, 85파일 회귀834통과·Git36/브라우저5차단·기존실패13·skip7·신규실패0, closure161불변/누락0.** 기존9인 HTML/순서/그림·roster·AI STAFF/팀/직급·저장/Cloud·timer/listener 보존. 기존실패는 변경전 재생에서도 재현, 성능2건 동일한도 순차 재검사 통과. Edge EPERM으로 PC/폰 PNG·실화면 미검증, git add의 index.lock 권한 거부로 **미커밋**. push/PR/merge/배포 없음. Notion 착수 HANI-83 저장/read-back 완료, 후속 갱신은 자동 승인 never 거절로 대기. [보고서](../../artifacts/seoyun-m9/REPORT.md) · [인수인계](handoffs/2026-11-08-seoyun-m9.md). 아래 타 담당·과거 기록 보존.
+
 # 2026-11-07 · 동행 동물 부서 상주 (Codex / companion-homes)
 
 `hani/companion-homes` / base·HEAD `c590f8a` / GitHub main `882e6c6`(수정 전 office JS blob 동일) / 표시·cache2.9.277 유지. 비동행 개구리4F·펭귄3F·병아리/여우2F·수달1F, 동행 자리 우선·2F 정류장 양끝 예약 분리. **7일×1440분 지정 층·평일1종/주말남매 PASS, 전체67파일736통과·Git EPERM33차단·기존skip5·그 외 실패0, 성능3/3·syntax·closure161/누락0·저장/새timer/listener/runtime파일0.** 혼잡 시 일부 펭귄/여우 숨김·새5종5F재회 대사 없음 기록. Edge 실행/CDP 차단으로 PNG·실화면 미검증. Git add index.lock 권한 거절로 **미커밋**, push/merge/버전변경/배포 없음. Notion 착수 저장/read-back 성공, 이후 진행 갱신은 자동 승인 never 거절로 대기. [보고서](../../artifacts/companion-homes/REPORT.md) · [인수인계](handoffs/2026-11-07-companion-homes.md). 아래 다른 담당·과거 기록 보존.
