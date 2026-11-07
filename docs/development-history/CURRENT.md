@@ -1,3 +1,7 @@
+# 2026-11-08 · 보리의 가끔 산책 (Codex / bori-stroll)
+
+`hani/bori-stroll` / base·HEAD·착수 GitHub main `f1a457f` / 표시·cache2.9.279 유지. 날짜 시드 낮 짧은 산책·기존 pose/tick/bubble, 2F 병아리 경로 예약·남매96px 간격. **4일×1440분20/18/21/19회·밤0·겹침0, 41회×0.5초 복귀 확인, 신규7항목 완료(공통6·fixture 수정 DOM 단독 재검사 포함). 기존67파일785통과·기존 대비 실패1·skip5, 성능 각 최종 단독3/3, PC1440/390 20장면·저장/오류0.** closure161·8파일 원문·등록수 보존. 기존 이름표 대비 실패는 변경 전에도 동일, 직원 통과 시 잠시 숨음 기록. Git add index.lock 권한 거절로 **미커밋**, push/merge/버전변경/배포 없음. Notion 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/bori-stroll/REPORT.md) · [인수인계](handoffs/2026-11-07-bori-stroll.md). 아래 다른 담당·과거 기록 보존.
+
 # 2026-11-07 · 동행 동물 부서 상주 (Codex / companion-homes)
 
 `hani/companion-homes` / base·HEAD `c590f8a` / GitHub main `882e6c6`(수정 전 office JS blob 동일) / 표시·cache2.9.277 유지. 비동행 개구리4F·펭귄3F·병아리/여우2F·수달1F, 동행 자리 우선·2F 정류장 양끝 예약 분리. **7일×1440분 지정 층·평일1종/주말남매 PASS, 전체67파일736통과·Git EPERM33차단·기존skip5·그 외 실패0, 성능3/3·syntax·closure161/누락0·저장/새timer/listener/runtime파일0.** 혼잡 시 일부 펭귄/여우 숨김·새5종5F재회 대사 없음 기록. Edge 실행/CDP 차단으로 PNG·실화면 미검증. Git add index.lock 권한 거절로 **미커밋**, push/merge/버전변경/배포 없음. Notion 착수 저장/read-back 성공, 이후 진행 갱신은 자동 승인 never 거절로 대기. [보고서](../../artifacts/companion-homes/REPORT.md) · [인수인계](handoffs/2026-11-07-companion-homes.md). 아래 다른 담당·과거 기록 보존.

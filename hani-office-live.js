@@ -3161,13 +3161,13 @@
   function companionSnapshot(now=new Date(),staff=null,enabled=true,reduced=false,neighbors=[]){
     if(!enabled||!canon||!art)return [];
     const date=koreaTime(now),weekday=date.getUTCDay(),weekend=weekday===0||weekday===6,day=date.toISOString().slice(0,10),seconds=date.getUTCHours()*3600+date.getUTCMinutes()*60+date.getUTCSeconds()+date.getUTCMilliseconds()/1000;
-    const people=[...(staff?.floors?.flatMap(f=>f.people||[])||[]),...neighbors],chair=people.find(p=>p.id==='seongmin'&&floors.some(f=>f.id===p.floor)&&p.state!=='ABSENT'),center=chair&&(chair.position||[chair.seat?.x,chair.seat?.y]),states=[],usedStops=new Set();
+    const people=[...(staff?.floors?.flatMap(f=>f.people||[])||[]),...neighbors],chair=people.find(p=>p.id==='seongmin'&&floors.some(f=>f.id===p.floor)&&p.state!=='ABSENT'),center=chair&&(chair.position||[chair.seat?.x,chair.seat?.y]),states=[],usedStops=new Set(neighbors.flatMap(p=>p.stroll?.stops||[]));
     const follows=person=>person.kid?weekend:!weekend&&person.atlasRow===weekday-1;
     // Reserve the chairman's companions first, then place department pets safely.
     for(const person of companionPeople.filter(follows).concat(companionPeople.filter(p=>!follows(p)))){
       const follow=follows(person);
       if(person.kid&&!weekend||follow&&(!chair||!center?.every(Number.isFinite)))continue;
-      const seed=residentSeed(day+'|'+person.id),rhythm=residentRhythm(person.id,day,seconds),free=(floor,v)=>!people.concat(states).some(p=>{const at=p.position||[p.seat?.x,p.seat?.y];return p.floor===floor&&at.every(Number.isFinite)&&Math.hypot((v[0]-at[0])*art.width/100,(v[1]-at[1])*art.height/100)<(p.id==='seongmin'?80:p.resident||p.pet?96:person.kid?90:70)});
+      const seed=residentSeed(day+'|'+person.id),rhythm=residentRhythm(person.id,day,seconds),free=(floor,v)=>!people.concat(states).some(p=>{const at=p.position||[p.seat?.x,p.seat?.y];return p.floor===floor&&at.every(Number.isFinite)&&(Math.hypot((v[0]-at[0])*art.width/100,(v[1]-at[1])*art.height/100)<(p.id==='seongmin'?80:p.resident||p.pet?96:person.kid?90:70)||p.id==='pet-bori'&&p.stroll?.stops?.some((id,i,ids)=>{const a=residentSpot(id),b=residentSpot(ids[(i+1)%ids.length]),x=(v[0]-a.visual[0])*art.width/100,y=(v[1]-a.visual[1])*art.height/100,dx=(b.visual[0]-a.visual[0])*art.width/100,dy=(b.visual[1]-a.visual[1])*art.height/100,t=Math.max(0,Math.min(1,(x*dx+y*dy)/(dx*dx+dy*dy||1)));return Math.hypot(x-t*dx,y-t*dy)<108}))});
       let floor,position,point=[500,330],walking=false,facing='left',pose='standing',motion;
       if(follow){
         floor=chair.floor;facing=chair.facing==='left'?'left':'right';
@@ -3225,7 +3225,7 @@
   function companionActivity(child,chair,people,states,day,seconds,reduced,now){
     const sister=child.id==='kid-suyeon',rhythm=residentRhythm(child.id,day,seconds),kind=(rhythm.beat%6+6)%6,home=child.position.slice(),center=chair.position||[chair.seat?.x,chair.seat?.y],floor=child.floor;
     const at=p=>p.position||[p.seat?.x,p.seat?.y],distance=(a,b)=>Math.hypot((a[0]-b[0])*art.width/100,(a[1]-b[1])*art.height/100);
-    const safe=v=>companionSafe(floor,v,true)&&!people.concat(states).some(p=>p.id!==child.id&&p.floor===floor&&at(p).every(Number.isFinite)&&distance(v,at(p))<(p.id==='seongmin'?80:86));
+    const safe=v=>companionSafe(floor,v,true)&&!people.concat(states).some(p=>p.id!==child.id&&p.floor===floor&&at(p).every(Number.isFinite)&&distance(v,at(p))<(p.id==='seongmin'?80:p.id==='pet-bori'?96:86));
     const clear=(a,b)=>{const steps=Math.max(1,Math.ceil(distance(a,b)/12));for(let i=0;i<=steps;i++)if(!safe([a[0]+(b[0]-a[0])*i/steps,a[1]+(b[1]-a[1])*i/steps]))return false;return true};
     let route=[home],partner,line,action=sister?['orbit','explore','bounce','wave','visit','wave'][kind]:['book','check','beside','book','check','beside'][kind];
     const offset=(x,y)=>[home[0]+x/art.width*100,home[1]+y/art.height*100];
@@ -3290,6 +3290,35 @@
     const seed=residentSeed('pet-rhythm|'+day+'|'+id),rabbit=id==='pet-rabbit',bori=id==='pet-bori',period=id==='kid-suyeon'?6+seed%7:id==='kid-suhyeon'?20+seed%21:rabbit||bori?25+seed%21:15+seed%16,phase=seed%period;
     const time=seconds+phase;return {period,beat:Math.floor(time/period),elapsed:time%period,rest:bori?10+seed%5:rabbit?3+seed%3:seed%3};
   }
+  // One clock-derived outing every 30..45 minutes; no saved day or timer.
+  function boriStroll(day,seconds){
+    const seed=residentSeed('bori-stroll|'+day),period=(34+seed%8)*60,first=9*3600+seed%900,index=Math.floor((seconds-first)/period);
+    // Move a boundary-crossing outing slightly earlier, keeping the same floor
+    // and all actual departure intervals within 30..45 minutes.
+    for(const beat of [index,index+1]){
+      if(beat<0)continue;
+      let start=first+beat*period;const duration=120+residentSeed(day+'|bori-stroll|'+beat)%121;
+      for(const hour of [13,15,21])if(start<hour*3600&&start+duration>hour*3600)start=hour*3600-duration;
+      if(start>=21*3600||seconds<start||seconds>=start+duration)continue;
+      return {key:day+'|bori-stroll|'+beat,beat,start,duration,elapsed:seconds-start};
+    }
+    return null;
+  }
+  function boriStrollSample(person,day,stroll,spots,free){
+    const home=residentSpot(spots[0]),other=residentSpot(spots[1]),extra=residentSpot(home.floor==='1f'?'resident_bori_stroll_lobby':'resident_bori_stroll_lounge');
+    // A blocked optional stop shortens the route, never relaxes free()/safe().
+    const stops=[home,other];if(extra&&free(extra.visual)&&residentPath(other.id,extra.id).length&&residentPath(extra.id,home.id).length)stops.push(extra);
+    if(!stops.every(a=>free(a.visual)))return null;
+    const route=[...stops,home],stage=(stroll.duration-8)/(route.length-1),legs=[];
+    for(let i=1;i<route.length;i++){const a=route[i-1],b=route[i],sample=petMotion(person.id,day,stroll.beat+i,a,b,0,free);if(!sample||sample.duration>stage)return null;legs.push({a,b,sample})}
+    const time=stroll.elapsed-4,index=Math.min(legs.length-1,Math.max(0,Math.floor(time/stage))),leg=legs[index],elapsed=Math.max(0,time-index*stage),sample=petMotion(person.id,day,stroll.beat+index+1,leg.a,leg.b,elapsed,free);
+    if(!sample)return null;
+    let {position,point,walking,facing,pose}=sample;
+    if(time<0){position=home.visual;point=[home.x,home.y];walking=false;pose='standing'}
+    if(stroll.elapsed>=stroll.duration-4){position=home.visual;point=[home.x,home.y];walking=false;pose='sleep'}
+    const scene=stroll.beat%3===0&&index===0&&elapsed>=leg.sample.duration+8&&elapsed<leg.sample.duration+13?{key:stroll.key,line:person.lines[(stroll.beat+3)%person.lines.length],patrol:true,notBefore:0}:null;
+    return {position,point,walking,facing,pose,scene,motion:sample,stroll:{...stroll,stops:stops.map(a=>a.id)},...(time<0?{life:{key:stroll.key,kind:'sit-stand'}}:{})};
+  }
   const residentAffectionVoice=Object.freeze({
     cat:Object.freeze({hani:'후후, 확인 도장은 발로 받았네요.',yuri:'살짝만요. 발밑은 비워 뒀어요.',seoyun:'한 번 쓰다듬고 다시 볼게.',arin:'슬쩍 기대는 거, 다 봤어.',sua:'치즈, 조용히 와 줘서 고마워.',haru:'간식 말고 쓰담으로 정산할게.'}),
     dog:Object.freeze({seongmin:'크림, 하하. 한 번 더 쓰다듬자.',taeo:'하하, 오늘 인사는 아주 힘차네!',naeun:'크림 덕분에 마음이 환해져요.',dohyun:'이 환영 인사, 매일 받고 싶네요.',yuna:'왔어, 크림? 실컷 쓰담받고 가.',minji:'잠깐, 두 손 다 비워 줄게!',serin:'좋아, 충전은 쓰담 두 번이야.',sooyeon:'꼬리 인사 덕분에 힘이 나네요.'}),
@@ -3299,7 +3328,7 @@
   // Each pet owns its brief greeting window; stationary staff only.
   function residentAffection(now,states,staff){
     const clock=residentClock(now);if(clock.sleeping)return states;
-    for(const pet of states.filter(p=>p.pet&&!p.walking&&!p.motion?.active&&p.pose!=='sleep')){
+    for(const pet of states.filter(p=>p.pet&&!p.stroll&&!p.walking&&!p.motion?.active&&p.pose!=='sleep')){
       const kind=pet.id==='pet-cat'?'cat':pet.id==='pet-dog'?'dog':pet.id==='pet-bori'?'bori':'rabbit',seed=residentSeed('pet-affection|'+clock.day+'|'+pet.id),period=kind==='cat'?100+seed%21:kind==='dog'?60+seed%21:80+seed%21,time=clock.seconds+seed%period,beat=Math.floor(time/period),elapsed=time%period,duration=kind==='cat'?3:kind==='dog'?6:7;
       if(elapsed<30||elapsed>=30+duration)continue;
       const peers=staff.filter(q=>q.floor===pet.floor&&!q.visitor&&!q.resident&&!q.walking&&residentVoice.staff[q.id]&&['rest','work'].includes(q.activity)&&(!q.state||q.state==='AT_HOME'||q.state==='AT_PLACE')).filter(q=>{const v=q.position||[q.seat?.x,q.seat?.y],d=Math.hypot((pet.position[0]-v[0])*art.width/100,(pet.position[1]-v[1])*art.height/100);return v.every(Number.isFinite)&&d>=100&&d<=320});
@@ -3314,7 +3343,7 @@
   // Pure clock samples on persistent sprites, consumed by the existing 100ms tick.
   function residentLife(now,states,reduced){
     const clock=residentClock(now);if(clock.sleeping||reduced)return states;
-    for(const pet of states.filter(p=>p.pet&&!p.walking&&!p.motion?.active&&!p.affection&&(p.id!=='pet-bori'||p.pose!=='sleep'))){
+    for(const pet of states.filter(p=>p.pet&&!p.stroll&&!p.walking&&!p.motion?.active&&!p.affection&&(p.id!=='pet-bori'||p.pose!=='sleep'))){
       // A shared six-second beat with two-second pet offsets prevents a chorus.
       const seed=residentSeed('pet-life|'+clock.day+'|'+pet.id),slot=['pet-cat','pet-dog','pet-rabbit','pet-bori'].indexOf(pet.id),period=pet.id==='pet-bori'?12:6,time=clock.seconds+residentSeed('pet-life|'+clock.day)%period-slot*2,beat=Math.floor(time/period),elapsed=time%period;
       pet.facing=(seed+beat)%2?'left':'right';
@@ -3348,7 +3377,7 @@
     const route={nodes,length:nodes.at(-1)?.distance||0};if(petRoutes.size>=256)petRoutes.delete(petRoutes.keys().next().value);petRoutes.set(key,route);return route;
   }
   function petMotion(id,day,beat,a,b,elapsed,free=()=>true){
-    const seed=residentSeed('pet-leg|'+day+'|'+id+'|'+beat),rabbit=id==='pet-rabbit',dog=id==='pet-dog',base=id==='pet-bori'?12:rabbit?18:dog?48:40,speed=base*(.9+seed%21/100),route=petRoute(a,b,seed),fallback=residentSeed('pet-facing|'+day+'|'+id)%2?'left':'right';
+    const seed=residentSeed('pet-leg|'+day+'|'+id+'|'+beat),rabbit=id==='pet-rabbit',dog=id==='pet-dog',base=id==='pet-bori'?18:rabbit?18:dog?48:40,speed=base*(.9+seed%21/100),route=petRoute(a,b,seed),fallback=residentSeed('pet-facing|'+day+'|'+id)%2?'left':'right';
     if(!route.nodes.length||!route.nodes.every(n=>free(n.visual)))return null;
     const length=route.length,travel=length/speed,pause=length>=24&&seed%3===0?1+seed%201/100:0,split=.35+(seed%21)/100;
     // Mochi advances two 18px hops, then holds an ears-up rest before the next pair.
@@ -3407,7 +3436,8 @@
     // Clear right lobby aisle: beyond the lounge, left of the cafe and barista.
     ['resident_bori_lobby_a','1f',79.5,72,true],['resident_bori_lobby_b','1f',81,72,true],
     ['resident_bori_night_a','1f',79.5,72,true],['resident_bori_night_b','1f',81,72,true],
-    ['resident_bori_lounge_a','2f',51,57,true],['resident_bori_lounge_b','2f',51,59,true]
+    ['resident_bori_lounge_a','2f',51,57,true],['resident_bori_lounge_b','2f',51,59,true],
+    ['resident_bori_stroll_lobby','1f',79.5,83,true],['resident_bori_stroll_lounge','2f',51,71,true]
   ].map(([id,floor,vx,vy,pet],i)=>[id,Object.freeze({id,floor,x:/^resident_(rabbit|bori)_/.test(id)?500:100+i*40,y:330,visual:[vx,vy],pet:!!pet})]));
   function residentBounds(id,pose){if(id.startsWith('companion-'))return [12,60,84,135];if(id.startsWith('kid-'))return [18,35,78,135];const pet=id.startsWith('pet-');if(id==='pet-bori')return [2,({sitting:52,standing:53,'walk-a':63,'walk-b':65,sleep:89})[pose]??52,94,135];if(id==='pet-rabbit')return [11,({sitting:61,standing:63,'hop-a':74,'hop-b':70,sleep:100})[pose]??61,85,135];const top=pet?(pose==='sleep'?102:({sitting: id==='pet-cat'?81:76,standing:id==='pet-cat'?83:75,'walk-a':id==='pet-cat'?87:82,'walk-b':id==='pet-cat'?90:83})[pose]):({standing:15,sitting:30,'walk-a':24,'walk-b':24})[pose];return [pet?13:9,top??15,pet?82:87,135]}
   const residentPaths=new Map();
@@ -3504,10 +3534,10 @@
     if(residentTrioHold&&(residentTrioHold.key!==residentTrioKey(now)||Number(now)>=residentTrioHold.until))residentTrioHold=null;
     const states=[...residentPeople.filter(p=>p.id!=='pet-rabbit'),...residentPeople.filter(p=>p.id==='pet-rabbit')].flatMap(person=>{
       const scheduleHour=person.pet?clock.seconds/3600:hour,window=person.hours.find(([start,end])=>scheduleHour>=start&&scheduleHour<end);if(!window)return [];
-      const seconds=person.pet?clock.seconds:clock.seconds%86400,day=person.pet?clock.day:time.toISOString().slice(0,10),sleeping=person.pet&&(clock.sleeping||person.id==='pet-bori'&&!reduced&&(clock.seconds+residentSeed('bori-nap|'+clock.day)%300)%900<600);
+      const seconds=person.pet?clock.seconds:clock.seconds%86400,day=person.pet?clock.day:time.toISOString().slice(0,10),stroll=person.id==='pet-bori'&&!reduced?boriStroll(day,seconds):null,sleeping=person.pet&&(clock.sleeping||person.id==='pet-bori'&&!stroll);
       const chairman=interactions&&person.id==='pet-dog'&&!sleeping&&occupied.find(p=>p.id==='seongmin'&&p.seat&&(p.walking||p.pose==='sitting'||p.seat.posture==='sitting'));
       const floor=chairman&&(!clock.night||chairman.floor==='1f')?chairman.floor:window[2],spots=(person.pet&&clock.night?residentNightSpots[person.id]:person.places[floor]||[...residentStops.values()].filter(a=>a.floor===floor&&(person.id==='pet-rabbit'||!a.id.startsWith('resident_rabbit_'))).map(a=>a.id)).filter(residentSpot);if(!spots.length)return [];
-      const seed=residentSeed('office-residents|'+day+'|'+person.id),beat=Math.floor(seconds/900),rhythm=person.pet?residentRhythm(person.id,day,seconds):{beat,elapsed:seconds%900,rest:0},index=sleeping||reduced?0:(rhythm.beat+(person.pet?seed%spots.length:0))%spots.length;
+      const seed=residentSeed('office-residents|'+day+'|'+person.id),beat=Math.floor(seconds/900),rhythm=person.pet?residentRhythm(person.id,day,seconds):{beat,elapsed:seconds%900,rest:0},index=sleeping||reduced||stroll?0:(rhythm.beat+(person.pet?seed%spots.length:0))%spots.length;
       const free=p=>!occupied.some(q=>{const at=q.position||(q.seat&&[q.seat.x,q.seat.y]);return q.floor===floor&&at&&Math.hypot((p[0]-at[0])*art.width/100,(p[1]-at[1])*art.height/100)<(q.resident?96:100)});
       const companions=interactions&&person.pet&&person.id!=='pet-bori'&&!sleeping&&!clock.night&&floor==='1f'&&residentPeople.some(q=>q.pet&&q.id!==person.id&&q.hours.some(([a,b,f])=>clock.seconds/3600>=a&&clock.seconds/3600<b&&f===floor));
       const group=companions&&residentSpot(residentNightSpots[person.id][0]);
@@ -3527,18 +3557,20 @@
       if(!reduced&&!trio&&!sleeping&&elapsed<rhythm.rest){anchor=path[0]||anchor;position=anchor.visual;point=[anchor.x,anchor.y];path=[anchor]}
       else elapsed-=rhythm.rest;
       if(trio)path=[anchor];
-      if(person.pet&&!reduced&&path.length>1&&!sleeping){
+      if(person.pet&&!stroll&&!reduced&&path.length>1&&!sleeping){
         const a=path[0],b=path.at(-1),sample=petMotion(person.id,day,rhythm.beat,a,b,elapsed,free);
         if(sample){motion=sample;({position,point,walking,facing,pose}=sample);if(sample.active)anchor=a;else {position=b.visual;point=[b.x,b.y];pose=scene?'sitting':beat%3?'sitting':'standing'}}
-      }else if(!reduced&&path.length>1&&!sleeping)for(let i=1;i<path.length;i++){
+      }else if(!stroll&&!reduced&&path.length>1&&!sleeping)for(let i=1;i<path.length;i++){
         const a=path[i-1],b=path[i],va=a.visual,vb=b.visual,length=Math.hypot((vb[0]-va[0])*art.width/100,(vb[1]-va[1])*art.height/100),duration=length/(rabbit?18:person.id==='pet-dog'?48:40);
         if(elapsed<duration){const t=duration?elapsed/duration:1;anchor=a;position=[va[0]+(vb[0]-va[0])*t,va[1]+(vb[1]-va[1])*t];point=[a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t];distance+=length*t;walking=true;facing=vb[0]<va[0]?'left':'right';pose=(rabbit?'hop-':'walk-')+(Math.floor(distance/(rabbit?18:30))%2?'b':'a');break}
         elapsed-=duration;distance+=length;
       }
+      const outing=stroll&&boriStrollSample(person,day,stroll,spots,free);
+      if(stroll){if(outing)({position,point,walking,facing,pose,scene,motion}=outing);else {position=anchor.visual;point=[anchor.x,anchor.y];walking=false;pose='sleep';motion=undefined;scene=null}}
       if(!free(position)){const alternatives=sleeping?[...spots.map(residentSpot),...[...residentStops.values()].filter(a=>a.floor===floor&&(person.id==='pet-rabbit'||!a.id.startsWith('resident_rabbit_'))&&residentSpot(a.id))]:spots.map(residentSpot),fallback=alternatives.find(a=>free(a.visual));if(!fallback)return [];anchor=fallback;position=anchor.visual;point=[anchor.x,anchor.y];walking=false;pose=person.pet?(sleeping?'sleep':'sitting'):'standing';scene=null;motion=undefined}
       occupied.push({floor,resident:true,seat:{x:position[0],y:position[1]}});
       if(walking)scene=null;
-      return [{id:person.id,name:person.name,sprite:person.sprite,pet:!!person.pet,floor,anchor:anchor.id,position,point,walking,facing,pose,scene,...(motion?{motion}:{})}];
+      return [{id:person.id,name:person.name,sprite:person.sprite,pet:!!person.pet,floor,anchor:anchor.id,position,point,walking,facing,pose,scene,...(motion?{motion}:{}),...(outing?{stroll:outing.stroll,...(outing.life?{life:outing.life}:{})}:{})}];
     });
     return residentLife(now,interactions?residentAffection(now,states,occupied):states,reduced);
   }
