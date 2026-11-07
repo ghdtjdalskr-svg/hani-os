@@ -7,7 +7,7 @@ import {assets} from './hani-office-v2-fixture.mjs';
 import {restorePatrol278Source,projectPreKidsSource} from './hani-office-chairman-patrol-278-source.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 // Frozen patrol contract remains exact; the lively extension has live tests.
-const fixture=(...args)=>{while(args.length<6)args.push(undefined);return mountFixture(...args,projectPreKidsSource)};
+const fixture=(...args)=>{while(args.length<5)args.push(undefined);return mountFixture(...args,projectPreKidsSource)};
 const {scene,table,context}=loadScene({transform:projectPreKidsSource}),s=scene.scheduler,r=scene.residents,options={chairmanPresent:true},plain=x=>JSON.parse(JSON.stringify(x));
 const trips=day=>s.blockPlan(day,0,s.plan(day,options),options).filter(e=>e.patrol);
 const person=(day,seconds,o=options)=>s.snapshot(at(day,seconds),o).entries.find(p=>p.id==='seongmin');

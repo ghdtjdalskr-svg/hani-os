@@ -1,8 +1,9 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
-import {fixture} from './hani-building-206-engine.test.mjs';import {assets} from './hani-office-v2-fixture.mjs';
-import {restoreKids278Source,projectPreKidsSource} from './hani-office-chairman-patrol-278-source.mjs';
+import {fixture as mountFixture} from './hani-building-206-engine.test.mjs';import {assets} from './hani-office-v2-fixture.mjs';
+import {restoreKids278Source,projectPreKidsSource,projectPreVisitsSource} from './hani-office-chairman-patrol-278-source.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
+const fixture=(...args)=>{while(args.length<5)args.push(undefined);return mountFixture(...args,projectPreVisitsSource)};
 const {scene,table}=loadScene(),r=scene.residents,plain=x=>JSON.parse(JSON.stringify(x)),day='2026-11-07',options={chairmanPresent:true};
 const chair=(floor='4f',extra={})=>({floors:[{id:floor,people:[{id:'seongmin',floor,position:[51,70],pose:'sitting',walking:false,facing:'right',...extra}]}]});
 const kids=(sec,snap=chair(),reduced=false)=>r.companionSnapshot(at(day,sec),snap,true,reduced).filter(p=>p.kid);

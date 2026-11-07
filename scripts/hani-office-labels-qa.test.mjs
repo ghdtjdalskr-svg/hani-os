@@ -127,7 +127,7 @@ test('QA18: real desktop/phone label keeps full title/aria/roster and delegated 
 test('QA18: label fitting keeps batched reads; existing steady frames do not add layout measurements',()=>{
  const f=mounted(),fit=source.slice(source.indexOf('  function fitStatusLabels('),source.indexOf('  if(buildingChairmanSlot())people.push'));
  // 2.9.277: +1 approved read in the same batch - phone-only companion bubble obstacle (open bubble only).
- assert.ok(fit.includes("if(compact&&!actorBubble.hidden&&actors.get(bubblePerson)?.dataset.companion==='true'){const b=actorBubble.getBoundingClientRect();"),'companion bubble obstacle read');
+ assert.ok(fit.includes("if(compact&&!actorBubble.hidden&&(actors.get(bubblePerson)?.dataset.companion==='true'||bubbleSelection?.kidsVisit)){const b=actorBubble.getBoundingClientRect();"),'companion and hidden visit bubble obstacle read');
  assert.equal((fit.match(/getBoundingClientRect/g)||[]).length,6,'existing floor/name/status/name-only/dot read sites + companion bubble obstacle');
  let reads=0;for(const node of [f.map,...f.root.querySelectorAll('*')])if(node.getBoundingClientRect){const measure=node.getBoundingClientRect;node.getBoundingClientRect=()=>{reads++;return measure()}}
  for(let i=0;i<30;i++)f.timers.find(t=>t.ms===100).fn();assert.equal(reads,0,'no layout reads on unchanged frame');
