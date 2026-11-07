@@ -300,7 +300,7 @@
       if (low === undefined) out.fairValueLow = parseFairNumber(parts[0], fieldCurrency);
       if (high === undefined) out.fairValueHigh = parseFairNumber(parts[1], fieldCurrency);
     }
-    if (mid === undefined && out.fairValueLow > 0 && out.fairValueHigh > 0) {
+    if (out.fairValue == null && out.fairValueLow > 0 && out.fairValueHigh > 0) {
       out.fairValue = (out.fairValueLow + out.fairValueHigh) / 2;
       out.valuationNote = [input.valuationNote, '입력된 적정가 구간의 중간값'].filter(Boolean).join(' · ');
     }
