@@ -68,11 +68,19 @@
     }).sort((a,b)=>b.date.localeCompare(a.date)||b.number-a.number);
   }
   function parseIssue(value, entry) {
+    if (entry.extra && (value?.extra !== true || value.id !== entry.id || value.comic?.captions?.length !== 6 || value.news?.some(x=>x.fictional !== true)) || !entry.extra && value?.extra) throw Error('호외 ID·6칸 캡션·세계관 표시를 확인해 주세요.');
     if (!value || value.number !== entry.number || value.date !== entry.date || !value.comic || !Array.isArray(value.comic.captions) || !Array.isArray(value.interview) || !Array.isArray(value.news)) throw Error('기사 형식을 확인해 주세요.');
     if (typeof value.comic.title !== 'string' || value.comic.captions.some(x=>typeof x !== 'string') || value.interview.some(x=>typeof x?.q !== 'string' || typeof x?.a !== 'string') || value.news.some(x=>typeof x?.title !== 'string' || typeof x?.body !== 'string' || typeof x?.fictional !== 'boolean') || typeof value.praise !== 'string') throw Error('기사 문구와 가상 소식 표시를 확인해 주세요.');
     if (value.news.some(x=>x.icon !== undefined && (typeof x.icon !== 'string' || Array.from(x.icon).length > 16)) || (value.interviewee !== undefined && typeof value.interviewee !== 'string') || (value.interviewQuote !== undefined && (typeof value.interviewQuote !== 'string' || !value.interview.some(x=>x.a.includes(value.interviewQuote))))) throw Error('기사 아이콘과 인터뷰 인용문을 확인해 주세요.');
     if (!/^assets\/hani-ilbo\/[\w-]+\.(webp|png|jpg)$/.test(value.comic.image)) throw Error('만화 이미지 경로를 확인해 주세요.');
     return value;
+  }
+  function parseExtras(value) {
+    const ids = new Set();
+    return rows(value?.extras).map(x=>{
+      if (!/^[a-z][a-z0-9-]*$/.test(x.id) || ids.has(x.id) || !date(x.date) || !/^data\/hani-ilbo\/extra-[\w-]+\.json$/.test(x.file)) throw Error('호외 ID·날짜·파일을 확인해 주세요.');
+      ids.add(x.id);return {...x,extra:true};
+    }).sort((a,b)=>b.date.localeCompare(a.date)||a.id.localeCompare(b.id));
   }
   function topPosts(board, issueDate, now = Date.now()) {
     if (!board?.listPosts || !board.displayLikes || !board.displayViews) return [];
@@ -119,23 +127,25 @@
       '<details class="ilbo-interview-full"><summary>인터뷰 전문 보기</summary><dl class="ilbo-interview">'+issue.interview.map(x=>'<div class="ilbo-qa"><dt>'+avatar('minji')+'<div class="ilbo-bubble"><small>Q · 민지 기자</small><p>'+esc(x.q)+'</p></div></dt><dd>'+avatar(id)+'<div class="ilbo-bubble"><small>A · '+esc(member?.name || '인터뷰이')+'</small><p>'+esc(x.a)+'</p></div></dd></div>').join('')+'</dl></details>';
   }
   function markup(issue, source, board, newsroom, now = Date.now()) {
-    const model = compute(source,issue.date,now), top = topPosts(board,issue.date,now), external = newsroomPosts(newsroom,issue.date,now);
+    const extra = issue.extra === true;
+    const model = extra ? null : compute(source,issue.date,now), top = extra ? [] : topPosts(board,issue.date,now), external = extra ? [] : newsroomPosts(newsroom,issue.date,now);
     const headline = issue.headline || rows(issue.news).find(x=>x.fictional === false)?.title || '한 주의 기록이 모여, 우리의 이야기가 됩니다';
     const weekday = ['일','월','화','수','목','금','토'][new Date(issue.date+'T00:00:00Z').getUTCDay()];
-    return '<article class="ilbo-paper"><header class="ilbo-masthead"><div class="ilbo-nameplate"><img data-ilbo-banner hidden src="assets/hani-ilbo/masthead-v1.webp" alt="" aria-hidden="true" width="1600" height="360" decoding="async"><div class="ilbo-nameplate-copy"><p class="ilbo-eyebrow">HANI GROUP · THE WEEKLY CHRONICLE</p><h2>HANI 일보</h2></div></div><div class="ilbo-meta"><span>제 '+issue.number+'호 · '+esc(issue.reporter || '민지 대리')+' 취재</span><time datetime="'+issue.date+'">'+issue.date.replaceAll('-','.')+'('+weekday+')</time></div></header>'+
+    return '<article class="ilbo-paper"><header class="ilbo-masthead"><div class="ilbo-nameplate"><img data-ilbo-banner hidden src="assets/hani-ilbo/masthead-v1.webp" alt="" aria-hidden="true" width="1600" height="360" decoding="async"><div class="ilbo-nameplate-copy"><p class="ilbo-eyebrow">HANI GROUP · THE WEEKLY CHRONICLE</p><h2>HANI 일보</h2></div></div><div class="ilbo-meta"><span>'+(extra?'호외':'제 '+issue.number+'호')+' · '+esc(issue.reporter || '민지 대리')+' 취재</span><time datetime="'+issue.date+'">'+issue.date.replaceAll('-','.')+'('+weekday+')</time></div></header>'+
       (issue.date > koreaDate(now) ? empty('발행 예정호 · '+issue.date+' 발행 / 현재까지의 기록을 미리 보여드려요.') : '')+
       (issue.editorialDraft ? '<p class="ilbo-draft">편집 초안 · 만화와 사내 소식 문구는 최종 확인 중이에요.</p>' : '')+
-      '<section class="ilbo-lead"><p class="ilbo-eyebrow">이 주의 헤드라인</p><h3>'+esc(headline)+'</h3><p>'+esc(issue.headlineBody || '')+'</p><small>'+model.range.start+' ~ '+model.range.end+' · 기록이 있는 항목만 싣습니다</small></section>'+
-      '<section class="ilbo-comic"><h3>'+esc(issue.comic.title)+'</h3><figure><div class="ilbo-art"><div class="ilbo-placeholder" data-ilbo-placeholder><span aria-hidden="true">✦</span><b>이번 주 만화, 곧 도착해요</b><p>그림을 기다리는 동안 이번 호를 둘러보세요.</p><p class="ilbo-sr-only">'+esc(issue.comic.captions.join(' · '))+'</p></div><img data-ilbo-comic hidden src="'+esc(issue.comic.image)+'" alt="'+esc([issue.comic.title,...issue.comic.captions].join(' · '))+'" decoding="async"></div></figure></section>'+
-      '<div class="ilbo-sections">'+fold('숫자로 보는 한 주', '<div class="ilbo-number-grid">'+model.tiles.map(tile).join('')+'</div>'+(model.tiles.length?'':empty('한 주의 기록이 모이면 이곳에 함께 실을게요.')),true)+
+      '<section class="ilbo-lead"><p class="ilbo-eyebrow">'+(extra?esc(issue.subtitle):'이 주의 헤드라인')+'</p><h3>'+esc(headline)+'</h3><p>'+esc(issue.headlineBody || '')+'</p><small>'+(extra?'호외 · 가상 세계관 특별 기사':model.range.start+' ~ '+model.range.end+' · 기록이 있는 항목만 싣습니다')+'</small></section>'+
+      '<section class="ilbo-comic"><h3>'+esc(issue.comic.title)+'</h3><figure><div class="ilbo-art"><div class="ilbo-placeholder" data-ilbo-placeholder><span aria-hidden="true">✦</span><b>이번 주 만화, 곧 도착해요</b><p>그림을 기다리는 동안 이번 호를 둘러보세요.</p><p class="ilbo-sr-only">'+esc(issue.comic.captions.join(' · '))+'</p></div><img data-ilbo-comic hidden src="'+esc(issue.comic.image)+'" alt="'+esc([issue.comic.title,...issue.comic.captions].join(' · '))+'" decoding="async"></div>'+(extra?'<figcaption><ol class="ilbo-extra-captions" aria-label="호외 만화 6칸 캡션">'+issue.comic.captions.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol></figcaption>':'')+'</figure></section>'+
+      '<div class="ilbo-sections">'+(extra?'':fold('숫자로 보는 한 주', '<div class="ilbo-number-grid">'+model.tiles.map(tile).join('')+'</div>'+(model.tiles.length?'':empty('한 주의 기록이 모이면 이곳에 함께 실을게요.')),true))+
       fold('이 주의 인터뷰', interview(issue),true)+
       fold('사내 소식', '<div class="ilbo-news-grid">'+issue.news.map(x=>'<section class="ilbo-story ilbo-news-card"><div class="ilbo-icon-band" aria-hidden="true">'+esc(x.icon || iconFor(x.title))+'</div><div class="ilbo-card-copy"><small class="ilbo-chip '+(x.fictional?'ilbo-fiction':'ilbo-real')+'">'+(x.fictional?'세계관':'실제 소식')+'</small><h4>'+esc(x.title)+'</h4><p tabindex="0">'+esc(x.body)+'</p></div></section>').join('')+'</div>')+
-      fold('라운지 베스트', top.length?'<ol class="ilbo-lounge-grid">'+top.map((x,i)=>'<li class="ilbo-lounge-card"><span class="ilbo-place" aria-label="'+(i+1)+'위">0'+(i+1)+'</span><header>'+avatar(x.authorId)+identity(x.authorId)+'</header><h4>'+esc(x.title)+'</h4><div class="ilbo-chips"><small class="ilbo-chip">♥ 추천 '+esc(x.likes)+'</small><small class="ilbo-chip">◉ 조회 '+esc(x.views)+'</small></div></li>').join('')+'</ol>':empty('이번 주 라운지 이야기를 기다려요.'))+
+      (extra?'':fold('라운지 베스트', top.length?'<ol class="ilbo-lounge-grid">'+top.map((x,i)=>'<li class="ilbo-lounge-card"><span class="ilbo-place" aria-label="'+(i+1)+'위">0'+(i+1)+'</span><header>'+avatar(x.authorId)+identity(x.authorId)+'</header><h4>'+esc(x.title)+'</h4><div class="ilbo-chips"><small class="ilbo-chip">♥ 추천 '+esc(x.likes)+'</small><small class="ilbo-chip">◉ 조회 '+esc(x.views)+'</small></div></li>').join('')+'</ol>':empty('이번 주 라운지 이야기를 기다려요.'))+
       fold('마켓 한 줄', external.length?'<ul class="ilbo-market">'+external.map(x=>'<li><span class="ilbo-row-icon" aria-hidden="true">'+iconFor(x.title)+'</span><div><b>'+esc(x.title)+'</b><p tabindex="0">'+esc(x.body)+'</p></div><small class="ilbo-chip">뉴스룸</small></li>').join('')+'</ul>':empty('현재 불러온 뉴스룸 소식이 없어요.'))+
-      fold('다음 주 예고', '<p class="ilbo-note">'+issue.date+' ~ '+shift(issue.date,6)+' · 미완료 일정</p>'+(model.tasks.length?'<ul class="ilbo-timeline">'+model.tasks.map(x=>'<li><span class="ilbo-row-icon" aria-hidden="true">📌</span><time datetime="'+x.due+'">'+x.due.slice(5).replace('-','.')+'</time><b>'+esc(x.text)+'</b></li>').join('')+'</ul>':empty('등록된 마감이 없어요. 여유도 일정의 일부예요.')))+
+      fold('다음 주 예고', '<p class="ilbo-note">'+issue.date+' ~ '+shift(issue.date,6)+' · 미완료 일정</p>'+(model.tasks.length?'<ul class="ilbo-timeline">'+model.tasks.map(x=>'<li><span class="ilbo-row-icon" aria-hidden="true">📌</span><time datetime="'+x.due+'">'+x.due.slice(5).replace('-','.')+'</time><b>'+esc(x.text)+'</b></li>').join('')+'</ul>':empty('등록된 마감이 없어요. 여유도 일정의 일부예요.'))))+
       fold('하니의 칭찬', '<div class="ilbo-praise"><span class="ilbo-note-mark" aria-hidden="true">✦</span><p class="ilbo-eyebrow">A NOTE FOR YOU</p><blockquote>'+esc(issue.praise)+'</blockquote><footer>'+avatar('hani')+'<span class="ilbo-signature">하니 드림</span></footer></div>')+'</div><footer class="ilbo-footer">한 주의 작은 순간을 모읍니다 · '+esc(issue.reporter || '민지 대리')+'</footer></article>';
   }
-  let entries = [], selected = null, generation = 0, loading = null, seenDate = '', ready = false;
+  let entries = [], extras = [], selected = null, generation = 0, loading = null, seenDate = '', ready = false;
+  const entryKey = entry => entry.extra ? 'extra:'+entry.id : entry.number;
   const publishedCount = (now = Date.now()) => ready ? new Set(entries.filter(x=>x.date <= koreaDate(now)).map(x=>x.number)).size : null;
   const cache = new Map();
   const root = () => document.getElementById(VIEW);
@@ -168,7 +178,8 @@
   }
   function archive(host, now) {
     const slot = host.querySelector('[data-ilbo-archive]');
-    slot.innerHTML = '<h3>HANI 일보 · 지난 호 보관함</h3>'+entries.filter(x=>x.date<=koreaDate(now)).map(x=>'<button type="button" class="btn" data-ilbo-issue="'+x.number+'" aria-pressed="'+(x.number===selected?.number)+'">제 '+x.number+'호 · '+x.date+'</button>').join('');
+    slot.innerHTML = '<h3>HANI 일보 · 지난 호 보관함</h3>'+entries.filter(x=>x.date<=koreaDate(now)).map(x=>'<button type="button" class="btn" data-ilbo-issue="'+x.number+'" aria-pressed="'+(!selected?.extra && x.number===selected?.number)+'">제 '+x.number+'호 · '+x.date+'</button>').join('')+
+      (extras.some(x=>x.date<=koreaDate(now))?'<section class="ilbo-extras" aria-label="호외"><h4>호외</h4>'+extras.filter(x=>x.date<=koreaDate(now)).map(x=>'<button type="button" class="btn" data-ilbo-extra="'+esc(x.id)+'" aria-pressed="'+(!!selected?.extra && x.id===selected.id)+'">호외 · '+esc(x.title || x.id)+' · '+x.date+'</button>').join('')+'</section>':'');
   }
   async function render() {
     const host = root();if (!host) return;
@@ -177,11 +188,11 @@
     selected = entry;
     const slot = host.querySelector('[data-ilbo-content]');slot.setAttribute('aria-busy','true');
     try {
-      let issue = cache.get(entry.number);
-      if (!issue) {issue = parseIssue(await json(entry.file),entry);cache.set(entry.number,issue);}
+      let issue = cache.get(entryKey(entry));
+      if (!issue) {issue = parseIssue(await json(entry.file),entry);cache.set(entryKey(entry),issue);}
       if (token !== generation) return;
       slot.innerHTML = markup(issue,stateSource(),window.HaniBoard,newsroomSource(),now);bindImage(slot);archive(host,now);
-      if (host.classList.contains('active') && entry.date <= koreaDate(now)) {seenDate = seenDate > entry.date ? seenDate : entry.date;homeCard(now);}
+      if (!entry.extra && host.classList.contains('active') && entry.date <= koreaDate(now)) {seenDate = seenDate > entry.date ? seenDate : entry.date;homeCard(now);}
     } catch (error) {
       if (token !== generation) return;
       slot.innerHTML = empty(error.message)+'<button class="btn" type="button" data-ilbo-retry>다시 불러오기</button>';
@@ -190,13 +201,13 @@
   async function boot() {
     if (loading) return loading;
     loading = (async () => {
-      try {entries = parseManifest(await json('data/hani-ilbo/issues.json'));ready = true;window.dispatchEvent(new Event('hani-ilbo-ready'));homeCard();await render();}
+      try {const manifest = await json('data/hani-ilbo/issues.json');entries = parseManifest(manifest);extras = parseExtras(manifest);ready = true;window.dispatchEvent(new Event('hani-ilbo-ready'));homeCard();await render();}
       catch (error) {const host = root()?.querySelector('[data-ilbo-content]');if (host) host.innerHTML = empty(error.message)+'<button class="btn" type="button" data-ilbo-retry>다시 불러오기</button>';}
     })();
     try {await loading;} finally {loading = null;}
   }
   async function enter() {if (!ready) await boot();else await render();}
-  window.HaniIlbo = Object.freeze({enter,homeCard,publishedCount,compute,period,koreaDate,parseManifest,parseIssue,topPosts,newsroomPosts,markup,bindImage});
+  window.HaniIlbo = Object.freeze({enter,homeCard,publishedCount,compute,period,koreaDate,parseManifest,parseExtras,parseIssue,topPosts,newsroomPosts,markup,bindImage});
   if (typeof document === 'undefined') return;
   function start() {
     const host = root();if (!host) return;
@@ -204,6 +215,8 @@
     host.addEventListener('click',event => {
       const issue = event.target.closest('[data-ilbo-issue]');
       if (issue) {selected = entries.find(x=>x.number===Number(issue.dataset.ilboIssue)) || null;render();}
+      const extra = event.target.closest('[data-ilbo-extra]');
+      if (extra) {const entry = extras.find(x=>x.id===extra.dataset.ilboExtra && x.date<=koreaDate(Date.now()));if (entry) {selected = entry;render();}}
       if (event.target.closest('[data-ilbo-retry]')) enter();
       if (event.target.closest('[data-ilbo-print]')) {preparePrint();window.print();}
     });
