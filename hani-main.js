@@ -5014,8 +5014,69 @@ function wishlistStatusLabel(v){return {consider:"검토중",planned:"구매/실
 function wishlistPriorityLabel(v){return {high:"높음",medium:"보통",low:"낮음"}[v]||"보통"}
 function wishlistKindLabel(v){return v==="experience"?"경험":"ITEM"}
 function wishlistAiReviewLabel(row={}){return row.sourceType==='agent'?'AI 검토 완료':['conversation','intake'].includes(row.sourceType)?'AI 접수 후보':'AI 검토 없음'}
+// Wishlist quick-add: URL text only; existing fields and save owner remain canonical.
+const WISHLIST_LINK_SHOPS = Object.freeze([
+  {domains:['coupang.com','coupa.ng'],name:'쿠팡'},
+  {domains:['smartstore.naver.com','brand.naver.com'],name:'네이버 스마트스토어'},
+  {domains:['11st.co.kr'],name:'11번가'},
+  {domains:['gmarket.co.kr'],name:'G마켓'},
+  {domains:['musinsa.com'],name:'무신사'},
+  {domains:['ohou.se'],name:'오늘의집',category:'생활'},
+  {domains:['29cm.co.kr'],name:'29CM'},
+  {domains:['oliveyoung.co.kr'],name:'올리브영',category:'뷰티'},
+  {domains:['apple.com'],name:'애플',category:'전자기기'},
+  {domains:['amazon.com','amazon.co.jp','amazon.co.uk','amazon.de','amazon.ca','amazon.fr','amazon.it','amazon.es','amazon.com.au'],name:'아마존'}
+]);
+function wishlistLinkName(value){
+  let text;try{text=decodeURIComponent(value)}catch(_){return ''}
+  text=text.replace(/\.(?:html?|aspx?)$/i,'').replace(/[-_]+/g,' ').replace(/\s+/g,' ').trim();
+  if(/^[\p{L}\p{N}]+$/u.test(text)&&/\d/.test(text))return '';
+  if(!text||text.length>160||!/[\p{L}]/u.test(text)||/[^\p{L}\p{N} .()&+,'’]/u.test(text))return '';
+  if(/^(?:detail|details|index|view|product|products|item|goods|shop|buy|dp|gp|[a-f\d]{8,}|[A-Z\d]{8,})$/i.test(text))return '';
+  return text;
+}
+function inferWishlistLink(raw){
+  if(typeof raw!=='string'||/[\u0000-\u001f\u007f]/.test(raw))return null;
+  let url;try{url=new URL(raw.trim())}catch(_){return null}
+  if(!['https:','http:'].includes(url.protocol)||url.username||url.password||!url.hostname.includes('.'))return null;
+  for(const key of [...url.searchParams.keys()])if(/^(?:utm_.*|fbclid|gclid|dclid|msclkid|igshid|mc_cid|mc_eid|spm|scm|ref_|tag|linkCode|ascsubtag)$/i.test(key))url.searchParams.delete(key);
+  const host=url.hostname.toLowerCase(),shop=WISHLIST_LINK_SHOPS.find(row=>row.domains.some(domain=>host===domain||host.endsWith('.'+domain)));
+  let name='';
+  for(const key of ['productName','product_name','itemName','item_name','goodsName','goodsNm']){
+    const value=url.searchParams.get(key);if(value){name=wishlistLinkName(encodeURIComponent(value));if(name)break}
+  }
+  const parts=url.pathname.split('/').filter(Boolean);
+  if(!name){
+    const dp=parts.indexOf('dp');
+    if(shop?.name==='아마존'&&dp===1)name=wishlistLinkName(parts[0]);
+    else {
+      const owner=parts.findIndex(part=>/^(?:products?|items?|goods)$/.test(part));
+      if(owner>=0){const candidate=parts[owner+1];if(candidate){
+        name=wishlistLinkName(candidate);
+        if(!name&&shop?.name==='애플'&&parts[owner+2])name=wishlistLinkName(parts[owner+2]);
+      }}
+    }
+  }
+  const category=shop?.category&&((shop.name==='애플'&&parts.includes('shop'))||(shop.name==='오늘의집'&&parts.includes('productions'))||shop.name==='올리브영')?shop.category:'';
+  return {url:url.href,shop:shop?.name||'',name,category};
+}
+function resetWishlistQuickAdd(){
+  if($('wishlistQuickLink'))$('wishlistQuickLink').value='';
+  if($('wishlistQuickLinkStatus'))$('wishlistQuickLinkStatus').textContent='링크와 쇼핑몰은 빈 메모에 채워요. 가격은 직접 확인해 주세요.';
+}
+function previewWishlistLink(){
+  const input=$('wishlistQuickLink'),status=$('wishlistQuickLinkStatus'),candidate=inferWishlistLink(input.value);
+  if(!candidate){status.textContent=input.value.trim()?'http 또는 https 상품 링크를 확인해 주세요.':'링크와 쇼핑몰은 빈 메모에 채워요. 가격은 직접 확인해 주세요.';return}
+  let filled=0;
+  for(const [id,value] of [['wishlistName',candidate.name],['wishlistCategory',candidate.category],['wishlistNote',[candidate.shop,candidate.url].filter(Boolean).join('\n')]]){
+    const field=$(id);if(value&&field&&!field.value.trim()){field.value=value;filled++}
+  }
+  input.value=candidate.url;
+  status.textContent=(candidate.shop?candidate.shop+' · ':'')+(filled?'빈 칸만 미리 채웠어요.':'작성한 칸은 그대로 두었어요.')+' 확인·수정 후 Wish 저장을 눌러 주세요.';
+}
+// End wishlist quick-add.
 function resetWishlistForm(){if(!$("wishlistEditId"))return;["wishlistEditId","wishlistName","wishlistCategory","wishlistPrice","wishlistReason","wishlistNote","wishlistPurchasedDate"].forEach(id=>$(id).value="");$("wishlistKind").value="item";$("wishlistPriority").value="medium";$("wishlistStatus").value="consider";$("wishlistSourceType").value="manual";$("wishlistSave").textContent="Wish 저장"}
-function openWishlistModal(row=null){resetWishlistForm();if(row){$("wishlistEditId").value=row.id;$("wishlistKind").value=row.kind||"item";$("wishlistName").value=row.name||"";$("wishlistCategory").value=row.category||"";$("wishlistPrice").value=row.price??"";$("wishlistPriority").value=row.priority||"medium";$("wishlistStatus").value=row.status||"consider";$("wishlistReason").value=row.reason||"";$("wishlistNote").value=row.note||"";$("wishlistPurchasedDate").value=row.purchasedDate||"";$("wishlistSourceType").value=row.sourceType||"manual";$("wishlistSave").textContent="수정 저장"}openModal("wishlistModal")}
+function openWishlistModal(row=null){resetWishlistForm();resetWishlistQuickAdd();if(row){$("wishlistEditId").value=row.id;$("wishlistKind").value=row.kind||"item";$("wishlistName").value=row.name||"";$("wishlistCategory").value=row.category||"";$("wishlistPrice").value=row.price??"";$("wishlistPriority").value=row.priority||"medium";$("wishlistStatus").value=row.status||"consider";$("wishlistReason").value=row.reason||"";$("wishlistNote").value=row.note||"";$("wishlistPurchasedDate").value=row.purchasedDate||"";$("wishlistSourceType").value=row.sourceType||"manual";$("wishlistSave").textContent="수정 저장"}openModal("wishlistModal")}
 function renderWishlist(){
   if(!$('wishlistGrid'))return;const all=[...(state.wishlistItems||[])],status=state.ui.wishlistFilter||'all',kind=state.ui.wishlistKindFilter||'all',q=(state.ui.wishlistSearch||'').trim().toLocaleLowerCase('ko-KR'),rows=all.filter(x=>(status==='all'||x.status===status)&&(kind==='all'||x.kind===kind)&&(!q||[x.name,x.category,x.reason,x.note].join(' ').toLocaleLowerCase('ko-KR').includes(q))).sort((a,b)=>({high:0,medium:1,low:2}[a.priority]??1)-({high:0,medium:1,low:2}[b.priority]??1)||String(b.updatedAt||'').localeCompare(String(a.updatedAt||'')));
   $('wishlistCount').textContent=all.length+'개';$('wishlistFilter').value=status;$('wishlistKindFilter').value=kind;$('wishlistSearch').value=state.ui.wishlistSearch||'';const counts={consider:0,planned:0,purchased:0,hold:0};all.forEach(x=>{if(counts[x.status]!==undefined)counts[x.status]++});[['wishlistKpiAll',all.length],['wishlistKpiConsider',counts.consider],['wishlistKpiPlanned',counts.planned],['wishlistKpiPurchased',counts.purchased]].forEach(([id,v])=>{if($(id))$(id).textContent=String(v)});
@@ -8559,6 +8620,7 @@ $("travelPlaceSave").onclick=saveEntry($("travelPlaceSave"),()=>{
 $("travelStopAdd").onclick=()=>openTravelStopModal();
 $("travelStopSave").onclick=saveEntry($("travelStopSave"),()=>{const t=state.travelTrips.find(x=>x.id===$("travelDetailTripId").value);if(!t)return;const id=$("travelStopEditId").value,old=t.itinerary.find(x=>x.id===id),category=$("travelStopCategory").value,row=normalizeTravelStop({id:id||uid(),day:$("travelStopDay").value,date:$("travelStopDate").value,time:$("travelStopTime").value,category,schedule:category,place:$("travelStopPlace").value,note:$("travelStopNote").value,costText:$("travelStopCost").value});if(!row.time&&!row.category&&!row.place&&!row.note&&!row.costText)return alert("시간, 구분, 장소, 비고 또는 예상 비용 중 하나는 입력해 주세요.");const idx=t.itinerary.findIndex(x=>x.id===row.id);if(idx>=0)t.itinerary[idx]=row;else t.itinerary.push(row);t.updatedAt=new Date().toISOString();closeModal("travelStopModal");commit(old?"여행 일정 행을 수정했습니다.":"여행 일정 행을 추가했습니다.",false);openTravelTripDetail(t.id)});
 
+if($("wishlistQuickLink"))$("wishlistQuickLink").oninput=previewWishlistLink;
 if($("wishlistAdd"))$("wishlistAdd").onclick=()=>openWishlistModal();
 if($("wishlistFilter"))$("wishlistFilter").onchange=()=>{uiResetPage('wishlist');state.ui.wishlistFilter=$("wishlistFilter").value;save();renderWishlist()};
 if($("wishlistKindFilter"))$("wishlistKindFilter").onchange=()=>{uiResetPage('wishlist');state.ui.wishlistKindFilter=$("wishlistKindFilter").value;save();renderWishlist()};
