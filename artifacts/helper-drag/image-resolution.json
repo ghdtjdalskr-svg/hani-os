@@ -1,0 +1,30 @@
+{
+  "assets/launch/chibi-launch-v1-day.webp": {
+    "width": 1600,
+    "height": 1000
+  },
+  "assets/sprites-v3/daon.webp": {
+    "width": 1152,
+    "height": 1536
+  },
+  "assets/sprites-v3/yoonseul.webp": {
+    "width": 1152,
+    "height": 1536
+  },
+  "assets/profiles/thumb/hani-profile-cheese-256.webp": {
+    "width": 256,
+    "height": 256
+  },
+  "assets/profiles/thumb/hani-profile-cream-256.webp": {
+    "width": 256,
+    "height": 256
+  },
+  "assets/profiles/thumb/hani-profile-mochi-256.webp": {
+    "width": 256,
+    "height": 256
+  },
+  "assets/profiles/thumb/hani-profile-bori-256.webp": {
+    "width": 256,
+    "height": 256
+  }
+}
