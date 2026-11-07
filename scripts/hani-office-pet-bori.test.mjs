@@ -1,5 +1,6 @@
 import test from 'node:test';
 import {restoreBarista273Source} from './hani-office-barista-night-273-source.mjs';
+import {projectPreBoriStrollSource} from './hani-office-bori-stroll-source.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
@@ -23,7 +24,7 @@ async function mount({width=1280,reduced=false,seconds=36000,floor='1f'}={}){
   matchMedia:q=>({matches:q.includes('prefers-reduced-motion')?reduced:width<=Number(q.match(/max-width:\s*(\d+)/)?.[1]||0),addEventListener(){}}),
   setTimeout(fn,ms){const t={id:++next,fn,ms,at:clock+ms};pending.set(t.id,t);history.push(t);return t.id},clearTimeout:id=>pending.delete(id),
   localStorage:{setItem:deny,removeItem:deny,clear:deny},sessionStorage:{setItem:deny,removeItem:deny,clear:deny},save:deny
- });
+ },projectPreBoriStrollSource);
  f.ids.set('app',{classList:{contains:()=>false}});f.context.window.HaniOfficePresence={chairman:'absent'};
  f.document.visibilityState='visible';f.setDateTime(new Date(clock).toISOString());f.click(floor);await flush();
  const panel=f.root.querySelector('.hani-office-character-bubble');

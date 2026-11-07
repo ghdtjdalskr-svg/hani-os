@@ -1,5 +1,6 @@
 // 274: hash-verified exact inverse preserves the legacy no-storage assertion; raw runtime is tested by affinity safety QA.
 import {restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';
+import seoyunM9 from './hani-seoyun-m9-source.cjs';
 // node scripts/hani-office-tap-lines.test.mjs [--browser [playwright/index.mjs] [browser.exe]]
 import assert from 'node:assert/strict';
 import test from 'node:test';
@@ -13,7 +14,7 @@ import {fixture} from './hani-building-206-engine.test.mjs';
 
 const root=fileURLToPath(new URL('../',import.meta.url));
 const read=f=>fs.readFileSync(path.join(root,f),'utf8');
-const bank=JSON.parse(read('assets/data/office-tap-lines-v1.json')),source=read('hani-office-live.js');
+const bank=JSON.parse(read('assets/data/office-tap-lines-v1.json')),source=seoyunM9.projectPreSeoyunM9Source(read('hani-office-live.js'));
 const actions=JSON.parse(read('assets/data/office-actions-221.json'));
 const roster=assets.canon.people;
 function model(fetch){

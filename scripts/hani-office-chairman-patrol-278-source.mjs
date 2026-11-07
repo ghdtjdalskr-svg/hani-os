@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {projectPreBoriStrollSource} from './hani-office-bori-stroll-source.mjs';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 const hash=x=>createHash('sha256').update(x).digest('hex');
@@ -82,10 +83,12 @@ export function projectPreFix278Source(source,file='hani-office-live.js'){
 
 // Exact department-home outer layer; every older frozen contract stays intact.
 export function restoreCompanionHomesSource(source,file='hani-office-live.js'){
+ source=projectPreBoriStrollSource(source,file);
  const row=patrol278Delta.companionHomesExtension;assert.equal(file,row.file);assert.equal(hash(source),row.afterSha256,'only exact companion home bytes accepted');
  for(const r of row.replacements){assert.equal(source.split(r.after).length-1,1,'one complete home pair: '+r.name);source=source.replace(r.after,()=>r.before)}
  assert.equal(hash(source),row.beforeSha256,'every c590f8a byte restored');return source;
 }
 export function projectPreCompanionHomesSource(source,file='hani-office-live.js'){
+ source=projectPreBoriStrollSource(source,file);
  const row=patrol278Delta.companionHomesExtension;return file===row.file&&hash(source)===row.afterSha256?restoreCompanionHomesSource(source,file):source;
 }

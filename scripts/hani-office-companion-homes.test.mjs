@@ -8,9 +8,10 @@ import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 import {patrol278Delta,restoreCompanionHomesSource,projectPreCompanionHomesSource} from './hani-office-chairman-patrol-278-source.mjs';
+import {projectPreBoriStrollSource} from './hani-office-bori-stroll-source.mjs';
 const hash=s=>createHash('sha256').update(s).digest('hex'),plain=x=>JSON.parse(JSON.stringify(x));
-const current=fs.readFileSync('hani-office-live.js','utf8'),base=restoreCompanionHomesSource(current);
-const {scene,table}=loadScene(),r=scene.residents,prior=loadScene({transform:projectPreCompanionHomesSource}).scene;
+const current=projectPreBoriStrollSource(fs.readFileSync('hani-office-live.js','utf8')),base=restoreCompanionHomesSource(current);
+const {scene,table}=loadScene({transform:projectPreBoriStrollSource}),r=scene.residents,prior=loadScene({transform:projectPreCompanionHomesSource}).scene;
 const homes={'companion-frog':'4f','companion-penguin':'3f','companion-chick':'2f','companion-fox':'2f','companion-otter':'1f'};
 const weekdays=['companion-frog','companion-penguin','companion-otter','companion-chick','companion-fox'];
 const chair=(floor='4f')=>({floors:[{id:floor,people:[{id:'seongmin',floor,position:[51,66],pose:'sitting',walking:false}]}]});
@@ -76,7 +77,7 @@ test('preferred 2F department stops, within-floor walking/sitting, safe envelope
 
 test('executed 2F motion endpoint reservations never share a stop, including occupied preferred-stop fallback',()=>{
  // Observe the actual selected IDs without adding a production API or state.
- const traced=loadScene({transform:s=>'globalThis.__homeLegs=[];\n'+s.replace('usedStops.add(a.id);usedStops.add(b.id);','globalThis.__homeLegs.push({id:person.id,from:a.id,to:b.id});usedStops.add(a.id);usedStops.add(b.id);')});
+ const traced=loadScene({transform:s=>'globalThis.__homeLegs=[];\n'+projectPreBoriStrollSource(s).replace('usedStops.add(a.id);usedStops.add(b.id);','globalThis.__homeLegs.push({id:person.id,from:a.id,to:b.id});usedStops.add(a.id);usedStops.add(b.id);')});
  for(let sec=0;sec<86400;sec+=60){
   traced.context.__homeLegs.length=0;const now=at('2026-11-07',sec),staff=traced.scene.snapshot(now,{chairmanPresent:true}),existing=traced.scene.residents.snapshot(now,staff);
   traced.scene.residents.companionSnapshot(now,staff,true,false,existing);
@@ -101,7 +102,7 @@ test('existing residents and hidden visit/patrol owners retain exact source and 
 
 test('actual persistent DOM mounts all department pets on weekdays/weekends with zero writes and unchanged timer/listener registration',()=>{
  const writes=[],manifest=JSON.parse(fs.readFileSync('assets/sprites-v3/manifest-v3.json')),deny=(...args)=>{writes.push(args);throw Error('forbidden home persistence')};
- const mount=transform=>fixture('14:00',false,()=>true,table,{HaniOfficeV2Assets:{...assets,spritesV3:manifest},setTimeout:()=>0,localStorage:{getItem:()=>null,setItem:deny,removeItem:deny,clear:deny},sessionStorage:{getItem:()=>null,setItem:deny,removeItem:deny,clear:deny}},transform);
+ const mount=transform=>fixture('14:00',false,()=>true,table,{HaniOfficeV2Assets:{...assets,spritesV3:manifest},setTimeout:()=>0,localStorage:{getItem:()=>null,setItem:deny,removeItem:deny,clear:deny},sessionStorage:{getItem:()=>null,setItem:deny,removeItem:deny,clear:deny}},s=>transform(projectPreBoriStrollSource(s)));
  const f=mount(s=>s),old=mount(projectPreCompanionHomesSource),slots=f.ids.get('haniOfficeActors').children.slice(),tick=f.timers.find(t=>t.ms===100).fn;
  assert.deepEqual(f.timers.map(t=>t.ms),old.timers.map(t=>t.ms));assert.deepEqual(Object.keys(f.document.events),Object.keys(old.document.events));
  for(const day of ['2026-11-02','2026-11-07']){

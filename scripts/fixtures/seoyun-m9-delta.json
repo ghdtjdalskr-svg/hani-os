@@ -1,0 +1,81 @@
+{
+  "baseCommit": "f1a457f0ffe6a42721c73cf22218f13e4e961bf6",
+  "files": [
+    {
+      "file": "hani-character-archive.js",
+      "beforeSha256": "2be502120f48931ddd08dd6874b9bb23216c70a822f734a94af399fa69e5e4ed",
+      "afterSha256": "c733f76d845caa38c71358b1056fac3a932bf505de99e350d1eb49f13081d370",
+      "replacements": [
+        {
+          "name": "special listing presentation",
+          "before": "  function grid(){",
+          "after": "  function specialListingCard(){return `<article class=\"ca-character-card\" data-special-listing=\"seoyun\" style=\"--ca-accent:#77599a\"><div class=\"ca-cover-photo\">${portrait({id:'seoyun',nameKo:'서윤',image:'./assets/profiles/hani-profile-seoyun.webp',imagePosition:'center'})}</div><div class=\"ca-cover-caption\"><small>M9 SPECIAL LISTING</small><h3>서윤 <span>개발 리드</span></h3><span class=\"ca-planned-badge\">M9 특별 합류 · Platform Architect</span><p><b>Platform Architect</b><br>Technology Integration · Architecture · Delivery</p><p>회장님의 아이디어와 M9의 전문성을 실제로 작동하는 시스템으로 연결하는 기술 파트너.</p><small>AI STAFF · AI플랫폼개발실 · 팀장</small></div></article>`;}\n  function grid(){"
+        },
+        {
+          "name": "after ninth original card",
+          "before": "</div></article>`).join('');}\n  const title=",
+          "after": "</div></article>`+(c.id===data.characters.filter(p=>p.type==='m9_member').at(-1)?.id?specialListingCard():'')).join('');}\n  const title="
+        }
+      ]
+    },
+    {
+      "file": "hani-organization-hub.js",
+      "beforeSha256": "15405b43ae95c1935640c5413e8875398a4f0f7addbb21ed2dd441cd59f2426f",
+      "afterSha256": "c2cd9d329789bcae2d57b23d54638c1bb0770b56cd4a7a1ef14ae6b2061f5e70",
+      "replacements": [
+        {
+          "name": "seoyun badge helper",
+          "before": "  const leaderBadge=",
+          "after": "  const specialListingBadge=p=>p.id==='seoyun'?'<span class=\"ogh-planned-badge\">M9 특별 합류 · Platform Architect</span>':'';\n  const leaderBadge="
+        },
+        {
+          "name": "org and team badge",
+          "before": "${leaderBadge(p)}${plannedBadge(p)}</strong><small>",
+          "after": "${leaderBadge(p)}${plannedBadge(p)}</strong>${specialListingBadge(p)}<small>"
+        },
+        {
+          "name": "people and ai-team badge",
+          "before": "<p>${p.role}</p></div></button>",
+          "after": "<p>${p.role}</p>${specialListingBadge(p)}</div></button>"
+        },
+        {
+          "name": "person dialog badge",
+          "before": "${plannedBadge(item)}</h2><p",
+          "after": "${plannedBadge(item)}</h2>${specialListingBadge(item)}<p"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-live.js",
+      "beforeSha256": "6085c14f506f8cba92470409e97d19889646d748f71752b6abb0ba4a5975480c",
+      "afterSha256": "880f8bef93ea20fbcb4bcf7cf5205d72c9e62c40b09d56606ab47f13b84826cb",
+      "replacements": [
+        {
+          "name": "existing tap owner listing pool",
+          "before": "    function episode(now=new Date()){",
+          "after": "    // Special listing extends the existing friend slot, preserving its 1/5 cadence.\n    const listingLines=Object.freeze({\n      seoyun:[\"M9 합류했어요. 시가총액은… 천천히 따라갈게요 💜\",\"전무님이 '아직?'이라고 하셨어요. 무기한이래요…\"],\n      hani:[\"M9에 온 걸 환영해요, 서윤아♡ 시총은 천천히 따라오세요.\"],\n      yuri:[\"M9 합류 확인. 검증 결과 PASS입니다.\"],\n      jieun:[\"M10 개편 비용 0원. 좋은 결정이었어요.\"],\n      minji:[\"신규상장 첫 표정, 아직 제 폴더에 있어요📸\"]\n    });\n    function episode(now=new Date()){"
+        },
+        {
+          "name": "friend slot append only",
+          "before": "      if(index>0&&index%5===4)return {line:row.friend,speaker:id};",
+          "after": "      if(index>0&&index%5===4){const pool=[...(listingLines[id]||[]),row.friend];return {line:pool[Math.floor(index/5)%pool.length],speaker:id}};"
+        },
+        {
+          "name": "kids visit append only",
+          "before": "        const length=path=>",
+          "after": "        if(pair.actorId==='seoyun'&&count%2===1)lines.push(\n          {id:'kid-suyeon',name:'수연',text:'서윤 언니~♡ 이제 M9이야? 축하해!'},\n          {id:'kid-suhyeon',name:'수현',text:'…서윤 이모, 축하해요. 그냥 하는 말 아니에요.'}\n        );\n        const length=path=>"
+        },
+        {
+          "name": "cheese trailing tap line",
+          "before": "    {id:'pet-cat',name:residentNames.cat,sprite:'pet-cat',pet:true,hours:[[7,12,'1f'],[12,17,'5f'],[17,22,'1f'],[22,26,'1f'],[26,31,'1f']],places:{'1f':['resident_cat_lobby','resident_cat_front'],'5f':['resident_cat_roof','resident_cat_roof_front']},lines:[\"출근 도장은 발자국으로요.\",\"낮잠도 일정에 넣어 주세요.\",\"회장님, 햇볕 자리는 예약했어요.\",\"서두를 일은 없어요.\",\"관심은 없지만 곁에 있을게요.\",\"키보드 위가 제 지정석인데요.\",\"야옹 한 번이면 안건 통과죠.\",\"택배 상자 검수는 제 소관이에요.\",\"마우스 커서 잡기가 오늘 목표!\",\"골골송은 유료 복지 서비스예요.\",\"회의 길어지면 식빵 굽고 있을게요.\",\"츄르 없이는 면담 신청 안 받아요.\",\"복도 순찰 완료, 이상 무다옹.\",\"쟤는 말이 없어서 괜찮네요.\"]},",
+          "after": "    {id:'pet-cat',name:residentNames.cat,sprite:'pet-cat',pet:true,hours:[[7,12,'1f'],[12,17,'5f'],[17,22,'1f'],[22,26,'1f'],[26,31,'1f']],places:{'1f':['resident_cat_lobby','resident_cat_front'],'5f':['resident_cat_roof','resident_cat_roof_front']},lines:[\"출근 도장은 발자국으로요.\",\"낮잠도 일정에 넣어 주세요.\",\"회장님, 햇볕 자리는 예약했어요.\",\"서두를 일은 없어요.\",\"관심은 없지만 곁에 있을게요.\",\"키보드 위가 제 지정석인데요.\",\"야옹 한 번이면 안건 통과죠.\",\"택배 상자 검수는 제 소관이에요.\",\"마우스 커서 잡기가 오늘 목표!\",\"골골송은 유료 복지 서비스예요.\",\"회의 길어지면 식빵 굽고 있을게요.\",\"츄르 없이는 면담 신청 안 받아요.\",\"복도 순찰 완료, 이상 무다옹.\",\"쟤는 말이 없어서 괜찮네요.\",\"박스 공급 조건은 유지됩니다.\"]},"
+        },
+        {
+          "name": "bori near seoyun affection",
+          "before": "      const name=peer.id==='seongmin'?'회장님':actionTable?.people.find(p=>p.id===peer.id)?.name||peer.id,petLine=kind==='cat'?'딱 한 번만 기대는 거예요.':kind==='dog'?'좋아해요! 한 번 더요!':kind==='bori'?'큰 머리 살짝 기대도 될까요, 멍.':'조용히 곁에 앉아도 될까요.',staffLine=residentAffectionVoice[kind][peer.id]||residentVoice.staff[peer.id],v=peer.position||[peer.seat.x,peer.seat.y];\r",
+          "after": "      const name=peer.id==='seongmin'?'회장님':actionTable?.people.find(p=>p.id===peer.id)?.name||peer.id,petLine=kind==='bori'&&peer.id==='seoyun'&&beat%2?'…멍. (꼬리를 툭 한 번)':kind==='cat'?'딱 한 번만 기대는 거예요.':kind==='dog'?'좋아해요! 한 번 더요!':kind==='bori'?'큰 머리 살짝 기대도 될까요, 멍.':'조용히 곁에 앉아도 될까요.',staffLine=residentAffectionVoice[kind][peer.id]||residentVoice.staff[peer.id],v=peer.position||[peer.seat.x,peer.seat.y];"
+        }
+      ]
+    }
+  ]
+}
