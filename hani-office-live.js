@@ -86,6 +86,68 @@
         new Set(day.lines.map(row=>row?.staffId)).size===day.lines.length&&day.lines.every(row=>row&&ids.has(row.staffId)&&
           typeof row.floor==='string'&&/^[1-5]f$/.test(row.floor)&&typeof row.hidden==='boolean'&&text(row.line,40))));
   }
+  // Approved local-only affinity. This owner stores counts and nothing else.
+  function createOfficeAffinity(){
+    const key='hani_office_affinity_v1',names=['처음 만남','인사하는 사이','편한 동료','단짝','최애 콤비'];
+    const secrets=Object.freeze({
+      hani:['회의 끝나면 창가에서 아이디어 하나만 더요♡','제 책상 메모엔 같이 만들 꿈이 가득해요!','회장님 오시면 사무실이 조금 더 신나요♡','이제 눈빛만 봐도 다음 아이디어가 보여요!','제일 멋진 콤비 자리, 저랑 예약해요♡'],
+      gaeun:['로비 꽃은 제가 조금씩 방향을 바꿔요.','회장님 발소리가 나면 안내가 더 반가워요.','조용한 틈엔 빈 회의실 의자를 맞춰둬요.','회장님 자리 옆엔 늘 여유를 남겨둘게요.','함께 걷는 복도는 안내 없이도 편하네요.'],
+      yuna:['제 정리함에 귀여운 스티커 칸도 있어요!','회장님 오실 때 인사 연습한 건 비밀이에요!','접수 없는 시간엔 종이클립을 색별로 놔요!','회장님 질문은 이제 목소리만 들어도 반가워요!','오늘의 베스트 콤비, 저희라고 적어둘까요!'],
+      jieun:['제 책상 화분 이름은 꾸준함이에요.','창가 의자 하나는 회장님 몫으로 비워요.','가끔은 결론 없는 잡담도 괜찮더라고요.','회장님 편이라는 말, 이제 생략해도 아시죠.','이렇게 편히 웃는 사무실이면 충분해요.'],
+      haru:['사실 제 서랍엔 예쁜 포장지가 모여요.','라운지 컵은 손잡이가 편한 게 좋더라고요.','회장님이랑 고르면 사무실 소품도 재밌어요.','이 컵 취향은 회장님도 알아보실 줄 알았어요.','최애 콤비면 소품 구경도 같이 가야죠.'],
+      naeun:['제 책상 꽃은 매일 조금씩 피네요.','회장님이 오시면 라운지가 포근해져요.','가끔은 말없이 같은 창밖을 봐도 좋아요.','회장님 옆자리는 이제 제게도 편한 자리예요.','함께 있는 시간이 사무실의 작은 쉼표네요.'],
+      hina:['제 필통엔 별 스티커가 숨어 있어용!','회장님 오시면 책갈피도 쫑긋해용♡','쉬는 시간엔 모찌랑 조용히 있어용.','이젠 회장님 웃음도 정답처럼 알아용♡','최애 콤비 도장, 별 다섯 개 찍어용!'],
+      minji:['라운지 창빛이 가끔 영화 같아요.','제 책상엔 좋아하는 장면의 엽서가 있어요.','회장님이랑 잡담하면 엔딩이 늘 아쉬워요.','우리 사무실 영화라면 이 장면은 남길래요.','회장님과 제 콤비 장면엔 자막도 필요 없네요.'],
+      sooyeon:['옥상 바람 방향은 제가 제일 잘 알아요!','회장님 오시면 산책 동선부터 떠올라요!','엘리베이터 앞에서도 작은 여행은 시작돼요!','회장님과는 복도 한 바퀴도 제법 즐겁네요!','최애 콤비 출발 신호는 눈빛으로 충분하죠!'],
+      sua:['제 문서 끝엔 작은 꽃 낙서가 있어요ㅎㅎ','회장님 인사 한 번이면 초안이 술술 나와요.','회의실 이름표도 예쁘게 맞춰봤어요ㅎㅎ','회장님은 제 말줄임표도 알아주시네요ㅎㅎ','우리 콤비 소개 문구는 제가 써도 되죠? 헤헤.'],
+      taeo:['제 메모지에도 가끔 쓸모없는 농담이 있습니다.','복도 잡담은 의외로 좋은 회의 형식입니다.','회장님 자리의 의자 소리도 이제 익숙합니다.','저희 콤비 안건은 만장일치로 즐겁군요.','오늘은 결론 없이 웃어도 성과로 치겠습니다.'],
+      seoyun:['제 모니터 옆 작은 별은 아린이 붙였어요.','회장님 오시면 설명보다 먼저 미소가 나네요.','조용한 사무실에서 키보드 소리가 좋아요💜','함께 나눈 아이디어는 오래 기억에 남아요.','회장님과의 콤비는 확인할수록 든든하네요💜'],
+      dohyun:['제 컵 받침엔 작은 버그 그림이 있어요☕','회장님 발소리가 나면 탭부터 정리하게 돼요.','고친 화면을 같이 보는 순간이 좋더라고요.','회장님이랑은 침묵도 꽤 편하네요☕','우리 콤비는 커피 식기 전에 통하네요.'],
+      serin:['제 노트 여백에도 가설이 자라요!!📊','회장님 오시면 아이디어 속도가 붙어요!✨','사무실 잡담에도 재밌는 패턴이 보여요!!','이젠 회장님 눈빛에 물음표가 보여요!!','최애 콤비라니 새 그래프보다 신나요!!✨'],
+      yuri:['제 책상에도 기준 없는 낙서는 있습니다.','회의실 의자는 조용히 맞춰두는 편입니다.','회장님과의 잡담은 검사표에 넣지 않습니다.','기준은 그대로지만 옆자리는 편해졌습니다.','최애 콤비 인정합니다. 도장은 생략하죠.'],
+      arin:['제 스케치북엔 사무실 햇살도 그려요🎨','회장님 오시면 말풍선 색이 떠올라요✨','이 작은 여백은 같이 낙서해도 좋아요.','회장님 표정은 이제 스케치 없이도 그려요!','최애 콤비 배지는 하트 다섯 개로 해요✨'],
+      daon:['제 메모지 모서리는 늘 조금 접혀 있어요😅','회장님 오시면 먼저 인사할 용기가 나요.','혹시… 창가 자리에서 잠깐 이야기할까요.','이제 회장님 옆에선 말이 덜 꼬이네요.','최애 콤비라니… 저도 자신 있게 고개 들게요.'],
+      yoonseul:['제 책갈피엔 작은 별자리가 있어요🔖','회장님과 나눌 질문은 여백에 적어둬요📚','사무실 창밖도 한 장의 지도 같네요!','이제 질문보다 먼저 반가움이 펼쳐져요!','우리 콤비 이야기는 두꺼운 책이 되겠네요📚'],
+      mir:['회장님 발소리, 이제 조금 알아, 헤헤.','창가에 같이 서면 생각이 천천히 자라.','사무실 불빛 아래 잡담하는 거 좋아.','회장님 옆에선 질문 없어도 편해.','우리 콤비 이름은 그냥 우리면 좋겠어.'],
+      'pet-cat':['회장님 옆 상자는 특별히 비워뒀다옹.','관심 없는 척해도 발소리는 기억해요.','제 골골송은 가까이 와야 들려요.','회장님 무릎 옆은 예약 없이 괜찮다옹.','최애 콤비라면 상자 반쪽은 내어줄게요.'],
+      'pet-dog':['회장님 발소리엔 꼬리가 먼저 답해요!','엘리베이터 앞에서 몰래 마중 연습했어요!','제 공은 회장님이 던져야 더 재밌어요!','이젠 눈만 마주쳐도 산책 약속이죠!','최애 콤비 오늘도 발도장 꾹 찍어요!'],
+      'pet-rabbit':['회장님 발소리는 조용히 알아볼 수 있어요.','제 옆 햇살은 조금 나눠드릴게요.','귀를 기울이면 사무실도 포근해요.','이제 회장님 곁에서도 눈을 감을 수 있어요.','가장 조용한 콤비여도 괜찮겠지요.'],
+      'pet-bori':['회장님 오시면 꼬리 끝부터 깨어나요, 멍.','로비 바닥의 따뜻한 자리를 알아뒀어요.','제 옆에선 천천히 이야기해도 돼요.','이젠 회장님 발소리에 눈 감고도 반겨요.','최애 콤비면 제 큰 그늘도 나눠드려요, 멍.'],
+      iseul:['회장님 오시는 소리에 컵부터 꺼냈어요.','제 앞치마 주머니엔 하트 스케치가 있어요.','한가한 카페에선 원두 소리가 더 다정해요.','이젠 하트 모양만 봐도 제 잔인 줄 아시죠.','우리 콤비 잔 받침은 나란히 놓아둘게요.'],
+      eunha:['야간 카페 시계 소리가 은근히 좋아요.','회장님 오시면 조용한 밤도 반가워져요.','제 앞치마 별 자수는 밤에 더 잘 보여요.','이젠 졸린 인사도 알아들으시겠네요.','최애 콤비 자리는 작은 조명 아래예요.']
+    });
+    const ids=new Set(Object.keys(secrets)),counts=Object.create(null),turns=new Map();
+    let loaded=false,writable=true,warned=false,dirty=false,due=Infinity,lastWrite=-Infinity;
+    function warn(){if(!warned){warned=true;console.warn('Office affinity storage unavailable or malformed; using memory only.')}}
+    function load(){
+      if(loaded)return;loaded=true;
+      try{
+        const raw=globalThis.localStorage.getItem(key);if(raw===null)return;
+        const value=JSON.parse(raw);
+        if(!value||Array.isArray(value)||value.v!==1||Object.keys(value).sort().join(',')!=='counts,v'||!value.counts||typeof value.counts!=='object'||Array.isArray(value.counts))throw Error('affinity format');
+        for(const [id,count]of Object.entries(value.counts))if(ids.has(id)){
+          if(!Number.isInteger(count)||count<0)throw Error('affinity count');
+          counts[id]=Math.min(9999,count);
+        }
+      }catch(_){for(const id of Object.keys(counts))delete counts[id];writable=false;warn()}
+    }
+    function get(id){load();const count=ids.has(id)?counts[id]||0:0,level=1+[5,15,35,70].filter(n=>count>=n).length;return {count,level,name:names[level-1],hearts:'♥'.repeat(level)+'♡'.repeat(5-level)}}
+    function tap(id,event){
+      if(!ids.has(id)||event?.isTrusted!==true||!((event.type==='click')||(event.type==='keydown'&&event.key==='Enter'&&!event.repeat)))return null;
+      const before=get(id);if(before.count<9999){counts[id]=before.count+1;dirty=true;if(due===Infinity)due=Date.now()+2000}
+      const info=get(id),turn=turns.get(id)||0;turns.set(id,turn+1);
+      const pool=secrets[id].slice(0,info.level>=5?5:3),up=info.level>before.level;
+      const suffix=id==='hina'?'회장님이랑 이제 '+info.name+'예용♡':id==='mir'?'회장님이랑 이제 '+info.name+'네, 헤헤.':id==='yuri'||id==='taeo'?'회장님과 이제 '+info.name+'입니다.':'회장님이랑 이제 '+info.name+'네요!';
+      return {...info,added:info.count>before.count,up,line:up?suffix:info.level>=3?pool[turn%pool.length]:''};
+    }
+    function flush(lifecycle=false){
+      const now=Date.now();if(!dirty||!writable||now-lastWrite<2000||(!lifecycle&&now<due))return;
+      try{globalThis.localStorage.setItem(key,JSON.stringify({v:1,counts}));dirty=false;due=Infinity;lastWrite=now}
+      catch(_){writable=false;warn()}
+    }
+    return Object.freeze({get,tap,flush});
+  }
+
   function createTapLines(roster){
     let bank=null,drama=null,request=null,ready=false,seenDay='',seen=new Set();const cursors=new Map();
     function load(){
@@ -2595,6 +2657,22 @@
   const roster=document.createElement("ul");roster.className="hani-building-roster";roster.setAttribute("aria-label","현재 층 직원과 활동");root.querySelector(".hani-office-scroll").after(roster);for(const actor of actors.values()){const row=document.createElement("li"),name=document.createElement("b"),text=document.createElement("span");name.textContent=actor.dataset.name;row.append(name,text);if(!actor.dataset.resident)roster.append(row);actor.officeRow=row;actor.officeRowName=name;actor.officeText=text}
   const actorBubble=document.createElement('div'),bubbleLine=document.createElement('p'),profileLink=document.createElement('a'),bubbleSprite=document.createElement('div'),bubbleClose=document.createElement('button');
   actorBubble.className='hani-office-character-bubble';actorBubble.hidden=true;actorBubble.setAttribute('aria-live','polite');actorBubble.setAttribute('aria-atomic','false');bubbleLine.setAttribute('aria-atomic','true');profileLink.setAttribute('aria-live','off');profileLink.textContent='프로필 ↗';profileLink.href='#organization/people';bubbleSprite.className='hani-office-bubble-sprite';bubbleSprite.hidden=true;bubbleSprite.setAttribute('aria-hidden','true');bubbleClose.type='button';bubbleClose.className='hani-office-bubble-close';bubbleClose.textContent='✕';bubbleClose.setAttribute('aria-label','말풍선 닫기');actorBubble.append(bubbleLine,profileLink,bubbleSprite,bubbleClose);actorBubble.onclick=event=>{if(!profileLink.contains(event.target))closeBubble(true,true)};map.append(actorBubble);
+  const affinity=createOfficeAffinity();window.HaniOfficeAffinity=Object.freeze({get:affinity.get});
+  const affinityRow=document.createElement('small'),affinityFloat=document.createElement('span');
+  affinityRow.className='hani-office-affinity';affinityRow.hidden=true;
+  affinityFloat.className='hani-office-affinity-float';affinityFloat.setAttribute('aria-hidden','true');affinityFloat.textContent='+1 ♡';affinityFloat.hidden=true;
+  actorBubble.append(affinityRow,affinityFloat);
+  function showAffinity(id,result=null){
+    const info=affinity.get(id),actor=actors.get(id),known=actor?actor.dataset.resident==='pet'||(!actor.dataset.resident&&actor.dataset.visitor!=='true'&&id!=='seongmin'):id==='iseul'||id==='eunha';
+    affinityRow.hidden=!known;affinityFloat.hidden=!result?.added;
+    if(!known)return;
+    affinityRow.textContent=(actor?.dataset.name||(id==='eunha'?'은하':'이슬'))+' · Lv'+info.level+' '+info.name+' '+info.hearts;
+    affinityFloat.dataset.beat=affinityFloat.dataset.beat==='a'?'b':'a';
+  }
+  function tapActor(actor,event){
+    if(actor.hidden||!sceneVisible()||document.getElementById('app')?.classList.contains('login-locked'))return;
+    openBubble(actor,false,event);
+  }
   const tapLines=building.tapLines.create(building.canon?.people||window.HaniOrganizationRoster?.people||[]);
   let bubblePerson=null,bubbleSerial=0,bubbleSelection=null,pendingTap=null,cancelled=new Set(),cancelledDay='',meetingStartedAt=0;
   let bubbleTimer=null,lastBubbleTap=-Infinity,autoBubbleEntry=true;
@@ -2629,6 +2707,7 @@
   }
   function actionRunning(actor){return meeting||!!actor.officeTravel||actor.dataset.walking==='true'||!!actor.dataset.event||actor.dataset.action&&actor.dataset.action!=='base-work'}
   function bubbleText(actor){
+    if(bubbleSelection?.affinity)return actor.dataset.name+' · '+bubbleSelection.line;
     if(actor.dataset.resident)return actor.dataset.name+' · '+(bubbleSelection?.line||actor.dataset.line);
     if(bubbleSelection&&(bubbleSelection.drama||bubbleSelection.ownerEvent||!actionRunning(actor))){const speaker=actors.get(bubbleSelection.speaker);return (speaker?.dataset.name||actor.dataset.name)+' · '+actor.querySelector('.hani-office-status').dataset.full+' · '+bubbleSelection.line}
     return actor.dataset.name+' · '+statusNames[actor.dataset.status]+' · '+actor.querySelector('.hani-office-status').dataset.full;
@@ -2657,7 +2736,7 @@
       // the next 100ms resident sample can immediately reopen the same bubble.
       const clock=building.residents.clock(new Date());root.officeTrioBeat=clock.day+'|'+Math.floor(clock.seconds/120);
     }
-    clearBubbleTimer();bubbleSerial++;bubblePerson=null;bubbleSelection=null;if(clearPending)pendingTap=null;actorBubble.hidden=true;for(const actor of actors.values())actor.dataset.speaking='false';fitStatusLabels();
+    clearBubbleTimer();affinityRow.hidden=true;affinityFloat.hidden=true;bubbleSerial++;bubblePerson=null;bubbleSelection=null;if(clearPending)pendingTap=null;actorBubble.hidden=true;for(const actor of actors.values())actor.dataset.speaking='false';fitStatusLabels();
     if(baristaAwake){baristaAwake=false;updateBarista()}
   }
   function updateBubbleSprite(actor,automatic){
@@ -2670,10 +2749,17 @@
     bubbleSprite.style.setProperty('--bubble-sprite-ratio',String(entry.cell[0]/entry.cell[1]));
     bubbleSprite.dataset.pose=actor.dataset.pose;
   }
-  function showBubble(actor,selection,duration=3000,automatic=false){bubblePerson=actor.dataset.person;bubbleSelection=selection;updateBubbleSprite(actor,automatic);actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=!!actor.dataset.resident||actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);fitStatusLabels();fitBubble();const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;const next=selection?.residentTrio?.lines[selection.trioIndex+1],speaker=next&&actors.get(next.id);if(speaker&&!speaker.hidden&&selection.residentTrio.key===building.residents.clock(new Date()).day+'|'+Math.floor(building.residents.clock(new Date()).seconds/900))showBubble(speaker,{speaker:next.id,line:next.line,resident:true,residentTrio:selection.residentTrio,trioIndex:selection.trioIndex+1},duration,automatic);else closeBubble(globalThis.innerWidth<=480)}},bubbleDuration(duration))}
-  function openBubble(actor,automatic=false){
+  function showBubble(actor,selection,duration=3000,automatic=false){showAffinity(actor.dataset.person,selection?.affinity||(!automatic?actor.officeAffinityTap:null));actor.officeAffinityTap=null;bubblePerson=actor.dataset.person;bubbleSelection=selection;updateBubbleSprite(actor,automatic);actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=!!actor.dataset.resident||actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);fitStatusLabels();fitBubble();const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;const next=selection?.residentTrio?.lines[selection.trioIndex+1],speaker=next&&actors.get(next.id);if(speaker&&!speaker.hidden&&selection.residentTrio.key===building.residents.clock(new Date()).day+'|'+Math.floor(building.residents.clock(new Date()).seconds/900))showBubble(speaker,{speaker:next.id,line:next.line,resident:true,residentTrio:selection.residentTrio,trioIndex:selection.trioIndex+1},duration,automatic);else closeBubble(globalThis.innerWidth<=480)}},bubbleDuration(duration))}
+  function openBubble(actor,automatic=false,event=null){
     if(!automatic){lastBubbleTap=Date.now();autoBubbleEntry=false;clearBubbleTimer()}
     if(actor.hidden)return;
+    const result=automatic?null:affinity.tap(actor.dataset.person,event);
+    if(result?.line){
+      pendingTap=null;const person=residentSlots.find(p=>p.id===actor.dataset.person);
+      if(!reduced){if(person?.pet)actor.officeReactions.reset();actor.officeReactions.request(person?.pet?'hop':'tap',Date.now(),true)}
+      showBubble(actor,{speaker:actor.dataset.person,line:result.line,affinity:result,resident:!!person},3000,false);return;
+    }
+    actor.officeAffinityTap=result;
     if(actor.dataset.resident){
       const affection=actor.officeResidentState?.affection;
       if(affection){pendingTap=null;showBubble(actor,{speaker:actor.dataset.person,line:affection.line,resident:true},3000,automatic);return}
@@ -2697,8 +2783,8 @@
     if(!eventPanel.hidden&&!eventPanel.contains(event.target)&&!eventButton.contains(event.target))closeEventPanel();
     if(eventPanel.contains(event.target)||eventButton.contains(event.target)){if(dismissOnly&&!actorBubble.hidden)closeBubble(true,true);return}
     const actor=event.target.closest?.('.hani-office-actor');
-    if(actor&&actorLayer.contains(actor)){if(!dismissOnly)openBubble(actor);return}
-    if(event.target.closest?.('.hani-office-barista')===baristaButton){if(!dismissOnly)openBaristaBubble();return}
+    if(actor&&actorLayer.contains(actor)){if(!dismissOnly)tapActor(actor,event);return}
+    if(event.target.closest?.('.hani-office-barista')===baristaButton){if(!dismissOnly)openBaristaBubble(event);return}
     if(!dismissOnly||actorBubble.contains(event.target)||[...actors.values()].some(a=>a.officeRow.contains(event.target)))return;
     closeBubble(true,true);
   }
@@ -2706,7 +2792,7 @@
   actorLayer.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();activateActor(event)}else if(event.key==='Escape')closeBubble(true,true)});
   profileLink.addEventListener('click',event=>{if(typeof showView==='function'){event.preventDefault();showView('organization/people/'+bubblePerson)}});
   // The existing roster is also a touch-sized entry to the same bubble.
-  for(const actor of actors.values()){actor.officeRow.setAttribute('role','button');actor.officeRow.tabIndex=0;actor.officeRow.addEventListener('click',()=>openBubble(actor));actor.officeRow.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();openBubble(actor)}})}
+  for(const actor of actors.values()){actor.officeRow.setAttribute('role','button');actor.officeRow.tabIndex=0;actor.officeRow.addEventListener('click',event=>tapActor(actor,event));actor.officeRow.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();tapActor(actor,event)}})}
   const plannedRows=(building.canon?.people||window.HaniOrganizationRoster?.people||[]).filter(p=>p.status==='planned').map(p=>{
     const row=document.createElement('li'),name=document.createElement('b'),badge=document.createElement('span'),info=document.createElement('span');
     row.dataset.plannedPerson=p.id;name.textContent=p.name;badge.className='hani-office-planned-badge';badge.textContent='입사 예정';
@@ -2769,13 +2855,15 @@
     baristaNight.hidden=hidden||!clock.night;
     const frame=clock.dozing?(baristaAwake?3:2):1;if(baristaNight.dataset.frame!==String(frame)){baristaNight.dataset.frame=String(frame);baristaNight.style.backgroundPosition=((frame-1)*50)+'% 0'}
   }
-  function openBaristaBubble(){
+  function openBaristaBubble(event){
     updateBarista();if(baristaButton.hidden||!sceneVisible()||document.getElementById('app')?.classList.contains('login-locked'))return;
     const clock=baristaClock(),waking=clock.dozing&&!baristaAwake;
     closeBubble();lastBubbleTap=Date.now();autoBubbleEntry=false;
     baristaAwake=clock.dozing;updateBarista();
     bubbleSprite.hidden=true;actorBubble.dataset.zoom='false';actorBubble.officeFollow=null;
     bubbleLine.textContent=clock.night?'은하 · 야간 카페 · '+(waking?'앗, 회장님! 졸지 않았어요… 커피 드릴게요.':baristaNightLines[baristaNightTap++%baristaNightLines.length]):'바리스타 이슬 · '+(matchMedia('(max-width:600px)').matches?'카페운영':'카페 운영 중')+' · '+baristaLines[baristaTap++%baristaLines.length];
+    const id=clock.night?'eunha':'iseul',result=affinity.tap(id,event);
+    showAffinity(id,result);if(result?.line)bubbleLine.textContent=(clock.night?'은하 · 야간 카페':'바리스타 이슬 · 카페 운영 중')+' · '+result.line;
     profileLink.hidden=true;actorBubble.style.left='4px';actorBubble.style.top='4px';actorBubble.hidden=false;
     const serial=++bubbleSerial,duration=bubbleDuration();queueBubbleTimer(()=>{
       if(serial!==bubbleSerial)return;
@@ -3183,7 +3271,7 @@
         if(affection?.bubble&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)showBubble(actor,{speaker:person.id,line:affection.line,resident:true},3000,true);
       }
       const line=affection?.line||state.scene?.line||person.lines[0];
-      if(actor.dataset.line!==line){actor.dataset.line=line;actor.querySelector('.hani-office-status').dataset.full=line;if(bubblePerson===person.id){bubbleSelection={speaker:person.id,line,resident:true};bubbleLine.textContent=bubbleText(actor)}}
+      if(actor.dataset.line!==line){actor.dataset.line=line;actor.querySelector('.hani-office-status').dataset.full=line;if(bubblePerson===person.id&&!bubbleSelection?.affinity){bubbleSelection={speaker:person.id,line,resident:true};bubbleLine.textContent=bubbleText(actor)}}
       if(state.scene&&actor.officeResidentScene!==state.scene.key){actor.officeResidentScene=state.scene.key;if(actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)showBubble(actor,{speaker:person.id,line:state.scene.line,resident:true})}
       if(moved&&bubblePerson===person.id)fitBubble(true);
     }
@@ -3199,7 +3287,9 @@
   tabs.addEventListener("click",event=>{const button=event.target.closest("[data-building-floor]");if(button&&tabs.contains(button))selectFloor(button.dataset.buildingFloor)});
   tabs.addEventListener("keydown",event=>{const keys=[...floorButtons.keys()],index=keys.indexOf(activeFloor);let next;if(event.key==="ArrowRight")next=(index+1)%keys.length;else if(event.key==="ArrowLeft")next=(index+keys.length-1)%keys.length;else if(event.key==="Home")next=0;else if(event.key==="End")next=keys.length-1;else return;event.preventDefault();selectFloor(keys[next]);floorButtons.get(keys[next]).focus()});
   function syncVisibility(){officePresence.read();const visible=sceneVisible();if(visible&&!sceneActive)autoBubbleEntry=true;sceneActive=visible;root.dataset.paused=String(!visible);if(visible)updateBuilding(true,false);else{closeEventPanel();autoBubbleEntry=false;for(const actor of actors.values())clearMotion(actor);closeBubble()}map.officeMascotMotion?.({now:Date.now(),reduced,visible,actors})}
-  document.addEventListener("visibilitychange",syncVisibility);
+  document.addEventListener("visibilitychange",()=>{if(document.hidden)affinity.flush(true);syncVisibility()});
+  // Exactly one new listener: a visible unload may have no visibilitychange.
+  globalThis.addEventListener?.('pagehide',()=>affinity.flush(true));
   new MutationObserver(syncVisibility).observe(root.closest(".view"),{attributes:true,attributeFilter:["class","hidden","style"]});
   if(typeof IntersectionObserver==='function')new IntersectionObserver(entries=>{mapOnScreen=entries[0].isIntersecting;syncVisibility()}).observe(map);
   if(typeof ResizeObserver==='function')new ResizeObserver(()=>{fitStatusLabels();fitBubble()}).observe(map);
@@ -3261,7 +3351,7 @@
   if(typeof agentDetailCache!=="undefined"&&agentDetailCache?.case)window.haniOfficeLiveUpdate(agentDetailCache);
   // One existing 100ms movement clock. Sample the reserved route at wall time;
   // persistent actor left/top remain the canonical coordinates for all readers.
-  setInterval(()=>{const now=Date.now();if(!sceneActive||document.hidden)return;
+  setInterval(()=>{affinity.flush();const now=Date.now();if(!sceneActive||document.hidden)return;
     if(building.scheduler&&!meeting&&now-lastProjection>=200){lastProjection=now;updateBuilding(false,false)}
     updateResidents(new Date(now));
     for(const actor of actors.values()){

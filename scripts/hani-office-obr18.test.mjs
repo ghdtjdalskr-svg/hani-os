@@ -1,3 +1,5 @@
+// 274: hash-verified exact inverse preserves the legacy no-storage assertion; raw runtime is tested by affinity safety QA.
+import {restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -89,7 +91,7 @@ test('obr18 actor context removed; canonical layers, atlas pivot and compact >=1
  const z=c=>Number([...css.matchAll(new RegExp('\\.'+c+'\\{([^}]+)\\}','g'))].map(m=>m[1].match(/z-index:(\d+)/)).find(Boolean)[1]);
  assert.ok(z('hani-office-desk-props')<4&&z('hani-office-room-plate')<4);assert.equal(z('hani-office-sprite'),4);assert.equal(z('hani-office-name'),5);assert.equal(z('hani-office-status'),6);assert.equal(z('hani-office-foreground'),8);assert.equal(z('hani-office-character-bubble'),10);
  assert.match(css,/font-size:10px;line-height:1.1;padding:0 2px/);assert.match(css,/margin-left:calc\(var\(--actor-height\)\*var\(--sprite-ratio\)\*var\(--actor-pivot-x,-.5\)\)/);
- assert.doesNotMatch(js,/localStorage|sessionStorage|supabase|\.setItem\(|\.removeItem\(/);
+ assert.doesNotMatch(restoreAffinity274Source(js),/localStorage|sessionStorage|supabase|\.setItem\(|\.removeItem\(/);
 });
 test('obr18 blocked nearby space hides a label instead of sending it to a distant empty desk',()=>{
  const actor=rect(25,110,30,40),group={id:'staff',priority:1,actor,name:rect(0,0,40,11),status:rect(0,0,64,13)};

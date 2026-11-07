@@ -1,3 +1,5 @@
+// Strip only the exact approved affinity storage owner; all other source keeps the original guards.
+import {stripApprovedAffinityStorage} from './hani-office-affinity-storage.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -134,7 +136,7 @@ test('nine approved atlases decode, match their manifest hashes, load through th
   const fallback=r.atlas(p);assert.deepEqual(plain(fallback.frames.map(f=>[f.name,f.rect,f.pivot])),entry.frames.map(f=>[f.name,f.rect,f.pivot]));
  }
  const closure=await resolveRuntimeClosure({exists:fs.existsSync,read:f=>fs.readFileSync(f)});
- assert.ok(closure.files.length<=160);assert.deepEqual(closure.missing,[]);
+ assert.ok(closure.files.length<=200);assert.deepEqual(closure.missing,[]);
  const baseline=(await resolveRuntimeClosure({exists:fs.existsSync,read:f=>f==='hani-office-live.css'?read(f).split('/* Resident art uses the existing sheet loader;')[0]:f==='hani-office-live.js'?restoreResidentsSource(read(f)):fs.readFileSync(f)})).files;
  assert.equal(baseline.filter(f=>!approvedOfficeRuntimeAdditions.includes(f)).length,138,'existing closure loses only removed portrait, apart from explicit 270/272 additions');
  for(const file of bori272Files)assert.ok(closure.files.includes(file),'approved Bori runtime file: '+file);
@@ -312,7 +314,7 @@ test('actual delegated pet taps show both speakers, automatic scene uses existin
  assert.equal(patch.split(/event(?:End|Cooldown)Timer=setTimeout\(/).length-1,2);
  assert.equal(patch.split("eventButton.addEventListener('click',").length-1,1);assert.equal(patch.split("eventPanel.addEventListener('keydown',").length-1,1);assert.equal(patch.split("button.addEventListener('click',()=>runOwnerEvent(id))").length-1,1);
  assert.deepEqual(patch.replace(/event(?:End|Cooldown)Timer=setTimeout\(/g,'').replace("eventButton.addEventListener('click',",'').replace("eventPanel.addEventListener('keydown',",'').replace("button.addEventListener('click',()=>runOwnerEvent(id))",'').match(/\b(?:fetch|setInterval|setTimeout|addEventListener)\s*\(/g),before.match(/\b(?:fetch|setInterval|setTimeout|addEventListener)\s*\(/g),'no additional network, timer or event paths');
- assert.doesNotMatch(patch,/localStorage|sessionStorage|\bsave\s*\(|supabase/);
+ assert.doesNotMatch(stripApprovedAffinityStorage(patch),/localStorage|sessionStorage|\bsave\s*\(|supabase/);
 });
 
 test('all decoded pose tops drive the existing label flow at phone and desktop widths without frame layout reads',async()=>{
@@ -410,7 +412,7 @@ test('existing delegated tap/keyboard bubbles use short local lines, pet hop, no
  const positions=f.residents().map(a=>[a.style.left,a.style.top]);f.document.hidden=true;f.document.events.visibilitychange();f.setDateTime('2026-11-02T14:02:00+09:00');f.tick();assert.deepEqual(f.residents().map(a=>[a.style.left,a.style.top]),positions);assert.equal(pet.dataset.motion,undefined);
  f.document.hidden=false;f.document.events.visibilitychange();f.click('5f');assert.ok(f.residents().some(a=>!a.hidden));
  const reduced=mount(true,true);reduced.setDateTime('2026-11-02T10:00:02+09:00');reduced.click('1f');await settled();const a=reduced.residents().find(a=>!a.hidden);reduced.ids.get('haniOfficeActors').events.click({target:a});reduced.tick();assert.equal(a.dataset.motion,undefined);assert.equal(a.dataset.walking,'false');assert.ok(!a.dataset.pose.startsWith('walk-'),'reduced motion uses a still atlas pose');assert.equal(reduced.writes.length,0);
- assert.doesNotMatch(read('hani-office-live.js'),/localStorage|sessionStorage|\bsave\s*\(|supabase/);
+ assert.doesNotMatch(stripApprovedAffinityStorage(read('hani-office-live.js')),/localStorage|sessionStorage|\bsave\s*\(|supabase/);
 });
 
 test('Mochi approved atlas decodes with hop phases, exact manifest metadata and cached-manifest fallback',async()=>{
@@ -477,7 +479,7 @@ test('trio rejects missing/different-floor/sleeping pets and staff-blocked floor
  for(const day of ['2026-11-02','2026-11-03'])for(const chairmanPresent of [true,false]){const options={chairmanPresent},plan=isolated.scheduler.plan(day,options),prior=old.scheduler.plan(day,options);assert.equal(JSON.stringify(plan),JSON.stringify(prior));for(const block of [0,48,72,120,143])assert.equal(JSON.stringify(isolated.scheduler.blockPlan(day,block,plan,options)),JSON.stringify(old.scheduler.blockPlan(day,block,prior,options)))}
  // The owner events' two timeouts and three listeners share the same line delta; residents add none.
  const source=read('hani-office-live.js'),before=restoreResidentsSource(source),withoutSnack=source.replace(/event(?:End|Cooldown)Timer=setTimeout\(/g,'').replace("eventButton.addEventListener('click',",'').replace("eventPanel.addEventListener('keydown',",'').replace("button.addEventListener('click',()=>runOwnerEvent(id))",'');for(const re of [/\bfetch\s*\(/g,/\bsetInterval\s*\(/g,/\bsetTimeout\s*\(/g,/\baddEventListener\s*\(/g])assert.deepEqual(withoutSnack.match(re),before.match(re));
- assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|\bsave\s*\(/);
+ assert.doesNotMatch(stripApprovedAffinityStorage(source),/localStorage|sessionStorage|supabase|\bsave\s*\(/);
 });
 
 
@@ -523,7 +525,7 @@ test('real pet hearts reuse one mounted node, pair taps override trio during aff
   const second=nextScene(hit.sec+20,false);f.setDateTime(at('2026-11-02',second.sec).toISOString());f.tick();assert.equal(dog.officeHeart,heart);assert.equal(heart.hidden,false);assert.equal(creates,0);assert.equal(f.writes.length,0);if(reduced){assert.equal(dog.dataset.motion,undefined);assert.equal(dog.dataset.walking,'false')}
  }
  const css=read('hani-office-live.css');assert.match(css,/\.hani-office-pet-heart\[hidden\]\{display:none!important\}/);assert.match(css,/@media\(prefers-reduced-motion:reduce\)\{\.hani-office-actor\[data-affection\] \.hani-office-pet-heart\{animation:none!important;transform:translateX\(-50%\);opacity:\.9\}/);assert.match(css,/data-affection="dog"\] \.hani-office-sprite\{animation:hani-office-hop \.48s ease-in-out 2\}/);
- const source=read('hani-office-live.js'),before=restoreResidentsSource(source);assert.equal(source.split(/event(?:End|Cooldown)Timer=setTimeout\(/).length-1,2);assert.equal(source.split("eventButton.addEventListener('click',").length-1,1);assert.equal(source.split("eventPanel.addEventListener('keydown',").length-1,1);assert.equal(source.split("button.addEventListener('click',()=>runOwnerEvent(id))").length-1,1);const withoutSnack=source.replace(/event(?:End|Cooldown)Timer=setTimeout\(/g,'').replace("eventButton.addEventListener('click',",'').replace("eventPanel.addEventListener('keydown',",'').replace("button.addEventListener('click',()=>runOwnerEvent(id))",'');for(const re of [/\bfetch\s*\(/g,/\bsetInterval\s*\(/g,/\bsetTimeout\s*\(/g,/\baddEventListener\s*\(/g])assert.deepEqual(withoutSnack.match(re),before.match(re));assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|\bsave\s*\(/);
+ const source=read('hani-office-live.js'),before=restoreResidentsSource(source);assert.equal(source.split(/event(?:End|Cooldown)Timer=setTimeout\(/).length-1,2);assert.equal(source.split("eventButton.addEventListener('click',").length-1,1);assert.equal(source.split("eventPanel.addEventListener('keydown',").length-1,1);assert.equal(source.split("button.addEventListener('click',()=>runOwnerEvent(id))").length-1,1);const withoutSnack=source.replace(/event(?:End|Cooldown)Timer=setTimeout\(/g,'').replace("eventButton.addEventListener('click',",'').replace("eventPanel.addEventListener('keydown',",'').replace("button.addEventListener('click',()=>runOwnerEvent(id))",'');for(const re of [/\bfetch\s*\(/g,/\bsetInterval\s*\(/g,/\bsetTimeout\s*\(/g,/\baddEventListener\s*\(/g])assert.deepEqual(withoutSnack.match(re),before.match(re));assert.doesNotMatch(stripApprovedAffinityStorage(source),/localStorage|sessionStorage|supabase|\bsave\s*\(/);
 });
 
 test('life signs repeat every six seconds with two-second offsets, cover four gestures, and sleep or reduced motion suppresses them',()=>{

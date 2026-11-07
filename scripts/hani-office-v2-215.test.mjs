@@ -1,3 +1,5 @@
+// 274: hash-verified exact inverse preserves the legacy no-storage assertion; raw runtime is tested by affinity safety QA.
+import {restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';
 import {assertOnboardedCanon} from './hani-office-onboarding-232-assertions.mjs';
 // node scripts/hani-office-v2-215.test.mjs [--browser <playwright/index.mjs> <msedge.exe>]
 import test from 'node:test';
@@ -146,7 +148,7 @@ test('walking updates canonical coordinates and both distance frames in existing
 test('v2 sprite metadata is real, all art exists, no persistence/cloud calls added',()=>{
   for(const entry of assets.sprites.entries){assert.ok(fs.existsSync(path.join(root,'assets/sprites-v2',entry.file)));assert.deepEqual(entry.frames.map(f=>f.name),['standing','sitting','walk-a','walk-b'])}
   for(const f of api.floors)for(const p of [f.background,f.production,f.fallback])assert.ok(fs.existsSync(path.join(root,p)));
-  assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|\.upsert\(|\.insert\(|Math\.random/);
+  assert.doesNotMatch(restoreAffinity274Source(source),/localStorage|sessionStorage|supabase|\.upsert\(|\.insert\(|Math\.random/);
   assert.doesNotMatch(source,/building-v2|foreground-v2/);
   assert.equal(Object.keys(assets.art.anchors).length,326);
   for(const anchor of assets.canon.anchors){const p=assets.art.anchors[anchor.id];assert.ok(Number.isFinite(p.x)&&Number.isFinite(p.y)&&p.x>0&&p.x<100&&p.y>0&&p.y<100,anchor.id);if(anchor.rendererSeat)assert.ok(p.furniture)}

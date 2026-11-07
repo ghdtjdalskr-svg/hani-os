@@ -235,7 +235,8 @@ test('actual sit/stand changes logical pose immediately while the visual dip is 
 });
 
 test('walking frames update canonical coordinates without label refits or layout reads',()=>{
-  const body=source.slice(source.indexOf('  setInterval(()=>{const now=Date.now()'),source.indexOf('  setInterval(changeOne'));
+  // 274 adds only flush() at the existing clock entry; inspect that same clock.
+  const body=source.slice(source.indexOf('  setInterval(()=>{affinity.flush();const now=Date.now()'),source.indexOf('  setInterval(changeOne'));
   assert.doesNotMatch(body,/getBoundingClientRect|offsetWidth|offsetHeight|clientWidth|clientHeight|fitStatusLabels\(|fitBubble\(|getComputedStyle/);
   assert.match(body,/moveActor\(actor,state.position\)/);assert.doesNotMatch(body,/place\(actor/);
   assert.doesNotMatch(css,/--travel-[xy]/);

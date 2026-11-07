@@ -194,14 +194,15 @@
 #settlementQuickCheck .home-update-item>span{white-space:nowrap;font-size:12px;color:var(--text-primary)}
 
 /* Daily helper: existing launch ensemble faces; three staff use their office atlases. */
-#haniHelperBot{--helper-safe-bottom:env(safe-area-inset-bottom,0px);position:fixed;z-index:86;width:56px;height:56px;font-family:inherit;color:#302a3d}
+#haniHelperBot{--helper-edge:90px;--helper-art-scale:1.653846154;--helper-safe-bottom:env(safe-area-inset-bottom,0px);position:fixed;z-index:86;width:var(--helper-edge);height:var(--helper-edge);font-family:inherit;color:#302a3d}
 #haniHelperBot[hidden],#haniHelperBot [hidden],.login-locked #haniHelperBot{display:none!important}
 #haniHelperBot button{font-family:inherit;cursor:pointer}
 #haniHelperBot button:focus-visible{outline:3px solid #725295;outline-offset:3px}
-#haniHelperBot .hani-helper-face{position:relative;display:block;width:56px;height:56px;padding:0;border:2px solid #fff;border-radius:50%;background:radial-gradient(circle at 40% 25%,#fff9f2,#eee1f6);box-shadow:0 3px 14px #49365b30,0 0 0 1px #c9b6d8;touch-action:manipulation}
-#haniHelperBot .hani-helper-art{display:block;width:100%;height:100%;border-radius:50%;background-image:var(--helper-image,none);background-size:var(--helper-size,272px 170px);background-position:var(--helper-x,0px) var(--helper-y,0px);background-repeat:no-repeat;clip-path:var(--helper-shape,inset(var(--helper-trim,0px)));mask-image:var(--helper-mask,none);transform-origin:50% 80%}
+#haniHelperBot .hani-helper-face{position:relative;display:block;box-sizing:border-box;width:var(--helper-edge);height:var(--helper-edge);padding:0;border:2px solid #fff;border-radius:50%;background:radial-gradient(circle at 40% 25%,#fff9f2,#eee1f6);box-shadow:0 3px 14px #49365b30,0 0 0 1px #c9b6d8;touch-action:none;user-select:none;cursor:grab}
+#haniHelperBot .hani-helper-face:active{cursor:grabbing}
+#haniHelperBot .hani-helper-art{position:absolute;left:50%;top:50%;margin:-26px;display:block;width:52px;height:52px;scale:var(--helper-art-scale);border-radius:50%;background-image:var(--helper-image,none);background-size:var(--helper-size,272px 170px);background-position:var(--helper-x,0px) var(--helper-y,0px);background-repeat:no-repeat;clip-path:var(--helper-shape,inset(var(--helper-trim,0px)));mask-image:var(--helper-mask,none);transform-origin:50% 80%}
 /* Explicit identity crops; an unknown staff id gets the plain badge, never a sheet corner.
-   52px art inside the existing 56px button. Trims expose its pale background at sheet overlaps. */
+   Keep the canonical 52px crop coordinates; scale the original high-resolution source with the face. */
 #haniHelperBot:is([data-staff="hani"],[data-staff="yuna"],[data-staff="mir"],[data-staff="seoyun"],[data-staff="dohyun"],[data-staff="serin"],[data-staff="yuri"],[data-staff="arin"],[data-staff="gaeun"],[data-staff="jieun"],[data-staff="haru"],[data-staff="naeun"],[data-staff="hina"],[data-staff="minji"],[data-staff="sooyeon"],[data-staff="sua"],[data-staff="taeo"]){--helper-image:url('./assets/launch/chibi-launch-v1-day.webp');--helper-mask:radial-gradient(ellipse 36% 37% at 50% 52%,#000 99%,transparent 100%)}
 #haniHelperBot[data-staff="hani"]{--helper-x:-89.6px;--helper-y:-82.65px;--helper-trim:6.43px 6.45px 0px 3.9px}
 #haniHelperBot[data-staff="yuna"]{--helper-x:-217.1px;--helper-y:-89.11px;--helper-trim:7.62px 2.2px 1.2px 2.2px;--helper-shape:polygon(0 0,55% 0,55% 18%,75% 30%,100% 50%,100% 100%,0 100%)}
@@ -243,6 +244,35 @@
 #haniHelperBot nav{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:14px}
 #haniHelperBot nav button{min-height:36px;padding:7px 8px;border:1px solid #dfd2e6;border-radius:10px;background:#fff;color:#60466c;font-size:12px;font-weight:600}
 #haniHelperBot .hani-helper-news{font-size:11px;color:#735f7b;margin-top:12px;padding-top:10px;border-top:1px solid #eee5f0}
+#haniHelperBot [data-helper-reset]{display:block;margin:12px 0 0 auto;min-height:32px;padding:4px 10px;border:1px solid #dfd2e6;border-radius:8px;background:#fff;color:#60466c;font-size:12px}
+@media(max-width:850px){#haniHelperBot{--helper-edge:78px;--helper-art-scale:1.423076923}}
 @keyframes hani-helper-tilt{0%,90%,100%{transform:rotate(0)}94%{transform:rotate(-6deg)}97%{transform:rotate(3deg)}}
 @media(prefers-reduced-motion:no-preference){#haniHelperBot .hani-helper-art{animation:hani-helper-tilt 13s ease-in-out infinite}#haniHelperBot:focus-within .hani-helper-art,#haniHelperBot:hover .hani-helper-art{animation-play-state:paused}}
 @media(prefers-reduced-motion:reduce){#haniHelperBot .hani-helper-art{animation:none}}
+
+/* Read-only daily office previews, inside the helper's existing persistent panel. */
+#haniHelperBot .hani-fun-entries{display:grid;gap:6px;margin-top:12px}
+#haniHelperBot .hani-fun-entries button,#haniHelperBot [data-fun-back]{min-height:40px;border:1px solid #d8c8e4;border-radius:12px;background:#f6effb;color:#593b70;padding:9px 10px;text-align:left;font-size:12px;font-weight:700}
+#haniHelperBot #haniFunPreview>h3{font-size:17px;color:#493155;margin:14px 0 4px}
+#haniHelperBot .hani-fun-meta{font-size:10px;color:#75667c;margin-bottom:10px}
+#haniHelperBot .hani-fun-topic{font-size:12px;text-align:center;padding:9px;background:#ede8f4;border-radius:12px 12px 0 0;color:#63516d}
+#haniHelperBot .hani-fun-chat{padding:12px 10px;background:#f0edf6;border-radius:0 0 14px 14px}
+#haniHelperBot .hani-fun-messages{display:grid;gap:13px}
+#haniHelperBot .hani-fun-message{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px 7px;min-width:0}
+#haniHelperBot .hani-fun-message b{grid-column:1/-1;font-size:10px;color:#665474;font-weight:700}
+#haniHelperBot .hani-fun-message p{padding:8px 10px;background:#fff;border:1px solid #e5ddec;border-radius:2px 12px 12px;box-shadow:0 2px 4px #4b325908;font-size:12px;line-height:1.6;color:#382c40}
+#haniHelperBot .hani-fun-message:nth-child(even) p{background:#fff8e7}
+#haniHelperBot .hani-fun-message time{align-self:end;font-size:9px;color:#76657d;padding-bottom:3px;font-variant-numeric:tabular-nums}
+#haniHelperBot .hani-fun-typing{font-size:11px;color:#735e80;margin-top:12px}
+#haniHelperBot .hani-fun-card{border:1px solid #d9c8e6;border-radius:18px;padding:20px 14px 16px;background:radial-gradient(ellipse at top,#fff8e5,#f4edfb 70%);text-align:center;transform-origin:center;backface-visibility:hidden;animation:hani-fun-flip .5s ease-out both}
+#haniHelperBot .hani-fun-star{font-size:42px;line-height:1;color:#8f669e;margin-bottom:12px}
+#haniHelperBot .hani-fun-drawer{font-size:11px;color:#73547f}
+#haniHelperBot .hani-fun-line{font-size:17px;font-weight:800;line-height:1.65;margin:14px 0 18px;color:#493155}
+#haniHelperBot .hani-fun-card dl{display:grid;grid-template-columns:1fr 1.3fr;gap:8px;text-align:left;padding:12px;margin:0 0 14px;background:#ffffffb8;border-radius:12px;font-size:11px;color:#634e70}
+#haniHelperBot .hani-fun-card dd{margin:0;font-weight:750;color:#493155;overflow-wrap:anywhere}
+#haniHelperBot .hani-fun-tip{font-size:12px;color:#6c5279}
+#haniHelperBot .hani-fun-card small{display:block;font-size:10px;color:#806a88;margin-top:14px}
+@keyframes hani-fun-flip{from{transform:perspective(600px) rotateY(-85deg);opacity:0}to{transform:perspective(600px) rotateY(0);opacity:1}}
+@media(prefers-reduced-motion:reduce){#haniHelperBot .hani-fun-card{animation:none;transform:none;opacity:1}}
+
+@media(min-width:851px){#haniHelperBot h2{font-size:19px}#haniHelperBot h3{font-size:15px}#haniHelperBot p{font-size:16px}#haniHelperBot nav button{font-size:14px}#haniHelperBot .hani-helper-news{font-size:13px}#haniHelperBot .hani-fun-entries button,#haniHelperBot [data-fun-back],#haniHelperBot .hani-fun-message p{font-size:15px}#haniHelperBot .hani-fun-meta,#haniHelperBot .hani-fun-message b,#haniHelperBot .hani-fun-card small{font-size:12px}}

@@ -1,0 +1,20 @@
+{
+  "base": "430d254eff90e04a21b6205fed69a2df44a67ac9",
+  "unchanged": {
+    "index.html": "f5ab6fcd4f6dec4d5c22f6b90a78115005b031668d3dcab12b98070a686f614d",
+    "hani-main.js": "caa9d2d380bb8a395c503223d5a04b17935ff9c513260268052f31ee14c59170",
+    "hani-office-live.js": "60075ca9c2992c36db7237ca9945fa771c9106eddb09bfe6665c73cfebf1f067",
+    "hani-office-live.css": "9506f017e5c01686f9c61225f0e7e41ee934dbbccf6985ea5daf9ee04d9c4e95",
+    "hani-style-01.css": "4943a672a55a52df87d3eb628276dff3c4242a898690c6b9014cdfb4f8d63589",
+    "hani-organization-hub.js": "15405b43ae95c1935640c5413e8875398a4f0f7addbb21ed2dd441cd59f2426f"
+  },
+  "helperOnly": true,
+  "otherCssUnchanged": true,
+  "approvedPositionKeyOnly": true,
+  "closure": {
+    "before": 158,
+    "after": 158,
+    "missing": []
+  },
+  "versionAndCacheUnchanged": true
+}

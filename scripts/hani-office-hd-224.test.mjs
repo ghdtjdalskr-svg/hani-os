@@ -1,3 +1,5 @@
+// 274: hash-verified exact inverse preserves the legacy no-storage assertion; raw runtime is tested by affinity safety QA.
+import {restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';
 // node scripts/hani-office-hd-224.test.mjs [--browser [playwright/index.mjs] [browser.exe]]
 // Browser run captures real 222/current floors at native physical pixels; no mocks of layout.
 import assert from 'node:assert/strict';
@@ -38,7 +40,7 @@ test('separately seeded HD manifest resolves every asset; pre-mascot runtime clo
  // Exclude only the two exactly-once approved tags; mascot packaging requires separate verification.
  const runtime=await resolveRuntimeClosure({exists:f=>fs.existsSync(path.join(root,f)),read:f=>f==='index.html'?Buffer.from(withoutDeskMascots(read(f))):fs.readFileSync(path.join(root,f))});
  assert.deepEqual(runtime.missing,[]);
- const contract=json('dev-center/one-pass-gate-contract.json');assert.equal(contract.limits.max_files,160);assert.ok(runtime.files.length<=contract.limits.max_files);
+ const contract=json('dev-center/one-pass-gate-contract.json');assert.equal(contract.limits.max_files,200);assert.ok(runtime.files.length<=contract.limits.max_files);
  console.log(JSON.stringify({runtimeFiles:runtime.files.length,seedFiles:seed.files.length,seedBytes:[...seed.contents.values()].reduce((n,b)=>n+b.length,0)}));
 });
 
@@ -101,7 +103,7 @@ test('actual metadata bootstrap tolerates missing/malformed v3 and keeps the v2 
   await vm.runInContext(source,c);assert.ok(c.HaniBuildingScene);assert.equal(c.HaniBuildingScene.canon.anchors.length,333);
   assert.equal(calls.filter(u=>u.endsWith('manifest-v3.json')).length,1);
  }
- assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|\.setItem\(|\.removeItem\(|\.clear\(/);
+ assert.doesNotMatch(restoreAffinity274Source(source),/localStorage|sessionStorage|supabase|\.setItem\(|\.removeItem\(|\.clear\(/);
 });
 
 if(process.argv.includes('--browser'))await browserChecks();

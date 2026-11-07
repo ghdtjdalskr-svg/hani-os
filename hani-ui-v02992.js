@@ -1359,7 +1359,149 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
   console.info('[HANI OS] v2.9.119 Library and viewing archive UX ready');
 })();
 
-// BEGIN HANI HELPER BOT · read-only daily duty / one persistent slot
+// BEGIN HANI FUN CHAT FORTUNE
+(() => {
+  'use strict';
+  if (window.HaniFunPreview) return;
+  const DAY = 86400000, KST = 32400000;
+  const mod = (n, size) => ((n % size) + size) % size;
+  const dayNumber = now => Math.floor((Number(now) + KST) / DAY);
+  const dateKey = now => new Date(Number(now) + KST).toISOString().slice(0, 10);
+  // Public voices: office-tap-lines-v1 + character profiles. Fictional office scenes only.
+  // Each row is a complete conversation, not random fragments of different scenes.
+  const CHAT_POOL = [
+    ['머그컵의 자리', ['dohyun','제 머그컵이 또 창가로 갔네요☕'],['arin','햇빛 받는 색이 예뻐서요✨'],['yuri','컵 주인 동의는 확인했나요?'],['dohyun','창가 사용 승인합니다. 커피는 제 거예요.'],['hani','컵도 자리 배치 회의가 필요하네♡'],['arin','손잡이는 도연님 쪽으로 돌려둘게요🎨']],
+    ['점심 메뉴 회의', ['yuna','점심 메뉴 안건 접수합니다!'],['naeun','따뜻한 국수 어때요~'],['serin','국수파가 모이는 패턴 보여요!!✨'],['sua','메뉴는 국수, 집합은 로비로 정리할게요.'],['hina','면이 길면 이야기도 길어져용♡'],['yuna','그럼 메뉴 회의는 여기서 마칩니다!']],
+    ['이슬의 커피 향', ['gaeun','카페 쪽에서 고소한 향이 나네요.'],['dohyun','이슬님 커피 향이면 길 안내가 필요 없죠☕'],['hani','향기 따라 모이면 회의실보다 빠르겠네♡'],['yuri','복도 통행은 남겨두세요.'],['arin','컵 사이 여백도 챙겨둘게요✨'],['gaeun','티타임 자리는 차분히 나눠 앉아요.']],
+    ['은하의 늦은 카페', ['minji','은하님 카페는 조명부터 엔딩 장면 같아요.'],['haru','조용한 테이블엔 에세이가 어울리죠.'],['yoonseul','그 장면에 책갈피 꽂고 싶어요!🔖'],['sua','컵은 반납대에 모아둘게요.'],['minji','자막은 오늘도 수고했어요, 어때요?'],['haru','짧고 다정해서 좋네요.']],
+    ['키보드 위의 치즈', ['dohyun','키보드에 새 단축키가 생겼어요☕'],['pet-cat','야옹. 내 발자국이다냥.'],['yuri','네 발 동시 입력은 처음 봅니다.'],['serin','고양이 전용 단축키 각인데요?!✨'],['hani','치즈 자리부터 옆에 마련하자♡'],['pet-cat','햇볕 자리면 협조한다냥.']],
+    ['크림의 안내', ['yuna','로비 안내에 지원자가 왔어요!'],['pet-dog','멍! 꼬리로 방향을 알려줄게요!'],['taeo','양쪽으로 흔들리면 어느 쪽이죠?'],['arin','발자국 표시는 한 방향으로 그릴까요?🎨'],['pet-dog','둘 다 반갑다는 뜻이에요! 멍!'],['yuna','환영 담당으로 정정합니다!']],
+    ['모찌의 책갈피', ['yoonseul','책갈피가 살짝 움직였어요!📚'],['pet-rabbit','깡총. 리본은 제 거예요.'],['hina','책갈피인 줄 알았어용♡'],['haru','모찌 옆에서는 책장을 천천히 넘겨요.'],['pet-rabbit','살랑이는 소리는 좋아요.'],['yoonseul','그럼 조용한 낭독회로 바꿀게요🔖']],
+    ['보리의 공', ['yuna','로비에 공 하나가 도착했어요!'],['pet-bori','멍. 제 옆에 놓아 주세요.'],['serin','공이 굴러오는 경로가 매번 같아요!!'],['yuri','로비 가운데는 비워둡시다.'],['pet-bori','구석에서 느긋하게 기다릴게요.'],['hani','오늘 로비 안내는 공 옆에서 만나자♡']],
+    ['우산 이름표', ['sua','우산꽂이에 비슷한 우산이 모였네요.'],['arin','손잡이에 작은 색표를 붙이면 어때요?✨'],['gaeun','이름표 자리도 마련할게요.'],['daon','혹시… 색까지 같으면요?'],['yuri','이름을 한 번 더 확인하면 됩니다.'],['sua','마지막 확인은 본인 이름으로 정리해요.']],
+    ['스티커 회의', ['arin','빈 메모지에 별 스티커 하나 붙였어요🎨'],['serin','별이 늘어나는 패턴 보이나요?!'],['yuri','한 개만 있습니다.'],['hani','작은 별부터 시작하는 거지♡'],['minji','다음 장면은 별 두 개로 갈까요?'],['arin','여백도 한 자리 남겨둘게요✨']],
+    ['배포하는 커피', ['dohyun','커피 준비됐어요. 컵별로 배포합니다☕'],['seoyun','범위는 테이블 하나로 잡아요.'],['yuri','빈 컵부터 확인합니다.'],['hina','향기 검수는 제가 할게용♡'],['serin','커피도 미리보기 각이네요!!'],['dohyun','이번 미리보기는 향만 제공합니다.']],
+    ['주말의 작은 계획', ['haru','다음 쉬는 날엔 책 한 권 골라보려고요.'],['minji','저는 영화 오프닝만 고르다 끝날지도요.'],['yoonseul','첫 장과 첫 장면이 연결되네요!📚'],['mir','왜 시작 고르는 시간이 제일 재밌지? 헤헤.'],['hani','고르는 것도 작은 즐거움이지♡'],['haru','끝까지 못 골라도 괜찮겠네요.']],
+    ['트리의 리본', ['arin','크리스마스 트리에 리본이 조금 비뚤어요✨'],['hina','삐뚤어도 귀여워용♡'],['yuri','통로로 나온 장식만 정리하죠.'],['gaeun','의자는 제가 옆으로 비워둘게요.'],['minji','비뚤어진 리본이 오늘의 주인공이네요.'],['arin','반듯함보다 포근한 쪽으로 갈게요🎨']],
+    ['팬트리의 차', ['naeun','팬트리에 차 우려뒀어요. 쉬었다 가요~'],['haru','오늘 향은 잔잔하네요.'],['gaeun','잔은 오른쪽에 준비했어요.'],['mir','차 한 잔에 다들 모이네. 이건 연결되네.'],['hani','작은 티타임도 좋은 안건이야♡'],['naeun','다 마신 잔은 여기 모아주세요~']],
+    ['창밖 구름', ['minji','창밖 구름이 토끼 모양이에요.'],['hina','귀가 두 개라 모찌 같아용♡'],['arin','구름 옆 여백도 예쁘네요✨'],['mir','왜 같이 보면 모양이 더 잘 보일까?'],['yoonseul','구름 도감 첫 장으로 남기고 싶어요📚'],['minji','잠깐 사이 다음 장면으로 넘어갔네요.']],
+    ['회의실 이름', ['yuna','작은 회의실 별명 후보 받아요!'],['taeo','문제부터 짚자면 이름표가 너무 작습니다.'],['arin','글자 세 개 정도가 편하겠네요🎨'],['serin','세 글자 규칙이면 후보가 줄겠는데요?!'],['seoyun','오늘은 후보만 모아보죠.'],['yuna','첫 후보는 옹기종기, 네 글자라 보류예요!']],
+    ['책상 정리', ['sua','테이블 끝에 펜 세 자루 모아뒀어요.'],['daon','혹시… 제 펜도 있을까요?'],['yuri','이름표와 대조해 보세요.'],['dohyun','커피색 펜은 제 겁니다☕'],['arin','커피색이 세 자루인데요?✨'],['sua','각자 한 번씩 확인하는 걸로 정리해요.']],
+    ['점심 후 빈 의자', ['gaeun','창가 의자 한 자리 비어 있어요.'],['haru','잠깐 책 읽기 좋겠네요.'],['pet-cat','이미 내가 앉을 예정이다냥.'],['yuri','아직 앉은 건 아니군요.'],['hani','옆 의자도 같이 쓰면 되지♡'],['pet-cat','옆자리는 양보한다냥.']],
+    ['컵받침 도안', ['arin','컵받침에 작은 구름을 그려봤어요🎨'],['dohyun','커피 아래 날씨가 맑네요☕'],['minji','제 컵 아래는 다음 장면 구름인가요?'],['serin','컵마다 날씨가 다른 패턴!!✨'],['seoyun','우선 한 테이블에서 써보죠.'],['arin','구름 사이 간격은 넉넉히 둘게요✨']],
+    ['사무실 소리', ['mir','프린터 소리랑 커피 소리가 이어지네.'],['minji','사무실 배경음악으로 써도 되겠어요.'],['dohyun','키보드 리듬도 추가할까요☕'],['yuri','알림음은 구분되게 남겨주세요.'],['hina','저는 책장 넘기는 소리 넣을래용♡'],['mir','다 같이 있어야 완성되는 소리네. 헤헤.']],
+    ['종이비행기', ['serin','메모지 비행 거리 실험해볼까요?!✨'],['seoyun','빈 테이블 안에서만 해봐요.'],['arin','날개 선은 간단하게 그릴게요🎨'],['taeo','착륙 지점부터 정하면 어떨까요?'],['yuri','사람 없는 방향 확인했습니다.'],['serin','제자리 착륙도 결과로 적을게요!!']],
+    ['작은 환영', ['yuna','회장님 오시면 다 같이 인사할까요!'],['hani','짧고 반갑게 하면 좋겠네♡'],['hina','안녕하세요를 맞춰볼까용?'],['minji','동시에 말하면 합창 장면이네요.'],['gaeun','로비 동선은 넉넉히 비워둘게요.'],['yuna','연습은 여기까지! 평소처럼 반갑게요!']],
+    ['빈 노트 첫 장', ['yoonseul','새 노트 첫 장은 늘 망설여져요📚'],['haru','좋아하는 단어 하나면 어때요?'],['mir','왜 첫 장은 꼭 멋져야 할까?'],['hani','시작이라고만 적어도 괜찮지♡'],['arin','모서리에 작은 점 하나도 좋아요✨'],['yoonseul','그럼 첫 단어는 함께로 할게요🔖']],
+    ['이슬과 은하의 컵', ['gaeun','이슬님 컵과 은하님 컵의 색이 다르네요.'],['arin','낮은 크림색, 밤은 남색 같아요🎨'],['dohyun','향으로도 구분할 수 있을까요☕'],['yuri','컵 표기를 먼저 확인하세요.'],['minji','낮 장면과 밤 장면의 소품 같아요.'],['gaeun','반납 위치는 같은 곳이라고 안내할게요.']],
+    ['점심 산책 이야기', ['naeun','점심 뒤엔 창가 쪽으로 한 바퀴 어때요~'],['pet-dog','멍! 저는 문 앞에서 기다릴게요!'],['sua','다녀와서 문은 닫아둘게요.'],['haru','바깥 바람이 책장 넘기는 느낌이네요.'],['pet-dog','바람 소식은 꼬리로 전할게요!'],['naeun','서두르지 말고 천천히 와요~']],
+    ['보리와 모찌', ['hina','보리 옆에 모찌가 앉았어용♡'],['pet-bori','멍. 여기 자리가 넓어요.'],['pet-rabbit','깡총. 조용해서 좋아요.'],['yuna','안내 표지에 작은 쉼터라고 적을까요!'],['arin','글자는 작게, 자리는 넓게요✨'],['hina','오늘은 조용한 합석이네용♡']],
+    ['한 줄 농담', ['dohyun','커피가 식기 전에 끝낼 농담 있어요☕'],['taeo','요구사항이 짧아서 좋네요.'],['serin','농담에도 완료 조건이 있나요?!'],['yuri','웃음은 강제할 수 없습니다.'],['hani','그 말에 먼저 웃었네♡'],['dohyun','아직 시작도 안 했는데 완료됐네요.']],
+    ['모서리 화분', ['arin','화분 그림자가 벽에 하트처럼 보여요✨'],['minji','빛이 바뀌면 다른 장면이 되겠네요.'],['mir','같은 자리인데 모양은 계속 바뀌네.'],['haru','잠깐 멈춰 보기 좋은 구석이네요.'],['yoonseul','오늘의 작은 발견으로 책갈피!🔖'],['arin','화분은 그대로 두고 그림자만 구경해요🎨']],
+    ['조용한 금빛 조명', ['gaeun','라운지 조명을 조금 낮춰봤어요.'],['minji','엔딩 크레딧 올라갈 분위기네요.'],['sua','컵과 메모만 제자리에 둘게요.'],['hina','오늘의 마지막 장면도 포근해용♡'],['hani','남은 이야기는 내일 이어가자♡'],['gaeun','나가실 때 의자만 살짝 넣어주세요.']],
+    ['스티커 이름표', ['yuna','이름표에 작은 꽃을 붙였어요!'],['daon','혹시… 꽃이 이름을 가리진 않나요?'],['arin','글자 옆에 여백 남겼어요🎨'],['yuri','이름은 잘 보입니다.'],['serin','꽃 위치도 규칙이 있네요!!✨'],['yuna','규칙 이름은 한눈에 반가움이에요!']]
+  ].map(([title, ...lines], id) => Object.freeze({id, title, lines:Object.freeze(lines.map(Object.freeze))}));
+  const FORTUNE_LINES = [
+    '작은 인사가 하루를 포근하게 열어줘요.','천천히 고른 한 가지가 즐거운 시작이 돼요.','평소 지나치던 구석에서 귀여운 장면을 만나요.','짧은 메모 하나가 생각의 길을 밝혀줘요.','함께 웃는 순간이 오늘의 반짝임이에요.','익숙한 자리에서도 새로운 이야기가 시작돼요.',
+    '다정한 한마디가 기분 좋은 여운을 남겨요.','여백을 조금 남기면 즐거움이 들어와요.','가벼운 호기심이 재미있는 발견으로 이어져요.','첫 장을 펼치는 것만으로도 멋진 출발이에요.','작은 정리가 책상 위에 산뜻함을 더해요.','따뜻한 향기처럼 좋은 분위기가 곁에 머물러요.',
+    '서로 다른 생각이 모여 재미있는 그림이 돼요.','잠깐 바라본 창밖이 새로운 영감을 건네요.','익숙한 길에 작은 변주를 더해보세요.','오늘의 속도는 차분해도 충분히 좋아요.','마음에 드는 색 하나가 하루를 밝혀줘요.','짧은 칭찬이 서로의 표정을 환하게 만들어요.',
+    '작은 질문에서 흥미로운 대화가 자라나요.','좋아하는 자리에 앉으면 생각도 편안해져요.','한 번 더 바라보면 숨은 귀여움이 보여요.','가벼운 농담이 딱 알맞은 순간에 찾아와요.','함께 나눈 이야기가 오래 기억에 남아요.','비어 있는 한 칸은 새로운 시작의 자리예요.',
+    '단정한 첫 문장이 다음 생각을 불러와요.','기다리던 아이디어를 느긋하게 맞아주세요.','익숙한 물건에서 새로운 쓰임이 떠올라요.','다정한 눈인사로도 반가움은 전해져요.','오늘의 작은 발견에 이름을 붙여보세요.','평범한 장면이 좋은 이야기의 첫 컷이 돼요.',
+    '같이 고르면 고르는 시간도 즐거워져요.','작은 리본 하나가 풍경에 생기를 더해요.','깔끔한 책갈피처럼 생각이 한곳에 모여요.','한 박자 쉬면 다음 장면이 더 잘 보여요.','창가의 빛처럼 은은한 즐거움이 머물러요.','좋아하는 문장을 다시 만나기 좋은 날이에요.',
+    '먼저 건넨 미소가 다정한 대화를 열어요.','작게 시작한 일이 기분 좋은 리듬을 만들어요.','어제와 다른 배치가 새로운 시선을 선물해요.','단순한 선택에서 산뜻한 기분을 만나요.','빈 노트에는 어떤 시작도 잘 어울려요.','잠깐의 티타임이 이야기의 쉼표가 돼요.',
+    '함께 쓰는 테이블에 작은 배려를 놓아보세요.','구름처럼 가벼운 상상을 펼쳐도 좋아요.','고른 말 한마디가 분위기를 부드럽게 해요.','취향을 나누면 재미있는 공통점을 만나요.','오늘의 작은 완성에 조용히 박수를 보내요.','조금 다른 시도가 새로운 재미를 데려와요.',
+    '차근차근 놓은 조각이 예쁜 모양을 만들어요.','일상의 소리에서 기분 좋은 리듬을 찾아요.','반가운 이름을 부르면 대화가 가까워져요.','가지런한 펜 한 자루가 시작을 도와줘요.','포근한 자리에서 느긋한 상상이 자라나요.','함께 바라본 풍경은 한층 다채로워져요.',
+    '한 줄로 적은 생각이 또렷한 길잡이가 돼요.','작은 별표가 오늘의 즐거움을 기억해줘요.','편안한 간격이 서로의 이야기를 살려줘요.','눈에 띈 작은 무늬가 새로운 영감이 돼요.','평소 좋아하던 것과 다시 인사해보세요.','하루의 끝에 귀여운 장면 하나를 챙겨가요.'
+  ];
+  const COLOURS = ['라벤더','크림색','하늘색','살구색','민트색','연분홍','남색','연노랑','연두색','아이보리'];
+  const ITEMS = ['커피','보리의 공','크리스마스 트리','책갈피','머그컵','메모지','리본','컵받침','색연필','작은 화분','펜','티스푼'];
+  const FORTUNE_POOL = Object.freeze(FORTUNE_LINES.map((line,id)=>Object.freeze({id,line,colour:COLOURS[id%COLOURS.length],item:ITEMS[id%ITEMS.length]})));
+  const TIPS = Object.freeze({hani:'오늘의 작은 즐거움부터 같이 골라보자♡',yuna:'반가운 인사 한 번, 제가 먼저 안내할게요!',mir:'왜 이 색이 눈에 들어왔을까? 가볍게 생각해봐. 헤헤.',seoyun:'한 가지부터 차분히 펼쳐봐요.',dohyun:'작은 것부터 한 단계 이어가요☕',serin:'좋았던 장면 하나씩 모으면 패턴 보여요!!✨',yuri:'기분 좋은 장면도 꼼꼼히 살펴보세요.',arin:'좋아하는 색 옆에 여백도 남겨봐요🎨',gaeun:'티타임 자리는 제가 넉넉히 비워둘게요.',jieun:'편안한 속도로 오늘을 펼쳐보세요.',haru:'좋아하는 문장에 책갈피를 끼워봐요.',naeun:'따뜻한 차 한 잔처럼 느긋하게 가요~',hina:'작은 발견도 별표 쳐주세용♡',minji:'오늘 마음에 든 장면을 한 컷 떠올려봐요.',sooyeon:'오늘의 리듬은 천천히 맞춰봐요.',sua:'좋았던 한 가지를 짧게 정리해보세요.',taeo:'재미있는 질문 하나부터 꺼내보세요.',daon:'혹시… 작은 즐거움을 지나치진 않았나요?😅',yoonseul:'오늘의 발견에 책갈피 하나 꽂아봐요!🔖','pet-cat':'햇볕 자리에서 느긋하게 구경하라냥.','pet-dog':'멍! 반가운 인사는 꼬리처럼 크게요!','pet-rabbit':'깡총. 작은 소리에도 다정하게 귀 기울여요.','pet-bori':'멍. 제 옆에서 느긋하게 한숨 돌려요.'});
+  const TIMES = [545,558,710,730,870,920,1025,1090];
+  function dailyChat(now = Date.now()) {
+    const conversation = CHAT_POOL[mod(dayNumber(now) * 7, CHAT_POOL.length)];
+    const messages = [['yuna','오늘도 단톡방 문 열었어요! 반가워요!'],...conversation.lines,['hani','소소한 이야기 고마워. 내일도 반갑게 만나자♡']].map(([speaker,text],i)=>({speaker,text,minute:TIMES[i],time:String(Math.floor(TIMES[i]/60)).padStart(2,'0')+':'+String(TIMES[i]%60).padStart(2,'0')}));
+    const elapsed = mod(Number(now) + KST, DAY) / 60000;
+    return {date:dateKey(now),id:conversation.id,title:conversation.title,messages:messages.filter(m=>m.minute<=elapsed),next:messages.find(m=>m.minute>elapsed)||null};
+  }
+  function fortune(now = Date.now(), person) {
+    const card = FORTUNE_POOL[mod(dayNumber(now) * 13, FORTUNE_POOL.length)];
+    return {...card,date:dateKey(now),drawer:person?.name||'오늘의 당번',tip:TIPS[person?.id]||'좋아하는 장면 하나를 천천히 찾아보세요.'};
+  }
+  let host, home, content, chat, card, meta, typing, mode = '', signature = '', returnButton;
+  const person = () => window.HaniHelperBot?.duty(window.HaniOrganizationRoster?.people || []);
+  function name(id) {
+    return (window.HaniOrganizationRoster?.people || []).find(p=>p.id===id)?.name || ({'pet-cat':'치즈','pet-dog':'크림','pet-rabbit':'모찌','pet-bori':'보리'})[id] || '직원';
+  }
+  function refresh() {
+    if (!content || !mode || content.hidden) return;
+    const now = Date.now(), today = dailyChat(now), current = person(), key = mode+today.date+today.messages.length+(current?.id||'');
+    if (signature === key) return;
+    signature = key;
+    meta.textContent = today.date+' · KST · 읽기 전용';
+    chat.hidden = mode !== 'chat'; card.hidden = mode !== 'fortune';
+    content.querySelector('h3').textContent = mode === 'chat' ? '직원 단톡방 엿보기 👀' : '오늘의 운세 🔮';
+    if (mode === 'chat') {
+      content.querySelector('.hani-fun-topic').textContent = today.title;
+      const rows = chat.querySelectorAll('.hani-fun-message');
+      rows.forEach((row,i)=>{
+        const message = today.messages[i]; row.hidden = !message;
+        if (!message) {
+          row.querySelector('b').textContent = ''; row.querySelector('p').textContent = ''; row.querySelector('time').textContent = '';
+          return;
+        }
+        row.querySelector('b').textContent = name(message.speaker);
+        row.querySelector('p').textContent = message.text;
+        row.querySelector('time').textContent = message.time;
+      });
+      typing.textContent = today.next ? '지금 입력 중…' : '오늘의 수다는 여기까지. 내일 또 만나요!';
+      content.querySelector('.hani-fun-topic').hidden = false;
+    } else {
+      const draw = fortune(now,current);
+      content.querySelector('.hani-fun-topic').hidden = true;
+      card.querySelector('.hani-fun-drawer').textContent = draw.drawer+' 당번이 뽑은 카드';
+      card.querySelector('.hani-fun-line').textContent = draw.line;
+      card.querySelector('[data-fun-colour]').textContent = draw.colour;
+      card.querySelector('[data-fun-item]').textContent = draw.item;
+      card.querySelector('.hani-fun-tip').textContent = draw.drawer+' · '+draw.tip;
+    }
+  }
+  function hide() {
+    if (!content) return;
+    home.hidden = false; content.hidden = true; mode = ''; signature = '';
+  }
+  function action(target) {
+    const entry = target.closest('[data-helper-fun]'), back = target.closest('[data-fun-back]');
+    if (entry && host?.contains(entry)) {
+      returnButton = entry; mode = entry.dataset.helperFun; signature = '';
+      home.hidden = true; content.hidden = false; refresh();
+      content.querySelector('[data-fun-back]').focus({preventScroll:true}); return true;
+    }
+    if (back && host?.contains(back)) { hide(); returnButton?.focus({preventScroll:true}); return true; }
+    return false;
+  }
+  function mount(root, panel) {
+    if (host || root.querySelector('#haniFunPreview')) return;
+    host = root; home = panel.querySelector('.hani-helper-home');
+    const entries = document.createElement('div'); entries.className = 'hani-fun-entries';
+    entries.innerHTML = '<button type="button" data-helper-fun="chat">직원 단톡방 엿보기 👀</button><button type="button" data-helper-fun="fortune">오늘의 운세 🔮</button>';
+    home.append(entries);
+    content = document.createElement('section'); content.id = 'haniFunPreview'; content.hidden = true;
+    content.innerHTML = '<button type="button" data-fun-back>← 도우미로</button><h3></h3><p class="hani-fun-meta"></p><p class="hani-fun-topic"></p><div class="hani-fun-chat"><div class="hani-fun-messages"></div><p class="hani-fun-typing" role="status"></p></div><div class="hani-fun-card"><div aria-hidden="true" class="hani-fun-star">✦</div><p class="hani-fun-drawer"></p><p class="hani-fun-line"></p><dl><dt>행운의 색</dt><dd data-fun-colour></dd><dt>행운의 아이템</dt><dd data-fun-item></dd></dl><p class="hani-fun-tip"></p><small>가볍게 즐기는 오늘의 한 장</small></div>';
+    panel.append(content); chat = content.querySelector('.hani-fun-chat'); card = content.querySelector('.hani-fun-card'); meta = content.querySelector('.hani-fun-meta'); typing = content.querySelector('.hani-fun-typing');
+    for (let i=0;i<TIMES.length;i++) {
+      const row = document.createElement('article'); row.className = 'hani-fun-message'; row.hidden = true;
+      row.innerHTML = '<b></b><p></p><time></time>'; chat.querySelector('.hani-fun-messages').append(row);
+    }
+    // Only the visible persistent slot refreshes. No polling of records or services.
+    window.setInterval?.(()=>{ if (!panel.hidden) { refresh(); window.HaniHelperBot?.update(); } },15000);
+    window.addEventListener('focus',()=>{ refresh(); window.HaniHelperBot?.update(); });
+  }
+  window.HaniFunPreview = Object.freeze({dailyChat,fortune,mount,action,refresh,hide,CHAT_POOL:Object.freeze(CHAT_POOL),FORTUNE_POOL,TIPS});
+})();
+// END HANI FUN CHAT FORTUNE
+
+// BEGIN HANI HELPER BOT · daily duty / one persistent slot / approved UI position only
 (() => {
   'use strict';
   if (window.HaniHelperBot) return;
@@ -1488,9 +1630,66 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
     return null;
   }
   let root, face, panel, dot, title, greetingLine, helpLine, newsLine, bank, loadNews, returnFocus, pending = false;
+  const POSITION_KEY = 'hani_helper_pos_v1';
+  let position = null, drag = null, suppressClick = false;
+  function readPosition() {
+    try {
+      const value = JSON.parse(localStorage.getItem(POSITION_KEY));
+      if (value && value.v === 1 && Object.keys(value).length === 3 &&
+        [value.x, value.y].every(n => typeof n === 'number' && Number.isFinite(n) && n >= 0 && n <= 1)) {
+        // (1,1) is the default-slot marker, outside the reachable face top-left range.
+        return value.x === 1 && value.y === 1 ? null : value;
+      }
+    } catch (_) {}
+    return null;
+  }
+  function writePosition(value) {
+    try { localStorage.setItem(POSITION_KEY, JSON.stringify(value)); } catch (_) {}
+  }
+  function viewportBox() {
+    const vv = window.visualViewport;
+    return {left: vv?.offsetLeft || 0, top: vv?.offsetTop || 0,
+      width: vv?.width || window.innerWidth,
+      height: Math.max(0, (vv?.height || window.innerHeight) - (parseFloat(getComputedStyle(root).getPropertyValue('--helper-safe-bottom')) || 0))};
+  }
+  function faceSize() { return face.getBoundingClientRect().width || (window.innerWidth > 850 ? 90 : 78); }
+  function clampBox(left, top, viewport, size) {
+    left = Math.max(viewport.left, Math.min(left, viewport.left + Math.max(0, viewport.width - size)));
+    top = Math.max(viewport.top, Math.min(top, viewport.top + Math.max(0, viewport.height - size)));
+    return {left, top, right: left + size, bottom: top + size};
+  }
+  function movePointer(event) {
+    if (!drag || drag.id !== event.pointerId) return;
+    const dx = event.clientX - drag.x, dy = event.clientY - drag.y;
+    if (!drag.moved && Math.hypot(dx, dy) < 6) return;
+    drag.moved = true; suppressClick = true; event.preventDefault();
+    const viewport = viewportBox(), box = clampBox(drag.left + dx, drag.top + dy, viewport, faceSize());
+    position = {x: (box.left - viewport.left) / Math.max(1, viewport.width), y: (box.top - viewport.top) / Math.max(1, viewport.height), v: 1};
+    place();
+  }
+  function pointer(event) {
+    if (event.type === 'pointerdown') {
+      if (drag || !face.contains(event.target) || event.isPrimary === false || event.button !== 0) return;
+      suppressClick = false;
+      drag = {id: event.pointerId, x: event.clientX, y: event.clientY,
+        left: parseFloat(root.style.left), top: parseFloat(root.style.top), previous: position, moved: false};
+      face.setPointerCapture(event.pointerId);
+    } else if (event.type === 'pointermove') movePointer(event);
+    else if (drag && drag.id === event.pointerId) {
+      if (event.type === 'pointerup') movePointer(event);
+      const ended = drag; drag = null;
+      if (event.type === 'pointerup') {
+        suppressClick = true;
+        if (ended.moved) writePosition(position);
+        else if (!root.hidden) toggle();
+      } else if (ended.moved) { position = ended.previous; place(); }
+      if (face.hasPointerCapture(event.pointerId)) face.releasePointerCapture(event.pointerId);
+    }
+  }
   function people() { return window.HaniOrganizationRoster?.people || []; }
   function update() {
     if (!root) return;
+    window.HaniFunPreview?.refresh();
     const person = duty(people());
     if (!person) { schedulePlace(); return; }
     root.dataset.staff = person.id;
@@ -1498,6 +1697,9 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
     title.textContent = person.name + ' · ' + person.rank;
     greetingLine.textContent = greeting(person, bank);
     helpLine.textContent = help(document.body.dataset.view, person);
+    const affinityLine = panel.querySelector('.hani-helper-affinity');
+    const affinity = window.HaniOfficeAffinity?.get(person.id) || {level:1,name:'처음 만남'};
+    affinityLine.textContent = '오늘 당번과의 친밀도: Lv' + affinity.level + ' ' + affinity.name + ' ' + '♡'.repeat(affinity.level);
     for (const button of panel.querySelectorAll('[data-helper-go]')) {
       const label = links.find(([id]) => id === button.dataset.helperGo)?.[1];
       button.textContent = label + (pet(person) ? ' · ' + pet(person).call : '');
@@ -1508,7 +1710,7 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
   }
   function close(restore = false) {
     if (!panel || panel.hidden) return;
-    panel.hidden = true; face.setAttribute('aria-expanded', 'false');
+    panel.hidden = true; window.HaniFunPreview?.hide(); face.setAttribute('aria-expanded', 'false');
     if (restore) (returnFocus?.isConnected ? returnFocus : face).focus({preventScroll: true});
   }
   function open() {
@@ -1516,6 +1718,7 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
     panel.hidden = false; face.setAttribute('aria-expanded', 'true');
     place(); panel.querySelector('[data-helper-close]').focus({preventScroll: true});
   }
+  function toggle() { panel.hidden ? open() : close(true); }
   function place() {
     if (!root) return;
     const visible = el => {
@@ -1530,8 +1733,7 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
     root.dataset.helperReason = login ? 'login' : modal ? 'modal' : !duty(people()) ? 'no-duty' : 'shown';
     root.hidden = root.dataset.helperReason !== 'shown';
     if (root.hidden) { close(); return; }
-    const vv = window.visualViewport, viewport = {left: vv?.offsetLeft || 0, top: vv?.offsetTop || 0, width: vv?.width || window.innerWidth, height: vv?.height || window.innerHeight};
-    viewport.height -= parseFloat(getComputedStyle(root).getPropertyValue('--helper-safe-bottom')) || 0;
+    const viewport = viewportBox(), size = faceSize();
     const desktop = window.innerWidth > 850, column = {...viewport};
     const railBox = rail?.getBoundingClientRect();
     if (desktop && railBox?.width > 0 && railBox.height > 0 && !app?.classList.contains('hani-remote-mini')) {
@@ -1541,11 +1743,11 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
     }
     // Floating UI reserves space on both sizes; ordinary scrolling controls never do.
     const floating = el => ['fixed', 'sticky'].includes(getComputedStyle(el).position);
-    const controls = [...document.querySelectorAll('*')].filter(el => floating(el) && !(desktop && el === rail));
+    const controls = position ? [] : [...document.querySelectorAll('*')].filter(el => floating(el) && !(desktop && el === rail));
     // Open rail bounds the main column above. In mini mode only its controls reserve space,
     // preserving the existing viewport-corner placement over the rail's inert background.
-    if (rail && floating(rail)) controls.push(...rail.querySelectorAll('button,a[href],input,textarea,select,[role="button"]'));
-    if (document.activeElement?.matches('input:not([type="hidden"]),textarea,select,[contenteditable="true"]')) controls.push(document.activeElement);
+    if (!position && rail && floating(rail)) controls.push(...rail.querySelectorAll('button,a[href],input,textarea,select,[role="button"]'));
+    if (!position && document.activeElement?.matches('input:not([type="hidden"]),textarea,select,[contenteditable="true"]')) controls.push(document.activeElement);
     const obstacles = controls
       .filter(el => !root.contains(el))
       .filter(visible)
@@ -1556,13 +1758,20 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
       const bars = obstacles.filter(b => b.width >= viewport.width / 2 && b.top >= viewport.top + viewport.height / 2 && b.bottom >= viewport.top + viewport.height - 16);
       if (bars.length) fallback.height = Math.max(84, Math.min(...bars.map(b => b.top)) - viewport.top);
     }
-    const box = slot(column, obstacles) || slot(fallback, []) || {left:column.left + Math.max(0, column.width - 72),top:viewport.top + Math.max(0, fallback.height - 72)};
-    box.right = box.left + 56; box.bottom = box.top + 56;
+    const proposed = position ? {left: viewport.left + position.x * viewport.width, top: viewport.top + position.y * viewport.height} :
+      slot(column, obstacles, size) || slot(fallback, [], size) || {left:column.left, top:viewport.top};
+    const box = clampBox(proposed.left, proposed.top, viewport, size);
     root.style.left = box.left + 'px'; root.style.top = box.top + 'px';
-    panel.style.width = desktop ? Math.min(320, column.width - 32) + 'px' : '';
-    panel.style.maxHeight = (desktop ? Math.max(0, box.top - viewport.top - 28) : Math.max(80, viewport.height - 32)) + 'px';
-    panel.style.left = Math.max(column.left + 16, box.right - Math.min(320, column.width - 32)) + 'px';
-    panel.style.top = Math.max(viewport.top + 16, box.top - panel.getBoundingClientRect().height - 12) + 'px';
+    const bounds = position ? viewport : column, gap = 12;
+    const width = Math.max(0, Math.min(desktop ? 360 : 320, bounds.width - 32));
+    panel.style.width = width + 'px';
+    const above = box.top - viewport.top - 16 - gap;
+    const below = viewport.top + viewport.height - box.bottom - 16 - gap;
+    const upwards = above >= below;
+    panel.style.maxHeight = Math.max(0, Math.max(above, below)) + 'px';
+    panel.style.left = Math.max(bounds.left + 16, Math.min(box.right - width, bounds.left + bounds.width - width - 16)) + 'px';
+    const height = panel.getBoundingClientRect().height;
+    panel.style.top = Math.max(viewport.top + 16, Math.min(upwards ? box.top - height - gap : box.bottom + gap, viewport.top + viewport.height - height - 16)) + 'px';
   }
   function schedulePlace() {
     if (pending) return;
@@ -1571,7 +1780,7 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
   function init() {
     if (root || document.getElementById('haniHelperBot')) return;
     root = document.createElement('aside'); root.id = 'haniHelperBot'; root.hidden = true;
-    root.innerHTML = '<button class="hani-helper-face" type="button" aria-expanded="false" aria-controls="haniHelperSpeech"><span class="hani-helper-art" aria-hidden="true"></span><i class="hani-helper-dot" aria-hidden="true" hidden></i></button><section id="haniHelperSpeech" class="hani-helper-speech" role="dialog" aria-modal="false" aria-labelledby="haniHelperTitle" hidden><header><div><small>오늘의 당번</small><h2 id="haniHelperTitle"></h2></div><button type="button" data-helper-close aria-label="도우미 닫기">×</button></header><p class="hani-helper-greeting"></p><h3>이 화면 도움말</h3><p class="hani-helper-help"></p><nav aria-label="도우미 바로가기"></nav><p class="hani-helper-news" aria-live="polite"></p></section>';
+    root.innerHTML = '<button class="hani-helper-face" type="button" aria-expanded="false" aria-controls="haniHelperSpeech"><span class="hani-helper-art" aria-hidden="true"></span><i class="hani-helper-dot" aria-hidden="true" hidden></i></button><section id="haniHelperSpeech" class="hani-helper-speech" role="dialog" aria-modal="false" aria-labelledby="haniHelperTitle" hidden><header><div><small>오늘의 당번</small><h2 id="haniHelperTitle"></h2></div><button type="button" data-helper-close aria-label="도우미 닫기">×</button></header><div class="hani-helper-home"><p class="hani-helper-greeting"></p><p class="hani-helper-affinity"></p><h3>이 화면 도움말</h3><p class="hani-helper-help"></p><nav aria-label="도우미 바로가기"></nav><p class="hani-helper-news" aria-live="polite"></p></div></section>';
     document.body.append(root);
     face = root.querySelector('.hani-helper-face'); panel = root.querySelector('.hani-helper-speech'); dot = root.querySelector('.hani-helper-dot');
     title = root.querySelector('h2'); greetingLine = root.querySelector('.hani-helper-greeting'); helpLine = root.querySelector('.hani-helper-help'); newsLine = root.querySelector('.hani-helper-news');
@@ -1580,10 +1789,17 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
       if (!document.getElementById(id)) continue;
       const button = document.createElement('button'); button.type = 'button'; button.dataset.helperGo = id; button.textContent = label; nav.append(button);
     }
+    const reset = document.createElement('button'); reset.type = 'button'; reset.dataset.helperReset = ''; reset.textContent = '제자리로'; panel.append(reset);
+    position = readPosition();
+    window.HaniFunPreview?.mount(root, panel);
+    for (const type of ['pointerdown', 'pointermove', 'pointerup', 'pointercancel', 'lostpointercapture']) document.addEventListener(type, pointer);
     document.addEventListener('click', event => {
-      if (face.contains(event.target)) { panel.hidden ? open() : close(true); return; }
+      if (suppressClick && event.detail !== 0 && face.contains(event.target)) { suppressClick = false; event.preventDefault(); return; }
+      if (window.HaniFunPreview?.action(event.target)) { schedulePlace(); return; }
+      if (face.contains(event.target)) { toggle(); return; }
       if (!root.contains(event.target)) { close(); schedulePlace(); return; }
       if (event.target.closest('[data-helper-close]')) { close(true); return; }
+      if (event.target.closest('[data-helper-reset]')) { position = null; writePosition({x: 1, y: 1, v: 1}); place(); return; }
       const target = event.target.closest('[data-helper-go]');
       if (target && typeof showView === 'function') { close(true); showView(target.dataset.helperGo); }
     });

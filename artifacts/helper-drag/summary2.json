@@ -1,0 +1,396 @@
+{
+  "officeFileCount": 57,
+  "total": {
+    "BLOCKED": 33,
+    "PASS": 633,
+    "SKIP": 5
+  },
+  "perFile": {
+    "scripts/hani-office-219.test.mjs": {
+      "BLOCKED": 1
+    },
+    "scripts/hani-office-actions-216.test.mjs": {
+      "PASS": 14,
+      "BLOCKED": 1
+    },
+    "scripts/hani-office-actions-221.test.mjs": {
+      "PASS": 20
+    },
+    "scripts/hani-office-affinity-274-pins.test.mjs": {
+      "PASS": 2,
+      "BLOCKED": 1
+    },
+    "scripts/hani-office-affinity-storage.test.mjs": {
+      "PASS": 3
+    },
+    "scripts/hani-office-affinity.test.mjs": {
+      "PASS": 21
+    },
+    "scripts/hani-office-barista-night-273-pins.test.mjs": {
+      "PASS": 4,
+      "BLOCKED": 1
+    },
+    "scripts/hani-office-barista-night.test.mjs": {
+      "PASS": 13
+    },
+    "scripts/hani-office-barista.test.mjs": {
+      "PASS": 10
+    },
+    "scripts/hani-office-behavior.test.mjs": {
+      "PASS": 10
+    },
+    "scripts/hani-office-bubble-close.test.mjs": {
+      "PASS": 17
+    },
+    "scripts/hani-office-cafe-rest.test.mjs": {
+      "BLOCKED": 1,
+      "PASS": 3
+    },
+    "scripts/hani-office-chairman-234.test.mjs": {
+      "BLOCKED": 7
+    },
+    "scripts/hani-office-consult.test.mjs": {
+      "PASS": 19,
+      "BLOCKED": 1
+    },
+    "scripts/hani-office-crowded-labels.test.mjs": {
+      "PASS": 19
+    },
+    "scripts/hani-office-drama.test.mjs": {
+      "PASS": 20
+    },
+    "scripts/hani-office-fix-218.test.mjs": {
+      "PASS": 6
+    },
+    "scripts/hani-office-floor-bubble.test.mjs": {
+      "PASS": 18
+    },
+    "scripts/hani-office-hd-224.test.mjs": {
+      "PASS": 10
+    },
+    "scripts/hani-office-icons.test.mjs": {
+      "PASS": 14,
+      "BLOCKED": 1
+    },
+    "scripts/hani-office-labels-qa.test.mjs": {
+      "PASS": 17
+    },
+    "scripts/hani-office-lively-v2.test.mjs": {
+      "PASS": 7,
+      "BLOCKED": 1
+    },
+    "scripts/hani-office-lively.test.mjs": {
+      "PASS": 19
+    },
+    "scripts/hani-office-motion-1.test.mjs": {
+      "PASS": 16
+    },
+    "scripts/hani-office-motion-2.test.mjs": {
+      "PASS": 24
+    },
+    "scripts/hani-office-obr10.test.mjs": {
+      "PASS": 4
+    },
+    "scripts/hani-office-obr12.test.mjs": {
+      "BLOCKED": 1
+    },
+    "scripts/hani-office-obr14.test.mjs": {
+      "BLOCKED": 1,
+      "PASS": 4
+    },
+    "scripts/hani-office-obr15.test.mjs": {
+      "PASS": 13,
+      "BLOCKED": 1
+    },
+    "scripts/hani-office-obr16.test.mjs": {
+      "PASS": 12
+    },
+    "scripts/hani-office-obr17.test.mjs": {
+      "PASS": 3
+    },
+    "scripts/hani-office-obr18.test.mjs": {
+      "PASS": 12
+    },
+    "scripts/hani-office-obr19.test.mjs": {
+      "PASS": 3
+    },
+    "scripts/hani-office-obr21.test.mjs": {
+      "PASS": 4,
+      "BLOCKED": 2
+    },
+    "scripts/hani-office-obr3.test.mjs": {
+      "PASS": 5
+    },
+    "scripts/hani-office-obr4.test.mjs": {
+      "PASS": 8,
+      "BLOCKED": 2
+    },
+    "scripts/hani-office-obr6.test.mjs": {
+      "BLOCKED": 1
+    },
+    "scripts/hani-office-obr7.test.mjs": {
+      "BLOCKED": 1
+    },
+    "scripts/hani-office-obr8.test.mjs": {
+      "BLOCKED": 1,
+      "PASS": 2
+    },
+    "scripts/hani-office-obr9.test.mjs": {
+      "BLOCKED": 1
+    },
+    "scripts/hani-office-pet-bori-272-pins.test.mjs": {
+      "PASS": 3,
+      "BLOCKED": 1
+    },
+    "scripts/hani-office-pet-bori.test.mjs": {
+      "PASS": 14
+    },
+    "scripts/hani-office-pets-268-pins.test.mjs": {
+      "BLOCKED": 1
+    },
+    "scripts/hani-office-pets-bubble.test.mjs": {
+      "PASS": 21,
+      "BLOCKED": 1
+    },
+    "scripts/hani-office-props.test.mjs": {
+      "PASS": 11
+    },
+    "scripts/hani-office-release-projection.test.mjs": {
+      "PASS": 2
+    },
+    "scripts/hani-office-residents.test.mjs": {
+      "PASS": 49
+    },
+    "scripts/hani-office-seats-215.test.mjs": {
+      "PASS": 12
+    },
+    "scripts/hani-office-snack.test.mjs": {
+      "PASS": 26
+    },
+    "scripts/hani-office-tap-lines.test.mjs": {
+      "PASS": 15
+    },
+    "scripts/hani-office-tlayout.test.mjs": {
+      "PASS": 13
+    },
+    "scripts/hani-office-top-labels.test.mjs": {
+      "PASS": 7
+    },
+    "scripts/hani-office-v2-215.test.mjs": {
+      "PASS": 17,
+      "BLOCKED": 1,
+      "SKIP": 2
+    },
+    "scripts/hani-office-visitors-cafe.test.mjs": {
+      "PASS": 5
+    },
+    "scripts/hani-office-xmas-269-pins.test.mjs": {
+      "PASS": 1,
+      "BLOCKED": 1
+    },
+    "scripts/hani-office-xmas.test.mjs": {
+      "PASS": 12,
+      "BLOCKED": 1
+    },
+    "scripts/hani-office-zoom.test.mjs": {
+      "PASS": 12,
+      "SKIP": 1
+    },
+    "scripts/hani-helper-bot.test.mjs": {
+      "PASS": 29,
+      "SKIP": 1
+    },
+    "scripts/hani-fun-chat-fortune.test.mjs": {
+      "PASS": 5,
+      "SKIP": 1
+    },
+    "scripts/hani-helper-275-pins.test.mjs": {
+      "PASS": 3,
+      "BLOCKED": 1
+    }
+  },
+  "blockedByFile": {
+    "scripts/hani-office-219.test.mjs": [
+      {
+        "name": "module evaluation",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-office-actions-216.test.mjs": [
+      {
+        "name": "approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-office-affinity-274-pins.test.mjs": [
+      {
+        "name": "274 base commit independently proves the entire original JS/CSS/helper blobs",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-office-barista-night-273-pins.test.mjs": [
+      {
+        "name": "273: fixed Git release blobs independently prove every baseline pin and complete diff",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-office-cafe-rest.test.mjs": [
+      {
+        "name": "cafe route uses clear lower-right floor, retains the lounge and sign mounting surface",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-office-chairman-234.test.mjs": [
+      {
+        "name": "module evaluation",
+        "error": "spawnSync git EPERM"
+      },
+      {
+        "name": "actual owner reuses 19 actors and a single host across all floor clicks",
+        "error": "module evaluation did not complete"
+      },
+      {
+        "name": "missing action table keeps base work instead of the retired fixed-time break/meeting schedule",
+        "error": "module evaluation did not complete"
+      },
+      {
+        "name": "actual owner loads approved 3F art when present and caches production fallback when absent",
+        "error": "module evaluation did not complete"
+      },
+      {
+        "name": "hidden view and document pause sprite frames and behaviour; visible view resumes",
+        "error": "module evaluation did not complete"
+      },
+      {
+        "name": "existing case meeting stays available during floor switches and returns to prior floor",
+        "error": "module evaluation did not complete"
+      },
+      {
+        "name": "summon animation waits while its view is hidden and resumes without a second engine",
+        "error": "module evaluation did not complete"
+      }
+    ],
+    "scripts/hani-office-consult.test.mjs": [
+      {
+        "name": "consult: sofa wording, counter words, safety owners and runtime timers",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-office-icons.test.mjs": [
+      {
+        "name": "icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-office-lively-v2.test.mjs": [
+      {
+        "name": "obr2: deterministic query order, reduced motion and frozen spatial bytes",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-office-obr12.test.mjs": [
+      {
+        "name": "module evaluation",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-office-obr14.test.mjs": [
+      {
+        "name": "235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-office-obr15.test.mjs": [
+      {
+        "name": "obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-office-obr21.test.mjs": [
+      {
+        "name": "obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+        "error": "spawnSync git EPERM"
+      },
+      {
+        "name": "obr21 cached gathering/index decisions equal full index rebuilds",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-office-obr4.test.mjs": [
+      {
+        "name": "obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+        "error": "spawnSync git EPERM"
+      },
+      {
+        "name": "obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-office-obr6.test.mjs": [
+      {
+        "name": "module evaluation",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-office-obr7.test.mjs": [
+      {
+        "name": "module evaluation",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-office-obr8.test.mjs": [
+      {
+        "name": "obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-office-obr9.test.mjs": [
+      {
+        "name": "module evaluation",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-office-pet-bori-272-pins.test.mjs": [
+      {
+        "name": "272: fixed Git release blobs independently prove every baseline pin and complete diff",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-office-pets-268-pins.test.mjs": [
+      {
+        "name": "v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-office-pets-bubble.test.mjs": [
+      {
+        "name": "resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-office-v2-215.test.mjs": [
+      {
+        "name": "frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-office-xmas-269-pins.test.mjs": [
+      {
+        "name": "v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-office-xmas.test.mjs": [
+      {
+        "name": "xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged",
+        "error": "spawnSync git EPERM"
+      }
+    ],
+    "scripts/hani-helper-275-pins.test.mjs": [
+      {
+        "name": "275 fixed Git base independently proves complete UI/CSS diffs and unchanged release owners",
+        "error": "spawnSync git EPERM"
+      }
+    ]
+  }
+}
