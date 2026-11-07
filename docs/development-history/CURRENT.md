@@ -1,3 +1,7 @@
+# 2026-11-08 · 보리 낮 리듬 보정 (Codex / bori-fix)
+
+`hani/bori-stroll` / HEAD `02468e1` / GitHub main `f1a457f` 일치 / 표시·cache2.9.279 유지. 기존 owner에서 낮잠·앉기·서기·느린 짧은 이동 복원, 정기 산책 유지. **Edge 화요일10시·40배속90회: 수면34(37.8%)·앉기/서기45(50.0%)·걷기11(12.2%).** 5일 매분 낮 수면36.1~37.1%·걷기11.0~15.0%, 밤 산책0·겹침0. 전용14/14, 전체68파일799통과·기존 대비실패1·skip5, 단독 성능 각3/3 PASS. 278/companion-homes 계약·저장/Cloud·timer/listener 보존. **git add index.lock 권한 거절로 미커밋**, push/merge/버전 변경/배포 없음. Notion 자동 승인 never 거절로 갱신 대기. [작업별 인수인계·실측표·전체 근거](../../artifacts/bori-fix/REPORT.md). 아래 1차 기록은 보정 전 근거로 보존.
+
 # 2026-11-08 · 보리의 가끔 산책 (Codex / bori-stroll)
 
 `hani/bori-stroll` / base·HEAD·착수 GitHub main `f1a457f` / 표시·cache2.9.279 유지. 날짜 시드 낮 짧은 산책·기존 pose/tick/bubble, 2F 병아리 경로 예약·남매96px 간격. **4일×1440분20/18/21/19회·밤0·겹침0, 41회×0.5초 복귀 확인, 신규7항목 완료(공통6·fixture 수정 DOM 단독 재검사 포함). 기존67파일785통과·기존 대비 실패1·skip5, 성능 각 최종 단독3/3, PC1440/390 20장면·저장/오류0.** closure161·8파일 원문·등록수 보존. 기존 이름표 대비 실패는 변경 전에도 동일, 직원 통과 시 잠시 숨음 기록. Git add index.lock 권한 거절로 **미커밋**, push/merge/버전변경/배포 없음. Notion 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/bori-stroll/REPORT.md) · [인수인계](handoffs/2026-11-07-bori-stroll.md). 아래 다른 담당·과거 기록 보존.

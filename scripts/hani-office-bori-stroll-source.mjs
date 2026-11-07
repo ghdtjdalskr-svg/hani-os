@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 const hash=s=>createHash('sha256').update(s).digest('hex');
 const bytes=fs.readFileSync(new URL('fixtures/office-bori-stroll-delta.json',import.meta.url));
-assert.equal(hash(bytes),'f75f5f3f4c90aaf5b89807d302e2f2379d58c48fc665f4544cd218387658602e','exact authored Bori stroll contract');
+assert.equal(hash(bytes),'c7e8675afd032e18c0eb6a46c71d6812964bddc8057a747641c4b2874e66deba','exact authored Bori stroll contract');
 export const boriStrollDelta=JSON.parse(bytes);
 assert.equal(boriStrollDelta.baseCommit,'f1a457f0ffe6a42721c73cf22218f13e4e961bf6');
 assert.equal(boriStrollDelta.beforeSha256,'84b448af3f4251d33b4d992016a7f158524fad49bbeb589c67e8a07c80d557ec');

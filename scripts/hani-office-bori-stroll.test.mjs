@@ -33,26 +33,29 @@ test('stroll inverse independently matches the fixed Git base',()=>{
 
 test('weekday/weekend minute-by-minute days: 15..25 daytime outings, 2..4 minutes each, no night outing or pet/companion/sibling overlap',()=>{
  const evidence=[];
- for(const day of ['2026-11-02','2026-11-06','2026-11-07','2026-11-08']){
-  const trips=new Map();let overlap=0,night=0,nap=0,walk=0,visible=0;
+ for(const day of ['2026-11-02','2026-11-03','2026-11-06','2026-11-07','2026-11-08']){
+  const trips=new Map(),daytime={samples:720,visible:0,sleep:0,awake:0,walking:0};let overlap=0,night=0,nap=0,walk=0,visible=0;
   for(let sec=0;sec<86400;sec+=60){
    const now=at(day,sec),staff=scene.snapshot(now,{chairmanPresent:true}),before=JSON.stringify(staff),states=r.snapshot(now,staff),p=states.find(p=>p.id==='pet-bori');
    assert.equal(JSON.stringify(staff),before);if(!p)continue;visible++;if(p.pose==='sleep')nap++;if(p.walking)walk++;
    assert.ok(r.safe(p.floor,p.point,p.position));
    const companions=r.companionSnapshot(now,staff,true,false,states);
    if(sec>=22*3600||sec<9*3600){if(p.stroll||p.walking)night++;assert.equal(p.pose,'sleep')}
+   if(sec>=9*3600&&sec<21*3600){daytime.visible++;if(p.walking){daytime.walking++;assert.match(p.pose,/^walk-[ab]$/)}else if(p.pose==='sleep')daytime.sleep++;else {assert.ok(['sitting','standing'].includes(p.pose));daytime.awake++}}
+   for(const q of [...states,...companions].filter(q=>q.id!==p.id&&q.floor===p.floor))if(distance(p.position,q.position)<96-1e-6)overlap++;
    if(!p.stroll)continue;
    trips.set(p.stroll.key,p.stroll);assert.ok(sec>=9*3600&&sec<21*3600);assert.ok(p.stroll.duration>=120&&p.stroll.duration<=240);
    assert.equal(p.floor,sec>=13*3600&&sec<15*3600?'2f':'1f');
    for(const stop of p.stroll.stops){const a=r.spot(stop);assert.ok(a);assert.equal(a.floor,p.floor)}
    assert.ok(p.stroll.stops.length>=2&&p.stroll.stops.length<=3);
-   for(const q of [...states,...companions].filter(q=>q.id!==p.id&&q.floor===p.floor))if(distance(p.position,q.position)<96-1e-6)overlap++;
   }
   const starts=[...trips.values()].map(t=>t.start).sort((a,b)=>a-b),intervals=starts.slice(1).map((s,i)=>(s-starts[i])/60);
-  evidence.push({day,samples:1440,outings:trips.size,night,overlap,visible,sleepMinutes:nap,walkingMinuteSamples:walk,intervalMinutes:intervals,durations:[...trips.values()].map(t=>t.duration)});
-  assert.ok(trips.size>=15&&trips.size<=25,day+' outings '+trips.size);assert.equal(night,0);assert.equal(overlap,0);assert.ok(visible>=1440*.95);assert.ok(nap/visible>.85);for(const gap of intervals)assert.ok(gap>=30&&gap<=45,day+' gap '+gap);
+  evidence.push({day,samples:1440,daytime,outings:trips.size,night,overlap,visible,sleepMinutes:nap,walkingMinuteSamples:walk,intervalMinutes:intervals,durations:[...trips.values()].map(t=>t.duration)});
+  assert.ok(trips.size>=15&&trips.size<=25,day+' outings '+trips.size);assert.equal(night,0);assert.equal(overlap,0);assert.ok(visible>=1440*.95);
+  assert.ok(daytime.visible>=720*.95);assert.ok(daytime.sleep/720>=.3&&daytime.sleep/720<=.5,day+' sleep '+daytime.sleep);assert.ok(daytime.awake/720>=.3,day+' awake '+daytime.awake);assert.ok(daytime.walking/720>=.1,day+' walking '+daytime.walking);
+  for(const gap of intervals)assert.ok(gap>=30&&gap<=45,day+' gap '+gap);
  }
- fs.writeFileSync('artifacts/bori-stroll/daily-evidence.json',JSON.stringify(evidence,null,2)+'\n');console.log('Bori daily evidence',JSON.stringify(evidence));
+ fs.mkdirSync('artifacts/bori-fix',{recursive:true});fs.writeFileSync('artifacts/bori-fix/daily-evidence.json',JSON.stringify(evidence,null,2)+'\n');console.log('Bori daily evidence',JSON.stringify(evidence));
 });
 
 test('second-level full tours wake, walk to 1..2 stops and return home without collisions; routes reserve both ends from the chick',()=>{
@@ -69,10 +72,11 @@ test('second-level full tours wake, walk to 1..2 stops and return home without c
     for(const q of [...states,...companions].filter(q=>q.id!==p.id&&q.floor===p.floor))assert.ok(distance(p.position,q.position)>=96-1e-6,day+' '+(trip.start+elapsed)+' '+q.id);
    }
    assert.ok(walks>0);assert.ok(poses.has('standing'));assert.ok(poses.has('sleep'));assert.ok(seen.size>=2);assert.ok(hidden/(trip.duration*2)<.1);result.push({day,start:trip.start,stops:[...seen],walkSamples:walks,lineSamples:lines,hiddenSamples:hidden});
-   const after=at(day,trip.start+trip.duration),p=r.snapshot(after,scene.snapshot(after,{chairmanPresent:true})).find(p=>p.id==='pet-bori');assert.equal(p.pose,'sleep');assert.equal(p.walking,false);assert.equal(p.stroll,undefined);assert.ok(distance(p.position,r.spot(trip.stops[0]).visual)<1);
+   const end=at(day,trip.start+trip.duration-1),home=r.snapshot(end,scene.snapshot(end,{chairmanPresent:true})).find(p=>p.id==='pet-bori');assert.equal(home.pose,'sleep');assert.equal(home.walking,false);assert.ok(distance(home.position,r.spot(trip.stops[0]).visual)<1);
+   const after=at(day,trip.start+trip.duration),p=r.snapshot(after,scene.snapshot(after,{chairmanPresent:true})).find(p=>p.id==='pet-bori');assert.equal(p.stroll,undefined);assert.ok(r.safe(p.floor,p.point,p.position));
   }
  }
- fs.writeFileSync('artifacts/bori-stroll/tour-evidence.json',JSON.stringify(result,null,2)+'\n');
+ fs.writeFileSync('artifacts/bori-fix/tour-evidence.json',JSON.stringify(result,null,2)+'\n');
 });
 
 test('date seed, reordered samples, absent chairman, reduced motion, KST boundaries and blocking retain safe nap behavior',()=>{
@@ -101,6 +105,20 @@ test('real persistent DOM: one Bori bubble on original owner, no writes, unchang
  f.click('3f');tick();const before=actor.officeResidentState;f.setDateTime('2026-11-07T16:00:00+09:00');tick();assert.equal(actor.officeResidentState,before);f.hide();tick();assert.equal(f.root.dataset.paused,'true');
  const reduced=mount(s=>s,true);for(const sec of [32400,36000,50400,72000]){reduced.setDateTime(at('2026-11-07',sec).toISOString());reduced.click(sec>=46800&&sec<54000?'2f':'1f');reduced.timers.find(t=>t.ms===100).fn();const p=reduced.ids.get('haniOfficeActors').children.find(p=>p.dataset.person==='pet-bori');assert.equal(p.dataset.walking,'false')}
  for(const regex of [/\bsetInterval\s*\(/g,/\bsetTimeout\s*\(/g,/\baddEventListener\s*\(/g,/\brequestAnimationFrame\s*\(/g,/\bcreateElement\s*\(/g,/\b(?:localStorage|sessionStorage)\b/g,/\bsupabase\b/g])assert.equal([...current.matchAll(regex)].length,[...base.matchAll(regex)].length);
+});
+
+test('Tuesday 10:00 KST at 40x: 90 actual persistent DOM poses retain daytime sleep, awake and walking shares',()=>{
+ const f=fixture('10:00',false,()=>true,table,{HaniOfficeV2Assets:{...assets,spritesV3:JSON.parse(fs.readFileSync('assets/sprites-v3/manifest-v3.json'))},setTimeout:()=>0});
+ f.context.window.HaniOfficePresence={chairman:'active'};f.click('1f');
+ const actor=f.ids.get('haniOfficeActors').children.find(a=>a.dataset.person==='pet-bori'),tick=f.timers.find(t=>t.ms===100).fn,counts={sleep:0,awake:0,walking:0},samples=[];
+ for(let i=0;i<90;i++){
+  f.setDateTime(at('2026-11-03',36000+i*40).toISOString());tick();assert.equal(actor.hidden,false);
+  const {pose,walking}=actor.dataset,p=actor.officeResidentState;assert.equal(pose,p.pose);assert.equal(walking,String(p.walking));
+  if(walking==='true'){counts.walking++;assert.match(pose,/^walk-[ab]$/)}else if(pose==='sleep')counts.sleep++;else {assert.ok(['sitting','standing'].includes(pose));counts.awake++}
+  samples.push({i,pose,walking});
+ }
+ assert.ok(counts.sleep>=27&&counts.sleep<=45,JSON.stringify(counts));assert.ok(counts.awake>=27,JSON.stringify(counts));assert.ok(counts.walking>=9,JSON.stringify(counts));
+ fs.writeFileSync('artifacts/bori-fix/dom-40x.json',JSON.stringify({day:'2026-11-03',start:'10:00 KST',counts,samples},null,2)+'\n');
 });
 
 test('runtime closure, CSS, assets, version, staff plan and other resident definitions have no dependency change',async()=>{
