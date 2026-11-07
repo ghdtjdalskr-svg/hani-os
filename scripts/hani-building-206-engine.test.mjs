@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import {assets} from './hani-office-v2-fixture.mjs';
 const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
-export function fixture(time='09:00',reduced=false,loadArt=null,actionTable=null,environment={}){
+export function fixture(time='09:00',reduced=false,loadArt=null,actionTable=null,environment={},sourceTransform=s=>s){
  const ids=new Map(),timers=[],observers=[],motionEvents={};let clock=new Date(`2026-10-11T${time}:00+09:00`).getTime();
  class Element{
   constructor(tag='div'){this.tagName=tag;this.children=[];this.dataset={};this.attributes={};this.events={};this.style={setProperty(k,v){this[k]=v}};this.hidden=false;this.className='';this.textContent='';this.classList={contains:c=>this.className.split(' ').includes(c),add:c=>{this.className+=' '+c}}}
@@ -32,7 +32,7 @@ export function fixture(time='09:00',reduced=false,loadArt=null,actionTable=null
  class Image{set src(v){if(v===availableArt||loadArt?.(v))this.onload();else this.onerror()}}
  const context=vm.createContext({HaniOfficeV2Assets:assets,HaniOfficeActions216:actionTable,HaniOfficeActions221:actionTable?.schemaVersion==='office-actions-221-v1'?actionTable:null,document,window:{},Date:Clock,Image,matchMedia:()=>({matches:reduced,addEventListener:(name,fn)=>{motionEvents[name]=fn}}),getComputedStyle:()=>({display:'block'}),MutationObserver:class{constructor(cb){observers.push(cb)}observe(){}},setInterval:(fn,ms)=>{timers.push({fn,ms})},setTimeout,console,...environment});
  // Canonical roster publishes even when its own view is absent.
- vm.runInContext(read('hani-organization-hub.js'),context);vm.runInContext(read('hani-office-live.js'),context);
+ vm.runInContext(read('hani-organization-hub.js'),context);vm.runInContext(sourceTransform(read('hani-office-live.js')),context);
  const click=floor=>tabs.events.click({target:[...tabs.children].find(b=>b.dataset.buildingFloor===floor)});
  const visible=()=>ids.get('haniOfficeActors').children.filter(a=>!a.hidden);
  return {context,ids,root,map,tabs,click,visible,timers,document,setTime:t=>{clock=new Date(`2026-10-11T${t}:00+09:00`).getTime()},setDateTime:t=>{clock=new Date(t).getTime()},setReduced:matches=>motionEvents.change({matches}),hide:()=>{view.className='view';observers[0]()},show:()=>{view.className='view active';observers[0]()},art:value=>{availableArt=value}};

@@ -1,3 +1,5 @@
+// Fixed pre-patrol behavior is independently pinned by the strict 278 inverse; current patrol is tested separately.
+import {projectPrePatrolSource} from './hani-office-chairman-patrol-278-source.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -100,7 +102,7 @@ test('props: scheduler/plan/blockPlan/snapshot/labels/home-clear source bytes an
  const source268=restoreXmas269Source(source),comparableSource=restorePets268Source(source);
  for(const row of base.sections){const text=row.name==='residents renderer'?source268:comparableSource;const i=text.indexOf(row.start),j=text.indexOf(row.end,i);assert.ok(i>=0&&j>i,row.name);assert.equal(hash(text.slice(i,j)),row.sha256,row.name)}
  for(const row of base.assets)assert.equal(hash(fs.readFileSync(new URL('../'+row.file,import.meta.url))),row.sha256,row.file);
- const {scene}=loadScene(),s=scene.scheduler,original=JSON.parse(read('artifacts/office-snack/baseline.json'));
+ const {scene}=loadScene({transform:projectPrePatrolSource}),s=scene.scheduler,original=JSON.parse(read('artifacts/office-snack/baseline.json'));
  for(const row of original.models){const formal=s.plan(row.day,row.options);assert.equal(hash(JSON.stringify(formal)),row.plan);assert.equal(hash(JSON.stringify(s.blockPlan(row.day,0,formal,row.options))),row.blockPlan);
   for(const snap of row.snapshots){assert.equal(hash(JSON.stringify(s.snapshot(at(row.day,snap.seconds),row.options))),snap.scheduler);assert.equal(hash(JSON.stringify(scene.snapshot(at(row.day,snap.seconds),row.options))),snap.view)}
  }

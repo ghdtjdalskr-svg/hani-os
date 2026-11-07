@@ -1,0 +1,14 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import {createHash} from 'node:crypto';import {execFileSync} from 'node:child_process';
+import {patrol278Delta as delta,restorePatrol278Source as restore} from './hani-office-chairman-patrol-278-source.mjs';
+const hash=x=>createHash('sha256').update(x).digest('hex'),read=f=>fs.readFileSync(f,'utf8');
+test('278 exact complete ordered replacements reject missing, duplicate, unrelated and baseline bytes',()=>{
+ assert.equal(delta.version,'2.9.278');assert.deepEqual(delta.files.map(r=>r.file),['hani-office-live.js','hani-office-live.css']);
+ for(const row of delta.files){const current=read(row.file),before=restore(current,row.file);let forward=before,aEnd=0,bEnd=0;
+  for(const r of row.replacements){assert.ok(r.before.length&&r.after.length);assert.notEqual(r.before,r.after);assert.equal(before.split(r.before).length-1,1);assert.equal(current.split(r.after).length-1,1);const a=before.indexOf(r.before),b=current.indexOf(r.after);assert.ok(a>=aEnd&&b>=bEnd);aEnd=a+r.before.length;bEnd=b+r.after.length;forward=forward.replace(r.before,()=>r.after);assert.throws(()=>restore(current.replace(r.after,()=>r.before),row.file));assert.throws(()=>restore(current+r.after,row.file));}
+  assert.equal(forward,current);assert.equal(hash(before),row.beforeSha256);assert.equal(hash(current),row.afterSha256);
+  const bytes=Buffer.from(before);assert.equal(createHash('sha1').update(Buffer.concat([Buffer.from('blob '+bytes.length+'\0'),bytes])).digest('hex'),row.beforeBlobSha1);
+  for(const bad of [current+'\n',current.slice(1),current+current,before])assert.throws(()=>restore(bad,row.file));
+ }
+ assert.throws(()=>restore(read('hani-main.js'),'hani-main.js'));
+});
+test('278 independent fixed Git blobs prove pre-patrol bytes',()=>{for(const row of delta.files){const before=execFileSync('git',['show',delta.baseCommit+':'+row.file],{encoding:'utf8',maxBuffer:32*1024*1024});assert.equal(hash(before),row.beforeSha256);assert.equal(restore(read(row.file),row.file),before)}});

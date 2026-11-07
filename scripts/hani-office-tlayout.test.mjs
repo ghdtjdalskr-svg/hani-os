@@ -1,3 +1,5 @@
+// Fixed pre-patrol behavior is independently pinned by the strict 278 inverse; current patrol is tested separately.
+import {projectPrePatrolSource} from './hani-office-chairman-patrol-278-source.mjs';
 import {restoreCompanions276Source} from './hani-office-companions-276-source.mjs';
 import {stripApprovedAffinityStorage} from './hani-office-affinity-storage.mjs';
 import test from 'node:test';
@@ -40,7 +42,7 @@ test('only the five pinned source fragments change; protected home and label own
 });
 test('16 separately authored complete plan/outings/reverse-snapshot outputs have no exclusions',()=>{
  const frozen=readTlayoutPlans();assert.equal(frozen.records.length,16);for(const[file,pin]of Object.entries(frozen.inputs))assert.equal(hash(['hani-office-live.js','hani-office-live.css'].includes(file)?restoreCompanions276Source(fs.readFileSync(file,'utf8'),file):fs.readFileSync(file)),pin,file+' exact input');
- for(const r of frozen.records){const s=loadScene().scene.scheduler,f=s.plan(r.day,r.options),o=s.blockPlan(r.day,0,f,r.options);assert.equal(JSON.stringify(f),JSON.stringify(r.formal));assert.equal(hash(JSON.stringify(f)),r.formalSha256);assert.equal(hash(JSON.stringify(o)),r.outingsSha256);for(const row of r.snapshots.toReversed())assert.equal(hash(JSON.stringify(s.snapshot(at(r.day,row.seconds),r.options))),row.sha256,r.label+' '+row.seconds);}
+ for(const r of frozen.records){const s=loadScene({transform:projectPrePatrolSource}).scene.scheduler,f=s.plan(r.day,r.options),o=s.blockPlan(r.day,0,f,r.options);assert.equal(JSON.stringify(f),JSON.stringify(r.formal));assert.equal(hash(JSON.stringify(f)),r.formalSha256);assert.equal(hash(JSON.stringify(o)),r.outingsSha256);for(const row of r.snapshots.toReversed())assert.equal(hash(JSON.stringify(s.snapshot(at(r.day,row.seconds),r.options))),row.sha256,r.label+' '+row.seconds);}
 });
 
 test('G keeps all five 3F resident stops, complete body routes and weekly resident separation',()=>{

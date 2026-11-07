@@ -9,6 +9,7 @@ import os from 'node:os';
 import {createRequire} from 'node:module';
 import {createHash} from 'node:crypto';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
+import {projectPrePatrolSource} from './hani-office-chairman-patrol-278-source.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {restoreResidentsSource} from './hani-office-residents-source.mjs';
@@ -17,7 +18,7 @@ import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 import {approvedOfficeRuntimeAdditions,bori272Files} from './hani-office-runtime-additions.mjs';
 const read=f=>fs.readFileSync(f,'utf8'),hash=b=>createHash('sha256').update(b).digest('hex');
 const manifest=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));
-const {scene,table}=loadScene(),r=scene.residents;
+const {scene,table}=loadScene({transform:projectPrePatrolSource}),r=scene.residents;
 const people=r.people,ids=people.map(p=>p.id),plain=x=>JSON.parse(JSON.stringify(x));
 const mount=(enabled=true,reduced=false,width=1440,options={})=>{
  const loaded=[],writes=[];const deny=(...args)=>{writes.push(args);throw Error('unexpected persistence')};
@@ -471,7 +472,7 @@ test('tap any trio member sequences Cream, Cheese, Mochi on the single bubble an
 });
 
 test('trio rejects missing/different-floor/sleeping pets and staff-blocked floor; plan and snapshot bytes stay frozen',()=>{
- const isolated=loadScene().scene,rr=isolated.residents,now=at('2026-11-02',20*3600+120),states=rr.snapshot(now),staff=isolated.snapshot(now,{chairmanPresent:true}),bytes=JSON.stringify(staff);
+ const isolated=loadScene({transform:projectPrePatrolSource}).scene,rr=isolated.residents,now=at('2026-11-02',20*3600+120),states=rr.snapshot(now),staff=isolated.snapshot(now,{chairmanPresent:true}),bytes=JSON.stringify(staff);
  assert.equal(rr.trio(now,states.filter(p=>p.id!=='pet-rabbit'),staff),null);assert.equal(rr.trio(now,states.map(p=>p.id==='pet-rabbit'?{...p,floor:'3f'}:p),staff),null);
  assert.equal(rr.trio(at('2026-11-03',3*3600),rr.snapshot(at('2026-11-03',3*3600)),staff),null);
  const stop=rr.spot('resident_rabbit_night_a'),blocked=staffWith({id:'visitor',visitor:true,floor:'1f',position:plain(stop.visual),walking:true});assert.equal(rr.trio(now,states,blocked),null);

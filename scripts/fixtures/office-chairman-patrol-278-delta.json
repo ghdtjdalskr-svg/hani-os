@@ -1,0 +1,77 @@
+{
+  "version": "2.9.278",
+  "baseCommit": "3f4158e7a1d793ede02160f2dfac21b834d268d1",
+  "files": [
+    {
+      "file": "hani-office-live.js",
+      "beforeSha256": "43224cad9ebb0eeed913f485afaa9895783157748816458218401810652f389b",
+      "afterSha256": "4afe5cd2164e9b0232aa728b685d5e60bc665cf1c2ef02ed85737c29a832b6f6",
+      "beforeBlobSha1": "b25e88e6f46308b7245c6c9fe7a9df53f734db2c",
+      "replacements": [
+        {
+          "name": "patrol-278-1",
+          "before": "      }\n      // At most six fixed daily slots, one report per employee. Reserve the\n",
+          "after": "      }\n      // Four KST patrol windows use the same route, seat and reservation owner.\n      // Formal events win; optional reports/outings see these accepted reservations.\n      if(nightCatalog&&allowed.some(p=>p.id==='seongmin')){\n        const chair=personById.get('seongmin'),home=chair.home;\n        const windows=weekday?[[37800,'sofa-3f'],[47400,'coffee-1f'],[54000,'garden-5f'],[60000,'pantry-seats-2f']]:[[39600,'coffee-1f'],[45000,'sofa-3f'],[50400,'garden-5f'],[57600,'pantry-seats-2f']];\n        for(const [begin,place]of windows){\n          const card=places.find(c=>c.id===place);if(!card)continue;\n          let booked=false;\n          const starts=[...Array.from({length:91},(_,i)=>begin+i*30),...Array.from({length:60},(_,i)=>begin-(i+1)*30)];\n          for(const at of starts){if(booked)break;for(const target of card.slots){\n            const deadline=Math.min(begin+4200,nextCommitment(chair.id,at)),travel=pathDuration(path(home.anchorId,target))+pathDuration(path(target,home.anchorId));\n            const stay=Math.min(900+seed(day+'|patrol|'+begin)%301,deadline-at-travel);if(stay<900)continue;\n            const e=excursion(chair.id,home,card,target,at,stay,day,null,deadline);\n            if(!e||e.end-at>1500||!withinCap(e)||!reserve(e,ledger,allowed))continue;\n            e.patrol={window:begin,weekend:!weekday};\n            result.push(e);if(!tripsByPerson.has(chair.id))tripsByPerson.set(chair.id,[]);tripsByPerson.get(chair.id).push(e);\n            booked=true;break;\n          }}\n        }\n      }\n      // At most six fixed daily slots, one report per employee. Reserve the\n"
+        },
+        {
+          "name": "patrol-278-2",
+          "before": "        if(!state.seat)return null;\n        const performing=event&&seconds>=event.performStart&&seconds<event.performEnd,card=event?.card;\n",
+          "after": "        if(!state.seat)return null;\n        if(event?.patrol){\n          const leg=[...t.out,...t.back].find(l=>l.start<=seconds&&seconds<l.end);\n          if(leg){const a=visualPoint(anchors.get(leg.from)),b=visualPoint(anchors.get(leg.to));state.facing=b[0]<a[0]?'left':'right'}\n        }\n        const performing=event&&seconds>=event.performStart&&seconds<event.performEnd,card=event?.card;\n"
+        },
+        {
+          "name": "patrol-278-3",
+          "before": "        }\n        // A brief stretch uses the existing pose slot at the same reserved\n",
+          "after": "        }\n        if(event?.patrol){\n          if(state.state==='GOING')line='사무실 순찰 가는 중';\n          else if(state.state==='RETURNING')line='순찰 마치고 자리로 돌아가는 중';\n          else if(state.state==='AT_PLACE')line=({'3f':'개발실 둘러보는 중','1f':'카페에서 커피 받는 중','5f':'옥상 정원 산책 중','2f':'라운지 둘러보는 중'})[state.floor];\n        }\n        // A brief stretch uses the existing pose slot at the same reserved\n"
+        },
+        {
+          "name": "patrol-278-4",
+          "before": "          pose:state.walking?(Math.floor(seconds*5)%2?'walk-a':'walk-b'):state.seat.posture,activity:p.visitor?'visit':event&&!card?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):lounge||card?.id==='cafe-1f'&&state.state==='AT_PLACE'?'rest':'work',\n          actionId:event&&!card&&(performing||state.state==='AT_PLACE')?action.id:'base-work',eventId:card?undefined:event?.id,outingId:card?event.id:undefined,groupIds:event?.group,placeId:card?.id,targetAnchor:t?.seat.anchor,line,\n          emoji:performing&&!card?(action.actorOverrides?.[p.id]?.emoji||action.performance.emoji):'',personalNonWork:action?.personalNonWork};\n",
+          "after": "          pose:state.walking?(Math.floor(seconds*5)%2?'walk-a':'walk-b'):state.seat.posture,activity:p.visitor?'visit':event&&!card?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):lounge||card?.id==='cafe-1f'&&state.state==='AT_PLACE'?'rest':'work',\n          actionId:event&&!card&&(performing||state.state==='AT_PLACE')?action.id:'base-work',eventId:card?undefined:event?.id,outingId:card?event.id:undefined,groupIds:event?.group,placeId:card?.id,targetAnchor:t?.seat.anchor,line,...(event?.patrol?{patrol:event.patrol,patrolArrival:t.out.at(-1).end}:{}),\n          emoji:performing&&!card?(action.actorOverrides?.[p.id]?.emoji||action.performance.emoji):'',personalNonWork:action?.personalNonWork};\n"
+        },
+        {
+          "name": "patrol-278-5",
+          "before": "    {id:'kid-suhyeon',name:'수현',kid:true,atlasRow:0,lines:['…지금 말고.','가방? 그냥 들어 준 거야.','아빠, 얘 좀 떼 줘.']},\n    {id:'kid-suyeon',name:'수연',kid:true,atlasRow:1,lines:['아빠아아!','나 커서 아빠랑 결혼할 거야!','오빠는 맨날 아닌 척해!']}\n  ].map(p=>Object.freeze({...p,companion:true,sprite:p.id,lines:Object.freeze(p.lines)})));\n",
+          "after": "    {id:'kid-suhyeon',name:'수현',kid:true,atlasRow:0,lines:['…지금 말고.','가방? 그냥 들어 준 거야.','아빠, 얘 좀 떼 줘.']},\n    {id:'kid-suyeon',name:'수연',kid:true,atlasRow:1,lines:['아빠아아!','나 커서 아빠랑 결혼할 거야!','오빠는 맨날 아닌 척해!','아빠 손 꼭 잡고 갈래!','아빠랑 다니니까 제일 좋아!','아빠 여기여기! 나랑 같이 가!']}\n  ].map(p=>Object.freeze({...p,companion:true,sprite:p.id,lines:Object.freeze(p.lines)})));\n"
+        },
+        {
+          "name": "patrol-278-6",
+          "before": "        floor=chair.floor;facing=chair.facing==='left'?'left':'right';\n        const behind=facing==='left'?1:-1,distance=person.id==='kid-suhyeon'?172:98,candidates=[];\n        // Shared furniture envelopes and distinct footprints, closest safe side first.\n",
+          "after": "        floor=chair.floor;facing=chair.facing==='left'?'left':'right';\n        const behind=(facing==='left'?1:-1)*(person.id==='kid-suyeon'&&chair.walking?-1:1),distance=person.id==='kid-suhyeon'?148:98,candidates=[];\n        // Shared furniture envelopes and distinct footprints, closest safe side first.\n"
+        },
+        {
+          "name": "patrol-278-7",
+          "before": "      const state={id:person.id,name:person.name,sprite:person.id,pet:!!person.pet,kid:!!person.kid,companion:true,following:follow,floor,anchor:follow?'companion-'+chair.id:person.id+'-'+floor,position,point,walking,facing,pose,...(motion?{motion}:{})};\n      states.push(state);\n    }\n",
+          "after": "      const state={id:person.id,name:person.name,sprite:person.id,pet:!!person.pet,kid:!!person.kid,companion:true,following:follow,floor,anchor:follow?'companion-'+chair.id:person.id+'-'+floor,position,point,walking,facing,pose,...(motion?{motion}:{})};\n      if(follow&&person.kid&&chair.patrol){\n        const phase=chair.state==='RETURNING'?'return':chair.walking?'walk':floor;\n        const line=person.id==='kid-suyeon'?(phase==='1f'?'아빠 나도 코코아!':phase==='5f'?'꽃이다!!':phase==='return'?'아빠 손 꼭 잡고 돌아가자!':'아빠 여기여기!'):(phase==='walk'?'…천천히 가.':'수연이 가방? 내가 들어 줄게.');\n        state.scene={key:day+'|patrol|'+chair.patrol.window+'|'+person.id+'|'+phase,line,patrol:true,notBefore:chair.walking?0:now.getTime()+(chair.patrolArrival+(person.id==='kid-suyeon'?10:15)-seconds)*1000};\n        if(person.id==='kid-suyeon'&&walking)state.motion={bob:-Math.abs(Math.sin(seconds*9))*3,lean:Math.sin(seconds*9)*2,spin:0};\n      }\n      states.push(state);\n    }\n    // One or two present, idle staff greet arrivals through the existing bubble owner.\n    if(chair?.patrol&&chair.state==='AT_PLACE'){\n      const elapsed=seconds-chair.patrolArrival,index=Math.floor(elapsed/5);\n      if(elapsed>=0&&elapsed<10){\n        const peers=people.filter(p=>p.id!=='seongmin'&&!p.resident&&!p.pet&&!p.kid&&!p.visitor&&p.floor===chair.floor&&!p.walking&&!p.eventId&&!p.outingId).sort((a,b)=>a.id.localeCompare(b.id)).slice(0,2),peer=peers[index],follower=states.find(p=>p.following);\n        if(peer&&follower)follower.reaction={id:peer.id,line:weekend?(index?'수현이도 같이 왔구나!':'어머 수연이 왔어?'):'회장님 오셨어요!',key:day+'|patrol|'+chair.patrol.window+'|'+index};\n      }\n    }\n"
+        },
+        {
+          "name": "patrol-278-8",
+          "before": "      if(!automatic&&actor.dataset.resident==='pet'&&actor.dataset.companion!=='true'){const now=new Date(),trio=building.residents.trio(now,residentSlots.map(p=>actors.get(p.id)).filter(a=>!a.hidden).map(a=>a.officeResidentState).filter(Boolean),floorSnapshot);if(trio){pendingTap=null;updateResidents(now);const first=trio.lines[0];showBubble(actors.get(first.id),{speaker:first.id,line:first.line,resident:true,residentTrio:trio,trioIndex:0});return}}\n      const person=residentSlots.find(p=>p.id===actor.dataset.person),index=actor.officeResidentTap||0;actor.officeResidentTap=index+1;pendingTap=null;if(!reduced){if(person.pet&&!automatic)actor.officeReactions.reset();actor.officeReactions.request(person.pet?'hop':'tap',Date.now(),true)}showBubble(actor,{speaker:person.id,line:actor.officeResidentState?.scene?.line||person.lines[index%person.lines.length],resident:true},3000,automatic);return}\n    if(!reduced)actor.officeReactions.request('tap',Date.now());\n",
+          "after": "      if(!automatic&&actor.dataset.resident==='pet'&&actor.dataset.companion!=='true'){const now=new Date(),trio=building.residents.trio(now,residentSlots.map(p=>actors.get(p.id)).filter(a=>!a.hidden).map(a=>a.officeResidentState).filter(Boolean),floorSnapshot);if(trio){pendingTap=null;updateResidents(now);const first=trio.lines[0];showBubble(actors.get(first.id),{speaker:first.id,line:first.line,resident:true,residentTrio:trio,trioIndex:0});return}}\n      const person=residentSlots.find(p=>p.id===actor.dataset.person),index=actor.officeResidentTap||0;actor.officeResidentTap=index+1;pendingTap=null;if(!reduced){if(person.pet&&!automatic)actor.officeReactions.reset();actor.officeReactions.request(person.pet?'hop':'tap',Date.now(),true)}showBubble(actor,{speaker:person.id,line:!automatic&&person.companion?person.lines[index%person.lines.length]:actor.officeResidentState?.scene?.line||person.lines[index%person.lines.length],resident:true},3000,automatic);return}\n    if(!reduced)actor.officeReactions.request('tap',Date.now());\n"
+        },
+        {
+          "name": "patrol-278-9",
+          "before": "      if(posed||turned)applyPose(actor,state.pose);\n      if(person.pet){\n        // One entrance greeting uses the existing reaction queue and clock.\n        // Walking defers it until arrival; hidden floors never consume it.\n        if(!person.companion&&actor.officePetFloor!==activeFloor){actor.officePetFloor=activeFloor;if(!reduced&&state.pose!=='sleep'&&sceneVisible())actor.officeReactions.request('hop',now.getTime()+1000*(1+['pet-cat','pet-dog','pet-rabbit','pet-bori'].indexOf(person.id)))}\n        const values=state.motion&&!reduced?[state.motion.bob.toFixed(3)+'px',state.motion.lean.toFixed(3)+'deg',state.motion.spin.toFixed(3)+'deg']:['0px','0deg','0deg'];\n",
+          "after": "      if(posed||turned)applyPose(actor,state.pose);\n      if(person.pet||person.kid){\n        // One entrance greeting uses the existing reaction queue and clock.\n        // Walking defers it until arrival; hidden floors never consume it.\n        if(person.pet&&!person.companion&&actor.officePetFloor!==activeFloor){actor.officePetFloor=activeFloor;if(!reduced&&state.pose!=='sleep'&&sceneVisible())actor.officeReactions.request('hop',now.getTime()+1000*(1+['pet-cat','pet-dog','pet-rabbit','pet-bori'].indexOf(person.id)))}\n        const values=state.motion&&!reduced?[state.motion.bob.toFixed(3)+'px',state.motion.lean.toFixed(3)+'deg',state.motion.spin.toFixed(3)+'deg']:['0px','0deg','0deg'];\n"
+        },
+        {
+          "name": "patrol-278-pending-dialogue",
+          "before": "      if(state.scene&&actor.officeResidentScene!==state.scene.key){actor.officeResidentScene=state.scene.key;if(actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)showBubble(actor,{speaker:person.id,line:state.scene.line,resident:true})}",
+          "after": "      // Patrol greetings and siblings take turns on this same slot; a busy bubble\n      // leaves each child's line pending instead of consuming it unseen.\n      if(state.scene&&actor.officeResidentScene!==state.scene.key&&(!state.scene.patrol||Date.now()>=state.scene.notBefore&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)){actor.officeResidentScene=state.scene.key;if(actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)showBubble(actor,{speaker:person.id,line:state.scene.line,resident:true},3000,!!state.scene.patrol)}"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-live.css",
+      "beforeSha256": "3911b660d786f550046a9805fea998a3a865151d843beb39e1c94b5ff9a31f46",
+      "afterSha256": "08d17d38c291d85481b2315f1579be6af265b677f62c3be6f2c0ed643f73eee5",
+      "beforeBlobSha1": "caeae3c523df4a7d3275eae14b2ac2e04587295c",
+      "replacements": [
+        {
+          "name": "patrol-278-1",
+          "before": ".hani-office-actor[data-companion=\"true\"][data-walking=\"true\"] .hani-office-sprite{animation:none}\n.hani-office-actor[data-resident] .hani-office-sprite{rotate:0deg;filter:none}\n",
+          "after": ".hani-office-actor[data-companion=\"true\"][data-walking=\"true\"] .hani-office-sprite{animation:none}\n.hani-office-actor[data-person=\"kid-suyeon\"][data-walking=\"true\"]:not([data-motion]) .hani-office-sprite{transform:translateY(var(--pet-bob,0px)) rotate(var(--pet-lean,0deg))}\n.hani-office-actor[data-resident] .hani-office-sprite{rotate:0deg;filter:none}\n"
+        }
+      ]
+    }
+  ]
+}

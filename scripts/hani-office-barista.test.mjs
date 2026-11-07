@@ -5,6 +5,7 @@ import {createHash} from 'node:crypto';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
+import {projectPrePatrolSource} from './hani-office-chairman-patrol-278-source.mjs';
 import {restorePets268Source} from './hani-office-pets-268-source.mjs';
 
 const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
@@ -64,7 +65,7 @@ test('barista: outside tap, Escape, existing auto close, stale callbacks, floor 
 });
 
 test('barista: plan, blockPlan, snapshot outputs and protected owner bytes preserve the pre-patch baseline',()=>{
- const baseline=JSON.parse(read('artifacts/cafe-barista/baseline.json')),source=read('hani-office-live.js'),hash=x=>createHash('sha256').update(x).digest('hex'),{scene}=loadScene();
+ const baseline=JSON.parse(read('artifacts/cafe-barista/baseline.json')),source=read('hani-office-live.js'),hash=x=>createHash('sha256').update(x).digest('hex'),{scene}=loadScene({transform:projectPrePatrolSource});
  // v2.9.268: normalize only the approved literal source delta. Every sampled
  // model output below still matches its old exact hash, including staff outputs.
  const comparableSource=restorePets268Source(source);

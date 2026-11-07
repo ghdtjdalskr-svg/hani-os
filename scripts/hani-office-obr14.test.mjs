@@ -1,3 +1,5 @@
+// Fixed pre-patrol behavior is independently pinned by the strict 278 inverse; current patrol is tested separately.
+import {projectPrePatrolSource} from './hani-office-chairman-patrol-278-source.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -5,7 +7,7 @@ import {gunzipSync} from 'node:zlib';
 import {createHash} from 'node:crypto';
 import {loadScene,at,readAt} from './hani-office-lively-fixture.mjs';
 import {assertResources,validPlaceSpeech} from './hani-office-place-assertions.mjs';
-const {scene,table,context}=loadScene(),s=scene.scheduler,day='2026-10-22';
+const {scene,table,context}=loadScene({transform:projectPrePatrolSource}),s=scene.scheduler,day='2026-10-22';
 let writes=0;const deny=()=>{writes++;throw Error('write/network forbidden')};context.localStorage=context.sessionStorage={setItem:deny,removeItem:deny,clear:deny};context.fetch=deny;
 test('235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism',()=>{
  const bytes=gunzipSync(fs.readFileSync('scripts/fixtures/office-lively-labels-235-plans.json.gz')),hash=b=>createHash('sha256').update(b).digest('hex');

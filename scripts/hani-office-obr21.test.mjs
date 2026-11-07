@@ -1,3 +1,5 @@
+// Fixed pre-patrol behavior is independently pinned by the strict 278 inverse; current patrol is tested separately.
+import {projectPrePatrolSource} from './hani-office-chairman-patrol-278-source.mjs';
 import {restoreResidentsSource} from './hani-office-residents-source.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -56,7 +58,7 @@ test('obr21 authored full absent/present plans and reverse snapshots match froze
  const first=motionDelta.changes.find(c=>c.after.length&&c.after[0].trim());
  assert.throws(()=>restoreMotionDelta(checked.replace(first.after[0],first.after[0].replace(/\S/,'!'))));
  assert.notEqual(createHash('sha256').update(restoreMotionDelta(checked.replace('/* V2 metadata','/* tampered V2 metadata'))).digest('hex'),motionDelta.beforeSha256);
- for(const r of frozen.records){const api=loadScene().scene.scheduler,f=api.plan(r.day,r.options),o=api.blockPlan(r.day,0,f,r.options);
+ for(const r of frozen.records){const api=loadScene({transform:projectPrePatrolSource}).scene.scheduler,f=api.plan(r.day,r.options),o=api.blockPlan(r.day,0,f,r.options);
   assert.equal(JSON.stringify(f),JSON.stringify(r.formal),r.label+' formal');assert.equal(JSON.stringify(o),JSON.stringify(r.outings),r.label+' outings');
   for(const row of r.snapshots.toReversed())assert.equal(JSON.stringify(api.snapshot(at(r.day,row.seconds),r.options)),JSON.stringify(row.snapshot),r.label+' '+row.seconds);
  }assert.equal(writes,0);

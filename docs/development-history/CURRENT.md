@@ -1,3 +1,11 @@
+# 2026-11-07 · 회장님 사무실 순찰 (Codex / companion-live)
+
+`hani/office-companions` / base·HEAD `3f4158e` / 조회 main `b736774`(office baseline JS/CSS blob 일치) / 실제 로컬 표시·캐시2.9.276 유지. 기존 scheduler 예약/이동·동행·bubble owner로 재실 시 하루4회 15~25분 순찰, 직원 인사·수연 통통/코코아/꽃/애교tap3줄·수현 가방 대사 추가. **전용15/15·syntax20/20·전체63파일665통과/Git EPERM27차단/기존skip5/그외실패0·주민49/49·성능기준 통과·closure161불변/누락0·새저장/timer/listener0**. 기존 PC/390 PNG 보존, 최종 대사 대기 보완 후 Edge 재실행은 EPERM/실행정책 차단이라 최신 화면 PASS 아님. **로컬 commit 차단(index.lock 쓰기 거부)**, push/merge/버전변경/배포 없음. Notion 자동 승인 never 거절로 갱신 대기. [짧은 보고서](../../artifacts/chairman-patrol/REPORT.md) · [인수인계](handoffs/2026-11-07-chairman-patrol.md). 아래 기존 타 담당 기록 보존.
+
+# 2026-11-07 · 사무실 회장님 전용 동행 (Codex / companion-live)
+
+`hani/office-companions` / base·HEAD·GitHub main `ce072a4` / 표시2.9.275 유지 / 미커밋. 평일5종 순번·주말남매+5종자유이동·기존슬롯/tick/bubble 확장, atlas2장·manifest 미수정. **전용11/11, 최종관련115검사110통과·Git EPERM5차단, syntax16/16. Edge PC/390 월·금·토·5층·남매실제탭20PNG, 이름표/phone말풍선 교차0·오류0. closure159→161(+2)·누락0·새저장/timer/listener0.** Git 원본대조·commit 차단, push/merge/버전변경/배포 없음. Notion 자동 승인 never 거절로 갱신 대기. 서윤: Git 재검사·두 atlas seed 선행 후 기능 commit. [인수인계](handoffs/2026-11-07-office-companions.md). 아래 타 담당·과거 기록 보존.
+
 # 2026-11-02 · 로비 큰 액자 퀸 / 말풍선 바깥 탭 (Codex / qa-b12)
 
 `hani/lobby-frame` / base·HEAD·origin/main 캐시 `28cce59a` / 2.9.259 유지 / 미커밋. 1F 실제 아트의 안쪽 캔버스(1171,73)–(1347,180), 176×107px에 기존 queen 배너를 오른쪽 cover·HTML 금색 캡션으로 표시. 기존 문서 pointer owner·actor 위임으로 바깥 탭 즉시 닫기, 다른 배우·링크·3초 timer 유지. portrait 삭제, 월별 이미지표는 전광판과 공유. **지정11묶음182통과·7실패(모두 Git EPERM), 전용22/22·주민36/36·syntax8/8·보존11/11 PASS. closure147→146/160·누락0.** 직원/방문객/주민 plans·저장/Cloud/schema·board-library·버전/cache 보존, exact-line LCS·pin 및 정확한 closure 기대값 갱신. 실제 배경 PC/폰 비교 PNG 확인, 브라우저·원격 최신성·운영 미검증. commit/push/merge/배포 없음. Notion 쓰기 자동 승인 never 거절로 갱신 대기. [인수인계·좌표·테스트·비교 PNG](handoffs/2026-11-02-lobby-frame.md). 아래 기존·다른 담당 기록 보존.
