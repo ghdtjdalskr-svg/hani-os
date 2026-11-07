@@ -1,3 +1,4 @@
+import {restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
@@ -10,6 +11,7 @@ assert.deepEqual(barista273Delta.files.map(f=>f.beforeSha256),["60075ca9c2992c36
 // Strict outer layer: 273 -> 272 -> 269 -> 268. No moving reference or repin.
 export function restoreBarista273Source(source,file='hani-office-live.js'){
  const row=barista273Delta.files.find(f=>f.file===file);assert.ok(row,'approved night barista source: '+file);
+ if(hash(source)!==row.afterSha256)source=restoreAffinity274Source(source,file);
  assert.equal(hash(source),row.afterSha256,'only the authored v2.9.273 night barista bytes are accepted: '+file);
  for(const r of row.replacements){assert.equal(source.split(r.after).length-1,1,'unique required night barista bytes: '+r.name);source=source.replace(r.after,r.before)}
  assert.equal(hash(source),row.beforeSha256,'every fixed v2.9.272 byte restored: '+file);return source;

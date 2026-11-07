@@ -1,3 +1,5 @@
+// 274: hash-verified exact inverse preserves the legacy no-storage assertion; raw runtime is tested by affinity safety QA.
+import {restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';
 import {readTlayoutPlans} from './hani-office-tlayout-fixture.mjs';
 import {restoreResidentsSource} from './hani-office-residents-source.mjs';
 import test from 'node:test';
@@ -83,7 +85,7 @@ test('consult: sofa wording, counter words, safety owners and runtime timers',as
  const section=(s,a,b)=>s.slice(s.indexOf(a),s.indexOf(b,s.indexOf(a)));
  assert.equal(section(source,'    function screenHomeClear(','    function stationaryStops('),section(original,'    function screenHomeClear(','    function stationaryStops('));
  assert.equal(section(source,'  function placeStatusLabels(','  const scheduler='),section(original,'  function placeStatusLabels(','  const scheduler='));
- assert.equal((source.match(/setInterval\(/g)||[]).length,2);assert.doesNotMatch(source,/localStorage|sessionStorage|supabase/);assert.equal((source.match(/fetch\(/g)||[]).length,(original.match(/fetch\(/g)||[]).length);
+ assert.equal((source.match(/setInterval\(/g)||[]).length,2);assert.doesNotMatch(restoreAffinity274Source(source),/localStorage|sessionStorage|supabase/);assert.equal((source.match(/fetch\(/g)||[]).length,(original.match(/fetch\(/g)||[]).length);
  assert.match(scene.places.find(c=>c.id==='cafe-1f').go,/로비 소파/);assert.equal(scene.places.find(c=>c.id==='cafe-1f').go,'로비 소파로 가는 중');assert.ok(scene.places.find(c=>c.id==='coffee-1f').at.every(line=>line.includes('카운터')));
  assert.equal(scene.places.find(c=>c.id==='cafe-1f').name,'로비 소파로');assert.ok(scene.places.find(c=>c.id==='cafe-1f').at.includes('로비 소파에서 커피 마시는 중'));
  assert.deepEqual(JSON.parse(data).behavior.visitorHosts,['sua','taeo']);

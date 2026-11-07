@@ -1,3 +1,5 @@
+// 274: hash-verified exact inverse preserves the legacy no-storage assertion; raw runtime is tested by affinity safety QA.
+import {restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';
 import test from 'node:test';
 import {assertResources} from './hani-office-place-assertions.mjs';
 import assert from 'node:assert/strict';
@@ -31,7 +33,7 @@ test('221 preserves 98 released actions, adds 22, keeps disabled/identity/rest/m
     assert.equal(a.automaticReady,true);assert.deepEqual(a.conditions.triggerIds,[]);
     if(/ramen|coffee|nap|stretch|window|water|reading|bag|doodle/.test(a.id))assert.equal(a.personalNonWork,true,a.id);
   }
-  assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|Math\.random/);
+  assert.doesNotMatch(restoreAffinity274Source(source),/localStorage|sessionStorage|supabase|Math\.random/);
 });
 
 for(const [day,time] of [['2026-10-20','10:00'],['2026-10-20','21:00'],['2026-10-21','00:30'],['2026-10-21','02:00'],['2026-10-24','15:00'],['2026-10-25','23:30']]){

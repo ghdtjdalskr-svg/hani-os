@@ -4,6 +4,8 @@ import fs from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {restoreBori272Source} from './hani-office-pet-bori-272-source.mjs';
+// 274 is an independently pinned outer layer; all 273 pairs/hashes remain exact.
+import {restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';
 import {normalizeReleaseVersion} from './hani-reviewed-release-baseline.mjs';
 import {barista273Files,approvedOfficeRuntimeAdditions} from './hani-office-runtime-additions.mjs';
 import {barista273Delta as delta,restoreBarista273Source} from './hani-office-barista-night-273-source.mjs';
@@ -14,7 +16,7 @@ const hash=x=>createHash('sha256').update(x).digest('hex');
 test('273: exact ordered pairs are the complete fixed-272 JS/CSS diff, rejecting all unlisted bytes',()=>{
  assert.equal(delta.version,'2.9.273');assert.deepEqual(delta.files.map(f=>[f.file,f.replacements.length]),[['hani-office-live.js',5],['hani-office-live.css',1]]);
  for(const row of delta.files){
-  const source=read(row.file),before=restoreBarista273Source(source,row.file);let forward=before,previousBeforeEnd=0,previousAfterEnd=0;
+  const source=restoreAffinity274Source(read(row.file),row.file),before=restoreBarista273Source(source,row.file);let forward=before,previousBeforeEnd=0,previousAfterEnd=0;
   for(const r of row.replacements){
    assert.ok(r.before.length&&r.after.length);assert.notEqual(r.before,r.after);
    assert.equal(before.split(r.before).length-1,1,r.name+' unique before');assert.equal(source.split(r.after).length-1,1,r.name+' unique after');
@@ -42,6 +44,6 @@ test('273: the single approved runtime addition retains its exact atlas bytes an
 });
 test('273: fixed Git release blobs independently prove every baseline pin and complete diff',()=>{
  const opts={cwd:new URL('../',import.meta.url),encoding:'utf8',maxBuffer:32*1024*1024};
- for(const row of delta.files){const before=execFileSync('git',['show',delta.baseCommit+':'+row.file],opts);assert.equal(hash(before),row.beforeSha256);assert.equal(restoreBarista273Source(read(row.file),row.file),before);let forward=before;for(const r of row.replacements){assert.equal(forward.split(r.before).length-1,1);forward=forward.replace(r.before,r.after)}assert.equal(forward,read(row.file))}
+ for(const row of delta.files){const before=execFileSync('git',['show',delta.baseCommit+':'+row.file],opts);assert.equal(hash(before),row.beforeSha256);assert.equal(restoreBarista273Source(read(row.file),row.file),before);let forward=before;for(const r of row.replacements){assert.equal(forward.split(r.before).length-1,1);forward=forward.replace(r.before,r.after)}assert.equal(forward,restoreAffinity274Source(read(row.file),row.file))}
  for(const pin of delta.unchangedRuntime){const before=execFileSync('git',['show',delta.baseCommit+':'+pin.file],opts);assert.equal(hash(before),pin.sha256);assert.equal(normalizeReleaseVersion(read(pin.file),'2.9.272'),normalizeReleaseVersion(before,'2.9.272'))}
 });
