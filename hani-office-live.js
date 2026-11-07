@@ -2125,7 +2125,7 @@
 
   function profile(id){return ({daon:"./assets/profiles/thumb/hani-profile-daon-v2-256.webp",yoonseul:"./assets/profiles/thumb/hani-profile-yoonseul-v2-256.webp",sua:"./assets/profiles/thumb/hani-profile-sua-id-256.webp"})[id]||`./assets/profiles/thumb/hani-profile-${id}-256.webp`}
   // Both densities share proportional atlas/cell/pivot coordinates and one loader.
-  function spriteSource(id,entry){return entry.scale===3?'./assets/sprites-v3/'+entry.file:({daon:"./assets/sprites-v2/daon-v2.webp",yoonseul:"./assets/sprites-v2/yoonseul-v2.webp"})[id]||'./assets/sprites-v2/'+entry.file}
+  function spriteSource(id,entry){return entry.officeCompanion?entry.file:entry.scale===3?'./assets/sprites-v3/'+entry.file:({daon:"./assets/sprites-v2/daon-v2.webp",yoonseul:"./assets/sprites-v2/yoonseul-v2.webp"})[id]||'./assets/sprites-v2/'+entry.file}
   // Residents own no staff seats, reservations, scheduler seeds or saved state.
   const residentNames=Object.freeze({cat:'치즈',dog:'크림',rabbit:'모찌',bori:'보리',cleaner:'청소 담당',gardener:'옥상 정원사',temp:'임시직'});
   const residentPeople=Object.freeze([
@@ -2139,6 +2139,72 @@
     {id:'npc-temp-b',name:residentNames.temp,sprite:'npc-temp-b',hours:[[9,13,'3f'],[13,18,'2f']],places:{'2f':['resident_temp_2f'],'3f':['resident_temp_b_3f']},lines:["오늘의 첫 질문도 잘 부탁드려요.","회의실 위치는 이제 외웠어요.","내선 번호표는 모니터 옆에 붙였어요.","보드 마커는 잘 나오는 걸로 채웠어요!","방문객 명찰 줄 맞추기가 참 재밌네요.","사내 약어를 오늘 세 개나 배웠습니다!","할 일 목록 지울 때가 제일 뿌듯해요!","토너 교체도 매뉴얼 보고 해냈습니다!","인사성 밝다는 말씀에 힘이 불끈 나요!","회의록 초안, 오타 두 번 확인했어요!"]},
     {id:'npc-temp-c',name:residentNames.temp,sprite:'npc-temp-c',hours:[[9,18,'2f']],places:{'2f':['resident_temp_c_2f']},lines:["점심 메뉴 조사도 업무 맞죠?","작은 일부터 깔끔하게 해볼게요.","탕비실 원두 채우는 날이 제일 설레요.","엑셀 표 테두리 정리, 방금 끝냈어요!","간식 바구니 채우면 인기 만점이에요.","포스트잇 색상별로 우선순위 나눴어요!","영수증 풀칠은 이제 달인 수준이에요.","간식 주문 취합, 빠짐없이 적었습니다!","폴더 이름 정리하니 속이 다 시원해요.","퇴근 전 멀티탭 확인도 제가 챙길게요!"]}
   ].map(p=>Object.freeze({...p,hours:Object.freeze(p.hours.map(Object.freeze)),places:Object.freeze(Object.fromEntries(Object.entries(p.places).map(([f,spots])=>[f,Object.freeze(spots)]))),lines:Object.freeze(p.lines)})));
+  // Calendar-day companions are display-only residents; the existing 07:00 pet day is unchanged.
+  const companionPeople=Object.freeze([
+    {id:'companion-frog',name:'아기 개구리',pet:true,atlasRow:0,lines:['회장님, 폴짝 따라갈게요!','회장님 옆이 제 연못이에요.','회장님, 잠깐 쉬어요!']},
+    {id:'companion-penguin',name:'꼬마 펭귄',pet:true,atlasRow:1,lines:['회장님, 순찰 완료예요!','회장님 일정은 제가 챙겨요!','회장님, 뒤뚱뒤뚱 갑니다!']},
+    {id:'companion-otter',name:'아기 수달',pet:true,atlasRow:2,lines:['회장님, 조개 선물이에요!','회장님 옆에서 냠냠해요.','회장님, 카페도 같이 가요!']},
+    {id:'companion-chick',name:'병아리',pet:true,atlasRow:3,lines:['회장님, 삐약 출근했어요!','회장님 따라 통통통!','회장님, 제 날개도 쉬어요.']},
+    {id:'companion-fox',name:'아기 여우',pet:true,atlasRow:4,lines:['회장님, 꼬리로 인사해요!','회장님 곁은 포근하네요.','회장님, 살금살금 갈게요!']},
+    {id:'kid-suhyeon',name:'수현',kid:true,atlasRow:0,lines:['…지금 말고.','가방? 그냥 들어 준 거야.','아빠, 얘 좀 떼 줘.']},
+    {id:'kid-suyeon',name:'수연',kid:true,atlasRow:1,lines:['아빠아아!','나 커서 아빠랑 결혼할 거야!','오빠는 맨날 아닌 척해!']}
+  ].map(p=>Object.freeze({...p,companion:true,sprite:p.id,lines:Object.freeze(p.lines)})));
+  const companionReactions=Object.freeze([
+    {id:'hani',line:'어머, 수연이 왔어?'},{id:'hani',line:'수현이는 오늘도 든든하네.'},
+    {id:'naeun',line:'남매 간식은 제가 챙길게요.'},{id:'hina',line:'수연아, 오빠랑 천천히 와.'},{id:'hina',line:'수현아, 무슨 책 읽고 있니?'}
+  ].map(Object.freeze));
+  function companionAtlas(person){
+    const kid=!!person.kid,poses=kid?['standing','sitting','walk-a','walk-b']:['sitting','standing','walk-a','walk-b','sleep'];
+    return {id:person.id,officeCompanion:true,file:kid?'./assets/office-companions/kids-v1.webp':'./assets/office-companions/companions-v1.webp',scale:3,cell:[96,144],atlas:[kid?384:480,kid?576:1440],frames:['left','right'].flatMap((dir,row)=>poses.map((pose,col)=>({name:pose+'-'+dir,rect:[col*96,(person.atlasRow*2+row)*144,96,144],pivot:[48,135]})))};
+  }
+  function companionSafe(floor,v,kid=false){
+    const x=v[0]*art.width/100,y=v[1]*art.height/100,half=kid?34:38,height=kid?104:80,items=art.floors[floor];
+    if(!Number.isFinite(x)||!Number.isFinite(y)||x<half+12||x>art.width-half-12||y<height+60||y>art.height-12)return false;
+    // Resident room-wide exclusions intentionally reserve the chairman room for staff.
+    // His own companions use the actual desk/chair bounds, never the whole room box.
+    const boxes=[...Object.values(items?.homeFurniture||{}).flatMap(item=>[item.seatBounds,item.deskBounds].filter(Boolean)),...(items?.freeDesks||[]).flatMap(item=>[item.seatBounds,item.deskBounds].filter(Boolean))];
+    return !boxes.some(r=>x+half>=r[0]-8&&x-half<=r[2]+8&&y+6>=r[1]&&y-height<=r[3]+8);
+  }
+  function companionSnapshot(now=new Date(),staff=null,enabled=true,reduced=false,neighbors=[]){
+    if(!enabled||!canon||!art)return [];
+    const date=koreaTime(now),weekday=date.getUTCDay(),weekend=weekday===0||weekday===6,day=date.toISOString().slice(0,10),seconds=date.getUTCHours()*3600+date.getUTCMinutes()*60+date.getUTCSeconds()+date.getUTCMilliseconds()/1000;
+    const people=[...(staff?.floors?.flatMap(f=>f.people||[])||[]),...neighbors],chair=people.find(p=>p.id==='seongmin'&&floors.some(f=>f.id===p.floor)&&p.state!=='ABSENT'),center=chair&&(chair.position||[chair.seat?.x,chair.seat?.y]),states=[];
+    for(const person of companionPeople){
+      const follow=person.kid?weekend:!weekend&&person.atlasRow===weekday-1;
+      if(person.kid&&!weekend||!person.kid&&!weekend&&!follow||follow&&(!chair||!center?.every(Number.isFinite)))continue;
+      const seed=residentSeed(day+'|'+person.id),rhythm=residentRhythm(person.id,day,seconds),free=(floor,v)=>!people.concat(states).some(p=>{const at=p.position||[p.seat?.x,p.seat?.y];return p.floor===floor&&at.every(Number.isFinite)&&Math.hypot((v[0]-at[0])*art.width/100,(v[1]-at[1])*art.height/100)<(p.id==='seongmin'?80:p.resident||p.pet?96:person.kid?90:70)});
+      let floor,position,point=[500,330],walking=false,facing='left',pose='standing',motion;
+      if(follow){
+        floor=chair.floor;facing=chair.facing==='left'?'left':'right';
+        const behind=facing==='left'?1:-1,distance=person.id==='kid-suhyeon'?172:98,candidates=[];
+        // Shared furniture envelopes and distinct footprints, closest safe side first.
+        for(const dx of [behind*distance,-behind*distance,behind*(distance+70),-behind*(distance+70),240,-240,0])for(const dy of [12,80,-60,140,220,-110]){
+          const v=[center[0]+dx/art.width*100,center[1]+dy/art.height*100];
+          if(companionSafe(floor,v,!!person.kid)&&free(floor,v))candidates.push(v);
+        }
+        candidates.sort((a,b)=>Math.hypot((a[0]-center[0])*art.width/100-behind*distance,(a[1]-center[1])*art.height/100-12)-Math.hypot((b[0]-center[0])*art.width/100-behind*distance,(b[1]-center[1])*art.height/100-12));
+        position=candidates[0];
+        // Narrow desk sides may need the nearest validated floor stop.
+        if(!position)position=[...residentStops.values()].filter(a=>a.floor===floor&&residentSpot(a.id)&&free(floor,a.visual)).sort((a,b)=>Math.hypot(a.visual[0]-center[0],a.visual[1]-center[1])-Math.hypot(b.visual[0]-center[0],b.visual[1]-center[1]))[0]?.visual;
+        if(!position)continue;
+        walking=!reduced&&!!chair.walking;pose=walking?(Math.floor(seconds*4)%2?'walk-a':'walk-b'):chair.pose==='sitting'||chair.seat?.posture==='sitting'?'sitting':'standing';
+      }else{
+        // Weekend pets roam independently. Penguin patrols all five floors; otter favors the cafe.
+        floor=person.id==='companion-otter'?'1f':floors[(Math.floor(seconds/900)+person.atlasRow)%floors.length].id;
+        const stops=[...residentStops.values()].filter(a=>a.floor===floor&&a.pet&&residentSpot(a.id)).flatMap(a=>[0,-12,12,24].map(dy=>({...a,visual:[a.visual[0],a.visual[1]+dy]}))).filter(a=>residentSafe(floor,[a.x,a.y],a.visual)&&free(floor,a.visual));
+        if(!stops.length)continue;
+        const index=reduced?seed%stops.length:(rhythm.beat+seed)%stops.length,a=stops[(index+stops.length-1)%stops.length],b=stops[index];position=b.visual;point=[b.x,b.y];pose=rhythm.beat%3?'sitting':'standing';
+        if(!reduced&&a!==b){motion=petMotion(person.id,day,rhythm.beat,a,b,rhythm.elapsed,v=>free(floor,v));if(motion){({position,point,walking,facing,pose}=motion);if(person.id==='companion-chick'&&walking)motion={...motion,bob:-Math.abs(Math.sin(seconds*9))*2.5}}}
+      }
+      const state={id:person.id,name:person.name,sprite:person.id,pet:!!person.pet,kid:!!person.kid,companion:true,following:follow,floor,anchor:follow?'companion-'+chair.id:person.id+'-'+floor,position,point,walking,facing,pose,...(motion?{motion}:{})};
+      states.push(state);
+    }
+    // Pure proximity window; the existing bubble owner deduplicates and displays staff reactions.
+    if(weekend&&Math.floor(seconds)%180<5){
+      const kids=states.filter(p=>p.kid);for(const row of companionReactions){const peer=people.find(p=>p.id===row.id&&!p.walking&&kids.some(k=>p.floor===k.floor&&Math.hypot(((p.position||[p.seat?.x,p.seat?.y])[0]-k.position[0])*art.width/100,((p.position||[p.seat?.x,p.seat?.y])[1]-k.position[1])*art.height/100)<380));if(peer){const kid=kids[0];kid.reaction={...row,key:day+'|'+Math.floor(seconds/180)};break}}
+    }
+    return states;
+  }
   function residentSeed(value){let n=2166136261;for(const ch of value)n=Math.imul(n^ch.charCodeAt(0),16777619);return n>>>0}
   // The pets' day starts at 07:00. 22:00..26:00 is one continuous 1F window.
   function residentClock(now){const time=koreaTime(now),seconds=time.getUTCHours()*3600+time.getUTCMinutes()*60+time.getUTCSeconds()+time.getUTCMilliseconds()/1000;return {day:new Date(time.getTime()-7*3600000).toISOString().slice(0,10),seconds:seconds+(seconds<7*3600?86400:0),hour:seconds/3600,sleeping:seconds>=2*3600&&seconds<7*3600,night:seconds>=22*3600||seconds<2*3600}}
@@ -2274,7 +2340,7 @@
     ['resident_bori_night_a','1f',79.5,72,true],['resident_bori_night_b','1f',81,72,true],
     ['resident_bori_lounge_a','2f',51,57,true],['resident_bori_lounge_b','2f',51,59,true]
   ].map(([id,floor,vx,vy,pet],i)=>[id,Object.freeze({id,floor,x:/^resident_(rabbit|bori)_/.test(id)?500:100+i*40,y:330,visual:[vx,vy],pet:!!pet})]));
-  function residentBounds(id,pose){const pet=id.startsWith('pet-');if(id==='pet-bori')return [2,({sitting:52,standing:53,'walk-a':63,'walk-b':65,sleep:89})[pose]??52,94,135];if(id==='pet-rabbit')return [11,({sitting:61,standing:63,'hop-a':74,'hop-b':70,sleep:100})[pose]??61,85,135];const top=pet?(pose==='sleep'?102:({sitting: id==='pet-cat'?81:76,standing:id==='pet-cat'?83:75,'walk-a':id==='pet-cat'?87:82,'walk-b':id==='pet-cat'?90:83})[pose]):({standing:15,sitting:30,'walk-a':24,'walk-b':24})[pose];return [pet?13:9,top??15,pet?82:87,135]}
+  function residentBounds(id,pose){if(id.startsWith('companion-'))return [12,60,84,135];if(id.startsWith('kid-'))return [18,35,78,135];const pet=id.startsWith('pet-');if(id==='pet-bori')return [2,({sitting:52,standing:53,'walk-a':63,'walk-b':65,sleep:89})[pose]??52,94,135];if(id==='pet-rabbit')return [11,({sitting:61,standing:63,'hop-a':74,'hop-b':70,sleep:100})[pose]??61,85,135];const top=pet?(pose==='sleep'?102:({sitting: id==='pet-cat'?81:76,standing:id==='pet-cat'?83:75,'walk-a':id==='pet-cat'?87:82,'walk-b':id==='pet-cat'?90:83})[pose]):({standing:15,sitting:30,'walk-a':24,'walk-b':24})[pose];return [pet?13:9,top??15,pet?82:87,135]}
   const residentPaths=new Map();
   function residentSafe(floorId,point,visual,pet=true){
     const floor=canon?.floors.find(f=>f.id===floorId);if(!floor||!point||!visual)return false;
@@ -2410,7 +2476,7 @@
   // Compact atlas fallback also works with a cached, pre-resident manifest.
   // The approved entries in manifest-v3.json remain the asset source of truth.
   function residentAtlas(person){const poses=person.pet?['sitting','standing',...(person.id==='pet-rabbit'?['hop-a','hop-b']:['walk-a','walk-b']),'sleep']:['standing','sitting','walk-a','walk-b'];return {id:person.id,file:person.sprite+'.webp',scale:3,cell:[96,144],atlas:person.pet?[480,288]:[768,768],frames:(person.pet?['left','right']:['']).flatMap((direction,row)=>poses.map((pose,col)=>({name:pose+(direction?'-'+direction:''),rect:[col*96,row*144,96,144],pivot:[48,135]})))}}
-  const residents=Object.freeze({names:residentNames,people:residentPeople,seed:residentSeed,clock:residentClock,rhythm:residentRhythm,motion:petMotion,route:petRoute,ease:petEase,facing:petFacing,life:residentLife,affection:residentAffection,affectionVoice:residentAffectionVoice,voice:residentVoice,snapshot:residentSnapshot,safe:residentSafe,spot:residentSpot,path:residentPath,atlas:residentAtlas,bounds:residentBounds,trio:residentTrio,trioLines:residentTrioLines,trioChat:residentTrioChat,furniture:residentFurniture});
+  const residents=Object.freeze({names:residentNames,people:residentPeople,companions:companionPeople,companionSnapshot,companionAtlas,companionReactions,companionSafe,seed:residentSeed,clock:residentClock,rhythm:residentRhythm,motion:petMotion,route:petRoute,ease:petEase,facing:petFacing,life:residentLife,affection:residentAffection,affectionVoice:residentAffectionVoice,voice:residentVoice,snapshot:residentSnapshot,safe:residentSafe,spot:residentSpot,path:residentPath,atlas:residentAtlas,bounds:residentBounds,trio:residentTrio,trioLines:residentTrioLines,trioChat:residentTrioChat,furniture:residentFurniture});
   // Read-only app signals; the caller installs one shared passive input callback
   // and reuses the office update/visibility cycle. No persistence or timer.
   function createPresence({now,locked,visible,override}){
@@ -2519,8 +2585,8 @@
   motion.addEventListener?.('change',event=>{reduced=event.matches;if(reduced)for(const actor of actors.values()){finishTravel(actor);clearMotion(actor)}if(sceneVisible())updateBuilding(true,false)});
   const spriteEntries=new Map((assets?.sprites.entries||[]).map(e=>[e.id,e])),spriteCache=new Map();
   const hdEntries=new Map((assets?.spritesV3?.entries||[]).filter(e=>e.scale===3&&(e.frames?.length===4||['pet-cat','pet-dog'].includes(e.id)&&e.frames?.length===10)&&e.cell?.length===2&&e.atlas?.length===2).map(e=>[e.id,e]));
-  const residentSlots=assets?.spritesV3?HaniBuildingScene.residents.people:[];
-  for(const person of residentSlots)if(!spriteEntries.has(person.id))spriteEntries.set(person.id,HaniBuildingScene.residents.atlas(person));
+  const residentSlots=assets?.spritesV3?[...HaniBuildingScene.residents.people,...HaniBuildingScene.residents.companions]:[];
+  for(const person of residentSlots)if(!spriteEntries.has(person.id))spriteEntries.set(person.id,(person.companion?HaniBuildingScene.residents.companionAtlas(person):HaniBuildingScene.residents.atlas(person)));
   const visualIdentity=HaniBuildingScene.scheduler?.identity||{seongmin:{entity:'human_user',role:'chairman',officeVisual:'ceo_frog',spriteId:'seongmin'}};
   function spriteId(actor){return actor.dataset.sprite||visualIdentity[actor.dataset.person]?.spriteId||actor.dataset.person}
   function pose(actor,name){
@@ -2536,7 +2602,7 @@
     const sprite=actor.querySelector('.hani-office-sprite'),entry=spriteEntries.get(spriteId(actor));
     actor.dataset.pose=name;
     if(actor.dataset.avatar!=='v2'||!entry)return;
-    const f=entry.frames.find(f=>f.name===(actor.dataset.resident==='pet'?name+'-'+(actor.dataset.facing||'left'):name))||entry.frames[0];
+    const f=entry.frames.find(f=>f.name===((actor.dataset.resident==='pet'||entry.officeCompanion)?name+'-'+(actor.dataset.facing||'left'):name))||entry.frames[0];
     actor.officePivot=[f.pivot[0]/entry.cell[0],f.pivot[1]/entry.cell[1]];
     if(actor.dataset.resident){const bounds=HaniBuildingScene.residents.bounds(actor.dataset.person,name);actor.officeArtBounds=bounds.map((v,i)=>v/entry.cell[i%2]);actor.style.setProperty('--resident-top',String(bounds[1]/entry.cell[1]))}
     sprite.style.backgroundPosition=(f.rect[0]/(entry.atlas[0]-entry.cell[0])*100)+'% '+(f.rect[1]/(entry.atlas[1]-entry.cell[1])*100)+'%';
@@ -2622,6 +2688,7 @@
     for(let i=0;i<rows.length;i++)if(rows[i].actor.dataset.resident)groups[i].nameOnly=groups[i].name;
     // Reserve the separate mascot owner's actual visible sprite boxes.
     const obstacles=[];
+    if(compact&&!actorBubble.hidden&&actors.get(bubblePerson)?.dataset.companion==='true'){const b=actorBubble.getBoundingClientRect();if(b.width&&b.height)obstacles.push(b)}
     for(const node of root.querySelectorAll('.hani-desk-mascots:not([hidden]) .hani-desk-mascot[data-ready="true"]')){const r=HaniBuildingScene.motion.stableMascotBox(node,floor);if(r.width&&r.height)obstacles.push(r)}
     const placements=HaniBuildingScene.labels.place(floor,groups,obstacles);
     for(const {actor}of rows)if(compact||actor.dataset.resident)actor.dataset.labelMode=actor.dataset.resident?'name':placements.get(actor.dataset.person)?.dot?'dot':placements.get(actor.dataset.person)?.mode||'pill';
@@ -2640,7 +2707,7 @@
   function buildingChairmanSlot(){return HaniBuildingScene.scheduler?.slot('ceo-reserved')}
   for(const [key,name,group,row] of [...people,...residentSlots.map(p=>[p.id,p.name,null,0])]){
     const actor=document.createElement("div");actor.className="hani-office-actor";actor.dataset.person=key;actor.dataset.name=name;actor.dataset.seat=residentSlots.some(p=>p.id===key)?'':(HaniBuildingScene.homeSeat(key)||buildingChairmanSlot()).id;actor.dataset.spot="seat";actor.officeReactions=HaniBuildingScene.motion.createReactions();
-    const resident=residentSlots.find(p=>p.id===key);if(resident){actor.dataset.resident=resident.pet?'pet':'npc';actor.dataset.sprite=resident.sprite;actor.hidden=true}
+    const resident=residentSlots.find(p=>p.id===key);if(resident){actor.dataset.resident=resident.pet?'pet':resident.kid?'kid':'npc';if(resident.companion)actor.dataset.companion='true';actor.dataset.sprite=resident.sprite;actor.hidden=true}
     if(resident?.pet){const heart=document.createElement('span');heart.className='hani-office-pet-heart';heart.setAttribute('aria-hidden','true');heart.hidden=true;actor.append(heart);actor.officeHeart=heart}
     const sprite=document.createElement('div');sprite.className='hani-office-sprite';sprite.dataset.row=String(row);actor.officeLegacy={group,row};
     const status=document.createElement('span');status.className='hani-office-status';const tag=document.createElement('small');tag.className='hani-office-name';
@@ -2663,7 +2730,7 @@
   affinityFloat.className='hani-office-affinity-float';affinityFloat.setAttribute('aria-hidden','true');affinityFloat.textContent='+1 ♡';affinityFloat.hidden=true;
   actorBubble.append(affinityRow,affinityFloat);
   function showAffinity(id,result=null){
-    const info=affinity.get(id),actor=actors.get(id),known=actor?actor.dataset.resident==='pet'||(!actor.dataset.resident&&actor.dataset.visitor!=='true'&&id!=='seongmin'):id==='iseul'||id==='eunha';
+    const info=affinity.get(id),actor=actors.get(id),known=actor?actor.dataset.companion!=='true'&&(actor.dataset.resident==='pet'||(!actor.dataset.resident&&actor.dataset.visitor!=='true'&&id!=='seongmin')):id==='iseul'||id==='eunha';
     affinityRow.hidden=!known;affinityFloat.hidden=!result?.added;
     if(!known)return;
     affinityRow.textContent=(actor?.dataset.name||(id==='eunha'?'은하':'이슬'))+' · Lv'+info.level+' '+info.name+' '+info.hearts;
@@ -2749,11 +2816,11 @@
     bubbleSprite.style.setProperty('--bubble-sprite-ratio',String(entry.cell[0]/entry.cell[1]));
     bubbleSprite.dataset.pose=actor.dataset.pose;
   }
-  function showBubble(actor,selection,duration=3000,automatic=false){showAffinity(actor.dataset.person,selection?.affinity||(!automatic?actor.officeAffinityTap:null));actor.officeAffinityTap=null;bubblePerson=actor.dataset.person;bubbleSelection=selection;updateBubbleSprite(actor,automatic);actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=!!actor.dataset.resident||actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);fitStatusLabels();fitBubble();const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;const next=selection?.residentTrio?.lines[selection.trioIndex+1],speaker=next&&actors.get(next.id);if(speaker&&!speaker.hidden&&selection.residentTrio.key===building.residents.clock(new Date()).day+'|'+Math.floor(building.residents.clock(new Date()).seconds/900))showBubble(speaker,{speaker:next.id,line:next.line,resident:true,residentTrio:selection.residentTrio,trioIndex:selection.trioIndex+1},duration,automatic);else closeBubble(globalThis.innerWidth<=480)}},bubbleDuration(duration))}
+  function showBubble(actor,selection,duration=3000,automatic=false){showAffinity(actor.dataset.person,selection?.affinity||(!automatic?actor.officeAffinityTap:null));actor.officeAffinityTap=null;bubblePerson=actor.dataset.person;bubbleSelection=selection;updateBubbleSprite(actor,automatic);actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=!!actor.dataset.resident||actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);if(actor.dataset.companion==='true'){fitBubble();fitStatusLabels()}else{fitStatusLabels();fitBubble()}const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;const next=selection?.residentTrio?.lines[selection.trioIndex+1],speaker=next&&actors.get(next.id);if(speaker&&!speaker.hidden&&selection.residentTrio.key===building.residents.clock(new Date()).day+'|'+Math.floor(building.residents.clock(new Date()).seconds/900))showBubble(speaker,{speaker:next.id,line:next.line,resident:true,residentTrio:selection.residentTrio,trioIndex:selection.trioIndex+1},duration,automatic);else closeBubble(globalThis.innerWidth<=480)}},bubbleDuration(duration))}
   function openBubble(actor,automatic=false,event=null){
     if(!automatic){lastBubbleTap=Date.now();autoBubbleEntry=false;clearBubbleTimer()}
     if(actor.hidden)return;
-    const result=automatic?null:affinity.tap(actor.dataset.person,event);
+    const result=automatic||actor.dataset.companion==='true'?null:affinity.tap(actor.dataset.person,event);
     if(result?.line){
       pendingTap=null;const person=residentSlots.find(p=>p.id===actor.dataset.person);
       if(!reduced){if(person?.pet)actor.officeReactions.reset();actor.officeReactions.request(person?.pet?'hop':'tap',Date.now(),true)}
@@ -2763,7 +2830,7 @@
     if(actor.dataset.resident){
       const affection=actor.officeResidentState?.affection;
       if(affection){pendingTap=null;showBubble(actor,{speaker:actor.dataset.person,line:affection.line,resident:true},3000,automatic);return}
-      if(!automatic&&actor.dataset.resident==='pet'){const now=new Date(),trio=building.residents.trio(now,residentSlots.map(p=>actors.get(p.id)).filter(a=>!a.hidden).map(a=>a.officeResidentState).filter(Boolean),floorSnapshot);if(trio){pendingTap=null;updateResidents(now);const first=trio.lines[0];showBubble(actors.get(first.id),{speaker:first.id,line:first.line,resident:true,residentTrio:trio,trioIndex:0});return}}
+      if(!automatic&&actor.dataset.resident==='pet'&&actor.dataset.companion!=='true'){const now=new Date(),trio=building.residents.trio(now,residentSlots.map(p=>actors.get(p.id)).filter(a=>!a.hidden).map(a=>a.officeResidentState).filter(Boolean),floorSnapshot);if(trio){pendingTap=null;updateResidents(now);const first=trio.lines[0];showBubble(actors.get(first.id),{speaker:first.id,line:first.line,resident:true,residentTrio:trio,trioIndex:0});return}}
       const person=residentSlots.find(p=>p.id===actor.dataset.person),index=actor.officeResidentTap||0;actor.officeResidentTap=index+1;pendingTap=null;if(!reduced){if(person.pet&&!automatic)actor.officeReactions.reset();actor.officeReactions.request(person.pet?'hop':'tap',Date.now(),true)}showBubble(actor,{speaker:person.id,line:actor.officeResidentState?.scene?.line||person.lines[index%person.lines.length],resident:true},3000,automatic);return}
     if(!reduced)actor.officeReactions.request('tap',Date.now());
     pendingTap=null;const now=new Date(),floor=activeFloor,options={floor,chairmanPresent:officePresence.read().chairmanPresent},selection=tapLines.tap(actor.dataset.person,now,options);
@@ -3237,7 +3304,7 @@
   }
   function updateResidents(now){
     if(!residentSlots.length)return;
-    const states=building.residents.snapshot(now,floorSnapshot,true,reduced);let changed=false;
+    const existing=building.residents.snapshot(now,floorSnapshot,true,reduced),states=[...existing,...building.residents.companionSnapshot(now,floorSnapshot,true,reduced,existing)];let changed=false;
     for(const person of residentSlots){
       const actor=actors.get(person.id),state=states.find(p=>p.id===person.id&&p.floor===activeFloor),wasVisible=!actor.hidden;
       if(!state){delete actor.officePetFloor;if(wasVisible){actor.hidden=true;clearMotion(actor);if(bubblePerson===person.id)closeBubble();changed=true}continue}
@@ -3255,7 +3322,7 @@
       if(person.pet){
         // One entrance greeting uses the existing reaction queue and clock.
         // Walking defers it until arrival; hidden floors never consume it.
-        if(actor.officePetFloor!==activeFloor){actor.officePetFloor=activeFloor;if(!reduced&&state.pose!=='sleep'&&sceneVisible())actor.officeReactions.request('hop',now.getTime()+1000*(1+['pet-cat','pet-dog','pet-rabbit','pet-bori'].indexOf(person.id)))}
+        if(!person.companion&&actor.officePetFloor!==activeFloor){actor.officePetFloor=activeFloor;if(!reduced&&state.pose!=='sleep'&&sceneVisible())actor.officeReactions.request('hop',now.getTime()+1000*(1+['pet-cat','pet-dog','pet-rabbit','pet-bori'].indexOf(person.id)))}
         const values=state.motion&&!reduced?[state.motion.bob.toFixed(3)+'px',state.motion.lean.toFixed(3)+'deg',state.motion.spin.toFixed(3)+'deg']:['0px','0deg','0deg'];
         for(const [i,key]of ['--pet-bob','--pet-lean','--pet-spin'].entries())if((actor.style.getPropertyValue?.(key)??actor.style[key])!==values[i])actor.style.setProperty(key,values[i]);
         const gesture=state.motion?.paused?state.motion.kind:'';if((actor.dataset.petPause||'')!==gesture){if(gesture)actor.dataset.petPause=gesture;else delete actor.dataset.petPause}
@@ -3271,9 +3338,10 @@
         if(affection?.bubble&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)showBubble(actor,{speaker:person.id,line:affection.line,resident:true},3000,true);
       }
       const line=affection?.line||state.scene?.line||person.lines[0];
-      if(actor.dataset.line!==line){actor.dataset.line=line;actor.querySelector('.hani-office-status').dataset.full=line;if(bubblePerson===person.id&&!bubbleSelection?.affinity){bubbleSelection={speaker:person.id,line,resident:true};bubbleLine.textContent=bubbleText(actor)}}
+      if(actor.dataset.line!==line){actor.dataset.line=line;actor.querySelector('.hani-office-status').dataset.full=line;if(bubblePerson===person.id&&!bubbleSelection?.affinity&&(!person.companion||autoBubbleEntry)){bubbleSelection={speaker:person.id,line,resident:true};bubbleLine.textContent=bubbleText(actor)}}
       if(state.scene&&actor.officeResidentScene!==state.scene.key){actor.officeResidentScene=state.scene.key;if(actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)showBubble(actor,{speaker:person.id,line:state.scene.line,resident:true})}
-      if(moved&&bubblePerson===person.id)fitBubble(true);
+      if(state.reaction&&root.officeCompanionReaction!==state.reaction.key&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000){const speaker=actors.get(state.reaction.id);if(speaker&&!speaker.hidden){root.officeCompanionReaction=state.reaction.key;showBubble(speaker,{speaker:state.reaction.id,line:state.reaction.line},3000,true)}}
+      if(moved&&bubblePerson===person.id){fitBubble(true);if(person.companion&&matchMedia('(max-width:600px)').matches)changed=true}
     }
     const pets=states.filter(p=>p.pet&&p.floor===activeFloor),clock=building.residents.clock(now),trioBeat=clock.day+'|'+Math.floor(clock.seconds/120);
     const trioLines=building.residents.trioChat(pets);

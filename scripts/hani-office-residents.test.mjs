@@ -1,3 +1,4 @@
+import {legacyOfficeNodes} from './hani-office-companions-276-nodes.mjs';
 // Strip only the exact approved affinity storage owner; all other source keeps the original guards.
 import {stripApprovedAffinityStorage} from './hani-office-affinity-storage.mjs';
 import test from 'node:test';
@@ -26,7 +27,7 @@ const mount=(enabled=true,reduced=false,width=1440,options={})=>{
   localStorage:{setItem:deny,removeItem:deny,clear:deny},sessionStorage:{setItem:deny,removeItem:deny,clear:deny},save:deny,
  });
  f.setDateTime('2026-11-02T10:02:00+09:00');f.click('1f');
- return {...f,loaded,writes,residents:()=>f.ids.get('haniOfficeActors').children.filter(a=>a.dataset.resident),tick:()=>f.timers.find(t=>t.ms===100).fn()};
+ return {...f,loaded,writes,residents:()=>legacyOfficeNodes(f.ids.get('haniOfficeActors').children).filter(a=>a.dataset.resident),tick:()=>f.timers.find(t=>t.ms===100).fn()};
 };
 const settled=()=>new Promise(resolve=>setImmediate(resolve));
 const sharpModule=()=>{const require=createRequire(import.meta.url);try{return require('sharp')}catch{return require(process.env.HANI_SHARP_MODULE||path.join(os.homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/sharp'))}};

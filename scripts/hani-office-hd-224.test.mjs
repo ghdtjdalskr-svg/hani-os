@@ -1,3 +1,4 @@
+import {legacyOfficeNodes} from './hani-office-companions-276-nodes.mjs';
 // 274: hash-verified exact inverse preserves the legacy no-storage assertion; raw runtime is tested by affinity safety QA.
 import {restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';
 // node scripts/hani-office-hd-224.test.mjs [--browser [playwright/index.mjs] [browser.exe]]
@@ -76,7 +77,7 @@ test('real canonical loader prefers v3; per-atlas failure falls back once to v2 
   const requests=[],writes=[],metadata={...assets,spritesV3:mode==='missing-manifest'?null:hd};
   const store={setItem(...v){writes.push(v)},removeItem(...v){writes.push(v)},clear(){writes.push('clear')}};
   const f=fixture('10:00',true,url=>{requests.push(url);return mode==='hd'?/sprites-v[23]\//.test(url):/sprites-v2\//.test(url)},null,{HaniOfficeV2Assets:metadata,localStorage:store,sessionStorage:store});
-  const allNodes=[...f.ids.get('haniOfficeActors').children],nodes=allNodes.filter(a=>!a.dataset.resident);
+  const allNodes=legacyOfficeNodes([...f.ids.get('haniOfficeActors').children]),nodes=allNodes.filter(a=>!a.dataset.resident);
   assert.equal(nodes.length,19);assert.equal(allNodes.length,mode==='missing-manifest'?19:28);
   for(const floor of ['1f','2f','3f','4f','5f']){f.click(floor);await flush()}
   for(const actor of nodes){
@@ -86,7 +87,7 @@ test('real canonical loader prefers v3; per-atlas failure falls back once to v2 
   }
   assert.equal(requests.filter(u=>/sprites-v3\//.test(u)&&!residentIds.some(id=>u.endsWith('/'+id+'.webp'))).length,mode==='missing-manifest'?0:19);
   assert.equal(requests.filter(u=>/sprites-v2\//.test(u)).length,mode==='hd'?0:19);
-  assert.deepEqual(f.ids.get('haniOfficeActors').children,allNodes);assert.deepEqual(writes,[]);
+  assert.deepEqual(legacyOfficeNodes(f.ids.get('haniOfficeActors').children),allNodes);assert.deepEqual(writes,[]);
  }
 });
 

@@ -7,7 +7,7 @@ import path from 'node:path';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {at} from './hani-office-lively-fixture.mjs';
-import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
+import {resolveRuntimeClosure} from './hani-office-companions-276-closure.mjs';
 import {restoreBarista273Source} from './hani-office-barista-night-273-source.mjs';
 import {restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';
 import {createHash} from 'node:crypto';
