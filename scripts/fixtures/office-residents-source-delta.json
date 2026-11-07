@@ -1,7 +1,7 @@
 {
   "scope": "Approved seven residents only; exact changed lines. Reverse before historical label/motion guards. All other bytes, scheduler, staff/visitor plans and previous fixtures remain frozen.; approved Mochi resident and trio display only",
   "beforeSha256": "672b4fa6b15ef08859822870c7a3ff12d8029a65a972010799391ea5eb33d00f",
-  "afterSha256": "5905668129215d75bfa806ee257cabfa70997b75e256d917fbcc5352eb395281",
+  "afterSha256": "c8a987fa6dbf7c2996d36cd97175d07485596e127bfa79e72592563d35b06cff",
   "changes": [
     {
       "beforeLine": 1879,
@@ -570,6 +570,7 @@
         "      const clock=building.residents.clock(new Date());root.officeTrioBeat=clock.day+'|'+Math.floor(clock.seconds/120);\n",
         "    }\n",
         "    clearBubbleTimer();bubbleSerial++;bubblePerson=null;bubbleSelection=null;if(clearPending)pendingTap=null;actorBubble.hidden=true;for(const actor of actors.values())actor.dataset.speaking='false';fitStatusLabels();\n",
+        "    if(baristaAwake){baristaAwake=false;updateBarista()}\n",
         "  }\n",
         "  function updateBubbleSprite(actor,automatic){\n",
         "    const sprite=actor.querySelector('.hani-office-sprite'),entry=spriteEntries.get(spriteId(actor));\n",
@@ -586,7 +587,7 @@
     },
     {
       "beforeLine": 2346,
-      "afterLine": 2675,
+      "afterLine": 2676,
       "before": [],
       "after": [
         "    if(actor.dataset.resident){\n",
@@ -598,7 +599,7 @@
     },
     {
       "beforeLine": 2349,
-      "afterLine": 2683,
+      "afterLine": 2684,
       "before": [
         "    showBubble(actor,selection||null,automatic?4000:3000);\n"
       ],
@@ -608,7 +609,7 @@
     },
     {
       "beforeLine": 2361,
-      "afterLine": 2695,
+      "afterLine": 2696,
       "before": [],
       "after": [
         "    if(!eventPanel.hidden&&!eventPanel.contains(event.target)&&!eventButton.contains(event.target))closeEventPanel();\n",
@@ -617,7 +618,7 @@
     },
     {
       "beforeLine": 2362,
-      "afterLine": 2698,
+      "afterLine": 2699,
       "before": [
         "    if(actor&&actorLayer.contains(actor)){if(!dismissOnly)openBubble(actor);return}\n",
         "    if(!dismissOnly||actorBubble.hidden||actorBubble.contains(event.target)||[...actors.values()].some(a=>a.officeRow.contains(event.target)))return;\n",
@@ -632,7 +633,7 @@
     },
     {
       "beforeLine": 2367,
-      "afterLine": 2704,
+      "afterLine": 2705,
       "before": [
         "  actorLayer.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();activateActor(event)}else if(event.key==='Escape')closeBubble()});\n"
       ],
@@ -642,7 +643,7 @@
     },
     {
       "beforeLine": 2416,
-      "afterLine": 2753,
+      "afterLine": 2754,
       "before": [
         "    const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble(false)}},3000);\n"
       ],
@@ -652,7 +653,7 @@
     },
     {
       "beforeLine": 2419,
-      "afterLine": 2756,
+      "afterLine": 2757,
       "before": [],
       "after": [
         "  // Visible barista pixels only: (1536,650)..(1581,706) in floor-1f-217.webp.\r\n",
@@ -660,21 +661,35 @@
         "  const baristaButton=document.createElement('button');baristaButton.type='button';baristaButton.id='haniOfficeBarista';baristaButton.className='hani-office-barista';baristaButton.hidden=true;baristaButton.onclick=activateActor;baristaButton.onkeydown=event=>{if(event.key==='Escape')closeBubble()};baristaButton.setAttribute('aria-label','바리스타 이슬 · 카페 운영 중');\n",
         "  baristaButton.style.left=(1536/(building.art?.width||1672)*100)+'%';baristaButton.style.top=(650/(building.art?.height||941)*100)+'%';baristaButton.style.width=(45/(building.art?.width||1672)*100)+'%';baristaButton.style.height=(56/(building.art?.height||941)*100)+'%';map.append(baristaButton);\r\n",
         "  const baristaLines=['회장님, 오늘도 늘 드시던 걸로요?','원두는 오늘 아침에 새로 볶았어요.','라떼 아트는 하트가 제일 자신 있어요.','직원분들 주문 순서, 다 외웠답니다.','크림이가 또 쿠키 냄새 맡고 왔네요.','치즈는 창가 자리 단골손님이에요.','바쁜 날엔 샷 하나 추가해 드릴게요.','디카페인도 맛있게 내려 드려요.'];\n",
-        "  let baristaTap=0;\r\n",
-        "  function updateBarista(){baristaButton.hidden=activeFloor!=='1f'||map.dataset.art!=='floor'}\r\n",
+        "  const baristaNightLines=['야근이세요? 따뜻한 걸로 드릴게요.','보리가 문 앞에서 지켜 줘서 든든해요.','조용한 밤엔 원두 향이 더 잘 느껴져요.','급하지 않아요. 잠깐 쉬었다 가세요.','디카페인도 따뜻하게 준비해 둘게요.','창밖 달빛이 오늘은 참 포근하네요.','늦은 시간까지 수고 많으셨어요.','아침까지 카페는 제가 지킬게요.'];\r\n",
+        "  let baristaTap=0,baristaNightTap=0,baristaAwake=false;\r\n",
+        "  function baristaClock(now=new Date()){const hour=koreaTime(now).getUTCHours();return {night:hour>=19||hour<7,dozing:hour>=2&&hour<7}}\r\n",
+        "  function updateBarista(now=new Date()){\r\n",
+        "    const clock=baristaClock(now),hidden=activeFloor!=='1f'||map.dataset.art!=='floor';baristaButton.hidden=hidden;\r\n",
+        "    const label=clock.night?'은하 · 야간 카페':'바리스타 이슬 · 카페 운영 중';if(baristaButton.getAttribute('aria-label')!==label)baristaButton.setAttribute('aria-label',label);\r\n",
+        "    baristaNight.hidden=hidden||!clock.night;\r\n",
+        "    const frame=clock.dozing?(baristaAwake?3:2):1;if(baristaNight.dataset.frame!==String(frame)){baristaNight.dataset.frame=String(frame);baristaNight.style.backgroundPosition=((frame-1)*50)+'% 0'}\r\n",
+        "  }\r\n",
         "  function openBaristaBubble(){\r\n",
         "    updateBarista();if(baristaButton.hidden||!sceneVisible()||document.getElementById('app')?.classList.contains('login-locked'))return;\r\n",
+        "    const clock=baristaClock(),waking=clock.dozing&&!baristaAwake;\r\n",
         "    closeBubble();lastBubbleTap=Date.now();autoBubbleEntry=false;\r\n",
+        "    baristaAwake=clock.dozing;updateBarista();\r\n",
         "    bubbleSprite.hidden=true;actorBubble.dataset.zoom='false';actorBubble.officeFollow=null;\r\n",
-        "    bubbleLine.textContent='바리스타 이슬 · '+(matchMedia('(max-width:600px)').matches?'카페운영':'카페 운영 중')+' · '+baristaLines[baristaTap++%baristaLines.length];\n",
+        "    bubbleLine.textContent=clock.night?'은하 · 야간 카페 · '+(waking?'앗, 회장님! 졸지 않았어요… 커피 드릴게요.':baristaNightLines[baristaNightTap++%baristaNightLines.length]):'바리스타 이슬 · '+(matchMedia('(max-width:600px)').matches?'카페운영':'카페 운영 중')+' · '+baristaLines[baristaTap++%baristaLines.length];\r\n",
         "    profileLink.hidden=true;actorBubble.style.left='4px';actorBubble.style.top='4px';actorBubble.hidden=false;\r\n",
-        "    const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble()}},bubbleDuration());\r\n",
+        "    const serial=++bubbleSerial,duration=bubbleDuration();queueBubbleTimer(()=>{\r\n",
+        "      if(serial!==bubbleSerial)return;\r\n",
+        "      bubbleTimer=null;\r\n",
+        "      if(baristaAwake){baristaAwake=false;updateBarista();if(duration>3000){queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble()}},duration-3000);return}}\r\n",
+        "      closeBubble();\r\n",
+        "    },baristaAwake?3000:duration);\r\n",
         "  }\r\n"
       ]
     },
     {
       "beforeLine": 2431,
-      "afterLine": 2783,
+      "afterLine": 2798,
       "before": [],
       "after": [
         "  // Annual KST windows are read-only; the exclusive end includes Dec 26 23:59.\n",
@@ -688,6 +703,9 @@
         "      ['xmas-lights','event-wide','5f',1344,565,384,64,'bottom-center',true]\n",
         "    ].map(Object.freeze))})\n",
         "  ]);\n",
+        "  // Opaque 120x110 patch in the same art coordinates; below props and actors.\n",
+        "  const baristaNight=document.createElement('span');baristaNight.className='hani-office-barista-night';baristaNight.setAttribute('aria-hidden','true');baristaNight.hidden=true;\n",
+        "  baristaNight.style.left=(1500/(building.art?.width||1672)*100)+'%';baristaNight.style.top=(610/(building.art?.height||941)*100)+'%';baristaNight.style.width=(120/(building.art?.width||1672)*100)+'%';baristaNight.style.height=(110/(building.art?.height||941)*100)+'%';map.append(baristaNight);\n",
         "  // Approved four-frame art: one map-owned layer and persistent prop/event slots.\n",
         "  const livePropLayer=document.createElement('div');livePropLayer.className='hani-office-live-props';livePropLayer.setAttribute('aria-hidden','true');livePropLayer.hidden=true;map.append(livePropLayer);\n",
         "  const liveProps=[\n",
@@ -716,7 +734,7 @@
     },
     {
       "beforeLine": 2434,
-      "afterLine": 2821,
+      "afterLine": 2839,
       "before": [],
       "after": [
         "  // View-only snack overlay. The table is the sole copy-edit point (up to 3 lines per staff id).\n",
@@ -884,7 +902,7 @@
     },
     {
       "beforeLine": 2446,
-      "afterLine": 2994,
+      "afterLine": 3012,
       "before": [],
       "after": [
         "    updateLiveProps(floor,map.querySelector('.hani-office-background').getAttribute('src'),map.dataset.art==='floor'&&map.dataset.floor===activeFloor,now);\n"
@@ -892,7 +910,7 @@
     },
     {
       "beforeLine": 2461,
-      "afterLine": 3010,
+      "afterLine": 3028,
       "before": [
         "    if(actor.dataset.person==='seongmin'||actor.dataset.person.startsWith('visitor')){sprite.className='hani-office-sprite';sprite.style.backgroundImage='';actor.dataset.avatar='pending';return}\n"
       ],
@@ -902,17 +920,17 @@
     },
     {
       "beforeLine": 2491,
-      "afterLine": 3040,
+      "afterLine": 3058,
       "before": [
         "    if(backgroundRequest!==request){backgroundRequest=request;bg.hidden=true;map.dataset.art='loading';monitorGlow.hidden=true;for(const entry of plates)entry.plate.hidden=true;for(const entry of deskProps)entry.prop.hidden=true}\n"
       ],
       "after": [
-        "    if(backgroundRequest!==request){backgroundRequest=request;bg.hidden=true;map.dataset.art='loading';livePropLayer.hidden=true;monitorGlow.hidden=true;for(const entry of plates)entry.plate.hidden=true;for(const entry of deskProps)entry.prop.hidden=true}\n"
+        "    if(backgroundRequest!==request){backgroundRequest=request;bg.hidden=true;map.dataset.art='loading';baristaNight.hidden=true;livePropLayer.hidden=true;monitorGlow.hidden=true;for(const entry of plates)entry.plate.hidden=true;for(const entry of deskProps)entry.prop.hidden=true}\n"
       ]
     },
     {
       "beforeLine": 2509,
-      "afterLine": 3058,
+      "afterLine": 3076,
       "before": [
         "      updateQueenFrame();\n"
       ],
@@ -922,7 +940,7 @@
     },
     {
       "beforeLine": 2515,
-      "afterLine": 3064,
+      "afterLine": 3082,
       "before": [],
       "after": [
         "    syncEventButtons();\n"
@@ -930,7 +948,7 @@
     },
     {
       "beforeLine": 2529,
-      "afterLine": 3079,
+      "afterLine": 3097,
       "before": [
         "    updateQueenFrame(now.getTime());\n"
       ],
@@ -940,7 +958,7 @@
     },
     {
       "beforeLine": 2538,
-      "afterLine": 3088,
+      "afterLine": 3106,
       "before": [
         "    setBackground(floor);updateQueenFrame(now.getTime());\n"
       ],
@@ -950,7 +968,7 @@
     },
     {
       "beforeLine": 2544,
-      "afterLine": 3094,
+      "afterLine": 3112,
       "before": [
         "    for(const actor of actors.values()){actor.officeWasVisible=!actor.hidden;actor.hidden=true;actor.officeRow.hidden=true;actor.dataset.called=\"false\"}\n"
       ],
@@ -960,7 +978,7 @@
     },
     {
       "beforeLine": 2566,
-      "afterLine": 3116,
+      "afterLine": 3134,
       "before": [],
       "after": [
         "      actor.dataset.ownerEvent=eventApplies(actor)?activeEvent:'';actor.dataset.snack=String(actor.dataset.ownerEvent==='snack');if(actor.dataset.ownerEvent){actor.dataset.line=ownerEvents[activeEvent].status;actor.dataset.emoji=activeEvent==='birthday'&&p.id!==eventBirthday?'🎉':ownerEvents[activeEvent].icon}\n"
@@ -968,7 +986,7 @@
     },
     {
       "beforeLine": 2569,
-      "afterLine": 3120,
+      "afterLine": 3138,
       "before": [
         "      label(actor,(actor.dataset.emoji?actor.dataset.emoji+' ':'')+actor.dataset.line);\n"
       ],
@@ -978,7 +996,7 @@
     },
     {
       "beforeLine": 2573,
-      "afterLine": 3124,
+      "afterLine": 3142,
       "before": [],
       "after": [
         "    updateResidents(now);\n"
@@ -986,7 +1004,7 @@
     },
     {
       "beforeLine": 2579,
-      "afterLine": 3131,
+      "afterLine": 3149,
       "before": [
         "  function selectFloor(id,animate=false){closeBubble();if(!floorButtons.has(id))return;autoBubbleEntry=true;for(const actor of actors.values())finishTravel(actor);activeFloor=id;updateBuilding(true,animate)}\n"
       ],
@@ -1044,7 +1062,7 @@
     },
     {
       "beforeLine": 2582,
-      "afterLine": 3182,
+      "afterLine": 3200,
       "before": [
         "  function syncVisibility(){officePresence.read();const visible=sceneVisible();if(visible&&!sceneActive)autoBubbleEntry=true;sceneActive=visible;root.dataset.paused=String(!visible);if(visible)updateBuilding(true,false);else{autoBubbleEntry=false;for(const actor of actors.values())clearMotion(actor);closeBubble()}map.officeMascotMotion?.({now:Date.now(),reduced,visible,actors})}\n"
       ],
@@ -1054,7 +1072,7 @@
     },
     {
       "beforeLine": 2647,
-      "afterLine": 3247,
+      "afterLine": 3265,
       "before": [],
       "after": [
         "    updateResidents(new Date(now));\n"
@@ -1062,7 +1080,7 @@
     },
     {
       "beforeLine": 2649,
-      "afterLine": 3250,
+      "afterLine": 3268,
       "before": [],
       "after": [
         "      if(actor.dataset.resident){const effect=actor.officeReactions.tick(now,reduced,actor.dataset.walking==='true');if(effect){if(actor.dataset.motion!==effect.kind)actor.dataset.motion=effect.kind}else if(actor.dataset.motion!==undefined)delete actor.dataset.motion;continue}\n"

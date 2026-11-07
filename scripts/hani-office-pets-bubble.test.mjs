@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {restoreBarista273Source} from './hani-office-barista-night-273-source.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
@@ -89,7 +90,7 @@ test('pets: bounded idle motion fills pauses, preserves clock paths, and reduced
 });
 
 test('staff scheduler/plan/blockPlan/snapshot and all staff model helpers stay byte identical; no extra loops, listeners or nodes',()=>{
- const before=read('artifacts/office-pets-bubble/before-source.txt'),after=read('hani-office-live.js'),boundary='/* Read-only Living Office.';
+ const before=read('artifacts/office-pets-bubble/before-source.txt'),after=restoreBarista273Source(read('hani-office-live.js')),boundary='/* Read-only Living Office.';
  // v2.9.268: retain byte identity for the entire staff model on both sides of the residents.
  const staff=s=>{const a=s.indexOf('  const residentNames='),b=s.indexOf('  function createPresence('),c=s.indexOf(boundary);assert.ok(a>=0&&b>a&&c>b);return s.slice(0,a)+s.slice(b,c)};
  assert.equal(staff(after),staff(before));
@@ -200,7 +201,7 @@ test('round2: all three pets are present for at least 95 percent of working-day 
 });
 
 test('round2: staff scheduler and snapshot source bytes stay identical; timer/listener/node/storage paths do not increase',()=>{
- const before=read('artifacts/office-pets-bubble/round2-before-source.txt'),after=read('hani-office-live.js');
+ const before=read('artifacts/office-pets-bubble/round2-before-source.txt'),after=restoreBarista273Source(read('hani-office-live.js'));
  const section=(s,a,b)=>{const i=s.indexOf(a),j=s.indexOf(b,i);assert.ok(i>=0&&j>i);return s.slice(i,j)};
  for(const [a,b]of [['  function createScheduler(','  // Read-only label geometry'],['  function snapshot(now=new Date()','  function profile('],['  function createPresence(','/* Read-only Living Office.']])assert.equal(section(after,a,b),section(before,a,b),a);
  for(const regex of [/document\.addEventListener\(/g,/addEventListener\(/g,/createElement\(/g,/setInterval\(/g,/setTimeout\(/g,/requestAnimationFrame\(/g,/\bfetch\(/g])assert.equal([...after.matchAll(regex)].length,[...before.matchAll(regex)].length,regex.toString());

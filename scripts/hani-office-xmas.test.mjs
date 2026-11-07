@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {restoreBarista273Source} from './hani-office-barista-night-273-source.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
@@ -59,7 +60,7 @@ test('xmas: same-floor clock ticks toggle the event without a click, new timer o
  assert.ok(decorations.every(p=>p.hidden));
  const before=read('artifacts/office-xmas-live/before.js');
  for(const token of ['setInterval(','setTimeout(','requestAnimationFrame(','addEventListener(','document.createElement('])
-  assert.equal(source.split(token).length,before.split(token).length,token);
+  assert.equal(restoreBarista273Source(source).split(token).length,before.split(token).length,token);
 });
 
 test('xmas: all five map-relative slots are created once, floor-scoped and tap-through at both widths',async()=>{

@@ -1697,6 +1697,9 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
     title.textContent = person.name + ' · ' + person.rank;
     greetingLine.textContent = greeting(person, bank);
     helpLine.textContent = help(document.body.dataset.view, person);
+    const affinityLine = panel.querySelector('.hani-helper-affinity');
+    const affinity = window.HaniOfficeAffinity?.get(person.id) || {level:1,name:'처음 만남'};
+    affinityLine.textContent = '오늘 당번과의 친밀도: Lv' + affinity.level + ' ' + affinity.name + ' ' + '♡'.repeat(affinity.level);
     for (const button of panel.querySelectorAll('[data-helper-go]')) {
       const label = links.find(([id]) => id === button.dataset.helperGo)?.[1];
       button.textContent = label + (pet(person) ? ' · ' + pet(person).call : '');
@@ -1777,7 +1780,7 @@ window.HaniMotion = Object.freeze({completion, trackGoal, countUp, refresh:refre
   function init() {
     if (root || document.getElementById('haniHelperBot')) return;
     root = document.createElement('aside'); root.id = 'haniHelperBot'; root.hidden = true;
-    root.innerHTML = '<button class="hani-helper-face" type="button" aria-expanded="false" aria-controls="haniHelperSpeech"><span class="hani-helper-art" aria-hidden="true"></span><i class="hani-helper-dot" aria-hidden="true" hidden></i></button><section id="haniHelperSpeech" class="hani-helper-speech" role="dialog" aria-modal="false" aria-labelledby="haniHelperTitle" hidden><header><div><small>오늘의 당번</small><h2 id="haniHelperTitle"></h2></div><button type="button" data-helper-close aria-label="도우미 닫기">×</button></header><div class="hani-helper-home"><p class="hani-helper-greeting"></p><h3>이 화면 도움말</h3><p class="hani-helper-help"></p><nav aria-label="도우미 바로가기"></nav><p class="hani-helper-news" aria-live="polite"></p></div></section>';
+    root.innerHTML = '<button class="hani-helper-face" type="button" aria-expanded="false" aria-controls="haniHelperSpeech"><span class="hani-helper-art" aria-hidden="true"></span><i class="hani-helper-dot" aria-hidden="true" hidden></i></button><section id="haniHelperSpeech" class="hani-helper-speech" role="dialog" aria-modal="false" aria-labelledby="haniHelperTitle" hidden><header><div><small>오늘의 당번</small><h2 id="haniHelperTitle"></h2></div><button type="button" data-helper-close aria-label="도우미 닫기">×</button></header><div class="hani-helper-home"><p class="hani-helper-greeting"></p><p class="hani-helper-affinity"></p><h3>이 화면 도움말</h3><p class="hani-helper-help"></p><nav aria-label="도우미 바로가기"></nav><p class="hani-helper-news" aria-live="polite"></p></div></section>';
     document.body.append(root);
     face = root.querySelector('.hani-helper-face'); panel = root.querySelector('.hani-helper-speech'); dot = root.querySelector('.hani-helper-dot');
     title = root.querySelector('h2'); greetingLine = root.querySelector('.hani-helper-greeting'); helpLine = root.querySelector('.hani-helper-help'); newsLine = root.querySelector('.hani-helper-news');

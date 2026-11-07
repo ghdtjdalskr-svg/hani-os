@@ -9,4 +9,7 @@ export const bori272Files=[
  'assets/profiles/thumb/hani-profile-bori-256.webp', // v2.9.272 approved Bori card/helper portrait.
  'assets/profiles/thumb/hani-profile-bori-128.webp' // v2.9.272 approved Bori small portrait.
 ];
-export const approvedOfficeRuntimeAdditions=[...helper270Files,...bori272Files];
+export const barista273Files=[
+ 'assets/office-season/barista-night.webp' // v2.9.273 night barista, one opaque three-frame patch.
+];
+export const approvedOfficeRuntimeAdditions=[...helper270Files,...bori272Files,...barista273Files];
