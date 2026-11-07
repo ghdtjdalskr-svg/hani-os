@@ -1,3 +1,7 @@
+# 2026-11-07 · fix278 후보 정리 3건 (Codex / companion-live)
+
+`hani/office-companions` / base·HEAD `ccda3c8` / 확인한 원격 main `b736774` / 표시·cache2.9.277 유지. 하루 계획 계산 색인·연속 거리 검사·내부 예약 배열 최적화(공개 API 보존), main 기준 baseline 갱신, 메모리 Map clear 제거. **원본 계획/공개 예약값/매분 snapshot 16조합·수다 3일 동등성3/3, 전체67파일724통과·Git32차단·기존skip5·기타실패0, syntax6/6·closure161/누락0.** 기존400ms 성능 assertion 3회 모두 통과하나 lively 판정값324.4~340.4ms·개별 최대429.6ms로320ms 목표 미달. runtime aa5c9893 / contract22a25dca. 실제 git add는 index.lock 권한 거부로 **미커밋**. push/merge/버전변경/배포 없음, Notion 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/fix278/REPORT.md) · [인수인계](handoffs/2026-11-07-fix278.md). 아래 타 담당·과거 기록 보존.
+
 # 2026-11-07 · PC 자동 말풍선 배치 (Codex / companion-live)
 
 `hani/office-companions` / base·HEAD `0159d09` / 표시·cache2.9.277 유지 / Git EPERM으로 미커밋. 기존 owner PC 위/아래 전환·좌우 clamp·최종 sprite/name 박스 캐시 재사용, 폰 compact 불변. **floor-bubble21/21·syntax4/4·closure161불변·새timer/listener/layout read/저장0. Edge 토요일14시4층 PC301표본51대사 본인교차0/0·PNG3장, 폰413표본 좌표/대사/시각 원본과 정확히 일치.** 전체66파일717통과·Git31차단·기존버전fixture2실패·성능1실패 후 동일400ms 재검사 통과(최종 결과718통과·Git31차단·기존실패2·skip5). 기존 278 assertion/contract 보존·3묶음 확장. push/merge/버전변경/배포 없음, Notion 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/bubble-place/REPORT.md) · [인수인계](handoffs/2026-11-07-bubble-place.md). 아래 타 담당·과거 기록 보존.

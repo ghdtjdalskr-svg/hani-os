@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 const hash=x=>createHash('sha256').update(x).digest('hex');
 const bytes=fs.readFileSync(new URL('fixtures/office-chairman-patrol-278-delta.json',import.meta.url));
-assert.equal(hash(bytes),'85944363691aca122e946bc2635682def7bc88e8cee03a7baac209b19e3339ae','exact authored patrol 278 delta');
+assert.equal(hash(bytes),'22a25dcad943eca990558ab02c930aec7f2ee134da6f1da9e5ddff0bbb7909d5','exact authored patrol 278 delta');
 export const patrol278Delta=JSON.parse(bytes);
 assert.equal(patrol278Delta.baseCommit,'3f4158e7a1d793ede02160f2dfac21b834d268d1');
 assert.deepEqual(patrol278Delta.files.map(r=>r.beforeSha256),['43224cad9ebb0eeed913f485afaa9895783157748816458218401810652f389b','3911b660d786f550046a9805fea998a3a865151d843beb39e1c94b5ff9a31f46']);
@@ -58,10 +58,22 @@ export function projectPreStaffChatSource(source,file='hani-office-live.js'){
 
 // Exact PC bubble-only outer layer; all earlier frozen assertions stay intact.
 export function restoreBubblePlace278Source(source,file='hani-office-live.js'){
+ source=projectPreFix278Source(source,file);
  const row=patrol278Delta.bubblePlaceExtension;assert.equal(file,row.file);assert.equal(hash(source),row.afterSha256,'only exact bubble placement extension accepted');
  for(const r of row.replacements){assert.equal(source.split(r.after).length-1,1);source=source.replace(r.after,()=>r.before)}
  assert.equal(hash(source),row.beforeSha256,'all 0159d09 bytes restored');return source;
 }
 export function projectPreBubblePlaceSource(source,file='hani-office-live.js'){
+ source=projectPreFix278Source(source,file);
  const row=patrol278Delta.bubblePlaceExtension;return file===row.file&&hash(source)===row.afterSha256?restoreBubblePlace278Source(source,file):source;
+}
+
+// Exact optimization/reset layer; every earlier assertion retains its frozen bytes.
+export function restoreFix278Source(source,file='hani-office-live.js'){
+ const row=patrol278Delta.fix278Extension;assert.equal(file,row.file);assert.equal(hash(source),row.afterSha256,'only exact fix278 bytes accepted');
+ for(const r of row.replacements){assert.equal(source.split(r.after).length-1,1);source=source.replace(r.after,()=>r.before)}
+ assert.equal(hash(source),row.beforeSha256,'every ccda3c8 byte restored');return source;
+}
+export function projectPreFix278Source(source,file='hani-office-live.js'){
+ const row=patrol278Delta.fix278Extension;return file===row.file&&hash(source)===row.afterSha256?restoreFix278Source(source,file):source;
 }
