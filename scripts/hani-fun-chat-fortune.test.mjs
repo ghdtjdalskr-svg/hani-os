@@ -7,7 +7,7 @@ import vm from 'node:vm';
 import http from 'node:http';
 import {test} from 'node:test';
 import {fileURLToPath,pathToFileURL} from 'node:url';
-import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
+import {resolveRuntimeClosure} from './hani-office-companions-276-closure.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const ui=read('hani-ui-v02992.js'),source=ui.slice(ui.indexOf('// BEGIN HANI FUN CHAT FORTUNE'));

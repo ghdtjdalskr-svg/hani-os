@@ -12,4 +12,5 @@ export const bori272Files=[
 export const barista273Files=[
  'assets/office-season/barista-night.webp' // v2.9.273 night barista, one opaque three-frame patch.
 ];
-export const approvedOfficeRuntimeAdditions=[...helper270Files,...bori272Files,...barista273Files];
+export const companion276Files=['assets/office-companions/companions-v1.webp','assets/office-companions/kids-v1.webp'];
+export const approvedOfficeRuntimeAdditions=[...helper270Files,...bori272Files,...barista273Files,...companion276Files];
