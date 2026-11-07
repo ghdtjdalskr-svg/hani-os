@@ -135,6 +135,8 @@
 #haniOfficeMap:has(.hani-office-actor:active) .hani-office-barista{pointer-events:none}
 #app #haniOfficeMap .hani-office-barista{min-width:0!important;min-height:0!important;max-width:none;transform:none;transition:none}
 .hani-office-barista:focus-visible{outline:2px solid #7656c4;outline-offset:0}
+.hani-office-barista-night{position:absolute;z-index:2;display:block;pointer-events:none;background-image:url("./assets/office-season/barista-night.webp");background-size:300% 100%;background-repeat:no-repeat;animation:none}
+.hani-office-barista-night[hidden]{display:none}
 .hani-office-queen-frame{position:absolute;z-index:2;box-sizing:border-box;display:block;margin:0;padding:0;border:0;border-radius:0;background:transparent;cursor:pointer;pointer-events:auto}
 .hani-office-queen-frame[hidden]{display:none}
 #app #haniOfficeMap .hani-office-queen-frame{min-width:0!important;min-height:0!important}
