@@ -26,6 +26,9 @@
 <link rel="preload" as="image" href="./assets/heroes/travel-218.webp">
 <style id="ledger-final-v1-style">#ledger .ledger-final-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}#ledger .ledger-import{margin:15px 0;overflow:hidden}#ledger .ledger-import textarea{min-height:120px;resize:vertical}#ledger .ledger-import-result{margin-top:10px;white-space:pre-wrap}#ledger .ledger-detail-wrap{max-width:100%;overflow-x:auto}#ledger .ledger-detail-wrap table{min-width:1080px}@media(max-width:760px){#ledger .ledger-final-grid{grid-template-columns:1fr}}</style>
 <link rel="stylesheet" href="./hani-style-01.css?v=2.9.280">
+<!-- BEGIN PROCRASTINATION STYLE -->
+<link rel="stylesheet" href="./hani-procrastination-board.css">
+<!-- END PROCRASTINATION STYLE -->
 <link rel="stylesheet" href="./hani-style-08.css?v=2.9.280" id="hani-page-skeleton-v02992-style">
 
 <link rel="stylesheet" href="./hani-style-02.css?v=2.9.280" id="v2926-sidebar-team-visual-fix">
@@ -265,6 +268,9 @@
       <button class="group-head" type="button"><span class="name">업무 / 시스템</span><span class="arrow" aria-hidden="true">▾</span></button>
       <div class="group-body">
         <button class="nav-btn" data-view="tasks"><span class="ico"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="m8 12 2.5 2.5L16 9"/></svg></span><span class="txt">할 일</span></button>
+        <!-- BEGIN PROCRASTINATION NAV -->
+        <button class="nav-btn" data-view="procrastination" type="button"><span class="ico" aria-hidden="true">💭</span><span class="txt">미룬 일</span></button>
+        <!-- END PROCRASTINATION NAV -->
         <button class="nav-btn" data-view="calendar"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 9h18"/><path d="M7 13h2M11 13h2M15 13h2M7 17h2M11 17h2"/></svg></span><span class="txt">캘린더</span></button>
 <button class="nav-btn" data-view="work"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5h6v2M3 12h18M10 12v2h4v-2"/></svg></span><span class="txt">업무 보조</span></button>
         <button class="nav-btn" data-view="drive"><span class="ico"><svg viewBox="0 0 24 24"><path d="M8 4h5l2 3h5a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h4Z"/></svg></span><span class="txt">Drive</span></button>
@@ -849,6 +855,14 @@
       </div>
     </section>
 
+    <!-- BEGIN PROCRASTINATION VIEW -->
+    <section id="procrastination" class="view" aria-labelledby="procrastinationTitle">
+      <header class="pb-header"><div><span class="pb-eyebrow">A LITTLE NUDGE / HANI GROUP</span><h2 id="procrastinationTitle">미룬 일, 같이 하나씩.</h2><p class="pb-intro">기록이 뜸해지면 담당 직원도 조금씩 삐져요.<br>오랜만이어도 괜찮아요. 오늘 한 번이면 다시 웃을 수 있어요.</p></div><span id="procrastinationCount" role="status"></span></header>
+      <div class="pb-legend" aria-label="삐짐 단계"><span>0 괜찮아요 😊</span><span>1 살짝 서운</span><span>2 삐짐 😤</span><span>3 뒤돌아 흥!</span><span>4 구석에서 웅크림</span></div>
+      <div id="procrastinationBoard"></div>
+      <p class="pb-note">KST 날짜 기준 · 마지막 기록 이후의 경과일을 보여줘요. 건강·일기는 매일, 목록은 주 1회, 자산·가계부는 월 1회를 기준으로 삐짐 단계가 달라져요. 퀴즈는 미완료 문제의 예정일 기준이며 오늘 풀면 0단계예요.<br>기록이 없거나 날짜가 불확실하면 기간을 추측하지 않아요. 건강 기록은 양보다 지속 가능성이 먼저예요.</p>
+    </section>
+    <!-- END PROCRASTINATION VIEW -->
     <section id="tasks" class="view"><div class="grid"><div class="card full task-calendar-hub" id="taskCalendarHub"><div class="sh"><div><h3>Google Calendar Sync</h3><div class="sub">실제 마감일이 있는 미완료 할 일만 HANI → Google Calendar 단방향으로 동기화합니다.</div></div><span class="pill" id="taskCalendarState">연결 확인</span></div><div class="task-calendar-hub-body"><div class="task-calendar-status"><div class="task-calendar-mark">📅</div><div><b id="taskCalendarTitle">Google Calendar 연결을 확인해 주세요.</b><p id="taskCalendarMessage">권장 시작일·수강기간·마감일 미확인 항목은 자동 전송하지 않습니다.</p></div></div><div class="task-calendar-actions"><button class="btn" id="taskCalendarConnect">Google Calendar 연결</button><button class="btn" id="taskCalendarDisconnect" hidden>연결 해제</button><button class="btn primary" id="taskCalendarSyncAll" disabled>마감 일정 동기화</button></div></div><div class="task-calendar-kpis"><span>동기화 대상 <b id="taskCalendarEligibleCount">0</b></span><span>동기화 완료 <b id="taskCalendarSyncedCount">0</b></span><span>재동기화 필요 <b id="taskCalendarChangedCount">0</b></span></div></div><div class="card full"><div class="sh"><h3>할 일 추가</h3></div><div class="task-input"><input id="taskText" placeholder="할 일을 입력하세요"><input id="taskDue" type="date"><button class="btn primary" id="addTask">추가</button></div></div><div class="card full"><div class="sh"><div><h3>할 일 목록</h3><p class="task-count-help">직접 등록한 미완료 + 오늘 실행할 자동 항목</p></div><span class="pill" id="taskCount">0개</span></div><div class="list" id="taskList"></div></div></div></section>
 
     <section id="calendar" class="view"><div class="grid"><div class="card full"><div class="sh"><h3>Google Calendar</h3><div class="sh-actions"><button class="btn" id="openCalendar">새창 열기</button><button class="btn primary" id="showCalendarSettings">Embed URL 설정</button></div></div><iframe id="calendarFrame" class="calendar-frame" title="Google Calendar"></iframe><div class="placeholder" id="calendarEmpty">캘린더를 연결하려면 ‘Embed URL 설정’을 눌러 주세요.</div></div></div></section>
@@ -1846,6 +1860,9 @@
 <script src="./hani-board.js?v=2.9.280"></script>
 <script src="./hani-ilbo.js?v=2.9.280"></script>
 <script src="./hani-milestones.js?v=2.9.280"></script>
+<!-- BEGIN PROCRASTINATION SCRIPT -->
+<script src="./hani-procrastination-board.js"></script>
+<!-- END PROCRASTINATION SCRIPT -->
 <script src="./hani-ai-budget-core.js?v=2.9.280"></script>
 <script src="./hani-ai-budget.js?v=2.9.280"></script>
 <dialog id="recordDeleteDialog" class="record-delete-dialog" aria-labelledby="recordDeleteTitle" aria-describedby="recordDeleteNotice recordDeleteValues">

@@ -1589,6 +1589,9 @@ function openModal(id){$(id).classList.add("open")}
 function closeModal(id){$(id).classList.remove("open")}
 
 const pageMeta={
+ // BEGIN PROCRASTINATION META
+ procrastination:["미룬 일","기다리는 기록을 담당 직원과 하나씩 다시 시작해요.","work"],
+ // END PROCRASTINATION META
  ilbo:["HANI 일보","민지 대리가 전하는 한 주의 우리 이야기","team"],
  home:["대시보드","오늘의 기록과 흐름을 한눈에 확인합니다.","home"],
  milestones:["마일스톤","삶에 남은 의미 있는 변화를 오래 기억할 수 있게 기록합니다.","milestones"],
@@ -1974,6 +1977,9 @@ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",
   window.HaniBoard?.syncBanner?.();
   if(id==="ilbo")window.HaniIlbo?.enter();
   if(id==="milestones")window.HaniMilestones?.enter();
+  // BEGIN PROCRASTINATION ENTER
+  if(id==="procrastination")window.HaniProcrastination?.render(state);
+  // END PROCRASTINATION ENTER
   if(id==="newsroom")window.HaniNewsroom4cut?.enter();
   if(id==="geminiReports")window.HaniGeminiReports?.render();
   if(id==="drive"&&typeof googleDriveEnter==="function")googleDriveEnter();
@@ -8298,7 +8304,7 @@ function renderMonthlyReport(){
 }
 
 
-function renderAll(){dataHubAuditSource();syncHaniDisplayVersion();normalizeHaniBrandLogos();refreshSelects();renderAccounts();renderInstruments();renderHoldings();renderTransactions();renderMonthlySnapshots();renderInvestmentQuickSuite();renderInvestmentHighlights();renderInvestmentAccountOverview();renderInvestmentNews();syncOverviewYearMirror();renderPortfolio();renderAssets();renderLedger();renderWishlist();renderBody();renderExercise();renderReading();renderMovies();renderDiary();renderCampus();renderTravel();renderCertificates();renderTasks();renderCalendar();renderTeam();renderNotes();renderHome();renderMonthlyReport();renderStoragePanel();window.HaniInvestmentCommittee?.render()}
+function renderAll(){dataHubAuditSource();syncHaniDisplayVersion();normalizeHaniBrandLogos();refreshSelects();renderAccounts();renderInstruments();renderHoldings();renderTransactions();renderMonthlySnapshots();renderInvestmentQuickSuite();renderInvestmentHighlights();renderInvestmentAccountOverview();renderInvestmentNews();syncOverviewYearMirror();renderPortfolio();renderAssets();renderLedger();renderWishlist();renderBody();renderExercise();renderReading();renderMovies();renderDiary();renderCampus();renderTravel();renderCertificates();renderTasks();renderCalendar();renderTeam();renderNotes();renderHome();renderMonthlyReport();renderStoragePanel();window.HaniInvestmentCommittee?.render();/* PROCRASTINATION REFRESH */if(document.body.dataset.view==="procrastination")window.HaniProcrastination?.render(state)}
 function downloadJson(serialized,filename){const blob=new Blob([serialized],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function buildBackupPayload(value,exportedAt,mediaState=null){
   const payload={...value,meta:{...value.meta,lastBackupAt:exportedAt},version:VERSION,exportedAt,
