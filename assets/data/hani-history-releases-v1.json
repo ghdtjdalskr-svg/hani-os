@@ -26,6 +26,18 @@
   ],
   "entries": [
     {
+      "id": "v2.9.278",
+      "date": "2026-11-07",
+      "status": "released",
+      "title": "회장님 순찰과 활발한 사무실",
+      "category": "하니 그룹",
+      "credits": [],
+      "source": {
+        "commit": "",
+        "subject": "release: v2.9.278 회장님 순찰과 활발한 사무실"
+      }
+    },
+    {
       "id": "v2.9.277",
       "date": "2026-11-07",
       "status": "released",
@@ -33,8 +45,8 @@
       "category": "하니 그룹",
       "credits": [],
       "source": {
-        "commit": "",
-        "subject": "release: v2.9.277 회장님 전용 동행과 꼬마 남매"
+        "commit": "6ea322bc85540f6ba484670558c268bef0666d1d",
+        "subject": "release: v2.9.277 회장님 전용 동행과 꼬마 남매 (#455)"
       }
     },
     {

@@ -362,6 +362,49 @@
   function projection(entries,capacity=6){const ordered=[...entries].sort((a,b)=>Number(b.activity!=="work")-Number(a.activity!=="work"));return {visible:ordered.slice(0,capacity),overflow:Math.max(0,entries.length-capacity)}}
   // One canonical scheduler. Daily plans are projections, never queues to replay.
   // All mutable state is disposable memory; no life records or data triggers enter here.
+  // Approved staff dialogue is embedded beside existing dialogue data.
+  const staffChatLines=Object.freeze([
+    {"id":"chat-01","a":"하니","b":"나은","place":"lounge","time":"morning","lines":[{"speaker":"a","text":"나은아, 오늘 안건 우선순위 다 잡았어!"},{"speaker":"b","text":"우선순위보다 아침밥 먹었는지가 먼저야!"},{"speaker":"a","text":"아메리카노 마셨는데 밥으로 안 쳐줘? 헤헤♡"},{"speaker":"b","text":"절대 안 되지! 팬트리에 구운 계란 챙겨놨어."}]},
+    {"id":"chat-02","a":"하니","b":"히나","place":"desk","time":"day","lines":[{"speaker":"a","text":"히나야, 이번 학습 화면 검수 일정 괜찮아?"},{"speaker":"b","text":"만년 과장 히나 선생님한테 맡겨만 줘용! 🐰"},{"speaker":"a","text":"방금 칠판 예문 오타 난 건 못 본 척할게?"},{"speaker":"b","text":"あれ？😳 그건 Scope 밖이라 못 본 거예용!"}]},
+    {"id":"chat-03","a":"나은","b":"히나","place":"pantry","time":"evening","lines":[{"speaker":"a","text":"히나야, 눈 반쯤 감겼는데 얼른 퇴근해야지."},{"speaker":"b","text":"언니이~ 저 하나도 안 졸려용, 문제 더 볼래용!"},{"speaker":"a","text":"잠깐, 펜 내려놔! 오늘은 회복이 먼저야."},{"speaker":"b","text":"헤헤♡ 언니 허브차 마시고 딱 정리할게용!"}]},
+    {"id":"chat-04","a":"하니","b":"가은","place":"desk","time":"morning","lines":[{"speaker":"a","text":"가은님, 오후 회의 사이에 안건 하나 더 넣죠!"},{"speaker":"b","text":"전무님, 회의 사이 10분은 이동 시간입니다."},{"speaker":"a","text":"복도 걸으면서 회의하면 딱 맞지 않을까요?"},{"speaker":"b","text":"숨 돌릴 시간까지 포함해 세 개만 넣으시죠."}]},
+    {"id":"chat-05","a":"가은","b":"유나","place":"desk","time":"day","lines":[{"speaker":"b","text":"제가요?! 이 문의도 전부 전략실로 오나요?!"},{"speaker":"a","text":"놀라지 말아요. 일정 건은 제가 먼저 볼게요."},{"speaker":"b","text":"휴, 다행이에요! 담당 팀 태그 붙여둘게요!"}]},
+    {"id":"chat-06","a":"하니","b":"미르","place":"hallway","time":"day","lines":[{"speaker":"b","text":"하니, 왜 다들 갑자기 책상을 정리해?"},{"speaker":"a","text":"회장님 오늘 오후에 순찰 오신대! 헤헤♡"},{"speaker":"b","text":"순찰이랑 책상 정리는 연결되네. 조금 더 볼게."}]},
+    {"id":"chat-07","a":"서윤","b":"도연","place":"desk","time":"morning","lines":[{"speaker":"a","text":"도연 선임님, 먼저 변경 범위부터 나눠봤어요 💜"},{"speaker":"b","text":"설계 확인했어요. 로컬에서 바로 재현했어요 ☕"},{"speaker":"a","text":"역시 빠르네요! 기존 경로는 그대로 유지되죠?"},{"speaker":"b","text":"네, 수정 8줄이고 타겟 테스트 통과요."}]},
+    {"id":"chat-08","a":"도연","b":"유리","place":"desk","time":"day","lines":[{"speaker":"a","text":"유리 책임님, 이번엔 진짜 다 고쳤어요 ☕"},{"speaker":"b","text":"일반 경로는 깔끔합니다. 엣지 케이스는요?"},{"speaker":"a","text":"모바일 회전까지 방금 테스트 붙였어요."},{"speaker":"b","text":"직접 깨보고 이상 없으면 PASS 드릴게요 ✅"}]},
+    {"id":"chat-09","a":"세린","b":"서윤","place":"desk","time":"day","lines":[{"speaker":"a","text":"서윤 리드님!! 주간 보고서 자동화 각인데요?!"},{"speaker":"b","text":"패턴은 좋네요! 먼저 영향 범위부터 볼게요 💜"},{"speaker":"a","text":"최근 한 달 로그에 반복 패턴이 딱 보여요!!📊"},{"speaker":"b","text":"정리하면 두 가지네요. 작은 실험부터 해봐요."}]},
+    {"id":"chat-10","a":"아린","b":"유리","place":"desk","time":"day","lines":[{"speaker":"a","text":"유리님, 이 카드 여백 숨 쉬게 넓혀봤어요 ✨"},{"speaker":"b","text":"예쁘긴 한데, 긴 제목 넣어도 안 깨지나요?"},{"speaker":"a","text":"앗, 두 줄 말줄임표까지 예쁘게 맞췄어요 🎨"},{"speaker":"b","text":"모바일 폭까지 확인했습니다. 깔끔합니다 ✅"}]},
+    {"id":"chat-11","a":"세린","b":"도연","place":"pantry","time":"day","lines":[{"speaker":"a","text":"도연 선임님! 이 반복 클릭 패턴 보여요?!✨"},{"speaker":"b","text":"세 번 누르는 거네요. 스크립트 10줄이면 돼요."},{"speaker":"a","text":"와아!! 역시 자동화 각이에요!! 바로 돌려봐요!"},{"speaker":"b","text":"커피 타는 김에 로컬에서 먼저 돌려볼게요 ☕"}]},
+    {"id":"chat-12","a":"서윤","b":"아린","place":"lounge","time":"evening","lines":[{"speaker":"a","text":"이 패널은 내부 모듈 두 개가 연결된 구조예요."},{"speaker":"b","text":"리드님, 사용자는 그 구조 몰라도 되잖아요 ✨"},{"speaker":"a","text":"하하, 맞아요. 먼저 첫 화면은 단순하게 갈까요?"},{"speaker":"b","text":"네! 버튼 하나만 예쁘게 숨 쉬게 해봐요 🎨"}]},
+    {"id":"chat-13","a":"세린","b":"유리","place":"hallway","time":"day","lines":[{"speaker":"a","text":"유리 책임님!! 응답 속도 개선 패턴 보여요!!📊"},{"speaker":"b","text":"패턴은 좋지만 미검증은 PASS 아닙니다."},{"speaker":"a","text":"샘플 백 건 비교표까지 준비해 뒀어요!!✨"},{"speaker":"b","text":"근거가 명확하네요. 회귀 검사 바로 볼게요 ✅"}]},
+    {"id":"chat-14","a":"도연","b":"아린","place":"rooftop","time":"evening","lines":[{"speaker":"b","text":"도연님, 아까 아이콘 간격 2픽셀 맞춰주셨죠? ✨"},{"speaker":"a","text":"네, 말씀하신 여백 수치대로 재현했어요 ☕"},{"speaker":"b","text":"너무 예쁜데요? 누를 때 기분 좋아지는 흐름이에요!"}]},
+    {"id":"chat-15","a":"지은","b":"하루","place":"desk","time":"day","lines":[{"speaker":"b","text":"부장님, 2층 팬트리 토스터기 이 모델 어때요?"},{"speaker":"a","text":"실사용성은 합격인데, 이번 달 비품 예산부터 보죠."},{"speaker":"b","text":"유령 구독 하나 정리한 금액이랑 딱 맞아요."},{"speaker":"a","text":"오차 없이 깔끔하네요. 이번 달 예산 승인할게요."}]},
+    {"id":"chat-16","a":"지은","b":"다온","place":"desk","time":"morning","lines":[{"speaker":"b","text":"부장님… 혹시 간식 바구니도 최악의 경우엔요😅"},{"speaker":"a","text":"간식 바구니에 무슨 하방 위험이 있어요, 다온님?"},{"speaker":"b","text":"오후 세 시에 초콜릿이 동날 시나리오가 보여서요…"},{"speaker":"a","text":"그건 중대 리스크네요. 예비분 한 상자 더 챙기죠."}]},
+    {"id":"chat-17","a":"하루","b":"다온","place":"pantry","time":"day","lines":[{"speaker":"a","text":"다온님, 새로 나온 보온 머그컵 두 개 비교해 봤어요."},{"speaker":"b","text":"혹시… 손잡이가 떨어질 최악의 경우엔요😅"},{"speaker":"a","text":"스텐 일체형이라 평생 안 떨어져요. 편히 골라요."}]},
+    {"id":"chat-18","a":"윤슬","b":"히나","place":"desk","time":"day","lines":[{"speaker":"a","text":"과장님, 이거 아세요? 문법 배경서 다섯 권이에요!📚"},{"speaker":"b","text":"윤슬아, 이거 다 읽으면 시험 전에 밤새워용! 🐰"},{"speaker":"a","text":"앗, 핵심 요약 카드만 추려서 바통 넘길게요!🔖"},{"speaker":"b","text":"헤헤♡ 요약은 윤슬이, 채점은 히나 선생님이 해용!"}]},
+    {"id":"chat-19","a":"민지","b":"수연","place":"hallway","time":"day","lines":[{"speaker":"b","text":"민지야, 날씨 좋은데 점심 먹고 산책 루트 돌자!"},{"speaker":"a","text":"일단 가, 내가 찍을게! 복귀 시간은 맞췄지?"},{"speaker":"b","text":"당연하지, 25분 코스라 낭만상 완벽히 가능해!"}]},
+    {"id":"chat-20","a":"하루","b":"민지","place":"pantry","time":"day","lines":[{"speaker":"b","text":"하루야, 이 영화 한정판 팝콘통 연출 완벽하지?!"},{"speaker":"a","text":"예쁘긴 한데… 그거 집에 둘 데 있어?"},{"speaker":"b","text":"컷! 방금 감동코드에 현실 팩폭 들어왔습니다!"},{"speaker":"a","text":"책상 위 작은 엽서 세트로 고르면 오래 잘 볼걸."}]},
+    {"id":"chat-21","a":"나은","b":"수연","place":"lounge","time":"morning","lines":[{"speaker":"b","text":"언니! 저 오늘 아침에 자전거 15킬로 타고 왔어요!"},{"speaker":"a","text":"출근 전부터 무리하면 안 돼! 물이랑 스트레칭은?"},{"speaker":"b","text":"스마트워치 회복 지표 만점이라 낭만상 안전해요!"}]},
+    {"id":"chat-22","a":"다온","b":"윤슬","place":"desk","time":"day","lines":[{"speaker":"b","text":"다온님, 이거 아세요? 리스크 용어집도 재밌네요!📚"},{"speaker":"a","text":"혹시… 제 메모지 접힌 부분까지 다 보셨나요😅"},{"speaker":"b","text":"지난주 회의록이랑 여기서 이어지네요! 신기해요🔖"}]},
+    {"id":"chat-23","a":"수아","b":"채원","place":"desk","time":"morning","lines":[{"speaker":"b","text":"과장님, 고객사 요청을 세 가지로 다시 정리했습니다."},{"speaker":"a","text":"역시 채원님! Owner랑 Due Date도 맞췄죠?"},{"speaker":"b","text":"네, 구두 약속은 빼고 증빙 기준으로만 적었습니다."},{"speaker":"a","text":"완벽해요! 후속 메일은 제가 기한 내에 챙길게요ㅎㅎ"}]},
+    {"id":"chat-24","a":"수아","b":"유나","place":"hallway","time":"day","lines":[{"speaker":"b","text":"수아 과장님! 1층 방문객 접수랑 분류 끝냈어요!"},{"speaker":"a","text":"유나님 요즘 후속 전달까지 정말 빈틈없네요!"},{"speaker":"b","text":"과장님께 배운 대로 다음 담당자까지 적었어요!"},{"speaker":"a","text":"칭찬 들으니까 저까지 기분 좋네요, 헤헤ㅎㅎ"}]},
+    {"id":"chat-25","a":"하니","b":"이슬","place":"cafe","time":"morning","lines":[{"speaker":"b","text":"하니 전무님, 오늘도 진한 아메리카노 맞으시죠?"},{"speaker":"a","text":"역시 이슬님! 회장님도 곧 커피 찾으실 시간이에요."},{"speaker":"b","text":"오늘 아침 새로 볶은 원두라 향이 더 좋을 거예요."}]},
+    {"id":"chat-26","a":"도연","b":"이슬","place":"cafe","time":"day","lines":[{"speaker":"b","text":"도연 선임님, 바쁜 날이니 샷 하나 추가해 드릴까요?"},{"speaker":"a","text":"오, 주문 순서까지 기억하셨네요. 통과요 ☕"},{"speaker":"b","text":"하트 라떼 아트도 선명하게 담아드렸답니다!"}]},
+    {"id":"chat-27","a":"수아","b":"이슬","place":"cafe","time":"day","lines":[{"speaker":"a","text":"이슬님, 상담실 미팅 전에 따뜻한 차 한 잔만요!"},{"speaker":"b","text":"목 축이시게 캐모마일로 따뜻하게 우려뒀어요."},{"speaker":"a","text":"센스 최고예요! 기한 내 미팅 잘 마칠게요ㅎㅎ"}]},
+    {"id":"chat-28","a":"서윤","b":"은하","place":"cafe","time":"night","lines":[{"speaker":"b","text":"서윤 리드님, 야근이세요? 따뜻한 디카페인 드릴까요?"},{"speaker":"a","text":"고마워요 은하님. 정리하면 구조 리뷰만 남았어요 💜"},{"speaker":"b","text":"급하지 않아요. 원두 향 맡으며 잠깐 쉬다 가세요."}]},
+    {"id":"chat-29","a":"미르","b":"은하","place":"cafe","time":"night","lines":[{"speaker":"a","text":"은하, 왜 밤에는 카페 시계 소리가 더 잘 들려?"},{"speaker":"b","text":"조용한 밤이라 그래요. 제 앞치마 별 자수도 보이죠?"},{"speaker":"a","text":"별빛이랑 밤 카페, 이건 연결되네. 헤헤."}]},
+    {"id":"chat-30","a":"민지","b":"은하","place":"cafe","time":"night","lines":[{"speaker":"a","text":"은하님, 방금 꾸벅 조는 장면 영화 같았어요!"},{"speaker":"b","text":"앗, 민지 대리님! 졸지 않았어요… 차 드릴게요."},{"speaker":"a","text":"걱정 마요, 야간 카페 비밀은 카메라 내려놓을게요!"}]},
+    {"id":"chat-31","a":"지은","b":"수아","place":"lounge","time":"day","lines":[{"speaker":"b","text":"부장님, 이번 계약 건 증빙 서류까지 다 챙겼어요."},{"speaker":"a","text":"역시 수아 과장님, 숫자랑 증빙이 맞으니 든든해요."},{"speaker":"b","text":"부장님이 예산 잡아주신 덕분이죠, 헤헤ㅎㅎ"}]},
+    {"id":"chat-32","a":"수아","b":"하루","place":"lounge","time":"evening","lines":[{"speaker":"a","text":"하루야, 상담실 태블릿 거치대 뭐가 제일 튼튼해?"},{"speaker":"b","text":"매일 각도 조절할 거면 무거운 철제가 오래 가."},{"speaker":"a","text":"역시 실사용 전문가! 바로 구매 기안 올릴게ㅎㅎ"}]},
+    {"id":"chat-33","a":"나은","b":"수아","place":"pantry","time":"evening","lines":[{"speaker":"a","text":"수아야, 제안서도 중요하지만 저녁밥은 먹었어?"},{"speaker":"b","text":"이번 Follow-up 메일 한 통만 보내고 먹을게요!"},{"speaker":"a","text":"일은 끝나도 사람은 안 끝나야지! 샌드위치부터 먹자."},{"speaker":"b","text":"언니한테는 못 당하겠네요, 헤헤ㅎㅎ 잘 먹을게요!"}]},
+    {"id":"chat-34","a":"유나","b":"미르","place":"cafe","time":"day","lines":[{"speaker":"b","text":"유나, 왜 메모지를 색깔별로 다르게 붙여?"},{"speaker":"a","text":"제가요?! 그래야 어느 팀 질문인지 한눈에 보여요!"},{"speaker":"b","text":"색깔이랑 담당자가 연결되네. 좋은 방법이야, 헤헤."}]},
+    {"id":"chat-35","a":"유나","b":"민지","place":"lounge","time":"day","lines":[{"speaker":"b","text":"컷! 유나 사원 '제가요?!' 놀라는 표정 포착!"},{"speaker":"a","text":"민지 선배님! 카메라 먼저 꺼주시면 안 돼요?!"},{"speaker":"b","text":"막내 적응기 1호 장면인데 아깝지만 보호해 줄게!"}]},
+    {"id":"chat-36","a":"수연","b":"미르","place":"rooftop","time":"day","lines":[{"speaker":"b","text":"수연, 왜 목적지도 없이 옥상 트랙을 계속 걸어?"},{"speaker":"a","text":"머릿속으로만 생각하지 말고 걸어봐, 바람이 좋잖아!"},{"speaker":"b","text":"바람이랑 기분이 연결되네. 조금 더 같이 걸을게."}]},
+    {"id":"chat-37","a":"채원","b":"서윤","place":"hallway","time":"day","lines":[{"speaker":"a","text":"리드님, 고객의 '버튼 하나' 요청을 번역해 왔습니다."},{"speaker":"b","text":"고마워요! 먼저 기존 구조 영향 범위부터 볼게요 💜"},{"speaker":"a","text":"정리하면 세 가지입니다. 예외 조건도 적어뒀어요."}]},
+    {"id":"chat-38","a":"채원","b":"아린","place":"lounge","time":"day","lines":[{"speaker":"a","text":"아린 선임님, 고객사 요구사항을 화면 흐름으로 묶었어요."},{"speaker":"b","text":"채원님 번역 덕분에 여백이 숨 쉬게 정리되겠어요 ✨"},{"speaker":"a","text":"복잡한 표 대신 카드 두 장으로 줄이면 충분합니다."},{"speaker":"b","text":"너무 예쁜데요? 모바일 가독성도 바로 맞춰볼게요 🎨"}]},
+    {"id":"chat-39","a":"세린","b":"윤슬","place":"lounge","time":"day","lines":[{"speaker":"b","text":"세린님, 이거 아세요? 지난주 실험과 책이 이어져요!📚"},{"speaker":"a","text":"와아!! 독서 기록에서도 학습 패턴이 딱 보여요!!📊"},{"speaker":"b","text":"제가 배경 자료 묶어둘 테니 분류 자동화 해볼까요?🔖"},{"speaker":"a","text":"완전 자동화 각인데요?! 인덱스 표부터 만들어볼게요!✨"}]},
+    {"id":"chat-40","a":"가은","b":"다온","place":"rooftop","time":"evening","lines":[{"speaker":"b","text":"가은 비서님… 혹시 내일 아침 회의가 겹칠 경우엔요😅"},{"speaker":"a","text":"걱정 마세요. 두 일정 사이에 15분 여유를 두었답니다."},{"speaker":"b","text":"다행이에요… 하방 위험 없는 평화로운 퇴근길이네요😅"}]}
+  ].map(p=>Object.freeze({...p,aId:canon?.people.find(q=>q.name.split('/')[0]===p.a)?.id||({이슬:'iseul',은하:'eunha'})[p.a],bId:canon?.people.find(q=>q.name.split('/')[0]===p.b)?.id||({이슬:'iseul',은하:'eunha'})[p.b],lines:Object.freeze(p.lines.map(Object.freeze))})));
   function createScheduler(table){
     const Math=globalThis.Math,Set=globalThis.Set,Map=globalThis.Map,Object=globalThis.Object,Infinity=globalThis.Infinity,Array=globalThis.Array,Date=globalThis.Date;
     const nightCatalog=table.schemaVersion==='office-actions-221-v1';
@@ -419,6 +462,7 @@
     const seedTail=(n,value)=>{for(let i=0;i<value.length;i++){n^=value.charCodeAt(i);n=imul(n,16777619)}return n>>>0};
     const unit=value=>seed(value)/4294967296;
     const overlap=(a,b)=>a.start<b.end&&b.start<a.end;
+    const homeBookings=new WeakMap();
     const ledgerIndices=new WeakMap(),intervalCache=new WeakMap(),homeGeometry=new Map(),clearGeometry=new Map(),rosterKeys=new WeakMap(),staticSafe=new Set();
     function rosterKey(allowed){if(!rosterKeys.has(allowed))rosterKeys.set(allowed,allowed.map(p=>p.id).join(','));return rosterKeys.get(allowed)}
     function ledgerOverlaps(ledger,start,end){
@@ -459,6 +503,9 @@
       if((isLate(seconds)||isEvening(seconds))&&displacedHomesById.has(person.id))return displacedHomesById.get(person.id);
       return person.home;
     }
+    // Presence-home and explicitly mapped targets do not depend on the day
+    // seed. Reuse those immutable route/seat records for the prior-day envelope.
+    const fixedTargetIds=new WeakMap();
     let targetCount=0;
     function targetBranch(day,action,subject){
       let byAction=targetCache.get(day);if(!byAction){byAction=new Map();targetCache.set(day,byAction)}
@@ -466,7 +513,9 @@
       let phases=bySubject.get(subject);if(!phases){phases=[];bySubject.set(subject,phases)}return phases;
     }
     function targets(action,subject,day,seconds=9*3600){
-      const phase=+(isLate(seconds)||isEvening(seconds)),cached=targetBranch(day,action,subject)[phase];
+      let fixed=fixedTargetIds.get(action);if(!fixed){fixed=new Set(action.participants.filter(id=>action.targetResolution==='presence_home'||id==='mir'&&action.layer===1||action.places.some(p=>p.personId===id)||action.participantSelector!=='explicit'&&action.places.length===action.participants.length));fixedTargetIds.set(action,fixed)}
+      const cacheDay=(subject?fixed.has(subject):fixed.size===action.participants.length)?'':day;
+      const phase=+(isLate(seconds)||isEvening(seconds)),cached=targetBranch(cacheDay,action,subject)[phase];
       if(cached)return cached;
       const ids=subject?[subject]:action.participants;
       const result=ids.map(id=>{
@@ -490,7 +539,7 @@
         if(!outbound.length||!inbound.length)return null;
         return {id,home,seat,outbound,inbound};
       });
-      if(targetCount>6000){for(const cachedDay of targetCache.keys())targetCache.delete(cachedDay);targetCount=0}targetBranch(day,action,subject)[phase]=result;targetCount++;return result;
+      if(targetCount>6000){for(const cachedDay of targetCache.keys())targetCache.delete(cachedDay);targetCount=0}targetBranch(cacheDay,action,subject)[phase]=result;targetCount++;return result;
     }
     function windows(action,weekday){
       const c=action.conditions;if(c.days==='평일'&&!weekday||c.days==='주말'&&weekday)return [];
@@ -569,7 +618,7 @@
             }
             const candidates=candidatePools.get(period);
             if(candidates.length){const offset=seed(base+'|variant|'+index)%candidates.length,key=period+'|'+offset;
-              if(!rotations.has(key))rotations.set(key,[...candidates.slice(offset),...candidates.slice(0,offset)]);
+              if(!rotations.has(key))rotations.set(key,{pool:candidates,offset});
               opportunities.push({family,parent,...candidates[offset],candidates:rotations.get(key),start,base,n:index,group:false,windowEnd:b})}
           }
           continue;
@@ -642,7 +691,8 @@
         const before=events.length;
         try{
         if(o.candidates){
-          const chosen=o.candidates.find(c=>{const people=targets(c.action,c.subject,day,o.start);return available(people,o.start,o.start+formalCeiling(o.family,c.action,people))});
+          const {pool,offset}=o.candidates;let chosen;
+          for(let i=0;i<pool.length;i++){const c=pool[(offset+i)%pool.length],people=targets(c.action,c.subject,day,o.start);if(available(people,o.start,o.start+formalCeiling(o.family,c.action,people))){chosen=c;break}}
           if(!chosen)continue;Object.assign(o,chosen);
         }
         const {family,parent,subject,action,start,group}=o,counter=family.id+'|'+(family.limits.cadenceSeconds?'floor':subject||'scene');
@@ -843,15 +893,68 @@
       const p=personById.get(id);if(!p||!presentAt(id,seconds))return null;
       const h=homeAt(p,seconds),seat=slot(h.anchorId,id==='mir'?'stand':'sit');return {seat,floor:h.floor,walking:false,position:null};
     }
+    // Compile immutable proposal geometry once. Sweep samples update two small
+    // scratch points instead of allocating renderer state/position objects.
+    const sweepTracks=new WeakMap(),sweepSeats=new WeakMap(),sweepEdges=new Map();
+    function sweepSeat(seat){let point=sweepSeats.get(seat);if(!point){point=pixels([seat.x,seat.y]);sweepSeats.set(seat,point)}return point}
+    function sweepEdge(l){
+      let targets=sweepEdges.get(l.from);if(!targets){targets=new Map();sweepEdges.set(l.from,targets)}
+      let g=targets.get(l.to);if(!g){const a=anchors.get(l.from),b=anchors.get(l.to);g={floor:a.floor,walking:a.floor===b.floor,pa:visualPoint(a),pb:visualPoint(b),to:sweepSeat(slot(l.to,'stand')),toFloor:b.floor};targets.set(l.to,g)}return g;
+    }
+    function sweepPoint(event,t,seconds,point){
+      let track=sweepTracks.get(t);
+      if(!track){
+        const home=slot(t.home.anchorId,t.id==='mir'?'stand':'sit');
+        track={out:t.out,back:t.back,outEnd:t.out.at(-1)?.end??event.start,backStart:t.back[0]?.start??event.end,home:sweepSeat(home),homeFloor:anchors.get(home.anchor).floor,stay:sweepSeat(t.seat),stayFloor:anchors.get(t.seat.anchor).floor};
+        sweepTracks.set(t,track);
+      }
+      point.walking=false;
+      if(seconds<track.outEnd||seconds>=track.backStart){
+        const legs=seconds<track.outEnd?track.out:track.back;let lo=0,hi=legs.length;
+        while(lo<hi){const mid=(lo+hi)>>>1;if(legs[mid].start<=seconds)lo=mid+1;else hi=mid}
+        const l=legs[lo-1];
+        if(l&&seconds<l.end){const g=sweepEdge(l),ratio=(seconds-l.start)/(l.end-l.start),{pa,pb}=g;
+          point.floor=g.floor;point.walking=g.walking;
+          point.x=(g.walking?pa[0]+(pb[0]-pa[0])*ratio:pa[0])*(art.width||1672)/100;
+          point.y=(g.walking?pa[1]+(pb[1]-pa[1])*ratio:pa[1])*(art.height||941)/100;return;
+        }
+        if(l&&lo<legs.length){const g=sweepEdge(l);point.floor=g.toFloor;point.x=g.to[0];point.y=g.to[1];return}
+      }
+      const staying=seconds>=track.outEnd&&seconds<track.backStart,p=staying?track.stay:track.home;
+      point.floor=staying?track.stayFloor:track.homeFloor;point.x=p[0];point.y=p[1];
+    }
+    function clearSweep(candidate,t,own,id,other,ticks,optionalCrossing){
+      const p={},q={};let previous=false,rx=0,ry=0,previousLimit=0,previousFloor;
+      const tracks=own?.map(e=>({e,t:e.people.find(t=>t.id===id)}));
+      for(const seconds of ticks){
+        sweepPoint(candidate,t,seconds,p);
+        if(other)sweepPoint(candidate,other,seconds,q);
+        else{
+          let track;for(const row of tracks)if(row.e.start<=seconds&&seconds<row.e.end){track=row;break}
+          if(track)sweepPoint(track.e,track.t,seconds,q);
+          else{const person=personById.get(id);if(!person||!presentAt(id,seconds)){previous=false;continue}
+            const home=homeAt(person,seconds),seat=slot(home.anchorId,id==='mir'?'stand':'sit');q.floor=home.floor;q.x=seat.x*(art.width||1672)/100;q.y=seat.y*(art.height||941)/100;q.walking=false;
+          }
+        }
+        if(p.floor!==q.floor){previous=false;continue}
+        const limit=optionalCrossing&&p.walking&&q.walking?30:p.walking||q.walking?24:20,x=p.x-q.x,y=p.y-q.y;
+        if(Math.hypot(x,y)<limit+.01)return false;
+        if(previous&&previousFloor===p.floor){const dx=x-rx,dy=y-ry,v=dx*dx+dy*dy,u=v?Math.max(0,Math.min(1,-(rx*dx+ry*dy)/v)):0;
+          if(Math.hypot(rx+u*dx,ry+u*dy)<Math.max(limit,previousLimit)+.01)return false;
+        }
+        previous=true;rx=x;ry=y;previousFloor=p.floor;previousLimit=limit;
+      }
+      return true;
+    }
     function gap(p,q){const a=pixels(p.position||[p.seat.x,p.seat.y]),b=pixels(q.position||[q.seat.x,q.seat.y]);return Math.hypot(a[0]-b[0],a[1]-b[1])}
-    function resourceIntervals(e){
+    function resourceEndpoints(e){
       if(intervalCache.has(e))return intervalCache.get(e);
       const result=new Map(),add=(id,start,end)=>{
         let ranges=result.get(id);if(!ranges){ranges=[];result.set(id,ranges)}
-        const last=ranges[ranges.length-1];
         // Adjacent legs and the stay reserve one continuous node interval.
-        // Preserve the exact union while avoiding duplicate tiny range objects.
-        if(last&&last.end===start)last.end=end;else ranges.push({start,end});
+        // Flat endpoint pairs preserve the exact union without range objects.
+        if(ranges.length&&ranges[ranges.length-1]===start)ranges[ranges.length-1]=end;
+        else ranges.push(start,end);
       };
       for(const t of e.people){
         for(const l of t.out){add(l.from,l.start,l.end);add(l.to,l.start,l.end)}
@@ -861,22 +964,34 @@
       // Internal cache only; do not alter the public event shape or formal ledger.
       intervalCache.set(e,result);return result;
     }
+    // Keep the public inspection API's original {start,end} ranges. Runtime
+    // conflict checks use the flat endpoints; views are built only on request.
+    const intervalViews=new WeakMap();
+    function resourceIntervals(e){
+      let view=intervalViews.get(e);
+      if(!view){view=new Map();for(const [id,ends]of resourceEndpoints(e)){
+        const ranges=[];for(let i=0;i<ends.length;i+=2)ranges.push({start:ends[i],end:ends[i+1]});view.set(id,ranges);
+      }intervalViews.set(e,view)}
+      return view;
+    }
     const resourceSets=new WeakMap();
     function resourceConflict(a,b){
       let ids=resourceSets.get(b.resources);if(!ids){ids=new Set(b.resources);resourceSets.set(b.resources,ids)}
       const person=a.people[0];
       if(a.resources.length===1&&a.people.length===1&&!person.out.length&&!person.back.length&&person.seat.anchor===a.resources[0]){
         if(!ids.has(a.resources[0]))return false;
-        const ranges=resourceIntervals(b).get(a.resources[0]);return !!ranges&&ranges.some(p=>overlap(a,p));
+        const ranges=resourceEndpoints(b).get(a.resources[0]);
+        if(ranges)for(let i=0;i<ranges.length;i+=2)if(a.start<ranges[i+1]&&ranges[i]<a.end)return true;
+        return false;
       }
       // Most nearby formal expressions share no route node. Build interval
       // maps lazily and inspect only shared resources, without nested callbacks.
       let x,y;
       for(const id of a.resources){
         if(!ids.has(id))continue;
-        if(!x){x=resourceIntervals(a);y=resourceIntervals(b)}
+        if(!x){x=resourceEndpoints(a);y=resourceEndpoints(b)}
         const left=x.get(id),right=y.get(id);if(!left||!right)continue;
-        for(const p of left)for(const q of right)if(overlap(p,q))return true;
+        for(let i=0;i<left.length;i+=2)for(let j=0;j<right.length;j+=2)if(left[i]<right[j+1]&&right[j]<left[i+1])return true;
       }
       return false;
     }
@@ -1084,6 +1199,13 @@
       return true;
     }
     const sweepKnots=new WeakMap();
+    function mergeSweepTicks(a,b,start,end){
+      const ticks=[];let i=0,j=0;while(j<b.length&&b[j]<=start)j++;
+      while(i<a.length||j<b.length&&b[j]<end){
+        const x=i<a.length?a[i]:Infinity,y=j<b.length&&b[j]<end?b[j]:Infinity;
+        const s=x<=y?a[i++]:b[j++];if(!ticks.length||ticks[ticks.length-1]!==s)ticks.push(s);
+      }return ticks;
+    }
     function eventKnots(e){
       if(sweepKnots.has(e))return sweepKnots.get(e);
       const times=new Set([e.start,e.end-.000001,e.end]);
@@ -1094,6 +1216,11 @@
       const ticks=[...times].sort((a,b)=>a-b);sweepKnots.set(e,ticks);return ticks;
     }
     function reserve(candidate,ledger,allowed,nearby=ledgerOverlaps(ledger,candidate.start,candidate.end)){
+      const homes=homeBookings.get(ledger);
+      if(homes)for(const t of candidate.people){const list=homes.get(t.id)||[];let lo=0,hi=list.length;
+        while(lo<hi){const mid=(lo+hi)>>>1;if(list[mid].end<=candidate.start)lo=mid+1;else hi=mid}
+        if(list[lo]&&list[lo].start<candidate.end)return false;
+      }
       const ids=new Set(candidate.people.map(t=>t.id));
       if(nearby.some(e=>e.people.some(t=>ids.has(t.id))))return false;
       // Actor reservations span floors; geometry/resources cannot conflict on
@@ -1156,48 +1283,16 @@
       const movingNearby=nearby.filter(e=>e.people.some(t=>t.visitor||t.out.length||t.back.length||t.seat.anchor!==t.home.anchorId)&&sharesResourceFloor(e,sweptFloors));
       const others=[...new Set(movingNearby.flatMap(e=>e.people.filter(t=>!ids.has(t.id)&&(t.visitor||t.out.length||t.back.length||t.seat.anchor!==t.home.anchorId)).map(t=>t.id)))];
       if(candidate.people.length===1&&!others.length){ledger.push(candidate);return true}
-      const times=new Set([candidate.start,candidate.end-.00001]);
-      for(const e of [candidate,...movingNearby]){
-        const knots=eventKnots(e);let lo=0,hi=knots.length;
-        while(lo<hi){const mid=(lo+hi)>>>1;if(knots[mid]<=candidate.start)lo=mid+1;else hi=mid}
-        for(let i=lo;i<knots.length&&knots[i]<candidate.end;i++)times.add(knots[i]);
+      // Unrelated trajectory knots only subdivide a pair's linear segments.
+      // Keep every boundary (including both sides of transfers) for that pair.
+      const baseTicks=mergeSweepTicks([candidate.start,candidate.end-.00001],eventKnots(candidate),candidate.start,candidate.end);
+      for(const id of others){
+        const own=movingNearby.filter(e=>e.people.some(t=>t.id===id));let ticks=baseTicks;
+        for(const e of own)ticks=mergeSweepTicks(ticks,eventKnots(e),candidate.start,candidate.end);
+        const optionalCrossing=candidate.card&&own.some(e=>e.card);
+        for(const t of candidate.people)if(!clearSweep(candidate,t,own,id,null,ticks,optionalCrossing))return false;
       }
-      const ticks=[...times].sort((a,b)=>a-b);
-      // Static homes were checked continuously above (stronger than sampling).
-      // Sample all remaining people: those with a reserved trajectory or stay.
-      const frames=new Map(candidate.people.map(t=>[t.id,ticks.map(s=>stateAt(candidate,t,s))]));
-      for(const id of others){const own=movingNearby.filter(e=>e.people.some(t=>t.id===id));frames.set(id,ticks.map(s=>positionAt(id,s,own)))}
-      for(const t of candidate.people){
-        for(const id of others){
-          const otherTrips=movingNearby.filter(e=>e.people.some(p=>p.id===id));
-          const optionalCrossing=candidate.card&&otherTrips.some(e=>e.card);
-          let prev=null;
-          for(let index=0;index<ticks.length;index++){const p=frames.get(t.id)[index],q=frames.get(id)[index];
-            if(!q||q.floor!==p.floor){prev=null;continue}
-            // The original 20/24px gate remains mandatory. Optional trips,
-            // including both public guests, keep the 30px crossing buffer.
-            const limit=optionalCrossing&&p.walking&&q.walking?30:p.walking||q.walking?24:20;
-            const pp=pixels(p.position||[p.seat.x,p.seat.y]),qp=pixels(q.position||[q.seat.x,q.seat.y]),r=[pp[0]-qp[0],pp[1]-qp[1]];
-            if(Math.hypot(r[0],r[1])<limit+.01)return false;
-            if(prev&&prev.floor===p.floor){const d=[r[0]-prev.r[0],r[1]-prev.r[1]],v=d[0]*d[0]+d[1]*d[1],u=v?Math.max(0,Math.min(1,-(prev.r[0]*d[0]+prev.r[1]*d[1])/v)):0;
-              if(Math.hypot(prev.r[0]+u*d[0],prev.r[1]+u*d[1])<Math.max(limit,prev.limit)+.01)return false}
-            prev={r,limit,floor:p.floor};
-          }
-        }
-        // Within a group too: FIFO travel does not waive physical spacing.
-        for(const q of candidate.people.filter(q=>q.id<t.id)){
-          let previous=null;
-          for(let index=0;index<ticks.length;index++){const p1=frames.get(t.id)[index],p2=frames.get(q.id)[index];
-            if(p1.floor!==p2.floor){previous=null;continue}
-            const limit=p1.walking||p2.walking?24:20;
-            const a=pixels(p1.position||[p1.seat.x,p1.seat.y]),b=pixels(p2.position||[p2.seat.x,p2.seat.y]),r=[a[0]-b[0],a[1]-b[1]];
-            if(Math.hypot(r[0],r[1])<limit+.01)return false;
-            if(previous&&previous.floor===p1.floor){const dx=r[0]-previous.r[0],dy=r[1]-previous.r[1],v=dx*dx+dy*dy,u=v?Math.max(0,Math.min(1,-(previous.r[0]*dx+previous.r[1]*dy)/v)):0;
-              if(Math.hypot(previous.r[0]+u*dx,previous.r[1]+u*dy)<Math.max(limit,previous.limit)+.01)return false}
-            previous={r,limit,floor:p1.floor};
-          }
-        }
-      }
+      for(const t of candidate.people)for(const q of candidate.people)if(q.id<t.id&&!clearSweep(candidate,t,null,q.id,q,baseTicks,false))return false;
       ledger.push(candidate);return true;
     }
     const excursionGeometry=new WeakMap(),legGeometry=new WeakMap();
@@ -1250,7 +1345,15 @@
       // Compatibility name/signature; the reservation horizon is now the whole day.
       // Adjacent blocks project the SAME ledger, including excursions crossing :00/:10.
       const key=day+'|'+allowed.map(p=>p.id).join(',');if(blocks.has(key))return blocks.get(key);
-      const ledger=events.slice(),result=[],consultations=[],last=new Map(),due=new Map(),visits=new Map(),slotOrders=new Map(),tripsByPerson=new Map(),visitorUntil=new Map();
+      // Home-only formal expressions reserve their actor calendar, while the
+      // existing continuous home geometry already protects their seat/route.
+      // Keep them in a per-actor index instead of every spatial time bucket.
+      const ledger=[],homeCalendar=new Map(),result=[],consultations=[],last=new Map(),due=new Map(),visits=new Map(),slotOrders=new Map(),tripsByPerson=new Map(),visitorUntil=new Map();
+      for(const e of events){
+        if(e.people.every(t=>t.seat.anchor===t.home.anchorId&&!t.out.length&&!t.back.length)){for(const t of e.people){if(!homeCalendar.has(t.id))homeCalendar.set(t.id,[]);homeCalendar.get(t.id).push(e)}}
+        else ledger.push(e);
+      }
+      homeBookings.set(ledger,homeCalendar);
       const weekday=![0,6].includes(new Date(day+'T00:00:00Z').getUTCDay());
       const rules=placeTable?.outingRules||{cooldownSeconds:600,intervalSeconds:[1500,3000],groupStayScale:1.2};
       // The present chairman uses the same affinity, reservations and proximity
@@ -1271,6 +1374,8 @@
       for(const r of companions)for(const a of r.people)for(const b of r.people)if(a!==b){const key=a+'|'+b;relationshipScores.set(key,Math.max(relationshipScores.get(key)||0,r.score))}
       const pairCounts=new Map(),preMeeting=new Set(),preMeetingEvents=events.filter(e=>e.layer===3),gathering=placeTable?.behavior?.gathering;
       const pairKeys=people=>people.flatMap((p,i)=>people.slice(i+1).map(q=>[p.id,q.id].sort().join('|')));
+      const companionRows=companions.map(r=>({r,keys:pairKeys(r.people.map(id=>({id})))})),companionsByPerson=new Map();
+      for(const r of companions)for(const id of r.people){if(!companionsByPerson.has(id))companionsByPerson.set(id,[]);companionsByPerson.get(id).push(r)}
       const gatheringPlace=card=>gathering&&card.slots.length>=2&&gathering.kinds.includes(card.kind);
       const floorTrips=new Map();
       for(const e of events.filter(e=>e.people.length>1))for(const t of e.people)if(anchors.get(t.seat.anchor).floor!==t.home.floor)floorTrips.set(t.id,(floorTrips.get(t.id)||0)+1);
@@ -1283,7 +1388,14 @@
       const lunch=s=>s>=41400&&s<46800,cap=s=>isLate(s)?1:lunch(s)?4:2;
       // Keep one excursion unit available for staff during appointments.
       const publicSlots=s=>s>=36000&&s<61200?1:2;
+      let capCache=new Map(),capLength=-1;
       function withinCap(e,includeVisitors=false){
+        if(capLength!==result.length){capCache=new Map();capLength=result.length}
+        const mask=e.floors.reduce((m,f)=>m|(1<<(f.charCodeAt(0)-48)),0),key=e.start+'|'+e.end+'|'+e.people.length+'|'+mask+'|'+includeVisitors;
+        if(!capCache.has(key))capCache.set(key,computeCap(e,includeVisitors));
+        return capCache.get(key);
+      }
+      function computeCap(e,includeVisitors){
         const near=ledgerOverlaps(result,e.start,e.end).filter(q=>(includeVisitors||!q.visitor)&&q.floors.some(f=>e.floors.includes(f)));
         if((!near.length&&e.people.length===1)||(e.start>=25200&&e.end<=86400&&near.reduce((n,q)=>n+q.people.length,e.people.length)<=2))return true;
         const ticks=[e.start,e.end-.00001,41400,46800,3600,25200,...near.flatMap(q=>[q.start,q.end])].filter(s=>s>=e.start&&s<e.end);
@@ -1320,7 +1432,7 @@
         if(gatheringPlace(card)){
           const staying=gatheringWindow.byCard.get(card.id)||[];
           if(staying.length){
-            const friends=staying.some(e=>companions.some(r=>r.people.some(id=>people.some(p=>p.id===id))&&r.people.some(id=>e.people.some(t=>t.id===id))));
+            const friends=staying.some(e=>people.some(p=>(companionsByPerson.get(p.id)||[]).some(r=>r.people.some(id=>e.people.some(t=>t.id===id)))));
             w*=gathering.joinWeight*(friends?2:1)*(sameFloor?gathering.sameFloorWeight:1);
           }
         }
@@ -1349,6 +1461,7 @@
         // in place: resource/sweep caches and rejected proposals stay immutable.
         const removed=new Set(updates.map(([old])=>old)),scratch=[];
         for(const [,e]of updates){const near=ledgerOverlaps(ledger,e.start,e.end).filter(q=>!removed.has(q));near.push(...scratch.filter(q=>overlap(q,e)));if(!reserve(e,scratch,allowed,near))return}
+        capLength=-1;
         for(const [old,e]of updates){
           ledger[ledger.indexOf(old)]=e;result[result.indexOf(old)]=e;
           replaceLedgerIndex(ledger,old,e);replaceLedgerIndex(result,old,e);
@@ -1363,7 +1476,11 @@
       function visitorWindow(at){
         if(!visitorOpportunity||visitorOpportunity.at!==at||visitorOpportunity.length!==ledger.length){
           const active=ledgerOverlaps(ledger,at,at+.000001).filter(e=>e.start<=at&&at<e.end);
-          visitorOpportunity={at,length:ledger.length,active,floor1:active.filter(e=>e.people.some(t=>t.seat.anchor!==t.home.anchorId)&&e.people.some(t=>t.home.floor==='1f'||anchors.get(t.seat.anchor).floor==='1f'))};
+          const byFloor=new Map();
+          for(const e of active)if(e.people.some(t=>t.seat.anchor!==t.home.anchorId)){
+            const used=new Set();for(const t of e.people)for(const floor of [t.home.floor,anchors.get(t.seat.anchor).floor])if(!used.has(floor)){used.add(floor);if(!byFloor.has(floor))byFloor.set(floor,[]);byFloor.get(floor).push(e)}
+          }
+          visitorOpportunity={at,length:ledger.length,active,byFloor,floor1:byFloor.get('1f')||[]};
         }
         return visitorOpportunity;
       }
@@ -1386,13 +1503,13 @@
         if(people.length>1&&pairKeys(people).some(key=>(pairCounts.get(key)||0)>=(placeTable?.behavior?.pairDailyMax||2)))return false;
         // Every candidate reserves all its actors from at. An existing actor
         // reservation covering that instant cannot be repaired by any card/FIFO.
-        const activeAt=visitor?visitorWindow(at).active:ledgerOverlaps(ledger,at,at+.000001).filter(e=>e.start<=at&&at<e.end);
+        const activeAt=visitorWindow(at).active;
         if(activeAt.some(e=>e.people.some(t=>people.some(p=>p.id===t.id))))return false;
         // Every excursion also reserves its home floor from at. Check this
         // necessary capacity condition before card ranking or trajectory creation.
         const homeFloors=new Set(people.map(p=>visitor?'1f':homeAt(p,at).floor));
         function floorHasRoom(floor){
-          const active=visitor?visitorOpportunity.floor1:activeAt.filter(e=>e.people.some(t=>t.seat.anchor!==t.home.anchorId)&&e.people.some(t=>t.home.floor===floor||anchors.get(t.seat.anchor).floor===floor));
+          const active=visitor?visitorOpportunity.floor1:visitorOpportunity.byFloor.get(floor)||[];
           return isLate(at)?active.reduce((n,e)=>n+e.people.length,people.length)<=1:lunch(at)?active.reduce((n,e)=>n+e.people.length,people.length)<=4:active.length<2&&(people.length===1||!active.some(e=>e.people.length>1));
         }
         if([...homeFloors].some(floor=>!floorHasRoom(floor)))return false;
@@ -1502,6 +1619,26 @@
           }
         }
         return false;
+      }
+      // Four KST patrol windows use the same route, seat and reservation owner.
+      // Formal events win; optional reports/outings see these accepted reservations.
+      if(nightCatalog&&allowed.some(p=>p.id==='seongmin')){
+        const chair=personById.get('seongmin'),home=chair.home;
+        const windows=weekday?[[37800,'sofa-3f'],[47400,'coffee-1f'],[54000,'garden-5f'],[60000,'pantry-seats-2f']]:[[39600,'coffee-1f'],[45000,'sofa-3f'],[50400,'garden-5f'],[57600,'pantry-seats-2f']];
+        for(const [begin,place]of windows){
+          const card=places.find(c=>c.id===place);if(!card)continue;
+          let booked=false;
+          const starts=[...Array.from({length:91},(_,i)=>begin+i*30),...Array.from({length:60},(_,i)=>begin-(i+1)*30)];
+          for(const at of starts){if(booked)break;for(const target of card.slots){
+            const deadline=Math.min(begin+4200,nextCommitment(chair.id,at)),travel=pathDuration(path(home.anchorId,target))+pathDuration(path(target,home.anchorId));
+            const stay=Math.min(900+seed(day+'|patrol|'+begin)%301,deadline-at-travel);if(stay<900)continue;
+            const e=excursion(chair.id,home,card,target,at,stay,day,null,deadline);
+            if(!e||e.end-at>1500||!withinCap(e)||!reserve(e,ledger,allowed))continue;
+            e.patrol={window:begin,weekend:!weekday};
+            result.push(e);if(!tripsByPerson.has(chair.id))tripsByPerson.set(chair.id,[]);tripsByPerson.get(chair.id).push(e);
+            booked=true;break;
+          }}
+        }
       }
       // At most six fixed daily slots, one report per employee. Reserve the
       // chairman at his own seat for the whole round trip, so later outings
@@ -1642,8 +1779,8 @@
           if(at>=32400&&at<70200&&unit(day+'|group|'+floor.id+at)<.55){
             const invitees=roster.filter(p=>!busy.has(p.id)&&at-(last.get(p.id)?.end??-Infinity)>=rules.cooldownSeconds);
             const availableIds=new Set(available.map(p=>p.id)),inviteeIds=new Set(invitees.map(p=>p.id));
-            const pairs=companions.filter(r=>r.people.some(id=>availableIds.has(id))&&r.people.every(id=>inviteeIds.has(id))&&pairKeys(r.people.map(id=>({id}))).every(key=>(pairCounts.get(key)||0)<(placeTable?.behavior?.pairDailyMax||2)))
-              .map(r=>({r,rank:-Math.log(Math.max(.000001,unit(day+at+r.people.join())))/((r.score-70+1)**2*(lunch(at)&&r.people.length===3?20:1))})).sort((a,b)=>a.rank-b.rank).map(p=>p.r);
+            const pairs=companionRows.filter(({r,keys})=>r.people.some(id=>availableIds.has(id))&&r.people.every(id=>inviteeIds.has(id))&&keys.every(key=>(pairCounts.get(key)||0)<(placeTable?.behavior?.pairDailyMax||2)))
+              .map(({r})=>({r,rank:-Math.log(Math.max(.000001,unit(day+at+r.people.join())))/((r.score-70+1)**2*(lunch(at)&&r.people.length===3?20:1))})).sort((a,b)=>a.rank-b.rank).map(p=>p.r);
             if(pairs.slice(0,lunch(at)?3:1).some(r=>attempt(r.people.map(id=>invitees.find(p=>p.id===id)),at)))continue;
           }
           // A failed geometry/booking never teleports or partially books anyone.
@@ -1783,7 +1920,7 @@
       const events=plan(day,options),cancelled=options.cancelled||new Set(),blocked=new Set(options.summoned||[]);
       const late=isLate(seconds),evening=isEvening(seconds),presenceNote=late?'심야에도 함께해요 · 개발실과 라운지에 직원들이 남아 있어요':'';
       // Outings respect the complete frozen formal ledger, including suppressed events.
-      const outings=blockPlan(day,Math.floor(seconds/BLOCK),events,options);
+      const outings=options.staffChat?[...blockPlan(day,Math.floor(seconds/BLOCK),events,options),options.staffChat]:blockPlan(day,Math.floor(seconds/BLOCK),events,options);
       if(!idleLedgers.has(outings))idleLedgers.set(outings,[...events,...outings]);const idleLedger=idleLedgers.get(outings);
       const since=options.chairmanSince==null?-Infinity:(options.chairmanSince-Date.parse(day+'T00:00:00+09:00'))/1000;
       const visibleOutings=cancelled.size||blocked.size||since!==-Infinity?outings.filter(e=>!cancelled.has(e.id)&&!cancelled.has(e.guestId)&&!e.people.some(t=>blocked.has(t.id))&&!blocked.has(e.card?.targetPerson)&&(!e.report||e.start>=since)):outings;
@@ -1794,6 +1931,10 @@
         const t=event?.people.find(t=>t.id===p.id),action=actions.get(event?.actionId)||defaults,home=p.visitor?{floor:'1f',anchorId:'arrival_gate'}:homeAt(p,seconds);
         const state=t?stateAt(event,t,seconds,options.reducedMotion):{state:'AT_HOME',seat:slot(home.anchorId,p.id==='mir'?'stand':'sit'),floor:home.floor,position:null,walking:false};
         if(!state.seat)return null;
+        if(event?.patrol){
+          const leg=[...t.out,...t.back].find(l=>l.start<=seconds&&seconds<l.end);
+          if(leg){const a=visualPoint(anchors.get(leg.from)),b=visualPoint(anchors.get(leg.to));state.facing=b[0]<a[0]?'left':'right'}
+        }
         const performing=event&&seconds>=event.performStart&&seconds<event.performEnd,card=event?.card;
         let plain=!event,line=p.id==='mir'||p.id==='seongmin'?speech(defaults,p.id,day):(late||evening&&lateWorkers.has(p.id))?'야근 중':evening?'퇴근 준비 중':speech(defaults,p.id,day);
         if(!event)line=workLines[p.id]||deskVoice[p.id]?.[0]||'자료 확인 중';
@@ -1816,19 +1957,24 @@
             line=p.visitor?'안녕히 계세요~':voice?.length?voice[Math.floor(event.start/90)%voice.length]:'자리로 돌아가는 중';
           }
           else if(state.state==='AT_PLACE'||t.seat.anchor===home.anchorId){
-            line=event.report?(p.id==='seongmin'?'보고 기다리는 중':card.at[0]):p.visitor?event.visitor.at:card?placeLine(card,p.id,day,event,t,seconds):speech(action,p.id,day);
+            line=event.report?(p.id==='seongmin'?'보고 기다리는 중':card.at[0]):p.visitor?event.visitor.at:event.staffChat?'잠깐 이야기 나누는 중':card?placeLine(card,p.id,day,event,t,seconds):speech(action,p.id,day);
             if(event.group&&state.state==='AT_PLACE'){
               const partners=event.group.filter(id=>id!==p.id).map(id=>persons.find(p=>p.id===id).name).join('·'),location=card.at[0].split('에서')[0];
               line=seconds<event.performStart?location+'에서 '+partners+' 기다리는 중':seconds>=event.performEnd?location+'에서 '+partners+'와 나눈 이야기 정리 중':partners+'와 '+location+'에서 '+(event.companion?.topic||'잠깐 수다')+' 중';
             }
           }
         }
+        if(event?.patrol){
+          if(state.state==='GOING')line='사무실 순찰 가는 중';
+          else if(state.state==='RETURNING')line='순찰 마치고 자리로 돌아가는 중';
+          else if(state.state==='AT_PLACE')line=({'3f':'개발실 둘러보는 중','1f':'카페에서 커피 받는 중','5f':'옥상 정원 산책 중','2f':'라운지 둘러보는 중'})[state.floor];
+        }
         // A brief stretch uses the existing pose slot at the same reserved
         // chair. Keep the long-rest words and reduced-motion seated pose intact.
         if(card?.id==='cafe-1f'&&performing&&!options.reducedMotion&&Math.floor(seconds+seed(p.id)%30)%30===0)state.seat=slot(t.seat.anchor,'stand');
         return {id:p.id,...state,visitor:!!p.visitor,...(p.visitor?event.visitor:{}),idle:!event||!!card,plain,stroll:!!card&&!p.visitor&&!options.reducedMotion,home:p.home?.floor||'1f',
           pose:state.walking?(Math.floor(seconds*5)%2?'walk-a':'walk-b'):state.seat.posture,activity:p.visitor?'visit':event&&!card?(action.personalNonWork?'rest':action.layer===3?'meeting':'work'):lounge||card?.id==='cafe-1f'&&state.state==='AT_PLACE'?'rest':'work',
-          actionId:event&&!card&&(performing||state.state==='AT_PLACE')?action.id:'base-work',eventId:card?undefined:event?.id,outingId:card?event.id:undefined,groupIds:event?.group,placeId:card?.id,targetAnchor:t?.seat.anchor,line,
+          actionId:event&&!card&&(performing||state.state==='AT_PLACE')?action.id:'base-work',eventId:card?undefined:event?.id,outingId:card?event.id:undefined,groupIds:event?.group,placeId:card?.id,targetAnchor:t?.seat.anchor,line,...(event?.patrol?{patrol:event.patrol,patrolArrival:t.out.at(-1).end}:{}),
           emoji:performing&&!card?(action.actorOverrides?.[p.id]?.emoji||action.performance.emoji):'',personalNonWork:action?.personalNonWork};
       };
       const entries=persons.filter(p=>(p.id!=='seongmin'||options.chairmanPresent)&&(!options.presentIds||options.presentIds.includes(p.id))&&!blocked.has(p.id)&&presentAt(p.id,seconds)).map(p=>render(p,
@@ -1924,7 +2070,89 @@
       return {day,minutes:seconds/60,seconds,entries,visitors,events:active,presenceNote};
     }
 
-    return Object.freeze({plan,snapshot,seed,slot,actions,windows,presentAt,homeAt,blockPlan,stateAt,resourceIntervals,errandPlaces,reportPlaces,shortLine,identity:table.identity});
+    // Optional conversations reserve gaps AFTER every existing work/rest trip.
+    // Their tracks, geometry gates and renderer are the scheduler's own owners.
+    function createStaffChats(){
+      let day='',ledger=[],allowed=[],active=null,retryAt=0,identity='';
+      let due=new Map(),turns=new Map(),uses=new Map();
+      const period=f=>1200+seed(day+'|staff-chat-period|'+f+'|'+(turns.get(f)||0))%601;
+      function reset(today,options,seconds){
+        const key=Boolean(options.chairmanPresent)+'|'+(options.presentIds?.join(',')||'');
+        if(day===today&&identity===key)return;
+        const changedDay=day!==today;day=today;identity=key;active=null;retryAt=seconds+5;
+        allowed=persons.filter(p=>(p.id!=='seongmin'||options.chairmanPresent)&&(!options.presentIds||options.presentIds.includes(p.id)));
+        const formal=plan(day,options);ledger=[...formal,...blockPlan(day,0,formal,options)];
+        if(changedDay){due=new Map();turns=new Map();uses=new Map();for(const f of floors){const first=(f.id==='1f'?0:32400)+seed(day+'|staff-chat-first|'+f.id)%1201;due.set(f.id,Math.max(first,Math.floor(seconds/1800)*1800+seed(day+'|staff-chat-first|'+f.id)%1201))}}
+      }
+      function timeMatches(pair,seconds){
+        const hour=seconds/3600,night=hour>=19||hour<7;
+        if(pair.time==='morning'&&(hour<9||hour>=12)||pair.time==='day'&&(hour<12||hour>=18)||pair.time==='evening'&&(hour<18||hour>=22)||pair.time==='night'&&!night)return false;
+        if([pair.aId,pair.bId].includes('eunha')&&!night||[pair.aId,pair.bId].includes('iseul')&&(hour<9||hour>=19))return false;
+        return pair.time==='night'||hour>=9&&hour<22;
+      }
+      function locations(pair,seconds){
+        if(pair.place==='cafe')return places.filter(c=>c.id===([pair.aId,pair.bId].some(id=>id==='iseul'||id==='eunha')?'coffee-1f':'cafe-1f'));
+        if(pair.place==='rooftop')return places.filter(c=>c.id==='terrace-5f');
+        if(pair.place==='lounge')return places.filter(c=>c.id==='sofa-4f');
+        if(pair.place==='pantry')return places.filter(c=>c.id==='pantry-seats-2f');
+        const b=personById.get(pair.bId);if(!b)return [];
+        const home=homeAt(b,seconds);
+        return errandPlaces.filter(c=>c.targetPerson===b.id&&c.floor===home.floor&&home.anchorId===b.home.anchorId);
+      }
+      function book(pair,card,start){
+        const ids=[pair.aId,pair.bId],barista=ids.find(id=>id==='iseul'||id==='eunha'),roster=ids.filter(id=>id!==barista).map(id=>personById.get(id));
+        if(roster.some(p=>!p||!allowed.includes(p)||!presentAt(p.id,start)))return null;
+        const stay=pair.lines.length*2.2,targets=card.slots;
+        for(let offset=0;offset<targets.length;offset++){
+          const tracks=[];let failed=false;
+          for(const [i,p]of roster.entries()){
+            const home=homeAt(p,start),atDesk=['desk','hallway'].includes(pair.place)&&p.id===pair.bId,target=atDesk?home.anchorId:targets[(offset+i)%targets.length];
+            if(atDesk){const nodes=path(home.anchorId,home.anchorId);tracks.push({id:p.id,home,seat:slot(home.anchorId,p.id==='mir'?'stand':'sit'),outbound:nodes,inbound:nodes,out:[],back:[]});continue}
+            const e=excursion(p.id,home,card,target,start+i*1.6,stay,day);
+            if(!e){failed=true;break}tracks.push(e.people[0]);
+          }
+          if(failed||tracks.length!==roster.length)continue;
+          const performStart=Math.max(start,...tracks.map(t=>t.out.at(-1)?.end||start)),performEnd=performStart+stay;
+          for(const [i,t]of tracks.entries()){const shift=performEnd+i*1.6-(t.back[0]?.start||performEnd);t.back=t.back.map(l=>({...l,start:l.start+shift,end:l.end+shift}))}
+          const end=Math.max(performEnd,...tracks.map(t=>t.back.at(-1)?.end||performEnd));
+          if(!timeMatches(pair,end-.001)||roster.some(p=>!presentAt(p.id,end-.001)))continue;
+          const event={id:day+'|staff-chat|'+pair.id+'|'+start,actionId:'base-work',start,end,performStart,performEnd,card:{...card,at:['잠깐 이야기 나누는 중'],go:'동료와 이야기하러 가는 중'},people:tracks,resources:[...new Set(tracks.flatMap(t=>[...t.outbound,...t.inbound].map(n=>n.id)).concat(barista?['coffee_counter']:[]))],staffChat:{...pair,floor:card.floor},floors:[...new Set(tracks.flatMap(t=>[t.home.floor,card.floor]))]};
+          const near=ledgerOverlaps(ledger,start,end);
+          if(near.some(e=>e.patrol||e.report||e.people.some(t=>t.id==='seongmin')&&e.card)||near.some(e=>e.card?.targetPerson&&ids.includes(e.card.targetPerson)))continue;
+          // A barista owns the existing counter; reject public service overlap.
+          if(barista&&near.some(e=>e.resources.includes('coffee_counter')||e.resources.includes('coffee_pickup')))continue;
+          if(reserve(event,ledger,allowed,near))return event;
+        }return null;
+      }
+      function cancel(now){
+        if(!active)return;
+        // Keep the proven return reservation even when a higher-priority scene
+        // interrupts speech. Moving the return earlier would need a new proof.
+        if(!active.staffChat.cancelled){
+          due.set(active.card.floor,active.end);uses.set(active.staffChat.id,Math.max(0,(uses.get(active.staffChat.id)||1)-1));
+          active={...active,staffChat:{...active.staffChat,cancelled:true}};
+        }
+      }
+      function update(now,options={}){
+        const date=new Date(now.getTime()+32400000),today=date.toISOString().slice(0,10),seconds=date.getUTCHours()*3600+date.getUTCMinutes()*60+date.getUTCSeconds()+date.getUTCMilliseconds()/1000;
+        reset(today,options,seconds);
+        if(active&&seconds>=active.end)active=null;
+        if(active){if(options.blocked)cancel(now);return active}
+        if(options.blocked||seconds<retryAt)return null;
+        retryAt=seconds+15;
+        const pending=[...due].filter(([,at])=>at<=seconds).sort((a,b)=>a[1]-b[1]);
+        for(const [floor]of pending){
+          const ranked=staffChatLines.filter(p=>p.aId&&p.bId&&timeMatches(p,seconds)).sort((a,b)=>(uses.get(a.id)||0)-(uses.get(b.id)||0)||seed(day+'|staff-chat-order|'+a.id)-seed(day+'|staff-chat-order|'+b.id));
+          for(const pair of ranked)for(const card of locations(pair,seconds).filter(c=>c.floor===floor)){
+            const event=book(pair,card,seconds);if(!event)continue;
+            active=event;uses.set(pair.id,(uses.get(pair.id)||0)+1);turns.set(floor,(turns.get(floor)||0)+1);due.set(floor,seconds+period(floor));return active;
+          }
+        }return null;
+      }
+      return {update,cancel,current:()=>active,timeMatches};
+    }
+
+    return Object.freeze({createStaffChats,staffChatLines,plan,snapshot,seed,slot,actions,windows,presentAt,homeAt,blockPlan,stateAt,resourceIntervals,errandPlaces,reportPlaces,shortLine,identity:table.identity});
   }
   // Read-only label geometry, shared by the persistent renderer and Node tests.
   function statusLabelPriority(data){
@@ -2146,8 +2374,8 @@
     {id:'companion-otter',name:'아기 수달',pet:true,atlasRow:2,lines:['회장님, 조개 선물이에요!','회장님 옆에서 냠냠해요.','회장님, 카페도 같이 가요!']},
     {id:'companion-chick',name:'병아리',pet:true,atlasRow:3,lines:['회장님, 삐약 출근했어요!','회장님 따라 통통통!','회장님, 제 날개도 쉬어요.']},
     {id:'companion-fox',name:'아기 여우',pet:true,atlasRow:4,lines:['회장님, 꼬리로 인사해요!','회장님 곁은 포근하네요.','회장님, 살금살금 갈게요!']},
-    {id:'kid-suhyeon',name:'수현',kid:true,atlasRow:0,lines:['…지금 말고.','가방? 그냥 들어 준 거야.','아빠, 얘 좀 떼 줘.']},
-    {id:'kid-suyeon',name:'수연',kid:true,atlasRow:1,lines:['아빠아아!','나 커서 아빠랑 결혼할 거야!','오빠는 맨날 아닌 척해!']}
+    {id:'kid-suhyeon',name:'수현',kid:true,atlasRow:0,lines:['…지금 말고.','가방? 그냥 들어 준 거야.','아빠, 얘 좀 떼 줘.','…거기 위험해.','옆에 있어 줄게. 책 읽으러 온 거지만.','이쪽이 조용해. 너도 와.']},
+    {id:'kid-suyeon',name:'수연',kid:true,atlasRow:1,lines:['아빠아아!','나 커서 아빠랑 결혼할 거야!','오빠는 맨날 아닌 척해!','아빠 손 꼭 잡고 갈래!','아빠랑 다니니까 제일 좋아!','아빠 여기여기! 나랑 같이 가!','아빠! 나 통통 뛰는 거 봐 봐!','저기까지 갔다가 꼭 돌아올게!','아빠 옆자리 찜! 내 자리야!','나 먼저 갈게! 아빠 오고 있지?']}
   ].map(p=>Object.freeze({...p,companion:true,sprite:p.id,lines:Object.freeze(p.lines)})));
   const companionReactions=Object.freeze([
     {id:'hani',line:'어머, 수연이 왔어?'},{id:'hani',line:'수현이는 오늘도 든든하네.'},
@@ -2165,6 +2393,771 @@
     const boxes=[...Object.values(items?.homeFurniture||{}).flatMap(item=>[item.seatBounds,item.deskBounds].filter(Boolean)),...(items?.freeDesks||[]).flatMap(item=>[item.seatBounds,item.deskBounds].filter(Boolean))];
     return !boxes.some(r=>x+half>=r[0]-8&&x-half<=r[2]+8&&y+6>=r[1]&&y-height<=r[3]+8);
   }
+  // Approved hidden lines are embedded; no runtime JSON request or persistence.
+  const kidsVisitLines=Object.freeze([
+  {
+    "staffId": "hani",
+    "staffName": "하니",
+    "lines": [
+      {
+        "speaker": "suyeon",
+        "text": "하니 이모! 아빠 옆에 앉아!"
+      },
+      {
+        "speaker": "staff",
+        "text": "오늘 작전 회의는 수연이가 대장 해!"
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "…게임 전략부터 다시 짜요."
+      },
+      {
+        "speaker": "staff",
+        "text": "오케이, 간식 보급부터 완료하자!"
+      }
+    ],
+    "rare": {
+      "speaker": "staff",
+      "text": "회장님, 오늘 꼬마 본부장님들 출근입니다!"
+    },
+    "actorId": "hani"
+  },
+  {
+    "staffId": "naeun",
+    "staffName": "나은",
+    "lines": [
+      {
+        "speaker": "suyeon",
+        "text": "나은 이모, 나 양갈래 다시 묶어줘!"
+      },
+      {
+        "speaker": "staff",
+        "text": "그럼, 이리 와. 물도 한 모금 마시자."
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "…이모 옆에 있으면 마음이 편해요."
+      },
+      {
+        "speaker": "staff",
+        "text": "수현이도 오늘 잠 잘 잤네, 기특해라."
+      }
+    ],
+    "rare": {
+      "speaker": "suhyeon",
+      "text": "…나은 이모가 주는 미지근한 물이 제일 좋아요."
+    },
+    "actorId": "naeun"
+  },
+  {
+    "staffId": "hina",
+    "staffName": "히나",
+    "lines": [
+      {
+        "speaker": "staff",
+        "text": "자, 노래 부르면서 일본어 퀴즈 출발~!"
+      },
+      {
+        "speaker": "suyeon",
+        "text": "신난다! 내가 먼저 맞힐래!"
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "…이거 결국 공부잖아요."
+      },
+      {
+        "speaker": "staff",
+        "text": "수현이 벌써 손 들었으면서~ 정답!"
+      }
+    ],
+    "rare": {
+      "speaker": "suhyeon",
+      "text": "…다음 노래 율동은 딱 한 번만 따라 할게요."
+    },
+    "actorId": "hina"
+  },
+  {
+    "staffId": "jieun",
+    "staffName": "지은",
+    "lines": [
+      {
+        "speaker": "staff",
+        "text": "이번 주 용돈 예산이랑 이유는 적었나요?"
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "네, 항목별로 정리해 왔어요."
+      },
+      {
+        "speaker": "suyeon",
+        "text": "으으… 나는 스티커 한 장만 샀어요!"
+      },
+      {
+        "speaker": "staff",
+        "text": "약속 지켰네, 수연이도 정말 잘했어요."
+      }
+    ],
+    "rare": {
+      "speaker": "suyeon",
+      "text": "헤헤, 지은 이모한테 칭찬받았다! 아빠한테 말해야지!"
+    },
+    "actorId": "jieun"
+  },
+  {
+    "staffId": "sua",
+    "staffName": "수아",
+    "lines": [
+      {
+        "speaker": "suyeon",
+        "text": "수아 이모는 진짜 거의 다 알아!"
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "…장난감 태엽이 안 돌아가는데 봐주실래요?"
+      },
+      {
+        "speaker": "staff",
+        "text": "잠깐만 봐줄게. 자, 이제 부드럽게 돌지?"
+      },
+      {
+        "speaker": "suyeon",
+        "text": "우와! 역시 해결사 이모야!"
+      }
+    ],
+    "rare": {
+      "speaker": "staff",
+      "text": "막히는 게 있으면 언제든 이모 책상으로 가져와."
+    },
+    "actorId": "sua"
+  },
+  {
+    "staffId": "haru",
+    "staffName": "하루",
+    "lines": [
+      {
+        "speaker": "suyeon",
+        "text": "하루 이모! 반짝이 필통 열 개 살래!"
+      },
+      {
+        "speaker": "staff",
+        "text": "수연아, 오래 쓸 튼튼한 걸로 하나 골라볼까?"
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "…내가 봐도 그게 훨씬 덜 고장 나겠어."
+      },
+      {
+        "speaker": "suyeon",
+        "text": "응! 그럼 이모가 골라준 걸로 할래!"
+      }
+    ],
+    "rare": {
+      "speaker": "staff",
+      "text": "오래 아껴 쓰는 마음이 제일 멋진 보물이야."
+    },
+    "actorId": "haru"
+  },
+  {
+    "staffId": "minji",
+    "staffName": "민지",
+    "lines": [
+      {
+        "speaker": "staff",
+        "text": "오늘의 남매 출근 기록, 카메라 봅니다~!"
+      },
+      {
+        "speaker": "suyeon",
+        "text": "브이! 나 한 장 더 찍어줘, 민지 이모!"
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "…지금 말고요. 저 찍지 마세요."
+      },
+      {
+        "speaker": "staff",
+        "text": "수현이 동생 챙기는 순간 이미 다 찍혔지~"
+      }
+    ],
+    "rare": {
+      "speaker": "suhyeon",
+      "text": "…나중에 앨범에 작게만 넣어주세요."
+    },
+    "actorId": "minji"
+  },
+  {
+    "staffId": "suyeon_staff",
+    "staffName": "수연",
+    "lines": [
+      {
+        "speaker": "suyeon",
+        "text": "큰 수연 이모! 우리 수연 콤비 출동하자!"
+      },
+      {
+        "speaker": "staff",
+        "text": "좋아! 복도 끝까지 자전거 타듯 달려볼까?!"
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "…둘 다 뛰지 마요. 실내잖아요."
+      },
+      {
+        "speaker": "staff",
+        "text": "앗, 수현 반장님 브레이크에 급정거!"
+      }
+    ],
+    "rare": {
+      "speaker": "suyeon",
+      "text": "이름이 같으니까 우리가 회사 최강 콤비야!"
+    },
+    "actorId": "sooyeon"
+  },
+  {
+    "staffId": "yuna",
+    "staffName": "유나",
+    "lines": [
+      {
+        "speaker": "suyeon",
+        "text": "유나 언니! 그거 해봐, 제가요?!"
+      },
+      {
+        "speaker": "staff",
+        "text": "에엑, 제가요?! 애들까지 왜 그래요!"
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "…언니, 오늘 발표도 잘할 수 있어요."
+      },
+      {
+        "speaker": "suyeon",
+        "text": "맞아! 우리가 유나 언니 일등 응원단이야!"
+      }
+    ],
+    "rare": {
+      "speaker": "staff",
+      "text": "꼬마 응원단 덕분에 오늘 진짜 힘난다!"
+    },
+    "actorId": "yuna"
+  },
+  {
+    "staffId": "mir",
+    "staffName": "미르",
+    "lines": [
+      {
+        "speaker": "staff",
+        "text": "왜?"
+      },
+      {
+        "speaker": "suyeon",
+        "text": "그냥!"
+      },
+      {
+        "speaker": "staff",
+        "text": "이건 연결되네. 헤헤."
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "…둘이 무슨 대화가 통하는 거야."
+      }
+    ],
+    "rare": {
+      "speaker": "staff",
+      "text": "수연이랑 조금 더 볼게. 헤헤."
+    },
+    "actorId": "mir"
+  },
+  {
+    "staffId": "seoyun",
+    "staffName": "서윤",
+    "lines": [
+      {
+        "speaker": "suyeon",
+        "text": "서윤 언니~♡ 나 왔어!"
+      },
+      {
+        "speaker": "staff",
+        "text": "수연이 왔어? 배포 멈추고 안아줄게 💜"
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "…일하시는 데 방해하지 마, 수연아."
+      },
+      {
+        "speaker": "staff",
+        "text": "괜찮아요, 정리하면 휴식도 일정이에요!"
+      }
+    ],
+    "rare": {
+      "speaker": "staff",
+      "text": "먼저 간식 범위부터 볼게요, 이리 와요 💜"
+    },
+    "actorId": "seoyun"
+  },
+  {
+    "staffId": "gaeun",
+    "staffName": "가은",
+    "lines": [
+      {
+        "speaker": "suyeon",
+        "text": "가은 이모! 방금 그 피아노 소리 뭐야?"
+      },
+      {
+        "speaker": "staff",
+        "text": "수연이 발걸음으로 만든 새 멜로디야."
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "…조용한 부분도 듣기 좋네요."
+      },
+      {
+        "speaker": "staff",
+        "text": "수현이 몫으로 차분한 화음도 넣었어."
+      }
+    ],
+    "rare": {
+      "speaker": "suyeon",
+      "text": "우와, 우리 남매 주제가가 생겼다!"
+    },
+    "actorId": "gaeun"
+  },
+  {
+    "staffId": "dohyun",
+    "staffName": "도연",
+    "lines": [
+      {
+        "speaker": "suhyeon",
+        "text": "도연 언니, 미니카 바퀴가 자꾸 틀어져요."
+      },
+      {
+        "speaker": "staff",
+        "text": "재현했어요. 나사 2바퀴 조임, 통과요 ☕"
+      },
+      {
+        "speaker": "suyeon",
+        "text": "우와, 3초 만에 고쳤어!"
+      },
+      {
+        "speaker": "staff",
+        "text": "주행 테스트 완료. 안전 운행하세요."
+      }
+    ],
+    "rare": {
+      "speaker": "suhyeon",
+      "text": "…말은 짧은데 제일 확실해요."
+    },
+    "actorId": "dohyun"
+  },
+  {
+    "staffId": "serin",
+    "staffName": "세린",
+    "lines": [
+      {
+        "speaker": "staff",
+        "text": "수연이 간식 취향 패턴 보여요!! ✨📊"
+      },
+      {
+        "speaker": "suyeon",
+        "text": "맞아! 나 딸기맛이랑 초코맛 다 좋아해!"
+      },
+      {
+        "speaker": "staff",
+        "text": "이거 간식 추천 자동화 각인데요?!"
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "…그냥 골고루 먹게 해주세요."
+      }
+    ],
+    "rare": {
+      "speaker": "staff",
+      "text": "남매 웃음 데이터, 오늘 최고치예요!! ✨"
+    },
+    "actorId": "serin"
+  },
+  {
+    "staffId": "yuri",
+    "staffName": "유리",
+    "lines": [
+      {
+        "speaker": "suyeon",
+        "text": "유리 언니, 나 숙제 다 했어! 통과지?"
+      },
+      {
+        "speaker": "staff",
+        "text": "이름 칸 비었네요. 미검증은 PASS 아닙니다."
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "…내가 아까 확인하라고 했잖아."
+      },
+      {
+        "speaker": "staff",
+        "text": "이름 기입 확인. 이제 깔끔합니다 ✅"
+      }
+    ],
+    "rare": {
+      "speaker": "suyeon",
+      "text": "휴, 유리 언니한테 합격 도장 받았다!"
+    },
+    "actorId": "yuri"
+  },
+  {
+    "staffId": "arin",
+    "staffName": "아린",
+    "lines": [
+      {
+        "speaker": "suyeon",
+        "text": "아린 언니, 내 스케치북 어때?"
+      },
+      {
+        "speaker": "staff",
+        "text": "너무 예쁜데요? 여백도 숨 쉬게 해봐요 ✨🎨"
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "…구름 옆을 조금 비워두라는 뜻이지?"
+      },
+      {
+        "speaker": "staff",
+        "text": "맞아요! 구름 스티커 붙여보는 건 어때요?"
+      }
+    ],
+    "rare": {
+      "speaker": "suyeon",
+      "text": "언니랑 그리니까 도화지가 살아 움직이는 것 같아!"
+    },
+    "actorId": "arin"
+  },
+  {
+    "staffId": "chaewon",
+    "staffName": "채원",
+    "lines": [
+      {
+        "speaker": "suyeon",
+        "text": "아빠가 놀아주고 과자 주고 책도 읽어준댔어!"
+      },
+      {
+        "speaker": "staff",
+        "text": "정리하면 세 가지입니다. 놀이, 간식, 독서군요."
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "…순서랑 완료 시간도 정해야 안 싸워요."
+      },
+      {
+        "speaker": "staff",
+        "text": "훌륭합니다. 회장님께 일정표로 전달하겠습니다."
+      }
+    ],
+    "rare": {
+      "speaker": "staff",
+      "text": "꼬마 고객님들 요구사항, 명확히 접수됐습니다."
+    },
+    "actorId": "taeo"
+  },
+  {
+    "staffId": "daon",
+    "staffName": "다온",
+    "lines": [
+      {
+        "speaker": "staff",
+        "text": "혹시… 신발 끈이 풀리는 최악의 경우엔요… 😅"
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "미리 두 번 묶어두면 안전해요."
+      },
+      {
+        "speaker": "suyeon",
+        "text": "다온 언니, 내 신발 끈도 확인해줘!"
+      },
+      {
+        "speaker": "staff",
+        "text": "네…! 양쪽 다 단단히 묶었으니 안심이에요 😅"
+      }
+    ],
+    "rare": {
+      "speaker": "suhyeon",
+      "text": "…미리 걱정해 주셔서 오히려 든든해요."
+    },
+    "actorId": "daon"
+  },
+  {
+    "staffId": "yunseul",
+    "staffName": "윤슬",
+    "lines": [
+      {
+        "speaker": "staff",
+        "text": "이거 아세요? 동화책이랑 여기서 이어지네요! 📚"
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "아, 그 별자리 이야기가 백과사전에 나오네요."
+      },
+      {
+        "speaker": "suyeon",
+        "text": "윤슬 언니, 나도 책갈피 꽂아줘!"
+      },
+      {
+        "speaker": "staff",
+        "text": "그럼요! 다음 장은 같이 펼쳐봐요 🔖"
+      }
+    ],
+    "rare": {
+      "speaker": "suhyeon",
+      "text": "…언니가 골라준 책은 끝까지 읽게 돼요."
+    },
+    "actorId": "yoonseul"
+  },
+  {
+    "staffId": "isle",
+    "staffName": "이슬",
+    "lines": [
+      {
+        "speaker": "staff",
+        "text": "꼬마 손님들, 따뜻한 우유 거품 준비됐어요."
+      },
+      {
+        "speaker": "suyeon",
+        "text": "와아! 이슬 언니, 입술에 거품 수염 생겼어!"
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "…휴지로 닦고 마셔, 수연아."
+      },
+      {
+        "speaker": "staff",
+        "text": "수현이 컵엔 코코아 가루도 살짝 올렸단다."
+      }
+    ],
+    "rare": {
+      "speaker": "suyeon",
+      "text": "이슬 언니네 카페가 세상에서 제일 맛있어!"
+    },
+    "actorId": "iseul"
+  },
+  {
+    "staffId": "eunha",
+    "staffName": "은하",
+    "lines": [
+      {
+        "speaker": "staff",
+        "text": "짜잔, 우유 위에 개구리 라떼아트 그려봤어!"
+      },
+      {
+        "speaker": "suyeon",
+        "text": "우와, 아빠 닮은 개구리다! 은하 언니 최고!"
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "…아까워서 어떻게 마셔요."
+      },
+      {
+        "speaker": "staff",
+        "text": "다 마시면 쿠키 접시에서 또 만날 수 있지~"
+      }
+    ],
+    "rare": {
+      "speaker": "suhyeon",
+      "text": "…사진 한 장만 찍고 마실게요."
+    },
+    "actorId": "eunha"
+  },
+  {
+    "staffId": "cheese",
+    "staffName": "치즈",
+    "lines": [
+      {
+        "speaker": "suyeon",
+        "text": "치즈야~ 이리 와, 나랑 놀자!"
+      },
+      {
+        "speaker": "staff",
+        "text": "야옹~ (식빵 자세로 꼬리만 살랑거린다)"
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "…갑자기 다가가면 놀라. 손부터 내밀어 봐."
+      },
+      {
+        "speaker": "staff",
+        "text": "골골골… (수현이 손등에 머리를 비빈다)"
+      }
+    ],
+    "rare": {
+      "speaker": "suyeon",
+      "text": "치즈가 내 무릎 위에서 하품했어!"
+    },
+    "actorId": "pet-cat"
+  },
+  {
+    "staffId": "cream",
+    "staffName": "크림",
+    "lines": [
+      {
+        "speaker": "staff",
+        "text": "멍… (조용히 다가와 수현이 발치에 앉는다)"
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "…크림이 너도 조용한 데가 좋구나."
+      },
+      {
+        "speaker": "suyeon",
+        "text": "나도 조용히 쓰다듬어 줄래! 털이 솜사탕 같아!"
+      },
+      {
+        "speaker": "staff",
+        "text": "킁… (꼬리를 살랑, 눈을 반쯤 감는다)"
+      }
+    ],
+    "rare": {
+      "speaker": "suhyeon",
+      "text": "…크림이 깨지 않게 책장 천천히 넘길게."
+    },
+    "actorId": "pet-dog"
+  },
+  {
+    "staffId": "mochi",
+    "staffName": "모찌",
+    "lines": [
+      {
+        "speaker": "suyeon",
+        "text": "모찌야! 볼살이 진짜 찹쌀떡 같아!"
+      },
+      {
+        "speaker": "staff",
+        "text": "(귀를 쫑긋, 코를 오물오물하며 다가온다)"
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "…당근 달라고 애교 부리는 거잖아."
+      },
+      {
+        "speaker": "suyeon",
+        "text": "나랑 똑같네! 모찌도 애교 대장이야!"
+      }
+    ],
+    "rare": {
+      "speaker": "staff",
+      "text": "(남매 사이로 쏙 파고들어 동그랗게 눕는다)"
+    },
+    "actorId": "pet-rabbit"
+  },
+  {
+    "staffId": "bori",
+    "staffName": "보리",
+    "lines": [
+      {
+        "speaker": "staff",
+        "text": "(쿨쿨 자다가 남매 발소리에 꼬리만 탁탁)"
+      },
+      {
+        "speaker": "suyeon",
+        "text": "보리야! 나 잡기 놀이 하자!"
+      },
+      {
+        "speaker": "suhyeon",
+        "text": "…보리야, 앉아. 기다려 먼저 해야지."
+      },
+      {
+        "speaker": "staff",
+        "text": "왕! (수현이 말에 늠름하게 앉아 앞발을 준다)"
+      }
+    ],
+    "rare": {
+      "speaker": "suhyeon",
+      "text": "…착하지, 산책 갈 때 내가 줄 잡아줄게."
+    },
+    "actorId": "pet-bori"
+  }
+].map(p=>Object.freeze({...p,lines:Object.freeze(p.lines.map(Object.freeze)),rare:Object.freeze(p.rare)})));
+  // A visit is part of the existing companion rhythm. Only this in-memory
+  // controller remembers daily turns; the resident tick owns movement/speech.
+  function createKidsVisits(){
+    let day='',nextAt=0,active=null,counts=new Map(),patrolSeen=new Map();
+    const position=p=>p.position||(p.seat&&[p.seat.x,p.seat.y]);
+    const distance=(a,b)=>Math.hypot((a[0]-b[0])*art.width/100,(a[1]-b[1])*art.height/100);
+    function reset(now){const today=koreaTime(now).toISOString().slice(0,10);if(today!==day){day=today;nextAt=now.getTime()+period()*1000;active=null;counts=new Map();patrolSeen=new Map()}}
+    function period(){return 30+residentSeed(day+'|kids-visit|'+[...counts.values()].reduce((a,b)=>a+b,0))%31}
+    function peers(now,staff,states){
+      const sister=states.find(p=>p.id==='kid-suyeon'),chair=staff?.floors?.flatMap(f=>f.people||[]).find(p=>p.id==='seongmin');
+      if(!sister||!chair||chair.walking||chair.state==='ABSENT')return [];
+      const hour=koreaTime(now).getUTCHours(),barista={id:hour>=19||hour<7?'eunha':'iseul',name:hour>=19||hour<7?'은하':'이슬',floor:'1f',position:[1536/art.width*100,706/art.height*100],barista:true};
+      const people=[...(staff?.floors?.flatMap(f=>f.people||[])||[]),...states,barista];
+      return kidsVisitLines.flatMap(pair=>{const peer=people.find(p=>p.id===pair.actorId&&p.floor===sister.floor&&!p.walking&&p.pose!=='sleep'&&p.state!=='ABSENT'&&position(p)?.every(Number.isFinite));return peer?[{pair,peer}]:[]});
+    }
+    function route(home,target,floor,occupied){
+      const safe=v=>companionSafe(floor,v,true)&&!occupied.some(p=>{const at=position(p);return p.floor===floor&&at?.every(Number.isFinite)&&distance(v,at)<(p.id==='seongmin'?78:82)});
+      const clear=(a,b)=>{const steps=Math.max(1,Math.ceil(distance(a,b)/12));for(let i=0;i<=steps;i++)if(!safe([a[0]+(b[0]-a[0])*i/steps,a[1]+(b[1]-a[1])*i/steps]))return false;return true};
+      if(!safe(home)||!safe(target))return null;if(clear(home,target))return [home,target];
+      // Find a furniture-safe route in the same visual coordinates as follow.
+      // Grid edges are sampled too, so neither sibling cuts through a desk.
+      const step=32,cols=Math.ceil(art.width/step),rows=Math.ceil(art.height/step),key=(x,y)=>y*cols+x,point=k=>[(k%cols+.5)*step/art.width*100,(Math.floor(k/cols)+.5)*step/art.height*100],previous=new Map(),queue=[];
+      const hx=Math.floor(home[0]*art.width/100/step),hy=Math.floor(home[1]*art.height/100/step);
+      for(let y=Math.max(0,hy-1);y<=Math.min(rows-1,hy+1);y++)for(let x=Math.max(0,hx-1);x<=Math.min(cols-1,hx+1);x++){const k=key(x,y);if(clear(home,point(k))){queue.push(k);previous.set(k,-1)}}
+      for(let i=0;i<queue.length;i++){
+        const k=queue[i],v=point(k),x=k%cols,y=Math.floor(k/cols);
+        if(distance(v,target)<65&&clear(v,target)){const path=[target];let cursor=k;while(cursor!==-1){path.push(point(cursor));cursor=previous.get(cursor)}path.push(home);return path.reverse()}
+        for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const xx=x+dx,yy=y+dy,n=key(xx,yy);if(xx<0||yy<0||xx>=cols||yy>=rows||previous.has(n)||!clear(v,point(n)))continue;previous.set(n,k);queue.push(n)}
+      }return null;
+    }
+    function paths(peer,states,staff){
+      const children=['kid-suyeon','kid-suhyeon'].map(id=>states.find(p=>p.id===id));if(children.some(p=>!p))return null;
+      const occupied=[...(staff?.floors?.flatMap(f=>f.people||[])||[]),...states.filter(p=>!p.kid)],at=position(peer),paths=[];
+      for(const [index,child]of children.entries()){
+        let selected=null;
+        const targets=[];for(const dx of [-100,100,-116,116,-180,180,0])for(const dy of [12,100,-70,160]){const v=[at[0]+dx/art.width*100,at[1]+dy/art.height*100];if(!index||distance(v,paths[0].at(-1))>=90)targets.push(v)}
+        targets.sort((a,b)=>distance(child.position,a)-distance(child.position,b));
+        for(const target of targets){selected=route(child.position,target,child.floor,occupied);if(selected)break}if(!selected)return null;paths.push(selected);
+      }return paths;
+    }
+    function begin(now,staff,states,reduced,candidates,tapped=false){
+      const chair=staff.floors.flatMap(f=>f.people||[]).find(p=>p.id==='seongmin'),patrol=chair?.patrol?day+'|'+chair.patrol.window+'|'+chair.floor:null,seen=patrolSeen.get(patrol)||new Set();
+      if(!tapped)candidates.sort((a,b)=>{
+        const rank=p=>p.pair.actorId==='seoyun'&&p.peer.floor==='3f'&&!counts.get('seoyun')?-1000:(patrol&&!seen.has(p.pair.actorId)?-100:0)+(counts.get(p.pair.actorId)||0)*10;
+        return rank(a)-rank(b)||residentSeed(day+'|'+a.pair.actorId)-residentSeed(day+'|'+b.pair.actorId);
+      });
+      for(const {pair,peer}of candidates){
+        const trails=paths(peer,states,staff);if(!trails)continue;
+        const count=counts.get(pair.actorId)||0,rare=(residentSeed(day+'|'+pair.staffId)%10+count)%10===0;
+        const lines=[...pair.lines,...(rare?[pair.rare]:[])].map(l=>({id:l.speaker==='staff'?pair.actorId:'kid-'+l.speaker,name:l.speaker==='staff'?pair.staffName:l.speaker==='suyeon'?'수연':'수현',text:l.text}));
+        const length=path=>path.slice(1).reduce((n,p,i)=>n+distance(p,path[i]),0),travel=Math.max(2,Math.min(reduced?6:4,Math.max(...trails.map(length))/(reduced?90:180)));
+        active={key:day+'|kids-visit|'+pair.staffId+'|'+count,actorId:pair.actorId,staffId:pair.staffId,floor:peer.floor,started:now.getTime(),travel,lines,rare,paths:trails,patrol,index:-1,line:null};
+        counts.set(pair.actorId,count+1);if(patrol){seen.add(pair.actorId);patrolSeen.set(patrol,seen)}nextAt=now.getTime()+period()*1000;return active;
+      }nextAt=now.getTime()+1000;return null;
+    }
+    function sample(path,progress,prefix=false){
+      const lengths=path.slice(1).map((p,i)=>distance(p,path[i])),total=lengths.reduce((a,b)=>a+b,0);let remaining=Math.max(0,Math.min(1,progress))*total;
+      for(let i=0;i<lengths.length;i++){if(remaining<=lengths[i]){const t=lengths[i]?remaining/lengths[i]:1,point=[path[i][0]+(path[i+1][0]-path[i][0])*t,path[i][1]+(path[i+1][1]-path[i][1])*t];return prefix?[...path.slice(0,i+1),point]:point}remaining-=lengths[i]}return prefix?path:path.at(-1);
+    }
+    function cancel(now){if(active&&!active.cancelled){const elapsed=(now.getTime()-active.started)/1000;active.cancelled=true;active.returnAt=now.getTime();active.returnPaths=active.paths.map((p,i)=>sample(p,(elapsed-i*.4)/active.travel,true).slice().reverse());active.line=null}}
+    function update(now,staff,states,reduced=false){
+      reset(now);const kids=states.filter(p=>p.kid),chair=staff?.floors?.flatMap(f=>f.people||[]).find(p=>p.id==='seongmin');
+      if(kids.length!==2||!chair){active=null;return null}
+      if(active&&(active.floor!==chair.floor||chair.walking)){active=null;nextAt=now.getTime()+period()*1000}
+      if(active&&!active.cancelled&&!peers(now,staff,states).some(p=>p.pair.actorId===active.actorId))cancel(now);
+      if(!active&&now.getTime()>=nextAt)begin(now,staff,states,reduced,peers(now,staff,states));
+      if(!active)return null;
+      const elapsed=(now.getTime()-active.started)/1000,talkAt=active.travel+.4,talkEnd=talkAt+active.lines.length*2.2,returnAt=active.returnAt??active.started+talkEnd*1000;
+      const returning=now.getTime()>=returnAt;
+      if(returning&&(now.getTime()-returnAt)/1000>=active.travel){active=null;return null}
+      active.index=active.cancelled?-1:Math.floor((elapsed-talkAt)/2.2);active.line=active.index>=0&&active.index<active.lines.length?active.lines[active.index]:null;
+      active.positions=[];
+      for(const [index,id]of ['kid-suyeon','kid-suhyeon'].entries()){
+        const child=kids.find(p=>p.id===id),path=returning?(active.returnPaths?.[index]||active.paths[index].slice().reverse()):active.paths[index],progress=returning?(now.getTime()-returnAt)/1000/active.travel:(elapsed-index*.4)/active.travel;
+        child.position=sample(path,progress);active.positions.push(child.position);child.walking=!reduced&&progress>=0&&progress<1;child.pose=child.walking?Math.floor(elapsed*4)%2?'walk-a':'walk-b':'standing';child.facing=(path.at(-1)[0]-path[0][0])<0?'left':'right';delete child.scene;delete child.reaction;
+        child.activity={...child.activity,kind:'hidden-visit',partnerId:active.actorId};child.visit={key:active.key,actorId:active.actorId,phase:returning?'return':active.line?'talk':'approach'};
+        if(reduced)delete child.motion;else child.motion={bob:child.walking&&index===0?-Math.abs(Math.sin(elapsed*9))*3:0,lean:0,spin:0};
+      }return active;
+    }
+    function request(now,staff,states,id,reduced=false){
+      reset(now);const child=states.find(p=>p.id===id);if(!child)return null;
+      const candidates=peers(now,staff,states).filter(p=>distance(child.position,position(p.peer))<=420).sort((a,b)=>distance(child.position,position(a.peer))-distance(child.position,position(b.peer)));
+      return candidates.length?begin(now,staff,states,reduced,candidates,true):null;
+    }
+    return {update,request,cancel,current:()=>active};
+  }
+
   function companionSnapshot(now=new Date(),staff=null,enabled=true,reduced=false,neighbors=[]){
     if(!enabled||!canon||!art)return [];
     const date=koreaTime(now),weekday=date.getUTCDay(),weekend=weekday===0||weekday===6,day=date.toISOString().slice(0,10),seconds=date.getUTCHours()*3600+date.getUTCMinutes()*60+date.getUTCSeconds()+date.getUTCMilliseconds()/1000;
@@ -2176,7 +3169,7 @@
       let floor,position,point=[500,330],walking=false,facing='left',pose='standing',motion;
       if(follow){
         floor=chair.floor;facing=chair.facing==='left'?'left':'right';
-        const behind=facing==='left'?1:-1,distance=person.id==='kid-suhyeon'?172:98,candidates=[];
+        const behind=(facing==='left'?1:-1)*(person.id==='kid-suyeon'&&chair.walking?-1:1),distance=person.id==='kid-suhyeon'?148:98,candidates=[];
         // Shared furniture envelopes and distinct footprints, closest safe side first.
         for(const dx of [behind*distance,-behind*distance,behind*(distance+70),-behind*(distance+70),240,-240,0])for(const dy of [12,80,-60,140,220,-110]){
           const v=[center[0]+dx/art.width*100,center[1]+dy/art.height*100];
@@ -2197,13 +3190,85 @@
         if(!reduced&&a!==b){motion=petMotion(person.id,day,rhythm.beat,a,b,rhythm.elapsed,v=>free(floor,v));if(motion){({position,point,walking,facing,pose}=motion);if(person.id==='companion-chick'&&walking)motion={...motion,bob:-Math.abs(Math.sin(seconds*9))*2.5}}}
       }
       const state={id:person.id,name:person.name,sprite:person.id,pet:!!person.pet,kid:!!person.kid,companion:true,following:follow,floor,anchor:follow?'companion-'+chair.id:person.id+'-'+floor,position,point,walking,facing,pose,...(motion?{motion}:{})};
+      if(follow&&person.kid&&chair.patrol){
+        const phase=chair.state==='RETURNING'?'return':chair.walking?'walk':floor;
+        const line=person.id==='kid-suyeon'?(phase==='1f'?'아빠 나도 코코아!':phase==='5f'?'꽃이다!!':phase==='return'?'아빠 손 꼭 잡고 돌아가자!':'아빠 여기여기!'):(phase==='walk'?'…천천히 가.':'수연이 가방? 내가 들어 줄게.');
+        state.scene={key:day+'|patrol|'+chair.patrol.window+'|'+person.id+'|'+phase,line,patrol:true,notBefore:chair.walking?0:now.getTime()+(chair.patrolArrival+(person.id==='kid-suyeon'?10:15)-seconds)*1000};
+        if(person.id==='kid-suyeon'&&walking)state.motion={bob:-Math.abs(Math.sin(seconds*9))*3,lean:Math.sin(seconds*9)*2,spin:0};
+      }
       states.push(state);
+    }
+    // One or two present, idle staff greet arrivals through the existing bubble owner.
+    if(chair?.patrol&&chair.state==='AT_PLACE'){
+      const elapsed=seconds-chair.patrolArrival,index=Math.floor(elapsed/5);
+      if(elapsed>=0&&elapsed<10){
+        const peers=people.filter(p=>p.id!=='seongmin'&&!p.resident&&!p.pet&&!p.kid&&!p.visitor&&p.floor===chair.floor&&!p.walking&&!p.eventId&&!p.outingId).sort((a,b)=>a.id.localeCompare(b.id)).slice(0,2),peer=peers[index],follower=states.find(p=>p.following);
+        if(peer&&follower)follower.reaction={id:peer.id,line:weekend?(index?'수현이도 같이 왔구나!':'어머 수연이 왔어?'):'회장님 오셨어요!',key:day+'|patrol|'+chair.patrol.window+'|'+index};
+      }
     }
     // Pure proximity window; the existing bubble owner deduplicates and displays staff reactions.
     if(weekend&&Math.floor(seconds)%180<5){
       const kids=states.filter(p=>p.kid);for(const row of companionReactions){const peer=people.find(p=>p.id===row.id&&!p.walking&&kids.some(k=>p.floor===k.floor&&Math.hypot(((p.position||[p.seat?.x,p.seat?.y])[0]-k.position[0])*art.width/100,((p.position||[p.seat?.x,p.seat?.y])[1]-k.position[1])*art.height/100)<380));if(peer){const kid=kids[0];kid.reaction={...row,key:day+'|'+Math.floor(seconds/180)};break}}
     }
+    // Extend the resident rhythm on the same snapshot/tick, after pets have their
+    // positions. The brother can see where his sister actually went this frame.
+    for(const id of ['kid-suyeon','kid-suhyeon']){
+      const child=states.find(p=>p.id===id);
+      if(child)companionActivity(child,chair,people,states,day,seconds,reduced,now);
+    }
     return states;
+  }
+  function companionActivity(child,chair,people,states,day,seconds,reduced,now){
+    const sister=child.id==='kid-suyeon',rhythm=residentRhythm(child.id,day,seconds),kind=(rhythm.beat%6+6)%6,home=child.position.slice(),center=chair.position||[chair.seat?.x,chair.seat?.y],floor=child.floor;
+    const at=p=>p.position||[p.seat?.x,p.seat?.y],distance=(a,b)=>Math.hypot((a[0]-b[0])*art.width/100,(a[1]-b[1])*art.height/100);
+    const safe=v=>companionSafe(floor,v,true)&&!people.concat(states).some(p=>p.id!==child.id&&p.floor===floor&&at(p).every(Number.isFinite)&&distance(v,at(p))<(p.id==='seongmin'?80:86));
+    const clear=(a,b)=>{const steps=Math.max(1,Math.ceil(distance(a,b)/12));for(let i=0;i<=steps;i++)if(!safe([a[0]+(b[0]-a[0])*i/steps,a[1]+(b[1]-a[1])*i/steps]))return false;return true};
+    let route=[home],partner,line,action=sister?['orbit','explore','bounce','wave','visit','wave'][kind]:['book','check','beside','book','check','beside'][kind];
+    const offset=(x,y)=>[home[0]+x/art.width*100,home[1]+y/art.height*100];
+    const excursion=target=>{if(target&&distance(home,target)>12&&clear(home,target)){route=[home,target,home];return true}return false};
+    if(chair.walking){
+      action=sister?'lead-look':'follow';
+      if(sister){
+        const ahead=(chair.facing==='left'?-1:1)*48;
+        excursion(offset(ahead,0));
+        // Keep following the chairman's live path; a brief glance uses idle,
+        // then walk resumes. No travel or event handler is installed on him.
+        if(rhythm.elapsed>rhythm.period*.72){child.facing=chair.facing==='left'?'right':'left';child.pose='standing';child.walking=false;}
+      }
+    }else if(sister&&kind===0){
+      const angle=Math.atan2((home[1]-center[1])*art.height,(home[0]-center[0])*art.width),rx=Math.max(100,Math.abs((home[0]-center[0])*art.width/100)),ry=Math.max(100,Math.abs((home[1]-center[1])*art.height/100)),circle=[home];
+      for(let i=1;i<=16;i++){const t=angle+i*Math.PI/8;circle.push([center[0]+Math.cos(t)*rx/art.width*100,center[1]+Math.sin(t)*ry/art.height*100]);}circle.push(home);
+      if(circle.every((v,i)=>!i||clear(circle[i-1],v)))route=circle;else action='bounce';
+    }else if(sister&&kind===1){
+      const stops=[...residentStops.values()].filter(p=>p.floor===floor&&/lounge|roof|front|quiet|garden/.test(p.id)&&distance(home,p.visual)<380).sort((a,b)=>distance(home,a.visual)-distance(home,b.visual));
+      if(!stops.some(p=>excursion(p.visual))){action='explore';[offset(110,20),offset(-110,20),offset(-40,100),offset(-60,80),offset(0,30)].some(excursion);}
+    }else if(sister&&kind===4){
+      const peers=people.concat(states).filter(p=>p.id!==child.id&&p.id!=='seongmin'&&!p.kid&&p.floor===floor&&!p.walking&&at(p).every(Number.isFinite)&&distance(home,at(p))<420).sort((a,b)=>distance(home,at(a))-distance(home,at(b)));
+      for(const peer of peers){const pos=at(peer),d=distance(home,pos),target=[pos[0]+(home[0]-pos[0])*110/Math.max(110,d),pos[1]+(home[1]-pos[1])*110/Math.max(110,d)];if(excursion(target)){partner=peer;break}}
+      if(!partner)action='wave';
+    }else if(!sister){
+      const other=states.find(p=>p.id==='kid-suyeon');
+      if(action==='check'&&other&&distance(home,other.position)>180){const d=distance(home,other.position);excursion([home[0]+(other.position[0]-home[0])*60/d,home[1]+(other.position[1]-home[1])*60/d]);line='…거기 위험해.';}
+      else [offset(kind%2?50:-50,20),offset(0,45),offset(0,-45)].some(excursion);
+    }
+    const duration=reduced?rhythm.period:Math.min(rhythm.period*.8,sister?6:9),progress=Math.min(1,rhythm.elapsed/duration),lengths=route.slice(1).map((v,i)=>distance(route[i],v)),length=lengths.reduce((a,b)=>a+b,0);
+    let cursor=progress*length,position=home,from=home,to=home;
+    for(let i=0;i<lengths.length;i++){if(cursor<=lengths[i]){from=route[i];to=route[i+1];const t=lengths[i]?cursor/lengths[i]:1,e=petEase(t);position=[from[0]+(to[0]-from[0])*e,from[1]+(to[1]-from[1])*e];break}cursor-=lengths[i];}
+    if(safe(position))child.position=position;
+    const moving=length>0&&progress<1&&!(chair.walking&&rhythm.elapsed>rhythm.period*.72);
+    if(moving){child.walking=!reduced;child.pose=reduced?'standing':Math.floor(seconds*4)%2?'walk-a':'walk-b';child.facing=to[0]<from[0]?'left':'right';}
+    if(!chair.walking&&!moving){child.walking=false;child.pose=sister&&action==='wave'?'sitting':sister||action==='beside'?'standing':'sitting';}
+    if(!reduced&&sister)child.motion={bob:action==='bounce'||moving?-Math.abs(Math.sin(seconds*9))*3:0,lean:action==='wave'?Math.sin(seconds*6)*3:0,spin:0};
+    if(reduced)delete child.motion;
+    child.activity={key:day+'|kids|'+child.id+'|'+rhythm.beat,kind:action,period:rhythm.period,elapsed:rhythm.elapsed,partnerId:partner?.id};
+    // Preserve patrol arrival greetings/cocoa/flowers first, then use the same
+    // pending bubble slot and tap cooldown for the children's short activities.
+    if(!chair.patrol||!chair.walking&&seconds-chair.patrolArrival>=25){
+      const animal={'companion-penguin':'펭귄','companion-frog':'개구리','companion-otter':'수달','companion-chick':'병아리','companion-fox':'여우','pet-cat':'치즈','pet-dog':'크림','pet-rabbit':'모찌','pet-bori':'보리'}[partner?.id];
+      line=line||(animal?animal+(/[가-힣]/.test(animal)&&((animal.charCodeAt(animal.length-1)-44032)%28)?'이다!!':'다!!'):sister?['아빠! 나 통통 뛰는 거 봐 봐!','저기까지 갔다가 꼭 돌아올게!','아빠 옆자리 찜! 내 자리야!','아빠! 손 흔드는 거 보여?','나 왔어! 같이 놀자!','아빠 오고 있지?'][kind]:['이쪽이 조용해. 너도 와.','…거기 위험해.','옆에 있어 줄게. 책 읽으러 온 거지만.'][kind%3]);
+      child.scene={key:child.activity.key,line,patrol:true,notBefore:now.getTime()-rhythm.elapsed*1000+1000};
+    }
+    if(partner&&!partner.pet&&!partner.resident&&!partner.companion&&!partner.visitor&&progress>.25)child.reaction={id:partner.id,line:'수연아, 반가워! 천천히 다녀와.',key:child.activity.key+'|hello'};
   }
   function residentSeed(value){let n=2166136261;for(const ch of value)n=Math.imul(n^ch.charCodeAt(0),16777619);return n>>>0}
   // The pets' day starts at 07:00. 22:00..26:00 is one continuous 1F window.
@@ -2218,7 +3283,7 @@
   });
   // Stable, staggered pet cycles; NPC quarters and the 07:00 day stay unchanged.
   function residentRhythm(id,day,seconds){
-    const seed=residentSeed('pet-rhythm|'+day+'|'+id),rabbit=id==='pet-rabbit',bori=id==='pet-bori',period=rabbit||bori?25+seed%21:15+seed%16,phase=seed%period;
+    const seed=residentSeed('pet-rhythm|'+day+'|'+id),rabbit=id==='pet-rabbit',bori=id==='pet-bori',period=id==='kid-suyeon'?6+seed%7:id==='kid-suhyeon'?20+seed%21:rabbit||bori?25+seed%21:15+seed%16,phase=seed%period;
     const time=seconds+phase;return {period,beat:Math.floor(time/period),elapsed:time%period,rest:bori?10+seed%5:rabbit?3+seed%3:seed%3};
   }
   const residentAffectionVoice=Object.freeze({
@@ -2476,7 +3541,7 @@
   // Compact atlas fallback also works with a cached, pre-resident manifest.
   // The approved entries in manifest-v3.json remain the asset source of truth.
   function residentAtlas(person){const poses=person.pet?['sitting','standing',...(person.id==='pet-rabbit'?['hop-a','hop-b']:['walk-a','walk-b']),'sleep']:['standing','sitting','walk-a','walk-b'];return {id:person.id,file:person.sprite+'.webp',scale:3,cell:[96,144],atlas:person.pet?[480,288]:[768,768],frames:(person.pet?['left','right']:['']).flatMap((direction,row)=>poses.map((pose,col)=>({name:pose+(direction?'-'+direction:''),rect:[col*96,row*144,96,144],pivot:[48,135]})))}}
-  const residents=Object.freeze({names:residentNames,people:residentPeople,companions:companionPeople,companionSnapshot,companionAtlas,companionReactions,companionSafe,seed:residentSeed,clock:residentClock,rhythm:residentRhythm,motion:petMotion,route:petRoute,ease:petEase,facing:petFacing,life:residentLife,affection:residentAffection,affectionVoice:residentAffectionVoice,voice:residentVoice,snapshot:residentSnapshot,safe:residentSafe,spot:residentSpot,path:residentPath,atlas:residentAtlas,bounds:residentBounds,trio:residentTrio,trioLines:residentTrioLines,trioChat:residentTrioChat,furniture:residentFurniture});
+  const residents=Object.freeze({names:residentNames,people:residentPeople,companions:companionPeople,kidsVisitLines,createKidsVisits,companionSnapshot,companionAtlas,companionReactions,companionSafe,seed:residentSeed,clock:residentClock,rhythm:residentRhythm,motion:petMotion,route:petRoute,ease:petEase,facing:petFacing,life:residentLife,affection:residentAffection,affectionVoice:residentAffectionVoice,voice:residentVoice,snapshot:residentSnapshot,safe:residentSafe,spot:residentSpot,path:residentPath,atlas:residentAtlas,bounds:residentBounds,trio:residentTrio,trioLines:residentTrioLines,trioChat:residentTrioChat,furniture:residentFurniture});
   // Read-only app signals; the caller installs one shared passive input callback
   // and reuses the office update/visibility cycle. No persistence or timer.
   function createPresence({now,locked,visible,override}){
@@ -2688,7 +3753,7 @@
     for(let i=0;i<rows.length;i++)if(rows[i].actor.dataset.resident)groups[i].nameOnly=groups[i].name;
     // Reserve the separate mascot owner's actual visible sprite boxes.
     const obstacles=[];
-    if(compact&&!actorBubble.hidden&&actors.get(bubblePerson)?.dataset.companion==='true'){const b=actorBubble.getBoundingClientRect();if(b.width&&b.height)obstacles.push(b)}
+    if(compact&&!actorBubble.hidden&&(actors.get(bubblePerson)?.dataset.companion==='true'||bubbleSelection?.kidsVisit||bubbleSelection?.staffChat)){const b=actorBubble.getBoundingClientRect();if(b.width&&b.height)obstacles.push(b)}
     for(const node of root.querySelectorAll('.hani-desk-mascots:not([hidden]) .hani-desk-mascot[data-ready="true"]')){const r=HaniBuildingScene.motion.stableMascotBox(node,floor);if(r.width&&r.height)obstacles.push(r)}
     const placements=HaniBuildingScene.labels.place(floor,groups,obstacles);
     for(const {actor}of rows)if(compact||actor.dataset.resident)actor.dataset.labelMode=actor.dataset.resident?'name':placements.get(actor.dataset.person)?.dot?'dot':placements.get(actor.dataset.person)?.mode||'pill';
@@ -2697,6 +3762,13 @@
       const node=rows[i][kind],base=compact&&placements.get(groups[i].id)?.dot?node.getBoundingClientRect():compact&&placements.get(groups[i].id)?.mode==='name'&&kind==='name'?groups[i].nameOnly:groups[i][kind],p=rows[i].actor.dataset.resident&&placements.get(groups[i].id)?.dot?null:placements.get(groups[i].id)?.[kind];
       node.officeLabelPlacement=p?{dx:p.left-base.left,dy:p.top-base.top}:null;node.style.visibility=p?'':'hidden';
       if(p){node.style.setProperty('--'+kind+'-x',(p.left-base.left)+'px');node.style.setProperty('--'+kind+'-y',(p.top-base.top)+'px')}
+    }
+    // PC bubble exclusion reuses this batch's sprite and final label boxes; zero extra layout reads.
+    if(!compact)for(let i=0;i<rows.length;i++){
+      const group=groups[i],p=placements.get(group.id),boxes=[group.actor,group.sprite,p?.name?{...p.name,width:group.name.width,height:group.name.height}:null,p?.status?{...p.status,width:group.status.width,height:group.status.height}:null].filter(Boolean);
+      rows[i].actor.officeBubbleBox={left:Math.min(...boxes.map(b=>b.left))-floor.left,right:Math.max(...boxes.map(b=>b.left+b.width))-floor.left,top:Math.min(...boxes.map(b=>b.top))-floor.top,bottom:Math.max(...boxes.map(b=>b.top+b.height))-floor.top};
+      const cached=actorBubble.officeFollow;
+      if(!actorBubble.hidden&&cached?.person===group.id){cached.pcBox=rows[i].actor.officeBubbleBox;cached.position=rows[i].actor.officePosition?.slice()||[0,0];cached.left=group.actor.left-floor.left+group.actor.width/2-cached.bw/2;fitBubble(true)}
     }
     // Readiness is committed only after every label's offset and visibility.
     map.dataset.labelsReady=map.dataset.floor;map.dataset.labelsAt=String(Date.now());
@@ -2749,6 +3821,7 @@
   function bubbleDuration(ms=3000){return globalThis.innerWidth<=480?Math.max(5000,ms):ms}
   function autoBubbleQuiet(){return reduced||document.hidden||!sceneVisible()||!actorBubble.hidden||Date.now()-lastBubbleTap<5000||!document.getElementById('app')||document.getElementById('app').classList.contains('login-locked')}
   function scheduleFloorBubble(){
+    if(staffChats?.current())return;
     if(!autoBubbleEntry||map.dataset.art==='loading'||!sceneVisible())return;
     autoBubbleEntry=false;
     if(autoBubbleQuiet()||Date.now()-(autoBubbleFloors.get(activeFloor)??-Infinity)<60000)return;
@@ -2774,6 +3847,7 @@
   }
   function actionRunning(actor){return meeting||!!actor.officeTravel||actor.dataset.walking==='true'||!!actor.dataset.event||actor.dataset.action&&actor.dataset.action!=='base-work'}
   function bubbleText(actor){
+    if(bubbleSelection?.kidsVisit||bubbleSelection?.staffChat)return bubbleSelection.name+' · '+bubbleSelection.line;
     if(bubbleSelection?.affinity)return actor.dataset.name+' · '+bubbleSelection.line;
     if(actor.dataset.resident)return actor.dataset.name+' · '+(bubbleSelection?.line||actor.dataset.line);
     if(bubbleSelection&&(bubbleSelection.drama||bubbleSelection.ownerEvent||!actionRunning(actor))){const speaker=actors.get(bubbleSelection.speaker);return (speaker?.dataset.name||actor.dataset.name)+' · '+actor.querySelector('.hani-office-status').dataset.full+' · '+bubbleSelection.line}
@@ -2783,21 +3857,25 @@
     const cached=actorBubble.officeFollow,personNow=actors.get(bubblePerson);
     if(follow){
       if(actorBubble.hidden||!cached||cached.person!==bubblePerson||!personNow?.officePosition)return;
-      const [x,y]=personNow.officePosition,left=Math.max(4,Math.min(cached.width-cached.bw-4,cached.left+(x-cached.position[0])*cached.width/100)),top=Math.max(4,Math.min(cached.height-cached.bh-4,cached.top+(y-cached.position[1])*cached.height/100));
+      const [x,y]=personNow.officePosition,dy=(y-cached.position[1])*cached.height/100,left=Math.max(4,Math.min(cached.width-cached.bw-(cached.pcBox?6:4),cached.left+(x-cached.position[0])*cached.width/100)),above=(cached.pcBox?.top??0)+dy-cached.bh-6,top=cached.pcBox?(above>=4?above:cached.pcBox.bottom+dy+6):Math.max(4,Math.min(cached.height-cached.bh-4,cached.top+dy));
       if(actorBubble.style.left!==left+'px')actorBubble.style.left=left+'px';if(actorBubble.style.top!==top+'px')actorBubble.style.top=top+'px';return;
     }
     if(actorBubble.hidden)return;
+    // Fix PC shrink-to-fit width before the existing read batch; moving the slot must not rewrap its text.
+    const compact=matchMedia('(max-width:600px)').matches;actorBubble.style.width=compact?'':'max-content';
     const person=actors.get(bubblePerson),floor=map.getBoundingClientRect?.();
     if(actorBubble.dataset.zoom==='true'&&floor?.height)actorBubble.style.setProperty('--bubble-max-height',Math.max(0,floor.height-8)+'px');
     const bubble=actorBubble.getBoundingClientRect?.(),actor=person?.getBoundingClientRect?building.motion.stableActorBox(person):null;
     if(!floor?.width||!bubble?.width||!actor)return;
-    const left=Math.max(4,Math.min(floor.width-bubble.width-4,actor.left-floor.left+actor.width/2-bubble.width/2));
-    const top=Math.max(4,Math.min(floor.height-bubble.height-4,actor.top-floor.top-bubble.height-6));
-    actorBubble.officeFollow={person:bubblePerson,position:person.officePosition?.slice()||[0,0],left:actor.left-floor.left+actor.width/2-bubble.width/2,top:actor.top-floor.top-bubble.height-6,width:floor.width,height:floor.height,bw:bubble.width,bh:bubble.height};
+    const left=Math.max(4,Math.min(floor.width-bubble.width-(compact?4:6),actor.left-floor.left+actor.width/2-bubble.width/2));
+    const pcBox=compact?null:person.officeBubbleBox,above=(pcBox?.top??actor.top-floor.top)-bubble.height-6;
+    const top=pcBox?(above>=4?above:pcBox.bottom+6):Math.max(4,Math.min(floor.height-bubble.height-4,actor.top-floor.top-bubble.height-6));
+    actorBubble.officeFollow={person:bubblePerson,position:person.officePosition?.slice()||[0,0],left:actor.left-floor.left+actor.width/2-bubble.width/2,top:actor.top-floor.top-bubble.height-6,width:floor.width,height:floor.height,bw:bubble.width,bh:bubble.height,pcBox};
     actorBubble.style.left=left+'px';actorBubble.style.top=top+'px';
   }
   function closeBubble(clearPending=true,explicit=false){
     if(explicit){
+      kidsVisits.cancel(new Date());staffChats?.cancel(new Date());
       lastBubbleTap=Date.now();autoBubbleEntry=false;
       // A viewer dismissal also consumes this automatic trio window. Otherwise
       // the next 100ms resident sample can immediately reopen the same bubble.
@@ -2816,10 +3894,19 @@
     bubbleSprite.style.setProperty('--bubble-sprite-ratio',String(entry.cell[0]/entry.cell[1]));
     bubbleSprite.dataset.pose=actor.dataset.pose;
   }
-  function showBubble(actor,selection,duration=3000,automatic=false){showAffinity(actor.dataset.person,selection?.affinity||(!automatic?actor.officeAffinityTap:null));actor.officeAffinityTap=null;bubblePerson=actor.dataset.person;bubbleSelection=selection;updateBubbleSprite(actor,automatic);actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=!!actor.dataset.resident||actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);if(actor.dataset.companion==='true'){fitBubble();fitStatusLabels()}else{fitStatusLabels();fitBubble()}const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;const next=selection?.residentTrio?.lines[selection.trioIndex+1],speaker=next&&actors.get(next.id);if(speaker&&!speaker.hidden&&selection.residentTrio.key===building.residents.clock(new Date()).day+'|'+Math.floor(building.residents.clock(new Date()).seconds/900))showBubble(speaker,{speaker:next.id,line:next.line,resident:true,residentTrio:selection.residentTrio,trioIndex:selection.trioIndex+1},duration,automatic);else closeBubble(globalThis.innerWidth<=480)}},bubbleDuration(duration))}
+  function showBubble(actor,selection,duration=3000,automatic=false){showAffinity(actor.dataset.person,selection?.affinity||(!automatic?actor.officeAffinityTap:null));actor.officeAffinityTap=null;bubblePerson=actor.dataset.person;bubbleSelection=selection;updateBubbleSprite(actor,automatic);actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=!!actor.dataset.resident||actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);if(actor.dataset.companion==='true'&&matchMedia('(max-width:600px)').matches){fitBubble();fitStatusLabels()}else{fitStatusLabels();fitBubble()}const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;const next=selection?.residentTrio?.lines[selection.trioIndex+1],speaker=next&&actors.get(next.id);if(speaker&&!speaker.hidden&&selection.residentTrio.key===building.residents.clock(new Date()).day+'|'+Math.floor(building.residents.clock(new Date()).seconds/900))showBubble(speaker,{speaker:next.id,line:next.line,resident:true,residentTrio:selection.residentTrio,trioIndex:selection.trioIndex+1},duration,automatic);else closeBubble(globalThis.innerWidth<=480)}},selection?.kidsVisit||selection?.staffChat?duration:bubbleDuration(duration))}
   function openBubble(actor,automatic=false,event=null){
     if(!automatic){lastBubbleTap=Date.now();autoBubbleEntry=false;clearBubbleTimer()}
     if(actor.hidden)return;
+    if(!automatic){
+      const now=new Date();
+      if(actor.dataset.person?.startsWith('kid-')){
+        const states=residentSlots.map(p=>actors.get(p.id)).filter(a=>!a.hidden).map(a=>a.officeResidentState).filter(Boolean);
+        const visit=kidsVisits.request(now,floorSnapshot,states,actor.dataset.person,reduced);
+        if(visit){pendingTap=null;closeBubble();updateResidents(now);return}
+      }
+      kidsVisits.cancel(now);staffChats?.cancel(now);
+    }
     const result=automatic||actor.dataset.companion==='true'?null:affinity.tap(actor.dataset.person,event);
     if(result?.line){
       pendingTap=null;const person=residentSlots.find(p=>p.id===actor.dataset.person);
@@ -2831,7 +3918,7 @@
       const affection=actor.officeResidentState?.affection;
       if(affection){pendingTap=null;showBubble(actor,{speaker:actor.dataset.person,line:affection.line,resident:true},3000,automatic);return}
       if(!automatic&&actor.dataset.resident==='pet'&&actor.dataset.companion!=='true'){const now=new Date(),trio=building.residents.trio(now,residentSlots.map(p=>actors.get(p.id)).filter(a=>!a.hidden).map(a=>a.officeResidentState).filter(Boolean),floorSnapshot);if(trio){pendingTap=null;updateResidents(now);const first=trio.lines[0];showBubble(actors.get(first.id),{speaker:first.id,line:first.line,resident:true,residentTrio:trio,trioIndex:0});return}}
-      const person=residentSlots.find(p=>p.id===actor.dataset.person),index=actor.officeResidentTap||0;actor.officeResidentTap=index+1;pendingTap=null;if(!reduced){if(person.pet&&!automatic)actor.officeReactions.reset();actor.officeReactions.request(person.pet?'hop':'tap',Date.now(),true)}showBubble(actor,{speaker:person.id,line:actor.officeResidentState?.scene?.line||person.lines[index%person.lines.length],resident:true},3000,automatic);return}
+      const person=residentSlots.find(p=>p.id===actor.dataset.person),index=actor.officeResidentTap||0;actor.officeResidentTap=index+1;pendingTap=null;if(!reduced){if(person.pet&&!automatic)actor.officeReactions.reset();actor.officeReactions.request(person.pet?'hop':'tap',Date.now(),true)}showBubble(actor,{speaker:person.id,line:!automatic&&person.companion?person.lines[index%person.lines.length]:actor.officeResidentState?.scene?.line||person.lines[index%person.lines.length],resident:true},3000,automatic);return}
     if(!reduced)actor.officeReactions.request('tap',Date.now());
     pendingTap=null;const now=new Date(),floor=activeFloor,options={floor,chairmanPresent:officePresence.read().chairmanPresent},selection=tapLines.tap(actor.dataset.person,now,options);
     if(!automatic&&selection&&!selection.drama&&actionRunning(actor))pendingTap={actor,selection,floor:activeFloor};
@@ -3244,7 +4331,8 @@
     if(day!==cancelledDay){cancelled=new Set();cancelledDay=day}
     const presence=officePresence.read();
     cancelScheduledDuringMeeting(now);
-    floorSnapshot=building.snapshot(now,{...presence,reducedMotion:reduced,cancelled,summoned:meeting?selectedAgents():[]});
+    const staffChat=staffChats?.update(now,{...presence,blocked:!!meeting||!!activeEvent||!!kidsVisits.current()||!sceneVisible()||document.hidden||Date.now()-lastBubbleTap<5000||!actorBubble.hidden&&!bubbleSelection?.staffChat});
+    floorSnapshot=building.snapshot(now,{...presence,reducedMotion:reduced,cancelled,summoned:meeting?selectedAgents():[],staffChat});
     presenceNote.textContent=floorSnapshot.presenceNote||'';presenceNote.hidden=!floorSnapshot.presenceNote;
     for(const floor of floorSnapshot.floors){const button=floorButtons.get(floor.id),selected=floor.id===activeFloor;button.setAttribute("aria-selected",String(selected));button.tabIndex=selected?0:-1;button.querySelector("small").textContent=`근무 ${floor.work} · 휴식 ${floor.rest}`}
     const floor=floorSnapshot.floors.find(f=>f.id===activeFloor),selected=meeting&&activeFloor==="2f"?selectedAgents():null;
@@ -3263,7 +4351,7 @@
     for(const entry of plannedRows)entry.row.hidden=entry.floor!==activeFloor;
     // Reuse the scheduler's exact formal/outing legs; never predict a route.
     const formal=building.scheduler&&!meeting?building.scheduler.plan(day,presence):[];
-    const scheduled=building.scheduler&&!meeting?[...formal,...building.scheduler.blockPlan(day,Math.floor(floorSnapshot.seconds/600),formal,presence)]:[];
+    const scheduled=building.scheduler&&!meeting?[...formal,...building.scheduler.blockPlan(day,Math.floor(floorSnapshot.seconds/600),formal,presence),...(staffChat?[staffChat]:[])]:[];
     const midnight=Date.parse(day+'T00:00:00+09:00');
     for(const actor of actors.values()){if(actor.dataset.resident)continue;actor.officeWasVisible=!actor.hidden;actor.hidden=true;actor.officeRow.hidden=true;actor.dataset.called="false"}
     for(const p of entries){const actor=actors.get(p.id);if(!actor||!p.seat)continue;actor.hidden=false;actor.officeRow.hidden=false;actor.dataset.activity=p.activity;actor.dataset.plain=String(Boolean(p.plain&&!selected&&!meeting));
@@ -3302,12 +4390,15 @@
     fitStatusLabels();fitBubble();
     scheduleFloorBubble();
   }
+  const kidsVisits=building.residents.createKidsVisits();
+  const staffChats=building.scheduler?.createStaffChats();
   function updateResidents(now){
     if(!residentSlots.length)return;
     const existing=building.residents.snapshot(now,floorSnapshot,true,reduced),states=[...existing,...building.residents.companionSnapshot(now,floorSnapshot,true,reduced,existing)];let changed=false;
+    const visit=kidsVisits.update(now,floorSnapshot,states,reduced);
     for(const person of residentSlots){
       const actor=actors.get(person.id),state=states.find(p=>p.id===person.id&&p.floor===activeFloor),wasVisible=!actor.hidden;
-      if(!state){delete actor.officePetFloor;if(wasVisible){actor.hidden=true;clearMotion(actor);if(bubblePerson===person.id)closeBubble();changed=true}continue}
+      if(!state){delete actor.officePetFloor;delete actor.officeKidReaction;if(wasVisible){actor.hidden=true;clearMotion(actor);if(bubblePerson===person.id)closeBubble();changed=true}continue}
       const prior=actor.officeResidentState,walking=String(state.walking),moved=!prior||prior.position[0]!==state.position[0]||prior.position[1]!==state.position[1],turned=!prior||prior.facing!==state.facing,posed=!prior||prior.pose!==state.pose;
       if(person.pet&&state.pose==='sleep'&&(!wasVisible||prior?.pose!=='sleep'))clearMotion(actor);
       if(!wasVisible){actor.hidden=false;changed=true}
@@ -3319,10 +4410,10 @@
       if(!prior||prior.anchor!==state.anchor)actor.officeAnchor=state.anchor;
       if(moved)place(actor,state.position);
       if(posed||turned)applyPose(actor,state.pose);
-      if(person.pet){
+      if(person.pet||person.kid){
         // One entrance greeting uses the existing reaction queue and clock.
         // Walking defers it until arrival; hidden floors never consume it.
-        if(!person.companion&&actor.officePetFloor!==activeFloor){actor.officePetFloor=activeFloor;if(!reduced&&state.pose!=='sleep'&&sceneVisible())actor.officeReactions.request('hop',now.getTime()+1000*(1+['pet-cat','pet-dog','pet-rabbit','pet-bori'].indexOf(person.id)))}
+        if(person.pet&&!person.companion&&actor.officePetFloor!==activeFloor){actor.officePetFloor=activeFloor;if(!reduced&&state.pose!=='sleep'&&sceneVisible())actor.officeReactions.request('hop',now.getTime()+1000*(1+['pet-cat','pet-dog','pet-rabbit','pet-bori'].indexOf(person.id)))}
         const values=state.motion&&!reduced?[state.motion.bob.toFixed(3)+'px',state.motion.lean.toFixed(3)+'deg',state.motion.spin.toFixed(3)+'deg']:['0px','0deg','0deg'];
         for(const [i,key]of ['--pet-bob','--pet-lean','--pet-spin'].entries())if((actor.style.getPropertyValue?.(key)??actor.style[key])!==values[i])actor.style.setProperty(key,values[i]);
         const gesture=state.motion?.paused?state.motion.kind:'';if((actor.dataset.petPause||'')!==gesture){if(gesture)actor.dataset.petPause=gesture;else delete actor.dataset.petPause}
@@ -3335,17 +4426,47 @@
         actor.officeHeart.hidden=!affection;
         if(affection){actor.officeHeart.textContent=affection.heart;actor.dataset.affection=affection.kind;actor.style.setProperty('--affection-lean',affection.lean+'deg')}
         else delete actor.dataset.affection;
-        if(affection?.bubble&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)showBubble(actor,{speaker:person.id,line:affection.line,resident:true},3000,true);
+        if(affection?.bubble&&!staffChats?.current()&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)showBubble(actor,{speaker:person.id,line:affection.line,resident:true},3000,true);
       }
       const line=affection?.line||state.scene?.line||person.lines[0];
-      if(actor.dataset.line!==line){actor.dataset.line=line;actor.querySelector('.hani-office-status').dataset.full=line;if(bubblePerson===person.id&&!bubbleSelection?.affinity&&(!person.companion||autoBubbleEntry)){bubbleSelection={speaker:person.id,line,resident:true};bubbleLine.textContent=bubbleText(actor)}}
-      if(state.scene&&actor.officeResidentScene!==state.scene.key){actor.officeResidentScene=state.scene.key;if(actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)showBubble(actor,{speaker:person.id,line:state.scene.line,resident:true})}
-      if(state.reaction&&root.officeCompanionReaction!==state.reaction.key&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000){const speaker=actors.get(state.reaction.id);if(speaker&&!speaker.hidden){root.officeCompanionReaction=state.reaction.key;showBubble(speaker,{speaker:state.reaction.id,line:state.reaction.line},3000,true)}}
+      if(actor.dataset.line!==line){actor.dataset.line=line;actor.querySelector('.hani-office-status').dataset.full=line;if(bubblePerson===person.id&&!bubbleSelection?.affinity&&!bubbleSelection?.kidsVisit&&!bubbleSelection?.staffChat&&(!person.companion||autoBubbleEntry)){bubbleSelection={speaker:person.id,line,resident:true};bubbleLine.textContent=bubbleText(actor)}}
+      // Patrol greetings and siblings take turns on this same slot; a busy bubble
+      // leaves each child's line pending instead of consuming it unseen.
+      if(person.kid&&state.reaction?.key.includes('|kids|')&&root.officeCompanionReaction!==state.reaction.key&&actor.officeKidReaction?.key!==state.reaction.key)actor.officeKidReaction={...state.reaction,floor:activeFloor,expires:now.getTime()+20000};
+      if(actor.officeKidReaction&&(actor.officeKidReaction.floor!==activeFloor||now.getTime()>actor.officeKidReaction.expires))delete actor.officeKidReaction;
+      if(person.kid&&visit){delete actor.officeKidReaction;if(moved&&bubblePerson===person.id)fitBubble(true);if(moved&&matchMedia('(max-width:600px)').matches)changed=true;continue}
+      const reaction=actor.officeKidReaction||state.reaction;
+      if(reaction&&root.officeCompanionReaction!==reaction.key&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000){const speaker=actors.get(reaction.id);if(speaker&&!speaker.hidden){root.officeCompanionReaction=reaction.key;delete actor.officeKidReaction;showBubble(speaker,{speaker:reaction.id,line:reaction.line},3000,true)}}
+      if(!staffChats?.current()&&state.scene&&actor.officeResidentScene!==state.scene.key&&(!state.scene.patrol||Date.now()>=state.scene.notBefore&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)){actor.officeResidentScene=state.scene.key;if(actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)showBubble(actor,{speaker:person.id,line:state.scene.line,resident:true},3000,!!state.scene.patrol)}
       if(moved&&bubblePerson===person.id){fitBubble(true);if(person.companion&&matchMedia('(max-width:600px)').matches)changed=true}
     }
+    if(visit?.line&&visit.floor===activeFloor&&sceneVisible()&&!document.hidden){
+      const key=visit.key+'|'+visit.index;
+      if(root.officeKidsVisitLine!==key){
+        const speaker=actors.get(visit.line.id),barista=visit.line.id===visit.actorId&&['iseul','eunha'].includes(visit.actorId);
+        if(speaker&&!speaker.hidden||barista&&!baristaButton.hidden){
+          root.officeKidsVisitLine=key;
+          const selection={speaker:visit.line.id,name:visit.line.name,line:visit.line.text,kidsVisit:true,ownerEvent:true};
+          if(barista){closeBubble();bubbleSelection=selection;bubbleLine.textContent=visit.line.name+' · '+visit.line.text;bubbleSprite.hidden=true;actorBubble.dataset.zoom='false';actorBubble.officeFollow=null;profileLink.hidden=true;actorBubble.style.left='4px';actorBubble.style.top='4px';actorBubble.hidden=false;const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial)closeBubble()},2200)}
+          else showBubble(speaker,selection,2200,true);
+        }
+      }
+    }
+    const chat=staffChats?.current(),seconds=(now.getTime()-Date.parse(floorSnapshot.day+'T00:00:00+09:00'))/1000;
+    if(chat&&chat.staffChat.floor===activeFloor&&seconds>=chat.performStart&&seconds<chat.performEnd&&!chat.staffChat.cancelled&&!visit&&!activeEvent&&sceneVisible()&&!document.hidden){
+      const index=Math.floor((seconds-chat.performStart)/2.2),line=chat.staffChat.lines[index],key=chat.id+'|'+index;
+      if(line&&root.officeStaffChatLine!==key&&(actorBubble.hidden||bubbleSelection?.staffChat)){
+        const id=chat.staffChat[line.speaker+'Id'],speaker=actors.get(id),barista=['iseul','eunha'].includes(id);
+        if(speaker&&!speaker.hidden||barista&&!baristaButton.hidden){
+          root.officeStaffChatLine=key;const selection={speaker:id,name:chat.staffChat[line.speaker],line:line.text,staffChat:true,ownerEvent:true};
+          if(barista){closeBubble();bubbleSelection=selection;bubbleLine.textContent=selection.name+' · '+line.text;bubbleSprite.hidden=true;actorBubble.dataset.zoom='false';actorBubble.officeFollow=null;profileLink.hidden=true;actorBubble.style.left='4px';actorBubble.style.top='4px';actorBubble.hidden=false;const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial)closeBubble()},2200);fitStatusLabels()}
+          else showBubble(speaker,selection,2200,true);
+        }
+      }
+    }else if(bubbleSelection?.staffChat)closeBubble();
     const pets=states.filter(p=>p.pet&&p.floor===activeFloor),clock=building.residents.clock(now),trioBeat=clock.day+'|'+Math.floor(clock.seconds/120);
     const trioLines=building.residents.trioChat(pets);
-    if(trioLines&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000&&root.officeTrioBeat!==trioBeat){
+    if(!visit&&!chat&&trioLines&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000&&root.officeTrioBeat!==trioBeat){
       root.officeTrioBeat=trioBeat;const trio={key:clock.day+'|'+Math.floor(clock.seconds/900),lines:trioLines},first=trio.lines[0];
       showBubble(actors.get(first.id),{speaker:first.id,line:first.line,resident:true,residentTrio:trio,trioIndex:0},3000,true);
     }
