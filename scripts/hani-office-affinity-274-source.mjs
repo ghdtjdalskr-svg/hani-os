@@ -1,3 +1,4 @@
+import {restoreCompanions276Source} from './hani-office-companions-276-source.mjs';
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
@@ -11,6 +12,7 @@ assert.deepEqual(affinity274Delta.files.map(r=>r.beforeSha256),["66d5b20204569b8
 // Strict outer layer: 275 -> 274 -> 273 -> 272 -> 269 -> 268; no moving refs.
 export function restoreAffinity274Source(source,file='hani-office-live.js'){
  const row=affinity274Delta.files.find(r=>r.file===file);assert.ok(row,'authored affinity file');
+ if(['hani-office-live.js','hani-office-live.css'].includes(file)&&hash(source)!==row.afterSha256)source=restoreCompanions276Source(source,file);
  if(file==='hani-ui-v02992.js'&&hash(source)!==row.afterSha256)source=restoreHelper275Source(source,file);
  assert.equal(hash(source),row.afterSha256,'only authored affinity bytes accepted: '+file);
  for(const r of row.replacements){assert.equal(source.split(r.after).length-1,1,'unique affinity pair: '+r.name);source=source.replace(r.after,r.before)}

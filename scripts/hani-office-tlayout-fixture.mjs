@@ -1,3 +1,4 @@
+import {restoreCompanions276Source} from './hani-office-companions-276-source.mjs';
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
@@ -12,6 +13,7 @@ export function applyTlayoutCanon(expected){
  return expected;
 }
 export function restoreTlayoutSource(source){
+ if(hash(source)!==tlayoutDelta.source.afterSha256)source=restoreCompanions276Source(source);
  assert.equal(hash(source),tlayoutDelta.source.afterSha256,'only the approved G source is accepted');
  source=restoreTlayoutPairs(source);
  assert.equal(hash(source),tlayoutDelta.source.beforeSha256,'every source byte before G restored');return source;
