@@ -3,10 +3,11 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
+import {restoreBarista273Source} from './hani-office-barista-night-273-source.mjs';
 import {bori272Delta as delta,restoreBori272Source} from './hani-office-pet-bori-272-source.mjs';
 import {restoreXmas269Source,xmas269Delta} from './hani-office-xmas-269-source.mjs';
 import {restorePets268Source,pets268Delta} from './hani-office-pets-268-source.mjs';
-const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
+const read=f=>{const source=fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');return ['hani-office-live.js','hani-office-live.css'].includes(f)?restoreBarista273Source(source,f):source};
 const hash=x=>createHash('sha256').update(x).digest('hex');
 test('272: exact ordered pairs are the complete fixed-271 JS/CSS diff, rejecting all unlisted bytes',()=>{
  assert.equal(delta.version,'2.9.272');assert.deepEqual(delta.files.map(f=>[f.file,f.replacements.length]),[['hani-office-live.js',20],['hani-office-live.css',2]]);
@@ -29,11 +30,11 @@ test('272 -> 269 -> 268: all stacked source hashes and literal pairs remain enfo
  const source=read('hani-office-live.js');assert.equal(hash(restoreXmas269Source(source)),xmas269Delta.files[0].beforeSha256);assert.equal(hash(restorePets268Source(source)),pets268Delta.beforeSha256);
  assert.equal(hash(restoreXmas269Source(read('hani-office-live.css'),'hani-office-live.css')),xmas269Delta.files[1].beforeSha256);
 });
-test('272: only the literal release version 2.9.272 -> 2.9.271 is allowed in index/main',()=>{
- for(const pin of delta.unchangedRuntime){const current=read(pin.file),restored=current.replaceAll('2.9.272','2.9.271');assert.equal(hash(restored),pin.sha256);assert.equal(restored.split('2.9.271').length-1,pin.versionCount);assert.notEqual(hash(restored+'\n'),pin.sha256)}
+test('272: only the release version (2.9.272 or later) -> 2.9.271 is allowed in index/main',()=>{
+ for(const pin of delta.unchangedRuntime){const current=read(pin.file),restored=current.replace(/2\.9\.(27[2-9]|2[89]\d)\b/g,'2.9.271');assert.equal(hash(restored),pin.sha256);assert.equal(restored.split('2.9.271').length-1,pin.versionCount);assert.notEqual(hash(restored+'\n'),pin.sha256)}
 });
 test('272: fixed Git release blobs independently prove every baseline pin and complete diff',()=>{
  const opts={cwd:new URL('../',import.meta.url),encoding:'utf8',maxBuffer:32*1024*1024};
  for(const row of delta.files){const before=execFileSync('git',['show',delta.baseCommit+':'+row.file],opts);assert.equal(hash(before),row.beforeSha256);assert.equal(restoreBori272Source(read(row.file),row.file),before);let forward=before;for(const r of row.replacements){assert.equal(forward.split(r.before).length-1,1);forward=forward.replace(r.before,r.after)}assert.equal(forward,read(row.file))}
- for(const pin of delta.unchangedRuntime){const before=execFileSync('git',['show',delta.baseCommit+':'+pin.file],opts);assert.equal(hash(before),pin.sha256);assert.equal(read(pin.file).replaceAll('2.9.272','2.9.271'),before)}
+ for(const pin of delta.unchangedRuntime){const before=execFileSync('git',['show',delta.baseCommit+':'+pin.file],opts);assert.equal(hash(before),pin.sha256);assert.equal(read(pin.file).replace(/2\.9\.(27[2-9]|2[89]\d)\b/g,'2.9.271'),before)}
 });

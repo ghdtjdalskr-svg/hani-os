@@ -1,0 +1,75 @@
+{
+  "version": "2.9.273",
+  "baseCommit": "c338bdab8589676979f85e1a5626fca2af5b86d8",
+  "files": [
+    {
+      "file": "hani-office-live.js",
+      "beforeSha256": "60075ca9c2992c36db7237ca9945fa771c9106eddb09bfe6665c73cfebf1f067",
+      "afterSha256": "66d5b20204569b8a9039aef1406a3536f24ae2668d3b237a50770b282b391137",
+      "replacements": [
+        {
+          "name": "barista-night-273-01",
+          "before": "    clearBubbleTimer();bubbleSerial++;bubblePerson=null;bubbleSelection=null;if(clearPending)pendingTap=null;actorBubble.hidden=true;for(const actor of actors.values())actor.dataset.speaking='false';fitStatusLabels();\n",
+          "after": "    clearBubbleTimer();bubbleSerial++;bubblePerson=null;bubbleSelection=null;if(clearPending)pendingTap=null;actorBubble.hidden=true;for(const actor of actors.values())actor.dataset.speaking='false';fitStatusLabels();\n    if(baristaAwake){baristaAwake=false;updateBarista()}\n"
+        },
+        {
+          "name": "barista-night-273-02",
+          "before": "  let baristaTap=0;\r\n  function updateBarista(){baristaButton.hidden=activeFloor!=='1f'||map.dataset.art!=='floor'}\r\n",
+          "after": "  const baristaNightLines=['야근이세요? 따뜻한 걸로 드릴게요.','보리가 문 앞에서 지켜 줘서 든든해요.','조용한 밤엔 원두 향이 더 잘 느껴져요.','급하지 않아요. 잠깐 쉬었다 가세요.','디카페인도 따뜻하게 준비해 둘게요.','창밖 달빛이 오늘은 참 포근하네요.','늦은 시간까지 수고 많으셨어요.','아침까지 카페는 제가 지킬게요.'];\r\n  let baristaTap=0,baristaNightTap=0,baristaAwake=false;\r\n  function baristaClock(now=new Date()){const hour=koreaTime(now).getUTCHours();return {night:hour>=19||hour<7,dozing:hour>=2&&hour<7}}\r\n  function updateBarista(now=new Date()){\r\n    const clock=baristaClock(now),hidden=activeFloor!=='1f'||map.dataset.art!=='floor';baristaButton.hidden=hidden;\r\n    const label=clock.night?'은하 · 야간 카페':'바리스타 이슬 · 카페 운영 중';if(baristaButton.getAttribute('aria-label')!==label)baristaButton.setAttribute('aria-label',label);\r\n    baristaNight.hidden=hidden||!clock.night;\r\n    const frame=clock.dozing?(baristaAwake?3:2):1;if(baristaNight.dataset.frame!==String(frame)){baristaNight.dataset.frame=String(frame);baristaNight.style.backgroundPosition=((frame-1)*50)+'% 0'}\r\n  }\r\n"
+        },
+        {
+          "name": "barista-night-273-03",
+          "before": "    closeBubble();lastBubbleTap=Date.now();autoBubbleEntry=false;\r\n    bubbleSprite.hidden=true;actorBubble.dataset.zoom='false';actorBubble.officeFollow=null;\r\n    bubbleLine.textContent='바리스타 이슬 · '+(matchMedia('(max-width:600px)').matches?'카페운영':'카페 운영 중')+' · '+baristaLines[baristaTap++%baristaLines.length];\n    profileLink.hidden=true;actorBubble.style.left='4px';actorBubble.style.top='4px';actorBubble.hidden=false;\r\n    const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble()}},bubbleDuration());\r\n",
+          "after": "    const clock=baristaClock(),waking=clock.dozing&&!baristaAwake;\r\n    closeBubble();lastBubbleTap=Date.now();autoBubbleEntry=false;\r\n    baristaAwake=clock.dozing;updateBarista();\r\n    bubbleSprite.hidden=true;actorBubble.dataset.zoom='false';actorBubble.officeFollow=null;\r\n    bubbleLine.textContent=clock.night?'은하 · 야간 카페 · '+(waking?'앗, 회장님! 졸지 않았어요… 커피 드릴게요.':baristaNightLines[baristaNightTap++%baristaNightLines.length]):'바리스타 이슬 · '+(matchMedia('(max-width:600px)').matches?'카페운영':'카페 운영 중')+' · '+baristaLines[baristaTap++%baristaLines.length];\r\n    profileLink.hidden=true;actorBubble.style.left='4px';actorBubble.style.top='4px';actorBubble.hidden=false;\r\n    const serial=++bubbleSerial,duration=bubbleDuration();queueBubbleTimer(()=>{\r\n      if(serial!==bubbleSerial)return;\r\n      bubbleTimer=null;\r\n      if(baristaAwake){baristaAwake=false;updateBarista();if(duration>3000){queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble()}},duration-3000);return}}\r\n      closeBubble();\r\n    },baristaAwake?3000:duration);\r\n"
+        },
+        {
+          "name": "barista-night-273-04",
+          "before": "  // Approved four-frame art: one map-owned layer and persistent prop/event slots.\n",
+          "after": "  // Opaque 120x110 patch in the same art coordinates; below props and actors.\n  const baristaNight=document.createElement('span');baristaNight.className='hani-office-barista-night';baristaNight.setAttribute('aria-hidden','true');baristaNight.hidden=true;\n  baristaNight.style.left=(1500/(building.art?.width||1672)*100)+'%';baristaNight.style.top=(610/(building.art?.height||941)*100)+'%';baristaNight.style.width=(120/(building.art?.width||1672)*100)+'%';baristaNight.style.height=(110/(building.art?.height||941)*100)+'%';map.append(baristaNight);\n  // Approved four-frame art: one map-owned layer and persistent prop/event slots.\n"
+        },
+        {
+          "name": "barista-night-273-05",
+          "before": "map.dataset.art='loading';livePropLayer.hidden=true;monitorGlow.hidden=true;",
+          "after": "map.dataset.art='loading';baristaNight.hidden=true;livePropLayer.hidden=true;monitorGlow.hidden=true;"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-live.css",
+      "beforeSha256": "9506f017e5c01686f9c61225f0e7e41ee934dbbccf6985ea5daf9ee04d9c4e95",
+      "afterSha256": "f44a75e570705d2c8cc196213bece505eb6603d5c163475e9883341d53de7fff",
+      "replacements": [
+        {
+          "name": "barista-night-273-06",
+          "before": ".hani-office-barista:focus-visible{outline:2px solid #7656c4;outline-offset:0}\r\n",
+          "after": ".hani-office-barista:focus-visible{outline:2px solid #7656c4;outline-offset:0}\r\n.hani-office-barista-night{position:absolute;z-index:2;display:block;pointer-events:none;background-image:url(\"./assets/office-season/barista-night.webp\");background-size:300% 100%;background-repeat:no-repeat;animation:none}\r\n.hani-office-barista-night[hidden]{display:none}\r\n"
+        }
+      ]
+    }
+  ],
+  "unchangedRuntime": [
+    {
+      "file": "index.html",
+      "sha256": "f5ab6fcd4f6dec4d5c22f6b90a78115005b031668d3dcab12b98070a686f614d",
+      "versionCount": 60,
+      "normalizedSha256": "25d3ba26777ecc365e4f42a401c2e90d24c382102561fad9bbdbf538806c5e1d",
+      "normalizedVersionCount": 70
+    },
+    {
+      "file": "hani-main.js",
+      "sha256": "caa9d2d380bb8a395c503223d5a04b17935ff9c513260268052f31ee14c59170",
+      "versionCount": 1,
+      "normalizedSha256": "caa9d2d380bb8a395c503223d5a04b17935ff9c513260268052f31ee14c59170",
+      "normalizedVersionCount": 1
+    }
+  ],
+  "runtimeAdditions": [
+    {
+      "file": "assets/office-season/barista-night.webp",
+      "sha256": "01abff41b922b7d081389d5d0d0578ebe33a01177b5fb91645038609267febac",
+      "sizeBytes": 34896,
+      "width": 360,
+      "height": 110
+    }
+  ]
+}
