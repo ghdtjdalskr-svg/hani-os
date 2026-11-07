@@ -1,6 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import {createHash} from 'node:crypto';import {execFileSync} from 'node:child_process';
-import {patrol278Delta as delta,restorePatrol278Source as restore} from './hani-office-chairman-patrol-278-source.mjs';
-const hash=x=>createHash('sha256').update(x).digest('hex'),read=f=>fs.readFileSync(f,'utf8');
+import {patrol278Delta as delta,restorePatrol278Source as restore,projectPreKidsSource,restoreKids278Source} from './hani-office-chairman-patrol-278-source.mjs';
+const hash=x=>createHash('sha256').update(x).digest('hex'),read=f=>projectPreKidsSource(fs.readFileSync(f,'utf8'),f);
 test('278 exact complete ordered replacements reject missing, duplicate, unrelated and baseline bytes',()=>{
  assert.equal(delta.version,'2.9.278');assert.deepEqual(delta.files.map(r=>r.file),['hani-office-live.js','hani-office-live.css']);
  for(const row of delta.files){const current=read(row.file),before=restore(current,row.file);let forward=before,aEnd=0,bEnd=0;
@@ -12,3 +12,11 @@ test('278 exact complete ordered replacements reject missing, duplicate, unrelat
  assert.throws(()=>restore(read('hani-main.js'),'hani-main.js'));
 });
 test('278 independent fixed Git blobs prove pre-patrol bytes',()=>{for(const row of delta.files){const before=execFileSync('git',['show',delta.baseCommit+':'+row.file],{encoding:'utf8',maxBuffer:32*1024*1024});assert.equal(hash(before),row.beforeSha256);assert.equal(restore(read(row.file),row.file),before)}});
+
+test('278 kids extension strictly restores every authored 1066c57 byte and rejects mutations',()=>{
+ const row=delta.kidsExtension,current=fs.readFileSync(row.file,'utf8'),before=restoreKids278Source(current);let forward=before,aEnd=0,bEnd=0;
+ assert.equal(row.baseCommit,'1066c5749037c335c7af9a48a8fe8bf9633ae1a3');assert.equal(hash(before),'4afe5cd2164e9b0232aa728b685d5e60bc665cf1c2ef02ed85737c29a832b6f6');
+ for(const r of row.replacements){assert.ok(r.before.length&&r.after.length);assert.notEqual(r.before,r.after);assert.equal(before.split(r.before).length-1,1);assert.equal(current.split(r.after).length-1,1);const a=before.indexOf(r.before),b=current.indexOf(r.after);assert.ok(a>=aEnd&&b>=bEnd);aEnd=a+r.before.length;bEnd=b+r.after.length;forward=forward.replace(r.before,()=>r.after);assert.throws(()=>restoreKids278Source(current.replace(r.after,()=>r.before)));assert.throws(()=>restoreKids278Source(current+r.after));}
+ assert.equal(forward,current);for(const bad of [current+'\n',current.slice(1),before,current+current])assert.throws(()=>restoreKids278Source(bad));assert.throws(()=>restoreKids278Source(current,'hani-main.js'));
+});
+test('278 kids extension independently matches its fixed Git base',()=>{assert.equal(restoreKids278Source(fs.readFileSync('hani-office-live.js','utf8')),execFileSync('git',['show',delta.kidsExtension.baseCommit+':hani-office-live.js'],{encoding:'utf8',maxBuffer:32*1024*1024}))});

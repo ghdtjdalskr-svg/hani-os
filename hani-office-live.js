@@ -2175,8 +2175,8 @@
     {id:'companion-otter',name:'아기 수달',pet:true,atlasRow:2,lines:['회장님, 조개 선물이에요!','회장님 옆에서 냠냠해요.','회장님, 카페도 같이 가요!']},
     {id:'companion-chick',name:'병아리',pet:true,atlasRow:3,lines:['회장님, 삐약 출근했어요!','회장님 따라 통통통!','회장님, 제 날개도 쉬어요.']},
     {id:'companion-fox',name:'아기 여우',pet:true,atlasRow:4,lines:['회장님, 꼬리로 인사해요!','회장님 곁은 포근하네요.','회장님, 살금살금 갈게요!']},
-    {id:'kid-suhyeon',name:'수현',kid:true,atlasRow:0,lines:['…지금 말고.','가방? 그냥 들어 준 거야.','아빠, 얘 좀 떼 줘.']},
-    {id:'kid-suyeon',name:'수연',kid:true,atlasRow:1,lines:['아빠아아!','나 커서 아빠랑 결혼할 거야!','오빠는 맨날 아닌 척해!','아빠 손 꼭 잡고 갈래!','아빠랑 다니니까 제일 좋아!','아빠 여기여기! 나랑 같이 가!']}
+    {id:'kid-suhyeon',name:'수현',kid:true,atlasRow:0,lines:['…지금 말고.','가방? 그냥 들어 준 거야.','아빠, 얘 좀 떼 줘.','…거기 위험해.','옆에 있어 줄게. 책 읽으러 온 거지만.','이쪽이 조용해. 너도 와.']},
+    {id:'kid-suyeon',name:'수연',kid:true,atlasRow:1,lines:['아빠아아!','나 커서 아빠랑 결혼할 거야!','오빠는 맨날 아닌 척해!','아빠 손 꼭 잡고 갈래!','아빠랑 다니니까 제일 좋아!','아빠 여기여기! 나랑 같이 가!','아빠! 나 통통 뛰는 거 봐 봐!','저기까지 갔다가 꼭 돌아올게!','아빠 옆자리 찜! 내 자리야!','나 먼저 갈게! 아빠 오고 있지?']}
   ].map(p=>Object.freeze({...p,companion:true,sprite:p.id,lines:Object.freeze(p.lines)})));
   const companionReactions=Object.freeze([
     {id:'hani',line:'어머, 수연이 왔어?'},{id:'hani',line:'수현이는 오늘도 든든하네.'},
@@ -2246,7 +2246,65 @@
     if(weekend&&Math.floor(seconds)%180<5){
       const kids=states.filter(p=>p.kid);for(const row of companionReactions){const peer=people.find(p=>p.id===row.id&&!p.walking&&kids.some(k=>p.floor===k.floor&&Math.hypot(((p.position||[p.seat?.x,p.seat?.y])[0]-k.position[0])*art.width/100,((p.position||[p.seat?.x,p.seat?.y])[1]-k.position[1])*art.height/100)<380));if(peer){const kid=kids[0];kid.reaction={...row,key:day+'|'+Math.floor(seconds/180)};break}}
     }
+    // Extend the resident rhythm on the same snapshot/tick, after pets have their
+    // positions. The brother can see where his sister actually went this frame.
+    for(const id of ['kid-suyeon','kid-suhyeon']){
+      const child=states.find(p=>p.id===id);
+      if(child)companionActivity(child,chair,people,states,day,seconds,reduced,now);
+    }
     return states;
+  }
+  function companionActivity(child,chair,people,states,day,seconds,reduced,now){
+    const sister=child.id==='kid-suyeon',rhythm=residentRhythm(child.id,day,seconds),kind=(rhythm.beat%6+6)%6,home=child.position.slice(),center=chair.position||[chair.seat?.x,chair.seat?.y],floor=child.floor;
+    const at=p=>p.position||[p.seat?.x,p.seat?.y],distance=(a,b)=>Math.hypot((a[0]-b[0])*art.width/100,(a[1]-b[1])*art.height/100);
+    const safe=v=>companionSafe(floor,v,true)&&!people.concat(states).some(p=>p.id!==child.id&&p.floor===floor&&at(p).every(Number.isFinite)&&distance(v,at(p))<(p.id==='seongmin'?80:86));
+    const clear=(a,b)=>{const steps=Math.max(1,Math.ceil(distance(a,b)/12));for(let i=0;i<=steps;i++)if(!safe([a[0]+(b[0]-a[0])*i/steps,a[1]+(b[1]-a[1])*i/steps]))return false;return true};
+    let route=[home],partner,line,action=sister?['orbit','explore','bounce','wave','visit','wave'][kind]:['book','check','beside','book','check','beside'][kind];
+    const offset=(x,y)=>[home[0]+x/art.width*100,home[1]+y/art.height*100];
+    const excursion=target=>{if(target&&distance(home,target)>12&&clear(home,target)){route=[home,target,home];return true}return false};
+    if(chair.walking){
+      action=sister?'lead-look':'follow';
+      if(sister){
+        const ahead=(chair.facing==='left'?-1:1)*48;
+        excursion(offset(ahead,0));
+        // Keep following the chairman's live path; a brief glance uses idle,
+        // then walk resumes. No travel or event handler is installed on him.
+        if(rhythm.elapsed>rhythm.period*.72){child.facing=chair.facing==='left'?'right':'left';child.pose='standing';child.walking=false;}
+      }
+    }else if(sister&&kind===0){
+      const angle=Math.atan2((home[1]-center[1])*art.height,(home[0]-center[0])*art.width),rx=Math.max(100,Math.abs((home[0]-center[0])*art.width/100)),ry=Math.max(100,Math.abs((home[1]-center[1])*art.height/100)),circle=[home];
+      for(let i=1;i<=16;i++){const t=angle+i*Math.PI/8;circle.push([center[0]+Math.cos(t)*rx/art.width*100,center[1]+Math.sin(t)*ry/art.height*100]);}circle.push(home);
+      if(circle.every((v,i)=>!i||clear(circle[i-1],v)))route=circle;else action='bounce';
+    }else if(sister&&kind===1){
+      const stops=[...residentStops.values()].filter(p=>p.floor===floor&&/lounge|roof|front|quiet|garden/.test(p.id)&&distance(home,p.visual)<380).sort((a,b)=>distance(home,a.visual)-distance(home,b.visual));
+      if(!stops.some(p=>excursion(p.visual))){action='explore';[offset(110,20),offset(-110,20),offset(-40,100),offset(-60,80),offset(0,30)].some(excursion);}
+    }else if(sister&&kind===4){
+      const peers=people.concat(states).filter(p=>p.id!==child.id&&p.id!=='seongmin'&&!p.kid&&p.floor===floor&&!p.walking&&at(p).every(Number.isFinite)&&distance(home,at(p))<420).sort((a,b)=>distance(home,at(a))-distance(home,at(b)));
+      for(const peer of peers){const pos=at(peer),d=distance(home,pos),target=[pos[0]+(home[0]-pos[0])*110/Math.max(110,d),pos[1]+(home[1]-pos[1])*110/Math.max(110,d)];if(excursion(target)){partner=peer;break}}
+      if(!partner)action='wave';
+    }else if(!sister){
+      const other=states.find(p=>p.id==='kid-suyeon');
+      if(action==='check'&&other&&distance(home,other.position)>180){const d=distance(home,other.position);excursion([home[0]+(other.position[0]-home[0])*60/d,home[1]+(other.position[1]-home[1])*60/d]);line='…거기 위험해.';}
+      else [offset(kind%2?50:-50,20),offset(0,45),offset(0,-45)].some(excursion);
+    }
+    const duration=reduced?rhythm.period:Math.min(rhythm.period*.8,sister?6:9),progress=Math.min(1,rhythm.elapsed/duration),lengths=route.slice(1).map((v,i)=>distance(route[i],v)),length=lengths.reduce((a,b)=>a+b,0);
+    let cursor=progress*length,position=home,from=home,to=home;
+    for(let i=0;i<lengths.length;i++){if(cursor<=lengths[i]){from=route[i];to=route[i+1];const t=lengths[i]?cursor/lengths[i]:1,e=petEase(t);position=[from[0]+(to[0]-from[0])*e,from[1]+(to[1]-from[1])*e];break}cursor-=lengths[i];}
+    if(safe(position))child.position=position;
+    const moving=length>0&&progress<1&&!(chair.walking&&rhythm.elapsed>rhythm.period*.72);
+    if(moving){child.walking=!reduced;child.pose=reduced?'standing':Math.floor(seconds*4)%2?'walk-a':'walk-b';child.facing=to[0]<from[0]?'left':'right';}
+    if(!chair.walking&&!moving){child.walking=false;child.pose=sister&&action==='wave'?'sitting':sister||action==='beside'?'standing':'sitting';}
+    if(!reduced&&sister)child.motion={bob:action==='bounce'||moving?-Math.abs(Math.sin(seconds*9))*3:0,lean:action==='wave'?Math.sin(seconds*6)*3:0,spin:0};
+    if(reduced)delete child.motion;
+    child.activity={key:day+'|kids|'+child.id+'|'+rhythm.beat,kind:action,period:rhythm.period,elapsed:rhythm.elapsed,partnerId:partner?.id};
+    // Preserve patrol arrival greetings/cocoa/flowers first, then use the same
+    // pending bubble slot and tap cooldown for the children's short activities.
+    if(!chair.patrol||!chair.walking&&seconds-chair.patrolArrival>=25){
+      const animal={'companion-penguin':'펭귄','companion-frog':'개구리','companion-otter':'수달','companion-chick':'병아리','companion-fox':'여우','pet-cat':'치즈','pet-dog':'크림','pet-rabbit':'모찌','pet-bori':'보리'}[partner?.id];
+      line=line||(animal?animal+(/[가-힣]/.test(animal)&&((animal.charCodeAt(animal.length-1)-44032)%28)?'이다!!':'다!!'):sister?['아빠! 나 통통 뛰는 거 봐 봐!','저기까지 갔다가 꼭 돌아올게!','아빠 옆자리 찜! 내 자리야!','아빠! 손 흔드는 거 보여?','나 왔어! 같이 놀자!','아빠 오고 있지?'][kind]:['이쪽이 조용해. 너도 와.','…거기 위험해.','옆에 있어 줄게. 책 읽으러 온 거지만.'][kind%3]);
+      child.scene={key:child.activity.key,line,patrol:true,notBefore:now.getTime()-rhythm.elapsed*1000+1000};
+    }
+    if(partner&&!partner.pet&&!partner.resident&&!partner.companion&&!partner.visitor&&progress>.25)child.reaction={id:partner.id,line:'수연아, 반가워! 천천히 다녀와.',key:child.activity.key+'|hello'};
   }
   function residentSeed(value){let n=2166136261;for(const ch of value)n=Math.imul(n^ch.charCodeAt(0),16777619);return n>>>0}
   // The pets' day starts at 07:00. 22:00..26:00 is one continuous 1F window.
@@ -2261,7 +2319,7 @@
   });
   // Stable, staggered pet cycles; NPC quarters and the 07:00 day stay unchanged.
   function residentRhythm(id,day,seconds){
-    const seed=residentSeed('pet-rhythm|'+day+'|'+id),rabbit=id==='pet-rabbit',bori=id==='pet-bori',period=rabbit||bori?25+seed%21:15+seed%16,phase=seed%period;
+    const seed=residentSeed('pet-rhythm|'+day+'|'+id),rabbit=id==='pet-rabbit',bori=id==='pet-bori',period=id==='kid-suyeon'?6+seed%7:id==='kid-suhyeon'?20+seed%21:rabbit||bori?25+seed%21:15+seed%16,phase=seed%period;
     const time=seconds+phase;return {period,beat:Math.floor(time/period),elapsed:time%period,rest:bori?10+seed%5:rabbit?3+seed%3:seed%3};
   }
   const residentAffectionVoice=Object.freeze({
@@ -3350,7 +3408,7 @@
     const existing=building.residents.snapshot(now,floorSnapshot,true,reduced),states=[...existing,...building.residents.companionSnapshot(now,floorSnapshot,true,reduced,existing)];let changed=false;
     for(const person of residentSlots){
       const actor=actors.get(person.id),state=states.find(p=>p.id===person.id&&p.floor===activeFloor),wasVisible=!actor.hidden;
-      if(!state){delete actor.officePetFloor;if(wasVisible){actor.hidden=true;clearMotion(actor);if(bubblePerson===person.id)closeBubble();changed=true}continue}
+      if(!state){delete actor.officePetFloor;delete actor.officeKidReaction;if(wasVisible){actor.hidden=true;clearMotion(actor);if(bubblePerson===person.id)closeBubble();changed=true}continue}
       const prior=actor.officeResidentState,walking=String(state.walking),moved=!prior||prior.position[0]!==state.position[0]||prior.position[1]!==state.position[1],turned=!prior||prior.facing!==state.facing,posed=!prior||prior.pose!==state.pose;
       if(person.pet&&state.pose==='sleep'&&(!wasVisible||prior?.pose!=='sleep'))clearMotion(actor);
       if(!wasVisible){actor.hidden=false;changed=true}
@@ -3384,8 +3442,11 @@
       if(actor.dataset.line!==line){actor.dataset.line=line;actor.querySelector('.hani-office-status').dataset.full=line;if(bubblePerson===person.id&&!bubbleSelection?.affinity&&(!person.companion||autoBubbleEntry)){bubbleSelection={speaker:person.id,line,resident:true};bubbleLine.textContent=bubbleText(actor)}}
       // Patrol greetings and siblings take turns on this same slot; a busy bubble
       // leaves each child's line pending instead of consuming it unseen.
+      if(person.kid&&state.reaction?.key.includes('|kids|')&&root.officeCompanionReaction!==state.reaction.key&&actor.officeKidReaction?.key!==state.reaction.key)actor.officeKidReaction={...state.reaction,floor:activeFloor,expires:now.getTime()+20000};
+      if(actor.officeKidReaction&&(actor.officeKidReaction.floor!==activeFloor||now.getTime()>actor.officeKidReaction.expires))delete actor.officeKidReaction;
+      const reaction=actor.officeKidReaction||state.reaction;
+      if(reaction&&root.officeCompanionReaction!==reaction.key&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000){const speaker=actors.get(reaction.id);if(speaker&&!speaker.hidden){root.officeCompanionReaction=reaction.key;delete actor.officeKidReaction;showBubble(speaker,{speaker:reaction.id,line:reaction.line},3000,true)}}
       if(state.scene&&actor.officeResidentScene!==state.scene.key&&(!state.scene.patrol||Date.now()>=state.scene.notBefore&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)){actor.officeResidentScene=state.scene.key;if(actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)showBubble(actor,{speaker:person.id,line:state.scene.line,resident:true},3000,!!state.scene.patrol)}
-      if(state.reaction&&root.officeCompanionReaction!==state.reaction.key&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000){const speaker=actors.get(state.reaction.id);if(speaker&&!speaker.hidden){root.officeCompanionReaction=state.reaction.key;showBubble(speaker,{speaker:state.reaction.id,line:state.reaction.line},3000,true)}}
       if(moved&&bubblePerson===person.id){fitBubble(true);if(person.companion&&matchMedia('(max-width:600px)').matches)changed=true}
     }
     const pets=states.filter(p=>p.pet&&p.floor===activeFloor),clock=building.residents.clock(now),trioBeat=clock.day+'|'+Math.floor(clock.seconds/120);

@@ -2,11 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
-import {fixture} from './hani-building-206-engine.test.mjs';
+import {fixture as mountFixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
-import {restorePatrol278Source} from './hani-office-chairman-patrol-278-source.mjs';
+import {restorePatrol278Source,projectPreKidsSource} from './hani-office-chairman-patrol-278-source.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
-const {scene,table,context}=loadScene(),s=scene.scheduler,r=scene.residents,options={chairmanPresent:true},plain=x=>JSON.parse(JSON.stringify(x));
+// Frozen patrol contract remains exact; the lively extension has live tests.
+const fixture=(...args)=>{while(args.length<6)args.push(undefined);return mountFixture(...args,projectPreKidsSource)};
+const {scene,table,context}=loadScene({transform:projectPreKidsSource}),s=scene.scheduler,r=scene.residents,options={chairmanPresent:true},plain=x=>JSON.parse(JSON.stringify(x));
 const trips=day=>s.blockPlan(day,0,s.plan(day,options),options).filter(e=>e.patrol);
 const person=(day,seconds,o=options)=>s.snapshot(at(day,seconds),o).entries.find(p=>p.id==='seongmin');
 const staff=(day,seconds,o=options)=>scene.snapshot(at(day,seconds),o);
