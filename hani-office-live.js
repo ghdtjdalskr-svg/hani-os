@@ -2658,6 +2658,7 @@
       const clock=building.residents.clock(new Date());root.officeTrioBeat=clock.day+'|'+Math.floor(clock.seconds/120);
     }
     clearBubbleTimer();bubbleSerial++;bubblePerson=null;bubbleSelection=null;if(clearPending)pendingTap=null;actorBubble.hidden=true;for(const actor of actors.values())actor.dataset.speaking='false';fitStatusLabels();
+    if(baristaAwake){baristaAwake=false;updateBarista()}
   }
   function updateBubbleSprite(actor,automatic){
     const sprite=actor.querySelector('.hani-office-sprite'),entry=spriteEntries.get(spriteId(actor));
@@ -2759,15 +2760,29 @@
   const baristaButton=document.createElement('button');baristaButton.type='button';baristaButton.id='haniOfficeBarista';baristaButton.className='hani-office-barista';baristaButton.hidden=true;baristaButton.onclick=activateActor;baristaButton.onkeydown=event=>{if(event.key==='Escape')closeBubble()};baristaButton.setAttribute('aria-label','바리스타 이슬 · 카페 운영 중');
   baristaButton.style.left=(1536/(building.art?.width||1672)*100)+'%';baristaButton.style.top=(650/(building.art?.height||941)*100)+'%';baristaButton.style.width=(45/(building.art?.width||1672)*100)+'%';baristaButton.style.height=(56/(building.art?.height||941)*100)+'%';map.append(baristaButton);
   const baristaLines=['회장님, 오늘도 늘 드시던 걸로요?','원두는 오늘 아침에 새로 볶았어요.','라떼 아트는 하트가 제일 자신 있어요.','직원분들 주문 순서, 다 외웠답니다.','크림이가 또 쿠키 냄새 맡고 왔네요.','치즈는 창가 자리 단골손님이에요.','바쁜 날엔 샷 하나 추가해 드릴게요.','디카페인도 맛있게 내려 드려요.'];
-  let baristaTap=0;
-  function updateBarista(){baristaButton.hidden=activeFloor!=='1f'||map.dataset.art!=='floor'}
+  const baristaNightLines=['야근이세요? 따뜻한 걸로 드릴게요.','보리가 문 앞에서 지켜 줘서 든든해요.','조용한 밤엔 원두 향이 더 잘 느껴져요.','급하지 않아요. 잠깐 쉬었다 가세요.','디카페인도 따뜻하게 준비해 둘게요.','창밖 달빛이 오늘은 참 포근하네요.','늦은 시간까지 수고 많으셨어요.','아침까지 카페는 제가 지킬게요.'];
+  let baristaTap=0,baristaNightTap=0,baristaAwake=false;
+  function baristaClock(now=new Date()){const hour=koreaTime(now).getUTCHours();return {night:hour>=19||hour<7,dozing:hour>=2&&hour<7}}
+  function updateBarista(now=new Date()){
+    const clock=baristaClock(now),hidden=activeFloor!=='1f'||map.dataset.art!=='floor';baristaButton.hidden=hidden;
+    const label=clock.night?'은하 · 야간 카페':'바리스타 이슬 · 카페 운영 중';if(baristaButton.getAttribute('aria-label')!==label)baristaButton.setAttribute('aria-label',label);
+    baristaNight.hidden=hidden||!clock.night;
+    const frame=clock.dozing?(baristaAwake?3:2):1;if(baristaNight.dataset.frame!==String(frame)){baristaNight.dataset.frame=String(frame);baristaNight.style.backgroundPosition=((frame-1)*50)+'% 0'}
+  }
   function openBaristaBubble(){
     updateBarista();if(baristaButton.hidden||!sceneVisible()||document.getElementById('app')?.classList.contains('login-locked'))return;
+    const clock=baristaClock(),waking=clock.dozing&&!baristaAwake;
     closeBubble();lastBubbleTap=Date.now();autoBubbleEntry=false;
+    baristaAwake=clock.dozing;updateBarista();
     bubbleSprite.hidden=true;actorBubble.dataset.zoom='false';actorBubble.officeFollow=null;
-    bubbleLine.textContent='바리스타 이슬 · '+(matchMedia('(max-width:600px)').matches?'카페운영':'카페 운영 중')+' · '+baristaLines[baristaTap++%baristaLines.length];
+    bubbleLine.textContent=clock.night?'은하 · 야간 카페 · '+(waking?'앗, 회장님! 졸지 않았어요… 커피 드릴게요.':baristaNightLines[baristaNightTap++%baristaNightLines.length]):'바리스타 이슬 · '+(matchMedia('(max-width:600px)').matches?'카페운영':'카페 운영 중')+' · '+baristaLines[baristaTap++%baristaLines.length];
     profileLink.hidden=true;actorBubble.style.left='4px';actorBubble.style.top='4px';actorBubble.hidden=false;
-    const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble()}},bubbleDuration());
+    const serial=++bubbleSerial,duration=bubbleDuration();queueBubbleTimer(()=>{
+      if(serial!==bubbleSerial)return;
+      bubbleTimer=null;
+      if(baristaAwake){baristaAwake=false;updateBarista();if(duration>3000){queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;closeBubble()}},duration-3000);return}}
+      closeBubble();
+    },baristaAwake?3000:duration);
   }
   // Each floor owns persistent decorative slots; positions are desk anchor + art offset.
   const deskProps=[];
@@ -2792,6 +2807,9 @@
       ['xmas-lights','event-wide','5f',1344,565,384,64,'bottom-center',true]
     ].map(Object.freeze))})
   ]);
+  // Opaque 120x110 patch in the same art coordinates; below props and actors.
+  const baristaNight=document.createElement('span');baristaNight.className='hani-office-barista-night';baristaNight.setAttribute('aria-hidden','true');baristaNight.hidden=true;
+  baristaNight.style.left=(1500/(building.art?.width||1672)*100)+'%';baristaNight.style.top=(610/(building.art?.height||941)*100)+'%';baristaNight.style.width=(120/(building.art?.width||1672)*100)+'%';baristaNight.style.height=(110/(building.art?.height||941)*100)+'%';map.append(baristaNight);
   // Approved four-frame art: one map-owned layer and persistent prop/event slots.
   const livePropLayer=document.createElement('div');livePropLayer.className='hani-office-live-props';livePropLayer.setAttribute('aria-hidden','true');livePropLayer.hidden=true;map.append(livePropLayer);
   const liveProps=[
@@ -3038,7 +3056,7 @@
     const token=++backgroundToken,bg=map.querySelector('.hani-office-background'),source=building.atmosphere.background(floor);
     const request=floor.id+'|'+source;
     // Never leave a previous floor/variant showing while its replacement loads.
-    if(backgroundRequest!==request){backgroundRequest=request;bg.hidden=true;map.dataset.art='loading';livePropLayer.hidden=true;monitorGlow.hidden=true;for(const entry of plates)entry.plate.hidden=true;for(const entry of deskProps)entry.prop.hidden=true}
+    if(backgroundRequest!==request){backgroundRequest=request;bg.hidden=true;map.dataset.art='loading';baristaNight.hidden=true;livePropLayer.hidden=true;monitorGlow.hidden=true;for(const entry of plates)entry.plate.hidden=true;for(const entry of deskProps)entry.prop.hidden=true}
     if(!backgroundCache.has(floor.id))backgroundCache.set(floor.id,new Map());
     const variants=backgroundCache.get(floor.id);
     const day=()=>{if(!variants.has(floor.background))variants.set(floor.background,(async()=>{
