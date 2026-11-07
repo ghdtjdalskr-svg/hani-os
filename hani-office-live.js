@@ -3689,6 +3689,13 @@
       node.officeLabelPlacement=p?{dx:p.left-base.left,dy:p.top-base.top}:null;node.style.visibility=p?'':'hidden';
       if(p){node.style.setProperty('--'+kind+'-x',(p.left-base.left)+'px');node.style.setProperty('--'+kind+'-y',(p.top-base.top)+'px')}
     }
+    // PC bubble exclusion reuses this batch's sprite and final label boxes; zero extra layout reads.
+    if(!compact)for(let i=0;i<rows.length;i++){
+      const group=groups[i],p=placements.get(group.id),boxes=[group.actor,group.sprite,p?.name?{...p.name,width:group.name.width,height:group.name.height}:null,p?.status?{...p.status,width:group.status.width,height:group.status.height}:null].filter(Boolean);
+      rows[i].actor.officeBubbleBox={left:Math.min(...boxes.map(b=>b.left))-floor.left,right:Math.max(...boxes.map(b=>b.left+b.width))-floor.left,top:Math.min(...boxes.map(b=>b.top))-floor.top,bottom:Math.max(...boxes.map(b=>b.top+b.height))-floor.top};
+      const cached=actorBubble.officeFollow;
+      if(!actorBubble.hidden&&cached?.person===group.id){cached.pcBox=rows[i].actor.officeBubbleBox;cached.position=rows[i].actor.officePosition?.slice()||[0,0];cached.left=group.actor.left-floor.left+group.actor.width/2-cached.bw/2;fitBubble(true)}
+    }
     // Readiness is committed only after every label's offset and visibility.
     map.dataset.labelsReady=map.dataset.floor;map.dataset.labelsAt=String(Date.now());
   }
@@ -3776,17 +3783,20 @@
     const cached=actorBubble.officeFollow,personNow=actors.get(bubblePerson);
     if(follow){
       if(actorBubble.hidden||!cached||cached.person!==bubblePerson||!personNow?.officePosition)return;
-      const [x,y]=personNow.officePosition,left=Math.max(4,Math.min(cached.width-cached.bw-4,cached.left+(x-cached.position[0])*cached.width/100)),top=Math.max(4,Math.min(cached.height-cached.bh-4,cached.top+(y-cached.position[1])*cached.height/100));
+      const [x,y]=personNow.officePosition,dy=(y-cached.position[1])*cached.height/100,left=Math.max(4,Math.min(cached.width-cached.bw-(cached.pcBox?6:4),cached.left+(x-cached.position[0])*cached.width/100)),above=(cached.pcBox?.top??0)+dy-cached.bh-6,top=cached.pcBox?(above>=4?above:cached.pcBox.bottom+dy+6):Math.max(4,Math.min(cached.height-cached.bh-4,cached.top+dy));
       if(actorBubble.style.left!==left+'px')actorBubble.style.left=left+'px';if(actorBubble.style.top!==top+'px')actorBubble.style.top=top+'px';return;
     }
     if(actorBubble.hidden)return;
+    // Fix PC shrink-to-fit width before the existing read batch; moving the slot must not rewrap its text.
+    const compact=matchMedia('(max-width:600px)').matches;actorBubble.style.width=compact?'':'max-content';
     const person=actors.get(bubblePerson),floor=map.getBoundingClientRect?.();
     if(actorBubble.dataset.zoom==='true'&&floor?.height)actorBubble.style.setProperty('--bubble-max-height',Math.max(0,floor.height-8)+'px');
     const bubble=actorBubble.getBoundingClientRect?.(),actor=person?.getBoundingClientRect?building.motion.stableActorBox(person):null;
     if(!floor?.width||!bubble?.width||!actor)return;
-    const left=Math.max(4,Math.min(floor.width-bubble.width-4,actor.left-floor.left+actor.width/2-bubble.width/2));
-    const top=Math.max(4,Math.min(floor.height-bubble.height-4,actor.top-floor.top-bubble.height-6));
-    actorBubble.officeFollow={person:bubblePerson,position:person.officePosition?.slice()||[0,0],left:actor.left-floor.left+actor.width/2-bubble.width/2,top:actor.top-floor.top-bubble.height-6,width:floor.width,height:floor.height,bw:bubble.width,bh:bubble.height};
+    const left=Math.max(4,Math.min(floor.width-bubble.width-(compact?4:6),actor.left-floor.left+actor.width/2-bubble.width/2));
+    const pcBox=compact?null:person.officeBubbleBox,above=(pcBox?.top??actor.top-floor.top)-bubble.height-6;
+    const top=pcBox?(above>=4?above:pcBox.bottom+6):Math.max(4,Math.min(floor.height-bubble.height-4,actor.top-floor.top-bubble.height-6));
+    actorBubble.officeFollow={person:bubblePerson,position:person.officePosition?.slice()||[0,0],left:actor.left-floor.left+actor.width/2-bubble.width/2,top:actor.top-floor.top-bubble.height-6,width:floor.width,height:floor.height,bw:bubble.width,bh:bubble.height,pcBox};
     actorBubble.style.left=left+'px';actorBubble.style.top=top+'px';
   }
   function closeBubble(clearPending=true,explicit=false){
@@ -3810,7 +3820,7 @@
     bubbleSprite.style.setProperty('--bubble-sprite-ratio',String(entry.cell[0]/entry.cell[1]));
     bubbleSprite.dataset.pose=actor.dataset.pose;
   }
-  function showBubble(actor,selection,duration=3000,automatic=false){showAffinity(actor.dataset.person,selection?.affinity||(!automatic?actor.officeAffinityTap:null));actor.officeAffinityTap=null;bubblePerson=actor.dataset.person;bubbleSelection=selection;updateBubbleSprite(actor,automatic);actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=!!actor.dataset.resident||actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);if(actor.dataset.companion==='true'){fitBubble();fitStatusLabels()}else{fitStatusLabels();fitBubble()}const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;const next=selection?.residentTrio?.lines[selection.trioIndex+1],speaker=next&&actors.get(next.id);if(speaker&&!speaker.hidden&&selection.residentTrio.key===building.residents.clock(new Date()).day+'|'+Math.floor(building.residents.clock(new Date()).seconds/900))showBubble(speaker,{speaker:next.id,line:next.line,resident:true,residentTrio:selection.residentTrio,trioIndex:selection.trioIndex+1},duration,automatic);else closeBubble(globalThis.innerWidth<=480)}},selection?.kidsVisit||selection?.staffChat?duration:bubbleDuration(duration))}
+  function showBubble(actor,selection,duration=3000,automatic=false){showAffinity(actor.dataset.person,selection?.affinity||(!automatic?actor.officeAffinityTap:null));actor.officeAffinityTap=null;bubblePerson=actor.dataset.person;bubbleSelection=selection;updateBubbleSprite(actor,automatic);actorBubble.hidden=false;bubbleLine.textContent=bubbleText(actor);profileLink.href='#organization/people/'+bubblePerson;profileLink.hidden=!!actor.dataset.resident||actors.get(bubblePerson)?.dataset.visitor==='true';for(const a of actors.values())a.dataset.speaking=String(a===actor);if(actor.dataset.companion==='true'&&matchMedia('(max-width:600px)').matches){fitBubble();fitStatusLabels()}else{fitStatusLabels();fitBubble()}const serial=++bubbleSerial;queueBubbleTimer(()=>{if(serial===bubbleSerial){bubbleTimer=null;const next=selection?.residentTrio?.lines[selection.trioIndex+1],speaker=next&&actors.get(next.id);if(speaker&&!speaker.hidden&&selection.residentTrio.key===building.residents.clock(new Date()).day+'|'+Math.floor(building.residents.clock(new Date()).seconds/900))showBubble(speaker,{speaker:next.id,line:next.line,resident:true,residentTrio:selection.residentTrio,trioIndex:selection.trioIndex+1},duration,automatic);else closeBubble(globalThis.innerWidth<=480)}},selection?.kidsVisit||selection?.staffChat?duration:bubbleDuration(duration))}
   function openBubble(actor,automatic=false,event=null){
     if(!automatic){lastBubbleTap=Date.now();autoBubbleEntry=false;clearBubbleTimer()}
     if(actor.hidden)return;

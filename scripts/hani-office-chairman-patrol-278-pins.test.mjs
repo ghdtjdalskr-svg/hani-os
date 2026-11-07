@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import {createHash} from 'node:crypto';import {execFileSync} from 'node:child_process';
-import {patrol278Delta as delta,restorePatrol278Source as restore,projectPreKidsSource,restoreKids278Source,projectPreVisitsSource,restoreVisits278Source,projectPreStaffChatSource,restoreStaffChats278Source} from './hani-office-chairman-patrol-278-source.mjs';
+import {patrol278Delta as delta,restorePatrol278Source as restore,projectPreKidsSource,restoreKids278Source,projectPreVisitsSource,restoreVisits278Source,projectPreStaffChatSource,restoreStaffChats278Source,projectPreBubblePlaceSource,restoreBubblePlace278Source} from './hani-office-chairman-patrol-278-source.mjs';
 const hash=x=>createHash('sha256').update(x).digest('hex'),read=f=>projectPreKidsSource(fs.readFileSync(f,'utf8'),f);
 test('278 exact complete ordered replacements reject missing, duplicate, unrelated and baseline bytes',()=>{
  assert.equal(delta.version,'2.9.278');assert.deepEqual(delta.files.map(r=>r.file),['hani-office-live.js','hani-office-live.css']);
@@ -30,9 +30,17 @@ test('278 visit extension strictly restores 59db365 and rejects every partial, d
 test('278 visit extension independently matches fixed Git base',()=>{assert.equal(restoreVisits278Source(fs.readFileSync('hani-office-live.js','utf8')),execFileSync('git',['show',delta.visitExtension.baseCommit+':hani-office-live.js'],{encoding:'utf8',maxBuffer:32*1024*1024}))});
 
 test('278 staff-chat extension strictly preserves ordered complete replacements and rejects mutations',()=>{
- const row=delta.staffChatExtension,current=fs.readFileSync(row.file,'utf8'),before=restoreStaffChats278Source(current);let forward=before,aEnd=0,bEnd=0;
+ const row=delta.staffChatExtension,current=projectPreBubblePlaceSource(fs.readFileSync(row.file,'utf8')),before=restoreStaffChats278Source(current);let forward=before,aEnd=0,bEnd=0;
  assert.equal(row.baseCommit,'f836468fa9b6c6f27c91a78f0408e6f8d2acbbf0');assert.equal(row.beforeSha256,'bbaceed5e8ac8ea5f33b67d8568a88b111d484c186f79d14d562bd3df77f8cae');
  for(const r of row.replacements){assert.ok(r.before.length&&r.after.length);assert.notEqual(r.before,r.after);assert.equal(before.split(r.before).length-1,1);assert.equal(current.split(r.after).length-1,1);const a=before.indexOf(r.before),b=current.indexOf(r.after);assert.ok(a>=aEnd&&b>=bEnd);aEnd=a+r.before.length;bEnd=b+r.after.length;forward=forward.replace(r.before,()=>r.after);assert.throws(()=>restoreStaffChats278Source(current.replace(r.after,()=>r.before)));assert.throws(()=>restoreStaffChats278Source(current+r.after));}
  assert.equal(forward,current);for(const bad of [current+'\n',current.slice(1),before,current+current])assert.throws(()=>restoreStaffChats278Source(bad));assert.throws(()=>restoreStaffChats278Source(current,'hani-main.js'));
 });
 test('278 staff-chat extension independently matches fixed Git base',()=>{assert.equal(restoreStaffChats278Source(fs.readFileSync('hani-office-live.js','utf8')),execFileSync('git',['show',delta.staffChatExtension.baseCommit+':hani-office-live.js'],{encoding:'utf8',maxBuffer:32*1024*1024}))});
+
+test('278 bubble placement extension strictly restores complete 0159d09 bytes and rejects all mutations',()=>{
+ const row=delta.bubblePlaceExtension,current=fs.readFileSync(row.file,'utf8'),before=restoreBubblePlace278Source(current);let forward=before,aEnd=0,bEnd=0;
+ assert.equal(row.baseCommit,'0159d09ad769c2841c6aba09af4022cf1bd9da0d');assert.equal(row.beforeSha256,'87e892c33ec1c2ded09c3d1d09914acb97ae737e1dbbcce439e10cf97ed18d5e');assert.equal(row.beforeSha256,delta.staffChatExtension.afterSha256);
+ for(const r of row.replacements){assert.ok(r.before.length&&r.after.length);assert.notEqual(r.before,r.after);assert.equal(before.split(r.before).length-1,1);assert.equal(current.split(r.after).length-1,1);const a=before.indexOf(r.before),b=current.indexOf(r.after);assert.ok(a>=aEnd&&b>=bEnd);aEnd=a+r.before.length;bEnd=b+r.after.length;forward=forward.replace(r.before,()=>r.after);assert.throws(()=>restoreBubblePlace278Source(current.replace(r.after,()=>r.before)));assert.throws(()=>restoreBubblePlace278Source(current+r.after));}
+ assert.equal(forward,current);for(const bad of [current+'\n',current.slice(1),before,current+current])assert.throws(()=>restoreBubblePlace278Source(bad));assert.throws(()=>restoreBubblePlace278Source(current,'hani-main.js'));
+});
+test('278 bubble placement extension independently matches fixed Git base',()=>{assert.equal(restoreBubblePlace278Source(fs.readFileSync('hani-office-live.js','utf8')),execFileSync('git',['show',delta.bubblePlaceExtension.baseCommit+':hani-office-live.js'],{encoding:'utf8',maxBuffer:32*1024*1024}))});
