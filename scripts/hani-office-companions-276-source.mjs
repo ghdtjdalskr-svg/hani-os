@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {projectPrePatrolSource} from './hani-office-chairman-patrol-278-source.mjs';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 const hash=x=>createHash('sha256').update(x).digest('hex');
@@ -9,6 +10,7 @@ assert.equal(companions276Delta.baseCommit,'ce072a4d2c4a445e835f8a8adbd040465a59
 assert.deepEqual(companions276Delta.files.map(r=>r.beforeSha256),["d42811da8644c5be985bfd0912bc0d258c3f7e39d51cd9f97e929e2d37aa6573","38851731fc7540954826c6409d85c7be34163d04c0d1d99745c89cc082d9bdc0"]);
 // Strict outer layer: 276 -> 275/274 -> 273 -> 272 -> 269 -> 268.
 export function restoreCompanions276Source(source,file='hani-office-live.js'){
+ source=projectPrePatrolSource(source,file);
  const row=companions276Delta.files.find(r=>r.file===file);assert.ok(row,'authored companions 276 file: '+file);
  assert.equal(hash(source),row.afterSha256,'only authored companions 276 bytes accepted: '+file);
  for(const r of row.replacements){assert.equal(source.split(r.after).length-1,1,'unique companions 276 pair: '+r.name);source=source.replace(r.after,()=>r.before);}

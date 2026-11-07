@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import {createHash} from 'node:crypto';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
+import {projectPrePatrolSource} from './hani-office-chairman-patrol-278-source.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {collectReferences} from './hani-runtime-closure.mjs';
 
@@ -176,7 +177,7 @@ test('DOM slow load after a floor change cannot consume the first drama line on 
 test('release trace sees literal JSON path; caption wraps in full; scheduler and label placement remain frozen',()=>{
  assert.ok(collectReferences('hani-office-live.js',source).includes('assets/data/office-drama-v1.json'));
  const css=read('hani-office-live.css');assert.match(css,/\.hani-building-drama-caption\{flex:1 1 100%;/);assert.doesNotMatch(css,/\.hani-building-drama-caption[^{]*\{[^}]*nowrap/);
- const normalized=source.replace(/\r\n/g,'\n');
+ const normalized=projectPrePatrolSource(source).replace(/\r\n/g,'\n');
  for(const [start,end,expected] of [
   ['  function createScheduler(','  function statusLabelPriority(','b7256f6c59e778864d6b7a8050d0bcd9976bb8a70b39005559989c374cec1d3a'],
   ['  function placeStatusLabels(','  const scheduler=','5070f7e62556b89410bc7588600fefe80ba99579e945ae49bab89def98bec6f0']

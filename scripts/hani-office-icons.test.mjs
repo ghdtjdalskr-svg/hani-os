@@ -7,6 +7,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import {loadScene,at,readAt} from './hani-office-lively-fixture.mjs';
+import {projectPrePatrolSource} from './hani-office-chairman-patrol-278-source.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {restoreResidentsSource} from './hani-office-residents-source.mjs';
 import {readTlayoutPlans} from './hani-office-tlayout-fixture.mjs';
@@ -131,6 +132,7 @@ test('icons: scheduler, home clearance, public snapshots and both label geometry
 const digest=x=>createHash('sha256').update(x).digest('hex');
 // G moved seats on purpose, so this guard follows the frozen G output instead of 15747bc.
 test('icons: complete plan/blockPlan and sampled snapshot JSON match the approved G output',()=>{
+ const s=loadScene({transform:projectPrePatrolSource}).scene.scheduler;
  for(const r of readTlayoutPlans().records){
   const f=s.plan(r.day,r.options),o=s.blockPlan(r.day,0,f,r.options);
   assert.equal(digest(JSON.stringify(f)),r.formalSha256,r.label+' plan');assert.equal(digest(JSON.stringify(o)),r.outingsSha256,r.label+' blockPlan');

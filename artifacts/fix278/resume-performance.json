@@ -1,0 +1,207 @@
+{
+  "base": "ccda3c85aad7fe6a04d3b4f5e64bfa92b129e4b5",
+  "runtime": "aa5c9893814c89d00e57626b9a43582ad885e4c93d6b152f338204a2e52375c9",
+  "contract": "22a25dcad943eca990558ab02c930aec7f2ee134da6f1da9e5ddff0bbb7909d5",
+  "node": "v24.20.0",
+  "results": [
+    {
+      "round": 1,
+      "file": "hani-office-cafe-rest.test.mjs",
+      "code": 1,
+      "log": "artifacts/fix278/resume-performance-1-hani-office-cafe-rest.test.mjs.log",
+      "pass": 3,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "blockedGit": 1,
+      "otherFailure": 0,
+      "completed": true,
+      "groups": [
+        {
+          "chairmanPresent": false,
+          "samples": [
+            268.6858,
+            279.8813,
+            275.8562000000002
+          ],
+          "min": 268.6858,
+          "max": 279.8813,
+          "original400msAssertion": true,
+          "target320ms": true
+        },
+        {
+          "chairmanPresent": true,
+          "samples": [
+            313.71209999999974,
+            316.558,
+            338.16899999999987
+          ],
+          "min": 313.71209999999974,
+          "max": 338.16899999999987,
+          "original400msAssertion": true,
+          "target320ms": true
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "file": "hani-office-lively-v2.test.mjs",
+      "code": 1,
+      "log": "artifacts/fix278/resume-performance-1-hani-office-lively-v2.test.mjs.log",
+      "pass": 7,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "blockedGit": 1,
+      "otherFailure": 0,
+      "completed": true,
+      "groups": [
+        {
+          "kind": "lively-v2",
+          "samples": [
+            331.4121,
+            429.6431999999986,
+            390.1692000000003
+          ],
+          "min": 331.4121,
+          "max": 429.6431999999986,
+          "original400msAssertion": true,
+          "target320ms": false
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "file": "hani-office-cafe-rest.test.mjs",
+      "code": 1,
+      "log": "artifacts/fix278/resume-performance-2-hani-office-cafe-rest.test.mjs.log",
+      "pass": 3,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "blockedGit": 1,
+      "otherFailure": 0,
+      "completed": true,
+      "groups": [
+        {
+          "chairmanPresent": false,
+          "samples": [
+            269.5259000000001,
+            276.5296000000001,
+            276.2809
+          ],
+          "min": 269.5259000000001,
+          "max": 276.5296000000001,
+          "original400msAssertion": true,
+          "target320ms": true
+        },
+        {
+          "chairmanPresent": true,
+          "samples": [
+            319.99029999999993,
+            313.88779999999997,
+            341.3099000000002
+          ],
+          "min": 313.88779999999997,
+          "max": 341.3099000000002,
+          "original400msAssertion": true,
+          "target320ms": true
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "file": "hani-office-lively-v2.test.mjs",
+      "code": 1,
+      "log": "artifacts/fix278/resume-performance-2-hani-office-lively-v2.test.mjs.log",
+      "pass": 7,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "blockedGit": 1,
+      "otherFailure": 0,
+      "completed": true,
+      "groups": [
+        {
+          "kind": "lively-v2",
+          "samples": [
+            340.3806,
+            402.51530000000275,
+            388.7672999999995
+          ],
+          "min": 340.3806,
+          "max": 402.51530000000275,
+          "original400msAssertion": true,
+          "target320ms": false
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "file": "hani-office-cafe-rest.test.mjs",
+      "code": 1,
+      "log": "artifacts/fix278/resume-performance-3-hani-office-cafe-rest.test.mjs.log",
+      "pass": 3,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "blockedGit": 1,
+      "otherFailure": 0,
+      "completed": true,
+      "groups": [
+        {
+          "chairmanPresent": false,
+          "samples": [
+            275.57529999999997,
+            274.32860000000005,
+            294.3138000000001
+          ],
+          "min": 274.32860000000005,
+          "max": 294.3138000000001,
+          "original400msAssertion": true,
+          "target320ms": true
+        },
+        {
+          "chairmanPresent": true,
+          "samples": [
+            325.17930000000024,
+            301.8443000000002,
+            356.06110000000035
+          ],
+          "min": 301.8443000000002,
+          "max": 356.06110000000035,
+          "original400msAssertion": true,
+          "target320ms": true
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "file": "hani-office-lively-v2.test.mjs",
+      "code": 1,
+      "log": "artifacts/fix278/resume-performance-3-hani-office-lively-v2.test.mjs.log",
+      "pass": 7,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "blockedGit": 1,
+      "otherFailure": 0,
+      "completed": true,
+      "groups": [
+        {
+          "kind": "lively-v2",
+          "samples": [
+            324.4316,
+            391.5402000000031,
+            377.435300000001
+          ],
+          "min": 324.4316,
+          "max": 391.5402000000031,
+          "original400msAssertion": true,
+          "target320ms": false
+        }
+      ]
+    }
+  ],
+  "maxSample": 429.6431999999986
+}

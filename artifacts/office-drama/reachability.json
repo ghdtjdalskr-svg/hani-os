@@ -1,0 +1,2589 @@
+{
+  "sourceSha256": "aa5c9893814c89d00e57626b9a43582ad885e4c93d6b152f338204a2e52375c9",
+  "placesSha256": "f6cbc09dfd89cf7b6747c30928128daf667b2990570f1e4a88b32aeb636bc70d",
+  "window": "09:00 <= KST < 18:00",
+  "anchor": "2026-11-02",
+  "method": "Each actor event/leg boundary and interval midpoint; verify reachable candidates through scheduler.snapshot. No timetable modification. Counts include clues and transit floors.",
+  "days": [
+    {
+      "date": "2026-11-02",
+      "week": 1,
+      "day": 1,
+      "presence": {
+        "absent": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "5f": {
+              "reachable": 1,
+              "total": 1
+            }
+          },
+          "lines": [
+            {
+              "staffId": "yuna",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "hani",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "sua",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 40106.39076565197
+            },
+            {
+              "staffId": "minji",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 41051.67511093177
+            },
+            {
+              "staffId": "haru",
+              "floor": "5f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 41907.22100393483
+            }
+          ]
+        },
+        "present": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "5f": {
+              "reachable": 1,
+              "total": 1
+            }
+          },
+          "lines": [
+            {
+              "staffId": "yuna",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32557.711761056707
+            },
+            {
+              "staffId": "hani",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "sua",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 40106.39076565197
+            },
+            {
+              "staffId": "minji",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 48616.593362363536
+            },
+            {
+              "staffId": "haru",
+              "floor": "5f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 34032.22100393483
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-11-03",
+      "week": 1,
+      "day": 2,
+      "presence": {
+        "absent": {
+          "floors": {
+            "1f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "2f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "jieun",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "naeun",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "hina",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "yoonseul",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "taeo",
+              "floor": "1f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        },
+        "present": {
+          "floors": {
+            "1f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "2f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "jieun",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "naeun",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "hina",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "yoonseul",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "taeo",
+              "floor": "1f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-11-04",
+      "week": 1,
+      "day": 3,
+      "presence": {
+        "absent": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "3f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "4f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "sooyeon",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32409.458862363572
+            },
+            {
+              "staffId": "arin",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "sua",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 39654.71234898531
+            },
+            {
+              "staffId": "minji",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 44020.075110931764
+            },
+            {
+              "staffId": "hani",
+              "floor": "4f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        },
+        "present": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "3f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "4f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "sooyeon",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32409.458862363572
+            },
+            {
+              "staffId": "arin",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "sua",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32979.71234898531
+            },
+            {
+              "staffId": "minji",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 44050.075110931764
+            },
+            {
+              "staffId": "hani",
+              "floor": "4f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-11-05",
+      "week": 1,
+      "day": 4,
+      "presence": {
+        "absent": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 1
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "yuna",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 43075.50301938818
+            },
+            {
+              "staffId": "haru",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "naeun",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "hina",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "seongmin",
+              "floor": "4f",
+              "hidden": true,
+              "reachable": false,
+              "witnessSeconds": null
+            }
+          ]
+        },
+        "present": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "yuna",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 42715.50301938818
+            },
+            {
+              "staffId": "haru",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "naeun",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "hina",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "seongmin",
+              "floor": "4f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-11-06",
+      "week": 1,
+      "day": 5,
+      "presence": {
+        "absent": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 1
+            },
+            "2f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 3,
+              "total": 4
+            }
+          },
+          "lines": [
+            {
+              "staffId": "hani",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 36488.09595155448
+            },
+            {
+              "staffId": "naeun",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 44790.25348826994
+            },
+            {
+              "staffId": "sua",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 36387.99076565198
+            },
+            {
+              "staffId": "seongmin",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": false,
+              "witnessSeconds": null
+            },
+            {
+              "staffId": "minji",
+              "floor": "1f",
+              "hidden": true,
+              "reachable": false,
+              "witnessSeconds": null
+            }
+          ]
+        },
+        "present": {
+          "floors": {
+            "1f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "2f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 4,
+              "total": 4
+            }
+          },
+          "lines": [
+            {
+              "staffId": "hani",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 37628.09595155448
+            },
+            {
+              "staffId": "naeun",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 41535.25348826994
+            },
+            {
+              "staffId": "sua",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 34797.99076565198
+            },
+            {
+              "staffId": "seongmin",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 35108.73836918642
+            },
+            {
+              "staffId": "minji",
+              "floor": "1f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 41409.69333315399
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-11-09",
+      "week": 2,
+      "day": 1,
+      "presence": {
+        "absent": {
+          "floors": {
+            "1f": {
+              "reachable": 3,
+              "total": 4
+            },
+            "2f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "taeo",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "sua",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "yuna",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": false,
+              "witnessSeconds": null
+            },
+            {
+              "staffId": "daon",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 64129.68835690809
+            },
+            {
+              "staffId": "yoonseul",
+              "floor": "2f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        },
+        "present": {
+          "floors": {
+            "1f": {
+              "reachable": 3,
+              "total": 4
+            },
+            "2f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "taeo",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "sua",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "yuna",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": false,
+              "witnessSeconds": null
+            },
+            {
+              "staffId": "daon",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 44693.68835690809
+            },
+            {
+              "staffId": "yoonseul",
+              "floor": "2f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-11-10",
+      "week": 2,
+      "day": 2,
+      "presence": {
+        "absent": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "3f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "yoonseul",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "taeo",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 36397.338862478326
+            },
+            {
+              "staffId": "jieun",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "haru",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "arin",
+              "floor": "3f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        },
+        "present": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "3f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "yoonseul",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "taeo",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 36397.338862478326
+            },
+            {
+              "staffId": "jieun",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "haru",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "arin",
+              "floor": "3f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-11-11",
+      "week": 2,
+      "day": 3,
+      "presence": {
+        "absent": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "3f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 1,
+              "total": 1
+            }
+          },
+          "lines": [
+            {
+              "staffId": "seoyun",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "arin",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32703.31313759798
+            },
+            {
+              "staffId": "serin",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "yuri",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "sooyeon",
+              "floor": "5f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 42132.904417919126
+            }
+          ]
+        },
+        "present": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "3f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 1,
+              "total": 1
+            }
+          },
+          "lines": [
+            {
+              "staffId": "seoyun",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "arin",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "serin",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "yuri",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "sooyeon",
+              "floor": "5f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 41757.904417919126
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-11-12",
+      "week": 2,
+      "day": 4,
+      "presence": {
+        "absent": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "yuna",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "hani",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "hina",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 34932.86925803471
+            },
+            {
+              "staffId": "daon",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 43120.67013468586
+            },
+            {
+              "staffId": "jieun",
+              "floor": "2f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        },
+        "present": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "yuna",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "hani",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "hina",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 42597.86925803471
+            },
+            {
+              "staffId": "daon",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 44200.67013468586
+            },
+            {
+              "staffId": "jieun",
+              "floor": "2f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-11-13",
+      "week": 2,
+      "day": 5,
+      "presence": {
+        "absent": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 2,
+              "total": 4
+            }
+          },
+          "lines": [
+            {
+              "staffId": "yoonseul",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 38172.6190546079
+            },
+            {
+              "staffId": "taeo",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": false,
+              "witnessSeconds": null
+            },
+            {
+              "staffId": "haru",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 41237.849973474644
+            },
+            {
+              "staffId": "seongmin",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": false,
+              "witnessSeconds": null
+            },
+            {
+              "staffId": "jieun",
+              "floor": "2f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        },
+        "present": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 4,
+              "total": 4
+            }
+          },
+          "lines": [
+            {
+              "staffId": "yoonseul",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 38712.6190546079
+            },
+            {
+              "staffId": "taeo",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 33327.38441803388
+            },
+            {
+              "staffId": "haru",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 46396.22100393483
+            },
+            {
+              "staffId": "seongmin",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32948.73836918642
+            },
+            {
+              "staffId": "jieun",
+              "floor": "2f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-11-16",
+      "week": 3,
+      "day": 1,
+      "presence": {
+        "absent": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "3f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "yuri",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32741.55174140148
+            },
+            {
+              "staffId": "seoyun",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "dohyun",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "serin",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "sooyeon",
+              "floor": "2f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        },
+        "present": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "3f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "yuri",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "seoyun",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "dohyun",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "serin",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "sooyeon",
+              "floor": "2f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-11-17",
+      "week": 3,
+      "day": 2,
+      "presence": {
+        "absent": {
+          "floors": {
+            "1f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "2f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "dohyun",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 42400.311736824005
+            },
+            {
+              "staffId": "naeun",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "haru",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "daon",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "taeo",
+              "floor": "1f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        },
+        "present": {
+          "floors": {
+            "1f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "2f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "dohyun",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 45956.311736824005
+            },
+            {
+              "staffId": "naeun",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "haru",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "daon",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "taeo",
+              "floor": "1f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-11-18",
+      "week": 3,
+      "day": 3,
+      "presence": {
+        "absent": {
+          "floors": {
+            "1f": {
+              "reachable": 3,
+              "total": 4
+            },
+            "2f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "serin",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": false,
+              "witnessSeconds": null
+            },
+            {
+              "staffId": "taeo",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "sua",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "yuri",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 41501.23963862184
+            },
+            {
+              "staffId": "yuna",
+              "floor": "4f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        },
+        "present": {
+          "floors": {
+            "1f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "2f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "serin",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 44605.0673060287
+            },
+            {
+              "staffId": "taeo",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "sua",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "yuri",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 41501.23963862184
+            },
+            {
+              "staffId": "yuna",
+              "floor": "4f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-11-19",
+      "week": 3,
+      "day": 4,
+      "presence": {
+        "absent": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "3f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "4f": {
+              "reachable": 3,
+              "total": 4
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "sooyeon",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 41456.05886236357
+            },
+            {
+              "staffId": "yuna",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "hani",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "seongmin",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": false,
+              "witnessSeconds": null
+            },
+            {
+              "staffId": "arin",
+              "floor": "3f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        },
+        "present": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "3f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "4f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "sooyeon",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 36011.05886236357
+            },
+            {
+              "staffId": "yuna",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "hani",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "seongmin",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "arin",
+              "floor": "3f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-11-20",
+      "week": 3,
+      "day": 5,
+      "presence": {
+        "absent": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "3f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 3,
+              "total": 4
+            }
+          },
+          "lines": [
+            {
+              "staffId": "seoyun",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 38776.50512924412
+            },
+            {
+              "staffId": "sooyeon",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 34032.904417919126
+            },
+            {
+              "staffId": "naeun",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 42585.25348826994
+            },
+            {
+              "staffId": "minji",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": false,
+              "witnessSeconds": null
+            },
+            {
+              "staffId": "dohyun",
+              "floor": "3f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        },
+        "present": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "3f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 4,
+              "total": 4
+            }
+          },
+          "lines": [
+            {
+              "staffId": "seoyun",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 42046.50512924412
+            },
+            {
+              "staffId": "sooyeon",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 35112.904417919126
+            },
+            {
+              "staffId": "naeun",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 33675.25348826994
+            },
+            {
+              "staffId": "minji",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 41788.520666487326
+            },
+            {
+              "staffId": "dohyun",
+              "floor": "3f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-11-23",
+      "week": 4,
+      "day": 1,
+      "presence": {
+        "absent": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "3f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "haru",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "jieun",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "daon",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "yoonseul",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "hina",
+              "floor": "3f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 33131.26925803471
+            }
+          ]
+        },
+        "present": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "3f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "haru",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "jieun",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "daon",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "yoonseul",
+              "floor": "2f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "hina",
+              "floor": "3f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 41621.26925803471
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-11-24",
+      "week": 4,
+      "day": 2,
+      "presence": {
+        "absent": {
+          "floors": {
+            "1f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "2f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "3f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "dohyun",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "yuri",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "serin",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "arin",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "minji",
+              "floor": "1f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 45954.69333315399
+            }
+          ]
+        },
+        "present": {
+          "floors": {
+            "1f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "2f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "3f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "dohyun",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "yuri",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "serin",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "arin",
+              "floor": "3f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "minji",
+              "floor": "1f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 44109.69333315399
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-11-25",
+      "week": 4,
+      "day": 3,
+      "presence": {
+        "absent": {
+          "floors": {
+            "1f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "2f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "taeo",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "sua",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "hina",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 45055.88748025693
+            },
+            {
+              "staffId": "minji",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 36729.69333315399
+            },
+            {
+              "staffId": "yuna",
+              "floor": "4f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        },
+        "present": {
+          "floors": {
+            "1f": {
+              "reachable": 3,
+              "total": 4
+            },
+            "2f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "5f": {
+              "reachable": 0,
+              "total": 0
+            }
+          },
+          "lines": [
+            {
+              "staffId": "taeo",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "sua",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "hina",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": false,
+              "witnessSeconds": null
+            },
+            {
+              "staffId": "minji",
+              "floor": "1f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 43524.69333315399
+            },
+            {
+              "staffId": "yuna",
+              "floor": "4f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-11-26",
+      "week": 4,
+      "day": 4,
+      "presence": {
+        "absent": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "5f": {
+              "reachable": 1,
+              "total": 1
+            }
+          },
+          "lines": [
+            {
+              "staffId": "yuna",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "hina",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 34752.86925803471
+            },
+            {
+              "staffId": "hani",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "jieun",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 43212.939047685795
+            },
+            {
+              "staffId": "sooyeon",
+              "floor": "5f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 43227.904417919126
+            }
+          ]
+        },
+        "present": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 4,
+              "total": 4
+            },
+            "5f": {
+              "reachable": 1,
+              "total": 1
+            }
+          },
+          "lines": [
+            {
+              "staffId": "yuna",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32616.941958700547
+            },
+            {
+              "staffId": "hina",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 42312.86925803471
+            },
+            {
+              "staffId": "hani",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 32400
+            },
+            {
+              "staffId": "jieun",
+              "floor": "4f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 43292.184603241345
+            },
+            {
+              "staffId": "sooyeon",
+              "floor": "5f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 40872.904417919126
+            }
+          ]
+        }
+      }
+    },
+    {
+      "date": "2026-11-27",
+      "week": 4,
+      "day": 5,
+      "presence": {
+        "absent": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 3,
+              "total": 4
+            }
+          },
+          "lines": [
+            {
+              "staffId": "minji",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 40874.37511093174
+            },
+            {
+              "staffId": "serin",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 39610.69463936203
+            },
+            {
+              "staffId": "naeun",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 42990.25348826994
+            },
+            {
+              "staffId": "seongmin",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": false,
+              "witnessSeconds": null
+            },
+            {
+              "staffId": "yoonseul",
+              "floor": "2f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        },
+        "present": {
+          "floors": {
+            "1f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "2f": {
+              "reachable": 1,
+              "total": 1
+            },
+            "3f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "4f": {
+              "reachable": 0,
+              "total": 0
+            },
+            "5f": {
+              "reachable": 4,
+              "total": 4
+            }
+          },
+          "lines": [
+            {
+              "staffId": "minji",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 42103.520666487326
+            },
+            {
+              "staffId": "serin",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 43570.69463936203
+            },
+            {
+              "staffId": "naeun",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 42720.25348826994
+            },
+            {
+              "staffId": "seongmin",
+              "floor": "5f",
+              "hidden": false,
+              "reachable": true,
+              "witnessSeconds": 35108.73836918642
+            },
+            {
+              "staffId": "yoonseul",
+              "floor": "2f",
+              "hidden": true,
+              "reachable": true,
+              "witnessSeconds": 32400
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

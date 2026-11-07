@@ -1,7 +1,8 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import {createHash} from 'node:crypto';import {execFileSync} from 'node:child_process';
 import {companions276Delta as delta,restoreCompanions276Source as restore} from './hani-office-companions-276-source.mjs';
 import {restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';
-const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8'),hash=x=>createHash('sha256').update(x).digest('hex');
+import {projectPrePatrolSource} from './hani-office-chairman-patrol-278-source.mjs';
+const read=f=>projectPrePatrolSource(fs.readFileSync(new URL('../'+f,import.meta.url),'utf8'),f),hash=x=>createHash('sha256').update(x).digest('hex');
 test('276 exact complete ordered disjoint replacements reject missing, duplicate, unrelated and base bytes',()=>{
  assert.equal(delta.version,'2.9.276');assert.deepEqual(delta.files.map(r=>r.file),['hani-office-live.js','hani-office-live.css']);
  for(const row of delta.files){const current=read(row.file),before=restore(current,row.file);let forward=before,aEnd=0,bEnd=0;
