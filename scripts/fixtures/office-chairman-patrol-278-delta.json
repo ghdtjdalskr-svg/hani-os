@@ -388,5 +388,38 @@
         "after": "  function createKidsVisits(){\n    let day='',nextAt=0,active=null,counts=new Map(),patrolSeen=new Map();\n    const position=p=>p.position||(p.seat&&[p.seat.x,p.seat.y]);\n    const distance=(a,b)=>Math.hypot((a[0]-b[0])*art.width/100,(a[1]-b[1])*art.height/100);\n    function reset(now){const today=koreaTime(now).toISOString().slice(0,10);if(today!==day){day=today;nextAt=now.getTime()+period()*1000;active=null;counts=new Map();patrolSeen=new Map()}}\n"
       }
     ]
+  },
+  "companionHomesExtension": {
+    "file": "hani-office-live.js",
+    "baseCommit": "c590f8ab64270857e5f50d82330f89a126e3b8a6",
+    "beforeSha256": "aa5c9893814c89d00e57626b9a43582ad885e4c93d6b152f338204a2e52375c9",
+    "afterSha256": "84b448af3f4251d33b4d992016a7f158524fad49bbeb589c67e8a07c80d557ec",
+    "replacements": [
+      {
+        "name": "snapshot-local stop reservations",
+        "before": "    const people=[...(staff?.floors?.flatMap(f=>f.people||[])||[]),...neighbors],chair=people.find(p=>p.id==='seongmin'&&floors.some(f=>f.id===p.floor)&&p.state!=='ABSENT'),center=chair&&(chair.position||[chair.seat?.x,chair.seat?.y]),states=[];",
+        "after": "    const people=[...(staff?.floors?.flatMap(f=>f.people||[])||[]),...neighbors],chair=people.find(p=>p.id==='seongmin'&&floors.some(f=>f.id===p.floor)&&p.state!=='ABSENT'),center=chair&&(chair.position||[chair.seat?.x,chair.seat?.y]),states=[],usedStops=new Set();"
+      },
+      {
+        "name": "reserve followers before department pets",
+        "before": "    for(const person of companionPeople){\n      const follow=person.kid?weekend:!weekend&&person.atlasRow===weekday-1;",
+        "after": "    const follows=person=>person.kid?weekend:!weekend&&person.atlasRow===weekday-1;\n    // Reserve the chairman's companions first, then place department pets safely.\n    for(const person of companionPeople.filter(follows).concat(companionPeople.filter(p=>!follows(p)))){\n      const follow=follows(person);"
+      },
+      {
+        "name": "show off-duty weekday pets",
+        "before": "      if(person.kid&&!weekend||!person.kid&&!weekend&&!follow||follow&&(!chair||!center?.every(Number.isFinite)))continue;",
+        "after": "      if(person.kid&&!weekend||follow&&(!chair||!center?.every(Number.isFinite)))continue;"
+      },
+      {
+        "name": "fixed department floor and preferred safe stops",
+        "before": "        // Weekend pets roam independently. Penguin patrols all five floors; otter favors the cafe.\n        floor=person.id==='companion-otter'?'1f':floors[(Math.floor(seconds/900)+person.atlasRow)%floors.length].id;\n        const stops=[...residentStops.values()].filter(a=>a.floor===floor&&a.pet&&residentSpot(a.id)).flatMap(a=>[0,-12,12,24].map(dy=>({...a,visual:[a.visual[0],a.visual[1]+dy]}))).filter(a=>residentSafe(floor,[a.x,a.y],a.visual)&&free(floor,a.visual));",
+        "after": "        // Off-duty companions stay in their department, on the existing pet rhythm.\n        floor=['4f','3f','1f','2f','2f'][person.atlasRow];\n        const available=[...residentStops.values()].filter(a=>a.floor===floor&&a.pet&&!usedStops.has(a.id)&&residentSpot(a.id)).flatMap(a=>[0,-12,12,24].map(dy=>({...a,visual:[a.visual[0],a.visual[1]+dy]}))).filter(a=>residentSafe(floor,[a.x,a.y],a.visual)&&free(floor,a.visual));\n        // The 2F hall stops face finance above and life/entertainment below.\n        const preferred=available.filter(a=>person.id==='companion-chick'?a.id.startsWith('resident_bori_'):person.id==='companion-fox'?a.id.startsWith('resident_dog_'):true),stops=preferred.length?preferred:available;"
+      },
+      {
+        "name": "reserve both existing motion endpoints",
+        "before": "        const index=reduced?seed%stops.length:(rhythm.beat+seed)%stops.length,a=stops[(index+stops.length-1)%stops.length],b=stops[index];position=b.visual;point=[b.x,b.y];pose=rhythm.beat%3?'sitting':'standing';",
+        "after": "        const index=reduced?seed%stops.length:(rhythm.beat+seed)%stops.length,a=stops[(index+stops.length-1)%stops.length],b=stops[index];usedStops.add(a.id);usedStops.add(b.id);position=b.visual;point=[b.x,b.y];pose=rhythm.beat%3?'sitting':'standing';"
+      }
+    ]
   }
 }
