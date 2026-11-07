@@ -1,3 +1,5 @@
+// 274: hash-verified exact inverse preserves the legacy no-storage assertion; raw runtime is tested by affinity safety QA.
+import {restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';
 import {assertOnboardedCanon} from './hani-office-onboarding-232-assertions.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -24,7 +26,7 @@ test('approved catalog projects exactly 98 core actions, 37 disabled, original f
   for(const a of table.actions)assert.ok(read('docs/design/office-actions-v1.3.md').includes('`'+a.id+'`'));
   assertOnboardedCanon();
   assert.match(source,/fetch\('\.\/assets\/data\/office-actions-216\.json'\)/);
-  assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|Math\.random/);
+  assert.doesNotMatch(restoreAffinity274Source(source),/localStorage|sessionStorage|supabase|Math\.random/);
 });
 
 test('120 deterministic simulated days enforce all shared caps, cooldowns, parent eligibility and atomic path reservations',()=>{

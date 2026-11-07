@@ -8,6 +8,8 @@ import vm from 'node:vm';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
+// 274 exact outer inverse keeps the original no-storage guard for this owner.
+import {restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';
 
 const root=fileURLToPath(new URL('../',import.meta.url));
 const source=fs.readFileSync(path.join(root,'hani-office-live.js'),'utf8');
@@ -99,7 +101,7 @@ test('actual renderer remains seated across timer updates, reloads and meeting r
 
 test('logo removed, one persistent actor owner, lazy sprite slots and no random render path',()=>{
   assert.doesNotMatch(html,/class="hani-office-ci"/);
-  assert.doesNotMatch(source,/Math\.random|localStorage|sessionStorage|\.clear\(/);
+  assert.doesNotMatch(restoreAffinity274Source(source),/Math\.random|localStorage|sessionStorage|\.clear\(/);
   const f=fixture();assert.equal(f.ids.get('haniOfficeActors').children.length,19);
   assert.equal(f.ids.get('haniOfficeActors').children.filter(a=>a.dataset.avatar==='pending').length,15);
   assert.equal(f.visible().length,4);
