@@ -9,6 +9,8 @@ import {assets} from './hani-office-v2-fixture.mjs';
 import {at} from './hani-office-lively-fixture.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 import {restoreBarista273Source} from './hani-office-barista-night-273-source.mjs';
+import {restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';
+import {createHash} from 'node:crypto';
 
 const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
 const table=JSON.parse(read('assets/data/office-actions-221.json'));
@@ -80,7 +82,10 @@ test('night barista: byte-exact 360x110 opaque atlas; sole new runtime file 158 
 });
 
 test('night barista: unchanged scheduler/labels/pets/props, timer and listener counts, no storage/Cloud paths',()=>{
- const source=read('hani-office-live.js'),before=restoreBarista273Source(source);assert.equal(before,read('artifacts/barista-night-live/baseline-hani-office-live.js.txt'));
+ // 274 exact inverse isolates the 273 owner. Keep the fixed baseline hash without
+ // depending on an untracked artifact from another worktree/session.
+ const source=restoreAffinity274Source(read('hani-office-live.js')),before=restoreBarista273Source(source);
+ assert.equal(createHash('sha256').update(before).digest('hex'),'60075ca9c2992c36db7237ca9945fa771c9106eddb09bfe6665c73cfebf1f067');
  for(const regex of [/document\.addEventListener\(/g,/addEventListener\(/g,/setInterval\(/g,/setTimeout\(/g,/requestAnimationFrame\(/g,/\bfetch\(/g])assert.equal([...source.matchAll(regex)].length,[...before.matchAll(regex)].length);
  assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|\bsave\s*\(/);
 });

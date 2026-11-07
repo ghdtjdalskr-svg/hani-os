@@ -1,3 +1,5 @@
+// 274: hash-verified exact inverse preserves the legacy no-storage assertion; raw runtime is tested by affinity safety QA.
+import {restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -68,5 +70,5 @@ test('place/geometry contract, no sub-4px timed edge, private homes and full ret
  }}
  const day='2026-10-22',events=[...s.plan(day),...s.blockPlan(day,Math.floor(14*3600/600),s.plan(day))];
  for(const e of events)for(const t of e.people){if(!t.back.length)continue;const p=s.stateAt(e,t,e.end-.0000001);assert.ok(distance(point(p),px(scene.visualPoint(scene.anchors.get(t.home.anchorId))))<.001);assert.equal(t.back.at(-1).to,t.home.anchorId)}
- const source=fs.readFileSync(new URL('../hani-office-live.js',import.meta.url),'utf8');assert.doesNotMatch(source,/localStorage|sessionStorage|supabase|idleStroll|strollPlan|visitorAt|idlePools\.stroll|A stroll never/);
+ const source=fs.readFileSync(new URL('../hani-office-live.js',import.meta.url),'utf8');assert.doesNotMatch(restoreAffinity274Source(source),/localStorage|sessionStorage|supabase|idleStroll|strollPlan|visitorAt|idlePools\.stroll|A stroll never/);
 });

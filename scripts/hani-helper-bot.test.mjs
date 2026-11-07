@@ -92,6 +92,19 @@ function fixture({now=Date.parse('2026-11-06T12:30:00+09:00'),failRelease=false,
   return {window,document,api:window.HaniHelperBot,callbacks,calls,requests,storageCalls,Element,flush,fire,resize,ready,rerun:()=>vm.runInContext(source,context),setNow:v=>{now=v;},mutate:target=>{observers.forEach(fn=>fn([{target}]));flush();},navigate:id=>{body.dataset.view=id;observers.forEach(fn=>fn([{target:body}]));flush();}};
 }
 
+test('affinity: duty getter updates the single panel line across levels and staff/pet days without storage',async()=>{
+  const f=fixture();await f.ready();const seen=[],start=Date.parse('2026-11-06T00:00:00+09:00');let level=3;
+  f.window.HaniOfficeAffinity=Object.freeze({get(id){seen.push(id);return {level,name:level===3?'편한 동료':'최애 콤비'};}});
+  for(const wantPet of [false,true]){
+    const day=Array.from({length:23},(_,i)=>start+i*86400000).find(t=>f.api.duty(staff,t).id.startsWith('pet-')===wantPet);
+    f.setNow(day);f.api.update();
+    const rows=f.document.body.querySelectorAll('.hani-helper-affinity');assert.equal(rows.length,1);
+    assert.equal(rows[0].textContent,'오늘 당번과의 친밀도: Lv3 편한 동료 ♡♡♡');assert.equal(seen.at(-1),f.api.duty(staff,day).id);
+  }
+  level=5;f.api.update();assert.equal(f.document.body.querySelector('.hani-helper-affinity').textContent,'오늘 당번과의 친밀도: Lv5 최애 콤비 ♡♡♡♡♡');
+  assert.deepEqual(f.storageCalls,[]);
+});
+
 test('KST midnight, deterministic fair 23-day rotation, 19 staff + 4 separated pets',()=>{
   const {api}=fixture({loading:true}),start=Date.parse('2026-11-06T00:00:00+09:00');
   const before=plain(staff);
