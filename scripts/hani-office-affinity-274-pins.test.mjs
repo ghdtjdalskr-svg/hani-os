@@ -1,10 +1,11 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import {createHash} from 'node:crypto';import {execFileSync} from 'node:child_process';
 import {affinity274Delta as delta,restoreAffinity274Source} from './hani-office-affinity-274-source.mjs';
+import {restoreHelper275Source} from './hani-helper-275-source.mjs';
 import {restoreBarista273Source} from './hani-office-barista-night-273-source.mjs';
 import {restoreBori272Source} from './hani-office-pet-bori-272-source.mjs';
 import {restoreXmas269Source} from './hani-office-xmas-269-source.mjs';
 import {restorePets268Source} from './hani-office-pets-268-source.mjs';
-const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8'),hash=x=>createHash('sha256').update(x).digest('hex');
+const read=f=>{const source=fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');return f==='hani-ui-v02992.js'?restoreHelper275Source(source,f):source;},hash=x=>createHash('sha256').update(x).digest('hex');
 test('274 exact complete pairs, ordered disjoint; reject missing, duplicate and unrelated bytes',()=>{
  assert.equal(delta.version,'2.9.274');assert.deepEqual(delta.files.map(r=>r.file),['hani-office-live.js','hani-office-live.css','hani-ui-v02992.js']);
  for(const row of delta.files){const source=read(row.file),before=restoreAffinity274Source(source,row.file);let forward=before,end=0;
