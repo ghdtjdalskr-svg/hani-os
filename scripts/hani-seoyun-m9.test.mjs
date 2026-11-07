@@ -4,12 +4,13 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import {createRequire} from 'node:module';
 import inverse from './hani-seoyun-m9-source.cjs';
+import capInverse from './hani-office-affinity-cap-source.cjs';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 const require=createRequire(import.meta.url),{delta,hash,restoreSeoyunM9Source:restore}=inverse;
-const read=f=>fs.readFileSync(f,'utf8'),plain=x=>JSON.parse(JSON.stringify(x));
+const read=f=>capInverse.projectPreAffinityCapSource(fs.readFileSync(f,'utf8'),f),plain=x=>JSON.parse(JSON.stringify(x));
 const originalBytes=fs.readFileSync('artifacts/seoyun-m9/originals.json');
 // 2.9.280 release advanced only the index.html/hani-main.js version strings; their pinned digests were refreshed to main 985cc15.
 assert.equal(hash(originalBytes),'e017475524a537091092a70bde1d68a4146fb6da310eb390143cdce561b68306');

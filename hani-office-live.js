@@ -86,7 +86,7 @@
         new Set(day.lines.map(row=>row?.staffId)).size===day.lines.length&&day.lines.every(row=>row&&ids.has(row.staffId)&&
           typeof row.floor==='string'&&/^[1-5]f$/.test(row.floor)&&typeof row.hidden==='boolean'&&text(row.line,40))));
   }
-  // Approved local-only affinity. This owner stores counts and nothing else.
+  // Approved local-only affinity: lifetime counts and KST daily allowance only.
   function createOfficeAffinity(){
     const key='hani_office_affinity_v1',names=['처음 만남','인사하는 사이','편한 동료','단짝','최애 콤비'];
     const secrets=Object.freeze({
@@ -116,25 +116,42 @@
       iseul:['회장님 오시는 소리에 컵부터 꺼냈어요.','제 앞치마 주머니엔 하트 스케치가 있어요.','한가한 카페에선 원두 소리가 더 다정해요.','이젠 하트 모양만 봐도 제 잔인 줄 아시죠.','우리 콤비 잔 받침은 나란히 놓아둘게요.'],
       eunha:['야간 카페 시계 소리가 은근히 좋아요.','회장님 오시면 조용한 밤도 반가워져요.','제 앞치마 별 자수는 밤에 더 잘 보여요.','이젠 졸린 인사도 알아들으시겠네요.','최애 콤비 자리는 작은 조명 아래예요.']
     });
-    const ids=new Set(Object.keys(secrets)),counts=Object.create(null),turns=new Map();
+    const ids=new Set(Object.keys(secrets)),counts=Object.create(null),turns=new Map(),notified=new Set();
+    let day=kstDay(),today=Object.create(null);
     let loaded=false,writable=true,warned=false,dirty=false,due=Infinity,lastWrite=-Infinity;
     function warn(){if(!warned){warned=true;console.warn('Office affinity storage unavailable or malformed; using memory only.')}}
+    function kstDay(){return new Date(Date.now()+9*60*60*1000).toISOString().slice(0,10)}
+    function rollover(){const next=kstDay();if(day!==next){day=next;today=Object.create(null);notified.clear()}}
+    function readStored(){
+      const raw=globalThis.localStorage.getItem(key);if(raw===null)return null;
+      const value=JSON.parse(raw),object=v=>v&&typeof v==='object'&&!Array.isArray(v);
+      if(!object(value)||![1,2].includes(value.v)||Object.keys(value).sort().join(',')!==(value.v===1?'counts,v':'counts,day,today,v')||!object(value.counts))throw Error('affinity format');
+      if(value.v===2&&(!/^\d{4}-\d{2}-\d{2}$/.test(value.day)||!Number.isFinite(Date.parse(value.day+'T00:00:00Z'))||new Date(value.day+'T00:00:00Z').toISOString().slice(0,10)!==value.day||!object(value.today)))throw Error('affinity day');
+      for(const count of Object.values(value.counts))if(!Number.isInteger(count)||count<0)throw Error('affinity count');
+      if(value.v===2)for(const [id,count]of Object.entries(value.today))if(!Number.isInteger(count)||count<0||count>2||count>(Object.hasOwn(value.counts,id)?value.counts[id]:0))throw Error('affinity today');
+      return value;
+    }
+    function merge(value){
+      if(!value)return;
+      for(const [id,count]of Object.entries(value.counts))if(ids.has(id))counts[id]=Math.max(counts[id]||0,Math.min(9999,count));
+      if(value.v===2&&value.day===day)for(const [id,count]of Object.entries(value.today))if(ids.has(id))today[id]=Math.max(today[id]||0,count);
+    }
     function load(){
       if(loaded)return;loaded=true;
       try{
-        const raw=globalThis.localStorage.getItem(key);if(raw===null)return;
-        const value=JSON.parse(raw);
-        if(!value||Array.isArray(value)||value.v!==1||Object.keys(value).sort().join(',')!=='counts,v'||!value.counts||typeof value.counts!=='object'||Array.isArray(value.counts))throw Error('affinity format');
-        for(const [id,count]of Object.entries(value.counts))if(ids.has(id)){
-          if(!Number.isInteger(count)||count<0)throw Error('affinity count');
-          counts[id]=Math.min(9999,count);
-        }
+        rollover();merge(readStored());
       }catch(_){for(const id of Object.keys(counts))delete counts[id];writable=false;warn()}
     }
-    function get(id){load();const count=ids.has(id)?counts[id]||0:0,level=1+[5,15,35,70].filter(n=>count>=n).length;return {count,level,name:names[level-1],hearts:'♥'.repeat(level)+'♡'.repeat(5-level)}}
+    function get(id){load();rollover();const count=ids.has(id)?counts[id]||0:0,level=1+[5,15,35,70].filter(n=>count>=n).length;return {count,level,name:names[level-1],hearts:'♥'.repeat(level)+'♡'.repeat(5-level)}}
     function tap(id,event){
       if(!ids.has(id)||event?.isTrusted!==true||!((event.type==='click')||(event.type==='keydown'&&event.key==='Enter'&&!event.repeat)))return null;
-      const before=get(id);if(before.count<9999){counts[id]=before.count+1;dirty=true;if(due===Infinity)due=Date.now()+2000}
+      const before=get(id),limited=(today[id]||0)>=2;
+      if(!limited&&before.count<9999){counts[id]=before.count+1;today[id]=(today[id]||0)+1;dirty=true;if(due===Infinity)due=Date.now()+2000}
+      if(limited&&!notified.has(id)){
+        notified.add(id);
+        const line=({hani:'오늘 친밀도는 여기까지예요♡ 내일 또 봐요!','pet-cat':'오늘 골골송은 여기까지다옹. 내일 또 와요.','pet-dog':'오늘도 신났어요! 내일 또 꼬리 흔들게요!','pet-rabbit':'오늘은 포근히 쉴게요. 내일 또 조용히 만나요.','pet-bori':'오늘은 제 옆에서 쉬어요. 내일 또 반겨줄게요, 멍.'})[id]||'오늘은 충분히 친해졌어요. 내일 또 만나요!';
+        return {...before,added:false,up:false,line};
+      }
       const info=get(id),turn=turns.get(id)||0;turns.set(id,turn+1);
       const pool=secrets[id].slice(0,info.level>=5?5:3),up=info.level>before.level;
       const suffix=id==='hina'?'회장님이랑 이제 '+info.name+'예용♡':id==='mir'?'회장님이랑 이제 '+info.name+'네, 헤헤.':id==='yuri'||id==='taeo'?'회장님과 이제 '+info.name+'입니다.':'회장님이랑 이제 '+info.name+'네요!';
@@ -142,7 +159,7 @@
     }
     function flush(lifecycle=false){
       const now=Date.now();if(!dirty||!writable||now-lastWrite<2000||(!lifecycle&&now<due))return;
-      try{globalThis.localStorage.setItem(key,JSON.stringify({v:1,counts}));dirty=false;due=Infinity;lastWrite=now}
+      try{rollover();merge(readStored());globalThis.localStorage.setItem(key,JSON.stringify({v:2,counts,day,today}));dirty=false;due=Infinity;lastWrite=now}
       catch(_){writable=false;warn()}
     }
     return Object.freeze({get,tap,flush});
