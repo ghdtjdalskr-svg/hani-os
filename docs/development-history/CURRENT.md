@@ -1,3 +1,7 @@
+# 2026-11-08 ? ?? ?? + ?? M9 ?? ?? ?? (Codex / bori-m9)
+
+`hani/bori-m9-280` / base `a2f377d` + ?? ?? `a7ce78e` / GitHub main??? ?? `f1a457f` ?? / ???cache2.9.279 ??. ??3? ?? ????? ??, exact inverse **M9 ? ?? ? companion-homes ? 278**, M9 ??? ?? ?? ? ???? ??. **73??755???Git??34???skip5?????0, ?????3/3?syntax9/9?closure161/??0.** ??2/2??? ? ??21,600?? ??????? ?? ?? ??289?; ??DOM40??90? ??34/?????47/??9. ???3?????278/Bori ?????/Cloud??? ??. Edge EPERM?? ???PC/390 PNG ???, Git ???index ???commit/push/merge/?? ??. **?? commit ?? ??.** Notion ?? ?? never ??? ?? ??. [?????? ?????? ????? ??](../../artifacts/bori-m9/REPORT.md). ?? ?? ??? ?? ?? ?? ??.
+
 # 2026-11-08 · 보리 낮 리듬 보정 (Codex / bori-fix)
 
 `hani/bori-stroll` / HEAD `02468e1` / GitHub main `f1a457f` 일치 / 표시·cache2.9.279 유지. 기존 owner에서 낮잠·앉기·서기·느린 짧은 이동 복원, 정기 산책 유지. **Edge 화요일10시·40배속90회: 수면34(37.8%)·앉기/서기45(50.0%)·걷기11(12.2%).** 5일 매분 낮 수면36.1~37.1%·걷기11.0~15.0%, 밤 산책0·겹침0. 전용14/14, 전체68파일799통과·기존 대비실패1·skip5, 단독 성능 각3/3 PASS. 278/companion-homes 계약·저장/Cloud·timer/listener 보존. **git add index.lock 권한 거절로 미커밋**, push/merge/버전 변경/배포 없음. Notion 자동 승인 never 거절로 갱신 대기. [작업별 인수인계·실측표·전체 근거](../../artifacts/bori-fix/REPORT.md). 아래 1차 기록은 보정 전 근거로 보존.
@@ -5,6 +9,10 @@
 # 2026-11-08 · 보리의 가끔 산책 (Codex / bori-stroll)
 
 `hani/bori-stroll` / base·HEAD·착수 GitHub main `f1a457f` / 표시·cache2.9.279 유지. 날짜 시드 낮 짧은 산책·기존 pose/tick/bubble, 2F 병아리 경로 예약·남매96px 간격. **4일×1440분20/18/21/19회·밤0·겹침0, 41회×0.5초 복귀 확인, 신규7항목 완료(공통6·fixture 수정 DOM 단독 재검사 포함). 기존67파일785통과·기존 대비 실패1·skip5, 성능 각 최종 단독3/3, PC1440/390 20장면·저장/오류0.** closure161·8파일 원문·등록수 보존. 기존 이름표 대비 실패는 변경 전에도 동일, 직원 통과 시 잠시 숨음 기록. Git add index.lock 권한 거절로 **미커밋**, push/merge/버전변경/배포 없음. Notion 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/bori-stroll/REPORT.md) · [인수인계](handoffs/2026-11-07-bori-stroll.md). 아래 다른 담당·과거 기록 보존.
+
+# 2026-11-08 · 서윤 M9 특별 합류 1단계 (Codex / seoyun-m9)
+
+`hani/seoyun-m9` / base·확인한 원격 main `f1a457f` / 표시·cache2.9.279 유지. 기존 9인 뒤·MIR 앞 표시 전용 서윤 특별 카드1개, 조직도·AI팀·상세 배지, 기존 탭/남매방문/주민 owner 대사10줄 추가. **전용15/15·기존탭15/15·syntax10/10·diff check PASS, 85파일 회귀834통과·Git36/브라우저5차단·기존실패13·skip7·신규실패0, closure161불변/누락0.** 기존9인 HTML/순서/그림·roster·AI STAFF/팀/직급·저장/Cloud·timer/listener 보존. 기존실패는 변경전 재생에서도 재현, 성능2건 동일한도 순차 재검사 통과. Edge EPERM으로 PC/폰 PNG·실화면 미검증, git add의 index.lock 권한 거부로 **미커밋**. push/PR/merge/배포 없음. Notion 착수 HANI-83 저장/read-back 완료, 후속 갱신은 자동 승인 never 거절로 대기. [보고서](../../artifacts/seoyun-m9/REPORT.md) · [인수인계](handoffs/2026-11-08-seoyun-m9.md). 아래 타 담당·과거 기록 보존.
 
 # 2026-11-07 · 동행 동물 부서 상주 (Codex / companion-homes)
 

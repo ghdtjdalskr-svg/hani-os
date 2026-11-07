@@ -162,6 +162,14 @@
       }catch(_){/* An absent or invalid drama never changes ordinary office speech. */}})()]).then(()=>{ready=true});
       return request;
     }
+    // Special listing extends the existing friend slot, preserving its 1/5 cadence.
+    const listingLines=Object.freeze({
+      seoyun:["M9 합류했어요. 시가총액은… 천천히 따라갈게요 💜","전무님이 '아직?'이라고 하셨어요. 무기한이래요…"],
+      hani:["M9에 온 걸 환영해요, 서윤아♡ 시총은 천천히 따라오세요."],
+      yuri:["M9 합류 확인. 검증 결과 PASS입니다."],
+      jieun:["M10 개편 비용 0원. 좋은 결정이었어요."],
+      minji:["신규상장 첫 표정, 아직 제 폴더에 있어요📸"]
+    });
     function episode(now=new Date()){
       const selected=drama&&dramaDate(now);if(!selected)return null;
       const week=drama.weeks[selected.week-1];return {...selected,title:week.title,...week.days[selected.day-1]};
@@ -187,7 +195,7 @@
       if(id==='seongmin'){const reaction=bank.chairman.staffReactions[index%5];return {line:reaction.line,speaker:reaction.staffId}}
       if(cursor.recent.length>=3){cursor.recent=[];return {line:row.tripleTap,speaker:id}}
       // A stable one-in-five cadence avoids a second random scene scheduler.
-      if(index>0&&index%5===4)return {line:row.friend,speaker:id};
+      if(index>0&&index%5===4){const pool=[...(listingLines[id]||[]),row.friend];return {line:pool[Math.floor(index/5)%pool.length],speaker:id}};
       const turn=cursor.turn++;
       return {line:turn%2?row.toChairman[Math.floor(turn/2)%3]:row[bucket][Math.floor(turn/2)%row[bucket].length],speaker:id};
     }
@@ -2357,7 +2365,7 @@
   // Residents own no staff seats, reservations, scheduler seeds or saved state.
   const residentNames=Object.freeze({cat:'치즈',dog:'크림',rabbit:'모찌',bori:'보리',cleaner:'청소 담당',gardener:'옥상 정원사',temp:'임시직'});
   const residentPeople=Object.freeze([
-    {id:'pet-cat',name:residentNames.cat,sprite:'pet-cat',pet:true,hours:[[7,12,'1f'],[12,17,'5f'],[17,22,'1f'],[22,26,'1f'],[26,31,'1f']],places:{'1f':['resident_cat_lobby','resident_cat_front'],'5f':['resident_cat_roof','resident_cat_roof_front']},lines:["출근 도장은 발자국으로요.","낮잠도 일정에 넣어 주세요.","회장님, 햇볕 자리는 예약했어요.","서두를 일은 없어요.","관심은 없지만 곁에 있을게요.","키보드 위가 제 지정석인데요.","야옹 한 번이면 안건 통과죠.","택배 상자 검수는 제 소관이에요.","마우스 커서 잡기가 오늘 목표!","골골송은 유료 복지 서비스예요.","회의 길어지면 식빵 굽고 있을게요.","츄르 없이는 면담 신청 안 받아요.","복도 순찰 완료, 이상 무다옹.","쟤는 말이 없어서 괜찮네요."]},
+    {id:'pet-cat',name:residentNames.cat,sprite:'pet-cat',pet:true,hours:[[7,12,'1f'],[12,17,'5f'],[17,22,'1f'],[22,26,'1f'],[26,31,'1f']],places:{'1f':['resident_cat_lobby','resident_cat_front'],'5f':['resident_cat_roof','resident_cat_roof_front']},lines:["출근 도장은 발자국으로요.","낮잠도 일정에 넣어 주세요.","회장님, 햇볕 자리는 예약했어요.","서두를 일은 없어요.","관심은 없지만 곁에 있을게요.","키보드 위가 제 지정석인데요.","야옹 한 번이면 안건 통과죠.","택배 상자 검수는 제 소관이에요.","마우스 커서 잡기가 오늘 목표!","골골송은 유료 복지 서비스예요.","회의 길어지면 식빵 굽고 있을게요.","츄르 없이는 면담 신청 안 받아요.","복도 순찰 완료, 이상 무다옹.","쟤는 말이 없어서 괜찮네요.","박스 공급 조건은 유지됩니다."]},
     {id:'pet-dog',name:residentNames.dog,sprite:'pet-dog',pet:true,hours:[[7,9,'1f'],[9,16,'2f'],[16,22,'1f'],[22,26,'1f'],[26,31,'1f']],places:{'1f':['resident_dog_lobby','resident_dog_front'],'2f':['resident_dog_hall','resident_dog_hall_front']},lines:["회의는 산책하면서 할까요?","간식 결재는 언제 나나요?","오늘도 모두 무사 출근!","오셨어요? 같이 가요!","모두 만나니 기분이 좋아요!","문소리 나면 반기는 게 제 업무!","공 던져 주시면 바로 야근 가능!","칭찬 한 마디면 사기 충전 완료!","점심시간 알림은 제가 일등이에요!","엘리베이터 앞 마중 대기 중이에요.","발도장으로 협조전 꾹 찍었어요!","분위기 메이커 수당은 개껌으로요!","퇴근길 에스코트 예약 받습니다!"]},
     {id:'pet-rabbit',name:residentNames.rabbit,sprite:'pet-rabbit',pet:true,hours:[[7,12,'3f'],[12,17,'1f'],[17,22,'1f'],[22,26,'1f'],[26,31,'1f']],places:{'3f':['resident_rabbit_quiet_a','resident_rabbit_quiet_b'],'4f':['resident_rabbit_lounge_a','resident_rabbit_lounge_b'],'1f':['resident_rabbit_lobby_a','resident_rabbit_lobby_b']},lines:["조용한 자리가 있으면 알려주세요.","간식보다 평온이 좋아요.","작은 소리도 잘 들려요.","오늘은 여기서 지켜볼게요.","천천히 다가와 주실래요.","햇살이 머무는 자리네요.","히나 곁이면 마음이 놓여요.","잠깐 눈을 감아도 될까요.","발소리가 다정해서 알아봤어요.","말없이 함께 있어도 좋아요."]},
     {id:'pet-bori',name:residentNames.bori,sprite:'pet-bori',pet:true,hours:[[7,13,'1f'],[13,15,'2f'],[15,22,'1f'],[22,26,'1f'],[26,31,'1f']],places:{'1f':['resident_bori_lobby_a','resident_bori_lobby_b'],'2f':['resident_bori_lounge_a','resident_bori_lounge_b']},lines:["어서 와요. 큰 꼬리로 인사할게요.","로비는 제가 느긋하게 지킬게요.","옆에 기대도 괜찮아요, 멍.","햇살이 따뜻해서 눈이 감겨요.","천천히 걸어요. 같이 갈게요.","쓰다듬어 주면 꼬리가 살랑해요.","잠깐 누워서 기다릴게요.","오늘도 무사히 와 줘서 고마워요.","제 옆에서 한숨 돌려요.","졸려도 반가운 건 알아요, 멍."]},
@@ -3121,6 +3129,10 @@
         const trails=paths(peer,states,staff);if(!trails)continue;
         const count=counts.get(pair.actorId)||0,rare=(residentSeed(day+'|'+pair.staffId)%10+count)%10===0;
         const lines=[...pair.lines,...(rare?[pair.rare]:[])].map(l=>({id:l.speaker==='staff'?pair.actorId:'kid-'+l.speaker,name:l.speaker==='staff'?pair.staffName:l.speaker==='suyeon'?'수연':'수현',text:l.text}));
+        if(pair.actorId==='seoyun'&&count%2===1)lines.push(
+          {id:'kid-suyeon',name:'수연',text:'서윤 언니~♡ 이제 M9이야? 축하해!'},
+          {id:'kid-suhyeon',name:'수현',text:'…서윤 이모, 축하해요. 그냥 하는 말 아니에요.'}
+        );
         const length=path=>path.slice(1).reduce((n,p,i)=>n+distance(p,path[i]),0),travel=Math.max(2,Math.min(reduced?6:4,Math.max(...trails.map(length))/(reduced?90:180)));
         active={key:day+'|kids-visit|'+pair.staffId+'|'+count,actorId:pair.actorId,staffId:pair.staffId,floor:peer.floor,started:now.getTime(),travel,lines,rare,paths:trails,patrol,index:-1,line:null};
         counts.set(pair.actorId,count+1);if(patrol){seen.add(pair.actorId);patrolSeen.set(patrol,seen)}nextAt=now.getTime()+period()*1000;return active;
@@ -3336,7 +3348,7 @@
       const peers=staff.filter(q=>q.floor===pet.floor&&!q.visitor&&!q.resident&&!q.walking&&residentVoice.staff[q.id]&&['rest','work'].includes(q.activity)&&(!q.state||q.state==='AT_HOME'||q.state==='AT_PLACE')).filter(q=>{const v=q.position||[q.seat?.x,q.seat?.y],d=Math.hypot((pet.position[0]-v[0])*art.width/100,(pet.position[1]-v[1])*art.height/100);return v.every(Number.isFinite)&&d>=100&&d<=320});
       peers.sort((a,b)=>(kind==='dog'?(a.id==='seongmin'?-1:b.id==='seongmin'?1:0):kind==='rabbit'?(a.id==='hina'?-1:b.id==='hina'?1:0):0)||residentSeed(seed+'|'+beat+'|'+a.id)-residentSeed(seed+'|'+beat+'|'+b.id));
       const peer=peers[0];if(!peer)continue;
-      const name=peer.id==='seongmin'?'회장님':actionTable?.people.find(p=>p.id===peer.id)?.name||peer.id,petLine=kind==='cat'?'딱 한 번만 기대는 거예요.':kind==='dog'?'좋아해요! 한 번 더요!':kind==='bori'?'큰 머리 살짝 기대도 될까요, 멍.':'조용히 곁에 앉아도 될까요.',staffLine=residentAffectionVoice[kind][peer.id]||residentVoice.staff[peer.id],v=peer.position||[peer.seat.x,peer.seat.y];
+      const name=peer.id==='seongmin'?'회장님':actionTable?.people.find(p=>p.id===peer.id)?.name||peer.id,petLine=kind==='bori'&&peer.id==='seoyun'&&beat%2?'…멍. (꼬리를 툭 한 번)':kind==='cat'?'딱 한 번만 기대는 거예요.':kind==='dog'?'좋아해요! 한 번 더요!':kind==='bori'?'큰 머리 살짝 기대도 될까요, 멍.':'조용히 곁에 앉아도 될까요.',staffLine=residentAffectionVoice[kind][peer.id]||residentVoice.staff[peer.id],v=peer.position||[peer.seat.x,peer.seat.y];
       if(kind==='rabbit')pet.pose='sitting';
       pet.affection={key:clock.day+'|'+pet.floor+'|'+beat+'|'+pet.id+'|'+peer.id,partnerId:peer.id,partnerName:name,petLine,staffLine,line:petLine+' · '+name+' · '+staffLine,kind,heart:kind==='dog'?'💕':'♥',lean:v[0]<pet.position[0]?-1:1,bubble:(seed+beat)%3===0};
     }

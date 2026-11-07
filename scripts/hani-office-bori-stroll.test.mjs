@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import seoyunM9 from './hani-seoyun-m9-source.cjs';
 import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
@@ -8,7 +9,7 @@ import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 import {boriStrollDelta,restoreBoriStrollSource,projectPreBoriStrollSource} from './hani-office-bori-stroll-source.mjs';
-const current=fs.readFileSync('hani-office-live.js','utf8'),base=restoreBoriStrollSource(current);
+const current=seoyunM9.projectPreSeoyunM9Source(fs.readFileSync('hani-office-live.js','utf8')),base=restoreBoriStrollSource(current);
 const {scene,table}=loadScene(),r=scene.residents,plain=x=>JSON.parse(JSON.stringify(x));
 const hash=s=>createHash('sha256').update(s).digest('hex');
 const distance=(a,b)=>Math.hypot((a[0]-b[0])*scene.art.width/100,(a[1]-b[1])*scene.art.height/100);
