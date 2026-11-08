@@ -6,6 +6,13 @@ hani/kids-visit-pose-b / 지정 main5c375d9(v2.9.284), Git 명령0. **파일 충
 
 `hani/kids-visit-pose-b` / base·HEAD `bbe71c0` / 표시·cache2.9.280 유지. 기존 owner에서 평일 KST 날짜 시드 15~19시 아이1명이 동물 동행1자리 대체, 아빠 인사 각3종·일반 각6줄·남매3세트 추가. **평일58/261(22.22%), 전용16/16·B13/13·kids-lively15/15·M9 15/15, 전체69파일796통과·기존219 대비실패1·skip3·신규 미해결0, syntax12/12·closure161/누락0. Edge157 PC1280/폰390 4장·인사1회/중복0·넘침/오류/저장0.** 타 작업 자동 생성 증거16경로 원문 복원. Git index.lock 권한 거절로 **미커밋**, push/merge/버전 변경/배포 없음. Notion 쓰기 자동 승인 never 거절로 갱신 대기. 종료 시 main `43eda9e`(v2.9.281/#465)로 진행되어 같은 office owner 변경 확인; 자동 merge/rebase 없음, 최신 main 결합·계약 재고정·재검사는 배포 담당 인계. [보고서·대사표·캡처](../../artifacts/kids-weekday/REPORT.md) · [인수인계](handoffs/2026-11-08-kids-weekday.md). 아래 다른 담당·과거 기록 보존.
 
+# 2026-11-08 · 뉴스룸 레이아웃 (Codex / news4cut2)
+
+`hani/newsroom-4cut-002` / 전달 HEAD `1b6274f`(Git 금지·원격 최신성 미확인). 기존 owner JS/CSS 2개에서 4컷 폭·중복·지난 호/최신 탐색·카탈로그 지수·F/U 3/2열·간격/다크 정리. **raw 4컷7·persona4·inverse2·task-local 범위 PASS, office73파일 전부 실행: 769통과·Git36차단·별도3실패·4skip.** 실패3은 office 3F art 215/218 기대와 cold plan400ms 기준2건(단독 재검증도 실패). **Edge spawn EPERM/직접 실행 정책 차단으로 실제 UI·PNG·비교 미검증**, Notion append 자동 승인 never 거절로 갱신 대기. 데이터/Cloud/서버·이미지/카탈로그·index/main·표시/cache284 보존, Git/commit/배포 없음. 서윤 실제 Edge·Git 재검증 뒤 2호와 **2.9.285** 통합 인계. [보고서](../../artifacts/newsroom-layout/REPORT.md) · [인수인계](handoffs/2026-11-08-newsroom-layout.md). 아래 다른 담당 기록 보존.
+# 2026-11-08 · tooling-284 · 2.9.284 시험 기준 갱신 (Codex)
+
+`hani/tooling-284` / 지정·로컬 base `5c375d9` / Git 명령 금지·원격 새 조회 없음. 공통 JSON release inverse·치비툰→283→생활/M9 체인 정리, 기존 assertion·fixture pin 보존. **지정 기능·nav/UI PASS, office69파일 745통과·35Git차단·3skip·기타실패0, 기존 m9-link packaging1FAIL 유지.** 런타임498 origin/main 바이트 동일·시험 부산물 복원·새PNG제거. Git/commit/배포 없음, 서윤 검토·Git 재검증·커밋 인계. Notion 쓰기는 자동 승인 never 거절로 갱신 대기. [짧은 보고서](../../artifacts/tooling-284/REPORT.md) · [인수인계](handoffs/2026-11-08-tooling-284.md). 아래 기존 기록 보존.
+
 # 2026-11-08 · tooling-283 후속 office 8개 (Codex)
 
 `hani/tooling-283` / base `a28918d`(기존 기록·Git 금지로 새 조회 없음). 시험8개가 283·생활 묶음 exact inverse preload를 자체 연결, assertion·고정 pin·Git 호출 보존. **대상110통과·6Git차단, office69파일745통과·35Git차단·3skip·기타실패0, 기존 성공41파일 전부 유지.** 부산물JSON4개 복원·런타임497바이트 동일·범위 밖 변경0. Git/commit/배포 없음, 서윤 실제 Git 재검증·커밋 인계. Notion 쓰기는 자동 승인 never 거절로 갱신 대기. [짧은 보고서](../../artifacts/tooling-283/REPORT-b.md) · [인수인계](handoffs/2026-11-08-tooling-283-b.md). 아래 기존 기록 보존.

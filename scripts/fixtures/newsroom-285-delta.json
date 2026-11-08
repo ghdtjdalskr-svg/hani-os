@@ -1,0 +1,119 @@
+{
+  "base": "5c375d970065b1ee44946aa82dcd9c9d27d02d7d",
+  "release": "b5f54978226bc209ee60ec7f10cd3d92474bfa05",
+  "files": {
+    "assets/data/newsroom-4cut/issues.json": {
+      "beforeSha256": "959345bae46db82537b7dbd31d8960fdc40a105f3473ca461d1805c5bf8cc6f3",
+      "afterSha256": "b135ae1c3db24624b520f8e20059f75f48d2adc4ae4eb82f28864a691c117a44",
+      "edits": [
+        {
+          "at": 17,
+          "after": "    },\n    {\n      \"number\": 2,\n      \"publishDate\": \"2026-11-08\",\n      \"week\": \"2026-11-02~11-06\",\n      \"image\": \"002\",\n      \"title\": \"AI 규제 우려에 흔들린 한 주\",\n      \"alt\": \"11월 1주차(2026-11-02~11-06) 주간 시황 4컷. 미국 중간선거 뒤 AI 데이터센터 규제 우려 속 코스피는 한 주 11.71% 내린 5,059.69, 코스닥은 11.06% 내린 644.27에 마감했다. S&P500은 2.68%, 나스닥은 3.37% 내렸고 금요일 종가는 각각 7,376.86과 24,579.42다. 주간 등락은 10/30 금요일 대비 11/6 금요일 기준이다. 원/달러 환율은 11/6 서울 주간거래 15:30 종가 1,356.6원이다. 11/6 발표된 미국 10월 비농업 고용은 165,000명(16만 5천 명) 증가했고 실업률은 4.1%다. 하니가 서킷브레이커 경고 전광판 앞에서 놀라는 클로즈업, 지은이 급락 미끄럼틀 끝 난간을 붙잡는 전신 장면, 민지가 미국과 한국의 낙폭을 비교하는 지도 부감 장면, 따뜻한 조명 아래 세 기자가 고용 지표와 다음 주를 준비하는 어깨 너머 장면이다. 회장님은 등장하지 않는다. 정보 정리용이며 투자 권유가 아니다.\",\n      \"sources\": [\n        {\n          \"label\": \"이투데이 · 국내 지수 금요일 종가·주간 등락 (11/7)\",\n          \"url\": \"https://www.etoday.co.kr/news/view/2645176\"\n        },\n        {\n          \"label\": \"연합뉴스 · 코스피 -11.71%·코스닥 -11.06% (11/8)\",\n          \"url\": \"https://www.yna.co.kr/amp/view/AKR20261106189100008\"\n        },\n        {\n          \"label\": \"뉴스핌 · 국내 지수·원/달러 15:30 마감 (11/6)\",\n          \"url\": \"https://www.newspim.com/news/view/20261106000988\"\n        },\n        {\n          \"label\": \"아시아경제 · 원/달러 1,356.6원 주간거래 종가 (11/6)\",\n          \"url\": \"https://www.asiae.co.kr/article/2026110615362639023\"\n        },\n        {\n          \"label\": \"Stock Rover · 미국 지수 종가·주간 등락 (11/6)\",\n          \"url\": \"https://www.stockrover.com/blog/rovers-weekly-market-brief-11-06-2026/\"\n        },\n        {\n          \"label\": \"NeQuit · 미국 지수 종가·주간 등락 교차 확인 (11/7)\",\n          \"url\": \"https://www.nequitco.com/blog-articles/market-intelligence-report---week-ending-november-6-2026\"\n        },\n        {\n          \"label\": \"AP · 미국 주요 지수 금요일 종가 (11/6)\",\n          \"url\": \"https://apnews.com/article/806f71d95105bc7efbc760b194dd8cad\"\n        },\n        {\n          \"label\": \"STL.News · AI 규제 우려·미국 10월 고용 (11/7)\",\n          \"url\": \"https://www.stl.news/stock-market-weekly-update-november-6-2026/\"\n        },\n        {\n          \"label\": \"Reuters · 미국 고용 165,000명 증가·실업률 4.1% (11/6)\",\n          \"url\": \"https://finance.yahoo.com/economy/policy/articles/strong-october-jobs-report-sends-134858909.html\"\n        },\n        {\n          \"label\": \"BLS 원문 · 10월 고용보고서 (11/6 08:30 EST)\",\n          \"url\": \"https://www.dol.gov/newsroom/economicdata/empsit_11062026.pdf\"\n        }\n      ]\n",
+          "before": ""
+        }
+      ]
+    },
+    "hani-design-system.css": {
+      "beforeSha256": "90699b9788c8d9397fbef35f88007611875b83086880c31a4a6e488ec4c02353",
+      "afterSha256": "22970c09a8b523de7a79b9dffdae4b55608a735017f82dca7b6ebf18d510e7b3",
+      "edits": [
+        {
+          "at": 260,
+          "after": "#app #newsroom .ds-news-navigation{box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-width:0;margin:0 0 16px;padding:12px;border-radius:18px}\n#app #newsroom .ds-news-navigation .newsroom-mode-tabs{margin:0!important;flex:1;min-width:0}\r\n",
+          "before": "#app #newsroom .ds-news-navigation{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;padding:6px}\r\n#app #newsroom .ds-news-navigation .newsroom-mode-tabs{margin:0!important;flex:none}\r\n"
+        },
+        {
+          "at": 265,
+          "after": "@media(max-width:600px){#app #newsroom .ds-news-navigation{flex-wrap:wrap}#app #newsroom .ds-news-navigation .newsroom-content-actions{width:100%}#app #newsroom .ds-news-navigation .newsroom-content-actions .btn{width:100%;min-height:44px}}\n",
+          "before": "@media(max-width:1000px){#app #newsroom .ds-news-navigation{flex-wrap:wrap}#app #newsroom .ds-news-navigation .newsroom-content-actions{width:100%}}\r\n"
+        },
+        {
+          "at": 780,
+          "after": "#app #newsroom .company-followup-preview{box-sizing:border-box;width:100%;min-width:0;margin:0 0 16px;border:1px solid var(--border-strong);border-radius:18px;background:var(--surface-panel);box-shadow:0 10px 28px rgba(58,66,88,.055);overflow:hidden}\n",
+          "before": "#app #newsroom .company-followup-preview{margin-bottom:15px;border:1px solid color-mix(in srgb,var(--ds-season) 14%,#dfe4eb);border-radius:20px;background:linear-gradient(145deg,rgba(255,255,255,.98),color-mix(in srgb,var(--ds-season-soft) 28%,#fff));box-shadow:0 10px 28px rgba(58,66,88,.055);overflow:hidden}\r\n"
+        },
+        {
+          "at": 785,
+          "after": "#app #newsroom #followup-semiconductor:checked~.company-followup-channels label[for=\"followup-semiconductor\"],#app #newsroom #followup-lg:checked~.company-followup-channels label[for=\"followup-lg\"],#app #newsroom #followup-infra:checked~.company-followup-channels label[for=\"followup-infra\"],#app #newsroom #followup-frontier:checked~.company-followup-channels label[for=\"followup-frontier\"],#app #newsroom #followup-world:checked~.company-followup-channels label[for=\"followup-world\"]{border-color:var(--followup-selected-border,#9f8ee8);background:var(--followup-selected-bg,#f7f4ff);box-shadow:0 5px 15px rgba(105,83,199,.11)}\r\n",
+          "before": "#app #newsroom #followup-semiconductor:checked~.company-followup-channels label[for=\"followup-semiconductor\"],#app #newsroom #followup-lg:checked~.company-followup-channels label[for=\"followup-lg\"],#app #newsroom #followup-infra:checked~.company-followup-channels label[for=\"followup-infra\"],#app #newsroom #followup-frontier:checked~.company-followup-channels label[for=\"followup-frontier\"],#app #newsroom #followup-world:checked~.company-followup-channels label[for=\"followup-world\"]{border-color:#9f8ee8;background:#f7f4ff;box-shadow:0 5px 15px rgba(105,83,199,.11)}\r\n"
+        },
+        {
+          "at": 1636,
+          "after": "  box-sizing:border-box;min-width:0;margin:0 0 16px;padding:clamp(14px,2vw,24px);\n",
+          "before": "  box-sizing:border-box;min-width:0;margin:0 0 20px;padding:clamp(14px,2vw,24px);\r\n"
+        },
+        {
+          "at": 1650,
+          "after": "#newsroom .newsroom-4cut .newsroom-4cut-open{display:block;width:100%;padding:0;overflow:hidden}\n",
+          "before": "#newsroom .newsroom-4cut .newsroom-4cut-open{display:block;width:min(100%,520px);padding:0;overflow:hidden}\r\n"
+        },
+        {
+          "at": 2008,
+          "after": "#newsroom .newsroom-4cut-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start}\n",
+          "before": "#newsroom .newsroom-4cut-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;align-items:start}\r\n"
+        },
+        {
+          "at": 2010,
+          "after": "#newsroom .newsroom-4cut-context{display:grid;gap:16px;overflow-wrap:anywhere}\r\n",
+          "before": "#newsroom .newsroom-4cut-context{display:grid;gap:20px;overflow-wrap:anywhere}\r\n"
+        },
+        {
+          "at": 2016,
+          "after": "#newsroom .newsroom-4cut-archive{margin:0 0 12px;padding:0 12px;border:1px solid var(--border-strong);border-radius:12px;background:var(--surface-raised)}\n#newsroom .newsroom-4cut-archive summary{font-weight:700}\n#newsroom .newsroom-4cut .newsroom-4cut-past{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:0 0 12px}\n#newsroom .newsroom-4cut .newsroom-4cut-past li{min-width:0;max-width:100%;padding:0}\n#newsroom .newsroom-4cut button[aria-pressed=\"true\"]{background:var(--surface-panel);outline:2px solid var(--text-primary);outline-offset:2px}\n#newsroom .newsroom-4cut-latest{margin:0 0 12px}\n#app #newsroom .company-followup-head{display:grid;gap:12px}\n#app #newsroom .company-followup-cycle{justify-items:start;min-width:0}\n#app #newsroom .company-followup-channels{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:0 16px 16px!important;overflow:visible}\n#app #newsroom .company-followup-channels label{grid-template-columns:32px minmax(0,1fr);gap:8px;min-width:0;min-height:96px;padding:10px;align-content:start}\n#app #newsroom .company-followup-channels label>i{position:absolute;right:5px;top:5px;min-width:18px;height:18px;font-size:10px}\n#app #newsroom .company-followup-channels small{display:block;font-size:9px;letter-spacing:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}\n#app #newsroom .company-followup-channels b{font-size:14px;word-break:keep-all;overflow-wrap:break-word}\n#app #newsroom .company-followup-channels em{font-size:11px;word-break:keep-all;overflow-wrap:break-word}\n#app #newsroom .company-followup-channels :is(.followup-channel-symbol,.followup-company-mark){width:32px;height:32px}\n#app #newsroom .company-followup-radio:focus-visible~.company-followup-channels label{outline:2px solid var(--text-primary);outline-offset:2px}\n@media(max-width:600px){#app #newsroom .company-followup-channels{grid-template-columns:repeat(2,minmax(0,1fr));padding:0 12px 16px!important}#app #newsroom .company-followup-channels label{grid-template-columns:minmax(0,1fr)}#app #newsroom .company-followup-channels small{font-size:9px}}\n:root:is([data-finish=\"midnight-black\"],[data-finish=\"titanium-graphite\"]) #app #newsroom .company-followup-preview{--text-primary:#edf1fa;--text-secondary:#bcc8da;--surface-panel:#202633;--surface-raised:#293243;--border-strong:#73829a;--followup-selected-bg:#383253;--followup-selected-border:#b9a8ff;background:var(--surface-panel)!important;color:var(--text-primary)}\n:root:is([data-finish=\"midnight-black\"],[data-finish=\"titanium-graphite\"]) #app #newsroom .company-followup-preview :is(.company-followup-panels,.company-followup-rule,.company-followup-channels label,.followup-empty,.agent-thread article,.issue-brief,.followup-issue,.company-followup-cycle em){background:var(--surface-raised);border-color:var(--border-strong);color:var(--text-primary)}\n:root:is([data-finish=\"midnight-black\"],[data-finish=\"titanium-graphite\"]) #app #newsroom .company-followup-preview :is(h3,h4,b,p,small,em,.company-followup-cycle span,.company-followup-channels b,.company-followup-channels em,.followup-panel-head span){color:var(--text-primary)}\n\n\n",
+          "before": "#newsroom .newsroom-4cut-layout.has-context{display:flex;flex-wrap:wrap}\r\n#newsroom .newsroom-4cut-layout.has-context>:first-child{flex:1 1 340px;max-width:520px}\r\n#newsroom .newsroom-4cut-layout.has-context>.newsroom-4cut-context{flex:1 1 260px}\r\n"
+        }
+      ]
+    },
+    "hani-newsroom-4cut.js": {
+      "beforeSha256": "adf22c3a15ba8713262d277286b60b437429beb3c37f1ffe14228f6e909dc79c",
+      "afterSha256": "cfe71da51f761c1986bf7f316763feffac12c385ae36a8a27388bfb5091b3fea",
+      "edits": [
+        {
+          "at": 35,
+          "after": "    if(us){\n      const direction=us[3]==='내렸'?'하락':'상승';\n      const closes=text.match(/금요일 종가는 각각\\s*([\\d,]+(?:\\.\\d+)?)과\\s*([\\d,]+(?:\\.\\d+)?)/);\n      indices.push({name:'S&P500',close:closes?.[1]??null,change:us[1]+'% '+direction},{name:'나스닥',close:closes?.[2]??null,change:us[2]+'% '+direction});\n    }\n",
+          "before": "    if(us){const direction=us[3]==='내렸'?'하락':'상승';indices.push({name:'S&P500',close:null,change:us[1]+'% '+direction},{name:'나스닥',close:null,change:us[2]+'% '+direction});}\n"
+        },
+        {
+          "at": 45,
+          "after": "    const model=issuePanels(issue);host.replaceChildren();host.hidden=!model.indices.length;\n",
+          "before": "    const model=issuePanels(issue);host.replaceChildren();host.hidden=!model.summary&&!model.indices.length;\n"
+        },
+        {
+          "at": 47,
+          "after": "",
+          "before": "    if(model.summary){const panel=node('section');panel.append(node('h3','이번 주 한 줄'),node('p',model.summary));host.append(panel);}\n"
+        },
+        {
+          "at": 50,
+          "after": "      const body=node('tbody');for(const row of model.indices){const line=node('tr'),th=node('th',row.name);th.setAttribute('scope','row');line.append(th,node('td',row.close??''),node('td',row.change));body.append(line);}table.append(body);panel.append(table,node('p','발행 주간 '+issue.week+' · 이 호에 실린 값만 표시합니다.'));host.append(panel);\n",
+          "before": "      const body=node('tbody');for(const row of model.indices){const line=node('tr'),th=node('th',row.name);th.setAttribute('scope','row');line.append(th,node('td',row.close??'미수록'),node('td',row.change));body.append(line);}table.append(body);panel.append(table,node('p','발행 주간 '+issue.week+' · 이 호에 실린 값만 표시합니다.'));host.append(panel);\n"
+        },
+        {
+          "at": 62,
+          "after": "    q('.newsroom-4cut-heading').textContent = `이번 주 시장 4컷 · ${issue.week}`;\n",
+          "before": "    q('.newsroom-4cut-heading').textContent = `이번 주 시장 4컷 · ${list[0].week}`;\n"
+        },
+        {
+          "at": 69,
+          "after": "    q('.newsroom-4cut-layout').classList?.toggle('has-context',!!issuePanels(issue).indices.length);\n    // The published image already contains this notice. Keep the text fallback for other artwork.\n    for (const selector of ['.newsroom-4cut-footnote', 'dialog .newsroom-4cut-footnote']) {\n      q(selector).hidden = /^00[12]$/.test(issue.image);\n    }\n",
+          "before": "    q('.newsroom-4cut-layout').classList?.toggle('has-context',!!(issuePanels(issue).summary||issuePanels(issue).indices.length));\n"
+        },
+        {
+          "at": 89,
+          "after": "      button.type = 'button'; button.textContent = `제${past.number}호 · ${past.week}`;\n      button.setAttribute('aria-label', `제${past.number}호 · ${past.week} · ${past.title}`);\n",
+          "before": "      button.type = 'button'; button.textContent = `제${past.number}호 · ${past.week} · ${past.title}`;\n"
+        },
+        {
+          "at": 95,
+          "after": "    const archivePanel = q('.newsroom-4cut-archive');\n    archivePanel.hidden = list.length < 2;\n    // Move existing slots once; subsequent issue selections only update their contents.\n    if (archivePanel.previousElementSibling !== q('.newsroom-4cut-meta')) {\n      q('.newsroom-4cut-meta').after?.(archivePanel, q('.newsroom-4cut-latest'));\n      archivePanel.open = true;\n    }\n    q('.newsroom-4cut-archive summary').textContent = `지난 호 선택 · 현재 제${issue.number}호${issue === list[0] ? ' (최신)' : ''}`;\n",
+          "before": "    q('.newsroom-4cut-archive').hidden = list.length < 2;\n"
+        },
+        {
+          "at": 104,
+          "after": "    q('.newsroom-4cut-latest').textContent = `최신 호로 · 제${list[0].number}호`;\n",
+          "before": ""
+        }
+      ]
+    }
+  }
+}
