@@ -1,0 +1,38 @@
+{
+  "base": "43eda9e2e3f69115c3569f585506904965c26c18",
+  "files": [
+    {
+      "file": "hani-character-archive.js",
+      "beforeSha256": "11e9fe7d32a5f95e1527d9612dad8af0cc48ce64fa97005452e01415d22f6400",
+      "afterSha256": "f2be5380d4dbf9c24438cb29a5f255c0deeab8bc7aa3c4a9bee754a9208e1977",
+      "replacements": [
+        {
+          "before": "<span class=\"ca-planned-badge\">M9 특별 합류 · Platform Architect</span>",
+          "after": "<span class=\"ca-planned-badge\">M9 특별 합류</span>"
+        }
+      ]
+    },
+    {
+      "file": "hani-organization-hub.js",
+      "beforeSha256": "b069a059ad8d3cb5db7d052a0ae7058956ebd67a1dbf1e7a9ec193ec970e93db",
+      "afterSha256": "44f81ffcd628abfa4560c7cb26957d1667793a509e7964bb5110e2029f9033ac",
+      "replacements": [
+        {
+          "before": "${item.status==='planned'||item.status==='active'?esc(item.profile?.seniority",
+          "after": "${item.id==='seoyun'?'M9 특별 합류 · Platform Architect (하니 전무 승인)':item.status==='planned'||item.status==='active'?esc(item.profile?.seniority"
+        }
+      ]
+    },
+    {
+      "file": "hani-character-archive.css",
+      "beforeSha256": "c2b9282afdabe46135378d48560fd8fb7a4ee1dba09bfa7d174a5fef2ccccd8a",
+      "afterSha256": "7f3ebd5e6caef20e213583567c2630220ac5ab03f873966201a733e2106670cb",
+      "replacements": [
+        {
+          "before": "#characterArchive .ca-planned-badge{",
+          "after": "/* The special listing owns a full grid row so its cut never stretches neighbouring member cards. */\n#characterArchive .ca-grid [data-special-listing=\"seoyun\"]{grid-column:1/-1;display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center}\n/* Keep the special card title readable in narrow desktop columns. */\n@media(min-width:601px){#characterArchive [data-special-listing=\"seoyun\"] .ca-cover-caption h3{word-break:keep-all}#characterArchive [data-special-listing=\"seoyun\"] .ca-cover-caption h3 span{display:inline-block;word-break:keep-all;white-space:nowrap}#characterArchive [data-special-listing=\"seoyun\"] .ca-planned-badge{word-break:keep-all;white-space:nowrap}#characterArchive .ca-grid [data-special-listing=\"seoyun\"]{grid-template-columns:minmax(160px,240px) 1fr;gap:20px}}\n#characterArchive .ca-planned-badge{"
+        }
+      ]
+    }
+  ]
+}

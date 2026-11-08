@@ -1,0 +1,13 @@
+{
+  "base": "5c375d9",
+  "mainOffice": "8d2db07921446cca8a234acfff4f026a2d44f0fdb2dedcea241dba6f462cd54e",
+  "poseB": "6ed8145767ab7e0f762a64aba892182cd1df8c2c015cf23007056b818a758aaa",
+  "weekday": "7e941be508a5efea0c309c8c689cd32bf976d3122a49ac34c7579e33acf67f36",
+  "runtimeChanged": [
+    "hani-office-live.js"
+  ],
+  "replacements": {
+    "poseB": 6,
+    "weekday": 10
+  }
+}

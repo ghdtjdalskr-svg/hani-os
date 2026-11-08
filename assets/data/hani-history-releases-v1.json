@@ -26,6 +26,54 @@
   ],
   "entries": [
     {
+      "id": "v2.9.284",
+      "date": "2026-11-08",
+      "status": "released",
+      "title": "미룬 일 치비툰",
+      "category": "생활·공부",
+      "credits": [],
+      "source": {
+        "commit": "",
+        "subject": "release: v2.9.284 미룬 일 치비툰"
+      }
+    },
+    {
+      "id": "v2.9.283",
+      "date": "2026-11-08",
+      "status": "released",
+      "title": "학습 재시도·미룬 일 보드·위시 링크",
+      "category": "생활·공부",
+      "credits": [],
+      "source": {
+        "commit": "a28918df50ba5fef3e7dab498eaa5eec4a27a103",
+        "subject": "release: v2.9.283 학습 재시도·미룬 일 보드·위시 링크 (#470)"
+      }
+    },
+    {
+      "id": "v2.9.282",
+      "date": "2026-11-08",
+      "status": "released",
+      "title": "서윤 M9 호외와 특별 합류 기념 컷",
+      "category": "하니 그룹",
+      "credits": [],
+      "source": {
+        "commit": "86feee3aae7888b0dacfac51121f3ffa7d9ba242",
+        "subject": "release: v2.9.282 서윤 M9 호외와 특별 합류 기념 컷 (#467)"
+      }
+    },
+    {
+      "id": "v2.9.281",
+      "date": "2026-11-08",
+      "status": "released",
+      "title": "친밀도 하루 2점과 부서 마스코트 이름표",
+      "category": "하니 그룹",
+      "credits": [],
+      "source": {
+        "commit": "43eda9e2e3f69115c3569f585506904965c26c18",
+        "subject": "release: v2.9.281 친밀도 하루 2점과 부서 마스코트 이름표 (#465)"
+      }
+    },
+    {
       "id": "v2.9.280",
       "date": "2026-11-07",
       "status": "released",
@@ -33,8 +81,8 @@
       "category": "하니 그룹",
       "credits": [],
       "source": {
-        "commit": "",
-        "subject": "release: v2.9.280 보리 기상과 서윤 M9 특별상장"
+        "commit": "985cc150958f2efffcee78dbdc92403d26ce31d0",
+        "subject": "release: v2.9.280 보리 기상과 서윤 M9 특별상장 (#461)"
       }
     },
     {

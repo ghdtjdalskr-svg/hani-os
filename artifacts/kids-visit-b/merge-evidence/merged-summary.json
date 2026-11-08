@@ -1,0 +1,28 @@
+﻿[
+    {
+        "file":  "hani-office-kids-merge.test.mjs",
+        "exit":  0,
+        "seconds":  2.9,
+        "pass":  10,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ],
+        "gitBlocked":  false,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-kids-merge.test.mjs"
+    },
+    {
+        "file":  "hani-office-affinity-cap.test.mjs",
+        "exit":  0,
+        "seconds":  11,
+        "pass":  19,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ],
+        "gitBlocked":  false,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-affinity-cap.test.mjs"
+    }
+]

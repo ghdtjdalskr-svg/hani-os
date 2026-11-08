@@ -1,0 +1,6 @@
+import fs from 'node:fs';
+const out='artifacts/kids-visit-b/merge-evidence';
+function read(file){const b=fs.readFileSync(out+'/'+file);return b[0]===255&&b[1]===254?b.subarray(2).toString('utf16le'):b.toString('utf8');}
+function metric(file,label,node){const text=read(file),m=text.match(/error: '(\{"chairmanPresent":[^']+\})'/);if(!m)throw Error('missing measured failure '+file);const sample=JSON.parse(m[1]);return {label,node,thresholdMs:400,chairmanPresent:sample.chairmanPresent,samplesMs:sample.samples,minimumMs:Math.min(...sample.samples),passed:false};}
+const result={assertion:'first full daily plan stays below the unchanged 400ms limit, chairman absent and present',mainOfficeSha256:'8d2db07921446cca8a234acfff4f026a2d44f0fdb2dedcea241dba6f462cd54e',checks:[metric('hani-office-cafe-rest.test.mjs.failure.tap','merged, sequential retry','24.20.0'),metric('cafe-main-serial.tap','exact main, sequential','24.20.0'),metric('cafe-canonical-serial.tap','merged, canonical Node, sequential','24.22.1')],conclusion:'400ms assertion remains failing on exact main and merged runtime; retained without changing scheduler or threshold. Parallel diagnostics excluded.',mainPreload:'main-read.cjs',gitCommandsExecuted:0};
+fs.writeFileSync(out+'/performance.json',JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result));

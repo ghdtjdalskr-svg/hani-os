@@ -1,8 +1,8 @@
 {
   "baseCommit": "bbe71c0ea53d6f65740a4ac0f2ee598d4b2c280f",
   "file": "hani-office-live.js",
-  "beforeSha256": "3c64d0e91bea897d3ee59a3e406a710934b40c2299abb9d9c0e10cd3d6d1fe1d",
-  "afterSha256": "bf0b7139b7486750977719729355a643520da68109a9050ddbe1fd9fa9bb705c",
+  "beforeSha256": "6ed8145767ab7e0f762a64aba892182cd1df8c2c015cf23007056b818a758aaa",
+  "afterSha256": "7e941be508a5efea0c309c8c689cd32bf976d3122a49ac34c7579e33acf67f36",
   "replacements": [
     {
       "name": "append canonical general lines",
@@ -54,5 +54,6 @@
       "before": "      child.scene={key:child.activity.key,line,patrol:true,notBefore:now.getTime()-rhythm.elapsed*1000+1000};",
       "after": "      child.scene={key:child.activity.key,line,patrol:true,notBefore:now.getTime()-rhythm.elapsed*1000+1000};\n      const sibling=states.find(p=>p.kid&&p.id!==child.id),turn=Math.floor(seconds/180),elapsed=seconds%180;\n      if(sibling&&sibling.floor===floor&&!chair.walking&&distance(home,sibling.position)<300&&elapsed>=150&&elapsed<174){\n        const exchange=kidsSiblingLines[residentSeed(day+'|siblings|'+turn)%kidsSiblingLines.length];\n        child.scene={key:day+'|siblings|'+turn+'|'+child.id,line:exchange[sister?1:0],patrol:true,sibling:true,notBefore:now.getTime()+(150+(sister?4:1)-elapsed)*1000};\n      }"
     }
-  ]
+  ],
+  "mergeBase": "5c375d9"
 }

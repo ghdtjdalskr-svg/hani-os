@@ -1,0 +1,42 @@
+﻿[
+    {
+        "file":  "hani-seoyun-m9.test.mjs",
+        "exit":  0,
+        "seconds":  4.4,
+        "pass":  15,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ],
+        "gitBlocked":  false,
+        "command":  "node --require ./scripts/hani-m9-polish-preload.cjs --require ./scripts/hani-m9-link-preload.cjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-seoyun-m9.test.mjs"
+    },
+    {
+        "file":  "hani-office-barista-night.test.mjs",
+        "exit":  0,
+        "seconds":  25.7,
+        "pass":  13,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ],
+        "gitBlocked":  false,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-barista-night.test.mjs"
+    },
+    {
+        "file":  "hani-office-kids-merge.test.mjs",
+        "exit":  1,
+        "seconds":  2.1,
+        "pass":  8,
+        "fail":  2,
+        "skipped":  0,
+        "failures":  [
+                         "full kids inverse recovers pinned main; affinity owner, storage keys, Cloud and timer/listener owners remain byte-identical",
+                         "same mounted weekday scene retains B visitor, mascot metadata and daily two-point cap on PC/phone without a persistence flush"
+                     ],
+        "gitBlocked":  false,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-kids-merge.test.mjs"
+    }
+]

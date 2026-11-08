@@ -1,0 +1,6 @@
+# Temporary raw base exports; preservation evidence is in preservation-baseline.json.
+base/
+base.zip
+office-originals.zip
+# Interrupted aggregate run is superseded by per-file office-logs and office-summary.json.
+office-regression.log

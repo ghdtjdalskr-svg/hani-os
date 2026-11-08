@@ -1,0 +1,48 @@
+{
+  "assertion": "first full daily plan stays below the unchanged 400ms limit, chairman absent and present",
+  "mainOfficeSha256": "8d2db07921446cca8a234acfff4f026a2d44f0fdb2dedcea241dba6f462cd54e",
+  "checks": [
+    {
+      "label": "merged, sequential retry",
+      "node": "24.20.0",
+      "thresholdMs": 400,
+      "chairmanPresent": true,
+      "samplesMs": [
+        506.1826000000001,
+        497.37030000000004,
+        496.2943000000005
+      ],
+      "minimumMs": 496.2943000000005,
+      "passed": false
+    },
+    {
+      "label": "exact main, sequential",
+      "node": "24.20.0",
+      "thresholdMs": 400,
+      "chairmanPresent": true,
+      "samplesMs": [
+        497.8466999999996,
+        460.0582999999997,
+        472.1758
+      ],
+      "minimumMs": 460.0582999999997,
+      "passed": false
+    },
+    {
+      "label": "merged, canonical Node, sequential",
+      "node": "24.22.1",
+      "thresholdMs": 400,
+      "chairmanPresent": false,
+      "samplesMs": [
+        452.0819999999999,
+        636.2299000000003,
+        893.2859000000003
+      ],
+      "minimumMs": 452.0819999999999,
+      "passed": false
+    }
+  ],
+  "conclusion": "400ms assertion remains failing on exact main and merged runtime; retained without changing scheduler or threshold. Parallel diagnostics excluded.",
+  "mainPreload": "main-read.cjs",
+  "gitCommandsExecuted": 0
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "file": "artifacts/kids-visit/baseline/index.html",
+    "before": "15226a2f3e63b350865ef24d296c7ce34a44e36307f17b77449e5cb8494a0c59",
+    "after": "02aba01325adb688c61a933740532dad303dc1b3ff1b870a55e44ac26c7561c5",
+    "versionTokens": 60
+  },
+  {
+    "file": "artifacts/kids-visit/baseline/hani-main.js",
+    "before": "636a4ac932bbbc99960135c2583d2430353b68eed2e13714be916f36e22bdd31",
+    "after": "9b9cd783236aaf6d5941a3575ef92cf1e49e0ffd084e5ef54cfa6d4ac5cdf1e9",
+    "versionTokens": 1
+  }
+]

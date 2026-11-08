@@ -2,8 +2,10 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
 const weekday=require('./hani-office-kids-weekday-source.cjs');
 const hash=s=>createHash('sha256').update(s).digest('hex');
 const bytes=fs.readFileSync(path.join(__dirname,'fixtures/office-kids-pose-b-delta.json'));
-assert.equal(hash(bytes),'755acb2933f3b98d61d0e612fd9c20c6831379107398544cbd86ab3d7cd518c8','exact authored kids pose B delta');
+assert.equal(hash(bytes),'e9ea69c80ada9af199197230f2edb84bf95173d5686166ac57910956549c8c89','exact authored kids pose B delta');
 const delta=JSON.parse(bytes);assert.equal(delta.baseCommit,'70c5d5d8e1ddc1262314f412934b3a450974599c');
+// baseCommit records authorship; the merged contract pins the new main exactly.
+assert.equal(delta.mergeBase,'5c375d9','fixed merged main 284 baseline');
 function restoreKidsPoseBSource(source,file='hani-office-live.js'){
  source=weekday.projectPreKidsWeekdaySource(source,file);
  const row=delta.files.find(r=>r.file===file);assert.ok(row,'authored kids B file');

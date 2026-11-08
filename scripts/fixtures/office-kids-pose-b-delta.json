@@ -3,8 +3,8 @@
   "files": [
     {
       "file": "hani-office-live.js",
-      "beforeSha256": "880f8bef93ea20fbcb4bcf7cf5205d72c9e62c40b09d56606ab47f13b84826cb",
-      "afterSha256": "3c64d0e91bea897d3ee59a3e406a710934b40c2299abb9d9c0e10cd3d6d1fe1d",
+      "beforeSha256": "8d2db07921446cca8a234acfff4f026a2d44f0fdb2dedcea241dba6f462cd54e",
+      "afterSha256": "6ed8145767ab7e0f762a64aba892182cd1df8c2c015cf23007056b818a758aaa",
       "replacements": [
         {
           "name": "companion atlas",
@@ -50,5 +50,6 @@
         }
       ]
     }
-  ]
+  ],
+  "mergeBase": "5c375d9"
 }
