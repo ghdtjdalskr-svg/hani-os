@@ -1,0 +1,43 @@
+{
+  "baseCommit": "fe7cfbd20e63ef3d56413b3a84a349f0adb90b63",
+  "file": "hani-office-live.js",
+  "beforeSha256": "e668ac0c6ac8104f1c3c5619c1778f48f8fd470cb228549328ca67ba06120492",
+  "afterSha256": "8d2db07921446cca8a234acfff4f026a2d44f0fdb2dedcea241dba6f462cd54e",
+  "replacements": [
+    {
+      "name": "frog",
+      "before": "    {id:'companion-frog',name:'아기 개구리',pet:true,atlasRow:0,lines:['회장님, 폴짝 따라갈게요!','회장님 옆이 제 연못이에요.','회장님, 잠깐 쉬어요!']},",
+      "after": "    {id:'companion-frog',name:'아기 개구리',pet:true,mascot:'전략기획실 마스코트',atlasRow:0,lines:['회장님, 폴짝 따라갈게요!','회장님 옆이 제 연못이에요.','회장님, 잠깐 쉬어요!']},"
+    },
+    {
+      "name": "penguin",
+      "before": "    {id:'companion-penguin',name:'꼬마 펭귄',pet:true,atlasRow:1,lines:['회장님, 순찰 완료예요!','회장님 일정은 제가 챙겨요!','회장님, 뒤뚱뒤뚱 갑니다!']},",
+      "after": "    {id:'companion-penguin',name:'꼬마 펭귄',pet:true,mascot:'개발실 마스코트',atlasRow:1,lines:['회장님, 순찰 완료예요!','회장님 일정은 제가 챙겨요!','회장님, 뒤뚱뒤뚱 갑니다!']},"
+    },
+    {
+      "name": "chick",
+      "before": "    {id:'companion-chick',name:'병아리',pet:true,atlasRow:3,lines:['회장님, 삐약 출근했어요!','회장님 따라 통통통!','회장님, 제 날개도 쉬어요.']},",
+      "after": "    {id:'companion-chick',name:'병아리',pet:true,mascot:'라이프&엔터 마스코트',atlasRow:3,lines:['회장님, 삐약 출근했어요!','회장님 따라 통통통!','회장님, 제 날개도 쉬어요.']},"
+    },
+    {
+      "name": "fox",
+      "before": "    {id:'companion-fox',name:'아기 여우',pet:true,atlasRow:4,lines:['회장님, 꼬리로 인사해요!','회장님 곁은 포근하네요.','회장님, 살금살금 갈게요!']},",
+      "after": "    {id:'companion-fox',name:'아기 여우',pet:true,mascot:'재무실 마스코트',atlasRow:4,lines:['회장님, 꼬리로 인사해요!','회장님 곁은 포근하네요.','회장님, 살금살금 갈게요!']},"
+    },
+    {
+      "name": "otter",
+      "before": "    {id:'companion-otter',name:'아기 수달',pet:true,atlasRow:2,lines:['회장님, 조개 선물이에요!','회장님 옆에서 냠냠해요.','회장님, 카페도 같이 가요!']},",
+      "after": "    {id:'companion-otter',name:'아기 수달',pet:true,mascot:'기업솔루션 마스코트',atlasRow:2,lines:['회장님, 조개 선물이에요!','회장님 옆에서 냠냠해요.','회장님, 카페도 같이 가요!']},"
+    },
+    {
+      "name": "resident auxiliary line",
+      "before": "      if(actor.dataset.resident){actor.dataset.labelMode='name';actor.officeCompact.textContent='';name.title=actor.dataset.name;name.setAttribute('aria-label',name.title);name.hidden=false;name.style.visibility='';name.style.setProperty('--name-x','0px');name.style.setProperty('--name-y','0px');status.hidden=true;status.style.visibility='hidden';continue}\n",
+      "after": "      if(actor.dataset.resident){\n        const mascot=residentSlots.find(p=>p.id===actor.dataset.person)?.mascot,following=actor.officeResidentState?.following;\n        const full=mascot?(following?'오늘의 동행 · ':'')+mascot:'',short=mascot?(following?(compact?'동행 · ':'오늘의 동행 · '):'')+mascot:'';\n        actor.dataset.labelMode='name';actor.officeCompact.textContent=short;actor.officeCompact.style.display=mascot?'block':'';\n        name.title=actor.dataset.name+(full?' · '+full:'');name.setAttribute('aria-label',name.title);if(mascot)actor.setAttribute('aria-label',name.title);\n        name.hidden=false;name.style.visibility='';name.style.setProperty('--name-x','0px');name.style.setProperty('--name-y','0px');status.hidden=true;status.style.visibility='hidden';continue\n      }\n"
+    },
+    {
+      "name": "following refresh",
+      "before": "if(!prior||prior.walking!==state.walking||prior.anchor!==state.anchor)changed=true;",
+      "after": "if(!prior||prior.walking!==state.walking||prior.anchor!==state.anchor||prior.following!==state.following)changed=true;"
+    }
+  ]
+}
