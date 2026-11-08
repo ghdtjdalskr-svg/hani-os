@@ -1,0 +1,20 @@
+﻿[
+    {
+        "file":  "hani-office-bori-stroll.test.mjs",
+        "exit":  1,
+        "seconds":  349.78,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-bori-stroll.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 8 - stroll inverse independently matches the fixed Git base",
+                        "  error: \u0027USER_GIT_DISABLED: save-guard task prohibits Git; original Git assertions remain unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 14",
+                        "# pass 13",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    }
+]

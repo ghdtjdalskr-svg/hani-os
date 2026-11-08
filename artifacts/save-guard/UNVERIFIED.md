@@ -1,0 +1,47 @@
+# Git 외 미검증·기존 실패
+
+- safety: `hani-backup-history-runtime.test.mjs` — 브라우저 차단
+- safety: `hani-building-206-safety.test.mjs` — 과거 baseline/fixture 없음
+  - not ok 1 - scripts\\hani-building-206-safety.test.mjs
+  -   error: 'The "paths[0]" argument must be of type string. Received undefined'
+- safety: `hani-cloud-stability-runtime.test.mjs` — 브라우저 차단
+- safety: `hani-investment-research-safety.test.cjs` — 과거 baseline/fixture 없음
+  - not ok 1 - scripts\\hani-investment-research-safety.test.cjs
+  -   error: 'Usage: node scripts/hani-investment-research-safety.test.cjs <baseline hani-main.js> <baseline index.html>'
+- safety: `hani-invest-split-safety.test.mjs` — 과거 baseline/fixture 없음
+  - not ok 1 - scripts\\hani-invest-split-safety.test.mjs
+  -   error: 'Usage: node scripts/hani-invest-split-safety.test.mjs <raw baseline directory>'
+- safety: `hani-offline-entry-223.test.mjs` — 브라우저 차단
+- safety: `hani-polish-205-safety.test.mjs` — 과거 baseline/fixture 없음
+  - not ok 1 - scripts\\hani-polish-205-safety.test.mjs
+  -   error: 'The "paths[0]" argument must be of type string. Received undefined'
+- safety: `hani-quality-data-runtime.test.mjs` — 브라우저 차단
+- safety: `hani-app-216-safety.cjs` — 과거 baseline/fixture 없음
+  - not ok 1 - scripts\\hani-app-216-safety.cjs
+  -   error: 'usage: node scripts/hani-app-216-safety.cjs <raw baseline directory>'
+- safety: `hani-app-216-audit-safety.cjs` — 과거 baseline/fixture 없음
+  - not ok 1 - scripts\\hani-app-216-audit-safety.cjs
+  -   error: 'usage: node scripts/hani-app-216-audit-safety.cjs <raw baseline>'
+- safety: `hani-app-216-practical-safety.cjs` — 과거 baseline/fixture 없음
+  - not ok 1 - scripts\\hani-app-216-practical-safety.cjs
+  -   error: 'usage: node scripts/hani-app-216-practical-safety.cjs <raw baseline>'
+- safety: `hani-google-drive-212-safety.mjs` — 과거 baseline/fixture 없음
+  - not ok 1 - scripts\\hani-google-drive-212-safety.mjs
+  -   error: 'The "paths[0]" argument must be of type string. Received undefined'
+- safety: `hani-qa-1st-safety.mjs` — 과거 baseline/fixture 없음
+  - not ok 1 - scripts\\hani-qa-1st-safety.mjs
+  -   error: "ENOENT: no such file or directory, open 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\audit-safe\\artifacts\\qa-1st\\eol-map.diff'"
+- life: `hani-procrastination-board.test.mjs` — 수정 전 재현 실패
+  - not ok 3 - persistent cards, actual click result, immediate reset and no side effects
+  -   error: 'card.querySelector(...).setAttribute is not a function'
+  - not ok 6 - existing artwork is reachable in the runtime closure, within 200 files
+  -   error: "Cannot read properties of undefined (reading 'replace')"
+- life: `hani-tasks-qa-212.test.mjs` — 수정 전 재현 실패
+  - not ok 5 - single persistent stepper above Calendar; 3 status icons/buttons, N chip navigation, zero hidden
+  -   error: "Cannot read properties of null (reading 'parentNode')"
+- related: `hani-app-216-audit.test.cjs` — 수정 전 재현 실패
+  - not ok 5 - styles remain in cascade order, only approved pending launch/mascot/newsroom files await train tags, worker is lazy, stale labels removed
+  -   error: |-
+- related: `hani-drive-vault-precheck.test.mjs` — 자식 Node EPERM
+  - not ok 1 - scripts\\hani-drive-vault-precheck.test.mjs
+  -   error: |-

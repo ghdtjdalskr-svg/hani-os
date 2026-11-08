@@ -1,3 +1,7 @@
+# 2026-11-08 · 저장 안전장치 01+07 (Codex / audit-safe)
+
+`hani/audit-safety-284` / 착수·최종 HEAD `3ab1177` / 로컬 origin/main 참조 `5c375d9`(Git 금지·원격 새 조회 없음). **다른 탭 저장 잠금·입력 보존 안내, Cloud 수신 기존 validator 적용**. 운영 변경은 hani-main.js 하나, 표시/cache2.9.284·내부 버전·보호 키 유지, localStorage setItem18→18/remove5→5/clear0→0. **신규10/10·syntax14/14·closure164불변/누락0, 전체122명령67통과·Git38차단·기타차단14·수정전재현실패3. office69파일41통과/28Git차단·744통과/36차단/3skip·Git외실패0.** Edge는 spawn EPERM 및 Windows IPC Access denied로 실제 두 탭·1280/390 PNG 미검증. 생성JSON4복원·신규시험JSON1제거·범위밖변경0. Git/commit/push/merge/버전증가/배포 없음, **서윤 검토·커밋 및 차단 검증 대기**. Notion insert_content는 자동 승인 never 거절로 미반영. [보고서](../../artifacts/save-guard/REPORT.md) · [인수인계](handoffs/2026-11-08-save-guard.md). 아래 기존 기록 보존.
+
 # 2026-11-08 · tooling-283 후속 office 8개 (Codex)
 
 `hani/tooling-283` / base `a28918d`(기존 기록·Git 금지로 새 조회 없음). 시험8개가 283·생활 묶음 exact inverse preload를 자체 연결, assertion·고정 pin·Git 호출 보존. **대상110통과·6Git차단, office69파일745통과·35Git차단·3skip·기타실패0, 기존 성공41파일 전부 유지.** 부산물JSON4개 복원·런타임497바이트 동일·범위 밖 변경0. Git/commit/배포 없음, 서윤 실제 Git 재검증·커밋 인계. Notion 쓰기는 자동 승인 never 거절로 갱신 대기. [짧은 보고서](../../artifacts/tooling-283/REPORT-b.md) · [인수인계](handoffs/2026-11-08-tooling-283-b.md). 아래 기존 기록 보존.

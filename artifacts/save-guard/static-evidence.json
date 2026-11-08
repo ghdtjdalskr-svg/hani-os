@@ -1,0 +1,87 @@
+{
+  "beforeSha256": "7014d45924c6a287502ed478447cfa3fc7930e31102ac534164209b945ea8af8",
+  "afterSha256": "a954d7a8da265592c313c053d2ea622eafc03d6a0af26775c1f74894ed77f1f9",
+  "indexPreserved": true,
+  "constants": {
+    "STORAGE_KEY": "const STORAGE_KEY=\"hani_os_life_v23\"",
+    "VERSION": "const VERSION=\"2.9.15-safe-baseline-bootstrap\"",
+    "HANI_DISPLAY_VERSION": "const HANI_DISPLAY_VERSION=\"2.9.284\"",
+    "CLOUD_SAFETY_KEY": "const CLOUD_SAFETY_KEY=\"hani_os_cloud_safety_snapshot_v1\""
+  },
+  "methodCalls": {
+    "setItem": {
+      "before": 20,
+      "after": 20
+    },
+    "removeItem": {
+      "before": 6,
+      "after": 6
+    },
+    "clear": {
+      "before": 1,
+      "after": 1
+    }
+  },
+  "localStorageCalls": {
+    "setItem": {
+      "before": 18,
+      "after": 18
+    },
+    "removeItem": {
+      "before": 5,
+      "after": 5
+    },
+    "clear": {
+      "before": 0,
+      "after": 0
+    }
+  },
+  "primaryCalls": {
+    "setItem": {
+      "before": 2,
+      "after": 2
+    },
+    "removeItem": {
+      "before": 1,
+      "after": 1
+    }
+  },
+  "preservedOwners": {
+    "record-validation": true,
+    "normalization": true,
+    "safety-snapshot": true,
+    "revision-locked-upload": true,
+    "revision-and-empty-decision": true,
+    "sync-cycle": true,
+    "quarantine-except-read-only-baseline": true
+  },
+  "anchors": {
+    "storageLoadedRaw=null": 1166,
+    "function loadState(": 1254,
+    "function writeProtectedState(": 1293,
+    "function assertCloudSourceReady(": 1323,
+    "function removeProtectedState(": 1329,
+    "function showStorageTabConflict(": 1415,
+    "function assertStorageTabCurrent(": 1426,
+    "function initStorageTabGuard(": 1430,
+    "function save(": 1439,
+    "function validateCloudRecords(": 5934,
+    "async function cloudReadRow(": 5940,
+    "async function cloudApplyRemoteRow(": 5975,
+    "async function cloudRestoreToLocal(": 6874,
+    "initStorageTabGuard();": 8805
+  },
+  "storageListenersBefore": 0,
+  "storageListenersAfter": 1,
+  "lastIndexScripts": [
+    "./hani-ai-budget-core.js?v=2.9.284",
+    "./hani-ai-budget.js?v=2.9.284",
+    "./hani-launch-greeting.js"
+  ],
+  "eol": {
+    "beforeCRLF": 5266,
+    "afterCRLF": 5310,
+    "beforeLF": 8890,
+    "afterLF": 8934
+  }
+}

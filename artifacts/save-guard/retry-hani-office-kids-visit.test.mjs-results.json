@@ -1,0 +1,17 @@
+﻿[
+    {
+        "file":  "hani-office-kids-visit.test.mjs",
+        "exit":  0,
+        "seconds":  65.13,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-kids-visit.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 16",
+                        "# pass 16",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    }
+]

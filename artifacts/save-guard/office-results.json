@@ -1,0 +1,1142 @@
+﻿[
+    {
+        "file":  "hani-office-219.test.mjs",
+        "exit":  null,
+        "seconds":  0.58,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-219.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 1 - scripts\\\\hani-office-219.test.mjs",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 1",
+                        "# pass 0",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-actions-216.test.mjs",
+        "exit":  null,
+        "seconds":  60.59,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-actions-216.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 7 - approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 15",
+                        "# pass 14",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-actions-221.test.mjs",
+        "exit":  null,
+        "seconds":  6.49,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-actions-221.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 20",
+                        "# pass 20",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-affinity.test.mjs",
+        "exit":  null,
+        "seconds":  13.9,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-affinity.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 21",
+                        "# pass 21",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-affinity-274-pins.test.mjs",
+        "exit":  null,
+        "seconds":  0.71,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-affinity-274-pins.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 3 - 274 base commit independently proves the entire original JS/CSS/helper blobs",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 3",
+                        "# pass 2",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-affinity-cap.test.mjs",
+        "exit":  null,
+        "seconds":  8.47,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-affinity-cap.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 19",
+                        "# pass 19",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-affinity-storage.test.mjs",
+        "exit":  null,
+        "seconds":  0.17,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-affinity-storage.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 3",
+                        "# pass 3",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-barista.test.mjs",
+        "exit":  null,
+        "seconds":  10.83,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-barista.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 10",
+                        "# pass 10",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-barista-night.test.mjs",
+        "exit":  null,
+        "seconds":  26.11,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-barista-night.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 13",
+                        "# pass 13",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-barista-night-273-pins.test.mjs",
+        "exit":  null,
+        "seconds":  0.85,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-barista-night-273-pins.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 5 - 273: fixed Git release blobs independently prove every baseline pin and complete diff",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 5",
+                        "# pass 4",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-behavior.test.mjs",
+        "exit":  null,
+        "seconds":  69.85,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-behavior.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 10",
+                        "# pass 10",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-bori-m9.test.mjs",
+        "exit":  null,
+        "seconds":  91.85,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-bori-m9.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 2",
+                        "# pass 2",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-bori-stroll.test.mjs",
+        "exit":  124,
+        "seconds":  180.87,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-bori-stroll.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  true,
+        "summary":  [
+
+                    ]
+    },
+    {
+        "file":  "hani-office-bubble-close.test.mjs",
+        "exit":  null,
+        "seconds":  12.77,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-bubble-close.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 17",
+                        "# pass 17",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-cafe-rest.test.mjs",
+        "exit":  null,
+        "seconds":  5.09,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-cafe-rest.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 1 - cafe route uses clear lower-right floor, retains the lounge and sign mounting surface",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "not ok 4 - first full daily plan stays below the unchanged 400ms limit, chairman absent and present",
+                        "  error: \u0027{\"chairmanPresent\":true,\"samples\":[455.09259999999995,531.4148999999998,537.4483]}\u0027",
+                        "  name: \u0027AssertionError\u0027",
+                        "# tests 4",
+                        "# pass 2",
+                        "# fail 2",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-chairman-234.test.mjs",
+        "exit":  null,
+        "seconds":  1.46,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-chairman-234.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 6",
+                        "# pass 6",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-chairman-patrol.test.mjs",
+        "exit":  null,
+        "seconds":  13.04,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-chairman-patrol.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 15",
+                        "# pass 15",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-chairman-patrol-278-pins.test.mjs",
+        "exit":  null,
+        "seconds":  2.07,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-chairman-patrol-278-pins.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 2 - 278 independent fixed Git blobs prove pre-patrol bytes",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "not ok 4 - 278 kids extension independently matches its fixed Git base",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "not ok 6 - 278 visit extension independently matches fixed Git base",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "not ok 8 - 278 staff-chat extension independently matches fixed Git base",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "not ok 10 - 278 bubble placement extension independently matches fixed Git base",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "not ok 12 - 278 optimization extension independently matches fixed Git base",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 12",
+                        "# pass 6",
+                        "# fail 6",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-companion-homes.test.mjs",
+        "exit":  null,
+        "seconds":  105.52,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-companion-homes.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 8 - home extension independently matches the specified fixed Git base",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 16",
+                        "# pass 15",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-companions.test.mjs",
+        "exit":  null,
+        "seconds":  13.11,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-companions.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 17",
+                        "# pass 17",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-companions-276-pins.test.mjs",
+        "exit":  null,
+        "seconds":  0.44,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-companions-276-pins.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 2 - 276 fixed Git base independently proves every original blob",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 3",
+                        "# pass 2",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-consult.test.mjs",
+        "exit":  null,
+        "seconds":  36.07,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-consult.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 14 - consult: sofa wording, counter words, safety owners and runtime timers",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 20",
+                        "# pass 19",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-crowded-labels.test.mjs",
+        "exit":  null,
+        "seconds":  0.92,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-crowded-labels.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 19",
+                        "# pass 19",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-drama.test.mjs",
+        "exit":  null,
+        "seconds":  25.18,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-drama.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 20",
+                        "# pass 20",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-fix-218.test.mjs",
+        "exit":  null,
+        "seconds":  2.75,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-fix-218.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 6",
+                        "# pass 6",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-floor-bubble.test.mjs",
+        "exit":  null,
+        "seconds":  2.23,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-floor-bubble.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 21",
+                        "# pass 21",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-hd-224.test.mjs",
+        "exit":  null,
+        "seconds":  2.9,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-hd-224.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 10",
+                        "# pass 10",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-icons.test.mjs",
+        "exit":  null,
+        "seconds":  13.31,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-icons.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 14 - icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 15",
+                        "# pass 14",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-kids-lively.test.mjs",
+        "exit":  null,
+        "seconds":  17.82,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-kids-lively.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 15",
+                        "# pass 15",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-kids-visit.test.mjs",
+        "exit":  null,
+        "seconds":  62.98,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-kids-visit.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 16 - raw runtime preserves timer/listener/storage/cloud counts, all scheduler bytes, CSS/index/main and \u003c=200 closure files",
+                        "  error: |-",
+                        "  name: \u0027AssertionError\u0027",
+                        "# tests 16",
+                        "# pass 15",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-labels-qa.test.mjs",
+        "exit":  null,
+        "seconds":  9.29,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-labels-qa.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 17",
+                        "# pass 17",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-lively.test.mjs",
+        "exit":  null,
+        "seconds":  41.57,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-lively.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 13",
+                        "# pass 13",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-lively-v2.test.mjs",
+        "exit":  null,
+        "seconds":  22.87,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-lively-v2.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 6 - obr2: deterministic query order, reduced motion and frozen spatial bytes",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 8",
+                        "# pass 7",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-mascot-label.test.mjs",
+        "exit":  null,
+        "seconds":  43.71,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-mascot-label.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 7 - outer exact inverse independently restores fixed affinity HEAD and rejects partial/duplicate/unrelated edits",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 10",
+                        "# pass 9",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-motion-1.test.mjs",
+        "exit":  null,
+        "seconds":  4.64,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-motion-1.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 16",
+                        "# pass 16",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-motion-2.test.mjs",
+        "exit":  null,
+        "seconds":  1.15,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-motion-2.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 24",
+                        "# pass 24",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr10.test.mjs",
+        "exit":  null,
+        "seconds":  2.77,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr10.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 4",
+                        "# pass 4",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr12.test.mjs",
+        "exit":  null,
+        "seconds":  0.11,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr12.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 1 - scripts\\\\hani-office-obr12.test.mjs",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 1",
+                        "# pass 0",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr14.test.mjs",
+        "exit":  null,
+        "seconds":  141.15,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr14.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 1 - 235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 5",
+                        "# pass 4",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr15.test.mjs",
+        "exit":  null,
+        "seconds":  15.04,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr15.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 7 - obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 14",
+                        "# pass 13",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr16.test.mjs",
+        "exit":  null,
+        "seconds":  11.18,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr16.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 12",
+                        "# pass 12",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr17.test.mjs",
+        "exit":  null,
+        "seconds":  3.52,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr17.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 3",
+                        "# pass 3",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr18.test.mjs",
+        "exit":  null,
+        "seconds":  8.97,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr18.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 12",
+                        "# pass 12",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr19.test.mjs",
+        "exit":  null,
+        "seconds":  5.38,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr19.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 3",
+                        "# pass 3",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr21.test.mjs",
+        "exit":  null,
+        "seconds":  37.15,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr21.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 4 - obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "not ok 5 - obr21 cached gathering/index decisions equal full index rebuilds",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 6",
+                        "# pass 4",
+                        "# fail 2",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr3.test.mjs",
+        "exit":  null,
+        "seconds":  3.46,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr3.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 5",
+                        "# pass 5",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr4.test.mjs",
+        "exit":  null,
+        "seconds":  0.58,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr4.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 7 - obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "not ok 8 - obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 10",
+                        "# pass 8",
+                        "# fail 2",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr6.test.mjs",
+        "exit":  null,
+        "seconds":  0.83,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr6.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 1 - scripts\\\\hani-office-obr6.test.mjs",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 1",
+                        "# pass 0",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr7.test.mjs",
+        "exit":  null,
+        "seconds":  0.14,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr7.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 1 - scripts\\\\hani-office-obr7.test.mjs",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 1",
+                        "# pass 0",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr8.test.mjs",
+        "exit":  null,
+        "seconds":  2.86,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr8.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 1 - obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 3",
+                        "# pass 2",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr9.test.mjs",
+        "exit":  null,
+        "seconds":  0.12,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr9.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 1 - scripts\\\\hani-office-obr9.test.mjs",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 1",
+                        "# pass 0",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-pet-bori.test.mjs",
+        "exit":  null,
+        "seconds":  64.87,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-pet-bori.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 14",
+                        "# pass 14",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-pet-bori-272-pins.test.mjs",
+        "exit":  null,
+        "seconds":  0.71,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-pet-bori-272-pins.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 4 - 272: fixed Git release blobs independently prove every baseline pin and complete diff",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 4",
+                        "# pass 3",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-pets-268-pins.test.mjs",
+        "exit":  null,
+        "seconds":  0.31,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-pets-268-pins.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 1 - v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 1",
+                        "# pass 0",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-pets-bubble.test.mjs",
+        "exit":  null,
+        "seconds":  68.47,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-pets-bubble.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 13 - resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 22",
+                        "# pass 21",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-props.test.mjs",
+        "exit":  null,
+        "seconds":  5.03,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-props.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 11",
+                        "# pass 11",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-release-projection.test.mjs",
+        "exit":  null,
+        "seconds":  0.18,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-release-projection.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 2",
+                        "# pass 2",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-residents.test.mjs",
+        "exit":  null,
+        "seconds":  101.89,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-residents.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 49",
+                        "# pass 49",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-seats-215.test.mjs",
+        "exit":  null,
+        "seconds":  0.82,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-seats-215.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 12",
+                        "# pass 12",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-snack.test.mjs",
+        "exit":  null,
+        "seconds":  24.72,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-snack.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 26",
+                        "# pass 26",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-staff-chat.test.mjs",
+        "exit":  null,
+        "seconds":  109.09,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-staff-chat.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 17",
+                        "# pass 17",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-tap-lines.test.mjs",
+        "exit":  null,
+        "seconds":  3.98,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-tap-lines.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 15",
+                        "# pass 15",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-tlayout.test.mjs",
+        "exit":  null,
+        "seconds":  21.91,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-tlayout.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 13",
+                        "# pass 13",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-top-labels.test.mjs",
+        "exit":  null,
+        "seconds":  0.19,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-top-labels.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 7",
+                        "# pass 7",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-v2-215.test.mjs",
+        "exit":  null,
+        "seconds":  0.84,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-v2-215.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 7 - frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 20",
+                        "# pass 17",
+                        "# fail 1",
+                        "# skipped 2"
+                    ]
+    },
+    {
+        "file":  "hani-office-visitors-cafe.test.mjs",
+        "exit":  null,
+        "seconds":  4.8,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-visitors-cafe.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 5",
+                        "# pass 5",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-xmas.test.mjs",
+        "exit":  null,
+        "seconds":  1.48,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-xmas.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 12 - xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 13",
+                        "# pass 12",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-xmas-269-pins.test.mjs",
+        "exit":  null,
+        "seconds":  0.45,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-xmas-269-pins.test.mjs",
+        "gitBlocked":  true,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "not ok 2 - v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit",
+                        "  error: \u0027USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified\u0027",
+                        "  code: \u0027USER_GIT_DISABLED\u0027",
+                        "# tests 2",
+                        "# pass 1",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-zoom.test.mjs",
+        "exit":  null,
+        "seconds":  15.76,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-zoom.test.mjs",
+        "gitBlocked":  false,
+        "browserBlocked":  false,
+        "timeout":  false,
+        "summary":  [
+                        "# tests 13",
+                        "# pass 12",
+                        "# fail 0",
+                        "# skipped 1"
+                    ]
+    }
+]

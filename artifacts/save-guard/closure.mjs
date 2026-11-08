@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import {resolveRuntimeClosure} from '../../scripts/hani-runtime-closure.mjs';
+import inverse from '../../scripts/hani-save-guard-source.cjs';
+const read=file=>fs.readFileSync(file);
+const current=await resolveRuntimeClosure({exists:fs.existsSync,read});
+const before=await resolveRuntimeClosure({exists:fs.existsSync,read:file=>file==='hani-main.js'?Buffer.from(inverse.restoreSaveGuard284(read(file).toString('utf8'),'guard-patch-only')):read(file)});
+assert.deepEqual(current.missing,[]);assert.deepEqual(current.files,before.files);
+fs.writeFileSync('artifacts/save-guard/closure-evidence.json',JSON.stringify({before:before.files.length,after:current.files.length,missing:current.missing,filesUnchanged:true},null,2));
+console.log('PASS runtime closure',current.files.length,'files, no additions or missing files');

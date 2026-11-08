@@ -1,0 +1,58 @@
+﻿[
+    {
+        "file":  "hani-main.js",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-save-guard.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-save-guard.browser.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-save-guard-source.cjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-release-283-source.cjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-life-bundle-source.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-cloud-first.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-cloud-conflict-choice.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-cloud-egress-save-sim.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-egress-fix.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-investment-research.test.cjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-board.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-kids-visit.test.mjs",
+        "exit":  0
+    },
+    {
+        "file":  "scripts/hani-office-staff-chat.test.mjs",
+        "exit":  0
+    }
+]

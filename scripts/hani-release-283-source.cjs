@@ -1,6 +1,7 @@
 // Test-only outer inverse: release 283 changed exactly 60 index and one main
 // version tokens. Full input/output digests retain every other byte and EOL.
 const assert=require('node:assert/strict'),{createHash}=require('node:crypto');
+const {projectPreSaveGuard284Source}=require('./hani-save-guard-source.cjs');
 const hash=s=>createHash('sha256').update(s).digest('hex');
 const files={
  'index.html':{after:'15226a2f3e63b350865ef24d296c7ce34a44e36307f17b77449e5cb8494a0c59',before:'93f4ad567faa2858a881f33bfd473b5b2be971d97160f4a1aea830e082d4752b',count:60},
@@ -14,5 +15,5 @@ function restoreRelease283(source,file){
  assert.equal(hash(before),row.before,'exact release-282 life-bundle bytes '+file);
  return before;
 }
-function projectPreRelease283Source(source,file){return files[file]&&hash(source)===files[file].after?restoreRelease283(source,file):source;}
+function projectPreRelease283Source(source,file){source=projectPreSaveGuard284Source(source,file);return files[file]&&hash(source)===files[file].after?restoreRelease283(source,file):source;}
 module.exports={files,restoreRelease283,projectPreRelease283Source};

@@ -1,0 +1,5 @@
+{
+  "command": "node --version (synthetic child process)",
+  "status": null,
+  "error": "EPERM"
+}

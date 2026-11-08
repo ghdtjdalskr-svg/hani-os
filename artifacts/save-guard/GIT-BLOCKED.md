@@ -1,0 +1,104 @@
+# Git 실행 금지로 미검증인 원래 assertion
+
+Git은 실행 전 차단했으며 assertion을 삭제·완화하지 않았다. 아래 검사는 Git이 허용된 담당 환경에서 다시 실행해야 한다.
+
+- safety: `hani-duplicate-id-guard.test.mjs`
+  - not ok 2 - index and all referenced JS/CSS introduce no new duplicate literals versus origin/main
+- safety: `hani-offline-transport-223.test.mjs`
+- safety: `hani-settings-225-qa-guard.test.mjs`
+  - not ok 1 - settings QA guard retains original handlers and executes memory-only approval and failure paths
+  - not ok 2 - extra wrappers, changed original body, wrong button and removed guard remain rejected
+  - not ok 3 - browser before fixture reverts settings presentation only and retains all integrated handlers
+- life: `hani-nav-groups.test.mjs`
+  - not ok 1 - scripts\\hani-nav-groups.test.mjs
+- related: `hani-media-core.test.mjs`
+  - not ok 1 - scripts\\hani-media-core.test.mjs
+- related: `hani-qa-210.test.mjs`
+  - not ok 8 - retained EOL, all versions/cache tags, id literals, storage and canonical save handlers are preserved
+- related: `hani-qa-210-followup.test.mjs`
+  - not ok 14 - versions, cache tags, protected writes, ids and retained mixed EOL match frozen HEAD export
+- related: `hani-settings-225.test.mjs`
+  - not ok 1 - scripts\\hani-settings-225.test.mjs
+- related: `hani-simplify-225.test.mjs`
+  - not ok 1 - scripts\\hani-simplify-225.test.mjs
+- related: `hani-reviewed-release-baseline.test.mjs`
+  - not ok 1 - every current owner rejects missing, duplicated, altered, moved and EOL bytes after a positive baseline
+  - not ok 2 - merged release discovery follows 234 through 244 without a new fixture; gaps, duplicates and forged metadata fail closed
+  - not ok 4 - release225 plus only named later release changes reproduces current source bytes
+  - not ok 5 - pending integrations are exact deltas between the fixed reviewed merge identities
+  - not ok 6 - release projection advances cache/display only; internal and historical literals stay strict
+  - not ok 7 - unlisted controls, storage, source and EOL edits remain detectable against Git oracle
+  - not ok 8 - shipped office deltas no longer strip CURRENT source; an unlisted index line is rejected
+  - not ok 9 - released office connections reject missing, duplicate or altered additions at every fixed historical stage
+  - not ok 10 - released newsroom bytes reject unlisted edits, including EOL and report data
+  - not ok 11 - approved additions cannot move to another script, event or cascade position
+  - not ok 12 - released 233 and shipped office retain scoped proofs; moved fragments and live staff edits stay strict
+  - not ok 13 - approved numeric integration fixes retain exact origin and reject removal, edits, duplication, moves and EOL changes
+  - not ok 14 - fixed f27be17 CSS follow-up and named owner corrections retain exact bytes and reject drift
+  - not ok 15 - date border correction is an exact delta from fixed 18916a0; old integration identities remain intact
+  - not ok 16 - open-only Remote CSS is an exact delta from fixed c026b63; sticky and all older identities remain strict
+  - not ok 17 - mobile scroll spacing is an exact delta from a29ff90; all older fixture identities remain unchanged
+- office: `hani-office-219.test.mjs`
+  - not ok 1 - scripts\\hani-office-219.test.mjs
+- office: `hani-office-actions-216.test.mjs`
+  - not ok 7 - approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract
+- office: `hani-office-affinity-274-pins.test.mjs`
+  - not ok 3 - 274 base commit independently proves the entire original JS/CSS/helper blobs
+- office: `hani-office-barista-night-273-pins.test.mjs`
+  - not ok 5 - 273: fixed Git release blobs independently prove every baseline pin and complete diff
+- office: `hani-office-bori-stroll.test.mjs`
+  - not ok 8 - stroll inverse independently matches the fixed Git base
+- office: `hani-office-cafe-rest.test.mjs`
+  - not ok 1 - cafe route uses clear lower-right floor, retains the lounge and sign mounting surface
+  - not ok 4 - first full daily plan stays below the unchanged 400ms limit, chairman absent and present
+- office: `hani-office-chairman-patrol-278-pins.test.mjs`
+  - not ok 2 - 278 independent fixed Git blobs prove pre-patrol bytes
+  - not ok 4 - 278 kids extension independently matches its fixed Git base
+  - not ok 6 - 278 visit extension independently matches fixed Git base
+  - not ok 8 - 278 staff-chat extension independently matches fixed Git base
+  - not ok 10 - 278 bubble placement extension independently matches fixed Git base
+  - not ok 12 - 278 optimization extension independently matches fixed Git base
+- office: `hani-office-companion-homes.test.mjs`
+  - not ok 8 - home extension independently matches the specified fixed Git base
+- office: `hani-office-companions-276-pins.test.mjs`
+  - not ok 2 - 276 fixed Git base independently proves every original blob
+- office: `hani-office-consult.test.mjs`
+  - not ok 14 - consult: sofa wording, counter words, safety owners and runtime timers
+- office: `hani-office-icons.test.mjs`
+  - not ok 14 - icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc
+- office: `hani-office-lively-v2.test.mjs`
+  - not ok 6 - obr2: deterministic query order, reduced motion and frozen spatial bytes
+- office: `hani-office-mascot-label.test.mjs`
+  - not ok 7 - outer exact inverse independently restores fixed affinity HEAD and rejects partial/duplicate/unrelated edits
+- office: `hani-office-obr12.test.mjs`
+  - not ok 1 - scripts\\hani-office-obr12.test.mjs
+- office: `hani-office-obr14.test.mjs`
+  - not ok 1 - 235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism
+- office: `hani-office-obr15.test.mjs`
+  - not ok 7 - obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately
+- office: `hani-office-obr21.test.mjs`
+  - not ok 4 - obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation
+  - not ok 5 - obr21 cached gathering/index decisions equal full index rebuilds
+- office: `hani-office-obr4.test.mjs`
+  - not ok 7 - obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows
+  - not ok 8 - obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats
+- office: `hani-office-obr6.test.mjs`
+  - not ok 1 - scripts\\hani-office-obr6.test.mjs
+- office: `hani-office-obr7.test.mjs`
+  - not ok 1 - scripts\\hani-office-obr7.test.mjs
+- office: `hani-office-obr8.test.mjs`
+  - not ok 1 - obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words
+- office: `hani-office-obr9.test.mjs`
+  - not ok 1 - scripts\\hani-office-obr9.test.mjs
+- office: `hani-office-pet-bori-272-pins.test.mjs`
+  - not ok 4 - 272: fixed Git release blobs independently prove every baseline pin and complete diff
+- office: `hani-office-pets-268-pins.test.mjs`
+  - not ok 1 - v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits
+- office: `hani-office-pets-bubble.test.mjs`
+  - not ok 13 - resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections
+- office: `hani-office-v2-215.test.mjs`
+  - not ok 7 - frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture
+- office: `hani-office-xmas.test.mjs`
+  - not ok 12 - xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged
+- office: `hani-office-xmas-269-pins.test.mjs`
+  - not ok 2 - v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit

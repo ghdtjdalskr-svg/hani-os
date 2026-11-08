@@ -1,0 +1,455 @@
+[
+  {
+    "file": "hani-backup-history-runtime.test.mjs",
+    "exit": 1,
+    "seconds": 0.3,
+    "command": "node scripts/hani-backup-history-runtime.test.mjs C:\\Users\\홍성민\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules\\playwright\\index.mjs C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+    "gitBlocked": false,
+    "browserBlocked": true,
+    "timeout": false,
+    "summary": [],
+    "status": "브라우저 차단"
+  },
+  {
+    "file": "hani-board-guard.test.mjs",
+    "exit": 0,
+    "seconds": 0.15,
+    "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-board-guard.test.mjs",
+    "gitBlocked": false,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "PASS: board sync readiness, zero blocked writes/drafts, persistent read-only UI, render recovery, drafts/replies/attendance/views",
+      "# tests 1",
+      "# pass 1",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "status": "통과"
+  },
+  {
+    "file": "hani-boardroom-recovery.test.mjs",
+    "exit": 0,
+    "seconds": 0.09,
+    "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-boardroom-recovery.test.mjs",
+    "gitBlocked": false,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "# tests 1",
+      "# pass 1",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "status": "통과"
+  },
+  {
+    "file": "hani-building-206-safety.test.mjs",
+    "exit": 1,
+    "seconds": 0.1,
+    "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-building-206-safety.test.mjs",
+    "gitBlocked": false,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "not ok 1 - scripts\\\\hani-building-206-safety.test.mjs",
+      "  error: 'The \"paths[0]\" argument must be of type string. Received undefined'",
+      "# tests 1",
+      "# pass 0",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "status": "과거 baseline/fixture 없음"
+  },
+  {
+    "file": "hani-cloud-conflict-choice.test.mjs",
+    "exit": 0,
+    "seconds": 0.09,
+    "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-cloud-conflict-choice.test.mjs",
+    "gitBlocked": false,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "PASS: choice ordering, revision races, snapshot/archive denial, pause, owner/local/hold guards, restore visibility and apply pre-write guard.",
+      "# tests 1",
+      "# pass 1",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "status": "통과"
+  },
+  {
+    "file": "hani-cloud-egress-save-sim.test.mjs",
+    "exit": 0,
+    "seconds": 0.13,
+    "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-cloud-egress-save-sim.test.mjs",
+    "gitBlocked": false,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "# tests 1",
+      "# pass 1",
+      "# fail 0",
+      "# skipped 0",
+      "Cloud sync local-save Error: Cloud revision이 20에서 21(으)로 바뀌었습니다. 다른 기기의 변경을 덮지 않도록 중단했습니다."
+    ],
+    "status": "통과"
+  },
+  {
+    "file": "hani-cloud-egress-sync.test.mjs",
+    "exit": 0,
+    "seconds": 0.09,
+    "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-cloud-egress-sync.test.mjs",
+    "gitBlocked": false,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "# tests 1",
+      "# pass 1",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "status": "통과"
+  },
+  {
+    "file": "hani-cloud-first.test.mjs",
+    "exit": 0,
+    "seconds": 0.13,
+    "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-cloud-first.test.mjs",
+    "gitBlocked": false,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "PASS 40 Cloud-first cases: snapshot-first adoption, manual choice, Local-only push, empty protection, guards, rollback, metadata-only and policy persistence.",
+      "# tests 1",
+      "# pass 1",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "status": "통과"
+  },
+  {
+    "file": "hani-cloud-stability-runtime.test.mjs",
+    "exit": 1,
+    "seconds": 0.4,
+    "command": "node scripts/hani-cloud-stability-runtime.test.mjs C:\\Users\\홍성민\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules\\playwright\\index.mjs C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+    "gitBlocked": false,
+    "browserBlocked": true,
+    "timeout": false,
+    "summary": [],
+    "status": "브라우저 차단"
+  },
+  {
+    "file": "hani-duplicate-id-guard.test.mjs",
+    "exit": 1,
+    "seconds": 0.17,
+    "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-duplicate-id-guard.test.mjs",
+    "gitBlocked": true,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "not ok 2 - index and all referenced JS/CSS introduce no new duplicate literals versus origin/main",
+      "  error: 'USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 2",
+      "# pass 1",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "status": "Git 차단"
+  },
+  {
+    "file": "hani-investment-research-safety.test.cjs",
+    "exit": 1,
+    "seconds": 0.19,
+    "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-investment-research-safety.test.cjs",
+    "gitBlocked": false,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "not ok 1 - scripts\\\\hani-investment-research-safety.test.cjs",
+      "  error: 'Usage: node scripts/hani-investment-research-safety.test.cjs <baseline hani-main.js> <baseline index.html>'",
+      "# tests 1",
+      "# pass 0",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "status": "과거 baseline/fixture 없음"
+  },
+  {
+    "file": "hani-invest-split-safety.test.mjs",
+    "exit": 1,
+    "seconds": 0.12,
+    "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-invest-split-safety.test.mjs",
+    "gitBlocked": false,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "not ok 1 - scripts\\\\hani-invest-split-safety.test.mjs",
+      "  error: 'Usage: node scripts/hani-invest-split-safety.test.mjs <raw baseline directory>'",
+      "# tests 1",
+      "# pass 0",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "status": "과거 baseline/fixture 없음"
+  },
+  {
+    "file": "hani-office-affinity-storage.test.mjs",
+    "exit": 0,
+    "seconds": 0.15,
+    "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-affinity-storage.test.mjs",
+    "gitBlocked": false,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "# tests 3",
+      "# pass 3",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "status": "통과"
+  },
+  {
+    "file": "hani-offline-entry-223.test.mjs",
+    "exit": 1,
+    "seconds": 0.35,
+    "command": "node scripts/hani-offline-entry-223.test.mjs C:\\Users\\홍성민\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules\\playwright\\index.mjs C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+    "gitBlocked": false,
+    "browserBlocked": true,
+    "timeout": false,
+    "summary": [],
+    "status": "브라우저 차단"
+  },
+  {
+    "file": "hani-offline-transport-223.test.mjs",
+    "exit": 1,
+    "seconds": 0.08,
+    "command": "node scripts/hani-offline-transport-223.test.mjs C:\\Users\\홍성민\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules\\playwright\\index.mjs C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+    "gitBlocked": true,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "   const error=new Error('USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified');",
+      "Error: USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified",
+      "  code: 'USER_GIT_DISABLED'"
+    ],
+    "status": "Git 차단"
+  },
+  {
+    "file": "hani-photo-backup-222.test.mjs",
+    "exit": 0,
+    "seconds": 0.21,
+    "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-photo-backup-222.test.mjs",
+    "gitBlocked": false,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "PASS Node: inline/ref, unique records, incremental, missing/conflict, MIME/size, collision preservation, read-back hash, guard",
+      "PASS Node: unsupported Vault initializes with one general notice, empty photo status, disabled actions",
+      "# tests 1",
+      "# pass 1",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "status": "통과"
+  },
+  {
+    "file": "hani-polish-205-safety.test.mjs",
+    "exit": 1,
+    "seconds": 0.14,
+    "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-polish-205-safety.test.mjs",
+    "gitBlocked": false,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "not ok 1 - scripts\\\\hani-polish-205-safety.test.mjs",
+      "  error: 'The \"paths[0]\" argument must be of type string. Received undefined'",
+      "# tests 1",
+      "# pass 0",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "status": "과거 baseline/fixture 없음"
+  },
+  {
+    "file": "hani-quality-data-runtime.test.mjs",
+    "exit": 1,
+    "seconds": 0.45,
+    "command": "node scripts/hani-quality-data-runtime.test.mjs C:\\Users\\홍성민\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules\\playwright\\index.mjs C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+    "gitBlocked": false,
+    "browserBlocked": true,
+    "timeout": false,
+    "summary": [],
+    "status": "브라우저 차단"
+  },
+  {
+    "file": "hani-save-guard.test.mjs",
+    "exit": 0,
+    "seconds": 0.17,
+    "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-save-guard.test.mjs",
+    "gitBlocked": false,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "# tests 10",
+      "# pass 10",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "status": "통과"
+  },
+  {
+    "file": "hani-settings-225-qa-guard.test.mjs",
+    "exit": 1,
+    "seconds": 0.11,
+    "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-settings-225-qa-guard.test.mjs",
+    "gitBlocked": true,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "not ok 1 - settings QA guard retains original handlers and executes memory-only approval and failure paths",
+      "  error: 'USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified'",
+      "  code: 'USER_GIT_DISABLED'",
+      "not ok 2 - extra wrappers, changed original body, wrong button and removed guard remain rejected",
+      "  error: |-",
+      "    +   code: 'USER_GIT_DISABLED'",
+      "  name: 'AssertionError'",
+      "  error: 'USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified'",
+      "  code: 'USER_GIT_DISABLED'",
+      "not ok 3 - browser before fixture reverts settings presentation only and retains all integrated handlers",
+      "  error: 'index.html: settings hunk present'",
+      "  name: 'AssertionError'",
+      "# tests 3",
+      "# pass 0",
+      "# fail 3",
+      "# skipped 0"
+    ],
+    "status": "Git 차단"
+  },
+  {
+    "file": "hani-photo-backup-222-preservation.mjs",
+    "exit": 0,
+    "seconds": 0.08,
+    "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-photo-backup-222-preservation.mjs",
+    "gitBlocked": false,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "# tests 1",
+      "# pass 1",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "status": "통과"
+  },
+  {
+    "file": "hani-offline-entry-223-preservation.mjs",
+    "exit": 0,
+    "seconds": 0.09,
+    "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-offline-entry-223-preservation.mjs",
+    "gitBlocked": false,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "# tests 1",
+      "# pass 1",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "status": "통과"
+  },
+  {
+    "file": "hani-app-216-safety.cjs",
+    "exit": 1,
+    "seconds": 0.09,
+    "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-app-216-safety.cjs",
+    "gitBlocked": false,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "not ok 1 - scripts\\\\hani-app-216-safety.cjs",
+      "  error: 'usage: node scripts/hani-app-216-safety.cjs <raw baseline directory>'",
+      "  name: 'AssertionError'",
+      "# tests 1",
+      "# pass 0",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "status": "과거 baseline/fixture 없음"
+  },
+  {
+    "file": "hani-app-216-audit-safety.cjs",
+    "exit": 1,
+    "seconds": 0.08,
+    "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-app-216-audit-safety.cjs",
+    "gitBlocked": false,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "not ok 1 - scripts\\\\hani-app-216-audit-safety.cjs",
+      "  error: 'usage: node scripts/hani-app-216-audit-safety.cjs <raw baseline>'",
+      "  name: 'AssertionError'",
+      "# tests 1",
+      "# pass 0",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "status": "과거 baseline/fixture 없음"
+  },
+  {
+    "file": "hani-app-216-practical-safety.cjs",
+    "exit": 1,
+    "seconds": 0.09,
+    "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-app-216-practical-safety.cjs",
+    "gitBlocked": false,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "not ok 1 - scripts\\\\hani-app-216-practical-safety.cjs",
+      "  error: 'usage: node scripts/hani-app-216-practical-safety.cjs <raw baseline>'",
+      "  name: 'AssertionError'",
+      "# tests 1",
+      "# pass 0",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "status": "과거 baseline/fixture 없음"
+  },
+  {
+    "file": "hani-google-drive-212-safety.mjs",
+    "exit": 1,
+    "seconds": 0.08,
+    "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-google-drive-212-safety.mjs",
+    "gitBlocked": false,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "not ok 1 - scripts\\\\hani-google-drive-212-safety.mjs",
+      "  error: 'The \"paths[0]\" argument must be of type string. Received undefined'",
+      "# tests 1",
+      "# pass 0",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "status": "과거 baseline/fixture 없음"
+  },
+  {
+    "file": "hani-qa-1st-safety.mjs",
+    "exit": 1,
+    "seconds": 1.9,
+    "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-qa-1st-safety.mjs",
+    "gitBlocked": false,
+    "browserBlocked": false,
+    "timeout": false,
+    "summary": [
+      "not ok 1 - scripts\\\\hani-qa-1st-safety.mjs",
+      "  error: \"ENOENT: no such file or directory, open 'C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\audit-safe\\\\artifacts\\\\qa-1st\\\\eol-map.diff'\"",
+      "# tests 1",
+      "# pass 0",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "status": "과거 baseline/fixture 없음"
+  }
+]

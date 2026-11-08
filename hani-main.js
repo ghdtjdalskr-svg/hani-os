@@ -1163,6 +1163,7 @@ const freshState=()=>({
 let lastLoadError="";
 let lastSaveResult={ok:true,message:"저장 전"};
 let loadRecovery={active:false,raw:null,quarantineKey:"",verified:false};
+let storageLoadedRaw=null,storageTabConflict=false,storageTabListenerBound=false;
 let state=loadState();
 const IMPORT_SYNC_HOLD_KEY="hani_os_import_sync_hold_v1";
 let importSyncHold=readImportSyncHold();
@@ -1254,6 +1255,7 @@ function loadState(){
   let stored=null;
   try{
     stored=localStorage.getItem(STORAGE_KEY);
+    storageLoadedRaw=stored;
     if(stored===null)return freshState();
     const raw=JSON.parse(stored);
     validateStoredRecords(raw);
@@ -1289,13 +1291,15 @@ function validateStoredRecords(raw){
   }
 }
 function writeProtectedState(value,{recover=false,rollback=false}={}){
+  assertStorageTabCurrent();
   if(loadRecovery.active){
-    if(rollback&&value===loadRecovery.raw){localStorage.setItem(STORAGE_KEY,value);return}
+    if(rollback&&value===loadRecovery.raw){localStorage.setItem(STORAGE_KEY,value);storageLoadedRaw=value;return}
     if(!recover||!loadRecovery.verified||typeof loadRecovery.raw!=="string"||
       localStorage.getItem(loadRecovery.quarantineKey)!==loadRecovery.raw||
       localStorage.getItem(STORAGE_KEY)!==loadRecovery.raw)throw new Error(lastLoadError||"원본 보호가 확인되지 않아 저장을 중단했습니다.");
   }
   localStorage.setItem(STORAGE_KEY,value);
+  storageLoadedRaw=value;
 }
 function readImportSyncHold(){
   try{return localStorage.getItem(IMPORT_SYNC_HOLD_KEY)!==null}catch(_){return true}
@@ -1317,13 +1321,16 @@ function releaseImportSyncHold(expectedHold){
   importSyncHold=false;
 }
 function assertCloudSourceReady({allowImport=false,expectedHold}={}){
+  assertStorageTabCurrent();
   if(loadRecovery.active)throw new Error(lastLoadError);
   if(allowImport&&localStorage.getItem(IMPORT_SYNC_HOLD_KEY)!==expectedHold)throw new Error("Cloud 확인 후 복원 상태가 변경되어 반영을 중단했습니다.");
   if((importSyncHold||readImportSyncHold())&&!allowImport)throw new Error("백업 복원은 이 기기에만 적용됐습니다. '이 기기 Local을 Cloud 기준으로 확정'에서 내용을 확인해야 다른 기기에 반영됩니다.");
 }
 function removeProtectedState(){
+  assertStorageTabCurrent();
   if(loadRecovery.active)throw new Error(lastLoadError);
   localStorage.removeItem(STORAGE_KEY);
+  storageLoadedRaw=null;
 }
 function downloadRecoveryOriginal(){
   if(!loadRecovery.active||typeof loadRecovery.raw!=="string")return alert("원본을 읽을 수 없습니다. 브라우저 저장 권한을 확인한 뒤 다시 열어 주세요.");
@@ -1404,7 +1411,33 @@ function updateStorageStatus(result=lastSaveResult){
   if(label)label.textContent="마지막 저장 "+formatDateTime(state?.meta?.lastSavedAt);
   renderStoragePanel();
 }
+const STORAGE_TAB_MESSAGE="다른 창에서 새 기록이 저장됐어요. 새로고침하면 최신 기록으로 이어서 쓸 수 있어요.";
+function showStorageTabConflict(){
+  let panel=$("storageTabConflict");
+  if(!panel){
+    panel=document.createElement("div");panel.id="storageTabConflict";panel.setAttribute("role","alert");
+    panel.style.cssText="position:fixed;left:12px;right:12px;bottom:12px;z-index:100000;padding:16px;background:#fff8e5;color:#382a18;border:2px solid #ba862e;border-radius:12px;box-shadow:0 4px 24px #0003;line-height:1.6";
+    const message=document.createElement("p");message.textContent=STORAGE_TAB_MESSAGE;message.style.margin="0 0 8px";
+    const button=document.createElement("button");button.type="button";button.className="btn";button.textContent="새로고침";
+    button.onclick=()=>window.location.reload();panel.append(message,button);document.body.append(panel);
+  }
+  panel.hidden=false;
+}
+function assertStorageTabCurrent(){
+  if(localStorage.getItem(STORAGE_KEY)!==storageLoadedRaw)storageTabConflict=true;
+  if(storageTabConflict){showStorageTabConflict();throw new Error(STORAGE_TAB_MESSAGE)}
+}
+function initStorageTabGuard(){
+  if(storageTabListenerBound)return;
+  storageTabListenerBound=true;
+  window.addEventListener("storage",event=>{
+    if(event.storageArea!==localStorage||event.key!==STORAGE_KEY||event.newValue===event.oldValue)return;
+    if(event.newValue===storageLoadedRaw)return;
+    storageTabConflict=true;showStorageTabConflict();
+  });
+}
 function save({recover=false}={}){
+  try{assertStorageTabCurrent()}catch(error){const result={ok:false,conflict:storageTabConflict,error,message:error.message};if(storageTabConflict)lastSaveResult=result;else updateStorageStatus(result);return result}
   if(loadRecovery.active&&!recover){const result={ok:false,recovery:true,message:lastLoadError};updateStorageStatus(result);return result}
   state.version=VERSION;
   state.meta={...freshState().meta,...(state.meta||{})};
@@ -5898,6 +5931,12 @@ function cloudSaveSyncMeta(remote,hash,extra={}){
   return meta;
 }
 
+function validateCloudRecords(value){
+  try{validateStoredRecords(value)}catch(error){
+    const message="Cloud 기록 형식을 확인하지 못해 이 기기 기록을 유지했어요";
+    cloudStopAutoSync(message,"error");throw new Error(message,{cause:error});
+  }
+}
 async function cloudReadRow(){
   if(!cloudClient||!cloudUser)throw new Error("Cloud 로그인이 필요합니다.");
   if(cloudOutage.active)throw cloudOutageError();
@@ -5908,7 +5947,9 @@ async function cloudReadRow(){
     .eq("user_id",cloudUser.id)
     .limit(1).retry(false);
   if(error){cloudNoteReadFailure(error,status);throw Object.assign(new Error(error.message),error,{status})}
-  return data?.[0]||null;
+  const remote=data?.[0]||null;
+  if(remote?.state!=null)validateCloudRecords(remote.state);
+  return remote;
 }
 function cloudStopAutoSync(message="",tone="warn"){
   cloudAutoSyncReady=false;cloudVerifiedRemote=null;
@@ -5933,6 +5974,7 @@ function cloudQueueSync(delay=650){
 }
 async function cloudApplyRemoteRow(remote,remoteHash,{announce=false,verifyRemote=null}={}){
   assertCloudSourceReady();
+  validateCloudRecords(remote?.state);
   const previousState=structuredClone(state);
   let candidate=normalizeState(structuredClone(remote?.state||{}));
   candidate=cloudMergeProtectedMedia(candidate,previousState);
@@ -6837,6 +6879,7 @@ async function cloudRestoreToLocal(){
   try{
     cloudAutoSyncReady=false;if(cloudPollTimer){clearInterval(cloudPollTimer);cloudPollTimer=null}
     const remote=await cloudReadRow();if(!remote?.state)throw new Error("Cloud에 복원할 HANI state가 없습니다.");
+    validateCloudRecords(remote.state);
     const previousState=structuredClone(state),localComparable=cloudComparableState(previousState);
     const rawRemote=cloudComparableState(remote.state);
     let candidate=normalizeState(structuredClone(remote.state));
@@ -8759,6 +8802,7 @@ initFlexibleDateInputs();
 
 ["txDate","bodyDate","exerciseDate","taskDue","diaryDate","flowDate","journalDate","watchDate","spendPurchaseDate","spendReviewDate"].forEach(id=>{if($(id))$(id).value=today()});
 updateTxForm();resetDiaryForm();resetFlow();resetWatchlist();resetJournal();updateMovieFormState();intakeInit();renderAll();
+initStorageTabGuard();
 initLoginGate();
 googleOAuthHandleReturn();
 setupQuickJump();

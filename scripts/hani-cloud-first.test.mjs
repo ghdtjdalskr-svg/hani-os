@@ -6,6 +6,7 @@ import vm from "node:vm";
 const source=fs.readFileSync(process.argv[2]||new URL("../hani-main.js",import.meta.url),"utf8");
 function block(start,end){const a=source.indexOf(start),b=source.indexOf(end,a);assert.ok(a>=0&&b>a,start+" anchor");return source.slice(a,b)}
 const functions=[
+  block("function validateStoredRecords(","function writeProtectedState("),
   block("function cloudMeta(","function cloudSetRuntime("),
   block("function cloudHasMeaningfulLocalData(","function cloudLocalStatusLabel("),
   block("function cloudSaveSyncMeta(","async function cloudReadRow("),

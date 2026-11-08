@@ -1,0 +1,41 @@
+﻿[
+    {
+        "file":  "hani-app-216-audit.test.cjs",
+        "mode":  "raw",
+        "exit":  1,
+        "summary":  [
+                        "not ok 5 - styles remain in cascade order, only approved pending launch/mascot/newsroom files await train tags, worker is lazy, stale labels removed",
+                        "  error: |-",
+                        "# tests 7",
+                        "# pass 6",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-procrastination-board.test.mjs",
+        "mode":  "historical",
+        "exit":  1,
+        "summary":  [
+                        "not ok 1 - persistent cards, actual click result, immediate reset and no side effects",
+                        "  error: \u0027card.querySelector(...).setAttribute is not a function\u0027",
+                        "# tests 1",
+                        "# pass 0",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-tasks-qa-212.test.mjs",
+        "mode":  "historical",
+        "exit":  1,
+        "summary":  [
+                        "not ok 5 - single persistent stepper above Calendar; 3 status icons/buttons, N chip navigation, zero hidden",
+                        "  error: \"Cannot read properties of null (reading \u0027parentNode\u0027)\"",
+                        "# tests 8",
+                        "# pass 6",
+                        "# fail 1",
+                        "# skipped 1"
+                    ]
+    }
+]

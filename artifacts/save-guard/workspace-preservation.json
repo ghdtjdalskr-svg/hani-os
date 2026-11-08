@@ -1,0 +1,27 @@
+{
+  "restoredGeneratedJson": [
+    "artifacts/office-behavior/obr16-layout-node.json",
+    "artifacts/office-behavior/obr17-layout-node.json",
+    "artifacts/office-behavior/obr19-layout-node.json",
+    "artifacts/office-drama/reachability.json"
+  ],
+  "intentionalChangesSinceSnapshot": [
+    "hani-main.js",
+    "scripts/hani-board.test.mjs",
+    "scripts/hani-egress-fix.test.mjs",
+    "scripts/hani-investment-research.test.cjs",
+    "scripts/hani-office-kids-visit.test.mjs",
+    "scripts/hani-office-staff-chat.test.mjs",
+    "scripts/hani-save-guard-source.cjs",
+    "scripts/hani-save-guard.browser.mjs",
+    "scripts/hani-save-guard.test.mjs",
+    "docs/development-history/handoffs/2026-11-08-save-guard.md",
+    "scripts/fixtures/save-guard-284-delta.json",
+    "docs/development-history/CURRENT.md"
+  ],
+  "unexpected": [],
+  "newOutsideScope": [],
+  "removedNewGeneratedJson": [
+    "artifacts/qa-210/node-evidence.json"
+  ]
+}

@@ -42,8 +42,8 @@ const context=vm.createContext({
   n:x=>Number(x)||0,uid:()=>"board-"+(++sequence),today:()=>"2026-10-10",
   monthKeyNow:()=>"2026-10",formatDateTime:String,
   normalizeBodyRecord:x=>x,legacyExercise:()=>[],
-  localStorage:{getItem:key=>{assert.equal(key,"hani_os_life_v23");return serial}},
-  writeProtectedState:value=>{if(fail)throw Error("quota");serial=value},
+  localStorage:{getItem:key=>{assert.equal(key,"hani_os_life_v23");return serial},setItem(key,value){assert.equal(key,"hani_os_life_v23");if(fail)throw Error("quota");serial=value}},
+  storageLoadedRaw:serial,storageTabConflict:false,
   updateStorageStatus(){},cloudQueueSync(){queues++},cloudApplyingRemote:false,
   cloudUser:{id:"sandbox-owner"},cloudAutoSyncReady:true,cloudRuntime:{sync:"ON"},
   importSyncHold:false,cloudRecoveryMode:false,
@@ -55,10 +55,10 @@ const context=vm.createContext({
 // Only unrelated legacy record normalizers are stubbed; board/save/backup/Cloud are real.
 for(const match of fn("normalizeState").matchAll(/\.map\((\w+)\)/g))
   context[match[1]]=x=>x;
-const names=["normalizeState","validateStoredRecords","validateBackup","save","buildBackupPayload","exportData",
+const names=["normalizeState","validateStoredRecords","validateBackup","showStorageTabConflict","assertStorageTabCurrent","writeProtectedState","save","buildBackupPayload","exportData",
   "cloudCanonical","cloudSame","cloudComparableState","cloudSyncFingerprintState",
   "cloudHasMeaningfulLocalData","cloudRecordCount","cloudStateHash","cloudSyncDecision"];
-vm.runInContext(fresh+"\n"+names.map(fn).join("\n")+
+vm.runInContext(fresh+"\n"+main.match(/const STORAGE_TAB_MESSAGE=[^\n]+/)[0]+"\n"+names.map(fn).join("\n")+
   "\nlet state=freshState();const loadRecovery={active:false};\n"+board+
   "\nthis.api={freshState,normalizeState,validateStoredRecords,validateBackup,exportData,"+
   "cloudComparableState,cloudHasMeaningfulLocalData,cloudRecordCount,cloudStateHash,cloudSyncDecision,"+

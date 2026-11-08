@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: 다른 탭 저장: 단일 listener, 저장 차단, 안내·수동 새로고침, 입력 보존
+ok 1 - 다른 탭 저장: 단일 listener, 저장 차단, 안내·수동 새로고침, 입력 보존
+  ---
+  duration_ms: 2.8866
+  type: 'test'
+  ...
+# Subtest: 자기 저장 반복은 오탐 없고 관계없는 storage 이벤트 무시
+ok 2 - 자기 저장 반복은 오탐 없고 관계없는 storage 이벤트 무시
+  ---
+  duration_ms: 3.0906
+  type: 'test'
+  ...
+# Subtest: storage 이벤트 대기 중에도 바이트 비교로 차단, 직접 write/Cloud도 차단
+ok 3 - storage 이벤트 대기 중에도 바이트 비교로 차단, 직접 write/Cloud도 차단
+  ---
+  duration_ms: 1.9904
+  type: 'test'
+  ...
+# Subtest: 깨진 Cloud 레코드 거부: 원본 바이트·메모리·안전 사본 이전 상태 보존
+ok 4 - 깨진 Cloud 레코드 거부: 원본 바이트·메모리·안전 사본 이전 상태 보존
+  ---
+  duration_ms: 8.7354
+  type: 'test'
+  ...
+# Subtest: 깨진 Local 원본 격리와 복구 후 read-back 안전장치 유지
+ok 5 - 깨진 Local 원본 격리와 복구 후 read-back 안전장치 유지
+  ---
+  duration_ms: 1.5227
+  type: 'test'
+  ...
+# Subtest: Cloud 원본 읽기와 수동 복원도 같은 형식 검사로 차단
+ok 6 - Cloud 원본 읽기와 수동 복원도 같은 형식 검사로 차단
+  ---
+  duration_ms: 3.4477
+  type: 'test'
+  ...
+# Subtest: Cloud 안전 사본을 기다리는 중 다른 탭 저장도 덮어쓰지 않음
+ok 7 - Cloud 안전 사본을 기다리는 중 다른 탭 저장도 덮어쓰지 않음
+  ---
+  duration_ms: 1.351
+  type: 'test'
+  ...
+# Subtest: 정상 Cloud: 수정 전 함수와 적용 결과·write 수·사본 수 동일
+ok 8 - 정상 Cloud: 수정 전 함수와 적용 결과·write 수·사본 수 동일
+  ---
+  duration_ms: 3.5514
+  type: 'test'
+  ...
+# Subtest: setItem/removeItem/clear 호출 수, 보호 키·내부 버전·서버 write 구조 보존
+ok 9 - setItem/removeItem/clear 호출 수, 보호 키·내부 버전·서버 write 구조 보존
+  ---
+  duration_ms: 7.3952
+  type: 'test'
+  ...
+# Subtest: 284·안전 패치 외층은 기존 283 고정 해시로 정확히 복원하고 drift·중복·재역변환 거부
+ok 10 - 284·안전 패치 외층은 기존 283 고정 해시로 정확히 복원하고 drift·중복·재역변환 거부
+  ---
+  duration_ms: 30.1268
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 99.4582
