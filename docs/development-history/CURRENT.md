@@ -1,3 +1,6 @@
+# 2026-11-08 · 뉴스룸 레이아웃 (Codex / news4cut2)
+
+`hani/newsroom-4cut-002` / 전달 HEAD `1b6274f`(Git 금지·원격 최신성 미확인). 기존 owner JS/CSS 2개에서 4컷 폭·중복·지난 호/최신 탐색·카탈로그 지수·F/U 3/2열·간격/다크 정리. **raw 4컷7·persona4·inverse2·task-local 범위 PASS, office73파일 전부 실행: 769통과·Git36차단·별도3실패·4skip.** 실패3은 office 3F art 215/218 기대와 cold plan400ms 기준2건(단독 재검증도 실패). **Edge spawn EPERM/직접 실행 정책 차단으로 실제 UI·PNG·비교 미검증**, Notion append 자동 승인 never 거절로 갱신 대기. 데이터/Cloud/서버·이미지/카탈로그·index/main·표시/cache284 보존, Git/commit/배포 없음. 서윤 실제 Edge·Git 재검증 뒤 2호와 **2.9.285** 통합 인계. [보고서](../../artifacts/newsroom-layout/REPORT.md) · [인수인계](handoffs/2026-11-08-newsroom-layout.md). 아래 다른 담당 기록 보존.
 # 2026-11-08 · tooling-284 · 2.9.284 시험 기준 갱신 (Codex)
 
 `hani/tooling-284` / 지정·로컬 base `5c375d9` / Git 명령 금지·원격 새 조회 없음. 공통 JSON release inverse·치비툰→283→생활/M9 체인 정리, 기존 assertion·fixture pin 보존. **지정 기능·nav/UI PASS, office69파일 745통과·35Git차단·3skip·기타실패0, 기존 m9-link packaging1FAIL 유지.** 런타임498 origin/main 바이트 동일·시험 부산물 복원·새PNG제거. Git/commit/배포 없음, 서윤 검토·Git 재검증·커밋 인계. Notion 쓰기는 자동 승인 never 거절로 갱신 대기. [짧은 보고서](../../artifacts/tooling-284/REPORT.md) · [인수인계](handoffs/2026-11-08-tooling-284.md). 아래 기존 기록 보존.
