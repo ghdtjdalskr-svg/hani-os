@@ -66,6 +66,27 @@ if (!browserOnly) {
     assert.equal(r.slot.hidden,true);assert.equal(r.nodes.size,0,'no image/source DOM accessed');
     assert.equal(r.calls.length,1);assert.deepEqual(r.writes,[]);
   });
+  test('index table uses only selected catalog facts, leaves absent closes blank and omits duplicate summary', async () => {
+    const r=runtime(catalog,'2026-11-08T12:00:00+09:00');
+    const firstRows=r.api.issuePanels(catalog.issues[0]).indices;
+    const latestRows=r.api.issuePanels(catalog.issues[1]).indices;
+    assert.deepEqual(JSON.parse(JSON.stringify(firstRows.map(x=>x.close))),['5,730.74','724.38',null,null]);
+    assert.deepEqual(JSON.parse(JSON.stringify(latestRows.map(x=>x.close))),['5,059.69','644.27','7,376.86','24,579.42']);
+    assert.equal(r.api.issuePanels({alt:'',title:'빈 호'}).indices.length,0);
+    r.document.body.dataset.view='newsroom';await r.api.enter();
+    const q=s=>r.slot.querySelector(s),host=q('.newsroom-4cut-context');
+    assert.equal(host.children.length,1,'only the index panel');
+    assert.equal(q('.newsroom-4cut-footnote').hidden,true);
+    assert.equal(q('dialog .newsroom-4cut-footnote').hidden,true);
+    const past=q('.newsroom-4cut-past').children[0].children[0];
+    past.onclick();
+    assert.equal(q('.newsroom-4cut-past').children[0].children[0].attrs['aria-pressed'],'true');
+    assert.equal(q('.newsroom-4cut-latest').hidden,false);
+    assert.match(q('.newsroom-4cut-archive summary').textContent,/현재 제1호/);
+    q('.newsroom-4cut-latest').onclick();
+    assert.match(q('.newsroom-4cut-archive summary').textContent,/현재 제2호.*최신/);
+    assert.deepEqual(r.writes,[]);
+  });
   test('KST release boundary: Oct 24 hidden; Oct 25 published, regardless of host timezone', () => {
     const {api} = runtime();
     assert.equal(api.kstDay(new Date('2026-10-24T14:59:59Z')), '2026-10-24');
@@ -233,7 +254,9 @@ if (!nodeOnly) test('actual browser: route lazy loading, dates, archive, modal, 
       await r.context.close();
     }
     const past=await pageAt('2026-10-25T00:00:00+09:00',many);
-    const {page}=past, archive=page.locator('.newsroom-4cut-archive'); await archive.locator('summary').click();
+    const {page}=past, archive=page.locator('.newsroom-4cut-archive');
+    assert.equal(await archive.evaluate(el=>el.previousElementSibling.className),'newsroom-4cut-meta');
+    assert.equal(await archive.getAttribute('open'),'','issue navigation is visible on entry');
     const buttons=archive.locator('button'); assert.equal(await buttons.count(),8);
     assert.deepEqual((await buttons.allTextContents()).map(s=>s.match(/^제(\d+)호/)[1]),['10','9','8','7','6','5','4','3']);
     await buttons.nth(1).click(); assert.equal(await page.locator('.newsroom-4cut-title').innerText(),'시장 소식 9');

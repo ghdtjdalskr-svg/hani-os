@@ -1,0 +1,523 @@
+﻿{
+    "results":  [
+                    {
+                        "file":  "hani-building-206.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  false,
+                        "seconds":  0.16,
+                        "summary":  "✖ existing assets resolve for all staff; per-floor art config has fallback (3.3484ms)\r\nℹ tests 21\r\nℹ pass 20\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ existing assets resolve for all staff; per-floor art config has fallback (3.3484ms)\r"
+                    },
+                    {
+                        "file":  "hani-building-206-engine.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  0.53,
+                        "summary":  "ℹ tests 6\r\nℹ pass 6\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-building-206-safety.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  false,
+                        "seconds":  0.12,
+                        "summary":  "✖ C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\news4cut2\\scripts\\hani-building-206-safety.test.mjs (0.4798ms)\r\nℹ tests 1\r\nℹ pass 0\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\news4cut2\\scripts\\hani-building-206-safety.test.mjs (0.4798ms)\r"
+                    },
+                    {
+                        "file":  "hani-building-206-ui.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  0.11,
+                        "summary":  "ℹ tests 1\r\nℹ pass 0\r\nℹ fail 0\r\nℹ skipped 1\r"
+                    },
+                    {
+                        "file":  "hani-office-219.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  0.19,
+                        "summary":  "✖ C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\news4cut2\\scripts\\hani-office-219.test.mjs (0.8032ms)\r\nℹ tests 1\r\nℹ pass 0\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\news4cut2\\scripts\\hani-office-219.test.mjs (0.8032ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-actions-216.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  57.31,
+                        "summary":  "✖ approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract (39.0894ms)\r\nℹ tests 15\r\nℹ pass 14\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract (39.0894ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-actions-221.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  7.7,
+                        "summary":  "ℹ tests 20\r\nℹ pass 20\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-affinity.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  15.35,
+                        "summary":  "ℹ tests 21\r\nℹ pass 21\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-affinity-274-pins.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  0.87,
+                        "summary":  "✖ 274 base commit independently proves the entire original JS/CSS/helper blobs (0.3755ms)\r\nℹ tests 3\r\nℹ pass 2\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ 274 base commit independently proves the entire original JS/CSS/helper blobs (0.3755ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-affinity-cap.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  10.32,
+                        "summary":  "ℹ tests 19\r\nℹ pass 19\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-affinity-storage.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  0.19,
+                        "summary":  "ℹ tests 3\r\nℹ pass 3\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-barista.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  11.23,
+                        "summary":  "ℹ tests 10\r\nℹ pass 10\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-barista-night.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  false,
+                        "seconds":  25.7,
+                        "summary":  "✖ night barista: byte-exact 360x110 opaque atlas; sole new runtime file 158 -\u003e 159/160 (73.4363ms)\r\nℹ tests 13\r\nℹ pass 12\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ night barista: byte-exact 360x110 opaque atlas; sole new runtime file 158 -\u003e 159/160 (73.4363ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-barista-night-273-pins.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  0.73,
+                        "summary":  "✖ 273: index/main remain fixed-272 bytes, allowing only canonical release projection (2.7516ms)\r\n✖ 273: fixed Git release blobs independently prove every baseline pin and complete diff (0.3838ms)\r\nℹ tests 5\r\nℹ pass 3\r\nℹ fail 2\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ 273: index/main remain fixed-272 bytes, allowing only canonical release projection (2.7516ms)\r\n✖ 273: fixed Git release blobs independently prove every baseline pin and complete diff (0.3838ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-behavior.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  67.54,
+                        "summary":  "ℹ tests 10\r\nℹ pass 10\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-bori-m9.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  92.43,
+                        "summary":  "ℹ tests 2\r\nℹ pass 2\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-bori-stroll.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  320.48,
+                        "summary":  "✖ stroll inverse independently matches the fixed Git base (0.4799ms)\r\nℹ tests 14\r\nℹ pass 13\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ stroll inverse independently matches the fixed Git base (0.4799ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-bubble-close.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  13.07,
+                        "summary":  "ℹ tests 17\r\nℹ pass 17\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-cafe-rest.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  3.75,
+                        "summary":  "✖ cafe route uses clear lower-right floor, retains the lounge and sign mounting surface (0.9729ms)\r\n✖ first full daily plan stays below the unchanged 400ms limit, chairman absent and present (1568.1374ms)\r\nℹ tests 4\r\nℹ pass 2\r\nℹ fail 2\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ cafe route uses clear lower-right floor, retains the lounge and sign mounting surface (0.9729ms)\r\n✖ first full daily plan stays below the unchanged 400ms limit, chairman absent and present (1568.1374ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-chairman-234.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  1.58,
+                        "summary":  "ℹ tests 6\r\nℹ pass 6\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-chairman-patrol.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  16.02,
+                        "summary":  "ℹ tests 15\r\nℹ pass 15\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-chairman-patrol-278-pins.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  1.71,
+                        "summary":  "✖ 278 independent fixed Git blobs prove pre-patrol bytes (0.5779ms)\r\n✖ 278 kids extension independently matches its fixed Git base (70.4848ms)\r\n✖ 278 visit extension independently matches fixed Git base (67.0323ms)\r\n✖ 278 staff-chat extension independently matches fixed Git base (58.6955ms)\r\n✖ 278 bubble placement extension independently matches fixed Git base (41.9719ms)\r\n✖ 278 optimization extension independently matches fixed Git base (38.6075ms)\r\nℹ tests 12\r\nℹ pass 6\r\nℹ fail 6\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ 278 independent fixed Git blobs prove pre-patrol bytes (0.5779ms)\r\n✖ 278 kids extension independently matches its fixed Git base (70.4848ms)\r\n✖ 278 visit extension independently matches fixed Git base (67.0323ms)\r\n✖ 278 staff-chat extension independently matches fixed Git base (58.6955ms)\r\n✖ 278 bubble placement extension independently matches fixed Git base (41.9719ms)\r\n✖ 278 optimization extension independently matches fixed Git base (38.6075ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-companion-homes.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  104.18,
+                        "summary":  "✖ home extension independently matches the specified fixed Git base (0.4262ms)\r\nℹ tests 16\r\nℹ pass 15\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ home extension independently matches the specified fixed Git base (0.4262ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-companions.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  13.6,
+                        "summary":  "ℹ tests 17\r\nℹ pass 17\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-companions-276-pins.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  0.46,
+                        "summary":  "✖ 276 fixed Git base independently proves every original blob (0.2719ms)\r\nℹ tests 3\r\nℹ pass 2\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ 276 fixed Git base independently proves every original blob (0.2719ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-consult.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  40.15,
+                        "summary":  "✖ consult: sofa wording, counter words, safety owners and runtime timers (1.9767ms)\r\nℹ tests 20\r\nℹ pass 19\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ consult: sofa wording, counter words, safety owners and runtime timers (1.9767ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-crowded-labels.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  1.09,
+                        "summary":  "ℹ tests 19\r\nℹ pass 19\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-drama.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  27.68,
+                        "summary":  "ℹ tests 20\r\nℹ pass 20\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-fix-218.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  3.63,
+                        "summary":  "ℹ tests 6\r\nℹ pass 6\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-floor-bubble.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  3.18,
+                        "summary":  "ℹ tests 21\r\nℹ pass 21\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-hd-224.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  3.43,
+                        "summary":  "ℹ tests 10\r\nℹ pass 10\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-icons.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  13.77,
+                        "summary":  "✖ icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc (121.9591ms)\r\nℹ tests 15\r\nℹ pass 14\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc (121.9591ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-kids-lively.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  18.08,
+                        "summary":  "ℹ tests 15\r\nℹ pass 15\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-kids-visit.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  52.89,
+                        "summary":  "ℹ tests 16\r\nℹ pass 16\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-labels-qa.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  9.61,
+                        "summary":  "ℹ tests 17\r\nℹ pass 17\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-lively.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  34.31,
+                        "summary":  "ℹ tests 13\r\nℹ pass 13\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-lively-v2.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  28.97,
+                        "summary":  "✖ obr2: deterministic query order, reduced motion and frozen spatial bytes (0.8662ms)\r\n✖ obr2: warm snapshot \u003c3ms, first full daily formal+outing plan \u003c400ms (1912.1975ms)\r\nℹ tests 8\r\nℹ pass 6\r\nℹ fail 2\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ obr2: deterministic query order, reduced motion and frozen spatial bytes (0.8662ms)\r\n✖ obr2: warm snapshot \u003c3ms, first full daily formal+outing plan \u003c400ms (1912.1975ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-mascot-label.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  41.86,
+                        "summary":  "✖ outer exact inverse independently restores fixed affinity HEAD and rejects partial/duplicate/unrelated edits (0.4238ms)\r\nℹ tests 10\r\nℹ pass 9\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ outer exact inverse independently restores fixed affinity HEAD and rejects partial/duplicate/unrelated edits (0.4238ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-motion-1.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  5.39,
+                        "summary":  "ℹ tests 16\r\nℹ pass 16\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-motion-2.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  1.23,
+                        "summary":  "ℹ tests 24\r\nℹ pass 24\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-obr10.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  3.4,
+                        "summary":  "ℹ tests 4\r\nℹ pass 4\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-obr12.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  0.09,
+                        "summary":  "✖ C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\news4cut2\\scripts\\hani-office-obr12.test.mjs (0.5506ms)\r\nℹ tests 1\r\nℹ pass 0\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\news4cut2\\scripts\\hani-office-obr12.test.mjs (0.5506ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-obr14.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  124.35,
+                        "summary":  "✖ 235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism (879.6205ms)\r\nℹ tests 5\r\nℹ pass 4\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ 235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism (879.6205ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-obr15.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  16.73,
+                        "summary":  "✖ obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately (868.6015ms)\r\nℹ tests 14\r\nℹ pass 13\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately (868.6015ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-obr16.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  11.37,
+                        "summary":  "ℹ tests 12\r\nℹ pass 12\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-obr17.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  3.62,
+                        "summary":  "ℹ tests 3\r\nℹ pass 3\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-obr18.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  8.4,
+                        "summary":  "ℹ tests 12\r\nℹ pass 12\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-obr19.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  5.7,
+                        "summary":  "ℹ tests 3\r\nℹ pass 3\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-obr21.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  38.83,
+                        "summary":  "✖ obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation (0.8876ms)\r\n✖ obr21 cached gathering/index decisions equal full index rebuilds (0.4081ms)\r\nℹ tests 6\r\nℹ pass 4\r\nℹ fail 2\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation (0.8876ms)\r\n✖ obr21 cached gathering/index decisions equal full index rebuilds (0.4081ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-obr3.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  3.91,
+                        "summary":  "ℹ tests 5\r\nℹ pass 5\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-obr4.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  0.55,
+                        "summary":  "✖ obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows (0.7012ms)\r\n✖ obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats (0.3319ms)\r\nℹ tests 10\r\nℹ pass 8\r\nℹ fail 2\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows (0.7012ms)\r\n✖ obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats (0.3319ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-obr6.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  0.99,
+                        "summary":  "✖ C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\news4cut2\\scripts\\hani-office-obr6.test.mjs (0.542ms)\r\nℹ tests 1\r\nℹ pass 0\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\news4cut2\\scripts\\hani-office-obr6.test.mjs (0.542ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-obr7.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  0.09,
+                        "summary":  "✖ C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\news4cut2\\scripts\\hani-office-obr7.test.mjs (0.5446ms)\r\nℹ tests 1\r\nℹ pass 0\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\news4cut2\\scripts\\hani-office-obr7.test.mjs (0.5446ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-obr8.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  3.19,
+                        "summary":  "✖ obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words (988.6144ms)\r\nℹ tests 3\r\nℹ pass 2\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words (988.6144ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-obr9.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  0.1,
+                        "summary":  "✖ C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\news4cut2\\scripts\\hani-office-obr9.test.mjs (0.5446ms)\r\nℹ tests 1\r\nℹ pass 0\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\news4cut2\\scripts\\hani-office-obr9.test.mjs (0.5446ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-pet-bori.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  73.66,
+                        "summary":  "ℹ tests 14\r\nℹ pass 14\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-pet-bori-272-pins.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  0.83,
+                        "summary":  "✖ 272: fixed Git release blobs independently prove every baseline pin and complete diff (0.4604ms)\r\nℹ tests 4\r\nℹ pass 3\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ 272: fixed Git release blobs independently prove every baseline pin and complete diff (0.4604ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-pets-268-pins.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  0.34,
+                        "summary":  "✖ v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits (226.8241ms)\r\nℹ tests 1\r\nℹ pass 0\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits (226.8241ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-pets-bubble.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  73.51,
+                        "summary":  "✖ resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections (0.7223ms)\r\nℹ tests 22\r\nℹ pass 21\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections (0.7223ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-props.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  5.79,
+                        "summary":  "ℹ tests 11\r\nℹ pass 11\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-release-projection.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  0.15,
+                        "summary":  "ℹ tests 2\r\nℹ pass 2\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-residents.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  107.36,
+                        "summary":  "ℹ tests 49\r\nℹ pass 49\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-seats-215.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  0.93,
+                        "summary":  "ℹ tests 12\r\nℹ pass 12\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-snack.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  27.27,
+                        "summary":  "ℹ tests 26\r\nℹ pass 26\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-staff-chat.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  125.13,
+                        "summary":  "ℹ tests 17\r\nℹ pass 17\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-tap-lines.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  3.78,
+                        "summary":  "ℹ tests 15\r\nℹ pass 15\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-tlayout.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  22.39,
+                        "summary":  "ℹ tests 13\r\nℹ pass 13\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-top-labels.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  0.16,
+                        "summary":  "ℹ tests 7\r\nℹ pass 7\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-v2-215.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  0.99,
+                        "summary":  "✖ frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture (0.7458ms)\r\nℹ tests 20\r\nℹ pass 17\r\nℹ fail 1\r\nℹ skipped 2\r\n✖ failing tests:\r\n✖ frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture (0.7458ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-visitors-cafe.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  6.61,
+                        "summary":  "ℹ tests 5\r\nℹ pass 5\r\nℹ fail 0\r\nℹ skipped 0\r"
+                    },
+                    {
+                        "file":  "hani-office-xmas.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  1.78,
+                        "summary":  "✖ xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged (109.7615ms)\r\nℹ tests 13\r\nℹ pass 12\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged (109.7615ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-xmas-269-pins.test.mjs",
+                        "exit":  1,
+                        "gitBlocked":  true,
+                        "seconds":  0.54,
+                        "summary":  "✖ v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit (0.4174ms)\r\nℹ tests 2\r\nℹ pass 1\r\nℹ fail 1\r\nℹ skipped 0\r\n✖ failing tests:\r\n✖ v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit (0.4174ms)\r"
+                    },
+                    {
+                        "file":  "hani-office-zoom.test.mjs",
+                        "exit":  0,
+                        "gitBlocked":  false,
+                        "seconds":  21.75,
+                        "summary":  "ℹ tests 13\r\nℹ pass 12\r\nℹ fail 0\r\nℹ skipped 1\r"
+                    }
+                ],
+    "restoredIncidentalJson":  [
+                                   "artifacts\\office-behavior\\obr16-layout-node.json",
+                                   "artifacts\\office-behavior\\obr19-layout-node.json",
+                                   "artifacts\\office-behavior\\obr17-layout-node.json",
+                                   "artifacts\\office-drama\\reachability.json"
+                               ],
+    "command":  "node --require no-git.cjs --require layout-preload.cjs --test --test-isolation=none \u003cfile\u003e",
+    "gitExecuted":  false
+}

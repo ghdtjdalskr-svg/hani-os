@@ -1,0 +1,968 @@
+{
+  "files": 73,
+  "completed": 73,
+  "fileStatus": {
+    "pass": 43,
+    "git-blocked": 27,
+    "mixed-git-and-performance": 2,
+    "failed": 1
+  },
+  "testCounts": {
+    "tests": 812,
+    "pass": 769,
+    "fail": 39,
+    "skipped": 4,
+    "nonGitFailures": 3,
+    "gitBlocked": 36
+  },
+  "results": [
+    {
+      "file": "hani-building-206-engine.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-building-206-safety.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "Expected baseline directory supplied; actual Git baseline lookup blocked."
+      ],
+      "retest": "logs/building-safety-with-baseline-path.log"
+    },
+    {
+      "file": "hani-building-206-ui.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 0,
+        "skipped": 1
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-building-206.test.mjs",
+      "status": "failed",
+      "counts": {
+        "tests": 21,
+        "pass": 20,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": [
+        "  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\r"
+      ]
+    },
+    {
+      "file": "hani-office-219.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-actions-216.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 15,
+        "pass": 14,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-actions-221.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 20,
+        "pass": 20,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-affinity-274-pins.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 3,
+        "pass": 2,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-affinity-cap.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 19,
+        "pass": 19,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-affinity-storage.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-affinity.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 21,
+        "pass": 21,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-barista-night-273-pins.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 5,
+        "pass": 4,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "Fixed Git release blobs blocked; all four local exact preservation assertions passed."
+      ],
+      "retest": "logs/barista-273-version284-retest.log"
+    },
+    {
+      "file": "hani-office-barista-night.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 13,
+        "pass": 13,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": [],
+      "retest": "logs/barista-night-version284-retest.log"
+    },
+    {
+      "file": "hani-office-barista.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-behavior.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-bori-m9.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-bori-stroll.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 14,
+        "pass": 13,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-bubble-close.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 17,
+        "pass": 17,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-cafe-rest.test.mjs",
+      "status": "mixed-git-and-performance",
+      "counts": {
+        "tests": 4,
+        "pass": 2,
+        "fail": 2,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r",
+        "  AssertionError [ERR_ASSERTION]: {\"chairmanPresent\":false,\"samples\":[460.5585000000001,524.9481000000001,536.5371]}\r"
+      ],
+      "retest": "logs/cafe-performance-retest.log"
+    },
+    {
+      "file": "hani-office-chairman-234.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-chairman-patrol-278-pins.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 12,
+        "pass": 6,
+        "fail": 6,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-chairman-patrol.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 15,
+        "pass": 15,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-companion-homes.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 16,
+        "pass": 15,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-companions-276-pins.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 3,
+        "pass": 2,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-companions.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 17,
+        "pass": 17,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-consult.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 20,
+        "pass": 19,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-crowded-labels.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 19,
+        "pass": 19,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-drama.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 20,
+        "pass": 20,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-fix-218.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-floor-bubble.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 21,
+        "pass": 21,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-hd-224.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-icons.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 15,
+        "pass": 14,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-kids-lively.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 15,
+        "pass": 15,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-kids-visit.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 16,
+        "pass": 16,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-labels-qa.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 17,
+        "pass": 17,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-lively-v2.test.mjs",
+      "status": "mixed-git-and-performance",
+      "counts": {
+        "tests": 8,
+        "pass": 6,
+        "fail": 2,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r",
+        "  AssertionError [ERR_ASSERTION]: first full day best of 3 443.1ms 443.1/532.7/534.8\r"
+      ],
+      "retest": "logs/lively-performance-retest.log"
+    },
+    {
+      "file": "hani-office-lively.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 13,
+        "pass": 13,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-mascot-label.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 10,
+        "pass": 9,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-motion-1.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 16,
+        "pass": 16,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-motion-2.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 24,
+        "pass": 24,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-obr10.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 4,
+        "pass": 4,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-obr12.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-obr14.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 5,
+        "pass": 4,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-obr15.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 14,
+        "pass": 13,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-obr16.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-obr17.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-obr18.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-obr19.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-obr21.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 6,
+        "pass": 4,
+        "fail": 2,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-obr3.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-obr4.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 10,
+        "pass": 8,
+        "fail": 2,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-obr6.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-obr7.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-obr8.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 3,
+        "pass": 2,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-obr9.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-pet-bori-272-pins.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 4,
+        "pass": 3,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-pet-bori.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 14,
+        "pass": 14,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-pets-268-pins.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-pets-bubble.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 22,
+        "pass": 21,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-props.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 11,
+        "pass": 11,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-release-projection.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 49,
+        "pass": 49,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-seats-215.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-snack.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 26,
+        "pass": 26,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-staff-chat.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 17,
+        "pass": 17,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-tap-lines.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 15,
+        "pass": 15,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-tlayout.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 13,
+        "pass": 13,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-top-labels.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 7,
+        "pass": 7,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-v2-215.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 20,
+        "pass": 17,
+        "fail": 1,
+        "skipped": 2
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-visitors-cafe.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "skipped": 0
+      },
+      "gitBlocked": false,
+      "reasons": []
+    },
+    {
+      "file": "hani-office-xmas-269-pins.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 2,
+        "pass": 1,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-xmas.test.mjs",
+      "status": "git-blocked",
+      "counts": {
+        "tests": 13,
+        "pass": 12,
+        "fail": 1,
+        "skipped": 0
+      },
+      "gitBlocked": true,
+      "reasons": [
+        "  Error: GIT_FORBIDDEN_BY_TASK: read-only baseline unavailable\r"
+      ]
+    },
+    {
+      "file": "hani-office-zoom.test.mjs",
+      "status": "pass",
+      "counts": {
+        "tests": 13,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 1
+      },
+      "gitBlocked": false,
+      "reasons": []
+    }
+  ],
+  "notes": [
+    "Initial full run kept in office-results.json and office-summary.json. Only demonstrated retests reconcile final results.",
+    "No Git command executed. No assertion, pin or timing threshold weakened.",
+    "Office evidence is the unchanged projected lower owner; this is not current newsroom UI or release QA evidence."
+  ]
+}

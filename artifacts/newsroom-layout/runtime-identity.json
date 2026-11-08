@@ -1,0 +1,14 @@
+{
+  "changedSinceSessionStart": [
+    "hani-design-system.css",
+    "hani-newsroom-4cut.js"
+  ],
+  "catalogUnchanged": true,
+  "hashes": {
+    "hani-newsroom-4cut.js": "cfe71da51f761c1986bf7f316763feffac12c385ae36a8a27388bfb5091b3fea",
+    "hani-design-system.css": "22970c09a8b523de7a79b9dffdae4b55608a735017f82dca7b6ebf18d510e7b3",
+    "index.html": "02aba01325adb688c61a933740532dad303dc1b3ff1b870a55e44ac26c7561c5",
+    "hani-main.js": "9b9cd783236aaf6d5941a3575ef92cf1e49e0ffd084e5ef54cfa6d4ac5cdf1e9",
+    "assets/data/newsroom-4cut/issues.json": "b135ae1c3db24624b520f8e20059f75f48d2adc4ae4eb82f28864a691c117a44"
+  }
+}

@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+import {createHash} from 'node:crypto';
+import {createRequire} from 'node:module';
+import {assertNoNewDuplicateIds} from '../../scripts/hani-duplicate-id-guard.mjs';
+const {restoreLayout,rows}=createRequire(import.meta.url)('./layout-source.cjs');
+const read=f=>fs.readFileSync(f,'utf8'),hash=s=>createHash('sha256').update(s).digest('hex');
+const source=read('hani-newsroom-4cut.js');new vm.Script(source);
+assert.doesNotMatch(source,/localStorage|sessionStorage|setTimeout|setInterval|addEventListener|MutationObserver|supabase|\.innerHTML/);
+for(const file of Object.keys(rows))assert.equal(restoreLayout(read(file),file),read('artifacts/newsroom-layout/baseline/'+file));
+const ids=assertNoNewDuplicateIds(read,f=>rows[f]?restoreLayout(read(f),f):read(f));
+const identity=JSON.parse(read('artifacts/newsroom-layout/session-start/hashes.json'));
+const changed=Object.entries(identity).filter(([f,h])=>hash(fs.readFileSync(f))!==h).map(([f])=>f).sort();
+assert.deepEqual(changed,['hani-design-system.css','hani-newsroom-4cut.js']);
+for(const file of ['index.html','hani-main.js'])assert.equal(hash(fs.readFileSync(file)),identity[file]);
+const result={status:'PASS',scope:'task-local baseline; remote main evidence still blocked',changedFiles:changed,protectedRootFilesPreserved:true,catalogPreserved:true,noNewTimerListenerOrStorage:true,duplicateIdCheck:ids};
+fs.writeFileSync('artifacts/newsroom-layout/scope-verification.json',JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result));

@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "scope": "task-local baseline; remote main evidence still blocked",
+  "changedFiles": [
+    "hani-design-system.css",
+    "hani-newsroom-4cut.js"
+  ],
+  "protectedRootFilesPreserved": true,
+  "catalogPreserved": true,
+  "noNewTimerListenerOrStorage": true,
+  "duplicateIdCheck": {
+    "files": 70,
+    "baseFiles": 70,
+    "existingDuplicates": 8
+  }
+}
