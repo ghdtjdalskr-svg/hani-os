@@ -1,3 +1,4 @@
+import './hani-life-bundle-preload.mjs';
 import {legacyOfficeNodes} from './hani-office-companions-276-nodes.mjs';
 // Strip only the exact approved affinity storage owner; all other source keeps the original guards.
 import {stripApprovedAffinityStorage} from './hani-office-affinity-storage.mjs';

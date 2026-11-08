@@ -1,3 +1,34 @@
+# 2026-11-08 · tooling-283 후속 office 8개 (Codex)
+
+`hani/tooling-283` / base `a28918d`(기존 기록·Git 금지로 새 조회 없음). 시험8개가 283·생활 묶음 exact inverse preload를 자체 연결, assertion·고정 pin·Git 호출 보존. **대상110통과·6Git차단, office69파일745통과·35Git차단·3skip·기타실패0, 기존 성공41파일 전부 유지.** 부산물JSON4개 복원·런타임497바이트 동일·범위 밖 변경0. Git/commit/배포 없음, 서윤 실제 Git 재검증·커밋 인계. Notion 쓰기는 자동 승인 never 거절로 갱신 대기. [짧은 보고서](../../artifacts/tooling-283/REPORT-b.md) · [인수인계](handoffs/2026-11-08-tooling-283-b.md). 아래 기존 기록 보존.
+
+# 2026-11-08 · 2.9.283 시험 기준 갱신 (Codex / tooling-283)
+
+`hani/tooling-283` / 지정·로컬 origin/main `a28918d` / Git 금지·원격 새 조회 없음. 시험 전용 283 exact inverse·독립282 압축 기준·raw reader 정리, 기존 assertion·fixture pin 보존. **전용4+dev-report10그룹·M9보존·nav/Edge UI PASS, office69파일41성공/28Git차단·745통과/35차단/3skip·기타실패0**, 기존 m9-link packaging1FAIL 유지. **런타임497 origin/main 동일·JSON16복원·PNG24제거·범위 밖 변경0.** Git/commit/push/merge/버전 변경/배포 없음, 서윤 검토·커밋·Git 재검증 인계. Notion 쓰기는 자동 승인 never 거절로 미반영. [짧은 보고서](../../artifacts/tooling-283/REPORT.md) · [인수인계](handoffs/2026-11-08-tooling-283.md). 아래 기존 기록 보존.
+
+# 2026-11-08 · 생활 묶음 283 재생성·시험 정리 (Codex / life-bundle)
+
+`hani/life-bundle` / 착수 HEAD `ada3be2` / 지정 main `2feb724`(Git 금지·원격 최신성 새 확인 없음). **내장 번들1회31편/catalog8→9·신규13편 일치·Git 실행 불가 문구0, 네 exact inverse 새282 기준·전용/번들/nav·login·dashboard PASS.** raw/투영 UI3개와 별도282 navlogin PC/390 PASS(보고된 실패2건 미재현). **office69파일41성공·28Git차단 / 745통과·35차단·3skip·그 외 실패0**, M9 기능 PASS·기존 packaging1FAIL, tasks 기존 fixture1FAIL. **raw closure168/160 초과8·누락0**, catalog 외 런타임167개·주변 코드 원문 보존. 시험 JSON4개 원문 복원·유지 출력15개 목록화. 표시/cache2.9.282·저장/Cloud/schema 보존. Git 명령/commit/push/merge/배포 없음, **서윤 검토·커밋 인계**. Notion 쓰기는 자동 승인 never 거절로 미반영. [짧은 결과 표](../../artifacts/life-bundle/REPORT-283.md) · [인수인계](handoffs/2026-11-08-life-bundle-283.md). 아래 과거·타 담당 기록 보존.
+
+# 2026-11-08 · 생활 편의 묶음 시험 레이어 (Codex / life-bundle)
+
+`hani/life-bundle` / 병합 HEAD `addcd20` / main 기준 `2bc9368`(원격 최신성 네트워크 차단). 네 작업의 정확한 inverse 체인 연결, 기존 assertion 보존·위시 두 해시만 바로 아래 미룬 일 기준으로 조정. **전용4개·역변환·번들·Quiz QA212·nav/navlogin/dashboard 정적 PASS, 92명령55성공·37실패(Git28·UI6차단, 기존 fixture3은 원본 main에서도 재현). office67개 전부 실행39성공/28차단, runtime168 raw HEAD 바이트 일치·누락0·syntax9/diff PASS.** 런타임·표시/cache2.9.280·저장/Cloud/schema 불변, 번들 빌더 재실행0. **index.lock 권한 거절로 미커밋**, push/merge/배포 없음. Notion 자동 승인 never 거절로 갱신 대기. [짧은 보고서](../../artifacts/life-bundle/REPORT.md) · [인수인계](handoffs/2026-11-08-life-bundle.md). 아래 다른 담당·과거 기록 보존.
+
+# 2026-11-08 · 미룬 일 보드 (Codex / procrastination)
+
+`hani/procrastination-board` / base·착수 원격 main `2bc9368` / 표시·cache2.9.280 유지. 읽기 전용 직원 카드7개·업무 메뉴1개·KST/삐짐0~4·기존 이동. **V8 공유191 assertion·기존 홈11 assertion·syntax·exact inverse 보존 PASS, 정적 closure mirror161→168(+7)/200·누락0.** 저장/Cloud·새 키/timer/listener0. Node7시험은 실행 접근 거부, Edge GPU fatal/브라우저 host 차단으로 PC1280×900·390 PNG/실UI 미검증. Git 실행 접근 거부로 **미커밋**, push/merge/버전변경/배포 없음. 합성 컴포넌트 Preview 준비, Notion 갱신은 자동 승인 never 거절로 대기. [보고서](../../artifacts/procrastination/REPORT.md) · [인수인계](handoffs/2026-11-08-procrastination.md). 아래 다른 담당·과거 기록 보존.
+
+# 2026-11-08 · 위시리스트 링크 입력 (Codex / wishlist)
+
+`hani/wishlist-quick-add` / base·착수 원격 main `2bc9368` / 표시·cache2.9.280 유지. URL 문자열만으로 빈 이름·카테고리·기존 메모(쇼핑몰/정리URL) 미리 채움. 기존 저장·검증 원문 보존/exact inverse 일치, 새 저장·키·fetch0. Node64/64·Edge PC/390 저장0→버튼1/read-back·PNG6·오프라인29·투자UI4 PASS. 기존시험3개 원본에서도 동일 실패, 데이터종합시험 브라우저 종료로2회 미완료. **Git EPERM으로 미커밋**, push/merge/버전변경/배포 없음. Notion 착수 쓰기 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/wishlist/REPORT.md) · [인수인계](handoffs/2026-11-08-wishlist-quick-add.md). 아래 과거·타 담당 기록 보존.
+
+# 2026-11-08 · 개발보고서 자동화 (Codex / dev-report)
+
+`hani/dev-report-auto` / base·HEAD `2bc9368` / 표시·캐시2.9.280 유지. 생성기·시험·공개 편집자료, **v230~280 51개 릴리스/13편**과 문서 목록, 기본 릴리스당1편 후속 절차. **신규9그룹·기존번들5그룹·기존담당자시험 PASS, 최종 생성 check 차이0·새 원고 민감 패턴0·runtime97개 바이트 보존.** 실제 renderer 격리 목록/본문/검색 확인, 실브라우저/원격/Git·PR 본문 미확인. 기존 일관성시험1개는 문자열 코드 생성 제한으로 시작 차단. 문서만으로 앱 표시 안 됨(원고31/내장18, bundle check exit1), runtime 미수정·검토상태/고정작성자 별도 후속. Git staging EPERM으로 **미커밋**, push/merge/버전/배포 없음. Notion 착수 read-back 완료·최종 append 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/dev-report/REPORT.md) · [인수인계](handoffs/2026-11-08-dev-report-auto.md). 아래 다른 담당·과거 기록 보존.
+# 2026-11-08 · 서윤 M9 2단계 연결 (Codex / m9-link)
+
+`hani/m9-stage2-link` / base·HEAD `2bc9368` / 표시·cache2.9.280 유지. 별도 호외·보이는 캡션6개·꼬마 수연/수현, 특별 카드/기존 상세 기념 컷 연결. 기능·보존9PASS, package 포함1FAIL(목록·JSON·그림2개 수집 밖). 기존 일보11그룹·history/archive unit·nav/login45·M9 15/15·기존closure3/3 PASS. 사무실67파일717PASS·Git EPERM34차단·skip3·그 외 실패0. 정기1~4 원문/렌더·저장/Cloud·새timer/listener·gate/서버 보존. Edge EPERM으로 PC/폰 PNG0, Git index.lock 권한 거부로 미커밋. push/merge/버전/배포 변경 없음, 원격 최신성·Production 미확인. Notion 자동 승인 never 거절로 갱신 대기. [짧은 보고서](../../artifacts/m9-link/REPORT.md) · [인수인계](handoffs/2026-11-08-m9-link.md). 아래 타 담당·과거 기록 보존.
+
 # 2026-11-08 ? ?? ?? + ?? M9 ?? ?? ?? (Codex / bori-m9)
 
 `hani/bori-m9-280` / base `a2f377d` + ?? ?? `a7ce78e` / GitHub main??? ?? `f1a457f` ?? / ???cache2.9.279 ??. ??3? ?? ????? ??, exact inverse **M9 ? ?? ? companion-homes ? 278**, M9 ??? ?? ?? ? ???? ??. **73??755???Git??34???skip5?????0, ?????3/3?syntax9/9?closure161/??0.** ??2/2??? ? ??21,600?? ??????? ?? ?? ??289?; ??DOM40??90? ??34/?????47/??9. ???3?????278/Bori ?????/Cloud??? ??. Edge EPERM?? ???PC/390 PNG ???, Git ???index ???commit/push/merge/?? ??. **?? commit ?? ??.** Notion ?? ?? never ??? ?? ??. [?????? ?????? ????? ??](../../artifacts/bori-m9/REPORT.md). ?? ?? ??? ?? ?? ?? ??.
