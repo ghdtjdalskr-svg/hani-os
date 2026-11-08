@@ -3358,7 +3358,7 @@ function renderInvestmentNews(){
               <section class="news-hani-view"><b>💜 HANI View</b><p>${esc(investmentNewsHaniView(r.entity,r.item))}</p></section>
               <section class="news-agent-comments">
                 <div class="news-comments-head"><b>💬 AI TEAM 댓글 (${commentsLabel})</b>${comments.length&&!isRead?'<span>NEW</span>':""}</div>
-                ${comments.length?comments.map(c=>`<div class="news-agent-comment ${String(c.tone||"").toLowerCase()}"><div class="news-agent-comment-head"><strong>${esc(c.agent_name||c.agent_key||"AI TEAM")}</strong><em>${investmentNewsCommentToneLabel(c.tone)}</em></div><p>${esc(c.comment||"")}</p></div>`).join(""):`<p class="news-comments-pending">${detailReady?'새 브리핑에서 관련 Agent 댓글을 생성합니다.':(investmentNewsArchiveRuntime.detailRetry?.has(r.item._archive_post_id)?'상세를 확인하지 못했습니다. 잠시 후 항목을 다시 열어 주세요.':'상세를 불러오는 중…')}</p>`}
+                ${comments.length?comments.map(c=>`<div class="news-agent-comment ${(String(c.tone||"").toLowerCase().match(/^[a-z_]{1,30}$/)||[""])[0]}"><div class="news-agent-comment-head"><strong>${esc(c.agent_name||c.agent_key||"AI TEAM")}</strong><em>${investmentNewsCommentToneLabel(c.tone)}</em></div><p>${esc(c.comment||"")}</p></div>`).join(""):`<p class="news-comments-pending">${detailReady?'새 브리핑에서 관련 Agent 댓글을 생성합니다.':(investmentNewsArchiveRuntime.detailRetry?.has(r.item._archive_post_id)?'상세를 확인하지 못했습니다. 잠시 후 항목을 다시 열어 주세요.':'상세를 불러오는 중…')}</p>`}
               </section>
               <div class="investment-news-row-actions"><span>${verified?"원문 링크 확인됨":"원문 링크 미검증"}</span><div>${u?`<a class="btn sm" href="${esc(u)}" target="_blank" rel="noopener noreferrer">원문 ↗</a>`:""}<button class="btn sm" data-news-journal="${i}">투자일기에 연결</button></div></div>
             </div>
@@ -8485,7 +8485,10 @@ $("ledgerImportApply").onclick=saveEntry($("ledgerImportApply"),()=>{
   if(ledgerFind(parsed.month)?.items?.length)return alert("해당 결산 월에 기존 항목이 있어 반영할 수 없습니다.");
   if(!confirm(`${ledgerMonthLabel(parsed.month)}에 ${parsed.items.length}건을 확정 반영할까요?`))return;
   const period=ledgerSettlementPeriod(parsed.month),targets=ledgerLatestTargets(),now=new Date().toISOString(),rec=normalizeLedgerMonth({month:parsed.month,...period,...targets,importVersion:"LEDGER_FINAL_V1",importedAt:now,items:parsed.items,createdAt:now,updatedAt:now});
-  state.ledgerMonths=state.ledgerMonths.filter(x=>x.month!==parsed.month);state.ledgerMonths.push(rec);state.ui.ledgerMonth=parsed.month;ledgerImportPreview=null;commit("확정본 가계부를 반영했습니다.");$("ledgerImportRaw").value="";$("ledgerImportApply").disabled=true;$("ledgerImportResult").textContent=`${ledgerMonthLabel(parsed.month)} 확정 반영 완료 · ${parsed.items.length}건`;
+  const prevLedgerMonths=state.ledgerMonths,prevLedgerUiMonth=state.ui.ledgerMonth,prevLedgerPreview=ledgerImportPreview;
+  state.ledgerMonths=state.ledgerMonths.filter(x=>x.month!==parsed.month);state.ledgerMonths.push(rec);state.ui.ledgerMonth=parsed.month;ledgerImportPreview=null;
+  if(!commit("확정본 가계부를 반영했습니다.")){state.ledgerMonths=prevLedgerMonths;state.ui.ledgerMonth=prevLedgerUiMonth;ledgerImportPreview=prevLedgerPreview;$("ledgerImportResult").textContent="저장에 실패해 반영하지 않았습니다. 붙여 넣은 원문은 그대로 두었어요.";return}
+  $("ledgerImportRaw").value="";$("ledgerImportApply").disabled=true;$("ledgerImportResult").textContent=`${ledgerMonthLabel(parsed.month)} 확정 반영 완료 · ${parsed.items.length}건`;
 });
 if($("ledgerSaveComment"))$("ledgerSaveComment").onclick=saveEntry($("ledgerSaveComment"),()=>{
   const rec=ledgerEnsure(),comment=$("ledgerMonthComment").value.trim();
