@@ -1,1 +1,0 @@
-PASS navigation 1440/390: last view and scroll after reopen, explicit hash wins, malformed/excluded view safe fallback, storage failure usable, UI metadata only, protected data/state unchanged. Draft persistence and Android unverified.
