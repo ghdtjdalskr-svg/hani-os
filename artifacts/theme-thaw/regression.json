@@ -1,0 +1,84 @@
+[
+  {
+    "command": "node scripts/hani-theme-thaw.test.mjs",
+    "file": "hani-theme-thaw.test.mjs",
+    "log": "artifacts/theme-thaw/unit.log",
+    "exit": 0
+  },
+  {
+    "command": "node scripts/hani-theme-white-215.test.mjs",
+    "file": "hani-theme-white-215.test.mjs",
+    "log": "artifacts/theme-thaw/hani-theme-white-215.test.mjs.log",
+    "exit": 1,
+    "baseline": "same settings hunk assertion on original HEAD"
+  },
+  {
+    "command": "node scripts/hani-design-system-qa.mjs",
+    "file": "hani-design-system-qa.mjs",
+    "log": "artifacts/theme-thaw/hani-design-system-qa.mjs.log",
+    "exit": 0
+  },
+  {
+    "command": "node scripts/hani-dashboard-period.test.mjs",
+    "file": "hani-dashboard-period.test.mjs",
+    "log": "artifacts/theme-thaw/hani-dashboard-period.test.mjs.log",
+    "exit": 0
+  },
+  {
+    "command": "node scripts/hani-nav-groups.test.mjs",
+    "file": "hani-nav-groups.test.mjs",
+    "log": "artifacts/theme-thaw/hani-nav-groups.test.mjs.log",
+    "exit": 0
+  },
+  {
+    "command": "node scripts/hani-navlogin.test.mjs",
+    "file": "hani-navlogin.test.mjs",
+    "log": "artifacts/theme-thaw/hani-navlogin.test.mjs.log",
+    "exit": 0
+  },
+  {
+    "command": "node scripts/hani-qa-1st.test.cjs",
+    "file": "hani-qa-1st.test.cjs",
+    "log": "artifacts/theme-thaw/hani-qa-1st.test.cjs.log",
+    "exit": 1,
+    "baseline": "same investmentMoveClass ReferenceError on original HEAD"
+  },
+  {
+    "command": "node scripts/hani-qa-1st-safety.mjs",
+    "file": "hani-qa-1st-safety.mjs",
+    "log": "artifacts/theme-thaw/safety.log",
+    "exit": 0
+  },
+  {
+    "command": "node scripts/hani-qa-1st-ui.test.mjs <runtime playwright> <Edge>",
+    "file": "hani-qa-1st-ui.test.mjs",
+    "log": "artifacts/theme-thaw/hani-qa-1st-ui.test.mjs.log",
+    "exit": 1,
+    "baseline": "same asset contrast 1.9041245634291846 on original HEAD"
+  },
+  {
+    "command": "node scripts/hani-dashboard-period-ui.test.mjs <runtime playwright> <Edge>",
+    "file": "hani-dashboard-period-ui.test.mjs",
+    "log": "artifacts/theme-thaw/hani-dashboard-period-ui.test.mjs.log",
+    "exit": 0
+  },
+  {
+    "command": "node scripts/hani-navigation-state-ui.test.mjs <runtime playwright> <Edge>",
+    "file": "hani-navigation-state-ui.test.mjs",
+    "log": "artifacts/theme-thaw/hani-navigation-state-ui.test.mjs.log",
+    "exit": 0
+  },
+  {
+    "command": "node scripts/hani-navlogin-ui.test.mjs <runtime playwright> <Edge>",
+    "file": "hani-navlogin-ui.test.mjs",
+    "log": "artifacts/theme-thaw/hani-navlogin-ui.test.mjs.log",
+    "exit": 0
+  },
+  {
+    "file": "hani-design-system-phase1-qa.mjs",
+    "command": "node scripts/hani-design-system-phase1-qa.mjs",
+    "exit": 1,
+    "log": "artifacts/theme-thaw/design-system-phase1.log",
+    "baseline": "same nav click timeout on original HEAD"
+  }
+]

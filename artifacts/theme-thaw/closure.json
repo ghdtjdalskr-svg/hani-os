@@ -1,0 +1,24 @@
+{
+  "base": "70c5d5d8e1ddc1262314f412934b3a450974599c",
+  "filesBefore": 161,
+  "filesAfter": 164,
+  "delta": 3,
+  "added": [
+    "assets/theme-collections/thaw-2027q1/teaser-mobile.webp",
+    "assets/theme-collections/thaw-2027q1/teaser-wide.webp",
+    "hani-theme-collections.json"
+  ],
+  "removed": [],
+  "bytesBefore": 17188205,
+  "bytesAfter": 17479902,
+  "byteDelta": 291697,
+  "missing": [],
+  "identity": {
+    "hani-main.js": "8e164eecd6c09a009aaca912fd1fe1aad9157927eb28f51ee2738aed743ec701",
+    "hani-design-system.css": "850e10ae59e2bcca10076a912769377a9eae2bba9b1978af4e5fa872e4ab1864",
+    "hani-theme-collections.json": "1e7797401b2d5bc6c60cdd0e0cf88de00e0368378ce491863b947e1312901061",
+    "assets/theme-collections/thaw-2027q1/teaser-mobile.webp": "6eb73b20357175ee5dfd7487a10d6951fd1cbe958be4f89ab6aa04936859d90c",
+    "assets/theme-collections/thaw-2027q1/teaser-wide.webp": "c770d4657626b7daca3b27d0d899ddf1f729959f931299c7c76dcb4df7a405c5"
+  },
+  "releasePackageBuilt": false
+}

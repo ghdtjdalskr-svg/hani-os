@@ -1,0 +1,28 @@
+// Narrow closure + existing safety prerequisites, without creating a release package.
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+import {createHash} from 'node:crypto';
+import {resolveRuntimeClosure} from '../../scripts/hani-runtime-closure.mjs';
+const root=path.resolve(import.meta.dirname,'../..'),git=process.env.HANI_GIT_PATH||'git';
+const base=execFileSync(git,['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();
+const original=file=>execFileSync(git,['show',base+':'+file],{cwd:root,maxBuffer:30*1024*1024});
+const changes=['hani-main.js','hani-design-system.css'];
+const old=new Map(changes.map(file=>[file,original(file)]));
+const exists=file=>fs.existsSync(path.join(root,file)),read=file=>fs.readFileSync(path.join(root,file));
+const before=await resolveRuntimeClosure({exists:file=>!file.startsWith('assets/theme-collections/')&&file!=='hani-theme-collections.json'&&exists(file),read:file=>old.get(file)||read(file)});
+const after=await resolveRuntimeClosure({exists,read});
+assert.deepEqual(before.missing,[]);assert.deepEqual(after.missing,[]);
+const added=after.files.filter(file=>!before.files.includes(file));
+assert.deepEqual(added,['assets/theme-collections/thaw-2027q1/teaser-mobile.webp','assets/theme-collections/thaw-2027q1/teaser-wide.webp','hani-theme-collections.json']);
+const removed=before.files.filter(file=>!after.files.includes(file));assert.deepEqual(removed,[]);
+const bytes=result=>[...result.contents.values()].reduce((sum,buffer)=>sum+buffer.length,0);
+const identity=Object.fromEntries(['hani-main.js','hani-design-system.css','hani-theme-collections.json',...added.filter(f=>f.endsWith('.webp'))].map(file=>[file,createHash('sha256').update(read(file)).digest('hex')]));
+const report={base,filesBefore:before.files.length,filesAfter:after.files.length,delta:after.files.length-before.files.length,added,removed,bytesBefore:bytes(before),bytesAfter:bytes(after),byteDelta:bytes(after)-bytes(before),missing:after.missing,identity,releasePackageBuilt:false};
+fs.writeFileSync(path.join(import.meta.dirname,'closure.json'),JSON.stringify(report,null,2));
+const safetyFiles=['hani-main.js','hani-asset-update-v1.js','hani-context-remote-v1.js','hani-context-remote.css','hani-design-system.css','hani-study-v02984.js','hani-yuna-helpdesk.js','hani-investment-committee.js','hani-asset-market-view.js','index.html'];
+const target=path.join(root,'artifacts/qa-1st/baseline');fs.mkdirSync(target,{recursive:true});
+for(const file of safetyFiles)fs.writeFileSync(path.join(target,file),original(file));
+fs.writeFileSync(path.join(root,'artifacts/qa-1st/eol-map.diff'),execFileSync(git,['diff','--no-ext-diff','--ignore-space-at-eol','--unified=0','HEAD','--',...safetyFiles],{cwd:root,maxBuffer:20*1024*1024}));
+console.log(JSON.stringify(report));

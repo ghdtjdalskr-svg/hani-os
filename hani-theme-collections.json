@@ -1,0 +1,37 @@
+[
+  {
+    "id": "thaw-2027q1",
+    "name": "THAW · 해빙의 정원",
+    "edition": "2027 Q1",
+    "teaserStart": "2027-01-08T09:00+09:00",
+    "launch": "2027-02-08T09:00+09:00",
+    "promoEnd": "2027-02-15T09:00+09:00",
+    "finish": "alpine-blue",
+    "season": "spring",
+    "palette": [
+      {
+        "name": "Frost",
+        "hex": "#DCEAF2"
+      },
+      {
+        "name": "Sage",
+        "hex": "#BCD4C3"
+      },
+      {
+        "name": "Pearl",
+        "hex": "#F7F5EF"
+      },
+      {
+        "name": "Blush",
+        "hex": "#EAC9CB"
+      },
+      {
+        "name": "Ink",
+        "hex": "#29313A"
+      }
+    ],
+    "art": "./assets/theme-collections/thaw-2027q1/teaser-wide.webp",
+    "mobileArt": "./assets/theme-collections/thaw-2027q1/teaser-mobile.webp",
+    "story": "회장님, 이번 신제품은… 봄을 조금 먼저 여는 창입니다."
+  }
+]

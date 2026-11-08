@@ -2033,3 +2033,55 @@ body[data-view="monthlyReport"] #app .ui26-top{position:relative;top:auto}
 @keyframes ms-encore-clap{0%,100%{transform:rotate(0) scale(1)}35%{transform:rotate(-12deg) scale(1.12)}65%{transform:rotate(10deg) scale(1.06)}}
 @media(prefers-reduced-motion:reduce){#milestones .ms-encore-clap{display:none!important;animation:none!important}}
 @media print{#reading .book-thanks,#milestones .ms-encore{display:none!important}}
+
+/* Quarterly campaign artwork stays inside its own surfaces; Finish tokens and
+   financial/status colors continue to be owned by the existing design system. */
+.theme-collection-home{position:relative;isolation:isolate;overflow:hidden;border-radius:22px;background:#202b3c;color:#f7f5ef;margin:18px 0;min-height:280px;border:1px solid #758695}
+.theme-collection-home[hidden],.theme-collection-dialog [hidden]{display:none!important}
+.theme-collection-home [data-collection-art],.theme-collection-home picture,.theme-collection-home img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.theme-collection-home:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,30,47,.94),rgba(20,30,47,.84) 40%,transparent 78%);z-index:-1}
+.theme-collection-home-copy{padding:30px 36px;max-width:62%;position:relative}
+.theme-collection-home .theme-collection-kicker,.theme-collection-dialog .theme-collection-kicker{color:#bcd4c3;font-size:12px;letter-spacing:.12em;font-weight:700}
+.theme-collection-home h3{color:#f7f5ef;font-size:clamp(24px,3vw,38px);line-height:1.25;margin:12px 0;font-family:Georgia,"Noto Serif KR",serif}
+.theme-collection-home h3 small{display:block;font-size:20px;font-family:inherit;margin-top:8px;word-break:keep-all;color:inherit}
+.theme-collection-home p{color:#f7f5ef;line-height:1.6}
+.theme-collection-home .theme-collection-countdown{font-size:19px;letter-spacing:.08em}
+.theme-collection-home .btn,.theme-collection-dialog .btn{background:#f7f5ef!important;color:#29313a!important;border:1px solid #bcd4c3!important;min-height:44px;white-space:normal}
+.theme-collection-close{position:absolute;top:10px;right:10px;width:44px;height:44px;display:grid;place-items:center;border:1px solid #9cabb9;border-radius:50%;background:#202b3c!important;color:#f7f5ef!important;font-size:26px;cursor:pointer;z-index:2}
+.theme-collection-home button:focus-visible,.theme-collection-dialog button:focus-visible,.theme-collection-choice button:focus-visible{outline:3px solid #83a9d1;outline-offset:3px}
+.theme-collection-list{margin-top:24px;border-top:1px solid var(--surface-border);padding-top:20px}
+.theme-collection-choice{display:grid;grid-template-columns:160px minmax(0,1fr);gap:20px;padding:16px 0;color:var(--text-primary)}
+.theme-collection-choice picture{display:block;min-width:0}
+.theme-collection-choice img{width:160px;height:180px;object-fit:cover;object-position:70% center;border-radius:14px}
+.theme-collection-choice h4{font-size:22px;line-height:1.35;margin:8px 0}
+.theme-collection-choice p{font-size:13px;line-height:1.6;margin:8px 0}
+.theme-collection-choice .theme-collection-kicker{color:var(--text-secondary);font-size:11px;letter-spacing:.08em}
+.theme-collection-palette{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}
+.theme-collection-color{display:flex;align-items:center;gap:6px;font-size:12px;line-height:1.4}
+.theme-collection-color i{display:block;flex:none;width:22px;height:22px;border:1px solid #87929c;border-radius:50%}
+.theme-collection-color small{display:block;font-size:10px}
+.theme-collection-actions{display:flex;flex-wrap:wrap;gap:8px}
+.theme-collection-choice .btn{min-height:44px;white-space:normal}
+.theme-collection-choice button:disabled{opacity:1;color:var(--text-secondary);background:var(--surface-panel);cursor:not-allowed}
+.theme-collection-dialog{position:fixed;inset:0;margin:auto;padding:0;width:min(720px,calc(100vw - 32px));max-height:calc(100dvh - 32px);overflow:auto;border:1px solid #758695;border-radius:24px;background:#202b3c!important;color:#f7f5ef!important;box-shadow:0 24px 100px #0008}
+.theme-collection-dialog::backdrop{background:#0b1222c9}
+.theme-collection-dialog form{margin:0}
+.theme-collection-dialog picture{display:block}
+.theme-collection-dialog img{display:block;width:100%;height:210px;object-fit:cover;object-position:60% 45%}
+.theme-collection-keynote{padding:22px 30px 28px}
+.theme-collection-dialog h2{color:#f7f5ef!important;font-size:32px;line-height:1.25;margin:12px 0;font-family:Georgia,"Noto Serif KR",serif}
+.theme-collection-dialog p,.theme-collection-dialog .theme-collection-palette{color:#f7f5ef!important;line-height:1.7}
+.theme-collection-dialog .theme-collection-combination{font-size:12px}
+@media(max-width:600px){
+  .theme-collection-home{min-height:370px;border-radius:18px}
+  .theme-collection-home:before{background:linear-gradient(0deg,rgba(20,30,47,.97),rgba(20,30,47,.86) 48%,rgba(20,30,47,.12))}
+  .theme-collection-home-copy{padding:118px 22px 24px;max-width:100%}
+  .theme-collection-home h3{font-size:28px}
+  .theme-collection-home-copy p{margin:8px 0}
+  .theme-collection-choice{grid-template-columns:1fr;gap:10px}
+  .theme-collection-choice img{width:100%;height:190px;object-position:center 55%}
+  .theme-collection-dialog img{height:170px;object-position:center 48%}
+  .theme-collection-keynote{padding:18px 20px 24px}
+  .theme-collection-dialog h2{font-size:27px}
+}
+@media print{.theme-collection-home,.theme-collection-dialog{display:none!important}}
