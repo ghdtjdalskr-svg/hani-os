@@ -3,11 +3,18 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
-import {lifeLayers,lifeHash,restoreLifeLayer,projectLifeSource,readLifeSource} from './hani-life-bundle-source.mjs';
+import {lifeLayers,lifeHash,restoreLifeLayer,projectLifeSource,readLifeSource,lifeRefresh,restoreLifeReportRefresh} from './hani-life-bundle-source.mjs';
 import {readBranchBaseline} from './hani-regression-baseline.mjs';
 import study from './hani-study-retry-source.cjs';
 const owners=['hani-main.js','index.html','hani-study-v02984.js'];
 const current=Object.fromEntries(owners.map(file=>[file,fs.readFileSync(new URL('../'+file,import.meta.url),'utf8')]));
+
+test('single report refresh has an exact inverse; rejects drift, missing, duplicate and repeated inverse',()=>{
+  const after=current['hani-main.js'],before=restoreLifeReportRefresh(after);
+  assert.equal(lifeHash(before),lifeRefresh.beforeSha256);
+  assert.equal(before.replace(lifeRefresh.before,()=>lifeRefresh.after),after);
+  for(const bad of [after+'\n',after.slice(1),after+after,before])assert.throws(()=>restoreLifeReportRefresh(bad),/exact refreshed report input/);
+});
 
 test('four ordered inverses restore each immediate lower hash and the entire frozen main, including mixed EOL',()=>{
   assert.deepEqual(lifeLayers.layers.map(row=>row.name),['dev-report','wishlist','procrastination','study-retry']);

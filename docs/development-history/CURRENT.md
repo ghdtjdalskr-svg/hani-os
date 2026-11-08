@@ -1,3 +1,7 @@
+# 2026-11-08 · 생활 묶음 283 재생성·시험 정리 (Codex / life-bundle)
+
+`hani/life-bundle` / 착수 HEAD `ada3be2` / 지정 main `2feb724`(Git 금지·원격 최신성 새 확인 없음). **내장 번들1회31편/catalog8→9·신규13편 일치·Git 실행 불가 문구0, 네 exact inverse 새282 기준·전용/번들/nav·login·dashboard PASS.** raw/투영 UI3개와 별도282 navlogin PC/390 PASS(보고된 실패2건 미재현). **office69파일41성공·28Git차단 / 745통과·35차단·3skip·그 외 실패0**, M9 기능 PASS·기존 packaging1FAIL, tasks 기존 fixture1FAIL. **raw closure168/160 초과8·누락0**, catalog 외 런타임167개·주변 코드 원문 보존. 시험 JSON4개 원문 복원·유지 출력15개 목록화. 표시/cache2.9.282·저장/Cloud/schema 보존. Git 명령/commit/push/merge/배포 없음, **서윤 검토·커밋 인계**. Notion 쓰기는 자동 승인 never 거절로 미반영. [짧은 결과 표](../../artifacts/life-bundle/REPORT-283.md) · [인수인계](handoffs/2026-11-08-life-bundle-283.md). 아래 과거·타 담당 기록 보존.
+
 # 2026-11-08 · 생활 편의 묶음 시험 레이어 (Codex / life-bundle)
 
 `hani/life-bundle` / 병합 HEAD `addcd20` / main 기준 `2bc9368`(원격 최신성 네트워크 차단). 네 작업의 정확한 inverse 체인 연결, 기존 assertion 보존·위시 두 해시만 바로 아래 미룬 일 기준으로 조정. **전용4개·역변환·번들·Quiz QA212·nav/navlogin/dashboard 정적 PASS, 92명령55성공·37실패(Git28·UI6차단, 기존 fixture3은 원본 main에서도 재현). office67개 전부 실행39성공/28차단, runtime168 raw HEAD 바이트 일치·누락0·syntax9/diff PASS.** 런타임·표시/cache2.9.280·저장/Cloud/schema 불변, 번들 빌더 재실행0. **index.lock 권한 거절로 미커밋**, push/merge/배포 없음. Notion 자동 승인 never 거절로 갱신 대기. [짧은 보고서](../../artifacts/life-bundle/REPORT.md) · [인수인계](handoffs/2026-11-08-life-bundle.md). 아래 다른 담당·과거 기록 보존.

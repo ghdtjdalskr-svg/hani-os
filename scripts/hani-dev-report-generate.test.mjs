@@ -5,7 +5,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { runInNewContext } from 'node:vm';
 import { generate, runCli, assertPublic, localGit } from './hani-dev-report-generate.mjs';
-import {restoreLifeLayer} from './hani-life-bundle-source.mjs';
+import {restoreLifeLayer,lifeHash,lifeRefresh,restoreLifeReportRefresh} from './hani-life-bundle-source.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const temp = mkdtempSync(join(tmpdir(), 'hani-dev-report-test-'));
@@ -125,7 +125,15 @@ try {
   assert.equal(deniedGit(temp, entry(230)).state, 'unavailable');
   pass('실제 localGit 함수: 고정 커밋 로컬 조회만, 제목·본문에서 PR 번호만 추출·원문 비노출, Git 거부 명시');
 
-  const actual = generate(root, { from: '2.9.230', to: '2.9.280', groupSize: 4, check: true });
+  // Reuse the public commit/PR evidence captured by ada3be2. This session is
+  // forbidden to run Git; localGit's call contract is independently tested above.
+  const evidenceBytes=readFileSync(join(root,'scripts/fixtures/dev-report-git-evidence-283.json'));
+  assert.equal(lifeHash(evidenceBytes),'b01b0ea07b7ddd4c28a1800ce3d3ce9f785b23ecb24eb278d53fd4657604c39b');
+  const evidence=JSON.parse(evidenceBytes);
+  for(const [file,digest]of Object.entries(evidence.reports))assert.equal(lifeHash(readFileSync(join(root,'docs/gemini-reports',file),'utf8')),digest,file+' frozen regenerated report');
+  const cachedGit=(_root,row)=>{const saved=evidence.rows[row.id];assert.equal(row.source.commit,saved.commit);return {state:'read',prs:saved.prs};};
+  const actual = generate(root, { from: '2.9.230', to: '2.9.280', groupSize: 4, check: true, gitReader:cachedGit });
+  assert.equal(actual.exitCode,0,'regenerated reports and source index match cached public Git evidence');
   assert.equal(actual.releaseCount, 51);
   assert.equal(actual.reports.length, 13);
   assert.deepEqual(actual.reports.flatMap(r => r.versions), Array.from({ length: 51 }, (_, i) => `v2.9.${230 + i}`));
@@ -185,7 +193,11 @@ try {
   pass('실제 DOM renderer 실행: 파일만 추가 시 앱 목록 불변, VM에서 번들 데이터 교체 시 새 목록·본문·검색 동작, fetch/저장 접근 0');
 
   const mergedCatalog=JSON.parse(mergedMain.match(/globalThis\.HaniGeminiReportCatalog=Object\.freeze\(([^\r\n]+)\);/)[1]);
-  assert.equal(mergedCatalog.catalog_version,embedded.catalog_version+1);
+  const previousMerged=restoreLifeReportRefresh(mergedMain);
+  const previousCatalog=JSON.parse(previousMerged.match(/globalThis\.HaniGeminiReportCatalog=Object\.freeze\(([^\r\n]+)\);/)[1]);
+  assert.equal(previousCatalog.catalog_version,embedded.catalog_version+1);
+  assert.equal(mergedCatalog.catalog_version,previousCatalog.catalog_version+1);
+  assert.equal(mergedCatalog.catalog_version,lifeRefresh.afterVersion);
   assert.equal(embedded.reports.length,18);
   assert.equal(mergedCatalog.reports.length,31);
   for(const old of embedded.reports){
@@ -205,7 +217,8 @@ try {
   assert.equal(nodes.geminiReportList.children.length,1);
   assert.equal(nodes.geminiReportList.children[0].dataset.reportId,reports.at(-1).id);
   assert.equal(nodes.geminiReportStatus.hidden,true);
-  pass('병합된 실제 번들31편·기존18편 원문·신규13편·실제 renderer 목록/본문/검색 보존, 디스크 빌더 실행0');
+  assert.ok(mergedCatalog.reports.every(r=>!r.body.includes('로컬 Git 실행 불가')));
+  pass('실제 번들31편·기존18편·재생성13편·renderer 목록/본문/검색, catalog8→9 exact inverse·이 시험의 디스크 빌더 실행0');
 } finally {
   rmSync(temp, { recursive: true, force: true });
 }

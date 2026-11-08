@@ -1,5 +1,5 @@
 {
-  "base": "2bc93683182728877a6b8e543badb330a3312756",
+  "base": "2feb724c94c92f206c5f79dd992632cbb3b58874",
   "functions": {
     "learningCommit": "7df8874590260dcb57d85429fdff67d03d5116dda022c1d7dd04bffbdb02caf1",
     "persistQuizRegrade": "d165bce1f70ee2b8d5d85fc008d7830b419aecc87c019b20564eccb3595e1599",
@@ -13,8 +13,8 @@
     "upsertWrongAnswer": "6154ccc5c879fea887e9a7593711f249b97a7c8fe7ee2c90bbff05bbc8410aa7"
   },
   "files": {
-    "hani-main.js": "c0ae237d62e2adb2b2749f177fdc915985214b3c34b25362004a18a911125ae3",
-    "index.html": "42df58715adf49c00c1319acd43698bda5bdcc77c0d819bb41fa13bea7f6a889",
+    "hani-main.js": "ef067e9fa7eecd6c7f27c044aa3fd2a14e4e05833174491be2e4e77de40a8c4b",
+    "index.html": "2fe92354e02751f5a4a8ece93ea56a4aa819c4bc7536876aee3415f7a5944d6d",
     "supabase/functions/hani-learning-quiz/index.ts": "fccf902231231af09870a53c3d8dadbf98dad599c527ba65bf6455e82e6191df"
   },
   "learningCommitCalls": 9

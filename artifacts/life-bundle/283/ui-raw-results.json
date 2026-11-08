@@ -1,0 +1,29 @@
+﻿[
+    {
+        "file":  "hani-navlogin-ui.test.mjs",
+        "exit":  0,
+        "seconds":  9.77,
+        "command":  "node scripts/hani-navlogin-ui.test.mjs C:\\Users\\홍성민\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules\\playwright\\index.mjs C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+        "summary":  [
+
+                    ]
+    },
+    {
+        "file":  "hani-navigation-state-ui.test.mjs",
+        "exit":  0,
+        "seconds":  16.39,
+        "command":  "node scripts/hani-navigation-state-ui.test.mjs C:\\Users\\홍성민\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules\\playwright\\index.mjs C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+        "summary":  [
+
+                    ]
+    },
+    {
+        "file":  "hani-dashboard-period-ui.test.mjs",
+        "exit":  0,
+        "seconds":  4.42,
+        "command":  "node scripts/hani-dashboard-period-ui.test.mjs C:\\Users\\홍성민\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules\\playwright\\index.mjs C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+        "summary":  [
+
+                    ]
+    }
+]

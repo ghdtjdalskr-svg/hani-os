@@ -4,8 +4,18 @@ import fs from 'node:fs';
 import {createHash} from 'node:crypto';
 export const lifeHash=value=>createHash('sha256').update(value).digest('hex');
 const frozen=fs.readFileSync(new URL('./fixtures/life-bundle-layers.json',import.meta.url));
-assert.equal(lifeHash(frozen),'cb49342779c5979c47ba0d4f7dfee2b491fd06607597fc38754451f74ce4f6d8','frozen life-bundle merge deltas');
+assert.equal(lifeHash(frozen),'a89a80745f9f00b596b763a1c4c0e562e488260a81d45eeda097d8a6abbe0f98','frozen life-bundle merge deltas');
 export const lifeLayers=JSON.parse(frozen);
+const refreshBytes=fs.readFileSync(new URL('./fixtures/life-bundle-report-refresh.json',import.meta.url));
+assert.equal(lifeHash(refreshBytes),'e8a1432ef23cbffb23eb40db9aac4df6254ab6667a6fba95c1a473075e19c8ad','frozen report refresh bytes');
+export const lifeRefresh=JSON.parse(refreshBytes);
+export function restoreLifeReportRefresh(source){
+  assert.equal(lifeHash(source),lifeRefresh.afterSha256,'exact refreshed report input');
+  assert.equal(source.split(lifeRefresh.after).length-1,1,'unique complete refreshed catalog');
+  const before=source.replace(lifeRefresh.after,()=>lifeRefresh.before);
+  assert.equal(lifeHash(before),lifeRefresh.beforeSha256,'exact pre-refresh runtime');
+  return before;
+}
 const lines=source=>source.match(/[^\n]*\n|[^\n]+$/g)||[];
 export function restoreLifeLayer(source,file,name){
   const layer=lifeLayers.layers.find(row=>row.name===name);

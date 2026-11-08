@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-08 KST",
+  "node": "24.22.1",
+  "edge": "157.0.4341.42",
+  "edgePath": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+  "viewports": [1440, 390],
+  "sameTestAssertions": "scripts/hani-navlogin-ui.test.mjs (unchanged)",
+  "actualBundleRaw": {"exit": 0, "passedViewports": 2, "evidence": "ui-raw-results.json"},
+  "actualBundleWithLifePreload": {"exit": 0, "passedViewports": 2, "evidence": "ui-results.json"},
+  "independentRelease282": {"exit": 0, "passedViewports": 2, "source": "release-282 f5672cfa captured runtime161", "preload": "artifacts/life-bundle/main-282-preload.mjs", "log": "navlogin-main-282.log"},
+  "result": "No reproduction of the two reported failures. No menu-specific fault observed. Original failing run environment/log difference remains unknown.",
+  "testAndRuntimeUiModified": false,
+  "scope": "Synthetic isolated credentials/Cloud responses; external network aborted; production not opened"
+}
