@@ -5,7 +5,8 @@ import vm from 'node:vm';
 import {runBoardCases,makeBoardFixture,runRenderCases} from './hani-procrastination-cases.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 import {readBranchBaseline} from './hani-regression-baseline.mjs';
-const read=file=>fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
+import {readLifeSource,restoreLifeLayer} from './hani-life-bundle-source.mjs';
+const read=file=>readLifeSource(file,'procrastination');
 const source=read('hani-procrastination-board.js'),main=read('hani-main.js'),html=read('index.html');
 const writes=[];
 const forbidden=new Proxy({}, {get:(_target,name)=>{writes.push(String(name));throw new Error('Forbidden side effect '+String(name))}});
@@ -34,9 +35,10 @@ test('only one new menu; all destinations are canonical pre-existing nav routes'
 });
 test('exact inverse restores all pre-existing menu, view, event and render bytes',()=>{
   const code=read('scripts/hani-procrastination-inverse.mjs');
-  const fn=code.slice(code.indexOf('export function withoutProcrastination'),code.indexOf('\nconst original=')).replace('export ','');
+  const fn=code.slice(code.indexOf('export function withoutProcrastination')).replace('export ','');
   const inverse=vm.runInNewContext('('+fn+')');
   for(const file of ['index.html','hani-main.js'])assert.equal(inverse(read(file),file),readBranchBaseline(file).replace(/\r\n/g,'\n'),file);
+  for(const file of ['index.html','hani-main.js'])assert.equal(restoreLifeLayer(read(file),file,'procrastination'),readBranchBaseline(file),file+' exact mixed-EOL inverse');
   assert.equal(read('hani-ui-v02992.js'),readBranchBaseline('hani-ui-v02992.js'),'existing UI owner untouched');
 });
 test('existing artwork is reachable in the runtime closure, within 200 files',async()=>{

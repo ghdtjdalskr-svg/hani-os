@@ -1,3 +1,7 @@
+# 2026-11-08 · 생활 편의 묶음 시험 레이어 (Codex / life-bundle)
+
+`hani/life-bundle` / 병합 HEAD `addcd20` / main 기준 `2bc9368`(원격 최신성 네트워크 차단). 네 작업의 정확한 inverse 체인 연결, 기존 assertion 보존·위시 두 해시만 바로 아래 미룬 일 기준으로 조정. **전용4개·역변환·번들·Quiz QA212·nav/navlogin/dashboard 정적 PASS, 92명령55성공·37실패(Git28·UI6차단, 기존 fixture3은 원본 main에서도 재현). office67개 전부 실행39성공/28차단, runtime168 raw HEAD 바이트 일치·누락0·syntax9/diff PASS.** 런타임·표시/cache2.9.280·저장/Cloud/schema 불변, 번들 빌더 재실행0. **index.lock 권한 거절로 미커밋**, push/merge/배포 없음. Notion 자동 승인 never 거절로 갱신 대기. [짧은 보고서](../../artifacts/life-bundle/REPORT.md) · [인수인계](handoffs/2026-11-08-life-bundle.md). 아래 다른 담당·과거 기록 보존.
+
 # 2026-11-08 · 미룬 일 보드 (Codex / procrastination)
 
 `hani/procrastination-board` / base·착수 원격 main `2bc9368` / 표시·cache2.9.280 유지. 읽기 전용 직원 카드7개·업무 메뉴1개·KST/삐짐0~4·기존 이동. **V8 공유191 assertion·기존 홈11 assertion·syntax·exact inverse 보존 PASS, 정적 closure mirror161→168(+7)/200·누락0.** 저장/Cloud·새 키/timer/listener0. Node7시험은 실행 접근 거부, Edge GPU fatal/브라우저 host 차단으로 PC1280×900·390 PNG/실UI 미검증. Git 실행 접근 거부로 **미커밋**, push/merge/버전변경/배포 없음. 합성 컴포넌트 Preview 준비, Notion 갱신은 자동 승인 never 거절로 대기. [보고서](../../artifacts/procrastination/REPORT.md) · [인수인계](handoffs/2026-11-08-procrastination.md). 아래 다른 담당·과거 기록 보존.

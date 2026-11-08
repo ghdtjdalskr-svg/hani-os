@@ -5,6 +5,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { runInNewContext } from 'node:vm';
 import { generate, runCli, assertPublic, localGit } from './hani-dev-report-generate.mjs';
+import {restoreLifeLayer} from './hani-life-bundle-source.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const temp = mkdtempSync(join(tmpdir(), 'hani-dev-report-test-'));
@@ -129,7 +130,10 @@ try {
   assert.equal(actual.reports.length, 13);
   assert.deepEqual(actual.reports.flatMap(r => r.versions), Array.from({ length: 51 }, (_, i) => `v2.9.${230 + i}`));
   assert.ok(actual.reports.every(r => r.versions.length >= 3 && r.versions.length <= 5));
-  const main = readFileSync(join(root, 'hani-main.js'), 'utf8');
+  const mergedMain = readFileSync(join(root, 'hani-main.js'), 'utf8');
+  // Keep the generator-only contract on its exact pre-embedding layer. The
+  // actual merged catalog and renderer are exercised below as well.
+  const main = restoreLifeLayer(mergedMain,'hani-main.js','dev-report');
   const context = { module: { exports: {} } };
   runInNewContext(main.split('/* HANI_GEMINI_REPORTS_BUNDLE_START */')[1].split('/* HANI_GEMINI_REPORTS_BUNDLE_END */')[0], context);
   const { parseMarkdown, validateCatalog, selectReports } = context.module.exports;
@@ -179,6 +183,29 @@ try {
   assert.equal(nodes.geminiReportList.children[0].dataset.reportId, reports.at(-1).id);
   assert.equal(nodes.geminiReportStatus.hidden, true);
   pass('실제 DOM renderer 실행: 파일만 추가 시 앱 목록 불변, VM에서 번들 데이터 교체 시 새 목록·본문·검색 동작, fetch/저장 접근 0');
+
+  const mergedCatalog=JSON.parse(mergedMain.match(/globalThis\.HaniGeminiReportCatalog=Object\.freeze\(([^\r\n]+)\);/)[1]);
+  assert.equal(mergedCatalog.catalog_version,embedded.catalog_version+1);
+  assert.equal(embedded.reports.length,18);
+  assert.equal(mergedCatalog.reports.length,31);
+  for(const old of embedded.reports){
+    const current=mergedCatalog.reports.find(r=>r.id===old.id);
+    assert.ok(current,old.id);
+    for(const key of ['id','file','body','title','date','release_version','review_status'])assert.equal(current[key],old[key],old.id+' '+key);
+  }
+  for(const generated of reports)assert.equal(mergedCatalog.reports.find(r=>r.id===generated.id)?.body,generated.body,generated.id+' embedded Markdown');
+  browser.HaniGeminiReportCatalog=mergedCatalog;
+  nodes.geminiReportSearch.value='';
+  await browser.HaniGeminiReports.render(true);
+  assert.equal(nodes.geminiReportList.children.length,31);
+  assert.equal(nodes.geminiReportList.children[0].dataset.reportId,reports.at(-1).id);
+  assert.ok(nodes.geminiReportDetail.children.length>5);
+  nodes.geminiReportSearch.value='v2.9.280';
+  nodes.geminiReportSearch.events.input();
+  assert.equal(nodes.geminiReportList.children.length,1);
+  assert.equal(nodes.geminiReportList.children[0].dataset.reportId,reports.at(-1).id);
+  assert.equal(nodes.geminiReportStatus.hidden,true);
+  pass('병합된 실제 번들31편·기존18편 원문·신규13편·실제 renderer 목록/본문/검색 보존, 디스크 빌더 실행0');
 } finally {
   rmSync(temp, { recursive: true, force: true });
 }

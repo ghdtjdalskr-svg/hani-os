@@ -3,8 +3,9 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import {createHash} from 'node:crypto';
 import {test} from 'node:test';
+import {readLifeSource,restoreLifeLayer} from './hani-life-bundle-source.mjs';
 
-const read=file=>fs.readFileSync(new URL('../'+file,import.meta.url),'utf8');
+const read=file=>readLifeSource(file,'wishlist');
 const main=read('hani-main.js'),html=read('index.html');
 const helper=main.slice(main.indexOf('// Wishlist quick-add:'),main.indexOf('// End wishlist quick-add.')+'// End wishlist quick-add.'.length);
 const line=prefix=>main.split(/\r?\n/).find(row=>row.startsWith(prefix));
@@ -75,8 +76,10 @@ test('exact inverse preserves all original runtime bytes and save contract; no n
   new vm.Script(main);
   assert.doesNotMatch(helper,/\b(?:fetch|XMLHttpRequest|localStorage|sessionStorage|clipboard|saveEntry|commit|supabase)\s*[.(]/);
   const inverse=main.replace(helper+'\r\n','').replace('resetWishlistForm();resetWishlistQuickAdd();','resetWishlistForm();').replace('if($("wishlistQuickLink"))$("wishlistQuickLink").oninput=previewWishlistLink;\r\n','');
-  assert.equal(createHash('sha256').update(inverse).digest('hex'),'c0ae237d62e2adb2b2749f177fdc915985214b3c34b25362004a18a911125ae3');
+  assert.equal(inverse,restoreLifeLayer(main,'hani-main.js','wishlist'),'own inverse exactly restores the procrastination layer');
+  assert.equal(createHash('sha256').update(inverse).digest('hex'),'9415917255e3f7ba637cb08f8c2457c0d5c3017c2466a4e81ce8fac1b8c32e8c');
   const ui=html.match(/<div class="field" style="margin:0 0 16px"><label for="wishlistQuickLink">[\s\S]*?<\/small><\/div>/)?.[0];
   assert.ok(ui);assert.match(ui,/min-height:52px;font-size:16px/);assert.match(ui,/role="status" aria-live="polite"/);
-  assert.equal(createHash('sha256').update(html.replace(ui,'')).digest('hex'),'42df58715adf49c00c1319acd43698bda5bdcc77c0d819bb41fa13bea7f6a889');
+  assert.equal(html.replace(ui,''),restoreLifeLayer(html,'index.html','wishlist'),'own markup inverse retains the prior menu and view');
+  assert.equal(createHash('sha256').update(html.replace(ui,'')).digest('hex'),'fe35f0ba5c55722fed0649d3ab3088361c618ccd0ad82be0ba1e6dc1b7484952');
 });

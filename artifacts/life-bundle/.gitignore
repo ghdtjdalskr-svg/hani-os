@@ -1,0 +1,7 @@
+/snapshots/
+*.patch
+*.zip
+*.log
+/make-fixture.mjs
+/head-tree.txt
+/design-system-phase1/

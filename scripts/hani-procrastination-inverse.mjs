@@ -1,7 +1,6 @@
 // Test preload only. Restore exactly the approved outer additions in memory;
 // every original assertion and production file on disk remains intact.
-import fs from 'node:fs';
-import {syncBuiltinESMExports} from 'node:module';
+import './hani-life-bundle-preload.mjs';
 export function withoutProcrastination(text,file) {
   let result=text.replace(/\r\n/g,'\n');
   const erase=pattern=>{
@@ -17,13 +16,3 @@ export function withoutProcrastination(text,file) {
   }
   return result;
 }
-const original=fs.readFileSync;
-fs.readFileSync=function(file,options){
-  const value=original.call(this,file,options),name=String(file).replaceAll('\\','/').split('/').at(-1);
-  if(!['index.html','hani-main.js'].includes(name))return value;
-  const source=Buffer.isBuffer(value)?value.toString('utf8'):value;
-  if(!source.includes('BEGIN PROCRASTINATION'))return value;
-  const restored=withoutProcrastination(source,name);
-  return Buffer.isBuffer(value)?Buffer.from(restored):restored;
-};
-syncBuiltinESMExports();

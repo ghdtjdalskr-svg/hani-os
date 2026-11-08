@@ -5,6 +5,7 @@ import {createHash} from 'node:crypto';
 import test from 'node:test';
 import {installCloudTransport} from './hani-cloud-transport-fixture.cjs';
 import {projectPreStudyRetrySource} from './hani-study-retry-source.cjs';
+import {readLifeSource} from './hani-life-bundle-source.mjs';
 
 const source = fs.readFileSync(new URL('../hani-study-v02984.js', import.meta.url), 'utf8');
 const hash = value => createHash('sha256').update(value).digest('hex');
@@ -239,7 +240,7 @@ test('storage owners, protected version and Cloud/server files match the frozen 
     const fn=source.match(new RegExp(`^  (?:async )?function ${name}\\([^]*?(?=^  (?:async )?function |^  window\\.)`,'m'))?.[0];
     assert.ok(fn,name); assert.equal(hash(fn),expected,name+' unchanged');
   }
-  for(const [file,expected] of Object.entries(baseline.files)) assert.equal(hash(fs.readFileSync(new URL('../'+file,import.meta.url))),expected,file+' unchanged');
+  for(const [file,expected] of Object.entries(baseline.files)) assert.equal(hash(readLifeSource(file,'study-retry')),expected,file+' unchanged');
   assert.doesNotMatch(source,/localStorage\.(?:setItem|removeItem|clear)|sessionStorage\.(?:setItem|removeItem|clear)/);
   assert.equal((source.match(/learningCommit\(/g)||[]).length,baseline.learningCommitCalls);
 });
