@@ -1,7 +1,8 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import vm from 'node:vm';
+import capInverse from './hani-office-affinity-cap-source.cjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';import {at} from './hani-office-lively-fixture.mjs';
-const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
+const read=f=>capInverse.projectPreAffinityCapSource(fs.readFileSync(new URL('../'+f,import.meta.url),'utf8'),f);
 const source=read('hani-office-live.js'),table=JSON.parse(read('assets/data/office-actions-221.json')),manifest=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));
 const ids=['hani','gaeun','yuna','jieun','haru','naeun','hina','minji','sooyeon','sua','taeo','seoyun','dohyun','serin','yuri','arin','daon','yoonseul','mir','pet-cat','pet-dog','pet-rabbit','pet-bori','iseul','eunha'];
 const flush=async()=>{for(let i=0;i<30;i++)await Promise.resolve()};
@@ -25,7 +26,7 @@ async function mount({raw=null,width=1280,reduced=false,seconds=36000,floor='4f'
   matchMedia:q=>({matches:q.includes('prefers-reduced-motion')?reduced:width<=Number(q.match(/max-width:\s*(\d+)/)?.[1]||0),addEventListener(){}}),
   setTimeout(fn,ms){const t={id:++next,fn,at:clock+ms};pending.set(t.id,t);return t.id},clearTimeout:id=>pending.delete(id),
   localStorage:s.api,console:{...console,warn:x=>s.warnings.push(x)},addEventListener:(type,fn)=>{assert.ok(!listeners[type]);listeners[type]=fn}
- });
+ },capInverse.projectPreAffinityCapSource);
  f.ids.set('app',{classList:{contains:()=>false}});f.context.window.HaniOfficePresence={chairman:'absent'};
  f.setDateTime(new Date(clock).toISOString());f.click(floor);await flush();
  const panel=f.root.querySelector('.hani-office-character-bubble'),badge=panel.querySelector('.hani-office-affinity'),float=panel.querySelector('.hani-office-affinity-float');

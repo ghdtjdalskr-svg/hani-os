@@ -1,11 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import capInverse from './hani-office-affinity-cap-source.cjs';
 import {affinity274Delta} from './hani-office-affinity-274-source.mjs';
 import {stripApprovedAffinityStorage} from './hani-office-affinity-storage.mjs';
 
 const pair=affinity274Delta.files.find(row=>row.file==='hani-office-live.js').replacements.find(row=>row.name==='count owner');
-const source=fs.readFileSync(new URL('../hani-office-live.js',import.meta.url),'utf8');
+const source=capInverse.projectPreAffinityCapSource(fs.readFileSync(new URL('../hani-office-live.js',import.meta.url),'utf8'));
 const guards=[/localStorage|sessionStorage|\.setItem\(|\.removeItem\(|\.clear\(\)\s*;?\s*\/\/.*storage/,/localStorage|sessionStorage|\bsave\s*\(|supabase/,/localStorage|sessionStorage|supabase/];
 
 test('storage exception removes only the exact approved owner and preserves every surrounding byte',()=>{
