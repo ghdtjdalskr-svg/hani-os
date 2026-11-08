@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import capInverse from './hani-office-affinity-cap-source.cjs';
 import {affinity274Delta} from './hani-office-affinity-274-source.mjs';
 
 // Use only the storage owner pair from the immutable 274 delta, never its UI/event pairs.
@@ -20,6 +21,7 @@ function assertApprovedStorage(block){
 }
 
 export function stripApprovedAffinityStorage(source){
+ source=capInverse.projectPreAffinityCapSource(source);
  assert.equal(source.split(before).length-1,1,'unique unchanged affinity owner anchor');
  assert.equal(source.split(after).length-1,1,'exact unique approved affinity owner pair');
  const start=source.indexOf(after);
