@@ -4,31 +4,31 @@
   const DAY = 86400000;
   const LABELS = ['괜찮아요 😊', '살짝 서운', '삐짐 😤', '단단히 삐짐', '대삐짐'];
   const STAFF = {
-    naeun: {name:'나은', role:'건강 · 루틴', image:'./assets/profiles/thumb/hani-profile-naeun-256.webp', lines:[
+    naeun: {name:'나은', role:'건강 · 루틴', lines:[
       '회장님, 오늘도 회장님 편이에요. 무리 말고 하나씩 해요.',
       '회장님, 기록이 조금 뜸하네요. 몸은 잘 챙기고 계시죠?',
       '저 조금 삐졌어요. 그래도 회장님 컨디션이 먼저예요.',
       '흥, 잠깐 등 돌릴게요. 무리하지 않겠다는 약속은 해요.',
       '구석에 앉아 기다릴래요… 다시 시작할 땐 제가 같이할게요.'], thanks:'드디어! 고마워요♡ 오늘은 여기까지도 좋아요.'},
-    hina: {name:'히나', role:'학습 · 최종 리뷰', image:'./assets/profiles/thumb/hani-profile-hina-256.webp', lines:[
+    hina: {name:'히나', role:'학습 · 최종 리뷰', lines:[
       '회장님♡ 한 문제씩 이해하면 되는 거예용!',
       '문제지가 회장님 기다리고 있어용. 저도 조금은요!',
       '흥! 히나 선생님 삐졌어용. 한 문제만 같이 볼까용?',
       '칠판 보고 있을게용. 회장님 오시면 바로 돌아볼 거지만!',
       '구석에서 문제지 안고 있을래용… 힌트는 챙겨 뒀어용.'], thanks:'드디어! 고마워요♡ 역시 우리 회장님이에용!'},
-    jieun: {name:'지은', role:'재무 · 자산', image:'./assets/street-journal/chibi/jieun-think.webp', lines:[
+    jieun: {name:'지은', role:'재무 · 자산', lines:[
       '회장님, 기록이 있으면 다음 선택도 차분히 볼 수 있어요.',
       '숫자 정리를 조금 기다리고 있어요. 한 항목부터 볼까요?',
       '저도 조금 서운하네요. 잔소리 대신 자료부터 펴 둘게요.',
       '잠깐 등 돌리겠습니다. 돌아보면 같이 확인해요.',
       '구석에서 장부 안고 기다릴게요. 시작할 분량은 작게 잡죠.'], thanks:'드디어! 고마워요♡ 이제 근거를 함께 볼 수 있겠네요.'},
-    haru: {name:'하루', role:'소비 · 구매 검토', image:'./assets/profiles/thumb/hani-profile-haru-256.webp', lines:[
+    haru: {name:'하루', role:'소비 · 구매 검토', lines:[
       '회장님, 갖고 싶은 마음도 천천히 정리해 봐요.',
       '목록이 조금 기다렸네요. 아직 필요한 것부터 볼까요?',
       '음, 조금 삐졌어요. 사라는 말보다 용도부터 물어볼게요.',
       '잠깐 뒤돌아 있을게요. 목록 펼치면 같이 볼 거예요.',
       '구석에서 찜 목록 보고 있을래요… 하나만 골라 정리해요.'], thanks:'드디어! 고마워요♡ 우리 생활에 맞게 골라 봐요.'},
-    minji: {name:'민지', role:'콘텐츠 · 문화 · 기록', image:'./assets/street-journal/chibi/minji-think.webp', lines:[
+    minji: {name:'민지', role:'콘텐츠 · 문화 · 기록', lines:[
       '회장님, 평범한 하루에도 남겨 둘 한 장면은 있죠!',
       '컷! 기록이 잠깐 쉬는 장면, 조금 서운한데요?',
       '감독님 삐졌습니다. 오늘 한 줄이면 다음 장면 갈 수 있어요.',
@@ -100,13 +100,13 @@
     // Persistent cards: attach once, update text and pose through existing render calls.
     if (!root.children.length) root.innerHTML = SPECS.map(spec => {
       const staff = STAFF[spec.owner];
-      return `<article class="pb-card" data-pb-card="${spec.id}"><div class="pb-scene"><span class="pb-mood" aria-hidden="true"></span><span class="pb-portrait" role="img" aria-label="${staff.name}"></span><span class="pb-cloud" aria-hidden="true">…</span></div><div class="pb-copy"><p class="pb-owner">${staff.name} <span>${staff.role}</span></p><h3>${spec.title}</h3><p class="pb-age"></p><p class="pb-level"></p><p class="pb-speech"></p><p class="pb-basis"></p><button type="button" class="btn" data-pb-go="${spec.route}">${spec.id === 'quiz' ? '문제 풀러 가기' : '기록하러 가기'} <span aria-hidden="true">↗</span></button></div></article>`;
+      return `<article class="pb-card" data-pb-card="${spec.id}"><div class="pb-copy"><p class="pb-owner">${staff.name} <span>${staff.role}</span></p><h3>${spec.title}</h3></div><div class="pb-scene"><p class="pb-speech"></p><span class="pb-portrait" role="img" aria-label="${staff.name}"></span></div><div class="pb-footer"><p class="pb-level"></p><p class="pb-age"></p><p class="pb-basis"></p><button type="button" class="btn" data-pb-go="${spec.route}">${spec.id === 'quiz' ? '문제 풀러 가기' : '기록하러 가기'} <span aria-hidden="true">↗</span></button></div></article>`;
     }).join('');
     const model = project(state);
     for (const item of model) {
       const card = root.querySelector(`[data-pb-card="${item.id}"]`);
       card.dataset.level = item.level === null ? 'unknown' : String(item.level);
-      card.querySelector('.pb-mood').textContent = item.level === null ? '?' : ['♡','·','💢','흥','☁'][item.level];
+      card.querySelector('.pb-portrait').setAttribute('aria-label', `${item.staff.name} · ${item.level === null ? '기록 없음 · 기간 미확인' : item.level + '단계 · ' + LABELS[item.level]}`);
       card.querySelector('.pb-age').textContent = item.days === null ? '기록 없음 · 기간 미확인' : item.days === 0 ? '오늘은 괜찮아요' : `${item.days}일째 미룸`;
       card.querySelector('.pb-level').textContent = item.level === null ? '아직 판단하지 않아요' : `${item.level}단계 · ${LABELS[item.level]}`;
       card.querySelector('.pb-speech').textContent = item.speech;
