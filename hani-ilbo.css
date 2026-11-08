@@ -143,3 +143,8 @@ html[data-theme="dark"] .ilbo-nameplate-illustrated .ilbo-eyebrow { color:#ded3e
   .ilbo-icon-band { min-height:60px; font-size:30px; print-color-adjust:exact; }
   .ilbo-placeholder { min-height:100px; }
 }
+/* Extra editions keep their captions visible without changing regular issues. */
+#ilbo .ilbo-extra-captions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px;padding:16px 16px 16px 36px;line-height:1.8;font-size:14px}
+#ilbo .ilbo-extra-captions li{padding-left:4px;overflow-wrap:anywhere}
+#ilbo .ilbo-extras{margin-top:20px;border-top:1px solid var(--line,#e8ebf2);padding-top:12px}
+@media(max-width:600px){#ilbo .ilbo-extra-captions{grid-template-columns:1fr}}
