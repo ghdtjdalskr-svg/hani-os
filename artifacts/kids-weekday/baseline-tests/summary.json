@@ -1,0 +1,10 @@
+﻿{
+    "file":  "hani-office-219.test.mjs",
+    "exit":  1,
+    "pass":  0,
+    "fail":  1,
+    "skipped":  0,
+    "failures":  [
+                     "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\kids-visit-b\\\\scripts\\\\hani-office-219.test.mjs"
+                 ]
+}

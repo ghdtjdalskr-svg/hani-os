@@ -2,13 +2,14 @@ import test from 'node:test';import assert from 'node:assert/strict';import fs f
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';import {assets} from './hani-office-v2-fixture.mjs';
 import inverse from './hani-office-kids-pose-b-source.cjs';
+import weekday from './hani-office-kids-weekday-source.cjs';
 import {projectPrePatrolSource} from './hani-office-chairman-patrol-278-source.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
-const {scene,table}=loadScene(),r=scene.residents,plain=x=>JSON.parse(JSON.stringify(x)),raw=fs.readFileSync('hani-office-live.js','utf8');
+const {scene,table}=loadScene(),r=scene.residents,plain=x=>JSON.parse(JSON.stringify(x)),raw=weekday.projectPreKidsWeekdaySource(fs.readFileSync('hani-office-live.js','utf8'));
 const chair=(walking=false)=>({floors:[{id:'5f',people:[{id:'seongmin',floor:'5f',position:[51,70],pose:walking?'walk-a':'sitting',walking,facing:'right'}]}]});
 
 test('B outer inverse restores fixed base, rejects every incomplete/duplicate/unrelated mutation, and retains the older inverse chain',()=>{
- for(const row of inverse.delta.files){const current=fs.readFileSync(row.file,'utf8'),before=inverse.restoreKidsPoseBSource(current,row.file);assert.equal(before,fs.readFileSync('artifacts/kids-visit-b/baseline/'+row.file,'utf8'));
+ for(const row of inverse.delta.files){const current=weekday.projectPreKidsWeekdaySource(fs.readFileSync(row.file,'utf8'),row.file),before=inverse.restoreKidsPoseBSource(current,row.file);assert.equal(before,fs.readFileSync('artifacts/kids-visit-b/baseline/'+row.file,'utf8'));
   let forward=before;for(const pair of row.replacements){assert.equal(before.split(pair.before).length-1,1);forward=forward.replace(pair.before,()=>pair.after);assert.throws(()=>inverse.restoreKidsPoseBSource(current.replace(pair.after,()=>pair.before),row.file));assert.throws(()=>inverse.restoreKidsPoseBSource(current+pair.after,row.file));}
   assert.equal(forward,current);for(const bad of [current+'\n',current.slice(1),current+current,before])assert.throws(()=>inverse.restoreKidsPoseBSource(bad,row.file));
   assert.equal(projectPrePatrolSource(current,row.file),projectPrePatrolSource(before,row.file));

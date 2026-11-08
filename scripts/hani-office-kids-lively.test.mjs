@@ -4,8 +4,9 @@ import {fixture as mountFixture} from './hani-building-206-engine.test.mjs';impo
 import {restoreKids278Source,projectPreKidsSource,projectPreVisitsSource,projectPreStaffChatSource,projectPreCompanionHomesSource} from './hani-office-chairman-patrol-278-source.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 import kidsPoseB from './hani-office-kids-pose-b-source.cjs';
+import weekday from './hani-office-kids-weekday-source.cjs';
 const fixture=(...args)=>{while(args.length<5)args.push(undefined);return mountFixture(...args,projectPreVisitsSource)};
-const {scene,table}=loadScene(),r=scene.residents,plain=x=>JSON.parse(JSON.stringify(x)),day='2026-11-07',options={chairmanPresent:true};
+const {scene,table}=loadScene({transform:weekday.projectPreKidsWeekdaySource}),r=scene.residents,plain=x=>JSON.parse(JSON.stringify(x)),day='2026-11-07',options={chairmanPresent:true};
 const chair=(floor='4f',extra={})=>({floors:[{id:floor,people:[{id:'seongmin',floor,position:[51,70],pose:'sitting',walking:false,facing:'right',...extra}]}]});
 const kids=(sec,snap=chair(),reduced=false)=>r.companionSnapshot(at(day,sec),snap,true,reduced).filter(p=>p.kid);
 const delta=(a,b)=>Math.hypot((a[0]-b[0])*scene.art.width/100,(a[1]-b[1])*scene.art.height/100);

@@ -1,0 +1,692 @@
+﻿[
+    {
+        "file":  "hani-office-219.test.mjs",
+        "exit":  1,
+        "pass":  0,
+        "fail":  1,
+        "skipped":  0,
+        "failures":  [
+                         "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\kids-visit-b\\\\scripts\\\\hani-office-219.test.mjs"
+                     ]
+    },
+    {
+        "file":  "hani-office-actions-216.test.mjs",
+        "exit":  0,
+        "pass":  15,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-actions-221.test.mjs",
+        "exit":  0,
+        "pass":  20,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-affinity.test.mjs",
+        "exit":  0,
+        "pass":  21,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-affinity-274-pins.test.mjs",
+        "exit":  0,
+        "pass":  3,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-affinity-storage.test.mjs",
+        "exit":  0,
+        "pass":  3,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-barista.test.mjs",
+        "exit":  0,
+        "pass":  10,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-barista-night.test.mjs",
+        "exit":  0,
+        "pass":  13,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-barista-night-273-pins.test.mjs",
+        "exit":  0,
+        "pass":  5,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-behavior.test.mjs",
+        "exit":  0,
+        "pass":  10,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-bori-m9.test.mjs",
+        "exit":  0,
+        "pass":  2,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-bori-stroll.test.mjs",
+        "exit":  0,
+        "pass":  14,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-bubble-close.test.mjs",
+        "exit":  0,
+        "pass":  17,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-cafe-rest.test.mjs",
+        "exit":  0,
+        "pass":  4,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-chairman-234.test.mjs",
+        "exit":  0,
+        "pass":  15,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-chairman-patrol.test.mjs",
+        "exit":  0,
+        "pass":  15,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-chairman-patrol-278-pins.test.mjs",
+        "exit":  0,
+        "pass":  12,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-companion-homes.test.mjs",
+        "exit":  0,
+        "pass":  16,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-companions.test.mjs",
+        "exit":  0,
+        "pass":  17,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-companions-276-pins.test.mjs",
+        "exit":  0,
+        "pass":  3,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-consult.test.mjs",
+        "exit":  0,
+        "pass":  20,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-crowded-labels.test.mjs",
+        "exit":  0,
+        "pass":  19,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-drama.test.mjs",
+        "exit":  0,
+        "pass":  20,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-fix-218.test.mjs",
+        "exit":  0,
+        "pass":  6,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-floor-bubble.test.mjs",
+        "exit":  0,
+        "pass":  21,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-hd-224.test.mjs",
+        "exit":  0,
+        "pass":  10,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-icons.test.mjs",
+        "exit":  0,
+        "pass":  15,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-kids-lively.test.mjs",
+        "exit":  1,
+        "pass":  14,
+        "fail":  1,
+        "skipped":  0,
+        "failures":  [
+                         "latest mounted slots rotate every new dialogue, retain taps/bubble, reduced motion, zero writes/timer/listener additions"
+                     ]
+    },
+    {
+        "file":  "hani-office-kids-pose-b.test.mjs",
+        "exit":  0,
+        "pass":  13,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-kids-visit.test.mjs",
+        "exit":  0,
+        "pass":  16,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-kids-weekday.test.mjs",
+        "exit":  0,
+        "pass":  16,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-labels-qa.test.mjs",
+        "exit":  0,
+        "pass":  17,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-lively.test.mjs",
+        "exit":  0,
+        "pass":  13,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-lively-v2.test.mjs",
+        "exit":  0,
+        "pass":  8,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-motion-1.test.mjs",
+        "exit":  0,
+        "pass":  16,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-motion-2.test.mjs",
+        "exit":  0,
+        "pass":  24,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-obr10.test.mjs",
+        "exit":  0,
+        "pass":  4,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-obr12.test.mjs",
+        "exit":  0,
+        "pass":  5,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-obr14.test.mjs",
+        "exit":  0,
+        "pass":  5,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-obr15.test.mjs",
+        "exit":  0,
+        "pass":  14,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-obr16.test.mjs",
+        "exit":  0,
+        "pass":  12,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-obr17.test.mjs",
+        "exit":  0,
+        "pass":  3,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-obr18.test.mjs",
+        "exit":  0,
+        "pass":  12,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-obr19.test.mjs",
+        "exit":  0,
+        "pass":  3,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-obr21.test.mjs",
+        "exit":  0,
+        "pass":  6,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-obr3.test.mjs",
+        "exit":  0,
+        "pass":  5,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-obr4.test.mjs",
+        "exit":  0,
+        "pass":  10,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-obr6.test.mjs",
+        "exit":  0,
+        "pass":  4,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-obr7.test.mjs",
+        "exit":  0,
+        "pass":  2,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-obr8.test.mjs",
+        "exit":  0,
+        "pass":  3,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-obr9.test.mjs",
+        "exit":  0,
+        "pass":  1,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-pet-bori.test.mjs",
+        "exit":  0,
+        "pass":  14,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-pet-bori-272-pins.test.mjs",
+        "exit":  0,
+        "pass":  4,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-pets-268-pins.test.mjs",
+        "exit":  0,
+        "pass":  1,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-pets-bubble.test.mjs",
+        "exit":  0,
+        "pass":  22,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-props.test.mjs",
+        "exit":  0,
+        "pass":  11,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-release-projection.test.mjs",
+        "exit":  0,
+        "pass":  2,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-residents.test.mjs",
+        "exit":  0,
+        "pass":  49,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-seats-215.test.mjs",
+        "exit":  0,
+        "pass":  12,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-snack.test.mjs",
+        "exit":  0,
+        "pass":  26,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-staff-chat.test.mjs",
+        "exit":  0,
+        "pass":  17,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-tap-lines.test.mjs",
+        "exit":  0,
+        "pass":  15,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-tlayout.test.mjs",
+        "exit":  0,
+        "pass":  13,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-top-labels.test.mjs",
+        "exit":  0,
+        "pass":  7,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-v2-215.test.mjs",
+        "exit":  0,
+        "pass":  18,
+        "fail":  0,
+        "skipped":  2,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-visitors-cafe.test.mjs",
+        "exit":  0,
+        "pass":  5,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-xmas.test.mjs",
+        "exit":  0,
+        "pass":  13,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-xmas-269-pins.test.mjs",
+        "exit":  0,
+        "pass":  2,
+        "fail":  0,
+        "skipped":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "file":  "hani-office-zoom.test.mjs",
+        "exit":  0,
+        "pass":  12,
+        "fail":  0,
+        "skipped":  1,
+        "failures":  [
+
+                     ]
+    }
+]

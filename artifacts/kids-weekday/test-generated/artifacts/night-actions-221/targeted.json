@@ -1,0 +1,274 @@
+{
+  "result": "pass",
+  "fakeClocks": [
+    {
+      "day": "2026-10-20",
+      "time": "10:00",
+      "present": [
+        "arin",
+        "daon",
+        "dohyun",
+        "gaeun",
+        "hani",
+        "haru",
+        "hina",
+        "jieun",
+        "minji",
+        "mir",
+        "naeun",
+        "seoyun",
+        "serin",
+        "sooyeon",
+        "sua",
+        "taeo",
+        "yoonseul",
+        "yuna",
+        "yuri"
+      ],
+      "checks": [
+        {
+          "floor": "4f",
+          "action": "sofa-4f",
+          "delaySeconds": 0
+        },
+        {
+          "floor": "3f",
+          "action": "window-3f",
+          "delaySeconds": 0
+        },
+        {
+          "floor": "2f",
+          "action": "pantry-2f",
+          "delaySeconds": 0
+        },
+        {
+          "floor": "1f",
+          "action": "night-lobby-story",
+          "delaySeconds": 2
+        }
+      ]
+    },
+    {
+      "day": "2026-10-20",
+      "time": "21:00",
+      "present": [
+        "arin",
+        "daon",
+        "dohyun",
+        "gaeun",
+        "hani",
+        "haru",
+        "hina",
+        "jieun",
+        "minji",
+        "mir",
+        "naeun",
+        "seoyun",
+        "serin",
+        "sooyeon",
+        "sua",
+        "taeo",
+        "yoonseul",
+        "yuna",
+        "yuri"
+      ],
+      "checks": [
+        {
+          "floor": "4f",
+          "action": "night-exec-connection",
+          "delaySeconds": 1
+        },
+        {
+          "floor": "3f",
+          "action": "night-dev-note",
+          "delaySeconds": 3
+        },
+        {
+          "floor": "2f",
+          "action": "base-water",
+          "delaySeconds": 0
+        },
+        {
+          "floor": "1f",
+          "action": "night-lobby-story",
+          "delaySeconds": 1
+        }
+      ]
+    },
+    {
+      "day": "2026-10-21",
+      "time": "00:30",
+      "present": [
+        "arin",
+        "daon",
+        "dohyun",
+        "gaeun",
+        "hani",
+        "haru",
+        "hina",
+        "jieun",
+        "minji",
+        "mir",
+        "naeun",
+        "seoyun",
+        "serin",
+        "sooyeon",
+        "sua",
+        "taeo",
+        "yoonseul",
+        "yuna",
+        "yuri"
+      ],
+      "checks": [
+        {
+          "floor": "4f",
+          "action": "night-exec-connection",
+          "delaySeconds": 2
+        },
+        {
+          "floor": "3f",
+          "action": "board-3f",
+          "delaySeconds": 0
+        },
+        {
+          "floor": "2f",
+          "action": "pantry-2f",
+          "delaySeconds": 0
+        },
+        {
+          "floor": "1f",
+          "action": "night-lobby-story",
+          "delaySeconds": 2
+        }
+      ]
+    },
+    {
+      "day": "2026-10-21",
+      "time": "02:00",
+      "present": [
+        "dohyun",
+        "minji",
+        "mir",
+        "seoyun",
+        "yuna"
+      ],
+      "checks": [
+        {
+          "floor": "4f",
+          "action": "night-exec-starlight",
+          "delaySeconds": 3
+        },
+        {
+          "floor": "3f",
+          "action": "night-dev-trace",
+          "delaySeconds": 3
+        },
+        {
+          "floor": "1f",
+          "action": "night-lobby-lights",
+          "delaySeconds": 2
+        }
+      ]
+    },
+    {
+      "day": "2026-10-24",
+      "time": "15:00",
+      "present": [
+        "arin",
+        "daon",
+        "dohyun",
+        "gaeun",
+        "hani",
+        "haru",
+        "hina",
+        "jieun",
+        "minji",
+        "mir",
+        "naeun",
+        "seoyun",
+        "serin",
+        "sooyeon",
+        "sua",
+        "taeo",
+        "yoonseul",
+        "yuna",
+        "yuri"
+      ],
+      "checks": [
+        {
+          "floor": "4f",
+          "action": "window-4f",
+          "delaySeconds": 0
+        },
+        {
+          "floor": "3f",
+          "action": "sofa-3f",
+          "delaySeconds": 0
+        },
+        {
+          "floor": "2f",
+          "action": "pantry-seats-2f",
+          "delaySeconds": 0
+        },
+        {
+          "floor": "1f",
+          "action": "coffee-1f",
+          "delaySeconds": 0
+        }
+      ]
+    },
+    {
+      "day": "2026-10-25",
+      "time": "23:30",
+      "present": [
+        "arin",
+        "daon",
+        "dohyun",
+        "gaeun",
+        "hani",
+        "haru",
+        "hina",
+        "jieun",
+        "minji",
+        "mir",
+        "naeun",
+        "seoyun",
+        "serin",
+        "sooyeon",
+        "sua",
+        "taeo",
+        "yoonseul",
+        "yuna",
+        "yuri"
+      ],
+      "checks": [
+        {
+          "floor": "4f",
+          "action": "night-exec-page",
+          "delaySeconds": 0
+        },
+        {
+          "floor": "3f",
+          "action": "sofa-3f",
+          "delaySeconds": 0
+        },
+        {
+          "floor": "2f",
+          "action": "night-life-idea",
+          "delaySeconds": 0
+        },
+        {
+          "floor": "1f",
+          "action": "night-lobby-lights",
+          "delaySeconds": 0
+        }
+      ]
+    }
+  ],
+  "renderer": {
+    "seconds": 2,
+    "person": "seoyun",
+    "action": "night-dev-code"
+  },
+  "scope": "actual owner with DOM doubles; pixels require browser"
+}

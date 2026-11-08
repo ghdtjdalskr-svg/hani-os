@@ -2382,9 +2382,18 @@
     {id:'companion-otter',name:'아기 수달',pet:true,atlasRow:2,lines:['회장님, 조개 선물이에요!','회장님 옆에서 냠냠해요.','회장님, 카페도 같이 가요!']},
     {id:'companion-chick',name:'병아리',pet:true,atlasRow:3,lines:['회장님, 삐약 출근했어요!','회장님 따라 통통통!','회장님, 제 날개도 쉬어요.']},
     {id:'companion-fox',name:'아기 여우',pet:true,atlasRow:4,lines:['회장님, 꼬리로 인사해요!','회장님 곁은 포근하네요.','회장님, 살금살금 갈게요!']},
-    {id:'kid-suhyeon',name:'수현',kid:true,atlasRow:0,lines:['…지금 말고.','가방? 그냥 들어 준 거야.','아빠, 얘 좀 떼 줘.','…거기 위험해.','옆에 있어 줄게. 책 읽으러 온 거지만.','이쪽이 조용해. 너도 와.']},
-    {id:'kid-suyeon',name:'수연',kid:true,atlasRow:1,lines:['아빠아아!','나 커서 아빠랑 결혼할 거야!','오빠는 맨날 아닌 척해!','아빠 손 꼭 잡고 갈래!','아빠랑 다니니까 제일 좋아!','아빠 여기여기! 나랑 같이 가!','아빠! 나 통통 뛰는 거 봐 봐!','저기까지 갔다가 꼭 돌아올게!','아빠 옆자리 찜! 내 자리야!','나 먼저 갈게! 아빠 오고 있지?']}
+    {id:'kid-suhyeon',name:'수현',kid:true,atlasRow:0,lines:['…지금 말고.','가방? 그냥 들어 준 거야.','아빠, 얘 좀 떼 줘.','…거기 위험해.','옆에 있어 줄게. 책 읽으러 온 거지만.','이쪽이 조용해. 너도 와.','아빠, 물 여기 뒀어. 그냥 보이길래.','…아빠 기다린 건 아니야. 책이 덜 끝나서.','아빠, 난 한 걸음 뒤에 있을게.','수연아, 뛰지 마. 가방은 내가 들게.','하니 이모한테 인사는 하고 가야지.','보리야, 여기 조용히 앉아 있어도 돼.']},
+    {id:'kid-suyeon',name:'수연',kid:true,atlasRow:1,lines:['아빠아아!','나 커서 아빠랑 결혼할 거야!','오빠는 맨날 아닌 척해!','아빠 손 꼭 잡고 갈래!','아빠랑 다니니까 제일 좋아!','아빠 여기여기! 나랑 같이 가!','아빠! 나 통통 뛰는 거 봐 봐!','저기까지 갔다가 꼭 돌아올게!','아빠 옆자리 찜! 내 자리야!','나 먼저 갈게! 아빠 오고 있지?','아빠! 오늘 학교에서 별 스티커 받았어!','아빠 보고 싶어서 발이 먼저 왔어!','아빠, 오늘도 내 옆자리 비워 뒀지?','하니 이모! 나 인사하러 왔어!','서윤 언니, 나도 축하 하트 줄게!','보리야! 아빠랑 같이 천천히 가자!']}
   ].map(p=>Object.freeze({...p,companion:true,sprite:p.id,lines:Object.freeze(p.lines)})));
+  const kidsWeekdayGreetings=Object.freeze({
+    'kid-suhyeon':Object.freeze(['…지나가다 들른 거야, 아빠.','아빠, 학교 끝났어. 잠깐만 있다 갈게.','…아빠, 책 읽을 데가 필요해서 온 거야.']),
+    'kid-suyeon':Object.freeze(['아빠! 학교 끝나고 왔어!','아빠아! 오늘은 내가 깜짝 선물이야!','아빠! 하교하자마자 보고 싶어서 왔어!'])
+  });
+  const kidsSiblingLines=Object.freeze([
+    Object.freeze(['…아빠 기다리는 동안만 같이 있어 줄게.','오빠, 아빠 보고 싶어서 온 거 다 알아!']),
+    Object.freeze(['수연아, 아빠 일할 땐 천천히 걸어.','응! 아빠 손 잡고 살금살금 갈게!']),
+    Object.freeze(['…네 가방은 내가 들게. 아빠한텐 비밀이야.','아빠! 오빠가 또 나 챙겨 줬어!'])
+  ]);
   const companionReactions=Object.freeze([
     {id:'hani',line:'어머, 수연이 왔어?'},{id:'hani',line:'수현이는 오늘도 든든하네.'},
     {id:'naeun',line:'남매 간식은 제가 챙길게요.'},{id:'hina',line:'수연아, 오빠랑 천천히 와.'},{id:'hina',line:'수현아, 무슨 책 읽고 있니?'}
@@ -3176,11 +3185,15 @@
     if(!enabled||!canon||!art)return [];
     const date=koreaTime(now),weekday=date.getUTCDay(),weekend=weekday===0||weekday===6,day=date.toISOString().slice(0,10),seconds=date.getUTCHours()*3600+date.getUTCMinutes()*60+date.getUTCSeconds()+date.getUTCMilliseconds()/1000;
     const people=[...(staff?.floors?.flatMap(f=>f.people||[])||[]),...neighbors],chair=people.find(p=>p.id==='seongmin'&&floors.some(f=>f.id===p.floor)&&p.state!=='ABSENT'),center=chair&&(chair.position||[chair.seat?.x,chair.seat?.y]),states=[],usedStops=new Set(neighbors.flatMap(p=>p.stroll?.stops||[]));
-    const follows=person=>person.kid?weekend:!weekend&&person.atlasRow===weekday-1;
+    // Calendar-date seed is independent of the resident 07:00 day and refreshes.
+    // One weekday visitor replaces the one animal follower; siblings keep weekends.
+    const surprise=!weekend&&residentSeed(day+'|kids-weekday')%4===0&&seconds>=15*3600&&seconds<19*3600;
+    const visitor=surprise?((residentSeed(day+'|kids-weekday-child')>>>8)%2?'kid-suyeon':'kid-suhyeon'):null;
+    const follows=person=>person.kid?weekend||person.id===visitor:!weekend&&!surprise&&person.atlasRow===weekday-1;
     // Reserve the chairman's companions first, then place department pets safely.
     for(const person of companionPeople.filter(follows).concat(companionPeople.filter(p=>!follows(p)))){
       const follow=follows(person);
-      if(person.kid&&!weekend||follow&&(!chair||!center?.every(Number.isFinite)))continue;
+      if(person.kid&&!weekend&&person.id!==visitor||follow&&(!chair||!center?.every(Number.isFinite)))continue;
       const seed=residentSeed(day+'|'+person.id),rhythm=residentRhythm(person.id,day,seconds),free=(floor,v)=>!people.concat(states).some(p=>{const at=p.position||[p.seat?.x,p.seat?.y];return p.floor===floor&&at.every(Number.isFinite)&&(Math.hypot((v[0]-at[0])*art.width/100,(v[1]-at[1])*art.height/100)<(p.id==='seongmin'?80:p.resident||p.pet?96:person.kid?90:70)||p.id==='pet-bori'&&p.stroll?.stops?.some((id,i,ids)=>{const a=residentSpot(id),b=residentSpot(ids[(i+1)%ids.length]),x=(v[0]-a.visual[0])*art.width/100,y=(v[1]-a.visual[1])*art.height/100,dx=(b.visual[0]-a.visual[0])*art.width/100,dy=(b.visual[1]-a.visual[1])*art.height/100,t=Math.max(0,Math.min(1,(x*dx+y*dy)/(dx*dx+dy*dy||1)));return Math.hypot(x-t*dx,y-t*dy)<108}))});
       let floor,position,point=[500,330],walking=false,facing='left',pose='standing',motion;
       if(follow){
@@ -3232,7 +3245,10 @@
     // positions. The brother can see where his sister actually went this frame.
     for(const id of ['kid-suyeon','kid-suhyeon']){
       const child=states.find(p=>p.id===id);
-      if(child)companionActivity(child,chair,people,states,day,seconds,reduced,now);
+      if(child){
+        companionActivity(child,chair,people,states,day,seconds,reduced,now);
+        if(surprise)child.weekdayArrival={day,line:kidsWeekdayGreetings[child.id][(residentSeed(day+'|kids-weekday-greeting')>>>8)%3]};
+      }
     }
     return states;
   }
@@ -3305,6 +3321,11 @@
       const animal={'companion-penguin':'펭귄','companion-frog':'개구리','companion-otter':'수달','companion-chick':'병아리','companion-fox':'여우','pet-cat':'치즈','pet-dog':'크림','pet-rabbit':'모찌','pet-bori':'보리'}[partner?.id];
       line=line||(animal?animal+(/[가-힣]/.test(animal)&&((animal.charCodeAt(animal.length-1)-44032)%28)?'이다!!':'다!!'):sister?['아빠! 나 통통 뛰는 거 봐 봐!','저기까지 갔다가 꼭 돌아올게!','아빠 옆자리 찜! 내 자리야!','아빠! 손 흔드는 거 보여?','나 왔어! 같이 놀자!','아빠 오고 있지?'][kind]:['이쪽이 조용해. 너도 와.','…거기 위험해.','옆에 있어 줄게. 책 읽으러 온 거지만.'][kind%3]);
       child.scene={key:child.activity.key,line,patrol:true,notBefore:now.getTime()-rhythm.elapsed*1000+1000};
+      const sibling=states.find(p=>p.kid&&p.id!==child.id),turn=Math.floor(seconds/180),elapsed=seconds%180;
+      if(sibling&&sibling.floor===floor&&!chair.walking&&distance(home,sibling.position)<300&&elapsed>=150&&elapsed<174){
+        const exchange=kidsSiblingLines[residentSeed(day+'|siblings|'+turn)%kidsSiblingLines.length];
+        child.scene={key:day+'|siblings|'+turn+'|'+child.id,line:exchange[sister?1:0],patrol:true,sibling:true,notBefore:now.getTime()+(150+(sister?4:1)-elapsed)*1000};
+      }
     }
     if(partner&&!partner.pet&&!partner.resident&&!partner.companion&&!partner.visitor&&progress>.25)child.reaction={id:partner.id,line:'수연아, 반가워! 천천히 다녀와.',key:child.activity.key+'|hello'};
   }
@@ -4466,6 +4487,7 @@
   }
   const kidsVisits=building.residents.createKidsVisits();
   const staffChats=building.scheduler?.createStaffChats();
+  const weekdayGreetings=new Set();
   function updateResidents(now){
     if(!residentSlots.length)return;
     const existing=building.residents.snapshot(now,floorSnapshot,true,reduced),states=[...existing,...building.residents.companionSnapshot(now,floorSnapshot,true,reduced,existing)];let changed=false;
@@ -4502,8 +4524,15 @@
         else delete actor.dataset.affection;
         if(affection?.bubble&&!staffChats?.current()&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000)showBubble(actor,{speaker:person.id,line:affection.line,resident:true},3000,true);
       }
+      // Consume only a visible, actually shown arrival. Floor changes, other
+      // speech and user taps leave it pending; memory alone remembers the day.
+      const arrival=state.weekdayArrival;
+      if(arrival&&!weekdayGreetings.has(arrival.day)&&sceneVisible()&&!document.hidden&&!meeting&&!activeEvent&&!visit&&!staffChats?.current()&&actorBubble.hidden&&Date.now()-lastBubbleTap>=5000){
+        weekdayGreetings.add(arrival.day);
+        showBubble(actor,{speaker:person.id,line:arrival.line,resident:true,weekdayArrival:true},3000,true);
+      }
       const line=affection?.line||state.scene?.line||person.lines[0];
-      if(actor.dataset.line!==line){actor.dataset.line=line;actor.querySelector('.hani-office-status').dataset.full=line;if(bubblePerson===person.id&&!bubbleSelection?.affinity&&!bubbleSelection?.kidsVisit&&!bubbleSelection?.staffChat&&(!person.companion||autoBubbleEntry)){bubbleSelection={speaker:person.id,line,resident:true};bubbleLine.textContent=bubbleText(actor)}}
+      if(actor.dataset.line!==line){actor.dataset.line=line;actor.querySelector('.hani-office-status').dataset.full=line;if(bubblePerson===person.id&&!bubbleSelection?.affinity&&!bubbleSelection?.kidsVisit&&!bubbleSelection?.staffChat&&!bubbleSelection?.weekdayArrival&&(!person.companion||autoBubbleEntry)){bubbleSelection={speaker:person.id,line,resident:true};bubbleLine.textContent=bubbleText(actor)}}
       // Patrol greetings and siblings take turns on this same slot; a busy bubble
       // leaves each child's line pending instead of consuming it unseen.
       if(person.kid&&state.reaction?.key.includes('|kids|')&&root.officeCompanionReaction!==state.reaction.key&&actor.officeKidReaction?.key!==state.reaction.key)actor.officeKidReaction={...state.reaction,floor:activeFloor,expires:now.getTime()+20000};
