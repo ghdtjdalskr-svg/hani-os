@@ -46,7 +46,13 @@
   // Page-session only: reload persistence requires approval for a storage write path.
   const generationFailures = new Map();
   const generationDay = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' });
-  const generationKey = project => `${project.id}|${generationDay()}`;
+  // Weekly retry state is page memory only; the quiz remains the persisted source of truth.
+  let generationProjectId = '';
+  let weeklyAutoRunning = false;
+  let studyLifecycleBound = false;
+  let weeklyAttemptUser = typeof cloudUser !== 'undefined' ? String(cloudUser?.id || '') : '';
+  const generationDate = project => normalizeProject(project).scheduleType === 'weekly' ? generationDay() : localToday();
+  const generationKey = project => `${project.id}|${normalizeProject(project).scheduleType === 'weekly' ? studyWeekStart(generationDay()) : generationDay()}`;
   const SCHEDULE_LABELS = {
     daily: '매일', mon_wed_fri: '월·수·금', every_2_days: '2일마다',
     every_3_days: '3일마다', weekly: '매주', monthly: '한 달마다', manual: '수동',
@@ -169,12 +175,32 @@
     return d ? Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000) : NaN;
   }
 
+  function studyWeekStart(date = generationDay()) {
+    const day = localDayNumber(date);
+    if (!Number.isFinite(day)) return '';
+    const weekday = new Date(day * 86400000).getUTCDay();
+    return new Date((day - (weekday + 6) % 7) * 86400000).toISOString().slice(0, 10);
+  }
+
+  function generationPeriodQuiz(project, date = generationDate(project)) {
+    const weekly = normalizeProject(project).scheduleType === 'weekly', start = studyWeekStart(date);
+    return projectQuizzes(project.id).find(quiz => weekly
+      ? studyWeekStart(quizDate(quiz)) === start
+      : quizDate(quiz) === date);
+  }
+
   function isScheduledDate(project, date = localToday()) {
     const p = normalizeProject(project), type = p.scheduleType;
     if (type === 'manual') return false;
     const d = parseLocalDate(date);
     if (!d) return false;
     if (type === 'daily') return true;
+    // Catch up on any visit this week, including after a missed anniversary date.
+    if (type === 'weekly') {
+      const created = new Date(p.createdAt);
+      const start = Number.isFinite(created.getTime()) ? created.toLocaleDateString('en-CA', {timeZone:'Asia/Seoul'}) : String(p.createdAt || '').slice(0,10);
+      return localDayNumber(date) >= localDayNumber(start);
+    }
     if (type === 'mon_wed_fri') return [1, 3, 5].includes(d.getDay());
     if (type === 'monthly') {
       const start = parseLocalDate(String(p.createdAt || '').slice(0, 10));
@@ -188,8 +214,8 @@
     return Number.isFinite(delta) && delta >= 0 && delta % interval === 0;
   }
 
-  function shouldGenerateForDate(project, date = localToday()) {
-    return normalizeProject(project).status === 'active' && isScheduledDate(project, date) && !projectQuizzes(project.id).some(x => quizDate(x) === date);
+  function shouldGenerateForDate(project, date = generationDate(project)) {
+    return normalizeProject(project).status === 'active' && isScheduledDate(project, date) && !generationPeriodQuiz(project, date);
   }
 
   function nextSequenceNo(projectId) {
@@ -374,7 +400,7 @@
     const results = await Promise.all([
       cloudClient.from('hani_newsroom_posts').select(select).eq('user_id', cloudUser.id).order('published_at', {ascending:false}).limit(60),
       cloudClient.from('hani_newsroom_posts').select(select).eq('user_id', cloudUser.id).eq('post_type', 'WEEKLY').order('published_at', {ascending:false}).limit(6),
-    ]);
+    ]).catch(() => { throw new Error('출제용 뉴스 조회에 실패했습니다. 잠시 후 다시 시도해 주세요.'); });
     if (results.some(result => result.error)) throw new Error('출제용 뉴스 조회에 실패했습니다. 기초문제로 조용히 대체하지 않습니다. 잠시 후 다시 시도해 주세요.');
     return newsroomQuestionSources(results.flatMap(result => result.data || []));
   }
@@ -641,7 +667,7 @@
     const previous=recentQuestions(project.id);
     const recentPrompts=previous.map(x=>questionFocus(x.prompt).slice(0,260)).filter(Boolean).slice(-40);
     const requestBody = {
-        local_date: localToday(),
+        local_date: generationDate(project),
         project: {
           id: project.id,
           name: project.name,
@@ -702,7 +728,11 @@
       });
       const result = await res.json().catch(() => ({}));
       if ((!res.ok || result?.ok === false) && result?.error === 'QUIZ_NEWS_MATERIAL_MISSING' && attempt < 8) continue;
-      if (!res.ok || result?.ok === false) throw new Error(quizFailureMessage(result, res.status));
+      if (!res.ok || result?.ok === false) {
+        const failure = new Error(quizFailureMessage(result, res.status));
+        failure.code = result?.error || `HTTP_${res.status}`;
+        throw failure;
+      }
       const questions = Array.isArray(result?.quiz?.questions) ? result.quiz.questions.map(normalizeQuestion) : [];
       if (!questions.length) throw new Error('퀴즈 생성 결과에 유효한 문제가 없습니다.');
       const ordered = questions.slice().sort((a,b) => Number(hasNewsMaterial(b,questionSources)) - Number(hasNewsMaterial(a,questionSources)));
@@ -1206,7 +1236,7 @@
       main.innerHTML = `<div class="study-card-v02984 study-main-empty"><div><b>학습 프로젝트를 선택해 주세요.</b><span>왼쪽에서 프로젝트를 만들면 Daily Quiz가 시작됩니다.</span></div></div>`;
       return;
     }
-    const view = normalizeProject(project), date = localToday(), allQuizzes = projectQuizzes(project.id), todayQuiz = allQuizzes.find(x => quizDate(x) === date), pending = allQuizzes.filter(x => x.status !== 'completed'), completed = allQuizzes.filter(x => x.status === 'completed'), archiveMonths = [...new Set(allQuizzes.map(x => quizDate(x).slice(0,7)).filter(x => /^\d{4}-\d{2}$/.test(x)))].sort((a,b)=>b.localeCompare(a)), filteredQuizzes = quizArchiveMonth === 'all' ? allQuizzes : allQuizzes.filter(x => quizDate(x).startsWith(quizArchiveMonth)), archivePages = Math.max(1, Math.ceil(filteredQuizzes.length / QUIZ_ARCHIVE_PAGE_SIZE));
+    const view = normalizeProject(project), date = generationDate(project), allQuizzes = projectQuizzes(project.id), todayQuiz = generationPeriodQuiz(project, date), pending = allQuizzes.filter(x => x.status !== 'completed'), completed = allQuizzes.filter(x => x.status === 'completed'), archiveMonths = [...new Set(allQuizzes.map(x => quizDate(x).slice(0,7)).filter(x => /^\d{4}-\d{2}$/.test(x)))].sort((a,b)=>b.localeCompare(a)), filteredQuizzes = quizArchiveMonth === 'all' ? allQuizzes : allQuizzes.filter(x => quizDate(x).startsWith(quizArchiveMonth)), archivePages = Math.max(1, Math.ceil(filteredQuizzes.length / QUIZ_ARCHIVE_PAGE_SIZE));
     quizArchivePage = Math.min(archivePages, Math.max(1, quizArchivePage));
     const quizzes = filteredQuizzes.slice((quizArchivePage - 1) * QUIZ_ARCHIVE_PAGE_SIZE, quizArchivePage * QUIZ_ARCHIVE_PAGE_SIZE);
     const scheduled = isScheduledDate(project, date), failed = generationFailures.get(generationKey(project)) || '', paused = view.status === 'paused';
@@ -1216,10 +1246,10 @@
       <details class="study-learning-board-collapsible" ${learningBoardOpen?'open':''}>
         <summary><span><b>${safe(project.name)} Learning Board</b></span><em>${learningBoardOpen?'접기':'열기'}</em></summary>
         <div class="study-card-v02984 study-today-card">
-        <div class="study-today-top"><div class="study-today-title"><span>${safe(view.category.toUpperCase())} · ${safe(date)}</span><b>${safe(project.name)} Learning Board</b></div>${todayQuiz?.status === 'completed' ? `<div class="study-score">${safe(quizStatusLabel(todayQuiz))}</div>` : paused ? '<span class="study-status in_progress">학습 중지</span>' : `<button class="btn primary" id="studyGenerateQuiz" type="button" ${busy ? 'disabled' : ''}>${todayQuiz ? '오늘 세트 열기' : busy ? '생성 중…' : failed ? '다시 생성' : view.scheduleType === 'manual' ? '문제세트 생성' : scheduled ? '오늘 세트 생성' : '수동 생성'}</button>`}</div>
+        <div class="study-today-top"><div class="study-today-title"><span>${safe(view.category.toUpperCase())} · ${safe(date)}</span><b>${safe(project.name)} Learning Board</b></div>${todayQuiz?.status === 'completed' ? `<div class="study-score">${safe(quizStatusLabel(todayQuiz))}</div>` : paused ? '<span class="study-status in_progress">학습 중지</span>' : `<button class="btn primary" id="studyGenerateQuiz" type="button" ${busy ? 'disabled' : ''}>${todayQuiz ? (view.scheduleType === 'weekly' ? '이번 주 세트 열기' : '오늘 세트 열기') : busy ? '생성 중…' : failed ? (view.scheduleType === 'weekly' ? '다시 시도' : '다시 생성') : view.scheduleType === 'manual' ? '문제세트 생성' : scheduled ? '오늘 세트 생성' : '수동 생성'}</button>`}</div>
         <div class="study-project-summary"><span class="study-chip">${safe(SCHEDULE_LABELS[view.scheduleType])}</span><span class="study-chip">${view.quizSize}문제</span>${view.examDate ? `<span class="study-chip">시험 ${safe(view.examDate)}</span>` : ''}${view.focusAreas.map(x => `<span class="study-chip">${safe(x)}</span>`).join('')}</div>
         ${view.category === 'economy' ? `<div class="note">새 세트는 최근 뉴스·기업·거시경제 사례와 개념 문제를 함께 구성합니다. ${usesBasicNewsBalance(project) ? '기초 과정은 뉴스 소재를 약 1/4 이내, 핵심 개념 확인·단일 인과 문항을 약 1/3 이상으로 구성하며 난이도 설정은 유지합니다.' : '뉴스 자료가 있으면 약 1/3 이상을 실제 사례로 출제하며 난이도 설정은 유지합니다.'} 이미 생성된 세트는 다시 쓰지 않습니다.</div>` : ''}
-        <div class="note" role="status" style="margin-top:8px">${paused ? '일시중지 상태입니다. 기존 문제세트와 오답은 계속 볼 수 있으며 새 문제 생성은 차단됩니다.' : failed ? `${safe(failed)} · 버튼으로 한 번씩 다시 시도할 수 있습니다.` : scheduled ? '오늘은 자동 생성 대상일입니다. 프로젝트 진입 시 세트가 없으면 한 번만 요청합니다.' : '오늘은 정기 생성일이 아닙니다. 필요하면 수동으로 생성할 수 있습니다.'}${pending.filter(x => quizDate(x) < date).length ? ` · 지난 미완료 ${pending.filter(x => quizDate(x) < date).length}개` : ''}</div>
+        <div class="note" role="status" style="margin-top:8px">${view.scheduleType === 'weekly' ? safe(weeklyStudyStatus(project)) : paused ? '일시중지 상태입니다. 기존 문제세트와 오답은 계속 볼 수 있으며 새 문제 생성은 차단됩니다.' : failed ? `${safe(failed)} · 버튼으로 한 번씩 다시 시도할 수 있습니다.` : scheduled ? '오늘은 자동 생성 대상일입니다. 프로젝트 진입 시 세트가 없으면 한 번만 요청합니다.' : '오늘은 정기 생성일이 아닙니다. 필요하면 수동으로 생성할 수 있습니다.'}${pending.filter(x => quizDate(x) < date).length ? ` · 지난 미완료 ${pending.filter(x => quizDate(x) < date).length}개` : ''}</div>
         <div class="study-project-tools"><button class="btn sm" type="button" id="studyProjectEdit">설정 수정</button>${paused ? '<button class="btn sm primary" type="button" id="studyProjectResume">학습 재개</button>' : '<button class="btn sm" type="button" id="studyProjectPause">학습 중지</button>'}<button class="btn sm" type="button" id="studyProjectComplete">프로젝트 종료</button><button class="btn sm ghost" type="button" id="studyProjectDelete">프로젝트 삭제</button></div>
         </div>
       </details>
@@ -1246,7 +1276,7 @@
     bindQuestionDisputes(main);
     bindTutorReviewCopy(main);
     q('[data-study-exam-open]', main)?.addEventListener('click', () => openExam(activeQuiz));
-    if (autoGenerate) maybeAutoGenerate(project);
+    if (autoGenerate && view.scheduleType !== 'weekly') maybeAutoGenerate(project);
   }
 
   function pendingLearningQuizzes() {
@@ -1344,6 +1374,7 @@
     } else if (activeStudyTab === 'wrong') renderWrongTab();
     else renderHistory();
     renderOrphanArchive();
+    if (autoGenerate) void retryWeeklyStudies();
   }
 
   function toggleProjectForm(show) {
@@ -1450,11 +1481,67 @@
   }
 
   function maybeAutoGenerate(project) {
-    const date = localToday(), key = generationKey(project);
+    const date = generationDate(project), key = generationKey(project);
     if (!shouldGenerateForDate(project, date) || generationFailures.has(key) || autoGenerationAttempts.has(key) || busy) return false;
     autoGenerationAttempts.add(key);
-    Promise.resolve().then(() => generateTodayQuiz(project, { automatic: true }));
+    void generateTodayQuiz(project, { automatic: true });
     return true;
+  }
+
+  function studyFailureReason(error) {
+    const text = `${error?.code || ''} ${error?.message || error || ''}`;
+    if (/로그인|세션|인증|JWT|token|UNAUTHORIZED|AUTH|HTTP_40[13]/i.test(text)) return '로그인이 필요해요. 로그인 후 다시 시도해 주세요.';
+    if (/출제용 뉴스 조회|최근 21일.*뉴스|NEWS_SOURCES_UNAVAILABLE/i.test(text)) return '뉴스를 아직 못 불러왔어요. 뉴스룸을 갱신한 뒤 다시 시도해 주세요.';
+    if (/QUIZ_QUALITY|QUIZ_NEWS_MATERIAL|검증|유효한 문제|문항|불완전|불일치|뉴스·기업 사례|기초 과정의 뉴스|JLPT 수준/i.test(text) && !/저장 검증/.test(text)) return '문제 검사에서 빠졌어요. 다시 시도해 주세요.';
+    if (/저장/.test(text)) return '학습을 저장하지 못했어요. 기존 기록은 그대로예요. 다시 시도해 주세요.';
+    if (/fetch|network|timeout|연결|시간 초과|HTTP_5/i.test(text)) return '연결이 원활하지 않아요. 잠시 후 다시 시도해 주세요.';
+    return '학습을 준비하지 못했어요. 잠시 후 다시 시도해 주세요.';
+  }
+
+  function weeklyStudyStatus(project) {
+    if (generationPeriodQuiz(project)) return '이번 주 학습 준비 완료';
+    if (normalizeProject(project).status !== 'active') return '이번 주 학습 · 학습 중지 상태예요.';
+    if (busy && generationProjectId === project.id) return '이번 주 학습 준비 중';
+    const failure = generationFailures.get(generationKey(project));
+    return failure || '이번 주 학습 준비 중';
+  }
+
+  async function retryWeeklyStudies(newVisit = false) {
+    const projects = activeProjects().filter(project => normalizeProject(project).scheduleType === 'weekly');
+    const user = typeof cloudUser !== 'undefined' ? String(cloudUser?.id || '') : '';
+    if (newVisit || weeklyAttemptUser !== user) {
+      weeklyAttemptUser = user;
+      for (const project of projects) {
+        if (busy && generationProjectId === project.id) continue;
+        autoGenerationAttempts.delete(generationKey(project));
+        generationFailures.delete(generationKey(project));
+      }
+    }
+    if (weeklyAutoRunning || busy) return false;
+    weeklyAutoRunning = true;
+    try {
+      for (const project of projects) {
+        const key = generationKey(project);
+        if (!shouldGenerateForDate(project) || autoGenerationAttempts.has(key) || generationFailures.has(key)) continue;
+        autoGenerationAttempts.add(key);
+        await generateTodayQuiz(project, {automatic:true});
+      }
+    } finally {
+      weeklyAutoRunning = false;
+    }
+    return true;
+  }
+
+  function bindStudyLifecycle() {
+    if (studyLifecycleBound) return;
+    studyLifecycleBound = true;
+    let wasHidden = document.visibilityState === 'hidden';
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') { wasHidden = true; return; }
+      if (document.visibilityState !== 'visible' || !wasHidden) return;
+      wasHidden = false;
+      void retryWeeklyStudies(true);
+    });
   }
 
   async function generateTodayQuiz(project, { automatic = false } = {}) {
@@ -1465,20 +1552,21 @@
       }
       return false;
     }
-    const date = localToday(), key = generationKey(project);
+    const date = generationDate(project), key = generationKey(project);
     if (automatic && generationFailures.has(key)) return false;
-    const existing = projectQuizzes(project.id).find(x => quizDate(x) === date);
-    if (existing) return selectQuiz(existing.id);
+    const existing = generationPeriodQuiz(project, date);
+    if (existing) return automatic && normalizeProject(project).scheduleType === 'weekly' ? false : selectQuiz(existing.id);
     if (busy) return;
     if (!automatic) autoGenerationAttempts.add(key);
     busy = true;
+    generationProjectId = project.id;
     renderLearning(false);
     try {
       const quizSize = normalizeProject(project).quizSize;
       if (!automatic && typeof haniWorkShow === 'function') haniWorkShow({agent:'hina', title:`히나가 오늘의 ${quizSize}문제를 만들고 있어요!`, step:'HINA · DAILY QUIZ', message:'최근 오답과 프로젝트 목표를 보고 새 문제를 구성합니다.'});
       const questions = await quizApi(project);
-      const duplicate = projectQuizzes(project.id).find(x => quizDate(x) === date);
-      if (duplicate) return selectQuiz(duplicate.id);
+      const duplicate = generationPeriodQuiz(project, date);
+      if (duplicate) return automatic && normalizeProject(project).scheduleType === 'weekly' ? false : selectQuiz(duplicate.id);
       const sequenceNo = nextSequenceNo(project.id);
       const quiz = normalizeQuiz({ projectId: project.id, date, scheduledDate:date, sequenceNo, title:`${project.name} 문제세트 #${String(sequenceNo).padStart(3, '0')}`, status:'pending', questions, answers:Array(questions.length).fill(null), total:questions.length });
       if (!persistGeneratedQuiz(project, quiz)) throw new Error('퀴즈 저장 검증에 실패했습니다.');
@@ -1486,12 +1574,16 @@
       if (!automatic && typeof haniWorkFinish === 'function') haniWorkFinish(true, `오늘의 ${questions.length}문제 준비 완료!`);
       if (!automatic && typeof haniWorkHide === 'function') haniWorkHide(700);
     } catch (e) {
-      generationFailures.set(key, `${automatic ? '자동' : '수동'} 생성 실패 · ${e?.message || String(e)}`);
+      generationFailures.set(key, normalizeProject(project).scheduleType === 'weekly'
+        ? `생성 실패: ${studyFailureReason(e)}`
+        : `${automatic ? '자동' : '수동'} 생성 실패 · ${e?.message || String(e)}`);
       if (!automatic && typeof haniWorkFinish === 'function') haniWorkFinish(false, `${project.name} · 퀴즈 생성 실패`);
       if (!automatic && typeof haniWorkHide === 'function') haniWorkHide(900);
     } finally {
       busy = false;
+      generationProjectId = '';
       renderLearning(false);
+      if (!weeklyAutoRunning) void retryWeeklyStudies();
     }
   }
 
@@ -1561,13 +1653,13 @@
     return true;
   }
 
-  function derivedLearningTasks(date = localToday()) {
+  function derivedLearningTasks(date) {
     const rows = [];
     for (const project of activeProjects()) {
-      const quizzes = projectQuizzes(project.id);
-      if (!quizzes.some(x => quizDate(x) === date) && isScheduledDate(project, date)) rows.push({projectId:project.id, quizId:'', due:date, text:project.name+' · 오늘 문제세트', sub:'생성 대상', overdue:false});
+      const due = date || generationDate(project);
+      if (shouldGenerateForDate(project, due)) rows.push({projectId:project.id, quizId:'', due, text:project.name+' · 오늘 문제세트', sub:'생성 대상', overdue:false});
     }
-    for (const quiz of pendingLearningQuizzes()) rows.push({projectId:quiz.projectId, quizId:quiz.id, due:quizDate(quiz), text:projectById(quiz.projectId).name+' · 문제세트', sub:quiz.status === 'in_progress' ? '풀이 중' : '미완료', overdue:quizDate(quiz)<date});
+    for (const quiz of pendingLearningQuizzes()) rows.push({projectId:quiz.projectId, quizId:quiz.id, due:quizDate(quiz), text:projectById(quiz.projectId).name+' · 문제세트', sub:quiz.status === 'in_progress' ? '풀이 중' : '미완료', overdue:quizDate(quiz)<(date || generationDate(projectById(quiz.projectId)))});
     return rows.sort((a,b) => String(a.due).localeCompare(String(b.due)));
   }
 
@@ -1617,6 +1709,7 @@
     bindStaticEvents();
     patchCoreHooks();
     patchVersionSurface();
+    bindStudyLifecycle();
     renderLearning();
     renderHomeDerived();
     window.HANI_STUDY_V02984_AUDIT = () => ({
