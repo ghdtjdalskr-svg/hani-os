@@ -74,7 +74,7 @@ export function runBoardCases(api, assert) {
 export function runRenderCases(source, assert, evaluate) {
   let mounts=0,reads=0,writes=0;
   const calls=[],cards=new Map(),count={textContent:''};
-  const node=()=>({textContent:'',dataset:{},onclick:null});
+  const node=()=>({textContent:'',dataset:{},onclick:null,attributes:{},setAttribute(name,value){this.attributes[name]=value}});
   const root={children:[],querySelector(selector){return cards.get(selector.match(/data-pb-card="([^"]+)"/)[1])}};
   Object.defineProperty(root,'innerHTML',{set(html){
     mounts++;root.children=[];
