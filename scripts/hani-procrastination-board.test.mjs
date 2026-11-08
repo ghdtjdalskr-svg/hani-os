@@ -1,3 +1,5 @@
+import './hani-pb-chibitoon-legacy-preload.mjs';
+import {readLegacyPbFile} from './hani-pb-chibitoon-legacy-preload.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -42,7 +44,7 @@ test('exact inverse restores all pre-existing menu, view, event and render bytes
   assert.equal(read('hani-ui-v02992.js'),readBranchBaseline('hani-ui-v02992.js'),'existing UI owner untouched');
 });
 test('existing artwork is reachable in the runtime closure, within 200 files',async()=>{
-  const closure=await resolveRuntimeClosure({exists:file=>fs.existsSync(new URL('../'+file,import.meta.url)),read:file=>readRawLifeFile(new URL('../'+file,import.meta.url))});
+  const closure=await resolveRuntimeClosure({exists:file=>fs.existsSync(new URL('../'+file,import.meta.url)),read:file=>readLegacyPbFile(new URL('../'+file,import.meta.url))});
   assert.deepEqual(closure.missing,[]);assert.ok(closure.files.length<=200);
   for(const file of ['hani-procrastination-board.js','hani-procrastination-board.css',...Object.values(window.HaniProcrastination.project({})).map(r=>r.staff.image.replace(/^\.\//,''))])assert.ok(closure.files.includes(file),file);
 });

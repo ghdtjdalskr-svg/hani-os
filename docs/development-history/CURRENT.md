@@ -1,3 +1,7 @@
+# 2026-11-08 · tooling-284 · 2.9.284 시험 기준 갱신 (Codex)
+
+`hani/tooling-284` / 지정·로컬 base `5c375d9` / Git 명령 금지·원격 새 조회 없음. 공통 JSON release inverse·치비툰→283→생활/M9 체인 정리, 기존 assertion·fixture pin 보존. **지정 기능·nav/UI PASS, office69파일 745통과·35Git차단·3skip·기타실패0, 기존 m9-link packaging1FAIL 유지.** 런타임498 origin/main 바이트 동일·시험 부산물 복원·새PNG제거. Git/commit/배포 없음, 서윤 검토·Git 재검증·커밋 인계. Notion 쓰기는 자동 승인 never 거절로 갱신 대기. [짧은 보고서](../../artifacts/tooling-284/REPORT.md) · [인수인계](handoffs/2026-11-08-tooling-284.md). 아래 기존 기록 보존.
+
 # 2026-11-08 · tooling-283 후속 office 8개 (Codex)
 
 `hani/tooling-283` / base `a28918d`(기존 기록·Git 금지로 새 조회 없음). 시험8개가 283·생활 묶음 exact inverse preload를 자체 연결, assertion·고정 pin·Git 호출 보존. **대상110통과·6Git차단, office69파일745통과·35Git차단·3skip·기타실패0, 기존 성공41파일 전부 유지.** 부산물JSON4개 복원·런타임497바이트 동일·범위 밖 변경0. Git/commit/배포 없음, 서윤 실제 Git 재검증·커밋 인계. Notion 쓰기는 자동 승인 never 거절로 갱신 대기. [짧은 보고서](../../artifacts/tooling-283/REPORT-b.md) · [인수인계](handoffs/2026-11-08-tooling-283-b.md). 아래 기존 기록 보존.
