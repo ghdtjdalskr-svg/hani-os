@@ -1,0 +1,70 @@
+﻿✖ raw runtime passes every original functional and persistent-render assertion (9.1704ms)
+✖ legacy assertions are retained verbatim; the synthetic DOM only gains setAttribute support (1.2952ms)
+✔ all dialogue, labels, stage calculations, routes and read models remain identical except retired images (1.7127ms)
+✔ outer inverses restore complete bytes and reject drift, duplicate and repeated restoration (27.4005ms)
+✔ one byte-identical literal sheet is reachable; raw closure reports exact additions/removals (87.9748ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 3
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 146.8845
+
+✖ failing tests:
+
+test at scripts\hani-pb-chibitoon.test.mjs:13:1
+✖ raw runtime passes every original functional and persistent-render assertion (9.1704ms)
+  TypeError: card.querySelector(...).setAttribute is not a function
+      at Object.render (evalmachine.<anonymous>:109:42)
+      at runRenderCases (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pb-toon/scripts/hani-procrastination-cases.mjs:93:7)
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pb-toon/scripts/hani-pb-chibitoon.test.mjs:15:3)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+
+test at scripts\hani-pb-chibitoon.test.mjs:19:1
+✖ legacy assertions are retained verbatim; the synthetic DOM only gains setAttribute support (1.2952ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  ... Skipped lines
+  
+    "import test from 'node:test';\n" +
+      "import assert from 'node:assert/strict';\n" +
+      "import fs from 'node:fs';\n" +
+      "import vm from 'node:vm';\n" +
+      "import {runBoardCases,makeBoardFixture,runRenderCases} from './hani-procrastination-cases.mjs';\n" +
+      "import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';\n" +
+  +   "import {readLifeBaseline as readBranchBaseline} from './hani-life-bundle-source.mjs';\n" +
+  +   "import {readLifeSource,restoreLifeLayer,readRawLifeFile} from './hani-life-bundle-source.mjs';\n" +
+  -   "import {readBranchBaseline} from './hani-regression-baseline.mjs';\n" +
+  -   "import {readLifeSource,restoreLifeLayer} from './hani-life-bundle-source.mjs';\n" +
+      "const read=file=>readLifeSource(file,'procrastination');\n" +
+      "const source=read('hani-procrastination-board.js'),main=read('hani-main.js'),html=read('index.html');\n" +
+      'const writes=[];\n' +
+      "const forbidden=new Proxy({}, {get:(_target,name)=>{writes.push(String(name));throw new Error('Forbidden side effect '+String(name))}});\n" +
+      'const window={},context=vm.createContext({window,localStorage:forbidden,sessionStorage:forbidden,fetch:forbidden,setTimeout:forbidden,setInterval:forbidden});\n' +
+  ...
+      "test('existing artwork is reachable in the runtime closure, within 200 files',async()=>{\n" +
+  +   "  const closure=await resolveRuntimeClosure({exists:file=>fs.existsSync(new URL('../'+file,import.meta.url)),read:file=>readRawLifeFile(new URL('../'+file,import.meta.url))});\n" +
+  -   "  const closure=await resolveRuntimeClosure({exists:file=>fs.existsSync(new URL('../'+file,import.meta.url)),read:file=>fs.readFileSync(new URL('../'+file,import.meta.url))});\n" +
+      '  assert.deepEqual(closure.missing,[]);assert.ok(closure.files.length<=200);\n' +
+      "  for(const file of ['hani-procrastination-board.js','hani-procrastination-board.css',...Object.values(window.HaniProcrastination.project({})).map(r=>r.staff.image.replace(/^\\.\\//,''))])assert.ok(closure.files.includes(file),file);\n" +
+      '});\n'
+  
+      at TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pb-toon/scripts/hani-pb-chibitoon.test.mjs:22:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport fs from 'node:fs';\nimport vm from 'node:vm';\nimport {runBoardCases,makeBoardFixture,runRenderCases} from './hani-procrastination-cases.mjs';\nimport {resolveRuntimeClosure} from './hani-runtime-closure.mjs';\nimport {readLifeBaseline as readBranchBaseline} from './hani-life-bundle-source.mjs';\nimport {readLifeSource,restoreLifeLayer,readRawLifeFile} from './hani-life-bundle-source.mjs';\nconst read=file=>readLifeSource(file,'procrastination');\nconst source=read('hani-procrastination-board.js'),main=read('hani-main.js'),html=read('index.html');\n...",
+    expected: "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport fs from 'node:fs';\nimport vm from 'node:vm';\nimport {runBoardCases,makeBoardFixture,runRenderCases} from './hani-procrastination-cases.mjs';\nimport {resolveRuntimeClosure} from './hani-runtime-closure.mjs';\nimport {readBranchBaseline} from './hani-regression-baseline.mjs';\nimport {readLifeSource,restoreLifeLayer} from './hani-life-bundle-source.mjs';\nconst read=file=>readLifeSource(file,'procrastination');\nconst source=read('hani-procrastination-board.js'),main=read('hani-main.js'),html=read('index.html');\n...",
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

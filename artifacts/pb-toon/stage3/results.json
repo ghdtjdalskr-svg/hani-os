@@ -1,0 +1,1731 @@
+[
+  {
+    "file": "hani-pb-chibitoon.test.mjs",
+    "group": "feature",
+    "exit": 0,
+    "seconds": 0.21,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-pb-chibitoon.test.mjs",
+    "summary": [
+      "# tests 5",
+      "# pass 5",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-procrastination-board.test.mjs",
+    "group": "feature",
+    "exit": 0,
+    "seconds": 0.27,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-procrastination-board.test.mjs",
+    "summary": [
+      "# tests 6",
+      "# pass 6",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-life-bundle-source.test.mjs",
+    "group": "feature",
+    "exit": 0,
+    "seconds": 0.42,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-life-bundle-source.test.mjs",
+    "summary": [
+      "# tests 5",
+      "# pass 5",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "rerun": "No legacy preload: main now tests exact raw release-283 input",
+    "counts": {
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-study-retry.test.mjs",
+    "group": "feature",
+    "exit": 0,
+    "seconds": 0.32,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-study-retry.test.mjs",
+    "summary": [
+      "# tests 26",
+      "# pass 26",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 26,
+      "pass": 26,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-wishlist-quick-add.test.mjs",
+    "group": "feature",
+    "exit": 0,
+    "seconds": 0.14,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-wishlist-quick-add.test.mjs",
+    "summary": [
+      "# tests 7",
+      "# pass 7",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 7,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-dev-report-generate.test.mjs",
+    "group": "feature",
+    "exit": 0,
+    "seconds": 0.32,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-dev-report-generate.test.mjs",
+    "summary": [
+      "PASS 형식·3~5개 균등 묶음·범위 정확·캐릭터 직급·원자료/수동 보고서/runtime 바이트 보존",
+      "PASS 같은 입력·출처의 출력 완전 동일, 두 번째 write 0, check drift 감지·쓰기 0",
+      "PASS 잘못된 범위·누락·중복·미배포·잘못된 날짜·기존 묶음 중복은 쓰기 전 차단",
+      "PASS 개인정보·금액·건강 수치·인증정보·금지 호칭·깨진 글자 거절, raw handoff 비노출",
+      "PASS 기본 릴리스당 1편·추가 실행 기존 목록 보존·Git 불가와 편집자료 부재 명시·CLI",
+      "PASS 손상된 목록 marker 차단",
+      "PASS 실제 localGit 함수: 고정 커밋 로컬 조회만, 제목·본문에서 PR 번호만 추출·원문 비노출, Git 거부 명시",
+      "PASS 실제 v230~280 51건/13편, 민감 패턴 0, 링크 존재, 실제 renderer 형식/검색/검토대기 허용·현재 앱 미반영 확인",
+      "PASS 실제 DOM renderer 실행: 파일만 추가 시 앱 목록 불변, VM에서 번들 데이터 교체 시 새 목록·본문·검색 동작, fetch/저장 접근 0",
+      "PASS 실제 번들31편·기존18편·재생성13편·renderer 목록/본문/검색, catalog8→9 exact inverse·이 시험의 디스크 빌더 실행0",
+      "PASS 개발보고서 생성기 10그룹",
+      "# tests 1",
+      "# pass 1",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-actions-216.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 40.53,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-actions-216.test.mjs",
+    "summary": [
+      "not ok 7 - approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 15",
+      "# pass 14",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 15,
+      "pass": 14,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 7 - approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-actions-221.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 5.03,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-actions-221.test.mjs",
+    "summary": [
+      "# tests 20",
+      "# pass 20",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 20,
+      "pass": 20,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-affinity.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 11.12,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-affinity.test.mjs",
+    "summary": [
+      "# tests 21",
+      "# pass 21",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 21,
+      "pass": 21,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-affinity-274-pins.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 0.57,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-affinity-274-pins.test.mjs",
+    "summary": [
+      "not ok 3 - 274 base commit independently proves the entire original JS/CSS/helper blobs",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 3",
+      "# pass 2",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 3,
+      "pass": 2,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 3 - 274 base commit independently proves the entire original JS/CSS/helper blobs"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-affinity-cap.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 7.2,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-affinity-cap.test.mjs",
+    "summary": [
+      "# tests 19",
+      "# pass 19",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 19,
+      "pass": 19,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-affinity-storage.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 0.12,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-affinity-storage.test.mjs",
+    "summary": [
+      "# tests 3",
+      "# pass 3",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 3,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-barista.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 7.96,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-barista.test.mjs",
+    "summary": [
+      "# tests 10",
+      "# pass 10",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 10,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-barista-night.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 18.77,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-barista-night.test.mjs",
+    "summary": [
+      "# tests 13",
+      "# pass 13",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 13,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-barista-night-273-pins.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 0.61,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-barista-night-273-pins.test.mjs",
+    "summary": [
+      "not ok 5 - 273: fixed Git release blobs independently prove every baseline pin and complete diff",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 5",
+      "# pass 4",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 5,
+      "pass": 4,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 5 - 273: fixed Git release blobs independently prove every baseline pin and complete diff"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-behavior.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 50.88,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-behavior.test.mjs",
+    "summary": [
+      "# tests 10",
+      "# pass 10",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 10,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-bori-m9.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 68.57,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-bori-m9.test.mjs",
+    "summary": [
+      "# tests 2",
+      "# pass 2",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-bori-stroll.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 219.44,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-bori-stroll.test.mjs",
+    "summary": [
+      "not ok 8 - stroll inverse independently matches the fixed Git base",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 14",
+      "# pass 13",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 14,
+      "pass": 13,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 8 - stroll inverse independently matches the fixed Git base"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-bubble-close.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 8.95,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-bubble-close.test.mjs",
+    "summary": [
+      "# tests 17",
+      "# pass 17",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 17,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-cafe-rest.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 3.3,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-cafe-rest.test.mjs",
+    "summary": [
+      "not ok 1 - cafe route uses clear lower-right floor, retains the lounge and sign mounting surface",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 4",
+      "# pass 3",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 4,
+      "pass": 3,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 1 - cafe route uses clear lower-right floor, retains the lounge and sign mounting surface"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-chairman-234.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 1.19,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-chairman-234.test.mjs",
+    "summary": [
+      "# tests 6",
+      "# pass 6",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-chairman-patrol.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 11.01,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-chairman-patrol.test.mjs",
+    "summary": [
+      "# tests 15",
+      "# pass 15",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-chairman-patrol-278-pins.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 1.3,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-chairman-patrol-278-pins.test.mjs",
+    "summary": [
+      "not ok 2 - 278 independent fixed Git blobs prove pre-patrol bytes",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "not ok 4 - 278 kids extension independently matches its fixed Git base",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "not ok 6 - 278 visit extension independently matches fixed Git base",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "not ok 8 - 278 staff-chat extension independently matches fixed Git base",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "not ok 10 - 278 bubble placement extension independently matches fixed Git base",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "not ok 12 - 278 optimization extension independently matches fixed Git base",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 12",
+      "# pass 6",
+      "# fail 6",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 12,
+      "pass": 6,
+      "fail": 6,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 2 - 278 independent fixed Git blobs prove pre-patrol bytes",
+      "not ok 4 - 278 kids extension independently matches its fixed Git base",
+      "not ok 6 - 278 visit extension independently matches fixed Git base",
+      "not ok 8 - 278 staff-chat extension independently matches fixed Git base",
+      "not ok 10 - 278 bubble placement extension independently matches fixed Git base",
+      "not ok 12 - 278 optimization extension independently matches fixed Git base"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-companion-homes.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 70.8,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-companion-homes.test.mjs",
+    "summary": [
+      "not ok 8 - home extension independently matches the specified fixed Git base",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 16",
+      "# pass 15",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 16,
+      "pass": 15,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 8 - home extension independently matches the specified fixed Git base"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-companions.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 9.9,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-companions.test.mjs",
+    "summary": [
+      "# tests 17",
+      "# pass 17",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 17,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-companions-276-pins.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 0.38,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-companions-276-pins.test.mjs",
+    "summary": [
+      "not ok 2 - 276 fixed Git base independently proves every original blob",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 3",
+      "# pass 2",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 3,
+      "pass": 2,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 2 - 276 fixed Git base independently proves every original blob"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-consult.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 29.66,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-consult.test.mjs",
+    "summary": [
+      "not ok 14 - consult: sofa wording, counter words, safety owners and runtime timers",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 20",
+      "# pass 19",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 20,
+      "pass": 19,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 14 - consult: sofa wording, counter words, safety owners and runtime timers"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-crowded-labels.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 0.83,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-crowded-labels.test.mjs",
+    "summary": [
+      "# tests 19",
+      "# pass 19",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 19,
+      "pass": 19,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-drama.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 20.2,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-drama.test.mjs",
+    "summary": [
+      "# tests 20",
+      "# pass 20",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 20,
+      "pass": 20,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-fix-218.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 2.26,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-fix-218.test.mjs",
+    "summary": [
+      "# tests 6",
+      "# pass 6",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-floor-bubble.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 1.56,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-floor-bubble.test.mjs",
+    "summary": [
+      "# tests 21",
+      "# pass 21",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 21,
+      "pass": 21,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-hd-224.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 2.4,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-hd-224.test.mjs",
+    "summary": [
+      "# tests 10",
+      "# pass 10",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 10,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-icons.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 10.21,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-icons.test.mjs",
+    "summary": [
+      "not ok 14 - icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 15",
+      "# pass 14",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 15,
+      "pass": 14,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 14 - icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-kids-lively.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 14.29,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-kids-lively.test.mjs",
+    "summary": [
+      "# tests 15",
+      "# pass 15",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-kids-visit.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 54.37,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-kids-visit.test.mjs",
+    "summary": [
+      "# tests 16",
+      "# pass 16",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 16,
+      "pass": 16,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-labels-qa.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 6.73,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-labels-qa.test.mjs",
+    "summary": [
+      "# tests 17",
+      "# pass 17",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 17,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-lively.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 27.15,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-lively.test.mjs",
+    "summary": [
+      "# tests 13",
+      "# pass 13",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 13,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-lively-v2.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 20.24,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-lively-v2.test.mjs",
+    "summary": [
+      "not ok 6 - obr2: deterministic query order, reduced motion and frozen spatial bytes",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 8",
+      "# pass 7",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 8,
+      "pass": 7,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 6 - obr2: deterministic query order, reduced motion and frozen spatial bytes"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-mascot-label.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 30.69,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-mascot-label.test.mjs",
+    "summary": [
+      "not ok 7 - outer exact inverse independently restores fixed affinity HEAD and rejects partial/duplicate/unrelated edits",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 10",
+      "# pass 9",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 10,
+      "pass": 9,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 7 - outer exact inverse independently restores fixed affinity HEAD and rejects partial/duplicate/unrelated edits"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-motion-1.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 3.44,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-motion-1.test.mjs",
+    "summary": [
+      "# tests 16",
+      "# pass 16",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 16,
+      "pass": 16,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-motion-2.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 1.1,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-motion-2.test.mjs",
+    "summary": [
+      "# tests 24",
+      "# pass 24",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 24,
+      "pass": 24,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-obr10.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 2.28,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr10.test.mjs",
+    "summary": [
+      "# tests 4",
+      "# pass 4",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 4,
+      "pass": 4,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-obr12.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 0.07,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr12.test.mjs",
+    "summary": [
+      "not ok 1 - scripts\\\\hani-office-obr12.test.mjs",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 1",
+      "# pass 0",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 1,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 1 - scripts\\\\hani-office-obr12.test.mjs"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-obr14.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 105.54,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr14.test.mjs",
+    "summary": [
+      "not ok 1 - 235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 5",
+      "# pass 4",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 5,
+      "pass": 4,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 1 - 235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-obr15.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 11.93,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr15.test.mjs",
+    "summary": [
+      "not ok 7 - obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 14",
+      "# pass 13",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 14,
+      "pass": 13,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 7 - obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-obr16.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 8.06,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr16.test.mjs",
+    "summary": [
+      "# tests 12",
+      "# pass 12",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 12,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-obr17.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 2.38,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr17.test.mjs",
+    "summary": [
+      "# tests 3",
+      "# pass 3",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 3,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-obr18.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 5.9,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr18.test.mjs",
+    "summary": [
+      "# tests 12",
+      "# pass 12",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 12,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-obr19.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 4.02,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr19.test.mjs",
+    "summary": [
+      "# tests 3",
+      "# pass 3",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 3,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-obr21.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 28.11,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr21.test.mjs",
+    "summary": [
+      "not ok 4 - obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "not ok 5 - obr21 cached gathering/index decisions equal full index rebuilds",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 6",
+      "# pass 4",
+      "# fail 2",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 6,
+      "pass": 4,
+      "fail": 2,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 4 - obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+      "not ok 5 - obr21 cached gathering/index decisions equal full index rebuilds"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-obr3.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 2.35,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr3.test.mjs",
+    "summary": [
+      "# tests 5",
+      "# pass 5",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-obr4.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 0.47,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr4.test.mjs",
+    "summary": [
+      "not ok 7 - obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "not ok 8 - obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 10",
+      "# pass 8",
+      "# fail 2",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 10,
+      "pass": 8,
+      "fail": 2,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 7 - obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+      "not ok 8 - obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-obr6.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 0.7,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr6.test.mjs",
+    "summary": [
+      "not ok 1 - scripts\\\\hani-office-obr6.test.mjs",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 1",
+      "# pass 0",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 1,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 1 - scripts\\\\hani-office-obr6.test.mjs"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-obr7.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 0.08,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr7.test.mjs",
+    "summary": [
+      "not ok 1 - scripts\\\\hani-office-obr7.test.mjs",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 1",
+      "# pass 0",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 1,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 1 - scripts\\\\hani-office-obr7.test.mjs"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-obr8.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 2.18,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr8.test.mjs",
+    "summary": [
+      "not ok 1 - obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 3",
+      "# pass 2",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 3,
+      "pass": 2,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 1 - obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-obr9.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 0.08,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr9.test.mjs",
+    "summary": [
+      "not ok 1 - scripts\\\\hani-office-obr9.test.mjs",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 1",
+      "# pass 0",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 1,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 1 - scripts\\\\hani-office-obr9.test.mjs"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-pet-bori.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 45.56,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-pet-bori.test.mjs",
+    "summary": [
+      "# tests 14",
+      "# pass 14",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 14,
+      "pass": 14,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-pet-bori-272-pins.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 0.62,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-pet-bori-272-pins.test.mjs",
+    "summary": [
+      "not ok 4 - 272: fixed Git release blobs independently prove every baseline pin and complete diff",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 4",
+      "# pass 3",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 4,
+      "pass": 3,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 4 - 272: fixed Git release blobs independently prove every baseline pin and complete diff"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-pets-268-pins.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 0.26,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-pets-268-pins.test.mjs",
+    "summary": [
+      "not ok 1 - v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 1",
+      "# pass 0",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 1,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 1 - v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-pets-bubble.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 54.53,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-pets-bubble.test.mjs",
+    "summary": [
+      "not ok 13 - resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 22",
+      "# pass 21",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 22,
+      "pass": 21,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 13 - resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-props.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 4.15,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-props.test.mjs",
+    "summary": [
+      "# tests 11",
+      "# pass 11",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 11,
+      "pass": 11,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-release-projection.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 0.14,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-release-projection.test.mjs",
+    "summary": [
+      "# tests 2",
+      "# pass 2",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-residents.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 77.91,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-residents.test.mjs",
+    "summary": [
+      "# tests 49",
+      "# pass 49",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 49,
+      "pass": 49,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-seats-215.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 0.73,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-seats-215.test.mjs",
+    "summary": [
+      "# tests 12",
+      "# pass 12",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 12,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-snack.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 19.46,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-snack.test.mjs",
+    "summary": [
+      "# tests 26",
+      "# pass 26",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 26,
+      "pass": 26,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-staff-chat.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 77.86,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-staff-chat.test.mjs",
+    "summary": [
+      "# tests 17",
+      "# pass 17",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 17,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-tap-lines.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 2.25,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-tap-lines.test.mjs",
+    "summary": [
+      "# tests 15",
+      "# pass 15",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-tlayout.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 15.19,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-tlayout.test.mjs",
+    "summary": [
+      "# tests 13",
+      "# pass 13",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 13,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-top-labels.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 0.12,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-top-labels.test.mjs",
+    "summary": [
+      "# tests 7",
+      "# pass 7",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 7,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-v2-215.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 0.73,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-v2-215.test.mjs",
+    "summary": [
+      "not ok 7 - frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 20",
+      "# pass 17",
+      "# fail 1",
+      "# skipped 2"
+    ],
+    "counts": {
+      "tests": 20,
+      "pass": 17,
+      "fail": 1,
+      "skipped": 2
+    },
+    "failedAssertions": [
+      "not ok 7 - frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-visitors-cafe.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 3.98,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-visitors-cafe.test.mjs",
+    "summary": [
+      "# tests 5",
+      "# pass 5",
+      "# fail 0",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  },
+  {
+    "file": "hani-office-xmas.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 1.21,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-xmas.test.mjs",
+    "summary": [
+      "not ok 12 - xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 13",
+      "# pass 12",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 13,
+      "pass": 12,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 12 - xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-xmas-269-pins.test.mjs",
+    "group": "office",
+    "exit": 1,
+    "seconds": 0.36,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-xmas-269-pins.test.mjs",
+    "summary": [
+      "not ok 2 - v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit",
+      "  error: 'USER_GIT_DISABLED: task prohibits Git execution'",
+      "  code: 'USER_GIT_DISABLED'",
+      "# tests 2",
+      "# pass 1",
+      "# fail 1",
+      "# skipped 0"
+    ],
+    "counts": {
+      "tests": 2,
+      "pass": 1,
+      "fail": 1,
+      "skipped": 0
+    },
+    "failedAssertions": [
+      "not ok 2 - v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit"
+    ],
+    "status": "GIT_BLOCKED"
+  },
+  {
+    "file": "hani-office-zoom.test.mjs",
+    "group": "office",
+    "exit": 0,
+    "seconds": 14.24,
+    "command": "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-office-zoom.test.mjs",
+    "summary": [
+      "# tests 13",
+      "# pass 12",
+      "# fail 0",
+      "# skipped 1"
+    ],
+    "counts": {
+      "tests": 13,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 1
+    },
+    "failedAssertions": [],
+    "status": "PASS"
+  }
+]

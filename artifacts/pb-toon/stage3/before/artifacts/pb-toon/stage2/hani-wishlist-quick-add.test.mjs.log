@@ -1,0 +1,52 @@
+﻿TAP version 13
+# Subtest: domain table matches real host boundaries and conservative categories
+ok 1 - domain table matches real host boundaries and conservative categories
+  ---
+  duration_ms: 6.1848
+  type: 'test'
+  ...
+# Subtest: only explicit product names and slugs become editable candidates
+ok 2 - only explicit product names and slugs become editable candidates
+  ---
+  duration_ms: 4.1998
+  type: 'test'
+  ...
+# Subtest: tracking cleanup preserves product, variant, repeated parameters and fragment
+ok 3 - tracking cleanup preserves product, variant, repeated parameters and fragment
+  ---
+  duration_ms: 3.584
+  type: 'test'
+  ...
+# Subtest: malformed, credentialed and executable links do nothing safely
+ok 4 - malformed, credentialed and executable links do nothing safely
+  ---
+  duration_ms: 3.7304
+  type: 'test'
+  ...
+# Subtest: input fills only blank existing fields, never price or existing drafts, no save/network/key
+ok 5 - input fills only blank existing fields, never price or existing drafts, no save/network/key
+  ---
+  duration_ms: 3.8699
+  type: 'test'
+  ...
+# Subtest: actual unchanged save owner validates and saves exactly once only on click; edit remains canonical
+ok 6 - actual unchanged save owner validates and saves exactly once only on click; edit remains canonical
+  ---
+  duration_ms: 4.4267
+  type: 'test'
+  ...
+# Subtest: exact inverse preserves all original runtime bytes and save contract; no new network/storage APIs
+ok 7 - exact inverse preserves all original runtime bytes and save contract; no new network/storage APIs
+  ---
+  duration_ms: 22.1434
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 84.8779

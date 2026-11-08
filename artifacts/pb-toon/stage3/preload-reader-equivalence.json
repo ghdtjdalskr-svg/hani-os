@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "legacyRootReads": [
+    {
+      "file": "index.html",
+      "legacyReaderSha256": "2fe92354e02751f5a4a8ece93ea56a4aa819c4bc7536876aee3415f7a5944d6d",
+      "oldAndNewLegacyBytesEqual": true
+    },
+    {
+      "file": "hani-main.js",
+      "legacyReaderSha256": "ef067e9fa7eecd6c7f27c044aa3fd2a14e4e05833174491be2e4e77de40a8c4b",
+      "oldAndNewLegacyBytesEqual": true
+    }
+  ],
+  "changedReader": "readRawLifeFile retains release 283; direct consumers are rerun"
+}

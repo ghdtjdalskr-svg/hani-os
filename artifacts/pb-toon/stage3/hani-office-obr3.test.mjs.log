@@ -1,0 +1,51 @@
+﻿obr3 formal bounds { catalog: 216, away: 184, home: 158, groups: 0 }
+obr3 formal bounds { catalog: 221, away: 183, home: 10740, groups: 1 }
+obr3 companion week [
+  { day: '2026-10-19', groups: 13, trios: 0 },
+  { day: '2026-10-20', groups: 11, trios: 0 },
+  { day: '2026-10-21', groups: 13, trios: 0 },
+  { day: '2026-10-22', groups: 13, trios: 0 },
+  { day: '2026-10-23', groups: 12, trios: 0 },
+  { day: '2026-10-24', groups: 11, trios: 0 },
+  { day: '2026-10-25', groups: 15, trios: 0 }
+]
+TAP version 13
+# Subtest: obr3: every places JSON string is free of file extensions, including keys and nested evidence
+ok 1 - obr3: every places JSON string is free of file extensions, including keys and nested evidence
+  ---
+  duration_ms: 1.988
+  type: 'test'
+  ...
+# Subtest: obr3: formal 216/221 trips obey destination bounds including FIFO waiting; home durations stay exact
+ok 2 - obr3: formal 216/221 trips obey destination bounds including FIFO waiting; home durations stay exact
+  ---
+  duration_ms: 174.5888
+  type: 'test'
+  ...
+# Subtest: obr3: unmapped destination falls back to its room kind, then a 45-second minimum
+ok 3 - obr3: unmapped destination falls back to its room kind, then a 45-second minimum
+  ---
+  duration_ms: 53.8651
+  type: 'test'
+  ...
+# Subtest: obr3: staff companionship fits 09:00–19:30, avoids consult/reception, and cross-floor companionship stays ≤2 per person/day
+ok 4 - obr3: staff companionship fits 09:00–19:30, avoids consult/reception, and cross-floor companionship stays ≤2 per person/day
+  ---
+  duration_ms: 1519.7381
+  type: 'test'
+  ...
+# Subtest: obr3: explicit human presence retains its reserved seat; staff leisure does not invite the chairman or virtual MIR
+ok 5 - obr3: explicit human presence retains its reserved seat; staff leisure does not invite the chairman or virtual MIR
+  ---
+  duration_ms: 502.0966
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2275.5188

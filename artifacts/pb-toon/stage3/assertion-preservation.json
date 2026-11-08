@@ -1,0 +1,7 @@
+{
+  "status": "PASS",
+  "main": "dca9ecf5ae3b49f94e94f3a5ba4072020905bfbf",
+  "helper": "main helper plus setAttribute support only",
+  "legacyTest": "main original plus existing preload import only; checked by pb-chibitoon",
+  "preloadSource": "chibitoon inverse only; main owns release-283 projection; legacy output equivalence checked separately"
+}

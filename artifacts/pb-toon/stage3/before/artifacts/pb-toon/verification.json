@@ -1,0 +1,559 @@
+{
+  "source": "C:\\Users\\홍성민\\.codex-2\\generated_images\\01a1bab1-17bb-7550-a849-b42cb9f1b1e6\\exec-71d4b97a-e0e6-4cbf-870e-ca186ba11783.png",
+  "width": 1536,
+  "height": 1280,
+  "cell": 256,
+  "rows": [
+    "naeun",
+    "hina",
+    "jieun",
+    "haru",
+    "minji"
+  ],
+  "columns": [
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "unknown"
+  ],
+  "cells": [
+    {
+      "employee": "naeun",
+      "state": 0,
+      "sourceBox": {
+        "left": 63,
+        "top": 41,
+        "width": 137,
+        "height": 185
+      },
+      "visiblePixels": 12987,
+      "placed": {
+        "left": 48,
+        "top": 28,
+        "width": 160,
+        "height": 216
+      }
+    },
+    {
+      "employee": "naeun",
+      "state": 1,
+      "sourceBox": {
+        "left": 62,
+        "top": 41,
+        "width": 119,
+        "height": 185
+      },
+      "visiblePixels": 12454,
+      "placed": {
+        "left": 315,
+        "top": 28,
+        "width": 139,
+        "height": 216
+      }
+    },
+    {
+      "employee": "naeun",
+      "state": 2,
+      "sourceBox": {
+        "left": 56,
+        "top": 40,
+        "width": 131,
+        "height": 185
+      },
+      "visiblePixels": 13282,
+      "placed": {
+        "left": 564,
+        "top": 28,
+        "width": 153,
+        "height": 216
+      }
+    },
+    {
+      "employee": "naeun",
+      "state": 3,
+      "sourceBox": {
+        "left": 47,
+        "top": 40,
+        "width": 132,
+        "height": 187
+      },
+      "visiblePixels": 12684,
+      "placed": {
+        "left": 820,
+        "top": 28,
+        "width": 152,
+        "height": 216
+      }
+    },
+    {
+      "employee": "naeun",
+      "state": 4,
+      "sourceBox": {
+        "left": 46,
+        "top": 48,
+        "width": 124,
+        "height": 178
+      },
+      "visiblePixels": 14196,
+      "placed": {
+        "left": 1118,
+        "top": 28,
+        "width": 150,
+        "height": 216
+      }
+    },
+    {
+      "employee": "naeun",
+      "state": "unknown",
+      "sourceBox": {
+        "left": 42,
+        "top": 40,
+        "width": 126,
+        "height": 186
+      },
+      "visiblePixels": 12856,
+      "placed": {
+        "left": 1335,
+        "top": 28,
+        "width": 146,
+        "height": 216
+      }
+    },
+    {
+      "employee": "hina",
+      "state": 0,
+      "sourceBox": {
+        "left": 67,
+        "top": 20,
+        "width": 133,
+        "height": 200
+      },
+      "visiblePixels": 13299,
+      "placed": {
+        "left": 56,
+        "top": 284,
+        "width": 144,
+        "height": 216
+      }
+    },
+    {
+      "employee": "hina",
+      "state": 1,
+      "sourceBox": {
+        "left": 69,
+        "top": 20,
+        "width": 106,
+        "height": 199
+      },
+      "visiblePixels": 12560,
+      "placed": {
+        "left": 327,
+        "top": 284,
+        "width": 115,
+        "height": 216
+      }
+    },
+    {
+      "employee": "hina",
+      "state": 2,
+      "sourceBox": {
+        "left": 64,
+        "top": 20,
+        "width": 124,
+        "height": 199
+      },
+      "visiblePixels": 13834,
+      "placed": {
+        "left": 573,
+        "top": 284,
+        "width": 135,
+        "height": 216
+      }
+    },
+    {
+      "employee": "hina",
+      "state": 3,
+      "sourceBox": {
+        "left": 53,
+        "top": 22,
+        "width": 127,
+        "height": 197
+      },
+      "visiblePixels": 13150,
+      "placed": {
+        "left": 827,
+        "top": 284,
+        "width": 139,
+        "height": 216
+      }
+    },
+    {
+      "employee": "hina",
+      "state": 4,
+      "sourceBox": {
+        "left": 49,
+        "top": 39,
+        "width": 121,
+        "height": 180
+      },
+      "visiblePixels": 13102,
+      "placed": {
+        "left": 1123,
+        "top": 284,
+        "width": 145,
+        "height": 216
+      }
+    },
+    {
+      "employee": "hina",
+      "state": "unknown",
+      "sourceBox": {
+        "left": 48,
+        "top": 21,
+        "width": 120,
+        "height": 199
+      },
+      "visiblePixels": 13074,
+      "placed": {
+        "left": 1343,
+        "top": 284,
+        "width": 130,
+        "height": 216
+      }
+    },
+    {
+      "employee": "jieun",
+      "state": 0,
+      "sourceBox": {
+        "left": 62,
+        "top": 16,
+        "width": 138,
+        "height": 195
+      },
+      "visiblePixels": 14081,
+      "placed": {
+        "left": 52,
+        "top": 540,
+        "width": 153,
+        "height": 216
+      }
+    },
+    {
+      "employee": "jieun",
+      "state": 1,
+      "sourceBox": {
+        "left": 61,
+        "top": 15,
+        "width": 113,
+        "height": 196
+      },
+      "visiblePixels": 13191,
+      "placed": {
+        "left": 322,
+        "top": 540,
+        "width": 125,
+        "height": 216
+      }
+    },
+    {
+      "employee": "jieun",
+      "state": 2,
+      "sourceBox": {
+        "left": 52,
+        "top": 18,
+        "width": 139,
+        "height": 191
+      },
+      "visiblePixels": 14177,
+      "placed": {
+        "left": 562,
+        "top": 540,
+        "width": 157,
+        "height": 216
+      }
+    },
+    {
+      "employee": "jieun",
+      "state": 3,
+      "sourceBox": {
+        "left": 45,
+        "top": 16,
+        "width": 137,
+        "height": 194
+      },
+      "visiblePixels": 13546,
+      "placed": {
+        "left": 820,
+        "top": 540,
+        "width": 153,
+        "height": 216
+      }
+    },
+    {
+      "employee": "jieun",
+      "state": 4,
+      "sourceBox": {
+        "left": 50,
+        "top": 34,
+        "width": 125,
+        "height": 175
+      },
+      "visiblePixels": 13696,
+      "placed": {
+        "left": 1114,
+        "top": 540,
+        "width": 154,
+        "height": 216
+      }
+    },
+    {
+      "employee": "jieun",
+      "state": "unknown",
+      "sourceBox": {
+        "left": 41,
+        "top": 18,
+        "width": 127,
+        "height": 190
+      },
+      "visiblePixels": 13172,
+      "placed": {
+        "left": 1336,
+        "top": 540,
+        "width": 144,
+        "height": 216
+      }
+    },
+    {
+      "employee": "haru",
+      "state": 0,
+      "sourceBox": {
+        "left": 48,
+        "top": 19,
+        "width": 152,
+        "height": 185
+      },
+      "visiblePixels": 17251,
+      "placed": {
+        "left": 40,
+        "top": 796,
+        "width": 177,
+        "height": 216
+      }
+    },
+    {
+      "employee": "haru",
+      "state": 1,
+      "sourceBox": {
+        "left": 55,
+        "top": 17,
+        "width": 144,
+        "height": 187
+      },
+      "visiblePixels": 16732,
+      "placed": {
+        "left": 301,
+        "top": 796,
+        "width": 166,
+        "height": 216
+      }
+    },
+    {
+      "employee": "haru",
+      "state": 2,
+      "sourceBox": {
+        "left": 46,
+        "top": 19,
+        "width": 144,
+        "height": 184
+      },
+      "visiblePixels": 18081,
+      "placed": {
+        "left": 556,
+        "top": 796,
+        "width": 169,
+        "height": 216
+      }
+    },
+    {
+      "employee": "haru",
+      "state": 3,
+      "sourceBox": {
+        "left": 38,
+        "top": 18,
+        "width": 142,
+        "height": 185
+      },
+      "visiblePixels": 15549,
+      "placed": {
+        "left": 813,
+        "top": 796,
+        "width": 166,
+        "height": 216
+      }
+    },
+    {
+      "employee": "haru",
+      "state": 4,
+      "sourceBox": {
+        "left": 32,
+        "top": 35,
+        "width": 149,
+        "height": 170
+      },
+      "visiblePixels": 15898,
+      "placed": {
+        "left": 1079,
+        "top": 796,
+        "width": 189,
+        "height": 216
+      }
+    },
+    {
+      "employee": "haru",
+      "state": "unknown",
+      "sourceBox": {
+        "left": 31,
+        "top": 19,
+        "width": 149,
+        "height": 185
+      },
+      "visiblePixels": 17818,
+      "placed": {
+        "left": 1321,
+        "top": 796,
+        "width": 174,
+        "height": 216
+      }
+    },
+    {
+      "employee": "minji",
+      "state": 0,
+      "sourceBox": {
+        "left": 51,
+        "top": 15,
+        "width": 153,
+        "height": 178
+      },
+      "visiblePixels": 15258,
+      "placed": {
+        "left": 35,
+        "top": 1052,
+        "width": 186,
+        "height": 216
+      }
+    },
+    {
+      "employee": "minji",
+      "state": 1,
+      "sourceBox": {
+        "left": 57,
+        "top": 15,
+        "width": 135,
+        "height": 177
+      },
+      "visiblePixels": 13666,
+      "placed": {
+        "left": 302,
+        "top": 1052,
+        "width": 165,
+        "height": 216
+      }
+    },
+    {
+      "employee": "minji",
+      "state": 2,
+      "sourceBox": {
+        "left": 51,
+        "top": 17,
+        "width": 141,
+        "height": 175
+      },
+      "visiblePixels": 14789,
+      "placed": {
+        "left": 553,
+        "top": 1052,
+        "width": 174,
+        "height": 216
+      }
+    },
+    {
+      "employee": "minji",
+      "state": 3,
+      "sourceBox": {
+        "left": 38,
+        "top": 15,
+        "width": 144,
+        "height": 177
+      },
+      "visiblePixels": 14227,
+      "placed": {
+        "left": 808,
+        "top": 1052,
+        "width": 176,
+        "height": 216
+      }
+    },
+    {
+      "employee": "minji",
+      "state": 4,
+      "sourceBox": {
+        "left": 43,
+        "top": 32,
+        "width": 133,
+        "height": 162
+      },
+      "visiblePixels": 13259,
+      "placed": {
+        "left": 1091,
+        "top": 1052,
+        "width": 177,
+        "height": 216
+      }
+    },
+    {
+      "employee": "minji",
+      "state": "unknown",
+      "sourceBox": {
+        "left": 31,
+        "top": 17,
+        "width": 147,
+        "height": 177
+      },
+      "visiblePixels": 14553,
+      "placed": {
+        "left": 1319,
+        "top": 1052,
+        "width": 179,
+        "height": 216
+      }
+    }
+  ],
+  "transparentPixels": 1092185,
+  "totalPixels": 1966080,
+  "dialogues": [
+    {
+      "employee": "naeun",
+      "state": 2,
+      "line": "저 조금 삐졌어요. 그래도 회장님 컨디션이 먼저예요."
+    },
+    {
+      "employee": "hina",
+      "state": 4,
+      "line": "구석에서 문제지 안고 있을래용… 힌트는 챙겨 뒀어용."
+    },
+    {
+      "employee": "jieun",
+      "state": 0,
+      "line": "회장님, 기록이 있으면 다음 선택도 차분히 볼 수 있어요."
+    }
+  ],
+  "card": {
+    "width": 390,
+    "height": 1412,
+    "examples": 3
+  },
+  "preservedFiles": 93,
+  "changedFiles": []
+}

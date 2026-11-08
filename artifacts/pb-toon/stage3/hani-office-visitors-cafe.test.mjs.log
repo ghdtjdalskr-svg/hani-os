@@ -1,0 +1,65 @@
+﻿{
+  day: '2026-11-02',
+  counts: [ 81, 37, 172, 189, 66 ],
+  onFloor: { ratio: 0.846276678214246, gap: 158.21211634229985 }
+}
+{
+  day: '2026-11-04',
+  counts: [ 77, 37, 180, 194, 52 ],
+  onFloor: { ratio: 0.8620005832617877, gap: 132.21211634229985 }
+}
+{
+  day: '2026-11-07',
+  counts: [ 107, 0, 184, 215, 74 ],
+  onFloor: { ratio: 0.7822082135579034, gap: 281.21211634229985 }
+}
+{
+  day: '2026-11-08',
+  counts: [ 103, 0, 184, 218, 74 ],
+  onFloor: { ratio: 0.7782660128805515, gap: 309.21211634229985 }
+}
+{
+  outside: 3.4455555555555555,
+  lunch: 7.1,
+  rooftop: 0.5211111111111111
+}
+TAP version 13
+# Subtest: cafe visitors: main-relative counts and visible appointments 2026-11-02
+ok 1 - cafe visitors: main-relative counts and visible appointments 2026-11-02
+  ---
+  duration_ms: 360.1896
+  type: 'test'
+  ...
+# Subtest: cafe visitors: main-relative counts and visible appointments 2026-11-04
+ok 2 - cafe visitors: main-relative counts and visible appointments 2026-11-04
+  ---
+  duration_ms: 256.3915
+  type: 'test'
+  ...
+# Subtest: cafe visitors: main-relative counts and visible appointments 2026-11-07
+ok 3 - cafe visitors: main-relative counts and visible appointments 2026-11-07
+  ---
+  duration_ms: 227.141
+  type: 'test'
+  ...
+# Subtest: cafe visitors: main-relative counts and visible appointments 2026-11-08
+ok 4 - cafe visitors: main-relative counts and visible appointments 2026-11-08
+  ---
+  duration_ms: 229.7743
+  type: 'test'
+  ...
+# Subtest: cafe visitors: weekday breaks and rooftop time retain REPORT-2 levels
+ok 5 - cafe visitors: weekday breaks and rooftop time retain REPORT-2 levels
+  ---
+  duration_ms: 2807.1221
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3918.6425

@@ -1,0 +1,28 @@
+﻿TAP version 13
+# Subtest: scripts\\hani-office-obr12.test.mjs
+not ok 1 - scripts\\hani-office-obr12.test.mjs
+  ---
+  duration_ms: 0.372
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pb-toon\\scripts\\hani-office-obr12.test.mjs:1:1'
+  error: 'USER_GIT_DISABLED: task prohibits Git execution'
+  code: 'USER_GIT_DISABLED'
+  stack: |-
+    cp.<computed> (C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\pb-toon\artifacts\pb-toon\stage2\no-git.cjs:7:16)
+    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pb-toon/scripts/hani-office-lively-fixture.mjs:9:9)
+    file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pb-toon/scripts/hani-office-obr12.test.mjs:5:14
+    ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+    async node:internal/modules/esm/loader:647:26
+    async node:internal/test_runner/runner:1075:15
+    async runFiles (node:internal/test_runner/runner:1041:9)
+    async runChain (node:internal/test_runner/runner:1119:5)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 21.3256

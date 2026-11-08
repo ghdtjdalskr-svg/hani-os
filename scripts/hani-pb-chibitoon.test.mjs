@@ -18,7 +18,8 @@ test('raw runtime passes every original functional and persistent-render asserti
 
 test('legacy assertions are retained verbatim; the synthetic DOM only gains setAttribute support',()=>{
   const normalize=value=>value.replace(/\r\n/g,'\n');
-  const original=normalize(read('artifacts/pb-toon/stage2/original-hani-procrastination-board.test.mjs'));
+  const original=normalize(read('artifacts/pb-toon/stage3/original-hani-procrastination-board.test.mjs'));
+  assert.equal(pbHash(original),'643c216fb7ca396c60f5c0f01fc05fefb16be8d213f4c9727e0411c198e3b03a','frozen origin/main dca9ecf legacy test');
   assert.equal(normalize(read('scripts/hani-procrastination-board.test.mjs')).replace("import './hani-pb-chibitoon-legacy-preload.mjs';\n",''),original);
   const cases=normalize(read('scripts/hani-procrastination-cases.mjs')).replace("onclick:null,attributes:{},setAttribute(name,value){this.attributes[name]=value}","onclick:null");
   assert.equal(cases,normalize(read('artifacts/pb-toon/stage2/original-hani-procrastination-cases.mjs')));

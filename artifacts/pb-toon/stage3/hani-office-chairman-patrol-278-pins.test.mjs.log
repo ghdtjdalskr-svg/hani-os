@@ -1,0 +1,160 @@
+﻿TAP version 13
+# Subtest: 278 exact complete ordered replacements reject missing, duplicate, unrelated and baseline bytes
+ok 1 - 278 exact complete ordered replacements reject missing, duplicate, unrelated and baseline bytes
+  ---
+  duration_ms: 215.6039
+  type: 'test'
+  ...
+# Subtest: 278 independent fixed Git blobs prove pre-patrol bytes
+not ok 2 - 278 independent fixed Git blobs prove pre-patrol bytes
+  ---
+  duration_ms: 0.2282
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pb-toon\\scripts\\hani-office-chairman-patrol-278-pins.test.mjs:15:1'
+  failureType: 'testCodeFailure'
+  error: 'USER_GIT_DISABLED: task prohibits Git execution'
+  code: 'USER_GIT_DISABLED'
+  stack: |-
+    cp.<computed> (C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\pb-toon\artifacts\pb-toon\stage2\no-git.cjs:7:16)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pb-toon/scripts/hani-office-chairman-patrol-278-pins.test.mjs:15:111)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1397:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+    Test.postRun (node:internal/test_runner/test:1537:19)
+    Test.run (node:internal/test_runner/test:1462:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: 278 kids extension strictly restores every authored 1066c57 byte and rejects mutations
+ok 3 - 278 kids extension strictly restores every authored 1066c57 byte and rejects mutations
+  ---
+  duration_ms: 125.1089
+  type: 'test'
+  ...
+# Subtest: 278 kids extension independently matches its fixed Git base
+not ok 4 - 278 kids extension independently matches its fixed Git base
+  ---
+  duration_ms: 54.305
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pb-toon\\scripts\\hani-office-chairman-patrol-278-pins.test.mjs:23:1'
+  failureType: 'testCodeFailure'
+  error: 'USER_GIT_DISABLED: task prohibits Git execution'
+  code: 'USER_GIT_DISABLED'
+  stack: |-
+    cp.<computed> (C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\pb-toon\artifacts\pb-toon\stage2\no-git.cjs:7:16)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pb-toon/scripts/hani-office-chairman-patrol-278-pins.test.mjs:23:154)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1397:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+    Test.postRun (node:internal/test_runner/test:1537:19)
+    Test.run (node:internal/test_runner/test:1462:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: 278 visit extension strictly restores 59db365 and rejects every partial, duplicate or unrelated byte
+ok 5 - 278 visit extension strictly restores 59db365 and rejects every partial, duplicate or unrelated byte
+  ---
+  duration_ms: 199.0235
+  type: 'test'
+  ...
+# Subtest: 278 visit extension independently matches fixed Git base
+not ok 6 - 278 visit extension independently matches fixed Git base
+  ---
+  duration_ms: 48.8168
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pb-toon\\scripts\\hani-office-chairman-patrol-278-pins.test.mjs:31:1'
+  failureType: 'testCodeFailure'
+  error: 'USER_GIT_DISABLED: task prohibits Git execution'
+  code: 'USER_GIT_DISABLED'
+  stack: |-
+    cp.<computed> (C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\pb-toon\artifacts\pb-toon\stage2\no-git.cjs:7:16)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pb-toon/scripts/hani-office-chairman-patrol-278-pins.test.mjs:31:153)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1397:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+    Test.postRun (node:internal/test_runner/test:1537:19)
+    Test.run (node:internal/test_runner/test:1462:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: 278 staff-chat extension strictly preserves ordered complete replacements and rejects mutations
+ok 7 - 278 staff-chat extension strictly preserves ordered complete replacements and rejects mutations
+  ---
+  duration_ms: 241.3382
+  type: 'test'
+  ...
+# Subtest: 278 staff-chat extension independently matches fixed Git base
+not ok 8 - 278 staff-chat extension independently matches fixed Git base
+  ---
+  duration_ms: 40.0025
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pb-toon\\scripts\\hani-office-chairman-patrol-278-pins.test.mjs:39:1'
+  failureType: 'testCodeFailure'
+  error: 'USER_GIT_DISABLED: task prohibits Git execution'
+  code: 'USER_GIT_DISABLED'
+  stack: |-
+    cp.<computed> (C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\pb-toon\artifacts\pb-toon\stage2\no-git.cjs:7:16)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pb-toon/scripts/hani-office-chairman-patrol-278-pins.test.mjs:39:162)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1397:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+    Test.postRun (node:internal/test_runner/test:1537:19)
+    Test.run (node:internal/test_runner/test:1462:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: 278 bubble placement extension strictly restores complete 0159d09 bytes and rejects all mutations
+ok 9 - 278 bubble placement extension strictly restores complete 0159d09 bytes and rejects all mutations
+  ---
+  duration_ms: 77.6208
+  type: 'test'
+  ...
+# Subtest: 278 bubble placement extension independently matches fixed Git base
+not ok 10 - 278 bubble placement extension independently matches fixed Git base
+  ---
+  duration_ms: 32.7218
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pb-toon\\scripts\\hani-office-chairman-patrol-278-pins.test.mjs:47:1'
+  failureType: 'testCodeFailure'
+  error: 'USER_GIT_DISABLED: task prohibits Git execution'
+  code: 'USER_GIT_DISABLED'
+  stack: |-
+    cp.<computed> (C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\pb-toon\artifacts\pb-toon\stage2\no-git.cjs:7:16)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pb-toon/scripts/hani-office-chairman-patrol-278-pins.test.mjs:47:169)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1397:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+    Test.postRun (node:internal/test_runner/test:1537:19)
+    Test.run (node:internal/test_runner/test:1462:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: 278 optimization extension preserves the entire previous contract and rejects all mutations
+ok 11 - 278 optimization extension preserves the entire previous contract and rejects all mutations
+  ---
+  duration_ms: 154.0233
+  type: 'test'
+  ...
+# Subtest: 278 optimization extension independently matches fixed Git base
+not ok 12 - 278 optimization extension independently matches fixed Git base
+  ---
+  duration_ms: 27.1827
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pb-toon\\scripts\\hani-office-chairman-patrol-278-pins.test.mjs:56:1'
+  failureType: 'testCodeFailure'
+  error: 'USER_GIT_DISABLED: task prohibits Git execution'
+  code: 'USER_GIT_DISABLED'
+  stack: |-
+    cp.<computed> (C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\pb-toon\artifacts\pb-toon\stage2\no-git.cjs:7:16)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pb-toon/scripts/hani-office-chairman-patrol-278-pins.test.mjs:56:157)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1397:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+    Test.postRun (node:internal/test_runner/test:1537:19)
+    Test.run (node:internal/test_runner/test:1462:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 6
+# fail 6
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1248.7464

@@ -1,0 +1,109 @@
+﻿TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 24.5539
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 9.603
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 9.4577
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 9.6365
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 71.4133
+  type: 'test'
+  ...
+node.exe : Office affinity storage unavailable or malformed; using memory only.
+At C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\pb-toon\artifacts\pb-toon\stage3\run-tests.ps1:14 char:10
++  $output=& node @argsForNode 2>&1
++          ~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Office affinity...ng memory only.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 250.8721
+  type: 'test'
+  ...
+# Subtest: night barista: exact KST shift and frame boundaries, including clock-only rollover
+ok 7 - night barista: exact KST shift and frame boundaries, including clock-only rollover
+  ---
+  duration_ms: 10410.3443
+  type: 'test'
+  ...
+# Subtest: night barista: one persistent exact art rectangle, floor/loading/fallback scoped and tap-through
+ok 8 - night barista: one persistent exact art rectangle, floor/loading/fallback scoped and tap-through
+  ---
+  duration_ms: 1655.1921
+  type: 'test'
+  ...
+# Subtest: night barista: 03:00 tap pours for 3s through shared timer; phone bubble keeps its 5s duration
+ok 9 - night barista: 03:00 tap pours for 3s through shared timer; phone bubble keeps its 5s duration
+  ---
+  duration_ms: 2877.0672
+  type: 'test'
+  ...
+# Subtest: night barista: dismissal, Escape, floor/view changes and stale timer preserve 268 close behavior
+ok 10 - night barista: dismissal, Escape, floor/view changes and stale timer preserve 268 close behavior
+  ---
+  duration_ms: 738.3345
+  type: 'test'
+  ...
+# Subtest: night barista: eight calm night lines and exact original day lines, independent rotations
+ok 11 - night barista: eight calm night lines and exact original day lines, independent rotations
+  ---
+  duration_ms: 2133.7171
+  type: 'test'
+  ...
+# Subtest: night barista: byte-exact 360x110 opaque atlas; sole new runtime file 158 -> 159/160
+ok 12 - night barista: byte-exact 360x110 opaque atlas; sole new runtime file 158 -> 159/160
+  ---
+  duration_ms: 281.3278
+  type: 'test'
+  ...
+# Subtest: night barista: unchanged scheduler/labels/pets/props, timer and listener counts, no storage/Cloud paths
+ok 13 - night barista: unchanged scheduler/labels/pets/props, timer and listener counts, no storage/Cloud paths
+  ---
+  duration_ms: 78.2849
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 18585.9468

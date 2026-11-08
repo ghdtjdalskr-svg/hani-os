@@ -1,0 +1,122 @@
+﻿TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 18.5125
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 8.3915
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 23.2016
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 9.4504
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 69.1563
+  type: 'test'
+  ...
+node.exe : Office affinity storage unavailable or malformed; using memory only.
+At C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\pb-toon\artifacts\pb-toon\stage2\run-office.ps1:11 char:10
++  $output=& node @argsForNode 2>&1
++          ~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Office affinity...ng memory only.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 248.4216
+  type: 'test'
+  ...
+# Subtest: approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract
+not ok 7 - approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract
+  ---
+  duration_ms: 44.7823
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pb-toon\\scripts\\hani-office-actions-216.test.mjs:21:1'
+  failureType: 'testCodeFailure'
+  error: 'USER_GIT_DISABLED: task prohibits Git execution'
+  code: 'USER_GIT_DISABLED'
+  stack: |-
+    cp.<computed> (C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\pb-toon\artifacts\pb-toon\stage2\no-git.cjs:7:16)
+    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pb-toon/scripts/hani-office-lively-fixture.mjs:9:9)
+    assertOnboardedCanon (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pb-toon/scripts/hani-office-onboarding-232-assertions.mjs:14:17)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pb-toon/scripts/hani-office-actions-216.test.mjs:27:3)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1397:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+    Test.postRun (node:internal/test_runner/test:1537:19)
+    Test.run (node:internal/test_runner/test:1462:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: 120 deterministic simulated days enforce all shared caps, cooldowns, parent eligibility and atomic path reservations
+ok 8 - 120 deterministic simulated days enforce all shared caps, cooldowns, parent eligibility and atomic path reservations
+  ---
+  duration_ms: 44228.6684
+  type: 'test'
+  ...
+# Subtest: KST seed, day boundaries, chairman identity/presence, MIR limits and independent daily 15% gates
+ok 9 - KST seed, day boundaries, chairman identity/presence, MIR limits and independent daily 15% gates
+  ---
+  duration_ms: 991.6092
+  type: 'test'
+  ...
+# Subtest: every one of the 97 scheduled core rows is reachable; base-work remains the default 98th row
+ok 10 - every one of the 97 scheduled core rows is reachable; base-work remains the default 98th row
+  ---
+  duration_ms: 604.3021
+  type: 'test'
+  ...
+# Subtest: blocked parents/slots never rescue with a variant; disabled and data-triggered rows cannot execute
+ok 11 - blocked parents/slots never rescue with a variant; disabled and data-triggered rows cannot execute
+  ---
+  duration_ms: 69.9414
+  type: 'test'
+  ...
+# Subtest: random access snapshots skip missed events; summoned and cancelled events stay out; reduced motion is static
+ok 12 - random access snapshots skip missed events; summoned and cancelled events stay out; reduced motion is static
+  ---
+  duration_ms: 13.263
+  type: 'test'
+  ...
+# Subtest: actual renderer uses persistent actor/prop/bubble slots, tap/keyboard/profile, visible-only motion and case priority
+ok 13 - actual renderer uses persistent actor/prop/bubble slots, tap/keyboard/profile, visible-only motion and case priority
+  ---
+  duration_ms: 1725.1713
+  type: 'test'
+  ...
+# Subtest: literal runtime fetch executes and an offline table settles into safe base work
+ok 14 - literal runtime fetch executes and an offline table settles into safe base work
+  ---
+  duration_ms: 415.9627
+  type: 'test'
+  ...
+# Subtest: canonical animation samples the reserved path, pauses other floors, and snaps on a motion preference change
+ok 15 - canonical animation samples the reserved path, pauses other floors, and snaps on a motion preference change
+  ---
+  duration_ms: 1035.1651
+  type: 'test'
+  ...
+1..15
+# tests 15
+# suites 0
+# pass 14
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 50116.2217

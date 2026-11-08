@@ -1,0 +1,131 @@
+{
+  "date": "2026-11-06 KST",
+  "head": "bc0d0eba76ec8a4ce951cab5af1a9f814df0d576",
+  "remoteMain": "461dfdff4d26275a4d6d61c177280fd2d6ed35fe",
+  "source": "447edb86def004395e66af6aa79950280c23f3698f53af28db8d1f6fe6f6b148",
+  "css": "b00bf744040c4cc24529eda7c9a5ad1ce2da40fd9e16a5a626668869b15ae368",
+  "checks": [
+    {
+      "name": "staff scheduler",
+      "equal": true,
+      "before": "2fb5f8eda0313523f45b7b0cd988402b221fb8a0cec823e69beb09141d673ad8",
+      "after": "2fb5f8eda0313523f45b7b0cd988402b221fb8a0cec823e69beb09141d673ad8"
+    },
+    {
+      "name": "staff snapshot",
+      "equal": true,
+      "before": "f790950ad2e6a2a672a547aec7a094e082bd3b3a98d5e853e7a4cba6acbe456f",
+      "after": "f790950ad2e6a2a672a547aec7a094e082bd3b3a98d5e853e7a4cba6acbe456f"
+    },
+    {
+      "name": "remaining model",
+      "equal": true,
+      "before": "78c926a6300b3145a440f1b60fa45231d6496710b7540b541bf57c371be7cb54",
+      "after": "78c926a6300b3145a440f1b60fa45231d6496710b7540b541bf57c371be7cb54"
+    },
+    {
+      "name": "round1 closeBubble",
+      "equal": true
+    },
+    {
+      "name": "round1 showBubble",
+      "equal": true
+    }
+  ],
+  "counts": {
+    "createElement(": {
+      "before": 64,
+      "after": 64
+    },
+    "addEventListener(": {
+      "before": 15,
+      "after": 15
+    },
+    "setInterval(": {
+      "before": 2,
+      "after": 2
+    },
+    "setTimeout(": {
+      "before": 4,
+      "after": 4
+    },
+    "requestAnimationFrame(": {
+      "before": 0,
+      "after": 0
+    },
+    "fetch(": {
+      "before": 5,
+      "after": 5
+    }
+  },
+  "originalAssertionsPreserved": true,
+  "storageCalls": 0,
+  "rhythms": [
+    {
+      "id": "pet-cat",
+      "period": 22,
+      "beat": 1637,
+      "elapsed": 1,
+      "rest": 1
+    },
+    {
+      "id": "pet-dog",
+      "period": 24,
+      "beat": 1500,
+      "elapsed": 1,
+      "rest": 1
+    },
+    {
+      "id": "pet-rabbit",
+      "period": 44,
+      "beat": 818,
+      "elapsed": 13,
+      "rest": 4
+    }
+  ],
+  "modifiedSections": [
+    {
+      "name": "residentPeople",
+      "before": "1ef7c24a5d7745d9f1a2bfb70d8b01a0fa6b5347afe79361dd812c3efc94d313",
+      "after": "c525d867f41ad27497fe3c9b42387088305264368743d117cfd9d9596bc2b552",
+      "changed": true
+    },
+    {
+      "name": "residentRhythm",
+      "before": "c6d85aed610e130f9b0d86ed06562ab72a0dbc613f77412b7c16b9b4e5d1df25",
+      "after": "c9cac013b1826b0337923b25d2ba2c058cb2ded69a2170dbf4f08e231e4a9816",
+      "changed": true
+    },
+    {
+      "name": "residentLife",
+      "before": "952ac702600efa3b5a7540eeae96711aee1a54f697bed0161e88c6b3e4b71218",
+      "after": "9f5ee367d9b6d6ab78e5390d26632ed1b7422718eb343fc25452438880dd8531",
+      "changed": true
+    },
+    {
+      "name": "residentSnapshot",
+      "before": "79ba25d2ce8a875c5c459e8c840562bc34640fba98c7ca117c5352a140a90199",
+      "after": "151418cc6cdef577ab64e137d9eb03b4dd4f11415618887d8b5302ed7c6cd8ad",
+      "changed": true
+    },
+    {
+      "name": "fitStatusLabels",
+      "before": "e7f807dd9110c0e44fd613c528b2cdf8c2f75df3e442ded716f768b9bdd0c3ac",
+      "after": "638089f0ae1fe6f0f46a8c267f1c574b4a2409ba7e1223f4242651cac786f1dd",
+      "changed": true
+    },
+    {
+      "name": "openBubble",
+      "before": "31a632f7970a0a830c9657b41c57b4bc3eb6328a2067c895d396500cff5037ff",
+      "after": "1571fd3a567b1d27b110b708de94ba4af2711f5ac17ce658763cd7574a845096",
+      "changed": true
+    },
+    {
+      "name": "updateResidents",
+      "before": "fecbb4fd530607479d6af26c71f6e7f5e6b1b5101e33f4be92504db8360537e2",
+      "after": "fcb97254e6fdcda07a7988a7b0ce194550c94f1ef119d6d0796cd73237a605b8",
+      "changed": true
+    }
+  ],
+  "entireSourceOutsideListedSectionsIdentical": true
+}

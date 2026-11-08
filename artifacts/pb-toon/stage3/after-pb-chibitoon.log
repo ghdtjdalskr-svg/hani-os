@@ -1,0 +1,40 @@
+﻿TAP version 13
+# Subtest: raw runtime passes every original functional and persistent-render assertion
+ok 1 - raw runtime passes every original functional and persistent-render assertion
+  ---
+  duration_ms: 8.7625
+  type: 'test'
+  ...
+# Subtest: legacy assertions are retained verbatim; the synthetic DOM only gains setAttribute support
+ok 2 - legacy assertions are retained verbatim; the synthetic DOM only gains setAttribute support
+  ---
+  duration_ms: 0.5088
+  type: 'test'
+  ...
+# Subtest: all dialogue, labels, stage calculations, routes and read models remain identical except retired images
+ok 3 - all dialogue, labels, stage calculations, routes and read models remain identical except retired images
+  ---
+  duration_ms: 1.5435
+  type: 'test'
+  ...
+# Subtest: outer inverses restore complete bytes and reject drift, duplicate and repeated restoration
+ok 4 - outer inverses restore complete bytes and reject drift, duplicate and repeated restoration
+  ---
+  duration_ms: 26.038
+  type: 'test'
+  ...
+# Subtest: one byte-identical literal sheet is reachable; raw closure reports exact additions/removals
+ok 5 - one byte-identical literal sheet is reachable; raw closure reports exact additions/removals
+  ---
+  duration_ms: 87.0384
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 141.7102

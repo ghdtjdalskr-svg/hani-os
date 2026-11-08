@@ -1,0 +1,61 @@
+﻿TAP version 13
+# Subtest: 283 outer inverse preserves complete bytes and rejects drift, partial, duplicate and repeated inverse
+not ok 1 - 283 outer inverse preserves complete bytes and rejects drift, partial, duplicate and repeated inverse
+  ---
+  duration_ms: 3.3005
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pb-toon\\scripts\\hani-life-bundle-source.test.mjs:13:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    exact release-283 input index.html
+    + actual - expected
+    
+    + '93f4ad567faa2858a881f33bfd473b5b2be971d97160f4a1aea830e082d4752b'
+    - '15226a2f3e63b350865ef24d296c7ce34a44e36307f17b77449e5cb8494a0c59'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '15226a2f3e63b350865ef24d296c7ce34a44e36307f17b77449e5cb8494a0c59'
+  actual: '93f4ad567faa2858a881f33bfd473b5b2be971d97160f4a1aea830e082d4752b'
+  operator: 'strictEqual'
+  stack: |-
+    Object.restoreRelease283 (C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\pb-toon\scripts\hani-release-283-source.cjs:11:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pb-toon/scripts/hani-life-bundle-source.test.mjs:16:29)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1397:25)
+    Test.start (node:internal/test_runner/test:1257:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+  ...
+# Subtest: single report refresh has an exact inverse; rejects drift, missing, duplicate and repeated inverse
+ok 2 - single report refresh has an exact inverse; rejects drift, missing, duplicate and repeated inverse
+  ---
+  duration_ms: 17.1289
+  type: 'test'
+  ...
+# Subtest: four ordered inverses restore each immediate lower hash and the entire frozen main, including mixed EOL
+ok 3 - four ordered inverses restore each immediate lower hash and the entire frozen main, including mixed EOL
+  ---
+  duration_ms: 64.5888
+  type: 'test'
+  ...
+# Subtest: every changed owner rejects drift, missing/duplicate bytes, wrong order and a second inverse
+ok 4 - every changed owner rejects drift, missing/duplicate bytes, wrong order and a second inverse
+  ---
+  duration_ms: 76.6803
+  type: 'test'
+  ...
+# Subtest: legacy preload changes only canonical root reads, retaining buffers and all temporary/baseline bytes
+ok 5 - legacy preload changes only canonical root reads, retaining buffers and all temporary/baseline bytes
+  ---
+  duration_ms: 128.284
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 4
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 329.3473

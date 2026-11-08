@@ -1,0 +1,124 @@
+﻿TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 22.0585
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 8.2843
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 12.2732
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 7.9553
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 70.8829
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 246.176
+  type: 'test'
+  ...
+# Subtest: raw v1 -> v2 keeps all known counts including 9999, unchanged key, no other writes
+ok 7 - raw v1 -> v2 keeps all known counts including 9999, unchanged key, no other writes
+  ---
+  duration_ms: 2.1083
+  type: 'test'
+  ...
+# Subtest: raw daily cap applies separately to every staff, pet and barista; only trusted click/Enter count
+ok 8 - raw daily cap applies separately to every staff, pet and barista; only trusted click/Enter count
+  ---
+  duration_ms: 3.1058
+  type: 'test'
+  ...
+# Subtest: raw KST 23:59 -> 00:00 resets today and one-time notice, never lifetime counts
+ok 9 - raw KST 23:59 -> 00:00 resets today and one-time notice, never lifetime counts
+  ---
+  duration_ms: 1.8334
+  type: 'test'
+  ...
+# Subtest: raw invalid v1/v2/unknown versions remain byte-identical with memory-only cap and one warning
+ok 10 - raw invalid v1/v2/unknown versions remain byte-identical with memory-only cap and one warning
+  ---
+  duration_ms: 11.9003
+  type: 'test'
+  ...
+# Subtest: raw flush revalidates storage: newly malformed/read failure/quota never overwrites or retries
+ok 11 - raw flush revalidates storage: newly malformed/read failure/quota never overwrites or retries
+  ---
+  duration_ms: 1.3212
+  type: 'test'
+  ...
+# Subtest: raw two live instances flush in either order: counts/day maxima preserve different ids and larger stored values
+ok 12 - raw two live instances flush in either order: counts/day maxima preserve different ids and larger stored values
+  ---
+  duration_ms: 2.5823
+  type: 'test'
+  ...
+# Subtest: raw cap notice only on first blocked tap per id/day; all secret pools and level thresholds survive
+ok 13 - raw cap notice only on first blocked tap per id/day; all secret pools and level thresholds survive
+  ---
+  duration_ms: 16.3199
+  type: 'test'
+  ...
+# Subtest: raw mounted cap uses existing single bubble/float and resumes normal dialogue 1280/false
+ok 14 - raw mounted cap uses existing single bubble/float and resumes normal dialogue 1280/false
+  ---
+  duration_ms: 640.0993
+  type: 'test'
+  ...
+# Subtest: raw mounted cap uses existing single bubble/float and resumes normal dialogue 1280/true
+ok 15 - raw mounted cap uses existing single bubble/float and resumes normal dialogue 1280/true
+  ---
+  duration_ms: 579.4536
+  type: 'test'
+  ...
+# Subtest: raw mounted cap uses existing single bubble/float and resumes normal dialogue 390/false
+ok 16 - raw mounted cap uses existing single bubble/float and resumes normal dialogue 390/false
+  ---
+  duration_ms: 572.229
+  type: 'test'
+  ...
+# Subtest: raw mounted cap uses existing single bubble/float and resumes normal dialogue 390/true
+ok 17 - raw mounted cap uses existing single bubble/float and resumes normal dialogue 390/true
+  ---
+  duration_ms: 541.4562
+  type: 'test'
+  ...
+# Subtest: raw mounted all pets and both baristas receive two points, one cap notice, then existing lines
+ok 18 - raw mounted all pets and both baristas receive two points, one cap notice, then existing lines
+  ---
+  duration_ms: 4307.6907
+  type: 'test'
+  ...
+# Subtest: raw safety boundary and exact inverse: only owner changed, zero new timers/listeners/runtime files, reject tampering
+ok 19 - raw safety boundary and exact inverse: only owner changed, zero new timers/listeners/runtime files, reject tampering
+  ---
+  duration_ms: 15.5889
+  type: 'test'
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 19
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 7105.7909

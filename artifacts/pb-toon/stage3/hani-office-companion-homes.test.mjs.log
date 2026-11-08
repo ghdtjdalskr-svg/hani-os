@@ -1,0 +1,120 @@
+﻿TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 23.481
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.9835
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 12.3356
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 8.4997
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 69.4563
+  type: 'test'
+  ...
+companion homes daily maxima [{"day":"2026-11-02","samples":1440,"allPets":{"5f":3,"4f":2,"3f":4,"2f":5,"1f":6},"companionsOnly":{"5f":1,"4f":1,"3f":2,"2f":3,"1f":2},"hiddenByExistingFreeRule":{"companion-frog":0,"companion-penguin":1,"companion-chick":0,"companion-fox":36,"companion-otter":0}},{"day":"2026-11-03","samples":1440,"allPets":{"5f":3,"4f":3,"3f":3,"2f":5,"1f":6},"companionsOnly":{"5f":1,"4f":2,"3f":1,"2f":3,"1f":2},"hiddenByExistingFreeRule":{"companion-frog":0,"companion-penguin":0,"companion-chick":0,"companion-fox":2,"companion-otter":0}},{"day":"2026-11-04","samples":1440,"allPets":{"5f":3,"4f":3,"3f":4,"2f":4,"1f":5},"companionsOnly":{"5f":1,"4f":2,"3f":2,"2f":3,"1f":1},"hiddenByExistingFreeRule":{"companion-frog":0,"companion-penguin":0,"companion-chick":0,"companion-fox":19,"companion-otter":0}},{"day":"2026-11-05","samples":1440,"allPets":{"5f":2,"4f":3,"3f":4,"2f":3,"1f":6},"companionsOnly":{"5f":1,"4f":2,"3f":2,"2f":2,"1f":2},"hiddenByExistingFreeRule":{"companion-frog":0,"companion-penguin":0,"companion-chick":0,"companion-fox":0,"companion-otter":0}},{"day":"2026-11-06","samples":1440,"allPets":{"5f":3,"4f":3,"3f":4,"2f":4,"1f":6},"companionsOnly":{"5f":1,"4f":2,"3f":2,"2f":2,"1f":2},"hiddenByExistingFreeRule":{"companion-frog":0,"companion-penguin":0,"companion-chick":0,"companion-fox":0,"companion-otter":0}},{"day":"2026-11-07","samples":1440,"allPets":{"5f":2,"4f":2,"3f":2,"2f":4,"1f":5},"companionsOnly":{"5f":0,"4f":1,"3f":1,"2f":2,"1f":1},"hiddenByExistingFreeRule":{"companion-frog":0,"companion-penguin":1,"companion-chick":0,"companion-fox":23,"companion-otter":0}},{"day":"2026-11-08","samples":1440,"allPets":{"5f":1,"4f":2,"3f":2,"2f":4,"1f":5},"companionsOnly":{"5f":0,"4f":1,"3f":1,"2f":2,"1f":1},"hiddenByExistingFreeRule":{"companion-frog":0,"companion-penguin":2,"companion-chick":0,"companion-fox":19,"companion-otter":0}}]
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 232.3683
+  type: 'test'
+  ...
+# Subtest: home extension retains the exact entire 278 contract and restores c590f8a; rejects every partial, duplicate and unrelated edit
+ok 7 - home extension retains the exact entire 278 contract and restores c590f8a; rejects every partial, duplicate and unrelated edit
+  ---
+  duration_ms: 46.9301
+  type: 'test'
+  ...
+# Subtest: home extension independently matches the specified fixed Git base
+not ok 8 - home extension independently matches the specified fixed Git base
+  ---
+  duration_ms: 0.2476
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pb-toon\\scripts\\hani-office-companion-homes.test.mjs:33:1'
+  failureType: 'testCodeFailure'
+  error: 'USER_GIT_DISABLED: task prohibits Git execution'
+  code: 'USER_GIT_DISABLED'
+  stack: |-
+    cp.<computed> (C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\pb-toon\artifacts\pb-toon\stage2\no-git.cjs:7:16)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pb-toon/scripts/hani-office-companion-homes.test.mjs:34:20)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1397:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+    Test.postRun (node:internal/test_runner/test:1537:19)
+    Test.run (node:internal/test_runner/test:1462:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: every minute of all five weekdays and both weekend days keeps off-duty animals home and original followers; reports all visible pet floor maxima
+ok 9 - every minute of all five weekdays and both weekend days keeps off-duty animals home and original followers; reports all visible pet floor maxima
+  ---
+  duration_ms: 55916.604
+  type: 'test'
+  ...
+# Subtest: absent chairman, reduced motion and KST midnight keep home rules and weekend sibling presence
+ok 10 - absent chairman, reduced motion and KST midnight keep home rules and weekend sibling presence
+  ---
+  duration_ms: 2247.8146
+  type: 'test'
+  ...
+# Subtest: preferred 2F department stops, within-floor walking/sitting, safe envelopes and deterministic results survive
+ok 11 - preferred 2F department stops, within-floor walking/sitting, safe envelopes and deterministic results survive
+  ---
+  duration_ms: 511.4876
+  type: 'test'
+  ...
+# Subtest: executed 2F motion endpoint reservations never share a stop, including occupied preferred-stop fallback
+ok 12 - executed 2F motion endpoint reservations never share a stop, including occupied preferred-stop fallback
+  ---
+  duration_ms: 9088.3129
+  type: 'test'
+  ...
+# Subtest: occupied preferred 2F stops fall back to an existing safe pet stop without changing floors
+ok 13 - occupied preferred 2F stops fall back to an existing safe pet stop without changing floors
+  ---
+  duration_ms: 1.1896
+  type: 'test'
+  ...
+# Subtest: existing residents and hidden visit/patrol owners retain exact source and resident output
+ok 14 - existing residents and hidden visit/patrol owners retain exact source and resident output
+  ---
+  duration_ms: 388.1294
+  type: 'test'
+  ...
+# Subtest: actual persistent DOM mounts all department pets on weekdays/weekends with zero writes and unchanged timer/listener registration
+ok 15 - actual persistent DOM mounts all department pets on weekdays/weekends with zero writes and unchanged timer/listener registration
+  ---
+  duration_ms: 1861.4446
+  type: 'test'
+  ...
+# Subtest: no runtime file, atlas, version, CSS or data dependency is added
+ok 16 - no runtime file, atlas, version, CSS or data dependency is added
+  ---
+  duration_ms: 179.8439
+  type: 'test'
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 15
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 70716.6569

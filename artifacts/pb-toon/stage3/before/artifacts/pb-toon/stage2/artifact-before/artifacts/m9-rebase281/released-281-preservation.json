@@ -1,0 +1,15 @@
+{
+  "officeInputEqualsMain281": true,
+  "checks": [
+    "function createOfficeAffinity(){",
+    "const companionPeople=",
+    "mascot:'전략기획실 마스코트'",
+    "mascot:'개발실 마스코트'",
+    "mascot:'기업솔루션 마스코트'",
+    "mascot:'라이프&엔터 마스코트'",
+    "mascot:'재무실 마스코트'",
+    "prior.following!==state.following"
+  ],
+  "allPreservedInM9Inverse": true,
+  "head33OriginalM9InverseOnSameRuntime": "only exact M9 special listing bytes accepted: hani-office-live.js"
+}

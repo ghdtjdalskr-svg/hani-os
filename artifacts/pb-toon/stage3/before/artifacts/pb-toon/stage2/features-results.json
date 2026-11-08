@@ -1,0 +1,79 @@
+﻿[
+    {
+        "file":  "hani-life-bundle-source.test.mjs",
+        "exit":  0,
+        "command":  "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-life-bundle-source.test.mjs",
+        "summary":  [
+                        "# tests 4",
+                        "# pass 4",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-study-retry.test.mjs",
+        "exit":  0,
+        "command":  "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-study-retry.test.mjs",
+        "summary":  [
+                        "# tests 26",
+                        "# pass 26",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-procrastination-board.test.mjs",
+        "exit":  0,
+        "command":  "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-procrastination-board.test.mjs",
+        "summary":  [
+                        "# tests 6",
+                        "# pass 6",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-wishlist-quick-add.test.mjs",
+        "exit":  0,
+        "command":  "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-chibitoon-legacy-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-wishlist-quick-add.test.mjs",
+        "summary":  [
+                        "# tests 7",
+                        "# pass 7",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-dev-report-generate.test.mjs",
+        "exit":  0,
+        "command":  "node --require ./artifacts/pb-toon/stage2/no-git.cjs --import ./scripts/hani-pb-dev-report-fixture-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-dev-report-generate.test.mjs",
+        "summary":  [
+                        "PASS 형식·3~5개 균등 묶음·범위 정확·캐릭터 직급·원자료/수동 보고서/runtime 바이트 보존",
+                        "PASS 같은 입력·출처의 출력 완전 동일, 두 번째 write 0, check drift 감지·쓰기 0",
+                        "PASS 잘못된 범위·누락·중복·미배포·잘못된 날짜·기존 묶음 중복은 쓰기 전 차단",
+                        "PASS 개인정보·금액·건강 수치·인증정보·금지 호칭·깨진 글자 거절, raw handoff 비노출",
+                        "PASS 기본 릴리스당 1편·추가 실행 기존 목록 보존·Git 불가와 편집자료 부재 명시·CLI",
+                        "PASS 손상된 목록 marker 차단",
+                        "PASS 실제 localGit 함수: 고정 커밋 로컬 조회만, 제목·본문에서 PR 번호만 추출·원문 비노출, Git 거부 명시",
+                        "PASS 실제 v230~280 51건/13편, 민감 패턴 0, 링크 존재, 실제 renderer 형식/검색/검토대기 허용·현재 앱 미반영 확인",
+                        "PASS 실제 DOM renderer 실행: 파일만 추가 시 앱 목록 불변, VM에서 번들 데이터 교체 시 새 목록·본문·검색 동작, fetch/저장 접근 0",
+                        "PASS 실제 번들31편·기존18편·재생성13편·renderer 목록/본문/검색, catalog8→9 exact inverse·이 시험의 디스크 빌더 실행0",
+                        "PASS 개발보고서 생성기 10그룹",
+                        "# tests 1",
+                        "# pass 1",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-pb-chibitoon.test.mjs",
+        "exit":  0,
+        "command":  "node --require ./artifacts/pb-toon/stage2/no-git.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-pb-chibitoon.test.mjs",
+        "summary":  [
+                        "# tests 5",
+                        "# pass 5",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    }
+]
