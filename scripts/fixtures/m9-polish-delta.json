@@ -26,11 +26,11 @@
     {
       "file": "hani-character-archive.css",
       "beforeSha256": "c2b9282afdabe46135378d48560fd8fb7a4ee1dba09bfa7d174a5fef2ccccd8a",
-      "afterSha256": "df18535bcb3cdb2f58eae54f1b694978fc99a2c29a1fc225a5f9a3994f9a23d2",
+      "afterSha256": "7f3ebd5e6caef20e213583567c2630220ac5ab03f873966201a733e2106670cb",
       "replacements": [
         {
           "before": "#characterArchive .ca-planned-badge{",
-          "after": "/* Keep the special card title readable in narrow desktop columns. */\n@media(min-width:601px){#characterArchive [data-special-listing=\"seoyun\"] .ca-cover-caption h3{word-break:keep-all}#characterArchive [data-special-listing=\"seoyun\"] .ca-cover-caption h3 span{display:inline-block;word-break:keep-all;white-space:nowrap}#characterArchive [data-special-listing=\"seoyun\"] .ca-planned-badge{word-break:keep-all;white-space:nowrap}}\n#characterArchive .ca-planned-badge{"
+          "after": "/* The special listing owns a full grid row so its cut never stretches neighbouring member cards. */\n#characterArchive .ca-grid [data-special-listing=\"seoyun\"]{grid-column:1/-1;display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center}\n/* Keep the special card title readable in narrow desktop columns. */\n@media(min-width:601px){#characterArchive [data-special-listing=\"seoyun\"] .ca-cover-caption h3{word-break:keep-all}#characterArchive [data-special-listing=\"seoyun\"] .ca-cover-caption h3 span{display:inline-block;word-break:keep-all;white-space:nowrap}#characterArchive [data-special-listing=\"seoyun\"] .ca-planned-badge{word-break:keep-all;white-space:nowrap}#characterArchive .ca-grid [data-special-listing=\"seoyun\"]{grid-template-columns:minmax(160px,240px) 1fr;gap:20px}}\n#characterArchive .ca-planned-badge{"
         }
       ]
     }

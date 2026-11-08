@@ -32,7 +32,24 @@
         "rankDisplay": "inline",
         "rankWordBreak": "normal",
         "titleWordBreak": "normal",
-        "gridColumns": "121.594px 121.594px 121.609px 121.594px 121.594px"
+        "gridColumns": "121.594px 121.594px 121.609px 121.594px 121.594px",
+        "gridColumn": "auto",
+        "gridLeft": 348,
+        "gridInner": 672,
+        "memberHeights": [
+          322.40625,
+          322.40625,
+          322.40625,
+          322.40625,
+          322.40625,
+          897.234375,
+          897.234375,
+          897.234375,
+          897.234375,
+          345.65625,
+          345.65625,
+          345.65625
+        ]
       },
       "writes": 0,
       "errors": []
@@ -44,22 +61,22 @@
       "status": "PASS",
       "metrics": {
         "card": {
-          "x": 898.390625,
-          "width": 121.59375,
-          "height": 843.234375
+          "x": 348,
+          "width": 671.984375,
+          "height": 347.875
         },
         "photo": {
-          "x": 903.390625,
-          "width": 111.59375,
-          "height": 139.484375
+          "x": 353,
+          "width": 240,
+          "height": 300
         },
         "title": {
-          "x": 919.390625,
-          "width": 79.59375,
-          "height": 68.1875
+          "x": 629,
+          "width": 369.984375,
+          "height": 34.09375
         },
         "rank": {
-          "x": 919.390625,
+          "x": 669.46875,
           "width": 40.015625,
           "height": 18.59375
         },
@@ -68,7 +85,24 @@
         "rankDisplay": "inline-block",
         "rankWordBreak": "keep-all",
         "titleWordBreak": "keep-all",
-        "gridColumns": "121.594px 121.594px 121.609px 121.594px 121.594px"
+        "gridColumns": "121.594px 121.594px 121.609px 121.594px 121.594px",
+        "gridColumn": "1 / -1",
+        "gridLeft": 348,
+        "gridInner": 672,
+        "memberHeights": [
+          322.40625,
+          322.40625,
+          322.40625,
+          322.40625,
+          322.40625,
+          322.40625,
+          322.40625,
+          322.40625,
+          322.40625,
+          345.65625,
+          345.65625,
+          345.65625
+        ]
       },
       "writes": 0,
       "errors": []
@@ -104,7 +138,24 @@
         "rankDisplay": "inline",
         "rankWordBreak": "normal",
         "titleWordBreak": "normal",
-        "gridColumns": "174px 174px"
+        "gridColumns": "174px 174px",
+        "gridColumn": "auto",
+        "gridLeft": 16,
+        "gridInner": 358,
+        "memberHeights": [
+          355.765625,
+          355.765625,
+          355.765625,
+          355.765625,
+          355.765625,
+          355.765625,
+          355.765625,
+          355.765625,
+          709.765625,
+          355.765625,
+          355.765625,
+          355.765625
+        ]
       },
       "writes": 0,
       "errors": []
@@ -116,22 +167,22 @@
       "status": "PASS",
       "metrics": {
         "card": {
-          "x": 200,
-          "width": 174,
-          "height": 691.765625
+          "x": 16,
+          "width": 358,
+          "height": 387.015625
         },
         "photo": {
-          "x": 205,
-          "width": 164,
-          "height": 205
+          "x": 21,
+          "width": 120,
+          "height": 150
         },
         "title": {
-          "x": 217,
-          "width": 140,
+          "x": 165,
+          "width": 192,
           "height": 31
         },
         "rank": {
-          "x": 253.78125,
+          "x": 201.78125,
           "width": 40.421875,
           "height": 14
         },
@@ -140,7 +191,24 @@
         "rankDisplay": "inline",
         "rankWordBreak": "normal",
         "titleWordBreak": "normal",
-        "gridColumns": "174px 174px"
+        "gridColumns": "174px 174px",
+        "gridColumn": "1 / -1",
+        "gridLeft": 16,
+        "gridInner": 358,
+        "memberHeights": [
+          355.765625,
+          355.765625,
+          355.765625,
+          355.765625,
+          355.765625,
+          355.765625,
+          355.765625,
+          355.765625,
+          355.765625,
+          355.765625,
+          355.765625,
+          355.765625
+        ]
       },
       "writes": 0,
       "errors": []

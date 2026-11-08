@@ -3,7 +3,7 @@
 const fs=require('node:fs'),assert=require('node:assert/strict'),path=require('node:path'),{createHash}=require('node:crypto');
 const hash=s=>createHash('sha256').update(s).digest('hex');
 const bytes=fs.readFileSync(path.join(__dirname,'fixtures/m9-polish-delta.json'));
-assert.equal(hash(bytes),'0f824124bbda90ab24d4d77b77e798cceeda54ece73cd53cd98ae3563909b7d6','authored polish delta only');
+assert.equal(hash(bytes),'4e15d9856e9fb4e08a176eb3f848999f727b7b2e48f294bcac50076f353d1b3c','authored polish delta only');
 const delta=JSON.parse(bytes);
 assert.equal(delta.base,'43eda9e2e3f69115c3569f585506904965c26c18');
 function restore(source,file){
