@@ -13,6 +13,9 @@
 # 2026-11-08 · 개발보고서 자동화 (Codex / dev-report)
 
 `hani/dev-report-auto` / base·HEAD `2bc9368` / 표시·캐시2.9.280 유지. 생성기·시험·공개 편집자료, **v230~280 51개 릴리스/13편**과 문서 목록, 기본 릴리스당1편 후속 절차. **신규9그룹·기존번들5그룹·기존담당자시험 PASS, 최종 생성 check 차이0·새 원고 민감 패턴0·runtime97개 바이트 보존.** 실제 renderer 격리 목록/본문/검색 확인, 실브라우저/원격/Git·PR 본문 미확인. 기존 일관성시험1개는 문자열 코드 생성 제한으로 시작 차단. 문서만으로 앱 표시 안 됨(원고31/내장18, bundle check exit1), runtime 미수정·검토상태/고정작성자 별도 후속. Git staging EPERM으로 **미커밋**, push/merge/버전/배포 없음. Notion 착수 read-back 완료·최종 append 자동 승인 never 거절로 갱신 대기. [보고서](../../artifacts/dev-report/REPORT.md) · [인수인계](handoffs/2026-11-08-dev-report-auto.md). 아래 다른 담당·과거 기록 보존.
+# 2026-11-08 · 서윤 M9 2단계 연결 (Codex / m9-link)
+
+`hani/m9-stage2-link` / base·HEAD `2bc9368` / 표시·cache2.9.280 유지. 별도 호외·보이는 캡션6개·꼬마 수연/수현, 특별 카드/기존 상세 기념 컷 연결. 기능·보존9PASS, package 포함1FAIL(목록·JSON·그림2개 수집 밖). 기존 일보11그룹·history/archive unit·nav/login45·M9 15/15·기존closure3/3 PASS. 사무실67파일717PASS·Git EPERM34차단·skip3·그 외 실패0. 정기1~4 원문/렌더·저장/Cloud·새timer/listener·gate/서버 보존. Edge EPERM으로 PC/폰 PNG0, Git index.lock 권한 거부로 미커밋. push/merge/버전/배포 변경 없음, 원격 최신성·Production 미확인. Notion 자동 승인 never 거절로 갱신 대기. [짧은 보고서](../../artifacts/m9-link/REPORT.md) · [인수인계](handoffs/2026-11-08-m9-link.md). 아래 타 담당·과거 기록 보존.
 
 # 2026-11-08 ? ?? ?? + ?? M9 ?? ?? ?? (Codex / bori-m9)
 
