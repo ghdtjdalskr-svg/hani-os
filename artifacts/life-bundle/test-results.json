@@ -1,0 +1,1111 @@
+﻿[
+    {
+        "file":  "hani-life-bundle-source.test.mjs",
+        "exit":  0,
+        "seconds":  0.43,
+        "command":  "node --test-reporter=tap scripts/hani-life-bundle-source.test.mjs",
+        "summary":  [
+                        "# tests 3",
+                        "# pass 3",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-study-retry.test.mjs",
+        "exit":  0,
+        "seconds":  1.09,
+        "command":  "node --test-reporter=tap scripts/hani-study-retry.test.mjs",
+        "summary":  [
+                        "# tests 26",
+                        "# pass 26",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-procrastination-board.test.mjs",
+        "exit":  0,
+        "seconds":  0.38,
+        "command":  "node --test-reporter=tap scripts/hani-procrastination-board.test.mjs",
+        "summary":  [
+                        "# tests 6",
+                        "# pass 6",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-wishlist-quick-add.test.mjs",
+        "exit":  0,
+        "seconds":  0.18,
+        "command":  "node --test-reporter=tap scripts/hani-wishlist-quick-add.test.mjs",
+        "summary":  [
+                        "# tests 7",
+                        "# pass 7",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-dev-report-generate.test.mjs",
+        "exit":  0,
+        "seconds":  0.42,
+        "command":  "node --test-reporter=tap scripts/hani-dev-report-generate.test.mjs",
+        "summary":  [
+                        "PASS 개발보고서 생성기 10그룹"
+                    ]
+    },
+    {
+        "file":  "hani-gemini-reports-build.test.mjs",
+        "exit":  0,
+        "seconds":  1.07,
+        "command":  "node --test-reporter=tap scripts/hani-gemini-reports-build.test.mjs",
+        "summary":  [
+                        "PASS Gemini reports build tests"
+                    ]
+    },
+    {
+        "file":  "hani-chart-toss-212.test.mjs",
+        "exit":  0,
+        "seconds":  0.26,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-chart-toss-212.test.mjs",
+        "summary":  [
+
+                    ]
+    },
+    {
+        "file":  "hani-dashboard-period.test.mjs",
+        "exit":  0,
+        "seconds":  0.16,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-dashboard-period.test.mjs",
+        "summary":  [
+
+                    ]
+    },
+    {
+        "file":  "hani-design-system-qa.mjs",
+        "exit":  0,
+        "seconds":  0.08,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-design-system-qa.mjs",
+        "summary":  [
+
+                    ]
+    },
+    {
+        "file":  "hani-google-drive-212.test.mjs",
+        "exit":  0,
+        "seconds":  0.4,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-google-drive-212.test.mjs",
+        "summary":  [
+                        "# tests 11",
+                        "# pass 11",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-lounge-qa-212.test.mjs",
+        "exit":  0,
+        "seconds":  7.13,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-lounge-qa-212.test.mjs",
+        "summary":  [
+                        "# tests 3",
+                        "# pass 3",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-monthly-report-design-212.test.mjs",
+        "exit":  0,
+        "seconds":  0.1,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-monthly-report-design-212.test.mjs",
+        "summary":  [
+
+                    ]
+    },
+    {
+        "file":  "hani-nav-groups.test.mjs",
+        "exit":  0,
+        "seconds":  0.22,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-nav-groups.test.mjs",
+        "summary":  [
+
+                    ]
+    },
+    {
+        "file":  "hani-navlogin.test.mjs",
+        "exit":  0,
+        "seconds":  0.19,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-navlogin.test.mjs",
+        "summary":  [
+
+                    ]
+    },
+    {
+        "file":  "hani-office-219.test.mjs",
+        "exit":  1,
+        "seconds":  0.36,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-219.test.mjs",
+        "summary":  [
+                        "\u003cref *1\u003e Error: spawnSync git EPERM",
+                        "  error: [Circular *1],"
+                    ]
+    },
+    {
+        "file":  "hani-office-actions-216.test.mjs",
+        "exit":  1,
+        "seconds":  47.99,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-actions-216.test.mjs",
+        "summary":  [
+                        "not ok 7 - approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "# tests 15",
+                        "# pass 14",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-actions-221.test.mjs",
+        "exit":  0,
+        "seconds":  6.45,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-actions-221.test.mjs",
+        "summary":  [
+                        "# tests 20",
+                        "# pass 20",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-affinity.test.mjs",
+        "exit":  0,
+        "seconds":  12.71,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-affinity.test.mjs",
+        "summary":  [
+                        "# tests 21",
+                        "# pass 21",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-affinity-274-pins.test.mjs",
+        "exit":  1,
+        "seconds":  0.61,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-affinity-274-pins.test.mjs",
+        "summary":  [
+                        "not ok 3 - 274 base commit independently proves the entire original JS/CSS/helper blobs",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "# tests 3",
+                        "# pass 2",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-affinity-storage.test.mjs",
+        "exit":  0,
+        "seconds":  0.1,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-affinity-storage.test.mjs",
+        "summary":  [
+                        "# tests 3",
+                        "# pass 3",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-barista.test.mjs",
+        "exit":  0,
+        "seconds":  10.46,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-barista.test.mjs",
+        "summary":  [
+                        "# tests 10",
+                        "# pass 10",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-barista-night.test.mjs",
+        "exit":  0,
+        "seconds":  23.75,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-barista-night.test.mjs",
+        "summary":  [
+                        "# tests 13",
+                        "# pass 13",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-barista-night-273-pins.test.mjs",
+        "exit":  1,
+        "seconds":  0.59,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-barista-night-273-pins.test.mjs",
+        "summary":  [
+                        "not ok 5 - 273: fixed Git release blobs independently prove every baseline pin and complete diff",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "# tests 5",
+                        "# pass 4",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-behavior.test.mjs",
+        "exit":  0,
+        "seconds":  54.85,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-behavior.test.mjs",
+        "summary":  [
+                        "# tests 10",
+                        "# pass 10",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-bori-m9.test.mjs",
+        "exit":  0,
+        "seconds":  71.34,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-bori-m9.test.mjs",
+        "summary":  [
+                        "# tests 2",
+                        "# pass 2",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-bori-stroll.test.mjs",
+        "exit":  1,
+        "seconds":  244.06,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-bori-stroll.test.mjs",
+        "summary":  [
+                        "not ok 8 - stroll inverse independently matches the fixed Git base",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "# tests 14",
+                        "# pass 13",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-bubble-close.test.mjs",
+        "exit":  0,
+        "seconds":  9.05,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-bubble-close.test.mjs",
+        "summary":  [
+                        "# tests 17",
+                        "# pass 17",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-cafe-rest.test.mjs",
+        "exit":  1,
+        "seconds":  3.69,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-cafe-rest.test.mjs",
+        "summary":  [
+                        "not ok 1 - cafe route uses clear lower-right floor, retains the lounge and sign mounting surface",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "# tests 4",
+                        "# pass 3",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-chairman-234.test.mjs",
+        "exit":  7,
+        "seconds":  0.86,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-chairman-234.test.mjs",
+        "summary":  [
+                        "\u003cref *1\u003e Error: spawnSync git EPERM",
+                        "  error: [Circular *1],"
+                    ]
+    },
+    {
+        "file":  "hani-office-chairman-patrol.test.mjs",
+        "exit":  0,
+        "seconds":  11.55,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-chairman-patrol.test.mjs",
+        "summary":  [
+                        "# tests 15",
+                        "# pass 15",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-chairman-patrol-278-pins.test.mjs",
+        "exit":  1,
+        "seconds":  1.13,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-chairman-patrol-278-pins.test.mjs",
+        "summary":  [
+                        "not ok 2 - 278 independent fixed Git blobs prove pre-patrol bytes",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "not ok 4 - 278 kids extension independently matches its fixed Git base",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "not ok 6 - 278 visit extension independently matches fixed Git base",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "not ok 8 - 278 staff-chat extension independently matches fixed Git base",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "not ok 10 - 278 bubble placement extension independently matches fixed Git base",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "not ok 12 - 278 optimization extension independently matches fixed Git base",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "# tests 12",
+                        "# pass 6",
+                        "# fail 6",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-companion-homes.test.mjs",
+        "exit":  1,
+        "seconds":  79.7,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-companion-homes.test.mjs",
+        "summary":  [
+                        "not ok 8 - home extension independently matches the specified fixed Git base",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "# tests 16",
+                        "# pass 15",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-companions.test.mjs",
+        "exit":  0,
+        "seconds":  10.82,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-companions.test.mjs",
+        "summary":  [
+                        "# tests 17",
+                        "# pass 17",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-companions-276-pins.test.mjs",
+        "exit":  1,
+        "seconds":  0.36,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-companions-276-pins.test.mjs",
+        "summary":  [
+                        "not ok 2 - 276 fixed Git base independently proves every original blob",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "# tests 3",
+                        "# pass 2",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-consult.test.mjs",
+        "exit":  1,
+        "seconds":  29.53,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-consult.test.mjs",
+        "summary":  [
+                        "not ok 14 - consult: sofa wording, counter words, safety owners and runtime timers",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "# tests 20",
+                        "# pass 19",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-crowded-labels.test.mjs",
+        "exit":  0,
+        "seconds":  0.9,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-crowded-labels.test.mjs",
+        "summary":  [
+                        "# tests 19",
+                        "# pass 19",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-drama.test.mjs",
+        "exit":  0,
+        "seconds":  21.39,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-drama.test.mjs",
+        "summary":  [
+                        "# tests 20",
+                        "# pass 20",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-fix-218.test.mjs",
+        "exit":  0,
+        "seconds":  2.8,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-fix-218.test.mjs",
+        "summary":  [
+                        "# tests 6",
+                        "# pass 6",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-floor-bubble.test.mjs",
+        "exit":  0,
+        "seconds":  1.88,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-floor-bubble.test.mjs",
+        "summary":  [
+                        "# tests 21",
+                        "# pass 21",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-hd-224.test.mjs",
+        "exit":  0,
+        "seconds":  2.91,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-hd-224.test.mjs",
+        "summary":  [
+                        "# tests 10",
+                        "# pass 10",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-icons.test.mjs",
+        "exit":  1,
+        "seconds":  11.82,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-icons.test.mjs",
+        "summary":  [
+                        "not ok 14 - icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "# tests 15",
+                        "# pass 14",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-kids-lively.test.mjs",
+        "exit":  0,
+        "seconds":  15.07,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-kids-lively.test.mjs",
+        "summary":  [
+                        "# tests 15",
+                        "# pass 15",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-kids-visit.test.mjs",
+        "exit":  0,
+        "seconds":  45.65,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-kids-visit.test.mjs",
+        "summary":  [
+                        "# tests 16",
+                        "# pass 16",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-labels-qa.test.mjs",
+        "exit":  0,
+        "seconds":  7.15,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-labels-qa.test.mjs",
+        "summary":  [
+                        "# tests 17",
+                        "# pass 17",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-lively.test.mjs",
+        "exit":  0,
+        "seconds":  27.01,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-lively.test.mjs",
+        "summary":  [
+                        "# tests 13",
+                        "# pass 13",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-lively-v2.test.mjs",
+        "exit":  1,
+        "seconds":  21.94,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-lively-v2.test.mjs",
+        "summary":  [
+                        "not ok 6 - obr2: deterministic query order, reduced motion and frozen spatial bytes",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "# tests 8",
+                        "# pass 7",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-motion-1.test.mjs",
+        "exit":  0,
+        "seconds":  4.18,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-motion-1.test.mjs",
+        "summary":  [
+                        "# tests 16",
+                        "# pass 16",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-motion-2.test.mjs",
+        "exit":  0,
+        "seconds":  1.15,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-motion-2.test.mjs",
+        "summary":  [
+                        "# tests 24",
+                        "# pass 24",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr10.test.mjs",
+        "exit":  0,
+        "seconds":  2.67,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-obr10.test.mjs",
+        "summary":  [
+                        "# tests 4",
+                        "# pass 4",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr12.test.mjs",
+        "exit":  1,
+        "seconds":  0.07,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-obr12.test.mjs",
+        "summary":  [
+                        "\u003cref *1\u003e Error: spawnSync git EPERM",
+                        "  error: [Circular *1],"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr14.test.mjs",
+        "exit":  1,
+        "seconds":  101.55,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-obr14.test.mjs",
+        "summary":  [
+                        "not ok 1 - 235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "# tests 5",
+                        "# pass 4",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr15.test.mjs",
+        "exit":  1,
+        "seconds":  13.36,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-obr15.test.mjs",
+        "summary":  [
+                        "not ok 7 - obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "# tests 14",
+                        "# pass 13",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr16.test.mjs",
+        "exit":  0,
+        "seconds":  8.92,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-obr16.test.mjs",
+        "summary":  [
+                        "# tests 12",
+                        "# pass 12",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr17.test.mjs",
+        "exit":  0,
+        "seconds":  3.03,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-obr17.test.mjs",
+        "summary":  [
+                        "# tests 3",
+                        "# pass 3",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr18.test.mjs",
+        "exit":  0,
+        "seconds":  6.51,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-obr18.test.mjs",
+        "summary":  [
+                        "# tests 12",
+                        "# pass 12",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr19.test.mjs",
+        "exit":  0,
+        "seconds":  4.59,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-obr19.test.mjs",
+        "summary":  [
+                        "# tests 3",
+                        "# pass 3",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr21.test.mjs",
+        "exit":  1,
+        "seconds":  29.2,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-obr21.test.mjs",
+        "summary":  [
+                        "not ok 4 - obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "not ok 5 - obr21 cached gathering/index decisions equal full index rebuilds",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "# tests 6",
+                        "# pass 4",
+                        "# fail 2",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr3.test.mjs",
+        "exit":  0,
+        "seconds":  3.08,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-obr3.test.mjs",
+        "summary":  [
+                        "# tests 5",
+                        "# pass 5",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr4.test.mjs",
+        "exit":  1,
+        "seconds":  0.49,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-obr4.test.mjs",
+        "summary":  [
+                        "not ok 7 - obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "not ok 8 - obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "# tests 10",
+                        "# pass 8",
+                        "# fail 2",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr6.test.mjs",
+        "exit":  1,
+        "seconds":  0.86,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-obr6.test.mjs",
+        "summary":  [
+                        "\u003cref *1\u003e Error: spawnSync git EPERM",
+                        "  error: [Circular *1],"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr7.test.mjs",
+        "exit":  1,
+        "seconds":  0.07,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-obr7.test.mjs",
+        "summary":  [
+                        "\u003cref *1\u003e Error: spawnSync git EPERM",
+                        "  error: [Circular *1],"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr8.test.mjs",
+        "exit":  1,
+        "seconds":  2.59,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-obr8.test.mjs",
+        "summary":  [
+                        "not ok 1 - obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "# tests 3",
+                        "# pass 2",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-obr9.test.mjs",
+        "exit":  1,
+        "seconds":  0.07,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-obr9.test.mjs",
+        "summary":  [
+                        "\u003cref *1\u003e Error: spawnSync git EPERM",
+                        "  error: [Circular *1],"
+                    ]
+    },
+    {
+        "file":  "hani-office-pet-bori.test.mjs",
+        "exit":  0,
+        "seconds":  52.53,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-pet-bori.test.mjs",
+        "summary":  [
+                        "# tests 14",
+                        "# pass 14",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-pet-bori-272-pins.test.mjs",
+        "exit":  1,
+        "seconds":  0.71,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-pet-bori-272-pins.test.mjs",
+        "summary":  [
+                        "not ok 4 - 272: fixed Git release blobs independently prove every baseline pin and complete diff",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "# tests 4",
+                        "# pass 3",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-pets-268-pins.test.mjs",
+        "exit":  1,
+        "seconds":  0.4,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-pets-268-pins.test.mjs",
+        "summary":  [
+                        "not ok 1 - v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "# tests 1",
+                        "# pass 0",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-pets-bubble.test.mjs",
+        "exit":  1,
+        "seconds":  64.22,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-pets-bubble.test.mjs",
+        "summary":  [
+                        "not ok 13 - resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "# tests 22",
+                        "# pass 21",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-props.test.mjs",
+        "exit":  0,
+        "seconds":  4.45,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-props.test.mjs",
+        "summary":  [
+                        "# tests 11",
+                        "# pass 11",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-release-projection.test.mjs",
+        "exit":  0,
+        "seconds":  0.12,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-release-projection.test.mjs",
+        "summary":  [
+                        "# tests 2",
+                        "# pass 2",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-residents.test.mjs",
+        "exit":  0,
+        "seconds":  73.69,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-residents.test.mjs",
+        "summary":  [
+                        "# tests 49",
+                        "# pass 49",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-seats-215.test.mjs",
+        "exit":  0,
+        "seconds":  0.69,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-seats-215.test.mjs",
+        "summary":  [
+                        "# tests 12",
+                        "# pass 12",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-snack.test.mjs",
+        "exit":  0,
+        "seconds":  16.76,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-snack.test.mjs",
+        "summary":  [
+                        "# tests 26",
+                        "# pass 26",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-staff-chat.test.mjs",
+        "exit":  0,
+        "seconds":  88.76,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-staff-chat.test.mjs",
+        "summary":  [
+                        "# tests 17",
+                        "# pass 17",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-tap-lines.test.mjs",
+        "exit":  0,
+        "seconds":  2.83,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-tap-lines.test.mjs",
+        "summary":  [
+                        "# tests 15",
+                        "# pass 15",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-tlayout.test.mjs",
+        "exit":  0,
+        "seconds":  15.08,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-tlayout.test.mjs",
+        "summary":  [
+                        "# tests 13",
+                        "# pass 13",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-top-labels.test.mjs",
+        "exit":  0,
+        "seconds":  0.11,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-top-labels.test.mjs",
+        "summary":  [
+                        "# tests 7",
+                        "# pass 7",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-v2-215.test.mjs",
+        "exit":  1,
+        "seconds":  0.78,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-v2-215.test.mjs",
+        "summary":  [
+                        "not ok 7 - frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "# tests 20",
+                        "# pass 17",
+                        "# fail 1",
+                        "# skipped 2"
+                    ]
+    },
+    {
+        "file":  "hani-office-visitors-cafe.test.mjs",
+        "exit":  0,
+        "seconds":  4.16,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-visitors-cafe.test.mjs",
+        "summary":  [
+                        "# tests 5",
+                        "# pass 5",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-xmas.test.mjs",
+        "exit":  1,
+        "seconds":  1.19,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-xmas.test.mjs",
+        "summary":  [
+                        "not ok 12 - xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "# tests 13",
+                        "# pass 12",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-xmas-269-pins.test.mjs",
+        "exit":  1,
+        "seconds":  0.32,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-xmas-269-pins.test.mjs",
+        "summary":  [
+                        "not ok 2 - v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit",
+                        "  error: \u0027spawnSync git EPERM\u0027",
+                        "# tests 2",
+                        "# pass 1",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-office-zoom.test.mjs",
+        "exit":  0,
+        "seconds":  18.97,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-office-zoom.test.mjs",
+        "summary":  [
+                        "# tests 13",
+                        "# pass 12",
+                        "# fail 0",
+                        "# skipped 1"
+                    ]
+    },
+    {
+        "file":  "hani-qa-1st.test.cjs",
+        "exit":  1,
+        "seconds":  1.29,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-qa-1st.test.cjs",
+        "summary":  [
+                        "not ok 10 - B actual asset and deployment renderers distinguish unknown/zero and none/awaiting approval",
+                        "  error: \u0027investmentMoveClass is not defined\u0027",
+                        "# tests 10",
+                        "# pass 9",
+                        "# fail 1",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-qa-1st-safety.mjs",
+        "exit":  1,
+        "seconds":  1.89,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-qa-1st-safety.mjs",
+        "summary":  [
+                        "Error: ENOENT: no such file or directory, open \u0027C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\life-bundle\\artifacts\\qa-1st\\eol-map.diff\u0027"
+                    ]
+    },
+    {
+        "file":  "hani-quiz-qa-212.test.cjs",
+        "exit":  0,
+        "seconds":  0.41,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-quiz-qa-212.test.cjs",
+        "summary":  [
+                        "# tests 10",
+                        "# pass 10",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-review-compact-212.test.mjs",
+        "exit":  0,
+        "seconds":  0.1,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-review-compact-212.test.mjs",
+        "summary":  [
+                        "# tests 3",
+                        "# pass 3",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-tasks-qa-212.test.mjs",
+        "exit":  1,
+        "seconds":  0.21,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-tasks-qa-212.test.mjs",
+        "summary":  [
+                        "not ok 5 - single persistent stepper above Calendar; 3 status icons/buttons, N chip navigation, zero hidden",
+                        "  error: \"Cannot read properties of null (reading \u0027parentNode\u0027)\"",
+                        "# tests 8",
+                        "# pass 6",
+                        "# fail 1",
+                        "# skipped 1"
+                    ]
+    },
+    {
+        "file":  "hani-navlogin-ui.test.mjs",
+        "exit":  1,
+        "seconds":  0.33,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-navlogin-ui.test.mjs C:\\Users\\홍성민/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+        "summary":  [
+
+                    ]
+    },
+    {
+        "file":  "hani-navigation-state-ui.test.mjs",
+        "exit":  1,
+        "seconds":  0.32,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-navigation-state-ui.test.mjs C:\\Users\\홍성민/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+        "summary":  [
+
+                    ]
+    },
+    {
+        "file":  "hani-dashboard-period-ui.test.mjs",
+        "exit":  1,
+        "seconds":  0.33,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-dashboard-period-ui.test.mjs C:\\Users\\홍성민/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+        "summary":  [
+
+                    ]
+    },
+    {
+        "file":  "hani-qa-1st-ui.test.mjs",
+        "exit":  1,
+        "seconds":  0.35,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-qa-1st-ui.test.mjs C:\\Users\\홍성민/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+        "summary":  [
+
+                    ]
+    },
+    {
+        "file":  "hani-sidebar-remote-photo-qa.cjs",
+        "exit":  1,
+        "seconds":  0.36,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-sidebar-remote-photo-qa.cjs",
+        "summary":  [
+
+                    ]
+    },
+    {
+        "file":  "hani-design-system-phase1-qa.mjs",
+        "exit":  1,
+        "seconds":  0.4,
+        "command":  "node --test-reporter=tap --import ./scripts/hani-life-bundle-preload.mjs scripts/hani-design-system-phase1-qa.mjs",
+        "summary":  [
+
+                    ]
+    }
+]

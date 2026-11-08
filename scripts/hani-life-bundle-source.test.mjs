@@ -3,11 +3,22 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
-import {lifeLayers,lifeHash,restoreLifeLayer,projectLifeSource,readLifeSource,lifeRefresh,restoreLifeReportRefresh} from './hani-life-bundle-source.mjs';
-import {readBranchBaseline} from './hani-regression-baseline.mjs';
+import {lifeLayers,lifeHash,restoreLifeLayer,projectLifeSource,readLifeSource,lifeRefresh,restoreLifeReportRefresh,readRawLifeFile,projectPreRelease283Source} from './hani-life-bundle-source.mjs';
+import release283 from './hani-release-283-source.cjs';
+import {readLifeBaseline as readBranchBaseline} from './hani-life-bundle-source.mjs';
 import study from './hani-study-retry-source.cjs';
 const owners=['hani-main.js','index.html','hani-study-v02984.js'];
-const current=Object.fromEntries(owners.map(file=>[file,fs.readFileSync(new URL('../'+file,import.meta.url),'utf8')]));
+const current=Object.fromEntries(owners.map(file=>[file,projectPreRelease283Source(readRawLifeFile(new URL('../'+file,import.meta.url),'utf8'),file)]));
+
+test('283 outer inverse preserves complete bytes and rejects drift, partial, duplicate and repeated inverse',()=>{
+  for(const file of Object.keys(release283.files)){
+    const raw=readRawLifeFile(new URL('../'+file,import.meta.url),'utf8');
+    const before=release283.restoreRelease283(raw,file);
+    assert.equal(before,current[file]);
+    assert.equal(before.replaceAll('2.9.282','2.9.283'),raw);
+    for(const bad of [raw+'\n',raw.slice(1),raw+raw,before,raw.replace('2.9.283','2.9.282')])assert.throws(()=>release283.restoreRelease283(bad,file),/exact release-283 input/);
+  }
+});
 
 test('single report refresh has an exact inverse; rejects drift, missing, duplicate and repeated inverse',()=>{
   const after=current['hani-main.js'],before=restoreLifeReportRefresh(after);
@@ -26,7 +37,7 @@ test('four ordered inverses restore each immediate lower hash and the entire fro
       source=restoreLifeLayer(source,file,layer.name);
       if(delta)assert.equal(lifeHash(source),delta.beforeSha256);
     }
-    assert.equal(source,readBranchBaseline(file),file+' independently exported Git baseline bytes');
+    assert.equal(source,readBranchBaseline(file),file+' independently frozen release baseline bytes');
     assert.equal(projectLifeSource(current[file],file,'main'),source);
   }
   assert.equal(projectLifeSource(current['hani-study-v02984.js'],'hani-study-v02984.js','main'),study.projectPreStudyRetrySource(current['hani-study-v02984.js']),'existing frozen study proof agrees');

@@ -1,0 +1,103 @@
+{
+  "browser": "157.0.4341.42",
+  "results": [
+    {
+      "width": 1440,
+      "preview": {
+        "calls": {
+          "commit": 0,
+          "save": 0,
+          "fetch": 0,
+          "writes": 0
+        },
+        "statePreserved": true,
+        "storagePreserved": true,
+        "keys": [
+          "hani_os_investment_baseline_reset_v250_rc23",
+          "hani_os_life_v23",
+          "hani_os_navigation_v1"
+        ],
+        "beforeKeys": [
+          "hani_os_investment_baseline_reset_v250_rc23",
+          "hani_os_life_v23",
+          "hani_os_navigation_v1"
+        ],
+        "version": "2.9.282",
+        "latestScript": "http://127.0.0.1:3108/hani-launch-greeting.js",
+        "overflow": false,
+        "inputHeight": 52
+      },
+      "saved": {
+        "calls": {
+          "commit": 1,
+          "save": 1,
+          "fetch": 0,
+          "writes": 1
+        },
+        "rows": [
+          {
+            "name": "대표님이 수정한 후보",
+            "price": 35000,
+            "note": "애플\nhttps://www.apple.com/kr/shop/product/123/blue-phone-case?color=blue"
+          }
+        ],
+        "keys": [
+          "hani_os_investment_baseline_reset_v250_rc23",
+          "hani_os_life_v23",
+          "hani_os_navigation_v1"
+        ],
+        "stored": true
+      },
+      "errors": []
+    },
+    {
+      "width": 390,
+      "preview": {
+        "calls": {
+          "commit": 0,
+          "save": 0,
+          "fetch": 0,
+          "writes": 0
+        },
+        "statePreserved": true,
+        "storagePreserved": true,
+        "keys": [
+          "hani_os_investment_baseline_reset_v250_rc23",
+          "hani_os_life_v23",
+          "hani_os_navigation_v1"
+        ],
+        "beforeKeys": [
+          "hani_os_investment_baseline_reset_v250_rc23",
+          "hani_os_life_v23",
+          "hani_os_navigation_v1"
+        ],
+        "version": "2.9.282",
+        "latestScript": "http://127.0.0.1:3108/hani-launch-greeting.js",
+        "overflow": false,
+        "inputHeight": 52
+      },
+      "saved": {
+        "calls": {
+          "commit": 1,
+          "save": 1,
+          "fetch": 0,
+          "writes": 1
+        },
+        "rows": [
+          {
+            "name": "대표님이 수정한 후보",
+            "price": 35000,
+            "note": "애플\nhttps://www.apple.com/kr/shop/product/123/blue-phone-case?color=blue"
+          }
+        ],
+        "keys": [
+          "hani_os_investment_baseline_reset_v250_rc23",
+          "hani_os_life_v23",
+          "hani_os_navigation_v1"
+        ],
+        "stored": true
+      },
+      "errors": []
+    }
+  ]
+}

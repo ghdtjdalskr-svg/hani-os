@@ -5,8 +5,8 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import {runBoardCases,makeBoardFixture,runRenderCases} from './hani-procrastination-cases.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
-import {readBranchBaseline} from './hani-regression-baseline.mjs';
-import {readLifeSource,restoreLifeLayer} from './hani-life-bundle-source.mjs';
+import {readLifeBaseline as readBranchBaseline} from './hani-life-bundle-source.mjs';
+import {readLifeSource,restoreLifeLayer,readRawLifeFile} from './hani-life-bundle-source.mjs';
 const read=file=>readLifeSource(file,'procrastination');
 const source=read('hani-procrastination-board.js'),main=read('hani-main.js'),html=read('index.html');
 const writes=[];
@@ -43,7 +43,7 @@ test('exact inverse restores all pre-existing menu, view, event and render bytes
   assert.equal(read('hani-ui-v02992.js'),readBranchBaseline('hani-ui-v02992.js'),'existing UI owner untouched');
 });
 test('existing artwork is reachable in the runtime closure, within 200 files',async()=>{
-  const closure=await resolveRuntimeClosure({exists:file=>fs.existsSync(new URL('../'+file,import.meta.url)),read:file=>fs.readFileSync(new URL('../'+file,import.meta.url))});
+  const closure=await resolveRuntimeClosure({exists:file=>fs.existsSync(new URL('../'+file,import.meta.url)),read:file=>readRawLifeFile(new URL('../'+file,import.meta.url))});
   assert.deepEqual(closure.missing,[]);assert.ok(closure.files.length<=200);
   for(const file of ['hani-procrastination-board.js','hani-procrastination-board.css',...Object.values(window.HaniProcrastination.project({})).map(r=>r.staff.image.replace(/^\.\//,''))])assert.ok(closure.files.includes(file),file);
 });

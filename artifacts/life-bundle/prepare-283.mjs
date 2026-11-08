@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import {resolveRuntimeClosure} from '../../scripts/hani-runtime-closure.mjs';
+const out='artifacts/life-bundle/283';
+assert.ok(!fs.existsSync(out+'/start.json'),'prepare once');
+fs.mkdirSync(out,{recursive:true});
+const hash=b=>createHash('sha256').update(b).digest('hex');
+const copy=(from,to)=>{fs.mkdirSync(path.dirname(to),{recursive:true});fs.copyFileSync(from,to)};
+const closure=await resolveRuntimeClosure({read:f=>fs.readFileSync(f),exists:fs.existsSync});
+const rows=closure.files.map(file=>({file,sha256:hash(fs.readFileSync(file))}));
+for(const file of ['hani-main.js','index.html','hani-study-v02984.js','scripts/fixtures/life-bundle-layers.json','scripts/hani-life-bundle-source.mjs','scripts/hani-dev-report-generate.test.mjs','scripts/hani-wishlist-quick-add.test.mjs','scripts/fixtures/study-retry-preservation.json'])copy(file,out+'/before/'+file);
+for(const dir of ['office-behavior','office-drama'])if(fs.existsSync('artifacts/'+dir))for(const name of fs.readdirSync('artifacts/'+dir))if(name.endsWith('.json'))copy('artifacts/'+dir+'/'+name,out+'/before/artifacts/'+dir+'/'+name);
+for(const file of ['hani-main.js','index.html','hani-study-v02984.js','hani-ui-v02992.js','supabase/functions/hani-learning-quiz/index.ts'])copy('../rel282/'+file,out+'/main-282/'+file);
+fs.writeFileSync(out+'/start.json',JSON.stringify({head:'ada3be2b1cee8fd01dced98a7e09c7ddd6c8f6b4',base:'2feb724c94c92f206c5f79dd992632cbb3b58874',mainSnapshot:{source:'../rel282',head:'f5672cfa1177d5a07e6ed362a402e0c2119fd401',note:'release-282 source tree; no fresh Git lookup; compare exact feature inverses to independent release tree'},runtime:rows,missing:closure.missing},null,2)+'\n');
+console.log(JSON.stringify({runtime:rows.length,missing:closure.missing,mainSnapshot:'release-282 f5672cfa',catalog:JSON.parse(fs.readFileSync('hani-main.js','utf8').match(/globalThis\.HaniGeminiReportCatalog=Object\.freeze\(([^\r\n]+)\);/)[1]).catalog_version}));

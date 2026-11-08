@@ -1,3 +1,4 @@
+import './hani-life-bundle-preload.mjs';
 import {stripApprovedAffinityStorage} from './hani-office-affinity-storage.mjs';
 import test from 'node:test';
 import {restoreBarista273Source} from './hani-office-barista-night-273-source.mjs';

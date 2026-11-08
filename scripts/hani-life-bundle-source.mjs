@@ -2,7 +2,24 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
+import {gunzipSync} from 'node:zlib';
+import release283 from './hani-release-283-source.cjs';
+// Capture the actual reader before any opt-in legacy preload is installed.
+export const readRawLifeFile=fs.readFileSync.bind(fs);
+export const projectPreRelease283Source=release283.projectPreRelease283Source;
 export const lifeHash=value=>createHash('sha256').update(value).digest('hex');
+let baseline;
+export function readLifeBaseline(file){
+  if(!baseline){
+    const bytes=readRawLifeFile(new URL('./fixtures/life-bundle-baseline-282.json.gz',import.meta.url));
+    assert.equal(lifeHash(bytes),'77485a27c153cf2e7e30d29ecfddb3705ec0ac5c5b31d56b6c508817c889076b','independent frozen release-282 bytes');
+    baseline=JSON.parse(gunzipSync(bytes));
+    assert.equal(baseline.base,'2feb724c94c92f206c5f79dd992632cbb3b58874');
+  }
+  const row=baseline.files[file];assert.ok(row,'known frozen life baseline '+file);
+  assert.equal(lifeHash(row.source),row.sha256,'complete frozen baseline '+file);
+  return row.source;
+}
 const frozen=fs.readFileSync(new URL('./fixtures/life-bundle-layers.json',import.meta.url));
 assert.equal(lifeHash(frozen),'a89a80745f9f00b596b763a1c4c0e562e488260a81d45eeda097d8a6abbe0f98','frozen life-bundle merge deltas');
 export const lifeLayers=JSON.parse(frozen);
@@ -32,6 +49,7 @@ export function restoreLifeLayer(source,file,name){
 export function projectLifeSource(source,file,target){
   const names=[...lifeLayers.layers.map(row=>row.name),'main'];
   assert.ok(names.includes(target),'known life-bundle target '+target);
+  source=projectPreRelease283Source(source,file);
   for(const layer of lifeLayers.layers){
     if(layer.name===target)break;
     source=restoreLifeLayer(source,file,layer.name);
@@ -39,5 +57,5 @@ export function projectLifeSource(source,file,target){
   return source;
 }
 export function readLifeSource(file,target){
-  return projectLifeSource(fs.readFileSync(new URL('../'+file,import.meta.url),'utf8'),file,target);
+  return projectLifeSource(readRawLifeFile(new URL('../'+file,import.meta.url),'utf8'),file,target);
 }

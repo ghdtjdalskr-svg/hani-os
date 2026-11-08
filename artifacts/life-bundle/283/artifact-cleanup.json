@@ -1,0 +1,159 @@
+{
+  "restoredSnapshots": [
+    {
+      "file": "artifacts/office-behavior/obr16-layout-node.json",
+      "changed": true,
+      "restored": true,
+      "beforeSha256": "b93abb61e8c8fc727c86669c9c2d1658c7585439a2ed2a6c2d94b5091298709b",
+      "testSha256": "135fa6d34c8ad822b514173345a4a2aa9e21496f708605b98d412dcc35dd72db"
+    },
+    {
+      "file": "artifacts/office-behavior/obr17-layout-node.json",
+      "changed": true,
+      "restored": true,
+      "beforeSha256": "e285500dfd36c5df258a68dd403f96aefc6f8cfe57edcaf36c64c4eb1800e901",
+      "testSha256": "b62fa4461dc27807b4c0c145feab5016a158970ce63dcb712c971b651591182f"
+    },
+    {
+      "file": "artifacts/office-behavior/obr19-layout-node.json",
+      "changed": true,
+      "restored": true,
+      "beforeSha256": "e38623b7b44eacd000361cfc7a5a7f53679cbd17882dbb18faca3ee54e85f8c8",
+      "testSha256": "e383649c4be40fc2850fbae78278756a535944d9d5547dcd80d1c5ca2e6842c9"
+    },
+    {
+      "file": "artifacts/office-behavior/obr19-vocabulary.json",
+      "changed": false,
+      "restored": true,
+      "beforeSha256": "c6109a88d6a72fbf1e085a033519e2727ac91f2b2a3b6f2b42bcb234797a206e",
+      "testSha256": "c6109a88d6a72fbf1e085a033519e2727ac91f2b2a3b6f2b42bcb234797a206e"
+    },
+    {
+      "file": "artifacts/office-behavior/obr21-stationary.json",
+      "changed": false,
+      "restored": true,
+      "beforeSha256": "5c4ea270bacf1aa3ac1fa4158970c46a6fe400532616c78e6afb69ced84c0994",
+      "testSha256": "5c4ea270bacf1aa3ac1fa4158970c46a6fe400532616c78e6afb69ced84c0994"
+    },
+    {
+      "file": "artifacts/office-drama/reachability.json",
+      "changed": true,
+      "restored": true,
+      "beforeSha256": "6b00b9b08c6069cde4824553a5cb2aa72eeb667ec53b51782a10bd3fa29b1ef1",
+      "testSha256": "93f8e68e91a0f102c839d7ef71a9cb21aefa6438cb0450c55e74f9467d1ad8fa"
+    },
+    {
+      "file": "artifacts/fix-218/clock-results.json",
+      "changed": false,
+      "restored": true,
+      "beforeSha256": "679856036d16c84b139db75f39a0f7fc35457c1db3c896929ac8375e51d61ca3",
+      "testSha256": "679856036d16c84b139db75f39a0f7fc35457c1db3c896929ac8375e51d61ca3"
+    },
+    {
+      "file": "artifacts/office-tlayout-apply/phone-boxes.json",
+      "changed": false,
+      "restored": true,
+      "beforeSha256": "214104bc812877bda1ad91600f4dececa0faa174fd7863c7745e3ffa420c0d81",
+      "testSha256": "214104bc812877bda1ad91600f4dececa0faa174fd7863c7745e3ffa420c0d81"
+    },
+    {
+      "file": "artifacts/pet-bori-live/schedule-evidence.json",
+      "changed": false,
+      "restored": true,
+      "beforeSha256": "5a33de80e21b64513bae15747db062aac531a3d495af331d4bbb7d947be51bb8",
+      "testSha256": "5a33de80e21b64513bae15747db062aac531a3d495af331d4bbb7d947be51bb8"
+    }
+  ],
+  "retainedOutputs": [
+    {
+      "file": "artifacts/l216-2/simulation-status.json",
+      "exists": true,
+      "sha256": "0ff3bee2982bfe2c8489f7654004aa53939e5be8cb0ed1e6aa6ea1309e01c3bf",
+      "note": "test output retained; no claim of tracked Git diff without Git"
+    },
+    {
+      "file": "artifacts/l216-2/reachability-status.json",
+      "exists": true,
+      "sha256": "5d097a4bcc3a4d505ff5a019ae6c20c988ed74eeb227835c97631db7b11f57f7",
+      "note": "test output retained; no claim of tracked Git diff without Git"
+    },
+    {
+      "file": "artifacts/night-actions-221/targeted.json",
+      "exists": true,
+      "sha256": "0a426e196aa00286590fb4aac67a984801de385ebd23a706975be70a298d556f",
+      "note": "test output retained; no claim of tracked Git diff without Git"
+    },
+    {
+      "file": "artifacts/bori-fix/daily-evidence.json",
+      "exists": true,
+      "sha256": "d76b101ccb85134dbc220d610addf53b16b2b6a2d9943236f60e404bc5ffeec4",
+      "note": "test output retained; no claim of tracked Git diff without Git"
+    },
+    {
+      "file": "artifacts/bori-fix/tour-evidence.json",
+      "exists": true,
+      "sha256": "adbb2f5149521c9478173015433853091e0dc0c8e01f83a5a0d6b5fc5df90113",
+      "note": "test output retained; no claim of tracked Git diff without Git"
+    },
+    {
+      "file": "artifacts/bori-fix/dom-40x.json",
+      "exists": true,
+      "sha256": "5ad32eeb32fbd9a980c956df67753de475284b7509f0a20b3d3c13a93ddc4d19",
+      "note": "test output retained; no claim of tracked Git diff without Git"
+    },
+    {
+      "file": "artifacts/wishlist/edge-results.json",
+      "exists": true,
+      "sha256": "11df632837c951a87445d9f9236f4d929229a132669ec8f14269f28bc862bef8",
+      "note": "test output retained; no claim of tracked Git diff without Git"
+    },
+    {
+      "file": "artifacts\\wishlist\\edge-1440-after-note.png",
+      "exists": true,
+      "sha256": "43c4171ea88fffc3a287014cfc682c39666372073f8d3fde795eedaa88243df7",
+      "note": "test output retained; no claim of tracked Git diff without Git"
+    },
+    {
+      "file": "artifacts\\wishlist\\edge-1440-after.png",
+      "exists": true,
+      "sha256": "43c4171ea88fffc3a287014cfc682c39666372073f8d3fde795eedaa88243df7",
+      "note": "test output retained; no claim of tracked Git diff without Git"
+    },
+    {
+      "file": "artifacts\\wishlist\\edge-1440-before.png",
+      "exists": true,
+      "sha256": "c519164b8d6a97015bc4c4533b63cf61072d5284a04d833a31b7fb1f4de6b006",
+      "note": "test output retained; no claim of tracked Git diff without Git"
+    },
+    {
+      "file": "artifacts\\wishlist\\edge-390-after-note.png",
+      "exists": true,
+      "sha256": "8785eb28978d5a02be77b0c71ec284ace1f4bec46280a4eccc1cfac89bc7ce6a",
+      "note": "test output retained; no claim of tracked Git diff without Git"
+    },
+    {
+      "file": "artifacts\\wishlist\\edge-390-after.png",
+      "exists": true,
+      "sha256": "c4309995934053dbfaf3eca106fe1d5a14bcec007527e4473396ceee9988ca10",
+      "note": "test output retained; no claim of tracked Git diff without Git"
+    },
+    {
+      "file": "artifacts\\wishlist\\edge-390-before.png",
+      "exists": true,
+      "sha256": "7ee7b35e4d7c8cfa6110b5af4017b8955a5d35aeb49df252c3a44c6bfe8c03b5",
+      "note": "test output retained; no claim of tracked Git diff without Git"
+    },
+    {
+      "file": "artifacts\\procrastination\\edge-pc-1280x900.png",
+      "exists": true,
+      "sha256": "3ef01ddf0727b9a34c2252e66cf5264a7921db93044cc3824289a535f958b0e2",
+      "note": "test output retained; no claim of tracked Git diff without Git"
+    },
+    {
+      "file": "artifacts\\procrastination\\edge-phone-390.png",
+      "exists": true,
+      "sha256": "afe924396432f68db865f481064b7024b499e49126d8590f939a46c62001991e",
+      "note": "test output retained; no claim of tracked Git diff without Git"
+    }
+  ]
+}

@@ -5,7 +5,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { runInNewContext } from 'node:vm';
 import { generate, runCli, assertPublic, localGit } from './hani-dev-report-generate.mjs';
-import {restoreLifeLayer,lifeHash,lifeRefresh,restoreLifeReportRefresh} from './hani-life-bundle-source.mjs';
+import {restoreLifeLayer,lifeHash,lifeRefresh,restoreLifeReportRefresh,readRawLifeFile,projectPreRelease283Source} from './hani-life-bundle-source.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const temp = mkdtempSync(join(tmpdir(), 'hani-dev-report-test-'));
@@ -138,7 +138,7 @@ try {
   assert.equal(actual.reports.length, 13);
   assert.deepEqual(actual.reports.flatMap(r => r.versions), Array.from({ length: 51 }, (_, i) => `v2.9.${230 + i}`));
   assert.ok(actual.reports.every(r => r.versions.length >= 3 && r.versions.length <= 5));
-  const mergedMain = readFileSync(join(root, 'hani-main.js'), 'utf8');
+  const mergedMain = projectPreRelease283Source(readRawLifeFile(join(root, 'hani-main.js'), 'utf8'),'hani-main.js');
   // Keep the generator-only contract on its exact pre-embedding layer. The
   // actual merged catalog and renderer are exercised below as well.
   const main = restoreLifeLayer(mergedMain,'hani-main.js','dev-report');
