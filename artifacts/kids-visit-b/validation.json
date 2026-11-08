@@ -1,0 +1,50 @@
+{
+  "baseCommit": "70c5d5d8e1ddc1262314f412934b3a450974599c",
+  "runtimeSha256": "3c64d0e91bea897d3ee59a3e406a710934b40c2299abb9d9c0e10cd3d6d1fe1d",
+  "cssSha256": "a7aaa77fa50268e4e01a698f1c6b932a214e709bdac732028d308353a068406e",
+  "atlasSha256": "ca2bde970da098eaa201885fe0bec9c947e229061bac4696e8bc7e96eb7ed930",
+  "contractSha256": "755acb2933f3b98d61d0e612fd9c20c6831379107398544cbd86ab3d7cd518c8",
+  "displayVersion": "2.9.280",
+  "counts": {
+    "interval": {
+      "before": 2,
+      "after": 2
+    },
+    "timeout": {
+      "before": 4,
+      "after": 4
+    },
+    "listener": {
+      "before": 15,
+      "after": 15
+    },
+    "storage": {
+      "before": 2,
+      "after": 2
+    },
+    "cloud": {
+      "before": 0,
+      "after": 0
+    }
+  },
+  "schedulerByteIdentical": true,
+  "preservedAssets": [
+    {
+      "file": "assets/office-companions/companions-v1.webp",
+      "sha256": "2a295143929040c144b647efe37a76387123cdb4dd0d2cf3672a2dc3ab17a0f5",
+      "preserved": true
+    },
+    {
+      "file": "assets/office-companions/kids-v1.webp",
+      "sha256": "f9046ee2dc22f0513d481f9382c71707cd8890f5913d2b8653360c414d20478f",
+      "preserved": true
+    }
+  ],
+  "runtimeClosure": {
+    "count": 161,
+    "missing": []
+  },
+  "browser": "blocked: Edge spawn EPERM",
+  "commit": "blocked: shared Git index.lock Permission denied",
+  "notion": "write rejected: approval policy is never"
+}

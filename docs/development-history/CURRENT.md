@@ -473,3 +473,6 @@ Mobile State Persistence 전체, 새기기 Cloud Restore UX, Cloud-first 전환,
 ## 다음 담당
 
 [전체 탭 원장](2026-10-05-all-tabs-status.md)에서 담당과 후보를 확인합니다. 타 작업의 파일·branch를 임의 수정/merge/rebase하지 않습니다. Claude 연결은 대표님의 후속 요청을 기다립니다. 오래된 INDEX/배포 기록은 역사적 근거로 보존합니다.
+# 2026-11-08 · 꼬마 방문 포즈 B 적용 (Codex / kids-visit-b)
+
+`hani/kids-visit-pose-b` / base·GitHub main 확인 `70c5d5d` / 표시·cache2.9.280 유지. v1의 보이는16프레임·좌표 보존 + B16프레임을 추가한 투명 kids-v2(384×1152), 기존 kids owner 안에서 대기 손 흔들기·앉기·표정·매달리기, 방문/이동 우선. **꼬마13/13·15/15·16/16, M9 15/15, 전체68파일730통과·Git34차단·skip3, syntax/diff PASS; 새 저장/timer/listener0·closure161/누락0.** Edge EPERM으로 PC/폰 PNG·실화면 미검증, Git index.lock 권한으로 미커밋, Notion 쓰기 자동 승인 never 거절로 갱신 대기. push/merge/배포/버전 변경 없음. [보고서](../../artifacts/kids-visit-b/REPORT.md) · [인수인계](handoffs/2026-11-08-kids-visit-b.md). 타 담당·과거 기록 보존.

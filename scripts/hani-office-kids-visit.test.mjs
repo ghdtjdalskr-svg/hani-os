@@ -2,7 +2,7 @@ import test from 'node:test';import assert from 'node:assert/strict';import fs f
 import {projectPrePatrolSource} from './hani-office-chairman-patrol-278-source.mjs';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';import {assets}from './hani-office-v2-fixture.mjs';
-import {restoreVisits278Source,projectPreStaffChatSource}from './hani-office-chairman-patrol-278-source.mjs';import {resolveRuntimeClosure}from './hani-runtime-closure.mjs';
+import {restoreVisits278Source,projectPreStaffChatSource}from './hani-office-chairman-patrol-278-source.mjs';import {resolveRuntimeClosure}from './hani-office-kids-pose-b-closure.mjs';
 const {scene,table}=loadScene(),r=scene.residents,day='2026-11-07',plain=x=>JSON.parse(JSON.stringify(x)),options={chairmanPresent:true};
 function frame(sec,staff=scene.snapshot(at(day,sec),options),reduced=false){const now=at(day,sec),existing=r.snapshot(now,staff),states=[...existing,...r.companionSnapshot(now,staff,true,reduced,existing)];return {now,staff,states}}
 const targets=new Set(),visits=[];

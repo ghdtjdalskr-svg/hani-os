@@ -4,12 +4,14 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import {createRequire} from 'node:module';
 import inverse from './hani-seoyun-m9-source.cjs';
+import kidsPoseB from './hani-office-kids-pose-b-source.cjs';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 const require=createRequire(import.meta.url),{delta,hash,restoreSeoyunM9Source:restore}=inverse;
-const read=f=>fs.readFileSync(f,'utf8'),plain=x=>JSON.parse(JSON.stringify(x));
+const read=f=>kidsPoseB.projectPreKidsPoseBSource(fs.readFileSync(f,'utf8'),f),plain=x=>JSON.parse(JSON.stringify(x));
+const readBytes=f=>kidsPoseB.delta.files.some(row=>row.file===f)?Buffer.from(read(f)):fs.readFileSync(f);
 const originalBytes=fs.readFileSync('artifacts/seoyun-m9/originals.json');
 // 2.9.280 release advanced only the index.html/hani-main.js version strings; their pinned digests were refreshed to main 985cc15.
 assert.equal(hash(originalBytes),'e017475524a537091092a70bde1d68a4146fb6da310eb390143cdce561b68306');
@@ -31,7 +33,7 @@ test('one special presentation card follows all nine unchanged M9 cards; MIR and
  assert.deepEqual(cards.filter(c=>!special.includes(c)),original.cards);assert.match(cards[10],/data-character-card="mir"/);assert.match(cards[10],/ca-cover-number">10</);
  for(const text of ['M9 특별 합류 · Platform Architect','M9 SPECIAL LISTING','Technology Integration · Architecture · Delivery','회장님의 아이디어와 M9의 전문성을 실제로 작동하는 시스템으로 연결하는 기술 파트너.','AI STAFF · AI플랫폼개발실 · 팀장'])assert.ok(special[0].includes(text));
  assert.match(special[0],/src="\.\/assets\/profiles\/hani-profile-seoyun.webp"/);
- for(const [file,digest]of Object.entries({...original.assets,...original.files}))assert.equal(hash(fs.readFileSync(file)),digest,file+' unchanged');
+ for(const [file,digest]of Object.entries({...original.assets,...original.files}))assert.equal(hash(readBytes(file)),digest,file+' unchanged');
 });
 
 function organization(){

@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import kidsPoseB from './hani-office-kids-pose-b-source.cjs';
 import {projectPreBoriStrollSource} from './hani-office-bori-stroll-source.mjs';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
@@ -9,6 +10,7 @@ export const patrol278Delta=JSON.parse(bytes);
 assert.equal(patrol278Delta.baseCommit,'3f4158e7a1d793ede02160f2dfac21b834d268d1');
 assert.deepEqual(patrol278Delta.files.map(r=>r.beforeSha256),['43224cad9ebb0eeed913f485afaa9895783157748816458218401810652f389b','3911b660d786f550046a9805fea998a3a865151d843beb39e1c94b5ff9a31f46']);
 export function restorePatrol278Source(source,file='hani-office-live.js'){
+ source=kidsPoseB.projectPreKidsPoseBSource(source,file);
  source=projectPreKidsSource(source,file);
  const row=patrol278Delta.files.find(r=>r.file===file);assert.ok(row,'authored patrol file');
  assert.equal(hash(source),row.afterSha256,'only exact patrol 278 bytes accepted: '+file);
@@ -25,10 +27,12 @@ export function restoreKids278Source(source,file='hani-office-live.js'){
  assert.equal(hash(source),row.beforeSha256,'all 1066c57 bytes restored');return source;
 }
 export function projectPreKidsSource(source,file='hani-office-live.js'){
+ source=kidsPoseB.projectPreKidsPoseBSource(source,file);
  const row=patrol278Delta.kidsExtension;
  return row&&file===row.file&&hash(source)!==row.beforeSha256?restoreKids278Source(source,file):source;
 }
 export function projectPrePatrolSource(source,file='hani-office-live.js'){
+ source=kidsPoseB.projectPreKidsPoseBSource(source,file);
  const row=patrol278Delta.files.find(r=>r.file===file);if(!row)return source;
  return hash(source)===row.beforeSha256?source:restorePatrol278Source(source,file);
 }

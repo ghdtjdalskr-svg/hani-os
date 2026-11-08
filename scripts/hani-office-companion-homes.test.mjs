@@ -6,7 +6,7 @@ import {execFileSync} from 'node:child_process';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
-import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
+import {resolveRuntimeClosure} from './hani-office-kids-pose-b-closure.mjs';
 import {patrol278Delta,restoreCompanionHomesSource,projectPreCompanionHomesSource} from './hani-office-chairman-patrol-278-source.mjs';
 import {projectPreBoriStrollSource} from './hani-office-bori-stroll-source.mjs';
 const hash=s=>createHash('sha256').update(s).digest('hex'),plain=x=>JSON.parse(JSON.stringify(x));

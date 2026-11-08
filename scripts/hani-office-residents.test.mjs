@@ -14,7 +14,7 @@ import {fixture} from './hani-building-206-engine.test.mjs';
 import {assets} from './hani-office-v2-fixture.mjs';
 import {restoreResidentsSource} from './hani-office-residents-source.mjs';
 import {reapplyTlayoutSource} from './hani-office-tlayout-fixture.mjs';
-import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
+import {resolveRuntimeClosure} from './hani-office-kids-pose-b-closure.mjs';
 import {approvedOfficeRuntimeAdditions,bori272Files} from './hani-office-runtime-additions.mjs';
 const read=f=>fs.readFileSync(f,'utf8'),hash=b=>createHash('sha256').update(b).digest('hex');
 const manifest=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));

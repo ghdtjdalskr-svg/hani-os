@@ -2391,7 +2391,9 @@
   ].map(Object.freeze));
   function companionAtlas(person){
     const kid=!!person.kid,poses=kid?['standing','sitting','walk-a','walk-b']:['sitting','standing','walk-a','walk-b','sleep'];
-    return {id:person.id,officeCompanion:true,file:kid?'./assets/office-companions/kids-v1.webp':'./assets/office-companions/companions-v1.webp',scale:3,cell:[96,144],atlas:[kid?384:480,kid?576:1440],frames:['left','right'].flatMap((dir,row)=>poses.map((pose,col)=>({name:pose+'-'+dir,rect:[col*96,(person.atlasRow*2+row)*144,96,144],pivot:[48,135]})))};
+    const frames=['left','right'].flatMap((dir,row)=>poses.map((pose,col)=>({name:pose+'-'+dir,rect:[col*96,(person.atlasRow*2+row)*144,96,144],pivot:[48,135]})));
+    if(kid)for(const [row,dir]of ['left','right'].entries())for(const [col,pose]of ['wave','seat-b','startled','cling'].entries())frames.push({name:pose+'-'+dir,rect:[col*96,(4+person.atlasRow*2+row)*144,96,144],pivot:[48,135]});
+    return {id:person.id,officeCompanion:true,file:kid?'./assets/office-companions/kids-v2.webp':'./assets/office-companions/companions-v1.webp',scale:3,cell:[96,144],atlas:[kid?384:480,kid?1152:1440],frames};
   }
   function companionSafe(floor,v,kid=false){
     const x=v[0]*art.width/100,y=v[1]*art.height/100,half=kid?34:38,height=kid?104:80,items=art.floors[floor];
@@ -3157,7 +3159,7 @@
       active.positions=[];
       for(const [index,id]of ['kid-suyeon','kid-suhyeon'].entries()){
         const child=kids.find(p=>p.id===id),path=returning?(active.returnPaths?.[index]||active.paths[index].slice().reverse()):active.paths[index],progress=returning?(now.getTime()-returnAt)/1000/active.travel:(elapsed-index*.4)/active.travel;
-        child.position=sample(path,progress);active.positions.push(child.position);child.walking=!reduced&&progress>=0&&progress<1;child.pose=child.walking?Math.floor(elapsed*4)%2?'walk-a':'walk-b':'standing';child.facing=(path.at(-1)[0]-path[0][0])<0?'left':'right';delete child.scene;delete child.reaction;
+        child.position=sample(path,progress);active.positions.push(child.position);child.walking=!reduced&&progress>=0&&progress<1;child.pose=child.walking?Math.floor(elapsed*4)%2?'walk-a':'walk-b':'standing';child.facing=(path.at(-1)[0]-path[0][0])<0?'left':'right';delete child.artPose;delete child.scene;delete child.reaction;
         child.activity={...child.activity,kind:'hidden-visit',partnerId:active.actorId};child.visit={key:active.key,actorId:active.actorId,phase:returning?'return':active.line?'talk':'approach'};
         if(reduced)delete child.motion;else child.motion={bob:child.walking&&index===0?-Math.abs(Math.sin(elapsed*9))*3:0,lean:0,spin:0};
       }return active;
@@ -3267,6 +3269,18 @@
       if(action==='check'&&other&&distance(home,other.position)>180){const d=distance(home,other.position);excursion([home[0]+(other.position[0]-home[0])*60/d,home[1]+(other.position[1]-home[1])*60/d]);line='…거기 위험해.';}
       else [offset(kind%2?50:-50,20),offset(0,45),offset(0,-45)].some(excursion);
     }
+    // B poses reuse this clock and route owner. Approach an idle chairman only
+    // through the same furniture/footprint checks; never attach to a moving one.
+    let cling=false;
+    if(sister&&!chair.walking&&kind===0){
+      const side=home[0]<center[0]?-1:1,start=Math.atan2((home[1]-center[1])*art.height,(home[0]-center[0])*art.width),radius=Math.max(86,distance(home,center));
+      for(const direction of [side,-side]){
+        const target=[center[0]+direction*84/art.width*100,center[1]+12/art.height*100],end=Math.atan2(12,direction*84),delta=Math.atan2(Math.sin(end-start),Math.cos(end-start));
+        if(clear(home,target)){route=[home,target];cling=true;break}
+        const approach=[home,...Array.from({length:13},(_,i)=>{const angle=start+delta*i/12;return [center[0]+Math.cos(angle)*radius/art.width*100,center[1]+Math.sin(angle)*radius/art.height*100]}),target];
+        if(approach.every((v,i)=>!i||clear(approach[i-1],v))){route=approach;cling=true;break}
+      }
+    }
     const duration=reduced?rhythm.period:Math.min(rhythm.period*.8,sister?6:9),progress=Math.min(1,rhythm.elapsed/duration),lengths=route.slice(1).map((v,i)=>distance(route[i],v)),length=lengths.reduce((a,b)=>a+b,0);
     let cursor=progress*length,position=home,from=home,to=home;
     for(let i=0;i<lengths.length;i++){if(cursor<=lengths[i]){from=route[i];to=route[i+1];const t=lengths[i]?cursor/lengths[i]:1,e=petEase(t);position=[from[0]+(to[0]-from[0])*e,from[1]+(to[1]-from[1])*e];break}cursor-=lengths[i];}
@@ -3277,6 +3291,14 @@
     if(!reduced&&sister)child.motion={bob:action==='bounce'||moving?-Math.abs(Math.sin(seconds*9))*3:0,lean:action==='wave'?Math.sin(seconds*6)*3:0,spin:0};
     if(reduced)delete child.motion;
     child.activity={key:day+'|kids|'+child.id+'|'+rhythm.beat,kind:action,period:rhythm.period,elapsed:rhythm.elapsed,partnerId:partner?.id};
+    // Preserve the logical walk/stop states; only the existing atlas selection
+    // varies during rests. Reduced motion uses quiet seats, never a cling jump.
+    if(!chair.walking&&!moving){
+      if(reduced)child.artPose='seat-b';
+      else if(cling){child.artPose='cling';child.facing=child.position[0]<center[0]?'right':'left';delete child.motion;}
+      else if(sister)child.artPose=action==='wave'?(rhythm.beat%2?'wave':'seat-b'):action==='bounce'&&rhythm.elapsed>rhythm.period-2?'startled':undefined;
+      else child.artPose=action==='book'?'seat-b':action==='check'&&rhythm.elapsed>rhythm.period-2?'startled':action==='beside'?'cling':undefined;
+    }
     // Preserve patrol arrival greetings/cocoa/flowers first, then use the same
     // pending bubble slot and tap cooldown for the children's short activities.
     if(!chair.patrol||!chair.walking&&seconds-chair.patrolArrival>=25){
@@ -3453,7 +3475,7 @@
     ['resident_bori_lounge_a','2f',51,57,true],['resident_bori_lounge_b','2f',51,59,true],
     ['resident_bori_stroll_lobby','1f',79.5,83,true],['resident_bori_stroll_lounge','2f',51,71,true]
   ].map(([id,floor,vx,vy,pet],i)=>[id,Object.freeze({id,floor,x:/^resident_(rabbit|bori)_/.test(id)?500:100+i*40,y:330,visual:[vx,vy],pet:!!pet})]));
-  function residentBounds(id,pose){if(id.startsWith('companion-'))return [12,60,84,135];if(id.startsWith('kid-'))return [18,35,78,135];const pet=id.startsWith('pet-');if(id==='pet-bori')return [2,({sitting:52,standing:53,'walk-a':63,'walk-b':65,sleep:89})[pose]??52,94,135];if(id==='pet-rabbit')return [11,({sitting:61,standing:63,'hop-a':74,'hop-b':70,sleep:100})[pose]??61,85,135];const top=pet?(pose==='sleep'?102:({sitting: id==='pet-cat'?81:76,standing:id==='pet-cat'?83:75,'walk-a':id==='pet-cat'?87:82,'walk-b':id==='pet-cat'?90:83})[pose]):({standing:15,sitting:30,'walk-a':24,'walk-b':24})[pose];return [pet?13:9,top??15,pet?82:87,135]}
+  function residentBounds(id,pose){if(id.startsWith('companion-'))return [12,60,84,135];if(id.startsWith('kid-'))return ['wave','seat-b','startled','cling'].includes(pose)?[12,31,84,135]:[18,35,78,135];const pet=id.startsWith('pet-');if(id==='pet-bori')return [2,({sitting:52,standing:53,'walk-a':63,'walk-b':65,sleep:89})[pose]??52,94,135];if(id==='pet-rabbit')return [11,({sitting:61,standing:63,'hop-a':74,'hop-b':70,sleep:100})[pose]??61,85,135];const top=pet?(pose==='sleep'?102:({sitting: id==='pet-cat'?81:76,standing:id==='pet-cat'?83:75,'walk-a':id==='pet-cat'?87:82,'walk-b':id==='pet-cat'?90:83})[pose]):({standing:15,sitting:30,'walk-a':24,'walk-b':24})[pose];return [pet?13:9,top??15,pet?82:87,135]}
   const residentPaths=new Map();
   function residentSafe(floorId,point,visual,pet=true){
     const floor=canon?.floors.find(f=>f.id===floorId);if(!floor||!point||!visual)return false;
@@ -4451,7 +4473,7 @@
     for(const person of residentSlots){
       const actor=actors.get(person.id),state=states.find(p=>p.id===person.id&&p.floor===activeFloor),wasVisible=!actor.hidden;
       if(!state){delete actor.officePetFloor;delete actor.officeKidReaction;if(wasVisible){actor.hidden=true;clearMotion(actor);if(bubblePerson===person.id)closeBubble();changed=true}continue}
-      const prior=actor.officeResidentState,walking=String(state.walking),moved=!prior||prior.position[0]!==state.position[0]||prior.position[1]!==state.position[1],turned=!prior||prior.facing!==state.facing,posed=!prior||prior.pose!==state.pose;
+      const prior=actor.officeResidentState,walking=String(state.walking),moved=!prior||prior.position[0]!==state.position[0]||prior.position[1]!==state.position[1],turned=!prior||prior.facing!==state.facing,posed=!prior||prior.pose!==state.pose||prior.artPose!==state.artPose;
       if(person.pet&&state.pose==='sleep'&&(!wasVisible||prior?.pose!=='sleep'))clearMotion(actor);
       if(!wasVisible){actor.hidden=false;changed=true}
       if(!prior||prior.walking!==state.walking||prior.anchor!==state.anchor)changed=true;
@@ -4461,7 +4483,7 @@
       if(!prior||prior.walking!==state.walking)actor.dataset.walking=walking;
       if(!prior||prior.anchor!==state.anchor)actor.officeAnchor=state.anchor;
       if(moved)place(actor,state.position);
-      if(posed||turned)applyPose(actor,state.pose);
+      if(posed||turned)applyPose(actor,state.artPose||state.pose);
       if(person.pet||person.kid){
         // One entrance greeting uses the existing reaction queue and clock.
         // Walking defers it until arrival; hidden floors never consume it.

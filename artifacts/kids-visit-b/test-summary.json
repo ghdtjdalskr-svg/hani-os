@@ -1,0 +1,928 @@
+{
+  "baseCommit": "70c5d5d8e1ddc1262314f412934b3a450974599c",
+  "runtimeSha256": "3c64d0e91bea897d3ee59a3e406a710934b40c2299abb9d9c0e10cd3d6d1fe1d",
+  "cssSha256": "a7aaa77fa50268e4e01a698f1c6b932a214e709bdac732028d308353a068406e",
+  "atlasSha256": "ca2bde970da098eaa201885fe0bec9c947e229061bac4696e8bc7e96eb7ed930",
+  "contractSha256": "755acb2933f3b98d61d0e612fd9c20c6831379107398544cbd86ab3d7cd518c8",
+  "files": 68,
+  "expectedFiles": 68,
+  "missing": [],
+  "pass": 730,
+  "fail": 34,
+  "skipped": 3,
+  "failures": [
+    {
+      "file": "hani-office-219.test.mjs",
+      "name": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\kids-visit-b\\\\scripts\\\\hani-office-219.test.mjs",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": true,
+      "log": "final-frozen-tests/hani-office-219.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-actions-216.test.mjs",
+      "name": "approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": true,
+      "log": "final-frozen-tests/hani-office-actions-216.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-affinity-274-pins.test.mjs",
+      "name": "274 base commit independently proves the entire original JS/CSS/helper blobs",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": true,
+      "log": "final-frozen-tests/hani-office-affinity-274-pins.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-barista-night-273-pins.test.mjs",
+      "name": "273: fixed Git release blobs independently prove every baseline pin and complete diff",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": true,
+      "log": "final-frozen-tests/hani-office-barista-night-273-pins.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-bori-stroll.test.mjs",
+      "name": "stroll inverse independently matches the fixed Git base",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-frozen-tests/hani-office-bori-stroll.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-cafe-rest.test.mjs",
+      "name": "cafe route uses clear lower-right floor, retains the lounge and sign mounting surface",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-frozen-tests/hani-office-cafe-rest.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-chairman-patrol-278-pins.test.mjs",
+      "name": "278 independent fixed Git blobs prove pre-patrol bytes",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-frozen-tests/hani-office-chairman-patrol-278-pins.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-chairman-patrol-278-pins.test.mjs",
+      "name": "278 kids extension independently matches its fixed Git base",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-frozen-tests/hani-office-chairman-patrol-278-pins.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-chairman-patrol-278-pins.test.mjs",
+      "name": "278 visit extension independently matches fixed Git base",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-frozen-tests/hani-office-chairman-patrol-278-pins.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-chairman-patrol-278-pins.test.mjs",
+      "name": "278 staff-chat extension independently matches fixed Git base",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-frozen-tests/hani-office-chairman-patrol-278-pins.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-chairman-patrol-278-pins.test.mjs",
+      "name": "278 bubble placement extension independently matches fixed Git base",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-frozen-tests/hani-office-chairman-patrol-278-pins.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-chairman-patrol-278-pins.test.mjs",
+      "name": "278 optimization extension independently matches fixed Git base",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-frozen-tests/hani-office-chairman-patrol-278-pins.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-companion-homes.test.mjs",
+      "name": "home extension independently matches the specified fixed Git base",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-frozen-tests/hani-office-companion-homes.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-companions-276-pins.test.mjs",
+      "name": "276 fixed Git base independently proves every original blob",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-frozen-tests/hani-office-companions-276-pins.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-consult.test.mjs",
+      "name": "consult: sofa wording, counter words, safety owners and runtime timers",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-frozen-tests/hani-office-consult.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-icons.test.mjs",
+      "name": "icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-frozen-tests/hani-office-icons.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-lively-v2.test.mjs",
+      "name": "obr2: deterministic query order, reduced motion and frozen spatial bytes",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-tests/hani-office-lively-v2.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr12.test.mjs",
+      "name": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\kids-visit-b\\\\scripts\\\\hani-office-obr12.test.mjs",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-tests/hani-office-obr12.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr14.test.mjs",
+      "name": "235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-tests/hani-office-obr14.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr15.test.mjs",
+      "name": "obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-tests/hani-office-obr15.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr21.test.mjs",
+      "name": "obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-tests/hani-office-obr21.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr21.test.mjs",
+      "name": "obr21 cached gathering/index decisions equal full index rebuilds",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-tests/hani-office-obr21.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr4.test.mjs",
+      "name": "obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-tests/hani-office-obr4.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr4.test.mjs",
+      "name": "obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-tests/hani-office-obr4.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr6.test.mjs",
+      "name": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\kids-visit-b\\\\scripts\\\\hani-office-obr6.test.mjs",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-tests/hani-office-obr6.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr7.test.mjs",
+      "name": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\kids-visit-b\\\\scripts\\\\hani-office-obr7.test.mjs",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-tests/hani-office-obr7.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr8.test.mjs",
+      "name": "obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-tests/hani-office-obr8.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr9.test.mjs",
+      "name": "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\kids-visit-b\\\\scripts\\\\hani-office-obr9.test.mjs",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-tests/hani-office-obr9.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-pet-bori-272-pins.test.mjs",
+      "name": "272: fixed Git release blobs independently prove every baseline pin and complete diff",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-tests/hani-office-pet-bori-272-pins.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-pets-268-pins.test.mjs",
+      "name": "v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-tests/hani-office-pets-268-pins.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-pets-bubble.test.mjs",
+      "name": "resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-tests/hani-office-pets-bubble.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-v2-215.test.mjs",
+      "name": "frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-tests/hani-office-v2-215.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-xmas.test.mjs",
+      "name": "xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-tests/hani-office-xmas.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-xmas-269-pins.test.mjs",
+      "name": "v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit",
+      "kind": "Git subprocess blocked",
+      "baseReproduced": false,
+      "log": "final-tests/hani-office-xmas-269-pins.test.mjs.tap"
+    }
+  ],
+  "rows": [
+    {
+      "file": "hani-office-219.test.mjs",
+      "exit": 1,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\kids-visit-b\\\\scripts\\\\hani-office-219.test.mjs"
+      ],
+      "log": "final-frozen-tests/hani-office-219.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-actions-216.test.mjs",
+      "exit": 1,
+      "pass": 14,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract"
+      ],
+      "log": "final-frozen-tests/hani-office-actions-216.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-actions-221.test.mjs",
+      "exit": 0,
+      "pass": 20,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-frozen-tests/hani-office-actions-221.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-affinity-274-pins.test.mjs",
+      "exit": 1,
+      "pass": 2,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "274 base commit independently proves the entire original JS/CSS/helper blobs"
+      ],
+      "log": "final-frozen-tests/hani-office-affinity-274-pins.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-affinity-storage.test.mjs",
+      "exit": 0,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-frozen-tests/hani-office-affinity-storage.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-affinity.test.mjs",
+      "exit": 0,
+      "pass": 21,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-frozen-tests/hani-office-affinity.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-barista-night-273-pins.test.mjs",
+      "exit": 1,
+      "pass": 4,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "273: fixed Git release blobs independently prove every baseline pin and complete diff"
+      ],
+      "log": "final-frozen-tests/hani-office-barista-night-273-pins.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-barista-night.test.mjs",
+      "exit": 0,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-frozen-tests/hani-office-barista-night.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-barista.test.mjs",
+      "exit": 0,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-frozen-tests/hani-office-barista.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-behavior.test.mjs",
+      "exit": 0,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-frozen-tests/hani-office-behavior.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-bori-m9.test.mjs",
+      "exit": 0,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-frozen-tests/hani-office-bori-m9.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-bori-stroll.test.mjs",
+      "exit": 1,
+      "pass": 13,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "stroll inverse independently matches the fixed Git base"
+      ],
+      "log": "final-frozen-tests/hani-office-bori-stroll.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-bubble-close.test.mjs",
+      "exit": 0,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-frozen-tests/hani-office-bubble-close.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-cafe-rest.test.mjs",
+      "exit": 1,
+      "pass": 3,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "cafe route uses clear lower-right floor, retains the lounge and sign mounting surface"
+      ],
+      "log": "final-frozen-tests/hani-office-cafe-rest.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-chairman-234.test.mjs",
+      "exit": 0,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-frozen-tests/hani-office-chairman-234.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-chairman-patrol-278-pins.test.mjs",
+      "exit": 1,
+      "pass": 6,
+      "fail": 6,
+      "skipped": 0,
+      "failures": [
+        "278 independent fixed Git blobs prove pre-patrol bytes",
+        "278 kids extension independently matches its fixed Git base",
+        "278 visit extension independently matches fixed Git base",
+        "278 staff-chat extension independently matches fixed Git base",
+        "278 bubble placement extension independently matches fixed Git base",
+        "278 optimization extension independently matches fixed Git base"
+      ],
+      "log": "final-frozen-tests/hani-office-chairman-patrol-278-pins.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-chairman-patrol.test.mjs",
+      "exit": 0,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-frozen-tests/hani-office-chairman-patrol.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-companion-homes.test.mjs",
+      "exit": 1,
+      "pass": 15,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "home extension independently matches the specified fixed Git base"
+      ],
+      "log": "final-frozen-tests/hani-office-companion-homes.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-companions-276-pins.test.mjs",
+      "exit": 1,
+      "pass": 2,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "276 fixed Git base independently proves every original blob"
+      ],
+      "log": "final-frozen-tests/hani-office-companions-276-pins.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-companions.test.mjs",
+      "exit": 0,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-frozen-tests/hani-office-companions.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-consult.test.mjs",
+      "exit": 1,
+      "pass": 19,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "consult: sofa wording, counter words, safety owners and runtime timers"
+      ],
+      "log": "final-frozen-tests/hani-office-consult.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-crowded-labels.test.mjs",
+      "exit": 0,
+      "pass": 19,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-frozen-tests/hani-office-crowded-labels.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-drama.test.mjs",
+      "exit": 0,
+      "pass": 20,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-frozen-tests/hani-office-drama.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-fix-218.test.mjs",
+      "exit": 0,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-frozen-tests/hani-office-fix-218.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-floor-bubble.test.mjs",
+      "exit": 0,
+      "pass": 21,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-frozen-tests/hani-office-floor-bubble.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-hd-224.test.mjs",
+      "exit": 0,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-frozen-tests/hani-office-hd-224.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-icons.test.mjs",
+      "exit": 1,
+      "pass": 14,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc"
+      ],
+      "log": "final-frozen-tests/hani-office-icons.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-kids-lively.test.mjs",
+      "exit": 0,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-frozen-tests/hani-office-kids-lively.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-kids-pose-b.test.mjs",
+      "exit": 0,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-frozen-tests/hani-office-kids-pose-b.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-kids-visit.test.mjs",
+      "exit": 0,
+      "pass": 16,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-frozen-tests/hani-office-kids-visit.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-labels-qa.test.mjs",
+      "exit": 0,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-frozen-tests/hani-office-labels-qa.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-lively-v2.test.mjs",
+      "exit": 1,
+      "pass": 7,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "obr2: deterministic query order, reduced motion and frozen spatial bytes"
+      ],
+      "log": "final-tests/hani-office-lively-v2.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-lively.test.mjs",
+      "exit": 0,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-frozen-tests/hani-office-lively.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-motion-1.test.mjs",
+      "exit": 0,
+      "pass": 16,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-tests/hani-office-motion-1.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-motion-2.test.mjs",
+      "exit": 0,
+      "pass": 24,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-tests/hani-office-motion-2.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr10.test.mjs",
+      "exit": 0,
+      "pass": 4,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-tests/hani-office-obr10.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr12.test.mjs",
+      "exit": 1,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\kids-visit-b\\\\scripts\\\\hani-office-obr12.test.mjs"
+      ],
+      "log": "final-tests/hani-office-obr12.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr14.test.mjs",
+      "exit": 1,
+      "pass": 4,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism"
+      ],
+      "log": "final-tests/hani-office-obr14.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr15.test.mjs",
+      "exit": 1,
+      "pass": 13,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately"
+      ],
+      "log": "final-tests/hani-office-obr15.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr16.test.mjs",
+      "exit": 0,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-tests/hani-office-obr16.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr17.test.mjs",
+      "exit": 0,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-tests/hani-office-obr17.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr18.test.mjs",
+      "exit": 0,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-tests/hani-office-obr18.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr19.test.mjs",
+      "exit": 0,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-tests/hani-office-obr19.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr21.test.mjs",
+      "exit": 1,
+      "pass": 4,
+      "fail": 2,
+      "skipped": 0,
+      "failures": [
+        "obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+        "obr21 cached gathering/index decisions equal full index rebuilds"
+      ],
+      "log": "final-tests/hani-office-obr21.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr3.test.mjs",
+      "exit": 0,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-tests/hani-office-obr3.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr4.test.mjs",
+      "exit": 1,
+      "pass": 8,
+      "fail": 2,
+      "skipped": 0,
+      "failures": [
+        "obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+        "obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats"
+      ],
+      "log": "final-tests/hani-office-obr4.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr6.test.mjs",
+      "exit": 1,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\kids-visit-b\\\\scripts\\\\hani-office-obr6.test.mjs"
+      ],
+      "log": "final-tests/hani-office-obr6.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr7.test.mjs",
+      "exit": 1,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\kids-visit-b\\\\scripts\\\\hani-office-obr7.test.mjs"
+      ],
+      "log": "final-tests/hani-office-obr7.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr8.test.mjs",
+      "exit": 1,
+      "pass": 2,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words"
+      ],
+      "log": "final-tests/hani-office-obr8.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-obr9.test.mjs",
+      "exit": 1,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\kids-visit-b\\\\scripts\\\\hani-office-obr9.test.mjs"
+      ],
+      "log": "final-tests/hani-office-obr9.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-pet-bori-272-pins.test.mjs",
+      "exit": 1,
+      "pass": 3,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "272: fixed Git release blobs independently prove every baseline pin and complete diff"
+      ],
+      "log": "final-tests/hani-office-pet-bori-272-pins.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-pet-bori.test.mjs",
+      "exit": 0,
+      "pass": 14,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-tests/hani-office-pet-bori.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-pets-268-pins.test.mjs",
+      "exit": 1,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits"
+      ],
+      "log": "final-tests/hani-office-pets-268-pins.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-pets-bubble.test.mjs",
+      "exit": 1,
+      "pass": 21,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections"
+      ],
+      "log": "final-tests/hani-office-pets-bubble.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-props.test.mjs",
+      "exit": 0,
+      "pass": 11,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-tests/hani-office-props.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-release-projection.test.mjs",
+      "exit": 0,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-tests/hani-office-release-projection.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "exit": 0,
+      "pass": 49,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-residents-tests/hani-office-residents.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-seats-215.test.mjs",
+      "exit": 0,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-tests/hani-office-seats-215.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-snack.test.mjs",
+      "exit": 0,
+      "pass": 26,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-tests/hani-office-snack.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-staff-chat.test.mjs",
+      "exit": 0,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-tests/hani-office-staff-chat.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-tap-lines.test.mjs",
+      "exit": 0,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-tests/hani-office-tap-lines.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-tlayout.test.mjs",
+      "exit": 0,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-tests/hani-office-tlayout.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-top-labels.test.mjs",
+      "exit": 0,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-tests/hani-office-top-labels.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-v2-215.test.mjs",
+      "exit": 1,
+      "pass": 17,
+      "fail": 1,
+      "skipped": 2,
+      "failures": [
+        "frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture"
+      ],
+      "log": "final-tests/hani-office-v2-215.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-visitors-cafe.test.mjs",
+      "exit": 0,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "log": "final-tests/hani-office-visitors-cafe.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-xmas-269-pins.test.mjs",
+      "exit": 1,
+      "pass": 1,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit"
+      ],
+      "log": "final-tests/hani-office-xmas-269-pins.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-xmas.test.mjs",
+      "exit": 1,
+      "pass": 12,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        "xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged"
+      ],
+      "log": "final-tests/hani-office-xmas.test.mjs.tap"
+    },
+    {
+      "file": "hani-office-zoom.test.mjs",
+      "exit": 0,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 1,
+      "failures": [],
+      "log": "final-tests/hani-office-zoom.test.mjs.tap"
+    }
+  ]
+}

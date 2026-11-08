@@ -1,0 +1,15 @@
+﻿{
+    "file":  "hani-office-chairman-patrol-278-pins.test.mjs",
+    "exit":  1,
+    "pass":  6,
+    "fail":  6,
+    "skipped":  0,
+    "failures":  [
+                     "278 independent fixed Git blobs prove pre-patrol bytes",
+                     "278 kids extension independently matches its fixed Git base",
+                     "278 visit extension independently matches fixed Git base",
+                     "278 staff-chat extension independently matches fixed Git base",
+                     "278 bubble placement extension independently matches fixed Git base",
+                     "278 optimization extension independently matches fixed Git base"
+                 ]
+}

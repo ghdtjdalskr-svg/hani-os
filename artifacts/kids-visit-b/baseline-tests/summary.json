@@ -1,0 +1,32 @@
+﻿[
+    {
+        "file":  "hani-office-219.test.mjs",
+        "exit":  1,
+        "pass":  0,
+        "fail":  1,
+        "skipped":  0,
+        "failures":  [
+                         "C:\\\\Users\\\\홍성민\\\\Documents\\\\HANI_OS_DEV_CLAUDE\\\\kids-visit-b\\\\scripts\\\\hani-office-219.test.mjs"
+                     ]
+    },
+    {
+        "file":  "hani-office-actions-216.test.mjs",
+        "exit":  1,
+        "pass":  14,
+        "fail":  1,
+        "skipped":  0,
+        "failures":  [
+                         "approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract"
+                     ]
+    },
+    {
+        "file":  "hani-office-affinity-274-pins.test.mjs",
+        "exit":  1,
+        "pass":  2,
+        "fail":  1,
+        "skipped":  0,
+        "failures":  [
+                         "274 base commit independently proves the entire original JS/CSS/helper blobs"
+                     ]
+    }
+]
