@@ -1,0 +1,25 @@
+{
+  "restored": [
+    {
+      "file": "artifacts/history-226/unit.json",
+      "evidence": "artifacts/m9-rebase281/generated/artifacts/history-226/unit.json"
+    },
+    {
+      "file": "artifacts/office-behavior/obr16-layout-node.json",
+      "evidence": "artifacts/m9-rebase281/generated/artifacts/office-behavior/obr16-layout-node.json"
+    },
+    {
+      "file": "artifacts/office-behavior/obr17-layout-node.json",
+      "evidence": "artifacts/m9-rebase281/generated/artifacts/office-behavior/obr17-layout-node.json"
+    },
+    {
+      "file": "artifacts/office-behavior/obr19-layout-node.json",
+      "evidence": "artifacts/m9-rebase281/generated/artifacts/office-behavior/obr19-layout-node.json"
+    },
+    {
+      "file": "artifacts/office-drama/reachability.json",
+      "evidence": "artifacts/m9-rebase281/generated/artifacts/office-drama/reachability.json"
+    }
+  ],
+  "preExistingIntegrationArtifactPreserved": true
+}

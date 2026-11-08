@@ -3,7 +3,8 @@
     {
       "width": 1440,
       "archive": true,
-      "originalTeam": 9,
+      "archiveMembers": 12,
+      "aiStaff": 10,
       "settings": true,
       "stateSame": true,
       "storageSame": true,
@@ -13,7 +14,8 @@
     {
       "width": 390,
       "archive": true,
-      "originalTeam": 9,
+      "archiveMembers": 12,
+      "aiStaff": 10,
       "settings": true,
       "stateSame": true,
       "storageSame": true,

@@ -1,0 +1,29 @@
+[
+  {
+    "width": 300,
+    "metrics": "synthetic, not browser pixels",
+    "minimumRatio": 0.875,
+    "samples": 365,
+    "meanMs": 1.3740082191780945,
+    "maxMs": 26.245900000000802,
+    "failures": []
+  },
+  {
+    "width": 342,
+    "metrics": "synthetic, not browser pixels",
+    "minimumRatio": 1,
+    "samples": 365,
+    "meanMs": 0.9485438356164432,
+    "maxMs": 12.99789999999939,
+    "failures": []
+  },
+  {
+    "width": 1348,
+    "metrics": "synthetic, not browser pixels",
+    "minimumRatio": 1,
+    "samples": 365,
+    "meanMs": 0.8370852054794403,
+    "maxMs": 3.1343000000006214,
+    "failures": []
+  }
+]

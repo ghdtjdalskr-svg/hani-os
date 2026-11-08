@@ -1,10 +1,11 @@
+// Baseline: main 43eda9e (v2.9.281); released affinity/mascot/version bytes are not M9 changes.
 // Test-only exact outer inverse. Runtime never loads this module.
 const fs=require('node:fs'),assert=require('node:assert/strict'),path=require('node:path'),{createHash}=require('node:crypto');
 const hash=s=>createHash('sha256').update(s).digest('hex');
 const bytes=fs.readFileSync(path.join(__dirname,'fixtures/m9-polish-delta.json'));
-assert.equal(hash(bytes),'9d7a4fbf35c9ec2718df3d3886c62f0e00d6527199092633afb9e02960dedbb9','authored polish delta only');
+assert.equal(hash(bytes),'0f824124bbda90ab24d4d77b77e798cceeda54ece73cd53cd98ae3563909b7d6','authored polish delta only');
 const delta=JSON.parse(bytes);
-assert.equal(delta.base,'4bdfa54063463a5863503eb7622d069bd4786b8b');
+assert.equal(delta.base,'43eda9e2e3f69115c3569f585506904965c26c18');
 function restore(source,file){
   const row=delta.files.find(r=>r.file===file);assert.ok(row,file);
   assert.equal(hash(source),row.afterSha256,'exact post-polish input: '+file);

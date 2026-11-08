@@ -1,0 +1,1385 @@
+{
+  "command": "node --require ./scripts/hani-m9-polish-preload.cjs --require ./scripts/hani-m9-link-preload.cjs --test --test-isolation=none --test-timeout=30000 --test-reporter=tap scripts/<hani-office-*.test.mjs> (one file at a time)",
+  "runtimeHead": "33dc1d9038f34ac1b05d81859da7cdb879aaa7e1",
+  "baseline": "43eda9e2e3f69115c3569f585506904965c26c18",
+  "totals": {
+    "files": 67,
+    "tests": 666,
+    "pass": 566,
+    "fail": 97,
+    "skip": 3,
+    "cancelled": 0,
+    "blocked": 23,
+    "nonBlockedFailures": 74
+  },
+  "rows": [
+    {
+      "file": "hani-office-219.test.mjs",
+      "exit": 1,
+      "seconds": 0.32,
+      "tests": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "scripts\\\\hani-office-219.test.mjs",
+          "error": "<Circular>",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-actions-216.test.mjs",
+      "exit": 1,
+      "seconds": 39.82,
+      "tests": 15,
+      "pass": 14,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract",
+          "error": "'spawnSync git EPERM'",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-actions-221.test.mjs",
+      "exit": 1,
+      "seconds": 4.72,
+      "tests": 20,
+      "pass": 19,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "221 preserves 98 released actions, adds 22, keeps disabled/identity/rest/movement budgets and reproduces exactly",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-affinity.test.mjs",
+      "exit": 1,
+      "seconds": 9.36,
+      "tests": 21,
+      "pass": 13,
+      "fail": 8,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "affinity storage: only the one exact key/counts payload; debounced <= one write per 2s",
+          "error": "Expected values to be strictly deep-equal: + actual - expected  [ 'counts', +   'day', +   'today', 'v'",
+          "code": "'ERR_ASSERTION'",
+          "classification": "assertion 실패"
+        },
+        {
+          "name": "affinity storage: malformed values preserved byte-for-byte with one warning and memory-only clicks",
+          "error": "Expected values to be strictly equal:  2 !== 20  TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-affinity.test.mjs:50:118) Test.runInAsyncScope (node:async_hooks:227:14) Test.run (node:internal/test_runner/test:1397:25) Test.processPendingSubtests (node:internal/test_runner/test:969:18)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "assertion 실패"
+        },
+        {
+          "name": "affinity storage: read denied, quota and storage getter failure remain usable in memory",
+          "error": "Expected values to be strictly equal:  2 !== 3  TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-affinity.test.mjs:54:174) Test.runInAsyncScope (node:async_hooks:227:14) Test.run (node:internal/test_runner/test:1397:25) Test.processPendingSubtests (node:internal/test_runner/test:969:18)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "assertion 실패"
+        },
+        {
+          "name": "affinity voices: 25 ids each unlock exactly three Lv3 and two additional Lv5 lines; no early leaks",
+          "error": "Expected values to be strictly equal: + actual - expected  + '회장님 오시면 사무실이 조금 더 신나요♡' - '회의 끝나면 창가에서 아이디어 하나만 더요♡'  TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-affinity.test.mjs:64:175) Test.runInAsyncScope (node:async_hooks:227:14)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "assertion 실패"
+        },
+        {
+          "name": "affinity actual owner: Lv1 -> Lv2 -> Lv3, secret stability, float and one persistent slot 1280/false",
+          "error": "The input did not match the regular expression /회장님.*편한 동료/. Input:  '하니 · 이동 중 · 복도 끝 창가로 가는 중'  TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-affinity.test.mjs:73:40) async Test.run (node:internal/test_runner/test:1404:7) async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "assertion 실패"
+        },
+        {
+          "name": "affinity actual owner: Lv1 -> Lv2 -> Lv3, secret stability, float and one persistent slot 1280/true",
+          "error": "The input did not match the regular expression /회장님.*편한 동료/. Input:  '하니 · 복도 끝 창가로 가는 중 · 같이 만들죠! 범위는 제가 잡을게요♡'  TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-affinity.test.mjs:73:40) async Test.run (node:internal/test_runner/test:1404:7) async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "assertion 실패"
+        },
+        {
+          "name": "affinity actual owner: Lv1 -> Lv2 -> Lv3, secret stability, float and one persistent slot 390/false",
+          "error": "The input did not match the regular expression /회장님.*편한 동료/. Input:  '하니 · 이동 중 · 복도 끝 창가로 가는 중'  TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-affinity.test.mjs:73:40) async Test.run (node:internal/test_runner/test:1404:7) async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "assertion 실패"
+        },
+        {
+          "name": "affinity actual owner: Lv1 -> Lv2 -> Lv3, secret stability, float and one persistent slot 390/true",
+          "error": "The input did not match the regular expression /회장님.*편한 동료/. Input:  '하니 · 복도 끝 창가로 가는 중 · 같이 만들죠! 범위는 제가 잡을게요♡'  TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-affinity.test.mjs:73:40) async Test.run (node:internal/test_runner/test:1404:7) async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "assertion 실패"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-affinity-274-pins.test.mjs",
+      "exit": 1,
+      "seconds": 0.11,
+      "tests": 3,
+      "pass": 0,
+      "fail": 3,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "274 exact complete pairs, ordered disjoint; reject missing, duplicate and unrelated bytes",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "274 -> 273 -> 272 -> 269 -> 268 strict restoration remains enforced",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "274 base commit independently proves the entire original JS/CSS/helper blobs",
+          "error": "'spawnSync git EPERM'",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-affinity-storage.test.mjs",
+      "exit": 1,
+      "seconds": 0.08,
+      "tests": 3,
+      "pass": 1,
+      "fail": 2,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "storage exception removes only the exact approved owner and preserves every surrounding byte",
+          "error": "exact unique approved affinity owner pair  0 !== 1  stripApprovedAffinityStorage (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-affinity-storage.mjs:24:9) TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-affinity-storage.test.mjs:13:17) Test.runInAsyncScope (node:async_hooks:227:14) Test.run (node:internal/test_runner/test:1397:25)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "storage exception leaves every outside storage/Cloud/save path visible to the original guards",
+          "error": "exact unique approved affinity owner pair  0 !== 1  stripApprovedAffinityStorage (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-affinity-storage.mjs:24:9) TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-affinity-storage.test.mjs:34:18) Test.runInAsyncScope (node:async_hooks:227:14) Test.run (node:internal/test_runner/test:1397:25)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-barista.test.mjs",
+      "exit": 1,
+      "seconds": 4.91,
+      "tests": 10,
+      "pass": 9,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "barista: plan, blockPlan, snapshot outputs and protected owner bytes preserve the pre-patch baseline",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-barista-night.test.mjs",
+      "exit": 1,
+      "seconds": 16.85,
+      "tests": 13,
+      "pass": 11,
+      "fail": 2,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "night barista: byte-exact 360x110 opaque atlas; sole new runtime file 158 -> 159/160",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "night barista: unchanged scheduler/labels/pets/props, timer and listener counts, no storage/Cloud paths",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-barista-night-273-pins.test.mjs",
+      "exit": 1,
+      "seconds": 0.19,
+      "tests": 5,
+      "pass": 2,
+      "fail": 3,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "273: exact ordered pairs are the complete fixed-272 JS/CSS diff, rejecting all unlisted bytes",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "273 -> 272 -> 269 -> 268: all stacked source hashes and literal pairs remain enforced",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "273: fixed Git release blobs independently prove every baseline pin and complete diff",
+          "error": "'spawnSync git EPERM'",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-behavior.test.mjs",
+      "exit": 1,
+      "seconds": 46.99,
+      "tests": 10,
+      "pass": 9,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "place/geometry contract, no sub-4px timed edge, private homes and full return endpoints",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-bori-m9.test.mjs",
+      "exit": 1,
+      "seconds": 66.33,
+      "tests": 2,
+      "pass": 1,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "merged exact inverses run M9 then Bori then homes through every unchanged 278 layer",
+          "error": "only exact Bori stroll bytes accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '6085c14f506f8cba92470409e97d19889646d748f71752b6abb0ba4a5975480c'  restoreBoriStrollSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-bori-stroll-source.mjs:13:63) TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-bori-m9.test.mjs:11:49)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-bori-stroll.test.mjs",
+      "exit": 0,
+      "seconds": 0.46,
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-bubble-close.test.mjs",
+      "exit": 1,
+      "seconds": 7.68,
+      "tests": 17,
+      "pass": 16,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "bubble close: protected owner bytes, global listeners and timer allocations are unchanged",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-cafe-rest.test.mjs",
+      "exit": 1,
+      "seconds": 3.38,
+      "tests": 4,
+      "pass": 2,
+      "fail": 2,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "cafe route uses clear lower-right floor, retains the lounge and sign mounting surface",
+          "error": "'spawnSync git EPERM'",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        },
+        {
+          "name": "approved workday cadence and exact frozen placement code stay intact",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-chairman-234.test.mjs",
+      "exit": 0,
+      "seconds": 0.47,
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-chairman-patrol.test.mjs",
+      "exit": 0,
+      "seconds": 0.47,
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-chairman-patrol-278-pins.test.mjs",
+      "exit": 1,
+      "seconds": 0.17,
+      "tests": 12,
+      "pass": 0,
+      "fail": 12,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "278 exact complete ordered replacements reject missing, duplicate, unrelated and baseline bytes",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "278 independent fixed Git blobs prove pre-patrol bytes",
+          "error": "'spawnSync git EPERM'",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        },
+        {
+          "name": "278 kids extension strictly restores every authored 1066c57 byte and rejects mutations",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-pins.test.mjs:18:104)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "278 kids extension independently matches its fixed Git base",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-pins.test.mjs:23:86)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "278 visit extension strictly restores 59db365 and rejects every partial, duplicate or unrelated byte",
+          "error": "only exact visit 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - 'bbaceed5e8ac8ea5f33b67d8568a88b111d484c186f79d14d562bd3df77f8cae'  restoreVisits278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:39:77) TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-pins.test.mjs:26:108)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "278 visit extension independently matches fixed Git base",
+          "error": "only exact visit 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - 'bbaceed5e8ac8ea5f33b67d8568a88b111d484c186f79d14d562bd3df77f8cae'  restoreVisits278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:39:77) TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-pins.test.mjs:31:83)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "278 staff-chat extension strictly preserves ordered complete replacements and rejects mutations",
+          "error": "only exact staff-chat extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '87e892c33ec1c2ded09c3d1d09914acb97ae737e1dbbcce439e10cf97ed18d5e'  restoreStaffChats278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:51:81) TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-pins.test.mjs:34:114)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "278 staff-chat extension independently matches fixed Git base",
+          "error": "only exact staff-chat extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '87e892c33ec1c2ded09c3d1d09914acb97ae737e1dbbcce439e10cf97ed18d5e'  restoreStaffChats278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:51:81) TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-pins.test.mjs:39:88)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "278 bubble placement extension strictly restores complete 0159d09 bytes and rejects all mutations",
+          "error": "only exact bubble placement extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - 'f3797ab8a7fdefdee7b475b604cc9aa8f60c9e15ade6089e517e735eb9efd1ff'  restoreBubblePlace278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:63:83) TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-pins.test.mjs:42:111)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "278 bubble placement extension independently matches fixed Git base",
+          "error": "only exact bubble placement extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - 'f3797ab8a7fdefdee7b475b604cc9aa8f60c9e15ade6089e517e735eb9efd1ff'  restoreBubblePlace278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:63:83) TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-pins.test.mjs:47:94)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "278 optimization extension preserves the entire previous contract and rejects all mutations",
+          "error": "only exact fix278 bytes accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - 'aa5c9893814c89d00e57626b9a43582ad885e4c93d6b152f338204a2e52375c9'  restoreFix278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:75:78) TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-pins.test.mjs:51:88)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "278 optimization extension independently matches fixed Git base",
+          "error": "only exact fix278 bytes accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - 'aa5c9893814c89d00e57626b9a43582ad885e4c93d6b152f338204a2e52375c9'  restoreFix278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:75:78) TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-pins.test.mjs:56:90)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-companion-homes.test.mjs",
+      "exit": 0,
+      "seconds": 0.47,
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-companions.test.mjs",
+      "exit": 0,
+      "seconds": 0.47,
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-companions-276-pins.test.mjs",
+      "exit": 1,
+      "seconds": 0.08,
+      "tests": 3,
+      "pass": 1,
+      "fail": 2,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "276 exact complete ordered disjoint replacements reject missing, duplicate, unrelated and base bytes",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "276 fixed Git base independently proves every original blob",
+          "error": "'spawnSync git EPERM'",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-consult.test.mjs",
+      "exit": 1,
+      "seconds": 17.04,
+      "tests": 20,
+      "pass": 18,
+      "fail": 2,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "consult: sofa wording, counter words, safety owners and runtime timers",
+          "error": "'spawnSync git EPERM'",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        },
+        {
+          "name": "consult: separately authored full plans and reverse snapshots retain exact identity in both presence states",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-crowded-labels.test.mjs",
+      "exit": 0,
+      "seconds": 0.83,
+      "tests": 19,
+      "pass": 19,
+      "fail": 0,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-drama.test.mjs",
+      "exit": 1,
+      "seconds": 17.83,
+      "tests": 20,
+      "pass": 19,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "release trace sees literal JSON path; caption wraps in full; scheduler and label placement remain frozen",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-fix-218.test.mjs",
+      "exit": 0,
+      "seconds": 2.46,
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-floor-bubble.test.mjs",
+      "exit": 0,
+      "seconds": 1.62,
+      "tests": 18,
+      "pass": 18,
+      "fail": 0,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-hd-224.test.mjs",
+      "exit": 1,
+      "seconds": 2.53,
+      "tests": 10,
+      "pass": 9,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "actual metadata bootstrap tolerates missing/malformed v3 and keeps the v2 scene",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-icons.test.mjs",
+      "exit": 1,
+      "seconds": 3.93,
+      "tests": 15,
+      "pass": 13,
+      "fail": 2,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "icons: complete plan/blockPlan and sampled snapshot JSON match the approved G output",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-kids-lively.test.mjs",
+      "exit": 1,
+      "seconds": 12.62,
+      "tests": 15,
+      "pass": 12,
+      "fail": 3,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "live walking leads and looks back while brother follows, floor/presence remain authoritative and pets unchanged",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "latest mounted slots rotate every new dialogue, retain taps/bubble, reduced motion, zero writes/timer/listener additions",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-kids-lively.test.mjs:64:66)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "kids add no runtime files or atlas/CSS bytes",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) read (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-kids-lively.test.mjs:70:180)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-kids-visit.test.mjs",
+      "exit": 1,
+      "seconds": 39.36,
+      "tests": 16,
+      "pass": 15,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "raw runtime preserves timer/listener/storage/cloud counts, all scheduler bytes, CSS/index/main and <=200 closure files",
+          "error": "only exact visit 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - 'bbaceed5e8ac8ea5f33b67d8568a88b111d484c186f79d14d562bd3df77f8cae'  restoreVisits278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:39:77) TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-kids-visit.test.mjs:57:66)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-labels-qa.test.mjs",
+      "exit": 1,
+      "seconds": 6.44,
+      "tests": 17,
+      "pass": 16,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "QA18: label fitting keeps batched reads; existing steady frames do not add layout measurements",
+          "error": "'companion and hidden visit bubble obstacle read'",
+          "code": "'ERR_ASSERTION'",
+          "classification": "assertion 실패"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-lively.test.mjs",
+      "exit": 0,
+      "seconds": 24.79,
+      "tests": 13,
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-lively-v2.test.mjs",
+      "exit": 1,
+      "seconds": 19.19,
+      "tests": 8,
+      "pass": 7,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "obr2: deterministic query order, reduced motion and frozen spatial bytes",
+          "error": "'spawnSync git EPERM'",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-motion-1.test.mjs",
+      "exit": 1,
+      "seconds": 3.47,
+      "tests": 16,
+      "pass": 15,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "approved consultation scheduler source stays frozen, including every route and arrival calculation",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-motion-2.test.mjs",
+      "exit": 0,
+      "seconds": 1.08,
+      "tests": 24,
+      "pass": 24,
+      "fail": 0,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr10.test.mjs",
+      "exit": 0,
+      "seconds": 2.52,
+      "tests": 4,
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr12.test.mjs",
+      "exit": 1,
+      "seconds": 0.07,
+      "tests": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "scripts\\\\hani-office-obr12.test.mjs",
+          "error": "<Circular>",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr14.test.mjs",
+      "exit": 1,
+      "seconds": 0.09,
+      "tests": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "scripts\\\\hani-office-obr14.test.mjs",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr15.test.mjs",
+      "exit": 1,
+      "seconds": 10.82,
+      "tests": 14,
+      "pass": 13,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately",
+          "error": "'spawnSync git EPERM'",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr16.test.mjs",
+      "exit": 0,
+      "seconds": 7.85,
+      "tests": 12,
+      "pass": 12,
+      "fail": 0,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr17.test.mjs",
+      "exit": 1,
+      "seconds": 2.44,
+      "tests": 3,
+      "pass": 2,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "obr17 actor context removed; canonical layers, atlas pivot and compact >=10px are explicit",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr18.test.mjs",
+      "exit": 1,
+      "seconds": 5.83,
+      "tests": 12,
+      "pass": 11,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "obr18 actor context removed; canonical layers, atlas pivot and compact >=10px are explicit",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr19.test.mjs",
+      "exit": 0,
+      "seconds": 4.08,
+      "tests": 3,
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr21.test.mjs",
+      "exit": 1,
+      "seconds": 15.4,
+      "tests": 6,
+      "pass": 3,
+      "fail": 3,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "obr21 authored full absent/present plans and reverse snapshots match frozen delta",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+          "error": "'spawnSync git EPERM'",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        },
+        {
+          "name": "obr21 cached gathering/index decisions equal full index rebuilds",
+          "error": "'spawnSync git EPERM'",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr3.test.mjs",
+      "exit": 0,
+      "seconds": 2.66,
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr4.test.mjs",
+      "exit": 1,
+      "seconds": 0.47,
+      "tests": 10,
+      "pass": 8,
+      "fail": 2,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+          "error": "'spawnSync git EPERM'",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        },
+        {
+          "name": "obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats",
+          "error": "'spawnSync git EPERM'",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr6.test.mjs",
+      "exit": 1,
+      "seconds": 0.76,
+      "tests": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "scripts\\\\hani-office-obr6.test.mjs",
+          "error": "<Circular>",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr7.test.mjs",
+      "exit": 1,
+      "seconds": 0.06,
+      "tests": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "scripts\\\\hani-office-obr7.test.mjs",
+          "error": "<Circular>",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr8.test.mjs",
+      "exit": 1,
+      "seconds": 2.35,
+      "tests": 3,
+      "pass": 2,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words",
+          "error": "'spawnSync git EPERM'",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-obr9.test.mjs",
+      "exit": 1,
+      "seconds": 0.06,
+      "tests": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "scripts\\\\hani-office-obr9.test.mjs",
+          "error": "<Circular>",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-pet-bori.test.mjs",
+      "exit": 1,
+      "seconds": 36.79,
+      "tests": 14,
+      "pass": 11,
+      "fail": 3,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "Bori: 1F 07–13/15–07, 2F 13–15; visible >=95%, sleeps more than all peers",
+          "error": "The expression evaluated to a falsy value:  assert.ok(counts['pet-bori'].sleep/total>=.6)  TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-pet-bori.test.mjs:55:86) async Test.run (node:internal/test_runner/test:1404:7) async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "assertion 실패"
+        },
+        {
+          "name": "Bori: 25–45 second cycles, longer rests, short 12px/s walks slower than Mochi",
+          "error": "The expression evaluated to a falsy value:  assert.ok(motion.speed<rabbit.speed)  TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-pet-bori.test.mjs:73:194) async Test.run (node:internal/test_runner/test:1404:7) async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "assertion 실패"
+        },
+        {
+          "name": "Bori: no persistence, staff plan owner, timers, listeners and nodes remain unchanged",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-pet-bori-272-pins.test.mjs",
+      "exit": 1,
+      "seconds": 0.12,
+      "tests": 4,
+      "pass": 1,
+      "fail": 3,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "272: exact ordered pairs are the complete fixed-271 JS/CSS diff, rejecting all unlisted bytes",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "272 -> 269 -> 268: all stacked source hashes and literal pairs remain enforced",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "272: fixed Git release blobs independently prove every baseline pin and complete diff",
+          "error": "'spawnSync git EPERM'",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-pets-268-pins.test.mjs",
+      "exit": 1,
+      "seconds": 0.09,
+      "tests": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-pets-bubble.test.mjs",
+      "exit": 1,
+      "seconds": 22.93,
+      "tests": 22,
+      "pass": 15,
+      "fail": 7,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "real cause: dismissing a manually opened pet trio cannot immediately trigger the automatic trio",
+          "error": "Expected values to be strictly equal:  5 !== 4  TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-pets-bubble.test.mjs:67:72) async Test.run (node:internal/test_runner/test:1404:7) async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "assertion 실패"
+        },
+        {
+          "name": "staff scheduler/plan/blockPlan/snapshot and all staff model helpers stay byte identical; no extra loops, listeners or nodes",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections",
+          "error": "'spawnSync git EPERM'",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        },
+        {
+          "name": "round2: sleeping pets do not greet automatically, but a manual tap still gets one hop",
+          "error": "Expected values to be strictly equal:  5 !== 4  TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-pets-bubble.test.mjs:126:103) async Test.run (node:internal/test_runner/test:1404:7) async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "assertion 실패"
+        },
+        {
+          "name": "round2: every visible pet starts a queued gesture within ten seconds of entering its floor",
+          "error": "entrance gesture armed on the visible floor  undefined !== '1f'  TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-pets-bubble.test.mjs:133:32) async Test.run (node:internal/test_runner/test:1404:7) async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "assertion 실패"
+        },
+        {
+          "name": "round2: walks start within the new windows and every sampled body stays on existing safe routes",
+          "error": "\"Cannot read properties of undefined (reading 'push')\"",
+          "code": "'ERR_TEST_FAILURE'",
+          "classification": "assertion 실패"
+        },
+        {
+          "name": "round2: staff scheduler and snapshot source bytes stay identical; timer/listener/node/storage paths do not increase",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-props.test.mjs",
+      "exit": 1,
+      "seconds": 0.56,
+      "tests": 11,
+      "pass": 10,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "props: scheduler/plan/blockPlan/snapshot/labels/home-clear source bytes and all six assets are unchanged",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-release-projection.test.mjs",
+      "exit": 0,
+      "seconds": 0.15,
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "exit": 0,
+      "seconds": 0.48,
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-seats-215.test.mjs",
+      "exit": 1,
+      "seconds": 0.68,
+      "tests": 12,
+      "pass": 11,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "logo removed, one persistent actor owner, lazy sprite slots and no random render path",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-snack.test.mjs",
+      "exit": 1,
+      "seconds": 14.36,
+      "tests": 26,
+      "pass": 25,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "snack: scheduler/snapshot/geometry/residents bytes and complete sampled model JSON preserve c301a13",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-staff-chat.test.mjs",
+      "exit": 1,
+      "seconds": 74.62,
+      "tests": 17,
+      "pass": 16,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "raw source adds zero timer/listener/storage/cloud references and keeps runtime closure and CSS/index/main unchanged",
+          "error": "only exact staff-chat extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '87e892c33ec1c2ded09c3d1d09914acb97ae737e1dbbcce439e10cf97ed18d5e'  restoreStaffChats278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:51:81) TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-staff-chat.test.mjs:55:66)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-tap-lines.test.mjs",
+      "exit": 1,
+      "seconds": 2.22,
+      "tests": 15,
+      "pass": 14,
+      "fail": 1,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "real delegated taps and keyboard reuse one slot, preserve labels, latest 3s timeout and no storage writes",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-tlayout.test.mjs",
+      "exit": 1,
+      "seconds": 4.76,
+      "tests": 13,
+      "pass": 11,
+      "fail": 2,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "only the five pinned source fragments change; protected home and label owners are byte identical",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "16 separately authored complete plan/outings/reverse-snapshot outputs have no exclusions",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-top-labels.test.mjs",
+      "exit": 0,
+      "seconds": 0.1,
+      "tests": 7,
+      "pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-v2-215.test.mjs",
+      "exit": 1,
+      "seconds": 0.69,
+      "tests": 20,
+      "pass": 16,
+      "fail": 2,
+      "skip": 2,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture",
+          "error": "'spawnSync git EPERM'",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        },
+        {
+          "name": "v2 sprite metadata is real, all art exists, no persistence/cloud calls added",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-visitors-cafe.test.mjs",
+      "exit": 0,
+      "seconds": 4.01,
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-xmas.test.mjs",
+      "exit": 1,
+      "seconds": 0.7,
+      "tests": 13,
+      "pass": 10,
+      "fail": 3,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "xmas: same-floor clock ticks toggle the event without a click, new timer or listener",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "xmas: literal atlas enters the release closure as the only new runtime file",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-xmas-269-pins.test.mjs",
+      "exit": 1,
+      "seconds": 0.11,
+      "tests": 2,
+      "pass": 0,
+      "fail": 2,
+      "skip": 0,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "v2.9.269: ordered unique pairs are the complete JS/CSS diff and reject unlisted edits",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        },
+        {
+          "name": "v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit",
+          "error": "'spawnSync git EPERM'",
+          "code": "'EPERM'",
+          "classification": "환경 차단"
+        }
+      ]
+    },
+    {
+      "file": "hani-office-zoom.test.mjs",
+      "exit": 1,
+      "seconds": 9.08,
+      "tests": 13,
+      "pass": 11,
+      "fail": 1,
+      "skip": 1,
+      "cancelled": 0,
+      "failures": [
+        {
+          "name": "zoom: scheduler, snapshots and all three protected geometry functions stay byte identical to task base",
+          "error": "only exact kids 278 extension accepted + actual - expected  + 'a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673' - '879d9c27f9be34326f6bfe8230cc4273d7a687ebf30dd202cd9826afeebce065'  restoreKids278Source (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:23:9) projectPreKidsSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/m9-link/scripts/hani-office-chairman-patrol-278-source.mjs:29:63)",
+          "code": "'ERR_ASSERTION'",
+          "classification": "고정 기준 불일치"
+        }
+      ]
+    }
+  ]
+}
