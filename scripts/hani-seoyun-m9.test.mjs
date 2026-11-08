@@ -14,7 +14,8 @@ const read=f=>capInverse.projectPreAffinityCapSource(fs.readFileSync(f,'utf8'),f
 const originalBytes=fs.readFileSync('artifacts/seoyun-m9/originals.json');
 // 2.9.280 release advanced only the index.html/hani-main.js version strings; their pinned digests were refreshed to main 985cc15.
 // 2.9.281 release likewise advanced only those version strings; digests refreshed to main 43eda9e.
-assert.equal(hash(originalBytes),'333d76dd800980567e52ec3ac6a64c9a9d370daae7da282c413129f162dbc255');
+// 2.9.282 release likewise advanced only those version strings; digests refreshed to main 86feee3.
+assert.equal(hash(originalBytes),'358c6a3db4d1bea61751d7ed4d62d44c63c50103802c5125e9007f382162aa1a');
 const original=JSON.parse(originalBytes),ui=require('../hani-character-archive.js'),data=require('../hani-character-archive-data.js');
 const lines=["M9 합류했어요. 시가총액은… 천천히 따라갈게요 💜","전무님이 '아직?'이라고 하셨어요. 무기한이래요…","M9에 온 걸 환영해요, 서윤아♡ 시총은 천천히 따라오세요.","M9 합류 확인. 검증 결과 PASS입니다.","M10 개편 비용 0원. 좋은 결정이었어요.","신규상장 첫 표정, 아직 제 폴더에 있어요📸","서윤 언니~♡ 이제 M9이야? 축하해!","…서윤 이모, 축하해요. 그냥 하는 말 아니에요.","박스 공급 조건은 유지됩니다.","…멍. (꼬리를 툭 한 번)"];
 const {scene,table}=loadScene();
