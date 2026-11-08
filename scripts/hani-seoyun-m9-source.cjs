@@ -1,11 +1,10 @@
-// Baseline: main 43eda9e (v2.9.281); released affinity/mascot/version bytes are not M9 changes.
 const fs=require('node:fs'),assert=require('node:assert/strict'),{createHash}=require('node:crypto'),path=require('node:path');
 const hash=s=>createHash('sha256').update(s).digest('hex');
 const {projectPreAffinityCapSource}=require('./hani-office-affinity-cap-source.cjs');
 const bytes=fs.readFileSync(path.join(__dirname,'fixtures/seoyun-m9-delta.json'));
-assert.equal(hash(bytes),'e38aaf1d180f029ab559bb04b9109f458c980fc76d708cbbac5897a887130e96','exact authored M9 special listing delta');
+assert.equal(hash(bytes),'67daf458f753f6d4d38a4ada6e7cca9568c83f90d291c55f426732d917b6761e','exact authored M9 special listing delta');
 const delta=JSON.parse(bytes);
-assert.equal(delta.baseCommit,'43eda9e2e3f69115c3569f585506904965c26c18');
+assert.equal(delta.baseCommit,'f1a457f0ffe6a42721c73cf22218f13e4e961bf6');
 function restoreSeoyunM9Source(source,file='hani-office-live.js'){
  source=projectPreAffinityCapSource(source,file);
  const row=delta.files.find(r=>r.file===file);assert.ok(row,'authored M9 file');

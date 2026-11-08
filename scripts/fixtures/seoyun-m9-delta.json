@@ -1,5 +1,5 @@
 {
-  "baseCommit": "43eda9e2e3f69115c3569f585506904965c26c18",
+  "baseCommit": "f1a457f0ffe6a42721c73cf22218f13e4e961bf6",
   "files": [
     {
       "file": "hani-character-archive.js",
@@ -47,8 +47,8 @@
     },
     {
       "file": "hani-office-live.js",
-      "beforeSha256": "a80a18f69d0679790fb18bb6b68063fd79c11a928d5ff54bc4b77d9017639673",
-      "afterSha256": "8d2db07921446cca8a234acfff4f026a2d44f0fdb2dedcea241dba6f462cd54e",
+      "beforeSha256": "6085c14f506f8cba92470409e97d19889646d748f71752b6abb0ba4a5975480c",
+      "afterSha256": "880f8bef93ea20fbcb4bcf7cf5205d72c9e62c40b09d56606ab47f13b84826cb",
       "replacements": [
         {
           "name": "existing tap owner listing pool",
