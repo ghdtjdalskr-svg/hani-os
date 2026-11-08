@@ -1,3 +1,5 @@
+// Apply the exact 283/life inverses before historical office pins, including standalone runs.
+import './hani-life-bundle-preload.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

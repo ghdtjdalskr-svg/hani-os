@@ -1,0 +1,347 @@
+{
+  "commands": 92,
+  "success": 55,
+  "failed": 37,
+  "counts": {
+    "git-spawn-EPERM": 28,
+    "baseline-test-defect": 3,
+    "browser-spawn-EPERM": 6
+  },
+  "office": {
+    "commands": 67,
+    "success": 39,
+    "blocked": 28
+  },
+  "baselineReplay": [
+    {
+      "file": "hani-qa-1st.test.cjs",
+      "base": "2bc93683182728877a6b8e543badb330a3312756",
+      "command": "node --test-reporter=tap scripts/hani-qa-1st.test.cjs",
+      "cwd": "artifacts/life-bundle/snapshots/main",
+      "errors": [
+        "error: 'investmentMoveClass is not defined'"
+      ],
+      "cause": "VM fixture omits the canonical investmentMoveClass dependency"
+    },
+    {
+      "file": "hani-qa-1st-safety.mjs",
+      "base": "2bc93683182728877a6b8e543badb330a3312756",
+      "command": "node --test-reporter=tap scripts/hani-qa-1st-safety.mjs",
+      "cwd": "artifacts/life-bundle/snapshots/main",
+      "errors": [
+        "Error: ENOENT: no such file or directory, open 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\life-bundle\\artifacts\\life-bu"
+      ],
+      "cause": "Required input artifacts/qa-1st/eol-map.diff is absent"
+    },
+    {
+      "file": "hani-tasks-qa-212.test.mjs",
+      "base": "2bc93683182728877a6b8e543badb330a3312756",
+      "command": "node --test-reporter=tap scripts/hani-tasks-qa-212.test.mjs",
+      "cwd": "artifacts/life-bundle/snapshots/main",
+      "errors": [
+        "error: \"Cannot read properties of null (reading 'parentNode')\""
+      ],
+      "cause": "DOM fixture omits homeActions, so renderHaniCareHome returns before creating the stepper"
+    }
+  ],
+  "failures": [
+    {
+      "file": "hani-office-219.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "error: [Circular *1],"
+      ]
+    },
+    {
+      "file": "hani-office-actions-216.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "not ok 7 - approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract",
+        "error: 'spawnSync git EPERM'"
+      ]
+    },
+    {
+      "file": "hani-office-affinity-274-pins.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "not ok 3 - 274 base commit independently proves the entire original JS/CSS/helper blobs",
+        "error: 'spawnSync git EPERM'"
+      ]
+    },
+    {
+      "file": "hani-office-barista-night-273-pins.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "not ok 5 - 273: fixed Git release blobs independently prove every baseline pin and complete diff",
+        "error: 'spawnSync git EPERM'"
+      ]
+    },
+    {
+      "file": "hani-office-bori-stroll.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "not ok 8 - stroll inverse independently matches the fixed Git base",
+        "error: 'spawnSync git EPERM'"
+      ]
+    },
+    {
+      "file": "hani-office-cafe-rest.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "not ok 1 - cafe route uses clear lower-right floor, retains the lounge and sign mounting surface",
+        "error: 'spawnSync git EPERM'"
+      ]
+    },
+    {
+      "file": "hani-office-chairman-234.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "error: [Circular *1],"
+      ]
+    },
+    {
+      "file": "hani-office-chairman-patrol-278-pins.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "not ok 2 - 278 independent fixed Git blobs prove pre-patrol bytes",
+        "error: 'spawnSync git EPERM'",
+        "not ok 4 - 278 kids extension independently matches its fixed Git base",
+        "error: 'spawnSync git EPERM'",
+        "not ok 6 - 278 visit extension independently matches fixed Git base",
+        "error: 'spawnSync git EPERM'",
+        "not ok 8 - 278 staff-chat extension independently matches fixed Git base",
+        "error: 'spawnSync git EPERM'",
+        "not ok 10 - 278 bubble placement extension independently matches fixed Git base",
+        "error: 'spawnSync git EPERM'",
+        "not ok 12 - 278 optimization extension independently matches fixed Git base",
+        "error: 'spawnSync git EPERM'"
+      ]
+    },
+    {
+      "file": "hani-office-companion-homes.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "not ok 8 - home extension independently matches the specified fixed Git base",
+        "error: 'spawnSync git EPERM'"
+      ]
+    },
+    {
+      "file": "hani-office-companions-276-pins.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "not ok 2 - 276 fixed Git base independently proves every original blob",
+        "error: 'spawnSync git EPERM'"
+      ]
+    },
+    {
+      "file": "hani-office-consult.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "not ok 14 - consult: sofa wording, counter words, safety owners and runtime timers",
+        "error: 'spawnSync git EPERM'"
+      ]
+    },
+    {
+      "file": "hani-office-icons.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "not ok 14 - icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc",
+        "error: 'spawnSync git EPERM'"
+      ]
+    },
+    {
+      "file": "hani-office-lively-v2.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "not ok 6 - obr2: deterministic query order, reduced motion and frozen spatial bytes",
+        "error: 'spawnSync git EPERM'"
+      ]
+    },
+    {
+      "file": "hani-office-obr12.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "error: [Circular *1],"
+      ]
+    },
+    {
+      "file": "hani-office-obr14.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "not ok 1 - 235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism",
+        "error: 'spawnSync git EPERM'"
+      ]
+    },
+    {
+      "file": "hani-office-obr15.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "not ok 7 - obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately",
+        "error: 'spawnSync git EPERM'"
+      ]
+    },
+    {
+      "file": "hani-office-obr21.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "not ok 4 - obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+        "error: 'spawnSync git EPERM'",
+        "not ok 5 - obr21 cached gathering/index decisions equal full index rebuilds",
+        "error: 'spawnSync git EPERM'"
+      ]
+    },
+    {
+      "file": "hani-office-obr4.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "not ok 7 - obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+        "error: 'spawnSync git EPERM'",
+        "not ok 8 - obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats",
+        "error: 'spawnSync git EPERM'"
+      ]
+    },
+    {
+      "file": "hani-office-obr6.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "error: [Circular *1],"
+      ]
+    },
+    {
+      "file": "hani-office-obr7.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "error: [Circular *1],"
+      ]
+    },
+    {
+      "file": "hani-office-obr8.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "not ok 1 - obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words",
+        "error: 'spawnSync git EPERM'"
+      ]
+    },
+    {
+      "file": "hani-office-obr9.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "error: [Circular *1],"
+      ]
+    },
+    {
+      "file": "hani-office-pet-bori-272-pins.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "not ok 4 - 272: fixed Git release blobs independently prove every baseline pin and complete diff",
+        "error: 'spawnSync git EPERM'"
+      ]
+    },
+    {
+      "file": "hani-office-pets-268-pins.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "not ok 1 - v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits",
+        "error: 'spawnSync git EPERM'"
+      ]
+    },
+    {
+      "file": "hani-office-pets-bubble.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "not ok 13 - resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections",
+        "error: 'spawnSync git EPERM'"
+      ]
+    },
+    {
+      "file": "hani-office-v2-215.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "not ok 7 - frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture",
+        "error: 'spawnSync git EPERM'"
+      ]
+    },
+    {
+      "file": "hani-office-xmas.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "not ok 12 - xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged",
+        "error: 'spawnSync git EPERM'"
+      ]
+    },
+    {
+      "file": "hani-office-xmas-269-pins.test.mjs",
+      "reason": "git-spawn-EPERM",
+      "details": [
+        "not ok 2 - v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit",
+        "error: 'spawnSync git EPERM'"
+      ]
+    },
+    {
+      "file": "hani-qa-1st.test.cjs",
+      "reason": "baseline-test-defect",
+      "details": [
+        "not ok 10 - B actual asset and deployment renderers distinguish unknown/zero and none/awaiting approval",
+        "error: 'investmentMoveClass is not defined'"
+      ]
+    },
+    {
+      "file": "hani-qa-1st-safety.mjs",
+      "reason": "baseline-test-defect",
+      "details": [
+        "Error: ENOENT: no such file or directory, open 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\life-bundle\\artifacts\\qa-1st\\"
+      ]
+    },
+    {
+      "file": "hani-tasks-qa-212.test.mjs",
+      "reason": "baseline-test-defect",
+      "details": [
+        "not ok 5 - single persistent stepper above Calendar; 3 status icons/buttons, N chip navigation, zero hidden",
+        "error: \"Cannot read properties of null (reading 'parentNode')\""
+      ]
+    },
+    {
+      "file": "hani-navlogin-ui.test.mjs",
+      "reason": "browser-spawn-EPERM",
+      "details": [
+        "browserType.launch: spawn EPERM"
+      ]
+    },
+    {
+      "file": "hani-navigation-state-ui.test.mjs",
+      "reason": "browser-spawn-EPERM",
+      "details": [
+        "browserType.launch: spawn EPERM"
+      ]
+    },
+    {
+      "file": "hani-dashboard-period-ui.test.mjs",
+      "reason": "browser-spawn-EPERM",
+      "details": [
+        "browserType.launch: spawn EPERM"
+      ]
+    },
+    {
+      "file": "hani-qa-1st-ui.test.mjs",
+      "reason": "browser-spawn-EPERM",
+      "details": [
+        "browserType.launch: spawn EPERM"
+      ]
+    },
+    {
+      "file": "hani-sidebar-remote-photo-qa.cjs",
+      "reason": "browser-spawn-EPERM",
+      "details": [
+        "browserType.launch: spawn EPERM",
+        "browserType.launch: spawn EPERM"
+      ]
+    },
+    {
+      "file": "hani-design-system-phase1-qa.mjs",
+      "reason": "browser-spawn-EPERM",
+      "details": [
+        "browserType.launch: spawn EPERM"
+      ]
+    }
+  ]
+}

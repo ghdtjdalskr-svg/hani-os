@@ -1,9 +1,10 @@
 const {installCloudTransport}=require('./hani-cloud-transport-fixture.cjs');
+const {projectPreStudyRetrySource}=require('./hani-study-retry-source.cjs');
 // Execute the real client and authenticated Edge handler, replacing only I/O/model.
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const test=require('node:test'),{stripTypeScriptTypes}=require('node:module');
 const fixture=JSON.parse(fs.readFileSync('scripts/fixtures/quiz-qa-212.json','utf8'));
-const client=fs.readFileSync('hani-study-v02984.js','utf8');
+const client=projectPreStudyRetrySource(fs.readFileSync('hani-study-v02984.js','utf8'));
 const edge=fs.readFileSync('supabase/functions/hani-learning-quiz/index.ts','utf8');
 const now=Date.parse('2026-10-15T09:00:00Z'),day=new Date(now-86400000).toISOString();
 class FixedDate extends Date {constructor(...args){super(...(args.length?args:[now]));}static now(){return now;}}
