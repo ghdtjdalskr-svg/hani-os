@@ -1,6 +1,7 @@
 // Explicit outer layer for frozen assertions; compose before m9-link-preload.
-// Read order: release283 -> life bundle -> polish -> link -> mascot/cap.
+// Read order: release versions -> chibitoon -> 283 -> life -> polish -> link.
 require('./hani-life-bundle-preload.mjs');
+require('./hani-pb-chibitoon-legacy-preload.mjs');
 const fs=require('node:fs'),path=require('node:path'),{fileURLToPath}=require('node:url');
 const {delta,hash,restore}=require('./hani-m9-polish-source.cjs');
 const original=fs.readFileSync,root=path.resolve(__dirname,'..');

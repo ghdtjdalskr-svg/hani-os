@@ -5,6 +5,7 @@ import path from 'node:path';
 import os from 'node:os';
 import {lifeLayers,lifeHash,restoreLifeLayer,projectLifeSource,readLifeSource,lifeRefresh,restoreLifeReportRefresh,readRawLifeFile,projectPreRelease283Source} from './hani-life-bundle-source.mjs';
 import release283 from './hani-release-283-source.cjs';
+import releaseLayers from './hani-release-version-layers.cjs';
 import {readLifeBaseline as readBranchBaseline} from './hani-life-bundle-source.mjs';
 import study from './hani-study-retry-source.cjs';
 const owners=['hani-main.js','index.html','hani-study-v02984.js'];
@@ -12,7 +13,7 @@ const current=Object.fromEntries(owners.map(file=>[file,projectPreRelease283Sour
 
 test('283 outer inverse preserves complete bytes and rejects drift, partial, duplicate and repeated inverse',()=>{
   for(const file of Object.keys(release283.files)){
-    const raw=readRawLifeFile(new URL('../'+file,import.meta.url),'utf8');
+    const raw=releaseLayers.projectReleaseSource(readRawLifeFile(new URL('../'+file,import.meta.url),'utf8'),file,'2.9.283');
     const before=release283.restoreRelease283(raw,file);
     assert.equal(before,current[file]);
     assert.equal(before.replaceAll('2.9.282','2.9.283'),raw);
