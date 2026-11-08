@@ -1,0 +1,2487 @@
+[
+  {
+    "file": "assets/ai-approval-characters/v3-animation-approved-transparent-group-a.webp",
+    "sha256": "54e226759932b86eee7251856dbb51be78d06eeeac8af6c055f6048593f4242d",
+    "oid": "6c5e66b5cebe80ff1ad70b183d1f49f26dec90cf"
+  },
+  {
+    "file": "assets/ai-approval-characters/v3-animation-approved-transparent-group-b.webp",
+    "sha256": "61c8ba5e666267b93ef2d5d375807b0e704ffb38dff4333559c4f23a0f789b5b",
+    "oid": "7ffa175c5712e1fd5394944bb1ebd9336ed3e819"
+  },
+  {
+    "file": "assets/ai-approval-characters/v3-animation-approved-transparent-group-c.webp",
+    "sha256": "f51a0569a325fe8fd11116dbef2fb8c573aec65b0f3a75b70049222fdd2b1e21",
+    "oid": "c8e769566540b2280620190f368e65ba12035944"
+  },
+  {
+    "file": "assets/ai-approval-concepts/v3-office-background-empty-8-seats.webp",
+    "sha256": "e36ec317deb5563faa0a002d9f8d0dc6f3b7c0b03aad28b295b39ccd47a4b640",
+    "oid": "b6d4b29f39c787807dc2c4ce0cf25cadf58aae16"
+  },
+  {
+    "file": "assets/ai-budget/SOURCES.md",
+    "sha256": "7c704f5a801ad3985644f91ef2c014cdca460b91a6ce585ea2d7c990b51f8e60",
+    "oid": "f8f3ff76c571743bf2708b1716b788a50171f077"
+  },
+  {
+    "file": "assets/ai-budget/claude.png",
+    "sha256": "4004381309500f25e49a1ae639912ce307ea81da74cc383954a1ac8b9d343fe6",
+    "oid": "2ba408abc214f01d82fdb113da2631c70c476d2a"
+  },
+  {
+    "file": "assets/ai-budget/gemini.png",
+    "sha256": "bf5071a26b4766a0890f906ef24aeb31de6f4fb64fe5bb4e646e4ecc37e56070",
+    "oid": "2312031191c0ae31ad5ae8200470512e87d83b32"
+  },
+  {
+    "file": "assets/ai-budget/openai.png",
+    "sha256": "8d5575ee667ff715cd3e3074d5296edc68d5aadd89720d203e13131b68b22a04",
+    "oid": "c4a1f3be11eae374935afd1d844c398e88556d50"
+  },
+  {
+    "file": "assets/banner-preview-v1/ai-approval-boardroom-v1.webp",
+    "sha256": "b453e4d1f29ff804c16cb7c0f94716941ef2114978fd5618c7f7a7924470c1c1",
+    "oid": "1bce1c6ef07083fac06946eb02804a22c7fc3e6e"
+  },
+  {
+    "file": "assets/banner-preview-v1/ai-budget-control-v1.webp",
+    "sha256": "893c8e4cbda5855303712bd0b63d85c3f4a595388d266d0b3ba73b516ce7fc6a",
+    "oid": "b8841abc1b712b073656f022c48f33443461ff46"
+  },
+  {
+    "file": "assets/banner-preview-v1/ai-work-status-v1.webp",
+    "sha256": "f58f6ddbc27bff5d3a38766a732f0bc898a7e87fefcce12fedea583b17ce9748",
+    "oid": "b9f86dc0ecc159d19424e3b75452c6e62475b366"
+  },
+  {
+    "file": "assets/banner-preview-v1/calendar-planning-v1.webp",
+    "sha256": "4c9e639f0e3e482cd3380b60e7f5048649bc8cce0c1a886bd2b3702d06c3097f",
+    "oid": "2ef0ef6a4ffd32a0a0169a18a050498cf8e1bb36"
+  },
+  {
+    "file": "assets/banner-preview-v1/campus-planner-v1.webp",
+    "sha256": "bb6e69e20e4736ffcb123c891455a9e55ed9c673f62333882b0cb86aa43649cd",
+    "oid": "fcb539ae678cab77b6d439afa85273c76f224743"
+  },
+  {
+    "file": "assets/banner-preview-v1/certification-roadmap-v1.webp",
+    "sha256": "6faead83a3bd1ce1a6ce1e991d2bf8fb33bb8507e4d2bb4f3408fde074417e08",
+    "oid": "289f604f942b72ae643b3ccd3fb32e7d4cc23261"
+  },
+  {
+    "file": "assets/banner-preview-v1/company-board-community-v1.webp",
+    "sha256": "e57e4a6dd7405bd42a9b349f1f95b8951908c813bb0ce25f176bd38e939ef4bf",
+    "oid": "2a7b2587394753a85db14e355a1a1c8162e207fe"
+  },
+  {
+    "file": "assets/banner-preview-v1/company-rules-board-v1.webp",
+    "sha256": "cd622da3609beef49e76c382ddc860ada0f4c289c00fbd50468eeb8fedbc5db6",
+    "oid": "0ede978b45aeab7f4d761ea4dd63336c0871d07e"
+  },
+  {
+    "file": "assets/banner-preview-v1/conference-room-reports-v1.webp",
+    "sha256": "b0180706561cd1e0398cde56988055f47302fdcba977b8c6c543792d4adbd602",
+    "oid": "fd331c2dbb8b34a4c0334dbd8be05a9a4b2ce3dd"
+  },
+  {
+    "file": "assets/banner-preview-v1/deployment-control-v1.webp",
+    "sha256": "bbb1a2e630130fdf973f8f4067e1d8ad61e3c9f4fbd222eefc230a26991a791a",
+    "oid": "05468ce1d4362e8391c6807b54c6283d40213647"
+  },
+  {
+    "file": "assets/banner-preview-v1/dev-reports-research-v1.webp",
+    "sha256": "c1b4bc49f76d6f2b11bb9749c95df68d42d3e03535a1df64da5563939c7c4b49",
+    "oid": "d3fcdf32706a598a676e47d3482c66cdf2bd84b4"
+  },
+  {
+    "file": "assets/banner-preview-v1/development-studio-v1.webp",
+    "sha256": "19957e7289fb9cfde14e007aaab87a67d95bca338e0148797211c18d3271e02e",
+    "oid": "49b72edb8207d13e6715446bc573fd656154ddf9"
+  },
+  {
+    "file": "assets/banner-preview-v1/diary-night-desk-v1.webp",
+    "sha256": "0222ffcc2923ba0cc192e4af876b5b7da9b5fd374173e6e91ea086009b2883e1",
+    "oid": "cdb743996ea91e7426166edcc132ad78bdd26f2d"
+  },
+  {
+    "file": "assets/banner-preview-v1/drive-archive-v1.webp",
+    "sha256": "294c66384c7a1c229e97575f612dac59cdc14c22d4c917905e164af2fe6ed549",
+    "oid": "c6b48fad774beb1aab7da5b4241e85611043fc4c"
+  },
+  {
+    "file": "assets/banner-preview-v1/infodesk-ai-desk-v1.webp",
+    "sha256": "21906dce267ecbe6573f34874908fe8eb8eeef16bae73651903ec9052cffb107",
+    "oid": "7d3557c369d02237b641cd6bb9c7d9ee5c1ea357"
+  },
+  {
+    "file": "assets/banner-preview-v1/investment-market-room-v1.webp",
+    "sha256": "b9c7772c5a2a9200ba4cee90d04197dca157688519ade7a8def0cb822e4a0142",
+    "oid": "46615597fe312140652f0ac883167565a12e4adc"
+  },
+  {
+    "file": "assets/banner-preview-v1/long-term-asset-archive-v1.webp",
+    "sha256": "ec0178ccee80bbe401271408bc9eb2513cd22444bd72be28aa06c6c9a41bd4ab",
+    "oid": "739efce4548fc569879a76e7d00c479832977716"
+  },
+  {
+    "file": "assets/banner-preview-v1/market-news-editor-v1.webp",
+    "sha256": "8707388659fe963ba35eac3b4f3d8c5d7773bb09e83d0ac332bee89821dd08e9",
+    "oid": "aef6137b2a56211deacec8c4ed341be6b1413048"
+  },
+  {
+    "file": "assets/banner-preview-v1/month-end-reconciliation-v1.webp",
+    "sha256": "e51b45738ce4d7b5d5b83acdc6bf1abe8eb4e89b3fb71bac7da9b8642e1c16da",
+    "oid": "2256b6c16add4d1f6e011490c5f67516aa1e2b3f"
+  },
+  {
+    "file": "assets/banner-preview-v1/nutrition-tracking-v1.webp",
+    "sha256": "59533c4aa807f5b670d24253bfe0be4335ba3788f91d477010200b74be27151f",
+    "oid": "a3398ec51592e6f4a7a27ccf78116b33dcafce42"
+  },
+  {
+    "file": "assets/banner-preview-v1/personal-library-v1.webp",
+    "sha256": "b9db097babefb305949e69fb47419c7601777f97f2ccf9789c01f8dc0e3df622",
+    "oid": "a93c13613352ce10fb9c9d409fb5561657772ef7"
+  },
+  {
+    "file": "assets/banner-preview-v1/settings-data-vault-v1.webp",
+    "sha256": "e53491300f88ec9e985b490487a6578d058b11a9f9edc2ab03d554ac475c3e66",
+    "oid": "94bd9b947d8d537215bddfd0ba895461a7cf710d"
+  },
+  {
+    "file": "assets/banner-preview-v1/study-jlpt-room-v1.webp",
+    "sha256": "22cbf9fc784682473342c73698e762ec8e8027c1fe2d2f7abe6e15ef78c7f7c7",
+    "oid": "b7997ae52aa8b7e0895c7ef578dab07f73b532aa"
+  },
+  {
+    "file": "assets/banner-preview-v1/tasks-kanban-v1.webp",
+    "sha256": "48a6af23f7c511e066050c6a91bd0c21a3a95bccfe7c5f3b4dc463d940dcd117",
+    "oid": "8aaa03a6ffc7dcb29de585355a9fd0ef94753d0a"
+  },
+  {
+    "file": "assets/banner-preview-v1/travel-route-planning-v1.webp",
+    "sha256": "a9232aac9096de2f2ff25a8ddb9294a6f3baaaf0526ad4c8d81458a89297a551",
+    "oid": "b0eb6876598680490097a0987455d7054f0e40f8"
+  },
+  {
+    "file": "assets/banner-preview-v1/wishlist-planning-v1.webp",
+    "sha256": "acb64f168e5a81c2931057d27383940ea784db7037cbf44b8065f0baf74d3f69",
+    "oid": "d84cf01f7325e60def2a0eb396f11c28b85a80f6"
+  },
+  {
+    "file": "assets/brand/hani-group-ci-lobby-217.webp",
+    "sha256": "0840c4bada315e279acadc10c10bf1b6436d4a4f0ff10034061452969b7e0de1",
+    "oid": "3b4e75d63f83531e4a44998829efdf881e427084"
+  },
+  {
+    "file": "assets/brand/hani-group-ci-official.webp",
+    "sha256": "aa2532cde39f44c52a3d902efde60f40dbd83550ef0110a6fa4dc4ff93220f3c",
+    "oid": "637ea17e869b069531046ec5378c215d26f23e01"
+  },
+  {
+    "file": "assets/brand/hani-group-company-profile-v1.webp",
+    "sha256": "305784f04d506cc1c81a8fe4d27a8623b3e7540611f5a11ebbe346937e471322",
+    "oid": "0a575c845b6214612943a4107f90dca64ac1ee82"
+  },
+  {
+    "file": "assets/building/floor-1f-215.webp",
+    "sha256": "09e7509f0a3282571afda5cfafc9837acb18f083453e54ff57443766ff02f0e8",
+    "oid": "d31cdb693c38b9bb083f8fd79247080cc3a4f1b2"
+  },
+  {
+    "file": "assets/building/floor-1f-217.webp",
+    "sha256": "e70a5f528209876bf6285dad47612047dc4fdfc043df469adbb8216efd77c2a1",
+    "oid": "1131abb9f3e46c535f352f7b0463737f2cbfda89"
+  },
+  {
+    "file": "assets/building/floor-1f-v1.webp",
+    "sha256": "3e47a252705bc8e8ced85f06885c66fa07b5e230d75b4723d11c2faeea1b6ef9",
+    "oid": "d6d618222d080315130b30d6985b842fc49e7539"
+  },
+  {
+    "file": "assets/building/floor-2f-215.webp",
+    "sha256": "ce5943cb8ffa5e641ddb70d87829aaafe4356dd4d8ef695d7c642016ee456564",
+    "oid": "4da5d6154953937d33f3259ebedf26b27277ee5e"
+  },
+  {
+    "file": "assets/building/floor-2f-217.webp",
+    "sha256": "e829b0d2e7f72c47234d6b8ce9eb59e283d9f4ca20934aea4794157158faca65",
+    "oid": "eb271a1569d9c00c344abef6c46fec8ff4a76ce6"
+  },
+  {
+    "file": "assets/building/floor-2f-v1.webp",
+    "sha256": "86d114f5c0e24691d51c307a07649381ff27fa8a9eed329e366c4826b4cecf28",
+    "oid": "13e37f66d08361e93a54f50bae6b088c4690848c"
+  },
+  {
+    "file": "assets/building/floor-3f-215.webp",
+    "sha256": "0dca7fdfa3aa8793591f652c5f8c1f48cbfb642a1b4160ca8594a030efaddd93",
+    "oid": "4e9a79d1e61869c9d947a798a6f05f74eda53790"
+  },
+  {
+    "file": "assets/building/floor-3f-218.webp",
+    "sha256": "3529aea428e077dfd3e1c8fa929a471b125d8ef71b87ed47511878f475a1d56c",
+    "oid": "cc38f741b06c3495228c379df6449d123564aa2d"
+  },
+  {
+    "file": "assets/building/floor-3f-v1.webp",
+    "sha256": "2153b85ab96859b35df7a7b8c9f61a3e88fd09b9b5710a78af1208365699b22b",
+    "oid": "8c5a4fd11f5ed94b711e93a51a4e3a336f987733"
+  },
+  {
+    "file": "assets/building/floor-4f-215.webp",
+    "sha256": "81fc929e28ce19ba76707a110b6d6ac94135f35c97befe6b93a934a397e84379",
+    "oid": "94889c492240aee5b15e927c193171eebe0935ce"
+  },
+  {
+    "file": "assets/building/floor-4f-217.webp",
+    "sha256": "fa31401ff0eaa529ccd3b0b1210565b5d66206675e8e801687ce9b53560fca21",
+    "oid": "f8eec60f75b4cc7cc011e694e1868764a70e4d5d"
+  },
+  {
+    "file": "assets/building/floor-4f-v1.webp",
+    "sha256": "ffabdb182b5c0539cb6404585bd72e8b508b0c14d1681b0bef1ade1d18cd0a4d",
+    "oid": "dfa6898af1f61e82daa0f46327044b0034a2d5e0"
+  },
+  {
+    "file": "assets/building/floor-5f-217.webp",
+    "sha256": "6532b7fcd36c47a46a6c427009d3f5bc99b82f6349b4aab07debc24bab83ac30",
+    "oid": "7c65b594e4169a16501cb5538abbebae7de1b86c"
+  },
+  {
+    "file": "assets/building/floor-5f-night-243.webp",
+    "sha256": "bf20bb9b1f50a6df87dea7ec0276b1c1d5d81e22d25bffd8f002fc3b9645a60c",
+    "oid": "ce1af5551d49951cbdecae101f838495fa90a5d2"
+  },
+  {
+    "file": "assets/building/floor-5f-v1.webp",
+    "sha256": "a748683771eb5403b0f007ced6159fd553b18abd101f27afc2cddd8ab391358f",
+    "oid": "d1a5b19a809e73e7219005b8e20c63bc9f5ece91"
+  },
+  {
+    "file": "assets/building/props/arin-217.webp",
+    "sha256": "23994de4cafe4e878fa8238558a5b83fa1dd144ccf6d9f9d5bee679e35f7465f",
+    "oid": "cfc64556b52f68342642a8614f92fcd991ede471"
+  },
+  {
+    "file": "assets/building/props/daon-217.webp",
+    "sha256": "72bb17ebad578838838c7348b1065563fe355d1e30bab009c305cd98c99f5aa8",
+    "oid": "e57d1ad487828738d7840b4834ae82f4e354a739"
+  },
+  {
+    "file": "assets/building/props/dohyun-217.webp",
+    "sha256": "317948ba0dffb07ae95cd48258235221d5707890f5c913ad926937f84951ff7d",
+    "oid": "460cc2646605499fbf1e6662beaf1deb17191ac1"
+  },
+  {
+    "file": "assets/building/props/gaeun-217.webp",
+    "sha256": "77e3f46f75fd077b991852321e306f748e67ebdcf2ee6f2438ac7bde988fa86d",
+    "oid": "dea3b6481dd7a4dfe3916dca5e9932d62b3cac28"
+  },
+  {
+    "file": "assets/building/props/hani-217.webp",
+    "sha256": "f166ae4a84f499162d5190fbb9a32eab06eea5e91771f6081c2ee794ee820055",
+    "oid": "297bc6f5d90a92571c67483e4d9bc22537f30b67"
+  },
+  {
+    "file": "assets/building/props/haru-217.webp",
+    "sha256": "66f1cdf97a4cf6e1f1b2fc8989ed28a70254d7cd298706736d87edd8e0021b22",
+    "oid": "8048f1028ee069cc1690db330fc48409deb1c3b8"
+  },
+  {
+    "file": "assets/building/props/hina-217.webp",
+    "sha256": "e775b39b84bf522c8cb541aaa257f7810cfa45eea95516054989046dc9f9615f",
+    "oid": "fdc44c9655553d9a492720a1e25894c0582a2b23"
+  },
+  {
+    "file": "assets/building/props/jieun-217.webp",
+    "sha256": "6702028cfc0cc9f016523ce5783c0d5643963673ecb7519f8fefe120d15a0ea5",
+    "oid": "d66c68da3308008a12d6dd679ea62b3a7d367cf8"
+  },
+  {
+    "file": "assets/building/props/minji-217.webp",
+    "sha256": "bf9db9c289ef5b997def392b81da59908825a6c19aa1c61af7f8ff127bb2c7b6",
+    "oid": "2e75d2a9e67887791859eafb54b3a58acb88494d"
+  },
+  {
+    "file": "assets/building/props/mir-217.webp",
+    "sha256": "8867b579988ea22c38459cd82a8b2fac289afc6ee6373e81a5ee04ec8518e6e4",
+    "oid": "30274980f4816c025092f8cdfb18a34371d249ed"
+  },
+  {
+    "file": "assets/building/props/naeun-217.webp",
+    "sha256": "fac0d4200c1734668ce1e2b1ee30016ebfc2966e4ce23a1f7aab59574c29c169",
+    "oid": "945e96e732b693a49299d2632abb026c0ef68bd5"
+  },
+  {
+    "file": "assets/building/props/seoyun-217.webp",
+    "sha256": "14dd28c63a43b95ea0166db7cba3be4b7bf1b91c08bf41c3b1441fb8bf95e8bc",
+    "oid": "b4063213144b6af93035a1e98ec82ddb843f3ca9"
+  },
+  {
+    "file": "assets/building/props/serin-217.webp",
+    "sha256": "d2822374133b8874396acac1fba7a3db2b1c719fbf34b82f6fb3f5c013ffb7d5",
+    "oid": "5a4b9363a670eb406cd25e86168c1296723ffc90"
+  },
+  {
+    "file": "assets/building/props/sooyeon-217.webp",
+    "sha256": "d27e2e3490f047c1188c6b3c7fb42894d76f4ae32ce5183976de3038f5f1b851",
+    "oid": "f676b89ae87e81d0aa397fec43b81c85d747fa40"
+  },
+  {
+    "file": "assets/building/props/sua-217.webp",
+    "sha256": "8dabaf1adc9bbe804482ec74d1797094f095d935f249baffc2b24f98c960d656",
+    "oid": "6ffa78b386dbc517505ca76e0181893b48c7e7f2"
+  },
+  {
+    "file": "assets/building/props/taeo-217.webp",
+    "sha256": "b76c4fccd76361bf049f4cf527bd19852dd8b11a67a1852a0afa9eec3ab9cb18",
+    "oid": "f40c743323f469690094329e80de4bef627c250c"
+  },
+  {
+    "file": "assets/building/props/yoonseul-217.webp",
+    "sha256": "04d0e5de9f6666800a4c97846df7273039b0f65926736c7eacda7e3cdb20ad02",
+    "oid": "cd94c5fdb1512ab91a44372220eeec82e2a25c12"
+  },
+  {
+    "file": "assets/building/props/yuna-217.webp",
+    "sha256": "61f05a36e137da78be136acda3532edce7a03c9702065992f16171c74e8c0a7f",
+    "oid": "8b1c88fbff6778c4115d8606972a737a289b2452"
+  },
+  {
+    "file": "assets/building/props/yuri-217.webp",
+    "sha256": "8c530866b86afcea0c423a9d77dd6973b9c4fbfa500e28d79fec8935ad08282b",
+    "oid": "a63a1dc9c3fd34f6a375285fa3dd0af38647ee9a"
+  },
+  {
+    "file": "assets/building/signs-1f-215.webp",
+    "sha256": "e5859b4f31230eb9550d1c90963fc7c8c99e8469e9a326334d8ae6b7aa474274",
+    "oid": "279676723a13d1f9c8052acc4032a19447e2f51b"
+  },
+  {
+    "file": "assets/building/signs-2f-215.webp",
+    "sha256": "9991edb51ac07f2eb6077f518707665f1b6aef2af7373dd67bd0b5e79752a58a",
+    "oid": "3ce414ae94c215715a5d2907e55a3cf0d3c35324"
+  },
+  {
+    "file": "assets/building/signs-3f-215.webp",
+    "sha256": "143947df320fd1ed4a6688f5d474f71545e116110daf45be9fc63c9cb28e1112",
+    "oid": "393e086fa1c63ed422b32af5e18c1296adf053f1"
+  },
+  {
+    "file": "assets/building/signs-4f-215.webp",
+    "sha256": "6d542ab3f4c301057df30402486757d8a756fe4d8a24350b284795559ccacb45",
+    "oid": "aacbb3330d5324aa1904b42845028b8a475c4c18"
+  },
+  {
+    "file": "assets/character-archive/m9-casual-ending-v1.webp",
+    "sha256": "339631999056f39e87b55236461e10adf1d4ae066fbb0545a67e5cd99e3b5794",
+    "oid": "7f876107ed538b623549f5863b798afbc4d06fd4"
+  },
+  {
+    "file": "assets/character-archive/m9-founders-teatime-v1.webp",
+    "sha256": "6392aac1616cee10ebbbfe918befaef4f317b51f99f3e6d808c2f988ef46c25a",
+    "oid": "e235a87e576443529d8dd091458077821029f5c9"
+  },
+  {
+    "file": "assets/character-archive/m9-group-portrait-v1.webp",
+    "sha256": "b34681c69489fcf97c3c1a8293e9b1e2278e414146169e9d61cd22ca7ce18240",
+    "oid": "6da98dae0c785957f547ba0e095edfc7959afde4"
+  },
+  {
+    "file": "assets/character-archive/m9-unit-balance-v1.webp",
+    "sha256": "7f36143519fb4624e56ad70465e8a0722319b21d0795d63f7277902c2760c099",
+    "oid": "aa778b94ebe0d37ea6dfaaeb9198198b2448e4c5"
+  },
+  {
+    "file": "assets/character-archive/m9-unit-culture-v1.webp",
+    "sha256": "6cc02e3af58d786f6aa78facfae0f10d1b0b464b42707ea861bb840d52fa1374",
+    "oid": "12fb5ecaaa3e173baf67b5a790ed5b7037cc5578"
+  },
+  {
+    "file": "assets/character-archive/m9-unit-growth-v1.webp",
+    "sha256": "33fdeee461a25366e7ec67708687410dde6368ed75cc0d22f0b6b3fddcd701c4",
+    "oid": "9961b0638e5e89a9cfc53811ed009b8faf80a019"
+  },
+  {
+    "file": "assets/character-archive/m9-unit-strategy-v1.webp",
+    "sha256": "dc88cde5f46e954151e0e366cdce6177e26c6d58cdde1450e98d3b6f0706b082",
+    "oid": "878f9b8fd38b68f877d6b3bdce38bdbccb86baa5"
+  },
+  {
+    "file": "assets/character-archive/seoyun-m9-special-cut.webp",
+    "sha256": "74d4ce59dc8917086e5a99c19085a1a29bdc78827fa45893a3f65270902883a1",
+    "oid": "9082015570338353eba2c51c8b5a423974c3d3d4"
+  },
+  {
+    "file": "assets/context-remote/autumn-1.jpg",
+    "sha256": "ef78568dd311f9f6090952d168d436ce0412dab99851e54fa0f2bfacbd8a54ef",
+    "oid": "1575eccc9f9262bde835bc05990fd34c6311a6f9"
+  },
+  {
+    "file": "assets/context-remote/autumn-2.jpg",
+    "sha256": "9f72a6e30137fa9a4b4d493ac520035670b247f428a364bf5860edd45e76b48f",
+    "oid": "a3528ed1f543b436c81e43f90ed8318c44a9d077"
+  },
+  {
+    "file": "assets/context-remote/life-book-cafe-v1.jpg",
+    "sha256": "741c2f4072d50bfe10cfe914d8d50c210a2e13958aa1092361de4bb25239dda4",
+    "oid": "40764f45f28aee9d5dd736b9cacadb7a9b8495df"
+  },
+  {
+    "file": "assets/context-remote/life-brunch-v1.jpg",
+    "sha256": "ea2af7777620a1cd8189077ab7b2e2ac70a244710367c0a04529c19eeedf1aef",
+    "oid": "4a828785e329f8b12dd90da213a0bf4ecd079dca"
+  },
+  {
+    "file": "assets/context-remote/life-media-night-v1.jpg",
+    "sha256": "63b337fbfd25e329f3f1d1dc924117d9fa050000eb6d21aa22115cd4ecaca6a6",
+    "oid": "034cb4373b7a4b0a4ae600fccb52cee64b7ffec7"
+  },
+  {
+    "file": "assets/context-remote/life-office-lounge-v1.jpg",
+    "sha256": "41591848ee8cefcedd8e3d41b1d208c6869d7767ab883deba0fded886b9b6f5a",
+    "oid": "b148e9c3c95a25c599ac37e499df486c9ac85f8a"
+  },
+  {
+    "file": "assets/context-remote/spring-1.jpg",
+    "sha256": "a64aecc9194df2ed65769e041c3bd0f69cb5ab88cc96e6776e778ed3831bd60e",
+    "oid": "aa7663eb7f3466a2f8f06245a3a3da81dfcab0f6"
+  },
+  {
+    "file": "assets/context-remote/spring-2.jpg",
+    "sha256": "2069e317178e513ebb4f3a324ca57871fe6d928b3f83ee101baa1118478700ee",
+    "oid": "7d83cfb7ed58040f369bcb54e2ccdb818709d68c"
+  },
+  {
+    "file": "assets/context-remote/summer-1.jpg",
+    "sha256": "76ce82278a0b17b48c6baa789f2b02832a4030e405981f941ba091e290cfcb52",
+    "oid": "6c2ce78a1fa151ff8ca10f3c2c81d3293b616eb2"
+  },
+  {
+    "file": "assets/context-remote/summer-2.jpg",
+    "sha256": "be10455ead32a8c2aae74e3ec77ca01a9ab99406f6f5e0b6552ae877bd93f082",
+    "oid": "a33187fe09a4b08c1a415819758a6bbc5fab3bd0"
+  },
+  {
+    "file": "assets/context-remote/winter-1.jpg",
+    "sha256": "9936020430baa7e1a62097523651603092e712765f8b8ed842a6d0d2bf487126",
+    "oid": "c519b007bb66735f705483004663d5d2a1180d4f"
+  },
+  {
+    "file": "assets/context-remote/winter-2.jpg",
+    "sha256": "cf9be0ea1d4171c91e584deef47b679195e6cfff8dd938bda8f34eec1d0fbccd",
+    "oid": "e0d199af390feef1fd00aff44834cc46f7c4b990"
+  },
+  {
+    "file": "assets/data/ai-team-status.json",
+    "sha256": "631f749bca01d89f6ed087fe089a825c44e5e3cf6c97feeb80bedfa2c25ec434",
+    "oid": "428f7119d79c763d2c7c88e1859d4d104a95d24d"
+  },
+  {
+    "file": "assets/data/desk-mascots-v1.json",
+    "sha256": "23e03a5f87fec1de8c33f3db19580e2548010f0c19a6e938d5c12b5ab8828d94",
+    "oid": "ca05d26f48ad6eb3efd0be7a8445d6e85caa3ca6"
+  },
+  {
+    "file": "assets/data/hani-history-releases-v1.json",
+    "sha256": "3765a564fb8e113c516877e345ff9a7c423be7accd51cf3724034cc6b778347c",
+    "oid": "ccffaed3ba89a7b5e045aacb83b80e720f50ec34"
+  },
+  {
+    "file": "assets/data/newsroom-4cut/issues.json",
+    "sha256": "959345bae46db82537b7dbd31d8960fdc40a105f3473ca461d1805c5bf8cc6f3",
+    "oid": "2e0b43b63e28e7cf506900efacf599b2c31bb106"
+  },
+  {
+    "file": "assets/data/office-actions-216.json",
+    "sha256": "987a3e8a4efc884deb3e4c77db4707b11a37f33395d773c98f8d98b9eedf9c3b",
+    "oid": "694ad9c601084379ad3dd70e7b6870870b7065e1"
+  },
+  {
+    "file": "assets/data/office-actions-221.json",
+    "sha256": "27479ebc6886740b80dfa444f6460216d9f903c3708bc2c611aafc585df2df5c",
+    "oid": "876e4f5ff9c0081729ed5bed91d1c05c9d251a24"
+  },
+  {
+    "file": "assets/data/office-drama-v1.json",
+    "sha256": "c82c41cfab5eb66c69b4c2750b6b88d70df2c2ec0e8a382770e89aa3f0b31688",
+    "oid": "3cbacc390989fbe1309edbaad1fd6aaeb49253ab"
+  },
+  {
+    "file": "assets/data/office-tap-lines-v1.json",
+    "sha256": "5973caed9c50e4766b605879f7ed89189eb6b6013b77f1784bd233d56a38d362",
+    "oid": "b4f9862b041cfb28712b6afd22b73c88974b8abe"
+  },
+  {
+    "file": "assets/design-system-v1/asset.webp",
+    "sha256": "e4b469ceaf8cd85817d13ae63f90b515b3c0ee974a32d13a3e8baf7238668daa",
+    "oid": "bc913d8b0f5f2cf9bc2cd387af0fc75429ec432f"
+  },
+  {
+    "file": "assets/design-system-v1/hani-galaxy-characters-v2.png",
+    "sha256": "dc66bd6876573b5216114cd57d557bdd3e52b9f4480bf868b172f7ffd9c3e86d",
+    "oid": "1e655d026510e600d4d828306caf99e70bb03b6e"
+  },
+  {
+    "file": "assets/design-system-v1/hina-cinema-canonical.webp",
+    "sha256": "533f67dda982163e168488c3ab5170df87fad669b71ecd856afeceb18a763bc4",
+    "oid": "5c89c6ddde68299117adb23c91326d1b51ad3e93"
+  },
+  {
+    "file": "assets/design-system-v1/hina-cinema-v2.webp",
+    "sha256": "11a09f6b3e223f451f7f27869845bf9477fd4230975e96b27430a6afb6227fbc",
+    "oid": "2e471310c4eacd3031e3a47e8be56cbdf380f07f"
+  },
+  {
+    "file": "assets/design-system-v1/hina-cinema.webp",
+    "sha256": "dd0c83c670f0aabe3bd738e4cae915b16d85730159ac5af19e86238ddda1ceb3",
+    "oid": "0aab84582533bead80bcd5ec169fbcbd2c970548"
+  },
+  {
+    "file": "assets/design-system-v1/learning.webp",
+    "sha256": "436f535e38e39acd4d9390e112d213a79c8a28f14d83aaee2289f8762c38366f",
+    "oid": "40ca4d2feadcdc840329ce28e0b2db4004d2d3f8"
+  },
+  {
+    "file": "assets/design-system-v1/naeun-running-canonical.webp",
+    "sha256": "bc63ad4607f395d23c90aaf8850cc41c875433c40211810cd15afa0c5f9e1a05",
+    "oid": "7cc39eb3f56608af13e593b3162d146f152f755d"
+  },
+  {
+    "file": "assets/design-system-v1/naeun-running.webp",
+    "sha256": "1d71e5b57d0aecebdbcca6d72ce429939d7cad3df8f77f3caf226da7013ea616",
+    "oid": "024b420d96ce14532050e5cff77e7385fa83d90a"
+  },
+  {
+    "file": "assets/design-system-v1/spending.webp",
+    "sha256": "39061e88202280a2394b20db098b577ed13acca52ab3e55aaba43bb85c42549b",
+    "oid": "4b9c3ff471cf0e409453cbf703645683797fd151"
+  },
+  {
+    "file": "assets/design-system-v1/srx.webp",
+    "sha256": "c2c882de038718c66146fddef3d9d8b04ecfc0aaa7b83b7cad0edbfb3ecdf672",
+    "oid": "c6f1dd3e70d077c7080b4c31ab325fed993b16e8"
+  },
+  {
+    "file": "assets/design-system-v1/steps.webp",
+    "sha256": "18978225279564eaf041d5396489df7d0459a3aa9203428facebd1ba0b6b37f7",
+    "oid": "33509e2d490557d185844db419517d9db90354be"
+  },
+  {
+    "file": "assets/desk-mascots/arin.webp",
+    "sha256": "36acbcec2ed7a5cefd0055093df7931f1129aa864b066071df9bf5a98488d6c8",
+    "oid": "4fd27ce63145144530c3319b1f3c49b3ebe751e1"
+  },
+  {
+    "file": "assets/desk-mascots/daon.webp",
+    "sha256": "59eae3eba0f463b7b294bf0e40ad6270ee8459642fb625f18dae30cfc0ea6eac",
+    "oid": "b81897c701e20101e378038e398d6e6e273e4ac2"
+  },
+  {
+    "file": "assets/desk-mascots/dohyun.webp",
+    "sha256": "f6fb51432af588323a8c43e49270d2a6b77efdccf5820f8a2a9e0837d073b6f6",
+    "oid": "30a039d23877de30c764ed09399da50fdbd87196"
+  },
+  {
+    "file": "assets/desk-mascots/gaeun.webp",
+    "sha256": "0951178186fb3633d8cb563634606621e67d45713168c24f5aee5ce107a1d335",
+    "oid": "89a265d8bd8a3672e68f58e7fa4171bd230a571b"
+  },
+  {
+    "file": "assets/desk-mascots/hani.webp",
+    "sha256": "1b5fc71fdf115159032515b2f47fcb9d9d75148889e92f344513d9aac5bc8072",
+    "oid": "81fe4fc294000a9dd2145b28c1d1fc0706d5423e"
+  },
+  {
+    "file": "assets/desk-mascots/haru.webp",
+    "sha256": "afbc6e8cef6782237685987a0b6c54126079fd602692e7952257d6fa122b7e0d",
+    "oid": "90ef4e5a84fb5a4bffda9ac55de533bf3a43650f"
+  },
+  {
+    "file": "assets/desk-mascots/hina.webp",
+    "sha256": "0e7de4a20a09e214d3c9186c97f367771c6621b9d50dd55e359b59901e899938",
+    "oid": "d734be93db1715b93bfe5dafc168363e954be686"
+  },
+  {
+    "file": "assets/desk-mascots/jieun.webp",
+    "sha256": "68cf37e6229b23bdeaeb7f89b179d8465f794d654e63f0d7c9abaed568e1f75f",
+    "oid": "aae6219d69dcf2ba9025c2352d534f27a86dd29c"
+  },
+  {
+    "file": "assets/desk-mascots/minji.webp",
+    "sha256": "ed255d0c5d86ebfd340e88a6216c9ceeeefa6e227cbe34ce855285e0065ba94d",
+    "oid": "df2bfc31d16eab0d0ddef51e3c054114626818aa"
+  },
+  {
+    "file": "assets/desk-mascots/mir.webp",
+    "sha256": "118a2dcf4262dfcb09ba6daa884fd1e3e6044448508d3b6169822b3649df6a76",
+    "oid": "e3aa1ed960acc01c119033b1cd8ffef0d3ac1544"
+  },
+  {
+    "file": "assets/desk-mascots/naeun.webp",
+    "sha256": "8590bebdb5d606a5e9605e4970f8352377110f473025ce0ed0d46ef4d460e601",
+    "oid": "764de094ec0bd638630318c679a81b8815a3fd45"
+  },
+  {
+    "file": "assets/desk-mascots/seoyun.webp",
+    "sha256": "329ee865034010c7d7767d894439b419768f9ff60e350b50dfd8fcb4d49a71f3",
+    "oid": "4050e25debfa98a3e7b316bc68032f9175455f4d"
+  },
+  {
+    "file": "assets/desk-mascots/serin.webp",
+    "sha256": "7203e7f603cfc3e7cb26daa00cd604b33f80ae52f238371c37c23306e43408e5",
+    "oid": "3daf40cbd7199e6b578003f0803e1648cfc9fe5c"
+  },
+  {
+    "file": "assets/desk-mascots/sooyeon.webp",
+    "sha256": "6a7141f77f2a5fd38e4b7353da2d56fa276340d28f9fb67f24983c96afac4357",
+    "oid": "4a15b2b109126361fd88570a4ccd36ed9474eff4"
+  },
+  {
+    "file": "assets/desk-mascots/sua.webp",
+    "sha256": "f09cbbb3918747c37a555b2a879486486f5b032f33d90edb36bb2c71fe6d4b9a",
+    "oid": "8ce92d9fd35ec54fc5ea19139efc1499591274c7"
+  },
+  {
+    "file": "assets/desk-mascots/taeo.webp",
+    "sha256": "85298aba526270456246aeb46f57ba29ae7546b17f3db65cb3a4ddf9e7265d45",
+    "oid": "557d3d018fbe0290e93ed68f29cac2b1ba4fd0d2"
+  },
+  {
+    "file": "assets/desk-mascots/yoonseul.webp",
+    "sha256": "a11a1710ea3faf7840c1e82931c425f5f241a988cf3b881374ff893454cdbc06",
+    "oid": "903e576ae494771f6572646b32ddaa5bf3e4e1cf"
+  },
+  {
+    "file": "assets/desk-mascots/yuna.webp",
+    "sha256": "9304198022c2bb50ed20dfdcd5d2e466324ea7b3dde2b6a7fae8f1e0d031f789",
+    "oid": "9a36053e188f22b04965f3b2ac219cbc729233f1"
+  },
+  {
+    "file": "assets/desk-mascots/yuri.webp",
+    "sha256": "793279b1fd74b3e3377105e2ca2122934fd8a1552dd126b4f6aa2b85f004379d",
+    "oid": "39546a73a17522a51dc3b432886444170cd0f844"
+  },
+  {
+    "file": "assets/hani-ilbo/001-comic.webp",
+    "sha256": "305b097f3596975df0fc16030c61c88d88dafb30c33776cb14be8f2c0636afed",
+    "oid": "990ab93d7741b160b98f21b9369ddb30ff8a26b9"
+  },
+  {
+    "file": "assets/hani-ilbo/002-comic.webp",
+    "sha256": "b2b0e8f9fa3d572b3876855206b827faf6601f7f94c4c2bd2f1f3de8e9b6e2e2",
+    "oid": "4c8269b1172d82592adddf8d319dfeed3b459504"
+  },
+  {
+    "file": "assets/hani-ilbo/003-comic.webp",
+    "sha256": "f8c963f320330600ff7fa75b55be5d66147a638923df9837c9606a5d06810a9b",
+    "oid": "2c95e803c60bba8f49cccdfff6ceafcf0c18535d"
+  },
+  {
+    "file": "assets/hani-ilbo/004-comic.webp",
+    "sha256": "b6d067a62e35c9fcdac54d0e448b450939f06c3f8bf3caf756f325bc86c5e5a0",
+    "oid": "ac3070419c240b92ee026ff2d6fa60ad8f56f7a2"
+  },
+  {
+    "file": "assets/hani-ilbo/extra-m9-comic.webp",
+    "sha256": "62acd1d17e11b832b36a2a35b7635ebbaaf9596c19812ad4b70b9793baf6973c",
+    "oid": "1a30f1b5721165120246d4f8c77e36547da6ea35"
+  },
+  {
+    "file": "assets/hani-ilbo/masthead-v1.webp",
+    "sha256": "deb0780b4ca4c4ce84eeaa22c23abb35982edf118e880f5e4ae9b9091025f40f",
+    "oid": "5820cb0bd0332a31a529f4a51144462f588dd035"
+  },
+  {
+    "file": "assets/hani-spatial-hero-atlas-v02994.png",
+    "sha256": "c920947ff417fd1ef056b7b58bad71d47447185c5dc60474db09744d74065989",
+    "oid": "b417f486b21479f6f411ce68c516da3e891e303b"
+  },
+  {
+    "file": "assets/heroes/aiBudget-218.webp",
+    "sha256": "b1435dde23423c72bfa5788d425ce83b9ae4111f74f054004210ae7075d89f37",
+    "oid": "5b3cde372db397d668d3e59ec04785d1bf8b6565"
+  },
+  {
+    "file": "assets/heroes/aiWork-218.webp",
+    "sha256": "99def2235d7077931379eb7f571c02853a5795e457111ce818d8564feaf1ad46",
+    "oid": "ff259349fc2fd48b47e0cac1b0c3d703d51a157c"
+  },
+  {
+    "file": "assets/heroes/asset-218.webp",
+    "sha256": "44e077bf296184a4176d5ad92aeef06224524262ab85ea4cff1a489231ccfc84",
+    "oid": "718b741365a2ca9d8d923c46448f246d6db1abda"
+  },
+  {
+    "file": "assets/heroes/asset-226w.webp",
+    "sha256": "d277aae728c8f163e1085911f530f62ab314d2128f4185dd9dadf4bb60b2f947",
+    "oid": "9a84b1bf47fd9dc5fd3bd30055a5b721f090b98b"
+  },
+  {
+    "file": "assets/heroes/asset.png",
+    "sha256": "0a36217cf328da61c6a6edd7d50b6064bfdb8bf1b4c3755262b629bb1157def1",
+    "oid": "6b1195c176cd3193ab56d7d4c308c5161a2b918a"
+  },
+  {
+    "file": "assets/heroes/calendar-218.webp",
+    "sha256": "5f4ed8564da3493866d52649e7020f53d51f3fbe78e97128b3a9775d87ca7985",
+    "oid": "01f336f0e0bf6d0e344b2196078232591bf9344c"
+  },
+  {
+    "file": "assets/heroes/campus.png",
+    "sha256": "b706298cd93f65051495b6c69e53e21948b5d8e9384afe6221fded4f98a385f3",
+    "oid": "cd984f82df625d4db83fa7e68ea26b35440cef6e"
+  },
+  {
+    "file": "assets/heroes/deployment-218.webp",
+    "sha256": "4fec8d2e5b4cd4de9582566929ebb4b547e83b75c5c03658433287b92edc3f9d",
+    "oid": "77fd9f7b194bc3729ce3477fd7c502e5845ce8ad"
+  },
+  {
+    "file": "assets/heroes/dev-218.webp",
+    "sha256": "aeb16581f261f17e3621b87535d3a6ee168a4b6f2c3daa382a180ab4c7ac2b9a",
+    "oid": "32f5bd4aaea5edc7b75fcfb95ee533b5320b646e"
+  },
+  {
+    "file": "assets/heroes/diet-218.webp",
+    "sha256": "da6ebbe16e33b56704b5e80b8813dec7fc4dd32566195e0af7a3da6f43e64d5e",
+    "oid": "a0eb1090b7c2a52c69b025fabcad6243ec5e727a"
+  },
+  {
+    "file": "assets/heroes/diet.png",
+    "sha256": "032ac615cc55f7471a536e1473d9f75ebfc34d36429aa9435654c9ce51cd92ca",
+    "oid": "1124677c562d8d93f66636c4bd9ea5003fa299aa"
+  },
+  {
+    "file": "assets/heroes/exercise-218.webp",
+    "sha256": "1c7ff83f17ff8d8a55c6cdb973f610db41fbbf6e456ed4989601753ee2af75c2",
+    "oid": "512424ecd9f0afad08309224a73a383a23e011fa"
+  },
+  {
+    "file": "assets/heroes/exercise-226w.webp",
+    "sha256": "86a2c20972fc0bbe68f983585851c1d747c923261265394c978f973abb101790",
+    "oid": "8693396c1e019641f6fb85399db09daaadc78e00"
+  },
+  {
+    "file": "assets/heroes/exercise.png",
+    "sha256": "e8fb8878292e6cdc31448fb0ff7eb541f31f1381c0f996f8cc4fa124c8be530b",
+    "oid": "2252bf333e5c884437c372c4a28925d8cc45fefa"
+  },
+  {
+    "file": "assets/heroes/geminiReports-218.webp",
+    "sha256": "2067446dd16c312446951ba3fd6af00aacc62c28a6ba46366ee1917f81640c2e",
+    "oid": "4ab1cf9133b1063fd47b12160e42ccf5ac2c876f"
+  },
+  {
+    "file": "assets/heroes/ilbo-218.webp",
+    "sha256": "05d5c702ab934028521b983de3f1be9b87494211a8fa0655d20bdeccf48acca2",
+    "oid": "40fdbe2b4a439019ac368e4ede9477793347bdaa"
+  },
+  {
+    "file": "assets/heroes/ilbo-226w.webp",
+    "sha256": "337180c21657b4dfca49d7db3070ea76663681df6552a5afd2384d1b2f4542af",
+    "oid": "4472466b684938664fe4c76a408629e0115e008c"
+  },
+  {
+    "file": "assets/heroes/investment-218.webp",
+    "sha256": "eb4fd575a5fca43f91650de21edf92aff1f8a24f2c92e01eaadfdfe4ebf2e5ac",
+    "oid": "37031264dba3aa2c9a15c2f0fcf3afd202447f3e"
+  },
+  {
+    "file": "assets/heroes/investment-226w.webp",
+    "sha256": "4c4d292d590951a2ffac1c9fa503c88629588363d8eac8a1685ae16efd875758",
+    "oid": "b5422a895b30e4ad76cde52ee18dec97467651f6"
+  },
+  {
+    "file": "assets/heroes/investment.png",
+    "sha256": "025dc0b36bdf39d63cd8b67a0cf86c5e0d30777008fabc305e133877fc9aaeba",
+    "oid": "a84e4dae9c75cd007ab0a8594525e54553f2155b"
+  },
+  {
+    "file": "assets/heroes/investmentCommittee-218.webp",
+    "sha256": "133724aa00d9b666830f450477edacf947c5ee4347f225c3683c22474da2aa05",
+    "oid": "70830bc55ff5675506072f7d1b555b713921452f"
+  },
+  {
+    "file": "assets/heroes/investmentIntake-218.webp",
+    "sha256": "be5d79572c5cf23f976b9dd0fe77d232bcc565cb5e51b67b514735fe7767da04",
+    "oid": "a89d5f0ea751eefe065c287092c31cc39c156f06"
+  },
+  {
+    "file": "assets/heroes/investmentIntake-226w.webp",
+    "sha256": "63d8379606481069e4ee963da694878b7de38e510a772ea54e69b6cd43771732",
+    "oid": "e616ee9230f99d222d2cde535e2eeea1b207b678"
+  },
+  {
+    "file": "assets/heroes/ledger-218.webp",
+    "sha256": "05b7dc3d6ce640609656d2089daf1331615231613a12009770c2f8e243e9347d",
+    "oid": "405c74f0491326987f50a0c2e03619059a167e53"
+  },
+  {
+    "file": "assets/heroes/ledger-226w.webp",
+    "sha256": "89047f708a1d636118aaa3d6c05d28b0fc7cbef1634587e738a7792c6c4971ae",
+    "oid": "12d335e6f51c0aa51f83ed150670e5b04f028dc7"
+  },
+  {
+    "file": "assets/heroes/ledger.png",
+    "sha256": "3ae047044f248c10cb58275ac511c18e16df1fcfaf5f85c015f56a9d4f24979c",
+    "oid": "3cfb2d13530504e743e5867b4e80ff2ef934e4e0"
+  },
+  {
+    "file": "assets/heroes/ledger.webp",
+    "sha256": "817d3a3684f1bc4ad37934b4c732abe19d844b45f8bad58c1e9b1fd60709d581",
+    "oid": "7f9ba8f9b380377fa59549dfd9c4211581539161"
+  },
+  {
+    "file": "assets/heroes/milestones-226w-a3.webp",
+    "sha256": "1259d2c8c8be074fb47b4f843a9a6780aca40aed7f13bdfb650da18f3074ab6d",
+    "oid": "3bf85ac703240023985de66f7ffe3c6de61d75fb"
+  },
+  {
+    "file": "assets/heroes/month-end.png",
+    "sha256": "8226fe7722bee7db5d6f2b3ff765912176848b0df1899306b57a254d1037343d",
+    "oid": "17f6cbb951675a2b7dcc31829a19ee83a0596236"
+  },
+  {
+    "file": "assets/heroes/movie-218.webp",
+    "sha256": "c0f3b896722b2a781c91912460c4b7eb6670bc3021a1a501ecb5f848a46398c3",
+    "oid": "4c234752b76485d89c90139f20b8c68aa9c537ea"
+  },
+  {
+    "file": "assets/heroes/movie.png",
+    "sha256": "745c4d832a8e2329e611bb42ed93870cc66449ac52f76a5493598f2967525d5f",
+    "oid": "439728b4059a6737ef243cc2011d8d48163347d0"
+  },
+  {
+    "file": "assets/heroes/newsroom-218.webp",
+    "sha256": "573ec47627cbe0a545bcbeb072b70531a79b5a37a78bdf331584878450a63e3e",
+    "oid": "389210d92de85fb070b2e7d0cdf20dddd7728efe"
+  },
+  {
+    "file": "assets/heroes/newsroom-226w.webp",
+    "sha256": "cd0492ec4ed04270420f76f7f274fb48d8fb781a6772a696fa49229d934e2bdc",
+    "oid": "6c22b704cacc604a127255fbcc1077726fb15449"
+  },
+  {
+    "file": "assets/heroes/newsroom.png",
+    "sha256": "6b4f866080b3dd5ac8a4c2285a9826a43fa0be2438b9c185e2d5e4b31afa8344",
+    "oid": "165d97582e9001a27a1f3fef1d1377732b92709c"
+  },
+  {
+    "file": "assets/heroes/organization-218.webp",
+    "sha256": "061c2507b2dd57308e1c41736a899f4e3e2eb5533835a3d17d720f4a35eb8544",
+    "oid": "48e4e38c88361ae88316f8384fdf54c33a44a3d9"
+  },
+  {
+    "file": "assets/heroes/organization-226w.webp",
+    "sha256": "1f1408e199a631af34d467c2ab88250a51126eb0bcee256dc6c2083d1b170067",
+    "oid": "f6ea8ec3e17ddd041a14f29ebd078bb2e239fe1f"
+  },
+  {
+    "file": "assets/heroes/reading-218.webp",
+    "sha256": "660fe55ff7db496e0a94279d52b62f6bb74013b6ffe49c9e6f2363241ed63118",
+    "oid": "21f153caee8f54fc9654fe1af3353f534f1c862c"
+  },
+  {
+    "file": "assets/heroes/reading-226w.webp",
+    "sha256": "29f1b4f21b064c9fac9335129d9f63bc71be52d94d9896463475f7a0b02534b9",
+    "oid": "3f7aaff9dc3e55cbcf87e4544469098bd6b85d8b"
+  },
+  {
+    "file": "assets/heroes/reading.png",
+    "sha256": "5ae681dae2d686cdacded15a79b0614ad3eeca7f0d365367ce6913ecce85e673",
+    "oid": "7dbc7ae7d3e25045cf4e5dffac417a39754b4e65"
+  },
+  {
+    "file": "assets/heroes/reading.webp",
+    "sha256": "ba96d03abe0f7169bc33aeb7368a27a5df31f258be089c83e7fcf2c0a13778dd",
+    "oid": "085d1ad18fca75a13b8062c4706bee1a3fe465a0"
+  },
+  {
+    "file": "assets/heroes/study-218.webp",
+    "sha256": "54d8e7513554b164cdfd44e70cd828372c233489fc4240ac6c383b0655bd199c",
+    "oid": "d4f9c9849ce590a2aaab14933718fcbb40134dc5"
+  },
+  {
+    "file": "assets/heroes/study-226w.webp",
+    "sha256": "ab860479d2fd59009f03bb4cb05160819a104168ccc4f180517b1592f5996e41",
+    "oid": "ecd0b29815d7824215320ef0eee053654ed49943"
+  },
+  {
+    "file": "assets/heroes/study.png",
+    "sha256": "fb0a757619cc5e68d176faecf4b7048d75204c9214efd994edc047d7640c1727",
+    "oid": "4c07fd1f7aa37cfe13cd956e3c26864e4af9b5e2"
+  },
+  {
+    "file": "assets/heroes/tasks-218.webp",
+    "sha256": "de48b947eac1c2ecdcf054548cd76480ca013ebcd3c46c10c83f6969b8c53cce",
+    "oid": "02e5810759238ca0699369fba80762c3639c7aa6"
+  },
+  {
+    "file": "assets/heroes/travel-218.webp",
+    "sha256": "139dc74c6b20c769fc611c212363a78f9a3c578d436a085e1e8d2304a1a045df",
+    "oid": "2f01ab378e20508f963b4400177a1cc30fd929a8"
+  },
+  {
+    "file": "assets/heroes/travel.png",
+    "sha256": "a8fb217431037728c42c74f602331c95c2e81bc3fbf6dd5de79c3e3636516708",
+    "oid": "b31e84b63cacb34417b713290604d6eaa0ff0f49"
+  },
+  {
+    "file": "assets/heroes/university-218.webp",
+    "sha256": "c7ce996ba8ca07711beda8d19a456bd1c2ec2a596251aa2441e74bdcf53a83ef",
+    "oid": "9175ea2bc3fdaae7c5c7bae8d0e3e938aa9bd954"
+  },
+  {
+    "file": "assets/heroes/university-226w.webp",
+    "sha256": "205d31a525e6c84096b3774e4440648d0649417fa307143f95408c797dca8c24",
+    "oid": "685154a7415c85557fabe6f96896f8b6b3c46d72"
+  },
+  {
+    "file": "assets/launch/chibi-launch-v1-day.webp",
+    "sha256": "23eef4ddb3994ed30f93e68b53abcd09412a4ff6965f956b799ec00be2ba3644",
+    "oid": "d714b69922a854b3cc745a7685c72226422777e5"
+  },
+  {
+    "file": "assets/launch/chibi-launch-v1-night.webp",
+    "sha256": "f466228327d823dcaef2a03211f24a31ad55a59bebdbe1934d3ba5edcc94a221",
+    "oid": "3a23a514b3d946976c6a16d43076e3cd9609e207"
+  },
+  {
+    "file": "assets/launch/greeters/hani-wave.webp",
+    "sha256": "c5fd335c3f67f99ce45f642eea5a71210b97a46154b6098891132b229e695c63",
+    "oid": "c440cef126618bf7bd1481cca97d8c6e4febe326"
+  },
+  {
+    "file": "assets/launch/greeters/hina-rabbit.webp",
+    "sha256": "e7c77bca2230fa0fc65644a7659297bcf7660a7b000e73e259697314205becf7",
+    "oid": "265ae3ddb9bf5264e45b054b26dd9fca54c4f736"
+  },
+  {
+    "file": "assets/launch/greeters/naeun-puppy.webp",
+    "sha256": "46da9164070350bd14b31fc54c09d29d17b1603bd9824cb60e3255943389e35d",
+    "oid": "f4c1a3b7bcdff7642b758224685a2d10c39e5126"
+  },
+  {
+    "file": "assets/launch/greeters/seoyun-tablet.webp",
+    "sha256": "2bce9cc281d4d8de4505a696ef26178f41051f40f2440b80aacec86454108c1b",
+    "oid": "e5acacd93c7bea7c1d6f73345a8414a1421751fe"
+  },
+  {
+    "file": "assets/life-market/HANI_LifeMarket_01_Original_Hani.png",
+    "sha256": "087d6397d5486c70e509c524a55581bf1d8ca50e92f72ce1f27e35e8f83ab4c1",
+    "oid": "de02c0d429282c85ca46bb39b6351efb4a7ca019"
+  },
+  {
+    "file": "assets/life-market/HANI_LifeMarket_01_Original_Hani.webp",
+    "sha256": "7c4abc397919f8133a8efc4825f046206264f90db0644b579d7bc3111db2f7a7",
+    "oid": "195007241fadd9c7c3b29fdd85b8845c8940e823"
+  },
+  {
+    "file": "assets/life-market/HANI_LifeMarket_02_Bull.png",
+    "sha256": "e0608a44499eeec9990736af5206ff176879616a937e29eeb7493592be982b34",
+    "oid": "893473f14efd6638a6670bb5815b47445e9e7516"
+  },
+  {
+    "file": "assets/life-market/HANI_LifeMarket_03_Bear.png",
+    "sha256": "f42f0c243c7803e97e7bd19fa87aae6017204ad8d535eb84a623018b0e770a1d",
+    "oid": "3c17d058909dcb6fe1c3cb9e435c4c5bc4242cbe"
+  },
+  {
+    "file": "assets/life-market/HANI_LifeMarket_04_Mixed.png",
+    "sha256": "1a736a2683e90d543bc862ba0b3c2176a05967f36f6ef264f456d2edeb2c0551",
+    "oid": "285be320a948f5363f721892b6a087cdc48fe079"
+  },
+  {
+    "file": "assets/milestone-cards/milestone-card-sheet-v1.webp",
+    "sha256": "28753f7a3e23cbd91090a03975cccff54dfdc871a47e9e9dd71afc20e2f47789",
+    "oid": "41a9c6a52503e3daa7aacf81455660cc649f93b1"
+  },
+  {
+    "file": "assets/milestone-cards/milestone-card-sheet-v2.webp",
+    "sha256": "c1890382208f2ce4e806803945d70299e5ef61d93a31d10d0b664088850f06ed",
+    "oid": "cb95a0dfbb9b081e9fcc9fc1b7866b1769db47a8"
+  },
+  {
+    "file": "assets/newsroom-4cut/001.webp",
+    "sha256": "dfa9fa2fcd8fd8f69d71abea928c81fdb20053b33745cc63f250344fefee0838",
+    "oid": "1a12229616c314de5d7bc1a86d76c7cec012ff5b"
+  },
+  {
+    "file": "assets/office-companions/companions-v1.webp",
+    "sha256": "2a295143929040c144b647efe37a76387123cdb4dd0d2cf3672a2dc3ab17a0f5",
+    "oid": "56fcfa8b7849443752a3de864dc8502573aa0802"
+  },
+  {
+    "file": "assets/office-companions/kids-v1.webp",
+    "sha256": "f9046ee2dc22f0513d481f9382c71707cd8890f5913d2b8653360c414d20478f",
+    "oid": "1099e94af3089c6f1f60caac7277956d6f8de699"
+  },
+  {
+    "file": "assets/office-props/coffee-steam.webp",
+    "sha256": "feb2dd03500f95727b1e71df9f4941d6b3d714e8b49a2458a25078dc1c51ad38",
+    "oid": "d1dc1b4fa662db3fe7a304a16505be9906d79f45"
+  },
+  {
+    "file": "assets/office-props/lantern-flicker.webp",
+    "sha256": "a773aa957b2a7079fb8c38ffd3f1030ffb086bc61e65243eca9981d950f7f62f",
+    "oid": "965c8b65a1d5b4f47d1c58d56f1e28ecbb6d41c0"
+  },
+  {
+    "file": "assets/office-props/monitor-glow.webp",
+    "sha256": "db6b7bba16223811cdfd41ccd2be97ea1d57e5744c49c63ec05d48798858df12",
+    "oid": "da8b99fc826ef89841b9ed8da2c734efc8f9bfb9"
+  },
+  {
+    "file": "assets/office-props/paper-flutter.webp",
+    "sha256": "74004f826f18adeaf88223751c3beb066b121ece44a738e252bba2e421ee90fb",
+    "oid": "b8dcdfd509f00ed962e6f14a84dc55720e46e402"
+  },
+  {
+    "file": "assets/office-props/plant-sway.webp",
+    "sha256": "3f0ebbe6dd3080747fdf0c851e52ad6e840285d1991069c9f8692a6fdafdd295",
+    "oid": "a50628a51a169bc9a0ccb9841f95f647526f17c2"
+  },
+  {
+    "file": "assets/office-props/stamp-sparkle.webp",
+    "sha256": "83de81db55c18381da4498bc91705f3aad37047be7a5079409bfbcb67e2cd497",
+    "oid": "8718bb49ec5d6224f23cdecea2eff7eef592bda6"
+  },
+  {
+    "file": "assets/office-season/barista-night.webp",
+    "sha256": "01abff41b922b7d081389d5d0d0578ebe33a01177b5fb91645038609267febac",
+    "oid": "5c22f74f8248cac125e5a629efcb30cd894f703c"
+  },
+  {
+    "file": "assets/office-season/xmas.webp",
+    "sha256": "7c5315c3b924a05b4ed00679c532410569010a5731fe04db9d5302ec063e7232",
+    "oid": "f3a9dff66f7d2fc466efa0828ee53e886b5455de"
+  },
+  {
+    "file": "assets/profiles/hani-profile-arin.webp",
+    "sha256": "d4fd2048180c5e5e0ed0fea2c8ebbf13b41ee86958844786c24ae9a3cbf46622",
+    "oid": "22a817ec11e8c128fd4311e818a0fa7d66e17470"
+  },
+  {
+    "file": "assets/profiles/hani-profile-cheese.webp",
+    "sha256": "32d827f540b81a5223ce2aad54e053bd182b4b18efd8652d6da97283f3e2e83d",
+    "oid": "783768b4429753d6e4c7154ec44e448f53f30b1b"
+  },
+  {
+    "file": "assets/profiles/hani-profile-cream.webp",
+    "sha256": "389abe8e725f6e15cd30cf527ec887e456658ef08489380a8cfd220262037013",
+    "oid": "4adef1343a6005664f15e41072e993f15a566a40"
+  },
+  {
+    "file": "assets/profiles/hani-profile-daon-v2.webp",
+    "sha256": "6aaa58e92463aa4a04ef9b561f2cdbf92631e71a06b95fa16c202aaac0600348",
+    "oid": "49530f76331dcd413bf8ae3af187281b0d3085f5"
+  },
+  {
+    "file": "assets/profiles/hani-profile-daon.webp",
+    "sha256": "73d6d4905fafa6e396b36debfc6b64f883e9160b977921b4b9728cf388905e08",
+    "oid": "4a269be950b06010c5db0ce9ac20b9251ac89285"
+  },
+  {
+    "file": "assets/profiles/hani-profile-dohyun.webp",
+    "sha256": "4cf3d3a1bf041b0acb4e077a16df63c031dda07939a02790e1beddeb794422cc",
+    "oid": "4f7a30111b5e650428f0ed64de682506155cf5d3"
+  },
+  {
+    "file": "assets/profiles/hani-profile-gaeun.webp",
+    "sha256": "b5a74660dd38e84e3f2a7f4aa310b4b30620952663f7c8118c059fb00ede749b",
+    "oid": "5e6ef8100a1b606c0400cc33b34a617ecd4c48d6"
+  },
+  {
+    "file": "assets/profiles/hani-profile-hani.webp",
+    "sha256": "89884ad7f3d466dc139012aafb65ad5c0c88111cd3eeedcb32d83861f6a7b072",
+    "oid": "9d71897dd17bc947ca3dc4881c1661c7d2920e52"
+  },
+  {
+    "file": "assets/profiles/hani-profile-haru.webp",
+    "sha256": "e44fc13e5d94aff93dd5bff7d34f2b9e21156903b644897146db20f6c405b31e",
+    "oid": "0ea288d472a87712a2821aa337484b59beb6623d"
+  },
+  {
+    "file": "assets/profiles/hani-profile-hina.webp",
+    "sha256": "bdaea4aa34302246ba66a84b43b29f94931e7f95c83e205977cfb29cc5edf835",
+    "oid": "8d20cf37aaa9385b8e91e2a12360bfa87f980117"
+  },
+  {
+    "file": "assets/profiles/hani-profile-jieun.webp",
+    "sha256": "b1b5385d1d4e223ce11e821d30a11c3d70f3f06d3e7bc1818b84b4a35c9e278e",
+    "oid": "d89c41dc2c5b8a0700aa792b141e778154512740"
+  },
+  {
+    "file": "assets/profiles/hani-profile-minji.webp",
+    "sha256": "03e0e53d19e6ba2a930c41265cbd9bdefff8590036dfe1736afa96941abf5bfe",
+    "oid": "4a0e497df477124001975f889a3ba77b9602c994"
+  },
+  {
+    "file": "assets/profiles/hani-profile-mir.webp",
+    "sha256": "3d7ae8fec89861811c82649edc6cb2be7ffacbc67e6e8008ee7838792c52f7d5",
+    "oid": "927177ca70ebd2fbe8f789be115a4cf7ff4811eb"
+  },
+  {
+    "file": "assets/profiles/hani-profile-mochi.webp",
+    "sha256": "fb9d59b3c85ff095dfdb94836b23a3e6ccf84e041e109557894485b315ce24c6",
+    "oid": "62d376ba4b2b98305a600593bf669d63aff23541"
+  },
+  {
+    "file": "assets/profiles/hani-profile-naeun.webp",
+    "sha256": "ac7fb3e19740e1d8c9179aab7209db9610a90360b554f316d14074399a0c6bd5",
+    "oid": "2b9e68f606a5ef7e36abb76d8eca2d0f43e6e43a"
+  },
+  {
+    "file": "assets/profiles/hani-profile-seoyun.webp",
+    "sha256": "f6ecccb2ea75a973474ec5ab9d839a285323c7406d66fcf680df8a241e101f55",
+    "oid": "91c7de032db7e260755e55544b5f887a58183c0c"
+  },
+  {
+    "file": "assets/profiles/hani-profile-serin.webp",
+    "sha256": "113d7f672e91d6292710957ef90b7b2814f57c78a56ba5ee54c61e4fb523dd32",
+    "oid": "44149c9bd1f8aa7e94bf32a4bb37453421d98de3"
+  },
+  {
+    "file": "assets/profiles/hani-profile-sooyeon.webp",
+    "sha256": "b4b6231162718871bd2b5062822699ef3586cabe54a4348db564c5dc621600fc",
+    "oid": "10afaf48e1214e69e9b688800cc94e5002c660e4"
+  },
+  {
+    "file": "assets/profiles/hani-profile-sua-id.webp",
+    "sha256": "8bf91c0a32c20175bccb4a9ca7b9f0f733e5adfb5807c28a313337d831d8ade3",
+    "oid": "ff3e0019166d7df45aaa13a682b16dbc2ba31e9b"
+  },
+  {
+    "file": "assets/profiles/hani-profile-sua.webp",
+    "sha256": "b5b3074cb3dc429c707354aa400725e856550c8da26c2769c7aac820094f94ca",
+    "oid": "7265b772fe53cc188fc40597ce01641aef93af92"
+  },
+  {
+    "file": "assets/profiles/hani-profile-taeo.webp",
+    "sha256": "a9cdc12937b86c867ce815ae92c97175d11e92ce96b4cb6c9e51480eb9d5bc45",
+    "oid": "db296e01428f44be0e926da74211a91dcb5d373a"
+  },
+  {
+    "file": "assets/profiles/hani-profile-yoonseul-v2.webp",
+    "sha256": "f477a24a3af1db5f229db7bbe3d3c6440e43cb5bdd36a933b17ee54690365afd",
+    "oid": "4ce50d6430cfb208a8ada3d8a450ff397ceb4f4d"
+  },
+  {
+    "file": "assets/profiles/hani-profile-yoonseul.webp",
+    "sha256": "206ab839129f17b91bbda5d4eae3d4f68f13aecb4c4041ac40b3d99cf9e0ceed",
+    "oid": "b9ba0b5aeddfc65c088eb787019269c777a1f70a"
+  },
+  {
+    "file": "assets/profiles/hani-profile-yuna.webp",
+    "sha256": "0a3f9c29cb2365f406f4214693bddcc28150030b31e604528a3c879176cb9cb2",
+    "oid": "8bc9bd6352260282c7b50df52d5688e0b96ae1ed"
+  },
+  {
+    "file": "assets/profiles/hani-profile-yuri.webp",
+    "sha256": "2c31cc525fdd7272a4d7de35ed6b2978debf3f44e6659c52a54a7076738f6837",
+    "oid": "e713250cabacf5e49f94313a183bf9793419bf06"
+  },
+  {
+    "file": "assets/profiles/hani-staff-arin-v5.webp",
+    "sha256": "1c430d35c47c68dc34d25f86c98b6786944e7484bb288824afb5b62cead71dd2",
+    "oid": "bd9b56aad277e799b451f6166a66835070da79da"
+  },
+  {
+    "file": "assets/profiles/hani-staff-dohyun-v5.webp",
+    "sha256": "da81d68f1872c2dffd786552feb4af1fe46546ddeaa5da441f47220f5f71eedc",
+    "oid": "dd442ab60294ebdec7cedd8f97292f20538be0e3"
+  },
+  {
+    "file": "assets/profiles/hani-staff-gaeun-v5.webp",
+    "sha256": "a66ab1a5418be4db227b237b364f877f1a7a493ef1322112504940409015a359",
+    "oid": "8481529665574cf712f3c7f94060687d3aa91112"
+  },
+  {
+    "file": "assets/profiles/hani-staff-mir-v5.webp",
+    "sha256": "32c8084aac5a1370436d21f579b627c24301801c24f11faf02ddfe31e41c970d",
+    "oid": "335a9f5a4931d57f3a4072a454ee3bb483ec52a3"
+  },
+  {
+    "file": "assets/profiles/hani-staff-seoyun-v7.webp",
+    "sha256": "fdba2dd19c0d27d961002a9a2070b3f7bf95fd244e987e04632b27a56b340d93",
+    "oid": "0270227d2671f669c31a8adaacf33853faf417f9"
+  },
+  {
+    "file": "assets/profiles/hani-staff-serin-v5.webp",
+    "sha256": "17692126770c78d0eeda84e0ddec73336ccd510083b0ae64baae3d2c7fea55f7",
+    "oid": "ccc0b8120b0d1fa3429f3e70c045a1a52994a459"
+  },
+  {
+    "file": "assets/profiles/hani-staff-taeo-v5.webp",
+    "sha256": "57e99c6215bde6af0f12ad8df0f4b332c200e3010aee468916a3e202b59ad739",
+    "oid": "b48d62ad093ed558b6d2a1218f9f4bc6fa42299a"
+  },
+  {
+    "file": "assets/profiles/hani-staff-yuri-v5.webp",
+    "sha256": "7061a98027c36d9e1ecef8fbc495924e9268e283440f1d2947df366c64441e23",
+    "oid": "0580b809d00aa5688c160cda93d2e58c80899ce4"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-arin-128.webp",
+    "sha256": "3ddb604ce3ae7b1d319380f839277f99fadd1aee48ca7a54d21243d91dc50a7d",
+    "oid": "f3fb3e815a603e30d34c02f42d09edc6fe777aa1"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-arin-256.webp",
+    "sha256": "dee73f2867d3b64131333c85c4856dc135522b9b98fcafb7ac6f28f1e230aa5a",
+    "oid": "8ea9df4357af6920c56402db18ec823297635b7c"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-bori-128.webp",
+    "sha256": "d5aae008aec1ec4aa3e892377c562b8bc61f19778421b40af29ddb7452f8c654",
+    "oid": "cad2fe1733610a76c2314f8aed6d5e5e368678f1"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-bori-256.webp",
+    "sha256": "4f8d58bdca5ae7eda717f54a0cb2e96013843017823e2ba3c8c1517f7f13120f",
+    "oid": "7568ec0ec6fc6b6654ac619aedc47b9a1010bada"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-cheese-128.webp",
+    "sha256": "b601cf976faa0f90e3d96bd8c89c03dfae12cf62604a04c29d502f5733b43681",
+    "oid": "31b1bdb4797b7f40669b41666db965159e4b1b30"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-cheese-256.webp",
+    "sha256": "aa2a3b6a437efd10fa66fb660bb8f5788dfa3a59816336da142b93742c5b77fc",
+    "oid": "8c15609a0e0d0a7c37c690601e9fd205aa0f4734"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-cream-128.webp",
+    "sha256": "5b1db1e5729dac058d30961c25f02d5909f6b53ef0dec252fbf846ca908837ef",
+    "oid": "a3cae757271c88d6f58398d691389a2b12a01eab"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-cream-256.webp",
+    "sha256": "cff161fd1d71d9a22ec30eba860ff54cd77e22a3a426006aa88131dfe4bd8b6f",
+    "oid": "73c0956848cdb6d220e5223ced672d45c63304d2"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-daon-128.webp",
+    "sha256": "b21541a5934cc93269de60aa82a2a17c7c1193893467f2cfb74ed24cc20115e6",
+    "oid": "d571dca018b4a25caa956546e570d925d4e7ae55"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-daon-256.webp",
+    "sha256": "102cdf0995b941e25cc04b9bf4cfe8932c756f89ec7af7fd3f9fa224904dcd0b",
+    "oid": "e4d9f282106a59dc8e12546587a2113fe9780ab6"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-daon-v2-128.webp",
+    "sha256": "ed5939a30011c56afd66db026aaa318f6d5b15017e31cd77da6df7601c4f341c",
+    "oid": "e2e6b2dfd73145867fb5494f8aff29905b390cd8"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-daon-v2-256.webp",
+    "sha256": "978fde76331057b4cd1c374d71d8213408f8ef33ca9730c059f50e47cc0b4b16",
+    "oid": "f56110753f9a31791b2bdec535731adfffe09b7b"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-dohyun-128.webp",
+    "sha256": "4eef1d574d7f342ad37690ac9b2c9c378e4427cc56379bddbc7bc4059aaaa3a3",
+    "oid": "79fe2778fbea4c9ce163cba396348c7cfd236353"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-dohyun-256.webp",
+    "sha256": "d6f7425d265e971af6da6a441824bf80d00be5289451e8cc9206f35692a27254",
+    "oid": "e14d3e5d213b61c915e0a0af4c980d44ef14b5c6"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-gaeun-128.webp",
+    "sha256": "a196777cc537bc4cf557ba4a64eaf8e926bd8a8303c7d0013cf2e8b237b92629",
+    "oid": "d04846c827f26b139ecc4a3a7f15ca3fd00fab27"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-gaeun-256.webp",
+    "sha256": "0e93afe0492b819068de628f5eade06b81d23320f14ccd9a8a25af1dac7fdedc",
+    "oid": "002d65b8fdaec8106aaf21460419f4fd410582a1"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-hani-128.webp",
+    "sha256": "c526944876f69d00fc49e0933be578177084c3d444e9b7e7fe7eaf5bbba3d945",
+    "oid": "027571c58253a4ddfba98b6b7fd51b1eaff36395"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-hani-256.webp",
+    "sha256": "fbb8f2807c3e699d2f149218573252ae41469c92d45c45410d910a243c84e0be",
+    "oid": "4bdf6a8468579b5e2d77fab4c1c105bd5349d5e7"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-haru-128.webp",
+    "sha256": "dc28426074446d9800ad7a5d6d89b960a96fc5b76ac6b28b9bdb6ddbb86d5ac8",
+    "oid": "11e36a49d84ede1ec60a2465746e335fe1c7ca90"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-haru-256.webp",
+    "sha256": "8fcd8964b0be00170d25e72585518e69d1df058af89223d88a1f3e4f19283ee1",
+    "oid": "52e59b12ff35682448d08b4a84dcb78e2353f14f"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-hina-128.webp",
+    "sha256": "1f4152586899f2903c7f1545bbd5aec00c9b797854636b62f3d84d1c48bddd8f",
+    "oid": "66f9a26f8d941a997431772231aa1b9ff0a65461"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-hina-256.webp",
+    "sha256": "7175d28dac8ddca495cbc73a942166c7bd37b0eaea0f98d7b4e7d7ccbf29a5f7",
+    "oid": "33473d2e9d0721927359b5ced465f14694dca896"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-jieun-128.webp",
+    "sha256": "a0d9a5d0e6ef5fba9a273fdea141137372ef209d2898ca781d99648d05f10f8d",
+    "oid": "8e53219e92d8e7e1f77f5aa50df713da2fc0290d"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-jieun-256.webp",
+    "sha256": "6b2b7d15a6a8166ac9ede28ab7ca7d2d354bb0370e0d0ded4d8d5ca9757a46c5",
+    "oid": "f2f8a9f62e9cca9e00f38de5298461e23a801dd9"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-minji-128.webp",
+    "sha256": "5f8cafb83a7ee82126a4ca41e2274d32c376e71513ae6a83cb0c7bff0cd9baf5",
+    "oid": "c04ea0c0d41581bfef59692cd7f583937d1028ff"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-minji-256.webp",
+    "sha256": "fc5b2b85ef54ea4e17e0f64cf2f4337bd75be10f6eeedb81f1305152a488ff6a",
+    "oid": "5d8c889f69f0f5b6e3f5d3f514abbf202cc4039c"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-mir-128.webp",
+    "sha256": "43557d234e25904ae5a2dd6eae3627978d9b8b8a634d245ddd63a7a19bb85aee",
+    "oid": "c086f34e63144acbf77f5a49feff2e846a8f3e7c"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-mir-256.webp",
+    "sha256": "b1b80ba55828e6ac557b0e756003b44fe366cefe8c3c6afeaadd70e0e490c2fe",
+    "oid": "408abc845e51aec31f2fd2c3070967a90f9a8706"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-mochi-128.webp",
+    "sha256": "3a895c716b1f4084627c9782a2e006d640b98b36e241a5df996a1edc1c6f42ff",
+    "oid": "e01dace7cbc0b1ae0d4481564cfe749be4ef56a9"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-mochi-256.webp",
+    "sha256": "caf3e6feddbc36d91f3814fc398cf3c9208cbbd501d0ec273c3e4cea07b0f531",
+    "oid": "977dcc4747434c870cf26567960b5d8c1031ed9e"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-naeun-128.webp",
+    "sha256": "500f04cd38e943425daefbef3bb9b230cb68ec09466b11a812246d977aca13a4",
+    "oid": "0fbf7f25efac601aca511b4d79ce3d87253a30e1"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-naeun-256.webp",
+    "sha256": "f19e4a424efdb99644072355de37f5bfbd4583133aa2377b8158fdbcaacd3b19",
+    "oid": "08ac08b12d93157f68770b819c40af2c0bd0908e"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-seoyun-128.webp",
+    "sha256": "58a899c1e833ed6a52c039fd2d10f6312fccd4b11673673fa8a2986ab85c4428",
+    "oid": "3ffae5fc669d7b658bb78be800c963f0dad7439d"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-seoyun-256.webp",
+    "sha256": "a3e24e1af0c85d1141776d050c23d6831ef185dd9f82a8d759c3df2b0a6440e5",
+    "oid": "3df664b752e6570d01e4c915c7b209bbf7a300d0"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-serin-128.webp",
+    "sha256": "832ec27f82c3676f7726c6e906f89aed22ac4a136ae1e649c1d1cab9fba7ff32",
+    "oid": "a69a758eea949d10cc5db26f475bd6ee52eb65d8"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-serin-256.webp",
+    "sha256": "c3112465bd2e73aa476d670f4f6aaba97cd099c756855f1efc6fb554b6b37113",
+    "oid": "2eb7c7934a1361dede4d6a5389371f55b542d2bc"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-sooyeon-128.webp",
+    "sha256": "42b8625e5930f841ce9980f842a47887448feb3c33117669adb6d8ec594e19f6",
+    "oid": "8f62171e8122cdd66df2a50a7f834ccfefb0a2af"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-sooyeon-256.webp",
+    "sha256": "fbf96e95660595d66da346fc052ecf0cd98fb9d7fb2a7207f1dafb61d6f4edd8",
+    "oid": "6b3d938c3d227ad248560216c946c9abd608bd85"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-sua-128.webp",
+    "sha256": "3d582c4948f5206aeaff4b3cbb68790d085cc0ac953829b051e268cd410a7698",
+    "oid": "397ff638c3cb4524f09d33f7f5b221eec9d1c828"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-sua-256.webp",
+    "sha256": "58184df6be1c51dfe6d303a65639ffa56bd34e424d7731e1af6c1865f31552ef",
+    "oid": "0f82a95d61633e5a8d53926f26ea9e44f4d1085a"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-sua-id-128.webp",
+    "sha256": "c22aa2a359917b9954341f061f62a05d15f02b85ff7bf7b044a8577d4322e61b",
+    "oid": "3d227ccff4d052217bcbab40c9bad7a85374f1a2"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-sua-id-256.webp",
+    "sha256": "24a8f20843be4711dde26e0359f0c1c7ce15e32bd6c93b51da04b6847ae566c8",
+    "oid": "80eb22c2671344089b921d037267b29e8004cf4d"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-taeo-128.webp",
+    "sha256": "27c00b3890a480b1b4b605e5ded4a1e7510458980a05f05a9cb615509da766cf",
+    "oid": "2e98320557ea66b8cd59584a7cc0a472f60651a3"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-taeo-256.webp",
+    "sha256": "60494b10a0cb18bf12c4ae82be55f47449bf3a7152303619922a7d99237ba9a5",
+    "oid": "7c6c22802c428e77f3637f049b93e285b73c5ec5"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-yoonseul-128.webp",
+    "sha256": "ba5055be8998f5ada863f00afedd0b2afc9a5f583ebffaef286cc30c7e4cad2c",
+    "oid": "47fba723193d1c220e40daa74f984322bc43fb56"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-yoonseul-256.webp",
+    "sha256": "d7d910c8fc021f1a8bd80556b6fcc721916332a9ba3c605f17cfcac3a34958e5",
+    "oid": "f2a50a2224210cff66591b3674316b89891a5f36"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-yoonseul-v2-128.webp",
+    "sha256": "23145552c20964fdec2acc6e9d7a250db0bc0a3f09d465c289052f974fdc71af",
+    "oid": "45900db3e0a75d69fd704fc9cbbfa2f87ec867c1"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-yoonseul-v2-256.webp",
+    "sha256": "2212e8356a448907980b2b2a89da03d18dbf7eafb8f457713bef8f60543e0d19",
+    "oid": "b5a795571c520a2a3b94fd864c4da8bb4ee040a4"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-yuna-128.webp",
+    "sha256": "104ef8284b90644dfd533ca0971e10f17ec8c8d33ca26925753f6218c80a3ebd",
+    "oid": "2049e67b56f5dafc87ee7c2150cce76d33d23d13"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-yuna-256.webp",
+    "sha256": "dc3cafee9b192462810bf9f79c86094c0ce0f14371f45d9d641951ad05867b7a",
+    "oid": "74316eef9b988847ec7fae525c8fcd9bcef1944c"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-yuri-128.webp",
+    "sha256": "8f375153439af7d08f6758a6e70abf4b349cef4a3695193c1902a5bd31362d10",
+    "oid": "581a466c5a6c9ca59707c977cee40b513eba6673"
+  },
+  {
+    "file": "assets/profiles/thumb/hani-profile-yuri-256.webp",
+    "sha256": "e2fde65c7c7d7b51ad205f9c141711e3c237eae9ffa9afd18bd990d99e757197",
+    "oid": "c2e343fd630276e251ce67bb4b9b427fc5b1878d"
+  },
+  {
+    "file": "assets/pwa/apple-touch-icon.png",
+    "sha256": "33293e48df934949efd3589f67e0dac3781674bc23f743108bd7da225347eb44",
+    "oid": "8bb9996d02b7fa735916e4d071d03bc2411f0aeb"
+  },
+  {
+    "file": "assets/pwa/icon-192.png",
+    "sha256": "569a61638f39acbdfeed49fbcd024f2aad93791abce81fc92d5012fc1ce83ddc",
+    "oid": "8273118e738589ed2a46b9f6042dd4e1b435d55d"
+  },
+  {
+    "file": "assets/pwa/icon-512-maskable.png",
+    "sha256": "cae535ad8ae5e3ef8f32d502cb2c8b7e6b78858022960c2402ca57883f9a8855",
+    "oid": "81bc23f8f23b149146edbfc6b8889a505f28aba0"
+  },
+  {
+    "file": "assets/pwa/icon-512.png",
+    "sha256": "8e58735c4bad71ba4f59a6a0deaf02c9ccfa3e9f798d04bc661c36cc0013c6fb",
+    "oid": "155cd5c54c5123df2987b6be61834adb671318cf"
+  },
+  {
+    "file": "assets/queen/2026-10.webp",
+    "sha256": "4003bd67e78e997aec43bf0bfbe37b2042231f1b3b99e873da4a6bff29deff81",
+    "oid": "3b9480feb46fc5c3d669e7c0b6debbec683a5c46"
+  },
+  {
+    "file": "assets/seasonal-collection/aura-season-campaign-v1.webp",
+    "sha256": "c63532804782de94216ba615f9a6919a2552096a579e1c79e68855a179669883",
+    "oid": "7d7da2b6993c92b07a1376acdec979b920fd907d"
+  },
+  {
+    "file": "assets/seasonal-collection/autumn-v2.webp",
+    "sha256": "3fdd75b3ae7dcd5bb4e9db8c9454773333b43b1e1484d438c54519381f85697a",
+    "oid": "b1e071fa9d1036303251efa9e87c911d248a57f1"
+  },
+  {
+    "file": "assets/seasonal-collection/sidebar-autumn-v2.webp",
+    "sha256": "4e3beba41b216af077ddd6c5743c8eaa5549a50f4b0e873c355319fabc1f83bb",
+    "oid": "39fc6f8acece0ff417b4f09e2a27fb4077d0dc40"
+  },
+  {
+    "file": "assets/seasonal-collection/sidebar-spring-v1.webp",
+    "sha256": "810a9a97d6c1945764e7f48c20c9e2a85574df2683dd219a54322241a969eed3",
+    "oid": "574c6ccf4bb2129bd2964794df573b443505d5cd"
+  },
+  {
+    "file": "assets/seasonal-collection/sidebar-summer-v2.webp",
+    "sha256": "7db388dba79bb7a9ddc3544b819c051d33f7c934f6b4b9ff5692c8351a25734b",
+    "oid": "2b49640aa1fa67d36ad405cefb654e22649dc711"
+  },
+  {
+    "file": "assets/seasonal-collection/sidebar-winter-v2.webp",
+    "sha256": "fef4b8cf46cda1e7152e4bad9efef7f8a26c1f664b815dfdca3fcb9c20ce0c3f",
+    "oid": "77664ca6461ec3d4e63b2d4f92fb92bf708f7048"
+  },
+  {
+    "file": "assets/seasonal-collection/spring-v2.webp",
+    "sha256": "60630930c7316651894b9778cb1ffc300903c21094354c89a6f689a428314069",
+    "oid": "86c8b32b7e0c50d683250f4a8ea239f05ebaa8ad"
+  },
+  {
+    "file": "assets/seasonal-collection/summer-v2.webp",
+    "sha256": "d365e562f53e9d896c8956e5d15a1641b9184ff803bf78e9620f36e6cbe741e9",
+    "oid": "dfe6dc31f0a40c998c1ae42995ac2201967ea76e"
+  },
+  {
+    "file": "assets/seasonal-collection/winter-v2.webp",
+    "sha256": "79807c874d1cfdcd49777c1e0e5ec3d2b176af9ecb67e72109539da14ab9f050",
+    "oid": "313178aba9f3d1637e4451c91cde6645dbd33e48"
+  },
+  {
+    "file": "assets/sports/colorado-rockies.svg",
+    "sha256": "e7bc2012073ce0f1078e9fa8e13e593c2bb15d494b76e98444c5b31f666bd992",
+    "oid": "e07674601adf2dd047908c22cf415d7dd4f71a07"
+  },
+  {
+    "file": "assets/sports/dplus-kia.svg",
+    "sha256": "4c59b0d681a558c53cdf6479722190a3393ab7683804011be3623d57e4c74a08",
+    "oid": "aeb17fe29c21ebe74289f91a70eca3bb84d345d3"
+  },
+  {
+    "file": "assets/sports/hani-sports-hero-v1.webp",
+    "sha256": "e4b4c94db9f2ac19e4283949c96c717ebfda77bcd49046417d93c12fba15328b",
+    "oid": "084aedcd00bed74bb4298754c7fbbefc1f55dd63"
+  },
+  {
+    "file": "assets/sports/inter-milan.webp",
+    "sha256": "4b38182e3485f3f876c9e975da0289d5dc7a9cd1d82c2d7b3d1017ffc5e42bd8",
+    "oid": "c7fc973e9257c1e7c6500136dced392fb653878d"
+  },
+  {
+    "file": "assets/sports/kia-tigers-current.png",
+    "sha256": "0807ec4eebf4a21725b51d58b051c7b8bea2a443ca1d0f87f4aae169dc582adc",
+    "oid": "5e46c1ef5735925f7a30bc8fc98e39b2e20204fd"
+  },
+  {
+    "file": "assets/sports/nc-dinos.png",
+    "sha256": "e3f49ac527946dfbab270a9b3957ba72fc98e073539de2d12c4f501ff113c42a",
+    "oid": "c7e370933a6be8d740161bec5c3d2cf50e741b8a"
+  },
+  {
+    "file": "assets/sports/new-york-yankees.svg",
+    "sha256": "2d254440a691933ee6226ad049b7b166ffea471233296cc73dc072a53ac95fb0",
+    "oid": "5d8498f7b33c86cd5edd3eb9fae67d1e1febd319"
+  },
+  {
+    "file": "assets/sports/real-madrid.svg",
+    "sha256": "8ace3aae37c9e0d37801d512a1dcf11ef2fdc034f51d13bec277518f7910d5a1",
+    "oid": "2e636b33b2ad87100bf69b6eb8274a6b6bebaccd"
+  },
+  {
+    "file": "assets/sports/t1-logo.png",
+    "sha256": "25312183dd7c134f4e33f40da6c6ccc70457eb66ff98cda827935a9be1e3b5d8",
+    "oid": "8c33d26bf3cc992f4ae876808d851dfdb6ac634f"
+  },
+  {
+    "file": "assets/sprites-v2/arin.webp",
+    "sha256": "e90899425f98f18224ece4905bd86ab014c84ab301d49328e8e2ca1ffdbbc94d",
+    "oid": "63491ffc0e751ac4b6de02539ce53cb02f70454f"
+  },
+  {
+    "file": "assets/sprites-v2/daon-v2.webp",
+    "sha256": "7f083c241a918dee77df8c696404674eac4095572f1ac90ba566ef840ca4cef8",
+    "oid": "58a8837d4745399de4514a1313803cfe61fef4b1"
+  },
+  {
+    "file": "assets/sprites-v2/daon.webp",
+    "sha256": "0c3669ebf8102d1f5e3feaeabee5c9c5b14be9f1d04414d9d021f00c47087319",
+    "oid": "a4d150be0ff4ae48ec602a25e286f4a553b6368a"
+  },
+  {
+    "file": "assets/sprites-v2/dohyun.webp",
+    "sha256": "b520219ded8073dfc84627cb0c6fc2a56a3e4d57cc08013c1a2942a7a6fffa4b",
+    "oid": "12d02c9b7dca6524c1060299ba991513c70b99bc"
+  },
+  {
+    "file": "assets/sprites-v2/gaeun.webp",
+    "sha256": "e873643590266f0d5e5b87326731232fcef04edc109f5e613165257492ecbbde",
+    "oid": "d85585ba4101e46fe77a47da02bc6025a1985fc4"
+  },
+  {
+    "file": "assets/sprites-v2/hani.webp",
+    "sha256": "632f5b94227aab6ed1e79bad01dd68c597860d8e27d45cfb65a64372e2b2e49f",
+    "oid": "e140d22de79dfca3cc78e4f4d51a0f18c58f6dc8"
+  },
+  {
+    "file": "assets/sprites-v2/haru.webp",
+    "sha256": "bdaf80779bb980e077524de20bc0649da28e235316dfb91be3e146d660e0cad1",
+    "oid": "f45a5df5061a99dfc430b3faa6295b0745da7542"
+  },
+  {
+    "file": "assets/sprites-v2/hina.webp",
+    "sha256": "d8eb5cea89a41ac962f1d132e696274d08130afd64c09d77e9641c13cc743b0f",
+    "oid": "bda135260010a35a1cf62ba2bad8f025ddcd14b4"
+  },
+  {
+    "file": "assets/sprites-v2/jieun.webp",
+    "sha256": "dd0b5705eeb50cbc12172ccbda9f27ab4c6802e3312b8b772bba60d3f56017f1",
+    "oid": "2edbc58161007cae2b062481e0ce81242463de65"
+  },
+  {
+    "file": "assets/sprites-v2/manifest.json",
+    "sha256": "537795f933ac5e3e93d962a40a8ad35fe4c00f9f1789057479e2e5d55e3ce0f8",
+    "oid": "342731a825223ceb179e933e7d5007fd2220ca62"
+  },
+  {
+    "file": "assets/sprites-v2/minji.webp",
+    "sha256": "02b006d01ff62d912d21c583cca098acda7f003852d938dedf1d21848f599bb3",
+    "oid": "dcc7e40006396d695e76e2b53371bd6c8bcec226"
+  },
+  {
+    "file": "assets/sprites-v2/mir.webp",
+    "sha256": "3e9fcd9c6762288d27c7b851518cf22ce666ea01470d432288d4b53fb0f538b5",
+    "oid": "50169d82f1030fa0d759aa01879956d481928019"
+  },
+  {
+    "file": "assets/sprites-v2/naeun.webp",
+    "sha256": "915b06261f89366a7358d5fc57a70e3e1d9ae95c7c418e946d54ce8438b69757",
+    "oid": "e2ff8ca31231a60f6588f0c7cb55233974209022"
+  },
+  {
+    "file": "assets/sprites-v2/seongmin.webp",
+    "sha256": "5ff41b1425f9acbda1490ead975262d73fe1cd9573e0b27b9566813edd89f6ca",
+    "oid": "6b5c6cdbde52fe14ba436341394f60fdd63537f8"
+  },
+  {
+    "file": "assets/sprites-v2/seoyun.webp",
+    "sha256": "58f3cbd6884de89dc21575af133c27135ead1e7d4fb85bcbf414998193e3cdd2",
+    "oid": "fcbcc8e058dadd5fc80969689e2170374a78ea22"
+  },
+  {
+    "file": "assets/sprites-v2/serin.webp",
+    "sha256": "4f105ff88ff882ac922215541736de19ec2a401d197cfdbd84da91855cf4d83f",
+    "oid": "857f01e223027eb0b9f37b4ba3c7f28915500740"
+  },
+  {
+    "file": "assets/sprites-v2/sooyeon.webp",
+    "sha256": "bdb735c27daf03b783665e5b937013ebd7dae9870a4239be6a795c37cb5e247d",
+    "oid": "29f13f999b9144b0d621b108653f2abf90671019"
+  },
+  {
+    "file": "assets/sprites-v2/sua.webp",
+    "sha256": "7b9dd182ccad4df7036fa63f75c3a91429598364e753f02e4e007ba42bb266ba",
+    "oid": "25deda18366c1dff66ddaffda88f83a2060fe0f7"
+  },
+  {
+    "file": "assets/sprites-v2/taeo.webp",
+    "sha256": "40cd32235c35fc3a7e72704901ab6853584b60cb75fb7e221a264d2da8347a19",
+    "oid": "c25c73ff350fc5cfd1a544bbc161093ff248044b"
+  },
+  {
+    "file": "assets/sprites-v2/visitor-candidate.webp",
+    "sha256": "ced0c1d5ba7c2b3cb64107c08435b8788f126271ee5a31cf031f41a2a716cc40",
+    "oid": "ecc3c4a51152935bf94eb04442de93e87c6d71d4"
+  },
+  {
+    "file": "assets/sprites-v2/visitor-client.webp",
+    "sha256": "9182afef98558c5d120c6d7e2d142c7b082d574cdb65225f736de75645602df4",
+    "oid": "142d7331b235c20e978bd970ea8be461d20ce869"
+  },
+  {
+    "file": "assets/sprites-v2/visitor-courier.webp",
+    "sha256": "949404a234869169528c08b1fdd96c05e110a1606902d974463570ce8fa3d179",
+    "oid": "00ff607c93490d6982d2508f82b70b98bb8f60c7"
+  },
+  {
+    "file": "assets/sprites-v2/visitor-generic.webp",
+    "sha256": "533d0909f8c647978713103e99fb4410e4cda1cc80d95b13b319949dcc9b0b2c",
+    "oid": "1d8f9ac19c46493a53fcf577523aed60bffc29bb"
+  },
+  {
+    "file": "assets/sprites-v2/visitor-rider.webp",
+    "sha256": "6a163230c26c6529879056d342335aeeb1d9be2ea650abf34d313103119b2dde",
+    "oid": "49d07ef614583d7c5e4dc79260bd3ff260cfe301"
+  },
+  {
+    "file": "assets/sprites-v2/yoonseul-v2.webp",
+    "sha256": "8303b4be219a140b1448d9a64658e30ae71b9e8e789191511cceaaebf3efe823",
+    "oid": "99b6626279c5ce27363407228f502712d746d4c0"
+  },
+  {
+    "file": "assets/sprites-v2/yoonseul.webp",
+    "sha256": "c0f52b0aed224c78d4e8f98edeca541a12066c8d5a192c2bbfae4875544de9fd",
+    "oid": "b086086f67b7ce3d24eada9480b87215e1071f63"
+  },
+  {
+    "file": "assets/sprites-v2/yuna.webp",
+    "sha256": "fbb2cf78ab4eadf8c96ddc39166e4f5b9b7a7109ccbcb42c53aaef181ffb1bd9",
+    "oid": "e860e03e6c22887f9c82da0032c266cf0faae150"
+  },
+  {
+    "file": "assets/sprites-v2/yuri.webp",
+    "sha256": "9c1b131be2b3dbba0c07a00baa9c0479e24af991f6cc35eafd2362092374e7a0",
+    "oid": "49d514dd3e33a7298dbc17b23aca3dc1c792902d"
+  },
+  {
+    "file": "assets/sprites-v3/arin.webp",
+    "sha256": "4969d0e2865af14d0c64e4f843df7ed90b735e179c13076644fc4cba4572e94e",
+    "oid": "3be8075f1de795d0fab33858f24e983fbd7f4627"
+  },
+  {
+    "file": "assets/sprites-v3/daon.webp",
+    "sha256": "6b43681b488994c4ef90223a0c8c71307cc7e229adfb5c77fca858c2d45bf529",
+    "oid": "a55e719f3ff3f275310282728de5f10eda8af062"
+  },
+  {
+    "file": "assets/sprites-v3/dohyun.webp",
+    "sha256": "f81cdb55516009243d1d062309430a468f2413920808293e03875a2751412db7",
+    "oid": "9591a843ee7dc48cbf90d8760d17eda825963f58"
+  },
+  {
+    "file": "assets/sprites-v3/gaeun.webp",
+    "sha256": "7e4674f26a68fcd5c732b9826e286954ab745b16222c47e68a82727b5a5037ed",
+    "oid": "5f38c5f291011d0e4cbc9d6eef7cd024eae07973"
+  },
+  {
+    "file": "assets/sprites-v3/hani.webp",
+    "sha256": "e77e37a56eb1f06c27ace961a2ffe7e169a195cd3e1bf861d185de49b694813f",
+    "oid": "43eb8d26e611bb85f994c8440148b822bd8469cf"
+  },
+  {
+    "file": "assets/sprites-v3/haru.webp",
+    "sha256": "562c6aae5b3b86fbcd3d14d67a6911a359e25ee87ddbc12982962d028a041f20",
+    "oid": "1f6dde1094d4f9a5fd1edd3a28406d8c3d4348f8"
+  },
+  {
+    "file": "assets/sprites-v3/hina.webp",
+    "sha256": "b97c2b71b5fa7f57c3076f3d85540d91006749bd52508413c1c10ca3daf670fa",
+    "oid": "a6584beafe17a34b259db4672776bfa99c88d621"
+  },
+  {
+    "file": "assets/sprites-v3/jieun.webp",
+    "sha256": "36fc6d41a54e6ed681e225c71aecc55cabad148cb1e3dc2848cda0d1fd95674d",
+    "oid": "cf8cd95a606d59e870c3b5e08cf792ca10461613"
+  },
+  {
+    "file": "assets/sprites-v3/manifest-v3.json",
+    "sha256": "4fb1e6a147fb041e8942afd6106a3af1aea09196656754bc9bc2eb74f304196d",
+    "oid": "da461174c776134ca1fb2934cc26448b07da0b64"
+  },
+  {
+    "file": "assets/sprites-v3/minji.webp",
+    "sha256": "8909fe5ce9bc88debcf4e72a1f257a4e6c8ee5e954d387e2e856dbf45759b96e",
+    "oid": "44430c3ff7cf9451900e401efb14d905f71e6d68"
+  },
+  {
+    "file": "assets/sprites-v3/mir.webp",
+    "sha256": "07af92d80ca55c5ea665fe8c34f044f05fdb6866ed8c22176df14dbd0414747c",
+    "oid": "3a825c0eb150f602a47dda8173d4feac4713cc07"
+  },
+  {
+    "file": "assets/sprites-v3/naeun.webp",
+    "sha256": "0d1244531274b381a57320db53144a218640896ca65f5551c70c77b8658feaf9",
+    "oid": "1ff77a73035879064edeb2f6a42b5bb97816341c"
+  },
+  {
+    "file": "assets/sprites-v3/npc-cleaner.webp",
+    "sha256": "486fa29675af2b2b25c83aad777b77e68071db6c4fae083c3676675a11d0e745",
+    "oid": "323df79764d3a3d07b2bf4b64bd874c2894029c7"
+  },
+  {
+    "file": "assets/sprites-v3/npc-gardener.webp",
+    "sha256": "665319d12519f8d97b8796ba2502439b0efdad393449f756ec3d16c6ede886f8",
+    "oid": "ee9182f45d80dd24b0cfd69f659edc14ade2f905"
+  },
+  {
+    "file": "assets/sprites-v3/npc-temp-a.webp",
+    "sha256": "c50b027d5290036652f6362712346aa15fd8637df1ae60674678bac7e4f34acc",
+    "oid": "77c226f03aa3eb3e0af2d1a6ca585215e38ebadb"
+  },
+  {
+    "file": "assets/sprites-v3/npc-temp-b.webp",
+    "sha256": "65fb9397d0e9c99fcc6bbc4fb4be2638bf7bfc84ba8dbbc20dbadb817f0976ec",
+    "oid": "ffab31ac6372b74cd6586df04df6a576358ec318"
+  },
+  {
+    "file": "assets/sprites-v3/npc-temp-c.webp",
+    "sha256": "ef475125af1460b67d1d8d48e775611f81af502d173da4c262d52c56329c4d72",
+    "oid": "d3d8c420cd44992a427b0f66a96be3cd7148058d"
+  },
+  {
+    "file": "assets/sprites-v3/pet-bori.webp",
+    "sha256": "5180a9c32c3cd2c4c2c9967d2195dd8207294a5b5d98001278284d53fafb2265",
+    "oid": "25b9a0dcf2e3d2928bcca3d2d2b593f2823edab7"
+  },
+  {
+    "file": "assets/sprites-v3/pet-cat.webp",
+    "sha256": "363bf2ffd5e6cca66d45ef47d108e21485fab77fd343a47bd36d110c60bef28f",
+    "oid": "31b463700c0c3200312a2bf63f899f1deb6e6dbf"
+  },
+  {
+    "file": "assets/sprites-v3/pet-dog.webp",
+    "sha256": "e2e87385e9aeea5fa4e9559410d655f02dcad19ccbb435caac3dc012635c37f8",
+    "oid": "ede10f09de055950d3c9e5b1d9016aa84b469486"
+  },
+  {
+    "file": "assets/sprites-v3/pet-rabbit.webp",
+    "sha256": "dd0e60bde7eb949bac0d491b659d2d93720e042b172c328457a7e9f29975ec2f",
+    "oid": "2fffc79d05be79bcbd9736b0b1934f75c18ac68b"
+  },
+  {
+    "file": "assets/sprites-v3/seongmin.webp",
+    "sha256": "415aafe7c1f44e7d0b433344a89e8e01cf4e7f469632bc76f33182e4427ebbf1",
+    "oid": "f7125b6ed5a098df12c471eb63e4e0a248b378f5"
+  },
+  {
+    "file": "assets/sprites-v3/seoyun.webp",
+    "sha256": "e5692026264fae69e138584d3be2aef2a93d106b038e79364dcb0868e6533922",
+    "oid": "6b46c976218568b0660c5d18ac6933d618c78d39"
+  },
+  {
+    "file": "assets/sprites-v3/serin.webp",
+    "sha256": "7d4c4bc4b049cb0798722a57dad652c0a004e175b6b27a0adcb46edd6de7ae5a",
+    "oid": "99d3489b7090d87211ae13afbdcdb75b003998e7"
+  },
+  {
+    "file": "assets/sprites-v3/sooyeon.webp",
+    "sha256": "ccea2fb72f74d6e15b2d6133553e7fa04560824c96d053388f64920725e79233",
+    "oid": "da9ebaf116245c714fd392a5f063b2191be9369f"
+  },
+  {
+    "file": "assets/sprites-v3/sua.webp",
+    "sha256": "9804e4ca07922bdf73b10634381b6bd01189444b2852c6d1a413bea1dd28275f",
+    "oid": "4451b56e7372d36b1822322ad5e0dc061e7f88d8"
+  },
+  {
+    "file": "assets/sprites-v3/taeo.webp",
+    "sha256": "a899de7c97454a6fe5190baaaf1d2773e32f3e643a48d2f2322d29c5f8dac362",
+    "oid": "155d4ee52df8ff6b73af9266b53b6ae4afedefd1"
+  },
+  {
+    "file": "assets/sprites-v3/visitor-candidate.webp",
+    "sha256": "5424a21e574f626c0f5dab503bb316665b9e05c9cb06ee94096c8c991a570348",
+    "oid": "96c5fe854e483e8052afb2090d4f3dbcbeaf9962"
+  },
+  {
+    "file": "assets/sprites-v3/visitor-client.webp",
+    "sha256": "227f57c9aaf323ad1770a151b88a7c08a077f80a47eae3b07962f62a22111ba2",
+    "oid": "c12d811bc8bc82979763a7f5fb0e531ee7453e6e"
+  },
+  {
+    "file": "assets/sprites-v3/visitor-courier.webp",
+    "sha256": "49fc7d211df06b88c925f164326909b9f3f71e2bf3915c3dc11fadb8b33d498c",
+    "oid": "2b4a0b211af530eb81eef80f188984842d8d6f0c"
+  },
+  {
+    "file": "assets/sprites-v3/visitor-generic.webp",
+    "sha256": "e307a66bebd69154fb62d4c2095f4e4fb1a142b30780e783e5ba32f9eff327f4",
+    "oid": "87f6726e7da665df422073d17637fb5789bcff49"
+  },
+  {
+    "file": "assets/sprites-v3/visitor-rider.webp",
+    "sha256": "b191288f913f376d9f4410280fc0311b3e08450281382fe9cd8bcf12a650c17f",
+    "oid": "711f015f556d8399b27bd4317232b7bbb69b11fe"
+  },
+  {
+    "file": "assets/sprites-v3/yoonseul.webp",
+    "sha256": "58af0f4267c1837413806d486cfbe082d9d24f667caeac13f97453b5cd9f7662",
+    "oid": "a60c67753fe899cc5db63746bc7edb6702c90c0b"
+  },
+  {
+    "file": "assets/sprites-v3/yuna.webp",
+    "sha256": "de8883109f74e710746a320dd5587b95ab6564939b4f78cb9bc3b4ce5ae4b22a",
+    "oid": "2a9a29d365d488a89284088b642d98ee776a0e79"
+  },
+  {
+    "file": "assets/sprites-v3/yuri.webp",
+    "sha256": "b4bf86bb8321f21b3b9ca6c7503a6e9bbd4a77b4dd5eeaca3ea4fec14206b0c3",
+    "oid": "54020abda52c7352bd7bcc0ba95e5ac9b6989cb6"
+  },
+  {
+    "file": "assets/street-journal/chibi-sheet-v1.webp",
+    "sha256": "ba1cac623db561cbbcefe6c5aa783425d7ba3c2db2f08a0e42aac383e0f9786c",
+    "oid": "c20b5084d51cfb5e5f2d104c446b534f16f5ef15"
+  },
+  {
+    "file": "assets/street-journal/chibi/hani-cheer.webp",
+    "sha256": "fbcb176473fd2f3eddb0d0857aef765576794ba324b0a7fd10ead9ef6a8567ce",
+    "oid": "043f87b4da3c06639ccf1c51908db2f4cc050f73"
+  },
+  {
+    "file": "assets/street-journal/chibi/hani-point.webp",
+    "sha256": "b4a17099d9339eeaf855ee510ed662f17d072a754fa8b23d45bccf0b67cf6560",
+    "oid": "e72ee9ccdb6973593cd36a96ee1e7acea6d4701e"
+  },
+  {
+    "file": "assets/street-journal/chibi/hani-think.webp",
+    "sha256": "bdfbd9a2ceec35e905ea27755bfb8848109d143e676fd5ed8a58acc676fe1c73",
+    "oid": "b87afff45a1bb03bbcf0d636cceb7bde6760d3ba"
+  },
+  {
+    "file": "assets/street-journal/chibi/hani-worried.webp",
+    "sha256": "23d1103ab1528e7c2571ead88c3bea06f55443baf014393007105eb50aa64532",
+    "oid": "7331988113495e91f6f3422160903bc9231651cc"
+  },
+  {
+    "file": "assets/street-journal/chibi/jieun-cheer.webp",
+    "sha256": "ae7247afde3c9673d1f2804b0fb19ea88c8a04c63fa563e0894178318e420d12",
+    "oid": "cb519897d469591c0f6f21fd593398d667475590"
+  },
+  {
+    "file": "assets/street-journal/chibi/jieun-point.webp",
+    "sha256": "5e8ad68cc6576dbcb925fbc2415d1e2d894535c823fade97200ece297d723f21",
+    "oid": "6368d23ded985aef10bd1f81211df93905571d75"
+  },
+  {
+    "file": "assets/street-journal/chibi/jieun-think.webp",
+    "sha256": "6af702c9d96f6660c409eb1ca8741f8d2bb62e0f484fe31a1947bf6fb8cc5b18",
+    "oid": "c4fb3617a32638acb559e415b44eff5c7c631741"
+  },
+  {
+    "file": "assets/street-journal/chibi/jieun-worried.webp",
+    "sha256": "5edbbcd4aa7bd4f3305ee89e9a373659c547dc579ff8c3fd1cb9a1af4d57e3f2",
+    "oid": "8a7f3cf21f5f4233995b2a842f71641c656e0764"
+  },
+  {
+    "file": "assets/street-journal/chibi/minji-cheer.webp",
+    "sha256": "fd3f78bd1ab1deaf9e7ff1b60bd816946d01a7f11db20fbe1bef9a54ec534aad",
+    "oid": "e478f15663c4683516a9f14506f2e1b6bb0587fd"
+  },
+  {
+    "file": "assets/street-journal/chibi/minji-point.webp",
+    "sha256": "0345b09c42605c65f5fca78738265abe6ebb16c1b9bd5a01c82c5366aa5fb905",
+    "oid": "12ec911f0e5f11ab01bc1ab55a1e17f0311f0595"
+  },
+  {
+    "file": "assets/street-journal/chibi/minji-think.webp",
+    "sha256": "8d5b358196d31044b7ddd68736e9a9a993bc313559fa62b4e832a3ac19777ea9",
+    "oid": "b4308607c03d78f64e0138d65e3f76af29608ae4"
+  },
+  {
+    "file": "assets/street-journal/chibi/minji-worried.webp",
+    "sha256": "05e13fa8eccaca49bf4b974e12a00b01b3605ed5e951f2c65d7d16787612590b",
+    "oid": "8441ee90192d8c8560e2e9a64bbbf3506e9dd2a9"
+  },
+  {
+    "file": "assets/street-journal/chibi/seoyun-cheer.webp",
+    "sha256": "8e9bbe80d273ea4401c4c9b307154935e18c74043a492354d760c62839bd27c8",
+    "oid": "29ede0400c117f9ad2074e427cb4291971c3e468"
+  },
+  {
+    "file": "assets/street-journal/chibi/seoyun-point.webp",
+    "sha256": "eeb3e94bd9c9d12bcf0842ed26e611e30ae1b6e8f8bbca42645f958477676dba",
+    "oid": "dadea37e53d7cdb79c13a9e7ad19582fefd689b7"
+  },
+  {
+    "file": "assets/street-journal/chibi/seoyun-think.webp",
+    "sha256": "0457fe4e4fbc2f7b42bdc83a0522bb7789355aefe78309cdfe3c9f60953e3560",
+    "oid": "15779bdb899dea2d79bb9a3c9710dcdf563fe58d"
+  },
+  {
+    "file": "assets/street-journal/chibi/seoyun-worried.webp",
+    "sha256": "62976cc8eeb42f7601a8e422598f2d7a64a73118266e12aac547c0b7d499f171",
+    "oid": "1fcf931676632b58f025d42c090a6d66d340d7c0"
+  },
+  {
+    "file": "assets/team/hani-org-business-v1.webp",
+    "sha256": "aa3b662ce36a3fd4867daf5c9f84bcf09c2397084388ca581e98a70c08bbbe35",
+    "oid": "4c359e11263ee5fc4ce88909dac6bec8859ddf22"
+  },
+  {
+    "file": "assets/team/hani-org-chair-v1.webp",
+    "sha256": "5a1d3754f4a0f54ef2a750b1d113f55bcfdffc480fd7009f89d620fa793ddf28",
+    "oid": "6bb588a150a68cd8850bca4e3e5150de7469cfe1"
+  },
+  {
+    "file": "assets/team/hani-org-demo-day-v1.webp",
+    "sha256": "797e1dcf558538a5973b26c59d501b306cfa632854a5e7911c0a32b3ec1658a8",
+    "oid": "28381434a2492c4d03b69ba1a58364720a338ad1"
+  },
+  {
+    "file": "assets/team/hani-org-finance-v1.webp",
+    "sha256": "2f3716afa0c19c8a70590677614a9a0a4e4f70b8e1f79bbff59d846e2b2a350a",
+    "oid": "a4d10949781924f78f72ee36384f999c33aa635c"
+  },
+  {
+    "file": "assets/team/hani-org-life-v1.webp",
+    "sha256": "cd8fe92cbb454e849010e14c9799bdfddef74475b2ac1c19f5f16a4152e74ac8",
+    "oid": "af72941609ebe792d83b4a5ee635683032c19af4"
+  },
+  {
+    "file": "assets/team/hani-org-platform-v1.webp",
+    "sha256": "a364f40f15c18ef9b76c843abec279b01c41185ca697a32474ded66985123bad",
+    "oid": "b43da9912c7ee13619f9e647f3b4549030d934e2"
+  },
+  {
+    "file": "assets/team/hani-org-strategy-v1.webp",
+    "sha256": "dd9da2b3e08c0f87f88683721e938f23e8776deeb2f6d25ea1f2a14ec3920679",
+    "oid": "97cae9796aab0b01a6d14b9b23d04c89059c9728"
+  },
+  {
+    "file": "assets/team/hani-team-office-active-v2.jpg",
+    "sha256": "700f20fb7fa8bbd386ce9f00d81b7585c63eb51078d480fcffa0a8663ace831f",
+    "oid": "9247c3c9efc37cef74d5eff243a9cdddcbd84712"
+  },
+  {
+    "file": "assets/team/hani-team-office.webp",
+    "sha256": "8324e43d8d70eee6f1b28e31aefba79a76f19e5f4accfd2de7aba216ab425daa",
+    "oid": "cfb4288096dabfca499526e9fe1bff15360cedd0"
+  },
+  {
+    "file": "assets/team/hani-team-picnic.webp",
+    "sha256": "8ce6f02f0f391cb53d0bb17b4a824d9cbcd81866cbbec041fc4f74616d0dcb86",
+    "oid": "9d01dd644f36e5fab077dc627022d3434712344a"
+  },
+  {
+    "file": "data/ai-team-status.json",
+    "sha256": "631f749bca01d89f6ed087fe089a825c44e5e3cf6c97feeb80bedfa2c25ec434",
+    "oid": "428f7119d79c763d2c7c88e1859d4d104a95d24d"
+  },
+  {
+    "file": "data/board-library/part-a.json",
+    "sha256": "737dde7bdf87b54f494f236e45e25f153b460c56dfb51382692e9176cab249d7",
+    "oid": "ec894cea7ba5fa4799db7b024304c2a957122dbc"
+  },
+  {
+    "file": "data/board-library/part-b.json",
+    "sha256": "bfc4808c24136313710e71be2d14b0854e48725ed0a4b229a918b57c470c8ee3",
+    "oid": "6ef8e8700dd0860cf89bf1f4b416eaf488009314"
+  },
+  {
+    "file": "data/board-library/part-c.json",
+    "sha256": "4108561ceba56e8709f2fd51aca5e88e1e7ed6d8f6b5535ba16a709bd40e36bf",
+    "oid": "943ea8fab17dbf642105df56c795a53002db9e91"
+  },
+  {
+    "file": "data/board-library/part-d.json",
+    "sha256": "a6bc8fdd1af7e4ff80461ace04388d708a51a6fb70402ffb9f59738b569bb7d8",
+    "oid": "7460a4738d4b3a56975beb4de5c12f88dde93549"
+  },
+  {
+    "file": "data/board-library/part-e.json",
+    "sha256": "68b970f4fc1f33b770f2150ec956251c78bfa0559bc4c1834c811f5f7620f04d",
+    "oid": "7cd093199f378056151f3fdaed94b46793f15c6b"
+  },
+  {
+    "file": "data/hani-building/art-map-v1.json",
+    "sha256": "50d60c3da36936a77c22f572fe7ed137b3f81fea3972976ba4501d90441c7666",
+    "oid": "6262494aec75d4d78a6cf67b0cd50017e1a74646"
+  },
+  {
+    "file": "data/hani-building/office-places.json",
+    "sha256": "f6cbc09dfd89cf7b6747c30928128daf667b2990570f1e4a88b32aeb636bc70d",
+    "oid": "53de6bd709baee3e3cb46784b923259a9575fc33"
+  },
+  {
+    "file": "data/hani-building/spatial-contract.json",
+    "sha256": "ec9921524c70cd8114c5878f5397e568fb37dda7e52b917d016540e65bab1117",
+    "oid": "1942b188a0686271e1f795858efbda86a518f3da"
+  },
+  {
+    "file": "data/hani-ilbo/001.json",
+    "sha256": "27b8cc65dcb2e4ccc8caada100e383e807ac59575db5192380c3d95e11cd53d2",
+    "oid": "b4f7a9b113bb5aff1e3fbf5e01a251b65a26fdcb"
+  },
+  {
+    "file": "data/hani-ilbo/002.json",
+    "sha256": "5797f23d44a31ed6980709a8429855d8286f40aa51b6a723b54966d94808338c",
+    "oid": "63981473b504dd2ed59fd749f30a53eb2ab51114"
+  },
+  {
+    "file": "data/hani-ilbo/003.json",
+    "sha256": "2fdda8ea9fcb4d774aa9f737f00ddda47a4f8d8ac2d787a5bcd95cc22df66948",
+    "oid": "7d9161b6fdaaee452c292a670447329e2786f110"
+  },
+  {
+    "file": "data/hani-ilbo/004.json",
+    "sha256": "1232cfb6965c505f5c322ce257fe3e69ac6fd4da679a153a142d8feb1d071fb3",
+    "oid": "687dd95a9dea5cbde3dbbe6a92c3dada968a102f"
+  },
+  {
+    "file": "data/hani-ilbo/extra-m9.json",
+    "sha256": "49cd4dfb6de0ec7d78c0524a9e8f20ff9c22c8c2eaf7b659d6d09ee06014a036",
+    "oid": "c4b35e24448bb23b3b8747005d2eb00e4ac3827f"
+  },
+  {
+    "file": "data/hani-ilbo/issues.json",
+    "sha256": "1721e1bc5fd0660aa20e3a5570b0ed5b75bf667159417854e115539209d3c304",
+    "oid": "4e5866343415fcab7b58b2cf596acd92be3e3a49"
+  },
+  {
+    "file": "data/hani-relationship-seed-v1.json",
+    "sha256": "0c0e5fa185ceed0faad4bb409b16fa35ceaeb52bb454022d852d84f1d53637f1",
+    "oid": "150fe379c7199da623beda95673c75f23d2f7d91"
+  },
+  {
+    "file": "hani-ai-budget-core.js",
+    "sha256": "c56cf98cb20f85dcec01cb41d5afde110b73e3116810e9a0e0a0b19efb5fe1af",
+    "oid": "79efb4001f2697857912932a6458a72b60b5f433"
+  },
+  {
+    "file": "hani-ai-budget.css",
+    "sha256": "593b16d923fc45dee688d1e54311ff0a2875f9c9fbdf95f86a27f9b505d8f705",
+    "oid": "22d82c78e7858a9b0e60d7b282ab001f9fe850c6"
+  },
+  {
+    "file": "hani-ai-budget.js",
+    "sha256": "ba67b44614c007fd129b36c21f57a28ec4f69912d626d61b82453910550a21d1",
+    "oid": "d27b250a906bff415259b7399e47ce47ab509381"
+  },
+  {
+    "file": "hani-asset-market-view.js",
+    "sha256": "c6d5d7775d724178e5a34873db89fc8c0cab4bd3bd5466b91b819c700942ee0a",
+    "oid": "27139f0b6e7cc4c8063ac777bd8f370c4335bba9"
+  },
+  {
+    "file": "hani-asset-market.css",
+    "sha256": "0a653215b9b5744d4ff61aaa8224d84f2dcded962655a38655a79b95967e2601",
+    "oid": "0c54aabe8fe41214d450f8b746dc888e874df12a"
+  },
+  {
+    "file": "hani-asset-update-v1.js",
+    "sha256": "3af574258171199890e2796fbc76331ad6b3fdc7ce8a8f2006dae829a06f25ab",
+    "oid": "63075dd12e7c72a1cfdb4cb712cb25b83b96475f"
+  },
+  {
+    "file": "hani-board-library.js",
+    "sha256": "46de2310c80c3672cda9d80430f93f9198e65450fc8faa7a58690cda69944423",
+    "oid": "ba2d29c04b8098f9db034e2fd1beaab671fcd54b"
+  },
+  {
+    "file": "hani-board.css",
+    "sha256": "9514dfc7784ee5d3f0db9929c31c27c9abc6103eea7fa52ea86ebaefc4328f10",
+    "oid": "506e1f8f93ead05d0445b9997bdee76a1013baa7"
+  },
+  {
+    "file": "hani-board.js",
+    "sha256": "367029c6b6ddd186e2572423f93c9c2f782199d75b5cb41e0232260de74afb90",
+    "oid": "519b11dc67762eed180cdb8d82858cccf213829f"
+  },
+  {
+    "file": "hani-character-archive-data.js",
+    "sha256": "abac4a0ad7aab92e34d2872693b233f3dfe8155f18ead51d68994cb36e73dac8",
+    "oid": "e46067d9e58e35c43d8d919a7b4d90b500b75f6a"
+  },
+  {
+    "file": "hani-character-archive.css",
+    "sha256": "7f3ebd5e6caef20e213583567c2630220ac5ab03f873966201a733e2106670cb",
+    "oid": "52d00693cddc1c843b30bba3fe75b447ffdd47e7"
+  },
+  {
+    "file": "hani-character-archive.js",
+    "sha256": "f2be5380d4dbf9c24438cb29a5f255c0deeab8bc7aa3c4a9bee754a9208e1977",
+    "oid": "5f394e279ff731ece314b6ac2abd65aedc6892f1"
+  },
+  {
+    "file": "hani-company-followup-preview.js",
+    "sha256": "34479bd9f5a23669228a142e2b5fa922747253162faf4e95fd416c12798993b8",
+    "oid": "41127e977fe2051fd41f73372ffc1fbba7094017"
+  },
+  {
+    "file": "hani-context-remote-v1.js",
+    "sha256": "b7de3e0a0493087f7cee9b4b83e67fdbbbb8ab1988b6d00a7a3c015543e4903d",
+    "oid": "b046b8d6e942526fb75927d6d09b825b9dadeecb"
+  },
+  {
+    "file": "hani-context-remote.css",
+    "sha256": "b543f80d8301c5427f1c44d631b831b76e60e1b657f7ee076c6be290c9b36a68",
+    "oid": "aae1fb1df0b45731145c9a423efa23d234839575"
+  },
+  {
+    "file": "hani-design-system.css",
+    "sha256": "90699b9788c8d9397fbef35f88007611875b83086880c31a4a6e488ec4c02353",
+    "oid": "6693d10643b728fa04ced08450c5e42dd0e2d678"
+  },
+  {
+    "file": "hani-desk-mascots.css",
+    "sha256": "7d444063cf5e627b11637cb97fefb0cdcb871c1d0ccc1fa124576c37ba2063cf",
+    "oid": "2c0e1e07c0026db8cb1e38b76ccea1468ce3a946"
+  },
+  {
+    "file": "hani-desk-mascots.js",
+    "sha256": "6f669132a8402adf562d6f6a61fded40077d64b758545485e338b1df27d1d82b",
+    "oid": "bea95376ac4decf7044eccaf60aae90e225e229e"
+  },
+  {
+    "file": "hani-development-history-v1.js",
+    "sha256": "aee1f63008e3a0c48bcd273e1c047f13897ee904f70951285340a3fa02fff5b0",
+    "oid": "1b6b47f10aa59678b2231371055270e75d368bcc"
+  },
+  {
+    "file": "hani-development-history.css",
+    "sha256": "d17b6bf45a3d5c1fff9b7b95440137c1a7c759d59656ad9735bb26c3951c6937",
+    "oid": "516def1a7e9443219360763eda7f95c5666f85e0"
+  },
+  {
+    "file": "hani-drive-vault.js",
+    "sha256": "21b2e5b69714289dfc66ebd2367637db0a1c6ae72c63f8ea018f2af31a4cfdfc",
+    "oid": "a22e38fd5bec87c9ca7e8ed2931db1c6b0aba8b5"
+  },
+  {
+    "file": "hani-goal-progress.js",
+    "sha256": "69c36af964e17ed3b1ddcd7351772b9cce5e47e0b66fae964b45ebcc47e792a8",
+    "oid": "7f8a78d79c4d1d2a310f58d2d874686c7c36a759"
+  },
+  {
+    "file": "hani-ilbo.css",
+    "sha256": "da66929ada85f3054d99d7b7f478f91b817219bf99a7336e274b1f083fcdafb5",
+    "oid": "598f7230ac22f33c6b624c9ee83b413a17871542"
+  },
+  {
+    "file": "hani-ilbo.js",
+    "sha256": "7133e79d6e4bca0afa010a3074ca2db04116bd541ed6e97c409c1497a44d8ba0",
+    "oid": "5cca0e4d630ac3a092addc40e7bd6f6ff0a40870"
+  },
+  {
+    "file": "hani-investment-committee.css",
+    "sha256": "7f96fa3806a06f7c549d92e1d2e701d3345c29e1691146e68e9efd5a5f129da0",
+    "oid": "d666aa266e876eac472928475e826f4c81db14a3"
+  },
+  {
+    "file": "hani-investment-committee.js",
+    "sha256": "6b6c5f4fcb67abde180f81a940ce0cfcc1f1937a4567088564a6a746a0f0ace1",
+    "oid": "c662749849fb42d7d1e0ed6965a8b772b181540b"
+  },
+  {
+    "file": "hani-launch-greeting.css",
+    "sha256": "16e7bbd6627b0378911cf3e7088e208bf5d20e6308c6cc2f5ae093b3508c5c75",
+    "oid": "6c57bba466a3c1b880ab5ca779bc457e721f2564"
+  },
+  {
+    "file": "hani-launch-greeting.js",
+    "sha256": "4b30c68a199b20c062251f5f23e8399f8e9aa42dcaca9b8d8f96b4b899abdb9d",
+    "oid": "3bd4dd0c1907df93a32a29eae078ea0b337e6bb5"
+  },
+  {
+    "file": "hani-main.js",
+    "sha256": "636a4ac932bbbc99960135c2583d2430353b68eed2e13714be916f36e22bdd31",
+    "oid": "a11a6024e811bef20fe761df069bc6fadf1f19b7"
+  },
+  {
+    "file": "hani-market-data.js",
+    "sha256": "dc946bc1bc40fd18dfdf3639035a14b5dc24e1a3687f74ad5e6ce895a33ffef3",
+    "oid": "b316849fcec438fd6b4aa5aa6a2b4a7c70e81586"
+  },
+  {
+    "file": "hani-media-core.js",
+    "sha256": "68865cb9fcf0e123e1cb86994a90741de7eaf9026bd6b1acb72e3c231259eb37",
+    "oid": "b5572affb5d5e7550e5d65394b32268ec7382a64"
+  },
+  {
+    "file": "hani-milestones.js",
+    "sha256": "37d0e345b19b0eaf53a3f6c26403b85e302a507e60a12f92a255c3eab85c9453",
+    "oid": "b4f12e83d8af57043dc4bd4dc16ae3801e24e0f0"
+  },
+  {
+    "file": "hani-newsroom-4cut.js",
+    "sha256": "adf22c3a15ba8713262d277286b60b437429beb3c37f1ffe14228f6e909dc79c",
+    "oid": "75443ad6b19903f733d33040a6c81f0263fac1cf"
+  },
+  {
+    "file": "hani-newsroom-ux-v02969.js",
+    "sha256": "2d0d6c6e0c477de8049e6282e57c8ed07c30ac4e6929f715fbc8b3e750832e53",
+    "oid": "731f1fece35ca9971cfe976a5000f13bd7ae12bb"
+  },
+  {
+    "file": "hani-newsroom-ux-v02970.js",
+    "sha256": "3559f0caf0193462c0bb59029235bd27ab33194d4c5dcbd27404326730f2fcac",
+    "oid": "d1a897f4f584502eb0343d06834233c56dd42fce"
+  },
+  {
+    "file": "hani-office-live.css",
+    "sha256": "08d17d38c291d85481b2315f1579be6af265b677f62c3be6f2c0ed643f73eee5",
+    "oid": "e480d9a3696a5f427ea79f2765bf750b2755a38f"
+  },
+  {
+    "file": "hani-office-live.js",
+    "sha256": "8d2db07921446cca8a234acfff4f026a2d44f0fdb2dedcea241dba6f462cd54e",
+    "oid": "3efe88828f638432a9d7157997be237ae9133d4f"
+  },
+  {
+    "file": "hani-organization-hub.css",
+    "sha256": "a33af6a6a113c4b7ddfe37961ee5255a7271618df349d739fa652115b3afc185",
+    "oid": "14a83dd6238bb9aa08403017b3092ded0f458b48"
+  },
+  {
+    "file": "hani-organization-hub.js",
+    "sha256": "44f81ffcd628abfa4560c7cb26957d1667793a509e7964bb5110e2029f9033ac",
+    "oid": "894d85b15f58c298620f60cfa9e8956aaa97d181"
+  },
+  {
+    "file": "hani-portfolio-preview.css",
+    "sha256": "ba189604ad26772bab38e9c2ca4c5294a3511e323217a5227043561f9fde08ee",
+    "oid": "97ec3e6b78922cb82db41b101565ae40c347de80"
+  },
+  {
+    "file": "hani-procrastination-board.css",
+    "sha256": "2e44953e391795046b1bf11cee0aef44d41494b0a5a9f4736effba0539d78095",
+    "oid": "7d2ba3b1c3b8e8ca7311783d883bf1f4447be8f5"
+  },
+  {
+    "file": "hani-procrastination-board.js",
+    "sha256": "26454b95f6cb25da01158563755cab621a56b19bfe6c626e8030bfccca2eb38d",
+    "oid": "5e53eac35e4bf6b4e7cc3208012ecf4b5eeb6042"
+  },
+  {
+    "file": "hani-relationship-seed.js",
+    "sha256": "8136d8e002247520532dec099b834c133c3e5a7f70718dc3b974d6ade5b84295",
+    "oid": "eb40bed18f6d50ec4645829040537cd80600edb5"
+  },
+  {
+    "file": "hani-stability-polish-v02972.js",
+    "sha256": "c7bc4ea8708a4b8d4492d0dcfd550dbd560dd40f990cc53dd2d8afbf10262d44",
+    "oid": "7f95db021ab1bfdd3a75734e84052d1b9bb653a2"
+  },
+  {
+    "file": "hani-street-journal.css",
+    "sha256": "7644bd0f1114824ee82668e8f40073277154d1fba6956cb92fbbd0f0ed2fc86a",
+    "oid": "a995b1ee9be8c26b31089e4a95dc650f255eeedc"
+  },
+  {
+    "file": "hani-street-journal.js",
+    "sha256": "9cead18ddae0e09807e884800d16aedfbcc66eefde90ea8c5a8c15b2ce80fea6",
+    "oid": "97925047583fd0fcd3e4f9caddca8177d958e362"
+  },
+  {
+    "file": "hani-study-v02984.js",
+    "sha256": "77a03d403c6f188c3c3081ed79d2874fc3da658ca893bce84fd52ce6f07d6777",
+    "oid": "239b6b35f34bf193368f8968f325fe9c3663895d"
+  },
+  {
+    "file": "hani-style-01.css",
+    "sha256": "4943a672a55a52df87d3eb628276dff3c4242a898690c6b9014cdfb4f8d63589",
+    "oid": "3f8477188eebdf38e2f2733e2ab9bfe70721dc71"
+  },
+  {
+    "file": "hani-style-02.css",
+    "sha256": "ad9e5c044031acae3b96f2d311159529863efa13a326bff6e9a3b57fc63a6505",
+    "oid": "5b6da77dfdd69dc59b2e3ab9bb23090ec3084ab6"
+  },
+  {
+    "file": "hani-style-03.css",
+    "sha256": "ddb9f8754223edb21b8225d251acd6f76e025348eef1ea50c94d93c549e48b33",
+    "oid": "c43ff4b8db2e6ea35c140041bc4a8035640beeaf"
+  },
+  {
+    "file": "hani-style-04.css",
+    "sha256": "04ec5e0257b49d7f8d9f79e270a62c96b85b4f94a318f93714c4fe63085540f6",
+    "oid": "316e813f50143980cc4fd06a29c729c3cc810801"
+  },
+  {
+    "file": "hani-style-05.css",
+    "sha256": "84028ad2e021be805a5ff6f133d7b02eff21c04503d8258bc7604633701afb09",
+    "oid": "acc1d0a829979d8ae6e095f6b2e7b0f4baa4dd94"
+  },
+  {
+    "file": "hani-style-06.css",
+    "sha256": "e26d0cbda052626d78fcd03b49340b84298253d825b0fc576e7a7656e992b1a1",
+    "oid": "195b1c49a3d048c901e6d945d08555cc1ba8ae30"
+  },
+  {
+    "file": "hani-style-07.css",
+    "sha256": "00de7ed2c0962d03781ea05cbd9178df463e667a087ce042ecf1171985775432",
+    "oid": "dad8f068cf0313da404b86899ed79ae1147e521f"
+  },
+  {
+    "file": "hani-style-08.css",
+    "sha256": "ce9fbb9e75549f581443a241178fe0fa1fce45c84a614b5bc6652fb622e4350f",
+    "oid": "4891779f2e837a70857b79c752feef80f6eb0644"
+  },
+  {
+    "file": "hani-ui-cleanup-v02971.js",
+    "sha256": "fd234ee6ff7dfee253011a0447d57194b3131e6f29e16ca0ef6c1878b8c12339",
+    "oid": "35ebf07a9e8be89e48ecf16092769d68827a7bf4"
+  },
+  {
+    "file": "hani-ui-v02973.js",
+    "sha256": "bbee83aac4cc501e87107098232fc5959493a9e223959a639d09b83c3fbf776e",
+    "oid": "5e3cb31d77f63c406622df3100615001b4ebf743"
+  },
+  {
+    "file": "hani-ui-v02974.js",
+    "sha256": "c9c94d57b751128ed9859ee349f703d693171656b7905227f5d1aab8502dfbab",
+    "oid": "57fa106f13998fb3169e851a3248873fb2765c7d"
+  },
+  {
+    "file": "hani-ui-v02975.js",
+    "sha256": "764974476122d47aeffff908c930501b13d25e8f887d03b01efc8dffe9e8447a",
+    "oid": "b55a44fb8f5f141f4dab8fad795042d40f364d39"
+  },
+  {
+    "file": "hani-ui-v02976.js",
+    "sha256": "d1374f67ff6cfb05d510aab37b926eb7dba25412a1450b5419ff4d4ca5382908",
+    "oid": "425b4c0e81fd91ee5ac7385ff176e166d4cf1790"
+  },
+  {
+    "file": "hani-ui-v02977.js",
+    "sha256": "74d65c9e7f5c9b1cf12dec8a81bb265f46d741430a055bafb3b35540dbb94c26",
+    "oid": "2798ba2bf84faebb5c338b33dfc42b878faa8d93"
+  },
+  {
+    "file": "hani-ui-v02978.js",
+    "sha256": "f7ca15d159049d7769ac10ed2c5a340d93daac03a3d86f48056f4b2109e35e43",
+    "oid": "701a18209d3f13b796e3a4edc590de7200198009"
+  },
+  {
+    "file": "hani-ui-v02979.js",
+    "sha256": "056ee811bdcdc704110125a9e61ed5db224df57083748b88e1a854230bbf32b3",
+    "oid": "741e298c243e5b94e5bdd142e49ce4d588643cd7"
+  },
+  {
+    "file": "hani-ui-v02980.js",
+    "sha256": "0f74bdda836d0b5d9faefc4ee2038aafd2d0fdd4b55cb59b3cb83a69a749f11d",
+    "oid": "9fc5869aa772e994b1a4156a2d0dfa4d316bd629"
+  },
+  {
+    "file": "hani-ui-v02981.js",
+    "sha256": "edea24056eb381f058100a6f3e69413c69f4b998fba74b08cbdc39e382ee49e8",
+    "oid": "19c7525774177ee25247b0e48d5a3323f30422ad"
+  },
+  {
+    "file": "hani-ui-v02982.js",
+    "sha256": "7ae03ed6a26d9916fb6e704e09795218890f63a848e639d2a75d9c721badda7f",
+    "oid": "b1a95455555c53809d914a332ce9053c9f7ca64d"
+  },
+  {
+    "file": "hani-ui-v02983.js",
+    "sha256": "8c71d6ba791ade79cb3c50d51bac85d0fe205b8ad425b19771ac89d005891a2a",
+    "oid": "3616cbdc26ad38427c23e4dff73fb426e8e429a6"
+  },
+  {
+    "file": "hani-ui-v02992.js",
+    "sha256": "5a83b8de88c24e8fe6f5df68d0d67d1e85f26d08bab0f286f4bf8a1a9a01bd62",
+    "oid": "c6917aea0943fbee1fefb8b5de3c9cd9039e604b"
+  },
+  {
+    "file": "hani-yuna-helpdesk.css",
+    "sha256": "400313f225ecc430e1ea3c541212a08c2dd7391ed5809ad4b9998e7b9515765a",
+    "oid": "f5f112c1ec09ee12ef8e64b131a673bd76c0555c"
+  },
+  {
+    "file": "hani-yuna-helpdesk.js",
+    "sha256": "195c7711c825cb5276b7978bb88ee98d9b7bfa0714fbf69f41f86518942de229",
+    "oid": "c8e225602c3497904033c4a1f52587ea7e904e55"
+  },
+  {
+    "file": "index.html",
+    "sha256": "15226a2f3e63b350865ef24d296c7ce34a44e36307f17b77449e5cb8494a0c59",
+    "oid": "ef6f8c031bc2b40c49bdebee45ce8cf245c84177"
+  }
+]

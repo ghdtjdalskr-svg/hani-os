@@ -1,0 +1,40 @@
+TAP version 13
+# Subtest: 283 outer inverse preserves complete bytes and rejects drift, partial, duplicate and repeated inverse
+ok 1 - 283 outer inverse preserves complete bytes and rejects drift, partial, duplicate and repeated inverse
+  ---
+  duration_ms: 26.7731
+  type: 'test'
+  ...
+# Subtest: single report refresh has an exact inverse; rejects drift, missing, duplicate and repeated inverse
+ok 2 - single report refresh has an exact inverse; rejects drift, missing, duplicate and repeated inverse
+  ---
+  duration_ms: 17.8296
+  type: 'test'
+  ...
+# Subtest: four ordered inverses restore each immediate lower hash and the entire frozen main, including mixed EOL
+ok 3 - four ordered inverses restore each immediate lower hash and the entire frozen main, including mixed EOL
+  ---
+  duration_ms: 62.7872
+  type: 'test'
+  ...
+# Subtest: every changed owner rejects drift, missing/duplicate bytes, wrong order and a second inverse
+ok 4 - every changed owner rejects drift, missing/duplicate bytes, wrong order and a second inverse
+  ---
+  duration_ms: 79.232
+  type: 'test'
+  ...
+# Subtest: legacy preload changes only canonical root reads, retaining buffers and all temporary/baseline bytes
+ok 5 - legacy preload changes only canonical root reads, retaining buffers and all temporary/baseline bytes
+  ---
+  duration_ms: 125.7055
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 402.056

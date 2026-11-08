@@ -1,0 +1,22 @@
+TAP version 13
+# Subtest: exact polish inverse round-trips all bytes and rejects unrelated, partial and duplicate changes
+ok 1 - exact polish inverse round-trips all bytes and rejects unrelated, partial and duplicate changes
+  ---
+  duration_ms: 3.9212
+  type: 'test'
+  ...
+# Subtest: actual card and detail owners change only the special badge and Seoyun note
+ok 2 - actual card and detail owners change only the special badge and Seoyun note
+  ---
+  duration_ms: 7.8436
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 33.6518

@@ -1,0 +1,28 @@
+TAP version 13
+# Subtest: scripts\\hani-office-obr7.test.mjs
+not ok 1 - scripts\\hani-office-obr7.test.mjs
+  ---
+  duration_ms: 0.3891
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\tool283\\scripts\\hani-office-obr7.test.mjs:1:1'
+  error: 'USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified'
+  code: 'USER_GIT_DISABLED'
+  stack: |-
+    cp.<computed> (C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\tool283\artifacts\life-bundle\no-git-283.cjs:7:16)
+    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tool283/scripts/hani-office-lively-fixture.mjs:9:9)
+    file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tool283/scripts/hani-office-obr7.test.mjs:5:14
+    ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+    async node:internal/modules/esm/loader:647:26
+    async node:internal/test_runner/runner:1091:15
+    async runFiles (node:internal/test_runner/runner:1057:9)
+    async runChain (node:internal/test_runner/runner:1135:5)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 22.5904

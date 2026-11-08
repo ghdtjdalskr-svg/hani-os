@@ -1,0 +1,76 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 23.5505
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.4621
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 10.7882
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 7.5469
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 66.9496
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 261.44
+  type: 'test'
+  ...
+# Subtest: props: one persistent map layer and seven persistent, map-relative slots across floors and clocks
+ok 7 - props: one persistent map layer and seven persistent, map-relative slots across floors and clocks
+  ---
+  duration_ms: 33.419
+  type: 'test'
+  ...
+# Subtest: props: lantern follows committed night art, exact 18:30/06:00 boundary, fallback and loading
+ok 8 - props: lantern follows committed night art, exact 18:30/06:00 boundary, fallback and loading
+  ---
+  duration_ms: 19.6148
+  type: 'test'
+  ...
+# Subtest: props: CSS owns four-frame timing, long-idle sparkle, tap-through, stacking and reduced frame 2
+ok 9 - props: CSS owns four-frame timing, long-idle sparkle, tap-through, stacking and reduced frame 2
+  ---
+  duration_ms: 1.318
+  type: 'test'
+  ...
+# Subtest: props: reduced-motion owner remains persistent, floor-scoped and write-free
+ok 10 - props: reduced-motion owner remains persistent, floor-scoped and write-free
+  ---
+  duration_ms: 7.1621
+  type: 'test'
+  ...
+# Subtest: props: scheduler/plan/blockPlan/snapshot/labels/home-clear source bytes and all six assets are unchanged
+ok 11 - props: scheduler/plan/blockPlan/snapshot/labels/home-clear source bytes and all six assets are unchanged
+  ---
+  duration_ms: 3453.6605
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3925.9742

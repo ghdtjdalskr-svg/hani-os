@@ -1,0 +1,131 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 17.8757
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.674
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 14.9721
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 8.1159
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 69.9266
+  type: 'test'
+  ...
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 248.7366
+  type: 'test'
+  ...
+# Subtest: touching sprites in one desk row all keep their names above their own heads
+ok 7 - touching sprites in one desk row all keep their names above their own heads
+  ---
+  duration_ms: 8.7354
+  type: 'test'
+  ...
+# Subtest: crowded 38px desk row upgrades a former dot to name without moving dialogue or full pills
+ok 8 - crowded 38px desk row upgrades a former dot to name without moving dialogue or full pills
+  ---
+  duration_ms: 15.1011
+  type: 'test'
+  ...
+# Subtest: names precede last-resort dots; all three modes remain collision-free and deterministic
+ok 9 - names precede last-resort dots; all three modes remain collision-free and deterministic
+  ---
+  duration_ms: 13.088
+  type: 'test'
+  ...
+# Subtest: top-edge full pill allowance survives; a smaller name uses the same legal side lane
+ok 10 - top-edge full pill allowance survives; a smaller name uses the same legal side lane
+  ---
+  duration_ms: 2.1223
+  type: 'test'
+  ...
+# Subtest: a name cannot escape ordinary head reach to a distant free desk
+ok 11 - a name cannot escape ordinary head reach to a distant free desk
+  ---
+  duration_ms: 1.3101
+  type: 'test'
+  ...
+# Subtest: seated 3F row under another row gets own-body names without covering faces or moving full pills
+ok 12 - seated 3F row under another row gets own-body names without covering faces or moving full pills
+  ---
+  duration_ms: 22.3751
+  type: 'test'
+  ...
+# Subtest: body tag wider than a sprite cannot touch a neighbour; keep the nearby dot
+ok 13 - body tag wider than a sprite cannot touch a neighbour; keep the nearby dot
+  ---
+  duration_ms: 1.647
+  type: 'test'
+  ...
+# Subtest: own-body name stays below face and clamps to floor; reject floor/mascot blocked bodies
+ok 14 - own-body name stays below face and clamps to floor; reject floor/mascot blocked bodies
+  ---
+  duration_ms: 3.0641
+  type: 'test'
+  ...
+# Subtest: a missing label with no legal head dot is rescued by the same name slot when its lower body is clear
+ok 15 - a missing label with no legal head dot is rescued by the same name slot when its lower body is clear
+  ---
+  duration_ms: 0.9011
+  type: 'test'
+  ...
+# Subtest: persistent own-body slot preserves tap/title/aria and strict browser checker rejects face, neighbour, label and mascot collisions
+ok 16 - persistent own-body slot preserves tap/title/aria and strict browser checker rejects face, neighbour, label and mascot collisions
+  ---
+  duration_ms: 138.2248
+  type: 'test'
+  ...
+# Subtest: actual persistent name slot retains title/aria/full activity and delegated tap opens the same bubble
+ok 17 - actual persistent name slot retains title/aria/full activity and delegated tap opens the same bubble
+  ---
+  duration_ms: 47.6044
+  type: 'test'
+  ...
+# Subtest: desktop ignores name-only dimensions and keeps the exact separate placement
+ok 18 - desktop ignores name-only dimensions and keeps the exact separate placement
+  ---
+  duration_ms: 40.7384
+  type: 'test'
+  ...
+# Subtest: browser geometry contract accepts name mode and rejects hidden text, lost full text, tiny font, overlaps and downgraded dialogue
+ok 19 - browser geometry contract accepts name mode and rejects hidden text, lost full text, tiny font, overlaps and downgraded dialogue
+  ---
+  duration_ms: 35.4025
+  type: 'test'
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 19
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 759.7668

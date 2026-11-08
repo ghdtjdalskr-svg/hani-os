@@ -1,0 +1,1 @@
+PASS nav/login UI 2 viewports: design before entry, Cloud wait/retry, tab keyboard, drawer, dialog focus, logout preservation, fresh entry

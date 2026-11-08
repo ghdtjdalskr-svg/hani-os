@@ -1,0 +1,134 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 16.4693
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.5471
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 19.9668
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 8.328
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 71.1702
+  type: 'test'
+  ...
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 249.159
+  type: 'test'
+  ...
+# Subtest: selection: every day in November, first four weeks and next cycle, independent of host timezone
+ok 7 - selection: every day in November, first four weeks and next cycle, independent of host timezone
+  ---
+  duration_ms: 0.9242
+  type: 'test'
+  ...
+# Subtest: selection: KST midnight, weekends, year boundary, leap date and pre-anchor modulo
+ok 8 - selection: KST midnight, weekends, year boundary, leap date and pre-anchor modulo
+  ---
+  duration_ms: 0.1851
+  type: 'test'
+  ...
+# Subtest: data: 4 approved scripts, 20 standalone days and all 100 verbatim lines, floors and clues
+ok 9 - data: 4 approved scripts, 20 standalone days and all 100 verbatim lines, floors and clues
+  ---
+  duration_ms: 18.2731
+  type: 'test'
+  ...
+# Subtest: validation rejects malformed shape, every invalid staff/floor/length, empty text and duplicate lines
+ok 10 - validation rejects malformed shape, every invalid staff/floor/length, empty text and duplicate lines
+  ---
+  duration_ms: 65.9444
+  type: 'test'
+  ...
+# Subtest: missing, network error, broken JSON and invalid catalog preserve ordinary taps and hide the caption data
+ok 11 - missing, network error, broken JSON and invalid catalog preserve ordinary taps and hide the caption data
+  ---
+  duration_ms: 1.3558
+  type: 'test'
+  ...
+# Subtest: first eligible tap then normal cadence; memory is per actor and per date, refreshed pages and four-week repeat reset
+ok 12 - first eligible tap then normal cadence; memory is per actor and per date, refreshed pages and four-week repeat reset
+  ---
+  duration_ms: 0.7215
+  type: 'test'
+  ...
+# Subtest: wrong floor and other staff do not consume a drama; hidden clues use their own floor
+ok 13 - wrong floor and other staff do not consume a drama; hidden clues use their own floor
+  ---
+  duration_ms: 0.4156
+  type: 'test'
+  ...
+# Subtest: chairman speaks his own script only when present on the specified floor; Saturday stays ordinary
+ok 14 - chairman speaks his own script only when present on the specified floor; Saturday stays ordinary
+  ---
+  duration_ms: 0.405
+  type: 'test'
+  ...
+# Subtest: loads each literal local GET once, waits for slow drama, and performs zero storage/network writes
+ok 15 - loads each literal local GET once, waits for slow drama, and performs zero storage/network writes
+  ---
+  duration_ms: 0.5635
+  type: 'test'
+  ...
+# Subtest: DOM owner: Monday caption, delegated first tap during an action, second normal tap, and Saturday clearing
+ok 16 - DOM owner: Monday caption, delegated first tap during an action, second normal tap, and Saturday clearing
+  ---
+  duration_ms: 854.3225
+  type: 'test'
+  ...
+# Subtest: DOM missing/broken drama keeps the same normal speech and no caption
+ok 17 - DOM missing/broken drama keeps the same normal speech and no caption
+  ---
+  duration_ms: 1083.0955
+  type: 'test'
+  ...
+# Subtest: DOM slow load after a floor change cannot consume the first drama line on the old floor
+ok 18 - DOM slow load after a floor change cannot consume the first drama line on the old floor
+  ---
+  duration_ms: 596.6685
+  type: 'test'
+  ...
+# Subtest: release trace sees literal JSON path; caption wraps in full; scheduler and label placement remain frozen
+ok 19 - release trace sees literal JSON path; caption wraps in full; scheduler and label placement remain frozen
+  ---
+  duration_ms: 87.4474
+  type: 'test'
+  ...
+# Subtest: 09:00–18:00 reachability uses scheduler event/leg intervals and actual snapshot witnesses, floor by floor
+ok 20 - 09:00–18:00 reachability uses scheduler event/leg intervals and actual snapshot witnesses, floor by floor
+  ---
+  duration_ms: 18488.0568
+  type: 'test'
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 20
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 21631.5788

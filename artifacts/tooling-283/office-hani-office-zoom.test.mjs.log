@@ -1,0 +1,99 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 17.7195
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.4956
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 27.7372
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 9.7149
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 68.5032
+  type: 'test'
+  ...
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 247.1077
+  type: 'test'
+  ...
+# Subtest: zoom: staff/visitor/NPC/pet taps copy the currently loaded atlas frame into one persistent decorative slot
+ok 7 - zoom: staff/visitor/NPC/pet taps copy the currently loaded atlas frame into one persistent decorative slot
+  ---
+  duration_ms: 2205.0257
+  type: 'test'
+  ...
+# Subtest: zoom: automatic floor bubble stays small, including after a previous manual zoom
+ok 8 - zoom: automatic floor bubble stays small, including after a previous manual zoom
+  ---
+  duration_ms: 933.9565
+  type: 'test'
+  ...
+# Subtest: zoom: missing or failed sprite hides the slot and preserves the old bubble and line
+ok 9 - zoom: missing or failed sprite hides the slot and preserves the old bubble and line
+  ---
+  duration_ms: 1471.7652
+  type: 'test'
+  ...
+# Subtest: zoom: fitBubble clamps all edges at 360/390/416/1280 widths
+ok 10 - zoom: fitBubble clamps all edges at 360/390/416/1280 widths
+  ---
+  duration_ms: 3419.421
+  type: 'test'
+  ...
+# Subtest: zoom: waiting client/candidate labels use 대기 중 instead of rest on phone and desktop
+ok 11 - zoom: waiting client/candidate labels use 대기 중 instead of rest on phone and desktop
+  ---
+  duration_ms: 1585.033
+  type: 'test'
+  ...
+# Subtest: zoom: scheduler, snapshots and all three protected geometry functions stay byte identical to task base
+ok 12 - zoom: scheduler, snapshots and all three protected geometry functions stay byte identical to task base
+  ---
+  duration_ms: 3879.6286
+  type: 'test'
+  ...
+# Subtest: zoom: real browser CSS keeps manual/automatic bubbles inside the map at every requested viewport
+ok 13 - zoom: real browser CSS keeps manual/automatic bubbles inside the map at every requested viewport # SKIP
+  ---
+  duration_ms: 0.0682
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 1
+# todo 0
+# duration_ms 13934.7781

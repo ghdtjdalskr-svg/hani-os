@@ -1,0 +1,21 @@
+{
+  "base": "2feb724c94c92f206c5f79dd992632cbb3b58874",
+  "functions": {
+    "learningCommit": "7df8874590260dcb57d85429fdff67d03d5116dda022c1d7dd04bffbdb02caf1",
+    "persistQuizRegrade": "d165bce1f70ee2b8d5d85fc008d7830b419aecc87c019b20564eccb3595e1599",
+    "persistNewProject": "727fec9512482929776c3f14897a8dab2153cbb10ec51546be67e5b122f3b52e",
+    "persistProjectUpdate": "15964a55d588619228dcf8a67cb522ae12d3e797cabec077eb8925d5052a5632",
+    "persistProjectStatus": "37fd016ed79dd66c7d5274b391598db5bf582e91efe29443077093e42f296f94",
+    "persistGeneratedQuiz": "52e36a1a9d1b32dd6458b4d6ebdc5d80d1f95074267c098dfb33e29656c10add",
+    "persistQuizAnswer": "90e6e54ad1f5a4e477ac70cc89a78988472972f28aad75a27b6f44b023870fe2",
+    "persistWrongUpdate": "2136ba2f2cfb5eddb486ca1cf7468e9944e741b0c8e5343ee88b412d681cda4a",
+    "gradeQuiz": "3c8b63e12d8ead0118f16026a1ed942deb673f94d5a24e20beed084e749d93cc",
+    "upsertWrongAnswer": "6154ccc5c879fea887e9a7593711f249b97a7c8fe7ee2c90bbff05bbc8410aa7"
+  },
+  "files": {
+    "hani-main.js": "ef067e9fa7eecd6c7f27c044aa3fd2a14e4e05833174491be2e4e77de40a8c4b",
+    "index.html": "2fe92354e02751f5a4a8ece93ea56a4aa819c4bc7536876aee3415f7a5944d6d",
+    "supabase/functions/hani-learning-quiz/index.ts": "fccf902231231af09870a53c3d8dadbf98dad599c527ba65bf6455e82e6191df"
+  },
+  "learningCommitCalls": 9
+}

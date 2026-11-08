@@ -1,0 +1,326 @@
+{
+  "provenance": "ada3be2 regenerated report source; cached public PR references only, no Git executed in task 283",
+  "rows": {
+    "v2.9.280": {
+      "commit": "985cc150958f2efffcee78dbdc92403d26ce31d0",
+      "prs": [
+        "461"
+      ]
+    },
+    "v2.9.279": {
+      "commit": "af29e398bf53b44e5271df39e6004bef661fad12",
+      "prs": [
+        "459"
+      ]
+    },
+    "v2.9.278": {
+      "commit": "882e6c604c5bdc1a72cb7fde1151f67d7b4f236f",
+      "prs": [
+        "457"
+      ]
+    },
+    "v2.9.277": {
+      "commit": "6ea322bc85540f6ba484670558c268bef0666d1d",
+      "prs": [
+        "455"
+      ]
+    },
+    "v2.9.276": {
+      "commit": "42330554aa4378803bbdb919154ed4e86540f0e8",
+      "prs": [
+        "452"
+      ]
+    },
+    "v2.9.275": {
+      "commit": "20f091d92251d7a1cec35c47febf69570e2e11a1",
+      "prs": [
+        "448"
+      ]
+    },
+    "v2.9.274": {
+      "commit": "0b98a29c592fe2fff4e98e12a2a42c7f3c34b9be",
+      "prs": [
+        "446"
+      ]
+    },
+    "v2.9.273": {
+      "commit": "08e038785c3c1dfeaebc22944061299f5d5b07b9",
+      "prs": [
+        "444"
+      ]
+    },
+    "v2.9.272": {
+      "commit": "c338bdab8589676979f85e1a5626fca2af5b86d8",
+      "prs": [
+        "441"
+      ]
+    },
+    "v2.9.271": {
+      "commit": "5f13d8d794184b35b29fb45e6539fd0d68c08b76",
+      "prs": [
+        "436"
+      ]
+    },
+    "v2.9.270": {
+      "commit": "6be1b2b940a46c55db5515ac1af0b8322eb52b57",
+      "prs": [
+        "434"
+      ]
+    },
+    "v2.9.269": {
+      "commit": "1bb98046973098959b7feaf906578710cdf3fe73",
+      "prs": [
+        "432"
+      ]
+    },
+    "v2.9.268": {
+      "commit": "f753c66af9d2b6a7535924e8d237e8b1980ae67a",
+      "prs": [
+        "429"
+      ]
+    },
+    "v2.9.267": {
+      "commit": "eddac134b502b798459ea01f79f11e8e8e5c005b",
+      "prs": [
+        "427"
+      ]
+    },
+    "v2.9.266": {
+      "commit": "2e1ab8b253132df40e1d077384ae695deb984fdb",
+      "prs": [
+        "424"
+      ]
+    },
+    "v2.9.265": {
+      "commit": "f271729b1a3a55cfcca02790aedbcce8b4264295",
+      "prs": [
+        "422"
+      ]
+    },
+    "v2.9.264": {
+      "commit": "813cedc5aaaa372d569d7d882a1d98cececc6b42",
+      "prs": [
+        "420"
+      ]
+    },
+    "v2.9.263": {
+      "commit": "0fa5866663edad7689157a1cf80e8fbe848d3a13",
+      "prs": [
+        "418"
+      ]
+    },
+    "v2.9.262": {
+      "commit": "068c864e703eb64a87b187c25f3730501dc54d63",
+      "prs": [
+        "416"
+      ]
+    },
+    "v2.9.261": {
+      "commit": "41a91fb0f0ace885ce31fc67921d376479bd3328",
+      "prs": [
+        "414"
+      ]
+    },
+    "v2.9.260": {
+      "commit": "0d5f8534363a435c09f1cba9d463a623b2cb8345",
+      "prs": [
+        "410"
+      ]
+    },
+    "v2.9.259": {
+      "commit": "476210cdbe0408039672932aa3ab6bbde825860a",
+      "prs": [
+        "408"
+      ]
+    },
+    "v2.9.258": {
+      "commit": "9eae97cce55169893e8b089071d08fed466ef2a4",
+      "prs": [
+        "405"
+      ]
+    },
+    "v2.9.257": {
+      "commit": "72ec5ca1eff0ea5478cfa7dcd5c90975e5f6b2df",
+      "prs": [
+        "403"
+      ]
+    },
+    "v2.9.256": {
+      "commit": "00fe8e8ee3e4a3a22584b590b576da13e0a5d6ee",
+      "prs": [
+        "401"
+      ]
+    },
+    "v2.9.255": {
+      "commit": "a5bc2e35a358ebf8f95ed58ba7eb7fd90311f861",
+      "prs": [
+        "399"
+      ]
+    },
+    "v2.9.254": {
+      "commit": "301362d1b76085bce34fe0e175e139cf01c8343d",
+      "prs": [
+        "395"
+      ]
+    },
+    "v2.9.253": {
+      "commit": "012dfbc27e347416e63b72b7757cc1f110680463",
+      "prs": [
+        "393"
+      ]
+    },
+    "v2.9.252": {
+      "commit": "333b0358960d9b60def7eb014670346bf3ffe351",
+      "prs": [
+        "391"
+      ]
+    },
+    "v2.9.251": {
+      "commit": "4576dfe385a990e03ddd758f744d84cb8a2a7d2d",
+      "prs": [
+        "387"
+      ]
+    },
+    "v2.9.250": {
+      "commit": "f726cb6d988d871813b3dc1a98fbcae6d4a7f693",
+      "prs": [
+        "385"
+      ]
+    },
+    "v2.9.249": {
+      "commit": "51f6ba41347034d386e4ab225c264aeceed0d0a4",
+      "prs": [
+        "382"
+      ]
+    },
+    "v2.9.248": {
+      "commit": "a8ca1f24950a3b07f7ec6345dc9d92157c5f256c",
+      "prs": [
+        "380"
+      ]
+    },
+    "v2.9.247": {
+      "commit": "e47b09bcecccf6aa18c7fffe94718c5725866e2e",
+      "prs": [
+        "378"
+      ]
+    },
+    "v2.9.246": {
+      "commit": "6085beb3726e10bc23aaaa3f24d962391645bda0",
+      "prs": [
+        "373"
+      ]
+    },
+    "v2.9.245": {
+      "commit": "c7b2c202eb9eed0d2ebc7449525c1d913ddf8ebf",
+      "prs": [
+        "370"
+      ]
+    },
+    "v2.9.244": {
+      "commit": "275a39ce7780cbf84fa915e18cdbb9f9ad9ae46d",
+      "prs": [
+        "369"
+      ]
+    },
+    "v2.9.243": {
+      "commit": "86a153b509d91b479ed384c55d9d07623e5cfcdb",
+      "prs": [
+        "367"
+      ]
+    },
+    "v2.9.242": {
+      "commit": "39ce4a137a20c7531b96e6e539dfe53762223138",
+      "prs": [
+        "365"
+      ]
+    },
+    "v2.9.241": {
+      "commit": "b6656b43ecd9595367c177c569ea34a810f7a71d",
+      "prs": [
+        "363"
+      ]
+    },
+    "v2.9.240": {
+      "commit": "19f9fad4f8f2b9eed785b94e9d2938bb6d9cd7f0",
+      "prs": [
+        "361"
+      ]
+    },
+    "v2.9.239": {
+      "commit": "f82f5d18e8052ed65ad75f0834ff401d59967acd",
+      "prs": [
+        "360"
+      ]
+    },
+    "v2.9.238": {
+      "commit": "5122c7cd8c3de3bd1dad70255abc48bcc5d11e6e",
+      "prs": [
+        "357"
+      ]
+    },
+    "v2.9.237": {
+      "commit": "8e1d1b1ecb5b3699cd1e02ddc19ac9bc9e3db8fc",
+      "prs": [
+        "356"
+      ]
+    },
+    "v2.9.236": {
+      "commit": "4eafeb7d87cf8b6d827f49b5ab34a01a1ddd404d",
+      "prs": [
+        "353"
+      ]
+    },
+    "v2.9.235": {
+      "commit": "0e34544d514b06c1f90b5d0dddc18e31102c3ff2",
+      "prs": [
+        "349"
+      ]
+    },
+    "v2.9.234": {
+      "commit": "ead7eff653bcbf3055003088bd5764149ee484e3",
+      "prs": [
+        "345"
+      ]
+    },
+    "v2.9.233": {
+      "commit": "beffc3850ea890ec84ce623579b26b4b5a3cd35c",
+      "prs": [
+        "343"
+      ]
+    },
+    "v2.9.232": {
+      "commit": "4ac6b6c0119eeacc7332f1c53c3c760675657c11",
+      "prs": [
+        "337"
+      ]
+    },
+    "v2.9.231": {
+      "commit": "13dedc67be96310d472537c72b088050e847d49e",
+      "prs": [
+        "336"
+      ]
+    },
+    "v2.9.230": {
+      "commit": "04fb2b377f28958aec1480ca09244f4567c3a339",
+      "prs": [
+        "331"
+      ]
+    }
+  },
+  "reports": {
+    "2026-11-07-v2.9.278-2.9.280-dev-report.md": "749d84d5cad9526b065dfa76410a871fa4fdabc174fa0190508cbabb4f595f91",
+    "2026-11-07-v2.9.274-2.9.277-dev-report.md": "dc168e7cae0a70a5000d46a2162235730a568bb360237735447df42b7bfe4573",
+    "2026-11-07-v2.9.270-2.9.273-dev-report.md": "a75a23574fe22021b781d10a7ffbfdb70b911a15a581abf50ef6d3b025287b99",
+    "2026-11-06-v2.9.266-2.9.269-dev-report.md": "a43eec60b3273ed4648fe4dd029ae46dee86b59823dba894b9d931b12ce62840",
+    "2026-11-06-v2.9.262-2.9.265-dev-report.md": "6448b446142b090dc16d4c9f68c9215a4630fa33426246ee114843ac91cfe0eb",
+    "2026-11-02-v2.9.258-2.9.261-dev-report.md": "7f8c64726b31d812fc6865c2a80797831a48f696c8fd536baf0e037aa7606ad3",
+    "2026-11-02-v2.9.254-2.9.257-dev-report.md": "c5a9200809f463fd205148d67bc5e946322725e5df85e4bb23d4e044817a444e",
+    "2026-11-01-v2.9.250-2.9.253-dev-report.md": "a4eb2e99b77ffd7b40f58aa6d0762fd4a559f42088951a0505fbe22e43570810",
+    "2026-11-01-v2.9.246-2.9.249-dev-report.md": "1857f2e7a1f23357b6049c94e5c8719b77b0aa7937da35582eccafb154104c19",
+    "2026-11-01-v2.9.242-2.9.245-dev-report.md": "2e6eb5c6337ced87911fd68926a7b3501e2dd4b4891704883d83eb2aea145fc0",
+    "2026-10-31-v2.9.238-2.9.241-dev-report.md": "2ef1550e5cf2678a40a8df622b9dbf3add453f7ef7f15b0b5e22838d738a16d2",
+    "2026-10-31-v2.9.234-2.9.237-dev-report.md": "1fef95df93db80a582fe31c92ed8191309e4e32698b0c58be60cdf7a2e7b3db9",
+    "2026-10-24-v2.9.230-2.9.233-dev-report.md": "bcddcbd5d882866967de6df8037b793825d8cc06939bf62c3f72238f6ded429a"
+  }
+}

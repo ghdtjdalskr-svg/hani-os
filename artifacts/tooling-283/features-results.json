@@ -1,0 +1,72 @@
+[
+  {
+    "file": "hani-life-bundle-source.test.mjs",
+    "exit": 0,
+    "signal": null,
+    "seconds": 0,
+    "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-reporter=tap scripts/hani-life-bundle-source.test.mjs",
+    "log": "artifacts/tooling-283/features-hani-life-bundle-source.test.mjs.log",
+    "summary": [
+      "# tests 5",
+      "# pass 5",
+      "# fail 0",
+      "# skipped 0"
+    ]
+  },
+  {
+    "file": "hani-study-retry.test.mjs",
+    "exit": 0,
+    "signal": null,
+    "seconds": 0,
+    "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-reporter=tap scripts/hani-study-retry.test.mjs",
+    "log": "artifacts/tooling-283/features-hani-study-retry.test.mjs.log",
+    "summary": [
+      "# tests 26",
+      "# pass 26",
+      "# fail 0",
+      "# skipped 0"
+    ]
+  },
+  {
+    "file": "hani-procrastination-board.test.mjs",
+    "exit": 0,
+    "signal": null,
+    "seconds": 0,
+    "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-reporter=tap scripts/hani-procrastination-board.test.mjs",
+    "log": "artifacts/tooling-283/features-hani-procrastination-board.test.mjs.log",
+    "summary": [
+      "# tests 6",
+      "# pass 6",
+      "# fail 0",
+      "# skipped 0"
+    ]
+  },
+  {
+    "file": "hani-wishlist-quick-add.test.mjs",
+    "exit": 0,
+    "signal": null,
+    "seconds": 0,
+    "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-reporter=tap scripts/hani-wishlist-quick-add.test.mjs",
+    "log": "artifacts/tooling-283/features-hani-wishlist-quick-add.test.mjs.log",
+    "summary": [
+      "# tests 7",
+      "# pass 7",
+      "# fail 0",
+      "# skipped 0"
+    ]
+  },
+  {
+    "file": "hani-dev-report-generate.test.mjs",
+    "exit": 0,
+    "signal": null,
+    "seconds": 0,
+    "command": "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-reporter=tap scripts/hani-dev-report-generate.test.mjs",
+    "log": "artifacts/tooling-283/features-hani-dev-report-generate.test.mjs.log",
+    "summary": [
+      "# tests 1",
+      "# pass 1",
+      "# fail 0",
+      "# skipped 0"
+    ]
+  }
+]

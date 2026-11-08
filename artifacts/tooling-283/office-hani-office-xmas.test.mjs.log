@@ -1,0 +1,102 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 22.8381
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.8567
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 23.0556
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 8.2874
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 71.2261
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 251.8802
+  type: 'test'
+  ...
+# Subtest: xmas: annual KST start/end boundaries include the entire final minute
+ok 7 - xmas: annual KST start/end boundaries include the entire final minute
+  ---
+  duration_ms: 15.1564
+  type: 'test'
+  ...
+# Subtest: xmas: same-floor clock ticks toggle the event without a click, new timer or listener
+ok 8 - xmas: same-floor clock ticks toggle the event without a click, new timer or listener
+  ---
+  duration_ms: 337.4205
+  type: 'test'
+  ...
+# Subtest: xmas: all five map-relative slots are created once, floor-scoped and tap-through at both widths
+ok 9 - xmas: all five map-relative slots are created once, floor-scoped and tap-through at both widths
+  ---
+  duration_ms: 41.441
+  type: 'test'
+  ...
+# Subtest: xmas: rooftop lights follow the same committed night background as the lantern, including fallback/loading
+ok 10 - xmas: rooftop lights follow the same committed night background as the lantern, including fallback/loading
+  ---
+  duration_ms: 20.4711
+  type: 'test'
+  ...
+# Subtest: xmas: CSS rectangles sample the original frames, animations use steps(4), reduced motion fixes frame 2
+ok 11 - xmas: CSS rectangles sample the original frames, animations use steps(4), reduced motion fixes frame 2
+  ---
+  duration_ms: 0.4967
+  type: 'test'
+  ...
+# Subtest: xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged
+not ok 12 - xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged
+  ---
+  duration_ms: 83.8511
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\tool283\\scripts\\hani-office-xmas.test.mjs:118:1'
+  failureType: 'testCodeFailure'
+  error: 'USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified'
+  code: 'USER_GIT_DISABLED'
+  stack: |-
+    cp.<computed> (C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\tool283\artifacts\life-bundle\no-git-283.cjs:7:16)
+    readReleaseSource (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tool283/scripts/hani-reviewed-release-baseline.mjs:85:17)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tool283/scripts/hani-office-xmas.test.mjs:128:14)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: xmas: literal atlas enters the release closure as the only new runtime file
+ok 13 - xmas: literal atlas enters the release closure as the only new runtime file
+  ---
+  duration_ms: 239.6648
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 12
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1175.0984

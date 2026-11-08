@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import {spawnSync} from 'node:child_process';
+import {resolveRuntimeClosure} from '../../scripts/hani-runtime-closure.mjs';
+import {readRawLifeFile,projectLifeSource} from '../../scripts/hani-life-bundle-source.mjs';
+const changed=['scripts/hani-release-283-source.cjs','scripts/hani-life-bundle-source.mjs','scripts/hani-life-bundle-source.test.mjs','scripts/hani-dev-report-generate.test.mjs','scripts/hani-procrastination-board.test.mjs','scripts/hani-m9-polish-preload.cjs','scripts/hani-seoyun-m9.test.mjs','scripts/hani-office-kids-visit.test.mjs','scripts/hani-office-staff-chat.test.mjs'];
+const syntax=changed.map(file=>{const r=spawnSync(process.execPath,['--check',file],{encoding:'utf8',windowsHide:true});assert.equal(r.status,0,r.stderr);return {file,exit:r.status};});
+const raw=await resolveRuntimeClosure({exists:fs.existsSync,read:f=>readRawLifeFile(f)});
+const projected=await resolveRuntimeClosure({exists:fs.existsSync,read:f=>Buffer.from(projectLifeSource(readRawLifeFile(f,'utf8'),f,'study-retry'))});
+assert.deepEqual(raw.missing,[]);assert.deepEqual(projected.missing,[]);
+assert.equal(projected.files.length,161,'existing M9 lower-layer closure remains exact');
+const result={syntax,raw:{files:raw.files.length,missing:raw.missing},projected:{files:projected.files.length,missing:projected.missing},added:raw.files.filter(f=>!projected.files.includes(f))};
+fs.writeFileSync('artifacts/tooling-283/final-checks.json',JSON.stringify(result,null,2));
+console.log(JSON.stringify(result));

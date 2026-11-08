@@ -1,0 +1,108 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 18.989
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 8.381
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 11.6649
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 9.0273
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 68.6181
+  type: 'test'
+  ...
+Bori daily evidence [{"day":"2026-11-02","samples":1440,"daytime":{"samples":720,"visible":720,"sleep":260,"awake":369,"walking":91},"outings":20,"night":0,"overlap":0,"visible":1440,"sleepMinutes":980,"walkingMinuteSamples":91,"intervalMinutes":[36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36],"durations":[164,165,166,167,168,169,170,171,156,157,229,228,227,226,233,232,231,230,221,220]},{"day":"2026-11-03","samples":1440,"daytime":{"samples":720,"visible":717,"sleep":264,"awake":374,"walking":79},"outings":19,"night":0,"overlap":0,"visible":1437,"sleepMinutes":984,"walkingMinuteSamples":79,"intervalMinutes":[39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39],"durations":[156,155,158,157,160,159,162,161,164,163,164,165,166,167,168,169,170,171,172]},{"day":"2026-11-06","samples":1440,"daytime":{"samples":720,"visible":718,"sleep":267,"awake":354,"walking":97},"outings":18,"night":0,"overlap":0,"visible":1438,"sleepMinutes":987,"walkingMinuteSamples":97,"intervalMinutes":[40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40],"durations":[199,200,201,202,195,196,197,198,207,208,143,142,141,140,139,138,137,136]},{"day":"2026-11-07","samples":1440,"daytime":{"samples":720,"visible":716,"sleep":264,"awake":358,"walking":94},"outings":21,"night":0,"overlap":0,"visible":1436,"sleepMinutes":984,"walkingMinuteSamples":94,"intervalMinutes":[35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35],"durations":[148,147,150,149,144,143,146,145,140,139,214,215,216,217,210,211,212,213,222,223,178]},{"day":"2026-11-08","samples":1440,"daytime":{"samples":720,"visible":719,"sleep":263,"awake":348,"walking":108},"outings":19,"night":0,"overlap":0,"visible":1439,"sleepMinutes":983,"walkingMinuteSamples":108,"intervalMinutes":[38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38],"durations":[205,206,203,204,201,202,199,200,213,214,182,181,184,183,178,177,180,179,190]}]
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 249.7094
+  type: 'test'
+  ...
+# Subtest: stroll exact inverse retains all f1a457f bytes and original 278 contract; every partial/duplicate/unrelated edit is rejected
+ok 7 - stroll exact inverse retains all f1a457f bytes and original 278 contract; every partial/duplicate/unrelated edit is rejected
+  ---
+  duration_ms: 102.5372
+  type: 'test'
+  ...
+# Subtest: stroll inverse independently matches the fixed Git base
+not ok 8 - stroll inverse independently matches the fixed Git base
+  ---
+  duration_ms: 0.2698
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\tool283\\scripts\\hani-office-bori-stroll.test.mjs:31:1'
+  failureType: 'testCodeFailure'
+  error: 'USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified'
+  code: 'USER_GIT_DISABLED'
+  stack: |-
+    cp.<computed> (C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\tool283\artifacts\life-bundle\no-git-283.cjs:7:16)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tool283/scripts/hani-office-bori-stroll.test.mjs:32:20)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: weekday/weekend minute-by-minute days: 15..25 daytime outings, 2..4 minutes each, no night outing or pet/companion/sibling overlap
+ok 9 - weekday/weekend minute-by-minute days: 15..25 daytime outings, 2..4 minutes each, no night outing or pet/companion/sibling overlap
+  ---
+  duration_ms: 43457.4563
+  type: 'test'
+  ...
+# Subtest: second-level full tours wake, walk to 1..2 stops and return home without collisions; routes reserve both ends from the chick
+ok 10 - second-level full tours wake, walk to 1..2 stops and return home without collisions; routes reserve both ends from the chick
+  ---
+  duration_ms: 147221.4352
+  type: 'test'
+  ...
+# Subtest: date seed, reordered samples, absent chairman, reduced motion, KST boundaries and blocking retain safe nap behavior
+ok 11 - date seed, reordered samples, absent chairman, reduced motion, KST boundaries and blocking retain safe nap behavior
+  ---
+  duration_ms: 9950.8641
+  type: 'test'
+  ...
+# Subtest: real persistent DOM: one Bori bubble on original owner, no writes, unchanged timers/listeners/nodes, hidden and reduced motion
+ok 12 - real persistent DOM: one Bori bubble on original owner, no writes, unchanged timers/listeners/nodes, hidden and reduced motion
+  ---
+  duration_ms: 18916.6066
+  type: 'test'
+  ...
+# Subtest: Tuesday 10:00 KST at 40x: 90 actual persistent DOM poses retain daytime sleep, awake and walking shares
+ok 13 - Tuesday 10:00 KST at 40x: 90 actual persistent DOM poses retain daytime sleep, awake and walking shares
+  ---
+  duration_ms: 2687.8007
+  type: 'test'
+  ...
+# Subtest: runtime closure, CSS, assets, version, staff plan and other resident definitions have no dependency change
+ok 14 - runtime closure, CSS, assets, version, staff plan and other resident definitions have no dependency change
+  ---
+  duration_ms: 156.8697
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 13
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 222922.8978

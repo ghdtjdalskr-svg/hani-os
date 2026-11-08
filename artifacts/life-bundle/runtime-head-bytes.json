@@ -1,0 +1,1016 @@
+{
+  "head": "addcd20c29839f0078e2409ed25ba3564d768376",
+  "count": 168,
+  "missing": [],
+  "result": "PASS",
+  "files": [
+    {
+      "file": "assets/ai-approval-characters/v3-animation-approved-transparent-group-a.webp",
+      "bytes": 403102,
+      "gitBlob": "6c5e66b5cebe80ff1ad70b183d1f49f26dec90cf",
+      "sha256": "54e226759932b86eee7251856dbb51be78d06eeeac8af6c055f6048593f4242d"
+    },
+    {
+      "file": "assets/ai-approval-characters/v3-animation-approved-transparent-group-b.webp",
+      "bytes": 386752,
+      "gitBlob": "7ffa175c5712e1fd5394944bb1ebd9336ed3e819",
+      "sha256": "61c8ba5e666267b93ef2d5d375807b0e704ffb38dff4333559c4f23a0f789b5b"
+    },
+    {
+      "file": "assets/ai-approval-characters/v3-animation-approved-transparent-group-c.webp",
+      "bytes": 476176,
+      "gitBlob": "c8e769566540b2280620190f368e65ba12035944",
+      "sha256": "f51a0569a325fe8fd11116dbef2fb8c573aec65b0f3a75b70049222fdd2b1e21"
+    },
+    {
+      "file": "assets/ai-approval-concepts/v3-office-background-empty-8-seats.webp",
+      "bytes": 283546,
+      "gitBlob": "b6d4b29f39c787807dc2c4ce0cf25cadf58aae16",
+      "sha256": "e36ec317deb5563faa0a002d9f8d0dc6f3b7c0b03aad28b295b39ccd47a4b640"
+    },
+    {
+      "file": "assets/brand/hani-group-ci-official.webp",
+      "bytes": 569466,
+      "gitBlob": "637ea17e869b069531046ec5378c215d26f23e01",
+      "sha256": "aa2532cde39f44c52a3d902efde60f40dbd83550ef0110a6fa4dc4ff93220f3c"
+    },
+    {
+      "file": "assets/data/ai-team-status.json",
+      "bytes": 2944,
+      "gitBlob": "428f7119d79c763d2c7c88e1859d4d104a95d24d",
+      "sha256": "631f749bca01d89f6ed087fe089a825c44e5e3cf6c97feeb80bedfa2c25ec434"
+    },
+    {
+      "file": "assets/data/desk-mascots-v1.json",
+      "bytes": 2953,
+      "gitBlob": "ca05d26f48ad6eb3efd0be7a8445d6e85caa3ca6",
+      "sha256": "23e03a5f87fec1de8c33f3db19580e2548010f0c19a6e938d5c12b5ab8828d94"
+    },
+    {
+      "file": "assets/data/hani-history-releases-v1.json",
+      "bytes": 63984,
+      "gitBlob": "3bd02ff4642f6c548d5ea552a65dc7e723268dc2",
+      "sha256": "13f8e21c88d0a0eb60a46b97c11ca58c48348171d4f901c99c36c638831071bb"
+    },
+    {
+      "file": "assets/data/newsroom-4cut/issues.json",
+      "bytes": 1495,
+      "gitBlob": "2e0b43b63e28e7cf506900efacf599b2c31bb106",
+      "sha256": "959345bae46db82537b7dbd31d8960fdc40a105f3473ca461d1805c5bf8cc6f3"
+    },
+    {
+      "file": "assets/data/office-actions-216.json",
+      "bytes": 155354,
+      "gitBlob": "694ad9c601084379ad3dd70e7b6870870b7065e1",
+      "sha256": "987a3e8a4efc884deb3e4c77db4707b11a37f33395d773c98f8d98b9eedf9c3b"
+    },
+    {
+      "file": "assets/data/office-actions-221.json",
+      "bytes": 221216,
+      "gitBlob": "876e4f5ff9c0081729ed5bed91d1c05c9d251a24",
+      "sha256": "27479ebc6886740b80dfa444f6460216d9f903c3708bc2c611aafc585df2df5c"
+    },
+    {
+      "file": "assets/data/office-drama-v1.json",
+      "bytes": 29484,
+      "gitBlob": "3cbacc390989fbe1309edbaad1fd6aaeb49253ab",
+      "sha256": "c82c41cfab5eb66c69b4c2750b6b88d70df2c2ec0e8a382770e89aa3f0b31688"
+    },
+    {
+      "file": "assets/data/office-tap-lines-v1.json",
+      "bytes": 17143,
+      "gitBlob": "b4f9862b041cfb28712b6afd22b73c88974b8abe",
+      "sha256": "5973caed9c50e4766b605879f7ed89189eb6b6013b77f1784bd233d56a38d362"
+    },
+    {
+      "file": "assets/design-system-v1/hani-galaxy-characters-v2.png",
+      "bytes": 2517599,
+      "gitBlob": "1e655d026510e600d4d828306caf99e70bb03b6e",
+      "sha256": "dc66bd6876573b5216114cd57d557bdd3e52b9f4480bf868b172f7ffd9c3e86d"
+    },
+    {
+      "file": "assets/design-system-v1/srx.webp",
+      "bytes": 246258,
+      "gitBlob": "c6f1dd3e70d077c7080b4c31ab325fed993b16e8",
+      "sha256": "c2c882de038718c66146fddef3d9d8b04ecfc0aaa7b83b7cad0edbfb3ecdf672"
+    },
+    {
+      "file": "assets/heroes/asset-218.webp",
+      "bytes": 42688,
+      "gitBlob": "718b741365a2ca9d8d923c46448f246d6db1abda",
+      "sha256": "44e077bf296184a4176d5ad92aeef06224524262ab85ea4cff1a489231ccfc84"
+    },
+    {
+      "file": "assets/heroes/diet-218.webp",
+      "bytes": 50332,
+      "gitBlob": "a0eb1090b7c2a52c69b025fabcad6243ec5e727a",
+      "sha256": "da6ebbe16e33b56704b5e80b8813dec7fc4dd32566195e0af7a3da6f43e64d5e"
+    },
+    {
+      "file": "assets/heroes/exercise-218.webp",
+      "bytes": 53984,
+      "gitBlob": "512424ecd9f0afad08309224a73a383a23e011fa",
+      "sha256": "1c7ff83f17ff8d8a55c6cdb973f610db41fbbf6e456ed4989601753ee2af75c2"
+    },
+    {
+      "file": "assets/heroes/investment-218.webp",
+      "bytes": 52040,
+      "gitBlob": "37031264dba3aa2c9a15c2f0fcf3afd202447f3e",
+      "sha256": "eb4fd575a5fca43f91650de21edf92aff1f8a24f2c92e01eaadfdfe4ebf2e5ac"
+    },
+    {
+      "file": "assets/heroes/ledger-218.webp",
+      "bytes": 47420,
+      "gitBlob": "405c74f0491326987f50a0c2e03619059a167e53",
+      "sha256": "05b7dc3d6ce640609656d2089daf1331615231613a12009770c2f8e243e9347d"
+    },
+    {
+      "file": "assets/heroes/movie-218.webp",
+      "bytes": 45848,
+      "gitBlob": "4c234752b76485d89c90139f20b8c68aa9c537ea",
+      "sha256": "c0f3b896722b2a781c91912460c4b7eb6670bc3021a1a501ecb5f848a46398c3"
+    },
+    {
+      "file": "assets/heroes/newsroom-218.webp",
+      "bytes": 53102,
+      "gitBlob": "389210d92de85fb070b2e7d0cdf20dddd7728efe",
+      "sha256": "573ec47627cbe0a545bcbeb072b70531a79b5a37a78bdf331584878450a63e3e"
+    },
+    {
+      "file": "assets/heroes/reading-218.webp",
+      "bytes": 51878,
+      "gitBlob": "21f153caee8f54fc9654fe1af3353f534f1c862c",
+      "sha256": "660fe55ff7db496e0a94279d52b62f6bb74013b6ffe49c9e6f2363241ed63118"
+    },
+    {
+      "file": "assets/heroes/study-218.webp",
+      "bytes": 46594,
+      "gitBlob": "d4f9c9849ce590a2aaab14933718fcbb40134dc5",
+      "sha256": "54d8e7513554b164cdfd44e70cd828372c233489fc4240ac6c383b0655bd199c"
+    },
+    {
+      "file": "assets/heroes/travel-218.webp",
+      "bytes": 44228,
+      "gitBlob": "2f01ab378e20508f963b4400177a1cc30fd929a8",
+      "sha256": "139dc74c6b20c769fc611c212363a78f9a3c578d436a085e1e8d2304a1a045df"
+    },
+    {
+      "file": "assets/heroes/university-218.webp",
+      "bytes": 45490,
+      "gitBlob": "9175ea2bc3fdaae7c5c7bae8d0e3e938aa9bd954",
+      "sha256": "c7ce996ba8ca07711beda8d19a456bd1c2ec2a596251aa2441e74bdcf53a83ef"
+    },
+    {
+      "file": "assets/launch/chibi-launch-v1-day.webp",
+      "bytes": 324264,
+      "gitBlob": "d714b69922a854b3cc745a7685c72226422777e5",
+      "sha256": "23eef4ddb3994ed30f93e68b53abcd09412a4ff6965f956b799ec00be2ba3644"
+    },
+    {
+      "file": "assets/launch/chibi-launch-v1-night.webp",
+      "bytes": 284236,
+      "gitBlob": "3a23a514b3d946976c6a16d43076e3cd9609e207",
+      "sha256": "f466228327d823dcaef2a03211f24a31ad55a59bebdbe1934d3ba5edcc94a221"
+    },
+    {
+      "file": "assets/life-market/HANI_LifeMarket_01_Original_Hani.webp",
+      "bytes": 304550,
+      "gitBlob": "195007241fadd9c7c3b29fdd85b8845c8940e823",
+      "sha256": "7c4abc397919f8133a8efc4825f046206264f90db0644b579d7bc3111db2f7a7"
+    },
+    {
+      "file": "assets/office-companions/companions-v1.webp",
+      "bytes": 189438,
+      "gitBlob": "56fcfa8b7849443752a3de864dc8502573aa0802",
+      "sha256": "2a295143929040c144b647efe37a76387123cdb4dd0d2cf3672a2dc3ab17a0f5"
+    },
+    {
+      "file": "assets/office-companions/kids-v1.webp",
+      "bytes": 69190,
+      "gitBlob": "1099e94af3089c6f1f60caac7277956d6f8de699",
+      "sha256": "f9046ee2dc22f0513d481f9382c71707cd8890f5913d2b8653360c414d20478f"
+    },
+    {
+      "file": "assets/office-props/coffee-steam.webp",
+      "bytes": 7502,
+      "gitBlob": "d1dc1b4fa662db3fe7a304a16505be9906d79f45",
+      "sha256": "feb2dd03500f95727b1e71df9f4941d6b3d714e8b49a2458a25078dc1c51ad38"
+    },
+    {
+      "file": "assets/office-props/lantern-flicker.webp",
+      "bytes": 14572,
+      "gitBlob": "965c8b65a1d5b4f47d1c58d56f1e28ecbb6d41c0",
+      "sha256": "a773aa957b2a7079fb8c38ffd3f1030ffb086bc61e65243eca9981d950f7f62f"
+    },
+    {
+      "file": "assets/office-props/monitor-glow.webp",
+      "bytes": 13672,
+      "gitBlob": "da8b99fc826ef89841b9ed8da2c734efc8f9bfb9",
+      "sha256": "db6b7bba16223811cdfd41ccd2be97ea1d57e5744c49c63ec05d48798858df12"
+    },
+    {
+      "file": "assets/office-props/paper-flutter.webp",
+      "bytes": 8612,
+      "gitBlob": "b8dcdfd509f00ed962e6f14a84dc55720e46e402",
+      "sha256": "74004f826f18adeaf88223751c3beb066b121ece44a738e252bba2e421ee90fb"
+    },
+    {
+      "file": "assets/office-props/plant-sway.webp",
+      "bytes": 17946,
+      "gitBlob": "a50628a51a169bc9a0ccb9841f95f647526f17c2",
+      "sha256": "3f0ebbe6dd3080747fdf0c851e52ad6e840285d1991069c9f8692a6fdafdd295"
+    },
+    {
+      "file": "assets/office-props/stamp-sparkle.webp",
+      "bytes": 4546,
+      "gitBlob": "8718bb49ec5d6224f23cdecea2eff7eef592bda6",
+      "sha256": "83de81db55c18381da4498bc91705f3aad37047be7a5079409bfbcb67e2cd497"
+    },
+    {
+      "file": "assets/office-season/barista-night.webp",
+      "bytes": 34896,
+      "gitBlob": "5c22f74f8248cac125e5a629efcb30cd894f703c",
+      "sha256": "01abff41b922b7d081389d5d0d0578ebe33a01177b5fb91645038609267febac"
+    },
+    {
+      "file": "assets/office-season/xmas.webp",
+      "bytes": 77544,
+      "gitBlob": "f3a9dff66f7d2fc466efa0828ee53e886b5455de",
+      "sha256": "7c5315c3b924a05b4ed00679c532410569010a5731fe04db9d5302ec063e7232"
+    },
+    {
+      "file": "assets/profiles/hani-profile-cheese.webp",
+      "bytes": 108042,
+      "gitBlob": "783768b4429753d6e4c7154ec44e448f53f30b1b",
+      "sha256": "32d827f540b81a5223ce2aad54e053bd182b4b18efd8652d6da97283f3e2e83d"
+    },
+    {
+      "file": "assets/profiles/hani-profile-cream.webp",
+      "bytes": 110178,
+      "gitBlob": "4adef1343a6005664f15e41072e993f15a566a40",
+      "sha256": "389abe8e725f6e15cd30cf527ec887e456658ef08489380a8cfd220262037013"
+    },
+    {
+      "file": "assets/profiles/hani-profile-hani.webp",
+      "bytes": 73844,
+      "gitBlob": "9d71897dd17bc947ca3dc4881c1661c7d2920e52",
+      "sha256": "89884ad7f3d466dc139012aafb65ad5c0c88111cd3eeedcb32d83861f6a7b072"
+    },
+    {
+      "file": "assets/profiles/hani-profile-haru.webp",
+      "bytes": 64126,
+      "gitBlob": "0ea288d472a87712a2821aa337484b59beb6623d",
+      "sha256": "e44fc13e5d94aff93dd5bff7d34f2b9e21156903b644897146db20f6c405b31e"
+    },
+    {
+      "file": "assets/profiles/hani-profile-hina.webp",
+      "bytes": 61208,
+      "gitBlob": "8d20cf37aaa9385b8e91e2a12360bfa87f980117",
+      "sha256": "bdaea4aa34302246ba66a84b43b29f94931e7f95c83e205977cfb29cc5edf835"
+    },
+    {
+      "file": "assets/profiles/hani-profile-jieun.webp",
+      "bytes": 56444,
+      "gitBlob": "d89c41dc2c5b8a0700aa792b141e778154512740",
+      "sha256": "b1b5385d1d4e223ce11e821d30a11c3d70f3f06d3e7bc1818b84b4a35c9e278e"
+    },
+    {
+      "file": "assets/profiles/hani-profile-minji.webp",
+      "bytes": 65356,
+      "gitBlob": "4a0e497df477124001975f889a3ba77b9602c994",
+      "sha256": "03e0e53d19e6ba2a930c41265cbd9bdefff8590036dfe1736afa96941abf5bfe"
+    },
+    {
+      "file": "assets/profiles/hani-profile-mochi.webp",
+      "bytes": 77758,
+      "gitBlob": "62d376ba4b2b98305a600593bf669d63aff23541",
+      "sha256": "fb9d59b3c85ff095dfdb94836b23a3e6ccf84e041e109557894485b315ce24c6"
+    },
+    {
+      "file": "assets/profiles/hani-profile-naeun.webp",
+      "bytes": 55148,
+      "gitBlob": "2b9e68f606a5ef7e36abb76d8eca2d0f43e6e43a",
+      "sha256": "ac7fb3e19740e1d8c9179aab7209db9610a90360b554f316d14074399a0c6bd5"
+    },
+    {
+      "file": "assets/profiles/hani-profile-sooyeon.webp",
+      "bytes": 70928,
+      "gitBlob": "10afaf48e1214e69e9b688800cc94e5002c660e4",
+      "sha256": "b4b6231162718871bd2b5062822699ef3586cabe54a4348db564c5dc621600fc"
+    },
+    {
+      "file": "assets/profiles/hani-profile-sua-id.webp",
+      "bytes": 36312,
+      "gitBlob": "ff3e0019166d7df45aaa13a682b16dbc2ba31e9b",
+      "sha256": "8bf91c0a32c20175bccb4a9ca7b9f0f733e5adfb5807c28a313337d831d8ade3"
+    },
+    {
+      "file": "assets/profiles/hani-profile-yuna.webp",
+      "bytes": 70106,
+      "gitBlob": "8bc9bd6352260282c7b50df52d5688e0b96ae1ed",
+      "sha256": "0a3f9c29cb2365f406f4214693bddcc28150030b31e604528a3c879176cb9cb2"
+    },
+    {
+      "file": "assets/profiles/thumb/hani-profile-bori-128.webp",
+      "bytes": 4316,
+      "gitBlob": "cad2fe1733610a76c2314f8aed6d5e5e368678f1",
+      "sha256": "d5aae008aec1ec4aa3e892377c562b8bc61f19778421b40af29ddb7452f8c654"
+    },
+    {
+      "file": "assets/profiles/thumb/hani-profile-bori-256.webp",
+      "bytes": 13386,
+      "gitBlob": "7568ec0ec6fc6b6654ac619aedc47b9a1010bada",
+      "sha256": "4f8d58bdca5ae7eda717f54a0cb2e96013843017823e2ba3c8c1517f7f13120f"
+    },
+    {
+      "file": "assets/profiles/thumb/hani-profile-cheese-128.webp",
+      "bytes": 5772,
+      "gitBlob": "31b1bdb4797b7f40669b41666db965159e4b1b30",
+      "sha256": "b601cf976faa0f90e3d96bd8c89c03dfae12cf62604a04c29d502f5733b43681"
+    },
+    {
+      "file": "assets/profiles/thumb/hani-profile-cheese-256.webp",
+      "bytes": 18754,
+      "gitBlob": "8c15609a0e0d0a7c37c690601e9fd205aa0f4734",
+      "sha256": "aa2a3b6a437efd10fa66fb660bb8f5788dfa3a59816336da142b93742c5b77fc"
+    },
+    {
+      "file": "assets/profiles/thumb/hani-profile-cream-128.webp",
+      "bytes": 5916,
+      "gitBlob": "a3cae757271c88d6f58398d691389a2b12a01eab",
+      "sha256": "5b1db1e5729dac058d30961c25f02d5909f6b53ef0dec252fbf846ca908837ef"
+    },
+    {
+      "file": "assets/profiles/thumb/hani-profile-cream-256.webp",
+      "bytes": 19890,
+      "gitBlob": "73c0956848cdb6d220e5223ced672d45c63304d2",
+      "sha256": "cff161fd1d71d9a22ec30eba860ff54cd77e22a3a426006aa88131dfe4bd8b6f"
+    },
+    {
+      "file": "assets/profiles/thumb/hani-profile-haru-256.webp",
+      "bytes": 15974,
+      "gitBlob": "52e59b12ff35682448d08b4a84dcb78e2353f14f",
+      "sha256": "8fcd8964b0be00170d25e72585518e69d1df058af89223d88a1f3e4f19283ee1"
+    },
+    {
+      "file": "assets/profiles/thumb/hani-profile-hina-256.webp",
+      "bytes": 15216,
+      "gitBlob": "33473d2e9d0721927359b5ced465f14694dca896",
+      "sha256": "7175d28dac8ddca495cbc73a942166c7bd37b0eaea0f98d7b4e7d7ccbf29a5f7"
+    },
+    {
+      "file": "assets/profiles/thumb/hani-profile-mochi-128.webp",
+      "bytes": 4424,
+      "gitBlob": "e01dace7cbc0b1ae0d4481564cfe749be4ef56a9",
+      "sha256": "3a895c716b1f4084627c9782a2e006d640b98b36e241a5df996a1edc1c6f42ff"
+    },
+    {
+      "file": "assets/profiles/thumb/hani-profile-mochi-256.webp",
+      "bytes": 13992,
+      "gitBlob": "977dcc4747434c870cf26567960b5d8c1031ed9e",
+      "sha256": "caf3e6feddbc36d91f3814fc398cf3c9208cbbd501d0ec273c3e4cea07b0f531"
+    },
+    {
+      "file": "assets/profiles/thumb/hani-profile-naeun-256.webp",
+      "bytes": 13590,
+      "gitBlob": "08ac08b12d93157f68770b819c40af2c0bd0908e",
+      "sha256": "f19e4a424efdb99644072355de37f5bfbd4583133aa2377b8158fdbcaacd3b19"
+    },
+    {
+      "file": "assets/pwa/icon-192.png",
+      "bytes": 10823,
+      "gitBlob": "8273118e738589ed2a46b9f6042dd4e1b435d55d",
+      "sha256": "569a61638f39acbdfeed49fbcd024f2aad93791abce81fc92d5012fc1ce83ddc"
+    },
+    {
+      "file": "assets/pwa/icon-512-maskable.png",
+      "bytes": 31400,
+      "gitBlob": "81bc23f8f23b149146edbfc6b8889a505f28aba0",
+      "sha256": "cae535ad8ae5e3ef8f32d502cb2c8b7e6b78858022960c2402ca57883f9a8855"
+    },
+    {
+      "file": "assets/pwa/icon-512.png",
+      "bytes": 53398,
+      "gitBlob": "155cd5c54c5123df2987b6be61834adb671318cf",
+      "sha256": "8e58735c4bad71ba4f59a6a0deaf02c9ccfa3e9f798d04bc661c36cc0013c6fb"
+    },
+    {
+      "file": "assets/queen/2026-10.webp",
+      "bytes": 88808,
+      "gitBlob": "3b9480feb46fc5c3d669e7c0b6debbec683a5c46",
+      "sha256": "4003bd67e78e997aec43bf0bfbe37b2042231f1b3b99e873da4a6bff29deff81"
+    },
+    {
+      "file": "assets/seasonal-collection/aura-season-campaign-v1.webp",
+      "bytes": 446300,
+      "gitBlob": "7d7da2b6993c92b07a1376acdec979b920fd907d",
+      "sha256": "c63532804782de94216ba615f9a6919a2552096a579e1c79e68855a179669883"
+    },
+    {
+      "file": "assets/seasonal-collection/autumn-v2.webp",
+      "bytes": 209760,
+      "gitBlob": "b1e071fa9d1036303251efa9e87c911d248a57f1",
+      "sha256": "3fdd75b3ae7dcd5bb4e9db8c9454773333b43b1e1484d438c54519381f85697a"
+    },
+    {
+      "file": "assets/seasonal-collection/sidebar-autumn-v2.webp",
+      "bytes": 280988,
+      "gitBlob": "39fc6f8acece0ff417b4f09e2a27fb4077d0dc40",
+      "sha256": "4e3beba41b216af077ddd6c5743c8eaa5549a50f4b0e873c355319fabc1f83bb"
+    },
+    {
+      "file": "assets/seasonal-collection/sidebar-spring-v1.webp",
+      "bytes": 292904,
+      "gitBlob": "574c6ccf4bb2129bd2964794df573b443505d5cd",
+      "sha256": "810a9a97d6c1945764e7f48c20c9e2a85574df2683dd219a54322241a969eed3"
+    },
+    {
+      "file": "assets/seasonal-collection/sidebar-summer-v2.webp",
+      "bytes": 248666,
+      "gitBlob": "2b49640aa1fa67d36ad405cefb654e22649dc711",
+      "sha256": "7db388dba79bb7a9ddc3544b819c051d33f7c934f6b4b9ff5692c8351a25734b"
+    },
+    {
+      "file": "assets/seasonal-collection/sidebar-winter-v2.webp",
+      "bytes": 295536,
+      "gitBlob": "77664ca6461ec3d4e63b2d4f92fb92bf708f7048",
+      "sha256": "fef4b8cf46cda1e7152e4bad9efef7f8a26c1f664b815dfdca3fcb9c20ce0c3f"
+    },
+    {
+      "file": "assets/seasonal-collection/spring-v2.webp",
+      "bytes": 217232,
+      "gitBlob": "86c8b32b7e0c50d683250f4a8ea239f05ebaa8ad",
+      "sha256": "60630930c7316651894b9778cb1ffc300903c21094354c89a6f689a428314069"
+    },
+    {
+      "file": "assets/seasonal-collection/summer-v2.webp",
+      "bytes": 219896,
+      "gitBlob": "dfe6dc31f0a40c998c1ae42995ac2201967ea76e",
+      "sha256": "d365e562f53e9d896c8956e5d15a1641b9184ff803bf78e9620f36e6cbe741e9"
+    },
+    {
+      "file": "assets/seasonal-collection/winter-v2.webp",
+      "bytes": 199156,
+      "gitBlob": "313178aba9f3d1637e4451c91cde6645dbd33e48",
+      "sha256": "79807c874d1cfdcd49777c1e0e5ec3d2b176af9ecb67e72109539da14ab9f050"
+    },
+    {
+      "file": "assets/sports/dplus-kia.svg",
+      "bytes": 5188,
+      "gitBlob": "aeb17fe29c21ebe74289f91a70eca3bb84d345d3",
+      "sha256": "4c59b0d681a558c53cdf6479722190a3393ab7683804011be3623d57e4c74a08"
+    },
+    {
+      "file": "assets/sports/inter-milan.webp",
+      "bytes": 9542,
+      "gitBlob": "c7fc973e9257c1e7c6500136dced392fb653878d",
+      "sha256": "4b38182e3485f3f876c9e975da0289d5dc7a9cd1d82c2d7b3d1017ffc5e42bd8"
+    },
+    {
+      "file": "assets/sports/kia-tigers-current.png",
+      "bytes": 16668,
+      "gitBlob": "5e46c1ef5735925f7a30bc8fc98e39b2e20204fd",
+      "sha256": "0807ec4eebf4a21725b51d58b051c7b8bea2a443ca1d0f87f4aae169dc582adc"
+    },
+    {
+      "file": "assets/sports/new-york-yankees.svg",
+      "bytes": 1380,
+      "gitBlob": "5d8498f7b33c86cd5edd3eb9fae67d1e1febd319",
+      "sha256": "2d254440a691933ee6226ad049b7b166ffea471233296cc73dc072a53ac95fb0"
+    },
+    {
+      "file": "assets/sports/real-madrid.svg",
+      "bytes": 36563,
+      "gitBlob": "2e636b33b2ad87100bf69b6eb8274a6b6bebaccd",
+      "sha256": "8ace3aae37c9e0d37801d512a1dcf11ef2fdc034f51d13bec277518f7910d5a1"
+    },
+    {
+      "file": "assets/sports/t1-logo.png",
+      "bytes": 36671,
+      "gitBlob": "8c33d26bf3cc992f4ae876808d851dfdb6ac634f",
+      "sha256": "25312183dd7c134f4e33f40da6c6ccc70457eb66ff98cda827935a9be1e3b5d8"
+    },
+    {
+      "file": "assets/sprites-v3/daon.webp",
+      "bytes": 29608,
+      "gitBlob": "a55e719f3ff3f275310282728de5f10eda8af062",
+      "sha256": "6b43681b488994c4ef90223a0c8c71307cc7e229adfb5c77fca858c2d45bf529"
+    },
+    {
+      "file": "assets/sprites-v3/npc-cleaner.webp",
+      "bytes": 21372,
+      "gitBlob": "323df79764d3a3d07b2bf4b64bd874c2894029c7",
+      "sha256": "486fa29675af2b2b25c83aad777b77e68071db6c4fae083c3676675a11d0e745"
+    },
+    {
+      "file": "assets/sprites-v3/npc-gardener.webp",
+      "bytes": 21506,
+      "gitBlob": "ee9182f45d80dd24b0cfd69f659edc14ade2f905",
+      "sha256": "665319d12519f8d97b8796ba2502439b0efdad393449f756ec3d16c6ede886f8"
+    },
+    {
+      "file": "assets/sprites-v3/npc-temp-a.webp",
+      "bytes": 20120,
+      "gitBlob": "77c226f03aa3eb3e0af2d1a6ca585215e38ebadb",
+      "sha256": "c50b027d5290036652f6362712346aa15fd8637df1ae60674678bac7e4f34acc"
+    },
+    {
+      "file": "assets/sprites-v3/npc-temp-b.webp",
+      "bytes": 20330,
+      "gitBlob": "ffab31ac6372b74cd6586df04df6a576358ec318",
+      "sha256": "65fb9397d0e9c99fcc6bbc4fb4be2638bf7bfc84ba8dbbc20dbadb817f0976ec"
+    },
+    {
+      "file": "assets/sprites-v3/npc-temp-c.webp",
+      "bytes": 19560,
+      "gitBlob": "d3d8c420cd44992a427b0f66a96be3cd7148058d",
+      "sha256": "ef475125af1460b67d1d8d48e775611f81af502d173da4c262d52c56329c4d72"
+    },
+    {
+      "file": "assets/sprites-v3/pet-bori.webp",
+      "bytes": 39404,
+      "gitBlob": "25b9a0dcf2e3d2928bcca3d2d2b593f2823edab7",
+      "sha256": "5180a9c32c3cd2c4c2c9967d2195dd8207294a5b5d98001278284d53fafb2265"
+    },
+    {
+      "file": "assets/sprites-v3/pet-cat.webp",
+      "bytes": 26012,
+      "gitBlob": "31b463700c0c3200312a2bf63f899f1deb6e6dbf",
+      "sha256": "363bf2ffd5e6cca66d45ef47d108e21485fab77fd343a47bd36d110c60bef28f"
+    },
+    {
+      "file": "assets/sprites-v3/pet-dog.webp",
+      "bytes": 30484,
+      "gitBlob": "ede10f09de055950d3c9e5b1d9016aa84b469486",
+      "sha256": "e2e87385e9aeea5fa4e9559410d655f02dcad19ccbb435caac3dc012635c37f8"
+    },
+    {
+      "file": "assets/sprites-v3/pet-rabbit.webp",
+      "bytes": 32442,
+      "gitBlob": "2fffc79d05be79bcbd9736b0b1934f75c18ac68b",
+      "sha256": "dd0e60bde7eb949bac0d491b659d2d93720e042b172c328457a7e9f29975ec2f"
+    },
+    {
+      "file": "assets/sprites-v3/yoonseul.webp",
+      "bytes": 37206,
+      "gitBlob": "a60c67753fe899cc5db63746bc7edb6702c90c0b",
+      "sha256": "58af0f4267c1837413806d486cfbe082d9d24f667caeac13f97453b5cd9f7662"
+    },
+    {
+      "file": "assets/street-journal/chibi-sheet-v1.webp",
+      "bytes": 168748,
+      "gitBlob": "c20b5084d51cfb5e5f2d104c446b534f16f5ef15",
+      "sha256": "ba1cac623db561cbbcefe6c5aa783425d7ba3c2db2f08a0e42aac383e0f9786c"
+    },
+    {
+      "file": "assets/street-journal/chibi/jieun-think.webp",
+      "bytes": 44000,
+      "gitBlob": "c4fb3617a32638acb559e415b44eff5c7c631741",
+      "sha256": "6af702c9d96f6660c409eb1ca8741f8d2bb62e0f484fe31a1947bf6fb8cc5b18"
+    },
+    {
+      "file": "assets/street-journal/chibi/minji-think.webp",
+      "bytes": 53366,
+      "gitBlob": "b4308607c03d78f64e0138d65e3f76af29608ae4",
+      "sha256": "8d5b358196d31044b7ddd68736e9a9a993bc313559fa62b4e832a3ac19777ea9"
+    },
+    {
+      "file": "assets/team/hani-team-office.webp",
+      "bytes": 235640,
+      "gitBlob": "cfb4288096dabfca499526e9fe1bff15360cedd0",
+      "sha256": "8324e43d8d70eee6f1b28e31aefba79a76f19e5f4accfd2de7aba216ab425daa"
+    },
+    {
+      "file": "assets/team/hani-team-picnic.webp",
+      "bytes": 316554,
+      "gitBlob": "9d01dd644f36e5fab077dc627022d3434712344a",
+      "sha256": "8ce6f02f0f391cb53d0bb17b4a824d9cbcd81866cbbec041fc4f74616d0dcb86"
+    },
+    {
+      "file": "hani-ai-budget-core.js",
+      "bytes": 8783,
+      "gitBlob": "79efb4001f2697857912932a6458a72b60b5f433",
+      "sha256": "c56cf98cb20f85dcec01cb41d5afde110b73e3116810e9a0e0a0b19efb5fe1af"
+    },
+    {
+      "file": "hani-ai-budget.css",
+      "bytes": 4147,
+      "gitBlob": "22d82c78e7858a9b0e60d7b282ab001f9fe850c6",
+      "sha256": "593b16d923fc45dee688d1e54311ff0a2875f9c9fbdf95f86a27f9b505d8f705"
+    },
+    {
+      "file": "hani-ai-budget.js",
+      "bytes": 14876,
+      "gitBlob": "d27b250a906bff415259b7399e47ce47ab509381",
+      "sha256": "ba67b44614c007fd129b36c21f57a28ec4f69912d626d61b82453910550a21d1"
+    },
+    {
+      "file": "hani-asset-market-view.js",
+      "bytes": 60797,
+      "gitBlob": "27139f0b6e7cc4c8063ac777bd8f370c4335bba9",
+      "sha256": "c6d5d7775d724178e5a34873db89fc8c0cab4bd3bd5466b91b819c700942ee0a"
+    },
+    {
+      "file": "hani-asset-market.css",
+      "bytes": 8424,
+      "gitBlob": "0c54aabe8fe41214d450f8b746dc888e874df12a",
+      "sha256": "0a653215b9b5744d4ff61aaa8224d84f2dcded962655a38655a79b95967e2601"
+    },
+    {
+      "file": "hani-asset-update-v1.js",
+      "bytes": 110340,
+      "gitBlob": "63075dd12e7c72a1cfdb4cb712cb25b83b96475f",
+      "sha256": "3af574258171199890e2796fbc76331ad6b3fdc7ce8a8f2006dae829a06f25ab"
+    },
+    {
+      "file": "hani-board-library.js",
+      "bytes": 300132,
+      "gitBlob": "ba2d29c04b8098f9db034e2fd1beaab671fcd54b",
+      "sha256": "46de2310c80c3672cda9d80430f93f9198e65450fc8faa7a58690cda69944423"
+    },
+    {
+      "file": "hani-board.css",
+      "bytes": 15101,
+      "gitBlob": "506e1f8f93ead05d0445b9997bdee76a1013baa7",
+      "sha256": "9514dfc7784ee5d3f0db9929c31c27c9abc6103eea7fa52ea86ebaefc4328f10"
+    },
+    {
+      "file": "hani-board.js",
+      "bytes": 154321,
+      "gitBlob": "519b11dc67762eed180cdb8d82858cccf213829f",
+      "sha256": "367029c6b6ddd186e2572423f93c9c2f782199d75b5cb41e0232260de74afb90"
+    },
+    {
+      "file": "hani-character-archive-data.js",
+      "bytes": 55569,
+      "gitBlob": "e46067d9e58e35c43d8d919a7b4d90b500b75f6a",
+      "sha256": "abac4a0ad7aab92e34d2872693b233f3dfe8155f18ead51d68994cb36e73dac8"
+    },
+    {
+      "file": "hani-character-archive.css",
+      "bytes": 44105,
+      "gitBlob": "6866db38cc0452f2c2f8c8d8dfd9d0023390953d",
+      "sha256": "c2b9282afdabe46135378d48560fd8fb7a4ee1dba09bfa7d174a5fef2ccccd8a"
+    },
+    {
+      "file": "hani-character-archive.js",
+      "bytes": 22435,
+      "gitBlob": "65d595e4950009f8c1fa7f184e508ee4c7c4af64",
+      "sha256": "c733f76d845caa38c71358b1056fac3a932bf505de99e350d1eb49f13081d370"
+    },
+    {
+      "file": "hani-company-followup-preview.js",
+      "bytes": 7732,
+      "gitBlob": "41127e977fe2051fd41f73372ffc1fbba7094017",
+      "sha256": "34479bd9f5a23669228a142e2b5fa922747253162faf4e95fd416c12798993b8"
+    },
+    {
+      "file": "hani-context-remote-v1.js",
+      "bytes": 25862,
+      "gitBlob": "b046b8d6e942526fb75927d6d09b825b9dadeecb",
+      "sha256": "b7de3e0a0493087f7cee9b4b83e67fdbbbb8ab1988b6d00a7a3c015543e4903d"
+    },
+    {
+      "file": "hani-context-remote.css",
+      "bytes": 19685,
+      "gitBlob": "aae1fb1df0b45731145c9a423efa23d234839575",
+      "sha256": "b543f80d8301c5427f1c44d631b831b76e60e1b657f7ee076c6be290c9b36a68"
+    },
+    {
+      "file": "hani-design-system.css",
+      "bytes": 265368,
+      "gitBlob": "6693d10643b728fa04ced08450c5e42dd0e2d678",
+      "sha256": "90699b9788c8d9397fbef35f88007611875b83086880c31a4a6e488ec4c02353"
+    },
+    {
+      "file": "hani-desk-mascots.css",
+      "bytes": 550,
+      "gitBlob": "2c0e1e07c0026db8cb1e38b76ccea1468ce3a946",
+      "sha256": "7d444063cf5e627b11637cb97fefb0cdcb871c1d0ccc1fa124576c37ba2063cf"
+    },
+    {
+      "file": "hani-desk-mascots.js",
+      "bytes": 6575,
+      "gitBlob": "bea95376ac4decf7044eccaf60aae90e225e229e",
+      "sha256": "6f669132a8402adf562d6f6a61fded40077d64b758545485e338b1df27d1d82b"
+    },
+    {
+      "file": "hani-development-history-v1.js",
+      "bytes": 13520,
+      "gitBlob": "1b6b47f10aa59678b2231371055270e75d368bcc",
+      "sha256": "aee1f63008e3a0c48bcd273e1c047f13897ee904f70951285340a3fa02fff5b0"
+    },
+    {
+      "file": "hani-development-history.css",
+      "bytes": 4796,
+      "gitBlob": "516def1a7e9443219360763eda7f95c5666f85e0",
+      "sha256": "d17b6bf45a3d5c1fff9b7b95440137c1a7c759d59656ad9735bb26c3951c6937"
+    },
+    {
+      "file": "hani-drive-vault.js",
+      "bytes": 19624,
+      "gitBlob": "a22e38fd5bec87c9ca7e8ed2931db1c6b0aba8b5",
+      "sha256": "21b2e5b69714289dfc66ebd2367637db0a1c6ae72c63f8ea018f2af31a4cfdfc"
+    },
+    {
+      "file": "hani-goal-progress.js",
+      "bytes": 70465,
+      "gitBlob": "7f8a78d79c4d1d2a310f58d2d874686c7c36a759",
+      "sha256": "69c36af964e17ed3b1ddcd7351772b9cce5e47e0b66fae964b45ebcc47e792a8"
+    },
+    {
+      "file": "hani-ilbo.css",
+      "bytes": 13559,
+      "gitBlob": "e2586b5ae85dd00f5b2eaa10ca7ef39e3b9113dd",
+      "sha256": "4e3074d1fa1fcc2debad6ccbd78801a55d967cd131f8b12f28da05338ce61598"
+    },
+    {
+      "file": "hani-ilbo.js",
+      "bytes": 22218,
+      "gitBlob": "bf4d7a4bd37b44d56e316c06adee66aba21c5506",
+      "sha256": "0c0f6285854c785173825de7cedc7444d62e08b6b7988b171600f558f7be9d38"
+    },
+    {
+      "file": "hani-investment-committee.css",
+      "bytes": 36170,
+      "gitBlob": "d666aa266e876eac472928475e826f4c81db14a3",
+      "sha256": "7f96fa3806a06f7c549d92e1d2e701d3345c29e1691146e68e9efd5a5f129da0"
+    },
+    {
+      "file": "hani-investment-committee.js",
+      "bytes": 151298,
+      "gitBlob": "c662749849fb42d7d1e0ed6965a8b772b181540b",
+      "sha256": "6b6c5f4fcb67abde180f81a940ce0cfcc1f1937a4567088564a6a746a0f0ace1"
+    },
+    {
+      "file": "hani-launch-greeting.css",
+      "bytes": 2343,
+      "gitBlob": "6c57bba466a3c1b880ab5ca779bc457e721f2564",
+      "sha256": "16e7bbd6627b0378911cf3e7088e208bf5d20e6308c6cc2f5ae093b3508c5c75"
+    },
+    {
+      "file": "hani-launch-greeting.js",
+      "bytes": 8521,
+      "gitBlob": "3bd4dd0c1907df93a32a29eae078ea0b337e6bb5",
+      "sha256": "4b30c68a199b20c062251f5f23e8399f8e9aa42dcaca9b8d8f96b4b899abdb9d"
+    },
+    {
+      "file": "hani-main.js",
+      "bytes": 1397291,
+      "gitBlob": "3371f889e20f62eaf534077248d82f060fe3feb7",
+      "sha256": "5cb241725fe70379cc7097079dfd81c87e6f3a782a30888fbf588bb6355cf59e"
+    },
+    {
+      "file": "hani-market-data.js",
+      "bytes": 15484,
+      "gitBlob": "b316849fcec438fd6b4aa5aa6a2b4a7c70e81586",
+      "sha256": "dc946bc1bc40fd18dfdf3639035a14b5dc24e1a3687f74ad5e6ce895a33ffef3"
+    },
+    {
+      "file": "hani-media-core.js",
+      "bytes": 17062,
+      "gitBlob": "b5572affb5d5e7550e5d65394b32268ec7382a64",
+      "sha256": "68865cb9fcf0e123e1cb86994a90741de7eaf9026bd6b1acb72e3c231259eb37"
+    },
+    {
+      "file": "hani-milestones.js",
+      "bytes": 53324,
+      "gitBlob": "b4f12e83d8af57043dc4bd4dc16ae3801e24e0f0",
+      "sha256": "37d0e345b19b0eaf53a3f6c26403b85e302a507e60a12f92a255c3eab85c9453"
+    },
+    {
+      "file": "hani-newsroom-4cut.js",
+      "bytes": 6929,
+      "gitBlob": "75443ad6b19903f733d33040a6c81f0263fac1cf",
+      "sha256": "adf22c3a15ba8713262d277286b60b437429beb3c37f1ffe14228f6e909dc79c"
+    },
+    {
+      "file": "hani-newsroom-ux-v02970.js",
+      "bytes": 23763,
+      "gitBlob": "d1a897f4f584502eb0343d06834233c56dd42fce",
+      "sha256": "3559f0caf0193462c0bb59029235bd27ab33194d4c5dcbd27404326730f2fcac"
+    },
+    {
+      "file": "hani-office-live.css",
+      "bytes": 39455,
+      "gitBlob": "e480d9a3696a5f427ea79f2765bf750b2755a38f",
+      "sha256": "08d17d38c291d85481b2315f1579be6af265b677f62c3be6f2c0ed643f73eee5"
+    },
+    {
+      "file": "hani-office-live.js",
+      "bytes": 434658,
+      "gitBlob": "ee5209f8061887a10d0403e6d0174d0c4893c01f",
+      "sha256": "880f8bef93ea20fbcb4bcf7cf5205d72c9e62c40b09d56606ab47f13b84826cb"
+    },
+    {
+      "file": "hani-organization-hub.css",
+      "bytes": 48074,
+      "gitBlob": "2b26fd20dd95ce891eaec55443482de33a3f5ecc",
+      "sha256": "cb7821ba3d0b89360cb990fe964d0c454705108a7de020305ac4c45292026182"
+    },
+    {
+      "file": "hani-organization-hub.js",
+      "bytes": 38590,
+      "gitBlob": "11f662617ddb83670999e6705333b4762351247b",
+      "sha256": "c2cd9d329789bcae2d57b23d54638c1bb0770b56cd4a7a1ef14ae6b2061f5e70"
+    },
+    {
+      "file": "hani-portfolio-preview.css",
+      "bytes": 8712,
+      "gitBlob": "97ec3e6b78922cb82db41b101565ae40c347de80",
+      "sha256": "ba189604ad26772bab38e9c2ca4c5294a3511e323217a5227043561f9fde08ee"
+    },
+    {
+      "file": "hani-procrastination-board.css",
+      "bytes": 4759,
+      "gitBlob": "7d2ba3b1c3b8e8ca7311783d883bf1f4447be8f5",
+      "sha256": "2e44953e391795046b1bf11cee0aef44d41494b0a5a9f4736effba0539d78095"
+    },
+    {
+      "file": "hani-procrastination-board.js",
+      "bytes": 10266,
+      "gitBlob": "5e53eac35e4bf6b4e7cc3208012ecf4b5eeb6042",
+      "sha256": "26454b95f6cb25da01158563755cab621a56b19bfe6c626e8030bfccca2eb38d"
+    },
+    {
+      "file": "hani-relationship-seed.js",
+      "bytes": 58850,
+      "gitBlob": "eb40bed18f6d50ec4645829040537cd80600edb5",
+      "sha256": "8136d8e002247520532dec099b834c133c3e5a7f70718dc3b974d6ade5b84295"
+    },
+    {
+      "file": "hani-stability-polish-v02972.js",
+      "bytes": 7938,
+      "gitBlob": "7f95db021ab1bfdd3a75734e84052d1b9bb653a2",
+      "sha256": "c7bc4ea8708a4b8d4492d0dcfd550dbd560dd40f990cc53dd2d8afbf10262d44"
+    },
+    {
+      "file": "hani-street-journal.css",
+      "bytes": 8953,
+      "gitBlob": "a995b1ee9be8c26b31089e4a95dc650f255eeedc",
+      "sha256": "7644bd0f1114824ee82668e8f40073277154d1fba6956cb92fbbd0f0ed2fc86a"
+    },
+    {
+      "file": "hani-street-journal.js",
+      "bytes": 20625,
+      "gitBlob": "97925047583fd0fcd3e4f9caddca8177d958e362",
+      "sha256": "9cead18ddae0e09807e884800d16aedfbcc66eefde90ea8c5a8c15b2ce80fea6"
+    },
+    {
+      "file": "hani-study-v02984.js",
+      "bytes": 138293,
+      "gitBlob": "239b6b35f34bf193368f8968f325fe9c3663895d",
+      "sha256": "77a03d403c6f188c3c3081ed79d2874fc3da658ca893bce84fd52ce6f07d6777"
+    },
+    {
+      "file": "hani-style-01.css",
+      "bytes": 252526,
+      "gitBlob": "3f8477188eebdf38e2f2733e2ab9bfe70721dc71",
+      "sha256": "4943a672a55a52df87d3eb628276dff3c4242a898690c6b9014cdfb4f8d63589"
+    },
+    {
+      "file": "hani-style-02.css",
+      "bytes": 1306,
+      "gitBlob": "5b6da77dfdd69dc59b2e3ab9bb23090ec3084ab6",
+      "sha256": "ad9e5c044031acae3b96f2d311159529863efa13a326bff6e9a3b57fc63a6505"
+    },
+    {
+      "file": "hani-style-03.css",
+      "bytes": 2264,
+      "gitBlob": "c43ff4b8db2e6ea35c140041bc4a8035640beeaf",
+      "sha256": "ddb9f8754223edb21b8225d251acd6f76e025348eef1ea50c94d93c549e48b33"
+    },
+    {
+      "file": "hani-style-04.css",
+      "bytes": 4958,
+      "gitBlob": "316e813f50143980cc4fd06a29c729c3cc810801",
+      "sha256": "04ec5e0257b49d7f8d9f79e270a62c96b85b4f94a318f93714c4fe63085540f6"
+    },
+    {
+      "file": "hani-style-05.css",
+      "bytes": 6243,
+      "gitBlob": "acc1d0a829979d8ae6e095f6b2e7b0f4baa4dd94",
+      "sha256": "84028ad2e021be805a5ff6f133d7b02eff21c04503d8258bc7604633701afb09"
+    },
+    {
+      "file": "hani-style-06.css",
+      "bytes": 3987,
+      "gitBlob": "195b1c49a3d048c901e6d945d08555cc1ba8ae30",
+      "sha256": "e26d0cbda052626d78fcd03b49340b84298253d825b0fc576e7a7656e992b1a1"
+    },
+    {
+      "file": "hani-style-07.css",
+      "bytes": 95472,
+      "gitBlob": "dad8f068cf0313da404b86899ed79ae1147e521f",
+      "sha256": "00de7ed2c0962d03781ea05cbd9178df463e667a087ce042ecf1171985775432"
+    },
+    {
+      "file": "hani-style-08.css",
+      "bytes": 49856,
+      "gitBlob": "4891779f2e837a70857b79c752feef80f6eb0644",
+      "sha256": "ce9fbb9e75549f581443a241178fe0fa1fce45c84a614b5bc6652fb622e4350f"
+    },
+    {
+      "file": "hani-ui-cleanup-v02971.js",
+      "bytes": 17637,
+      "gitBlob": "35ebf07a9e8be89e48ecf16092769d68827a7bf4",
+      "sha256": "fd234ee6ff7dfee253011a0447d57194b3131e6f29e16ca0ef6c1878b8c12339"
+    },
+    {
+      "file": "hani-ui-v02973.js",
+      "bytes": 18929,
+      "gitBlob": "5e3cb31d77f63c406622df3100615001b4ebf743",
+      "sha256": "bbee83aac4cc501e87107098232fc5959493a9e223959a639d09b83c3fbf776e"
+    },
+    {
+      "file": "hani-ui-v02974.js",
+      "bytes": 13374,
+      "gitBlob": "57fa106f13998fb3169e851a3248873fb2765c7d",
+      "sha256": "c9c94d57b751128ed9859ee349f703d693171656b7905227f5d1aab8502dfbab"
+    },
+    {
+      "file": "hani-ui-v02975.js",
+      "bytes": 17026,
+      "gitBlob": "b55a44fb8f5f141f4dab8fad795042d40f364d39",
+      "sha256": "764974476122d47aeffff908c930501b13d25e8f887d03b01efc8dffe9e8447a"
+    },
+    {
+      "file": "hani-ui-v02976.js",
+      "bytes": 29750,
+      "gitBlob": "425b4c0e81fd91ee5ac7385ff176e166d4cf1790",
+      "sha256": "d1374f67ff6cfb05d510aab37b926eb7dba25412a1450b5419ff4d4ca5382908"
+    },
+    {
+      "file": "hani-ui-v02978.js",
+      "bytes": 37489,
+      "gitBlob": "701a18209d3f13b796e3a4edc590de7200198009",
+      "sha256": "f7ca15d159049d7769ac10ed2c5a340d93daac03a3d86f48056f4b2109e35e43"
+    },
+    {
+      "file": "hani-ui-v02979.js",
+      "bytes": 33256,
+      "gitBlob": "741e298c243e5b94e5bdd142e49ce4d588643cd7",
+      "sha256": "056ee811bdcdc704110125a9e61ed5db224df57083748b88e1a854230bbf32b3"
+    },
+    {
+      "file": "hani-ui-v02980.js",
+      "bytes": 19579,
+      "gitBlob": "9fc5869aa772e994b1a4156a2d0dfa4d316bd629",
+      "sha256": "0f74bdda836d0b5d9faefc4ee2038aafd2d0fdd4b55cb59b3cb83a69a749f11d"
+    },
+    {
+      "file": "hani-ui-v02981.js",
+      "bytes": 18700,
+      "gitBlob": "19c7525774177ee25247b0e48d5a3323f30422ad",
+      "sha256": "edea24056eb381f058100a6f3e69413c69f4b998fba74b08cbdc39e382ee49e8"
+    },
+    {
+      "file": "hani-ui-v02982.js",
+      "bytes": 25176,
+      "gitBlob": "b1a95455555c53809d914a332ce9053c9f7ca64d",
+      "sha256": "7ae03ed6a26d9916fb6e704e09795218890f63a848e639d2a75d9c721badda7f"
+    },
+    {
+      "file": "hani-ui-v02983.js",
+      "bytes": 10252,
+      "gitBlob": "3616cbdc26ad38427c23e4dff73fb426e8e429a6",
+      "sha256": "8c71d6ba791ade79cb3c50d51bac85d0fe205b8ad425b19771ac89d005891a2a"
+    },
+    {
+      "file": "hani-ui-v02992.js",
+      "bytes": 138773,
+      "gitBlob": "c6917aea0943fbee1fefb8b5de3c9cd9039e604b",
+      "sha256": "5a83b8de88c24e8fe6f5df68d0d67d1e85f26d08bab0f286f4bf8a1a9a01bd62"
+    },
+    {
+      "file": "hani-yuna-helpdesk.css",
+      "bytes": 10791,
+      "gitBlob": "f5f112c1ec09ee12ef8e64b131a673bd76c0555c",
+      "sha256": "400313f225ecc430e1ea3c541212a08c2dd7391ed5809ad4b9998e7b9515765a"
+    },
+    {
+      "file": "hani-yuna-helpdesk.js",
+      "bytes": 50166,
+      "gitBlob": "c8e225602c3497904033c4a1f52587ea7e904e55",
+      "sha256": "195c7711c825cb5276b7978bb88ee98d9b7bfa0714fbf69f41f86518942de229"
+    },
+    {
+      "file": "index.html",
+      "bytes": 264518,
+      "gitBlob": "7f2068ecf483d317ba8b6784d98f29aa5b02b2f8",
+      "sha256": "8fdeca064bcb5389d02c925240ceb0e0e8f36255d3a01d3a53a6d42c53503281"
+    },
+    {
+      "file": "js/hani-pdf-core.js",
+      "bytes": 443338,
+      "gitBlob": "5c23fd0763171039dbfcc02e4d7d8a5d8a9da073",
+      "sha256": "810c0a1f2f47c32ef01c68d74bf24d38ef4690cf5ead6cb4967266dea8a736b3"
+    },
+    {
+      "file": "manifest.webmanifest",
+      "bytes": 558,
+      "gitBlob": "2349421f04f6d4e1add9a82adbade1a650d58b13",
+      "sha256": "9cf3e50dae11a7c31e7eee927a4485b0685364838dd77b4bb4a25ab35c6e5429"
+    }
+  ]
+}

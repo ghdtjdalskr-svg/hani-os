@@ -1,0 +1,108 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 17.8706
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.8234
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 16.3077
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 7.9699
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 70.3411
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 247.9579
+  type: 'test'
+  ...
+# Subtest: obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately
+not ok 7 - obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately
+  ---
+  duration_ms: 685.4231
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\tool283\\scripts\\hani-office-obr15.test.mjs:30:1'
+  failureType: 'testCodeFailure'
+  error: 'USER_GIT_DISABLED: task 283 prohibits Git; independent Git assertion remains unverified'
+  code: 'USER_GIT_DISABLED'
+  stack: |-
+    cp.<computed> (C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\tool283\artifacts\life-bundle\no-git-283.cjs:7:16)
+    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tool283/scripts/hani-office-lively-fixture.mjs:9:9)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tool283/scripts/hani-office-obr15.test.mjs:32:20)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: obr15 canonical presence first arrival / >=10 minute absence / brief flicker / day rollover / override
+ok 8 - obr15 canonical presence first arrival / >=10 minute absence / brief flicker / day rollover / override
+  ---
+  duration_ms: 0.2497
+  type: 'test'
+  ...
+# Subtest: obr15 greeting occurs immediately, 1–2 nearest available 4F staff stand in place for 5–10 seconds, then exact original action
+ok 9 - obr15 greeting occurs immediately, 1–2 nearest available 4F staff stand in place for 5–10 seconds, then exact original action
+  ---
+  duration_ms: 5039.4686
+  type: 'test'
+  ...
+# Subtest: obr15 greeting never addresses a chairman on a different floor
+ok 10 - obr15 greeting never addresses a chairman on a different floor
+  ---
+  duration_ms: 3.5695
+  type: 'test'
+  ...
+# Subtest: obr15 legacy 216 fallback retains its no-chairman-outing contract
+ok 11 - obr15 legacy 216 fallback retains its no-chairman-outing contract
+  ---
+  duration_ms: 389.7416
+  type: 'test'
+  ...
+# Subtest: obr15 reports: 4–8/day, one/person, 20–60 seconds, private chair unused, actor/resource collision zero, elevator round trip
+ok 12 - obr15 reports: 4–8/day, one/person, 20–60 seconds, private chair unused, actor/resource collision zero, elevator round trip
+  ---
+  duration_ms: 1086.4656
+  type: 'test'
+  ...
+# Subtest: obr15 reciprocal two-line report dialogue, exact endpoints, absent/cancelled/summoned gates and deterministic order
+ok 13 - obr15 reciprocal two-line report dialogue, exact endpoints, absent/cancelled/summoned gates and deterministic order
+  ---
+  duration_ms: 3202.631
+  type: 'test'
+  ...
+# Subtest: obr15 actual persistent renderer consumes presence greeting and reciprocal facing, then resets through the existing update path
+ok 14 - obr15 actual persistent renderer consumes presence greeting and reciprocal facing, then resets through the existing update path
+  ---
+  duration_ms: 1066.3182
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 13
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 11900.7318

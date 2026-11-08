@@ -1,0 +1,42 @@
+[
+  {
+    "file": "scripts/hani-office-barista-night-273-pins.test.mjs",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "file": "scripts/hani-office-barista-night.test.mjs",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "file": "scripts/hani-office-bori-stroll.test.mjs",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "file": "scripts/hani-office-companion-homes.test.mjs",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "file": "scripts/hani-office-pet-bori-272-pins.test.mjs",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "file": "scripts/hani-office-residents.test.mjs",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "file": "scripts/hani-office-xmas-269-pins.test.mjs",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "file": "scripts/hani-office-xmas.test.mjs",
+    "status": 0,
+    "stderr": ""
+  }
+]

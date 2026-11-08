@@ -1,0 +1,76 @@
+﻿[
+    {
+        "file":  "hani-life-bundle-source.test.mjs",
+        "exit":  0,
+        "seconds":  0.42,
+        "command":  "node --test --test-isolation=none --test-reporter=tap scripts/hani-life-bundle-source.test.mjs",
+        "summary":  [
+                        "# tests 4",
+                        "# pass 4",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-study-retry.test.mjs",
+        "exit":  0,
+        "seconds":  0.35,
+        "command":  "node --test --test-isolation=none --test-reporter=tap scripts/hani-study-retry.test.mjs",
+        "summary":  [
+                        "# tests 26",
+                        "# pass 26",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-procrastination-board.test.mjs",
+        "exit":  0,
+        "seconds":  0.28,
+        "command":  "node --test --test-isolation=none --test-reporter=tap scripts/hani-procrastination-board.test.mjs",
+        "summary":  [
+                        "# tests 6",
+                        "# pass 6",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-wishlist-quick-add.test.mjs",
+        "exit":  0,
+        "seconds":  0.15,
+        "command":  "node --test --test-isolation=none --test-reporter=tap scripts/hani-wishlist-quick-add.test.mjs",
+        "summary":  [
+                        "# tests 7",
+                        "# pass 7",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-dev-report-generate.test.mjs",
+        "exit":  0,
+        "seconds":  0.32,
+        "command":  "node --test --test-isolation=none --test-reporter=tap scripts/hani-dev-report-generate.test.mjs",
+        "summary":  [
+                        "PASS 개발보고서 생성기 10그룹",
+                        "# tests 1",
+                        "# pass 1",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    },
+    {
+        "file":  "hani-gemini-reports-build.test.mjs",
+        "exit":  0,
+        "seconds":  0.87,
+        "command":  "node --import ./scripts/hani-life-bundle-preload.mjs --test --test-isolation=none --test-reporter=tap scripts/hani-gemini-reports-build.test.mjs",
+        "summary":  [
+                        "PASS Gemini reports build tests",
+                        "# tests 1",
+                        "# pass 1",
+                        "# fail 0",
+                        "# skipped 0"
+                    ]
+    }
+]

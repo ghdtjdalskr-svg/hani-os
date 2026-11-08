@@ -1,0 +1,67 @@
+{
+  "evidence": [
+    {
+      "fixture": "office-barista-night-273-delta.json",
+      "file": "index.html",
+      "sha256": "25d3ba26777ecc365e4f42a401c2e90d24c382102561fad9bbdbf538806c5e1d",
+      "pass": true
+    },
+    {
+      "fixture": "office-barista-night-273-delta.json",
+      "file": "hani-main.js",
+      "sha256": "caa9d2d380bb8a395c503223d5a04b17935ff9c513260268052f31ee14c59170",
+      "pass": true
+    },
+    {
+      "fixture": "office-pet-bori-272-delta.json",
+      "file": "index.html",
+      "sha256": "864efe757a92f12d3a40b386b382de16725d0d585bfe95f83ab61772eb4d102b",
+      "pass": true
+    },
+    {
+      "fixture": "office-pet-bori-272-delta.json",
+      "file": "hani-main.js",
+      "sha256": "e42adfe96550cb758a2ea75268e7034e572fcda9d1559c87e3b8b8534f038f2b",
+      "pass": true
+    },
+    {
+      "fixture": "office-xmas-269-delta.json",
+      "file": "index.html",
+      "sha256": "d992db9b57b6ead06581d025d124ccd4299e931a61aaa2250908d90656d3c333",
+      "pass": true
+    },
+    {
+      "fixture": "office-xmas-269-delta.json",
+      "file": "hani-main.js",
+      "sha256": "4833ef3fabe5e2eb4bd646993f6e8cf157d6cd6b75727db73c43018fe21b2147",
+      "pass": true
+    },
+    {
+      "name": "bori-stroll",
+      "file": "hani-office-live.js",
+      "sha256": "84b448af3f4251d33b4d992016a7f158524fad49bbeb589c67e8a07c80d557ec",
+      "pass": true
+    },
+    {
+      "name": "companion-homes",
+      "file": "hani-office-live.js",
+      "sha256": "aa5c9893814c89d00e57626b9a43582ad885e4c93d6b152f338204a2e52375c9",
+      "pass": true
+    }
+  ],
+  "closure": {
+    "raw": 168,
+    "projected": 161,
+    "added": [
+      "assets/profiles/thumb/hani-profile-haru-256.webp",
+      "assets/profiles/thumb/hani-profile-hina-256.webp",
+      "assets/profiles/thumb/hani-profile-naeun-256.webp",
+      "assets/street-journal/chibi/jieun-think.webp",
+      "assets/street-journal/chibi/minji-think.webp",
+      "hani-procrastination-board.css",
+      "hani-procrastination-board.js"
+    ],
+    "missing": []
+  },
+  "gitExecuted": false
+}

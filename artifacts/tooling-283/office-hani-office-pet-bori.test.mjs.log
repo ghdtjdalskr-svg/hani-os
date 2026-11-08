@@ -1,0 +1,96 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 25.0509
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.8957
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 10.0239
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 9.381
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 66.8855
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 234.3511
+  type: 'test'
+  ...
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+# Subtest: Bori: three byte-exact approved assets and complete ten-frame dog model; no full portrait
+ok 7 - Bori: three byte-exact approved assets and complete ten-frame dog model; no full portrait
+  ---
+  duration_ms: 36.797
+  type: 'test'
+  ...
+# Subtest: Bori: 1F 07–13/15–07, 2F 13–15; visible >=95%, sleeps more than all peers
+ok 8 - Bori: 1F 07–13/15–07, 2F 13–15; visible >=95%, sleeps more than all peers
+  ---
+  duration_ms: 12081.824
+  type: 'test'
+  ...
+# Subtest: Bori: clear routes exclude furniture, staff chairs, other pets, queen, barista, tree and gifts
+ok 9 - Bori: clear routes exclude furniture, staff chairs, other pets, queen, barista, tree and gifts
+  ---
+  duration_ms: 27585.3256
+  type: 'test'
+  ...
+# Subtest: Bori: 25–45 second cycles, longer rests, short 12px/s walks slower than Mochi
+ok 10 - Bori: 25–45 second cycles, longer rests, short 12px/s walks slower than Mochi
+  ---
+  duration_ms: 725.7113
+  type: 'test'
+  ...
+# Subtest: Bori: tap uses his existing bubble and ten warm lines while napping
+ok 11 - Bori: tap uses his existing bubble and ten warm lines while napping
+  ---
+  duration_ms: 742.7963
+  type: 'test'
+  ...
+# Subtest: Bori: reduced motion freezes him; hidden and offscreen floors retain no advancing state
+ok 12 - Bori: reduced motion freezes him; hidden and offscreen floors retain no advancing state
+  ---
+  duration_ms: 3036.7209
+  type: 'test'
+  ...
+# Subtest: Bori: eligible for a three-way chat; four present pets keep the original nearby trio
+ok 13 - Bori: eligible for a three-way chat; four present pets keep the original nearby trio
+  ---
+  duration_ms: 748.7678
+  type: 'test'
+  ...
+# Subtest: Bori: no persistence, staff plan owner, timers, listeners and nodes remain unchanged
+ok 14 - Bori: no persistence, staff plan owner, timers, listeners and nodes remain unchanged
+  ---
+  duration_ms: 74.8182
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 45421.6995

@@ -1,0 +1,23 @@
+Merged actual Bori samples {"sleep":8026,"walking":2673,"stroll":1549,"awake":10901,"special":289}
+TAP version 13
+# Subtest: merged exact inverses run M9 then Bori then homes through every unchanged 278 layer
+ok 1 - merged exact inverses run M9 then Bori then homes through every unchanged 278 layer
+  ---
+  duration_ms: 149.8804
+  type: 'test'
+  ...
+# Subtest: merged Bori affection runs on actual daytime snapshots and preserves all pre-M9 rhythm, motion and positions
+ok 2 - merged Bori affection runs on actual daytime snapshots and preserves all pre-M9 rhythm, motion and positions
+  ---
+  duration_ms: 68099.6304
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 68276.4135

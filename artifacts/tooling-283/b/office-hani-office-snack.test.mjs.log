@@ -1,0 +1,245 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 17.4119
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 6.8343
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 22.9569
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 8.2357
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 71.1411
+  type: 'test'
+  ...
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+Office affinity storage unavailable or malformed; using memory only.
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 249.0769
+  type: 'test'
+  ...
+# Subtest: snack: mounted persistent caption button reacts only to stationary staff on this floor
+ok 7 - snack: mounted persistent caption button reacts only to stationary staff on this floor
+  ---
+  duration_ms: 61.7592
+  type: 'test'
+  ...
+# Subtest: snack: phone exact short form is shared by everyone, including reduced motion with no new effect
+ok 8 - snack: phone exact short form is shared by everyone, including reduced motion with no new effect
+  ---
+  duration_ms: 141.3662
+  type: 'test'
+  ...
+# Subtest: snack: real walking staff keep the same motion path; visitors, NPCs and pets never react
+ok 9 - snack: real walking staff keep the same motion path; visitors, NPCs and pets never react
+  ---
+  duration_ms: 3212.7735
+  type: 'test'
+  ...
+# Subtest: snack: after exactly 8 seconds icon/status restore in place without an intermediate schedule flash
+ok 10 - snack: after exactly 8 seconds icon/status restore in place without an intermediate schedule flash
+  ---
+  duration_ms: 73.6535
+  type: 'test'
+  ...
+# Subtest: snack: schedule advances during overlay and expiry restores the current schedule
+ok 11 - snack: schedule advances during overlay and expiry restores the current schedule
+  ---
+  duration_ms: 1530.697
+  type: 'test'
+  ...
+# Subtest: snack: ten-minute floor cooldown survives floor changes, both timers clear, stale end cannot affect another floor
+ok 12 - snack: ten-minute floor cooldown survives floor changes, both timers clear, stale end cannot affect another floor
+  ---
+  duration_ms: 100.1118
+  type: 'test'
+  ...
+# Subtest: snack: viewer tap wins over thank-you, including stale bubble timer and pending async loads
+ok 13 - snack: viewer tap wins over thank-you, including stale bubble timer and pending async loads
+  ---
+  duration_ms: 131.9297
+  type: 'test'
+  ...
+# Subtest: snack: no node allocation on repeated taps, floor switches or expiry; no storage writes; reload clears memory
+ok 14 - snack: no node allocation on repeated taps, floor switches or expiry; no storage writes; reload clears memory
+  ---
+  duration_ms: 281.6831
+  type: 'test'
+  ...
+# Subtest: snack: login lock hides button and rejects clicks; no scene interaction when hidden
+ok 15 - snack: login lock hides button and rejects clicks; no scene interaction when hidden
+  ---
+  duration_ms: 50.9654
+  type: 'test'
+  ...
+# Subtest: snack: scheduler/snapshot/geometry/residents bytes and complete sampled model JSON preserve c301a13
+ok 16 - snack: scheduler/snapshot/geometry/residents bytes and complete sampled model JSON preserve c301a13
+  ---
+  duration_ms: 3834.7906
+  type: 'test'
+  ...
+# Subtest: events snack: stationary floor scope, exact status at both widths, 8s restore, viewer priority and no writes
+ok 17 - events snack: stationary floor scope, exact status at both widths, 8s restore, viewer priority and no writes
+  ---
+  duration_ms: 511.8937
+  type: 'test'
+  ...
+# Subtest: events coffee: stationary floor scope, exact status at both widths, 8s restore, viewer priority and no writes
+ok 18 - events coffee: stationary floor scope, exact status at both widths, 8s restore, viewer priority and no writes
+  ---
+  duration_ms: 485.3791
+  type: 'test'
+  ...
+# Subtest: events applause: stationary floor scope, exact status at both widths, 8s restore, viewer priority and no writes
+ok 19 - events applause: stationary floor scope, exact status at both widths, 8s restore, viewer priority and no writes
+  ---
+  duration_ms: 480.2841
+  type: 'test'
+  ...
+# Subtest: events cheer: stationary floor scope, exact status at both widths, 8s restore, viewer priority and no writes
+ok 20 - events cheer: stationary floor scope, exact status at both widths, 8s restore, viewer priority and no writes
+  ---
+  duration_ms: 497.5813
+  type: 'test'
+  ...
+# Subtest: events birthday: stationary floor scope, exact status at both widths, 8s restore, viewer priority and no writes
+ok 21 - events birthday: stationary floor scope, exact status at both widths, 8s restore, viewer priority and no writes
+  ---
+  duration_ms: 489.8891
+  type: 'test'
+  ...
+# Subtest: events: independent event/floor cooldowns share two timer slots; stale callbacks cannot clear a replacement
+ok 22 - events: independent event/floor cooldowns share two timer slots; stale callbacks cannot clear a replacement
+  ---
+  duration_ms: 189.7359
+  type: 'test'
+  ...
+# Subtest: events: persistent panel/buttons, outside pointer, keyboard, floors, lock and reload
+ok 23 - events: persistent panel/buttons, outside pointer, keyboard, floors, lock and reload
+  ---
+  duration_ms: 231.306
+  type: 'test'
+  ...
+# Subtest: events: birthday uses final dates, KST midnight, own and colleague lines, absence and stationary scope
+ok 24 - events: birthday uses final dates, KST midnight, own and colleague lines, absence and stationary scope
+  ---
+  duration_ms: 2235.3809
+  type: 'test'
+  ...
+# Subtest: events: every event excludes actual walking staff, visitors and residents without changing their paths
+ok 25 - events: every event excludes actual walking staff, visitors and residents without changing their paths
+  ---
+  duration_ms: 4219.5626
+  type: 'test'
+  ...
+# Subtest: events: authored table preserves every short line and records every necessary shortening
+ok 26 - events: authored table preserves every short line and records every necessary shortening
+  ---
+  duration_ms: 8.9678
+  type: 'test'
+  ...
+1..26
+# tests 26
+# suites 0
+# pass 26
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 19317.3028

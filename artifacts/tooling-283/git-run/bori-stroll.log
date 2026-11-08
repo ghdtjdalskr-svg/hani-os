@@ -1,0 +1,111 @@
+﻿TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 19.9335
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 8.4631
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 10.7557
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 9.173
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 68.9528
+  type: 'test'
+  ...
+# Bori daily evidence [{"day":"2026-11-02","samples":1440,"daytime":{"samples":720,"visible":720,"sleep":260,"awake":369,"walking":91},"outings":20,"night":0,"overlap":0,"visible":1440,"sleepMinutes":980,"walkingMinuteSamples":91,"intervalMinutes":[36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36],"durations":[164,165,166,167,168,169,170,171,156,157,229,228,227,226,233,232,231,230,221,220]},{"day":"2026-11-03","samples":1440,"daytime":{"samples":720,"visible":717,"sleep":264,"awake":374,"walking":79},"outings":19,"night":0,"overlap":0,"visible":1437,"sleepMinutes":984,"walkingMinuteSamples":79,"intervalMinutes":[39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39],"durations":[156,155,158,157,160,159,162,161,164,163,164,165,166,167,168,169,170,171,172]},{"day":"2026-11-06","samples":1440,"daytime":{"samples":720,"visible":718,"sleep":267,"awake":354,"walking":97},"outings":18,"night":0,"overlap":0,"visible":1438,"sleepMinutes":987,"walkingMinuteSamples":97,"intervalMinutes":[40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40],"durations":[199,200,201,202,195,196,197,198,207,208,143,142,141,140,139,138,137,136]},{"day":"2026-11-07","samples":1440,"daytime":{"samples":720,"visible":716,"sleep":264,"awake":358,"walking":94},"outings":21,"night":0,"overlap":0,"visible":1436,"sleepMinutes":984,"walkingMinuteSamples":94,"intervalMinutes":[35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35,35],"durations":[148,147,150,149,144,143,146,145,140,139,214,215,216,217,210,211,212,213,222,223,178]},{"day":"2026-11-08","samples":1440,"daytime":{"samples":720,"visible":719,"sleep":263,"awake":348,"walking":108},"outings":19,"night":0,"overlap":0,"visible":1439,"sleepMinutes":983,"walkingMinuteSamples":108,"intervalMinutes":[38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38],"durations":[205,206,203,204,201,202,199,200,213,214,182,181,184,183,178,177,180,179,190]}]
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 246.8286
+  type: 'test'
+  ...
+# Subtest: stroll exact inverse retains all f1a457f bytes and original 278 contract; every partial/duplicate/unrelated edit is rejected
+ok 7 - stroll exact inverse retains all f1a457f bytes and original 278 contract; every partial/duplicate/unrelated edit is rejected
+  ---
+  duration_ms: 108.0149
+  type: 'test'
+  ...
+# Subtest: stroll inverse independently matches the fixed Git base
+ok 8 - stroll inverse independently matches the fixed Git base
+  ---
+  duration_ms: 60.7467
+  type: 'test'
+  ...
+# Subtest: weekday/weekend minute-by-minute days: 15..25 daytime outings, 2..4 minutes each, no night outing or pet/companion/sibling overlap
+ok 9 - weekday/weekend minute-by-minute days: 15..25 daytime outings, 2..4 minutes each, no night outing or pet/companion/sibling overlap
+  ---
+  duration_ms: 57094.9819
+  type: 'test'
+  ...
+# Subtest: second-level full tours wake, walk to 1..2 stops and return home without collisions; routes reserve both ends from the chick
+ok 10 - second-level full tours wake, walk to 1..2 stops and return home without collisions; routes reserve both ends from the chick
+  ---
+  duration_ms: 197681.3364
+  type: 'test'
+  ...
+# Subtest: date seed, reordered samples, absent chairman, reduced motion, KST boundaries and blocking retain safe nap behavior
+ok 11 - date seed, reordered samples, absent chairman, reduced motion, KST boundaries and blocking retain safe nap behavior
+  ---
+  duration_ms: 13486.1191
+  type: 'test'
+  ...
+# Subtest: real persistent DOM: one Bori bubble on original owner, no writes, unchanged timers/listeners/nodes, hidden and reduced motion
+ok 12 - real persistent DOM: one Bori bubble on original owner, no writes, unchanged timers/listeners/nodes, hidden and reduced motion
+  ---
+  duration_ms: 24731.6805
+  type: 'test'
+  ...
+# Subtest: Tuesday 10:00 KST at 40x: 90 actual persistent DOM poses retain daytime sleep, awake and walking shares
+ok 13 - Tuesday 10:00 KST at 40x: 90 actual persistent DOM poses retain daytime sleep, awake and walking shares
+  ---
+  duration_ms: 3231.4869
+  type: 'test'
+  ...
+# Subtest: runtime closure, CSS, assets, version, staff plan and other resident definitions have no dependency change
+not ok 14 - runtime closure, CSS, assets, version, staff plan and other resident definitions have no dependency change
+  ---
+  duration_ms: 113.2732
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\tool283\\scripts\\hani-office-bori-stroll.test.mjs:125:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    168 !== 161
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 161
+  actual: 168
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/tool283/scripts/hani-office-bori-stroll.test.mjs:126:280)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 13
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 297023.4984

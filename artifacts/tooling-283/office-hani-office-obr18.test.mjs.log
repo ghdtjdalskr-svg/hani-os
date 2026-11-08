@@ -1,0 +1,153 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 15.5248
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 7.5247
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 8.7922
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 10.1865
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 70.9792
+  type: 'test'
+  ...
+[
+  {
+    width: 300,
+    metrics: 'Node synthetic font/animation geometry, not browser pixels',
+    samples: 370,
+    minimumRatio: 0.25,
+    meanMs: 4.553717837837842,
+    maxMs: 29.487999999999943,
+    counts: {
+      sprite: 0,
+      face: 0,
+      label: 0,
+      mascot: 0,
+      outside: 0,
+      distant: 0,
+      dialogue: 0
+    },
+    failures: [],
+    missingDots: [
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object]
+    ],
+    spritePairs: 423
+  },
+  {
+    width: 342,
+    metrics: 'Node synthetic font/animation geometry, not browser pixels',
+    samples: 370,
+    minimumRatio: 0.25,
+    meanMs: 4.196255405405418,
+    maxMs: 22.150500000000193,
+    counts: {
+      sprite: 0,
+      face: 0,
+      label: 0,
+      mascot: 0,
+      outside: 0,
+      distant: 0,
+      dialogue: 0
+    },
+    failures: [],
+    missingDots: [],
+    spritePairs: 286
+  },
+  {
+    width: 1348,
+    metrics: 'Node synthetic font/animation geometry, not browser pixels',
+    samples: 370,
+    minimumRatio: 1,
+    meanMs: 1.1054454054053928,
+    maxMs: 5.8604999999997744,
+    counts: {
+      sprite: 0,
+      face: 0,
+      label: 0,
+      mascot: 0,
+      outside: 0,
+      distant: 0,
+      dialogue: 0
+    },
+    failures: [],
+    missingDots: [],
+    spritePairs: 17
+  }
+]
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 251.9362
+  type: 'test'
+  ...
+# Subtest: obr19 original >=40px atlas / phone dimensions: measured ratios, mandatory dialogue, all sprite/face/label/mascot/bounds and nearby limit
+ok 7 - obr19 original >=40px atlas / phone dimensions: measured ratios, mandatory dialogue, all sprite/face/label/mascot/bounds and nearby limit
+  ---
+  duration_ms: 4498.5868
+  type: 'test'
+  ...
+# Subtest: obr18 suppressed pills retain collision-free nearby dots; dots excluded from visible count
+ok 8 - obr18 suppressed pills retain collision-free nearby dots; dots excluded from visible count
+  ---
+  duration_ms: 5.5437
+  type: 'test'
+  ...
+# Subtest: obr18 mobile actual owner keeps one merged slot, full tap source, feet and persistent nodes through updates
+ok 9 - obr18 mobile actual owner keeps one merged slot, full tap source, feet and persistent nodes through updates
+  ---
+  duration_ms: 908.5171
+  type: 'test'
+  ...
+# Subtest: obr18 phone vocabulary preserves report topic, assent and greeting without clipping
+ok 10 - obr18 phone vocabulary preserves report topic, assent and greeting without clipping
+  ---
+  duration_ms: 0.2508
+  type: 'test'
+  ...
+# Subtest: obr18 actor context removed; canonical layers, atlas pivot and compact >=10px are explicit
+ok 11 - obr18 actor context removed; canonical layers, atlas pivot and compact >=10px are explicit
+  ---
+  duration_ms: 67.4285
+  type: 'test'
+  ...
+# Subtest: obr18 blocked nearby space hides a label instead of sending it to a distant empty desk
+ok 12 - obr18 blocked nearby space hides a label instead of sending it to a distant empty desk
+  ---
+  duration_ms: 1.3782
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5892.1012

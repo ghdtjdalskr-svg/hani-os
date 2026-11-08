@@ -1,0 +1,136 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 24.7438
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 9.1308
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 14.9812
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 9.5823
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 69.3186
+  type: 'test'
+  ...
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 250.0151
+  type: 'test'
+  ...
+# Subtest: affinity storage: load, read-only get, fake click, hover, repeat and unknown ids never write
+ok 7 - affinity storage: load, read-only get, fake click, hover, repeat and unknown ids never write
+  ---
+  duration_ms: 1.2963
+  type: 'test'
+  ...
+# Subtest: affinity storage: only the one exact key/counts payload; debounced <= one write per 2s
+ok 8 - affinity storage: only the one exact key/counts payload; debounced <= one write per 2s
+  ---
+  duration_ms: 0.7379
+  type: 'test'
+  ...
+# Subtest: affinity storage: malformed values preserved byte-for-byte with one warning and memory-only clicks
+ok 9 - affinity storage: malformed values preserved byte-for-byte with one warning and memory-only clicks
+  ---
+  duration_ms: 3.6023
+  type: 'test'
+  ...
+# Subtest: affinity storage: read denied, quota and storage getter failure remain usable in memory
+ok 10 - affinity storage: read denied, quota and storage getter failure remain usable in memory
+  ---
+  duration_ms: 1.6389
+  type: 'test'
+  ...
+# Subtest: affinity levels: every threshold, per-id isolation, unknown stored ids ignored, cap 9999 and reload
+ok 11 - affinity levels: every threshold, per-id isolation, unknown stored ids ignored, cap 9999 and reload
+  ---
+  duration_ms: 4.4326
+  type: 'test'
+  ...
+# Subtest: affinity voices: 25 ids each unlock exactly three Lv3 and two additional Lv5 lines; no early leaks
+ok 12 - affinity voices: 25 ids each unlock exactly three Lv3 and two additional Lv5 lines; no early leaks
+  ---
+  duration_ms: 38.205
+  type: 'test'
+  ...
+# Subtest: affinity actual owner: Lv1 -> Lv2 -> Lv3, secret stability, float and one persistent slot 1280/false
+ok 13 - affinity actual owner: Lv1 -> Lv2 -> Lv3, secret stability, float and one persistent slot 1280/false
+  ---
+  duration_ms: 760.8242
+  type: 'test'
+  ...
+# Subtest: affinity actual owner: Lv1 -> Lv2 -> Lv3, secret stability, float and one persistent slot 1280/true
+ok 14 - affinity actual owner: Lv1 -> Lv2 -> Lv3, secret stability, float and one persistent slot 1280/true
+  ---
+  duration_ms: 599.2132
+  type: 'test'
+  ...
+# Subtest: affinity actual owner: Lv1 -> Lv2 -> Lv3, secret stability, float and one persistent slot 390/false
+ok 15 - affinity actual owner: Lv1 -> Lv2 -> Lv3, secret stability, float and one persistent slot 390/false
+  ---
+  duration_ms: 690.1645
+  type: 'test'
+  ...
+# Subtest: affinity actual owner: Lv1 -> Lv2 -> Lv3, secret stability, float and one persistent slot 390/true
+ok 16 - affinity actual owner: Lv1 -> Lv2 -> Lv3, secret stability, float and one persistent slot 390/true
+  ---
+  duration_ms: 801.823
+  type: 'test'
+  ...
+# Subtest: affinity actual owner: automatic bubbles/load/floors do not write; synthetic clicks do not count
+ok 17 - affinity actual owner: automatic bubbles/load/floors do not write; synthetic clicks do not count
+  ---
+  duration_ms: 1252.4834
+  type: 'test'
+  ...
+# Subtest: affinity actual owner: reused visibility lifecycle plus exactly one pagehide listener, no timer added
+ok 18 - affinity actual owner: reused visibility lifecycle plus exactly one pagehide listener, no timer added
+  ---
+  duration_ms: 1771.6844
+  type: 'test'
+  ...
+# Subtest: affinity actual owner: day/night baristas independent and each pet id counted through the canonical tap
+ok 19 - affinity actual owner: day/night baristas independent and each pet id counted through the canonical tap
+  ---
+  duration_ms: 5379.9621
+  type: 'test'
+  ...
+# Subtest: affinity actual owner: hidden/locked actor and non-Enter keyboard do not increase
+ok 20 - affinity actual owner: hidden/locked actor and non-Enter keyboard do not increase
+  ---
+  duration_ms: 864.454
+  type: 'test'
+  ...
+# Subtest: affinity CSS motion and source boundaries: no new timers, network, protected state or other storage
+ok 21 - affinity CSS motion and source boundaries: no new timers, network, protected state or other storage
+  ---
+  duration_ms: 3.5434
+  type: 'test'
+  ...
+1..21
+# tests 21
+# suites 0
+# pass 21
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 12594.8074

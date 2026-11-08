@@ -1,0 +1,5 @@
+{
+  "file": "artifacts/m9-link/closure.json",
+  "method": "Changed only resolverFiles from projected161 back to raw168; complete reconstructed bytes match original pre-test SHA256",
+  "sha256": "9db4b44a340a87ea69bc3f85b1711f0488abd1550789452c3acd357970405ca9"
+}

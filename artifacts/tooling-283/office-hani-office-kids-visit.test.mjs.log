@@ -1,0 +1,109 @@
+TAP version 13
+# Subtest: actual owner reuses 19 actors and a single host across all floor clicks
+ok 1 - actual owner reuses 19 actors and a single host across all floor clicks
+  ---
+  duration_ms: 15.9908
+  type: 'test'
+  ...
+# Subtest: missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+ok 2 - missing action table keeps base work instead of the retired fixed-time break/meeting schedule
+  ---
+  duration_ms: 6.9827
+  type: 'test'
+  ...
+# Subtest: actual owner loads approved 3F art when present and caches production fallback when absent
+ok 3 - actual owner loads approved 3F art when present and caches production fallback when absent
+  ---
+  duration_ms: 11.0588
+  type: 'test'
+  ...
+# Subtest: hidden view and document pause sprite frames and behaviour; visible view resumes
+ok 4 - hidden view and document pause sprite frames and behaviour; visible view resumes
+  ---
+  duration_ms: 8.1883
+  type: 'test'
+  ...
+# Subtest: existing case meeting stays available during floor switches and returns to prior floor
+ok 5 - existing case meeting stays available during floor switches and returns to prior floor
+  ---
+  duration_ms: 75.4276
+  type: 'test'
+  ...
+10m visits {"started":13,"completed":13,"targets":["mir","gaeun","yuna","pet-dog","yuri"]}
+patrol [{"floor":"1f","visits":5,"targets":["iseul","taeo","pet-cat","sua"]},{"floor":"3f","visits":5,"targets":["seoyun","sua","arin"]},{"floor":"5f","visits":4,"targets":["pet-cat"]},{"floor":"2f","visits":5,"targets":["pet-dog","jieun","yoonseul"]}]
+closure 168
+# Subtest: summon animation waits while its view is hidden and resumes without a second engine
+ok 6 - summon animation waits while its view is hidden and resumes without a second engine
+  ---
+  duration_ms: 249.6944
+  type: 'test'
+  ...
+# Subtest: actual 10 minute schedule completes >=8 visits with >=4 distinct people and returns both children safely
+ok 7 - actual 10 minute schedule completes >=8 visits with >=4 distinct people and returns both children safely
+  ---
+  duration_ms: 16255.1619
+  type: 'test'
+  ...
+# Subtest: each actual patrol floor completes >=3 visits, diverse when available, with Seoyun first on 3F once a day
+ok 8 - each actual patrol floor completes >=3 visits, diverse when available, with Seoyun first on 3F once a day
+  ---
+  duration_ms: 5784.6823
+  type: 'test'
+  ...
+# Subtest: all 25 source sets preserve text and map to actual roster, resident or the single day/night barista slot
+ok 9 - all 25 source sets preserve text and map to actual roster, resident or the single day/night barista slot
+  ---
+  duration_ms: 0.9345
+  type: 'test'
+  ...
+# Subtest: nearest same-floor target wins a child tap and no target retains fallback; no staff on another floor can win
+ok 10 - nearest same-floor target wins a child tap and no target retains fallback; no staff on another floor can win
+  ---
+  duration_ms: 7.2755
+  type: 'test'
+  ...
+# Subtest: rare is exactly one in ten consecutive seeded turns and comes after all four unchanged normal lines
+ok 11 - rare is exactly one in ten consecutive seeded turns and comes after all four unchanged normal lines
+  ---
+  duration_ms: 13.4074
+  type: 'test'
+  ...
+# Subtest: KST date reset restores seeded order; reduced motion shares dialogues with zero bounce and real movement
+ok 12 - KST date reset restores seeded order; reduced motion shares dialogues with zero bounce and real movement
+  ---
+  duration_ms: 4243.4406
+  type: 'test'
+  ...
+# Subtest: mounted desktop/phone renders every visit line at ~2.2s on one bubble, using persistent actor slots and zero writes
+ok 13 - mounted desktop/phone renders every visit line at ~2.2s on one bubble, using persistent actor slots and zero writes
+  ---
+  duration_ms: 9675.3989
+  type: 'test'
+  ...
+# Subtest: raw mounted child taps choose a nearby visit; when none can be reached the original tap line still appears
+ok 14 - raw mounted child taps choose a nearby visit; when none can be reached the original tap line still appears
+  ---
+  duration_ms: 2743.3512
+  type: 'test'
+  ...
+# Subtest: moving target cancels speech and retraces the furniture-safe approach; chairman absence and floor transfers cancel ownership
+ok 15 - moving target cancels speech and retraces the furniture-safe approach; chairman absence and floor transfers cancel ownership
+  ---
+  duration_ms: 1077.5321
+  type: 'test'
+  ...
+# Subtest: raw runtime preserves timer/listener/storage/cloud counts, all scheduler bytes, CSS/index/main and <=200 closure files
+ok 16 - raw runtime preserves timer/listener/storage/cloud counts, all scheduler bytes, CSS/index/main and <=200 closure files
+  ---
+  duration_ms: 197.8377
+  type: 'test'
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 16
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 40409.8777
