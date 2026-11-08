@@ -1,0 +1,11 @@
+{
+  "days": 120,
+  "groupTotal": 94,
+  "exposedActionCount": 94,
+  "missingActionIds": [
+    "scene-source-layout",
+    "scene-haru-minji-cover",
+    "scene-map-rest"
+  ],
+  "result": "pass"
+}

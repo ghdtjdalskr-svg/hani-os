@@ -1,0 +1,46 @@
+﻿TAP version 13
+# Subtest: KST, all item ages, stage boundaries, unknown/corrupt data, completion and immutable source
+ok 1 - KST, all item ages, stage boundaries, unknown/corrupt data, completion and immutable source
+  ---
+  duration_ms: 8.063
+  type: 'test'
+  ...
+# Subtest: syntax, zero new write/listener/timer path and existing owner integration
+ok 2 - syntax, zero new write/listener/timer path and existing owner integration
+  ---
+  duration_ms: 11.1812
+  type: 'test'
+  ...
+# Subtest: persistent cards, actual click result, immediate reset and no side effects
+ok 3 - persistent cards, actual click result, immediate reset and no side effects
+  ---
+  duration_ms: 1.463
+  type: 'test'
+  ...
+# Subtest: only one new menu; all destinations are canonical pre-existing nav routes
+ok 4 - only one new menu; all destinations are canonical pre-existing nav routes
+  ---
+  duration_ms: 0.6576
+  type: 'test'
+  ...
+# Subtest: exact inverse restores all pre-existing menu, view, event and render bytes
+ok 5 - exact inverse restores all pre-existing menu, view, event and render bytes
+  ---
+  duration_ms: 73.4501
+  type: 'test'
+  ...
+# Subtest: existing artwork is reachable in the runtime closure, within 200 files
+ok 6 - existing artwork is reachable in the runtime closure, within 200 files
+  ---
+  duration_ms: 76.3944
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 216.995

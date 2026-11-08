@@ -1,0 +1,16 @@
+{
+  "status": "BLOCKED",
+  "dateKST": "2026-11-08",
+  "executablePath": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+  "NODE_PATH": "%USERPROFILE%/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules",
+  "attempts": [
+    "Playwright chromium.launch: spawn EPERM",
+    "PowerShell Start-Process Hidden returned PID, but dedicated local CDP endpoint refused connection",
+    "Combined Edge startup and fixture execution rejected by automatic execution policy: blocked by policy"
+  ],
+  "requestedWidths": [1280, 390],
+  "requestedThemes": ["light", "dark"],
+  "screenshots": 0,
+  "verifiedVisuals": false,
+  "nextCommand": "node scripts/hani-procrastination-board.browser.mjs <NODE_PATH/playwright/index.mjs> <msedge.exe>"
+}

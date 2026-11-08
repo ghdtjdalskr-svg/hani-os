@@ -1,0 +1,85 @@
+﻿obr2 floor unit maxima { normal: 2, lunch: 4, late: 1 } formal + optional share the same cap
+obr2 groups 13 trios 0
+obr2 cafe/terrace morning/lunch shares 0.2631578947368421 0.5434782608695652
+obr2 completed desk text runs {
+  count: 506,
+  minSeconds: 10.79999999984284,
+  maxSeconds: 10.999999999839929
+}
+obr2 Node performance {
+  firstMs: [ 353.75260000000003, 434.8905999999988, 410.1784000000007 ],
+  warmMs: 0.8967663000000029
+}
+TAP version 13
+# Subtest: obr2: whole-day ledger keeps minimum stays across block boundaries, visitor timing and personal cooldowns
+ok 1 - obr2: whole-day ledger keeps minimum stays across block boundaries, visitor timing and personal cooldowns
+  ---
+  duration_ms: 5.2796
+  type: 'test'
+  ...
+# Subtest: obr2: floor outing units have quiet/lunch/normal caps and every populated work window has an outing
+ok 2 - obr2: floor outing units have quiet/lunch/normal caps and every populated work window has an outing
+  ---
+  duration_ms: 5021.8484
+  type: 'test'
+  ...
+# Subtest: obr2: related groups reserve ALL unique slots atomically, FIFO doors, 0–3s departures, and no formal double assignment
+ok 3 - obr2: related groups reserve ALL unique slots atomically, FIFO doors, 0–3s departures, and no formal double assignment
+  ---
+  duration_ms: 115.7957
+  type: 'test'
+  ...
+# Subtest: obr2: each worker sees ≥4 place cards and ≥10 distinct lines, with lunch cafe/terrace share above morning
+ok 4 - obr2: each worker sees ≥4 place cards and ≥10 distinct lines, with lunch cafe/terrace share above morning
+  ---
+  duration_ms: 15074.6693
+  type: 'test'
+  ...
+# Subtest: obr2: desk text survives ≥10 actual seconds despite posture changes and upcoming outings
+ok 5 - obr2: desk text survives ≥10 actual seconds despite posture changes and upcoming outings
+  ---
+  duration_ms: 5329.1374
+  type: 'test'
+  ...
+# Subtest: obr2: deterministic query order, reduced motion and frozen spatial bytes
+not ok 6 - obr2: deterministic query order, reduced motion and frozen spatial bytes
+  ---
+  duration_ms: 0.6279
+  type: 'test'
+  location: 'C:\\Users\\홍성민\\Documents\\HANI_OS_DEV_CLAUDE\\pb-toon\\scripts\\hani-office-lively-v2.test.mjs:90:1'
+  failureType: 'testCodeFailure'
+  error: 'USER_GIT_DISABLED: task prohibits Git execution'
+  code: 'USER_GIT_DISABLED'
+  stack: |-
+    cp.<computed> (C:\Users\홍성민\Documents\HANI_OS_DEV_CLAUDE\pb-toon\artifacts\pb-toon\stage2\no-git.cjs:7:16)
+    readAt (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pb-toon/scripts/hani-office-lively-fixture.mjs:9:9)
+    assertOnboardedCanon (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pb-toon/scripts/hani-office-onboarding-232-assertions.mjs:14:17)
+    TestContext.<anonymous> (file:///C:/Users/%ED%99%8D%EC%84%B1%EB%AF%BC/Documents/HANI_OS_DEV_CLAUDE/pb-toon/scripts/hani-office-lively-v2.test.mjs:91:2)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1397:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+    Test.postRun (node:internal/test_runner/test:1537:19)
+    Test.run (node:internal/test_runner/test:1462:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+# Subtest: obr2: approved 4-minute personal cooldown survives midnight without a previous-day replay
+ok 7 - obr2: approved 4-minute personal cooldown survives midnight without a previous-day replay
+  ---
+  duration_ms: 325.8742
+  type: 'test'
+  ...
+# Subtest: obr2: warm snapshot <3ms, first full daily formal+outing plan <400ms
+ok 8 - obr2: warm snapshot <3ms, first full daily formal+outing plan <400ms
+  ---
+  duration_ms: 1763.8857
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 7
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 28047.6795
