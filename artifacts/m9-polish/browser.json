@@ -1,0 +1,159 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "width": 1280,
+      "height": 900,
+      "mode": "before",
+      "status": "PASS",
+      "metrics": {
+        "card": {
+          "x": 898.390625,
+          "width": 121.59375,
+          "height": 897.234375
+        },
+        "photo": {
+          "x": 903.390625,
+          "width": 111.59375,
+          "height": 139.484375
+        },
+        "title": {
+          "x": 919.390625,
+          "width": 79.59375,
+          "height": 68.1875
+        },
+        "rank": {
+          "x": 919.390625,
+          "width": 71,
+          "height": 48.09375
+        },
+        "rankLines": 2,
+        "badgeLines": 4,
+        "rankDisplay": "inline",
+        "rankWordBreak": "normal",
+        "titleWordBreak": "normal",
+        "gridColumns": "121.594px 121.594px 121.609px 121.594px 121.594px"
+      },
+      "writes": 0,
+      "errors": []
+    },
+    {
+      "width": 1280,
+      "height": 900,
+      "mode": "after",
+      "status": "PASS",
+      "metrics": {
+        "card": {
+          "x": 898.390625,
+          "width": 121.59375,
+          "height": 843.234375
+        },
+        "photo": {
+          "x": 903.390625,
+          "width": 111.59375,
+          "height": 139.484375
+        },
+        "title": {
+          "x": 919.390625,
+          "width": 79.59375,
+          "height": 68.1875
+        },
+        "rank": {
+          "x": 919.390625,
+          "width": 40.015625,
+          "height": 18.59375
+        },
+        "rankLines": 1,
+        "badgeLines": 1,
+        "rankDisplay": "inline-block",
+        "rankWordBreak": "keep-all",
+        "titleWordBreak": "keep-all",
+        "gridColumns": "121.594px 121.594px 121.609px 121.594px 121.594px"
+      },
+      "writes": 0,
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 900,
+      "mode": "before",
+      "status": "PASS",
+      "metrics": {
+        "card": {
+          "x": 200,
+          "width": 174,
+          "height": 709.765625
+        },
+        "photo": {
+          "x": 205,
+          "width": 164,
+          "height": 205
+        },
+        "title": {
+          "x": 217,
+          "width": 140,
+          "height": 31
+        },
+        "rank": {
+          "x": 253.78125,
+          "width": 40.421875,
+          "height": 14
+        },
+        "rankLines": 1,
+        "badgeLines": 2,
+        "rankDisplay": "inline",
+        "rankWordBreak": "normal",
+        "titleWordBreak": "normal",
+        "gridColumns": "174px 174px"
+      },
+      "writes": 0,
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 900,
+      "mode": "after",
+      "status": "PASS",
+      "metrics": {
+        "card": {
+          "x": 200,
+          "width": 174,
+          "height": 691.765625
+        },
+        "photo": {
+          "x": 205,
+          "width": 164,
+          "height": 205
+        },
+        "title": {
+          "x": 217,
+          "width": 140,
+          "height": 31
+        },
+        "rank": {
+          "x": 253.78125,
+          "width": 40.421875,
+          "height": 14
+        },
+        "rankLines": 1,
+        "badgeLines": 1,
+        "rankDisplay": "inline",
+        "rankWordBreak": "normal",
+        "titleWordBreak": "normal",
+        "gridColumns": "174px 174px"
+      },
+      "writes": 0,
+      "errors": []
+    }
+  ],
+  "screenshots": [
+    "1280-special-card.png",
+    "1280-special-detail.png",
+    "1280-special-detail-note.png",
+    "390-special-card.png",
+    "390-special-detail.png",
+    "390-special-detail-note.png"
+  ],
+  "errors": [],
+  "browser": "157.0.4341.42"
+}
