@@ -2,6 +2,38 @@
   "schema": 1,
   "layers": [
     {
+      "from": "2.9.284",
+      "to": "2.9.285",
+      "files": {
+        "index.html": {
+          "count": 60,
+          "after": "78ad579c21526aa39fef2dc89e320b98724d11457b4bc8bb9d413b459b5dd18a",
+          "before": "02aba01325adb688c61a933740532dad303dc1b3ff1b870a55e44ac26c7561c5"
+        },
+        "hani-main.js": {
+          "count": 1,
+          "after": "1b245194f5fc6dfc4184e44c187f08b071870efca7989cbf8ed28c94425efbf2",
+          "before": "9b9cd783236aaf6d5941a3575ef92cf1e49e0ffd084e5ef54cfa6d4ac5cdf1e9"
+        },
+        "assets/data/hani-history-releases-v1.json": {
+          "count": 1,
+          "after": "4859f87461dfb78db3f72a1da2fab07d0ba2b95c806dccbc6e685732b2defd01",
+          "before": "9534ab3375488f6ddd01d7e2f65b8c68cac8b2f0bf718cdbe78f9965061d00a5",
+          "replacements": [
+            {
+              "after": "5\",\n      \"date\": \"2026-11-09\",\n      \"status\": \"released\",\n      \"title\": \"뉴스룸 4컷 2호와 지난 호 보기\",\n      \"category\": \"뉴스·학습\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.285 뉴스룸 4컷 2호와 지난 호 보기\"\n      }\n    },\n    {\n      \"id\": \"v2.9.284\",\n      \"date\": \"2026-11-08\",\n      \"status\": \"released\",\n      \"title\": \"미룬 일 치비툰\",\n      \"category\": \"생활·공부\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"5c375d970065b1ee44946aa82dcd9c9d27d02d7d\",\n        \"subject\": \"release: v2.9.284 미룬 일 치비툰 (#473)",
+              "before": "4\",\n      \"date\": \"2026-11-08\",\n      \"status\": \"released\",\n      \"title\": \"미룬 일 치비툰\",\n      \"category\": \"생활·공부\",\n      \"credits\": [],\n      \"source\": {\n        \"commit\": \"\",\n        \"subject\": \"release: v2.9.284 미룬 일 치비툰"
+            }
+          ]
+        }
+      },
+      "feature": {
+        "module": "./hani-newsroom-285-source.cjs",
+        "restore": "restoreNewsroom285Source",
+        "fixture": "./fixtures/newsroom-285-delta.json"
+      }
+    },
+    {
       "from": "2.9.283",
       "to": "2.9.284",
       "files": {
