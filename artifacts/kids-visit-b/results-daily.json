@@ -1,0 +1,1403 @@
+{
+  "task": "kidsb-daily",
+  "dateKST": "2026-11-09 13:15:31",
+  "owner": "Codex",
+  "worktree": "kids-visit-b",
+  "branch": "hani/kids-visit-pose-b",
+  "providedHead": "3f40a06",
+  "gitCommands": 0,
+  "remoteFreshness": "not queried: task prohibits Git",
+  "risk": "NORMAL",
+  "audit": {
+    "runtimeFiles": 503,
+    "changed": [
+      "hani-office-live.js"
+    ],
+    "delta": {
+      "schema": 1,
+      "task": "kidsb-daily",
+      "baseCommit": "3f40a06",
+      "file": "hani-office-live.js",
+      "beforeSha256": "7e941be508a5efea0c309c8c689cd32bf976d3122a49ac34c7579e33acf67f36",
+      "afterSha256": "4eb2dd2a1834b766c712e3aa9553a000191336a66aa02e2f0e50a5aaf5805f6b",
+      "replacements": [
+        {
+          "name": "every-weekday-15-to-19-KST",
+          "before": "!weekend&&residentSeed(day+'|kids-weekday')%4===0&&seconds>=15*3600&&seconds<19*3600",
+          "after": "!weekend&&seconds>=15*3600&&seconds<19*3600"
+        }
+      ]
+    },
+    "onlyRemovedBytes": 41,
+    "offset": 269210,
+    "exactInverse": true,
+    "mixedEolPreserved": true,
+    "closure": {
+      "files": 164,
+      "missing": []
+    },
+    "counts": [
+      {
+        "pattern": "/\\bsetInterval\\s*\\(/g",
+        "before": 2,
+        "after": 2
+      },
+      {
+        "pattern": "/\\bsetTimeout\\s*\\(/g",
+        "before": 4,
+        "after": 4
+      },
+      {
+        "pattern": "/\\baddEventListener\\s*\\(/g",
+        "before": 15,
+        "after": 15
+      },
+      {
+        "pattern": "/\\b(?:localStorage|sessionStorage)\\b/g",
+        "before": 2,
+        "after": 2
+      },
+      {
+        "pattern": "/\\b(?:supabase|cloudClient)\\b/g",
+        "before": 0,
+        "after": 0
+      },
+      {
+        "pattern": "/\\bMath\\.random\\b/g",
+        "before": 0,
+        "after": 0
+      }
+    ],
+    "displayVersion": "2.9.285",
+    "uiEntry": "hani-ui-v02992.js?v=2.9.285",
+    "lastScript": "hani-launch-greeting.js"
+  },
+  "syntax": {
+    "pass": 4,
+    "files": [
+      "hani-office-live.js",
+      "scripts/hani-office-kids-daily-source.cjs",
+      "scripts/hani-office-kids-weekday-source.cjs",
+      "scripts/hani-office-kids-weekday.test.mjs"
+    ]
+  },
+  "office": {
+    "files": 72,
+    "pass": 787,
+    "fail": 35,
+    "gitBlocked": 35,
+    "otherFailures": [],
+    "skipped": 3
+  },
+  "extras": {
+    "files": 11,
+    "pass": 82,
+    "fail": 2,
+    "gitBlocked": 2,
+    "otherFailures": [],
+    "skipped": 0
+  },
+  "gitBlockedFiles": [
+    "hani-office-219.test.mjs",
+    "hani-office-actions-216.test.mjs",
+    "hani-office-affinity-274-pins.test.mjs",
+    "hani-office-barista-night-273-pins.test.mjs",
+    "hani-office-bori-stroll.test.mjs",
+    "hani-office-cafe-rest.test.mjs",
+    "hani-office-chairman-patrol-278-pins.test.mjs",
+    "hani-office-companion-homes.test.mjs",
+    "hani-office-companions-276-pins.test.mjs",
+    "hani-office-consult.test.mjs",
+    "hani-office-icons.test.mjs",
+    "hani-office-lively-v2.test.mjs",
+    "hani-office-mascot-label.test.mjs",
+    "hani-office-obr12.test.mjs",
+    "hani-office-obr14.test.mjs",
+    "hani-office-obr15.test.mjs",
+    "hani-office-obr21.test.mjs",
+    "hani-office-obr4.test.mjs",
+    "hani-office-obr6.test.mjs",
+    "hani-office-obr7.test.mjs",
+    "hani-office-obr8.test.mjs",
+    "hani-office-obr9.test.mjs",
+    "hani-office-pet-bori-272-pins.test.mjs",
+    "hani-office-pets-268-pins.test.mjs",
+    "hani-office-pets-bubble.test.mjs",
+    "hani-office-v2-215.test.mjs",
+    "hani-office-xmas-269-pins.test.mjs",
+    "hani-office-xmas.test.mjs",
+    "hani-dev-report-generate.test.mjs",
+    "hani-newsroom-4cut-230.test.mjs"
+  ],
+  "performance": {
+    "hani-office-cafe-rest.test.mjs": {
+      "test": [],
+      "measurements": [
+        "cafe cold plan {\n  chairmanPresent: false,\n  samples: [ 268.03560000000016, 285.2375000000002, 271.33410000000003 ]\n}",
+        "cafe cold plan {\n  chairmanPresent: true,\n  samples: [ 313.9141999999997, 306.8053, 337.953 ]\n}"
+      ]
+    },
+    "hani-office-lively-v2.test.mjs": {
+      "test": [],
+      "measurements": [
+        "obr2 Node performance {\n  firstMs: [ 325.8626, 379.2894000000015, 372.42559999999867 ],\n  warmMs: 0.5933709999999992\n}"
+      ]
+    }
+  },
+  "tests": [
+    {
+      "file": "hani-office-kids-weekday.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-kids-weekday.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 88359,
+      "pass": 19,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": [
+        "weekday year simulation {\"year\":2026,\"weekdays\":261,\"visits\":261,\"ratio\":1,\"first\":\"2026-01-01\"}",
+        "daily full-window evidence {\"weekdays\":261,\"minuteSnapshots\":62640,\"weekends\":104,\"children\":[\"kid-suhyeon\",\"kid-suyeon\"]}"
+      ],
+      "reusedSameRuntime": true
+    },
+    {
+      "file": "hani-office-219.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-219.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 113,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "scripts\\\\hani-office-219.test.mjs",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-actions-216.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-actions-216.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 39500,
+      "pass": 14,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "approved catalog projects exactly 98 core actions, 37 disabled, original family weights and frozen contract",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-actions-221.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-actions-221.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 4939,
+      "pass": 20,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-affinity-274-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-affinity-274-pins.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 802,
+      "pass": 2,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "274 base commit independently proves the entire original JS/CSS/helper blobs",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-affinity-cap.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-affinity-cap.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 6979,
+      "pass": 19,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-affinity-storage.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-affinity-storage.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 195,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-affinity.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-affinity.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 10996,
+      "pass": 21,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-barista-night-273-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-barista-night-273-pins.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 835,
+      "pass": 4,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "273: fixed Git release blobs independently prove every baseline pin and complete diff",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-barista-night.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-barista-night.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 18471,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-barista.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-barista.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 7975,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-behavior.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-behavior.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 48030,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-bori-m9.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-bori-m9.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 68253,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-bori-stroll.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-bori-stroll.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 226375,
+      "pass": 13,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "stroll inverse independently matches the fixed Git base",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-bubble-close.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-bubble-close.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 9092,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-cafe-rest.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-cafe-rest.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 3247,
+      "pass": 3,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "cafe route uses clear lower-right floor, retains the lounge and sign mounting surface",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": [
+        "cafe cold plan {",
+        "cafe cold plan {"
+      ]
+    },
+    {
+      "file": "hani-office-chairman-234.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-chairman-234.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 1213,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-chairman-patrol-278-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-chairman-patrol-278-pins.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 1850,
+      "pass": 6,
+      "fail": 6,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "278 independent fixed Git blobs prove pre-patrol bytes",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        },
+        {
+          "test": "278 kids extension independently matches its fixed Git base",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        },
+        {
+          "test": "278 visit extension independently matches fixed Git base",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        },
+        {
+          "test": "278 staff-chat extension independently matches fixed Git base",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        },
+        {
+          "test": "278 bubble placement extension independently matches fixed Git base",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        },
+        {
+          "test": "278 optimization extension independently matches fixed Git base",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-chairman-patrol.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-chairman-patrol.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 11125,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-companion-homes.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-companion-homes.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 72004,
+      "pass": 15,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "home extension independently matches the specified fixed Git base",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-companions-276-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-companions-276-pins.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 571,
+      "pass": 2,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "276 fixed Git base independently proves every original blob",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-companions.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-companions.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 12323,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-consult.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-consult.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 29744,
+      "pass": 19,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "consult: sofa wording, counter words, safety owners and runtime timers",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-crowded-labels.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-crowded-labels.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 792,
+      "pass": 19,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-drama.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-drama.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 19839,
+      "pass": 20,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-fix-218.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-fix-218.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 2162,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-floor-bubble.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-floor-bubble.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 1534,
+      "pass": 21,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-hd-224.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-hd-224.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 2520,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-icons.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-icons.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 10214,
+      "pass": 14,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "icons: scheduler, home clearance, public snapshots and both label geometry owners are byte identical to 15747bc",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-kids-lively.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-kids-lively.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 14971,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-kids-merge.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-kids-merge.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 2085,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-kids-pose-b.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-kids-pose-b.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 12098,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-kids-visit.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-kids-visit.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 41519,
+      "pass": 16,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-labels-qa.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-labels-qa.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 6632,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-lively-v2.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-lively-v2.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 20479,
+      "pass": 7,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "obr2: deterministic query order, reduced motion and frozen spatial bytes",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": [
+        "  warmMs: 0.5933709999999992",
+        "# Subtest: obr2: warm snapshot <3ms, first full daily formal+outing plan <400ms",
+        "ok 8 - obr2: warm snapshot <3ms, first full daily formal+outing plan <400ms"
+      ]
+    },
+    {
+      "file": "hani-office-lively.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-lively.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 25638,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-mascot-label.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-mascot-label.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 30389,
+      "pass": 9,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "outer exact inverse independently restores fixed affinity HEAD and rejects partial/duplicate/unrelated edits",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-motion-1.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-motion-1.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 3384,
+      "pass": 16,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-motion-2.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-motion-2.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 1110,
+      "pass": 24,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-obr10.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr10.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 2231,
+      "pass": 4,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-obr12.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr12.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 72,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "scripts\\\\hani-office-obr12.test.mjs",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-obr14.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr14.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 89327,
+      "pass": 4,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "235 authored immutable six complete ledgers and 84 snapshots, exact source/CSS and query-order determinism",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-obr15.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr15.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 11765,
+      "pass": 13,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "obr15 historical source identities retained; cafe/rest source and full absent ledgers frozen separately",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-obr16.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr16.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 7963,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-obr17.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr17.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 2413,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-obr18.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr18.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 5882,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-obr19.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr19.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 3883,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-obr21.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr21.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 28093,
+      "pass": 4,
+      "fail": 2,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "obr21 fixed pre-patch collision witnesses fail on base and clear on current, including reduced motion/cancellation",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        },
+        {
+          "test": "obr21 cached gathering/index decisions equal full index rebuilds",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-obr3.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr3.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 2440,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-obr4.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr4.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 471,
+      "pass": 8,
+      "fail": 2,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "obr4: all 326 canon anchors/coordinates stay frozen; both registered owners render in 2F with no planned rows",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        },
+        {
+          "test": "obr4: released 2.9.232 runtime tolerates canon arriving first, with all 326 art coordinates and both home seats",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-obr6.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr6.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 730,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "scripts\\\\hani-office-obr6.test.mjs",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-obr7.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr7.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 78,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "scripts\\\\hani-office-obr7.test.mjs",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-obr8.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr8.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 2112,
+      "pass": 2,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "obr8/obr13: frozen formal plans include approved chairman delta; errands have full 8–25s stays, ≤60s round trips, present colleagues, shared reservations and no leisure words",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-obr9.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-obr9.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 78,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "scripts\\\\hani-office-obr9.test.mjs",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-pet-bori-272-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-pet-bori-272-pins.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 933,
+      "pass": 3,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "272: fixed Git release blobs independently prove every baseline pin and complete diff",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-pet-bori.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-pet-bori.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 45823,
+      "pass": 14,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": [
+        "# Subtest: Bori: tap uses his existing bubble and ten warm lines while napping",
+        "ok 11 - Bori: tap uses his existing bubble and ten warm lines while napping"
+      ]
+    },
+    {
+      "file": "hani-office-pets-268-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-pets-268-pins.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 338,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "v2.9.268: exact fixture pairs are the complete diff from pinned origin/main, with no other source edits",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-pets-bubble.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-pets-bubble.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 55097,
+      "pass": 21,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "resident model differs from origin/main only in approved Mochi hours, rhythm, life and snapshot sections",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-props.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-props.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 4204,
+      "pass": 11,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-release-projection.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-release-projection.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 228,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-residents.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 77895,
+      "pass": 49,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-seats-215.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-seats-215.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 766,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-snack.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-snack.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 19545,
+      "pass": 26,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-staff-chat.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-staff-chat.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 77298,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-tap-lines.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-tap-lines.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 2200,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-tlayout.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-tlayout.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 15310,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-top-labels.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-top-labels.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 114,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-v2-215.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-v2-215.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 919,
+      "pass": 17,
+      "fail": 1,
+      "skipped": 2,
+      "failures": [
+        {
+          "test": "frozen 326-anchor canon file (+5 window spots and 2 coffee service anchors), active registered staff only, exact home floor/seat and posture",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-visitors-cafe.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-visitors-cafe.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 3921,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-office-xmas-269-pins.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-xmas-269-pins.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 506,
+      "pass": 1,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "v2.9.269: restored files equal actual Git blobs at the fixed v2.9.268 release commit",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-xmas.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-xmas.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 1503,
+      "pass": 12,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "xmas: source patch has no storage/Cloud/AI path; protected function and runtime baseline bytes are unchanged",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-office-zoom.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-office-zoom.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 14111,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 1,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-pb-chibitoon.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-pb-chibitoon.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 385,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-procrastination-board.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-procrastination-board.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 349,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-life-bundle-source.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-life-bundle-source.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 512,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-study-retry.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-study-retry.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 365,
+      "pass": 26,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-wishlist-quick-add.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-wishlist-quick-add.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 162,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-dev-report-generate.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-dev-report-generate.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 286,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "scripts\\\\hani-dev-report-generate.test.mjs",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-newsroom-4cut-230.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-newsroom-4cut-230.test.mjs --node",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 1,
+      "elapsedMs": 137,
+      "pass": 7,
+      "fail": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "test": "release closure literal, static lazy dimensions, canonical route and no new duplicate id literals",
+          "gitBlocked": true,
+          "reason": "HANI_GIT_FORBIDDEN: blocked before launch; original assertion unverified"
+        }
+      ],
+      "performance": []
+    },
+    {
+      "file": "hani-newsroom-persona.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-newsroom-persona.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 165,
+      "pass": 4,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-newsroom-285-source.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-newsroom-285-source.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 105,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-release-version-layers.test.mjs",
+      "command": "node --test --test-isolation=none scripts/hani-release-version-layers.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 372,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    },
+    {
+      "file": "hani-seoyun-m9.test.mjs",
+      "command": "node --require ./scripts/hani-m9-polish-preload.cjs --require ./scripts/hani-m9-link-preload.cjs --test --test-isolation=none scripts/hani-seoyun-m9.test.mjs",
+      "gitGuard": ".scratch-kidsb-daily/no-git.cjs",
+      "exit": 0,
+      "elapsedMs": 3155,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "failures": [],
+      "performance": []
+    }
+  ],
+  "artifacts": {
+    "originalFiles": 656,
+    "restored": [
+      "artifacts\\office-behavior\\obr16-layout-node.json",
+      "artifacts\\office-behavior\\obr17-layout-node.json",
+      "artifacts\\office-behavior\\obr19-layout-node.json",
+      "artifacts\\office-drama\\reachability.json"
+    ],
+    "removed": [],
+    "allOriginalHashesRestored": true,
+    "scratchCleanup": "verified absolute workspace path; removed after this final check"
+  },
+  "notion": {
+    "status": "pending",
+    "read": "hub and Markdown spec fetched",
+    "write": "automatic approval review rejected insert_content: approval policy is never",
+    "readBack": false
+  },
+  "unverified": [
+    "Git-dependent original assertions",
+    "remote origin/main freshness",
+    "real browser pixels/Android",
+    "Candidate/HINA/Preview approval/merge/Pages/Production read-back"
+  ],
+  "handoff": {
+    "next": "서윤이 Git 차단 시험 재검증·검토 후 커밋하고 배포 열차에 통합",
+    "approval": "../kidsb-daily-task.md 전체 수행; Git/버전/배포 변경 금지",
+    "serverChanges": []
+  }
+}

@@ -3,10 +3,12 @@ import test from 'node:test';import assert from 'node:assert/strict';import fs f
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';import {assets} from './hani-office-v2-fixture.mjs';
 import mainOffice from './hani-office-kids-main-source.cjs';
+import daily from './hani-office-kids-daily-source.cjs';
 import inverse from './hani-office-kids-weekday-source.cjs';import poseB from './hani-office-kids-pose-b-source.cjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
-const raw=fs.readFileSync('hani-office-live.js','utf8'),base=inverse.restoreKidsWeekdaySource(raw),plain=x=>JSON.parse(JSON.stringify(x));
+const dailyRaw=fs.readFileSync('hani-office-live.js','utf8'),raw=daily.restoreKidsDailySource(dailyRaw),base=inverse.restoreKidsWeekdaySource(raw),plain=x=>JSON.parse(JSON.stringify(x));
 const {scene,table}=loadScene(),r=scene.residents,old=loadScene({transform:inverse.projectPreKidsWeekdaySource}).scene;
+const previous=loadScene({transform:daily.restoreKidsDailySource}).scene.residents;
 const chair=(floor='4f',extra={})=>({floors:[{id:floor,people:[{id:'seongmin',floor,position:[51,70],pose:'sitting',walking:false,facing:'right',...extra}]}]});
 const homes={'companion-frog':'4f','companion-penguin':'3f','companion-otter':'1f','companion-chick':'2f','companion-fox':'2f'};
 const days=Array.from({length:365},(_,i)=>new Date(Date.UTC(2026,0,i+1)).toISOString().slice(0,10));
@@ -20,6 +22,25 @@ function weekendEqual(actual,before){
  }
  assert.deepEqual(a,b);
 }
+
+test('daily exact outer inverse round-trips mixed EOL bytes, keeps frozen weekday/B/main assertions and rejects all drift',()=>{
+ const bytes=fs.readFileSync('hani-office-live.js'),before=daily.restoreKidsDailySource(bytes);
+ assert.deepEqual(before,Buffer.from(raw));assert.equal(daily.hash(before),daily.delta.beforeSha256);
+ assert.equal(daily.delta.replacements.length,1);
+ let forward=raw;
+ for(const pair of daily.delta.replacements){
+  assert.equal(forward.split(pair.before).length-1,1);forward=forward.replace(pair.before,()=>pair.after);
+  assert.throws(()=>daily.restoreKidsDailySource(dailyRaw.replace(pair.after,()=>pair.before)));
+  assert.throws(()=>daily.restoreKidsDailySource(dailyRaw+pair.after));
+ }
+ assert.equal(forward,dailyRaw);assert.equal(dailyRaw.length,raw.length-41);
+ assert.equal((dailyRaw.match(/\r\n/g)||[]).length,(raw.match(/\r\n/g)||[]).length);
+ assert.equal((dailyRaw.match(/\n/g)||[]).length,(raw.match(/\n/g)||[]).length);
+ for(const bad of [dailyRaw+'\n',dailyRaw.slice(1),dailyRaw+dailyRaw,raw,dailyRaw.replace(/\r?\n/,m=>m==='\n'?'\r\n':'\n'),dailyRaw.replace('kids-weekday-child','changed-child')])assert.throws(()=>daily.restoreKidsDailySource(bad));
+ assert.throws(()=>daily.restoreKidsDailySource(dailyRaw,'hani-main.js'));
+ assert.equal(inverse.restoreKidsWeekdaySource(dailyRaw),base);
+ assert.equal(poseB.projectPreKidsPoseBSource(dailyRaw),poseB.projectPreKidsPoseBSource(raw));
+});
 
 test('exact outer inverse restores every bbe71c0 byte, preserves B contract, rejects incomplete/duplicate/unrelated changes',()=>{
  assert.equal(mainOffice.restoreMainOfficeSource(base),fs.readFileSync('artifacts/kids-weekday/baseline/hani-office-live.js','utf8'));
@@ -35,19 +56,33 @@ test('main office outer layer preserves exact weekday baseline and rejects drift
  assert.throws(()=>mainOffice.restoreMainOfficeSource(base,'hani-main.js'),/known merged main office owner/);
 });
 
-test('365 KST dates give deterministic ~25% weekday visits across fresh scenes and ISO representations, both children visit',()=>{
+test('365 KST dates give daily weekday visits across fresh scenes and ISO representations, both children visit; weekends stay identical',()=>{
  const fresh=loadScene({transform:s=>'Math.random=()=>{throw Error("random forbidden")};\n'+s}).scene.residents,children=new Set();
- for(const day of days){const now=at(day,57600),a=r.companionSnapshot(now,chair(),true,true),b=fresh.companionSnapshot(new Date(now.toISOString()),chair(),true,true);assert.deepEqual(plain(a),plain(b));if(weekdays.includes(day))for(const p of a.filter(p=>p.kid))children.add(p.id);}
- const ratio=visiting.length/weekdays.length;assert.ok(ratio>=.2&&ratio<=.3,ratio);assert.deepEqual([...children].sort(),['kid-suhyeon','kid-suyeon']);
+ for(const day of days){const now=at(day,57600),a=r.companionSnapshot(now,chair(),true,true),b=fresh.companionSnapshot(new Date(now.toISOString()),chair(),true,true);assert.deepEqual(plain(a),plain(b));assert.deepEqual(plain(a),plain(r.companionSnapshot(now,chair(),true,true)));if(weekdays.includes(day)){assert.equal(a.filter(p=>p.kid).length,1,day);for(const p of a.filter(p=>p.kid))children.add(p.id);}else{assert.equal(a.filter(p=>p.kid).length,2,day);assert.deepEqual(plain(a),plain(previous.companionSnapshot(now,chair(),true,true)));}}
+ const ratio=visiting.length/weekdays.length;assert.equal(visiting.length,weekdays.length);assert.equal(ratio,1);assert.deepEqual([...children].sort(),['kid-suhyeon','kid-suyeon']);
  console.log('weekday year simulation '+JSON.stringify({year:2026,weekdays:weekdays.length,visits:visiting.length,ratio,first:visiting[0]}));
 });
-test('all weekday boundary milliseconds use [15:00,19:00) KST, nonvisit dates stay unchanged and follower count never grows',()=>{
+test('all weekday boundary milliseconds use [15:00,19:00) KST, outside hours stay unchanged and follower count never grows',()=>{
  for(const day of weekdays)for(const seconds of [0,53999.999,54000,57600,68399.999,68400,86399.999]){
-  const now=at(day,seconds),staff=chair(),saved=JSON.stringify(staff),states=r.companionSnapshot(now,staff,true,true),expected=visiting.includes(day)&&seconds>=54000&&seconds<68400;
+  const now=at(day,seconds),staff=chair(),saved=JSON.stringify(staff),states=r.companionSnapshot(now,staff,true,true),expected=seconds>=54000&&seconds<68400;
   assert.equal(states.filter(p=>p.kid).length,expected?1:0,day+' '+seconds);assert.equal(states.filter(p=>p.following).length,1);assert.equal(JSON.stringify(staff),saved);
   if(expected){assert.equal(states.find(p=>p.following).kid,true);for(const p of states.filter(p=>p.pet))assert.equal(p.floor,homes[p.id]);}
   else assert.deepEqual(plain(states),plain(old.residents.companionSnapshot(now,staff,true,true)));
  }
+});
+test('every minute of every weekday visit window has exactly one child; every weekend sample matches the pre-daily runtime',()=>{
+ let minutes=0;const children=new Set();
+ for(const day of weekdays)for(let seconds=54000;seconds<68400;seconds+=60){
+  const states=r.companionSnapshot(at(day,seconds),chair(),true,true),kids=states.filter(p=>p.kid);
+  assert.equal(kids.length,1,day+' '+seconds);assert.equal(states.filter(p=>p.following).length,1);
+  assert.equal(kids[0].following,true);assert.equal(kids[0].weekdayArrival.day,day);children.add(kids[0].id);minutes++;
+ }
+ assert.equal(minutes,weekdays.length*240);assert.deepEqual([...children].sort(),['kid-suhyeon','kid-suyeon']);
+ for(const day of days.filter(day=>!weekdays.includes(day)))for(const seconds of [0,53999.999,54000,57600,68399.999,68400,86399.999]){
+  const now=at(day,seconds),a=r.companionSnapshot(now,chair(),true,true),b=previous.companionSnapshot(now,chair(),true,true);
+  assert.equal(a.filter(p=>p.kid).length,2);assert.deepEqual(plain(a),plain(b));
+ }
+ console.log('daily full-window evidence '+JSON.stringify({weekdays:weekdays.length,minuteSnapshots:minutes,weekends:days.length-weekdays.length,children:[...children].sort()}));
 });
 test('visit-day actual schedule on every minute preserves safe slots, reduced motion, absence, disabled scene and resident output',()=>{
  for(const day of visiting.slice(0,2))for(let seconds=0;seconds<86400;seconds+=60){

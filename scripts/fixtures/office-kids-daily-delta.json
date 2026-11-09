@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "task": "kidsb-daily",
+  "baseCommit": "3f40a06",
+  "file": "hani-office-live.js",
+  "beforeSha256": "7e941be508a5efea0c309c8c689cd32bf976d3122a49ac34c7579e33acf67f36",
+  "afterSha256": "4eb2dd2a1834b766c712e3aa9553a000191336a66aa02e2f0e50a5aaf5805f6b",
+  "replacements": [
+    {
+      "name": "every-weekday-15-to-19-KST",
+      "before": "!weekend&&residentSeed(day+'|kids-weekday')%4===0&&seconds>=15*3600&&seconds<19*3600",
+      "after": "!weekend&&seconds>=15*3600&&seconds<19*3600"
+    }
+  ]
+}
