@@ -343,4 +343,4 @@
 @media(prefers-reduced-motion:reduce){.hani-office-affinity-float{display:none;animation:none!important}}
 
 .hani-office-actor[data-person^="companion-"] .hani-office-sprite{background-image:url("./assets/office-companions/companions-v1.webp")}
-.hani-office-actor[data-resident="kid"] .hani-office-sprite{background-image:url("./assets/office-companions/kids-v1.webp")}
+.hani-office-actor[data-resident="kid"] .hani-office-sprite{background-image:url("./assets/office-companions/kids-v2.webp")}
