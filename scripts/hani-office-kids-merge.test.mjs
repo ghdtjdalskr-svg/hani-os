@@ -11,12 +11,16 @@ import kids from './hani-office-kids-pose-b-source.cjs';
 import mascot from './hani-office-mascot-label-source.cjs';
 import release284 from './hani-release-284-source.cjs';
 import release283 from './hani-release-283-source.cjs';
+import releases from './hani-release-version-layers.cjs';
 const read=f=>readRawLifeFile(f,'utf8'),raw=read('hani-office-live.js'),main=kids.restoreKidsPoseBSource(raw);
 
 test('284 exact version inverse retains all 283 pins and rejects unrelated, partial, duplicated and EOL edits',()=>{
  for(const file of Object.keys(release284.delta.files)){
-  const source=read(file),lower=release284.restoreRelease284(source,file);
+  const source=releases.projectReleaseSource(read(file),file,'2.9.284'),lower=release284.restoreRelease284(source,file);
   assert.equal(kids.hash(lower),release283.files[file].after);
+  assert.equal(release284.restoreRelease284(read(file),file),lower,'285 common outer layer reaches the unchanged 284 inverse');
+  assert.equal(release284.projectPreRelease284Source(read(file),file),lower);
+  for(const bad of [read(file)+'\n',read(file).slice(1),read(file)+read(file),read(file).replace(/\r?\n/,m=>m==='\n'?'\r\n':'\n')])assert.throws(()=>release284.restoreRelease284(bad,file));
   for(const bad of [source+'\n',source.slice(1),source+source,source.replace('2.9.284','2.9.283'),source.replace(/\r?\n/,m=>m==='\n'?'\r\n':'\n')])assert.throws(()=>release284.restoreRelease284(bad,file));
  }
 });

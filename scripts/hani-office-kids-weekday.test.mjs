@@ -2,6 +2,7 @@ import './hani-life-bundle-preload.mjs';
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';
 import {fixture} from './hani-building-206-engine.test.mjs';import {assets} from './hani-office-v2-fixture.mjs';
+import mainOffice from './hani-office-kids-main-source.cjs';
 import inverse from './hani-office-kids-weekday-source.cjs';import poseB from './hani-office-kids-pose-b-source.cjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
 const raw=fs.readFileSync('hani-office-live.js','utf8'),base=inverse.restoreKidsWeekdaySource(raw),plain=x=>JSON.parse(JSON.stringify(x));
@@ -21,12 +22,19 @@ function weekendEqual(actual,before){
 }
 
 test('exact outer inverse restores every bbe71c0 byte, preserves B contract, rejects incomplete/duplicate/unrelated changes',()=>{
- assert.equal(base,fs.readFileSync('artifacts/kids-weekday/baseline/hani-office-live.js','utf8'));
+ assert.equal(mainOffice.restoreMainOfficeSource(base),fs.readFileSync('artifacts/kids-weekday/baseline/hani-office-live.js','utf8'));
  assert.equal(poseB.projectPreKidsPoseBSource(raw),poseB.projectPreKidsPoseBSource(base));
  let forward=base;
  for(const pair of inverse.delta.replacements){assert.equal(base.split(pair.before).length-1,1);forward=forward.replace(pair.before,()=>pair.after);assert.throws(()=>inverse.restoreKidsWeekdaySource(raw.replace(pair.after,()=>pair.before)));assert.throws(()=>inverse.restoreKidsWeekdaySource(raw+pair.after));}
  assert.equal(forward,raw);for(const bad of [raw+'\n',raw.slice(1),raw+raw,base])assert.throws(()=>inverse.restoreKidsWeekdaySource(bad));assert.throws(()=>inverse.restoreKidsWeekdaySource(raw,'hani-main.js'));
 });
+test('main office outer layer preserves exact weekday baseline and rejects drift, duplicate, partial and repeated inverse',()=>{
+ const before=mainOffice.restoreMainOfficeSource(base);
+ assert.deepEqual(mainOffice.restoreMainOfficeSource(Buffer.from(base)),Buffer.from(before));
+ for(const bad of [base+'\n',base.slice(1),base+base,before,base.replace(/\r?\n/,m=>m==='\n'?'\r\n':'\n')])assert.throws(()=>mainOffice.restoreMainOfficeSource(bad),/exact merged main office input/);
+ assert.throws(()=>mainOffice.restoreMainOfficeSource(base,'hani-main.js'),/known merged main office owner/);
+});
+
 test('365 KST dates give deterministic ~25% weekday visits across fresh scenes and ISO representations, both children visit',()=>{
  const fresh=loadScene({transform:s=>'Math.random=()=>{throw Error("random forbidden")};\n'+s}).scene.residents,children=new Set();
  for(const day of days){const now=at(day,57600),a=r.companionSnapshot(now,chair(),true,true),b=fresh.companionSnapshot(new Date(now.toISOString()),chair(),true,true);assert.deepEqual(plain(a),plain(b));if(weekdays.includes(day))for(const p of a.filter(p=>p.kid))children.add(p.id);}

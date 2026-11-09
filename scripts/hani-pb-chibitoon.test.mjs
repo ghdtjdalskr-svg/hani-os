@@ -5,10 +5,18 @@ import vm from 'node:vm';
 import {runBoardCases,makeBoardFixture,runRenderCases} from './hani-procrastination-cases.mjs';
 import {pbDelta,pbHash,restoreChibitoonSource,restoreRelease283Source} from './hani-pb-chibitoon-source.mjs';
 import {resolveRuntimeClosure} from './hani-runtime-closure.mjs';
+import kids from './hani-office-kids-pose-b-source.cjs';
 import releaseLayers from './hani-release-version-layers.cjs';
 import {readPbBaseline} from './hani-pb-chibitoon-baseline.mjs';
+// Preserve binary assets while composing the exact kids and release layers.
+const projectFeature=(source,file)=>{
+ const value=releaseLayers.projectFeatureSource(source,file,'2.9.284');
+ if(!kids.delta.files.some(row=>row.file===file))return value;
+ const restored=kids.projectPreKidsPoseBSource(String(value),file);
+ return Buffer.isBuffer(value)?Buffer.from(restored):restored;
+};
 // Peel later releases/features and this version. Keep this feature's raw bytes.
-const read=file=>file.startsWith('artifacts/pb-toon/')?readPbBaseline(file.slice('artifacts/pb-toon/'.length),'utf8'):releaseLayers.projectFeatureSource(fs.readFileSync(new URL('../'+file,import.meta.url),'utf8'),file,'2.9.284');
+const read=file=>file.startsWith('artifacts/pb-toon/')?readPbBaseline(file.slice('artifacts/pb-toon/'.length),'utf8'):projectFeature(fs.readFileSync(new URL('../'+file,import.meta.url),'utf8'),file);
 const source=read('hani-procrastination-board.js'),css=read('hani-procrastination-board.css');
 const load=code=>{const window={};vm.runInNewContext(code,{window});return window.HaniProcrastination};
 const api=load(source),before=load(restoreChibitoonSource(source,'hani-procrastination-board.js'));
@@ -57,13 +65,13 @@ test('outer inverses restore complete bytes and reject drift, duplicate and repe
 
 test('one byte-identical literal sheet is reachable; raw closure reports exact additions/removals',async()=>{
   const sheet='assets/procrastination/pb-chibi-sheet-v1.webp';
-  assert.deepEqual(releaseLayers.projectFeatureSource(fs.readFileSync(new URL('../'+sheet,import.meta.url)),sheet,'2.9.284'),readPbBaseline('drafts/pb-chibi-sheet-v1.webp'));
-  const current=await resolveRuntimeClosure({exists:file=>fs.existsSync(new URL('../'+file,import.meta.url)),read:file=>releaseLayers.projectFeatureSource(fs.readFileSync(new URL('../'+file,import.meta.url)),file,'2.9.284')});
+  assert.deepEqual(projectFeature(fs.readFileSync(new URL('../'+sheet,import.meta.url)),sheet),readPbBaseline('drafts/pb-chibi-sheet-v1.webp'));
+  const current=await resolveRuntimeClosure({exists:file=>fs.existsSync(new URL('../'+file,import.meta.url)),read:file=>projectFeature(fs.readFileSync(new URL('../'+file,import.meta.url)),file)});
   const old=JSON.parse(read('artifacts/pb-toon/stage2/baseline.json'));
   assert.deepEqual(current.missing,[]);
   assert.deepEqual(current.files.filter(f=>!old.closure.files.includes(f)),[sheet]);
   assert.ok(current.files.length<=200);
-  const changed=Object.entries(old.files).filter(([file,hash])=>pbHash(releaseLayers.projectFeatureSource(fs.readFileSync(new URL('../'+file,import.meta.url)),file,'2.9.284'))!==hash).map(([file])=>file).sort();
+  const changed=Object.entries(old.files).filter(([file,hash])=>pbHash(projectFeature(fs.readFileSync(new URL('../'+file,import.meta.url)),file))!==hash).map(([file])=>file).sort();
   assert.deepEqual(changed,['hani-procrastination-board.css','hani-procrastination-board.js']);
   const output=new URL('../artifacts/pb-toon/stage2/closure.json',import.meta.url);
   fs.mkdirSync(new URL('./',output),{recursive:true});

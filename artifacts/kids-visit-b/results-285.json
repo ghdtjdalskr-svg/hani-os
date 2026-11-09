@@ -1,0 +1,1096 @@
+{
+  "task": "kidsb-285",
+  "head": "f296f6a75a10b90a15ad0578bb74c52a76d425d7",
+  "gitInvocations": 0,
+  "runs": [
+    {
+      "file": "hani-dev-report-generate.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-dev-report-generate.test.mjs",
+      "exit": 0,
+      "pass": 1,
+      "fail": 0,
+      "skipped": 0,
+      "gitBlocked": 0,
+      "groups": 10,
+      "failures": []
+    },
+    {
+      "file": "hani-life-bundle-source.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-life-bundle-source.test.mjs",
+      "exit": 0,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 0.51,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-newsroom-285-source.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-newsroom-285-source.test.mjs",
+      "exit": 0,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 0.12,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-newsroom-4cut-230.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-newsroom-4cut-230.test.mjs --node",
+      "exit": 0,
+      "pass": 8,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 0.14,
+      "gitBlocked": 0,
+      "failures": [],
+      "scope": "Existing --node path; preloaded before test evaluation. Browser path not requested for unchanged runtime.",
+      "independentBaseline": {
+        "commit": "9543fbdab0fd1ee3f30cc058c47249b5af5cdb76",
+        "method": "Integrity-verified local commit/tree/blob extraction; 70-file runtime graph"
+      }
+    },
+    {
+      "file": "hani-newsroom-persona.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-newsroom-persona.test.mjs",
+      "exit": 0,
+      "pass": 4,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 0.14,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-219.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-219.test.mjs",
+      "exit": 1,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 0.13,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-actions-216.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-actions-216.test.mjs",
+      "exit": 1,
+      "pass": 14,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 40.41,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-actions-221.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-actions-221.test.mjs",
+      "exit": 0,
+      "pass": 20,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 5.32,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-affinity-274-pins.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-affinity-274-pins.test.mjs",
+      "exit": 1,
+      "pass": 2,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 0.8,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-affinity-cap.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-affinity-cap.test.mjs",
+      "exit": 0,
+      "pass": 19,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 6.98,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-affinity-storage.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-affinity-storage.test.mjs",
+      "exit": 0,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 0.17,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-affinity.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-affinity.test.mjs",
+      "exit": 0,
+      "pass": 21,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 10.35,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-barista-night-273-pins.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-barista-night-273-pins.test.mjs",
+      "exit": 1,
+      "pass": 4,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 0.87,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-barista-night.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-barista-night.test.mjs",
+      "exit": 0,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 17.31,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-barista.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-barista.test.mjs",
+      "exit": 0,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 7.67,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-behavior.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-behavior.test.mjs",
+      "exit": 0,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 46.59,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-bori-m9.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-bori-m9.test.mjs",
+      "exit": 0,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 66.74,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-bori-stroll.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-bori-stroll.test.mjs",
+      "exit": 1,
+      "pass": 13,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 216.03,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-bubble-close.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-bubble-close.test.mjs",
+      "exit": 0,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 9.38,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-cafe-rest.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-cafe-rest.test.mjs",
+      "exit": 1,
+      "pass": 3,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 3.74,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-chairman-234.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-chairman-234.test.mjs",
+      "exit": 0,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 1.24,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-chairman-patrol-278-pins.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-chairman-patrol-278-pins.test.mjs",
+      "exit": 1,
+      "pass": 6,
+      "fail": 6,
+      "skipped": 0,
+      "seconds": 1.69,
+      "gitBlocked": 6,
+      "failures": []
+    },
+    {
+      "file": "hani-office-chairman-patrol.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-chairman-patrol.test.mjs",
+      "exit": 0,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 10.24,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-companion-homes.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-companion-homes.test.mjs",
+      "exit": 1,
+      "pass": 15,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 69.96,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-companions-276-pins.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-companions-276-pins.test.mjs",
+      "exit": 1,
+      "pass": 2,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 0.51,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-companions.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-companions.test.mjs",
+      "exit": 0,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 9.53,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-consult.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-consult.test.mjs",
+      "exit": 1,
+      "pass": 19,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 26.58,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-crowded-labels.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-crowded-labels.test.mjs",
+      "exit": 0,
+      "pass": 19,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 0.82,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-drama.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-drama.test.mjs",
+      "exit": 0,
+      "pass": 20,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 17.21,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-fix-218.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-fix-218.test.mjs",
+      "exit": 0,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 2.32,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-floor-bubble.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-floor-bubble.test.mjs",
+      "exit": 0,
+      "pass": 21,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 1.63,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-hd-224.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-hd-224.test.mjs",
+      "exit": 0,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 2.54,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-icons.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-icons.test.mjs",
+      "exit": 1,
+      "pass": 14,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 9.91,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-kids-lively.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-kids-lively.test.mjs",
+      "exit": 0,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 13.74,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-kids-merge.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-kids-merge.test.mjs",
+      "exit": 0,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 2.16,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-kids-pose-b.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-kids-pose-b.test.mjs",
+      "exit": 0,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 11.4,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-kids-visit.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-kids-visit.test.mjs",
+      "exit": 0,
+      "pass": 16,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 39.49,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-kids-weekday.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-kids-weekday.test.mjs",
+      "exit": 0,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 51.94,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-labels-qa.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-labels-qa.test.mjs",
+      "exit": 0,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 6.52,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-lively-v2.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-lively-v2.test.mjs",
+      "exit": 1,
+      "pass": 7,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 19.91,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-lively.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-lively.test.mjs",
+      "exit": 0,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 24.19,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-mascot-label.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-mascot-label.test.mjs",
+      "exit": 1,
+      "pass": 9,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 27.05,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-motion-1.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-motion-1.test.mjs",
+      "exit": 0,
+      "pass": 16,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 3.53,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-motion-2.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-motion-2.test.mjs",
+      "exit": 0,
+      "pass": 24,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 1.11,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr10.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr10.test.mjs",
+      "exit": 0,
+      "pass": 4,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 2.45,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr12.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr12.test.mjs",
+      "exit": 1,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 0.08,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr14.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr14.test.mjs",
+      "exit": 1,
+      "pass": 4,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 88.16,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr15.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr15.test.mjs",
+      "exit": 1,
+      "pass": 13,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 10.66,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr16.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr16.test.mjs",
+      "exit": 0,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 7.6,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr17.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr17.test.mjs",
+      "exit": 0,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 2.54,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr18.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr18.test.mjs",
+      "exit": 0,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 5.78,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr19.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr19.test.mjs",
+      "exit": 0,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 4.06,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr21.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr21.test.mjs",
+      "exit": 1,
+      "pass": 4,
+      "fail": 2,
+      "skipped": 0,
+      "seconds": 26.82,
+      "gitBlocked": 2,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr3.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr3.test.mjs",
+      "exit": 0,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 2.57,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr4.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr4.test.mjs",
+      "exit": 1,
+      "pass": 8,
+      "fail": 2,
+      "skipped": 0,
+      "seconds": 0.51,
+      "gitBlocked": 2,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr6.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr6.test.mjs",
+      "exit": 1,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 0.73,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr7.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr7.test.mjs",
+      "exit": 1,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 0.08,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr8.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr8.test.mjs",
+      "exit": 1,
+      "pass": 2,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 2.25,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-obr9.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-obr9.test.mjs",
+      "exit": 1,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 0.08,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-pet-bori-272-pins.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-pet-bori-272-pins.test.mjs",
+      "exit": 1,
+      "pass": 3,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 0.86,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-pet-bori.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-pet-bori.test.mjs",
+      "exit": 0,
+      "pass": 14,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 43.66,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-pets-268-pins.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-pets-268-pins.test.mjs",
+      "exit": 1,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 0.32,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-pets-bubble.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-pets-bubble.test.mjs",
+      "exit": 1,
+      "pass": 21,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 47.06,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-props.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-props.test.mjs",
+      "exit": 0,
+      "pass": 11,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 4.25,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-release-projection.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-release-projection.test.mjs",
+      "exit": 0,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 0.12,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-residents.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-residents.test.mjs",
+      "exit": 0,
+      "pass": 49,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 71.31,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-seats-215.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-seats-215.test.mjs",
+      "exit": 0,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 0.75,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-snack.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-snack.test.mjs",
+      "exit": 0,
+      "pass": 26,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 17.31,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-staff-chat.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-staff-chat.test.mjs",
+      "exit": 0,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 75.69,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-tap-lines.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-tap-lines.test.mjs",
+      "exit": 0,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 2.45,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-tlayout.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-tlayout.test.mjs",
+      "exit": 0,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 14.1,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-top-labels.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-top-labels.test.mjs",
+      "exit": 0,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 0.11,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-v2-215.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-v2-215.test.mjs",
+      "exit": 1,
+      "pass": 17,
+      "fail": 1,
+      "skipped": 2,
+      "seconds": 0.77,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-visitors-cafe.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-visitors-cafe.test.mjs",
+      "exit": 0,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 4.12,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-office-xmas-269-pins.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-xmas-269-pins.test.mjs",
+      "exit": 1,
+      "pass": 1,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 0.47,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-xmas.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-xmas.test.mjs",
+      "exit": 1,
+      "pass": 12,
+      "fail": 1,
+      "skipped": 0,
+      "seconds": 1.45,
+      "gitBlocked": 1,
+      "failures": []
+    },
+    {
+      "file": "hani-office-zoom.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-office-zoom.test.mjs",
+      "exit": 0,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 1,
+      "seconds": 12.9,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-pb-chibitoon.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-pb-chibitoon.test.mjs",
+      "exit": 0,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 0.32,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-procrastination-board.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-procrastination-board.test.mjs",
+      "exit": 0,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 0.36,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-release-version-layers.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-release-version-layers.test.mjs",
+      "exit": 0,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 0.39,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-seoyun-m9.test.mjs",
+      "command": "node --require ./scripts/hani-m9-polish-preload.cjs --require ./scripts/hani-m9-link-preload.cjs --test --test-isolation=none --test-reporter=tap scripts/hani-seoyun-m9.test.mjs",
+      "exit": 0,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 3.23,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-study-retry.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-study-retry.test.mjs",
+      "exit": 0,
+      "pass": 26,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 0.35,
+      "gitBlocked": 0,
+      "failures": []
+    },
+    {
+      "file": "hani-wishlist-quick-add.test.mjs",
+      "command": "node --test --test-isolation=none --test-reporter=tap scripts/hani-wishlist-quick-add.test.mjs",
+      "exit": 0,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0,
+      "seconds": 0.17,
+      "gitBlocked": 0,
+      "failures": []
+    }
+  ],
+  "environment": {
+    "dateKST": "2026-11-09",
+    "node": "v24.22.1",
+    "platform": "win32",
+    "execution": "Sequential per-file Node tests; Git denied before invocation. Office includes shared imported fixture tests."
+  },
+  "totals": {
+    "office": {
+      "files": 72,
+      "pass": 785,
+      "gitBlocked": 35,
+      "otherFail": 0,
+      "skipped": 3
+    },
+    "all": {
+      "files": 83,
+      "pass": 869,
+      "gitBlocked": 35,
+      "otherFail": 0,
+      "skipped": 3
+    }
+  },
+  "gitBlockedFiles": [
+    "hani-office-219.test.mjs",
+    "hani-office-actions-216.test.mjs",
+    "hani-office-affinity-274-pins.test.mjs",
+    "hani-office-barista-night-273-pins.test.mjs",
+    "hani-office-bori-stroll.test.mjs",
+    "hani-office-cafe-rest.test.mjs",
+    "hani-office-chairman-patrol-278-pins.test.mjs",
+    "hani-office-companion-homes.test.mjs",
+    "hani-office-companions-276-pins.test.mjs",
+    "hani-office-consult.test.mjs",
+    "hani-office-icons.test.mjs",
+    "hani-office-lively-v2.test.mjs",
+    "hani-office-mascot-label.test.mjs",
+    "hani-office-obr12.test.mjs",
+    "hani-office-obr14.test.mjs",
+    "hani-office-obr15.test.mjs",
+    "hani-office-obr21.test.mjs",
+    "hani-office-obr4.test.mjs",
+    "hani-office-obr6.test.mjs",
+    "hani-office-obr7.test.mjs",
+    "hani-office-obr8.test.mjs",
+    "hani-office-obr9.test.mjs",
+    "hani-office-pet-bori-272-pins.test.mjs",
+    "hani-office-pets-268-pins.test.mjs",
+    "hani-office-pets-bubble.test.mjs",
+    "hani-office-v2-215.test.mjs",
+    "hani-office-xmas-269-pins.test.mjs",
+    "hani-office-xmas.test.mjs"
+  ],
+  "safety": {
+    "runtimeFiles": 504,
+    "runtimeByteComparison": "Buffer.equals against integrity-verified HEAD commit/tree/blob objects",
+    "runtimeMismatch": [],
+    "rawClosure": {
+      "files": 164,
+      "missing": [],
+      "kidsV2": true
+    },
+    "localMain": "9543fbdab0fd1ee3f30cc058c47249b5af5cdb76",
+    "remoteFreshness": "not queried; Git forbidden",
+    "protectedStorageInternalVersionCloud": "runtime bytes unchanged; no runtime writes or schema changes",
+    "syntax": [
+      {
+        "file": "scripts/hani-office-kids-main-source.cjs",
+        "exit": 0
+      },
+      {
+        "file": "scripts/hani-office-kids-merge.test.mjs",
+        "exit": 0
+      },
+      {
+        "file": "scripts/hani-office-kids-weekday.test.mjs",
+        "exit": 0
+      },
+      {
+        "file": "scripts/hani-pb-chibitoon.test.mjs",
+        "exit": 0
+      },
+      {
+        "file": "scripts/hani-release-284-source.cjs",
+        "exit": 0
+      }
+    ]
+  },
+  "preservation": {
+    "restoredArtifacts": [
+      "artifacts/pb-toon/stage2/closure.json"
+    ],
+    "removedNewArtifacts": [],
+    "originalArtifactsVerified": 654,
+    "changedFiles": [
+      "scripts/hani-office-kids-merge.test.mjs",
+      "scripts/hani-office-kids-weekday.test.mjs",
+      "scripts/hani-pb-chibitoon.test.mjs",
+      "scripts/hani-release-284-source.cjs"
+    ],
+    "addedFiles": [
+      "artifacts/kids-visit-b/REPORT-285.md",
+      "artifacts/kids-visit-b/results-285.json",
+      "scripts/hani-office-kids-main-source.cjs"
+    ],
+    "code": [
+      {
+        "file": "scripts/hani-office-kids-main-source.cjs",
+        "sha256": "1060aa1be2b803677dfe629c27d8c0a5d387415a18d2d08beb8c7d84fd63ca65"
+      },
+      {
+        "file": "scripts/hani-office-kids-merge.test.mjs",
+        "sha256": "7330483728d62338bd4f5c0192f3d322bb9ae6b0c00486c79724b5a24fd26dbf"
+      },
+      {
+        "file": "scripts/hani-office-kids-weekday.test.mjs",
+        "sha256": "faad38d5626e6854602d245d2eb2744f6cedad3cdc53f4b5acc0fcab3dd1d320"
+      },
+      {
+        "file": "scripts/hani-pb-chibitoon.test.mjs",
+        "sha256": "4f01ab136172384694f92c412bfe723872c3123b82c16664d9cda63b892e8e16"
+      },
+      {
+        "file": "scripts/hani-release-284-source.cjs",
+        "sha256": "df77f58f7dfb7e25f1aafc62880b185d5fb3f84b1bf30588baab28bc6eda220f"
+      }
+    ],
+    "allOtherTrackedFilesMatchHead": true,
+    "assertions": "Original assertions and fixture pins retained; only exact outer projections added. Weekday adds drift/Buffer guards; merge adds direct 285 dispatch/drift guards.",
+    "temporaryFilesRemoved": false,
+    "newReportArtifacts": [
+      "artifacts/kids-visit-b/REPORT-285.md",
+      "artifacts/kids-visit-b/results-285.json"
+    ],
+    "cleanupBlocker": {
+      "path": ".tmp-kidsb-285/",
+      "files": 766,
+      "reason": "Execution review rejected both verified recursive cleanup and verified per-file cleanup: blocked by policy. No detailed reason provided.",
+      "next": "Seoyun removes this task-owned temporary directory in an allowed environment."
+    }
+  },
+  "performance": {
+    "limitsUnchanged": true,
+    "cafeRest": {
+      "status": "PASS",
+      "absentSamplesMs": [
+        291.5888,
+        350.4724,
+        426.5701
+      ],
+      "presentSamplesMs": [
+        352.7127,
+        367.3224,
+        379.7045
+      ]
+    },
+    "livelyV2": {
+      "status": "PASS",
+      "coldSamplesMs": [
+        355.6639,
+        318.1995,
+        311.728
+      ],
+      "warmMs": 0.5776406
+    },
+    "note": "Original assertions use best of three cold samples, cold <400ms and lively warm <3ms. Same sequential full-suite results, no performance rerun."
+  },
+  "notion": {
+    "state": "pending",
+    "reason": "Automatic approval review rejected insert_content: approval policy is never; no write/read-back",
+    "pending": "2026-11-09 KST / Codex / kidsb-285 / branch hani/kids-visit-pose-b / HEAD and local main above / exact outer layers, test results, runtime preservation, byproduct restoration / Seoyun Git recheck and commit"
+  }
+}
