@@ -13,7 +13,7 @@ const chair=(floor='4f',extra={})=>({floors:[{id:floor,people:[{id:'seongmin',fl
 const homes={'companion-frog':'4f','companion-penguin':'3f','companion-otter':'1f','companion-chick':'2f','companion-fox':'2f'};
 const days=Array.from({length:365},(_,i)=>new Date(Date.UTC(2026,0,i+1)).toISOString().slice(0,10));
 const weekdays=days.filter(day=>![0,6].includes(new Date(day).getUTCDay()));
-const visiting=weekdays.filter(day=>r.companionSnapshot(at(day,57600),chair(),true,true).some(p=>p.kid));
+const visiting=weekdays.filter(day=>r.companionSnapshot(at(day,68400),chair(),true,true).some(p=>p.kid));
 function weekendEqual(actual,before){
  const a=plain(actual),b=plain(before);
  for(const child of a.filter(p=>p.scene?.sibling)){
@@ -58,13 +58,13 @@ test('main office outer layer preserves exact weekday baseline and rejects drift
 
 test('365 KST dates give daily weekday visits across fresh scenes and ISO representations, both children visit; weekends stay identical',()=>{
  const fresh=loadScene({transform:s=>'Math.random=()=>{throw Error("random forbidden")};\n'+s}).scene.residents,children=new Set();
- for(const day of days){const now=at(day,57600),a=r.companionSnapshot(now,chair(),true,true),b=fresh.companionSnapshot(new Date(now.toISOString()),chair(),true,true);assert.deepEqual(plain(a),plain(b));assert.deepEqual(plain(a),plain(r.companionSnapshot(now,chair(),true,true)));if(weekdays.includes(day)){assert.equal(a.filter(p=>p.kid).length,1,day);for(const p of a.filter(p=>p.kid))children.add(p.id);}else{assert.equal(a.filter(p=>p.kid).length,2,day);assert.deepEqual(plain(a),plain(previous.companionSnapshot(now,chair(),true,true)));}}
+ for(const day of days){const now=at(day,68400),a=r.companionSnapshot(now,chair(),true,true),b=fresh.companionSnapshot(new Date(now.toISOString()),chair(),true,true);assert.deepEqual(plain(a),plain(b));assert.deepEqual(plain(a),plain(r.companionSnapshot(now,chair(),true,true)));if(weekdays.includes(day)){assert.equal(a.filter(p=>p.kid).length,1,day);for(const p of a.filter(p=>p.kid))children.add(p.id);}else{assert.equal(a.filter(p=>p.kid).length,2,day);assert.deepEqual(plain(a),plain(previous.companionSnapshot(now,chair(),true,true)));}}
  const ratio=visiting.length/weekdays.length;assert.equal(visiting.length,weekdays.length);assert.equal(ratio,1);assert.deepEqual([...children].sort(),['kid-suhyeon','kid-suyeon']);
  console.log('weekday year simulation '+JSON.stringify({year:2026,weekdays:weekdays.length,visits:visiting.length,ratio,first:visiting[0]}));
 });
-test('all weekday boundary milliseconds use [15:00,19:00) KST, outside hours stay unchanged and follower count never grows',()=>{
- for(const day of weekdays)for(const seconds of [0,53999.999,54000,57600,68399.999,68400,86399.999]){
-  const now=at(day,seconds),staff=chair(),saved=JSON.stringify(staff),states=r.companionSnapshot(now,staff,true,true),expected=seconds>=54000&&seconds<68400;
+test('all weekday boundary milliseconds use [18:00,22:00) KST, outside hours stay unchanged and follower count never grows',()=>{
+ for(const day of weekdays)for(const seconds of [0,64799.999,64800,68400,79199.999,79200,86399.999]){
+  const now=at(day,seconds),staff=chair(),saved=JSON.stringify(staff),states=r.companionSnapshot(now,staff,true,true),expected=seconds>=64800&&seconds<79200;
   assert.equal(states.filter(p=>p.kid).length,expected?1:0,day+' '+seconds);assert.equal(states.filter(p=>p.following).length,1);assert.equal(JSON.stringify(staff),saved);
   if(expected){assert.equal(states.find(p=>p.following).kid,true);for(const p of states.filter(p=>p.pet))assert.equal(p.floor,homes[p.id]);}
   else assert.deepEqual(plain(states),plain(old.residents.companionSnapshot(now,staff,true,true)));
@@ -72,13 +72,13 @@ test('all weekday boundary milliseconds use [15:00,19:00) KST, outside hours sta
 });
 test('every minute of every weekday visit window has exactly one child; every weekend sample matches the pre-daily runtime',()=>{
  let minutes=0;const children=new Set();
- for(const day of weekdays)for(let seconds=54000;seconds<68400;seconds+=60){
+ for(const day of weekdays)for(let seconds=64800;seconds<79200;seconds+=60){
   const states=r.companionSnapshot(at(day,seconds),chair(),true,true),kids=states.filter(p=>p.kid);
   assert.equal(kids.length,1,day+' '+seconds);assert.equal(states.filter(p=>p.following).length,1);
   assert.equal(kids[0].following,true);assert.equal(kids[0].weekdayArrival.day,day);children.add(kids[0].id);minutes++;
  }
  assert.equal(minutes,weekdays.length*240);assert.deepEqual([...children].sort(),['kid-suhyeon','kid-suyeon']);
- for(const day of days.filter(day=>!weekdays.includes(day)))for(const seconds of [0,53999.999,54000,57600,68399.999,68400,86399.999]){
+ for(const day of days.filter(day=>!weekdays.includes(day)))for(const seconds of [0,64799.999,64800,68400,79199.999,79200,86399.999]){
   const now=at(day,seconds),a=r.companionSnapshot(now,chair(),true,true),b=previous.companionSnapshot(now,chair(),true,true);
   assert.equal(a.filter(p=>p.kid).length,2);assert.deepEqual(plain(a),plain(b));
  }
@@ -86,14 +86,14 @@ test('every minute of every weekday visit window has exactly one child; every we
 });
 test('visit-day actual schedule on every minute preserves safe slots, reduced motion, absence, disabled scene and resident output',()=>{
  for(const day of visiting.slice(0,2))for(let seconds=0;seconds<86400;seconds+=60){
-  const now=at(day,seconds),staff=scene.snapshot(now,{chairmanPresent:true}),residents=r.snapshot(now,staff),states=r.companionSnapshot(now,staff,true,false,residents),expected=seconds>=54000&&seconds<68400;
+  const now=at(day,seconds),staff=scene.snapshot(now,{chairmanPresent:true}),residents=r.snapshot(now,staff),states=r.companionSnapshot(now,staff,true,false,residents),expected=seconds>=64800&&seconds<79200;
   assert.equal(states.filter(p=>p.kid).length,expected?1:0,day+' '+seconds);assert.equal(states.filter(p=>p.following).length,1);assert.deepEqual(plain(residents),plain(old.residents.snapshot(now,staff)));
   for(const p of states.filter(p=>p.kid))assert.ok(r.companionSafe(p.floor,p.position,true));
  }
  for(const floor of scene.floors.map(f=>f.id))for(const reduced of [false,true]){
-  const now=at(visiting[0],57600),states=r.companionSnapshot(now,chair(floor,{walking:true}),true,reduced),kid=states.find(p=>p.kid);assert.equal(kid.floor,floor);if(reduced)assert.ok(!kid.motion&&!kid.walking);
+  const now=at(visiting[0],68400),states=r.companionSnapshot(now,chair(floor,{walking:true}),true,reduced),kid=states.find(p=>p.kid);assert.equal(kid.floor,floor);if(reduced)assert.ok(!kid.motion&&!kid.walking);
  }
- const now=at(visiting[0],57600);for(const staff of [{floors:[]},chair('4f',{state:'ABSENT'})])assert.equal(r.companionSnapshot(now,staff).filter(p=>p.kid||p.following).length,0);
+ const now=at(visiting[0],68400);for(const staff of [{floors:[]},chair('4f',{state:'ABSENT'})])assert.equal(r.companionSnapshot(now,staff).filter(p=>p.kid||p.following).length,0);
  assert.deepEqual(plain(r.companionSnapshot(now,chair(),false)),[]);
 });
 test('weekend movement and staff visits match fixed baseline; only requested sibling speech expands',()=>{
@@ -112,7 +112,7 @@ test('all old general lines remain in order, six new lines each and three determ
   assert.ok(person.lines.slice(original.length).every(line=>!line.includes('회장님')));
   greetings.set(person.id,new Set());
  }
- for(const day of visiting){const child=r.companionSnapshot(at(day,57600),chair()).find(p=>p.kid);assert.equal(child.weekdayArrival.day,day);assert.match(child.weekdayArrival.line,/아빠/);assert.doesNotMatch(child.weekdayArrival.line,/회장님/);greetings.get(child.id).add(child.weekdayArrival.line);}
+ for(const day of visiting){const child=r.companionSnapshot(at(day,68400),chair()).find(p=>p.kid);assert.equal(child.weekdayArrival.day,day);assert.match(child.weekdayArrival.line,/아빠/);assert.doesNotMatch(child.weekdayArrival.line,/회장님/);greetings.get(child.id).add(child.weekdayArrival.line);}
  for(const lines of greetings.values())assert.equal(lines.size,3);
 });
 test('three sibling exchanges share the existing scene queue with brother then sister, never a lone weekday child',()=>{
@@ -124,7 +124,7 @@ test('three sibling exchanges share the existing scene queue with brother then s
   exchanges.add(brother.scene.line+' / '+sister.scene.line);
  }
  assert.equal(exchanges.size,3);
- for(const day of visiting)assert.ok(r.companionSnapshot(at(day,57750),chair()).filter(p=>p.kid).every(p=>!p.scene?.sibling));
+ for(const day of visiting)assert.ok(r.companionSnapshot(at(day,68550),chair()).filter(p=>p.kid).every(p=>!p.scene?.sibling));
 });
 test('mounted existing tick/bubble greets once per KST day only when visible, keeps taps, slots, timers/listeners, and performs zero writes',()=>{
  const writes=[],deny=(...args)=>{writes.push(args);throw Error('persistence forbidden')},manifest=JSON.parse(fs.readFileSync('assets/sprites-v3/manifest-v3.json'));
@@ -132,19 +132,19 @@ test('mounted existing tick/bubble greets once per KST day only when visible, ke
  const f=mount(s=>s),prior=mount(inverse.projectPreKidsWeekdaySource),slots=f.ids.get('haniOfficeActors').children.slice(),tick=f.timers.find(t=>t.ms===100).fn;
  f.context.window.HaniOfficePresence={chairman:'active'};const bubble=f.map.children.find(a=>a.className==='hani-office-character-bubble');
  for(const [index,day]of visiting.slice(0,2).entries()){
-  f.document.hidden=true;f.setDateTime(at(day,57600).toISOString());f.click('4f');tick();assert.equal(f.context.__weekdayShown.length,index);
+  f.document.hidden=true;f.setDateTime(at(day,68400).toISOString());f.click('4f');tick();assert.equal(f.context.__weekdayShown.length,index);
   f.expireBubbles();f.document.hidden=false;f.document.events.visibilitychange();tick();assert.equal(f.context.__weekdayShown.length,index+1);
   const arrival=f.context.__weekdayShown.at(-1),actor=slots.find(p=>p.dataset.person===arrival.id);assert.equal(actor.hidden,false);assert.ok(bubble.children[0].textContent.includes(arrival.line));tick();assert.ok(bubble.children[0].textContent.includes(arrival.line),'tick preserves first greeting');
   f.ids.get('haniOfficeActors').events.click({target:actor,isTrusted:true});assert.ok(bubble.children[0].textContent.includes(r.companions.find(p=>p.id===arrival.id).lines[0]));
   for(const line of r.companions.find(p=>p.id===arrival.id).lines.slice(1)){f.ids.get('haniOfficeActors').events.click({target:actor,isTrusted:true});assert.ok(bubble.children[0].textContent.includes(line));tick();assert.ok(bubble.children[0].textContent.includes(line));}
-  f.click('1f');f.setDateTime(at(day,57610).toISOString());f.click('4f');tick();assert.equal(f.context.__weekdayShown.length,index+1);
-  f.setDateTime(at(day,68400).toISOString());tick();assert.ok(slots.filter(p=>p.dataset.person?.startsWith('kid-')).every(p=>p.hidden));
+  f.click('1f');f.setDateTime(at(day,68410).toISOString());f.click('4f');tick();assert.equal(f.context.__weekdayShown.length,index+1);
+  f.setDateTime(at(day,79200).toISOString());tick();assert.ok(slots.filter(p=>p.dataset.person?.startsWith('kid-')).every(p=>p.hidden));
  }
  assert.deepEqual(f.ids.get('haniOfficeActors').children,slots);assert.deepEqual(f.timers.map(t=>t.ms),prior.timers.map(t=>t.ms));assert.deepEqual(Object.keys(f.document.events),Object.keys(prior.document.events));assert.deepEqual(writes,[]);
 });
 test('mounted weekend sibling exchange actually speaks brother then sister through the one existing bubble',()=>{
  const day='2026-11-08';let start,expected;
- for(let seconds=36150;seconds<68400;seconds+=180){
+ for(let seconds=36150;seconds<79200;seconds+=180){
   const stable=Array.from({length:8},(_,i)=>{const now=at(day,seconds+i),staff=scene.snapshot(now,{chairmanPresent:true});return r.companionSnapshot(now,staff,true,true).filter(p=>p.kid)});
   if(stable.every(kids=>kids.length===2&&kids.every(p=>p.scene?.sibling))){start=seconds;expected=stable[0];break}
  }

@@ -4,12 +4,12 @@
   "baseCommit": "3f40a06",
   "file": "hani-office-live.js",
   "beforeSha256": "7e941be508a5efea0c309c8c689cd32bf976d3122a49ac34c7579e33acf67f36",
-  "afterSha256": "4eb2dd2a1834b766c712e3aa9553a000191336a66aa02e2f0e50a5aaf5805f6b",
+  "afterSha256": "1c1493de329fbc4a905dab7689a6d8833375699af5ebb9ca5e31ed94605db850",
   "replacements": [
     {
-      "name": "every-weekday-15-to-19-KST",
+      "name": "every-weekday-18-to-22-KST",
       "before": "!weekend&&residentSeed(day+'|kids-weekday')%4===0&&seconds>=15*3600&&seconds<19*3600",
-      "after": "!weekend&&seconds>=15*3600&&seconds<19*3600"
+      "after": "!weekend&&seconds>=18*3600&&seconds<22*3600"
     }
   ]
 }

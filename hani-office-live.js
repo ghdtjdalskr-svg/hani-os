@@ -3204,7 +3204,7 @@
     const people=[...(staff?.floors?.flatMap(f=>f.people||[])||[]),...neighbors],chair=people.find(p=>p.id==='seongmin'&&floors.some(f=>f.id===p.floor)&&p.state!=='ABSENT'),center=chair&&(chair.position||[chair.seat?.x,chair.seat?.y]),states=[],usedStops=new Set(neighbors.flatMap(p=>p.stroll?.stops||[]));
     // Calendar-date seed is independent of the resident 07:00 day and refreshes.
     // One weekday visitor replaces the one animal follower; siblings keep weekends.
-    const surprise=!weekend&&seconds>=15*3600&&seconds<19*3600;
+    const surprise=!weekend&&seconds>=18*3600&&seconds<22*3600;
     const visitor=surprise?((residentSeed(day+'|kids-weekday-child')>>>8)%2?'kid-suyeon':'kid-suhyeon'):null;
     const follows=person=>person.kid?weekend||person.id===visitor:!weekend&&!surprise&&person.atlasRow===weekday-1;
     // Reserve the chairman's companions first, then place department pets safely.

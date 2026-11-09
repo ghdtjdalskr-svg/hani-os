@@ -46,8 +46,8 @@ test('same mounted weekday scene retains B visitor, mascot metadata and daily tw
  const table=JSON.parse(read('assets/data/office-actions-221.json')),manifest=JSON.parse(read('assets/sprites-v3/manifest-v3.json'));
  for(const width of [1280,390]){
   const writes=[],deny=(...args)=>{writes.push(args);throw Error('unexpected storage')};
-  const f=fixture('16:00',false,()=>true,table,{innerWidth:width,matchMedia:q=>({matches:q==='(max-width:600px)'&&width===390,addEventListener(){}}),HaniOfficeV2Assets:{...assets,spritesV3:manifest},setTimeout:()=>0,localStorage:{getItem:()=>null,setItem:deny,removeItem:deny,clear:deny}},()=>raw);
-  f.context.window.HaniOfficePresence={chairman:'active'};f.setDateTime(at('2026-01-02',57600).toISOString());f.click('4f');
+  const f=fixture('19:00',false,()=>true,table,{innerWidth:width,matchMedia:q=>({matches:q==='(max-width:600px)'&&width===390,addEventListener(){}}),HaniOfficeV2Assets:{...assets,spritesV3:manifest},setTimeout:()=>0,localStorage:{getItem:()=>null,setItem:deny,removeItem:deny,clear:deny}},()=>raw);
+  f.context.window.HaniOfficePresence={chairman:'active'};f.setDateTime(at('2026-01-02',68400).toISOString());f.click('4f');
   for(let n=0;n<16;n++)await Promise.resolve();
   const slots=f.ids.get('haniOfficeActors').children,kid=slots.find(p=>p.dataset.person==='kid-suhyeon');
   assert.equal(kid.hidden,false);assert.ok(kid.querySelector('.hani-office-sprite').style.backgroundImage.includes('kids-v2.webp'));

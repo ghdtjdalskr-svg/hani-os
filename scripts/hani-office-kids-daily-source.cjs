@@ -2,7 +2,7 @@
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{createHash}=require('node:crypto');
 const hash=source=>createHash('sha256').update(source).digest('hex');
 const bytes=fs.readFileSync(path.join(__dirname,'fixtures/office-kids-daily-delta.json'));
-assert.equal(hash(bytes),'814336ce50551c8e050e9e6392bc0ce6b8c94283aeb1f6c89fd4f22d8f15f123','exact authored daily delta');
+assert.equal(hash(bytes),'034494e170a749911d593ea97b1de09ce919d19503eebd61b47f6aeeb9dd7004','exact authored daily delta');
 const delta=JSON.parse(bytes);assert.equal(delta.schema,1);assert.equal(delta.baseCommit,'3f40a06');
 assert.equal(delta.beforeSha256,'7e941be508a5efea0c309c8c689cd32bf976d3122a49ac34c7579e33acf67f36');
 function restoreKidsDailySource(source,file='hani-office-live.js'){
