@@ -1,3 +1,8 @@
+# 2026-11-08 · 저장 안전장치 01+07 (Codex / audit-safe)
+
+`hani/audit-safety-284` / 착수·최종 HEAD `3ab1177` / 로컬 origin/main 참조 `5c375d9`(Git 금지·원격 새 조회 없음). **다른 탭 저장 잠금·입력 보존 안내, Cloud 수신 기존 validator 적용**. 운영 변경은 hani-main.js 하나, 표시/cache2.9.284·내부 버전·보호 키 유지, localStorage setItem18→18/remove5→5/clear0→0. **신규10/10·syntax14/14·closure164불변/누락0, 전체122명령67통과·Git38차단·기타차단14·수정전재현실패3. office69파일41통과/28Git차단·744통과/36차단/3skip·Git외실패0.** Edge는 spawn EPERM 및 Windows IPC Access denied로 실제 두 탭·1280/390 PNG 미검증. 생성JSON4복원·신규시험JSON1제거·범위밖변경0. Git/commit/push/merge/버전증가/배포 없음, **서윤 검토·커밋 및 차단 검증 대기**. Notion insert_content는 자동 승인 never 거절로 미반영. [보고서](../../artifacts/save-guard/REPORT.md) · [인수인계](handoffs/2026-11-08-save-guard.md). 아래 기존 기록 보존.
+
+
 # 2026-11-08 · kids B + 평일 방문 main284 충돌 정리 (Codex)
 
 hani/kids-visit-pose-b / 지정 main5c375d9(v2.9.284), Git 명령0. **파일 충돌4개 정리·양쪽 기능 보존, office72파일783통과·35Git 차단·1기타 실패·3skip, M915통과, 문법11/11·원문closure164/누락0·저장/Cloud/새timer/listener0.** 기타1건은400ms성능으로 고정main 단독에서도460ms로 재현·제한 유지. 283pin·기존assertion 보존, weekday→B→main체인 연결. **Edge spawn EPERM/Windows 접근 거부로 새PNG0**, 실제Git검사·index처리·커밋은 서윤 인계. 표시/cache284유지·배포 없음. Notion 착수 쓰기 자동 승인 never 거절로 갱신 대기. [짧은 보고서](../../artifacts/kids-visit-b/REPORT-merge.md) · [인수인계](handoffs/2026-11-08-kids-b-merge.md). 아래 양쪽·과거 기록 보존.

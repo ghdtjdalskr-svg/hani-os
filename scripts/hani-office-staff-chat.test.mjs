@@ -1,5 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';
 import {readRawLifeFile} from './hani-life-bundle-source.mjs';
+import outer284 from './hani-save-guard-source.cjs';
 import {projectPrePatrolSource} from './hani-office-chairman-patrol-278-source.mjs';
 import {loadScene,at} from './hani-office-lively-fixture.mjs';import {fixture} from './hani-building-206-engine.test.mjs';import {assets} from './hani-office-v2-fixture.mjs';
 import {restoreStaffChats278Source} from './hani-office-chairman-patrol-278-source.mjs';import {resolveRuntimeClosure} from './hani-office-kids-pose-b-closure.mjs';
@@ -56,6 +57,6 @@ test('raw source adds zero timer/listener/storage/cloud references and keeps run
  const source=fs.readFileSync('hani-office-live.js','utf8'),base=restoreStaffChats278Source(source),count=(s,re)=>[...s.matchAll(re)].length;
  const fit=source.slice(source.indexOf('  function fitStatusLabels('),source.indexOf('  if(buildingChairmanSlot())people.push'));assert.ok(fit.includes("bubbleSelection?.kidsVisit||bubbleSelection?.staffChat)){const b=actorBubble.getBoundingClientRect();"));assert.equal((fit.match(/getBoundingClientRect/g)||[]).length,6);
  for(const re of [/\bsetInterval\s*\(/g,/\bsetTimeout\s*\(/g,/\baddEventListener\s*\(/g,/\b(?:localStorage|sessionStorage)\b/g,/\bsupabase\b/g])assert.equal(count(source,re),count(base,re));
- for(const file of ['hani-office-live.css','index.html','hani-main.js'])assert.deepEqual(file==='hani-office-live.css'?Buffer.from(projectPrePatrolSource(fs.readFileSync(file,'utf8'),file)):readRawLifeFile(file),fs.readFileSync('artifacts/kids-visit/baseline/'+file));
+ for(const file of ['hani-office-live.css','index.html','hani-main.js'])assert.deepEqual(file==='hani-office-live.css'?Buffer.from(projectPrePatrolSource(fs.readFileSync(file,'utf8'),file)):Buffer.from(outer284.projectPreSaveGuard286Source(readRawLifeFile(file).toString('utf8'),file)),fs.readFileSync('artifacts/kids-visit/baseline/'+file));
  const read=f=>readRawLifeFile(f),closure=await resolveRuntimeClosure({exists:fs.existsSync,read}),prior=await resolveRuntimeClosure({exists:fs.existsSync,read:f=>f==='hani-office-live.js'?base:read(f)});assert.deepEqual(closure.files,prior.files);assert.deepEqual(closure.missing,[]);console.log('staff-chat closure '+closure.files.length);
 });

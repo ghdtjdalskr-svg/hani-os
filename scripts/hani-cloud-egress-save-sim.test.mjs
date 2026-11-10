@@ -24,7 +24,7 @@ function extractFunction(name){
 const constant=name=>source.match(new RegExp(`const ${name}=([^;\\n]+)`))[0];
 
 const names=["cloudCanonical","cloudSame","cloudComparableState","cloudSyncFingerprintState","cloudHasMeaningfulLocalData","cloudMergeProtectedMedia","cloudStateHash","cloudSaveSyncMeta","cloudReadRow","cloudStopAutoSync","cloudStartPolling","cloudApplyRemoteRow","cloudPushLocalRow","cloudSyncDecision","cloudSyncSelfTest","cloudShouldFetchFullState","cloudSyncCycle","cloudFetchMeta","cloudMeta","cloudSaveJson","cloudLoadJson"];
-const optional=["cloudSyncPolicy","cloudPrepareChoice","cloudCanUseVerifiedRemote","cloudRememberVerifiedRemote","cloudIsLifecycleCheck","cloudRevisionNumber","cloudIsNetworkFailure","cloudRetryAfterNetwork"];
+const optional=["validateStoredRecords","validateCloudRecords","cloudSyncPolicy","cloudPrepareChoice","cloudCanUseVerifiedRemote","cloudRememberVerifiedRemote","cloudIsLifecycleCheck","cloudRevisionNumber","cloudIsNetworkFailure","cloudRetryAfterNetwork"];
 const fns=[...names,...optional.filter(n=>source.includes(`function ${n}(`))].map(extractFunction).join("\n");
 const hasCache=source.includes("let cloudVerifiedRemote=");
 

@@ -3,10 +3,12 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
+import outer from './hani-save-guard-source.cjs';
 import inverse from './hani-office-kids-286-source.cjs';
-import releases from './hani-release-version-layers.cjs';
+import allReleases from './hani-release-version-layers.cjs';
+const releases={...allReleases,layers:allReleases.layers.slice(allReleases.layers.findIndex(row=>row.to==='2.9.286'))};
 import view285 from './hani-release-285-test-source.cjs';
-const read=file=>releases.readRawFileSync(new URL('../'+file,import.meta.url),'utf8');
+const read=file=>outer.projectPreSaveGuard286Source(releases.readRawFileSync(new URL('../'+file,import.meta.url),'utf8'),file);
 
 test('286 feature composes every frozen daily/weekday/B inverse with full hashes, buffer parity and strict drift rejection',()=>{
  for(const [file,row] of Object.entries(inverse.delta.files)){
@@ -42,7 +44,7 @@ test('285 input view leaves temporary and baseline names untouched and never mut
   const file=path.join(dir,'index.html'),raw=read('index.html');fs.writeFileSync(file,raw);
   assert.equal(view285.readRawFileSync(file,'utf8'),raw);
   assert.deepEqual(view285.readRawFileSync(file),Buffer.from(raw));
-  assert.equal(releases.readRawFileSync(new URL('../index.html',import.meta.url),'utf8'),raw);
+  assert.equal(outer.projectPreRelease287Source(releases.readRawFileSync(new URL('../index.html',import.meta.url),'utf8'),'index.html'),raw);
   assert.equal(releases.layers[0].to,'2.9.286');
  }finally{assert.equal(path.dirname(dir),os.tmpdir());fs.rmSync(dir,{recursive:true,force:true})}
 });
